@@ -55,7 +55,7 @@ successive sibling is a `label` element. This means it will work for MDC Web for
     <div class="mdc-checkbox__background">
       <svg class="mdc-checkbox__checkmark"
            viewBox="0 0 24 24">
-        <path class="mdc-checkbox__checkmark__path"
+        <path class="mdc-checkbox__checkmark-path"
               fill="none"
               stroke="white"
               d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
@@ -75,11 +75,6 @@ successive sibling is a `label` element. This means it will work for MDC Web for
 
 `mdc-form-field` is automatically RTL-aware, and will re-position elements within an RTL context.
 `mdc-form-field` will apply RTL styles whenever it, or its ancestors, has a `dir="rtl"` attribute.
-
-### Theming
-
-`mdc-form-field` is dark theme aware, and will change the text color to the "primary on dark" text
-color when used within a dark theme.
 
 
 ## JS Usage

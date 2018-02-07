@@ -68,7 +68,7 @@
 }
 
 @mixin mdc-checkbox-ink-color($color) {
-  .mdc-checkbox__checkmark__path {
+  .mdc-checkbox__checkmark-path {
     // !important is needed here because a stroke must be set as an attribute on the SVG in order
     // for line animation to work properly.
     @include mdc-theme-prop(stroke, $color, $important: true);
@@ -102,7 +102,9 @@
   white-space: nowrap;
   cursor: pointer;
   vertical-align: bottom;
+}
 
+@mixin mdc-checkbox-disabled-container-color_ {
   @include mdc-checkbox-unmarked-background-selector-disabled_ {
     @include mdc-theme-prop(border-color, $mdc-checkbox-disabled-color);
   }
@@ -110,16 +112,6 @@
   @include mdc-checkbox-marked-background-selector-disabled_ {
     @include mdc-theme-prop(border-color, transparent);
     @include mdc-theme-prop(background-color, $mdc-checkbox-disabled-color);
-  }
-
-  @include mdc-theme-dark {
-    @include mdc-checkbox-unmarked-background-selector-disabled_ {
-      @include mdc-theme-prop(border-color, $mdc-checkbox-disabled-color-dark);
-    }
-
-    @include mdc-checkbox-marked-background-selector-disabled_ {
-      @include mdc-theme-prop(background-color, $mdc-checkbox-disabled-color-dark);
-    }
   }
 }
 
@@ -162,7 +154,7 @@
   }
 
   &-unchecked-checked {
-    .mdc-checkbox__checkmark__path {
+    .mdc-checkbox__checkmark-path {
       // Instead of delaying the animation, we simply multiply its length by 2 and begin the
       // animation at 50% in order to prevent a flash of styles applied to a checked checkmark
       // as the background is fading in before the animation begins.
@@ -179,7 +171,7 @@
   }
 
   &-checked-unchecked {
-    .mdc-checkbox__checkmark__path {
+    .mdc-checkbox__checkmark-path {
       animation: $mdc-checkbox-transition-duration linear 0s mdc-checkbox-checked-unchecked-checkmark-path;
       transition: none;
     }
@@ -352,7 +344,7 @@
 
 // Check mark path
 
-@mixin mdc-checkbox__checkmark__path_ {
+@mixin mdc-checkbox__checkmark-path_ {
   transition:
     mdc-checkbox-transition-exit(
       stroke-dashoffset,
@@ -364,7 +356,7 @@
   stroke-dasharray: $mdc-checkbox-mark-path-length_;
 }
 
-@mixin mdc-checkbox__checkmark__path--marked_ {
+@mixin mdc-checkbox__checkmark-path--marked_ {
   stroke-dashoffset: 0;
 }
 

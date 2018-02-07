@@ -36,17 +36,13 @@
     transform-origin: right top;
   }
   // stylelint-enable plugin/selector-bem-pattern
-
-  &--float-above {
-    transform: translateY(-100%) scale(.75);
-    cursor: auto;
-  }
 }
 
-// stylelint-disable plugin/selector-bem-pattern
 .mdc-text-field__label--float-above {
-  &.mdc-text-field__label--shake {
-    animation: invalid-shake-float-above-standard 250ms 1;
-  }
+  cursor: auto;
 }
-// stylelint-enable plugin/selector-bem-pattern
+
+@at-root {
+  @include mdc-text-field-label-float_($mdc-text-field-label-position-y);
+  @include mdc-text-field-label-shake_(standard);
+}

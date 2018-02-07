@@ -44,8 +44,8 @@
                 <span class="demo-theme-color-radio__inner"></span>
               </i>
             </button>
-            <div class="mdc-simple-menu demo-theme-menu" style="position: absolute;" tabindex="-1" id="theme-color-menu">
-              <ul class="mdc-simple-menu__items mdc-list demo-theme-list"
+            <div class="mdc-menu demo-theme-menu" style="position: absolute;" tabindex="-1" id="theme-color-menu">
+              <ul class="mdc-menu__items mdc-list demo-theme-list"
                   role="menu"
                   aria-hidden="true"
                   style="list-style-type: none"><!-- Inline style needed to fix IE 11 rendering bug (see https://stackoverflow.com/a/23717689/467582) -->
@@ -360,46 +360,35 @@
 
         <div class="demo-card-wrapper">
           <div class="mdc-card">
-            <section class="mdc-card__primary">
-              <h1 class="mdc-card__title mdc-card__title--large">Title goes here</h1>
-              <h3 class="mdc-card__subtitle">Subtitle here</h3>
-            </section>
-            <section class="mdc-card__supporting-text">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-            </section>
-            <section class="mdc-card__actions">
-              <button class="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
-              <button class="mdc-button mdc-button--compact mdc-card__action">Action 2</button>
-            </section>
-          </div>
-        </div>
-
-        <div class="demo-card-wrapper">
-          <div class="mdc-card demo-card--with-avatar">
-            <section class="mdc-card__primary">
-              <div class="demo-card__avatar"></div>
-              <h1 class="mdc-card__title">Title</h1>
-              <h3 class="mdc-card__subtitle">Subhead</h3>
-            </section>
-            <section class="mdc-card__supporting-text">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor.
-            </section>
-            <section class="mdc-card__actions">
-              <button class="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
-              <button class="mdc-button mdc-button--compact mdc-card__action">Action 2</button>
-            </section>
-          </div>
-        </div>
-
-        <div class="demo-card-wrapper">
-          <div class="mdc-card demo-card--small">
-            <section class="mdc-card__media">
-              <h1 class="mdc-card__title mdc-card__title--large">Title</h1>
-            </section>
-            <section class="mdc-card__actions">
-              <button class="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
-            </section>
+            <div class="mdc-card__media mdc-card__media--16-9 demo-card__media"></div>
+            <div class="mdc-card__actions">
+              <div class="mdc-card__action-buttons">
+                <button class="mdc-button mdc-card__action mdc-card__action--button">Read</button>
+                <button class="mdc-button mdc-card__action mdc-card__action--button">Bookmark</button>
+              </div>
+              <div class="mdc-card__action-icons">
+                <i class="mdc-icon-toggle material-icons mdc-card__action mdc-card__action--icon"
+                   tabindex="0"
+                   role="button"
+                   aria-pressed="false"
+                   aria-label="Add to favorites"
+                   title="Add to favorites"
+                   data-toggle-on='{"content": "favorite", "label": "Remove from favorites"}'
+                   data-toggle-off='{"content": "favorite_border", "label": "Add to favorites"}'>
+                  favorite_border
+                </i>
+                <i class="material-icons mdc-card__action mdc-card__action--icon mdc-ripple-surface"
+                   tabindex="0"
+                   role="button"
+                   data-mdc-ripple-is-unbounded
+                   title="Share">share</i>
+                <i class="material-icons mdc-card__action mdc-card__action--icon mdc-ripple-surface"
+                   tabindex="0"
+                   role="button"
+                   data-mdc-ripple-is-unbounded
+                   title="More options">more_vert</i>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -420,7 +409,7 @@
               <div class="mdc-checkbox__background">
                 <svg class="mdc-checkbox__checkmark"
                      viewBox="0 0 24 24">
-                  <path class="mdc-checkbox__checkmark__path"
+                  <path class="mdc-checkbox__checkmark-path"
                         fill="none"
                         stroke="white"
                         d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
@@ -439,7 +428,7 @@
               <div class="mdc-checkbox__background">
                 <svg class="mdc-checkbox__checkmark"
                      viewBox="0 0 24 24">
-                  <path class="mdc-checkbox__checkmark__path"
+                  <path class="mdc-checkbox__checkmark-path"
                         fill="none"
                         stroke="white"
                         d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
@@ -459,7 +448,7 @@
               <div class="mdc-checkbox__background">
                 <svg class="mdc-checkbox__checkmark"
                      viewBox="0 0 24 24">
-                  <path class="mdc-checkbox__checkmark__path"
+                  <path class="mdc-checkbox__checkmark-path"
                         fill="none"
                         stroke="white"
                         d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
@@ -685,10 +674,10 @@
           <div class="mdc-select__surface" tabindex="0">
             <div class="mdc-select__label">Pick a food group</div>
             <div class="mdc-select__selected-text"></div>
-            <div class="mdc-select__bottom-line"></div>
+            <div class="mdc-select__line-ripple"></div>
           </div>
-          <div class="mdc-simple-menu mdc-select__menu">
-            <ul class="mdc-list mdc-simple-menu__items">
+          <div class="mdc-menu mdc-select__menu">
+            <ul class="mdc-list mdc-menu__items">
               <li class="mdc-list-item" role="option" id="none" aria-disabled="true">
                 Pick a food group
               </li>
@@ -848,7 +837,7 @@
                    aria-controls="demo-text-field-default-helper-text"
                    autocomplete="email">
             <label for="demo-text-field-default" class="mdc-text-field__label">Name (optional)</label>
-            <div class="mdc-text-field__bottom-line"></div>
+            <div class="mdc-line-ripple"></div>
           </div>
           <p class="mdc-text-field-helper-text" id="demo-text-field-default-helper-text"
              aria-hidden="true">
@@ -863,7 +852,7 @@
                    autocomplete="email"
                    required>
             <label for="demo-text-field-required" class="mdc-text-field__label">Email (required)</label>
-            <div class="mdc-text-field__bottom-line"></div>
+            <div class="mdc-line-ripple"></div>
           </div>
           <p class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" id="demo-text-field-required-helper-text">
             A valid email address is required
@@ -875,7 +864,7 @@
                    id="demo-text-field-box"
                    aria-controls="name-validation-message">
             <label for="demo-text-field-box" class="mdc-text-field__label">With <code>--box</code> modifier</label>
-            <div class="mdc-text-field__bottom-line"></div>
+            <div class="mdc-line-ripple"></div>
           </div>
           <p class="mdc-text-field-helper-text" id="demo-text-field-box-helper-text"
              aria-hidden="true">
@@ -886,7 +875,6 @@
     </main>
 
     <script src="/assets/material-components-web.js" async></script>
-    <script src="/assets/common.js" async></script>
     <script src="/assets/theme/index.js" async></script>
     <script>
       demoReady(function() {
@@ -894,7 +882,7 @@
          * Button
          */
 
-        [].slice.call(document.querySelectorAll('.mdc-button')).forEach(function(button) {
+        [].forEach.call(document.querySelectorAll('.mdc-button'), function(button) {
           mdc.ripple.MDCRipple.attachTo(button);
         });
 
@@ -905,17 +893,17 @@
         document.querySelector('#indeterminate-checkbox').indeterminate = true;
 
         document.querySelector('#checkbox-toggle--indeterminate').addEventListener('click', function() {
-          [].slice.call(document.querySelectorAll('.demo-checkbox-wrapper .mdc-checkbox__native-control'))
-            .forEach(function(checkbox) {
+          [].forEach.call(
+            document.querySelectorAll('.demo-checkbox-wrapper .mdc-checkbox__native-control'),
+            function(checkbox) {
               checkbox.indeterminate = !checkbox.indeterminate;
             });
         });
 
         document.querySelector('#checkbox-toggle--align-end').addEventListener('click', function() {
-          [].slice.call(document.querySelectorAll('.demo-checkbox-wrapper'))
-            .forEach(function(formField) {
-              formField.classList.toggle('mdc-form-field--align-end');
-            });
+          [].forEach.call(document.querySelectorAll('.demo-checkbox-wrapper'), function(formField) {
+            formField.classList.toggle('mdc-form-field--align-end');
+          });
         });
 
         /*
@@ -925,7 +913,7 @@
         var drawerEl = document.querySelector('.mdc-drawer--temporary');
         var drawer = new mdc.drawer.MDCTemporaryDrawer(drawerEl);
 
-        [].slice.call(document.querySelectorAll('.demo-drawer-toggle')).forEach(function(toggleElem) {
+        [].forEach.call(document.querySelectorAll('.demo-drawer-toggle'), function(toggleElem) {
           toggleElem.addEventListener('click', function() {
             drawer.open = true;
           });
@@ -943,7 +931,7 @@
          * FAB
          */
 
-        [].slice.call(document.querySelectorAll('.mdc-fab')).forEach(function(fab) {
+        [].forEach.call(document.querySelectorAll('.mdc-fab'), function(fab) {
           mdc.ripple.MDCRipple.attachTo(fab);
         });
 
@@ -951,7 +939,7 @@
          * Icon Toggle
          */
 
-        [].slice.call(document.querySelectorAll('.mdc-icon-toggle')).forEach(function(iconToggleEl) {
+        [].forEach.call(document.querySelectorAll('.mdc-icon-toggle'), function(iconToggleEl) {
           mdc.iconToggle.MDCIconToggle.attachTo(iconToggleEl);
         });
 
@@ -959,7 +947,7 @@
          * Linear Progress
          */
 
-        [].slice.call(document.querySelectorAll('.mdc-linear-progress')).forEach(function(progressEl) {
+        [].forEach.call(document.querySelectorAll('.mdc-linear-progress'), function(progressEl) {
           var linearProgress = mdc.linearProgress.MDCLinearProgress.attachTo(progressEl);
           linearProgress.progress = 0.5;
           if (progressEl.dataset.buffer) {
@@ -968,10 +956,22 @@
         });
 
         /*
+         * Radio
+         */
+
+        [].forEach.call(document.querySelectorAll('.demo-radio-form-field'), function(formField) {
+          var formFieldInstance = new mdc.formField.MDCFormField(formField);
+          var radio = formField.querySelector('.mdc-radio');
+          if (radio) {
+            formFieldInstance.input = new mdc.radio.MDCRadio(radio);
+          }
+        });
+
+        /*
          * Select
          */
 
-        [].slice.call(document.querySelectorAll('.mdc-select:not(select)')).forEach(function(select) {
+        [].forEach.call(document.querySelectorAll('.mdc-select:not(select)'), function(select) {
           mdc.select.MDCSelect.attachTo(select);
         });
 
@@ -979,7 +979,7 @@
          * Slider
          */
 
-        [].slice.call(document.querySelectorAll('.mdc-slider')).forEach(function(slider) {
+        [].forEach.call(document.querySelectorAll('.mdc-slider'), function(slider) {
           mdc.slider.MDCSlider.attachTo(slider);
         });
 
@@ -987,7 +987,7 @@
          * Tab Bar
          */
 
-        [].slice.call(document.querySelectorAll('.mdc-tab-bar')).forEach(function(tabBar) {
+        [].forEach.call(document.querySelectorAll('.mdc-tab-bar'), function(tabBar) {
           mdc.tabs.MDCTabBar.attachTo(tabBar);
         });
 
@@ -995,20 +995,8 @@
          * Text Field
          */
 
-        [].slice.call(document.querySelectorAll('.mdc-text-field')).forEach(function(textField) {
+        [].forEach.call(document.querySelectorAll('.mdc-text-field'), function(textField) {
           mdc.textField.MDCTextField.attachTo(textField);
-        });
-
-        /*
-         * Radio
-         */
-
-        [].slice.call(document.querySelectorAll('.demo-radio-form-field')).forEach(function(formField) {
-          var formFieldInstance = new mdc.formField.MDCFormField(formField);
-          var radio = formField.querySelector('.mdc-radio');
-          if (radio) {
-            formFieldInstance.input = new mdc.radio.MDCRadio(radio);
-          }
         });
       });
     </script>

@@ -17,7 +17,7 @@
 import td from 'testdouble';
 
 import {captureHandlers} from '../helpers/foundation';
-import {testFoundation} from './helpers';
+import {setupTest, testFoundation} from './helpers';
 import {cssClasses, strings, numbers} from '../../../packages/mdc-ripple/constants';
 
 suite('MDCRippleFoundation - Activation Logic');
@@ -316,6 +316,64 @@ testFoundation('removes deactivation classes on activate to ensure ripples can b
     mockRaf.flush();
 
     td.verify(adapter.removeClass(cssClasses.FG_DEACTIVATION));
+  });
+
+testFoundation('will not activate multiple ripples on same frame if one surface descends from another',
+  ({foundation, adapter, mockRaf}) => {
+    const secondRipple = setupTest();
+    const firstHandlers = captureHandlers(adapter, 'registerInteractionHandler');
+    const secondHandlers = captureHandlers(secondRipple.adapter, 'registerInteractionHandler');
+    td.when(secondRipple.adapter.containsEventTarget(td.matchers.anything())).thenReturn(true);
+    foundation.init();
+    secondRipple.foundation.init();
+    mockRaf.flush();
+
+    firstHandlers.mousedown();
+    secondHandlers.mousedown();
+    mockRaf.flush();
+
+    td.verify(adapter.addClass(cssClasses.FG_ACTIVATION));
+    td.verify(secondRipple.adapter.addClass(cssClasses.FG_ACTIVATION), {times: 0});
+  });
+
+testFoundation('will not activate multiple ripples on same frame for parent surface w/ touch follow-on events',
+  ({foundation, adapter, mockRaf}) => {
+    const secondRipple = setupTest();
+    const firstHandlers = captureHandlers(adapter, 'registerInteractionHandler');
+    const secondHandlers = captureHandlers(secondRipple.adapter, 'registerInteractionHandler');
+    td.when(secondRipple.adapter.containsEventTarget(td.matchers.anything())).thenReturn(true);
+    foundation.init();
+    secondRipple.foundation.init();
+    mockRaf.flush();
+
+    firstHandlers.touchstart({changedTouches: [{pageX: 0, pageY: 0}]});
+    secondHandlers.touchstart({changedTouches: [{pageX: 0, pageY: 0}]});
+    // Simulated mouse events on touch devices always happen after a delay, not on the same frame
+    mockRaf.flush();
+    firstHandlers.mousedown();
+    secondHandlers.mousedown();
+    mockRaf.flush();
+
+    td.verify(adapter.addClass(cssClasses.FG_ACTIVATION));
+    td.verify(secondRipple.adapter.addClass(cssClasses.FG_ACTIVATION), {times: 0});
+  });
+
+testFoundation('will activate multiple ripples on same frame for surfaces without an ancestor/descendant relationship',
+  ({foundation, adapter, mockRaf}) => {
+    const secondRipple = setupTest();
+    const firstHandlers = captureHandlers(adapter, 'registerInteractionHandler');
+    const secondHandlers = captureHandlers(secondRipple.adapter, 'registerInteractionHandler');
+    td.when(secondRipple.adapter.containsEventTarget(td.matchers.anything())).thenReturn(false);
+    foundation.init();
+    secondRipple.foundation.init();
+    mockRaf.flush();
+
+    firstHandlers.mousedown();
+    secondHandlers.mousedown();
+    mockRaf.flush();
+
+    td.verify(adapter.addClass(cssClasses.FG_ACTIVATION));
+    td.verify(secondRipple.adapter.addClass(cssClasses.FG_ACTIVATION));
   });
 
 testFoundation('displays the foreground ripple on activation when unbounded', ({foundation, adapter, mockRaf}) => {

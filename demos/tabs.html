@@ -36,22 +36,6 @@
         margin: 16px;
       }
 
-      .mdc-theme--dark fieldset {
-        background-color: #333;
-      }
-
-      .mdc-theme--dark fieldset legend {
-        color: #f0f0f0;
-      }
-
-      .mdc-theme--dark .demo-tabs__scroller {
-        background-color: #333;
-      }
-
-      .mdc-theme--dark .demo-tabs__scroller .demo-title {
-        color: #f0f0f0;
-      }
-
       .demo-header-toolbar {
         z-index: 10;
       }
@@ -144,10 +128,10 @@
         right: auto;
         left: 0;
       }
-
     </style>
   </head>
-  <body class="mdc-typography">
+
+  <body class="mdc-typography" data-demo-disable-hash-link-navigation>
     <header class="mdc-toolbar mdc-toolbar--fixed demo-header-toolbar">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
@@ -171,7 +155,6 @@
 
       <section class="demo-buttons">
         <button type="button" class="mdc-button mdc-button--raised" id="toggle-rtl">Toggle RTL</button>
-        <button type="button" class="mdc-button mdc-button--raised" id="toggle-dark-theme">Toggle Dark Theme</button>
       </section>
 
       <section>
@@ -655,6 +638,7 @@
     </main>
 
     <script src="/assets/material-components-web.js" async></script>
+    <script src="/assets/common.js" async></script>
     <script>
       demoReady(function() {
         window.demoTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#demo-tab-bar'));
@@ -741,9 +725,6 @@
           window.customIndicatorToolbarTabBar.layout();
           window.dynamicTabBar.layout();
           toolbarTabBarModified.layout();
-        });
-        document.getElementById('toggle-dark-theme').addEventListener('click', function(evt) {
-          document.body.classList.contains('mdc-theme--dark') ? document.body.classList.remove('mdc-theme--dark') : document.body.classList.add('mdc-theme--dark');
         });
       });
     </script>

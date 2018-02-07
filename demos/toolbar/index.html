@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="/ready.js"></script>
     <style>
       .demo-container {
         height: 500px;
@@ -189,8 +190,10 @@
         </div>
       </section>
     </main>
+
+    <script src="/assets/common.js" async></script>
     <script>
-      [].slice.call(document.querySelectorAll('.examples button')).forEach(function(button) {
+      [].forEach.call(document.querySelectorAll('.examples button'), function(button) {
         button.addEventListener('click', function(event) {
           var iframeMainEl = event.target.parentNode.parentNode.querySelector('iframe').contentWindow.document.querySelector('body');
           iframeMainEl.setAttribute('dir', iframeMainEl.getAttribute('dir') === 'rtl' ? 'ltr' : 'rtl');

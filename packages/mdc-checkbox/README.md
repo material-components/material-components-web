@@ -47,7 +47,7 @@ npm install --save @material/checkbox
   <div class="mdc-checkbox__background">
     <svg class="mdc-checkbox__checkmark"
          viewBox="0 0 24 24">
-      <path class="mdc-checkbox__checkmark__path"
+      <path class="mdc-checkbox__checkmark-path"
             fill="none"
             stroke="white"
             d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
@@ -61,9 +61,6 @@ The checkbox component is driven by an underlying native checkbox element. This 
 positioned the same way as the checkbox component itself, allowing for proper behavior of assistive
 devices.
 
-You can also add an `mdc-checkbox--theme-dark` modifier class to the component to use the dark theme
-checkbox styles.
-
 Additionally, the checkbox can be used in conjunction with [mdc-form-field](../mdc-form-field) to
 easily position checkboxes and their labels.
 
@@ -76,7 +73,7 @@ easily position checkboxes and their labels.
     <div class="mdc-checkbox__background">
       <svg class="mdc-checkbox__checkmark"
            viewBox="0 0 24 24">
-        <path class="mdc-checkbox__checkmark__path"
+        <path class="mdc-checkbox__checkmark-path"
               fill="none"
               stroke="white"
               d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
@@ -104,7 +101,7 @@ Note that `mdc-checkbox--disabled` is necessary on the root element of CSS-only 
   <div class="mdc-checkbox__background">
     <svg class="mdc-checkbox__checkmark"
          viewBox="0 0 24 24">
-      <path class="mdc-checkbox__checkmark__path"
+      <path class="mdc-checkbox__checkmark-path"
             fill="none"
             stroke="white"
             d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
@@ -257,7 +254,7 @@ not return an object.
 
 ## Theming
 
-MDC Checkboxes use the theme's secondary color by default for "marked" states (i.e., checked or indeterminate), and are completely dark theme aware.
+MDC Checkboxes use the theme's secondary color by default for "marked" states (i.e., checked or indeterminate).
 
 ### Sass Mixins
 

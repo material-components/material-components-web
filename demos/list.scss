@@ -19,6 +19,7 @@
 @import "../packages/mdc-elevation/mixins";
 @import "../packages/mdc-form-field/mdc-form-field";
 @import "../packages/mdc-list/mdc-list";
+@import "../packages/mdc-ripple/mixins";
 
 a.material-icons {
   text-decoration: none;
@@ -29,31 +30,14 @@ a.material-icons {
   max-width: 600px;
 }
 
-.mdc-theme--dark {
-  background: #303030;
-}
-
-.mdc-theme--dark > h3 {
-  color: white;
-}
-
 .demo-list--icon-placeholders,
 .demo-list--with-avatars {
   @include mdc-list-item-graphic-ink-color(white);
   @include mdc-list-item-graphic-fill-color(text-icon-on-background);
-
-  @include mdc-theme-dark {
-    @include mdc-list-item-graphic-ink-color(#303030);
-    @include mdc-list-item-graphic-fill-color(text-icon-on-dark);
-  }
 }
 
 .demo-list--avatar-and-meta-icon {
   @include mdc-list-item-meta-ink-color($material-color-pink-a200);
-
-  @include mdc-theme-dark {
-    @include mdc-list-item-meta-ink-color($material-color-pink-a200);
-  }
 }
 
 .demo-list-group--custom,
@@ -75,6 +59,12 @@ a.material-icons {
   margin-left: 72px;
 }
 
+.checkbox-list-ripple-surface:not(.mdc-ripple-upgraded):active::after {
+  // TODO(moog16): Update mdc-ripple to prevent duplicate ripples on parent elements, and remove this hack
+  // Prevent checkbox clicks from activating a second ripple on the list item.
+  opacity: 0 !important;
+}
+
 #demo-wrapper {
   margin: 24px;
 }
@@ -87,9 +77,7 @@ a.material-icons {
   border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-#demo-wrapper .mdc-list-group .mdc-list,
-#demo-wrapper .mdc-theme--dark .mdc-list,
-#demo-wrapper .mdc-theme--dark .mdc-list-group {
+#demo-wrapper .mdc-list-group .mdc-list {
   border: none;
 }
 

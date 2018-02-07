@@ -17,8 +17,8 @@
 
 import MDCFoundation from '@material/base/foundation';
 import {MDCTextFieldAdapter, NativeInputType, FoundationMapType} from './adapter';
-import MDCTextFieldBottomLineFoundation from './bottom-line/foundation';
 /* eslint-disable no-unused-vars */
+import MDCLineRippleFoundation from '@material/line-ripple/foundation';
 import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
 import MDCTextFieldIconFoundation from './icon/foundation';
 import MDCTextFieldLabelFoundation from './label/foundation';
@@ -61,24 +61,22 @@ class MDCTextFieldFoundation extends MDCFoundation {
       deregisterTextFieldInteractionHandler: () => {},
       registerInputInteractionHandler: () => {},
       deregisterInputInteractionHandler: () => {},
-      registerBottomLineEventHandler: () => {},
-      deregisterBottomLineEventHandler: () => {},
       getNativeInput: () => {},
       isFocused: () => {},
       isRtl: () => {},
+      activateLineRipple: () => {},
+      deactivateLineRipple: () => {},
+      setLineRippleTransformOrigin: () => {},
     });
   }
 
   /**
-   * @param {!MDCTextFieldAdapter=} adapter
+   * @param {!MDCTextFieldAdapter} adapter
    * @param {!FoundationMapType=} foundationMap Map from subcomponent names to their subfoundations.
    */
-  constructor(adapter = /** @type {!MDCTextFieldAdapter} */ ({}),
-    foundationMap = /** @type {!FoundationMapType} */ ({})) {
+  constructor(adapter, foundationMap = /** @type {!FoundationMapType} */ ({})) {
     super(Object.assign(MDCTextFieldFoundation.defaultAdapter, adapter));
 
-    /** @type {!MDCTextFieldBottomLineFoundation|undefined} */
-    this.bottomLine_ = foundationMap.bottomLine;
     /** @type {!MDCTextFieldHelperTextFoundation|undefined} */
     this.helperText_ = foundationMap.helperText;
     /** @type {!MDCTextFieldIconFoundation|undefined} */
@@ -103,11 +101,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
     /** @private {function(): undefined} */
     this.inputInputHandler_ = () => this.autoCompleteFocus();
     /** @private {function(!Event): undefined} */
-    this.setPointerXOffset_ = (evt) => this.setBottomLineTransformOrigin(evt);
+    this.setPointerXOffset_ = (evt) => this.setTransformOrigin(evt);
     /** @private {function(!Event): undefined} */
     this.textFieldInteractionHandler_ = () => this.handleTextFieldInteraction();
-    /** @private {function(!Event): undefined} */
-    this.bottomLineAnimationEndHandler_ = () => this.handleBottomLineAnimationEnd();
   }
 
   init() {
@@ -131,8 +127,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.registerTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
     });
-    this.adapter_.registerBottomLineEventHandler(
-      MDCTextFieldBottomLineFoundation.strings.ANIMATION_END_EVENT, this.bottomLineAnimationEndHandler_);
   }
 
   destroy() {
@@ -146,8 +140,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.deregisterTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
     });
-    this.adapter_.deregisterBottomLineEventHandler(
-      MDCTextFieldBottomLineFoundation.strings.ANIMATION_END_EVENT, this.bottomLineAnimationEndHandler_);
   }
 
   /**
@@ -181,9 +173,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
   activateFocus() {
     this.isFocused_ = true;
     this.styleFocused_(this.isFocused_);
-    if (this.bottomLine_) {
-      this.bottomLine_.activate();
-    }
+    this.adapter_.activateLineRipple();
     if (this.outline_) {
       this.updateOutline();
     }
@@ -198,14 +188,15 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * Sets the bottom line's transform origin, so that the bottom line activate
+   * Sets the line ripple's transform origin, so that the line ripple activate
    * animation will animate out from the user's click location.
    * @param {!Event} evt
    */
-  setBottomLineTransformOrigin(evt) {
-    if (this.bottomLine_) {
-      this.bottomLine_.setTransformOrigin(evt);
-    }
+  setTransformOrigin(evt) {
+    const targetClientRect = evt.target.getBoundingClientRect();
+    const evtCoords = {x: evt.clientX, y: evt.clientY};
+    const normalizedX = evtCoords.x - targetClientRect.left;
+    this.adapter_.setLineRippleTransformOrigin(normalizedX);
   }
 
   /**
@@ -219,23 +210,11 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * Handles when bottom line animation ends, performing actions that must wait
-   * for animations to finish.
-   */
-  handleBottomLineAnimationEnd() {
-    // We need to wait for the bottom line to be entirely transparent
-    // before removing the class. If we do not, we see the line start to
-    // scale down before disappearing
-    if (!this.isFocused_ && this.bottomLine_) {
-      this.bottomLine_.deactivate();
-    }
-  }
-
-  /**
    * Deactivates the Text Field's focus state.
    */
   deactivateFocus() {
     this.isFocused_ = false;
+    this.adapter_.deactivateLineRipple();
     const input = this.getNativeInput_();
     const shouldRemoveLabelFloat = !input.value && !this.isBadInput_();
     const isValid = this.isValid();

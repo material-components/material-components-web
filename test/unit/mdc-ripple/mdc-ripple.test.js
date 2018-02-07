@@ -137,6 +137,15 @@ test('adapter#removeClass removes a class from the root', () => {
   assert.isNotOk(root.classList.contains('foo'));
 });
 
+test('adapter#containsEventTarget returns true if the passed element is a descendant of the root element', () => {
+  const {root, component} = setupTest();
+  const child = bel`<div></div>`;
+  const notChild = bel`<div></div>`;
+  root.appendChild(child);
+  assert.isTrue(component.getDefaultFoundation().adapter_.containsEventTarget(child));
+  assert.isFalse(component.getDefaultFoundation().adapter_.containsEventTarget(notChild));
+});
+
 test('adapter#registerInteractionHandler proxies to addEventListener on the root element', () => {
   const {root, component} = setupTest();
   const handler = td.func('interactionHandler');
@@ -180,7 +189,7 @@ test('adapter#registerResizeHandler uses the handler as a window resize listener
   window.removeEventListener('resize', handler);
 });
 
-test('adapter#registerResizeHandler unlistens the handler for window resize', () => {
+test('adapter#deregisterResizeHandler unlistens the handler for window resize', () => {
   const {component} = setupTest();
   const handler = td.func('resizeHandler');
   window.addEventListener('resize', handler);
