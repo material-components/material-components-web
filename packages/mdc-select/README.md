@@ -97,6 +97,11 @@ style dependencies for both the mdc-list and mdc-menu for this component to func
 
 #### Select with pre-selected option
 
+When dealing with the select component that has pre-selected values, you'll want to ensure that you
+render `mdc-select__label` with the `mdc-select__label--float-above` modifier class and the selected
+option with `aria-selected`. This will ensure that the label moves out of the way of the select's value
+and prevents a Flash Of Un-styled Content (**FOUC**).
+
 ```html
 <div class="mdc-select" role="listbox">
   <div class="mdc-select__surface" tabindex="0">
@@ -128,13 +133,6 @@ style dependencies for both the mdc-list and mdc-menu for this component to func
   </div>
 </div>
 ```
-
-#### Preventing [FOUC](https://en.wikipedia.org/wiki/Flash_of_unstyled_content)
-
-Because `MDCSelect` updates its UI based on the values it reads in when it is instantiated, there is
-potential for an incorrect first render before the script containing the `MDCSelect` initialization
-logic executes. To avoid this, you can manually add the `mdc-select__label--float-above` class to the
-label element whenever you are initializing the component with an option pre-selected
 
 #### Disabled select
 
