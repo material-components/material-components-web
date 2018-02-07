@@ -21,15 +21,21 @@
   @include mdc-ripple-surface;
   @include mdc-ripple-radius-bounded;
   @include mdc-states;
+  @include mdc-states-activated(black);
 
   display: inline-block;
   border-radius: 16px;
   background: rgba(0, 0, 0, 0.08);
-  color: rgba(0, 0, 0, 0.87);
+  color: rgba(0, 0, 0, 0.6);
   padding: 7px 12px;
   margin: 5px;
   cursor: pointer;
   overflow: hidden;
+}
+
+.mdc-chip:hover,
+.mdc-chip--activated{
+  color: rgba(0, 0, 0, 1);
 }
 
 .mdc-chip__text {

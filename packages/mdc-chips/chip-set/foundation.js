@@ -53,8 +53,11 @@ class MDCChipSetFoundation extends MDCFoundation {
   constructor(adapter) {
     super(Object.assign(MDCChipSetFoundation.defaultAdapter, adapter));
 
-    /** @private {!Array<!MDCChip>} */
-    this.selectedChips_ = [];
+    /** 
+     * The active chips in the set. Only used for choice chip set or filter chip set.
+     * @private {!Array<!MDCChip>}
+     */
+    this.activeChips_ = [];
   }
 
   init() {
@@ -72,7 +75,15 @@ class MDCChipSetFoundation extends MDCFoundation {
   handleChipInteraction(evt) {
     const {chip} = evt.detail;
     if (this.adapter_.hasClass(cssClasses.CHOICE)) {
-      console.log("Chip selected!");
+      if (this.activeChips_.length == 0) {
+        this.activeChips_[0] = chip;
+      } else if (this.activeChips_[0] != chip) {
+        this.activeChips_[0].toggleActive();
+        this.activeChips_[0] = chip;
+      } else {
+        this.activeChips_ = [];
+      }
+      chip.toggleActive();
     }
   }
 }
