@@ -1,4 +1,3 @@
-
 //
 // Copyright 2017 Google Inc. All Rights Reserved.
 //
@@ -15,6 +14,11 @@
 // limitations under the License.
 //
 
+$mdc-chip-border-radius-default: 16px;
+$mdc-chip-fill-color-default: rgba(black, .08);
+$mdc-chip-ink-color-default: rgba(black, .87);
+$mdc-chip-horizontal-padding: 12px;
+$mdc-chip-vertical-padding: 7px;
 $mdc-chip-with-icon-padding: 4px;
 
 $mdc-chip-icon-color: rgba(0, 0, 0, .54);
