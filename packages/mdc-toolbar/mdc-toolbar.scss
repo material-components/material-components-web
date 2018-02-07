@@ -172,6 +172,16 @@
       line-height: 1.5rem;
     }
 
+    @media (min-width: 600px) {
+      &.mdc-toolbar--fixed-lastrow-only {
+        .mdc-toolbar__title,
+        .mdc-toolbar__menu-icon,
+        .mdc-toolbar__icon {
+          line-height: 2rem;
+        }
+      }
+    }
+
     .mdc-toolbar__row:first-child::after {
       top: 0;
       left: 0;
