@@ -103,8 +103,8 @@ Method Signature | Description
 Method Signature | Description
 --- | ---
 `hasClass(className: string) => boolean` | Returns whether the chip set element has the given class
-`bindOnChipInteractionEvent() => void` | Binds the chip interaction handler to an `MDCChip:interaction` event on the root chip set element
-`unbindOnChipInteractionEvent() => void` | Unbinds the chip interaction handler to an `MDCChip:interaction` event on the root chip set element
+`registerOnChipInteractionEvent(handler) => void` | Registers the given handler to an `MDCChip:interaction` event on the root chip set element
+`deregisterOnChipInteractionEvent(handler) => void` | Deregisters the given handler to an `MDCChip:interaction` event on the root chip set element
 
 ### Foundations: `MDCChipFoundation` and `MDCChipSetFoundation`
 
@@ -115,7 +115,4 @@ Method Signature | Description
 `toggleActive() => void` | Toggles the active state of the chip
 
 #### `MDCChipSetFoundation`
-
-Method Signature | Description
---- | ---
-`handleChipInteraction(evtType: string) => void` | Handles an `MDCChip:interaction` event based on the type of chips this set holds
+None yet, coming soon.
