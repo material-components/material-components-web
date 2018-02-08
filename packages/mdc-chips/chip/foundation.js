@@ -74,7 +74,7 @@ class MDCChipFoundation extends MDCFoundation {
   }
     
   /**
-   * Toggles the active state of the chip. Only used for choice chips or filter chips.
+   * Toggles the activated class on the chip element.
    */
   toggleActive() {
     if (this.adapter_.hasClass(cssClasses.ACTIVATED)) {

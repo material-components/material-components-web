@@ -112,7 +112,7 @@ Method Signature | Description
 
 Method Signature | Description
 --- | ---
-`toggleActive() => void` | Toggles the active state of the chip
+`toggleActive() => void` | Toggles the activated class on the chip element
 
 #### `MDCChipSetFoundation`
 None yet, coming soon.
