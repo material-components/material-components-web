@@ -46,7 +46,7 @@ class MDCChipAdapter {
    * @return {boolean}
    */
   hasClass(className) {}
-  
+
   /**
    * Registers an event listener on the root element for a given event.
    * @param {string} evtType

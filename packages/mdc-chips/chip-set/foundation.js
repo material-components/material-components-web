@@ -54,7 +54,7 @@ class MDCChipSetFoundation extends MDCFoundation {
   constructor(adapter) {
     super(Object.assign(MDCChipSetFoundation.defaultAdapter, adapter));
 
-    /** 
+    /**
      * The active chips in the set. Only used for choice chip set or filter chip set.
      * @private {!Array<!MDCChip>}
      */

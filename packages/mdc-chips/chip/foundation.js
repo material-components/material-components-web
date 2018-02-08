@@ -72,7 +72,7 @@ class MDCChipFoundation extends MDCFoundation {
       this.adapter_.deregisterInteractionHandler(evtType, this.interactionHandler_);
     });
   }
-    
+
   /**
    * Toggles the activated class on the chip element.
    */
