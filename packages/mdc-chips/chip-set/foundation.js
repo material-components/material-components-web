@@ -17,6 +17,7 @@
 
 import MDCFoundation from '@material/base/foundation';
 import MDCChipSetAdapter from './adapter';
+import MDCChipFoundation from '../chip/foundation';
 import {strings, cssClasses} from './constants';
 
 /**
@@ -42,8 +43,8 @@ class MDCChipSetFoundation extends MDCFoundation {
   static get defaultAdapter() {
     return /** @type {!MDCChipSetAdapter} */ ({
       hasClass: () => {},
-      registerOnChipInteractionEvent: () => {},
-      deregisterOnChipInteractionEvent: () => {},
+      registerEventHandler: () => {},
+      deregisterEventHandler: () => {},
     });
   }
 
@@ -58,17 +59,16 @@ class MDCChipSetFoundation extends MDCFoundation {
      * @private {!Array<!MDCChip>}
      */
     this.activeChips_ = [];
-
     /** @private {function(!Event): undefined} */
     this.chipInteractionHandler_ = (evt) => this.handleChipInteraction_(evt);
   }
 
   init() {
-    this.adapter_.registerOnChipInteractionEvent(this.chipInteractionHandler_);
+    this.adapter_.registerEventHandler(MDCChipFoundation.strings.INTERACTION_EVENT, this.chipInteractionHandler_);
   }
 
   destroy() {
-    this.adapter_.deregisterOnChipInteractionEvent(this.chipInteractionHandler_);
+    this.adapter_.deregisterEventHandler(MDCChipFoundation.strings.INTERACTION_EVENT, this.chipInteractionHandler_);
   }
 
   /**

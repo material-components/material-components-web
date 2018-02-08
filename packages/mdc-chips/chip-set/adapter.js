@@ -36,16 +36,18 @@ class MDCChipSetAdapter {
   hasClass(className) {}
 
   /**
-   * Registers the given handler to an `MDCChip:interaction` event on the root chip set element.
+   * Registers an event handler on the root element for a given event.
+   * @param {string} evtType
    * @param {function(!Event): undefined} handler
    */
-  registerOnChipInteractionEvent(handler) {}
+  registerEventHandler(evtType, handler) {}
 
   /**
-   * Deregisters the given handler to an `MDCChip:interaction` event on the root chip set element.
+   * Deregisters an event handler on the root element for a given event.
+   * @param {string} evtType
    * @param {function(!Event): undefined} handler
    */
-  deregisterOnChipInteractionEvent(handler) {}
+  deregisterEventHandler(evtType, handler) {}
 }
 
 export default MDCChipSetAdapter;

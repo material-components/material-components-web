@@ -103,8 +103,8 @@ Method Signature | Description
 Method Signature | Description
 --- | ---
 `hasClass(className: string) => boolean` | Returns whether the chip set element has the given class
-`registerOnChipInteractionEvent(handler) => void` | Registers the given handler to an `MDCChip:interaction` event on the root chip set element
-`deregisterOnChipInteractionEvent(handler) => void` | Deregisters the given handler to an `MDCChip:interaction` event on the root chip set element
+`registerEventHandler(evtType, handler) => void` | Registers an event handler on the root element for a given event
+`deregisterEventHandler(evtType, handler) => void` | Deregisters an event handler on the root element for a given event
 
 ### Foundations: `MDCChipFoundation` and `MDCChipSetFoundation`
 
