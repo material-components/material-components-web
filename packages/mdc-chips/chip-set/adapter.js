@@ -31,8 +31,21 @@ class MDCChipSetAdapter {
   /**
    * Returns true if the root element contains the given class name.
    * @param {string} className
+   * @return {boolean}
    */
   hasClass(className) {}
+
+  /**
+   * Binds the chip interaction handler to an `MDCChip:interaction` event on the root chip set element.
+   * @param {string} type
+   */
+  bindOnChipInteractionEvent() {}
+
+  /**
+   * Unbinds the chip interaction handler to an `MDCChip:interaction` event on the root chip set element.
+   * @param {string} type
+   */
+  unbindOnChipInteractionEvent() {}
 }
 
 export default MDCChipSetAdapter;

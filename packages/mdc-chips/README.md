@@ -59,6 +59,7 @@ CSS Class | Description
 `mdc-chip` | Mandatory.
 `mdc-chip__text` | Mandatory. Indicates the text content of the chip.
 `mdc-chip-set` | Mandatory. Indicates the set that the chip belongs to.
+`mdc-chip-set--choice` | Optional. Indicates that the chips in the set are choice chips.
 
 ### `MDCChip` and `MDCChipSet`
 
@@ -69,6 +70,10 @@ The MDC Chips module is comprised of two JavaScript classes:
 To use the `MDCChip` and `MDCChipSet` classes, [import](../../docs/importing-js.md) both classes from `@material/chips`.
 
 #### `MDCChip`
+
+Method Signature | Description
+--- | ---
+`toggleActive() => void` | Proxies to the foundation's `toggleActive` method
 
 Property | Value Type | Description
 --- | --- | ---
@@ -86,6 +91,9 @@ Property | Value Type | Description
 
 Method Signature | Description
 --- | ---
+`addClass(className: string) => void` | Adds a class to the root element
+`removeClass(className: string) => void` | Removes a class from the root element
+`hasClass(className: string) => boolean` | Returns true if the root element contains the given class
 `registerInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the root element
 `deregisterInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the root element
 `notifyInteraction() => void` | Emits a custom event "MDCChip:interaction" denoting the chip has been interacted with, which bubbles to the parent `mdc-chip-set` element
@@ -95,11 +103,19 @@ Method Signature | Description
 Method Signature | Description
 --- | ---
 `hasClass(className: string) => boolean` | Returns whether the chip set element has the given class
+`bindOnChipInteractionEvent() => void` | Binds the chip interaction handler to an `MDCChip:interaction` event on the root chip set element
+`unbindOnChipInteractionEvent() => void` | Unbinds the chip interaction handler to an `MDCChip:interaction` event on the root chip set element
 
 ### Foundations: `MDCChipFoundation` and `MDCChipSetFoundation`
 
 #### `MDCChipFoundation`
-None yet, coming soon.
+
+Method Signature | Description
+--- | ---
+`toggleActive() => void` | Toggles the active state of the chip
 
 #### `MDCChipSetFoundation`
-None yet, coming soon.
+
+Method Signature | Description
+--- | ---
+`handleChipInteraction(evtType: string) => void` | Handles an `MDCChip:interaction` event based on the type of chips this set holds
