@@ -177,7 +177,7 @@
       "publicPath": "/assets/",
       "filename": "[name].css.js-entry"
     },
-    "devtool": false,
+    "devtool": "source-map",
     "module": {
       "rules": [
         {
@@ -197,19 +197,19 @@
             {
               "loader": "css-loader",
               "options": {
-                "sourceMap": false
+                "sourceMap": true
               }
             },
             {
               "loader": "postcss-loader",
               "options": {
-                "sourceMap": false
+                "sourceMap": true
               }
             },
             {
               "loader": "sass-loader",
               "options": {
-                "sourceMap": false,
+                "sourceMap": true,
                 "includePaths": [
                   "/packages/material-components-web/node_modules",
                   "/packages/mdc-button/node_modules",
