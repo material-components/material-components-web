@@ -267,6 +267,24 @@ class MDCTextField extends MDCComponent {
             this.lineRipple_.setRippleCenter(normalizedX);
           }
         },
+        shakeLabel: (isValid, isFocused) => {
+          if (this.label_) {
+            this.label_.shake(isValid, isFocused);
+          }
+        },
+        floatLabel: (value, isFocused, isBadInput) => {
+          if (this.label_) {
+            this.label_.float(value, isFocused, isBadInput);
+          }
+        },
+        hasLabel: () => {
+          return !!this.label_;
+        },
+        getLabelWidth: () => {
+          if (this.label_) {
+            return this.label_.getWidth();
+          }
+        }
       },
       this.getInputAdapterMethods_())),
       this.getFoundationMap_());
@@ -295,7 +313,6 @@ class MDCTextField extends MDCComponent {
     return {
       helperText: this.helperText_ ? this.helperText_.foundation : undefined,
       icon: this.icon_ ? this.icon_.foundation : undefined,
-      label: this.label_ ? this.label_.foundation : undefined,
       outline: this.outline_ ? this.outline_.foundation : undefined,
     };
   }

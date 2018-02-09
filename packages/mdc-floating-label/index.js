@@ -34,10 +34,30 @@ class MDCFloatingLabel extends MDCComponent {
   }
 
   /**
-   * @return {!MDCFloatingLabelFoundation}.
+   * Styles the label to produce the label shake for errors.
+   * @param {boolean} isValid Whether the input's value is valid (passes all
+   *     validity checks).
+   * @param {boolean} isFocused Whether the input is focused.
    */
-  get foundation() {
-    return this.foundation_;
+  shake(isValid, isFocused) {
+    this.foundation_.styleShake(isValid, isFocused);
+  }
+
+  /**
+   * Styles the label to float or defloat as necessary.
+   * @param {string} value The value of the input.
+   * @param {boolean} isFocused Whether the input is focused.
+   * @param {boolean} isBadInput The input's `validity.badInput` value.
+   */
+  float(value, isFocused, isBadInput) {
+    this.foundation_.styleFloat(value, isFocused, isBadInput);
+  }
+
+  /**
+   * @return {number}
+   */
+  getWidth() {
+    return this.foundation_.getWidth();
   }
 
   /**
