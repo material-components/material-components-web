@@ -173,7 +173,7 @@
   @include mdc-text-field-dense_;
 }
 
-@include mdc-required-text-field-label-asterix_ {
+@include mdc-required-text-field-label-asterisk_ {
   margin-left: 1px;
   content: "*";
 }
@@ -183,7 +183,11 @@
 }
 
 .mdc-text-field--fullwidth {
-  @include mdc-text-field-full-width_;
+  @include mdc-text-field-fullwidth_;
+}
+
+.mdc-text-field--fullwidth.mdc-text-field--invalid {
+  @include mdc-text-field-fullwidth-invalid_;
 }
 
 // postcss-bem-linter: define text-field-helper-text

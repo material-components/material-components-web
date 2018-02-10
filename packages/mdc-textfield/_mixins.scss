@@ -139,7 +139,7 @@
 @mixin mdc-text-field-focused_ {
   @include mdc-floating-label-color(primary);
 
-  @include mdc-required-text-field-label-asterix_ {
+  @include mdc-required-text-field-label-asterisk_ {
     color: $mdc-text-field-error;
   }
 
@@ -158,8 +158,8 @@
 }
 
 // TODO(mattgoo): can this be placed into the mdc-floating-label repo?
-@mixin mdc-required-text-field-label-asterix_() {
-  .mdc-text-field__input:required + .mdc-floating-label::after {
+@mixin mdc-required-text-field-label-asterisk_() {
+  .mdc-text-field__input:required + .mdc-text-field__label::after {
     @content;
   }
 }
@@ -340,7 +340,7 @@
 
 // Full Width
 
-@mixin mdc-text-field-full-width_ {
+@mixin mdc-text-field-fullwidth_ {
   width: 100%;
 
   .mdc-text-field__input {
@@ -365,6 +365,10 @@
       border: none !important;
     }
   }
+}
+
+@mixin mdc-text-field-fullwidth-invalid_ {
+  @include mdc-text-field-fullwidth-bottom-line-color($mdc-text-field-error);
 }
 
 // Textarea
