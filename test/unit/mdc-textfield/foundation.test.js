@@ -202,23 +202,45 @@ test('#setValid updates classes', () => {
   td.verify(mockAdapter.removeClass(cssClasses.DISABLED), {times: 0});
 });
 
-test('#setRequired updates CSS classes', () => {
+test('#setValidationAttribute required to true updates CSS classes', () => {
   // Native validity checking does not apply in unittests, so manually mark as valid or invalid.
-  const {foundation, mockAdapter, nativeInput} =
+  const {foundation, mockAdapter, helperText} =
     setupValueTest('', /* isValid */ false);
 
-  foundation.setRequired(true);
-  assert.isOk(foundation.isRequired());
+  td.when(mockAdapter.getNativeInput()).thenReturn({setAttribute: () => null});
+  foundation.setValidationAttribute('required', 'true');
+  td.verify(mockAdapter.removeClass(cssClasses.INVALID));
+  td.verify(helperText.setValidity(true));
 
-  nativeInput.validity.valid = true;
-  foundation.setRequired(false);
-  assert.isNotOk(foundation.isRequired());
-
-  // None of these is affected by setRequired.
+  // None of these is affected by setValidationAttribute.
   td.verify(mockAdapter.addClass(cssClasses.FOCUSED), {times: 0});
   td.verify(mockAdapter.removeClass(cssClasses.FOCUSED), {times: 0});
   td.verify(mockAdapter.addClass(cssClasses.DISABLED), {times: 0});
   td.verify(mockAdapter.removeClass(cssClasses.DISABLED), {times: 0});
+});
+
+test('#removeValidationAttribute required updates CSS classes', () => {
+  const {foundation, mockAdapter, helperText} =
+    setupValueTest('', /* isValid */ false);
+
+  td.when(mockAdapter.getNativeInput()).thenReturn({removeAttribute: () => null});
+  foundation.removeValidationAttribute('required');
+  td.verify(mockAdapter.removeClass(cssClasses.INVALID));
+  td.verify(helperText.setValidity(true));
+
+  // None of these is affected by setValidationAttribute.
+  td.verify(mockAdapter.addClass(cssClasses.FOCUSED), {times: 0});
+  td.verify(mockAdapter.removeClass(cssClasses.FOCUSED), {times: 0});
+  td.verify(mockAdapter.addClass(cssClasses.DISABLED), {times: 0});
+  td.verify(mockAdapter.removeClass(cssClasses.DISABLED), {times: 0});
+});
+
+test('#getValidationAttribute required returns correct value', () => {
+  const {foundation, mockAdapter} =
+    setupValueTest('', /* isValid */ false);
+
+  td.when(mockAdapter.getNativeInput()).thenReturn({getAttribute: () => true});
+  assert.equal(foundation.getValidationAttribute('required'), true);
 });
 
 test('#setDisabled flips disabled when a native input is given', () => {

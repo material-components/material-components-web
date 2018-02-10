@@ -416,10 +416,20 @@ test('get/set valid', () => {
   td.verify(mockFoundation.setValid(true));
 });
 
-test('get/set required', () => {
+test('setValidationAttribute', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
-  component.required;
-  td.verify(mockFoundation.isRequired());
-  component.required = true;
-  td.verify(mockFoundation.setRequired(true));
+  component.setValidationAttribute('required', true);
+  td.verify(mockFoundation.setValidationAttribute('required', true));
+});
+
+test('removeValidationAttribute', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.removeValidationAttribute('required');
+  td.verify(mockFoundation.removeValidationAttribute('required'));
+});
+
+test('getValidationAttribute', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.getValidationAttribute('required');
+  td.verify(mockFoundation.getValidationAttribute('required'));
 });

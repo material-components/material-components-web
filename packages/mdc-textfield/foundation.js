@@ -290,17 +290,32 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * @return {boolean} True if the Text Field is required.
+   * @return {string} the attribute value from the input element
+   * @param {string} attrName is the name of the attribute on the input element
    */
-  isRequired() {
-    return this.getNativeInput_().required;
+  getValidationAttribute(attrName) {
+    return this.getNativeInput_().getAttribute(attrName);
   }
 
   /**
-   * @param {boolean} isRequired Sets the text-field required or not.
+   * @param {string} attrName is the name of the attribute to be set
+   * @param {boolean|number|string} val is the value of attribute to be set
    */
-  setRequired(isRequired) {
-    this.getNativeInput_().required = isRequired;
+  setValidationAttribute(attrName, val) {
+    this.getNativeInput_().setAttribute(attrName, val);
+    // Setting validation to true even if input is incorrect.
+    // If developer toggles a validation property (required, minlength, etc)
+    // the user should have a chance interact with the input before it being
+    // invalid again.
+    this.styleValidity_(true);
+  }
+
+  /**
+   * @param {string} attrName is the name of the attribute to remove from input element
+   */
+  removeValidationAttribute(attrName) {
+    this.getNativeInput_().removeAttribute(attrName);
+    this.styleValidity_(true);
   }
 
   /**

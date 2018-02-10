@@ -203,17 +203,26 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
-   * @return {boolean} True if the Text Field is required.
+   * @return {string} the attribute value from the input element
+   * @param {string} attrName is the name of the attribute on the input element
    */
-  get required() {
-    return this.foundation_.isRequired();
+  getValidationAttribute(attrName) {
+    return this.foundation_.getValidationAttribute(attrName);
   }
 
   /**
-   * @param {boolean} required Sets the Text Field to required.
+   * @param {string} attrName is the attribute name to be set
+   * @param {boolean|number|string} val is the value of attribute to be set
    */
-  set required(required) {
-    this.foundation_.setRequired(required);
+  setValidationAttribute(attrName, val) {
+    this.foundation_.setValidationAttribute(attrName, val);
+  }
+
+  /**
+   * @param {string} attrName is the name of the attribute to remove from input element
+   */
+  removeValidationAttribute(attrName) {
+    this.foundation_.removeValidationAttribute(attrName);
   }
 
   /**
