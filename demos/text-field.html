@@ -149,8 +149,8 @@
             </div>
             <div class="mdc-text-field__idle-outline"></div>
           </div>
-          <p class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg">
-            Must be at least 8 characters
+          <p class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" id="tf-outlined-validation-msg">
+            Helper Text (possibly validation message)
           </p>
         </div>
         <div>
@@ -375,8 +375,16 @@
 
     <script src="/assets/material-components-web.js" async></script>
     <script>
+      function toggleRequired(textfield, isRequired) {
+        if (isRequired) {
+          textfield.setValidationAttribute('required', 'true');
+        } else {
+          textfield.removeValidationAttribute('required');
+        }
+      }
       demoReady(function() {
         var tfEl = document.getElementById('tf-outlined-example');
+        var tfHelperText = document.getElementById('tf-outlined-validation-msg');
         var tf = new mdc.textField.MDCTextField(tfEl);
         var wrapper = document.getElementById('demo-tf-outlined-wrapper');
         document.getElementById('outlined-disable').addEventListener('change', function(evt) {
@@ -399,19 +407,18 @@
           tf.layout();
         });
         document.getElementById('outlined-required').addEventListener('change', function(evt) {
-          var checked = evt.target.checked;
-          if (checked) {
-            tf.setValidationAttribute('required', 'true');
-          } else {
-            tf.removeValidationAttribute('required');
-          }
+          toggleRequired(tf, evt.target.checked);
         });
         document.getElementById('outlined-pattern').addEventListener('change', function(evt) {
           var checked = evt.target.checked;
+          var plainHelperText = 'Helper Text (possibly validation message)';
+          var requiredHelperText = 'Must be at least 8 characters';requiredHelperText
           if (checked) {
             tf.setValidationAttribute('minlength', 8);
+            tfHelperText.innerHTML = requiredHelperText;
           } else {
             tf.removeValidationAttribute('minlength');
+            tfHelperText.innerHTML = plainHelperText;
           }
         });
       });
@@ -447,12 +454,7 @@
         });
 
         document.getElementById('box-required').addEventListener('change', function(evt) {
-          var checked = evt.target.checked;
-          if (checked) {
-            tf.setValidationAttribute('required', 'true');
-          } else {
-            tf.removeValidationAttribute('required');
-          }
+          toggleRequired(tf, evt.target.checked);
         });
         document.getElementById('box-pattern').addEventListener('change', function(evt) {
           var checked = evt.target.checked;
@@ -555,17 +557,10 @@
 
         document.getElementById('required-leading-trailing').addEventListener('change', function(evt) {
           var checked = evt.target.checked;
-          if (checked) {
-            tfBoxLeading.setValidationAttribute('required', 'true');
-            tfBoxTrailing.setValidationAttribute('required', 'true');
-            tfOutlinedLeading.setValidationAttribute('required', 'true');
-            tfOutlinedTrailing.setValidationAttribute('required', 'true');
-          } else {
-            tfBoxLeading.removeValidationAttribute('required');
-            tfBoxTrailing.removeValidationAttribute('required');
-            tfOutlinedLeading.removeValidationAttribute('required');
-            tfOutlinedTrailing.removeValidationAttribute('required');
-          }
+          toggleRequired(tfBoxLeading, checked);
+          toggleRequired(tfBoxTrailing, checked);
+          toggleRequired(tfOutlinedLeading, checked);
+          toggleRequired(tfOutlinedTrailing, checked);
         });
 
         document.getElementById('pattern-leading-trailing').addEventListener('change', function(evt) {
@@ -622,12 +617,7 @@
           tfRoot.classList[target.checked ? 'add' : 'remove']('mdc-text-field--dense');
         });
         document.getElementById('required').addEventListener('change', function(evt) {
-          var checked = evt.target.checked;
-          if (checked) {
-            tf.setValidationAttribute('required', 'true');
-          } else {
-            tf.removeValidationAttribute('required');
-          }
+          toggleRequired(tf, evt.target.checked);
         });
         document.getElementById('alternate-colors').addEventListener('change', function (evt) {
           var target = evt.target;
@@ -676,12 +666,7 @@
           tfRoot.classList[target.checked ? 'add' : 'remove']('demo-textarea');
         });
         document.getElementById('textarea-required').addEventListener('change', function(evt) {
-          var checked = evt.target.checked;
-          if (checked) {
-            tf.setValidationAttribute('required', 'true');
-          } else {
-            tf.removeValidationAttribute('required');
-          }
+          toggleRequired(tf, evt.target.checked);
         });
       });
 
@@ -707,13 +692,8 @@
         });
         document.getElementById('fullwidth-required').addEventListener('change', function(evt) {
           var checked = evt.target.checked;
-          if (checked) {
-            tf.setValidationAttribute('required', 'true');
-            tfMulti.setValidationAttribute('required', 'true');
-          } else {
-            tf.removeValidationAttribute('required');
-            tfMulti.removeValidationAttribute('required');
-          }
+          toggleRequired(tf, evt.target.checked);
+          toggleRequired(tfMulti, evt.target.checked);
         });
 
         document.getElementById('fullwidth-alternate-colors').addEventListener('change', function (evt) {
