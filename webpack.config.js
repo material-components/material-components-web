@@ -125,6 +125,7 @@ if (!env.isDev()) {
       tabs: [path.resolve('./packages/mdc-tabs/index.js')],
       textfield: [path.resolve('./packages/mdc-textfield/index.js')],
       toolbar: [path.resolve('./packages/mdc-toolbar/index.js')],
+      topAppBar: [path.resolve('./packages/mdc-top-app-bar/index.js')],
     },
     output: {
       path: OUT_DIR_ABS,
@@ -178,6 +179,7 @@ if (!env.isDev()) {
       'mdc.textfield': path.resolve('./packages/mdc-textfield/mdc-text-field.scss'),
       'mdc.theme': path.resolve('./packages/mdc-theme/mdc-theme.scss'),
       'mdc.toolbar': path.resolve('./packages/mdc-toolbar/mdc-toolbar.scss'),
+      'mdc.top-app-bar': path.resolve('./packages/mdc-top-app-bar/mdc-top-app-bar.scss'),
       'mdc.typography': path.resolve('./packages/mdc-typography/mdc-typography.scss'),
     },
     output: {
