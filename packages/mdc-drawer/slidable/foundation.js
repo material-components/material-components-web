@@ -177,8 +177,9 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
       return;
     }
 
-    if (this.adapter_.hasClass(this.openCssClass_))
+    if (this.adapter_.hasClass(this.openCssClass_)) {
       this.updateRaf_ = requestAnimationFrame(this.updateDrawer_.bind(this));
+    }
   }
 
   handleTouchMove_(evt) {
