@@ -167,14 +167,11 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
     if (evt.pointerType && evt.pointerType !== 'touch') {
       return;
     }
-    if (this.adapter_.hasClass(this.openCssClass_)) {
-      this.direction_ = this.adapter_.isRtl() ? -1 : 1;
-      this.drawerWidth_ = this.adapter_.getDrawerWidth();
-      this.startX_ = evt.touches ? evt.touches[0].pageX : evt.pageX;
-      this.currentX_ = this.startX_;
-    } else {
-      let x = evt.touches ? evt.touches[0].pageX : evt.pageX,
-          dir = this.adapter_.isRtl() ? -1 : 1;
+
+    let startX = evt.touches ? evt.touches[0].pageX : evt.pageX,
+        direction = this.adapter_.isRtl() ? -1 : 1;
+
+    if (!this.adapter_.hasClass(this.openCssClass_)) {
       if (dir === 1) {
         if (x > 35) {
           return;
@@ -184,10 +181,12 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
           return;
         }
       }
-      this.direction_ = dir;
-      this.startX_ = x;
-      this.currentX_ = this.startX_;
     }
+
+    this.direction_ = direction;
+    this.drawerWidth_ = this.adapter_.getDrawerWidth();
+    this.startX_ = startX;
+    this.currentX_ = this.startX_;
 
     this.updateRaf_ = requestAnimationFrame(this.updateDrawer_.bind(this));
   }
@@ -207,16 +206,16 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
 
     this.prepareForTouchEnd_();
 
-    if (this.adapter_.hasClass(this.openCssClass_)) {
-      // Did the user close the drawer by more than 50%?
-      if (Math.abs(this.newPosition_ / this.drawerWidth_) >= 0.5) {
+    // Did the user close the drawer by more than 50%?
+    if (Math.abs(this.newPosition_ / this.drawerWidth_) >= 0.5) {
+      if (this.adapter_.hasClass(this.openCssClass_)) {
         this.close();
       } else {
-        // Triggering an open here means we'll get a nice animation back to the fully open state.
         this.open();
       }
     } else {
-      if (Math.abs(this.newPosition_ / this.drawerWidth_) >= 0.5) {
+      // Triggering an open here means we'll get a nice animation back to the fully open state.
+      if (this.adapter_.hasClass(this.openCssClass_)) {
         this.open();
       } else {
         this.close();
