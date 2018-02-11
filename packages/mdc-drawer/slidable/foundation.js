@@ -168,40 +168,26 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
       return;
     }
 
-    let startX = evt.touches ? evt.touches[0].pageX : evt.pageX,
-        direction = this.adapter_.isRtl() ? -1 : 1;
-
-    if (!this.adapter_.hasClass(this.openCssClass_)) {
-      if (direction === 1) {
-        if (startX > 35) {
-          console.log('out of range')
-          return;
-        }
-        startX = startX - 35;
-      } else {
-        if (startX < window.innerWidth - 35) {
-          console.log('out of range')
-          return;
-        }
-        startX = startX + 35;
-      }
-      console.log('start closed')
-    }
-    console.log('start')
-
-    this.direction_ = direction;
+    this.direction_ = this.adapter_.isRtl() ? -1 : 1;
     this.drawerWidth_ = this.adapter_.getDrawerWidth();
-    this.startX_ = startX;
+    this.startX_ = evt.touches ? evt.touches[0].pageX : evt.pageX;
     this.currentX_ = this.startX_;
 
-    this.updateRaf_ = requestAnimationFrame(this.updateDrawer_.bind(this));
+    if (!this.adapter_.hasClass(this.openCssClass_) && !this.isInRange()) {
+      return;
+    }
+
+    if (this.adapter_.hasClass(this.openCssClass_))
+      this.updateRaf_ = requestAnimationFrame(this.updateDrawer_.bind(this));
   }
 
   handleTouchMove_(evt) {
     if (evt.pointerType && evt.pointerType !== 'touch') {
       return;
     }
-    console.log('updateing pos')
+    if (!this.adapter_.hasClass(this.openCssClass_) && !this.isInRange()) {
+      return;
+    }
 
     this.currentX_ = evt.touches ? evt.touches[0].pageX : evt.pageX;
   }
@@ -214,17 +200,14 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
     this.prepareForTouchEnd_();
 
     // Did the user close the drawer by more than 50%?
-    if (Math.abs(this.newPosition_ / this.drawerWidth_) >= 0.5) {
-      console.log(this.newPosition_)
-      console.log(this.drawerWidth_)
-      if (this.adapter_.hasClass(this.openCssClass_)) {
+    if (this.adapter_.hasClass(this.openCssClass_)) {
+      if (Math.abs(this.newPosition_ / this.drawerWidth_) >= 0.5) {
         this.close();
       } else {
         this.open();
       }
     } else {
-      // Triggering an open here means we'll get a nice animation back to the fully open state.
-      if (this.adapter_.hasClass(this.openCssClass_)) {
+      if (Math.abs((this.currentX_ - this.startX_) / this.drawerWidth_) >= 0.5) {
         this.open();
       } else {
         this.close();
@@ -246,6 +229,19 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
     let newPos = null;
     newPos = Math.min(0, this.currentX_ - this.startX_);
     return newPos;
+  }
+
+  isInRange() {
+    if (this.direction_ === 1) {
+      if (this.startX_ > 35) {
+        return false;
+      }
+    } else {
+      if (this.startX_ < window.innerWidth - 35) {
+        return false;
+      }
+    }
+    return true;
   }
 
   isRootTransitioningEventTarget_() {
