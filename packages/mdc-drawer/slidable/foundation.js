@@ -172,12 +172,12 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
         direction = this.adapter_.isRtl() ? -1 : 1;
 
     if (!this.adapter_.hasClass(this.openCssClass_)) {
-      if (dir === 1) {
-        if (x > 35) {
+      if (direction === 1) {
+        if (startX > 35) {
           return;
         }
       } else {
-        if (x < window.innerWidth - 35) {
+        if (startX < window.innerWidth - 35) {
           return;
         }
       }
