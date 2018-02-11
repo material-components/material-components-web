@@ -164,17 +164,30 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
   }
 
   handleTouchStart_(evt) {
-    if (!this.adapter_.hasClass(this.openCssClass_)) {
-      return;
-    }
     if (evt.pointerType && evt.pointerType !== 'touch') {
       return;
     }
-
-    this.direction_ = this.adapter_.isRtl() ? -1 : 1;
-    this.drawerWidth_ = this.adapter_.getDrawerWidth();
-    this.startX_ = evt.touches ? evt.touches[0].pageX : evt.pageX;
-    this.currentX_ = this.startX_;
+    if (this.adapter_.hasClass(this.openCssClass_)) {
+      this.direction_ = this.adapter_.isRtl() ? -1 : 1;
+      this.drawerWidth_ = this.adapter_.getDrawerWidth();
+      this.startX_ = evt.touches ? evt.touches[0].pageX : evt.pageX;
+      this.currentX_ = this.startX_;
+    } else {
+      let x = evt.touches ? evt.touches[0].pageX : evt.pageX,
+          dir = this.adapter_.isRtl() ? -1 : 1;
+      if (dir === 1) {
+        if (x > 35) {
+          return;
+        }
+      } else {
+        if (x < window.innerWidth - 35) {
+          return;
+        }
+      }
+      this.direction_ = dir;
+      this.startX_ = x;
+      this.currentX_ = this.startX_;
+    }
 
     this.updateRaf_ = requestAnimationFrame(this.updateDrawer_.bind(this));
   }
@@ -194,12 +207,20 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
 
     this.prepareForTouchEnd_();
 
-    // Did the user close the drawer by more than 50%?
-    if (Math.abs(this.newPosition_ / this.drawerWidth_) >= 0.5) {
-      this.close();
+    if (this.adapter_.hasClass(this.openCssClass_)) {
+      // Did the user close the drawer by more than 50%?
+      if (Math.abs(this.newPosition_ / this.drawerWidth_) >= 0.5) {
+        this.close();
+      } else {
+        // Triggering an open here means we'll get a nice animation back to the fully open state.
+        this.open();
+      }
     } else {
-      // Triggering an open here means we'll get a nice animation back to the fully open state.
-      this.open();
+      if (Math.abs(this.newPosition_ / this.drawerWidth_) >= 0.5) {
+        this.open();
+      } else {
+        this.close();
+      }
     }
   }
 
@@ -215,13 +236,7 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
 
   get newPosition_() {
     let newPos = null;
-
-    if (this.direction_ === 1) {
-      newPos = Math.min(0, this.currentX_ - this.startX_);
-    } else {
-      newPos = Math.max(0, this.currentX_ - this.startX_);
-    }
-
+    newPos = Math.min(0, this.currentX_ - this.startX_);
     return newPos;
   }
 
