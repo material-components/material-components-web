@@ -25,8 +25,7 @@ const CssCleanupPlugin = require('../../scripts/webpack/css-cleanup-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = class {
-  constructor({pathResolver, globber} = {}) {
-    this.pathResolver_ = pathResolver;
+  constructor({globber} = {}) {
     this.globber_ = globber;
   }
 

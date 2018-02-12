@@ -29,7 +29,7 @@ env.setBabelEnv();
 
 const pathResolver = new PathResolver();
 const globber = new Globber({pathResolver});
-const pluginFactory = new PluginFactory({pathResolver, globber});
+const pluginFactory = new PluginFactory({globber});
 const cssBundleFactory = new CssBundleFactory({env, pathResolver, globber, pluginFactory});
 
 const OUT_DIR_ABS = path.resolve('./build');
