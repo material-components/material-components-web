@@ -177,7 +177,6 @@ Mixin | Description
 `mdc-text-field-box-corner-radius($radius)` | Customizes the border radius for a box text field
 `mdc-text-field-textarea-corner-radius($radius)` | Customizes the border radius for a `<textarea>` text field
 `mdc-text-field-ink-color($color)` | Customizes the text entered into the text-field.
-`mdc-floating-label-color($color)` | Customizes the label color of the text-field.
 `mdc-text-field-line-ripple-color($color)` | Customizes the color of the default line ripple of the text-field.
 `mdc-text-field-hover-line-ripple-color($color)` | Customizes the hover color of the line ripple of the text-field.
 `mdc-text-field-focused-line-ripple-color($color)` | Customizes the line-ripple ripple color when the text-field is focused.
@@ -254,4 +253,4 @@ Method Signature | Description
 `setHelperTextContent(content: string) => void` | Sets the content of the helper text
 `updateOutline() => void` | Updates the focus outline for outlined text fields
 
-`MDCTextFieldFoundation` supports multiple optional sub-elements: line ripple, helper text, icon, label, and outline. The foundations of these sub-elements must be passed in as constructor arguments to `MDCTextFieldFoundation`.
+`MDCTextFieldFoundation` supports multiple optional sub-elements: line ripple, helper text, icon, and outline. The foundations of these sub-elements must be passed in as constructor arguments to `MDCTextFieldFoundation`.

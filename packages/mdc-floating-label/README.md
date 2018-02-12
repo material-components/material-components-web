@@ -50,7 +50,7 @@ It's also possible to wrap `mdc-text-field__input` within a `<label>` to avoid d
 </label>
 ```
 
-> _NOTE_: Only place an `mdc-floating-label` inside of a text field _if you plan on using
+> _NOTE_: Only place a `mdc-floating-label` inside of a text field _if you plan on using
 > Javascript_. Otherwise, the label must go outside of the text-field, as shown below.
 
 #### Single Line, CSS Only
@@ -71,13 +71,20 @@ CSS Class | Description
 `mdc-floating-label--float-above` | Indicates the label is floating above the text field
 `mdc-floating-label--shake` | Shakes the label
 
-<!-- TODO(mattgoo): add ### SCSS Classes -->
+### SCSS Mixins
+
+Mixin | Description
+--- | ---
+`mdc-floating-label-color($color)` | Customizes the color of the label.
 
 ### `MDCFloatingLabel`
 
-##### `MDCFloatingLabel.foundation`
+Method Signature | Description
+--- | ---
+`shake(isValid: boolean, isFocused: boolean) => void` | Shakes label when invalid
+`float(value: string/number, isFocused: boolean, isBadInput: boolean) => void` | Floats label above text field or select
+`getWidth() => number` | Returns the width of the label element
 
-This allows the parent `MDCTextField` or `MDCSelect` component to access the public methods on the `MDCFloatingLabelFoundation` class.
 
 ### `MDCFloatingLabelAdapter`
 

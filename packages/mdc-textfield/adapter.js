@@ -146,6 +146,33 @@ class MDCTextFieldAdapter {
    * @param {number} normalizedX
    */
   setLineRippleTransformOrigin(normalizedX) {}
+
+  /**
+   * Shakes the floating label.
+   * @param {boolean} isValid
+   * @param {boolean} isFocused
+   */
+  shakeLabel(isValid, isFocused) {}
+
+  /**
+   * Floats the floating label element above the text-field
+   * @param {string|number} value
+   * @param {boolean} isValid
+   * @param {boolean} isBadInput
+   */
+  floatLabel(value, isFocused, isBadInput) {}
+
+  /**
+   * Sets the transform origin of the line ripple.
+   * @return {boolean}
+   */
+  hasLabel() {}
+
+  /**
+   * Get width of label in pixels
+   * @return {number}
+   */
+  getLabelWidth() {}
 }
 
 export {MDCTextFieldAdapter, NativeInputType, FoundationMapType};

@@ -112,7 +112,7 @@ Replace the contents of the `<body>` tag in `index.html` with the following:
       <div class="mdc-form-field">
         <div class="mdc-text-field" data-mdc-auto-init="MDCTextField">
           <input id="firstname" type="text" class="mdc-text-field__input">
-          <label for="firstname" class="mdc-text-field__label">
+          <label for="firstname" class="mdc-floating-label">
             First Name
           </label>
           <div class="mdc-line-ripple"></div>
@@ -122,7 +122,7 @@ Replace the contents of the `<body>` tag in `index.html` with the following:
       <div class="mdc-form-field">
         <div class="mdc-text-field" data-mdc-auto-init="MDCTextField">
           <input id="lastname" type="text" class="mdc-text-field__input">
-          <label for="lastname" class="mdc-text-field__label">
+          <label for="lastname" class="mdc-floating-label">
             Last Name
           </label>
           <div class="mdc-line-ripple"></div>
@@ -282,7 +282,7 @@ how to easily add components to a page, and how to customize and theme MDC Web t
 ## Next steps
 
 If you're looking to incorporate MDC Web Components into a framework like Angular or React, check our
-[framework integration guide](./integrating-into-frameworks.md). 
+[framework integration guide](./integrating-into-frameworks.md).
 
 If you'd like to contribute to
 MDC Web and build your own components, or extend one of ours to fit your own purposes, check out our
