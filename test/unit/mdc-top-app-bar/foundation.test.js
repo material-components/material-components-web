@@ -19,6 +19,8 @@ import {assert} from 'chai';
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
 import MDCTopAppBarFoundation from '../../../packages/mdc-top-app-bar/foundation';
+import {strings} from '../../../packages/mdc-top-app-bar/constants';
+
 
 suite('MDCTopAppBarFoundation');
 
@@ -38,4 +40,8 @@ test('#init calls component event registrations', () => {
   const {foundation} = setupTest();
 
   foundation.init();
+});
+
+test('foundation returns strings', () => {
+  assert.equal(strings, MDCTopAppBarFoundation.strings);
 });
