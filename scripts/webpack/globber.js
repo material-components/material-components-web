@@ -56,6 +56,18 @@ module.exports = class {
    *
    * Import-only files (i.e., those with a leading underscore in their name) are excluded.
    *
+   * E.g., the demo CSS chunks look like this:
+   *
+   * <code>
+   *   > getChunks({filePathPattern: '**' + '/*.scss'})
+   *   < {
+   *       "button": "/absolute/path/to/mdc-web-repo/demos/button.scss",
+   *       ...
+   *       "theme/theme-baseline": "/absolute/path/to/mdc-web-repo/demos/theme/theme-baseline.scss",
+   *       ...
+   *     }
+   * </code>
+   *
    * @param {string} filePathPattern
    * @param {string=} inputDirectory
    * @return {!Object<string, string>} Map of chunk names to their absolute filesystem paths
