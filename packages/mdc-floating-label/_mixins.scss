@@ -19,8 +19,8 @@
 // Public
 
 @mixin mdc-floating-label-color($color) {
-  &:not(.mdc-text-field--disabled) {
-    @include mdc-floating-label-color_($color);
+  .mdc-floating-label {
+    @include mdc-theme-prop(color, $color);
   }
 }
 
@@ -76,13 +76,6 @@
 @mixin mdc-floating-label-shake_($modifier) {
   .mdc-floating-label--shake {
     animation: invalid-shake-float-above-#{$modifier} 250ms 1;
-  }
-}
-
-@mixin mdc-floating-label-color_($color) {
-  .mdc-floating-label,
-  .mdc-text-field__input::placeholder { // placeholder used in place of label on css only version
-    @include mdc-theme-prop(color, $color);
   }
 }
 
