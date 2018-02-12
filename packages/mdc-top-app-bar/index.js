@@ -16,6 +16,7 @@
 
 import MDCTopAppBarFoundation from './foundation';
 import {MDCComponent} from '@material/base/index';
+import {MDCRipple} from '@material/ripple/index';
 import {strings} from './constants';
 
 
@@ -36,16 +37,29 @@ export class MDCTopAppBar extends MDCComponent {
   initialize() {
     this.navIcon_ = this.root_.querySelector(strings.MENU_ICON_SELECTOR);
     this.navIconClick_ = this.navigationEvent_.bind(this);
-
     if (this.navIcon_) {
       this.navIcon_.addEventListener('click', this.navIconClick_);
     }
+
+    this.iconRipples = [].slice.call(this.root_.querySelectorAll(strings.ACTION_ICON_SELECTOR)).map(function(icon) {
+      const ripple = MDCRipple.attachTo(icon);
+      ripple.unbounded = true;
+      return ripple;
+    });
+
+    const navIconRipple = MDCRipple.attachTo(this.navIcon_);
+    navIconRipple.unbounded = true;
+    this.iconRipples.push(navIconRipple);
   }
 
   destroy() {
     if (this.navIcon_) {
       this.navIcon_.removeEventListener('click', this.navIconClick_);
     }
+
+    this.iconRipples.slice.call(function(iconRipple) {
+      iconRipple.destroy();
+    });
   }
 
   navigationEvent_() {

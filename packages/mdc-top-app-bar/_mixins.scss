@@ -15,6 +15,7 @@
 //
 
 @import "@material/theme/variables"; // for mdc-theme-accessible-ink-color
+@import "@material/ripple/mixins";
 @import "./variables";
 
 //
@@ -46,10 +47,13 @@
 // Both .mdc-top-app-bar__icon and .mdc-top-app-bar__menu-icon share all styles except for
 // horizontal padding.
 @mixin mdc-top-app-bar-icon_() {
+  @include mdc-ripple-surface;
+  @include mdc-ripple-radius-unbounded;
+  @include mdc-states(text-primary-on-primary);
+
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: $mdc-top-app-bar-element-vertical-padding;
   border: none;
   background-color: transparent;
   color: inherit;

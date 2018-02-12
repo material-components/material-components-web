@@ -19,6 +19,7 @@ const strings = {
   NAVIGATION_EVENT: 'MDCTopAppBar:nav',
   TITLE_SELECTOR: '.mdc-top-app-bar__title',
   MENU_ICON_SELECTOR: '.mdc-top-app-bar__menu-icon',
+  ACTION_ICON_SELECTOR: '.mdc-top-app-bar__icon',
 };
 
 export {strings};

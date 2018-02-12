@@ -48,9 +48,10 @@
   &__section {
     display: inline-flex;
     flex: 1;
-    align-items: flex-start;
+    align-items: center;
     min-width: 0;
     height: 100%;
+    padding: $mdc-top-app-bar-icon-vertical-padding 12px;
     z-index: 1;
 
     &--align-start {
@@ -69,8 +70,6 @@
     @include mdc-typography-overflow-ellipsis;
     @include mdc-rtl-reflexive-box(margin, left, $mdc-top-app-bar-title-left-padding);
 
-    margin-top: auto;
-    padding-bottom: $mdc-top-app-bar-title-bottom-padding;
     line-height: 1.5rem;
     z-index: 1;
   }
@@ -78,12 +77,14 @@
   &__icon {
     @include mdc-top-app-bar-icon_;
 
-    padding: $mdc-top-app-bar-icon-vertical-padding $mdc-top-app-bar-icon-horizontal-padding;
+    padding-right: $mdc-top-app-bar-icon-horizontal-padding / 2;
+    padding-left: $mdc-top-app-bar-icon-horizontal-padding / 2;
   }
 
   &__menu-icon {
     @include mdc-top-app-bar-icon_;
 
-    padding: $mdc-top-app-bar-icon-vertical-padding $mdc-top-app-bar-icon-horizontal-padding;
+    padding-right: $mdc-top-app-bar-icon-horizontal-padding / 2;
+    padding-left: $mdc-top-app-bar-icon-horizontal-padding / 2;
   }
 }
