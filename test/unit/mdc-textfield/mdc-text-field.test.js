@@ -76,6 +76,7 @@ class FakeIcon {
 class FakeLabel {
   constructor() {
     this.destroy = td.func('.destroy');
+    this.shake = td.func('.shake');
   }
 }
 

@@ -157,9 +157,8 @@
   font-size: .813rem;
 }
 
-// TODO(mattgoo): can this be placed into the mdc-floating-label repo?
 @mixin mdc-required-text-field-label-asterisk_() {
-  .mdc-text-field__input:required + .mdc-text-field__label::after {
+  .mdc-text-field__input:required + .mdc-floating-label::after {
     @content;
   }
 }

@@ -67,6 +67,10 @@ class MDCTextFieldFoundation extends MDCFoundation {
       activateLineRipple: () => {},
       deactivateLineRipple: () => {},
       setLineRippleTransformOrigin: () => {},
+      shakeLabel: () => {},
+      floatLabel: () => {},
+      hasLabel: () => {},
+      getLabelWidth: () => {},
     });
   }
 

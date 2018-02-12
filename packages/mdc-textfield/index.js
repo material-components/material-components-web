@@ -284,7 +284,7 @@ class MDCTextField extends MDCComponent {
           if (this.label_) {
             return this.label_.getWidth();
           }
-        }
+        },
       },
       this.getInputAdapterMethods_())),
       this.getFoundationMap_());

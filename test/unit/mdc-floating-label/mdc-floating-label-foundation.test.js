@@ -75,7 +75,7 @@ test('#styleFloat with empty value and badInput does not touch floating label', 
   td.verify(mockAdapter.removeClass(cssClasses.LABEL_FLOAT_ABOVE), {times: 0});
 });
 
-test('#styleShake updates shake class', () => {
+test('#shake updates shake class', () => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.styleShake(/* isValid */ false, /* isFocused */ false);
