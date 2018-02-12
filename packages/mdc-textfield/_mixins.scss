@@ -139,7 +139,7 @@
 @mixin mdc-text-field-focused_ {
   @include mdc-text-field-label-color(primary);
 
-  @include mdc-required-text-field-label-asterix_ {
+  @include mdc-required-text-field-label-asterisk_ {
     color: $mdc-text-field-error;
   }
 
@@ -157,7 +157,7 @@
   font-size: .813rem;
 }
 
-@mixin mdc-required-text-field-label-asterix_() {
+@mixin mdc-required-text-field-label-asterisk_() {
   .mdc-text-field__input:required + .mdc-text-field__label::after {
     @content;
   }
@@ -339,7 +339,7 @@
 
 // Full Width
 
-@mixin mdc-text-field-full-width_ {
+@mixin mdc-text-field-fullwidth_ {
   width: 100%;
 
   .mdc-text-field__input {
@@ -364,6 +364,10 @@
       border: none !important;
     }
   }
+}
+
+@mixin mdc-text-field-fullwidth-invalid_ {
+  @include mdc-text-field-fullwidth-bottom-line-color($mdc-text-field-error);
 }
 
 // Textarea
