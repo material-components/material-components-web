@@ -24,6 +24,7 @@
 // postcss-bem-linter: define top-app-bar
 .mdc-top-app-bar {
   @include mdc-top-app-bar-fill-color-accessible(primary);
+  @include mdc-top-app-bar-icon-ink-color(text-primary-on-primary);
 
   display: flex;
   position: relative;
@@ -39,10 +40,6 @@
     width: 100%;
     height: auto;
     min-height: $mdc-top-app-bar-row-height;
-
-    @media (max-width: $mdc-top-app-bar-mobile-breakpoint) {
-      min-height: $mdc-top-app-bar-mobile-row-height;
-    }
   }
 
   &__section {
