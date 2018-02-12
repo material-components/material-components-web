@@ -18,8 +18,7 @@ path: /catalog/menus/
 
 The MDC Menu component is a spec-aligned menu component adhering to the
 [Material Design menu specification](https://material.io/guidelines/components/menus.html).
-Menus require JavaScript to work correctly, but the open and closed states are correct on
-first render.
+Menus require JavaScript to properly position themselves when opening.
 
 ## Design & API Documentation
 
