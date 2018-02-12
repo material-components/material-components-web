@@ -50,6 +50,7 @@ module.exports = class {
 
   // https://youtu.be/SNAK21fcVzU
   nukeEm_() {
+    // The trailing `*` at the end of the glob pattern is needed to clean up sourcemap files (e.g., `foo.css.js.map`).
     this.globber_.getAbsolutePaths(this.cleanupDirRelativePath, '**/*.css.js*').forEach((absolutePath) => {
       this.fsExtraLib_.removeSync(absolutePath);
     });
