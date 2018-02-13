@@ -41,29 +41,30 @@ test('defaultAdapter returns a complete adapter implementation', () => {
 const setupTest = () => {
   const mockAdapter = td.object(MDCChipSetFoundation.defaultAdapter);
   const foundation = new MDCChipSetFoundation(mockAdapter);
-  return {foundation, mockAdapter};
-};
-
-test('on custom MDCChip:interaction event toggles active state on choice chips', () => {
-  const {foundation, mockAdapter} = setupTest();
   const chipA = td.object({
     toggleActive: () => {},
   });
   const chipB = td.object({
     toggleActive: () => {},
   });
+  return {foundation, mockAdapter, chipA, chipB};
+};
+
+test('on custom MDCChip:interaction event toggles active state on choice chips', () => {
+  const {foundation, mockAdapter, chipA, chipB} = setupTest();
   let chipInteractionHandler;
   td.when(mockAdapter.registerEventHandler('MDCChip:interaction', td.matchers.isA(Function)))
     .thenDo((evtType, handler) => {
       chipInteractionHandler = handler;
     });
+  td.when(mockAdapter.hasClass(cssClasses.CHOICE)).thenReturn(true);
 
   assert.equal(foundation.activeChips_.length, 0);
   foundation.init();
 
   chipInteractionHandler({
     detail: {
-      chip: chipA
+      chip: chipA,
     },
   });
   td.verify(chipA.toggleActive());
@@ -71,7 +72,7 @@ test('on custom MDCChip:interaction event toggles active state on choice chips',
 
   chipInteractionHandler({
     detail: {
-      chip: chipB
+      chip: chipB,
     },
   });
   td.verify(chipA.toggleActive());
@@ -80,7 +81,7 @@ test('on custom MDCChip:interaction event toggles active state on choice chips',
 
   chipInteractionHandler({
     detail: {
-      chip: chipB
+      chip: chipB,
     },
   });
   td.verify(chipB.toggleActive());
