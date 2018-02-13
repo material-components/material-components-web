@@ -115,7 +115,7 @@ module.exports = class {
     });
   }
 
-  createMainCssPackages(
+  createMainCssALaCarte(
     {
       output: {
         fsDirAbsolutePath,

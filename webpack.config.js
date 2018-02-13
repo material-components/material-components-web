@@ -126,7 +126,7 @@ if (!env.isDev()) {
     },
   }));
 
-  module.exports.push(cssBundleFactory.createMainCssPackages({
+  module.exports.push(cssBundleFactory.createMainCssALaCarte({
     output: {
       fsDirAbsolutePath: OUT_DIR_ABS,
       httpDirAbsolutePath: DEMO_ASSET_DIR_REL,
