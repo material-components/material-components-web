@@ -30,7 +30,7 @@ module.exports = class {
   }
 
   createCopyrightBannerPlugin({
-    projectName = 'Material Components for the web',
+    projectName = 'Material Components for the Web',
     authorName = 'Google Inc.',
     licenseName = 'Apache-2.0',
   } = {}) {

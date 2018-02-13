@@ -28,11 +28,11 @@
     "plugins": [
       {
         "options": {
-          "banner": "/*!\n Material Components for the web\n Copyright (c) 2018 Google Inc.\n License: Apache-2.0\n*/",
+          "banner": "/*!\n Material Components for the Web\n Copyright (c) 2018 Google Inc.\n License: Apache-2.0\n*/",
           "raw": true,
           "entryOnly": true
         },
-        "banner": "/*!\n Material Components for the web\n Copyright (c) 2018 Google Inc.\n License: Apache-2.0\n*/"
+        "banner": "/*!\n Material Components for the Web\n Copyright (c) 2018 Google Inc.\n License: Apache-2.0\n*/"
       }
     ]
   },
@@ -129,11 +129,11 @@
       },
       {
         "options": {
-          "banner": "/*!\n Material Components for the web\n Copyright (c) 2018 Google Inc.\n License: Apache-2.0\n*/",
+          "banner": "/*!\n Material Components for the Web\n Copyright (c) 2018 Google Inc.\n License: Apache-2.0\n*/",
           "raw": true,
           "entryOnly": true
         },
-        "banner": "/*!\n Material Components for the web\n Copyright (c) 2018 Google Inc.\n License: Apache-2.0\n*/"
+        "banner": "/*!\n Material Components for the Web\n Copyright (c) 2018 Google Inc.\n License: Apache-2.0\n*/"
       }
     ]
   },
@@ -173,11 +173,11 @@
     "plugins": [
       {
         "options": {
-          "banner": "/*!\n Material Components for the web\n Copyright (c) 2018 Google Inc.\n License: Apache-2.0\n*/",
+          "banner": "/*!\n Material Components for the Web\n Copyright (c) 2018 Google Inc.\n License: Apache-2.0\n*/",
           "raw": true,
           "entryOnly": true
         },
-        "banner": "/*!\n Material Components for the web\n Copyright (c) 2018 Google Inc.\n License: Apache-2.0\n*/"
+        "banner": "/*!\n Material Components for the Web\n Copyright (c) 2018 Google Inc.\n License: Apache-2.0\n*/"
       }
     ]
   }
