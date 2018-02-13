@@ -40,6 +40,15 @@
   }
 }
 
+@at-root {
+  @include mdc-switch-unchecked-track-color_($mdc-switch-unchecked-track-color);
+  @include mdc-switch-unchecked-knob-color_($mdc-switch-unchecked-knob-color);
+  @include mdc-switch-unchecked-focus-indicator-color_($mdc-switch-unchecked-focus-ring-color);
+  @include mdc-switch-track-color($mdc-switch-baseline-theme-color);
+  @include mdc-switch-knob-color($mdc-switch-baseline-theme-color);
+  @include mdc-switch-focus-indicator-color($mdc-switch-baseline-theme-color);
+}
+
 .mdc-switch__background {
   display: block;
   position: relative;
@@ -66,7 +75,6 @@
   }
 }
 
-// postcss-bem-linter: ignore
 .mdc-switch__knob {
   @include mdc-elevation(2);
 
@@ -84,7 +92,6 @@
   z-index: 1;
 
   // Focus indicator
-  // postcss-bem-linter: ignore
   &::before {
     @include mdc-switch-tap-target_;
 
@@ -98,27 +105,9 @@
   }
 }
 
-@at-root {
-  @include mdc-switch-unchecked-track-color_($mdc-switch-unchecked-track-color);
-  @include mdc-switch-unchecked-knob-color_($mdc-switch-unchecked-knob-color);
-  @include mdc-switch-unchecked-focus-indicator-color_($mdc-switch-unchecked-focus-ring-color);
-  @include mdc-switch-track-color($mdc-switch-baseline-theme-color);
-  @include mdc-switch-knob-color($mdc-switch-baseline-theme-color);
-  @include mdc-switch-focus-indicator-color($mdc-switch-baseline-theme-color);
-}
-
-.mdc-switch__native-control:focus ~ .mdc-switch__background {
-  // Focus indicator
-  .mdc-switch__knob::before {
-    position: absolute;
-    width: $mdc-switch-focus-ring-diameter;
-    height: $mdc-switch-focus-ring-diameter;
-    transform: scale(1);
-    transition:
-      mdc-switch-transition(transform),
-      mdc-switch-transition(background-color);
-    border-radius: $mdc-switch-focus-ring-diameter / 2;
-  }
+// Focus indicator
+.mdc-switch__native-control:focus ~ .mdc-switch__background .mdc-switch__knob::before {
+  transform: scale(1);
 }
 
 .mdc-switch__native-control:checked ~ .mdc-switch__background {
@@ -129,9 +118,6 @@
 
   .mdc-switch__knob {
     transform: translateX($mdc-switch-knob-active-margin);
-    transition:
-      mdc-switch-transition(transform),
-      mdc-switch-transition(background-color);
 
     // Focus indicator
     &::before {
