@@ -76,6 +76,10 @@ CSS Class | Description
 Mixin | Description
 --- | ---
 `mdc-floating-label-color($color)` | Customizes the color of the label.
+`mdc-floating-label-fill-color($color)` | Customizes the fill color of the label.
+`mdc-floating-label-invalid-shake-keyframes($modifier, $positionY, $positionX, $scale)` | Creates a shake keyframe animation for invalid label shake. To be used with sass mixin `mdc-floating-label-shake($modifier)`.
+`mdc-floating-label-shake($modifier)` | Applies shake keyframe animation to label.
+`mdc-floating-label-float-position($positionY, $positionX, $scale)` | Sets position of label when floating.
 
 ### `MDCFloatingLabel`
 
