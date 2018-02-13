@@ -43,8 +43,8 @@ class MDCChipSetFoundation extends MDCFoundation {
   static get defaultAdapter() {
     return /** @type {!MDCChipSetAdapter} */ ({
       hasClass: () => {},
-      registerEventHandler: () => {},
-      deregisterEventHandler: () => {},
+      registerInteractionHandler: () => {},
+      deregisterInteractionHandler: () => {},
     });
   }
 
@@ -64,11 +64,11 @@ class MDCChipSetFoundation extends MDCFoundation {
   }
 
   init() {
-    this.adapter_.registerEventHandler(MDCChipFoundation.strings.INTERACTION_EVENT, this.chipInteractionHandler_);
+    this.adapter_.registerInteractionHandler(MDCChipFoundation.strings.INTERACTION_EVENT, this.chipInteractionHandler_);
   }
 
   destroy() {
-    this.adapter_.deregisterEventHandler(MDCChipFoundation.strings.INTERACTION_EVENT, this.chipInteractionHandler_);
+    this.adapter_.deregisterInteractionHandler(MDCChipFoundation.strings.INTERACTION_EVENT, this.chipInteractionHandler_);
   }
 
   /**

@@ -40,14 +40,14 @@ class MDCChipSetAdapter {
    * @param {string} evtType
    * @param {function(!Event): undefined} handler
    */
-  registerEventHandler(evtType, handler) {}
+  registerInteractionHandler(evtType, handler) {}
 
   /**
    * Deregisters an event handler on the root element for a given event.
    * @param {string} evtType
    * @param {function(!Event): undefined} handler
    */
-  deregisterEventHandler(evtType, handler) {}
+  deregisterInteractionHandler(evtType, handler) {}
 }
 
 export default MDCChipSetAdapter;

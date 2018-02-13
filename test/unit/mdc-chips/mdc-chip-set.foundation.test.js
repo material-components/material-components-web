@@ -34,7 +34,7 @@ test('exports cssClasses', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCChipSetFoundation, [
-    'hasClass', 'registerEventHandler', 'deregisterEventHandler',
+    'hasClass', 'registerInteractionHandler', 'deregisterInteractionHandler',
   ]);
 });
 
@@ -54,20 +54,20 @@ test('#init adds event listeners', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
 
-  td.verify(mockAdapter.registerEventHandler('MDCChip:interaction', td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerInteractionHandler('MDCChip:interaction', td.matchers.isA(Function)));
 });
 
 test('#destroy removes event listeners', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.destroy();
 
-  td.verify(mockAdapter.deregisterEventHandler('MDCChip:interaction', td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterInteractionHandler('MDCChip:interaction', td.matchers.isA(Function)));
 });
 
 test('on custom MDCChip:interaction event toggles active state on choice chips', () => {
   const {foundation, mockAdapter, chipA, chipB} = setupTest();
   let chipInteractionHandler;
-  td.when(mockAdapter.registerEventHandler('MDCChip:interaction', td.matchers.isA(Function)))
+  td.when(mockAdapter.registerInteractionHandler('MDCChip:interaction', td.matchers.isA(Function)))
     .thenDo((evtType, handler) => {
       chipInteractionHandler = handler;
     });

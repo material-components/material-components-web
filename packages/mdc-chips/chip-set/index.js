@@ -64,8 +64,8 @@ class MDCChipSet extends MDCComponent {
   getDefaultFoundation() {
     return new MDCChipSetFoundation(/** @type {!MDCChipSetAdapter} */ (Object.assign({
       hasClass: (className) => this.root_.classList.contains(className),
-      registerEventHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
-      deregisterEventHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
+      registerInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
+      deregisterInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
     })));
   }
 
