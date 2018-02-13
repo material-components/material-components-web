@@ -15,9 +15,12 @@
  */
 
 import {assert} from 'chai';
+import td from 'testdouble';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import MDCChipSetFoundation from '../../../packages/mdc-chips/chip-set/foundation';
+
+const {cssClasses} = MDCChipSetFoundation;
 
 suite('MDCChipSetFoundation');
 
@@ -25,8 +28,61 @@ test('exports strings', () => {
   assert.isOk('strings' in MDCChipSetFoundation);
 });
 
+test('exports cssClasses', () => {
+  assert.isOk('cssClasses' in MDCChipSetFoundation);
+});
+
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCChipSetFoundation, [
-    'hasClass',
+    'hasClass', 'registerEventHandler', 'deregisterEventHandler',
   ]);
+});
+
+const setupTest = () => {
+  const mockAdapter = td.object(MDCChipSetFoundation.defaultAdapter);
+  const foundation = new MDCChipSetFoundation(mockAdapter);
+  return {foundation, mockAdapter};
+};
+
+test('on custom MDCChip:interaction event toggles active state on choice chips', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const chipA = td.object({
+    toggleActive: () => {},
+  });
+  const chipB = td.object({
+    toggleActive: () => {},
+  });
+  let chipInteractionHandler;
+  td.when(mockAdapter.registerEventHandler('MDCChip:interaction', td.matchers.isA(Function)))
+    .thenDo((evtType, handler) => {
+      chipInteractionHandler = handler;
+    });
+
+  assert.equal(foundation.activeChips_.length, 0);
+  foundation.init();
+
+  chipInteractionHandler({
+    detail: {
+      chip: chipA
+    },
+  });
+  td.verify(chipA.toggleActive());
+  assert.equal(foundation.activeChips_.length, 1);
+
+  chipInteractionHandler({
+    detail: {
+      chip: chipB
+    },
+  });
+  td.verify(chipA.toggleActive());
+  td.verify(chipB.toggleActive());
+  assert.equal(foundation.activeChips_.length, 1);
+
+  chipInteractionHandler({
+    detail: {
+      chip: chipB
+    },
+  });
+  td.verify(chipB.toggleActive());
+  assert.equal(foundation.activeChips_.length, 0);
 });
