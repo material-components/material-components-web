@@ -56,11 +56,22 @@
   &__section {
     display: inline-flex;
     flex: 1;
-    align-items: center;
+    align-items: start;
     justify-content: center;
     min-width: 0;
     height: 100%;
     z-index: 1;
+    padding: $mdc-toolbar-element-vertical-padding 0;
+    box-sizing: border-box;
+
+    @media (max-width: $mdc-toolbar-mobile-landscape-width-breakpoint)
+      and (orientation: landscape) {
+      padding: $mdc-toolbar-element-landscape-vertical-padding 0;
+    }
+
+    @media (max-width: $mdc-toolbar-mobile-breakpoint) {
+      padding: $mdc-toolbar-element-mobile-vertical-padding 0;
+    }
 
     &--align-start {
       justify-content: flex-start;
@@ -79,7 +90,6 @@
     @include mdc-rtl-reflexive-box(margin, left, $mdc-toolbar-element-horizontal-padding-desktop);
 
     align-self: center;
-    padding: $mdc-toolbar-element-vertical-padding 0;
     line-height: 1.5rem;
     z-index: 1;
   }

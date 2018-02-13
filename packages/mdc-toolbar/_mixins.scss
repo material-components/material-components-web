@@ -47,9 +47,9 @@
 // horizontal padding.
 @mixin mdc-toolbar-icon_() {
   display: flex;
-  align-items: center;
+  align-items: start;
   justify-content: center;
-  padding: $mdc-toolbar-element-vertical-padding;
+  padding: 0 $mdc-toolbar-element-vertical-padding;
   border: none;
   background-color: transparent;
   color: inherit;
