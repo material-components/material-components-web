@@ -212,7 +212,7 @@ class MDCTextField extends MDCComponent {
 
   /**
    * @param {string} attrName is the attribute name to be set
-   * @param {boolean|number|string} val is the value of attribute to be set
+   * @param {string} val is the value of attribute to be set
    */
   setValidationAttribute(attrName, val) {
     this.foundation_.setValidationAttribute(attrName, val);
