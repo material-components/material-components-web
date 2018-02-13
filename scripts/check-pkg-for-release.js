@@ -101,7 +101,7 @@ function checkCSSDependencyAddedInWebpackConfig() {
   const name = getPkgName();
   if (CSS_WHITELIST.indexOf(name) === -1) {
     const cssconfig = WEBPACK_CONFIG.find((value) => {
-      return value.name === 'css';
+      return value.name === 'main-css-a-la-carte';
     });
     const nameMDC = pkg.name.replace('@material/', 'mdc.');
     assert.notEqual(typeof cssconfig.entry[nameMDC], 'undefined',

@@ -126,7 +126,7 @@ module.exports = class {
     const getAbsolutePath = (...args) => this.pathResolver_.getAbsolutePath(...args);
 
     return this.createCustomCss({
-      bundleName: 'main-css-packages',
+      bundleName: 'main-css-a-la-carte',
       chunks: {
         'mdc.button': getAbsolutePath('/packages/mdc-button/mdc-button.scss'),
         'mdc.card': getAbsolutePath('/packages/mdc-card/mdc-card.scss'),
