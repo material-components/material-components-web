@@ -172,6 +172,7 @@ CSS Class | Description
 --- | ---
 `mdc-card` | Mandatory, for the card element
 `mdc-card--stroked` | Removes the shadow and displays a hairline stroke instead
+`mdc-card__primary-action` | The main tappable area of the card. Typically contains most (or all) card content _except_ `mdc-card__actions`. Only applicable to cards that have a primary action that the main surface should trigger.
 `mdc-card__media` | Media area that displays a custom `background-image` with `background-size: cover`
 `mdc-card__media--square` | Automatically scales the media area's height to equal its width
 `mdc-card__media--16-9` | Automatically scales the media area's height according to its width, maintaining a 16:9 aspect ratio

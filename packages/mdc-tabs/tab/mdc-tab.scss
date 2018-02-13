@@ -16,10 +16,8 @@
 
 @import "@material/animation/functions";
 @import "@material/typography/mixins";
-@import "@material/theme/mixins";
 @import "@material/ripple/common";
 @import "@material/ripple/mixins";
-@import "@material/rtl/mixins";
 @import "./mixins";
 @import "../mixins";
 
@@ -35,6 +33,9 @@ $mdc-tab-with-icon-and-text-height: 72px;
 .mdc-tab {
   @include mdc-typography(body2);
   @include mdc-tab-ink-color(text-secondary-on-background);
+  @include mdc-ripple-surface;
+  @include mdc-states;
+  @include mdc-ripple-radius-bounded;
 
   display: table-cell;
   position: relative;
@@ -49,13 +50,12 @@ $mdc-tab-with-icon-and-text-height: 72px;
   overflow: hidden;
   vertical-align: middle;
 
-
   &:hover {
     @include mdc-tab-ink-color(text-primary-on-background);
   }
 
   &:focus {
-    @include mdc-theme-prop(outline-color, text-secondary-on-background);
+    outline: none;
   }
 
   // TODO: Replace with breakpoint variable
@@ -102,10 +102,6 @@ $mdc-tab-with-icon-and-text-height: 72px;
 }
 
 .mdc-tab-bar:not(.mdc-tab-bar-upgraded) {
-  .mdc-tab {
-    position: relative;
-  }
-
   .mdc-tab--active,
   .mdc-tab:hover,
   .mdc-tab:active {
@@ -124,15 +120,4 @@ $mdc-tab-with-icon-and-text-height: 72px;
   }
 }
 
-.mdc-tab.mdc-ripple-upgraded {
-  @include mdc-ripple-surface;
-  @include mdc-states;
-  @include mdc-ripple-radius-bounded;
-
-  // stylelint-disable plugin/selector-bem-pattern
-  &:focus {
-    outline: none;
-  }
-  // stylelint-enable plugin/selector-bem-pattern
-}
 // postcss-bem-linter: end
