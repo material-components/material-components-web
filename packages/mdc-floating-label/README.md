@@ -86,7 +86,7 @@ Mixin | Description
 Method Signature | Description
 --- | ---
 `shake(isValid: boolean, isFocused: boolean) => void` | Shakes label when invalid
-`float(value: string/number, isFocused: boolean, isBadInput: boolean) => void` | Floats label above text field or select
+`float(value: string, isFocused: boolean, isBadInput: boolean) => void` | Floats label above text field or select
 `getWidth() => number` | Returns the width of the label element
 
 

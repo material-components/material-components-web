@@ -156,7 +156,7 @@ class MDCTextFieldAdapter {
 
   /**
    * Floats the floating label element above the text-field
-   * @param {string|number} value
+   * @param {string} value
    * @param {boolean} isFocused
    * @param {boolean} isBadInput
    */
