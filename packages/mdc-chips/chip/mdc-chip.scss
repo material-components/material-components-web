@@ -35,6 +35,10 @@
   overflow: hidden;
 }
 
+.mdc-chip--activated {
+  @include mdc-chip-ink-color($mdc-chip-ink-color-activated);
+}
+
 .mdc-chip__text {
   display: inline-block;
   vertical-align: middle;

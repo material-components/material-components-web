@@ -42,10 +42,6 @@
   @include mdc-states($color);
   @include mdc-states-activated($color);
   @include mdc-theme-prop(color, $color);
-
-  &.mdc-chip--activated {
-    @include mdc-theme-prop(color, rgba($color, 1));
-  }
 }
 
 @mixin mdc-chip-stroke($width: 1, $style: solid, $color: black) {
