@@ -29,8 +29,10 @@
 
   @if ($fill-tone == "dark") {
     @include mdc-chip-ink-color(text-primary-on-dark);
+    @include mdc-chip-ink-color-activated(white);
   } @else {
     @include mdc-chip-ink-color(text-primary-on-light);
+    @include mdc-chip-ink-color-activated(black);
   }
 }
 
@@ -42,6 +44,13 @@
   @include mdc-states($color);
   @include mdc-states-activated($color);
   @include mdc-theme-prop(color, $color);
+}
+
+@mixin mdc-chip-ink-color-activated($color) {
+  &:hover,
+  &--activated {
+    @include mdc-theme-prop(color, $color);
+  }
 }
 
 @mixin mdc-chip-stroke($width: 1, $style: solid, $color: black) {
