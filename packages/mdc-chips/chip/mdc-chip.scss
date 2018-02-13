@@ -16,6 +16,7 @@
 
 @import "@material/ripple/common";
 @import "@material/ripple/mixins";
+@import "@material/theme/mixins";
 @import "../mixins";
 @import "../variables";
 
@@ -35,8 +36,10 @@
   overflow: hidden;
 }
 
+.mdc-chip:hover,
 .mdc-chip--activated {
-  @include mdc-chip-ink-color($mdc-chip-ink-color-activated);
+  // Don't use mdc-chip-ink-color because source-map gets confused between the `--activated` selectors.
+  @include mdc-theme-prop(color, $mdc-chip-ink-color-activated);
 }
 
 .mdc-chip__text {
