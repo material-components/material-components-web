@@ -212,7 +212,7 @@
     ]
   },
   {
-    "name": "main-css-packages",
+    "name": "main-css-a-la-carte",
     "entry": {
       "mdc.button": "/packages/mdc-button/mdc-button.scss",
       "mdc.card": "/packages/mdc-card/mdc-card.scss",
