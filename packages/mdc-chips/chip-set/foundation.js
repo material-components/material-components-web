@@ -17,7 +17,8 @@
 
 import MDCFoundation from '@material/base/foundation';
 import MDCChipSetAdapter from './adapter';
-import MDCChipFoundation from '../chip/foundation';
+// eslint-disable-next-line no-unused-vars
+import {MDCChip, MDCChipFoundation} from '../chip/index';
 import {strings, cssClasses} from './constants';
 
 /**
@@ -64,11 +65,13 @@ class MDCChipSetFoundation extends MDCFoundation {
   }
 
   init() {
-    this.adapter_.registerInteractionHandler(MDCChipFoundation.strings.INTERACTION_EVENT, this.chipInteractionHandler_);
+    this.adapter_.registerInteractionHandler(
+      MDCChipFoundation.strings.INTERACTION_EVENT, this.chipInteractionHandler_);
   }
 
   destroy() {
-    this.adapter_.deregisterInteractionHandler(MDCChipFoundation.strings.INTERACTION_EVENT, this.chipInteractionHandler_);
+    this.adapter_.deregisterInteractionHandler(
+      MDCChipFoundation.strings.INTERACTION_EVENT, this.chipInteractionHandler_);
   }
 
   /**
