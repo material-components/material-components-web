@@ -37,9 +37,8 @@ function getFixture(open) {
 
 function setupTest(open = false) {
   const root = getFixture(open);
-  const listItem = root.querySelector('.mdc-list-item');
   const component = new MDCMenu(root);
-  return {root, listItem, component};
+  return {root, component};
 }
 
 suite('MDCMenu');
@@ -149,13 +148,6 @@ test('adapter#getAttributeForEventTarget returns the value of an attribute for a
   target.setAttribute(attrName, attrVal);
 
   assert.equal(component.getDefaultFoundation().adapter_.getAttributeForEventTarget(target, attrName), attrVal);
-});
-
-test('adapter#eventTargetHasClass returns true if a target has a given classname', () => {
-  const {listItem, component} = setupTest();
-  listItem.classList.add('foo');
-
-  assert.isTrue(component.getDefaultFoundation().adapter_.eventTargetHasClass(listItem, 'foo'));
 });
 
 test('adapter#hasNecessaryDom returns false if the DOM does not include the items container', () => {

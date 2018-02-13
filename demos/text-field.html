@@ -169,32 +169,6 @@
           <input id="outlined-dense" type="checkbox">
           <label for="outlined-dense">Dense</label>
         </div>
-        <script>
-          demoReady(function() {
-            var tfEl = document.getElementById('tf-outlined-example');
-            var tf = new mdc.textField.MDCTextField(tfEl);
-            var wrapper = document.getElementById('demo-tf-outlined-wrapper');
-            document.getElementById('outlined-disable').addEventListener('change', function(evt) {
-              tf.disabled = evt.target.checked;
-            });
-            document.getElementById('outlined-rtl').addEventListener('change', function(evt) {
-              if (evt.target.checked) {
-                wrapper.setAttribute('dir', 'rtl');
-              } else {
-                wrapper.removeAttribute('dir');
-              }
-              tf.layout();
-            });
-            document.getElementById('outlined-custom-colors').addEventListener('change', function(evt) {
-              tfEl.classList[evt.target.checked ? 'add' : 'remove']('demo-text-field-custom-colors');
-              tfEl.classList[evt.target.checked ? 'add' : 'remove']('demo-text-field-custom-error-colors');
-            });
-            document.getElementById('outlined-dense').addEventListener('change', function(evt) {
-              tfEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
-              tf.layout();
-            });
-          });
-        </script>
       </section>
 
       <section class="example" id="text-field-box-example">
@@ -239,61 +213,6 @@
           <input id="box-persistent-helper-text" type="checkbox" disabled>
           <label for="box-persistent-helper-text">Make helper text persistent</label>
         </div>
-        <script>
-          demoReady(function() {
-            var tfEl = document.getElementById('tf-box-example');
-            var tf = new mdc.textField.MDCTextField(tfEl);
-            var wrapper = document.getElementById('demo-tf-box-wrapper');
-            var helperText = document.getElementById('box-text-field-helper-text');
-
-            document.getElementById('box-disable').addEventListener('change', function(evt) {
-              tf.disabled = evt.target.checked;
-            });
-
-            document.getElementById('box-rtl').addEventListener('change', function(evt) {
-              if (evt.target.checked) {
-                wrapper.setAttribute('dir', 'rtl');
-              } else {
-                wrapper.removeAttribute('dir');
-              }
-              tf.layout();
-            });
-
-            document.getElementById('box-dense').addEventListener('change', function(evt) {
-              tfEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
-              tf.layout();
-            });
-
-            document.getElementById('box-alternate-colors').addEventListener('change', function (evt) {
-              var target = evt.target;
-              tfEl.classList[target.checked ? 'add' : 'remove']('demo-text-field-custom-colors');
-              tfEl.classList[target.checked ? 'add' : 'remove']('demo-text-field-custom-error-colors');
-            });
-
-            document.getElementById('box-required').addEventListener('change', function(evt) {
-              var target = evt.target;
-              var input = tfEl.querySelector('.mdc-text-field__input');
-              var requiredHelperText = 'Must be at least 8 characters';
-              var plainHelperText = 'Helper Text (possibly validation message)';
-              input.required = target.checked;
-              input.pattern = evt.target.checked ? '.{8,}' : '.*';
-              helperText.innerHTML = target.checked ? requiredHelperText : plainHelperText;
-            });
-
-            document.getElementById('box-use-helper-text').addEventListener('change', function(evt) {
-              var target = evt.target;
-              helperText.style.display = target.checked ? 'block' : 'none';
-              document.getElementById('box-persistent-helper-text').disabled = !target.checked;
-            });
-
-            document.getElementById('box-persistent-helper-text').addEventListener('change', function(evt) {
-              var target = evt.target;
-              helperText.classList[target.checked ? 'add' : 'remove'](
-                'mdc-text-field-helper-text--persistent'
-              );
-            });
-          });
-        </script>
       </section>
 
       <section class="example" id="demo-tf-icon-container">
@@ -440,6 +359,85 @@
 
     <script src="/assets/material-components-web.js" async></script>
     <script>
+      demoReady(function() {
+        var tfEl = document.getElementById('tf-outlined-example');
+        var tf = new mdc.textField.MDCTextField(tfEl);
+        var wrapper = document.getElementById('demo-tf-outlined-wrapper');
+        document.getElementById('outlined-disable').addEventListener('change', function(evt) {
+          tf.disabled = evt.target.checked;
+        });
+        document.getElementById('outlined-rtl').addEventListener('change', function(evt) {
+          if (evt.target.checked) {
+            wrapper.setAttribute('dir', 'rtl');
+          } else {
+            wrapper.removeAttribute('dir');
+          }
+          tf.layout();
+        });
+        document.getElementById('outlined-custom-colors').addEventListener('change', function(evt) {
+          tfEl.classList[evt.target.checked ? 'add' : 'remove']('demo-text-field-custom-colors');
+          tfEl.classList[evt.target.checked ? 'add' : 'remove']('demo-text-field-custom-error-colors');
+        });
+        document.getElementById('outlined-dense').addEventListener('change', function(evt) {
+          tfEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
+          tf.layout();
+        });
+      });
+
+      demoReady(function() {
+        var tfEl = document.getElementById('tf-box-example');
+        var tf = new mdc.textField.MDCTextField(tfEl);
+        var wrapper = document.getElementById('demo-tf-box-wrapper');
+        var helperText = document.getElementById('box-text-field-helper-text');
+
+        document.getElementById('box-disable').addEventListener('change', function(evt) {
+          tf.disabled = evt.target.checked;
+        });
+
+        document.getElementById('box-rtl').addEventListener('change', function(evt) {
+          if (evt.target.checked) {
+            wrapper.setAttribute('dir', 'rtl');
+          } else {
+            wrapper.removeAttribute('dir');
+          }
+          tf.layout();
+        });
+
+        document.getElementById('box-dense').addEventListener('change', function(evt) {
+          tfEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
+          tf.layout();
+        });
+
+        document.getElementById('box-alternate-colors').addEventListener('change', function (evt) {
+          var target = evt.target;
+          tfEl.classList[target.checked ? 'add' : 'remove']('demo-text-field-custom-colors');
+          tfEl.classList[target.checked ? 'add' : 'remove']('demo-text-field-custom-error-colors');
+        });
+
+        document.getElementById('box-required').addEventListener('change', function(evt) {
+          var target = evt.target;
+          var input = tfEl.querySelector('.mdc-text-field__input');
+          var requiredHelperText = 'Must be at least 8 characters';
+          var plainHelperText = 'Helper Text (possibly validation message)';
+          input.required = target.checked;
+          input.pattern = evt.target.checked ? '.{8,}' : '.*';
+          helperText.innerHTML = target.checked ? requiredHelperText : plainHelperText;
+        });
+
+        document.getElementById('box-use-helper-text').addEventListener('change', function(evt) {
+          var target = evt.target;
+          helperText.style.display = target.checked ? 'block' : 'none';
+          document.getElementById('box-persistent-helper-text').disabled = !target.checked;
+        });
+
+        document.getElementById('box-persistent-helper-text').addEventListener('change', function(evt) {
+          var target = evt.target;
+          helperText.classList[target.checked ? 'add' : 'remove'](
+            'mdc-text-field-helper-text--persistent'
+          );
+        });
+      });
+
       demoReady(function() {
         var tfs = document.querySelectorAll(
           '.mdc-text-field:not([data-demo-no-auto-js])'

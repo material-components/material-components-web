@@ -16,18 +16,19 @@
 
 @import "@material/ripple/common";
 @import "@material/ripple/mixins";
+@import "../mixins";
+@import "../variables";
 
 .mdc-chip {
   @include mdc-ripple-surface;
   @include mdc-ripple-radius-bounded;
-  @include mdc-states;
+  @include mdc-chip-corner-radius($mdc-chip-border-radius-default);
+  @include mdc-chip-fill-color($mdc-chip-fill-color-default);
+  @include mdc-chip-ink-color($mdc-chip-ink-color-default);
 
   display: inline-block;
-  border-radius: 16px;
-  background: rgba(0, 0, 0, 0.08);
-  color: rgba(0, 0, 0, 0.87);
-  padding: 7px 12px;
   margin: 5px;
+  padding: $mdc-chip-vertical-padding $mdc-chip-horizontal-padding;
   cursor: pointer;
   overflow: hidden;
 }

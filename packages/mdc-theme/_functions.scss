@@ -64,15 +64,6 @@ $_mdc-theme-tonal-offset: 7%;
   @return if(mdc-theme-tone($color) == "dark", "light", "dark");
 }
 
-// DEPRECATED. Use mdc-theme-contrast-tone instead.
-@function mdc-theme-light-or-dark($color) {
-  // stylelint-disable indentation
-  @warn "The 'mdc-theme-light-or-dark' mixin is DEPRECATED and will be REMOVED in a future version. " +
-        "Please use 'mdc-theme-contrast-tone' or 'mdc-theme-tone' (as applicable) instead.";
-  @return mdc-theme-contrast-tone($color);
-  // stylelint-enable indentation
-}
-
 // lighten() and darken() require values to be between 0% and 100%.
 @function mdc-theme-clamp-percentage_($percentage) {
   @return max(0%, min(100%, $percentage));

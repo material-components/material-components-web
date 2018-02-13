@@ -21,7 +21,6 @@ const cssClasses = {
   OPEN: 'mdc-menu--open',
   ANIMATING_OPEN: 'mdc-menu--animating-open',
   ANIMATING_CLOSED: 'mdc-menu--animating-closed',
-  LIST_ITEM: 'mdc-list-item',
   SELECTED_LIST_ITEM: 'mdc-list-item--selected',
 };
 

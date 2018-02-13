@@ -86,7 +86,7 @@ test('exports numbers', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCMenuFoundation, [
-    'addClass', 'removeClass', 'hasClass', 'hasNecessaryDom', 'getAttributeForEventTarget', 'eventTargetHasClass',
+    'addClass', 'removeClass', 'hasClass', 'hasNecessaryDom', 'getAttributeForEventTarget',
     'getInnerDimensions', 'hasAnchor', 'getAnchorDimensions', 'getWindowDimensions',
     'getNumberOfItems', 'registerInteractionHandler', 'deregisterInteractionHandler', 'registerBodyClickHandler',
     'deregisterBodyClickHandler', 'getIndexForEventTarget', 'notifySelected', 'notifyCancel', 'saveFocus',
@@ -1058,8 +1058,7 @@ test('on document click cancels and closes the menu', () => {
   td.when(mockAdapter.registerBodyClickHandler(td.matchers.isA(Function))).thenDo((handler) => {
     documentClickHandler = handler;
   });
-  td.when(mockAdapter.eventTargetHasClass(td.matchers.anything(), cssClasses.LIST_ITEM))
-    .thenReturn(false);
+  td.when(mockAdapter.getIndexForEventTarget(td.matchers.anything())).thenReturn(-1);
 
   td.when(mockAdapter.hasClass(MDCMenuFoundation.cssClasses.OPEN)).thenReturn(true);
 
@@ -1086,8 +1085,7 @@ test('on menu item click does not emit cancel', () => {
   td.when(mockAdapter.registerBodyClickHandler(td.matchers.isA(Function))).thenDo((handler) => {
     documentClickHandler = handler;
   });
-  td.when(mockAdapter.eventTargetHasClass(td.matchers.anything(), cssClasses.LIST_ITEM))
-    .thenReturn(true);
+  td.when(mockAdapter.getIndexForEventTarget(td.matchers.anything())).thenReturn(0);
 
   foundation.init();
   foundation.open();
