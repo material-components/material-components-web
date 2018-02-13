@@ -184,32 +184,7 @@
               "options": {
                 "sourceMap": true,
                 "includePaths": [
-                  "/packages/material-components-web/node_modules",
-                  "/packages/mdc-button/node_modules",
-                  "/packages/mdc-card/node_modules",
-                  "/packages/mdc-checkbox/node_modules",
-                  "/packages/mdc-chips/node_modules",
-                  "/packages/mdc-dialog/node_modules",
-                  "/packages/mdc-drawer/node_modules",
-                  "/packages/mdc-elevation/node_modules",
-                  "/packages/mdc-fab/node_modules",
-                  "/packages/mdc-form-field/node_modules",
-                  "/packages/mdc-grid-list/node_modules",
-                  "/packages/mdc-icon-toggle/node_modules",
-                  "/packages/mdc-line-ripple/node_modules",
-                  "/packages/mdc-linear-progress/node_modules",
-                  "/packages/mdc-list/node_modules",
-                  "/packages/mdc-menu/node_modules",
-                  "/packages/mdc-radio/node_modules",
-                  "/packages/mdc-ripple/node_modules",
-                  "/packages/mdc-select/node_modules",
-                  "/packages/mdc-selection-control/node_modules",
-                  "/packages/mdc-slider/node_modules",
-                  "/packages/mdc-snackbar/node_modules",
-                  "/packages/mdc-switch/node_modules",
-                  "/packages/mdc-tabs/node_modules",
-                  "/packages/mdc-textfield/node_modules",
-                  "/packages/mdc-toolbar/node_modules"
+                  "/packages/material-components-web/node_modules"
                 ]
               }
             }
@@ -306,32 +281,7 @@
               "options": {
                 "sourceMap": true,
                 "includePaths": [
-                  "/packages/material-components-web/node_modules",
-                  "/packages/mdc-button/node_modules",
-                  "/packages/mdc-card/node_modules",
-                  "/packages/mdc-checkbox/node_modules",
-                  "/packages/mdc-chips/node_modules",
-                  "/packages/mdc-dialog/node_modules",
-                  "/packages/mdc-drawer/node_modules",
-                  "/packages/mdc-elevation/node_modules",
-                  "/packages/mdc-fab/node_modules",
-                  "/packages/mdc-form-field/node_modules",
-                  "/packages/mdc-grid-list/node_modules",
-                  "/packages/mdc-icon-toggle/node_modules",
-                  "/packages/mdc-line-ripple/node_modules",
-                  "/packages/mdc-linear-progress/node_modules",
-                  "/packages/mdc-list/node_modules",
-                  "/packages/mdc-menu/node_modules",
-                  "/packages/mdc-radio/node_modules",
-                  "/packages/mdc-ripple/node_modules",
-                  "/packages/mdc-select/node_modules",
-                  "/packages/mdc-selection-control/node_modules",
-                  "/packages/mdc-slider/node_modules",
-                  "/packages/mdc-snackbar/node_modules",
-                  "/packages/mdc-switch/node_modules",
-                  "/packages/mdc-tabs/node_modules",
-                  "/packages/mdc-textfield/node_modules",
-                  "/packages/mdc-toolbar/node_modules"
+                  "/packages/material-components-web/node_modules"
                 ]
               }
             }

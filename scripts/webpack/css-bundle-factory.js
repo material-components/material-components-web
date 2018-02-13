@@ -188,7 +188,7 @@ module.exports = class {
           loader: 'sass-loader',
           options: {
             sourceMap: true,
-            includePaths: this.globber_.getAbsolutePaths('/packages/*/node_modules'),
+            includePaths: this.globber_.getAbsolutePaths('/packages/material-components-web/node_modules'),
           },
         },
       ],
