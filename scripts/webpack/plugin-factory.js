@@ -29,8 +29,12 @@ module.exports = class {
     this.globber_ = globber;
   }
 
-  createCopyrightBannerPlugin() {
-    return new CopyrightBannerPlugin();
+  createCopyrightBannerPlugin({
+    projectName = 'Material Components for the web',
+    authorName = 'Google Inc.',
+    licenseName = 'Apache-2.0',
+  } = {}) {
+    return new CopyrightBannerPlugin({projectName, authorName, licenseName});
   }
 
   createCssCleanupPlugin({cleanupDirRelativePath} = {}) {

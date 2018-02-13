@@ -144,6 +144,9 @@ if (env.isDev()) {
       fsDirAbsolutePath: OUT_DIR_ABS,
       httpDirAbsolutePath: DEMO_ASSET_DIR_REL,
     },
+    plugins: [
+      copyrightBannerPlugin,
+    ],
   }));
 
   module.exports.push({

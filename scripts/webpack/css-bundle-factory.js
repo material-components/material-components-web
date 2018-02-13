@@ -84,7 +84,6 @@ module.exports = class {
         this.pluginFactory_.createCssCleanupPlugin({
           cleanupDirRelativePath: fsDirAbsolutePath,
         }),
-        this.pluginFactory_.createCopyrightBannerPlugin(),
         ...plugins,
       ],
     };
@@ -96,6 +95,7 @@ module.exports = class {
         fsDirAbsolutePath,
         httpDirAbsolutePath,
       },
+      plugins = [],
     }) {
     const getAbsolutePath = (...args) => this.pathResolver_.getAbsolutePath(...args);
 
@@ -108,6 +108,10 @@ module.exports = class {
         fsDirAbsolutePath,
         httpDirAbsolutePath,
       },
+      plugins: [
+        this.pluginFactory_.createCopyrightBannerPlugin(),
+        ...plugins,
+      ],
     });
   }
 
@@ -117,6 +121,7 @@ module.exports = class {
         fsDirAbsolutePath,
         httpDirAbsolutePath,
       },
+      plugins = [],
     }) {
     const getAbsolutePath = (...args) => this.pathResolver_.getAbsolutePath(...args);
 
@@ -155,6 +160,10 @@ module.exports = class {
         fsDirAbsolutePath,
         httpDirAbsolutePath,
       },
+      plugins: [
+        this.pluginFactory_.createCopyrightBannerPlugin(),
+        ...plugins,
+      ],
     });
   }
 

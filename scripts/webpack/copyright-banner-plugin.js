@@ -23,13 +23,13 @@
 const webpack = require('webpack');
 
 module.exports = class extends webpack.BannerPlugin {
-  constructor() {
+  constructor({projectName, authorName, licenseName}) {
     super({
       banner: [
         '/*!',
-        ' Material Components for the web',
-        ` Copyright (c) ${new Date().getFullYear()} Google Inc.`,
-        ' License: Apache-2.0',
+        ` ${projectName}`,
+        ` Copyright (c) ${new Date().getFullYear()} ${authorName}`,
+        ` License: ${licenseName}`,
         '*/',
       ].join('\n'),
       raw: true,
