@@ -41,6 +41,7 @@
 
   @if $generate-keyframes {
     $uid: mdc-checkbox-container-keyframes-uid_();
+    $anim-selector: if(&, "&.mdc-checkbox--anim", ".mdc-checkbox--anim");
 
     @include mdc-checkbox-container-keyframes_(
       $from-stroke-color: $unmarked-stroke-color,
@@ -49,7 +50,7 @@
       $to-fill-color: $marked-fill-color,
       $uid: $uid);
 
-    &.mdc-checkbox--anim {
+    #{$anim-selector} {
       &-unchecked-checked,
       &-unchecked-indeterminate {
         .mdc-checkbox__native-control:enabled ~ .mdc-checkbox__background {
