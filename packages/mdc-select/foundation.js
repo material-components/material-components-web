@@ -37,8 +37,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
     return {
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
-      addClassToLabel: (/* className: string */) => {},
-      removeClassFromLabel: (/* className: string */) => {},
+      floatLabel: (/* value: boolean */) => {},
       addClassToBottomLine: (/* className: string */) => {},
       removeClassFromBottomLine: (/* className: string */) => {},
       setBottomLineAttr: (/* attr: string, value: string */) => {},
@@ -153,9 +152,9 @@ export default class MDCSelectFoundation extends MDCFoundation {
     if (this.selectedIndex_ >= 0) {
       selectedTextContent = this.adapter_.getTextForOptionAtIndex(this.selectedIndex_).trim();
       this.adapter_.setAttrForOptionAtIndex(this.selectedIndex_, 'aria-selected', 'true');
-      this.adapter_.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE);
+      this.adapter_.floatLabel(true);
     } else {
-      this.adapter_.removeClassFromLabel(cssClasses.LABEL_FLOAT_ABOVE);
+      this.adapter_.floatLabel(false);
     }
     this.adapter_.setSelectedTextContent(selectedTextContent);
   }

@@ -226,7 +226,7 @@ Mixin | Description
 --- | ---
 `mdc-select-ink-color($color)` | Customizes the color of the selected item displayed in the select.
 `mdc-select-container-fill-color($color)` | Customizes the background color of the select.
-`mdc-select-label-color($color)` | Customizes the label color of the select in the unfocused state. This mixin is only used for the JS version of the select.
+`mdc-select-label-color($color)` | Customizes the label color of the select in the unfocused state.
 `mdc-select-focused-label-color($color, $opacity: 0.87)` | Customizes the label color of the select when focused. Changing opacity for the label when floating is optional.
 `mdc-select-bottom-line-color($color)` | Customizes the color of the default bottom line of the select.
 `mdc-select-focused-bottom-line-color($color)` | Customizes the color of the bottom line of the select when focused.
@@ -280,6 +280,26 @@ The `menuFactory` function is passed an `HTMLElement` and is expected to return 
 instance attached to that element. This is mostly used for testing purposes, but it's there if you
 need it nonetheless.
 
+#### Instantiating using a custom `MDCSelectLabel` component.
+
+`MDCSelect` controls an [MDCSelectLabel](./label) instance under the hood in order to display
+its options. If you'd like to instantiate a custom label instance, you can provide an optional 4th
+`labelFactory` argument to `MDCSelect`'s constructor.
+
+```js
+const labelFactory = labelEl => {
+  const label = new MDCSelectLabel(labelEl);
+  // Do stuff with label...
+  return label;
+};
+const selectEl = document.querySelector('.mdc-select');
+const select = new MDCSelect(selectEl, /* foundation */ undefined, undefined, labelFactory);
+```
+
+The `labelFactory` function is passed an `HTMLElement` and is expected to return an `MDCSelectLabel`
+instance attached to that element. This is mostly used for testing purposes, but it's there if you
+need it nonetheless.
+
 ## Using the foundation class
 
 MDC Select ships with a foundation class that framework authors can use to integrate MDC Select
@@ -312,8 +332,7 @@ within `componentDidUpdate`.
 | --- | --- |
 | `addClass(className: string) => void` | Adds a class to the root element. |
 | `removeClass(className: string) => void` | Removes a class from the root element. |
-| `addClassToLabel(className: string) => void` | Adds a class to the label |
-| `removeClassFromLabel(className: string) => void` | Removes a class from the label |
+| `floatLabel(value: string) => void` | Float or defloats label as necessary |
 | `addClassToBottomLine(className: string) => void` | Adds a class to the bottom line |
 | `removeClassFromBottomLine(className: string) => void` | Removes a class from the bottom line |
 | `setBottomLineAttr(attr: string, value: string) => void` | Adds an attribute to the bottom line |
