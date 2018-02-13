@@ -50,6 +50,20 @@ const setupTest = () => {
   return {foundation, mockAdapter, chipA, chipB};
 };
 
+test('#init adds event listeners', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.init();
+
+  td.verify(mockAdapter.registerEventHandler('MDCChip:interaction', td.matchers.isA(Function)));
+});
+
+test('#destroy removes event listeners', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.destroy();
+
+  td.verify(mockAdapter.deregisterEventHandler('MDCChip:interaction', td.matchers.isA(Function)));
+});
+
 test('on custom MDCChip:interaction event toggles active state on choice chips', () => {
   const {foundation, mockAdapter, chipA, chipB} = setupTest();
   let chipInteractionHandler;
