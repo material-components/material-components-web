@@ -321,5 +321,4 @@ class MDCTextField extends MDCComponent {
 export {MDCTextField, MDCTextFieldFoundation,
   MDCTextFieldHelperText, MDCTextFieldHelperTextFoundation,
   MDCTextFieldIcon, MDCTextFieldIconFoundation,
-  MDCFloatingLabel, MDCFloatingLabelFoundation,
   MDCTextFieldOutline, MDCTextFieldOutlineFoundation};
