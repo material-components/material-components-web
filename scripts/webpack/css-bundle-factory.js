@@ -168,6 +168,8 @@ module.exports = class {
   }
 
   createCssLoader_(extractTextPlugin) {
+    const getAbsolutePath = (...args) => this.pathResolver_.getAbsolutePath(...args);
+
     return extractTextPlugin.extract({
       fallback: 'style-loader',
       use: [
@@ -188,7 +190,7 @@ module.exports = class {
           loader: 'sass-loader',
           options: {
             sourceMap: true,
-            includePaths: this.globber_.getAbsolutePaths('/packages/material-components-web/node_modules'),
+            includePaths: [getAbsolutePath('/packages/material-components-web/node_modules')],
           },
         },
       ],
