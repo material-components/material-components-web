@@ -60,6 +60,7 @@ class MDCChipSetFoundation extends MDCFoundation {
      * @private {!Array<!MDCChip>}
      */
     this.activeChips_ = [];
+    
     /** @private {function(!Event): undefined} */
     this.chipInteractionHandler_ = (evt) => this.handleChipInteraction_(evt);
   }
@@ -84,9 +85,9 @@ class MDCChipSetFoundation extends MDCFoundation {
       return;
     }
     const {chip} = evt.detail;
-    if (this.activeChips_.length == 0) {
+    if (this.activeChips_.length === 0) {
       this.activeChips_[0] = chip;
-    } else if (this.activeChips_[0] != chip) {
+    } else if (this.activeChips_[0] !== chip) {
       this.activeChips_[0].toggleActive();
       this.activeChips_[0] = chip;
     } else {
