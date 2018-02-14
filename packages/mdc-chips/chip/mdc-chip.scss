@@ -34,16 +34,6 @@
   overflow: hidden;
 }
 
-.mdc-chip--with-leading-icon {
-  padding-top: $mdc-chip-with-icon-padding;
-  padding-bottom: $mdc-chip-with-icon-padding;
-  padding-left: $mdc-chip-with-icon-padding;
-}
-
-.mdc-chip--with-trailing-icon {
-  padding-right: $mdc-chip-with-icon-padding;
-}
-
 .mdc-chip__text {
   display: inline-block;
   vertical-align: middle;
@@ -54,18 +44,22 @@
 .mdc-chip__icon {
   color: $mdc-chip-icon-color;
   vertical-align: middle;
-  margin: 0 4px;
   border-radius: 16px;
   outline: none;
 }
 
+.mdc-chip__icon--leading {
+  margin: -4px 4px -4px -4px;
+}
+
 .mdc-chip__icon--trailing {
+  margin: 0 -4px 0 4px;
   &:hover {
-    color: $mdc-chip-trailing-icon-hover;
+    color: $mdc-chip-trailing-icon-hover-color;
   }
 
   &:focus {
-    color: $mdc-chip-trailing-icon-focus;
+    color: $mdc-chip-trailing-icon-focus-color;
   }
 }
 

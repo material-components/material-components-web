@@ -54,13 +54,13 @@ npm install --save @material/chips
 
 #### Leading and Trailing Icons
 
-You can optionally add a leading icon (i.e. thumbnail) and/or a trailing icon to a chip. To add an icon, add the relevant class (either `mdc-chip--with-leading-icon` or `mdc-chip--with-trailing-icon`) to the chip element, add an `i` element with your preferred icon, and give it a class of `mdc-chip__icon`. If you're adding a trailing icon, also give the icon a class of `mdc-chip__icon--trailing`.
+You can optionally add a leading icon (i.e. thumbnail) and/or a trailing icon to a chip. To add an icon, add an `i` element with your preferred icon, give it a class of `mdc-chip__icon`, and a class of either `mdc-chip__icon--leading` or `mdc-chip__icon--trailing`. If you're adding a trailing icon, also set `tabindex="0"` to make it accessible by keyboard.
 
 ##### Leading icon
 
 ```html
 <div class="mdc-chip mdc-chip--with-leading-icon">
-  <i class="material-icons mdc-chip__icon">event</i>
+  <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">event</i>
   <div class="mdc-chip__text">Add to calendar</div>
 </div>
 ```
@@ -80,11 +80,12 @@ CSS Class | Description
 --- | ---
 `mdc-chip-set` | Mandatory. Indicates the set that the chip belongs to
 `mdc-chip` | Mandatory.
-`mdc-chip--with-leading-icon` | Optional. Indicates the chip contains a leading icon
-`mdc-chip--with-trailing-icon` | Optional. Indicates the chip contains a trailing icon
 `mdc-chip__text` | Mandatory. Indicates the text content of the chip
-`mdc-chip__icon` | Optional. Indicates a leading or trailing icon in the chip
+`mdc-chip__icon` | Optional. Indicates an icon in the chip
+`mdc-chip__icon--leading` | Optional. Indicates a leading icon in the chip
 `mdc-chip__icon--trailing` | Optional. Indicates a trailing icon in the chip
+
+> _NOTE_: Every element that has an `mdc-chip__icon` class must also have either the `mdc-chip__icon--leading` or `mdc-chip__icon--trailing` class.
 
 ### Sass Mixins
 
