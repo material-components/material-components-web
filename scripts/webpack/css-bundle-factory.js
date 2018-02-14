@@ -142,6 +142,7 @@ module.exports = class {
         'mdc.dialog': getAbsolutePath('/packages/mdc-dialog/mdc-dialog.scss'),
         'mdc.drawer': getAbsolutePath('/packages/mdc-drawer/mdc-drawer.scss'),
         'mdc.elevation': getAbsolutePath('/packages/mdc-elevation/mdc-elevation.scss'),
+        'mdc.expansion-panel': getAbsolutePath('/packages/mdc-expansion-panel/mdc-expansion-panel.scss'),
         'mdc.fab': getAbsolutePath('/packages/mdc-fab/mdc-fab.scss'),
         'mdc.floating-label': getAbsolutePath('/packages/mdc-floating-label/mdc-floating-label.scss'),
         'mdc.form-field': getAbsolutePath('/packages/mdc-form-field/mdc-form-field.scss'),
