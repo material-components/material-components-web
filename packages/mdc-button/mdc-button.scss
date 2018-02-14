@@ -26,6 +26,14 @@
   @include mdc-button-container-fill-color(transparent);
   @include mdc-button-ink-color(primary);
   @include mdc-states(primary);
+
+  // The icon CSS class overrides styles defined in the .material-icons CSS
+  // class, which is loaded separately so the order of CSS definitions is not
+  // guaranteed. Therefore, increase specifity by nesting this class to ensure
+  // overrides apply.
+  .mdc-button__icon {
+    @include mdc-button__icon_;
+  }
 }
 
 .mdc-button--raised,
@@ -52,9 +60,5 @@
 
 .mdc-button--dense {
   @include mdc-button--dense_;
-}
-
-.mdc-button__icon {
-  @include mdc-button__icon_;
 }
 // postcss-bem-linter: end
