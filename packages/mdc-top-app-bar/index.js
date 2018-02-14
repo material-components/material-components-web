@@ -41,15 +41,15 @@ export class MDCTopAppBar extends MDCComponent {
       this.navIcon_.addEventListener('click', this.navIconClick_);
     }
 
-    this.iconRipples = [].slice.call(this.root_.querySelectorAll(strings.ACTION_ICON_SELECTOR)).map(function(icon) {
+    // Get all icons in the toolbar and instantiate the ripples
+    this.iconRipples = [].slice.call(this.root_.querySelectorAll(strings.ACTION_ICON_SELECTOR));
+    this.iconRipples.push(this.navIcon_);
+
+    this.iconRipples.map(function(icon) {
       const ripple = MDCRipple.attachTo(icon);
       ripple.unbounded = true;
       return ripple;
     });
-
-    const navIconRipple = MDCRipple.attachTo(this.navIcon_);
-    navIconRipple.unbounded = true;
-    this.iconRipples.push(navIconRipple);
   }
 
   destroy() {
