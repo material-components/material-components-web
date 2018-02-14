@@ -59,11 +59,7 @@
   outline: none;
 }
 
-.mdc-chip__icon.mdc-chip__icon--trailing {
-  width: $mdc-chip-trailing-icon-size;
-  height: $mdc-chip-trailing-icon-size;
-  font-size: $mdc-chip-trailing-icon-size;
-
+.mdc-chip__icon--trailing {
   &:hover {
     color: $mdc-chip-trailing-icon-hover;
   }
@@ -71,4 +67,10 @@
   &:focus {
     color: $mdc-chip-trailing-icon-focus;
   }
+}
+
+.mdc-chip__icon.mdc-chip__icon--trailing {
+  width: $mdc-chip-trailing-icon-size;
+  height: $mdc-chip-trailing-icon-size;
+  font-size: $mdc-chip-trailing-icon-size;
 }
