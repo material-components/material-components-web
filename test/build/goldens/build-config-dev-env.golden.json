@@ -28,11 +28,11 @@
     "plugins": [
       {
         "options": {
-          "banner": "/*!\n Material Components for the web\n Copyright (c) 2018 Google Inc.\n License: Apache-2.0\n*/",
+          "banner": "/*!\n Material Components for the Web\n Copyright (c) 2018 Google Inc.\n License: Apache-2.0\n*/",
           "raw": true,
           "entryOnly": true
         },
-        "banner": "/*!\n Material Components for the web\n Copyright (c) 2018 Google Inc.\n License: Apache-2.0\n*/"
+        "banner": "/*!\n Material Components for the Web\n Copyright (c) 2018 Google Inc.\n License: Apache-2.0\n*/"
       }
     ]
   },
@@ -85,7 +85,7 @@
             {
               "loader": "/node_modules/extract-text-webpack-plugin/dist/loader.js",
               "options": {
-                "id": 3,
+                "id": 5,
                 "omit": 1,
                 "remove": true
               }
@@ -110,32 +110,7 @@
               "options": {
                 "sourceMap": true,
                 "includePaths": [
-                  "/packages/material-components-web/node_modules",
-                  "/packages/mdc-button/node_modules",
-                  "/packages/mdc-card/node_modules",
-                  "/packages/mdc-checkbox/node_modules",
-                  "/packages/mdc-chips/node_modules",
-                  "/packages/mdc-dialog/node_modules",
-                  "/packages/mdc-drawer/node_modules",
-                  "/packages/mdc-elevation/node_modules",
-                  "/packages/mdc-fab/node_modules",
-                  "/packages/mdc-form-field/node_modules",
-                  "/packages/mdc-grid-list/node_modules",
-                  "/packages/mdc-icon-toggle/node_modules",
-                  "/packages/mdc-line-ripple/node_modules",
-                  "/packages/mdc-linear-progress/node_modules",
-                  "/packages/mdc-list/node_modules",
-                  "/packages/mdc-menu/node_modules",
-                  "/packages/mdc-radio/node_modules",
-                  "/packages/mdc-ripple/node_modules",
-                  "/packages/mdc-select/node_modules",
-                  "/packages/mdc-selection-control/node_modules",
-                  "/packages/mdc-slider/node_modules",
-                  "/packages/mdc-snackbar/node_modules",
-                  "/packages/mdc-switch/node_modules",
-                  "/packages/mdc-tabs/node_modules",
-                  "/packages/mdc-textfield/node_modules",
-                  "/packages/mdc-toolbar/node_modules"
+                  "/packages/material-components-web/node_modules"
                 ]
               }
             }
@@ -146,16 +121,19 @@
     "plugins": [
       {
         "filename": "[name].css",
-        "id": 3,
+        "id": 5,
         "options": {}
       },
       {
+        "cleanupDirRelativePath": "/build"
+      },
+      {
         "options": {
-          "banner": "/*!\n Material Components for the web\n Copyright (c) 2018 Google Inc.\n License: Apache-2.0\n*/",
+          "banner": "/*!\n Material Components for the Web\n Copyright (c) 2018 Google Inc.\n License: Apache-2.0\n*/",
           "raw": true,
           "entryOnly": true
         },
-        "banner": "/*!\n Material Components for the web\n Copyright (c) 2018 Google Inc.\n License: Apache-2.0\n*/"
+        "banner": "/*!\n Material Components for the Web\n Copyright (c) 2018 Google Inc.\n License: Apache-2.0\n*/"
       }
     ]
   },
@@ -195,11 +173,11 @@
     "plugins": [
       {
         "options": {
-          "banner": "/*!\n Material Components for the web\n Copyright (c) 2018 Google Inc.\n License: Apache-2.0\n*/",
+          "banner": "/*!\n Material Components for the Web\n Copyright (c) 2018 Google Inc.\n License: Apache-2.0\n*/",
           "raw": true,
           "entryOnly": true
         },
-        "banner": "/*!\n Material Components for the web\n Copyright (c) 2018 Google Inc.\n License: Apache-2.0\n*/"
+        "banner": "/*!\n Material Components for the Web\n Copyright (c) 2018 Google Inc.\n License: Apache-2.0\n*/"
       }
     ]
   }
