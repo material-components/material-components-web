@@ -60,7 +60,7 @@ class MDCChipSetFoundation extends MDCFoundation {
      * @private {!Array<!MDCChip>}
      */
     this.activeChips_ = [];
-    
+
     /** @private {function(!Event): undefined} */
     this.chipInteractionHandler_ = (evt) => this.handleChipInteraction_(evt);
   }
