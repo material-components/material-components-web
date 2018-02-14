@@ -40,13 +40,13 @@ npm install --save @material/chips
 
 ```html
 <div class="mdc-chip-set">
-  <div class="mdc-chip">
+  <div class="mdc-chip" tabindex="0">
     <div class="mdc-chip__text">Chip content</div>
   </div>
-  <div class="mdc-chip">
+  <div class="mdc-chip" tabindex="0">
     <div class="mdc-chip__text">Chip content</div>
   </div>
-  <div class="mdc-chip">
+  <div class="mdc-chip" tabindex="0">
     <div class="mdc-chip__text">Chip content</div>
   </div>
 </div>
@@ -60,7 +60,7 @@ You can optionally add a leading icon (i.e. thumbnail) and/or a trailing icon to
 
 ```html
 <div class="mdc-chip mdc-chip--with-leading-icon">
-  <i class="material-icons mdc-chip__icon" tabindex="0">event</i>
+  <i class="material-icons mdc-chip__icon">event</i>
   <div class="mdc-chip__text">Add to calendar</div>
 </div>
 ```
