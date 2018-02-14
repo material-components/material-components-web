@@ -416,6 +416,38 @@ test('get/set valid', () => {
   td.verify(mockFoundation.setValid(true));
 });
 
+test('get/set required', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.required;
+  td.verify(mockFoundation.getValidationAttribute('required'));
+  component.required = true;
+  td.verify(mockFoundation.setValidationAttribute('required', true));
+});
+
+test('get/set pattern', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.pattern;
+  td.verify(mockFoundation.getValidationAttribute('pattern'));
+  component.pattern = 'foo';
+  td.verify(mockFoundation.setValidationAttribute('pattern', 'foo'));
+});
+
+test('get/set minlength', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.minlength;
+  td.verify(mockFoundation.getValidationAttribute('minlength'));
+  component.minlength = '8';
+  td.verify(mockFoundation.setValidationAttribute('minlength', '8'));
+});
+
+test('get/set maxlength', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.maxlength;
+  td.verify(mockFoundation.getValidationAttribute('maxlength'));
+  component.maxlength = '10';
+  td.verify(mockFoundation.setValidationAttribute('maxlength', '10'));
+});
+
 test('setValidationAttribute', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
   component.setValidationAttribute('required', true);

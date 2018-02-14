@@ -174,8 +174,12 @@
           <label for="outlined-required">Required</label>
         </div>
         <div>
-          <input id="outlined-pattern" type="checkbox">
-          <label for="outlined-pattern">Must be at least 8 characters</label>
+          <input id="outlined-minlength" type="checkbox">
+          <label for="outlined-minlength">Must be at least 8 characters</label>
+        </div>
+        <div>
+          <input id="outlined-maxlength" type="checkbox">
+          <label for="outlined-maxlength">Limit to 10 characters</label>
         </div>
       </section>
 
@@ -377,17 +381,30 @@
     <script>
       function toggleRequired(textfield, isRequired) {
         if (isRequired) {
-          textfield.setValidationAttribute('required', 'true');
+          textfield.required = true;
         } else {
-          textfield.removeValidationAttribute('required');
+          textfield.required = false;
+        }
+      }
+
+      function togglePattern(textfield, checked) {
+        if (checked) {
+          textfield.pattern = '.{8,}';
+        } else {
+          textfield.pattern = '.*';
         }
       }
 
       demoReady(function() {
         var tfEl = document.getElementById('tf-outlined-example');
+        var outlinedInputEl = tfEl.querySelector('input');
         var tfHelperText = document.getElementById('tf-outlined-validation-msg');
         var tf = new mdc.textField.MDCTextField(tfEl);
         var wrapper = document.getElementById('demo-tf-outlined-wrapper');
+        var plainHelperText = 'Helper Text (possibly validation message)';
+        var minLengthError = 'Must be at least 8 characters';
+        var maxLengthError = 'Limit to 10 characters';
+
         document.getElementById('outlined-disable').addEventListener('change', function(evt) {
           tf.disabled = evt.target.checked;
         });
@@ -410,15 +427,28 @@
         document.getElementById('outlined-required').addEventListener('change', function(evt) {
           toggleRequired(tf, evt.target.checked);
         });
-        document.getElementById('outlined-pattern').addEventListener('change', function(evt) {
+        document.getElementById('outlined-minlength').addEventListener('change', function(evt) {
           var checked = evt.target.checked;
-          var plainHelperText = 'Helper Text (possibly validation message)';
-          var requiredHelperText = 'Must be at least 8 characters';requiredHelperText
           if (checked) {
-            tf.setValidationAttribute('minlength', 8);
-            tfHelperText.innerHTML = requiredHelperText;
+            tf.minlength = '8';
           } else {
-            tf.removeValidationAttribute('minlength');
+            tf.minlength = '0';
+          }
+        });
+        document.getElementById('outlined-maxlength').addEventListener('change', function(evt) {
+          var checked = evt.target.checked;
+          if (checked) {
+            tf.maxlength = '10';
+          } else {
+            tf.maxlength = '';
+          }
+        });
+        outlinedInputEl.addEventListener('blur', function() {
+          if (outlinedInputEl.validity.tooShort) {
+            tfHelperText.innerHTML = minLengthError;
+          } else if (outlinedInputEl.validity.tooLong) {
+            tfHelperText.innerHTML = maxLengthError;
+          } else {
             tfHelperText.innerHTML = plainHelperText;
           }
         });
@@ -461,11 +491,7 @@
           var checked = evt.target.checked;
           var requiredHelperText = 'Must be at least 8 characters';
           var plainHelperText = 'Helper Text (possibly validation message)';
-          if (checked) {
-            tf.setValidationAttribute('pattern', '.{8,}');
-          } else {
-            tf.setValidationAttribute('pattern', '.*');
-          }
+          togglePattern(tf, checked);
           helperText.innerHTML = checked ? requiredHelperText : plainHelperText;
         });
 
@@ -566,17 +592,10 @@
 
         document.getElementById('pattern-leading-trailing').addEventListener('change', function(evt) {
           var checked = evt.target.checked;
-          if (checked) {
-            tfBoxLeading.setValidationAttribute('pattern', '.{8,}');
-            tfBoxTrailing.setValidationAttribute('pattern', '.{8,}');
-            tfOutlinedLeading.setValidationAttribute('pattern', '.{8,}');
-            tfOutlinedTrailing.setValidationAttribute('pattern', '.{8,}');
-          } else {
-            tfBoxLeading.setValidationAttribute('pattern', '.*');
-            tfBoxTrailing.setValidationAttribute('pattern', '.*');
-            tfOutlinedLeading.setValidationAttribute('pattern', '.*');
-            tfOutlinedTrailing.setValidationAttribute('pattern', '.*');
-          }
+          togglePattern(tfBoxLeading, checked);
+          togglePattern(tfBoxTrailing, checked);
+          togglePattern(tfOutlinedLeading, checked);
+          togglePattern(tfOutlinedTrailing, checked);
         });
 
         document.getElementById('leading-trailing-alternate-colors').addEventListener('change', function(evt) {

@@ -290,7 +290,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * @return {string} the attribute value from the input element
+   * @return {boolean|string} the attribute value from the input element
    * @param {string} attrName is the name of the attribute on the input element
    */
   getValidationAttribute(attrName) {
@@ -299,7 +299,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
 
   /**
    * @param {string} attrName is the name of the attribute to be set
-   * @param {string} val is the value of attribute to be set
+   * @param {boolean|string} val is the value of attribute to be set
    */
   setValidationAttribute(attrName, val) {
     this.getNativeInput_().setAttribute(attrName, val);

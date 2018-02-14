@@ -203,7 +203,67 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
-   * @return {string} the attribute value from the input element
+   * @return {boolean|string} True if the Text Field is required.
+   */
+  get required() {
+    return this.foundation_.getValidationAttribute('required');
+  }
+
+  /**
+   * @param {boolean|string} required Sets the Text Field to required.
+   */
+  set required(required) {
+    if (!required) {
+      this.foundation_.removeValidationAttribute('required');
+    } else {
+      this.foundation_.setValidationAttribute('required', required);
+    }
+  }
+
+  /**
+   * @return {string} pattern that is used to validate.
+   */
+  get pattern() {
+    return this.foundation_.getValidationAttribute('pattern');
+  }
+
+  /**
+   * @param {string} pattern Sets the Text Field's validation pattern.
+   */
+  set pattern(pattern) {
+    this.foundation_.setValidationAttribute('pattern', pattern);
+  }
+
+  /**
+   * @return {string} minlength that is used to validate.
+   */
+  get minlength() {
+    return this.foundation_.getValidationAttribute('minlength');
+  }
+
+  /**
+   * @param {string} length Sets the Text Field's validation minlength.
+   */
+  set minlength(length) {
+    this.foundation_.setValidationAttribute('minlength', length);
+  }
+
+  /**
+   * @return {string} maxlength that is used to validate.
+   */
+  get maxlength() {
+    return this.foundation_.getValidationAttribute('maxlength');
+  }
+
+  /**
+   * @param {string} length Sets the Text Field's validation maxlength.
+   */
+  set maxlength(length) {
+    this.foundation_.setValidationAttribute('maxlength', length);
+  }
+
+  /**
+   * @return {boolean|string} the attribute value from the input element
    * @param {string} attrName is the name of the attribute on the input element
    */
   getValidationAttribute(attrName) {
