@@ -18,7 +18,7 @@
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
- * Adapter for MDC Top App Bar .
+ * Adapter for MDC Top App Bar
  *
  * Defines the shape of the adapter expected by the foundation. Implement this
  * adapter to integrate the Top App Bar into your framework. See
@@ -41,7 +41,7 @@ class MDCTopAppBarAdapter {
   removeClass(className) {}
 
   /**
-   * Returns true if the root element contains the given class name.
+   * Returns true if the root Element contains the given class name.
    * @param {string} className
    * @return {boolean}
    */

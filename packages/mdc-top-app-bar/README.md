@@ -7,16 +7,9 @@ iconId: toolbar
 path: /catalog/topappbar/
 -->
 
-# Top App Bars
+# Top App Bar
 
-<!--<div class="article__asset">
-  <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/toolbar/index.html">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/toolbars.png" width="494" alt="Toolbars screenshot">
-  </a>
-</div>-->
-
-MDC Top App Bar acts as a container for containing items such as
+MDC Top App Bar acts as a container for items such as
 application title, navigation menu, and action items, among other things. Top app bars
 scroll with content by default.
 
@@ -27,7 +20,7 @@ scroll with content by default.
     <a href="https://material.io/guidelines/components/toolbars.html">Material Design guidelines: Toolbars</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/toolbar/index.html">Demo</a>
+    <a href="https://material-components-web.appspot.com/top-app-bar.html">Demo</a>
   </li>
 </ul>
 
@@ -40,8 +33,6 @@ npm install --save @material/top-app-bar
 ## Usage
 
 ### HTML Structure
-
-Wrap the items with `mdc-top-app-bar` class in the following way:
 
 ```html
 <header class="mdc-top-app-bar">
@@ -74,7 +65,6 @@ Top app bars can accommodate multiple icons on the right:
 
 ### JavaScript
 
-
 ```js
   // Instantiation
   var topAppBarElement = document.querySelector('#topAppBar');
@@ -101,7 +91,7 @@ Mixin | Description
 `mdc-top-app-bar-ink-color($color)` | Sets the ink color of the top app bar
 `mdc-top-app-bar-fill-color($color)` | Sets the fill color of the top app bar
 `mdc-top-app-bar-fill-color-accessible($color)` | Sets the fill color of the top app bar and automatically sets a high-contrast ink color
-`mdc-top-app-bar-icon-ink-color($color)` | Sets the ink color of a top app bar icon
+`mdc-top-app-bar-icon-ink-color($color)` | Sets the ink color of the top app bar icons
 
 ### `MDCTopAppBar`
 

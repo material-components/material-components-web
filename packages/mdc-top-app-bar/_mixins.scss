@@ -39,6 +39,7 @@
   .mdc-top-app-bar__icon,
   .mdc-top-app-bar__menu-icon {
     @include mdc-theme-prop(color, $color);
+    @include mdc-states($color);
   }
 }
 
@@ -52,7 +53,6 @@
 @mixin mdc-top-app-bar-icon_() {
   @include mdc-ripple-surface;
   @include mdc-ripple-radius-unbounded;
-  @include mdc-states(text-primary-on-primary);
 
   display: flex;
   align-items: center;

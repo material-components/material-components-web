@@ -33,7 +33,7 @@ export default class MDCTopAppBarFoundation extends MDCFoundation {
    */
   static get defaultAdapter() {
     return /** @type {!MDCTopAppBarAdapter} */ {
-      hasClass: (/* className: string */) => /* boolean */ false,
+      hasClass: (/* className: string */) => {},
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
     };
