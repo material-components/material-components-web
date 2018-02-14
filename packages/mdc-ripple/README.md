@@ -153,6 +153,7 @@ Method Signature | Description
 | `isSurfaceDisabled() => boolean` | Whether or not the ripple is attached to a disabled component |
 | `addClass(className: string) => void` | Adds a class to the ripple surface |
 | `removeClass(className: string) => void` | Removes a class from the ripple surface |
+| `containsEventTarget(target: EventTarget) => boolean` | Whether or not the ripple surface contains the given event target |
 | `registerInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event handler on the ripple surface |
 | `deregisterInteractionHandler(evtType: string, handler: EventListener) => void` | Unregisters an event handler on the ripple surface |
 | `registerDocumentInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event handler on the documentElement |
@@ -327,18 +328,3 @@ Mobile Safari does not trigger `:active` styles noticeably by default, as
 in the Safari Web Content Guide. This effectively suppresses the intended pressed state styles for CSS-only ripple surfaces. This behavior can be remedied by registering a `touchstart` event handler on the element, or on any common ancestor of the desired elements.
 
 See [this StackOverflow answer](https://stackoverflow.com/a/33681490) for additional information on mobile Safari's behavior.
-
-### Caveat: Theme Custom Variables
-
-> TL;DR theme custom variable changes will not propagate to ripples if the browser does not support
-> [CSS 4 color-mod functions](https://drafts.csswg.org/css-color/).
-
-[MDC Theme](../mdc-theme#mdc-theme-prop-mixin) works by emitting two properties: one with the hard-coded Sass variable, and another for a
-CSS variable that can be interpolated. Ripple backgrounds need to have an opacity, and currently there's no way to opacify a pre-existing color defined by a CSS variable.
-There is an editor's draft for a `color-mod` function (see link in TL;DR) that _can_ do this:
-
-```css
-background: color(var(--mdc-theme-primary) a(6%));
-```
-
-But as far as we know, no browsers yet support it. We have added a `@supports` clause into our code to make sure that it can be used as soon as browsers adopt it, but for now this means that _changes to your theme via a custom variable will not propagate to ripples._ For places where you do need this, special treatment will have to be given.

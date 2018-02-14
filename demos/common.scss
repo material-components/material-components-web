@@ -24,17 +24,11 @@
 $mdc-theme-primary: #6200ee !default; // baseline purple, 500 tone
 $mdc-theme-secondary: #018786 !default; // baseline teal, 600 tone
 
-// Import button and ripple mixins to apply overrides for dark theme
-// TODO(kfranqueiro): Pending further design discussion around how to manage dark theme
-@import "../packages/mdc-button/mixins";
-@import "../packages/mdc-ripple/mixins";
 // All demo pages have a top toolbar, and most of them use theme variables.
 // Import these *after* setting theme colors to override defaults in mdc-theme.
 @import "../packages/mdc-theme/mdc-theme";
 @import "../packages/mdc-toolbar/mdc-toolbar";
 @import "../packages/mdc-typography/mdc-typography";
-
-$dark-button-color: $material-color-light-green-a200;
 
 // Used by ready.js to test whether the CSS has finished loading.
 .demo-ready-detect {
@@ -45,32 +39,6 @@ fieldset {
   margin: 0;
   padding: 0;
   border: 0;
-}
-
-// TODO mgoo: remove these dark theme when complete with removing other components
-.mdc-button {
-  @include mdc-theme-dark {
-    @include mdc-button-ink-color($dark-button-color);
-    @include mdc-states($dark-button-color);
-  }
-}
-
-.mdc-button--raised {
-  @include mdc-theme-dark(".mdc-button", true) {
-    @include mdc-button-filled-accessible($dark-button-color);
-  }
-}
-
-.mdc-button--unelevated {
-  @include mdc-theme-dark(".mdc-button", true) {
-    @include mdc-button-filled-accessible($dark-button-color);
-  }
-}
-
-.mdc-button--stroked {
-  @include mdc-theme-dark(".mdc-button", true) {
-    @include mdc-button-stroke-color($dark-button-color);
-  }
 }
 
 .catalog-title {

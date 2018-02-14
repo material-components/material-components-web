@@ -430,37 +430,27 @@ Since our cards only contain text and no components, let's keep it simple for no
 > Note: in the future we plan to provide a Javascript utility method for changing all derived colors and making this
 use-case easier.
 
+## Custom Themes
 
-## Dark Themes
+Most MDC Web components provide a set of Sass mixins to customize their appearance,
+such as changing the fill color, ink color, stroke width, etc.
+These mixins are documented in each component's README file
+(e.g., the [Button readme](../packages/mdc-button/README.md#advanced-sass-mixins)).
 
-Beyond what we've covered in this document so far, there's also the concept of a _dark theme_. All MDC Web components have
-been designed to work with both light themes (that assume a light-colored background) and dark themes (with dark-colored
-backgrounds), but the default is always light.
+For example, to change the fill color of a button and automatically select an accessible ink color,
+simply call the `mdc-button-filled-accessible` mixin inside a custom CSS class:
 
-> Note: When using a dark theme, you probably want to choose a dark color as the background for your page, and adjust
-the MDC Web `background` color to match.
+```scss
+.accessible-button {
+  @include mdc-button-filled-accessible(blue);
+}
+```
 
-In order to apply a dark theme to a single element, you can use its `--theme-dark` class. For example, for a button:
+Then apply the custom class to the button elements:
 
 ```html
-<button class="mdc-button mdc-button--raised mdc-button--theme-dark">
-  Raised dark button
+<button class="mdc-button accessible-button">
+  <i class="material-icons mdc-button__icon">favorite</i>
+  Button
 </button>
 ```
-
-Alternatively, you can set your entire page (or a portion of it) to a dark theme by using the `mdc-theme--dark` class:
-
-```html
-<section class="mdc-theme--dark">
-  <button class="mdc-button mdc-button--raised">
-    Still dark
-  </button>
-
-  <button class="mdc-button">
-    Me too!
-  </button>
-</section>
-```
-
-> Note: there's currently no way to set a light portion inside of a dark one, so if you want to achieve that effect
-you'll need to selectively apply dark classes to everything except the light bits.
