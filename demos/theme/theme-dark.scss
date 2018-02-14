@@ -28,10 +28,6 @@ $mdc-theme-background: $material-color-grey-900;
 
 // TODO: Call theme mixins for mdc-select
 
-.demo-checkbox {
-  @include mdc-checkbox-container-colors(text-secondary-on-dark);
-}
-
 .demo-radio {
   @include mdc-radio-unchecked-stroke-color(text-secondary-on-dark);
 }
