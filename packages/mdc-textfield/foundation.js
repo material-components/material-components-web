@@ -61,6 +61,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
       deregisterTextFieldInteractionHandler: () => {},
       registerInputInteractionHandler: () => {},
       deregisterInputInteractionHandler: () => {},
+      registerValidationAttributeChangeHandler: () => {},
+      deregisterValidationAttributeChangeHandler: () => {},
       getNativeInput: () => {},
       isFocused: () => {},
       isRtl: () => {},
@@ -104,6 +106,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.setPointerXOffset_ = (evt) => this.setTransformOrigin(evt);
     /** @private {function(!Event): undefined} */
     this.textFieldInteractionHandler_ = () => this.handleTextFieldInteraction();
+    /** @private {function(!Array): undefined} */
+    this.validationAttributeChangeHandler_ = (mutations) => this.handleValidationAttributeMutation(mutations);
   }
 
   init() {
@@ -127,6 +131,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.registerTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
     });
+    this.adapter_.registerValidationAttributeChangeHandler(this.validationAttributeChangeHandler_);
   }
 
   destroy() {
@@ -140,6 +145,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.deregisterTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
     });
+    this.adapter_.deregisterValidationAttributeChangeHandler();
   }
 
   /**
@@ -150,6 +156,23 @@ class MDCTextFieldFoundation extends MDCFoundation {
       return;
     }
     this.receivedUserInput_ = true;
+  }
+
+  /**
+   * Handles validation attribute changes
+   */
+  handleValidationAttributeMutation(mutationsList) {
+    // whitelist based off of https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
+    // under section: `Validation-related attributes`
+    const validationAttrWhitelist = [
+      'pattern', 'min', 'max', 'required', 'step', 'minlength', 'maxlength'
+    ];
+
+    mutationsList.forEach(mutation => {
+      if (validationAttrWhitelist.includes(mutation.attributeName)) {
+        this.styleValidity_(true);
+      }
+    });
   }
 
   /**
@@ -287,35 +310,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
   setDisabled(disabled) {
     this.getNativeInput_().disabled = disabled;
     this.styleDisabled_(disabled);
-  }
-
-  /**
-   * @return {boolean|string} the attribute value from the input element
-   * @param {string} attrName is the name of the attribute on the input element
-   */
-  getValidationAttribute(attrName) {
-    return this.getNativeInput_().getAttribute(attrName);
-  }
-
-  /**
-   * @param {string} attrName is the name of the attribute to be set
-   * @param {boolean|string} val is the value of attribute to be set
-   */
-  setValidationAttribute(attrName, val) {
-    this.getNativeInput_().setAttribute(attrName, val);
-    // Setting validation to true even if input is incorrect.
-    // If developer toggles a validation property (required, minlength, etc)
-    // the user should have a chance interact with the input before it being
-    // invalid again.
-    this.styleValidity_(true);
-  }
-
-  /**
-   * @param {string} attrName is the name of the attribute to remove from input element
-   */
-  removeValidationAttribute(attrName) {
-    this.getNativeInput_().removeAttribute(attrName);
-    this.styleValidity_(true);
   }
 
   /**

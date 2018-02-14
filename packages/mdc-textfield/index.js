@@ -57,6 +57,8 @@ class MDCTextField extends MDCComponent {
     this.label_;
     /** @private {?MDCTextFieldOutline} */
     this.outline_;
+    /** @private {?MutationObserver} */
+    this.observers_;
   }
 
   /**
@@ -128,6 +130,7 @@ class MDCTextField extends MDCComponent {
       const foundation = new MDCRippleFoundation(adapter);
       this.ripple = rippleFactory(rippleRoot, foundation);
     }
+    this.observers_ = [];
   }
 
   destroy() {
@@ -203,89 +206,6 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
-   * @return {boolean|string} True if the Text Field is required.
-   */
-  get required() {
-    return this.foundation_.getValidationAttribute('required');
-  }
-
-  /**
-   * @param {boolean|string} required Sets the Text Field to required.
-   */
-  set required(required) {
-    if (!required) {
-      this.foundation_.removeValidationAttribute('required');
-    } else {
-      this.foundation_.setValidationAttribute('required', required);
-    }
-  }
-
-  /**
-   * @return {string} pattern that is used to validate.
-   */
-  get pattern() {
-    return this.foundation_.getValidationAttribute('pattern');
-  }
-
-  /**
-   * @param {string} pattern Sets the Text Field's validation pattern.
-   */
-  set pattern(pattern) {
-    this.foundation_.setValidationAttribute('pattern', pattern);
-  }
-
-  /**
-   * @return {string} minlength that is used to validate.
-   */
-  get minlength() {
-    return this.foundation_.getValidationAttribute('minlength');
-  }
-
-  /**
-   * @param {string} length Sets the Text Field's validation minlength.
-   */
-  set minlength(length) {
-    this.foundation_.setValidationAttribute('minlength', length);
-  }
-
-  /**
-   * @return {string} maxlength that is used to validate.
-   */
-  get maxlength() {
-    return this.foundation_.getValidationAttribute('maxlength');
-  }
-
-  /**
-   * @param {string} length Sets the Text Field's validation maxlength.
-   */
-  set maxlength(length) {
-    this.foundation_.setValidationAttribute('maxlength', length);
-  }
-
-  /**
-   * @return {boolean|string} the attribute value from the input element
-   * @param {string} attrName is the name of the attribute on the input element
-   */
-  getValidationAttribute(attrName) {
-    return this.foundation_.getValidationAttribute(attrName);
-  }
-
-  /**
-   * @param {string} attrName is the attribute name to be set
-   * @param {string} val is the value of attribute to be set
-   */
-  setValidationAttribute(attrName, val) {
-    this.foundation_.setValidationAttribute(attrName, val);
-  }
-
-  /**
-   * @param {string} attrName is the name of the attribute to remove from input element
-   */
-  removeValidationAttribute(attrName) {
-    this.foundation_.removeValidationAttribute(attrName);
-  }
-
-  /**
    * Sets the helper text element content.
    * @param {string} content
    */
@@ -317,6 +237,14 @@ class MDCTextField extends MDCComponent {
         hasClass: (className) => this.root_.classList.contains(className),
         registerTextFieldInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
         deregisterTextFieldInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
+        registerValidationAttributeChangeHandler: (handler) => {
+          const observer = new MutationObserver(handler);
+          const targetNode = this.root_.querySelector(strings.INPUT_SELECTOR);
+          const config = { attributes: true };
+          observer.observe(targetNode, config);
+          this.observers_.push(observer);
+        },
+        deregisterValidationAttributeChangeHandler: () => this.observers_.forEach(observer => observer.disconnect()),
         isFocused: () => {
           return document.activeElement === this.root_.querySelector(strings.INPUT_SELECTOR);
         },

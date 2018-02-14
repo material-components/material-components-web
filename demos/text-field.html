@@ -397,9 +397,9 @@
 
       demoReady(function() {
         var tfEl = document.getElementById('tf-outlined-example');
-        var outlinedInputEl = tfEl.querySelector('input');
         var tfHelperText = document.getElementById('tf-outlined-validation-msg');
         var tf = new mdc.textField.MDCTextField(tfEl);
+        var outlinedInputEl = tfEl.querySelector('input');
         var wrapper = document.getElementById('demo-tf-outlined-wrapper');
         var plainHelperText = 'Helper Text (possibly validation message)';
         var minLengthError = 'Must be at least 8 characters';
@@ -425,22 +425,22 @@
           tf.layout();
         });
         document.getElementById('outlined-required').addEventListener('change', function(evt) {
-          toggleRequired(tf, evt.target.checked);
+          toggleRequired(outlinedInputEl, evt.target.checked);
         });
         document.getElementById('outlined-minlength').addEventListener('change', function(evt) {
           var checked = evt.target.checked;
           if (checked) {
-            tf.minlength = '8';
+            outlinedInputEl.minLength = 8;
           } else {
-            tf.minlength = '0';
+            outlinedInputEl.minLength = 0;
           }
         });
         document.getElementById('outlined-maxlength').addEventListener('change', function(evt) {
           var checked = evt.target.checked;
           if (checked) {
-            tf.maxlength = '10';
+            outlinedInputEl.maxLength = 10;
           } else {
-            tf.maxlength = '';
+            outlinedInputEl.removeAttribute('maxLength');
           }
         });
         outlinedInputEl.addEventListener('blur', function() {
@@ -457,6 +457,7 @@
       demoReady(function() {
         var tfEl = document.getElementById('tf-box-example');
         var tf = new mdc.textField.MDCTextField(tfEl);
+        var boxInputEl = tfEl.querySelector('input');
         var wrapper = document.getElementById('demo-tf-box-wrapper');
         var helperText = document.getElementById('box-text-field-helper-text');
 
@@ -485,13 +486,13 @@
         });
 
         document.getElementById('box-required').addEventListener('change', function(evt) {
-          toggleRequired(tf, evt.target.checked);
+          toggleRequired(boxInputEl, evt.target.checked);
         });
         document.getElementById('box-pattern').addEventListener('change', function(evt) {
           var checked = evt.target.checked;
           var requiredHelperText = 'Must be at least 8 characters';
           var plainHelperText = 'Helper Text (possibly validation message)';
-          togglePattern(tf, checked);
+          togglePattern(boxInputEl, checked);
           helperText.innerHTML = checked ? requiredHelperText : plainHelperText;
         });
 
@@ -524,18 +525,22 @@
         var tfBoxLeadingEl = document.getElementById('tf-box-leading-example');
         var tfBoxLeading = new mdc.textField.MDCTextField(tfBoxLeadingEl);
         var wrapperBoxLeading = document.getElementById('demo-tf-box-leading-wrapper');
+        var tfBoxLeadingInput = tfBoxLeadingEl.querySelector('input');
 
         var tfBoxTrailingEl = document.getElementById('tf-box-trailing-example');
         var tfBoxTrailing = new mdc.textField.MDCTextField(tfBoxTrailingEl);
         var wrapperBoxTrailing = document.getElementById('demo-tf-box-trailing-wrapper');
+        var tfBoxTrailingInput = tfBoxTrailingEl.querySelector('input');
 
         var tfOutlinedLeadingEl = document.getElementById('tf-outlined-leading-example');
         var tfOutlinedLeading = new mdc.textField.MDCTextField(tfOutlinedLeadingEl);
         var wrapperOutlinedLeading = document.getElementById('demo-tf-outlined-leading-wrapper');
+        var tfOutlinedLeadingInput = tfOutlinedLeadingEl.querySelector('input');
 
         var tfOutlinedTrailingEl = document.getElementById('tf-outlined-trailing-example');
         var tfOutlinedTrailing = new mdc.textField.MDCTextField(tfOutlinedTrailingEl);
         var wrapperOutlinedTrailing = document.getElementById('demo-tf-outlined-trailing-wrapper');
+        var tfOutlinedTrailingInput = tfOutlinedTrailingEl.querySelector('input');
 
         var tfIcons = document.querySelectorAll('.mdc-text-field__icon');
         var tfInputs = tfIconContainer.querySelectorAll('.mdc-text-field__input');
@@ -584,18 +589,18 @@
 
         document.getElementById('required-leading-trailing').addEventListener('change', function(evt) {
           var checked = evt.target.checked;
-          toggleRequired(tfBoxLeading, checked);
-          toggleRequired(tfBoxTrailing, checked);
-          toggleRequired(tfOutlinedLeading, checked);
-          toggleRequired(tfOutlinedTrailing, checked);
+          toggleRequired(tfBoxLeadingInput, checked);
+          toggleRequired(tfBoxTrailingInput, checked);
+          toggleRequired(tfOutlinedLeadingInput, checked);
+          toggleRequired(tfOutlinedTrailingInput, checked);
         });
 
         document.getElementById('pattern-leading-trailing').addEventListener('change', function(evt) {
           var checked = evt.target.checked;
-          togglePattern(tfBoxLeading, checked);
-          togglePattern(tfBoxTrailing, checked);
-          togglePattern(tfOutlinedLeading, checked);
-          togglePattern(tfOutlinedTrailing, checked);
+          togglePattern(tfBoxLeadingInput, checked);
+          togglePattern(tfBoxTrailingInput, checked);
+          togglePattern(tfOutlinedLeadingInput, checked);
+          togglePattern(tfOutlinedTrailingInput, checked);
         });
 
         document.getElementById('leading-trailing-alternate-colors').addEventListener('change', function(evt) {
@@ -619,6 +624,7 @@
         var tfRoot = section.querySelector('.mdc-text-field');
         var helperText = section.querySelector('.mdc-text-field-helper-text');
         var tf = new mdc.textField.MDCTextField(tfRoot);
+        var inputEl = tfRoot.querySelector('input');
 
         document.getElementById('disable').addEventListener('change', function(evt) {
           var target = evt.target;
@@ -637,7 +643,7 @@
           tfRoot.classList[target.checked ? 'add' : 'remove']('mdc-text-field--dense');
         });
         document.getElementById('required').addEventListener('change', function(evt) {
-          toggleRequired(tf, evt.target.checked);
+          toggleRequired(inputEl, evt.target.checked);
         });
         document.getElementById('alternate-colors').addEventListener('change', function (evt) {
           var target = evt.target;
@@ -668,6 +674,8 @@
         var section = document.getElementById('demo-text-field-textarea-wrapper');
         var tfRoot = section.querySelector('.mdc-text-field');
         var tf = new mdc.textField.MDCTextField(tfRoot);
+        var inputEl = tfRoot.querySelector('textarea');
+
         document.getElementById('textarea-disable').addEventListener('change', function(evt) {
           var target = evt.target;
           tf.disabled = target.checked;
@@ -686,7 +694,7 @@
           tfRoot.classList[target.checked ? 'add' : 'remove']('demo-textarea');
         });
         document.getElementById('textarea-required').addEventListener('change', function(evt) {
-          toggleRequired(tf, evt.target.checked);
+          toggleRequired(inputEl, evt.target.checked);
         });
       });
 
@@ -696,6 +704,8 @@
         var tfMultiRoot = section.querySelector('.mdc-text-field--textarea');
         var tf = new mdc.textField.MDCTextField(tfRoot);
         var tfMulti = new mdc.textField.MDCTextField(tfMultiRoot);
+        var inputEl = tfRoot.querySelector('input');
+        var inputMultiEl = tfMultiRoot.querySelector('textarea');
 
         document.getElementById('fullwidth-disable').addEventListener('change', function(evt) {
           var target = evt.target;
@@ -712,8 +722,8 @@
         });
         document.getElementById('fullwidth-required').addEventListener('change', function(evt) {
           var checked = evt.target.checked;
-          toggleRequired(tf, evt.target.checked);
-          toggleRequired(tfMulti, evt.target.checked);
+          toggleRequired(inputEl, evt.target.checked);
+          toggleRequired(inputMultiEl, evt.target.checked);
         });
 
         document.getElementById('fullwidth-alternate-colors').addEventListener('change', function (evt) {
