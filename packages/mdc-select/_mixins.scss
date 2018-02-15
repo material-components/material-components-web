@@ -32,8 +32,11 @@
 }
 
 @mixin mdc-select-focused-label-color($color, $opacity: .87) {
-  &:not(.mdc-select--disabled) .mdc-select__surface:focus {
-    @include mdc-select-floating-label-color($color, $opacity);
+  &:not(.mdc-select--disabled) {
+    .mdc-select__surface:focus,
+    &.mdc-select--open {
+      @include mdc-select-floating-label-color($color, $opacity);
+    }
   }
 }
 
