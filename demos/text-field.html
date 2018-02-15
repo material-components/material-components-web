@@ -720,8 +720,8 @@
         });
         document.getElementById('fullwidth-required').addEventListener('change', function(evt) {
           var checked = evt.target.checked;
-          toggleRequired(inputEl, evt.target.checked);
-          toggleRequired(inputMultiEl, evt.target.checked);
+          toggleRequired(inputEl, checked);
+          toggleRequired(inputMultiEl, checked);
         });
 
         document.getElementById('fullwidth-alternate-colors').addEventListener('change', function (evt) {

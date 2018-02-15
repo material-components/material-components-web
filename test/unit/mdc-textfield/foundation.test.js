@@ -670,9 +670,7 @@ test('touchstart on the input sets the line ripple origin', () => {
   let clickHandler;
 
   td.when(mockAdapter.registerInputInteractionHandler('touchstart', td.matchers.isA(Function)))
-    .thenDo((evtType, handler) => {
-      clickHandler = handler;
-    });
+    .thenDo((evtType, handler) => clickHandler = handler);
 
   foundation.init();
   clickHandler(mockEvt);
@@ -684,9 +682,7 @@ test('on validation attribute change calls styleValidity_', () => {
   const {foundation, mockAdapter, helperText} = setupTest();
   let attributeChange;
   td.when(mockAdapter.registerValidationAttributeChangeHandler(td.matchers.isA(Function)))
-    .thenDo((handler) => {
-      attributeChange = handler;
-    });
+    .thenDo((handler) => attributeChange = handler);
   foundation.init();
 
   attributeChange([{attributeName: 'required'}]);
@@ -704,9 +700,7 @@ test('should not call styleValidity_ on non-whitelisted attribute change', () =>
   const {foundation, mockAdapter} = setupTest();
   let attributeChange;
   td.when(mockAdapter.registerValidationAttributeChangeHandler(td.matchers.isA(Function)))
-    .thenDo((handler) => {
-      attributeChange = handler;
-    });
+    .thenDo((handler) => attributeChange = handler);
   foundation.init();
 
   attributeChange([{attributeName: 'form'}]);
