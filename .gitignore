@@ -1,6 +1,7 @@
 node_modules
 .DS_Store
 /build
+/.c9/
 /coverage
 packages/*/dist
 *.log
