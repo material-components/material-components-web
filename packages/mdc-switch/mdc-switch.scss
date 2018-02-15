@@ -54,7 +54,7 @@
   position: relative;
   width: $mdc-switch-track-width;
   height: $mdc-switch-track-height;
-  border-radius: 7px;
+  border-radius: 50%;
   outline: none;
   user-select: none;
 
@@ -88,7 +88,7 @@
   transition:
     mdc-switch-transition(transform),
     mdc-switch-transition(background-color);
-  border-radius: $mdc-switch-knob-diameter / 2;
+  border-radius: 50%;
   z-index: 1;
 
   // Focus indicator
@@ -99,7 +99,7 @@
     transition:
       mdc-switch-transition(transform),
       mdc-switch-transition(background-color);
-    border-radius: $mdc-switch-focus-ring-diameter / 2;
+    border-radius: 50%;
     opacity: .2;
     content: "";
   }
