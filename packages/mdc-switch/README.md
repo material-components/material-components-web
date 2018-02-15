@@ -47,10 +47,10 @@ npm install --save @material/switch
     <div class="mdc-switch__knob"></div>
   </div>
 </div>
-<label for="basic-switch" class="mdc-switch-label">off/on</label>
+<label for="basic-switch">off/on</label>
 ```
 
-### Disabled Switch
+#### Disabled Switch
 
 Users can add `disabled` directly to the input element or set the fieldset containing the switch to `disabled` to disable a switch. Disabled switches cannot be interacted with and have no visual interaction effect.
 
@@ -61,7 +61,7 @@ Users can add `disabled` directly to the input element or set the fieldset conta
     <div class="mdc-switch__knob"></div>
   </div>
 </div>
-<label for="another-basic-switch" class="mdc-switch-label">off/on</label>
+<label for="another-basic-switch">off/on</label>
 ```
 
 ### CSS Classes
