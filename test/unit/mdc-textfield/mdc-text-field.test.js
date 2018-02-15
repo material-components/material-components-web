@@ -352,6 +352,18 @@ test('#adapter.deregisterTextFieldInteractionHandler removes an event handler fo
   td.verify(handler(td.matchers.anything()));
 });
 
+test('#adapter.registerValidationAttributeChangeHandler add a mutation observer on the component input element', (done) => {
+  const {root, component} = setupTest();
+  component.foundation_.adapter_.registerValidationAttributeChangeHandler(handler);
+  root.classList.add('mdc-text-field--invalid');
+  assert.isOk(root.classList.contains('mdc-text-field--invalid'));
+  root.querySelector('.mdc-text-field__input').required = true;
+  setTimeout(() => {
+    assert.isNotOk(root.classList.contains('mdc-text-field--invalid'));
+    done();
+  });
+});
+
 test('#adapter.getNativeInput returns the component input element', () => {
   const {root, component} = setupTest();
   assert.equal(
@@ -414,54 +426,4 @@ test('get/set valid', () => {
   td.verify(mockFoundation.isValid());
   component.valid = true;
   td.verify(mockFoundation.setValid(true));
-});
-
-test('get/set required', () => {
-  const {component, mockFoundation} = setupMockFoundationTest();
-  component.required;
-  td.verify(mockFoundation.getValidationAttribute('required'));
-  component.required = true;
-  td.verify(mockFoundation.setValidationAttribute('required', true));
-});
-
-test('get/set pattern', () => {
-  const {component, mockFoundation} = setupMockFoundationTest();
-  component.pattern;
-  td.verify(mockFoundation.getValidationAttribute('pattern'));
-  component.pattern = 'foo';
-  td.verify(mockFoundation.setValidationAttribute('pattern', 'foo'));
-});
-
-test('get/set minlength', () => {
-  const {component, mockFoundation} = setupMockFoundationTest();
-  component.minlength;
-  td.verify(mockFoundation.getValidationAttribute('minlength'));
-  component.minlength = '8';
-  td.verify(mockFoundation.setValidationAttribute('minlength', '8'));
-});
-
-test('get/set maxlength', () => {
-  const {component, mockFoundation} = setupMockFoundationTest();
-  component.maxlength;
-  td.verify(mockFoundation.getValidationAttribute('maxlength'));
-  component.maxlength = '10';
-  td.verify(mockFoundation.setValidationAttribute('maxlength', '10'));
-});
-
-test('setValidationAttribute', () => {
-  const {component, mockFoundation} = setupMockFoundationTest();
-  component.setValidationAttribute('required', true);
-  td.verify(mockFoundation.setValidationAttribute('required', true));
-});
-
-test('removeValidationAttribute', () => {
-  const {component, mockFoundation} = setupMockFoundationTest();
-  component.removeValidationAttribute('required');
-  td.verify(mockFoundation.removeValidationAttribute('required'));
-});
-
-test('getValidationAttribute', () => {
-  const {component, mockFoundation} = setupMockFoundationTest();
-  component.getValidationAttribute('required');
-  td.verify(mockFoundation.getValidationAttribute('required'));
 });

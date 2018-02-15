@@ -165,10 +165,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
     // whitelist based off of https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
     // under section: `Validation-related attributes`
     const validationAttrWhitelist = [
-      'pattern', 'min', 'max', 'required', 'step', 'minlength', 'maxlength'
+      'pattern', 'min', 'max', 'required', 'step', 'minlength', 'maxlength',
     ];
-
-    mutationsList.forEach(mutation => {
+    mutationsList.forEach((mutation) => {
       if (validationAttrWhitelist.includes(mutation.attributeName)) {
         this.styleValidity_(true);
       }

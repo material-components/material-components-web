@@ -42,7 +42,8 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'registerTextFieldInteractionHandler', 'deregisterTextFieldInteractionHandler',
     'registerInputInteractionHandler', 'deregisterInputInteractionHandler',
     'getNativeInput', 'isFocused', 'isRtl', 'activateLineRipple', 'deactivateLineRipple',
-    'setLineRippleTransformOrigin',
+    'setLineRippleTransformOrigin', 'registerValidationAttributeChangeHandler',
+    'deregisterValidationAttributeChangeHandler',
   ]);
 });
 
@@ -202,47 +203,6 @@ test('#setValid updates classes', () => {
   td.verify(mockAdapter.removeClass(cssClasses.DISABLED), {times: 0});
 });
 
-test('#setValidationAttribute required to true updates CSS classes', () => {
-  // Native validity checking does not apply in unittests, so manually mark as valid or invalid.
-  const {foundation, mockAdapter, helperText} =
-    setupValueTest('', /* isValid */ false);
-
-  td.when(mockAdapter.getNativeInput()).thenReturn({setAttribute: () => null});
-  foundation.setValidationAttribute('required', 'true');
-  td.verify(mockAdapter.removeClass(cssClasses.INVALID));
-  td.verify(helperText.setValidity(true));
-
-  // None of these is affected by setValidationAttribute.
-  td.verify(mockAdapter.addClass(cssClasses.FOCUSED), {times: 0});
-  td.verify(mockAdapter.removeClass(cssClasses.FOCUSED), {times: 0});
-  td.verify(mockAdapter.addClass(cssClasses.DISABLED), {times: 0});
-  td.verify(mockAdapter.removeClass(cssClasses.DISABLED), {times: 0});
-});
-
-test('#removeValidationAttribute required updates CSS classes', () => {
-  const {foundation, mockAdapter, helperText} =
-    setupValueTest('', /* isValid */ false);
-
-  td.when(mockAdapter.getNativeInput()).thenReturn({removeAttribute: () => null});
-  foundation.removeValidationAttribute('required');
-  td.verify(mockAdapter.removeClass(cssClasses.INVALID));
-  td.verify(helperText.setValidity(true));
-
-  // None of these is affected by setValidationAttribute.
-  td.verify(mockAdapter.addClass(cssClasses.FOCUSED), {times: 0});
-  td.verify(mockAdapter.removeClass(cssClasses.FOCUSED), {times: 0});
-  td.verify(mockAdapter.addClass(cssClasses.DISABLED), {times: 0});
-  td.verify(mockAdapter.removeClass(cssClasses.DISABLED), {times: 0});
-});
-
-test('#getValidationAttribute required returns correct value', () => {
-  const {foundation, mockAdapter} =
-    setupValueTest('', /* isValid */ false);
-
-  td.when(mockAdapter.getNativeInput()).thenReturn({getAttribute: () => true});
-  assert.equal(foundation.getValidationAttribute('required'), true);
-});
-
 test('#setDisabled flips disabled when a native input is given', () => {
   const {foundation, mockAdapter} = setupTest();
   const nativeInput = {disabled: false};
@@ -338,6 +298,7 @@ test('#init adds event listeners', () => {
   td.verify(mockAdapter.registerInputInteractionHandler('touchstart', td.matchers.isA(Function)));
   td.verify(mockAdapter.registerTextFieldInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.registerTextFieldInteractionHandler('keydown', td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerValidationAttributeChangeHandler(td.matchers.isA(Function)));
 });
 
 test('#destroy removes event listeners', () => {
@@ -351,6 +312,7 @@ test('#destroy removes event listeners', () => {
   td.verify(mockAdapter.deregisterInputInteractionHandler('touchstart', td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterTextFieldInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterTextFieldInteractionHandler('keydown', td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterValidationAttributeChangeHandler());
 });
 
 test('#init floats label if the input contains a value', () => {
@@ -692,4 +654,43 @@ test('touchstart on the input sets the line ripple origin', () => {
   clickHandler(mockEvt);
 
   td.verify(mockAdapter.setLineRippleTransformOrigin(td.matchers.anything()));
+});
+
+test('on validation attribute change calls styleValidity_', () => {
+  const {foundation, mockAdapter, helperText} = setupTest();
+  let attributeChange;
+  td.when(mockAdapter.registerValidationAttributeChangeHandler(td.matchers.isA(Function)))
+    .thenDo((handler) => {
+      attributeChange = handler;
+    });
+  foundation.init();
+
+  attributeChange([{attributeName: 'required'}]);
+  td.verify(mockAdapter.removeClass(cssClasses.INVALID));
+  td.verify(helperText.setValidity(true));
+
+  // None of these is affected by setValidationAttribute.
+  td.verify(mockAdapter.addClass(cssClasses.FOCUSED), {times: 0});
+  td.verify(mockAdapter.removeClass(cssClasses.FOCUSED), {times: 0});
+  td.verify(mockAdapter.addClass(cssClasses.DISABLED), {times: 0});
+  td.verify(mockAdapter.removeClass(cssClasses.DISABLED), {times: 0});
+});
+
+test('should not call styleValidity_ on non-whitelisted attribute change', () => {
+  const {foundation, mockAdapter, helperText} = setupTest();
+  let attributeChange;
+  td.when(mockAdapter.registerValidationAttributeChangeHandler(td.matchers.isA(Function)))
+    .thenDo((handler) => {
+      attributeChange = handler;
+    });
+  foundation.init();
+
+  attributeChange([{attributeName: 'form'}]);
+  td.verify(mockAdapter.removeClass(cssClasses.INVALID), {times: 0});
+
+  // None of these is affected by setValidationAttribute.
+  td.verify(mockAdapter.addClass(cssClasses.FOCUSED), {times: 0});
+  td.verify(mockAdapter.removeClass(cssClasses.FOCUSED), {times: 0});
+  td.verify(mockAdapter.addClass(cssClasses.DISABLED), {times: 0});
+  td.verify(mockAdapter.removeClass(cssClasses.DISABLED), {times: 0});
 });

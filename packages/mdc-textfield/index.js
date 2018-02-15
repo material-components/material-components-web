@@ -240,11 +240,11 @@ class MDCTextField extends MDCComponent {
         registerValidationAttributeChangeHandler: (handler) => {
           const observer = new MutationObserver(handler);
           const targetNode = this.root_.querySelector(strings.INPUT_SELECTOR);
-          const config = { attributes: true };
+          const config = {attributes: true};
           observer.observe(targetNode, config);
           this.observers_.push(observer);
         },
-        deregisterValidationAttributeChangeHandler: () => this.observers_.forEach(observer => observer.disconnect()),
+        deregisterValidationAttributeChangeHandler: () => this.observers_.forEach((observer) => observer.disconnect()),
         isFocused: () => {
           return document.activeElement === this.root_.querySelector(strings.INPUT_SELECTOR);
         },
