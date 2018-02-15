@@ -352,16 +352,34 @@ test('#adapter.deregisterTextFieldInteractionHandler removes an event handler fo
   td.verify(handler(td.matchers.anything()));
 });
 
-test('#adapter.registerValidationAttributeChangeHandler add a mutation observer on the component input element', (done) => {
+test('#adapter.registerValidationAttributeChangeHandler creates a working mutation observer', (done) => {
   const {root, component} = setupTest();
-  component.foundation_.adapter_.registerValidationAttributeChangeHandler(handler);
-  root.classList.add('mdc-text-field--invalid');
-  assert.isOk(root.classList.contains('mdc-text-field--invalid'));
-  root.querySelector('.mdc-text-field__input').required = true;
-  setTimeout(() => {
+  const handler = td.func('ValidationAttributeChangeHandler');
+  td.when(handler(td.matchers.anything(), td.matchers.anything())).thenDo(() => {
     assert.isNotOk(root.classList.contains('mdc-text-field--invalid'));
     done();
   });
+
+  component.foundation_.adapter_.registerValidationAttributeChangeHandler(handler);
+  root.classList.add('mdc-text-field--invalid');
+  root.querySelector('.mdc-text-field__input').required = true;
+});
+
+test('#adapter.registerValidationAttributeChangeHandler adds an observer to the component', () => {
+  const {component} = setupTest();
+  const handler = td.func('ValidationAttributeChangeHandler');
+
+  component.foundation_.adapter_.registerValidationAttributeChangeHandler(handler);
+  assert.equal(component.observers_.length, 2);
+});
+
+test('#adapter.deregisterValidationAttributeChangeHandler removes observers from component', () => {
+  const {component} = setupTest();
+  const disconnect = td.func('ValidationDisconnect');
+
+  component.observers_ = [{disconnect}];
+  component.foundation_.adapter_.deregisterValidationAttributeChangeHandler();
+  td.verify(disconnect());
 });
 
 test('#adapter.getNativeInput returns the component input element', () => {

@@ -57,7 +57,7 @@ class MDCTextField extends MDCComponent {
     this.label_;
     /** @private {?MDCTextFieldOutline} */
     this.outline_;
-    /** @private {?MutationObserver} */
+    /** @private {?Array<MutationObserver>} */
     this.observers_;
   }
 

@@ -482,6 +482,30 @@ test('on focus makes helper text visible to the screen reader', () => {
   td.verify(helperText.showToScreenReader());
 });
 
+test('on validation attribute change should update invalid classes', () => {
+  const {foundation, mockAdapter} = setupTest();
+  let attributeMutate;
+  td.when(mockAdapter.registerValidationAttributeChangeHandler(td.matchers.isA(Function)))
+    .thenDo((handler) => {
+      attributeMutate = handler;
+    });
+  foundation.init();
+  attributeMutate([{attributeName: 'required'}]);
+  td.verify(mockAdapter.removeClass('mdc-text-field--invalid'));
+});
+
+test('on attribute change non-whitelisted should not update classes', () => {
+  const {foundation, mockAdapter} = setupTest();
+  let attributeMutate;
+  td.when(mockAdapter.registerValidationAttributeChangeHandler(td.matchers.isA(Function)))
+    .thenDo((handler) => {
+      attributeMutate = handler;
+    });
+  foundation.init();
+  attributeMutate([{attributeName: 'form'}]);
+  td.verify(mockAdapter.removeClass('mdc-text-field--invalid'), {times: 0});
+});
+
 const setupBlurTest = () => {
   const {foundation, mockAdapter, helperText, label} = setupTest();
   let blur;
@@ -677,7 +701,7 @@ test('on validation attribute change calls styleValidity_', () => {
 });
 
 test('should not call styleValidity_ on non-whitelisted attribute change', () => {
-  const {foundation, mockAdapter, helperText} = setupTest();
+  const {foundation, mockAdapter} = setupTest();
   let attributeChange;
   td.when(mockAdapter.registerValidationAttributeChangeHandler(td.matchers.isA(Function)))
     .thenDo((handler) => {

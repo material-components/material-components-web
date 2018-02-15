@@ -107,6 +107,17 @@ class MDCTextFieldAdapter {
   deregisterInputInteractionHandler(evtType, handler) {}
 
   /**
+   * Registers a validation attribute change listener on the input element.
+   * @param {function(!Array): undefined} handler
+   */
+  registerValidationAttributeChangeHandler(handler) {}
+
+  /**
+   * Disconnect all validation attrinute listeners on the input element.
+   */
+  deregisterValidationAttributeChangeHandler() {}
+
+  /**
    * Returns an object representing the native text input element, with a
    * similar API shape. The object returned should include the value, disabled
    * and badInput properties, as well as the checkValidity() function. We never
