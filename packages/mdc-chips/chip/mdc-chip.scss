@@ -27,7 +27,7 @@
   @include mdc-chip-corner-radius($mdc-chip-border-radius-default);
   @include mdc-chip-fill-color($mdc-chip-fill-color-default);
   @include mdc-chip-ink-color($mdc-chip-ink-color-default);
-  @include mdc-chip-ink-color-activated($mdc-chip-ink-color-activated-default);
+  @include mdc-chip-activated-ink-color(black);
 
   display: inline-block;
   padding: 7px 12px;
@@ -35,6 +35,10 @@
   padding: $mdc-chip-vertical-padding $mdc-chip-horizontal-padding;
   cursor: pointer;
   overflow: hidden;
+
+  &:hover {
+    @include mdc-theme-prop(color, black);
+  }
 }
 
 .mdc-chip__text {

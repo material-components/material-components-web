@@ -29,10 +29,10 @@
 
   @if ($fill-tone == "dark") {
     @include mdc-chip-ink-color(text-primary-on-dark);
-    @include mdc-chip-ink-color-activated(white);
+    @include mdc-chip-activated-ink-color(white);
   } @else {
     @include mdc-chip-ink-color(text-primary-on-light);
-    @include mdc-chip-ink-color-activated(black);
+    @include mdc-chip-activated-ink-color(black);
   }
 }
 
@@ -42,14 +42,23 @@
 
 @mixin mdc-chip-ink-color($color) {
   @include mdc-states($color);
-  @include mdc-states-activated($color);
   @include mdc-theme-prop(color, $color);
+  @include mdc-chip-activated-ink-color($color);
+
+  &:hover {
+    @include mdc-theme-prop(color, $color);
+  }
 }
 
-@mixin mdc-chip-ink-color-activated($color) {
-  &:hover,
-  &--activated {
-    @include mdc-theme-prop(color, $color);
+@mixin mdc-chip-activated-ink-color($activated-ink-color) {
+  &.mdc-chip {
+    // This changes the opacity of the ripple based on whether $activated-ink-color is light or dark.
+    // It does not change the color of the ripple.
+    @include mdc-states-activated($activated-ink-color);
+  }
+
+  &.mdc-chip--activated {
+    @include mdc-theme-prop(color, $activated-ink-color);
   }
 }
 
