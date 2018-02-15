@@ -1,0 +1,16 @@
+@import "./common";
+@import "../packages/mdc-tabz/mdc-tabz";
+
+// Customization for the demo
+.custom-demo {
+  @include mdc-tabz-background(#ffdbcf);
+  @include mdc-tabz-active-color(#442b2d);
+
+  @include mdc-tabz-active-indicator-customization {
+    color: #eaa4a4;
+
+    .custom-indicator {
+      font-size: 34px;
+    }
+  }
+}

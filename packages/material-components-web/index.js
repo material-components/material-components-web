@@ -33,6 +33,7 @@ import * as selectionControl from '@material/selection-control/index';
 import * as slider from '@material/slider/index';
 import * as snackbar from '@material/snackbar/index';
 import * as tabs from '@material/tabs/index';
+import * as tabz from '@material/tabz/index';
 import * as textField from '@material/textfield/index';
 import * as toolbar from '@material/toolbar/index';
 
@@ -80,6 +81,7 @@ export {
   slider,
   snackbar,
   tabs,
+  tabz,
   textField,
   toolbar,
 };
