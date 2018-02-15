@@ -48,4 +48,4 @@ class MDCTopAppBarAdapter {
   hasClass(className) {}
 }
 
-export {MDCTopAppBarAdapter};
+export default MDCTopAppBarAdapter;

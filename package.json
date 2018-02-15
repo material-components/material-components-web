@@ -177,6 +177,7 @@
     "mdc-ripple",
     "mdc-selection-control",
     "mdc-slider",
-    "mdc-textfield"
+    "mdc-textfield",
+    "mdc-top-app-bar"
   ]
 }

@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 import {strings} from './constants';
+
+import MDCTopAppBarAdapter from './adapter';
+
 import MDCFoundation from '@material/base/foundation';
 
 /**
  * @extends {MDCFoundation<!MDCTopAppBarFoundation>}
  * @final
  */
-export default class MDCTopAppBarFoundation extends MDCFoundation {
+class MDCTopAppBarFoundation extends MDCFoundation {
   /** @return enum {string} */
   static get strings() {
     return strings;
@@ -32,11 +35,11 @@ export default class MDCTopAppBarFoundation extends MDCFoundation {
    * @return {!MDCTopAppBarAdapter}
    */
   static get defaultAdapter() {
-    return /** @type {!MDCTopAppBarAdapter} */ {
+    return /** @type {!MDCTopAppBarAdapter} */ ({
       hasClass: (/* className: string */) => {},
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
-    };
+    });
   }
 
   /**
@@ -46,3 +49,5 @@ export default class MDCTopAppBarFoundation extends MDCFoundation {
     super(Object.assign(MDCTopAppBarFoundation.defaultAdapter, adapter));
   }
 }
+
+export default MDCTopAppBarFoundation;

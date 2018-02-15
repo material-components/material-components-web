@@ -31,13 +31,3 @@
     padding: 16px;
   }
 }
-
-.demo-controls-container {
-  @include mdc-elevation(4);
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  background-color: white;
-  padding: 10px;
-}
-
