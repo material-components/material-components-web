@@ -109,4 +109,4 @@ Method Signature | Description
 
 Event Name | Event Data Structure | Description
 --- | --- | ---
-`MDCTopAppBar:nav` | None | Emits when the menu icon is clicked. 
+`MDCTopAppBar:nav` | None | Emits when the menu icon is clicked.

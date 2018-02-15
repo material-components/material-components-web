@@ -17,7 +17,7 @@
 
 import MDCTopAppBarAdapter from './adapter';
 import MDCTopAppBarFoundation from './foundation';
-import {MDCComponent} from '@material/base/index';
+import MDCComponent from '@material/base/componentgit ';
 import {MDCRipple} from '@material/ripple/index';
 import {strings} from './constants';
 
