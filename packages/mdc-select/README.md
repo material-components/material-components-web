@@ -260,46 +260,6 @@ is outlined below.
 The MDC Select JS component emits an `MDCSelect:change` event when the selected option changes as
 the result of a user action.
 
-#### Instantiating using a custom `MDCMenu` component.
-
-`MDCSelect` controls an [MDCMenu](../mdc-menu) instance under the hood in order to display
-its options. If you'd like to instantiate a custom menu instance, you can provide an optional 3rd
-`menuFactory` argument to `MDCSelect`'s constructor.
-
-```js
-const menuFactory = menuEl => {
-  const menu = new MDCMenu(menuEl);
-  // Do stuff with menu...
-  return menu;
-};
-const selectEl = document.querySelector('.mdc-select');
-const select = new MDCSelect(selectEl, /* foundation */ undefined, menuFactory);
-```
-
-The `menuFactory` function is passed an `HTMLElement` and is expected to return an `MDCMenu`
-instance attached to that element. This is mostly used for testing purposes, but it's there if you
-need it nonetheless.
-
-#### Instantiating using a custom `MDCSelectLabel` component.
-
-`MDCSelect` controls an [MDCSelectLabel](./label) instance under the hood in order to display
-its options. If you'd like to instantiate a custom label instance, you can provide an optional 4th
-`labelFactory` argument to `MDCSelect`'s constructor.
-
-```js
-const labelFactory = labelEl => {
-  const label = new MDCSelectLabel(labelEl);
-  // Do stuff with label...
-  return label;
-};
-const selectEl = document.querySelector('.mdc-select');
-const select = new MDCSelect(selectEl, /* foundation */ undefined, undefined, labelFactory);
-```
-
-The `labelFactory` function is passed an `HTMLElement` and is expected to return an `MDCSelectLabel`
-instance attached to that element. This is mostly used for testing purposes, but it's there if you
-need it nonetheless.
-
 ## Using the foundation class
 
 MDC Select ships with a foundation class that framework authors can use to integrate MDC Select
@@ -332,7 +292,7 @@ within `componentDidUpdate`.
 | --- | --- |
 | `addClass(className: string) => void` | Adds a class to the root element. |
 | `removeClass(className: string) => void` | Removes a class from the root element. |
-| `floatLabel(value: string) => void` | Float or defloats label as necessary |
+| `floatLabel(value: boolean) => void` | Float or defloats label as necessary |
 | `addClassToBottomLine(className: string) => void` | Adds a class to the bottom line |
 | `removeClassFromBottomLine(className: string) => void` | Removes a class from the bottom line |
 | `setBottomLineAttr(attr: string, value: string) => void` | Adds an attribute to the bottom line |
