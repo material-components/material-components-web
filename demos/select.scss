@@ -17,12 +17,13 @@
 @import "./common";
 @import "../packages/mdc-list/mdc-list";
 @import "../packages/mdc-menu/mdc-menu";
+@import "../packages/mdc-select/label/mixins";
 @import "../packages/mdc-select/mdc-select";
 
 // stylelint-disable selector-class-pattern
 .demo-select-custom-colors {
   @include mdc-select-ink-color(blue);
-  @include mdc-select-label-color(rgba(blue, .6));
+  @include mdc-select-label-color(blue, .6);
   @include mdc-select-bottom-line-color(rgba(blue, .5));
 
   // Focused colors
