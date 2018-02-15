@@ -1,4 +1,5 @@
 /**
+ *  @license
  * Copyright 2018 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,7 +22,7 @@ import {MDCRipple} from '@material/ripple/index';
 import {strings} from './constants';
 
 /**
- * @extends {MDCComponent<!MDCTopAppBar>}
+ * @extends {MDCComponent<!MDCTopAppBarFoundation>}
  * @final
  */
 class MDCTopAppBar extends MDCComponent {
@@ -30,10 +31,11 @@ class MDCTopAppBar extends MDCComponent {
    */
   constructor(...args) {
     super(...args);
+    /** @private {?Element} */
     this.navIcon_;
-    /** @private {Array} */
+    /** @type {?Array<MDCRipple>} */
     this.iconRipples_;
-    /** @private {EventListener} */
+    /** @private {function(!Event)} */
     this.navIconClick_;
   }
 
@@ -46,10 +48,10 @@ class MDCTopAppBar extends MDCComponent {
     }
 
     // Get all icons in the toolbar and instantiate the ripples
-    this.iconRipples_ = [].slice.call(this.root_.querySelectorAll(strings.ACTION_ICON_SELECTOR));
-    this.iconRipples_.push(this.navIcon_);
+    const icons = [].slice.call(this.root_.querySelectorAll(strings.ACTION_ICON_SELECTOR));
+    icons.push(this.navIcon_);
 
-    this.iconRipples_.map(function(icon) {
+    this.iconRipples_ = icons.map(function(icon) {
       const ripple = MDCRipple.attachTo(icon);
       ripple.unbounded = true;
       return ripple;
@@ -61,13 +63,17 @@ class MDCTopAppBar extends MDCComponent {
       this.navIcon_.removeEventListener('click', this.navIconClick_);
     }
 
-    this.iconRipples_.slice.call(function(iconRipple) {
+    this.iconRipples_.forEach(function(iconRipple) {
       iconRipple.destroy();
     });
   }
 
-  navigationEvent_() {
-    this.emit(strings.NAVIGATION_EVENT, {});
+  /**
+   * @param {!Event} event
+   * @private
+   */
+  navigationEvent_(event) {
+    this.emit(strings.NAVIGATION_EVENT, event);
   }
 
   /**
@@ -93,4 +99,4 @@ class MDCTopAppBar extends MDCComponent {
   }
 }
 
-export {MDCTopAppBar};
+export {MDCTopAppBar, MDCTopAppBarFoundation};

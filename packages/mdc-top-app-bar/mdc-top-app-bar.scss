@@ -73,16 +73,10 @@
 
   &__icon {
     @include mdc-top-app-bar-icon_;
-
-    padding-right: $mdc-top-app-bar-icon-horizontal-padding / 2;
-    padding-left: $mdc-top-app-bar-icon-horizontal-padding / 2;
   }
 
   &__menu-icon {
     @include mdc-top-app-bar-icon_;
-
-    padding-right: $mdc-top-app-bar-icon-horizontal-padding / 2;
-    padding-left: $mdc-top-app-bar-icon-horizontal-padding / 2;
   }
 
   @media (max-width: $mdc-top-app-bar-mobile-breakpoint) {
@@ -96,12 +90,6 @@
 
     .mdc-top-app-bar__title {
       @include mdc-rtl-reflexive-box(margin, left, $mdc-top-app-bar-mobile-title-left-padding);
-    }
-
-    .mdc-top-app-bar__icon,
-    .mdc-top-app-bar__menu-icon {
-      padding-right: $mdc-top-app-bar-mobile-icon-horizontal-padding / 2;
-      padding-left: $mdc-top-app-bar-mobile-icon-horizontal-padding / 2;
     }
   }
 }
