@@ -18,8 +18,7 @@ path: /catalog/menus/
 
 The MDC Menu component is a spec-aligned menu component adhering to the
 [Material Design menu specification](https://material.io/guidelines/components/menus.html).
-Menus require JavaScript to work correctly, but the open and closed states are correct on
-first render.
+Menus require JavaScript to properly position themselves when opening.
 
 ## Design & API Documentation
 
@@ -40,9 +39,9 @@ npm install --save @material/menu
 
 ## Usage
 
-### HTML Structure 
+### HTML Structure
 
-A menu is usually closed, appearing when opened. It is appropriate for any display size.
+A menu is initially hidden, appearing when opened via the JS API. It is appropriate for any display size.
 
 ```html
 <div class="mdc-menu" tabindex="-1">
@@ -57,19 +56,9 @@ A menu is usually closed, appearing when opened. It is appropriate for any displ
 </div>
 ```
 
-#### Opened Menu
-
-The menu can be configured to start in the opened state by adding the `mdc-menu--open` class to the element.
- 
-```html
-<div class="mdc-menu mdc-menu--open">
-...
-</div>
-```
-
 #### Anchor To Parent
 
-The menu can be positioned to automatically anchor to a parent element when opened. 
+The menu can be positioned to automatically anchor to a parent element when opened.
 
 ```html
 <div id="toolbar" class="toolbar mdc-menu-anchor">
@@ -81,7 +70,7 @@ The menu can be positioned to automatically anchor to a parent element when open
 
 #### Anchor To Element Within Wrapper
 
-The menu can be positioned to automatically anchor to another element, by wrapping the other element with the anchor class. 
+The menu can be positioned to automatically anchor to another element, by wrapping the other element with the anchor class.
 
 ```html
 <div id="demo-menu" class="mdc-menu-anchor">
@@ -115,9 +104,9 @@ To disable a list item, set `aria-disabled` property to `"true"`, and set `tabin
 CSS Class | Description
 --- | ---
 `mdc-menu` | Mandatory
-`mdc-menu--animating-open` | Indicates the menu is currently animating open. This class is removed once the animation completes. 
-`mdc-menu--open` | Indicates the menu is currently open, or is currently animating open. 
-`mdc-menu--animating-closed` | Indicates the menu is currently animating closed. This class is removed once the animation completes. 
+`mdc-menu--animating-open` | Indicates the menu is currently animating open. This class is removed once the animation completes.
+`mdc-menu--open` | Indicates the menu is currently open, or is currently animating open.
+`mdc-menu--animating-closed` | Indicates the menu is currently animating closed. This class is removed once the animation completes.
 
 ### JS Examples
 
@@ -126,20 +115,20 @@ CSS Class | Description
   var menuEl = document.querySelector('#toolbar');
   var menu = new mdc.menu.MDCMenu(menuEl);
   var menuButtonEl = document.querySelector('#menu-button');
-  
+
   // Toggle menu open
   menuButtonEl.addEventListener('click', function() {
     menu.open = !menu.open;
   });
-  
+
   // Listen for selected item
   menuEl.addEventListener('MDCMenu:selected', function(evt) {
      var detail = evt.detail;
   });
-  
+
   // Set Anchor Corner to Bottom End
-  menu.setAnchorCorner(Corner.BOTTOM_END); 
-  
+  menu.setAnchorCorner(Corner.BOTTOM_END);
+
   // Turn off menu open animations
   menu.quickOpen = true;
 ```
@@ -150,10 +139,10 @@ See [Importing the JS component](../../docs/importing-js.md) for more informatio
 
 Property | Value Type | Description
 --- | --- | ---
-`open` | Boolean | Proxies to the foundation's `isOpen`/(`open`, `close`) methods. 
+`open` | Boolean | Proxies to the foundation's `isOpen`/(`open`, `close`) methods.
 `items` | Array<Element> | Proxies to the foundation's container to query for all `.mdc-list-item[role]` elements.
 `itemsContainer` | Element | Queries the foundation's root element for the `mdc-menu__items` container element.
-`quickOpen` | Boolean | Proxies to the foundation's `setQuickOpen()` method. 
+`quickOpen` | Boolean | Proxies to the foundation's `setQuickOpen()` method.
 
 Method Signature | Description
 --- | ---
@@ -161,7 +150,7 @@ Method Signature | Description
 `hide() => void` | Proxies to the foundation's `close()` method.
 `setAnchorCorner(Corner) => void` | Proxies to the foundation's `setAnchorCorner(Corner)` method.
 `setAnchorMargin(AnchorMargin) => void` | Proxies to the foundation's `setAnchorMargin(AnchorMargin)` method.
-`getDefaultFoundation() => MDCMenuFoundation` | Returns the foundation. 
+`getDefaultFoundation() => MDCMenuFoundation` | Returns the foundation.
 
 ### `MDCMenuAdapter`
 
@@ -200,15 +189,15 @@ Method Signature | Description
 Method Signature | Description
 --- | ---
 `setAnchorCorner(corder: Corner) => void` | Sets the corner that the menu will be anchored to. See [constants.js](https://github.com/material-components/material-components-web/blob/cc299230728ba5a994866ebd31aaaf1a0f4cc87f/packages/mdc-menu/constants.js#L73)
-`setAnchorMargin(margin: AnchorMargin) => void` | Sets the distance from the anchor point that the menu should be shown. 
-`open({focusIndex: ?number}) => void` | Opens the menu. Optionally accepts an object with a `focusIndex` parameter to indicate which list item should receive focus when the menu is opened. 
-`close(evt: ?Event)` | Closes the menu. Optionally accepts the event to check if the target is disabled before closing the menu.  
-`isOpen() => boolean` | Returns a boolean indicating whether the menu is open. 
-`setQuickOpen(quickOpen: boolean) => void` | Sets whether the menu should open and close without animation when the `open`/`close` methods are called. 
+`setAnchorMargin(margin: AnchorMargin) => void` | Sets the distance from the anchor point that the menu should be shown.
+`open({focusIndex: ?number}) => void` | Opens the menu. Optionally accepts an object with a `focusIndex` parameter to indicate which list item should receive focus when the menu is opened.
+`close(evt: ?Event)` | Closes the menu. Optionally accepts the event to check if the target is disabled before closing the menu.
+`isOpen() => boolean` | Returns a boolean indicating whether the menu is open.
+`setQuickOpen(quickOpen: boolean) => void` | Sets whether the menu should open and close without animation when the `open`/`close` methods are called.
 
 ### Events
 
 Event Name | Data | Description
 --- | --- | ---
 `MDCMenu:selected` | `{detail: {item: HTMLElement, index: number}}` | Used to indicate when an element has been selected. This event also includes the item selected and the list index of that item.
-`MDCMenu:cancel` | none | Event emitted when the menu is closed with no selection made (e.g. if the user hits `Esc` while it's open, or clicks somewhere else on the page). 
+`MDCMenu:cancel` | none | Event emitted when the menu is closed with no selection made (e.g. if the user hits `Esc` while it's open, or clicks somewhere else on the page).
