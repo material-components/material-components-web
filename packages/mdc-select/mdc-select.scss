@@ -15,16 +15,13 @@
 //
 
 @import "./mixins";
+@import "./variables";
 @import "@material/animation/functions";
-@import "@material/animation/variables";
 @import "@material/typography/mixins";
 @import "@material/ripple/common";
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
-
-$mdc-select-arrow-padding: 26px;
-$mdc-select-label-padding: 16px;
-$mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timing-function;
+@import "./label/mdc-select-label";
 
 // postcss-bem-linter: define select
 .mdc-select {
@@ -37,7 +34,7 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
 
   @include mdc-select-dd-arrow-svg-bg_;
   @include mdc-select-ink-color(text-primary-on-light);
-  @include mdc-select-label-color(rgba(black, .6));
+  @include mdc-select-label-color(black, .6);
   @include mdc-select-bottom-line-color(rgba(black, .5));
 
   // Focused state colors
@@ -83,26 +80,6 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
     border: none;
     outline: none;
     overflow: hidden;
-  }
-
-  &__label {
-    @include mdc-rtl-reflexive-position(left, 0);
-
-    position: absolute;
-    bottom: 8px;
-    left: 0;
-    transform-origin: left top;
-    transition: $mdc-select-menu-transition;
-    pointer-events: none;
-    will-change: transform;
-
-    @include mdc-rtl(".mdc-select") {
-      transform-origin: right top;
-    }
-
-    &--float-above {
-      transform: translateY(-100%) scale(.75);
-    }
   }
 
   &__selected-text {
@@ -216,7 +193,7 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
 }
 
 .mdc-select--disabled {
-  @include mdc-select-label-color_(text-disabled-on-light);
+  @include mdc-select-floating-label-color(text-disabled-on-light);
   @include mdc-select-dd-arrow-svg-bg_(000000, .38);
 
   border-bottom-width: 1px;

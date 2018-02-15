@@ -38,6 +38,12 @@ class FakeMenu {
   }
 }
 
+class FakeLabel {
+  constructor() {
+    this.float = td.func('label.float');
+  }
+}
+
 function getFixture() {
   return bel`
     <div class="mdc-select" role="listbox">
@@ -65,14 +71,15 @@ test('attachTo returns a component instance', () => {
 
 function setupTest() {
   const menu = new FakeMenu();
+  const label = new FakeLabel();
   const fixture = getFixture();
   const surface = fixture.querySelector('.mdc-select__surface');
-  const label = fixture.querySelector('.mdc-select__label');
+  const labelEl = fixture.querySelector('.mdc-select__label');
   const bottomLine = fixture.querySelector('.mdc-select__bottom-line');
   const menuEl = fixture.querySelector('.mdc-select__menu');
-  const component = new MDCSelect(fixture, /* foundation */ undefined, () => menu);
+  const component = new MDCSelect(fixture, /* foundation */ undefined, () => menu, () => label);
 
-  return {menu, menuEl, fixture, surface, label, bottomLine, component};
+  return {menu, menuEl, fixture, surface, label, labelEl, bottomLine, component};
 }
 
 test('options returns the menu items', () => {
@@ -173,19 +180,11 @@ test('adapter#removeClass removes a class from the root element', () => {
   assert.isNotOk(fixture.classList.contains('foo'));
 });
 
-test('adapter#addClassToLabel adds a class to the label', () => {
+test('adapter#floatLabel adds a class to the label', () => {
   const {component, label} = setupTest();
 
-  component.getDefaultFoundation().adapter_.addClassToLabel('foo');
-  assert.isTrue(label.classList.contains('foo'));
-});
-
-test('adapter#removeClassFromLabel removes a class from the label', () => {
-  const {component, label} = setupTest();
-
-  label.classList.add('foo');
-  component.getDefaultFoundation().adapter_.removeClassFromLabel('foo');
-  assert.isFalse(label.classList.contains('foo'));
+  component.getDefaultFoundation().adapter_.floatLabel('foo');
+  td.verify(label.float('foo'));
 });
 
 test('adapter#addClassToBottomLine adds a class to the bottom line', () => {

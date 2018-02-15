@@ -167,10 +167,10 @@ CSS Class | Description
 
 To customize the colors of any part of the text-field, use the following mixins. We recommend you apply
 these mixins within CSS selectors like `.foo-text-field:not(.mdc-text-field--focused)` to select your unfocused text fields,
-and `.foo-tab.mdc-text-field--focused` to select your focused text-fields. To change the invalid state of your text fields,
+and `.foo-text-field.mdc-text-field--focused` to select your focused text-fields. To change the invalid state of your text fields,
 apply these mixins with CSS selectors such as `.foo-text-field.mdc-text-field--invalid`.
 
-> _NOTE_: the `mdc-line-ripple-color` mixin should be applied from the not focused class `foo-text-field:not(.mdc-tab--focused)`).
+> _NOTE_: the `mdc-line-ripple-color` mixin should be applied from the not focused class `foo-text-field:not(.mdc-text-field--focused)`).
 
 Mixin | Description
 --- | ---
