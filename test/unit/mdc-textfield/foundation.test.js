@@ -486,9 +486,7 @@ test('on validation attribute change should update invalid classes', () => {
   const {foundation, mockAdapter} = setupTest();
   let attributeMutate;
   td.when(mockAdapter.registerValidationAttributeChangeHandler(td.matchers.isA(Function)))
-    .thenDo((handler) => {
-      attributeMutate = handler;
-    });
+    .thenDo((handler) => attributeMutate = handler);
   foundation.init();
   attributeMutate([{attributeName: 'required'}]);
   td.verify(mockAdapter.removeClass('mdc-text-field--invalid'));
@@ -498,9 +496,7 @@ test('on attribute change non-whitelisted should not update classes', () => {
   const {foundation, mockAdapter} = setupTest();
   let attributeMutate;
   td.when(mockAdapter.registerValidationAttributeChangeHandler(td.matchers.isA(Function)))
-    .thenDo((handler) => {
-      attributeMutate = handler;
-    });
+    .thenDo((handler) => attributeMutate = handler);
   foundation.init();
   attributeMutate([{attributeName: 'form'}]);
   td.verify(mockAdapter.removeClass('mdc-text-field--invalid'), {times: 0});
