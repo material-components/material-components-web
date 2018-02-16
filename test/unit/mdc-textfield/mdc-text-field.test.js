@@ -373,13 +373,24 @@ test('#adapter.registerValidationAttributeChangeHandler adds an observer to the 
   assert.equal(component.observers_.length, 2);
 });
 
-test('#adapter.deregisterValidationAttributeChangeHandler removes observers from component', () => {
+test('#adapter.deregisterValidationAttributeChangeHandler disconnects observers from component', () => {
   const {component} = setupTest();
   const disconnect = td.func('ValidationDisconnect');
 
   component.observers_ = [{disconnect}];
   component.foundation_.adapter_.deregisterValidationAttributeChangeHandler();
   td.verify(disconnect());
+});
+
+test('#adapter.deregisterValidationAttributeChangeHandler disconnects all observers on component', () => {
+  const {component} = setupTest();
+  const disconnect1 = td.func('ValidationDisconnect1');
+  const disconnect2 = td.func('ValidationDisconnect2');
+
+  component.observers_ = [{disconnect: disconnect1}, {disconnect: disconnect2}];
+  component.foundation_.adapter_.deregisterValidationAttributeChangeHandler();
+  td.verify(disconnect1());
+  td.verify(disconnect2());
 });
 
 test('#adapter.getNativeInput returns the component input element', () => {

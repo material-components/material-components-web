@@ -482,13 +482,23 @@ test('on focus makes helper text visible to the screen reader', () => {
   td.verify(helperText.showToScreenReader());
 });
 
-test('on validation attribute change should update invalid classes', () => {
+test('on required validation attribute change should update invalid classes', () => {
   const {foundation, mockAdapter} = setupTest();
   let attributeMutate;
   td.when(mockAdapter.registerValidationAttributeChangeHandler(td.matchers.isA(Function)))
     .thenDo((handler) => attributeMutate = handler);
   foundation.init();
   attributeMutate([{attributeName: 'required'}]);
+  td.verify(mockAdapter.removeClass('mdc-text-field--invalid'));
+});
+
+test('on pattern validation attribute change should update invalid classes', () => {
+  const {foundation, mockAdapter} = setupTest();
+  let attributeMutate;
+  td.when(mockAdapter.registerValidationAttributeChangeHandler(td.matchers.isA(Function)))
+    .thenDo((handler) => attributeMutate = handler);
+  foundation.init();
+  attributeMutate([{attributeName: 'pattern'}]);
   td.verify(mockAdapter.removeClass('mdc-text-field--invalid'));
 });
 
