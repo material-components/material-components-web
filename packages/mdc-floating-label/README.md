@@ -2,7 +2,7 @@
 title: "Floating Label"
 layout: detail
 section: components
-excerpt: "The label is a text caption or description for the text field or select."
+excerpt: "An animated text caption for a text field or select."
 path: /catalog/input-controls/floating-label/
 -->
 
@@ -51,12 +51,12 @@ It's also possible to wrap `mdc-text-field__input` within a `<label>` to avoid d
 ```
 
 > _NOTE_: Only place a `mdc-floating-label` inside of a text field _if you plan on using
-> Javascript_. Otherwise, the label must go outside of the text-field, as shown below.
+> JavaScript_. Otherwise, the label must go outside of the text-field, as shown below.
 
 #### Single Line, CSS Only
 
 ```html
-<label for="text-field-no-js">TextField with no JS: </label>
+<label for="text-field-no-js">TextField with no JS:</label>
 <div class="mdc-text-field">
   <input type="text" id="text-field-no-js" class="mdc-text-field__input" placeholder="Hint text">
   <div class="mdc-text-field__bottom-line"></div>
@@ -75,33 +75,32 @@ CSS Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-floating-label-color($color)` | Customizes the color of the label.
+`mdc-floating-label-ink-color($color)` | Customizes the ink color of the label.
 `mdc-floating-label-fill-color($color)` | Customizes the fill color of the label.
-`mdc-floating-label-invalid-shake-keyframes($modifier, $positionY, $positionX, $scale)` | Creates a shake keyframe animation for invalid label shake. To be used with sass mixin `mdc-floating-label-shake($modifier)`.
-`mdc-floating-label-shake($modifier)` | Applies shake keyframe animation to label.
+`mdc-floating-label-shake-keyframes($modifier, $positionY, $positionX, $scale)` | Generates a CSS `@keyframes` at-rule for an invalid label shake. Used in conjunction with the `mdc-floating-label-shake-animation` mixin.
+`mdc-floating-label-shake-animation($modifier)` | Applies shake keyframe animation to label.
 `mdc-floating-label-float-position($positionY, $positionX, $scale)` | Sets position of label when floating.
 
 ### `MDCFloatingLabel`
 
 Method Signature | Description
 --- | ---
-`shake(isValid: boolean, isFocused: boolean) => void` | Shakes label when invalid
-`float(value: string, isFocused: boolean, isBadInput: boolean) => void` | Floats label above text field or select
-`getWidth() => number` | Returns the width of the label element
-
+`shake(isValid: boolean, isFocused: boolean) => void` | Label animation class is applied unless isValid or isFocused is true.
+`float(value: string, isFocused: boolean, isBadInput: boolean) => void` | Floats label above text field or select.
+`getWidth() => number` | Returns the width of the label element.
 
 ### `MDCFloatingLabelAdapter`
 
 Method Signature | Description
 --- | ---
-`addClass(className: string) => void` | Adds a class to the label element
-`removeClass(className: string) => void` | Removes a class from the label element
-`getWidth() => number` | Returns the width of the label element
+`addClass(className: string) => void` | Adds a class to the label element.
+`removeClass(className: string) => void` | Removes a class from the label element.
+`getWidth() => number` | Returns the width of the label element.
 
 ### `MDCFloatingLabelFoundation`
 
 Method Signature | Description
 --- | ---
-`getWidth() => number` | Returns the width of the label element
-`styleShake(isValid: boolean, isFocused: boolean)` | Styles the label to produce the shake effect when needed.
-`styleFloat(value: string, isFocused: boolean, isBadInput: boolean)` | Styles the label to float or defloat as necessary.
+`getWidth() => number` | Returns the width of the label element.
+`styleShake(isValid: boolean, isFocused: boolean)` | Will remove shake class if isValid _or_ isFocused is true, otherwise it will add shake class.
+`styleFloat(value: string, isFocused: boolean, isBadInput: boolean)` | Will add class to float label if isFocused, or if value is present. Otherwise it will remove classes unless isBadInput is true.

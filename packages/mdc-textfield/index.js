@@ -268,22 +268,16 @@ class MDCTextField extends MDCComponent {
           }
         },
         shakeLabel: (isValid, isFocused) => {
-          if (this.label_) {
-            this.label_.shake(isValid, isFocused);
-          }
+          this.label_.shake(isValid, isFocused);
         },
         floatLabel: (value, isFocused, isBadInput) => {
-          if (this.label_) {
-            this.label_.float(value, isFocused, isBadInput);
-          }
+          this.label_.float(value, isFocused, isBadInput);
         },
         hasLabel: () => {
           return !!this.label_;
         },
         getLabelWidth: () => {
-          if (this.label_) {
-            return this.label_.getWidth();
-          }
+          return this.label_.getWidth();
         },
       },
       this.getInputAdapterMethods_())),

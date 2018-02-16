@@ -76,7 +76,7 @@ test('#constructor sets disabled to false', () => {
   assert.isNotOk(foundation.isDisabled());
 });
 
-const setupValueTest = (value, optIsValid, optIsBadInput) => {
+const setupValueTest = (value, optIsValid, optIsBadInput, hasLabel) => {
   const {foundation, mockAdapter, helperText} = setupTest();
   const nativeInput = {
     value: value,
@@ -85,6 +85,9 @@ const setupValueTest = (value, optIsValid, optIsBadInput) => {
       badInput: optIsBadInput === undefined ? false : !!optIsBadInput,
     },
   };
+  if (hasLabel) {
+    td.when(mockAdapter.hasLabel()).thenReturn(true);
+  }
   td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
   foundation.init();
 
@@ -102,7 +105,7 @@ test('#getValue returns the field\'s value', () => {
 
 test('#setValue with non-empty value styles the label', () => {
   const value = 'new value';
-  const {foundation, nativeInput, mockAdapter} = setupValueTest('');
+  const {foundation, nativeInput, mockAdapter} = setupValueTest('', undefined, undefined, true);
   // Initial empty value should not float label.
   td.verify(mockAdapter.floatLabel('', /* isFocused */ false, /* isBadInput */ false), {times: 0});
   nativeInput.value = value;
@@ -112,7 +115,7 @@ test('#setValue with non-empty value styles the label', () => {
 });
 
 test('#setValue with empty value styles the label', () => {
-  const {foundation, nativeInput, mockAdapter} = setupValueTest('old value');
+  const {foundation, nativeInput, mockAdapter} = setupValueTest('old value', undefined, undefined, true);
   // Initial value should float the label.
   td.verify(mockAdapter.floatLabel('old value', /* isFocused */ false, /* isBadInput */ false));
   nativeInput.value = '';
@@ -123,7 +126,7 @@ test('#setValue with empty value styles the label', () => {
 
 test('#setValue valid and invalid input', () => {
   const {foundation, mockAdapter, nativeInput, helperText} =
-    setupValueTest('', /* isValid */ false);
+    setupValueTest('', /* isValid */ false, undefined, true);
 
   foundation.setValue('invalid');
   td.verify(mockAdapter.addClass(cssClasses.INVALID));
@@ -175,6 +178,7 @@ test('#setValid overrides native validation', () => {
 
 test('#setValid updates classes', () => {
   const {foundation, mockAdapter, helperText} = setupTest();
+  td.when(mockAdapter.hasLabel()).thenReturn(true);
 
   foundation.setValid(false);
   td.verify(mockAdapter.addClass(cssClasses.INVALID));
@@ -185,6 +189,26 @@ test('#setValid updates classes', () => {
   td.verify(mockAdapter.removeClass(cssClasses.INVALID));
   td.verify(helperText.setValidity(true));
   td.verify(mockAdapter.shakeLabel(/* isValid */ true, /* isFocused */ false));
+
+  // None of these is affected by setValid.
+  td.verify(mockAdapter.addClass(cssClasses.FOCUSED), {times: 0});
+  td.verify(mockAdapter.removeClass(cssClasses.FOCUSED), {times: 0});
+  td.verify(mockAdapter.addClass(cssClasses.DISABLED), {times: 0});
+  td.verify(mockAdapter.removeClass(cssClasses.DISABLED), {times: 0});
+});
+
+test('#setValid updates classes, but not label methods when hasLabel is false', () => {
+  const {foundation, mockAdapter, helperText} = setupTest();
+
+  foundation.setValid(false);
+  td.verify(mockAdapter.addClass(cssClasses.INVALID));
+  td.verify(helperText.setValidity(false));
+  td.verify(mockAdapter.shakeLabel(td.matchers.anything(), td.matchers.anything()), {times: 0});
+
+  foundation.setValid(true);
+  td.verify(mockAdapter.removeClass(cssClasses.INVALID));
+  td.verify(helperText.setValidity(true));
+  td.verify(mockAdapter.shakeLabel(td.matchers.anything(), td.matchers.anything()), {times: 0});
 
   // None of these is affected by setValid.
   td.verify(mockAdapter.addClass(cssClasses.FOCUSED), {times: 0});
@@ -328,6 +352,7 @@ test('#destroy removes event listeners', () => {
 
 test('#init floats label if the input contains a value', () => {
   const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasLabel()).thenReturn(true);
   td.when(mockAdapter.getNativeInput()).thenReturn({
     value: 'Pre-filled value',
     disabled: false,
@@ -337,6 +362,19 @@ test('#init floats label if the input contains a value', () => {
   });
   foundation.init();
   td.verify(mockAdapter.floatLabel('Pre-filled value', /* isFocused */ false, /* isBadInput */ false));
+});
+
+test('#init doesnot call floatLabel if there is no label and the input contains a value', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getNativeInput()).thenReturn({
+    value: 'Pre-filled value',
+    disabled: false,
+    validity: {
+      badInput: false,
+    },
+  });
+  foundation.init();
+  td.verify(mockAdapter.floatLabel(td.matchers.anything(), td.matchers.anything(), td.matchers.anything()), {times: 0});
 });
 
 test('#init does not float label if the input does not contain a value', () => {
@@ -397,7 +435,7 @@ test('#updateOutline does nothing if no outline is present', () => {
 test('on input styles label if input event occurs without any other events', () => {
   const {foundation, mockAdapter} = setupTest();
   let input;
-
+  td.when(mockAdapter.hasLabel()).thenReturn(true);
   td.when(mockAdapter.registerInputInteractionHandler('input', td.matchers.isA(Function)))
     .thenDo((evtType, handler) => {
       input = handler;
@@ -407,6 +445,19 @@ test('on input styles label if input event occurs without any other events', () 
   input();
   td.verify(mockAdapter.shakeLabel(/* isValid */ true, /* isFocused */ true));
   td.verify(mockAdapter.floatLabel(/* value */ '', /* isFocused */ true, /* isBadInput */ false));
+});
+
+test('on input doesnot styles label if input event occurs without any other events but hasLabel is false', () => {
+  const {foundation, mockAdapter} = setupTest();
+  let input;
+  td.when(mockAdapter.registerInputInteractionHandler('input', td.matchers.isA(Function)))
+    .thenDo((evtType, handler) => {
+      input = handler;
+    });
+  foundation.init();
+  input();
+  td.verify(mockAdapter.shakeLabel(td.matchers.anything(), td.matchers.anything()), {times: 0});
+  td.verify(mockAdapter.floatLabel(td.matchers.anything(), td.matchers.anything(), td.matchers.anything()), {times: 0});
 });
 
 test('on input does nothing if input event preceded by keydown event', () => {
@@ -464,6 +515,7 @@ test('on focus activates line ripple', () => {
 test('on focus styles label', () => {
   const {foundation, mockAdapter} = setupTest();
   let focus;
+  td.when(mockAdapter.hasLabel()).thenReturn(true);
   td.when(mockAdapter.registerInputInteractionHandler('focus', td.matchers.isA(Function)))
     .thenDo((evtType, handler) => {
       focus = handler;
@@ -472,6 +524,19 @@ test('on focus styles label', () => {
   td.verify(mockAdapter.floatLabel(/* value */ '', /* isFocused */ false, /* isBadInput */ false), {times: 0});
   focus();
   td.verify(mockAdapter.shakeLabel(/* isValid */ true, /* isFocused */ true));
+});
+
+test('on focus do not styles label if hasLabel is false', () => {
+  const {foundation, mockAdapter} = setupTest();
+  let focus;
+  td.when(mockAdapter.registerInputInteractionHandler('focus', td.matchers.isA(Function)))
+    .thenDo((evtType, handler) => {
+      focus = handler;
+    });
+  foundation.init();
+  focus();
+  td.verify(mockAdapter.floatLabel(td.matchers.anything(), td.matchers.anything(), td.matchers.anything()), {times: 0});
+  td.verify(mockAdapter.shakeLabel(td.matchers.anything(), td.matchers.anything()), {times: 0});
 });
 
 test('on focus makes helper text visible to the screen reader', () => {
@@ -513,19 +578,38 @@ test('on blur removes mdc-text-field--focused class', () => {
 
 test('on blur styles label when no input value present and validity checks pass', () => {
   const {blur, mockAdapter} = setupBlurTest();
+  td.when(mockAdapter.hasLabel()).thenReturn(true);
   td.verify(mockAdapter.floatLabel(/* value */ '', /* isFocused */ false), {times: 0});
   blur();
   td.verify(mockAdapter.shakeLabel(/* isValid */ true, /* isFocused */ false));
   td.verify(mockAdapter.floatLabel(/* value */ '', /* isFocused */ false, /* isBadInput */ false));
 });
 
+test('does not style label on blur when no input value present and validity checks pass and hasLabel is false', () => {
+  const {blur, mockAdapter} = setupBlurTest();
+  td.verify(mockAdapter.floatLabel(/* value */ '', /* isFocused */ false), {times: 0});
+  blur();
+  td.verify(mockAdapter.shakeLabel(td.matchers.anything(), td.matchers.anything()), {times: 0});
+  td.verify(mockAdapter.floatLabel(td.matchers.anything(), td.matchers.anything(), td.matchers.anything()), {times: 0});
+});
+
 test('on blur styles label if input has a value', () => {
   const {blur, nativeInput, mockAdapter} = setupBlurTest();
+  td.when(mockAdapter.hasLabel()).thenReturn(true);
   td.verify(mockAdapter.floatLabel(/* value */ '', /* isFocused */ false), {times: 0});
   nativeInput.value = 'non-empty value';
   blur();
   td.verify(mockAdapter.shakeLabel(/* isValid */ true, /* isFocused */ false));
   td.verify(mockAdapter.floatLabel('non-empty value', /* isFocused */ false, /* isBadInput */ false));
+});
+
+test('does not style label on blur if input has a value and hasLabel is false', () => {
+  const {blur, nativeInput, mockAdapter} = setupBlurTest();
+  td.verify(mockAdapter.floatLabel(/* value */ '', /* isFocused */ false), {times: 0});
+  nativeInput.value = 'non-empty value';
+  blur();
+  td.verify(mockAdapter.shakeLabel(td.matchers.anything(), td.matchers.anything()), {times: 0});
+  td.verify(mockAdapter.floatLabel(td.matchers.anything(), td.matchers.anything(), td.matchers.anything()), {times: 0});
 });
 
 test('on blur removes mdc-text-field--invalid if custom validity is false and' +

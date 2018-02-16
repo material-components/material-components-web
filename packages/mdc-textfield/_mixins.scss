@@ -14,13 +14,13 @@
 // limitations under the License.
 //
 
-@import "@material/line-ripple/mixins";
-@import "outline/mixins";
-@import "@material/floating-label/mixins";
-@import "helper-text/mixins";
-@import "./variables";
 @import "icon/mixins";
 @import "icon/variables";
+@import "helper-text/mixins";
+@import "outline/mixins";
+@import "./variables";
+@import "@material/line-ripple/mixins";
+@import "@material/floating-label/mixins";
 @import "@material/theme/mixins";
 
 @mixin mdc-text-field-outlined-corner-radius($radius) {
@@ -199,7 +199,7 @@
 
 @mixin mdc-text-field-outlined-dense_ {
   @include mdc-floating-label-float-position($mdc-text-field-outlined-dense-label-position-y, 0%, $mdc-text-field-dense-label-scale);
-  @include mdc-floating-label-shake(outlined-dense);
+  @include mdc-floating-label-shake-animation(outlined-dense);
 
   height: 48px;
 
@@ -221,7 +221,7 @@
   @include mdc-text-field-hover-outline-color($mdc-text-field-outlined-hover-border);
   @include mdc-text-field-focused-outline-color(primary);
   @include mdc-floating-label-float-position($mdc-text-field-outlined-label-position-y);
-  @include mdc-floating-label-shake(outlined);
+  @include mdc-floating-label-shake-animation(outlined);
 
   height: 56px;
   border: none;
@@ -267,7 +267,7 @@
   @include mdc-text-field-box-corner-radius($mdc-text-field-border-radius);
   @include mdc-text-field-box-fill-color($mdc-text-field-box-background);
   @include mdc-floating-label-float-position($mdc-text-field-box-label-position-y);
-  @include mdc-floating-label-shake(box);
+  @include mdc-floating-label-shake-animation(box);
 
   display: inline-flex;
   position: relative;
@@ -308,7 +308,7 @@
 
 @mixin mdc-text-field-box-dense_ {
   @include mdc-floating-label-float-position($mdc-text-field-box-dense-label-position-y, 0%, $mdc-text-field-dense-label-scale);
-  @include mdc-floating-label-shake(box-dense);
+  @include mdc-floating-label-shake-animation(box-dense);
 
   .mdc-text-field__input {
     padding: 12px 12px 0;
@@ -327,12 +327,12 @@
 
 @mixin mdc-text-field-outlined-with-leading-icon_ {
   @include mdc-floating-label-float-position($mdc-text-field-outlined-label-position-y, $mdc-text-field-outlined-with-leading-icon-label-position-x);
-  @include mdc-floating-label-shake(outlined-leading-icon);
+  @include mdc-floating-label-shake-animation(outlined-leading-icon);
 }
 
 @mixin mdc-text-field-outlined-dense-with-leading-icon_ {
   @include mdc-floating-label-float-position($mdc-text-field-outlined-dense-label-position-y, $mdc-text-field-outlined-dense-with-leading-icon-label-position-x, $mdc-text-field-dense-label-scale);
-  @include mdc-floating-label-shake(outlined-leading-icon-dense);
+  @include mdc-floating-label-shake-animation(outlined-leading-icon-dense);
 }
 
 @mixin mdc-text-field-with-trailing-icon_ {
@@ -402,7 +402,7 @@
   // Translate above the top of the input, and compensate for the amount of offset needed
   // to position the label within the bounds of the inset padding.
   @include mdc-floating-label-float-position($mdc-text-field-textarea-label-position-y, 0%, $mdc-text-field-textarea-label-scale);
-  @include mdc-floating-label-shake(textarea);
+  @include mdc-floating-label-shake-animation(textarea);
 
   $padding-inset: 16px;
   $label-offset-y: $padding-inset + 2;
@@ -489,11 +489,3 @@
     @include mdc-theme-prop(color, $color);
   }
 }
-
-@include mdc-floating-label-invalid-shake-keyframes(box, $mdc-text-field-box-label-position-y);
-@include mdc-floating-label-invalid-shake-keyframes(box-dense, $mdc-text-field-box-dense-label-position-y, 0%, $mdc-text-field-dense-label-scale);
-@include mdc-floating-label-invalid-shake-keyframes(outlined, $mdc-text-field-outlined-label-position-y);
-@include mdc-floating-label-invalid-shake-keyframes(outlined-dense, $mdc-text-field-outlined-dense-label-position-y, 0%, $mdc-text-field-dense-label-scale);
-@include mdc-floating-label-invalid-shake-keyframes(outlined-leading-icon, $mdc-text-field-outlined-label-position-y, $mdc-text-field-outlined-with-leading-icon-label-position-x);
-@include mdc-floating-label-invalid-shake-keyframes(outlined-leading-icon-dense, $mdc-text-field-outlined-dense-label-position-y, $mdc-text-field-outlined-dense-with-leading-icon-label-position-x, $mdc-text-field-dense-label-scale);
-@include mdc-floating-label-invalid-shake-keyframes(textarea, $mdc-text-field-textarea-label-position-y, 0%, $mdc-text-field-textarea-label-scale);

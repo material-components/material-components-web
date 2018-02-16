@@ -44,7 +44,8 @@ class MDCFloatingLabel extends MDCComponent {
   }
 
   /**
-   * Styles the label to float or defloat as necessary.
+   * Styles label to float if isFocused, or if value is present.
+   * Otherwise it will style to defloat unless isBadInput is true.
    * @param {string} value The value of the input.
    * @param {boolean} isFocused Whether the input is focused.
    * @param {boolean} isBadInput The input's `validity.badInput` value.
@@ -64,11 +65,11 @@ class MDCFloatingLabel extends MDCComponent {
    * @return {!MDCFloatingLabelFoundation}
    */
   getDefaultFoundation() {
-    return new MDCFloatingLabelFoundation(/** @type {!MDCFloatingLabelAdapter} */ (Object.assign({
+    return new MDCFloatingLabelFoundation({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       getWidth: () => this.root_.offsetWidth,
-    })));
+    });
   }
 }
 

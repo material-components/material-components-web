@@ -44,5 +44,7 @@
 
 @at-root {
   @include mdc-floating-label-float-position($mdc-floating-label-position-y);
-  @include mdc-floating-label-shake(standard);
+  @include mdc-floating-label-shake-animation(standard);
 }
+
+@include mdc-floating-label-shake-keyframes(standard, $mdc-floating-label-position-y);

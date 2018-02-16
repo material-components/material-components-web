@@ -111,7 +111,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
   init() {
     this.adapter_.addClass(MDCTextFieldFoundation.cssClasses.UPGRADED);
     // Ensure label does not collide with any pre-filled value.
-    if (this.getValue()) {
+    if (this.adapter_.hasLabel() && this.getValue()) {
       this.adapter_.floatLabel(
         this.getValue(), this.isFocused_, this.isBadInput_());
     }
@@ -179,9 +179,11 @@ class MDCTextFieldFoundation extends MDCFoundation {
     if (this.outline_) {
       this.updateOutline();
     }
-    this.adapter_.shakeLabel(this.isValid(), this.isFocused_);
-    this.adapter_.floatLabel(
-      this.getValue(), this.isFocused_, this.isBadInput_());
+    if (this.adapter_.hasLabel()) {
+      this.adapter_.shakeLabel(this.isValid(), this.isFocused_);
+      this.adapter_.floatLabel(
+        this.getValue(), this.isFocused_, this.isBadInput_());
+    }
     if (this.helperText_) {
       this.helperText_.showToScreenReader();
     }
@@ -220,9 +222,11 @@ class MDCTextFieldFoundation extends MDCFoundation {
     const isValid = this.isValid();
     this.styleValidity_(isValid);
     this.styleFocused_(this.isFocused_);
-    this.adapter_.shakeLabel(this.isValid(), this.isFocused_);
-    this.adapter_.floatLabel(
-      this.getValue(), this.isFocused_, this.isBadInput_());
+    if (this.adapter_.hasLabel()) {
+      this.adapter_.shakeLabel(this.isValid(), this.isFocused_);
+      this.adapter_.floatLabel(
+        this.getValue(), this.isFocused_, this.isBadInput_());
+    }
     if (shouldRemoveLabelFloat) {
       this.receivedUserInput_ = false;
     }
@@ -242,9 +246,11 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.getNativeInput_().value = value;
     const isValid = this.isValid();
     this.styleValidity_(isValid);
-    this.adapter_.shakeLabel(isValid, this.isFocused_);
-    this.adapter_.floatLabel(
-      this.getValue(), this.isFocused_, this.isBadInput_());
+    if (this.adapter_.hasLabel()) {
+      this.adapter_.shakeLabel(isValid, this.isFocused_);
+      this.adapter_.floatLabel(
+        this.getValue(), this.isFocused_, this.isBadInput_());
+    }
   }
 
   /**
@@ -265,7 +271,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
     // Retrieve from the getter to ensure correct logic is applied.
     isValid = this.isValid();
     this.styleValidity_(isValid);
-    this.adapter_.shakeLabel(isValid, this.isFocused_);
+    if (this.adapter_.hasLabel()) {
+      this.adapter_.shakeLabel(isValid, this.isFocused_);
+    }
   }
 
   /**

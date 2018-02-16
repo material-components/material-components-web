@@ -24,8 +24,8 @@
   }
 }
 
-@mixin mdc-floating-label-invalid-shake-keyframes($modifier, $positionY, $positionX: 0%, $scale: .75) {
-  @keyframes invalid-shake-float-above-#{$modifier} {
+@mixin mdc-floating-label-shake-keyframes($modifier, $positionY, $positionX: 0%, $scale: .75) {
+  @keyframes shake-float-above-#{$modifier} {
     0% {
       transform: translateX(calc(0 - #{$positionX})) translateY(-#{$positionY}) scale(#{$scale});
     }
@@ -46,8 +46,6 @@
   }
 }
 
-@include mdc-floating-label-invalid-shake-keyframes(standard, $mdc-floating-label-position-y);
-
 @mixin mdc-floating-label-float-position($positionY, $positionX: 0%, $scale: .75) {
   @if $positionX == 0 {
     .mdc-floating-label--float-above {
@@ -64,9 +62,9 @@
   }
 }
 
-@mixin mdc-floating-label-shake($modifier) {
+@mixin mdc-floating-label-shake-animation($modifier) {
   .mdc-floating-label--shake {
-    animation: invalid-shake-float-above-#{$modifier} 250ms 1;
+    animation: shake-float-above-#{$modifier} 250ms 1;
   }
 }
 

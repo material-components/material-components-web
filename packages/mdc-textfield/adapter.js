@@ -148,14 +148,19 @@ class MDCTextFieldAdapter {
   setLineRippleTransformOrigin(normalizedX) {}
 
   /**
-   * Shakes the floating label.
+   * Only implement if label exists.
+   * Should shake the floating label if input is _not_ focused and _not_ valid,
+   * otherwise it should shake.
    * @param {boolean} isValid
    * @param {boolean} isFocused
    */
   shakeLabel(isValid, isFocused) {}
 
   /**
-   * Floats the floating label element above the text-field
+   * Only implement if label exists.
+   * Floats the floating label element above the text-field if there is a value
+   * or is focused. Otherwise it should go back to resting state unless isBadInput
+   * is true.
    * @param {string} value
    * @param {boolean} isFocused
    * @param {boolean} isBadInput
@@ -163,13 +168,14 @@ class MDCTextFieldAdapter {
   floatLabel(value, isFocused, isBadInput) {}
 
   /**
-   * Sets the transform origin of the line ripple.
+   * Returns true if label element exists, false if it doesn't.
    * @return {boolean}
    */
   hasLabel() {}
 
   /**
-   * Get width of label in pixels
+   * Only implement if label exists.
+   * Returns width of label in pixels.
    * @return {number}
    */
   getLabelWidth() {}
