@@ -3,14 +3,20 @@
 
 // Customization for the demo
 .custom-demo {
-  @include mdc-tabz-background(#ffdbcf);
-  @include mdc-tabz-active-color(#442b2d);
+  @include mdc-tabz-colors($background: #ffdbcf);
+  @include mdc-tabz-active-colors($color: #442b2d);
 
-  @include mdc-tabz-indicator-customization {
+  @include mdc-tabz-indicator-icon {
     color: #eaa4a4;
 
     .custom-indicator {
       font-size: 34px;
     }
   }
+}
+
+.dark-demo {
+  @include mdc-tabz-colors($background: $mdc-purple, $color: white);
+  @include mdc-tabz-active-colors($background: $mdc-purple, $color: white);
+  @include mdc-tabz-indicator($color: white);
 }

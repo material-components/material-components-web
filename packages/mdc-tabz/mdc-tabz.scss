@@ -9,15 +9,49 @@ $mdc-dark-gray: rgba(0, 0, 0, .87);
 $mdc-height: 2px;
 $mdc-color: $mdc-purple;
 
-@mixin mdc-tabz-background($color: none) {
+@mixin mdc-tabz-colors($color: null, $background: null) {
   .mdc-tabz {
-    background: $color;
+    @if ($background) {
+      background: $background;
+    }
+  }
+
+  .mdc-tabz__content {
+    @if ($color) {
+      color: $color;
+    }
   }
 }
 
-@mixin mdc-tabz-active-color($color: $mdc-purple) {
+@mixin mdc-tabz-active-colors($color: null, $background: null) {
   .mdc-tabz--active {
-    color: $color;
+    @if ($background) {
+      background: $background;
+    }
+  }
+
+  .mdc-tabz--active .mdc-tabz__content {
+    @if ($color) {
+      color: $color;
+    }
+  }
+}
+
+@mixin mdc-tabz-indicator($color: null, $height: null) {
+  .mdc-tabz-indicator {
+    @if ($color) {
+      background: $color;
+    }
+
+    @if ($height) {
+      height: $height;
+    }
+  }
+}
+
+@mixin mdc-tabz-indicator-icon {
+  .mdc-tabz-indicator--icon {
+    @content;
   }
 }
 
@@ -38,7 +72,6 @@ $mdc-color: $mdc-purple;
   box-sizing: border-box;
   height: 48px;
   padding: 0 24px;
-  color: $mdc-gray;
   font-family: Roboto, sans-serif;
   font-size: 14px;
   font-weight: 500;
@@ -60,11 +93,13 @@ $mdc-color: $mdc-purple;
     position: relative;
     justify-content: center;
     opacity: .6;
-    z-index: 2;
+    color: $mdc-gray;
+    z-index: 1;
   }
 
   &--active &__content {
     opacity: 1;
+    color: $mdc-color;
   }
 
   &--animating-deactivate &__content {
@@ -101,6 +136,7 @@ $mdc-color: $mdc-purple;
     width: 100%;
     height: 100%;
     overflow: hidden;
+    z-index: 2;
   }
 
   &__label {
@@ -137,14 +173,13 @@ $mdc-color: $mdc-purple;
  * Top-Level Element
  */
 .mdc-tabz-bar {
-  display: flex;
+  display: block;
   position: relative;
   border-bottom: 1px solid rgba(0, 0, 0, .12);
-  background: white;
+  overflow-x: scroll;
 
-  &--scrollable {
-    display: block;
-    overflow-x: scroll;
+  &::-webkit-scrollbar {
+    display: none;
   }
 
   &--scrollable-fixed {
@@ -168,12 +203,9 @@ $mdc-color: $mdc-purple;
     }
   }
 
-  /** For scrolling */
   &__container {
     display: flex;
     position: relative;
-    width: 100%;
-    max-width: 9999999px;
   }
 
   &--scrollable-fixed &__container {
@@ -191,7 +223,6 @@ $mdc-color: $mdc-purple;
   background-color: $mdc-purple;
   opacity: 0;
   will-change: transform;
-  z-index: 1;
 
   &--upgraded {
     opacity: 1;
@@ -201,13 +232,22 @@ $mdc-color: $mdc-purple;
     transition: 250ms transform cubic-bezier(0, 0, .2, 1);
   }
 
-  &--custom {
+  &--animating-icon {
+    transition: 125ms opacity linear;
+  }
+
+  &--custom,
+  &--icon {
     display: flex;
     align-items: center;
     justify-content: center;
     width: inherit;
     height: 100%;
     background: none;
+  }
+
+  &--icon-hide {
+    opacity: 0;
   }
 }
 

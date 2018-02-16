@@ -4,11 +4,12 @@ import {MDCTabzIndicator} from '../tabz-indicator';
 const strings = {
   TABZ_SELECTOR: '.mdc-tabz',
   RESIZE_INDICATOR_SELECTOR: '.mdc-tabz-indicator',
+  CONTAINER_SELECTOR: '.mdc-tabz-bar__container',
 };
 
 const numbers = {
-  // TODO: Determine an appropriate magic number
-  PIXEL_TOLERANCE: 0.4,
+  // TODO: Determine an appropriate magic number or if this is necessary
+  PIXEL_TOLERANCE: 0.6,
 };
 
 class MDCTabzBar {
@@ -16,8 +17,13 @@ class MDCTabzBar {
     return new MDCTabzBar(root);
   }
 
+  get activeTab() {
+    return this.tabz_[this.activeIndex_];
+  }
+
   constructor(root) {
     this.root_ = root;
+    this.container_ = root.querySelector(strings.CONTAINER_SELECTOR);
     const indicatorRoot = this.root_.querySelector(strings.RESIZE_INDICATOR_SELECTOR);
     this.indicator_ = MDCTabzIndicator.attachTo(indicatorRoot);
     const tabz = Array.from(this.root_.querySelectorAll(strings.TABZ_SELECTOR));
@@ -25,8 +31,21 @@ class MDCTabzBar {
     this.handleTabChange_ = (e) => this.handleTabChange(e);
     this.handleResize_ = () => this.handleResize();
     this.handleClick_ = (e) => this.handleClick(e);
-    this.root_.addEventListener('tabchange', this.handleTabChange_);
-    this.root_.addEventListener('click', this.handleClick_);
+
+    this.adapter_ = {
+      getContainerBoundingClientRect: () =>
+        this.container_.getBoundingClientRect(),
+      registerWindowEventListener: (evtType, handler) =>
+        window.addEventListener(evtType, handler),
+      deregisterWindowEventListener: (evtType, handler) =>
+        window.removeEventListener(evtType, handler),
+      registerEventListener: (evtType, handler) =>
+        this.root_.addEventListener(evtType, handler),
+      deregisterEventListener: (evtType, handler) =>
+        this.root_.removeEventListener(evtType, handler),
+    };
+
+    this.adapter_.registerEventListener('click', this.handleClick_);
 
     /** @private {number} */
     this.activeIndex_ = this.getActiveTabIndex_();
@@ -35,14 +54,14 @@ class MDCTabzBar {
     this.bbox_;
 
     /** @private {number} The ID of the requestAnimationFrame */
-    this.layoutFrame_ = 0;
+    this.updateFrame_ = 0;
 
     this.init();
   }
 
   init() {
-    this.handleResize();
-    this._adapterAddWindowEventListener('resize', this.handleResize_);
+    this.updateIndicator();
+    this.adapter_.registerWindowEventListener('resize', this.handleResize_);
   }
 
   /**
@@ -64,33 +83,6 @@ class MDCTabzBar {
   }
 
   /**
-   * Returns the active tab
-   * @return {MDCTabz}
-   * @private
-   */
-  getActiveTab_() {
-    return this.tabz_[this.activeIndex_];
-  }
-
-  /**
-   * Get the bounding box of the root element
-   * @return {!ClientRect}
-   * @private
-   */
-  _adapterGetBoundingClientRect() {
-    return this.root_.getBoundingClientRect();
-  }
-
-  /**
-   * Adds an event listener to the window object
-   * @param {string} evtType The event name to bind
-   * @param {!EventListener} handler The event handler
-   */
-  _adapterAddWindowEventListener(evtType, handler) {
-    window.addEventListener(evtType, handler);
-  }
-
-  /**
    * Handles the click event
    * @param {!Event} e The event object from the click event
    */
@@ -102,11 +94,7 @@ class MDCTabzBar {
    * Handles the window resize event
    */
   handleResize() {
-    const bbox = this.getActiveTab_().getBoundingClientRect();
-    if (!this.bboxIsEqual_(bbox)) {
-      this.bbox_ = bbox;
-      this.throttleIndicatorResize(bbox);
-    }
+    this.throttleIndicatorUpdates();
   }
 
   /**
@@ -117,10 +105,11 @@ class MDCTabzBar {
     if (index < 0 || index >= this.tabz_.length || index === this.activeIndex_) {
       return;
     }
-    this.getActiveTab_().deactivate();
+    this.activeTab.deactivate();
     this.activeIndex_ = index;
-    this.getActiveTab_().activate();
-    this.updateIndicator(this.getActiveTab_().getBoundingClientRect());
+    this.activeTab.activate();
+    this.calculateIndicatorPosition();
+    this.indicator_.animatePosition();
   }
 
   /**
@@ -129,44 +118,45 @@ class MDCTabzBar {
    * @return {boolean}
    * @private
    */
-  bboxIsEqual_(bbox) {
+  bboxDeltaIsPerceptible_(bbox) {
     if (!this.bbox_) {
-      return false;
+      return true;
     }
     if (Math.abs(bbox.width - this.bbox_.width) > numbers.PIXEL_TOLERANCE) {
-      return false;
+      return true;
     }
     if (Math.abs(bbox.x - this.bbox_.x) > numbers.PIXEL_TOLERANCE) {
-      return false;
+      return true;
     }
-    return true;
+    return false;
   }
 
-  calculateIndicatorPosition(activeBbox) {
-    const barBbox = this._adapterGetBoundingClientRect();
-    return activeBbox.left - barBbox.left;
-  }
-
-  /**
-   * Updates the indicator size
-   * @param {!ClientRect} activeBbox The bounding box of the active element
-   * @param {boolean=} shouldAnimate Whether the update should be animated (defaults to true)
-   */
-  updateIndicator(activeBbox, shouldAnimate=true) {
-    this.indicator_.updatePosition(activeBbox, this._adapterGetBoundingClientRect(), shouldAnimate);
+  calculateIndicatorPosition() {
+    const bbox = this.activeTab.getBoundingClientRect();
+    if (this.bboxDeltaIsPerceptible_(bbox)) {
+      this.bbox_ = bbox;
+      this.indicator_.calculatePosition(this.bbox_, this.adapter_.getContainerBoundingClientRect());
+    }
   }
 
   /**
    * Throttles the indicator updates to only occur once per frame
-   * @param {!ClientRect} activeBbox The bounding box of the active element
    */
-  throttleIndicatorResize(activeBbox) {
-    if (this.layoutFrame_ !== 0) {
-      cancelAnimationFrame(this.layoutFrame_);
+  throttleIndicatorUpdates() {
+    if (this.updateFrame_ !== 0) {
+      cancelAnimationFrame(this.updateFrame_);
     }
-    this.layoutFrame_ = requestAnimationFrame(() => {
-      this.updateIndicator(activeBbox, false);
+    this.updateFrame_ = requestAnimationFrame(() => {
+      this.updateIndicator();
     });
+  }
+
+  /**
+   * Updates the indicator size
+   */
+  updateIndicator() {
+    this.calculateIndicatorPosition();
+    this.indicator_.updatePosition();
   }
 }
 

@@ -126,33 +126,36 @@
       <fieldset>
         <legend class="mdc-typography--title">Basic Tab Bar</legend>
         <nav data-name="simpleBar" class="mdc-tabz-bar">
-          <span class="mdc-tabz">
-            <span class="mdc-tabz__content">
-              <span class="mdc-tabz__label">Item One</span>
+          <div class="mdc-tabz-bar__container">
+            <span class="mdc-tabz">
+              <span class="mdc-tabz__content">
+                <span class="mdc-tabz__label">Item One</span>
+              </span>
+              <span class="mdc-tabz__ripple"></span>
             </span>
-            <span class="mdc-tabz__ripple"></span>
-          </span>
-          <span class="mdc-tabz mdc-tabz--active">
-            <span class="mdc-tabz__content">
-              <span class="mdc-tabz__label">Item Two</span>
+            <span class="mdc-tabz mdc-tabz--active">
+              <span class="mdc-tabz__content">
+                <span class="mdc-tabz__label">Item Two</span>
+              </span>
+              <span class="mdc-tabz__ripple"></span>
             </span>
-            <span class="mdc-tabz__ripple"></span>
-          </span>
-          <span class="mdc-tabz">
-            <span class="mdc-tabz__content">
-              <span class="mdc-tabz__label">Item Three</span>
+            <span class="mdc-tabz">
+              <span class="mdc-tabz__content">
+                <span class="mdc-tabz__label">Item Three</span>
+              </span>
+              <span class="mdc-tabz__ripple"></span>
             </span>
-            <span class="mdc-tabz__ripple"></span>
-          </span>
-          <span class="mdc-tabz-indicator"></span>
+            <span class="mdc-tabz-indicator"></span>
+          </div>
         </nav>
       </fieldset>
     </section>
 
     <section>
-        <fieldset>
-          <legend class="mdc-typography--title">Basic Tab Bar with Many Tabs</legend>
-          <nav data-name="simpleBar" class="mdc-tabz-bar">
+      <fieldset>
+        <legend class="mdc-typography--title">Basic Tab Bar with Many Tabs</legend>
+        <nav data-name="simpleBarWithManyTabs" class="mdc-tabz-bar">
+          <div class="mdc-tabz-bar__container">
             <span class="mdc-tabz">
               <span class="mdc-tabz__content">
                 <span class="mdc-tabz__label">Item One</span>
@@ -213,73 +216,69 @@
               </span>
               <span class="mdc-tabz__ripple"></span>
             </span>
+            <span class="mdc-tabz">
+              <span class="mdc-tabz__content">
+                <span class="mdc-tabz__label">Item Eleven</span>
+              </span>
+              <span class="mdc-tabz__ripple"></span>
+            </span>
+            <span class="mdc-tabz">
+              <span class="mdc-tabz__content">
+                <span class="mdc-tabz__label">Item Twelve</span>
+              </span>
+              <span class="mdc-tabz__ripple"></span>
+            </span>
+            <span class="mdc-tabz">
+              <span class="mdc-tabz__content">
+                <span class="mdc-tabz__label">Item Thirteen</span>
+              </span>
+              <span class="mdc-tabz__ripple"></span>
+            </span>
+            <span class="mdc-tabz">
+              <span class="mdc-tabz__content">
+                <span class="mdc-tabz__label">Item Fourteen</span>
+              </span>
+              <span class="mdc-tabz__ripple"></span>
+            </span>
+            <span class="mdc-tabz">
+              <span class="mdc-tabz__content">
+                <span class="mdc-tabz__label">Item Fifteen</span>
+              </span>
+              <span class="mdc-tabz__ripple"></span>
+            </span>
             <span class="mdc-tabz-indicator"></span>
-          </nav>
-        </fieldset>
-      </section>
-
-    <section>
-      <fieldset>
-        <legend class="mdc-typography--title">Basic Tab Bar w/ Custom Indicator and Styles</legend>
-        <nav data-name="simpleBar" class="mdc-tabz-bar custom-demo">
-          <span class="mdc-tabz mdc-tabz--active">
-            <span class="mdc-tabz__content">
-              <span class="mdc-tabz__label">Item One</span>
-            </span>
-            <span class="mdc-tabz__ripple"></span>
-          </span>
-          <span class="mdc-tabz">
-            <span class="mdc-tabz__content">
-              <span class="mdc-tabz__label">Item Two</span>
-            </span>
-            <span class="mdc-tabz__ripple"></span>
-          </span>
-          <span class="mdc-tabz">
-            <span class="mdc-tabz__content">
-              <span class="mdc-tabz__label">Item Three</span>
-            </span>
-            <span class="mdc-tabz__ripple"></span>
-          </span>
-          <span class="mdc-tabz-indicator mdc-tabz-indicator--custom">
-            <svg xmlns="http://www.w3.org/2000/svg" width="40px" height="40px" viewBox="-11.5 -10.23174 23 20.46348">
-              <title>React Logo</title>
-              <circle cx="0" cy="0" r="2.05" fill="#61dafb"/>
-              <g stroke="#61dafb" stroke-width="1" fill="none">
-                <ellipse rx="11" ry="4.2"/>
-                <ellipse rx="11" ry="4.2" transform="rotate(60)"/>
-                <ellipse rx="11" ry="4.2" transform="rotate(120)"/>
-              </g>
-            </svg>
-          </span>
+          </div>
         </nav>
       </fieldset>
     </section>
 
     <section>
       <fieldset>
-        <legend class="mdc-typography--title">Basic Tab Bar w/ Custom Shape and Styles</legend>
-        <nav data-name="simpleBar" class="mdc-tabz-bar custom-shape">
-          <span class="mdc-tabz mdc-tabz--active">
-            <span class="mdc-tabz__content">
-              <span class="mdc-tabz__label">Item One</span>
+        <legend class="mdc-typography--title">Basic Tab Bar w/ Custom Indicator and Styles</legend>
+        <nav data-name="simpleBarWithCustomIndicator" class="mdc-tabz-bar custom-demo">
+          <div class="mdc-tabz-bar__container">
+            <span class="mdc-tabz mdc-tabz--active">
+              <span class="mdc-tabz__content">
+                <span class="mdc-tabz__label">Item One</span>
+              </span>
+              <span class="mdc-tabz__ripple"></span>
             </span>
-            <span class="mdc-tabz__ripple"></span>
-          </span>
-          <span class="mdc-tabz">
-            <span class="mdc-tabz__content">
-              <span class="mdc-tabz__label">Item Two</span>
+            <span class="mdc-tabz">
+              <span class="mdc-tabz__content">
+                <span class="mdc-tabz__label">Item Two</span>
+              </span>
+              <span class="mdc-tabz__ripple"></span>
             </span>
-            <span class="mdc-tabz__ripple"></span>
-          </span>
-          <span class="mdc-tabz">
-            <span class="mdc-tabz__content">
-              <span class="mdc-tabz__label">Item Three</span>
+            <span class="mdc-tabz">
+              <span class="mdc-tabz__content">
+                <span class="mdc-tabz__label">Item Three</span>
+              </span>
+              <span class="mdc-tabz__ripple"></span>
             </span>
-            <span class="mdc-tabz__ripple"></span>
-          </span>
-          <span class="mdc-tabz-indicator mdc-tabz-indicator--custom">
-            <canvas id="canvas" width="300px" height="48px"></canvas>
-          </span>
+            <span class="mdc-tabz-indicator mdc-tabz-indicator--icon">
+              <i class="material-icons custom-indicator" aria-hidden="true">change_history</i>
+            </span>
+          </div>
         </nav>
       </fieldset>
     </section>
@@ -288,25 +287,27 @@
       <fieldset>
         <legend class="mdc-typography--title">Basic Tab Bar w/ Icons</legend>
         <nav data-name="simpleBarWithIcons" class="mdc-tabz-bar">
-          <span class="mdc-tabz">
-            <span class="mdc-tabz__content">
-              <i class="material-icons mdc-tabz__icon" aria-hidden="true">call</i>
+          <div class="mdc-tabz-bar__container">
+            <span class="mdc-tabz">
+              <span class="mdc-tabz__content">
+                <i class="material-icons mdc-tabz__icon" aria-hidden="true">call</i>
+              </span>
+              <span class="mdc-tabz__ripple"></span>
             </span>
-            <span class="mdc-tabz__ripple"></span>
-          </span>
-          <span class="mdc-tabz  mdc-tabz--active">
-            <span class="mdc-tabz__content">
-              <i class="material-icons mdc-tabz__icon" aria-hidden="true">favorite</i>
+            <span class="mdc-tabz  mdc-tabz--active">
+              <span class="mdc-tabz__content">
+                <i class="material-icons mdc-tabz__icon" aria-hidden="true">favorite</i>
+              </span>
+              <span class="mdc-tabz__ripple"></span>
             </span>
-            <span class="mdc-tabz__ripple"></span>
-          </span>
-          <span class="mdc-tabz">
-            <span class="mdc-tabz__content">
-              <i class="material-icons mdc-tabz__icon" aria-hidden="true">place</i>
+            <span class="mdc-tabz">
+              <span class="mdc-tabz__content">
+                <i class="material-icons mdc-tabz__icon" aria-hidden="true">place</i>
+              </span>
+              <span class="mdc-tabz__ripple"></span>
             </span>
-            <span class="mdc-tabz__ripple"></span>
-          </span>
-          <span class="mdc-tabz-indicator"></span>
+            <span class="mdc-tabz-indicator"></span>
+          </div>
         </nav>
       </fieldset>
     </section>
@@ -315,28 +316,30 @@
       <fieldset>
         <legend class="mdc-typography--title">Basic Tab Bar w/ Icons and Labels</legend>
         <nav data-name="simpleBarWithIconsAndLabels" class="mdc-tabz-bar">
-          <span class="mdc-tabz">
-            <span class="mdc-tabz__content">
-              <i class="material-icons mdc-tabz__icon" aria-hidden="true">call</i>
-              <span class="mdc-tabz__label">Recents</span>
+          <div class="mdc-tabz-bar__container">
+            <span class="mdc-tabz">
+              <span class="mdc-tabz__content">
+                <i class="material-icons mdc-tabz__icon" aria-hidden="true">call</i>
+                <span class="mdc-tabz__label">Recents</span>
+              </span>
+              <span class="mdc-tabz__ripple"></span>
             </span>
-            <span class="mdc-tabz__ripple"></span>
-          </span>
-          <span class="mdc-tabz  mdc-tabz--active">
-            <span class="mdc-tabz__content">
-              <i class="material-icons mdc-tabz__icon" aria-hidden="true">favorite</i>
-              <span class="mdc-tabz__label">Favorites</span>
+            <span class="mdc-tabz  mdc-tabz--active">
+              <span class="mdc-tabz__content">
+                <i class="material-icons mdc-tabz__icon" aria-hidden="true">favorite</i>
+                <span class="mdc-tabz__label">Favorites</span>
+              </span>
+              <span class="mdc-tabz__ripple"></span>
             </span>
-            <span class="mdc-tabz__ripple"></span>
-          </span>
-          <span class="mdc-tabz">
-            <span class="mdc-tabz__content">
-              <i class="material-icons mdc-tabz__icon" aria-hidden="true">place</i>
-              <span class="mdc-tabz__label">Nearby</span>
+            <span class="mdc-tabz">
+              <span class="mdc-tabz__content">
+                <i class="material-icons mdc-tabz__icon" aria-hidden="true">place</i>
+                <span class="mdc-tabz__label">Nearby</span>
+              </span>
+              <span class="mdc-tabz__ripple"></span>
             </span>
-            <span class="mdc-tabz__ripple"></span>
-          </span>
-          <span class="mdc-tabz-indicator"></span>
+            <span class="mdc-tabz-indicator"></span>
+          </div>
         </nav>
       </fieldset>
     </section>
@@ -345,28 +348,62 @@
       <fieldset>
         <legend class="mdc-typography--title">Basic Tab Bar w/ Icons and Text on Two Lines</legend>
         <nav data-name="simpleBarWithTwoLineIconsAndLabels" class="mdc-tabz-bar mdc-tabz-bar--two-lines">
-          <span class="mdc-tabz">
-            <span class="mdc-tabz__content">
-              <i class="material-icons mdc-tabz__icon" aria-hidden="true">call</i>
-              <span class="mdc-tabz__label">Recents</span>
+          <div class="mdc-tabz-bar__container">
+            <span class="mdc-tabz">
+              <span class="mdc-tabz__content">
+                <i class="material-icons mdc-tabz__icon" aria-hidden="true">call</i>
+                <span class="mdc-tabz__label">Recents</span>
+              </span>
+              <span class="mdc-tabz__ripple"></span>
             </span>
-            <span class="mdc-tabz__ripple"></span>
-          </span>
-          <span class="mdc-tabz mdc-tabz--active">
-            <span class="mdc-tabz__content">
-              <i class="material-icons mdc-tabz__icon" aria-hidden="true">favorite</i>
-              <span class="mdc-tabz__label">Favorites</span>
+            <span class="mdc-tabz mdc-tabz--active">
+              <span class="mdc-tabz__content">
+                <i class="material-icons mdc-tabz__icon" aria-hidden="true">favorite</i>
+                <span class="mdc-tabz__label">Favorites</span>
+              </span>
+              <span class="mdc-tabz__ripple"></span>
             </span>
-            <span class="mdc-tabz__ripple"></span>
-          </span>
-          <span class="mdc-tabz">
-            <span class="mdc-tabz__content">
-              <i class="material-icons mdc-tabz__icon" aria-hidden="true">place</i>
-              <span class="mdc-tabz__label">Nearby</span>
+            <span class="mdc-tabz">
+              <span class="mdc-tabz__content">
+                <i class="material-icons mdc-tabz__icon" aria-hidden="true">place</i>
+                <span class="mdc-tabz__label">Nearby</span>
+              </span>
+              <span class="mdc-tabz__ripple"></span>
             </span>
-            <span class="mdc-tabz__ripple"></span>
-          </span>
-          <span class="mdc-tabz-indicator"></span>
+            <span class="mdc-tabz-indicator"></span>
+          </div>
+        </nav>
+      </fieldset>
+    </section>
+
+    <section>
+      <fieldset>
+        <legend class="mdc-typography--title">Basic Tab Bar w/ Icons and Text on Two Lines and Custom Colors</legend>
+        <nav data-name="simpleBarWithTwoLineIconsAndLabelsAndCustomColors" class="mdc-tabz-bar mdc-tabz-bar--two-lines dark-demo">
+          <div class="mdc-tabz-bar__container">
+            <span class="mdc-tabz">
+              <span class="mdc-tabz__content">
+                <i class="material-icons mdc-tabz__icon" aria-hidden="true">call</i>
+                <span class="mdc-tabz__label">Recents</span>
+              </span>
+              <span class="mdc-tabz__ripple"></span>
+            </span>
+            <span class="mdc-tabz mdc-tabz--active">
+              <span class="mdc-tabz__content">
+                <i class="material-icons mdc-tabz__icon" aria-hidden="true">favorite</i>
+                <span class="mdc-tabz__label">Favorites</span>
+              </span>
+              <span class="mdc-tabz__ripple"></span>
+            </span>
+            <span class="mdc-tabz">
+              <span class="mdc-tabz__content">
+                <i class="material-icons mdc-tabz__icon" aria-hidden="true">place</i>
+                <span class="mdc-tabz__label">Nearby</span>
+              </span>
+              <span class="mdc-tabz__ripple"></span>
+            </span>
+            <span class="mdc-tabz-indicator"></span>
+          </div>
         </nav>
       </fieldset>
     </section>
