@@ -1,17 +1,8 @@
-<!--docs:
-title: "Toolbars"
-layout: detail
-section: components
-excerpt: "A container for multiple rows of items such as application title, navigation menu, or tabs."
-iconId: toolbar
-path: /catalog/topappbar/
--->
 
 # Top App Bar
 
-MDC Top App Bar acts as a container for items such as
-application title, navigation menu, and action items, among other things. Top app bars
-scroll with content by default.
+MDC Top App Bar acts as a container for items such as application title, navigation menu, and action items, among other 
+things. Top app bars scroll with content by default.
 
 ## Design & API Documentation
 
@@ -78,8 +69,6 @@ Top app bars can accommodate multiple icons on the right:
 
 ### CSS Classes
 
-The provided modifiers are:
-
 Class | Description                            
 --- | ---
 `mdc-top-app-bar` | Mandatory
@@ -89,9 +78,9 @@ Class | Description
 Mixin | Description
 --- | ---
 `mdc-top-app-bar-ink-color($color)` | Sets the ink color of the top app bar
+`mdc-top-app-bar-icon-ink-color($color)` | Sets the ink color of the top app bar icons
 `mdc-top-app-bar-fill-color($color)` | Sets the fill color of the top app bar
 `mdc-top-app-bar-fill-color-accessible($color)` | Sets the fill color of the top app bar and automatically sets a high-contrast ink color
-`mdc-top-app-bar-icon-ink-color($color)` | Sets the ink color of the top app bar icons
 
 ### `MDCTopAppBar`
 

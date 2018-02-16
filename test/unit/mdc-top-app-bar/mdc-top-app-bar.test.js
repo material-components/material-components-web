@@ -16,9 +16,10 @@
 
 import {assert} from 'chai';
 import bel from 'bel';
+import domEvents from 'dom-events';
+import td from 'testdouble';
 
 import {MDCTopAppBar} from '../../../packages/mdc-top-app-bar';
-import {strings} from '../../../packages/mdc-top-app-bar/constants';
 
 function getFixture() {
   return bel`
@@ -29,7 +30,7 @@ function getFixture() {
           <a href="#" class="material-icons mdc-top-app-bar__menu-icon">menu</a>
           <span class="mdc-top-app-bar__title">Title</span>
         </section>
-        <section id="iconSection" class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" 
+        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" 
         role="top-app-bar">
           <a href="#" class="material-icons mdc-top-app-bar__icon" aria-label="Download" alt="Download">
           file_download</a>
@@ -66,32 +67,6 @@ test('attachTo initializes and returns an MDCTopAppBar instance', () => {
   assert.isOk(MDCTopAppBar.attachTo(getFixture()) instanceof MDCTopAppBar);
 });
 
-test('navIcon click listener is added to the navicon', (done) => {
-  const element = getFixture();
-  const icon = element.querySelector(strings.MENU_ICON_SELECTOR);
-
-  MDCTopAppBar.attachTo(element);
-  element.addEventListener(strings.NAVIGATION_EVENT, function() {
-    done();
-  });
-
-  icon.click();
-});
-
-test('navIcon click listener is removed during destroy', (done) => {
-  const element = getFixture();
-  const icon = element.querySelector(strings.MENU_ICON_SELECTOR);
-  const toolbar = MDCTopAppBar.attachTo(element);
-  element.addEventListener(strings.NAVIGATION_EVENT, function() {
-    done(new Error('navIcon eventListener should have been removed'));
-  });
-
-  toolbar.destroy();
-
-  icon.click();
-  done();
-});
-
 test('adapter#hasClass returns true if the root element has specified class', () => {
   const {root, component} = setupTest();
   root.classList.add('foo');
@@ -114,4 +89,26 @@ test('adapter#removeClass removes a class from the root element', () => {
   root.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClass('foo');
   assert.isNotOk(root.classList.contains('foo'));
+});
+
+test('#adapter.registerNavigationIconInteractionHandler adds a handler to the nav icon ' +
+  'element for a given event', () => {
+  const {root, component} = setupTest();
+  const icon = root.querySelector('.mdc-top-app-bar__menu-icon');
+  const handler = td.func('eventHandler');
+  component.getDefaultFoundation().adapter_.registerNavigationIconInteractionHandler('click', handler);
+  domEvents.emit(icon, 'click');
+  td.verify(handler(td.matchers.anything()));
+});
+
+test('#adapter.deregisterNavigationIconInteractionHandler removes a handler from the nav icon ' +
+  'element for a given event', () => {
+  const {root, component} = setupTest();
+  const icon = root.querySelector('.mdc-top-app-bar__menu-icon');
+  const handler = td.func('eventHandler');
+
+  icon.addEventListener('click', handler);
+  component.getDefaultFoundation().adapter_.deregisterNavigationIconInteractionHandler('click', handler);
+  domEvents.emit(icon, 'click');
+  td.verify(handler(td.matchers.anything()), {times: 0});
 });

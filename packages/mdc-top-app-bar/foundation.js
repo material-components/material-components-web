@@ -39,6 +39,9 @@ class MDCTopAppBarFoundation extends MDCFoundation {
       hasClass: (/* className: string */) => {},
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
+      registerNavigationIconInteractionHandler: (/* type: string, handler: EventListener */) => {},
+      deregisterNavigationIconInteractionHandler: (/* type: string, handler: EventListener */) => {},
+      notifyNavigationIconClicked: () => {},
     });
   }
 
@@ -47,6 +50,16 @@ class MDCTopAppBarFoundation extends MDCFoundation {
    */
   constructor(adapter) {
     super(Object.assign(MDCTopAppBarFoundation.defaultAdapter, adapter));
+
+    this.navClickHandler_ = () => this.adapter_.notifyNavigationIconClicked();
+  }
+
+  init() {
+    this.adapter_.registerNavigationIconInteractionHandler('click', this.navClickHandler_);
+  }
+
+  destroy() {
+    this.adapter_.deregisterNavigationIconInteractionHandler('click', this.navClickHandler_);
   }
 }
 

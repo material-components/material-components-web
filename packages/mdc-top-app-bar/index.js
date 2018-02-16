@@ -35,23 +35,16 @@ class MDCTopAppBar extends MDCComponent {
     this.navIcon_;
     /** @type {?Array<MDCRipple>} */
     this.iconRipples_;
-    /** @private {function(!Event)} */
-    this.navIconClick_;
   }
 
   initialize() {
     this.navIcon_ = this.root_.querySelector(strings.MENU_ICON_SELECTOR);
-    this.navIconClick_ = this.navigationEvent_.bind(this);
-
-    if (this.navIcon_) {
-      this.navIcon_.addEventListener('click', this.navIconClick_);
-    }
 
     // Get all icons in the toolbar and instantiate the ripples
     const icons = [].slice.call(this.root_.querySelectorAll(strings.ACTION_ICON_SELECTOR));
     icons.push(this.navIcon_);
 
-    this.iconRipples_ = icons.map(function(icon) {
+    this.iconRipples_ = icons.map((icon) => {
       const ripple = MDCRipple.attachTo(icon);
       ripple.unbounded = true;
       return ripple;
@@ -59,21 +52,7 @@ class MDCTopAppBar extends MDCComponent {
   }
 
   destroy() {
-    if (this.navIcon_) {
-      this.navIcon_.removeEventListener('click', this.navIconClick_);
-    }
-
-    this.iconRipples_.forEach(function(iconRipple) {
-      iconRipple.destroy();
-    });
-  }
-
-  /**
-   * @param {!Event} event
-   * @private
-   */
-  navigationEvent_(event) {
-    this.emit(strings.NAVIGATION_EVENT, event);
+    this.iconRipples_.forEach((iconRipple) => iconRipple.destroy());
   }
 
   /**
@@ -93,6 +72,19 @@ class MDCTopAppBar extends MDCComponent {
         hasClass: (className) => this.root_.classList.contains(className),
         addClass: (className) => this.root_.classList.add(className),
         removeClass: (className) => this.root_.classList.remove(className),
+        registerNavigationIconInteractionHandler: (evtType, handler) => {
+          if (this.navIcon_) {
+            this.navIcon_.addEventListener(evtType, handler);
+          }
+        },
+        deregisterNavigationIconInteractionHandler: (evtType, handler) => {
+          if (this.navIcon_) {
+            this.navIcon_.removeEventListener(evtType, handler);
+          }
+        },
+        notifyNavigationIconClicked: () => {
+          this.emit(strings.NAVIGATION_EVENT, {});
+        },
       })
       )
     );

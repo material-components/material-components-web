@@ -47,8 +47,7 @@
     flex: 1;
     align-items: center;
     min-width: 0;
-    height: 100%;
-    padding: $mdc-top-app-bar-icon-vertical-padding $mdc-top-app-bar-section-horizontal-padding;
+    padding: $mdc-top-app-bar-section-vertical-padding $mdc-top-app-bar-section-horizontal-padding;
     z-index: 1;
 
     &--align-start {
@@ -80,7 +79,7 @@
     }
 
     .mdc-top-app-bar__section {
-      padding: $mdc-top-app-bar-mobile-icon-vertical-padding $mdc-top-app-bar-mobile-section-horizontal-padding;
+      padding: $mdc-top-app-bar-mobile-section-padding;
     }
 
     .mdc-top-app-bar__title {

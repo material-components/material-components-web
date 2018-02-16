@@ -41,11 +41,31 @@ class MDCTopAppBarAdapter {
   removeClass(className) {}
 
   /**
-   * Returns true if the root Element contains the given class name.
+   * Returns true if the root Element contains the given class.
    * @param {string} className
    * @return {boolean}
    */
   hasClass(className) {}
+
+
+  /**
+   * Registers an event handler on the navigation icon element for a given event.
+   * @param {string} type
+   * @param {function(!Event): undefined} handler
+   */
+  registerNavigationIconInteractionHandler(type, handler) {}
+
+  /**
+   * Deregisters an event handler on the navigation icon element for a given event.
+   * @param {string} type
+   * @param {function(!Event): undefined} handler
+   */
+  deregisterNavigationIconInteractionHandler(type, handler) {}
+
+  /**
+   * Emits an event when the navigation icon is clicked.
+   */
+  notifyNavigationIconClicked() {}
 }
 
 export default MDCTopAppBarAdapter;

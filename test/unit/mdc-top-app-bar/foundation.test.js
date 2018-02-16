@@ -15,9 +15,9 @@
  */
 
 import {assert} from 'chai';
+import td from 'testdouble';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
-import {setupFoundationTest} from '../helpers/setup';
 import MDCTopAppBarFoundation from '../../../packages/mdc-top-app-bar/foundation';
 import {strings} from '../../../packages/mdc-top-app-bar/constants';
 
@@ -30,11 +30,17 @@ test('exports strings', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTopAppBarFoundation, [
-    'hasClass', 'addClass', 'removeClass',
+    'hasClass', 'addClass', 'removeClass', 'registerNavigationIconInteractionHandler',
+    'deregisterNavigationIconInteractionHandler', 'notifyNavigationIconClicked',
   ]);
 });
 
-const setupTest = () => setupFoundationTest(MDCTopAppBarFoundation);
+const setupTest = () => {
+  const mockAdapter = td.object(MDCTopAppBarFoundation.defaultAdapter);
+
+  const foundation = new MDCTopAppBarFoundation(mockAdapter);
+  return {foundation, mockAdapter};
+};
 
 test('#init calls component event registrations', () => {
   const {foundation} = setupTest();
@@ -44,4 +50,20 @@ test('#init calls component event registrations', () => {
 
 test('foundation returns strings', () => {
   assert.equal(strings, MDCTopAppBarFoundation.strings);
+});
+
+test('on click emits navigation icon event', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  let click;
+
+  td.when(mockAdapter.registerNavigationIconInteractionHandler('click', td.matchers.isA(Function)))
+    .thenDo((evtType, handler) => {
+      click = handler;
+    });
+
+  foundation.init();
+  click();
+
+  td.verify(mockAdapter.notifyNavigationIconClicked(), {times: 1});
 });
