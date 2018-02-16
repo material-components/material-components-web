@@ -27,7 +27,6 @@ suite('MDCTopAppBarFoundation');
 test('exports strings', () => {
   assert.isTrue('strings' in MDCTopAppBarFoundation);
   assert.deepEqual(MDCTopAppBarFoundation.strings, strings);
-
 });
 
 test('defaultAdapter returns a complete adapter implementation', () => {
