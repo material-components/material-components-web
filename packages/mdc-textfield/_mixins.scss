@@ -483,7 +483,9 @@
 }
 
 @mixin mdc-text-field-label-color_($color) {
-  @include mdc-floating-label-color($color);
+  .mdc-floating-label {
+    @include mdc-floating-label-color($color);
+  }
 
   .mdc-text-field__input::placeholder { // placeholder used in place of label on css only version
     @include mdc-theme-prop(color, $color);

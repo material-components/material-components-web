@@ -25,7 +25,6 @@ $mdc-theme-background: $material-color-grey-900;
 @import "../../packages/mdc-checkbox/mixins";
 @import "../../packages/mdc-radio/mixins";
 @import "../../packages/mdc-textfield/mixins";
-@import "../../packages/mdc-floating-label/mixins";
 
 // TODO: Call theme mixins for mdc-select
 
@@ -39,7 +38,7 @@ $mdc-theme-background: $material-color-grey-900;
 
 .demo-text-field {
   @include mdc-text-field-ink-color(text-primary-on-dark);
-  @include mdc-floating-label-color(text-secondary-on-dark);
+  @include mdc-text-field-label-color(text-secondary-on-dark);
   @include mdc-text-field-line-ripple-color(text-hint-on-dark);
 }
 

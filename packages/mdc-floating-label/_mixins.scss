@@ -19,9 +19,7 @@
 // Public
 
 @mixin mdc-floating-label-color($color) {
-  .mdc-floating-label {
-    @include mdc-theme-prop(color, $color);
-  }
+  @include mdc-theme-prop(color, $color);
 }
 
 @mixin mdc-floating-label-shake-keyframes($modifier, $positionY, $positionX: 0%, $scale: .75) {
