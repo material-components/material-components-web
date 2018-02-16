@@ -180,6 +180,35 @@
 
     <section>
       <fieldset>
+        <legend class="mdc-typography--title">Basic Tab Bar w/ Custom Shape and Styles</legend>
+        <nav data-name="simpleBar" class="mdc-tabz-bar custom-shape">
+          <span class="mdc-tabz mdc-tabz--active">
+            <span class="mdc-tabz__content">
+              <span class="mdc-tabz__label">Item One</span>
+            </span>
+            <span class="mdc-tabz__ripple"></span>
+          </span>
+          <span class="mdc-tabz">
+            <span class="mdc-tabz__content">
+              <span class="mdc-tabz__label">Item Two</span>
+            </span>
+            <span class="mdc-tabz__ripple"></span>
+          </span>
+          <span class="mdc-tabz">
+            <span class="mdc-tabz__content">
+              <span class="mdc-tabz__label">Item Three</span>
+            </span>
+            <span class="mdc-tabz__ripple"></span>
+          </span>
+          <span class="mdc-tabz-indicator mdc-tabz-indicator--custom">
+            <canvas id="canvas" width="300px" height="48px"></canvas>
+          </span>
+        </nav>
+      </fieldset>
+    </section>
+
+    <section>
+      <fieldset>
         <legend class="mdc-typography--title">Basic Tab Bar w/ Icons</legend>
         <nav data-name="simpleBarWithIcons" class="mdc-tabz-bar">
           <span class="mdc-tabz">

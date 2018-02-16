@@ -28,13 +28,13 @@ class MDCTabz {
         this.root_.classList.remove(className),
       hasClass: (className) =>
         this.root_.classList.contains(className),
-      contains: (element) =>
+      hasChildElement: (element) =>
         this.root_.contains(element),
     };
   }
 
   hasChildElement(target) {
-    return this.root_ === target || this.adapter_.contains(target);
+    return this.root_ === target || this.adapter_.hasChildElement(target);
   }
 
   /**
