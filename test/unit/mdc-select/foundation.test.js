@@ -34,7 +34,7 @@ test('exports strings', () => {
 
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSelectFoundation, [
-    'addClass', 'removeClass', 'addClassToLabel', 'removeClassFromLabel', 'addClassToBottomLine',
+    'addClass', 'removeClass', 'floatLabel', 'addClassToBottomLine',
     'removeClassFromBottomLine', 'setBottomLineAttr', 'addBodyClass', 'removeBodyClass',
     'setAttr', 'rmAttr', 'computeBoundingRect',
     'registerInteractionHandler', 'deregisterInteractionHandler', 'focus', 'makeTabbable',
