@@ -6,7 +6,7 @@
   @include mdc-tabz-background(#ffdbcf);
   @include mdc-tabz-active-color(#442b2d);
 
-  @include mdc-tabz-active-indicator-customization {
+  @include mdc-tabz-indicator-customization {
     color: #eaa4a4;
 
     .custom-indicator {

@@ -30,9 +30,9 @@ class MDCTabzIndicator {
         this.root_.classList.contains(className),
     };
 
-    this.init();
-
     this.isCustomIndicator_ = this.isCustom_();
+
+    this.init();
   }
 
   init() {
@@ -48,28 +48,22 @@ class MDCTabzIndicator {
   }
 
   /**
-   * Animates the position of the indicator
-   * @param {!ClientRect} activeBbox The bounding box of the active element
-   * @param {!ClientRect} barBbox The bounding box of the tab bar
-   */
-  animatePosition(activeBbox, barBbox) {
-    this.adapter_.addEventListener('transitionend', this.handleTransitionend_);
-    this.adapter_.addClass(cssClasses.ANIMATING);
-    this.updatePosition(activeBbox, barBbox);
-  }
-
-  /**
    * Updates the position of the indicator after resize
    * @param {!ClientRect} activeBbox The bounding box of the active element
    * @param {!ClientRect} barBbox The bounding box of the tab bar
+   * @param {boolean=} shouldAnimate Whether the indicator should be animated
    */
-  updatePosition(activeBbox, barBbox) {
+  updatePosition(activeBbox, barBbox, shouldAnimate=true) {
     let translateX = activeBbox.left - barBbox.left;
     let scaleX = activeBbox.width;
     if (this.isCustomIndicator_) {
       const indicatorBbox = this.adapter_.getBoundingClientRect();
       translateX += activeBbox.width / 2 - indicatorBbox.width / 2;
       scaleX = 1;
+    }
+    if (shouldAnimate) {
+      this.adapter_.addEventListener('transitionend', this.handleTransitionend_);
+      this.adapter_.addClass(cssClasses.ANIMATING);
     }
     this.transform_(`translateX(${translateX}px) scaleX(${scaleX})`);
   }
@@ -85,6 +79,11 @@ class MDCTabzIndicator {
     });
   }
 
+  /**
+   * Returns whether the indicator is custom
+   * @return {boolean}
+   * @private
+   */
   isCustom_() {
     return this.adapter_.hasClass(cssClasses.CUSTOM);
   }

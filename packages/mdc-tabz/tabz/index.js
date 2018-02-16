@@ -2,6 +2,8 @@ import {MDCRipple} from '@material/ripple/index';
 
 const cssClasses = {
   ACTIVE: 'mdc-tabz--active',
+  ANIMATING_ACTIVATE: 'mdc-tabz--animating-activate',
+  ANIMATING_DEACTIVATE: 'mdc-tabz--animating-deactivate',
 };
 
 const strings = {
@@ -20,6 +22,10 @@ class MDCTabz {
     this.ripple_ = MDCRipple.attachTo(rippleRoot_);
 
     this.adapter_ = {
+      addEventListener: (evtType, handler) =>
+        this.root_.addEventListener(evtType, handler),
+      removeEventListener: (evtType, handler) =>
+        this.root_.addEventListener(evtType, handler),
       getBoundingClientRect: () =>
         this.root_.getBoundingClientRect(),
       addClass: (className) =>
@@ -28,13 +34,24 @@ class MDCTabz {
         this.root_.classList.remove(className),
       hasClass: (className) =>
         this.root_.classList.contains(className),
-      contains: (element) =>
+      hasChildElement: (element) =>
         this.root_.contains(element),
     };
+
+    this.handleTransitionEnd_ = () => this.handleTransitionEnd();
   }
 
+  handleTransitionEnd() {
+    this.adapter_.removeClass(cssClasses.ANIMATING_ACTIVATE);
+    this.adapter_.removeClass(cssClasses.ANIMATING_DEACTIVATE);
+  }
+
+  /**
+   * Returns whether the target exists in the tree at or below this element.
+   * @param {Node} target The element to check the presence of
+   */
   hasChildElement(target) {
-    return this.root_ === target || this.adapter_.contains(target);
+    return this.root_ === target || this.adapter_.hasChildElement(target);
   }
 
   /**
@@ -47,11 +64,15 @@ class MDCTabz {
 
   /** Activates the tab */
   activate() {
+    this.adapter_.addEventListener('transitionend', this.handleTransitionEnd_);
+    this.adapter_.addClass(cssClasses.ANIMATING_ACTIVATE);
     this.adapter_.addClass(cssClasses.ACTIVE);
   }
 
   /** Deactivates the tab */
   deactivate() {
+    this.adapter_.addEventListener('transitionend', this.handleTransitionEnd_);
+    this.adapter_.addClass(cssClasses.ANIMATING_DEACTIVATE);
     this.adapter_.removeClass(cssClasses.ACTIVE);
   }
 

@@ -120,7 +120,7 @@ class MDCTabzBar {
     this.getActiveTab_().deactivate();
     this.activeIndex_ = index;
     this.getActiveTab_().activate();
-    this.animateIndicator(this.getActiveTab_().getBoundingClientRect());
+    this.updateIndicator(this.getActiveTab_().getBoundingClientRect());
   }
 
   /**
@@ -150,17 +150,10 @@ class MDCTabzBar {
   /**
    * Updates the indicator size
    * @param {!ClientRect} activeBbox The bounding box of the active element
+   * @param {boolean=} shouldAnimate Whether the update should be animated (defaults to true)
    */
-  updateIndicator(activeBbox) {
-    this.indicator_.updatePosition(activeBbox, this._adapterGetBoundingClientRect());
-  }
-
-  /**
-   * Updates the indicator size with animation
-   * @param {!ClientRect} activeBbox The bounding box of the active element
-   */
-  animateIndicator(activeBbox) {
-    this.indicator_.animatePosition(activeBbox, this._adapterGetBoundingClientRect());
+  updateIndicator(activeBbox, shouldAnimate=true) {
+    this.indicator_.updatePosition(activeBbox, this._adapterGetBoundingClientRect(), shouldAnimate);
   }
 
   /**
@@ -172,7 +165,7 @@ class MDCTabzBar {
       cancelAnimationFrame(this.layoutFrame_);
     }
     this.layoutFrame_ = requestAnimationFrame(() => {
-      this.updateIndicator(activeBbox);
+      this.updateIndicator(activeBbox, false);
     });
   }
 }

@@ -2,8 +2,8 @@
 @import "@material/ripple/mixins";
 @import "@material/typography/mixins";
 
-$mdc-purple: rgba(98, 0, 238, 1);
-$mdc-gray: rgba(25, 25, 25, .6);
+$mdc-purple: #6200ee;
+$mdc-gray: #191919;
 $mdc-light-gray: rgba(229, 229, 229, 1);
 $mdc-dark-gray: rgba(0, 0, 0, .87);
 $mdc-height: 2px;
@@ -21,7 +21,7 @@ $mdc-color: $mdc-purple;
   }
 }
 
-@mixin mdc-tabz-active-indicator-customization {
+@mixin mdc-tabz-indicator-customization {
   .mdc-tabz-indicator--custom {
     @content;
   }
@@ -59,7 +59,22 @@ $mdc-color: $mdc-purple;
     display: flex;
     position: relative;
     justify-content: center;
+    opacity: .6;
     z-index: 2;
+  }
+
+  &--active &__content {
+    opacity: 1;
+  }
+
+  &--animating-deactivate &__content {
+    transition: 100ms opacity linear, 100ms color linear;
+    transition-delay: 0ms;
+  }
+
+  &--animating-activate &__content {
+    transition: 150ms opacity linear, 150ms color linear;
+    transition-delay: 100ms;
   }
 
   &__indicator {
@@ -183,7 +198,7 @@ $mdc-color: $mdc-purple;
   }
 
   &--animating {
-    transition: 240ms transform cubic-bezier(0, 0, .2, 1);
+    transition: 250ms transform cubic-bezier(0, 0, .2, 1);
   }
 
   &--custom {
