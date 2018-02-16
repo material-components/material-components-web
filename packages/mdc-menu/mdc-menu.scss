@@ -27,6 +27,7 @@ $mdc-menu-scale-duration: .12s;
 // postcss-bem-linter: define menu
 .mdc-menu {
   @include mdc-elevation(2);
+  @include mdc-theme-prop(background-color, background);
 
   display: none;
   position: absolute;
@@ -39,7 +40,6 @@ $mdc-menu-scale-duration: .12s;
   transform: scale(1);
   transform-origin: top left;
   border-radius: 2px;
-  background-color: $mdc-theme-background;
   opacity: 0;
   white-space: nowrap;
   overflow-x: hidden;
