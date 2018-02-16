@@ -22,11 +22,12 @@ import {verifyDefaultAdapter} from '../helpers/foundation';
 import MDCTopAppBarFoundation from '../../../packages/mdc-top-app-bar/foundation';
 import {strings} from '../../../packages/mdc-top-app-bar/constants';
 
-
 suite('MDCTopAppBarFoundation');
 
 test('exports strings', () => {
-  assert.isOk('strings' in MDCTopAppBarFoundation);
+  assert.isTrue('strings' in MDCTopAppBarFoundation);
+  assert.deepEqual(MDCTopAppBarFoundation.strings, strings);
+
 });
 
 test('defaultAdapter returns a complete adapter implementation', () => {
@@ -43,10 +44,6 @@ const setupTest = () => {
 
   return {foundation, mockAdapter};
 };
-
-test('foundation returns strings', () => {
-  assert.deepEqual(MDCTopAppBarFoundation.strings, strings);
-});
 
 test('on click emits navigation icon event', () => {
   const {foundation, mockAdapter} = setupTest();
