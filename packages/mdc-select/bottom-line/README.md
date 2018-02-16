@@ -15,7 +15,7 @@ path: /catalog/input-controls/select-menus/
   </a>
 </div>-->
 
-Select labels display the type of input a field requires. Every select should have a label. Labels are aligned with the input line and always visible. They can be resting (when a select is inactive and empty) or floating. The label is a text caption or description for the select.
+Select bottom line animates activation and deactivation state as the select focuses and blurs. Every select should have a bottom line.
 
 ## Design & API Documentation
 
@@ -36,7 +36,7 @@ Select labels display the type of input a field requires. Every select should ha
 ### HTML Structure
 
 ```html
-<div class="mdc-select__label" for="my-select-id">Hint text</div>
+<div class="mdc-select-bottom-line"></div>
 ```
 
 ### Usage within `mdc-select`
@@ -68,30 +68,32 @@ Select labels display the type of input a field requires. Every select should ha
 
 CSS Class | Description
 --- | ---
-`mdc-select__label` | Mandatory
-`mdc-select__label--float-above` | Indicates the label is floating above the select
+`mdc-select-bottom-line` | Mandatory
+`mdc-select-bottom-line--active` | Indicates the bottom line is active and the select is in focus.
 
-### `MDCSelectLabel`
-
-Method Signature | Description
---- | ---
-`float(value: string)` | Styles the label to float or defloat as necessary.
-
-### `MDCSelectLabelAdapter`
+### `MDCSelectBottomLine`
 
 Method Signature | Description
 --- | ---
-`addClass(className: string) => void` | Adds a class to the label element.
-`removeClass(className: string) => void` | Removes a class from the label element.
+`activate()` | Proxies to the foundation's `activate()` method.
+`deactivate()` | Proxies to the foundation's `deactivate()` method.
 
-### `MDCSelectLabelFoundation`
+### `MDCSelectBottomLineAdapter`
 
 Method Signature | Description
 --- | ---
-`styleFloat(value: string)` | Adds or removes the float-above selector to the label element.
+`addClass(className: string) => void` | Adds a class to the bottom line element.
+`removeClass(className: string) => void` | Removes a class from the bottom line element.
+
+### `MDCSelectBottomLineFoundation`
+
+Method Signature | Description
+--- | ---
+`activate()` | Activates the bottom line.
+`deactivate()` | Deactivates the bottom line.
 
 ### Sass Mixins
 
 Mixin | Description
 --- | ---
-`mdc-select-floating-label-color($color)` | Customizes the color of the label element.
+`mdc-select-bottom-line-fill-color($color)` | Customizes the color of the background color.
