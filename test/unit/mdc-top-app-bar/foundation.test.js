@@ -16,6 +16,7 @@
 
 import {assert} from 'chai';
 import td from 'testdouble';
+import {captureHandlers} from '../helpers/foundation';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import MDCTopAppBarFoundation from '../../../packages/mdc-top-app-bar/foundation';
@@ -39,31 +40,25 @@ const setupTest = () => {
   const mockAdapter = td.object(MDCTopAppBarFoundation.defaultAdapter);
 
   const foundation = new MDCTopAppBarFoundation(mockAdapter);
+
   return {foundation, mockAdapter};
 };
 
-test('#init calls component event registrations', () => {
-  const {foundation} = setupTest();
-
-  foundation.init();
-});
-
 test('foundation returns strings', () => {
-  assert.equal(strings, MDCTopAppBarFoundation.strings);
+  assert.deepEqual(MDCTopAppBarFoundation.strings, strings);
 });
 
 test('on click emits navigation icon event', () => {
   const {foundation, mockAdapter} = setupTest();
-
-  let click;
-
-  td.when(mockAdapter.registerNavigationIconInteractionHandler('click', td.matchers.isA(Function)))
-    .thenDo((evtType, handler) => {
-      click = handler;
-    });
-
+  const handlers = captureHandlers(mockAdapter, 'registerNavigationIconInteractionHandler');
   foundation.init();
-  click();
-
+  handlers.click();
   td.verify(mockAdapter.notifyNavigationIconClicked(), {times: 1});
+});
+
+test('click handler removed from navigation icon during destroy', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.init();
+  foundation.destroy();
+  td.verify(mockAdapter.deregisterNavigationIconInteractionHandler('click', td.matchers.isA(Function)));
 });

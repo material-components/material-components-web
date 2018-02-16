@@ -15,10 +15,6 @@
 //
 
 @import "common";
-@import "../packages/mdc-button/mdc-button";
-@import "../packages/mdc-list/mdc-list";
-@import "../packages/mdc-menu/mdc-menu";
-@import "../packages/mdc-theme/color-palette";
 @import "../packages/mdc-top-app-bar/mdc-top-app-bar";
 
 .demo-paragraph {
@@ -26,7 +22,7 @@
   padding: 20px 28px;
 }
 
-@media (max-width: 599px) {
+@media (max-width: $mdc-top-app-bar-mobile-breakpoint) {
   .demo-paragraph {
     padding: 16px;
   }

@@ -64,31 +64,31 @@ function setupTest() {
 suite('MDCTopAppBar');
 
 test('attachTo initializes and returns an MDCTopAppBar instance', () => {
-  assert.isOk(MDCTopAppBar.attachTo(getFixture()) instanceof MDCTopAppBar);
+  assert.isTrue(MDCTopAppBar.attachTo(getFixture()) instanceof MDCTopAppBar);
 });
 
 test('adapter#hasClass returns true if the root element has specified class', () => {
   const {root, component} = setupTest();
   root.classList.add('foo');
-  assert.isOk(component.getDefaultFoundation().adapter_.hasClass('foo'));
+  assert.isTrue(component.getDefaultFoundation().adapter_.hasClass('foo'));
 });
 
 test('adapter#hasClass returns false if the root element does not have specified class', () => {
   const {component} = setupTest();
-  assert.isNotOk(component.getDefaultFoundation().adapter_.hasClass('foo'));
+  assert.isFalse(component.getDefaultFoundation().adapter_.hasClass('foo'));
 });
 
 test('adapter#addClass adds a class to the root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
-  assert.isOk(root.classList.contains('foo'));
+  assert.isTrue(root.classList.contains('foo'));
 });
 
 test('adapter#removeClass removes a class from the root element', () => {
   const {root, component} = setupTest();
   root.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClass('foo');
-  assert.isNotOk(root.classList.contains('foo'));
+  assert.isFalse(root.classList.contains('foo'));
 });
 
 test('#adapter.registerNavigationIconInteractionHandler adds a handler to the nav icon ' +
