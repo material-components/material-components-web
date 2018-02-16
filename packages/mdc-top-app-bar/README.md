@@ -45,7 +45,7 @@ Top app bars can accommodate multiple icons on the right:
       <a href="#" class="material-icons mdc-top-app-bar__menu-icon">menu</a>
       <span class="mdc-top-app-bar__title">Title</span>
     </section>
-    <section id="iconSection" class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="top-app-bar">
+    <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="top-app-bar">
       <a href="#" class="material-icons mdc-top-app-bar__icon" aria-label="Download" alt="Download">file_download</a>
       <a href="#" class="material-icons mdc-top-app-bar__icon" aria-label="Print this page" alt="Print this page">print</a>
       <a href="#" class="material-icons mdc-top-app-bar__icon" aria-label="Bookmark this page" alt="Bookmark this page">bookmark</a>
@@ -93,6 +93,9 @@ Method Signature | Description
 `hasClass(className: string) => boolean` | Checks if the root element of the component has the given className.
 `addClass(className: string) => void` | Adds a class to the root element of the component.
 `removeClass(className: string) => void` | Removes a class from the root element of the component.
+`registerNavigationIconInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the native navigation icon element for a given event.
+`deregisterNavigationIconInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the native navigation icon element for a given event.
+`notifyNavigationIconClicked() => void` | Emits a custom event "MDCTopAppBar:nav" when the navigation icon is clicked. 
 
 ### Events
 
