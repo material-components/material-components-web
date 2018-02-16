@@ -53,6 +53,7 @@
 
 .mdc-chip__icon--trailing {
   margin: 0 -4px 0 4px;
+
   &:hover {
     color: $mdc-chip-trailing-icon-hover-color;
   }
@@ -62,6 +63,9 @@
   }
 }
 
+// This overrides styles defined in the .material-icons CSS class
+// which is loaded separately, so the order of CSS definitions is not
+// guaranteed. Therefore, increase specifity to ensure overrides apply.
 .mdc-chip__icon.mdc-chip__icon--trailing {
   width: $mdc-chip-trailing-icon-size;
   height: $mdc-chip-trailing-icon-size;

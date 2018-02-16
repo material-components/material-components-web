@@ -59,7 +59,7 @@ You can optionally add a leading icon (i.e. thumbnail) and/or a trailing icon to
 ##### Leading icon
 
 ```html
-<div class="mdc-chip mdc-chip--with-leading-icon">
+<div class="mdc-chip mdc-chip">
   <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">event</i>
   <div class="mdc-chip__text">Add to calendar</div>
 </div>
@@ -68,9 +68,9 @@ You can optionally add a leading icon (i.e. thumbnail) and/or a trailing icon to
 ##### Trailing icon
 
 ```html
-<div class="mdc-chip mdc-chip--with-trailing-icon">
+<div class="mdc-chip mdc-chip">
   <div class="mdc-chip__text">Jane Smith</div>
-  <i class="material-icons mdc-chip__icon mdc-chip__icon--trailing" tabindex="0">cancel</i>
+  <i class="material-icons mdc-chip__icon mdc-chip__icon--trailing" tabindex="0" role="button">cancel</i>
 </div>
 ```
 
