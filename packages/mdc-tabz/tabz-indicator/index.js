@@ -2,6 +2,7 @@ const cssClasses = {
   ANIMATING: 'mdc-tabz-indicator--animating',
   UPGRADED: 'mdc-tabz-indicator--upgraded',
   CUSTOM: 'mdc-tabz-indicator--custom',
+  SHAPE: 'mdc-tabz-indicator--shape',
 };
 
 class MDCTabzIndicator {
@@ -11,7 +12,7 @@ class MDCTabzIndicator {
 
   constructor(root) {
     this.root_ = root;
-    this.handleTransitionend_ = () => this.handleTransitionEnd();
+    this.handleTransitionEnd_ = () => this.handleTransitionEnd();
 
     this.adapter_ = {
       getBoundingClientRect: () =>
@@ -40,10 +41,31 @@ class MDCTabzIndicator {
   }
 
   /**
+   * Returns the custom status of the indicator
+   * @private
+   */
+  isCustom_() {
+    return this.adapter_.hasClass(cssClasses.CUSTOM);
+  }
+
+  emitShapeChange(activeBbox) {
+    console.log('MDCTabzIndicator:shapechange', activeBbox);
+    // const animStart = new CustomEvent('MDCTabz:animationstart', {
+    //   detail: {
+    //     previousClientRect: prevBbox,
+    //     activeClientRect: activeBbox,
+    //     barClientRect: barBbox,
+    //   },
+    //   bubbles: true,
+    // });
+    // this.root_.dispatchEvent(animStart);
+  }
+
+  /**
    * Called on transitionend
    */
   handleTransitionEnd() {
-    this.adapter_.removeEventListener('transitionend', this.handleTransitionend_);
+    this.adapter_.removeEventListener('transitionend', this.handleTransitionEnd_);
     this.adapter_.removeClass(cssClasses.ANIMATING);
   }
 
@@ -66,6 +88,7 @@ class MDCTabzIndicator {
       this.adapter_.addClass(cssClasses.ANIMATING);
     }
     this.transform_(`translateX(${translateX}px) scaleX(${scaleX})`);
+    this.emitShapeChange(activeBbox);
   }
 
   /**
@@ -77,15 +100,6 @@ class MDCTabzIndicator {
     requestAnimationFrame(() => {
       this.adapter_.setRootStyle('transform', transformation);
     });
-  }
-
-  /**
-   * Returns whether the indicator is custom
-   * @return {boolean}
-   * @private
-   */
-  isCustom_() {
-    return this.adapter_.hasClass(cssClasses.CUSTOM);
   }
 }
 
