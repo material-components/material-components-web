@@ -95,8 +95,6 @@
     overflow: hidden;
   }
 
-
-
   @include mdc-select-focused-bottom-line_ {
     &::after {
       transform: scale(1, 2);
@@ -157,11 +155,9 @@
     opacity: 0;
   }
 
-  .mdc-select__bottom-line {
-    &::after {
-      transform: scaleY(2);
-      opacity: 1;
-    }
+  .mdc-select__bottom-line::after {
+    transform: scaleY(2);
+    opacity: 1;
   }
 }
 

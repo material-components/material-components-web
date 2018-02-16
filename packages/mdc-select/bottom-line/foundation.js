@@ -19,7 +19,6 @@ import MDCFoundation from '@material/base/foundation';
 import MDCSelectBottomLineAdapter from './adapter';
 import {cssClasses} from './constants';
 
-
 /**
  * @extends {MDCFoundation<!MDCSelectBottomLineAdapter>}
  * @final
@@ -43,14 +42,14 @@ class MDCSelectBottomLineFoundation extends MDCFoundation {
   }
 
   /**
-   * Activates the line ripple
+   * Adds the active class to bottom line
    */
   activate() {
     this.adapter_.addClass(cssClasses.BOTTOM_LINE_ACTIVE);
   }
 
   /**
-   * Deactivates the line ripple
+   * Removes the active class from the bottom line
    */
   deactivate() {
     this.adapter_.removeClass(cssClasses.BOTTOM_LINE_ACTIVE);
@@ -62,8 +61,6 @@ class MDCSelectBottomLineFoundation extends MDCFoundation {
   constructor(adapter) {
     super(Object.assign(MDCSelectBottomLineFoundation.defaultAdapter, adapter));
   }
-
-
 }
 
 export default MDCSelectBottomLineFoundation;

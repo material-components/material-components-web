@@ -15,7 +15,6 @@
 //
 
 @import "../variables";
-// @import "@material/rtl/mixins";
 
 // postcss-bem-linter: define select-bottom-line
 .mdc-select__bottom-line {
@@ -42,8 +41,6 @@
   }
 }
 
-.mdc-select__bottom-line--active {
-  &::after {
-    opacity: 1;
-  }
+.mdc-select__bottom-line--active::after {
+  opacity: 1;
 }

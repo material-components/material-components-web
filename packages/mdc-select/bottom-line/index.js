@@ -34,14 +34,14 @@ class MDCSelectBottomLine extends MDCComponent {
   }
 
   /**
-   * Activates the bottom line
+   * Activates the bottom line active class
    */
   activate() {
     this.foundation_.activate();
   }
 
   /**
-   * Deactivates the bottom line
+   * Deactivates the bottom line active class
    */
   deactivate() {
     this.foundation_.deactivate();
@@ -51,10 +51,10 @@ class MDCSelectBottomLine extends MDCComponent {
    * @return {!MDCSelectBottomLineFoundation}
    */
   getDefaultFoundation() {
-    return new MDCSelectBottomLineFoundation(/** @type {!MDCSelectBottomLineAdapter} */ (Object.assign({
+    return new MDCSelectBottomLineFoundation({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
-    })));
+    });
   }
 }
 

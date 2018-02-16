@@ -39,7 +39,6 @@ class MDCSelectBottomLineAdapter {
    * @param {string} className
    */
   removeClass(className) {}
-
 }
 
 export default MDCSelectBottomLineAdapter;
