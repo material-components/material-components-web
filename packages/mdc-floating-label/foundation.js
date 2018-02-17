@@ -60,30 +60,26 @@ class MDCFloatingLabelFoundation extends MDCFoundation {
 
   /**
    * Styles the label to produce the label shake for errors.
-   * @param {boolean} isValid Whether the input's value is valid (passes all
-   *     validity checks).
-   * @param {boolean} isFocused Whether the input is focused.
+   * @param {boolean} shouldShake adds shake class if true.
    */
-  styleShake(isValid, isFocused) {
+  styleShake(shouldShake) {
     const {LABEL_SHAKE} = MDCFloatingLabelFoundation.cssClasses;
-    if (isValid || isFocused) {
-      this.adapter_.removeClass(LABEL_SHAKE);
-    } else {
+    if (shouldShake) {
       this.adapter_.addClass(LABEL_SHAKE);
+    } else {
+      this.adapter_.removeClass(LABEL_SHAKE);
     }
   }
 
   /**
-   * Styles the label to float or defloat as necessary.
-   * @param {string} value The value of the input.
-   * @param {boolean} isFocused Whether the input is focused.
-   * @param {boolean} isBadInput The input's `validity.badInput` value.
+   * Styles the label to float or defloat.
+   * @param {boolean} shouldFloat adds float class if true.
    */
-  styleFloat(value, isFocused, isBadInput) {
+  styleFloat(shouldFloat) {
     const {LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCFloatingLabelFoundation.cssClasses;
-    if (!!value || isFocused) {
+    if (shouldFloat) {
       this.adapter_.addClass(LABEL_FLOAT_ABOVE);
-    } else if (!isBadInput) {
+    } else {
       this.adapter_.removeClass(LABEL_FLOAT_ABOVE);
       this.adapter_.removeClass(LABEL_SHAKE);
     }

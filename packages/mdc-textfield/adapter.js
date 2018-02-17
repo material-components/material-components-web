@@ -149,23 +149,17 @@ class MDCTextFieldAdapter {
 
   /**
    * Only implement if label exists.
-   * Should shake the floating label if input is _not_ focused and _not_ valid,
-   * otherwise it should shake.
-   * @param {boolean} isValid
-   * @param {boolean} isFocused
+   * Shakes label if shouldShake is true
+   * @param {boolean} shouldShake
    */
-  shakeLabel(isValid, isFocused) {}
+  shakeLabel(shouldShake) {}
 
   /**
    * Only implement if label exists.
-   * Floats the floating label element above the text-field if there is a value
-   * or is focused. Otherwise it should go back to resting state unless isBadInput
-   * is true.
-   * @param {string} value
-   * @param {boolean} isFocused
-   * @param {boolean} isBadInput
+   * Floats the label above the input element if shouldFloat is true.
+   * @param {boolean} shouldFloat
    */
-  floatLabel(value, isFocused, isBadInput) {}
+  floatLabel(shouldFloat) {}
 
   /**
    * Returns true if label element exists, false if it doesn't.

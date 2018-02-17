@@ -44,46 +44,26 @@ test('#getWidth returns the width of the label element scaled by 75%', () => {
   assert.equal(foundation.getWidth(), width);
 });
 
-test('#styleFloat with non-empty value floats the label', () => {
+test('#styleFloat called with shouldFloat is true, floats the label', () => {
   const {foundation, mockAdapter} = setupTest();
-  foundation.styleFloat('new value', /* isFocused */ true, /* isBadInput */ false);
+  foundation.styleFloat(true);
   td.verify(mockAdapter.addClass(cssClasses.LABEL_FLOAT_ABOVE));
 });
 
-test('#styleFloat with empty value de-floats the label', () => {
+test('#styleFloat called with shouldFloat is false, de-floats the label', () => {
   const {foundation, mockAdapter} = setupTest();
-  foundation.styleFloat('', /* isFocused */ false, /* isBadInput */ false);
+  foundation.styleFloat(false);
   td.verify(mockAdapter.removeClass(cssClasses.LABEL_FLOAT_ABOVE));
 });
 
-test('#styleShake with valid and invalid input', () => {
+test('#styleShake called with shouldShake is true, should add shake class', () => {
   const {foundation, mockAdapter} = setupTest();
-  foundation.styleShake(/* isValid */ false, /* isFocused */ false);
+  foundation.styleShake(true);
   td.verify(mockAdapter.addClass(cssClasses.LABEL_SHAKE));
-
-  foundation.styleShake(/* isValid */ true, /* isFocused */ false);
-  td.verify(mockAdapter.removeClass(cssClasses.LABEL_SHAKE));
-
-  foundation.styleShake(/* isValid */ false, /* isFocused */ true);
-  td.verify(mockAdapter.removeClass(cssClasses.LABEL_SHAKE));
 });
 
-test('#styleFloat with empty value and badInput does not touch floating label', () => {
+test('#styleShake called with shouldShake is false, should remove shake class', () => {
   const {foundation, mockAdapter} = setupTest();
-  foundation.styleFloat('', /* isFocused*/ false, /* isBadInput */ true);
-  td.verify(mockAdapter.addClass(cssClasses.LABEL_FLOAT_ABOVE), {times: 0});
-  td.verify(mockAdapter.removeClass(cssClasses.LABEL_FLOAT_ABOVE), {times: 0});
-});
-
-test('#styleShake updates shake class', () => {
-  const {foundation, mockAdapter} = setupTest();
-
-  foundation.styleShake(/* isValid */ false, /* isFocused */ false);
-  td.verify(mockAdapter.addClass(cssClasses.LABEL_SHAKE));
-
-  foundation.styleShake(/* isValid */ true, /* isFocused */ false);
-  td.verify(mockAdapter.removeClass(cssClasses.LABEL_SHAKE));
-
-  foundation.styleShake(/* isValid */ false, /* isFocused */ true);
+  foundation.styleFloat(false);
   td.verify(mockAdapter.removeClass(cssClasses.LABEL_SHAKE));
 });

@@ -267,11 +267,11 @@ class MDCTextField extends MDCComponent {
             this.lineRipple_.setRippleCenter(normalizedX);
           }
         },
-        shakeLabel: (isValid, isFocused) => {
-          this.label_.shake(isValid, isFocused);
+        shakeLabel: (shouldShake) => {
+          this.label_.shake(shouldShake);
         },
-        floatLabel: (value, isFocused, isBadInput) => {
-          this.label_.float(value, isFocused, isBadInput);
+        floatLabel: (shouldFloat) => {
+          this.label_.float(shouldFloat);
         },
         hasLabel: () => {
           return !!this.label_;

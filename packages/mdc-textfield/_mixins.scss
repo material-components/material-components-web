@@ -14,14 +14,14 @@
 // limitations under the License.
 //
 
-@import "icon/mixins";
-@import "icon/variables";
-@import "helper-text/mixins";
-@import "outline/mixins";
-@import "./variables";
-@import "@material/line-ripple/mixins";
 @import "@material/floating-label/mixins";
+@import "@material/line-ripple/mixins";
 @import "@material/theme/mixins";
+@import "./helper-text/mixins";
+@import "./icon/mixins";
+@import "./icon/variables";
+@import "./outline/mixins";
+@import "./variables";
 
 @mixin mdc-text-field-outlined-corner-radius($radius) {
   border-radius: $radius;

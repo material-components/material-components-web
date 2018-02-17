@@ -85,8 +85,8 @@ Mixin | Description
 
 Method Signature | Description
 --- | ---
-`shake(isValid: boolean, isFocused: boolean) => void` | Label animation class is applied unless isValid or isFocused is true.
-`float(value: string, isFocused: boolean, isBadInput: boolean) => void` | Floats label above text field or select.
+`shake(shouldShake: boolean) => void` | Shakes label if shouldShake is true.
+`float(shouldFloat: boolean) => void` | Floats label if shouldFloat is true.
 `getWidth() => number` | Returns the width of the label element.
 
 ### `MDCFloatingLabelAdapter`
@@ -102,5 +102,5 @@ Method Signature | Description
 Method Signature | Description
 --- | ---
 `getWidth() => number` | Returns the width of the label element.
-`styleShake(isValid: boolean, isFocused: boolean)` | Will remove shake class if isValid _or_ isFocused is true, otherwise it will add shake class.
-`styleFloat(value: string, isFocused: boolean, isBadInput: boolean)` | Will add class to float label if isFocused, or if value is present. Otherwise it will remove classes unless isBadInput is true.
+`styleShake(shouldShake: boolean)` | Adds shake class if shouldShake is true.
+`styleFloat(shouldFloat: boolean)` | Adds float class if shouldFloat is true.

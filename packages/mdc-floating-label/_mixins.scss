@@ -23,7 +23,7 @@
 }
 
 @mixin mdc-floating-label-shake-keyframes($modifier, $positionY, $positionX: 0%, $scale: .75) {
-  @keyframes shake-float-above-#{$modifier} {
+  @keyframes mdc-floating-label-shake-float-above-#{$modifier} {
     0% {
       transform: translateX(calc(0 - #{$positionX})) translateY(-#{$positionY}) scale(#{$scale});
     }
@@ -62,7 +62,7 @@
 
 @mixin mdc-floating-label-shake-animation($modifier) {
   .mdc-floating-label--shake {
-    animation: shake-float-above-#{$modifier} 250ms 1;
+    animation: mdc-floating-label-shake-float-above-#{$modifier} 250ms 1;
   }
 }
 
