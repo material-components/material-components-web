@@ -56,9 +56,9 @@ export class MDCPersistentDrawer extends MDCComponent {
       deregisterInteractionHandler: (evt, handler) =>
         this.root_.removeEventListener(util.remapEvent(evt), handler, util.applyPassive()),
       registerDrawerInteractionHandler: (evt, handler) =>
-        this.drawer.addEventListener(util.remapEvent(evt), handler),
+        document.addEventListener(util.remapEvent(evt), handler),
       deregisterDrawerInteractionHandler: (evt, handler) =>
-        this.drawer.removeEventListener(util.remapEvent(evt), handler),
+        document.removeEventListener(util.remapEvent(evt), handler),
       registerTransitionEndHandler: (handler) =>
         this.root_.addEventListener('transitionend', handler),
       deregisterTransitionEndHandler: (handler) =>

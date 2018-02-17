@@ -84,14 +84,14 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
     }
 
     this.adapter_.registerDrawerInteractionHandler('touchstart', this.componentTouchStartHandler_);
-    this.adapter_.registerInteractionHandler('touchmove', this.componentTouchMoveHandler_);
-    this.adapter_.registerInteractionHandler('touchend', this.componentTouchEndHandler_);
+    this.adapter_.registerDrawerInteractionHandler('touchmove', this.componentTouchMoveHandler_);
+    this.adapter_.registerDrawerInteractionHandler('touchend', this.componentTouchEndHandler_);
   }
 
   destroy() {
     this.adapter_.deregisterDrawerInteractionHandler('touchstart', this.componentTouchStartHandler_);
-    this.adapter_.deregisterInteractionHandler('touchmove', this.componentTouchMoveHandler_);
-    this.adapter_.deregisterInteractionHandler('touchend', this.componentTouchEndHandler_);
+    this.adapter_.deregisterDrawerInteractionHandler('touchmove', this.componentTouchMoveHandler_);
+    this.adapter_.deregisterDrawerInteractionHandler('touchend', this.componentTouchEndHandler_);
     // Deregister the document keydown handler just in case the component is destroyed while the menu is open.
     this.adapter_.deregisterDocumentKeydownHandler(this.documentKeydownHandler_);
   }
@@ -164,9 +164,6 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
   }
 
   handleTouchStart_(evt) {
-    if (!this.adapter_.hasClass(this.openCssClass_)) {
-      return;
-    }
     if (evt.pointerType && evt.pointerType !== 'touch') {
       return;
     }
@@ -176,11 +173,20 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
     this.startX_ = evt.touches ? evt.touches[0].pageX : evt.pageX;
     this.currentX_ = this.startX_;
 
-    this.updateRaf_ = requestAnimationFrame(this.updateDrawer_.bind(this));
+    if (!this.adapter_.hasClass(this.openCssClass_) && !this.isInRange()) {
+      return;
+    }
+
+    if (this.adapter_.hasClass(this.openCssClass_)) {
+      this.updateRaf_ = requestAnimationFrame(this.updateDrawer_.bind(this));
+    }
   }
 
   handleTouchMove_(evt) {
     if (evt.pointerType && evt.pointerType !== 'touch') {
+      return;
+    }
+    if (!this.adapter_.hasClass(this.openCssClass_) && !this.isInRange()) {
       return;
     }
 
@@ -195,11 +201,18 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
     this.prepareForTouchEnd_();
 
     // Did the user close the drawer by more than 50%?
-    if (Math.abs(this.newPosition_ / this.drawerWidth_) >= 0.5) {
-      this.close();
+    if (this.adapter_.hasClass(this.openCssClass_)) {
+      if (Math.abs(this.newPosition_ / this.drawerWidth_) >= 0.5) {
+        this.close();
+      } else {
+        this.open();
+      }
     } else {
-      // Triggering an open here means we'll get a nice animation back to the fully open state.
-      this.open();
+      if (Math.abs((this.currentX_ - this.startX_) / this.drawerWidth_) >= 0.5) {
+        this.open();
+      } else {
+        this.close();
+      }
     }
   }
 
@@ -215,14 +228,21 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
 
   get newPosition_() {
     let newPos = null;
-
-    if (this.direction_ === 1) {
-      newPos = Math.min(0, this.currentX_ - this.startX_);
-    } else {
-      newPos = Math.max(0, this.currentX_ - this.startX_);
-    }
-
+    newPos = Math.min(0, this.currentX_ - this.startX_);
     return newPos;
+  }
+
+  isInRange() {
+    if (this.direction_ === 1) {
+      if (this.startX_ > 35) {
+        return false;
+      }
+    } else {
+      if (this.startX_ < window.innerWidth - 35) {
+        return false;
+      }
+    }
+    return true;
   }
 
   isRootTransitioningEventTarget_() {
