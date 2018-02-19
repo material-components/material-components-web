@@ -169,16 +169,9 @@
 
       align-self: flex-end;
       font-weight: #{map-get($mdc-typography-font-weight-values, normal)};
-      line-height: 1.5rem;
-    }
 
-    @media (min-width: 600px) {
-      &.mdc-toolbar--fixed-lastrow-only {
-        .mdc-toolbar__title,
-        .mdc-toolbar__menu-icon,
-        .mdc-toolbar__icon {
-          line-height: 2rem;
-        }
+      @media (max-width: $mdc-toolbar-mobile-breakpoint) { 
+        line-height: 1.5rem;
       }
     }
 
