@@ -1,3 +1,36 @@
+<a name="0.31.0"></a>
+# [0.31.0](https://github.com/material-components/material-components-web/compare/v0.30.0...v0.31.0) (2018-02-20)
+
+
+### Bug Fixes
+
+* **button:** Increase specifity of button icon's CSS class ([#2242](https://github.com/material-components/material-components-web/issues/2242)) ([f91d25e](https://github.com/material-components/material-components-web/commit/f91d25e))
+* **card:** Remove unused dep/import and add missing dep ([#2234](https://github.com/material-components/material-components-web/issues/2234)) ([a6de863](https://github.com/material-components/material-components-web/commit/a6de863)), closes [#2231](https://github.com/material-components/material-components-web/issues/2231)
+* **checkbox:** Avoid using & within [@at-root](https://github.com/at-root) context ([#2238](https://github.com/material-components/material-components-web/issues/2238)) ([665cf12](https://github.com/material-components/material-components-web/commit/665cf12))
+* **demos:** Remove space between toolbar title and navigation icon. ([#2174](https://github.com/material-components/material-components-web/issues/2174)) ([3b0977d](https://github.com/material-components/material-components-web/commit/3b0977d))
+* **menu:** Rename test files ([#2168](https://github.com/material-components/material-components-web/issues/2168)) ([5ea5c2f](https://github.com/material-components/material-components-web/commit/5ea5c2f))
+* **menu:** Use mdc-theme-prop to support css variables on background ([#2253](https://github.com/material-components/material-components-web/issues/2253)) ([1cc5dd5](https://github.com/material-components/material-components-web/commit/1cc5dd5))
+* **ripple:** Ensure hover/focus states have proper z-index ([#2204](https://github.com/material-components/material-components-web/issues/2204)) ([751dabd](https://github.com/material-components/material-components-web/commit/751dabd))
+* **ripple:** use default computeBoundingRect for all components with ripple ([#2216](https://github.com/material-components/material-components-web/issues/2216)) ([229e590](https://github.com/material-components/material-components-web/commit/229e590))
+* **select:** pre-selected option correctly floats label ([#2125](https://github.com/material-components/material-components-web/issues/2125)) ([fac0d03](https://github.com/material-components/material-components-web/commit/fac0d03))
+* **switch:** change all border-radius values to 50% instead of hardcoded pixel values ([#2255](https://github.com/material-components/material-components-web/issues/2255)) ([1b2219b](https://github.com/material-components/material-components-web/commit/1b2219b))
+* **text-field:** Apply error color on bottom line of fullwidth field ([#2197](https://github.com/material-components/material-components-web/issues/2197)) ([a6500bd](https://github.com/material-components/material-components-web/commit/a6500bd))
+* **theme:** fix select underline ([#2236](https://github.com/material-components/material-components-web/issues/2236)) ([4514e03](https://github.com/material-components/material-components-web/commit/4514e03))
+
+
+### Features
+
+* **card:** Add primary action element with hover, focused, and pressed states ([#2039](https://github.com/material-components/material-components-web/issues/2039)) ([3949dbe](https://github.com/material-components/material-components-web/commit/3949dbe)), closes [#1709](https://github.com/material-components/material-components-web/issues/1709)
+* **chips:** Add Sass mixins for customization ([#2177](https://github.com/material-components/material-components-web/issues/2177)) ([667513c](https://github.com/material-components/material-components-web/commit/667513c))
+* **chips:** Handle leading/trailing icon styles ([#2191](https://github.com/material-components/material-components-web/issues/2191)) ([be71f9f](https://github.com/material-components/material-components-web/commit/be71f9f))
+
+
+### BREAKING CHANGES
+
+* **chips:** MDC Chips has new Sass mixins.
+
+
+
 <a name="0.30.0"></a>
 # [0.30.0](https://github.com/material-components/material-components-web/compare/v0.29.0...v0.30.0) (2018-02-05)
 
