@@ -93,6 +93,7 @@ To customize the colors of any part of the chip, use the following mixins.
 
 Mixin | Description
 --- | ---
+`mdc-chip-set-margin($margin)` | Customizes the amount of space between each chip in the set
 `mdc-chip-corner-radius($radius)` | Customizes the corner radius for a chip
 `mdc-chip-fill-color-accessible($color)` | Customizes the background fill color for a chip, and updates the chip's ink and ripple color to meet accessibility standards
 `mdc-chip-fill-color($color)` | Customizes the background fill color for a chip
@@ -101,6 +102,8 @@ Mixin | Description
 `mdc-chip-stroke-width($width)` | Customizes the border stroke width for a chip
 `mdc-chip-stroke-style($style)` | Customizes the border stroke style for a chip
 `mdc-chip-stroke-color($color)` | Customizes the border stroke color for a chip
+
+> _NOTE_: `mdc-chip-set-margin` also sets the amount of space between a chip and the edge of the set it's contained in.
 
 ### `MDCChip` and `MDCChipSet`
 

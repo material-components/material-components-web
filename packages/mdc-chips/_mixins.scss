@@ -68,3 +68,11 @@
   padding-left: $horizontal-padding-value;
   border-width: $width;
 }
+
+@mixin mdc-chip-set-margin($margin) {
+  padding: $margin / 2;
+
+  .mdc-chip {
+    margin: $margin / 2;
+  }
+}
