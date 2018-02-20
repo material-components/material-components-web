@@ -206,6 +206,109 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
+   * @return {boolean} True if the Text Field is required.
+   */
+  get required() {
+    return this.input_.required;
+  }
+
+  /**
+   * @param {boolean} required Sets the Text Field to required.
+   */
+  set required(required) {
+    this.input_.required = required;
+  }
+
+  /**
+   * @return {string} the input element's validation pattern.
+   */
+  get pattern() {
+    return this.input_.pattern;
+  }
+
+  /**
+   * @param {string} pattern Sets the input element's validation pattern.
+   */
+  set pattern(pattern) {
+    this.input_.pattern = pattern;
+  }
+
+  /**
+   * @return {number} the input element's minLength.
+   */
+  get minLength() {
+    return this.input_.minLength;
+  }
+
+  /**
+   * @param {number} minLength Sets the input element's minLength.
+   */
+  set minLength(minLength) {
+    this.input_.minLength = minLength;
+  }
+
+  /**
+   * @return {number} the input element's maxLength.
+   */
+  get maxLength() {
+    return this.input_.maxLength;
+  }
+
+  /**
+   * @param {number} maxLength Sets the input element's maxLength.
+   */
+  set maxLength(maxLength) {
+    if (maxLength < 0) {
+      this.input_.removeAttribute('maxLength');
+    } else {
+      this.input_.maxLength = maxLength;
+    }
+  }
+
+  /**
+   * @return {string} the input element's min.
+   */
+  get min() {
+    return this.input_.min;
+  }
+
+  /**
+   * @param {string} min Sets the input element's min.
+   */
+  set min(min) {
+    this.input_.min = min;
+  }
+
+  /**
+   * @return {string} the input element's max.
+   */
+  get max() {
+    return this.input_.max;
+  }
+
+  /**
+   * @param {string} max Sets the input element's max.
+   */
+  set max(max) {
+    this.input_.max = max;
+  }
+
+
+  /**
+   * @return {string} the input element's step.
+   */
+  get step() {
+    return this.input_.step;
+  }
+
+  /**
+   * @param {string} step Sets the input element's step.
+   */
+  set step(step) {
+    this.input_.step = step;
+  }
+
+  /**
    * Sets the helper text element content.
    * @param {string} content
    */

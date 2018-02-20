@@ -167,9 +167,10 @@ class MDCTextFieldFoundation extends MDCFoundation {
     const validationAttrWhitelist = [
       'pattern', 'min', 'max', 'required', 'step', 'minlength', 'maxlength',
     ];
-    mutationsList.forEach((mutation) => {
+    mutationsList.some((mutation) => {
       if (validationAttrWhitelist.indexOf(mutation.attributeName) > -1) {
         this.styleValidity_(true);
+        return true;
       }
     });
   }

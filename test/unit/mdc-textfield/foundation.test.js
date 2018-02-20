@@ -196,7 +196,6 @@ test('#setValid updates classes', () => {
   td.verify(helperText.setValidity(true));
   td.verify(label.styleShake(/* isValid */ true, /* isFocused */ false));
 
-  // None of these is affected by setValid.
   td.verify(mockAdapter.addClass(cssClasses.FOCUSED), {times: 0});
   td.verify(mockAdapter.removeClass(cssClasses.FOCUSED), {times: 0});
   td.verify(mockAdapter.addClass(cssClasses.DISABLED), {times: 0});
@@ -695,7 +694,6 @@ test('on validation attribute change calls styleValidity_', () => {
   td.verify(mockAdapter.removeClass(cssClasses.INVALID));
   td.verify(helperText.setValidity(true));
 
-  // None of these is affected by setValidationAttribute.
   td.verify(mockAdapter.addClass(cssClasses.FOCUSED), {times: 0});
   td.verify(mockAdapter.removeClass(cssClasses.FOCUSED), {times: 0});
   td.verify(mockAdapter.addClass(cssClasses.DISABLED), {times: 0});
@@ -712,7 +710,6 @@ test('should not call styleValidity_ on non-whitelisted attribute change', () =>
   attributeChange([{attributeName: 'form'}]);
   td.verify(mockAdapter.removeClass(cssClasses.INVALID), {times: 0});
 
-  // None of these is affected by setValidationAttribute.
   td.verify(mockAdapter.addClass(cssClasses.FOCUSED), {times: 0});
   td.verify(mockAdapter.removeClass(cssClasses.FOCUSED), {times: 0});
   td.verify(mockAdapter.addClass(cssClasses.DISABLED), {times: 0});

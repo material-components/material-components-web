@@ -147,7 +147,8 @@
             </div>
             <div class="mdc-text-field__idle-outline"></div>
           </div>
-          <p class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" id="tf-outlined-validation-msg">
+          <p class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
+             id="name-validation-message">
             Helper Text (possibly validation message)
           </p>
         </div>
@@ -186,12 +187,12 @@
         <div id="demo-tf-box-wrapper">
           <div id="tf-box-example" class="mdc-text-field mdc-text-field--box" data-demo-no-auto-js>
             <input type="text" id="tf-box" class="mdc-text-field__input"
-                   aria-controls="name-validation-message">
+                   aria-controls="box-name-validation-message">
             <label for="tf-box" class="mdc-text-field__label">Your Name</label>
             <div class="mdc-line-ripple"></div>
           </div>
           <p class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
-            id="box-text-field-helper-text">
+            id="box-name-validation-message">
             Helper Text (possibly validation message)
           </p>
         </div>
@@ -378,19 +379,11 @@
     <script src="/assets/material-components-web.js" async></script>
     <script>
       function toggleRequired(textfield, isRequired) {
-        if (isRequired) {
-          textfield.required = true;
-        } else {
-          textfield.required = false;
-        }
+        textfield.required = isRequired;
       }
 
       function togglePattern(textfield, checked) {
-        if (checked) {
-          textfield.pattern = '.{8,}';
-        } else {
-          textfield.pattern = '.*';
-        }
+        textfield.pattern = checked ? '.{8,}' : '.*';
       }
 
       demoReady(function() {
@@ -423,31 +416,21 @@
           tf.layout();
         });
         document.getElementById('outlined-required').addEventListener('change', function(evt) {
-          toggleRequired(outlinedInputEl, evt.target.checked);
+          toggleRequired(tf, evt.target.checked);
         });
         document.getElementById('outlined-minlength').addEventListener('change', function(evt) {
-          var checked = evt.target.checked;
-          if (checked) {
-            outlinedInputEl.minLength = 8;
-          } else {
-            outlinedInputEl.minLength = 0;
-          }
+          tf.minLength = evt.target.checked ? 8 : -1;
         });
         document.getElementById('outlined-maxlength').addEventListener('change', function(evt) {
-          var checked = evt.target.checked;
-          if (checked) {
-            outlinedInputEl.maxLength = 10;
-          } else {
-            outlinedInputEl.removeAttribute('maxLength');
-          }
+          tf.maxLength = evt.target.checked ? 10 : -1;
         });
         outlinedInputEl.addEventListener('blur', function() {
           if (outlinedInputEl.validity.tooShort) {
-            tfHelperText.innerHTML = minLengthError;
+            tf.helperTextContent = minLengthError;
           } else if (outlinedInputEl.validity.tooLong) {
-            tfHelperText.innerHTML = maxLengthError;
+            tf.helperTextContent = maxLengthError;
           } else {
-            tfHelperText.innerHTML = plainHelperText;
+            tf.helperTextContent = plainHelperText;
           }
         });
       });
@@ -455,7 +438,6 @@
       demoReady(function() {
         var tfEl = document.getElementById('tf-box-example');
         var tf = new mdc.textField.MDCTextField(tfEl);
-        var boxInputEl = tfEl.querySelector('input');
         var wrapper = document.getElementById('demo-tf-box-wrapper');
         var helperText = document.getElementById('box-text-field-helper-text');
 
@@ -484,14 +466,14 @@
         });
 
         document.getElementById('box-required').addEventListener('change', function(evt) {
-          toggleRequired(boxInputEl, evt.target.checked);
+          toggleRequired(tf, evt.target.checked);
         });
         document.getElementById('box-pattern').addEventListener('change', function(evt) {
           var checked = evt.target.checked;
           var requiredHelperText = 'Must be at least 8 characters';
           var plainHelperText = 'Helper Text (possibly validation message)';
-          togglePattern(boxInputEl, checked);
-          helperText.innerHTML = checked ? requiredHelperText : plainHelperText;
+          togglePattern(tf, checked);
+          tf.helperTextContent = checked ? requiredHelperText : plainHelperText;
         });
 
         document.getElementById('box-use-helper-text').addEventListener('change', function(evt) {
@@ -523,22 +505,18 @@
         var tfBoxLeadingEl = document.getElementById('tf-box-leading-example');
         var tfBoxLeading = new mdc.textField.MDCTextField(tfBoxLeadingEl);
         var wrapperBoxLeading = document.getElementById('demo-tf-box-leading-wrapper');
-        var tfBoxLeadingInput = tfBoxLeadingEl.querySelector('input');
 
         var tfBoxTrailingEl = document.getElementById('tf-box-trailing-example');
         var tfBoxTrailing = new mdc.textField.MDCTextField(tfBoxTrailingEl);
         var wrapperBoxTrailing = document.getElementById('demo-tf-box-trailing-wrapper');
-        var tfBoxTrailingInput = tfBoxTrailingEl.querySelector('input');
 
         var tfOutlinedLeadingEl = document.getElementById('tf-outlined-leading-example');
         var tfOutlinedLeading = new mdc.textField.MDCTextField(tfOutlinedLeadingEl);
         var wrapperOutlinedLeading = document.getElementById('demo-tf-outlined-leading-wrapper');
-        var tfOutlinedLeadingInput = tfOutlinedLeadingEl.querySelector('input');
 
         var tfOutlinedTrailingEl = document.getElementById('tf-outlined-trailing-example');
         var tfOutlinedTrailing = new mdc.textField.MDCTextField(tfOutlinedTrailingEl);
         var wrapperOutlinedTrailing = document.getElementById('demo-tf-outlined-trailing-wrapper');
-        var tfOutlinedTrailingInput = tfOutlinedTrailingEl.querySelector('input');
 
         var tfIcons = document.querySelectorAll('.mdc-text-field__icon');
         var tfInputs = tfIconContainer.querySelectorAll('.mdc-text-field__input');
@@ -587,18 +565,18 @@
 
         document.getElementById('required-leading-trailing').addEventListener('change', function(evt) {
           var checked = evt.target.checked;
-          toggleRequired(tfBoxLeadingInput, checked);
-          toggleRequired(tfBoxTrailingInput, checked);
-          toggleRequired(tfOutlinedLeadingInput, checked);
-          toggleRequired(tfOutlinedTrailingInput, checked);
+          toggleRequired(tfBoxLeading, checked);
+          toggleRequired(tfBoxTrailing, checked);
+          toggleRequired(tfOutlinedLeading, checked);
+          toggleRequired(tfOutlinedTrailing, checked);
         });
 
         document.getElementById('pattern-leading-trailing').addEventListener('change', function(evt) {
           var checked = evt.target.checked;
-          togglePattern(tfBoxLeadingInput, checked);
-          togglePattern(tfBoxTrailingInput, checked);
-          togglePattern(tfOutlinedLeadingInput, checked);
-          togglePattern(tfOutlinedTrailingInput, checked);
+          togglePattern(tfBoxLeading, checked);
+          togglePattern(tfBoxTrailing, checked);
+          togglePattern(tfOutlinedLeading, checked);
+          togglePattern(tfOutlinedTrailing, checked);
         });
 
         document.getElementById('leading-trailing-alternate-colors').addEventListener('change', function(evt) {
@@ -622,7 +600,6 @@
         var tfRoot = section.querySelector('.mdc-text-field');
         var helperText = section.querySelector('.mdc-text-field-helper-text');
         var tf = new mdc.textField.MDCTextField(tfRoot);
-        var inputEl = tfRoot.querySelector('input');
 
         document.getElementById('disable').addEventListener('change', function(evt) {
           var target = evt.target;
@@ -641,7 +618,7 @@
           tfRoot.classList[target.checked ? 'add' : 'remove']('mdc-text-field--dense');
         });
         document.getElementById('required').addEventListener('change', function(evt) {
-          toggleRequired(inputEl, evt.target.checked);
+          toggleRequired(tf, evt.target.checked);
         });
         document.getElementById('alternate-colors').addEventListener('change', function (evt) {
           var target = evt.target;
@@ -672,8 +649,6 @@
         var section = document.getElementById('demo-text-field-textarea-wrapper');
         var tfRoot = section.querySelector('.mdc-text-field');
         var tf = new mdc.textField.MDCTextField(tfRoot);
-        var inputEl = tfRoot.querySelector('textarea');
-
         document.getElementById('textarea-disable').addEventListener('change', function(evt) {
           var target = evt.target;
           tf.disabled = target.checked;
@@ -692,7 +667,7 @@
           tfRoot.classList[target.checked ? 'add' : 'remove']('demo-textarea');
         });
         document.getElementById('textarea-required').addEventListener('change', function(evt) {
-          toggleRequired(inputEl, evt.target.checked);
+          toggleRequired(tf, evt.target.checked);
         });
       });
 
@@ -702,8 +677,6 @@
         var tfMultiRoot = section.querySelector('.mdc-text-field--textarea');
         var tf = new mdc.textField.MDCTextField(tfRoot);
         var tfMulti = new mdc.textField.MDCTextField(tfMultiRoot);
-        var inputEl = tfRoot.querySelector('input');
-        var inputMultiEl = tfMultiRoot.querySelector('textarea');
 
         document.getElementById('fullwidth-disable').addEventListener('change', function(evt) {
           var target = evt.target;
@@ -718,10 +691,11 @@
             el.classList[target.checked ? 'add' : 'remove']('mdc-text-field--dense');
           });
         });
+
         document.getElementById('fullwidth-required').addEventListener('change', function(evt) {
           var checked = evt.target.checked;
-          toggleRequired(inputEl, checked);
-          toggleRequired(inputMultiEl, checked);
+          toggleRequired(tf, checked);
+          toggleRequired(tfMulti, checked);
         });
 
         document.getElementById('fullwidth-alternate-colors').addEventListener('change', function (evt) {

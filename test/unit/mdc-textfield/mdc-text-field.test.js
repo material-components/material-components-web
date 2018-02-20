@@ -365,23 +365,6 @@ test('#adapter.registerValidationAttributeChangeHandler creates a working mutati
   root.querySelector('.mdc-text-field__input').required = true;
 });
 
-test('#adapter.registerValidationAttributeChangeHandler adds an observer to the component', () => {
-  const {component} = setupTest();
-  const handler = td.func('ValidationAttributeChangeHandler');
-
-  component.foundation_.adapter_.registerValidationAttributeChangeHandler(handler);
-  assert.equal(component.observers_.length, 2);
-});
-
-test('#adapter.deregisterValidationAttributeChangeHandler disconnects observers from component', () => {
-  const {component} = setupTest();
-  const disconnect = td.func('ValidationDisconnect');
-
-  component.observers_ = [{disconnect}];
-  component.foundation_.adapter_.deregisterValidationAttributeChangeHandler();
-  td.verify(disconnect());
-});
-
 test('#adapter.deregisterValidationAttributeChangeHandler disconnects all observers on component', () => {
   const {component} = setupTest();
   const disconnect1 = td.func('ValidationDisconnect1');
