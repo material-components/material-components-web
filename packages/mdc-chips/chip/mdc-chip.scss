@@ -24,18 +24,51 @@
   @include mdc-ripple-radius-bounded;
   @include mdc-chip-corner-radius($mdc-chip-border-radius-default);
   @include mdc-chip-fill-color($mdc-chip-fill-color-default);
-  @include mdc-chip-ink-color($mdc-chip-ink-color-default);
+  @include mdc-chip-ink-color(text-primary-on-light);
 
-  display: inline-block;
-  margin: 5px;
+  display: inline-flex;
+  position: relative;
+  align-items: center;
+  margin: 4px;
   padding: $mdc-chip-vertical-padding $mdc-chip-horizontal-padding;
   cursor: pointer;
+  outline: none;
   overflow: hidden;
 }
 
 .mdc-chip__text {
-  display: inline-block;
-  vertical-align: middle;
   // Set line-height to be <18px to force the content height of mdc-chip to be 18px.
   line-height: 17px;
+}
+
+.mdc-chip__icon {
+  color: $mdc-chip-icon-color;
+  vertical-align: middle;
+  border-radius: 50%;
+  outline: none;
+}
+
+.mdc-chip__icon--leading {
+  margin: -4px 4px -4px -4px;
+}
+
+.mdc-chip__icon--trailing {
+  margin: 0 -4px 0 4px;
+
+  &:hover {
+    color: $mdc-chip-trailing-icon-hover-color;
+  }
+
+  &:focus {
+    color: $mdc-chip-trailing-icon-focus-color;
+  }
+}
+
+// This overrides styles defined in the .material-icons CSS class
+// which is loaded separately, so the order of CSS definitions is not
+// guaranteed. Therefore, increase specifity to ensure overrides apply.
+.mdc-chip__icon.mdc-chip__icon--trailing {
+  width: $mdc-chip-trailing-icon-size;
+  height: $mdc-chip-trailing-icon-size;
+  font-size: $mdc-chip-trailing-icon-size;
 }
