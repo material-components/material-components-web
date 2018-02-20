@@ -16,6 +16,10 @@
 
 $mdc-chip-border-radius-default: 16px;
 $mdc-chip-fill-color-default: rgba(black, .08);
-$mdc-chip-ink-color-default: rgba(black, .87);
 $mdc-chip-horizontal-padding: 12px;
 $mdc-chip-vertical-padding: 7px;
+
+$mdc-chip-icon-color: rgba(black, .54);
+$mdc-chip-trailing-icon-size: 18px;
+$mdc-chip-trailing-icon-hover-color: rgba(black, .62);
+$mdc-chip-trailing-icon-focus-color: rgba(black, .87);
