@@ -14,11 +14,11 @@
 // limitations under the License.
 //
 
-@import "./mixins";
-@import "./variables";
 @import "@material/rtl/mixins";
 @import "@material/theme/variables";
 @import "@material/theme/mixins";
+@import "./mixins";
+@import "./variables";
 
 // postcss-bem-linter: define floating-label
 .mdc-floating-label {
