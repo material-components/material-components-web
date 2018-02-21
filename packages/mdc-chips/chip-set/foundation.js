@@ -17,7 +17,9 @@
 
 import MDCFoundation from '@material/base/foundation';
 import MDCChipSetAdapter from './adapter';
-import {strings} from './constants';
+// eslint-disable-next-line no-unused-vars
+import {MDCChip, MDCChipFoundation} from '../chip/index';
+import {strings, cssClasses} from './constants';
 
 /**
  * @extends {MDCFoundation<!MDCChipSetAdapter>}
@@ -29,6 +31,11 @@ class MDCChipSetFoundation extends MDCFoundation {
     return strings;
   }
 
+  /** @return enum {string} */
+  static get cssClasses() {
+    return cssClasses;
+  }
+
   /**
    * {@see MDCChipSetAdapter} for typing information on parameters and return
    * types.
@@ -37,6 +44,8 @@ class MDCChipSetFoundation extends MDCFoundation {
   static get defaultAdapter() {
     return /** @type {!MDCChipSetAdapter} */ ({
       hasClass: () => {},
+      registerInteractionHandler: () => {},
+      deregisterInteractionHandler: () => {},
     });
   }
 
@@ -45,6 +54,46 @@ class MDCChipSetFoundation extends MDCFoundation {
    */
   constructor(adapter) {
     super(Object.assign(MDCChipSetFoundation.defaultAdapter, adapter));
+
+    /**
+     * The active chips in the set. Only used for choice chip set or filter chip set.
+     * @private {!Array<!MDCChip>}
+     */
+    this.activeChips_ = [];
+
+    /** @private {function(!Event): undefined} */
+    this.chipInteractionHandler_ = (evt) => this.handleChipInteraction_(evt);
+  }
+
+  init() {
+    this.adapter_.registerInteractionHandler(
+      MDCChipFoundation.strings.INTERACTION_EVENT, this.chipInteractionHandler_);
+  }
+
+  destroy() {
+    this.adapter_.deregisterInteractionHandler(
+      MDCChipFoundation.strings.INTERACTION_EVENT, this.chipInteractionHandler_);
+  }
+
+  /**
+   * Handles a chip interaction event
+   * @param {!Object} evt
+   * @private
+   */
+  handleChipInteraction_(evt) {
+    if (!this.adapter_.hasClass(cssClasses.CHOICE)) {
+      return;
+    }
+    const {chip} = evt.detail;
+    if (this.activeChips_.length === 0) {
+      this.activeChips_[0] = chip;
+    } else if (this.activeChips_[0] !== chip) {
+      this.activeChips_[0].toggleActive();
+      this.activeChips_[0] = chip;
+    } else {
+      this.activeChips_ = [];
+    }
+    chip.toggleActive();
   }
 }
 
