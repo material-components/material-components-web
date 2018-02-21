@@ -59,17 +59,25 @@ class MDCChipFoundation extends MDCFoundation {
 
     /** @private {function(!Event): undefined} */
     this.interactionHandler_ = (evt) => this.handleInteraction_(evt);
+    /** @private {function(!Event): undefined} */
+    this.trailingIconInteractionHandler_ = (evt) => this.handleTrailingIconInteraction_(evt);
   }
 
   init() {
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.registerInteractionHandler(evtType, this.interactionHandler_);
     });
+    ['click', 'touchstart', 'pointerdown', 'mousedown', 'keydown'].forEach((evtType) => {
+      this.adapter_.registerTrailingIconInteractionHandler(evtType, this.trailingIconInteractionHandler_);
+    });
   }
 
   destroy() {
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.deregisterInteractionHandler(evtType, this.interactionHandler_);
+    });
+    ['click', 'touchstart', 'pointerdown', 'mousedown', 'keydown'].forEach((evtType) => {
+      this.adapter_.deregisterTrailingIconInteractionHandler(evtType, this.trailingIconInteractionHandler_);
     });
   }
 
@@ -92,6 +100,15 @@ class MDCChipFoundation extends MDCFoundation {
     if (evt.type === 'click' || evt.key === 'Enter' || evt.keyCode === 13) {
       this.adapter_.notifyInteraction();
     }
+  }
+
+  /**
+   * Handles an interaction event on the trailing icon element. This is used to
+   * prevent the ripple from activating on interaction with the trailing icon.
+   * @param {!Event} evt
+   */
+  handleTrailingIconInteraction_(evt) {
+    evt.stopPropagation();
   }
 }
 
