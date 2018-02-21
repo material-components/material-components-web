@@ -42,7 +42,7 @@ test('attachTo returns a component instance', () => {
 test('#float should call styleFloat on foundation', () => {
   const {component} = setupTest();
   component.foundation_.styleFloat = td.func();
-  component.float();
+  component.float('value');
   td.verify(component.foundation_.styleFloat(td.matchers.isA(String)));
 });
 
