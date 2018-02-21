@@ -20,4 +20,9 @@ const strings = {
   CHIP_SELECTOR: '.mdc-chip',
 };
 
-export {strings};
+/** @enum {string} */
+const cssClasses = {
+  CHOICE: 'mdc-chip-set--choice',
+};
+
+export {strings, cssClasses};

@@ -20,4 +20,9 @@ const strings = {
   INTERACTION_EVENT: 'MDCChip:interaction',
 };
 
-export {strings};
+/** @enum {string} */
+const cssClasses = {
+  ACTIVATED: 'mdc-chip--activated',
+};
+
+export {strings, cssClasses};
