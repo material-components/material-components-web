@@ -18,7 +18,7 @@ import {assert} from 'chai';
 import td from 'testdouble';
 
 import {setupFoundationTest} from '../helpers/setup';
-import {captureHandlers, verifyDefaultAdapter} from '../helpers/foundation';
+import {verifyDefaultAdapter} from '../helpers/foundation';
 
 import MDCSelectLabelFoundation from '../../../packages/mdc-select/label/foundation';
 import {cssClasses} from '../../../packages/mdc-select/label/constants';

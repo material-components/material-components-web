@@ -16,11 +16,9 @@
 
 import {assert} from 'chai';
 import bel from 'bel';
-import domEvents from 'dom-events';
 import td from 'testdouble';
 
 import {MDCSelectLabel} from '../../../packages/mdc-select/label';
-import {strings} from '../../../packages/mdc-select/constants';
 
 function getFixture() {
   return bel`
