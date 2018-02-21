@@ -35,7 +35,7 @@ test('exports cssClasses', () => {
 
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSelectLabelFoundation, [
-    'addClass', 'removeClass', 'getWidth'
+    'addClass', 'removeClass', 'getWidth',
   ]);
 });
 
