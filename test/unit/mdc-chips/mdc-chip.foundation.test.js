@@ -38,6 +38,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'addClass', 'removeClass', 'hasClass',
     'registerTrailingIconInteractionHandler', 'deregisterTrailingIconInteractionHandler',
     'registerInteractionHandler', 'deregisterInteractionHandler', 'notifyInteraction',
+    'notifyTrailingIconInteraction',
   ]);
 });
 
@@ -100,4 +101,23 @@ test('on click, emit custom event', () => {
   click(mockEvt);
 
   td.verify(mockAdapter.notifyInteraction());
+});
+
+test('on click in trailing icon, emit custom event', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const mockEvt = {
+    type: 'click',
+    stopPropagation: () => {},
+  };
+  let click;
+
+  td.when(mockAdapter.registerTrailingIconInteractionHandler('click', td.matchers.isA(Function)))
+    .thenDo((evtType, handler) => {
+      click = handler;
+    });
+
+  foundation.init();
+  click(mockEvt);
+
+  td.verify(mockAdapter.notifyTrailingIconInteraction());
 });

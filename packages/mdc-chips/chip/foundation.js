@@ -50,6 +50,7 @@ class MDCChipFoundation extends MDCFoundation {
       registerTrailingIconInteractionHandler: () => {},
       deregisterTrailingIconInteractionHandler: () => {},
       notifyInteraction: () => {},
+      notifyTrailingIconInteraction: () => {},
     });
   }
 
@@ -113,6 +114,9 @@ class MDCChipFoundation extends MDCFoundation {
    */
   handleTrailingIconInteraction_(evt) {
     evt.stopPropagation();
+    if (evt.type === 'click' || evt.key === 'Enter' || evt.keyCode === 13) {
+      this.adapter_.notifyTrailingIconInteraction();
+    }
   }
 }
 

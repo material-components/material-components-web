@@ -80,6 +80,12 @@ class MDCChipAdapter {
    * interacted with (typically on click or keydown).
    */
   notifyInteraction() {}
+
+  /**
+   * Emits a custom "MDCChip:trailingIconInteraction" event denoting the trailing icon has been
+   * interacted with (typically on click or keydown).
+   */
+  notifyTrailingIconInteraction() {}
 }
 
 export default MDCChipAdapter;
