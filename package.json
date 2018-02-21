@@ -152,6 +152,7 @@
           "text-field",
           "theme",
           "toolbar",
+          "top-app-bar",
           "typography",
           "demos",
           "infrastructure",
@@ -178,6 +179,7 @@
     "mdc-ripple",
     "mdc-selection-control",
     "mdc-slider",
-    "mdc-textfield"
+    "mdc-textfield",
+    "mdc-top-app-bar"
   ]
 }
