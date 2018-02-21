@@ -17,7 +17,7 @@
 import {assert} from 'chai';
 import td from 'testdouble';
 
-import {verifyDefaultAdapter} from '../helpers/foundation';
+import {verifyDefaultAdapter, captureHandlers} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
 import MDCChipFoundation from '../../../packages/mdc-chips/chip/foundation';
 
@@ -88,36 +88,27 @@ test('#toggleActive removes mdc-chip--activated class if the class exists', () =
 
 test('on click, emit custom event', () => {
   const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const mockEvt = {
     type: 'click',
   };
-  let click;
-
-  td.when(mockAdapter.registerInteractionHandler('click', td.matchers.isA(Function))).thenDo((evtType, handler) => {
-    click = handler;
-  });
 
   foundation.init();
-  click(mockEvt);
+  handlers.click(mockEvt);
 
   td.verify(mockAdapter.notifyInteraction());
 });
 
 test('on click in trailing icon, emit custom event', () => {
   const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerTrailingIconInteractionHandler');
   const mockEvt = {
     type: 'click',
     stopPropagation: () => {},
   };
-  let click;
-
-  td.when(mockAdapter.registerTrailingIconInteractionHandler('click', td.matchers.isA(Function)))
-    .thenDo((evtType, handler) => {
-      click = handler;
-    });
 
   foundation.init();
-  click(mockEvt);
+  handlers.click(mockEvt);
 
   td.verify(mockAdapter.notifyTrailingIconInteraction());
 });

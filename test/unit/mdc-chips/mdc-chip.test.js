@@ -108,8 +108,7 @@ test('#adapter.deregisterTrailingIconInteractionHandler removes event listener f
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test('#adapter.notifyInteraction emits ' +
-  `${MDCChipFoundation.strings.INTERACTION_EVENT}`, () => {
+test('#adapter.notifyInteraction emits ' + MDCChipFoundation.strings.INTERACTION_EVENT, () => {
   const {component} = setupTest();
   const handler = td.func('interaction handler');
 
@@ -120,8 +119,7 @@ test('#adapter.notifyInteraction emits ' +
   td.verify(handler(td.matchers.anything()));
 });
 
-test('#adapter.notifyTrailingIconInteraction emits ' +
-  `${MDCChipFoundation.strings.INTERACTION_EVENT}`, () => {
+test('#adapter.notifyTrailingIconInteraction emits ' + MDCChipFoundation.strings.INTERACTION_EVENT, () => {
   const {component} = setupTest();
   const handler = td.func('interaction handler');
 
