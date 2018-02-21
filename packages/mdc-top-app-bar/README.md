@@ -60,7 +60,7 @@ Top app bars can accommodate multiple icons on the right:
   var topAppBarElement = document.querySelector('#topAppBar');
   var topAppBar = mdc.topAppBar.MDCTopAppBar.attachTo(topAppBarElement);
   
-  // Listen for menu icon events 
+  // Listen for navigation icon events 
   topAppBarElement.addEventListener('MDCTopAppBar:nav', function () {
     // do something
   });
@@ -100,4 +100,4 @@ Method Signature | Description
 
 Event Name | Event Data Structure | Description
 --- | --- | ---
-`MDCTopAppBar:nav` | None | Emits when the menu icon is clicked.
+`MDCTopAppBar:nav` | None | Emits when the navigation icon is clicked.

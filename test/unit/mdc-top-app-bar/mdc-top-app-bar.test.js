@@ -57,14 +57,39 @@ function setupTest() {
   const fixture = getFixture();
   const root = fixture.querySelector('.mdc-top-app-bar');
   const adjust = fixture.querySelector('.mdc-top-app-bar-fixed-adjust');
-  const component = new MDCTopAppBar(root);
-  return {root, adjust, component};
+  const icon = root.querySelector('.mdc-top-app-bar__menu-icon');
+  const component = new MDCTopAppBar(root, undefined, (el) => new FakeRipple(el));
+
+  return {root, adjust, component, icon};
+}
+
+class FakeRipple {
+  constructor(root) {
+    this.root = root;
+    this.destroy = td.func('.destroy');
+    this.unbounded = null;
+  }
 }
 
 suite('MDCTopAppBar');
 
-test('attachTo initializes and returns an MDCTopAppBar instance', () => {
+test('initialize and returns an MDCTopAppBar instance', () => {
   assert.isTrue(MDCTopAppBar.attachTo(getFixture()) instanceof MDCTopAppBar);
+});
+
+test('constructor instantiates icon ripples', () => {
+  const {root, component} = setupTest();
+  const icons = root.querySelectorAll('.mdc-top-app-bar__icon').length + 1;
+
+  assert.isTrue(component.iconRipples_.length === icons);
+});
+
+test('destroy destroys icon ripples', () => {
+  const {component} = setupTest();
+  component.destroy();
+  component.iconRipples_.forEach((icon) => {
+    td.verify(icon.destroy());
+  });
 });
 
 test('adapter#hasClass returns true if the root element has specified class', () => {
@@ -93,8 +118,7 @@ test('adapter#removeClass removes a class from the root element', () => {
 
 test('#adapter.registerNavigationIconInteractionHandler adds a handler to the nav icon ' +
   'element for a given event', () => {
-  const {root, component} = setupTest();
-  const icon = root.querySelector('.mdc-top-app-bar__menu-icon');
+  const {component, icon} = setupTest();
   const handler = td.func('eventHandler');
   component.getDefaultFoundation().adapter_.registerNavigationIconInteractionHandler('click', handler);
   domEvents.emit(icon, 'click');
@@ -103,8 +127,7 @@ test('#adapter.registerNavigationIconInteractionHandler adds a handler to the na
 
 test('#adapter.deregisterNavigationIconInteractionHandler removes a handler from the nav icon ' +
   'element for a given event', () => {
-  const {root, component} = setupTest();
-  const icon = root.querySelector('.mdc-top-app-bar__menu-icon');
+  const {component, icon} = setupTest();
   const handler = td.func('eventHandler');
 
   icon.addEventListener('click', handler);

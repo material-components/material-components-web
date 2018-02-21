@@ -37,7 +37,8 @@ class MDCTopAppBar extends MDCComponent {
     this.iconRipples_;
   }
 
-  initialize() {
+  initialize(
+    rippleFactory = (el) => MDCRipple.attachTo(el)) {
     this.navIcon_ = this.root_.querySelector(strings.MENU_ICON_SELECTOR);
 
     // Get all icons in the toolbar and instantiate the ripples
@@ -45,7 +46,7 @@ class MDCTopAppBar extends MDCComponent {
     icons.push(this.navIcon_);
 
     this.iconRipples_ = icons.map((icon) => {
-      const ripple = MDCRipple.attachTo(icon);
+      const ripple = rippleFactory(icon);
       ripple.unbounded = true;
       return ripple;
     });
