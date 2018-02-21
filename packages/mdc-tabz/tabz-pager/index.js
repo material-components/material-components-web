@@ -43,19 +43,11 @@ class MDCTabzPager {
   }
 
   handleClick() {
-    if (this.isPrev_()) {
+    if (this.adapter_.hasClass(cssClasses.PREV)) {
       this.adapter_.notifyPrev();
-    } else if (this.isNext_()) {
+    } else if (this.adapter_.hasClass(cssClasses.NEXT)) {
       this.adapter_.notifyNext();
     }
-  }
-
-  isPrev_() {
-    return this.adapter_.hasClass(cssClasses.PREV);
-  }
-
-  isNext_() {
-    return this.adapter_.hasClass(cssClasses.NEXT);
   }
 
   emitPrevEvent_() {

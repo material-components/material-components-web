@@ -285,10 +285,6 @@ $mdc-color: $mdc-purple;
   flex: 1 0 110px;
 }
 
-.mdc-tabz-panel-container {
-  overflow: hidden;
-}
-
 @media screen and (max-width: 599px) {
   .mdc-tabz-bar--scrollable-fixed .mdc-tabz__container {
     padding-left: 52px;

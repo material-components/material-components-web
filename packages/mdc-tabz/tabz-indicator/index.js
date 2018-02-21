@@ -33,10 +33,6 @@ class MDCTabzIndicator {
     this.adapter_ = {
       getBoundingClientRect: () =>
         this.root_.getBoundingClientRect(),
-      registerEventListener: (evtType, handler) =>
-        this.root_.addEventListener(evtType, handler),
-      deregisterEventListener: (evtType, handler) =>
-        this.root_.removeEventListener(evtType, handler),
       setRootStyle: (prop, value) =>
         this.root_.style[prop] = value,
       addClass: (className) =>
@@ -45,9 +41,16 @@ class MDCTabzIndicator {
         this.root_.classList.remove(className),
       hasClass: (className) =>
         this.root_.classList.contains(className),
+      registerEventListener: (evtType, handler) =>
+        this.root_.addEventListener(evtType, handler),
+      deregisterEventListener: (evtType, handler) =>
+        this.root_.removeEventListener(evtType, handler),
     };
 
+    /** @private {!EventListener} */
     this.handleTransitionEnd_ = () => this.handleTransitionEnd();
+
+    /** @private {string} */
     this.transformation_ = '';
 
     this.init();
@@ -81,16 +84,6 @@ class MDCTabzIndicator {
 
   /** Animates the position of the indicator */
   animatePosition() {
-    this.animatePosition_();
-  }
-
-  /**
-   * Animates the position of the indicator. Depending on whether the indicator
-   * is an icon indicator, the indicator position change happens either
-   * immediately or after the icon transition
-   * @private
-   */
-  animatePosition_() {
     this.adapter_.registerEventListener('transitionend', this.handleTransitionEnd_);
     if (this.isIcon_) {
       this.adapter_.addClass(cssClasses.ANIMATING_ICON);
@@ -103,14 +96,6 @@ class MDCTabzIndicator {
 
   /** Updates the position of the indicator */
   updatePosition() {
-    this.updatePosition_();
-  }
-
-  /**
-   * Set the root element's transform property from the calculated position
-   * @private
-   */
-  updatePosition_() {
     this.adapter_.setRootStyle('transform', this.transformation_);
   }
 
@@ -120,16 +105,6 @@ class MDCTabzIndicator {
    * @param {!ClientRect} containerBbox The container's bounding box
    */
   calculatePosition(activeBbox, containerBbox) {
-    this.calculatePosition_(activeBbox, containerBbox);
-  }
-
-  /**
-   * Calculates and stores the position of the indicator for use in updatePosition
-   * @param {!ClientRect} activeBbox The active tab's bounding box
-   * @param {!ClientRect} containerBbox The container's bounding box
-   * @private
-   */
-  calculatePosition_(activeBbox, containerBbox) {
     let translateX = activeBbox.left - containerBbox.left;
     let scaleX = activeBbox.width;
     if (this.isCustom_ || this.isIcon_) {

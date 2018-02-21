@@ -40,6 +40,9 @@ class MDCTabzContainer {
       },
     };
 
+    /** @type {boolean} */
+    this.shouldNotifyScrollFakery_ = false;
+
     this.handleTransitionEnd_ = (e) => this.handleTransitionEnd(e);
 
     this.init();
@@ -48,12 +51,7 @@ class MDCTabzContainer {
   init() {
   }
 
-  handleTransitionEnd(e) {
-    if (e.target !== this.root_) return;
-    this.adapter_.removeClass(cssClasses.ANIMATING);
-    this.adapter_.notifyScrollFakery();
-  }
-
+  /** @private */
   emitScrollFakery_() {
     const ce = new CustomEvent(strings.SCROLL_FAKERY_EVENT, {
       bubbles: true,
@@ -61,46 +59,53 @@ class MDCTabzContainer {
     this.root_.dispatchEvent(ce);
   }
 
-  animateToPosition(currentScrollX, targetScrollX) {
-    this.adapter_.setStyleProp('transform', `translateX(${currentScrollX}px)`);
+  handleTransitionEnd(e) {
+    if (e.target !== this.root_) return;
+    // Remove the animating class
+    this.adapter_.removeClass(cssClasses.ANIMATING);
+    if (this.shouldNotifyScrollFakery_) {
+      this.adapter_.notifyScrollFakery();
+      this.shouldNotifyScrollFakery_ = false;
+    }
+  }
+
+  /**
+   * Animates fake scrolling from currentX to targetX
+   * @param {number} targetX The target scrollLeft value
+   * @param {number=} currentX The current scrollLeft value
+   */
+  animateFakeScroll(targetX, currentX=0) {
+    this.adapter_.setStyleProp('transform', `translateX(${currentX}px)`);
     this.adapter_.addClass(cssClasses.ANIMATING);
-    // Cause reflow
+    // Force reflow so style changes get picked up
     this.adapter_.getBoundingClientRect();
     // Listen for transition end
     this.adapter_.registerEventListener('transitionend', this.handleTransitionEnd_);
     // Update the position
     requestAnimationFrame(() => {
-      this.adapter_.setStyleProp('transform', `translateX(${targetScrollX}px)`);
+      this.adapter_.setStyleProp('transform', `translateX(${targetX}px)`);
     });
   }
 
+  /**
+   * Fake scrolling from currentX to targetX
+   * @param {number} targetX The target scrollLeft value
+   * @param {?number} currentX The current scrollLeft value
+   */
+  fakeScroll(targetX, currentX) {
+    this.shouldNotifyScrollFakery_ = true;
+    this.animateFakeScroll(targetX, currentX);
+  }
+
+  /** Resets the root element's transform property */
   resetTransform() {
     this.adapter_.setStyleProp('transform', '');
   }
 
-  // animateToPosition(xPosition) {
-  //   requestAnimationFrame(() => {
-  //     this.animateToPosition_(xPosition);
-  //   });
-  // }
-
-  // animateToPosition_(xPosition) {
-  //   this.translateX_ += (xPosition - this.translateX_) / 4;
-  //   this.adapter_.setStyleProp('transform', `translateX(${this.translateX_}px)`);
-  //   if (Math.abs(xPosition - this.translateX_) < 1) {
-  //     this.translateX_ = xPosition;
-  //     this.adapter_.setStyleProp('transform', `translateX(${this.translateX_}px)`);
-  //   } else {
-  //     requestAnimationFrame(() => {
-  //       this.animateToPosition_(xPosition);
-  //     });
-  //   }
-  // }
-
-  // cancelScrollAnimation() {
-  //   cancelAnimationFrame(this.scrollFrame_);
-  // }
-
+  /**
+   * Returns the bounding client rect of the root
+   * @return {!ClientRect}
+   */
   getBoundingClientRect() {
     return this.adapter_.getBoundingClientRect();
   }
