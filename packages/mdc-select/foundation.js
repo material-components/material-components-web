@@ -105,9 +105,6 @@ export default class MDCSelectFoundation extends MDCFoundation {
     };
     this.cancelHandler_ = () => {
       this.close_();
-      if (this.selectedIndex_ === -1) {
-        this.adapter_.floatLabel(false);
-      }
     };
   }
 
@@ -155,6 +152,9 @@ export default class MDCSelectFoundation extends MDCFoundation {
     if (this.selectedIndex_ >= 0) {
       selectedTextContent = this.adapter_.getTextForOptionAtIndex(this.selectedIndex_).trim();
       this.adapter_.setAttrForOptionAtIndex(this.selectedIndex_, 'aria-selected', 'true');
+      this.adapter_.floatLabel(true);
+    } else {
+      this.adapter_.floatLabel(false);
     }
     this.adapter_.setSelectedTextContent(selectedTextContent);
   }
@@ -212,7 +212,6 @@ export default class MDCSelectFoundation extends MDCFoundation {
     const focusIndex = this.selectedIndex_ < 0 ? 0 : this.selectedIndex_;
 
     this.setMenuStylesForOpenAtIndex_(focusIndex);
-    this.adapter_.floatLabel(true);
     this.adapter_.addClassToBottomLine(cssClasses.BOTTOM_LINE_ACTIVE);
     this.adapter_.addClass(OPEN);
     this.animationRequestId_ = requestAnimationFrame(() => {
