@@ -1,7 +1,7 @@
 {
   "name": "@material/checkbox",
   "description": "The Material Components for the web checkbox component",
-  "version": "0.30.0",
+  "version": "0.31.0",
   "license": "Apache-2.0",
   "keywords": [
     "material components",
@@ -16,8 +16,8 @@
   "dependencies": {
     "@material/animation": "^0.25.0",
     "@material/base": "^0.29.0",
-    "@material/ripple": "^0.30.0",
-    "@material/selection-control": "^0.30.0",
+    "@material/ripple": "^0.31.0",
+    "@material/selection-control": "^0.31.0",
     "@material/rtl": "^0.30.0",
     "@material/theme": "^0.30.0"
   }
