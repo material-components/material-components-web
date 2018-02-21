@@ -57,9 +57,12 @@
   // mdc-states is included within the mdc-toolbar-icon-ink-color mixin
 
   display: flex;
+  position: relative;
   align-items: start;
+  padding: $mdc-toolbar-icon-padding;
   justify-content: center;
   border: none;
+  outline: none;
   background-color: transparent;
   color: inherit;
   text-decoration: none;
