@@ -13,6 +13,7 @@ const strings = {
 const numbers = {
   // TODO: Determine an appropriate magic number or if this is even necessary
   PIXEL_TOLERANCE: 0.6,
+  SCROLL_EXTRA: 48,
 };
 
 class MDCTabzBar {
@@ -49,16 +50,15 @@ class MDCTabzBar {
     this.pagerz_ = Array.from(pagerz).map((pager) => MDCTabzPager.attachTo(pager));
 
     // Event Handlers
-    this.handleTabSelection_ = (e) => this.handleTabSelection(e);
     this.handleResize_ = () => this.handleResize();
-    this.handleClick_ = (e) => this.handleClick(e);
+    this.handleTabSelection_ = (e) => this.handleTabSelection(e);
     this.handleNextPageClick_ = () => this.handleNextPageClick();
     this.handlePrevPageClick_ = () => this.handlePrevPageClick();
     this.handleScrollFakery_ = () => this.handleScrollFakery();
 
     // Adapter initialization
     this.adapter_ = {
-      getBoundingClientRect: () =>
+      getRootBoundingClientRect: () =>
         this.root_.getBoundingClientRect(),
       registerWindowEventListener: (evtType, handler) =>
         window.addEventListener(evtType, handler),
@@ -75,7 +75,7 @@ class MDCTabzBar {
     };
 
     /** @private {number} */
-    this.activeIndex_ = this.getActiveTabIndex_();
+    this.activeIndex_ = this.tabz_.findIndex((tab) => tab.isActive()) || 0;
 
     /** @private {?ClientRect} The cached bounding box */
     this.bbox_;
@@ -83,8 +83,8 @@ class MDCTabzBar {
     /** @private {number} The ID of the requestAnimationFrame */
     this.updateFrame_ = 0;
 
-    /** @private {number} The pixel value to scroll left */
-    this.scrollLeft_ = 0;
+    /** @private {number} The pixel value to scroll */
+    this.scroll_ = 0;
 
     this.init();
   }
@@ -103,15 +103,6 @@ class MDCTabzBar {
   }
 
   /**
-   * Retuns the index of the active tab
-   * @return {number}
-   * @private
-   */
-  getActiveTabIndex_() {
-    return this.tabz_.findIndex((tab) => tab.isActive()) || 0;
-  }
-
-  /**
    * Returns the index of the selected tab
    * @return {number}
    * @private
@@ -122,20 +113,11 @@ class MDCTabzBar {
 
   handleScrollFakery() {
     this.container_.resetTransform();
-    this.adapter_.setScrollLeft(this.scrollLeft_);
-  }
-
-  /**
-   * Handles the click event
-   * @param {!Event} e The event object from the click event
-   */
-  handleClick(e) {
-    this.activateTab(this.getSelectedTabIndex_(e.target));
+    this.adapter_.setScrollLeft(this.scroll_);
   }
 
   handleTabSelection(e) {
-    const index = this.getSelectedTabIndex_(e.detail.tab);
-    this.activateTab(index);
+    this.activateTab(this.getSelectedTabIndex_(e.detail.tab));
   }
 
   /**
@@ -160,29 +142,58 @@ class MDCTabzBar {
     }
     this.activeTab.deactivate();
     this.activeIndex_ = index;
-    // Calculate the bounding boxes of the selected tab and the container
-    const activeTabBbox = this.activeTab.getBoundingClientRect();
-    const barBbox = this.adapter_.getBoundingClientRect();
+    this.scrollTabIntoView_();
+    this.activeTab.activate();
+    this.calculateIndicatorPosition();
+    this.indicator_.animatePosition();
+  }
 
+  scrollTabIntoView_() {
+    // Calculate the bounding boxes of the selected tab and the container
+    const barBbox = this.adapter_.getRootBoundingClientRect();
+    const containerBbox = this.container_.getRootBoundingClientRect();
+    if (containerBbox.width <= barBbox.width) {
+      return;
+    }
+    const activeTabBbox = this.activeTab.getRootBoundingClientRect();
+    const activeTabContentBbox = this.activeTab.getContentBoundingClientRect();
+    const scrollExtra = activeTabBbox.width - activeTabContentBbox.width;
     // Determine the left and right gaps
-    const leftGap = activeTabBbox.right - barBbox.right;
-    const rightGap = barBbox.left - activeTabBbox.left;
+    let leftGap = activeTabBbox.right - barBbox.right;
+    let rightGap = barBbox.left - activeTabBbox.left;
     // Determine the scrollLeft
-    const currentScrollLeft = this.adapter_.getScrollLeft();
+    const currentScroll = this.adapter_.getScrollLeft();
     // Scroll to either left or right if necessary
     if (leftGap > 0) {
-      this.scrollLeft_ = currentScrollLeft + leftGap;
-      this.container_.fakeScroll(leftGap * -1, currentScrollLeft);
+      if (this.isActiveTabBetweenEnds_()) {
+        leftGap += scrollExtra;
+      }
+      this.scroll_ = currentScroll + leftGap;
+      this.container_.fakeScroll(leftGap * -1, currentScroll);
+    } else if (Math.abs(leftGap) < scrollExtra) {
+      leftGap += scrollExtra;
+      this.scroll_ = currentScroll + leftGap;
+      this.container_.fakeScroll(leftGap * -1, currentScroll);
     } else if (rightGap > 0) {
-      this.scrollLeft_ = currentScrollLeft - rightGap;
-      this.container_.fakeScroll(rightGap, currentScrollLeft);
+      if (this.isActiveTabBetweenEnds_()) {
+        rightGap += scrollExtra;
+      }
+      this.scroll_ = currentScroll - rightGap;
+      this.container_.fakeScroll(rightGap, currentScroll);
+    } else if (Math.abs(rightGap) < scrollExtra) {
+      rightGap += scrollExtra;
+      this.scroll_ = currentScroll - rightGap;
+      this.container_.fakeScroll(rightGap, currentScroll);
     }
+  }
 
-    // Get the bounding box of the container element
-    const containerBbox = this.container_.getBoundingClientRect();
-    this.activeTab.activate();
-    this.calculateIndicatorPosition(activeTabBbox, containerBbox);
-    this.indicator_.animatePosition();
+  /**
+   * Determines if the active tab is between the end tabs
+   * @return {boolean}
+   * @private
+   */
+  isActiveTabBetweenEnds_() {
+    return this.activeIndex_ > 0 && this.activeIndex_ < this.tabz_.length - 1
   }
 
   /**
@@ -206,15 +217,28 @@ class MDCTabzBar {
 
   /**
    * Calculates the indicator's new position
-   * @param {?ClientRect} activeTabBbox The bounding box of the active tab
-   * @param {?ClientRect} containerBbox THe bounding box of the container
    */
-  calculateIndicatorPosition(activeTabBbox, containerBbox) {
-    const tabBbox_ = activeTabBbox ? activeTabBbox : this.activeTab.getBoundingClientRect();
-    if (this.bboxDeltaIsPerceptible_(tabBbox_)) {
-      this.bbox_ = tabBbox_;
-      const containerBbox_ = containerBbox ? containerBbox : this.container_.getBoundingClientRect();
-      this.indicator_.calculatePosition(this.bbox_, containerBbox_);
+  calculateIndicatorPosition() {
+    const tabBbox = this.indicator_.shouldMatchTabContentWidth
+      ? this.activeTab.getContentBoundingClientRect()
+      : this.activeTab.getRootBoundingClientRect();
+    if (this.bboxDeltaIsPerceptible_(tabBbox)) {
+      this.bbox_ = tabBbox;
+      const containerBbox = this.container_.getRootBoundingClientRect();
+      this.indicator_.calculatePosition(this.bbox_, containerBbox);
+    }
+  }
+
+  /**
+   * Get the width of the tab
+   * @return {!ClientRect}
+   * @private
+   */
+  getTabBboxForIndicator_() {
+    if (this.indicator_.shouldMatchTabContentWidth) {
+      return this.activeTab.getContentBoundingClientRect();
+    } else {
+      return this.activeTab.getRootBoundingClientRect();
     }
   }
 

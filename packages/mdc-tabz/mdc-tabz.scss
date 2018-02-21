@@ -147,7 +147,11 @@ $mdc-color: $mdc-purple;
   &__icon {
     width: 24px;
     height: 24px;
-    padding: 12px 8px;
+    padding: 12px 0;
+  }
+
+  &__icon + &__label {
+    padding-left: 8px;
   }
 
   .mdc-tabz-bar--two-lines & {
@@ -173,7 +177,7 @@ $mdc-color: $mdc-purple;
  * Top-Level Element
  */
 .mdc-tabz-bar {
-  display: block;
+  display: flex;
   position: relative;
   border-bottom: 1px solid rgba(0, 0, 0, .12);
   overflow-x: scroll;
@@ -182,21 +186,19 @@ $mdc-color: $mdc-purple;
     display: none;
   }
 
-  &--scrollable-fixed {
-    border-bottom: none;
-  }
-
   &__container {
     display: flex;
     position: relative;
+    flex: 1 1 100%;
 
     &--animating {
       transition: 250ms transform cubic-bezier(0, 0, .2, 1);
     }
   }
 
-  &--end,
-  &--start {
+  &--start,
+  &--center,
+  &--end {
     border-bottom: none;
 
     .mdc-tabz {
@@ -204,12 +206,38 @@ $mdc-color: $mdc-purple;
     }
   }
 
-  &--end &__container {
+  &--start {
+    justify-content: flex-start;
+  }
+
+  &--center {
+    justify-content: center;
+  }
+
+  &--end {
     justify-content: flex-end;
+  }
+
+  &--start &__container,
+  &--center &__container,
+  &--end &__container {
+    flex: 0;
   }
 
   &--start &__container {
     justify-content: flex-start;
+  }
+
+  &--center &__container {
+    justify-content: center;
+  }
+
+  &--end &__container {
+    justify-content: flex-end;
+  }
+
+  &--fixed-width {
+    border-bottom: none;
   }
 
   &--fixed-width &__container {
@@ -263,7 +291,7 @@ $mdc-color: $mdc-purple;
   }
 
   &--animating-icon {
-    transition: 125ms opacity linear;
+    transition: 150ms opacity linear;
   }
 
   &--custom,
@@ -279,10 +307,6 @@ $mdc-color: $mdc-purple;
   &--icon-hide {
     opacity: 0;
   }
-}
-
-.mdc-tabz-bar--fixed-width .mdc-tabz {
-  flex: 1 0 110px;
 }
 
 @media screen and (max-width: 599px) {

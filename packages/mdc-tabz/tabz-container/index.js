@@ -60,6 +60,7 @@ class MDCTabzContainer {
   }
 
   handleTransitionEnd(e) {
+    // Ignore all events that aren't from the root
     if (e.target !== this.root_) return;
     // Remove the animating class
     this.adapter_.removeClass(cssClasses.ANIMATING);
@@ -106,7 +107,7 @@ class MDCTabzContainer {
    * Returns the bounding client rect of the root
    * @return {!ClientRect}
    */
-  getBoundingClientRect() {
+  getRootBoundingClientRect() {
     return this.adapter_.getBoundingClientRect();
   }
 }

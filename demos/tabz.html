@@ -17,6 +17,8 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <style>
     fieldset {
+      display: block;
+      box-sizing: border-box;
       padding: 24px;
       padding-top: 0;
       padding-bottom: 16px;
@@ -41,9 +43,7 @@
 
     fieldset legend {
       display: block;
-      padding: 16px;
-      padding-top: 64px;
-      padding-bottom: 24px;
+      padding: 64px 16px 24px;
     }
 
     .demo-tabs__scroller {
@@ -122,7 +122,6 @@
 </head>
 <body class="mdc-typography" data-demo-disable-hash-link-navigation>
 
-  <!--
   <main id="tabz-demo-main-section" class="mdc-toolbar-fixed-adjust">
     <section>
       <fieldset>
@@ -161,10 +160,8 @@
 
     <section>
       <fieldset>
-        <legend class="mdc-typography--title">Basic Tab Bar with Many Tabs</legend>
-        
-        -->
-        <nav data-name="simpleBarWithManyTabs" class="mdc-tabz-bar">
+        <legend class="mdc-typography--title">Basic Tab Bar w/ Width Matching Indicator</legend>
+        <nav data-name="simpleBarWithWidthMatchingIndicator" class="mdc-tabz-bar">
           <div class="mdc-tabz-bar__container">
             <span class="mdc-tabz">
               <span class="mdc-tabz__content">
@@ -174,13 +171,13 @@
             </span>
             <span class="mdc-tabz mdc-tabz--active">
               <span class="mdc-tabz__content">
-                <span class="mdc-tabz__label">Item Two</span>
+                <span class="mdc-tabz__label">Two</span>
               </span>
               <span class="mdc-tabz__ripple"></span>
             </span>
             <span class="mdc-tabz">
               <span class="mdc-tabz__content">
-                <span class="mdc-tabz__label">Item Three</span>
+                <span class="mdc-tabz__label">Item Number Three</span>
               </span>
               <span class="mdc-tabz__ripple"></span>
             </span>
@@ -192,75 +189,116 @@
             </span>
             <span class="mdc-tabz">
               <span class="mdc-tabz__content">
-                <span class="mdc-tabz__label">Item Five</span>
+                <span class="mdc-tabz__label">Five</span>
               </span>
               <span class="mdc-tabz__ripple"></span>
             </span>
-            <span class="mdc-tabz">
-              <span class="mdc-tabz__content">
-                <span class="mdc-tabz__label">Item Six</span>
-              </span>
-              <span class="mdc-tabz__ripple"></span>
-            </span>
-            <span class="mdc-tabz">
-              <span class="mdc-tabz__content">
-                <span class="mdc-tabz__label">Item Seven</span>
-              </span>
-              <span class="mdc-tabz__ripple"></span>
-            </span>
-            <span class="mdc-tabz">
-              <span class="mdc-tabz__content">
-                <span class="mdc-tabz__label">Item Eight</span>
-              </span>
-              <span class="mdc-tabz__ripple"></span>
-            </span>
-            <span class="mdc-tabz">
-              <span class="mdc-tabz__content">
-                <span class="mdc-tabz__label">Item Nine</span>
-              </span>
-              <span class="mdc-tabz__ripple"></span>
-            </span>
-            <span class="mdc-tabz">
-              <span class="mdc-tabz__content">
-                <span class="mdc-tabz__label">Item Ten</span>
-              </span>
-              <span class="mdc-tabz__ripple"></span>
-            </span>
-            <span class="mdc-tabz">
-              <span class="mdc-tabz__content">
-                <span class="mdc-tabz__label">Item Eleven</span>
-              </span>
-              <span class="mdc-tabz__ripple"></span>
-            </span>
-            <span class="mdc-tabz">
-              <span class="mdc-tabz__content">
-                <span class="mdc-tabz__label">Item Twelve</span>
-              </span>
-              <span class="mdc-tabz__ripple"></span>
-            </span>
-            <span class="mdc-tabz">
-              <span class="mdc-tabz__content">
-                <span class="mdc-tabz__label">Item Thirteen</span>
-              </span>
-              <span class="mdc-tabz__ripple"></span>
-            </span>
-            <span class="mdc-tabz">
-              <span class="mdc-tabz__content">
-                <span class="mdc-tabz__label">Item Fourteen</span>
-              </span>
-              <span class="mdc-tabz__ripple"></span>
-            </span>
-            <span class="mdc-tabz">
-              <span class="mdc-tabz__content">
-                <span class="mdc-tabz__label">Item Fifteen</span>
-              </span>
-              <span class="mdc-tabz__ripple"></span>
-            </span>
-            <span class="mdc-tabz-indicator"></span>
+            <span class="mdc-tabz-indicator mdc-tabz-indicator--match-tab-content"></span>
           </div>
         </nav>
+      </fieldset>
+    </section>
 
-        <!--
+    <section>
+      <fieldset>
+        <legend class="mdc-typography--title">Basic Tab Bar with Scrolling Tabs</legend>
+        <div class="demo-many">
+          <nav data-name="simpleBarWithManyTabs" class="mdc-tabz-bar mdc-tabz-bar--fixed-width demo-many-tabs">
+            <div class="mdc-tabz-bar__container">
+              <span class="mdc-tabz">
+                <span class="mdc-tabz__content">
+                  <span class="mdc-tabz__label">Item One</span>
+                </span>
+                <span class="mdc-tabz__ripple"></span>
+              </span>
+              <span class="mdc-tabz mdc-tabz--active">
+                <span class="mdc-tabz__content">
+                  <span class="mdc-tabz__label">Item Two</span>
+                </span>
+                <span class="mdc-tabz__ripple"></span>
+              </span>
+              <span class="mdc-tabz">
+                <span class="mdc-tabz__content">
+                  <span class="mdc-tabz__label">Item Three</span>
+                </span>
+                <span class="mdc-tabz__ripple"></span>
+              </span>
+              <span class="mdc-tabz">
+                <span class="mdc-tabz__content">
+                  <span class="mdc-tabz__label">Item Four</span>
+                </span>
+                <span class="mdc-tabz__ripple"></span>
+              </span>
+              <span class="mdc-tabz">
+                <span class="mdc-tabz__content">
+                  <span class="mdc-tabz__label">Item Five</span>
+                </span>
+                <span class="mdc-tabz__ripple"></span>
+              </span>
+              <span class="mdc-tabz">
+                <span class="mdc-tabz__content">
+                  <span class="mdc-tabz__label">Item Six</span>
+                </span>
+                <span class="mdc-tabz__ripple"></span>
+              </span>
+              <span class="mdc-tabz">
+                <span class="mdc-tabz__content">
+                  <span class="mdc-tabz__label">Item Seven</span>
+                </span>
+                <span class="mdc-tabz__ripple"></span>
+              </span>
+              <span class="mdc-tabz">
+                <span class="mdc-tabz__content">
+                  <span class="mdc-tabz__label">Item Eight</span>
+                </span>
+                <span class="mdc-tabz__ripple"></span>
+              </span>
+              <span class="mdc-tabz">
+                <span class="mdc-tabz__content">
+                  <span class="mdc-tabz__label">Item Nine</span>
+                </span>
+                <span class="mdc-tabz__ripple"></span>
+              </span>
+              <span class="mdc-tabz">
+                <span class="mdc-tabz__content">
+                  <span class="mdc-tabz__label">Item Ten</span>
+                </span>
+                <span class="mdc-tabz__ripple"></span>
+              </span>
+              <span class="mdc-tabz">
+                <span class="mdc-tabz__content">
+                  <span class="mdc-tabz__label">Item Eleven</span>
+                </span>
+                <span class="mdc-tabz__ripple"></span>
+              </span>
+              <span class="mdc-tabz">
+                <span class="mdc-tabz__content">
+                  <span class="mdc-tabz__label">Item Twelve</span>
+                </span>
+                <span class="mdc-tabz__ripple"></span>
+              </span>
+              <span class="mdc-tabz">
+                <span class="mdc-tabz__content">
+                  <span class="mdc-tabz__label">Item Thirteen</span>
+                </span>
+                <span class="mdc-tabz__ripple"></span>
+              </span>
+              <span class="mdc-tabz">
+                <span class="mdc-tabz__content">
+                  <span class="mdc-tabz__label">Item Fourteen</span>
+                </span>
+                <span class="mdc-tabz__ripple"></span>
+              </span>
+              <span class="mdc-tabz">
+                <span class="mdc-tabz__content">
+                  <span class="mdc-tabz__label">Item Fifteen</span>
+                </span>
+                <span class="mdc-tabz__ripple"></span>
+              </span>
+              <span class="mdc-tabz-indicator"></span>
+            </div>
+          </nav>
+        </div>
       </fieldset>
     </section>
 
@@ -420,7 +458,6 @@
       </fieldset>
     </section>
   </main>
-  -->
 
   <script src="/assets/material-components-web.js" async></script>
   <script src="/assets/common.js" async></script>

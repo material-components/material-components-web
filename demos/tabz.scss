@@ -1,7 +1,20 @@
 @import "./common";
 @import "../packages/mdc-tabz/mdc-tabz";
+@import "../packages/mdc-elevation/mixins";
 
 // Customization for the demo
+.demo-many {
+  width: 360px;
+  height: 360px;
+  border: 1px solid #e5e5e5;
+  background: #e5e5e5;
+}
+.demo-many-tabs {
+  @include mdc-elevation(1);
+
+  background: white;
+}
+
 .custom-demo {
   @include mdc-tabz-colors($background: #ffdbcf);
   @include mdc-tabz-active-colors($color: #442b2d);

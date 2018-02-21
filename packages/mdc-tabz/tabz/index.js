@@ -7,7 +7,8 @@ const cssClasses = {
 };
 
 const strings = {
-  RIPPLE_SURFACE: '.mdc-tabz__ripple',
+  RIPPLE_SURFACE_SELECTOR: '.mdc-tabz__ripple',
+  CONTENT_SELECTOR: '.mdc-tabz__content',
   TABZ_EVENT: 'MDCTabz:selected',
 };
 
@@ -22,8 +23,9 @@ class MDCTabz {
 
   constructor(root) {
     this.root_ = root;
+    this.content_ = this.root_.querySelector(strings.CONTENT_SELECTOR);
 
-    const rippleRoot_ = this.root_.querySelector(strings.RIPPLE_SURFACE);
+    const rippleRoot_ = this.root_.querySelector(strings.RIPPLE_SURFACE_SELECTOR);
     this.ripple_ = MDCRipple.attachTo(rippleRoot_);
 
     this.adapter_ = {
@@ -31,8 +33,10 @@ class MDCTabz {
         this.root_.addEventListener(evtType, handler),
       deregisterEventListener: (evtType, handler) =>
         this.root_.addEventListener(evtType, handler),
-      getBoundingClientRect: () =>
+      getRootBoundingClientRect: () =>
         this.root_.getBoundingClientRect(),
+      getContentBoundingClientRect: () =>
+        this.content_.getBoundingClientRect(),
       addClass: (className) =>
         this.root_.classList.add(className),
       removeClass: (className) =>
@@ -95,8 +99,16 @@ class MDCTabz {
    * Returns the bounding rect of the element
    * @return {!ClientRect}
    */
-  getBoundingClientRect() {
-    return this.adapter_.getBoundingClientRect();
+  getRootBoundingClientRect() {
+    return this.adapter_.getRootBoundingClientRect();
+  }
+
+  /**
+   * Returns the bounding rect of the content
+   * @return {!ClientRect}
+   */
+  getContentBoundingClientRect() {
+    return this.adapter_.getContentBoundingClientRect();
   }
 }
 

@@ -3,6 +3,7 @@ const cssClasses = {
   ANIMATING_ICON: 'mdc-tabz-indicator--animating-icon',
   UPGRADED: 'mdc-tabz-indicator--upgraded',
   CUSTOM: 'mdc-tabz-indicator--custom',
+  MATCH_TAB_CONTENT: 'mdc-tabz-indicator--match-tab-content',
   ICON: 'mdc-tabz-indicator--icon',
   ICON_HIDE: 'mdc-tabz-indicator--icon-hide',
 };
@@ -10,6 +11,10 @@ const cssClasses = {
 class MDCTabzIndicator {
   static attachTo(root) {
     return new MDCTabzIndicator(root);
+  }
+
+  static get strings() {
+    return strings;
   }
 
   /** @private */
@@ -25,6 +30,11 @@ class MDCTabzIndicator {
   /** @private */
   get isIconHidden_() {
     return this.adapter_.hasClass(cssClasses.ICON_HIDE);
+  }
+
+  /** @public */
+  get shouldMatchTabContentWidth() {
+    return this.adapter_.hasClass(cssClasses.MATCH_TAB_CONTENT);
   }
 
   constructor(root) {
