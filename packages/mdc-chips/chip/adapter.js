@@ -29,6 +29,25 @@
  */
 class MDCChipAdapter {
   /**
+   * Adds a class to the root element.
+   * @param {string} className
+   */
+  addClass(className) {}
+
+  /**
+   * Removes a class from the root element.
+   * @param {string} className
+   */
+  removeClass(className) {}
+
+  /**
+   * Returns true if the root element contains the given class.
+   * @param {string} className
+   * @return {boolean}
+   */
+  hasClass(className) {}
+
+  /**
    * Registers an event listener on the root element for a given event.
    * @param {string} evtType
    * @param {function(!Event): undefined} handler
