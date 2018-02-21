@@ -196,9 +196,9 @@ $mdc-color: $mdc-purple;
     }
   }
 
-  &--start,
-  &--center,
-  &--end {
+  &--cluster-left,
+  &--cluster-center,
+  &--cluster-right {
     border-bottom: none;
 
     .mdc-tabz {
@@ -206,33 +206,24 @@ $mdc-color: $mdc-purple;
     }
   }
 
-  &--start {
-    justify-content: flex-start;
-  }
-
-  &--center {
-    justify-content: center;
-  }
-
-  &--end {
-    justify-content: flex-end;
-  }
-
-  &--start &__container,
-  &--center &__container,
-  &--end &__container {
+  &--cluster-left &__container,
+  &--cluster-center &__container,
+  &--cluster-right &__container {
     flex: 0;
   }
 
-  &--start &__container {
+  &--cluster-left,
+  &--cluster-left &__container {
     justify-content: flex-start;
   }
 
-  &--center &__container {
+  &--cluster-center,
+  &--cluster-center &__container {
     justify-content: center;
   }
 
-  &--end &__container {
+  &--cluster-right,
+  &--cluster-right &__container {
     justify-content: flex-end;
   }
 
