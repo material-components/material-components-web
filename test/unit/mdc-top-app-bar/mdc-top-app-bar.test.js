@@ -21,8 +21,8 @@ import td from 'testdouble';
 
 import {MDCTopAppBar} from '../../../packages/mdc-top-app-bar';
 
-function getFixture() {
-  return bel`
+function getFixture(removeIcon) {
+  const html = bel`
     <div>
         <header class="mdc-top-app-bar">
       <div class="mdc-top-app-bar__row">
@@ -51,16 +51,13 @@ function getFixture() {
       </main>
     </div>
   `;
-}
 
-function setupTest() {
-  const fixture = getFixture();
-  const root = fixture.querySelector('.mdc-top-app-bar');
-  const adjust = fixture.querySelector('.mdc-top-app-bar-fixed-adjust');
-  const icon = root.querySelector('.mdc-top-app-bar__menu-icon');
-  const component = new MDCTopAppBar(root, undefined, (el) => new FakeRipple(el));
+  if (removeIcon) {
+    const icon = html.querySelector('.mdc-top-app-bar__menu-icon');
+    icon.parentNode.removeChild(icon);
+  }
 
-  return {root, adjust, component, icon};
+  return html;
 }
 
 class FakeRipple {
@@ -71,17 +68,27 @@ class FakeRipple {
   }
 }
 
+function setupTest(removeIcon = false) {
+  const fixture = getFixture(removeIcon);
+  const root = fixture.querySelector('.mdc-top-app-bar');
+  const adjust = fixture.querySelector('.mdc-top-app-bar-fixed-adjust');
+  const icon = root.querySelector('.mdc-top-app-bar__menu-icon');
+  const component = new MDCTopAppBar(root, undefined, (el) => new FakeRipple(el));
+
+  return {root, adjust, component, icon};
+}
+
 suite('MDCTopAppBar');
 
-test('initialize and returns an MDCTopAppBar instance', () => {
+test('attachTo initialize and returns an MDCTopAppBar instance', () => {
   assert.isTrue(MDCTopAppBar.attachTo(getFixture()) instanceof MDCTopAppBar);
 });
 
 test('constructor instantiates icon ripples', () => {
   const {root, component} = setupTest();
-  const icons = root.querySelectorAll('.mdc-top-app-bar__icon').length + 1;
+  const totalIcons = root.querySelectorAll('.mdc-top-app-bar__icon, .mdc-top-app-bar__menu-icon').length;
 
-  assert.isTrue(component.iconRipples_.length === icons);
+  assert.isTrue(component.iconRipples_.length === totalIcons);
 });
 
 test('destroy destroys icon ripples', () => {
@@ -114,6 +121,14 @@ test('adapter#removeClass removes a class from the root element', () => {
   root.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClass('foo');
   assert.isFalse(root.classList.contains('foo'));
+});
+
+test('registerNavigationIconInteractionHandler does not add a handler to the nav icon ', () => {
+  const {component} = setupTest(true);
+  const handler = td.func('eventHandler');
+
+  assert.doesNotThrow(
+    () => component.getDefaultFoundation().adapter_.registerNavigationIconInteractionHandler('click', handler));
 });
 
 test('#adapter.registerNavigationIconInteractionHandler adds a handler to the nav icon ' +
