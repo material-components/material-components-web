@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {strings} from './constants';
+import {strings, cssClasses} from './constants';
 
 import MDCTopAppBarAdapter from './adapter';
-
 import MDCFoundation from '@material/base/foundation';
 
 /**
@@ -27,6 +26,11 @@ class MDCTopAppBarFoundation extends MDCFoundation {
   /** @return enum {string} */
   static get strings() {
     return strings;
+  }
+
+  /** @return enum {string} */
+  static get cssClasses() {
+    return cssClasses;
   }
 
   /**
@@ -42,6 +46,10 @@ class MDCTopAppBarFoundation extends MDCFoundation {
       registerNavigationIconInteractionHandler: (/* type: string, handler: EventListener */) => {},
       deregisterNavigationIconInteractionHandler: (/* type: string, handler: EventListener */) => {},
       notifyNavigationIconClicked: () => {},
+      registerScrollHandler: (/* handler: EventListener */) => {},
+      deregisterScrollHandler: (/* handler: EventListener */) => {},
+      getViewportScrollY: () => /* number */ 0,
+      totalActionIcons: () => /* number */ 0,
     });
   }
 
@@ -50,16 +58,56 @@ class MDCTopAppBarFoundation extends MDCFoundation {
    */
   constructor(adapter) {
     super(Object.assign(MDCTopAppBarFoundation.defaultAdapter, adapter));
+    // State variable for the current top app bar state
+    this.isCollapsed = false;
 
     this.navClickHandler_ = () => this.adapter_.notifyNavigationIconClicked();
+    this.scrollHandler_ = () => this.shortAppBarScrollHandler();
   }
 
   init() {
     this.adapter_.registerNavigationIconInteractionHandler('click', this.navClickHandler_);
+
+    const isShortTopAppBar = this.adapter_.hasClass(cssClasses.SHORT_CLASS);
+
+    if (isShortTopAppBar) {
+      this.adapter_.registerScrollHandler(this.scrollHandler_);
+      this.styleShortAppBar();
+    }
   }
 
   destroy() {
     this.adapter_.deregisterNavigationIconInteractionHandler('click', this.navClickHandler_);
+    this.adapter_.deregisterScrollHandler(this.scrollHandler_);
+  }
+
+  /**
+   * Class used to set the initial style of the short top app bar
+   */
+  styleShortAppBar() {
+    if (this.adapter_.totalActionIcons() > 0) {
+      this.adapter_.addClass(cssClasses.RIGHT_ICON_CLASS);
+    }
+  }
+
+  /**
+   * Scroll handler for the applying/removing the closed modifier class
+   * on the short top app bar.
+   */
+  shortAppBarScrollHandler() {
+    const currentScroll = this.adapter_.getViewportScrollY();
+
+    if (currentScroll === 0) {
+      if (this.isCollapsed) {
+        this.adapter_.removeClass(cssClasses.SHORT_CLOSED_CLASS);
+        this.isCollapsed = false;
+      }
+    } else {
+      if (!this.isCollapsed) {
+        this.adapter_.addClass(cssClasses.SHORT_CLOSED_CLASS);
+        this.isCollapsed = true;
+      }
+    }
   }
 }
 

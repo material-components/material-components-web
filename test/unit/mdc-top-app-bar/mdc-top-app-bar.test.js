@@ -20,6 +20,7 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 
 import {MDCTopAppBar} from '../../../packages/mdc-top-app-bar';
+import {strings, cssClasses} from '../../../packages/mdc-top-app-bar/constants';
 
 function getFixture(removeIcon) {
   const html = bel`
@@ -27,7 +28,7 @@ function getFixture(removeIcon) {
         <header class="mdc-top-app-bar">
       <div class="mdc-top-app-bar__row">
         <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-          <a href="#" class="material-icons mdc-top-app-bar__menu-icon">menu</a>
+          <a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
           <span class="mdc-top-app-bar__title">Title</span>
         </section>
         <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" 
@@ -53,7 +54,7 @@ function getFixture(removeIcon) {
   `;
 
   if (removeIcon) {
-    const icon = html.querySelector('.mdc-top-app-bar__menu-icon');
+    const icon = html.querySelector(strings.NAVIGATION_ICON_SELECTOR);
     icon.parentNode.removeChild(icon);
   }
 
@@ -70,12 +71,11 @@ class FakeRipple {
 
 function setupTest(removeIcon = false) {
   const fixture = getFixture(removeIcon);
-  const root = fixture.querySelector('.mdc-top-app-bar');
-  const adjust = fixture.querySelector('.mdc-top-app-bar-fixed-adjust');
-  const icon = root.querySelector('.mdc-top-app-bar__menu-icon');
+  const root = fixture.querySelector(strings.TOPAPPBAR_SELECTOR);
+  const icon = root.querySelector(strings.NAVIGATION_ICON_SELECTOR);
   const component = new MDCTopAppBar(root, undefined, (el) => new FakeRipple(el));
 
-  return {root, adjust, component, icon};
+  return {root, component, icon};
 }
 
 suite('MDCTopAppBar');
@@ -86,7 +86,8 @@ test('attachTo initializes and returns an MDCTopAppBar instance', () => {
 
 test('constructor instantiates icon ripples', () => {
   const {root, component} = setupTest();
-  const totalIcons = root.querySelectorAll('.mdc-top-app-bar__icon, .mdc-top-app-bar__menu-icon').length;
+  const selector = strings.ACTION_ICON_SELECTOR + ',' + strings.NAVIGATION_ICON_SELECTOR;
+  const totalIcons = root.querySelectorAll(selector).length;
 
   assert.isTrue(component.iconRipples_.length === totalIcons);
 });
@@ -149,4 +150,46 @@ test('#adapter.deregisterNavigationIconInteractionHandler removes a handler from
   component.getDefaultFoundation().adapter_.deregisterNavigationIconInteractionHandler('click', handler);
   domEvents.emit(icon, 'click');
   td.verify(handler(td.matchers.anything()), {times: 0});
+});
+
+test('#adapter.registerScrollHandler adds a scroll handler to the window ' +
+  'element for a given event', () => {
+  const {component} = setupTest();
+  const handler = td.func('scrollHandler');
+  component.getDefaultFoundation().adapter_.registerScrollHandler(handler);
+
+  domEvents.emit(window, 'scroll');
+  try {
+    td.verify(handler(td.matchers.anything()));
+  } finally {
+    // Just to be safe
+    window.removeEventListener('scroll', handler);
+  }
+});
+
+test('#adapter.deregisterScrollHandler removes a scroll handler from the window ' +
+  'element for a given event', () => {
+  const {component} = setupTest();
+  const handler = td.func('scrollHandler');
+  window.addEventListener('scroll', handler);
+  component.getDefaultFoundation().adapter_.deregisterScrollHandler(handler);
+  domEvents.emit(window, 'scroll');
+  try {
+    td.verify(handler(td.matchers.anything()), {times: 0});
+  } finally {
+    // Just to be safe
+    window.removeEventListener('scroll', handler);
+  }
+});
+
+test('adapter#getViewportScrollY returns scroll distance', () => {
+  const {component} = setupTest();
+  assert.equal(component.getDefaultFoundation().adapter_.getViewportScrollY(), window.pageYOffset);
+});
+
+test('adapter#totalActionIcons returns the amount of action icons on the opposite side of the menu', () => {
+  const {root, component} = setupTest();
+  const adapterReturn = component.getDefaultFoundation().adapter_.totalActionIcons();
+  const actual = root.querySelectorAll(strings.ACTION_ICON_SELECTOR).length;
+  assert.isTrue(adapterReturn === actual);
 });

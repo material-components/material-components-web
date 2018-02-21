@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 
+@import "@material/elevation/mixins";
 @import "@material/rtl/mixins";
 @import "@material/typography/mixins";
 @import "./mixins";
@@ -36,13 +37,12 @@
     position: relative;
     box-sizing: border-box;
     width: 100%;
-    height: auto;
-    min-height: $mdc-top-app-bar-row-height;
+    height: $mdc-top-app-bar-row-height;
   }
 
   &__section {
     display: inline-flex;
-    flex: 1;
+    flex: 1 1 auto;
     align-items: center;
     min-width: 0;
     padding: $mdc-top-app-bar-section-vertical-padding $mdc-top-app-bar-section-horizontal-padding;
@@ -61,27 +61,71 @@
 
   &__title {
     @include mdc-typography(title);
-    @include mdc-rtl-reflexive-box(margin, left, $mdc-top-app-bar-title-left-padding);
+    @include mdc-rtl-reflexive-box(padding, left, $mdc-top-app-bar-title-left-padding);
 
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
     z-index: 1;
   }
 
   &__icon,
-  &__menu-icon {
+  &__navigation-icon {
     @include mdc-top-app-bar-icon_;
   }
+}
 
-  @media (max-width: $mdc-top-app-bar-mobile-breakpoint) {
-    .mdc-top-app-bar__row {
-      min-height: $mdc-top-app-bar-mobile-row-height;
-    }
+.mdc-top-app-bar--short {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transition: width 250ms $mdc-top-app-bar-standard-easing;
+  z-index: 4;
 
-    .mdc-top-app-bar__section {
-      padding: $mdc-top-app-bar-mobile-section-padding;
-    }
+  .mdc-top-app-bar__row {
+    height: $mdc-top-app-bar-mobile-row-height;
+  }
 
-    .mdc-top-app-bar__title {
-      @include mdc-rtl-reflexive-box(margin, left, $mdc-top-app-bar-mobile-title-left-padding);
-    }
+  .mdc-top-app-bar__section {
+    padding: $mdc-top-app-bar-mobile-section-padding;
+  }
+
+  .mdc-top-app-bar__title {
+    transition: opacity 200ms $mdc-top-app-bar-standard-easing;
+    opacity: 1;
+  }
+
+  .mdc-top-app-bar__icon {
+    transition: padding-right 150ms $mdc-top-app-bar-standard-easing;
   }
 }
+
+.mdc-top-app-bar--short-collapsed {
+  @include mdc-top-app-bar-short-border-radius;
+  @include mdc-elevation(4);
+
+  width: $mdc-top-app-bar-short-collapsed-width;
+  transition: width 300ms $mdc-top-app-bar-standard-easing;
+
+  .mdc-top-app-bar__title {
+    transition: opacity 100ms linear;
+    opacity: 0;
+  }
+
+  .mdc-top-app-bar__icon {
+    transition: padding-right 150ms $mdc-top-app-bar-standard-easing;
+  }
+
+  .mdc-top-app-bar__section--align-end {
+    padding-right: 12px;
+  }
+}
+
+// stylelint-disable-next-line plugin/selector-bem-pattern
+.mdc-top-app-bar--short-collapsed.mdc-top-app-bar--short__right-icon {
+  width: $mdc-top-app-bar-short-collapsed-width * 2;
+}
+
+// Mobile Styles
+@include mdc-top-app-bar-mobile-breakpoint;

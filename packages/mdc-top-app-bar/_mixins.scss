@@ -38,9 +38,47 @@
 
 @mixin mdc-top-app-bar-icon-ink-color($color) {
   .mdc-top-app-bar__icon,
-  .mdc-top-app-bar__menu-icon {
+  .mdc-top-app-bar__navigation-icon {
     @include mdc-theme-prop(color, $color);
     @include mdc-states($color);
+  }
+}
+
+@mixin mdc-top-app-bar-short-border-radius($border-radius: $mdc-top-app-bar-short-collapsed-border-radius) {
+  border-bottom-right-radius: $border-radius;
+}
+
+@mixin mdc-top-app-bar-mobile-breakpoint($mobile-breakpoint: $mdc-top-app-bar-mobile-breakpoint) {
+  @media (max-width: $mobile-breakpoint) {
+    .mdc-top-app-bar {
+      .mdc-top-app-bar__row {
+        height: $mdc-top-app-bar-mobile-row-height;
+      }
+
+      .mdc-top-app-bar__section {
+        padding: $mdc-top-app-bar-mobile-section-padding;
+      }
+
+      .mdc-top-app-bar__title {
+        @include mdc-rtl-reflexive-box(padding, left, $mdc-top-app-bar-mobile-title-left-padding);
+      }
+    }
+
+    .mdc-top-app-bar--short {
+      transition: width 200ms $mdc-top-app-bar-standard-easing;
+
+      .mdc-top-app-bar__row {
+        height: $mdc-top-app-bar-mobile-row-height;
+      }
+    }
+
+    .mdc-top-app-bar--short-collapsed {
+      transition: width 250ms $mdc-top-app-bar-standard-easing;
+
+      .mdc-top-app-bar__section--align-end {
+        padding-right: 12px;
+      }
+    }
   }
 }
 
@@ -49,7 +87,7 @@
 //
 
 // Applies styles to the different types of icons that can exist in top-app-bars.
-// Both .mdc-top-app-bar__icon and .mdc-top-app-bar__menu-icon share all styles except for
+// Both .mdc-top-app-bar__icon and .mdc-top-app-bar__navigation-icon share all styles except for
 // horizontal padding.
 @mixin mdc-top-app-bar-icon_() {
   @include mdc-ripple-surface;
