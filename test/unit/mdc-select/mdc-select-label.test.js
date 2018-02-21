@@ -36,14 +36,14 @@ function setupTest() {
 suite('MDCSelectLabel');
 
 test('attachTo returns a component instance', () => {
-  assert.isOk(MDCSelectLabel.attachTo(getFixture()) instanceof MDCSelectLabel);
+  assert.isTrue(MDCSelectLabel.attachTo(getFixture()) instanceof MDCSelectLabel);
 });
 
 test('#float should call styleFloat on foundation', () => {
   const {component} = setupTest();
   component.foundation_.styleFloat = td.func();
   component.float();
-  td.verify(component.foundation_.styleFloat(td.matchers.anything()));
+  td.verify(component.foundation_.styleFloat(td.matchers.isA(String)));
 });
 
 test('adapter#addClass adds a class to the root element', () => {
@@ -54,7 +54,7 @@ test('adapter#addClass adds a class to the root element', () => {
 });
 
 
-test('adapter#removeClass adds a class to the root element', () => {
+test('adapter#removeClass removes a class to the root element', () => {
   const {component, fixture} = setupTest();
 
   fixture.classList.add('foo');
