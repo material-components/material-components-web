@@ -19,29 +19,28 @@ import td from 'testdouble';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
-import MDCTextFieldBottomLineFoundation from '../../../packages/mdc-textfield/bottom-line/foundation';
+import MDCLineRippleFoundation from '../../../packages/mdc-line-ripple/foundation';
 
-const {cssClasses} = MDCTextFieldBottomLineFoundation;
+const {cssClasses} = MDCLineRippleFoundation;
 
-suite('MDCTextFieldBottomLineFoundation');
+suite('MDCLineRippleFoundation');
 
 test('exports cssClasses', () => {
-  assert.isOk('cssClasses' in MDCTextFieldBottomLineFoundation);
+  assert.isOk('cssClasses' in MDCLineRippleFoundation);
 });
 
 test('exports strings', () => {
-  assert.isOk('strings' in MDCTextFieldBottomLineFoundation);
+  assert.isOk('strings' in MDCLineRippleFoundation);
 });
 
 test('defaultAdapter returns a complete adapter implementation', () => {
-  verifyDefaultAdapter(MDCTextFieldBottomLineFoundation, [
-    'addClass', 'removeClass', 'setAttr',
+  verifyDefaultAdapter(MDCLineRippleFoundation, [
+    'addClass', 'removeClass', 'hasClass', 'setAttr',
     'registerEventHandler', 'deregisterEventHandler',
-    'notifyAnimationEnd',
   ]);
 });
 
-const setupTest = () => setupFoundationTest(MDCTextFieldBottomLineFoundation);
+const setupTest = () => setupFoundationTest(MDCLineRippleFoundation);
 
 test('#init adds event listeners', () => {
   const {foundation, mockAdapter} = setupTest();
@@ -57,51 +56,26 @@ test('#destroy removes event listeners', () => {
   td.verify(mockAdapter.deregisterEventHandler('transitionend', td.matchers.isA(Function)));
 });
 
-test(`activate adds ${MDCTextFieldBottomLineFoundation.cssClasses.BOTTOM_LINE_ACTIVE} class`, () => {
+test(`activate adds ${MDCLineRippleFoundation.cssClasses.LINE_RIPPLE_ACTIVE} class`, () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
   foundation.activate();
-  td.verify(mockAdapter.addClass(cssClasses.BOTTOM_LINE_ACTIVE));
+  td.verify(mockAdapter.addClass(cssClasses.LINE_RIPPLE_ACTIVE));
 });
 
-test(`deactivate removes ${MDCTextFieldBottomLineFoundation.cssClasses.BOTTOM_LINE_ACTIVE} class`, () => {
+test(`deactivate removes ${MDCLineRippleFoundation.cssClasses.LINE_RIPPLE_DEACTIVATING} class`, () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
   foundation.deactivate();
-  td.verify(mockAdapter.removeClass(cssClasses.BOTTOM_LINE_ACTIVE));
+  td.verify(mockAdapter.addClass(cssClasses.LINE_RIPPLE_DEACTIVATING));
 });
 
-test('setTransformOrigin sets style attribute', () => {
+test('setRippleCenter sets style attribute', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockEvt = {
-    target: {
-      getBoundingClientRect: () => {
-        return {};
-      },
-    },
-    clientX: 200,
-    clientY: 200,
-  };
+  const transformOriginValue = 100;
 
   foundation.init();
-  foundation.setTransformOrigin(mockEvt);
+  foundation.setRippleCenter(transformOriginValue);
 
   td.verify(mockAdapter.setAttr('style', td.matchers.isA(String)));
-});
-
-test('on opacity transition end, emit custom event', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const mockEvt = {
-    propertyName: 'opacity',
-  };
-  let transitionEnd;
-
-  td.when(mockAdapter.registerEventHandler('transitionend', td.matchers.isA(Function))).thenDo((evtType, handler) => {
-    transitionEnd = handler;
-  });
-
-  foundation.init();
-  transitionEnd(mockEvt);
-
-  td.verify(mockAdapter.notifyAnimationEnd());
 });

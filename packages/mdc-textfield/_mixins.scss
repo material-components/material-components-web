@@ -14,13 +14,14 @@
 // limitations under the License.
 //
 
-@import "bottom-line/mixins";
+@import "@material/line-ripple/mixins";
 @import "outline/mixins";
 @import "label/mixins";
 @import "label/variables";
 @import "helper-text/mixins";
 @import "icon/mixins";
 @import "icon/variables";
+@import "@material/theme/mixins";
 
 @mixin mdc-text-field-outlined-corner-radius($radius) {
   border-radius: $radius;
@@ -82,40 +83,40 @@
   }
 }
 
+@mixin mdc-text-field-bottom-line-color($color) {
+  &:not(.mdc-text-field--disabled):not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) {
+    @include mdc-text-field-bottom-line-color_($color);
+  }
+}
+
+@mixin mdc-text-field-hover-bottom-line-color($color) {
+  &:not(.mdc-text-field--disabled):not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) {
+    @include mdc-text-field-hover-bottom-line-color_($color);
+  }
+}
+
+@mixin mdc-text-field-line-ripple-color($color) {
+  &:not(.mdc-text-field--disabled) {
+    @include mdc-text-field-line-ripple-color_($color);
+  }
+}
+
 // Private mixins
 
 // Baseline
 
 @mixin mdc-text-field-disabled_ {
-  @include mdc-text-field-bottom-line-color_($mdc-text-field-disabled-border-on-light);
-  @include mdc-text-field-ink-color_(text-disabled-on-light);
-  @include mdc-text-field-label-color_(text-disabled-on-light);
-  @include mdc-text-field-helper-text-color_(text-disabled-on-light);
-  @include mdc-text-field-icon-color_($mdc-text-field-disabled-icon-on-light);
-  @include mdc-text-field-fullwidth-bottom-line-color_($mdc-text-field-divider-on-light);
-
-  @include mdc-theme-dark(".mdc-text-field") {
-    @include mdc-text-field-bottom-line-color_($mdc-text-field-disabled-border-on-dark);
-    @include mdc-text-field-ink-color_(text-disabled-on-dark);
-    @include mdc-text-field-label-color_(text-disabled-on-dark);
-  }
+  @include mdc-text-field-bottom-line-color_($mdc-text-field-disabled-border);
+  @include mdc-text-field-ink-color_(text-disabled-on-background);
+  @include mdc-text-field-label-color_(text-disabled-on-background);
+  @include mdc-text-field-helper-text-color_(text-disabled-on-background);
+  @include mdc-text-field-icon-color_($mdc-text-field-disabled-icon);
+  @include mdc-text-field-fullwidth-bottom-line-color_($mdc-text-field-divider);
 
   pointer-events: none;
 
   .mdc-text-field__input {
     border-bottom: 1px dotted;
-
-    @include mdc-theme-dark(".mdc-text-field", true) {
-      border-bottom: 1px dotted;
-    }
-  }
-
-  @include mdc-theme-dark(".mdc-text-field", true) {
-    // stylelint-disable plugin/selector-bem-pattern
-    + .mdc-text-field-helper-text {
-      @include mdc-theme-prop(color, text-disabled-on-dark);
-    }
-    // stylelint-enable plugin/selector-bem-pattern
   }
 
   .mdc-text-field__label {
@@ -124,32 +125,22 @@
 }
 
 @mixin mdc-text-field-invalid_ {
-  @include mdc-text-field-bottom-line-color($mdc-text-field-error-on-light);
-  @include mdc-text-field-hover-bottom-line-color($mdc-text-field-error-on-light);
-  @include mdc-text-field-focused-bottom-line-color($mdc-text-field-error-on-light);
-  @include mdc-text-field-label-color($mdc-text-field-error-on-light);
-  @include mdc-text-field-helper-text-validation-color($mdc-text-field-error-on-light);
+  @include mdc-text-field-bottom-line-color($mdc-text-field-error);
+  @include mdc-text-field-hover-bottom-line-color($mdc-text-field-error);
+  @include mdc-text-field-line-ripple-color($mdc-text-field-error);
+  @include mdc-text-field-label-color($mdc-text-field-error);
+  @include mdc-text-field-helper-text-validation-color($mdc-text-field-error);
 
   + .mdc-text-field-helper-text--validation-msg {
     opacity: 1;
-  }
-
-  @include mdc-theme-dark(".mdc-text-field", true) {
-    + .mdc-text-field-helper-text--validation-msg {
-      color: $mdc-text-field-error-on-dark;
-    }
   }
 }
 
 @mixin mdc-text-field-focused_ {
   @include mdc-text-field-label-color(primary);
 
-  @include mdc-required-text-field-label-asterix_ {
-    color: $mdc-text-field-error-on-light;
-
-    @include mdc-theme-dark(".mdc-text-field", true) {
-      color: $mdc-text-field-error-on-dark;
-    }
+  @include mdc-required-text-field-label-asterisk_ {
+    color: $mdc-text-field-error;
   }
 
   + .mdc-text-field-helper-text:not(.mdc-text-field-helper-text--validation-msg) {
@@ -166,7 +157,7 @@
   font-size: .813rem;
 }
 
-@mixin mdc-required-text-field-label-asterix_() {
+@mixin mdc-required-text-field-label-asterisk_() {
   .mdc-text-field__input:required + .mdc-text-field__label::after {
     @content;
   }
@@ -175,7 +166,7 @@
 // Outlined
 
 @mixin mdc-text-field-outlined-disabled_ {
-  @include mdc-text-field-ink-color_($mdc-text-field-light-placeholder);
+  @include mdc-text-field-ink-color_($mdc-text-field-placeholder);
   @include mdc-text-field-outline-color_($mdc-text-field-outlined-disabled-border);
 
   .mdc-text-field__input {
@@ -189,9 +180,9 @@
 
 @mixin mdc-text-field-outlined-invalid_ {
   // Outline specific mixins
-  @include mdc-text-field-outline-color($mdc-text-field-error-on-light);
-  @include mdc-text-field-hover-outline-color($mdc-text-field-error-on-light);
-  @include mdc-text-field-focused-outline-color($mdc-text-field-error-on-light);
+  @include mdc-text-field-outline-color($mdc-text-field-error);
+  @include mdc-text-field-hover-outline-color($mdc-text-field-error);
+  @include mdc-text-field-focused-outline-color($mdc-text-field-error);
 }
 
 @mixin mdc-text-field-outlined-focused_ {
@@ -265,7 +256,7 @@
 
 @mixin mdc-text-field-box_ {
   @include mdc-ripple-surface;
-  @include mdc-states(text-primary-on-light, $has-nested-focusable-element: true);
+  @include mdc-states(text-primary-on-background, $has-nested-focusable-element: true);
   @include mdc-ripple-radius-bounded;
   @include mdc-text-field-box-corner-radius($mdc-text-field-border-radius);
   @include mdc-text-field-box-fill-color($mdc-text-field-box-background);
@@ -277,14 +268,6 @@
   height: 56px;
   margin-top: 16px;
   overflow: hidden;
-
-  @include mdc-theme-dark(".mdc-text-field", true) {
-    background-color: $mdc-text-field-box-background-dark;
-  }
-
-  @include mdc-theme-dark(".mdc-text-field", true) {
-    @include mdc-states(text-primary-on-dark, $has-nested-focusable-element: true);
-  }
 
   .mdc-text-field__input {
     align-self: flex-end;
@@ -306,17 +289,13 @@
     // Force the label into its own layer to prevent to prevent visible layer promotion adjustments
     // when the ripple is activated behind it.
     will-change: transform;
-
-    @include mdc-theme-dark(".mdc-text-field") {
-      @include mdc-theme-prop(color, text-secondary-on-dark);
-    }
   }
 }
 
 @mixin mdc-text-field-box-disabled_ {
   @include mdc-text-field-box-fill-color_($mdc-text-field-box-disabled-background);
   @include mdc-text-field-bottom-line-color_($mdc-text-field-outlined-disabled-border);
-  @include mdc-text-field-label-color(text-hint-on-light);
+  @include mdc-text-field-label-color(text-hint-on-background);
 
   border-bottom: none;
 }
@@ -360,7 +339,7 @@
 
 // Full Width
 
-@mixin mdc-text-field-full-width_ {
+@mixin mdc-text-field-fullwidth_ {
   width: 100%;
 
   .mdc-text-field__input {
@@ -385,38 +364,34 @@
       border: none !important;
     }
   }
+}
 
-  @include mdc-theme-dark {
-    border-bottom: 1px solid $mdc-text-field-divider-on-dark;
-  }
+@mixin mdc-text-field-fullwidth-invalid_ {
+  @include mdc-text-field-fullwidth-bottom-line-color($mdc-text-field-error);
 }
 
 // Textarea
 
 @mixin mdc-text-field-textarea-disabled_ {
-  @include mdc-text-field-label-background-color_($mdc-textarea-disabled-background-on-light);
-  @include mdc-text-field-textarea-stroke-color_($mdc-text-field-disabled-border-on-light);
-  @include mdc-text-field-textarea-fill-color_($mdc-textarea-disabled-background-on-light);
+  @include mdc-text-field-label-background-color_($mdc-textarea-disabled-background);
+  @include mdc-text-field-textarea-stroke-color_($mdc-text-field-disabled-border);
+  @include mdc-text-field-textarea-fill-color_($mdc-textarea-disabled-background);
 
   border-style: solid;
 
   .mdc-text-field__input {
     border: 1px solid transparent;
   }
-
-  @include mdc-theme-dark(".mdc-text-field") {
-    background-color: $mdc-textarea-disabled-background-on-dark;
-  }
 }
 
 @mixin mdc-text-field-textarea-invalid_ {
-  @include mdc-text-field-textarea-stroke-color($mdc-text-field-error-on-light);
+  @include mdc-text-field-textarea-stroke-color($mdc-text-field-error);
 }
 
 @mixin mdc-text-field-textarea_ {
   @include mdc-text-field-textarea-corner-radius($mdc-text-field-border-radius);
-  @include mdc-text-field-label-background-color_($mdc-textarea-light-background);
-  @include mdc-text-field-textarea-stroke-color($mdc-textarea-border-on-light);
+  @include mdc-text-field-label-background-color_($mdc-textarea-background);
+  @include mdc-text-field-textarea-stroke-color($mdc-textarea-border);
 
   // Translate above the top of the input, and compensate for the amount of offset needed
   // to position the label within the bounds of the inset padding.
@@ -434,10 +409,6 @@
   border: 1px solid;
   overflow: hidden;
 
-  @include mdc-theme-dark(".mdc-text-field") {
-    border-color: $mdc-textarea-border-on-dark;
-  }
-
   .mdc-text-field__input {
     margin: 0;
     padding: $padding-inset;
@@ -454,10 +425,6 @@
     margin-left: 8px;
     padding: 8px;
     line-height: 1.15;
-
-    @include mdc-theme-dark(".mdc-text-field") {
-      background-color: $mdc-textarea-dark-background;
-    }
   }
 }
 
@@ -488,5 +455,23 @@
 @mixin mdc-text-field-fullwidth-bottom-line-color_($color) {
   &:not(.mdc-text-field--textarea) {
     @include mdc-theme-prop(border-bottom-color, $color);
+  }
+}
+
+@mixin mdc-text-field-bottom-line-color_($color) {
+  .mdc-text-field__input {
+    @include mdc-theme-prop(border-bottom-color, $color);
+  }
+}
+
+@mixin mdc-text-field-hover-bottom-line-color_($color) {
+  .mdc-text-field__input:hover {
+    @include mdc-theme-prop(border-bottom-color, $color);
+  }
+}
+
+@mixin mdc-text-field-line-ripple-color_($color) {
+  .mdc-line-ripple {
+    @include mdc-line-ripple-color($color);
   }
 }

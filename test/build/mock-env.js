@@ -1,6 +1,5 @@
 /**
- * @license
- * Copyright 2017 Google Inc. All Rights Reserved.
+ * Copyright 2018 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +14,23 @@
  * limitations under the License.
  */
 
-/** @enum {string} */
-const strings = {
-  ANIMATION_END_EVENT: 'MDCTextFieldBottomLine:animation-end',
-};
+/**
+ * Temporarily overwrites environment variables and restores their original values.
+ */
+module.exports = class {
+  constructor() {
+    this.saved_ = new Map();
+  }
 
-/** @enum {string} */
-const cssClasses = {
-  BOTTOM_LINE_ACTIVE: 'mdc-text-field__bottom-line--active',
-};
+  mock(key, value) {
+    this.saved_[key] = process.env[key];
+    process.env[key] = value;
+  }
 
-export {strings, cssClasses};
+  restoreAll() {
+    this.saved_.forEach((value, key) => {
+      process.env[key] = value;
+    });
+    this.saved_.clear();
+  }
+};

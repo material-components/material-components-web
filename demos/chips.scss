@@ -14,29 +14,15 @@
 // limitations under the License.
 //
 
-@import "../functions";
-@import "./mixins";
-@import "@material/theme/mixins";
+@import "./common";
+@import "../packages/mdc-chips/mdc-chips";
 
-// postcss-bem-linter: define textfield
-.mdc-text-field {
-  &__bottom-line {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    transform: scaleX(0);
-    transition: mdc-text-field-transition(transform), mdc-text-field-transition(opacity);
-    opacity: 0;
-    z-index: 2;
-  }
+.custom-chip-primary {
+  @include mdc-chip-fill-color-accessible($mdc-theme-primary);
+}
 
-  &__bottom-line--active {
-    transform: scaleX(1);
-  }
-
-  .mdc-text-field__input:focus ~ .mdc-text-field__bottom-line {
-    opacity: 1;
-  }
+.custom-chip-secondary {
+  @include mdc-chip-fill-color(white);
+  @include mdc-chip-ink-color($mdc-theme-secondary);
+  @include mdc-chip-stroke(2px, solid, $mdc-theme-secondary);
 }

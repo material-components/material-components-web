@@ -26,7 +26,7 @@
 
   @include mdc-text-field-bottom-line-color($idle-border);
   @include mdc-text-field-hover-bottom-line-color($hover-border);
-  @include mdc-text-field-focused-bottom-line-color($focused-border);
+  @include mdc-text-field-line-ripple-color($focused-border);
   @include mdc-text-field-ink-color(black);
   @include mdc-text-field-label-color(rgba(blue, .5));
   @include mdc-text-field-outline-color($idle-border);
@@ -60,7 +60,7 @@
 .demo-textarea.mdc-text-field--invalid {
   @include mdc-text-field-ink-color(orange);
   @include mdc-text-field-label-color(rgba(orange, .5));
-  @include mdc-text-field-textarea-stroke-color(orange);
+  @include mdc-text-field-textarea-stroke-color(rgba(orange, .38));
 
   &.mdc-text-field--focused {
     @include mdc-text-field-label-color(rgba(orange, .87));
@@ -69,9 +69,10 @@
 }
 
 .demo-fullwidth-input:not(.mdc-text-field--invalid) {
+  @include mdc-text-field-fullwidth-bottom-line-color(rgba(blue, .38));
   @include mdc-text-field-ink-color(black);
   @include mdc-text-field-label-color(rgba(blue, .5));
-  @include mdc-text-field-focused-bottom-line-color(blue);
+  @include mdc-text-field-line-ripple-color(blue);
 
   &.mdc-text-field--focused {
     @include mdc-text-field-label-color(rgba(blue, .87));
@@ -79,9 +80,10 @@
 }
 
 .demo-fullwidth-input.mdc-text-field--invalid {
+  @include mdc-text-field-fullwidth-bottom-line-color(rgba(orange, .38));
   @include mdc-text-field-ink-color(orange);
   @include mdc-text-field-label-color(rgba(orange, .5));
-  @include mdc-text-field-focused-bottom-line-color(orange);
+  @include mdc-text-field-line-ripple-color(orange);
 
   &.mdc-text-field--focused {
     @include mdc-text-field-label-color(rgba(orange, .87));
@@ -96,7 +98,7 @@
 
   @include mdc-text-field-bottom-line-color($idle-border);
   @include mdc-text-field-hover-bottom-line-color($hover-border);
-  @include mdc-text-field-focused-bottom-line-color($focused-border);
+  @include mdc-text-field-line-ripple-color($focused-border);
   @include mdc-text-field-ink-color(orange);
   @include mdc-text-field-label-color(rgba(orange, .87));
   @include mdc-text-field-outline-color($idle-border);

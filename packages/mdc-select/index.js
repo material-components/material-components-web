@@ -17,6 +17,7 @@
 import {MDCComponent} from '@material/base/index';
 import {MDCRipple} from '@material/ripple/index';
 import {MDCMenu} from '@material/menu/index';
+import {MDCSelectLabel} from './label/index';
 
 import MDCSelectFoundation from './foundation';
 import {strings} from './constants';
@@ -70,9 +71,14 @@ export class MDCSelect extends MDCComponent {
     return null;
   }
 
-  initialize(menuFactory = (el) => new MDCMenu(el)) {
+  initialize(
+    menuFactory = (el) => new MDCMenu(el),
+    labelFactory = (el) => new MDCSelectLabel(el)) {
     this.surface_ = this.root_.querySelector(strings.SURFACE_SELECTOR);
-    this.label_ = this.root_.querySelector(strings.LABEL_SELECTOR);
+    const labelElement = this.root_.querySelector(strings.LABEL_SELECTOR);
+    if (labelElement) {
+      this.label_ = labelFactory(labelElement);
+    }
     this.bottomLine_ = this.root_.querySelector(strings.BOTTOM_LINE_SELECTOR);
     this.selectedText_ = this.root_.querySelector(strings.SELECTED_TEXT_SELECTOR);
     this.menuEl_ = this.root_.querySelector(strings.MENU_SELECTOR);
@@ -85,8 +91,11 @@ export class MDCSelect extends MDCComponent {
     return new MDCSelectFoundation({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
-      addClassToLabel: (className) => this.label_.classList.add(className),
-      removeClassFromLabel: (className) => this.label_.classList.remove(className),
+      floatLabel: (value) => {
+        if (this.label_) {
+          this.label_.float(value);
+        }
+      },
       addClassToBottomLine: (className) => this.bottomLine_.classList.add(className),
       removeClassFromBottomLine: (className) => this.bottomLine_.classList.remove(className),
       setBottomLineAttr: (attr, value) => this.bottomLine_.setAttribute(attr, value),
