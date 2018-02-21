@@ -66,8 +66,9 @@ class MDCChipFoundation extends MDCFoundation {
   init() {
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.registerInteractionHandler(evtType, this.interactionHandler_);
+      this.adapter_.registerTrailingIconInteractionHandler(evtType, this.trailingIconInteractionHandler_);
     });
-    ['click', 'touchstart', 'pointerdown', 'mousedown', 'keydown'].forEach((evtType) => {
+    ['touchstart', 'pointerdown', 'mousedown'].forEach((evtType) => {
       this.adapter_.registerTrailingIconInteractionHandler(evtType, this.trailingIconInteractionHandler_);
     });
   }
@@ -75,8 +76,9 @@ class MDCChipFoundation extends MDCFoundation {
   destroy() {
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.deregisterInteractionHandler(evtType, this.interactionHandler_);
+      this.adapter_.deregisterTrailingIconInteractionHandler(evtType, this.trailingIconInteractionHandler_);
     });
-    ['click', 'touchstart', 'pointerdown', 'mousedown', 'keydown'].forEach((evtType) => {
+    ['touchstart', 'pointerdown', 'mousedown'].forEach((evtType) => {
       this.adapter_.deregisterTrailingIconInteractionHandler(evtType, this.trailingIconInteractionHandler_);
     });
   }
