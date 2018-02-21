@@ -120,6 +120,18 @@ test('#adapter.notifyInteraction emits ' +
   td.verify(handler(td.matchers.anything()));
 });
 
+test('#adapter.notifyTrailingIconInteraction emits ' +
+  `${MDCChipFoundation.strings.INTERACTION_EVENT}`, () => {
+  const {component} = setupTest();
+  const handler = td.func('interaction handler');
+
+  component.listen(
+    MDCChipFoundation.strings.TRAILING_ICON_INTERACTION_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyTrailingIconInteraction();
+
+  td.verify(handler(td.matchers.anything()));
+});
+
 function setupMockFoundationTest(root = getFixture()) {
   const MockFoundationConstructor = td.constructor(MDCChipFoundation);
   const mockFoundation = new MockFoundationConstructor();
