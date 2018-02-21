@@ -488,7 +488,7 @@ test('on required validation attribute change should update invalid classes', ()
     .thenDo((handler) => attributeMutate = handler);
   foundation.init();
   attributeMutate([{attributeName: 'required'}]);
-  td.verify(mockAdapter.removeClass('mdc-text-field--invalid'));
+  td.verify(mockAdapter.removeClass(cssClasses.INVALID));
 });
 
 test('on pattern validation attribute change should update invalid classes', () => {
@@ -498,7 +498,7 @@ test('on pattern validation attribute change should update invalid classes', () 
     .thenDo((handler) => attributeMutate = handler);
   foundation.init();
   attributeMutate([{attributeName: 'pattern'}]);
-  td.verify(mockAdapter.removeClass('mdc-text-field--invalid'));
+  td.verify(mockAdapter.removeClass(cssClasses.INVALID));
 });
 
 test('on attribute change non-whitelisted should not update classes', () => {
@@ -508,7 +508,7 @@ test('on attribute change non-whitelisted should not update classes', () => {
     .thenDo((handler) => attributeMutate = handler);
   foundation.init();
   attributeMutate([{attributeName: 'form'}]);
-  td.verify(mockAdapter.removeClass('mdc-text-field--invalid'), {times: 0});
+  td.verify(mockAdapter.removeClass(cssClasses.INVALID), {times: 0});
 });
 
 const setupBlurTest = () => {
