@@ -59,6 +59,8 @@
   display: flex;
   position: relative;
   align-items: start;
+  width: $mdc-toolbar-icon-size;
+  height: $mdc-toolbar-icon-size;
   padding: $mdc-toolbar-icon-padding;
   justify-content: center;
   border: none;
