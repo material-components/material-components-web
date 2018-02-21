@@ -21,14 +21,21 @@ import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
 import MDCChipFoundation from '../../../packages/mdc-chips/chip/foundation';
 
+const {cssClasses} = MDCChipFoundation;
+
 suite('MDCChipFoundation');
 
 test('exports strings', () => {
   assert.isOk('strings' in MDCChipFoundation);
 });
 
+test('exports cssClasses', () => {
+  assert.isOk('cssClasses' in MDCChipFoundation);
+});
+
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCChipFoundation, [
+    'addClass', 'removeClass', 'hasClass',
     'registerInteractionHandler', 'deregisterInteractionHandler', 'notifyInteraction',
   ]);
 });
@@ -49,6 +56,22 @@ test('#destroy removes event listeners', () => {
 
   td.verify(mockAdapter.deregisterInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterInteractionHandler('keydown', td.matchers.isA(Function)));
+});
+
+test('#toggleActive adds mdc-chip--activated class if the class does not exist', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(cssClasses.ACTIVATED)).thenReturn(false);
+
+  foundation.toggleActive();
+  td.verify(mockAdapter.addClass(cssClasses.ACTIVATED));
+});
+
+test('#toggleActive removes mdc-chip--activated class if the class exists', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(cssClasses.ACTIVATED)).thenReturn(true);
+
+  foundation.toggleActive();
+  td.verify(mockAdapter.removeClass(cssClasses.ACTIVATED));
 });
 
 test('on click, emit custom event', () => {
