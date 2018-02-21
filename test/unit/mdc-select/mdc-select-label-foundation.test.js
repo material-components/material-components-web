@@ -30,7 +30,7 @@ function setupTest() {
 suite('MDCSelectLabelFoundation');
 
 test('exports cssClasses', () => {
-  assert.isTrue('cssClasses' in MDCSelectLabelFoundation);
+  assert.deepEqual(MDCSelectLabelFoundation.cssClasses, cssClasses);
 });
 
 test('default adapter returns a complete adapter implementation', () => {

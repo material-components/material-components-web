@@ -41,9 +41,10 @@ test('attachTo returns a component instance', () => {
 
 test('#float should call styleFloat on foundation', () => {
   const {component} = setupTest();
+  const value = 'value';
   component.foundation_.styleFloat = td.func();
-  component.float('value');
-  td.verify(component.foundation_.styleFloat(td.matchers.isA(String)));
+  component.float(value);
+  td.verify(component.foundation_.styleFloat(value));
 });
 
 test('adapter#addClass adds a class to the root element', () => {
