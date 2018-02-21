@@ -47,6 +47,8 @@ class MDCChipFoundation extends MDCFoundation {
       hasClass: () => {},
       registerInteractionHandler: () => {},
       deregisterInteractionHandler: () => {},
+      registerTrailingIconInteractionHandler: () => {},
+      deregisterTrailingIconInteractionHandler: () => {},
       notifyInteraction: () => {},
     });
   }

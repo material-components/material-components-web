@@ -36,6 +36,7 @@ test('exports cssClasses', () => {
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCChipFoundation, [
     'addClass', 'removeClass', 'hasClass',
+    'registerTrailingIconInteractionHandler', 'deregisterTrailingIconInteractionHandler',
     'registerInteractionHandler', 'deregisterInteractionHandler', 'notifyInteraction',
   ]);
 });
@@ -48,6 +49,11 @@ test('#init adds event listeners', () => {
 
   td.verify(mockAdapter.registerInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.registerInteractionHandler('keydown', td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerTrailingIconInteractionHandler('click', td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerTrailingIconInteractionHandler('keydown', td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerTrailingIconInteractionHandler('touchstart', td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerTrailingIconInteractionHandler('pointerdown', td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerTrailingIconInteractionHandler('mousedown', td.matchers.isA(Function)));
 });
 
 test('#destroy removes event listeners', () => {
@@ -56,6 +62,11 @@ test('#destroy removes event listeners', () => {
 
   td.verify(mockAdapter.deregisterInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterInteractionHandler('keydown', td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterTrailingIconInteractionHandler('click', td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterTrailingIconInteractionHandler('keydown', td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterTrailingIconInteractionHandler('touchstart', td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterTrailingIconInteractionHandler('pointerdown', td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterTrailingIconInteractionHandler('mousedown', td.matchers.isA(Function)));
 });
 
 test('#toggleActive adds mdc-chip--activated class if the class does not exist', () => {
