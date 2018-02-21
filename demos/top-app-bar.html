@@ -21,14 +21,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <link rel="stylesheet" href="/assets/top-app-bar.css">
-    <link rel="stylesheet" href="/assets/drawer/drawer.css">
     <script src="/ready.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   </head>
   <body class="mdc-typography">
-    <header id="demo-top-app-bar" class="mdc-top-app-bar demo-top-app-bar">
+    <header id="demo-top-app-bar" class="mdc-top-app-bar">
       <div class="mdc-top-app-bar__row">
         <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
           <a href="#" class="material-icons mdc-top-app-bar__menu-icon">menu</a>
@@ -42,7 +41,7 @@
       </div>
     </header>
 
-    <aside class="mdc-drawer mdc-drawer--temporary demo-drawer">
+    <aside class="mdc-drawer mdc-drawer--temporary">
       <nav class="mdc-drawer__drawer">
         <header class="mdc-drawer__header">
           <div class="mdc-drawer__header-content mdc-theme--text-primary-on-primary mdc-theme--primary-bg">
@@ -51,16 +50,16 @@
         </header>
         <nav class="mdc-drawer__content mdc-list-group">
           <div class="mdc-list">
-            <a href="/" class="mdc-list-item demo-drawer-list-item">
+            <a href="/" class="mdc-list-item ">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">&#xE5C4;</i>Back
             </a>
-            <a class="mdc-list-item demo-drawer-list-item" href="#">
+            <a class="mdc-list-item" href="#">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
             </a>
-            <a class="mdc-list-item demo-drawer-list-item" href="#">
+            <a class="mdc-list-item" href="#">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>Sent Mail
             </a>
-            <a class="mdc-list-item demo-drawer-list-item" href="#">
+            <a class="mdc-list-item" href="#">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>Drafts
             </a>
           </div>
@@ -68,13 +67,13 @@
           <hr class="mdc-list-divider">
 
           <div class="mdc-list">
-            <a class="mdc-list-item demo-drawer-list-item" href="#">
+            <a class="mdc-list-item" href="#">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">email</i>All Mail
             </a>
-            <a class="mdc-list-item demo-drawer-list-item" href="#">
+            <a class="mdc-list-item" href="#">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">delete</i>Trash
             </a>
-            <a class="mdc-list-item demo-drawer-list-item" href="#">
+            <a class="mdc-list-item" href="#">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">report</i>Spam
             </a>
           </div>
@@ -127,14 +126,14 @@
     <script src="/assets/material-components-web.js" async></script>
     <script type="text/javascript">
     demoReady(function() {
-      var appBarElement = document.getElementById('demo-top-app-bar');
-      var appBar = mdc.topAppBar.MDCTopAppBar.attachTo(appBarElement);
+      var appBarEl = document.getElementById('demo-top-app-bar');
+      var appBar = mdc.topAppBar.MDCTopAppBar.attachTo(appBarEl);
 
       var drawerEl = document.querySelector('.mdc-drawer');
       var MDCTemporaryDrawer = mdc.drawer.MDCTemporaryDrawer;
       var drawer = new MDCTemporaryDrawer(drawerEl);
 
-      appBarElement.addEventListener('MDCTopAppBar:nav', function() {
+      appBarEl.addEventListener('MDCTopAppBar:nav', function() {
         drawer.open = true;
       });
 

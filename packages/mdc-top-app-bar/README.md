@@ -94,7 +94,7 @@ Method Signature | Description
 `removeClass(className: string) => void` | Removes a class from the root element of the component.
 `registerNavigationIconInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the native navigation icon element for a given event.
 `deregisterNavigationIconInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the native navigation icon element for a given event.
-`notifyNavigationIconClicked() => void` | Emits a custom event "MDCTopAppBar:nav" when the navigation icon is clicked. 
+`notifyNavigationIconClicked() => void` | Emits a custom event `MDCTopAppBar:nav` when the navigation icon is clicked. 
 
 ### Events
 

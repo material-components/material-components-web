@@ -56,6 +56,7 @@
   @include mdc-ripple-radius-unbounded;
 
   display: flex;
+  position: relative;
   align-items: center;
   justify-content: center;
   padding: $mdc-top-app-bar-icon-padding;
