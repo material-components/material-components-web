@@ -104,6 +104,9 @@
       ],
       "toolbar": [
         "/packages/mdc-toolbar/index.js"
+      ],
+      "topAppBar": [
+        "/packages/mdc-top-app-bar/index.js"
       ]
     },
     "output": {
@@ -240,6 +243,7 @@
       "mdc.textfield": "/packages/mdc-textfield/mdc-text-field.scss",
       "mdc.theme": "/packages/mdc-theme/mdc-theme.scss",
       "mdc.toolbar": "/packages/mdc-toolbar/mdc-toolbar.scss",
+      "mdc.top-app-bar": "/packages/mdc-top-app-bar/mdc-top-app-bar.scss",
       "mdc.typography": "/packages/mdc-typography/mdc-typography.scss"
     },
     "output": {

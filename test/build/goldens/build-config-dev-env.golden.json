@@ -69,6 +69,7 @@
       "theme/theme-white": "/demos/theme/theme-white.scss",
       "theme/theme-yellow": "/demos/theme/theme-yellow.scss",
       "toolbar/toolbar": "/demos/toolbar/toolbar.scss",
+      "top-app-bar": "/demos/top-app-bar.scss",
       "typography": "/demos/typography.scss"
     },
     "output": {
