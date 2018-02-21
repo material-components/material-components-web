@@ -42,8 +42,8 @@
 
 @mixin mdc-chip-ink-color($color) {
   @include mdc-states($color);
-  @include mdc-theme-prop(color, $color);
   @include mdc-chip-activated-ink-color($color);
+  @include mdc-theme-prop(color, $color);
 
   &:hover {
     @include mdc-theme-prop(color, $color);
