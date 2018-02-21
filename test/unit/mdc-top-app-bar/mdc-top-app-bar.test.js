@@ -80,7 +80,7 @@ function setupTest(removeIcon = false) {
 
 suite('MDCTopAppBar');
 
-test('attachTo initialize and returns an MDCTopAppBar instance', () => {
+test('attachTo initializes and returns an MDCTopAppBar instance', () => {
   assert.isTrue(MDCTopAppBar.attachTo(getFixture()) instanceof MDCTopAppBar);
 });
 
