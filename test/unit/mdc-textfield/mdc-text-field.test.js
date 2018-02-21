@@ -356,12 +356,10 @@ test('#adapter.registerValidationAttributeChangeHandler creates a working mutati
   const {root, component} = setupTest();
   const handler = td.func('ValidationAttributeChangeHandler');
   td.when(handler(td.matchers.anything(), td.matchers.anything())).thenDo(() => {
-    assert.isNotOk(root.classList.contains('mdc-text-field--invalid'));
     done();
   });
 
   component.foundation_.adapter_.registerValidationAttributeChangeHandler(handler);
-  root.classList.add('mdc-text-field--invalid');
   root.querySelector('.mdc-text-field__input').required = true;
 });
 
@@ -438,4 +436,61 @@ test('get/set valid', () => {
   td.verify(mockFoundation.isValid());
   component.valid = true;
   td.verify(mockFoundation.setValid(true));
+});
+
+test('get/set required', () => {
+  const {component} = setupMockFoundationTest();
+  component.required = true;
+  assert.isOk(component.required);
+  component.required = false;
+  assert.isNotOk(component.required);
+});
+
+test('get/set pattern', () => {
+  const {component} = setupMockFoundationTest();
+  component.pattern = '.{8,}';
+  assert.equal(component.pattern, '.{8,}');
+  component.pattern = '.*';
+  assert.equal(component.pattern, '.*');
+});
+
+test('get/set minLength', () => {
+  const {component} = setupMockFoundationTest();
+  component.minLength = 8;
+  assert.equal(component.minLength, 8);
+  component.minLength = 0;
+  assert.equal(component.minLength, 0);
+});
+
+test('get/set maxLength', () => {
+  const {component} = setupMockFoundationTest();
+  component.maxLength = 10;
+  assert.equal(component.maxLength, 10);
+  component.maxLength = -1;
+  assert.equal(component.maxLength, -1);
+});
+
+test('get/set min', () => {
+  const {component} = setupMockFoundationTest();
+  component.min = '8';
+  assert.equal(component.min, '8');
+  component.min = '0';
+  assert.equal(component.min, '0');
+});
+
+test('get/set max', () => {
+  const {component} = setupMockFoundationTest();
+  assert.equal(component.max, '');
+  component.max = '10';
+  assert.equal(component.max, '10');
+  component.max = '';
+  assert.equal(component.max, '');
+});
+
+test('get/set step', () => {
+  const {component} = setupMockFoundationTest();
+  component.step = '8';
+  assert.equal(component.step, '8');
+  component.step = '10';
+  assert.equal(component.step, '10');
 });
