@@ -1,10 +1,13 @@
 import {MDCTabz} from '../tabz';
 import {MDCTabzIndicator} from '../tabz-indicator';
+import {MDCTabzContainer} from '../tabz-container';
+import {MDCTabzPager} from '../tabz-pager';
 
 const strings = {
   TABZ_SELECTOR: '.mdc-tabz',
   RESIZE_INDICATOR_SELECTOR: '.mdc-tabz-indicator',
   CONTAINER_SELECTOR: '.mdc-tabz-bar__container',
+  PAGER_SELECTOR: '.mdc-tabz-pager',
 };
 
 const numbers = {
@@ -22,19 +25,33 @@ class MDCTabzBar {
   }
 
   constructor(root) {
+    // Component initialization
     this.root_ = root;
-    this.container_ = root.querySelector(strings.CONTAINER_SELECTOR);
-    const indicatorRoot = this.root_.querySelector(strings.RESIZE_INDICATOR_SELECTOR);
-    this.indicator_ = MDCTabzIndicator.attachTo(indicatorRoot);
-    const tabz = Array.from(this.root_.querySelectorAll(strings.TABZ_SELECTOR));
-    this.tabz_ = tabz.map((tab) => MDCTabz.attachTo(tab));
-    this.handleTabChange_ = (e) => this.handleTabChange(e);
+
+    const containerRoot = root.querySelector(strings.CONTAINER_SELECTOR);
+    this.container_ = MDCTabzContainer.attachTo(containerRoot);
+
+    const indicator = this.root_.querySelector(strings.RESIZE_INDICATOR_SELECTOR);
+    this.indicator_ = MDCTabzIndicator.attachTo(indicator);
+
+    const tabz = this.root_.querySelectorAll(strings.TABZ_SELECTOR);
+    this.tabz_ = Array.from(tabz).map((tab) => MDCTabz.attachTo(tab));
+
+    const pagerz = this.root_.querySelectorAll(strings.PAGER_SELECTOR);
+    this.pagerz_ = Array.from(pagerz).map((pager) => MDCTabzPager.attachTo(pager));
+
+    // Event Handlers
+    this.handleTabSelection_ = (e) => this.handleTabSelection(e);
     this.handleResize_ = () => this.handleResize();
     this.handleClick_ = (e) => this.handleClick(e);
+    this.handleNextPageClick_ = () => this.handleNextPageClick();
+    this.handlePrevPageClick_ = () => this.handlePrevPageClick();
+    this.handleScrollFakery_ = () => this.handleScrollFakery();
 
+    // Adapter initialization
     this.adapter_ = {
-      getContainerBoundingClientRect: () =>
-        this.container_.getBoundingClientRect(),
+      getBoundingClientRect: () =>
+        this.root_.getBoundingClientRect(),
       registerWindowEventListener: (evtType, handler) =>
         window.addEventListener(evtType, handler),
       deregisterWindowEventListener: (evtType, handler) =>
@@ -43,9 +60,11 @@ class MDCTabzBar {
         this.root_.addEventListener(evtType, handler),
       deregisterEventListener: (evtType, handler) =>
         this.root_.removeEventListener(evtType, handler),
+      getScrollLeft: () =>
+        this.root_.scrollLeft,
+      setScrollLeft: (value) =>
+        this.root_.scrollLeft = value,
     };
-
-    this.adapter_.registerEventListener('click', this.handleClick_);
 
     /** @private {number} */
     this.activeIndex_ = this.getActiveTabIndex_();
@@ -56,12 +75,20 @@ class MDCTabzBar {
     /** @private {number} The ID of the requestAnimationFrame */
     this.updateFrame_ = 0;
 
+    /** @private {number} The ID of the requestAnimationFrame */
+    this.scrollFrame_ = 0;
+
+    /** @private {number} The pixel value to scroll left */
+    this.scrollLeft_ = 0;
+
     this.init();
   }
 
   init() {
     this.updateIndicator();
     this.adapter_.registerWindowEventListener('resize', this.handleResize_);
+    this.adapter_.registerEventListener(MDCTabz.strings.TABZ_EVENT, this.handleTabSelection_);
+    this.adapter_.registerEventListener(MDCTabzContainer.strings.SCROLL_FAKERY_EVENT, this.handleScrollFakery_);
   }
 
   /**
@@ -79,7 +106,13 @@ class MDCTabzBar {
    * @private
    */
   getSelectedTabIndex_(target) {
-    return this.tabz_.findIndex((tab) => tab.hasChildElement(target));
+    return this.tabz_.findIndex((tab) => tab === target);
+  }
+
+  handleScrollFakery() {
+    this.container_.resetTransform();
+    console.log(`this.scrollLeft_: ${this.scrollLeft_}`);
+    this.adapter_.setScrollLeft(this.scrollLeft_);
   }
 
   /**
@@ -90,11 +123,43 @@ class MDCTabzBar {
     this.activateTab(this.getSelectedTabIndex_(e.target));
   }
 
+  handleTabSelection(e) {
+    const index = this.getSelectedTabIndex_(e.detail.tab);
+    this.activeTab.deactivate();
+    this.activeIndex_ = index;
+
+    const activeTabBbox = this.activeTab.getBoundingClientRect();
+    const barBbox = this.adapter_.getBoundingClientRect();
+
+    const leftGap = this.shouldScrollToLeft_(activeTabBbox, barBbox);
+    const rightGap = this.shouldScrollToRight_(activeTabBbox, barBbox);
+    const currentScrollLeft = this.adapter_.getScrollLeft();
+    if (leftGap > 0) {
+      this.scrollLeft_ = currentScrollLeft + leftGap;
+      this.container_.animateToPosition(currentScrollLeft, leftGap * -1);
+    } else if (rightGap > 0) {
+      this.scrollLeft_ = currentScrollLeft - rightGap;
+      this.container_.animateToPosition(currentScrollLeft, rightGap);
+    }
+
+    this.activeTab.activate();
+    this.calculateIndicatorPosition();
+    this.indicator_.animatePosition();
+  }
+
   /**
    * Handles the window resize event
    */
   handleResize() {
     this.throttleIndicatorUpdates();
+  }
+
+  shouldScrollToLeft_(activeTabBbox, barBbox) {
+    return activeTabBbox.right - barBbox.right;
+  }
+
+  shouldScrollToRight_(activeTabBbox, barBbox) {
+    return barBbox.left - activeTabBbox.left;
   }
 
   /**
@@ -135,7 +200,7 @@ class MDCTabzBar {
     const bbox = this.activeTab.getBoundingClientRect();
     if (this.bboxDeltaIsPerceptible_(bbox)) {
       this.bbox_ = bbox;
-      this.indicator_.calculatePosition(this.bbox_, this.adapter_.getContainerBoundingClientRect());
+      this.indicator_.calculatePosition(this.bbox_, this.container_.getBoundingClientRect());
     }
   }
 

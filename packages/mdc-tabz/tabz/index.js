@@ -8,11 +8,16 @@ const cssClasses = {
 
 const strings = {
   RIPPLE_SURFACE: '.mdc-tabz__ripple',
+  TABZ_EVENT: 'MDCTabz:selected',
 };
 
 class MDCTabz {
   static attachTo(root) {
     return new MDCTabz(root);
+  }
+
+  static get strings() {
+    return strings;
   }
 
   constructor(root) {
@@ -22,9 +27,9 @@ class MDCTabz {
     this.ripple_ = MDCRipple.attachTo(rippleRoot_);
 
     this.adapter_ = {
-      addEventListener: (evtType, handler) =>
+      registerEventListener: (evtType, handler) =>
         this.root_.addEventListener(evtType, handler),
-      removeEventListener: (evtType, handler) =>
+      deregisterEventListener: (evtType, handler) =>
         this.root_.addEventListener(evtType, handler),
       getBoundingClientRect: () =>
         this.root_.getBoundingClientRect(),
@@ -34,24 +39,34 @@ class MDCTabz {
         this.root_.classList.remove(className),
       hasClass: (className) =>
         this.root_.classList.contains(className),
-      hasChildElement: (element) =>
-        this.root_.contains(element),
+      notifyTabSelection: () => {
+        const evt = new CustomEvent(strings.TABZ_EVENT, {
+          detail: {
+            tab: this,
+          },
+          bubbles: true,
+        });
+        this.root_.dispatchEvent(evt);
+      },
     };
 
+    this.handleClick_ = () => this.handleClick();
     this.handleTransitionEnd_ = () => this.handleTransitionEnd();
+
+    this.init();
+  }
+
+  init() {
+    this.adapter_.registerEventListener('click', this.handleClick_);
+  }
+
+  handleClick() {
+    this.adapter_.notifyTabSelection();
   }
 
   handleTransitionEnd() {
     this.adapter_.removeClass(cssClasses.ANIMATING_ACTIVATE);
     this.adapter_.removeClass(cssClasses.ANIMATING_DEACTIVATE);
-  }
-
-  /**
-   * Returns whether the target exists in the tree at or below this element.
-   * @param {Node} target The element to check the presence of
-   */
-  hasChildElement(target) {
-    return this.root_ === target || this.adapter_.hasChildElement(target);
   }
 
   /**
@@ -64,14 +79,14 @@ class MDCTabz {
 
   /** Activates the tab */
   activate() {
-    this.adapter_.addEventListener('transitionend', this.handleTransitionEnd_);
+    this.adapter_.registerEventListener('transitionend', this.handleTransitionEnd_);
     this.adapter_.addClass(cssClasses.ANIMATING_ACTIVATE);
     this.adapter_.addClass(cssClasses.ACTIVE);
   }
 
   /** Deactivates the tab */
   deactivate() {
-    this.adapter_.addEventListener('transitionend', this.handleTransitionEnd_);
+    this.adapter_.registerEventListener('transitionend', this.handleTransitionEnd_);
     this.adapter_.addClass(cssClasses.ANIMATING_DEACTIVATE);
     this.adapter_.removeClass(cssClasses.ACTIVE);
   }

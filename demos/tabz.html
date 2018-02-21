@@ -121,12 +121,20 @@
   </style>
 </head>
 <body class="mdc-typography" data-demo-disable-hash-link-navigation>
+
+  <!--
   <main id="tabz-demo-main-section" class="mdc-toolbar-fixed-adjust">
     <section>
       <fieldset>
         <legend class="mdc-typography--title">Basic Tab Bar</legend>
         <nav data-name="simpleBar" class="mdc-tabz-bar">
-          <div class="mdc-tabz-bar__container">
+          <button class="mdc-tabz-pager mdc-tabz-pager--prev">
+            <i class="material-icons">keyboard_arrow_left</i>
+          </button>
+          <button class="mdc-tabz-pager mdc-tabz-pager--next">
+            <i class="material-icons">keyboard_arrow_right</i>
+          </button>
+          <div class="mdc-tabz-bar__container" id="basicContainer">
             <span class="mdc-tabz">
               <span class="mdc-tabz__content">
                 <span class="mdc-tabz__label">Item One</span>
@@ -154,6 +162,8 @@
     <section>
       <fieldset>
         <legend class="mdc-typography--title">Basic Tab Bar with Many Tabs</legend>
+        
+        -->
         <nav data-name="simpleBarWithManyTabs" class="mdc-tabz-bar">
           <div class="mdc-tabz-bar__container">
             <span class="mdc-tabz">
@@ -249,6 +259,8 @@
             <span class="mdc-tabz-indicator"></span>
           </div>
         </nav>
+
+        <!--
       </fieldset>
     </section>
 
@@ -408,6 +420,8 @@
       </fieldset>
     </section>
   </main>
+  -->
+
   <script src="/assets/material-components-web.js" async></script>
   <script src="/assets/common.js" async></script>
   <script>

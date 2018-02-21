@@ -186,12 +186,13 @@ $mdc-color: $mdc-purple;
     border-bottom: none;
   }
 
-  &--end {
-    justify-content: flex-end;
-  }
+  &__container {
+    display: flex;
+    position: relative;
 
-  &--start {
-    justify-content: flex-start;
+    &--animating {
+      transition: 250ms transform cubic-bezier(0, 0, .2, 1);
+    }
   }
 
   &--end,
@@ -203,13 +204,42 @@ $mdc-color: $mdc-purple;
     }
   }
 
-  &__container {
-    display: flex;
-    position: relative;
+  &--end &__container {
+    justify-content: flex-end;
   }
 
-  &--scrollable-fixed &__container {
+  &--start &__container {
+    justify-content: flex-start;
+  }
+
+  &--fixed-width &__container {
     padding-left: 56px;
+  }
+
+  &--fixed-width .mdc-tabz {
+    flex: 1 0 110px;
+  }
+}
+
+.mdc-tabz-pager {
+  display: flex;
+  position: absolute;
+  top: 0;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: none;
+  background: none;
+  z-index: 3;
+
+  &--prev {
+    left: 0;
+  }
+
+  &--next {
+    right: 0;
   }
 }
 
@@ -251,12 +281,12 @@ $mdc-color: $mdc-purple;
   }
 }
 
-.mdc-tabz-bar--scrollable .mdc-tabz {
-  white-space: nowrap;
+.mdc-tabz-bar--fixed-width .mdc-tabz {
+  flex: 1 0 110px;
 }
 
-.mdc-tabz-bar--scrollable-fixed .mdc-tabz {
-  flex: 1 0 110px;
+.mdc-tabz-panel-container {
+  overflow: hidden;
 }
 
 @media screen and (max-width: 599px) {
