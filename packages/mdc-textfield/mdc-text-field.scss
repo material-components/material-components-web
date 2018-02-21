@@ -14,21 +14,21 @@
 // limitations under the License.
 //
 
-@import "./functions";
-@import "./mixins";
-@import "./variables";
 @import "@material/animation/variables";
+@import "@material/floating-label/mdc-floating-label";
+@import "@material/line-ripple/mdc-line-ripple";
 @import "@material/ripple/common";
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
 @import "@material/theme/variables";
 @import "@material/typography/mixins";
 @import "@material/typography/variables";
-@import "@material/line-ripple/mdc-line-ripple";
+@import "./functions";
 @import "./helper-text/mdc-text-field-helper-text";
 @import "./icon/mdc-text-field-icon";
-@import "@material/floating-label/mdc-floating-label";
+@import "./mixins";
 @import "./outline/mdc-text-field-outline";
+@import "./variables";
 
 // postcss-bem-linter: define text-field
 

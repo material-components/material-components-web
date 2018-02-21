@@ -35,18 +35,20 @@ class MDCFloatingLabel extends MDCComponent {
 
   /**
    * Styles the label to produce the label shake for errors.
-   * @param {boolean} shouldShake styles the label to shake if true.
+   * @param {boolean} shouldShake styles the label to shake by adding shake class
+   * if true, otherwise will stop shaking by removing shake class.
    */
   shake(shouldShake) {
-    this.foundation_.styleShake(shouldShake);
+    this.foundation_.shake(shouldShake);
   }
 
   /**
-   * Styles label to float/defloat.
-   * @param {boolean} shouldFloat styles the label to float if true.
+   * Styles label to float/dock.
+   * @param {boolean} shouldFloat styles the label to float by adding float class
+   * if true, otherwise docks the label by removing the float class.
    */
   float(shouldFloat) {
-    this.foundation_.styleFloat(shouldFloat);
+    this.foundation_.float(shouldFloat);
   }
 
   /**
@@ -64,6 +66,8 @@ class MDCFloatingLabel extends MDCComponent {
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       getWidth: () => this.root_.offsetWidth,
+      registerInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
+      deregisterInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
     });
   }
 }

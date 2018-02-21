@@ -45,6 +45,20 @@ class MDCFloatingLabelAdapter {
    * @return {number}
    */
   getWidth() {}
+
+  /**
+   * Registers an event listener on the root element for a given event.
+   * @param {string} evtType
+   * @param {function(!Event): undefined} handler
+   */
+  registerInteractionHandler(evtType, handler) {}
+
+  /**
+   * Deregisters an event listener on the root element for a given event.
+   * @param {string} evtType
+   * @param {function(!Event): undefined} handler
+   */
+  deregisterInteractionHandler(evtType, handler) {}
 }
 
 export default MDCFloatingLabelAdapter;

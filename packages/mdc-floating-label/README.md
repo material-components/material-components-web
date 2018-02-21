@@ -40,7 +40,8 @@ Floating labels display the type of input a field requires. Every text field and
 
 #### Avoid Dynamic ID Generation
 
-It's also possible to wrap `mdc-text-field__input` within a `<label>` to avoid dynamic id generation:
+If you're using the JavaScript-enabled version of floating label, you can avoid needing to assign
+a unique `id` to each `<input>` by wrapping `mdc-text-field__input` within a `<label>`:
 
 ```html
 <label class="mdc-text-field">
@@ -48,19 +49,6 @@ It's also possible to wrap `mdc-text-field__input` within a `<label>` to avoid d
   <span class="mdc-floating-label">Hint Text</span>
   <div class="mdc-text-field__bottom-line"></div>
 </label>
-```
-
-> _NOTE_: Only place a `mdc-floating-label` inside of a text field _if you plan on using
-> JavaScript_. Otherwise, the label must go outside of the text-field, as shown below.
-
-#### Single Line, CSS Only
-
-```html
-<label for="text-field-no-js">TextField with no JS:</label>
-<div class="mdc-text-field">
-  <input type="text" id="text-field-no-js" class="mdc-text-field__input" placeholder="Hint text">
-  <div class="mdc-text-field__bottom-line"></div>
-</div>
 ```
 
 ### CSS Classes
@@ -85,8 +73,8 @@ Mixin | Description
 
 Method Signature | Description
 --- | ---
-`shake(shouldShake: boolean) => void` | Shakes label if shouldShake is true.
-`float(shouldFloat: boolean) => void` | Floats label if shouldFloat is true.
+`shake(shouldShake: boolean) => void` | Shakes or stops shaking the label, depending on the value of `shouldShake`. Proxies to the foundation method of the same name.
+`float(shouldFloat: boolean) => void` | Floats or docks the label, depending on the value of `shouldFloat`. Proxies to the foundation method of the same name.
 `getWidth() => number` | Returns the width of the label element.
 
 ### `MDCFloatingLabelAdapter`
@@ -101,6 +89,9 @@ Method Signature | Description
 
 Method Signature | Description
 --- | ---
+`shake(shouldShake: boolean)` | Shakes or stops shaking the label, depending on the value of `shouldShake`.*
+`float(shouldFloat: boolean)` | Floats or docks the label, depending on the value of `shouldFloat`.
 `getWidth() => number` | Returns the width of the label element.
-`styleShake(shouldShake: boolean)` | Adds shake class if shouldShake is true.
-`styleFloat(shouldFloat: boolean)` | Adds float class if shouldFloat is true.
+
+\* **N.B.:** Multiple consecutive calls to `shake(true)` will only shake the label once.
+To shake the label a second time, you must first call `shake(false)` to reset its state.

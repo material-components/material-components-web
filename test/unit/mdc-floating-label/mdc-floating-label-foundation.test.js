@@ -32,6 +32,7 @@ test('exports cssClasses', () => {
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCFloatingLabelFoundation, [
     'addClass', 'removeClass', 'getWidth',
+    'registerInteractionHandler', 'deregisterInteractionHandler',
   ]);
 });
 
@@ -44,26 +45,44 @@ test('#getWidth returns the width of the label element scaled by 75%', () => {
   assert.equal(foundation.getWidth(), width);
 });
 
-test('#styleFloat called with shouldFloat is true, floats the label', () => {
+test('#float called with shouldFloat is true, floats the label', () => {
   const {foundation, mockAdapter} = setupTest();
-  foundation.styleFloat(true);
+  foundation.float(true);
   td.verify(mockAdapter.addClass(cssClasses.LABEL_FLOAT_ABOVE));
 });
 
-test('#styleFloat called with shouldFloat is false, de-floats the label', () => {
+test('#float called with shouldFloat is false, de-floats the label', () => {
   const {foundation, mockAdapter} = setupTest();
-  foundation.styleFloat(false);
+  foundation.float(false);
   td.verify(mockAdapter.removeClass(cssClasses.LABEL_FLOAT_ABOVE));
 });
 
-test('#styleShake called with shouldShake is true, should add shake class', () => {
+test('#shake called with shouldShake is true, should add shake class', () => {
   const {foundation, mockAdapter} = setupTest();
-  foundation.styleShake(true);
+  foundation.shake(true);
   td.verify(mockAdapter.addClass(cssClasses.LABEL_SHAKE));
 });
 
-test('#styleShake called with shouldShake is false, should remove shake class', () => {
+test('#shake called with shouldShake is true, should register animationend event listener', () => {
   const {foundation, mockAdapter} = setupTest();
-  foundation.styleFloat(false);
+  foundation.shake(true);
+  td.verify(mockAdapter.registerInteractionHandler('animationend', td.matchers.isA(Function)));
+});
+
+test('#shake called with shouldShake is false, should remove shake class', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.shake(false);
   td.verify(mockAdapter.removeClass(cssClasses.LABEL_SHAKE));
+});
+
+test('#float called with shouldFloat is false, should remove shake class', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.float(false);
+  td.verify(mockAdapter.removeClass(cssClasses.LABEL_SHAKE));
+});
+
+test('#handleShakeAnimationEnd_ should deregisterInteractionHandler', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.handleShakeAnimationEnd_();
+  td.verify(mockAdapter.deregisterInteractionHandler('animationend', td.matchers.isA(Function)));
 });

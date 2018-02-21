@@ -16,8 +16,6 @@
 
 @import "./variables";
 
-// Public
-
 @mixin mdc-floating-label-color($color) {
   @include mdc-theme-prop(color, $color);
 }

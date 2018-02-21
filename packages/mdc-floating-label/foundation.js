@@ -40,6 +40,8 @@ class MDCFloatingLabelFoundation extends MDCFoundation {
       addClass: () => {},
       removeClass: () => {},
       getWidth: () => {},
+      registerInteractionHandler: () => {},
+      deregisterInteractionHandler: () => {},
     });
   }
 
@@ -48,6 +50,9 @@ class MDCFloatingLabelFoundation extends MDCFoundation {
    */
   constructor(adapter) {
     super(Object.assign(MDCFloatingLabelFoundation.defaultAdapter, adapter));
+
+    /** @private {function(!Event): undefined} */
+    this.shakeAnimationEndHandler_ = () => this.handleShakeAnimationEnd_();
   }
 
   /**
@@ -60,22 +65,25 @@ class MDCFloatingLabelFoundation extends MDCFoundation {
 
   /**
    * Styles the label to produce the label shake for errors.
-   * @param {boolean} shouldShake adds shake class if true.
+   * @param {boolean} shouldShake adds shake class if true,
+   * otherwise removes shake class.
    */
-  styleShake(shouldShake) {
+  shake(shouldShake) {
     const {LABEL_SHAKE} = MDCFloatingLabelFoundation.cssClasses;
     if (shouldShake) {
       this.adapter_.addClass(LABEL_SHAKE);
+      this.adapter_.registerInteractionHandler('animationend', this.shakeAnimationEndHandler_);
     } else {
       this.adapter_.removeClass(LABEL_SHAKE);
     }
   }
 
   /**
-   * Styles the label to float or defloat.
-   * @param {boolean} shouldFloat adds float class if true.
+   * Styles the label to float or dock.
+   * @param {boolean} shouldFloat adds float class if true, otherwise remove
+   * float and shake class to dock label.
    */
-  styleFloat(shouldFloat) {
+  float(shouldFloat) {
     const {LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCFloatingLabelFoundation.cssClasses;
     if (shouldFloat) {
       this.adapter_.addClass(LABEL_FLOAT_ABOVE);
@@ -83,6 +91,15 @@ class MDCFloatingLabelFoundation extends MDCFoundation {
       this.adapter_.removeClass(LABEL_FLOAT_ABOVE);
       this.adapter_.removeClass(LABEL_SHAKE);
     }
+  }
+
+  /**
+   * Handles an interaction event on the root element.
+   */
+  handleShakeAnimationEnd_() {
+    const {LABEL_SHAKE} = MDCFloatingLabelFoundation.cssClasses;
+    this.adapter_.removeClass(LABEL_SHAKE);
+    this.adapter_.deregisterInteractionHandler('animationend', this.shakeAnimationEndHandler_);
   }
 }
 
