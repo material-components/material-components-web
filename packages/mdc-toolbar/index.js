@@ -15,7 +15,7 @@
  */
 
 import {MDCComponent} from '@material/base/index';
-import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
+import {MDCRipple} from '@material/ripple/index';
 
 import MDCToolbarFoundation from './foundation';
 import * as util from './util';

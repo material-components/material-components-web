@@ -59,11 +59,11 @@
     flex: 1;
     align-items: start;
     justify-content: center;
+    box-sizing: border-box;
     min-width: 0;
     height: 100%;
-    z-index: 1;
     padding: $mdc-toolbar-element-section-padding;
-    box-sizing: border-box;
+    z-index: 1;
 
     @media (max-width: $mdc-toolbar-mobile-landscape-width-breakpoint)
       and (orientation: landscape) {
@@ -97,9 +97,10 @@
       order: 1;
 
       @media (max-width: $mdc-toolbar-mobile-landscape-width-breakpoint)
-          and (orientation: landscape) {
+        and (orientation: landscape) {
         @include mdc-rtl-reflexive-box(padding, "right", $mdc-toolbar-mobile-section-horizontal-padding);
       }
+
       @media (max-width: $mdc-toolbar-mobile-breakpoint) {
         @include mdc-rtl-reflexive-box(padding, "right", $mdc-toolbar-mobile-section-horizontal-padding);
       }
