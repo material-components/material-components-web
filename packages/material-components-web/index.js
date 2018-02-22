@@ -35,6 +35,7 @@ import * as snackbar from '@material/snackbar/index';
 import * as tabs from '@material/tabs/index';
 import * as textField from '@material/textfield/index';
 import * as toolbar from '@material/toolbar/index';
+import * as topAppBar from '@material/top-app-bar/index';
 
 // Register all components
 autoInit.register('MDCLineRipple', lineRipple.MDCLineRipple);
@@ -58,6 +59,7 @@ autoInit.register('MDCMenu', menu.MDCMenu);
 autoInit.register('MDCSelect', select.MDCSelect);
 autoInit.register('MDCSlider', slider.MDCSlider);
 autoInit.register('MDCToolbar', toolbar.MDCToolbar);
+autoInit.register('MDCTopAppBar', topAppBar.MDCTopAppBar);
 
 // Export all components.
 export {
@@ -82,4 +84,5 @@ export {
   tabs,
   textField,
   toolbar,
+  topAppBar,
 };

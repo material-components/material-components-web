@@ -18,7 +18,6 @@ export const cssClasses = {
   BOTTOM_LINE_ACTIVE: 'mdc-select__bottom-line--active',
   BOX: 'mdc-select--box',
   DISABLED: 'mdc-select--disabled',
-  LABEL_FLOAT_ABOVE: 'mdc-select__label--float-above',
   OPEN: 'mdc-select--open',
   ROOT: 'mdc-select',
   SCROLL_LOCK: 'mdc-select-scroll-lock',
