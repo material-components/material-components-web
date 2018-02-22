@@ -55,7 +55,7 @@ test('adapter#addClass adds a class to the root element', () => {
 });
 
 
-test('adapter#removeClass removes a class to the root element', () => {
+test('adapter#removeClass removes a class from the root element', () => {
   const {component, fixture} = setupTest();
 
   fixture.classList.add('foo');
