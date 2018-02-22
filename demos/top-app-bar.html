@@ -173,6 +173,10 @@
     <div class="demo-controls-container">
       <h3>Demo Controls</h3>
       <div>
+        <input type="checkbox" id="rtl-checkbox"/>
+        <label for="rtl-checkbox">RTL</label>
+      </div>
+      <div>
         <input type="checkbox" id="short"/>
         <label for="short">Short</label>
       </div>
@@ -200,6 +204,7 @@
       var iconSection = document.getElementById('iconSection');
       var shortCheckbox = document.getElementById('short');
       var oneRightIcon = document.getElementById('no-right-icon');
+      var rtlCheckBox = document.getElementById('rtl-checkbox');
 
       shortCheckbox.addEventListener('change', function() {
         this.checked ? appBarEl.classList.add('mdc-top-app-bar--short') : appBarEl.classList.remove('mdc-top-app-bar--short');
@@ -221,6 +226,10 @@
           iconSection.innerHTML = '<a href="#" class="material-icons mdc-top-app-bar__icon" aria-label="Bookmark this page" alt="Bookmark this page">bookmark</a>';
           appBarEl.classList.add('mdc-top-app-bar--short__right-icon');
         }
+      });
+
+      rtlCheckBox.addEventListener('change', function()  {
+        this.checked ? document.body.setAttribute("dir", "rtl") : document.body.removeAttribute("dir");
       })
     });
   </script>
