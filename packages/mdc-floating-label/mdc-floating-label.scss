@@ -30,13 +30,11 @@
   transition: mdc-floating-label-transition(transform), mdc-floating-label-transition(color);
   cursor: text;
 
-  // stylelint-disable plugin/selector-bem-pattern
-  @include mdc-rtl(".mdc-text-field") {
+  @include mdc-rtl() {
     right: 0;
     left: auto;
     transform-origin: right top;
   }
-  // stylelint-enable plugin/selector-bem-pattern
 }
 
 .mdc-floating-label--float-above {
