@@ -71,7 +71,7 @@ test(`deactivate adds ${cssClasses.LINE_RIPPLE_DEACTIVATING} class`, () => {
   td.verify(mockAdapter.addClass(cssClasses.LINE_RIPPLE_DEACTIVATING));
 });
 
-test('opacity event after adding deactivating class triggers activation classes to be removed', () => {
+test('opacity event after adding deactivating class triggers triggers removal of activation classes', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.hasClass(cssClasses.LINE_RIPPLE_DEACTIVATING)).thenReturn(true);
   const event = {
