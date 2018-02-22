@@ -462,12 +462,13 @@ test('get/set minLength', () => {
   assert.equal(component.minLength, 0);
 });
 
-test('get/set maxLength', () => {
+test.only('get/set maxLength', () => {
   const {component} = setupMockFoundationTest();
   component.maxLength = 10;
   assert.equal(component.maxLength, 10);
   component.maxLength = -1;
-  assert.equal(component.maxLength, -1);
+  // need to check maxLength === 2147483647 is specifically for IE11 
+  assert.isTrue(component.maxLength === -1 || component.maxLength === 2147483647);
 });
 
 test('get/set min', () => {
