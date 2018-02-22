@@ -54,6 +54,7 @@
   vertical-align: middle;
   border-radius: 50%;
   outline: none;
+  transition: opacity 100ms linear, width 100ms linear;
 }
 
 .mdc-chip__icon--filter,
@@ -84,5 +85,6 @@
 }
 
 .mdc-chip__icon.mdc-chip__icon--hidden {
-  display: none;
+  width: 0;
+  opacity: 0;
 }
