@@ -1,12 +1,12 @@
 <!--docs:
-title: "Select Label"
+title: "Select Bottom Line"
 layout: detail
 section: components
 iconId: menu
-path: /catalog/input-controls/select-menus/
+path: /catalog/input-controls/select-menus/bottom-line/
 -->
 
-# Select Label
+# Select Bottom Line
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
@@ -15,7 +15,7 @@ path: /catalog/input-controls/select-menus/
   </a>
 </div>-->
 
-Select bottom line animates activation and deactivation state as the select focuses and blurs. Every select should have a bottom line.
+Select bottom line animates activation and deactivation state as the select receives focus and blurs. Every select should have a bottom line.
 
 ## Design & API Documentation
 
@@ -36,7 +36,7 @@ Select bottom line animates activation and deactivation state as the select focu
 ### HTML Structure
 
 ```html
-<div class="mdc-select-bottom-line"></div>
+<div class="mdc-select__bottom-line"></div>
 ```
 
 ### Usage within `mdc-select`
@@ -68,8 +68,8 @@ Select bottom line animates activation and deactivation state as the select focu
 
 CSS Class | Description
 --- | ---
-`mdc-select-bottom-line` | Mandatory
-`mdc-select-bottom-line--active` | Indicates the bottom line is active and the select is in focus.
+`mdc-select__bottom-line` | Mandatory.
+`mdc-select__bottom-line--active` | Indicates the bottom line is active and the select is in focus.
 
 ### `MDCSelectBottomLine`
 
