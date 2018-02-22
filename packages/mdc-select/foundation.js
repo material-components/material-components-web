@@ -38,9 +38,8 @@ export default class MDCSelectFoundation extends MDCFoundation {
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
       floatLabel: (/* value: boolean */) => {},
-      addClassToBottomLine: (/* className: string */) => {},
-      removeClassFromBottomLine: (/* className: string */) => {},
-      setBottomLineAttr: (/* attr: string, value: string */) => {},
+      activateBottomLine: () => {},
+      deactivateBottomLine: () => {},
       addBodyClass: (/* className: string */) => {},
       removeBodyClass: (/* className: string */) => {},
       setAttr: (/* attr: string, value: string */) => {},
@@ -213,7 +212,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
 
     this.setMenuStylesForOpenAtIndex_(focusIndex);
     this.adapter_.floatLabel(true);
-    this.adapter_.addClassToBottomLine(cssClasses.BOTTOM_LINE_ACTIVE);
+    this.adapter_.activateBottomLine();
     this.adapter_.addClass(OPEN);
     this.animationRequestId_ = requestAnimationFrame(() => {
       this.adapter_.openMenu(focusIndex);
@@ -249,7 +248,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
   close_() {
     const {OPEN} = MDCSelectFoundation.cssClasses;
     this.adapter_.removeClass(OPEN);
-    this.adapter_.removeClassFromBottomLine(cssClasses.BOTTOM_LINE_ACTIVE);
+    this.adapter_.deactivateBottomLine();
     this.adapter_.focus();
     this.enableScroll_();
   }
