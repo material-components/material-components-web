@@ -15,6 +15,7 @@
 //
 
 @import "@material/theme/mixins";
+@import "./bottom-line/mixins";
 @import "./label/mixins";
 
 // Public
@@ -75,7 +76,7 @@
 
 @mixin mdc-select-bottom-line-color_($color) {
   .mdc-select__bottom-line {
-    @include mdc-theme-prop(background-color, $color);
+    @include mdc-select-bottom-line-fill-color($color);
   }
 }
 
@@ -87,15 +88,15 @@
 
 @mixin mdc-select-focused-bottom-line-color_($color) {
   @include mdc-select-focused-bottom-line_ {
-    @include mdc-theme-prop(background-color, $color);
+    @include mdc-select-bottom-line-fill-color($color);
   }
 
   &.mdc-select--open .mdc-select__bottom-line {
-    @include mdc-theme-prop(background-color, $color);
+    @include mdc-select-bottom-line-fill-color($color);
   }
 
   .mdc-select__bottom-line::after {
-    @include mdc-theme-prop(background-color, $color);
+    @include mdc-select-bottom-line-fill-color($color);
   }
 }
 
