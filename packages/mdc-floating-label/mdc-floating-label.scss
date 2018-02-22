@@ -30,7 +30,7 @@
   transition: mdc-floating-label-transition(transform), mdc-floating-label-transition(color);
   cursor: text;
 
-  @include mdc-rtl() {
+  @include mdc-rtl {
     right: 0;
     left: auto;
     transform-origin: right top;
