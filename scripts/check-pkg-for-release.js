@@ -101,11 +101,11 @@ function checkCSSDependencyAddedInWebpackConfig() {
   const name = getPkgName();
   if (CSS_WHITELIST.indexOf(name) === -1) {
     const cssconfig = WEBPACK_CONFIG.find((value) => {
-      return value.name === 'css';
+      return value.name === 'main-css-a-la-carte';
     });
     const nameMDC = pkg.name.replace('@material/', 'mdc.');
     assert.notEqual(typeof cssconfig.entry[nameMDC], 'undefined',
-      'FAILURE: Component ' + pkg.name + ' css denpendency not added to webpack ' +
+      'FAILURE: Component ' + pkg.name + ' css dependency not added to webpack ' +
       'configuration. Please add ' + name + ' to ' + WEBPACK_CONFIG_PATH + '\'s css ' +
       'entry before commit.');
   }

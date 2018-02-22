@@ -14,17 +14,37 @@
  * limitations under the License.
  */
 
+/**
+ * Factory for Webpack plugins. Allows us to more easily mock and test our config generator code.
+ */
+
 'use strict';
 
 const CopyrightBannerPlugin = require('./copyright-banner-plugin');
+const CssCleanupPlugin = require('../../scripts/webpack/css-cleanup-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = class {
-  createCopyrightBannerPlugin() {
-    return new CopyrightBannerPlugin();
+  constructor({globber} = {}) {
+    this.globber_ = globber;
   }
 
-  createCssExtractionPlugin(outputFilenamePattern) {
+  createCopyrightBannerPlugin({
+    projectName = 'Material Components for the Web',
+    authorName = 'Google Inc.',
+    licenseName = 'Apache-2.0',
+  } = {}) {
+    return new CopyrightBannerPlugin({projectName, authorName, licenseName});
+  }
+
+  createCssCleanupPlugin({cleanupDirRelativePath} = {}) {
+    return new CssCleanupPlugin({
+      cleanupDirRelativePath,
+      globber: this.globber_,
+    });
+  }
+
+  createCssExtractorPlugin(outputFilenamePattern) {
     return new ExtractTextPlugin(outputFilenamePattern);
   }
 };

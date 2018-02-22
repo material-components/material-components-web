@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview Provides an API to read and write environment variables and npm lifecycle events.
+ */
+
 'use strict';
 
 module.exports = class {
