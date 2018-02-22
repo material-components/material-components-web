@@ -17,7 +17,7 @@
 
 import MDCFoundation from '@material/base/foundation';
 import MDCChipAdapter from './adapter';
-import {strings} from './constants';
+import {strings, cssClasses} from './constants';
 
 
 /**
@@ -30,6 +30,11 @@ class MDCChipFoundation extends MDCFoundation {
     return strings;
   }
 
+  /** @return enum {string} */
+  static get cssClasses() {
+    return cssClasses;
+  }
+
   /**
    * {@see MDCChipAdapter} for typing information on parameters and return
    * types.
@@ -37,6 +42,9 @@ class MDCChipFoundation extends MDCFoundation {
    */
   static get defaultAdapter() {
     return /** @type {!MDCChipAdapter} */ ({
+      addClass: () => {},
+      removeClass: () => {},
+      hasClass: () => {},
       registerInteractionHandler: () => {},
       deregisterInteractionHandler: () => {},
       notifyInteraction: () => {},
@@ -63,6 +71,17 @@ class MDCChipFoundation extends MDCFoundation {
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.deregisterInteractionHandler(evtType, this.interactionHandler_);
     });
+  }
+
+  /**
+   * Toggles the activated class on the chip element.
+   */
+  toggleActive() {
+    if (this.adapter_.hasClass(cssClasses.ACTIVATED)) {
+      this.adapter_.removeClass(cssClasses.ACTIVATED);
+    } else {
+      this.adapter_.addClass(cssClasses.ACTIVATED);
+    }
   }
 
   /**

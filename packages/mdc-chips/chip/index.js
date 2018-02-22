@@ -51,10 +51,20 @@ class MDCChip extends MDCComponent {
   }
 
   /**
+   * Toggles active state of the chip.
+   */
+  toggleActive() {
+    this.foundation_.toggleActive();
+  }
+
+  /**
    * @return {!MDCChipFoundation}
    */
   getDefaultFoundation() {
     return new MDCChipFoundation(/** @type {!MDCChipAdapter} */ (Object.assign({
+      addClass: (className) => this.root_.classList.add(className),
+      removeClass: (className) => this.root_.classList.remove(className),
+      hasClass: (className) => this.root_.classList.contains(className),
       registerInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
       notifyInteraction: () => this.emit(strings.INTERACTION_EVENT, {chip: this}, true /* shouldBubble */),

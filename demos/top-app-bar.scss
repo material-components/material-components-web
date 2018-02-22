@@ -14,13 +14,18 @@
 // limitations under the License.
 //
 
-$mdc-chip-border-radius-default: 16px;
-$mdc-chip-fill-color-default: rgba(black, .08);
-$mdc-chip-ink-color-default: rgba(black, .6);
-$mdc-chip-horizontal-padding: 12px;
-$mdc-chip-vertical-padding: 7px;
+@import "common";
+@import "../packages/mdc-top-app-bar/mdc-top-app-bar";
+@import "../packages/mdc-drawer/mdc-drawer";
+@import "../packages/mdc-list/mdc-list";
 
-$mdc-chip-icon-color: rgba(black, .54);
-$mdc-chip-trailing-icon-size: 18px;
-$mdc-chip-trailing-icon-hover-color: rgba(black, .62);
-$mdc-chip-trailing-icon-focus-color: rgba(black, .87);
+.demo-paragraph {
+  margin: 0;
+  padding: 20px 28px;
+}
+
+@media (max-width: $mdc-top-app-bar-mobile-breakpoint) {
+  .demo-paragraph {
+    padding: 16px;
+  }
+}

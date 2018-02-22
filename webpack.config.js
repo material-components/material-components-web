@@ -95,6 +95,7 @@ if (!env.isDev()) {
       tabs: [path.resolve('./packages/mdc-tabs/index.js')],
       textfield: [path.resolve('./packages/mdc-textfield/index.js')],
       toolbar: [path.resolve('./packages/mdc-toolbar/index.js')],
+      topAppBar: [path.resolve('./packages/mdc-top-app-bar/index.js')],
     },
     output: {
       path: OUT_DIR_ABS,
