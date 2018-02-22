@@ -18,11 +18,14 @@
 /** @enum {string} */
 const strings = {
   INTERACTION_EVENT: 'MDCChip:interaction',
+  FILTER_ICON_SELECTOR: '.mdc-chip__icon--filter',
+  LEADING_ICON_SELECTOR: '.mdc-chip__icon--leading',
 };
 
 /** @enum {string} */
 const cssClasses = {
   ACTIVATED: 'mdc-chip--activated',
+  HIDDEN_ICON: 'mdc-chip__icon--hidden',
 };
 
 export {strings, cssClasses};

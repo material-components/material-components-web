@@ -15,6 +15,8 @@
  * limitations under the License.
  */
 
+import bel from 'bel';
+
 import MDCFoundation from '@material/base/foundation';
 import MDCChipAdapter from './adapter';
 import {strings, cssClasses} from './constants';
@@ -92,6 +94,19 @@ class MDCChipFoundation extends MDCFoundation {
     if (evt.type === 'click' || evt.key === 'Enter' || evt.keyCode === 13) {
       this.adapter_.notifyInteraction();
     }
+  }
+
+  replaceLeadingIconWithFilterIcon() {
+    if (!this.adapter_.hasFilterIcon()) {
+      return;
+    }
+    this.adapter_.removeClassFromFilterIcon(cssClasses.HIDDEN_ICON);
+    this.adapter_.addClassToLeadingIcon(cssClasses.HIDDEN_ICON);
+  }
+
+  replaceFilterIconWithLeadingIcon() {
+    this.adapter_.removeClassFromLeadingIcon(cssClasses.HIDDEN_ICON);
+    this.adapter_.addClassToFilterIcon(cssClasses.HIDDEN_ICON);
   }
 }
 

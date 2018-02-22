@@ -33,6 +33,10 @@ class MDCChip extends MDCComponent {
   constructor(...args) {
     super(...args);
 
+    /** @private {?Element} */
+    this.leadingIcon_;
+    /** @private {?Element} */
+    this.filterIcon_;
     /** @private {!MDCRipple} */
     this.ripple_ = new MDCRipple(this.root_);
   }
@@ -45,9 +49,24 @@ class MDCChip extends MDCComponent {
     return new MDCChip(root);
   }
 
+  initialize() {
+    this.leadingIcon_ = this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
+    this.filterIcon_ = this.root_.querySelector(strings.FILTER_ICON_SELECTOR);
+  }
+
   destroy() {
     this.ripple_.destroy();
     super.destroy();
+  }
+
+  replaceLeadingIconWithFilterIcon() {
+    this.foundation_.replaceLeadingIconWithFilterIcon();
+    this.ripple_.layout();
+  }
+
+  replaceFilterIconWithLeadingIcon() {
+    this.foundation_.replaceFilterIconWithLeadingIcon();
+    this.ripple_.layout();
   }
 
   /**
@@ -68,6 +87,27 @@ class MDCChip extends MDCComponent {
       registerInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
       notifyInteraction: () => this.emit(strings.INTERACTION_EVENT, {chip: this}, true /* shouldBubble */),
+      addClassToLeadingIcon: (className) => {
+        if (this.leadingIcon_) {
+          this.leadingIcon_.classList.add(className);
+        }
+      },
+      removeClassFromLeadingIcon: (className) => {
+        if (this.leadingIcon_) {
+          this.leadingIcon_.classList.remove(className);
+        }
+      },
+      hasFilterIcon: () => this.filterIcon_,
+      addClassToFilterIcon: (className) => {
+        if (this.filterIcon_) {
+          this.filterIcon_.classList.add(className);
+        }
+      },
+      removeClassFromFilterIcon: (className) => {
+        if (this.filterIcon_) {
+          this.filterIcon_.classList.remove(className);
+        }
+      },
     })));
   }
 

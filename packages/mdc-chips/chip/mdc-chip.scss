@@ -37,6 +37,7 @@
   cursor: pointer;
   outline: none;
   overflow: hidden;
+  vertical-align: middle;
 
   &:hover {
     @include mdc-theme-prop(color, black);
@@ -55,7 +56,9 @@
   outline: none;
 }
 
+.mdc-chip__icon--filter,
 .mdc-chip__icon--leading {
+  width: 24px;
   margin: -4px 4px -4px -4px;
 }
 
@@ -78,4 +81,8 @@
   width: $mdc-chip-trailing-icon-size;
   height: $mdc-chip-trailing-icon-size;
   font-size: $mdc-chip-trailing-icon-size;
+}
+
+.mdc-chip__icon.mdc-chip__icon--hidden {
+  display: none;
 }

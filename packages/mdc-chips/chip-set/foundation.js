@@ -96,8 +96,10 @@ class MDCChipSetFoundation extends MDCFoundation {
       const index = this.activeChips_.indexOf(chip);
       if (index >= 0) {
         this.activeChips_.splice(index, 1);
+        chip.replaceFilterIconWithLeadingIcon();
       } else {
         this.activeChips_.push(chip);
+        chip.replaceLeadingIconWithFilterIcon();
       }
       chip.toggleActive();
     }
