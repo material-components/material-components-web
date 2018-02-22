@@ -17,6 +17,7 @@
 @import "@material/rtl/mixins";
 @import "@material/theme/variables";
 @import "@material/theme/mixins";
+@import "./functions";
 @import "./mixins";
 @import "./variables";
 
@@ -26,7 +27,7 @@
   bottom: 8px;
   left: 0;
   transform-origin: left top;
-  transition: mdc-text-field-transition(transform), mdc-text-field-transition(color);
+  transition: mdc-floating-label-transition(transform), mdc-floating-label-transition(color);
   cursor: text;
 
   // stylelint-disable plugin/selector-bem-pattern
