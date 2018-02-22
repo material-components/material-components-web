@@ -20,7 +20,7 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 
 import {MDCTopAppBar} from '../../../packages/mdc-top-app-bar';
-import {strings, cssClasses} from '../../../packages/mdc-top-app-bar/constants';
+import {strings} from '../../../packages/mdc-top-app-bar/constants';
 
 function getFixture(removeIcon) {
   const html = bel`

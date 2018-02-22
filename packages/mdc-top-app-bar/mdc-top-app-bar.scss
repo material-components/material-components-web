@@ -76,9 +76,10 @@
 }
 
 .mdc-top-app-bar--short {
+  @include mdc-rtl-reflexive-position(left, 0);
+
   position: fixed;
   top: 0;
-  left: 0;
   width: 100%;
   transition: width 250ms $mdc-top-app-bar-standard-easing;
   z-index: 4;
@@ -97,7 +98,7 @@
   }
 
   .mdc-top-app-bar__icon {
-    transition: padding-right 150ms $mdc-top-app-bar-standard-easing;
+    transition: padding 150ms $mdc-top-app-bar-standard-easing;
   }
 }
 
@@ -114,11 +115,11 @@
   }
 
   .mdc-top-app-bar__icon {
-    transition: padding-right 150ms $mdc-top-app-bar-standard-easing;
+    transition: padding 150ms $mdc-top-app-bar-standard-easing;
   }
 
   .mdc-top-app-bar__section--align-end {
-    padding-right: 12px;
+    @include mdc-rtl-reflexive-box(padding, right, 12px);
   }
 }
 

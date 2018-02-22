@@ -45,7 +45,7 @@
 }
 
 @mixin mdc-top-app-bar-short-border-radius($border-radius: $mdc-top-app-bar-short-collapsed-border-radius) {
-  border-bottom-right-radius: $border-radius;
+  @include mdc-rtl-reflexive_(border-bottom-left-radius, 0, border-bottom-right-radius, $mdc-top-app-bar-short-collapsed-border-radius);
 }
 
 @mixin mdc-top-app-bar-mobile-breakpoint($mobile-breakpoint: $mdc-top-app-bar-mobile-breakpoint) {
@@ -76,7 +76,7 @@
       transition: width 250ms $mdc-top-app-bar-standard-easing;
 
       .mdc-top-app-bar__section--align-end {
-        padding-right: 12px;
+        @include mdc-rtl-reflexive-box(padding, right, $mdc-top-app-bar-short-collapsed-right-icon-padding);
       }
     }
   }

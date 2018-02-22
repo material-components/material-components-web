@@ -82,7 +82,7 @@ class MDCTopAppBarFoundation extends MDCFoundation {
   }
 
   /**
-   * Class used to set the initial style of the short top app bar
+   * Used to set the initial style of the short top app bar
    */
   styleShortAppBar() {
     if (this.adapter_.totalActionIcons() > 0) {

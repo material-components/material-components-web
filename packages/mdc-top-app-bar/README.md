@@ -120,6 +120,7 @@ Method Signature | Description
 `deregisterScrollHandler(handler) => void` | Unregisters a handler to be called when user scrolls. Our default implementation removes the handler as a listener to the window's `scroll` event.
 `getViewportScrollY() => number` | Gets the number of pixels that the content of body is scrolled upward.
 `totalActionIcons() => number` | Gets the number of action items on the right side of the top app bar.
+
 ### Events
 
 Event Name | Event Data Structure | Description
