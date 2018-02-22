@@ -39,6 +39,25 @@ function setupTest() {
   return {root, component};
 }
 
+test('#adapter.hasClass returns true if class is set on chip set element', () => {
+  const {root, component} = setupTest();
+  root.classList.add('foo');
+  assert.isTrue(component.getDefaultFoundation().adapter_.hasClass('foo'));
+});
+
+test('#adapter.addClass adds a class to the root element', () => {
+  const {root, component} = setupTest();
+  component.getDefaultFoundation().adapter_.addClass('foo');
+  assert.isOk(root.classList.contains('foo'));
+});
+
+test('#adapter.removeClass removes a class from the root element', () => {
+  const {root, component} = setupTest();
+  root.classList.add('foo');
+  component.getDefaultFoundation().adapter_.removeClass('foo');
+  assert.isNotOk(root.classList.contains('foo'));
+});
+
 test('#adapter.registerInteractionHandler adds event listener for a given event to the root element', () => {
   const {root, component} = setupTest();
   const handler = td.func('click handler');
@@ -69,4 +88,17 @@ test('#adapter.notifyInteraction emits ' +
   component.getDefaultFoundation().adapter_.notifyInteraction();
 
   td.verify(handler(td.matchers.anything()));
+});
+
+function setupMockFoundationTest(root = getFixture()) {
+  const MockFoundationConstructor = td.constructor(MDCChipFoundation);
+  const mockFoundation = new MockFoundationConstructor();
+  const component = new MDCChip(root, mockFoundation);
+  return {root, component, mockFoundation};
+}
+
+test('#toggleActive proxies to foundation', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.toggleActive();
+  td.verify(mockFoundation.toggleActive());
 });

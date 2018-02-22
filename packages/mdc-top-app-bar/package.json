@@ -1,7 +1,7 @@
 {
-  "name": "@material/tabs",
-  "version": "0.31.0",
-  "description": "The Material Components for the web tabs component",
+  "name": "@material/top-app-bar",
+  "version": "0.0.0",
+  "description": "The Material Components for the web top app bar component",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
@@ -10,17 +10,18 @@
   "keywords": [
     "material components",
     "material design",
-    "tabs"
+    "top app bar",
+    "top-app-bar",
+    "topappbar"
   ],
-  "publishConfig": {
-    "access": "public"
-  },
   "dependencies": {
     "@material/base": "^0.29.0",
     "@material/ripple": "^0.31.0",
-    "@material/animation": "^0.25.0",
-    "@material/typography": "^0.28.0",
     "@material/rtl": "^0.30.0",
-    "@material/theme": "^0.30.0"
+    "@material/theme": "^0.30.0",
+    "@material/typography": "^0.28.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
