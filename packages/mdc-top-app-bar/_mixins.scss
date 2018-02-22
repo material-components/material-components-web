@@ -15,6 +15,7 @@
 //
 
 @import "@material/theme/variables"; // for mdc-theme-accessible-ink-color
+@import "@material/animation/variables";
 @import "@material/theme/mixins";
 @import "@material/ripple/mixins";
 @import "./variables";
@@ -52,7 +53,7 @@
   @media (max-width: $mobile-breakpoint) {
     .mdc-top-app-bar {
       .mdc-top-app-bar__row {
-        height: $mdc-top-app-bar-mobile-row-height;
+        min-height: $mdc-top-app-bar-mobile-row-height;
       }
 
       .mdc-top-app-bar__section {
@@ -65,15 +66,15 @@
     }
 
     .mdc-top-app-bar--short {
-      transition: width 200ms $mdc-top-app-bar-standard-easing;
+      transition: width 200ms $mdc-animation-standard-curve-timing-function;
 
       .mdc-top-app-bar__row {
-        height: $mdc-top-app-bar-mobile-row-height;
+        min-height: $mdc-top-app-bar-mobile-row-height;
       }
     }
 
     .mdc-top-app-bar--short-collapsed {
-      transition: width 250ms $mdc-top-app-bar-standard-easing;
+      transition: width 250ms $mdc-animation-standard-curve-timing-function;
 
       .mdc-top-app-bar__section--align-end {
         @include mdc-rtl-reflexive-box(padding, right, $mdc-top-app-bar-short-collapsed-right-icon-padding);

@@ -25,19 +25,6 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <style>
-      .demo-body {
-        padding: 0;
-        margin: 0;
-        box-sizing: border-box;
-      }
-      .demo-main {
-        padding-left: 16px;
-        padding-right: 16px;
-        padding-bottom: 16px;
-        overflow: auto;
-      }
-    </style>
   </head>
   <body class="mdc-typography demo-body">
     <header id="demo-top-app-bar" class="mdc-top-app-bar">
@@ -47,7 +34,7 @@
           <span class="mdc-top-app-bar__title">San Francisco, CA</span>
         </section>
         <section id="iconSection" class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
-          <a class="material-icons mdc-top-app-bar__icon" aria-label="Download" alt="Download">file_download</a>
+          <a id="right-item" class="material-icons mdc-top-app-bar__action-item" aria-label="Download" alt="Download">file_download</a>
         </section>
       </div>
     </header>
@@ -177,61 +164,59 @@
         <label for="rtl-checkbox">RTL</label>
       </div>
       <div>
-        <input type="checkbox" id="short"/>
-        <label for="short">Short</label>
+        <input type="checkbox" id="short-checkbox"/>
+        <label for="short-checkbox">Short</label>
       </div>
       <div>
-        <input type="checkbox" id="no-right-icon"/>
-        <label for="no-right-icon">No Right Icon</label>
+        <input type="checkbox" id="no-right-item-checkbox"/>
+        <label for="no-right-item-checkbox">No Right Item</label>
       </div>
     </div>
 
     <script src="/assets/common.js" async></script>
     <script src="/assets/material-components-web.js" async></script>
     <script type="text/javascript">
-    demoReady(function() {
-      var appBarEl = document.getElementById('demo-top-app-bar');
-      var appBar = mdc.topAppBar.MDCTopAppBar.attachTo(appBarEl);
+      demoReady(function() {
+        var appBarEl = document.getElementById('demo-top-app-bar');
+        var rightItemEl = document.getElementById('right-item');
+        var drawerEl = document.querySelector('.mdc-drawer');
 
-      var drawerEl = document.querySelector('.mdc-drawer');
-      var MDCTemporaryDrawer = mdc.drawer.MDCTemporaryDrawer;
-      var drawer = new MDCTemporaryDrawer(drawerEl);
+        var drawer = new mdc.drawer.MDCTemporaryDrawer(drawerEl);
+        var appBar = mdc.topAppBar.MDCTopAppBar.attachTo(appBarEl);
 
-      appBarEl.addEventListener('MDCTopAppBar:nav', function() {
-        drawer.open = true;
+        var shortCheckbox = document.getElementById('short-checkbox');
+        var noRightItemCheckbox = document.getElementById('no-right-item-checkbox');
+        var rtlCheckbox = document.getElementById('rtl-checkbox');
+
+        appBarEl.addEventListener('MDCTopAppBar:nav', function() {
+          drawer.open = true;
+        });
+
+        shortCheckbox.addEventListener('change', function() {
+          this.checked ? appBarEl.classList.add('mdc-top-app-bar--short') : appBarEl.classList.remove('mdc-top-app-bar--short');
+
+          appBar.destroy();
+          appBar = mdc.topAppBar.MDCTopAppBar.attachTo(appBarEl);
+
+          if(!this.checked){
+            appBarEl.classList.remove('mdc-top-app-bar--short-collapsed');
+          }
+        });
+
+        noRightItemCheckbox.addEventListener('change', function()  {
+          if(this.checked) {
+            rightItemEl.style.display = 'none';
+            appBarEl.classList.remove('mdc-top-app-bar--short__right-action-item');
+          } else {
+            rightItemEl.style.display = 'inline';
+            appBarEl.classList.add('mdc-top-app-bar--short__right-action-item');
+          }
+        });
+
+        rtlCheckbox.addEventListener('change', function()  {
+          this.checked ? document.body.setAttribute("dir", "rtl") : document.body.removeAttribute("dir");
+        })
       });
-
-      var iconSection = document.getElementById('iconSection');
-      var shortCheckbox = document.getElementById('short');
-      var oneRightIcon = document.getElementById('no-right-icon');
-      var rtlCheckBox = document.getElementById('rtl-checkbox');
-
-      shortCheckbox.addEventListener('change', function() {
-        this.checked ? appBarEl.classList.add('mdc-top-app-bar--short') : appBarEl.classList.remove('mdc-top-app-bar--short');
-        this.checked ? appBarEl.classList.add('mdc-top-app-bar--short__right-icon') : appBarEl.classList.remove('mdc-top-app-bar--short__right-icon');
-
-        appBar.destroy();
-        appBar = mdc.topAppBar.MDCTopAppBar.attachTo(appBarEl);
-
-        if(!this.checked){
-          appBarEl.classList.remove('mdc-top-app-bar--short-collapsed');
-        }
-      });
-
-      oneRightIcon.addEventListener('change', function()  {
-        if(this.checked) {
-          iconSection.innerHTML = '';
-          appBarEl.classList.remove('mdc-top-app-bar--short__right-icon');
-        } else {
-          iconSection.innerHTML = '<a href="#" class="material-icons mdc-top-app-bar__icon" aria-label="Bookmark this page" alt="Bookmark this page">bookmark</a>';
-          appBarEl.classList.add('mdc-top-app-bar--short__right-icon');
-        }
-      });
-
-      rtlCheckBox.addEventListener('change', function()  {
-        this.checked ? document.body.setAttribute("dir", "rtl") : document.body.removeAttribute("dir");
-      })
-    });
   </script>
   </body>
 </html>

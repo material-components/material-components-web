@@ -39,7 +39,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTopAppBarFoundation, [
     'hasClass', 'addClass', 'removeClass', 'registerNavigationIconInteractionHandler',
     'deregisterNavigationIconInteractionHandler', 'notifyNavigationIconClicked', 'registerScrollHandler',
-    'deregisterScrollHandler', 'getViewportScrollY', 'totalActionIcons',
+    'deregisterScrollHandler', 'getViewportScrollY', 'totalActionItems',
   ]);
 });
 
@@ -130,15 +130,15 @@ test('short top app bar: class is removed once when page is scrolled to the top'
 test('short top app bar: class is added if it has a right icon', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_CLASS)).thenReturn(true);
-  td.when(mockAdapter.totalActionIcons()).thenReturn(1);
+  td.when(mockAdapter.totalActionItems()).thenReturn(1);
   foundation.init();
-  td.verify(mockAdapter.addClass(MDCTopAppBarFoundation.cssClasses.RIGHT_ICON_CLASS), {times: 1});
+  td.verify(mockAdapter.addClass(MDCTopAppBarFoundation.cssClasses.RIGHT_ACTION_ITEM_CLASS), {times: 1});
 });
 
 test('short top app bar: class is not added if it has a right icon', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_CLASS)).thenReturn(true);
-  td.when(mockAdapter.totalActionIcons()).thenReturn(0);
+  td.when(mockAdapter.totalActionItems()).thenReturn(0);
   foundation.init();
-  td.verify(mockAdapter.addClass(MDCTopAppBarFoundation.cssClasses.RIGHT_ICON_CLASS), {times: 0});
+  td.verify(mockAdapter.addClass(MDCTopAppBarFoundation.cssClasses.RIGHT_ACTION_ITEM_CLASS), {times: 0});
 });

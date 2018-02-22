@@ -17,16 +17,16 @@
 /** @enum {string} */
 const strings = {
   NAVIGATION_EVENT: 'MDCTopAppBar:nav',
-  TOPAPPBAR_SELECTOR: '.mdc-top-app-bar',
+  ROOT_SELECTOR: '.mdc-top-app-bar',
   TITLE_SELECTOR: '.mdc-top-app-bar__title',
   NAVIGATION_ICON_SELECTOR: '.mdc-top-app-bar__navigation-icon',
-  ACTION_ICON_SELECTOR: '.mdc-top-app-bar__icon',
+  ACTION_ITEM_SELECTOR: '.mdc-top-app-bar__action-item',
 };
 
 /** @enum {string} */
 const cssClasses = {
   SHORT_CLASS: 'mdc-top-app-bar--short',
-  RIGHT_ICON_CLASS: 'mdc-top-app-bar--short__right-icon',
+  RIGHT_ACTION_ITEM_CLASS: 'mdc-top-app-bar--short__right-action-item',
   SHORT_CLOSED_CLASS: 'mdc-top-app-bar--short-collapsed',
 };
 

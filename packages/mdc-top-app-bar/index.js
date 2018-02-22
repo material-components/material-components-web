@@ -43,7 +43,7 @@ class MDCTopAppBar extends MDCComponent {
     this.navIcon_ = this.root_.querySelector(strings.NAVIGATION_ICON_SELECTOR);
 
     // Get all icons in the toolbar and instantiate the ripples
-    const icons = [].slice.call(this.root_.querySelectorAll(strings.ACTION_ICON_SELECTOR));
+    const icons = [].slice.call(this.root_.querySelectorAll(strings.ACTION_ITEM_SELECTOR));
     icons.push(this.navIcon_);
 
     this.iconRipples_ = icons.map((icon) => {
@@ -91,7 +91,8 @@ class MDCTopAppBar extends MDCComponent {
         registerScrollHandler: (handler) => window.addEventListener('scroll', handler, util.applyPassive()),
         deregisterScrollHandler: (handler) => window.removeEventListener('scroll', handler),
         getViewportScrollY: () => window.pageYOffset,
-        totalActionIcons: () => this.root_.querySelectorAll(strings.ACTION_ICON_SELECTOR).length,
+        totalActionItems: () =>
+          this.root_.querySelectorAll(strings.ACTION_ITEM_SELECTOR + ':not([style*="display: none"])').length,
       })
       )
     );

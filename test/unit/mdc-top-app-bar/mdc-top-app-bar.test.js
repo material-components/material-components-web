@@ -71,7 +71,7 @@ class FakeRipple {
 
 function setupTest(removeIcon = false) {
   const fixture = getFixture(removeIcon);
-  const root = fixture.querySelector(strings.TOPAPPBAR_SELECTOR);
+  const root = fixture.querySelector(strings.ROOT_SELECTOR);
   const icon = root.querySelector(strings.NAVIGATION_ICON_SELECTOR);
   const component = new MDCTopAppBar(root, undefined, (el) => new FakeRipple(el));
 
@@ -86,7 +86,7 @@ test('attachTo initializes and returns an MDCTopAppBar instance', () => {
 
 test('constructor instantiates icon ripples', () => {
   const {root, component} = setupTest();
-  const selector = strings.ACTION_ICON_SELECTOR + ',' + strings.NAVIGATION_ICON_SELECTOR;
+  const selector = strings.ACTION_ITEM_SELECTOR + ',' + strings.NAVIGATION_ICON_SELECTOR;
   const totalIcons = root.querySelectorAll(selector).length;
 
   assert.isTrue(component.iconRipples_.length === totalIcons);
@@ -195,9 +195,9 @@ test('adapter#getViewportScrollY returns scroll distance', () => {
   assert.equal(component.getDefaultFoundation().adapter_.getViewportScrollY(), window.pageYOffset);
 });
 
-test('adapter#totalActionIcons returns the amount of action icons on the opposite side of the menu', () => {
+test('adapter#totalActionItems returns the amount of action icons on the opposite side of the menu', () => {
   const {root, component} = setupTest();
-  const adapterReturn = component.getDefaultFoundation().adapter_.totalActionIcons();
-  const actual = root.querySelectorAll(strings.ACTION_ICON_SELECTOR).length;
+  const adapterReturn = component.getDefaultFoundation().adapter_.totalActionItems();
+  const actual = root.querySelectorAll(strings.ACTION_ITEM_SELECTOR).length;
   assert.isTrue(adapterReturn === actual);
 });

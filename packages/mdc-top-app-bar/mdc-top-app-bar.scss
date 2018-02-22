@@ -15,6 +15,7 @@
 //
 
 @import "@material/elevation/mixins";
+@import "@material/animation/variables";
 @import "@material/rtl/mixins";
 @import "@material/typography/mixins";
 @import "./mixins";
@@ -37,7 +38,8 @@
     position: relative;
     box-sizing: border-box;
     width: 100%;
-    height: $mdc-top-app-bar-row-height;
+    height: auto;
+    min-height: $mdc-top-app-bar-row-height;
   }
 
   &__section {
@@ -69,7 +71,7 @@
     z-index: 1;
   }
 
-  &__icon,
+  &__action-item,
   &__navigation-icon {
     @include mdc-top-app-bar-icon_;
   }
@@ -81,11 +83,11 @@
   position: fixed;
   top: 0;
   width: 100%;
-  transition: width 250ms $mdc-top-app-bar-standard-easing;
+  transition: width 250ms $mdc-animation-standard-curve-timing-function;
   z-index: 4;
 
   .mdc-top-app-bar__row {
-    height: $mdc-top-app-bar-mobile-row-height;
+    min-height: $mdc-top-app-bar-mobile-row-height;
   }
 
   .mdc-top-app-bar__section {
@@ -93,12 +95,12 @@
   }
 
   .mdc-top-app-bar__title {
-    transition: opacity 200ms $mdc-top-app-bar-standard-easing;
+    transition: opacity 200ms $mdc-animation-standard-curve-timing-function;
     opacity: 1;
   }
 
-  .mdc-top-app-bar__icon {
-    transition: padding 150ms $mdc-top-app-bar-standard-easing;
+  .mdc-top-app-bar__action-item {
+    transition: padding 150ms $mdc-animation-standard-curve-timing-function;
   }
 }
 
@@ -107,15 +109,15 @@
   @include mdc-elevation(4);
 
   width: $mdc-top-app-bar-short-collapsed-width;
-  transition: width 300ms $mdc-top-app-bar-standard-easing;
+  transition: width 300ms $mdc-animation-standard-curve-timing-function;
 
   .mdc-top-app-bar__title {
     transition: opacity 100ms linear;
     opacity: 0;
   }
 
-  .mdc-top-app-bar__icon {
-    transition: padding 150ms $mdc-top-app-bar-standard-easing;
+  .mdc-top-app-bar__action-item {
+    transition: padding 150ms $mdc-animation-standard-curve-timing-function;
   }
 
   .mdc-top-app-bar__section--align-end {
@@ -124,7 +126,7 @@
 }
 
 // stylelint-disable-next-line plugin/selector-bem-pattern
-.mdc-top-app-bar--short-collapsed.mdc-top-app-bar--short__right-icon {
+.mdc-top-app-bar--short-collapsed.mdc-top-app-bar--short__right-action-item {
   width: $mdc-top-app-bar-short-collapsed-width * 2;
 }
 

@@ -49,7 +49,7 @@ class MDCTopAppBarFoundation extends MDCFoundation {
       registerScrollHandler: (/* handler: EventListener */) => {},
       deregisterScrollHandler: (/* handler: EventListener */) => {},
       getViewportScrollY: () => /* number */ 0,
-      totalActionIcons: () => /* number */ 0,
+      totalActionItems: () => /* number */ 0,
     });
   }
 
@@ -85,10 +85,10 @@ class MDCTopAppBarFoundation extends MDCFoundation {
    * Used to set the initial style of the short top app bar
    */
   styleShortAppBar() {
-    if (this.adapter_.totalActionIcons() > 0) {
-      this.adapter_.addClass(cssClasses.RIGHT_ICON_CLASS);
+    if (this.adapter_.totalActionItems() > 0) {
+      this.adapter_.addClass(cssClasses.RIGHT_ACTION_ITEM_CLASS);
     } else {
-      this.adapter_.removeClass(cssClasses.RIGHT_ICON_CLASS);
+      this.adapter_.removeClass(cssClasses.RIGHT_ACTION_ITEM_CLASS);
     }
   }
 

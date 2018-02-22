@@ -62,8 +62,6 @@ Short top app bars should only be used with one right icon:
       <span class="mdc-top-app-bar__title">Title</span>
     </section>
     <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="top-app-bar">
-      <a href="#" class="material-icons mdc-top-app-bar__icon" aria-label="Download" alt="Download">file_download</a>
-      <a href="#" class="material-icons mdc-top-app-bar__icon" aria-label="Print this page" alt="Print this page">print</a>
       <a href="#" class="material-icons mdc-top-app-bar__icon" aria-label="Bookmark this page" alt="Bookmark this page">bookmark</a>
     </section>
   </div>
@@ -118,7 +116,7 @@ Method Signature | Description
 `notifyNavigationIconClicked() => void` | Emits a custom event `MDCTopAppBar:nav` when the navigation icon is clicked. 
 `registerScrollHandler(handler) => void` | Registers a handler to be called when user scrolls. Our default implementation adds the handler as a listener to the window's `scroll` event.
 `deregisterScrollHandler(handler) => void` | Unregisters a handler to be called when user scrolls. Our default implementation removes the handler as a listener to the window's `scroll` event.
-`getViewportScrollY() => number` | Gets the number of pixels that the content of body is scrolled upward.
+`getViewportScrollY() => number` | Gets the number of pixels that the content of body is scrolled from the top of the page.
 `totalActionIcons() => number` | Gets the number of action items on the right side of the top app bar.
 
 ### Events
