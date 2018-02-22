@@ -108,7 +108,7 @@ test('short top app bar: class is added once when page is scrolled down', () => 
   td.verify(mockAdapter.addClass(MDCTopAppBarFoundation.cssClasses.SHORT_CLOSED_CLASS), {times: 1});
 });
 
-test('short top app bar class: is removed once when page is scrolled to the top', () => {
+test('short top app bar: class is removed once when page is scrolled to the top', () => {
   const {foundation, mockAdapter} = setupTest();
   const mockRaf = createMockRaf();
 

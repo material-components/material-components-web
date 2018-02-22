@@ -124,7 +124,7 @@ test('adapter#removeClass removes a class from the root element', () => {
   assert.isFalse(root.classList.contains('foo'));
 });
 
-test('registerNavigationIconInteractionHandler does not add a handler to the nav icon ', () => {
+test('registerNavigationIconInteractionHandler does not add a handler to the nav icon if the nav icon is null', () => {
   const {component} = setupTest(true);
   const handler = td.func('eventHandler');
 
@@ -139,6 +139,14 @@ test('#adapter.registerNavigationIconInteractionHandler adds a handler to the na
   component.getDefaultFoundation().adapter_.registerNavigationIconInteractionHandler('click', handler);
   domEvents.emit(icon, 'click');
   td.verify(handler(td.matchers.anything()));
+});
+
+test('#adapter.deregisterScrollHandler does not remove a handler to the nav icon if the nav icon is null ', () => {
+  const {component} = setupTest(true);
+  const handler = td.func('eventHandler');
+
+  assert.doesNotThrow(
+    () => component.getDefaultFoundation().adapter_.deregisterNavigationIconInteractionHandler('click', handler));
 });
 
 test('#adapter.deregisterNavigationIconInteractionHandler removes a handler from the nav icon ' +
