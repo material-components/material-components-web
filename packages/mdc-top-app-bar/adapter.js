@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2017 Google Inc. All Rights Reserved.
+ * Copyright 2018 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,54 +18,54 @@
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
- * Adapter for MDC Chip.
+ * Adapter for MDC Top App Bar
  *
  * Defines the shape of the adapter expected by the foundation. Implement this
- * adapter to integrate the Chip into your framework. See
+ * adapter to integrate the Top App Bar into your framework. See
  * https://github.com/material-components/material-components-web/blob/master/docs/authoring-components.md
  * for more information.
  *
  * @record
  */
-class MDCChipAdapter {
+class MDCTopAppBarAdapter {
   /**
-   * Adds a class to the root element.
+   * Adds a class to the root Element.
    * @param {string} className
    */
   addClass(className) {}
 
   /**
-   * Removes a class from the root element.
+   * Removes a class from the root Element.
    * @param {string} className
    */
   removeClass(className) {}
 
   /**
-   * Returns true if the root element contains the given class.
+   * Returns true if the root Element contains the given class.
    * @param {string} className
    * @return {boolean}
    */
   hasClass(className) {}
 
-  /**
-   * Registers an event listener on the root element for a given event.
-   * @param {string} evtType
-   * @param {function(!Event): undefined} handler
-   */
-  registerInteractionHandler(evtType, handler) {}
 
   /**
-   * Deregisters an event listener on the root element for a given event.
-   * @param {string} evtType
+   * Registers an event handler on the navigation icon element for a given event.
+   * @param {string} type
    * @param {function(!Event): undefined} handler
    */
-  deregisterInteractionHandler(evtType, handler) {}
+  registerNavigationIconInteractionHandler(type, handler) {}
 
   /**
-   * Emits a custom "MDCChip:interaction" event denoting the chip has been
-   * interacted with (typically on click or keydown).
+   * Deregisters an event handler on the navigation icon element for a given event.
+   * @param {string} type
+   * @param {function(!Event): undefined} handler
    */
-  notifyInteraction() {}
+  deregisterNavigationIconInteractionHandler(type, handler) {}
+
+  /**
+   * Emits an event when the navigation icon is clicked.
+   */
+  notifyNavigationIconClicked() {}
 }
 
-export default MDCChipAdapter;
+export default MDCTopAppBarAdapter;

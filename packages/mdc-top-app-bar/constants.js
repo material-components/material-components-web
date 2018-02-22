@@ -1,6 +1,5 @@
 /**
- * @license
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2017 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,12 +16,10 @@
 
 /** @enum {string} */
 const strings = {
-  CHIP_SELECTOR: '.mdc-chip',
+  NAVIGATION_EVENT: 'MDCTopAppBar:nav',
+  TITLE_SELECTOR: '.mdc-top-app-bar__title',
+  MENU_ICON_SELECTOR: '.mdc-top-app-bar__menu-icon',
+  ACTION_ICON_SELECTOR: '.mdc-top-app-bar__icon',
 };
 
-/** @enum {string} */
-const cssClasses = {
-  CHOICE: 'mdc-chip-set--choice',
-};
-
-export {strings, cssClasses};
+export {strings};
