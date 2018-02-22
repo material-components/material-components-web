@@ -55,6 +55,14 @@ class MDCFloatingLabelFoundation extends MDCFoundation {
     this.shakeAnimationEndHandler_ = () => this.handleShakeAnimationEnd_();
   }
 
+  init() {
+    this.adapter_.registerInteractionHandler('animationend', this.shakeAnimationEndHandler_);
+  }
+
+  destroy() {
+    this.adapter_.deregisterInteractionHandler('animationend', this.shakeAnimationEndHandler_);
+  }
+
   /**
    * Returns the width of the label element.
    * @return {number}
@@ -72,7 +80,6 @@ class MDCFloatingLabelFoundation extends MDCFoundation {
     const {LABEL_SHAKE} = MDCFloatingLabelFoundation.cssClasses;
     if (shouldShake) {
       this.adapter_.addClass(LABEL_SHAKE);
-      this.adapter_.registerInteractionHandler('animationend', this.shakeAnimationEndHandler_);
     } else {
       this.adapter_.removeClass(LABEL_SHAKE);
     }
@@ -99,7 +106,6 @@ class MDCFloatingLabelFoundation extends MDCFoundation {
   handleShakeAnimationEnd_() {
     const {LABEL_SHAKE} = MDCFloatingLabelFoundation.cssClasses;
     this.adapter_.removeClass(LABEL_SHAKE);
-    this.adapter_.deregisterInteractionHandler('animationend', this.shakeAnimationEndHandler_);
   }
 }
 

@@ -23,10 +23,12 @@ import MDCFloatingLabelFoundation from '../../../packages/mdc-floating-label/fou
 
 const {cssClasses} = MDCFloatingLabelFoundation;
 
+const setupTest = () => setupFoundationTest(MDCFloatingLabelFoundation);
+
 suite('MDCFloatingLabelFoundation');
 
 test('exports cssClasses', () => {
-  assert.isOk('cssClasses' in MDCFloatingLabelFoundation);
+  assert.deepEqual(MDCFloatingLabelFoundation.cssClasses, cssClasses);
 });
 
 test('defaultAdapter returns a complete adapter implementation', () => {
@@ -36,7 +38,17 @@ test('defaultAdapter returns a complete adapter implementation', () => {
   ]);
 });
 
-const setupTest = () => setupFoundationTest(MDCFloatingLabelFoundation);
+test('#init should register animationend event listener', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.init();
+  td.verify(mockAdapter.registerInteractionHandler('animationend', td.matchers.isA(Function)));
+});
+
+test('#destroy should deregister animationend event listener', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.destroy();
+  td.verify(mockAdapter.deregisterInteractionHandler('animationend', td.matchers.isA(Function)));
+});
 
 test('#getWidth returns the width of the label element scaled by 75%', () => {
   const {foundation, mockAdapter} = setupTest();
@@ -63,12 +75,6 @@ test('#shake called with shouldShake is true, should add shake class', () => {
   td.verify(mockAdapter.addClass(cssClasses.LABEL_SHAKE));
 });
 
-test('#shake called with shouldShake is true, should register animationend event listener', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.shake(true);
-  td.verify(mockAdapter.registerInteractionHandler('animationend', td.matchers.isA(Function)));
-});
-
 test('#shake called with shouldShake is false, should remove shake class', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.shake(false);
@@ -81,8 +87,8 @@ test('#float called with shouldFloat is false, should remove shake class', () =>
   td.verify(mockAdapter.removeClass(cssClasses.LABEL_SHAKE));
 });
 
-test('#handleShakeAnimationEnd_ should deregisterInteractionHandler', () => {
+test('#handleShakeAnimationEnd_ should remove LABEL_SHAKE class', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.handleShakeAnimationEnd_();
-  td.verify(mockAdapter.deregisterInteractionHandler('animationend', td.matchers.isA(Function)));
+  td.verify(mockAdapter.removeClass(cssClasses.LABEL_SHAKE));
 });
