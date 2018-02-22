@@ -17,7 +17,6 @@
 import bel from 'bel';
 import {assert} from 'chai';
 import td from 'testdouble';
-import domEvents from 'dom-events';
 
 import {MDCSelectBottomLine, MDCSelectBottomLineFoundation} from '../../../packages/mdc-select/bottom-line';
 
