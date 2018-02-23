@@ -229,9 +229,7 @@ class MDCTextField extends MDCComponent {
    * all dimensions and positions for the ripple element.
    */
   layout() {
-    if (this.outline_) {
-      // this.outline_.updateOutline();
-    }
+    this.foundation_.updateOutline();
     if (this.ripple) {
       this.ripple.layout();
     }
