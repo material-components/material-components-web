@@ -15,6 +15,7 @@
  */
 
 import {MDCComponent} from '@material/base/index';
+import {MDCRipple} from '@material/ripple/index';
 
 import MDCToolbarFoundation from './foundation';
 import * as util from './util';
@@ -43,6 +44,22 @@ export class MDCToolbar extends MDCComponent {
   get fixedAdjustElement() {
     return this.fixedAdjustElement_;
   }
+
+  initialize() {
+    this.ripples_ = [].map.call(this.root_.querySelectorAll(MDCToolbarFoundation.strings.ICON_SELECTOR), (icon) => {
+      const ripple = MDCRipple.attachTo(icon);
+      ripple.unbounded = true;
+      return ripple;
+    });
+  }
+
+  destroy() {
+    this.ripples_.forEach((ripple) => {
+      ripple.destroy();
+    });
+    super.destroy();
+  }
+
 
   getDefaultFoundation() {
     return new MDCToolbarFoundation({

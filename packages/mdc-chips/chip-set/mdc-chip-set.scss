@@ -1,5 +1,5 @@
 //
-// Copyright 2016 Google Inc. All Rights Reserved.
+// Copyright 2017 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,28 +14,12 @@
 // limitations under the License.
 //
 
-$mdc-ripple-fade-in-duration: 75ms;
-$mdc-ripple-fade-out-duration: 150ms;
-$mdc-ripple-translate-duration: 225ms;
-$mdc-states-wash-duration: 15ms;
+@import "../mixins";
 
-$mdc-ripple-dark-ink-opacities: (
-  hover: .04,
-  focus: .12,
-  press: .16,
-  selected: .08,
-  activated: .12
-) !default;
+.mdc-chip-set {
+  @include mdc-chip-set-spacing(8px);
 
-$mdc-ripple-light-ink-opacities: (
-  hover: .08,
-  focus: .24,
-  press: .32,
-  selected: .16,
-  activated: .24
-) !default;
-
-// Legacy
-
-$mdc-ripple-pressed-dark-ink-opacity: .16;
-$mdc-ripple-pressed-light-ink-opacity: .32;
+  display: flex;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+}

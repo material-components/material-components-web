@@ -16,51 +16,51 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-import MDCSelectLabelAdapter from './adapter';
+import MDCSelectBottomLineAdapter from './adapter';
 import {cssClasses} from './constants';
 
 /**
- * @extends {MDCFoundation<!MDCSelectLabelAdapter>}
+ * @extends {MDCFoundation<!MDCSelectBottomLineAdapter>}
  * @final
  */
-class MDCSelectLabelFoundation extends MDCFoundation {
+class MDCSelectBottomLineFoundation extends MDCFoundation {
   /** @return enum {string} */
   static get cssClasses() {
     return cssClasses;
   }
 
   /**
-   * {@see MDCSelectLabelAdapter} for typing information on parameters and return
+   * {@see MDCSelectBottomLineAdapter} for typing information on parameters and return
    * types.
-   * @return {!MDCSelectLabelAdapter}
+   * @return {!MDCSelectBottomLineAdapter}
    */
   static get defaultAdapter() {
-    return /** @type {!MDCSelectLabelAdapter} */ ({
+    return /** @type {!MDCSelectBottomLineAdapter} */ ({
       addClass: () => {},
       removeClass: () => {},
-      getWidth: () => {},
     });
   }
 
   /**
-   * @param {!MDCSelectLabelAdapter} adapter
+   * Adds the active class to bottom line
    */
-  constructor(adapter) {
-    super(Object.assign(MDCSelectLabelFoundation.defaultAdapter, adapter));
+  activate() {
+    this.adapter_.addClass(cssClasses.BOTTOM_LINE_ACTIVE);
   }
 
   /**
-   * Styles the label to float or defloat as necessary.
-   * @param {string} value The value of the input.
+   * Removes the active class from the bottom line
    */
-  styleFloat(value) {
-    const {LABEL_FLOAT_ABOVE} = MDCSelectLabelFoundation.cssClasses;
-    if (!!value) {
-      this.adapter_.addClass(LABEL_FLOAT_ABOVE);
-    } else {
-      this.adapter_.removeClass(LABEL_FLOAT_ABOVE);
-    }
+  deactivate() {
+    this.adapter_.removeClass(cssClasses.BOTTOM_LINE_ACTIVE);
+  }
+
+  /**
+   * @param {!MDCSelectBottomLineAdapter} adapter
+   */
+  constructor(adapter) {
+    super(Object.assign(MDCSelectBottomLineFoundation.defaultAdapter, adapter));
   }
 }
 
-export default MDCSelectLabelFoundation;
+export default MDCSelectBottomLineFoundation;

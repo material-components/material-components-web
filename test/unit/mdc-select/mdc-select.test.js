@@ -44,6 +44,13 @@ class FakeLabel {
   }
 }
 
+class FakeBottomLine {
+  constructor() {
+    this.activate = td.func('bottomLine.activate');
+    this.deactivate = td.func('bottomLine.deactivate');
+  }
+}
+
 function getFixture() {
   return bel`
     <div class="mdc-select" role="listbox">
@@ -70,16 +77,17 @@ test('attachTo returns a component instance', () => {
 });
 
 function setupTest() {
-  const menu = new FakeMenu();
+  const bottomLine = new FakeBottomLine();
   const label = new FakeLabel();
+  const menu = new FakeMenu();
   const fixture = getFixture();
   const surface = fixture.querySelector('.mdc-select__surface');
   const labelEl = fixture.querySelector('.mdc-select__label');
-  const bottomLine = fixture.querySelector('.mdc-select__bottom-line');
+  const bottomLineEl = fixture.querySelector('.mdc-select__bottom-line');
   const menuEl = fixture.querySelector('.mdc-select__menu');
-  const component = new MDCSelect(fixture, /* foundation */ undefined, () => menu, () => label);
+  const component = new MDCSelect(fixture, /* foundation */ undefined, () => menu, () => label, () => bottomLine);
 
-  return {menu, menuEl, fixture, surface, label, labelEl, bottomLine, component};
+  return {menu, menuEl, fixture, surface, label, labelEl, bottomLine, bottomLineEl, component};
 }
 
 test('options returns the menu items', () => {
@@ -187,26 +195,18 @@ test('adapter#floatLabel adds a class to the label', () => {
   td.verify(label.float('foo'));
 });
 
-test('adapter#addClassToBottomLine adds a class to the bottom line', () => {
+test('adapter#activateBottomLine adds active class to the bottom line', () => {
   const {component, bottomLine} = setupTest();
 
-  component.getDefaultFoundation().adapter_.addClassToBottomLine('foo');
-  assert.isTrue(bottomLine.classList.contains('foo'));
+  component.getDefaultFoundation().adapter_.activateBottomLine();
+  td.verify(bottomLine.activate());
 });
 
-test('adapter#removeClassFromBottomLine removes a class from the bottom line', () => {
+test('adapter#deactivateBottomLine removes active class from the bottom line', () => {
   const {component, bottomLine} = setupTest();
 
-  bottomLine.classList.add('foo');
-  component.getDefaultFoundation().adapter_.removeClassFromBottomLine('foo');
-  assert.isFalse(bottomLine.classList.contains('foo'));
-});
-
-test('adapter#setBottomLineAttr adds attribute to bottom line', () => {
-  const {component, bottomLine} = setupTest();
-
-  component.getDefaultFoundation().adapter_.setBottomLineAttr('aria-disabled', 'true');
-  assert.equal(bottomLine.getAttribute('aria-disabled'), 'true');
+  component.getDefaultFoundation().adapter_.deactivateBottomLine();
+  td.verify(bottomLine.deactivate());
 });
 
 test('adapter#setAttr sets an attribute with a given value on the root element', () => {
