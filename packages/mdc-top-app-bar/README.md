@@ -34,7 +34,7 @@ npm install --save @material/top-app-bar
 </header>
 ```
 
-Top app bars can accommodate multiple icons on the right:
+Top app bars can accommodate multiple action items on the opposite side of the navigation icon:
 
 ```html
 <header class="mdc-top-app-bar">
@@ -44,15 +44,15 @@ Top app bars can accommodate multiple icons on the right:
       <span class="mdc-top-app-bar__title">Title</span>
     </section>
     <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
-      <a href="#" class="material-icons mdc-top-app-bar__icon" aria-label="Download" alt="Download">file_download</a>
-      <a href="#" class="material-icons mdc-top-app-bar__icon" aria-label="Print this page" alt="Print this page">print</a>
-      <a href="#" class="material-icons mdc-top-app-bar__icon" aria-label="Bookmark this page" alt="Bookmark this page">bookmark</a>
+      <a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="Download" alt="Download">file_download</a>
+      <a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="Print this page" alt="Print this page">print</a>
+      <a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="Bookmark this page" alt="Bookmark this page">bookmark</a>
     </section>
   </div>
 </header>
 ```
 
-Short top app bars should only be used with one right icon:
+Short top app bars should only be used with one action item:
 
 ```html
 <header class="mdc-top-app-bar mdc-top-app-bar--short">
@@ -62,7 +62,7 @@ Short top app bars should only be used with one right icon:
       <span class="mdc-top-app-bar__title">Title</span>
     </section>
     <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
-      <a href="#" class="material-icons mdc-top-app-bar__icon" aria-label="Bookmark this page" alt="Bookmark this page">bookmark</a>
+      <a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="Bookmark this page" alt="Bookmark this page">bookmark</a>
     </section>
   </div>
 </header>
@@ -97,7 +97,7 @@ Mixin | Description
 `mdc-top-app-bar-icon-ink-color($color)` | Sets the ink color of the top app bar icons.
 `mdc-top-app-bar-fill-color($color)` | Sets the fill color of the top app bar.
 `mdc-top-app-bar-fill-color-accessible($color)` | Sets the fill color of the top app bar and automatically sets a high-contrast ink color.
-`mdc-top-app-bar-short-border-radius($border-radius)` | Sets the `border-bottom-right-radius` property. Used only for the short top app bar.
+`mdc-top-app-bar-short-border-radius($border-radius)` | Sets the `border-bottom-radius` property on the action item side. Used only for the short top app bar when collapsed.
 `mdc-top-app-bar-mobile-breakpoint($mobile-breakpoint)` | Sets the css breakpoint for the mobile styles (default is 599px).
 
 ### `MDCTopAppBar`
@@ -117,7 +117,7 @@ Method Signature | Description
 `registerScrollHandler(handler) => void` | Registers a handler to be called when user scrolls. Our default implementation adds the handler as a listener to the window's `scroll` event.
 `deregisterScrollHandler(handler) => void` | Unregisters a handler to be called when user scrolls. Our default implementation removes the handler as a listener to the window's `scroll` event.
 `getViewportScrollY() => number` | Gets the number of pixels that the content of body is scrolled from the top of the page.
-`getTotalActionItems() => number` | Gets the number of action items on the right side of the top app bar.
+`getTotalActionItems() => number` | Gets the number of action items on the top app bar.
 
 ### Events
 

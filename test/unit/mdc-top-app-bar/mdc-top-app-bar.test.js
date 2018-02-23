@@ -33,11 +33,12 @@ function getFixture(removeIcon) {
         </section>
         <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" 
         role="top-app-bar">
-          <a href="#" class="material-icons mdc-top-app-bar__icon" aria-label="Download" alt="Download">
+          <a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="Download" alt="Download">
           file_download</a>
-          <a href="#" class="material-icons mdc-top-app-bar__icon" aria-label="Print this page" alt="Print this page">
+          <a href="#" class="material-icons mdc-top-app-bar__action-item" 
+             aria-label="Print this page" alt="Print this page">
           print</a>
-          <a href="#" class="material-icons mdc-top-app-bar__icon" aria-label="Bookmark this page" 
+          <a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="Bookmark this page" 
           alt="Bookmark this page">bookmark</a>
           <div class="mdc-menu-anchor">
             <div class="mdc-menu" tabindex="-1" id="demo-menu">
@@ -195,9 +196,9 @@ test('adapter#getViewportScrollY returns scroll distance', () => {
   assert.equal(component.getDefaultFoundation().adapter_.getViewportScrollY(), window.pageYOffset);
 });
 
-test('adapter#totalActionItems returns the amount of action icons on the opposite side of the menu', () => {
+test('adapter#getTotalActionItems returns the amount of action icons on the opposite side of the menu', () => {
   const {root, component} = setupTest();
-  const adapterReturn = component.getDefaultFoundation().adapter_.totalActionItems();
+  const adapterReturn = component.getDefaultFoundation().adapter_.getTotalActionItems();
   const actual = root.querySelectorAll(strings.ACTION_ITEM_SELECTOR).length;
   assert.isTrue(adapterReturn === actual);
 });
