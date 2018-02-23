@@ -104,11 +104,12 @@ test('on click in trailing icon, emit custom event', () => {
   const handlers = captureHandlers(mockAdapter, 'registerTrailingIconInteractionHandler');
   const mockEvt = {
     type: 'click',
-    stopPropagation: () => {},
+    stopPropagation: td.func('stopPropagation'),
   };
 
   foundation.init();
   handlers.click(mockEvt);
 
   td.verify(mockAdapter.notifyTrailingIconInteraction());
+  td.verify(mockEvt.stopPropagation());
 });
