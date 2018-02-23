@@ -189,6 +189,7 @@
       </section>
     </main>
 
+    <script src="/assets/material-components-web.js" async></script>
     <script src="/assets/common.js" async></script>
     <script>
       [].forEach.call(document.querySelectorAll('.examples button'), function(button) {
@@ -196,6 +197,10 @@
           var iframeMainEl = event.target.parentNode.parentNode.querySelector('iframe').contentWindow.document.querySelector('body');
           iframeMainEl.setAttribute('dir', iframeMainEl.getAttribute('dir') === 'rtl' ? 'ltr' : 'rtl');
         });
+      });
+
+      demoReady(function() {
+        mdc.toolbar.MDCToolbar.attachTo(document.querySelector('.hero .mdc-toolbar'));
       });
     </script>
   </body>

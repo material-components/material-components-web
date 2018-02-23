@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "ascii-table": "0.0.9",
-    "autoprefixer": "^7.0.0",
+    "autoprefixer": "^8.0.0",
     "babel-core": "^6.22.1",
     "babel-loader": "^7.0.0",
     "babel-plugin-transform-object-assign": "^6.8.0",
@@ -83,8 +83,7 @@
     "scss-parser": "^1.0.0",
     "semver": "^5.3.0",
     "standard-changelog": "^1.0.4",
-    "style-loader": "^0.20.0",
-    "stylelint": "^8.4.0",
+    "stylelint": "^9.0.0",
     "stylelint-config-standard": "^18.0.0",
     "stylelint-order": "^0.8.0",
     "stylelint-scss": "^2.0.1",
