@@ -87,3 +87,11 @@
   padding-left: $horizontal-padding-value;
   border-width: $width;
 }
+
+@mixin mdc-chip-set-spacing($gap-size) {
+  padding: $gap-size / 2;
+
+  .mdc-chip {
+    margin: $gap-size / 2;
+  }
+}
