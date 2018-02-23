@@ -17,8 +17,9 @@
 @import "../mixins";
 
 .mdc-chip-set {
-  @include mdc-chip-set-margin(8px);
+  @include mdc-chip-set-spacing(8px);
 
   display: flex;
   flex-wrap: wrap;
+  box-sizing: border-box;
 }
