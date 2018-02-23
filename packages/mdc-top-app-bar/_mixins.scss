@@ -38,7 +38,7 @@
 }
 
 @mixin mdc-top-app-bar-icon-ink-color($color) {
-  .mdc-top-app-bar__icon,
+  .mdc-top-app-bar__action-item,
   .mdc-top-app-bar__navigation-icon {
     @include mdc-theme-prop(color, $color);
     @include mdc-states($color);
