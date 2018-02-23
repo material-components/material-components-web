@@ -95,6 +95,8 @@ Mixin | Description
 
 > _NOTE_: Each of the mixins above adds ripple styles using the indicated color, deciding opacity values based on whether the passed color is light or dark.
 
+> _NOTE_: The `mdc-states-activated` and `mdc-states-selected` mixins add the appropriate state styles to the root element containing `&--activated` or `&--selected` modifier classes respectively.
+
 > _NOTE_: `$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) inside the root element.
 
 #### Advanced States Mixins

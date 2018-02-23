@@ -37,11 +37,9 @@ export default class MDCSelectFoundation extends MDCFoundation {
     return {
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
-      addClassToLabel: (/* className: string */) => {},
-      removeClassFromLabel: (/* className: string */) => {},
-      addClassToBottomLine: (/* className: string */) => {},
-      removeClassFromBottomLine: (/* className: string */) => {},
-      setBottomLineAttr: (/* attr: string, value: string */) => {},
+      floatLabel: (/* value: boolean */) => {},
+      activateBottomLine: () => {},
+      deactivateBottomLine: () => {},
       addBodyClass: (/* className: string */) => {},
       removeBodyClass: (/* className: string */) => {},
       setAttr: (/* attr: string, value: string */) => {},
@@ -106,6 +104,9 @@ export default class MDCSelectFoundation extends MDCFoundation {
     };
     this.cancelHandler_ = () => {
       this.close_();
+      if (this.selectedIndex_ === -1) {
+        this.adapter_.floatLabel(false);
+      }
     };
   }
 
@@ -153,9 +154,6 @@ export default class MDCSelectFoundation extends MDCFoundation {
     if (this.selectedIndex_ >= 0) {
       selectedTextContent = this.adapter_.getTextForOptionAtIndex(this.selectedIndex_).trim();
       this.adapter_.setAttrForOptionAtIndex(this.selectedIndex_, 'aria-selected', 'true');
-      this.adapter_.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE);
-    } else {
-      this.adapter_.removeClassFromLabel(cssClasses.LABEL_FLOAT_ABOVE);
     }
     this.adapter_.setSelectedTextContent(selectedTextContent);
   }
@@ -213,7 +211,8 @@ export default class MDCSelectFoundation extends MDCFoundation {
     const focusIndex = this.selectedIndex_ < 0 ? 0 : this.selectedIndex_;
 
     this.setMenuStylesForOpenAtIndex_(focusIndex);
-    this.adapter_.addClassToBottomLine(cssClasses.BOTTOM_LINE_ACTIVE);
+    this.adapter_.floatLabel(true);
+    this.adapter_.activateBottomLine();
     this.adapter_.addClass(OPEN);
     this.animationRequestId_ = requestAnimationFrame(() => {
       this.adapter_.openMenu(focusIndex);
@@ -249,7 +248,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
   close_() {
     const {OPEN} = MDCSelectFoundation.cssClasses;
     this.adapter_.removeClass(OPEN);
-    this.adapter_.removeClassFromBottomLine(cssClasses.BOTTOM_LINE_ACTIVE);
+    this.adapter_.deactivateBottomLine();
     this.adapter_.focus();
     this.enableScroll_();
   }

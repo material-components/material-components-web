@@ -78,9 +78,7 @@
     <header class="mdc-toolbar mdc-toolbar--fixed demo-header-toolbar">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-          <span class="catalog-back">
-            <a href="/" class="mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
-          </span>
+          <a href="/" class="catalog-back mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
           <span class="mdc-toolbar__title catalog-title">Toolbar</span>
         </section>
       </div>
@@ -191,6 +189,7 @@
       </section>
     </main>
 
+    <script src="/assets/material-components-web.js" async></script>
     <script src="/assets/common.js" async></script>
     <script>
       [].forEach.call(document.querySelectorAll('.examples button'), function(button) {
@@ -198,6 +197,10 @@
           var iframeMainEl = event.target.parentNode.parentNode.querySelector('iframe').contentWindow.document.querySelector('body');
           iframeMainEl.setAttribute('dir', iframeMainEl.getAttribute('dir') === 'rtl' ? 'ltr' : 'rtl');
         });
+      });
+
+      demoReady(function() {
+        mdc.toolbar.MDCToolbar.attachTo(document.querySelector('.hero .mdc-toolbar'));
       });
     </script>
   </body>
