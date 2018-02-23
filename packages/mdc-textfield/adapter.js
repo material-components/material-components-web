@@ -149,7 +149,7 @@ class MDCTextFieldAdapter {
 
   /**
    * Only implement if label exists.
-   * Shakes label if shouldShake is true
+   * Shakes label if shouldShake is true.
    * @param {boolean} shouldShake
    */
   shakeLabel(shouldShake) {}
