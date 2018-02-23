@@ -462,7 +462,7 @@ test('get/set minLength', () => {
   assert.equal(component.minLength, 0);
 });
 
-test.only('get/set maxLength', () => {
+test('get/set maxLength', () => {
   const {component} = setupMockFoundationTest();
   component.maxLength = 10;
   assert.equal(component.maxLength, 10);
