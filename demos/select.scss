@@ -35,3 +35,7 @@
   @include mdc-select-container-fill-color(rgba(blue, .1));
 }
 // stylelint-enable selector-class-pattern
+
+.select-many-options__menu {
+  max-height: 200px;
+}

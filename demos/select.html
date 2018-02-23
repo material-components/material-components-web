@@ -174,6 +174,22 @@
           <label for="box-disabled">Disabled</label>
         </div>
       </section>
+
+      <section class="example">
+        <h2 class="mdc-typography--title">Select w/ Many Options and Max Height</h2>
+        <section id="many-options-demo-wrapper">
+          <div id="many-options-select-js-select" class="mdc-select" role="listbox">
+            <div class="mdc-select__surface" tabindex="0">
+              <div class="mdc-select__label">Select Label</div>
+              <div class="mdc-select__selected-text"></div>
+              <div class="mdc-select__bottom-line"></div>
+            </div>
+            <div class="mdc-menu mdc-select__menu select-many-options__menu">
+              <ul class="mdc-list mdc-menu__items"></ul>
+            </div>
+          </div>
+        </section>
+      </section>
     </main>
 
     <script src="/assets/material-components-web.js" async></script>
@@ -242,6 +258,22 @@
         disabledCb.addEventListener('change', function() {
           select.disabled = disabledCb.checked;
         });
+      });
+      demoReady(function() {
+        var root = document.getElementById('many-options-select-js-select');
+        var mdcList = root.querySelector('.mdc-list');
+
+        for(var i = 1; i < 101; i++) {
+          var listItem = document.createElement('li');
+          listItem.classList.add('mdc-list-item');
+          listItem.setAttribute('role', 'option');
+          listItem.id = `item-${i}`;
+          listItem.tabIndex = '0';
+          listItem.textContent = `Item ${i}`;
+          mdcList.appendChild(listItem);
+        }
+
+        var select = new mdc.select.MDCSelect(root);
       });
 
     </script>
