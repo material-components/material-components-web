@@ -87,7 +87,7 @@ Class | Description
 --- | ---
 `mdc-top-app-bar` | Mandatory.
 `mdc-top-app-bar--short` | Class used to style the top app bar as a short top app bar.
-`mdc-topp-app-bar--short-collapsed` | Class used to indicate the short top app bar is collapsed. 
+`mdc-top-app-bar--short-collapsed` | Class used to indicate the short top app bar is collapsed. 
 
 ### Sass Mixins
 
