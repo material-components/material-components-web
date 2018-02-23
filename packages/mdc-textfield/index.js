@@ -258,7 +258,7 @@ class MDCTextField extends MDCComponent {
    * @param {number} maxLength Sets the input element's maxLength.
    */
   set maxLength(maxLength) {
-    // Chrome throws error if maxLength is set < 0
+    // Chrome throws exception if maxLength is set < 0
     if (maxLength < 0) {
       this.input_.removeAttribute('maxLength');
     } else {
@@ -293,7 +293,6 @@ class MDCTextField extends MDCComponent {
   set max(max) {
     this.input_.max = max;
   }
-
 
   /**
    * @return {string} The input element's step.
