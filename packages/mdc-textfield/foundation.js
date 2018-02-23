@@ -27,6 +27,12 @@ import MDCTextFieldOutlineFoundation from './outline/foundation';
 import {cssClasses, strings, numbers} from './constants';
 
 
+// whitelist based off of https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
+// under section: `Validation-related attributes`
+const VALIDATION_ATTR_WHITELIST = [
+  'pattern', 'min', 'max', 'required', 'step', 'minlength', 'maxlength',
+];
+
 /**
  * @extends {MDCFoundation<!MDCTextFieldAdapter>}
  * @final
@@ -162,13 +168,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
    * Handles validation attribute changes
    */
   handleValidationAttributeMutation(mutationsList) {
-    // whitelist based off of https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
-    // under section: `Validation-related attributes`
-    const validationAttrWhitelist = [
-      'pattern', 'min', 'max', 'required', 'step', 'minlength', 'maxlength',
-    ];
     mutationsList.some((mutation) => {
-      if (validationAttrWhitelist.indexOf(mutation.attributeName) > -1) {
+      if (VALIDATION_ATTR_WHITELIST.indexOf(mutation.attributeName) > -1) {
         this.styleValidity_(true);
         return true;
       }

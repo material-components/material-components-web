@@ -220,7 +220,7 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
-   * @return {string} the input element's validation pattern.
+   * @return {string} The input element's validation pattern.
    */
   get pattern() {
     return this.input_.pattern;
@@ -234,7 +234,7 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
-   * @return {number} the input element's minLength.
+   * @return {number} The input element's minLength.
    */
   get minLength() {
     return this.input_.minLength;
@@ -248,7 +248,7 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
-   * @return {number} the input element's maxLength.
+   * @return {number} The input element's maxLength.
    */
   get maxLength() {
     return this.input_.maxLength;
@@ -258,6 +258,7 @@ class MDCTextField extends MDCComponent {
    * @param {number} maxLength Sets the input element's maxLength.
    */
   set maxLength(maxLength) {
+    // Chrome throws error if maxLength is set < 0
     if (maxLength < 0) {
       this.input_.removeAttribute('maxLength');
     } else {
@@ -266,7 +267,7 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
-   * @return {string} the input element's min.
+   * @return {string} The input element's min.
    */
   get min() {
     return this.input_.min;
@@ -280,7 +281,7 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
-   * @return {string} the input element's max.
+   * @return {string} The input element's max.
    */
   get max() {
     return this.input_.max;
@@ -295,7 +296,7 @@ class MDCTextField extends MDCComponent {
 
 
   /**
-   * @return {string} the input element's step.
+   * @return {string} The input element's step.
    */
   get step() {
     return this.input_.step;

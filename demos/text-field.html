@@ -178,7 +178,7 @@
         </div>
         <div>
           <input id="outlined-maxlength" type="checkbox">
-          <label for="outlined-maxlength">Limit to 10 characters</label>
+          <label for="outlined-maxlength">Must not exceed 10 characters</label>
         </div>
       </section>
 
@@ -394,7 +394,7 @@
         var wrapper = document.getElementById('demo-tf-outlined-wrapper');
         var plainHelperText = 'Helper Text (possibly validation message)';
         var minLengthError = 'Must be at least 8 characters';
-        var maxLengthError = 'Limit to 10 characters';
+        var maxLengthError = 'Must not exceed 10 characters';
 
         document.getElementById('outlined-disable').addEventListener('change', function(evt) {
           tf.disabled = evt.target.checked;
@@ -419,7 +419,7 @@
           toggleRequired(tf, evt.target.checked);
         });
         document.getElementById('outlined-minlength').addEventListener('change', function(evt) {
-          tf.minLength = evt.target.checked ? 8 : -1;
+          tf.minLength = evt.target.checked ? 8 : 0;
         });
         document.getElementById('outlined-maxlength').addEventListener('change', function(evt) {
           tf.maxLength = evt.target.checked ? 10 : -1;
@@ -439,7 +439,7 @@
         var tfEl = document.getElementById('tf-box-example');
         var tf = new mdc.textField.MDCTextField(tfEl);
         var wrapper = document.getElementById('demo-tf-box-wrapper');
-        var helperText = document.getElementById('box-text-field-helper-text');
+        var helperText = document.getElementById('box-name-validation-message');
 
         document.getElementById('box-disable').addEventListener('change', function(evt) {
           tf.disabled = evt.target.checked;

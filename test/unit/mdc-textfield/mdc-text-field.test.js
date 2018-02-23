@@ -441,9 +441,9 @@ test('get/set valid', () => {
 test('get/set required', () => {
   const {component} = setupMockFoundationTest();
   component.required = true;
-  assert.isOk(component.required);
+  assert.isTrue(component.required);
   component.required = false;
-  assert.isNotOk(component.required);
+  assert.isFalse(component.required);
 });
 
 test('get/set pattern', () => {

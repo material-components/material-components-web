@@ -481,36 +481,6 @@ test('on focus makes helper text visible to the screen reader', () => {
   td.verify(helperText.showToScreenReader());
 });
 
-test('on required validation attribute change should update invalid classes', () => {
-  const {foundation, mockAdapter} = setupTest();
-  let attributeMutate;
-  td.when(mockAdapter.registerValidationAttributeChangeHandler(td.matchers.isA(Function)))
-    .thenDo((handler) => attributeMutate = handler);
-  foundation.init();
-  attributeMutate([{attributeName: 'required'}]);
-  td.verify(mockAdapter.removeClass(cssClasses.INVALID));
-});
-
-test('on pattern validation attribute change should update invalid classes', () => {
-  const {foundation, mockAdapter} = setupTest();
-  let attributeMutate;
-  td.when(mockAdapter.registerValidationAttributeChangeHandler(td.matchers.isA(Function)))
-    .thenDo((handler) => attributeMutate = handler);
-  foundation.init();
-  attributeMutate([{attributeName: 'pattern'}]);
-  td.verify(mockAdapter.removeClass(cssClasses.INVALID));
-});
-
-test('on attribute change non-whitelisted should not update classes', () => {
-  const {foundation, mockAdapter} = setupTest();
-  let attributeMutate;
-  td.when(mockAdapter.registerValidationAttributeChangeHandler(td.matchers.isA(Function)))
-    .thenDo((handler) => attributeMutate = handler);
-  foundation.init();
-  attributeMutate([{attributeName: 'form'}]);
-  td.verify(mockAdapter.removeClass(cssClasses.INVALID), {times: 0});
-});
-
 const setupBlurTest = () => {
   const {foundation, mockAdapter, helperText, label} = setupTest();
   let blur;
@@ -701,7 +671,7 @@ test('on validation attribute change calls styleValidity_', () => {
 });
 
 test('should not call styleValidity_ on non-whitelisted attribute change', () => {
-  const {foundation, mockAdapter} = setupTest();
+  const {foundation, mockAdapter, helperText} = setupTest();
   let attributeChange;
   td.when(mockAdapter.registerValidationAttributeChangeHandler(td.matchers.isA(Function)))
     .thenDo((handler) => attributeChange = handler);
@@ -709,6 +679,7 @@ test('should not call styleValidity_ on non-whitelisted attribute change', () =>
 
   attributeChange([{attributeName: 'form'}]);
   td.verify(mockAdapter.removeClass(cssClasses.INVALID), {times: 0});
+  td.verify(helperText.setValidity(td.matchers.isA(Boolean)), {times: 0});
 
   td.verify(mockAdapter.addClass(cssClasses.FOCUSED), {times: 0});
   td.verify(mockAdapter.removeClass(cssClasses.FOCUSED), {times: 0});

@@ -113,7 +113,7 @@ class MDCTextFieldAdapter {
   registerValidationAttributeChangeHandler(handler) {}
 
   /**
-   * Disconnect all validation attrinute listeners on the input element.
+   * Disconnect all validation attribute listeners on the input element.
    */
   deregisterValidationAttributeChangeHandler() {}
 
