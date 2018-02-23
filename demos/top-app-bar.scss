@@ -1,5 +1,5 @@
 //
-// Copyright 2016 Google Inc. All Rights Reserved.
+// Copyright 2017 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,28 +14,18 @@
 // limitations under the License.
 //
 
-$mdc-ripple-fade-in-duration: 75ms;
-$mdc-ripple-fade-out-duration: 150ms;
-$mdc-ripple-translate-duration: 225ms;
-$mdc-states-wash-duration: 15ms;
+@import "common";
+@import "../packages/mdc-top-app-bar/mdc-top-app-bar";
+@import "../packages/mdc-drawer/mdc-drawer";
+@import "../packages/mdc-list/mdc-list";
 
-$mdc-ripple-dark-ink-opacities: (
-  hover: .04,
-  focus: .12,
-  press: .16,
-  selected: .08,
-  activated: .12
-) !default;
+.demo-paragraph {
+  margin: 0;
+  padding: 20px 28px;
+}
 
-$mdc-ripple-light-ink-opacities: (
-  hover: .08,
-  focus: .24,
-  press: .32,
-  selected: .16,
-  activated: .24
-) !default;
-
-// Legacy
-
-$mdc-ripple-pressed-dark-ink-opacity: .16;
-$mdc-ripple-pressed-light-ink-opacity: .32;
+@media (max-width: $mdc-top-app-bar-mobile-breakpoint) {
+  .demo-paragraph {
+    padding: 16px;
+  }
+}

@@ -1,5 +1,5 @@
 /**
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2017 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,19 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export const cssClasses = {
-  BOX: 'mdc-select--box',
-  DISABLED: 'mdc-select--disabled',
-  OPEN: 'mdc-select--open',
-  ROOT: 'mdc-select',
-  SCROLL_LOCK: 'mdc-select-scroll-lock',
+
+/** @enum {string} */
+const strings = {
+  NAVIGATION_EVENT: 'MDCTopAppBar:nav',
+  TITLE_SELECTOR: '.mdc-top-app-bar__title',
+  MENU_ICON_SELECTOR: '.mdc-top-app-bar__menu-icon',
+  ACTION_ICON_SELECTOR: '.mdc-top-app-bar__icon',
 };
 
-export const strings = {
-  CHANGE_EVENT: 'MDCSelect:change',
-  BOTTOM_LINE_SELECTOR: '.mdc-select__bottom-line',
-  LABEL_SELECTOR: '.mdc-select__label',
-  MENU_SELECTOR: '.mdc-select__menu',
-  SURFACE_SELECTOR: '.mdc-select__surface',
-  SELECTED_TEXT_SELECTOR: '.mdc-select__selected-text',
-};
+export {strings};

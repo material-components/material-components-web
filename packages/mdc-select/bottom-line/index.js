@@ -17,39 +17,45 @@
 
 import MDCComponent from '@material/base/component';
 
-import MDCSelectLabelAdapter from './adapter';
-import MDCSelectLabelFoundation from './foundation';
+import MDCSelectBottomLineAdapter from './adapter';
+import MDCSelectBottomLineFoundation from './foundation';
 
 /**
- * @extends {MDCComponent<!MDCSelectLabelFoundation>}
+ * @extends {MDCComponent<!MDCSelectBottomLineFoundation>}
  * @final
  */
-class MDCSelectLabel extends MDCComponent {
+class MDCSelectBottomLine extends MDCComponent {
   /**
    * @param {!Element} root
-   * @return {!MDCSelectLabel}
+   * @return {!MDCSelectBottomLine}
    */
   static attachTo(root) {
-    return new MDCSelectLabel(root);
+    return new MDCSelectBottomLine(root);
   }
 
   /**
-   * Styles the label to float or defloat as necessary.
-   * @param {string} value The value of the input.
+   * Activates the bottom line active class
    */
-  float(value) {
-    this.foundation_.styleFloat(value);
+  activate() {
+    this.foundation_.activate();
   }
 
   /**
-   * @return {!MDCSelectLabelFoundation}
+   * Deactivates the bottom line active class
+   */
+  deactivate() {
+    this.foundation_.deactivate();
+  }
+
+  /**
+   * @return {!MDCSelectBottomLineFoundation}
    */
   getDefaultFoundation() {
-    return new MDCSelectLabelFoundation({
+    return new MDCSelectBottomLineFoundation({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
     });
   }
 }
 
-export {MDCSelectLabel, MDCSelectLabelFoundation};
+export {MDCSelectBottomLine, MDCSelectBottomLineFoundation};
