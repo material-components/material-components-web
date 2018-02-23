@@ -44,7 +44,7 @@
   // side as the label. Aka the icon is on left side in a LTR context.
   @if ($position-property == left) {
     .mdc-floating-label {
-	  @include mdc-rtl-reflexive-position($position-property, $padding);
+      @include mdc-rtl-reflexive-position($position-property, $padding);
     }
   }
 }
