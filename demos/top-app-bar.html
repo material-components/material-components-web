@@ -194,28 +194,28 @@
         });
 
         shortCheckbox.addEventListener('change', function() {
-          this.checked ? appBarEl.classList.add('mdc-top-app-bar--short') : appBarEl.classList.remove('mdc-top-app-bar--short');
+          appBarEl.classList[this.checked ? 'add' : 'remove']('mdc-top-app-bar--short');
 
           appBar.destroy();
           appBar = mdc.topAppBar.MDCTopAppBar.attachTo(appBarEl);
 
-          if(!this.checked){
+          if (!this.checked) {
             appBarEl.classList.remove('mdc-top-app-bar--short-collapsed');
           }
         });
 
         noRightItemCheckbox.addEventListener('change', function()  {
-          if(this.checked) {
+          if (this.checked) {
             rightSection.removeChild(rightItemEl);
-            appBarEl.classList.remove('mdc-top-app-bar--short__right-action-item');
+            appBarEl.classList.remove('mdc-top-app-bar--short-has-action-item');
           } else {
             rightSection.appendChild(rightItemEl);
-            appBarEl.classList.add('mdc-top-app-bar--short__right-action-item');
+            appBarEl.classList.add('mdc-top-app-bar--short-has-action-item');
           }
         });
 
         rtlCheckbox.addEventListener('change', function()  {
-          this.checked ? document.body.setAttribute("dir", "rtl") : document.body.removeAttribute("dir");
+          document.body[this.checked ? 'setAttribute' : 'removeAttribute']("dir", "rtl");
         })
       });
   </script>

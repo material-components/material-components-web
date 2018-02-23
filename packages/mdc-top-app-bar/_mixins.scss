@@ -14,10 +14,10 @@
 // limitations under the License.
 //
 
-@import "@material/theme/variables"; // for mdc-theme-accessible-ink-color
 @import "@material/animation/variables";
-@import "@material/theme/mixins";
 @import "@material/ripple/mixins";
+@import "@material/theme/variables"; // for mdc-theme-accessible-ink-color
+@import "@material/theme/mixins";
 @import "./variables";
 
 //

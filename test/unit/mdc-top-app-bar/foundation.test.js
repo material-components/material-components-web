@@ -132,7 +132,7 @@ test('short top app bar: class is added if it has a right icon', () => {
   td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_CLASS)).thenReturn(true);
   td.when(mockAdapter.totalActionItems()).thenReturn(1);
   foundation.init();
-  td.verify(mockAdapter.addClass(MDCTopAppBarFoundation.cssClasses.RIGHT_ACTION_ITEM_CLASS), {times: 1});
+  td.verify(mockAdapter.addClass(MDCTopAppBarFoundation.cssClasses.HAS_ACTION_ITEM_CLASS), {times: 1});
 });
 
 test('short top app bar: class is not added if it has a right icon', () => {
@@ -140,5 +140,5 @@ test('short top app bar: class is not added if it has a right icon', () => {
   td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_CLASS)).thenReturn(true);
   td.when(mockAdapter.totalActionItems()).thenReturn(0);
   foundation.init();
-  td.verify(mockAdapter.addClass(MDCTopAppBarFoundation.cssClasses.RIGHT_ACTION_ITEM_CLASS), {times: 0});
+  td.verify(mockAdapter.addClass(MDCTopAppBarFoundation.cssClasses.HAS_ACTION_ITEM_CLASS), {times: 0});
 });

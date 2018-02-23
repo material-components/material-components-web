@@ -117,7 +117,7 @@ Method Signature | Description
 `registerScrollHandler(handler) => void` | Registers a handler to be called when user scrolls. Our default implementation adds the handler as a listener to the window's `scroll` event.
 `deregisterScrollHandler(handler) => void` | Unregisters a handler to be called when user scrolls. Our default implementation removes the handler as a listener to the window's `scroll` event.
 `getViewportScrollY() => number` | Gets the number of pixels that the content of body is scrolled from the top of the page.
-`totalActionIcons() => number` | Gets the number of action items on the right side of the top app bar.
+`getTotalActionItems() => number` | Gets the number of action items on the right side of the top app bar.
 
 ### Events
 

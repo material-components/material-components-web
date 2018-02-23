@@ -26,7 +26,7 @@ const strings = {
 /** @enum {string} */
 const cssClasses = {
   SHORT_CLASS: 'mdc-top-app-bar--short',
-  RIGHT_ACTION_ITEM_CLASS: 'mdc-top-app-bar--short__right-action-item',
+  HAS_ACTION_ITEM_CLASS: 'mdc-top-app-bar--short-has-action-item',
   SHORT_CLOSED_CLASS: 'mdc-top-app-bar--short-collapsed',
 };
 

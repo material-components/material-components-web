@@ -76,7 +76,7 @@ class MDCTopAppBarAdapter {
   getViewportScrollY() {}
 
   /** @return {number} */
-  totalActionItems() {}
+  getTotalActionItems() {}
 }
 
 export default MDCTopAppBarAdapter;
