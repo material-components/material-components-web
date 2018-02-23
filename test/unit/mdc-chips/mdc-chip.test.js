@@ -119,7 +119,7 @@ test('#adapter.notifyInteraction emits ' + MDCChipFoundation.strings.INTERACTION
   td.verify(handler(td.matchers.anything()));
 });
 
-test('#adapter.notifyTrailingIconInteraction emits ' + MDCChipFoundation.strings.INTERACTION_EVENT, () => {
+test('#adapter.notifyTrailingIconInteraction emits ' + MDCChipFoundation.strings.TRAILING_ICON_INTERACTION_EVENT, () => {
   const {component} = setupTest();
   const handler = td.func('interaction handler');
 
