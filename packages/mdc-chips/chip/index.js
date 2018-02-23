@@ -86,7 +86,13 @@ class MDCChip extends MDCComponent {
       hasClass: (className) => this.root_.classList.contains(className),
       registerInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
+      eventTargetHasClass: (target, className) => target.classList.contains(className),
+      registerLeadingIconInteractionHandler: (evtType, handler) => this.leadingIcon_ ? this.leadingIcon_.addEventListener(evtType, handler) : null,
+      deregisterLeadingIconInteractionHandler: (evtType, handler) => this.leadingIcon_ ? this.leadingIcon_.removeEventListener(evtType, handler) : null,
+      registerFilterIconInteractionHandler: (evtType, handler) => this.filterIcon_ ? this.filterIcon_.addEventListener(evtType, handler) : null,
+      deregisterFilterIconInteractionHandler: (evtType, handler) => this.filterIcon_ ? this.filterIcon_.removeEventListener(evtType, handler) : null,
       notifyInteraction: () => this.emit(strings.INTERACTION_EVENT, {chip: this}, true /* shouldBubble */),
+      hasLeadingIcon: () => this.leadingIcon_,
       addClassToLeadingIcon: (className) => {
         if (this.leadingIcon_) {
           this.leadingIcon_.classList.add(className);

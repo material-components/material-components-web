@@ -61,18 +61,26 @@ class MDCChipFoundation extends MDCFoundation {
 
     /** @private {function(!Event): undefined} */
     this.interactionHandler_ = (evt) => this.handleInteraction_(evt);
+    /** @private {function(!Event): undefined} */
+    this.leadingIconTransitionEndHandler_ = (evt) => this.handleLeadingIconTransitionEnd_(evt);
+    /** @private {function(!Event): undefined} */
+    this.filterIconTransitionEndHandler_ = (evt) => this.handleFilterIconTransitionEnd_(evt);
   }
 
   init() {
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.registerInteractionHandler(evtType, this.interactionHandler_);
     });
+    this.adapter_.registerLeadingIconInteractionHandler('transitionend', this.leadingIconTransitionEndHandler_);
+    this.adapter_.registerFilterIconInteractionHandler('transitionend', this.filterIconTransitionEndHandler_);
   }
 
   destroy() {
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.deregisterInteractionHandler(evtType, this.interactionHandler_);
     });
+    this.adapter_.deregisterLeadingIconInteractionHandler('transitionend', this.leadingIconTransitionEndHandler_);
+    this.adapter_.deregisterFilterIconInteractionHandler('transitionend', this.filterIconTransitionEndHandler_);
   }
 
   /**
@@ -96,17 +104,49 @@ class MDCChipFoundation extends MDCFoundation {
     }
   }
 
+  // Filter chip is selected.
   replaceLeadingIconWithFilterIcon() {
     if (!this.adapter_.hasFilterIcon()) {
       return;
     }
-    this.adapter_.addClassToLeadingIcon(cssClasses.HIDDEN_ICON);
-    this.adapter_.removeClassFromFilterIcon(cssClasses.HIDDEN_ICON);
+    if (this.adapter_.hasLeadingIcon()) {
+      this.adapter_.addClassToLeadingIcon(cssClasses.TRANSPARENT_ICON);
+      this.adapter_.addClassToLeadingIcon(cssClasses.ANIMATING_ICON);
+    } else {
+      this.adapter_.addClassToFilterIcon(cssClasses.EXPANDED_ICON);
+      this.adapter_.addClassToFilterIcon(cssClasses.ANIMATING_ICON);
+    }
   }
 
+  // Filter chip is deselected.
   replaceFilterIconWithLeadingIcon() {
-    this.adapter_.addClassToFilterIcon(cssClasses.HIDDEN_ICON);
-    this.adapter_.removeClassFromLeadingIcon(cssClasses.HIDDEN_ICON);
+    if (this.adapter_.hasLeadingIcon()) {
+      this.adapter_.removeClassFromFilterIcon(cssClasses.OPAQUE_ICON);
+    } else {
+      this.adapter_.removeClassFromFilterIcon(cssClasses.OPAQUE_ICON);
+    }
+    this.adapter_.addClassToFilterIcon(cssClasses.ANIMATING_ICON);
+  }
+
+
+  handleLeadingIconTransitionEnd_(evt) {
+    if (evt.propertyName === 'opacity' && this.adapter_.eventTargetHasClass(evt.target, cssClasses.ANIMATING_ICON)) {
+      this.adapter_.addClassToFilterIcon(cssClasses.OPAQUE_ICON);
+      this.adapter_.removeClassFromLeadingIcon(cssClasses.ANIMATING_ICON);
+    }
+  }
+
+  handleFilterIconTransitionEnd_(evt) {
+    if (this.adapter_.eventTargetHasClass(evt.target, cssClasses.ANIMATING_ICON)) {
+      if (evt.propertyName === 'width') {
+        this.adapter_.addClassToFilterIcon(cssClasses.OPAQUE_ICON);
+      } else if (evt.propertyName === 'opacity') {
+        this.adapter_.removeClassFromLeadingIcon(cssClasses.TRANSPARENT_ICON);
+        this.adapter_.removeClassFromFilterIcon(cssClasses.EXPANDED_ICON);
+      }
+      this.adapter_.removeClassFromFilterIcon(cssClasses.ANIMATING_ICON);
+    }
+    
   }
 }
 
