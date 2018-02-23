@@ -80,6 +80,7 @@ CSS Class | Description
 --- | ---
 `mdc-chip-set` | Mandatory. Indicates the set that the chip belongs to
 `mdc-chip-set--choice` | Optional. Indicates that the chips in the set are choice chips, which allow a single selection from a set of options.
+`mdc-chip-set--filter` | Optional. Indicates that the chips in the set are filter chips, which allow multiple selection from a set of options.
 `mdc-chip` | Mandatory.
 `mdc-chip__text` | Mandatory. Indicates the text content of the chip
 `mdc-chip__icon` | Optional. Indicates an icon in the chip
