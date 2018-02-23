@@ -35,7 +35,8 @@
 }
 
 @mixin mdc-toolbar-icon-ink-color($color) {
-  @include mdc-theme-prop(color, $color);
+  @include mdc-theme-prop(color, $color); // for font icons
+  @include mdc-theme-prop(fill, $color); // for SVG icons
 }
 
 //
