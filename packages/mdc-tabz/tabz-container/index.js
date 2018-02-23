@@ -76,6 +76,7 @@ class MDCTabzContainer {
    * @param {number=} currentX The current scrollLeft value
    */
   animateFakeScroll(targetX, currentX=0) {
+    console.log('currentX', currentX, 'targetX', targetX);
     this.adapter_.setStyleProp('transform', `translateX(${currentX}px)`);
     this.adapter_.addClass(cssClasses.ANIMATING);
     // Force reflow so style changes get picked up

@@ -1,6 +1,7 @@
 @import "./common";
 @import "../packages/mdc-tabz/mdc-tabz";
 @import "../packages/mdc-elevation/mixins";
+@import "../packages/mdc-ripple/mixins";
 
 // Customization for the demo
 .demo-many {
@@ -19,6 +20,10 @@
   @include mdc-tabz-colors($background: #ffdbcf);
   @include mdc-tabz-active-colors($color: #442b2d);
 
+  @include mdc-tabz-ripple {
+    @include mdc-states(#442b2d);
+  }
+
   @include mdc-tabz-indicator-icon {
     color: #eaa4a4;
 
@@ -32,4 +37,13 @@
   @include mdc-tabz-colors($background: $mdc-purple, $color: white);
   @include mdc-tabz-active-colors($background: $mdc-purple, $color: white);
   @include mdc-tabz-indicator($color: white);
+
+  @include mdc-tabz-ripple {
+    @include mdc-states(white);
+  }
+}
+
+.demo-paging {
+  width: 800px;
+  max-width: 100%;
 }

@@ -86,6 +86,8 @@ class MDCTabzBar {
     /** @private {number} The pixel value to scroll */
     this.scroll_ = 0;
 
+    this.pageOffset_ = 0;
+
     this.init();
   }
 
@@ -107,7 +109,7 @@ class MDCTabzBar {
    * @return {number}
    * @private
    */
-  getSelectedTabIndex_(target) {
+  getTabIndex_(target) {
     return this.tabz_.findIndex((tab) => tab === target);
   }
 
@@ -117,7 +119,7 @@ class MDCTabzBar {
   }
 
   handleTabSelection(e) {
-    this.activateTab(this.getSelectedTabIndex_(e.detail.tab));
+    this.activateTab(this.getTabIndex_(e.detail.tab));
   }
 
   /**
@@ -132,40 +134,197 @@ class MDCTabzBar {
     });
   }
 
+  handleNextPageClick() {
+    // const barBbox = this.adapter_.getRootBoundingClientRect();
+    // let currentPageSize = 0;
+    // let newPageSize = 0;
+
+    // for (let i = 0; i < this.tabz_.length; i++) {
+    //   const bbox = this.tabz_[i].getRootBoundingClientRect();
+    //   if (bbox.left >= barBbox.left && bbox.right <= barBbox.right) {
+    //     currentPageSize += bbox.width;
+    //   } else {
+    //     const newPageSize_ = newPageSize + bbox.width;
+    //     if (newPageSize_ < barBbox.width) {
+    //       newPageSize = newPageSize_;
+    //     } else {
+    //       break;
+    //     }
+    //   }
+    // }
+
+    const index = this.calculatePageEdgeTabIndex_('next');
+    const tab = this.tabz_[index];
+    if (tab) {
+      this.scrollTabIntoView_(tab);
+    }
+    // const currentPageSize = this.calculatePageSize_('next');
+    // const scrollTarget = currentPageSize + this.pageOffset_;
+    // this.container_.animateFakeScroll(scrollTarget * -1, this.pageOffset_);
+    // this.pageOffset_ = scrollTarget;
+  }
+
+  handlePrevPageClick() {
+    const index = this.calculatePageEdgeTabIndex_('prev');
+    const tab = this.tabz_[index];
+    if (tab) {
+      this.scrollTabIntoView_(tab);
+    }
+    // const currentPageSize = this.calculatePageSize_('prev');
+    // const scrollTarget = currentPageSize - this.pageOffset_;
+    // this.container_.animateFakeScroll(scrollTarget, this.pageOffset_);
+    // this.pageOffset_ = scrollTarget;
+  }
+
+  /**
+   * 
+   * @param {string} direction The direction to scroll
+   */
+  calculatePageSize_(direction) {
+    if (direction !== 'prev' && direction !== 'next') {
+      throw new Error('WHOA THERE BUDDY WHAT DO YOU THINK YOU\'RE DOING?!');
+    }
+
+    const shouldContinue = (dir, i) => {
+      let shouldContinue_ = false;
+      if (dir === 'next') {
+        shouldContinue_ = i < this.tabz_.length;
+      } else if (dir === 'prev') {
+        shouldContinue_ = i >= 0;
+      }
+      return shouldContinue_;
+    };
+
+    const nextIteration = (dir, i) => {
+      if (dir === 'next') {
+        return i + 1;
+      } else if (dir === 'prev') {
+        return i - 1;
+      }
+    };
+
+    const iteratorValue = (dir) => {
+      if (dir === 'next') {
+        return 0;
+      } else if (dir === 'prev') {
+        return this.tabz_.length - 1;
+      }
+    };
+
+    const barBbox = this.adapter_.getRootBoundingClientRect();
+    let i = iteratorValue(direction);
+    let current = 0;
+    let next = 0;
+    while (shouldContinue(direction, i)) {
+      const tabBbox = this.tabz_[i].getRootBoundingClientRect();
+      if (tabBbox.left >= barBbox.left && tabBbox.right <= barBbox.right) {
+        current += tabBbox.width;
+      } else {
+        const newPageSize_ = next + tabBbox.width;
+        if (newPageSize_ < barBbox.width) {
+          next = newPageSize_;
+        } else {
+          break;
+        }
+      }
+      i = nextIteration(direction, i);
+    }
+
+    return current;
+  }
+
+  /**
+   * Calculates the edge tab to scroll to
+   * @return {number}
+   * @private
+   */
+  calculatePageEdgeTabIndex_(direction) {
+    const barBbox = this.adapter_.getRootBoundingClientRect();
+    const tabBoxes = this.tabz_.map((tab) => tab.getRootBoundingClientRect());
+    const visibleTabs = tabBoxes.reduce((acc, bbox, i) => {
+      if (bbox.left >= barBbox.left && bbox.right <= barBbox.right) {
+        acc.push(i);
+      }
+      return acc;
+    }, []);
+
+    let pageSize = 0;
+    let activeIndex;
+
+    if (direction === 'next') {
+      const start = visibleTabs[visibleTabs.length - 1] + 1;
+      activeIndex = start;
+      for (let i = start; i < tabBoxes.length; i++) {
+        const bbox = tabBoxes[i];
+        const pageSize_ = pageSize + bbox.width;
+        if (pageSize_ < barBbox.width) {
+          pageSize = pageSize_;
+          activeIndex = i;
+        } else {
+          break;
+        }
+      }
+    } else {
+      const start = visibleTabs[0] - 1;
+      activeIndex = start;
+      for (let i = start; i > -1; i--) {
+        const bbox = tabBoxes[i];
+        const pageSize_ = pageSize + bbox.width;
+        if (pageSize_ < barBbox.width) {
+          pageSize = pageSize_;
+          activeIndex = i;
+        } else {
+          break;
+        }
+      }
+    }
+    console.log('activeIndex', activeIndex);
+    return activeIndex;
+  }
+
   /**
    * Activates the tab at the given index
    * @param {number} index The index of the tab to activate
    */
   activateTab(index) {
+    performance.mark('startActivate');
     if (index < 0 || index >= this.tabz_.length || index === this.activeIndex_) {
       return;
     }
     this.activeTab.deactivate();
     this.activeIndex_ = index;
-    this.scrollTabIntoView_();
+    this.scrollTabIntoView_(this.activeTab);
     this.activeTab.activate();
     this.calculateIndicatorPosition();
     this.indicator_.animatePosition();
+    performance.mark('endActivate');
+    performance.measure('activate', 'startActivate', 'endActivate');
   }
 
-  scrollTabIntoView_() {
+  scrollTabIntoView_(tab) {
     // Calculate the bounding boxes of the selected tab and the container
     const barBbox = this.adapter_.getRootBoundingClientRect();
     const containerBbox = this.container_.getRootBoundingClientRect();
     if (containerBbox.width <= barBbox.width) {
       return;
     }
-    const activeTabBbox = this.activeTab.getRootBoundingClientRect();
-    const activeTabContentBbox = this.activeTab.getContentBoundingClientRect();
+
+    // Get initial bounding boxes
+    const activeTabBbox = tab.getRootBoundingClientRect();
+    const activeTabContentBbox = tab.getContentBoundingClientRect();
     const scrollExtra = activeTabBbox.width - activeTabContentBbox.width;
+
     // Determine the left and right gaps
     let leftGap = activeTabBbox.right - barBbox.right;
     let rightGap = barBbox.left - activeTabBbox.left;
+
     // Determine the scrollLeft
     const currentScroll = this.adapter_.getScrollLeft();
+    const tabIsBetweenEnds = this.isTabBetweenEnds_(tab);
+
     // Scroll to either left or right if necessary
     if (leftGap > 0) {
-      if (this.isActiveTabBetweenEnds_()) {
+      if (tabIsBetweenEnds) {
         leftGap += scrollExtra;
       }
       this.scroll_ = currentScroll + leftGap;
@@ -175,7 +334,7 @@ class MDCTabzBar {
       this.scroll_ = currentScroll + leftGap;
       this.container_.fakeScroll(leftGap * -1, currentScroll);
     } else if (rightGap > 0) {
-      if (this.isActiveTabBetweenEnds_()) {
+      if (tabIsBetweenEnds) {
         rightGap += scrollExtra;
       }
       this.scroll_ = currentScroll - rightGap;
@@ -188,12 +347,14 @@ class MDCTabzBar {
   }
 
   /**
-   * Determines if the active tab is between the end tabs
+   * Determines if the index is between the end tabs
+   * @param {number} index The index to
    * @return {boolean}
    * @private
    */
-  isActiveTabBetweenEnds_() {
-    return this.activeIndex_ > 0 && this.activeIndex_ < this.tabz_.length - 1
+  isTabBetweenEnds_(tab) {
+    const tabIndex = this.getTabIndex_(tab);
+    return tabIndex > 0 && tabIndex < this.tabz_.length - 1;
   }
 
   /**

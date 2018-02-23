@@ -1,6 +1,7 @@
 @import "@material/ripple/common";
 @import "@material/ripple/mixins";
 @import "@material/typography/mixins";
+@import "@material/rtl/mixins";
 
 $mdc-purple: #6200ee;
 $mdc-gray: #191919;
@@ -57,6 +58,12 @@ $mdc-color: $mdc-purple;
 
 @mixin mdc-tabz-indicator-customization {
   .mdc-tabz-indicator--custom {
+    @content;
+  }
+}
+
+@mixin mdc-tabz-ripple {
+  .mdc-tabz__ripple {
     @content;
   }
 }
@@ -127,8 +134,8 @@ $mdc-color: $mdc-purple;
 
   &__ripple {
     @include mdc-ripple-surface;
-    @include mdc-states;
     @include mdc-ripple-radius-bounded;
+    @include mdc-states(primary);
 
     position: absolute;
     top: 0;
@@ -152,6 +159,11 @@ $mdc-color: $mdc-purple;
 
   &__icon + &__label {
     padding-left: 8px;
+
+    @include mdc-rtl {
+      padding-right: 8px;
+      padding-left: 0;
+    }
   }
 
   .mdc-tabz-bar--two-lines & {
@@ -228,11 +240,14 @@ $mdc-color: $mdc-purple;
   }
 
   &--fixed-width {
-    border-bottom: none;
-  }
-
-  &--fixed-width &__container {
+    padding-right: 56px;
     padding-left: 56px;
+    border-bottom: none;
+
+    // @include mdc-rtl {
+    //   padding-right: 56px;
+    //   padding-left: 0;
+    // }
   }
 
   &--fixed-width .mdc-tabz {
