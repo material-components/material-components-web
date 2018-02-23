@@ -18,34 +18,34 @@
 import MDCComponent from '@material/base/component';
 
 import {strings} from './constants';
-import MDCTextFieldOutlineAdapter from './adapter';
-import MDCTextFieldOutlineFoundation from './foundation';
+import MDCNotchedOutlineAdapter from './adapter';
+import MDCNotchedOutlineFoundation from './foundation';
 
 /**
- * @extends {MDCComponent<!MDCTextFieldOutlineFoundation>}
+ * @extends {MDCComponent<!MDCNotchedOutlineFoundation>}
  * @final
  */
-class MDCTextFieldOutline extends MDCComponent {
+class MDCNotchedOutline extends MDCComponent {
   /**
    * @param {!Element} root
-   * @return {!MDCTextFieldOutline}
+   * @return {!MDCNotchedOutline}
    */
   static attachTo(root) {
-    return new MDCTextFieldOutline(root);
+    return new MDCNotchedOutline(root);
   }
 
   /**
-   * @return {!MDCTextFieldOutlineFoundation}
-   */
-  get foundation() {
-    return this.foundation_;
+    *
+    */
+  updateOutlinePath(labelWidth, isRtl) {
+    this.foundation_.updateSvgPath(labelWidth, isRtl);
   }
 
   /**
-   * @return {!MDCTextFieldOutlineFoundation}
+   * @return {!MDCNotchedOutlineFoundation}
    */
   getDefaultFoundation() {
-    return new MDCTextFieldOutlineFoundation(/** @type {!MDCTextFieldOutlineAdapter} */ (Object.assign({
+    return new MDCNotchedOutlineFoundation({
       getWidth: () => this.root_.offsetWidth,
       getHeight: () => this.root_.offsetHeight,
       setOutlinePathAttr: (value) => {
@@ -58,8 +58,8 @@ class MDCTextFieldOutline extends MDCComponent {
           return window.getComputedStyle(idleOutlineElement).getPropertyValue(propertyName);
         }
       },
-    })));
+    });
   }
 }
 
-export {MDCTextFieldOutline, MDCTextFieldOutlineFoundation};
+export {MDCNotchedOutline, MDCNotchedOutlineFoundation};

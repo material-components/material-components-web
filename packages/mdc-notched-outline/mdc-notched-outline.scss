@@ -15,15 +15,11 @@
 //
 
 @import "./mixins";
-@import "../mixins";
-@import "../variables";
 @import "@material/theme/mixins";
 @import "@material/ripple/mixins";
 @import "@material/ripple/variables";
 
-.mdc-text-field__idle-outline {
-  @include mdc-text-field-outlined-corner-radius($mdc-text-field-border-radius);
-
+.mdc-notched-outline--idle {
   position: absolute;
   top: 0;
   left: 0;
@@ -34,12 +30,11 @@
   opacity: 1;
 }
 
-.mdc-text-field__outline {
+.mdc-notched-outline {
   @include mdc-ripple-surface;
   @include mdc-ripple-radius-bounded;
   @include mdc-states-base-color(text-primary-on-background);
   @include mdc-states-press-opacity(map-get($mdc-ripple-dark-ink-opacities, "press"));
-  @include mdc-text-field-outlined-corner-radius($mdc-text-field-border-radius);
 
   position: absolute;
   top: 0;
@@ -57,7 +52,7 @@
   }
 }
 
-.mdc-text-field__outline-path {
+.mdc-notched-outline__path {
   stroke-width: 1px;
   transition: mdc-text-field-transition(stroke), mdc-text-field-transition(stroke-width),
   mdc-text-field-transition(opacity);

@@ -16,26 +16,26 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-import MDCTextFieldOutlineAdapter from './adapter';
+import MDCNotchedOutlineAdapter from './adapter';
 import {strings} from './constants';
 
 /**
- * @extends {MDCFoundation<!MDCTextFieldOutlineAdapter>}
+ * @extends {MDCFoundation<!MDCNotchedOutlineAdapter>}
  * @final
  */
-class MDCTextFieldOutlineFoundation extends MDCFoundation {
+class MDCNotchedOutlineFoundation extends MDCFoundation {
   /** @return enum {string} */
   static get strings() {
     return strings;
   }
 
   /**
-   * {@see MDCTextFieldOutlineAdapter} for typing information on parameters and return
+   * {@see MDCNotchedOutlineAdapter} for typing information on parameters and return
    * types.
-   * @return {!MDCTextFieldOutlineAdapter}
+   * @return {!MDCNotchedOutlineAdapter}
    */
   static get defaultAdapter() {
-    return /** @type {!MDCTextFieldOutlineAdapter} */ ({
+    return /** @type {!MDCNotchedOutlineAdapter} */ ({
       getWidth: () => {},
       getHeight: () => {},
       setOutlinePathAttr: () => {},
@@ -44,10 +44,10 @@ class MDCTextFieldOutlineFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {!MDCTextFieldOutlineAdapter} adapter
+   * @param {!MDCNotchedOutlineAdapter} adapter
    */
   constructor(adapter) {
-    super(Object.assign(MDCTextFieldOutlineFoundation.defaultAdapter, adapter));
+    super(Object.assign(MDCNotchedOutlineFoundation.defaultAdapter, adapter));
   }
 
   /**
@@ -93,4 +93,4 @@ class MDCTextFieldOutlineFoundation extends MDCFoundation {
   }
 }
 
-export default MDCTextFieldOutlineFoundation;
+export default MDCNotchedOutlineFoundation;

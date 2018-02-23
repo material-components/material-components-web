@@ -22,7 +22,6 @@ import MDCLineRippleFoundation from '@material/line-ripple/foundation';
 import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
 import MDCTextFieldIconFoundation from './icon/foundation';
 import MDCFloatingLabelFoundation from '@material/floating-label/foundation';
-import MDCTextFieldOutlineFoundation from './outline/foundation';
 /* eslint-enable no-unused-vars */
 import {cssClasses, strings, numbers} from './constants';
 
@@ -95,8 +94,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.helperText_ = foundationMap.helperText;
     /** @type {!MDCTextFieldIconFoundation|undefined} */
     this.icon_ = foundationMap.icon;
-    /** @type {!MDCTextFieldOutlineFoundation|undefined} */
-    this.outline_ = foundationMap.outline;
 
     /** @private {boolean} */
     this.isFocused_ = false;
@@ -167,7 +164,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
    * Updates the focus outline for outlined text fields.
    */
   updateOutline() {
-    if (!this.outline_ || !this.adapter_.hasLabel()) {
+    if (!this.adapter_.hasOutline() || !this.adapter_.hasLabel()) {
       return;
     }
 
@@ -175,7 +172,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     const labelScale = isDense ? numbers.DENSE_LABEL_SCALE : numbers.LABEL_SCALE;
     const labelWidth = this.adapter_.getLabelWidth() * labelScale;
     const isRtl = this.adapter_.isRtl();
-    this.outline_.updateSvgPath(labelWidth, isRtl);
+    this.adapter_.updateOutlinePath(labelWidth, isRtl);
   }
 
   /**
@@ -185,8 +182,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.isFocused_ = true;
     this.styleFocused_(this.isFocused_);
     this.adapter_.activateLineRipple();
-    if (this.outline_) {
-      this.updateOutline();
+    if (this.adapter_.hasOutline()) {
+      this.adapter_.updateOutlinePath();
     }
     if (this.adapter_.hasLabel()) {
       this.adapter_.shakeLabel(this.shouldShake);

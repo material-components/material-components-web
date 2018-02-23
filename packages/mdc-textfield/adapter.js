@@ -17,10 +17,10 @@
 
 /* eslint-disable no-unused-vars */
 import MDCLineRippleFoundation from '@material/line-ripple/foundation';
+import MDCNotchedOutlineFoundation from '@material/notched-outline/foundation';
 import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
 import MDCTextFieldIconFoundation from './icon/foundation';
 import MDCFloatingLabelFoundation from '@material/floating-label/foundation';
-import MDCTextFieldOutlineFoundation from './outline/foundation';
 
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
@@ -43,7 +43,8 @@ let NativeInputType;
  *   helperText: (!MDCTextFieldHelperTextFoundation|undefined),
  *   icon: (!MDCTextFieldIconFoundation|undefined),
  *   label: (!MDCFloatingLabelFoundation|undefined),
- *   outline: (!MDCTextFieldOutlineFoundation|undefined)
+ *   outline: (!MDCTextFieldOutlineFoundation|undefined),
+ *   outline: (!MDCNotchedOutlineFoundation|undefined)
  * }}
  */
 let FoundationMapType;
