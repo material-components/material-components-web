@@ -172,7 +172,6 @@ module.exports = class {
     const getAbsolutePath = (...args) => this.pathResolver_.getAbsolutePath(...args);
 
     return extractTextPlugin.extract({
-      fallback: 'style-loader',
       use: [
         {
           loader: 'css-loader',
