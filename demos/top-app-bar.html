@@ -179,6 +179,7 @@
       demoReady(function() {
         var appBarEl = document.getElementById('demo-top-app-bar');
         var rightItemEl = document.getElementById('right-item');
+        var rightSection = document.getElementById('iconSection');
         var drawerEl = document.querySelector('.mdc-drawer');
 
         var drawer = new mdc.drawer.MDCTemporaryDrawer(drawerEl);
@@ -205,10 +206,10 @@
 
         noRightItemCheckbox.addEventListener('change', function()  {
           if(this.checked) {
-            rightItemEl.style.display = 'none';
+            rightSection.removeChild(rightItemEl);
             appBarEl.classList.remove('mdc-top-app-bar--short__right-action-item');
           } else {
-            rightItemEl.style.display = 'inline';
+            rightSection.appendChild(rightItemEl);
             appBarEl.classList.add('mdc-top-app-bar--short__right-action-item');
           }
         });

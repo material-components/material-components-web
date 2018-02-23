@@ -43,7 +43,7 @@ Top app bars can accommodate multiple icons on the right:
       <a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
       <span class="mdc-top-app-bar__title">Title</span>
     </section>
-    <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="top-app-bar">
+    <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
       <a href="#" class="material-icons mdc-top-app-bar__icon" aria-label="Download" alt="Download">file_download</a>
       <a href="#" class="material-icons mdc-top-app-bar__icon" aria-label="Print this page" alt="Print this page">print</a>
       <a href="#" class="material-icons mdc-top-app-bar__icon" aria-label="Bookmark this page" alt="Bookmark this page">bookmark</a>
@@ -61,7 +61,7 @@ Short top app bars should only be used with one right icon:
       <a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
       <span class="mdc-top-app-bar__title">Title</span>
     </section>
-    <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="top-app-bar">
+    <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
       <a href="#" class="material-icons mdc-top-app-bar__icon" aria-label="Bookmark this page" alt="Bookmark this page">bookmark</a>
     </section>
   </div>
