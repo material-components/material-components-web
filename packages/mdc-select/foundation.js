@@ -60,6 +60,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
       setMenuElAttr: (/* attr: string, value: string */) => {},
       rmMenuElAttr: (/* attr: string */) => {},
       getMenuElOffsetHeight: () => /* number */ 0,
+      getAdjustedMenuTop: () => 0,
       openMenu: (/* focusIndex: number */) => {},
       isMenuOpen: () => /* boolean */ false,
       setSelectedTextContent: (/* textContent: string */) => {},
@@ -228,10 +229,11 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.adapter_.setMenuElStyle('display', 'block');
     const menuHeight = this.adapter_.getMenuElOffsetHeight();
     const itemOffsetTop = this.adapter_.getOffsetTopForOptionAtIndex(index);
+    const adjustedHeight = this.adapter_.getAdjustedMenuTop(index);
     this.adapter_.setMenuElStyle('display', '');
     this.adapter_.rmMenuElAttr('aria-hidden');
 
-    let adjustedTop = top - itemOffsetTop;
+    let adjustedTop = top - adjustedHeight;
     const overflowsTop = adjustedTop < 0;
     const overflowsBottom = adjustedTop + menuHeight > innerHeight;
     if (overflowsTop) {
