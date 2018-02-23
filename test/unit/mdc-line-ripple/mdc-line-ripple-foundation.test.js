@@ -56,18 +56,57 @@ test('#destroy removes event listeners', () => {
   td.verify(mockAdapter.deregisterEventHandler('transitionend', td.matchers.isA(Function)));
 });
 
-test(`activate adds ${MDCLineRippleFoundation.cssClasses.LINE_RIPPLE_ACTIVE} class`, () => {
+test(`activate adds ${cssClasses.LINE_RIPPLE_ACTIVE} class`, () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
   foundation.activate();
   td.verify(mockAdapter.addClass(cssClasses.LINE_RIPPLE_ACTIVE));
 });
 
-test(`deactivate removes ${MDCLineRippleFoundation.cssClasses.LINE_RIPPLE_DEACTIVATING} class`, () => {
+test(`deactivate adds ${cssClasses.LINE_RIPPLE_DEACTIVATING} class`, () => {
   const {foundation, mockAdapter} = setupTest();
+
   foundation.init();
   foundation.deactivate();
   td.verify(mockAdapter.addClass(cssClasses.LINE_RIPPLE_DEACTIVATING));
+});
+
+test('opacity event after adding deactivating class triggers triggers removal of activation classes', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(cssClasses.LINE_RIPPLE_DEACTIVATING)).thenReturn(true);
+  const event = {
+    propertyName: 'opacity',
+  };
+
+  foundation.init();
+  foundation.handleTransitionEnd(event);
+  td.verify(mockAdapter.removeClass(cssClasses.LINE_RIPPLE_DEACTIVATING));
+  td.verify(mockAdapter.removeClass(cssClasses.LINE_RIPPLE_ACTIVE));
+});
+
+test(`non opacity transition event doesn't remove ${cssClasses.LINE_RIPPLE_DEACTIVATING} class`, () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(cssClasses.LINE_RIPPLE_DEACTIVATING)).thenReturn(true);
+  const event = {
+    propertyName: 'not-opacity',
+  };
+  foundation.init();
+
+  foundation.handleTransitionEnd(event);
+  td.verify(mockAdapter.removeClass(cssClasses.LINE_RIPPLE_DEACTIVATING), {times: 0});
+  td.verify(mockAdapter.removeClass(cssClasses.LINE_RIPPLE_ACTIVE), {times: 0});
+});
+
+test(`opacity transition event doesn't remove ${cssClasses.LINE_RIPPLE_DEACTIVATING} class if not deactivating`, () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(cssClasses.LINE_RIPPLE_DEACTIVATING)).thenReturn(false);
+  const event = {
+    propertyName: 'opacity',
+  };
+  foundation.init();
+  foundation.handleTransitionEnd(event);
+  td.verify(mockAdapter.removeClass(cssClasses.LINE_RIPPLE_DEACTIVATING), {times: 0});
+  td.verify(mockAdapter.removeClass(cssClasses.LINE_RIPPLE_ACTIVE), {times: 0});
 });
 
 test('setRippleCenter sets style attribute', () => {

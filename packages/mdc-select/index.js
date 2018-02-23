@@ -17,6 +17,7 @@
 import {MDCComponent} from '@material/base/index';
 import {MDCRipple} from '@material/ripple/index';
 import {MDCMenu} from '@material/menu/index';
+import {MDCSelectBottomLine} from './bottom-line/index';
 import {MDCSelectLabel} from './label/index';
 
 import MDCSelectFoundation from './foundation';
@@ -73,13 +74,17 @@ export class MDCSelect extends MDCComponent {
 
   initialize(
     menuFactory = (el) => new MDCMenu(el),
-    labelFactory = (el) => new MDCSelectLabel(el)) {
+    labelFactory = (el) => new MDCSelectLabel(el),
+    bottomLineFactory = (el) => new MDCSelectBottomLine(el)) {
     this.surface_ = this.root_.querySelector(strings.SURFACE_SELECTOR);
     const labelElement = this.root_.querySelector(strings.LABEL_SELECTOR);
     if (labelElement) {
       this.label_ = labelFactory(labelElement);
     }
-    this.bottomLine_ = this.root_.querySelector(strings.BOTTOM_LINE_SELECTOR);
+    const bottomLineElement = this.root_.querySelector(strings.BOTTOM_LINE_SELECTOR);
+    if (bottomLineElement) {
+      this.bottomLine_ = bottomLineFactory(bottomLineElement);
+    }
     this.selectedText_ = this.root_.querySelector(strings.SELECTED_TEXT_SELECTOR);
     this.menuEl_ = this.root_.querySelector(strings.MENU_SELECTOR);
     this.menu_ = menuFactory(this.menuEl_);
@@ -96,9 +101,8 @@ export class MDCSelect extends MDCComponent {
           this.label_.float(value);
         }
       },
-      addClassToBottomLine: (className) => this.bottomLine_.classList.add(className),
-      removeClassFromBottomLine: (className) => this.bottomLine_.classList.remove(className),
-      setBottomLineAttr: (attr, value) => this.bottomLine_.setAttribute(attr, value),
+      activateBottomLine: () => this.bottomLine_.activate(),
+      deactivateBottomLine: () => this.bottomLine_.deactivate(),
       setAttr: (attr, value) => this.root_.setAttribute(attr, value),
       rmAttr: (attr, value) => this.root_.removeAttribute(attr, value),
       computeBoundingRect: () => this.surface_.getBoundingClientRect(),

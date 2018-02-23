@@ -36,6 +36,8 @@ function setupTest() {
   return {root, component};
 }
 
+suite('MDCFormField');
+
 test('attachTo initializes and returns an MDCFormField instance', () => {
   assert.isOk(MDCFormField.attachTo(getFixture()) instanceof MDCFormField);
 });
