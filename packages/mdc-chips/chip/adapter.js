@@ -62,10 +62,30 @@ class MDCChipAdapter {
   deregisterInteractionHandler(evtType, handler) {}
 
   /**
+   * Registers an event listener on the trailing icon element for a given event.
+   * @param {string} evtType
+   * @param {function(!Event): undefined} handler
+   */
+  registerTrailingIconInteractionHandler(evtType, handler) {}
+
+  /**
+   * Deregisters an event listener on the trailing icon element for a given event.
+   * @param {string} evtType
+   * @param {function(!Event): undefined} handler
+   */
+  deregisterTrailingIconInteractionHandler(evtType, handler) {}
+
+  /**
    * Emits a custom "MDCChip:interaction" event denoting the chip has been
    * interacted with (typically on click or keydown).
    */
   notifyInteraction() {}
+
+  /**
+   * Emits a custom "MDCChip:trailingIconInteraction" event denoting the trailing icon has been
+   * interacted with (typically on click or keydown).
+   */
+  notifyTrailingIconInteraction() {}
 }
 
 export default MDCChipAdapter;
