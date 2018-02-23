@@ -467,8 +467,8 @@ test('get/set maxLength', () => {
   component.maxLength = 10;
   assert.equal(component.maxLength, 10);
   component.maxLength = -1;
-  // IE11 has a different value for no maxlength property
-  assert.isFalse(component.maxLength === 10);
+  // IE11 has a different value for no maxLength property
+  assert.notEqual(component.maxLength, 10);
 });
 
 test('get/set min', () => {
