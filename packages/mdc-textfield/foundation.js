@@ -183,7 +183,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.styleFocused_(this.isFocused_);
     this.adapter_.activateLineRipple();
     if (this.adapter_.hasOutline()) {
-      this.adapter_.updateOutlinePath();
+      this.updateOutline();
     }
     if (this.adapter_.hasLabel()) {
       this.adapter_.shakeLabel(this.shouldShake);
