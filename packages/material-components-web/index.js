@@ -38,7 +38,6 @@ import * as toolbar from '@material/toolbar/index';
 import * as topAppBar from '@material/top-app-bar/index';
 
 // Register all components
-autoInit.register('MDCLineRipple', lineRipple.MDCLineRipple);
 autoInit.register('MDCCheckbox', checkbox.MDCCheckbox);
 autoInit.register('MDCChip', chips.MDCChip);
 autoInit.register('MDCChipSet', chips.MDCChipSet);
@@ -49,6 +48,7 @@ autoInit.register('MDCFormField', formField.MDCFormField);
 autoInit.register('MDCRipple', ripple.MDCRipple);
 autoInit.register('MDCGridList', gridList.MDCGridList);
 autoInit.register('MDCIconToggle', iconToggle.MDCIconToggle);
+autoInit.register('MDCLineRipple', lineRipple.MDCLineRipple);
 autoInit.register('MDCLinearProgress', linearProgress.MDCLinearProgress);
 autoInit.register('MDCRadio', radio.MDCRadio);
 autoInit.register('MDCSnackbar', snackbar.MDCSnackbar);
@@ -65,7 +65,6 @@ autoInit.register('MDCTopAppBar', topAppBar.MDCTopAppBar);
 export {
   autoInit,
   base,
-  lineRipple,
   checkbox,
   chips,
   dialog,
@@ -73,6 +72,7 @@ export {
   formField,
   gridList,
   iconToggle,
+  lineRipple,
   linearProgress,
   menu,
   radio,
