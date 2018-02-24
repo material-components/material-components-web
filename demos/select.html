@@ -131,6 +131,10 @@
           <input type="checkbox" id="disabled">
           <label for="disabled">Disabled</label>
         </div>
+        <div>
+          <input type="checkbox" id="set-selected-checkbox">
+          <label for="set-selected-checkbox">Set Selected Index (0)</label>
+        </div>
       </section>
 
       <section class="example">
@@ -173,6 +177,10 @@
           <input type="checkbox" id="box-disabled">
           <label for="box-disabled">Disabled</label>
         </div>
+        <div>
+          <input type="checkbox" id="box-set-selected-checkbox">
+          <label for="box-set-selected-checkbox">Set Selected Index (0)</label>
+        </div>
       </section>
     </main>
 
@@ -196,6 +204,8 @@
         var rtlCb = document.getElementById('rtl');
         var alternateColorsCb = document.getElementById('alternate-colors');
         var disabledCb = document.getElementById('disabled');
+        var setSelectedCb = document.getElementById('set-selected-checkbox');
+
 
         rtlCb.addEventListener('change', function() {
           if (rtlCb.checked) {
@@ -210,6 +220,11 @@
         disabledCb.addEventListener('change', function() {
           select.disabled = disabledCb.checked;
         });
+
+        setSelectedCb.addEventListener('change', function() {
+          select.selectedIndex = this.checked ? 0 : -1;
+        });
+
       });
 
       demoReady(function() {
@@ -228,6 +243,7 @@
         var rtlCb = document.getElementById('box-rtl');
         var alternateColorsCb = document.getElementById('box-alternate-colors');
         var disabledCb = document.getElementById('box-disabled');
+        var setSelectedCb = document.getElementById('box-set-selected-checkbox');
 
         rtlCb.addEventListener('change', function() {
           if (rtlCb.checked) {
@@ -241,6 +257,10 @@
         });
         disabledCb.addEventListener('change', function() {
           select.disabled = disabledCb.checked;
+        });
+
+        setSelectedCb.addEventListener('change', function() {
+          select.selectedIndex = this.checked ? 0 : -1;
         });
       });
 
