@@ -1,9 +1,9 @@
 const cssClasses = {
-  ANIMATING: 'mdc-tabz-bar__container--animating',
+  ANIMATING: 'mdc-tabz-container--animating',
 };
 
 const strings = {
-  SCROLL_FAKERY_EVENT: 'MDCTabzContainer:scrollfakery',
+  INNER_SELECTOR: '.mdc-tabz-container__inner',
 };
 
 class MDCTabzContainer {
@@ -21,12 +21,21 @@ class MDCTabzContainer {
 
   constructor(root) {
     this.root_ = root;
+    this.inner_ = root.querySelector(strings.INNER_SELECTOR);
 
     this.adapter_ = {
-      getBoundingClientRect: () =>
+      getRootBoundingClientRect: () =>
         this.root_.getBoundingClientRect(),
-      setStyleProp: (prop, value) =>
-        this.root_.style[prop] = value,
+      getInnerBoundingClientRect: () =>
+        this.inner_.getBoundingClientRect(),
+      getInnerOffsetLeft: () =>
+        this.inner_.offsetLeft,
+      getRootScrollLeft: () =>
+        this.root_.scrollLeft,
+      setRootScrollLeft: (scrollLeft) =>
+        this.root_.scrollLeft = scrollLeft,
+      setInnerStyleProp: (prop, value) =>
+        this.inner_.style[prop] = value,
       addClass: (className) =>
         this.root_.classList.add(className),
       removeClass: (className) =>
@@ -35,13 +44,10 @@ class MDCTabzContainer {
         this.root_.addEventListener(evtType, handler),
       deregisterEventListener: (evtType, handler) =>
         this.root_.removeEventListener(evtType, handler),
-      notifyScrollFakery: () => {
-        this.emitScrollFakery_();
-      },
     };
 
-    /** @type {boolean} */
-    this.shouldNotifyScrollFakery_ = false;
+    this.shouldUpdateScrollPosition_ = false;
+    this.targetScrollPosition_ = 0;
 
     this.handleTransitionEnd_ = (e) => this.handleTransitionEnd(e);
 
@@ -51,23 +57,26 @@ class MDCTabzContainer {
   init() {
   }
 
-  /** @private */
-  emitScrollFakery_() {
-    const ce = new CustomEvent(strings.SCROLL_FAKERY_EVENT, {
-      bubbles: true,
-    });
-    this.root_.dispatchEvent(ce);
-  }
-
   handleTransitionEnd(e) {
     // Ignore all events that aren't from the root
-    if (e.target !== this.root_) return;
+    if (e.target !== this.inner_) return;
     // Remove the animating class
     this.adapter_.removeClass(cssClasses.ANIMATING);
-    if (this.shouldNotifyScrollFakery_) {
-      this.adapter_.notifyScrollFakery();
-      this.shouldNotifyScrollFakery_ = false;
+    if (this.shouldUpdateScrollPosition_) {
+      this.updateScrollPosition_();
     }
+  }
+
+  /**
+   * Updates the scroll position to the saved value
+   * @private
+   */
+  updateScrollPosition_() {
+    this.resetTransform_();
+    const currentScrollLeft = this.adapter_.getRootScrollLeft();
+    this.adapter_.setRootScrollLeft(currentScrollLeft - this.targetScrollPosition_);
+    this.targetScrollPosition_ = 0;
+    this.shouldUpdateScrollPosition_ = false;
   }
 
   /**
@@ -75,17 +84,16 @@ class MDCTabzContainer {
    * @param {number} targetX The target scrollLeft value
    * @param {number=} currentX The current scrollLeft value
    */
-  animateFakeScroll(targetX, currentX=0) {
-    console.log('currentX', currentX, 'targetX', targetX);
-    this.adapter_.setStyleProp('transform', `translateX(${currentX}px)`);
+  slideTo(targetX, currentX=0) {
+    this.adapter_.setInnerStyleProp('transform', `translateX(${currentX}px)`);
     this.adapter_.addClass(cssClasses.ANIMATING);
     // Force reflow so style changes get picked up
-    this.adapter_.getBoundingClientRect();
+    this.adapter_.getRootBoundingClientRect();
     // Listen for transition end
     this.adapter_.registerEventListener('transitionend', this.handleTransitionEnd_);
     // Update the position
     requestAnimationFrame(() => {
-      this.adapter_.setStyleProp('transform', `translateX(${targetX}px)`);
+      this.adapter_.setInnerStyleProp('transform', `translateX(${targetX}px)`);
     });
   }
 
@@ -94,14 +102,14 @@ class MDCTabzContainer {
    * @param {number} targetX The target scrollLeft value
    * @param {?number} currentX The current scrollLeft value
    */
-  fakeScroll(targetX, currentX) {
-    this.shouldNotifyScrollFakery_ = true;
-    this.animateFakeScroll(targetX, currentX);
+  scrollTo(targetX, currentX) {
+    this.shouldUpdateScrollPosition_ = true;
+    this.targetScrollPosition_ = targetX;
+    this.slideTo(targetX, currentX);
   }
 
-  /** Resets the root element's transform property */
-  resetTransform() {
-    this.adapter_.setStyleProp('transform', '');
+  resetTransform_() {
+    this.adapter_.setInnerStyleProp('transform', '');
   }
 
   /**
@@ -109,7 +117,31 @@ class MDCTabzContainer {
    * @return {!ClientRect}
    */
   getRootBoundingClientRect() {
-    return this.adapter_.getBoundingClientRect();
+    return this.adapter_.getRootBoundingClientRect();
+  }
+
+  /**
+   * Returns the bounding client rect of the inner
+   * @return {!ClientRect}
+   */
+  getInnerBoundingClientRect() {
+    return this.adapter_.getInnerBoundingClientRect();
+  }
+
+  /**
+   * Returns the left offet
+   * @return {number}
+   */
+  getInnerOffsetLeft() {
+    return this.adapter_.getInnerOffsetLeft();
+  }
+
+  /**
+   * Returns the scroll offset
+   * @return {number}
+   */
+  getRootScrollOffset() {
+    return this.adapter_.getRootScrollLeft();
   }
 }
 

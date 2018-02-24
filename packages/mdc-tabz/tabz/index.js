@@ -33,10 +33,16 @@ class MDCTabz {
         this.root_.addEventListener(evtType, handler),
       deregisterEventListener: (evtType, handler) =>
         this.root_.addEventListener(evtType, handler),
+      getRootOffsetLeft: () =>
+        this.root_.offsetLeft,
+      getRootOffsetWidth: () =>
+        this.root_.offsetWidth,
+      getContentOffsetLeft: () =>
+        this.content_.offsetLeft,
+      getContentOffsetWidth: () =>
+        this.content_.offsetWidth,
       getRootBoundingClientRect: () =>
         this.root_.getBoundingClientRect(),
-      getContentBoundingClientRect: () =>
-        this.content_.getBoundingClientRect(),
       addClass: (className) =>
         this.root_.classList.add(className),
       removeClass: (className) =>
@@ -95,20 +101,28 @@ class MDCTabz {
     this.adapter_.removeClass(cssClasses.ACTIVE);
   }
 
+  getRootOffsetLeft() {
+    return this.adapter_.getRootOffsetLeft();
+  }
+
+  getRootOffsetWidth() {
+    return this.adapter_.getRootOffsetWidth();
+  }
+
+  getContentOffsetLeft() {
+    return this.adapter_.getContentOffsetLeft();
+  }
+
+  getContentOffsetWidth() {
+    return this.adapter_.getContentOffsetWidth();
+  }
+
   /**
    * Returns the bounding rect of the element
    * @return {!ClientRect}
    */
   getRootBoundingClientRect() {
     return this.adapter_.getRootBoundingClientRect();
-  }
-
-  /**
-   * Returns the bounding rect of the content
-   * @return {!ClientRect}
-   */
-  getContentBoundingClientRect() {
-    return this.adapter_.getContentBoundingClientRect();
   }
 }
 

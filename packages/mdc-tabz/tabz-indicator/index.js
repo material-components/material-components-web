@@ -33,7 +33,7 @@ class MDCTabzIndicator {
   }
 
   /** @public */
-  get shouldMatchTabContentWidth() {
+  shouldMatchTabContentWidth() {
     return this.adapter_.hasClass(cssClasses.MATCH_TAB_CONTENT);
   }
 
@@ -41,6 +41,8 @@ class MDCTabzIndicator {
     this.root_ = root;
 
     this.adapter_ = {
+      getRootOffsetWidth: () =>
+        this.root_.offsetWidth,
       getBoundingClientRect: () =>
         this.root_.getBoundingClientRect(),
       setRootStyle: (prop, value) =>
@@ -68,14 +70,6 @@ class MDCTabzIndicator {
 
   init() {
     this.adapter_.addClass(cssClasses.UPGRADED);
-  }
-
-  /**
-   * Returns the bounding rect of the element
-   * @return {!ClientRect}
-   */
-  getBoundingClientRect() {
-    return this.adapter_.getBoundingClientRect();
   }
 
   /** Handles the transitionend event */
@@ -109,17 +103,9 @@ class MDCTabzIndicator {
     this.adapter_.setRootStyle('transform', this.transformation_);
   }
 
-  /**
-   * Calculates and stores the position of the indicator
-   * @param {!ClientRect} activeBbox The active tab's bounding box
-   * @param {!ClientRect} containerBbox The container's bounding box
-   */
-  calculatePosition(activeBbox, containerBbox) {
-    let translateX = activeBbox.left - containerBbox.left;
-    let scaleX = activeBbox.width;
+  calculatePosition(translateX, scaleX) {
     if (this.isCustom_ || this.isIcon_) {
-      const indicatorBbox = this.adapter_.getBoundingClientRect();
-      translateX += (activeBbox.width / 2) - (indicatorBbox.width / 2);
+      translateX += (scaleX / 2) - (this.adapter_.getRootOffsetWidth() / 2);
       scaleX = 1;
     }
     this.transformation_ = `translateX(${translateX}px) scaleX(${scaleX})`;

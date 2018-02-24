@@ -185,27 +185,63 @@ $mdc-color: $mdc-purple;
   }
 }
 
-/**
- * Top-Level Element
- */
-.mdc-tabz-bar {
+.mdc-tabz-pager {
+  display: flex;
+  position: absolute;
+  top: 0;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: none;
+  background: none;
+  visibility: hidden;
+  z-index: 3;
+
+  &--prev {
+    left: 0;
+  }
+
+  &--next {
+    right: 0;
+  }
+}
+
+.mdc-tabz-container {
   display: flex;
   position: relative;
-  border-bottom: 1px solid rgba(0, 0, 0, .12);
   overflow-x: scroll;
 
   &::-webkit-scrollbar {
     display: none;
   }
 
-  &__container {
+  &__inner {
     display: flex;
     position: relative;
-    flex: 1 1 100%;
+    flex: 1;
+    transform-origin: left;
+  }
 
-    &--animating {
-      transition: 250ms transform cubic-bezier(0, 0, .2, 1);
-    }
+  &--animating &__inner {
+    transition: 250ms transform cubic-bezier(0, 0, .2, 1);
+  }
+}
+
+/**
+ * Top-Level Element
+ */
+.mdc-tabz-bar {
+  position: relative;
+  border-bottom: 1px solid rgba(0, 0, 0, .12);
+
+  &--paging .mdc-tabz-container {
+    overflow-x: hidden;
+  }
+
+  &--paging .mdc-tabz-pager {
+    visibility: visible;
   }
 
   &--cluster-left,
@@ -218,62 +254,29 @@ $mdc-color: $mdc-purple;
     }
   }
 
-  &--cluster-left &__container,
-  &--cluster-center &__container,
-  &--cluster-right &__container {
-    flex: 0;
-  }
-
-  &--cluster-left,
-  &--cluster-left &__container {
+  &--cluster-left .mdc-tabz-container__inner {
     justify-content: flex-start;
   }
 
-  &--cluster-center,
-  &--cluster-center &__container {
+  &--cluster-center .mdc-tabz-container__inner {
     justify-content: center;
   }
 
-  &--cluster-right,
-  &--cluster-right &__container {
+  &--cluster-right .mdc-tabz-container__inner {
     justify-content: flex-end;
   }
 
   &--fixed-width {
-    padding-right: 56px;
+    border-bottom: none;
+  }
+
+  &--fixed-width .mdc-tabz-container {
     padding-left: 56px;
     border-bottom: none;
-
-    // @include mdc-rtl {
-    //   padding-right: 56px;
-    //   padding-left: 0;
-    // }
   }
 
   &--fixed-width .mdc-tabz {
-    flex: 1 0 110px;
-  }
-}
-
-.mdc-tabz-pager {
-  display: flex;
-  position: absolute;
-  top: 0;
-  align-items: center;
-  justify-content: center;
-  width: 48px;
-  height: 48px;
-  padding: 0;
-  border: none;
-  background: none;
-  z-index: 3;
-
-  &--prev {
-    left: 0;
-  }
-
-  &--next {
-    right: 0;
+    flex: 0 0 110px;
   }
 }
 
