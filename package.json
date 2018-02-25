@@ -91,7 +91,7 @@
     "testdouble": "^3.2.4",
     "to-slug-case": "^1.0.0",
     "validate-commit-msg": "^2.6.1",
-    "webpack": "^3.0.0",
+    "webpack": "^4.0.0",
     "webpack-dev-server": "^2.4.3"
   },
   "babel": {
