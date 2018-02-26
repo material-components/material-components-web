@@ -84,7 +84,7 @@ This will produce a customized Material Design button!
 
 > Note: This guide assume you have webpack configured to compile ES2015 into JavaScript. See this [getting started guide](docs/getting-started.md) for pointers on how to configure webpack.
 
-Now that you have webpack configured to compile ES2015 into JavaScript, lets include the ES2015 files from the Material Design ripple. First install the Node dependency:
+To include the ES2015 files for the Material Design ripple, install the Node dependency:
 
 ```
 npm install @material/ripple
