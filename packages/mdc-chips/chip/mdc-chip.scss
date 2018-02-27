@@ -59,25 +59,6 @@
   outline: none;
 }
 
-.mdc-chip__checkmark {
-  width: 0;
-  height: 24px;
-  transition: opacity 100ms linear, width 100ms linear;
-}
-
-.mdc-chip__icon--leading + .mdc-chip__checkmark {
-  transition: width 0ms linear;
-
-  &.mdc-chip__icon--opaque {
-    width: 24px;
-  }
-}
-
-.mdc-chip__checkmark,
-.mdc-chip__icon--leading {
-  margin: -4px 4px -4px -4px;
-}
-
 .mdc-chip__icon--trailing {
   margin: 0 -4px 0 4px;
 
@@ -99,17 +80,9 @@
   font-size: $mdc-chip-trailing-icon-size;
 }
 
-.mdc-chip__checkmark.mdc-chip__icon--opaque {
-  width: 24px;
-}
-
+.mdc-chip__checkmark,
 .mdc-chip__icon--leading {
-  transition: opacity 50ms linear, width 50ms linear;
-}
-
-.mdc-chip__icon.mdc-chip__icon--transparent {
-  width: 0;
-  opacity: 0;
+  margin: -4px 4px -4px -4px;
 }
 
 .mdc-chip__checkmark-path {
@@ -127,4 +100,34 @@
 
 .mdc-chip__icon--opaque .mdc-chip__checkmark-path {
   stroke-dashoffset: 0;
+}
+
+.mdc-chip__checkmark {
+  width: 0;
+  height: 24px;
+  transition: width 100ms linear;
+}
+
+// No leading icon
+
+.mdc-chip--activated .mdc-chip__checkmark {
+  width: 24px;
+}
+
+// With leading icon
+.mdc-chip__icon--leading + .mdc-chip__checkmark {
+  transition: width 0ms;
+
+  .mdc-chip--activated & {
+    width: 24px;
+  }
+}
+
+.mdc-chip__icon--leading {
+  transition: opacity 75ms linear;
+
+  .mdc-chip--activated & {
+    width: 0;
+    opacity: 0;
+  }
 }
