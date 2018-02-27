@@ -80,6 +80,7 @@ export {
   lineRipple,
   linearProgress,
   menu,
+  notchedOutline,
   radio,
   ripple,
   select,

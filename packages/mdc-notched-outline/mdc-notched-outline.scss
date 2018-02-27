@@ -14,12 +14,12 @@
 // limitations under the License.
 //
 
-@import "@material/theme/mixins";
 @import "@material/ripple/mixins";
 @import "@material/ripple/variables";
+@import "@material/theme/mixins";
 @import "./mixins";
 
-.mdc-notched-outline--idle {
+.mdc-notched-outline__idle {
   position: absolute;
   top: 0;
   left: 0;
@@ -46,7 +46,6 @@
   overflow: hidden;
 
   // stylelint-disable selector-max-type
-  // postcss-bem-linter: ignore
   svg {
     position: absolute;
     width: 100%;

@@ -18,7 +18,7 @@
 /** @enum {string} */
 const strings = {
   PATH_SELECTOR: '.mdc-notched-outline__path',
-  IDLE_OUTLINE_SELECTOR: '.mdc-notched-outline--idle',
+  IDLE_OUTLINE_SELECTOR: '.mdc-notched-outline__idle',
 };
 
 export {strings};

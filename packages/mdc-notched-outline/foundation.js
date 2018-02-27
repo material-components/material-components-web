@@ -52,7 +52,7 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
 
   /**
    * Updates the SVG path of the focus outline element based on the width
-   * of the notched element width and the RTL context.
+   * of the notched element and the RTL context.
    * @param {number} notchWidth
    * @param {boolean=} isRtl
    */

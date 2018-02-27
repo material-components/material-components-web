@@ -101,7 +101,7 @@ test('#constructor when given a `mdc-text-field--outlined` element instantiates 
       <input type="text" class="mdc-text-field__input" id="my-text-field">
       <label class="mdc-floating-label" for="my-text-field">My Label</label>
       <div class="mdc-notched-outline"></div>
-      <div class="mdc-notched-outline--idle"></div>
+      <div class="mdc-notched-outline__idle"></div>
     </div>
   `;
   const outline = root.querySelector('.mdc-notched-outline');
@@ -130,7 +130,7 @@ test('#constructor when given a `mdc-text-field--outlined` element, initializes 
       <input type="text" class="mdc-text-field__input" id="my-text-field">
       <label class="mdc-floating-label" for="my-text-field">My Label</label>
       <div class="mdc-notched-outline"></div>
-      <div class="mdc-notched-outline--idle"></div>
+      <div class="mdc-notched-outline__idle"></div>
     </div>
   `;
   const component = new MDCTextField(root);

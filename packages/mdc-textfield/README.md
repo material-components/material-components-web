@@ -128,7 +128,7 @@ Add the `disabled` attribute to `<input>` if the `mdc-text-field` is disabled. Y
       <path class="mdc-notched-outline__path"/>
     </svg>
   </div>
-  <div class="mdc-notched-outline--idle"></div>
+  <div class="mdc-notched-outline__idle"></div>
 </div>
 ```
 

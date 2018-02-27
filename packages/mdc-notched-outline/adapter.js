@@ -21,7 +21,7 @@
  * Adapter for MDC Notched Outline.
  *
  * Defines the shape of the adapter expected by the foundation. Implement this
- * adapter to integrate the Notched outline into your framework. See
+ * adapter to integrate the Notched Outline into your framework. See
  * https://github.com/material-components/material-components-web/blob/master/docs/authoring-components.md
  * for more information.
  *

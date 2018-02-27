@@ -16,11 +16,11 @@
  */
 
 /* eslint-disable no-unused-vars */
+import MDCFloatingLabelFoundation from '@material/floating-label/foundation';
 import MDCLineRippleFoundation from '@material/line-ripple/foundation';
 import MDCNotchedOutlineFoundation from '@material/notched-outline/foundation';
 import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
 import MDCTextFieldIconFoundation from './icon/foundation';
-import MDCFloatingLabelFoundation from '@material/floating-label/foundation';
 
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
@@ -182,7 +182,7 @@ class MDCTextFieldAdapter {
 
   /**
    * Only implement if outline element exists.
-   * Updates SVG Path on outline element based on the width of the
+   * Updates SVG Path on outline element based on the
    * label element width and RTL context.
    * @param {number} labelWidth
    * @param {boolean} isRtl

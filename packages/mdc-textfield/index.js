@@ -265,23 +265,41 @@ class MDCTextField extends MDCComponent {
             this.lineRipple_.setRippleCenter(normalizedX);
           }
         },
-        shakeLabel: (shouldShake) => {
-          this.label_.shake(shouldShake);
-        },
-        floatLabel: (shouldFloat) => {
-          this.label_.float(shouldFloat);
-        },
-        hasLabel: () => {
-          return !!this.label_;
-        },
-        getLabelWidth: () => {
-          return this.label_.getWidth();
-        },
-        hasOutline: () => !!this.outline_,
-        updateOutlinePath: (labelWidth, isRtl) => this.outline_.updateSvgPath(labelWidth, isRtl),
       },
+      this.getOutlineAdapterMethods_(),
+      this.getLabelAdapterMethods_(),
       this.getInputAdapterMethods_())),
       this.getFoundationMap_());
+  }
+
+  /**
+   * @return {!{
+   *   shakeLabel: function(string, function()): undefined,
+   *   floatLabel: function(string, function()): undefined,
+   *   hasLabel: function(): ?Element,
+   *   getLabelWidth: function(): number,
+   * }}
+   */
+  getLabelAdapterMethods_() {
+    return {
+      shakeLabel: (shouldShake) => this.label_.shake(shouldShake),
+      floatLabel: (shouldFloat) => this.label_.float(shouldFloat),
+      hasLabel: () => !!this.label_,
+      getLabelWidth: () => this.label_.getWidth(),
+    };
+  }
+
+  /**
+   * @return {!{
+   *   hasOutline: function(): boolean,
+   *   updateOutlinePath: function(number, boolean): undefined,
+   * }}
+   */
+  getOutlineAdapterMethods_() {
+    return {
+      hasOutline: () => !!this.outline_,
+      updateOutlinePath: (labelWidth, isRtl) => this.outline_.updateSvgPath(labelWidth, isRtl),
+    };
   }
 
   /**

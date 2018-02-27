@@ -246,7 +246,7 @@
 
 // Never show the idle outline when the label is floating, otherwise the label
 // will collide with the idle outline.
-.mdc-floating-label--float-above ~ .mdc-notched-outline--idle {
+.mdc-floating-label--float-above ~ .mdc-notched-outline__idle {
   opacity: 0;
 }
 

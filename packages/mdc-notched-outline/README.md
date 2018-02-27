@@ -29,7 +29,7 @@ The outline is a border around all sides of the text field or select. This is us
     <path class="mdc-notched-outline__path"/>
   </svg>
 </div>
-<div class="mdc-notched-outline--idle"></div>
+<div class="mdc-notched-outline__idle"></div>
 ```
 
 ### Usage within `mdc-text-field`
@@ -43,7 +43,7 @@ The outline is a border around all sides of the text field or select. This is us
       <path class="mdc-notched-outline__path"/>
     </svg>
   </div>
-  <div class="mdc-notched-outline--idle"></div>
+  <div class="mdc-notched-outline__idle"></div>
 </div>
 ```
 
@@ -53,7 +53,7 @@ CSS Class | Description
 --- | ---
 `mdc-notched-outline` | Mandatory. Container for the SVG of the outline when the label is floating above the input.
 `mdc-notched-outline__path` | Mandatory. The SVG path in the outline when the label is floating above the input.
-`mdc-notched-outline--idle` | Mandatory. The outline when the label is resting in the input position.
+`mdc-notched-outline__idle` | Mandatory. The outline when the label is resting, in the docked position.
 
 ### `MDCNotchedOutline`
 Method Signature | Description
@@ -67,10 +67,10 @@ Method Signature | Description
 `getWidth() => number` | Returns the width of the outline element.
 `getHeight() => number` | Returns the height of the outline element.
 `setOutlinePathAttr(value: string) => void` | Sets the "d" attribute of the outline element's SVG path.
-`getIdleOutlineStyleValue(propertyName: string) => string` | Returns the idle outline element's computed style value of the given css property `propertyName`.
+`getIdleOutlineStyleValue(propertyName: string) => string` | Returns the idle outline element's computed style value of a given css `propertyName`.
 
 ### `MDCNotchedOutlineFoundation`
 
 Method Signature | Description
 --- | ---
-`updateSvgPath(labelWidth: number, isRtl: boolean) => void` | Updates the SVG path of the focus outline element based on the given the width of the label element and the RTL context.
+`updateSvgPath(labelWidth: number, isRtl: boolean) => void` | Updates the SVG path of the focus outline element based on the given width of the label element and the RTL context.

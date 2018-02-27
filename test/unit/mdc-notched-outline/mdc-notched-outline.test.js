@@ -62,8 +62,8 @@ test('#adapter.getIdleOutlineStyleValue returns the value of the given property 
   const outlineRoot = getFixture();
   const root = bel`<div></div>`;
   root.appendChild(outlineRoot);
-  root.appendChild(bel`<div class="mdc-notched-outline--idle"></div>`);
-  const idleOutline = root.querySelector('.mdc-notched-outline--idle');
+  root.appendChild(bel`<div class="mdc-notched-outline__idle"></div>`);
+  const idleOutline = root.querySelector('.mdc-notched-outline__idle');
   idleOutline.style.width = '500px';
 
   const component = new MDCNotchedOutline(outlineRoot);
