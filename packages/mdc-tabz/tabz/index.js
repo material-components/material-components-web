@@ -60,6 +60,11 @@ class MDCTabz {
       },
     };
 
+    this.rootOffsetLeftCache_ = null;
+    this.rootOffsetWidthCache_ = null;
+    this.contentOffsetLeftCache_ = null;
+    this.contentOffsetWidthCache_ = null;
+
     this.handleClick_ = () => this.handleClick();
     this.handleTransitionEnd_ = () => this.handleTransitionEnd();
 
@@ -70,10 +75,12 @@ class MDCTabz {
     this.adapter_.registerEventListener('click', this.handleClick_);
   }
 
+  /** Handles the click event */
   handleClick() {
     this.adapter_.notifyTabSelection();
   }
 
+  /** Handles the transitionend event */
   handleTransitionEnd() {
     this.adapter_.removeClass(cssClasses.ANIMATING_ACTIVATE);
     this.adapter_.removeClass(cssClasses.ANIMATING_DEACTIVATE);
@@ -101,18 +108,34 @@ class MDCTabz {
     this.adapter_.removeClass(cssClasses.ACTIVE);
   }
 
+  /**
+   * Returns the offset left of the root
+   * @return {number}
+   */
   getRootOffsetLeft() {
     return this.adapter_.getRootOffsetLeft();
   }
 
+  /**
+   * Returns the offset width of the root
+   * @return {number}
+   */
   getRootOffsetWidth() {
     return this.adapter_.getRootOffsetWidth();
   }
 
+  /**
+   * Returns the offset left of the content
+   * @return {number}
+   */
   getContentOffsetLeft() {
     return this.adapter_.getContentOffsetLeft();
   }
 
+  /**
+   * Returns the offset width of the content
+   * @return {number}
+   */
   getContentOffsetWidth() {
     return this.adapter_.getContentOffsetWidth();
   }

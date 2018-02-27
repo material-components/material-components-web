@@ -8,10 +8,17 @@ const strings = {
   RESIZE_INDICATOR_SELECTOR: '.mdc-tabz-indicator',
   CONTAINER_SELECTOR: '.mdc-tabz-container',
   PAGER_SELECTOR: '.mdc-tabz-pager',
+  PAGER_NEXT_SELECTOR: '.mdc-tabz-pager--next',
+  PAGER_PREV_SELECTOR: '.mdc-tabz-pager--prev',
 };
 
 const cssClasses = {
   PAGING: 'mdc-tabz-bar--paging',
+  PAGING_NEXT: '',
+};
+
+const numbers = {
+  SCROLL_OFFSET_FACTOR: 1.5,
 };
 
 class MDCTabzBar {
@@ -44,8 +51,10 @@ class MDCTabzBar {
     const tabz = this.root_.querySelectorAll(strings.TABZ_SELECTOR);
     this.tabz_ = Array.from(tabz).map((tab) => MDCTabz.attachTo(tab));
 
-    const pagerz = this.root_.querySelectorAll(strings.PAGER_SELECTOR);
-    this.pagerz_ = Array.from(pagerz).map((pager) => MDCTabzPager.attachTo(pager));
+    const pagerNext = this.root_.querySelector(strings.PAGER_NEXT_SELECTOR);
+    if (pagerNext) {
+      this.pagerNext_ = MDCTabzPager.attachTo(pagerNext);
+    }
 
     // Event Handlers
     this.handleResize_ = () => this.handleResize();
@@ -138,15 +147,6 @@ class MDCTabzBar {
   }
 
   /**
-   * Returns whether the tab is paging
-   * @return {boolean}
-   * @private
-   */
-  isPaging_() {
-    return this.adapter_.hasClass(cssClasses.PAGING);
-  }
-
-  /**
    * Handles the tab selection event
    * @param {!Event} e A browser event
    */
@@ -168,163 +168,55 @@ class MDCTabzBar {
 
   /** Handles the next page click */
   handleNextPageClick() {
-    const index = this.calculatePageEdgeIndex_('next');
-    // this.slideTabIntoView_(index);
+    const containerBbox = this.container_.getRootBoundingClientRect();
+    const innerBbox = this.container_.getInnerBoundingClientRect();
+    const innerOffset = innerBbox.left - containerBbox.left;
+    const tabLength = this.tabz_.length;
+    let i = 0;
+    let slideTo = 0;
+    let tabsToRightAreOccluded = false;
+
+    while (!tabsToRightAreOccluded && i < tabLength) {
+      const tabLeft = this.tabz_[i].getRootOffsetLeft();
+      const tabRight = tabLeft + this.tabz_[i].getRootOffsetWidth();
+      const tabRightRelative = tabRight + innerOffset;
+      slideTo = tabLeft;
+      tabsToRightAreOccluded = tabRightRelative > containerBbox.width;
+      i++;
+    }
+
+    if (tabsToRightAreOccluded) {
+      this.container_.slideTo(slideTo * -1);
+    }
+
+    const remainingInnerWidth = innerBbox.width - slideTo;
+    if (remainingInnerWidth < containerBbox.width) {
+      this.pagerNext_.hide();
+    }
   }
 
   /** Handles the prev page click */
   handlePrevPageClick() {
-    const index = this.calculatePageEdgeIndex_('prev');
-    // this.slideTabIntoView_(index);
-  }
-
-  /**
-   * @param {string} direction The direction to scroll
-   */
-  calculatePageSize_(direction) {
-    if (direction !== 'prev' && direction !== 'next') {
-      throw new Error('WHOA THERE BUDDY WHAT DO YOU THINK YOU\'RE DOING?!');
-    }
-
-    const shouldContinue = (dir, i) => {
-      let shouldContinue_ = false;
-      if (dir === 'next') {
-        shouldContinue_ = i < this.tabz_.length;
-      } else if (dir === 'prev') {
-        shouldContinue_ = i >= 0;
-      }
-      return shouldContinue_;
-    };
-
-    const nextIteration = (dir, i) => {
-      if (dir === 'next') {
-        return i + 1;
-      } else if (dir === 'prev') {
-        return i - 1;
-      }
-    };
-
-    const iteratorValue = (dir) => {
-      if (dir === 'next') {
-        return 0;
-      } else if (dir === 'prev') {
-        return this.tabz_.length - 1;
-      }
-    };
-
-    const barBbox = this.adapter_.getRootBoundingClientRect();
-    let i = iteratorValue(direction);
-    let current = 0;
-    let next = 0;
-    while (shouldContinue(direction, i)) {
-      const tabBbox = this.tabz_[i].getRootBoundingClientRect();
-      if (tabBbox.left >= barBbox.left && tabBbox.right <= barBbox.right) {
-        current += tabBbox.width;
-      } else {
-        const newPageSize_ = next + tabBbox.width;
-        if (newPageSize_ < barBbox.width) {
-          next = newPageSize_;
-        } else {
-          break;
-        }
-      }
-      i = nextIteration(direction, i);
-    }
-
-    return current;
-  }
-
-  getTabVisibilityBuckets_() {
-    const visibleBbox = this.container_.getRootBoundingClientRect();
-    const innerOffset = this.container_.getInnerOffsetLeft();
-    const innerBbox = this.container_.getInnerBoundingClientRect();
-    const offset = innerBbox.left - visibleBbox.left - innerOffset;
-
-    // Keep track of occluded and visible tabs
-    const occludedLeft = [];
-    const occludedRight = [];
-    const visible = [];
-
-    // For loop because speed?
-    for (let i = 0; i < this.tabz_.length; i++) {
-      const tab = this.tabz_[i];
-      const left = tab.getRootOffsetLeft() + offset;
-      const width = tab.getRootOffsetWidth();
-      const right = left + width;
-      const vbox = {
-        left,
-        width,
-        right,
-        index: i,
-      };
-
-      if (left < 0) {
-        occludedLeft.push(vbox);
-      } else if (left >= 0 && right <= visibleBbox.width) {
-        visible.push(vbox);
-      } else {
-        occludedRight.push(vbox);
-      }
-    }
-
-    return {
-      occludedLeft,
-      occludedRight,
-      visible,
-    };
-  }
-
-  calculatePageEdgeIndex_(direction) {
-    const tabs = this.getTabVisibilityBuckets_();
-    console.log(tabs);
-  }
-
-  /**
-   * Calculates the edge tab to scroll to
-   * @return {number}
-   * @private
-   */
-  calculatePageEdgeTabIndex_(direction) {
     const containerBbox = this.container_.getRootBoundingClientRect();
-    const tabBoxes = this.tabz_.map((tab) => tab.getRootBoundingClientRect());
-    const visibleTabs = tabBoxes.reduce((acc, bbox, i) => {
-      if (bbox.left >= containerBbox.left && bbox.right <= containerBbox.right) {
-        acc.push(i);
-      }
-      return acc;
-    }, []);
+    const innerBbox = this.container_.getInnerBoundingClientRect();
+    const innerOffset = innerBbox.left - containerBbox.left;
+    const tabLength = this.tabz_.length;
+    let i = tabLength - 1;
+    let slideTo = 0;
+    let tabsToLeftAreOccluded = false;
 
-    let pageSize = 0;
-    let activeIndex;
-
-    if (direction === 'next') {
-      const start = visibleTabs[visibleTabs.length - 1] + 1;
-      activeIndex = start;
-      for (let i = start; i < tabBoxes.length; i++) {
-        const bbox = tabBoxes[i];
-        const pageSize_ = pageSize + bbox.width;
-        if (pageSize_ < containerBbox.width) {
-          pageSize = pageSize_;
-          activeIndex = i;
-        } else {
-          break;
-        }
-      }
-    } else {
-      const start = visibleTabs[0] - 1;
-      activeIndex = start;
-      for (let i = start; i > -1; i--) {
-        const bbox = tabBoxes[i];
-        const pageSize_ = pageSize + bbox.width;
-        if (pageSize_ < containerBbox.width) {
-          pageSize = pageSize_;
-          activeIndex = i;
-        } else {
-          break;
-        }
-      }
+    while (!tabsToLeftAreOccluded && i > 0) {
+      const tabLeft = this.tabz_[i].getRootOffsetLeft();
+      const tabRight = tabLeft + this.tabz_[i].getRootOffsetWidth();
+      const tabRightRelative = tabRight + innerOffset;
+      slideTo = tabLeft;
+      tabsToLeftAreOccluded = tabRightRelative > containerBbox.width;
+      i++;
     }
-    return activeIndex;
+
+    if (tabsToLeftAreOccluded) {
+      this.slideToPosition(slideTo);
+    }
   }
 
   /**
@@ -344,12 +236,66 @@ class MDCTabzBar {
     this.indicator_.animatePosition();
   }
 
+  slideTabIntoView_(index) {
+    // Early exit
+    if (!this.isIndexInRange_(index)) {
+      return;
+    }
+
+    // Check if tabs are between ends
+    const tabIsBetweenEnds = this.isIndexBetweenEnds_(index);
+    // Get the container and inner bounding rects
+    const containerBbox = this.container_.getRootBoundingClientRect();
+    const innerBbox = this.container_.getInnerBoundingClientRect();
+    // Get the inner's offsetLeft
+    const innerLeft = this.container_.getInnerOffsetLeft();
+    // Calculate innerOffset
+    const innerOffset = innerBbox.left - containerBbox.left;
+    // Calculate innerScroll
+    const innerScroll = containerBbox.left - innerBbox.left + innerLeft;
+    // Get the current tab
+    const tab = this.getTabAtIndex_(index);
+    const tabRootLeft = tab.getRootOffsetLeft();
+    const tabContentLeft = tab.getContentOffsetLeft();
+    const tabLeftEdgeDistance = innerScroll - tabRootLeft;
+    const tabRootRight = tabRootLeft + tab.getRootOffsetWidth();
+    const tabRightEdgeDistance = tabRootRight + innerOffset - containerBbox.width;
+    const slideToExtra = tabContentLeft * 2;
+    let shouldSlide = false;
+    let slideTo;
+
+    console.log('innerScroll', innerScroll);
+    console.log('tabLeftEdgeDistance', tabLeftEdgeDistance);
+    console.log('tabRightEdgeDistance', tabRightEdgeDistance);
+    console.log('tabRootLeft', tabRootLeft);
+    console.log('tabContentLeft', tabContentLeft);
+
+    // DEBUG
+    const tabBbox = tab.root_.getBoundingClientRect();
+    const containerBbox_ = this.container_.root_.getBoundingClientRect();
+    console.log(tabBbox.right - containerBbox_.right);
+
+    if (tabLeftEdgeDistance > 0) {
+      slideTo = tabRootLeft;
+    } else if (tabRightEdgeDistance > 0) {
+      slideTo = tabRightEdgeDistance + innerScroll;
+      if (tabIsBetweenEnds) {
+        slideTo += slideToExtra;
+      }
+    }
+
+    this.container_.slideTo(slideTo);
+
+    // this.container_.scrollTo(slideTo);
+    // console.log(tabLeft, tabRight, containerBbox.width);
+  }
+
   /**
    * Slides the tab at the given index into view
    * @param {number} index The index of the tab to slide into view
    * @private
    */
-  slideTabIntoView_(index) {
+  slideTabIntoView(index) {
     // Early exit
     if (!this.isIndexInRange_(index)) {
       return;
@@ -364,7 +310,6 @@ class MDCTabzBar {
     }
 
     // Determine the scrollLeft
-    const currentScroll = this.container_.getRootScrollOffset();
     const tabIsBetweenEnds = this.isIndexBetweenEnds_(index);
 
     // Get initial bounding boxes
@@ -379,27 +324,23 @@ class MDCTabzBar {
     // Scroll to either left or right if necessary
     if (leftGap > 0) {
       if (tabIsBetweenEnds) {
-        leftGap += scrollExtra * 1.5;
+        leftGap += scrollExtra * numbers.SCROLL_OFFSET_FACTOR;
       }
       targetScroll = leftGap * -1;
     } else if (Math.abs(leftGap) < scrollExtra) {
-      leftGap += scrollExtra;
+      leftGap += scrollExtra * numbers.SCROLL_OFFSET_FACTOR;
       targetScroll = leftGap * -1;
     } else if (rightGap > 0) {
       if (tabIsBetweenEnds) {
-        rightGap += scrollExtra * 1.5;
+        rightGap += scrollExtra * numbers.SCROLL_OFFSET_FACTOR;
       }
       targetScroll = rightGap;
     } else if (Math.abs(rightGap) < scrollExtra) {
-      rightGap += scrollExtra;
+      rightGap += scrollExtra * numbers.SCROLL_OFFSET_FACTOR;
       targetScroll = rightGap;
     }
 
-    if (this.isPaging_()) {
-      this.container_.slideTo(targetScroll, currentScroll);
-    } else {
-      this.container_.scrollTo(targetScroll, currentScroll);
-    }
+    this.container_.scrollTo(targetScroll);
   }
 
   /**

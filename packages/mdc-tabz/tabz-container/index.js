@@ -72,44 +72,35 @@ class MDCTabzContainer {
    * @private
    */
   updateScrollPosition_() {
-    this.resetTransform_();
+    this.adapter_.setInnerStyleProp('transform', '');
     const currentScrollLeft = this.adapter_.getRootScrollLeft();
-    this.adapter_.setRootScrollLeft(currentScrollLeft - this.targetScrollPosition_);
+    // console.log('updateScrollPosition_', this.targetScrollPosition_);
+    this.adapter_.setRootScrollLeft(currentScrollLeft + this.targetScrollPosition_);
     this.targetScrollPosition_ = 0;
     this.shouldUpdateScrollPosition_ = false;
   }
 
   /**
-   * Animates fake scrolling from currentX to targetX
+   * Animates fake scrolling to targetX
    * @param {number} targetX The target scrollLeft value
-   * @param {number=} currentX The current scrollLeft value
    */
-  slideTo(targetX, currentX=0) {
-    this.adapter_.setInnerStyleProp('transform', `translateX(${currentX}px)`);
+  slideTo(targetX) {
+    console.log(`slideTo(${targetX * -1}px)`);
     this.adapter_.addClass(cssClasses.ANIMATING);
-    // Force reflow so style changes get picked up
-    this.adapter_.getRootBoundingClientRect();
-    // Listen for transition end
     this.adapter_.registerEventListener('transitionend', this.handleTransitionEnd_);
-    // Update the position
-    requestAnimationFrame(() => {
-      this.adapter_.setInnerStyleProp('transform', `translateX(${targetX}px)`);
-    });
+    this.adapter_.setInnerStyleProp('transform', `translateX(${targetX * -1}px)`);
   }
 
   /**
-   * Fake scrolling from currentX to targetX
+   * Fake scrolling from targetX
    * @param {number} targetX The target scrollLeft value
-   * @param {?number} currentX The current scrollLeft value
    */
-  scrollTo(targetX, currentX) {
+  scrollTo(targetX) {
+    const currentX = this.adapter_.getRootScrollLeft();
+    this.adapter_.setInnerStyleProp('transform', `translateX(${currentX * -1}px)`);
     this.shouldUpdateScrollPosition_ = true;
     this.targetScrollPosition_ = targetX;
-    this.slideTo(targetX, currentX);
-  }
-
-  resetTransform_() {
-    this.adapter_.setInnerStyleProp('transform', '');
+    this.slideTo(targetX);
   }
 
   /**

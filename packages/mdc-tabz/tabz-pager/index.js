@@ -1,6 +1,7 @@
 const cssClasses = {
   PREV: 'mdc-tabz-pager--prev',
   NEXT: 'mdc-tabz-pager--next',
+  HIDE: 'mdc-tabz-pager--hide',
 };
 
 const strings = {
@@ -27,6 +28,10 @@ class MDCTabzPager {
         this.root_.removeEventListener(evtType, handler),
       hasClass: (className) =>
         this.root_.classList.contains(className),
+      addClass: (className) =>
+        this.root_.classList.add(className),
+      removeClass: (className) =>
+        this.root_.classList.remove(className),
       notifyPrev: () =>
         this.emitPrevEvent_(),
       notifyNext: () =>
@@ -62,6 +67,14 @@ class MDCTabzPager {
       bubbles: true,
     });
     this.root_.dispatchEvent(ce);
+  }
+
+  hide() {
+    this.adapter_.addClass(cssClasses.HIDE);
+  }
+
+  show() {
+    this.adapter_.removeClass(cssClasses.HIDE);
   }
 }
 

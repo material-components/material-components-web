@@ -196,8 +196,11 @@ $mdc-color: $mdc-purple;
   padding: 0;
   border: none;
   background: none;
-  visibility: hidden;
   z-index: 3;
+
+  &:focus {
+    outline: none;
+  }
 
   &--prev {
     left: 0;
@@ -205,6 +208,10 @@ $mdc-color: $mdc-purple;
 
   &--next {
     right: 0;
+  }
+
+  &--hide {
+    visibility: hidden;
   }
 }
 
@@ -238,10 +245,6 @@ $mdc-color: $mdc-purple;
 
   &--paging .mdc-tabz-container {
     overflow-x: hidden;
-  }
-
-  &--paging .mdc-tabz-pager {
-    visibility: visible;
   }
 
   &--cluster-left,
