@@ -256,38 +256,30 @@ class MDCTabzBar {
     // Get the current tab
     const tab = this.getTabAtIndex_(index);
     const tabRootLeft = tab.getRootOffsetLeft();
-    const tabContentLeft = tab.getContentOffsetLeft();
-    const tabLeftEdgeDistance = innerScroll - tabRootLeft;
+    // The distance from the left edge of the tab to the left edge of the container
+    const tabLeftEdgeDistance = innerScroll - tabRootLeft - innerLeft;
     const tabRootRight = tabRootLeft + tab.getRootOffsetWidth();
+    // The distance from the right edge of the tab to the right edge of the container
     const tabRightEdgeDistance = tabRootRight + innerOffset - containerBbox.width;
-    const slideToExtra = tabContentLeft * 2;
-    let shouldSlide = false;
+    // Extra scrollage FTW
+    const slideToExtra = tab.getContentOffsetLeft() * 2;
     let slideTo;
 
-    console.log('innerScroll', innerScroll);
-    console.log('tabLeftEdgeDistance', tabLeftEdgeDistance);
-    console.log('tabRightEdgeDistance', tabRightEdgeDistance);
-    console.log('tabRootLeft', tabRootLeft);
-    console.log('tabContentLeft', tabContentLeft);
-
-    // DEBUG
-    const tabBbox = tab.root_.getBoundingClientRect();
-    const containerBbox_ = this.container_.root_.getBoundingClientRect();
-    console.log(tabBbox.right - containerBbox_.right);
-
     if (tabLeftEdgeDistance > 0) {
-      slideTo = tabRootLeft;
+      slideTo = innerScroll - tabLeftEdgeDistance;
+      if (tabIsBetweenEnds) {
+        slideTo -= slideToExtra;
+      }
     } else if (tabRightEdgeDistance > 0) {
-      slideTo = tabRightEdgeDistance + innerScroll;
+      slideTo = innerScroll + tabRightEdgeDistance;
       if (tabIsBetweenEnds) {
         slideTo += slideToExtra;
       }
     }
 
-    this.container_.slideTo(slideTo);
-
-    // this.container_.scrollTo(slideTo);
-    // console.log(tabLeft, tabRight, containerBbox.width);
+    if (slideTo) {
+      this.container_.scrollTo(slideTo);
+    }
   }
 
   /**
