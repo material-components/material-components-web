@@ -23,6 +23,26 @@
 @import "../mixins";
 @import "../variables";
 
+@keyframes mdc-chips-checkmark-enter {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 24px;
+  }
+}
+
+@keyframes mdc-chips-checkmark-path-enter {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 24px;
+  }
+}
+
 .mdc-chip {
   @include mdc-ripple-surface;
   @include mdc-ripple-radius-bounded;
@@ -62,13 +82,12 @@
 
 .mdc-chip__icon.mdc-chip__icon--filter {
   width: 0;
-  opacity: 0;
+  height: 24px;
   transition: opacity 100ms linear, width 100ms linear;
 }
 
 .mdc-chip__icon--filter,
 .mdc-chip__icon--leading {
-  width: 24px;
   margin: -4px 4px -4px -4px;
 }
 
@@ -93,45 +112,23 @@
   font-size: $mdc-chip-trailing-icon-size;
 }
 
-.mdc-chip__icon.mdc-chip__icon--expanded {
+.mdc-chip__icon.mdc-chip__icon--opaque {
   width: 24px;
 }
 
-.mdc-chip__icon.mdc-chip__icon--opaque {
-  opacity: 1;
+.mdc-chip__checkmark-path {
+  transition:
+    mdc-checkbox-transition-exit(
+      stroke-dashoffset,
+      50ms,
+      150ms
+    );
+
+  stroke-width: 2px;
+  stroke-dashoffset: $mdc-checkbox-mark-path-length_;
+  stroke-dasharray: $mdc-checkbox-mark-path-length_;
 }
 
-.mdc-chip__icon.mdc-chip__icon--transparent {
-  opacity: 0;
-}
-
-.mdc-chip__checkmark {
-  width: 100%;
-  transition: mdc-checkbox-transition-exit(opacity, 0ms, $mdc-checkbox-transition-duration * 2);
-  opacity: 0;
-
-  .mdc-chip__checkmark-path {
-    transition:
-      mdc-checkbox-transition-exit(
-        stroke-dashoffset,
-        0ms,
-        $mdc-checkbox-transition-duration * 2
-      );
-    stroke-width: $mdc-checkbox-mark-stroke-size * 1.3;
-    stroke-dashoffset: $mdc-checkbox-mark-path-length_;
-    stroke-dasharray: $mdc-checkbox-mark-path-length_;
-  }
-}
-
-.mdc-chip__icon--opaque {
-  .mdc-chip__checkmark {
-    transition:
-      mdc-checkbox-transition-enter(opacity, 0ms, $mdc-checkbox-transition-duration * 2),
-      mdc-checkbox-transition-enter(transform, 0ms, $mdc-checkbox-transition-duration * 2);
-    opacity: 1;
-
-    .mdc-chip__checkmark-path {
-      stroke-dashoffset: 0;
-    }
-  }
+.mdc-chip__icon--opaque .mdc-chip__checkmark-path {
+  stroke-dashoffset: 0;
 }
