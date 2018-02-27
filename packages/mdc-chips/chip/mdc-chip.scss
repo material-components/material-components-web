@@ -98,9 +98,11 @@
   stroke-dasharray: $mdc-checkbox-mark-path-length_;
 }
 
-.mdc-chip__icon--opaque .mdc-chip__checkmark-path {
+.mdc-chip--activated .mdc-chip__checkmark-path {
   stroke-dashoffset: 0;
 }
+
+// No leading icon
 
 .mdc-chip__checkmark {
   width: 0;
@@ -108,26 +110,35 @@
   transition: width 100ms linear;
 }
 
-// No leading icon
-
 .mdc-chip--activated .mdc-chip__checkmark {
   width: 24px;
 }
 
 // With leading icon
-.mdc-chip__icon--leading + .mdc-chip__checkmark {
-  transition: width 0ms;
 
-  .mdc-chip--activated & {
-    width: 24px;
+.mdc-chip__icon--leading {
+  transition: opacity 75ms linear, width 0ms;
+  opacity: 1;
+}
+.mdc-chip__icon--leading + .mdc-chip__checkmark {
+  transition: opacity 75ms linear, width 0ms;
+  opacity: 0;
+}
+
+.mdc-chip--activated {
+  .mdc-chip__icon--leading {
+    opacity: 0;
+  }
+  .mdc-chip__icon--leading + .mdc-chip__checkmark {
+    opacity: 1;
+    width: 0;
   }
 }
 
-.mdc-chip__icon--leading {
-  transition: opacity 75ms linear;
-
-  .mdc-chip--activated & {
-    width: 0;
-    opacity: 0;
-  }
+.mdc-chip__icon--transparent.mdc-chip__icon--leading {
+  opacity: 0;
+  width: 0;
+}
+.mdc-chip__icon--transparent.mdc-chip__icon--leading + .mdc-chip__checkmark {
+  width: 24px;
 }
