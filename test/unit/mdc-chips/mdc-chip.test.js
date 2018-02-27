@@ -78,14 +78,55 @@ test('#adapter.deregisterInteractionHandler removes event listener for a given e
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test('#adapter.notifyInteraction emits ' +
-  `${MDCChipFoundation.strings.INTERACTION_EVENT}`, () => {
+test('#adapter.registerTrailingIconInteractionHandler adds event listener for a given event to the trailing' +
+'icon element', () => {
+  const {root, component} = setupTest();
+  const icon = bel`
+    <i class="material-icons mdc-chip__icon mdc-chip__icon--trailing" tabindex="0" role="button">cancel</i>
+  `;
+  root.appendChild(icon);
+  const handler = td.func('click handler');
+  component.getDefaultFoundation().adapter_.registerTrailingIconInteractionHandler('click', handler);
+  domEvents.emit(icon, 'click');
+
+  td.verify(handler(td.matchers.anything()));
+});
+
+test('#adapter.deregisterTrailingIconInteractionHandler removes event listener for a given event from the trailing ' +
+'icon element', () => {
+  const {root, component} = setupTest();
+  const icon = bel`
+    <i class="material-icons mdc-chip__icon mdc-chip__icon--trailing" tabindex="0" role="button">cancel</i>
+  `;
+  root.appendChild(icon);
+  const handler = td.func('click handler');
+
+  icon.addEventListener('click', handler);
+  component.getDefaultFoundation().adapter_.deregisterTrailingIconInteractionHandler('click', handler);
+  domEvents.emit(icon, 'click');
+
+  td.verify(handler(td.matchers.anything()), {times: 0});
+});
+
+test('#adapter.notifyInteraction emits ' + MDCChipFoundation.strings.INTERACTION_EVENT, () => {
   const {component} = setupTest();
   const handler = td.func('interaction handler');
 
   component.listen(
     MDCChipFoundation.strings.INTERACTION_EVENT, handler);
   component.getDefaultFoundation().adapter_.notifyInteraction();
+
+  td.verify(handler(td.matchers.anything()));
+});
+
+test('#adapter.notifyTrailingIconInteraction emits ' +
+  MDCChipFoundation.strings.TRAILING_ICON_INTERACTION_EVENT, () => {
+  const {component} = setupTest();
+  const handler = td.func('interaction handler');
+
+  component.listen(
+    MDCChipFoundation.strings.TRAILING_ICON_INTERACTION_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyTrailingIconInteraction();
 
   td.verify(handler(td.matchers.anything()));
 });
