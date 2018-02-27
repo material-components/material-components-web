@@ -142,7 +142,7 @@ test('#adapter.registerNavigationIconInteractionHandler adds a handler to the na
   td.verify(handler(td.matchers.anything()));
 });
 
-test('#adapter.deregisterScrollHandler does not remove a handler to the nav icon if the nav icon is null ', () => {
+test('#adapter.deregisterScrollHandler does not remove a handler from the nav icon if the nav icon is null ', () => {
   const {component} = setupTest(true);
   const handler = td.func('eventHandler');
 

@@ -63,7 +63,7 @@ class MDCTopAppBarFoundation extends MDCFoundation {
     this.isCollapsed = false;
 
     this.navClickHandler_ = () => this.adapter_.notifyNavigationIconClicked();
-    this.scrollHandler_ = () => this.shortAppBarScrollHandler();
+    this.scrollHandler_ = () => this.shortAppBarScrollHandler_();
   }
 
   init() {
@@ -73,7 +73,7 @@ class MDCTopAppBarFoundation extends MDCFoundation {
 
     if (isShortTopAppBar) {
       this.adapter_.registerScrollHandler(this.scrollHandler_);
-      this.styleShortAppBar();
+      this.initShortAppBar_();
     }
   }
 
@@ -85,7 +85,7 @@ class MDCTopAppBarFoundation extends MDCFoundation {
   /**
    * Used to set the initial style of the short top app bar
    */
-  styleShortAppBar() {
+  initShortAppBar_() {
     if (this.adapter_.getTotalActionItems() > 0) {
       this.adapter_.addClass(cssClasses.SHORT_HAS_ACTION_ITEM_CLASS);
     } else {
@@ -94,20 +94,20 @@ class MDCTopAppBarFoundation extends MDCFoundation {
   }
 
   /**
-   * Scroll handler for the applying/removing the closed modifier class
+   * Scroll handler for applying/removing the closed modifier class
    * on the short top app bar.
    */
-  shortAppBarScrollHandler() {
+  shortAppBarScrollHandler_() {
     const currentScroll = this.adapter_.getViewportScrollY();
 
     if (currentScroll === 0) {
       if (this.isCollapsed) {
-        this.adapter_.removeClass(cssClasses.SHORT_CLOSED_CLASS);
+        this.adapter_.removeClass(cssClasses.SHORT_COLLAPSED_CLASS);
         this.isCollapsed = false;
       }
     } else {
       if (!this.isCollapsed) {
-        this.adapter_.addClass(cssClasses.SHORT_CLOSED_CLASS);
+        this.adapter_.addClass(cssClasses.SHORT_COLLAPSED_CLASS);
         this.isCollapsed = true;
       }
     }

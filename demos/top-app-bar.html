@@ -168,8 +168,8 @@
         <label for="short-checkbox">Short</label>
       </div>
       <div>
-        <input type="checkbox" id="no-right-item-checkbox"/>
-        <label for="no-right-item-checkbox">No Right Item</label>
+        <input type="checkbox" id="no-action-item-checkbox"/>
+        <label for="no-action-item-checkbox">No Right Item</label>
       </div>
     </div>
 
@@ -186,7 +186,7 @@
         var appBar = mdc.topAppBar.MDCTopAppBar.attachTo(appBarEl);
 
         var shortCheckbox = document.getElementById('short-checkbox');
-        var noRightItemCheckbox = document.getElementById('no-right-item-checkbox');
+        var noActionItemCheckbox = document.getElementById('no-action-item-checkbox');
         var rtlCheckbox = document.getElementById('rtl-checkbox');
 
         appBarEl.addEventListener('MDCTopAppBar:nav', function() {
@@ -204,7 +204,7 @@
           }
         });
 
-        noRightItemCheckbox.addEventListener('change', function()  {
+        noActionItemCheckbox.addEventListener('change', function()  {
           if (this.checked) {
             rightSection.removeChild(rightItemEl);
             appBarEl.classList.remove('mdc-top-app-bar--short-has-action-item');

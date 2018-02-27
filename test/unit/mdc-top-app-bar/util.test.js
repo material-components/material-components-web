@@ -38,5 +38,5 @@ test('applyPassive returns false for browsers that do not support passive event 
       },
     },
   };
-  assert.isNotOk(util.applyPassive(mockWindow, true));
+  assert.isFalse(util.applyPassive(mockWindow, true));
 });

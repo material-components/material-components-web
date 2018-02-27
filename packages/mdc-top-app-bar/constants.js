@@ -28,7 +28,7 @@ const strings = {
 const cssClasses = {
   SHORT_CLASS: 'mdc-top-app-bar--short',
   SHORT_HAS_ACTION_ITEM_CLASS: 'mdc-top-app-bar--short-has-action-item',
-  SHORT_CLOSED_CLASS: 'mdc-top-app-bar--short-collapsed',
+  SHORT_COLLAPSED_CLASS: 'mdc-top-app-bar--short-collapsed',
 };
 
 export {strings, cssClasses};

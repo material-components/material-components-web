@@ -49,7 +49,7 @@
   @include mdc-rtl-reflexive_(border-bottom-left-radius, 0, border-bottom-right-radius, $mdc-top-app-bar-short-collapsed-border-radius);
 }
 
-@mixin mdc-top-app-bar-mobile-breakpoint($mobile-breakpoint: $mdc-top-app-bar-mobile-breakpoint) {
+@mixin mdc-top-app-bar-mobile-breakpoint_($mobile-breakpoint: $mdc-top-app-bar-mobile-breakpoint) {
   @media (max-width: $mobile-breakpoint) {
     .mdc-top-app-bar {
       .mdc-top-app-bar__row {

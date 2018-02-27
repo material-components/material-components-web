@@ -98,7 +98,6 @@ Mixin | Description
 `mdc-top-app-bar-fill-color($color)` | Sets the fill color of the top app bar.
 `mdc-top-app-bar-fill-color-accessible($color)` | Sets the fill color of the top app bar and automatically sets a high-contrast ink color.
 `mdc-top-app-bar-short-border-radius($border-radius)` | Sets the `border-bottom-radius` property on the action item side. Used only for the short top app bar when collapsed.
-`mdc-top-app-bar-mobile-breakpoint($mobile-breakpoint)` | Sets the css breakpoint for the mobile styles (default is 599px).
 
 ### `MDCTopAppBar`
 
@@ -117,7 +116,7 @@ Method Signature | Description
 `registerScrollHandler(handler) => void` | Registers a handler to be called when user scrolls. Our default implementation adds the handler as a listener to the window's `scroll` event.
 `deregisterScrollHandler(handler) => void` | Unregisters a handler to be called when user scrolls. Our default implementation removes the handler as a listener to the window's `scroll` event.
 `getViewportScrollY() => number` | Gets the number of pixels that the content of body is scrolled from the top of the page.
-`getTotalActionItems() => number` | Gets the number of action items on the top app bar.
+`getTotalActionItems() => number` | Gets the number of action items in the top app bar.
 
 ### Events
 
