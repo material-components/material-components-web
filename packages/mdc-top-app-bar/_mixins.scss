@@ -95,6 +95,7 @@
   @include mdc-ripple-radius-unbounded;
 
   display: flex;
+  flex-shrink: 0;
   position: relative;
   align-items: center;
   justify-content: center;

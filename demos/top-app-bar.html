@@ -216,6 +216,9 @@
 
         rtlCheckbox.addEventListener('change', function()  {
           document.body[this.checked ? 'setAttribute' : 'removeAttribute']("dir", "rtl");
+
+          appBar.destroy();
+          appBar = mdc.topAppBar.MDCTopAppBar.attachTo(appBarEl);
         })
       });
   </script>
