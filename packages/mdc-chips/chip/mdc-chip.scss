@@ -23,26 +23,6 @@
 @import "../mixins";
 @import "../variables";
 
-@keyframes mdc-chips-checkmark-enter {
-  from {
-    width: 0;
-  }
-
-  to {
-    width: 24px;
-  }
-}
-
-@keyframes mdc-chips-checkmark-path-enter {
-  from {
-    width: 0;
-  }
-
-  to {
-    width: 24px;
-  }
-}
-
 .mdc-chip {
   @include mdc-ripple-surface;
   @include mdc-ripple-radius-bounded;
@@ -77,16 +57,23 @@
   vertical-align: middle;
   border-radius: 50%;
   outline: none;
-  transition: opacity 100ms linear;
 }
 
-.mdc-chip__icon.mdc-chip__icon--filter {
+.mdc-chip__checkmark {
   width: 0;
   height: 24px;
   transition: opacity 100ms linear, width 100ms linear;
 }
 
-.mdc-chip__icon--filter,
+.mdc-chip__icon--leading + .mdc-chip__checkmark {
+  transition: width 0ms linear;
+
+  &.mdc-chip__icon--opaque {
+    width: 24px;
+  }
+}
+
+.mdc-chip__checkmark,
 .mdc-chip__icon--leading {
   margin: -4px 4px -4px -4px;
 }
@@ -112,8 +99,17 @@
   font-size: $mdc-chip-trailing-icon-size;
 }
 
-.mdc-chip__icon.mdc-chip__icon--opaque {
+.mdc-chip__checkmark.mdc-chip__icon--opaque {
   width: 24px;
+}
+
+.mdc-chip__icon--leading {
+  transition: opacity 50ms linear, width 50ms linear;
+}
+
+.mdc-chip__icon.mdc-chip__icon--transparent {
+  width: 0;
+  opacity: 0;
 }
 
 .mdc-chip__checkmark-path {

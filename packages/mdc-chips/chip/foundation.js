@@ -111,7 +111,7 @@ class MDCChipFoundation extends MDCFoundation {
     }
     if (this.adapter_.hasLeadingIcon()) {
       this.adapter_.addClassToLeadingIcon(cssClasses.TRANSPARENT_ICON);
-      this.adapter_.addClassToLeadingIcon(cssClasses.ANIMATING_ICON);
+      this.adapter_.addClassToFilterIcon(cssClasses.OPAQUE_ICON);
     } else {
       this.adapter_.addClassToFilterIcon(cssClasses.OPAQUE_ICON);
       // this.adapter_.addClassToFilterIcon(cssClasses.ANIMATING_ICON);
@@ -125,7 +125,7 @@ class MDCChipFoundation extends MDCFoundation {
     } else {
       this.adapter_.removeClassFromFilterIcon(cssClasses.OPAQUE_ICON);
     }
-    this.adapter_.addClassToFilterIcon(cssClasses.ANIMATING_ICON);
+    // this.adapter_.addClassToFilterIcon(cssClasses.ANIMATING_ICON);
   }
 
 
