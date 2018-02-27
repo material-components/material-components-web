@@ -109,36 +109,24 @@ class MDCChipFoundation extends MDCFoundation {
     if (!this.adapter_.hasFilterIcon()) {
       return;
     }
-    // if (this.adapter_.hasLeadingIcon()) {
-    //   this.adapter_.addClassToLeadingIcon(cssClasses.TRANSPARENT_ICON);
-    //   this.adapter_.addClassToFilterIcon(cssClasses.OPAQUE_ICON);
-    // } else {
-    //   this.adapter_.addClassToFilterIcon(cssClasses.OPAQUE_ICON);
-    //   // this.adapter_.addClassToFilterIcon(cssClasses.ANIMATING_ICON);
-    // }
     this.adapter_.addClassToLeadingIcon(cssClasses.ANIMATING_ICON);
   }
 
   // Filter chip is deselected.
   replaceFilterIconWithLeadingIcon() {
-    // if (this.adapter_.hasLeadingIcon()) {
-    //   this.adapter_.removeClassFromFilterIcon(cssClasses.OPAQUE_ICON);
-    // } else {
-    //   this.adapter_.removeClassFromFilterIcon(cssClasses.OPAQUE_ICON);
-    // }
     this.adapter_.addClassToFilterIcon(cssClasses.ANIMATING_ICON);
   }
 
   handleLeadingIconTransitionEnd_(evt) {
     if (evt.propertyName === 'opacity' && this.adapter_.eventTargetHasClass(evt.target, cssClasses.ANIMATING_ICON)) {
-      this.adapter_.addClassToLeadingIcon(cssClasses.TRANSPARENT_ICON);
+      this.adapter_.addClassToLeadingIcon(cssClasses.HIDDEN_ICON);
       this.adapter_.removeClassFromLeadingIcon(cssClasses.ANIMATING_ICON);
     }
   }
 
   handleFilterIconTransitionEnd_(evt) {
     if (evt.propertyName === 'opacity' && this.adapter_.eventTargetHasClass(evt.target, cssClasses.ANIMATING_ICON)) {
-      this.adapter_.removeClassFromLeadingIcon(cssClasses.TRANSPARENT_ICON);
+      this.adapter_.removeClassFromLeadingIcon(cssClasses.HIDDEN_ICON);
       this.adapter_.removeClassFromFilterIcon(cssClasses.ANIMATING_ICON);
     }
   }

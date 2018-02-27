@@ -92,7 +92,6 @@
       50ms,
       150ms
     );
-
   stroke-width: 2px;
   stroke-dashoffset: $mdc-checkbox-mark-path-length_;
   stroke-dasharray: $mdc-checkbox-mark-path-length_;
@@ -120,6 +119,7 @@
   transition: opacity 75ms linear, width 0ms;
   opacity: 1;
 }
+
 .mdc-chip__icon--leading + .mdc-chip__checkmark {
   transition: opacity 75ms linear, width 0ms;
   opacity: 0;
@@ -129,16 +129,18 @@
   .mdc-chip__icon--leading {
     opacity: 0;
   }
+
   .mdc-chip__icon--leading + .mdc-chip__checkmark {
     opacity: 1;
     width: 0;
   }
 }
 
-.mdc-chip__icon--transparent.mdc-chip__icon--leading {
+.mdc-chip__icon--leading.mdc-chip__icon--hidden {
   opacity: 0;
   width: 0;
 }
-.mdc-chip__icon--transparent.mdc-chip__icon--leading + .mdc-chip__checkmark {
+
+.mdc-chip__icon--leading.mdc-chip__icon--hidden + .mdc-chip__checkmark {
   width: 24px;
 }

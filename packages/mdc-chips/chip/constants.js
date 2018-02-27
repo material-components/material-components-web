@@ -26,9 +26,7 @@ const strings = {
 const cssClasses = {
   ACTIVATED: 'mdc-chip--activated',
   ANIMATING_ICON: 'mdc-chip__icon--animating',
-  EXPANDED_ICON: 'mdc-chip__icon--expanded',
-  OPAQUE_ICON: 'mdc-chip__icon--opaque',
-  TRANSPARENT_ICON: 'mdc-chip__icon--transparent',
+  HIDDEN_ICON: 'mdc-chip__icon--hidden',
 };
 
 export {strings, cssClasses};
