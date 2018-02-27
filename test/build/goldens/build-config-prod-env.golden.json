@@ -48,9 +48,6 @@
       "base": [
         "/packages/mdc-base/index.js"
       ],
-      "lineRipple": [
-        "/packages/mdc-line-ripple/index.js"
-      ],
       "checkbox": [
         "/packages/mdc-checkbox/index.js"
       ],
@@ -71,6 +68,9 @@
       ],
       "iconToggle": [
         "/packages/mdc-icon-toggle/index.js"
+      ],
+      "lineRipple": [
+        "/packages/mdc-line-ripple/index.js"
       ],
       "linearProgress": [
         "/packages/mdc-linear-progress/index.js"
@@ -163,12 +163,9 @@
               "loader": "/node_modules/extract-text-webpack-plugin/dist/loader.js",
               "options": {
                 "id": 3,
-                "omit": 1,
+                "omit": 0,
                 "remove": true
               }
-            },
-            {
-              "loader": "style-loader"
             },
             {
               "loader": "css-loader",
@@ -261,12 +258,9 @@
               "loader": "/node_modules/extract-text-webpack-plugin/dist/loader.js",
               "options": {
                 "id": 4,
-                "omit": 1,
+                "omit": 0,
                 "remove": true
               }
-            },
-            {
-              "loader": "style-loader"
             },
             {
               "loader": "css-loader",
