@@ -81,19 +81,26 @@ class MDCChipSetFoundation extends MDCFoundation {
    * @private
    */
   handleChipInteraction_(evt) {
-    if (!this.adapter_.hasClass(cssClasses.CHOICE)) {
-      return;
-    }
     const {chip} = evt.detail;
-    if (this.activeChips_.length === 0) {
-      this.activeChips_[0] = chip;
-    } else if (this.activeChips_[0] !== chip) {
-      this.activeChips_[0].toggleActive();
-      this.activeChips_[0] = chip;
-    } else {
-      this.activeChips_ = [];
+    if (this.adapter_.hasClass(cssClasses.CHOICE)) {
+      if (this.activeChips_.length === 0) {
+        this.activeChips_[0] = chip;
+      } else if (this.activeChips_[0] !== chip) {
+        this.activeChips_[0].toggleActive();
+        this.activeChips_[0] = chip;
+      } else {
+        this.activeChips_ = [];
+      }
+      chip.toggleActive();
+    } else if (this.adapter_.hasClass(cssClasses.FILTER)) {
+      const index = this.activeChips_.indexOf(chip);
+      if (index >= 0) {
+        this.activeChips_.splice(index, 1);
+      } else {
+        this.activeChips_.push(chip);
+      }
+      chip.toggleActive();
     }
-    chip.toggleActive();
   }
 }
 
