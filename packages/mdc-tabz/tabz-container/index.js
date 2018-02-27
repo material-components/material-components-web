@@ -85,6 +85,7 @@ class MDCTabzContainer {
    * @param {number} targetX The target scrollLeft value
    */
   slideTo(targetX) {
+    console.log(`slideTo(${targetX})`);
     this.adapter_.addClass(cssClasses.ANIMATING);
     this.adapter_.registerEventListener('transitionend', this.handleTransitionEnd_);
     this.adapter_.setInnerStyleProp('transform', `translateX(${targetX * -1}px)`);
@@ -95,6 +96,7 @@ class MDCTabzContainer {
    * @param {number} targetX The target scrollLeft value
    */
   scrollTo(targetX) {
+    console.log(`scrollTo(${targetX})`);
     const currentX = this.adapter_.getRootScrollLeft();
     this.targetScrollPosition_ = targetX - currentX;
     this.shouldUpdateScrollPosition_ = true;

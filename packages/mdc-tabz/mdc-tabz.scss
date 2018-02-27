@@ -276,6 +276,11 @@ $mdc-color: $mdc-purple;
   &--fixed-width .mdc-tabz-container {
     padding-left: 56px;
     border-bottom: none;
+
+    @include mdc-rtl {
+      padding-right: 56px;
+      padding-left: 0;
+    }
   }
 
   &--fixed-width .mdc-tabz {

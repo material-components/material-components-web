@@ -147,6 +147,13 @@ class MDCTabzBar {
   }
 
   /**
+   * @private
+   */
+  isPaging_() {
+    return this.adapter_.hasClass(cssClasses.PAGING);
+  }
+
+  /**
    * Handles the tab selection event
    * @param {!Event} e A browser event
    */
@@ -186,7 +193,7 @@ class MDCTabzBar {
     }
 
     if (tabsToRightAreOccluded) {
-      this.container_.slideTo(slideTo * -1);
+      this.container_.slideTo(slideTo);
     }
 
     const remainingInnerWidth = innerBbox.width - slideTo;
@@ -265,11 +272,19 @@ class MDCTabzBar {
     const slideToExtra = tab.getContentOffsetLeft() * 2;
     let slideTo;
 
-    if (tabLeftEdgeDistance > 0) {
+    if (tabLeftEdgeDistance > 0 && this.isPaging_()) {
+      this.container_.slideTo(tabRootRight);
+      // Early exit
+      return;
+    } else if (tabLeftEdgeDistance > 0) {
       slideTo = innerScroll - tabLeftEdgeDistance;
       if (tabIsBetweenEnds) {
         slideTo -= slideToExtra;
       }
+    } else if (tabRightEdgeDistance > 0 && this.isPaging_()) {
+      this.container_.slideTo(tabRootLeft);
+      // Early exit
+      return;
     } else if (tabRightEdgeDistance > 0) {
       slideTo = innerScroll + tabRightEdgeDistance;
       if (tabIsBetweenEnds) {

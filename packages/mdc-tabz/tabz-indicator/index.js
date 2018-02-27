@@ -43,8 +43,6 @@ class MDCTabzIndicator {
     this.adapter_ = {
       getRootOffsetWidth: () =>
         this.root_.offsetWidth,
-      getBoundingClientRect: () =>
-        this.root_.getBoundingClientRect(),
       setRootStyle: (prop, value) =>
         this.root_.style[prop] = value,
       addClass: (className) =>
