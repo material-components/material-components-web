@@ -48,9 +48,6 @@
       "base": [
         "/packages/mdc-base/index.js"
       ],
-      "lineRipple": [
-        "/packages/mdc-line-ripple/index.js"
-      ],
       "checkbox": [
         "/packages/mdc-checkbox/index.js"
       ],
@@ -71,6 +68,9 @@
       ],
       "iconToggle": [
         "/packages/mdc-icon-toggle/index.js"
+      ],
+      "lineRipple": [
+        "/packages/mdc-line-ripple/index.js"
       ],
       "linearProgress": [
         "/packages/mdc-linear-progress/index.js"

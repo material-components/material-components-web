@@ -131,6 +131,10 @@
           <input type="checkbox" id="disabled">
           <label for="disabled">Disabled</label>
         </div>
+        <div>
+          <input type="checkbox" id="set-selected-checkbox">
+          <label for="set-selected-checkbox">Set Selected Index (0)</label>
+        </div>
       </section>
 
       <section class="example">
@@ -173,6 +177,39 @@
           <input type="checkbox" id="box-disabled">
           <label for="box-disabled">Disabled</label>
         </div>
+        <div>
+          <input type="checkbox" id="box-set-selected-checkbox">
+          <label for="box-set-selected-checkbox">Set Selected Index (0)</label>
+        </div>
+      </section>
+
+      <section class="example">
+        <h2 class="mdc-typography--title">Pre-selected option via HTML</h2>
+        <section id="demo-wrapper">
+          <div id="js-pre-selected" class="mdc-select" role="listbox">
+            <div class="mdc-select__surface" tabindex="0">
+              <div class="mdc-select__label">Food Group</div>
+              <div class="mdc-select__selected-text"></div>
+              <div class="mdc-select__bottom-line"></div>
+            </div>
+            <div class="mdc-menu mdc-select__menu">
+              <ul class="mdc-list mdc-menu__items">
+                <li class="mdc-list-item" role="option" id="fruit-roll-ups" tabindex="0" aria-selected="true">
+                  Fruit Roll Ups
+                </li>
+                <li class="mdc-list-item" role="option" id="cotton-candy" tabindex="0">
+                  Candy (cotton)
+                </li>
+                <li class="mdc-list-item" role="option" id="vegetables" aria-disabled="true" tabindex="0">
+                  Vegetables
+                </li>
+                <li class="mdc-list-item" role="option" id="noodles" tabindex="0">
+                  Noodles
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
       </section>
     </main>
 
@@ -180,23 +217,25 @@
     <script>
       demoReady(function() {
         mdc.select.MDCSelect.attachTo(document.getElementById('hero-js-select'));
+        mdc.select.MDCSelect.attachTo(document.getElementById('js-pre-selected'));
 
         var root = document.getElementById('js-select');
         var boxCurrentlySelected = document.getElementById('currently-selected');
         var select = new mdc.select.MDCSelect(root);
+        var boxDemoWrapper = document.getElementById('demo-wrapper');
+        var rtlCb = document.getElementById('rtl');
+        var alternateColorsCb = document.getElementById('alternate-colors');
+        var disabledCb = document.getElementById('disabled');
+        var setSelectedCb = document.getElementById('set-selected-checkbox');
 
         root.addEventListener('MDCSelect:change', function() {
           var item = select.selectedOptions[0];
           var index = select.selectedIndex;
           boxCurrentlySelected.textContent = '"' + item.textContent + '" at index ' + index +
             ' with value "' + select.value + '"';
+
+          setSelectedCb.checked = index === 0;
         });
-
-        var boxDemoWrapper = document.getElementById('demo-wrapper');
-        var rtlCb = document.getElementById('rtl');
-        var alternateColorsCb = document.getElementById('alternate-colors');
-        var disabledCb = document.getElementById('disabled');
-
         rtlCb.addEventListener('change', function() {
           if (rtlCb.checked) {
             boxDemoWrapper.setAttribute('dir', 'rtl');
@@ -209,6 +248,9 @@
         });
         disabledCb.addEventListener('change', function() {
           select.disabled = disabledCb.checked;
+        });
+        setSelectedCb.addEventListener('change', function() {
+          select.selectedIndex = this.checked ? 0 : -1;
         });
       });
 
@@ -216,19 +258,20 @@
         var root = document.getElementById('box-js-select');
         var boxCurrentlySelected = document.getElementById('box-currently-selected');
         var select = new mdc.select.MDCSelect(root);
+        var boxDemoWrapper = document.getElementById('box-demo-wrapper');
+        var rtlCb = document.getElementById('box-rtl');
+        var alternateColorsCb = document.getElementById('box-alternate-colors');
+        var disabledCb = document.getElementById('box-disabled');
+        var setSelectedCb = document.getElementById('box-set-selected-checkbox');
 
         root.addEventListener('MDCSelect:change', function() {
           var item = select.selectedOptions[0];
           var index = select.selectedIndex;
           boxCurrentlySelected.textContent = '"' + item.textContent + '" at index ' + index +
             ' with value "' + select.value + '"';
+
+          setSelectedCb.checked = index === 0;
         });
-
-        var boxDemoWrapper = document.getElementById('box-demo-wrapper');
-        var rtlCb = document.getElementById('box-rtl');
-        var alternateColorsCb = document.getElementById('box-alternate-colors');
-        var disabledCb = document.getElementById('box-disabled');
-
         rtlCb.addEventListener('change', function() {
           if (rtlCb.checked) {
             boxDemoWrapper.setAttribute('dir', 'rtl');
@@ -242,8 +285,10 @@
         disabledCb.addEventListener('change', function() {
           select.disabled = disabledCb.checked;
         });
+        setSelectedCb.addEventListener('change', function() {
+          select.selectedIndex = this.checked ? 0 : -1;
+        });
       });
-
     </script>
   </body>
 </html>
