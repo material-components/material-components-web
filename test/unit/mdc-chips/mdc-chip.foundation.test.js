@@ -17,7 +17,7 @@
 import {assert} from 'chai';
 import td from 'testdouble';
 
-import {verifyDefaultAdapter} from '../helpers/foundation';
+import {verifyDefaultAdapter, captureHandlers} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
 import MDCChipFoundation from '../../../packages/mdc-chips/chip/foundation';
 
@@ -36,7 +36,9 @@ test('exports cssClasses', () => {
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCChipFoundation, [
     'addClass', 'removeClass', 'hasClass',
+    'registerTrailingIconInteractionHandler', 'deregisterTrailingIconInteractionHandler',
     'registerInteractionHandler', 'deregisterInteractionHandler', 'notifyInteraction',
+    'notifyTrailingIconInteraction',
   ]);
 });
 
@@ -48,6 +50,11 @@ test('#init adds event listeners', () => {
 
   td.verify(mockAdapter.registerInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.registerInteractionHandler('keydown', td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerTrailingIconInteractionHandler('click', td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerTrailingIconInteractionHandler('keydown', td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerTrailingIconInteractionHandler('touchstart', td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerTrailingIconInteractionHandler('pointerdown', td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerTrailingIconInteractionHandler('mousedown', td.matchers.isA(Function)));
 });
 
 test('#destroy removes event listeners', () => {
@@ -56,6 +63,11 @@ test('#destroy removes event listeners', () => {
 
   td.verify(mockAdapter.deregisterInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterInteractionHandler('keydown', td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterTrailingIconInteractionHandler('click', td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterTrailingIconInteractionHandler('keydown', td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterTrailingIconInteractionHandler('touchstart', td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterTrailingIconInteractionHandler('pointerdown', td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterTrailingIconInteractionHandler('mousedown', td.matchers.isA(Function)));
 });
 
 test('#toggleActive adds mdc-chip--activated class if the class does not exist', () => {
@@ -76,17 +88,28 @@ test('#toggleActive removes mdc-chip--activated class if the class exists', () =
 
 test('on click, emit custom event', () => {
   const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const mockEvt = {
     type: 'click',
   };
-  let click;
-
-  td.when(mockAdapter.registerInteractionHandler('click', td.matchers.isA(Function))).thenDo((evtType, handler) => {
-    click = handler;
-  });
 
   foundation.init();
-  click(mockEvt);
+  handlers.click(mockEvt);
 
   td.verify(mockAdapter.notifyInteraction());
+});
+
+test('on click in trailing icon, emit custom event', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerTrailingIconInteractionHandler');
+  const mockEvt = {
+    type: 'click',
+    stopPropagation: td.func('stopPropagation'),
+  };
+
+  foundation.init();
+  handlers.click(mockEvt);
+
+  td.verify(mockAdapter.notifyTrailingIconInteraction());
+  td.verify(mockEvt.stopPropagation());
 });
