@@ -43,7 +43,6 @@ let NativeInputType;
  *   helperText: (!MDCTextFieldHelperTextFoundation|undefined),
  *   icon: (!MDCTextFieldIconFoundation|undefined),
  *   label: (!MDCFloatingLabelFoundation|undefined),
- *   outline: (!MDCTextFieldOutlineFoundation|undefined),
  *   outline: (!MDCNotchedOutlineFoundation|undefined)
  * }}
  */

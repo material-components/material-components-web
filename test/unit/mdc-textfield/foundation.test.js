@@ -406,7 +406,7 @@ test('#updateOutline updates the SVG path of the outline element', () => {
 });
 
 test('#updateOutline updates the SVG path of the outline element when dense', () => {
-  const {foundation, mockAdapter, outline} = setupTest();
+  const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getLabelWidth()).thenReturn(30);
   td.when(mockAdapter.hasLabel()).thenReturn(true);
   td.when(mockAdapter.hasOutline()).thenReturn(true);
