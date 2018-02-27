@@ -95,8 +95,8 @@
   @include mdc-ripple-radius-unbounded;
 
   display: flex;
-  flex-shrink: 0;
   position: relative;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
   width: $mdc-top-app-bar-icon-size;
