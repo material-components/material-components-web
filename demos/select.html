@@ -222,7 +222,6 @@
         var root = document.getElementById('js-select');
         var boxCurrentlySelected = document.getElementById('currently-selected');
         var select = new mdc.select.MDCSelect(root);
-
         var boxDemoWrapper = document.getElementById('demo-wrapper');
         var rtlCb = document.getElementById('rtl');
         var alternateColorsCb = document.getElementById('alternate-colors');
@@ -237,7 +236,6 @@
 
           setSelectedCb.checked = index === 0;
         });
-
         rtlCb.addEventListener('change', function() {
           if (rtlCb.checked) {
             boxDemoWrapper.setAttribute('dir', 'rtl');
@@ -251,18 +249,15 @@
         disabledCb.addEventListener('change', function() {
           select.disabled = disabledCb.checked;
         });
-
         setSelectedCb.addEventListener('change', function() {
           select.selectedIndex = this.checked ? 0 : -1;
         });
-
       });
 
       demoReady(function() {
         var root = document.getElementById('box-js-select');
         var boxCurrentlySelected = document.getElementById('box-currently-selected');
         var select = new mdc.select.MDCSelect(root);
-
         var boxDemoWrapper = document.getElementById('box-demo-wrapper');
         var rtlCb = document.getElementById('box-rtl');
         var alternateColorsCb = document.getElementById('box-alternate-colors');
@@ -277,7 +272,6 @@
 
           setSelectedCb.checked = index === 0;
         });
-
         rtlCb.addEventListener('change', function() {
           if (rtlCb.checked) {
             boxDemoWrapper.setAttribute('dir', 'rtl');
@@ -291,12 +285,10 @@
         disabledCb.addEventListener('change', function() {
           select.disabled = disabledCb.checked;
         });
-
         setSelectedCb.addEventListener('change', function() {
           select.selectedIndex = this.checked ? 0 : -1;
         });
       });
-
     </script>
   </body>
 </html>
