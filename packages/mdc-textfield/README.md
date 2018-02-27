@@ -123,16 +123,16 @@ Add the `disabled` attribute to `<input>` if the `mdc-text-field` is disabled. Y
 <div class="mdc-text-field mdc-text-field--outlined">
   <input type="text" id="tf-outlined" class="mdc-text-field__input">
   <label for="tf-outlined" class="mdc-floating-label">Your Name</label>
-  <div class="mdc-text-field__outline">
+  <div class="mdc-notched-outline">
     <svg>
-      <path class="mdc-text-field__outline-path"/>
+      <path class="mdc-notched-outline__path"/>
     </svg>
   </div>
-  <div class="mdc-text-field__idle-outline"></div>
+  <div class="mdc-notched-outline--idle"></div>
 </div>
 ```
 
-See [here](outline/) for more information on using the outline sub-component.
+See [here](../mdc-notched-outline/) for more information on using the outline sub-component.
 
 > _NOTE_: Do not use `mdc-line-ripple` inside of `mdc-text-field` _if you plan on using `mdc-text-field--outlined`_. Bottom line should not be included as part of the DOM structure of an outlined text field.
 
@@ -226,6 +226,8 @@ Method Signature | Description
 `getNativeInput() => {value: string, disabled: boolean, badInput: boolean, checkValidity: () => boolean}?` | Returns an object representing the native text input element, with a similar API shape
 `isFocused() => boolean` | Returns whether the input is focused
 `isRtl() => boolean` | Returns whether the direction of the root element is set to RTL
+`hasOutline() => boolean` | Returns whether there is an outline element
+`updateOutlinePath(labelWidth: number, isRtl: boolean) => void` | Updates the outline path to create a notch for the label element
 
 #### `MDCTextFieldAdapter.getNativeInput()`
 

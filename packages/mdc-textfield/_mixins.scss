@@ -16,11 +16,11 @@
 
 @import "@material/floating-label/mixins";
 @import "@material/line-ripple/mixins";
+@import "@material/notched-outline/mixins";
+@import "@material/theme/mixins";
 @import "helper-text/mixins";
 @import "icon/mixins";
 @import "icon/variables";
-@import "@material/theme/mixins";
-@import "@material/notched-outline/mixins";
 
 @mixin mdc-text-field-outlined-corner-radius($radius) {
   border-radius: $radius;
@@ -103,6 +103,24 @@
 @mixin mdc-text-field-label-color($color) {
   &:not(.mdc-text-field--disabled) {
     @include mdc-text-field-label-color_($color);
+  }
+}
+
+@mixin mdc-text-field-outline-color($color) {
+  &:not(.mdc-text-field--disabled) {
+    @include mdc-text-field-outline-color_($color);
+  }
+}
+
+@mixin mdc-text-field-hover-outline-color($color) {
+  &:not(.mdc-text-field--disabled) {
+    @include mdc-text-field-hover-outline-color_($color);
+  }
+}
+
+@mixin mdc-text-field-focused-outline-color($color) {
+  &:not(.mdc-text-field--disabled) {
+    @include mdc-text-field-focused-outline-color_($color);
   }
 }
 
@@ -251,32 +269,12 @@
     @include mdc-text-field-outlined-corner-radius($mdc-text-field-border-radius);
   }
 
-  // stylelint-disable plugin/selector-bem-pattern
   .mdc-text-field__input:hover ~ .mdc-notched-outline--idle {
     border: 1px solid;
   }
 
   .mdc-text-field__icon:hover ~ .mdc-notched-outline--idle {
     border: 1px solid $mdc-text-field-outlined-hover-border;
-  }
-  // stylelint-enable plugin/selector-bem-pattern
-}
-
-@mixin mdc-text-field-outline-color($color) {
-  &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-outline-color_($color);
-  }
-}
-
-@mixin mdc-text-field-hover-outline-color($color) {
-  &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-hover-outline-color_($color);
-  }
-}
-
-@mixin mdc-text-field-focused-outline-color($color) {
-  &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-focused-outline-color_($color);
   }
 }
 

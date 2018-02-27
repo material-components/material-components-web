@@ -17,9 +17,9 @@
 
 import MDCComponent from '@material/base/component';
 
-import {strings} from './constants';
 import MDCNotchedOutlineAdapter from './adapter';
 import MDCNotchedOutlineFoundation from './foundation';
+import {strings} from './constants';
 
 /**
  * @extends {MDCComponent<!MDCNotchedOutlineFoundation>}
@@ -35,10 +35,13 @@ class MDCNotchedOutline extends MDCComponent {
   }
 
   /**
-    *
+    * Updates the SVG path of the focus outline element based on the width
+    * of the notched element width and the RTL context.
+    * @param {number} notchWidth Width of the size of the notch in the outline
+    * @param {boolean=} isRtl Determines if outline is rtl
     */
-  updateOutlinePath(labelWidth, isRtl) {
-    this.foundation_.updateSvgPath(labelWidth, isRtl);
+  updateSvgPath(notchWidth, isRtl) {
+    this.foundation_.updateSvgPath(notchWidth, isRtl);
   }
 
   /**

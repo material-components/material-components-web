@@ -277,12 +277,8 @@ class MDCTextField extends MDCComponent {
         getLabelWidth: () => {
           return this.label_.getWidth();
         },
-        hasOutline: () => {
-          return !!this.outline_;
-        },
-        updateOutlinePath: (labelWidth, isRtl) => {
-          this.outline_.updateOutlinePath(labelWidth, isRtl);
-        },
+        hasOutline: () => !!this.outline_,
+        updateOutlinePath: (labelWidth, isRtl) => this.outline_.updateSvgPath(labelWidth, isRtl),
       },
       this.getInputAdapterMethods_())),
       this.getFoundationMap_());

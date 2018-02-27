@@ -80,6 +80,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
       floatLabel: () => {},
       hasLabel: () => {},
       getLabelWidth: () => {},
+      hasOutline: () => {},
+      updateOutlinePath: () => {},
     });
   }
 
@@ -182,9 +184,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.isFocused_ = true;
     this.styleFocused_(this.isFocused_);
     this.adapter_.activateLineRipple();
-    if (this.adapter_.hasOutline()) {
-      this.updateOutline();
-    }
+    this.updateOutline();
     if (this.adapter_.hasLabel()) {
       this.adapter_.shakeLabel(this.shouldShake);
       this.adapter_.floatLabel(this.shouldFloat);

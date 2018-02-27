@@ -51,12 +51,12 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
   }
 
   /**
-   * Updates the SVG path of the focus outline element based on the given width of the
-   * label element and the RTL context.
-   * @param {number} labelWidth
+   * Updates the SVG path of the focus outline element based on the width
+   * of the notched element width and the RTL context.
+   * @param {number} notchWidth
    * @param {boolean=} isRtl
    */
-  updateSvgPath(labelWidth, isRtl = false) {
+  updateSvgPath(notchWidth, isRtl = false) {
     // Fall back to reading a specific corner's style because Firefox doesn't report the style on border-radius.
     const radiusStyleValue = this.adapter_.getIdleOutlineStyleValue('border-radius') ||
         this.adapter_.getIdleOutlineStyleValue('border-top-left-radius');
@@ -65,7 +65,7 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
     const height = this.adapter_.getHeight();
     const cornerWidth = radius + 1.2;
     const leadingStrokeLength = Math.abs(11 - cornerWidth);
-    const paddedLabelWidth = labelWidth + 8;
+    const paddedNotchWidth = notchWidth + 8;
 
     // The right, bottom, and left sides of the outline follow the same SVG path.
     const pathMiddle = 'a' + radius + ',' + radius + ' 0 0 1 ' + radius + ',' + radius
@@ -78,15 +78,15 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
 
     let path;
     if (!isRtl) {
-      path = 'M' + (cornerWidth + leadingStrokeLength + paddedLabelWidth) + ',' + 1
-        + 'h' + (width - (2 * cornerWidth) - paddedLabelWidth - leadingStrokeLength)
+      path = 'M' + (cornerWidth + leadingStrokeLength + paddedNotchWidth) + ',' + 1
+        + 'h' + (width - (2 * cornerWidth) - paddedNotchWidth - leadingStrokeLength)
         + pathMiddle
         + 'h' + leadingStrokeLength;
     } else {
       path = 'M' + (width - cornerWidth - leadingStrokeLength) + ',' + 1
         + 'h' + leadingStrokeLength
         + pathMiddle
-        + 'h' + (width - (2 * cornerWidth) - paddedLabelWidth - leadingStrokeLength);
+        + 'h' + (width - (2 * cornerWidth) - paddedNotchWidth - leadingStrokeLength);
     }
 
     this.adapter_.setOutlinePathAttr(path);

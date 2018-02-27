@@ -1,15 +1,15 @@
 <!--docs:
-title: "Text Field Outline"
+title: "Notched Outline"
 layout: detail
 section: components
-excerpt: "The outline is a border around the text field"
+excerpt: "The notched outline is a border around either a text field or select element"
 iconId: text_field
-path: /catalog/input-controls/text-field/outline/
+path: /catalog/input-controls/notched-outline
 -->
 
-# Text Field Outline
+# Notched Outline
 
-The outline is a border around all sides of the text field. This is used for the Outlined variation of Text Fields.
+The outline is a border around all sides of the text field or select. This is used for the Outlined variation of Text Fields and Select.
 
 ## Design & API Documentation
 
@@ -24,12 +24,12 @@ The outline is a border around all sides of the text field. This is used for the
 ### HTML Structure
 
 ```html
-<div class="mdc-text-field__outline">
+<div class="mdc-notched-outline">
   <svg>
-    <path class="mdc-text-field__outline-path"/>
+    <path class="mdc-notched-outline__path"/>
   </svg>
 </div>
-<div class="mdc-text-field__idle-outline"></div>
+<div class="mdc-notched-outline--idle"></div>
 ```
 
 ### Usage within `mdc-text-field`
@@ -38,12 +38,12 @@ The outline is a border around all sides of the text field. This is used for the
 <div class="mdc-text-field mdc-text-field--outlined">
   <input class="mdc-text-field__input" id="my-text-field-id" type="text">
   <label class="mdc-text-field__label" for="my-text-field-id">Label</label>
-  <div class="mdc-text-field__outline">
+  <div class="mdc-notched-outline">
     <svg>
-      <path class="mdc-text-field__outline-path"/>
+      <path class="mdc-notched-outline__path"/>
     </svg>
   </div>
-  <div class="mdc-text-field__idle-outline"></div>
+  <div class="mdc-notched-outline--idle"></div>
 </div>
 ```
 
@@ -51,26 +51,25 @@ The outline is a border around all sides of the text field. This is used for the
 
 CSS Class | Description
 --- | ---
-`mdc-text-field__outline` | Mandatory. Container for the SVG in the outline when the label is floating above the input.
-`mdc-text-field__outline-path` | Mandatory. The SVG path in the outline when the label is floating above the input.
-`mdc-text-field__idle-outline` | Mandatory. The outline when the label is resting in the input position.
+`mdc-notched-outline` | Mandatory. Container for the SVG of the outline when the label is floating above the input.
+`mdc-notched-outline__path` | Mandatory. The SVG path in the outline when the label is floating above the input.
+`mdc-notched-outline--idle` | Mandatory. The outline when the label is resting in the input position.
 
-#### `MDCTextFieldOutline`
+### `MDCNotchedOutline`
+Method Signature | Description
+--- | ---
+`updateSvgPath(notchWidth: number, isRtl: boolean) => void` | Updates the SVG of the outline element with a notch calculated based off of the notchWidth. The notch will appear left justified, unless isRtl is true.
 
-##### `MDCTextFieldOutline.foundation`
-
-This allows the parent `MDCTextField` component to access the public methods on the `MDCTextFieldOutlineFoundation` class.
-
-### `MDCTextFieldOutlineAdapter`
+### `MDCNotchedOutlineAdapter`
 
 Method Signature | Description
 --- | ---
-`getWidth() => number` | Returns the width of the outline element
-`getHeight() => number` | Returns the height of the outline element
-`setOutlinePathAttr(value: string) => void` | Sets the "d" attribute of the outline element's SVG path
-`getIdleOutlineStyleValue(propertyName: string) => string` | Returns the idle outline element's computed style value of the given css property `propertyName`
+`getWidth() => number` | Returns the width of the outline element.
+`getHeight() => number` | Returns the height of the outline element.
+`setOutlinePathAttr(value: string) => void` | Sets the "d" attribute of the outline element's SVG path.
+`getIdleOutlineStyleValue(propertyName: string) => string` | Returns the idle outline element's computed style value of the given css property `propertyName`.
 
-### `MDCTextFieldOutlineFoundation`
+### `MDCNotchedOutlineFoundation`
 
 Method Signature | Description
 --- | ---

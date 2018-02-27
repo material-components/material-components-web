@@ -174,6 +174,21 @@ class MDCTextFieldAdapter {
    * @return {number}
    */
   getLabelWidth() {}
+
+  /**
+   * Returns true if outline element exists, false if it doesn't.
+   * @return {boolean}
+   */
+  hasOutline() {}
+
+  /**
+   * Only implement if outline element exists.
+   * Updates SVG Path on outline element based on the width of the
+   * label element width and RTL context.
+   * @param {number} labelWidth
+   * @param {boolean} isRtl
+   */
+  updateOutlinePath(labelWidth, isRtl) {}
 }
 
 export {MDCTextFieldAdapter, NativeInputType, FoundationMapType};
