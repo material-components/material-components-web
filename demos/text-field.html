@@ -191,7 +191,7 @@
             <label for="tf-box" class="mdc-text-field__label">Your Name</label>
             <div class="mdc-line-ripple"></div>
           </div>
-          <p class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
+          <p class="mdc-text-field-helper-text"
             id="box-name-validation-message"
             style="display: none;">
             Helper Text (possibly validation message)
@@ -228,6 +228,12 @@
         <div>
           <input id="box-persistent-helper-text" type="checkbox" disabled>
           <label for="box-persistent-helper-text">Make helper text persistent</label>
+        </div>
+        <div>
+          <input id="box-helper-text-as-validation" type="checkbox" disabled>
+          <label for="box-helper-text-as-validation">
+            Use helper text as validation message
+          </label>
         </div>
       </section>
 
@@ -481,12 +487,20 @@
           var target = evt.target;
           helperText.style.display = target.checked ? 'block' : 'none';
           document.getElementById('box-persistent-helper-text').disabled = !target.checked;
+          document.getElementById('box-helper-text-as-validation').disabled = !target.checked;
         });
 
         document.getElementById('box-persistent-helper-text').addEventListener('change', function(evt) {
           var target = evt.target;
           helperText.classList[target.checked ? 'add' : 'remove'](
             'mdc-text-field-helper-text--persistent'
+          );
+        });
+
+        document.getElementById('box-helper-text-as-validation').addEventListener('change', function(evt) {
+          var target = evt.target;
+          helperText.classList[target.checked ? 'add' : 'remove'](
+            'mdc-text-field-helper-text--validation-msg'
           );
         });
       });
