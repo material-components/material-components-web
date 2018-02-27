@@ -48,7 +48,7 @@ Then import the Sass files for @material/button into your application. You can a
   @include mdc-states(teal);
 }
 ```
-[@material/button has documentation about the required HTML of a button](https://github.com/material-components/material-components-web/tree/master/packages/mdc-button). Update your application's HTML to include this HTML, and add the foo-button class onto the element:
+@material/button has [documentation](packages/mdc-button/README.md) about the required HTML of a button. Update your application's HTML to include this HTML, and add the foo-button class onto the element:
 
 ```
 <body>
