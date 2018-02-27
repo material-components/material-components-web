@@ -49,7 +49,7 @@ class MDCTabzBar {
     this.indicator_ = MDCTabzIndicator.attachTo(indicator);
 
     const tabz = this.root_.querySelectorAll(strings.TABZ_SELECTOR);
-    this.tabz_ = Array.from(tabz).map((tab) => MDCTabz.attachTo(tab));
+    this.tabz_ = [].slice.call(tabz).map((tab) => MDCTabz.attachTo(tab));
 
     const pagerNext = this.root_.querySelector(strings.PAGER_NEXT_SELECTOR);
     if (pagerNext) {
