@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 
-import bel from 'bel';
-
 import MDCFoundation from '@material/base/foundation';
 import MDCChipAdapter from './adapter';
 import {strings, cssClasses} from './constants';
@@ -64,23 +62,23 @@ class MDCChipFoundation extends MDCFoundation {
     /** @private {function(!Event): undefined} */
     this.leadingIconTransitionEndHandler_ = (evt) => this.handleLeadingIconTransitionEnd_(evt);
     /** @private {function(!Event): undefined} */
-    this.filterIconTransitionEndHandler_ = (evt) => this.handleFilterIconTransitionEnd_(evt);
+    this.checkmarkTransitionEndHandler_ = (evt) => this.handleCheckmarkTransitionEnd_(evt);
   }
 
   init() {
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.registerInteractionHandler(evtType, this.interactionHandler_);
     });
-    this.adapter_.registerLeadingIconInteractionHandler('transitionend', this.leadingIconTransitionEndHandler_);
-    this.adapter_.registerFilterIconInteractionHandler('transitionend', this.filterIconTransitionEndHandler_);
+    this.adapter_.registerLeadingIconEventHandler('transitionend', this.leadingIconTransitionEndHandler_);
+    this.adapter_.registerCheckmarkEventHandler('transitionend', this.checkmarkTransitionEndHandler_);
   }
 
   destroy() {
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.deregisterInteractionHandler(evtType, this.interactionHandler_);
     });
-    this.adapter_.deregisterLeadingIconInteractionHandler('transitionend', this.leadingIconTransitionEndHandler_);
-    this.adapter_.deregisterFilterIconInteractionHandler('transitionend', this.filterIconTransitionEndHandler_);
+    this.adapter_.deregisterLeadingIconEventHandler('transitionend', this.leadingIconTransitionEndHandler_);
+    this.adapter_.deregisterCheckmarkEventHandler('transitionend', this.checkmarkTransitionEndHandler_);
   }
 
   /**
@@ -104,30 +102,15 @@ class MDCChipFoundation extends MDCFoundation {
     }
   }
 
-  // Filter chip is selected.
-  replaceLeadingIconWithFilterIcon() {
-    if (!this.adapter_.hasFilterIcon()) {
-      return;
-    }
-    this.adapter_.addClassToLeadingIcon(cssClasses.ANIMATING_ICON);
-  }
-
-  // Filter chip is deselected.
-  replaceFilterIconWithLeadingIcon() {
-    this.adapter_.addClassToFilterIcon(cssClasses.ANIMATING_ICON);
-  }
-
   handleLeadingIconTransitionEnd_(evt) {
-    if (evt.propertyName === 'opacity' && this.adapter_.eventTargetHasClass(evt.target, cssClasses.ANIMATING_ICON)) {
-      this.adapter_.addClassToLeadingIcon(cssClasses.HIDDEN_ICON);
-      this.adapter_.removeClassFromLeadingIcon(cssClasses.ANIMATING_ICON);
+    if (evt.propertyName === 'opacity' && this.adapter_.hasClass(cssClasses.ACTIVATED)) {
+      this.adapter_.addClassToLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
     }
   }
 
-  handleFilterIconTransitionEnd_(evt) {
-    if (evt.propertyName === 'opacity' && this.adapter_.eventTargetHasClass(evt.target, cssClasses.ANIMATING_ICON)) {
-      this.adapter_.removeClassFromLeadingIcon(cssClasses.HIDDEN_ICON);
-      this.adapter_.removeClassFromFilterIcon(cssClasses.ANIMATING_ICON);
+  handleCheckmarkTransitionEnd_(evt) {
+    if (evt.propertyName === 'opacity' && !this.adapter_.hasClass(cssClasses.ACTIVATED)) {
+      this.adapter_.removeClassFromLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
     }
   }
 }

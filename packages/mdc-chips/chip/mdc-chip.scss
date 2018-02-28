@@ -89,8 +89,8 @@
   transition:
     mdc-checkbox-transition-exit(
       stroke-dashoffset,
-      50ms,
-      150ms
+      $mdc-chip-checkmark-animation-delay,
+      $mdc-chip-checkmark-animation-duration
     );
   stroke-width: 2px;
   stroke-dashoffset: $mdc-checkbox-mark-path-length_;
@@ -101,27 +101,27 @@
   stroke-dashoffset: 0;
 }
 
-// No leading icon
+// Add leading checkmark to filter chips with no leading icon
 
 .mdc-chip__checkmark {
   width: 0;
   height: 24px;
-  transition: width 100ms linear;
+  transition: width $mdc-chip-width-animation-duration $mdc-animation-standard-curve-timing-function;
 }
 
 .mdc-chip--activated .mdc-chip__checkmark {
   width: 24px;
 }
 
-// With leading icon
+// Add leading checkmark to filter chips with leading icon
 
 .mdc-chip__icon--leading {
-  transition: opacity 75ms linear, width 0ms;
+  transition: opacity $mdc-chip-opacity-animation-duration linear, width 0ms;
   opacity: 1;
 }
 
 .mdc-chip__icon--leading + .mdc-chip__checkmark {
-  transition: opacity 75ms linear, width 0ms;
+  transition: opacity $mdc-chip-opacity-animation-duration linear, width 0ms;
   opacity: 0;
 }
 
@@ -136,11 +136,13 @@
   }
 }
 
-.mdc-chip__icon--leading.mdc-chip__icon--hidden {
-  opacity: 0;
-  width: 0;
-}
+.mdc-chip__icon--hidden-leading {
+  &.mdc-chip__icon--leading {
+    opacity: 0;
+    width: 0;
+  }
 
-.mdc-chip__icon--leading.mdc-chip__icon--hidden + .mdc-chip__checkmark {
-  width: 24px;
+  &.mdc-chip__icon--leading + .mdc-chip__checkmark {
+    width: 24px;
+  }
 }

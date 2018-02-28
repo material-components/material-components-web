@@ -36,7 +36,7 @@ class MDCChip extends MDCComponent {
     /** @private {?Element} */
     this.leadingIcon_;
     /** @private {?Element} */
-    this.filterIcon_;
+    this.checkmark_;
     /** @private {!MDCRipple} */
     this.ripple_ = new MDCRipple(this.root_);
   }
@@ -51,22 +51,12 @@ class MDCChip extends MDCComponent {
 
   initialize() {
     this.leadingIcon_ = this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
-    this.filterIcon_ = this.root_.querySelector(strings.FILTER_ICON_SELECTOR);
+    this.checkmark_ = this.root_.querySelector(strings.CHECKMARK_SELECTOR);
   }
 
   destroy() {
     this.ripple_.destroy();
     super.destroy();
-  }
-
-  replaceLeadingIconWithFilterIcon() {
-    this.foundation_.replaceLeadingIconWithFilterIcon();
-    this.ripple_.layout();
-  }
-
-  replaceFilterIconWithLeadingIcon() {
-    this.foundation_.replaceFilterIconWithLeadingIcon();
-    this.ripple_.layout();
   }
 
   /**
@@ -84,14 +74,6 @@ class MDCChip extends MDCComponent {
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       hasClass: (className) => this.root_.classList.contains(className),
-      registerInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
-      deregisterInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
-      eventTargetHasClass: (target, className) => target.classList.contains(className),
-      registerLeadingIconInteractionHandler: (evtType, handler) => this.leadingIcon_ ? this.leadingIcon_.addEventListener(evtType, handler) : null,
-      deregisterLeadingIconInteractionHandler: (evtType, handler) => this.leadingIcon_ ? this.leadingIcon_.removeEventListener(evtType, handler) : null,
-      registerFilterIconInteractionHandler: (evtType, handler) => this.filterIcon_ ? this.filterIcon_.addEventListener(evtType, handler) : null,
-      deregisterFilterIconInteractionHandler: (evtType, handler) => this.filterIcon_ ? this.filterIcon_.removeEventListener(evtType, handler) : null,
-      notifyInteraction: () => this.emit(strings.INTERACTION_EVENT, {chip: this}, true /* shouldBubble */),
       addClassToLeadingIcon: (className) => {
         if (this.leadingIcon_) {
           this.leadingIcon_.classList.add(className);
@@ -102,17 +84,29 @@ class MDCChip extends MDCComponent {
           this.leadingIcon_.classList.remove(className);
         }
       },
-      hasFilterIcon: () => this.filterIcon_,
-      addClassToFilterIcon: (className) => {
-        if (this.filterIcon_) {
-          this.filterIcon_.classList.add(className);
+      registerInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
+      deregisterInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
+      registerLeadingIconEventHandler: (evtType, handler) => {
+        if (this.leadingIcon_) {
+          this.leadingIcon_.addEventListener(evtType, handler);
         }
       },
-      removeClassFromFilterIcon: (className) => {
-        if (this.filterIcon_) {
-          this.filterIcon_.classList.remove(className);
+      deregisterLeadingIconEventHandler: (evtType, handler) => {
+        if (this.leadingIcon_) {
+          this.leadingIcon_.removeEventListener(evtType, handler);
         }
       },
+      registerCheckmarkEventHandler: (evtType, handler) => {
+        if (this.checkmark_) {
+          this.checkmark_.addEventListener(evtType, handler);
+        }
+      },
+      deregisterCheckmarkEventHandler: (evtType, handler) => {
+        if (this.checkmark_) {
+          this.checkmark_.removeEventListener(evtType, handler);
+        }
+      },
+      notifyInteraction: () => this.emit(strings.INTERACTION_EVENT, {chip: this}, true /* shouldBubble */),
     })));
   }
 
