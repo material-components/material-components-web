@@ -88,7 +88,7 @@ function checkDependencyAddedInWebpackConfig() {
 
 function checkJSDependencyAddedInWebpackConfig() {
   const jsconfig = WEBPACK_CONFIG.find((value) => {
-    return value.name === 'main-js-a-la-carte';
+    return value.name === 'js-components';
   });
   const nameCamel = camelCase(pkg.name.replace('@material/', ''));
   assert.notEqual(typeof jsconfig.entry[nameCamel], 'undefined',

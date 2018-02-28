@@ -55,22 +55,13 @@ module.exports = class {
         filePathPattern = '**/*.scss',
       } = {},
       output: {
-        fsDirAbsolutePath = undefined, // Required if you're building npm dist and writing output files to disk
-        httpDirAbsolutePath = undefined, // Required if you're running the demo server
+        fsDirAbsolutePath,
+        httpDirAbsolutePath,
         filenamePattern = this.env_.isProd() ? '[name].min.css' : '[name].css',
       },
       plugins = [],
     }) {
     chunks = chunks || this.globber_.getChunks({inputDirectory, filePathPattern});
-
-    const fsCleanupPlugins = [];
-
-    if (fsDirAbsolutePath) {
-      fsCleanupPlugins.push(this.pluginFactory_.createCssCleanupPlugin({
-        cleanupDirRelativePath: fsDirAbsolutePath,
-      }));
-    }
-
     const cssExtractorPlugin = this.pluginFactory_.createCssExtractorPlugin(filenamePattern);
 
     return {
@@ -90,7 +81,9 @@ module.exports = class {
       },
       plugins: [
         cssExtractorPlugin,
-        ...fsCleanupPlugins,
+        this.pluginFactory_.createCssCleanupPlugin({
+          cleanupDirRelativePath: fsDirAbsolutePath,
+        }),
         ...plugins,
       ],
     };
