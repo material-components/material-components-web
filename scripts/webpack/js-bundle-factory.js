@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview Creates Webpack bundle config objects to compile ES2015 JavaScript to ES5.
+ */
+
 'use strict';
 
 class JsBundleFactory {
