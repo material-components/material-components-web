@@ -57,8 +57,6 @@ class MDCTextField extends MDCComponent {
     this.label_;
     /** @private {?MDCTextFieldOutline} */
     this.outline_;
-    /** @private {?Array<MutationObserver>} */
-    this.observers_;
   }
 
   /**
@@ -130,7 +128,6 @@ class MDCTextField extends MDCComponent {
       const foundation = new MDCRippleFoundation(adapter);
       this.ripple = rippleFactory(rippleRoot, foundation);
     }
-    this.observers_ = [];
   }
 
   destroy() {
@@ -345,9 +342,13 @@ class MDCTextField extends MDCComponent {
           const targetNode = this.root_.querySelector(strings.INPUT_SELECTOR);
           const config = {attributes: true};
           observer.observe(targetNode, config);
-          this.observers_.push(observer);
+          return observer;
         },
-        deregisterValidationAttributeChangeHandler: () => this.observers_.forEach((observer) => observer.disconnect()),
+        deregisterValidationAttributeChangeHandler: (observer) => {
+          if (observer) {
+            observer.disconnect();
+          }
+        },
         isFocused: () => {
           return document.activeElement === this.root_.querySelector(strings.INPUT_SELECTOR);
         },

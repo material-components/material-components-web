@@ -302,6 +302,7 @@ test('#init adds event listeners', () => {
 
 test('#destroy removes event listeners', () => {
   const {foundation, mockAdapter} = setupTest();
+  foundation.validationObserver_ = {test: 'test1'};
   foundation.destroy();
 
   td.verify(mockAdapter.deregisterInputInteractionHandler('focus', td.matchers.isA(Function)));
@@ -311,7 +312,7 @@ test('#destroy removes event listeners', () => {
   td.verify(mockAdapter.deregisterInputInteractionHandler('touchstart', td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterTextFieldInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterTextFieldInteractionHandler('keydown', td.matchers.isA(Function)));
-  td.verify(mockAdapter.deregisterValidationAttributeChangeHandler());
+  td.verify(mockAdapter.deregisterValidationAttributeChangeHandler(foundation.validationObserver_));
 });
 
 test('#init floats label if the input contains a value', () => {
