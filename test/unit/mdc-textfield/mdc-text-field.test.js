@@ -21,8 +21,9 @@ import {assert} from 'chai';
 
 import {MDCRipple} from '../../../packages/mdc-ripple';
 import {MDCLineRipple} from '../../../packages/mdc-line-ripple';
+import {MDCFloatingLabel} from '../../../packages/mdc-floating-label';
 import {MDCTextField, MDCTextFieldFoundation, MDCTextFieldHelperText,
-  MDCTextFieldIcon, MDCTextFieldLabel, MDCTextFieldOutline} from '../../../packages/mdc-textfield';
+  MDCTextFieldIcon, MDCTextFieldOutline} from '../../../packages/mdc-textfield';
 
 const {cssClasses} = MDCTextFieldFoundation;
 
@@ -30,7 +31,7 @@ const getFixture = () => bel`
   <div class="mdc-text-field">
     <i class="material-icons mdc-text-field__icon" tabindex="0">event</i>
     <input type="text" class="mdc-text-field__input" id="my-text-field">
-    <label class="mdc-text-field__label" for="my-text-field">My Label</label>
+    <label class="mdc-floating-label" for="my-text-field">My Label</label>
     <div class="mdc-line-ripple"></div>
   </div>
 `;
@@ -75,6 +76,7 @@ class FakeIcon {
 class FakeLabel {
   constructor() {
     this.destroy = td.func('.destroy');
+    this.shake = td.func('.shake');
   }
 }
 
@@ -97,7 +99,7 @@ test('#constructor when given a `mdc-text-field--outlined` element instantiates 
   const root = bel`
     <div class="mdc-text-field mdc-text-field--outlined">
       <input type="text" class="mdc-text-field__input" id="my-text-field">
-      <label class="mdc-text-field__label" for="my-text-field">My Label</label>
+      <label class="mdc-floating-label" for="my-text-field">My Label</label>
       <div class="mdc-text-field__outline"></div>
       <div class="mdc-text-field__idle-outline"></div>
     </div>
@@ -126,7 +128,7 @@ test('#constructor when given a `mdc-text-field--outlined` element, initializes 
   const root = bel`
     <div class="mdc-text-field mdc-text-field--outlined">
       <input type="text" class="mdc-text-field__input" id="my-text-field">
-      <label class="mdc-text-field__label" for="my-text-field">My Label</label>
+      <label class="mdc-floating-label" for="my-text-field">My Label</label>
       <div class="mdc-text-field__outline"></div>
       <div class="mdc-text-field__idle-outline"></div>
     </div>
@@ -160,10 +162,10 @@ test('#constructor instantiates an icon on the `.mdc-text-field__icon` element i
   assert.instanceOf(component.icon_, MDCTextFieldIcon);
 });
 
-test('#constructor instantiates a label on the `.mdc-text-field__label` element if present', () => {
+test('#constructor instantiates a label on the `.mdc-floating-label` element if present', () => {
   const root = getFixture();
   const component = new MDCTextField(root);
-  assert.instanceOf(component.label_, MDCTextFieldLabel);
+  assert.instanceOf(component.label_, MDCFloatingLabel);
 });
 
 test('#constructor instantiates an outline on the `.mdc-text-field__outline` element if present', () => {

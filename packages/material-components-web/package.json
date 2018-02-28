@@ -24,6 +24,7 @@
     "@material/drawer": "^0.30.0",
     "@material/elevation": "^0.28.0",
     "@material/fab": "^0.31.0",
+    "@material/floating-label": "0.0.0",
     "@material/form-field": "^0.31.0",
     "@material/grid-list": "^0.30.0",
     "@material/icon-toggle": "^0.31.0",

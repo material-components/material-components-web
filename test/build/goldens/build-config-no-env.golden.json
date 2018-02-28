@@ -60,6 +60,9 @@
       "drawer": [
         "/packages/mdc-drawer/index.js"
       ],
+      "floatingLabel": [
+        "/packages/mdc-floating-label/index.js"
+      ],
       "formField": [
         "/packages/mdc-form-field/index.js"
       ],
@@ -222,6 +225,7 @@
       "mdc.drawer": "/packages/mdc-drawer/mdc-drawer.scss",
       "mdc.elevation": "/packages/mdc-elevation/mdc-elevation.scss",
       "mdc.fab": "/packages/mdc-fab/mdc-fab.scss",
+      "mdc.floating-label": "/packages/mdc-floating-label/mdc-floating-label.scss",
       "mdc.form-field": "/packages/mdc-form-field/mdc-form-field.scss",
       "mdc.grid-list": "/packages/mdc-grid-list/mdc-grid-list.scss",
       "mdc.icon-toggle": "/packages/mdc-icon-toggle/mdc-icon-toggle.scss",
