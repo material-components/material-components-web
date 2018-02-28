@@ -35,10 +35,11 @@ test('exports cssClasses', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCChipFoundation, [
-    'addClass', 'removeClass', 'hasClass',
+    'addClass', 'removeClass', 'hasClass', 'addClassToLeadingIcon', 'removeClassFromLeadingIcon',
+    'registerInteractionHandler', 'deregisterInteractionHandler', 'registerLeadingIconEventHandler',
+    'deregisterLeadingIconEventHandler', 'registerCheckmarkEventHandler', 'deregisterCheckmarkEventHandler',
     'registerTrailingIconInteractionHandler', 'deregisterTrailingIconInteractionHandler',
-    'registerInteractionHandler', 'deregisterInteractionHandler', 'notifyInteraction',
-    'notifyTrailingIconInteraction',
+    'notifyInteraction', 'notifyTrailingIconInteraction',
   ]);
 });
 
@@ -50,6 +51,8 @@ test('#init adds event listeners', () => {
 
   td.verify(mockAdapter.registerInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.registerInteractionHandler('keydown', td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerLeadingIconEventHandler('transitionend', td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerCheckmarkEventHandler('transitionend', td.matchers.isA(Function)));
   td.verify(mockAdapter.registerTrailingIconInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.registerTrailingIconInteractionHandler('keydown', td.matchers.isA(Function)));
   td.verify(mockAdapter.registerTrailingIconInteractionHandler('touchstart', td.matchers.isA(Function)));
@@ -63,6 +66,8 @@ test('#destroy removes event listeners', () => {
 
   td.verify(mockAdapter.deregisterInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterInteractionHandler('keydown', td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterLeadingIconEventHandler('transitionend', td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterCheckmarkEventHandler('transitionend', td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterTrailingIconInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterTrailingIconInteractionHandler('keydown', td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterTrailingIconInteractionHandler('touchstart', td.matchers.isA(Function)));
