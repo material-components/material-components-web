@@ -120,7 +120,7 @@ To use the `MDCChip` and `MDCChipSet` classes, [import](../../docs/importing-js.
 
 Method Signature | Description
 --- | ---
-`toggleActive() => void` | Proxies to the foundation's `toggleActive` method
+`toggleSelected() => void` | Proxies to the foundation's `toggleSelected` method
 
 Property | Value Type | Description
 --- | --- | ---
@@ -162,7 +162,7 @@ Method Signature | Description
 
 Method Signature | Description
 --- | ---
-`toggleActive() => void` | Toggles the selected class on the chip element
+`toggleSelected() => void` | Toggles the selected class on the chip element
 
 #### `MDCChipSetFoundation`
 None yet, coming soon.
