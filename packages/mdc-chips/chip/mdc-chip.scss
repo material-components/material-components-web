@@ -27,7 +27,7 @@
   @include mdc-chip-corner-radius($mdc-chip-border-radius-default);
   @include mdc-chip-fill-color($mdc-chip-fill-color-default);
   @include mdc-chip-ink-color($mdc-chip-ink-color-default);
-  @include mdc-chip-activated-color(primary);
+  @include mdc-chip-selected-color(primary);
 
   display: inline-flex;
   position: relative;
@@ -42,7 +42,7 @@
   }
 }
 
-.mdc-chip--activated {
+.mdc-chip--selected {
   @include mdc-theme-prop(background-color, white);
 }
 
