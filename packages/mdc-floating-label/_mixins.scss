@@ -20,6 +20,11 @@
   @include mdc-theme-prop(color, $color);
 }
 
+// Used for textarea in case of scrolling
+@mixin mdc-floating-label-fill-color($color) {
+  @include mdc-theme-prop(background-color, $color);
+}
+
 @mixin mdc-floating-label-shake-keyframes($modifier, $positionY, $positionX: 0%, $scale: .75) {
   @keyframes mdc-floating-label-shake-float-above-#{$modifier} {
     0% {
@@ -60,9 +65,4 @@
   .mdc-floating-label--shake {
     animation: mdc-floating-label-shake-float-above-#{$modifier} 250ms 1;
   }
-}
-
-// Used for textarea in case of scrolling
-@mixin mdc-floating-label-fill-color($color) {
-  @include mdc-theme-prop(background-color, $color);
 }

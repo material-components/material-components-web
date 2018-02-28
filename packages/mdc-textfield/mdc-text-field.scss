@@ -256,10 +256,10 @@
   opacity: 1;
 }
 
-@include mdc-floating-label-shake-keyframes(box, $mdc-text-field-box-label-position-y);
-@include mdc-floating-label-shake-keyframes(box-dense, $mdc-text-field-box-dense-label-position-y, 0%, $mdc-text-field-dense-label-scale);
-@include mdc-floating-label-shake-keyframes(outlined, $mdc-text-field-outlined-label-position-y);
-@include mdc-floating-label-shake-keyframes(outlined-dense, $mdc-text-field-outlined-dense-label-position-y, 0%, $mdc-text-field-dense-label-scale);
-@include mdc-floating-label-shake-keyframes(outlined-leading-icon, $mdc-text-field-outlined-label-position-y, $mdc-text-field-outlined-with-leading-icon-label-position-x);
-@include mdc-floating-label-shake-keyframes(outlined-leading-icon-dense, $mdc-text-field-outlined-dense-label-position-y, $mdc-text-field-outlined-dense-with-leading-icon-label-position-x, $mdc-text-field-dense-label-scale);
+@include mdc-floating-label-shake-keyframes(text-field-box, $mdc-text-field-box-label-position-y);
+@include mdc-floating-label-shake-keyframes(text-field-box-dense, $mdc-text-field-box-dense-label-position-y, 0%, $mdc-text-field-dense-label-scale);
+@include mdc-floating-label-shake-keyframes(text-field-outlined, $mdc-text-field-outlined-label-position-y);
+@include mdc-floating-label-shake-keyframes(text-field-outlined-dense, $mdc-text-field-outlined-dense-label-position-y, 0%, $mdc-text-field-dense-label-scale);
+@include mdc-floating-label-shake-keyframes(text-field-outlined-leading-icon, $mdc-text-field-outlined-label-position-y, $mdc-text-field-outlined-with-leading-icon-label-position-x);
+@include mdc-floating-label-shake-keyframes(text-field-outlined-leading-icon-dense, $mdc-text-field-outlined-dense-label-position-y, $mdc-text-field-outlined-dense-with-leading-icon-label-position-x, $mdc-text-field-dense-label-scale);
 @include mdc-floating-label-shake-keyframes(textarea, $mdc-text-field-textarea-label-position-y, 0%, $mdc-text-field-textarea-label-scale);

@@ -71,6 +71,7 @@
 @mixin mdc-text-field-textarea-fill-color($color) {
   &:not(.mdc-text-field--disabled) {
     @include mdc-text-field-textarea-fill-color_($color);
+
     // Automatically add label background color the same color as well to ensure
     // the label can be seen if the input scrolls behind the label
     .mdc-floating-label {
@@ -201,7 +202,7 @@
 
 @mixin mdc-text-field-outlined-dense_ {
   @include mdc-floating-label-float-position($mdc-text-field-outlined-dense-label-position-y, 0%, $mdc-text-field-dense-label-scale);
-  @include mdc-floating-label-shake-animation(outlined-dense);
+  @include mdc-floating-label-shake-animation(text-field-outlined-dense);
 
   height: 48px;
 
@@ -223,7 +224,7 @@
   @include mdc-text-field-hover-outline-color($mdc-text-field-outlined-hover-border);
   @include mdc-text-field-focused-outline-color(primary);
   @include mdc-floating-label-float-position($mdc-text-field-outlined-label-position-y);
-  @include mdc-floating-label-shake-animation(outlined);
+  @include mdc-floating-label-shake-animation(text-field-outlined);
 
   height: 56px;
   border: none;
@@ -269,7 +270,7 @@
   @include mdc-text-field-box-corner-radius($mdc-text-field-border-radius);
   @include mdc-text-field-box-fill-color($mdc-text-field-box-background);
   @include mdc-floating-label-float-position($mdc-text-field-box-label-position-y);
-  @include mdc-floating-label-shake-animation(box);
+  @include mdc-floating-label-shake-animation(text-field-box);
 
   display: inline-flex;
   position: relative;
@@ -310,7 +311,7 @@
 
 @mixin mdc-text-field-box-dense_ {
   @include mdc-floating-label-float-position($mdc-text-field-box-dense-label-position-y, 0%, $mdc-text-field-dense-label-scale);
-  @include mdc-floating-label-shake-animation(box-dense);
+  @include mdc-floating-label-shake-animation(text-field-box-dense);
 
   .mdc-text-field__input {
     padding: 12px 12px 0;
@@ -329,12 +330,12 @@
 
 @mixin mdc-text-field-outlined-with-leading-icon_ {
   @include mdc-floating-label-float-position($mdc-text-field-outlined-label-position-y, $mdc-text-field-outlined-with-leading-icon-label-position-x);
-  @include mdc-floating-label-shake-animation(outlined-leading-icon);
+  @include mdc-floating-label-shake-animation(text-field-outlined-leading-icon);
 }
 
 @mixin mdc-text-field-outlined-dense-with-leading-icon_ {
   @include mdc-floating-label-float-position($mdc-text-field-outlined-dense-label-position-y, $mdc-text-field-outlined-dense-with-leading-icon-label-position-x, $mdc-text-field-dense-label-scale);
-  @include mdc-floating-label-shake-animation(outlined-leading-icon-dense);
+  @include mdc-floating-label-shake-animation(text-field-outlined-leading-icon-dense);
 }
 
 @mixin mdc-text-field-with-trailing-icon_ {
