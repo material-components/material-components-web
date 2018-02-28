@@ -16,8 +16,13 @@
 
 @import "./variables";
 
-@mixin mdc-floating-label-color($color) {
+@mixin mdc-floating-label-ink-color($color) {
   @include mdc-theme-prop(color, $color);
+}
+
+// Used for textarea in case of scrolling
+@mixin mdc-floating-label-fill-color($color) {
+  @include mdc-theme-prop(background-color, $color);
 }
 
 @mixin mdc-floating-label-shake-keyframes($modifier, $positionY, $positionX: 0%, $scale: .75) {
@@ -43,12 +48,10 @@
 }
 
 @mixin mdc-floating-label-float-position($positionY, $positionX: 0%, $scale: .75) {
-  @if $positionX == 0 {
-    .mdc-floating-label--float-above {
+  .mdc-floating-label--float-above {
+    @if $positionX == 0 {
       transform: translateY(-1 * $positionY) scale($scale);
-    }
-  } @else {
-    .mdc-floating-label--float-above {
+    } @else {
       transform: translateY(-1 * $positionY) translateX(-1 * $positionX) scale($scale);
 
       @include mdc-rtl {
@@ -61,12 +64,5 @@
 @mixin mdc-floating-label-shake-animation($modifier) {
   .mdc-floating-label--shake {
     animation: mdc-floating-label-shake-float-above-#{$modifier} 250ms 1;
-  }
-}
-
-// Used for textarea in case of scrolling
-@mixin mdc-floating-label-fill-color($color) {
-  .mdc-floating-label {
-    @include mdc-theme-prop(background-color, $color);
   }
 }

@@ -89,9 +89,6 @@ Method Signature | Description
 
 Method Signature | Description
 --- | ---
-`shake(shouldShake: boolean)` | Shakes or stops shaking the label, depending on the value of `shouldShake`.*
+`shake(shouldShake: boolean)` | Shakes or stops shaking the label, depending on the value of `shouldShake`.
 `float(shouldFloat: boolean)` | Floats or docks the label, depending on the value of `shouldFloat`.
 `getWidth() => number` | Returns the width of the label element.
-
-\* **N.B.:** Multiple consecutive calls to `shake(true)` will only shake the label once.
-To shake the label a second time, you must first call `shake(false)` to reset its state.

@@ -174,22 +174,18 @@ apply these mixins with CSS selectors such as `.foo-text-field.mdc-text-field--i
 
 Mixin | Description
 --- | ---
-`mdc-text-field-box-corner-radius($radius)` | Customizes the border radius for a box text field
-`mdc-text-field-textarea-corner-radius($radius)` | Customizes the border radius for a `<textarea>` text field
-`mdc-text-field-ink-color($color)` | Customizes the text entered into the text-field.
-`mdc-text-field-line-ripple-color($color)` | Customizes the color of the default line ripple of the text-field.
-`mdc-text-field-hover-line-ripple-color($color)` | Customizes the hover color of the line ripple of the text-field.
-`mdc-text-field-focused-line-ripple-color($color)` | Customizes the line-ripple ripple color when the text-field is focused.
-`mdc-text-field-outline-color($color)` | Customizes the color of the border of the outlined text-field.
-`mdc-text-field-hover-outline-color($color)` | Customizes the hover color of the border of the outlined text-field.
-`mdc-text-field-focused-outline-color($color)` | Customizes the outlined border color when the text-field is focused.
+`mdc-text-field-bottom-line-color($color)` | Customizes the text-field bottom line color except the outline and textarea variants.
+`mdc-text-field-box-corner-radius($radius)` | Customizes the border radius for the text-field box variant.
 `mdc-text-field-box-fill-color($color)` | Customizes the background color of the text-field box.
-`mdc-text-field-textarea-stroke-color($color)` | Customizes the color of the border of the textarea.
+`mdc-text-field-fullwidth-bottom-line-color($color)` | Customizes the fullwidth text-field variant bottom line color.
+`mdc-text-field-hover-bottom-line-color($color)` | Customizes the hover text-field bottom line color except the outline and textarea variants.
+`mdc-text-field-ink-color($color)` | Customizes the text entered into the text-field.
+`mdc-text-field-label-color($color)` | Customizes the text color of the label.
+`mdc-text-field-line-ripple-color($color)` | Customizes the color of the default line ripple of the text-field.
+`mdc-text-field-outlined-corner-radius($radius)` | Sets the border radius of of the text-field outline variant.
+`mdc-text-field-textarea-corner-radius($radius)` | Customizes the border radius for a `<textarea>` variant.
 `mdc-text-field-textarea-fill-color($color)` | Customizes the color of the background of the textarea.
-`mdc-text-field-fullwidth-line-ripple-color($color)` | Customizes the line ripple under a fullwidth text field. Doesn't apply to a textarea.
-`mdc-text-field-icon-color($color)` | Customizes the color for the leading/trailing icons.
-`mdc-text-field-helper-text-color($color)` | Customizes the color of the helper text following a text-field.
-`mdc-text-field-helper-text-validation-color($color)` | Customizes the color of the helper text when it's used as a validation message.
+`mdc-text-field-textarea-stroke-color($color)` | Customizes the color of the border of the textarea.
 
 ### `MDCTextField`
 

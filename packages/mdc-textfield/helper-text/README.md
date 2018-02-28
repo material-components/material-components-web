@@ -73,6 +73,14 @@ CSS Class | Description
 `mdc-text-field-helper-text--persistent` | Makes the helper text permanently visible
 `mdc-text-field-helper-text--validation-msg` | Indicates the helper text is a validation message
 
+
+### Sass Mixins
+
+Mixin | Description
+--- | ---
+`mdc-text-field-helper-text-color($color)` | Customizes the color of the helper text following a text-field.
+`mdc-text-field-helper-text-validation-color($color)` | Customizes the color of the helper text when it's used as a validation message.
+
 ### `MDCTextFieldHelperText`
 
 ##### `MDCTextFieldHelperText.foundation`

@@ -89,6 +89,12 @@ In outlined text field:
 and the css will ensure the cursor is set to default, and that actioning on an icon doesn't
 do anything unexpected.
 
+### Sass Mixins
+
+Mixin | Description
+--- | ---
+`mdc-text-field-icon-color($color)` | Customizes the color for the leading/trailing icons.
+
 ### `MDCTextFieldIcon`
 
 ##### `MDCTextFieldIcon.foundation`

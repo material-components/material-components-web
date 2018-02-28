@@ -16,7 +16,6 @@
  */
 
 import MDCComponent from '@material/base/component';
-
 import MDCFloatingLabelAdapter from './adapter';
 import MDCFloatingLabelFoundation from './foundation';
 
