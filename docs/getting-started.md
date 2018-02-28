@@ -96,7 +96,7 @@ npm start
 
 And open localhost:8080 from a browser. You should see a blue “Hello World”.
 
-![Hello World](hello_world.png?raw=true)
+![Hello World](hello_world.png)
 
 ### Step 2: Include CSS for a component
 
@@ -146,7 +146,7 @@ You also need to configure the sass-loader to understand the @material syntax. U
 
 Now run npm start again and open localhost:8080. You should see the a Material Design button!
 
-![Button](button.png?raw=true)
+![Button](button.png)
 
 ### Step 3: Webpack with ES2015
 
@@ -213,6 +213,6 @@ const ripple = new MDCRipple(document.querySelector('.foo-button'));
 
 Now run npm start again and open localhost:8080. You should see a Material Design ripple on the button!
 
-![Button with Ripple](button_with_ripple.png?raw=true)
+![Button with Ripple](button_with_ripple.png)
 
 TODO: Write a getting started guide for our CDN users

@@ -76,7 +76,7 @@ You also need to configure the sass-loader to understand the @material syntax. U
 
 This will produce a customized Material Design button!
 
-![Button](docs/button.png?raw=true)
+![Button](docs/button.png)
 
 ### Include JavaScript for a component
 
@@ -97,7 +97,7 @@ const ripple = new MDCRipple(document.querySelector('.foo-button'));
 
 This will produce a Material Design ripple on the button!
 
-![Button with Ripple](docs/button_with_ripple.png?raw=true)
+![Button with Ripple](docs/button_with_ripple.png)
 
 ## Useful Links
 
