@@ -112,6 +112,39 @@ test('#setSelectedIndex clears the select if given index is >= the number of opt
   assert.equal(foundation.getSelectedIndex(), -1);
 });
 
+test('#setSelectedIndex with valid index causes the label to float', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getNumberOfOptions()).thenReturn(2);
+  td.when(mockAdapter.getTextForOptionAtIndex(td.matchers.anything())).thenReturn('');
+
+  foundation.setSelectedIndex(0);
+
+  td.verify(mockAdapter.floatLabel(true));
+});
+
+test('#setSelectedIndex with -1 and already floating label causes the label to dock', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getNumberOfOptions()).thenReturn(2);
+  td.when(mockAdapter.isMenuOpen()).thenReturn(false);
+  td.when(mockAdapter.getTextForOptionAtIndex(td.matchers.anything())).thenReturn('');
+
+  foundation.setSelectedIndex(-1);
+
+  td.verify(mockAdapter.setSelectedTextContent(''));
+  td.verify(mockAdapter.floatLabel(false));
+});
+
+test('#setSelectedIndex with -1 and menu open does not cause the label to dock', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getNumberOfOptions()).thenReturn(2);
+  td.when(mockAdapter.isMenuOpen()).thenReturn(true);
+  td.when(mockAdapter.getTextForOptionAtIndex(td.matchers.anything())).thenReturn('');
+
+  foundation.setSelectedIndex(-1);
+
+  td.verify(mockAdapter.floatLabel(td.matchers.anything()), {times: 0});
+});
+
 test('#isDisabled returns false by default', () => {
   const {foundation} = setupTest();
   assert.isNotOk(foundation.isDisabled());
