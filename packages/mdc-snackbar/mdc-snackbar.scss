@@ -83,6 +83,10 @@
   }
 }
 
+.mdc-snackbar[aria-hidden="true"] {
+  visibility: hidden;
+}
+
 .mdc-snackbar__action-wrapper {
   @include mdc-rtl-reflexive-property(padding, 24px, 0);
 }
