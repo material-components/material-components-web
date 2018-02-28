@@ -100,15 +100,13 @@ Mixin | Description
 `mdc-chip-fill-color-accessible($color)` | Customizes the background fill color for a chip, and updates the chip's ink and ripple color to meet accessibility standards
 `mdc-chip-fill-color($color)` | Customizes the background fill color for a chip
 `mdc-chip-ink-color($color)` | Customizes the text ink color for a chip, and updates the chip's ripple color to match
-`mdc-chip-activated-ink-color($color)` | Customizes text ink color and updates the ripple opacity of a chip in the _activated_ state
+`mdc-chip-activated-color($color)` | Customizes text ink and ripple color of a chip in the _activated_ state
 `mdc-chip-stroke($width, $style, $color)` | Customizes the border stroke properties for a chip
 `mdc-chip-stroke-width($width)` | Customizes the border stroke width for a chip
 `mdc-chip-stroke-style($style)` | Customizes the border stroke style for a chip
 `mdc-chip-stroke-color($color)` | Customizes the border stroke color for a chip
 
 > _NOTE_: `mdc-chip-set-spacing` also sets the amount of space between a chip and the edge of the set it's contained in.
-
-> _NOTE_: `mdc-chip-ink-color` also updates the chip's text ink color for _hover_ and _activated_ states, and updates the ripple opacity of the chip in the _activated_ state.
 
 ### `MDCChip` and `MDCChipSet`
 
