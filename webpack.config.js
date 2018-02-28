@@ -16,8 +16,6 @@
 
 'use strict';
 
-const path = require('path');
-
 const CssBundleFactory = require('./scripts/webpack/css-bundle-factory');
 const Environment = require('./scripts/build/environment');
 const Globber = require('./scripts/webpack/globber');
@@ -34,7 +32,7 @@ const pluginFactory = new PluginFactory({globber});
 const cssBundleFactory = new CssBundleFactory({env, pathResolver, globber, pluginFactory});
 const jsBundleFactory = new JsBundleFactory({env, pathResolver, globber, pluginFactory});
 
-const OUT_DIR_ABS = path.resolve('./build');
+const OUT_DIR_ABS = pathResolver.getAbsolutePath('./build');
 const DEMO_ASSET_DIR_REL = '/assets/'; // Used by webpack-dev-server
 
 const copyrightBannerPlugin = pluginFactory.createCopyrightBannerPlugin();
@@ -89,8 +87,8 @@ if (env.isDev()) {
   module.exports.push(jsBundleFactory.createCustomJs({
     bundleName: 'demo-js',
     chunks: {
-      'common': [path.resolve('./demos/common.js')],
-      'theme/index': [path.resolve('./demos/theme/index.js')],
+      'common': pathResolver.getAbsolutePath('./demos/common.js'),
+      'theme/index': pathResolver.getAbsolutePath('./demos/theme/index.js'),
     },
     output: {
       fsDirAbsolutePath: OUT_DIR_ABS,
