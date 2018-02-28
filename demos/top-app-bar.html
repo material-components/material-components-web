@@ -195,12 +195,14 @@
 
         shortCheckbox.addEventListener('change', function() {
           appBarEl.classList[this.checked ? 'add' : 'remove']('mdc-top-app-bar--short');
+          appBarEl.classList.remove('mdc-top-app-bar--short-has-action-item');
 
           appBar.destroy();
           appBar = mdc.topAppBar.MDCTopAppBar.attachTo(appBarEl);
 
           if (!this.checked) {
             appBarEl.classList.remove('mdc-top-app-bar--short-collapsed');
+            appBarEl.classList.remove('mdc-top-app-bar--short-has-action-item');
           }
         });
 
@@ -216,6 +218,7 @@
 
         rtlCheckbox.addEventListener('change', function()  {
           document.body[this.checked ? 'setAttribute' : 'removeAttribute']("dir", "rtl");
+          appBarEl.classList.remove('mdc-top-app-bar--short-has-action-item');
 
           appBar.destroy();
           appBar = mdc.topAppBar.MDCTopAppBar.attachTo(appBarEl);

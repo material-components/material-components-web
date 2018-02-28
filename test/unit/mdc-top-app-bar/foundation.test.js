@@ -90,7 +90,7 @@ test('short top app bar: scroll listener is removed on destroy', () => {
   td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_CLASS)).thenReturn(true);
   foundation.init();
   foundation.destroy();
-  td.verify(mockAdapter.registerScrollHandler(td.matchers.isA(Function)), {times: 1});
+  td.verify(mockAdapter.deregisterScrollHandler(td.matchers.isA(Function)), {times: 1});
 });
 
 test('short top app bar: class is added once when page is scrolled from the top', () => {

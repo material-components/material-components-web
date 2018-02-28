@@ -196,7 +196,7 @@ test('adapter#getViewportScrollY returns scroll distance', () => {
   assert.equal(component.getDefaultFoundation().adapter_.getViewportScrollY(), window.pageYOffset);
 });
 
-test('adapter#getTotalActionItems returns the amount of action icons on the opposite side of the menu', () => {
+test('adapter#getTotalActionItems returns the number of action items on the opposite side of the menu', () => {
   const {root, component} = setupTest();
   const adapterReturn = component.getDefaultFoundation().adapter_.getTotalActionItems();
   const actual = root.querySelectorAll(strings.ACTION_ITEM_SELECTOR).length;

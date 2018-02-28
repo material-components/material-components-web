@@ -88,8 +88,6 @@ class MDCTopAppBarFoundation extends MDCFoundation {
   initShortAppBar_() {
     if (this.adapter_.getTotalActionItems() > 0) {
       this.adapter_.addClass(cssClasses.SHORT_HAS_ACTION_ITEM_CLASS);
-    } else {
-      this.adapter_.removeClass(cssClasses.SHORT_HAS_ACTION_ITEM_CLASS);
     }
   }
 
