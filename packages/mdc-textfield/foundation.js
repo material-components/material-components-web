@@ -114,8 +114,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.textFieldInteractionHandler_ = () => this.handleTextFieldInteraction();
     /** @private {function(!Array): undefined} */
     this.validationAttributeChangeHandler_ = (mutations) => this.handleValidationAttributeMutation(mutations);
-    /** @private {MutationObserver} */
-    this.validationObserver_ = null;
+    /** @private {!MutationObserver} */
+    this.validationObserver_;
   }
 
   init() {
@@ -139,7 +139,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.registerTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
     });
-    this.validationObserver_ = this.adapter_.registerValidationAttributeChangeHandler(this.validationAttributeChangeHandler_);
+    this.validationObserver_ = this.adapter_.registerValidationAttributeChangeHandler(
+      this.validationAttributeChangeHandler_);
   }
 
   destroy() {

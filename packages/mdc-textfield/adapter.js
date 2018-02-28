@@ -108,6 +108,7 @@ class MDCTextFieldAdapter {
 
   /**
    * Registers a validation attribute change listener on the input element.
+   * @return {!MutationObserver}
    * @param {function(!Array): undefined} handler
    */
   registerValidationAttributeChangeHandler(handler) {}
