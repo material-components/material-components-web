@@ -33,10 +33,6 @@ class MDCChip extends MDCComponent {
   constructor(...args) {
     super(...args);
 
-    /** @private {?Element} */
-    this.leadingIcon_;
-    /** @private {?Element} */
-    this.checkmark_;
     /** @private {!MDCRipple} */
     this.ripple_ = new MDCRipple(this.root_);
   }
@@ -47,11 +43,6 @@ class MDCChip extends MDCComponent {
    */
   static attachTo(root) {
     return new MDCChip(root);
-  }
-
-  initialize() {
-    this.leadingIcon_ = this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
-    this.checkmark_ = this.root_.querySelector(strings.CHECKMARK_SELECTOR);
   }
 
   destroy() {
@@ -75,35 +66,40 @@ class MDCChip extends MDCComponent {
       removeClass: (className) => this.root_.classList.remove(className),
       hasClass: (className) => this.root_.classList.contains(className),
       addClassToLeadingIcon: (className) => {
-        if (this.leadingIcon_) {
-          this.leadingIcon_.classList.add(className);
+        const leadingIconEl = this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
+        if (leadingIconEl) {
+          leadingIconEl.classList.add(className);
         }
       },
       removeClassFromLeadingIcon: (className) => {
-        if (this.leadingIcon_) {
-          this.leadingIcon_.classList.remove(className);
+        const leadingIconEl = this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
+        if (leadingIconEl) {
+          leadingIconEl.classList.remove(className);
         }
       },
       registerInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
       registerLeadingIconEventHandler: (evtType, handler) => {
-        if (this.leadingIcon_) {
-          this.leadingIcon_.addEventListener(evtType, handler);
+        const leadingIconEl = this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
+        if (leadingIconEl) {
+          leadingIconEl.addEventListener(evtType, handler);
         }
       },
       deregisterLeadingIconEventHandler: (evtType, handler) => {
-        if (this.leadingIcon_) {
-          this.leadingIcon_.removeEventListener(evtType, handler);
+        const leadingIconEl = this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
+        if (leadingIconEl) {
+          leadingIconEl.removeEventListener(evtType, handler);
         }
       },
       registerCheckmarkEventHandler: (evtType, handler) => {
-        if (this.checkmark_) {
-          this.checkmark_.addEventListener(evtType, handler);
+        const checkmarkEl = this.root_.querySelector(strings.CHECKMARK_SELECTOR);
+        if (checkmarkEl) {
+          checkmarkEl.addEventListener(evtType, handler);
         }
       },
       deregisterCheckmarkEventHandler: (evtType, handler) => {
-        if (this.checkmark_) {
-          this.checkmark_.removeEventListener(evtType, handler);
+        if (checkmarkEl) {
+          checkmarkEl.removeEventListener(evtType, handler);
         }
       },
       registerTrailingIconInteractionHandler: (evtType, handler) => {
