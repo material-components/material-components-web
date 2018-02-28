@@ -47,7 +47,10 @@ class MDCChipFoundation extends MDCFoundation {
       hasClass: () => {},
       registerInteractionHandler: () => {},
       deregisterInteractionHandler: () => {},
+      registerTrailingIconInteractionHandler: () => {},
+      deregisterTrailingIconInteractionHandler: () => {},
       notifyInteraction: () => {},
+      notifyTrailingIconInteraction: () => {},
     });
   }
 
@@ -63,11 +66,17 @@ class MDCChipFoundation extends MDCFoundation {
     this.leadingIconTransitionEndHandler_ = (evt) => this.handleLeadingIconTransitionEnd_(evt);
     /** @private {function(!Event): undefined} */
     this.checkmarkTransitionEndHandler_ = (evt) => this.handleCheckmarkTransitionEnd_(evt);
+    /** @private {function(!Event): undefined} */
+    this.trailingIconInteractionHandler_ = (evt) => this.handleTrailingIconInteraction_(evt);
   }
 
   init() {
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.registerInteractionHandler(evtType, this.interactionHandler_);
+      this.adapter_.registerTrailingIconInteractionHandler(evtType, this.trailingIconInteractionHandler_);
+    });
+    ['touchstart', 'pointerdown', 'mousedown'].forEach((evtType) => {
+      this.adapter_.registerTrailingIconInteractionHandler(evtType, this.trailingIconInteractionHandler_);
     });
     this.adapter_.registerLeadingIconEventHandler('transitionend', this.leadingIconTransitionEndHandler_);
     this.adapter_.registerCheckmarkEventHandler('transitionend', this.checkmarkTransitionEndHandler_);
@@ -76,6 +85,10 @@ class MDCChipFoundation extends MDCFoundation {
   destroy() {
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.deregisterInteractionHandler(evtType, this.interactionHandler_);
+      this.adapter_.deregisterTrailingIconInteractionHandler(evtType, this.trailingIconInteractionHandler_);
+    });
+    ['touchstart', 'pointerdown', 'mousedown'].forEach((evtType) => {
+      this.adapter_.deregisterTrailingIconInteractionHandler(evtType, this.trailingIconInteractionHandler_);
     });
     this.adapter_.deregisterLeadingIconEventHandler('transitionend', this.leadingIconTransitionEndHandler_);
     this.adapter_.deregisterCheckmarkEventHandler('transitionend', this.checkmarkTransitionEndHandler_);
@@ -111,6 +124,18 @@ class MDCChipFoundation extends MDCFoundation {
   handleCheckmarkTransitionEnd_(evt) {
     if (evt.propertyName === 'opacity' && !this.adapter_.hasClass(cssClasses.ACTIVATED)) {
       this.adapter_.removeClassFromLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
+    }
+  }
+
+  /**
+   * Handles an interaction event on the trailing icon element. This is used to
+   * prevent the ripple from activating on interaction with the trailing icon.
+   * @param {!Event} evt
+   */
+  handleTrailingIconInteraction_(evt) {
+    evt.stopPropagation();
+    if (evt.type === 'click' || evt.key === 'Enter' || evt.keyCode === 13) {
+      this.adapter_.notifyTrailingIconInteraction();
     }
   }
 }

@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 export const cssClasses = {
-  BOTTOM_LINE: 'mdc-select__bottom-line',
-  BOTTOM_LINE_ACTIVE: 'mdc-select__bottom-line--active',
   BOX: 'mdc-select--box',
   DISABLED: 'mdc-select--disabled',
   OPEN: 'mdc-select--open',
