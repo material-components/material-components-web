@@ -4,7 +4,6 @@
     "entry": "/packages/material-components-web/index.js",
     "output": {
       "path": "/build",
-      "publicPath": "/assets/",
       "filename": "material-components-web.min.js",
       "libraryTarget": "umd",
       "library": "mdc"
@@ -65,7 +64,6 @@
     },
     "output": {
       "path": "/build",
-      "publicPath": "/assets/",
       "filename": "mdc.[name].min.js",
       "libraryTarget": "umd",
       "library": [
@@ -107,7 +105,6 @@
     },
     "output": {
       "path": "/build",
-      "publicPath": "/assets/",
       "filename": "[name].min.css.js"
     },
     "devtool": "source-map",
@@ -202,7 +199,6 @@
     },
     "output": {
       "path": "/build",
-      "publicPath": "/assets/",
       "filename": "[name].min.css.js"
     },
     "devtool": "source-map",
