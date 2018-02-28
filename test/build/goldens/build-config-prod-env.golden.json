@@ -81,6 +81,9 @@
       "menu": [
         "/packages/mdc-menu/index.js"
       ],
+      "notchedOutline": [
+        "/packages/mdc-notched-outline/index.js"
+      ],
       "radio": [
         "/packages/mdc-radio/index.js"
       ],
@@ -234,6 +237,7 @@
       "mdc.linear-progress": "/packages/mdc-linear-progress/mdc-linear-progress.scss",
       "mdc.list": "/packages/mdc-list/mdc-list.scss",
       "mdc.menu": "/packages/mdc-menu/mdc-menu.scss",
+      "mdc.notched-outline": "/packages/mdc-notched-outline/mdc-notched-outline.scss",
       "mdc.radio": "/packages/mdc-radio/mdc-radio.scss",
       "mdc.ripple": "/packages/mdc-ripple/mdc-ripple.scss",
       "mdc.select": "/packages/mdc-select/mdc-select.scss",
