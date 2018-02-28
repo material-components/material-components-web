@@ -100,7 +100,7 @@ class MDCTopAppBarFoundation extends MDCFoundation {
   shortAppBarScrollHandler_() {
     const currentScroll = this.adapter_.getViewportScrollY();
 
-    if (currentScroll === 0) {
+    if (currentScroll <= 0) {
       if (this.isCollapsed) {
         this.adapter_.removeClass(cssClasses.SHORT_COLLAPSED_CLASS);
         this.isCollapsed = false;
