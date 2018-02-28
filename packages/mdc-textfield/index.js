@@ -344,11 +344,7 @@ class MDCTextField extends MDCComponent {
           observer.observe(targetNode, config);
           return observer;
         },
-        deregisterValidationAttributeChangeHandler: (observer) => {
-          if (observer) {
-            observer.disconnect();
-          }
-        },
+        deregisterValidationAttributeChangeHandler: (observer) => observer.disconnect(),
         isFocused: () => {
           return document.activeElement === this.root_.querySelector(strings.INPUT_SELECTOR);
         },
