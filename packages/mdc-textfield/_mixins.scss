@@ -73,7 +73,9 @@
     @include mdc-text-field-textarea-fill-color_($color);
     // Automatically add label background color the same color as well to ensure
     // the label can be seen if the input scrolls behind the label
-    @include mdc-floating-label-fill-color($color);
+    .mdc-floating-label {
+      @include mdc-floating-label-fill-color($color);
+    }
   }
 }
 
@@ -101,9 +103,9 @@
   }
 }
 
-@mixin mdc-text-field-label-color($color) {
+@mixin mdc-text-field-label-ink-color($color) {
   &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-label-color_($color);
+    @include mdc-text-field-label-ink-color_($color);
   }
 }
 
@@ -114,7 +116,7 @@
 @mixin mdc-text-field-disabled_ {
   @include mdc-text-field-bottom-line-color_($mdc-text-field-disabled-border);
   @include mdc-text-field-ink-color_(text-disabled-on-background);
-  @include mdc-text-field-label-color_(text-disabled-on-background);
+  @include mdc-text-field-label-ink-color_(text-disabled-on-background);
   @include mdc-text-field-helper-text-color_(text-disabled-on-background);
   @include mdc-text-field-icon-color_($mdc-text-field-disabled-icon);
   @include mdc-text-field-fullwidth-bottom-line-color_($mdc-text-field-divider);
@@ -134,7 +136,7 @@
   @include mdc-text-field-bottom-line-color($mdc-text-field-error);
   @include mdc-text-field-hover-bottom-line-color($mdc-text-field-error);
   @include mdc-text-field-line-ripple-color($mdc-text-field-error);
-  @include mdc-text-field-label-color($mdc-text-field-error);
+  @include mdc-text-field-label-ink-color($mdc-text-field-error);
   @include mdc-text-field-helper-text-validation-color($mdc-text-field-error);
 
   + .mdc-text-field-helper-text--validation-msg {
@@ -143,7 +145,7 @@
 }
 
 @mixin mdc-text-field-focused_ {
-  @include mdc-text-field-label-color(primary);
+  @include mdc-text-field-label-ink-color(primary);
 
   @include mdc-required-text-field-label-asterisk_ {
     color: $mdc-text-field-error;
@@ -301,7 +303,7 @@
 @mixin mdc-text-field-box-disabled_ {
   @include mdc-text-field-box-fill-color_($mdc-text-field-box-disabled-background);
   @include mdc-text-field-bottom-line-color_($mdc-text-field-outlined-disabled-border);
-  @include mdc-text-field-label-color(text-hint-on-background);
+  @include mdc-text-field-label-ink-color(text-hint-on-background);
 
   border-bottom: none;
 }
@@ -379,7 +381,6 @@
 // Textarea
 
 @mixin mdc-text-field-textarea-disabled_ {
-  @include mdc-floating-label-fill-color($mdc-textarea-disabled-background);
   @include mdc-text-field-textarea-stroke-color_($mdc-text-field-disabled-border);
   @include mdc-text-field-textarea-fill-color_($mdc-textarea-disabled-background);
 
@@ -387,6 +388,10 @@
 
   .mdc-text-field__input {
     border: 1px solid transparent;
+  }
+
+  .mdc-floating-label {
+    @include mdc-floating-label-fill-color($mdc-textarea-disabled-background);
   }
 }
 
@@ -396,7 +401,6 @@
 
 @mixin mdc-text-field-textarea_ {
   @include mdc-text-field-textarea-corner-radius($mdc-text-field-border-radius);
-  @include mdc-floating-label-fill-color($mdc-textarea-background);
   @include mdc-text-field-textarea-stroke-color($mdc-textarea-border);
 
   // Translate above the top of the input, and compensate for the amount of offset needed
@@ -424,6 +428,7 @@
 
   .mdc-floating-label {
     @include mdc-rtl-reflexive-position(left, 1px);
+    @include mdc-floating-label-fill-color($mdc-textarea-background);
 
     top: $label-offset-y;
     bottom: auto;
@@ -482,12 +487,13 @@
   }
 }
 
-@mixin mdc-text-field-label-color_($color) {
+@mixin mdc-text-field-label-ink-color_($color) {
   .mdc-floating-label {
-    @include mdc-floating-label-color($color);
+    @include mdc-floating-label-ink-color($color);
   }
 
-  .mdc-text-field__input::placeholder { // placeholder used in place of label on css only version
+  // CSS-only version
+  .mdc-text-field__input::placeholder {
     @include mdc-theme-prop(color, $color);
   }
 }

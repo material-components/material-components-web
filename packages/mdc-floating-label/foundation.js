@@ -19,7 +19,6 @@ import MDCFoundation from '@material/base/foundation';
 import MDCFloatingLabelAdapter from './adapter';
 import {cssClasses} from './constants';
 
-
 /**
  * @extends {MDCFoundation<!MDCFloatingLabelAdapter>}
  * @final
