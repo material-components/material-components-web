@@ -40,7 +40,7 @@ npm install @material/button
 
 Then import the Sass files for @material/button into your application. You can also use Sass mixins to customize the button:
 
-```
+```scss
 @import "@material/button/mdc-button";
 
 .foo-button {
@@ -50,17 +50,15 @@ Then import the Sass files for @material/button into your application. You can a
 ```
 @material/button has [documentation](packages/mdc-button/README.md) about the required HTML of a button. Update your application's HTML to include this HTML, and add the foo-button class onto the element:
 
-```
-<body>
-  <button class="foo-button mdc-button">
-    Button
-  </button>
-</body>
+```html
+<button class="foo-button mdc-button">
+  Button
+</button>
 ```
 
-You also need to configure the sass-loader to understand the @material syntax. Update your webpack.config.js by changing `{ loader: 'sass-loader' }` to :
+You also need to configure the sass-loader to understand the @material syntax. Update your webpack.config.js by changing `{ loader: 'sass-loader' }` to:
 
-```
+```javascript
 {
   loader: 'sass-loader',
   options: {
@@ -92,9 +90,9 @@ npm install @material/ripple
 
 Then import the ES2015 file for @material/ripple into your application, and initialize an MDCRipple with a DOM element:
 
-```
+```javascript
 import {MDCRipple} from '@material/ripple';
-const ripple = new MDCRipple(document.querySelector(".foo-button"));
+const ripple = new MDCRipple(document.querySelector('.foo-button'));
 ```
 
 This will produce a Material Design ripple on the button!
