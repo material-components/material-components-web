@@ -498,8 +498,7 @@
         });
 
         document.getElementById('box-helper-text-as-validation').addEventListener('change', function(evt) {
-          var target = evt.target;
-          helperText.classList[target.checked ? 'add' : 'remove'](
+          helperText.classList[evt.target.checked ? 'add' : 'remove'](
             'mdc-text-field-helper-text--validation-msg'
           );
         });

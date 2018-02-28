@@ -115,7 +115,7 @@ class MDCTextFieldAdapter {
 
   /**
    * Disconnects a validation attribute observer on the input element.
-   * @param {MutationObserver} observer
+   * @param {!MutationObserver} observer
    */
   deregisterValidationAttributeChangeHandler(observer) {}
 
