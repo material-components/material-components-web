@@ -17,9 +17,13 @@
 @import "@material/theme/mixins";
 
 @mixin mdc-notched-outline-color($color) {
-  @include mdc-theme-prop(border-color, $color);
+  .mdc-notched-outline__idle {
+    @include mdc-theme-prop(border-color, $color);
+  }
 }
 
 @mixin mdc-notched-outline-path-color($color) {
-  @include mdc-theme-prop(stroke, $color);
+  .mdc-notched-outline__path {
+    @include mdc-theme-prop(stroke, $color);
+  }
 }

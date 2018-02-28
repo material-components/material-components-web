@@ -35,11 +35,11 @@ class MDCNotchedOutline extends MDCComponent {
   }
 
   /**
-    * Updates the SVG path of the focus outline element based on the width
-    * of the notched element and the RTL context.
-    * @param {number} notchWidth Width of the size of the notch in the outline.
-    * @param {boolean=} isRtl Determines if outline is rtl. If rtl is true, outline notch
-    * will be right justified, otherwise left justified.
+    * Updates the SVG path of the outline element based on the
+    * notch element width and the RTL context.
+    * @param {number} notchWidth The notch width in the outline.
+    * @param {boolean=} isRtl Determines if outline is rtl. If rtl is true, notch
+    * will be right justified in outline path, otherwise left justified.
     */
   updateSvgPath(notchWidth, isRtl) {
     this.foundation_.updateSvgPath(notchWidth, isRtl);

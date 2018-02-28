@@ -9,7 +9,7 @@ path: /catalog/input-controls/notched-outline
 
 # Notched Outline
 
-The outline is a border around all sides of the text field or select. This is used for the Outlined variation of Text Fields and Select.
+The outline is a border around all sides of either a text field or select component. This is used for the Outlined variant of either a Text Field or Select.
 
 ## Design & API Documentation
 
@@ -59,11 +59,11 @@ CSS Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-text-field-outline-color($color)` | Customizes the color of the border of the outlined text-field.
-`mdc-text-field-hover-outline-color($color)` | Customizes the hover color of the border of the outlined text-field.
-`mdc-text-field-focused-outline-color($color)` | Customizes the outlined border color when the text-field is focused.
+`mdc-notched-outline-color($color)` | Customizes the border color of the idle outline.
+`mdc-notched-outline-path-color($color)` | Customizes the border color of the notched outlined.
 
 ### `MDCNotchedOutline`
+
 Method Signature | Description
 --- | ---
 `updateSvgPath(notchWidth: number, isRtl: boolean) => void` | Updates the SVG of the outline element with a notch calculated based off of the notchWidth. The notch will appear left justified, unless isRtl is true.

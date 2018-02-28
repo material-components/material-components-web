@@ -49,12 +49,12 @@ In outlined text field:
   <i class="material-icons mdc-text-field__icon" tabindex="0">event</i>
   <input type="text" id="my-input" class="mdc-text-field__input">
   <label for="my-input" class="mdc-floating-label">Your Name</label>
-  <div class="mdc-text-field__outline">
+  <div class="mdc-notched-outline">
     <svg>
-      <path class="mdc-text-field__outline-path"/>
+      <path class="mdc-notched-outline__path"/>
     </svg>
   </div>
-  <div class="mdc-text-field__idle-outline"></div>
+  <div class="mdc-notched-outline__idle"></div>
 </div>
 ```
 
@@ -76,12 +76,12 @@ In outlined text field:
   <input type="text" id="my-input" class="mdc-text-field__input">
   <label for="my-input" class="mdc-floating-label">Your Name</label>
   <i class="material-icons mdc-text-field__icon" tabindex="0">event</i>
-  <div class="mdc-text-field__outline">
+  <div class="mdc-notched-outline">
     <svg>
-      <path class="mdc-text-field__outline-path"/>
+      <path class="mdc-notched-outline__path"/>
     </svg>
   </div>
-  <div class="mdc-text-field__idle-outline"></div>
+  <div class="mdc-notched-outline__idle"></div>
 </div>
 ```
 

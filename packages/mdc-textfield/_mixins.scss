@@ -205,7 +205,6 @@
 }
 
 @mixin mdc-text-field-outlined-invalid_ {
-  // Outline specific mixins
   @include mdc-text-field-outline-color($mdc-text-field-error);
   @include mdc-text-field-hover-outline-color($mdc-text-field-error);
   @include mdc-text-field-focused-outline-color($mdc-text-field-error);
@@ -282,24 +281,22 @@
 }
 
 @mixin mdc-text-field-hover-outline-color_($color) {
-  .mdc-text-field__input:hover ~ .mdc-notched-outline__idle,
-  .mdc-text-field__icon:hover ~ .mdc-notched-outline__idle {
+  .mdc-text-field__input:hover ~,
+  .mdc-text-field__icon:hover ~ {
     @include mdc-notched-outline-color($color);
   }
 }
 
 @mixin mdc-text-field-focused-outline-color_($color) {
-  &.mdc-text-field--focused .mdc-notched-outline__path {
+  &.mdc-text-field--focused {
     @include mdc-notched-outline-path-color($color);
   }
 }
 
 @mixin mdc-text-field-outline-color_($color) {
-  .mdc-notched-outline__idle {
-    @include mdc-notched-outline-color($color);
-  }
+  @include mdc-notched-outline-color($color);
 
-  &:not(.mdc-text-field--focused) .mdc-notched-outline__path {
+  &:not(.mdc-text-field--focused) {
     @include mdc-notched-outline-path-color($color);
   }
 }

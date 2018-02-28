@@ -266,17 +266,17 @@ class MDCTextField extends MDCComponent {
           }
         },
       },
-      this.getOutlineAdapterMethods_(),
       this.getLabelAdapterMethods_(),
+      this.getOutlineAdapterMethods_(),
       this.getInputAdapterMethods_())),
       this.getFoundationMap_());
   }
 
   /**
    * @return {!{
-   *   shakeLabel: function(string, function()): undefined,
-   *   floatLabel: function(string, function()): undefined,
-   *   hasLabel: function(): ?Element,
+   *   shakeLabel: function(boolean): undefined,
+   *   floatLabel: function(boolean): undefined,
+   *   hasLabel: function(): boolean,
    *   getLabelWidth: function(): number,
    * }}
    */

@@ -19,17 +19,6 @@
 @import "@material/theme/mixins";
 @import "./mixins";
 
-.mdc-notched-outline__idle {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: calc(100% - 4px);
-  height: calc(100% - 4px);
-  transition: opacity 100ms ease;
-  border: 1px solid;
-  opacity: 1;
-}
-
 .mdc-notched-outline {
   @include mdc-ripple-surface;
   @include mdc-ripple-radius-bounded;
@@ -52,6 +41,17 @@
     height: 100%;
   }
   // stylelint-enable selector-max-type
+}
+
+.mdc-notched-outline__idle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(100% - 4px);
+  height: calc(100% - 4px);
+  transition: opacity 100ms ease;
+  border: 1px solid;
+  opacity: 1;
 }
 
 .mdc-notched-outline__path {
