@@ -21,7 +21,7 @@
 'use strict';
 
 const CopyrightBannerPlugin = require('./copyright-banner-plugin');
-const CssCleanupPlugin = require('../../scripts/webpack/css-cleanup-plugin');
+const CssCleanupPlugin = require('./css-cleanup-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = class {
