@@ -138,12 +138,8 @@
   {
     "name": "demo-js",
     "entry": {
-      "common": [
-        "/demos/common.js"
-      ],
-      "theme/index": [
-        "/demos/theme/index.js"
-      ]
+      "common": "/demos/common.js",
+      "theme/index": "/demos/theme/index.js"
     },
     "output": {
       "path": "/build",
