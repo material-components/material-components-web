@@ -98,7 +98,7 @@ class MDCTopAppBarFoundation extends MDCFoundation {
   }
 
   /**
-   * Scroll handler for applying/removing the closed modifier class
+   * Scroll handler for applying/removing the collapsed modifier class
    * on the short top app bar.
    */
   shortAppBarScrollHandler_() {

@@ -40,3 +40,15 @@ test('applyPassive returns false for browsers that do not support passive event 
   };
   assert.isFalse(util.applyPassive(mockWindow, true));
 });
+
+test('applyPassive returns previous value when called twice without refresh', () => {
+  const mockWindow = {
+    document: {
+      addEventListener: function(name, method, options) {
+        return options.passive;
+      },
+    },
+  };
+  util.applyPassive(mockWindow, true);
+  assert.deepEqual(util.applyPassive(mockWindow, false), {passive: true});
+});
