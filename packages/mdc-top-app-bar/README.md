@@ -68,7 +68,7 @@ Short top app bars should only be used with one action item:
 </header>
 ```
 
-Short top app bars can be configured to stay collapsed: 
+Short top app bars can be configured to stay collapsed by applying the `mdc-top-app-bar--short-collapsed` before instantiating the component : 
 
 ```html
 <header class="mdc-top-app-bar mdc-top-app-bar--short mdc-top-app-bar--short-collapsed">
