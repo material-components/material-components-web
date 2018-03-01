@@ -14,16 +14,8 @@
 // limitations under the License.
 //
 
-@import "./common";
-@import "../packages/mdc-chips/mdc-chips";
+@import "@material/animation/variables";
 
-.custom-chip-primary {
-  @include mdc-chip-fill-color-accessible($mdc-theme-primary);
-}
-
-.custom-chip-secondary {
-  @include mdc-chip-fill-color(white);
-  @include mdc-chip-ink-color($mdc-theme-secondary);
-  @include mdc-chip-selected-ink-color($mdc-theme-secondary);
-  @include mdc-chip-stroke(2px, solid, $mdc-theme-secondary);
+@function mdc-floating-label-transition($property) {
+  @return #{$property} 180ms $mdc-animation-standard-curve-timing-function;
 }

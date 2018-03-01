@@ -31,7 +31,7 @@ The line ripple is used to highlight user-specified text above it. When a line r
 ```html
 <div class="mdc-text-field">
   <input type="text" id="my-text-field-id" class="mdc-text-field__input">
-  <label class="mdc-text-field__label" for="my-text-field-id">Hint text</label>
+  <label class="mdc-floating-label" for="my-text-field-id">Hint text</label>
   <div class="mdc-line-ripple"></div>
 </div>
 ```

@@ -19,7 +19,7 @@
 import MDCLineRippleFoundation from '@material/line-ripple/foundation';
 import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
 import MDCTextFieldIconFoundation from './icon/foundation';
-import MDCTextFieldLabelFoundation from './label/foundation';
+import MDCFloatingLabelFoundation from '@material/floating-label/foundation';
 import MDCTextFieldOutlineFoundation from './outline/foundation';
 
 /* eslint no-unused-vars: [2, {"args": "none"}] */
@@ -42,7 +42,7 @@ let NativeInputType;
  *   lineRipple: (!MDCLineRippleFoundation|undefined),
  *   helperText: (!MDCTextFieldHelperTextFoundation|undefined),
  *   icon: (!MDCTextFieldIconFoundation|undefined),
- *   label: (!MDCTextFieldLabelFoundation|undefined),
+ *   label: (!MDCFloatingLabelFoundation|undefined),
  *   outline: (!MDCTextFieldOutlineFoundation|undefined)
  * }}
  */
@@ -146,6 +146,33 @@ class MDCTextFieldAdapter {
    * @param {number} normalizedX
    */
   setLineRippleTransformOrigin(normalizedX) {}
+
+  /**
+   * Only implement if label exists.
+   * Shakes label if shouldShake is true.
+   * @param {boolean} shouldShake
+   */
+  shakeLabel(shouldShake) {}
+
+  /**
+   * Only implement if label exists.
+   * Floats the label above the input element if shouldFloat is true.
+   * @param {boolean} shouldFloat
+   */
+  floatLabel(shouldFloat) {}
+
+  /**
+   * Returns true if label element exists, false if it doesn't.
+   * @return {boolean}
+   */
+  hasLabel() {}
+
+  /**
+   * Only implement if label exists.
+   * Returns width of label in pixels.
+   * @return {number}
+   */
+  getLabelWidth() {}
 }
 
 export {MDCTextFieldAdapter, NativeInputType, FoundationMapType};
