@@ -27,7 +27,7 @@
   @include mdc-chip-corner-radius($mdc-chip-border-radius-default);
   @include mdc-chip-fill-color($mdc-chip-fill-color-default);
   @include mdc-chip-ink-color($mdc-chip-ink-color-default);
-  @include mdc-chip-selected-color(primary);
+  @include mdc-chip-selected-ink-color(primary);
 
   display: inline-flex;
   position: relative;

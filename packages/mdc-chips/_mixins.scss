@@ -29,10 +29,10 @@
 
   @if ($fill-tone == "dark") {
     @include mdc-chip-ink-color(text-primary-on-dark);
-    @include mdc-chip-selected-color(white);
+    @include mdc-chip-selected-ink-color(white);
   } @else {
     @include mdc-chip-ink-color(text-primary-on-light);
-    @include mdc-chip-selected-color(black);
+    @include mdc-chip-selected-ink-color(black);
   }
 }
 
@@ -49,7 +49,7 @@
   }
 }
 
-@mixin mdc-chip-selected-color($color) {
+@mixin mdc-chip-selected-ink-color($color) {
   &.mdc-chip {
     @include mdc-states-selected($color);
   }
