@@ -317,7 +317,7 @@ test('#init adds event listeners', () => {
 
 test('#destroy removes event listeners', () => {
   const {foundation, mockAdapter} = setupTest();
-  foundation.validationObserver_ = {test: 'test1'};
+  foundation.validationObserver_ = {};
   foundation.destroy();
 
   td.verify(mockAdapter.deregisterInputInteractionHandler('focus', td.matchers.isA(Function)));
