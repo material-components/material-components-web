@@ -42,10 +42,10 @@ const setupTest = () => {
   const mockAdapter = td.object(MDCChipSetFoundation.defaultAdapter);
   const foundation = new MDCChipSetFoundation(mockAdapter);
   const chipA = td.object({
-    toggleActive: () => {},
+    toggleSelected: () => {},
   });
   const chipB = td.object({
-    toggleActive: () => {},
+    toggleSelected: () => {},
   });
   return {foundation, mockAdapter, chipA, chipB};
 };
@@ -64,7 +64,7 @@ test('#destroy removes event listeners', () => {
   td.verify(mockAdapter.deregisterInteractionHandler('MDCChip:interaction', td.matchers.isA(Function)));
 });
 
-test('on custom MDCChip:interaction event toggles active state with single selection on choice chips', () => {
+test('on custom MDCChip:interaction event toggles selected state with single selection on choice chips', () => {
   const {foundation, mockAdapter, chipA, chipB} = setupTest();
   let chipInteractionHandler;
   td.when(mockAdapter.registerInteractionHandler('MDCChip:interaction', td.matchers.isA(Function)))
@@ -73,7 +73,7 @@ test('on custom MDCChip:interaction event toggles active state with single selec
     });
   td.when(mockAdapter.hasClass(cssClasses.CHOICE)).thenReturn(true);
 
-  assert.equal(foundation.activeChips_.length, 0);
+  assert.equal(foundation.selectedChips_.length, 0);
   foundation.init();
 
   chipInteractionHandler({
@@ -81,28 +81,28 @@ test('on custom MDCChip:interaction event toggles active state with single selec
       chip: chipA,
     },
   });
-  td.verify(chipA.toggleActive());
-  assert.equal(foundation.activeChips_.length, 1);
+  td.verify(chipA.toggleSelected());
+  assert.equal(foundation.selectedChips_.length, 1);
 
   chipInteractionHandler({
     detail: {
       chip: chipB,
     },
   });
-  td.verify(chipA.toggleActive());
-  td.verify(chipB.toggleActive());
-  assert.equal(foundation.activeChips_.length, 1);
+  td.verify(chipA.toggleSelected());
+  td.verify(chipB.toggleSelected());
+  assert.equal(foundation.selectedChips_.length, 1);
 
   chipInteractionHandler({
     detail: {
       chip: chipB,
     },
   });
-  td.verify(chipB.toggleActive());
-  assert.equal(foundation.activeChips_.length, 0);
+  td.verify(chipB.toggleSelected());
+  assert.equal(foundation.selectedChips_.length, 0);
 });
 
-test('on custom MDCChip:interaction event toggles active state with multi-selection on filter chips', () => {
+test('on custom MDCChip:interaction event toggles selected state with multi-selection on filter chips', () => {
   const {foundation, mockAdapter, chipA, chipB} = setupTest();
   let chipInteractionHandler;
   td.when(mockAdapter.registerInteractionHandler('MDCChip:interaction', td.matchers.isA(Function)))
@@ -111,7 +111,7 @@ test('on custom MDCChip:interaction event toggles active state with multi-select
     });
   td.when(mockAdapter.hasClass(cssClasses.FILTER)).thenReturn(true);
 
-  assert.equal(foundation.activeChips_.length, 0);
+  assert.equal(foundation.selectedChips_.length, 0);
   foundation.init();
 
   chipInteractionHandler({
@@ -119,30 +119,30 @@ test('on custom MDCChip:interaction event toggles active state with multi-select
       chip: chipA,
     },
   });
-  td.verify(chipA.toggleActive());
-  assert.equal(foundation.activeChips_.length, 1);
+  td.verify(chipA.toggleSelected());
+  assert.equal(foundation.selectedChips_.length, 1);
 
   chipInteractionHandler({
     detail: {
       chip: chipB,
     },
   });
-  td.verify(chipB.toggleActive());
-  assert.equal(foundation.activeChips_.length, 2);
+  td.verify(chipB.toggleSelected());
+  assert.equal(foundation.selectedChips_.length, 2);
 
   chipInteractionHandler({
     detail: {
       chip: chipB,
     },
   });
-  td.verify(chipB.toggleActive());
-  assert.equal(foundation.activeChips_.length, 1);
+  td.verify(chipB.toggleSelected());
+  assert.equal(foundation.selectedChips_.length, 1);
 
   chipInteractionHandler({
     detail: {
       chip: chipA,
     },
   });
-  td.verify(chipA.toggleActive());
-  assert.equal(foundation.activeChips_.length, 0);
+  td.verify(chipA.toggleSelected());
+  assert.equal(foundation.selectedChips_.length, 0);
 });
