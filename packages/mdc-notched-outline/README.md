@@ -32,28 +32,15 @@ The outline is a border around all sides of either a text field or select compon
 <div class="mdc-notched-outline__idle"></div>
 ```
 
-### Usage within `mdc-text-field`
-
-```html
-<div class="mdc-text-field mdc-text-field--outlined">
-  <input class="mdc-text-field__input" id="my-text-field-id" type="text">
-  <label class="mdc-text-field__label" for="my-text-field-id">Label</label>
-  <div class="mdc-notched-outline">
-    <svg>
-      <path class="mdc-notched-outline__path"/>
-    </svg>
-  </div>
-  <div class="mdc-notched-outline__idle"></div>
-</div>
-```
+> For usage within a text field [see](../mdc-textfield/README.md#outlined/).
 
 ### CSS Classes
 
 CSS Class | Description
 --- | ---
-`mdc-notched-outline` | Mandatory. Container for the SVG of the outline when the label is floating above the input.
-`mdc-notched-outline__path` | Mandatory. The SVG path in the outline when the label is floating above the input.
-`mdc-notched-outline__idle` | Mandatory. The outline when the label is resting, in the docked position.
+`mdc-notched-outline` | Mandatory. Container for the SVG of the notched outline path.
+`mdc-notched-outline__path` | Mandatory. The path of the SVG of the notched outline.
+`mdc-notched-outline__idle` | Mandatory. The full outline when the notch is hidden.
 
 ### Sass Mixins
 
@@ -82,3 +69,6 @@ Method Signature | Description
 Method Signature | Description
 --- | ---
 `updateSvgPath(labelWidth: number, isRtl: boolean) => void` | Updates the SVG path of the focus outline element based on the given width of the label element and the RTL context.
+
+
+[//]: <> (TODO(mattgoo): add how to hide/show notch in outline)
