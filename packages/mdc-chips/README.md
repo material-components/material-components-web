@@ -88,7 +88,7 @@ Filter chips are a variant of chips which allow multiple selection from a set of
 </div>
 ```
 
-> _NOTE_: To use a leading icon in a filter chip, put the `mdc-chip__icon--leading` element _before_ the `mdc-chip__checkmark` element.
+> _NOTE_: To use a leading icon in a filter chip, put the `mdc-chip__icon--leading` element _before_ the `mdc-chip__checkmark` element:
 
 ```html
 <div class="mdc-chip">
@@ -114,7 +114,7 @@ CSS Class | Description
 `mdc-chip__icon--leading` | Optional. Indicates a leading icon in the chip
 `mdc-chip__icon--trailing` | Optional. Indicates a trailing icon in the chip
 `mdc-chip__checkmark` | Optional. Indicates the checkmark SVG element in a filter chip
-`mdc-chip__checkmark-path` | Optional. Indicates the checkmark SVG path in a filter chip
+`mdc-chip__checkmark-path` | Mandatory with the use of `mdc-chip__checkmark`. Indicates the checkmark SVG path in a filter chip
 
 > _NOTE_: Every element that has an `mdc-chip__icon` class must also have either the `mdc-chip__icon--leading` or `mdc-chip__icon--trailing` class.
 
