@@ -51,3 +51,7 @@
   background-color: white;
   padding: 10px;
 }
+
+input[type="checkbox"]:disabled + label {
+  opacity: .4;
+}

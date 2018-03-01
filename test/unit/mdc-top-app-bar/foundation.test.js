@@ -129,7 +129,7 @@ test('short top app bar: class is removed once when page is scrolled to the top'
   td.when(mockAdapter.getTotalActionItems()).thenReturn(0);
 
   const {scrollHandler} = createMockHandlers(foundation, mockAdapter, mockRaf);
-  // Apply the closed class
+  // Apply the collapsed class
   td.when(mockAdapter.getViewportScrollY()).thenReturn(1);
   scrollHandler();
 
