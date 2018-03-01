@@ -43,8 +43,8 @@
   // Only move the label's position to allow room for the icon, if the icon is on the same
   // side as the label. Aka the icon is on left side in a LTR context.
   @if ($position-property == left) {
-    .mdc-text-field__label {
-	  @include mdc-rtl-reflexive-position($position-property, $padding);
+    .mdc-floating-label {
+      @include mdc-rtl-reflexive-position($position-property, $padding);
     }
   }
 }

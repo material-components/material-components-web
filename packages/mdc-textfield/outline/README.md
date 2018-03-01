@@ -37,7 +37,7 @@ The outline is a border around all sides of the text field. This is used for the
 ```html
 <div class="mdc-text-field mdc-text-field--outlined">
   <input class="mdc-text-field__input" id="my-text-field-id" type="text">
-  <label class="mdc-text-field__label" for="my-text-field-id">Label</label>
+  <label class="mdc-floating-label" for="my-text-field-id">Label</label>
   <div class="mdc-text-field__outline">
     <svg>
       <path class="mdc-text-field__outline-path"/>
@@ -54,6 +54,14 @@ CSS Class | Description
 `mdc-text-field__outline` | Mandatory. Container for the SVG in the outline when the label is floating above the input.
 `mdc-text-field__outline-path` | Mandatory. The SVG path in the outline when the label is floating above the input.
 `mdc-text-field__idle-outline` | Mandatory. The outline when the label is resting in the input position.
+
+### Sass Mixins
+
+Mixin | Description
+--- | ---
+`mdc-text-field-outline-color($color)` | Customizes the color of the border of the outlined text-field.
+`mdc-text-field-hover-outline-color($color)` | Customizes the hover color of the border of the outlined text-field.
+`mdc-text-field-focused-outline-color($color)` | Customizes the outlined border color when the text-field is focused.
 
 #### `MDCTextFieldOutline`
 

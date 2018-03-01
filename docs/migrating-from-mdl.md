@@ -92,7 +92,7 @@ MDC Web:
 ```html
 <div class="mdc-text-field">
   <input class="mdc-text-field__input" type="text" id="input">
-  <label for="input" class="mdc-text-field__label">Input Label</label>
+  <label for="input" class="mdc-floating-label">Input Label</label>
   <div class="mdc-line-ripple"></div>
 </div>
 ```
@@ -118,7 +118,7 @@ element, with the component’s class name as the value. For example:
 ```html
 <div class="mdc-text-field" data-mdc-auto-init="MDCTextField">
   <input class="mdc-text-field__input" type="text" id="input">
-  <label for="input" class="mdc-text-field__label">Input Label</label>
+  <label for="input" class="mdc-floating-label">Input Label</label>
   <div class="mdc-line-ripple"></div>
 </div>
 ```
@@ -199,7 +199,7 @@ Like in MDL, styling components with CSS classes is simply a matter of applied t
 ```html
 <div class="mdc-text-field">
   <input type="text" id="my-text-field" class="mdc-text-field__input">
-  <label class="mdc-text-field__label" for="my-text-field">Hint text</label>
+  <label class="mdc-floating-label" for="my-text-field">Hint text</label>
   <div class="mdc-line-ripple"></div>
 </div>
 ```

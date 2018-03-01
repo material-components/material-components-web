@@ -15,7 +15,9 @@
     "topappbar"
   ],
   "dependencies": {
+    "@material/animation": "^0.25.0",
     "@material/base": "^0.29.0",
+    "@material/elevation": "^0.28.0",
     "@material/ripple": "^0.31.0",
     "@material/rtl": "^0.30.0",
     "@material/theme": "^0.30.0",

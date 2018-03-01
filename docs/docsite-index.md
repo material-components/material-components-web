@@ -35,9 +35,9 @@ Get up and running with Material Components for web
     ```
 
 2.  {: .step-list-item } ### Include the stylesheet
-    
+
     Include the MDC Web stylesheet in the head of your file
-    
+
     ```html
     <html>
       <head>
@@ -56,14 +56,14 @@ Get up and running with Material Components for web
         <h2 class="mdc-typography--display2">Hello, Material Components!</h2>
         <div class="mdc-text-field" data-mdc-auto-init="MDCTextField">
           <input type="text" class="mdc-text-field__input" id="demo-input">
-          <label for="demo-input" class="mdc-text-field__label">Tell us how you feel!</label>
+          <label for="demo-input" class="mdc-floating-label">Tell us how you feel!</label>
         </div>
       </body>
     ```
 
 4.  {: .step-list-item } ### Add scripts and instantiate
 
-    Add the MDC Web scripts and call MDC Auto Init. 
+    Add the MDC Web scripts and call MDC Auto Init.
 
     ```html
     <script src="node_modules/material-components-web/dist/material-components-web.js"></script>
@@ -71,7 +71,7 @@ Get up and running with Material Components for web
     ```
 
     A full example of the HTML could look like this:
-    
+
     ```html
     <!DOCTYPE html>
     <html>
@@ -84,7 +84,7 @@ Get up and running with Material Components for web
         <h2 class="mdc-typography--display2">Hello, Material Components!</h2>
         <div class="mdc-text-field" data-mdc-auto-init="MDCTextField">
           <input type="text" class="mdc-text-field__input" id="demo-input">
-          <label for="demo-input" class="mdc-text-field__label">Tell us how you feel!</label>
+          <label for="demo-input" class="mdc-floating-label">Tell us how you feel!</label>
         </div>
         <script src="node_modules/material-components-web/dist/material-components-web.js"></script>
         <script>mdc.autoInit()</script>
