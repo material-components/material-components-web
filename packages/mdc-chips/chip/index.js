@@ -98,6 +98,7 @@ class MDCChip extends MDCComponent {
         }
       },
       deregisterCheckmarkEventHandler: (evtType, handler) => {
+        const checkmarkEl = this.root_.querySelector(strings.CHECKMARK_SELECTOR);
         if (checkmarkEl) {
           checkmarkEl.removeEventListener(evtType, handler);
         }

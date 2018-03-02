@@ -135,12 +135,14 @@
 
   .mdc-chip__icon--leading + .mdc-chip__checkmark {
     opacity: 1;
+    // This ensures that the checkmark has zero width while the leading icon is still animating.
     width: 0;
   }
 }
 
 .mdc-chip__icon--hidden-leading {
   &.mdc-chip__icon--leading {
+    // This ensures that the leading icon doesn't fade in while the checkmark is fading out.
     opacity: 0;
     width: 0;
   }
