@@ -19,6 +19,7 @@ import {assert} from 'chai';
 import td from 'testdouble';
 import domEvents from 'dom-events';
 
+import {MDCRipple} from '../../../packages/mdc-ripple';
 import {MDCChip, MDCChipFoundation} from '../../../packages/mdc-chips/chip';
 
 const getFixture = () => bel`
@@ -38,6 +39,11 @@ function setupTest() {
   const component = new MDCChip(root);
   return {root, component};
 }
+
+test('get ripple returns MDCRipple instance', () => {
+  const {component} = setupTest();
+  assert.isOk(component.ripple instanceof MDCRipple);
+});
 
 test('#adapter.hasClass returns true if class is set on chip set element', () => {
   const {root, component} = setupTest();
@@ -68,6 +74,11 @@ test('#adapter.addClassToLeadingIcon adds a class to the leading icon element', 
   assert.isOk(leadingIcon.classList.contains('foo'));
 });
 
+test('#adapter.addClassToLeadingIcon does nothing if no leading icon element is present', () => {
+  const {component} = setupTest();
+  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.addClassToLeadingIcon('foo'));
+});
+
 test('#adapter.removeClassFromLeadingIcon removes a class from the leading icon element', () => {
   const {root, component} = setupTest();
   const leadingIcon = bel`
@@ -77,6 +88,11 @@ test('#adapter.removeClassFromLeadingIcon removes a class from the leading icon 
   leadingIcon.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClassFromLeadingIcon('foo');
   assert.isNotOk(leadingIcon.classList.contains('foo'));
+});
+
+test('#adapter.removeClassFromLeadingIcon does nothing if no leading icon element is present', () => {
+  const {component} = setupTest();
+  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.removeClassFromLeadingIcon('foo'));
 });
 
 test('#adapter.registerInteractionHandler adds event listener for a given event to the root element', () => {
