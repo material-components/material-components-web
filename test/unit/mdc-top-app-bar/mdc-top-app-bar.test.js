@@ -20,6 +20,7 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 
 import {MDCTopAppBar} from '../../../packages/mdc-top-app-bar';
+import {strings} from '../../../packages/mdc-top-app-bar/constants';
 
 function getFixture(removeIcon) {
   const html = bel`
@@ -27,16 +28,17 @@ function getFixture(removeIcon) {
         <header class="mdc-top-app-bar">
       <div class="mdc-top-app-bar__row">
         <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-          <a href="#" class="material-icons mdc-top-app-bar__menu-icon">menu</a>
+          <a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
           <span class="mdc-top-app-bar__title">Title</span>
         </section>
         <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" 
         role="top-app-bar">
-          <a href="#" class="material-icons mdc-top-app-bar__icon" aria-label="Download" alt="Download">
+          <a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="Download" alt="Download">
           file_download</a>
-          <a href="#" class="material-icons mdc-top-app-bar__icon" aria-label="Print this page" alt="Print this page">
+          <a href="#" class="material-icons mdc-top-app-bar__action-item" 
+             aria-label="Print this page" alt="Print this page">
           print</a>
-          <a href="#" class="material-icons mdc-top-app-bar__icon" aria-label="Bookmark this page" 
+          <a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="Bookmark this page" 
           alt="Bookmark this page">bookmark</a>
           <div class="mdc-menu-anchor">
             <div class="mdc-menu" tabindex="-1" id="demo-menu">
@@ -53,7 +55,7 @@ function getFixture(removeIcon) {
   `;
 
   if (removeIcon) {
-    const icon = html.querySelector('.mdc-top-app-bar__menu-icon');
+    const icon = html.querySelector(strings.NAVIGATION_ICON_SELECTOR);
     icon.parentNode.removeChild(icon);
   }
 
@@ -70,12 +72,11 @@ class FakeRipple {
 
 function setupTest(removeIcon = false) {
   const fixture = getFixture(removeIcon);
-  const root = fixture.querySelector('.mdc-top-app-bar');
-  const adjust = fixture.querySelector('.mdc-top-app-bar-fixed-adjust');
-  const icon = root.querySelector('.mdc-top-app-bar__menu-icon');
+  const root = fixture.querySelector(strings.ROOT_SELECTOR);
+  const icon = root.querySelector(strings.NAVIGATION_ICON_SELECTOR);
   const component = new MDCTopAppBar(root, undefined, (el) => new FakeRipple(el));
 
-  return {root, adjust, component, icon};
+  return {root, component, icon};
 }
 
 suite('MDCTopAppBar');
@@ -86,7 +87,8 @@ test('attachTo initializes and returns an MDCTopAppBar instance', () => {
 
 test('constructor instantiates icon ripples', () => {
   const {root, component} = setupTest();
-  const totalIcons = root.querySelectorAll('.mdc-top-app-bar__icon, .mdc-top-app-bar__menu-icon').length;
+  const selector = strings.ACTION_ITEM_SELECTOR + ',' + strings.NAVIGATION_ICON_SELECTOR;
+  const totalIcons = root.querySelectorAll(selector).length;
 
   assert.isTrue(component.iconRipples_.length === totalIcons);
 });
@@ -123,7 +125,7 @@ test('adapter#removeClass removes a class from the root element', () => {
   assert.isFalse(root.classList.contains('foo'));
 });
 
-test('registerNavigationIconInteractionHandler does not add a handler to the nav icon ', () => {
+test('registerNavigationIconInteractionHandler does not add a handler to the nav icon if the nav icon is null', () => {
   const {component} = setupTest(true);
   const handler = td.func('eventHandler');
 
@@ -140,6 +142,14 @@ test('#adapter.registerNavigationIconInteractionHandler adds a handler to the na
   td.verify(handler(td.matchers.anything()));
 });
 
+test('#adapter.deregisterScrollHandler does not remove a handler from the nav icon if the nav icon is null ', () => {
+  const {component} = setupTest(true);
+  const handler = td.func('eventHandler');
+
+  assert.doesNotThrow(
+    () => component.getDefaultFoundation().adapter_.deregisterNavigationIconInteractionHandler('click', handler));
+});
+
 test('#adapter.deregisterNavigationIconInteractionHandler removes a handler from the nav icon ' +
   'element for a given event', () => {
   const {component, icon} = setupTest();
@@ -149,4 +159,46 @@ test('#adapter.deregisterNavigationIconInteractionHandler removes a handler from
   component.getDefaultFoundation().adapter_.deregisterNavigationIconInteractionHandler('click', handler);
   domEvents.emit(icon, 'click');
   td.verify(handler(td.matchers.anything()), {times: 0});
+});
+
+test('#adapter.registerScrollHandler adds a scroll handler to the window ' +
+  'element for a given event', () => {
+  const {component} = setupTest();
+  const handler = td.func('scrollHandler');
+  component.getDefaultFoundation().adapter_.registerScrollHandler(handler);
+
+  domEvents.emit(window, 'scroll');
+  try {
+    td.verify(handler(td.matchers.anything()));
+  } finally {
+    // Just to be safe
+    window.removeEventListener('scroll', handler);
+  }
+});
+
+test('#adapter.deregisterScrollHandler removes a scroll handler from the window ' +
+  'element for a given event', () => {
+  const {component} = setupTest();
+  const handler = td.func('scrollHandler');
+  window.addEventListener('scroll', handler);
+  component.getDefaultFoundation().adapter_.deregisterScrollHandler(handler);
+  domEvents.emit(window, 'scroll');
+  try {
+    td.verify(handler(td.matchers.anything()), {times: 0});
+  } finally {
+    // Just to be safe
+    window.removeEventListener('scroll', handler);
+  }
+});
+
+test('adapter#getViewportScrollY returns scroll distance', () => {
+  const {component} = setupTest();
+  assert.equal(component.getDefaultFoundation().adapter_.getViewportScrollY(), window.pageYOffset);
+});
+
+test('adapter#getTotalActionItems returns the number of action items on the opposite side of the menu', () => {
+  const {root, component} = setupTest();
+  const adapterReturn = component.getDefaultFoundation().adapter_.getTotalActionItems();
+  const actual = root.querySelectorAll(strings.ACTION_ITEM_SELECTOR).length;
+  assert.isTrue(adapterReturn === actual);
 });

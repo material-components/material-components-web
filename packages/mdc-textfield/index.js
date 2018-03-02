@@ -29,7 +29,7 @@ import MDCTextFieldFoundation from './foundation';
 import {MDCLineRipple, MDCLineRippleFoundation} from '@material/line-ripple/index';
 import {MDCTextFieldHelperText, MDCTextFieldHelperTextFoundation} from './helper-text/index';
 import {MDCTextFieldIcon, MDCTextFieldIconFoundation} from './icon/index';
-import {MDCTextFieldLabel, MDCTextFieldLabelFoundation} from './label/index';
+import {MDCFloatingLabel, MDCFloatingLabelFoundation} from '@material/floating-label/index';
 import {MDCTextFieldOutline, MDCTextFieldOutlineFoundation} from './outline/index';
 /* eslint-enable no-unused-vars */
 
@@ -53,7 +53,7 @@ class MDCTextField extends MDCComponent {
     this.helperText_;
     /** @private {?MDCTextFieldIcon} */
     this.icon_;
-    /** @private {?MDCTextFieldLabel} */
+    /** @private {?MDCFloatingLabel} */
     this.label_;
     /** @private {?MDCTextFieldOutline} */
     this.outline_;
@@ -76,8 +76,8 @@ class MDCTextField extends MDCComponent {
    * creates a new MDCTextFieldHelperText.
    * @param {(function(!Element): !MDCTextFieldIcon)=} iconFactory A function which
    * creates a new MDCTextFieldIcon.
-   * @param {(function(!Element): !MDCTextFieldLabel)=} labelFactory A function which
-   * creates a new MDCTextFieldLabel.
+   * @param {(function(!Element): !MDCFloatingLabel)=} labelFactory A function which
+   * creates a new MDCFloatingLabel.
    * @param {(function(!Element): !MDCTextFieldOutline)=} outlineFactory A function which
    * creates a new MDCTextFieldOutline.
    */
@@ -86,7 +86,7 @@ class MDCTextField extends MDCComponent {
     lineRippleFactory = (el) => new MDCLineRipple(el),
     helperTextFactory = (el) => new MDCTextFieldHelperText(el),
     iconFactory = (el) => new MDCTextFieldIcon(el),
-    labelFactory = (el) => new MDCTextFieldLabel(el),
+    labelFactory = (el) => new MDCFloatingLabel(el),
     outlineFactory = (el) => new MDCTextFieldOutline(el)) {
     this.input_ = this.root_.querySelector(strings.INPUT_SELECTOR);
     const labelElement = this.root_.querySelector(strings.LABEL_SELECTOR);
@@ -267,6 +267,18 @@ class MDCTextField extends MDCComponent {
             this.lineRipple_.setRippleCenter(normalizedX);
           }
         },
+        shakeLabel: (shouldShake) => {
+          this.label_.shake(shouldShake);
+        },
+        floatLabel: (shouldFloat) => {
+          this.label_.float(shouldFloat);
+        },
+        hasLabel: () => {
+          return !!this.label_;
+        },
+        getLabelWidth: () => {
+          return this.label_.getWidth();
+        },
       },
       this.getInputAdapterMethods_())),
       this.getFoundationMap_());
@@ -295,7 +307,6 @@ class MDCTextField extends MDCComponent {
     return {
       helperText: this.helperText_ ? this.helperText_.foundation : undefined,
       icon: this.icon_ ? this.icon_.foundation : undefined,
-      label: this.label_ ? this.label_.foundation : undefined,
       outline: this.outline_ ? this.outline_.foundation : undefined,
     };
   }
@@ -304,5 +315,4 @@ class MDCTextField extends MDCComponent {
 export {MDCTextField, MDCTextFieldFoundation,
   MDCTextFieldHelperText, MDCTextFieldHelperTextFoundation,
   MDCTextFieldIcon, MDCTextFieldIconFoundation,
-  MDCTextFieldLabel, MDCTextFieldLabelFoundation,
   MDCTextFieldOutline, MDCTextFieldOutlineFoundation};

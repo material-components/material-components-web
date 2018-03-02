@@ -26,8 +26,8 @@ const strings = {
 
 /** @enum {string} */
 const cssClasses = {
-  ACTIVATED: 'mdc-chip--activated',
   HIDDEN_LEADING_ICON: 'mdc-chip__icon--hidden-leading',
+  SELECTED: 'mdc-chip--selected',
 };
 
 export {strings, cssClasses};

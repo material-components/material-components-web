@@ -18,16 +18,16 @@
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
- * Adapter for MDC Text Field Label.
+ * Adapter for MDC Floating Label.
  *
  * Defines the shape of the adapter expected by the foundation. Implement this
- * adapter to integrate the Text Field label into your framework. See
+ * adapter to integrate the floating label into your framework. See
  * https://github.com/material-components/material-components-web/blob/master/docs/authoring-components.md
  * for more information.
  *
  * @record
  */
-class MDCTextFieldLabelAdapter {
+class MDCFloatingLabelAdapter {
   /**
    * Adds a class to the label element.
    * @param {string} className
@@ -45,6 +45,20 @@ class MDCTextFieldLabelAdapter {
    * @return {number}
    */
   getWidth() {}
+
+  /**
+   * Registers an event listener on the root element for a given event.
+   * @param {string} evtType
+   * @param {function(!Event): undefined} handler
+   */
+  registerInteractionHandler(evtType, handler) {}
+
+  /**
+   * Deregisters an event listener on the root element for a given event.
+   * @param {string} evtType
+   * @param {function(!Event): undefined} handler
+   */
+  deregisterInteractionHandler(evtType, handler) {}
 }
 
-export default MDCTextFieldLabelAdapter;
+export default MDCFloatingLabelAdapter;

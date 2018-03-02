@@ -21,7 +21,7 @@ import {MDCTextFieldAdapter, NativeInputType, FoundationMapType} from './adapter
 import MDCLineRippleFoundation from '@material/line-ripple/foundation';
 import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
 import MDCTextFieldIconFoundation from './icon/foundation';
-import MDCTextFieldLabelFoundation from './label/foundation';
+import MDCFloatingLabelFoundation from '@material/floating-label/foundation';
 import MDCTextFieldOutlineFoundation from './outline/foundation';
 /* eslint-enable no-unused-vars */
 import {cssClasses, strings, numbers} from './constants';
@@ -47,6 +47,16 @@ class MDCTextFieldFoundation extends MDCFoundation {
     return numbers;
   }
 
+  /** @return {boolean} */
+  get shouldShake() {
+    return !this.isValid() && !this.isFocused_;
+  }
+
+  /** @return {boolean} */
+  get shouldFloat() {
+    return !this.isBadInput_() && (!!this.getValue() || this.isFocused_);
+  }
+
   /**
    * {@see MDCTextFieldAdapter} for typing information on parameters and return
    * types.
@@ -67,6 +77,10 @@ class MDCTextFieldFoundation extends MDCFoundation {
       activateLineRipple: () => {},
       deactivateLineRipple: () => {},
       setLineRippleTransformOrigin: () => {},
+      shakeLabel: () => {},
+      floatLabel: () => {},
+      hasLabel: () => {},
+      getLabelWidth: () => {},
     });
   }
 
@@ -81,8 +95,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.helperText_ = foundationMap.helperText;
     /** @type {!MDCTextFieldIconFoundation|undefined} */
     this.icon_ = foundationMap.icon;
-    /** @type {!MDCTextFieldLabelFoundation|undefined} */
-    this.label_ = foundationMap.label;
     /** @type {!MDCTextFieldOutlineFoundation|undefined} */
     this.outline_ = foundationMap.outline;
 
@@ -109,9 +121,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
   init() {
     this.adapter_.addClass(MDCTextFieldFoundation.cssClasses.UPGRADED);
     // Ensure label does not collide with any pre-filled value.
-    if (this.label_ && this.getValue()) {
-      this.label_.styleFloat(
-        this.getValue(), this.isFocused_, this.isBadInput_());
+    if (this.adapter_.hasLabel() && this.getValue()) {
+      this.adapter_.floatLabel(this.shouldFloat);
     }
 
     if (this.adapter_.isFocused()) {
@@ -156,13 +167,13 @@ class MDCTextFieldFoundation extends MDCFoundation {
    * Updates the focus outline for outlined text fields.
    */
   updateOutline() {
-    if (!this.outline_ || !this.label_) {
+    if (!this.outline_ || !this.adapter_.hasLabel()) {
       return;
     }
 
     const isDense = this.adapter_.hasClass(cssClasses.DENSE);
     const labelScale = isDense ? numbers.DENSE_LABEL_SCALE : numbers.LABEL_SCALE;
-    const labelWidth = this.label_.getWidth() * labelScale;
+    const labelWidth = this.adapter_.getLabelWidth() * labelScale;
     const isRtl = this.adapter_.isRtl();
     this.outline_.updateSvgPath(labelWidth, isRtl);
   }
@@ -177,10 +188,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
     if (this.outline_) {
       this.updateOutline();
     }
-    if (this.label_) {
-      this.label_.styleShake(this.isValid(), this.isFocused_);
-      this.label_.styleFloat(
-        this.getValue(), this.isFocused_, this.isBadInput_());
+    if (this.adapter_.hasLabel()) {
+      this.adapter_.shakeLabel(this.shouldShake);
+      this.adapter_.floatLabel(this.shouldFloat);
     }
     if (this.helperText_) {
       this.helperText_.showToScreenReader();
@@ -220,10 +230,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
     const isValid = this.isValid();
     this.styleValidity_(isValid);
     this.styleFocused_(this.isFocused_);
-    if (this.label_) {
-      this.label_.styleShake(this.isValid(), this.isFocused_);
-      this.label_.styleFloat(
-        this.getValue(), this.isFocused_, this.isBadInput_());
+    if (this.adapter_.hasLabel()) {
+      this.adapter_.shakeLabel(this.shouldShake);
+      this.adapter_.floatLabel(this.shouldFloat);
     }
     if (shouldRemoveLabelFloat) {
       this.receivedUserInput_ = false;
@@ -244,10 +253,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.getNativeInput_().value = value;
     const isValid = this.isValid();
     this.styleValidity_(isValid);
-    if (this.label_) {
-      this.label_.styleShake(isValid, this.isFocused_);
-      this.label_.styleFloat(
-        this.getValue(), this.isFocused_, this.isBadInput_());
+    if (this.adapter_.hasLabel()) {
+      this.adapter_.shakeLabel(this.shouldShake);
+      this.adapter_.floatLabel(this.shouldFloat);
     }
   }
 
@@ -269,8 +277,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
     // Retrieve from the getter to ensure correct logic is applied.
     isValid = this.isValid();
     this.styleValidity_(isValid);
-    if (this.label_) {
-      this.label_.styleShake(isValid, this.isFocused_);
+    if (this.adapter_.hasLabel()) {
+      this.adapter_.shakeLabel(this.shouldShake);
     }
   }
 

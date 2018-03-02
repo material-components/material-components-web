@@ -17,8 +17,8 @@
 
 /** @enum {string} */
 const cssClasses = {
-  LABEL_FLOAT_ABOVE: 'mdc-text-field__label--float-above',
-  LABEL_SHAKE: 'mdc-text-field__label--shake',
+  LABEL_FLOAT_ABOVE: 'mdc-floating-label--float-above',
+  LABEL_SHAKE: 'mdc-floating-label--shake',
 };
 
 export {cssClasses};

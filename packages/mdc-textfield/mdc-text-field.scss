@@ -14,21 +14,21 @@
 // limitations under the License.
 //
 
-@import "./functions";
-@import "./mixins";
-@import "./variables";
 @import "@material/animation/variables";
+@import "@material/floating-label/mdc-floating-label";
+@import "@material/line-ripple/mdc-line-ripple";
 @import "@material/ripple/common";
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
 @import "@material/theme/variables";
 @import "@material/typography/mixins";
 @import "@material/typography/variables";
-@import "@material/line-ripple/mdc-line-ripple";
+@import "./functions";
 @import "./helper-text/mdc-text-field-helper-text";
 @import "./icon/mdc-text-field-icon";
-@import "./label/mdc-text-field-label";
+@import "./mixins";
 @import "./outline/mdc-text-field-outline";
+@import "./variables";
 
 // postcss-bem-linter: define text-field
 
@@ -85,7 +85,7 @@
 
   // Move label when text-field gets autofilled in Chrome
   // stylelint-disable plugin/selector-bem-pattern
-  &:-webkit-autofill + .mdc-text-field__label {
+  &:-webkit-autofill + .mdc-floating-label {
     transform: translateY(-100%) scale(.75);
     cursor: auto;
   }
@@ -164,7 +164,7 @@
     height: 48px;
   }
 
-  .mdc-text-field__label {
+  .mdc-floating-label {
     pointer-events: none;
   }
 }
@@ -246,12 +246,20 @@
 
 // Never show the idle outline when the label is floating, otherwise the label
 // will collide with the idle outline.
-.mdc-text-field__label--float-above ~ .mdc-text-field__idle-outline {
+.mdc-floating-label--float-above ~ .mdc-text-field__idle-outline {
   opacity: 0;
 }
 
 // Show the outline when the label is floating, since the outline has a
 // notch for the label to fit into.
-.mdc-text-field__label--float-above ~ .mdc-text-field__outline {
+.mdc-floating-label--float-above ~ .mdc-text-field__outline {
   opacity: 1;
 }
+
+@include mdc-floating-label-shake-keyframes(text-field-box, $mdc-text-field-box-label-position-y);
+@include mdc-floating-label-shake-keyframes(text-field-box-dense, $mdc-text-field-box-dense-label-position-y, 0%, $mdc-text-field-dense-label-scale);
+@include mdc-floating-label-shake-keyframes(text-field-outlined, $mdc-text-field-outlined-label-position-y);
+@include mdc-floating-label-shake-keyframes(text-field-outlined-dense, $mdc-text-field-outlined-dense-label-position-y, 0%, $mdc-text-field-dense-label-scale);
+@include mdc-floating-label-shake-keyframes(text-field-outlined-leading-icon, $mdc-text-field-outlined-label-position-y, $mdc-text-field-outlined-with-leading-icon-label-position-x);
+@include mdc-floating-label-shake-keyframes(text-field-outlined-leading-icon-dense, $mdc-text-field-outlined-dense-label-position-y, $mdc-text-field-outlined-dense-with-leading-icon-label-position-x, $mdc-text-field-dense-label-scale);
+@include mdc-floating-label-shake-keyframes(textarea, $mdc-text-field-textarea-label-position-y, 0%, $mdc-text-field-textarea-label-scale);
