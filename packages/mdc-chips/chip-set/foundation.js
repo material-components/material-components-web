@@ -56,10 +56,10 @@ class MDCChipSetFoundation extends MDCFoundation {
     super(Object.assign(MDCChipSetFoundation.defaultAdapter, adapter));
 
     /**
-     * The active chips in the set. Only used for choice chip set or filter chip set.
+     * The selected chips in the set. Only used for choice chip set or filter chip set.
      * @private {!Array<!MDCChip>}
      */
-    this.activeChips_ = [];
+    this.selectedChips_ = [];
 
     /** @private {function(!Event): undefined} */
     this.chipInteractionHandler_ = (evt) => this.handleChipInteraction_(evt);
@@ -83,23 +83,23 @@ class MDCChipSetFoundation extends MDCFoundation {
   handleChipInteraction_(evt) {
     const {chip} = evt.detail;
     if (this.adapter_.hasClass(cssClasses.CHOICE)) {
-      if (this.activeChips_.length === 0) {
-        this.activeChips_[0] = chip;
-      } else if (this.activeChips_[0] !== chip) {
-        this.activeChips_[0].toggleActive();
-        this.activeChips_[0] = chip;
+      if (this.selectedChips_.length === 0) {
+        this.selectedChips_[0] = chip;
+      } else if (this.selectedChips_[0] !== chip) {
+        this.selectedChips_[0].toggleSelected();
+        this.selectedChips_[0] = chip;
       } else {
-        this.activeChips_ = [];
+        this.selectedChips_ = [];
       }
-      chip.toggleActive();
+      chip.toggleSelected();
     } else if (this.adapter_.hasClass(cssClasses.FILTER)) {
-      const index = this.activeChips_.indexOf(chip);
+      const index = this.selectedChips_.indexOf(chip);
       if (index >= 0) {
-        this.activeChips_.splice(index, 1);
+        this.selectedChips_.splice(index, 1);
       } else {
-        this.activeChips_.push(chip);
+        this.selectedChips_.push(chip);
       }
-      chip.toggleActive();
+      chip.toggleSelected();
     }
   }
 }
