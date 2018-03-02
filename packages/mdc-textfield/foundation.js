@@ -27,6 +27,12 @@ import MDCTextFieldOutlineFoundation from './outline/foundation';
 import {cssClasses, strings, numbers} from './constants';
 
 
+// whitelist based off of https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
+// under section: `Validation-related attributes`
+const VALIDATION_ATTR_WHITELIST = [
+  'pattern', 'min', 'max', 'required', 'step', 'minlength', 'maxlength',
+];
+
 /**
  * @extends {MDCFoundation<!MDCTextFieldAdapter>}
  * @final
@@ -71,6 +77,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
       deregisterTextFieldInteractionHandler: () => {},
       registerInputInteractionHandler: () => {},
       deregisterInputInteractionHandler: () => {},
+      registerValidationAttributeChangeHandler: () => {},
+      deregisterValidationAttributeChangeHandler: () => {},
       getNativeInput: () => {},
       isFocused: () => {},
       isRtl: () => {},
@@ -116,6 +124,10 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.setPointerXOffset_ = (evt) => this.setTransformOrigin(evt);
     /** @private {function(!Event): undefined} */
     this.textFieldInteractionHandler_ = () => this.handleTextFieldInteraction();
+    /** @private {function(!Array): undefined} */
+    this.validationAttributeChangeHandler_ = (mutations) => this.handleValidationAttributeMutation_(mutations);
+    /** @private {!MutationObserver} */
+    this.validationObserver_;
   }
 
   init() {
@@ -138,6 +150,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.registerTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
     });
+    this.validationObserver_ = this.adapter_.registerValidationAttributeChangeHandler(
+      this.validationAttributeChangeHandler_);
   }
 
   destroy() {
@@ -151,6 +165,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.deregisterTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
     });
+    this.adapter_.deregisterValidationAttributeChangeHandler(this.validationObserver_);
   }
 
   /**
@@ -161,6 +176,20 @@ class MDCTextFieldFoundation extends MDCFoundation {
       return;
     }
     this.receivedUserInput_ = true;
+  }
+
+  /**
+   * Handles validation attribute changes
+   * @param {Array<MutationRecord>} mutationsList
+   * @private
+   */
+  handleValidationAttributeMutation_(mutationsList) {
+    mutationsList.some((mutation) => {
+      if (VALIDATION_ATTR_WHITELIST.indexOf(mutation.attributeName) > -1) {
+        this.styleValidity_(true);
+        return true;
+      }
+    });
   }
 
   /**
@@ -295,23 +324,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
   setDisabled(disabled) {
     this.getNativeInput_().disabled = disabled;
     this.styleDisabled_(disabled);
-  }
-
-  /**
-   * @return {boolean} True if the Text Field is required.
-   */
-  isRequired() {
-    return this.getNativeInput_().required;
-  }
-
-  /**
-   * @param {boolean} isRequired Sets the text-field required or not.
-   */
-  setRequired(isRequired) {
-    this.getNativeInput_().required = isRequired;
-    // Addition of the asterisk is automatic based on CSS, but validity checking
-    // needs to be manually run.
-    this.styleValidity_(this.isValid());
   }
 
   /**

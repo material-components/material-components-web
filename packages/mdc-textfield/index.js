@@ -206,14 +206,103 @@ class MDCTextField extends MDCComponent {
    * @return {boolean} True if the Text Field is required.
    */
   get required() {
-    return this.foundation_.isRequired();
+    return this.input_.required;
   }
 
   /**
    * @param {boolean} required Sets the Text Field to required.
    */
   set required(required) {
-    this.foundation_.setRequired(required);
+    this.input_.required = required;
+  }
+
+  /**
+   * @return {string} The input element's validation pattern.
+   */
+  get pattern() {
+    return this.input_.pattern;
+  }
+
+  /**
+   * @param {string} pattern Sets the input element's validation pattern.
+   */
+  set pattern(pattern) {
+    this.input_.pattern = pattern;
+  }
+
+  /**
+   * @return {number} The input element's minLength.
+   */
+  get minLength() {
+    return this.input_.minLength;
+  }
+
+  /**
+   * @param {number} minLength Sets the input element's minLength.
+   */
+  set minLength(minLength) {
+    this.input_.minLength = minLength;
+  }
+
+  /**
+   * @return {number} The input element's maxLength.
+   */
+  get maxLength() {
+    return this.input_.maxLength;
+  }
+
+  /**
+   * @param {number} maxLength Sets the input element's maxLength.
+   */
+  set maxLength(maxLength) {
+    // Chrome throws exception if maxLength is set < 0
+    if (maxLength < 0) {
+      this.input_.removeAttribute('maxLength');
+    } else {
+      this.input_.maxLength = maxLength;
+    }
+  }
+
+  /**
+   * @return {string} The input element's min.
+   */
+  get min() {
+    return this.input_.min;
+  }
+
+  /**
+   * @param {string} min Sets the input element's min.
+   */
+  set min(min) {
+    this.input_.min = min;
+  }
+
+  /**
+   * @return {string} The input element's max.
+   */
+  get max() {
+    return this.input_.max;
+  }
+
+  /**
+   * @param {string} max Sets the input element's max.
+   */
+  set max(max) {
+    this.input_.max = max;
+  }
+
+  /**
+   * @return {string} The input element's step.
+   */
+  get step() {
+    return this.input_.step;
+  }
+
+  /**
+   * @param {string} step Sets the input element's step.
+   */
+  set step(step) {
+    this.input_.step = step;
   }
 
   /**
@@ -248,6 +337,14 @@ class MDCTextField extends MDCComponent {
         hasClass: (className) => this.root_.classList.contains(className),
         registerTextFieldInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
         deregisterTextFieldInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
+        registerValidationAttributeChangeHandler: (handler) => {
+          const observer = new MutationObserver(handler);
+          const targetNode = this.root_.querySelector(strings.INPUT_SELECTOR);
+          const config = {attributes: true};
+          observer.observe(targetNode, config);
+          return observer;
+        },
+        deregisterValidationAttributeChangeHandler: (observer) => observer.disconnect(),
         isFocused: () => {
           return document.activeElement === this.root_.querySelector(strings.INPUT_SELECTOR);
         },

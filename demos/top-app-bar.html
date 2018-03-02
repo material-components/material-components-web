@@ -164,12 +164,16 @@
         <label for="rtl-checkbox">RTL</label>
       </div>
       <div>
+        <input type="checkbox" id="no-action-item-checkbox"/>
+        <label for="no-action-item-checkbox">No Action Item</label>
+      </div>
+      <div>
         <input type="checkbox" id="short-checkbox"/>
         <label for="short-checkbox">Short</label>
       </div>
       <div>
-        <input type="checkbox" id="no-action-item-checkbox"/>
-        <label for="no-action-item-checkbox">No Action Item</label>
+        <input type="checkbox" id="always-collapsed-checkbox" disabled/>
+        <label for="always-collapsed-checkbox">Always Collapsed (Short Only)&#x200E;</label>
       </div>
     </div>
 
@@ -185,25 +189,21 @@
         var drawer = new mdc.drawer.MDCTemporaryDrawer(drawerEl);
         var appBar = mdc.topAppBar.MDCTopAppBar.attachTo(appBarEl);
 
-        var shortCheckbox = document.getElementById('short-checkbox');
-        var noActionItemCheckbox = document.getElementById('no-action-item-checkbox');
         var rtlCheckbox = document.getElementById('rtl-checkbox');
+        var noActionItemCheckbox = document.getElementById('no-action-item-checkbox');
+        var shortCheckbox = document.getElementById('short-checkbox');
+        var alwaysCollapsedCheckbox = document.getElementById('always-collapsed-checkbox');
 
         appBarEl.addEventListener('MDCTopAppBar:nav', function() {
           drawer.open = true;
         });
 
-        shortCheckbox.addEventListener('change', function() {
-          appBarEl.classList[this.checked ? 'add' : 'remove']('mdc-top-app-bar--short');
+        rtlCheckbox.addEventListener('change', function()  {
+          document.body[this.checked ? 'setAttribute' : 'removeAttribute']("dir", "rtl");
           appBarEl.classList.remove('mdc-top-app-bar--short-has-action-item');
 
           appBar.destroy();
           appBar = mdc.topAppBar.MDCTopAppBar.attachTo(appBarEl);
-
-          if (!this.checked) {
-            appBarEl.classList.remove('mdc-top-app-bar--short-collapsed');
-            appBarEl.classList.remove('mdc-top-app-bar--short-has-action-item');
-          }
         });
 
         noActionItemCheckbox.addEventListener('change', function()  {
@@ -216,13 +216,28 @@
           }
         });
 
-        rtlCheckbox.addEventListener('change', function()  {
-          document.body[this.checked ? 'setAttribute' : 'removeAttribute']("dir", "rtl");
+        shortCheckbox.addEventListener('change', function() {
+          appBarEl.classList[this.checked ? 'add' : 'remove']('mdc-top-app-bar--short');
           appBarEl.classList.remove('mdc-top-app-bar--short-has-action-item');
 
           appBar.destroy();
           appBar = mdc.topAppBar.MDCTopAppBar.attachTo(appBarEl);
-        })
+
+          if (!this.checked) {
+            appBarEl.classList.remove('mdc-top-app-bar--short-collapsed');
+            appBarEl.classList.remove('mdc-top-app-bar--short-has-action-item');
+            alwaysCollapsedCheckbox.checked = false;
+          }
+
+          alwaysCollapsedCheckbox.disabled = !this.checked;
+        });
+
+        alwaysCollapsedCheckbox.addEventListener('change', function() {
+          appBarEl.classList[this.checked ? 'add' : 'remove']('mdc-top-app-bar--short-collapsed');
+
+          appBar.destroy();
+          appBar = mdc.topAppBar.MDCTopAppBar.attachTo(appBarEl);
+        });
       });
   </script>
   </body>

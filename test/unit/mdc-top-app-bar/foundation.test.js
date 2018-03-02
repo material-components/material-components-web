@@ -93,15 +93,27 @@ test('short top app bar: scroll listener is removed on destroy', () => {
   td.verify(mockAdapter.deregisterScrollHandler(td.matchers.isA(Function)), {times: 1});
 });
 
+test('short top app bar: scroll listener is not registered if collapsed class exists before init', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_CLASS)).thenReturn(true);
+  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_COLLAPSED_CLASS)).thenReturn(true);
+  td.when(mockAdapter.getTotalActionItems()).thenReturn(0);
+  foundation.init();
+  td.verify(mockAdapter.registerScrollHandler(td.matchers.anything()), {times: 0});
+});
+
 test('short top app bar: class is added once when page is scrolled from the top', () => {
   const {foundation, mockAdapter} = setupTest();
   const mockRaf = createMockRaf();
 
   td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_CLASS)).thenReturn(true);
+  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_COLLAPSED_CLASS)).thenReturn(false);
+  td.when(mockAdapter.getTotalActionItems()).thenReturn(0);
+  td.when(mockAdapter.getViewportScrollY()).thenReturn(0);
 
   const {scrollHandler} = createMockHandlers(foundation, mockAdapter, mockRaf);
-
   td.when(mockAdapter.getViewportScrollY()).thenReturn(1);
+
   scrollHandler();
   scrollHandler();
 
@@ -113,9 +125,11 @@ test('short top app bar: class is removed once when page is scrolled to the top'
   const mockRaf = createMockRaf();
 
   td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_CLASS)).thenReturn(true);
+  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_COLLAPSED_CLASS)).thenReturn(false);
+  td.when(mockAdapter.getTotalActionItems()).thenReturn(0);
 
   const {scrollHandler} = createMockHandlers(foundation, mockAdapter, mockRaf);
-  // Apply the closed class
+  // Apply the collapsed class
   td.when(mockAdapter.getViewportScrollY()).thenReturn(1);
   scrollHandler();
 
