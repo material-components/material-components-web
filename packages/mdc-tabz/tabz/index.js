@@ -41,8 +41,6 @@ class MDCTabz {
         this.content_.offsetLeft,
       getContentOffsetWidth: () =>
         this.content_.offsetWidth,
-      getRootBoundingClientRect: () =>
-        this.root_.getBoundingClientRect(),
       addClass: (className) =>
         this.root_.classList.add(className),
       removeClass: (className) =>
@@ -138,14 +136,6 @@ class MDCTabz {
    */
   getContentOffsetWidth() {
     return this.adapter_.getContentOffsetWidth();
-  }
-
-  /**
-   * Returns the bounding rect of the element
-   * @return {!ClientRect}
-   */
-  getRootBoundingClientRect() {
-    return this.adapter_.getRootBoundingClientRect();
   }
 }
 

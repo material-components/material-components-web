@@ -17,24 +17,31 @@ class MDCTabzIndicator {
     return strings;
   }
 
-  /** @private */
-  get isCustom_() {
+  /**
+   * Returns whether the indicator is a custom indicator
+   * @return {boolean}
+   * @private
+   */
+  isCustom_() {
     return this.adapter_.hasClass(cssClasses.CUSTOM);
   }
 
-  /** @private */
-  get isIcon_() {
+  /**
+   * Returns whether the indicator is an icon indicator
+   * @return {boolean}
+   * @private
+   */
+  isIcon_() {
     return this.adapter_.hasClass(cssClasses.ICON);
   }
 
-  /** @private */
-  get isIconHidden_() {
+  /**
+   * Returns whether the indicator icon is hidden
+   * @return {boolean}
+   * @private
+   */
+  isIconHidden_() {
     return this.adapter_.hasClass(cssClasses.ICON_HIDE);
-  }
-
-  /** @public */
-  shouldMatchTabContentWidth() {
-    return this.adapter_.hasClass(cssClasses.MATCH_TAB_CONTENT);
   }
 
   constructor(root) {
@@ -70,12 +77,21 @@ class MDCTabzIndicator {
     this.adapter_.addClass(cssClasses.UPGRADED);
   }
 
+  /**
+   * Returns whether the indicator should match the width of the tab content
+   * @return {boolean}
+   * @private
+   */
+  shouldMatchTabContentWidth_() {
+    return this.adapter_.hasClass(cssClasses.MATCH_TAB_CONTENT);
+  }
+
   /** Handles the transitionend event */
   handleTransitionEnd() {
-    if (this.isIcon_ && this.isIconHidden_) {
+    if (this.isIcon_() && this.isIconHidden_()) {
       this.adapter_.removeClass(cssClasses.ICON_HIDE);
       this.updatePosition();
-    } else if (this.isIcon_) {
+    } else if (this.isIcon_()) {
       this.adapter_.deregisterEventListener('transitionend', this.handleTransitionEnd_);
       this.adapter_.removeClass(cssClasses.ANIMATING_ICON);
     } else {
@@ -87,7 +103,7 @@ class MDCTabzIndicator {
   /** Animates the position of the indicator */
   animatePosition() {
     this.adapter_.registerEventListener('transitionend', this.handleTransitionEnd_);
-    if (this.isIcon_) {
+    if (this.isIcon_()) {
       this.adapter_.addClass(cssClasses.ANIMATING_ICON);
       this.adapter_.addClass(cssClasses.ICON_HIDE);
     } else {
@@ -101,10 +117,12 @@ class MDCTabzIndicator {
     this.adapter_.setRootStyle('transform', this.transformation_);
   }
 
-  calculatePosition(translateX, scaleX) {
-    if (this.isCustom_ || this.isIcon_) {
-      translateX += (scaleX / 2) - (this.adapter_.getRootOffsetWidth() / 2);
-      scaleX = 1;
+  calculatePosition(tabRootLeft, tabRootWidth, tabContentLeft, tabContentWidth) {
+    let translateX = tabRootLeft;
+    let scaleX = tabRootWidth;
+    if (this.shouldMatchTabContentWidth_()) {
+      translateX += tabContentLeft;
+      scaleX = tabContentWidth;
     }
     this.transformation_ = `translateX(${translateX}px) scaleX(${scaleX})`;
   }

@@ -64,8 +64,6 @@ class MDCTabzBar {
 
     // Adapter initialization
     this.adapter_ = {
-      getRootBoundingClientRect: () =>
-        this.root_.getBoundingClientRect(),
       registerWindowEventListener: (evtType, handler) =>
         window.addEventListener(evtType, handler),
       deregisterWindowEventListener: (evtType, handler) =>
@@ -76,10 +74,18 @@ class MDCTabzBar {
         this.root_.removeEventListener(evtType, handler),
       hasClass: (className) =>
         this.root_.classList.contains(className),
+      isRTL: () =>
+        window.getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
     };
 
     /** @private {number} */
-    this.activeIndex_ = this.tabz_.findIndex((tab) => tab.isActive()) || 0;
+    this.activeIndex_ = 0;
+    for (let i = 0; i < this.tabz_.length; i++) {
+      if (this.tabz_[i].isActive()) {
+        this.activeIndex_ = i;
+        break;
+      }
+    }
 
     /** @private {number} The ID of the requestAnimationFrame */
     this.updateFrame_ = 0;
@@ -237,20 +243,21 @@ class MDCTabzBar {
     }
     this.getActiveTab().deactivate();
     this.activeIndex_ = index;
-    this.slideTabIntoView_(index);
+    this.slideTabIntoView(index);
     this.getActiveTab().activate();
-    this.calculateIndicatorPosition();
+    this.calculateIndicatorPosition_();
     this.indicator_.animatePosition();
   }
 
-  slideTabIntoView_(index) {
-    // Early exit
-    if (!this.isIndexInRange_(index)) {
-      return;
-    }
-
-    // Check if tabs are between ends
-    const tabIsBetweenEnds = this.isIndexBetweenEnds_(index);
+  /**
+   * Calculate a tab's respective edge distances from the container, where a
+   * positive number indicates that the edge is outside the container while a
+   * negative number indicates that the edge is inside the container
+   * @param {number} index The index of the tab
+   * @return {{left: number, right: number}}
+   * @private
+   */
+  calculateTabEdgeDistances_(index) {
     // Get the container and inner bounding rects
     const containerBbox = this.container_.getRootBoundingClientRect();
     const innerBbox = this.container_.getInnerBoundingClientRect();
@@ -268,39 +275,16 @@ class MDCTabzBar {
     const tabRootRight = tabRootLeft + tab.getRootOffsetWidth();
     // The distance from the right edge of the tab to the right edge of the container
     const tabRightEdgeDistance = tabRootRight + innerOffset - containerBbox.width;
-    // Extra scrollage FTW
-    const slideToExtra = tab.getContentOffsetLeft() * 2;
-    let slideTo;
 
-    if (tabLeftEdgeDistance > 0 && this.isPaging_()) {
-      this.container_.slideTo(tabRootRight);
-      // Early exit
-      return;
-    } else if (tabLeftEdgeDistance > 0) {
-      slideTo = innerScroll - tabLeftEdgeDistance;
-      if (tabIsBetweenEnds) {
-        slideTo -= slideToExtra;
-      }
-    } else if (tabRightEdgeDistance > 0 && this.isPaging_()) {
-      this.container_.slideTo(tabRootLeft);
-      // Early exit
-      return;
-    } else if (tabRightEdgeDistance > 0) {
-      slideTo = innerScroll + tabRightEdgeDistance;
-      if (tabIsBetweenEnds) {
-        slideTo += slideToExtra;
-      }
-    }
-
-    if (slideTo) {
-      this.container_.scrollTo(slideTo);
-    }
+    return {
+      left: tabLeftEdgeDistance,
+      right: tabRightEdgeDistance,
+    };
   }
 
   /**
    * Slides the tab at the given index into view
    * @param {number} index The index of the tab to slide into view
-   * @private
    */
   slideTabIntoView(index) {
     // Early exit
@@ -308,66 +292,54 @@ class MDCTabzBar {
       return;
     }
 
+    const edgeDistance = this.calculateTabEdgeDistances_(index);
+    // Check if tabs are between ends
+    const tabIsBetweenEnds = this.isIndexBetweenEnds_(index);
+    // Get the current tab
     const tab = this.getTabAtIndex_(index);
-    // Calculate the bounding boxes of the selected tab and the container
-    const barBbox = this.container_.getRootBoundingClientRect();
-    const containerBbox = this.container_.getInnerBoundingClientRect();
-    if (containerBbox.width <= barBbox.width) {
+    // Extra scrollage FTW
+    const slideToExtra = tab.getContentOffsetLeft() * 2;
+    let shouldSlideLeft = false;
+    let slideTo;
+
+    if (edgeDistance.left > 0) {
+      slideTo = edgeDistance.left;
+    } else if (edgeDistance.right > 0) {
+      slideTo = edgeDistance.right;
+      shouldSlideLeft = true;
+    } else {
+      // Early exit
       return;
     }
 
-    // Determine the scrollLeft
-    const tabIsBetweenEnds = this.isIndexBetweenEnds_(index);
-
-    // Get initial bounding boxes
-    const tabBbox = tab.getRootBoundingClientRect();
-    const scrollExtra = tab.getContentOffsetLeft();
-
-    // Determine the left and right gaps
-    let leftGap = tabBbox.right - barBbox.right;
-    let rightGap = barBbox.left - tabBbox.left;
-    let targetScroll = 0;
-
-    // Scroll to either left or right if necessary
-    if (leftGap > 0) {
-      if (tabIsBetweenEnds) {
-        leftGap += scrollExtra * numbers.SCROLL_OFFSET_FACTOR;
-      }
-      targetScroll = leftGap * -1;
-    } else if (Math.abs(leftGap) < scrollExtra) {
-      leftGap += scrollExtra * numbers.SCROLL_OFFSET_FACTOR;
-      targetScroll = leftGap * -1;
-    } else if (rightGap > 0) {
-      if (tabIsBetweenEnds) {
-        rightGap += scrollExtra * numbers.SCROLL_OFFSET_FACTOR;
-      }
-      targetScroll = rightGap;
-    } else if (Math.abs(rightGap) < scrollExtra) {
-      rightGap += scrollExtra * numbers.SCROLL_OFFSET_FACTOR;
-      targetScroll = rightGap;
+    if (tabIsBetweenEnds) {
+      slideTo += slideToExtra;
     }
 
-    this.container_.scrollTo(targetScroll);
+    // Sliding left is a negative translation so we invert the value
+    if (shouldSlideLeft) {
+      slideTo *= -1;
+    }
+
+    this.container_.scrollTo(slideTo);
   }
 
   /**
    * Calculates the indicator's new position
    */
-  calculateIndicatorPosition() {
-    let left = this.getActiveTab().getRootOffsetLeft();
-    let width = this.getActiveTab().getRootOffsetWidth();
-    if (this.indicator_.shouldMatchTabContentWidth()) {
-      left += this.getActiveTab().getContentOffsetLeft();
-      width = this.getActiveTab().getContentOffsetWidth();
-    }
-    this.indicator_.calculatePosition(left, width);
+  calculateIndicatorPosition_() {
+    const tabRootLeft = this.getActiveTab().getRootOffsetLeft();
+    const tabRootWidth = this.getActiveTab().getRootOffsetWidth();
+    const tabContentLeft = this.getActiveTab().getContentOffsetLeft();
+    const tabContentWidth = this.getActiveTab().getContentOffsetWidth();
+    this.indicator_.calculatePosition(tabRootLeft, tabRootWidth, tabContentLeft, tabContentWidth);
   }
 
   /**
    * Updates the indicator size
    */
   updateIndicator() {
-    this.calculateIndicatorPosition();
+    this.calculateIndicatorPosition_();
     this.indicator_.updatePosition();
   }
 }

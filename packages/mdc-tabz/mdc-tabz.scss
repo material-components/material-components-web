@@ -216,6 +216,7 @@ $mdc-color: $mdc-purple;
 }
 
 .mdc-tabz-container {
+  -webkit-overflow-scrolling: touch;
   display: flex;
   position: relative;
   overflow-x: scroll;

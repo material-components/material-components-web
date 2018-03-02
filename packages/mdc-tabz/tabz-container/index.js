@@ -24,6 +24,10 @@ class MDCTabzContainer {
     this.inner_ = root.querySelector(strings.INNER_SELECTOR);
 
     this.adapter_ = {
+      registerEventListener: (evtType, handler) =>
+        this.root_.addEventListener(evtType, handler),
+      deregisterEventListener: (evtType, handler) =>
+        this.root_.removeEventListener(evtType, handler),
       getRootBoundingClientRect: () =>
         this.root_.getBoundingClientRect(),
       getInnerBoundingClientRect: () =>
@@ -40,10 +44,8 @@ class MDCTabzContainer {
         this.root_.classList.add(className),
       removeClass: (className) =>
         this.root_.classList.remove(className),
-      registerEventListener: (evtType, handler) =>
-        this.root_.addEventListener(evtType, handler),
-      deregisterEventListener: (evtType, handler) =>
-        this.root_.removeEventListener(evtType, handler),
+      isRTL: () =>
+        window.getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
     };
 
     this.shouldUpdateScrollPosition_ = false;
@@ -62,33 +64,11 @@ class MDCTabzContainer {
     if (e.target !== this.inner_) return;
     // Remove the animating class
     this.adapter_.removeClass(cssClasses.ANIMATING);
-    if (this.shouldUpdateScrollPosition_) {
-      this.updateScrollPosition_();
+    if (this.targetScrollPosition_ !== undefined) {
+      this.adapter_.setInnerStyleProp('transform', '');
+      this.adapter_.setRootScrollLeft(this.targetScrollPosition_);
+      this.targetScrollPosition_ = undefined;
     }
-  }
-
-  /**
-   * Updates the scroll position to the saved value
-   * @private
-   */
-  updateScrollPosition_() {
-    this.adapter_.setInnerStyleProp('transform', '');
-    const currentScrollLeft = this.adapter_.getRootScrollLeft();
-    // console.log('updateScrollPosition_', this.targetScrollPosition_);
-    this.adapter_.setRootScrollLeft(currentScrollLeft + this.targetScrollPosition_);
-    this.targetScrollPosition_ = 0;
-    this.shouldUpdateScrollPosition_ = false;
-  }
-
-  /**
-   * Animates fake scrolling to targetX
-   * @param {number} targetX The target scrollLeft value
-   */
-  slideTo(targetX) {
-    console.log(`slideTo(${targetX})`);
-    this.adapter_.addClass(cssClasses.ANIMATING);
-    this.adapter_.registerEventListener('transitionend', this.handleTransitionEnd_);
-    this.adapter_.setInnerStyleProp('transform', `translateX(${targetX * -1}px)`);
   }
 
   /**
@@ -96,11 +76,18 @@ class MDCTabzContainer {
    * @param {number} targetX The target scrollLeft value
    */
   scrollTo(targetX) {
-    console.log(`scrollTo(${targetX})`);
-    const currentX = this.adapter_.getRootScrollLeft();
-    this.targetScrollPosition_ = targetX - currentX;
-    this.shouldUpdateScrollPosition_ = true;
-    this.slideTo(targetX - currentX);
+    this.targetScrollPosition_ = this.adapter_.getRootScrollLeft() - targetX;
+    this.slideTo(targetX);
+  }
+
+  /**
+   * Animates fake scrolling to targetX
+   * @param {number} targetX The target scrollLeft value
+   */
+  slideTo(targetX) {
+    this.adapter_.addClass(cssClasses.ANIMATING);
+    this.adapter_.registerEventListener('transitionend', this.handleTransitionEnd_);
+    this.adapter_.setInnerStyleProp('transform', `translateX(${targetX}px)`);
   }
 
   /**
@@ -125,14 +112,6 @@ class MDCTabzContainer {
    */
   getInnerOffsetLeft() {
     return this.adapter_.getInnerOffsetLeft();
-  }
-
-  /**
-   * Returns the scroll offset
-   * @return {number}
-   */
-  getRootScrollOffset() {
-    return this.adapter_.getRootScrollLeft();
   }
 }
 
