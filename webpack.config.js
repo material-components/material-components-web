@@ -80,6 +80,7 @@ if (!env.isDev()) {
       chips: [path.resolve('./packages/mdc-chips/index.js')],
       dialog: [path.resolve('./packages/mdc-dialog/index.js')],
       drawer: [path.resolve('./packages/mdc-drawer/index.js')],
+      floatingLabel: [path.resolve('./packages/mdc-floating-label/index.js')],
       formField: [path.resolve('./packages/mdc-form-field/index.js')],
       gridList: [path.resolve('./packages/mdc-grid-list/index.js')],
       iconToggle: [path.resolve('./packages/mdc-icon-toggle/index.js')],

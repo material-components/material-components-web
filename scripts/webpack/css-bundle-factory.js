@@ -136,6 +136,7 @@ module.exports = class {
         'mdc.drawer': getAbsolutePath('/packages/mdc-drawer/mdc-drawer.scss'),
         'mdc.elevation': getAbsolutePath('/packages/mdc-elevation/mdc-elevation.scss'),
         'mdc.fab': getAbsolutePath('/packages/mdc-fab/mdc-fab.scss'),
+        'mdc.floating-label': getAbsolutePath('/packages/mdc-floating-label/mdc-floating-label.scss'),
         'mdc.form-field': getAbsolutePath('/packages/mdc-form-field/mdc-form-field.scss'),
         'mdc.grid-list': getAbsolutePath('/packages/mdc-grid-list/mdc-grid-list.scss'),
         'mdc.icon-toggle': getAbsolutePath('/packages/mdc-icon-toggle/mdc-icon-toggle.scss'),
