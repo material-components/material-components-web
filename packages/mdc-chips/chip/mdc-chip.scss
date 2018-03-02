@@ -100,7 +100,7 @@
   stroke-dasharray: $mdc-checkbox-mark-path-length_;
 }
 
-.mdc-chip--activated .mdc-chip__checkmark-path {
+.mdc-chip--selected .mdc-chip__checkmark-path {
   stroke-dashoffset: 0;
 }
 
@@ -112,7 +112,7 @@
   transition: width $mdc-chip-width-animation-duration $mdc-animation-standard-curve-timing-function;
 }
 
-.mdc-chip--activated .mdc-chip__checkmark {
+.mdc-chip--selected .mdc-chip__checkmark {
   width: 24px;
 }
 
@@ -128,7 +128,7 @@
   opacity: 0;
 }
 
-.mdc-chip--activated {
+.mdc-chip--selected {
   .mdc-chip__icon--leading {
     opacity: 0;
   }

@@ -122,13 +122,13 @@ class MDCChipFoundation extends MDCFoundation {
   }
 
   handleLeadingIconTransitionEnd_(evt) {
-    if (evt.propertyName === 'opacity' && this.adapter_.hasClass(cssClasses.ACTIVATED)) {
+    if (evt.propertyName === 'opacity' && this.adapter_.hasClass(cssClasses.SELECTED)) {
       this.adapter_.addClassToLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
     }
   }
 
   handleCheckmarkTransitionEnd_(evt) {
-    if (evt.propertyName === 'opacity' && !this.adapter_.hasClass(cssClasses.ACTIVATED)) {
+    if (evt.propertyName === 'opacity' && !this.adapter_.hasClass(cssClasses.SELECTED)) {
       this.adapter_.removeClassFromLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
     }
   }

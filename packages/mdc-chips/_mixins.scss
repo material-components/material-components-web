@@ -61,6 +61,10 @@
       @include mdc-theme-prop(color, $color);
     }
   }
+
+  .mdc-chip__checkmark-path {
+    @include mdc-theme-prop(stroke, $color);
+  }
 }
 
 @mixin mdc-chip-stroke($width: 1, $style: solid, $color: black) {
