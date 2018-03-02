@@ -89,7 +89,7 @@ class MDCTopAppBar extends MDCComponent {
           this.emit(strings.NAVIGATION_EVENT, {});
         },
         registerScrollHandler: (handler) => window.addEventListener('scroll', handler, util.applyPassive()),
-        deregisterScrollHandler: (handler) => window.removeEventListener('scroll', handler, util.applyPassive()),
+        deregisterScrollHandler: (handler) => window.removeEventListener('scroll', handler),
         getViewportScrollY: () => window.pageYOffset,
         getTotalActionItems: () =>
           this.root_.querySelectorAll(strings.ACTION_ITEM_SELECTOR).length,
