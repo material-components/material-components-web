@@ -1,14 +1,14 @@
 <!--docs:
-title: "Integrating MDC-Web into Frameworks"
+title: "Integrating MDC Web into Frameworks"
 navTitle: "Framework Integration"
 layout: landing
 section: docs
 path: /docs/framework-integration/
 -->
 
-# Integrating MDC-Web into Frameworks
+# Integrating MDC Web into Frameworks
 
-MDC-Web was designed to be integrated as easily as possible into any and all web frameworks. This
+MDC Web was designed to be integrated as easily as possible into any and all web frameworks. This
 document will walk you through strategies for integrating components into various types of
 frameworks.
 
@@ -25,9 +25,9 @@ There are two approaches you can take for integrating our components into framew
 approach and the **advanced** approach. Both have their benefits and drawbacks, and are explained
 below.
 
-### The Simple Approach: Wrapping MDC-Web vanilla components.
+### The Simple Approach: Wrapping MDC Web vanilla components.
 
-The easiest way to integrate MDC-Web into frameworks is to use our vanilla components directly. This
+The easiest way to integrate MDC Web into frameworks is to use our vanilla components directly. This
 works well for frameworks which assume they will be executed within the context of a browser, such
 as [angular v1](https://angularjs.org), [backbone.js](http://backbonejs.org/), or even things such as [jQuery plugins](https://learn.jquery.com/plugins/basic-plugin-creation/).
 
@@ -35,12 +35,12 @@ The simple approach can be outlined as follows:
 
 1. Include the Component's CSS on the page any way you wish
 2. Create a **wrapper component** for your framework of choice, and add a property which will be
-   set to the value of the MDC-Web Component. We'll call this `mdcComponent`.
+   set to the value of the MDC Web Component. We'll call this `mdcComponent`.
 3. When the wrapper component is **initialized** (e.g. it is instantiated and attached to the DOM),
-   _instantiate the MDC-Web component with a root element, and assign it to the `mdcComponent`
+   _instantiate the MDC Web component with a root element, and assign it to the `mdcComponent`
    property_.
 4. When the wrapper component is **destroyed** (e.g. it is unbound and detached from the DOM), call
-   `mdcComponent.destroy()` to clean up the MDC-Web component.
+   `mdcComponent.destroy()` to clean up the MDC Web component.
 
 This general approach will work for almost all basic use-cases. For an example of this approach,
 check out [this plunk](https://plnkr.co/edit/b4v160c186ErrPG5vNza?p=preview) which
@@ -63,15 +63,15 @@ case.
 
 Every component comes with a complementary foundation class, which is usually called
 `MDCComponentFoundation`, where `MDCComponent` is the name of a component. For example, we have an
-[MDCSimpleMenuFoundation](../packages/mdc-menu/simple/foundation.js) that is used by our
-[MDCSimpleMenu](../packages/mdc-menu/simple/index.js) component, and which are both exported
+[MDCMenuFoundation](../packages/mdc-menu/foundation.js) that is used by our
+[MDCMenu](../packages/mdc-menu/index.js) component, and which are both exported
 publicly.
 
 In order to implement a component via a foundation, take the following steps:
 
 1. Include the component's CSS on the page any way you wish
 2. Add an instance property to your component which will be set to the proper foundation class.
-   We'll calls this `mdcFoundation`.
+   We'll call this `mdcFoundation`.
 3. Instantiate a foundation class, passing it a properly configured adapter as an argument
 4. When your component is initialized, call `mdcFoundation.init()`
 5. When your component is destroyed, call `mdcFoundation.destroy()`

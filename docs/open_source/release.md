@@ -66,6 +66,20 @@ This will update our CHANGELOG.md and generate a vX.Y.Z semver tag.
 This will ensure the commits *and* tags are pushed to the remote git repository.
 (This shouldn't be necessary; lerna should already do this in fixed mode.)
 
+> If you run into CLI errors such as:
+> ```
+> remote: error: GH006: Protected branch update failed for refs/heads/master.
+> remote: error: Required status check "cla/google" is expected. At least one approved review is required by reviewers with write access.
+> To github.com:material-components/material-components-web.git
+> ! [remote rejected]   master -> master (protected branch hook declined)
+> ```
+> You may need to update Github's master branch protection:
+> 1. Go to: [settings page](https://github.com/material-components/material-components-web/settings/branches/master)
+> 1. Uncheck `Include administrators`
+> 1. Click Save changes
+> 1. Perform `git push && git push --tags`
+> 1. Don't forget to toggle on `Include administrators` & click Save changes
+
 ### Deploy Catalog Server
 
 `MDC_ENV=development npm run build && gcloud app deploy`

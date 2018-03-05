@@ -24,14 +24,9 @@
 
 .mdc-icon-toggle {
   @include mdc-ripple-surface;
-  @include mdc-ripple-radius;
+  @include mdc-ripple-radius-unbounded;
   @include mdc-states(black);
   @include mdc-icon-toggle-ink-color(text-primary-on-light);
-
-  @include mdc-theme-dark(".mdc-icon-toggle", true) {
-    @include mdc-states(white);
-    @include mdc-icon-toggle-ink-color(text-primary-on-dark);
-  }
 
   display: flex;
   position: relative;
@@ -61,10 +56,6 @@
   @include mdc-theme-prop(color, text-disabled-on-light);
 
   pointer-events: none;
-
-  @include mdc-theme-dark(".mdc-icon-toggle", true) {
-    @include mdc-theme-prop(color, text-disabled-on-dark);
-  }
 }
 
 /** postcss-bem-linter: end */

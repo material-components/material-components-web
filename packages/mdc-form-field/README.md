@@ -41,10 +41,10 @@ By default, this will position the label after the input. You can change this be
 
 Now the label will be positioned before the checkbox.
 
-### Usage with MDC-Web Components
+### Usage with MDC Web Components
 
 `mdc-form-field` works not just with `input` elements, but with _any_ immediate child element as long as its
-successive sibling is a `label` element. This means it will work for MDC-Web form controls such as Checkbox and Radio:
+successive sibling is a `label` element. This means it will work for MDC Web form controls such as Checkbox and Radio:
 
 ```html
 <div class="mdc-form-field">
@@ -55,7 +55,7 @@ successive sibling is a `label` element. This means it will work for MDC-Web for
     <div class="mdc-checkbox__background">
       <svg class="mdc-checkbox__checkmark"
            viewBox="0 0 24 24">
-        <path class="mdc-checkbox__checkmark__path"
+        <path class="mdc-checkbox__checkmark-path"
               fill="none"
               stroke="white"
               d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
@@ -75,11 +75,6 @@ successive sibling is a `label` element. This means it will work for MDC-Web for
 
 `mdc-form-field` is automatically RTL-aware, and will re-position elements within an RTL context.
 `mdc-form-field` will apply RTL styles whenever it, or its ancestors, has a `dir="rtl"` attribute.
-
-### Theming
-
-`mdc-form-field` is dark theme aware, and will change the text color to the "primary on dark" text
-color when used within a dark theme.
 
 
 ## JS Usage
@@ -130,10 +125,10 @@ The `MDCFormField` functionality is exposed through a single accessor method.
 
 #### MDCFormField.input
 
-Read-write property that works with an instance of an MDC-Web input element.
+Read-write property that works with an instance of an MDC Web input element.
 
 In order for the label ripple integration to work correctly, this property needs to be set to a
-valid instance of an MDC-Web input element which exposes a `ripple` getter.
+valid instance of an MDC Web input element which exposes a `ripple` getter.
 
 ```javascript
 const formField = new MDCFormField(document.querySelector('.mdc-form-field'));

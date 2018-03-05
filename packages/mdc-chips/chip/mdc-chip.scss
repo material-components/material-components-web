@@ -1,0 +1,84 @@
+//
+// Copyright 2017 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+@import "@material/ripple/common";
+@import "@material/ripple/mixins";
+@import "@material/theme/mixins";
+@import "../mixins";
+@import "../variables";
+
+.mdc-chip {
+  @include mdc-ripple-surface;
+  @include mdc-ripple-radius-bounded;
+  
+  @include mdc-chip-corner-radius($mdc-chip-border-radius-default);
+  @include mdc-chip-fill-color($mdc-chip-fill-color-default);
+  @include mdc-chip-ink-color($mdc-chip-ink-color-default);
+  @include mdc-chip-selected-ink-color(primary);
+
+  display: inline-flex;
+  position: relative;
+  align-items: center;
+  padding: $mdc-chip-vertical-padding $mdc-chip-horizontal-padding;
+  cursor: pointer;
+  outline: none;
+  overflow: hidden;
+
+  &:hover {
+    @include mdc-theme-prop(color, black);
+  }
+}
+
+.mdc-chip--selected {
+  @include mdc-theme-prop(background-color, white);
+}
+
+.mdc-chip__text {
+  // Set line-height to be <18px to force the content height of mdc-chip to be 18px.
+  line-height: 17px;
+}
+
+.mdc-chip__icon {
+  color: $mdc-chip-icon-color;
+  vertical-align: middle;
+  border-radius: 50%;
+  outline: none;
+}
+
+.mdc-chip__icon--leading {
+  margin: -4px 4px -4px -4px;
+}
+
+.mdc-chip__icon--trailing {
+  margin: 0 -4px 0 4px;
+
+  &:hover {
+    color: $mdc-chip-trailing-icon-hover-color;
+  }
+
+  &:focus {
+    color: $mdc-chip-trailing-icon-focus-color;
+  }
+}
+
+// This overrides styles defined in the .material-icons CSS class
+// which is loaded separately, so the order of CSS definitions is not
+// guaranteed. Therefore, increase specifity to ensure overrides apply.
+.mdc-chip__icon.mdc-chip__icon--trailing {
+  width: $mdc-chip-trailing-icon-size;
+  height: $mdc-chip-trailing-icon-size;
+  font-size: $mdc-chip-trailing-icon-size;
+}

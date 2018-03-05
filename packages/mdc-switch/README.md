@@ -38,6 +38,8 @@ npm install --save @material/switch
 
 ## Usage
 
+### HTML Structure
+
 ```html
 <div class="mdc-switch">
   <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" />
@@ -45,10 +47,13 @@ npm install --save @material/switch
     <div class="mdc-switch__knob"></div>
   </div>
 </div>
-<label for="basic-switch" class="mdc-switch-label">off/on</label>
+<label for="basic-switch">off/on</label>
 ```
 
-### Disabled
+#### Disabled Switch
+
+Users can add `disabled` directly to the input element or set the fieldset containing the switch to `disabled` to disable a switch. Disabled switches cannot be interacted with and have no visual interaction effect.
+
 ```html
 <div class="mdc-switch">
   <input type="checkbox" id="another-basic-switch" class="mdc-switch__native-control" disabled />
@@ -56,14 +61,17 @@ npm install --save @material/switch
     <div class="mdc-switch__knob"></div>
   </div>
 </div>
-<label for="another-basic-switch" class="mdc-switch-label">off/on</label>
+<label for="another-basic-switch">off/on</label>
 ```
 
-### Classes
+### CSS Classes
 
-#### Block
-
-The block class is `mdc-switch`. This defines the top-level switch element.
+CSS Class | Description
+--- | ---
+`mdc-switch` | Mandatory, for the parent element
+`mdc-switch__native-control` | Mandatory, for the input checkbox
+`mdc-switch__background` | Mandatory, for the background element
+`mdc-switch__knob` | Mandatory, for the knob element
 
 ### Sass Mixins
 

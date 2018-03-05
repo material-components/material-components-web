@@ -21,20 +21,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <link rel="stylesheet" href="/assets/checkbox.css">
-    <script src="/ready.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <style media="screen">
-      .mdc-theme--dark, .section-dark-theme {
-        background: #262626;
-        color: white;
-      }
-
-      .mdc-theme--dark > h2 {
-        margin-top: 0;
-      }
-
+    <script src="/ready.js"></script>
+    <style>
       .example--with-js .mdc-form-field {
         min-width: 450px;
       }
@@ -58,15 +49,14 @@
     <header class="mdc-toolbar mdc-toolbar--fixed">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-          <span class="catalog-back">
-            <a href="/" class="mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
-          </span>
+          <a href="/" class="catalog-back mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
           <span class="mdc-toolbar__title catalog-title">Checkbox</span>
         </section>
       </div>
     </header>
     <main>
       <div class="mdc-toolbar-fixed-adjust"></div>
+
       <section class="hero">
         <div class="mdc-checkbox">
           <input type="checkbox"
@@ -75,7 +65,7 @@
           <div class="mdc-checkbox__background">
             <svg class="mdc-checkbox__checkmark"
                  viewBox="0 0 24 24">
-              <path class="mdc-checkbox__checkmark__path"
+              <path class="mdc-checkbox__checkmark-path"
                     fill="none"
                     stroke="white"
                     d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
@@ -97,7 +87,7 @@
               <div class="mdc-checkbox__background">
                 <svg class="mdc-checkbox__checkmark"
                      viewBox="0 0 24 24">
-                  <path class="mdc-checkbox__checkmark__path"
+                  <path class="mdc-checkbox__checkmark-path"
                         fill="none"
                         stroke="white"
                         d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
@@ -122,7 +112,7 @@
               <div class="mdc-checkbox__background">
                 <svg class="mdc-checkbox__checkmark"
                      viewBox="0 0 24 24">
-                  <path class="mdc-checkbox__checkmark__path"
+                  <path class="mdc-checkbox__checkmark-path"
                         fill="none"
                         stroke="white"
                         d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
@@ -141,7 +131,7 @@
                 <div class="mdc-checkbox__background">
                   <svg class="mdc-checkbox__checkmark"
                        viewBox="0 0 24 24">
-                    <path class="mdc-checkbox__checkmark__path"
+                    <path class="mdc-checkbox__checkmark-path"
                           fill="none"
                           stroke="white"
                           d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
@@ -164,7 +154,7 @@
                 <div class="mdc-checkbox__background">
                   <svg class="mdc-checkbox__checkmark"
                        viewBox="0 0 24 24">
-                    <path class="mdc-checkbox__checkmark__path"
+                    <path class="mdc-checkbox__checkmark-path"
                           fill="none"
                           stroke="white"
                           d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
@@ -184,7 +174,7 @@
                 <div class="mdc-checkbox__background">
                   <svg class="mdc-checkbox__checkmark"
                        viewBox="0 0 24 24">
-                    <path class="mdc-checkbox__checkmark__path"
+                    <path class="mdc-checkbox__checkmark-path"
                           fill="none"
                           stroke="white"
                           d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
@@ -209,7 +199,7 @@
               <div class="mdc-checkbox__background">
                 <svg class="mdc-checkbox__checkmark"
                      viewBox="0 0 24 24">
-                  <path class="mdc-checkbox__checkmark__path"
+                  <path class="mdc-checkbox__checkmark-path"
                         fill="none"
                         stroke="white"
                         d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
@@ -234,7 +224,7 @@
               <div class="mdc-checkbox__background">
                 <svg class="mdc-checkbox__checkmark"
                      viewBox="0 0 24 24">
-                  <path class="mdc-checkbox__checkmark__path"
+                  <path class="mdc-checkbox__checkmark-path"
                         fill="none"
                         stroke="white"
                         d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
@@ -261,7 +251,7 @@
               <div class="mdc-checkbox__background">
                 <svg class="mdc-checkbox__checkmark"
                      viewBox="0 0 24 24">
-                  <path class="mdc-checkbox__checkmark__path"
+                  <path class="mdc-checkbox__checkmark-path"
                         fill="none"
                         stroke="white"
                         d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
@@ -285,7 +275,7 @@
               <div class="mdc-checkbox__background">
                 <svg class="mdc-checkbox__checkmark"
                      viewBox="0 0 24 24">
-                  <path class="mdc-checkbox__checkmark__path"
+                  <path class="mdc-checkbox__checkmark-path"
                         fill="none"
                         stroke="white"
                         d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
@@ -301,236 +291,15 @@
           </div>
         </div>
       </section>
-
-      <section class="example mdc-theme--dark">
-        <h2>Dark Theme (mdc-theme--dark) - With JavaScript</h2>
-        <div>
-          <div class="mdc-form-field">
-            <div class="mdc-checkbox" data-js>
-              <input type="checkbox"
-                     id="checkbox-dark"
-                     class="mdc-checkbox__native-control"/>
-              <div class="mdc-checkbox__background">
-                <svg class="mdc-checkbox__checkmark"
-                     viewBox="0 0 24 24">
-                  <path class="mdc-checkbox__checkmark__path"
-                        fill="none"
-                        stroke="white"
-                        d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-                </svg>
-                <div class="mdc-checkbox__mixedmark"></div>
-              </div>
-            </div>
-            <label for="checkbox-dark">Default checkbox</label>
-          </div>
-        </div>
-        <div>
-          <div class="mdc-form-field">
-            <div class="mdc-checkbox mdc-checkbox--disabled" data-js>
-              <input type="checkbox"
-                     id="basic-disabled-checkbox-dark"
-                     class="mdc-checkbox__native-control"
-                     disabled />
-              <div class="mdc-checkbox__background">
-                <svg class="mdc-checkbox__checkmark"
-                     viewBox="0 0 24 24">
-                  <path class="mdc-checkbox__checkmark__path"
-                        fill="none"
-                        stroke="white"
-                        d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-                </svg>
-                <div class="mdc-checkbox__mixedmark"></div>
-              </div>
-            </div>
-            <label for="basic-disabled-checkbox-dark">Disabled checkbox</label>
-          </div>
-        </div>
-        <div>
-          <div class="mdc-form-field">
-            <div class="mdc-checkbox" data-js>
-              <input type="checkbox"
-                     id="basic-indeterminate-checkbox-dark"
-                     class="mdc-checkbox__native-control"/>
-              <div class="mdc-checkbox__background">
-                <svg class="mdc-checkbox__checkmark"
-                     viewBox="0 0 24 24">
-                  <path class="mdc-checkbox__checkmark__path"
-                        fill="none"
-                        stroke="white"
-                        d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-                </svg>
-                <div class="mdc-checkbox__mixedmark"></div>
-              </div>
-            </div>
-            <label for="basic-indeterminate-checkbox-dark">Indeterminate checkbox</label>
-          </div>
-          <script type="text/javascript">
-            document.getElementById('basic-indeterminate-checkbox-dark').indeterminate = true;
-          </script>
-        </div>
-        <div>
-          <div class="mdc-form-field">
-            <div class="mdc-checkbox demo-checkbox--custom-all" data-js>
-              <input type="checkbox"
-                     id="basic-checkbox-dark-custom-all"
-                     class="mdc-checkbox__native-control" />
-              <div class="mdc-checkbox__background">
-                <svg class="mdc-checkbox__checkmark"
-                     viewBox="0 0 24 24">
-                  <path class="mdc-checkbox__checkmark__path"
-                        fill="none"
-                        stroke="white"
-                        d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-                </svg>
-                <div class="mdc-checkbox__mixedmark"></div>
-              </div>
-            </div>
-            <label for="basic-checkbox-dark-custom-all">Custom colored checkbox (stroke, fill, ripple, focus, and ink)</label>
-          </div>
-        </div>
-        <div>
-          <div class="mdc-form-field">
-            <div class="mdc-checkbox demo-checkbox--custom-stroke-and-fill" data-js>
-              <input type="checkbox"
-                     id="basic-checkbox-dark-custom-stroke-and-fill"
-                     class="mdc-checkbox__native-control" />
-              <div class="mdc-checkbox__background">
-                <svg class="mdc-checkbox__checkmark"
-                     viewBox="0 0 24 24">
-                  <path class="mdc-checkbox__checkmark__path"
-                        fill="none"
-                        stroke="white"
-                        d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-                </svg>
-                <div class="mdc-checkbox__mixedmark"></div>
-              </div>
-            </div>
-            <label for="basic-checkbox-dark-custom-stroke-and-fill">Custom colored checkbox (stroke and fill only)</label>
-          </div>
-        </div>
-      </section>
-
-      <section class="example section-dark-theme">
-        <h2>Dark Theme (mdc-checkbox--theme-dark) - CSS Only</h2>
-        <div>
-          <div class="mdc-form-field mdc-form-field--theme-dark">
-            <div class="mdc-checkbox mdc-checkbox--theme-dark">
-              <input type="checkbox"
-                     id="checkbox-dark-2"
-                     class="mdc-checkbox__native-control"/>
-              <div class="mdc-checkbox__background">
-                <svg class="mdc-checkbox__checkmark"
-                     viewBox="0 0 24 24">
-                  <path class="mdc-checkbox__checkmark__path"
-                        fill="none"
-                        stroke="white"
-                        d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-                </svg>
-                <div class="mdc-checkbox__mixedmark"></div>
-              </div>
-            </div>
-            <label for="checkbox-dark-2">Default checkbox</label>
-          </div>
-        </div>
-        <div>
-          <div class="mdc-form-field mdc-form-field--theme-dark">
-            <div class="mdc-checkbox mdc-checkbox--theme-dark mdc-checkbox--disabled">
-              <input type="checkbox"
-                     id="basic-disabled-checkbox-dark-2"
-                     class="mdc-checkbox__native-control"
-                     disabled />
-              <div class="mdc-checkbox__background">
-                <svg class="mdc-checkbox__checkmark"
-                     viewBox="0 0 24 24">
-                  <path class="mdc-checkbox__checkmark__path"
-                        fill="none"
-                        stroke="white"
-                        d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-                </svg>
-                <div class="mdc-checkbox__mixedmark"></div>
-              </div>
-            </div>
-            <label for="basic-disabled-checkbox-dark-2">Disabled checkbox</label>
-          </div>
-        </div>
-        <div>
-          <div class="mdc-form-field mdc-form-field--theme-dark">
-            <div class="mdc-checkbox mdc-checkbox--theme-dark">
-              <input type="checkbox"
-                     id="basic-indeterminate-checkbox-dark-2"
-                     class="mdc-checkbox__native-control"/>
-              <div class="mdc-checkbox__background">
-                <svg class="mdc-checkbox__checkmark"
-                     viewBox="0 0 24 24">
-                  <path class="mdc-checkbox__checkmark__path"
-                        fill="none"
-                        stroke="white"
-                        d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-                </svg>
-                <div class="mdc-checkbox__mixedmark"></div>
-              </div>
-            </div>
-            <label for="basic-indeterminate-checkbox-dark-2">Indeterminate checkbox</label>
-          </div>
-          <script type="text/javascript">
-            document.getElementById('basic-indeterminate-checkbox-dark-2').indeterminate = true;
-          </script>
-        </div>
-        <div>
-          <div class="mdc-form-field mdc-form-field--theme-dark">
-            <div class="mdc-checkbox mdc-checkbox--theme-dark demo-checkbox--custom-all">
-              <input type="checkbox"
-                     id="basic-checkbox-dark-custom-all-2"
-                     class="mdc-checkbox__native-control" />
-              <div class="mdc-checkbox__background">
-                <svg class="mdc-checkbox__checkmark"
-                     viewBox="0 0 24 24">
-                  <path class="mdc-checkbox__checkmark__path"
-                        fill="none"
-                        stroke="white"
-                        d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-                </svg>
-                <div class="mdc-checkbox__mixedmark"></div>
-              </div>
-            </div>
-            <label for="basic-checkbox-dark-custom-all-2">Custom colored checkbox (stroke, fill, ripple, focus, and ink)</label>
-          </div>
-        </div>
-        <div>
-          <div class="mdc-form-field mdc-form-field--theme-dark">
-            <div class="mdc-checkbox mdc-checkbox--theme-dark demo-checkbox--custom-stroke-and-fill">
-              <input type="checkbox"
-                     id="basic-checkbox-dark-custom-stroke-and-fill-2"
-                     class="mdc-checkbox__native-control" />
-              <div class="mdc-checkbox__background">
-                <svg class="mdc-checkbox__checkmark"
-                     viewBox="0 0 24 24">
-                  <path class="mdc-checkbox__checkmark__path"
-                        fill="none"
-                        stroke="white"
-                        d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-                </svg>
-                <div class="mdc-checkbox__mixedmark"></div>
-              </div>
-            </div>
-            <label for="basic-checkbox-dark-custom-stroke-and-fill-2">Custom colored checkbox (stroke and fill only)</label>
-          </div>
-        </div>
-      </section>
-
     </main>
+
     <script src="/assets/material-components-web.js" async></script>
     <script>
       demoReady(function() {
-        var MDCCheckbox = mdc.checkbox.MDCCheckbox;
-        var MDCFormField = mdc.formField.MDCFormField;
-
-        var checkboxes = [].slice.call(document.querySelectorAll('.mdc-checkbox[data-js]'));
-        checkboxes.forEach(function(checkbox) {
-          var checkboxInstance = new MDCCheckbox(checkbox);
-
+        [].forEach.call(document.querySelectorAll('.mdc-checkbox[data-js]'), function(checkbox) {
           var formField = checkbox.parentElement;
-          var formFieldInstance = new MDCFormField(formField);
+          var formFieldInstance = new mdc.formField.MDCFormField(formField);
+          var checkboxInstance = new mdc.checkbox.MDCCheckbox(checkbox);
           formFieldInstance.input = checkboxInstance;
 
           var row = formField.parentElement;

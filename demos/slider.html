@@ -34,18 +34,9 @@
         --mdc-slider-bg-color-behind-component: #f2f2f2;
       }
 
-      .mdc-theme--dark {
-        background-color: #333;
-      }
-
       .custom-bg {
         background-color: #eee;
         --mdc-slider-bg-color-behind-component: #eee;
-      }
-
-      .mdc-theme--dark.custom-bg {
-        background-color: #102027;
-        --mdc-slider-bg-color-behind-component: #102027;
       }
 
       .slider-example {
@@ -74,9 +65,7 @@
     <header class="mdc-toolbar mdc-toolbar--fixed">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-          <span class="catalog-back">
-            <a href="/" class="mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
-          </span>
+          <a href="/" class="catalog-back mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
           <span class="mdc-toolbar__title catalog-title">Slider</span>
         </section>
       </div>
@@ -219,11 +208,11 @@
         <div class="demo-param-field-group">
           <label class="demo-param-field">
             <span class="demo-param-input-label">Min:</span>
-            <input name="min" type="number" min="0" max="100" value="0">
+            <input name="min" type="number" min="-100" max="100" value="0">
           </label>
           <label class="demo-param-field">
-            <div class="demo-param-input-label">Max:</div>
-            <input name="max" type="number" min="0" max="100" value="50">
+            <span class="demo-param-input-label">Max:</span>
+            <input name="max" type="number" min="-100" max="100" value="50">
           </label>
           <label class="demo-param-field">
             <span class="demo-param-input-label">Step:</span>
@@ -234,10 +223,6 @@
           <label class="demo-param-field">
             <input type="checkbox" name="disabled">
             Disabled
-          </label>
-          <label class="demo-param-field">
-            <input type="checkbox" name="dark-theme">
-            Dark Theme
           </label>
           <label class="demo-param-field">
             <input type="checkbox" name="use-custom-color">
@@ -256,11 +241,14 @@
       demoReady(function() {
         mdc.slider.MDCSlider.attachTo(document.getElementById('hero-slider'));
 
+        var numberIsFinite = Number.isFinite || function(value) {
+          return typeof value === 'number' && isFinite(value);
+        };
+
         var demoRoot = document.getElementById('slider-example')
-        var min = demoRoot.querySelector('[name="min"]');
-        var max = demoRoot.querySelector('[name="max"]');
+        var minInput = demoRoot.querySelector('[name="min"]');
+        var maxInput = demoRoot.querySelector('[name="max"]');
         var step = demoRoot.querySelector('[name="step"]');
-        var darkTheme = demoRoot.querySelector('[name="dark-theme"]');
         var disabled = demoRoot.querySelector('[name="disabled"]');
         var useCustomColor = demoRoot.querySelector('[name="use-custom-color"]');
         var rtl = demoRoot.querySelector('[name="rtl"]');
@@ -309,31 +297,37 @@
           customDiscreteWMarkerCommittedValue.textContent = customDiscreteWMarkerSlider.value;
         });
 
-        min.addEventListener('input', function() {
-          continuousSlider.min = parseFloat(min.value);
-          discreteSlider.min = parseFloat(min.value);
-          discreteWMarkerSlider.min = parseFloat(min.value);
-          customDiscreteWMarkerSlider.min = parseFloat(min.value);
+        minInput.addEventListener('input', function() {
+          var minValue = parseFloat(minInput.value);
+          if (!numberIsFinite(minValue)) {
+            return;
+          }
+          continuousSlider.min = minValue;
+          discreteSlider.min = minValue;
+          discreteWMarkerSlider.min = minValue;
+          customDiscreteWMarkerSlider.min = minValue;
         });
 
-        max.addEventListener('input', function() {
-          continuousSlider.max = parseFloat(max.value);
-          discreteSlider.max = parseFloat(max.value);
-          discreteWMarkerSlider.max = parseFloat(max.value);
-          customDiscreteWMarkerSlider.max = parseFloat(max.value);
+        maxInput.addEventListener('input', function() {
+          var maxValue = parseFloat(maxInput.value);
+          if (!numberIsFinite(maxValue)) {
+            return;
+          }
+          continuousSlider.max = maxValue;
+          discreteSlider.max = maxValue;
+          discreteWMarkerSlider.max = maxValue;
+          customDiscreteWMarkerSlider.max = maxValue;
         });
 
         step.addEventListener('input', function() {
-          continuousSlider.step = parseFloat(step.value);
-          discreteSlider.step = parseFloat(step.value);
-          discreteWMarkerSlider.step = parseFloat(step.value);
-          customDiscreteWMarkerSlider.step = parseFloat(step.value);
-        });
-
-        darkTheme.addEventListener('change', function() {
-          [].slice.call(demoRoot.querySelectorAll('.example-slider-wrapper')).forEach(function(example) {
-            example.classList[ darkTheme.checked ? 'add' : 'remove']('mdc-theme--dark');
-          });
+          var stepValue = parseFloat(step.value);
+          if (!numberIsFinite(stepValue)) {
+            return;
+          }
+          continuousSlider.step = stepValue;
+          discreteSlider.step = stepValue;
+          discreteWMarkerSlider.step = stepValue;
+          customDiscreteWMarkerSlider.step = stepValue;
         });
 
         disabled.addEventListener('change', function() {
@@ -344,13 +338,13 @@
         });
 
         useCustomColor.addEventListener('change', function() {
-          [].slice.call(demoRoot.querySelectorAll('.example-slider-wrapper')).forEach(function(example) {
+          [].forEach.call(demoRoot.querySelectorAll('.example-slider-wrapper'), function(example) {
             example.classList[ useCustomColor.checked ? 'add' : 'remove' ]('custom-bg');
           });
         });
 
         rtl.addEventListener('change', function() {
-          [].slice.call(demoRoot.querySelectorAll('.example-slider-wrapper')).forEach(function(example) {
+          [].forEach.call(demoRoot.querySelectorAll('.example-slider-wrapper'), function(example) {
             if (rtl.checked) {
               example.setAttribute('dir', 'rtl');
             } else {

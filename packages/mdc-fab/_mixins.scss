@@ -47,7 +47,7 @@ $mdc-fab-icon-enter-duration_: 180ms;
 
 @mixin mdc-fab-base_ {
   @include mdc-ripple-surface;
-  @include mdc-ripple-radius;
+  @include mdc-ripple-radius-bounded;
   @include mdc-elevation(6);
 
   display: inline-flex;
@@ -70,6 +70,11 @@ $mdc-fab-icon-enter-duration_: 180ms;
   -webkit-appearance: none;
   overflow: hidden;
 
+  &::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+  }
+
   &:hover,
   &:focus {
     @include mdc-elevation(8);
@@ -90,11 +95,6 @@ $mdc-fab-icon-enter-duration_: 180ms;
 
   &:hover {
     cursor: pointer;
-  }
-
-  &::-moz-focus-inner {
-    padding: 0;
-    border: 0;
   }
 
   // This allows for using SVGs within them to align properly in all browsers.

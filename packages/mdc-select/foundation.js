@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import {MDCFoundation} from '@material/base';
+import {MDCFoundation} from '@material/base/index';
 import {cssClasses, strings} from './constants';
-import {MDCSimpleMenuFoundation} from '@material/menu';
+import {MDCMenuFoundation} from '@material/menu/index';
 
 const OPENER_KEYS = [
   {key: 'ArrowUp', keyCode: 38, forType: 'keydown'},
@@ -37,11 +37,9 @@ export default class MDCSelectFoundation extends MDCFoundation {
     return {
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
-      addClassToLabel: (/* className: string */) => {},
-      removeClassFromLabel: (/* className: string */) => {},
-      addClassToBottomLine: (/* className: string */) => {},
-      removeClassFromBottomLine: (/* className: string */) => {},
-      setBottomLineAttr: (/* attr: string, value: string */) => {},
+      floatLabel: (/* value: boolean */) => {},
+      activateBottomLine: () => {},
+      deactivateBottomLine: () => {},
       addBodyClass: (/* className: string */) => {},
       removeBodyClass: (/* className: string */) => {},
       setAttr: (/* attr: string, value: string */) => {},
@@ -106,9 +104,8 @@ export default class MDCSelectFoundation extends MDCFoundation {
     };
     this.cancelHandler_ = () => {
       this.close_();
-
       if (this.selectedIndex_ === -1) {
-        this.adapter_.removeClassFromLabel(cssClasses.LABEL_FLOAT_ABOVE);
+        this.adapter_.floatLabel(false);
       }
     };
   }
@@ -119,9 +116,9 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.adapter_.registerInteractionHandler('keydown', this.displayViaKeyboardHandler_);
     this.adapter_.registerInteractionHandler('keyup', this.displayViaKeyboardHandler_);
     this.adapter_.registerMenuInteractionHandler(
-      MDCSimpleMenuFoundation.strings.SELECTED_EVENT, this.selectionHandler_);
+      MDCMenuFoundation.strings.SELECTED_EVENT, this.selectionHandler_);
     this.adapter_.registerMenuInteractionHandler(
-      MDCSimpleMenuFoundation.strings.CANCEL_EVENT, this.cancelHandler_);
+      MDCMenuFoundation.strings.CANCEL_EVENT, this.cancelHandler_);
     this.resize();
   }
 
@@ -133,9 +130,9 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.adapter_.deregisterInteractionHandler('keydown', this.displayViaKeyboardHandler_);
     this.adapter_.deregisterInteractionHandler('keyup', this.displayViaKeyboardHandler_);
     this.adapter_.deregisterMenuInteractionHandler(
-      MDCSimpleMenuFoundation.strings.SELECTED_EVENT, this.selectionHandler_);
+      MDCMenuFoundation.strings.SELECTED_EVENT, this.selectionHandler_);
     this.adapter_.deregisterMenuInteractionHandler(
-      MDCSimpleMenuFoundation.strings.CANCEL_EVENT, this.cancelHandler_);
+      MDCMenuFoundation.strings.CANCEL_EVENT, this.cancelHandler_);
   }
 
   getValue() {
@@ -157,6 +154,11 @@ export default class MDCSelectFoundation extends MDCFoundation {
     if (this.selectedIndex_ >= 0) {
       selectedTextContent = this.adapter_.getTextForOptionAtIndex(this.selectedIndex_).trim();
       this.adapter_.setAttrForOptionAtIndex(this.selectedIndex_, 'aria-selected', 'true');
+      this.adapter_.floatLabel(true);
+    } else {
+      if (!this.adapter_.isMenuOpen()) {
+        this.adapter_.floatLabel(false);
+      }
     }
     this.adapter_.setSelectedTextContent(selectedTextContent);
   }
@@ -214,8 +216,8 @@ export default class MDCSelectFoundation extends MDCFoundation {
     const focusIndex = this.selectedIndex_ < 0 ? 0 : this.selectedIndex_;
 
     this.setMenuStylesForOpenAtIndex_(focusIndex);
-    this.adapter_.addClassToLabel(cssClasses.LABEL_FLOAT_ABOVE);
-    this.adapter_.addClassToBottomLine(cssClasses.BOTTOM_LINE_ACTIVE);
+    this.adapter_.floatLabel(true);
+    this.adapter_.activateBottomLine();
     this.adapter_.addClass(OPEN);
     this.animationRequestId_ = requestAnimationFrame(() => {
       this.adapter_.openMenu(focusIndex);
@@ -251,7 +253,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
   close_() {
     const {OPEN} = MDCSelectFoundation.cssClasses;
     this.adapter_.removeClass(OPEN);
-    this.adapter_.removeClassFromBottomLine(cssClasses.BOTTOM_LINE_ACTIVE);
+    this.adapter_.deactivateBottomLine();
     this.adapter_.focus();
     this.enableScroll_();
   }

@@ -15,7 +15,7 @@
 //
 
 /**
- * Creates a rule that will be applied when an MDC-Web component is within the context of an RTL layout.
+ * Creates a rule that will be applied when an MDC Web component is within the context of an RTL layout.
  *
  * Usage Example:
  * ```scss
@@ -64,8 +64,8 @@
 @mixin mdc-rtl($root-selector: null) {
   @if ($root-selector) {
     @at-root {
-      [dir="rtl"] #{$root-selector} &,
-      #{$root-selector}[dir="rtl"] & {
+      #{$root-selector}[dir="rtl"] &,
+      [dir="rtl"] #{$root-selector} & {
         @content;
       }
     }
@@ -130,7 +130,7 @@
  */
 @mixin mdc-rtl-reflexive-box($base-property, $default-direction, $value, $root-selector: null) {
   @if (index((right, left), $default-direction) == null) {
-    @error "Invalid default direction #{default-direction}. Please specifiy either right or left";
+    @error "Invalid default direction: '#{$default-direction}'. Please specifiy either 'right' or 'left'.";
   }
 
   $left-value: $value;

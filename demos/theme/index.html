@@ -23,16 +23,90 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="/assets/theme/index.css">
     <script src="/ready.js"></script>
+    <script src="/uri.js"></script>
+    <script src="/theme-loader.js"></script>
+    <noscript>
+      <link rel="stylesheet" href="/assets/theme/theme-baseline.css">
+    </noscript>
   </head>
   <body class="mdc-typography">
-    <header class="mdc-toolbar mdc-toolbar--fixed">
+    <header class="mdc-toolbar mdc-toolbar--fixed demo-toolbar">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
           <button class="material-icons mdc-toolbar__menu-icon demo-drawer-toggle">menu</button>
           <span class="mdc-toolbar__title catalog-title">Color Theming</span>
         </section>
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-end mdc-toolbar__section--shrink-to-fit" role="toolbar">
+          <div class="mdc-menu-anchor">
+            <button id="theme-color-action" class="mdc-toolbar__icon" title="Change theme colors" data-theme="baseline">
+              <i class="demo-theme-color-radio">
+                <span class="demo-theme-color-radio__inner"></span>
+              </i>
+            </button>
+            <div class="mdc-menu demo-theme-menu" style="position: absolute;" tabindex="-1" id="theme-color-menu">
+              <ul class="mdc-menu__items mdc-list demo-theme-list"
+                  role="menu"
+                  aria-hidden="true"
+                  style="list-style-type: none"><!-- Inline style needed to fix IE 11 rendering bug (see https://stackoverflow.com/a/23717689/467582) -->
+                <li class="mdc-list-item demo-theme-menu__list-item--selected" role="menuitem" tabindex="0" data-theme="baseline">
+                  <div class="mdc-list-item__graphic">
+                    <i class="demo-theme-color-radio">
+                      <span class="demo-theme-color-radio__inner"></span>
+                    </i>
+                  </div>
+                  Baseline (default)
+                </li>
+                <li class="mdc-list-item" role="menuitem" tabindex="0" data-theme="dark">
+                  <div class="mdc-list-item__graphic">
+                    <i class="demo-theme-color-radio">
+                      <span class="demo-theme-color-radio__inner"></span>
+                    </i>
+                  </div>
+                  Dark background (custom)
+                </li>
+                <li class="mdc-list-item" role="menuitem" tabindex="0" data-theme="black">
+                  <div class="mdc-list-item__graphic">
+                    <i class="demo-theme-color-radio">
+                      <span class="demo-theme-color-radio__inner"></span>
+                    </i>
+                  </div>
+                  Black primary (custom)
+                </li>
+                <li class="mdc-list-item" role="menuitem" tabindex="0" data-theme="white">
+                  <div class="mdc-list-item__graphic">
+                    <i class="demo-theme-color-radio">
+                      <span class="demo-theme-color-radio__inner"></span>
+                    </i>
+                  </div>
+                  White primary (custom)
+                </li>
+                <li class="mdc-list-item" role="menuitem" tabindex="0" data-theme="yellow">
+                  <div class="mdc-list-item__graphic">
+                    <i class="demo-theme-color-radio">
+                      <span class="demo-theme-color-radio__inner"></span>
+                    </i>
+                  </div>
+                  Yellow primary (custom)
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div class="mdc-toolbar__row demo-toolbar-progress-row">
+        <div role="progressbar"
+             class="mdc-linear-progress mdc-linear-progress--indeterminate demo-toolbar-progress-bar"
+             id="demo-toolbar-progress-bar">
+          <div class="mdc-linear-progress__buffering-dots"></div>
+          <div class="mdc-linear-progress__buffer"></div>
+          <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
+            <span class="mdc-linear-progress__bar-inner"></span>
+          </div>
+          <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
+            <span class="mdc-linear-progress__bar-inner"></span>
+          </div>
+        </div>
       </div>
     </header>
 
@@ -77,7 +151,6 @@
     </aside>
 
     <main class="mdc-toolbar-fixed-adjust demo-main">
-
       <h2 class="mdc-typography--display1">
         Baseline Colors
       </h2>
@@ -89,129 +162,143 @@
           <a href="#classes" class="demo-component-section__permalink" title="Permalink to the theme demo for baseline CSS classes">#</a>
         </h3>
 
-        <fieldset class="demo-fieldset--color">
-          <legend class="mdc-typography--subheading2">Theme colors as text</legend>
+        <div class="demo-theme-color-section">
+          <div class="demo-theme-color-section__row">
+            <fieldset class="demo-fieldset--color">
+              <legend class="mdc-typography--subheading2">Theme colors as text</legend>
 
-          <div class="demo-theme-color-group">
-            <div class="demo-theme-color-swatches">
-              <div class="demo-theme-color-swatch demo-theme-color-swatch--elevated mdc-theme--primary mdc-typography--body2">Primary</div>
-              <div class="demo-theme-color-swatch demo-theme-color-swatch--elevated mdc-theme--primary-light mdc-typography--body2">Primary Light</div>
-              <div class="demo-theme-color-swatch demo-theme-color-swatch--elevated mdc-theme--primary-dark mdc-typography--body2">Primary Dark</div>
-            </div>
-            <div class="demo-theme-color-swatches">
-              <div class="demo-theme-color-swatch demo-theme-color-swatch--elevated mdc-theme--secondary mdc-typography--body2">Secondary</div>
-              <div class="demo-theme-color-swatch demo-theme-color-swatch--elevated mdc-theme--secondary-light mdc-typography--body2">Secondary Light</div>
-              <div class="demo-theme-color-swatch demo-theme-color-swatch--elevated mdc-theme--secondary-dark mdc-typography--body2">Secondary Dark</div>
-            </div>
+              <div class="demo-theme-color-group">
+                <div class="demo-theme-color-swatches">
+                  <div class="demo-theme-color-swatch demo-theme-color-swatch--elevated mdc-theme--primary mdc-typography--body2">Primary</div>
+                  <div class="demo-theme-color-swatch demo-theme-color-swatch--elevated mdc-theme--primary-light mdc-typography--body2">Primary Light</div>
+                  <div class="demo-theme-color-swatch demo-theme-color-swatch--elevated mdc-theme--primary-dark mdc-typography--body2">Primary Dark</div>
+                </div>
+                <div class="demo-theme-color-swatches">
+                  <div class="demo-theme-color-swatch demo-theme-color-swatch--elevated mdc-theme--secondary mdc-typography--body2">Secondary</div>
+                  <div class="demo-theme-color-swatch demo-theme-color-swatch--elevated mdc-theme--secondary-light mdc-typography--body2">Secondary Light</div>
+                  <div class="demo-theme-color-swatch demo-theme-color-swatch--elevated mdc-theme--secondary-dark mdc-typography--body2">Secondary Dark</div>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="demo-fieldset--color">
+              <legend class="mdc-typography--subheading2">Theme colors as background</legend>
+
+              <div class="demo-theme-color-group">
+                <div class="demo-theme-color-swatches">
+                  <div class="demo-theme-color-swatch mdc-theme--primary-bg mdc-theme--text-primary-on-primary">Primary</div>
+                  <div class="demo-theme-color-swatch mdc-theme--primary-light-bg mdc-theme--text-primary-on-primary-light">Primary Light</div>
+                  <div class="demo-theme-color-swatch mdc-theme--primary-dark-bg mdc-theme--text-primary-on-primary-dark">Primary Dark</div>
+                </div>
+                <div class="demo-theme-color-swatches">
+                  <div class="demo-theme-color-swatch mdc-theme--secondary-bg mdc-theme--text-primary-on-secondary">Secondary</div>
+                  <div class="demo-theme-color-swatch mdc-theme--secondary-light-bg mdc-theme--text-primary-on-secondary-light">Secondary Light</div>
+                  <div class="demo-theme-color-swatch mdc-theme--secondary-dark-bg mdc-theme--text-primary-on-secondary-dark">Secondary Dark</div>
+                </div>
+                <div class="demo-theme-color-swatches">
+                  <div class="demo-theme-color-swatch demo-theme-color-swatch--elevated mdc-theme--background mdc-theme--text-primary-on-background">Background</div>
+                </div>
+              </div>
+            </fieldset>
           </div>
-        </fieldset>
 
-        <fieldset class="demo-fieldset--color">
-          <legend class="mdc-typography--subheading2">Theme colors as background</legend>
+          <div class="demo-theme-color-section__row">
+            <fieldset class="demo-fieldset--color">
+              <legend class="mdc-typography--subheading2">Light and dark tonal variants for extreme input luminance</legend>
 
-          <div class="demo-theme-color-group">
-            <div class="demo-theme-color-swatches">
-              <div class="demo-theme-color-swatch mdc-theme--primary-bg mdc-theme--text-primary-on-primary">Primary</div>
-              <div class="demo-theme-color-swatch mdc-theme--primary-light-bg mdc-theme--text-primary-on-primary-light">Primary Light</div>
-              <div class="demo-theme-color-swatch mdc-theme--primary-dark-bg mdc-theme--text-primary-on-primary-dark">Primary Dark</div>
-            </div>
-            <div class="demo-theme-color-swatches">
-              <div class="demo-theme-color-swatch mdc-theme--secondary-bg mdc-theme--text-primary-on-secondary">Secondary</div>
-              <div class="demo-theme-color-swatch mdc-theme--secondary-light-bg mdc-theme--text-primary-on-secondary-light">Secondary Light</div>
-              <div class="demo-theme-color-swatch mdc-theme--secondary-dark-bg mdc-theme--text-primary-on-secondary-dark">Secondary Dark</div>
-            </div>
-            <div class="demo-theme-color-swatches">
-              <div class="demo-theme-color-swatch demo-theme-color-swatch--elevated mdc-theme--background mdc-theme--text-primary-on-background">Background</div>
-            </div>
+              <div class="demo-theme-color-group">
+                <div class="demo-theme-color-swatches">
+                  <div class="demo-theme-color-swatch demo-theme-bg--low-luminance mdc-theme--text-primary-on-dark">Low Luminance</div>
+                  <div class="demo-theme-color-swatch demo-theme-bg--low-luminance-light mdc-theme--text-primary-on-dark">Light Variant</div>
+                  <div class="demo-theme-color-swatch demo-theme-bg--low-luminance-dark mdc-theme--text-primary-on-dark">Dark Variant</div>
+                </div>
+                <div class="demo-theme-color-swatches">
+                  <div class="demo-theme-color-swatch demo-theme-bg--high-luminance mdc-theme--text-primary-on-light">High Luminance</div>
+                  <div class="demo-theme-color-swatch demo-theme-bg--high-luminance-light mdc-theme--text-primary-on-light">Light Variant</div>
+                  <div class="demo-theme-color-swatch demo-theme-bg--high-luminance-dark mdc-theme--text-primary-on-light">Dark Variant</div>
+                </div>
+              </div>
+            </fieldset>
           </div>
-        </fieldset>
+        </div>
 
-        <fieldset class="demo-fieldset--color">
-          <legend class="mdc-typography--subheading2">Light and dark tonal variants for extreme input luminance</legend>
+        <div class="demo-theme-color-section">
+          <div class="demo-theme-color-section_row">
+            <fieldset class="demo-fieldset--color">
+              <legend class="mdc-typography--subheading2">Text on background</legend>
 
-          <div class="demo-theme-color-group">
-            <div class="demo-theme-color-swatches">
-              <div class="demo-theme-color-swatch demo-theme-bg--low-luminance mdc-theme--text-primary-on-dark">Low Luminance</div>
-              <div class="demo-theme-color-swatch demo-theme-bg--low-luminance-light mdc-theme--text-primary-on-dark">Light Variant</div>
-              <div class="demo-theme-color-swatch demo-theme-bg--low-luminance-dark mdc-theme--text-primary-on-dark">Dark Variant</div>
-            </div>
-            <div class="demo-theme-color-swatches">
-              <div class="demo-theme-color-swatch demo-theme-bg--high-luminance mdc-theme--text-primary-on-light">High Luminance</div>
-              <div class="demo-theme-color-swatch demo-theme-bg--high-luminance-light mdc-theme--text-primary-on-light">Light Variant</div>
-              <div class="demo-theme-color-swatch demo-theme-bg--high-luminance-dark mdc-theme--text-primary-on-light">Dark Variant</div>
-            </div>
+              <div class="demo-theme-color-group">
+                <div class="demo-theme-text-row mdc-theme--background mdc-typography--body2">
+                  <span class="demo-theme-text-style mdc-theme--text-primary-on-background">Primary</span>
+                  <span class="demo-theme-text-style mdc-theme--text-secondary-on-background">Secondary</span>
+                  <span class="demo-theme-text-style mdc-theme--text-hint-on-background">Hint</span>
+                  <span class="demo-theme-text-style mdc-theme--text-disabled-on-background">Disabled</span>
+                  <span class="demo-theme-text-style mdc-theme--text-icon-on-background material-icons">favorite</span>
+                </div>
+              </div>
+            </fieldset>
           </div>
-        </fieldset>
 
-        <fieldset class="demo-fieldset--color">
-          <legend class="mdc-typography--subheading2">Text on background</legend>
+          <div class="demo-theme-color-section__row">
+            <fieldset class="demo-fieldset--color">
+              <legend class="mdc-typography--subheading2">Text on primary</legend>
 
-          <div class="demo-theme-color-group">
-            <div class="demo-theme-text-row mdc-theme--background mdc-typography--body2">
-              <span class="demo-theme-text-style mdc-theme--text-primary-on-background">Primary</span>
-              <span class="demo-theme-text-style mdc-theme--text-secondary-on-background">Secondary</span>
-              <span class="demo-theme-text-style mdc-theme--text-hint-on-background">Hint</span>
-              <span class="demo-theme-text-style mdc-theme--text-disabled-on-background">Disabled</span>
-              <span class="demo-theme-text-style mdc-theme--text-icon-on-background material-icons">favorite</span>
-            </div>
+              <div class="demo-theme-color-group">
+                <div class="demo-theme-text-row mdc-theme--primary-bg mdc-typography--body2">
+                  <span class="demo-theme-text-style mdc-theme--text-primary-on-primary">Primary</span>
+                  <span class="demo-theme-text-style mdc-theme--text-secondary-on-primary">Secondary</span>
+                  <span class="demo-theme-text-style mdc-theme--text-hint-on-primary">Hint</span>
+                  <span class="demo-theme-text-style mdc-theme--text-disabled-on-primary">Disabled</span>
+                  <span class="demo-theme-text-style mdc-theme--text-icon-on-primary material-icons">favorite</span>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="demo-fieldset--color">
+              <legend class="mdc-typography--subheading2">Text on secondary</legend>
+
+              <div class="demo-theme-color-group">
+                <div class="demo-theme-text-row mdc-theme--secondary-bg mdc-typography--body2">
+                  <span class="demo-theme-text-style mdc-theme--text-primary-on-secondary">Primary</span>
+                  <span class="demo-theme-text-style mdc-theme--text-secondary-on-secondary">Secondary</span>
+                  <span class="demo-theme-text-style mdc-theme--text-hint-on-secondary">Hint</span>
+                  <span class="demo-theme-text-style mdc-theme--text-disabled-on-secondary">Disabled</span>
+                  <span class="demo-theme-text-style mdc-theme--text-icon-on-secondary material-icons">favorite</span>
+                </div>
+              </div>
+            </fieldset>
           </div>
-        </fieldset>
 
-        <fieldset class="demo-fieldset--color">
-          <legend class="mdc-typography--subheading2">Text on primary</legend>
+          <div class="demo-theme-color-section__row">
+            <fieldset class="demo-fieldset--color">
+              <legend class="mdc-typography--subheading2">Text on user-defined light background</legend>
 
-          <div class="demo-theme-color-group">
-            <div class="demo-theme-text-row mdc-theme--primary-bg mdc-typography--body2">
-              <span class="demo-theme-text-style mdc-theme--text-primary-on-primary">Primary</span>
-              <span class="demo-theme-text-style mdc-theme--text-secondary-on-primary">Secondary</span>
-              <span class="demo-theme-text-style mdc-theme--text-hint-on-primary">Hint</span>
-              <span class="demo-theme-text-style mdc-theme--text-disabled-on-primary">Disabled</span>
-              <span class="demo-theme-text-style mdc-theme--text-icon-on-primary material-icons">favorite</span>
-            </div>
+              <div class="demo-theme-color-group">
+                <div class="demo-theme-text-row demo-theme-bg--custom-light mdc-typography--body2">
+                  <span class="demo-theme-text-style mdc-theme--text-primary-on-light">Primary</span>
+                  <span class="demo-theme-text-style mdc-theme--text-secondary-on-light">Secondary</span>
+                  <span class="demo-theme-text-style mdc-theme--text-hint-on-light">Hint</span>
+                  <span class="demo-theme-text-style mdc-theme--text-disabled-on-light">Disabled</span>
+                  <span class="demo-theme-text-style mdc-theme--text-icon-on-light material-icons">favorite</span>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="demo-fieldset--color">
+              <legend class="mdc-typography--subheading2">Text on user-defined dark background</legend>
+
+              <div class="demo-theme-color-group">
+                <div class="demo-theme-text-row demo-theme-bg--custom-dark mdc-typography--body2">
+                  <span class="demo-theme-text-style mdc-theme--text-primary-on-dark">Primary</span>
+                  <span class="demo-theme-text-style mdc-theme--text-secondary-on-dark">Secondary</span>
+                  <span class="demo-theme-text-style mdc-theme--text-hint-on-dark">Hint</span>
+                  <span class="demo-theme-text-style mdc-theme--text-disabled-on-dark">Disabled</span>
+                  <span class="demo-theme-text-style mdc-theme--text-icon-on-dark material-icons">favorite</span>
+                </div>
+              </div>
+            </fieldset>
           </div>
-        </fieldset>
-
-        <fieldset class="demo-fieldset--color">
-          <legend class="mdc-typography--subheading2">Text on secondary</legend>
-
-          <div class="demo-theme-color-group">
-            <div class="demo-theme-text-row mdc-theme--secondary-bg mdc-typography--body2">
-              <span class="demo-theme-text-style mdc-theme--text-primary-on-secondary">Primary</span>
-              <span class="demo-theme-text-style mdc-theme--text-secondary-on-secondary">Secondary</span>
-              <span class="demo-theme-text-style mdc-theme--text-hint-on-secondary">Hint</span>
-              <span class="demo-theme-text-style mdc-theme--text-disabled-on-secondary">Disabled</span>
-              <span class="demo-theme-text-style mdc-theme--text-icon-on-secondary material-icons">favorite</span>
-            </div>
-          </div>
-        </fieldset>
-
-        <fieldset class="demo-fieldset--color">
-          <legend class="mdc-typography--subheading2">Text on user-defined light background</legend>
-
-          <div class="demo-theme-color-group">
-            <div class="demo-theme-text-row demo-theme-bg--custom-light mdc-typography--body2">
-              <span class="demo-theme-text-style mdc-theme--text-primary-on-light">Primary</span>
-              <span class="demo-theme-text-style mdc-theme--text-secondary-on-light">Secondary</span>
-              <span class="demo-theme-text-style mdc-theme--text-hint-on-light">Hint</span>
-              <span class="demo-theme-text-style mdc-theme--text-disabled-on-light">Disabled</span>
-              <span class="demo-theme-text-style mdc-theme--text-icon-on-light material-icons">favorite</span>
-            </div>
-          </div>
-        </fieldset>
-
-        <fieldset class="demo-fieldset--color">
-          <legend class="mdc-typography--subheading2">Text on user-defined dark background</legend>
-
-          <div class="demo-theme-color-group">
-            <div class="demo-theme-text-row demo-theme-bg--custom-dark mdc-typography--body2">
-              <span class="demo-theme-text-style mdc-theme--text-primary-on-dark">Primary</span>
-              <span class="demo-theme-text-style mdc-theme--text-secondary-on-dark">Secondary</span>
-              <span class="demo-theme-text-style mdc-theme--text-hint-on-dark">Hint</span>
-              <span class="demo-theme-text-style mdc-theme--text-disabled-on-dark">Disabled</span>
-              <span class="demo-theme-text-style mdc-theme--text-icon-on-dark material-icons">favorite</span>
-            </div>
-          </div>
-        </fieldset>
+        </div>
       </section>
 
       <h2 class="mdc-typography--display1">
@@ -273,46 +360,35 @@
 
         <div class="demo-card-wrapper">
           <div class="mdc-card">
-            <section class="mdc-card__primary">
-              <h1 class="mdc-card__title mdc-card__title--large">Title goes here</h1>
-              <h3 class="mdc-card__subtitle">Subtitle here</h3>
-            </section>
-            <section class="mdc-card__supporting-text">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-            </section>
-            <section class="mdc-card__actions">
-              <button class="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
-              <button class="mdc-button mdc-button--compact mdc-card__action">Action 2</button>
-            </section>
-          </div>
-        </div>
-
-        <div class="demo-card-wrapper">
-          <div class="mdc-card demo-card--with-avatar">
-            <section class="mdc-card__primary">
-              <div class="demo-card__avatar"></div>
-              <h1 class="mdc-card__title">Title</h1>
-              <h3 class="mdc-card__subtitle">Subhead</h3>
-            </section>
-            <section class="mdc-card__supporting-text">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor.
-            </section>
-            <section class="mdc-card__actions">
-              <button class="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
-              <button class="mdc-button mdc-button--compact mdc-card__action">Action 2</button>
-            </section>
-          </div>
-        </div>
-
-        <div class="demo-card-wrapper">
-          <div class="mdc-card demo-card--small">
-            <section class="mdc-card__media">
-              <h1 class="mdc-card__title mdc-card__title--large">Title</h1>
-            </section>
-            <section class="mdc-card__actions">
-              <button class="mdc-button mdc-button--compact mdc-card__action">Action 1</button>
-            </section>
+            <div class="mdc-card__media mdc-card__media--16-9 demo-card__media"></div>
+            <div class="mdc-card__actions">
+              <div class="mdc-card__action-buttons">
+                <button class="mdc-button mdc-card__action mdc-card__action--button">Read</button>
+                <button class="mdc-button mdc-card__action mdc-card__action--button">Bookmark</button>
+              </div>
+              <div class="mdc-card__action-icons">
+                <i class="mdc-icon-toggle material-icons mdc-card__action mdc-card__action--icon"
+                   tabindex="0"
+                   role="button"
+                   aria-pressed="false"
+                   aria-label="Add to favorites"
+                   title="Add to favorites"
+                   data-toggle-on='{"content": "favorite", "label": "Remove from favorites"}'
+                   data-toggle-off='{"content": "favorite_border", "label": "Add to favorites"}'>
+                  favorite_border
+                </i>
+                <i class="material-icons mdc-card__action mdc-card__action--icon mdc-ripple-surface"
+                   tabindex="0"
+                   role="button"
+                   data-mdc-ripple-is-unbounded
+                   title="Share">share</i>
+                <i class="material-icons mdc-card__action mdc-card__action--icon mdc-ripple-surface"
+                   tabindex="0"
+                   role="button"
+                   data-mdc-ripple-is-unbounded
+                   title="More options">more_vert</i>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -326,14 +402,14 @@
 
         <div class="demo-checkbox-row">
           <div class="mdc-form-field demo-checkbox-wrapper">
-            <div class="mdc-checkbox">
+            <div class="mdc-checkbox demo-checkbox">
               <input type="checkbox"
                      id="enabled-checkbox"
                      class="mdc-checkbox__native-control"/>
               <div class="mdc-checkbox__background">
                 <svg class="mdc-checkbox__checkmark"
                      viewBox="0 0 24 24">
-                  <path class="mdc-checkbox__checkmark__path"
+                  <path class="mdc-checkbox__checkmark-path"
                         fill="none"
                         stroke="white"
                         d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
@@ -345,14 +421,14 @@
           </div>
 
           <div class="mdc-form-field demo-checkbox-wrapper">
-            <div class="mdc-checkbox">
+            <div class="mdc-checkbox demo-checkbox">
               <input type="checkbox"
                      id="indeterminate-checkbox"
                      class="mdc-checkbox__native-control"/>
               <div class="mdc-checkbox__background">
                 <svg class="mdc-checkbox__checkmark"
                      viewBox="0 0 24 24">
-                  <path class="mdc-checkbox__checkmark__path"
+                  <path class="mdc-checkbox__checkmark-path"
                         fill="none"
                         stroke="white"
                         d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
@@ -364,7 +440,7 @@
           </div>
 
           <div class="mdc-form-field demo-checkbox-wrapper">
-            <div class="mdc-checkbox mdc-checkbox--disabled">
+            <div class="mdc-checkbox mdc-checkbox--disabled demo-checkbox">
               <input type="checkbox"
                      id="disabled-checkbox"
                      class="mdc-checkbox__native-control"
@@ -372,7 +448,7 @@
               <div class="mdc-checkbox__background">
                 <svg class="mdc-checkbox__checkmark"
                      viewBox="0 0 24 24">
-                  <path class="mdc-checkbox__checkmark__path"
+                  <path class="mdc-checkbox__checkmark-path"
                         fill="none"
                         stroke="white"
                         d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
@@ -383,8 +459,8 @@
             <label for="disabled-checkbox" id="disabled-checkbox-label">Disabled</label>
           </div>
 
-          <button type="button" class="mdc-button mdc-button--raised demo-checkbox-toggle" id="checkbox-toggle--indeterminate">Toggle <code class="demo-button__code">indeterminate</code></button>
-          <button type="button" class="mdc-button mdc-button--raised demo-checkbox-toggle" id="checkbox-toggle--align-end">Toggle <code class="demo-button__code">--align-end</code></button>
+          <button type="button" class="mdc-button mdc-button--stroked demo-checkbox-toggle-button" id="checkbox-toggle--indeterminate">Toggle <code class="demo-button__code">indeterminate</code></button>
+          <button type="button" class="mdc-button mdc-button--stroked demo-checkbox-toggle-button" id="checkbox-toggle--align-end">Toggle <code class="demo-button__code">--align-end</code></button>
         </div>
       </section>
 
@@ -465,8 +541,8 @@
           <a href="#icon-toggle" class="demo-component-section__permalink" title="Permalink to the theme demo for the icon toggle component">#</a>
         </h3>
 
-        <div class="demo-icon-toggle__row">
-          <div class="mdc-elevation--z2 demo-icon-toggle__tile">
+        <div class="demo-icon-toggle-row">
+          <div class="mdc-elevation--z2 demo-icon-toggle-tile">
             <h4 class="mdc-typography--subheading2">Enabled</h4>
 
             <i class="mdc-icon-toggle mdc-icon-toggle--primary material-icons"
@@ -480,7 +556,7 @@
             </i>
           </div>
 
-          <div class="mdc-elevation--z2 demo-icon-toggle__tile">
+          <div class="mdc-elevation--z2 demo-icon-toggle-tile">
             <h4 class="mdc-typography--subheading2">Disabled</h4>
 
             <i class="mdc-icon-toggle mdc-icon-toggle--disabled material-icons"
@@ -504,7 +580,7 @@
           <a href="#linear-progress" class="demo-component-section__permalink" title="Permalink to the theme demo for the linear progress component">#</a>
         </h3>
 
-        <figure class="demo-linear-progress__row">
+        <figure class="demo-linear-progress-row">
           <figcaption class="mdc-typography--subheading2">Indeterminate</figcaption>
           <div role="progressbar" class="mdc-linear-progress mdc-linear-progress--indeterminate">
             <div class="mdc-linear-progress__buffering-dots"></div>
@@ -518,7 +594,7 @@
           </div>
         </figure>
 
-        <figure class="demo-linear-progress__row">
+        <figure class="demo-linear-progress-row">
           <figcaption class="mdc-typography--subheading2">Buffer</figcaption>
           <div role="progressbar" class="mdc-linear-progress" data-buffer="true">
             <div class="mdc-linear-progress__buffering-dots"></div>
@@ -542,7 +618,7 @@
 
         <figure class="demo-radio-group">
           <div class="mdc-form-field demo-radio-form-field">
-            <div class="mdc-radio">
+            <div class="mdc-radio demo-radio">
               <input class="mdc-radio__native-control" type="radio" id="demo-radio-1" checked name="demo-radio-group-1">
               <div class="mdc-radio__background">
                 <div class="mdc-radio__outer-circle"></div>
@@ -552,7 +628,7 @@
             <label id="demo-radio-1-label" for="demo-radio-1">Enabled 1</label>
           </div>
           <div class="mdc-form-field demo-radio-form-field">
-            <div class="mdc-radio">
+            <div class="mdc-radio demo-radio">
               <input class="mdc-radio__native-control" type="radio" id="demo-radio-2" name="demo-radio-group-1">
               <div class="mdc-radio__background">
                 <div class="mdc-radio__outer-circle"></div>
@@ -565,7 +641,7 @@
 
         <figure class="demo-radio-group">
           <div class="mdc-form-field demo-radio-form-field">
-            <div class="mdc-radio mdc-radio--disabled">
+            <div class="mdc-radio mdc-radio--disabled demo-radio">
               <input class="mdc-radio__native-control" type="radio" id="demo-radio-7" disabled checked name="demo-radio-group-4">
               <div class="mdc-radio__background">
                 <div class="mdc-radio__outer-circle"></div>
@@ -575,7 +651,7 @@
             <label id="demo-radio-7-label" for="demo-radio-7">Disabled 1</label>
           </div>
           <div class="mdc-form-field demo-radio-form-field">
-            <div class="mdc-radio mdc-radio--disabled">
+            <div class="mdc-radio mdc-radio--disabled demo-radio">
               <input class="mdc-radio__native-control" type="radio" id="demo-radio-8" disabled name="demo-radio-group-4">
               <div class="mdc-radio__background">
                 <div class="mdc-radio__outer-circle"></div>
@@ -600,9 +676,9 @@
             <div class="mdc-select__selected-text"></div>
             <div class="mdc-select__bottom-line"></div>
           </div>
-          <div class="mdc-simple-menu mdc-select__menu">
-            <ul class="mdc-list mdc-simple-menu__items">
-              <li class="mdc-list-item" role="option" id="grains" aria-disabled="true">
+          <div class="mdc-menu mdc-select__menu">
+            <ul class="mdc-list mdc-menu__items">
+              <li class="mdc-list-item" role="option" id="none" aria-disabled="true">
                 Pick a food group
               </li>
               <li class="mdc-list-item" role="option" id="grains" tabindex="0">
@@ -672,12 +748,12 @@
         </fieldset>
         <fieldset class="demo-switch-wrapper" disabled>
           <div class="mdc-switch">
-            <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" checked />
+            <input type="checkbox" id="disabled-switch" class="mdc-switch__native-control" checked />
             <div class="mdc-switch__background">
               <div class="mdc-switch__knob"></div>
             </div>
           </div>
-          <label for="basic-switch" class="mdc-switch-label">disabled</label>
+          <label for="disabled-switch" class="mdc-switch-label">disabled</label>
         </fieldset>
       </section>
 
@@ -688,57 +764,57 @@
           <a href="#tabs" class="demo-component-section__permalink" title="Permalink to the theme demo for the tabs component">#</a>
         </h3>
 
-        <figure>
+        <figure class="demo-figure--tab-bar">
           <figcaption>Default</figcaption>
 
-          <nav class="mdc-tab-bar mdc-tab-bar--icons-with-text">
-            <a class="mdc-tab mdc-tab--with-icon-and-text mdc-tab--active" href="javascript:">
+          <nav class="mdc-tab-bar mdc-tab-bar--icons-with-text demo-tab-bar">
+            <a class="mdc-tab mdc-tab--with-icon-and-text mdc-tab--active demo-tab" href="javascript:">
               <i class="material-icons mdc-tab__icon" aria-hidden="true">phone</i>
               <span class="mdc-tab__icon-text">Recents</span>
             </a>
-            <a class="mdc-tab mdc-tab--with-icon-and-text" href="javascript:">
+            <a class="mdc-tab mdc-tab--with-icon-and-text demo-tab" href="javascript:">
               <i class="material-icons mdc-tab__icon" aria-hidden="true">favorite</i>
               <span class="mdc-tab__icon-text">Favorites</span>
             </a>
-            <a class="mdc-tab mdc-tab--with-icon-and-text" href="javascript:">
+            <a class="mdc-tab mdc-tab--with-icon-and-text demo-tab" href="javascript:">
               <i class="material-icons mdc-tab__icon" aria-hidden="true">person_pin</i>
               <span class="mdc-tab__icon-text">Nearby</span>
             </a>
             <span class="mdc-tab-bar__indicator"></span>
           </nav>
         </figure>
-        <figure>
+        <figure class="demo-figure--tab-bar">
           <figcaption>Primary Color</figcaption>
 
-          <nav class="mdc-tab-bar mdc-tab-bar--icons-with-text mdc-tab-bar--indicator-primary">
-            <a class="mdc-tab mdc-tab--with-icon-and-text mdc-tab--active" href="javascript:">
+          <nav class="mdc-tab-bar mdc-tab-bar--icons-with-text mdc-tab-bar--indicator-primary demo-tab-bar">
+            <a class="mdc-tab mdc-tab--with-icon-and-text mdc-tab--active demo-tab" href="javascript:">
               <i class="material-icons mdc-tab__icon" aria-hidden="true">phone</i>
               <span class="mdc-tab__icon-text">Recents</span>
             </a>
-            <a class="mdc-tab mdc-tab--with-icon-and-text" href="javascript:">
+            <a class="mdc-tab mdc-tab--with-icon-and-text demo-tab" href="javascript:">
               <i class="material-icons mdc-tab__icon" aria-hidden="true">favorite</i>
               <span class="mdc-tab__icon-text">Favorites</span>
             </a>
-            <a class="mdc-tab mdc-tab--with-icon-and-text" href="javascript:">
+            <a class="mdc-tab mdc-tab--with-icon-and-text demo-tab" href="javascript:">
               <i class="material-icons mdc-tab__icon" aria-hidden="true">person_pin</i>
               <span class="mdc-tab__icon-text">Nearby</span>
             </a>
             <span class="mdc-tab-bar__indicator"></span>
           </nav>
         </figure>
-        <figure>
+        <figure class="demo-figure--tab-bar">
           <figcaption>Secondary Color</figcaption>
 
-          <nav class="mdc-tab-bar mdc-tab-bar--icons-with-text mdc-tab-bar--indicator-accent">
-            <a class="mdc-tab mdc-tab--with-icon-and-text mdc-tab--active" href="javascript:">
+          <nav class="mdc-tab-bar mdc-tab-bar--icons-with-text mdc-tab-bar--indicator-accent demo-tab-bar">
+            <a class="mdc-tab mdc-tab--with-icon-and-text mdc-tab--active demo-tab" href="javascript:">
               <i class="material-icons mdc-tab__icon" aria-hidden="true">phone</i>
               <span class="mdc-tab__icon-text">Recents</span>
             </a>
-            <a class="mdc-tab mdc-tab--with-icon-and-text" href="javascript:">
+            <a class="mdc-tab mdc-tab--with-icon-and-text demo-tab" href="javascript:">
               <i class="material-icons mdc-tab__icon" aria-hidden="true">favorite</i>
               <span class="mdc-tab__icon-text">Favorites</span>
             </a>
-            <a class="mdc-tab mdc-tab--with-icon-and-text" href="javascript:">
+            <a class="mdc-tab mdc-tab--with-icon-and-text demo-tab" href="javascript:">
               <i class="material-icons mdc-tab__icon" aria-hidden="true">person_pin</i>
               <span class="mdc-tab__icon-text">Nearby</span>
             </a>
@@ -755,12 +831,13 @@
         </h3>
 
         <figure class="demo-text-field-wrapper">
-          <div class="mdc-text-field">
-            <input type="text" class="mdc-text-field__input" id="demo-text-field-default"
-                   name="email" aria-controls="demo-text-field-default-helper-text"
-                   data-demo-no-js autocomplete="email">
-            <label for="demo-text-field-default" class="mdc-text-field__label">Default</label>
-            <div class="mdc-text-field__bottom-line"></div>
+          <div class="mdc-text-field demo-text-field">
+            <input type="text" class="mdc-text-field__input"
+                   id="demo-text-field-default"
+                   aria-controls="demo-text-field-default-helper-text"
+                   autocomplete="email">
+            <label for="demo-text-field-default" class="mdc-floating-label">Name (optional)</label>
+            <div class="mdc-line-ripple"></div>
           </div>
           <p class="mdc-text-field-helper-text" id="demo-text-field-default-helper-text"
              aria-hidden="true">
@@ -768,23 +845,26 @@
           </p>
         </figure>
         <figure class="demo-text-field-wrapper">
-          <div class="mdc-text-field">
-            <input type="text" class="mdc-text-field__input" id="demo-text-field-required" required
-                   name="email" aria-controls="demo-text-field-required-helper-text"
-                   data-demo-no-js autocomplete="email">
-            <label for="demo-text-field-required" class="mdc-text-field__label">Required</label>
-            <div class="mdc-text-field__bottom-line"></div>
+          <div class="mdc-text-field demo-text-field">
+            <input type="email" class="mdc-text-field__input"
+                   id="demo-text-field-required"
+                   aria-controls="demo-text-field-required-helper-text"
+                   autocomplete="email"
+                   required>
+            <label for="demo-text-field-required" class="mdc-floating-label">Email (required)</label>
+            <div class="mdc-line-ripple"></div>
           </div>
           <p class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" id="demo-text-field-required-helper-text">
-            Must provide a name
+            A valid email address is required
           </p>
         </figure>
         <figure class="demo-text-field-wrapper">
-          <div class="mdc-text-field mdc-text-field--box">
-            <input type="text" class="mdc-text-field__input" id="demo-text-field-box"
+          <div class="mdc-text-field mdc-text-field--box demo-text-field">
+            <input type="text" class="mdc-text-field__input"
+                   id="demo-text-field-box"
                    aria-controls="name-validation-message">
-            <label for="demo-text-field-box" class="mdc-text-field__label">With <code>--box</code> modifier</label>
-            <div class="mdc-text-field__bottom-line"></div>
+            <label for="demo-text-field-box" class="mdc-floating-label">With <code>--box</code> modifier</label>
+            <div class="mdc-line-ripple"></div>
           </div>
           <p class="mdc-text-field-helper-text" id="demo-text-field-box-helper-text"
              aria-hidden="true">
@@ -795,83 +875,16 @@
     </main>
 
     <script src="/assets/material-components-web.js" async></script>
+    <script src="/assets/theme/index.js" async></script>
     <script>
       demoReady(function() {
-        function getAll(query) {
-          return [].slice.call(document.querySelectorAll(query));
-        }
-
-        function matches(elem, selector) {
-          var nativeMatches = elem.matches || elem.webkitMatchesSelector || elem.mozMatchesSelector || elem.msMatchesSelector || elem.oMatchesSelector;
-          return nativeMatches.call(elem, selector);
-        }
-
-        function closest(elem, selector) {
-          while (elem) {
-            if (matches(elem, selector)) {
-              return elem;
-            }
-            elem = elem.parentElement;
-          }
-          return null;
-        }
-
-        /*
-         * Permalinks for component section headings
-         */
-
-        document.addEventListener('focusin', function(e) {
-          if (e.target.classList.contains('demo-component-section__permalink')) {
-            e.target.parentElement.classList.add('demo-component-section__heading--focus');
-          }
-        });
-        document.addEventListener('focusout', function(e) {
-          if (e.target.classList.contains('demo-component-section__permalink')) {
-            e.target.parentElement.classList.remove('demo-component-section__heading--focus');
-          }
-        });
-
-        function flashCurrentSection() {
-          var id = location.href.split('#')[1];
-          if (!id) {
-            return;
-          }
-          var anchor = document.getElementById(id);
-          if (!anchor) {
-            return;
-          }
-          var section = closest(anchor, '.demo-component-section');
-          if (!section) {
-            return;
-          }
-          section.classList.add('demo-component-section--flash');
-          setTimeout(function() {
-            section.classList.remove('demo-component-section--flash');
-          }, 200);
-        }
-
-        window.addEventListener('hashchange', function(e) {
-          flashCurrentSection();
-        });
-        flashCurrentSection();
-
         /*
          * Button
          */
 
-        var buttons = document.querySelectorAll('.mdc-button:not([data-demo-no-js])');
-        for (var i = 0, button; button = buttons[i]; i++) {
+        [].forEach.call(document.querySelectorAll('.mdc-button'), function(button) {
           mdc.ripple.MDCRipple.attachTo(button);
-        }
-
-        /*
-         * FAB
-         */
-
-        var fabs = document.querySelectorAll('.mdc-fab:not([data-demo-no-js])');
-        for (var i = 0, fab; fab = fabs[i]; i++) {
-          mdc.ripple.MDCRipple.attachTo(fab);
-        }
+        });
 
         /*
          * Checkbox
@@ -879,16 +892,16 @@
 
         document.querySelector('#indeterminate-checkbox').indeterminate = true;
 
-        document.querySelector('#checkbox-toggle--indeterminate').addEventListener('click', function(e) {
-          var checkboxes = getAll('.demo-checkbox-wrapper .mdc-checkbox__native-control');
-          checkboxes.forEach(function(checkbox) {
-            checkbox.indeterminate = !checkbox.indeterminate;
-          });
+        document.querySelector('#checkbox-toggle--indeterminate').addEventListener('click', function() {
+          [].forEach.call(
+            document.querySelectorAll('.demo-checkbox-wrapper .mdc-checkbox__native-control'),
+            function(checkbox) {
+              checkbox.indeterminate = !checkbox.indeterminate;
+            });
         });
 
-        document.querySelector('#checkbox-toggle--align-end').addEventListener('click', function(e) {
-          var formFields = getAll('.demo-checkbox-wrapper.mdc-form-field');
-          formFields.forEach(function(formField) {
+        document.querySelector('#checkbox-toggle--align-end').addEventListener('click', function() {
+          [].forEach.call(document.querySelectorAll('.demo-checkbox-wrapper'), function(formField) {
             formField.classList.toggle('mdc-form-field--align-end');
           });
         });
@@ -900,7 +913,7 @@
         var drawerEl = document.querySelector('.mdc-drawer--temporary');
         var drawer = new mdc.drawer.MDCTemporaryDrawer(drawerEl);
 
-        getAll('.demo-drawer-toggle').forEach(function(toggleElem) {
+        [].forEach.call(document.querySelectorAll('.demo-drawer-toggle'), function(toggleElem) {
           toggleElem.addEventListener('click', function() {
             drawer.open = true;
           });
@@ -915,32 +928,50 @@
         });
 
         /*
+         * FAB
+         */
+
+        [].forEach.call(document.querySelectorAll('.mdc-fab'), function(fab) {
+          mdc.ripple.MDCRipple.attachTo(fab);
+        });
+
+        /*
          * Icon Toggle
          */
 
-        var iconToggleEls = getAll('.mdc-icon-toggle');
-        for (var i = 0, iconToggleEl; iconToggleEl = iconToggleEls[i]; i++) {
+        [].forEach.call(document.querySelectorAll('.mdc-icon-toggle'), function(iconToggleEl) {
           mdc.iconToggle.MDCIconToggle.attachTo(iconToggleEl);
-        }
+        });
 
         /*
          * Linear Progress
          */
 
-        var progressEls = getAll('.mdc-linear-progress');
-        for (var i = 0, progressEl; progressEl = progressEls[i]; i++) {
+        [].forEach.call(document.querySelectorAll('.mdc-linear-progress'), function(progressEl) {
           var linearProgress = mdc.linearProgress.MDCLinearProgress.attachTo(progressEl);
           linearProgress.progress = 0.5;
           if (progressEl.dataset.buffer) {
             linearProgress.buffer = 0.75;
           }
-        }
+        });
+
+        /*
+         * Radio
+         */
+
+        [].forEach.call(document.querySelectorAll('.demo-radio-form-field'), function(formField) {
+          var formFieldInstance = new mdc.formField.MDCFormField(formField);
+          var radio = formField.querySelector('.mdc-radio');
+          if (radio) {
+            formFieldInstance.input = new mdc.radio.MDCRadio(radio);
+          }
+        });
 
         /*
          * Select
          */
 
-        getAll('.mdc-select:not(select)').forEach(function(select) {
+        [].forEach.call(document.querySelectorAll('.mdc-select:not(select)'), function(select) {
           mdc.select.MDCSelect.attachTo(select);
         });
 
@@ -948,43 +979,25 @@
          * Slider
          */
 
-        getAll('.mdc-slider').forEach(function(slider) {
+        [].forEach.call(document.querySelectorAll('.mdc-slider'), function(slider) {
           mdc.slider.MDCSlider.attachTo(slider);
         });
 
         /*
-         * Tabs
+         * Tab Bar
          */
 
-        getAll('.mdc-tab-bar').forEach(function(tabBar) {
+        [].forEach.call(document.querySelectorAll('.mdc-tab-bar'), function(tabBar) {
           mdc.tabs.MDCTabBar.attachTo(tabBar);
         });
 
         /*
-         * TextField
+         * Text Field
          */
 
-        getAll('.mdc-text-field:not([data-demo-no-js])').forEach(function(textField) {
+        [].forEach.call(document.querySelectorAll('.mdc-text-field'), function(textField) {
           mdc.textField.MDCTextField.attachTo(textField);
         });
-
-        /*
-         * Radio Button
-         */
-
-        var MDCFormField = mdc.formField.MDCFormField;
-        var MDCRadio = mdc.radio.MDCRadio;
-
-        var formFields = getAll('.mdc-form-field.demo-radio-form-field');
-        for (var i = 0, formField; formField = formFields[i]; i++) {
-          var formFieldInstance = new MDCFormField(formField);
-
-          var radio = formField.querySelector('.mdc-radio:not([data-demo-no-js])');
-          if (radio) {
-            var radioInstance = new MDCRadio(radio);
-            formFieldInstance.input = radioInstance;
-          }
-        }
       });
     </script>
   </body>

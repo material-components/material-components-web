@@ -1,0 +1,105 @@
+//
+// Copyright 2018 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+@import "@material/theme/mixins";
+@import "./bottom-line/mixins";
+@import "./label/mixins";
+
+// Public
+
+@mixin mdc-select-ink-color($color) {
+  &:not(.mdc-select--disabled) {
+    @include mdc-select-ink-color_($color);
+  }
+}
+
+@mixin mdc-select-container-fill-color($color) {
+  &:not(.mdc-select--disabled) {
+    @include mdc-select-container-fill-color_($color);
+  }
+}
+
+@mixin mdc-select-focused-label-color($color, $opacity: .87) {
+  &:not(.mdc-select--disabled) {
+    .mdc-select__surface:focus,
+    &.mdc-select--open {
+      @include mdc-select-floating-label-color($color, $opacity);
+    }
+  }
+}
+
+@mixin mdc-select-bottom-line-color($color) {
+  &:not(.mdc-select--disabled) {
+    @include mdc-select-bottom-line-color_($color);
+  }
+}
+
+@mixin mdc-select-focused-bottom-line-color($color) {
+  &:not(.mdc-select--disabled) {
+    @include mdc-select-focused-bottom-line-color_($color);
+  }
+}
+
+// Private
+
+@mixin mdc-select-focused-bottom-line_ {
+  .mdc-select__surface:focus .mdc-select__bottom-line {
+    @content;
+  }
+}
+
+@mixin mdc-select-ink-color_($color) {
+  .mdc-select__surface,
+  .mdc-select__selected-text {
+    @include mdc-theme-prop(color, $color);
+  }
+}
+
+@mixin mdc-select-container-fill-color_($color) {
+  .mdc-select__surface {
+    @include mdc-theme-prop(background-color, $color);
+  }
+}
+
+@mixin mdc-select-bottom-line-color_($color) {
+  .mdc-select__bottom-line {
+    @include mdc-select-bottom-line-fill-color($color);
+  }
+}
+
+@mixin mdc-select-label-color($color, $opacity: 1) {
+  &:not(.mdc-select--disabled) {
+    @include mdc-select-floating-label-color($color, $opacity);
+  }
+}
+
+@mixin mdc-select-focused-bottom-line-color_($color) {
+  @include mdc-select-focused-bottom-line_ {
+    @include mdc-select-bottom-line-fill-color($color);
+  }
+
+  &.mdc-select--open .mdc-select__bottom-line {
+    @include mdc-select-bottom-line-fill-color($color);
+  }
+
+  .mdc-select__bottom-line::after {
+    @include mdc-select-bottom-line-fill-color($color);
+  }
+}
+
+@mixin mdc-select-dd-arrow-svg-bg_($fill-hex-number: 000000, $opacity: .54) {
+  background-image: url(data:image/svg+xml,%3Csvg%20width%3D%2210px%22%20height%3D%225px%22%20viewBox%3D%227%2010%2010%205%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%20%20%3Cpolygon%20id%3D%22Shape%22%20stroke%3D%22none%22%20fill%3D%22%23#{$fill-hex-number}%22%20fill-rule%3D%22evenodd%22%20opacity%3D%22#{$opacity}%22%20points%3D%227%2010%2012%2015%2017%2010%22%3E%3C%2Fpolygon%3E%0A%3C%2Fsvg%3E);
+}

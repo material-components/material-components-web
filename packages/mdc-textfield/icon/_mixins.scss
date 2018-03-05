@@ -1,0 +1,56 @@
+//
+// Copyright 2018 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+// Public mixins
+
+@mixin mdc-text-field-icon-color($color) {
+  &:not(.mdc-text-field--disabled) {
+    @include mdc-text-field-icon-color_($color);
+  }
+}
+
+// Private mixins
+
+@mixin mdc-text-field-icon-horizontal-position_($position-property, $position, $padding) {
+  .mdc-text-field__icon {
+    @include mdc-rtl-reflexive-position($position-property, $position);
+  }
+
+  // Move the input's position, to allow room for the icon
+  @if ($position-property == left) {
+    .mdc-text-field__input {
+      @include mdc-rtl-reflexive-property(padding, $padding /* left-value */, $position  /* right-value */);
+    }
+  } @else {
+  	.mdc-text-field__input {
+      @include mdc-rtl-reflexive-property(padding, $position /* left-value */, $padding  /* right-value */);
+    }
+  }
+
+  // Only move the label's position to allow room for the icon, if the icon is on the same
+  // side as the label. Aka the icon is on left side in a LTR context.
+  @if ($position-property == left) {
+    .mdc-floating-label {
+      @include mdc-rtl-reflexive-position($position-property, $padding);
+    }
+  }
+}
+
+@mixin mdc-text-field-icon-color_($color) {
+  .mdc-text-field__icon {
+    @include mdc-theme-prop(color, $color);
+  }
+}

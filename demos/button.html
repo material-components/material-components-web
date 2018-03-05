@@ -20,22 +20,14 @@
     <title>Button - Material Components Catalog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
+    <link rel="stylesheet" href="/assets/button.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="/assets/button.css">
     <script src="/ready.js"></script>
     <style>
       .demo-wrapper {
         padding-bottom: 100px;
-      }
-
-      .demo-wrapper.mdc-theme--dark{
-        background-color: #333;
-      }
-
-      .demo-wrapper.mdc-theme--dark fieldset legend, .demo-wrapper.mdc-theme--dark h1 {
-        color: #f0f0f0;
       }
 
       fieldset {
@@ -82,9 +74,7 @@
     <header class="mdc-toolbar mdc-toolbar--fixed">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-          <span class="catalog-back">
-            <a href="/" class="mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
-          </span>
+          <a href="/" class="catalog-back mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
           <span class="mdc-toolbar__title catalog-title">Buttons</span>
         </section>
       </div>
@@ -104,23 +94,10 @@
       <section class="demo-wrapper">
         <div class="mdc-form-field">
           <div class="mdc-checkbox">
-            <input type="checkbox" class="mdc-checkbox__native-control" id="toggle-dark" aria-labelledby="toggle-dark-label">
-            <div class="mdc-checkbox__background">
-              <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
-                <path class="mdc-checkbox__checkmark__path" fill="none" stroke="white" d="M1.73,12.91 8.1,19.28 22.79,4.59">
-              </svg>
-              <div class="mdc-checkbox__mixedmark"></div>
-            </div>
-          </div>
-          <label for="toggle-dark" id="toggle-dark-label">Dark Theme</label>
-        </div>
-
-        <div class="mdc-form-field">
-          <div class="mdc-checkbox">
             <input type="checkbox" class="mdc-checkbox__native-control" id="toggle-disabled" aria-labelledby="toggle-disabled-label">
             <div class="mdc-checkbox__background">
               <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
-                <path class="mdc-checkbox__checkmark__path" fill="none" stroke="white" d="M1.73,12.91 8.1,19.28 22.79,4.59">
+                <path class="mdc-checkbox__checkmark-path" fill="none" stroke="white" d="M1.73,12.91 8.1,19.28 22.79,4.59">
               </svg>
               <div class="mdc-checkbox__mixedmark"></div>
             </div>
@@ -364,21 +341,11 @@
           mdc.ripple.MDCRipple.attachTo(btn);
         }
 
-        var demoWrapper = document.querySelector('.demo-wrapper');
-        document.getElementById('toggle-dark').addEventListener('change', function () {
-          if (this.checked) {
-            demoWrapper.classList.add('mdc-theme--dark');
-          } else {
-            demoWrapper.classList.remove('mdc-theme--dark');
-          }
-        });
-
-        document.getElementById('toggle-disabled').addEventListener('change', function () {
+        document.getElementById('toggle-disabled').addEventListener('change', function() {
           var isDisabled = this.checked;
-          [].slice.call(document.querySelectorAll('button')).forEach(function(button) {
+          [].forEach.call(document.querySelectorAll('button'), function(button) {
             button.disabled = isDisabled;
           });
-
         });
       });
     </script>

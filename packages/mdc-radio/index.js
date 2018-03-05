@@ -17,10 +17,10 @@
 
 import MDCComponent from '@material/base/component';
 /* eslint-disable no-unused-vars */
-import {MDCSelectionControlState, MDCSelectionControl} from '@material/selection-control';
+import {MDCSelectionControlState, MDCSelectionControl} from '@material/selection-control/index';
 /* eslint-enable no-unused-vars */
 import MDCRadioFoundation from './foundation';
-import {MDCRipple, MDCRippleFoundation} from '@material/ripple';
+import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
 
 /**
  * @extends MDCComponent<!MDCRadioFoundation>
@@ -85,18 +85,6 @@ class MDCRadio extends MDCComponent {
       isSurfaceActive: () => false,
       registerInteractionHandler: (type, handler) => this.nativeControl_.addEventListener(type, handler),
       deregisterInteractionHandler: (type, handler) => this.nativeControl_.removeEventListener(type, handler),
-      computeBoundingRect: () => {
-        const {left, top} = this.root_.getBoundingClientRect();
-        const DIM = 40;
-        return {
-          top,
-          left,
-          right: left + DIM,
-          bottom: top + DIM,
-          width: DIM,
-          height: DIM,
-        };
-      },
     });
     const foundation = new MDCRippleFoundation(adapter);
     return new MDCRipple(this.root_, foundation);

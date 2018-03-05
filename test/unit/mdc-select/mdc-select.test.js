@@ -38,6 +38,19 @@ class FakeMenu {
   }
 }
 
+class FakeLabel {
+  constructor() {
+    this.float = td.func('label.float');
+  }
+}
+
+class FakeBottomLine {
+  constructor() {
+    this.activate = td.func('bottomLine.activate');
+    this.deactivate = td.func('bottomLine.deactivate');
+  }
+}
+
 function getFixture() {
   return bel`
     <div class="mdc-select" role="listbox">
@@ -46,8 +59,8 @@ function getFixture() {
         <div class="mdc-select__selected-text"></div>
         <div class="mdc-select__bottom-line"></div>
       </div>
-      <div class="mdc-simple-menu mdc-select__menu">
-        <ul class="mdc-list mdc-simple-menu__items">
+      <div class="mdc-menu mdc-select__menu">
+        <ul class="mdc-list mdc-menu__items">
           <li class="mdc-list-item" role="option" aria-disabled="true">
             Pick a food group
           </li>
@@ -64,15 +77,17 @@ test('attachTo returns a component instance', () => {
 });
 
 function setupTest() {
+  const bottomLine = new FakeBottomLine();
+  const label = new FakeLabel();
   const menu = new FakeMenu();
   const fixture = getFixture();
   const surface = fixture.querySelector('.mdc-select__surface');
-  const label = fixture.querySelector('.mdc-select__label');
-  const bottomLine = fixture.querySelector('.mdc-select__bottom-line');
+  const labelEl = fixture.querySelector('.mdc-select__label');
+  const bottomLineEl = fixture.querySelector('.mdc-select__bottom-line');
   const menuEl = fixture.querySelector('.mdc-select__menu');
-  const component = new MDCSelect(fixture, /* foundation */ undefined, () => menu);
+  const component = new MDCSelect(fixture, /* foundation */ undefined, () => menu, () => label, () => bottomLine);
 
-  return {menu, menuEl, fixture, surface, label, bottomLine, component};
+  return {menu, menuEl, fixture, surface, label, labelEl, bottomLine, bottomLineEl, component};
 }
 
 test('options returns the menu items', () => {
@@ -173,41 +188,25 @@ test('adapter#removeClass removes a class from the root element', () => {
   assert.isNotOk(fixture.classList.contains('foo'));
 });
 
-test('adapter#addClassToLabel adds a class to the label', () => {
+test('adapter#floatLabel adds a class to the label', () => {
   const {component, label} = setupTest();
 
-  component.getDefaultFoundation().adapter_.addClassToLabel('foo');
-  assert.isTrue(label.classList.contains('foo'));
+  component.getDefaultFoundation().adapter_.floatLabel('foo');
+  td.verify(label.float('foo'));
 });
 
-test('adapter#removeClassFromLabel removes a class from the label', () => {
-  const {component, label} = setupTest();
-
-  label.classList.add('foo');
-  component.getDefaultFoundation().adapter_.removeClassFromLabel('foo');
-  assert.isFalse(label.classList.contains('foo'));
-});
-
-test('adapter#addClassToBottomLine adds a class to the bottom line', () => {
+test('adapter#activateBottomLine adds active class to the bottom line', () => {
   const {component, bottomLine} = setupTest();
 
-  component.getDefaultFoundation().adapter_.addClassToBottomLine('foo');
-  assert.isTrue(bottomLine.classList.contains('foo'));
+  component.getDefaultFoundation().adapter_.activateBottomLine();
+  td.verify(bottomLine.activate());
 });
 
-test('adapter#removeClassFromBottomLine removes a class from the bottom line', () => {
+test('adapter#deactivateBottomLine removes active class from the bottom line', () => {
   const {component, bottomLine} = setupTest();
 
-  bottomLine.classList.add('foo');
-  component.getDefaultFoundation().adapter_.removeClassFromBottomLine('foo');
-  assert.isFalse(bottomLine.classList.contains('foo'));
-});
-
-test('adapter#setBottomLineAttr adds attribute to bottom line', () => {
-  const {component, bottomLine} = setupTest();
-
-  component.getDefaultFoundation().adapter_.setBottomLineAttr('aria-disabled', 'true');
-  assert.equal(bottomLine.getAttribute('aria-disabled'), 'true');
+  component.getDefaultFoundation().adapter_.deactivateBottomLine();
+  td.verify(bottomLine.deactivate());
 });
 
 test('adapter#setAttr sets an attribute with a given value on the root element', () => {
