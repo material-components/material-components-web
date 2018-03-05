@@ -16,6 +16,7 @@
 
 @import "@material/elevation/mixins";
 @import "@material/ripple/mixins";
+@import "@material/rtl/mixins";
 @import "@material/theme/functions";
 @import "@material/theme/mixins";
 @import "@material/typography/mixins";
@@ -63,8 +64,8 @@
   // Note: Adjust padding to maintain consistent width with non-stroked buttons
   $padding-value: max($mdc-button-horizontal-padding - $stroke-width, 0);
 
-  padding-right: $padding-value;
-  padding-left: $padding-value;
+  @include mdc-rtl-reflexive-property(padding, $padding-value, $padding-value);
+
   border-width: $stroke-width;
   // Note: line height is adjusted for stroke button because borders are not
   // considered as space available to text on the Web
@@ -79,8 +80,7 @@
   &.mdc-button--compact {
     $padding-compact-value: max($mdc-compact-button-horizontal-padding - $stroke-width, 0);
 
-    padding-right: $padding-compact-value;
-    padding-left: $padding-compact-value;
+    @include mdc-rtl-reflexive-property(padding, $padding-compact-value, $padding-compact-value);
   }
 }
 
@@ -131,10 +131,11 @@
 }
 
 @mixin mdc-button__icon_ {
+  @include mdc-rtl-reflexive-box(margin, right, 8px);
+
   display: inline-block;
   width: 18px;
   height: 18px;
-  margin-right: 8px;
   font-size: 18px;
   line-height: inherit;
   vertical-align: top;
