@@ -31,7 +31,7 @@ const getFixture = () => bel`
 suite('MDCChip');
 
 test('attachTo returns an MDCChip instance', () => {
-  assert.isOk(MDCChip.attachTo(getFixture()) instanceof MDCChip);
+  assert.isTrue(MDCChip.attachTo(getFixture()) instanceof MDCChip);
 });
 
 function setupTest() {
@@ -42,7 +42,7 @@ function setupTest() {
 
 test('get ripple returns MDCRipple instance', () => {
   const {component} = setupTest();
-  assert.isOk(component.ripple instanceof MDCRipple);
+  assert.isTrue(component.ripple instanceof MDCRipple);
 });
 
 test('#adapter.hasClass returns true if class is set on chip set element', () => {
@@ -54,7 +54,7 @@ test('#adapter.hasClass returns true if class is set on chip set element', () =>
 test('#adapter.addClass adds a class to the root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
-  assert.isOk(root.classList.contains('foo'));
+  assert.isTrue(root.classList.contains('foo'));
 });
 
 test('#adapter.removeClass removes a class from the root element', () => {
@@ -71,7 +71,7 @@ test('#adapter.addClassToLeadingIcon adds a class to the leading icon element', 
   `;
   root.appendChild(leadingIcon);
   component.getDefaultFoundation().adapter_.addClassToLeadingIcon('foo');
-  assert.isOk(leadingIcon.classList.contains('foo'));
+  assert.isTrue(leadingIcon.classList.contains('foo'));
 });
 
 test('#adapter.addClassToLeadingIcon does nothing if no leading icon element is present', () => {
