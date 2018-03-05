@@ -87,7 +87,7 @@
 @mixin mdc-button-base_() {
   @include mdc-typography(button);
   @include mdc-ripple-surface;
-  @include mdc-ripple-radius;
+  @include mdc-ripple-radius-bounded;
 
   display: inline-block;
   position: relative;
@@ -103,6 +103,11 @@
   overflow: hidden;
   vertical-align: middle;
 
+  &::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+  }
+
   // postcss-bem-linter: ignore
   &:active {
     outline: none;
@@ -112,21 +117,12 @@
     cursor: pointer;
   }
 
-  &::-moz-focus-inner {
-    padding: 0;
-    border: 0;
-  }
-
   &:disabled {
     @include mdc-theme-prop(background-color, transparent);
     @include mdc-theme-prop(color, text-disabled-on-light);
 
     cursor: default;
     pointer-events: none;
-
-    @include mdc-theme-dark(".mdc-button") {
-      @include mdc-theme-prop(color, text-disabled-on-dark);
-    }
   }
 }
 
@@ -145,10 +141,6 @@
 
   &:disabled {
     @include mdc-theme-prop(border-color, text-disabled-on-light);
-
-    @include mdc-theme-dark(".mdc-button") {
-      @include mdc-theme-prop(border-color, text-disabled-on-dark);
-    }
   }
 }
 
@@ -156,11 +148,6 @@
   &:disabled {
     @include mdc-theme-prop(background-color, rgba(black, .12));
     @include mdc-theme-prop(color, text-disabled-on-light);
-
-    @include mdc-theme-dark(".mdc-button") {
-      @include mdc-theme-prop(background-color, rgba(white, .12));
-      @include mdc-theme-prop(color, text-disabled-on-light);
-    }
   }
 }
 
