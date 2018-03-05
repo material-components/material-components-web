@@ -16,7 +16,6 @@
 
 @import "@material/elevation/mixins";
 @import "@material/ripple/mixins";
-@import "@material/rtl/mixins";
 @import "@material/theme/functions";
 @import "@material/theme/mixins";
 @import "@material/typography/mixins";
@@ -64,8 +63,8 @@
   // Note: Adjust padding to maintain consistent width with non-stroked buttons
   $padding-value: max($mdc-button-horizontal-padding - $stroke-width, 0);
 
-  @include mdc-rtl-reflexive-property(padding, $padding-value, $padding-value);
-
+  padding-right: $padding-value;
+  padding-left: $padding-value;
   border-width: $stroke-width;
   // Note: line height is adjusted for stroke button because borders are not
   // considered as space available to text on the Web
@@ -80,14 +79,15 @@
   &.mdc-button--compact {
     $padding-compact-value: max($mdc-compact-button-horizontal-padding - $stroke-width, 0);
 
-    @include mdc-rtl-reflexive-property(padding, $padding-compact-value, $padding-compact-value);
+    padding-right: $padding-compact-value;
+    padding-left: $padding-compact-value;
   }
 }
 
 @mixin mdc-button-base_() {
   @include mdc-typography(button);
   @include mdc-ripple-surface;
-  @include mdc-ripple-radius-bounded;
+  @include mdc-ripple-radius;
 
   display: inline-block;
   position: relative;
@@ -103,11 +103,6 @@
   overflow: hidden;
   vertical-align: middle;
 
-  &::-moz-focus-inner {
-    padding: 0;
-    border: 0;
-  }
-
   // postcss-bem-linter: ignore
   &:active {
     outline: none;
@@ -117,21 +112,29 @@
     cursor: pointer;
   }
 
+  &::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+  }
+
   &:disabled {
     @include mdc-theme-prop(background-color, transparent);
     @include mdc-theme-prop(color, text-disabled-on-light);
 
     cursor: default;
     pointer-events: none;
+
+    @include mdc-theme-dark(".mdc-button") {
+      @include mdc-theme-prop(color, text-disabled-on-dark);
+    }
   }
 }
 
 @mixin mdc-button__icon_ {
-  @include mdc-rtl-reflexive-box(margin, right, 8px);
-
   display: inline-block;
   width: 18px;
   height: 18px;
+  margin-right: 8px;
   font-size: 18px;
   line-height: inherit;
   vertical-align: top;
@@ -142,6 +145,10 @@
 
   &:disabled {
     @include mdc-theme-prop(border-color, text-disabled-on-light);
+
+    @include mdc-theme-dark(".mdc-button") {
+      @include mdc-theme-prop(border-color, text-disabled-on-dark);
+    }
   }
 }
 
@@ -149,6 +156,11 @@
   &:disabled {
     @include mdc-theme-prop(background-color, rgba(black, .12));
     @include mdc-theme-prop(color, text-disabled-on-light);
+
+    @include mdc-theme-dark(".mdc-button") {
+      @include mdc-theme-prop(background-color, rgba(white, .12));
+      @include mdc-theme-prop(color, text-disabled-on-light);
+    }
   }
 }
 
