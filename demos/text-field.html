@@ -137,7 +137,7 @@
         <h2>Outlined Text Field</h2>
         <div id="demo-tf-outlined-wrapper">
           <div id="tf-outlined-example" class="mdc-text-field mdc-text-field--outlined" data-demo-no-auto-js>
-            <input required pattern=".{8,}" type="text" id="tf-outlined-input" class="mdc-text-field__input"
+            <input type="text" id="tf-outlined-input" class="mdc-text-field__input"
                    aria-controls="name-validation-message">
             <label for="tf-outlined-input" class="mdc-floating-label">Your Name</label>
             <div class="mdc-text-field__outline">
@@ -147,8 +147,9 @@
             </div>
             <div class="mdc-text-field__idle-outline"></div>
           </div>
-          <p class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg">
-            Must be at least 8 characters
+          <p class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
+             id="name-validation-message">
+            Helper Text (possibly validation message)
           </p>
         </div>
         <div>
@@ -167,6 +168,18 @@
           <input id="outlined-dense" type="checkbox">
           <label for="outlined-dense">Dense</label>
         </div>
+        <div>
+          <input id="outlined-required" type="checkbox">
+          <label for="outlined-required">Required</label>
+        </div>
+        <div>
+          <input id="outlined-minlength" type="checkbox">
+          <label for="outlined-minlength">Must be at least 8 characters</label>
+        </div>
+        <div>
+          <input id="outlined-maxlength" type="checkbox">
+          <label for="outlined-maxlength">Must not exceed 10 characters</label>
+        </div>
       </section>
 
       <section class="example" id="text-field-box-example">
@@ -174,12 +187,13 @@
         <div id="demo-tf-box-wrapper">
           <div id="tf-box-example" class="mdc-text-field mdc-text-field--box" data-demo-no-auto-js>
             <input type="text" id="tf-box" class="mdc-text-field__input"
-                   aria-controls="name-validation-message">
+                   aria-controls="box-name-validation-message">
             <label for="tf-box" class="mdc-floating-label">Your Name</label>
             <div class="mdc-line-ripple"></div>
           </div>
-          <p class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
-            id="box-text-field-helper-text">
+          <p class="mdc-text-field-helper-text"
+            id="box-name-validation-message"
+            style="display: none;">
             Helper Text (possibly validation message)
           </p>
         </div>
@@ -201,7 +215,11 @@
         </div>
         <div>
           <input id="box-required" type="checkbox">
-          <label for="box-required">Required and must be at least 8 characters</label>
+          <label for="box-required">Required</label>
+        </div>
+        <div>
+          <input id="box-pattern" type="checkbox">
+          <label for="box-pattern">Must be at least 8 characters</label>
         </div>
         <div>
           <input id="box-use-helper-text" type="checkbox">
@@ -210,6 +228,12 @@
         <div>
           <input id="box-persistent-helper-text" type="checkbox" disabled>
           <label for="box-persistent-helper-text">Make helper text persistent</label>
+        </div>
+        <div>
+          <input id="box-helper-text-as-validation" type="checkbox" disabled>
+          <label for="box-helper-text-as-validation">
+            Use helper text as validation message
+          </label>
         </div>
       </section>
 
@@ -283,7 +307,11 @@
         </div>
         <div>
           <input id="required-leading-trailing" type="checkbox">
-          <label for="required-leading-trailing">Required and must be at least 8 characters</label>
+          <label for="required-leading-trailing">Required</label>
+        </div>
+        <div>
+          <input id="pattern-leading-trailing" type="checkbox">
+          <label for="pattern-leading-trailing">Must be at least 8 characters</label>
         </div>
       </section>
 
@@ -357,10 +385,24 @@
 
     <script src="/assets/material-components-web.js" async></script>
     <script>
+      function toggleRequired(textfield, isRequired) {
+        textfield.required = isRequired;
+      }
+
+      function togglePattern(textfield, checked) {
+        textfield.pattern = checked ? '.{8,}' : '.*';
+      }
+
       demoReady(function() {
         var tfEl = document.getElementById('tf-outlined-example');
+        var tfHelperText = document.getElementById('tf-outlined-validation-msg');
         var tf = new mdc.textField.MDCTextField(tfEl);
+        var outlinedInputEl = tfEl.querySelector('input');
         var wrapper = document.getElementById('demo-tf-outlined-wrapper');
+        var plainHelperText = 'Helper Text (possibly validation message)';
+        var minLengthError = 'Must be at least 8 characters';
+        var maxLengthError = 'Must not exceed 10 characters';
+
         document.getElementById('outlined-disable').addEventListener('change', function(evt) {
           tf.disabled = evt.target.checked;
         });
@@ -380,13 +422,31 @@
           tfEl.classList[evt.target.checked ? 'add' : 'remove']('mdc-text-field--dense');
           tf.layout();
         });
+        document.getElementById('outlined-required').addEventListener('change', function(evt) {
+          toggleRequired(tf, evt.target.checked);
+        });
+        document.getElementById('outlined-minlength').addEventListener('change', function(evt) {
+          tf.minLength = evt.target.checked ? 8 : 0;
+        });
+        document.getElementById('outlined-maxlength').addEventListener('change', function(evt) {
+          tf.maxLength = evt.target.checked ? 10 : -1;
+        });
+        outlinedInputEl.addEventListener('blur', function() {
+          if (outlinedInputEl.validity.tooShort) {
+            tf.helperTextContent = minLengthError;
+          } else if (outlinedInputEl.validity.tooLong) {
+            tf.helperTextContent = maxLengthError;
+          } else {
+            tf.helperTextContent = plainHelperText;
+          }
+        });
       });
 
       demoReady(function() {
         var tfEl = document.getElementById('tf-box-example');
         var tf = new mdc.textField.MDCTextField(tfEl);
         var wrapper = document.getElementById('demo-tf-box-wrapper');
-        var helperText = document.getElementById('box-text-field-helper-text');
+        var helperText = document.getElementById('box-name-validation-message');
 
         document.getElementById('box-disable').addEventListener('change', function(evt) {
           tf.disabled = evt.target.checked;
@@ -413,25 +473,33 @@
         });
 
         document.getElementById('box-required').addEventListener('change', function(evt) {
-          var target = evt.target;
-          var input = tfEl.querySelector('.mdc-text-field__input');
+          toggleRequired(tf, evt.target.checked);
+        });
+        document.getElementById('box-pattern').addEventListener('change', function(evt) {
+          var checked = evt.target.checked;
           var requiredHelperText = 'Must be at least 8 characters';
           var plainHelperText = 'Helper Text (possibly validation message)';
-          input.required = target.checked;
-          input.pattern = evt.target.checked ? '.{8,}' : '.*';
-          helperText.innerHTML = target.checked ? requiredHelperText : plainHelperText;
+          togglePattern(tf, checked);
+          tf.helperTextContent = checked ? requiredHelperText : plainHelperText;
         });
 
         document.getElementById('box-use-helper-text').addEventListener('change', function(evt) {
           var target = evt.target;
           helperText.style.display = target.checked ? 'block' : 'none';
           document.getElementById('box-persistent-helper-text').disabled = !target.checked;
+          document.getElementById('box-helper-text-as-validation').disabled = !target.checked;
         });
 
         document.getElementById('box-persistent-helper-text').addEventListener('change', function(evt) {
           var target = evt.target;
           helperText.classList[target.checked ? 'add' : 'remove'](
             'mdc-text-field-helper-text--persistent'
+          );
+        });
+
+        document.getElementById('box-helper-text-as-validation').addEventListener('change', function(evt) {
+          helperText.classList[evt.target.checked ? 'add' : 'remove'](
+            'mdc-text-field-helper-text--validation-msg'
           );
         });
       });
@@ -510,10 +578,19 @@
         });
 
         document.getElementById('required-leading-trailing').addEventListener('change', function(evt) {
-          [].slice.call(tfInputs).forEach(function(input) {
-                input.required = evt.target.checked;
-                input.pattern = evt.target.checked ? '.{8,}' : '.*';
-              });
+          var checked = evt.target.checked;
+          toggleRequired(tfBoxLeading, checked);
+          toggleRequired(tfBoxTrailing, checked);
+          toggleRequired(tfOutlinedLeading, checked);
+          toggleRequired(tfOutlinedTrailing, checked);
+        });
+
+        document.getElementById('pattern-leading-trailing').addEventListener('change', function(evt) {
+          var checked = evt.target.checked;
+          togglePattern(tfBoxLeading, checked);
+          togglePattern(tfBoxTrailing, checked);
+          togglePattern(tfOutlinedLeading, checked);
+          togglePattern(tfOutlinedTrailing, checked);
         });
 
         document.getElementById('leading-trailing-alternate-colors').addEventListener('change', function(evt) {
@@ -555,8 +632,7 @@
           tfRoot.classList[target.checked ? 'add' : 'remove']('mdc-text-field--dense');
         });
         document.getElementById('required').addEventListener('change', function(evt) {
-          var target = evt.target;
-          tfRoot.querySelector('.mdc-text-field__input').required = target.checked;
+          toggleRequired(tf, evt.target.checked);
         });
         document.getElementById('alternate-colors').addEventListener('change', function (evt) {
           var target = evt.target;
@@ -604,13 +680,8 @@
           var target = evt.target;
           tfRoot.classList[target.checked ? 'add' : 'remove']('demo-textarea');
         });
-
         document.getElementById('textarea-required').addEventListener('change', function(evt) {
-          var target = evt.target;
-          [].slice.call(tfRoot.querySelectorAll('.mdc-text-field__input'))
-              .forEach(function(input) {
-                input.required = target.checked;
-              })
+          toggleRequired(tf, evt.target.checked);
         });
       });
 
@@ -636,11 +707,9 @@
         });
 
         document.getElementById('fullwidth-required').addEventListener('change', function(evt) {
-          var target = evt.target;
-          [].slice.call(section.querySelectorAll('.mdc-text-field__input'))
-              .forEach(function(input) {
-                input.required = target.checked;
-              })
+          var checked = evt.target.checked;
+          toggleRequired(tf, checked);
+          toggleRequired(tfMulti, checked);
         });
 
         document.getElementById('fullwidth-alternate-colors').addEventListener('change', function (evt) {
