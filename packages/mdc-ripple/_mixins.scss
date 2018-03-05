@@ -196,7 +196,7 @@
   &::before,
   &::after {
     top: calc(50% - #{$radius / 2});
-    
+
     /* @noflip */
     left: calc(50% - #{$radius / 2});
     width: $radius;
