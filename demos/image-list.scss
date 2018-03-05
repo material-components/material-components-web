@@ -18,3 +18,25 @@
 @import "../packages/mdc-checkbox/mdc-checkbox";
 @import "../packages/mdc-form-field/mdc-form-field";
 @import "../packages/mdc-image-list/mdc-image-list";
+@import "../packages/mdc-radio/mdc-radio";
+
+.mdc-image-list.hero-image-list {
+  @include mdc-image-list-columns-fixed(4, 76px);
+}
+
+.hero-image-list .mdc-image-list__image {
+  background-color: #000;
+}
+
+.mdc-image-list.standard-image-list--scale {
+  @include mdc-image-list-columns-scale(4);
+  max-width: 1000px;
+}
+
+.mdc-image-list.standard-image-list--fixed {
+  @include mdc-image-list-columns-fixed(4, 200px);
+}
+
+.standard-image-list--no-labels .mdc-image-list__supporting {
+  display: none;
+}

@@ -27,7 +27,7 @@
 .mdc-image-list__item,
 .mdc-image-list__image-aspect-container {
   display: inline-flex;
-  position: relative; // Supports overlaid text label for tile, image for image-aspect-container
+  position: relative; // Supports protected text label for tile, image for image-aspect-container
   flex-direction: column;
   box-sizing: border-box;
 }

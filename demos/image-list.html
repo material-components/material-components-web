@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="/ready.js"></script>
   </head>
   <body class="mdc-typography">
     <header class="mdc-toolbar mdc-toolbar--fixed">
@@ -37,21 +38,67 @@
     <main>
       <div class="mdc-toolbar-fixed-adjust"></div>
       <section class="hero">
-        <ul class="mdc-image-list">
-          <li class="mdc-image-list__item"><div class="mdc-image-list__image"></div></li>
-          <li class="mdc-image-list__item"><div class="mdc-image-list__image"></div></li>
-          <li class="mdc-image-list__item"><div class="mdc-image-list__image"></div></li>
-          <li class="mdc-image-list__item"><div class="mdc-image-list__image"></div></li>
-
-          <li class="mdc-image-list__item"><div class="mdc-image-list__image"></div></li>
-          <li class="mdc-image-list__item"><div class="mdc-image-list__image"></div></li>
-          <li class="mdc-image-list__item"><div class="mdc-image-list__image"></div></li>
-          <li class="mdc-image-list__item"><div class="mdc-image-list__image"></div></li>
-
-          <li class="mdc-image-list__item"><div class="mdc-image-list__image"></div></li>
-          <li class="mdc-image-list__item"><div class="mdc-image-list__image"></div></li>
-          <li class="mdc-image-list__item"><div class="mdc-image-list__image"></div></li>
-          <li class="mdc-image-list__item"><div class="mdc-image-list__image"></div></li>
+        <ul class="mdc-image-list hero-image-list">
+          <li class="mdc-image-list__item">
+            <div class="mdc-image-list__image-aspect-container">
+              <div class="mdc-image-list__image"></div>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <div class="mdc-image-list__image-aspect-container">
+              <div class="mdc-image-list__image"></div>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <div class="mdc-image-list__image-aspect-container">
+              <div class="mdc-image-list__image"></div>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <div class="mdc-image-list__image-aspect-container">
+              <div class="mdc-image-list__image"></div>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <div class="mdc-image-list__image-aspect-container">
+              <div class="mdc-image-list__image"></div>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <div class="mdc-image-list__image-aspect-container">
+              <div class="mdc-image-list__image"></div>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <div class="mdc-image-list__image-aspect-container">
+              <div class="mdc-image-list__image"></div>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <div class="mdc-image-list__image-aspect-container">
+              <div class="mdc-image-list__image"></div>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <div class="mdc-image-list__image-aspect-container">
+              <div class="mdc-image-list__image"></div>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <div class="mdc-image-list__image-aspect-container">
+              <div class="mdc-image-list__image"></div>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <div class="mdc-image-list__image-aspect-container">
+              <div class="mdc-image-list__image"></div>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <div class="mdc-image-list__image-aspect-container">
+              <div class="mdc-image-list__image"></div>
+            </div>
+          </li>
         </ul>
       </section>
 
@@ -68,12 +115,211 @@
           </div>
           <label for="toggle-rtl" id="toggle-rtl-label">Toggle RTL</label>
         </div>
-      </section>
 
-      <section class="example">
-        <h2>Standard Image List</h2>
-        <ul class="mdc-image-list"></ul>
+        <h1 class="mdc-typography--headline">Standard Image List</h1>
+        <div>
+          <h2 class="mdc-typography--title">Scaling</h2>
+          <div class="mdc-form-field">
+            <div class="mdc-radio">
+              <input class="mdc-radio__native-control" type="radio" id="standard-scale" name="standard-scaling" checked>
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
+            </div>
+            <label for="standard-scale">Scale images (up to a set max-width)</label>
+          </div>
+          <div class="mdc-form-field">
+            <div class="mdc-radio">
+              <input class="mdc-radio__native-control" type="radio" id="standard-fixed" name="standard-scaling">
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
+            </div>
+            <label for="standard-fixed">Scale margins</label>
+          </div>
+        </div>
+        <div>
+          <h2 class="mdc-typography--title">Text labels</h2>
+          <div class="mdc-form-field">
+            <div class="mdc-radio">
+              <input class="mdc-radio__native-control" type="radio" id="standard-label-below" name="standard-labels" checked>
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
+            </div>
+            <label for="standard-label-below">Labels below images</label>
+          </div>
+          <div class="mdc-form-field">
+            <div class="mdc-radio">
+              <input class="mdc-radio__native-control" type="radio" id="standard-label-protected" name="standard-labels">
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
+            </div>
+            <label for="standard-label-protected">Labels over images with text protection</label>
+          </div>
+          <div class="mdc-form-field">
+            <div class="mdc-radio">
+              <input class="mdc-radio__native-control" type="radio" id="standard-label-none" name="standard-labels">
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
+            </div>
+            <label for="standard-label-none">No labels</label>
+          </div>
+        </div>
+        <ul id="standard-image-list" class="mdc-image-list standard-image-list--scale">
+          <li class="mdc-image-list__item">
+            <div class="mdc-image-list__image-aspect-container">
+              <img class="mdc-image-list__image" src="images/1-1.jpg">
+            </div>
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <div class="mdc-image-list__image-aspect-container">
+              <img class="mdc-image-list__image" src="images/1-1.jpg">
+            </div>
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <div class="mdc-image-list__image-aspect-container">
+              <img class="mdc-image-list__image" src="images/1-1.jpg">
+            </div>
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <div class="mdc-image-list__image-aspect-container">
+              <img class="mdc-image-list__image" src="images/1-1.jpg">
+            </div>
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <div class="mdc-image-list__image-aspect-container">
+              <img class="mdc-image-list__image" src="images/1-1.jpg">
+            </div>
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <div class="mdc-image-list__image-aspect-container">
+              <img class="mdc-image-list__image" src="images/1-1.jpg">
+            </div>
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <div class="mdc-image-list__image-aspect-container">
+              <img class="mdc-image-list__image" src="images/1-1.jpg">
+            </div>
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <div class="mdc-image-list__image-aspect-container">
+              <img class="mdc-image-list__image" src="images/1-1.jpg">
+            </div>
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <div class="mdc-image-list__image-aspect-container">
+              <img class="mdc-image-list__image" src="images/1-1.jpg">
+            </div>
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <div class="mdc-image-list__image-aspect-container">
+              <img class="mdc-image-list__image" src="images/1-1.jpg">
+            </div>
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <div class="mdc-image-list__image-aspect-container">
+              <img class="mdc-image-list__image" src="images/1-1.jpg">
+            </div>
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <div class="mdc-image-list__image-aspect-container">
+              <img class="mdc-image-list__image" src="images/1-1.jpg">
+            </div>
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+        </ul>
       </section>
     </main>
+
+    <script src="/assets/material-components-web.js" async></script>
+    <script>
+      demoReady(function() {
+        [].forEach.call(document.querySelectorAll('.mdc-form-field'), function(el) {
+          var formField = mdc.formField.MDCFormField.attachTo(el);
+          var inputEl = el.querySelector('.mdc-checkbox, .mdc-radio');
+          var input = inputEl.classList.contains('mdc-checkbox') ?
+            mdc.checkbox.MDCCheckbox.attachTo(inputEl) : mdc.radio.MDCRadio.attachTo(inputEl);
+          formField.input = input;
+        });
+
+        document.getElementById('toggle-rtl').addEventListener('change', function() {
+          if (this.checked) {
+            document.body.setAttribute('dir', 'rtl');
+          } else {
+            document.body.removeAttribute('dir');
+          }
+        });
+
+        var standardImageListEl = document.getElementById('standard-image-list');
+
+        document.getElementById('standard-scale').addEventListener('change', function() {
+          standardImageListEl.classList[this.checked ? 'add' : 'remove']('standard-image-list--scale');
+          standardImageListEl.classList[this.checked ? 'remove' : 'add']('standard-image-list--fixed');
+        });
+
+        document.getElementById('standard-fixed').addEventListener('change', function() {
+          standardImageListEl.classList[this.checked ? 'add' : 'remove']('standard-image-list--fixed');
+          standardImageListEl.classList[this.checked ? 'remove' : 'add']('standard-image-list--scale');
+        });
+
+        document.getElementById('standard-label-below').addEventListener('change', function() {
+          standardImageListEl.classList[this.checked ? 'remove' : 'add']('mdc-image-list--protected-labels');
+          standardImageListEl.classList[this.checked ? 'remove' : 'add']('standard-image-list--no-labels');
+        });
+
+        document.getElementById('standard-label-protected').addEventListener('change', function() {
+          standardImageListEl.classList[this.checked ? 'add' : 'remove']('mdc-image-list--protected-labels');
+          standardImageListEl.classList[this.checked ? 'remove' : 'add']('standard-image-list--no-labels');
+        });
+
+        document.getElementById('standard-label-none').addEventListener('change', function() {
+          standardImageListEl.classList[this.checked ? 'remove' : 'add']('mdc-image-list--protected-labels');
+          standardImageListEl.classList[this.checked ? 'add' : 'remove']('standard-image-list--no-labels');
+        });
+      });
+    </script>
   </body>
 </html>
