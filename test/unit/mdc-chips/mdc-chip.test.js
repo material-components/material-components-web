@@ -28,6 +28,10 @@ const getFixture = () => bel`
   </div>
 `;
 
+const getLeadingIcon = () => bel`
+  <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">face</i>
+`;
+
 suite('MDCChip');
 
 test('attachTo returns an MDCChip instance', () => {
@@ -66,9 +70,7 @@ test('#adapter.removeClass removes a class from the root element', () => {
 
 test('#adapter.addClassToLeadingIcon adds a class to the leading icon element', () => {
   const {root, component} = setupTest();
-  const leadingIcon = bel`
-    <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">face</i>
-  `;
+  const leadingIcon = getLeadingIcon();
   root.appendChild(leadingIcon);
   component.getDefaultFoundation().adapter_.addClassToLeadingIcon('foo');
   assert.isTrue(leadingIcon.classList.contains('foo'));
@@ -81,9 +83,7 @@ test('#adapter.addClassToLeadingIcon does nothing if no leading icon element is 
 
 test('#adapter.removeClassFromLeadingIcon removes a class from the leading icon element', () => {
   const {root, component} = setupTest();
-  const leadingIcon = bel`
-    <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">face</i>
-  `;
+  const leadingIcon = getLeadingIcon();
   root.appendChild(leadingIcon);
   leadingIcon.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClassFromLeadingIcon('foo');
@@ -118,9 +118,7 @@ test('#adapter.deregisterInteractionHandler removes event listener for a given e
 test('#adapter.registerLeadingIconEventHandler adds event listener for ' +
   'a given event to the leading icon element', () => {
   const {root, component} = setupTest();
-  const leadingIcon = bel`
-    <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">face</i>
-  `;
+  const leadingIcon = getLeadingIcon();
   root.appendChild(leadingIcon);
   const handler = td.func('click handler');
   component.getDefaultFoundation().adapter_.registerLeadingIconEventHandler('click', handler);
@@ -132,9 +130,7 @@ test('#adapter.registerLeadingIconEventHandler adds event listener for ' +
 test('#adapter.deregisterLeadingIconEventHandler removes event listener for ' +
   'a given event from the leading icon element', () => {
   const {root, component} = setupTest();
-  const leadingIcon = bel`
-    <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">face</i>
-  `;
+  const leadingIcon = getLeadingIcon();
   root.appendChild(leadingIcon);
   const handler = td.func('click handler');
 
