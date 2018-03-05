@@ -47,7 +47,7 @@ class MDCTabz {
         this.root_.classList.remove(className),
       hasClass: (className) =>
         this.root_.classList.contains(className),
-      notifyTabSelection: () => {
+      notifyTabSelected: () => {
         const evt = new CustomEvent(strings.TABZ_EVENT, {
           detail: {
             tab: this,
@@ -75,7 +75,7 @@ class MDCTabz {
 
   /** Handles the click event */
   handleClick() {
-    this.adapter_.notifyTabSelection();
+    this.adapter_.notifyTabSelected();
   }
 
   /** Handles the transitionend event */

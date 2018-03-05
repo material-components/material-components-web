@@ -199,7 +199,7 @@ class MDCTabzBar {
     }
 
     if (tabsToRightAreOccluded) {
-      this.container_.slideTo(slideTo);
+      this.container_.slideTo(slideTo * -1);
     }
 
     const remainingInnerWidth = innerBbox.width - slideTo;

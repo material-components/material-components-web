@@ -49,7 +49,7 @@ class MDCTabzContainer {
     };
 
     this.shouldUpdateScrollPosition_ = false;
-    this.targetScrollPosition_ = 0;
+    this.targetScrollPosition_;
 
     this.handleTransitionEnd_ = (e) => this.handleTransitionEnd(e);
 
