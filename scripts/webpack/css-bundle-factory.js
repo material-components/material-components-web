@@ -22,6 +22,13 @@
 
 const autoprefixer = require('autoprefixer');
 
+// For browser query syntax, see:
+// https://github.com/ai/browserslist#queries
+const BROWSER_LIST = [
+  'defaults',
+  'IE >= 10',
+];
+
 module.exports = class {
   constructor({
     env,
@@ -184,7 +191,12 @@ module.exports = class {
           loader: 'postcss-loader',
           options: {
             sourceMap: true,
-            plugins: () => [this.autoprefixerLib_({grid: false})],
+            plugins: () => [
+              require('autoprefixer')({
+                grid: true,
+                browsers: BROWSER_LIST,
+              }),
+            ],
           },
         },
         {
