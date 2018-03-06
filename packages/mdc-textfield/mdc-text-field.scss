@@ -163,10 +163,6 @@
   &:not(.mdc-text-field--textarea):not(.mdc-text-field--outlined) {
     height: 48px;
   }
-
-  .mdc-floating-label {
-    pointer-events: none;
-  }
 }
 
 .mdc-text-field--dense {
