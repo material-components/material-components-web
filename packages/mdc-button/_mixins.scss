@@ -126,9 +126,12 @@
     pointer-events: none;
   }
 
+  // stylelint-disable-next-line selector-max-type
   svg {
     position: relative;
     top: 4px;
+    width: 18px;
+    height: 18px;
     margin-right: 8px;
     fill: currentColor;
   }
