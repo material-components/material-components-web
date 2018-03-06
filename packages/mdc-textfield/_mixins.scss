@@ -109,9 +109,9 @@
   }
 }
 
-@mixin mdc-text-field-outline-color($color) {
+@mixin mdc-text-field-outlined-color($color) {
   &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-outline-color_($color);
+    @include mdc-text-field-outlined-color_($color);
   }
 }
 
@@ -193,7 +193,7 @@
 
 @mixin mdc-text-field-outlined-disabled_ {
   @include mdc-text-field-ink-color_($mdc-text-field-placeholder);
-  @include mdc-text-field-outline-color_($mdc-text-field-outlined-disabled-border);
+  @include mdc-text-field-outlined-color_($mdc-text-field-outlined-disabled-border);
 
   .mdc-text-field__input {
     border-bottom: none;
@@ -201,7 +201,7 @@
 }
 
 @mixin mdc-text-field-outlined-invalid_ {
-  @include mdc-text-field-outline-color($mdc-text-field-error);
+  @include mdc-text-field-outlined-color($mdc-text-field-error);
   @include mdc-text-field-hover-outline-color($mdc-text-field-error);
   @include mdc-text-field-focused-outline-color($mdc-text-field-error);
 }
@@ -232,7 +232,7 @@
 }
 
 @mixin mdc-text-field-outlined_ {
-  @include mdc-text-field-outline-color($mdc-text-field-outlined-idle-border);
+  @include mdc-text-field-outlined-color($mdc-text-field-outlined-idle-border);
   @include mdc-text-field-hover-outline-color($mdc-text-field-outlined-hover-border);
   @include mdc-text-field-focused-outline-color(primary);
   @include mdc-floating-label-float-position($mdc-text-field-outlined-label-position-y);
@@ -266,21 +266,23 @@
   .mdc-notched-outline__idle {
     @include mdc-text-field-outlined-corner-radius($mdc-text-field-border-radius);
   }
-
-  .mdc-text-field__icon:hover ~ .mdc-notched-outline__idle {
-    border: 1px solid $mdc-text-field-outlined-hover-border;
-  }
 }
 
-@mixin mdc-text-field-outline-color_($color) {
+@mixin mdc-text-field-outlined-color_($color) {
   @include mdc-notched-outline-idle-color($color);
   @include mdc-notched-outline-color($color);
 }
 
 @mixin mdc-text-field-hover-outline-color_($color) {
-  .mdc-text-field__input:hover ~,
-  .mdc-text-field__icon:hover ~ {
-    @include mdc-notched-outline-idle-color($color);
+  &:not(.mdc-text-field--focused) {
+    .mdc-text-field__input:hover ~,
+    .mdc-text-field__icon:hover ~ {
+      @include mdc-notched-outline-idle-color($color);
+
+      .mdc-notched-outline {
+        @include mdc-notched-outline-color($color);
+      }
+    }
   }
 }
 
