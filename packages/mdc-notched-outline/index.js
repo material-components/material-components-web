@@ -46,12 +46,23 @@ class MDCNotchedOutline extends MDCComponent {
   }
 
   /**
+    * Updates outline to activate/deactivate notch in outline path.
+    * @param {boolean} activateNotch If true outline is in _notched_ mode.
+    * If false, outline will show full path without notch.
+    */
+  notch(activateNotch) {
+    this.foundation_.notch(activateNotch);
+  }
+
+  /**
    * @return {!MDCNotchedOutlineFoundation}
    */
   getDefaultFoundation() {
     return new MDCNotchedOutlineFoundation({
       getWidth: () => this.root_.offsetWidth,
       getHeight: () => this.root_.offsetHeight,
+      addClass: (className) => this.root_.classList.add(className),
+      removeClass: (className) => this.root_.classList.remove(className),
       setOutlinePathAttr: (value) => {
         const path = this.root_.querySelector(strings.PATH_SELECTOR);
         path.setAttribute('d', value);

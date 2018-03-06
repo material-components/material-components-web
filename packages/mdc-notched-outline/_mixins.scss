@@ -27,3 +27,9 @@
     @include mdc-theme-prop(stroke, $color);
   }
 }
+
+@mixin mdc-notched-outline-stroke-width($width) {
+  .mdc-notched-outline__path {
+    stroke-width: $width;
+  }
+}

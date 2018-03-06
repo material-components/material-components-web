@@ -17,7 +17,7 @@
 
 import MDCFoundation from '@material/base/foundation';
 import MDCNotchedOutlineAdapter from './adapter';
-import {strings} from './constants';
+import {cssClasses, strings} from './constants';
 
 /**
  * @extends {MDCFoundation<!MDCNotchedOutlineAdapter>}
@@ -29,6 +29,11 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
     return strings;
   }
 
+  /** @return enum {string} */
+  static get cssClasses() {
+    return cssClasses;
+  }
+
   /**
    * {@see MDCNotchedOutlineAdapter} for typing information on parameters and return
    * types.
@@ -38,6 +43,8 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
     return /** @type {!MDCNotchedOutlineAdapter} */ ({
       getWidth: () => {},
       getHeight: () => {},
+      addClass: () => {},
+      removeClass: () => {},
       setOutlinePathAttr: () => {},
       getIdleOutlineStyleValue: () => {},
     });
@@ -48,6 +55,20 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
    */
   constructor(adapter) {
     super(Object.assign(MDCNotchedOutlineFoundation.defaultAdapter, adapter));
+  }
+
+  /**
+   * Adds remove the outline notched selector if activateNotch is true,
+   * otherwise it will remove notched selector.
+   * @param {boolean} activateNotch
+   */
+  notch(activateNotch) {
+    const {OUTLINE_NOTCHED} = MDCNotchedOutlineFoundation.cssClasses;
+    if (activateNotch) {
+      this.adapter_.addClass(OUTLINE_NOTCHED);
+    } else {
+      this.adapter_.removeClass(OUTLINE_NOTCHED);
+    }
   }
 
   /**

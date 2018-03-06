@@ -401,12 +401,14 @@ class MDCTextField extends MDCComponent {
 
   /**
    * @return {!{
+   *   notchOutline: function(boolean): undefined,
    *   hasOutline: function(): boolean,
    *   updateOutlinePath: function(number, boolean): undefined,
    * }}
    */
   getOutlineAdapterMethods_() {
     return {
+      notchOutline: (activateNotch) => this.outline_.notch(activateNotch),
       hasOutline: () => !!this.outline_,
       updateOutlinePath: (labelWidth, isRtl) => this.outline_.updateSvgPath(labelWidth, isRtl),
     };

@@ -135,6 +135,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
     // Ensure label does not collide with any pre-filled value.
     if (this.adapter_.hasLabel() && this.getValue()) {
       this.adapter_.floatLabel(this.shouldFloat);
+      if (this.adapter_.hasOutline()) {
+        this.adapter_.notchOutline(this.shouldFloat);
+      }
     }
 
     if (this.adapter_.isFocused()) {
@@ -218,6 +221,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
     if (this.adapter_.hasLabel()) {
       this.adapter_.shakeLabel(this.shouldShake);
       this.adapter_.floatLabel(this.shouldFloat);
+      if (this.adapter_.hasOutline()) {
+        this.adapter_.notchOutline(this.shouldFloat);
+      }
     }
     if (this.helperText_) {
       this.helperText_.showToScreenReader();
@@ -260,6 +266,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
     if (this.adapter_.hasLabel()) {
       this.adapter_.shakeLabel(this.shouldShake);
       this.adapter_.floatLabel(this.shouldFloat);
+      if (this.adapter_.hasOutline()) {
+        this.adapter_.notchOutline(this.shouldFloat);
+      }
     }
     if (shouldRemoveLabelFloat) {
       this.receivedUserInput_ = false;
@@ -283,6 +292,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
     if (this.adapter_.hasLabel()) {
       this.adapter_.shakeLabel(this.shouldShake);
       this.adapter_.floatLabel(this.shouldFloat);
+      if (this.adapter_.hasOutline()) {
+        this.adapter_.notchOutline(this.shouldFloat);
+      }
     }
   }
 

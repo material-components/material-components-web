@@ -207,9 +207,7 @@
 }
 
 @mixin mdc-text-field-outlined-focused_ {
-  .mdc-notched-outline__path {
-    stroke-width: 2px;
-  }
+  @include mdc-notched-outline-stroke-width(2px);
 }
 
 @mixin mdc-text-field-outlined-dense_ {
@@ -265,10 +263,6 @@
   .mdc-notched-outline,
   .mdc-notched-outline__idle {
     @include mdc-text-field-outlined-corner-radius($mdc-text-field-border-radius);
-  }
-
-  .mdc-text-field__icon:hover ~ .mdc-notched-outline__idle {
-    border: 1px solid $mdc-text-field-outlined-hover-border;
   }
 }
 
