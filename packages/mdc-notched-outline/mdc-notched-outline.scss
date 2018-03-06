@@ -16,6 +16,7 @@
 
 @import "@material/ripple/mixins";
 @import "@material/ripple/variables";
+@import "@material/textfield/functions";
 @import "@material/theme/mixins";
 @import "./mixins";
 
@@ -56,6 +57,8 @@
 
 .mdc-notched-outline__path {
   stroke-width: 1px;
+
+  // TODO(mattgoo): remove this text-field dep from notched-outline
   transition:
     mdc-text-field-transition(stroke),
     mdc-text-field-transition(stroke-width),
