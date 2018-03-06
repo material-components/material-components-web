@@ -320,25 +320,25 @@
           });
         }
 
-        const marginInputsEl = document.querySelector('#margin-inputs');
+        var marginInputsEl = document.querySelector('#margin-inputs');
         var inputs = marginInputsEl.querySelectorAll('input[type="text"]');
         for (var i = 0; i < inputs.length; i++) {
           inputs[i].addEventListener('change', function(evt) {
-            const topMarginInput = document.getElementById('top-margin');
-            const bottomMarginInput = document.getElementById('bottom-margin');
-            const rightMarginInput = document.getElementById('right-margin');
-            const leftMarginInput = document.getElementById('left-margin');
-            const margin = {top: parseInt(topMarginInput.value, 10),
-                            right: parseInt(rightMarginInput.value, 10),
-                            bottom: parseInt(bottomMarginInput.value, 10),
-                            left: parseInt(leftMarginInput.value, 10)};
+            var topMarginInput = document.getElementById('top-margin');
+            var bottomMarginInput = document.getElementById('bottom-margin');
+            var rightMarginInput = document.getElementById('right-margin');
+            var leftMarginInput = document.getElementById('left-margin');
+            var margin = {top: parseInt(topMarginInput.value, 10),
+                          right: parseInt(rightMarginInput.value, 10),
+                          bottom: parseInt(bottomMarginInput.value, 10),
+                          left: parseInt(leftMarginInput.value, 10)};
             menu.setAnchorMargin(margin);
           });
         }
 
-        const rtl = document.querySelector('input[name="is-rtl"]');
+        var rtl = document.querySelector('input[name="is-rtl"]');
         rtl.addEventListener('change', function() {
-          const demoWrapper = document.getElementById('demo-wrapper');
+          var demoWrapper = document.getElementById('demo-wrapper');
           if (rtl.checked) {
             demoWrapper.setAttribute('dir', 'rtl');
           } else {
