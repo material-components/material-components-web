@@ -205,6 +205,20 @@ To disable a list item, set `aria-disabled` to `"true"`, and set `tabindex` to `
 </div>
 ```
 
+#### Resetting
+
+Select elements are cleared on page reload. To reset or clear selects via JavaScript, 
+remove the `mdc-select__label--float-above` class from the select label, 
+clear the text node from `mdc-select__selected-text`, 
+and remove the `aria-selected` attribute from the selected option. 
+
+```
+var mySelect = document.querySelector(".mdc-select");
+mySelect.querySelector(".mdc-select__label").classList.remove("mdc-select__label--float-above");
+mySelect.querySelector(".mdc-select__selected-text").innerHTML = "";
+mySelect.querySelector('[aria-selected="true"]').removeAttribute("aria-selected");
+```
+
 #### CSS Classes
 
 | Class                    | Description                                     |
