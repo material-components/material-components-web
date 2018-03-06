@@ -32,7 +32,7 @@ The outline is a border around all sides of either a text field or select compon
 <div class="mdc-notched-outline__idle"></div>
 ```
 
-> For usage within a text field [see](../mdc-textfield/README.md#outlined/).
+> For usage within a text field see [here](../mdc-textfield/README.md#outlined/).
 
 ### CSS Classes
 
