@@ -198,10 +198,6 @@
   .mdc-text-field__input {
     border-bottom: none;
   }
-
-  .mdc-notched-outline__path {
-    stroke-width: 1px;
-  }
 }
 
 @mixin mdc-text-field-outlined-invalid_ {
@@ -271,33 +267,26 @@
     @include mdc-text-field-outlined-corner-radius($mdc-text-field-border-radius);
   }
 
-  .mdc-text-field__input:hover ~ .mdc-notched-outline__idle {
-    border: 1px solid;
-  }
-
   .mdc-text-field__icon:hover ~ .mdc-notched-outline__idle {
     border: 1px solid $mdc-text-field-outlined-hover-border;
   }
 }
 
+@mixin mdc-text-field-outline-color_($color) {
+  @include mdc-notched-outline-idle-color($color);
+  @include mdc-notched-outline-color($color);
+}
+
 @mixin mdc-text-field-hover-outline-color_($color) {
   .mdc-text-field__input:hover ~,
   .mdc-text-field__icon:hover ~ {
-    @include mdc-notched-outline-color($color);
+    @include mdc-notched-outline-idle-color($color);
   }
 }
 
 @mixin mdc-text-field-focused-outline-color_($color) {
   &.mdc-text-field--focused {
-    @include mdc-notched-outline-path-color($color);
-  }
-}
-
-@mixin mdc-text-field-outline-color_($color) {
-  @include mdc-notched-outline-color($color);
-
-  &:not(.mdc-text-field--focused) {
-    @include mdc-notched-outline-path-color($color);
+    @include mdc-notched-outline-color($color);
   }
 }
 

@@ -172,23 +172,45 @@ apply these mixins with CSS selectors such as `.foo-text-field.mdc-text-field--i
 
 > _NOTE_: the `mdc-line-ripple-color` mixin should be applied from the not focused class `foo-text-field:not(.mdc-text-field--focused)`).
 
+#### Mixins for Text Field Box
+
+Mixin | Description
+--- | ---
+`mdc-text-field-box-corner-radius($radius)` | Customizes the border radius for the text field box variant.
+`mdc-text-field-box-fill-color($color)` | Customizes the background color of the text field box.
+
+#### Mixins for Text Field Outline
+
+Mixin | Description
+--- | ---
+`mdc-text-field-outline-color($color)` | Customizes the border color of the outline text field.
+`mdc-text-field-outlined-corner-radius($radius)` | Sets the border radius of of the text field outline variant.
+
+#### Mixins for Textarea
+
+Mixin | Description
+--- | ---
+`mdc-text-field-textarea-corner-radius($radius)` | Customizes the border radius for a `<textarea>` variant.
+`mdc-text-field-textarea-fill-color($color)` | Customizes the color of the background of the textarea.
+`mdc-text-field-textarea-stroke-color($color)` | Customizes the color of the border of the textarea.
+
+
+#### Mixins for Text Field Fullwidth
+
+Mixin | Description
+--- | ---
+`mdc-text-field-fullwidth-bottom-line-color($color)` | Customizes the fullwidth text field variant bottom line color.
+
+#### Other Mixins
 Mixin | Description
 --- | ---
 `mdc-text-field-bottom-line-color($color)` | Customizes the text field bottom line color except the outline and textarea variants.
-`mdc-text-field-box-corner-radius($radius)` | Customizes the border radius for the text field box variant.
-`mdc-text-field-box-fill-color($color)` | Customizes the background color of the text field box.
 `mdc-text-field-focused-outline-color($color)` | Customizes the outline border color when the text field is focused.
-`mdc-text-field-fullwidth-bottom-line-color($color)` | Customizes the fullwidth text field variant bottom line color.
 `mdc-text-field-hover-bottom-line-color($color)` | Customizes the hover text field bottom line color except the outline and textarea variants.
 `mdc-text-field-hover-outline-color($color)` | Customizes the outline border color when the text field is hovered.
 `mdc-text-field-ink-color($color)` | Customizes the text entered into the text field.
 `mdc-text-field-label-color($color)` | Customizes the text color of the label.
 `mdc-text-field-line-ripple-color($color)` | Customizes the color of the default line ripple of the text field.
-`mdc-text-field-outline-color($color)` | Customizes the border color of the outline text field.
-`mdc-text-field-outlined-corner-radius($radius)` | Sets the border radius of of the text field outline variant.
-`mdc-text-field-textarea-corner-radius($radius)` | Customizes the border radius for a `<textarea>` variant.
-`mdc-text-field-textarea-fill-color($color)` | Customizes the color of the background of the textarea.
-`mdc-text-field-textarea-stroke-color($color)` | Customizes the color of the border of the textarea.
 
 ### `MDCTextField`
 
@@ -254,4 +276,4 @@ Method Signature | Description
 `setHelperTextContent(content: string) => void` | Sets the content of the helper text
 `updateOutline() => void` | Updates the focus outline for outlined text fields
 
-`MDCTextFieldFoundation` supports multiple optional sub-elements: helper text and outline. The foundations of these sub-elements must be passed in as constructor arguments to `MDCTextFieldFoundation`.
+`MDCTextFieldFoundation` supports multiple optional sub-elements: helper text and icon. The foundations of these sub-elements must be passed in as constructor arguments to `MDCTextFieldFoundation`.

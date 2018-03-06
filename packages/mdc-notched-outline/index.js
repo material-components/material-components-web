@@ -58,9 +58,7 @@ class MDCNotchedOutline extends MDCComponent {
       },
       getIdleOutlineStyleValue: (propertyName) => {
         const idleOutlineElement = this.root_.parentNode.querySelector(strings.IDLE_OUTLINE_SELECTOR);
-        if (idleOutlineElement) {
-          return window.getComputedStyle(idleOutlineElement).getPropertyValue(propertyName);
-        }
+        return window.getComputedStyle(idleOutlineElement).getPropertyValue(propertyName);
       },
     });
   }

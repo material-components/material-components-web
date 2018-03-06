@@ -347,25 +347,11 @@ class MDCTextField extends MDCComponent {
           return document.activeElement === this.root_.querySelector(strings.INPUT_SELECTOR);
         },
         isRtl: () => window.getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
-        activateLineRipple: () => {
-          if (this.lineRipple_) {
-            this.lineRipple_.activate();
-          }
-        },
-        deactivateLineRipple: () => {
-          if (this.lineRipple_) {
-            this.lineRipple_.deactivate();
-          }
-        },
-        setLineRippleTransformOrigin: (normalizedX) => {
-          if (this.lineRipple_) {
-            this.lineRipple_.setRippleCenter(normalizedX);
-          }
-        },
       },
+      this.getInputAdapterMethods_(),
       this.getLabelAdapterMethods_(),
-      this.getOutlineAdapterMethods_(),
-      this.getInputAdapterMethods_())),
+      this.getLineRippleAdapterMethods_(),
+      this.getOutlineAdapterMethods_())),
       this.getFoundationMap_());
   }
 
@@ -383,6 +369,33 @@ class MDCTextField extends MDCComponent {
       floatLabel: (shouldFloat) => this.label_.float(shouldFloat),
       hasLabel: () => !!this.label_,
       getLabelWidth: () => this.label_.getWidth(),
+    };
+  }
+
+  /**
+   * @return {!{
+   *   activateLineRipple: function(): undefined,
+   *   deactivateLineRipple: function(): undefined,
+   *   setLineRippleTransformOrigin: function(!number): undefined,
+   * }}
+   */
+  getLineRippleAdapterMethods_() {
+    return {
+      activateLineRipple: () => {
+        if (this.lineRipple_) {
+          this.lineRipple_.activate();
+        }
+      },
+      deactivateLineRipple: () => {
+        if (this.lineRipple_) {
+          this.lineRipple_.deactivate();
+        }
+      },
+      setLineRippleTransformOrigin: (normalizedX) => {
+        if (this.lineRipple_) {
+          this.lineRipple_.setRippleCenter(normalizedX);
+        }
+      },
     };
   }
 

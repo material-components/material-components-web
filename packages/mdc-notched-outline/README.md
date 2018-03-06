@@ -46,8 +46,8 @@ CSS Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-notched-outline-color($color)` | Customizes the border color of the idle outline.
-`mdc-notched-outline-path-color($color)` | Customizes the border color of the notched outlined.
+`mdc-notched-outline-color($color)` | Customizes the border color of the notched outlined.
+`mdc-notched-outline-idle-color($color)` | Customizes the border color of the idle outline.
 
 ### `MDCNotchedOutline`
 
@@ -68,7 +68,7 @@ Method Signature | Description
 
 Method Signature | Description
 --- | ---
-`updateSvgPath(labelWidth: number, isRtl: boolean) => void` | Updates the SVG path of the focus outline element based on the given width of the label element and the RTL context.
+`updateSvgPath(notchWidth: number, isRtl: boolean) => void` | Updates the SVG path of the focus outline element based on the given notchWidth and the RTL context.
 
 
 [//]: <> (TODO(mattgoo): add how to hide/show notch in outline)
