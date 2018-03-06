@@ -125,6 +125,13 @@
     cursor: default;
     pointer-events: none;
   }
+
+  svg {
+    position: relative;
+    top: 4px;
+    margin-right: 8px;
+    fill: currentColor;
+  }
 }
 
 @mixin mdc-button__icon_ {
