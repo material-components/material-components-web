@@ -127,7 +127,8 @@
   }
 
   // stylelint-disable-next-line selector-max-type
-  svg {
+  svg,
+  img {
     position: relative;
     top: 4px;
     width: 18px;
