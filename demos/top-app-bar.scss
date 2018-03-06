@@ -55,3 +55,21 @@
 input[type="checkbox"]:disabled + label {
   opacity: .4;
 }
+
+
+.demo-col {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  margin: 0 20px 20px 20px;
+
+  & > span {
+    font-weight: bold;
+  }
+}
+
+.demo-row {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: row;
+}

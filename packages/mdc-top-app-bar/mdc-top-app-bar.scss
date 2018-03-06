@@ -130,5 +130,24 @@
   }
 }
 
+.mdc-top-app-bar--prominent {
+  .mdc-top-app-bar__row {
+    min-height: $mdc-top-app-bar-prominent-row-height;
+  }
+
+  .mdc-top-app-bar__title {
+    align-self: flex-end;
+    padding-bottom: $mdc-top-app-bar-prominent-title-bottom-padding;
+  }
+
+  .mdc-top-app-bar__action-item {
+    align-self: flex-start;
+  }
+
+  .mdc-top-app-bar__navigation-icon {
+    align-self: flex-start;
+  }
+}
+
 // Mobile Styles
 @include mdc-top-app-bar-mobile-breakpoint_;
