@@ -29,7 +29,7 @@
   @include mdc-text-field-line-ripple-color($focused-border);
   @include mdc-text-field-ink-color(black);
   @include mdc-text-field-label-color(rgba(blue, .5));
-  @include mdc-text-field-outlined-color($idle-border);
+  @include mdc-text-field-outline-color($idle-border);
   @include mdc-text-field-hover-outline-color($hover-border);
   @include mdc-text-field-focused-outline-color($focused-border);
   @include mdc-text-field-helper-text-color($idle-border);
@@ -101,7 +101,7 @@
   @include mdc-text-field-line-ripple-color($focused-border);
   @include mdc-text-field-ink-color(orange);
   @include mdc-text-field-label-color(rgba(orange, .87));
-  @include mdc-text-field-outlined-color($idle-border);
+  @include mdc-text-field-outline-color($idle-border);
   @include mdc-text-field-hover-outline-color($hover-border);
   @include mdc-text-field-focused-outline-color($focused-border);
   @include mdc-text-field-helper-text-validation-color($hover-border);

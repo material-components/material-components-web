@@ -183,8 +183,8 @@ Mixin | Description
 
 Mixin | Description
 --- | ---
-`mdc-text-field-outlined-color($color)` | Customizes the border color of the outline text field.
-`mdc-text-field-outlined-corner-radius($radius)` | Sets the border radius of of the text field outline variant.
+`mdc-text-field-outline-color($color)` | Customizes the border color of the outline text field.
+`mdc-text-field-outline-corner-radius($radius)` | Sets the border radius of of the text field outline variant.
 
 #### Mixins for Textarea
 
