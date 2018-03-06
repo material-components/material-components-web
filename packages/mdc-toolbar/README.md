@@ -144,9 +144,9 @@ Icons can be added as anchor tags, `span`s, or `button`s to `mdc-toolbar`. There
 When using `svg` icons, ensure you wrap the `svg` element in an `a` and include the `mdc-toolbar__icon` class.
 
 ```html
-    <a href="#" class="mdc-toolbar__icon">
-        <svg></svg>
-    </a>
+<a href="#" class="mdc-toolbar__icon">
+  <svg></svg>
+</a>
 ```
 
 ### Fixed toolbars
