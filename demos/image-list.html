@@ -118,30 +118,6 @@
 
         <h1 class="mdc-typography--headline">Standard Image List</h1>
         <div>
-          <h2 class="mdc-typography--title">Scaling</h2>
-          <div class="mdc-form-field">
-            <div class="mdc-radio">
-              <input class="mdc-radio__native-control" type="radio" id="standard-scale" name="standard-scaling" checked>
-              <div class="mdc-radio__background">
-                <div class="mdc-radio__outer-circle"></div>
-                <div class="mdc-radio__inner-circle"></div>
-              </div>
-            </div>
-            <label for="standard-scale">Scale images (up to a set max-width)</label>
-          </div>
-          <div class="mdc-form-field">
-            <div class="mdc-radio">
-              <input class="mdc-radio__native-control" type="radio" id="standard-fixed" name="standard-scaling">
-              <div class="mdc-radio__background">
-                <div class="mdc-radio__outer-circle"></div>
-                <div class="mdc-radio__inner-circle"></div>
-              </div>
-            </div>
-            <label for="standard-fixed">Scale margins</label>
-          </div>
-        </div>
-        <div>
-          <h2 class="mdc-typography--title">Text labels</h2>
           <div class="mdc-form-field">
             <div class="mdc-radio">
               <input class="mdc-radio__native-control" type="radio" id="standard-label-below" name="standard-labels" checked>
@@ -173,7 +149,7 @@
             <label for="standard-label-none">No labels</label>
           </div>
         </div>
-        <ul id="standard-image-list" class="mdc-image-list standard-image-list--scale">
+        <ul id="standard-image-list" class="mdc-image-list standard-image-list">
           <li class="mdc-image-list__item">
             <div class="mdc-image-list__image-aspect-container">
               <img class="mdc-image-list__image" src="images/1-1.jpg">
@@ -295,29 +271,19 @@
 
         var standardImageListEl = document.getElementById('standard-image-list');
 
-        document.getElementById('standard-scale').addEventListener('change', function() {
-          standardImageListEl.classList[this.checked ? 'add' : 'remove']('standard-image-list--scale');
-          standardImageListEl.classList[this.checked ? 'remove' : 'add']('standard-image-list--fixed');
-        });
-
-        document.getElementById('standard-fixed').addEventListener('change', function() {
-          standardImageListEl.classList[this.checked ? 'add' : 'remove']('standard-image-list--fixed');
-          standardImageListEl.classList[this.checked ? 'remove' : 'add']('standard-image-list--scale');
-        });
-
         document.getElementById('standard-label-below').addEventListener('change', function() {
           standardImageListEl.classList[this.checked ? 'remove' : 'add']('mdc-image-list--protected-labels');
-          standardImageListEl.classList[this.checked ? 'remove' : 'add']('standard-image-list--no-labels');
+          standardImageListEl.classList[this.checked ? 'remove' : 'add']('hide-supporting');
         });
 
         document.getElementById('standard-label-protected').addEventListener('change', function() {
           standardImageListEl.classList[this.checked ? 'add' : 'remove']('mdc-image-list--protected-labels');
-          standardImageListEl.classList[this.checked ? 'remove' : 'add']('standard-image-list--no-labels');
+          standardImageListEl.classList[this.checked ? 'remove' : 'add']('hide-supporting');
         });
 
         document.getElementById('standard-label-none').addEventListener('change', function() {
           standardImageListEl.classList[this.checked ? 'remove' : 'add']('mdc-image-list--protected-labels');
-          standardImageListEl.classList[this.checked ? 'add' : 'remove']('standard-image-list--no-labels');
+          standardImageListEl.classList[this.checked ? 'add' : 'remove']('hide-supporting');
         });
       });
     </script>

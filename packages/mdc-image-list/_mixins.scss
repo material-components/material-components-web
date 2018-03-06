@@ -20,24 +20,13 @@
   }
 }
 
-// Standard mixins
-// These use margin rather than padding to avoid an otherwise messy situation to deal with text label positioning,
-// in the case of text being overlaid over the image.
+// Standard Image List
 
-@mixin mdc-image-list-columns-scale($column-count, $gutter-size: $mdc-image-list-gutter-size) {
+@mixin mdc-image-list-columns($column-count, $gutter-size: $mdc-image-list-gutter-size) {
+  // This uses margin rather than padding to avoid an otherwise messy situation to deal with text label positioning,
+  // in the case of text being overlaid over the image.
   .mdc-image-list__item {
     width: calc(100% / #{$column-count} - #{$gutter-size});
-    margin: $gutter-size / 2;
-  }
-}
-
-@mixin mdc-image-list-columns-fixed($column-count, $image-width, $gutter-size: $mdc-image-list-gutter-size) {
-  // Overall width needs to be set for side auto margins to work
-  width: ($image-width + $gutter-size) * $column-count;
-
-  .mdc-image-list__item {
-    // Image width needs to be set to properly constrain text label
-    width: $image-width;
     margin: $gutter-size / 2;
   }
 }
