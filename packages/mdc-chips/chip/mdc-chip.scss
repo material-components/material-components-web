@@ -121,22 +121,22 @@
 .mdc-chip__icon--leading {
   transition: opacity $mdc-chip-opacity-animation-duration linear, width 0ms;
   opacity: 1;
-}
 
-.mdc-chip__icon--leading + .mdc-chip__checkmark {
-  transition: opacity $mdc-chip-opacity-animation-duration linear, width 0ms;
-  opacity: 0;
+  + .mdc-chip__checkmark {
+    transition: opacity $mdc-chip-opacity-animation-duration linear, width 0ms;
+    opacity: 0;
+  }
 }
 
 .mdc-chip--selected {
   .mdc-chip__icon--leading {
     opacity: 0;
-  }
 
-  .mdc-chip__icon--leading + .mdc-chip__checkmark {
-    opacity: 1;
-    // This ensures that the checkmark has zero width while the leading icon is still animating.
-    width: 0;
+    + .mdc-chip__checkmark {
+      opacity: 1;
+      // This ensures that the checkmark has zero width while the leading icon is still animating.
+      width: 0;
+    }
   }
 }
 
@@ -145,9 +145,9 @@
     // This ensures that the leading icon doesn't fade in while the checkmark is fading out.
     opacity: 0;
     width: 0;
-  }
 
-  &.mdc-chip__icon--leading + .mdc-chip__checkmark {
-    width: 24px;
+    + .mdc-chip__checkmark {
+      width: 24px;
+    }
   }
 }
