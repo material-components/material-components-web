@@ -141,12 +141,12 @@ Icons can be added as anchor tags, `span`s, or `button`s to `mdc-toolbar`. There
 `mdc-toolbar__menu-icon` represents the left most icon in `mdc-toolbar` usually to the left of `mdc-toolbar__title`.
 `mdc-toolbar__icon` represents any icons placed on the right side of an `mdc-toolbar`.
 
-When using `svg` icons, ensure you wrap the `svg` element in a `span` and include the `mdc-toolbar__icon` class.
+When using `svg` icons, ensure you wrap the `svg` element in an `a` and include the `mdc-toolbar__icon` class.
 
 ```html
-    <span class="mdc-toolbar__icon">
+    <a href="#" class="mdc-toolbar__icon">
         <svg></svg>
-    </span>
+    </a>
 ```
 
 ### Fixed toolbars
