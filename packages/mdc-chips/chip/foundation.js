@@ -46,13 +46,10 @@ class MDCChipFoundation extends MDCFoundation {
       removeClass: () => {},
       hasClass: () => {},
       addClassToLeadingIcon: () => {},
+      eventTargetHasClass: () => {},
       removeClassFromLeadingIcon: () => {},
       registerInteractionHandler: () => {},
       deregisterInteractionHandler: () => {},
-      registerLeadingIconEventHandler: () => {},
-      deregisterLeadingIconEventHandler: () => {},
-      registerCheckmarkEventHandler: () => {},
-      deregisterCheckmarkEventHandler: () => {},
       registerTrailingIconInteractionHandler: () => {},
       deregisterTrailingIconInteractionHandler: () => {},
       notifyInteraction: () => {},
@@ -69,9 +66,7 @@ class MDCChipFoundation extends MDCFoundation {
     /** @private {function(!Event): undefined} */
     this.interactionHandler_ = (evt) => this.handleInteraction_(evt);
     /** @private {function(!Event): undefined} */
-    this.leadingIconTransitionEndHandler_ = (evt) => this.handleLeadingIconTransitionEnd_(evt);
-    /** @private {function(!Event): undefined} */
-    this.checkmarkTransitionEndHandler_ = (evt) => this.handleCheckmarkTransitionEnd_(evt);
+    this.transitionEndHandler_ = (evt) => this.handleTransitionEnd_(evt);
     /** @private {function(!Event): undefined} */
     this.trailingIconInteractionHandler_ = (evt) => this.handleTrailingIconInteraction_(evt);
   }
@@ -79,25 +74,21 @@ class MDCChipFoundation extends MDCFoundation {
   init() {
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.registerInteractionHandler(evtType, this.interactionHandler_);
+    });
+    this.adapter_.registerInteractionHandler('transitionend', this.transitionEndHandler_);
+    ['click', 'keydown', 'touchstart', 'pointerdown', 'mousedown'].forEach((evtType) => {
       this.adapter_.registerTrailingIconInteractionHandler(evtType, this.trailingIconInteractionHandler_);
     });
-    ['touchstart', 'pointerdown', 'mousedown'].forEach((evtType) => {
-      this.adapter_.registerTrailingIconInteractionHandler(evtType, this.trailingIconInteractionHandler_);
-    });
-    this.adapter_.registerLeadingIconEventHandler('transitionend', this.leadingIconTransitionEndHandler_);
-    this.adapter_.registerCheckmarkEventHandler('transitionend', this.checkmarkTransitionEndHandler_);
   }
 
   destroy() {
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.deregisterInteractionHandler(evtType, this.interactionHandler_);
+    });
+    this.adapter_.deregisterInteractionHandler('transitionend', this.transitionEndHandler_);
+    ['click', 'keydown', 'touchstart', 'pointerdown', 'mousedown'].forEach((evtType) => {
       this.adapter_.deregisterTrailingIconInteractionHandler(evtType, this.trailingIconInteractionHandler_);
     });
-    ['touchstart', 'pointerdown', 'mousedown'].forEach((evtType) => {
-      this.adapter_.deregisterTrailingIconInteractionHandler(evtType, this.trailingIconInteractionHandler_);
-    });
-    this.adapter_.deregisterLeadingIconEventHandler('transitionend', this.leadingIconTransitionEndHandler_);
-    this.adapter_.deregisterCheckmarkEventHandler('transitionend', this.checkmarkTransitionEndHandler_);
   }
 
   /**
@@ -121,14 +112,21 @@ class MDCChipFoundation extends MDCFoundation {
     }
   }
 
-  handleLeadingIconTransitionEnd_(evt) {
-    if (evt.propertyName === 'opacity' && this.adapter_.hasClass(cssClasses.SELECTED)) {
-      this.adapter_.addClassToLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
+  /**
+   * Handles a transition end event on the root element.
+   * This is a proxy for handling a transition end event on the leading icon or checkmark,
+   * since the transition end event bubbles.
+   * @param {!Event} evt
+   */
+  handleTransitionEnd_(evt) {
+    if (!evt.propertyName === 'opacity') {
+      return;
     }
-  }
-
-  handleCheckmarkTransitionEnd_(evt) {
-    if (evt.propertyName === 'opacity' && !this.adapter_.hasClass(cssClasses.SELECTED)) {
+    if (this.adapter_.eventTargetHasClass(evt.target, cssClasses.LEADING_ICON) &&
+        this.adapter_.hasClass(cssClasses.SELECTED)) {
+      this.adapter_.addClassToLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
+    } else if (this.adapter_.eventTargetHasClass(evt.target, cssClasses.CHECKMARK) &&
+              !this.adapter_.hasClass(cssClasses.SELECTED)) {
       this.adapter_.removeClassFromLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
     }
   }

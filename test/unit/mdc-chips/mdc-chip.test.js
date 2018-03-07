@@ -95,6 +95,13 @@ test('#adapter.removeClassFromLeadingIcon does nothing if no leading icon elemen
   assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.removeClassFromLeadingIcon('foo'));
 });
 
+test('adapter#eventTargetHasClass returns true if given element has class', () => {
+  const {component} = setupTest();
+  const mockEventTarget = bel`<div class="foo">bar</div>`;
+
+  assert.isTrue(component.getDefaultFoundation().adapter_.eventTargetHasClass(mockEventTarget, 'foo'));
+});
+
 test('#adapter.registerInteractionHandler adds event listener for a given event to the root element', () => {
   const {root, component} = setupTest();
   const handler = td.func('click handler');
@@ -111,67 +118,6 @@ test('#adapter.deregisterInteractionHandler removes event listener for a given e
   root.addEventListener('click', handler);
   component.getDefaultFoundation().adapter_.deregisterInteractionHandler('click', handler);
   domEvents.emit(root, 'click');
-
-  td.verify(handler(td.matchers.anything()), {times: 0});
-});
-
-test('#adapter.registerLeadingIconEventHandler adds event listener for ' +
-  'a given event to the leading icon element', () => {
-  const {root, component} = setupTest();
-  const leadingIcon = getLeadingIcon();
-  root.appendChild(leadingIcon);
-  const handler = td.func('click handler');
-  component.getDefaultFoundation().adapter_.registerLeadingIconEventHandler('click', handler);
-  domEvents.emit(leadingIcon, 'click');
-
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('#adapter.deregisterLeadingIconEventHandler removes event listener for ' +
-  'a given event from the leading icon element', () => {
-  const {root, component} = setupTest();
-  const leadingIcon = getLeadingIcon();
-  root.appendChild(leadingIcon);
-  const handler = td.func('click handler');
-
-  root.addEventListener('click', handler);
-  component.getDefaultFoundation().adapter_.deregisterLeadingIconEventHandler('click', handler);
-  domEvents.emit(leadingIcon, 'click');
-
-  td.verify(handler(td.matchers.anything()), {times: 0});
-});
-
-test('#adapter.registerCheckmarkEventHandler adds event listener for a given event to the checkmark element', () => {
-  const {root, component} = setupTest();
-  const checkmark = bel`
-    <svg class="mdc-chip__checkmark" viewBox="-2 -3 30 30">
-      <path class="mdc-chip__checkmark-path" fill="none" stroke="black"
-            d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-    </svg>
-  `;
-  root.appendChild(checkmark);
-  const handler = td.func('click handler');
-  component.getDefaultFoundation().adapter_.registerCheckmarkEventHandler('click', handler);
-  domEvents.emit(checkmark, 'click');
-
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('#adapter.deregisterCheckmarkEventHandler removes event listener for ' +
-  'a given event from the checkmark element', () => {
-  const {root, component} = setupTest();
-  const checkmark = bel`
-    <svg class="mdc-chip__checkmark" viewBox="-2 -3 30 30">
-      <path class="mdc-chip__checkmark-path" fill="none" stroke="black"
-            d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-    </svg>
-  `;
-  root.appendChild(checkmark);
-  const handler = td.func('click handler');
-
-  root.addEventListener('click', handler);
-  component.getDefaultFoundation().adapter_.deregisterCheckmarkEventHandler('click', handler);
-  domEvents.emit(checkmark, 'click');
 
   td.verify(handler(td.matchers.anything()), {times: 0});
 });

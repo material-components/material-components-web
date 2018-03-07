@@ -172,12 +172,9 @@ Method Signature | Description
 `hasClass(className: string) => boolean` | Returns true if the root element contains the given class
 `addClassToLeadingIcon(className: string) => void` | Adds a class to the leading icon element
 `removeClassFromLeadingIcon(className: string) => void` | Removes a class from the leading icon element
+`eventTargetHasClass(target: EventTarget, className: string) => boolean` | Returns true if target has className, false otherwise. 
 `registerInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the root element
 `deregisterInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the root element
-`registerLeadingIconEventHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the leading icon element
-`deregisterLeadingIconEventHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the leading icon element
-`registerCheckmarkEventHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the checkmark element
-`deregisterCheckmarkEventHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the checkmark element
 `registerTrailingIconInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the trailing icon element
 `deregisterTrailingIconInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the trailing icon element
 `notifyInteraction() => void` | Emits a custom event `MDCChip:interaction` denoting the chip has been interacted with, which bubbles to the parent `mdc-chip-set` element

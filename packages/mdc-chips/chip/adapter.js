@@ -60,6 +60,13 @@ class MDCChipAdapter {
   removeClassFromLeadingIcon(className) {}
 
   /**
+   * Returns true if target has className, false otherwise.
+   * @param {EventTarget} target
+   * @param {string} className
+   */
+  eventTargetHasClass(target, className) {}
+
+  /**
    * Registers an event listener on the root element for a given event.
    * @param {string} evtType
    * @param {function(!Event): undefined} handler
@@ -72,34 +79,6 @@ class MDCChipAdapter {
    * @param {function(!Event): undefined} handler
    */
   deregisterInteractionHandler(evtType, handler) {}
-
-  /**
-   * Registers an event listener on the leading icon element for a given event.
-   * @param {string} evtType
-   * @param {function(!Event): undefined} handler
-   */
-  registerLeadingIconEventHandler(evtType, handler) {}
-
-  /**
-   * Deregisters an event listener on the leading icon element for a given event.
-   * @param {string} evtType
-   * @param {function(!Event): undefined} handler
-   */
-  deregisterLeadingIconEventHandler(evtType, handler) {}
-
-  /**
-   * Registers an event listener on the checkmark element for a given event.
-   * @param {string} evtType
-   * @param {function(!Event): undefined} handler
-   */
-  registerCheckmarkEventHandler(evtType, handler) {}
-
-  /**
-   * Deregisters an event listener on the checkmark element for a given event.
-   * @param {string} evtType
-   * @param {function(!Event): undefined} handler
-   */
-  deregisterCheckmarkEventHandler(evtType, handler) {}
 
   /**
    * Registers an event listener on the trailing icon element for a given event.

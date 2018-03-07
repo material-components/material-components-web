@@ -77,32 +77,9 @@ class MDCChip extends MDCComponent {
           leadingIconEl.classList.remove(className);
         }
       },
+      eventTargetHasClass: (target, className) => target.classList.contains(className),
       registerInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
-      registerLeadingIconEventHandler: (evtType, handler) => {
-        const leadingIconEl = this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
-        if (leadingIconEl) {
-          leadingIconEl.addEventListener(evtType, handler);
-        }
-      },
-      deregisterLeadingIconEventHandler: (evtType, handler) => {
-        const leadingIconEl = this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
-        if (leadingIconEl) {
-          leadingIconEl.removeEventListener(evtType, handler);
-        }
-      },
-      registerCheckmarkEventHandler: (evtType, handler) => {
-        const checkmarkEl = this.root_.querySelector(strings.CHECKMARK_SELECTOR);
-        if (checkmarkEl) {
-          checkmarkEl.addEventListener(evtType, handler);
-        }
-      },
-      deregisterCheckmarkEventHandler: (evtType, handler) => {
-        const checkmarkEl = this.root_.querySelector(strings.CHECKMARK_SELECTOR);
-        if (checkmarkEl) {
-          checkmarkEl.removeEventListener(evtType, handler);
-        }
-      },
       registerTrailingIconInteractionHandler: (evtType, handler) => {
         const trailingIconEl = this.root_.querySelector(strings.TRAILING_ICON_SELECTOR);
         if (trailingIconEl) {
