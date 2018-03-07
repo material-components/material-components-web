@@ -16,6 +16,7 @@
 
 @import "@material/elevation/mixins";
 @import "@material/ripple/mixins";
+@import "@material/rtl/mixins";
 @import "@material/theme/functions";
 @import "@material/theme/mixins";
 @import "@material/typography/mixins";
@@ -127,10 +128,11 @@
 }
 
 @mixin mdc-button__icon_ {
+  @include mdc-rtl-reflexive-box(margin, right, 8px);
+
   display: inline-block;
   width: 18px;
   height: 18px;
-  margin-right: 8px;
   font-size: 18px;
   line-height: inherit;
   vertical-align: top;
