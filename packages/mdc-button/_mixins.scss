@@ -129,11 +129,12 @@
   // stylelint-disable-next-line selector-max-type
   svg,
   img {
+    @include mdc-rtl-reflexive-box(margin, right, 8px);
+
     position: relative;
     top: 4px;
     width: 18px;
     height: 18px;
-    margin-right: 8px;
     fill: currentColor;
   }
 }
