@@ -34,6 +34,9 @@
   .mdc-button__icon {
     @include mdc-button__icon_;
   }
+  svg.mdc-button__icon {
+    @include mdc-button__icon-svg_;
+  }
 }
 
 .mdc-button--raised,

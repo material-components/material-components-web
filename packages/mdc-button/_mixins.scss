@@ -125,17 +125,6 @@
     cursor: default;
     pointer-events: none;
   }
-
-  // stylelint-disable-next-line selector-max-type
-  svg {
-    @include mdc-rtl-reflexive-box(margin, right, 8px);
-
-    position: relative;
-    top: 4px;
-    width: 18px;
-    height: 18px;
-    fill: currentColor;
-  }
 }
 
 @mixin mdc-button__icon_ {
@@ -147,6 +136,16 @@
   font-size: 18px;
   line-height: inherit;
   vertical-align: top;
+}
+
+@mixin mdc-button__icon-svg_ {
+  @include mdc-rtl-reflexive-box(margin, right, 8px);
+
+  position: relative;
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+  vertical-align: text-bottom;
 }
 
 @mixin mdc-button--stroked_() {
