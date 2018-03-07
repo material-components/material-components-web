@@ -301,11 +301,7 @@
         });
 
         document.getElementById('toggle-rtl').addEventListener('change', function() {
-          if (this.checked) {
-            document.body.setAttribute('dir', 'rtl');
-          } else {
-            document.body.removeAttribute('dir');
-          }
+          document.body.setAttribute('dir', this.checked ? 'rtl' : 'ltr');
         });
 
         var standardImageListEl = document.getElementById('standard-image-list');
