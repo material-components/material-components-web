@@ -33,6 +33,8 @@ class MDCChip extends MDCComponent {
   constructor(...args) {
     super(...args);
 
+    /** @private {?Element} */
+    this.leadingIcon_ = this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
     /** @private {!MDCRipple} */
     this.ripple_ = new MDCRipple(this.root_);
   }
@@ -66,15 +68,13 @@ class MDCChip extends MDCComponent {
       removeClass: (className) => this.root_.classList.remove(className),
       hasClass: (className) => this.root_.classList.contains(className),
       addClassToLeadingIcon: (className) => {
-        const leadingIconEl = this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
-        if (leadingIconEl) {
-          leadingIconEl.classList.add(className);
+        if (this.leadingIcon_) {
+          this.leadingIcon_.classList.add(className);
         }
       },
       removeClassFromLeadingIcon: (className) => {
-        const leadingIconEl = this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
-        if (leadingIconEl) {
-          leadingIconEl.classList.remove(className);
+        if (this.leadingIcon_) {
+          this.leadingIcon_.classList.remove(className);
         }
       },
       eventTargetHasClass: (target, className) => target.classList.contains(className),
