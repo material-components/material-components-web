@@ -89,6 +89,7 @@
 
 .mdc-list-item__meta {
   @include mdc-rtl-reflexive-property(margin, auto, 0, ".mdc-list-item");
+
   pointer-events: none;
 }
 
