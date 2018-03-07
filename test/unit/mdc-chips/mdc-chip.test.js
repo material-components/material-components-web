@@ -65,7 +65,7 @@ test('#adapter.removeClass removes a class from the root element', () => {
   const {root, component} = setupTest();
   root.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClass('foo');
-  assert.isNotOk(root.classList.contains('foo'));
+  assert.isFalse(root.classList.contains('foo'));
 });
 
 test('#adapter.addClassToLeadingIcon adds a class to the leading icon element', () => {
@@ -88,10 +88,10 @@ test('#adapter.removeClassFromLeadingIcon removes a class from the leading icon 
   const leadingIcon = getLeadingIcon();
   root.appendChild(leadingIcon);
   const component = new MDCChip(root);
-  
+
   leadingIcon.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClassFromLeadingIcon('foo');
-  assert.isNotOk(leadingIcon.classList.contains('foo'));
+  assert.isFalse(leadingIcon.classList.contains('foo'));
 });
 
 test('#adapter.removeClassFromLeadingIcon does nothing if no leading icon element is present', () => {

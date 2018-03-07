@@ -101,15 +101,13 @@ test('on click, emit custom event', () => {
   td.verify(mockAdapter.notifyInteraction());
 });
 
-test('on leading icon opacity transition end, add `mdc-chip__icon--hidden-leading`' +
+test(`on leading icon opacity transition end, add ${cssClasses.HIDDEN_LEADING_ICON}` +
   'class to leading icon if chip is selected', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerEventHandler');
   const mockEvt = {
     type: 'transitionend',
-    target: {
-      classList: ['mdc-chip__icon--leading'],
-    },
+    target: {},
     propertyName: 'opacity',
   };
   td.when(mockAdapter.eventTargetHasClass(mockEvt.target, cssClasses.LEADING_ICON)).thenReturn(true);
@@ -121,15 +119,12 @@ test('on leading icon opacity transition end, add `mdc-chip__icon--hidden-leadin
   td.verify(mockAdapter.addClassToLeadingIcon(cssClasses.HIDDEN_LEADING_ICON));
 });
 
-test('on leading icon opacity transition end, add `mdc-chip__icon--hidden-leading`' +
-  'class to leading icon if chip is not selected', () => {
+test('on leading icon opacity transition end, do nothing if chip is not selected', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerEventHandler');
   const mockEvt = {
     type: 'transitionend',
-    target: {
-      classList: ['mdc-chip__icon--leading'],
-    },
+    target: {},
     propertyName: 'opacity',
   };
   td.when(mockAdapter.eventTargetHasClass(mockEvt.target, cssClasses.LEADING_ICON)).thenReturn(true);
@@ -141,7 +136,7 @@ test('on leading icon opacity transition end, add `mdc-chip__icon--hidden-leadin
   td.verify(mockAdapter.addClassToLeadingIcon(cssClasses.HIDDEN_LEADING_ICON), {times: 0});
 });
 
-test('on checkmark opacity transition end, remove `mdc-chip__icon--hidden-leading`' +
+test(`on checkmark opacity transition end, remove ${cssClasses.HIDDEN_LEADING_ICON}` +
   'class from leading icon if chip is not selected', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerEventHandler');
@@ -161,8 +156,7 @@ test('on checkmark opacity transition end, remove `mdc-chip__icon--hidden-leadin
   td.verify(mockAdapter.removeClassFromLeadingIcon(cssClasses.HIDDEN_LEADING_ICON));
 });
 
-test('on checkmark opacity transition end, remove `mdc-chip__icon--hidden-leading`' +
-  'class from leading icon if chip is selected', () => {
+test('on checkmark opacity transition end, do nothing if chip is selected', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerEventHandler');
   const mockEvt = {
