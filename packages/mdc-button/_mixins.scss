@@ -127,8 +127,7 @@
   }
 
   // stylelint-disable-next-line selector-max-type
-  svg,
-  img {
+  svg {
     @include mdc-rtl-reflexive-box(margin, right, 8px);
 
     position: relative;
