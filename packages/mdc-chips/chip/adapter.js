@@ -71,14 +71,14 @@ class MDCChipAdapter {
    * @param {string} evtType
    * @param {function(!Event): undefined} handler
    */
-  registerInteractionHandler(evtType, handler) {}
+  registerEventHandler(evtType, handler) {}
 
   /**
    * Deregisters an event listener on the root element for a given event.
    * @param {string} evtType
    * @param {function(!Event): undefined} handler
    */
-  deregisterInteractionHandler(evtType, handler) {}
+  deregisterEventHandler(evtType, handler) {}
 
   /**
    * Registers an event listener on the trailing icon element for a given event.

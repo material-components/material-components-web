@@ -102,21 +102,21 @@ test('adapter#eventTargetHasClass returns true if given element has class', () =
   assert.isTrue(component.getDefaultFoundation().adapter_.eventTargetHasClass(mockEventTarget, 'foo'));
 });
 
-test('#adapter.registerInteractionHandler adds event listener for a given event to the root element', () => {
+test('#adapter.registerEventHandler adds event listener for a given event to the root element', () => {
   const {root, component} = setupTest();
   const handler = td.func('click handler');
-  component.getDefaultFoundation().adapter_.registerInteractionHandler('click', handler);
+  component.getDefaultFoundation().adapter_.registerEventHandler('click', handler);
   domEvents.emit(root, 'click');
 
   td.verify(handler(td.matchers.anything()));
 });
 
-test('#adapter.deregisterInteractionHandler removes event listener for a given event from the root element', () => {
+test('#adapter.deregisterEventHandler removes event listener for a given event from the root element', () => {
   const {root, component} = setupTest();
   const handler = td.func('click handler');
 
   root.addEventListener('click', handler);
-  component.getDefaultFoundation().adapter_.deregisterInteractionHandler('click', handler);
+  component.getDefaultFoundation().adapter_.deregisterEventHandler('click', handler);
   domEvents.emit(root, 'click');
 
   td.verify(handler(td.matchers.anything()), {times: 0});

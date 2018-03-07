@@ -48,8 +48,8 @@ class MDCChipFoundation extends MDCFoundation {
       addClassToLeadingIcon: () => {},
       eventTargetHasClass: () => {},
       removeClassFromLeadingIcon: () => {},
-      registerInteractionHandler: () => {},
-      deregisterInteractionHandler: () => {},
+      registerEventHandler: () => {},
+      deregisterEventHandler: () => {},
       registerTrailingIconInteractionHandler: () => {},
       deregisterTrailingIconInteractionHandler: () => {},
       notifyInteraction: () => {},
@@ -73,9 +73,9 @@ class MDCChipFoundation extends MDCFoundation {
 
   init() {
     ['click', 'keydown'].forEach((evtType) => {
-      this.adapter_.registerInteractionHandler(evtType, this.interactionHandler_);
+      this.adapter_.registerEventHandler(evtType, this.interactionHandler_);
     });
-    this.adapter_.registerInteractionHandler('transitionend', this.transitionEndHandler_);
+    this.adapter_.registerEventHandler('transitionend', this.transitionEndHandler_);
     ['click', 'keydown', 'touchstart', 'pointerdown', 'mousedown'].forEach((evtType) => {
       this.adapter_.registerTrailingIconInteractionHandler(evtType, this.trailingIconInteractionHandler_);
     });
@@ -83,9 +83,9 @@ class MDCChipFoundation extends MDCFoundation {
 
   destroy() {
     ['click', 'keydown'].forEach((evtType) => {
-      this.adapter_.deregisterInteractionHandler(evtType, this.interactionHandler_);
+      this.adapter_.deregisterEventHandler(evtType, this.interactionHandler_);
     });
-    this.adapter_.deregisterInteractionHandler('transitionend', this.transitionEndHandler_);
+    this.adapter_.deregisterEventHandler('transitionend', this.transitionEndHandler_);
     ['click', 'keydown', 'touchstart', 'pointerdown', 'mousedown'].forEach((evtType) => {
       this.adapter_.deregisterTrailingIconInteractionHandler(evtType, this.trailingIconInteractionHandler_);
     });
@@ -119,7 +119,7 @@ class MDCChipFoundation extends MDCFoundation {
    * @param {!Event} evt
    */
   handleTransitionEnd_(evt) {
-    if (!evt.propertyName === 'opacity') {
+    if (!(evt.propertyName === 'opacity')) {
       return;
     }
     if (this.adapter_.eventTargetHasClass(evt.target, cssClasses.LEADING_ICON) &&
