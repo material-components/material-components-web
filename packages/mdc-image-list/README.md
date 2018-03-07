@@ -37,40 +37,27 @@ An Image List consists of several items, each containing an image and optionally
 npm install --save @material/image-list
 ```
 
-## Usage
+## Basic Usage
 
-### DOM Structure
+### HTML Structure
 
-#### Image list items
-
-Each item within an Image List possesses the following structure:
-
-```html
-<li class="mdc-image-list__item">
-  <div class="mdc-image-list__image-aspect-container">
-    <img class="mdc-image-list__image" src="...">
-  </div>
-  <div class="mdc-image-list__supporting">
-    <span class="mdc-image-list__label">Text label</span>
-  </div>
-</li>
-```
-
-#### Standard Image List
-
-The Standard Image List is simply an unordered list containing any number of items:
+The HTML structure for a Standard Image List is as follows:
 
 ```html
 <ul class="mdc-image-list">
   <li class="mdc-image-list__item">
-    ...
-  </li>
-  <li class="mdc-image-list__item">
-    ...
+    <div class="mdc-image-list__image-aspect-container">
+      <img class="mdc-image-list__image" src="...">
+    </div>
+    <div class="mdc-image-list__supporting">
+      <span class="mdc-image-list__label">Text label</span>
+    </div>
   </li>
   ...
 </ul>
 ```
+
+## Style Customization
 
 ### CSS Classes
 
@@ -78,22 +65,55 @@ CSS Class | Description
 --- | ---
 `mdc-image-list` | Mandatory. Indicates the root Image List element.
 `mdc-image-list__item` | Mandatory. Indicates each item in an Image List.
-`mdc-image-list__image-aspect-container` | Optional. Parent of each item's image element, responsible for contstraining aspect ratio. This element may be omitted entirely if images are already guaranteed to be the correct aspect ratio.
+`mdc-image-list__image-aspect-container` | Optional. Parent of each item's image element, responsible for constraining aspect ratio. This element may be omitted entirely if images are alreadysized to the correct aspect ratio.
 `mdc-image-list__image` | Mandatory. Indicates the image element in each item.
-`mdc-image-list__supporting` | Optional. Indicates the area within each item containing the supporting text label and
+`mdc-image-list__supporting` | Optional. Indicates the area within each item containing the supporting text label.
 `mdc-image-list__label` | Optional. Indicates the text label in each item, if the Image List contains text labels.
 
 ### Sass Mixins
 
 Mixin | Description
 --- | ---
+`mdc-image-list-aspect($width-height-ratio)` | Styles the aspect container elements within an image list to conform to the given ratio, where 1 is 1:1, greater than 1 is wider, and less than 1 is taller.
+`mdc-image-list-columns($column-count, $gutter-size)` | Styles the Image List to display the given number of columns. `$gutter-size` is optional and overrides the default amount of space between items.
 
+### Additional Information
 
-Image List can be styled one of two ways to scale based on the width of its containing element (or the page):
-scaling images so the Image List always fills the width of the container, or scaling the side margins such
-that the images remain the same size and the Image List remains centered within the container.
+#### Constraining width
 
-### Using div in place of img to enforce aspect ratio
+The `mdc-image-list-columns` mixin will grow and shrink items based on the Image List's overall width. Depending on
+placement, this could be directly related to the viewport width, and images could become exceedingly large compared to
+their actual rendered size. This can be restricted by using any of `min-width`, `width`, or `max-width` on the Image
+List:
+
+```scss
+.my-image-list {
+  @include mdc-image-list-columns(5);
+  max-width: 960px;
+}
+```
+
+> **Note:** Remember that any specified width will apply to the entire list, including gutters around the outer edges of
+the first and last items in each row.
+
+#### Changing number of columns across breakpoints
+
+Presenting a different number of columns for different viewport sizes is straightforward, since the only thing that
+needs to be changed are styles:
+
+```scss
+.my-image-list {
+  @include mdc-image-list-columns(5);
+}
+
+@media (max-width: 599px) {
+  .my-image-list {
+    @include mdc-image-list-columns(3);
+  }
+}
+```
+
+#### Using div in place of img to enforce aspect ratio
 
 Images in an Image List typically use the `img` element. However, if your assets don't have the same aspect ratio as
 specified for list items, they will become distorted. In these cases, you can use a `div` element in place of `img`,
