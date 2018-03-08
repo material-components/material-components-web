@@ -54,14 +54,14 @@
 
 .demo-toolbar--custom {
   @include mdc-toolbar-fill-color-accessible($material-color-red-900);
-}
 
-.demo-toolbar__menu-icon--custom,
-.demo-toolbar__icon--custom {
-  @include mdc-toolbar-icon-ink-color($material-color-red-100);
+  .demo-toolbar__menu-icon--custom,
+  .demo-toolbar__icon--custom {
+    @include mdc-toolbar-icon-ink-color($material-color-red-100);
 
-  &:hover {
-    @include mdc-toolbar-icon-ink-color(white);
+    &:hover {
+      @include mdc-toolbar-icon-ink-color(white);
+    }
   }
 }
 

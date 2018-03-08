@@ -36,7 +36,6 @@
     $value: map-get($mdc-theme-property-values, $style);
 
     @if $important {
-      /* @alternate */
       #{$property}: $value !important;
 
       @if $edgeOptOut {
@@ -45,6 +44,7 @@
           @supports not (-ms-ime-align:auto) {
             // stylelint-disable scss/selector-no-redundant-nesting-selector
             & {
+              /* @alternate */
               #{$property}: var(--mdc-theme-#{$style}, $value) !important;
             }
             // stylelint-enable scss/selector-no-redundant-nesting-selector
@@ -52,10 +52,10 @@
         }
         // stylelint-enable max-nesting-depth
       } @else {
+        /* @alternate */
         #{$property}: var(--mdc-theme-#{$style}, $value) !important;
       }
     } @else {
-      /* @alternate */
       #{$property}: $value;
 
       @if $edgeOptOut {
@@ -64,6 +64,7 @@
           @supports not (-ms-ime-align:auto) {
             // stylelint-disable scss/selector-no-redundant-nesting-selector
             & {
+              /* @alternate */
               #{$property}: var(--mdc-theme-#{$style}, $value);
             }
             // stylelint-enable scss/selector-no-redundant-nesting-selector
@@ -71,6 +72,7 @@
         }
         // stylelint-enable max-nesting-depth
       } @else {
+        /* @alternate */
         #{$property}: var(--mdc-theme-#{$style}, $value);
       }
     }

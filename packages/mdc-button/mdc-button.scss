@@ -54,10 +54,6 @@
   @include mdc-button-stroke-color(primary);
 }
 
-.mdc-button--compact {
-  @include mdc-button--compact_;
-}
-
 .mdc-button--dense {
   @include mdc-button--dense_;
 }
