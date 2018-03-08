@@ -67,7 +67,7 @@ CSS Class | Description
 `mdc-image-list__item` | Mandatory. Indicates each item in an Image List.
 `mdc-image-list__image-aspect-container` | Optional. Parent of each item's image element, responsible for constraining aspect ratio. This element may be omitted entirely if images are alreadysized to the correct aspect ratio.
 `mdc-image-list__image` | Mandatory. Indicates the image element in each item.
-`mdc-image-list__supporting` | Optional. Indicates the area within each item containing the supporting text label.
+`mdc-image-list__supporting` | Optional. Indicates the area within each item containing the supporting text label, if the Image List contains text labels.
 `mdc-image-list__label` | Optional. Indicates the text label in each item, if the Image List contains text labels.
 
 ### Sass Mixins
@@ -93,7 +93,8 @@ List:
 }
 ```
 
-> **Note:** Remember that any specified width will apply to the _entire_ list, including gutters.
+> **Note:** Remember that any specified width will apply to the _entire_ list, so be sure to account for the gutters
+as well.
 
 #### Changing number of columns across breakpoints
 
