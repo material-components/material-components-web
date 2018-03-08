@@ -50,6 +50,12 @@
   }
 }
 
+@mixin mdc-button-icon-color($color) {
+  &:not(:disabled) .mdc-button__icon {
+    @include mdc-theme-prop(color, $color);
+  }
+}
+
 @mixin mdc-button-ink-color($color) {
   &:not(:disabled) {
     @include mdc-theme-prop(color, $color);
