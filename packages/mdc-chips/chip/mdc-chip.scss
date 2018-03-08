@@ -39,7 +39,6 @@
   cursor: pointer;
   outline: none;
   overflow: hidden;
-  vertical-align: middle;
 
   &:hover {
     @include mdc-theme-prop(color, black);
