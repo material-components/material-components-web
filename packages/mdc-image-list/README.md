@@ -93,8 +93,7 @@ List:
 }
 ```
 
-> **Note:** Remember that any specified width will apply to the entire list, including gutters around the outer edges of
-the first and last items in each row.
+> **Note:** Remember that any specified width will apply to the _entire_ list, including gutters.
 
 #### Changing number of columns across breakpoints
 
