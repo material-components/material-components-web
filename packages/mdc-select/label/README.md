@@ -3,7 +3,7 @@ title: "Select Label"
 layout: detail
 section: components
 iconId: menu
-path: /catalog/input-controls/select-menus/
+path: /catalog/input-controls/select-menus/label/
 -->
 
 # Select Label

@@ -138,8 +138,8 @@ function setupMockFoundationTest(root = getFixture()) {
   return {root, component, mockFoundation};
 }
 
-test('#toggleActive proxies to foundation', () => {
+test('#toggleSelected proxies to foundation', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
-  component.toggleActive();
-  td.verify(mockFoundation.toggleActive());
+  component.toggleSelected();
+  td.verify(mockFoundation.toggleSelected());
 });

@@ -14,35 +14,36 @@
 // limitations under the License.
 //
 
-@import "../mixins";
-@import "../variables";
 @import "@material/rtl/mixins";
 @import "@material/theme/variables";
 @import "@material/theme/mixins";
+@import "./functions";
+@import "./mixins";
+@import "./variables";
 
-// postcss-bem-linter: define text-field-label
-.mdc-text-field__label {
+// postcss-bem-linter: define floating-label
+.mdc-floating-label {
   position: absolute;
   bottom: 8px;
   left: 0;
   transform-origin: left top;
-  transition: mdc-text-field-transition(transform), mdc-text-field-transition(color);
+  transition: mdc-floating-label-transition(transform), mdc-floating-label-transition(color);
   cursor: text;
 
-  // stylelint-disable plugin/selector-bem-pattern
-  @include mdc-rtl(".mdc-text-field") {
+  @include mdc-rtl {
     right: 0;
     left: auto;
     transform-origin: right top;
   }
-  // stylelint-enable plugin/selector-bem-pattern
 }
 
-.mdc-text-field__label--float-above {
+.mdc-floating-label--float-above {
   cursor: auto;
 }
 
 @at-root {
-  @include mdc-text-field-label-float_($mdc-text-field-label-position-y);
-  @include mdc-text-field-label-shake_(standard);
+  @include mdc-floating-label-float-position($mdc-floating-label-position-y);
+  @include mdc-floating-label-shake-animation(standard);
 }
+
+@include mdc-floating-label-shake-keyframes(standard, $mdc-floating-label-position-y);
