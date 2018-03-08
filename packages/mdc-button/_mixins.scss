@@ -76,13 +76,6 @@
     // Minus extra 1 to accommodate odd font size of dense button
     line-height: $mdc-dense-button-height - $stroke-width * 2 - 1;
   }
-
-  &.mdc-button--compact {
-    $padding-compact-value: max($mdc-compact-button-horizontal-padding - $stroke-width, 0);
-
-    padding-right: $padding-compact-value;
-    padding-left: $padding-compact-value;
-  }
 }
 
 @mixin mdc-button-base_() {
@@ -170,10 +163,6 @@
   &:disabled {
     @include mdc-elevation(0);
   }
-}
-
-@mixin mdc-button--compact_() {
-  padding: 0 $mdc-compact-button-horizontal-padding;
 }
 
 @mixin mdc-button--dense_() {
