@@ -32,7 +32,7 @@ writing the markup, simply insert a script tag that calls `mdc.autoInit()`. Make
 ```html
 <div class="mdc-text-field" data-mdc-auto-init="MDCTextField">
   <input class="mdc-text-field__input" type="text" id="input">
-  <label for="input" class="mdc-text-field__label">Input Label</label>
+  <label for="input" class="mdc-floating-label">Input Label</label>
   <div class="mdc-line-ripple"></div>
 </div>
 
@@ -52,7 +52,7 @@ using a property whose name is the value of `data-mdc-auto-init`. For example, g
 ```html
 <div class="mdc-text-field" data-mdc-auto-init="MDCTextField">
   <input class="mdc-text-field__input" type="text" id="input">
-  <label for="input" class="mdc-text-field__label">Input Label</label>
+  <label for="input" class="mdc-floating-label">Input Label</label>
   <div class="mdc-line-ripple"></div>
 </div>
 ```

@@ -67,7 +67,7 @@ module.exports = [{
   output: {
     // This is necessary for webpack to compile
     // But we never use style-bundle.js
-    filename: 'style-bundle.js', 
+    filename: 'style-bundle.js',
   },
   module: {
     rules: [{

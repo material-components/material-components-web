@@ -78,14 +78,14 @@ npm install --save @material/select
 Then with JS
 
 ```js
-import {MDCSelect} from '@material/select';
-
-const select = new MDCSelect(document.querySelector('.mdc-select'));
+const select = new mdc.select.MDCSelect(document.querySelector('.mdc-select'));
 select.listen('MDCSelect:change', () => {
   alert(`Selected "${select.selectedOptions[0].textContent}" at index ${select.selectedIndex} ` +
         `with value "${select.value}"`);
 });
 ```
+
+See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
 
 Note that you can include mdc-select via a UMD bundle, which will be available post-alpha.
 
