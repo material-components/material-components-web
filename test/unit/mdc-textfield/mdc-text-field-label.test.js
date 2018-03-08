@@ -17,21 +17,21 @@
 import bel from 'bel';
 import {assert} from 'chai';
 
-import {MDCFloatingLabel} from '../../../packages/mdc-floating-label/index';
+import {MDCTextFieldLabel} from '../../../packages/mdc-textfield/label';
 
 const getFixture = () => bel`
-  <div class="mdc-floating-label"></div>
+  <div class="mdc-text-field__label"></div>
 `;
 
-suite('MDCFloatingLabel');
+suite('MDCTextFieldLabel');
 
-test('attachTo returns an MDCFloatingLabel instance', () => {
-  assert.isOk(MDCFloatingLabel.attachTo(getFixture()) instanceof MDCFloatingLabel);
+test('attachTo returns an MDCTextFieldLabel instance', () => {
+  assert.isOk(MDCTextFieldLabel.attachTo(getFixture()) instanceof MDCTextFieldLabel);
 });
 
 function setupTest() {
   const root = getFixture();
-  const component = new MDCFloatingLabel(root);
+  const component = new MDCTextFieldLabel(root);
   return {root, component};
 }
 

@@ -52,8 +52,6 @@
 
   &.mdc-ripple-upgraded::after {
     top: 0;
-
-    /* @noflip */
     left: 0;
     transform: scale(0);
     transform-origin: center center;
@@ -61,8 +59,6 @@
 
   &.mdc-ripple-upgraded--unbounded::after {
     top: var(--mdc-ripple-top, 0);
-
-    /* @noflip */
     left: var(--mdc-ripple-left, 0);
   }
 
@@ -179,8 +175,6 @@
   &::before,
   &::after {
     top: calc(50% - #{$radius});
-
-    /* @noflip */
     left: calc(50% - #{$radius});
     width: $radius * 2;
     height: $radius * 2;
@@ -196,8 +190,6 @@
   &::before,
   &::after {
     top: calc(50% - #{$radius / 2});
-
-    /* @noflip */
     left: calc(50% - #{$radius / 2});
     width: $radius;
     height: $radius;
@@ -206,8 +198,6 @@
   &.mdc-ripple-upgraded::before,
   &.mdc-ripple-upgraded::after {
     top: var(--mdc-ripple-top, calc(50% - #{$radius / 2}));
-
-    /* @noflip */
     left: var(--mdc-ripple-left, calc(50% - #{$radius / 2}));
     width: var(--mdc-ripple-fg-size, $radius);
     height: var(--mdc-ripple-fg-size, $radius);

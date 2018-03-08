@@ -47,6 +47,7 @@ class MDCTopAppBarAdapter {
    */
   hasClass(className) {}
 
+
   /**
    * Registers an event handler on the navigation icon element for a given event.
    * @param {string} type
@@ -65,18 +66,6 @@ class MDCTopAppBarAdapter {
    * Emits an event when the navigation icon is clicked.
    */
   notifyNavigationIconClicked() {}
-
-  /** @param {function(!Event)} handler */
-  registerScrollHandler(handler) {}
-
-  /** @param {function(!Event)} handler */
-  deregisterScrollHandler(handler) {}
-
-  /** @return {number} */
-  getViewportScrollY() {}
-
-  /** @return {number} */
-  getTotalActionItems() {}
 }
 
 export default MDCTopAppBarAdapter;

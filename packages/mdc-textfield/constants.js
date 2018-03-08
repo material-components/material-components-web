@@ -19,7 +19,7 @@
 const strings = {
   ARIA_CONTROLS: 'aria-controls',
   INPUT_SELECTOR: '.mdc-text-field__input',
-  LABEL_SELECTOR: '.mdc-floating-label',
+  LABEL_SELECTOR: '.mdc-text-field__label',
   ICON_SELECTOR: '.mdc-text-field__icon',
   OUTLINE_SELECTOR: '.mdc-text-field__outline',
   BOTTOM_LINE_SELECTOR: '.mdc-line-ripple',

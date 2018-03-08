@@ -24,7 +24,7 @@ const strings = {
 
 /** @enum {string} */
 const cssClasses = {
-  SELECTED: 'mdc-chip--selected',
+  ACTIVATED: 'mdc-chip--activated',
 };
 
 export {strings, cssClasses};
