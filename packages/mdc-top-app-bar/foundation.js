@@ -128,7 +128,8 @@ class MDCTopAppBarFoundation extends MDCFoundation {
   }
 
   topAppBarScrollHandler_() {
-    const currentScroll = this.adapter_.getViewportScrollY();
+    let currentScroll = this.adapter_.getViewportScrollY();
+    if (currentScroll < 0) currentScroll = 0;
     const diff = currentScroll - this.lastScrollPosition;
     this.lastScrollPosition = currentScroll;
 
