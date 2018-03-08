@@ -75,6 +75,7 @@ class MDCTopAppBar extends MDCComponent {
         hasClass: (className) => this.root_.classList.contains(className),
         addClass: (className) => this.root_.classList.add(className),
         removeClass: (className) => this.root_.classList.remove(className),
+        addAttributeToTopAppBar: (attribute, value) => this.root_.setAttribute(attribute, value),
         registerNavigationIconInteractionHandler: (evtType, handler) => {
           if (this.navIcon_) {
             this.navIcon_.addEventListener(evtType, handler);
@@ -93,6 +94,7 @@ class MDCTopAppBar extends MDCComponent {
         getViewportScrollY: () => window.pageYOffset,
         getTotalActionItems: () =>
           this.root_.querySelectorAll(strings.ACTION_ITEM_SELECTOR).length,
+
       })
       )
     );

@@ -44,6 +44,7 @@ class MDCTopAppBarFoundation extends MDCFoundation {
       hasClass: (/* className: string */) => {},
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
+      addAttributeToTopAppBar: (/* attribute: string, value: string */) => {},
       registerNavigationIconInteractionHandler: (/* type: string, handler: EventListener */) => {},
       deregisterNavigationIconInteractionHandler: (/* type: string, handler: EventListener */) => {},
       notifyNavigationIconClicked: () => {},
@@ -61,9 +62,15 @@ class MDCTopAppBarFoundation extends MDCFoundation {
     super(Object.assign(MDCTopAppBarFoundation.defaultAdapter, adapter));
     // State variable for the current top app bar state
     this.isCollapsed = false;
+    this.lastScrollPosition = 0;
+    this.toolbarHeight = 64;
+    this.docked = true;
+    // State variable for current scroll position
+    this.currentAppBarScrollPosition = this.toolbarHeight;
 
     this.navClickHandler_ = () => this.adapter_.notifyNavigationIconClicked();
     this.scrollHandler_ = () => this.shortAppBarScrollHandler_();
+    this.defaultScrollHandler_ = () => this.topAppBarScrollHandler_();
   }
 
   init() {
@@ -71,6 +78,8 @@ class MDCTopAppBarFoundation extends MDCFoundation {
 
     if (isShortTopAppBar) {
       this.initShortTopAppBar_();
+    } else {
+      this.adapter_.registerScrollHandler(this.defaultScrollHandler_);
     }
 
     this.adapter_.registerNavigationIconInteractionHandler('click', this.navClickHandler_);
@@ -79,6 +88,7 @@ class MDCTopAppBarFoundation extends MDCFoundation {
   destroy() {
     this.adapter_.deregisterNavigationIconInteractionHandler('click', this.navClickHandler_);
     this.adapter_.deregisterScrollHandler(this.scrollHandler_);
+    this.adapter_.deregisterScrollHandler(this.defaultScrollHandler_);
   }
 
   /**
@@ -114,6 +124,38 @@ class MDCTopAppBarFoundation extends MDCFoundation {
         this.adapter_.addClass(cssClasses.SHORT_COLLAPSED_CLASS);
         this.isCollapsed = true;
       }
+    }
+  }
+
+  topAppBarScrollHandler_() {
+    const currentScroll = this.adapter_.getViewportScrollY();
+    const diff = currentScroll - this.lastScrollPosition;
+    this.lastScrollPosition = currentScroll;
+
+    this.currentAppBarScrollPosition -= diff;
+    if (this.currentAppBarScrollPosition < 0) {
+      this.currentAppBarScrollPosition = 0;
+    } if (this.currentAppBarScrollPosition > this.toolbarHeight) {
+      this.currentAppBarScrollPosition = this.toolbarHeight;
+    }
+
+    this.moveTopAppBar();
+  }
+
+  moveTopAppBar() {
+    if (this.docked) {
+      // If it's already docked and the user is still scrolling in the same direction, do nothing
+      if (!(this.currentAppBarScrollPosition === 0 || this.currentAppBarScrollPosition === this.toolbarHeight)) {
+        const offset = (this.currentAppBarScrollPosition - this.toolbarHeight);
+        this.adapter_.addAttributeToTopAppBar('style', 'top: ' + offset + 'px;');
+        this.docked = false;
+      }
+    } else {
+      if (this.currentAppBarScrollPosition === 0 || this.currentAppBarScrollPosition === this.toolbarHeight) {
+        this.docked = true;
+      }
+      const offset = (this.currentAppBarScrollPosition - this.toolbarHeight);
+      this.adapter_.addAttributeToTopAppBar('style', 'top: ' + offset + 'px;');
     }
   }
 }

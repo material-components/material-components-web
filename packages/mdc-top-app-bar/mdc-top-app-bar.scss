@@ -27,7 +27,7 @@
   @include mdc-top-app-bar-icon-ink-color(text-primary-on-primary);
 
   display: flex;
-  position: relative;
+  position: fixed;
   flex-direction: column;
   justify-content: space-between;
   box-sizing: border-box;

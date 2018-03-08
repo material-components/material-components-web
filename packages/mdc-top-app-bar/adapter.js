@@ -48,6 +48,13 @@ class MDCTopAppBarAdapter {
   hasClass(className) {}
 
   /**
+   * Adds the specified attribute and value to the root Element.
+   * @param {string} attribute
+   * @param {string} value
+   */
+  addAttributeToTopAppBar(attribute, value) {}
+
+  /**
    * Registers an event handler on the navigation icon element for a given event.
    * @param {string} type
    * @param {function(!Event): undefined} handler
