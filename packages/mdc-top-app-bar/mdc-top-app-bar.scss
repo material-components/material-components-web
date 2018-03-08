@@ -38,8 +38,7 @@
     position: relative;
     box-sizing: border-box;
     width: 100%;
-    height: auto;
-    min-height: $mdc-top-app-bar-row-height;
+    height: $mdc-top-app-bar-row-height;
   }
 
   &__section {
@@ -92,7 +91,7 @@
   }
 
   .mdc-top-app-bar__row {
-    min-height: $mdc-top-app-bar-mobile-row-height;
+    height: $mdc-top-app-bar-mobile-row-height;
   }
 
   .mdc-top-app-bar__section {
