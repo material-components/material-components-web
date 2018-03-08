@@ -26,10 +26,12 @@
 
 .mdc-image-list__item,
 .mdc-image-list__image-aspect-container {
-  display: inline-flex;
   position: relative; // Supports protected text label for tile, image for image-aspect-container
-  flex-direction: column;
   box-sizing: border-box;
+}
+
+.mdc-image-list__item {
+  list-style-type: none;
 }
 
 .mdc-image-list__image {
@@ -70,9 +72,9 @@
   // TODO: What typography style should this match? grid-list uses its own styles...
 }
 
-// Modifier for labels with text protection, overlaying images.
+// Modifier for labels/icons with text protection, overlaying images.
 
-.mdc-image-list--protected-labels .mdc-image-list__supporting {
+.mdc-image-list--protected .mdc-image-list__supporting {
   position: absolute;
   bottom: 0;
   width: 100%;

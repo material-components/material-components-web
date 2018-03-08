@@ -23,8 +23,8 @@
 // Standard Image List
 
 @mixin mdc-image-list-columns($column-count, $gutter-size: $mdc-image-list-gutter-size) {
-  // This uses margin rather than padding to avoid an otherwise messy situation to deal with text label positioning,
-  // in the case of text being overlaid over the image.
+  // This uses margin rather than padding to facilitate properly positioning the supporting content element when
+  // --protected is used.
   .mdc-image-list__item {
     width: calc(100% / #{$column-count} - #{$gutter-size});
     margin: $gutter-size / 2;

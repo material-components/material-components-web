@@ -307,17 +307,17 @@
         var standardImageListEl = document.getElementById('standard-image-list');
 
         document.getElementById('standard-label-below').addEventListener('change', function() {
-          standardImageListEl.classList[this.checked ? 'remove' : 'add']('mdc-image-list--protected-labels');
+          standardImageListEl.classList[this.checked ? 'remove' : 'add']('mdc-image-list--protected');
           standardImageListEl.classList[this.checked ? 'remove' : 'add']('hide-supporting');
         });
 
         document.getElementById('standard-label-protected').addEventListener('change', function() {
-          standardImageListEl.classList[this.checked ? 'add' : 'remove']('mdc-image-list--protected-labels');
+          standardImageListEl.classList[this.checked ? 'add' : 'remove']('mdc-image-list--protected');
           standardImageListEl.classList[this.checked ? 'remove' : 'add']('hide-supporting');
         });
 
         document.getElementById('standard-label-none').addEventListener('change', function() {
-          standardImageListEl.classList[this.checked ? 'remove' : 'add']('mdc-image-list--protected-labels');
+          standardImageListEl.classList[this.checked ? 'remove' : 'add']('mdc-image-list--protected');
           standardImageListEl.classList[this.checked ? 'add' : 'remove']('hide-supporting');
         });
       });
