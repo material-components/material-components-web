@@ -26,7 +26,8 @@
   // This uses margin rather than padding to facilitate properly positioning the supporting content element when
   // --protected is used.
   .mdc-image-list__item {
-    width: calc(100% / #{$column-count} - #{$gutter-size});
+    // Subtract extra fraction from each item's width to ensure correct wrapping in IE and Edge which round differently
+    width: calc(100% / #{$column-count} - #{$gutter-size + 1 / $column-count});
     margin: $gutter-size / 2;
   }
 }
