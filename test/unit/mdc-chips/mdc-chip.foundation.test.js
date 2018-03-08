@@ -142,9 +142,7 @@ test(`on checkmark opacity transition end, remove ${cssClasses.HIDDEN_LEADING_IC
   const handlers = captureHandlers(mockAdapter, 'registerEventHandler');
   const mockEvt = {
     type: 'transitionend',
-    target: {
-      classList: ['mdc-chip__checkmark'],
-    },
+    target: {},
     propertyName: 'opacity',
   };
   td.when(mockAdapter.eventTargetHasClass(mockEvt.target, cssClasses.CHECKMARK)).thenReturn(true);
@@ -161,9 +159,7 @@ test('on checkmark opacity transition end, do nothing if chip is selected', () =
   const handlers = captureHandlers(mockAdapter, 'registerEventHandler');
   const mockEvt = {
     type: 'transitionend',
-    target: {
-      classList: ['mdc-chip__checkmark'],
-    },
+    target: {},
     propertyName: 'opacity',
   };
   td.when(mockAdapter.eventTargetHasClass(mockEvt.target, cssClasses.CHECKMARK)).thenReturn(true);

@@ -172,7 +172,7 @@ Method Signature | Description
 `hasClass(className: string) => boolean` | Returns true if the root element contains the given class
 `addClassToLeadingIcon(className: string) => void` | Adds a class to the leading icon element
 `removeClassFromLeadingIcon(className: string) => void` | Removes a class from the leading icon element
-`eventTargetHasClass(target: EventTarget, className: string) => boolean` | Returns true if target has className, false otherwise. 
+`eventTargetHasClass(target: EventTarget, className: string) => boolean` | Returns true if target has className, false otherwise
 `registerEventHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the root element
 `deregisterEventHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the root element
 `registerTrailingIconInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the trailing icon element
