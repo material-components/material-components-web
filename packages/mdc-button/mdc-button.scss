@@ -34,6 +34,11 @@
   .mdc-button__icon {
     @include mdc-button__icon_;
   }
+
+  // stylelint-disable-next-line selector-no-qualifying-type
+  svg.mdc-button__icon {
+    @include mdc-button__icon-svg_;
+  }
 }
 
 .mdc-button--raised,
