@@ -45,11 +45,14 @@ class MDCTopAppBarFoundation extends MDCFoundation {
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
       addAttributeToTopAppBar: (/* attribute: string, value: string */) => {},
+      getTopAppBarHeight: () => {},
       registerNavigationIconInteractionHandler: (/* type: string, handler: EventListener */) => {},
       deregisterNavigationIconInteractionHandler: (/* type: string, handler: EventListener */) => {},
       notifyNavigationIconClicked: () => {},
       registerScrollHandler: (/* handler: EventListener */) => {},
       deregisterScrollHandler: (/* handler: EventListener */) => {},
+      registerResizeHandler: (/* handler: EventListener */) => {},
+      deregisterResizeHandler: (/* handler: EventListener */) => {},
       getViewportScrollY: () => /* number */ 0,
       getTotalActionItems: () => /* number */ 0,
     });
@@ -63,14 +66,18 @@ class MDCTopAppBarFoundation extends MDCFoundation {
     // State variable for the current top app bar state
     this.isCollapsed = false;
     this.lastScrollPosition = 0;
-    this.toolbarHeight = 64;
+    this.toolbarHeight = this.adapter_.getTopAppBarHeight();
+    // docked is used to indicate if the top app bar is 100% showing or hidden
     this.docked = true;
     // State variable for current scroll position
     this.currentAppBarScrollPosition = this.toolbarHeight;
+    // holder for our resizeTimeout event to throttle resize events
+    this.resizeTimeout = null;
 
     this.navClickHandler_ = () => this.adapter_.notifyNavigationIconClicked();
     this.scrollHandler_ = () => this.shortAppBarScrollHandler_();
     this.defaultScrollHandler_ = () => this.topAppBarScrollHandler_();
+    this.defaultResizeHandler_ = () => this.topAppBarResizeHandler_();
   }
 
   init() {
@@ -80,6 +87,7 @@ class MDCTopAppBarFoundation extends MDCFoundation {
       this.initShortTopAppBar_();
     } else {
       this.adapter_.registerScrollHandler(this.defaultScrollHandler_);
+      this.adapter_.registerResizeHandler(this.defaultResizeHandler_);
     }
 
     this.adapter_.registerNavigationIconInteractionHandler('click', this.navClickHandler_);
@@ -89,6 +97,8 @@ class MDCTopAppBarFoundation extends MDCFoundation {
     this.adapter_.deregisterNavigationIconInteractionHandler('click', this.navClickHandler_);
     this.adapter_.deregisterScrollHandler(this.scrollHandler_);
     this.adapter_.deregisterScrollHandler(this.defaultScrollHandler_);
+    this.adapter_.deregisterResizeHandler(this.defaultResizeHandler_);
+    this.adapter_.addAttributeToTopAppBar('style', '');
   }
 
   /**
@@ -158,6 +168,27 @@ class MDCTopAppBarFoundation extends MDCFoundation {
       const offset = (this.currentAppBarScrollPosition - this.toolbarHeight);
       this.adapter_.addAttributeToTopAppBar('style', 'top: ' + offset + 'px;');
     }
+  }
+
+  topAppBarResizeHandler_() {
+    if (!this.resizeTimeout) {
+      this.resizeTimeout = setTimeout((function() {
+        this.resizeTimeout = null;
+        this.throttledResizeHandler_();
+      }).bind(this), 100);
+    }
+  }
+
+  throttledResizeHandler_() {
+    const currentHeight = this.adapter_.getTopAppBarHeight();
+    if (this.toolbarHeight !== currentHeight) {
+      this.docked = false;
+      if (this.currentAppBarScrollPosition === this.toolbarHeight) {
+        this.currentAppBarScrollPosition = currentHeight;
+      }
+      this.toolbarHeight = currentHeight;
+    }
+    this.topAppBarScrollHandler_();
   }
 }
 

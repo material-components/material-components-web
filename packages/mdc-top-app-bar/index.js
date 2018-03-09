@@ -76,6 +76,7 @@ class MDCTopAppBar extends MDCComponent {
         addClass: (className) => this.root_.classList.add(className),
         removeClass: (className) => this.root_.classList.remove(className),
         addAttributeToTopAppBar: (attribute, value) => this.root_.setAttribute(attribute, value),
+        getTopAppBarHeight: () => this.root_.clientHeight,
         registerNavigationIconInteractionHandler: (evtType, handler) => {
           if (this.navIcon_) {
             this.navIcon_.addEventListener(evtType, handler);
@@ -91,6 +92,8 @@ class MDCTopAppBar extends MDCComponent {
         },
         registerScrollHandler: (handler) => window.addEventListener('scroll', handler, util.applyPassive()),
         deregisterScrollHandler: (handler) => window.removeEventListener('scroll', handler),
+        registerResizeHandler: (handler) => window.addEventListener('resize', handler, util.applyPassive()),
+        deregisterResizeHandler: (handler) => window.removeEventListener('resize', handler),
         getViewportScrollY: () => window.pageYOffset,
         getTotalActionItems: () =>
           this.root_.querySelectorAll(strings.ACTION_ITEM_SELECTOR).length,
