@@ -60,7 +60,7 @@
   }
 
   width: 100%;
-  padding: 0 0 8px;
+  padding: 20px 0 8px;
   transition: mdc-text-field-transition(opacity);
   border: none;
   border-bottom: 1px solid;
@@ -162,10 +162,6 @@
   // stylelint-disable-next-line selector-max-specificity
   &:not(.mdc-text-field--textarea):not(.mdc-text-field--outlined) {
     height: 48px;
-  }
-
-  .mdc-floating-label {
-    pointer-events: none;
   }
 }
 

@@ -1,6 +1,6 @@
 [
   {
-    "name": "js-all",
+    "name": "main-js-combined",
     "entry": "/packages/material-components-web/index.js",
     "output": {
       "path": "/build",
@@ -138,12 +138,8 @@
   {
     "name": "demo-js",
     "entry": {
-      "common": [
-        "/demos/common.js"
-      ],
-      "theme/index": [
-        "/demos/theme/index.js"
-      ]
+      "common": "/demos/common.js",
+      "theme/index": "/demos/theme/index.js"
     },
     "output": {
       "path": "/build",
@@ -154,6 +150,9 @@
         "demo",
         "[name]"
       ]
+    },
+    "devServer": {
+      "disableHostCheck": true
     },
     "devtool": "source-map",
     "module": {
