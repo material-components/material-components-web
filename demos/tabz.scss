@@ -37,10 +37,15 @@
   }
 }
 
-.posifeed-container {
+.posifeed-container,
+.shrine-container {
   position: relative;
   width: 714px;
   height: 309px;
+  background-repeat: no-repeat;
+}
+
+.posifeed-container {
   background-image: url("/images/posifeed.png");
 }
 
@@ -68,6 +73,41 @@
     font-family: "Roboto Condensed", Arial, sans-serif;
     font-size: 16px;
     letter-spacing: 1.5px;
+  }
+}
+
+.shrine-container {
+  background-image: url("/images/shrine.png");
+}
+
+.shrine-logo {
+  position: absolute;
+  top: 51px;
+  left: 33px;
+}
+
+.shrine-tabz-container {
+  @include mdc-tabz-ink(rgba(68, 43, 45, .6));
+  @include mdc-tabz-active-ink(rgba(68, 43, 45, 1));
+
+  position: absolute;
+  top: 37px;
+  left: 145px;
+
+  .mdc-tabz {
+    @include mdc-states(#eaa4a4);
+
+    padding: 0 17.5px;
+    font-family: Rubik, Arial, sans-serif;
+    letter-spacing: .03px;
+  }
+
+  @include mdc-tabz-indicator-icon {
+    color: #eaa4a4;
+
+    .shrine-indicator {
+      font-size: 34px;
+    }
   }
 }
 

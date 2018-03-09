@@ -97,23 +97,21 @@ $mdc-color: $mdc-purple;
     display: flex;
     position: relative;
     justify-content: center;
-    // opacity: .6;
     color: #616161;
     z-index: 1;
   }
 
   &--active &__content {
-    opacity: 1;
     color: $mdc-color;
   }
 
   &--animating-deactivate &__content {
-    transition: 100ms opacity linear, 100ms color linear;
+    transition: 100ms color linear;
     transition-delay: 0ms;
   }
 
   &--animating-activate &__content {
-    transition: 150ms opacity linear, 150ms color linear;
+    transition: 150ms color linear;
     transition-delay: 100ms;
   }
 
