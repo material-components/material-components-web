@@ -46,11 +46,11 @@ class JsBundleFactory {
       chunks,
       chunkGlobConfig: {
         inputDirectory = null,
-        filePathPattern = null,
+        filePathPattern = '**/*.js',
       } = {},
       output: {
-        fsDirAbsolutePath,
-        httpDirAbsolutePath,
+        fsDirAbsolutePath = undefined, // Required for building the npm distribution and writing output files to disk
+        httpDirAbsolutePath = undefined, // Required for running the demo server
         filenamePattern = this.env_.isProd() ? '[name].min.js' : '[name].js',
         library,
       },
