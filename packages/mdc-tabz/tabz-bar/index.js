@@ -154,10 +154,21 @@ class MDCTabzBar {
   }
 
   /**
+   * Returns whether the Tab Bar has paging enabled
+   * @return {boolean}
    * @private
    */
   isPaging_() {
     return this.adapter_.hasClass(cssClasses.PAGING);
+  }
+
+  /**
+   * Returns whether the Tab Bar text direction is RTL
+   * @return {boolean}
+   * @private
+   */
+  isRTL_() {
+    return this.adapter_.isRTL();
   }
 
   /**
@@ -277,6 +288,13 @@ class MDCTabzBar {
     this.container_.slideTo(-slideTo);
   }
 
+  /**
+   * Updates the visibility of the pagers
+   * @param {!ClientRect} containerBbox The client rect of the container root element
+   * @param {!ClientRect} innerBbox The client rect of the container inner element
+   * @param {number} slideTo The distance to slide
+   * @private
+   */
   updatePagerVisibility_(containerBbox, innerBbox, slideTo) {
     const remainingInnerWidth = innerBbox.width - slideTo;
     if (remainingInnerWidth < containerBbox.width) {
@@ -337,8 +355,6 @@ class MDCTabzBar {
     // The distance from the right edge of the tab to the right edge of the container
     const tabRightEdgeDistance = tabRootRight + innerOffset - containerBbox.width;
 
-    console.log('index', index, 'tabLeftEdgeDistance', tabLeftEdgeDistance, 'tabRightEdgeDistance', tabRightEdgeDistance, 'scroll', innerScroll);
-
     return {
       left: tabLeftEdgeDistance,
       right: tabRightEdgeDistance,
@@ -354,6 +370,7 @@ class MDCTabzBar {
    * @private
    */
   calculateAdjacentTabContentDistance_(index, adjacentIndex) {
+    // Early exit
     if (!this.isIndexInRange_(adjacentIndex)) {
       return 0;
     }
@@ -363,18 +380,22 @@ class MDCTabzBar {
     const tabRight = tabLeft + tab.getRootOffsetWidth();
 
     const adjacentTab = this.getTabAtIndex_(adjacentIndex);
-    let extra = numbers.SCROLL_EXTRA;
+    const adjacentRootLeft = adjacentTab.getRootOffsetLeft();
+    const adjacentContentLeft = adjacentTab.getContentOffsetLeft();
+    const adjacentContentWidth = adjacentTab.getContentOffsetWidth();
+
+    const leftExtra = tabLeft - adjacentRootLeft - adjacentContentLeft - adjacentContentWidth;
+    const rightExtra = adjacentRootLeft + adjacentContentLeft - tabRight;
+
+    let extra;
 
     if (adjacentIndex < index) {
-      extra += tabLeft - adjacentTab.getRootOffsetLeft() - adjacentTab.getContentOffsetLeft() - adjacentTab.getContentOffsetWidth();
+      extra = this.isRTL_() ? rightExtra : leftExtra;
     } else {
-      extra += adjacentTab.getRootOffsetLeft() + adjacentTab.getContentOffsetLeft() - tabRight;
+      extra = this.isRTL_() ? leftExtra : rightExtra;
     }
 
-    // TODO(prodee): Fix extra calculation for RTL
-    console.log('extra', extra);
-
-    return extra;
+    return extra + numbers.SCROLL_EXTRA;
   }
 
   /**
@@ -387,9 +408,9 @@ class MDCTabzBar {
   calculateAdjacentTabIndex_(index, edge) {
     let adjacentIndex;
     if (edge.left > 0) {
-      adjacentIndex = this.adapter_.isRTL() ? index + 1 : index - 1;
+      adjacentIndex = this.isRTL_() ? index + 1 : index - 1;
     } else if (edge.right > 0) {
-      adjacentIndex = this.adapter_.isRTL() ? index - 1 : index + 1;
+      adjacentIndex = this.isRTL_() ? index - 1 : index + 1;
     } else {
       adjacentIndex = edge.left > edge.right ? index - 1 : index + 1;
     }
@@ -413,8 +434,6 @@ class MDCTabzBar {
     let shouldSlideLeft = false;
     let slideTo;
 
-    console.log('index', index, 'adjacentIndex', adjacentIndex);
-
     if (edge.left > 0 || edge.left < 0 && edge.left > -adjacentTabContentDistance) {
       slideTo = edge.left;
     } else if (edge.right > 0 || edge.right < 0 && edge.right > -adjacentTabContentDistance) {
@@ -424,8 +443,6 @@ class MDCTabzBar {
       // Early exit
       return;
     }
-
-    console.log('slideTo', slideTo, 'scroll', edge.scroll);
 
     if (tabIsBetweenEnds) {
       slideTo += adjacentTabContentDistance;
