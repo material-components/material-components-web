@@ -46,11 +46,11 @@ class JsBundleFactory {
       chunks,
       chunkGlobConfig: {
         inputDirectory = null,
-        filePathPattern = null,
+        filePathPattern = '**/*.js',
       } = {},
       output: {
-        fsDirAbsolutePath,
-        httpDirAbsolutePath,
+        fsDirAbsolutePath = undefined, // Required for building the npm distribution and writing output files to disk
+        httpDirAbsolutePath = undefined, // Required for running the demo server
         filenamePattern = this.env_.isProd() ? '[name].min.js' : '[name].js',
         library,
       },
@@ -67,12 +67,6 @@ class JsBundleFactory {
         filename: filenamePattern,
         libraryTarget: 'umd',
         library,
-      },
-      // See https://github.com/webpack/webpack-dev-server/issues/882
-      // Because we only spin up dev servers temporarily, and all of our assets are publicly
-      // available on GitHub, we can safely disable this check.
-      devServer: {
-        disableHostCheck: true,
       },
       devtool: 'source-map',
       module: {
