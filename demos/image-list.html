@@ -449,17 +449,17 @@
         });
 
         document.getElementById('masonry-label-below').addEventListener('change', function() {
-          masonryImageListEl.classList[this.checked ? 'remove' : 'add']('mdc-image-list--protected');
+          masonryImageListEl.classList[this.checked ? 'remove' : 'add']('mdc-image-list--with-text-protection');
           masonryImageListEl.classList[this.checked ? 'remove' : 'add']('hide-supporting');
         });
 
         document.getElementById('masonry-label-protected').addEventListener('change', function() {
-          masonryImageListEl.classList[this.checked ? 'add' : 'remove']('mdc-image-list--protected');
+          masonryImageListEl.classList[this.checked ? 'add' : 'remove']('mdc-image-list--with-text-protection');
           masonryImageListEl.classList[this.checked ? 'remove' : 'add']('hide-supporting');
         });
 
         document.getElementById('masonry-label-none').addEventListener('change', function() {
-          masonryImageListEl.classList[this.checked ? 'remove' : 'add']('mdc-image-list--protected');
+          masonryImageListEl.classList[this.checked ? 'remove' : 'add']('mdc-image-list--with-text-protection');
           masonryImageListEl.classList[this.checked ? 'add' : 'remove']('hide-supporting');
         });
       });
