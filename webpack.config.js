@@ -29,75 +29,80 @@ env.setBabelEnv();
 const pathResolver = new PathResolver();
 const globber = new Globber({pathResolver});
 const pluginFactory = new PluginFactory({globber});
+const copyrightBannerPlugin = pluginFactory.createCopyrightBannerPlugin();
 const cssBundleFactory = new CssBundleFactory({env, pathResolver, globber, pluginFactory});
 const jsBundleFactory = new JsBundleFactory({env, pathResolver, globber, pluginFactory});
 
-const OUT_DIR_ABS = pathResolver.getAbsolutePath('./build');
-const DEMO_ASSET_DIR_REL = '/assets/'; // Used by webpack-dev-server
-
-const copyrightBannerPlugin = pluginFactory.createCopyrightBannerPlugin();
-
-module.exports = [];
-
-module.exports.push(jsBundleFactory.createMainJsCombined({
-  output: {
-    fsDirAbsolutePath: OUT_DIR_ABS,
-    httpDirAbsolutePath: DEMO_ASSET_DIR_REL,
-  },
-}));
-
-if (!env.isDev()) {
-  module.exports.push(jsBundleFactory.createMainJsALaCarte({
-    output: {
-      fsDirAbsolutePath: OUT_DIR_ABS,
-      httpDirAbsolutePath: DEMO_ASSET_DIR_REL,
-    },
-  }));
-
-  module.exports.push(cssBundleFactory.createMainCssCombined({
-    output: {
-      fsDirAbsolutePath: OUT_DIR_ABS,
-      httpDirAbsolutePath: DEMO_ASSET_DIR_REL,
-    },
-  }));
-
-  module.exports.push(cssBundleFactory.createMainCssALaCarte({
-    output: {
-      fsDirAbsolutePath: OUT_DIR_ABS,
-      httpDirAbsolutePath: DEMO_ASSET_DIR_REL,
-    },
-  }));
-}
+const OUTPUT = {
+  fsDirAbsolutePath: pathResolver.getAbsolutePath('./build'),
+  httpDirAbsolutePath: '/assets/',
+};
 
 if (env.isDev()) {
-  module.exports.push(cssBundleFactory.createCustomCss({
-    bundleName: 'demo-css',
-    chunkGlobConfig: {
-      inputDirectory: '/demos',
-    },
-    output: {
-      fsDirAbsolutePath: OUT_DIR_ABS,
-      httpDirAbsolutePath: DEMO_ASSET_DIR_REL,
-    },
-    plugins: [
-      copyrightBannerPlugin,
-    ],
-  }));
+  module.exports = demo();
+} else {
+  module.exports = dist();
+}
 
-  module.exports.push(jsBundleFactory.createCustomJs({
+function dist() {
+  return [
+    mainJsCombined(),
+    mainJsALaCarte(),
+    mainCssCombined(),
+    mainCssALaCarte(),
+  ];
+}
+
+function demo() {
+  return [
+    mainJsCombined(),
+    demoCss(),
+    demoJs(),
+  ];
+}
+
+function mainJsCombined() {
+  return jsBundleFactory.createMainJsCombined({output: OUTPUT});
+}
+
+function mainJsALaCarte() {
+  return jsBundleFactory.createMainJsALaCarte({output: OUTPUT});
+}
+
+function mainCssCombined() {
+  return cssBundleFactory.createMainCssCombined({output: OUTPUT});
+}
+
+function mainCssALaCarte() {
+  return cssBundleFactory.createMainCssALaCarte({output: OUTPUT});
+}
+
+function demoJs() {
+  return jsBundleFactory.createCustomJs({
     bundleName: 'demo-js',
     chunks: {
       'common': pathResolver.getAbsolutePath('./demos/common.js'),
       'theme/index': pathResolver.getAbsolutePath('./demos/theme/index.js'),
     },
-    output: {
-      fsDirAbsolutePath: OUT_DIR_ABS,
-      httpDirAbsolutePath: DEMO_ASSET_DIR_REL,
+    output: Object.assign({}, OUTPUT, {
       filename: '[name].js',
       library: ['demo', '[name]'],
-    },
+    }),
     plugins: [
       copyrightBannerPlugin,
     ],
-  }));
+  });
+}
+
+function demoCss() {
+  return cssBundleFactory.createCustomCss({
+    bundleName: 'demo-css',
+    chunkGlobConfig: {
+      inputDirectory: '/demos',
+    },
+    output: OUTPUT,
+    plugins: [
+      copyrightBannerPlugin,
+    ],
+  });
 }
