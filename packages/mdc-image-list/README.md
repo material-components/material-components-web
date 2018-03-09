@@ -59,12 +59,12 @@ The HTML structure for a Standard Image List is as follows:
 
 ### Styles
 
-The structure above would be combined with an invocation of the `mdc-image-list-columns` mixin, to establish how many
+The structure above would be combined with an invocation of the `mdc-image-list-standard-columns` mixin, to establish how many
 columns should be displayed per line:
 
 ```scss
 .my-image-list {
-  @include mdc-image-list-columns(5);
+  @include mdc-image-list-standard-columns(5);
 }
 ```
 
@@ -88,21 +88,21 @@ CSS Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-image-list-aspect($width-height-ratio)` | Styles the aspect container elements within an image list to conform to the given ratio, where 1 is 1:1, greater than 1 is wider, and less than 1 is taller.
-`mdc-image-list-columns($column-count, $gutter-size)` | Styles the Image List to display the given number of columns. `$gutter-size` is optional and overrides the default amount of space between items.
+`mdc-image-list-aspect($width-height-ratio)` | Styles the aspect container elements within an Image List to conform to the given ratio, where 1 is 1:1, greater than 1 is wider, and less than 1 is taller.
+`mdc-image-list-standard-columns($column-count, $gutter-size)` | Styles a Standard Image List to display the given number of columns. `$gutter-size` is optional and overrides the default amount of space between items.
 
 ### Additional Information
 
 #### Constraining width
 
-The `mdc-image-list-columns` mixin will grow and shrink items based on the Image List's overall width. Depending on
+The `mdc-image-list-standard-columns` mixin will grow and shrink items based on the Image List's overall width. Depending on
 placement, this could be directly related to the viewport width, and images could become exceedingly large compared to
 their actual rendered size. This can be restricted by using any of `min-width`, `width`, or `max-width` on the Image
 List:
 
 ```scss
 .my-image-list {
-  @include mdc-image-list-columns(5);
+  @include mdc-image-list-standard-columns(5);
   max-width: 960px;
 }
 ```
@@ -117,12 +117,12 @@ needs to be changed are styles:
 
 ```scss
 .my-image-list {
-  @include mdc-image-list-columns(5);
+  @include mdc-image-list-standard-columns(5);
 }
 
 @media (max-width: 599px) {
   .my-image-list {
-    @include mdc-image-list-columns(3);
+    @include mdc-image-list-standard-columns(3);
   }
 }
 ```

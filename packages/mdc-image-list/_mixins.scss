@@ -22,7 +22,7 @@
 
 // Standard Image List
 
-@mixin mdc-image-list-columns($column-count, $gutter-size: $mdc-image-list-gutter-size) {
+@mixin mdc-image-list-standard-columns($column-count, $gutter-size: $mdc-image-list-standard-gutter-size) {
   // This uses margin rather than padding to facilitate properly positioning the supporting content element when
   // --protected is used.
   .mdc-image-list__item {
