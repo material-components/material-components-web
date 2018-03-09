@@ -112,6 +112,7 @@
     @include mdc-typography-overflow-ellipsis;
     @include mdc-rtl-reflexive-box(margin, left, $mdc-toolbar-element-horizontal-padding-desktop);
 
+    display: block;
     align-self: center;
     padding: 12px 0;
     line-height: 1.5rem;
