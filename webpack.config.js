@@ -29,7 +29,6 @@ env.setBabelEnv();
 const pathResolver = new PathResolver();
 const globber = new Globber({pathResolver});
 const pluginFactory = new PluginFactory({globber});
-const copyrightBannerPlugin = pluginFactory.createCopyrightBannerPlugin();
 const cssBundleFactory = new CssBundleFactory({env, pathResolver, globber, pluginFactory});
 const jsBundleFactory = new JsBundleFactory({env, pathResolver, globber, pluginFactory});
 
