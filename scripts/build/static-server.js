@@ -16,6 +16,7 @@
 
 'use strict';
 
+const colors = require('colors');
 const express = require('express');
 const serveIndex = require('serve-index');
 
@@ -30,7 +31,10 @@ class StaticServer {
     this.serveIndexLib_ = serveIndexLib;
   }
 
-  runLocalDevServer({relativeDirectoryPaths, port = process.env.MDC_PORT || 8090}) {
+  runLocalDevServer({
+    relativeDirectoryPaths,
+    port = process.env.MDC_PORT || 8090,
+  }) {
     const app = this.expressLib_();
     relativeDirectoryPaths.forEach((relativeDirectoryPath) => {
       this.serveStatic_(app, relativeDirectoryPath);
@@ -47,18 +51,18 @@ class StaticServer {
   }
 
   logLocalDevServerRunning_(port) {
-    const message = `Local development server running on http://localhost:${port}/`;
-    const ch = '=';
-    const divider = ch.repeat(message.length + 6);
-    const spacer = ' '.repeat(message.length);
+    const content = `Local development server running on http://localhost:${port}/`;
+    const border = '=';
+    const divider = border.repeat(content.length + 8);
+    const spacer = ' '.repeat(content.length);
 
-    console.log(`
+    console.log(colors.green.bold(`
 ${divider}
-${ch}  ${spacer}  ${ch}
-${ch}  ${message}  ${ch}
-${ch}  ${spacer}  ${ch}
+${border}   ${spacer}   ${border}
+${border}   ${content}   ${border}
+${border}   ${spacer}   ${border}
 ${divider}
-`);
+`));
   }
 }
 
