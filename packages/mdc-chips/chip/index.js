@@ -51,10 +51,10 @@ class MDCChip extends MDCComponent {
   }
 
   /**
-   * Toggles active state of the chip.
+   * Toggles selected state of the chip.
    */
-  toggleActive() {
-    this.foundation_.toggleActive();
+  toggleSelected() {
+    this.foundation_.toggleSelected();
   }
 
   /**

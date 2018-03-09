@@ -1,3 +1,44 @@
+<a name="0.32.0"></a>
+# [0.32.0](https://github.com/material-components/material-components-web/compare/v0.31.0...v0.32.0) (2018-03-05)
+
+
+### Bug Fixes
+
+* **chips:** Emit custom event from trailing icon ([#2286](https://github.com/material-components/material-components-web/issues/2286)) ([e849937](https://github.com/material-components/material-components-web/commit/e849937))
+* **ripple:** Fix selected opacity levels ([#2294](https://github.com/material-components/material-components-web/issues/2294)) ([06e39b1](https://github.com/material-components/material-components-web/commit/06e39b1))
+* **select:** add tests for select label package ([#2289](https://github.com/material-components/material-components-web/issues/2289)) ([b8ae66c](https://github.com/material-components/material-components-web/commit/b8ae66c))
+* **select:** Fix floating label for pre-selected option ([#2306](https://github.com/material-components/material-components-web/issues/2306)) ([d8dae34](https://github.com/material-components/material-components-web/commit/d8dae34))
+* **text-field:** disable validation check in setRequired ([#2201](https://github.com/material-components/material-components-web/issues/2201)) ([0ba7d10](https://github.com/material-components/material-components-web/commit/0ba7d10))
+* **toolbar:** Fix icon padding for ripples, and vertical alignment in FF/IE/Edge ([#2138](https://github.com/material-components/material-components-web/issues/2138)) ([d2c9726](https://github.com/material-components/material-components-web/commit/d2c9726))
+* Use `var` instead of `const` in demos/ready.js ([#2343](https://github.com/material-components/material-components-web/issues/2343)) ([78408bb](https://github.com/material-components/material-components-web/commit/78408bb))
+
+
+### Chores
+
+* **floating-label:** separate label module from text-field ([#2237](https://github.com/material-components/material-components-web/issues/2237)) ([4b24b51](https://github.com/material-components/material-components-web/commit/4b24b51))
+
+
+### Features
+
+* **chips:** Add `mdc-chip-set--choice` variant ([#2215](https://github.com/material-components/material-components-web/issues/2215)) ([f89cd10](https://github.com/material-components/material-components-web/commit/f89cd10))
+* **chips:** Change chip color when selected ([#2329](https://github.com/material-components/material-components-web/issues/2329)) ([ecf4060](https://github.com/material-components/material-components-web/commit/ecf4060))
+* **chips:** Create mixin to customize chip margins ([#2277](https://github.com/material-components/material-components-web/issues/2277)) ([b996b7f](https://github.com/material-components/material-components-web/commit/b996b7f))
+* **chips:** Handle multi-select for filter chips ([#2297](https://github.com/material-components/material-components-web/issues/2297)) ([807b6ce](https://github.com/material-components/material-components-web/commit/807b6ce))
+* **top app bar:** Add short top app bar always collapsed feature ([#2327](https://github.com/material-components/material-components-web/issues/2327)) ([bc17291](https://github.com/material-components/material-components-web/commit/bc17291))
+* **top-app-bar:** Baseline top app bar component ([#2225](https://github.com/material-components/material-components-web/issues/2225)) ([0ad69c4](https://github.com/material-components/material-components-web/commit/0ad69c4))
+* **top-app-bar:** Implement short top app bar ([#2290](https://github.com/material-components/material-components-web/issues/2290)) ([fd8d8d9](https://github.com/material-components/material-components-web/commit/fd8d8d9))
+
+
+### BREAKING CHANGES
+
+* **text-field:** removed setRequired and isRequired from foundation.
+* **chips:** The `mdc-chip--activated` class, `mdc-chip-activated-ink-color` Sass mixin, and the `toggleActive` methods on `MDCChip`/`MDCChipSet` have been renamed to `mdc-chip--selected`, `mdc-chip-selected-ink-color`, and `toggleSelected`, respectively.
+* **floating-label:** must use `.mdc-floating-label` selector instead of `.mdc-text-field__label`
+* **chips:** Added `mdc-chip-set--filter` as a variant to be set in the HTML.
+* **chips:** New MDCChipAdapter methods for handling trailing icons must be implemented.
+
+
+
 <a name="0.31.0"></a>
 # [0.31.0](https://github.com/material-components/material-components-web/compare/v0.30.0...v0.31.0) (2018-02-20)
 

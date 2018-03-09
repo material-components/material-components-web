@@ -41,7 +41,7 @@ npm install --save @material/textfield
 ```html
 <div class="mdc-text-field">
   <input type="text" id="my-text-field" class="mdc-text-field__input">
-  <label class="mdc-text-field__label" for="my-text-field">Hint text</label>
+  <label class="mdc-floating-label" for="my-text-field">Hint text</label>
   <div class="mdc-line-ripple"></div>
 </div>
 ```
@@ -54,7 +54,7 @@ by HTML5's form validation API.
 ```html
 <div class="mdc-text-field">
   <input type="password" id="pw" class="mdc-text-field__input" required minlength=8>
-  <label for="pw" class="mdc-text-field__label">Password</label>
+  <label for="pw" class="mdc-floating-label">Password</label>
   <div class="mdc-line-ripple"></div>
 </div>
 ```
@@ -64,14 +64,14 @@ by HTML5's form validation API.
 #### Pre-filled
 
 When dealing with JS-driven text fields that already have values, you'll want to ensure that you
-render `mdc-text-field__label` with the `mdc-text-field__label--float-above` modifier class, and `mdc-text-field` with the `mdc-text-field--upgraded` modifier class. This will
+render `mdc-floating-label` with the `mdc-floating-label--float-above` modifier class, and `mdc-text-field` with the `mdc-text-field--upgraded` modifier class. This will
 ensure that the label moves out of the way of the text field's value and prevents a Flash Of
 Un-styled Content (**FOUC**).
 
 ```html
 <div class="mdc-text-field mdc-text-field--upgraded">
   <input type="text" id="pre-filled" class="mdc-text-field__input" value="Pre-filled value">
-  <label class="mdc-text-field__label mdc-text-field__label--float-above" for="pre-filled">
+  <label class="mdc-floating-label mdc-floating-label--float-above" for="pre-filled">
     Label in correct place
   </label>
   <div class="mdc-line-ripple"></div>
@@ -93,7 +93,7 @@ Full width text fields are useful for in-depth tasks or entering complex informa
 
 > _NOTE_: Do not use `mdc-text-field--box` or `mdc-text-field--outlined` to style a full width text field.
 
-> _NOTE_: Do not use `mdc-text-field__label` within `mdc-text-field--fullwidth`. Labels should not be
+> _NOTE_: Do not use `mdc-floating-label` within `mdc-text-field--fullwidth`. Labels should not be
 included as part of the DOM structure of a full width text field.
 
 #### Textarea
@@ -101,7 +101,7 @@ included as part of the DOM structure of a full width text field.
 ```html
 <div class="mdc-text-field mdc-text-field--textarea">
   <textarea id="textarea" class="mdc-text-field__input" rows="8" cols="40"></textarea>
-  <label for="textarea" class="mdc-text-field__label">Textarea Label</label>
+  <label for="textarea" class="mdc-floating-label">Textarea Label</label>
 </div>
 ```
 
@@ -112,7 +112,7 @@ Add the `disabled` attribute to `<input>` if the `mdc-text-field` is disabled. Y
 ```html
 <div class="mdc-text-field mdc-text-field--disabled">
   <input type="text" id="disabled-text-field" class="mdc-text-field__input" disabled>
-  <label class="mdc-text-field__label" for="disabled-text-field">Disabled text field</label>
+  <label class="mdc-floating-label" for="disabled-text-field">Disabled text field</label>
   <div class="mdc-line-ripple"></div>
 </div>
 ```
@@ -122,7 +122,7 @@ Add the `disabled` attribute to `<input>` if the `mdc-text-field` is disabled. Y
 ```html
 <div class="mdc-text-field mdc-text-field--outlined">
   <input type="text" id="tf-outlined" class="mdc-text-field__input">
-  <label for="tf-outlined" class="mdc-text-field__label">Your Name</label>
+  <label for="tf-outlined" class="mdc-floating-label">Your Name</label>
   <div class="mdc-text-field__outline">
     <svg>
       <path class="mdc-text-field__outline-path"/>
@@ -174,23 +174,18 @@ apply these mixins with CSS selectors such as `.foo-text-field.mdc-text-field--i
 
 Mixin | Description
 --- | ---
-`mdc-text-field-box-corner-radius($radius)` | Customizes the border radius for a box text field
-`mdc-text-field-textarea-corner-radius($radius)` | Customizes the border radius for a `<textarea>` text field
-`mdc-text-field-ink-color($color)` | Customizes the text entered into the text-field.
-`mdc-text-field-label-color($color)` | Customizes the label color of the text-field.
-`mdc-text-field-line-ripple-color($color)` | Customizes the color of the default line ripple of the text-field.
-`mdc-text-field-hover-line-ripple-color($color)` | Customizes the hover color of the line ripple of the text-field.
-`mdc-text-field-focused-line-ripple-color($color)` | Customizes the line-ripple ripple color when the text-field is focused.
-`mdc-text-field-outline-color($color)` | Customizes the color of the border of the outlined text-field.
-`mdc-text-field-hover-outline-color($color)` | Customizes the hover color of the border of the outlined text-field.
-`mdc-text-field-focused-outline-color($color)` | Customizes the outlined border color when the text-field is focused.
+`mdc-text-field-bottom-line-color($color)` | Customizes the text-field bottom line color except the outline and textarea variants.
+`mdc-text-field-box-corner-radius($radius)` | Customizes the border radius for the text-field box variant.
 `mdc-text-field-box-fill-color($color)` | Customizes the background color of the text-field box.
-`mdc-text-field-textarea-stroke-color($color)` | Customizes the color of the border of the textarea.
+`mdc-text-field-fullwidth-bottom-line-color($color)` | Customizes the fullwidth text-field variant bottom line color.
+`mdc-text-field-hover-bottom-line-color($color)` | Customizes the hover text-field bottom line color except the outline and textarea variants.
+`mdc-text-field-ink-color($color)` | Customizes the text entered into the text-field.
+`mdc-text-field-label-color($color)` | Customizes the text color of the label.
+`mdc-text-field-line-ripple-color($color)` | Customizes the color of the default line ripple of the text-field.
+`mdc-text-field-outlined-corner-radius($radius)` | Sets the border radius of of the text-field outline variant.
+`mdc-text-field-textarea-corner-radius($radius)` | Customizes the border radius for a `<textarea>` variant.
 `mdc-text-field-textarea-fill-color($color)` | Customizes the color of the background of the textarea.
-`mdc-text-field-fullwidth-line-ripple-color($color)` | Customizes the line ripple under a fullwidth text field. Doesn't apply to a textarea.
-`mdc-text-field-icon-color($color)` | Customizes the color for the leading/trailing icons.
-`mdc-text-field-helper-text-color($color)` | Customizes the color of the helper text following a text-field.
-`mdc-text-field-helper-text-validation-color($color)` | Customizes the color of the helper text when it's used as a validation message.
+`mdc-text-field-textarea-stroke-color($color)` | Customizes the color of the border of the textarea.
 
 ### `MDCTextField`
 
@@ -254,4 +249,4 @@ Method Signature | Description
 `setHelperTextContent(content: string) => void` | Sets the content of the helper text
 `updateOutline() => void` | Updates the focus outline for outlined text fields
 
-`MDCTextFieldFoundation` supports multiple optional sub-elements: line ripple, helper text, icon, label, and outline. The foundations of these sub-elements must be passed in as constructor arguments to `MDCTextFieldFoundation`.
+`MDCTextFieldFoundation` supports multiple optional sub-elements: line ripple, helper text, icon, and outline. The foundations of these sub-elements must be passed in as constructor arguments to `MDCTextFieldFoundation`.

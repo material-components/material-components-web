@@ -18,9 +18,17 @@
 /** @enum {string} */
 const strings = {
   NAVIGATION_EVENT: 'MDCTopAppBar:nav',
+  ROOT_SELECTOR: '.mdc-top-app-bar',
   TITLE_SELECTOR: '.mdc-top-app-bar__title',
-  MENU_ICON_SELECTOR: '.mdc-top-app-bar__menu-icon',
-  ACTION_ICON_SELECTOR: '.mdc-top-app-bar__icon',
+  NAVIGATION_ICON_SELECTOR: '.mdc-top-app-bar__navigation-icon',
+  ACTION_ITEM_SELECTOR: '.mdc-top-app-bar__action-item',
 };
 
-export {strings};
+/** @enum {string} */
+const cssClasses = {
+  SHORT_CLASS: 'mdc-top-app-bar--short',
+  SHORT_HAS_ACTION_ITEM_CLASS: 'mdc-top-app-bar--short-has-action-item',
+  SHORT_COLLAPSED_CLASS: 'mdc-top-app-bar--short-collapsed',
+};
+
+export {strings, cssClasses};

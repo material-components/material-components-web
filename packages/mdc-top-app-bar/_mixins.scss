@@ -14,9 +14,10 @@
 // limitations under the License.
 //
 
+@import "@material/animation/variables";
+@import "@material/ripple/mixins";
 @import "@material/theme/variables"; // for mdc-theme-accessible-ink-color
 @import "@material/theme/mixins";
-@import "@material/ripple/mixins";
 @import "./variables";
 
 //
@@ -37,10 +38,48 @@
 }
 
 @mixin mdc-top-app-bar-icon-ink-color($color) {
-  .mdc-top-app-bar__icon,
-  .mdc-top-app-bar__menu-icon {
+  .mdc-top-app-bar__action-item,
+  .mdc-top-app-bar__navigation-icon {
     @include mdc-theme-prop(color, $color);
     @include mdc-states($color);
+  }
+}
+
+@mixin mdc-top-app-bar-short-border-radius($border-radius: $mdc-top-app-bar-short-collapsed-border-radius) {
+  @include mdc-rtl-reflexive_(border-bottom-left-radius, 0, border-bottom-right-radius, $mdc-top-app-bar-short-collapsed-border-radius);
+}
+
+@mixin mdc-top-app-bar-mobile-breakpoint_($mobile-breakpoint: $mdc-top-app-bar-mobile-breakpoint) {
+  @media (max-width: $mobile-breakpoint) {
+    .mdc-top-app-bar {
+      .mdc-top-app-bar__row {
+        min-height: $mdc-top-app-bar-mobile-row-height;
+      }
+
+      .mdc-top-app-bar__section {
+        padding: $mdc-top-app-bar-mobile-section-padding;
+      }
+
+      .mdc-top-app-bar__title {
+        @include mdc-rtl-reflexive-box(padding, left, $mdc-top-app-bar-mobile-title-left-padding);
+      }
+    }
+
+    .mdc-top-app-bar--short {
+      transition: width 200ms $mdc-animation-standard-curve-timing-function;
+
+      .mdc-top-app-bar__row {
+        min-height: $mdc-top-app-bar-mobile-row-height;
+      }
+    }
+
+    .mdc-top-app-bar--short-collapsed {
+      transition: width 250ms $mdc-animation-standard-curve-timing-function;
+
+      .mdc-top-app-bar__section--align-end {
+        @include mdc-rtl-reflexive-box(padding, right, $mdc-top-app-bar-short-collapsed-right-icon-padding);
+      }
+    }
   }
 }
 
@@ -49,7 +88,7 @@
 //
 
 // Applies styles to the different types of icons that can exist in top-app-bars.
-// Both .mdc-top-app-bar__icon and .mdc-top-app-bar__menu-icon share all styles except for
+// Both .mdc-top-app-bar__icon and .mdc-top-app-bar__navigation-icon share all styles except for
 // horizontal padding.
 @mixin mdc-top-app-bar-icon_() {
   @include mdc-ripple-surface;
@@ -57,6 +96,7 @@
 
   display: flex;
   position: relative;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
   width: $mdc-top-app-bar-icon-size;
