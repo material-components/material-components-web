@@ -113,7 +113,8 @@ CSS Class | Description
 `mdc-chip__icon` | Optional. Indicates an icon in the chip.
 `mdc-chip__icon--leading` | Optional. Indicates a leading icon in the chip.
 `mdc-chip__icon--trailing` | Optional. Indicates a trailing icon in the chip.
-`mdc-chip__checkmark` | Optional. Indicates the checkmark SVG element in a filter chip.
+`mdc-chip__checkmark` | Optional. Indicates the checkmark in a filter chip.
+`mdc-chip__checkmark-svg` | Mandatory with the use of `mdc-chip__checkmark`. Indicates the checkmark SVG element in a filter chip.
 `mdc-chip__checkmark-path` | Mandatory with the use of `mdc-chip__checkmark`. Indicates the checkmark SVG path in a filter chip.
 
 > _NOTE_: Every element that has an `mdc-chip__icon` class must also have either the `mdc-chip__icon--leading` or `mdc-chip__icon--trailing` class.

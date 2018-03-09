@@ -84,6 +84,7 @@
 
 .mdc-chip__checkmark,
 .mdc-chip__icon--leading {
+  height: 24px;
   margin: -4px 4px -4px -4px;
 }
 
@@ -105,25 +106,29 @@
 
 // Add leading checkmark to filter chips with no leading icon
 
-.mdc-chip__checkmark {
+.mdc-chip__checkmark-svg {
   width: 0;
   height: 24px;
   transition: width $mdc-chip-width-animation-duration $mdc-animation-standard-curve-timing-function;
 }
 
-.mdc-chip--selected .mdc-chip__checkmark {
+.mdc-chip--selected .mdc-chip__checkmark-svg {
   width: 24px;
 }
 
 // Add leading checkmark to filter chips with a leading icon
 
 .mdc-chip__icon--leading {
-  transition: opacity $mdc-chip-opacity-animation-duration linear, width 0ms;
+  transition: opacity $mdc-chip-opacity-animation-duration linear;
   opacity: 1;
 
   + .mdc-chip__checkmark {
-    transition: opacity $mdc-chip-opacity-animation-duration linear, width 0ms;
+    transition: opacity $mdc-chip-opacity-animation-duration linear;
     opacity: 0;
+
+    .mdc-chip__checkmark-svg {
+      transition: width 0ms;
+    }
   }
 }
 
