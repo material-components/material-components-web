@@ -33,6 +33,8 @@ const copyrightBannerPlugin = pluginFactory.createCopyrightBannerPlugin();
 const cssBundleFactory = new CssBundleFactory({env, pathResolver, globber, pluginFactory});
 const jsBundleFactory = new JsBundleFactory({env, pathResolver, globber, pluginFactory});
 
+const DEMO_BASE_DIR_ABSOLUTE_PATH = pathResolver.getAbsolutePath('/demos');
+
 const OUTPUT = {
   httpDirAbsolutePath: '/assets/',
 };
@@ -42,6 +44,19 @@ module.exports = [
   demoCss(),
   demoJs(),
 ];
+
+// webpack-dev-server requires that these properties be set on the first bundle.
+// It ignores them on all other bundles.
+Object.assign(module.exports[0], {
+  devServer: {
+    contentBase: DEMO_BASE_DIR_ABSOLUTE_PATH,
+
+    // See https://github.com/webpack/webpack-dev-server/issues/882
+    // Because we only spin up dev servers temporarily, and all of our assets are publicly
+    // available on GitHub, we can safely disable this check.
+    disableHostCheck: true,
+  },
+});
 
 function mainJsCombined() {
   return jsBundleFactory.createMainJsCombined({output: OUTPUT});

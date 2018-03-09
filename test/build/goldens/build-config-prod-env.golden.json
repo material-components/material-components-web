@@ -8,9 +8,6 @@
       "libraryTarget": "umd",
       "library": "mdc"
     },
-    "devServer": {
-      "disableHostCheck": true
-    },
     "devtool": "source-map",
     "module": {
       "rules": [
@@ -71,9 +68,6 @@
         "mdc",
         "[name]"
       ]
-    },
-    "devServer": {
-      "disableHostCheck": true
     },
     "devtool": "source-map",
     "module": {

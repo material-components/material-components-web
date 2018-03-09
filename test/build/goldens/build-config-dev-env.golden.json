@@ -8,9 +8,6 @@
       "libraryTarget": "umd",
       "library": "mdc"
     },
-    "devServer": {
-      "disableHostCheck": true
-    },
     "devtool": "source-map",
     "module": {
       "rules": [
@@ -33,7 +30,11 @@
         },
         "banner": "/*!\n Material Components for the Web\n Copyright (c) 2018 Google Inc.\n License: Apache-2.0\n*/"
       }
-    ]
+    ],
+    "devServer": {
+      "contentBase": "/demos",
+      "disableHostCheck": true
+    }
   },
   {
     "name": "demo-css",
@@ -144,9 +145,6 @@
         "demo",
         "[name]"
       ]
-    },
-    "devServer": {
-      "disableHostCheck": true
     },
     "devtool": "source-map",
     "module": {
