@@ -77,7 +77,7 @@ class MDCChip extends MDCComponent {
           this.leadingIcon_.classList.remove(className);
         }
       },
-      eventTargetHasClass: (target, className) => target ? target.classList.contains(className) : false,
+      eventTargetHasClass: (target, className) => target.classList.contains(className),
       registerEventHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterEventHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
       registerTrailingIconInteractionHandler: (evtType, handler) => {

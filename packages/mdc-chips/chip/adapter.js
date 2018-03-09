@@ -61,7 +61,7 @@ class MDCChipAdapter {
 
   /**
    * Returns true if target has className, false otherwise.
-   * @param {?EventTarget} target
+   * @param {!EventTarget} target
    * @param {string} className
    * @return {boolean}
    */
