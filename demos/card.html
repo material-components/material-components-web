@@ -238,11 +238,7 @@
         var rtlToggle = document.getElementById('toggle-rtl');
         rtlToggle.addEventListener('change', function() {
           var docEl = document.documentElement;
-          if (rtlToggle.checked) {
-            docEl.setAttribute('dir', 'rtl');
-          } else {
-            docEl.removeAttribute('dir');
-          }
+          docEl.setAttribute('dir', rtlToggle.checked ? 'rtl' : 'ltr');
         });
 
         [].forEach.call(document.querySelectorAll('.mdc-button'), function(surface) {

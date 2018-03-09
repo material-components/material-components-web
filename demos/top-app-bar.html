@@ -199,7 +199,7 @@
         });
 
         rtlCheckbox.addEventListener('change', function()  {
-          document.body[this.checked ? 'setAttribute' : 'removeAttribute']("dir", "rtl");
+          document.body.setAttribute('dir', this.checked ? 'rtl': 'ltr');
           appBarEl.classList.remove('mdc-top-app-bar--short-has-action-item');
 
           appBar.destroy();
