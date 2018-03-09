@@ -17,7 +17,7 @@ path: /catalog/image-lists/
 </div>-->
 
 MDC Image List provides a RTL-aware Material Design image list component, representing an evolution of the
-[Material Design Grid list spec](https://material.io/guidelines/components/grid-lists.html).
+[Material Design Grid List spec](https://material.io/guidelines/components/grid-lists.html).
 An Image List consists of several items, each containing an image and optionally supporting content (i.e. a text label).
 
 ## Design & API Documentation
@@ -44,7 +44,7 @@ npm install --save @material/image-list
 The HTML structure for a Standard Image List is as follows:
 
 ```html
-<ul class="mdc-image-list">
+<ul class="mdc-image-list my-image-list">
   <li class="mdc-image-list__item">
     <div class="mdc-image-list__image-aspect-container">
       <img class="mdc-image-list__image" src="...">
@@ -56,6 +56,20 @@ The HTML structure for a Standard Image List is as follows:
   ...
 </ul>
 ```
+
+### Styles
+
+The structure above would be combined with an invocation of the `mdc-image-list-columns` mixin, to establish how many
+columns should be displayed per line:
+
+```scss
+.my-image-list {
+  @include mdc-image-list-columns(5);
+}
+```
+
+Images in a Standard Image list are constrained to 1:1 aspect ratio by default; this can be overridden using the
+`mdc-image-list-aspect` mixin documented below.
 
 ## Style Customization
 
