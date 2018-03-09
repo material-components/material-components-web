@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2018 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>All Mixins Combined - Button Sticker Sheet - MDC Web Screenshot Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="../out/main/mdc.button.css">
+    <link rel="stylesheet" href="../out/main/mdc.typography.css">
+    <link rel="stylesheet" href="../out/test/fixture.test.css">
+    <link rel="stylesheet" href="../out/test/mdc-button/button.test.css">
+    <script src="../../../demos/ready.js"></script>
+  </head>
+
+  <body class="mdc-typography">
+    <main class="test-main">
+      <p class="test-row">
+        <button class="custom-button custom-button--all-mixins mdc-button"><i class="material-icons mdc-button__icon">favorite</i>Baseline</button>
+        <button class="custom-button custom-button--all-mixins mdc-button mdc-button--compact"><i class="material-icons mdc-button__icon">favorite</i>Compact</button>
+        <button class="custom-button custom-button--all-mixins mdc-button mdc-button--dense"><i class="material-icons mdc-button__icon">favorite</i>Dense</button>
+        <button class="custom-button custom-button--all-mixins mdc-button mdc-button--dense mdc-button--compact"><i class="material-icons mdc-button__icon">favorite</i>Compact + Dense</button>
+        <a class="custom-button custom-button--all-mixins mdc-button" href="#">
+          <i class="material-icons mdc-button__icon">favorite</i>
+          Link
+        </a>
+      </p>
+      <p class="test-row">
+        <button class="custom-button custom-button--all-mixins mdc-button mdc-button--raised"><i class="material-icons mdc-button__icon">favorite</i>Baseline</button>
+        <button class="custom-button custom-button--all-mixins mdc-button mdc-button--raised mdc-button--compact"><i class="material-icons mdc-button__icon">favorite</i>Compact</button>
+        <button class="custom-button custom-button--all-mixins mdc-button mdc-button--raised mdc-button--dense"><i class="material-icons mdc-button__icon">favorite</i>Dense</button>
+        <button class="custom-button custom-button--all-mixins mdc-button mdc-button--raised mdc-button--dense mdc-button--compact"><i class="material-icons mdc-button__icon">favorite</i>Compact + Dense</button>
+        <a class="custom-button custom-button--all-mixins mdc-button mdc-button--raised" href="#">
+          <i class="material-icons mdc-button__icon">favorite</i>
+          Link
+        </a>
+      </p>
+      <p class="test-row">
+        <button class="custom-button custom-button--all-mixins mdc-button mdc-button--stroked"><i class="material-icons mdc-button__icon">favorite</i>Baseline</button>
+        <button class="custom-button custom-button--all-mixins mdc-button mdc-button--stroked mdc-button--compact"><i class="material-icons mdc-button__icon">favorite</i>Compact</button>
+        <button class="custom-button custom-button--all-mixins mdc-button mdc-button--stroked mdc-button--dense"><i class="material-icons mdc-button__icon">favorite</i>Dense</button>
+        <button class="custom-button custom-button--all-mixins mdc-button mdc-button--stroked mdc-button--dense mdc-button--compact"><i class="material-icons mdc-button__icon">favorite</i>Compact + Dense</button>
+        <a class="custom-button custom-button--all-mixins mdc-button mdc-button--stroked" href="#">
+          <i class="material-icons mdc-button__icon">favorite</i>
+          Link
+        </a>
+      </p>
+    </main>
+
+    <script src="../out/main/material-components-web.js" async></script>
+    <script src="../out/test/mdc-button/button.test.js" async></script>
+  </body>
+</html>

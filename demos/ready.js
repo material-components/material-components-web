@@ -90,7 +90,7 @@ window.demoReady = (function(root) {
 
   function invokeHandlers() {
     handlers.forEach(function(handler) {
-      handler(root);
+      handler(root, window.mdc);
     });
     handlers.length = 0;
   }
@@ -101,7 +101,7 @@ window.demoReady = (function(root) {
 
   return function addHandler(handler) {
     if (isReady()) {
-      handler(root);
+      handler(root, window.mdc);
       return;
     }
     handlers.push(handler);

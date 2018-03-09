@@ -1,0 +1,50 @@
+//
+// Copyright 2018 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+@import url("https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css");
+
+// Mixins
+@import "../../packages/mdc-theme/mixins";
+@import "../../packages/mdc-typography/mixins";
+
+body {
+  @include mdc-theme-prop(background-color, background);
+  @include mdc-theme-prop(color, text-primary-on-background);
+}
+
+// Used by ready.js to test whether the CSS has finished loading.
+// stylelint-disable-next-line selector-class-pattern
+.demo-ready-detect {
+  position: relative;
+}
+
+.test-main {
+  padding: 16px;
+}
+
+.test-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 0 0 24px 0;
+}
+
+// TODO(acdvorak): Avoid using a universal selector and potentially overwriting the component's baseline styles.
+// We might need to wrap every component in a `<div class="test-cell">` element; HTML templates could make that easier.
+// stylelint-disable-next-line selector-max-universal
+.test-row > * {
+  margin: 8px;
+}
