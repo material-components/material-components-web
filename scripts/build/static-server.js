@@ -39,6 +39,9 @@ class StaticServer {
     relativeDirectoryPaths.forEach((relativeDirectoryPath) => {
       this.serveStatic_(app, relativeDirectoryPath);
     });
+    app.get('/', (req, res) => {
+      res.redirect('test/screenshot/');
+    });
     app.listen(port, () => this.logLocalDevServerRunning_(port));
   }
 
