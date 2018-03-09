@@ -78,9 +78,9 @@ Images in a Standard Image list are constrained to 1:1 aspect ratio by default; 
 CSS Class | Description
 --- | ---
 `mdc-image-list` | Mandatory. Indicates the root Image List element.
-`mdc-image-list--protected` | Optional. Indicates that supporting content should be positioned in a scrim overlaying each image (instead of positioned separately under each image).
+`mdc-image-list--with-text-protection` | Optional. Indicates that supporting content should be positioned in a scrim overlaying each image (instead of positioned separately under each image).
 `mdc-image-list__item` | Mandatory. Indicates each item in an Image List.
-`mdc-image-list__image-aspect-container` | Optional. Parent of each item's image element, responsible for constraining aspect ratio. This element may be omitted entirely if images are alreadysized to the correct aspect ratio.
+`mdc-image-list__image-aspect-container` | Optional. Parent of each item's image element, responsible for constraining aspect ratio. This element may be omitted entirely if images are already sized to the correct aspect ratio.
 `mdc-image-list__image` | Mandatory. Indicates the image element in each item.
 `mdc-image-list__supporting` | Optional. Indicates the area within each item containing the supporting text label, if the Image List contains text labels.
 `mdc-image-list__label` | Optional. Indicates the text label in each item, if the Image List contains text labels.
