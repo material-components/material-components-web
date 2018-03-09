@@ -6,9 +6,9 @@ const strings = {
   INNER_SELECTOR: '.mdc-tabz-container__inner',
 };
 
-class MDCTabzContainer {
+class MDCTabzScroller {
   static attachTo(root) {
-    return new MDCTabzContainer(root);
+    return new MDCTabzScroller(root);
   }
 
   static get cssClasses() {
@@ -24,9 +24,9 @@ class MDCTabzContainer {
     this.inner_ = root.querySelector(strings.INNER_SELECTOR);
 
     this.adapter_ = {
-      registerEventListener: (evtType, handler) =>
+      registerEventHandler: (evtType, handler) =>
         this.root_.addEventListener(evtType, handler),
-      deregisterEventListener: (evtType, handler) =>
+      deregisterEventHandler: (evtType, handler) =>
         this.root_.removeEventListener(evtType, handler),
       getRootBoundingClientRect: () =>
         this.root_.getBoundingClientRect(),
@@ -86,7 +86,7 @@ class MDCTabzContainer {
    */
   slideTo(targetX) {
     this.adapter_.addClass(cssClasses.ANIMATING);
-    this.adapter_.registerEventListener('transitionend', this.handleTransitionEnd_);
+    this.adapter_.registerEventHandler('transitionend', this.handleTransitionEnd_);
     this.adapter_.setInnerStyleProp('transform', `translateX(${targetX}px)`);
   }
 
@@ -116,5 +116,5 @@ class MDCTabzContainer {
 }
 
 export {
-  MDCTabzContainer,
+  MDCTabzScroller,
 };

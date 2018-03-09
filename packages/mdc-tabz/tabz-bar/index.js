@@ -1,6 +1,6 @@
 import {MDCTabz} from '../tabz';
 import {MDCTabzIndicator} from '../tabz-indicator';
-import {MDCTabzContainer} from '../tabz-container';
+import {MDCTabzScroller} from '../tabz-scroller';
 import {MDCTabzPager} from '../tabz-pager';
 
 const strings = {
@@ -9,7 +9,7 @@ const strings = {
   CONTAINER_SELECTOR: '.mdc-tabz-container',
   PAGER_SELECTOR: '.mdc-tabz-pager',
   PAGER_NEXT_SELECTOR: '.mdc-tabz-pager--next',
-  PAGER_PREV_SELECTOR: '.mdc-tabz-pager--prev',
+  PAGER_PREVIOUS_SELECTOR: '.mdc-tabz-pager--previous',
 };
 
 const cssClasses = {
@@ -18,7 +18,7 @@ const cssClasses = {
 };
 
 const numbers = {
-  SCROLL_OFFSET_FACTOR: 1.5,
+  SCROLL_EXTRA: 16,
 };
 
 class MDCTabzBar {
@@ -43,7 +43,7 @@ class MDCTabzBar {
     this.root_ = root;
 
     const containerRoot = root.querySelector(strings.CONTAINER_SELECTOR);
-    this.container_ = MDCTabzContainer.attachTo(containerRoot);
+    this.container_ = MDCTabzScroller.attachTo(containerRoot);
 
     const indicator = this.root_.querySelector(strings.RESIZE_INDICATOR_SELECTOR);
     this.indicator_ = MDCTabzIndicator.attachTo(indicator);
@@ -56,21 +56,26 @@ class MDCTabzBar {
       this.pagerNext_ = MDCTabzPager.attachTo(pagerNext);
     }
 
+    const pagerPrevious = this.root_.querySelector(strings.PAGER_PREVIOUS_SELECTOR);
+    if (pagerPrevious) {
+      this.pagerPrevious_ = MDCTabzPager.attachTo(pagerPrevious);
+    }
+
     // Event Handlers
     this.handleResize_ = () => this.handleResize();
     this.handleTabSelection_ = (e) => this.handleTabSelection(e);
-    this.handleNextPageClick_ = () => this.handleNextPageClick();
-    this.handlePrevPageClick_ = () => this.handlePrevPageClick();
+    this.handlePagingEvent_ = (e) => this.handlePagingEvent(e);
+    this.handleTabKeyboard_ = (e) => this.handleTabKeyboard(e);
 
     // Adapter initialization
     this.adapter_ = {
-      registerWindowEventListener: (evtType, handler) =>
-        window.addEventListener(evtType, handler),
-      deregisterWindowEventListener: (evtType, handler) =>
-        window.removeEventListener(evtType, handler),
-      registerEventListener: (evtType, handler) =>
+      registerWindowResizeHandler: (handler) =>
+        window.addEventListener('resize', handler),
+      deregisterWindowResizeHandler: (handler) =>
+        window.removeEventListener('resize', handler),
+      registerEventHandler: (evtType, handler) =>
         this.root_.addEventListener(evtType, handler),
-      deregisterEventListener: (evtType, handler) =>
+      deregisterEventHandler: (evtType, handler) =>
         this.root_.removeEventListener(evtType, handler),
       hasClass: (className) =>
         this.root_.classList.contains(className),
@@ -96,12 +101,13 @@ class MDCTabzBar {
   init() {
     this.updateIndicator();
     // Window events
-    this.adapter_.registerWindowEventListener('resize', this.handleResize_);
+    this.adapter_.registerWindowResizeHandler(this.handleResize_);
     // Tab events
-    this.adapter_.registerEventListener(MDCTabz.strings.TABZ_EVENT, this.handleTabSelection_);
+    this.adapter_.registerEventHandler(MDCTabz.strings.SELECTED_EVENT, this.handleTabSelection_);
     // Pager events
-    this.adapter_.registerEventListener(MDCTabzPager.strings.NEXT, this.handleNextPageClick_);
-    this.adapter_.registerEventListener(MDCTabzPager.strings.PREV, this.handlePrevPageClick_);
+    this.adapter_.registerEventHandler(MDCTabzPager.strings.PAGING_EVENT, this.handlePagingEvent_);
+    // Keypress
+    this.adapter_.registerEventHandler(MDCTabz.strings.KEYBOARD_EVENT, this.handleTabKeyboard_);
   }
 
   /**
@@ -109,16 +115,16 @@ class MDCTabzBar {
    * @return {!MDCTabz}
    * @private
    */
-  getActiveTab() {
+  getActiveTab_() {
     return this.getTabAtIndex_(this.activeIndex_);
   }
 
   /**
-   * Returns the index of the selected tab
+   * Returns the index of the given tab
    * @return {number}
    * @private
    */
-  getIndexOfTab_(target) {
+  getTabIndex_(target) {
     return this.tabz_.indexOf(target);
   }
 
@@ -135,21 +141,16 @@ class MDCTabzBar {
   /**
    * Returns whether the index is within the tab range
    * @param {number} index The index to check
+   * @param {boolean=} inclusive Whether to include the end indices (defaults to true)
    * @return {boolean}
    * @private
    */
-  isIndexInRange_(index) {
-    return index >= 0 && index < this.tabz_.length;
-  }
-
-  /**
-   * Returns whether the index is between the tab ends
-   * @param {number} index The index to check
-   * @return {boolean}
-   * @private
-   */
-  isIndexBetweenEnds_(index) {
-    return index > 0 && index < this.tabz_.length - 1;
+  isIndexInRange_(index, inclusive=true) {
+    if (inclusive) {
+      return index >= 0 && index < this.tabz_.length;
+    } else {
+      return index > 0 && index < this.tabz_.length - 1;
+    }
   }
 
   /**
@@ -164,7 +165,19 @@ class MDCTabzBar {
    * @param {!Event} e A browser event
    */
   handleTabSelection(e) {
-    this.activateTab(this.getIndexOfTab_(e.detail.tab));
+    this.activateTab(this.getTabIndex_(e.detail.tab));
+  }
+
+  /**
+   * Handles the paging event
+   * @param {!Event} e A browser event
+   */
+  handlePagingEvent(e) {
+    if (e.detail.direction === MDCTabzPager.strings.NEXT) {
+      this.nextPage();
+    } else if (e.detail.direction === MDCTabzPager.strings.PREVIOUS) {
+      this.previousPage();
+    }
   }
 
   /**
@@ -179,8 +192,40 @@ class MDCTabzBar {
     });
   }
 
-  /** Handles the next page click */
-  handleNextPageClick() {
+  /**
+   * Handles the Tab keyboard event
+   * @param {!Event} e The Tab keyboard event
+   */
+  handleTabKeyboard(e) {
+    const tabIndex = this.getTabIndex_(e.detail.tab);
+    let nextIndex;
+
+    switch (e.detail.direction) {
+    case MDCTabz.strings.KEYBOARD_END:
+      nextIndex = this.tabz_.length - 1;
+      break;
+    case MDCTabz.strings.KEYBOARD_HOME:
+      nextIndex = 0;
+      break;
+    case MDCTabz.strings.KEYBOARD_NEXT:
+      nextIndex = tabIndex + 1;
+      break;
+    case MDCTabz.strings.KEYBOARD_PREVIOUS:
+      nextIndex = tabIndex - 1;
+      break;
+    }
+
+    if (nextIndex < 0) {
+      nextIndex = this.tabz_.length - 1;
+    } else if (!this.isIndexInRange_(nextIndex)) {
+      nextIndex = 0;
+    }
+
+    this.activateTab(nextIndex);
+  }
+
+  /** Shows the next page */
+  nextPage() {
     const containerBbox = this.container_.getRootBoundingClientRect();
     const innerBbox = this.container_.getInnerBoundingClientRect();
     const innerOffset = innerBbox.left - containerBbox.left;
@@ -198,37 +243,52 @@ class MDCTabzBar {
       i++;
     }
 
-    if (tabsToRightAreOccluded) {
-      this.container_.slideTo(slideTo * -1);
-    }
-
-    const remainingInnerWidth = innerBbox.width - slideTo;
-    if (remainingInnerWidth < containerBbox.width) {
-      this.pagerNext_.hide();
-    }
+    this.updatePagerVisibility_(containerBbox, innerBbox, slideTo);
+    this.container_.slideTo(-slideTo);
   }
 
-  /** Handles the prev page click */
-  handlePrevPageClick() {
+  /** Handles the previous page click */
+  previousPage() {
     const containerBbox = this.container_.getRootBoundingClientRect();
     const innerBbox = this.container_.getInnerBoundingClientRect();
     const innerOffset = innerBbox.left - containerBbox.left;
     const tabLength = this.tabz_.length;
     let i = tabLength - 1;
     let slideTo = 0;
-    let tabsToLeftAreOccluded = false;
+    let pageSize = containerBbox.width;
 
-    while (!tabsToLeftAreOccluded && i > 0) {
+    while (i >= 0 && pageSize > 0) {
       const tabLeft = this.tabz_[i].getRootOffsetLeft();
-      const tabRight = tabLeft + this.tabz_[i].getRootOffsetWidth();
-      const tabRightRelative = tabRight + innerOffset;
-      slideTo = tabLeft;
-      tabsToLeftAreOccluded = tabRightRelative > containerBbox.width;
-      i++;
+      const tabWidth = this.tabz_[i].getRootOffsetWidth();
+      const tabLeftRelative = tabLeft + innerOffset;
+
+      if (tabLeftRelative < 0) {
+        pageSize -= tabWidth;
+      }
+
+      if (pageSize >= 0) {
+        slideTo = tabLeft;
+      }
+
+      i--;
     }
 
-    if (tabsToLeftAreOccluded) {
-      this.slideToPosition(slideTo);
+    this.updatePagerVisibility_(containerBbox, innerBbox, slideTo);
+    this.container_.slideTo(-slideTo);
+  }
+
+  updatePagerVisibility_(containerBbox, innerBbox, slideTo) {
+    const remainingInnerWidth = innerBbox.width - slideTo;
+    if (remainingInnerWidth < containerBbox.width) {
+      this.pagerNext_.hide();
+    } else {
+      this.pagerNext_.show();
+    }
+
+    if (slideTo === 0) {
+      this.pagerPrevious_.hide();
+    } else {
+      this.pagerPrevious_.show();
     }
   }
 
@@ -241,10 +301,11 @@ class MDCTabzBar {
     if (index === this.activeIndex_ || !this.isIndexInRange_(index)) {
       return;
     }
-    this.getActiveTab().deactivate();
+
+    this.getActiveTab_().deactivate();
     this.activeIndex_ = index;
     this.slideTabIntoView(index);
-    this.getActiveTab().activate();
+    this.getActiveTab_().activate();
     this.calculateIndicatorPosition_();
     this.indicator_.animatePosition();
   }
@@ -254,7 +315,7 @@ class MDCTabzBar {
    * positive number indicates that the edge is outside the container while a
    * negative number indicates that the edge is inside the container
    * @param {number} index The index of the tab
-   * @return {{left: number, right: number}}
+   * @return {{left: number, right: number, scroll: number, offset: number}}
    * @private
    */
   calculateTabEdgeDistances_(index) {
@@ -276,10 +337,63 @@ class MDCTabzBar {
     // The distance from the right edge of the tab to the right edge of the container
     const tabRightEdgeDistance = tabRootRight + innerOffset - containerBbox.width;
 
+    console.log('index', index, 'tabLeftEdgeDistance', tabLeftEdgeDistance, 'tabRightEdgeDistance', tabRightEdgeDistance, 'scroll', innerScroll);
+
     return {
       left: tabLeftEdgeDistance,
       right: tabRightEdgeDistance,
+      scroll: innerScroll,
     };
+  }
+
+  /**
+   * Calculate the distance between the current tab and the next adjacent tab's content
+   * @param {number} index The index of the current tab
+   * @param {number} adjacentIndex The direction as either -1 (left) or 1 (right)
+   * @return {number}
+   * @private
+   */
+  calculateAdjacentTabContentDistance_(index, adjacentIndex) {
+    if (!this.isIndexInRange_(adjacentIndex)) {
+      return 0;
+    }
+
+    const tab = this.getTabAtIndex_(index);
+    const tabLeft = tab.getRootOffsetLeft();
+    const tabRight = tabLeft + tab.getRootOffsetWidth();
+
+    const adjacentTab = this.getTabAtIndex_(adjacentIndex);
+    let extra = numbers.SCROLL_EXTRA;
+
+    if (adjacentIndex < index) {
+      extra += tabLeft - adjacentTab.getRootOffsetLeft() - adjacentTab.getContentOffsetLeft() - adjacentTab.getContentOffsetWidth();
+    } else {
+      extra += adjacentTab.getRootOffsetLeft() + adjacentTab.getContentOffsetLeft() - tabRight;
+    }
+
+    // TODO(prodee): Fix extra calculation for RTL
+    console.log('extra', extra);
+
+    return extra;
+  }
+
+  /**
+   * Calculates the adjacent tab index given the current index
+   * @param {number} index The current index
+   * @param {{left: number, right: number}} edge The calculated tab edges
+   * @return {number}
+   * @private
+   */
+  calculateAdjacentTabIndex_(index, edge) {
+    let adjacentIndex;
+    if (edge.left > 0) {
+      adjacentIndex = this.adapter_.isRTL() ? index + 1 : index - 1;
+    } else if (edge.right > 0) {
+      adjacentIndex = this.adapter_.isRTL() ? index - 1 : index + 1;
+    } else {
+      adjacentIndex = edge.left > edge.right ? index - 1 : index + 1;
+    }
+    return adjacentIndex;
   }
 
   /**
@@ -292,28 +406,29 @@ class MDCTabzBar {
       return;
     }
 
-    const edgeDistance = this.calculateTabEdgeDistances_(index);
-    // Check if tabs are between ends
-    const tabIsBetweenEnds = this.isIndexBetweenEnds_(index);
-    // Get the current tab
-    const tab = this.getTabAtIndex_(index);
-    // Extra scrollage FTW
-    const slideToExtra = tab.getContentOffsetLeft() * 2;
+    const tabIsBetweenEnds = this.isIndexInRange_(index, false);
+    const edge = this.calculateTabEdgeDistances_(index);
+    const adjacentIndex = this.calculateAdjacentTabIndex_(index, edge);
+    const adjacentTabContentDistance = this.calculateAdjacentTabContentDistance_(index, adjacentIndex);
     let shouldSlideLeft = false;
     let slideTo;
 
-    if (edgeDistance.left > 0) {
-      slideTo = edgeDistance.left;
-    } else if (edgeDistance.right > 0) {
-      slideTo = edgeDistance.right;
+    console.log('index', index, 'adjacentIndex', adjacentIndex);
+
+    if (edge.left > 0 || edge.left < 0 && edge.left > -adjacentTabContentDistance) {
+      slideTo = edge.left;
+    } else if (edge.right > 0 || edge.right < 0 && edge.right > -adjacentTabContentDistance) {
+      slideTo = edge.right;
       shouldSlideLeft = true;
     } else {
       // Early exit
       return;
     }
 
+    console.log('slideTo', slideTo, 'scroll', edge.scroll);
+
     if (tabIsBetweenEnds) {
-      slideTo += slideToExtra;
+      slideTo += adjacentTabContentDistance;
     }
 
     // Sliding left is a negative translation so we invert the value
@@ -321,17 +436,23 @@ class MDCTabzBar {
       slideTo *= -1;
     }
 
-    this.container_.scrollTo(slideTo);
+    if (this.isPaging_()) {
+      // Scroll is positive when scrolled to the left, negative when scrolled to the right.
+      // We negate the value to account for transformations (used in paging)
+      this.container_.slideTo(slideTo - edge.scroll);
+    } else {
+      this.container_.scrollTo(slideTo);
+    }
   }
 
   /**
    * Calculates the indicator's new position
    */
   calculateIndicatorPosition_() {
-    const tabRootLeft = this.getActiveTab().getRootOffsetLeft();
-    const tabRootWidth = this.getActiveTab().getRootOffsetWidth();
-    const tabContentLeft = this.getActiveTab().getContentOffsetLeft();
-    const tabContentWidth = this.getActiveTab().getContentOffsetWidth();
+    const tabRootLeft = this.getActiveTab_().getRootOffsetLeft();
+    const tabRootWidth = this.getActiveTab_().getRootOffsetWidth();
+    const tabContentLeft = this.getActiveTab_().getContentOffsetLeft();
+    const tabContentWidth = this.getActiveTab_().getContentOffsetWidth();
     this.indicator_.calculatePosition(tabRootLeft, tabRootWidth, tabContentLeft, tabContentWidth);
   }
 

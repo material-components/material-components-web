@@ -2,6 +2,7 @@
 @import "../packages/mdc-tabz/mdc-tabz";
 @import "../packages/mdc-elevation/mixins";
 @import "../packages/mdc-ripple/mixins";
+@import "../packages/mdc-theme/color-palette";
 
 // Customization for the demo
 .demo-many {
@@ -17,10 +18,13 @@
 }
 
 .custom-demo {
-  @include mdc-tabz-colors($background: #ffdbcf);
-  @include mdc-tabz-active-colors($color: #442b2d);
+  .mdc-tabz-container {
+    background: #ffdbcf;
+  }
+  // @include mdc-tabz-colors($background: #ffdbcf);
+  @include mdc-tabz-active-ink(#442b2d);
 
-  @include mdc-tabz-ripple {
+  .mdc-tabz {
     @include mdc-states(#442b2d);
   }
 
@@ -33,13 +37,37 @@
   }
 }
 
-.dark-demo {
-  @include mdc-tabz-colors($background: $mdc-purple, $color: white);
-  @include mdc-tabz-active-colors($background: $mdc-purple, $color: white);
-  @include mdc-tabz-indicator($color: white);
+.posifeed-container {
+  position: relative;
+  width: 714px;
+  height: 309px;
+  background-image: url("/images/posifeed.png");
+}
 
-  @include mdc-tabz-ripple {
-    @include mdc-states(white);
+.posifeed-logo {
+  position: absolute;
+  top: 45px;
+  left: 41px;
+}
+
+.posifeed-tabz-container {
+  position: absolute;
+  top: 41px;
+  left: 200px;
+}
+
+.posifeed-tabz {
+  @include mdc-tabz-ink($material-color-grey-900);
+  @include mdc-tabz-active-bold;
+  @include mdc-tabz-indicator($color: $material-color-grey-900, $height: 4px);
+
+  .mdc-tabz {
+    @include mdc-states($material-color-grey-900);
+
+    padding: 0 20px;
+    font-family: "Roboto Condensed", Arial, sans-serif;
+    font-size: 16px;
+    letter-spacing: 1.5px;
   }
 }
 

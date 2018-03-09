@@ -48,6 +48,10 @@ class MDCTabzIndicator {
     this.root_ = root;
 
     this.adapter_ = {
+      registerEventHandler: (evtType, handler) =>
+        this.root_.addEventListener(evtType, handler),
+      deregisterEventHandler: (evtType, handler) =>
+        this.root_.removeEventListener(evtType, handler),
       getRootOffsetWidth: () =>
         this.root_.offsetWidth,
       setRootStyle: (prop, value) =>
@@ -58,10 +62,6 @@ class MDCTabzIndicator {
         this.root_.classList.remove(className),
       hasClass: (className) =>
         this.root_.classList.contains(className),
-      registerEventListener: (evtType, handler) =>
-        this.root_.addEventListener(evtType, handler),
-      deregisterEventListener: (evtType, handler) =>
-        this.root_.removeEventListener(evtType, handler),
     };
 
     /** @private {!EventListener} */
@@ -92,17 +92,17 @@ class MDCTabzIndicator {
       this.adapter_.removeClass(cssClasses.ICON_HIDE);
       this.updatePosition();
     } else if (this.isIcon_()) {
-      this.adapter_.deregisterEventListener('transitionend', this.handleTransitionEnd_);
+      this.adapter_.deregisterEventHandler('transitionend', this.handleTransitionEnd_);
       this.adapter_.removeClass(cssClasses.ANIMATING_ICON);
     } else {
-      this.adapter_.deregisterEventListener('transitionend', this.handleTransitionEnd_);
+      this.adapter_.deregisterEventHandler('transitionend', this.handleTransitionEnd_);
       this.adapter_.removeClass(cssClasses.ANIMATING);
     }
   }
 
   /** Animates the position of the indicator */
   animatePosition() {
-    this.adapter_.registerEventListener('transitionend', this.handleTransitionEnd_);
+    this.adapter_.registerEventHandler('transitionend', this.handleTransitionEnd_);
     if (this.isIcon_()) {
       this.adapter_.addClass(cssClasses.ANIMATING_ICON);
       this.adapter_.addClass(cssClasses.ICON_HIDE);
@@ -123,6 +123,9 @@ class MDCTabzIndicator {
     if (this.shouldMatchTabContentWidth_()) {
       translateX += tabContentLeft;
       scaleX = tabContentWidth;
+    } else if (this.isIcon_()) {
+      translateX += (tabRootWidth / 2) - (this.adapter_.getRootOffsetWidth() / 2);
+      scaleX = 1;
     }
     this.transformation_ = `translateX(${translateX}px) scaleX(${scaleX})`;
   }

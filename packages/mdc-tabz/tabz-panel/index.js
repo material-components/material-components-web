@@ -1,4 +1,12 @@
+const strings = {
+  TABZ_PANEL_SELECTOR: '.mdc-tabz-panel',
+};
+
 class MDCTabzPanel {
+  static get strings() {
+    return strings;
+  }
+
   static attachTo(root) {
     return new MDCTabzPanel(root);
   }
@@ -17,7 +25,7 @@ class MDCTabzPanel {
   }
 
   init() {
-    console.log('init');
+    console.log('init MDCTabzPanel');
   }
 }
 

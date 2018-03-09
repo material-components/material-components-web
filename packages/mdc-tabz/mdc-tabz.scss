@@ -10,31 +10,27 @@ $mdc-dark-gray: rgba(0, 0, 0, .87);
 $mdc-height: 2px;
 $mdc-color: $mdc-purple;
 
-@mixin mdc-tabz-colors($color: null, $background: null) {
-  .mdc-tabz {
-    @if ($background) {
-      background: $background;
-    }
-  }
-
-  .mdc-tabz__content {
-    @if ($color) {
-      color: $color;
-    }
+@mixin mdc-tabz-background($background) {
+  .mdc-tabz-container {
+    background: $background;
   }
 }
 
-@mixin mdc-tabz-active-colors($color: null, $background: null) {
-  .mdc-tabz--active {
-    @if ($background) {
-      background: $background;
-    }
+@mixin mdc-tabz-ink($color) {
+  .mdc-tabz__content {
+    color: $color;
   }
+}
 
+@mixin mdc-tabz-active-ink($color) {
   .mdc-tabz--active .mdc-tabz__content {
-    @if ($color) {
-      color: $color;
-    }
+    color: $color;
+  }
+}
+
+@mixin mdc-tabz-active-bold {
+  .mdc-tabz--active .mdc-tabz__content {
+    font-weight: bold;
   }
 }
 
@@ -62,23 +58,23 @@ $mdc-color: $mdc-purple;
   }
 }
 
-@mixin mdc-tabz-ripple {
-  .mdc-tabz__ripple {
-    @content;
-  }
-}
-
 /**
  * Items
  */
 .mdc-tabz {
+  @include mdc-ripple-surface;
+  @include mdc-ripple-radius-bounded;
+  @include mdc-states(primary);
+
   display: flex;
   position: relative;
-  flex: 1 0 0;
+  flex: 1 0 auto;
   justify-content: center;
   box-sizing: border-box;
   height: 48px;
   padding: 0 24px;
+  border: none;
+  background: none;
   font-family: Roboto, sans-serif;
   font-size: 14px;
   font-weight: 500;
@@ -86,6 +82,8 @@ $mdc-color: $mdc-purple;
   text-decoration: none;
   text-transform: uppercase;
   white-space: nowrap;
+  overflow: hidden;
+  z-index: 1;
 
   &:focus {
     outline: none;
@@ -99,8 +97,8 @@ $mdc-color: $mdc-purple;
     display: flex;
     position: relative;
     justify-content: center;
-    opacity: .6;
-    color: $mdc-gray;
+    // opacity: .6;
+    color: #616161;
     z-index: 1;
   }
 
@@ -129,24 +127,9 @@ $mdc-color: $mdc-purple;
     height: 2px;
     background-color: $mdc-color;
     pointer-events: none;
-    z-index: 1;
   }
 
-  &__ripple {
-    @include mdc-ripple-surface;
-    @include mdc-ripple-radius-bounded;
-    @include mdc-states(primary);
-
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    z-index: 2;
-  }
-
-  &__label {
+  &__text-label {
     display: inline-block;
     padding: 16px 0 20px;
   }
@@ -157,13 +140,8 @@ $mdc-color: $mdc-purple;
     padding: 12px 0;
   }
 
-  &__icon + &__label {
-    padding-left: 8px;
-
-    @include mdc-rtl {
-      padding-right: 8px;
-      padding-left: 0;
-    }
+  &__icon + &__text-label {
+    @include mdc-rtl-reflexive-box(padding, left, 8px);
   }
 
   .mdc-tabz-bar--two-lines & {
@@ -179,7 +157,7 @@ $mdc-color: $mdc-purple;
     padding: 12px 0 8px;
   }
 
-  .mdc-tabz-bar--two-lines &__label {
+  .mdc-tabz-bar--two-lines &__text-label {
     padding: 0 0 16px;
     line-height: 12px;
   }
@@ -196,18 +174,20 @@ $mdc-color: $mdc-purple;
   padding: 0;
   border: none;
   background: none;
-  z-index: 3;
+  z-index: 2;
 
   &:focus {
     outline: none;
   }
 
-  &--prev {
+  &--previous {
     left: 0;
+    background-image: linear-gradient(to left, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 50%);
   }
 
   &--next {
     right: 0;
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 50%);
   }
 
   &--hide {
@@ -228,7 +208,7 @@ $mdc-color: $mdc-purple;
   &__inner {
     display: flex;
     position: relative;
-    flex: 1;
+    flex: 1 0 auto;
     transform-origin: left;
   }
 
@@ -253,20 +233,24 @@ $mdc-color: $mdc-purple;
   &--cluster-right {
     border-bottom: none;
 
+    .mdc-tabz-container__inner {
+      flex: 0 0 auto;
+    }
+
     .mdc-tabz {
-      flex: 0;
+      flex: 0 1 auto;
     }
   }
 
-  &--cluster-left .mdc-tabz-container__inner {
+  &--cluster-left .mdc-tabz-container {
     justify-content: flex-start;
   }
 
-  &--cluster-center .mdc-tabz-container__inner {
+  &--cluster-center .mdc-tabz-container {
     justify-content: center;
   }
 
-  &--cluster-right .mdc-tabz-container__inner {
+  &--cluster-right .mdc-tabz-container {
     justify-content: flex-end;
   }
 
@@ -275,17 +259,14 @@ $mdc-color: $mdc-purple;
   }
 
   &--fixed-width .mdc-tabz-container {
-    padding-left: 56px;
-    border-bottom: none;
+    @include mdc-rtl-reflexive-box(padding, left, 56px);
 
-    @include mdc-rtl {
-      padding-right: 56px;
-      padding-left: 0;
-    }
+    border-bottom: none;
   }
 
   &--fixed-width .mdc-tabz {
-    flex: 0 0 110px;
+    flex: 1 0 auto;
+    min-width: 110px;
   }
 }
 
@@ -299,6 +280,7 @@ $mdc-color: $mdc-purple;
   background-color: $mdc-purple;
   opacity: 0;
   will-change: transform;
+  z-index: 1;
 
   &--upgraded {
     opacity: 1;
@@ -320,6 +302,7 @@ $mdc-color: $mdc-purple;
     width: inherit;
     height: 100%;
     background: none;
+    z-index: auto;
   }
 
   &--icon-hide {

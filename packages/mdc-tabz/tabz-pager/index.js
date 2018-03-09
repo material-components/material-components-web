@@ -1,12 +1,13 @@
 const cssClasses = {
-  PREV: 'mdc-tabz-pager--prev',
+  PREVIOUS: 'mdc-tabz-pager--previous',
   NEXT: 'mdc-tabz-pager--next',
   HIDE: 'mdc-tabz-pager--hide',
 };
 
 const strings = {
-  NEXT: 'MDCTabzPager:next',
-  PREV: 'MDCTabzPager:prev',
+  PAGING_EVENT: 'MDCTabzPager:paging',
+  NEXT: 'next',
+  PREVIOUS: 'previous',
 };
 
 class MDCTabzPager {
@@ -22,9 +23,9 @@ class MDCTabzPager {
     this.root_ = root;
 
     this.adapter_ = {
-      registerEventListener: (evtType, handler) =>
+      registerEventHandler: (evtType, handler) =>
         this.root_.addEventListener(evtType, handler),
-      deregisterEventListener: (evtType, handler) =>
+      deregisterEventHandler: (evtType, handler) =>
         this.root_.removeEventListener(evtType, handler),
       hasClass: (className) =>
         this.root_.classList.contains(className),
@@ -32,10 +33,13 @@ class MDCTabzPager {
         this.root_.classList.add(className),
       removeClass: (className) =>
         this.root_.classList.remove(className),
-      notifyPrev: () =>
-        this.emitPrevEvent_(),
-      notifyNext: () =>
-        this.emitNextEvent_(),
+      notifyPagingEvent: (data) => {
+        const ce = new CustomEvent(strings.PAGING_EVENT, {
+          detail: data,
+          bubbles: true,
+        });
+        this.root_.dispatchEvent(ce);
+      },
     };
 
     this.handleClick_ = () => this.handleClick();
@@ -44,29 +48,19 @@ class MDCTabzPager {
   }
 
   init() {
-    this.adapter_.registerEventListener('click', this.handleClick_);
+    this.adapter_.registerEventHandler('click', this.handleClick_);
   }
 
   handleClick() {
-    if (this.adapter_.hasClass(cssClasses.PREV)) {
-      this.adapter_.notifyPrev();
+    let direction;
+    if (this.adapter_.hasClass(cssClasses.PREVIOUS)) {
+      direction = strings.PREVIOUS;
     } else if (this.adapter_.hasClass(cssClasses.NEXT)) {
-      this.adapter_.notifyNext();
+      direction = strings.NEXT;
     }
-  }
-
-  emitPrevEvent_() {
-    const ce = new CustomEvent(strings.PREV, {
-      bubbles: true,
+    this.adapter_.notifyPagingEvent({
+      direction,
     });
-    this.root_.dispatchEvent(ce);
-  }
-
-  emitNextEvent_() {
-    const ce = new CustomEvent(strings.NEXT, {
-      bubbles: true,
-    });
-    this.root_.dispatchEvent(ce);
   }
 
   hide() {
