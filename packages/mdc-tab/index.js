@@ -68,6 +68,7 @@ class MDCTab extends MDCComponent {
       deregisterEventHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
+      hasClass: (className) => this.root_.classList.contains(className),
     })));
   }
 }
