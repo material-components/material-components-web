@@ -130,7 +130,7 @@ class MDCTabzIndicator {
       translateX += tab.getContentOffsetLeft();
       scaleX = tab.getContentOffsetWidth();
     } else if (this.isIcon_()) {
-      translateX += (tabRootWidth / 2) - this.adapter_.getRootOffsetWidth();
+      translateX += (tabRootWidth / 2) - (this.adapter_.getRootOffsetWidth() / 2);
       scaleX = 1;
     }
 
