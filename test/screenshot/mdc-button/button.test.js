@@ -27,7 +27,13 @@ demoReady((root, mdc) => {
   });
 
   // TODO(acdvorak): How do we handle combinatorial explosion of screenshot images?
-  // E.g., CSS-only vs. JS; LTR vs. RTL; idle vs. hover vs. pressed; IE vs. Chrome vs. Firefox; etc.
+  // E.g.:
+  // 1. Variants (--modifier)
+  // 2. Mixin combinations
+  // 3. CSS-only vs. JS-enabled
+  // 4. RTL vs. LTR
+  // 5. States (idle vs. hover vs. pressed)
+  // 6. Browsers (IE vs. Chrome vs. Firefox)
   dom.getAll('.mdc-button', root).forEach((el) => {
     mdc.ripple.MDCRipple.attachTo(el);
   });
