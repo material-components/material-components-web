@@ -175,6 +175,7 @@
       "mdc.form-field": "/packages/mdc-form-field/mdc-form-field.scss",
       "mdc.grid-list": "/packages/mdc-grid-list/mdc-grid-list.scss",
       "mdc.icon-toggle": "/packages/mdc-icon-toggle/mdc-icon-toggle.scss",
+      "mdc.image-list": "/packages/mdc-image-list/mdc-image-list.scss",
       "mdc.layout-grid": "/packages/mdc-layout-grid/mdc-layout-grid.scss",
       "mdc.line-ripple": "/packages/mdc-line-ripple/mdc-line-ripple.scss",
       "mdc.linear-progress": "/packages/mdc-linear-progress/mdc-linear-progress.scss",

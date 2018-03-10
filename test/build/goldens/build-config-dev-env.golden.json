@@ -50,6 +50,7 @@
       "fab": "/demos/fab.scss",
       "grid-list": "/demos/grid-list.scss",
       "icon-toggle": "/demos/icon-toggle.scss",
+      "image-list": "/demos/image-list.scss",
       "index": "/demos/index.scss",
       "layout-grid": "/demos/layout-grid.scss",
       "linear-progress": "/demos/linear-progress.scss",

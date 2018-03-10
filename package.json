@@ -134,6 +134,7 @@
           "form-field",
           "grid-list",
           "icon-toggle",
+          "image-list",
           "layout-grid",
           "line-ripple",
           "linear-progress",
