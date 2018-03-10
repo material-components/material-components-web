@@ -91,11 +91,9 @@ class MDCTabzIndicator {
     if (this.isIcon_() && this.isIconHidden_()) {
       this.adapter_.removeClass(cssClasses.ICON_HIDE);
       this.updatePosition();
-    } else if (this.isIcon_()) {
-      this.adapter_.deregisterEventHandler('transitionend', this.handleTransitionEnd_);
-      this.adapter_.removeClass(cssClasses.ANIMATING_ICON);
     } else {
       this.adapter_.deregisterEventHandler('transitionend', this.handleTransitionEnd_);
+      this.adapter_.removeClass(cssClasses.ANIMATING_ICON);
       this.adapter_.removeClass(cssClasses.ANIMATING);
     }
   }
@@ -115,6 +113,28 @@ class MDCTabzIndicator {
   /** Updates the position of the indicator */
   updatePosition() {
     this.adapter_.setRootStyle('transform', this.transformation_);
+  }
+
+  /**
+   * Calculates the position of the Tab
+   * @param {!MDCTabz} tab The active MDCTabz
+   */
+  calculatePosition2(tab) {
+    const tabRootLeft = tab.getRootOffsetLeft();
+    const tabRootWidth = tab.getRootOffsetWidth();
+
+    let translateX = tabRootLeft;
+    let scaleX = tabRootWidth;
+
+    if (this.shouldMatchTabContentWidth_()) {
+      translateX += tab.getContentOffsetLeft();
+      scaleX = tab.getContentOffsetWidth();
+    } else if (this.isIcon_()) {
+      translateX += (tabRootWidth / 2) - this.adapter_.getRootOffsetWidth();
+      scaleX = 1;
+    }
+
+    this.transformation_ = `translateX(${translateX}px) scaleX(${scaleX})`;
   }
 
   calculatePosition(tabRootLeft, tabRootWidth, tabContentLeft, tabContentWidth) {

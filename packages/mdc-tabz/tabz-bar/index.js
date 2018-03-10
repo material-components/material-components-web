@@ -42,11 +42,11 @@ class MDCTabzBar {
     // Component initialization
     this.root_ = root;
 
-    const containerRoot = root.querySelector(strings.CONTAINER_SELECTOR);
-    this.container_ = MDCTabzScroller.attachTo(containerRoot);
+    const scrollerRoot = root.querySelector(strings.CONTAINER_SELECTOR);
+    this.scroller_ = MDCTabzScroller.attachTo(scrollerRoot);
 
-    const indicator = this.root_.querySelector(strings.RESIZE_INDICATOR_SELECTOR);
-    this.indicator_ = MDCTabzIndicator.attachTo(indicator);
+    const indicatorRoot = this.root_.querySelector(strings.RESIZE_INDICATOR_SELECTOR);
+    this.indicator_ = MDCTabzIndicator.attachTo(indicatorRoot);
 
     const tabz = this.root_.querySelectorAll(strings.TABZ_SELECTOR);
     this.tabz_ = [].slice.call(tabz).map((tab) => MDCTabz.attachTo(tab));
@@ -237,8 +237,8 @@ class MDCTabzBar {
 
   /** Shows the next page */
   nextPage() {
-    const containerBbox = this.container_.getRootBoundingClientRect();
-    const innerBbox = this.container_.getInnerBoundingClientRect();
+    const containerBbox = this.scroller_.getRootBoundingClientRect();
+    const innerBbox = this.scroller_.getInnerBoundingClientRect();
     const innerOffset = innerBbox.left - containerBbox.left;
     const tabLength = this.tabz_.length;
     let i = 0;
@@ -255,13 +255,13 @@ class MDCTabzBar {
     }
 
     this.updatePagerVisibility_(containerBbox, innerBbox, slideTo);
-    this.container_.slideTo(-slideTo);
+    this.scroller_.slideTo(-slideTo);
   }
 
   /** Handles the previous page click */
   previousPage() {
-    const containerBbox = this.container_.getRootBoundingClientRect();
-    const innerBbox = this.container_.getInnerBoundingClientRect();
+    const containerBbox = this.scroller_.getRootBoundingClientRect();
+    const innerBbox = this.scroller_.getInnerBoundingClientRect();
     const innerOffset = innerBbox.left - containerBbox.left;
     const tabLength = this.tabz_.length;
     let i = tabLength - 1;
@@ -285,7 +285,7 @@ class MDCTabzBar {
     }
 
     this.updatePagerVisibility_(containerBbox, innerBbox, slideTo);
-    this.container_.slideTo(-slideTo);
+    this.scroller_.slideTo(-slideTo);
   }
 
   /**
@@ -338,10 +338,10 @@ class MDCTabzBar {
    */
   calculateTabEdgeDistances_(index) {
     // Get the container and inner bounding rects
-    const containerBbox = this.container_.getRootBoundingClientRect();
-    const innerBbox = this.container_.getInnerBoundingClientRect();
+    const containerBbox = this.scroller_.getRootBoundingClientRect();
+    const innerBbox = this.scroller_.getInnerBoundingClientRect();
     // Get the inner's offsetLeft
-    const innerLeft = this.container_.getInnerOffsetLeft();
+    const innerLeft = this.scroller_.getInnerOffsetLeft();
     // Calculate innerOffset
     const innerOffset = innerBbox.left - containerBbox.left;
     // Calculate innerScroll
@@ -456,9 +456,9 @@ class MDCTabzBar {
     if (this.isPaging_()) {
       // Scroll is positive when scrolled to the left, negative when scrolled to the right.
       // We negate the value to account for transformations (used in paging)
-      this.container_.slideTo(slideTo - edge.scroll);
+      this.scroller_.slideTo(slideTo - edge.scroll);
     } else {
-      this.container_.scrollTo(slideTo);
+      this.scroller_.scrollTo(slideTo);
     }
   }
 
@@ -466,11 +466,7 @@ class MDCTabzBar {
    * Calculates the indicator's new position
    */
   calculateIndicatorPosition_() {
-    const tabRootLeft = this.getActiveTab_().getRootOffsetLeft();
-    const tabRootWidth = this.getActiveTab_().getRootOffsetWidth();
-    const tabContentLeft = this.getActiveTab_().getContentOffsetLeft();
-    const tabContentWidth = this.getActiveTab_().getContentOffsetWidth();
-    this.indicator_.calculatePosition(tabRootLeft, tabRootWidth, tabContentLeft, tabContentWidth);
+    this.indicator_.calculatePosition2(this.getActiveTab_());
   }
 
   /**
