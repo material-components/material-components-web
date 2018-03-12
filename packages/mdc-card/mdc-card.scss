@@ -46,6 +46,7 @@
 
   position: relative; // Child element `__media-content` has `position: absolute`
   box-sizing: border-box;
+  background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
 }
