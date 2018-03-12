@@ -1,6 +1,7 @@
 import {MDCRipple} from '@material/ripple/index';
 
 const cssClasses = {
+  UPGRADED: 'mdc-tabz--upgraded',
   ACTIVE: 'mdc-tabz--active',
   ANIMATING_ACTIVATE: 'mdc-tabz--animating-activate',
   ANIMATING_DEACTIVATE: 'mdc-tabz--animating-deactivate',
@@ -41,8 +42,6 @@ class MDCTabz {
   constructor(root) {
     this.root_ = root;
     this.content_ = this.root_.querySelector(strings.CONTENT_SELECTOR);
-
-    // const rippleRoot_ = this.root_.querySelector(strings.RIPPLE_SURFACE_SELECTOR);
     this.ripple_ = MDCRipple.attachTo(this.root_);
 
     this.adapter_ = {
@@ -91,7 +90,7 @@ class MDCTabz {
 
     this.handleClick_ = () => this.handleClick();
     this.handleKeyPress_ = (e) => this.handleKeyPress(e);
-    this.handleTransitionEnd_ = () => this.handleTransitionEnd();
+    this.handleTransitionEnd_ = (e) => this.handleTransitionEnd(e);
 
     this.init();
   }
@@ -99,6 +98,8 @@ class MDCTabz {
   init() {
     this.adapter_.registerEventHandler('click', this.handleClick_);
     this.adapter_.registerEventHandler('keydown', this.handleKeyPress_);
+    this.adapter_.addClass(cssClasses.UPGRADED);
+    this.adapter_.setAttributeValue(strings.ARIA_SELECTED, this.isActive() ? 'true' : 'false');
   }
 
   /** Handles the click event */
@@ -109,9 +110,16 @@ class MDCTabz {
   }
 
   /** Handles the transitionend event */
-  handleTransitionEnd() {
+  handleTransitionEnd(e) {
+    // Early exit
+    if (e.pseudoElement) {
+      return;
+    }
     this.adapter_.removeClass(cssClasses.ANIMATING_ACTIVATE);
     this.adapter_.removeClass(cssClasses.ANIMATING_DEACTIVATE);
+    this.adapter_.removeClass(cssClasses.ANIMATING_ACTIVATE_CUSTOM_INDICATOR);
+    this.adapter_.removeClass(cssClasses.ANIMATING_DEACTIVATE_CUSTOM_INDICATOR);
+    this.adapter_.deregisterEventHandler('transitionend', this.handleTransitionEnd_);
   }
 
   handleKeyPress(e) {

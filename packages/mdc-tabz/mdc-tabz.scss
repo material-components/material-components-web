@@ -35,6 +35,16 @@ $mdc-color: $mdc-purple;
 }
 
 @mixin mdc-tabz-indicator($color: null, $height: null) {
+  .mdc-tabz__indicator {
+    @if ($color) {
+      color: $color;
+    }
+
+    @if ($height) {
+      height: $height;
+    }
+  }
+
   .mdc-tabz-indicator {
     @if ($color) {
       background: $color;
@@ -102,13 +112,15 @@ $mdc-color: $mdc-purple;
     z-index: 1;
   }
 
-  &--active &__content {
-    color: $mdc-color;
+  &__indicator {
+    position: absolute;
+    align-self: center;
+    justify-content: center;
+    opacity: 0;
   }
 
-  &--animating-deactivate &__content {
-    transition: 100ms color linear;
-    transition-delay: 0ms;
+  &--active &__content {
+    color: $mdc-color;
   }
 
   &--animating-activate &__content {
@@ -116,16 +128,27 @@ $mdc-color: $mdc-purple;
     transition-delay: 100ms;
   }
 
-  &__indicator {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 2px;
-    background-color: $mdc-color;
-    pointer-events: none;
+  &--animating-activate &__indicator {
+    transition: 150ms opacity linear;
+    transition-delay: 100ms;
+  }
+
+  &--animating-deactivate &__content {
+    transition: 100ms color linear;
+    transition-delay: 0ms;
+  }
+
+  &--animating-deactivate &__indicator {
+    transition: 100ms opacity linear;
+    transition-delay: 0ms;
+  }
+
+  &--active &__indicator {
+    opacity: 1;
+  }
+
+  &--upgraded:not(.mdc-tabz--custom-indicator) &__indicator {
+    display: none;
   }
 
   &__text-label {

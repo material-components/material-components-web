@@ -37,6 +37,14 @@
   }
 }
 
+.custom-icon-indicator {
+  @include mdc-tabz-indicator($color: $mdc-theme-secondary);
+
+  .custom-svg-indicator {
+    fill: currentColor;
+  }
+}
+
 .posifeed-container,
 .shrine-container {
   position: relative;

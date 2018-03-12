@@ -46,7 +46,9 @@ class MDCTabzBar {
     this.scroller_ = MDCTabzScroller.attachTo(scrollerRoot);
 
     const indicatorRoot = this.root_.querySelector(strings.RESIZE_INDICATOR_SELECTOR);
-    this.indicator_ = MDCTabzIndicator.attachTo(indicatorRoot);
+    if (indicatorRoot) {
+      this.indicator_ = MDCTabzIndicator.attachTo(indicatorRoot);
+    }
 
     const tabz = this.root_.querySelectorAll(strings.TABZ_SELECTOR);
     this.tabz_ = [].slice.call(tabz).map((tab) => MDCTabz.attachTo(tab));
@@ -324,8 +326,7 @@ class MDCTabzBar {
     this.activeIndex_ = index;
     this.slideTabIntoView(index);
     this.getActiveTab_().activate();
-    this.calculateIndicatorPosition_();
-    this.indicator_.animatePosition();
+    this.animateIndicator();
   }
 
   /**
@@ -466,15 +467,26 @@ class MDCTabzBar {
    * Calculates the indicator's new position
    */
   calculateIndicatorPosition_() {
-    this.indicator_.calculatePosition2(this.getActiveTab_());
+    if (this.indicator_) {
+      this.indicator_.calculatePosition2(this.getActiveTab_());
+    }
   }
 
   /**
    * Updates the indicator size
    */
   updateIndicator() {
-    this.calculateIndicatorPosition_();
-    this.indicator_.updatePosition();
+    if (this.indicator_) {
+      this.calculateIndicatorPosition_();
+      this.indicator_.updatePosition();
+    }
+  }
+
+  animateIndicator() {
+    if (this.indicator_) {
+      this.calculateIndicatorPosition_();
+      this.indicator_.animatePosition();
+    }
   }
 }
 
