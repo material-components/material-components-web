@@ -1,5 +1,4 @@
-//
-// Copyright 2017 Google Inc. All Rights Reserved.
+// Copyright 2018 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,8 +11,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
 
-$mdc-button-height: 36px;
-$mdc-button-horizontal-padding: 16px;
-$mdc-dense-button-height: 32px;
+$mdc-image-list-standard-gutter-size: 4px;
+$mdc-image-list-icon-size: 24px;
+$mdc-image-list-text-protection-background-color: rgba(0, 0, 0, .6);
+$mdc-image-list-text-protection-height: 48px;
+$mdc-image-list-text-protection-horizontal-padding: 16px;
