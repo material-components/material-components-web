@@ -64,6 +64,7 @@ class MDCTabFoundation extends MDCFoundation {
    * Handles the "transitionend" event
    */
   handleTransitionEnd() {
+    this.adapter_.deregisterEventHandler('transitionend', this.handleTransitionEnd_);
     this.adapter_.removeClass(MDCTabFoundation.cssClasses.ANIMATING_ACTIVATE);
     this.adapter_.removeClass(MDCTabFoundation.cssClasses.ANIMATING_DEACTIVATE);
   }
@@ -80,28 +81,28 @@ class MDCTabFoundation extends MDCFoundation {
    * Activates the Tab
    */
   activate() {
-    // Early exity
+    // Early exit
     if (this.isActive()) {
       return;
     }
     this.adapter_.registerEventHandler('transitionend', this.handleTransitionEnd_);
     this.adapter_.addClass(MDCTabFoundation.cssClasses.ANIMATING_ACTIVATE);
     this.adapter_.addClass(MDCTabFoundation.cssClasses.ACTIVE);
-    this.adapter_.setAttributeValue(MDCTabFoundation.strings.ARIA_SELECTED, 'true');
+    this.adapter_.setAttr(MDCTabFoundation.strings.ARIA_SELECTED, 'true');
   }
 
   /**
    * Deactivates the Tab
    */
   deactivate() {
-    // Early exity
+    // Early exit
     if (!this.isActive()) {
       return;
     }
     this.adapter_.registerEventHandler('transitionend', this.handleTransitionEnd_);
     this.adapter_.addClass(MDCTabFoundation.cssClasses.ANIMATING_DEACTIVATE);
     this.adapter_.removeClass(MDCTabFoundation.cssClasses.ACTIVE);
-    this.adapter_.setAttributeValue(MDCTabFoundation.strings.ARIA_SELECTED, 'false');
+    this.adapter_.setAttr(MDCTabFoundation.strings.ARIA_SELECTED, 'false');
   }
 }
 
