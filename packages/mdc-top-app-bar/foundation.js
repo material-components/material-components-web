@@ -73,6 +73,8 @@ class MDCTopAppBarFoundation extends MDCFoundation {
     this.currentAppBarScrollPosition = this.toolbarHeight;
     // holder for our resizeTimeout event to throttle resize events
     this.resizeTimeout = null;
+    this.isCurrentlyBeingResized = false;
+    this.resizeDebounce = null;
 
     this.navClickHandler_ = () => this.adapter_.notifyNavigationIconClicked();
     this.scrollHandler_ = () => this.shortAppBarScrollHandler_();
@@ -143,17 +145,21 @@ class MDCTopAppBarFoundation extends MDCFoundation {
     const diff = currentScroll - this.lastScrollPosition;
     this.lastScrollPosition = currentScroll;
 
-    this.currentAppBarScrollPosition -= diff;
-    if (this.currentAppBarScrollPosition < 0) {
-      this.currentAppBarScrollPosition = 0;
-    } if (this.currentAppBarScrollPosition > this.toolbarHeight) {
-      this.currentAppBarScrollPosition = this.toolbarHeight;
-    }
+    //
+    if (!this.isCurrentlyBeingResized) {
+      this.currentAppBarScrollPosition -= diff;
+      if (this.currentAppBarScrollPosition < 0) {
+        this.currentAppBarScrollPosition = 0;
+      }
+      if (this.currentAppBarScrollPosition > this.toolbarHeight) {
+        this.currentAppBarScrollPosition = this.toolbarHeight;
+      }
 
-    this.moveTopAppBar();
+      this.moveTopAppBar_();
+    }
   }
 
-  moveTopAppBar() {
+  moveTopAppBar_() {
     if (this.docked) {
       // If it's already docked and the user is still scrolling in the same direction, do nothing
       if (!(this.currentAppBarScrollPosition === 0 || this.currentAppBarScrollPosition === this.toolbarHeight)) {
@@ -171,12 +177,25 @@ class MDCTopAppBarFoundation extends MDCFoundation {
   }
 
   topAppBarResizeHandler_() {
+    this.isCurrentlyBeingResized = true;
+
+    // W
     if (!this.resizeTimeout) {
       this.resizeTimeout = setTimeout((function() {
         this.resizeTimeout = null;
         this.throttledResizeHandler_();
       }).bind(this), 100);
     }
+
+    // When the window is being resized, scroll events are fired. This disables most of our scroll function
+    // until the resize is complete.
+    if (this.resizeDebounce) {
+      clearTimeout(this.resizeDebounce);
+    }
+
+    this.resizeDebounce = setTimeout((function() {
+      this.isCurrentlyBeingResized = false;
+    }).bind(this), 100);
   }
 
   throttledResizeHandler_() {
