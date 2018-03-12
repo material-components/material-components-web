@@ -65,10 +65,6 @@
 
     .mdc-top-app-bar--short {
       transition: width 200ms $mdc-animation-standard-curve-timing-function;
-
-      .mdc-top-app-bar__row {
-        height: $mdc-top-app-bar-mobile-row-height;
-      }
     }
 
     .mdc-top-app-bar--short-collapsed {
