@@ -110,9 +110,9 @@ test('exports numbers', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCCheckboxFoundation, [
-    'addClass', 'removeClass', 'registerAnimationEndHandler', 'deregisterAnimationEndHandler',
-    'registerChangeHandler', 'deregisterChangeHandler', 'getNativeControl', 'forceLayout',
-    'isAttachedToDOM',
+    'addClass', 'removeClass', 'setNativeControlAttr', 'removeNativeControlAttr', 'registerAnimationEndHandler',
+    'deregisterAnimationEndHandler', 'registerChangeHandler', 'deregisterChangeHandler', 'getNativeControl',
+    'forceLayout', 'isAttachedToDOM',
   ]);
 });
 
@@ -207,13 +207,15 @@ test('#isChecked returns false when no native control is returned', () => {
 });
 
 test('#setIndeterminate updates the value of nativeControl.indeterminate', () => {
-  const {foundation, nativeControl} = setupTest();
+  const {foundation, nativeControl, mockAdapter} = setupTest();
   foundation.setIndeterminate(true);
   assert.isOk(foundation.isIndeterminate());
   assert.isOk(nativeControl.indeterminate);
+  td.verify(mockAdapter.setNativeControlAttr('aria-checked', 'mixed'));
   foundation.setIndeterminate(false);
   assert.isNotOk(foundation.isIndeterminate());
   assert.isNotOk(nativeControl.indeterminate);
+  td.verify(mockAdapter.removeNativeControlAttr('aria-checked'));
 });
 
 test('#setIndeterminate works when no native control is returned', () => {
