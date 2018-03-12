@@ -139,26 +139,6 @@ class MDCTopAppBarFoundation extends MDCFoundation {
     }
   }
 
-  topAppBarScrollHandler_() {
-    let currentScroll = this.adapter_.getViewportScrollY();
-    if (currentScroll < 0) currentScroll = 0;
-    const diff = currentScroll - this.lastScrollPosition;
-    this.lastScrollPosition = currentScroll;
-
-    //
-    if (!this.isCurrentlyBeingResized) {
-      this.currentAppBarScrollPosition -= diff;
-      if (this.currentAppBarScrollPosition < 0) {
-        this.currentAppBarScrollPosition = 0;
-      }
-      if (this.currentAppBarScrollPosition > this.toolbarHeight) {
-        this.currentAppBarScrollPosition = this.toolbarHeight;
-      }
-
-      this.moveTopAppBar_();
-    }
-  }
-
   moveTopAppBar_() {
     if (this.docked) {
       // If it's already docked and the user is still scrolling in the same direction, do nothing
@@ -176,10 +156,31 @@ class MDCTopAppBarFoundation extends MDCFoundation {
     }
   }
 
-  topAppBarResizeHandler_() {
-    this.isCurrentlyBeingResized = true;
+  topAppBarScrollHandler_() {
+    let currentScrollPosition = this.adapter_.getViewportScrollY();
+    if (currentScrollPosition < 0) {
+      currentScrollPosition = 0;
+    }
+    const diff = currentScrollPosition - this.lastScrollPosition;
+    this.lastScrollPosition = currentScrollPosition;
 
-    // W
+    // If the window is being resized the lastScrollPosition needs to be updated but the
+    // current scroll of the top app bar should stay the same.
+    if (!this.isCurrentlyBeingResized) {
+      this.currentAppBarScrollPosition -= diff;
+      if (this.currentAppBarScrollPosition < 0) {
+        this.currentAppBarScrollPosition = 0;
+      }
+      if (this.currentAppBarScrollPosition > this.toolbarHeight) {
+        this.currentAppBarScrollPosition = this.toolbarHeight;
+      }
+
+      this.moveTopAppBar_();
+    }
+  }
+
+  topAppBarResizeHandler_() {
+    // Throttle resize events 10 p/s
     if (!this.resizeTimeout) {
       this.resizeTimeout = setTimeout((function() {
         this.resizeTimeout = null;
@@ -187,8 +188,10 @@ class MDCTopAppBarFoundation extends MDCFoundation {
       }).bind(this), 100);
     }
 
-    // When the window is being resized, scroll events are fired. This disables most of our scroll function
-    // until the resize is complete.
+    // When the window is being resized, scroll events are fired. The top app bar should
+    // stay in place during a resize event.
+    this.isCurrentlyBeingResized = true;
+
     if (this.resizeDebounce) {
       clearTimeout(this.resizeDebounce);
     }
