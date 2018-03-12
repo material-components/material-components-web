@@ -22,7 +22,9 @@
 
 .mdc-image-list.hero-image-list {
   @include mdc-image-list-standard-columns(5);
+
   width: 300px;
+  margin: 0;
 }
 
 .hero-image-list .mdc-image-list__image {
@@ -31,6 +33,7 @@
 
 .mdc-image-list.standard-image-list {
   @include mdc-image-list-standard-columns(5);
+
   max-width: 1000px;
 }
 
