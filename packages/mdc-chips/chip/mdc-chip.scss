@@ -106,13 +106,13 @@
 
 // Add leading checkmark to filter chips with no leading icon
 
-.mdc-chip__checkmark svg {
+.mdc-chip__checkmark-svg {
   width: 0;
   height: 24px;
   transition: width $mdc-chip-width-animation-duration $mdc-animation-standard-curve-timing-function;
 }
 
-.mdc-chip--selected .mdc-chip__checkmark svg {
+.mdc-chip--selected .mdc-chip__checkmark-svg {
   width: 24px;
 }
 
@@ -126,7 +126,7 @@
     transition: opacity $mdc-chip-opacity-animation-duration linear;
     opacity: 0;
 
-    svg {
+    .mdc-chip__checkmark-svg {
       transition: width 0ms;
     }
   }
