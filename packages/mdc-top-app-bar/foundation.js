@@ -65,10 +65,10 @@ class MDCTopAppBarFoundation extends MDCFoundation {
     super(Object.assign(MDCTopAppBarFoundation.defaultAdapter, adapter));
     // State variable for the current top app bar state
     this.isCollapsed = false;
-    this.lastScrollPosition = 0;
+    this.lastScrollPosition = this.adapter_.getViewportScrollY();
     this.toolbarHeight = this.adapter_.getTopAppBarHeight();
     // docked is used to indicate if the top app bar is 100% showing or hidden
-    this.docked = true;
+    this.isDocked = true;
     // State variable for current scroll position
     this.currentAppBarScrollPosition = this.toolbarHeight;
     // holder for our resizeTimeout event to throttle resize events
@@ -140,16 +140,18 @@ class MDCTopAppBarFoundation extends MDCFoundation {
   }
 
   moveTopAppBar_() {
-    if (this.docked) {
+    if (this.isDocked) {
       // If it's already docked and the user is still scrolling in the same direction, do nothing
       if (!(this.currentAppBarScrollPosition === 0 || this.currentAppBarScrollPosition === this.toolbarHeight)) {
+        // Otherwise update the toolbar position
         const offset = (this.currentAppBarScrollPosition - this.toolbarHeight);
         this.adapter_.addAttributeToTopAppBar('style', 'top: ' + offset + 'px;');
-        this.docked = false;
+        this.isDocked = false;
       }
     } else {
+      // If it's not docked but the position now indicates fully docked, toggle the docked variable
       if (this.currentAppBarScrollPosition === 0 || this.currentAppBarScrollPosition === this.toolbarHeight) {
-        this.docked = true;
+        this.isDocked = true;
       }
       const offset = (this.currentAppBarScrollPosition - this.toolbarHeight);
       this.adapter_.addAttributeToTopAppBar('style', 'top: ' + offset + 'px;');
@@ -165,7 +167,7 @@ class MDCTopAppBarFoundation extends MDCFoundation {
     this.lastScrollPosition = currentScrollPosition;
 
     // If the window is being resized the lastScrollPosition needs to be updated but the
-    // current scroll of the top app bar should stay the same.
+    // current scroll of the top app bar should stay in the same position.
     if (!this.isCurrentlyBeingResized) {
       this.currentAppBarScrollPosition -= diff;
       if (this.currentAppBarScrollPosition < 0) {
@@ -201,10 +203,18 @@ class MDCTopAppBarFoundation extends MDCFoundation {
     }).bind(this), 100);
   }
 
+  /**
+   *
+   * @private
+   */
   throttledResizeHandler_() {
     const currentHeight = this.adapter_.getTopAppBarHeight();
     if (this.toolbarHeight !== currentHeight) {
-      this.docked = false;
+      this.isDocked = false;
+
+      // Since the top app bar has a different height depending on the screen width, this
+      // check will ensure that the top app bar remains in the correct location if
+      // completely hidden and a resize makes the top app bar shorter.
       if (this.currentAppBarScrollPosition === this.toolbarHeight) {
         this.currentAppBarScrollPosition = currentHeight;
       }
