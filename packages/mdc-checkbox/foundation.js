@@ -49,6 +49,8 @@ class MDCCheckboxFoundation extends MDCFoundation {
     return /** @type {!MDCCheckboxAdapter} */ ({
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
+      setNativeControlAttr: () => {},
+      removeNativeControlAttr: () => {},
       registerAnimationEndHandler: (/* handler: EventListener */) => {},
       deregisterAnimationEndHandler: (/* handler: EventListener */) => {},
       registerChangeHandler: (/* handler: EventListener */) => {},
@@ -201,6 +203,14 @@ class MDCCheckboxFoundation extends MDCFoundation {
     const newState = this.determineCheckState_(nativeCb);
     if (oldState === newState) {
       return;
+    }
+
+    // Ensure aria-checked is set to mixed if checkbox is in indeterminate state.
+    if (this.isIndeterminate()) {
+      this.adapter_.setNativeControlAttr(
+        strings.ARIA_CHECKED_ATTR, strings.ARIA_CHECKED_INDETERMINATE_VALUE);
+    } else {
+      this.adapter_.removeNativeControlAttr(strings.ARIA_CHECKED_ATTR);
     }
 
     // Check to ensure that there isn't a previously existing animation class, in case for example
