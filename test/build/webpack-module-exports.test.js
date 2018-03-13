@@ -51,7 +51,7 @@ describe('webpack.config.js', () => {
   describe('MDC_ENV="development"', () => {
     it('module exports should match build-config-dev-env.golden.json', () => {
       const {generatedWebpackConfig, expectedWebpackConfig} = webpackConfigLoader.setupTest({
-        configPath: path.join(__dirname, '../../webpack.config.js'),
+        configPath: path.join(__dirname, '../../demos/webpack.config.js'),
         goldenPath: path.join(__dirname, './goldens/build-config-dev-env.golden.json'),
         mdcEnv: 'development',
       });
