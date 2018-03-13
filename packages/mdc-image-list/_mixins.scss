@@ -20,6 +20,16 @@
   }
 }
 
+@mixin mdc-image-list-corner-radius($radius) {
+  .mdc-image-list__image {
+    border-radius: $radius;
+  }
+
+  .mdc-image-list__supporting {
+    border-radius: 0 0 $radius $radius;
+  }
+}
+
 // Standard Image List
 
 @mixin mdc-image-list-standard-columns($column-count, $gutter-size: $mdc-image-list-standard-gutter-size) {

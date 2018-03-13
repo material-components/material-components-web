@@ -41,6 +41,10 @@
   display: none;
 }
 
+.rounded-corners {
+  @include mdc-image-list-corner-radius(8px);
+}
+
 @media (max-width: 599px) {
   .mdc-image-list.standard-image-list {
     @include mdc-image-list-standard-columns(3);
