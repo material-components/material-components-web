@@ -14,21 +14,4 @@
 // limitations under the License.
 //
 
-@import "@material/theme/mixins";
-
-// Public mixins
-
-@mixin mdc-tab-text-label-color($color) {
-  .mdc-tab__text-label {
-    @include mdc-theme-prop(color, $color);
-    // color: $color;
-  }
-}
-
-@mixin mdc-tab-icon-color($color) {
-  .mdc-tab__icon {
-    @include mdc-theme-prop(color, $color);
-    // color: $color;
-  }
-}
-
+$mdc-tab-baseline-color: rgba(25, 25, 25, .6);

@@ -22,7 +22,12 @@ import domEvents from 'dom-events';
 import {MDCTab, MDCTabFoundation} from '../../../packages/mdc-tab';
 
 const getFixture = () => bel`
-  <button class="mdc-tab" aria-selected="false" role="tab"></button>
+  <button class="mdc-tab" aria-selected="false" role="tab">
+    <div class="mdc-tab__content">
+      <span class="mdc-tab__text-label">Foo</span>
+      <span class="mdc-tab__icon"></span>
+    </div>
+  </button>
 `;
 
 suite('MDCTab');

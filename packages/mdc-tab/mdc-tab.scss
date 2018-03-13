@@ -15,7 +15,7 @@
 //
 
 @import "./mixins";
-@import "@material/theme/mixins";
+@import "./variables";
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
 
@@ -23,6 +23,8 @@
   @include mdc-ripple-surface;
   @include mdc-ripple-radius-bounded;
   @include mdc-states(primary);
+  @include mdc-tab-text-label-color($mdc-tab-baseline-color);
+  @include mdc-tab-icon-color($mdc-tab-baseline-color);
 
   display: flex;
   position: relative;
@@ -32,6 +34,7 @@
   height: 48px;
   padding: 0 24px;
   border: none;
+  outline: none;
   background: none;
   font-family: Roboto, sans-serif;
   font-size: 14px;
@@ -52,22 +55,12 @@
   z-index: 1;
 }
 
-.mdc-tab__indicator {
-  @include mdc-states-base-color(text-primary-on-background);
-
-  position: absolute;
-}
-
 .mdc-tab__text-label {
-  @include mdc-states-base-color(text-primary-on-background);
-
   display: inline-block;
   padding: 16px 0 20px;
 }
 
 .mdc-tab__icon {
-  @include mdc-states-base-color(text-primary-on-background);
-
   width: 24px;
   height: 24px;
   padding: 12px 0;
@@ -87,25 +80,15 @@
   transition: 150ms color linear;
 }
 
-.mdc-tab--animating-activate .mdc-tab__indicator,
-.mdc-tab--animating-deactivate .mdc-tab__indicator {
-  transition: 150ms opacity linear;
-}
-
 /**
  * The activation animation has a delay of 100ms
  */
 .mdc-tab--animating-activate .mdc-tab__text-label,
-.mdc-tab--animating-activate .mdc-tab__icon,
-.mdc-tab--animating-activate .mdc-tab__indicator {
+.mdc-tab--animating-activate .mdc-tab__icon {
   transition-delay: 100ms;
 }
 
 .mdc-tab--active {
-  @include mdc-tab-text-label-color(text-primary-on-background);
-  @include mdc-tab-icon-color(text-primary-on-background);
-}
-
-.mdc-tab--upgraded:not(.mdc-tab--custom-indicator) .mdc-tab__indicator {
-  display: none;
+  @include mdc-tab-text-label-color(primary);
+  @include mdc-tab-icon-color(primary);
 }

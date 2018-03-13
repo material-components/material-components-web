@@ -14,21 +14,11 @@
 // limitations under the License.
 //
 
-@import "@material/theme/mixins";
+@import "./common";
+@import "../packages/mdc-tab/mixins";
+@import "../packages/mdc-tab/mdc-tab";
 
-// Public mixins
-
-@mixin mdc-tab-text-label-color($color) {
-  .mdc-tab__text-label {
-    @include mdc-theme-prop(color, $color);
-    // color: $color;
-  }
+.demo-tab {
+  flex-basis: 110px;
+  flex-grow: 0;
 }
-
-@mixin mdc-tab-icon-color($color) {
-  .mdc-tab__icon {
-    @include mdc-theme-prop(color, $color);
-    // color: $color;
-  }
-}
-
