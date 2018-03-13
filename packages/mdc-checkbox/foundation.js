@@ -110,12 +110,6 @@ class MDCCheckboxFoundation extends MDCFoundation {
   /** @param {boolean} indeterminate */
   setIndeterminate(indeterminate) {
     this.getNativeControl_().indeterminate = indeterminate;
-    if (indeterminate) {
-      this.adapter_.setNativeControlAttr(
-        strings.ARIA_CHECKED_ATTR, strings.ARIA_CHECKED_INDETERMINATE_VALUE);
-    } else {
-      this.adapter_.removeNativeControlAttr(strings.ARIA_CHECKED_ATTR);
-    }
   }
 
   /** @return {boolean} */
@@ -211,9 +205,13 @@ class MDCCheckboxFoundation extends MDCFoundation {
       return;
     }
 
-    // Remove aria-checked (needed for initial inditerminate state) - screen
-    // readers will pick the right state from input.
-    this.adapter_.removeNativeControlAttr(strings.ARIA_CHECKED_ATTR);
+    // Ensure aria-checked is set to mixed if checkbox is in indeterminate state.
+    if (this.isIndeterminate()) {
+      this.adapter_.setNativeControlAttr(
+          strings.ARIA_CHECKED_ATTR, strings.ARIA_CHECKED_INDETERMINATE_VALUE);
+    } else {
+      this.adapter_.removeNativeControlAttr(strings.ARIA_CHECKED_ATTR);
+    }
 
     // Check to ensure that there isn't a previously existing animation class, in case for example
     // the user interacted with the checkbox before the animation was finished.
