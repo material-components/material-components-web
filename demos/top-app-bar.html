@@ -30,11 +30,11 @@
     <header id="demo-top-app-bar" class="mdc-top-app-bar">
       <div class="mdc-top-app-bar__row">
         <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-          <a class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
+          <a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
           <span class="mdc-top-app-bar__title">San Francisco, CA</span>
         </section>
         <section id="iconSection" class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
-          <a id="right-item" class="material-icons mdc-top-app-bar__action-item" aria-label="Download" alt="Download">file_download</a>
+          <a href="#" id="right-item" class="material-icons mdc-top-app-bar__action-item" aria-label="Download" alt="Download">file_download</a>
         </section>
       </div>
     </header>
@@ -157,28 +157,43 @@
       </div>
     </main>
 
-    <div class="demo-controls-container">
-      <h3>Demo Controls</h3>
-      <div>
-        <input type="checkbox" id="rtl-checkbox"/>
-        <label for="rtl-checkbox">RTL</label>
-      </div>
-      <div>
-        <input type="checkbox" id="no-action-item-checkbox"/>
-        <label for="no-action-item-checkbox">No Action Item</label>
-      </div>
-      <div>
-        <input type="checkbox" id="short-checkbox"/>
-        <label for="short-checkbox">Short</label>
-      </div>
-      <div>
-        <input type="checkbox" id="always-collapsed-checkbox" disabled/>
-        <label for="always-collapsed-checkbox">Always Collapsed (Short Only)&#x200E;</label>
+    <div class="demo-controls-container" dir="ltr">
+      <h3 class="mdc-typography--title">Demo Controls</h3>
+      <div class="demo-row">
+        <div class="demo-col">
+          <h4 class="mdc-typography--subheading2 mdc-typography--adjust-margin">Common Options</h4>
+          <div>
+            <input type="checkbox" id="rtl-checkbox"/>
+            <label for="rtl-checkbox">RTL</label>
+          </div>
+          <div>
+            <input type="checkbox" id="no-action-item-checkbox"/>
+            <label for="no-action-item-checkbox">No Action Item</label>
+          </div>
+        </div>
+        <div class="demo-col">
+          <h4 class="mdc-typography--subheading2 mdc-typography--adjust-margin">Top App Bar Specific Options</h4>
+          <div>
+            <input type="checkbox" id="prominent-checkbox"/>
+            <label for="prominent-checkbox">Prominent</label>
+          </div>
+        </div>
+        <div class="demo-col">
+          <h4 class="mdc-typography--subheading2 mdc-typography--adjust-margin">Short Top App Bar Specific Options</h4>
+          <div>
+            <input type="checkbox" id="short-checkbox"/>
+            <label for="short-checkbox">Short</label>
+          </div>
+          <div>
+            <input type="checkbox" id="always-collapsed-checkbox" disabled/>
+            <label for="always-collapsed-checkbox">Always Collapsed (Short Only)&#x200E;</label>
+          </div>
+        </div>
       </div>
     </div>
 
-    <script src="/assets/common.js" async></script>
     <script src="/assets/material-components-web.js" async></script>
+    <script src="/assets/common.js" async></script>
     <script type="text/javascript">
       demoReady(function() {
         var appBarEl = document.getElementById('demo-top-app-bar');
@@ -193,6 +208,7 @@
         var noActionItemCheckbox = document.getElementById('no-action-item-checkbox');
         var shortCheckbox = document.getElementById('short-checkbox');
         var alwaysCollapsedCheckbox = document.getElementById('always-collapsed-checkbox');
+        var prominentCheckbox = document.getElementById('prominent-checkbox');
 
         appBarEl.addEventListener('MDCTopAppBar:nav', function() {
           drawer.open = true;
@@ -230,6 +246,7 @@
           }
 
           alwaysCollapsedCheckbox.disabled = !this.checked;
+          prominentCheckbox.disabled = this.checked;
         });
 
         alwaysCollapsedCheckbox.addEventListener('change', function() {
@@ -237,6 +254,12 @@
 
           appBar.destroy();
           appBar = mdc.topAppBar.MDCTopAppBar.attachTo(appBarEl);
+        });
+
+        prominentCheckbox.addEventListener('change', function()  {
+          appBarEl.classList[this.checked ? 'add' : 'remove']('mdc-top-app-bar--prominent');
+
+          shortCheckbox.disabled = this.checked;
         });
       });
   </script>
