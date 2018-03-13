@@ -44,6 +44,7 @@ test('attachTo returns an MDCChipSet instance', () => {
 class FakeChip {
   constructor() {
     this.destroy = td.func('.destroy');
+    this.isSelected = td.func('.isSelected');
   }
 }
 

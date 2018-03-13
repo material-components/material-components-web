@@ -20,7 +20,7 @@ import {MDCRipple} from '@material/ripple/index';
 
 import MDCChipAdapter from './adapter';
 import MDCChipFoundation from './foundation';
-import {strings} from './constants';
+import {strings, cssClasses} from './constants';
 
 /**
  * @extends {MDCComponent<!MDCChipFoundation>}
@@ -48,6 +48,14 @@ class MDCChip extends MDCComponent {
   destroy() {
     this.ripple_.destroy();
     super.destroy();
+  }
+
+  /**
+   * Returns true if the chip is selected.
+   * @return {boolean}
+   */
+  isSelected() {
+    return this.root_.classList.contains(cssClasses.SELECTED);
   }
 
   /**

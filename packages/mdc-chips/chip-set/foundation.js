@@ -76,12 +76,10 @@ class MDCChipSetFoundation extends MDCFoundation {
   }
 
   /**
-   * Handles a chip interaction event
-   * @param {!Object} evt
-   * @private
+   * Manages the selection state of the chip set, given a chip that was just selected/deselected.
+   * @param {!MDCChip} chip
    */
-  handleChipInteraction_(evt) {
-    const {chip} = evt.detail;
+  manageSelection(chip) {
     if (this.adapter_.hasClass(cssClasses.CHOICE)) {
       if (this.selectedChips_.length === 0) {
         this.selectedChips_[0] = chip;
@@ -91,7 +89,6 @@ class MDCChipSetFoundation extends MDCFoundation {
       } else {
         this.selectedChips_ = [];
       }
-      chip.toggleSelected();
     } else if (this.adapter_.hasClass(cssClasses.FILTER)) {
       const index = this.selectedChips_.indexOf(chip);
       if (index >= 0) {
@@ -99,7 +96,19 @@ class MDCChipSetFoundation extends MDCFoundation {
       } else {
         this.selectedChips_.push(chip);
       }
+    }
+  }
+
+  /**
+   * Handles a chip interaction event
+   * @param {!Object} evt
+   * @private
+   */
+  handleChipInteraction_(evt) {
+    const {chip} = evt.detail;
+    if (this.adapter_.hasClass(cssClasses.CHOICE) || this.adapter_.hasClass(cssClasses.FILTER)) {
       chip.toggleSelected();
+      this.manageSelection(chip);
     }
   }
 }

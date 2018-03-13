@@ -131,6 +131,17 @@ test('#adapter.notifyTrailingIconInteraction emits ' +
   td.verify(handler(td.matchers.anything()));
 });
 
+test('#isSelected returns false if ' + MDCChipFoundation.cssClasses.SELECTED + ' class is not present', () => {
+  const {component} = setupTest();
+  assert.isFalse(component.isSelected());
+});
+
+test('#isSelected returns true if ' + MDCChipFoundation.cssClasses.SELECTED + ' class is present', () => {
+  const {root, component} = setupTest();
+  root.classList.add(MDCChipFoundation.cssClasses.SELECTED);
+  assert.isTrue(component.isSelected());
+});
+
 function setupMockFoundationTest(root = getFixture()) {
   const MockFoundationConstructor = td.constructor(MDCChipFoundation);
   const mockFoundation = new MockFoundationConstructor();

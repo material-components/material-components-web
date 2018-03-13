@@ -120,6 +120,7 @@ To use the `MDCChip` and `MDCChipSet` classes, [import](../../docs/importing-js.
 
 Method Signature | Description
 --- | ---
+`isSelected() => boolean` | Returns true if the chip is selected
 `toggleSelected() => void` | Proxies to the foundation's `toggleSelected` method
 
 Property | Value Type | Description
@@ -165,4 +166,7 @@ Method Signature | Description
 `toggleSelected() => void` | Toggles the selected class on the chip element
 
 #### `MDCChipSetFoundation`
-None yet, coming soon.
+
+Method Signature | Description
+--- | ---
+`manageSelection() => void` | Manages the selection state of the chip set, given a chip that was just selected/deselected.

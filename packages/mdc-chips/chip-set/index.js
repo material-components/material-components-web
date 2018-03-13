@@ -58,6 +58,14 @@ class MDCChipSet extends MDCComponent {
     });
   }
 
+  initialSyncWithDOM() {
+    this.chips.forEach((chip) => {
+      if (chip.isSelected()) {
+        this.foundation_.manageSelection(chip);
+      }
+    });
+  }
+
   /**
    * @return {!MDCChipSetFoundation}
    */
