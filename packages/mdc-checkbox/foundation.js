@@ -208,7 +208,7 @@ class MDCCheckboxFoundation extends MDCFoundation {
     // Ensure aria-checked is set to mixed if checkbox is in indeterminate state.
     if (this.isIndeterminate()) {
       this.adapter_.setNativeControlAttr(
-          strings.ARIA_CHECKED_ATTR, strings.ARIA_CHECKED_INDETERMINATE_VALUE);
+        strings.ARIA_CHECKED_ATTR, strings.ARIA_CHECKED_INDETERMINATE_VALUE);
     } else {
       this.adapter_.removeNativeControlAttr(strings.ARIA_CHECKED_ATTR);
     }
