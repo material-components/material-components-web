@@ -34,13 +34,6 @@ class MDCTab extends MDCComponent {
   }
 
   /**
-   * @return {!MDCTabFoundation}
-   */
-  get foundation() {
-    return this.foundation_;
-  }
-
-  /**
    * @return {boolean}
    */
   get active() {

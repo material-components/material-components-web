@@ -28,3 +28,9 @@
   }
 }
 
+@mixin mdc-tab-indicator-color($color) {
+  .mdc-tab__indicator {
+    color: $color;
+  }
+}
+

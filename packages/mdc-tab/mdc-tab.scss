@@ -52,6 +52,12 @@
   z-index: 1;
 }
 
+.mdc-tab__indicator {
+  @include mdc-states-base-color(text-primary-on-background);
+
+  position: absolute;
+}
+
 .mdc-tab__text-label {
   @include mdc-states-base-color(text-primary-on-background);
 
@@ -71,19 +77,35 @@
   @include mdc-rtl-reflexive-box(padding, left, 8px);
 }
 
+/**
+ * The [de]activation animation affects color for text label and icon
+ */
 .mdc-tab--animating-activate .mdc-tab__text-label,
-.mdc-tab--animating-activate .mdc-tab__icon {
-  transition: 150ms color linear;
-  transition-delay: 100ms;
-}
-
+.mdc-tab--animating-activate .mdc-tab__icon,
 .mdc-tab--animating-deactivate .mdc-tab__text-label,
 .mdc-tab--animating-deactivate .mdc-tab__icon {
-  transition: 100ms color linear;
-  transition-delay: 0ms;
+  transition: 150ms color linear;
+}
+
+.mdc-tab--animating-activate .mdc-tab__indicator,
+.mdc-tab--animating-deactivate .mdc-tab__indicator {
+  transition: 150ms opacity linear;
+}
+
+/**
+ * The activation animation has a delay of 100ms
+ */
+.mdc-tab--animating-activate .mdc-tab__text-label,
+.mdc-tab--animating-activate .mdc-tab__icon,
+.mdc-tab--animating-activate .mdc-tab__indicator {
+  transition-delay: 100ms;
 }
 
 .mdc-tab--active {
   @include mdc-tab-text-label-color(text-primary-on-background);
   @include mdc-tab-icon-color(text-primary-on-background);
+}
+
+.mdc-tab--upgraded:not(.mdc-tab--custom-indicator) .mdc-tab__indicator {
+  display: none;
 }
