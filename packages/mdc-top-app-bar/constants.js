@@ -31,4 +31,9 @@ const cssClasses = {
   SHORT_COLLAPSED_CLASS: 'mdc-top-app-bar--short-collapsed',
 };
 
-export {strings, cssClasses};
+/** @enum {number} */
+const numbers = {
+  MAX_TOP_APP_BAR_HEIGHT: 128,
+};
+
+export {strings, cssClasses, numbers};
