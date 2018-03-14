@@ -92,7 +92,7 @@ test('layout() delegates to the foundation', () => {
   const {component} = setupTest();
   component.foundation_.layout = td.function();
   component.layout();
-  td.verify(component.foundation_.layout());
+  td.verify(component.foundation_.layout(undefined, undefined));
 });
 
 test('adapter#browserSupportsCssVars delegates to util', () => {
