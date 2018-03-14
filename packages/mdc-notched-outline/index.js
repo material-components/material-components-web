@@ -35,23 +35,14 @@ class MDCNotchedOutline extends MDCComponent {
   }
 
   /**
-    * Updates the SVG path of the outline element based on the
-    * notch element width and the RTL context.
-    * @param {number} notchWidth The notch width in the outline.
+    * Updates outline selectors and SVG path to activate/deactivate notch.
+    * @param {number} notchWidth The notch width in the outline. If set to 0,
+    * the component will return to the idle state.
     * @param {boolean=} isRtl Determines if outline is rtl. If rtl is true, notch
     * will be right justified in outline path, otherwise left justified.
     */
-  updateSvgPath(notchWidth, isRtl) {
-    this.foundation_.updateSvgPath(notchWidth, isRtl);
-  }
-
-  /**
-    * Updates outline to activate/deactivate notch in outline path.
-    * @param {boolean} activateNotch If true outline is in _notched_ mode.
-    * If false, outline will show full path without notch.
-    */
-  notch(activateNotch) {
-    this.foundation_.notch(activateNotch);
+  notch(notchWidth, isRtl) {
+    this.foundation_.notch(notchWidth, isRtl);
   }
 
   /**

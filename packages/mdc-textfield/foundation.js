@@ -90,7 +90,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
       hasLabel: () => {},
       getLabelWidth: () => {},
       hasOutline: () => {},
-      updateOutlinePath: () => {},
+      notchOutline: () => {},
     });
   }
 
@@ -135,9 +135,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     // Ensure label does not collide with any pre-filled value.
     if (this.adapter_.hasLabel() && this.getValue()) {
       this.adapter_.floatLabel(this.shouldFloat);
-      if (this.adapter_.hasOutline()) {
-        this.adapter_.notchOutline(this.shouldFloat);
-      }
+      this.notchOutline(this.shouldFloat);
     }
 
     if (this.adapter_.isFocused()) {
@@ -196,9 +194,10 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * Updates the focus outline for outlined text fields.
+   * Activates/deactivates the notched outline.
+   * @param {boolean} activateNotch
    */
-  updateOutline() {
+  notchOutline(activateNotch) {
     if (!this.adapter_.hasOutline() || !this.adapter_.hasLabel()) {
       return;
     }
@@ -207,7 +206,11 @@ class MDCTextFieldFoundation extends MDCFoundation {
     const labelScale = isDense ? numbers.DENSE_LABEL_SCALE : numbers.LABEL_SCALE;
     const labelWidth = this.adapter_.getLabelWidth() * labelScale;
     const isRtl = this.adapter_.isRtl();
-    this.adapter_.updateOutlinePath(labelWidth, isRtl);
+    if (activateNotch) {
+      this.adapter_.notchOutline(labelWidth, isRtl);
+    } else {
+      this.adapter_.notchOutline(0);
+    }
   }
 
   /**
@@ -217,13 +220,10 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.isFocused_ = true;
     this.styleFocused_(this.isFocused_);
     this.adapter_.activateLineRipple();
-    this.updateOutline();
+    this.notchOutline(this.shouldFloat);
     if (this.adapter_.hasLabel()) {
       this.adapter_.shakeLabel(this.shouldShake);
       this.adapter_.floatLabel(this.shouldFloat);
-      if (this.adapter_.hasOutline()) {
-        this.adapter_.notchOutline(this.shouldFloat);
-      }
     }
     if (this.helperText_) {
       this.helperText_.showToScreenReader();
@@ -266,9 +266,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     if (this.adapter_.hasLabel()) {
       this.adapter_.shakeLabel(this.shouldShake);
       this.adapter_.floatLabel(this.shouldFloat);
-      if (this.adapter_.hasOutline()) {
-        this.adapter_.notchOutline(this.shouldFloat);
-      }
+      this.notchOutline(this.shouldFloat);
     }
     if (shouldRemoveLabelFloat) {
       this.receivedUserInput_ = false;
@@ -292,9 +290,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     if (this.adapter_.hasLabel()) {
       this.adapter_.shakeLabel(this.shouldShake);
       this.adapter_.floatLabel(this.shouldFloat);
-      if (this.adapter_.hasOutline()) {
-        this.adapter_.notchOutline(this.shouldFloat);
-      }
+      this.notchOutline(this.shouldFloat);
     }
   }
 

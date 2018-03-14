@@ -58,14 +58,17 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
   }
 
   /**
-   * Adds remove the outline notched selector if activateNotch is true,
-   * otherwise it will remove notched selector.
-   * @param {boolean} activateNotch
+   * Adds the outline notched selector and updates the notch width
+   * if activateNotch is true, otherwise it will remove notched
+   * selector.
+   * @param {number} notchWidth
+   * @param {boolean=} isRtl
    */
-  notch(activateNotch) {
+  notch(notchWidth, isRtl = false) {
     const {OUTLINE_NOTCHED} = MDCNotchedOutlineFoundation.cssClasses;
-    if (activateNotch) {
+    if (notchWidth > 0) {
       this.adapter_.addClass(OUTLINE_NOTCHED);
+      this.updateSvgPath_(notchWidth, isRtl);
     } else {
       this.adapter_.removeClass(OUTLINE_NOTCHED);
     }
@@ -76,8 +79,9 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
    * and the RTL context.
    * @param {number} notchWidth
    * @param {boolean=} isRtl
+   * @private
    */
-  updateSvgPath(notchWidth, isRtl = false) {
+  updateSvgPath_(notchWidth, isRtl) {
     // Fall back to reading a specific corner's style because Firefox doesn't report the style on border-radius.
     const radiusStyleValue = this.adapter_.getIdleOutlineStyleValue('border-radius') ||
         this.adapter_.getIdleOutlineStyleValue('border-top-left-radius');

@@ -189,12 +189,14 @@ class MDCTextFieldAdapter {
 
   /**
    * Only implement if outline element exists.
-   * Updates SVG Path on outline element based on the
-   * label element width and RTL context.
+   * Updates SVG Path and outline element based on the
+   * label element width and RTL context. Will notch the
+   * element if labelWidth is greater than 0, otherwise
+   * will return to idle state.
    * @param {number} labelWidth
-   * @param {boolean} isRtl
+   * @param {boolean=} isRtl
    */
-  updateOutlinePath(labelWidth, isRtl) {}
+  notchOutline(labelWidth, isRtl) {}
 }
 
 export {MDCTextFieldAdapter, NativeInputType, FoundationMapType};
