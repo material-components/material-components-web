@@ -15,8 +15,8 @@
 //
 
 @import "@material/animation/variables";
-@import "@material/theme/functions";
 @import "@material/theme/mixins";
+@import "./functions";
 @import "./variables";
 
 @mixin mdc-ripple-surface() {
@@ -145,8 +145,7 @@
 // Simple mixin for activated states which automatically selects opacity values based on whether the ink color is
 // light or dark.
 @mixin mdc-states-activated($color, $has-nested-focusable-element: false) {
-  $opacity-map: mdc-states-opacities_($color);
-  $activated-opacity: map-get($opacity-map, "activated");
+  $activated-opacity: mdc-states-opacity($color, activated);
 
   &--activated {
     // Stylelint seems to think that '&' qualifies as a type selector here?
@@ -162,8 +161,7 @@
 // Simple mixin for selected states which automatically selects opacity values based on whether the ink color is
 // light or dark.
 @mixin mdc-states-selected($color, $has-nested-focusable-element: false) {
-  $opacity-map: mdc-states-opacities_($color);
-  $selected-opacity: map-get($opacity-map, "selected");
+  $selected-opacity: mdc-states-opacity($color, selected);
 
   &--selected {
     // stylelint-disable-next-line selector-max-type
@@ -217,21 +215,6 @@
     width: var(--mdc-ripple-fg-size, $radius);
     height: var(--mdc-ripple-fg-size, $radius);
   }
-}
-
-//
-// Private
-//
-
-@function mdc-states-opacities_($color) {
-  $color-value: mdc-theme-prop-value($color);
-  $opacity-map: if(
-    mdc-theme-tone($color-value) == "light",
-    $mdc-ripple-light-ink-opacities,
-    $mdc-ripple-dark-ink-opacities
-  );
-
-  @return $opacity-map;
 }
 
 @mixin mdc-states-interactions_($color, $has-nested-focusable-element, $opacity-modifier: 0) {
