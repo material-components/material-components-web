@@ -74,18 +74,52 @@ You can optionally add a leading icon (i.e. thumbnail) and/or a trailing icon to
 </div>
 ```
 
+#### Filter Chips
+
+Filter chips are a variant of chips which allow multiple selection from a set of options. When a filter chip is selected, a checkmark appears as the leading icon. If the chip already has a leading icon, the checkmark replaces it. This requires the HTML structure of a filter chip to differ from other chips:
+
+```html
+<div class="mdc-chip">
+  <div class="mdc-chip__checkmark" >
+    <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
+      <path class="mdc-chip__checkmark-path" fill="none" stroke="black"
+            d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+    </svg>
+  </div>
+  <div class="mdc-chip__text">Filterable content</div>
+</div>
+```
+
+> _NOTE_: To use a leading icon in a filter chip, put the `mdc-chip__icon--leading` element _before_ the `mdc-chip__checkmark` element:
+
+```html
+<div class="mdc-chip">
+  <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">face</i>
+  <div class="mdc-chip__checkmark" >
+    <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
+      <path class="mdc-chip__checkmark-path" fill="none" stroke="black"
+            d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+    </svg>
+  </div>
+  <div class="mdc-chip__text">Filterable content</div>
+</div>
+```
+
 ### CSS Classes
 
 CSS Class | Description
 --- | ---
-`mdc-chip-set` | Mandatory. Indicates the set that the chip belongs to
+`mdc-chip-set` | Mandatory. Indicates the set that the chip belongs to.
 `mdc-chip-set--choice` | Optional. Indicates that the chips in the set are choice chips, which allow a single selection from a set of options.
 `mdc-chip-set--filter` | Optional. Indicates that the chips in the set are filter chips, which allow multiple selection from a set of options.
 `mdc-chip` | Mandatory.
-`mdc-chip__text` | Mandatory. Indicates the text content of the chip
-`mdc-chip__icon` | Optional. Indicates an icon in the chip
-`mdc-chip__icon--leading` | Optional. Indicates a leading icon in the chip
-`mdc-chip__icon--trailing` | Optional. Indicates a trailing icon in the chip
+`mdc-chip__text` | Mandatory. Indicates the text content of the chip.
+`mdc-chip__icon` | Optional. Indicates an icon in the chip.
+`mdc-chip__icon--leading` | Optional. Indicates a leading icon in the chip.
+`mdc-chip__icon--trailing` | Optional. Indicates a trailing icon in the chip.
+`mdc-chip__checkmark` | Optional. Indicates the checkmark in a filter chip.
+`mdc-chip__checkmark-svg` | Mandatory with the use of `mdc-chip__checkmark`. Indicates the checkmark SVG element in a filter chip.
+`mdc-chip__checkmark-path` | Mandatory with the use of `mdc-chip__checkmark`. Indicates the checkmark SVG path in a filter chip.
 
 > _NOTE_: Every element that has an `mdc-chip__icon` class must also have either the `mdc-chip__icon--leading` or `mdc-chip__icon--trailing` class.
 
@@ -141,8 +175,11 @@ Method Signature | Description
 `addClass(className: string) => void` | Adds a class to the root element
 `removeClass(className: string) => void` | Removes a class from the root element
 `hasClass(className: string) => boolean` | Returns true if the root element contains the given class
-`registerInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the root element
-`deregisterInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the root element
+`addClassToLeadingIcon(className: string) => void` | Adds a class to the leading icon element
+`removeClassFromLeadingIcon(className: string) => void` | Removes a class from the leading icon element
+`eventTargetHasClass(target: EventTarget, className: string) => boolean` | Returns true if target has className, false otherwise
+`registerEventHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the root element
+`deregisterEventHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the root element
 `registerTrailingIconInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the trailing icon element
 `deregisterTrailingIconInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the trailing icon element
 `notifyInteraction() => void` | Emits a custom event `MDCChip:interaction` denoting the chip has been interacted with, which bubbles to the parent `mdc-chip-set` element

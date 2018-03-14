@@ -110,9 +110,9 @@ test('exports numbers', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCCheckboxFoundation, [
-    'addClass', 'removeClass', 'registerAnimationEndHandler', 'deregisterAnimationEndHandler',
-    'registerChangeHandler', 'deregisterChangeHandler', 'getNativeControl', 'forceLayout',
-    'isAttachedToDOM',
+    'addClass', 'removeClass', 'setNativeControlAttr', 'removeNativeControlAttr', 'registerAnimationEndHandler',
+    'deregisterAnimationEndHandler', 'registerChangeHandler', 'deregisterChangeHandler', 'getNativeControl',
+    'forceLayout', 'isAttachedToDOM',
   ]);
 });
 
@@ -422,6 +422,16 @@ test('change handler triggers layout for changes within the same frame to correc
 
   change({checked: true, indeterminate: true});
   td.verify(mockAdapter.forceLayout());
+});
+
+test('change handler updates aria-checked attribute correctly.', () => {
+  const {mockAdapter, change} = setupChangeHandlerTest();
+
+  change({checked: true, indeterminate: true});
+  td.verify(mockAdapter.setNativeControlAttr('aria-checked', 'mixed'));
+
+  change({checked: true, indeterminate: false});
+  td.verify(mockAdapter.removeNativeControlAttr('aria-checked'));
 });
 
 test('change handler does not add animation classes when isAttachedToDOM() is falsy', () => {
