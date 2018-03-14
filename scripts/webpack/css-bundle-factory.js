@@ -55,13 +55,22 @@ module.exports = class {
         filePathPattern = '**/*.scss',
       } = {},
       output: {
-        fsDirAbsolutePath,
-        httpDirAbsolutePath,
+        fsDirAbsolutePath = undefined, // Required for building the npm distribution and writing output files to disk
+        httpDirAbsolutePath = undefined, // Required for running the demo server
         filenamePattern = this.env_.isProd() ? '[name].min.css' : '[name].css',
       },
       plugins = [],
     }) {
     chunks = chunks || this.globber_.getChunks({inputDirectory, filePathPattern});
+
+    const fsCleanupPlugins = [];
+
+    if (fsDirAbsolutePath) {
+      fsCleanupPlugins.push(this.pluginFactory_.createCssCleanupPlugin({
+        cleanupDirRelativePath: fsDirAbsolutePath,
+      }));
+    }
+
     const cssExtractorPlugin = this.pluginFactory_.createCssExtractorPlugin(filenamePattern);
 
     return {
@@ -81,9 +90,7 @@ module.exports = class {
       },
       plugins: [
         cssExtractorPlugin,
-        this.pluginFactory_.createCssCleanupPlugin({
-          cleanupDirRelativePath: fsDirAbsolutePath,
-        }),
+        ...fsCleanupPlugins,
         ...plugins,
       ],
     };
@@ -140,6 +147,7 @@ module.exports = class {
         'mdc.form-field': getAbsolutePath('/packages/mdc-form-field/mdc-form-field.scss'),
         'mdc.grid-list': getAbsolutePath('/packages/mdc-grid-list/mdc-grid-list.scss'),
         'mdc.icon-toggle': getAbsolutePath('/packages/mdc-icon-toggle/mdc-icon-toggle.scss'),
+        'mdc.image-list': getAbsolutePath('/packages/mdc-image-list/mdc-image-list.scss'),
         'mdc.layout-grid': getAbsolutePath('/packages/mdc-layout-grid/mdc-layout-grid.scss'),
         'mdc.line-ripple': getAbsolutePath('/packages/mdc-line-ripple/mdc-line-ripple.scss'),
         'mdc.linear-progress': getAbsolutePath('/packages/mdc-linear-progress/mdc-linear-progress.scss'),
