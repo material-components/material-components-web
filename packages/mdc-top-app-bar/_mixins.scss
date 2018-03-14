@@ -59,10 +59,6 @@
       padding: $mdc-top-app-bar-mobile-section-padding;
     }
 
-    .mdc-top-app-bar__title {
-      @include mdc-rtl-reflexive-box(padding, left, $mdc-top-app-bar-mobile-title-left-padding);
-    }
-
     .mdc-top-app-bar--short {
       transition: width 200ms $mdc-animation-standard-curve-timing-function;
     }
