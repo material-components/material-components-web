@@ -504,7 +504,7 @@ class MDCRippleFoundation extends MDCFoundation {
     });
   }
 
-  /** 
+  /**
    * @param {number=} width
    * @param {number=} height
    * @private
