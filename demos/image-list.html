@@ -118,17 +118,35 @@
       </section>
 
       <section class="example">
-        <div class="mdc-form-field">
-          <div class="mdc-checkbox">
-            <input type="checkbox" class="mdc-checkbox__native-control" id="toggle-rtl" aria-labelledby="toggle-rtl-label" />
-            <div class="mdc-checkbox__background">
-              <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
-                <path class="mdc-checkbox__checkmark-path" fill="none" stroke="white" d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-              </svg>
-              <div class="mdc-checkbox__mixedmark"></div>
+        <div dir="ltr">
+          <div>
+            <div class="mdc-form-field">
+              <div class="mdc-checkbox">
+                <input type="checkbox" class="mdc-checkbox__native-control" id="toggle-rtl" aria-labelledby="toggle-rtl-label" />
+                <div class="mdc-checkbox__background">
+                  <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                    <path class="mdc-checkbox__checkmark-path" fill="none" stroke="white" d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                  </svg>
+                  <div class="mdc-checkbox__mixedmark"></div>
+                </div>
+              </div>
+              <label for="toggle-rtl" id="toggle-rtl-label">Toggle RTL</label>
             </div>
           </div>
-          <label for="toggle-rtl" id="toggle-rtl-label">Toggle RTL</label>
+          <div>
+            <div class="mdc-form-field">
+              <div class="mdc-checkbox">
+                <input type="checkbox" class="mdc-checkbox__native-control" id="toggle-radius" aria-labelledby="toggle-radius-label" />
+                <div class="mdc-checkbox__background">
+                  <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                    <path class="mdc-checkbox__checkmark-path" fill="none" stroke="white" d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                  </svg>
+                  <div class="mdc-checkbox__mixedmark"></div>
+                </div>
+              </div>
+              <label for="toggle-radius" id="toggle-radius-label">Toggle Rounded Corners</label>
+            </div>
+          </div>
         </div>
 
         <h1 class="mdc-typography--headline">Standard Image List</h1>
@@ -302,6 +320,10 @@
 
         document.getElementById('toggle-rtl').addEventListener('change', function() {
           document.body.setAttribute('dir', this.checked ? 'rtl' : 'ltr');
+        });
+
+        document.getElementById('toggle-radius').addEventListener('change', function() {
+          document.querySelector('.example').classList[this.checked ? 'add' : 'remove']('rounded-corners');
         });
 
         var standardImageListEl = document.getElementById('standard-image-list');
