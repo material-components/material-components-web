@@ -58,7 +58,7 @@ class MDCChip extends MDCComponent {
   toggleSelected() {
     this.foundation_.toggleSelected();
   }
-
+  
   /**
    * @return {!MDCChipFoundation}
    */
@@ -92,9 +92,9 @@ class MDCChip extends MDCComponent {
           trailingIconEl.removeEventListener(evtType, handler);
         }
       },
-      notifyInteraction: () => this.emit(strings.INTERACTION_EVENT, {chip: this}, true /* shouldBubble */),
+      notifyInteraction: () => this.emit(strings.INTERACTION_EVENT, {chip: this.foundation_}, true /* shouldBubble */),
       notifyTrailingIconInteraction: () => this.emit(
-        strings.TRAILING_ICON_INTERACTION_EVENT, {chip: this}, true /* shouldBubble */),
+        strings.TRAILING_ICON_INTERACTION_EVENT, {chip: this.foundation_}, true /* shouldBubble */),
     })));
   }
 

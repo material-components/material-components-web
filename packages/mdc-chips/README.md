@@ -182,8 +182,10 @@ Method Signature | Description
 `deregisterEventHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the root element
 `registerTrailingIconInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the trailing icon element
 `deregisterTrailingIconInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the trailing icon element
-`notifyInteraction() => void` | Emits a custom event `MDCChip:interaction` denoting the chip has been interacted with, which bubbles to the parent `mdc-chip-set` element
-`notifyTrailingIconInteraction() => void` | Emits a custom event `MDCChip:trailingIconInteraction` denoting the chip's trailing icon has been interacted with, which bubbles to the parent `mdc-chip-set` element
+`notifyInteraction() => void` | Emits a custom event `MDCChip:interaction` denoting the chip has been interacted with
+`notifyTrailingIconInteraction() => void` | Emits a custom event `MDCChip:trailingIconInteraction` denoting the chip's trailing icon has been interacted with
+
+> _NOTE_: The custom events emitted by `notifyInteraction` and `notifyTrailingIconInteraction` must pass along the target chip's `MDCChipFoundation` in its event details, as well as bubble to the parent `mdc-chip-set` element.
 
 #### `MDCChipSetAdapter`
 

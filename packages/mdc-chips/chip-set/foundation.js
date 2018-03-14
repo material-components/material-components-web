@@ -17,8 +17,7 @@
 
 import MDCFoundation from '@material/base/foundation';
 import MDCChipSetAdapter from './adapter';
-// eslint-disable-next-line no-unused-vars
-import {MDCChip, MDCChipFoundation} from '../chip/index';
+import MDCChipFoundation from '../chip/foundation';
 import {strings, cssClasses} from './constants';
 
 /**
@@ -57,7 +56,7 @@ class MDCChipSetFoundation extends MDCFoundation {
 
     /**
      * The selected chips in the set. Only used for choice chip set or filter chip set.
-     * @private {!Array<!MDCChip>}
+     * @private {!Array<!MDCChipFoundation>}
      */
     this.selectedChips_ = [];
 
