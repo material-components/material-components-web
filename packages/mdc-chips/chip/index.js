@@ -58,7 +58,7 @@ class MDCChip extends MDCComponent {
   toggleSelected() {
     this.foundation_.toggleSelected();
   }
-  
+
   /**
    * @return {!MDCChipFoundation}
    */
