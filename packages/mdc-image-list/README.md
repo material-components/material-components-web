@@ -82,7 +82,7 @@ combination of aspect ratios.
 ```html
 <ul class="mdc-image-list mdc-image-list--masonry my-masonry-image-list">
   <li class="mdc-image-list__item">
-    <img class="mdc-image-list__image" src="images/1-1.jpg">
+    <img class="mdc-image-list__image" src="...">
     <div class="mdc-image-list__supporting">
       <span class="mdc-image-list__label">Text label</span>
     </div>
@@ -127,8 +127,8 @@ Mixin | Description
 `mdc-image-list-standard-columns($column-count, $gutter-size)` | Styles a Standard Image List to display the given number of columns. `$gutter-size` is optional and overrides the default amount of space between items.
 `mdc-image-list-masonry-columns($column-count, $gutter-size)` | Styles a Masonry Image List to display the given number of columns. `$gutter-size` is optional and overrides the default amount of space between items.
 
-> **Note:** Only one of the `-columns` mixins should be used for any given Image List. Use the mixin appropriate to the
-variant being used.
+> **Note:** Only one of the `mdc-image-list-...-columns` mixins should be used for any given Image List.
+> Use the mixin appropriate to the variant being used.
 
 ### Additional Information
 
