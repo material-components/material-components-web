@@ -113,13 +113,13 @@ Mixin | Description
 `mdc-states-focus-opacity($opacity, $has-nested-focusable-element)` | Mandatory. Adds styles for focus state using the provided opacity
 `mdc-states-press-opacity($opacity)` | Mandatory. Adds styles for press state using the provided opacity
 
+> _NOTE_: `$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) inside the root element.
+
 #### Sass Functions
 
 Function | Description
 --- | ---
 `mdc-states-opacity($color, $state)` | Returns the appropriate default opacity to apply to the given color in the given state (hover, focus, press, selected, or activated)
-
-> _NOTE_: `$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) inside the root element.
 
 ### `MDCRipple`
 
