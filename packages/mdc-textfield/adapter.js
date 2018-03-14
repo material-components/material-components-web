@@ -16,9 +16,6 @@
  */
 
 /* eslint-disable no-unused-vars */
-import MDCFloatingLabelFoundation from '@material/floating-label/foundation';
-import MDCLineRippleFoundation from '@material/line-ripple/foundation';
-import MDCNotchedOutlineFoundation from '@material/notched-outline/foundation';
 import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
 import MDCTextFieldIconFoundation from './icon/foundation';
 
@@ -39,11 +36,8 @@ let NativeInputType;
 
 /**
  * @typedef {{
- *   lineRipple: (!MDCLineRippleFoundation|undefined),
  *   helperText: (!MDCTextFieldHelperTextFoundation|undefined),
  *   icon: (!MDCTextFieldIconFoundation|undefined),
- *   label: (!MDCFloatingLabelFoundation|undefined),
- *   outline: (!MDCNotchedOutlineFoundation|undefined)
  * }}
  */
 let FoundationMapType;

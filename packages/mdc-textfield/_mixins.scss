@@ -22,10 +22,6 @@
 @import "icon/mixins";
 @import "icon/variables";
 
-@mixin mdc-text-field-outline-corner-radius($radius) {
-  border-radius: $radius;
-}
-
 @mixin mdc-text-field-box-corner-radius($radius) {
   border-radius: $radius $radius 0 0;
 }
@@ -207,9 +203,7 @@
 }
 
 @mixin mdc-text-field-outlined-focused_ {
-  .mdc-notched-outline__path {
-    stroke-width: 2px;
-  }
+  @include mdc-notched-outline-stroke-width(2px);
 }
 
 @mixin mdc-text-field-outlined-dense_ {
@@ -262,13 +256,17 @@
     z-index: 2;
   }
 
-  .mdc-notched-outline,
-  .mdc-notched-outline__idle {
-    @include mdc-text-field-outline-corner-radius($mdc-text-field-border-radius);
+  .mdc-notched-outline {
+    @include mdc-notched-outline-corner-radius($mdc-text-field-border-radius);
   }
 }
 
 @mixin mdc-text-field-outline-color_($color) {
+  /** NOTE: outlined version of text-field wants the "idle" and
+   * "notched" outline to have the same color. This covers two cases:
+   * 1) text field renders with NO value in the "idle" state
+   * 2) text field renders with a value in the "notched" state
+   */
   @include mdc-notched-outline-idle-color($color);
   @include mdc-notched-outline-color($color);
 }
@@ -279,6 +277,13 @@
     .mdc-text-field__icon:hover ~ {
       @include mdc-notched-outline-idle-color($color);
 
+      /** tldr; this doesn't break BEM:
+       * We need to wrap this mixin with the .mdc-notched-outline
+       * selector, because of the sibling selector '~'. The notched
+       * outline html structure has .mdc-notched-outline
+       * and .mdc-notched-outline__idle as siblings, while
+       * .mdc-notched-outline__path is a child of .mdc-notched-outline
+       */
       .mdc-notched-outline {
         @include mdc-notched-outline-color($color);
       }
