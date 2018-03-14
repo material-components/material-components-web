@@ -71,6 +71,38 @@ columns should be displayed per line:
 Images in a Standard Image list are constrained to 1:1 aspect ratio by default; this can be overridden using the
 `mdc-image-list-aspect` mixin documented below.
 
+## Variants
+
+### Masonry Image List
+
+The Masonry Image List variant presents images vertically arranged into several columns, using
+[CSS Columns](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Columns). In this layout, images may be any
+combination of aspect ratios.
+
+```html
+<ul class="mdc-image-list mdc-image-list--masonry my-masonry-image-list">
+  <li class="mdc-image-list__item">
+    <img class="mdc-image-list__image" src="...">
+    <div class="mdc-image-list__supporting">
+      <span class="mdc-image-list__label">Text label</span>
+    </div>
+  </li>
+  ...
+</ul>
+```
+
+> **Note:** Masonry Image List items _do not_ include the `mdc-image-list__image-aspect-container` element, since
+images in the list are not expected to be locked to a common aspect ratio.
+
+This would be combined with an invocation of the `mdc-image-list-masonry-columns` mixin, to establish how many columns
+should be displayed:
+
+```scss
+.my-masonry-image-list {
+  @include mdc-image-list-masonry-columns(5);
+}
+```
+
 ## Style Customization
 
 ### CSS Classes
@@ -78,6 +110,7 @@ Images in a Standard Image list are constrained to 1:1 aspect ratio by default; 
 CSS Class | Description
 --- | ---
 `mdc-image-list` | Mandatory. Indicates the root Image List element.
+`mdc-image-list--masonry` | Optional. Indicates that this Image List should use the Masonry variant.
 `mdc-image-list--with-text-protection` | Optional. Indicates that supporting content should be positioned in a scrim overlaying each image (instead of positioned separately under each image).
 `mdc-image-list__item` | Mandatory. Indicates each item in an Image List.
 `mdc-image-list__image-aspect-container` | Optional. Parent of each item's image element, responsible for constraining aspect ratio. This element may be omitted entirely if images are already sized to the correct aspect ratio.
@@ -92,12 +125,16 @@ Mixin | Description
 `mdc-image-list-aspect($width-height-ratio)` | Styles the aspect container elements within an Image List to conform to the given ratio, where 1 is 1:1, greater than 1 is wider, and less than 1 is taller.
 `mdc-image-list-corner-radius($radius)` | Styles the image and supporting content elements within an Image List to have rounded corners with the given radius.
 `mdc-image-list-standard-columns($column-count, $gutter-size)` | Styles a Standard Image List to display the given number of columns. `$gutter-size` is optional and overrides the default amount of space between items.
+`mdc-image-list-masonry-columns($column-count, $gutter-size)` | Styles a Masonry Image List to display the given number of columns. `$gutter-size` is optional and overrides the default amount of space between items.
+
+> **Note:** Only one of the `mdc-image-list-...-columns` mixins should be used for any given Image List.
+> Use the mixin appropriate to the variant being used.
 
 ### Additional Information
 
 #### Constraining width
 
-The `mdc-image-list-standard-columns` mixin will grow and shrink items based on the Image List's overall width. Depending on
+The `mdc-image-list-...-columns` mixins will grow and shrink items based on the Image List's overall width. Depending on
 placement, this could be directly related to the viewport width, and images could become exceedingly large compared to
 their actual rendered size. This can be restricted by using any of `min-width`, `width`, or `max-width` on the Image
 List:
@@ -130,6 +167,8 @@ needs to be changed are styles:
 ```
 
 #### Using div in place of img to enforce aspect ratio
+
+> **Note:** This advice is not applicable to Masonry Image List, where images do not share a common aspect ratio.
 
 Images in an Image List typically use the `img` element. However, if your assets don't have the same aspect ratio as
 specified for list items, they will become distorted. In these cases, you can use a `div` element in place of `img`,
