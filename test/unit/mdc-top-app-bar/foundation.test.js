@@ -37,9 +37,10 @@ test('exports cssClasses', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTopAppBarFoundation, [
-    'hasClass', 'addClass', 'removeClass', 'registerNavigationIconInteractionHandler',
-    'deregisterNavigationIconInteractionHandler', 'notifyNavigationIconClicked', 'registerScrollHandler',
-    'deregisterScrollHandler', 'getViewportScrollY', 'getTotalActionItems',
+    'hasClass', 'addClass', 'removeClass', 'addAttributeToTopAppBar', 'getTopAppBarHeight',
+    'registerNavigationIconInteractionHandler', 'deregisterNavigationIconInteractionHandler',
+    'notifyNavigationIconClicked', 'registerScrollHandler', 'deregisterScrollHandler',
+    'registerResizeHandler', 'deregisterResizeHandler', 'getViewportScrollY', 'getTotalActionItems',
   ]);
 });
 
@@ -90,7 +91,7 @@ test('short top app bar: scroll listener is removed on destroy', () => {
   td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_CLASS)).thenReturn(true);
   foundation.init();
   foundation.destroy();
-  td.verify(mockAdapter.deregisterScrollHandler(td.matchers.isA(Function)), {times: 1});
+  td.verify(mockAdapter.deregisterScrollHandler(td.matchers.isA(Function)), {times: 2});
 });
 
 test('short top app bar: scroll listener is not registered if collapsed class exists before init', () => {
