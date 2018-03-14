@@ -75,7 +75,7 @@ class MDCTopAppBar extends MDCComponent {
         hasClass: (className) => this.root_.classList.contains(className),
         addClass: (className) => this.root_.classList.add(className),
         removeClass: (className) => this.root_.classList.remove(className),
-        addAttributeToTopAppBar: (attribute, value) => this.root_.setAttribute(attribute, value),
+        setStyle: (attribute, value) => this.root_.style.setProperty(attribute, value),
         getTopAppBarHeight: () => this.root_.clientHeight,
         registerNavigationIconInteractionHandler: (evtType, handler) => {
           if (this.navIcon_) {

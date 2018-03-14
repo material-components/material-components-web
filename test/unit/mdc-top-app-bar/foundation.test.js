@@ -37,7 +37,7 @@ test('exports cssClasses', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTopAppBarFoundation, [
-    'hasClass', 'addClass', 'removeClass', 'addAttributeToTopAppBar', 'getTopAppBarHeight',
+    'hasClass', 'addClass', 'removeClass', 'setStyle', 'getTopAppBarHeight',
     'registerNavigationIconInteractionHandler', 'deregisterNavigationIconInteractionHandler',
     'notifyNavigationIconClicked', 'registerScrollHandler', 'deregisterScrollHandler',
     'registerResizeHandler', 'deregisterResizeHandler', 'getViewportScrollY', 'getTotalActionItems',
@@ -46,6 +46,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
 
 const setupTest = () => {
   const mockAdapter = td.object(MDCTopAppBarFoundation.defaultAdapter);
+  td.when(mockAdapter.getTopAppBarHeight()).thenReturn(64);
 
   const foundation = new MDCTopAppBarFoundation(mockAdapter);
 
@@ -156,4 +157,31 @@ test('short top app bar: class is not added if it does not have an action item',
   td.when(mockAdapter.getTotalActionItems()).thenReturn(0);
   foundation.init();
   td.verify(mockAdapter.addClass(MDCTopAppBarFoundation.cssClasses.SHORT_HAS_ACTION_ITEM_CLASS), {times: 0});
+});
+
+test('top app bar scroll: throttledResizeHandler_ updates topAppBarHeight_ if the top app bar height changes', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.init();
+  assert.isTrue(foundation.topAppBarHeight_ === 64);
+  td.when(mockAdapter.getTopAppBarHeight()).thenReturn(56);
+  foundation.throttledResizeHandler_();
+  assert.isTrue(foundation.topAppBarHeight_ === 56);
+});
+
+test('top app bar scroll: throttledResizeHandler_ does not update topAppBarHeight_ if height is the same', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.init();
+  assert.isTrue(foundation.topAppBarHeight_ === 64);
+  td.when(mockAdapter.getTopAppBarHeight()).thenReturn(64);
+  foundation.throttledResizeHandler_();
+  assert.isTrue(foundation.topAppBarHeight_ === 64);
+});
+
+test('top app bar : moveTopAppBar_ ', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.init();
+  assert.isTrue(foundation.topAppBarHeight_ === 64);
+  td.when(mockAdapter.getTopAppBarHeight()).thenReturn(64);
+  foundation.throttledResizeHandler_();
+  assert.isTrue(foundation.topAppBarHeight_ === 64);
 });
