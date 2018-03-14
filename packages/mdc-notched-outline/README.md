@@ -50,6 +50,7 @@ Mixin | Description
 `mdc-notched-outline-color($color)` | Customizes the border color of the notched outlined.
 `mdc-notched-outline-idle-color($color)` | Customizes the border color of the idle outline.
 `mdc-notched-outline-stroke-width($width)` | Changes notched outline width to a specified pixel value.
+`mdc-notched-outline-corner-radius($radius)` | Sets the corner radius of the notched outline element to the given number.
 
 ### `MDCNotchedOutline`
 

@@ -33,3 +33,10 @@
     stroke-width: $width;
   }
 }
+
+@mixin mdc-notched-outline-corner-radius($radius) {
+  &,
+  ~ .mdc-notched-outline__idle {
+    border-radius: $radius;
+  }
+}
