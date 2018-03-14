@@ -212,11 +212,6 @@
     width: var(--mdc-ripple-fg-size, $radius);
     height: var(--mdc-ripple-fg-size, $radius);
   }
-
-  &.mdc-ripple-upgraded::after {
-    width: var(--mdc-ripple-fg-size, $radius);
-    height: var(--mdc-ripple-fg-size, $radius);
-  }
 }
 
 //

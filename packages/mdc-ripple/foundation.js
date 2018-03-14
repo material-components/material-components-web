@@ -488,20 +488,31 @@ class MDCRippleFoundation extends MDCFoundation {
     }
   }
 
-  layout() {
+  /**
+   * Recomputes all dimensions and positions for the ripple element.
+   * Optionally include width and height for ripple surfaces that change size during runtime.
+   * @param {number=} width
+   * @param {number=} height
+   */
+  layout(width, height) {
     if (this.layoutFrame_) {
       cancelAnimationFrame(this.layoutFrame_);
     }
     this.layoutFrame_ = requestAnimationFrame(() => {
-      this.layoutInternal_();
+      this.layoutInternal_(width, height);
       this.layoutFrame_ = 0;
     });
   }
 
-  /** @private */
-  layoutInternal_() {
+  /** 
+   * @param {number=} width
+   * @param {number=} height
+   * @private
+   */
+  layoutInternal_(width, height) {
     this.frame_ = this.adapter_.computeBoundingRect();
-    const maxDim = Math.max(this.frame_.height, this.frame_.width);
+    width = width || this.frame_.width;
+    height = height || this.frame_.height;
 
     // Surface diameter is treated differently for unbounded vs. bounded ripples.
     // Unbounded ripple diameter is calculated smaller since the surface is expected to already be padded appropriately
@@ -510,10 +521,11 @@ class MDCRippleFoundation extends MDCFoundation {
     // (calculated based on the diagonal plus a constant padding), and are clipped at the surface's border via
     // `overflow: hidden`.
     const getBoundedRadius = () => {
-      const hypotenuse = Math.sqrt(Math.pow(this.frame_.width, 2) + Math.pow(this.frame_.height, 2));
+      const hypotenuse = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
       return hypotenuse + MDCRippleFoundation.numbers.PADDING;
     };
 
+    const maxDim = Math.max(height, width);
     this.maxRadius_ = this.adapter_.isUnbounded() ? maxDim : getBoundedRadius();
 
     // Ripple is sized as a fraction of the largest dimension of the surface, then scales up using a CSS scale transform

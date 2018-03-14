@@ -18,6 +18,7 @@
 /** @enum {string} */
 const strings = {
   INTERACTION_EVENT: 'MDCChip:interaction',
+  CHECKMARK_SELECTOR: '.mdc-chip__checkmark',
   LEADING_ICON_SELECTOR: '.mdc-chip__icon--leading',
   TRAILING_ICON_INTERACTION_EVENT: 'MDCChip:trailingIconInteraction',
   TRAILING_ICON_SELECTOR: '.mdc-chip__icon--trailing',
