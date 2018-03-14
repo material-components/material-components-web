@@ -55,7 +55,6 @@ autoInit.register('MDCLineRipple', lineRipple.MDCLineRipple);
 autoInit.register('MDCLinearProgress', linearProgress.MDCLinearProgress);
 autoInit.register('MDCRadio', radio.MDCRadio);
 autoInit.register('MDCSnackbar', snackbar.MDCSnackbar);
-autoInit.register('MDCTabItem', tab.MDCTab);
 autoInit.register('MDCTab', tabs.MDCTab);
 autoInit.register('MDCTabBar', tabs.MDCTabBar);
 autoInit.register('MDCTextField', textField.MDCTextField);
