@@ -32,72 +32,13 @@ const pluginFactory = new PluginFactory({globber});
 const cssBundleFactory = new CssBundleFactory({env, pathResolver, globber, pluginFactory});
 const jsBundleFactory = new JsBundleFactory({env, pathResolver, globber, pluginFactory});
 
-const OUT_DIR_ABS = pathResolver.getAbsolutePath('./build');
-const DEMO_ASSET_DIR_REL = '/assets/'; // Used by webpack-dev-server
+const OUTPUT = {
+  fsDirAbsolutePath: pathResolver.getAbsolutePath('./build'),
+};
 
-const copyrightBannerPlugin = pluginFactory.createCopyrightBannerPlugin();
-
-module.exports = [];
-
-module.exports.push(jsBundleFactory.createMainJsCombined({
-  output: {
-    fsDirAbsolutePath: OUT_DIR_ABS,
-    httpDirAbsolutePath: DEMO_ASSET_DIR_REL,
-  },
-}));
-
-if (!env.isDev()) {
-  module.exports.push(jsBundleFactory.createMainJsALaCarte({
-    output: {
-      fsDirAbsolutePath: OUT_DIR_ABS,
-      httpDirAbsolutePath: DEMO_ASSET_DIR_REL,
-    },
-  }));
-
-  module.exports.push(cssBundleFactory.createMainCssCombined({
-    output: {
-      fsDirAbsolutePath: OUT_DIR_ABS,
-      httpDirAbsolutePath: DEMO_ASSET_DIR_REL,
-    },
-  }));
-
-  module.exports.push(cssBundleFactory.createMainCssALaCarte({
-    output: {
-      fsDirAbsolutePath: OUT_DIR_ABS,
-      httpDirAbsolutePath: DEMO_ASSET_DIR_REL,
-    },
-  }));
-}
-
-if (env.isDev()) {
-  module.exports.push(cssBundleFactory.createCustomCss({
-    bundleName: 'demo-css',
-    chunkGlobConfig: {
-      inputDirectory: '/demos',
-    },
-    output: {
-      fsDirAbsolutePath: OUT_DIR_ABS,
-      httpDirAbsolutePath: DEMO_ASSET_DIR_REL,
-    },
-    plugins: [
-      copyrightBannerPlugin,
-    ],
-  }));
-
-  module.exports.push(jsBundleFactory.createCustomJs({
-    bundleName: 'demo-js',
-    chunks: {
-      'common': pathResolver.getAbsolutePath('./demos/common.js'),
-      'theme/index': pathResolver.getAbsolutePath('./demos/theme/index.js'),
-    },
-    output: {
-      fsDirAbsolutePath: OUT_DIR_ABS,
-      httpDirAbsolutePath: DEMO_ASSET_DIR_REL,
-      filename: '[name].js',
-      library: ['demo', '[name]'],
-    },
-    plugins: [
-      copyrightBannerPlugin,
-    ],
-  }));
-}
+module.exports = [
+  jsBundleFactory.createMainJsCombined({output: OUTPUT}),
+  jsBundleFactory.createMainJsALaCarte({output: OUTPUT}),
+  cssBundleFactory.createMainCssCombined({output: OUTPUT}),
+  cssBundleFactory.createMainCssALaCarte({output: OUTPUT}),
+];

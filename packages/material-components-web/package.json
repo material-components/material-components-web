@@ -28,6 +28,7 @@
     "@material/form-field": "^0.32.0",
     "@material/grid-list": "^0.30.0",
     "@material/icon-toggle": "^0.32.0",
+    "@material/image-list": "^0.0.0",
     "@material/layout-grid": "^0.24.0",
     "@material/line-ripple": "^0.32.0",
     "@material/linear-progress": "^0.30.0",

@@ -16,7 +16,9 @@
     "access": "public"
   },
   "dependencies": {
+    "@material/animation": "^0.25.0",
     "@material/base": "^0.29.0",
+    "@material/checkbox": "^0.32.0",
     "@material/ripple": "^0.32.0"
   }
 }

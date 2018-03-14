@@ -18,6 +18,7 @@
 @import "../packages/mdc-top-app-bar/mdc-top-app-bar";
 @import "../packages/mdc-drawer/mdc-drawer";
 @import "../packages/mdc-list/mdc-list";
+@import "../packages/mdc-typography/mdc-typography";
 
 .demo-paragraph {
   margin: 0;
@@ -54,4 +55,17 @@
 
 input[type="checkbox"]:disabled + label {
   opacity: .4;
+}
+
+.demo-col {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  margin: 10px;
+}
+
+.demo-row {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: row;
 }
