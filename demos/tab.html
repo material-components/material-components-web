@@ -25,114 +25,21 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <style>
-      fieldset {
-        padding: 24px;
-        padding-top: 0;
-        padding-bottom: 16px;
-      }
-
-      fieldset .mdc-button {
-        margin: 16px;
-      }
-
-      .demo-header-toolbar {
-        z-index: 10;
-      }
-
-      .demo-buttons {
-        padding: 40px 40px 0 40px;
-      }
-
-      fieldset legend {
-        display: block;
-        padding: 16px;
-        padding-top: 64px;
-        padding-bottom: 24px;
-      }
-
-      .demo-tabs__scroller {
-        margin-top: 64px;
-        padding-bottom: 1px;
-      }
-
-      .demo-title {
-        padding: 0 40px 40px;
-      }
-
-      .demo-note {
-        padding: 20px;
-        margin: 20px 0;
-        background-color: #f2f2f2;
-      }
-
-      #dynamic-demo-toolbar h1 {
-        margin-left: 64px;
-      }
-
-      .panels {
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        margin-top: 8px;
-      }
-
-      .panel {
-        display: none;
-      }
-
-      .panel.active {
-        display: block;
-      }
-
-      .dots {
-        display: flex;
-        justify-content: flex-start;
-        margin-top: 4px;
-        padding-bottom: 16px;
-      }
-
-      .dot {
-        margin: 0 4px;
-        border-radius: 50%;
-        border: 1px solid #64DD17;
-        width: 20px;
-        height: 20px;
-      }
-
-      .dot:last-child {
-        margin-right: 0;
-      }
-
-      .dot.active {
-        background-color: #64DD17;
-        border-color: #64DD17;
-      }
-
-      .my-modified-toolbar-section {
-        position: absolute;
-        right: 0;
-        bottom: -16px;
-      }
-
-      [dir="rtl"] .my-modified-toolbar-section {
-        right: auto;
-        left: 0;
-      }
-    </style>
   </head>
 
-  <body class="mdc-typography" data-demo-disable-hash-link-navigation>
-    <header class="mdc-toolbar mdc-toolbar--fixed demo-header-toolbar">
+  <body class="mdc-typography">
+    <header class="mdc-toolbar mdc-toolbar--fixed">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-          <a href="/" class="catalog-back mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
+          <span class="catalog-back">
+            <a href="/" class="mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
+          </span>
           <span class="mdc-toolbar__title catalog-title">Tab</span>
         </section>
       </div>
     </header>
 
-    <main id="tabs-demo-main-section" class="mdc-toolbar-fixed-adjust">
+    <main class="mdc-toolbar-fixed-adjust">
       <section class="hero">
         <button class="mdc-tab demo-tab" role="tab" data-demo="demoTabFavorite">
           <span class="mdc-tab__content">
@@ -140,12 +47,39 @@
             <span class="mdc-tab__text-label">Favorites</span>
           </span>
         </button>
-        <button class="mdc-tab mdc-tab--active demo-tab" role="tab" data-demo="demoTabRecents">
-            <span class="mdc-tab__content">
-              <span class="material-icons mdc-tab__icon">phone</span>
-              <span class="mdc-tab__text-label">Recents</span>
-            </span>
-          </button>
+        <button class="mdc-tab mdc-tab--active demo-tab" role="tab" data-demo="demoRecentsTabRecents">
+          <span class="mdc-tab__content">
+            <span class="material-icons mdc-tab__icon">phone</span>
+            <span class="mdc-tab__text-label">Recents</span>
+          </span>
+        </button>
+      </section>
+
+      <section class="example">
+        <h2>Basic Tab</h2>
+        <button class="mdc-tab demo-tab" role="tab" data-demo="basicTab">
+          <span class="mdc-tab__content">
+            <span class="mdc-tab__text-label">Nearby</span>
+          </span>
+        </button>
+        <div>
+          <input type="checkbox" id="basic-active-checkbox" data-controls="basicTab"/>
+          <label for="basic-active-checkbox">Active</label>
+        </div>
+      </section>
+
+      <section class="example">
+        <h2>Basic Tab with Icon</h2>
+        <button class="mdc-tab demo-tab" role="tab" data-demo="basicTabWithIcon">
+          <span class="mdc-tab__content">
+            <span class="mdc-tab__icon">directions_transit</span>
+            <span class="mdc-tab__text-label">Transit</span>
+          </span>
+        </button>
+        <div>
+          <input type="checkbox" id="basic-icon-active-checkbox" data-controls="basicTabWithIcon"/>
+          <label for="basic-icon-active-checkbox">Active</label>
+        </div>
       </section>
     </main>
 
@@ -154,9 +88,24 @@
     <script>
       demoReady(function() {
         var demos = document.querySelectorAll('[data-demo]');
-        for (let i = 0; i < demos.length; i++) {
+        for (var i = 0; i < demos.length; i++) {
           var demoName = demos[i].dataset.demo;
           window[demoName] = new mdc.tab.MDCTab(demos[i]);
+        }
+
+        var controls = document.querySelectorAll('[data-controls]');
+        for (var i = 0; i < controls.length; i++) {
+          (function(index) {
+            var controller = controls[index];
+            var controlTarget = controller.dataset.controls;
+            if (!controlTarget) {
+              return;
+            }
+
+            controller.addEventListener('change', function(event) {
+              window[controlTarget].active = controller.checked;
+            });
+          })(i);
         }
       });
     </script>
