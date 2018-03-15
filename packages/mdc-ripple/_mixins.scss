@@ -218,10 +218,11 @@
 }
 
 @mixin mdc-states-interactions_($color, $has-nested-focusable-element, $opacity-modifier: 0) {
-  $opacity-map: mdc-states-opacities_($color);
-
   @include mdc-states-base-color($color);
-  @include mdc-states-hover-opacity(map-get($opacity-map, "hover") + $opacity-modifier);
-  @include mdc-states-focus-opacity(map-get($opacity-map, "focus") + $opacity-modifier, $has-nested-focusable-element);
-  @include mdc-states-press-opacity(map-get($opacity-map, "press") + $opacity-modifier);
+  @include mdc-states-hover-opacity(mdc-states-opacity($color, hover) + $opacity-modifier);
+  @include mdc-states-focus-opacity(
+    mdc-states-opacity($color, focus) + $opacity-modifier,
+    $has-nested-focusable-element
+  );
+  @include mdc-states-press-opacity(mdc-states-opacity($color, press) + $opacity-modifier);
 }
