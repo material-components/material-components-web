@@ -86,9 +86,13 @@ class MDCChipSet extends MDCComponent {
 
         let chipEl = document.createElement('div');
         chipEl.classList.add(MDCChipFoundation.cssClasses.CHIP);
-        chipEl.appendChild(leadingIcon);
+        if (leadingIcon) {
+          chipEl.appendChild(leadingIcon);
+        }
         chipEl.appendChild(chipTextEl);
-        chipEl.appendChild(trailingIcon);
+        if (trailingIcon) {
+          chipEl.appendChild(trailingIcon);
+        }
         return chipEl;
       },
       appendChild: (el) => this.root_.appendChild(el),
