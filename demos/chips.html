@@ -55,7 +55,8 @@
 
       <section class="example">
         <h2>Entry Chips</h2>
-        <div class="mdc-chip-set">
+        Add entry: <input id="entry-chip-set-input">
+        <div class="mdc-chip-set mdc-chip-set--entry">
           <div class="demo-chip mdc-chip" tabindex="0">
             <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">face</i>
             <div class="mdc-chip__text">Jane Smith</div>
@@ -231,10 +232,24 @@
     <script src="/assets/material-components-web.js" async></script>
     <script>
       demoReady(function() {
-        var chipSets = document.querySelectorAll('.mdc-chip-set');
+        var entryChipSet = document.querySelector('.mdc-chip-set--entry');
+        var chipSets = document.querySelectorAll('.mdc-chip-set:not(.mdc-chip-set--entry)');
+        var inputEl = document.getElementById('entry-chip-set-input');
+
         [].forEach.call(chipSets, function(chipSet) {
           mdc.chips.MDCChipSet.attachTo(chipSet);
         });
+
+        var entryChipSetComponent = mdc.chips.MDCChipSet.attachTo(entryChipSet);
+        var handleInputEnter = (evt) => {
+          if (evt.key === 'Enter' || evt.keyCode === 13) {
+            var leadingIcon = document.querySelector('.mdc-chip__icon--leading').cloneNode(true);
+            var trailingIcon = document.querySelector('.mdc-chip__icon--trailing').cloneNode(true);
+            entryChipSetComponent.addChip(inputEl.value, leadingIcon, trailingIcon);
+            inputEl.value = '';
+          }
+        };
+        inputEl.addEventListener('keydown', handleInputEnter);
       });
     </script>
   </body>

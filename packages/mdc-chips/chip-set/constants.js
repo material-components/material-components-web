@@ -22,6 +22,7 @@ const strings = {
 
 /** @enum {string} */
 const cssClasses = {
+  CHIP: 'mdc-chip',
   CHOICE: 'mdc-chip-set--choice',
   FILTER: 'mdc-chip-set--filter',
 };

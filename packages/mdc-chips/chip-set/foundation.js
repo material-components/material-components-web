@@ -76,6 +76,20 @@ class MDCChipSetFoundation extends MDCFoundation {
   }
 
   /**
+   * Returns a new chip element with the given text, leading icon, and trailing icon, 
+   * added to the root chip set element.
+   * @param {string} text
+   * @param {?Element} leadingIcon
+   * @param {?Element} trailingIcon
+   * @return {!Element}
+   */
+  createChipElement(text, leadingIcon, trailingIcon) {
+    const chipEl = this.adapter_.createChip(text, leadingIcon, trailingIcon);
+    this.adapter_.appendChild(chipEl);
+    return chipEl;
+  }
+
+  /**
    * Handles a chip interaction event
    * @param {!Object} evt
    * @private
