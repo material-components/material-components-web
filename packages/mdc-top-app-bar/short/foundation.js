@@ -36,6 +36,7 @@ class MDCShortTopAppBarFoundation extends MDCTopAppBarFoundation {
   }
 
   init() {
+    super.init();
     const isAlwaysCollapsed = this.adapter_.hasClass(cssClasses.SHORT_COLLAPSED_CLASS);
 
     if (this.adapter_.getTotalActionItems() > 0) {
@@ -49,6 +50,7 @@ class MDCShortTopAppBarFoundation extends MDCTopAppBarFoundation {
   }
 
   destroy() {
+    super.destroy();
     this.adapter_.deregisterScrollHandler(this.scrollHandler_);
   }
 
