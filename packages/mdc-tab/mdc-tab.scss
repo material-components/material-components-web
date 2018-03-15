@@ -14,11 +14,12 @@
 // limitations under the License.
 //
 
-@import "./mixins";
-@import "./variables";
+@import "@material/ripple/common";
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
 @import "@material/typography/mixins";
+@import "./mixins";
+@import "./variables";
 
 .mdc-tab {
   @include mdc-ripple-surface;
@@ -42,6 +43,7 @@
   text-transform: uppercase;
   white-space: nowrap;
   cursor: pointer;
+  -webkit-appearance: none;
   overflow: hidden;
   z-index: 1;
 }

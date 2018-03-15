@@ -17,8 +17,35 @@
 @import "./common";
 @import "../packages/mdc-tab/mixins";
 @import "../packages/mdc-tab/mdc-tab";
-@import "../packages/mdc-button/mdc-button";
+@import "../packages/mdc-elevation/mixins";
+@import "../packages/mdc-ripple/mixins";
+@import "../packages/mdc-theme/color-palette";
+
+.demo {
+  display: flex;
+  align-items: center;
+}
 
 .demo-tab {
   flex: 0 1 auto;
+}
+
+.custom-tab1 {
+  @include mdc-states($material-color-yellow-a700);
+  @include mdc-tab-text-label-color($material-color-deep-purple-600);
+
+  &.mdc-tab--active {
+    @include mdc-tab-text-label-color($material-color-cyan-600);
+  }
+}
+
+.custom-tab2 {
+  @include mdc-states($material-color-amber-a700);
+  @include mdc-tab-text-label-color($material-color-red-300);
+  @include mdc-tab-icon-color($material-color-orange-300);
+
+  &.mdc-tab--active {
+    @include mdc-tab-text-label-color($material-color-red-900);
+    @include mdc-tab-icon-color($material-color-orange-900);
+  }
 }

@@ -16,6 +16,7 @@
  */
 
 import MDCComponent from '@material/base/component';
+import {MDCRipple} from '@material/ripple/index';
 
 import MDCTabAdapter from './adapter';
 import MDCTabFoundation from './foundation';
@@ -49,6 +50,16 @@ class MDCTab extends MDCComponent {
     } else {
       this.foundation_.deactivate();
     }
+  }
+
+  /**
+   * @param {...?} args
+   */
+  constructor(...args) {
+    super(...args);
+
+    /** @private {!MDCRipple} */
+    this.ripple_ = MDCRipple.attachTo(this.root_);
   }
 
   /**

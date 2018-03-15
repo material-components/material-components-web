@@ -55,32 +55,85 @@
         </button>
       </section>
 
-      <section class="example">
-        <h2>Basic Tab</h2>
-        <button class="mdc-tab demo-tab" role="tab" data-demo="basicTab">
-          <span class="mdc-tab__content">
-            <span class="mdc-tab__text-label">Nearby</span>
-          </span>
-        </button>
+      <div class="rtl-container">
+        <h3>RTL</h3>
         <div>
-          <input type="checkbox" id="basic-active-checkbox" data-controls="basicTab"/>
-          <label for="basic-active-checkbox">Active</label>
+          <input type="checkbox" id="rtl-checkbox"/>
+          <label for="rtl-checkbox">Enabled</label>
+        </div>
+      </div>
+
+      <section class="example">
+        <h2>Basic Tabs</h2>
+        <div class="demo">
+          <button class="mdc-tab demo-tab" role="tab" data-demo="basicTab">
+            <span class="mdc-tab__content">
+              <span class="mdc-tab__text-label">Nearby</span>
+            </span>
+          </button>
+          <div class="demo-controls">
+            <input type="checkbox" id="id0" data-controls="basicTab"/>
+            <label for="id0">Active</label>
+          </div>
+        </div>
+        <div class="demo">
+          <button class="mdc-tab demo-tab" role="tab" data-demo="basicTabWithIcon">
+            <span class="mdc-tab__content">
+              <span class="material-icons mdc-tab__icon">directions_transit</span>
+              <span class="mdc-tab__text-label">Transit</span>
+            </span>
+          </button>
+          <div class="demo-controls">
+            <input type="checkbox" id="id1" data-controls="basicTabWithIcon"/>
+            <label for="id1">Active</label>
+          </div>
         </div>
       </section>
 
       <section class="example">
+          <h2>Basic Tabs with Custom Colors</h2>
+          <div class="demo">
+            <button class="mdc-tab demo-tab custom-tab1" role="tab" data-demo="customColorsTab1">
+              <span class="mdc-tab__content">
+                <span class="mdc-tab__text-label">Showtimes</span>
+              </span>
+            </button>
+            <div class="demo-controls">
+              <input type="checkbox" id="id2" data-controls="customColorsTab1"/>
+              <label for="id2">Active</label>
+            </div>
+          </div>
+          <div class="demo">
+            <button class="mdc-tab demo-tab custom-tab2" role="tab" data-demo="customColorsTab2">
+              <span class="mdc-tab__content">
+                <span class="material-icons mdc-tab__icon">directions_car</span>
+                <span class="mdc-tab__text-label">Directions</span>
+              </span>
+            </button>
+            <div class="demo-controls">
+              <input type="checkbox" id="id3" data-controls="customColorsTab2"/>
+              <label for="id3">Active</label>
+            </div>
+          </div>
+        </section>
+
+      <!--
+      <section class="example">
         <h2>Basic Tab with Icon</h2>
-        <button class="mdc-tab demo-tab" role="tab" data-demo="basicTabWithIcon">
-          <span class="mdc-tab__content">
-            <span class="material-icons mdc-tab__icon">directions_transit</span>
-            <span class="mdc-tab__text-label">Transit</span>
-          </span>
-        </button>
-        <div>
-          <input type="checkbox" id="basic-icon-active-checkbox" data-controls="basicTabWithIcon"/>
-          <label for="basic-icon-active-checkbox">Active</label>
+        <div class="demo">
+          <button class="mdc-tab demo-tab" role="tab" data-demo="basicTabWithIcon">
+            <span class="mdc-tab__content">
+              <span class="material-icons mdc-tab__icon">directions_transit</span>
+              <span class="mdc-tab__text-label">Transit</span>
+            </span>
+          </button>
+          <div>
+            <input type="checkbox" id="basic-icon-active-checkbox" data-controls="basicTabWithIcon"/>
+            <label for="basic-icon-active-checkbox">Active</label>
+          </div>
         </div>
       </section>
+      -->
     </main>
 
     <script src="/assets/material-components-web.js" async></script>
@@ -95,18 +148,18 @@
 
         var controls = document.querySelectorAll('[data-controls]');
         for (var i = 0; i < controls.length; i++) {
-          (function(index) {
-            var controller = controls[index];
-            var controlTarget = controller.dataset.controls;
-            if (!controlTarget) {
-              return;
+          controls[i].addEventListener('change', function(event) {
+            var controlTarget = event.currentTarget.dataset.controls;
+            if (window[controlTarget]) {
+              window[controlTarget].active = event.currentTarget.checked;
             }
-
-            controller.addEventListener('change', function(event) {
-              window[controlTarget].active = controller.checked;
-            });
-          })(i);
+          });
         }
+
+        var rtlControls = document.getElementById('rtl-checkbox');
+        rtlControls.addEventListener('change', function(event) {
+          document.body.setAttribute('dir', event.currentTarget.checked ? 'rtl': 'ltr');
+        });
       });
     </script>
   </body>

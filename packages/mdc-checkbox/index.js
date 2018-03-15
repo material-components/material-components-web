@@ -21,7 +21,7 @@ import MDCComponent from '@material/base/component';
 import {MDCSelectionControlState, MDCSelectionControl} from '@material/selection-control/index';
 /* eslint-enable no-unused-vars */
 import MDCCheckboxFoundation from './foundation';
-import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
+import {MDCRipple} from '@material/ripple/index';
 import {getMatchesProperty} from '@material/ripple/util';
 
 /**
