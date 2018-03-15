@@ -112,12 +112,11 @@ class MDCRipple extends MDCComponent {
 
   /**
    * Updates the dimensions of the ripple.
-   * Optionally include width and height for surfaces that change size during runtime.
-   * @param {number=} width
-   * @param {number=} height
+   * Optionally include dimensions for surfaces that change size during animation.
+   * @param {{height:number, width: number}=} dimensions
    */
-  layout(width, height) {
-    this.foundation_.layout(width, height);
+  layout(dimensions) {
+    this.foundation_.layout(dimensions);
   }
 
   /** @return {!MDCRippleFoundation} */

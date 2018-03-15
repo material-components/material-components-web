@@ -143,7 +143,7 @@ Method Signature | Description
 --- | ---
 `activate() => void` | Proxies to the foundation's `activate` method
 `deactivate() => void` | Proxies to the foundation's `deactivate` method
-`layout(width, height) => void` | Proxies to the foundation's `layout` method
+`layout(dimensions: {height: number, width: number}) => void` | Proxies to the foundation's `layout` method
 
 ### `MDCRippleAdapter`
 
@@ -174,7 +174,7 @@ Method Signature | Description
 --- | ---
 `activate() => void` | Triggers an activation of the ripple (the first stage, which happens when the ripple surface is engaged via interaction, such as a `mousedown` or a `pointerdown` event). It expands from the center.
 `deactivate() => void` | Triggers a deactivation of the ripple (the second stage, which happens when the ripple surface is engaged via interaction, such as a `mouseup` or a `pointerup` event). It expands from the center.
-`layout(width, height) => void` | Recomputes all dimensions and positions for the ripple element. Useful if a ripple surface's position or dimension is changed programmatically.
+`layout(dimensions: {height: number, width: number}) => void` | Recomputes all dimensions and positions for the ripple element. Useful if a ripple surface's position or dimension is changed programmatically. `dimensions` are optional and only required when the size is expected to change during the ripple.
 `setUnbounded(unbounded: boolean) => void` | Sets the ripple to be unbounded or not, based on the given boolean.
 
 ## Tips/Tricks

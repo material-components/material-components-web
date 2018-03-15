@@ -202,6 +202,19 @@ testFoundation(`#layout sets ${strings.VAR_FG_SIZE} to the circumscribing circle
     td.verify(adapter.updateCssVariable(strings.VAR_FG_SIZE, `${initialSize}px`));
   });
 
+testFoundation(`#layout sets ${strings.VAR_FG_SIZE} to the circumscribing circle's diameter when called with` +
+               'dimensions', ({foundation, adapter, mockRaf}) => {
+  const width = 200;
+  const height = 100;
+  const maxSize = Math.max(width, height);
+  const initialSize = maxSize * numbers.INITIAL_ORIGIN_SCALE;
+
+  foundation.layout({width, height});
+  mockRaf.flush();
+
+  td.verify(adapter.updateCssVariable(strings.VAR_FG_SIZE, `${initialSize}px`));
+});
+
 testFoundation(`#layout sets ${strings.VAR_FG_SCALE} based on the difference between the ` +
                'proportion of the max radius and the initial size', ({foundation, adapter, mockRaf}) => {
   const width = 200;

@@ -92,7 +92,14 @@ test('layout() delegates to the foundation', () => {
   const {component} = setupTest();
   component.foundation_.layout = td.function();
   component.layout();
-  td.verify(component.foundation_.layout(undefined, undefined));
+  td.verify(component.foundation_.layout(undefined));
+});
+
+test('layout() passes value of dimensions to the foundation when set', () => {
+  const {component} = setupTest();
+  component.foundation_.layout = td.function();
+  component.layout({height: '10px', width: '10px'});
+  td.verify(component.foundation_.layout({height: '10px', width: '10px'}));
 });
 
 test('adapter#browserSupportsCssVars delegates to util', () => {

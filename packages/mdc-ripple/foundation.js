@@ -490,29 +490,26 @@ class MDCRippleFoundation extends MDCFoundation {
 
   /**
    * Recomputes all dimensions and positions for the ripple element.
-   * Optionally include width and height for ripple surfaces that change size during runtime.
-   * @param {number=} width
-   * @param {number=} height
+   * Optionally include dimensions for ripple surfaces that change size during animation.
+   * @param {{height:number, width: number}=} dimensions
    */
-  layout(width, height) {
+  layout(dimensions) {
     if (this.layoutFrame_) {
       cancelAnimationFrame(this.layoutFrame_);
     }
     this.layoutFrame_ = requestAnimationFrame(() => {
-      this.layoutInternal_(width, height);
+      this.layoutInternal_(dimensions);
       this.layoutFrame_ = 0;
     });
   }
 
   /**
-   * @param {number=} width
-   * @param {number=} height
+   * @param {{height:number, width: number}=} dimensions
    * @private
    */
-  layoutInternal_(width, height) {
-    this.frame_ = this.adapter_.computeBoundingRect();
-    width = width || this.frame_.width;
-    height = height || this.frame_.height;
+  layoutInternal_(dimensions) {
+    this.frame_ = /** @type {!ClientRect} */ (dimensions) || this.adapter_.computeBoundingRect();
+    const maxDim = Math.max(this.frame_.height, this.frame_.width);
 
     // Surface diameter is treated differently for unbounded vs. bounded ripples.
     // Unbounded ripple diameter is calculated smaller since the surface is expected to already be padded appropriately
@@ -521,11 +518,10 @@ class MDCRippleFoundation extends MDCFoundation {
     // (calculated based on the diagonal plus a constant padding), and are clipped at the surface's border via
     // `overflow: hidden`.
     const getBoundedRadius = () => {
-      const hypotenuse = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
+      const hypotenuse = Math.sqrt(Math.pow(this.frame_.width, 2) + Math.pow(this.frame_.height, 2));
       return hypotenuse + MDCRippleFoundation.numbers.PADDING;
     };
 
-    const maxDim = Math.max(height, width);
     this.maxRadius_ = this.adapter_.isUnbounded() ? maxDim : getBoundedRadius();
 
     // Ripple is sized as a fraction of the largest dimension of the surface, then scales up using a CSS scale transform
