@@ -99,8 +99,8 @@ test('#adapter.deregisterInteractionHandler removes a handler from the root elem
 test('#adapter.createChip returns a new chip element', () => {
   const {component} = setupTest();
   const chipEl = component.getDefaultFoundation().adapter_.createChip('hello world');
-  assert.isTrue(chipEl.classList.contains("mdc-chip"));
-  assert.isTrue(chipEl.childNodes[0].classList.contains("mdc-chip__text"));
+  assert.isTrue(chipEl.classList.contains('mdc-chip'));
+  assert.isTrue(chipEl.childNodes[0].classList.contains('mdc-chip__text'));
   assert.equal(chipEl.childNodes[0].textContent, 'hello world');
 });
 

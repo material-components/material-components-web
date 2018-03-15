@@ -64,13 +64,6 @@ test('#destroy removes event listeners', () => {
   td.verify(mockAdapter.deregisterInteractionHandler('MDCChip:interaction', td.matchers.isA(Function)));
 });
 
-test('#createChipElement removes event listeners', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.destroy();
-
-  td.verify(mockAdapter.deregisterInteractionHandler('MDCChip:interaction', td.matchers.isA(Function)));
-});
-
 test('on custom MDCChip:interaction event toggles selected state with single selection on choice chips', () => {
   const {foundation, mockAdapter, chipA, chipB} = setupTest();
   let chipInteractionHandler;

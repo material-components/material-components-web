@@ -34,7 +34,7 @@ class MDCChipSet extends MDCComponent {
 
     /** @type {!Array<!MDCChip>} */
     this.chips;
-    /** @type {(function(!Element): !MDCChip)=} */
+    /** @type {(function(!Element): !MDCChip)} */
     this.chipFactory_;
   }
 
@@ -80,11 +80,11 @@ class MDCChipSet extends MDCComponent {
       hasClass: (className) => this.root_.classList.contains(className),
       registerInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       createChip: (text, leadingIcon, trailingIcon) => {
-        let chipTextEl = document.createElement('div');
+        const chipTextEl = document.createElement('div');
         chipTextEl.classList.add(MDCChipFoundation.cssClasses.TEXT);
         chipTextEl.appendChild(document.createTextNode(text));
 
-        let chipEl = document.createElement('div');
+        const chipEl = document.createElement('div');
         chipEl.classList.add(MDCChipFoundation.cssClasses.CHIP);
         if (leadingIcon) {
           chipEl.appendChild(leadingIcon);

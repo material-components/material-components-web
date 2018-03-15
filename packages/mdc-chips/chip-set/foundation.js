@@ -76,7 +76,7 @@ class MDCChipSetFoundation extends MDCFoundation {
   }
 
   /**
-   * Returns a new chip element with the given text, leading icon, and trailing icon, 
+   * Returns a new chip element with the given text, leading icon, and trailing icon,
    * added to the root chip set element.
    * @param {string} text
    * @param {?Element} leadingIcon
