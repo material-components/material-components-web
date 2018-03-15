@@ -5,7 +5,7 @@ branches:
 matrix:
   include:
     # Unit tests on Node Stable
-    - node_js: 7
+    - node_js: 8
       env:
         - SAUCE_USERNAME=material-sauce
       addons:
