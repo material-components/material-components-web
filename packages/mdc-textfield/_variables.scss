@@ -38,3 +38,14 @@ $mdc-textarea-background: rgba(white, 1);
 $mdc-textarea-disabled-background: rgba(249, 249, 249, 1);
 
 $mdc-text-field-border-radius: 4px !default;
+
+$mdc-text-field-box-label-position-y: 50%;
+$mdc-text-field-box-dense-label-position-y: 90%;
+$mdc-text-field-dense-label-scale: .923;
+$mdc-text-field-outlined-label-position-y: 130%;
+$mdc-text-field-outlined-dense-label-position-y: 145%;
+$mdc-text-field-outlined-with-leading-icon-label-position-x: 32px;
+$mdc-text-field-outlined-dense-with-leading-icon-label-position-x: 21px;
+$mdc-text-field-textarea-label-position-y: 50%;
+// Note that the scale factor is an eyeballed approximation of what's shown in the mocks.
+$mdc-text-field-textarea-label-scale: .923;

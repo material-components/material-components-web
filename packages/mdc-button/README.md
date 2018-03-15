@@ -70,6 +70,17 @@ We recommend you load [Material Icons](https://material.io/icons/) from Google F
 </button>
 ```
 
+It's also possible to use an SVG icon:
+
+```html
+<button class="mdc-button">
+  <svg class="mdc-button__icon" xmlns="http://www.w3.org/2000/svg" viewBox="...">
+  ...
+  </svg>
+  SVG Icon
+</button>
+```
+
 ### CSS Classes
 
 
@@ -81,8 +92,6 @@ CSS Class | Description
 `mdc-button--unelevated` | Optional, a contained button that is flush with the surface
 `mdc-button--stroked` | Optional, a contained button that is flush with the surface and has a visible border
 `mdc-button--dense` | Optional, compresses the button text to make it slightly smaller
-`mdc-button--compact` | Optional, reduces the amount of horizontal padding in the button
-
 
 ### Disabled Button
 

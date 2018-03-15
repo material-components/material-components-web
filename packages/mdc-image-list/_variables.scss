@@ -1,4 +1,3 @@
-//
 // Copyright 2018 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,16 +11,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
 
-$mdc-text-field-label-position-y: 100%;
-$mdc-text-field-box-label-position-y: 50%;
-$mdc-text-field-box-dense-label-position-y: 90%;
-$mdc-text-field-dense-label-scale: .923;
-$mdc-text-field-outlined-label-position-y: 130%;
-$mdc-text-field-outlined-dense-label-position-y: 145%;
-$mdc-text-field-outlined-with-leading-icon-label-position-x: 32px;
-$mdc-text-field-outlined-dense-with-leading-icon-label-position-x: 21px;
-$mdc-text-field-textarea-label-position-y: 50%;
-// Note that the scale factor is an eyeball'd approximation of what's shown in the mocks.
-$mdc-text-field-textarea-label-scale: .923;
+$mdc-image-list-standard-gutter-size: 4px;
+$mdc-image-list-masonry-gutter-size: 16px;
+$mdc-image-list-icon-size: 24px;
+$mdc-image-list-text-protection-background-color: rgba(0, 0, 0, .6);
+$mdc-image-list-text-protection-height: 48px;
+$mdc-image-list-text-protection-horizontal-padding: 16px;

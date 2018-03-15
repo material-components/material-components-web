@@ -1,16 +1,12 @@
 [
   {
-    "name": "js-all",
+    "name": "main-js-combined",
     "entry": "/packages/material-components-web/index.js",
     "output": {
       "path": "/build",
-      "publicPath": "/assets/",
       "filename": "material-components-web.js",
       "libraryTarget": "umd",
       "library": "mdc"
-    },
-    "devServer": {
-      "disableHostCheck": true
     },
     "devtool": "source-map",
     "module": {
@@ -37,81 +33,35 @@
     ]
   },
   {
-    "name": "js-components",
+    "name": "main-js-a-la-carte",
     "entry": {
-      "animation": [
-        "/packages/mdc-animation/index.js"
-      ],
-      "autoInit": [
-        "/packages/mdc-auto-init/index.js"
-      ],
-      "base": [
-        "/packages/mdc-base/index.js"
-      ],
-      "checkbox": [
-        "/packages/mdc-checkbox/index.js"
-      ],
-      "chips": [
-        "/packages/mdc-chips/index.js"
-      ],
-      "dialog": [
-        "/packages/mdc-dialog/index.js"
-      ],
-      "drawer": [
-        "/packages/mdc-drawer/index.js"
-      ],
-      "formField": [
-        "/packages/mdc-form-field/index.js"
-      ],
-      "gridList": [
-        "/packages/mdc-grid-list/index.js"
-      ],
-      "iconToggle": [
-        "/packages/mdc-icon-toggle/index.js"
-      ],
-      "lineRipple": [
-        "/packages/mdc-line-ripple/index.js"
-      ],
-      "linearProgress": [
-        "/packages/mdc-linear-progress/index.js"
-      ],
-      "menu": [
-        "/packages/mdc-menu/index.js"
-      ],
-      "radio": [
-        "/packages/mdc-radio/index.js"
-      ],
-      "ripple": [
-        "/packages/mdc-ripple/index.js"
-      ],
-      "select": [
-        "/packages/mdc-select/index.js"
-      ],
-      "selectionControl": [
-        "/packages/mdc-selection-control/index.js"
-      ],
-      "slider": [
-        "/packages/mdc-slider/index.js"
-      ],
-      "snackbar": [
-        "/packages/mdc-snackbar/index.js"
-      ],
-      "tabs": [
-        "/packages/mdc-tabs/index.js"
-      ],
-      "textfield": [
-        "/packages/mdc-textfield/index.js"
-      ],
-      "toolbar": [
-        "/packages/mdc-toolbar/index.js"
-      ],
-      "topAppBar": [
-        "/packages/mdc-top-app-bar/index.js"
-      ]
+      "animation": "/packages/mdc-animation/index.js",
+      "autoInit": "/packages/mdc-auto-init/index.js",
+      "base": "/packages/mdc-base/index.js",
+      "checkbox": "/packages/mdc-checkbox/index.js",
+      "chips": "/packages/mdc-chips/index.js",
+      "dialog": "/packages/mdc-dialog/index.js",
+      "drawer": "/packages/mdc-drawer/index.js",
+      "floatingLabel": "/packages/mdc-floating-label/index.js",
+      "formField": "/packages/mdc-form-field/index.js",
+      "gridList": "/packages/mdc-grid-list/index.js",
+      "iconToggle": "/packages/mdc-icon-toggle/index.js",
+      "lineRipple": "/packages/mdc-line-ripple/index.js",
+      "linearProgress": "/packages/mdc-linear-progress/index.js",
+      "menu": "/packages/mdc-menu/index.js",
+      "radio": "/packages/mdc-radio/index.js",
+      "ripple": "/packages/mdc-ripple/index.js",
+      "select": "/packages/mdc-select/index.js",
+      "selectionControl": "/packages/mdc-selection-control/index.js",
+      "slider": "/packages/mdc-slider/index.js",
+      "snackbar": "/packages/mdc-snackbar/index.js",
+      "tabs": "/packages/mdc-tabs/index.js",
+      "textfield": "/packages/mdc-textfield/index.js",
+      "toolbar": "/packages/mdc-toolbar/index.js",
+      "topAppBar": "/packages/mdc-top-app-bar/index.js"
     },
     "output": {
       "path": "/build",
-      "publicPath": "/assets/",
       "filename": "mdc.[name].js",
       "libraryTarget": "umd",
       "library": [
@@ -150,7 +100,6 @@
     },
     "output": {
       "path": "/build",
-      "publicPath": "/assets/",
       "filename": "[name].css.js"
     },
     "devtool": "source-map",
@@ -222,9 +171,11 @@
       "mdc.drawer": "/packages/mdc-drawer/mdc-drawer.scss",
       "mdc.elevation": "/packages/mdc-elevation/mdc-elevation.scss",
       "mdc.fab": "/packages/mdc-fab/mdc-fab.scss",
+      "mdc.floating-label": "/packages/mdc-floating-label/mdc-floating-label.scss",
       "mdc.form-field": "/packages/mdc-form-field/mdc-form-field.scss",
       "mdc.grid-list": "/packages/mdc-grid-list/mdc-grid-list.scss",
       "mdc.icon-toggle": "/packages/mdc-icon-toggle/mdc-icon-toggle.scss",
+      "mdc.image-list": "/packages/mdc-image-list/mdc-image-list.scss",
       "mdc.layout-grid": "/packages/mdc-layout-grid/mdc-layout-grid.scss",
       "mdc.line-ripple": "/packages/mdc-line-ripple/mdc-line-ripple.scss",
       "mdc.linear-progress": "/packages/mdc-linear-progress/mdc-linear-progress.scss",
@@ -245,7 +196,6 @@
     },
     "output": {
       "path": "/build",
-      "publicPath": "/assets/",
       "filename": "[name].css.js"
     },
     "devtool": "source-map",

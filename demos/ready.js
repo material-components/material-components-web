@@ -79,7 +79,7 @@ window.demoReady = (function(root) {
       return;
     }
 
-    const elapsedTimeMs = Date.now() - startTimeMs;
+    var elapsedTimeMs = Date.now() - startTimeMs;
     if (elapsedTimeMs > POLL_MAX_WAIT_MS) {
       clearInterval(pollTimer);
       removeDetectionDom();
