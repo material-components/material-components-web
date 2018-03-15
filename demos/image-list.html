@@ -304,6 +304,132 @@
             </div>
           </li>
         </ul>
+
+        <h1 class="mdc-typography--headline">Masonry Image List</h1>
+        <div>
+          <div class="mdc-form-field">
+            <div class="mdc-radio">
+              <input class="mdc-radio__native-control" type="radio" id="masonry-label-below" name="masonry-labels" checked>
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
+            </div>
+            <label for="masonry-label-below">Labels below images</label>
+          </div>
+          <div class="mdc-form-field">
+            <div class="mdc-radio">
+              <input class="mdc-radio__native-control" type="radio" id="masonry-label-protected" name="masonry-labels">
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
+            </div>
+            <label for="masonry-label-protected">Labels over images with text protection</label>
+          </div>
+          <div class="mdc-form-field">
+            <div class="mdc-radio">
+              <input class="mdc-radio__native-control" type="radio" id="masonry-label-none" name="masonry-labels">
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
+            </div>
+            <label for="masonry-label-none">No labels</label>
+          </div>
+        </div>
+        <ul id="masonry-image-list" class="mdc-image-list mdc-image-list--masonry masonry-image-list">
+          <li class="mdc-image-list__item">
+            <img class="mdc-image-list__image" src="images/1-1.jpg">
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <img class="mdc-image-list__image" src="images/16-9.jpg">
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <img class="mdc-image-list__image" src="images/4-3.jpg">
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <img class="mdc-image-list__image" src="images/16-9.jpg">
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <img class="mdc-image-list__image" src="images/4-3.jpg">
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <img class="mdc-image-list__image" src="images/16-9.jpg">
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <img class="mdc-image-list__image" src="images/1-1.jpg">
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <img class="mdc-image-list__image" src="images/16-9.jpg">
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <img class="mdc-image-list__image" src="images/1-1.jpg">
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <img class="mdc-image-list__image" src="images/16-9.jpg">
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <img class="mdc-image-list__image" src="images/1-1.jpg">
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <img class="mdc-image-list__image" src="images/4-3.jpg">
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <img class="mdc-image-list__image" src="images/1-1.jpg">
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <img class="mdc-image-list__image" src="images/16-9.jpg">
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <img class="mdc-image-list__image" src="images/4-3.jpg">
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+        </ul>
       </section>
     </main>
 
@@ -327,6 +453,7 @@
         });
 
         var standardImageListEl = document.getElementById('standard-image-list');
+        var masonryImageListEl = document.getElementById('masonry-image-list');
 
         document.getElementById('standard-label-below').addEventListener('change', function() {
           standardImageListEl.classList[this.checked ? 'remove' : 'add']('mdc-image-list--with-text-protection');
@@ -341,6 +468,21 @@
         document.getElementById('standard-label-none').addEventListener('change', function() {
           standardImageListEl.classList[this.checked ? 'remove' : 'add']('mdc-image-list--with-text-protection');
           standardImageListEl.classList[this.checked ? 'add' : 'remove']('hide-supporting');
+        });
+
+        document.getElementById('masonry-label-below').addEventListener('change', function() {
+          masonryImageListEl.classList[this.checked ? 'remove' : 'add']('mdc-image-list--with-text-protection');
+          masonryImageListEl.classList[this.checked ? 'remove' : 'add']('hide-supporting');
+        });
+
+        document.getElementById('masonry-label-protected').addEventListener('change', function() {
+          masonryImageListEl.classList[this.checked ? 'add' : 'remove']('mdc-image-list--with-text-protection');
+          masonryImageListEl.classList[this.checked ? 'remove' : 'add']('hide-supporting');
+        });
+
+        document.getElementById('masonry-label-none').addEventListener('change', function() {
+          masonryImageListEl.classList[this.checked ? 'remove' : 'add']('mdc-image-list--with-text-protection');
+          masonryImageListEl.classList[this.checked ? 'add' : 'remove']('hide-supporting');
         });
       });
     </script>

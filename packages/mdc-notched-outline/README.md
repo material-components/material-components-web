@@ -51,6 +51,14 @@ Mixin | Description
 `mdc-notched-outline-idle-color($color)` | Customizes the border color of the idle outline.
 `mdc-notched-outline-stroke-width($width)` | Changes notched outline width to a specified pixel value.
 `mdc-notched-outline-corner-radius($radius)` | Sets the corner radius of the notched outline element to the given number.
+`mdc-notched-outline-idle-corner-radius($radius)` | Sets the corner radius of the notched outline element in idle state.
+> NOTE:
+> 1. Having 2 corner radius mixins is intentional. Combining the mixins into one
+> causes the CSS output to be overly specific. The main cause of this is the fact that
+> `.mdc-notched-outline__idle` is sibling to `.mdc-notched-outline`. The future fix
+> is move `.mdc-notched-outline__idle` as a child to `.mdc-notched-outline`.
+> 1. Please be considerate of how you nest the `idle` and `notched` state Sass Mixins.
+> You may be overly specific in some cases, which should be avoided.
 
 ### `MDCNotchedOutline`
 

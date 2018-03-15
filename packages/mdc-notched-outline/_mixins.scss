@@ -35,8 +35,11 @@
 }
 
 @mixin mdc-notched-outline-corner-radius($radius) {
-  &,
-  ~ .mdc-notched-outline__idle {
+  border-radius: $radius;
+}
+
+@mixin mdc-notched-outline-idle-corner-radius($radius) {
+  .mdc-notched-outline__idle {
     border-radius: $radius;
   }
 }

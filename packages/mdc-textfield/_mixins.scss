@@ -185,6 +185,20 @@
   }
 }
 
+@mixin mdc-text-field-outline-corner-radius_($radius) {
+  // NOTE: idle and notched state border radius mixins
+  // are broken into 2 different mixins, otherwise
+  // we would be overly specific (big no, no). The cause of
+  // this is because .mdc-notched-outline and .mdc-notched-outline__idle
+  // are siblings. .mdc-notched-outline__idle needs to be a child of
+  // .mdc-notched-outline in order to remedy this issue.
+  .mdc-notched-outline {
+    @include mdc-notched-outline-corner-radius($radius);
+  }
+
+  @include mdc-notched-outline-idle-corner-radius($radius);
+}
+
 // Outlined
 
 @mixin mdc-text-field-outlined-disabled_ {
@@ -231,6 +245,7 @@
   @include mdc-text-field-focused-outline-color(primary);
   @include mdc-floating-label-float-position($mdc-text-field-outlined-label-position-y);
   @include mdc-floating-label-shake-animation(text-field-outlined);
+  @include mdc-text-field-outline-corner-radius_($mdc-text-field-border-radius);
 
   height: 56px;
   border: none;
@@ -255,18 +270,13 @@
   .mdc-text-field__icon {
     z-index: 2;
   }
-
-  .mdc-notched-outline {
-    @include mdc-notched-outline-corner-radius($mdc-text-field-border-radius);
-  }
 }
 
 @mixin mdc-text-field-outline-color_($color) {
-  /** NOTE: outlined version of text-field wants the "idle" and
-   * "notched" outline to have the same color. This covers two cases:
-   * 1) text field renders with NO value in the "idle" state
-   * 2) text field renders with a value in the "notched" state
-   */
+  // NOTE: outlined version of text-field wants the "idle" and
+  // "notched" outline to have the same color. This covers two cases:
+  // 1) text field renders with NO value in the "idle" state
+  // 2) text field renders with a value in the "notched" state
   @include mdc-notched-outline-idle-color($color);
   @include mdc-notched-outline-color($color);
 }
@@ -277,13 +287,12 @@
     .mdc-text-field__icon:hover ~ {
       @include mdc-notched-outline-idle-color($color);
 
-      /** tldr; this doesn't break BEM:
-       * We need to wrap this mixin with the .mdc-notched-outline
-       * selector, because of the sibling selector '~'. The notched
-       * outline html structure has .mdc-notched-outline
-       * and .mdc-notched-outline__idle as siblings, while
-       * .mdc-notched-outline__path is a child of .mdc-notched-outline
-       */
+      // tldr; this doesn't break BEM:
+      // We need to wrap this mixin with the .mdc-notched-outline
+      // selector, because of the sibling selector '~'. The notched
+      // outline html structure has .mdc-notched-outline
+      // and .mdc-notched-outline__idle as siblings, while
+      // .mdc-notched-outline__path is a child of .mdc-notched-outline
       .mdc-notched-outline {
         @include mdc-notched-outline-color($color);
       }
