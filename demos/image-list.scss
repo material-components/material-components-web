@@ -37,6 +37,11 @@
   max-width: 1000px;
 }
 
+.mdc-image-list.masonry-image-list {
+  @include mdc-image-list-masonry-columns(5);
+  max-width: 1000px;
+}
+
 .hide-supporting .mdc-image-list__supporting {
   display: none;
 }
@@ -48,5 +53,9 @@
 @media (max-width: 599px) {
   .mdc-image-list.standard-image-list {
     @include mdc-image-list-standard-columns(3);
+  }
+
+  .mdc-image-list.masonry-image-list {
+    @include mdc-image-list-masonry-columns(3);
   }
 }

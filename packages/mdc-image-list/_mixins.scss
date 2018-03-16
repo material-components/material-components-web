@@ -41,3 +41,14 @@
     margin: $gutter-size / 2;
   }
 }
+
+// Masonry Image List
+
+@mixin mdc-image-list-masonry-columns($column-count, $gutter-size: $mdc-image-list-masonry-gutter-size) {
+  column-count: $column-count;
+  column-gap: $gutter-size;
+
+  .mdc-image-list__item {
+    margin-bottom: $gutter-size;
+  }
+}
