@@ -20,6 +20,7 @@ import td from 'testdouble';
 import domEvents from 'dom-events';
 
 import {MDCTab, MDCTabFoundation} from '../../../packages/mdc-tab';
+import {MDCRipple} from '../../../packages/mdc-ripple';
 
 const getFixture = () => bel`
   <button class="mdc-tab" aria-selected="false" role="tab">
@@ -108,4 +109,9 @@ test('#active set to false calls deactivate', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
   component.active = false;
   td.verify(mockFoundation.deactivate(), {times: 1});
+});
+
+test('#ripple returns an instance of MDCRipple', () => {
+  const {component} = setupMockFoundationTest();
+  assert.instanceOf(component.ripple, MDCRipple);
 });

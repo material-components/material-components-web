@@ -149,6 +149,7 @@
           "snackbar",
           "switch",
           "tabs",
+          "tab",
           "text-field",
           "theme",
           "toolbar",
@@ -179,6 +180,7 @@
     "mdc-ripple",
     "mdc-selection-control",
     "mdc-slider",
+    "mdc-tab",
     "mdc-textfield",
     "mdc-top-app-bar"
   ]

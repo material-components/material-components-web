@@ -57,8 +57,9 @@ class MDCTabAdapter {
   /**
    * Returns whether the root element has the given className.
    * @param {string} className The className to remove
+   * @return {boolean}
    */
-  hasClass(classname) {}
+  hasClass(className) {}
 
   /**
    * Sets the given attrName of the root element to the given value.

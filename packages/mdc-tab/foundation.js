@@ -27,12 +27,12 @@ import {
  * @final
  */
 class MDCTabFoundation extends MDCFoundation {
-  /** @return @enum {string} */
+  /** @return enum {string} */
   static get cssClasses() {
     return cssClasses;
   }
 
-  /** @return @enum {string} */
+  /** @return enum {string} */
   static get strings() {
     return strings;
   }
@@ -70,8 +70,8 @@ class MDCTabFoundation extends MDCFoundation {
       return;
     }
     this.adapter_.deregisterEventHandler('transitionend', this.handleTransitionEnd_);
-    this.adapter_.removeClass(MDCTabFoundation.cssClasses.ANIMATING_ACTIVATE);
-    this.adapter_.removeClass(MDCTabFoundation.cssClasses.ANIMATING_DEACTIVATE);
+    this.adapter_.removeClass(cssClasses.ANIMATING_ACTIVATE);
+    this.adapter_.removeClass(cssClasses.ANIMATING_DEACTIVATE);
   }
 
   /**
@@ -79,7 +79,7 @@ class MDCTabFoundation extends MDCFoundation {
    * @return {boolean}
    */
   isActive() {
-    return this.adapter_.hasClass(MDCTabFoundation.cssClasses.ACTIVE);
+    return this.adapter_.hasClass(cssClasses.ACTIVE);
   }
 
   /**
@@ -91,9 +91,9 @@ class MDCTabFoundation extends MDCFoundation {
       return;
     }
     this.adapter_.registerEventHandler('transitionend', this.handleTransitionEnd_);
-    this.adapter_.addClass(MDCTabFoundation.cssClasses.ANIMATING_ACTIVATE);
-    this.adapter_.addClass(MDCTabFoundation.cssClasses.ACTIVE);
-    this.adapter_.setAttr(MDCTabFoundation.strings.ARIA_SELECTED, 'true');
+    this.adapter_.addClass(cssClasses.ANIMATING_ACTIVATE);
+    this.adapter_.addClass(cssClasses.ACTIVE);
+    this.adapter_.setAttr(strings.ARIA_SELECTED, 'true');
   }
 
   /**
@@ -105,9 +105,9 @@ class MDCTabFoundation extends MDCFoundation {
       return;
     }
     this.adapter_.registerEventHandler('transitionend', this.handleTransitionEnd_);
-    this.adapter_.addClass(MDCTabFoundation.cssClasses.ANIMATING_DEACTIVATE);
-    this.adapter_.removeClass(MDCTabFoundation.cssClasses.ACTIVE);
-    this.adapter_.setAttr(MDCTabFoundation.strings.ARIA_SELECTED, 'false');
+    this.adapter_.addClass(cssClasses.ANIMATING_DEACTIVATE);
+    this.adapter_.removeClass(cssClasses.ACTIVE);
+    this.adapter_.setAttr(strings.ARIA_SELECTED, 'false');
   }
 }
 
