@@ -82,7 +82,7 @@ Method Signature | Description
 `addClass(className: string) => void` | Adds a class to the root element
 `removeClass(className: string) => void` | Removes a class from the root element
 `hasClass(className: string) => boolean` | Returns true if the root element contains the given class
-`registerIEventHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the root element
+`registerEventHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the root element
 `deregisterEventHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the root element
 `setAttr(attr: string, value: string) => void` | Sets the given attribute on the root element to the given value
 
