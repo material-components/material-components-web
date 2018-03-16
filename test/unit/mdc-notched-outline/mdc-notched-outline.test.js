@@ -17,25 +17,25 @@
 import bel from 'bel';
 import {assert} from 'chai';
 
-import {MDCTextFieldOutline} from '../../../packages/mdc-textfield/outline';
+import {MDCNotchedOutline} from '../../../packages/mdc-notched-outline';
 
 const getFixture = () => bel`
-  <div class="mdc-text-field__outline">
+  <div class="mdc-notched-outline">
     <svg>
-      <path class="mdc-text-field__outline-path">
+      <path class="mdc-notched-outline__path">
     </svg>
   </div>
 `;
 
-suite('MDCTextFieldOutline');
+suite('MDCNotchedOutline');
 
-test('attachTo returns an MDCTextFieldOutline instance', () => {
-  assert.isOk(MDCTextFieldOutline.attachTo(getFixture()) instanceof MDCTextFieldOutline);
+test('attachTo returns an MDCNotchedOutline instance', () => {
+  assert.isOk(MDCNotchedOutline.attachTo(getFixture()) instanceof MDCNotchedOutline);
 });
 
 function setupTest() {
   const root = getFixture();
-  const component = new MDCTextFieldOutline(root);
+  const component = new MDCNotchedOutline(root);
   return {root, component};
 }
 
@@ -54,7 +54,7 @@ test('#adapter.getHeight returns the height of the element', () => {
 test('#adapter.setOutlinePathAttr sets the SVG path of the element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.setOutlinePathAttr('M 0 1');
-  const path = root.querySelector('.mdc-text-field__outline-path');
+  const path = root.querySelector('.mdc-notched-outline__path');
   assert.equal(path.getAttribute('d'), 'M 0 1');
 });
 
@@ -62,11 +62,11 @@ test('#adapter.getIdleOutlineStyleValue returns the value of the given property 
   const outlineRoot = getFixture();
   const root = bel`<div></div>`;
   root.appendChild(outlineRoot);
-  root.appendChild(bel`<div class="mdc-text-field__idle-outline"></div>`);
-  const idleOutline = root.querySelector('.mdc-text-field__idle-outline');
+  root.appendChild(bel`<div class="mdc-notched-outline__idle"></div>`);
+  const idleOutline = root.querySelector('.mdc-notched-outline__idle');
   idleOutline.style.width = '500px';
 
-  const component = new MDCTextFieldOutline(outlineRoot);
+  const component = new MDCNotchedOutline(outlineRoot);
   assert.equal(
     component.getDefaultFoundation().adapter_.getIdleOutlineStyleValue('width'),
     getComputedStyle(idleOutline).getPropertyValue('width')

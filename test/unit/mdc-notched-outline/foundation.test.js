@@ -19,21 +19,21 @@ import td from 'testdouble';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
-import MDCTextFieldOutlineFoundation from '../../../packages/mdc-textfield/outline/foundation';
+import MDCNotchedOutlineFoundation from '../../../packages/mdc-notched-outline/foundation';
 
-suite('MDCTextFieldOutlineFoundation');
+suite('MDCNotchedOutlineFoundation');
 
 test('exports strings', () => {
-  assert.isOk('strings' in MDCTextFieldOutlineFoundation);
+  assert.isOk('strings' in MDCNotchedOutlineFoundation);
 });
 
 test('defaultAdapter returns a complete adapter implementation', () => {
-  verifyDefaultAdapter(MDCTextFieldOutlineFoundation, [
+  verifyDefaultAdapter(MDCNotchedOutlineFoundation, [
     'getWidth', 'getHeight', 'setOutlinePathAttr', 'getIdleOutlineStyleValue',
   ]);
 });
 
-const setupTest = () => setupFoundationTest(MDCTextFieldOutlineFoundation);
+const setupTest = () => setupFoundationTest(MDCNotchedOutlineFoundation);
 
 test('#updateSvgPath sets the path of the outline element', () => {
   const {foundation, mockAdapter} = setupTest();
