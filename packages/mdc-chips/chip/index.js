@@ -36,7 +36,7 @@ class MDCChip extends MDCComponent {
     /** @private {?Element} */
     this.leadingIcon_;
     /** @private {!MDCRipple} */
-    this.ripple_; 
+    this.ripple_;
   }
 
   /**
@@ -63,8 +63,7 @@ class MDCChip extends MDCComponent {
           return {height, width};
         },
       });
-      const foundation = new MDCRippleFoundation(adapter);
-      this.ripple_ = new MDCRipple(this.root_, foundation);
+      this.ripple_ = new MDCRipple(this.root_, new MDCRippleFoundation(adapter));
     } else {
       this.ripple_ = new MDCRipple(this.root_);
     }
