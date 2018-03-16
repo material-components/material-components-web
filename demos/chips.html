@@ -55,7 +55,10 @@
 
       <section class="example">
         <h2>Entry Chips</h2>
-        Add entry: <input id="entry-chip-set-input">
+        <input id="entry-chip-set-input">
+        <button id="entry-chip-set-button" class="mdc-button mdc-button--dense">
+          Add Entry Chip
+        </button>
         <div class="mdc-chip-set mdc-chip-set--entry">
           <div class="demo-chip mdc-chip" tabindex="0">
             <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">face</i>
@@ -234,22 +237,26 @@
       demoReady(function() {
         var entryChipSet = document.querySelector('.mdc-chip-set--entry');
         var chipSets = document.querySelectorAll('.mdc-chip-set:not(.mdc-chip-set--entry)');
-        var inputEl = document.getElementById('entry-chip-set-input');
+        var entryInput = document.getElementById('entry-chip-set-input');
+        var entryButton = document.getElementById('entry-chip-set-button');
 
         [].forEach.call(chipSets, function(chipSet) {
           mdc.chips.MDCChipSet.attachTo(chipSet);
         });
 
         var entryChipSetComponent = mdc.chips.MDCChipSet.attachTo(entryChipSet);
-        var handleInputEnter = (evt) => {
-          if (evt.key === 'Enter' || evt.keyCode === 13) {
+        var addChip = (evt) => {
+          if ((evt.type === 'click' || evt.key === 'Enter' || evt.keyCode === 13) && 
+              entryInput.value !== '') {
             var leadingIcon = document.querySelector('.mdc-chip__icon--leading').cloneNode(true);
             var trailingIcon = document.querySelector('.mdc-chip__icon--trailing').cloneNode(true);
-            entryChipSetComponent.addChip(inputEl.value, leadingIcon, trailingIcon);
-            inputEl.value = '';
+            entryChipSetComponent.addChip(entryInput.value, leadingIcon, trailingIcon);
+            entryInput.value = '';
           }
         };
-        inputEl.addEventListener('keydown', handleInputEnter);
+        ['click', 'keydown'].forEach((evtType) => {
+          entryButton.addEventListener(evtType, addChip);
+        });
       });
     </script>
   </body>

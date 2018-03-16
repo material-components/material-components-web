@@ -194,8 +194,8 @@ Method Signature | Description
 Method Signature | Description
 --- | ---
 `hasClass(className: string) => boolean` | Returns whether the chip set element has the given class
-`registerInteractionHandler(evtType, handler) => void` | Registers an event handler on the root element for a given event
-`deregisterInteractionHandler(evtType, handler) => void` | Deregisters an event handler on the root element for a given event
+`registerInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event handler on the root element for a given event
+`deregisterInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event handler on the root element for a given event
 `createChip(text: string, leadingIcon: Element, trailingIcon: Element) => Element` | Returns a chip element with the given text, leading icon, and trailing icon
 `appendChild(el: Element) => void` | Appends the given element as a child of the root element
 
