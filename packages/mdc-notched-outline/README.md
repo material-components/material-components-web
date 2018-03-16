@@ -53,12 +53,31 @@ Mixin | Description
 `mdc-notched-outline-corner-radius($radius)` | Sets the corner radius of the notched outline element to the given number.
 `mdc-notched-outline-idle-corner-radius($radius)` | Sets the corner radius of the notched outline element in idle state.
 > NOTE:
-> 1. Having 2 corner radius mixins is intentional. Combining the mixins into one
-> causes the CSS output to be overly specific. The main cause of this is the fact that
-> `.mdc-notched-outline__idle` is sibling to `.mdc-notched-outline`. The future fix
-> is move `.mdc-notched-outline__idle` as a child to `.mdc-notched-outline`.
-> 1. Please be considerate of how you nest the `idle` and `notched` state Sass Mixins.
-> You may be overly specific in some cases, which should be avoided.
+> Because notched-outline has sibling elements, you need to call the "idle" Sass mixins with parent selectors.
+> Consider the following example HTML:
+>
+> ```html
+> <div class="foo-line-ripple-parent">
+>   <div class="mdc-notched-outline foo-line-ripple">
+>     <svg>
+>       <path class="mdc-notched-outline__path"/>
+>     </svg>
+>   </div>
+>   <div class="mdc-notched-outline__idle"></div>
+> </div>
+> ```
+> In order to customize any "non-idle" part of notched-outline, use the .foo-line-ripple CSS selector:
+> ```scss
+> .foo-line-ripple {
+>   @include mdc-notched-outline-color($fooColor);
+> }
+> ```
+> But in order to customize any "idle" part of the notched-outline, you must use the .foo-line-ripple-parent CSS selector:
+> ```scss
+> .foo-line-ripple-parent {
+>   @include mdc-notched-outline-idle-color($fooColor);
+> }
+> ```
 
 ### `MDCNotchedOutline`
 
