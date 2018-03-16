@@ -61,7 +61,8 @@
 }
 
 @mixin mdc-button-horizontal-padding($padding) {
-  padding: 0 $padding;
+  padding-right: $padding;
+  padding-left: $padding;
 }
 
 @mixin mdc-button-stroke-width($stroke-width, $padding: $mdc-button-contained-horizontal-padding) {
