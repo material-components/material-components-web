@@ -54,12 +54,12 @@ class MDCChip extends MDCComponent {
     // a leading icon are selected, and a leading checkmark will cause the chip width to expand.
     const checkmarkEl = this.root_.querySelector(strings.CHECKMARK_SELECTOR);
     if (checkmarkEl && !this.leadingIcon_) {
-      const height = this.root_.getBoundingClientRect().height;
-      // The checkmark's width is initially set to 0, so use the checkmark's height as a proxy since the
-      // checkmark should always be square.
-      const width = this.root_.getBoundingClientRect().width + checkmarkEl.getBoundingClientRect().height;
       const adapter = Object.assign(MDCRipple.createAdapter(this), {
         computeBoundingRect: () => {
+          const height = this.root_.getBoundingClientRect().height;
+          // The checkmark's width is initially set to 0, so use the checkmark's height as a proxy since the
+          // checkmark should always be square.
+          const width = this.root_.getBoundingClientRect().width + checkmarkEl.getBoundingClientRect().height;
           return {height, width};
         },
       });
