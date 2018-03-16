@@ -49,7 +49,6 @@ class MDCChip extends MDCComponent {
 
   initialize() {
     this.leadingIcon_ = this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
-    this.ripple_ = new MDCRipple(this.root_);
 
     // Adjust ripple size for chips with animated growing width. This applies when filter chips without
     // a leading icon are selected, and a leading checkmark will cause the chip width to expand.
@@ -59,29 +58,16 @@ class MDCChip extends MDCComponent {
       // The checkmark's width is initially set to 0, so use the checkmark's height as a proxy since the
       // checkmark should always be square.
       const width = this.root_.getBoundingClientRect().width + checkmarkEl.getBoundingClientRect().height;
-      
-      const adapter = Object.assign(MDCRipple.createAdapter(this.root_), {
-        computeBoundingRect: () => {height, width},
+      const adapter = Object.assign(MDCRipple.createAdapter(this), {
+        computeBoundingRect: () => {
+          return {height, width};
+        },
       });
       const foundation = new MDCRippleFoundation(adapter);
       this.ripple_ = new MDCRipple(this.root_, foundation);
+    } else {
+      this.ripple_ = new MDCRipple(this.root_);
     }
-
-    // if (this.root_.classList.contains(cssClasses.BOX) || this.root_.classList.contains(cssClasses.OUTLINED)) {
-    //   // For outlined text fields, the ripple is instantiated on the outline element instead of the root element
-    //   // to clip the ripple at the outline while still allowing the label to be visible beyond the outline.
-    //   const rippleCapableSurface = outlineElement ? this.outline_ : this;
-    //   const rippleRoot = outlineElement ? outlineElement : this.root_;
-    //   const MATCHES = getMatchesProperty(HTMLElement.prototype);
-    //   const adapter =
-    //     Object.assign(MDCRipple.createAdapter(/** @type {!RippleCapableSurface} */ (rippleCapableSurface)), {
-    //       isSurfaceActive: () => this.input_[MATCHES](':active'),
-    //       registerInteractionHandler: (type, handler) => this.input_.addEventListener(type, handler),
-    //       deregisterInteractionHandler: (type, handler) => this.input_.removeEventListener(type, handler),
-    //     });
-    //   const foundation = new MDCRippleFoundation(adapter);
-    //   this.ripple = rippleFactory(rippleRoot, foundation);
-    // }
   }
 
   destroy() {
