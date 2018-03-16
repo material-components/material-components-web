@@ -19,8 +19,9 @@ import MDCTopAppBarAdapter from './adapter';
 import MDCTopAppBarFoundation from './foundation';
 import MDCComponent from '@material/base/component';
 import {MDCRipple} from '@material/ripple/index';
-import {strings} from './constants';
+import {cssClasses, strings} from './constants';
 import * as util from './util';
+import MDCShortTopAppBarFoundation from './short/foundation';
 
 /**
  * @extends {MDCComponent<!MDCTopAppBarFoundation>}
@@ -70,33 +71,41 @@ class MDCTopAppBar extends MDCComponent {
    * @return {!MDCTopAppBarFoundation}
    */
   getDefaultFoundation() {
-    return new MDCTopAppBarFoundation(
-      /** @type {!MDCTopAppBarAdapter} */ (Object.assign({
-        hasClass: (className) => this.root_.classList.contains(className),
-        addClass: (className) => this.root_.classList.add(className),
-        removeClass: (className) => this.root_.classList.remove(className),
-        registerNavigationIconInteractionHandler: (evtType, handler) => {
-          if (this.navIcon_) {
-            this.navIcon_.addEventListener(evtType, handler);
-          }
-        },
-        deregisterNavigationIconInteractionHandler: (evtType, handler) => {
-          if (this.navIcon_) {
-            this.navIcon_.removeEventListener(evtType, handler);
-          }
-        },
-        notifyNavigationIconClicked: () => {
-          this.emit(strings.NAVIGATION_EVENT, {});
-        },
-        registerScrollHandler: (handler) => window.addEventListener('scroll', handler, util.applyPassive()),
-        deregisterScrollHandler: (handler) => window.removeEventListener('scroll', handler),
-        getViewportScrollY: () => window.pageYOffset,
-        getTotalActionItems: () =>
-          this.root_.querySelectorAll(strings.ACTION_ITEM_SELECTOR).length,
-      })
-      )
+    /** @type {!MDCTopAppBarAdapter} */
+    const adapter = /** @type {!MDCTopAppBarAdapter} */ (Object.assign({
+      hasClass: (className) => this.root_.classList.contains(className),
+      addClass: (className) => this.root_.classList.add(className),
+      removeClass: (className) => this.root_.classList.remove(className),
+      registerNavigationIconInteractionHandler: (evtType, handler) => {
+        if (this.navIcon_) {
+          this.navIcon_.addEventListener(evtType, handler);
+        }
+      },
+      deregisterNavigationIconInteractionHandler: (evtType, handler) => {
+        if (this.navIcon_) {
+          this.navIcon_.removeEventListener(evtType, handler);
+        }
+      },
+      notifyNavigationIconClicked: () => {
+        this.emit(strings.NAVIGATION_EVENT, {});
+      },
+      registerScrollHandler: (handler) => window.addEventListener('scroll', handler, util.applyPassive()),
+      deregisterScrollHandler: (handler) => window.removeEventListener('scroll', handler),
+      getViewportScrollY: () => window.pageYOffset,
+      getTotalActionItems: () =>
+        this.root_.querySelectorAll(strings.ACTION_ITEM_SELECTOR).length,
+    })
     );
+
+    let foundation;
+    if (this.root_.classList.contains(cssClasses.SHORT_CLASS)) {
+      foundation = new MDCShortTopAppBarFoundation(adapter);
+    } else {
+      foundation = new MDCTopAppBarFoundation(adapter);
+    }
+
+    return foundation;
   }
 }
 
-export {MDCTopAppBar, MDCTopAppBarFoundation, util};
+export {MDCTopAppBar, MDCTopAppBarFoundation, MDCShortTopAppBarFoundation, util};

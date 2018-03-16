@@ -19,6 +19,7 @@
     "@material/base": "^0.29.0",
     "@material/floating-label": "^0.32.0",
     "@material/line-ripple": "^0.32.0",
+    "@material/notched-outline": "0.0.0",
     "@material/ripple": "^0.32.0",
     "@material/rtl": "^0.30.0",
     "@material/theme": "^0.30.0",
