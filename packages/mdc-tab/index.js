@@ -52,6 +52,11 @@ class MDCTab extends MDCComponent {
     }
   }
 
+  /** @return {!MDCRipple} */
+  get ripple() {
+    return this.ripple_;
+  }
+
   /**
    * @param {...?} args
    */
