@@ -30,9 +30,18 @@
   flex: 0 1 auto;
 }
 
+.demo-controls {
+  padding: 0 16px;
+}
+
+.rtl-container {
+  margin: 24px;
+  padding: 24px;
+}
+
 .custom-tab1 {
   @include mdc-states($material-color-yellow-a700);
-  @include mdc-tab-text-label-color($material-color-deep-purple-600);
+  @include mdc-tab-text-label-color($material-color-pink-600);
 
   &.mdc-tab--active {
     @include mdc-tab-text-label-color($material-color-cyan-600);
