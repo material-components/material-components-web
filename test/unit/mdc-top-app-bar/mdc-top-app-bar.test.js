@@ -125,6 +125,13 @@ test('adapter#removeClass removes a class from the root element', () => {
   assert.isFalse(root.classList.contains('foo'));
 });
 
+test('adapter#setStyle sets a style attribute on the root element', () => {
+  const {root, component} = setupTest();
+  assert.isFalse(root.style.getPropertyValue('top') === '1px');
+  component.getDefaultFoundation().adapter_.setStyle('top', '1px');
+  assert.isTrue(root.style.getPropertyValue('top') === '1px');
+});
+
 test('registerNavigationIconInteractionHandler does not add a handler to the nav icon if the nav icon is null', () => {
   const {component} = setupTest(true);
   const handler = td.func('eventHandler');
@@ -190,6 +197,35 @@ test('#adapter.deregisterScrollHandler removes a scroll handler from the window 
     window.removeEventListener('scroll', handler);
   }
 });
+
+test('#adapter.registerResizeHandler adds a resize handler to the window', () => {
+  const {component} = setupTest();
+  const handler = td.func('resizeHandler');
+  component.getDefaultFoundation().adapter_.registerResizeHandler(handler);
+
+  domEvents.emit(window, 'resize');
+  try {
+    td.verify(handler(td.matchers.anything()));
+  } finally {
+    // Just to be safe
+    window.removeEventListener('resize', handler);
+  }
+});
+
+test('#adapter.deregisterResizeHandler removes a resize handler from the window', () => {
+  const {component} = setupTest();
+  const handler = td.func('resizeHandler');
+  window.addEventListener('resize', handler);
+  component.getDefaultFoundation().adapter_.deregisterResizeHandler(handler);
+  domEvents.emit(window, 'resize');
+  try {
+    td.verify(handler(td.matchers.anything()), {times: 0});
+  } finally {
+    // Just to be safe
+    window.removeEventListener('resize', handler);
+  }
+});
+
 
 test('adapter#getViewportScrollY returns scroll distance', () => {
   const {component} = setupTest();

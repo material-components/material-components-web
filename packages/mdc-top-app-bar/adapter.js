@@ -52,10 +52,10 @@ class MDCTopAppBarAdapter {
    * @param {string} attribute
    * @param {string} value
    */
-  addAttributeToTopAppBar(attribute, value) {}
+  setStyle(attribute, value) {}
 
   /**
-   * Gets the height of the top app bar
+   * Gets the height of the top app bar.
    * @return {number}
    */
   getTopAppBarHeight() {}
