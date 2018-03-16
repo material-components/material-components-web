@@ -17,35 +17,39 @@
 
 import MDCComponent from '@material/base/component';
 
+import MDCNotchedOutlineAdapter from './adapter';
+import MDCNotchedOutlineFoundation from './foundation';
 import {strings} from './constants';
-import MDCTextFieldOutlineAdapter from './adapter';
-import MDCTextFieldOutlineFoundation from './foundation';
 
 /**
- * @extends {MDCComponent<!MDCTextFieldOutlineFoundation>}
+ * @extends {MDCComponent<!MDCNotchedOutlineFoundation>}
  * @final
  */
-class MDCTextFieldOutline extends MDCComponent {
+class MDCNotchedOutline extends MDCComponent {
   /**
    * @param {!Element} root
-   * @return {!MDCTextFieldOutline}
+   * @return {!MDCNotchedOutline}
    */
   static attachTo(root) {
-    return new MDCTextFieldOutline(root);
+    return new MDCNotchedOutline(root);
   }
 
   /**
-   * @return {!MDCTextFieldOutlineFoundation}
-   */
-  get foundation() {
-    return this.foundation_;
+    * Updates the SVG path of the outline element based on the
+    * notch element width and the RTL context.
+    * @param {number} notchWidth The notch width in the outline.
+    * @param {boolean=} isRtl Determines if outline is rtl. If rtl is true, notch
+    * will be right justified in outline path, otherwise left justified.
+    */
+  updateSvgPath(notchWidth, isRtl) {
+    this.foundation_.updateSvgPath(notchWidth, isRtl);
   }
 
   /**
-   * @return {!MDCTextFieldOutlineFoundation}
+   * @return {!MDCNotchedOutlineFoundation}
    */
   getDefaultFoundation() {
-    return new MDCTextFieldOutlineFoundation(/** @type {!MDCTextFieldOutlineAdapter} */ (Object.assign({
+    return new MDCNotchedOutlineFoundation({
       getWidth: () => this.root_.offsetWidth,
       getHeight: () => this.root_.offsetHeight,
       setOutlinePathAttr: (value) => {
@@ -54,12 +58,10 @@ class MDCTextFieldOutline extends MDCComponent {
       },
       getIdleOutlineStyleValue: (propertyName) => {
         const idleOutlineElement = this.root_.parentNode.querySelector(strings.IDLE_OUTLINE_SELECTOR);
-        if (idleOutlineElement) {
-          return window.getComputedStyle(idleOutlineElement).getPropertyValue(propertyName);
-        }
+        return window.getComputedStyle(idleOutlineElement).getPropertyValue(propertyName);
       },
-    })));
+    });
   }
 }
 
-export {MDCTextFieldOutline, MDCTextFieldOutlineFoundation};
+export {MDCNotchedOutline, MDCNotchedOutlineFoundation};
