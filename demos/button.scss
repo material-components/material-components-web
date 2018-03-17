@@ -45,9 +45,10 @@
   @include mdc-button-stroke-width(4px);
 }
 
-.demo-text-color {
+.demo-ink-color {
   @include mdc-button-icon-color(white);
   @include mdc-button-ink-color(orange);
+  @include mdc-states(orange);
 }
 
 .demo-icon-color {
