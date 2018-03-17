@@ -104,7 +104,7 @@ class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
       // Once the top app bar is fully hidden we use the max potential top app bar height as our offset
       // so the top app bar doesn't show if the window resizes and the new height > the old height.
       let offset = this.currentAppBarScrollPosition_;
-      if (Math.abs(offset) === this.topAppBarHeight_) {
+      if (Math.abs(offset) >= this.topAppBarHeight_) {
         offset = -numbers.MAX_TOP_APP_BAR_HEIGHT;
       }
 

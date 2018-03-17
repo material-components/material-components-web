@@ -72,6 +72,7 @@ class MDCTopAppBar extends MDCComponent {
    * @return {!MDCTopAppBarBaseFoundation}
    */
   getDefaultFoundation() {
+    /** @type {!MDCTopAppBarAdapter} */
     const adapter = /** @type {!MDCTopAppBarAdapter} */ (Object.assign({
       hasClass: (className) => this.root_.classList.contains(className),
       addClass: (className) => this.root_.classList.add(className),

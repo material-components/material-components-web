@@ -20,7 +20,7 @@ import MDCTopAppBarAdapter from './adapter';
 import MDCFoundation from '@material/base/foundation';
 
 /**
- * @extends {MDCFoundation<!MDCTopAppBarBaseFoundation>}
+ * @extends {MDCFoundation<!MDCTopAppBarAdapter>}
  */
 class MDCTopAppBarBaseFoundation extends MDCFoundation {
   /** @return enum {string} */
