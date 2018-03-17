@@ -34,6 +34,7 @@ const cssClasses = {
 /** @enum {number} */
 const numbers = {
   MAX_TOP_APP_BAR_HEIGHT: 128,
+  DEBOUNCE_THROTTLE_RESIZE_TIME: 100,
 };
 
 export {strings, cssClasses, numbers};

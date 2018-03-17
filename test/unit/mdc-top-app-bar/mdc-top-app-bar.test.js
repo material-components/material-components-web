@@ -226,7 +226,6 @@ test('#adapter.deregisterResizeHandler removes a resize handler from the window'
   }
 });
 
-
 test('adapter#getViewportScrollY returns scroll distance', () => {
   const {component} = setupTest();
   assert.equal(component.getDefaultFoundation().adapter_.getViewportScrollY(), window.pageYOffset);

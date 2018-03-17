@@ -17,6 +17,7 @@
 @import "@material/animation/variables";
 @import "@material/floating-label/mdc-floating-label";
 @import "@material/line-ripple/mdc-line-ripple";
+@import "@material/notched-outline/mdc-notched-outline";
 @import "@material/ripple/common";
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
@@ -27,7 +28,6 @@
 @import "./helper-text/mdc-text-field-helper-text";
 @import "./icon/mdc-text-field-icon";
 @import "./mixins";
-@import "./outline/mdc-text-field-outline";
 @import "./variables";
 
 // postcss-bem-linter: define text-field
@@ -242,13 +242,13 @@
 
 // Never show the idle outline when the label is floating, otherwise the label
 // will collide with the idle outline.
-.mdc-floating-label--float-above ~ .mdc-text-field__idle-outline {
+.mdc-floating-label--float-above ~ .mdc-notched-outline__idle {
   opacity: 0;
 }
 
 // Show the outline when the label is floating, since the outline has a
 // notch for the label to fit into.
-.mdc-floating-label--float-above ~ .mdc-text-field__outline {
+.mdc-floating-label--float-above ~ .mdc-notched-outline {
   opacity: 1;
 }
 
