@@ -39,6 +39,10 @@ npm install --save @material/card
 
 ## Usage
 
+```css
+@import "@material/card/mdc-card";
+```
+
 ### HTML Structure
 
 ```html
