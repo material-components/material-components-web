@@ -33,28 +33,51 @@ class StaticServer {
 
   runLocalDevServer({
     relativeDirectoryPaths,
+    directoryListing: {
+      fileExtensions = [],
+      stylesheetAbsolutePath,
+    } = {},
     port = process.env.MDC_PORT || 8090,
   }) {
     const app = this.expressLib_();
+    const indexOpts = {
+      icons: true,
+      filter: (filename, index, files, dir) => {
+        return this.shouldListFile_(filename, fileExtensions);
+      },
+      stylesheet: stylesheetAbsolutePath,
+    };
+
     relativeDirectoryPaths.forEach((relativeDirectoryPath) => {
-      this.serveStatic_(app, relativeDirectoryPath);
+      const fsAbsolutePath = this.pathResolver_.getAbsolutePath(relativeDirectoryPath);
+      app.use(
+        relativeDirectoryPath,
+        this.expressLib_.static(fsAbsolutePath),
+        this.serveIndexLib_(fsAbsolutePath, indexOpts)
+      );
     });
+
     app.get('/', (req, res) => {
       res.redirect('test/screenshot/');
     });
+
     app.listen(port, () => this.logLocalDevServerRunning_(port));
   }
 
-  serveStatic_(app, urlPath, fsRelativePath = urlPath) {
-    const fsAbsolutePath = this.pathResolver_.getAbsolutePath(fsRelativePath);
-    const indexOpts = {
-      icons: true,
-      filter(filename, index, files, dir) {
-        return /\.html$/.test(filename) || filename.indexOf('.') === -1;
-      },
-      stylesheet: this.pathResolver_.getAbsolutePath('/test/screenshot/directory.css'),
-    };
-    app.use(urlPath, this.expressLib_.static(fsAbsolutePath), this.serveIndexLib_(fsAbsolutePath, indexOpts));
+  shouldListFile_(filename, fileExtensions) {
+    // Directory
+    if (filename.indexOf('.') === -1) {
+      return true;
+    }
+    // Show all file extensions
+    if (fileExtensions.length === 0) {
+      return true;
+    }
+    // File with matching extension
+    if (fileExtensions.some((ext) => filename.endsWith(ext))) {
+      return true;
+    }
+    return false;
   }
 
   logLocalDevServerRunning_(port) {

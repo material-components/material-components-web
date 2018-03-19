@@ -53,6 +53,10 @@ module.exports = [
 if (env.isDev()) {
   staticServer.runLocalDevServer({
     relativeDirectoryPaths: ['/demos', '/test'],
+    directoryListing: {
+      fileExtensions: ['.html', '.css', '.html', '.svg', '.png'],
+      stylesheetAbsolutePath: pathResolver.join(TEST_OUTPUT.fsDirAbsolutePath, 'directory.test.css'),
+    },
   });
 }
 
