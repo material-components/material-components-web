@@ -74,20 +74,19 @@ class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
    * @returns {boolean}
    */
   isUpdateRequired_() {
-    const fullyHidden = this.currentAppBarScrollPosition_ === 0;
-    const fullyShown = this.currentAppBarScrollPosition_ === -this.topAppBarHeight_;
+    const partiallyShowing = this.currentAppBarScrollPosition_ < 0
+      && this.currentAppBarScrollPosition_ > -this.topAppBarHeight_;
     let updateRequired = false;
 
     if (this.isDocked_) {
-      // If it's already docked and the user is still scrolling in the same direction, do nothing
-      if (!(fullyShown || fullyHidden)) {
-        // Otherwise update the toolbar position
+      // If it was previously already docked but now is partially showing, it's no longer docked
+      if (partiallyShowing) {
         this.isDocked_ = false;
         updateRequired = true;
       }
     } else {
-      // If it's not docked but the position now indicates fully docked, toggle the docked variable
-      if (fullyShown || fullyHidden) {
+      // If it's not previously docked and not partially showing, it just became docked.
+      if (!partiallyShowing) {
         this.isDocked_ = true;
       }
       updateRequired = true;
