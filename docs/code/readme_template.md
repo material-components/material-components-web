@@ -58,7 +58,7 @@ path: /catalog/<COMPONENT_ID>/
 ## Installation
 
 ```
-npm install --save @material/<MODULE_NAME>
+npm install @material/<MODULE_NAME>
 ```
 
 ## Usage

@@ -34,7 +34,7 @@ An Image List consists of several items, each containing an image and optionally
 ## Installation
 
 ```
-npm install --save @material/image-list
+npm install @material/image-list
 ```
 
 ## Basic Usage

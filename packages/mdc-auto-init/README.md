@@ -17,7 +17,7 @@ appropriate.
 ## Installation
 
 ```
-npm install --save @material/auto-init
+npm install @material/auto-init
 ```
 
 ## Usage
