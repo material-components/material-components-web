@@ -49,6 +49,10 @@ class StaticServer {
     const fsAbsolutePath = this.pathResolver_.getAbsolutePath(fsRelativePath);
     const indexOpts = {
       icons: true,
+      filter(filename, index, files, dir) {
+        return /\.html$/.test(filename) || filename.indexOf('.') === -1;
+      },
+      stylesheet: this.pathResolver_.getAbsolutePath('/test/screenshot/directory.css'),
     };
     app.use(urlPath, this.expressLib_.static(fsAbsolutePath), this.serveIndexLib_(fsAbsolutePath, indexOpts));
   }
