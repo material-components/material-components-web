@@ -44,8 +44,8 @@ export default class MDCSelectFoundation extends MDCFoundation {
       rmAttr: (/* attr: string */) => {},
       registerInteractionHandler: (/* type: string, handler: EventListener */) => {},
       deregisterInteractionHandler: (/* type: string, handler: EventListener */) => {},
-      registerOptionsInteractionHandler: (/* type: string, handler: EventListener */) => {},
-
+      registerSelectedTextInteractionHandler: (/* type: string, handler: EventListener */) => {},
+      deregisterSelectedTextInteractionHandler: (/* type: string, handler: EventListener */) => {},
       getComputedStyleValue: (/* propertyName: string */) => /* string */ '',
       setStyle: (/* propertyName: string, value: string */) => {},
       create2dRenderingContext: () => /* {font: string, measureText: (string) => {width: number}} */ ({
@@ -85,6 +85,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.adapter_.registerInteractionHandler('focus', this.focusHandler_);
     this.adapter_.registerInteractionHandler('blur', this.blurHandler_);
     this.adapter_.registerInteractionHandler('change', this.selectionHandler_);
+    // this.adapter_.registerOptionsInteractionHandler('click', this)
   }
 
   destroy() {
@@ -117,7 +118,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
         this.adapter_.floatLabel(false);
       }
     }
-    this.adapter_.setSelectedTextContent(selectedTextContent);
+    // this.adapter_.setSelectedTextContent(selectedTextContent);
   }
 
   setDisabled(disabled) {

@@ -117,7 +117,10 @@ export class MDCSelect extends MDCComponent {
       registerInteractionHandler: (type, handler) => this.surface_.addEventListener(type, handler),
       deregisterInteractionHandler: (type, handler) => this.surface_.removeEventListener(type, handler),
       registerOptionsInteractionHandler: (type, handler) => {
-        this.options.forEach(opt => opt.addEventListener(type, handler));
+        this.selectedText_.addEventListener(type, handler);
+      },
+      deregisterOptionsInteractionHandler: (type, handler) => {
+        this.selectedText_.removeEventListener(type, handler);
       },
       getIndexByValue: (value) => this.indexByValue(value),
       getComputedStyleValue: (prop) => window.getComputedStyle(this.surface_).getPropertyValue(prop),

@@ -45,7 +45,8 @@
 
   display: inline-flex;
   position: relative;
-  align-items: center;
+  // align-items: center;
+  align-items: flex-end;
   justify-content: flex-start;
   box-sizing: border-box;
   height: 48px;
@@ -53,8 +54,6 @@
   outline: none;
   background-repeat: no-repeat;
   background-position: right 8px bottom 8px;
-  cursor: pointer;
-  overflow: visible;
 
   @include mdc-rtl {
     background-position: left 8px bottom 8px;
@@ -68,29 +67,18 @@
       display: none;
     }
 
-    display: flex;
-    position: relative;
-    flex-grow: 1;
     width: 100%;
-    height: 48px;
     padding-bottom: 8px;
+    padding-top: 22px;
     border: none;
     outline: none;
     overflow: hidden;
     appearance: none;
-    color: transparent;
-  }
-
-  &__selected-text {
-    display: flex;
-    position: absolute;
-    bottom: 8px;
-    align-items: flex-end;
+    cursor: pointer;
     transition:
       mdc-animation-exit-temporary(opacity, 125ms),
       mdc-animation-exit-temporary(transform, 125ms);
     white-space: nowrap;
-    overflow: hidden;
   }
 
   @include mdc-select-focused-bottom-line_ {
@@ -120,6 +108,7 @@
   .mdc-select__surface {
     @include mdc-typography(subheading2);
     @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding);
+    // TODO(mattgoo): fix bug where label collides with background select arrow
     @include mdc-ripple-surface;
     @include mdc-ripple-radius-bounded;
 
@@ -138,11 +127,11 @@
     }
   }
 
-  .mdc-select__selected-text {
-    position: inherit;
-    bottom: 0;
-    margin-bottom: 6px;
-  }
+  // .mdc-select__selected-text {
+  //   position: inherit;
+  //   bottom: 0;
+  //   margin-bottom: 6px;
+  // }
 }
 
 .mdc-select--open {
@@ -150,13 +139,13 @@
     opacity: map-get($mdc-ripple-dark-ink-opacities, "focus");
   }
 
-  .mdc-select__selected-text {
-    transform: translateY(8px);
-    transition:
-      mdc-animation-enter(opacity, 125ms, 125ms),
-      mdc-animation-enter(transform, 125ms, 125ms);
-    opacity: 0;
-  }
+  // .mdc-select__selected-text {
+  //   transform: translateY(8px);
+  //   transition:
+  //     mdc-animation-enter(opacity, 125ms, 125ms),
+  //     mdc-animation-enter(transform, 125ms, 125ms);
+  //   opacity: 0;
+  // }
 
   .mdc-select__bottom-line::after {
     transform: scaleY(2);
@@ -167,6 +156,7 @@
 .mdc-select--disabled {
   @include mdc-select-floating-label-color(text-disabled-on-light);
   @include mdc-select-dd-arrow-svg-bg_(000000, .38);
+  @include mdc-select-container-fill-color_(transparent);
 
   border-bottom-width: 1px;
   border-bottom-style: dotted;

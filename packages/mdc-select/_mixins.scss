@@ -62,6 +62,7 @@
 }
 
 @mixin mdc-select-ink-color_($color) {
+  .mdc-select__option,
   .mdc-select__selected-text {
     @include mdc-theme-prop(color, $color);
   }
