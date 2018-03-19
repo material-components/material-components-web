@@ -33,6 +33,7 @@
     #{$prop}: map-get(map-get($mdc-typography-styles, subheading2), $prop);
   }
 
+  @include mdc-select-container-fill-color(transparent);
   @include mdc-select-dd-arrow-svg-bg_;
   @include mdc-select-ink-color(text-primary-on-light);
   @include mdc-select-label-color(black, .6);
@@ -59,18 +60,13 @@
     background-position: left 8px bottom 8px;
   }
 
-  &__menu {
-    position: fixed;
-    top: 0;
-    left: 0;
-    max-height: 100%;
-    transform-origin: center center;
-    z-index: 4; // Should pop up above everything else. temporary-drawer is next highest at 3.
-  }
-
   &__surface {
     @include mdc-rtl-reflexive-property(padding, 0, $mdc-select-arrow-padding);
     @include mdc-states;
+
+    &::-ms-expand {
+      display: none;
+    }
 
     display: flex;
     position: relative;
@@ -81,6 +77,8 @@
     border: none;
     outline: none;
     overflow: hidden;
+    appearance: none;
+    color: transparent;
   }
 
   &__selected-text {
@@ -101,6 +99,11 @@
       opacity: 1;
     }
   }
+}
+
+.mdc-select__option[value=""] {
+  // added for placeholder option for no value
+  display: none;
 }
 
 .mdc-select--box {
