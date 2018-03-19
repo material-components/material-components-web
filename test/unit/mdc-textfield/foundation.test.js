@@ -44,6 +44,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'getNativeInput', 'isFocused', 'isRtl', 'activateLineRipple', 'deactivateLineRipple',
     'setLineRippleTransformOrigin', 'shakeLabel', 'floatLabel', 'hasLabel', 'getLabelWidth',
     'registerValidationAttributeChangeHandler', 'deregisterValidationAttributeChangeHandler',
+    'hasOutline', 'updateOutlinePath',
   ]);
 });
 
@@ -60,16 +61,12 @@ const setupTest = () => {
     deregisterInteractionHandler: () => {},
     handleInteraction: () => {},
   });
-  const outline = td.object({
-    updateSvgPath: () => {},
-  });
   const foundationMap = {
-    helperText: helperText,
-    icon: icon,
-    outline: outline,
+    helperText,
+    icon,
   };
   const foundation = new MDCTextFieldFoundation(mockAdapter, foundationMap);
-  return {foundation, mockAdapter, helperText, icon, outline};
+  return {foundation, mockAdapter, helperText, icon};
 };
 
 test('#constructor sets disabled to false', () => {
@@ -377,25 +374,27 @@ test('#setHelperTextContent sets the content of the helper text element', () => 
 });
 
 test('#updateOutline updates the SVG path of the outline element', () => {
-  const {foundation, mockAdapter, outline} = setupTest();
+  const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getLabelWidth()).thenReturn(30);
   td.when(mockAdapter.hasLabel()).thenReturn(true);
+  td.when(mockAdapter.hasOutline()).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.DENSE)).thenReturn(false);
   td.when(mockAdapter.isRtl()).thenReturn(false);
 
   foundation.updateOutline();
-  td.verify(outline.updateSvgPath(30 * numbers.LABEL_SCALE, false));
+  td.verify(mockAdapter.updateOutlinePath(30 * numbers.LABEL_SCALE, false));
 });
 
 test('#updateOutline updates the SVG path of the outline element when dense', () => {
-  const {foundation, mockAdapter, outline} = setupTest();
+  const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getLabelWidth()).thenReturn(30);
   td.when(mockAdapter.hasLabel()).thenReturn(true);
+  td.when(mockAdapter.hasOutline()).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.DENSE)).thenReturn(true);
   td.when(mockAdapter.isRtl()).thenReturn(false);
 
   foundation.updateOutline();
-  td.verify(outline.updateSvgPath(30 * numbers.DENSE_LABEL_SCALE, false));
+  td.verify(mockAdapter.updateOutlinePath(30 * numbers.DENSE_LABEL_SCALE, false));
 });
 
 const setupBareBonesTest = () => {

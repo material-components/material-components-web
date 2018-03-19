@@ -16,11 +16,8 @@
  */
 
 /* eslint-disable no-unused-vars */
-import MDCLineRippleFoundation from '@material/line-ripple/foundation';
 import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
 import MDCTextFieldIconFoundation from './icon/foundation';
-import MDCFloatingLabelFoundation from '@material/floating-label/foundation';
-import MDCTextFieldOutlineFoundation from './outline/foundation';
 
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
@@ -39,11 +36,8 @@ let NativeInputType;
 
 /**
  * @typedef {{
- *   lineRipple: (!MDCLineRippleFoundation|undefined),
  *   helperText: (!MDCTextFieldHelperTextFoundation|undefined),
  *   icon: (!MDCTextFieldIconFoundation|undefined),
- *   label: (!MDCFloatingLabelFoundation|undefined),
- *   outline: (!MDCTextFieldOutlineFoundation|undefined)
  * }}
  */
 let FoundationMapType;
@@ -186,6 +180,21 @@ class MDCTextFieldAdapter {
    * @return {number}
    */
   getLabelWidth() {}
+
+  /**
+   * Returns true if outline element exists, false if it doesn't.
+   * @return {boolean}
+   */
+  hasOutline() {}
+
+  /**
+   * Only implement if outline element exists.
+   * Updates SVG Path on outline element based on the
+   * label element width and RTL context.
+   * @param {number} labelWidth
+   * @param {boolean} isRtl
+   */
+  updateOutlinePath(labelWidth, isRtl) {}
 }
 
 export {MDCTextFieldAdapter, NativeInputType, FoundationMapType};

@@ -32,6 +32,7 @@
 }
 
 .mdc-image-list.standard-image-list {
+  @include mdc-image-list-aspect(1.5); // Images are 3:2
   @include mdc-image-list-standard-columns(5);
 
   max-width: 1000px;
