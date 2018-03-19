@@ -14,32 +14,17 @@
 // limitations under the License.
 //
 
-@import "./mixins";
-@import "../mixins";
-@import "../variables";
-@import "@material/theme/mixins";
 @import "@material/ripple/mixins";
 @import "@material/ripple/variables";
+@import "@material/textfield/functions";
+@import "@material/theme/mixins";
+@import "./mixins";
 
-.mdc-text-field__idle-outline {
-  @include mdc-text-field-outlined-corner-radius($mdc-text-field-border-radius);
-
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: calc(100% - 4px);
-  height: calc(100% - 4px);
-  transition: opacity 100ms ease;
-  border: 1px solid;
-  opacity: 1;
-}
-
-.mdc-text-field__outline {
+.mdc-notched-outline {
   @include mdc-ripple-surface;
   @include mdc-ripple-radius-bounded;
   @include mdc-states-base-color(text-primary-on-background);
   @include mdc-states-press-opacity(map-get($mdc-ripple-dark-ink-opacities, "press"));
-  @include mdc-text-field-outlined-corner-radius($mdc-text-field-border-radius);
 
   position: absolute;
   top: 0;
@@ -50,16 +35,33 @@
   opacity: 0;
   overflow: hidden;
 
+  // stylelint-disable selector-max-type
   svg {
     position: absolute;
     width: 100%;
     height: 100%;
   }
+  // stylelint-enable selector-max-type
 }
 
-.mdc-text-field__outline-path {
+.mdc-notched-outline__idle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(100% - 4px);
+  height: calc(100% - 4px);
+  transition: opacity 100ms ease;
+  border: 1px solid;
+  opacity: 1;
+}
+
+.mdc-notched-outline__path {
   stroke-width: 1px;
-  transition: mdc-text-field-transition(stroke), mdc-text-field-transition(stroke-width),
-  mdc-text-field-transition(opacity);
+
+  // TODO(mattgoo): remove this text-field dep from notched-outline
+  transition:
+    mdc-text-field-transition(stroke),
+    mdc-text-field-transition(stroke-width),
+    mdc-text-field-transition(opacity);
   fill: transparent;
 }

@@ -3,6 +3,7 @@
     "name": "main-js-combined",
     "entry": "/packages/material-components-web/index.js",
     "output": {
+      "path": "/build",
       "publicPath": "/assets/",
       "filename": "material-components-web.js",
       "libraryTarget": "umd",
@@ -50,6 +51,7 @@
       "fab": "/demos/fab.scss",
       "grid-list": "/demos/grid-list.scss",
       "icon-toggle": "/demos/icon-toggle.scss",
+      "image-list": "/demos/image-list.scss",
       "index": "/demos/index.scss",
       "layout-grid": "/demos/layout-grid.scss",
       "linear-progress": "/demos/linear-progress.scss",
@@ -73,6 +75,7 @@
       "typography": "/demos/typography.scss"
     },
     "output": {
+      "path": "/build",
       "publicPath": "/assets/",
       "filename": "[name].css.js"
     },
@@ -122,6 +125,9 @@
         "options": {}
       },
       {
+        "cleanupDirRelativePath": "/build"
+      },
+      {
         "options": {
           "banner": "/*!\n Material Components for the Web\n Copyright (c) 2018 Google Inc.\n License: Apache-2.0\n*/",
           "raw": true,
@@ -138,6 +144,7 @@
       "theme/index": "/demos/theme/index.js"
     },
     "output": {
+      "path": "/build",
       "publicPath": "/assets/",
       "filename": "[name].js",
       "libraryTarget": "umd",

@@ -43,6 +43,19 @@ class MDCCheckboxAdapter {
   /** @param {string} className */
   removeClass(className) {}
 
+  /**
+   * Sets an attribute with a given value on the input element.
+   * @param {string} attr
+   * @param {string} value
+   */
+  setNativeControlAttr(attr, value) {}
+
+  /**
+   * Removes an attribute from the input element.
+   * @param {string} attr
+   */
+  removeNativeControlAttr(attr) {}
+
   /** @param {!EventListener} handler */
   registerAnimationEndHandler(handler) {}
 

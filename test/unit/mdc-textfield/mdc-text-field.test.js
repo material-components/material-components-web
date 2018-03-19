@@ -22,8 +22,9 @@ import {assert} from 'chai';
 import {MDCRipple} from '../../../packages/mdc-ripple';
 import {MDCLineRipple} from '../../../packages/mdc-line-ripple';
 import {MDCFloatingLabel} from '../../../packages/mdc-floating-label';
+import {MDCNotchedOutline} from '../../../packages/mdc-notched-outline';
 import {MDCTextField, MDCTextFieldFoundation, MDCTextFieldHelperText,
-  MDCTextFieldIcon, MDCTextFieldOutline} from '../../../packages/mdc-textfield';
+  MDCTextFieldIcon} from '../../../packages/mdc-textfield';
 
 const {cssClasses} = MDCTextFieldFoundation;
 
@@ -82,7 +83,6 @@ class FakeLabel {
 
 class FakeOutline {
   constructor() {
-    this.createRipple = td.function('.createRipple');
     this.destroy = td.func('.destroy');
   }
 }
@@ -100,11 +100,11 @@ test('#constructor when given a `mdc-text-field--outlined` element instantiates 
     <div class="mdc-text-field mdc-text-field--outlined">
       <input type="text" class="mdc-text-field__input" id="my-text-field">
       <label class="mdc-floating-label" for="my-text-field">My Label</label>
-      <div class="mdc-text-field__outline"></div>
-      <div class="mdc-text-field__idle-outline"></div>
+      <div class="mdc-notched-outline"></div>
+      <div class="mdc-notched-outline__idle"></div>
     </div>
   `;
-  const outline = root.querySelector('.mdc-text-field__outline');
+  const outline = root.querySelector('.mdc-notched-outline');
   const component = new MDCTextField(root, undefined, (el) => new FakeRipple(el));
   assert.equal(component.ripple.root, outline);
 });
@@ -129,8 +129,8 @@ test('#constructor when given a `mdc-text-field--outlined` element, initializes 
     <div class="mdc-text-field mdc-text-field--outlined">
       <input type="text" class="mdc-text-field__input" id="my-text-field">
       <label class="mdc-floating-label" for="my-text-field">My Label</label>
-      <div class="mdc-text-field__outline"></div>
-      <div class="mdc-text-field__idle-outline"></div>
+      <div class="mdc-notched-outline"></div>
+      <div class="mdc-notched-outline__idle"></div>
     </div>
   `;
   const component = new MDCTextField(root);
@@ -168,11 +168,11 @@ test('#constructor instantiates a label on the `.mdc-floating-label` element if 
   assert.instanceOf(component.label_, MDCFloatingLabel);
 });
 
-test('#constructor instantiates an outline on the `.mdc-text-field__outline` element if present', () => {
+test('#constructor instantiates an outline on the `.mdc-notched-outline` element if present', () => {
   const root = getFixture();
-  root.appendChild(bel`<div class="mdc-text-field__outline"></div>`);
+  root.appendChild(bel`<div class="mdc-notched-outline"></div>`);
   const component = new MDCTextField(root);
-  assert.instanceOf(component.outline_, MDCTextFieldOutline);
+  assert.instanceOf(component.outline_, MDCNotchedOutline);
 });
 
 test('#constructor handles undefined optional sub-elements gracefully', () => {
@@ -242,7 +242,7 @@ test('#destroy cleans up the label if present', () => {
 
 test('#destroy cleans up the outline if present', () => {
   const root = getFixture();
-  root.appendChild(bel`<div class="mdc-text-field__outline"></div>`);
+  root.appendChild(bel`<div class="mdc-notched-outline"></div>`);
   const {component, outline} = setupTest(root);
   component.destroy();
   td.verify(outline.destroy());

@@ -123,16 +123,16 @@ Add the `disabled` attribute to `<input>` if the `mdc-text-field` is disabled. Y
 <div class="mdc-text-field mdc-text-field--outlined">
   <input type="text" id="tf-outlined" class="mdc-text-field__input">
   <label for="tf-outlined" class="mdc-floating-label">Your Name</label>
-  <div class="mdc-text-field__outline">
+  <div class="mdc-notched-outline">
     <svg>
-      <path class="mdc-text-field__outline-path"/>
+      <path class="mdc-notched-outline__path"/>
     </svg>
   </div>
-  <div class="mdc-text-field__idle-outline"></div>
+  <div class="mdc-notched-outline__idle"></div>
 </div>
 ```
 
-See [here](outline/) for more information on using the outline sub-component.
+See [here](../mdc-notched-outline/) for more information on using the outline sub-component.
 
 > _NOTE_: Do not use `mdc-line-ripple` inside of `mdc-text-field` _if you plan on using `mdc-text-field--outlined`_. Bottom line should not be included as part of the DOM structure of an outlined text field.
 
@@ -172,20 +172,45 @@ apply these mixins with CSS selectors such as `.foo-text-field.mdc-text-field--i
 
 > _NOTE_: the `mdc-line-ripple-color` mixin should be applied from the not focused class `foo-text-field:not(.mdc-text-field--focused)`).
 
+#### Mixins for Text Field Box
+
 Mixin | Description
 --- | ---
-`mdc-text-field-bottom-line-color($color)` | Customizes the text-field bottom line color except the outline and textarea variants.
-`mdc-text-field-box-corner-radius($radius)` | Customizes the border radius for the text-field box variant.
-`mdc-text-field-box-fill-color($color)` | Customizes the background color of the text-field box.
-`mdc-text-field-fullwidth-bottom-line-color($color)` | Customizes the fullwidth text-field variant bottom line color.
-`mdc-text-field-hover-bottom-line-color($color)` | Customizes the hover text-field bottom line color except the outline and textarea variants.
-`mdc-text-field-ink-color($color)` | Customizes the text entered into the text-field.
-`mdc-text-field-label-color($color)` | Customizes the text color of the label.
-`mdc-text-field-line-ripple-color($color)` | Customizes the color of the default line ripple of the text-field.
-`mdc-text-field-outlined-corner-radius($radius)` | Sets the border radius of of the text-field outline variant.
+`mdc-text-field-box-corner-radius($radius)` | Customizes the border radius for the text field box variant.
+`mdc-text-field-box-fill-color($color)` | Customizes the background color of the text field box.
+
+#### Mixins for Text Field Outline
+
+Mixin | Description
+--- | ---
+`mdc-text-field-focused-outline-color($color)` | Customizes the outline border color when the text field is focused.
+`mdc-text-field-hover-outline-color($color)` | Customizes the outline border color when the text field is hovered.
+`mdc-text-field-outline-color($color)` | Customizes the border color of the outline text field.
+`mdc-text-field-outline-corner-radius($radius)` | Sets the border radius of of the text field outline variant.
+
+#### Mixins for Textarea
+
+Mixin | Description
+--- | ---
 `mdc-text-field-textarea-corner-radius($radius)` | Customizes the border radius for a `<textarea>` variant.
 `mdc-text-field-textarea-fill-color($color)` | Customizes the color of the background of the textarea.
 `mdc-text-field-textarea-stroke-color($color)` | Customizes the color of the border of the textarea.
+
+
+#### Mixins for Text Field Fullwidth
+
+Mixin | Description
+--- | ---
+`mdc-text-field-fullwidth-bottom-line-color($color)` | Customizes the fullwidth text field variant bottom line color.
+
+#### Other Mixins
+Mixin | Description
+--- | ---
+`mdc-text-field-bottom-line-color($color)` | Customizes the text field bottom line color except the outline and textarea variants.
+`mdc-text-field-hover-bottom-line-color($color)` | Customizes the hover text field bottom line color except the outline and textarea variants.
+`mdc-text-field-ink-color($color)` | Customizes the text entered into the text field.
+`mdc-text-field-label-color($color)` | Customizes the text color of the label.
+`mdc-text-field-line-ripple-color($color)` | Customizes the color of the default line ripple of the text field.
 
 ### `MDCTextField`
 
@@ -206,7 +231,7 @@ Method Signature | Description
 
 ##### `MDCTextField.ripple`
 
-`MDCRipple` instance. When given an `mdc-text-field--box` root element, this is set to the `MDCRipple` instance on the root element. When given an `mdc-text-field--outlined` root element, this is set to the `MDCRipple` instance on the `mdc-text-field__outline` element. Otherwise, the field is set to `null`.
+`MDCRipple` instance. When given an `mdc-text-field--box` root element, this is set to the `MDCRipple` instance on the root element. When given an `mdc-text-field--outlined` root element, this is set to the `MDCRipple` instance on the `mdc-notched-outline` element. Otherwise, the field is set to `null`.
 
 ### `MDCTextFieldAdapter`
 
@@ -222,6 +247,8 @@ Method Signature | Description
 `getNativeInput() => {value: string, disabled: boolean, badInput: boolean, checkValidity: () => boolean}?` | Returns an object representing the native text input element, with a similar API shape
 `isFocused() => boolean` | Returns whether the input is focused
 `isRtl() => boolean` | Returns whether the direction of the root element is set to RTL
+`hasOutline() => boolean` | Returns whether there is an outline element
+`updateOutlinePath(labelWidth: number, isRtl: boolean) => void` | Updates the outline path to create a notch for the label element
 
 #### `MDCTextFieldAdapter.getNativeInput()`
 
@@ -249,4 +276,4 @@ Method Signature | Description
 `setHelperTextContent(content: string) => void` | Sets the content of the helper text
 `updateOutline() => void` | Updates the focus outline for outlined text fields
 
-`MDCTextFieldFoundation` supports multiple optional sub-elements: line ripple, helper text, icon, and outline. The foundations of these sub-elements must be passed in as constructor arguments to `MDCTextFieldFoundation`.
+`MDCTextFieldFoundation` supports multiple optional sub-elements: helper text and icon. The foundations of these sub-elements must be passed in as constructor arguments to `MDCTextFieldFoundation`.
