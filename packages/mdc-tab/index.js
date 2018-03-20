@@ -35,29 +35,6 @@ class MDCTab extends MDCComponent {
   }
 
   /**
-   * @return {boolean}
-   */
-  get active() {
-    return this.foundation_.isActive();
-  }
-
-  /**
-   * @param {boolean} isActive
-   */
-  set active(isActive) {
-    if (isActive) {
-      this.foundation_.activate();
-    } else {
-      this.foundation_.deactivate();
-    }
-  }
-
-  /** @return {!MDCRipple} */
-  get ripple() {
-    return this.ripple_;
-  }
-
-  /**
    * @param {...?} args
    */
   constructor(...args) {
@@ -80,9 +57,29 @@ class MDCTab extends MDCComponent {
       hasClass: (className) => this.root_.classList.contains(className),
     })));
   }
+
+  /**
+   * @return {boolean}
+   */
+  get active() {
+    return this.foundation_.isActive();
+  }
+
+  /**
+   * @param {boolean} isActive
+   */
+  set active(isActive) {
+    if (isActive) {
+      this.foundation_.activate();
+    } else {
+      this.foundation_.deactivate();
+    }
+  }
+
+  /** @return {!MDCRipple} */
+  get ripple() {
+    return this.ripple_;
+  }
 }
 
-export {
-  MDCTab,
-  MDCTabFoundation,
-};
+export {MDCTab, MDCTabFoundation};
