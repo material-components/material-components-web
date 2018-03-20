@@ -310,7 +310,13 @@
 
 @mixin mdc-text-field-box_ {
   @include mdc-ripple-surface;
-  @include mdc-states(text-primary-on-background, $has-nested-focusable-element: true);
+  // Text Field Box intentionally omits press ripple, so each state needs to be specified individually
+  @include mdc-states-base-color(text-primary-on-background);
+  @include mdc-states-hover-opacity(mdc-states-opacity(text-primary-on-background, hover));
+  @include mdc-states-focus-opacity(
+    mdc-states-opacity(text-primary-on-background, focus),
+    $has-nested-focusable-element: true
+  );
   @include mdc-ripple-radius-bounded;
   @include mdc-text-field-box-corner-radius($mdc-text-field-border-radius);
   @include mdc-text-field-box-fill-color($mdc-text-field-box-background);
