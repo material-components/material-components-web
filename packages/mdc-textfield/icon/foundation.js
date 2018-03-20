@@ -38,6 +38,9 @@ class MDCTextFieldIconFoundation extends MDCFoundation {
   static get defaultAdapter() {
     return /** @type {!MDCTextFieldIconAdapter} */ ({
       setAttr: () => {},
+      getAttr: (/* name: string */) => /* string */ '',
+      getTabIndex: () => /* number */ 0,
+      setTabIndex: (/* tabIndex: number */) => {},
       registerInteractionHandler: () => {},
       deregisterInteractionHandler: () => {},
       notifyIconAction: () => {},
@@ -50,6 +53,9 @@ class MDCTextFieldIconFoundation extends MDCFoundation {
   constructor(adapter) {
     super(Object.assign(MDCTextFieldIconFoundation.defaultAdapter, adapter));
 
+    /** @private {number} */
+    this.savedTabIndex_ = this.adapter_.getTabIndex();
+
     /** @private {function(!Event): undefined} */
     this.interactionHandler_ = (evt) => this.handleInteraction(evt);
   }
@@ -57,6 +63,7 @@ class MDCTextFieldIconFoundation extends MDCFoundation {
   init() {
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.registerInteractionHandler(evtType, this.interactionHandler_);
+      this.adapter_.setTabIndex(this.savedTabIndex_);
     });
   }
 
@@ -72,9 +79,10 @@ class MDCTextFieldIconFoundation extends MDCFoundation {
    */
   setDisabled(disabled) {
     if (disabled) {
-      this.adapter_.setAttr('tabindex', '-1');
+      this.savedTabIndex_= this.adapter_.getTabIndex();
+      this.adapter_.setTabIndex('-1');
     } else {
-      this.adapter_.setAttr('tabindex', '0');
+      this.adapter_.setTabIndex(this.savedTabIndex_);
     }
   }
 
