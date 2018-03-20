@@ -55,7 +55,6 @@ $custom-button-custom-stroke-width: 4px;
   @include mdc-button-stroke-width($custom-button-custom-stroke-width);
 }
 
-// TODO(acdvorak): Figure out why `npm run lint:css` doesn't find `test/screenshot/.stylelintrc.yaml`
 // stylelint-disable-next-line selector-class-pattern
 .custom-button--all-mixins.mdc-button--raised {
   @include mdc-button-container-fill-color($custom-button-color);
