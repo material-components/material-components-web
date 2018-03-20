@@ -27,14 +27,6 @@ import MDCTabFoundation from './foundation';
  */
 class MDCTab extends MDCComponent {
   /**
-   * @param {!Element} root
-   * @return {!MDCTab}
-   */
-  static attachTo(root) {
-    return new MDCTab(root);
-  }
-
-  /**
    * @param {...?} args
    */
   constructor(...args) {
@@ -42,6 +34,14 @@ class MDCTab extends MDCComponent {
 
     /** @private {!MDCRipple} */
     this.ripple_ = new MDCRipple(this.root_);
+  }
+
+  /**
+   * @param {!Element} root
+   * @return {!MDCTab}
+   */
+  static attachTo(root) {
+    return new MDCTab(root);
   }
 
   /**
