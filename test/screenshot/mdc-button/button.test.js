@@ -18,7 +18,7 @@
 import * as dom from '../../../demos/dom.js';
 import * as pony from '../../../demos/ponyfill.js';
 
-demoReady((root, mdc) => {
+testReady((root, mdc) => {
   // Prevent default navigation behavior on all <a href="#"> links
   root.addEventListener('click', (evt) => {
     if (pony.closest(evt.target, 'a[href^="#"]')) {

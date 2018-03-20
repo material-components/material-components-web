@@ -26,8 +26,7 @@ body {
 }
 
 // Used by ready.js to test whether the CSS has finished loading.
-// stylelint-disable-next-line selector-class-pattern
-.demo-ready-detect {
+.test-ready-detect {
   position: relative;
 }
 

@@ -51,10 +51,9 @@ module.exports = [
 ];
 
 if (env.isDev()) {
-  staticServer.run({
-    relativeDirectoryPaths: ['/demos', '/test'],
-    defaultUrl: '/test/screenshot/',
-    directoryListing: {
+  staticServer.start({
+    path: '/test/screenshot',
+    directoryIndex: {
       fileExtensions: ['.html'],
       stylesheetAbsolutePath: pathResolver.getAbsolutePath('/test/screenshot/directory.css'),
     },

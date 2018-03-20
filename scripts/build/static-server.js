@@ -39,16 +39,14 @@ class StaticServer {
 
   /**
    * Starts a static file server asynchronously and returns immediately.
-   * @param {!Array<string>} relativeDirectoryPaths
-   * @param {string} defaultUrl
-   * @param {!Array<string>=} fileExtensions
-   * @param {string} stylesheetAbsolutePath
+   * @param {string} path Relative or absolute path to a filesystem directory to serve
+   * @param {!Array<string>=} fileExtensions Whitelisted file extensions to show in the directory index
+   * @param {string} stylesheetAbsolutePath Absolute path to a CSS file containing styles for the directory index
    * @param {number=} port
    */
-  run({
-    relativeDirectoryPaths,
-    defaultUrl,
-    directoryListing: {
+  start({
+    path,
+    directoryIndex: {
       fileExtensions = [],
       stylesheetAbsolutePath,
     } = {},
@@ -64,20 +62,12 @@ class StaticServer {
       icons: true,
     };
 
-    relativeDirectoryPaths.forEach((relativeDirectoryPath) => {
-      const fsAbsolutePath = this.pathResolver_.getAbsolutePath(relativeDirectoryPath);
-      app.use(
-        // Mirror filesystem paths in the URL
-        relativeDirectoryPath,
-        this.expressLib_.static(fsAbsolutePath),
-        this.serveIndexLib_(fsAbsolutePath, indexOpts)
-      );
-    });
-
-    // Redirect to the screenshot test directory if no path is specified in the URL.
-    app.get('/', (req, res) => {
-      res.redirect(defaultUrl);
-    });
+    const absolutePath = this.pathResolver_.getAbsolutePath(path);
+    app.use(
+      '/',
+      this.expressLib_.static(absolutePath),
+      this.serveIndexLib_(absolutePath, indexOpts)
+    );
 
     app.listen(port, () => this.logRunning_(port));
   }
