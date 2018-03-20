@@ -59,7 +59,7 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
 
   /**
    * Adds the outline notched selector and updates the notch width
-   * if activateNotch is true, otherwise it will remove notched
+   * if activateNotch is true, otherwise it will remove the notched
    * selector.
    * @param {number} notchWidth
    * @param {boolean=} isRtl

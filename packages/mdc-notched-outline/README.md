@@ -101,5 +101,5 @@ Method Signature | Description
 
 Method Signature | Description
 --- | ---
-`notch(activateNotch: boolean)` | Adds remove the outline notched selector if activateNotch is true. Updates the component to activate/deactivate notched outline.
+`notch(activateNotch: boolean)` | Adds the outline notched selector and updates the notched outline path if activateNotch is true. Will remove the notched selector otherwise.
 `updateSvgPath(notchWidth: number, isRtl: boolean) => void` | Updates the SVG path of the focus outline element based on the given notchWidth and the RTL context.
