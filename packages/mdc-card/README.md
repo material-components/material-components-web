@@ -34,7 +34,7 @@ developers as a set of CSS classes.
 ## Installation
 
 ```
-npm install --save @material/card
+npm install @material/card
 ```
 
 ## Usage
