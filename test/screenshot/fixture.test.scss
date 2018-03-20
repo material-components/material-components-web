@@ -42,8 +42,8 @@ body {
   margin: 0 0 24px 0;
 }
 
-// TODO(acdvorak): Avoid using a universal selector and potentially overwriting the component's baseline styles.
-// We might need to wrap every component in a `<div class="test-cell">` element; HTML templates could make that easier.
+// TODO: Wrap every component in a `<div class="test-cell">` element instead of overriding baseline styles, -OR- remove
+// margins from baseline styles.
 // stylelint-disable-next-line selector-max-universal
 .test-row > * {
   margin: 8px;

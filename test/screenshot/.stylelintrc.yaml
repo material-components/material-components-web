@@ -3,7 +3,7 @@ ignoreFiles:
   - node_modules/**/*
   - out/**/*
 rules:
-  # Ensure any defined symbols are prefixed with "test-"
+  # Ensure any defined symbols are prefixed with "test-" or "custom-"
   custom-media-pattern: ^(test|custom)-.+
   custom-property-pattern: ^(test|custom)-.+
   selector-class-pattern:
