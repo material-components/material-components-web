@@ -234,6 +234,7 @@ test('when opened the select positions the menu such that the selected option is
   const mockLocation = mockAdapter.computeBoundingRect();
   foundation.setSelectedIndex(1);
   td.when(mockAdapter.getOffsetTopForOptionAtIndex(1)).thenReturn(20);
+  td.when(mockAdapter.getAdjustedMenuTop(1)).thenReturn(20);
   handlers.click(createEvent());
 
   td.verify(mockAdapter.setMenuElStyle('left', `${mockLocation.left}px`));
@@ -255,6 +256,7 @@ test('when opened clamps the menu position to the top of the window if it would 
   const mockLocation = mockAdapter.computeBoundingRect();
   foundation.setSelectedIndex(1);
   td.when(mockAdapter.getOffsetTopForOptionAtIndex(1)).thenReturn(mockLocation.top + 20);
+  td.when(mockAdapter.getAdjustedMenuTop(1)).thenReturn(mockLocation.top + 20);
   handlers.click(createEvent());
 
   td.verify(mockAdapter.setMenuElStyle('left', `${mockLocation.left}px`));
@@ -273,6 +275,7 @@ test('when opened clamps the menu position to the bottom of the window if it wou
     top: mockInnerHeight-40,
   });
   td.when(mockAdapter.getOffsetTopForOptionAtIndex(1)).thenReturn(20);
+  td.when(mockAdapter.getAdjustedMenuTop(1)).thenReturn(20);
   handlers.click(createEvent());
 
   const mockLocation = mockAdapter.computeBoundingRect();
@@ -292,6 +295,7 @@ test('when opened clamps the menu position to the top of the window if it cannot
   // Bump off offsetHeight to simulate no good possible placement
   td.when(mockAdapter.getMenuElOffsetHeight()).thenReturn(mockMenuHeight + 10);
   td.when(mockAdapter.getOffsetTopForOptionAtIndex(1)).thenReturn(20);
+  td.when(mockAdapter.getAdjustedMenuTop(1)).thenReturn(20);
   handlers.click(createEvent());
 
   const mockLocation = mockAdapter.computeBoundingRect();

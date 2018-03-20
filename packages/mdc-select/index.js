@@ -122,6 +122,16 @@ export class MDCSelect extends MDCComponent {
       setMenuElAttr: (attr, value) => this.menuEl_.setAttribute(attr, value),
       rmMenuElAttr: (attr) => this.menuEl_.removeAttribute(attr),
       getMenuElOffsetHeight: () => this.menuEl_.offsetHeight,
+      getAdjustedMenuTop: (index) => {
+        const item = this.options[index];
+        const menu = this.menuEl_;
+        if (((item.offsetTop + item.offsetHeight) - menu.scrollTop) > menu.offsetHeight) {
+          menu.scrollTop = item.offsetTop;
+          // return menu.scrollTop;
+        }
+        return item.offsetTop - this.menuEl_.scrollTop;
+        // (itemOffsetTop % menu.offsetHeight) + item.offsetHeight;
+      },
       openMenu: (focusIndex) => this.menu_.show({focusIndex}),
       isMenuOpen: () => this.menu_.open,
       setSelectedTextContent: (selectedTextContent) => {
