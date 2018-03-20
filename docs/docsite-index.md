@@ -31,7 +31,7 @@ Get up and running with Material Components for web
     Start by installing the library from [npm](https://npmjs.com):
 
     ```
-    npm install --save material-components-web
+    npm install material-components-web
     ```
 
 2.  {: .step-list-item } ### Include the stylesheet
