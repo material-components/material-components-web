@@ -80,11 +80,7 @@ class MDCTextFieldIconFoundation extends MDCFoundation {
   setDisabled(disabled) {
     if (disabled) {
       this.savedTabIndex_= this.adapter_.getTabIndex();
-<<<<<<< 4724f3a16533fd7b450dbbba18e58ac7cf89cbc0
       this.adapter_.setTabIndex(-1);
-=======
-      this.adapter_.setTabIndex('-1');
->>>>>>> fix: Fix for MDC Textfield / Icon / Tab Index changed to 0 by disabled call #2156
     } else {
       this.adapter_.setTabIndex(this.savedTabIndex_);
     }
