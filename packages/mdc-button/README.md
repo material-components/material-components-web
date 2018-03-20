@@ -36,7 +36,7 @@ the `button` element. See [MDC Ripple](../mdc-ripple) and [Demo](https://materia
 ## Installation
 
 ```
-npm install --save @material/button
+npm install @material/button
 ```
 
 ## Usage

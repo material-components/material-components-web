@@ -36,6 +36,7 @@ const jsBundleFactory = new JsBundleFactory({env, pathResolver, globber, pluginF
 const DEMO_BASE_DIR_ABSOLUTE_PATH = pathResolver.getAbsolutePath('/demos');
 
 const OUTPUT = {
+  fsDirAbsolutePath: pathResolver.getAbsolutePath('/build'),
   httpDirAbsolutePath: '/assets/',
 };
 

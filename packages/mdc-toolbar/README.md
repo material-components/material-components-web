@@ -46,7 +46,7 @@ height added to their first rows.
 ## Installation
 
 ```
-npm install --save @material/toolbar
+npm install @material/toolbar
 ```
 
 ## Usage
@@ -337,7 +337,7 @@ further details.
 
 The provided modifiers are:
 
-Class | Description                            
+Class | Description
 --- | ---
 `mdc-toolbar--fixed` | Makes toolbar fixed on top and have persistent elevation
 `mdc-toolbar--waterfall` | Removes fixed toolbar persistent elevation and makes it gain elevation when a user begins to scroll down the page
