@@ -21,6 +21,9 @@ const express = require('express');
 const fs = require('fs');
 const serveIndex = require('serve-index');
 
+/**
+ * An Express-based Web server for static files.
+ */
 class StaticServer {
   constructor({
     pathResolver,
@@ -88,16 +91,16 @@ class StaticServer {
    * @private
    */
   shouldShowFile_(parentPath, filename, fileExtensions) {
-    // Directory
-    if (this.isDirectory_(parentPath, filename)) {
+    // No whitelisted file extensions were specified, so show all files
+    if (fileExtensions.length === 0) {
       return true;
     }
-    // File with whitelisted file extension
+    // File with a whitelisted file extension
     if (fileExtensions.some((ext) => filename.endsWith(ext))) {
       return true;
     }
-    // No file extensions specified; show all files
-    if (fileExtensions.length === 0) {
+    // Directories are always shown
+    if (this.isDirectory_(parentPath, filename)) {
       return true;
     }
     return false;
@@ -120,17 +123,17 @@ class StaticServer {
    * @private
    */
   logRunning_(port) {
-    const content = `Local development server running on http://localhost:${port}/`;
-    const border = '=';
-    const divider = border.repeat(content.length + 8);
-    const spacer = ' '.repeat(content.length);
+    const message = `Local development server running on http://localhost:${port}/`;
+    const ch = '=';
+    const border = ch.repeat(message.length + 8);
+    const spacer = ' '.repeat(message.length);
 
     console.log(colors.green.bold(`
-${divider}
-${border}   ${spacer}   ${border}
-${border}   ${content}   ${border}
-${border}   ${spacer}   ${border}
-${divider}
+${border}
+${ch}   ${spacer}   ${ch}
+${ch}   ${message}   ${ch}
+${ch}   ${spacer}   ${ch}
+${border}
 `));
   }
 }
