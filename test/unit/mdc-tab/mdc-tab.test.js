@@ -19,8 +19,8 @@ import {assert} from 'chai';
 import td from 'testdouble';
 import domEvents from 'dom-events';
 
-import {MDCTab, MDCTabFoundation} from '../../../packages/mdc-tab';
 import {MDCRipple} from '../../../packages/mdc-ripple';
+import {MDCTab, MDCTabFoundation} from '../../../packages/mdc-tab';
 
 const getFixture = () => bel`
   <button class="mdc-tab" aria-selected="false" role="tab">
