@@ -64,7 +64,7 @@ class MDCTab extends MDCComponent {
     super(...args);
 
     /** @private {!MDCRipple} */
-    this.ripple_ = MDCRipple.attachTo(this.root_);
+    this.ripple_ = new MDCRipple(this.root_);
   }
 
   /**

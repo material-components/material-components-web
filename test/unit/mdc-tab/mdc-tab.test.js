@@ -43,6 +43,11 @@ function setupTest() {
   return {root, component};
 }
 
+test('#ripple returns an instance of MDCRipple', () => {
+  const {component} = setupTest();
+  assert.isTrue(component.ripple instanceof MDCRipple);
+});
+
 test('#adapter.addClass adds a class to the root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
@@ -109,9 +114,4 @@ test('#active set to false calls deactivate', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
   component.active = false;
   td.verify(mockFoundation.deactivate(), {times: 1});
-});
-
-test('#ripple returns an instance of MDCRipple', () => {
-  const {component} = setupTest();
-  assert.isTrue(component.ripple instanceof MDCRipple);
 });
