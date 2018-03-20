@@ -37,12 +37,14 @@ class StaticServer {
   /**
    * Starts a static file server asynchronously and returns immediately.
    * @param {!Array<string>} relativeDirectoryPaths
+   * @param {string} defaultUrl
    * @param {!Array<string>=} fileExtensions
    * @param {string} stylesheetAbsolutePath
    * @param {number=} port
    */
   run({
     relativeDirectoryPaths,
+    defaultUrl,
     directoryListing: {
       fileExtensions = [],
       stylesheetAbsolutePath,
@@ -71,7 +73,7 @@ class StaticServer {
 
     // Redirect to the screenshot test directory if no path is specified in the URL.
     app.get('/', (req, res) => {
-      res.redirect('test/screenshot/');
+      res.redirect(defaultUrl);
     });
 
     app.listen(port, () => this.logRunning_(port));
