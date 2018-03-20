@@ -23,11 +23,11 @@
 const webpack = require('webpack');
 
 module.exports = class extends webpack.BannerPlugin {
-  constructor({projectName, authorName, licenseName}) {
+  constructor({projectName, projectVersion, authorName, licenseName}) {
     super({
       banner: [
         '/*!',
-        ` ${projectName}`,
+        ` ${projectName} v${projectVersion}`,
         ` Copyright (c) ${new Date().getFullYear()} ${authorName}`,
         ` License: ${licenseName}`,
         '*/',
