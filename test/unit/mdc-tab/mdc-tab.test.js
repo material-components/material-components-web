@@ -34,7 +34,7 @@ const getFixture = () => bel`
 suite('MDCTab');
 
 test('attachTo returns an MDCTab instance', () => {
-  assert.isOk(MDCTab.attachTo(getFixture()) instanceof MDCTab);
+  assert.isTrue(MDCTab.attachTo(getFixture()) instanceof MDCTab);
 });
 
 function setupTest() {
@@ -43,7 +43,7 @@ function setupTest() {
   return {root, component};
 }
 
-test('#ripple returns an instance of MDCRipple', () => {
+test('get ripple returns MDCRipple instance', () => {
   const {component} = setupTest();
   assert.isTrue(component.ripple instanceof MDCRipple);
 });

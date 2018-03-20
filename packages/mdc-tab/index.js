@@ -44,6 +44,11 @@ class MDCTab extends MDCComponent {
     return new MDCTab(root);
   }
 
+  destroy() {
+    this.ripple_.destroy();
+    super.destroy();
+  }
+
   /**
    * @return {!MDCTabFoundation}
    */
