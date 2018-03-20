@@ -33,7 +33,7 @@ It works without JavaScript.
 ## Installation
 
 ```
-npm install --save @material/switch
+npm install @material/switch
 ```
 
 ## Usage

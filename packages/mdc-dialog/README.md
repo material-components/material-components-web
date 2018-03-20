@@ -36,7 +36,7 @@ a dialog should be.
 ## Installation
 
 ```
-npm install --save @material/dialog
+npm install @material/dialog
 ```
 
 ## Dialog usage

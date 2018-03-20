@@ -31,7 +31,7 @@ Text fields allow users to input, edit, and select text.
 ## Installation
 
 ```
-npm install --save @material/textfield
+npm install @material/textfield
 ```
 
 ## Usage

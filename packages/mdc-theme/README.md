@@ -48,7 +48,7 @@ and five text styles:
 ## Installation
 
 ```
-npm install --save @material/theme
+npm install @material/theme
 ```
 
 ## Usage
