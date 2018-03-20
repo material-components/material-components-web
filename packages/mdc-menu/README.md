@@ -34,7 +34,7 @@ Menus require JavaScript to properly position themselves when opening.
 ## Installation
 
 ```
-npm install --save @material/menu
+npm install @material/menu
 ```
 
 ## Usage
