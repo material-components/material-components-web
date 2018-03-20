@@ -80,11 +80,6 @@ class MDCTab extends MDCComponent {
       this.foundation_.deactivate();
     }
   }
-
-  /** @return {!MDCRipple} */
-  get ripple() {
-    return this.ripple_;
-  }
 }
 
 export {MDCTab, MDCTabFoundation};
