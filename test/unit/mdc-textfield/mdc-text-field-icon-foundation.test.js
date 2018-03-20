@@ -29,8 +29,8 @@ test('exports strings', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTextFieldIconFoundation, [
-    'setAttr', 'registerInteractionHandler', 'deregisterInteractionHandler',
-    'notifyIconAction',
+    'setAttr', 'getAttr', 'registerInteractionHandler', 'deregisterInteractionHandler',
+    'notifyIconAction', 'getTabIndex', 'setTabIndex',
   ]);
 });
 
@@ -52,16 +52,14 @@ test('#destroy removes event listeners', () => {
   td.verify(mockAdapter.deregisterInteractionHandler('keydown', td.matchers.isA(Function)));
 });
 
-test('#setDisabled sets icon tabindex to -1 when set to true', () => {
+test('#setDisabled restores the previously set tab index when enabled', () => {
   const {foundation, mockAdapter} = setupTest();
+  const tabIndex = 5;
+  td.when(mockAdapter.getTabIndex()).thenReturn(tabIndex);
   foundation.setDisabled(true);
-  td.verify(mockAdapter.setAttr('tabindex', '-1'));
-});
 
-test('#setDisabled sets icon tabindex to 0 when set to false', () => {
-  const {foundation, mockAdapter} = setupTest();
   foundation.setDisabled(false);
-  td.verify(mockAdapter.setAttr('tabindex', '0'));
+  td.verify(mockAdapter.setTabIndex(tabIndex));
 });
 
 test('on click notifies custom icon event', () => {
