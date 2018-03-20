@@ -15,8 +15,8 @@
 //
 
 @import "@material/animation/variables";
-@import "@material/theme/functions";
 @import "@material/theme/mixins";
+@import "./functions";
 @import "./variables";
 
 @mixin mdc-ripple-surface() {
@@ -145,8 +145,7 @@
 // Simple mixin for activated states which automatically selects opacity values based on whether the ink color is
 // light or dark.
 @mixin mdc-states-activated($color, $has-nested-focusable-element: false) {
-  $opacity-map: mdc-states-opacities_($color);
-  $activated-opacity: map-get($opacity-map, "activated");
+  $activated-opacity: mdc-states-opacity($color, activated);
 
   &--activated {
     // Stylelint seems to think that '&' qualifies as a type selector here?
@@ -162,8 +161,7 @@
 // Simple mixin for selected states which automatically selects opacity values based on whether the ink color is
 // light or dark.
 @mixin mdc-states-selected($color, $has-nested-focusable-element: false) {
-  $opacity-map: mdc-states-opacities_($color);
-  $selected-opacity: map-get($opacity-map, "selected");
+  $selected-opacity: mdc-states-opacity($color, selected);
 
   &--selected {
     // stylelint-disable-next-line selector-max-type
@@ -219,26 +217,12 @@
   }
 }
 
-//
-// Private
-//
-
-@function mdc-states-opacities_($color) {
-  $color-value: mdc-theme-prop-value($color);
-  $opacity-map: if(
-    mdc-theme-tone($color-value) == "light",
-    $mdc-ripple-light-ink-opacities,
-    $mdc-ripple-dark-ink-opacities
-  );
-
-  @return $opacity-map;
-}
-
 @mixin mdc-states-interactions_($color, $has-nested-focusable-element, $opacity-modifier: 0) {
-  $opacity-map: mdc-states-opacities_($color);
-
   @include mdc-states-base-color($color);
-  @include mdc-states-hover-opacity(map-get($opacity-map, "hover") + $opacity-modifier);
-  @include mdc-states-focus-opacity(map-get($opacity-map, "focus") + $opacity-modifier, $has-nested-focusable-element);
-  @include mdc-states-press-opacity(map-get($opacity-map, "press") + $opacity-modifier);
+  @include mdc-states-hover-opacity(mdc-states-opacity($color, hover) + $opacity-modifier);
+  @include mdc-states-focus-opacity(
+    mdc-states-opacity($color, focus) + $opacity-modifier,
+    $has-nested-focusable-element
+  );
+  @include mdc-states-press-opacity(mdc-states-opacity($color, press) + $opacity-modifier);
 }

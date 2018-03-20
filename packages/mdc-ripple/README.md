@@ -44,7 +44,7 @@ CSS Class | Description
 `mdc-ripple-surface--primary` | Sets the ripple color to the theme primary color
 `mdc-ripple-surface--accent` | Sets the ripple color to the theme secondary color
 
-### Sass Mixins
+### Sass APIs
 
 In order to fully style the ripple effect for different states (hover/focus/pressed), the following mixins must be included:
 
@@ -114,6 +114,12 @@ Mixin | Description
 `mdc-states-press-opacity($opacity)` | Mandatory. Adds styles for press state using the provided opacity
 
 > _NOTE_: `$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) inside the root element.
+
+#### Sass Functions
+
+Function | Description
+--- | ---
+`mdc-states-opacity($color, $state)` | Returns the appropriate default opacity to apply to the given color in the given state (hover, focus, press, selected, or activated)
 
 ### `MDCRipple`
 

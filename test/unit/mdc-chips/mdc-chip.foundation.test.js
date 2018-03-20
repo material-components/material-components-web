@@ -35,10 +35,10 @@ test('exports cssClasses', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCChipFoundation, [
-    'addClass', 'removeClass', 'hasClass',
+    'addClass', 'removeClass', 'hasClass', 'addClassToLeadingIcon', 'removeClassFromLeadingIcon',
+    'eventTargetHasClass', 'registerEventHandler', 'deregisterEventHandler',
     'registerTrailingIconInteractionHandler', 'deregisterTrailingIconInteractionHandler',
-    'registerInteractionHandler', 'deregisterInteractionHandler', 'notifyInteraction',
-    'notifyTrailingIconInteraction',
+    'notifyInteraction', 'notifyTrailingIconInteraction',
   ]);
 });
 
@@ -48,8 +48,9 @@ test('#init adds event listeners', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
 
-  td.verify(mockAdapter.registerInteractionHandler('click', td.matchers.isA(Function)));
-  td.verify(mockAdapter.registerInteractionHandler('keydown', td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerEventHandler('click', td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerEventHandler('keydown', td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerEventHandler('transitionend', td.matchers.isA(Function)));
   td.verify(mockAdapter.registerTrailingIconInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.registerTrailingIconInteractionHandler('keydown', td.matchers.isA(Function)));
   td.verify(mockAdapter.registerTrailingIconInteractionHandler('touchstart', td.matchers.isA(Function)));
@@ -61,8 +62,9 @@ test('#destroy removes event listeners', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.destroy();
 
-  td.verify(mockAdapter.deregisterInteractionHandler('click', td.matchers.isA(Function)));
-  td.verify(mockAdapter.deregisterInteractionHandler('keydown', td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterEventHandler('click', td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterEventHandler('keydown', td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterEventHandler('transitionend', td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterTrailingIconInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterTrailingIconInteractionHandler('keydown', td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterTrailingIconInteractionHandler('touchstart', td.matchers.isA(Function)));
@@ -88,7 +90,7 @@ test('#toggleSelected removes mdc-chip--selected class if the class exists', () 
 
 test('on click, emit custom event', () => {
   const {foundation, mockAdapter} = setupTest();
-  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const handlers = captureHandlers(mockAdapter, 'registerEventHandler');
   const mockEvt = {
     type: 'click',
   };
@@ -97,6 +99,76 @@ test('on click, emit custom event', () => {
   handlers.click(mockEvt);
 
   td.verify(mockAdapter.notifyInteraction());
+});
+
+test(`on leading icon opacity transition end, add ${cssClasses.HIDDEN_LEADING_ICON}` +
+  'class to leading icon if chip is selected', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerEventHandler');
+  const mockEvt = {
+    type: 'transitionend',
+    target: {},
+    propertyName: 'opacity',
+  };
+  td.when(mockAdapter.eventTargetHasClass(mockEvt.target, cssClasses.LEADING_ICON)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.SELECTED)).thenReturn(true);
+
+  foundation.init();
+  handlers.transitionend(mockEvt);
+
+  td.verify(mockAdapter.addClassToLeadingIcon(cssClasses.HIDDEN_LEADING_ICON));
+});
+
+test('on leading icon opacity transition end, do nothing if chip is not selected', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerEventHandler');
+  const mockEvt = {
+    type: 'transitionend',
+    target: {},
+    propertyName: 'opacity',
+  };
+  td.when(mockAdapter.eventTargetHasClass(mockEvt.target, cssClasses.LEADING_ICON)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.SELECTED)).thenReturn(false);
+
+  foundation.init();
+  handlers.transitionend(mockEvt);
+
+  td.verify(mockAdapter.addClassToLeadingIcon(cssClasses.HIDDEN_LEADING_ICON), {times: 0});
+});
+
+test(`on checkmark opacity transition end, remove ${cssClasses.HIDDEN_LEADING_ICON}` +
+  'class from leading icon if chip is not selected', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerEventHandler');
+  const mockEvt = {
+    type: 'transitionend',
+    target: {},
+    propertyName: 'opacity',
+  };
+  td.when(mockAdapter.eventTargetHasClass(mockEvt.target, cssClasses.CHECKMARK)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.SELECTED)).thenReturn(false);
+
+  foundation.init();
+  handlers.transitionend(mockEvt);
+
+  td.verify(mockAdapter.removeClassFromLeadingIcon(cssClasses.HIDDEN_LEADING_ICON));
+});
+
+test('on checkmark opacity transition end, do nothing if chip is selected', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerEventHandler');
+  const mockEvt = {
+    type: 'transitionend',
+    target: {},
+    propertyName: 'opacity',
+  };
+  td.when(mockAdapter.eventTargetHasClass(mockEvt.target, cssClasses.CHECKMARK)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.SELECTED)).thenReturn(true);
+
+  foundation.init();
+  handlers.transitionend(mockEvt);
+
+  td.verify(mockAdapter.removeClassFromLeadingIcon(cssClasses.HIDDEN_LEADING_ICON), {times: 0});
 });
 
 test('on click in trailing icon, emit custom event', () => {

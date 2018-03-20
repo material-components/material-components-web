@@ -78,11 +78,11 @@ rules:
     - resize
 
     - columns
+    - column-count
     - column-gap
     - column-fill
     - column-rule
     - column-span
-    - column-count
     - column-width
 
     - grid-gap

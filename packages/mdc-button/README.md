@@ -139,11 +139,12 @@ container color to the given color, and updates the Button's ink and ripple colo
 
 Mixin | Description
 --- | ---
-`mdc-button-container-fill-color` | Sets the container color to the given color
-`mdc-button-ink-color` | Sets the ink color to the given color
-`mdc-button-stroke-color` | Sets the stroke color to the given color
-`mdc-button-corner-radius` | Sets the corner radius to the given number (defaults to 2px)
-`mdc-button-stroke-width` | Sets the stroke width to the given number (defaults to 2px)
+`mdc-button-container-fill-color` | Sets the container color to the given color.
+`mdc-button-icon-color` | Sets the icon color to the given color.
+`mdc-button-ink-color` | Sets the ink color to the given color. This affects both text and icon, unless `mdc-button-icon-color` is also used.
+`mdc-button-stroke-color` | Sets the stroke color to the given color.
+`mdc-button-corner-radius` | Sets the corner radius to the given number (defaults to 2px).
+`mdc-button-stroke-width` | Sets the stroke width to the given number (defaults to 2px).
 
 The ripple effect for the Button component is styled using [MDC Ripple](../mdc-ripple) mixins.
 
