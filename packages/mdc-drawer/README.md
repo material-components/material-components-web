@@ -37,7 +37,7 @@ user interaction.
 ## Installation
 
 ```
-npm install --save @material/drawer
+npm install @material/drawer
 ```
 
 ## Permanent drawer usage

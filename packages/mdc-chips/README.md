@@ -31,7 +31,7 @@ Chips are compact elements that allow users to enter information, select a choic
 
 ## Installation
 ```
-npm install --save @material/chips
+npm install @material/chips
 ```
 
 ## Usage
@@ -125,7 +125,7 @@ CSS Class | Description
 
 ### Sass Mixins
 
-To customize the colors of any part of the chip, use the following mixins. 
+To customize the colors of any part of the chip, use the following mixins.
 
 Mixin | Description
 --- | ---
@@ -144,7 +144,7 @@ Mixin | Description
 
 ### `MDCChip` and `MDCChipSet`
 
-The MDC Chips module is comprised of two JavaScript classes: 
+The MDC Chips module is comprised of two JavaScript classes:
 * `MDCChip` defines the behavior of a single chip
 * `MDCChipSet` defines the behavior of chips within a specific set. For example, chips in an entry chip set behave differently from those in a filter chip set.
 

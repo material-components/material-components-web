@@ -36,7 +36,7 @@ the `button` element. See [MDC Ripple](../mdc-ripple) and [Demo](https://materia
 ## Installation
 
 ```
-npm install --save @material/button
+npm install @material/button
 ```
 
 ## Usage
@@ -141,6 +141,7 @@ container color to the given color, and updates the Button's ink and ripple colo
 Mixin | Description
 --- | ---
 `mdc-button-container-fill-color` | Sets the container color to the given color
+`mdc-button-icon-color` | Sets the icon color to the given color.
 `mdc-button-ink-color` | Sets the ink color to the given color
 `mdc-button-stroke-color` | Sets the stroke color to the given color
 `mdc-button-corner-radius` | Sets the corner radius to the given number (defaults to 2px)
