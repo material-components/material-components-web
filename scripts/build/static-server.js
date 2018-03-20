@@ -18,6 +18,7 @@
 
 const colors = require('colors');
 const express = require('express');
+const fs = require('fs');
 const serveIndex = require('serve-index');
 
 class StaticServer {
@@ -25,13 +26,22 @@ class StaticServer {
     pathResolver,
     expressLib = express,
     serveIndexLib = serveIndex,
+    fsLib = fs,
   } = {}) {
     this.pathResolver_ = pathResolver;
     this.expressLib_ = expressLib;
+    this.fsLib_ = fsLib;
     this.serveIndexLib_ = serveIndexLib;
   }
 
-  runLocalDevServer({
+  /**
+   * Starts a static file server asynchronously and returns immediately.
+   * @param {!Array<string>} relativeDirectoryPaths
+   * @param {!Array<string>=} fileExtensions
+   * @param {string} stylesheetAbsolutePath
+   * @param {number=} port
+   */
+  run({
     relativeDirectoryPaths,
     directoryListing: {
       fileExtensions = [],
@@ -41,46 +51,73 @@ class StaticServer {
   }) {
     const app = this.expressLib_();
     const indexOpts = {
-      icons: true,
+      // eslint-disable-next-line no-unused-vars
       filter: (filename, index, files, dir) => {
-        return this.shouldListFile_(filename, fileExtensions);
+        return this.shouldShowFile_(dir, filename, fileExtensions);
       },
       stylesheet: stylesheetAbsolutePath,
+      icons: true,
     };
 
     relativeDirectoryPaths.forEach((relativeDirectoryPath) => {
       const fsAbsolutePath = this.pathResolver_.getAbsolutePath(relativeDirectoryPath);
       app.use(
+        // Mirror filesystem paths in the URL
         relativeDirectoryPath,
         this.expressLib_.static(fsAbsolutePath),
         this.serveIndexLib_(fsAbsolutePath, indexOpts)
       );
     });
 
+    // Redirect to the screenshot test directory if no path is specified in the URL.
     app.get('/', (req, res) => {
       res.redirect('test/screenshot/');
     });
 
-    app.listen(port, () => this.logLocalDevServerRunning_(port));
+    app.listen(port, () => this.logRunning_(port));
   }
 
-  shouldListFile_(filename, fileExtensions) {
+  /**
+   * Determines whether the given filesystem path (parentPath + filename) should be listed in the directory index page.
+   * @param {string} parentPath
+   * @param {string} filename
+   * @param {!Array<string>} fileExtensions
+   * @return {boolean}
+   * @private
+   */
+  shouldShowFile_(parentPath, filename, fileExtensions) {
     // Directory
-    if (filename.indexOf('.') === -1) {
+    if (this.isDirectory_(parentPath, filename)) {
       return true;
     }
-    // Show all file extensions
-    if (fileExtensions.length === 0) {
-      return true;
-    }
-    // File with matching extension
+    // File with whitelisted file extension
     if (fileExtensions.some((ext) => filename.endsWith(ext))) {
+      return true;
+    }
+    // No file extensions specified; show all files
+    if (fileExtensions.length === 0) {
       return true;
     }
     return false;
   }
 
-  logLocalDevServerRunning_(port) {
+  /**
+   * Determines whether the given filename points to a directory.
+   * @param {string} parentPath
+   * @param {string} filename
+   * @return {boolean}
+   * @private
+   */
+  isDirectory_(parentPath, filename) {
+    const fullAbsolutePath = this.pathResolver_.join(parentPath, filename);
+    return this.fsLib_.statSync(fullAbsolutePath).isDirectory();
+  }
+
+  /**
+   * @param {number} port
+   * @private
+   */
+  logRunning_(port) {
     const content = `Local development server running on http://localhost:${port}/`;
     const border = '=';
     const divider = border.repeat(content.length + 8);

@@ -51,7 +51,7 @@ module.exports = [
 ];
 
 if (env.isDev()) {
-  staticServer.runLocalDevServer({
+  staticServer.run({
     relativeDirectoryPaths: ['/demos', '/test'],
     directoryListing: {
       fileExtensions: ['.html', '.css', '.html', '.svg', '.png'],
