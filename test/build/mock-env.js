@@ -17,7 +17,7 @@
 /**
  * Temporarily overwrites environment variables and restores their original values.
  */
-module.exports = class {
+class MockEnv {
   constructor() {
     this.saved_ = new Map();
   }
@@ -33,4 +33,6 @@ module.exports = class {
     });
     this.saved_.clear();
   }
-};
+}
+
+module.exports = MockEnv;

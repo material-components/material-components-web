@@ -26,7 +26,7 @@ const MockEnv = require('./mock-env');
 
 const PROJECT_ROOT_ABSOLUTE_PATH = path.resolve(__dirname, '../../');
 
-module.exports = class {
+class WebpackConfigLoader {
   /**
    * Simulates a build command (`npm run build`, `npm run build:min`, or `npm run dev`), and returns both the generated
    * config object exported by the webpack config file as well as the expected (golden) config object.
@@ -68,7 +68,9 @@ module.exports = class {
       env.restoreAll();
     }
   }
-};
+}
+
+module.exports = WebpackConfigLoader;
 
 /**
  * Same as `require()`, but bypasses the module cache, forcing Node to reevaluate the requested module file.
