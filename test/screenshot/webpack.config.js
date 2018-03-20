@@ -54,7 +54,7 @@ if (env.isDev()) {
   staticServer.run({
     relativeDirectoryPaths: ['/demos', '/test'],
     directoryListing: {
-      fileExtensions: ['.html', '.css', '.html', '.svg', '.png'],
+      fileExtensions: ['.html'],
       stylesheetAbsolutePath: pathResolver.getAbsolutePath('/test/screenshot/directory.css'),
     },
   });
