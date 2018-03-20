@@ -113,5 +113,5 @@ test('#active set to false calls deactivate', () => {
 
 test('#ripple returns an instance of MDCRipple', () => {
   const {component} = setupMockFoundationTest();
-  assert.instanceOf(component.ripple, MDCRipple);
+  assert.isTrue(component.ripple instanceof MDCRipple);
 });
