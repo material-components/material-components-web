@@ -19,7 +19,7 @@ import {assert} from 'chai';
 import td from 'testdouble';
 import domEvents from 'dom-events';
 
-import {MDCRipple} from '../../../packages/mdc-ripple';
+import {createMockRaf} from '../helpers/raf';
 import {MDCTab, MDCTabFoundation} from '../../../packages/mdc-tab';
 
 const getFixture = () => bel`
@@ -43,9 +43,14 @@ function setupTest() {
   return {root, component};
 }
 
-test('get ripple returns MDCRipple instance', () => {
-  const {component} = setupTest();
-  assert.isTrue(component.ripple instanceof MDCRipple);
+test('#destroy removes the ripple', () => {
+  const raf = createMockRaf();
+  const {component, root} = setupTest();
+  raf.flush();
+  component.destroy();
+  raf.flush();
+  assert.isNotOk(root.classList.contains('mdc-ripple-upgraded'));
+  raf.restore();
 });
 
 test('#adapter.addClass adds a class to the root element', () => {
