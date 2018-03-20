@@ -55,7 +55,7 @@ if (env.isDev()) {
     relativeDirectoryPaths: ['/demos', '/test'],
     directoryListing: {
       fileExtensions: ['.html', '.css', '.html', '.svg', '.png'],
-      stylesheetAbsolutePath: pathResolver.join(TEST_OUTPUT.fsDirAbsolutePath, 'directory.test.css'),
+      stylesheetAbsolutePath: pathResolver.getAbsolutePath('/test/screenshot/directory.css'),
     },
   });
 }
