@@ -34,7 +34,7 @@ MDC Web is made available on [NPM](https://www.npmjs.com/), with packages living
 In order to install e.g. the button component, you can run:
 
 ```
-npm install --save @material/button
+npm install @material/button
 ```
 
 Some packages serve as dependencies for others, so don’t be surprised if you end up with multiple packages in your
@@ -43,7 +43,7 @@ Some packages serve as dependencies for others, so don’t be surprised if you e
 If you want all of MDC Web, you can pull in the meta package:
 
 ```
-npm install --save material-components-web
+npm install material-components-web
 ```
 
 ### Content Distribution Network (CDN)
