@@ -63,6 +63,7 @@
       "slider": "/demos/slider.scss",
       "snackbar": "/demos/snackbar.scss",
       "switch": "/demos/switch.scss",
+      "tab": "/demos/tab.scss",
       "tabs": "/demos/tabs.scss",
       "text-field": "/demos/text-field.scss",
       "theme/theme-baseline": "/demos/theme/theme-baseline.scss",
