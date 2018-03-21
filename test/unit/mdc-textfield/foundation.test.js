@@ -44,7 +44,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'getNativeInput', 'isFocused', 'isRtl', 'activateLineRipple', 'deactivateLineRipple',
     'setLineRippleTransformOrigin', 'shakeLabel', 'floatLabel', 'hasLabel', 'getLabelWidth',
     'registerValidationAttributeChangeHandler', 'deregisterValidationAttributeChangeHandler',
-    'hasOutline', 'notchOutline',
+    'hasOutline', 'notchOutline', 'closeOutline',
   ]);
 });
 
@@ -409,7 +409,7 @@ test('#notchOutline does nothing if no outline is present', () => {
   td.when(mockAdapter.hasOutline()).thenReturn(false);
   td.when(mockAdapter.hasLabel()).thenReturn(true);
 
-  foundation.notchOutline(false);
+  foundation.notchOutline(true);
   td.verify(mockAdapter.notchOutline(td.matchers.anything()), {times: 0});
 });
 
@@ -418,7 +418,7 @@ test('#notchOutline does nothing if no label is present', () => {
   td.when(mockAdapter.hasOutline()).thenReturn(true);
   td.when(mockAdapter.hasLabel()).thenReturn(false);
 
-  foundation.notchOutline(false);
+  foundation.notchOutline(true);
   td.verify(mockAdapter.notchOutline(td.matchers.anything()), {times: 0});
 });
 
@@ -429,7 +429,7 @@ test('#notchOutline calls updates notched outline to return to idle state when '
   td.when(mockAdapter.hasOutline()).thenReturn(true);
 
   foundation.notchOutline(false);
-  td.verify(mockAdapter.notchOutline(0));
+  td.verify(mockAdapter.closeOutline());
 });
 
 test('on input styles label if input event occurs without any other events', () => {

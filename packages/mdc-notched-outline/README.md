@@ -83,8 +83,8 @@ Mixin | Description
 
 Method Signature | Description
 --- | ---
-`notch(activateNotch: boolean)` | Updates outline to activate/deactivate notch in outline path.
-`updateSvgPath(notchWidth: number, isRtl: boolean) => void` | Updates the SVG of the outline element with a notch calculated based off of the notchWidth. The notch will appear left justified, unless isRtl is true.
+`notch(notchWidth: number, isRtl: boolean) => void` | Updates outline to activate notch in outline path.
+`closeNotch() => void` | Updates the outline to deactivate notch in outline path.
 
 ### `MDCNotchedOutlineAdapter`
 
@@ -101,5 +101,6 @@ Method Signature | Description
 
 Method Signature | Description
 --- | ---
-`notch(activateNotch: boolean)` | Adds the outline notched selector and updates the notched outline path if activateNotch is true. Will remove the notched selector otherwise.
-`updateSvgPath(notchWidth: number, isRtl: boolean) => void` | Updates the SVG path of the focus outline element based on the given notchWidth and the RTL context.
+`notch(notchWidth: number, isRtl: boolean) => void` | Adds the outline notched selector and updates the notched outline path based off notchWidth and isRtl.
+`closeNotch() => void` | Removes the outline notched selector.
+`updateSvgPath(notchWidth: number, isRtl: boolean) => void` | Updates the SVG path of the focus outline element calculated based off of the notchWidth. The notch will appear left justified, unless isRtl is true.

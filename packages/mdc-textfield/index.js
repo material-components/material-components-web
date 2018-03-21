@@ -405,6 +405,7 @@ class MDCTextField extends MDCComponent {
   getOutlineAdapterMethods_() {
     return {
       notchOutline: (labelWidth, isRtl) => this.outline_.notch(labelWidth, isRtl),
+      closeOutline: () => this.outline_.closeNotch(),
       hasOutline: () => !!this.outline_,
     };
   }

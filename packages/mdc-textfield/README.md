@@ -249,6 +249,7 @@ Method Signature | Description
 `isRtl() => boolean` | Returns whether the direction of the root element is set to RTL
 `hasOutline() => boolean` | Returns whether there is an outline element
 `notchOutline(labelWidth: number, isRtl: boolean) => void` | Updates the outline path to create a notch for the label element
+`closeOutline() => void` | Closes the notch in the outline element
 
 #### `MDCTextFieldAdapter.getNativeInput()`
 

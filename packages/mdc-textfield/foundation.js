@@ -91,6 +91,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
       getLabelWidth: () => {},
       hasOutline: () => {},
       notchOutline: () => {},
+      closeOutline: () => {},
     });
   }
 
@@ -209,7 +210,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     if (activateNotch) {
       this.adapter_.notchOutline(labelWidth, isRtl);
     } else {
-      this.adapter_.notchOutline(0);
+      this.adapter_.closeOutline();
     }
   }
 

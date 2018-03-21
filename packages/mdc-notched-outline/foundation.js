@@ -59,19 +59,22 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
 
   /**
    * Adds the outline notched selector and updates the notch width
-   * if activateNotch is true, otherwise it will remove the notched
-   * selector.
+   * calculated based off of notchWidth and isRtl.
    * @param {number} notchWidth
    * @param {boolean=} isRtl
    */
   notch(notchWidth, isRtl = false) {
     const {OUTLINE_NOTCHED} = MDCNotchedOutlineFoundation.cssClasses;
-    if (notchWidth > 0) {
-      this.adapter_.addClass(OUTLINE_NOTCHED);
-      this.updateSvgPath_(notchWidth, isRtl);
-    } else {
-      this.adapter_.removeClass(OUTLINE_NOTCHED);
-    }
+    this.adapter_.addClass(OUTLINE_NOTCHED);
+    this.updateSvgPath_(notchWidth, isRtl);
+  }
+
+  /**
+   * Removes notched outline selector to close the notch in the outline.
+   */
+  closeNotch() {
+    const {OUTLINE_NOTCHED} = MDCNotchedOutlineFoundation.cssClasses;
+    this.adapter_.removeClass(OUTLINE_NOTCHED);
   }
 
   /**
