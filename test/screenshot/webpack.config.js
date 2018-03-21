@@ -45,25 +45,23 @@ const TEST_OUTPUT = {
   fsDirAbsolutePath: pathResolver.getAbsolutePath('/test/screenshot/out/test'),
 };
 
-module.exports = (webpackEnv, argv) => {
-  if (env.isDev()) {
-    staticServer.start({
-      path: '/test/screenshot',
-      directoryIndex: {
-        fileExtensions: ['.html'],
-        stylesheetAbsolutePath: pathResolver.getAbsolutePath('/test/screenshot/directory.css'),
-      },
-      port: env.getPort(),
-    });
-  }
+module.exports = [
+  mainJsCombined(),
+  mainCssALaCarte(),
+  testJs(),
+  testCss(),
+];
 
-  return [
-    mainJsCombined(),
-    mainCssALaCarte(),
-    testJs(),
-    testCss(),
-  ];
-};
+if (env.isDev()) {
+  staticServer.start({
+    path: '/test/screenshot',
+    directoryIndex: {
+      fileExtensions: ['.html'],
+      stylesheetAbsolutePath: pathResolver.getAbsolutePath('/test/screenshot/directory.css'),
+    },
+    port: env.getPort(),
+  });
+}
 
 function mainJsCombined() {
   return jsBundleFactory.createMainJsCombined({output: MAIN_OUTPUT});
