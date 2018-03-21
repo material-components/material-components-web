@@ -22,7 +22,11 @@
 
 const minimist = require('minimist');
 
-module.exports = class {
+class Environment {
+  constructor({minimistLib = minimist} = {}) {
+    this.minimistLib_ = minimistLib;
+  }
+
   setBabelEnv() {
     const event = this.getNpmLifecycleEvent_();
     // TODO: Figure out if this `if` check should include all `test:*` targets.
@@ -55,7 +59,7 @@ module.exports = class {
    * @return {!Object<string, *>}
    */
   getAllCliArgs() {
-    return minimist(process.argv.slice(2).filter((arg) => arg !== '--'), {
+    return this.minimistLib_(process.argv.slice(2).filter((arg) => arg !== '--'), {
       default: {
         // TODO(acdvorak): I don't like having a default value in two places (both here and in `StaticServer.start()`).
         // Defining it here would be useful if we had a `--help` option.
@@ -68,4 +72,6 @@ module.exports = class {
   getNpmLifecycleEvent_() {
     return process.env.npm_lifecycle_event;
   }
-};
+}
+
+module.exports = Environment;
