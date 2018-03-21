@@ -16,6 +16,8 @@
 
 'use strict';
 
+const minimist = require('minimist');
+
 const CssBundleFactory = require('../../scripts/webpack/css-bundle-factory');
 const Environment = require('../../scripts/build/environment');
 const Globber = require('../../scripts/webpack/globber');
@@ -43,22 +45,30 @@ const TEST_OUTPUT = {
   fsDirAbsolutePath: pathResolver.getAbsolutePath('/test/screenshot/out/test'),
 };
 
-module.exports = [
-  mainJsCombined(),
-  mainCssALaCarte(),
-  testJs(),
-  testCss(),
-];
+module.exports = (webpackEnv, argv) => {
+  // MDC-specific command line arguments can be passed to the `webpack` binary, which forwards them to us.
+  // They must come after all Webpack parameters, and be preceded by a `--`.
+  // E.g.: `webpack --watch -- --mdc-port=8091`
+  const cliArgs = minimist(argv._);
 
-if (env.isDev()) {
-  staticServer.start({
-    path: '/test/screenshot',
-    directoryIndex: {
-      fileExtensions: ['.html'],
-      stylesheetAbsolutePath: pathResolver.getAbsolutePath('/test/screenshot/directory.css'),
-    },
-  });
-}
+  if (env.isDev()) {
+    staticServer.start({
+      path: '/test/screenshot',
+      directoryIndex: {
+        fileExtensions: ['.html'],
+        stylesheetAbsolutePath: pathResolver.getAbsolutePath('/test/screenshot/directory.css'),
+      },
+      port: cliArgs['mdc-port'],
+    });
+  }
+
+  return [
+    mainJsCombined(),
+    mainCssALaCarte(),
+    testJs(),
+    testCss(),
+  ];
+};
 
 function mainJsCombined() {
   return jsBundleFactory.createMainJsCombined({output: MAIN_OUTPUT});

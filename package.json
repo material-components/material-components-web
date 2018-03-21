@@ -97,7 +97,8 @@
     "webpack-dev-server": "^2.4.3",
     "express": "latest",
     "serve-index": "latest",
-    "colors": "latest"
+    "colors": "latest",
+    "minimist": "latest"
   },
   "babel": {
     "presets": [
