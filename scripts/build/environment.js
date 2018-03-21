@@ -32,11 +32,11 @@ module.exports = class {
   }
 
   isDev() {
-    return process.env.MDC_ENV === 'development';
+    return process.env.NODE_ENV === 'development';
   }
 
   isProd() {
-    return process.env.MDC_ENV === 'production';
+    return process.env.NODE_ENV === 'production';
   }
 
   getNpmLifecycleEvent_() {

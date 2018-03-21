@@ -50,7 +50,7 @@ module.exports = class {
 
     try {
       env.mock('npm_lifecycle_event', npmCmd);
-      env.mock('MDC_ENV', mdcEnv);
+      env.mock('NODE_ENV', mdcEnv);
 
       const generatedWebpackConfig = normalizeForDiffing(serialize(requireUncached(configPath)));
 

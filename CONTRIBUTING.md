@@ -71,7 +71,7 @@ open http://localhost:8080
 #### Appengine development server
 
 ```
-MDC_ENV=development npm run build && gcloud app deploy app.yaml --project google.com:mdc-web-dev --version $USER
+NODE_ENV=development npm run build && gcloud app deploy app.yaml --project google.com:mdc-web-dev --version $USER
 gcloud app browse
 ```
 
