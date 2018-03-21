@@ -248,7 +248,7 @@ Method Signature | Description
 `isFocused() => boolean` | Returns whether the input is focused
 `isRtl() => boolean` | Returns whether the direction of the root element is set to RTL
 `hasOutline() => boolean` | Returns whether there is an outline element
-`notchOutline(labelWidth: number, isRtl: boolean) => void` | Updates the outline path to create a notch for the label element
+`notchOutline(labelWidth: number, isRtl: boolean) => void` | Updates the outline path to open the notch and update the notch width for the label element
 `closeOutline() => void` | Closes the notch in the outline element
 
 #### `MDCTextFieldAdapter.getNativeInput()`
@@ -275,6 +275,6 @@ Method Signature | Description
 `activateFocus() => void` | Activates the focus state of the Text Field. Normally called in response to the input focus event.
 `deactivateFocus() => void` | Deactivates the focus state of the Text Field. Normally called in response to the input blur event.
 `setHelperTextContent(content: string) => void` | Sets the content of the helper text.
-`notchOutline(activateNotch: boolean) => void` | Activates/deactivates the notched outline.
+`notchOutline(openNotch: boolean) => void` | Opens/closes the notched outline.
 
 `MDCTextFieldFoundation` supports multiple optional sub-elements: helper text and icon. The foundations of these sub-elements must be passed in as constructor arguments to `MDCTextFieldFoundation`.

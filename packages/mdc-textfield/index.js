@@ -314,8 +314,8 @@ class MDCTextField extends MDCComponent {
    * all dimensions and positions for the ripple element.
    */
   layout() {
-    const activateNotch = this.foundation_.shouldFloat;
-    this.foundation_.notchOutline(activateNotch);
+    const openNotch = this.foundation_.shouldFloat;
+    this.foundation_.notchOutline(openNotch);
     if (this.ripple) {
       this.ripple.layout();
     }

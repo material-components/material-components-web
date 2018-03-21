@@ -423,7 +423,7 @@ test('#notchOutline does nothing if no label is present', () => {
 });
 
 test('#notchOutline calls updates notched outline to return to idle state when ' +
-  'activateNotch is false', () => {
+  'openNotch is false', () => {
   const {foundation, mockAdapter} = setupBareBonesTest();
   td.when(mockAdapter.hasLabel()).thenReturn(true);
   td.when(mockAdapter.hasOutline()).thenReturn(true);

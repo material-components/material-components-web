@@ -35,7 +35,7 @@ class MDCNotchedOutline extends MDCComponent {
   }
 
   /**
-    * Updates outline selectors and SVG path to activate notch.
+    * Updates outline selectors and SVG path to open notch.
     * @param {number} notchWidth The notch width in the outline.
     * @param {boolean=} isRtl Determines if outline is rtl. If rtl is true, notch
     * will be right justified in outline path, otherwise left justified.
@@ -45,7 +45,7 @@ class MDCNotchedOutline extends MDCComponent {
   }
 
   /**
-   * Updates the outline selectors to deactivate notch to return to idle state.
+   * Updates the outline selectors to close notch and return it to idle state.
    */
   closeNotch() {
     this.foundation_.closeNotch();

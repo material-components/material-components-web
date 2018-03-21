@@ -195,19 +195,19 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * Activates/deactivates the notched outline.
-   * @param {boolean} activateNotch
+   * Opens/closes the notched outline.
+   * @param {boolean} openNotch
    */
-  notchOutline(activateNotch) {
+  notchOutline(openNotch) {
     if (!this.adapter_.hasOutline() || !this.adapter_.hasLabel()) {
       return;
     }
 
-    const isDense = this.adapter_.hasClass(cssClasses.DENSE);
-    const labelScale = isDense ? numbers.DENSE_LABEL_SCALE : numbers.LABEL_SCALE;
-    const labelWidth = this.adapter_.getLabelWidth() * labelScale;
-    const isRtl = this.adapter_.isRtl();
-    if (activateNotch) {
+    if (openNotch) {
+      const isDense = this.adapter_.hasClass(cssClasses.DENSE);
+      const labelScale = isDense ? numbers.DENSE_LABEL_SCALE : numbers.LABEL_SCALE;
+      const labelWidth = this.adapter_.getLabelWidth() * labelScale;
+      const isRtl = this.adapter_.isRtl();
       this.adapter_.notchOutline(labelWidth, isRtl);
     } else {
       this.adapter_.closeOutline();

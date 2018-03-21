@@ -39,7 +39,7 @@ The outline is a border around all sides of either a text field or select compon
 CSS Class | Description
 --- | ---
 `mdc-notched-outline` | Mandatory. Container for the SVG of the notched outline path.
-`mdc-notched-outline--notched` | Class to activate notch outline.
+`mdc-notched-outline--notched` | Class to open notch outline.
 `mdc-notched-outline__path` | Mandatory. The path of the SVG of the notched outline.
 `mdc-notched-outline__idle` | Mandatory. The full outline when the notch is hidden.
 
@@ -83,8 +83,8 @@ Mixin | Description
 
 Method Signature | Description
 --- | ---
-`notch(notchWidth: number, isRtl: boolean) => void` | Updates outline to activate notch in outline path.
-`closeNotch() => void` | Updates the outline to deactivate notch in outline path.
+`notch(notchWidth: number, isRtl: boolean) => void` | Updates outline to open notch in outline path.
+`closeNotch() => void` | Updates the outline to close notch in outline path.
 
 ### `MDCNotchedOutlineAdapter`
 
