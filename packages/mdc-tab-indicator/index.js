@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 
-
 import MDCComponent from '@material/base/component';
 
 import {cssClasses} from './constants';

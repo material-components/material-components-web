@@ -52,7 +52,7 @@ class MDCTabIndicatorFoundation extends MDCFoundation {
 
   /** @param {!MDCTabIndicatorAdapter} adapter */
   constructor(adapter) {
-    super(Object.assign(MDCTabIndicatorAdapter.defaultAdapter, adapter));
+    super(Object.assign(MDCTabIndicatorFoundation.defaultAdapter, adapter));
 
     /** @private {function(): undefined} */
     this.handleTransitionEnd_ = () => this.handleTransitionEnd();
@@ -64,14 +64,6 @@ class MDCTabIndicatorFoundation extends MDCFoundation {
   handleTransitionEnd() {
     this.adapter_.deregisterEventHandler('transitionend', this.handleTransitionEnd_);
     this.adapter_.removeClass(cssClasses.ANIMATING);
-  }
-
-  /**
-   * Returns whether the indicator should match the width of the tab content
-   * @return {boolean}
-   */
-  shouldMatchTextLabelWidth() {
-    return this.adapter_.hasClass(cssClasses.MATCH_TEXT_LABEL);
   }
 
 
