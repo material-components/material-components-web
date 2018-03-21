@@ -36,7 +36,7 @@ in conjunction with the browser's native element. Both are fully accessible, and
 ## Installation
 
 ```
-npm install --save @material/select
+npm install @material/select
 ```
 
 ## Usage
