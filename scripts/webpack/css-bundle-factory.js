@@ -85,6 +85,10 @@ module.exports = class {
       module: {
         rules: [{
           test: /\.scss$/,
+          exclude: [
+            /\/node_modules\//,
+            /\/out\//,
+          ],
           use: this.createCssLoader_(cssExtractorPlugin),
         }],
       },
