@@ -132,7 +132,7 @@
 }
 
 @mixin mdc-button__icon_ {
-  @include mdc-button__icon-margin_(-2px);
+  @include mdc-rtl-reflexive-box(margin, right, 8px);
 
   display: inline-block;
   width: 18px;
@@ -148,9 +148,8 @@
   vertical-align: middle;
 }
 
-@mixin mdc-button__icon-margin_($margin) {
-  // Sets margin on the side of the icon nearest the button edge to the given value; other side has constant margin
-  @include mdc-rtl-reflexive-property(margin, $margin, $mdc-button-icon-label-margin);
+@mixin mdc-button__icon-contained_ {
+  @include mdc-rtl-reflexive-property(margin, -4px, 8px);
 }
 
 @mixin mdc-button--stroked_() {

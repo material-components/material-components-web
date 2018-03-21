@@ -46,8 +46,8 @@
 .mdc-button--raised,
 .mdc-button--stroked {
   .mdc-button__icon {
-    // Contained buttons have a different icon-side margin due to increased overall button padding
-    @include mdc-button__icon-margin_(-4px);
+    // Icons inside contained buttons have different styles due to increased button padding
+    @include mdc-button__icon-contained_;
   }
 }
 
