@@ -26,6 +26,7 @@
   @include mdc-button-container-fill-color(transparent);
   @include mdc-button-ink-color(primary);
   @include mdc-states(primary);
+  @include mdc-button-horizontal-padding($mdc-text-button-horizontal-padding);
 
   // The icon CSS class overrides styles defined in the .material-icons CSS
   // class, which is loaded separately so the order of CSS definitions is not
@@ -46,6 +47,7 @@
   @include mdc-button--filled_;
   @include mdc-button-container-fill-color(primary);
   @include mdc-button-ink-color(text-primary-on-primary);
+  @include mdc-button-horizontal-padding($mdc-button-horizontal-padding);
   @include mdc-states(text-primary-on-primary);
 }
 
@@ -57,9 +59,14 @@
   @include mdc-button--stroked_;
   @include mdc-button-stroke-width(2px);
   @include mdc-button-stroke-color(primary);
+  @include mdc-button-horizontal-padding($mdc-button-horizontal-padding);
 }
 
 .mdc-button--dense {
   @include mdc-button--dense_;
+}
+
+.mdc-button--with-icon {
+  @include mdc-button-horizontal-padding($mdc-button-with-icon-start-horizontal-padding, $mdc-button-horizontal-padding);
 }
 // postcss-bem-linter: end

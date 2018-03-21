@@ -66,6 +66,15 @@
   border-radius: $corner-radius;
 }
 
+@mixin mdc-button-horizontal-padding($left, $right: $left) {
+  @if ($left == $right) {
+    /* @noflip */ padding-left: $left;
+    /* @noflip */ padding-right: $right;
+  } else {
+    @include mdc-rtl-reflexive-property(padding, $left, $right);
+  }
+}
+
 @mixin mdc-button-stroke-width($stroke-width) {
   // Note: Adjust padding to maintain consistent width with non-stroked buttons
   $padding-value: max($mdc-button-horizontal-padding - $stroke-width, 0);
@@ -94,7 +103,6 @@
   box-sizing: border-box;
   min-width: 64px;
   height: $mdc-button-height;
-  padding: 0 $mdc-button-horizontal-padding;
   border: none;
   outline: none;
   text-align: center;

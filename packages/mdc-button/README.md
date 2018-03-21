@@ -54,8 +54,8 @@ semantically correct.
 
 ### Adding Icon
 
-Users can nest `mdc-button__icon` inside the button element to add an icon. The icon in button
-is set to 18px to meet legibility requirements.
+Users can add  `mdc-button--with-icon` to button element classes and nest `mdc-button__icon` inside the button
+element to add an icon. The icon in button is set to 18px to meet legibility requirements.
 
 We recommend you load [Material Icons](https://material.io/icons/) from Google Fonts
 
@@ -64,7 +64,7 @@ We recommend you load [Material Icons](https://material.io/icons/) from Google F
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
-<button class="mdc-button">
+<button class="mdc-button mdc-button--with-icon">
   <i class="material-icons mdc-button__icon">favorite</i>
   Button
 </button>
@@ -73,7 +73,7 @@ We recommend you load [Material Icons](https://material.io/icons/) from Google F
 It's also possible to use an SVG icon:
 
 ```html
-<button class="mdc-button">
+<button class="mdc-button mdc-button--with-icon">
   <svg class="mdc-button__icon" xmlns="http://www.w3.org/2000/svg" viewBox="...">
   ...
   </svg>
@@ -88,6 +88,7 @@ CSS Class | Description
 --- | ---
 `mdc-button` | Mandatory, defaults to a text button that is flush with the surface
 `mdc-button__icon`    | Optional, for the icon element
+`mdc-button--with-icon` | Mandatory, if a button has an icon.
 `mdc-button--raised` | Optional, a contained button that is elevated upon the surface
 `mdc-button--unelevated` | Optional, a contained button that is flush with the surface
 `mdc-button--stroked` | Optional, a contained button that is flush with the surface and has a visible border
@@ -139,12 +140,13 @@ container color to the given color, and updates the Button's ink and ripple colo
 
 Mixin | Description
 --- | ---
-`mdc-button-container-fill-color` | Sets the container color to the given color.
+`mdc-button-container-fill-color` | Sets the container color to the given color
 `mdc-button-icon-color` | Sets the icon color to the given color.
-`mdc-button-ink-color` | Sets the ink color to the given color. This affects both text and icon, unless `mdc-button-icon-color` is also used.
-`mdc-button-stroke-color` | Sets the stroke color to the given color.
-`mdc-button-corner-radius` | Sets the corner radius to the given number (defaults to 2px).
-`mdc-button-stroke-width` | Sets the stroke width to the given number (defaults to 2px).
+`mdc-button-ink-color` | Sets the ink color to the given color
+`mdc-button-stroke-color` | Sets the stroke color to the given color
+`mdc-button-corner-radius` | Sets the corner radius to the given number (defaults to 2px)
+`mdc-button-horizontal-padding` | Sets the horizontal padding (defaults to 16px on each side)
+`mdc-button-stroke-width` | Sets the stroke width to the given number (defaults to 2px)
 
 The ripple effect for the Button component is styled using [MDC Ripple](../mdc-ripple) mixins.
 
