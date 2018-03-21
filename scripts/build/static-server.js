@@ -28,8 +28,8 @@ class StaticServer {
   constructor({
     pathResolver,
     expressLib = express,
-    serveIndexLib = serveIndex,
     fsLib = fs,
+    serveIndexLib = serveIndex,
   } = {}) {
     this.pathResolver_ = pathResolver;
     this.expressLib_ = expressLib;
