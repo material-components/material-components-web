@@ -46,11 +46,6 @@ const TEST_OUTPUT = {
 };
 
 module.exports = (webpackEnv, argv) => {
-  // MDC-specific command line arguments can be passed to the `webpack` binary, which forwards them to us.
-  // They must come after all Webpack parameters, and be preceded by a `--`.
-  // E.g.: `webpack --watch -- --mdc-port=8091`
-  const cliArgs = minimist(argv._);
-
   if (env.isDev()) {
     staticServer.start({
       path: '/test/screenshot',
@@ -58,7 +53,7 @@ module.exports = (webpackEnv, argv) => {
         fileExtensions: ['.html'],
         stylesheetAbsolutePath: pathResolver.getAbsolutePath('/test/screenshot/directory.css'),
       },
-      port: cliArgs['mdc-port'],
+      port: env.getPort(),
     });
   }
 

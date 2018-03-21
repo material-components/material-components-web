@@ -20,6 +20,8 @@
 
 'use strict';
 
+const minimist = require('minimist');
+
 module.exports = class {
   setBabelEnv() {
     const event = this.getNpmLifecycleEvent_();
@@ -37,6 +39,30 @@ module.exports = class {
 
   isProd() {
     return process.env.NODE_ENV === 'production';
+  }
+
+  getPort() {
+    const argv = this.getAllCliArgs();
+    return argv['mdc-port'];
+  }
+
+  /**
+   * Parses all command line arguments passed to the `webpack` binary, including those after any number of `--` params.
+   * To pass MDC-specific CLI args, you'll need to precede them by one or more `--`, depending on the calling depth.
+   * For example:
+   *   - `webpack --watch -- --mdc-port=8091` (one `--` separator)
+   *   - `npm run dev -- -- --mdc-port=8091` (two `--` separators)
+   * @return {!Object<string, *>}
+   */
+  getAllCliArgs() {
+    return minimist(process.argv.slice(2).filter((arg) => arg !== '--'), {
+      default: {
+        // TODO(acdvorak): I don't like having a default value in two places (both here and in `StaticServer.start()`).
+        // Defining it here would be useful if we had a `--help` option.
+        // Defining it in StaticServer makes unit tests easier (does it tho?)
+        'mdc-port': 8090,
+      },
+    });
   }
 
   getNpmLifecycleEvent_() {
