@@ -95,7 +95,7 @@
   @include mdc-ripple-radius-bounded;
   @include mdc-button-horizontal-padding($mdc-button-horizontal-padding);
 
-  display: inline-block;
+  display: inline-flex;
   position: relative;
   box-sizing: border-box;
   min-width: 64px;
@@ -143,9 +143,8 @@
 }
 
 @mixin mdc-button__icon-svg_ {
-  margin-top: -2px;
   fill: currentColor;
-  vertical-align: middle;
+  align-self: center;
 }
 
 @mixin mdc-button__icon-contained_ {
