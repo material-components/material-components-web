@@ -153,8 +153,6 @@
 }
 
 @mixin mdc-button--stroked_() {
-  @include mdc-button-horizontal-padding($mdc-button-contained-horizontal-padding);
-
   border-style: solid;
 
   &:disabled {
