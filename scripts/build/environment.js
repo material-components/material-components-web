@@ -20,13 +20,7 @@
 
 'use strict';
 
-const minimist = require('minimist');
-
 class Environment {
-  constructor({minimistLib = minimist} = {}) {
-    this.minimistLib_ = minimistLib;
-  }
-
   setBabelEnv() {
     const event = this.getNpmLifecycleEvent_();
     // TODO: Figure out if this `if` check should include all `test:*` targets.
@@ -50,51 +44,17 @@ class Environment {
    * @return {number}
    */
   getPort() {
-    const argv = this.getCliArgs();
-    return argv.env.mdc_port;
+    return parseInt(process.env.MDC_PORT, 10) || 8090;
   }
 
   /**
-   * Parses all command line arguments passed to the `webpack` binary and returns them as an object map.
-   *
-   * If an argument has a default value and is left unspecified on the command line, the default value will be returned.
-   *
-   * MDC-specific arguments must take the form `--env.mdc_FOO_BAR[=VALUE]`, and may need to be preceded by one or more
-   * standalone `--` separator args, depending on the calling depth.
-   *
-   * For example:
-   *   - `webpack --watch --env.mdc_port=8091` (no `--` separator)
-   *   - `npm run dev:next -- --env.mdc_port=8091` (one `--` separator)
-   *
-   * @return {!Object<string, *>}
+   * Determines whether to run a static Web server on startup.
+   * @return {boolean}
    */
-  getCliArgs() {
-    // The first two argv slots contain the path to the `node` binary and the path to the main JS file, so we skip them.
-    const parsedArgs = this.minimistLib_(process.argv.slice(2), {
-      default: this.getDefaultCliArgs_(),
-    });
-    console.log('parsedArgs:', parsedArgs);
-    return parsedArgs;
+  shouldRunStaticServer() {
+    return process.env.MDC_STATIC_SERVER === 'true';
   }
 
-  /**
-   * @return {!Object<string, *>}
-   * @private
-   */
-  getDefaultCliArgs_() {
-    return {
-      // Webpack only supports custom CLI arguments of the form `--env.FOO_BAR[=value]`.
-      // Those arguments get parsed into a single `env` object by `minimist`.
-      env: {
-        mdc_port: 8090,
-      },
-    };
-  }
-
-  /**
-   * @return {string}
-   * @private
-   */
   getNpmLifecycleEvent_() {
     return process.env.npm_lifecycle_event;
   }
