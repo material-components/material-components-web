@@ -59,8 +59,8 @@ class Environment {
    *
    * If an argument has a default value and is left unspecified on the command line, the default value will be returned.
    *
-   * MDC-specific arguments may need to be preceded by one or more standalone `--` separator args, depending on the
-   * calling depth.
+   * MDC-specific arguments must take the form `--env.mdc_FOO_BAR[=VALUE]`, and may need to be preceded by one or more
+   * standalone `--` separator args, depending on the calling depth.
    *
    * For example:
    *   - `webpack --watch --env.mdc_port=8091` (no `--` separator)
@@ -83,6 +83,8 @@ class Environment {
    */
   getDefaultCliArgs_() {
     return {
+      // Webpack only supports custom CLI arguments of the form `--env.FOO_BAR[=value]`.
+      // Those arguments get parsed into a single `env` object by `minimist`.
       env: {
         mdc_port: 8090,
       },
