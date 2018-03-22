@@ -16,14 +16,18 @@
  */
 
 /** @enum {string} */
-const strings = {
-  PATH_SELECTOR: '.mdc-notched-outline__path',
-  IDLE_OUTLINE_SELECTOR: '.mdc-notched-outline__idle',
+const cssClasses = {
+  ACTIVE: 'mdc-tab--active',
+  ANIMATING_ACTIVATE: 'mdc-tab--animating-activate',
+  ANIMATING_DEACTIVATE: 'mdc-tab--animating-deactivate',
 };
 
 /** @enum {string} */
-const cssClasses = {
-  OUTLINE_NOTCHED: 'mdc-notched-outline--notched',
+const strings = {
+  ARIA_SELECTED: 'aria-selected',
 };
 
-export {cssClasses, strings};
+export {
+  cssClasses,
+  strings,
+};

@@ -41,6 +41,18 @@ class MDCNotchedOutlineAdapter {
   getHeight() {}
 
   /**
+   * Adds a class to the root element.
+   * @param {string} className
+   */
+  addClass(className) {}
+
+  /**
+   * Removes a class from the root element.
+   * @param {string} className
+   */
+  removeClass(className) {}
+
+  /**
    * Sets the "d" attribute of the outline element's SVG path.
    * @param {string} value
    */

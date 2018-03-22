@@ -1,5 +1,5 @@
 //
-// Copyright 2017 Google Inc. All Rights Reserved.
+// Copyright 2018 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,18 @@
 // limitations under the License.
 //
 
-$mdc-button-height: 36px;
-$mdc-button-horizontal-padding: 8px;
-$mdc-button-contained-horizontal-padding: 16px;
-$mdc-dense-button-height: 32px;
+@import "@material/theme/mixins";
+
+// Public mixins
+
+@mixin mdc-tab-text-label-color($color) {
+  .mdc-tab__text-label {
+    @include mdc-theme-prop(color, $color);
+  }
+}
+
+@mixin mdc-tab-icon-color($color) {
+  .mdc-tab__icon {
+    @include mdc-theme-prop(color, $color);
+  }
+}
