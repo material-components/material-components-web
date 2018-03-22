@@ -23,6 +23,7 @@ const serveIndex = require('serve-index');
 
 /**
  * An Express-based Web server for static files.
+ * Automatically generates a readable directory listing when no index.html file is present.
  */
 class StaticServer {
   /**
@@ -91,11 +92,11 @@ class StaticServer {
     if (fileExtensions.length === 0) {
       return true;
     }
-    // File with a whitelisted file extension
+    // Whitelisted file extension
     if (fileExtensions.some((ext) => filename.endsWith(ext))) {
       return true;
     }
-    // Directories are always shown
+    // Always show directories
     if (this.isDirectory_(parentPath, filename)) {
       return true;
     }
