@@ -1,0 +1,76 @@
+/**
+ * Copyright 2017 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+@import "@material/typography/mixins";
+@import "@material/rtl/mixins";
+@import "./variables";
+
+@mixin mdc-expansion-panel-text {
+  @include mdc-typography-overflow-ellipsis;
+
+  cursor: text;
+}
+
+@mixin mdc-expansion-panel-primary-text {
+  @include mdc-expansion-panel-text;
+
+  color: $mdc-expansion-panel-primary-text-color;
+  font-size: $mdc-expansion-panel-primary-text-font-size;
+}
+
+@mixin mdc-expansion-panel-secondary-text {
+  @include mdc-expansion-panel-text;
+
+  color: $mdc-expansion-panel-secondary-text-color;
+  font-size: $mdc-expansion-panel-secondary-text-font-size;
+}
+
+@mixin mdc-expansion-panel-icon {
+  color: $mdc-expansion-panel-icon-color;
+}
+
+@mixin mdc-expansion-panel-transform($args) {
+  -webkit-transform: $args;
+  -moz-transform: $args;
+  -ms-transform: $args;
+  -o-transform: $args;
+  transform: $args;
+}
+
+@mixin mdc-expansion-panel-transition($properties) {
+  -webkit-transition: $properties $mdc-expansion-panel-transition-duration;
+  -moz-transition: $properties $mdc-expansion-panel-transition-duration;
+  -ms-transition: $properties $mdc-expansion-panel-transition-duration;
+  -o-transition: $properties $mdc-expansion-panel-transition-duration;
+  transition: $properties $mdc-expansion-panel-transition-duration;
+}
+
+@mixin mdc-expansion-panel-rtl {
+  @include mdc-rtl(".mdc-expansion-panel") {
+    @content;
+  }
+}
+
+@mixin mdc-expansion-panel-last-element {
+  @include mdc-expansion-panel-rtl {
+    margin-right: auto;
+    margin-left: initial;
+  }
+
+  order: $mdc-expansion-panel-last-element-order;
+  margin-right: initial;
+  margin-left: auto;
+}

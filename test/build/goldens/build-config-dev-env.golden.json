@@ -48,6 +48,7 @@
       "dialog": "/demos/dialog.scss",
       "drawer/drawer": "/demos/drawer/drawer.scss",
       "elevation": "/demos/elevation.scss",
+      "expansion-panel": "/demos/expansion-panel.scss",
       "fab": "/demos/fab.scss",
       "grid-list": "/demos/grid-list.scss",
       "icon-toggle": "/demos/icon-toggle.scss",
