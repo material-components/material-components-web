@@ -45,30 +45,54 @@ class Environment {
     return process.env.NODE_ENV === 'production';
   }
 
+  /**
+   * Returns the TCP port number to use when running a local development server.
+   * @return {number}
+   */
   getPort() {
-    const argv = this.getAllCliArgs();
-    return argv['mdc-port'];
+    const argv = this.getCliArgs();
+    return argv.env.mdc_port;
   }
 
   /**
-   * Parses all command line arguments passed to the `webpack` binary, including those after any number of `--` params.
-   * To pass MDC-specific CLI args, you'll need to precede them by one or more `--`, depending on the calling depth.
+   * Parses all command line arguments passed to the `webpack` binary and returns them as an object map.
+   *
+   * If an argument has a default value and is left unspecified on the command line, the default value will be returned.
+   *
+   * MDC-specific arguments may need to be preceded by one or more standalone `--` separator args, depending on the
+   * calling depth.
+   *
    * For example:
-   *   - `webpack --watch -- --mdc-port=8091` (one `--` separator)
-   *   - `npm run dev -- -- --mdc-port=8091` (two `--` separators)
+   *   - `webpack --watch --env.mdc_port=8091` (no `--` separator)
+   *   - `npm run dev:next -- --env.mdc_port=8091` (one `--` separator)
+   *
    * @return {!Object<string, *>}
    */
-  getAllCliArgs() {
-    return this.minimistLib_(process.argv.slice(2).filter((arg) => arg !== '--'), {
-      default: {
-        // TODO(acdvorak): I don't like having a default value in two places (both here and in `StaticServer.start()`).
-        // Defining it here would be useful if we had a `--help` option.
-        // Defining it in StaticServer makes unit tests easier (does it tho?)
-        'mdc-port': 8090,
-      },
+  getCliArgs() {
+    // The first two argv slots contain the path to the `node` binary and the path to the main JS file, so we skip them.
+    const parsedArgs = this.minimistLib_(process.argv.slice(2), {
+      default: this.getDefaultCliArgs_(),
     });
+    console.log('parsedArgs:', parsedArgs);
+    return parsedArgs;
   }
 
+  /**
+   * @return {!Object<string, *>}
+   * @private
+   */
+  getDefaultCliArgs_() {
+    return {
+      env: {
+        mdc_port: 8090,
+      },
+    };
+  }
+
+  /**
+   * @return {string}
+   * @private
+   */
   getNpmLifecycleEvent_() {
     return process.env.npm_lifecycle_event;
   }

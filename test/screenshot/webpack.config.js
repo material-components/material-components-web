@@ -16,8 +16,6 @@
 
 'use strict';
 
-const minimist = require('minimist');
-
 const CssBundleFactory = require('../../scripts/webpack/css-bundle-factory');
 const Environment = require('../../scripts/build/environment');
 const Globber = require('../../scripts/webpack/globber');
@@ -55,11 +53,11 @@ module.exports = [
 if (env.isDev()) {
   staticServer.start({
     path: '/test/screenshot',
+    port: env.getPort(),
     directoryIndex: {
       fileExtensions: ['.html'],
       stylesheetAbsolutePath: pathResolver.getAbsolutePath('/test/screenshot/directory.css'),
     },
-    port: env.getPort(),
   });
 }
 

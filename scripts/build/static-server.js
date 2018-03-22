@@ -25,6 +25,12 @@ const serveIndex = require('serve-index');
  * An Express-based Web server for static files.
  */
 class StaticServer {
+  /**
+   * @param {!PathResolver} pathResolver
+   * @param {!express=} expressLib
+   * @param {!fs=} fsLib
+   * @param {!serveIndex=} serveIndexLib
+   */
   constructor({
     pathResolver,
     expressLib = express,
@@ -40,17 +46,17 @@ class StaticServer {
   /**
    * Starts a static file server asynchronously and returns immediately.
    * @param {string} path Relative or absolute path to a filesystem directory to serve
+   * @param {number} port
    * @param {!Array<string>=} fileExtensions Whitelisted file extensions to show in the directory index
    * @param {string} stylesheetAbsolutePath Absolute path to a CSS file containing styles for the directory index
-   * @param {number=} port
    */
   start({
     path,
+    port,
     directoryIndex: {
       fileExtensions = [],
       stylesheetAbsolutePath,
     } = {},
-    port = process.env.MDC_PORT || 8090,
   }) {
     const app = this.expressLib_();
     const indexOpts = {
