@@ -46,12 +46,14 @@
             <span class="material-icons mdc-tab__icon">favorite</span>
             <span class="mdc-tab__text-label">Favorites</span>
           </span>
+          <span class="mdc-tab__indicator"></span>
         </button>
         <button class="mdc-tab mdc-tab--active demo-tab" role="tab" data-demo="demoRecentsTabRecents">
           <span class="mdc-tab__content">
             <span class="material-icons mdc-tab__icon">phone</span>
             <span class="mdc-tab__text-label">Recents</span>
           </span>
+          <span class="mdc-tab__indicator"></span>
         </button>
       </section>
 
@@ -70,6 +72,7 @@
             <span class="mdc-tab__content">
               <span class="mdc-tab__text-label">Nearby</span>
             </span>
+            <span class="mdc-tab__indicator"></span>
           </button>
           <div class="demo-controls">
             <input type="checkbox" id="id0" data-controls="basicTab"/>
@@ -82,10 +85,40 @@
               <span class="material-icons mdc-tab__icon">directions_transit</span>
               <span class="mdc-tab__text-label">Transit</span>
             </span>
+            <span class="mdc-tab__indicator"></span>
           </button>
           <div class="demo-controls">
             <input type="checkbox" id="id1" data-controls="basicTabWithIcon"/>
             <label for="id1">Active</label>
+          </div>
+        </div>
+      </section>
+
+      <section class="example">
+        <h2>Basic Tabs with Text-Label Width Matching Indicators</h2>
+        <div class="demo">
+          <button class="mdc-tab demo-tab" role="tab" data-demo="basicTabTextLabelIndicator">
+            <span class="mdc-tab__content">
+              <span class="mdc-tab__text-label">Nearby</span>
+              <span class="mdc-tab__indicator"></span>
+            </span>
+          </button>
+          <div class="demo-controls">
+            <input type="checkbox" id="id2" data-controls="basicTabTextLabelIndicator"/>
+            <label for="id2">Active</label>
+          </div>
+        </div>
+        <div class="demo">
+          <button class="mdc-tab demo-tab" role="tab" data-demo="basicTabWithIconTextLabelIndicator">
+            <span class="mdc-tab__content">
+              <span class="material-icons mdc-tab__icon">directions_transit</span>
+              <span class="mdc-tab__text-label">Transit</span>
+              <span class="mdc-tab__indicator"></span>
+            </span>
+          </button>
+          <div class="demo-controls">
+            <input type="checkbox" id="id3" data-controls="basicTabWithIconTextLabelIndicator"/>
+            <label for="id3">Active</label>
           </div>
         </div>
       </section>
@@ -97,10 +130,11 @@
             <span class="mdc-tab__content">
               <span class="mdc-tab__text-label">Showtimes</span>
             </span>
+            <span class="mdc-tab__indicator"></span>
           </button>
           <div class="demo-controls">
-            <input type="checkbox" id="id2" data-controls="customColorsTab1"/>
-            <label for="id2">Active</label>
+            <input type="checkbox" id="id4" data-controls="customColorsTab1"/>
+            <label for="id4">Active</label>
           </div>
         </div>
         <div class="demo">
@@ -108,11 +142,12 @@
             <span class="mdc-tab__content">
               <span class="material-icons mdc-tab__icon">directions_car</span>
               <span class="mdc-tab__text-label">Directions</span>
+              <span class="mdc-tab__indicator"></span>
             </span>
           </button>
           <div class="demo-controls">
-            <input type="checkbox" id="id3" data-controls="customColorsTab2"/>
-            <label for="id3">Active</label>
+            <input type="checkbox" id="id5" data-controls="customColorsTab2"/>
+            <label for="id5">Active</label>
           </div>
         </div>
       </section>

@@ -29,3 +29,21 @@
     @include mdc-theme-prop(color, $color);
   }
 }
+
+@mixin mdc-tab-indicator() {
+  .mdc-tab__indicator {
+    @content;
+  }
+}
+
+@mixin mdc-tab-indicator-color($color) {
+  @include mdc-tab-indicator {
+    background-color: $color;
+  }
+}
+
+@mixin mdc-tab-indicator-height($height) {
+  @include mdc-tab-indicator {
+    height: $height;
+  }
+}

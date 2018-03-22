@@ -42,6 +42,8 @@
 .custom-tab1 {
   @include mdc-states($material-color-yellow-a700);
   @include mdc-tab-text-label-color($material-color-pink-600);
+  @include mdc-tab-indicator-color($material-color-blue-600);
+  @include mdc-tab-indicator-height(5px);
 
   &.mdc-tab--active {
     @include mdc-tab-text-label-color($material-color-cyan-600);
@@ -52,6 +54,7 @@
   @include mdc-states($material-color-amber-a700);
   @include mdc-tab-text-label-color($material-color-red-300);
   @include mdc-tab-icon-color($material-color-orange-300);
+  @include mdc-tab-indicator-color($material-color-purple-600);
 
   &.mdc-tab--active {
     @include mdc-tab-text-label-color($material-color-red-900);
