@@ -6,7 +6,7 @@
     "build": "npm run clean && mkdirp build && webpack --progress --colors && webpack --config=demos/webpack.config.js --progress --colors",
     "build:min": "mkdirp build && cross-env MDC_ENV=production webpack -p --progress --colors",
     "changelog": "standard-changelog -i CHANGELOG.md -k packages/material-components-web/package.json -w",
-    "clean": "del-cli build .closure-tmp test/screenshot/out",
+    "clean": "del-cli build/** build .closure-tmp/** .closure-tmp test/screenshot/out",
     "commitmsg": "validate-commit-msg",
     "dist": "npm run build && npm run build:min",
     "dev": "npm run clean && cross-env MDC_ENV=development webpack-dev-server --config=demos/webpack.config.js --progress --inline --hot --host 0.0.0.0",
