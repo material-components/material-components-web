@@ -38,11 +38,11 @@ class Environment {
   }
 
   isDev() {
-    return process.env.NODE_ENV === 'development';
+    return process.env.MDC_ENV === 'development';
   }
 
   isProd() {
-    return process.env.NODE_ENV === 'production';
+    return process.env.MDC_ENV === 'production';
   }
 
   /**

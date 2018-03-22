@@ -26,7 +26,7 @@ const WebpackConfigLoader = require('./webpack-config-loader');
 const webpackConfigLoader = new WebpackConfigLoader();
 
 describe('webpack.config.js', () => {
-  describe('NODE_ENV=""', () => {
+  describe('MDC_ENV=""', () => {
     it('module exports should match build-config-no-env.golden.json', () => {
       const {generatedWebpackConfig, expectedWebpackConfig} = webpackConfigLoader.setupTest({
         configPath: path.join(__dirname, '../../webpack.config.js'),
@@ -37,7 +37,7 @@ describe('webpack.config.js', () => {
     });
   });
 
-  describe('NODE_ENV="production"', () => {
+  describe('MDC_ENV="production"', () => {
     it('module exports should match build-config-prod-env.golden.json', () => {
       const {generatedWebpackConfig, expectedWebpackConfig} = webpackConfigLoader.setupTest({
         configPath: path.join(__dirname, '../../webpack.config.js'),
@@ -48,7 +48,7 @@ describe('webpack.config.js', () => {
     });
   });
 
-  describe('NODE_ENV="development"', () => {
+  describe('MDC_ENV="development"', () => {
     it('module exports should match build-config-dev-env.golden.json', () => {
       const {generatedWebpackConfig, expectedWebpackConfig} = webpackConfigLoader.setupTest({
         configPath: path.join(__dirname, '../../demos/webpack.config.js'),
