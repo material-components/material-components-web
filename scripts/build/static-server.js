@@ -97,7 +97,7 @@ class StaticServer {
       return true;
     }
     // Always show directories
-    if (this.isDirectory_(parentPath, filename)) {
+    if (this.isDirectory_(parentPath, filename) && filename !== 'out') {
       return true;
     }
     return false;
