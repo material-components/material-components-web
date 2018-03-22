@@ -18,15 +18,13 @@
 import * as dom from '../../../demos/dom.js';
 import * as pony from '../../../demos/ponyfill.js';
 
-testReady((root, mdc) => {
-  // Prevent default navigation behavior on all <a href="#"> links
-  root.addEventListener('click', (evt) => {
-    if (pony.closest(evt.target, 'a[href^="#"]')) {
-      evt.preventDefault();
-    }
-  });
+// Prevent default navigation behavior on all <a href="#"> links
+document.addEventListener('click', (evt) => {
+  if (pony.closest(evt.target, 'a[href^="#"]')) {
+    evt.preventDefault();
+  }
+});
 
-  dom.getAll('.mdc-button', root).forEach((el) => {
-    mdc.ripple.MDCRipple.attachTo(el);
-  });
+dom.getAll('.mdc-button').forEach((el) => {
+  mdc.ripple.MDCRipple.attachTo(el);
 });

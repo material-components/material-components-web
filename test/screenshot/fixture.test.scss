@@ -25,11 +25,6 @@ body {
   @include mdc-theme-prop(color, text-primary-on-background);
 }
 
-// Used by ready.js to test whether the CSS has finished loading.
-.test-ready-detect {
-  position: relative;
-}
-
 .test-main {
   padding: 16px;
 }
