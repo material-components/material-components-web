@@ -22,7 +22,7 @@
 
 const autoprefixer = require('autoprefixer');
 
-module.exports = class {
+class CssBundleFactory {
   constructor({
     env,
     pathResolver,
@@ -211,4 +211,6 @@ module.exports = class {
       ],
     });
   }
-};
+}
+
+module.exports = CssBundleFactory;
