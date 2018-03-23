@@ -79,7 +79,7 @@ class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
     let updateRequired = false;
 
     if (this.isDocked_) {
-      // If it was previously already docked but now is partially showing, it's no longer docked
+      // If it was previously already docked but now is partially showing, it's no longer docked.
       if (partiallyShowing) {
         this.isDocked_ = false;
         updateRequired = true;
