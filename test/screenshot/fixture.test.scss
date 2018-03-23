@@ -16,15 +16,6 @@
 
 @import url("https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css");
 
-// Mixins
-@import "../../packages/mdc-theme/mixins";
-@import "../../packages/mdc-typography/mixins";
-
-body {
-  @include mdc-theme-prop(background-color, background);
-  @include mdc-theme-prop(color, text-primary-on-background);
-}
-
 .test-main {
   padding: 16px;
 }
