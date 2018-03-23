@@ -97,7 +97,7 @@
             }
           }
           const elevationInput = document.querySelector("#elevation-input");
-          elevationInput.addEventListener("change", () => {
+          elevationInput.addEventListener("change", function() {
             elevatableHeart.elevation = parseInt(elevationInput.value);
           });
         }
