@@ -16,7 +16,6 @@
 
 import {MDCFoundation} from '@material/base/index';
 import {cssClasses, numbers, strings} from './constants';
-import {MDCMenuFoundation} from '@material/menu/index';
 
 export default class MDCSelectFoundation extends MDCFoundation {
   static get cssClasses() {
@@ -29,6 +28,23 @@ export default class MDCSelectFoundation extends MDCFoundation {
 
   static get strings() {
     return strings;
+  }
+
+  get disabled() {
+    return this.disabled_;
+  }
+
+  set disabled(disabled) {
+    const {DISABLED} = MDCSelectFoundation.cssClasses;
+    this.disabled_ = disabled;
+    this.adapter_.setDisabled(disabled);
+    if (this.disabled_) {
+      this.adapter_.addClass(DISABLED);
+      this.adapter_.setAttr('aria-disabled', 'true');
+    } else {
+      this.adapter_.removeClass(DISABLED);
+      this.adapter_.rmAttr('aria-disabled');
+    }
   }
 
   static get defaultAdapter() {
@@ -45,6 +61,8 @@ export default class MDCSelectFoundation extends MDCFoundation {
       getNumberOfOptions: () => /* number */ 0,
       getIndexForOptionValue: (/* value: string */) => /* number */ -1,
       getValueForOptionAtIndex: (/* index: number */) => /* index */ '',
+      getValue: () => /* string */ '',
+      setValue: (/* value: string */) => {},
       setAttrForOptionAtIndex: (/* index: number, attr: string, value: string */) => {},
       rmAttrForOptionAtIndex: (/* index: number, attr: string */) => {},
     };
@@ -103,16 +121,16 @@ export default class MDCSelectFoundation extends MDCFoundation {
     }, SELECT_TEXT_TRANSITION_TIME);
   }
 
-  setDisabled(disabled) {
-    const {DISABLED} = MDCSelectFoundation.cssClasses;
-    this.disabled_ = disabled;
-    if (this.disabled_) {
-      this.adapter_.addClass(DISABLED);
-      this.adapter_.setAttr('aria-disabled', 'true');
-    } else {
-      this.adapter_.removeClass(DISABLED);
-      this.adapter_.rmAttr('aria-disabled');
-    }
+  getValue() {
+    return this.adapter_.getValue();
+  }
+
+  setValue(value) {
+    let index = this.adapter_.getIndexForOptionValue(value);
+    index = !index && null !== 0 ? -1 : index;
+
+    this.adapter_.setValue(value);
+    this.setSelectedIndex(index);
   }
 
   handleFocus_() {

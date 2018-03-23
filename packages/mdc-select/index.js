@@ -16,7 +16,6 @@
 
 import {MDCComponent} from '@material/base/index';
 import {MDCRipple} from '@material/ripple/index';
-import {MDCMenu} from '@material/menu/index';
 import {MDCSelectBottomLine} from './bottom-line/index';
 import {MDCSelectLabel} from './label/index';
 
@@ -31,7 +30,7 @@ export class MDCSelect extends MDCComponent {
   }
 
   get value() {
-    return this.surface_.value;
+    return this.foundation_.getValue();
   }
 
   set value(value) {
@@ -55,12 +54,11 @@ export class MDCSelect extends MDCComponent {
   }
 
   get disabled() {
-    return this.surface_.disabled;
+    return this.foundation_.disabled;
   }
 
   set disabled(disabled) {
-    this.surface_.disabled = disabled;
-    this.foundation_.setDisabled(disabled);
+    this.foundation_.disabled = disabled;
   }
 
   item(index) {
@@ -116,12 +114,14 @@ export class MDCSelect extends MDCComponent {
       deactivateBottomLine: () => this.bottomLine_.deactivate(),
       setAttr: (attr, value) => this.root_.setAttribute(attr, value),
       rmAttr: (attr, value) => this.root_.removeAttribute(attr, value),
+      setDisabled: (disabled) => this.surface_.disabled = disabled,
       registerInteractionHandler: (type, handler) => this.surface_.addEventListener(type, handler),
       deregisterInteractionHandler: (type, handler) => this.surface_.removeEventListener(type, handler),
       getNumberOfOptions: () => this.options.length,
       getIndexForOptionValue: (value) => this.indexByValue_(value),
       getValueForOptionAtIndex: (index) => this.options[index].value,
       setSelectedIndex: (index) => this.surface_.selectedIndex = index,
+      getValue: () => this.surface_.value,
       setValue: (value) => this.surface_.value = value,
       setAttrForOptionAtIndex: (index, attr, value) => this.options[index].setAttribute(attr, value),
       rmAttrForOptionAtIndex: (index, attr) => this.options[index].removeAttribute(attr),

@@ -48,11 +48,11 @@
 
   display: inline-flex;
   position: relative;
-  overflow: hidden;
   box-sizing: border-box;
   height: 48px;
   background-repeat: no-repeat;
   background-position: right 8px bottom 8px;
+  overflow: hidden;
 
   @include mdc-rtl {
     background-position: left 8px bottom 8px;
@@ -65,20 +65,20 @@
       display: none;
     }
 
-    @-moz-document url-prefix() {
+    @-moz-document url-prefix("") {
       text-indent: -2px;
     }
 
     width: 100%;
-    background-color: transparent;
-    padding-bottom: 8px;
     padding-top: 22px;
+    padding-bottom: 8px;
     border: none;
     outline: none;
-    overflow: hidden;
-    appearance: none;
-    cursor: pointer;
+    background-color: transparent;
     white-space: nowrap;
+    cursor: pointer;
+    appearance: none;
+    overflow: hidden;
   }
 
   @include mdc-select-focused-bottom-line_ {
