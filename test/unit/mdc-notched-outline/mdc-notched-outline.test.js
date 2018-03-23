@@ -47,8 +47,20 @@ test('#adapter.getWidth returns the width of the element', () => {
 
 test('#adapter.getHeight returns the height of the element', () => {
   const {root, component} = setupTest();
-  const height = component.getDefaultFoundation().adapter_.getWidth();
+  const height = component.getDefaultFoundation().adapter_.getHeight();
   assert.equal(height, root.offsetHeight);
+});
+
+test('adapter#addClass adds a class to the root element', () => {
+  const {root, component} = setupTest();
+  component.getDefaultFoundation().adapter_.addClass('foo');
+  assert.isTrue(root.classList.contains('foo'));
+});
+
+test('adapter#removeClass removes a class to the root element', () => {
+  const {root, component} = setupTest();
+  component.getDefaultFoundation().adapter_.removeClass('foo');
+  assert.isFalse(root.classList.contains('foo'));
 });
 
 test('#adapter.setOutlinePathAttr sets the SVG path of the element', () => {

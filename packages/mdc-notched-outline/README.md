@@ -39,6 +39,7 @@ The outline is a border around all sides of either a text field or select compon
 CSS Class | Description
 --- | ---
 `mdc-notched-outline` | Mandatory. Container for the SVG of the notched outline path.
+`mdc-notched-outline--notched` | Class to open notch outline.
 `mdc-notched-outline__path` | Mandatory. The path of the SVG of the notched outline.
 `mdc-notched-outline__idle` | Mandatory. The full outline when the notch is hidden.
 
@@ -82,7 +83,8 @@ Mixin | Description
 
 Method Signature | Description
 --- | ---
-`updateSvgPath(notchWidth: number, isRtl: boolean) => void` | Updates the SVG of the outline element with a notch calculated based off of the notchWidth. The notch will appear left justified, unless isRtl is true.
+`notch(notchWidth: number, isRtl: boolean) => void` | Updates outline to open notch in outline path.
+`closeNotch() => void` | Updates the outline to close notch in outline path.
 
 ### `MDCNotchedOutlineAdapter`
 
@@ -90,6 +92,8 @@ Method Signature | Description
 --- | ---
 `getWidth() => number` | Returns the width of the outline element.
 `getHeight() => number` | Returns the height of the outline element.
+`addClass(className: string) => void` | Adds a class to the notched outline element.
+`removeClass(className: string) => void` | Removes a class from the notched outline element.
 `setOutlinePathAttr(value: string) => void` | Sets the "d" attribute of the outline element's SVG path.
 `getIdleOutlineStyleValue(propertyName: string) => string` | Returns the idle outline element's computed style value of a given css `propertyName`.
 
@@ -97,7 +101,6 @@ Method Signature | Description
 
 Method Signature | Description
 --- | ---
-`updateSvgPath(notchWidth: number, isRtl: boolean) => void` | Updates the SVG path of the focus outline element based on the given notchWidth and the RTL context.
-
-
-[//]: <> (TODO(mattgoo): add how to hide/show notch in outline)
+`notch(notchWidth: number, isRtl: boolean) => void` | Adds the outline notched selector and updates the notched outline path based off notchWidth and isRtl.
+`closeNotch() => void` | Removes the outline notched selector.
+`updateSvgPath(notchWidth: number, isRtl: boolean) => void` | Updates the SVG path of the focus outline element calculated based off of the notchWidth. The notch will appear left justified, unless isRtl is true.

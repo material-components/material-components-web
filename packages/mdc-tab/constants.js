@@ -1,5 +1,6 @@
 /**
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * @license
+ * Copyright 2018 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +15,19 @@
  * limitations under the License.
  */
 
-const glob = require('glob');
-const path = require('path');
+/** @enum {string} */
+const cssClasses = {
+  ACTIVE: 'mdc-tab--active',
+  ANIMATING_ACTIVATE: 'mdc-tab--animating-activate',
+  ANIMATING_DEACTIVATE: 'mdc-tab--animating-deactivate',
+};
 
-glob.sync(path.join(__dirname, '**/*.test.js')).forEach((testFilePath) => require(testFilePath));
+/** @enum {string} */
+const strings = {
+  ARIA_SELECTED: 'aria-selected',
+};
+
+export {
+  cssClasses,
+  strings,
+};
