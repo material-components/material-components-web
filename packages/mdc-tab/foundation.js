@@ -49,6 +49,8 @@ class MDCTabFoundation extends MDCFoundation {
       removeClass: () => {},
       hasClass: () => {},
       setAttr: () => {},
+      getIndicatorClientRect: () => {},
+      setIndicatorStyleProperty: () => {},
     });
   }
 

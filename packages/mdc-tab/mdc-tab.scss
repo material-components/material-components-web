@@ -23,9 +23,6 @@
 @import "./variables";
 
 .mdc-tab {
-  @include mdc-ripple-surface;
-  @include mdc-ripple-radius-bounded;
-  @include mdc-states(primary);
   @include mdc-tab-text-label-color($mdc-tab-baseline-color);
   @include mdc-tab-icon-color($mdc-tab-baseline-color);
 
@@ -45,6 +42,19 @@
   white-space: nowrap;
   cursor: pointer;
   -webkit-appearance: none;
+  z-index: 1;
+}
+
+.mdc-tab__ripple {
+  @include mdc-ripple-surface;
+  @include mdc-ripple-radius-bounded;
+  @include mdc-states(primary);
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   z-index: 1;
 }
@@ -54,6 +64,11 @@
   position: relative;
   justify-content: center;
   height: inherit;
+  z-index: 1;
+}
+
+.mdc-tab__icon,
+.mdc-tab__text-label {
   z-index: 1;
 }
 
@@ -89,6 +104,15 @@
   opacity: 0;
 }
 
+.mdc-tab__indicator--icon {
+  @include mdc-theme-prop(color, secondary);
+
+  bottom: auto;
+  align-self: center;
+  height: auto;
+  background: none;
+}
+
 .mdc-tab__indicator--animating {
   transition: 250ms transform cubic-bezier(0, 0, .2, 1);
 }
@@ -104,10 +128,19 @@
 }
 
 /**
+ * The [de]activation animation affects opacity for indicator icons
+ */
+.mdc-tab--animating-activate .mdc-tab__indicator--icon,
+.mdc-tab--animating-deactivate .mdc-tab__indicator--icon {
+  transition: 150ms opacity linear;
+}
+
+/**
  * The activation animation has a delay of 100ms
  */
 .mdc-tab--animating-activate .mdc-tab__text-label,
-.mdc-tab--animating-activate .mdc-tab__icon {
+.mdc-tab--animating-activate .mdc-tab__icon,
+.mdc-tab--animating-activate .mdc-tab__indicator--icon {
   transition-delay: 100ms;
 }
 

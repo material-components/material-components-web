@@ -67,6 +67,19 @@ class MDCTabAdapter {
    * @param {string} value The value so give the attribute
    */
   setAttr(attr, value) {}
+
+  /**
+   * Returns the client rect of the indicator element.
+   * @return {!ClientRect}
+   */
+  getIndicatorClientRect() {}
+
+  /**
+   * Sets a style property of the indicator element to the passed value
+   * @param {string} propName The style property name to set
+   * @param {string} value The style property value
+   */
+  setIndicatorStyleProperty(propName, value) {}
 }
 
 export default MDCTabAdapter;

@@ -54,10 +54,22 @@
   @include mdc-states($material-color-amber-a700);
   @include mdc-tab-text-label-color($material-color-red-300);
   @include mdc-tab-icon-color($material-color-orange-300);
-  @include mdc-tab-indicator-color($material-color-purple-600);
+  @include mdc-tab-indicator-color($material-color-blue-600);
 
   &.mdc-tab--active {
     @include mdc-tab-text-label-color($material-color-red-900);
     @include mdc-tab-icon-color($material-color-orange-900);
+  }
+}
+
+.custom-tab3 {
+  @include mdc-states($material-color-grey-700);
+  @include mdc-tab-text-label-color($material-color-grey-700);
+  @include mdc-tab-icon-color($material-color-grey-700);
+  @include mdc-tab-indicator-color($material-color-pink-a100);
+  @include mdc-tab-indicator-height(36px);
+
+  &.mdc-tab--active {
+    @include mdc-tab-text-label-color($material-color-purple-900);
   }
 }

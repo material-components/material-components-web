@@ -37,13 +37,19 @@
 }
 
 @mixin mdc-tab-indicator-color($color) {
-  @include mdc-tab-indicator {
+  .mdc-tab__indicator {
     background-color: $color;
+  }
+
+  .mdc-tab__indicator--icon {
+    background: none;
+    color: $color;
   }
 }
 
 @mixin mdc-tab-indicator-height($height) {
-  @include mdc-tab-indicator {
+  .mdc-tab__indicator {
     height: $height;
+    font-size: $height;
   }
 }

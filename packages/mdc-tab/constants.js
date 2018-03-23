@@ -25,6 +25,7 @@ const cssClasses = {
 /** @enum {string} */
 const strings = {
   ARIA_SELECTED: 'aria-selected',
+  RIPPLE_SELECTOR: '.mdc-tab__ripple',
 };
 
 export {
