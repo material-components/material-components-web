@@ -34,6 +34,10 @@ export class MDCSelect extends MDCComponent {
     return this.surface_.value;
   }
 
+  set value(value) {
+    this.foundation_.setValue(value);
+  }
+
   get options() {
     return [].slice.call(this.surface_.options);
   }
@@ -63,7 +67,6 @@ export class MDCSelect extends MDCComponent {
     return this.surface_.item(index);
   }
 
-  // TODO: do we need this?
   nameditem(key) {
     // NOTE: IE11 precludes us from using Array.prototype.find
     for (let i = 0, options = this.options, option; (option = options[i]); i++) {
@@ -74,7 +77,7 @@ export class MDCSelect extends MDCComponent {
     return null;
   }
 
-  indexByValue(value) {
+  indexByValue_(value) {
     // NOTE: IE11 precludes us from using Array.prototype.find
     for (let i = 0, options = this.options, option; (option = options[i]); i++) {
       if (option.value === value) {
@@ -96,9 +99,8 @@ export class MDCSelect extends MDCComponent {
     if (bottomLineElement) {
       this.bottomLine_ = bottomLineFactory(bottomLineElement);
     }
-    this.selectedText_ = this.root_.querySelector(strings.SELECTED_TEXT_SELECTOR);
 
-    this.ripple = new MDCRipple(this.surface_);
+    this.ripple = new MDCRipple(this.root_);
   }
 
   getDefaultFoundation() {
@@ -116,27 +118,13 @@ export class MDCSelect extends MDCComponent {
       rmAttr: (attr, value) => this.root_.removeAttribute(attr, value),
       registerInteractionHandler: (type, handler) => this.surface_.addEventListener(type, handler),
       deregisterInteractionHandler: (type, handler) => this.surface_.removeEventListener(type, handler),
-      registerOptionsInteractionHandler: (type, handler) => {
-        this.selectedText_.addEventListener(type, handler);
-      },
-      deregisterOptionsInteractionHandler: (type, handler) => {
-        this.selectedText_.removeEventListener(type, handler);
-      },
-      getIndexByValue: (value) => this.indexByValue(value),
-      getComputedStyleValue: (prop) => window.getComputedStyle(this.surface_).getPropertyValue(prop),
-      setStyle: (propertyName, value) => this.surface_.style.setProperty(propertyName, value),
-      create2dRenderingContext: () => document.createElement('canvas').getContext('2d'),
-      // isMenuOpen: () => this.menu_.open,
-      setSelectedTextContent: (selectedTextContent) => {
-        this.selectedText_.textContent = selectedTextContent;
-      },
       getNumberOfOptions: () => this.options.length,
-      getTextForOptionAtIndex: (index) => this.options[index].textContent,
-      getValueForOptionAtIndex: (index) => this.options[index].id || this.options[index].textContent,
+      getIndexForOptionValue: (value) => this.indexByValue_(value),
+      getValueForOptionAtIndex: (index) => this.options[index].value,
+      setSelectedIndex: (index) => this.surface_.selectedIndex = index,
+      setValue: (value) => this.surface_.value = value,
       setAttrForOptionAtIndex: (index, attr, value) => this.options[index].setAttribute(attr, value),
       rmAttrForOptionAtIndex: (index, attr) => this.options[index].removeAttribute(attr),
-      getOffsetTopForOptionAtIndex: (index) => this.options[index].offsetTop,
-      notifyChange: () => this.emit(MDCSelectFoundation.strings.CHANGE_EVENT, this),
     });
   }
 

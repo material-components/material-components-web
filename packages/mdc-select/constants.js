@@ -16,9 +16,12 @@
 export const cssClasses = {
   BOX: 'mdc-select--box',
   DISABLED: 'mdc-select--disabled',
-  OPEN: 'mdc-select--open',
   ROOT: 'mdc-select',
-  SCROLL_LOCK: 'mdc-select-scroll-lock',
+  IS_CHANGING: 'mdc-select--is-changing',
+};
+
+export const numbers = {
+  SELECT_TEXT_TRANSITION_TIME: 125,
 };
 
 export const strings = {
@@ -28,5 +31,4 @@ export const strings = {
   MENU_SELECTOR: '.mdc-select__menu',
   OPTION_SELECTOR: '.mdc-select__option',
   SURFACE_SELECTOR: '.mdc-select__surface',
-  SELECTED_TEXT_SELECTOR: '.mdc-select__selected-text',
 };

@@ -14,9 +14,10 @@
 // limitations under the License.
 //
 
+@import "./keyframes";
 @import "./mixins";
 @import "./variables";
-@import "@material/animation/functions";
+@import "@material/animation/variables";
 @import "@material/typography/mixins";
 @import "@material/ripple/common";
 @import "@material/ripple/mixins";
@@ -27,6 +28,8 @@
 // postcss-bem-linter: define select
 .mdc-select {
   @include mdc-typography-base;
+  @include mdc-states;
+
   // We use only a subset of the MDC typography values here as changing things such as line-height
   // affects how the labels are transformed.
   @each $prop in (letter-spacing) {
@@ -45,13 +48,9 @@
 
   display: inline-flex;
   position: relative;
-  // align-items: center;
-  align-items: flex-end;
-  justify-content: flex-start;
+  overflow: hidden;
   box-sizing: border-box;
   height: 48px;
-  border: none;
-  outline: none;
   background-repeat: no-repeat;
   background-position: right 8px bottom 8px;
 
@@ -61,13 +60,17 @@
 
   &__surface {
     @include mdc-rtl-reflexive-property(padding, 0, $mdc-select-arrow-padding);
-    @include mdc-states;
 
     &::-ms-expand {
       display: none;
     }
 
+    @-moz-document url-prefix() {
+      text-indent: -2px;
+    }
+
     width: 100%;
+    background-color: transparent;
     padding-bottom: 8px;
     padding-top: 22px;
     border: none;
@@ -75,9 +78,6 @@
     overflow: hidden;
     appearance: none;
     cursor: pointer;
-    transition:
-      mdc-animation-exit-temporary(opacity, 125ms),
-      mdc-animation-exit-temporary(transform, 125ms);
     white-space: nowrap;
   }
 
@@ -89,6 +89,13 @@
   }
 }
 
+// needed to make this a keyframe animation because having translateY in the
+// not-selected state caused an unwanted scrolling behavior to occur
+.mdc-select--is-changing .mdc-select__surface {
+  animation: mdc-select-float-text 125ms 1;
+  animation-timing-function: $mdc-animation-deceleration-curve-timing-function;
+}
+
 .mdc-select__option[value=""] {
   // added for placeholder option for no value
   display: none;
@@ -96,6 +103,8 @@
 
 .mdc-select--box {
   @include mdc-select-container-fill-color(rgba(black, .04));
+  @include mdc-ripple-surface;
+  @include mdc-ripple-radius-bounded;
 
   height: 56px;
   border-radius: 4px 4px 0 0;
@@ -105,15 +114,15 @@
     background-position: left 10px center;
   }
 
-  .mdc-select__surface {
+  .mdc-select__surface,
+  .mdc-select__label {
     @include mdc-typography(subheading2);
+  }
+
+  .mdc-select__surface {
     @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding);
-    // TODO(mattgoo): fix bug where label collides with background select arrow
-    @include mdc-ripple-surface;
-    @include mdc-ripple-radius-bounded;
 
     height: 56px;
-    padding-bottom: 0;
     border-radius: 4px 4px 0 0;
   }
 
@@ -125,31 +134,6 @@
     &--float-above {
       transform: translateY(-40%) scale(.75, .75);
     }
-  }
-
-  // .mdc-select__selected-text {
-  //   position: inherit;
-  //   bottom: 0;
-  //   margin-bottom: 6px;
-  // }
-}
-
-.mdc-select--open {
-  .mdc-select__surface::before {
-    opacity: map-get($mdc-ripple-dark-ink-opacities, "focus");
-  }
-
-  // .mdc-select__selected-text {
-  //   transform: translateY(8px);
-  //   transition:
-  //     mdc-animation-enter(opacity, 125ms, 125ms),
-  //     mdc-animation-enter(transform, 125ms, 125ms);
-  //   opacity: 0;
-  // }
-
-  .mdc-select__bottom-line::after {
-    transform: scaleY(2);
-    opacity: 1;
   }
 }
 
@@ -163,8 +147,6 @@
   opacity: .38;
   cursor: default;
   pointer-events: none;
-  // Imitate native disabled functionality
-  user-select: none;
 
   .mdc-select__bottom-line {
     display: none;
@@ -172,7 +154,3 @@
 }
 
 // postcss-bem-linter: end
-
-.mdc-select-scroll-lock {
-  overflow: hidden;
-}

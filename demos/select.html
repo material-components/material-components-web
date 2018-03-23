@@ -60,37 +60,30 @@
     <main>
       <div class="mdc-toolbar-fixed-adjust"></div>
       <section class="hero">
-        <!--
         <div id="hero-js-select" class="mdc-select" role="listbox">
-          <div class="mdc-select__surface" tabindex="0">
-            <div class="mdc-select__label">Pick a Food Group</div>
-            <div class="mdc-select__selected-text"></div>
-            <div class="mdc-select__bottom-line"></div>
-          </div>
-          <div class="mdc-menu mdc-select__menu">
-            <ul class="mdc-list mdc-menu__items">
-              <li class="mdc-list-item" role="option" tabindex="0">
-                Bread, Cereal, Rice, and Pasta
-              </li>
-              <li class="mdc-list-item" role="option" aria-disabled="true" tabindex="0">
-                Vegetables
-              </li>
-              <li class="mdc-list-item" role="option" tabindex="0">
-                Fruit
-              </li>
-              <li class="mdc-list-item" role="option" tabindex="0">
-                Milk, Yogurt, and Cheese
-              </li>
-              <li class="mdc-list-item" role="option" tabindex="0">
-                Meat, Poultry, Fish, Dry Beans, Eggs, and Nuts
-              </li>
-              <li class="mdc-list-item" role="option" tabindex="0">
-                Fats, Oils, and Sweets
-              </li>
-            </ul>
-          </div>
+          <select class="mdc-select__surface">
+            <option class="mdc-select__option" value="grains">
+              Bread, Cereal, Rice, and Pasta
+            </option>
+            <option class="mdc-select__option" value="vegetables" aria-disabled="true">
+              Vegetables
+            </option>
+            <option class="mdc-select__option" value="fruit">
+              Fruit
+            </option>
+            <option class="mdc-select__option" value="dairy">
+              Milk, Yogurt, and Cheese
+            </option>
+            <option class="mdc-select__option" value="meat">
+              Meat, Poultry, Fish, Dry Beans, Eggs, and Nuts
+            </option>
+            <option class="mdc-select__option" value="fats">
+              Fats, Oils, and Sweets
+            </option>
+          </select>
+          <div class="mdc-select__label">Pick a Food Group</div>
+          <div class="mdc-select__bottom-line"></div>
         </div>
-      -->
       </section>
 
       <section class="example">
@@ -141,32 +134,28 @@
           <label for="set-selected-checkbox">Set Selected Index (0)</label>
         </div>
       </section>
-<!--
+
       <section class="example">
         <h2 class="mdc-typography--title">Select box</h2>
         <section id="box-demo-wrapper">
           <div id="box-js-select" class="mdc-select mdc-select--box" role="listbox">
-            <div class="mdc-select__surface" tabindex="0">
-              <div class="mdc-select__label">Food Group</div>
-              <div class="mdc-select__selected-text"></div>
-              <div class="mdc-select__bottom-line"></div>
-            </div>
-            <div class="mdc-menu mdc-select__menu">
-              <ul class="mdc-list mdc-menu__items">
-                <li class="mdc-list-item" role="option" id="fruit-roll-ups2" tabindex="0">
-                  Fruit Roll Ups
-                </li>
-                <li class="mdc-list-item" role="option" id="cotton-candy2" tabindex="0">
-                  Candy (cotton)&#x200E;
-                </li>
-                <li class="mdc-list-item" role="option" id="vegetables2" aria-disabled="true" tabindex="0">
-                  Vegetables
-                </li>
-                <li class="mdc-list-item" role="option" id="noodles2" tabindex="0">
-                  Noodles
-                </li>
-              </ul>
-            </div>
+            <select class="mdc-select__surface">
+              <option class="mdc-select__option" value="" disabled selected></option>
+              <option class="mdc-select__option" value="fruit-roll-ups2">
+                Fruit Roll Ups
+              </option>
+              <option class="mdc-select__option" value="cotton-candy2">
+                Candy (cotton)&#x200E;
+              </option>
+              <option class="mdc-select__option" value="vegetables2" aria-disabled="true">
+                Vegetables
+              </option>
+              <option class="mdc-select__option" value="noodles2">
+                Noodles
+              </option>
+            </select>
+            <div class="mdc-select__label">Food Group</div>
+            <div class="mdc-select__bottom-line"></div>
           </div>
         </section>
         <p>Currently selected: <span id="box-currently-selected">(none)</span></p>
@@ -187,7 +176,7 @@
           <label for="box-set-selected-checkbox">Set Selected Index (0)</label>
         </div>
       </section>
-
+<!--
       <section class="example">
         <h2 class="mdc-typography--title">Pre-selected option via HTML</h2>
         <section>
@@ -222,8 +211,8 @@
     <script src="/assets/material-components-web.js" async></script>
     <script>
       demoReady(function() {
-        /*
         mdc.select.MDCSelect.attachTo(document.getElementById('hero-js-select'));
+        /*
         mdc.select.MDCSelect.attachTo(document.getElementById('js-pre-selected'));
 */
         var root = document.getElementById('js-select');
@@ -262,7 +251,6 @@
       });
 
       demoReady(function() {
-        return
         var root = document.getElementById('box-js-select');
         var boxCurrentlySelected = document.getElementById('box-currently-selected');
         var select = new mdc.select.MDCSelect(root);
