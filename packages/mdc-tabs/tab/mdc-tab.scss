@@ -30,6 +30,7 @@ $mdc-tab-with-icon-and-text-height: 72px;
 }
 
 // postcss-bem-linter: define tab
+
 .mdc-tab {
   @include mdc-typography(body2);
   @include mdc-tab-ink-color(text-secondary-on-background);
@@ -101,6 +102,7 @@ $mdc-tab-with-icon-and-text-height: 72px;
   width: calc(100% - 4px);
 }
 
+// stylelint-disable plugin/selector-bem-pattern, selector-max-specificity
 .mdc-tab-bar:not(.mdc-tab-bar-upgraded) {
   .mdc-tab--active,
   .mdc-tab:hover,
@@ -119,5 +121,6 @@ $mdc-tab-with-icon-and-text-height: 72px;
     opacity: .87;
   }
 }
+// stylelint-enable plugin/selector-bem-pattern, selector-max-specificity
 
 // postcss-bem-linter: end

@@ -11,21 +11,20 @@
     "dist": "npm run build && npm run build:min",
     "dev": "npm run clean && cross-env MDC_ENV=development webpack-dev-server --config=demos/webpack.config.js --progress --inline --hot --host 0.0.0.0",
     "fix:js": "eslint --fix packages test webpack.config.js demos/webpack.config.js karma.conf.js",
-    "fix:css": "stylelint --fix packages/**/*.scss",
+    "fix:css": "stylelint --fix \"packages/**/*.scss\"",
     "fix": "npm-run-all --parallel fix:*",
     "lint:js": "eslint packages test scripts webpack.config.js demos/webpack.config.js karma.conf.js",
-    "lint:css": "stylelint packages/**/*.scss",
+    "lint:css": "stylelint \"packages/**/*.scss\"",
     "lint:imports": "node scripts/check-imports.js",
     "lint": "npm-run-all --parallel lint:*",
     "postinstall": "lerna bootstrap",
     "pretest": "npm run lint",
-    "test": "npm run test:unit && npm run test:closure && npm run test:dependency && npm run test:buildconfig && npm run build && npm run clean",
+    "test": "npm run test:unit && npm run test:closure && npm run test:dependency && npm run build && npm run clean",
     "posttest": "istanbul report --root coverage text-summary && istanbul check-coverage --lines 95 --statements 95 --branches 95 --functions 95",
     "test:watch": "karma start --auto-watch",
     "test:unit": "karma start --single-run",
     "test:closure": "./scripts/closure-test.sh",
-    "test:dependency": "./scripts/dependency-test.sh",
-    "test:buildconfig": "mocha ./test/build/index.js"
+    "test:dependency": "./scripts/dependency-test.sh"
   },
   "devDependencies": {
     "ascii-table": "0.0.9",
@@ -151,6 +150,7 @@
           "snackbar",
           "switch",
           "tabs",
+          "tab",
           "text-field",
           "theme",
           "toolbar",
@@ -182,6 +182,7 @@
     "mdc-ripple",
     "mdc-selection-control",
     "mdc-slider",
+    "mdc-tab",
     "mdc-textfield",
     "mdc-top-app-bar"
   ]

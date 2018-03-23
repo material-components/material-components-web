@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2018 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,23 +15,19 @@
  * limitations under the License.
  */
 
-/**
- * Temporarily overwrites environment variables and restores their original values.
- */
-module.exports = class {
-  constructor() {
-    this.saved_ = new Map();
-  }
+/** @enum {string} */
+const cssClasses = {
+  ACTIVE: 'mdc-tab--active',
+  ANIMATING_ACTIVATE: 'mdc-tab--animating-activate',
+  ANIMATING_DEACTIVATE: 'mdc-tab--animating-deactivate',
+};
 
-  mock(key, value) {
-    this.saved_[key] = process.env[key];
-    process.env[key] = value;
-  }
+/** @enum {string} */
+const strings = {
+  ARIA_SELECTED: 'aria-selected',
+};
 
-  restoreAll() {
-    this.saved_.forEach((value, key) => {
-      process.env[key] = value;
-    });
-    this.saved_.clear();
-  }
+export {
+  cssClasses,
+  strings,
 };
