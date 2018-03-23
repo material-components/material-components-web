@@ -45,6 +45,8 @@ class MDCTabFoundation extends MDCFoundation {
     return /** @type {!MDCTabAdapter} */ ({
       registerEventHandler: () => {},
       deregisterEventHandler: () => {},
+      registerIndicatorEventHandler: () => {},
+      deregisterIndicatorEventHandler: () => {},
       addClass: () => {},
       removeClass: () => {},
       hasClass: () => {},
@@ -59,21 +61,32 @@ class MDCTabFoundation extends MDCFoundation {
     super(Object.assign(MDCTabFoundation.defaultAdapter, adapter));
 
     /** @private {function(!Event): undefined} */
-    this.handleTransitionEnd_ = (evt) => this.handleTransitionEnd(evt);
+    this.handleRootTransitionEnd_ = (evt) => this.handleRootTransitionEnd(evt);
+
+    /** @private {function(Event=): undefined} */
+    this.handleIndicatorTransitionEnd_ = (evt) => this.handleIndicatorTransitionEnd(evt);
   }
 
   /**
-   * Handles the "transitionend" event
+   * Handles the "transitionend" event for the root element
    * @param {!Event} evt A browser event
    */
-  handleTransitionEnd(evt) {
+  handleRootTransitionEnd(evt) {
     // Early exit for ripple
     if (evt.pseudoElement) {
       return;
     }
-    this.adapter_.deregisterEventHandler('transitionend', this.handleTransitionEnd_);
+    this.adapter_.deregisterEventHandler('transitionend', this.handleRootTransitionEnd_);
     this.adapter_.removeClass(cssClasses.ANIMATING_ACTIVATE);
     this.adapter_.removeClass(cssClasses.ANIMATING_DEACTIVATE);
+  }
+
+  /**
+   * Handles the "transitionend" event for the indicator
+   */
+  handleIndicatorTransitionEnd() {
+    this.adapter_.deregisterIndicatorEventHandler('transitionend', this.handleIndicatorTransitionEnd_);
+    this.adapter_.removeClass(cssClasses.ANIMATING_INDICATOR);
   }
 
   /**
@@ -86,16 +99,50 @@ class MDCTabFoundation extends MDCFoundation {
 
   /**
    * Activates the Tab
+   * @param {ClientRect=} previousTabIndicatorRect
    */
-  activate() {
+  activate(previousTabIndicatorRect) {
     // Early exit
     if (this.isActive()) {
       return;
     }
-    this.adapter_.registerEventHandler('transitionend', this.handleTransitionEnd_);
+
+    this.activateTab_();
+    this.activateIndicator_(previousTabIndicatorRect);
+  }
+
+  /**
+   * Activates the tab
+   * @private
+   */
+  activateTab_() {
+    this.adapter_.registerEventHandler('transitionend', this.handleRootTransitionEnd_);
     this.adapter_.addClass(cssClasses.ANIMATING_ACTIVATE);
     this.adapter_.addClass(cssClasses.ACTIVE);
     this.adapter_.setAttr(strings.ARIA_SELECTED, 'true');
+  }
+
+  /**
+   * Activates the tab indicator
+   * @param {ClientRect=} previousTabIndicatorRect
+   * @private
+   */
+  activateIndicator_(previousTabIndicatorRect) {
+    if (!previousTabIndicatorRect) {
+      return;
+    }
+
+    const currentTabIndicatorRect = this.adapter_.getIndicatorClientRect();
+    const widthDelta = previousTabIndicatorRect.width / currentTabIndicatorRect.width;
+    const xPosition = previousTabIndicatorRect.left - currentTabIndicatorRect.left;
+    this.adapter_.setIndicatorStyleProperty('transform', `translateX(${xPosition}px) scaleX(${widthDelta})`);
+    // Force repaint
+    this.adapter_.getIndicatorClientRect();
+    requestAnimationFrame(() => {
+      this.adapter_.addClass(cssClasses.ANIMATING_INDICATOR);
+      this.adapter_.setIndicatorStyleProperty('transform', '');
+    });
+    this.adapter_.registerIndicatorEventHandler('transitionend', this.handleIndicatorTransitionEnd_);
   }
 
   /**
@@ -106,10 +153,17 @@ class MDCTabFoundation extends MDCFoundation {
     if (!this.isActive()) {
       return;
     }
-    this.adapter_.registerEventHandler('transitionend', this.handleTransitionEnd_);
+    this.adapter_.registerEventHandler('transitionend', this.handleRootTransitionEnd_);
     this.adapter_.addClass(cssClasses.ANIMATING_DEACTIVATE);
     this.adapter_.removeClass(cssClasses.ACTIVE);
     this.adapter_.setAttr(strings.ARIA_SELECTED, 'false');
+  }
+
+  /**
+   * @return {!ClientRect}
+   */
+  getIndicatorClientRect() {
+    return this.adapter_.getIndicatorClientRect();
   }
 }
 

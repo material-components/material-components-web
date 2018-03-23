@@ -20,6 +20,7 @@ const cssClasses = {
   ACTIVE: 'mdc-tab--active',
   ANIMATING_ACTIVATE: 'mdc-tab--animating-activate',
   ANIMATING_DEACTIVATE: 'mdc-tab--animating-deactivate',
+  ANIMATING_INDICATOR: 'mdc-tab--animating-indicator',
 };
 
 /** @enum {string} */

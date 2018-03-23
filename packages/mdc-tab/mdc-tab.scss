@@ -113,10 +113,6 @@
   background: none;
 }
 
-.mdc-tab__indicator--animating {
-  transition: 250ms transform cubic-bezier(0, 0, .2, 1);
-}
-
 /**
  * The [de]activation animation affects color for text label and icon
  */
@@ -142,6 +138,10 @@
 .mdc-tab--animating-activate .mdc-tab__icon,
 .mdc-tab--animating-activate .mdc-tab__indicator--icon {
   transition-delay: 100ms;
+}
+
+.mdc-tab--animating-indicator .mdc-tab__indicator {
+  transition: 250ms transform cubic-bezier(0, 0, .2, 1);
 }
 
 .mdc-tab--active {
