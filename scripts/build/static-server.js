@@ -48,7 +48,8 @@ class StaticServer {
    * Starts a static file server asynchronously and returns immediately.
    * @param {string} path Relative or absolute path to a filesystem directory to serve
    * @param {number} port
-   * @param {!Array<string>=} fileExtensions Whitelisted file extensions to show in the directory index
+   * @param {!Array<string>=} fileExtensions List of file extensions to show in directory indexes. If left empty, all
+   *   files will be shown.
    * @param {string} stylesheetAbsolutePath Absolute path to a CSS file containing styles for the directory index
    */
   start({
@@ -82,16 +83,16 @@ class StaticServer {
    * Determines whether the given filesystem path (parentPath + filename) should be listed in the directory index page.
    * @param {string} parentPath
    * @param {string} filename
-   * @param {!Array<string>} fileExtensions
+   * @param {!Array<string>} fileExtensions List of file extensions to show. If left empty, all files will be shown.
    * @return {boolean}
    * @private
    */
   shouldShowFile_(parentPath, filename, fileExtensions) {
-    // No whitelisted file extensions were specified, so show all files
+    // No file extension restrictions were specified, so show all files
     if (fileExtensions.length === 0) {
       return true;
     }
-    // Whitelisted file extension
+    // Matching file extension
     if (fileExtensions.some((ext) => filename.endsWith(ext))) {
       return true;
     }
