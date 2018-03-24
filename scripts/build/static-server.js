@@ -61,7 +61,6 @@ class StaticServer {
   }) {
     const app = this.expressLib_();
     const indexOpts = {
-      // eslint-disable-next-line no-unused-vars
       filter: (filename, index, files, dir) => {
         return this.shouldShowFile_(dir, filename, fileExtensions);
       },
