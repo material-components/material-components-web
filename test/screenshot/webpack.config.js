@@ -76,10 +76,7 @@ function testJs() {
       inputDirectory: '/test/screenshot',
       filePathPattern: '**/*.test.js',
     },
-    output: Object.assign({}, TEST_OUTPUT, {
-      filename: '[name].js',
-      library: ['demo', '[name]'],
-    }),
+    output: TEST_OUTPUT,
     plugins: [
       copyrightBannerPlugin,
     ],
