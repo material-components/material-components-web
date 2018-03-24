@@ -1,5 +1,4 @@
 /**
- * @license
  * Copyright 2018 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +14,13 @@
  * limitations under the License.
  */
 
-import * as dom from '../../../demos/dom.js';
+'use strict';
 
-dom.getAll('.mdc-button').forEach((el) => {
-  mdc.ripple.MDCRipple.attachTo(el);
+import * as pony from '../../demos/ponyfill.js';
+
+// Prevent default navigation behavior on all <a href="#"> links
+document.addEventListener('click', (evt) => {
+  if (pony.closest(evt.target, 'a[href^="#"]')) {
+    evt.preventDefault();
+  }
 });
