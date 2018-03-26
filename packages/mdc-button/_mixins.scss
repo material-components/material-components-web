@@ -95,14 +95,15 @@
   @include mdc-ripple-radius-bounded;
   @include mdc-button-horizontal-padding($mdc-button-horizontal-padding);
 
-  display: inline-block;
+  display: inline-flex;
   position: relative;
+  align-items: center;
+  justify-content: center;
   box-sizing: border-box;
   min-width: 64px;
   height: $mdc-button-height;
   border: none;
   outline: none;
-  text-align: center;
   user-select: none;
   -webkit-appearance: none;
   overflow: hidden;
@@ -138,14 +139,11 @@
   width: 18px;
   height: 18px;
   font-size: 18px;
-  line-height: inherit;
   vertical-align: top;
 }
 
 @mixin mdc-button__icon-svg_ {
-  margin-top: -2px;
   fill: currentColor;
-  vertical-align: middle;
 }
 
 @mixin mdc-button__icon-contained_ {
