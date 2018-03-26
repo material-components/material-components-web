@@ -1,5 +1,6 @@
 
 @import "../common";
+@import "../../packages/mdc-ripple/mdc-ripple";
 @import "../../packages/mdc-shape/mdc-shape";
 
 fieldset {
@@ -12,9 +13,19 @@ fieldset {
   height: 100px;
   margin: 16px auto;
 }
-.demo-input, .demo-button {
-  text-align: center;
+
+.demo-shape-content {
+  @include mdc-ripple-surface;
+  @include mdc-ripple-color(#000, .16);
+  @include mdc-ripple-radius;
+
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
 }
-#heart-ripple {
-  height: 100%;
+
+.demo-input {
+  text-align: center;
 }

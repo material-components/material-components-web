@@ -17,6 +17,8 @@
 import {MDCComponent} from '@material/base';
 import MDCShapeFoundation from './foundation';
 
+import './canvas-polyfill';
+
 export default class MDCShape extends MDCComponent {
   set background(value) {
     this.foundation_.setBackground(value);

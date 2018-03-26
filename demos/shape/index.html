@@ -41,12 +41,16 @@
       <section class="hero">
           <div class="mdc-shape">
             <canvas class="mdc-shape__canvas"></canvas>
+            <div class="demo-shape-content" style="clip-path: url(#hero-shape-path); -webkit-clip-path: url(#hero-shape-path)"></div>
             <svg class="mdc-shape__svg">
-              <clipPath>
+              <clipPath id="hero-shape-path">
                 <path class="mdc-shape__path"/>
               </clipPath>
             </svg>
           </div>
+      </section>
+      <section>
+        <p>The shape above has clip-path styles applied, while the one below doesn't, in order to contrast behavior and performance.</p>
       </section>
       <section>
         <fieldset>
@@ -54,8 +58,9 @@
           <figure>
             <div class="mdc-shape" id="elevatable-shape">
               <canvas class="mdc-shape__canvas"></canvas>
+            <div class="demo-shape-content"></div>
               <svg class="mdc-shape__svg">
-                <clipPath>
+                <clipPath id="elevatable-shape-path">
                   <path class="mdc-shape__path"/>
                 </clipPath>
               </svg>
@@ -87,13 +92,18 @@
           const DemoHeart = mdc["shape/heart/index"].default;
           var shapes = document.querySelectorAll(".mdc-shape");
           let elevatableHeart;
-          for (var i=0; i<shapes.length; i++) {
+          for (var i = 0; i < shapes.length; i++) {
             const demoHeart = DemoHeart.attachTo(shapes[i]);
             demoHeart.elevation = 4;
             demoHeart.background = '#ff00ff';
             demoHeart.redraw();
             if (shapes[i].id === "elevatable-shape") {
               elevatableHeart = demoHeart;
+            }
+
+            var rippleSurfaceNode = shapes[i].querySelector('.demo-shape-content');
+            if (rippleSurfaceNode) {
+              mdc.ripple.MDCRipple.attachTo(rippleSurfaceNode);
             }
           }
           const elevationInput = document.querySelector("#elevation-input");
