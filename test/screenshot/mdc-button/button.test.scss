@@ -28,7 +28,7 @@ $custom-button-custom-stroke-width: 4px;
   @include mdc-button-ink-color($custom-button-color);
 }
 
-.custom-button--fill-color {
+.custom-button--container-fill-color {
   @include mdc-button-container-fill-color($custom-button-color);
 }
 
