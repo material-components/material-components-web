@@ -60,7 +60,7 @@ class StaticServer {
       stylesheetAbsolutePath,
     } = {},
   }) {
-    const app = this.expressLib_();
+    const absolutePath = this.pathResolver_.getAbsolutePath(path);
     const indexOpts = {
       filter: (filename, index, files, dir) => {
         return this.shouldShowFile_(dir, filename, fileExtensions);
@@ -69,13 +69,8 @@ class StaticServer {
       icons: true,
     };
 
-    const absolutePath = this.pathResolver_.getAbsolutePath(path);
-    app.use(
-      '/',
-      this.expressLib_.static(absolutePath),
-      this.serveIndexLib_(absolutePath, indexOpts)
-    );
-
+    const app = this.expressLib_();
+    app.use('/', this.expressLib_.static(absolutePath), this.serveIndexLib_(absolutePath, indexOpts));
     app.listen(port, () => this.logRunning_(port));
   }
 
