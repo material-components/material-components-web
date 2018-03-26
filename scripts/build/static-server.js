@@ -70,6 +70,9 @@ class StaticServer {
     };
 
     const app = this.expressLib_();
+
+    // Route all HTTP requests for URLs beginning with `/` to the static file middleware. If the URL is a directory, and
+    // it does not contain an `index.html` file, the serve-index middleware will generate a directory listing.
     app.use('/', this.expressLib_.static(absolutePath), this.serveIndexLib_(absolutePath, indexOpts));
     app.listen(port, () => this.logRunning_(port));
   }
