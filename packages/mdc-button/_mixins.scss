@@ -97,13 +97,13 @@
 
   display: inline-flex;
   position: relative;
+  align-items: center;
+  justify-content: center;
   box-sizing: border-box;
   min-width: 64px;
   height: $mdc-button-height;
   border: none;
   outline: none;
-  justify-content: center;
-  align-items: center;
   user-select: none;
   -webkit-appearance: none;
   overflow: hidden;
