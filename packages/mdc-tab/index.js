@@ -16,7 +16,9 @@
  */
 
 import MDCComponent from '@material/base/component';
-import MDCTabRipple from './tab-ripple';
+/* eslint-disable no-unused-vars */
+import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
+/* eslint-enable no-unused-vars */
 
 import MDCTabAdapter from './adapter';
 import MDCTabFoundation from './foundation';
@@ -35,10 +37,20 @@ class MDCTab extends MDCComponent {
   }
 
   initialize() {
-    /** @private {!MDCTabRipple} */
-    this.ripple_ = MDCTabRipple.attachTo(this.root_);
     /** @private {?Element} */
     this.indicator_ = this.root_.querySelector(MDCTabFoundation.strings.INDICATOR_SELECTOR);
+
+    /** @private {?Element} */
+    this.rippleSurface_ = this.root_.querySelector(MDCTabFoundation.strings.RIPPLE_SELECTOR);
+
+    const rippleAdapter = Object.assign(MDCRipple.createAdapter(/** @type {!RippleCapableSurface} */ (this)), {
+      addClass: (className) => this.rippleSurface_.classList.add(className),
+      removeClass: (className) => this.rippleSurface_.classList.remove(className),
+      updateCssVariable: (varName, value) => this.rippleSurface_.style.setProperty(varName, value),
+    });
+
+    const foundation = new MDCRippleFoundation(rippleAdapter);
+    this.ripple_ = new MDCRipple(this.root_, foundation);
   }
 
   destroy() {
