@@ -132,7 +132,7 @@
   }
 
   &.mdc-ripple-upgraded {
-    --mdc-ripple-fg-opacity: $opacity;
+    --mdc-ripple-fg-opacity: #{$opacity};
   }
 }
 
