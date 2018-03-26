@@ -47,18 +47,3 @@ $custom-button-custom-stroke-width: 4px;
 .custom-button--corner-radius {
   @include mdc-button-corner-radius($custom-button-custom-corner-radius);
 }
-
-.custom-button--all-mixins {
-  @include mdc-button-ink-color($custom-button-color);
-  @include mdc-button-stroke-color($custom-button-color);
-  @include mdc-button-corner-radius($custom-button-custom-corner-radius);
-  @include mdc-button-stroke-width($custom-button-custom-stroke-width);
-}
-
-// stylelint-disable selector-class-pattern
-.custom-button--all-mixins.mdc-button--raised,
-.custom-button--all-mixins.mdc-button--unelevated {
-  @include mdc-button-container-fill-color($custom-button-color);
-  @include mdc-button-ink-color($custom-button-contrast-color);
-}
-// stylelint-enable selector-class-pattern
