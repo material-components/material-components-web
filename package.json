@@ -3,7 +3,8 @@
   "description": "Material Components Web",
   "license": "Apache-2.0",
   "scripts": {
-    "build": "npm run clean && mkdirp build && webpack --progress --colors && webpack --config=demos/webpack.config.js --progress --colors",
+    "build": "npm run clean && mkdirp build && webpack --progress --colors",
+    "build:demos": "npm run clean && mkdirp build && webpack --config=demos/webpack.config.js --progress --colors",
     "build:min": "mkdirp build && cross-env MDC_ENV=production webpack -p --progress --colors",
     "changelog": "standard-changelog -i CHANGELOG.md -k packages/material-components-web/package.json -w",
     "clean": "del-cli build/** build .closure-tmp/** .closure-tmp",

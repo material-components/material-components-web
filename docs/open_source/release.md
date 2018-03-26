@@ -82,6 +82,6 @@ This will ensure the commits *and* tags are pushed to the remote git repository.
 
 ### Deploy Catalog Server
 
-`MDC_ENV=development npm run build && gcloud app deploy`
+`MDC_ENV=development npm run build:demos && gcloud app deploy`
 
 [Double check it is live](https://material-components-web.appspot.com/)
