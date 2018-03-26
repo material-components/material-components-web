@@ -183,3 +183,13 @@ test('#deactivate calls deactivate', () => {
   component.deactivate();
   td.verify(mockFoundation.deactivate(), {times: 1});
 });
+
+test('activating the ripples causes changes on the ripple surface', () => {
+  const {component} = setupMockFoundationTest();
+  const raf = createMockRaf();
+  raf.flush();
+  component.ripple_.activate();
+  raf.flush();
+  raf.restore();
+  assert.isAtLeast(component.rippleSurface_.classList.length, 2);
+});
