@@ -20,7 +20,7 @@
 
 'use strict';
 
-module.exports = class {
+class Environment {
   setBabelEnv() {
     const event = this.getNpmLifecycleEvent_();
     // TODO: Figure out if this `if` check should include all `test:*` targets.
@@ -42,4 +42,6 @@ module.exports = class {
   getNpmLifecycleEvent_() {
     return process.env.npm_lifecycle_event;
   }
-};
+}
+
+module.exports = Environment;
