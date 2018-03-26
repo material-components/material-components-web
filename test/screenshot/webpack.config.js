@@ -36,10 +36,12 @@ const jsBundleFactory = new JsBundleFactory({env, pathResolver, globber, pluginF
 const staticServer = new StaticServer({pathResolver});
 
 const MAIN_OUTPUT = {
+  // Webpack output directory that all compiled MDC files will be written to.
   fsDirAbsolutePath: pathResolver.getAbsolutePath('/test/screenshot/out/main'),
 };
 
 const TEST_OUTPUT = {
+  // Webpack output directory that all compiled test files will be written to.
   fsDirAbsolutePath: pathResolver.getAbsolutePath('/test/screenshot/out/test'),
 };
 
