@@ -23,6 +23,7 @@ const strings = {
 /** @enum {string} */
 const cssClasses = {
   CHOICE: 'mdc-chip-set--choice',
+  FILTER: 'mdc-chip-set--filter',
 };
 
 export {strings, cssClasses};

@@ -20,7 +20,7 @@ import {captureHandlers} from '../helpers/foundation';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import MDCTopAppBarFoundation from '../../../packages/mdc-top-app-bar/foundation';
-import {strings} from '../../../packages/mdc-top-app-bar/constants';
+import {strings, cssClasses} from '../../../packages/mdc-top-app-bar/constants';
 
 suite('MDCTopAppBarFoundation');
 
@@ -29,10 +29,16 @@ test('exports strings', () => {
   assert.deepEqual(MDCTopAppBarFoundation.strings, strings);
 });
 
+test('exports cssClasses', () => {
+  assert.isTrue('cssClasses' in MDCTopAppBarFoundation);
+  assert.deepEqual(MDCTopAppBarFoundation.cssClasses, cssClasses);
+});
+
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTopAppBarFoundation, [
     'hasClass', 'addClass', 'removeClass', 'registerNavigationIconInteractionHandler',
-    'deregisterNavigationIconInteractionHandler', 'notifyNavigationIconClicked',
+    'deregisterNavigationIconInteractionHandler', 'notifyNavigationIconClicked', 'registerScrollHandler',
+    'deregisterScrollHandler', 'getViewportScrollY', 'getTotalActionItems',
   ]);
 });
 
@@ -44,7 +50,7 @@ const setupTest = () => {
   return {foundation, mockAdapter};
 };
 
-test('on click emits navigation icon event', () => {
+test('click on navigation icon emits a navigation event', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerNavigationIconInteractionHandler');
   foundation.init();

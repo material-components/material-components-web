@@ -26,127 +26,78 @@ MDC Web strives to seamlessly incorporate into a wider range of usage contexts, 
 
 ## Quick start
 
-Install the library
+> Note: This guide assumes you have npm installed locally.
+
+### Include CSS for a component
+
+> Note: This guide assumes you have webpack configured to compile Sass into CSS. See this [getting started guide](docs/getting-started.md) for pointers on how to configure webpack.
+
+To include the Sass files for the Material Design button, install the Node dependency:
 
 ```
-npm install --save material-components-web
+npm install @material/button
 ```
 
-Then simply include the correct files, write some HTML, and call `mdc.autoInit()` within a closing
-`<script>` tag.
-
-```html
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Material Components for the web</title>
-    <link rel="stylesheet"
-          href="node_modules/material-components-web/dist/material-components-web.css">
-  </head>
-  <body class="mdc-typography">
-    <h2 class="mdc-typography--display2">Hello, Material Components!</h2>
-    <div class="mdc-text-field" data-mdc-auto-init="MDCTextField">
-      <input type="text" class="mdc-text-field__input" id="demo-input">
-      <label for="demo-input" class="mdc-text-field__label">Tell us how you feel!</label>
-    </div>
-    <script src="node_modules/material-components-web/dist/material-components-web.js"></script>
-    <script>mdc.autoInit()</script>
-  </body>
-</html>
-```
-
-That's all there is to it! This is the easiest way to get up and running with Material Components
-for web. Check out our [Getting Started guide](./docs/getting-started.md) for a more in-depth
-introduction to the library.
-
-## Installing individual components
-
-MDC Web is modular by design. Each component lives within its own packages under the
-[@material npm org](https://www.npmjs.com/org/material).
-
-```
-npm install --save @material/button @material/card @material/textfield @material/typography
-```
-
-All our components can be found in the [packages](./packages) directory. Each component has a
-README documenting installation and usage.
-
-## Including components
-
-### JavaScript
-
-If you are using a module loader such as Webpack or SystemJS to load your JS modules, you can simply
-`import` every component you need from `material-components-web` and use it as such.
-
-```js
-import {checkbox as mdcCheckbox} from 'material-components-web';
-
-const {MDCCheckbox, MDCCheckboxFoundation} = mdcCheckbox;
-// Use MDCCheckbox and/or MDCCheckboxFoundation
-```
-
-You can do the same with individual components
-
-```js
-import {MDCCheckbox, MDCCheckboxFoundation} from '@material/checkbox';
-// Use MDCCheckbox and/or MDCCheckboxFoundation
-```
-
-We also provide [UMD](http://bob.yexley.net/umd-javascript-that-runs-anywhere/) bundles for both `material-components-web` as
-well as all individual components.
-
-```js
-const {checkbox: mdcCheckbox} = require('material-components-web/dist/material-components-web');
-// Use mdcCheckbox
-
-const {MDCCheckbox, MDCCheckboxFoundation} = require('@material/checkbox/dist/mdc.checkbox');
-// Use MDCCheckbox, MDCCheckboxFoundation
-```
-
-When no module system is used, every component is added under the global `mdc` namespace. This
-occurs regardless of whether or not the entire library or the individual components are used.
-
-Every component also ships with a minified version of its UMD bundle, which can be found at
-`dist/mdc.COMPONENT.min.js`.
-
-### CSS
-
-All components which include styles provide them at `dist/mdc.COMPONENT.css`, as well as a
-complementary minified version at `dist/mdc.COMPONENT.min.css`. Note that _CSS files for a
-component's dependencies are not included within the component's CSS file_, so if you are using
-individual components you'll have to include each separately.
-
-Each component also comes with a Sass source file that can be included in your application's Sass
+Then import the Sass files for @material/button into your application. You can also use Sass mixins to customize the button:
 
 ```scss
-// Using the whole library
-@import "material-components-web/material-components-web";
+@import "@material/button/mdc-button";
 
-// Using individual components / mixins
-@import '@material/checkbox';
-@import '@material/typography';
-@import '@material/elevation/mixins'; // Mixins for elevation.
+.foo-button {
+  @include mdc-button-ink-color(teal);
+  @include mdc-states(teal);
+}
+```
+@material/button has [documentation](packages/mdc-button/README.md) about the required HTML of a button. Update your application's HTML to include this HTML, and add the foo-button class onto the element:
+
+```html
+<button class="foo-button mdc-button">
+  Button
+</button>
 ```
 
-> NOTE: The components' Sass files expect that the `node_modules` directory containing the
-`@material` scope folder is present on the Sass include path.
+You also need to configure the sass-loader to understand the @material syntax. Update your webpack.config.js by changing `{ loader: 'sass-loader' }` to:
 
-## Running the demos
+```javascript
+{
+  loader: 'sass-loader',
+  options: {
+    importer: function(url, prev) {
+      if(url.indexOf('@material') === 0) {
+        var filePath = url.split('@material')[1];
+        var nodeModulePath = `./node_modules/@material/${filePath}`;
+        return { file: require('path').resolve(nodeModulePath) };
+      }
+      return { file: url };
+    }
+  }
+}
+```
 
-Setup the repo:
+This will produce a customized Material Design button!
+
+![Button](docs/button.png)
+
+### Include JavaScript for a component
+
+> Note: This guide assumes you have webpack configured to compile ES2015 into JavaScript. See this [getting started guide](docs/getting-started.md) for pointers on how to configure webpack.
+
+To include the ES2015 files for the Material Design ripple, install the Node dependency:
 
 ```
-git clone https://github.com/material-components/material-components-web.git && cd material-components-web
-npm i
+npm install @material/ripple
 ```
 
-Run the development server (served out of `demos/`):
+Then import the ES2015 file for @material/ripple into your application, and initialize an MDCRipple with a DOM element:
 
+```javascript
+import {MDCRipple} from '@material/ripple';
+const ripple = new MDCRipple(document.querySelector('.foo-button'));
 ```
-cd /path/to/material-components-web
-npm run dev
-open http://localhost:8080
-```
+
+This will produce a Material Design ripple on the button!
+
+![Button with Ripple](docs/button_with_ripple.png)
 
 ## Useful Links
 

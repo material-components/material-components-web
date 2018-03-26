@@ -51,7 +51,7 @@ MDC Typography is a foundational module that applies these styles to MDC Web com
 ## Installation
 
 ```
-npm install --save @material/typography
+npm install @material/typography
 ```
 
 ## Usage

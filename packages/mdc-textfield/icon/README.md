@@ -38,7 +38,7 @@ In text field box:
 <div class="mdc-text-field mdc-text-field--box mdc-text-field--with-leading-icon">
   <i class="material-icons mdc-text-field__icon" tabindex="0">event</i>
   <input type="text" id="my-input" class="mdc-text-field__input">
-  <label for="my-input" class="mdc-text-field__label">Your Name</label>
+  <label for="my-input" class="mdc-floating-label">Your Name</label>
   <div class="mdc-text-field__bottom-line"></div>
 </div>
 ```
@@ -48,13 +48,13 @@ In outlined text field:
 <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon">
   <i class="material-icons mdc-text-field__icon" tabindex="0">event</i>
   <input type="text" id="my-input" class="mdc-text-field__input">
-  <label for="my-input" class="mdc-text-field__label">Your Name</label>
-  <div class="mdc-text-field__outline">
+  <label for="my-input" class="mdc-floating-label">Your Name</label>
+  <div class="mdc-notched-outline">
     <svg>
-      <path class="mdc-text-field__outline-path"/>
+      <path class="mdc-notched-outline__path"/>
     </svg>
   </div>
-  <div class="mdc-text-field__idle-outline"></div>
+  <div class="mdc-notched-outline__idle"></div>
 </div>
 ```
 
@@ -64,7 +64,7 @@ In text field box:
 ```html
 <div class="mdc-text-field mdc-text-field--box mdc-text-field--with-trailing-icon">
   <input type="text" id="my-input" class="mdc-text-field__input">
-  <label for="my-input" class="mdc-text-field__label">Your Name</label>
+  <label for="my-input" class="mdc-floating-label">Your Name</label>
   <i class="material-icons mdc-text-field__icon" tabindex="0">event</i>
   <div class="mdc-text-field__bottom-line"></div>
 </div>
@@ -74,20 +74,26 @@ In outlined text field:
 ```html
 <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-trailing-icon">
   <input type="text" id="my-input" class="mdc-text-field__input">
-  <label for="my-input" class="mdc-text-field__label">Your Name</label>
+  <label for="my-input" class="mdc-floating-label">Your Name</label>
   <i class="material-icons mdc-text-field__icon" tabindex="0">event</i>
-  <div class="mdc-text-field__outline">
+  <div class="mdc-notched-outline">
     <svg>
-      <path class="mdc-text-field__outline-path"/>
+      <path class="mdc-notched-outline__path"/>
     </svg>
   </div>
-  <div class="mdc-text-field__idle-outline"></div>
+  <div class="mdc-notched-outline__idle"></div>
 </div>
 ```
 
 >**NOTE:** if you would like to display un-clickable icons, simply remove `tabindex="0"`,
 and the css will ensure the cursor is set to default, and that actioning on an icon doesn't
 do anything unexpected.
+
+### Sass Mixins
+
+Mixin | Description
+--- | ---
+`mdc-text-field-icon-color($color)` | Customizes the color for the leading/trailing icons.
 
 ### `MDCTextFieldIcon`
 

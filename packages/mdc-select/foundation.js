@@ -154,6 +154,11 @@ export default class MDCSelectFoundation extends MDCFoundation {
     if (this.selectedIndex_ >= 0) {
       selectedTextContent = this.adapter_.getTextForOptionAtIndex(this.selectedIndex_).trim();
       this.adapter_.setAttrForOptionAtIndex(this.selectedIndex_, 'aria-selected', 'true');
+      this.adapter_.floatLabel(true);
+    } else {
+      if (!this.adapter_.isMenuOpen()) {
+        this.adapter_.floatLabel(false);
+      }
     }
     this.adapter_.setSelectedTextContent(selectedTextContent);
   }

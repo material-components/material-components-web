@@ -1,0 +1,102 @@
+// Copyright 2018 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+@import "./mixins";
+@import "./variables";
+@import "@material/theme/mixins";
+@import "@material/typography/mixins";
+
+.mdc-image-list {
+  display: flex;
+  flex-wrap: wrap;
+  // Margin and padding are set to override default user agent styles for lists, and also to center the Image List
+  margin: 0 auto;
+  padding: 0;
+}
+
+.mdc-image-list__item,
+.mdc-image-list__image-aspect-container {
+  // Supports absolute positioning of protected supporting content for item, and image for image-aspect-container
+  position: relative;
+  box-sizing: border-box;
+}
+
+.mdc-image-list__item {
+  list-style-type: none;
+}
+
+.mdc-image-list__image {
+  width: 100%;
+}
+
+// Descendant selector allows image-aspect-container to be optional in DOM structure
+.mdc-image-list__image-aspect-container .mdc-image-list__image {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 100%;
+  // Background styles to support div instead of img
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+@at-root {
+  @include mdc-image-list-aspect(1);
+}
+
+.mdc-image-list__supporting {
+  @include mdc-theme-prop(color, text-primary-on-background);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: 8px 0;
+  line-height: $mdc-image-list-icon-size;
+}
+
+.mdc-image-list__label {
+  @include mdc-typography(subheading2);
+  @include mdc-typography-overflow-ellipsis;
+}
+
+// Modifier for labels/icons with text protection, overlaying images.
+
+.mdc-image-list--with-text-protection .mdc-image-list__supporting {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: $mdc-image-list-text-protection-height;
+  padding: 0 $mdc-image-list-text-protection-horizontal-padding;
+  background: $mdc-image-list-text-protection-background-color;
+  color: #fff;
+}
+
+// Masonry Image List, using CSS columns (i.e. renders down then across)
+
+.mdc-image-list--masonry {
+  display: block; // Override flex
+
+  .mdc-image-list__item {
+    break-inside: avoid-column;
+  }
+
+  .mdc-image-list__image {
+    display: block;
+    height: auto;
+  }
+}

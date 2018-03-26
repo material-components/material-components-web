@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2018 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,20 +14,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {strings} from './constants';
 
+import {strings, cssClasses} from './constants';
 import MDCTopAppBarAdapter from './adapter';
-
 import MDCFoundation from '@material/base/foundation';
 
 /**
  * @extends {MDCFoundation<!MDCTopAppBarAdapter>}
- * @final
  */
 class MDCTopAppBarFoundation extends MDCFoundation {
   /** @return enum {string} */
   static get strings() {
     return strings;
+  }
+
+  /** @return enum {string} */
+  static get cssClasses() {
+    return cssClasses;
   }
 
   /**
@@ -42,6 +46,10 @@ class MDCTopAppBarFoundation extends MDCFoundation {
       registerNavigationIconInteractionHandler: (/* type: string, handler: EventListener */) => {},
       deregisterNavigationIconInteractionHandler: (/* type: string, handler: EventListener */) => {},
       notifyNavigationIconClicked: () => {},
+      registerScrollHandler: (/* handler: EventListener */) => {},
+      deregisterScrollHandler: (/* handler: EventListener */) => {},
+      getViewportScrollY: () => /* number */ 0,
+      getTotalActionItems: () => /* number */ 0,
     });
   }
 

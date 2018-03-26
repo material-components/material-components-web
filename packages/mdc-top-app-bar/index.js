@@ -1,5 +1,5 @@
 /**
- *  @license
+ * @license
  * Copyright 2018 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,9 @@ import MDCTopAppBarAdapter from './adapter';
 import MDCTopAppBarFoundation from './foundation';
 import MDCComponent from '@material/base/component';
 import {MDCRipple} from '@material/ripple/index';
-import {strings} from './constants';
+import {cssClasses, strings} from './constants';
+import * as util from './util';
+import MDCShortTopAppBarFoundation from './short/foundation';
 
 /**
  * @extends {MDCComponent<!MDCTopAppBarFoundation>}
@@ -39,10 +41,10 @@ class MDCTopAppBar extends MDCComponent {
 
   initialize(
     rippleFactory = (el) => MDCRipple.attachTo(el)) {
-    this.navIcon_ = this.root_.querySelector(strings.MENU_ICON_SELECTOR);
+    this.navIcon_ = this.root_.querySelector(strings.NAVIGATION_ICON_SELECTOR);
 
     // Get all icons in the toolbar and instantiate the ripples
-    const icons = [].slice.call(this.root_.querySelectorAll(strings.ACTION_ICON_SELECTOR));
+    const icons = [].slice.call(this.root_.querySelectorAll(strings.ACTION_ITEM_SELECTOR));
     icons.push(this.navIcon_);
 
     this.iconRipples_ = icons.map((icon) => {
@@ -54,6 +56,7 @@ class MDCTopAppBar extends MDCComponent {
 
   destroy() {
     this.iconRipples_.forEach((iconRipple) => iconRipple.destroy());
+    super.destroy();
   }
 
   /**
@@ -68,28 +71,41 @@ class MDCTopAppBar extends MDCComponent {
    * @return {!MDCTopAppBarFoundation}
    */
   getDefaultFoundation() {
-    return new MDCTopAppBarFoundation(
-      /** @type {!MDCTopAppBarAdapter} */ (Object.assign({
-        hasClass: (className) => this.root_.classList.contains(className),
-        addClass: (className) => this.root_.classList.add(className),
-        removeClass: (className) => this.root_.classList.remove(className),
-        registerNavigationIconInteractionHandler: (evtType, handler) => {
-          if (this.navIcon_) {
-            this.navIcon_.addEventListener(evtType, handler);
-          }
-        },
-        deregisterNavigationIconInteractionHandler: (evtType, handler) => {
-          if (this.navIcon_) {
-            this.navIcon_.removeEventListener(evtType, handler);
-          }
-        },
-        notifyNavigationIconClicked: () => {
-          this.emit(strings.NAVIGATION_EVENT, {});
-        },
-      })
-      )
+    /** @type {!MDCTopAppBarAdapter} */
+    const adapter = /** @type {!MDCTopAppBarAdapter} */ (Object.assign({
+      hasClass: (className) => this.root_.classList.contains(className),
+      addClass: (className) => this.root_.classList.add(className),
+      removeClass: (className) => this.root_.classList.remove(className),
+      registerNavigationIconInteractionHandler: (evtType, handler) => {
+        if (this.navIcon_) {
+          this.navIcon_.addEventListener(evtType, handler);
+        }
+      },
+      deregisterNavigationIconInteractionHandler: (evtType, handler) => {
+        if (this.navIcon_) {
+          this.navIcon_.removeEventListener(evtType, handler);
+        }
+      },
+      notifyNavigationIconClicked: () => {
+        this.emit(strings.NAVIGATION_EVENT, {});
+      },
+      registerScrollHandler: (handler) => window.addEventListener('scroll', handler, util.applyPassive()),
+      deregisterScrollHandler: (handler) => window.removeEventListener('scroll', handler),
+      getViewportScrollY: () => window.pageYOffset,
+      getTotalActionItems: () =>
+        this.root_.querySelectorAll(strings.ACTION_ITEM_SELECTOR).length,
+    })
     );
+
+    let foundation;
+    if (this.root_.classList.contains(cssClasses.SHORT_CLASS)) {
+      foundation = new MDCShortTopAppBarFoundation(adapter);
+    } else {
+      foundation = new MDCTopAppBarFoundation(adapter);
+    }
+
+    return foundation;
   }
 }
 
-export {MDCTopAppBar, MDCTopAppBarFoundation};
+export {MDCTopAppBar, MDCTopAppBarFoundation, MDCShortTopAppBarFoundation, util};

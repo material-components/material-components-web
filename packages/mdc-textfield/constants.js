@@ -19,9 +19,9 @@
 const strings = {
   ARIA_CONTROLS: 'aria-controls',
   INPUT_SELECTOR: '.mdc-text-field__input',
-  LABEL_SELECTOR: '.mdc-text-field__label',
+  LABEL_SELECTOR: '.mdc-floating-label',
   ICON_SELECTOR: '.mdc-text-field__icon',
-  OUTLINE_SELECTOR: '.mdc-text-field__outline',
+  OUTLINE_SELECTOR: '.mdc-notched-outline',
   BOTTOM_LINE_SELECTOR: '.mdc-line-ripple',
 };
 
