@@ -20,7 +20,8 @@ import td from 'testdouble';
 import domEvents from 'dom-events';
 
 import {createMockRaf} from '../helpers/raf';
-import {MDCTab, MDCTabFoundation, MDCTabRipple} from '../../../packages/mdc-tab';
+import {MDCTab, MDCTabFoundation} from '../../../packages/mdc-tab';
+import {MDCRipple} from '../../../packages/mdc-tab/node_modules/@material/ripple';
 
 const getFixture = () => bel`
   <button class="mdc-tab" aria-selected="false" role="tab">
@@ -47,7 +48,7 @@ function setupTest() {
 
 test('#initialize creates the ripple', () => {
   const {component} = setupTest();
-  assert.instanceOf(component.ripple_, MDCTabRipple);
+  assert.instanceOf(component.ripple_, MDCRipple);
 });
 
 test('#destroy removes the ripple', () => {

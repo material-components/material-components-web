@@ -36,6 +36,19 @@ class MDCTab extends MDCComponent {
     return new MDCTab(root);
   }
 
+  /**
+   * @param {...?} args
+   */
+  constructor(...args) {
+    super(...args);
+    /** @private {?Element} */
+    this.indicator_;
+    /** @private {?Element} */
+    this.rippleSurface_;
+    /** @type {?MDCRipple} */
+    this.ripple_;
+  };
+
   initialize() {
     /** @private {?Element} */
     this.indicator_ = this.root_.querySelector(MDCTabFoundation.strings.INDICATOR_SELECTOR);
@@ -50,6 +63,7 @@ class MDCTab extends MDCComponent {
     });
 
     const foundation = new MDCRippleFoundation(rippleAdapter);
+
     this.ripple_ = new MDCRipple(this.root_, foundation);
   }
 
@@ -114,4 +128,4 @@ class MDCTab extends MDCComponent {
   }
 }
 
-export {MDCTab, MDCTabFoundation, MDCTabRipple};
+export {MDCTab, MDCTabFoundation};
