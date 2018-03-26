@@ -13,7 +13,6 @@ rules:
   # SCSS naming patterns, just like our CSS conventions above.
   scss/dollar-variable-pattern:
     - ^(test|custom)-.+
-    -
-      ignore: local
+    - ignore: local
   scss/at-function-pattern: ^(test|custom)-.+
   scss/at-mixin-pattern: ^(test|custom)-.+
