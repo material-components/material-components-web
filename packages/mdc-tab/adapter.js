@@ -70,7 +70,7 @@ class MDCTabAdapter {
 
   /**
    * Returns whether the root element has the given className.
-   * @param {string} className The className to remove
+   * @param {string} className The className to check
    * @return {boolean}
    */
   hasClass(className) {}
@@ -94,6 +94,13 @@ class MDCTabAdapter {
    * @param {string} value The style property value
    */
   setIndicatorStyleProperty(propName, value) {}
+
+  /**
+   * Returns whether the indicator element has the given className.
+   * @param {string} className The className to check
+   * @return {boolean}
+   */
+  indicatorHasClass(className) {}
 }
 
 export default MDCTabAdapter;

@@ -28,6 +28,8 @@ const getFixture = () => bel`
       <span class="mdc-tab__text-label">Foo</span>
       <span class="mdc-tab__icon"></span>
     </div>
+    <span class="mdc-tab__indicator"></span>
+    <span class="mdc-tab__ripple"></span>
   </button>
 `;
 
@@ -43,14 +45,25 @@ function setupTest() {
   return {root, component};
 }
 
+test('#initialize creates the ripple', () => {
+  const raf = createMockRaf();
+  const {root} = setupTest();
+  raf.flush();
+  // component.initialize();
+  // raf.flush();
+  raf.restore();
+  console.log(root.querySelector(MDCTabFoundation.strings.RIPPLE_SELECTOR).classList);
+  assert.isOk(root.querySelector(MDCTabFoundation.strings.RIPPLE_SELECTOR).classList.contains('mdc-ripple-upgraded'));
+});
+
 test('#destroy removes the ripple', () => {
   const raf = createMockRaf();
   const {component, root} = setupTest();
   raf.flush();
   component.destroy();
   raf.flush();
-  assert.isNotOk(root.classList.contains('mdc-ripple-upgraded'));
   raf.restore();
+  assert.isNotOk(root.querySelector('.mdc-tab__ripple').classList.contains('mdc-ripple-upgraded'));
 });
 
 test('#adapter.addClass adds a class to the root element', () => {
@@ -96,6 +109,41 @@ test('#adapter.deregisterEventHandler removes an event listener from the root el
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
+test('#adapter.registerIndicatorEventHandler adds an event listener to the indicator element', () => {
+  const {component} = setupTest();
+  const handler = td.func('transitionend handler');
+  component.getDefaultFoundation().adapter_.registerIndicatorEventHandler('transitionend', handler);
+  domEvents.emit(component.indicator_, 'transitionend');
+  td.verify(handler(td.matchers.anything()));
+});
+
+test('#adapter.deregisterIndicatorEventHandler removes an event listener from the indicator element', () => {
+  const {component} = setupTest();
+  const handler = td.func('transitionend handler');
+  component.indicator_.addEventListener('transitionend', handler);
+  component.getDefaultFoundation().adapter_.deregisterIndicatorEventHandler('transitionend', handler);
+  domEvents.emit(component.indicator_, 'transitionend');
+  td.verify(handler(td.matchers.anything()), {times: 0});
+});
+
+test('#adapter.getIndicatorClientRect returns the indicator client rect', () => {
+  const {component} = setupTest();
+  assert.deepEqual(component.getDefaultFoundation().adapter_.getIndicatorClientRect(),
+    component.indicator_.getBoundingClientRect());
+});
+
+test('#adapter.setIndicatorStyleProperty sets a style property on the indicator element', () => {
+  const {component} = setupTest();
+  component.getDefaultFoundation().adapter_.setIndicatorStyleProperty('background-color', 'red');
+  assert.strictEqual(component.indicator_.style.backgroundColor, 'red');
+});
+
+test('#adapter.indicatorHasClass returns true if a class exists on the indicator element', () => {
+  const {component} = setupTest();
+  component.indicator_.classList.add('foo');
+  assert.ok(component.getDefaultFoundation().adapter_.indicatorHasClass('foo'));
+});
+
 function setupMockFoundationTest(root = getFixture()) {
   const MockFoundationConstructor = td.constructor(MDCTabFoundation);
   const mockFoundation = new MockFoundationConstructor();
@@ -112,11 +160,29 @@ test('#active getter calls isActive', () => {
 test('#active set to true calls activate', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
   component.active = true;
-  td.verify(mockFoundation.activate(), {times: 1});
+  td.verify(mockFoundation.activate(undefined), {times: 1});
 });
 
 test('#active set to false calls deactivate', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
   component.active = false;
+  td.verify(mockFoundation.deactivate(), {times: 1});
+});
+
+test('#indicatorClientRect getter calls getIndicatorClientRect', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.indicatorClientRect;
+  td.verify(mockFoundation.getIndicatorClientRect(), {times: 1});
+});
+
+test('#activate calls activate with passed args', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.activate({width: 100, left: 0});
+  td.verify(mockFoundation.activate({width: 100, left: 0}), {times: 1});
+});
+
+test('#deactivate calls deactivate', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.deactivate();
   td.verify(mockFoundation.deactivate(), {times: 1});
 });

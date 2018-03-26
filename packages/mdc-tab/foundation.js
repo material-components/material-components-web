@@ -53,6 +53,7 @@ class MDCTabFoundation extends MDCFoundation {
       setAttr: () => {},
       getIndicatorClientRect: () => {},
       setIndicatorStyleProperty: () => {},
+      indicatorHasClass: () => {},
     });
   }
 
@@ -128,7 +129,7 @@ class MDCTabFoundation extends MDCFoundation {
    * @private
    */
   activateIndicator_(previousTabIndicatorRect) {
-    if (!previousTabIndicatorRect) {
+    if (!previousTabIndicatorRect || this.adapter_.indicatorHasClass(cssClasses.INDICATOR_ICON)) {
       return;
     }
 

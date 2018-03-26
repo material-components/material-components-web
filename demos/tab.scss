@@ -21,6 +21,11 @@
 @import "../packages/mdc-ripple/mixins";
 @import "../packages/mdc-theme/color-palette";
 
+.hero-demo-wrapper {
+  position: relative;
+  display: flex;
+}
+
 .demo {
   display: flex;
   align-items: center;

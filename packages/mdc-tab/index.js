@@ -73,6 +73,8 @@ class MDCTab extends MDCComponent {
   initialize() {
     /** @private {!MDCTabRipple} */
     this.ripple_ = new MDCTabRipple(this.root_);
+    /** @private {!Element} */
+    this.indicator_ = this.root_.querySelector(MDCTabFoundation.strings.INDICATOR_SELECTOR);
   }
 
   destroy() {
@@ -91,6 +93,11 @@ class MDCTab extends MDCComponent {
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       hasClass: (className) => this.root_.classList.contains(className),
+      registerIndicatorEventHandler: (evtType, handler) => this.indicator_.addEventListener(evtType, handler),
+      deregisterIndicatorEventHandler: (evtType, handler) => this.indicator_.removeEventListener(evtType, handler),
+      getIndicatorClientRect: () => this.indicator_.getBoundingClientRect(),
+      setIndicatorStyleProperty: (prop, value) => this.indicator_.style.setProperty(prop, value),
+      indicatorHasClass: (className) => this.indicator_.classList.contains(className),
     })));
   }
 
@@ -106,10 +113,28 @@ class MDCTab extends MDCComponent {
    */
   set active(isActive) {
     if (isActive) {
-      this.foundation_.activate();
+      this.activate();
     } else {
-      this.foundation_.deactivate();
+      this.deactivate();
     }
+  }
+
+  /**
+   * @return {!ClientRect}
+   */
+  get indicatorClientRect() {
+    return this.foundation_.getIndicatorClientRect();
+  }
+
+  /**
+   * @param {ClientRect=} previousTabClientRect
+   */
+  activate(previousTabClientRect) {
+    this.foundation_.activate(previousTabClientRect);
+  }
+
+  deactivate() {
+    this.foundation_.deactivate();
   }
 }
 

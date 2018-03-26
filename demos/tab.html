@@ -41,22 +41,32 @@
 
     <main class="mdc-toolbar-fixed-adjust">
       <section class="hero">
-        <button class="mdc-tab demo-tab" role="tab" data-demo="demoTabFavorite">
-          <span class="mdc-tab__content">
-            <span class="material-icons mdc-tab__icon">favorite</span>
-            <span class="mdc-tab__text-label">Favorites</span>
-          </span>
-          <span class="mdc-tab__indicator"></span>
-          <span class="mdc-tab__ripple"></span>
-        </button>
-        <button class="mdc-tab mdc-tab--active demo-tab" role="tab" data-demo="demoRecentsTabRecents">
-          <span class="mdc-tab__content">
-            <span class="material-icons mdc-tab__icon">phone</span>
-            <span class="mdc-tab__text-label">Recents</span>
-          </span>
-          <span class="mdc-tab__indicator"></span>
-          <span class="mdc-tab__ripple"></span>
-        </button>
+        <div class="hero-demo-wrapper" id="hero-demo-set">
+          <button class="mdc-tab mdc-tab--active demo-tab" role="tab">
+            <span class="mdc-tab__content">
+              <span class="material-icons mdc-tab__icon">favorite</span>
+              <span class="mdc-tab__text-label">Favorites</span>
+            </span>
+            <span class="mdc-tab__indicator"></span>
+            <span class="mdc-tab__ripple"></span>
+          </button>
+          <button class="mdc-tab demo-tab" role="tab">
+            <span class="mdc-tab__content">
+              <span class="material-icons mdc-tab__icon">phone</span>
+              <span class="mdc-tab__text-label">Recents</span>
+            </span>
+            <span class="mdc-tab__indicator"></span>
+            <span class="mdc-tab__ripple"></span>
+          </button>
+          <button class="mdc-tab demo-tab" role="tab">
+            <span class="mdc-tab__content">
+              <span class="material-icons mdc-tab__icon">explore_nearby</span>
+              <span class="mdc-tab__text-label">Nearby</span>
+            </span>
+            <span class="mdc-tab__indicator"></span>
+            <span class="mdc-tab__ripple"></span>
+          </button>
+        </div>
       </section>
 
       <div class="rtl-container">
@@ -178,6 +188,24 @@
     <script src="/assets/common.js" async></script>
     <script>
       demoReady(function() {
+
+        var heroDemoTabs = document.querySelectorAll('#hero-demo-set .demo-tab');
+        var activeTab;
+        for (var i = 0; i < heroDemoTabs.length; i++) {
+          (function(index) {
+            var tabElement = heroDemoTabs[i];
+            var tab = new mdc.tab.MDCTab(tabElement);
+            if (tab.active) {
+              activeTab = tab;
+            }
+            tabElement.addEventListener('click', function () {
+              activeTab.deactivate();
+              tab.activate(activeTab.indicatorClientRect);
+              activeTab = tab;
+            });
+          })(i);
+        }
+
         var demos = document.querySelectorAll('[data-demo]');
         for (var i = 0; i < demos.length; i++) {
           var demoName = demos[i].dataset.demo;

@@ -21,12 +21,14 @@ const cssClasses = {
   ANIMATING_ACTIVATE: 'mdc-tab--animating-activate',
   ANIMATING_DEACTIVATE: 'mdc-tab--animating-deactivate',
   ANIMATING_INDICATOR: 'mdc-tab--animating-indicator',
+  INDICATOR_ICON: 'mdc-tab__indicator--icon',
 };
 
 /** @enum {string} */
 const strings = {
   ARIA_SELECTED: 'aria-selected',
   RIPPLE_SELECTOR: '.mdc-tab__ripple',
+  INDICATOR_SELECTOR: '.mdc-tab__indicator',
 };
 
 export {
