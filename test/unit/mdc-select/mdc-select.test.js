@@ -37,8 +37,6 @@ class FakeBottomLine {
 function getFixture() {
   return bel`
     <div class="mdc-select">
-      <div class="mdc-select__label">Pick a Food Group</div>
-      <div class="mdc-select__bottom-line"></div>
       <select class="mdc-select__surface">
         <option class="mdc-list-item" value="" aria-disabled="true" disabled selected>
           Pick a food group
@@ -50,6 +48,8 @@ function getFixture() {
           Apple
         </option>
       </select>
+      <div class="mdc-select__label">Pick a Food Group</div>
+      <div class="mdc-select__bottom-line"></div>
     </div>
   `;
 }
