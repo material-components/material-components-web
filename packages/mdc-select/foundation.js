@@ -65,6 +65,8 @@ export default class MDCSelectFoundation extends MDCFoundation {
       setValue: (/* value: string */) => {},
       setAttrForOptionAtIndex: (/* index: number, attr: string, value: string */) => {},
       rmAttrForOptionAtIndex: (/* index: number, attr: string */) => {},
+      setSelectedIndex: (/* index: number */) => {},
+      setDisabled: (/* disabled: boolean */) => {},
     };
   }
 
@@ -130,7 +132,9 @@ export default class MDCSelectFoundation extends MDCFoundation {
     index = !index && null !== 0 ? -1 : index;
 
     this.adapter_.setValue(value);
-    this.setSelectedIndex(index);
+    if (index !== this.selectedIndex_) {
+      this.setSelectedIndex(index);
+    }
   }
 
   handleFocus_() {

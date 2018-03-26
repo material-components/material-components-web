@@ -65,16 +65,6 @@ export class MDCSelect extends MDCComponent {
     return this.surface_.item(index);
   }
 
-  nameditem(key) {
-    // NOTE: IE11 precludes us from using Array.prototype.find
-    for (let i = 0, options = this.options, option; (option = options[i]); i++) {
-      if (option.id === key || option.getAttribute('name') === key) {
-        return option;
-      }
-    }
-    return null;
-  }
-
   indexByValue_(value) {
     // NOTE: IE11 precludes us from using Array.prototype.find
     for (let i = 0, options = this.options, option; (option = options[i]); i++) {

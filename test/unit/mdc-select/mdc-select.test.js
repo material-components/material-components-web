@@ -20,23 +20,6 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 
 import {MDCSelect} from '../../../packages/mdc-select';
-import {strings} from '../../../packages/mdc-select/constants';
-
-class FakeMenu {
-  constructor() {
-    this.items = [
-      bel`<div id="item-1">Item 1</div>`,
-      bel`<div id="item-2">Item 2</div>`,
-      bel`<div id="item-3">Item 3</div>`,
-      bel`<div>Item 4 no id</div>`,
-    ];
-    this.listen = td.func('menu.listen');
-    this.unlisten = td.func('menu.unlisten');
-    this.show = td.func('menu.show');
-    this.hide = td.func('menu.hide');
-    this.open = false;
-  }
-}
 
 class FakeLabel {
   constructor() {
@@ -53,19 +36,20 @@ class FakeBottomLine {
 
 function getFixture() {
   return bel`
-    <div class="mdc-select" role="listbox">
-      <div class="mdc-select__surface" tabindex="0">
-        <div class="mdc-select__label">Pick a Food Group</div>
-        <div class="mdc-select__selected-text"></div>
-        <div class="mdc-select__bottom-line"></div>
-      </div>
-      <div class="mdc-menu mdc-select__menu">
-        <ul class="mdc-list mdc-menu__items">
-          <li class="mdc-list-item" role="option" aria-disabled="true">
-            Pick a food group
-          </li>
-        </ul>
-      </div>
+    <div class="mdc-select">
+      <div class="mdc-select__label">Pick a Food Group</div>
+      <div class="mdc-select__bottom-line"></div>
+      <select class="mdc-select__surface">
+        <option class="mdc-list-item" value="" aria-disabled="true" disabled selected>
+          Pick a food group
+        </option>
+        <option class="mdc-list-item" value="orange">
+          Orange
+        </option>
+        <option class="mdc-list-item" value="apple">
+          Apple
+        </option>
+      </select>
     </div>
   `;
 }
@@ -79,30 +63,14 @@ test('attachTo returns a component instance', () => {
 function setupTest() {
   const bottomLine = new FakeBottomLine();
   const label = new FakeLabel();
-  const menu = new FakeMenu();
   const fixture = getFixture();
   const surface = fixture.querySelector('.mdc-select__surface');
   const labelEl = fixture.querySelector('.mdc-select__label');
   const bottomLineEl = fixture.querySelector('.mdc-select__bottom-line');
-  const menuEl = fixture.querySelector('.mdc-select__menu');
-  const component = new MDCSelect(fixture, /* foundation */ undefined, () => menu, () => label, () => bottomLine);
+  const component = new MDCSelect(fixture, /* foundation */ undefined, () => label, () => bottomLine);
 
-  return {menu, menuEl, fixture, surface, label, labelEl, bottomLine, bottomLineEl, component};
+  return {fixture, surface, label, labelEl, bottomLine, bottomLineEl, component};
 }
-
-test('options returns the menu items', () => {
-  const {menu, component} = setupTest();
-  assert.equal(component.options, menu.items);
-});
-
-test('selectOptions returns a NodeList containing the node with "aria-selected" as an attr', () => {
-  const {component, fixture} = setupTest();
-  const option = fixture.querySelector('[role="option"]');
-  assert.equal(component.selectedOptions.length, 0, 'No selected options when none selected');
-  option.setAttribute('aria-selected', 'true');
-  assert.equal(component.selectedOptions.length, 1, 'One selected option when element has aria-selected');
-  assert.equal(component.selectedOptions[0], option, 'Option within selected options is the selected option');
-});
 
 test('#get/setSelectedIndex', () => {
   const {component} = setupTest();
@@ -115,21 +83,16 @@ test('#get/setDisabled', () => {
   const {component} = setupTest();
   assert.equal(component.disabled, false);
   component.disabled = true;
-  assert.isOk(component.disabled);
+  assert.isTrue(component.disabled);
 });
 
 test('#get value', () => {
   const {component} = setupTest();
   assert.equal(component.value, '');
+  component.selectedIndex = 2;
+  assert.equal(component.value, 'apple');
   component.selectedIndex = 1;
-  assert.equal(component.value, 'item-2');
-  component.selectedIndex = 3;
-  assert.equal(component.value, 'Item 4 no id');
-});
-
-test('#item returns the menu item at the specified index', () => {
-  const {menu, component} = setupTest();
-  assert.equal(component.item(1), menu.items[1]);
+  assert.equal(component.value, 'orange');
 });
 
 test('#item returns null if index out of bounds', () => {
@@ -137,38 +100,26 @@ test('#item returns null if index out of bounds', () => {
   assert.equal(component.item(100), null);
 });
 
-test('#nameditem returns the item whose id matches the given key', () => {
-  const {menu, component} = setupTest();
-  assert.equal(component.nameditem('item-1'), menu.items[0]);
-});
-
-test('#nameditem returns the item whose "name" key matches the given key', () => {
-  const {menu, component} = setupTest();
-  const item = menu.items[0];
-  const name = item.id;
-  item.id = '';
-  item.removeAttribute('id');
-  item.setAttribute('name', name);
-  assert.equal(component.nameditem(name), menu.items[0]);
-});
-
-test('#nameditem returns null when no id or name matches the given key', () => {
-  const {component} = setupTest();
-  assert.equal(component.nameditem('nonexistant'), null);
-});
-
-test('#initialSyncWithDOM sets the selected index if a menu item contains an aria-selected attribute', () => {
-  const menu = new FakeMenu();
-  const fixture = getFixture();
-  // Insert menu item into fixture to pretend like the fake menu items are part of the component under test.
-  menu.items[1].setAttribute('aria-selected', 'true');
-  fixture.appendChild(menu.items[1]);
-
-  const component = new MDCSelect(fixture, /* foundation */ undefined, () => menu);
+test('#initialSyncWithDOM sets the selected index if an option has the selected attr', () => {
+  const fixture = bel`
+    <div class="mdc-select">
+      <div class="mdc-select__label">Pick a Food Group</div>
+      <div class="mdc-select__bottom-line"></div>
+      <select class="mdc-select__surface">
+        <option class="mdc-list-item" value="orange">
+          Orange
+        </option>
+        <option class="mdc-list-item" value="apple" selected>
+          Apple
+        </option>
+      </select>
+    </div>
+  `;
+  const component = new MDCSelect(fixture, /* foundation */ undefined);
   assert.equal(component.selectedIndex, 1);
 });
 
-test('#initialSyncWithDOM disables the menu if aria-disabled="true" is found on the element', () => {
+test('#initialSyncWithDOM disables the select if aria-disabled="true" is found on the element', () => {
   const fixture = getFixture();
   fixture.setAttribute('aria-disabled', 'true');
   const component = new MDCSelect(fixture);
@@ -178,14 +129,14 @@ test('#initialSyncWithDOM disables the menu if aria-disabled="true" is found on 
 test('adapter#addClass adds a class to the root element', () => {
   const {component, fixture} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
-  assert.isOk(fixture.classList.contains('foo'));
+  assert.isTrue(fixture.classList.contains('foo'));
 });
 
 test('adapter#removeClass removes a class from the root element', () => {
   const {component, fixture} = setupTest();
   fixture.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClass('foo');
-  assert.isNotOk(fixture.classList.contains('foo'));
+  assert.isFalse(fixture.classList.contains('foo'));
 });
 
 test('adapter#floatLabel adds a class to the label', () => {
@@ -219,15 +170,7 @@ test('adapter#rmAttr removes an attribute from the root element', () => {
   const {component, fixture} = setupTest();
   fixture.setAttribute('aria-disabled', 'true');
   component.getDefaultFoundation().adapter_.rmAttr('aria-disabled');
-  assert.isNotOk(fixture.hasAttribute('aria-disabled'));
-});
-
-test('adapter#computeBoundingRect returns the result of getBoundingClientRect() on the root element', () => {
-  const {component, fixture} = setupTest();
-  assert.deepEqual(
-    component.getDefaultFoundation().adapter_.computeBoundingRect(),
-    fixture.getBoundingClientRect()
-  );
+  assert.isFalse(fixture.hasAttribute('aria-disabled'));
 });
 
 test('adapter#registerInteractionHandler adds an event listener to the surface element', () => {
@@ -247,121 +190,9 @@ test('adapter#deregisterInteractionHandler removes an event listener from the su
   td.verify(listener(td.matchers.anything()), {times: 0});
 });
 
-test('adapter#focus focuses on the surface element', () => {
-  const {component, fixture, surface} = setupTest();
-  document.body.appendChild(fixture);
-
-  component.getDefaultFoundation().adapter_.focus();
-  assert.equal(document.activeElement, surface);
-
-  document.body.removeChild(fixture);
-});
-
-test('adapter#makeTabbable sets the surface element\'s tabindex to 0', () => {
-  const {component, surface} = setupTest();
-  surface.tabIndex = -1;
-  component.getDefaultFoundation().adapter_.makeTabbable();
-  assert.equal(surface.tabIndex, 0);
-});
-
-test('adapter#makeUntabbable sets the surface element\'s tabindex to -1', () => {
-  const {component, surface} = setupTest();
-  surface.tabIndex = 0;
-  component.getDefaultFoundation().adapter_.makeUntabbable();
-  assert.equal(surface.tabIndex, -1);
-});
-
-test('adapter#getComputedStyleValue gets the computed style value of the prop from the surface element', () => {
-  const {component, fixture, surface} = setupTest();
-  document.body.appendChild(fixture);
-  surface.style.width = '500px';
-  assert.equal(
-    component.getDefaultFoundation().adapter_.getComputedStyleValue('width'),
-    getComputedStyle(surface).getPropertyValue('width')
-  );
-  document.body.removeChild(fixture);
-});
-
-test('adapter#setStyle sets the given style propertyName to the given value', () => {
-  const {component, surface} = setupTest();
-  component.getDefaultFoundation().adapter_.setStyle('font-size', '13px');
-  assert.equal(surface.style.getPropertyValue('font-size'), '13px');
-});
-
-test('adapter#create2dRenderingContext returns a CanvasRenderingContext2d instance', () => {
-  const {component} = setupTest();
-  const fakeCtx = {};
-  const fakeCanvas = {
-    getContext: td.func('canvas.getContext'),
-  };
-  const origCreateElement = document.createElement;
-  document.createElement = td.func('document.createElement');
-
-  td.when(fakeCanvas.getContext('2d')).thenReturn(fakeCtx);
-  td.when(document.createElement('canvas')).thenReturn(fakeCanvas);
-
-  const ctx = component.getDefaultFoundation().adapter_.create2dRenderingContext();
-  assert.equal(ctx, fakeCtx);
-
-  document.createElement = origCreateElement;
-});
-
-test('adapter#setMenuElStyle sets a style property on the menu element', () => {
-  const {component, menuEl} = setupTest();
-  component.getDefaultFoundation().adapter_.setMenuElStyle('font-size', '10px');
-  assert.equal(menuEl.style.fontSize, '10px');
-});
-
-test('adapter#setMenuElAttr sets an attribute on the menu element', () => {
-  const {component, menuEl} = setupTest();
-  component.getDefaultFoundation().adapter_.setMenuElAttr('aria-hidden', 'true');
-  assert.equal(menuEl.getAttribute('aria-hidden'), 'true');
-});
-
-test('adapter#rmMenuElAttr removes an attribute from the menu element', () => {
-  const {component, menuEl} = setupTest();
-  menuEl.setAttribute('aria-hidden', 'true');
-  component.getDefaultFoundation().adapter_.rmMenuElAttr('aria-hidden');
-  assert.isNotOk(menuEl.hasAttribute('aria-hidden'));
-});
-
-test('adapter#getMenuElOffsetHeight returns the menu element\'s offsetHeight', () => {
-  const {component, menuEl} = setupTest();
-  assert.equal(component.getDefaultFoundation().adapter_.getMenuElOffsetHeight(), menuEl.offsetHeight);
-});
-
-test('adapter#openMenu shows the menu with the given focusIndex', () => {
-  const {component, menu} = setupTest();
-  component.getDefaultFoundation().adapter_.openMenu(1);
-  td.verify(menu.show({focusIndex: 1}));
-});
-
-test('adapter#isMenuOpen returns whether or not the menu is open', () => {
-  const {component, menu} = setupTest();
-  const {adapter_: adapter} = component.getDefaultFoundation();
-  menu.open = true;
-  assert.isOk(adapter.isMenuOpen());
-  menu.open = false;
-  assert.isNotOk(adapter.isMenuOpen());
-});
-
-test('adapter#setSelectedTextContent sets the textContent of the selected text el', () => {
-  const {component, fixture} = setupTest();
-  component.getDefaultFoundation().adapter_.setSelectedTextContent('content');
-  assert.equal(fixture.querySelector('.mdc-select__selected-text').textContent, 'content');
-});
-
 test('adapter#getNumberOfOptions returns the length of the component\'s options property', () => {
   const {component} = setupTest();
   assert.equal(component.getDefaultFoundation().adapter_.getNumberOfOptions(), component.options.length);
-});
-
-test('adapter#getTextForOptionAtIndex gets the text content for the option at the given index', () => {
-  const {component} = setupTest();
-  assert.equal(
-    component.getDefaultFoundation().adapter_.getTextForOptionAtIndex(1),
-    component.options[1].textContent
-  );
 });
 
 test('adapter#setAttrForOptionAtIndex sets an attribute to the given value for the option at the ' +
@@ -375,66 +206,45 @@ test('adapter#rmAttrForOptionAtIndex removes the given attribute for the option 
   const {component} = setupTest();
   component.options[1].setAttribute('aria-disabled', 'true');
   component.getDefaultFoundation().adapter_.rmAttrForOptionAtIndex(1, 'aria-disabled');
-  assert.isNotOk(component.options[1].hasAttribute('aria-disabled'));
-});
-
-test('adapter#getOffsetTopForOptionAtIndex returns the offsetTop for the option at the given index', () => {
-  const {component, menu} = setupTest();
-  assert.equal(
-    component.getDefaultFoundation().adapter_.getOffsetTopForOptionAtIndex(1),
-    menu.items[1].offsetTop
-  );
-});
-
-test('adapter#registerMenuInteractionHandler listens for an interaction handler on the menu', () => {
-  const {component, menu} = setupTest();
-  const handler = () => {};
-  component.getDefaultFoundation().adapter_.registerMenuInteractionHandler('evt', handler);
-  td.verify(menu.listen('evt', handler));
-});
-
-test('adapter#deregisterMenuInteractionHandler unlistens for an interaction handler on the menu', () => {
-  const {component, menu} = setupTest();
-  const handler = () => {};
-  component.getDefaultFoundation().adapter_.deregisterMenuInteractionHandler('evt', handler);
-  td.verify(menu.unlisten('evt', handler));
-});
-
-test(`adapter#notifyChange emits an ${strings.CHANGE_EVENT} custom event from the root element`, () => {
-  const {component, fixture} = setupTest();
-  const handler = td.func('change handler');
-  fixture.addEventListener(strings.CHANGE_EVENT, handler);
-  component.getDefaultFoundation().adapter_.notifyChange();
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('adapter#getWindowInnerHeight returns window.innerHeight', () => {
-  const {component} = setupTest();
-  assert.equal(component.getDefaultFoundation().adapter_.getWindowInnerHeight(), window.innerHeight);
+  assert.isFalse(component.options[1].hasAttribute('aria-disabled'));
 });
 
 test('adapter#getValueForOptionAtIndex returns the id of the option at the given index', () => {
   const {component} = setupTest();
-  assert.equal(component.getDefaultFoundation().adapter_.getValueForOptionAtIndex(1), 'item-2');
+  assert.equal(component.getDefaultFoundation().adapter_.getValueForOptionAtIndex(1), 'orange');
 });
 
-test('adapter#getValueForOptionAtIndex returns the textContent of the option at given index when ' +
-     'no id value present', () => {
+test('adapter#getIndexForOptionValue returns the index of the option with a value', () => {
   const {component} = setupTest();
-  assert.equal(component.getDefaultFoundation().adapter_.getValueForOptionAtIndex(3), 'Item 4 no id');
+  assert.equal(component.getDefaultFoundation().adapter_.getIndexForOptionValue('apple'), 2);
 });
 
-test('adapter#addBodyClass adds a class to the body', () => {
+test('adapter#getIndexForOptionValue returns null if there is no option with the specific value', () => {
   const {component} = setupTest();
-  component.getDefaultFoundation().adapter_.addBodyClass('mdc-select-scroll-lock');
-  assert.isOk(document.querySelector('body').classList.contains('mdc-select-scroll-lock'));
+  assert.equal(component.getDefaultFoundation().adapter_.getIndexForOptionValue('grape'), null);
 });
 
-test('adapter#removeBodyClass remove a class from the body', () => {
-  const {component} = setupTest();
-  const body = document.querySelector('body');
+test('adapter#getValue returns the value of the select element', () => {
+  const {surface, component} = setupTest();
+  surface.selectedIndex = 1;
+  assert.equal(component.getDefaultFoundation().adapter_.getValue(), 'orange');
+});
 
-  body.classList.add('mdc-select-scroll-lock');
-  component.getDefaultFoundation().adapter_.removeBodyClass('mdc-select-scroll-lock');
-  assert.isNotOk(body.classList.contains('mdc-select-scroll-lock'));
+test('adapter#getValue returns empty string if there is no selected value', () => {
+  const {surface, component} = setupTest();
+  surface.selectedIndex = -1;
+  assert.equal(component.getDefaultFoundation().adapter_.getValue(), '');
+});
+
+test('adapter#setValue sets the value of the select to the correct option', () => {
+  const {surface, component} = setupTest();
+  component.getDefaultFoundation().adapter_.setValue('orange');
+  assert.equal(surface.selectedIndex, 1);
+});
+
+test('adapter#setValue sets the selectedIndex of the select to -1 if there is ' +
+  'no option with the specified value', () => {
+  const {surface, component} = setupTest();
+  component.getDefaultFoundation().adapter_.setValue('grape');
+  assert.equal(surface.selectedIndex, -1);
 });
