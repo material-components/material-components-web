@@ -64,8 +64,8 @@ class MDCTabFoundation extends MDCFoundation {
     /** @private {function(!Event): undefined} */
     this.handleRootTransitionEnd_ = (evt) => this.handleRootTransitionEnd(evt);
 
-    /** @private {function(Event=): undefined} */
-    this.handleIndicatorTransitionEnd_ = (evt) => this.handleIndicatorTransitionEnd(evt);
+    /** @private {function(?Event): undefined} */
+    this.handleIndicatorTransitionEnd_ = () => this.handleIndicatorTransitionEnd();
   }
 
   /**

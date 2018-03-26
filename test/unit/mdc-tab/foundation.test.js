@@ -115,8 +115,8 @@ test(`#activate adds class ${MDCTabFoundation.cssClasses.ANIMATING_INDICATOR} to
   td.when(mockAdapter.getIndicatorClientRect()).thenReturn({width: 100, left: 25});
   foundation.activate({width: 90, left: 0});
   raf.flush();
-  td.verify(mockAdapter.addClass(MDCTabFoundation.cssClasses.ANIMATING_INDICATOR));
   raf.restore();
+  td.verify(mockAdapter.addClass(MDCTabFoundation.cssClasses.ANIMATING_INDICATOR));
 });
 
 test('#activate sets the indicator style transform property to an empty string', () => {
@@ -125,8 +125,8 @@ test('#activate sets the indicator style transform property to an empty string',
   td.when(mockAdapter.getIndicatorClientRect()).thenReturn({width: 100, left: 25});
   foundation.activate({width: 90, left: 0});
   raf.flush();
-  td.verify(mockAdapter.setIndicatorStyleProperty('transform', ''));
   raf.restore();
+  td.verify(mockAdapter.setIndicatorStyleProperty('transform', ''));
 });
 
 test('#deactivate does nothing if not active', () => {

@@ -16,46 +16,10 @@
  */
 
 import MDCComponent from '@material/base/component';
-import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
-import MDCRippleAdapter from '@material/ripple/adapter';
+import MDCTabRipple from './tab-ripple';
 
 import MDCTabAdapter from './adapter';
 import MDCTabFoundation from './foundation';
-
-class RipplePaintSurface {}
-
-/** @protected {!Element} */
-RipplePaintSurface.prototype.paintSurface;
-
-class MDCTabRipple extends MDCRipple {
-  /**
-   * @param {!RipplePaintSurface} instance
-   * @return {!MDCRippleAdapter}
-   */
-  static createAdapter(instance) {
-    return Object.assign(MDCRipple.createAdapter(instance), {
-      addClass: (className) => instance.paintSurface.classList.add(className),
-      removeClass: (className) => instance.paintSurface.classList.remove(className),
-      updateCssVariable: (varName, value) => instance.paintSurface.style.setProperty(varName, value),
-    });
-  }
-
-  /** @return {!Element} */
-  get paintSurface() {
-    if (!this.paintSurface_) {
-      this.paintSurface_ = this.root_.querySelector(MDCTabFoundation.strings.RIPPLE_SELECTOR);
-    }
-    return this.paintSurface_;
-  }
-
-  /**
-   * @return {!MDCRippleFoundation}
-   * @override
-   */
-  getDefaultFoundation() {
-    return new MDCRippleFoundation(MDCTabRipple.createAdapter(this));
-  }
-}
 
 /**
  * @extends {MDCComponent<!MDCTabFoundation>}
@@ -72,8 +36,8 @@ class MDCTab extends MDCComponent {
 
   initialize() {
     /** @private {!MDCTabRipple} */
-    this.ripple_ = new MDCTabRipple(this.root_);
-    /** @private {!Element} */
+    this.ripple_ = MDCTabRipple.attachTo(this.root_);
+    /** @private {?Element} */
     this.indicator_ = this.root_.querySelector(MDCTabFoundation.strings.INDICATOR_SELECTOR);
   }
 
@@ -138,4 +102,4 @@ class MDCTab extends MDCComponent {
   }
 }
 
-export {MDCTab, MDCTabFoundation};
+export {MDCTab, MDCTabFoundation, MDCTabRipple};

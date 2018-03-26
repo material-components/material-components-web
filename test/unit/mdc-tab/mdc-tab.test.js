@@ -20,7 +20,7 @@ import td from 'testdouble';
 import domEvents from 'dom-events';
 
 import {createMockRaf} from '../helpers/raf';
-import {MDCTab, MDCTabFoundation} from '../../../packages/mdc-tab';
+import {MDCTab, MDCTabFoundation, MDCTabRipple} from '../../../packages/mdc-tab';
 
 const getFixture = () => bel`
   <button class="mdc-tab" aria-selected="false" role="tab">
@@ -46,24 +46,20 @@ function setupTest() {
 }
 
 test('#initialize creates the ripple', () => {
-  const raf = createMockRaf();
-  const {root} = setupTest();
-  raf.flush();
-  // component.initialize();
-  // raf.flush();
-  raf.restore();
-  console.log(root.querySelector(MDCTabFoundation.strings.RIPPLE_SELECTOR).classList);
-  assert.isOk(root.querySelector(MDCTabFoundation.strings.RIPPLE_SELECTOR).classList.contains('mdc-ripple-upgraded'));
+  const {component} = setupTest();
+  assert.instanceOf(component.ripple_, MDCTabRipple);
 });
 
 test('#destroy removes the ripple', () => {
   const raf = createMockRaf();
+  raf.flush();
   const {component, root} = setupTest();
   raf.flush();
   component.destroy();
   raf.flush();
   raf.restore();
-  assert.isNotOk(root.querySelector('.mdc-tab__ripple').classList.contains('mdc-ripple-upgraded'));
+  assert.isNotOk(
+    root.querySelector(MDCTabFoundation.strings.RIPPLE_SELECTOR).classList.contains('mdc-ripple-upgraded'));
 });
 
 test('#adapter.addClass adds a class to the root element', () => {
