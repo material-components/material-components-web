@@ -22,7 +22,7 @@
 
 const webpack = require('webpack');
 
-module.exports = class extends webpack.BannerPlugin {
+class CopyrightBannerPlugin extends webpack.BannerPlugin {
   constructor({projectName, authorName, licenseName}) {
     super({
       banner: [
@@ -36,4 +36,6 @@ module.exports = class extends webpack.BannerPlugin {
       entryOnly: true,
     });
   }
-};
+}
+
+module.exports = CopyrightBannerPlugin;

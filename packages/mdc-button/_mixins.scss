@@ -66,9 +66,14 @@
   border-radius: $corner-radius;
 }
 
-@mixin mdc-button-stroke-width($stroke-width) {
+@mixin mdc-button-horizontal-padding($padding) {
+  padding-right: $padding;
+  padding-left: $padding;
+}
+
+@mixin mdc-button-stroke-width($stroke-width, $padding: $mdc-button-contained-horizontal-padding) {
   // Note: Adjust padding to maintain consistent width with non-stroked buttons
-  $padding-value: max($mdc-button-horizontal-padding - $stroke-width, 0);
+  $padding-value: max($padding - $stroke-width, 0);
 
   padding-right: $padding-value;
   padding-left: $padding-value;
@@ -88,16 +93,17 @@
   @include mdc-typography(button);
   @include mdc-ripple-surface;
   @include mdc-ripple-radius-bounded;
+  @include mdc-button-horizontal-padding($mdc-button-horizontal-padding);
 
-  display: inline-block;
+  display: inline-flex;
   position: relative;
+  align-items: center;
+  justify-content: center;
   box-sizing: border-box;
   min-width: 64px;
   height: $mdc-button-height;
-  padding: 0 $mdc-button-horizontal-padding;
   border: none;
   outline: none;
-  text-align: center;
   user-select: none;
   -webkit-appearance: none;
   overflow: hidden;
@@ -133,16 +139,15 @@
   width: 18px;
   height: 18px;
   font-size: 18px;
-  line-height: inherit;
   vertical-align: top;
 }
 
 @mixin mdc-button__icon-svg_ {
-  @include mdc-rtl-reflexive-box(margin, right, 8px);
-
-  margin-top: -2px;
   fill: currentColor;
-  vertical-align: middle;
+}
+
+@mixin mdc-button__icon-contained_ {
+  @include mdc-rtl-reflexive-property(margin, -4px, 8px);
 }
 
 @mixin mdc-button--stroked_() {
@@ -154,6 +159,8 @@
 }
 
 @mixin mdc-button--filled_() {
+  @include mdc-button-horizontal-padding($mdc-button-contained-horizontal-padding);
+
   &:disabled {
     @include mdc-theme-prop(background-color, rgba(black, .12));
     @include mdc-theme-prop(color, text-disabled-on-light);
