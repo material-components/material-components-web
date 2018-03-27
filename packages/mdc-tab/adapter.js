@@ -33,14 +33,14 @@ class MDCTabAdapter {
    * @param {string} evtType
    * @param {function(!Event): undefined} handler
    */
-  registerEventHandler(evtType, handler) {}
+  registerRootEventHandler(evtType, handler) {}
 
   /**
    * Deregisters an event listener on the root element for a given event.
    * @param {string} evtType
    * @param {function(!Event): undefined} handler
    */
-  deregisterEventHandler(evtType, handler) {}
+  deregisterRootEventHandler(evtType, handler) {}
 
   /**
    * Registers an event listener on the indicator element

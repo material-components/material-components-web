@@ -27,7 +27,6 @@ const getFixture = () => bel`
   <button class="mdc-tab" aria-selected="false" role="tab">
     <div class="mdc-tab__content">
       <span class="mdc-tab__text-label">Foo</span>
-      <span class="mdc-tab__icon"></span>
     </div>
     <span class="mdc-tab__indicator"></span>
     <span class="mdc-tab__ripple"></span>
@@ -89,19 +88,19 @@ test('#adapter.setAttr adds a given attribute to the root element', () => {
   assert.equal(root.getAttribute('foo'), 'bar');
 });
 
-test('#adapter.registerEventHandler adds an event listener to the root element for a given event', () => {
+test('#adapter.registerRootEventHandler adds an event listener to the root element for a given event', () => {
   const {root, component} = setupTest();
   const handler = td.func('transitionend handler');
-  component.getDefaultFoundation().adapter_.registerEventHandler('transitionend', handler);
+  component.getDefaultFoundation().adapter_.registerRootEventHandler('transitionend', handler);
   domEvents.emit(root, 'transitionend');
   td.verify(handler(td.matchers.anything()));
 });
 
-test('#adapter.deregisterEventHandler removes an event listener from the root element for a given event', () => {
+test('#adapter.deregisterRootEventHandler removes an event listener from the root element for a given event', () => {
   const {root, component} = setupTest();
   const handler = td.func('transitionend handler');
   root.addEventListener('transitionend', handler);
-  component.getDefaultFoundation().adapter_.deregisterEventHandler('transitionend', handler);
+  component.getDefaultFoundation().adapter_.deregisterRootEventHandler('transitionend', handler);
   domEvents.emit(root, 'transitionend');
   td.verify(handler(td.matchers.anything()), {times: 0});
 });

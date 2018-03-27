@@ -87,7 +87,7 @@
   padding: 12px 0;
 }
 
-.mdc-tab__icon + .mdc-tab__text-label {
+.mdc-tab:not(.mdc-tab--two-lines) .mdc-tab__icon + .mdc-tab__text-label {
   @include mdc-rtl-reflexive-box(padding, left, 8px);
 }
 
@@ -112,6 +112,24 @@
   align-self: center;
   height: auto;
   background: none;
+}
+
+.mdc-tab--two-lines {
+  height: 72px;
+}
+
+.mdc-tab--two-lines .mdc-tab__content {
+  flex-direction: column;
+  align-items: center;
+}
+
+.mdc-tab--two-lines .mdc-tab__icon {
+  padding: 12px 0 8px;
+}
+
+.mdc-tab--two-lines .mdc-tab__text-label {
+  padding: 0 0 16px;
+  line-height: 12px;
 }
 
 /**

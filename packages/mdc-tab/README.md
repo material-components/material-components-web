@@ -43,9 +43,10 @@ npm install --save @material/tab
 ```html
 <button class="mdc-tab" role="tab" aria-selected="false">
   <div class="mdc-tab__content">
-    <span class="mdc-tab__icon">heart</div>
     <span class="mdc-tab__text-label">Favorites</div>
   </div>
+  <span class="mdc-tab__indicator"></span>
+  <span class="mdc-tab__ripple"></span>
 </button>
 ```
 
@@ -54,10 +55,14 @@ npm install --save @material/tab
 CSS Class | Description
 --- | ---
 `mdc-tab` | Mandatory.
-`mdc-tab--active` | Optional. Indicates that the tab is active.
-`mdc-tab__content` | Mandatory. Indicates the text label of the tab
-`mdc-tab__text-label` | Optional. Indicates an icon in the tab
-`mdc-tab__icon` | Optional. Indicates a leading icon in the tab
+`mdc-tab--active` | Optional. Denos that the tab is active.
+`mdc-tab--two-lines` | Optional. Denos that the tab has an icon and text label that should be drawn on two separate lines
+`mdc-tab__ripple` | Mandatory. Denos the ripple element of the tab
+`mdc-tab__indicator` | Mandatory. Denotes the indicator of the tab
+`mdc-tab__indicator--icon` | Optional. Denotes that the indicator should be drawn as an icon instead of a bar.
+`mdc-tab__content` | Mandatory. Denotes the text label of the tab
+`mdc-tab__text-label` | Optional. Denos an icon in the tab
+`mdc-tab__icon` | Optional. Denotes a leading icon in the tab
 
 ### Sass Mixins
 
@@ -67,6 +72,8 @@ Mixin | Description
 --- | ---
 `mdc-tab-text-label-color($color)` | Customizes the color of the tab text label
 `mdc-tab-icon-color($color)` | Customizes the color of the tab icon
+`mdc-tab-indicator-color($color)` | Customizes the color of the tab indicator
+`mdc-tab-indciator-height($height)` | Customizes the height of the tab indicator
 
 ### `MDCTab`
 

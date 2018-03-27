@@ -78,8 +78,8 @@ class MDCTab extends MDCComponent {
   getDefaultFoundation() {
     return new MDCTabFoundation(/** @type {!MDCTabAdapter} */ (Object.assign({
       setAttr: (attr, value) => this.root_.setAttribute(attr, value),
-      registerEventHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
-      deregisterEventHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
+      registerRootEventHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
+      deregisterRootEventHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       hasClass: (className) => this.root_.classList.contains(className),

@@ -43,8 +43,8 @@ class MDCTabFoundation extends MDCFoundation {
    */
   static get defaultAdapter() {
     return /** @type {!MDCTabAdapter} */ ({
-      registerEventHandler: () => {},
-      deregisterEventHandler: () => {},
+      registerRootEventHandler: () => {},
+      deregisterRootEventHandler: () => {},
       registerIndicatorEventHandler: () => {},
       deregisterIndicatorEventHandler: () => {},
       addClass: () => {},
@@ -77,7 +77,7 @@ class MDCTabFoundation extends MDCFoundation {
     if (evt.pseudoElement) {
       return;
     }
-    this.adapter_.deregisterEventHandler('transitionend', this.handleRootTransitionEnd_);
+    this.adapter_.deregisterRootEventHandler('transitionend', this.handleRootTransitionEnd_);
     this.adapter_.removeClass(cssClasses.ANIMATING_ACTIVATE);
     this.adapter_.removeClass(cssClasses.ANIMATING_DEACTIVATE);
   }
@@ -117,7 +117,7 @@ class MDCTabFoundation extends MDCFoundation {
    * @private
    */
   activateTab_() {
-    this.adapter_.registerEventHandler('transitionend', this.handleRootTransitionEnd_);
+    this.adapter_.registerRootEventHandler('transitionend', this.handleRootTransitionEnd_);
     this.adapter_.addClass(cssClasses.ANIMATING_ACTIVATE);
     this.adapter_.addClass(cssClasses.ACTIVE);
     this.adapter_.setAttr(strings.ARIA_SELECTED, 'true');
@@ -129,6 +129,7 @@ class MDCTabFoundation extends MDCFoundation {
    * @private
    */
   activateIndicator_(previousTabIndicatorRect) {
+    // Early exit
     if (!previousTabIndicatorRect || this.adapter_.indicatorHasClass(cssClasses.INDICATOR_ICON)) {
       return;
     }
@@ -139,6 +140,7 @@ class MDCTabFoundation extends MDCFoundation {
     this.adapter_.setIndicatorStyleProperty('transform', `translateX(${xPosition}px) scaleX(${widthDelta})`);
     // Force repaint
     this.adapter_.getIndicatorClientRect();
+    // Add class and undo styling in a new frame
     requestAnimationFrame(() => {
       this.adapter_.addClass(cssClasses.ANIMATING_INDICATOR);
       this.adapter_.setIndicatorStyleProperty('transform', '');
@@ -154,7 +156,7 @@ class MDCTabFoundation extends MDCFoundation {
     if (!this.isActive()) {
       return;
     }
-    this.adapter_.registerEventHandler('transitionend', this.handleRootTransitionEnd_);
+    this.adapter_.registerRootEventHandler('transitionend', this.handleRootTransitionEnd_);
     this.adapter_.addClass(cssClasses.ANIMATING_DEACTIVATE);
     this.adapter_.removeClass(cssClasses.ACTIVE);
     this.adapter_.setAttr(strings.ARIA_SELECTED, 'false');
