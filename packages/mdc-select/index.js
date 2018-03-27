@@ -42,7 +42,10 @@ export class MDCSelect extends MDCComponent {
   }
 
   get selectedOptions() {
-    return [].slice.call(this.surface_.selectedOptions);
+    // In an array because HTML spec also returns an array.
+    // Cannot access HTMLSelectElement.selectedIndex since it is not supported by IE11.
+    // https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement/selectedIndex
+    return [this.item(this.selectedIndex)];
   }
 
   get selectedIndex() {
