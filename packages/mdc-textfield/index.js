@@ -314,7 +314,8 @@ class MDCTextField extends MDCComponent {
    * all dimensions and positions for the ripple element.
    */
   layout() {
-    this.foundation_.updateOutline();
+    const openNotch = this.foundation_.shouldFloat;
+    this.foundation_.notchOutline(openNotch);
     if (this.ripple) {
       this.ripple.layout();
     }
@@ -397,14 +398,15 @@ class MDCTextField extends MDCComponent {
 
   /**
    * @return {!{
+   *   notchOutline: function(number, boolean): undefined,
    *   hasOutline: function(): boolean,
-   *   updateOutlinePath: function(number, boolean): undefined,
    * }}
    */
   getOutlineAdapterMethods_() {
     return {
+      notchOutline: (labelWidth, isRtl) => this.outline_.notch(labelWidth, isRtl),
+      closeOutline: () => this.outline_.closeNotch(),
       hasOutline: () => !!this.outline_,
-      updateOutlinePath: (labelWidth, isRtl) => this.outline_.updateSvgPath(labelWidth, isRtl),
     };
   }
 
