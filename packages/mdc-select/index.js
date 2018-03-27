@@ -111,6 +111,7 @@ export class MDCSelect extends MDCComponent {
       getNumberOfOptions: () => this.options.length,
       getIndexForOptionValue: (value) => this.indexByValue_(value),
       getValueForOptionAtIndex: (index) => this.options[index].value,
+      getSelectedIndex: () => this.surface_.selectedIndex,
       setSelectedIndex: (index) => this.surface_.selectedIndex = index,
       getValue: () => this.surface_.value,
       setValue: (value) => this.surface_.value = value,

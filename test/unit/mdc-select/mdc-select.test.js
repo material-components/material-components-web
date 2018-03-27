@@ -39,9 +39,7 @@ function getFixture() {
   return bel`
     <div class="mdc-select">
       <select class="mdc-select__surface">
-        <option class="mdc-list-item" value="" disabled selected>
-          Pick a food group
-        </option>
+        <option class="mdc-list-item" value="" disabled selected hidden></option>
         <option class="mdc-list-item" value="orange">
           Orange
         </option>
@@ -75,7 +73,7 @@ function setupTest() {
 
 test('#get/setSelectedIndex', () => {
   const {component} = setupTest();
-  assert.equal(component.selectedIndex, -1);
+  assert.equal(component.selectedIndex, 0);
   component.selectedIndex = 1;
   assert.equal(component.selectedIndex, 1);
 });

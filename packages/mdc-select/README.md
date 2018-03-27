@@ -222,6 +222,7 @@ the result of a user action.
 | `getNumberOfOptions() => number` | Returns the number of options contained in the select. |
 | `getIndexForOptionValue(value: string) => number` | Returns the index of the option that matches the specified value. Returns -1 if value is not found. |
 | `getValueForOptionAtIndex(index: number) => string` | Returns the value for the option at the specified index within the select. |
+| `getSelectedIndex() => number` | Returns the selectedIndex of the select element. |
 | `setSelectedIndex(index: number) => void` | Sets the select's selectedValue to the option found at the provided index. If the index is out of the select's range, it will default to -1. |
 | `getValue() => string` | Returns the selected value of the select. Returns empty string if no value is set. |
 | `setValue(value: string) => void` | Sets the select's value. If no option has the provided value, it sets `value` to empty string. |

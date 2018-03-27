@@ -58,9 +58,7 @@
   }
 }
 
-
 // Private
-
 @mixin mdc-select-focused-bottom-line_ {
   .mdc-select__surface:focus ~ .mdc-select__bottom-line {
     @content;
@@ -82,6 +80,7 @@
     @include mdc-select-bottom-line-fill-color($color);
   }
 }
+
 @mixin mdc-select-focused-bottom-line-color_($color) {
   @include mdc-select-focused-bottom-line_ {
     @include mdc-select-bottom-line-fill-color($color);

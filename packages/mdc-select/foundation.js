@@ -59,6 +59,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
       getValueForOptionAtIndex: (/* index: number */) => /* index */ '',
       getValue: () => /* string */ '',
       setValue: (/* value: string */) => {},
+      getSelectedIndex: () => /* number */ -1,
       setSelectedIndex: (/* index: number */) => {},
       setDisabled: (/* disabled: boolean */) => {},
     };
@@ -66,7 +67,6 @@ export default class MDCSelectFoundation extends MDCFoundation {
 
   constructor(adapter) {
     super(Object.assign(MDCSelectFoundation.defaultAdapter, adapter));
-    this.selectedIndex_ = -1;
     this.disabled_ = false;
 
     this.focusHandler_ = (evt) => this.handleFocus_(evt);
@@ -87,24 +87,20 @@ export default class MDCSelectFoundation extends MDCFoundation {
   }
 
   getSelectedIndex() {
-    return this.selectedIndex_;
+    return this.adapter_.getSelectedIndex();
   }
 
   setSelectedIndex(index) {
     const {IS_CHANGING} = MDCSelectFoundation.cssClasses;
     const {SELECT_TEXT_TRANSITION_TIME} = MDCSelectFoundation.numbers;
+    const isIndexInRange = index >= 0 && index < this.adapter_.getNumberOfOptions();
 
-    this.selectedIndex_ = index >= 0 && index < this.adapter_.getNumberOfOptions() ? index : -1;
-    this.adapter_.setSelectedIndex(index);
+    const selectedIndex = isIndexInRange ? index : -1;
+    this.adapter_.setSelectedIndex(selectedIndex);
     this.adapter_.addClass(IS_CHANGING);
 
-    const optionHasValue = this.selectedIndex_ > -1 ? !!this.adapter_.getValueForOptionAtIndex(index) : false;
-
-    if (this.selectedIndex_ >= 0 && optionHasValue) {
-      this.adapter_.floatLabel(true);
-    } else {
-      this.adapter_.floatLabel(false);
-    }
+    const optionHasValue = selectedIndex > -1 ? !!this.adapter_.getValueForOptionAtIndex(selectedIndex) : false;
+    this.adapter_.floatLabel(optionHasValue);
 
     setTimeout(() => {
       this.adapter_.removeClass(IS_CHANGING);
@@ -120,9 +116,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
     index = !index && null !== 0 ? -1 : index;
 
     this.adapter_.setValue(value);
-    if (index !== this.selectedIndex_) {
-      this.setSelectedIndex(index);
-    }
+    this.setSelectedIndex(index);
   }
 
   handleFocus_() {
@@ -135,9 +129,6 @@ export default class MDCSelectFoundation extends MDCFoundation {
 
   handleSelect_(evt) {
     const index = this.adapter_.getIndexForOptionValue(evt.target.value);
-
-    if (index !== this.selectedIndex_) {
-      this.setSelectedIndex(index);
-    }
+    this.setSelectedIndex(index);
   }
 }

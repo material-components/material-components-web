@@ -43,7 +43,7 @@ test('default adapter returns a complete adapter implementation', () => {
     'deactivateBottomLine',
     'registerInteractionHandler', 'deregisterInteractionHandler',
     'getNumberOfOptions', 'getIndexForOptionValue', 'getValueForOptionAtIndex',
-    'getValue', 'setValue', 'setSelectedIndex', 'setDisabled',
+    'getValue', 'setValue', 'getSelectedIndex', 'setSelectedIndex', 'setDisabled',
   ]);
 });
 
@@ -111,8 +111,9 @@ test('#destroy deregisters focus, blur, and change handler', () => {
   td.verify(mockAdapter.deregisterInteractionHandler('change', foundation.selectionHandler_));
 });
 
-test('#getSelectedIndex returns correct default value of -1', () => {
-  const {foundation} = setupTest();
+test('#getSelectedIndex returns correct value', () => {
+  const {mockAdapter, foundation} = setupTest();
+  td.when(mockAdapter.getSelectedIndex()).thenReturn(-1);
   assert.equal(foundation.getSelectedIndex(), -1);
 });
 
@@ -175,13 +176,4 @@ test('#setValue calls setSelectedIndex, which calls floatLabel true', () => {
   td.when(mockAdapter.getIndexForOptionValue('value')).thenReturn(1);
   foundation.setValue('value');
   td.verify(mockAdapter.floatLabel(true));
-});
-
-test('#setValue does not call setSelectedIndex if the option is already selected', () => {
-  const {mockAdapter, foundation} = setupTest();
-  foundation.selectedIndex_ = 1;
-  td.when(mockAdapter.getValueForOptionAtIndex(1)).thenReturn('value');
-  td.when(mockAdapter.getIndexForOptionValue('value')).thenReturn(1);
-  foundation.setValue('value');
-  td.verify(mockAdapter.floatLabel(td.matchers.boolean), {times: 0});
 });
