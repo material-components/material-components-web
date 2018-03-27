@@ -19,7 +19,6 @@
 const CssBundleFactory = require('../../scripts/webpack/css-bundle-factory');
 const Environment = require('../../scripts/build/environment');
 const Globber = require('../../scripts/webpack/globber');
-const JsBundleFactory = require('../../scripts/webpack/js-bundle-factory');
 const PathResolver = require('../../scripts/build/path-resolver');
 const PluginFactory = require('../../scripts/webpack/plugin-factory');
 const StaticServer = require('../../scripts/build/static-server');
@@ -32,7 +31,6 @@ const globber = new Globber({pathResolver});
 const pluginFactory = new PluginFactory({globber});
 const copyrightBannerPlugin = pluginFactory.createCopyrightBannerPlugin();
 const cssBundleFactory = new CssBundleFactory({env, pathResolver, globber, pluginFactory});
-const jsBundleFactory = new JsBundleFactory({env, pathResolver, globber, pluginFactory});
 const staticServer = new StaticServer({pathResolver});
 
 const MAIN_OUTPUT = {
@@ -46,9 +44,7 @@ const TEST_OUTPUT = {
 };
 
 module.exports = [
-  mainJsCombined(),
   mainCssALaCarte(),
-  testJs(),
   testCss(),
 ];
 
@@ -63,26 +59,8 @@ if (env.shouldRunStaticServer()) {
   });
 }
 
-function mainJsCombined() {
-  return jsBundleFactory.createMainJsCombined({output: MAIN_OUTPUT});
-}
-
 function mainCssALaCarte() {
   return cssBundleFactory.createMainCssALaCarte({output: MAIN_OUTPUT});
-}
-
-function testJs() {
-  return jsBundleFactory.createCustomJs({
-    bundleName: 'screenshot-test-js',
-    chunkGlobConfig: {
-      inputDirectory: '/test/screenshot',
-      filePathPattern: '**/*.test.js',
-    },
-    output: TEST_OUTPUT,
-    plugins: [
-      copyrightBannerPlugin,
-    ],
-  });
 }
 
 function testCss() {
