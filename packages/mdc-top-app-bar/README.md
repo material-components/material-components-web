@@ -52,6 +52,19 @@ Top app bars can accommodate multiple action items on the opposite side of the n
 </header>
 ```
 
+Top app bars can be fixed at the top of the page:
+
+```html
+<header class="mdc-top-app-bar mdc-top-app-bar--fixed">
+  <div class="mdc-top-app-bar__row">
+    <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+      <a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
+      <span class="mdc-top-app-bar__title">Title</span>
+    </section>
+  </div>
+</header>
+```
+
 Short top app bars should only be used with one action item:
 
 ```html
@@ -102,6 +115,8 @@ Short top app bars can be configured to always appear collapsed by applying the 
 Class | Description
 --- | ---
 `mdc-top-app-bar` | Mandatory.
+`mdc-top-app-bar--fixed` | Class used to style the top app bar as a fixed top app bar.
+`mdc-top-app-bar--prominent` | Class used to style the top app bar as a prominent top app bar.
 `mdc-top-app-bar--short` | Class used to style the top app bar as a short top app bar.
 `mdc-top-app-bar--short-collapsed` | Class used to indicate the short top app bar is collapsed.
 

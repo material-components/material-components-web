@@ -145,5 +145,13 @@
   }
 }
 
+.mdc-top-app-bar--fixed {
+  position: fixed;
+}
+
+.mdc-top-app-bar--fixed__scrolled {
+  @include mdc-elevation(4);
+}
+
 // Mobile Styles
 @include mdc-top-app-bar-mobile-breakpoint_;
