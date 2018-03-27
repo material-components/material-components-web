@@ -44,7 +44,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'getNativeInput', 'isFocused', 'isRtl', 'activateLineRipple', 'deactivateLineRipple',
     'setLineRippleTransformOrigin', 'shakeLabel', 'floatLabel', 'hasLabel', 'getLabelWidth',
     'registerValidationAttributeChangeHandler', 'deregisterValidationAttributeChangeHandler',
-    'hasOutline', 'updateOutlinePath',
+    'hasOutline', 'notchOutline', 'closeOutline',
   ]);
 });
 
@@ -373,7 +373,7 @@ test('#setHelperTextContent sets the content of the helper text element', () => 
   td.verify(helperText.setContent('foo'));
 });
 
-test('#updateOutline updates the SVG path of the outline element', () => {
+test('#notchOutline updates the SVG path of the outline element', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getLabelWidth()).thenReturn(30);
   td.when(mockAdapter.hasLabel()).thenReturn(true);
@@ -381,11 +381,11 @@ test('#updateOutline updates the SVG path of the outline element', () => {
   td.when(mockAdapter.hasClass(cssClasses.DENSE)).thenReturn(false);
   td.when(mockAdapter.isRtl()).thenReturn(false);
 
-  foundation.updateOutline();
-  td.verify(mockAdapter.updateOutlinePath(30 * numbers.LABEL_SCALE, false));
+  foundation.notchOutline(true);
+  td.verify(mockAdapter.notchOutline(30 * numbers.LABEL_SCALE, false));
 });
 
-test('#updateOutline updates the SVG path of the outline element when dense', () => {
+test('#notchOutline updates the SVG path of the outline element when dense', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getLabelWidth()).thenReturn(30);
   td.when(mockAdapter.hasLabel()).thenReturn(true);
@@ -393,8 +393,8 @@ test('#updateOutline updates the SVG path of the outline element when dense', ()
   td.when(mockAdapter.hasClass(cssClasses.DENSE)).thenReturn(true);
   td.when(mockAdapter.isRtl()).thenReturn(false);
 
-  foundation.updateOutline();
-  td.verify(mockAdapter.updateOutlinePath(30 * numbers.DENSE_LABEL_SCALE, false));
+  foundation.notchOutline(true);
+  td.verify(mockAdapter.notchOutline(30 * numbers.DENSE_LABEL_SCALE, false));
 });
 
 const setupBareBonesTest = () => {
@@ -404,11 +404,32 @@ const setupBareBonesTest = () => {
   return {foundation, mockAdapter};
 };
 
-test('#updateOutline does nothing if no outline is present', () => {
+test('#notchOutline does nothing if no outline is present', () => {
   const {foundation, mockAdapter} = setupBareBonesTest();
+  td.when(mockAdapter.hasOutline()).thenReturn(false);
+  td.when(mockAdapter.hasLabel()).thenReturn(true);
 
-  foundation.updateOutline();
-  td.verify(mockAdapter.hasClass(cssClasses.DENSE), {times: 0});
+  foundation.notchOutline(true);
+  td.verify(mockAdapter.notchOutline(td.matchers.anything()), {times: 0});
+});
+
+test('#notchOutline does nothing if no label is present', () => {
+  const {foundation, mockAdapter} = setupBareBonesTest();
+  td.when(mockAdapter.hasOutline()).thenReturn(true);
+  td.when(mockAdapter.hasLabel()).thenReturn(false);
+
+  foundation.notchOutline(true);
+  td.verify(mockAdapter.notchOutline(td.matchers.anything()), {times: 0});
+});
+
+test('#notchOutline calls updates notched outline to return to idle state when ' +
+  'openNotch is false', () => {
+  const {foundation, mockAdapter} = setupBareBonesTest();
+  td.when(mockAdapter.hasLabel()).thenReturn(true);
+  td.when(mockAdapter.hasOutline()).thenReturn(true);
+
+  foundation.notchOutline(false);
+  td.verify(mockAdapter.closeOutline());
 });
 
 test('on input styles label if input event occurs without any other events', () => {

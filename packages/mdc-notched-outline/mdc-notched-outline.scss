@@ -60,3 +60,11 @@
     mdc-text-field-transition(opacity);
   fill: transparent;
 }
+
+.mdc-notched-outline--notched {
+  opacity: 1;
+}
+
+.mdc-notched-outline--notched ~ .mdc-notched-outline__idle {
+  opacity: 0;
+}
