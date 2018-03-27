@@ -218,13 +218,11 @@ test('#handleIndicatorTransitionEnd deregisters the transitionend event listener
   td.verify(mockAdapter.deregisterIndicatorEventHandler('transitionend', td.matchers.isA(Function)));
 });
 
-test('on indicator transitionend', () => {
+test('on indicator transitionend, remove the transitionend handler', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerIndicatorEventHandler');
   td.when(mockAdapter.getIndicatorClientRect()).thenReturn({width: 100, left: 25});
   foundation.activate({width: 90, left: 0});
   handlers.transitionend();
-  // td.verify(mockAdapter.removeClass(MDCTabFoundation.cssClasses.ANIMATING_ACTIVATE), {times: 0});
-  // td.verify(mockAdapter.removeClass(MDCTabFoundation.cssClasses.ANIMATING_DEACTIVATE), {times: 0});
-  // td.verify(mockAdapter.deregisterEventHandler('transitionend', td.matchers.isA(Function)), {times: 0});
+  td.verify(mockAdapter.deregisterIndicatorEventHandler('transitionend', td.matchers.isA(Function)), {times: 1});
 });

@@ -93,6 +93,19 @@
           </div>
         </div>
         <div class="demo">
+          <button class="mdc-tab demo-tab" role="tab" data-demo="basicTabIcon">
+            <span class="mdc-tab__content">
+              <span class="mdc-tab__icon material-icons">favorite</span>
+            </span>
+            <span class="mdc-tab__indicator"></span>
+            <span class="mdc-tab__ripple"></span>
+          </button>
+          <div class="demo-controls">
+            <input type="checkbox" id="id13" data-controls="basicTabIcon"/>
+            <label for="id13">Active</label>
+          </div>
+        </div>
+        <div class="demo">
           <button class="mdc-tab demo-tab" role="tab" data-demo="basicTabWithIcon">
             <span class="mdc-tab__content">
               <span class="material-icons mdc-tab__icon">directions_transit</span>
@@ -104,6 +117,20 @@
           <div class="demo-controls">
             <input type="checkbox" id="id1" data-controls="basicTabWithIcon"/>
             <label for="id1">Active</label>
+          </div>
+        </div>
+        <div class="demo">
+          <button class="mdc-tab mdc-tab--two-lines demo-tab" role="tab" data-demo="basicTabTwoLines">
+            <span class="mdc-tab__content">
+              <span class="material-icons mdc-tab__icon">people</span>
+              <span class="mdc-tab__text-label">Contacts</span>
+            </span>
+            <span class="mdc-tab__indicator"></span>
+            <span class="mdc-tab__ripple"></span>
+          </button>
+          <div class="demo-controls">
+            <input type="checkbox" id="id12" data-controls="basicTabTwoLines"/>
+            <label for="id12">Active</label>
           </div>
         </div>
       </section>
@@ -127,7 +154,6 @@
           <button class="mdc-tab demo-tab" role="tab" data-demo="basicTabWithIconTextLabelIndicator">
             <span class="mdc-tab__content">
               <span class="material-icons mdc-tab__icon">directions_transit</span>
-              <span class="mdc-tab__text-label">Transit</span>
               <span class="mdc-tab__indicator"></span>
             </span>
             <span class="mdc-tab__ripple"></span>
@@ -141,7 +167,7 @@
           <button class="mdc-tab mdc-tab--two-lines demo-tab" role="tab" data-demo="basicTabTwoLinesWithIconTextLabelIndicator">
             <span class="mdc-tab__content">
               <span class="material-icons mdc-tab__icon">people</span>
-              <span class="mdc-tab__text-label">Saved</span>
+              <span class="mdc-tab__text-label">Contacts</span>
               <span class="mdc-tab__indicator"></span>
             </span>
             <span class="mdc-tab__ripple"></span>
@@ -169,7 +195,7 @@
           </div>
         </div>
         <div class="demo">
-          <button class="mdc-tab demo-tab custom-tab2" role="tab" data-demo="customColorsTab2">
+          <button class="mdc-tab mdc-tab--two-lines demo-tab custom-tab2" role="tab" data-demo="customColorsTab2">
             <span class="mdc-tab__content">
               <span class="material-icons mdc-tab__icon">directions_car</span>
               <span class="mdc-tab__text-label">Directions</span>
@@ -230,8 +256,10 @@
         for (var i = 0; i < controls.length; i++) {
           controls[i].addEventListener('change', function(event) {
             var controlTarget = event.currentTarget.dataset.controls;
-            if (window[controlTarget]) {
-              window[controlTarget].active = event.currentTarget.checked;
+            if (event.currentTarget.checked) {
+              window[controlTarget].activate();
+            } else {
+              window[controlTarget].deactivate()
             }
           });
         }

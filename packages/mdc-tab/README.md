@@ -156,9 +156,9 @@ CSS Class | Description
 `mdc-tab__ripple` | Mandatory. Denos the ripple element of the tab
 `mdc-tab__indicator` | Mandatory. Denotes the indicator of the tab
 `mdc-tab__indicator--icon` | Optional. Denotes that the indicator should be drawn as an icon instead of a bar.
-`mdc-tab__content` | Mandatory. Denotes the text label of the tab
-`mdc-tab__text-label` | Optional. Denos an icon in the tab
-`mdc-tab__icon` | Optional. Denotes a leading icon in the tab
+`mdc-tab__content` | Mandatory. Denotes the content of the tab
+`mdc-tab__text-label` | Optional. Denotes a text label in the tab content
+`mdc-tab__icon` | Optional. Denotes an icon in the tab content
 
 ### Sass Mixins
 
@@ -173,10 +173,15 @@ Mixin | Description
 
 ### `MDCTab`
 
+Method Signature | Description
+--- | ---
+`activate(previousTabClientRect: ClientRect) => void` | Activates the tab
+`deactivate() => void` | Deactivates the tab
+
 Property | Value Type | Description
 --- | --- | ---
-`active` | `boolean` | Allows getting/setting the active state of the tab
-`ripple` | `MDCRipple` | The `MDCRipple` instance for the root element that `MDCChip` initializes
+`active` | `boolean` | Getter for the active state of the tab
+`indicatorClientRect` | `ClientRect` | Getter for the indicator's bounding client rect
 
 ### `MDCTabAdapter`
 

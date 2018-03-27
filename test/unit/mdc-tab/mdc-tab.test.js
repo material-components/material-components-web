@@ -153,18 +153,6 @@ test('#active getter calls isActive', () => {
   td.verify(mockFoundation.isActive(), {times: 1});
 });
 
-test('#active set to true calls activate', () => {
-  const {component, mockFoundation} = setupMockFoundationTest();
-  component.active = true;
-  td.verify(mockFoundation.activate(undefined), {times: 1});
-});
-
-test('#active set to false calls deactivate', () => {
-  const {component, mockFoundation} = setupMockFoundationTest();
-  component.active = false;
-  td.verify(mockFoundation.deactivate(), {times: 1});
-});
-
 test('#indicatorClientRect getter calls getIndicatorClientRect', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
   component.indicatorClientRect;

@@ -50,10 +50,7 @@ class MDCTab extends MDCComponent {
   };
 
   initialize() {
-    /** @private {?Element} */
     this.indicator_ = this.root_.querySelector(MDCTabFoundation.strings.INDICATOR_SELECTOR);
-
-    /** @private {?Element} */
     this.rippleSurface_ = this.root_.querySelector(MDCTabFoundation.strings.RIPPLE_SELECTOR);
 
     const rippleAdapter = Object.assign(MDCRipple.createAdapter(/** @type {!RippleCapableSurface} */ (this)), {
@@ -96,17 +93,6 @@ class MDCTab extends MDCComponent {
    */
   get active() {
     return this.foundation_.isActive();
-  }
-
-  /**
-   * @param {boolean} isActive
-   */
-  set active(isActive) {
-    if (isActive) {
-      this.activate();
-    } else {
-      this.deactivate();
-    }
   }
 
   /**
