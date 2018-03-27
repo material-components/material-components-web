@@ -90,7 +90,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
       hasLabel: () => {},
       getLabelWidth: () => {},
       hasOutline: () => {},
-      updateOutlinePath: () => {},
+      notchOutline: () => {},
+      closeOutline: () => {},
     });
   }
 
@@ -135,6 +136,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     // Ensure label does not collide with any pre-filled value.
     if (this.adapter_.hasLabel() && this.getValue()) {
       this.adapter_.floatLabel(this.shouldFloat);
+      this.notchOutline(this.shouldFloat);
     }
 
     if (this.adapter_.isFocused()) {
@@ -193,18 +195,23 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * Updates the focus outline for outlined text fields.
+   * Opens/closes the notched outline.
+   * @param {boolean} openNotch
    */
-  updateOutline() {
+  notchOutline(openNotch) {
     if (!this.adapter_.hasOutline() || !this.adapter_.hasLabel()) {
       return;
     }
 
-    const isDense = this.adapter_.hasClass(cssClasses.DENSE);
-    const labelScale = isDense ? numbers.DENSE_LABEL_SCALE : numbers.LABEL_SCALE;
-    const labelWidth = this.adapter_.getLabelWidth() * labelScale;
-    const isRtl = this.adapter_.isRtl();
-    this.adapter_.updateOutlinePath(labelWidth, isRtl);
+    if (openNotch) {
+      const isDense = this.adapter_.hasClass(cssClasses.DENSE);
+      const labelScale = isDense ? numbers.DENSE_LABEL_SCALE : numbers.LABEL_SCALE;
+      const labelWidth = this.adapter_.getLabelWidth() * labelScale;
+      const isRtl = this.adapter_.isRtl();
+      this.adapter_.notchOutline(labelWidth, isRtl);
+    } else {
+      this.adapter_.closeOutline();
+    }
   }
 
   /**
@@ -214,7 +221,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.isFocused_ = true;
     this.styleFocused_(this.isFocused_);
     this.adapter_.activateLineRipple();
-    this.updateOutline();
+    this.notchOutline(this.shouldFloat);
     if (this.adapter_.hasLabel()) {
       this.adapter_.shakeLabel(this.shouldShake);
       this.adapter_.floatLabel(this.shouldFloat);
@@ -260,6 +267,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     if (this.adapter_.hasLabel()) {
       this.adapter_.shakeLabel(this.shouldShake);
       this.adapter_.floatLabel(this.shouldFloat);
+      this.notchOutline(this.shouldFloat);
     }
     if (shouldRemoveLabelFloat) {
       this.receivedUserInput_ = false;
@@ -283,6 +291,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     if (this.adapter_.hasLabel()) {
       this.adapter_.shakeLabel(this.shouldShake);
       this.adapter_.floatLabel(this.shouldFloat);
+      this.notchOutline(this.shouldFloat);
     }
   }
 
