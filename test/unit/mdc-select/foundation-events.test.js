@@ -59,11 +59,7 @@ test('on select value change with option value', () => {
   handlers.change(createEvent({
     target: {value: 'abc'},
   }));
-  td.verify(mockAdapter.getIndexForOptionValue('abc'), {times: 1});
-  td.verify(mockAdapter.getNumberOfOptions(), {times: 1});
-  td.verify(mockAdapter.setSelectedIndex(1), {times: 1});
   td.verify(mockAdapter.addClass(MDCSelectFoundation.cssClasses.IS_CHANGING), {times: 1});
-  td.verify(mockAdapter.getValueForOptionAtIndex(1), {times: 1});
   td.verify(mockAdapter.floatLabel(true), {times: 1});
   clock.tick(MDCSelectFoundation.numbers.SELECT_TEXT_TRANSITION_TIME);
   td.verify(mockAdapter.removeClass(MDCSelectFoundation.cssClasses.IS_CHANGING), {times: 1});
