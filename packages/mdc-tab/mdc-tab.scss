@@ -159,6 +159,9 @@
   transition: 250ms transform cubic-bezier(0, 0, .2, 1);
 }
 
+/**
+ * RTL fix for single lines with icon and text label
+ */
 .mdc-tab:not(.mdc-tab--two-lines) .mdc-tab__icon + .mdc-tab__text-label {
   @include mdc-rtl-reflexive-box(padding, left, 8px);
 }
