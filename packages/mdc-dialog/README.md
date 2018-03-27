@@ -52,7 +52,7 @@ Dialogs inform users about a specific task and may contain critical information 
   <div class="mdc-dialog__surface">
     <header class="mdc-dialog__header">
       <h2 id="my-mdc-dialog-label" class="mdc-dialog__header__title">
-        Use Google's location service?
+        Use Google&apos;s location service?
       </h2>
     </header>
     <section id="my-mdc-dialog-description" class="mdc-dialog__body">
