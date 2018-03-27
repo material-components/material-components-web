@@ -68,7 +68,6 @@ function testCss() {
     bundleName: 'screenshot-test-css',
     chunkGlobConfig: {
       inputDirectory: '/test/screenshot',
-      filePathPattern: '**/*.test.scss',
     },
     output: TEST_OUTPUT,
     plugins: [
