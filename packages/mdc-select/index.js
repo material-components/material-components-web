@@ -102,8 +102,6 @@ export class MDCSelect extends MDCComponent {
       },
       activateBottomLine: () => this.bottomLine_.activate(),
       deactivateBottomLine: () => this.bottomLine_.deactivate(),
-      setAttr: (attr, value) => this.root_.setAttribute(attr, value),
-      rmAttr: (attr, value) => this.root_.removeAttribute(attr, value),
       setDisabled: (disabled) => this.surface_.disabled = disabled,
       registerInteractionHandler: (type, handler) => this.surface_.addEventListener(type, handler),
       deregisterInteractionHandler: (type, handler) => this.surface_.removeEventListener(type, handler),
@@ -113,8 +111,6 @@ export class MDCSelect extends MDCComponent {
       setSelectedIndex: (index) => this.surface_.selectedIndex = index,
       getValue: () => this.surface_.value,
       setValue: (value) => this.surface_.value = value,
-      setAttrForOptionAtIndex: (index, attr, value) => this.options[index].setAttribute(attr, value),
-      rmAttrForOptionAtIndex: (index, attr) => this.options[index].removeAttribute(attr),
     });
   }
 
@@ -125,7 +121,7 @@ export class MDCSelect extends MDCComponent {
       this.selectedIndex = idx;
     }
 
-    if (this.root_.getAttribute('aria-disabled') === 'true') {
+    if (this.root_.classList.contains(MDCSelectFoundation.cssClasses.DISABLED)) {
       this.disabled = true;
     }
   }

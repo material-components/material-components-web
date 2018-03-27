@@ -89,7 +89,7 @@ See [Importing the JS component](../../docs/importing-js.md) for more informatio
 
 When dealing with the select component that has pre-selected values, you'll want to ensure that you
 render `mdc-select__label` with the `mdc-select__label--float-above` modifier class and the selected
-option with `aria-selected` and the `selected` attribute. This will ensure that the label moves out
+option with the `selected` attribute. This will ensure that the label moves out
 of the way of the select's value and prevents a Flash Of Un-styled Content (**FOUC**).
 
 ```html
@@ -104,7 +104,7 @@ of the way of the select's value and prevents a Flash Of Un-styled Content (**FO
     <option class="mdc-select__option" value="fruit">
       Fruit
     </option>
-    <option class="mdc-select__option" value="dairy" aria-selected selected>
+    <option class="mdc-select__option" value="dairy" selected>
       Milk, Yogurt, and Cheese
     </option>
   </select>
@@ -115,11 +115,13 @@ of the way of the select's value and prevents a Flash Of Un-styled Content (**FO
 
 #### Disabled select
 
-Add the `mdc-select--disabled` class and the `aria-disabled` attribute to the `mdc-select`
-element. Also add the `disabled` attribute to the `<select />` element.
+Add the `mdc-select--disabled` class to the `mdc-select` element. The disabled
+attribute will be added to the `<select />` element once `initialSyncWithDOM`
+is called. If for whatever reason you do not initialize the JS component, you will
+need to manually add the `disabled` attribute to the `<select />` element.
 
 ```html
-<div class="mdc-select mdc-select--disabled" aria-disabled="true">
+<div class="mdc-select mdc-select--disabled">
   <select class="mdc-select__surface" disabled>
     <option class="mdc-select__option" value="grains">
       Bread, Cereal, Rice, and Pasta
@@ -139,7 +141,7 @@ element. Also add the `disabled` attribute to the `<select />` element.
 #### Disabled options
 
 When used in components such as MDC Select, `mdc-select__option`s can be disabled.
-To disable a list item, set `aria-disabled` to `"true"` and add the `disabled` attribute.
+To disable a list item, set the `disabled` attribute.
 
 ```html
 <div class="mdc-select">
@@ -147,7 +149,7 @@ To disable a list item, set `aria-disabled` to `"true"` and add the `disabled` a
     <option class="mdc-select__option" value="grains">
       Bread, Cereal, Rice, and Pasta
     </option>
-    <option class="mdc-select__option" value="vegetables" aria-disabled="true" disabled>
+    <option class="mdc-select__option" value="vegetables" disabled>
       Vegetables
     </option>
     <option class="mdc-select__option" value="fruit">
@@ -221,8 +223,6 @@ the result of a user action.
 | `floatLabel(value: boolean) => void` | Float or defloats label as necessary. |
 | `activateBottomLine() => void` | Activates bottom line as focused. |
 | `deactivateBottomLine() => void` | Deactivates bottom line as root element loses focus. |
-| `setAttr(attr: string, value: string) => void` | Sets attribute `attr` to value `value` on the root element. |
-| `rmAttr(attr: string) => void` | Removes attribute `attr` from the root element. |
 | `setDisabled(disabled: boolean) => void` | Sets the `<select />` element to disabled. |
 | `registerInteractionHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` on the surface element. |
 | `deregisterInteractionHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` on the surface element. |
@@ -232,8 +232,6 @@ the result of a user action.
 | `setSelectedIndex(index: number) => void` | Sets the select's selectedValue to the option found at the provided index. If the index is out of the select's range, it will default to -1. |
 | `getValue() => string` | Returns the selected value of the select. Returns empty string if no value is set. |
 | `setValue(value: string) => void` | Sets the select's value. If no option has the provided value, it sets `value` to empty string. |
-| `setAttrForOptionAtIndex(index: number, attr: string, value: string) => void` | Sets an attribute `attr` to value `value` for the option at the specified index within the select. |
-| `rmAttrForOptionAtIndex(index: number, attr: string) => void` | Removes an attribute `attr` for the option at the specified index within the select. |
 
 ### `MDCSelectFoundation`
 

@@ -20,6 +20,7 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 
 import {MDCSelect} from '../../../packages/mdc-select';
+import {cssClasses} from '../../../packages/mdc-select/constants';
 
 class FakeLabel {
   constructor() {
@@ -38,7 +39,7 @@ function getFixture() {
   return bel`
     <div class="mdc-select">
       <select class="mdc-select__surface">
-        <option class="mdc-list-item" value="" aria-disabled="true" disabled selected>
+        <option class="mdc-list-item" value="" disabled selected>
           Pick a food group
         </option>
         <option class="mdc-list-item" value="orange">
@@ -119,11 +120,11 @@ test('#initialSyncWithDOM sets the selected index if an option has the selected 
   assert.equal(component.selectedIndex, 1);
 });
 
-test('#initialSyncWithDOM disables the select if aria-disabled="true" is found on the element', () => {
+test(`#initialSyncWithDOM disables the select if ${cssClasses.DISABLED} is found on the element`, () => {
   const fixture = getFixture();
-  fixture.setAttribute('aria-disabled', 'true');
+  fixture.classList.add(cssClasses.DISABLED);
   const component = new MDCSelect(fixture);
-  assert.isOk(component.disabled);
+  assert.isTrue(component.disabled);
 });
 
 test('adapter#addClass adds a class to the root element', () => {
@@ -160,19 +161,6 @@ test('adapter#deactivateBottomLine removes active class from the bottom line', (
   td.verify(bottomLine.deactivate());
 });
 
-test('adapter#setAttr sets an attribute with a given value on the root element', () => {
-  const {component, fixture} = setupTest();
-  component.getDefaultFoundation().adapter_.setAttr('aria-disabled', 'true');
-  assert.equal(fixture.getAttribute('aria-disabled'), 'true');
-});
-
-test('adapter#rmAttr removes an attribute from the root element', () => {
-  const {component, fixture} = setupTest();
-  fixture.setAttribute('aria-disabled', 'true');
-  component.getDefaultFoundation().adapter_.rmAttr('aria-disabled');
-  assert.isFalse(fixture.hasAttribute('aria-disabled'));
-});
-
 test('adapter#registerInteractionHandler adds an event listener to the surface element', () => {
   const {component, surface} = setupTest();
   const listener = td.func('eventlistener');
@@ -193,20 +181,6 @@ test('adapter#deregisterInteractionHandler removes an event listener from the su
 test('adapter#getNumberOfOptions returns the length of the component\'s options property', () => {
   const {component} = setupTest();
   assert.equal(component.getDefaultFoundation().adapter_.getNumberOfOptions(), component.options.length);
-});
-
-test('adapter#setAttrForOptionAtIndex sets an attribute to the given value for the option at the ' +
-     'given index', () => {
-  const {component} = setupTest();
-  component.getDefaultFoundation().adapter_.setAttrForOptionAtIndex(1, 'aria-disabled', 'true');
-  assert.equal(component.options[1].getAttribute('aria-disabled'), 'true');
-});
-
-test('adapter#rmAttrForOptionAtIndex removes the given attribute for the option at the given index', () => {
-  const {component} = setupTest();
-  component.options[1].setAttribute('aria-disabled', 'true');
-  component.getDefaultFoundation().adapter_.rmAttrForOptionAtIndex(1, 'aria-disabled');
-  assert.isFalse(component.options[1].hasAttribute('aria-disabled'));
 });
 
 test('adapter#getValueForOptionAtIndex returns the id of the option at the given index', () => {

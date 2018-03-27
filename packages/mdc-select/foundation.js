@@ -40,10 +40,8 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.adapter_.setDisabled(disabled);
     if (this.disabled_) {
       this.adapter_.addClass(DISABLED);
-      this.adapter_.setAttr('aria-disabled', 'true');
     } else {
       this.adapter_.removeClass(DISABLED);
-      this.adapter_.rmAttr('aria-disabled');
     }
   }
 
@@ -54,8 +52,6 @@ export default class MDCSelectFoundation extends MDCFoundation {
       floatLabel: (/* value: boolean */) => {},
       activateBottomLine: () => {},
       deactivateBottomLine: () => {},
-      setAttr: (/* attr: string, value: string */) => {},
-      rmAttr: (/* attr: string */) => {},
       registerInteractionHandler: (/* type: string, handler: EventListener */) => {},
       deregisterInteractionHandler: (/* type: string, handler: EventListener */) => {},
       getNumberOfOptions: () => /* number */ 0,
@@ -63,8 +59,6 @@ export default class MDCSelectFoundation extends MDCFoundation {
       getValueForOptionAtIndex: (/* index: number */) => /* index */ '',
       getValue: () => /* string */ '',
       setValue: (/* value: string */) => {},
-      setAttrForOptionAtIndex: (/* index: number, attr: string, value: string */) => {},
-      rmAttrForOptionAtIndex: (/* index: number, attr: string */) => {},
       setSelectedIndex: (/* index: number */) => {},
       setDisabled: (/* disabled: boolean */) => {},
     };
@@ -99,11 +93,6 @@ export default class MDCSelectFoundation extends MDCFoundation {
   setSelectedIndex(index) {
     const {IS_CHANGING} = MDCSelectFoundation.cssClasses;
     const {SELECT_TEXT_TRANSITION_TIME} = MDCSelectFoundation.numbers;
-    const prevSelectedIndex = this.selectedIndex_;
-
-    if (prevSelectedIndex >= 0) {
-      this.adapter_.rmAttrForOptionAtIndex(this.selectedIndex_, 'aria-selected');
-    }
 
     this.selectedIndex_ = index >= 0 && index < this.adapter_.getNumberOfOptions() ? index : -1;
     this.adapter_.setSelectedIndex(index);
@@ -112,7 +101,6 @@ export default class MDCSelectFoundation extends MDCFoundation {
     const optionHasValue = this.selectedIndex_ > -1 ? !!this.adapter_.getValueForOptionAtIndex(index) : false;
 
     if (this.selectedIndex_ >= 0 && optionHasValue) {
-      this.adapter_.setAttrForOptionAtIndex(this.selectedIndex_, 'aria-selected', 'true');
       this.adapter_.floatLabel(true);
     } else {
       this.adapter_.floatLabel(false);

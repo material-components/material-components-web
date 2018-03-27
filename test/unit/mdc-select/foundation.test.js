@@ -40,11 +40,10 @@ test('exports strings', () => {
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSelectFoundation, [
     'addClass', 'removeClass', 'floatLabel', 'activateBottomLine',
-    'deactivateBottomLine', 'setAttr', 'rmAttr',
+    'deactivateBottomLine',
     'registerInteractionHandler', 'deregisterInteractionHandler',
     'getNumberOfOptions', 'getIndexForOptionValue', 'getValueForOptionAtIndex',
-    'getValue', 'setValue', 'setAttrForOptionAtIndex', 'rmAttrForOptionAtIndex',
-    'setSelectedIndex', 'setDisabled',
+    'getValue', 'setValue', 'setSelectedIndex', 'setDisabled',
   ]);
 });
 
@@ -71,13 +70,6 @@ test('set disabled to true calls adapter.addClass', () => {
   td.verify(mockAdapter.addClass(MDCSelectFoundation.cssClasses.DISABLED));
 });
 
-
-test('set disabled to true sets aria-disabled to true', () => {
-  const {mockAdapter, foundation} = setupTest();
-  foundation.disabled = true;
-  td.verify(mockAdapter.setAttr('aria-disabled', 'true'));
-});
-
 test('set disabled to true and calling get disabled returns true', () => {
   const {foundation} = setupTest();
   foundation.disabled = true;
@@ -94,12 +86,6 @@ test('set disabled to false removes disabled class', () => {
   const {mockAdapter, foundation} = setupTest();
   foundation.disabled = false;
   td.verify(mockAdapter.removeClass(MDCSelectFoundation.cssClasses.DISABLED));
-});
-
-test('set disabled to false removes aria-disabled attr', () => {
-  const {mockAdapter, foundation} = setupTest();
-  foundation.disabled = false;
-  td.verify(mockAdapter.rmAttr('aria-disabled'));
 });
 
 test('set disabled to false and get disabled returns false', () => {
@@ -130,19 +116,6 @@ test('#getSelectedIndex returns correct default value of -1', () => {
   assert.equal(foundation.getSelectedIndex(), -1);
 });
 
-test('#setSelectedIndex removes aria-selected from a previous option', () => {
-  const {mockAdapter, foundation} = setupTest();
-  foundation.selectedIndex_ = 2;
-  foundation.setSelectedIndex(1);
-  td.verify(mockAdapter.rmAttrForOptionAtIndex(2, 'aria-selected'));
-});
-
-test('#setSelectedIndex does not remove aria-selected if there is no previous selected option', () => {
-  const {mockAdapter, foundation} = setupTest();
-  foundation.setSelectedIndex(1);
-  td.verify(mockAdapter.rmAttrForOptionAtIndex(td.matchers.number, 'aria-selected'), {times: 0});
-});
-
 test('#setSelectedIndex calls setSelectedIndex', () => {
   const {mockAdapter, foundation} = setupTest();
   foundation.setSelectedIndex(1);
@@ -155,19 +128,17 @@ test(`#setSelectedIndex calls addClass ${MDCSelectFoundation.cssClasses.IS_CHANG
   td.verify(mockAdapter.addClass(MDCSelectFoundation.cssClasses.IS_CHANGING));
 });
 
-test('#setSelectedIndex adds aria-selected to selected option and floats label', () => {
+test('#setSelectedIndex floats label', () => {
   const {mockAdapter, foundation} = setupTest();
   td.when(mockAdapter.getValueForOptionAtIndex(1)).thenReturn('value');
   foundation.setSelectedIndex(1);
-  td.verify(mockAdapter.setAttrForOptionAtIndex(1, 'aria-selected', 'true'));
   td.verify(mockAdapter.floatLabel(true));
 });
 
-test('#setSelectedIndex does not add aria-selected to selected option, but defloats label', () => {
+test('#setSelectedIndex defloats label', () => {
   const {mockAdapter, foundation} = setupTest();
   td.when(mockAdapter.getValueForOptionAtIndex(1)).thenReturn('');
   foundation.setSelectedIndex(1);
-  td.verify(mockAdapter.setAttrForOptionAtIndex(1, 'aria-selected', 'true'), {times: 0});
   td.verify(mockAdapter.floatLabel(false));
 });
 
@@ -175,7 +146,6 @@ test('#setSelectedIndex defloats label if called with a number out of range', ()
   const {mockAdapter, foundation} = setupTest();
   td.when(mockAdapter.getValueForOptionAtIndex(1)).thenReturn('value');
   foundation.setSelectedIndex(4);
-  td.verify(mockAdapter.setAttrForOptionAtIndex(td.matchers.number, 'aria-selected', 'true'), {times: 0});
   td.verify(mockAdapter.floatLabel(false));
 });
 
@@ -199,12 +169,12 @@ test('#setValue will call setValue on adapter', () => {
   td.verify(mockAdapter.setValue('value'));
 });
 
-test('#setValue calls setSelectedIndex, which calls setAttrForOptionAtIndex with the index', () => {
+test('#setValue calls setSelectedIndex, which calls floatLabel true', () => {
   const {mockAdapter, foundation} = setupTest();
   td.when(mockAdapter.getValueForOptionAtIndex(1)).thenReturn('value');
   td.when(mockAdapter.getIndexForOptionValue('value')).thenReturn(1);
   foundation.setValue('value');
-  td.verify(mockAdapter.setAttrForOptionAtIndex(1, 'aria-selected', 'true'));
+  td.verify(mockAdapter.floatLabel(true));
 });
 
 test('#setValue does not call setSelectedIndex if the option is already selected', () => {
@@ -213,5 +183,5 @@ test('#setValue does not call setSelectedIndex if the option is already selected
   td.when(mockAdapter.getValueForOptionAtIndex(1)).thenReturn('value');
   td.when(mockAdapter.getIndexForOptionValue('value')).thenReturn(1);
   foundation.setValue('value');
-  td.verify(mockAdapter.setAttrForOptionAtIndex(1, 'aria-selected', 'true'), {times: 0});
+  td.verify(mockAdapter.floatLabel(td.matchers.boolean), {times: 0});
 });
