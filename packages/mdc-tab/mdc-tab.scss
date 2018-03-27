@@ -87,10 +87,6 @@
   padding: 12px 0;
 }
 
-.mdc-tab:not(.mdc-tab--two-lines) .mdc-tab__icon + .mdc-tab__text-label {
-  @include mdc-rtl-reflexive-box(padding, left, 8px);
-}
-
 .mdc-tab__indicator {
   @include mdc-theme-prop(background-color, primary);
 
@@ -161,6 +157,10 @@
 
 .mdc-tab--animating-indicator .mdc-tab__indicator {
   transition: 250ms transform cubic-bezier(0, 0, .2, 1);
+}
+
+.mdc-tab:not(.mdc-tab--two-lines) .mdc-tab__icon + .mdc-tab__text-label {
+  @include mdc-rtl-reflexive-box(padding, left, 8px);
 }
 
 .mdc-tab--active {
