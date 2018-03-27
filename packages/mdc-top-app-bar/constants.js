@@ -24,7 +24,7 @@ const cssClasses = {
 
 /** @enum {number} */
 const numbers = {
-  DEBOUNCE_THROTTLE_RESIZE_TIME: 100,
+  DEBOUNCE_THROTTLE_RESIZE_TIME_MS: 100,
   MAX_TOP_APP_BAR_HEIGHT: 128,
 };
 
