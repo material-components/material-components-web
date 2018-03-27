@@ -264,13 +264,13 @@
         denseCheckbox.addEventListener('change', function()  {
           appBarEl.classList[this.checked ? 'add' : 'remove']('mdc-top-app-bar--dense');
 
-          shortCheckbox.disabled = this.checked;
+          shortCheckbox.disabled = this.checked || prominentCheckbox.checked;
         });
 
         prominentCheckbox.addEventListener('change', function()  {
           appBarEl.classList[this.checked ? 'add' : 'remove']('mdc-top-app-bar--prominent');
 
-          shortCheckbox.disabled = this.checked;
+          shortCheckbox.disabled = this.checked || denseCheckbox.checked;
         });
       });
   </script>
