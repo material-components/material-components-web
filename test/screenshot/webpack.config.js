@@ -48,16 +48,14 @@ module.exports = [
   testCss(),
 ];
 
-if (env.shouldRunStaticServer()) {
-  staticServer.start({
-    path: '/test/screenshot',
-    port: env.getPort(),
-    directoryIndex: {
-      fileExtensions: ['.html'],
-      stylesheetAbsolutePath: pathResolver.getAbsolutePath('/test/screenshot/directory.css'),
-    },
-  });
-}
+staticServer.start({
+  path: '/test/screenshot',
+  port: env.getPort(),
+  directoryIndex: {
+    fileExtensions: ['.html'],
+    stylesheetAbsolutePath: pathResolver.getAbsolutePath('/test/screenshot/directory.css'),
+  },
+});
 
 function mainCssALaCarte() {
   return cssBundleFactory.createMainCssALaCarte({output: MAIN_OUTPUT});

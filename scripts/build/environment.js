@@ -47,14 +47,6 @@ class Environment {
     return parseInt(process.env.MDC_PORT, 10) || 8090;
   }
 
-  /**
-   * Determines whether to run a static Web server on startup.
-   * @return {boolean}
-   */
-  shouldRunStaticServer() {
-    return process.env.MDC_STATIC_SERVER === 'true';
-  }
-
   getNpmLifecycleEvent_() {
     return process.env.npm_lifecycle_event;
   }
