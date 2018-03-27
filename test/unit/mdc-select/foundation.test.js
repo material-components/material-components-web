@@ -22,28 +22,29 @@ import {setupFoundationTest} from '../helpers/setup';
 import {verifyDefaultAdapter} from '../helpers/foundation';
 
 import MDCSelectFoundation from '../../../packages/mdc-select/foundation';
+import {cssClasses, numbers, strings} from '../../../packages/mdc-select/constants';
 
 suite('MDCSelectFoundation');
 
 test('exports cssClasses', () => {
-  assert.isOk('cssClasses' in MDCSelectFoundation);
+  assert.deepEqual(MDCSelectFoundation.cssClasses, cssClasses);
 });
 
 test('exports numbers', () => {
-  assert.isOk('numbers' in MDCSelectFoundation);
+  assert.deepEqual(MDCSelectFoundation.numbers, numbers);
 });
 
 test('exports strings', () => {
-  assert.isOk('strings' in MDCSelectFoundation);
+  assert.deepEqual(MDCSelectFoundation.strings, strings);
 });
 
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSelectFoundation, [
     'addClass', 'removeClass', 'floatLabel', 'activateBottomLine',
-    'deactivateBottomLine',
+    'deactivateBottomLine', 'setDisabled',
     'registerInteractionHandler', 'deregisterInteractionHandler',
     'getNumberOfOptions', 'getIndexForOptionValue', 'getValueForOptionAtIndex',
-    'getValue', 'setValue', 'getSelectedIndex', 'setSelectedIndex', 'setDisabled',
+    'setValue', 'setSelectedIndex',
   ]);
 });
 
@@ -53,45 +54,28 @@ function setupTest() {
   return {mockAdapter, foundation};
 }
 
-test('get disabled', () => {
-  const {foundation} = setupTest();
-  assert.isFalse(foundation.disabled);
-});
-
-test('set disabled to true calls adapter.setDisabled', () => {
+test('#setDisabled to true calls adapter.setDisabled', () => {
   const {mockAdapter, foundation} = setupTest();
-  foundation.disabled = true;
+  foundation.setDisabled(true);
   td.verify(mockAdapter.setDisabled(true));
 });
 
-test('set disabled to true calls adapter.addClass', () => {
+test('#setDisabled to true calls adapter.addClass', () => {
   const {mockAdapter, foundation} = setupTest();
-  foundation.disabled = true;
+  foundation.setDisabled(true);
   td.verify(mockAdapter.addClass(MDCSelectFoundation.cssClasses.DISABLED));
 });
 
-test('set disabled to true and calling get disabled returns true', () => {
-  const {foundation} = setupTest();
-  foundation.disabled = true;
-  assert.isTrue(foundation.disabled);
-});
-
-test('set disabled to false calls adapter.setDisabled false', () => {
+test('#setDisabled to false calls adapter.setDisabled false', () => {
   const {mockAdapter, foundation} = setupTest();
-  foundation.disabled = false;
+  foundation.setDisabled(false);
   td.verify(mockAdapter.setDisabled(false));
 });
 
-test('set disabled to false removes disabled class', () => {
+test('#setDisabled to false removes disabled class', () => {
   const {mockAdapter, foundation} = setupTest();
-  foundation.disabled = false;
+  foundation.setDisabled(false);
   td.verify(mockAdapter.removeClass(MDCSelectFoundation.cssClasses.DISABLED));
-});
-
-test('set disabled to false and get disabled returns false', () => {
-  const {foundation} = setupTest();
-  foundation.disabled = false;
-  assert.isFalse(foundation.disabled);
 });
 
 test('#init registers focus, blur, and change handler', () => {
@@ -102,19 +86,12 @@ test('#init registers focus, blur, and change handler', () => {
   td.verify(mockAdapter.registerInteractionHandler('change', foundation.selectionHandler_));
 });
 
-
 test('#destroy deregisters focus, blur, and change handler', () => {
   const {mockAdapter, foundation} = setupTest();
   foundation.destroy();
   td.verify(mockAdapter.deregisterInteractionHandler('focus', foundation.focusHandler_));
   td.verify(mockAdapter.deregisterInteractionHandler('blur', foundation.blurHandler_));
   td.verify(mockAdapter.deregisterInteractionHandler('change', foundation.selectionHandler_));
-});
-
-test('#getSelectedIndex returns correct value', () => {
-  const {mockAdapter, foundation} = setupTest();
-  td.when(mockAdapter.getSelectedIndex()).thenReturn(-1);
-  assert.equal(foundation.getSelectedIndex(), -1);
 });
 
 test('#setSelectedIndex calls setSelectedIndex', () => {
@@ -156,11 +133,6 @@ test(`#setSelectedIndex removesClass ${MDCSelectFoundation.cssClasses.IS_CHANGIN
   foundation.setSelectedIndex(1);
   clock.tick(MDCSelectFoundation.numbers.SELECT_TEXT_TRANSITION_TIME);
   td.verify(mockAdapter.removeClass(MDCSelectFoundation.cssClasses.IS_CHANGING));
-});
-
-test('#getValue will return the adapter getValue', () => {
-  const {mockAdapter, foundation} = setupTest();
-  assert.equal(foundation.getValue(), mockAdapter.getValue());
 });
 
 test('#setValue will call setValue on adapter', () => {

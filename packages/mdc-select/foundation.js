@@ -30,21 +30,6 @@ export default class MDCSelectFoundation extends MDCFoundation {
     return strings;
   }
 
-  get disabled() {
-    return this.disabled_;
-  }
-
-  set disabled(disabled) {
-    const {DISABLED} = MDCSelectFoundation.cssClasses;
-    this.disabled_ = disabled;
-    this.adapter_.setDisabled(disabled);
-    if (this.disabled_) {
-      this.adapter_.addClass(DISABLED);
-    } else {
-      this.adapter_.removeClass(DISABLED);
-    }
-  }
-
   static get defaultAdapter() {
     return {
       addClass: (/* className: string */) => {},
@@ -57,17 +42,14 @@ export default class MDCSelectFoundation extends MDCFoundation {
       getNumberOfOptions: () => /* number */ 0,
       getIndexForOptionValue: (/* value: string */) => /* number */ -1,
       getValueForOptionAtIndex: (/* index: number */) => /* index */ '',
-      getValue: () => /* string */ '',
-      setValue: (/* value: string */) => {},
-      getSelectedIndex: () => /* number */ -1,
       setSelectedIndex: (/* index: number */) => {},
       setDisabled: (/* disabled: boolean */) => {},
+      setValue: (/* value: string */) => {},
     };
   }
 
   constructor(adapter) {
     super(Object.assign(MDCSelectFoundation.defaultAdapter, adapter));
-    this.disabled_ = false;
 
     this.focusHandler_ = (evt) => this.handleFocus_(evt);
     this.blurHandler_ = (evt) => this.handleBlur_(evt);
@@ -84,10 +66,6 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.adapter_.deregisterInteractionHandler('focus', this.focusHandler_);
     this.adapter_.deregisterInteractionHandler('blur', this.blurHandler_);
     this.adapter_.deregisterInteractionHandler('change', this.selectionHandler_);
-  }
-
-  getSelectedIndex() {
-    return this.adapter_.getSelectedIndex();
   }
 
   setSelectedIndex(index) {
@@ -107,16 +85,22 @@ export default class MDCSelectFoundation extends MDCFoundation {
     }, SELECT_TEXT_TRANSITION_TIME);
   }
 
-  getValue() {
-    return this.adapter_.getValue();
-  }
-
   setValue(value) {
     let index = this.adapter_.getIndexForOptionValue(value);
-    index = !index && null !== 0 ? -1 : index;
+    index = !index && index !== 0 ? -1 : index;
 
     this.adapter_.setValue(value);
     this.setSelectedIndex(index);
+  }
+
+  setDisabled(disabled) {
+    const {DISABLED} = MDCSelectFoundation.cssClasses;
+    this.adapter_.setDisabled(disabled);
+    if (disabled) {
+      this.adapter_.addClass(DISABLED);
+    } else {
+      this.adapter_.removeClass(DISABLED);
+    }
   }
 
   handleFocus_() {

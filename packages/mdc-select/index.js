@@ -30,7 +30,7 @@ export class MDCSelect extends MDCComponent {
   }
 
   get value() {
-    return this.foundation_.getValue();
+    return this.surface_.value;
   }
 
   set value(value) {
@@ -45,11 +45,12 @@ export class MDCSelect extends MDCComponent {
     // In an array because HTML spec also returns an array.
     // Cannot access HTMLSelectElement.selectedIndex since it is not supported by IE11.
     // https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement/selectedIndex
-    return [this.item(this.selectedIndex)];
+    const selectedOption = this.item(this.selectedIndex);
+    return selectedOption ? [selectedOption] : undefined;
   }
 
   get selectedIndex() {
-    return this.foundation_.getSelectedIndex();
+    return this.surface_.selectedIndex;
   }
 
   set selectedIndex(selectedIndex) {
@@ -57,11 +58,11 @@ export class MDCSelect extends MDCComponent {
   }
 
   get disabled() {
-    return this.foundation_.disabled;
+    return this.surface_.disabled;
   }
 
   set disabled(disabled) {
-    this.foundation_.disabled = disabled;
+    this.foundation_.setDisabled(disabled);
   }
 
   item(index) {
@@ -111,19 +112,14 @@ export class MDCSelect extends MDCComponent {
       getNumberOfOptions: () => this.options.length,
       getIndexForOptionValue: (value) => this.indexByValue_(value),
       getValueForOptionAtIndex: (index) => this.options[index].value,
-      getSelectedIndex: () => this.surface_.selectedIndex,
       setSelectedIndex: (index) => this.surface_.selectedIndex = index,
-      getValue: () => this.surface_.value,
       setValue: (value) => this.surface_.value = value,
     });
   }
 
   initialSyncWithDOM() {
-    const selectedOption = this.selectedOptions[0];
-    const idx = selectedOption ? this.options.indexOf(selectedOption) : -1;
-    if (idx >= 0 && selectedOption.value) {
-      this.selectedIndex = idx;
-    }
+    // needed to sync floating label
+    this.selectedIndex = this.surface_.selectedIndex;
 
     if (this.root_.classList.contains(MDCSelectFoundation.cssClasses.DISABLED)) {
       this.disabled = true;

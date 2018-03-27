@@ -39,11 +39,11 @@ function getFixture() {
   return bel`
     <div class="mdc-select">
       <select class="mdc-select__surface">
-        <option class="mdc-list-item" value="" disabled selected hidden></option>
-        <option class="mdc-list-item" value="orange">
+        <option value="" disabled selected hidden></option>
+        <option value="orange">
           Orange
         </option>
-        <option class="mdc-list-item" value="apple">
+        <option value="apple">
           Apple
         </option>
       </select>
@@ -94,6 +94,18 @@ test('#get value', () => {
   assert.equal(component.value, 'orange');
 });
 
+test('#set value sets the value on the <select />', () => {
+  const {component, surface} = setupTest();
+  component.value = 'orange';
+  assert.equal(surface.value, 'orange');
+});
+
+test('#set value sets non value to empty string on <select />', () => {
+  const {component, surface} = setupTest();
+  component.value = 'grape';
+  assert.equal(surface.value, '');
+});
+
 test('#item returns null if index out of bounds', () => {
   const {component} = setupTest();
   assert.equal(component.item(100), null);
@@ -105,10 +117,10 @@ test('#initialSyncWithDOM sets the selected index if an option has the selected 
       <div class="mdc-select__label">Pick a Food Group</div>
       <div class="mdc-select__bottom-line"></div>
       <select class="mdc-select__surface">
-        <option class="mdc-list-item" value="orange">
+        <option value="orange">
           Orange
         </option>
-        <option class="mdc-list-item" value="apple" selected>
+        <option value="apple" selected>
           Apple
         </option>
       </select>
@@ -136,6 +148,54 @@ test('adapter#removeClass removes a class from the root element', () => {
   fixture.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClass('foo');
   assert.isFalse(fixture.classList.contains('foo'));
+});
+
+test('does not create label', () => {
+  const fixture = bel`
+    <div class="mdc-select">
+      <div class="mdc-select__bottom-line"></div>
+      <select class="mdc-select__surface">
+        <option value="orange">
+          Orange
+        </option>
+        <option value="apple" selected>
+          Apple
+        </option>
+      </select>
+    </div>
+  `;
+  const component = new MDCSelect(fixture);
+  component.getDefaultFoundation().adapter_.floatLabel('foo');
+  assert.equal(component.label_, undefined);
+});
+
+test('does not create bottomLine element', () => {
+  const fixture = bel`
+    <div class="mdc-select">
+      <div class="mdc-select__label"></div>
+      <select class="mdc-select__surface">
+        <option value="orange">
+          Orange
+        </option>
+        <option value="apple" selected>
+          Apple
+        </option>
+      </select>
+    </div>
+  `;
+  const component = new MDCSelect(fixture);
+  assert.equal(component.bottomLine_, undefined);
+});
+
+test('#selectedOptions should return the option selected in the select element', () => {
+  const {component} = setupTest();
+  assert.equal(component.selectedOptions.length, 1);
+});
+
+test('#selectedOptions should return an empty array if nothing is selected', () => {
+  const {component} = setupTest();
+  component.selectedIndex = -1;
+  assert.equal(component.selectedOptions, undefined);
 });
 
 test('adapter#floatLabel adds a class to the label', () => {
@@ -194,18 +254,6 @@ test('adapter#getIndexForOptionValue returns the index of the option with a valu
 test('adapter#getIndexForOptionValue returns null if there is no option with the specific value', () => {
   const {component} = setupTest();
   assert.equal(component.getDefaultFoundation().adapter_.getIndexForOptionValue('grape'), null);
-});
-
-test('adapter#getValue returns the value of the select element', () => {
-  const {surface, component} = setupTest();
-  surface.selectedIndex = 1;
-  assert.equal(component.getDefaultFoundation().adapter_.getValue(), 'orange');
-});
-
-test('adapter#getValue returns empty string if there is no selected value', () => {
-  const {surface, component} = setupTest();
-  surface.selectedIndex = -1;
-  assert.equal(component.getDefaultFoundation().adapter_.getValue(), '');
 });
 
 test('adapter#setValue sets the value of the select to the correct option', () => {

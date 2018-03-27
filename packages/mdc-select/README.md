@@ -198,9 +198,7 @@ is outlined below.
 
 | Method Signature | Description |
 | --- | --- |
-| `item(index: number) => HTMLElement?` | Analogous to `HTMLSelectElement.prototype.item`. Returns the option at the specified index, or `null` if the index is out of bounds. }
-| `nameditem(key: string) => HTMLElement?` | Analogous to `HTMLSelectElement.prototype.nameditem`. Returns the options either whose `id` equals the given `key`, or whose `name` attribute equals the given `key`. Returns `null` if no item with an `id` or `name` attribute of the specified key is found. |
-| `initialSyncWithDOM() => void` | Syncs the component with the current state of the HTML markup. |
+| `item(index: number) => HTMLElement?` | Analogous to `HTMLSelectElement.prototype.item`. Returns the option at the specified index, or `null` if the index is out of bounds. |
 
 #### Events
 
@@ -222,16 +220,13 @@ the result of a user action.
 | `getNumberOfOptions() => number` | Returns the number of options contained in the select. |
 | `getIndexForOptionValue(value: string) => number` | Returns the index of the option that matches the specified value. Returns -1 if value is not found. |
 | `getValueForOptionAtIndex(index: number) => string` | Returns the value for the option at the specified index within the select. |
-| `getSelectedIndex() => number` | Returns the selectedIndex of the select element. |
 | `setSelectedIndex(index: number) => void` | Sets the select's selectedValue to the option found at the provided index. If the index is out of the select's range, it will default to -1. |
-| `getValue() => string` | Returns the selected value of the select. Returns empty string if no value is set. |
 | `setValue(value: string) => void` | Sets the select's value. If no option has the provided value, it sets `value` to empty string. |
 
 ### `MDCSelectFoundation`
 
 | Method Signature | Description |
 | --- | --- |
-| `getValue() => string` | Returns the value of the currently selected option, or an empty string if no option is selected. |
 | `setValue(value: string) => void` | Sets the select's value. If value is not found within list of options, it will set it to empty string. |
-| `getSelectedIndex() => number` | Returns the index of the currently selected option. Returns -1 if no option is currently selected. |
+| `setDisabled(disabled: boolean) => void` | Adds/removes disabled class, and sets disabled attribute on the component. |
 | `setSelectedIndex(selectedIndex: number) => void` | Sets the selected index of the component. |
