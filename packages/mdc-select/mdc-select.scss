@@ -96,11 +96,6 @@
   animation-timing-function: $mdc-animation-deceleration-curve-timing-function;
 }
 
-.mdc-select__option[value=""] {
-  // added for placeholder option for no value
-  display: none;
-}
-
 .mdc-select--box {
   @include mdc-select-container-fill-color(rgba(black, .04));
   @include mdc-ripple-surface;

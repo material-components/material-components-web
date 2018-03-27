@@ -52,6 +52,13 @@
   }
 }
 
+@mixin mdc-select-label-color($color, $opacity: 1) {
+  &:not(.mdc-select--disabled) {
+    @include mdc-select-floating-label-color($color, $opacity);
+  }
+}
+
+
 // Private
 
 @mixin mdc-select-focused-bottom-line_ {
@@ -61,7 +68,6 @@
 }
 
 @mixin mdc-select-ink-color_($color) {
-  .mdc-select__option,
   .mdc-select__surface {
     @include mdc-theme-prop(color, $color);
   }
@@ -76,13 +82,6 @@
     @include mdc-select-bottom-line-fill-color($color);
   }
 }
-
-@mixin mdc-select-label-color($color, $opacity: 1) {
-  &:not(.mdc-select--disabled) {
-    @include mdc-select-floating-label-color($color, $opacity);
-  }
-}
-
 @mixin mdc-select-focused-bottom-line-color_($color) {
   @include mdc-select-focused-bottom-line_ {
     @include mdc-select-bottom-line-fill-color($color);

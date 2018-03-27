@@ -42,35 +42,20 @@ npm install @material/select
 ```html
 <div class="mdc-select">
   <select class="mdc-select__surface">
-    <option class="mdc-select__option" value="" disabled selected></option>
-    <option class="mdc-select__option" value="grains">
+    <option value="" disabled selected hidden></option>
+    <option value="grains">
       Bread, Cereal, Rice, and Pasta
     </option>
-    <option class="mdc-select__option" value="vegetables">
+    <option value="vegetables">
       Vegetables
     </option>
-    <option class="mdc-select__option" value="fruit">
+    <option value="fruit">
       Fruit
-    </option>
-    <option class="mdc-select__option" value="dairy">
-      Milk, Yogurt, and Cheese
-    </option>
-    <option class="mdc-select__option" value="meat">
-      Meat, Poultry, Fish, Dry Beans, Eggs, and Nuts
-    </option>
-    <option class="mdc-select__option" value="fats">
-      Fats, Oils, and Sweets
     </option>
   </select>
   <div class="mdc-select__label">Pick a Food Group</div>
   <div class="mdc-select__bottom-line"></div>
 </div>
-```
-
-Use the `<option disabled selected/>` element as a way to display the select having no value.
-
-```html
-<option class="mdc-select__option" value="" disabled selected></option>
 ```
 
 Then with JS
@@ -95,16 +80,13 @@ of the way of the select's value and prevents a Flash Of Un-styled Content (**FO
 ```html
 <div class="mdc-select">
   <select class="mdc-select__surface">
-    <option class="mdc-select__option" value="grains">
-      Bread, Cereal, Rice, and Pasta
-    </option>
-    <option class="mdc-select__option" value="vegetables">
+    <option value="vegetables">
       Vegetables
     </option>
-    <option class="mdc-select__option" value="fruit">
+    <option value="fruit">
       Fruit
     </option>
-    <option class="mdc-select__option" value="dairy" selected>
+    <option value="dairy" selected>
       Milk, Yogurt, and Cheese
     </option>
   </select>
@@ -112,6 +94,17 @@ of the way of the select's value and prevents a Flash Of Un-styled Content (**FO
   <div class="mdc-select__bottom-line"></div>
 </div>
 ```
+
+#### Select with floating label as the placeholder
+
+Use the `<option disabled selected hidden/>` element as a way to display the select having no value.
+The `<select />` will by default select the first `<option />`, which explains why the `selected` and `disabled` attributes. The hidden and disabled attributes depend on your use case. You may want to use this as a placeholder or an initial value for the `<select />`. Remember
+if you do use this option as a placeholder to add the `mdc-select__label--float-above` class. Refer to [pre-selected option](#select-with-pre-selected-option). Also note that not all browsers respect the `hidden` attribute (ie. IE11).
+
+```html
+<option value="" disabled selected hidden></option>
+```
+
 
 #### Disabled select
 
@@ -123,13 +116,13 @@ need to manually add the `disabled` attribute to the `<select />` element.
 ```html
 <div class="mdc-select mdc-select--disabled">
   <select class="mdc-select__surface" disabled>
-    <option class="mdc-select__option" value="grains">
+    <option value="grains">
       Bread, Cereal, Rice, and Pasta
     </option>
-    <option class="mdc-select__option" value="vegetables">
+    <option value="vegetables">
       Vegetables
     </option>
-    <option class="mdc-select__option" value="fruit">
+    <option value="fruit">
       Fruit
     </option>
   </select>
@@ -140,19 +133,19 @@ need to manually add the `disabled` attribute to the `<select />` element.
 
 #### Disabled options
 
-When used in components such as MDC Select, `mdc-select__option`s can be disabled.
+When used in components such as MDC Select, `<option />`s can be disabled.
 To disable a list item, set the `disabled` attribute.
 
 ```html
 <div class="mdc-select">
   <select class="mdc-select__surface">
-    <option class="mdc-select__option" value="grains">
+    <option value="grains">
       Bread, Cereal, Rice, and Pasta
     </option>
-    <option class="mdc-select__option" value="vegetables" disabled>
+    <option value="vegetables" disabled>
       Vegetables
     </option>
-    <option class="mdc-select__option" value="fruit">
+    <option value="fruit">
       Fruit
     </option>
   </select>
@@ -167,7 +160,6 @@ To disable a list item, set the `disabled` attribute.
 | ------------------------ | ----------------------------------------------- |
 | `mdc-select`             | Mandatory.                                      |
 | `mdc-select--box`        | Styles the select as a box select.              |
-| `mdc-select__option`     | A select option.                                |
 
 ### Sass Mixins
 
@@ -178,6 +170,7 @@ Mixin | Description
 --- | ---
 `mdc-select-ink-color($color)` | Customizes the color of the selected item displayed in the select.
 `mdc-select-container-fill-color($color)` | Customizes the background color of the select.
+`mdc-select-label-color($color)` | Customizes the label color of the select in the unfocused state.
 `mdc-select-focused-label-color($color, $opacity: 0.87)` | Customizes the label color of the select when focused. Changing opacity for the label when floating is optional.
 `mdc-select-bottom-line-color($color)` | Customizes the color of the default bottom line of the select.
 `mdc-select-focused-bottom-line-color($color)` | Customizes the color of the bottom line of the select when focused.

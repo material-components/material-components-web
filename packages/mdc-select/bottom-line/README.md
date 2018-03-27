@@ -41,24 +41,15 @@ Select bottom line animates activation and deactivation state as the select rece
 ```html
 <div class="mdc-select">
   <select class="mdc-select__surface">
-    <option class="mdc-select__option" value="" disabled selected></option>
-    <option class="mdc-select__option" value="grains">
+    <option value="" disabled selected></option>
+    <option value="grains">
       Bread, Cereal, Rice, and Pasta
     </option>
-    <option class="mdc-select__option" value="vegetables">
+    <option value="vegetables">
       Vegetables
     </option>
-    <option class="mdc-select__option" value="fruit">
+    <option value="fruit">
       Fruit
-    </option>
-    <option class="mdc-select__option" value="dairy">
-      Milk, Yogurt, and Cheese
-    </option>
-    <option class="mdc-select__option" value="meat">
-      Meat, Poultry, Fish, Dry Beans, Eggs, and Nuts
-    </option>
-    <option class="mdc-select__option" value="fats">
-      Fats, Oils, and Sweets
     </option>
   </select>
   <div class="mdc-select__label">Pick a Food Group</div>

@@ -28,6 +28,5 @@ export const strings = {
   CHANGE_EVENT: 'MDCSelect:change',
   BOTTOM_LINE_SELECTOR: '.mdc-select__bottom-line',
   LABEL_SELECTOR: '.mdc-select__label',
-  OPTION_SELECTOR: '.mdc-select__option',
   SURFACE_SELECTOR: '.mdc-select__surface',
 };
