@@ -103,7 +103,7 @@ Mixin | Description
 
 #### `$style` Values
 
-These styles can be used as the `$style` argument for `mdc-typography` mixins.
+These styles can be used as the `$style` argument for `mdc-typography` mixin.
 
 * `display4`
 * `display3`
