@@ -21,7 +21,6 @@ const Environment = require('../../scripts/build/environment');
 const Globber = require('../../scripts/webpack/globber');
 const PathResolver = require('../../scripts/build/path-resolver');
 const PluginFactory = require('../../scripts/webpack/plugin-factory');
-const StaticServer = require('../../scripts/build/static-server');
 
 const env = new Environment();
 env.setBabelEnv();
@@ -31,7 +30,6 @@ const globber = new Globber({pathResolver});
 const pluginFactory = new PluginFactory({globber});
 const copyrightBannerPlugin = pluginFactory.createCopyrightBannerPlugin();
 const cssBundleFactory = new CssBundleFactory({env, pathResolver, globber, pluginFactory});
-const staticServer = new StaticServer({pathResolver});
 
 const MAIN_OUTPUT = {
   // Webpack output directory that all compiled MDC files will be written to.
@@ -47,15 +45,6 @@ module.exports = [
   mainCssALaCarte(),
   testCss(),
 ];
-
-staticServer.start({
-  path: '/test/screenshot',
-  port: env.getPort(),
-  directoryIndex: {
-    fileExtensions: ['.html'],
-    stylesheetAbsolutePath: pathResolver.getAbsolutePath('/test/screenshot/directory.css'),
-  },
-});
 
 function mainCssALaCarte() {
   return cssBundleFactory.createMainCssALaCarte({output: MAIN_OUTPUT});
