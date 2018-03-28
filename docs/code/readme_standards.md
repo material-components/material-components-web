@@ -14,8 +14,8 @@ read/understood by the [Catalog Site](https://material.io/components/web/catalog
 
 The 'Basic Usage' section documents the bare minimum to get the most basic version of this component up and running, including:
 * HTML structure
-* Style imports, and any mixin invocations necessary to make the component look as desired
-* JavaScript Instantiation, if applicable. Include a note about importing a JavaScript component with a link to our importing documentation.
+* Style import
+* JavaScript import and instantiation, if applicable
 
 ~~~
 ### HTML Structure
@@ -25,6 +25,7 @@ The 'Basic Usage' section documents the bare minimum to get the most basic versi
 ```
 ~~~
 
+In the 'Styles' subsection, include any mixin invocations necessary to make the component look as desired.
 ~~~
 ### Styles
 
@@ -35,6 +36,7 @@ The 'Basic Usage' section documents the bare minimum to get the most basic versi
 ```
 ~~~
 
+In the 'JavaScript Instantiation' subsection, include a note about importing a JavaScript component with a link to our importing documentation.
 ~~~
 ### JavaScript Instantiation
 
