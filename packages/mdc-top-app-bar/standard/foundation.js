@@ -49,6 +49,13 @@ class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
     this.wasDocked_ = true;
 
     /**
+     * isDockedShowing is used to indicate if the top app bar is docked in the fully
+     * shown position.
+     * @private {boolean}
+     */
+    this.isDockedShowing = true;
+
+    /**
      * Variable for current scroll position of the top app bar
      * @private {number}
      */
@@ -94,23 +101,29 @@ class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
    * @private
    */
   checkForUpdate_() {
-    const partiallyShowing = this.currentAppBarScrollPosition_ < 0
-      && this.currentAppBarScrollPosition_ > -this.topAppBarHeight_;
+    const offscreenBoundaryTop = -this.topAppBarHeight_;
+    const hasAnyPixelsOffscreen = this.currentAppBarScrollPosition_ < 0;
+    const hasAnyPixelsOnscreen = this.currentAppBarScrollPosition_ > offscreenBoundaryTop;
+    const partiallyShowing = hasAnyPixelsOffscreen && hasAnyPixelsOnscreen;
 
-    if (this.wasDocked_) {
-      // If it was previously already docked but now is partially showing, it's no longer docked.
-      if (partiallyShowing) {
-        this.wasDocked_ = false;
-        return true;
-      }
+    // If it's partially showing, it can't be docked.
+    if (partiallyShowing) {
+      this.wasDocked_ = false;
     } else {
-      // If it's not previously docked and not partially showing, it just became docked.
-      if (!partiallyShowing) {
+      // Not previously docked and not partially showing, it's now docked.
+      if (!this.wasDocked_) {
         this.wasDocked_ = true;
+        return true;
+      } else {
+        // If it was previously docked and now it's docked the opposite way, update the DOM.
+        if (this.isDockedShowing !== hasAnyPixelsOnscreen) {
+          this.isDockedShowing = hasAnyPixelsOnscreen;
+          return true;
+        }
       }
-      return true;
     }
-    return false;
+
+    return partiallyShowing;
   }
 
   /**
@@ -150,7 +163,7 @@ class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
         this.currentAppBarScrollPosition_ = -this.topAppBarHeight_;
       }
 
-      requestAnimationFrame(() => this.moveTopAppBar_());
+      this.moveTopAppBar_();
     }
   }
 
