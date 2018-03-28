@@ -246,7 +246,9 @@
         });
 
         fixedCheckbox.addEventListener('change', function()  {
+          var addScrolledClass = this.checked ? window.pageYOffset > 0 : false;
           appBarEl.classList[this.checked ? 'add' : 'remove']('mdc-top-app-bar--fixed');
+          appBarEl.classList[addScrolledClass ? 'add' : 'remove']('mdc-top-app-bar--fixed-scrolled');
 
           appBar.destroy();
           appBar = mdc.topAppBar.MDCTopAppBar.attachTo(appBarEl);

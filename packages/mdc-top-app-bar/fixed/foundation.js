@@ -29,8 +29,8 @@ class MDCFixedTopAppBarFoundation extends MDCTopAppBarFoundation {
    */
   constructor(adapter) {
     super(adapter);
-    // State variable for the previous top app bar state
-    this.isScrolled_ = false;
+    /** State variable for the previous scroll iteration top app bar state */
+    this.wasScrolled_ = false;
 
     this.scrollHandler_ = () => this.fixedScrollHandler_();
   }
@@ -53,14 +53,14 @@ class MDCFixedTopAppBarFoundation extends MDCTopAppBarFoundation {
     const currentScroll = this.adapter_.getViewportScrollY();
 
     if (currentScroll <= 0) {
-      if (this.isScrolled_) {
+      if (this.wasScrolled_) {
         this.adapter_.removeClass(cssClasses.FIXED_SCROLLED_CLASS);
-        this.isScrolled_ = false;
+        this.wasScrolled_ = false;
       }
     } else {
-      if (!this.isScrolled_) {
+      if (!this.wasScrolled_) {
         this.adapter_.addClass(cssClasses.FIXED_SCROLLED_CLASS);
-        this.isScrolled_ = true;
+        this.wasScrolled_ = true;
       }
     }
   }
