@@ -9,5 +9,9 @@ const app = express();
 const absolutePath = pathResolver.getAbsolutePath('/test/screenshot');
 app.use('/', express.static(absolutePath), serveIndex(absolutePath));
 app.listen(8080, () => {
-  console.log('!!! LOCAL SERVER RUNNING ON http://localhost:8080/');
+  console.log('');
+  console.log('==========================================================');
+  console.log('Local development server running on http://localhost:8080/');
+  console.log('==========================================================');
+  console.log('');
 });
