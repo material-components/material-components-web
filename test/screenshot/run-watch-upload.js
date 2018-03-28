@@ -92,7 +92,7 @@ async function notify() {
 
   files.forEach(async (fileContents, localFilePath) => {
     const relativeFilePath = localFilePath.replace(LOCAL_DIRECTORY_PREFIX, '');
-    const gcsFilePath = `commit/${gitBaseCommit}/${gitDiffHash}/static/${relativeFilePath}`;
+    const gcsFilePath = `base-commit/${gitBaseCommit}/${gitDiffHash}/static/${relativeFilePath}`;
 
     console.log(gcsFilePath);
 
