@@ -23,11 +23,13 @@
 //
 
 $mdc-theme-primary: #6200ee !default; // baseline purple, 500 tone
+$mdc-theme-on-primary: #fff !default;
 
 // The $mdc-theme-accent variable is DEPRECATED - it exists purely for backward compatibility.
 // The $mdc-theme-secondary* variables should be used for all new projects.
 $mdc-theme-accent: #018786 !default; // baseline teal, 600 tone
 $mdc-theme-secondary: $mdc-theme-accent !default;
+$mdc-theme-on-secondary: #fff !default;
 
 $mdc-theme-background: #fff !default; // White
 
@@ -69,18 +71,8 @@ $mdc-theme-property-values: (
   secondary: $mdc-theme-secondary,
   /* Background */
   background: $mdc-theme-background,
-  // Text-primary on "primary" background
-  text-primary-on-primary: mdc-theme-ink-color-for-fill_(primary, $mdc-theme-primary),
-  text-secondary-on-primary: mdc-theme-ink-color-for-fill_(secondary, $mdc-theme-primary),
-  text-hint-on-primary: mdc-theme-ink-color-for-fill_(hint, $mdc-theme-primary),
-  text-disabled-on-primary: mdc-theme-ink-color-for-fill_(disabled, $mdc-theme-primary),
-  text-icon-on-primary: mdc-theme-ink-color-for-fill_(icon, $mdc-theme-primary),
-  // Text-primary on "secondary" background
-  text-primary-on-secondary: mdc-theme-ink-color-for-fill_(primary, $mdc-theme-secondary),
-  text-secondary-on-secondary: mdc-theme-ink-color-for-fill_(secondary, $mdc-theme-secondary),
-  text-hint-on-secondary: mdc-theme-ink-color-for-fill_(hint, $mdc-theme-secondary),
-  text-disabled-on-secondary: mdc-theme-ink-color-for-fill_(disabled, $mdc-theme-secondary),
-  text-icon-on-secondary: mdc-theme-ink-color-for-fill_(icon, $mdc-theme-secondary),
+  on-primary: $mdc-theme-on-primary,
+  on-secondary: $mdc-theme-on-secondary,
   // Text-primary on "background" background
   text-primary-on-background: mdc-theme-ink-color-for-fill_(primary, $mdc-theme-background),
   text-secondary-on-background: mdc-theme-ink-color-for-fill_(secondary, $mdc-theme-background),

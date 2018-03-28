@@ -16,8 +16,9 @@
 
 @import "../../packages/mdc-theme/color-palette";
 
-// TODO: Use theme mixin(s) instead
-$mdc-theme-primary: #fff;
-$mdc-theme-secondary: $material-color-orange-500;
+$mdc-theme-primary: #FCB8AB;
+$mdc-theme-secondary: #FEEAE6;
+$mdc-theme-on-primary: #442B2D;
+$mdc-theme-on-secondary: #442B2D;
 
 @import "./theme-shared";

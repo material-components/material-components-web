@@ -22,8 +22,8 @@
 .mdc-fab {
   @include mdc-fab-base_;
   @include mdc-fab-container-color(secondary);
-  @include mdc-fab-ink-color(text-primary-on-secondary);
-  @include mdc-states(text-primary-on-secondary);
+  @include mdc-fab-ink-color(on-secondary);
+  @include mdc-states(on-secondary);
 }
 
 .mdc-fab--mini {

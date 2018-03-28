@@ -24,7 +24,7 @@
 // postcss-bem-linter: define top-app-bar
 .mdc-top-app-bar {
   @include mdc-top-app-bar-fill-color-accessible(primary);
-  @include mdc-top-app-bar-icon-ink-color(text-primary-on-primary);
+  @include mdc-top-app-bar-icon-ink-color(on-primary);
 
   display: flex;
   position: relative;
