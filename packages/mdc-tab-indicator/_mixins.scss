@@ -1,0 +1,74 @@
+/**
+  * @license
+  * Copyright 2018 Google Inc. All Rights Reserved.
+  *
+  * Licensed under the Apache License, Version 2.0 (the "License")
+  * you may not use this file except in compliance with the License.
+  * You may obtain a copy of the License at
+  *
+  *      http://www.apache.org/licenses/LICENSE-2.0
+  *
+  * Unless required by applicable law or agreed to in writing, software
+  * distributed under the License is distributed on an "AS IS" BASIS,
+  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  * See the License for the specific language governing permissions and
+  * limitations under the License.
+*/
+
+@import "@material/theme/mixins";
+
+@mixin mdc-tab-indicator-active {
+  .mdc-tab-indicator {
+    opacity: 1;
+  }
+}
+
+@mixin mdc-tab-indicator-color($color) {
+  .mdc-tab-indicator--bar {
+    @include mdc-tab-indicator-bar-color($color);
+  }
+
+  .mdc-tab-indicator--icon {
+    @include mdc-tab-indicator-icon-color($color);
+  }
+}
+
+@mixin mdc-tab-indicator-height($height) {
+  .mdc-tab-indicator--bar {
+    @include mdc-tab-indicator-bar-height($height);
+  }
+
+  .mdc-tab-indicator--icon {
+    @include mdc-tab-indicator-icon-height($height);
+  }
+}
+
+@mixin mdc-tab-indicator-top-border-radius($radius) {
+  .mdc-tab-indicator--bar {
+    @include mdc-tab-indicator-bar-top-corner-radius($radius);
+  }
+}
+
+// Bar mixins
+@mixin mdc-tab-indicator-bar-color($color) {
+  @include mdc-theme-prop(background-color, $color);
+}
+
+@mixin mdc-tab-indicator-bar-height($height) {
+  height: $height;
+}
+
+@mixin mdc-tab-indicator-bar-top-corner-radius($radius) {
+  border-top-left-radius: $radius;
+  border-top-right-radius: $radius;
+}
+
+// Icon mixins
+@mixin mdc-tab-indicator-icon-color($color) {
+  @include mdc-theme-prop(color, $color);
+}
+
+@mixin mdc-tab-indicator-icon-height($height) {
+  height: $height;
+  font-size: $height;
+}

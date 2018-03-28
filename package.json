@@ -152,6 +152,7 @@
           "switch",
           "tabs",
           "tab",
+          "tab-indicator",
           "text-field",
           "theme",
           "toolbar",
@@ -184,6 +185,7 @@
     "mdc-selection-control",
     "mdc-slider",
     "mdc-tab",
+    "mdc-tab-indicator",
     "mdc-textfield",
     "mdc-top-app-bar"
   ]
