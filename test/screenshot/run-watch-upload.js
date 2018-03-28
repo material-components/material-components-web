@@ -41,6 +41,10 @@ watcher
   .on('change', change)
   .on('unlink', remove);
 
+async function gitCmd(cmd, ...args) {
+  return (await gitRepo[cmd](args) || '').trim();
+}
+
 async function add(path) {
   fileQueue.set(path, await readFilePromise(path, {encoding: 'utf8'}));
   notifyDebounce();
@@ -58,17 +62,22 @@ function remove(path) {
 }
 
 async function notify() {
-  const gitDiffOutput = (await gitRepo.diff(['HEAD'])).trim();
-  const gitBaseCommit = (await gitRepo.revparse(['--short', 'HEAD'])).trim();
-  const gitBranchName = (await gitRepo.revparse(['--abbrev-ref', 'HEAD'])).trim();
-  const gitUntrackedFilePaths = (await gitRepo.raw(['ls-files', '--others', '--exclude-standard'])).trim().split('\n');
+  const gitDiffOutput = await gitCmd('diff', 'HEAD');
+  const gitBaseCommit = await gitCmd('revparse', '--short', 'HEAD');
+  const gitBranchName = await gitCmd('revparse', '--abbrev-ref', 'HEAD');
+  const gitAddedFiles = await gitCmd('raw', 'ls-files', '--others', '--exclude-standard');
 
-  console.log('gitUntrackedFilePaths:', gitUntrackedFilePaths);
+  console.log('gitAddedFiles:', (gitAddedFiles || '(none)'));
 
-  const gitUntrackedFileContents = await Promise.all(
-    gitUntrackedFilePaths.map((untrackedFilePath) => readFilePromise(untrackedFilePath, {encoding: 'utf8'}))
-  );
-  const gitDiffHash = shortHash(gitDiffOutput + gitUntrackedFileContents.join('\n'));
+  let gitDiffHash;
+  if (gitAddedFiles) {
+    const gitUntrackedFileContents = await Promise.all(
+      gitAddedFiles.split('\n').map((untrackedFilePath) => readFilePromise(untrackedFilePath, {encoding: 'utf8'}))
+    );
+    gitDiffHash = shortHash(gitDiffOutput + gitUntrackedFileContents.join('\n'));
+  } else {
+    gitDiffHash = shortHash(gitDiffOutput);
+  }
 
   const files = new Map(fileQueue);
   fileQueue.clear();
