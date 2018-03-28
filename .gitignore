@@ -1,6 +1,5 @@
 node_modules
 .DS_Store
-out
 /build
 /coverage
 packages/*/dist

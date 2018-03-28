@@ -85,10 +85,6 @@ class CssBundleFactory {
       module: {
         rules: [{
           test: /\.scss$/,
-          exclude: [
-            /\/node_modules\//,
-            /\/out\//,
-          ],
           use: this.createCssLoader_(cssExtractorPlugin),
         }],
       },

@@ -72,10 +72,7 @@ class JsBundleFactory {
       module: {
         rules: [{
           test: /\.js$/,
-          exclude: [
-            /\/node_modules\//,
-            /\/out\//,
-          ],
+          exclude: /node_modules/,
           loader: 'babel-loader',
           options: {
             cacheDirectory: true,

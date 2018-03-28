@@ -31,14 +31,8 @@ const pluginFactory = new PluginFactory({globber});
 const copyrightBannerPlugin = pluginFactory.createCopyrightBannerPlugin();
 const cssBundleFactory = new CssBundleFactory({env, pathResolver, globber, pluginFactory});
 
-const MAIN_OUTPUT = {
-  // Webpack output directory that all compiled MDC files will be written to.
-  fsDirAbsolutePath: pathResolver.getAbsolutePath('/test/screenshot/out/main'),
-};
-
-const TEST_OUTPUT = {
-  // Webpack output directory that all compiled test files will be written to.
-  fsDirAbsolutePath: pathResolver.getAbsolutePath('/test/screenshot/out/test'),
+const OUTPUT = {
+  httpDirAbsolutePath: '/out/',
 };
 
 module.exports = [
@@ -47,7 +41,7 @@ module.exports = [
 ];
 
 function mainCssALaCarte() {
-  return cssBundleFactory.createMainCssALaCarte({output: MAIN_OUTPUT});
+  return cssBundleFactory.createMainCssALaCarte({output: OUTPUT});
 }
 
 function testCss() {
@@ -56,7 +50,7 @@ function testCss() {
     chunkGlobConfig: {
       inputDirectory: '/test/screenshot',
     },
-    output: TEST_OUTPUT,
+    output: OUTPUT,
     plugins: [
       copyrightBannerPlugin,
     ],

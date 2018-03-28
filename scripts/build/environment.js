@@ -39,14 +39,6 @@ class Environment {
     return process.env.MDC_ENV === 'production';
   }
 
-  /**
-   * Returns the TCP port number to use when running a local development server.
-   * @return {number}
-   */
-  getPort() {
-    return parseInt(process.env.MDC_PORT, 10) || 8090;
-  }
-
   getNpmLifecycleEvent_() {
     return process.env.npm_lifecycle_event;
   }
