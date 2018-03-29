@@ -17,13 +17,14 @@
 @import "@material/ripple/common";
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
-@import "@material/theme/mixins";
 @import "@material/typography/mixins";
-@import "@material/tab-indicator/mixins";
 @import "./mixins";
 @import "./variables";
 
 .mdc-tab {
+  @include mdc-ripple-surface;
+  @include mdc-ripple-radius-bounded;
+  @include mdc-states(primary);
   @include mdc-tab-text-label-color($mdc-tab-baseline-color);
   @include mdc-tab-icon-color($mdc-tab-baseline-color);
 
@@ -43,19 +44,6 @@
   white-space: nowrap;
   cursor: pointer;
   -webkit-appearance: none;
-  z-index: 1;
-}
-
-.mdc-tab__ripple {
-  @include mdc-ripple-surface;
-  @include mdc-ripple-radius-bounded;
-  @include mdc-states(primary);
-
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
   overflow: hidden;
   z-index: 1;
 }
@@ -65,11 +53,6 @@
   position: relative;
   justify-content: center;
   height: inherit;
-  z-index: 1;
-}
-
-.mdc-tab__icon,
-.mdc-tab__text-label {
   z-index: 1;
 }
 
@@ -88,22 +71,8 @@
   padding: 12px 0;
 }
 
-.mdc-tab--stacked {
-  height: 72px;
-}
-
-.mdc-tab--stacked .mdc-tab__content {
-  flex-direction: column;
-  align-items: center;
-}
-
-.mdc-tab--stacked .mdc-tab__icon {
-  padding: 12px 0 8px;
-}
-
-.mdc-tab--stacked .mdc-tab__text-label {
-  padding: 0 0 16px;
-  line-height: 12px;
+.mdc-tab__icon + .mdc-tab__text-label {
+  @include mdc-rtl-reflexive-box(padding, left, 8px);
 }
 
 /**
@@ -120,20 +89,11 @@
  * The activation animation has a delay of 100ms
  */
 .mdc-tab--animating-activate .mdc-tab__text-label,
-.mdc-tab--animating-activate .mdc-tab__icon,
-.mdc-tab--animating-activate .mdc-tab__indicator--icon {
+.mdc-tab--animating-activate .mdc-tab__icon {
   transition-delay: 100ms;
-}
-
-/**
- * RTL fix for single lines with icon and text label
- */
-.mdc-tab:not(.mdc-tab--stacked) .mdc-tab__icon + .mdc-tab__text-label {
-  @include mdc-rtl-reflexive-box(padding, left, 8px);
 }
 
 .mdc-tab--active {
   @include mdc-tab-text-label-color(primary);
   @include mdc-tab-icon-color(primary);
-  @include mdc-tab-indicator-active;
 }

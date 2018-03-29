@@ -41,32 +41,18 @@
 
     <main class="mdc-toolbar-fixed-adjust">
       <section class="hero">
-        <div class="hero-demo-wrapper" id="hero-demo-set">
-          <button class="mdc-tab mdc-tab--stacked mdc-tab--active demo-tab" role="tab" tabindex="0">
-            <span class="mdc-tab__content">
-              <span class="material-icons mdc-tab__icon">favorite</span>
-              <span class="mdc-tab__text-label">Favorites</span>
-              <span class="mdc-tab-indicator"></span>
-            </span>
-            <span class="mdc-tab__ripple"></span>
-          </button>
-          <button class="mdc-tab mdc-tab--stacked demo-tab" role="tab" tabindex="-1">
-            <span class="mdc-tab__content">
-              <span class="material-icons mdc-tab__icon">phone</span>
-              <span class="mdc-tab__text-label">Recents</span>
-              <span class="mdc-tab-indicator"></span>
-            </span>
-            <span class="mdc-tab__ripple"></span>
-          </button>
-          <button class="mdc-tab mdc-tab--stacked demo-tab" role="tab" tabindex="-1">
-            <span class="mdc-tab__content">
-              <span class="material-icons mdc-tab__icon">explore_nearby</span>
-              <span class="mdc-tab__text-label">Nearby</span>
-              <span class="mdc-tab-indicator"></span>
-            </span>
-            <span class="mdc-tab__ripple"></span>
-          </button>
-        </div>
+        <button class="mdc-tab demo-tab" role="tab" data-demo="demoTabFavorite">
+          <span class="mdc-tab__content">
+            <span class="material-icons mdc-tab__icon">favorite</span>
+            <span class="mdc-tab__text-label">Favorites</span>
+          </span>
+        </button>
+        <button class="mdc-tab mdc-tab--active demo-tab" role="tab" data-demo="demoRecentsTabRecents">
+          <span class="mdc-tab__content">
+            <span class="material-icons mdc-tab__icon">phone</span>
+            <span class="mdc-tab__text-label">Recents</span>
+          </span>
+        </button>
       </section>
 
       <div class="rtl-container">
@@ -84,25 +70,10 @@
             <span class="mdc-tab__content">
               <span class="mdc-tab__text-label">Nearby</span>
             </span>
-            <span class="mdc-tab-indicator"></span>
-            <span class="mdc-tab__ripple"></span>
           </button>
           <div class="demo-controls">
             <input type="checkbox" id="id0" data-controls="basicTab"/>
             <label for="id0">Active</label>
-          </div>
-        </div>
-        <div class="demo">
-          <button class="mdc-tab demo-tab" role="tab" data-demo="basicTabIcon">
-            <span class="mdc-tab__content">
-              <span class="mdc-tab__icon material-icons">favorite</span>
-            </span>
-            <span class="mdc-tab-indicator"></span>
-            <span class="mdc-tab__ripple"></span>
-          </button>
-          <div class="demo-controls">
-            <input type="checkbox" id="id13" data-controls="basicTabIcon"/>
-            <label for="id13">Active</label>
           </div>
         </div>
         <div class="demo">
@@ -111,70 +82,10 @@
               <span class="material-icons mdc-tab__icon">directions_transit</span>
               <span class="mdc-tab__text-label">Transit</span>
             </span>
-            <span class="mdc-tab-indicator"></span>
-            <span class="mdc-tab__ripple"></span>
           </button>
           <div class="demo-controls">
             <input type="checkbox" id="id1" data-controls="basicTabWithIcon"/>
             <label for="id1">Active</label>
-          </div>
-        </div>
-        <div class="demo">
-          <button class="mdc-tab mdc-tab--stacked demo-tab" role="tab" data-demo="basicTabTwoLines">
-            <span class="mdc-tab__content">
-              <span class="material-icons mdc-tab__icon">people</span>
-              <span class="mdc-tab__text-label">Contacts</span>
-            </span>
-            <span class="mdc-tab-indicator"></span>
-            <span class="mdc-tab__ripple"></span>
-          </button>
-          <div class="demo-controls">
-            <input type="checkbox" id="id12" data-controls="basicTabTwoLines"/>
-            <label for="id12">Active</label>
-          </div>
-        </div>
-      </section>
-
-      <section class="example">
-        <h2>Basic Tabs with Text-Label Width Matching Indicators</h2>
-        <div class="demo">
-          <button class="mdc-tab demo-tab" role="tab" data-demo="basicTabTextLabelIndicator">
-            <span class="mdc-tab__content">
-              <span class="mdc-tab__text-label">Nearby</span>
-              <span class="mdc-tab-indicator"></span>
-            </span>
-            <span class="mdc-tab__ripple"></span>
-          </button>
-          <div class="demo-controls">
-            <input type="checkbox" id="id2" data-controls="basicTabTextLabelIndicator"/>
-            <label for="id2">Active</label>
-          </div>
-        </div>
-        <div class="demo">
-          <button class="mdc-tab demo-tab" role="tab" data-demo="basicTabWithIconTextLabelIndicator">
-            <span class="mdc-tab__content">
-              <span class="material-icons mdc-tab__icon">directions_transit</span>
-              <span class="mdc-tab-indicator"></span>
-            </span>
-            <span class="mdc-tab__ripple"></span>
-          </button>
-          <div class="demo-controls">
-            <input type="checkbox" id="id3" data-controls="basicTabWithIconTextLabelIndicator"/>
-            <label for="id3">Active</label>
-          </div>
-        </div>
-        <div class="demo">
-          <button class="mdc-tab mdc-tab--stacked demo-tab" role="tab" data-demo="basicTabTwoLinesWithIconTextLabelIndicator">
-            <span class="mdc-tab__content">
-              <span class="material-icons mdc-tab__icon">people</span>
-              <span class="mdc-tab__text-label">Contacts</span>
-              <span class="mdc-tab-indicator"></span>
-            </span>
-            <span class="mdc-tab__ripple"></span>
-          </button>
-          <div class="demo-controls">
-            <input type="checkbox" id="id11" data-controls="basicTabTwoLinesWithIconTextLabelIndicator"/>
-            <label for="id11">Active</label>
           </div>
         </div>
       </section>
@@ -186,67 +97,31 @@
             <span class="mdc-tab__content">
               <span class="mdc-tab__text-label">Showtimes</span>
             </span>
-            <span class="mdc-tab-indicator"></span>
-            <span class="mdc-tab__ripple"></span>
           </button>
           <div class="demo-controls">
-            <input type="checkbox" id="id4" data-controls="customColorsTab1"/>
-            <label for="id4">Active</label>
+            <input type="checkbox" id="id2" data-controls="customColorsTab1"/>
+            <label for="id2">Active</label>
           </div>
         </div>
         <div class="demo">
-          <button class="mdc-tab mdc-tab--stacked demo-tab custom-tab2" role="tab" data-demo="customColorsTab2">
+          <button class="mdc-tab demo-tab custom-tab2" role="tab" data-demo="customColorsTab2">
             <span class="mdc-tab__content">
               <span class="material-icons mdc-tab__icon">directions_car</span>
               <span class="mdc-tab__text-label">Directions</span>
-              <span class="mdc-tab-indicator"></span>
             </span>
-            <span class="mdc-tab__ripple"></span>
           </button>
           <div class="demo-controls">
-            <input type="checkbox" id="id5" data-controls="customColorsTab2"/>
-            <label for="id5">Active</label>
-          </div>
-        </div>
-        <div class="demo">
-          <button class="mdc-tab demo-tab custom-tab3" role="tab" data-demo="customColorsTab3">
-            <span class="mdc-tab__content">
-              <span class="mdc-tab__text-label">Featured</span>
-            </span>
-            <span class="mdc-tab-indicator mdc-tab-indicator--icon material-icons">star</span>
-            <span class="mdc-tab__ripple"></span>
-          </button>
-          <div class="demo-controls">
-            <input type="checkbox" id="id6" data-controls="customColorsTab3"/>
-            <label for="id6">Active</label>
+            <input type="checkbox" id="id3" data-controls="customColorsTab2"/>
+            <label for="id3">Active</label>
           </div>
         </div>
       </section>
-
     </main>
 
     <script src="/assets/material-components-web.js" async></script>
     <script src="/assets/common.js" async></script>
     <script>
       demoReady(function() {
-
-        var heroDemoTabs = document.querySelectorAll('#hero-demo-set .demo-tab');
-        var activeTab;
-        for (var i = 0; i < heroDemoTabs.length; i++) {
-          (function(index) {
-            var tabElement = heroDemoTabs[i];
-            var tab = new mdc.tab.MDCTab(tabElement);
-            if (tab.active) {
-              activeTab = tab;
-            }
-            tabElement.addEventListener('click', function () {
-              activeTab.deactivate();
-              tab.activate(activeTab.indicatorClientRect);
-              activeTab = tab;
-            });
-          })(i);
-        }
-
         var demos = document.querySelectorAll('[data-demo]');
         for (var i = 0; i < demos.length; i++) {
           var demoName = demos[i].dataset.demo;
@@ -257,10 +132,8 @@
         for (var i = 0; i < controls.length; i++) {
           controls[i].addEventListener('change', function(event) {
             var controlTarget = event.currentTarget.dataset.controls;
-            if (event.currentTarget.checked) {
-              window[controlTarget].activate();
-            } else {
-              window[controlTarget].deactivate()
+            if (window[controlTarget]) {
+              window[controlTarget].active = event.currentTarget.checked;
             }
           });
         }

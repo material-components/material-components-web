@@ -16,11 +16,7 @@
  */
 
 import MDCComponent from '@material/base/component';
-/* eslint-disable no-unused-vars */
-import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
-/* eslint-enable no-unused-vars */
-
-import {MDCTabIndicator, MDCTabIndicatorFoundation} from '@material/tab-indicator/index';
+import {MDCRipple} from '@material/ripple/index';
 
 import MDCTabAdapter from './adapter';
 import MDCTabFoundation from './foundation';
@@ -31,46 +27,21 @@ import MDCTabFoundation from './foundation';
  */
 class MDCTab extends MDCComponent {
   /**
+   * @param {...?} args
+   */
+  constructor(...args) {
+    super(...args);
+
+    /** @private {!MDCRipple} */
+    this.ripple_ = new MDCRipple(this.root_);
+  }
+
+  /**
    * @param {!Element} root
    * @return {!MDCTab}
    */
   static attachTo(root) {
     return new MDCTab(root);
-  }
-
-  /**
-   * @param {...?} args
-   */
-  constructor(...args) {
-    super(...args);
-    /** @type {!MDCTabIndicator} */
-    this.indicator_;
-    /** @type {!MDCRipple} */
-    this.ripple_;
-    /** @private {?Element} */
-    this.rippleSurface_;
-  };
-
-  /**
-   * @param {(function(!Element): !MDCRipple)=} rippleFactory A function which creates a new MDCRipple.
-   * @param {(function(!Element): !MDCTabIndicator)=} indicatorFactory A function which creates a new MDCTabIndicator.
-   */
-  initialize(
-    rippleFactory = (el, foundation) => new MDCRipple(el, foundation),
-    indicatorFactory = (el) => new MDCTabIndicator(el)) {
-    this.rippleSurface_ = this.root_.querySelector(MDCTabFoundation.strings.RIPPLE_SELECTOR);
-
-    const indicatorElement = this.root_.querySelector(MDCTabIndicatorFoundation.strings.INDICATOR_SELECTOR);
-    this.indicator_ = indicatorFactory(indicatorElement);
-
-    const rippleAdapter = Object.assign(MDCRipple.createAdapter(/** @type {!RippleCapableSurface} */ (this)), {
-      addClass: (className) => this.rippleSurface_.classList.add(className),
-      removeClass: (className) => this.rippleSurface_.classList.remove(className),
-      updateCssVariable: (varName, value) => this.rippleSurface_.style.setProperty(varName, value),
-    });
-
-    const foundation = new MDCRippleFoundation(rippleAdapter);
-    this.ripple_ = rippleFactory(this.root_, foundation);
   }
 
   destroy() {
@@ -89,7 +60,7 @@ class MDCTab extends MDCComponent {
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       hasClass: (className) => this.root_.classList.contains(className),
-    })), this.indicator_.foundation);
+    })));
   }
 
   /**
@@ -100,21 +71,14 @@ class MDCTab extends MDCComponent {
   }
 
   /**
-   * @return {!ClientRect}
+   * @param {boolean} isActive
    */
-  get indicatorClientRect() {
-    return this.foundation_.getIndicatorClientRect();
-  }
-
-  /**
-   * @param {!ClientRect=} previousTabClientRect
-   */
-  activate(previousTabClientRect) {
-    this.foundation_.activate(previousTabClientRect);
-  }
-
-  deactivate() {
-    this.foundation_.deactivate();
+  set active(isActive) {
+    if (isActive) {
+      this.foundation_.activate();
+    } else {
+      this.foundation_.deactivate();
+    }
   }
 }
 

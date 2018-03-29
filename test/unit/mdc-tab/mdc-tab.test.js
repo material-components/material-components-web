@@ -21,15 +21,13 @@ import domEvents from 'dom-events';
 
 import {createMockRaf} from '../helpers/raf';
 import {MDCTab, MDCTabFoundation} from '../../../packages/mdc-tab';
-import {MDCRipple} from '../../../packages/mdc-tab/node_modules/@material/ripple';
 
 const getFixture = () => bel`
   <button class="mdc-tab" aria-selected="false" role="tab">
     <div class="mdc-tab__content">
       <span class="mdc-tab__text-label">Foo</span>
+      <span class="mdc-tab__icon"></span>
     </div>
-    <span class="mdc-tab__ripple"></span>
-    <span class="mdc-tab-indicator"></span>
   </button>
 `;
 
@@ -39,50 +37,20 @@ test('attachTo returns an MDCTab instance', () => {
   assert.isTrue(MDCTab.attachTo(getFixture()) instanceof MDCTab);
 });
 
-test('#constructor instantiates a ipple on the `.mdc-tab__ripple` element', () => {
-  const root = getFixture();
-  const component = new MDCTab(root);
-  assert.instanceOf(component.ripple_, MDCRipple);
-});
-
-class FakeRipple {
-  constructor(root) {
-    this.root = root;
-    this.layout = td.func('.layout');
-    this.destroy = td.func('.destroy');
-  }
-}
-
-class FakeTabIndicator {
-  constructor() {
-    this.activate = td.func('indicator.activate');
-    this.deactivate = td.func('indicator.deactivate');
-    this.getClientRect = td.func('indicator.getClientRect');
-  }
-}
-
 function setupTest() {
   const root = getFixture();
-  const indicator = new FakeTabIndicator();
-  const component = new MDCTab(
-    root,
-    undefined,
-    (el) => new FakeRipple(el),
-    () => indicator
-  );
-  return {root, component, indicator};
+  const component = new MDCTab(root);
+  return {root, component};
 }
 
 test('#destroy removes the ripple', () => {
   const raf = createMockRaf();
-  raf.flush();
   const {component, root} = setupTest();
   raf.flush();
   component.destroy();
   raf.flush();
+  assert.isNotOk(root.classList.contains('mdc-ripple-upgraded'));
   raf.restore();
-  assert.isNotOk(
-    root.querySelector(MDCTabFoundation.strings.RIPPLE_SELECTOR).classList.contains('mdc-ripple-upgraded'));
 });
 
 test('#adapter.addClass adds a class to the root element', () => {
@@ -111,7 +79,7 @@ test('#adapter.setAttr adds a given attribute to the root element', () => {
   assert.equal(root.getAttribute('foo'), 'bar');
 });
 
-test('#adapter.registerEventHandler adds an event listener to the root element', () => {
+test('#adapter.registerEventHandler adds an event listener to the root element for a given event', () => {
   const {root, component} = setupTest();
   const handler = td.func('transitionend handler');
   component.getDefaultFoundation().adapter_.registerEventHandler('transitionend', handler);
@@ -119,7 +87,7 @@ test('#adapter.registerEventHandler adds an event listener to the root element',
   td.verify(handler(td.matchers.anything()));
 });
 
-test('#adapter.deregisterEventHandler removes an event listener from the root element', () => {
+test('#adapter.deregisterEventHandler removes an event listener from the root element for a given event', () => {
   const {root, component} = setupTest();
   const handler = td.func('transitionend handler');
   root.addEventListener('transitionend', handler);
@@ -141,30 +109,14 @@ test('#active getter calls isActive', () => {
   td.verify(mockFoundation.isActive(), {times: 1});
 });
 
-test('#activate calls activate with passed args', () => {
+test('#active set to true calls activate', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
-  component.activate({width: 100, left: 0});
-  td.verify(mockFoundation.activate({width: 100, left: 0}), {times: 1});
+  component.active = true;
+  td.verify(mockFoundation.activate(), {times: 1});
 });
 
-test('#deactivate calls deactivate', () => {
+test('#active set to false calls deactivate', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
-  component.deactivate();
+  component.active = false;
   td.verify(mockFoundation.deactivate(), {times: 1});
-});
-
-test('activating the ripples causes changes on the ripple surface', () => {
-  const {component} = setupMockFoundationTest();
-  const raf = createMockRaf();
-  raf.flush();
-  component.ripple_.activate();
-  raf.flush();
-  raf.restore();
-  assert.isAtLeast(component.rippleSurface_.classList.length, 2);
-});
-
-test('#indicatorClientRect getter calls getIndicatorClientRect', () => {
-  const {component, mockFoundation} = setupMockFoundationTest();
-  component.indicatorClientRect;
-  td.verify(mockFoundation.getIndicatorClientRect(), {times: 1});
 });

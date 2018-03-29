@@ -22,10 +22,6 @@ import {
   strings,
 } from './constants';
 
-/* eslint-disable no-unused-vars */
-import MDCTabIndicatorFoundation from '@material/tab-indicator/foundation';
-/* eslint-enable no-unused-vars */
-
 /**
  * @extends {MDCFoundation<!MDCTabAdapter>}
  * @final
@@ -56,22 +52,16 @@ class MDCTabFoundation extends MDCFoundation {
     });
   }
 
-  /**
-   * @param {!MDCTabAdapter} adapter
-   * @param {!MDCTabIndicatorFoundation} indicatorFoundation
-   */
-  constructor(adapter, indicatorFoundation) {
+  /** @param {!MDCTabAdapter} adapter */
+  constructor(adapter) {
     super(Object.assign(MDCTabFoundation.defaultAdapter, adapter));
-
-    /** @private */
-    this.indicator_ = indicatorFoundation;
 
     /** @private {function(!Event): undefined} */
     this.handleTransitionEnd_ = (evt) => this.handleTransitionEnd(evt);
   }
 
   /**
-   * Handles the "transitionend" event for the root element
+   * Handles the "transitionend" event
    * @param {!Event} evt A browser event
    */
   handleTransitionEnd(evt) {
@@ -79,7 +69,6 @@ class MDCTabFoundation extends MDCFoundation {
     if (evt.pseudoElement) {
       return;
     }
-
     this.adapter_.deregisterEventHandler('transitionend', this.handleTransitionEnd_);
     this.adapter_.removeClass(cssClasses.ANIMATING_ACTIVATE);
     this.adapter_.removeClass(cssClasses.ANIMATING_DEACTIVATE);
@@ -95,20 +84,16 @@ class MDCTabFoundation extends MDCFoundation {
 
   /**
    * Activates the Tab
-   * @param {!ClientRect=} previousIndicatorClientRect
    */
-  activate(previousIndicatorClientRect) {
+  activate() {
     // Early exit
     if (this.isActive()) {
       return;
     }
-
     this.adapter_.registerEventHandler('transitionend', this.handleTransitionEnd_);
     this.adapter_.addClass(cssClasses.ANIMATING_ACTIVATE);
     this.adapter_.addClass(cssClasses.ACTIVE);
     this.adapter_.setAttr(strings.ARIA_SELECTED, 'true');
-    this.adapter_.setAttr(strings.TABINDEX, '0');
-    this.indicator_.activate(previousIndicatorClientRect);
   }
 
   /**
@@ -119,21 +104,10 @@ class MDCTabFoundation extends MDCFoundation {
     if (!this.isActive()) {
       return;
     }
-
     this.adapter_.registerEventHandler('transitionend', this.handleTransitionEnd_);
     this.adapter_.addClass(cssClasses.ANIMATING_DEACTIVATE);
     this.adapter_.removeClass(cssClasses.ACTIVE);
     this.adapter_.setAttr(strings.ARIA_SELECTED, 'false');
-    this.adapter_.setAttr(strings.TABINDEX, '-1');
-    this.indicator_.deactivate();
-  }
-
-  /**
-   * Returns the indicator's client rect
-   * @return {!ClientRect}
-   */
-  getIndicatorClientRect() {
-    return this.indicator_.getClientRect();
   }
 }
 
