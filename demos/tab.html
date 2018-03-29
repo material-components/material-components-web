@@ -42,27 +42,27 @@
     <main class="mdc-toolbar-fixed-adjust">
       <section class="hero">
         <div class="hero-demo-wrapper" id="hero-demo-set">
-          <button class="mdc-tab mdc-tab--two-lines mdc-tab--active demo-tab" role="tab">
+          <button class="mdc-tab mdc-tab--stacked mdc-tab--active demo-tab" role="tab" tabindex="0">
             <span class="mdc-tab__content">
               <span class="material-icons mdc-tab__icon">favorite</span>
               <span class="mdc-tab__text-label">Favorites</span>
-              <span class="mdc-tab-indicator mdc-tab-indicator--bar"></span>
+              <span class="mdc-tab-indicator"></span>
             </span>
             <span class="mdc-tab__ripple"></span>
           </button>
-          <button class="mdc-tab mdc-tab--two-lines demo-tab" role="tab">
+          <button class="mdc-tab mdc-tab--stacked demo-tab" role="tab" tabindex="-1">
             <span class="mdc-tab__content">
               <span class="material-icons mdc-tab__icon">phone</span>
               <span class="mdc-tab__text-label">Recents</span>
-              <span class="mdc-tab-indicator mdc-tab-indicator--bar"></span>
+              <span class="mdc-tab-indicator"></span>
             </span>
             <span class="mdc-tab__ripple"></span>
           </button>
-          <button class="mdc-tab mdc-tab--two-lines demo-tab" role="tab">
+          <button class="mdc-tab mdc-tab--stacked demo-tab" role="tab" tabindex="-1">
             <span class="mdc-tab__content">
               <span class="material-icons mdc-tab__icon">explore_nearby</span>
               <span class="mdc-tab__text-label">Nearby</span>
-              <span class="mdc-tab-indicator mdc-tab-indicator--bar"></span>
+              <span class="mdc-tab-indicator"></span>
             </span>
             <span class="mdc-tab__ripple"></span>
           </button>
@@ -84,7 +84,7 @@
             <span class="mdc-tab__content">
               <span class="mdc-tab__text-label">Nearby</span>
             </span>
-            <span class="mdc-tab-indicator mdc-tab-indicator--bar"></span>
+            <span class="mdc-tab-indicator"></span>
             <span class="mdc-tab__ripple"></span>
           </button>
           <div class="demo-controls">
@@ -97,7 +97,7 @@
             <span class="mdc-tab__content">
               <span class="mdc-tab__icon material-icons">favorite</span>
             </span>
-            <span class="mdc-tab-indicator mdc-tab-indicator--bar"></span>
+            <span class="mdc-tab-indicator"></span>
             <span class="mdc-tab__ripple"></span>
           </button>
           <div class="demo-controls">
@@ -111,7 +111,7 @@
               <span class="material-icons mdc-tab__icon">directions_transit</span>
               <span class="mdc-tab__text-label">Transit</span>
             </span>
-            <span class="mdc-tab-indicator mdc-tab-indicator--bar"></span>
+            <span class="mdc-tab-indicator"></span>
             <span class="mdc-tab__ripple"></span>
           </button>
           <div class="demo-controls">
@@ -120,14 +120,12 @@
           </div>
         </div>
         <div class="demo">
-          <button class="mdc-tab mdc-tab--two-lines demo-tab" role="tab" data-demo="basicTabTwoLines">
+          <button class="mdc-tab mdc-tab--stacked demo-tab" role="tab" data-demo="basicTabTwoLines">
             <span class="mdc-tab__content">
               <span class="material-icons mdc-tab__icon">people</span>
               <span class="mdc-tab__text-label">Contacts</span>
             </span>
-            <span class="mdc-tab-indicator mdc-tab-indicator--icon">
-              <i class="material-icons">lens</i>
-            </span>
+            <span class="mdc-tab-indicator"></span>
             <span class="mdc-tab__ripple"></span>
           </button>
           <div class="demo-controls">
@@ -137,15 +135,13 @@
         </div>
       </section>
 
-      <!--
-
       <section class="example">
         <h2>Basic Tabs with Text-Label Width Matching Indicators</h2>
         <div class="demo">
           <button class="mdc-tab demo-tab" role="tab" data-demo="basicTabTextLabelIndicator">
             <span class="mdc-tab__content">
               <span class="mdc-tab__text-label">Nearby</span>
-              <span class="mdc-tab__indicator"></span>
+              <span class="mdc-tab-indicator"></span>
             </span>
             <span class="mdc-tab__ripple"></span>
           </button>
@@ -158,7 +154,7 @@
           <button class="mdc-tab demo-tab" role="tab" data-demo="basicTabWithIconTextLabelIndicator">
             <span class="mdc-tab__content">
               <span class="material-icons mdc-tab__icon">directions_transit</span>
-              <span class="mdc-tab__indicator"></span>
+              <span class="mdc-tab-indicator"></span>
             </span>
             <span class="mdc-tab__ripple"></span>
           </button>
@@ -168,11 +164,11 @@
           </div>
         </div>
         <div class="demo">
-          <button class="mdc-tab mdc-tab--two-lines demo-tab" role="tab" data-demo="basicTabTwoLinesWithIconTextLabelIndicator">
+          <button class="mdc-tab mdc-tab--stacked demo-tab" role="tab" data-demo="basicTabTwoLinesWithIconTextLabelIndicator">
             <span class="mdc-tab__content">
               <span class="material-icons mdc-tab__icon">people</span>
               <span class="mdc-tab__text-label">Contacts</span>
-              <span class="mdc-tab__indicator"></span>
+              <span class="mdc-tab-indicator"></span>
             </span>
             <span class="mdc-tab__ripple"></span>
           </button>
@@ -190,7 +186,7 @@
             <span class="mdc-tab__content">
               <span class="mdc-tab__text-label">Showtimes</span>
             </span>
-            <span class="mdc-tab__indicator"></span>
+            <span class="mdc-tab-indicator"></span>
             <span class="mdc-tab__ripple"></span>
           </button>
           <div class="demo-controls">
@@ -199,11 +195,11 @@
           </div>
         </div>
         <div class="demo">
-          <button class="mdc-tab mdc-tab--two-lines demo-tab custom-tab2" role="tab" data-demo="customColorsTab2">
+          <button class="mdc-tab mdc-tab--stacked demo-tab custom-tab2" role="tab" data-demo="customColorsTab2">
             <span class="mdc-tab__content">
               <span class="material-icons mdc-tab__icon">directions_car</span>
               <span class="mdc-tab__text-label">Directions</span>
-              <span class="mdc-tab__indicator"></span>
+              <span class="mdc-tab-indicator"></span>
             </span>
             <span class="mdc-tab__ripple"></span>
           </button>
@@ -217,7 +213,7 @@
             <span class="mdc-tab__content">
               <span class="mdc-tab__text-label">Featured</span>
             </span>
-            <span class="mdc-tab__indicator mdc-tab__indicator--icon material-icons">star</span>
+            <span class="mdc-tab-indicator mdc-tab-indicator--icon material-icons">star</span>
             <span class="mdc-tab__ripple"></span>
           </button>
           <div class="demo-controls">
@@ -226,8 +222,6 @@
           </div>
         </div>
       </section>
-
-      -->
 
     </main>
 
@@ -247,7 +241,7 @@
             }
             tabElement.addEventListener('click', function () {
               activeTab.deactivate();
-              tab.activate(activeTab.getIndicatorClientRect());
+              tab.activate(activeTab.indicatorClientRect);
               activeTab = tab;
             });
           })(i);

@@ -23,31 +23,38 @@ import MDCTabIndicatorFoundation from './foundation';
 class MDCTabIndicatorBarFoundation extends MDCTabIndicatorFoundation {
   /**
    * @param {!ClientRect=} previousClientRect
-   * @override
    */
   activate(previousClientRect) {
     // Activate the tab
     this.adapter_.addClass(MDCTabIndicatorFoundation.cssClasses.ACTIVE);
+
+    // Early exit if no indicator is present to handle cases where an indicator
+    // may be activated without a prior indicator state
     if (!previousClientRect) {
       return;
     }
+
+    // This animation uses the FLIP approach. You can read more about it at the link below:
+    // https://aerotwist.com/blog/flip-your-animations/
 
     // Calculate the dimensions based on the dimensions of the previous indicator
     const currentClientRect = this.adapter_.getClientRect();
     const widthDelta = previousClientRect.width / currentClientRect.width;
     const xPosition = previousClientRect.left - currentClientRect.left;
     this.adapter_.setStyleProperty('transform', `translateX(${xPosition}px) scaleX(${widthDelta})`);
+
     // Force repaint
     this.adapter_.getClientRect();
-    // Add class and undo styling in a new frame
+
+    // Add animating class and remove transformation in a new frame
     requestAnimationFrame(() => {
-      this.adapter_.addClass(MDCTabIndicatorFoundation.cssClasses.ANIMATING_BAR);
+      this.adapter_.addClass(MDCTabIndicatorFoundation.cssClasses.ANIMATING);
       this.adapter_.setStyleProperty('transform', '');
     });
+
     this.adapter_.registerEventHandler('transitionend', this.handleTransitionEnd_);
   }
 
-  /** @override */
   deactivate() {
     this.adapter_.removeClass(MDCTabIndicatorFoundation.cssClasses.ACTIVE);
   }

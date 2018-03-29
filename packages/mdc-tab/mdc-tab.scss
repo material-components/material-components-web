@@ -88,43 +88,20 @@
   padding: 12px 0;
 }
 
-.mdc-tab__indicator {
-  @include mdc-theme-prop(background-color, primary);
-
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  align-self: center;
-  justify-content: center;
-  width: 100%;
-  height: 2px;
-  transform-origin: left;
-  opacity: 0;
-}
-
-.mdc-tab__indicator--icon {
-  @include mdc-theme-prop(color, secondary);
-
-  bottom: auto;
-  align-self: center;
-  height: auto;
-  background: none;
-}
-
-.mdc-tab--two-lines {
+.mdc-tab--stacked {
   height: 72px;
 }
 
-.mdc-tab--two-lines .mdc-tab__content {
+.mdc-tab--stacked .mdc-tab__content {
   flex-direction: column;
   align-items: center;
 }
 
-.mdc-tab--two-lines .mdc-tab__icon {
+.mdc-tab--stacked .mdc-tab__icon {
   padding: 12px 0 8px;
 }
 
-.mdc-tab--two-lines .mdc-tab__text-label {
+.mdc-tab--stacked .mdc-tab__text-label {
   padding: 0 0 16px;
   line-height: 12px;
 }
@@ -140,14 +117,6 @@
 }
 
 /**
- * The [de]activation animation affects opacity for indicator icons
- */
-.mdc-tab--animating-activate .mdc-tab__indicator--icon,
-.mdc-tab--animating-deactivate .mdc-tab__indicator--icon {
-  transition: 150ms opacity linear;
-}
-
-/**
  * The activation animation has a delay of 100ms
  */
 .mdc-tab--animating-activate .mdc-tab__text-label,
@@ -156,14 +125,10 @@
   transition-delay: 100ms;
 }
 
-.mdc-tab--animating-indicator .mdc-tab__indicator {
-  transition: 250ms transform cubic-bezier(0, 0, .2, 1);
-}
-
 /**
  * RTL fix for single lines with icon and text label
  */
-.mdc-tab:not(.mdc-tab--two-lines) .mdc-tab__icon + .mdc-tab__text-label {
+.mdc-tab:not(.mdc-tab--stacked) .mdc-tab__icon + .mdc-tab__text-label {
   @include mdc-rtl-reflexive-box(padding, left, 8px);
 }
 

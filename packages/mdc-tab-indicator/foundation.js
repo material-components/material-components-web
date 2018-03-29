@@ -67,7 +67,7 @@ class MDCTabIndicatorFoundation extends MDCFoundation {
     this.adapter_.deregisterEventHandler('transitionend', this.handleTransitionEnd_);
     this.adapter_.removeClass(cssClasses.ANIMATING_ICON_ACTIVATE);
     this.adapter_.removeClass(cssClasses.ANIMATING_ICON_DEACTIVATE);
-    this.adapter_.removeClass(cssClasses.ANIMATING_BAR);
+    this.adapter_.removeClass(cssClasses.ANIMATING);
   }
 
   /** @return {!ClientRect} */

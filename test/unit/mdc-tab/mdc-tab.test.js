@@ -29,7 +29,7 @@ const getFixture = () => bel`
       <span class="mdc-tab__text-label">Foo</span>
     </div>
     <span class="mdc-tab__ripple"></span>
-    <span class="mdc-tab-indicator mdc-tab-indicator--bar"></span>
+    <span class="mdc-tab-indicator"></span>
   </button>
 `;
 
@@ -163,8 +163,8 @@ test('activating the ripples causes changes on the ripple surface', () => {
   assert.isAtLeast(component.rippleSurface_.classList.length, 2);
 });
 
-test('#getIndicatorClientRect calls getIndicatorClientRect', () => {
+test('#indicatorClientRect getter calls getIndicatorClientRect', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
-  component.getIndicatorClientRect();
+  component.indicatorClientRect;
   td.verify(mockFoundation.getIndicatorClientRect(), {times: 1});
 });

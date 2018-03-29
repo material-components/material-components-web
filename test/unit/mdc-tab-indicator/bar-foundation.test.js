@@ -47,14 +47,14 @@ test('#activate registers a transitionend handler', () => {
   td.verify(mockAdapter.registerEventHandler('transitionend', td.matchers.isA(Function)));
 });
 
-test(`#activate adds the ${MDCTabIndicatorBarFoundation.cssClasses.ANIMATING_BAR} class`, () => {
+test(`#activate adds the ${MDCTabIndicatorBarFoundation.cssClasses.ANIMATING} class`, () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
   td.when(mockAdapter.getClientRect()).thenReturn({width: 100, left: 10});
   foundation.activate({width: 90, left: 25});
   raf.flush();
   raf.restore();
-  td.verify(mockAdapter.addClass(MDCTabIndicatorBarFoundation.cssClasses.ANIMATING_BAR));
+  td.verify(mockAdapter.addClass(MDCTabIndicatorBarFoundation.cssClasses.ANIMATING));
 });
 
 test('#activate resets the transform property', () => {
@@ -79,11 +79,11 @@ test(`#deactivate removes the ${MDCTabIndicatorBarFoundation.cssClasses.ACTIVE} 
   td.verify(mockAdapter.removeClass(MDCTabIndicatorBarFoundation.cssClasses.ACTIVE));
 });
 
-test(`on transitionend, remove the ${MDCTabIndicatorBarFoundation.cssClasses.ANIMATING_BAR} class`, () => {
+test(`on transitionend, remove the ${MDCTabIndicatorBarFoundation.cssClasses.ANIMATING} class`, () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerEventHandler');
   td.when(mockAdapter.getClientRect()).thenReturn({width: 100, left: 10});
   foundation.activate({width: 90, left: 25});
   handlers.transitionend();
-  td.verify(mockAdapter.removeClass(MDCTabIndicatorBarFoundation.cssClasses.ANIMATING_BAR));
+  td.verify(mockAdapter.removeClass(MDCTabIndicatorBarFoundation.cssClasses.ANIMATING));
 });

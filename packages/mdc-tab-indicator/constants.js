@@ -21,8 +21,7 @@ const cssClasses = {
   ICON: 'mdc-tab-indicator--icon',
   ANIMATING_ICON_ACTIVATE: 'mdc-tab-indicator--icon-animating-activate',
   ANIMATING_ICON_DEACTIVATE: 'mdc-tab-indicator--icon-animating-deactivate',
-  BAR: 'mdc-tab-indicator--bar',
-  ANIMATING_BAR: 'mdc-tab-indicator--bar-animating',
+  ANIMATING: 'mdc-tab-indicator--animating',
 };
 
 /** @enum {string} */

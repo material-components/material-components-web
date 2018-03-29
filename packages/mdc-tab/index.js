@@ -43,9 +43,9 @@ class MDCTab extends MDCComponent {
    */
   constructor(...args) {
     super(...args);
-    /** @private {?MDCTabIndicator} */
+    /** @type {!MDCTabIndicator} */
     this.indicator_;
-    /** @type {?MDCRipple} */
+    /** @type {!MDCRipple} */
     this.ripple_;
     /** @private {?Element} */
     this.rippleSurface_;
@@ -89,7 +89,7 @@ class MDCTab extends MDCComponent {
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       hasClass: (className) => this.root_.classList.contains(className),
-    })), this.indicator_);
+    })), this.indicator_.foundation);
   }
 
   /**
@@ -102,7 +102,7 @@ class MDCTab extends MDCComponent {
   /**
    * @return {!ClientRect}
    */
-  getIndicatorClientRect() {
+  get indicatorClientRect() {
     return this.foundation_.getIndicatorClientRect();
   }
 

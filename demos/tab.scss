@@ -17,6 +17,7 @@
 @import "./common";
 @import "../packages/mdc-tab/mixins";
 @import "../packages/mdc-tab/mdc-tab";
+@import "../packages/mdc-tab-indicator/mixins";
 @import "../packages/mdc-tab-indicator/mdc-tab-indicator";
 @import "../packages/mdc-elevation/mixins";
 @import "../packages/mdc-ripple/mixins";
@@ -74,7 +75,7 @@
   @include mdc-tab-text-label-color($material-color-grey-700);
   @include mdc-tab-icon-color($material-color-grey-700);
   @include mdc-tab-indicator-color($material-color-pink-a100);
-  @include mdc-tab-indicator-height(36px);
+  @include mdc-tab-indicator-height(40px);
 
   &.mdc-tab--active {
     @include mdc-tab-text-label-color($material-color-purple-900);

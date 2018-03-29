@@ -26,35 +26,26 @@ import {
   MDCTabIndicatorIconFoundation,
 } from '../../../packages/mdc-tab-indicator';
 
-const getBarFixture = () => bel`
-  <span class="mdc-tab-indicator mdc-tab-indicator--bar"></span>
+const getFixture = () => bel`
+  <span class="mdc-tab-indicator"></span>
 `;
 
 const getIconFixture = () => bel`
   <span class="mdc-tab-indicator mdc-tab-indicator--icon"></span>
 `;
 
-const getFailingFixture = () => bel`
-  <span class="mdc-tab-indicator"></span>
-`;
-
 suite('MDCTabIndicator');
 
-test('attachTo a bar returns an MDCTabIndicator instance', () => {
-  assert.isTrue(MDCTabIndicator.attachTo(getBarFixture()) instanceof MDCTabIndicator);
+test('attachTo returns an MDCTabIndicator instance', () => {
+  assert.isTrue(MDCTabIndicator.attachTo(getFixture()) instanceof MDCTabIndicator);
 });
 
 test('attachTo an icon returns an MDCTabIndicator instance', () => {
   assert.isTrue(MDCTabIndicator.attachTo(getIconFixture()) instanceof MDCTabIndicator);
 });
 
-test('attachTo throws an error if the root element is neither bar nor icon', () => {
-  // Wrapped in a function because that's what assert.throws wants
-  assert.throws(() => MDCTabIndicator.attachTo(getFailingFixture()));
-});
-
 function setupTest() {
-  const root = getBarFixture();
+  const root = getFixture();
   const component = new MDCTabIndicator(root);
   return {root, component};
 }
@@ -100,7 +91,7 @@ test('#adapter.setStyleProperty sets a style property on the root element', () =
   assert.strictEqual(root.style.backgroundColor, 'red');
 });
 
-function setupMockBarFoundationTest(root = getBarFixture()) {
+function setupMockBarFoundationTest(root = getFixture()) {
   const MockFoundationConstructor = td.constructor(MDCTabIndicatorBarFoundation);
   const mockFoundation = new MockFoundationConstructor();
   const component = new MDCTabIndicator(root, mockFoundation);
@@ -138,8 +129,8 @@ test('#deactivate icon indicator calls deactivate', () => {
   td.verify(mockFoundation.deactivate(), {times: 1});
 });
 
-test('#getClientRect calls getClientRect', () => {
+test('#clientRect getter calls getClientRect', () => {
   const {component, mockFoundation} = setupMockBarFoundationTest();
-  component.getClientRect();
+  component.clientRect;
   td.verify(mockFoundation.getClientRect(), {times: 1});
 });

@@ -16,17 +16,17 @@ path: /catalog/tab/
   </a>
 </div>-->
 
-Tab is a selectable element with an active state
+Tab is a selectable element with an active state and an indicator
 
 ## Design & API Documentation
 
 <!--
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/chips.html">Material Design guidelines: Chips</a>
+    <a href="https://material.io/guidelines/components/tabs.html">Material Design guidelines: Tabs</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/chips.html">Demo</a>
+    <a href="https://material-components-web.appspot.com/tab.html">Demo</a>
   </li>
 </ul>
 -->
@@ -45,26 +45,14 @@ npm install --save @material/tab
   <div class="mdc-tab__content">
     <span class="mdc-tab__text-label">Favorites</div>
   </div>
-  <span class="mdc-tab__indicator"></span>
   <span class="mdc-tab__ripple"></span>
+  <span class="mdc-tab-indicator"></span>
 </button>
 ```
 
 #### Text Label and Icon
 
 You can use an icon in place of or with a text label.
-
-##### Text Label
-
-```html
-<button class="mdc-tab" role="tab" aria-selected="false">
-  <div class="mdc-tab__content">
-    <span class="mdc-tab__text-label">Favorites</div>
-  </div>
-  <span class="mdc-tab__indicator"></span>
-  <span class="mdc-tab__ripple"></span>
-</button>
-```
 
 ##### Icon
 
@@ -73,8 +61,8 @@ You can use an icon in place of or with a text label.
   <div class="mdc-tab__content">
     <span class="mdc-tab__icon material-icons">favorite</div>
   </div>
-  <span class="mdc-tab__indicator"></span>
   <span class="mdc-tab__ripple"></span>
+  <span class="mdc-tab-indicator"></span>
 </button>
 ```
 
@@ -86,39 +74,20 @@ You can use an icon in place of or with a text label.
     <span class="mdc-tab__icon material-icons">favorite</div>
     <span class="mdc-tab__text-label">Favorites</div>
   </div>
-  <span class="mdc-tab__indicator"></span>
   <span class="mdc-tab__ripple"></span>
+  <span class="mdc-tab-indicator"></span>
 </button>
 ```
 
-##### Text Label and Icon on Two Lines
+##### Stacked Text Label and Icon
 
-```html
-<button class="mdc-tab mdc-tab--two-lines" role="tab" aria-selected="false">
-  <div class="mdc-tab__content">
-    <span class="mdc-tab__icon material-icons">favorite</div>
-    <span class="mdc-tab__text-label">Favorites</div>
-  </div>
-  <span class="mdc-tab__indicator"></span>
-  <span class="mdc-tab__ripple"></span>
-</button>
-```
+Add the `mdc-tab--stacked` class to the root element to vertically stack the icon and text label.
 
 #### Indicator Customization
 
 The tab indicator can be customized via dimensions and style. It can appear as a bar matching the width of the full tab *or* a bar matching the width of the text label. It can also be customized to appear as an icon.
 
-##### Full Tab Width Indicator
-
-```html
-<button class="mdc-tab" role="tab" aria-selected="false">
-  <div class="mdc-tab__content">
-    <span class="mdc-tab__text-label">Favorites</div>
-  </div>
-  <span class="mdc-tab__indicator"></span>
-  <span class="mdc-tab__ripple"></span>
-</button>
-```
+Modifying the width of the tab indicator bar requires changing the tab indicator's location in the DOM. Modifying the tab indicator to appear as an icon requires adding an `mdc-tab-indicator--icon` class.
 
 ##### Text Label Width Indicator
 
@@ -128,7 +97,7 @@ To make the indicator match the width of the text label, just move the indicator
 <button class="mdc-tab" role="tab" aria-selected="false">
   <div class="mdc-tab__content">
     <span class="mdc-tab__text-label">Favorites</div>
-    <span class="mdc-tab__indicator"></span>
+    <span class="mdc-tab-indicator"></span>
   </div>
   <span class="mdc-tab__ripple"></span>
 </button>
@@ -136,12 +105,16 @@ To make the indicator match the width of the text label, just move the indicator
 
 ##### Icon Indicator
 
+We recommend you load [Material Icons](https://material.io/icons/) from Google Fonts. However, users are free to use whatever icons they like.
+
 ```html
 <button class="mdc-tab" role="tab" aria-selected="false">
   <div class="mdc-tab__content">
     <span class="mdc-tab__text-label">Favorites</div>
   </div>
-  <span class="mdc-tab__indicator mdc-tab__indicator--icon material-icons">change_history</span>
+  <span class="mdc-tab-indicator mdc-tab-indicator--icon">
+    <i class="material-icons">change_history</i>
+  </span>
   <span class="mdc-tab__ripple"></span>
 </button>
 ```
@@ -151,12 +124,11 @@ To make the indicator match the width of the text label, just move the indicator
 CSS Class | Description
 --- | ---
 `mdc-tab` | Mandatory.
-`mdc-tab--active` | Optional. Denos that the tab is active.
-`mdc-tab--two-lines` | Optional. Denos that the tab has an icon and text label that should be drawn on two separate lines
-`mdc-tab__ripple` | Mandatory. Denos the ripple element of the tab
-`mdc-tab__indicator` | Mandatory. Denotes the indicator of the tab
-`mdc-tab__indicator--icon` | Optional. Denotes that the indicator should be drawn as an icon instead of a bar.
+`mdc-tab__ripple` | Mandatory. Denotes the ripple element of the tab
 `mdc-tab__content` | Mandatory. Denotes the content of the tab
+`mdc-tab-indicator` | Mandatory. Denotes the tab indicator
+`mdc-tab--active` | Optional. Denotes that the tab is active.
+`mdc-tab--two-lines` | Optional. Denotes that the tab has an icon and text label that should be drawn on two separate lines
 `mdc-tab__text-label` | Optional. Denotes a text label in the tab content
 `mdc-tab__icon` | Optional. Denotes an icon in the tab content
 
@@ -190,22 +162,16 @@ Method Signature | Description
 `addClass(className: string) => void` | Adds a class to the root element
 `removeClass(className: string) => void` | Removes a class from the root element
 `hasClass(className: string) => boolean` | Returns whether the root element has the given class
-`registerRootEventHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the root element
-`deregisterRootEventHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the root element
-`registerIndicatorEventHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the indicator element
-`deregisterIndicatorEventHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the indicator element
+`registerEventHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the root element
+`deregisterEventHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the root element
 `setAttr(attr: string, value: string) => void` | Sets the given attribute on the root element to the given value
-`getIndicatorClientRect() => ClientRect` | Returns the bounding client rect of the indicator element
-`setIndicatorStyleProperty(propName: string, value: string) => void` | Sets the given style property on the indicator element to the given value
-`indicatorHasClass() => boolean` | Returns whether the indicator element has the given class
 
 ### `MDCTabFoundation`
 
 Method Signature | Description
 --- | ---
-`handleRootTransitionEnd(evt: Event) => void` | Handles the logic for the `"transitionend"` event on the root element
-`handleIndicatorTransitionEnd() => void` | Handles the logic for the `"transitionend"` event on the indicator element
+`handleTransitionEnd(evt: Event) => void` | Handles the logic for the `"transitionend"` event on the root element
 `isActive() => boolean` | Returns whether the tab is active
 `activate(previousTabIndicatorRect: ClientRect) => void` | Activates the tab
 `deactivate() => void` | Deactivates the tab
-`getIndicatorClientRect() => ClientRect` | Returns the indicator's bounding client rect
+`getIndicatorClientRect() => ClientRect` | Returns the tab indicator's bounding client rect

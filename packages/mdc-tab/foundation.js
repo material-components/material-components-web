@@ -63,7 +63,7 @@ class MDCTabFoundation extends MDCFoundation {
   constructor(adapter, indicatorFoundation) {
     super(Object.assign(MDCTabFoundation.defaultAdapter, adapter));
 
-    /** @type {!MDCTabIndicatorFoundation} */
+    /** @private */
     this.indicator_ = indicatorFoundation;
 
     /** @private {function(!Event): undefined} */
@@ -79,6 +79,7 @@ class MDCTabFoundation extends MDCFoundation {
     if (evt.pseudoElement) {
       return;
     }
+
     this.adapter_.deregisterEventHandler('transitionend', this.handleTransitionEnd_);
     this.adapter_.removeClass(cssClasses.ANIMATING_ACTIVATE);
     this.adapter_.removeClass(cssClasses.ANIMATING_DEACTIVATE);
@@ -106,6 +107,7 @@ class MDCTabFoundation extends MDCFoundation {
     this.adapter_.addClass(cssClasses.ANIMATING_ACTIVATE);
     this.adapter_.addClass(cssClasses.ACTIVE);
     this.adapter_.setAttr(strings.ARIA_SELECTED, 'true');
+    this.adapter_.setAttr(strings.TABINDEX, '0');
     this.indicator_.activate(previousIndicatorClientRect);
   }
 
@@ -122,6 +124,7 @@ class MDCTabFoundation extends MDCFoundation {
     this.adapter_.addClass(cssClasses.ANIMATING_DEACTIVATE);
     this.adapter_.removeClass(cssClasses.ACTIVE);
     this.adapter_.setAttr(strings.ARIA_SELECTED, 'false');
+    this.adapter_.setAttr(strings.TABINDEX, '-1');
     this.indicator_.deactivate();
   }
 

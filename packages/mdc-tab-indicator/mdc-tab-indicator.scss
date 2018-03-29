@@ -18,34 +18,32 @@
 @import "./mixins";
 
 .mdc-tab-indicator {
+  @include mdc-tab-indicator-bar-color_(primary);
+
   position: absolute;
+  bottom: 0;
   left: 0;
   align-self: center;
   justify-content: center;
   width: 100%;
+  height: 2px;
   transform-origin: left;
   opacity: 0;
 }
 
-.mdc-tab-indicator--bar {
-  @include mdc-tab-indicator-bar-color(primary);
-
-  bottom: 0;
-  height: 2px;
-}
-
 .mdc-tab-indicator--icon {
-  @include mdc-tab-indicator-icon-color(secondary);
+  @include mdc-tab-indicator-icon-color_(secondary);
 
   bottom: auto;
   height: auto;
+  background: none;
 }
 
 .mdc-tab-indicator--active {
   opacity: 1;
 }
 
-.mdc-tab-indicator--bar-animating {
+.mdc-tab-indicator--animating {
   transition: 250ms transform cubic-bezier(0, 0, .2, 1);
 }
 

@@ -82,6 +82,12 @@ test('#activate sets the root element aria-selected attribute to true', () => {
   td.verify(mockAdapter.setAttr(MDCTabFoundation.strings.ARIA_SELECTED, 'true'));
 });
 
+test('#activate sets the root element tabindex attribute to 0', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.activate();
+  td.verify(mockAdapter.setAttr(MDCTabFoundation.strings.TABINDEX, '0'));
+});
+
 test('#deactivate does nothing if not active', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.deactivate();
@@ -115,6 +121,13 @@ test('#deactivate sets the root element aria-selected attribute to false', () =>
   td.when(mockAdapter.hasClass(MDCTabFoundation.cssClasses.ACTIVE)).thenReturn(true);
   foundation.deactivate();
   td.verify(mockAdapter.setAttr(MDCTabFoundation.strings.ARIA_SELECTED, 'false'));
+});
+
+test('#deactivate sets the root element tabindex attribute to -1', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(MDCTabFoundation.cssClasses.ACTIVE)).thenReturn(true);
+  foundation.deactivate();
+  td.verify(mockAdapter.setAttr(MDCTabFoundation.strings.TABINDEX, '-1'));
 });
 
 test(`#handleTransitionEnd removes ${MDCTabFoundation.cssClasses.ANIMATING_ACTIVATE} class`, () => {

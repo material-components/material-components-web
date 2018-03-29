@@ -39,6 +39,20 @@ class MDCTabIndicator extends MDCComponent {
   /**
    * @return {!MDCTabIndicatorFoundation}
    */
+  get foundation() {
+    return this.foundation_;
+  }
+
+  /**
+   * @return {!ClientRect}
+   */
+  get clientRect() {
+    return this.foundation_.getClientRect();
+  }
+
+  /**
+   * @return {!MDCTabIndicatorFoundation}
+   */
   getDefaultFoundation() {
     const adapter = /** @type {!MDCTabIndicatorAdapter} */ (Object.assign({
       registerEventHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
@@ -49,18 +63,16 @@ class MDCTabIndicator extends MDCComponent {
       setStyleProperty: (prop, value) => this.root_.style.setProperty(prop, value),
     }));
 
-    if (this.root_.classList.contains(MDCTabIndicatorFoundation.cssClasses.BAR)) {
-      return new MDCTabIndicatorBarFoundation(adapter);
-    } else if (this.root_.classList.contains(MDCTabIndicatorFoundation.cssClasses.ICON)) {
+    if (this.root_.classList.contains(MDCTabIndicatorFoundation.cssClasses.ICON)) {
       return new MDCTabIndicatorIconFoundation(adapter);
-    } else {
-      throw new Error(`Root element must either include ${MDCTabIndicatorFoundation.cssClasses.BAR} or ` +
-        `${MDCTabIndicatorFoundation.cssClasses.ICON}`);
     }
+
+    // Default to the bar indicator
+    return new MDCTabIndicatorBarFoundation(adapter);
   }
 
   /**
-   * @param {!ClientRect} previousTabClientRect
+   * @param {!ClientRect=} previousTabClientRect
    */
   activate(previousTabClientRect) {
     this.foundation_.activate(previousTabClientRect);
@@ -68,13 +80,6 @@ class MDCTabIndicator extends MDCComponent {
 
   deactivate() {
     this.foundation_.deactivate();
-  }
-
-  /**
-   * @return {!ClientRect}
-   */
-  getClientRect() {
-    return this.foundation_.getClientRect();
   }
 }
 
