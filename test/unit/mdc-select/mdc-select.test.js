@@ -38,7 +38,7 @@ class FakeBottomLine {
 function getFixture() {
   return bel`
     <div class="mdc-select">
-      <select class="mdc-select__surface">
+      <select class="mdc-select__native-control">
         <option value="" disabled selected hidden></option>
         <option value="orange">
           Orange
@@ -63,12 +63,12 @@ function setupTest() {
   const bottomLine = new FakeBottomLine();
   const label = new FakeLabel();
   const fixture = getFixture();
-  const surface = fixture.querySelector('.mdc-select__surface');
+  const nativeControl = fixture.querySelector('.mdc-select__native-control');
   const labelEl = fixture.querySelector('.mdc-select__label');
   const bottomLineEl = fixture.querySelector('.mdc-select__bottom-line');
   const component = new MDCSelect(fixture, /* foundation */ undefined, () => label, () => bottomLine);
 
-  return {fixture, surface, label, labelEl, bottomLine, bottomLineEl, component};
+  return {fixture, nativeControl, label, labelEl, bottomLine, bottomLineEl, component};
 }
 
 test('#get/setSelectedIndex', () => {
@@ -94,21 +94,16 @@ test('#get value', () => {
   assert.equal(component.value, 'orange');
 });
 
-test('#set value sets the value on the <select />', () => {
-  const {component, surface} = setupTest();
+test('#set value sets the value on the <select>', () => {
+  const {component, nativeControl} = setupTest();
   component.value = 'orange';
-  assert.equal(surface.value, 'orange');
+  assert.equal(nativeControl.value, 'orange');
 });
 
-test('#set value sets non value to empty string on <select />', () => {
-  const {component, surface} = setupTest();
+test('#set value sets non value to empty string on <select>', () => {
+  const {component, nativeControl} = setupTest();
   component.value = 'grape';
-  assert.equal(surface.value, '');
-});
-
-test('#item returns null if index out of bounds', () => {
-  const {component} = setupTest();
-  assert.equal(component.item(100), null);
+  assert.equal(nativeControl.value, '');
 });
 
 test('#initialSyncWithDOM sets the selected index if an option has the selected attr', () => {
@@ -116,7 +111,7 @@ test('#initialSyncWithDOM sets the selected index if an option has the selected 
     <div class="mdc-select">
       <div class="mdc-select__label">Pick a Food Group</div>
       <div class="mdc-select__bottom-line"></div>
-      <select class="mdc-select__surface">
+      <select class="mdc-select__native-control">
         <option value="orange">
           Orange
         </option>
@@ -130,9 +125,20 @@ test('#initialSyncWithDOM sets the selected index if an option has the selected 
   assert.equal(component.selectedIndex, 1);
 });
 
-test(`#initialSyncWithDOM disables the select if ${cssClasses.DISABLED} is found on the element`, () => {
-  const fixture = getFixture();
-  fixture.classList.add(cssClasses.DISABLED);
+test('#initialSyncWithDOM disables the select if the disabled attr is found on the <select>', () => {
+  const fixture = bel`
+    <div class="mdc-select">
+      <div class="mdc-select__bottom-line"></div>
+      <select class="mdc-select__native-control" disabled>
+        <option value="orange">
+          Orange
+        </option>
+        <option value="apple" selected>
+          Apple
+        </option>
+      </select>
+    </div>
+  `;
   const component = new MDCSelect(fixture);
   assert.isTrue(component.disabled);
 });
@@ -154,7 +160,7 @@ test('does not create label', () => {
   const fixture = bel`
     <div class="mdc-select">
       <div class="mdc-select__bottom-line"></div>
-      <select class="mdc-select__surface">
+      <select class="mdc-select__native-control">
         <option value="orange">
           Orange
         </option>
@@ -173,7 +179,7 @@ test('does not create bottomLine element', () => {
   const fixture = bel`
     <div class="mdc-select">
       <div class="mdc-select__label"></div>
-      <select class="mdc-select__surface">
+      <select class="mdc-select__native-control">
         <option value="orange">
           Orange
         </option>
@@ -187,15 +193,42 @@ test('does not create bottomLine element', () => {
   assert.equal(component.bottomLine_, undefined);
 });
 
-test('#selectedOptions should return the option selected in the select element', () => {
-  const {component} = setupTest();
-  assert.equal(component.selectedOptions.length, 1);
+test(`does not create ripple element if ${cssClasses.BOX}` +
+  'class is present', () => {
+  const fixture = bel`
+    <div class="mdc-select">
+      <div class="mdc-select__label"></div>
+      <select class="mdc-select__native-control">
+        <option value="orange">
+          Orange
+        </option>
+        <option value="apple" selected>
+          Apple
+        </option>
+      </select>
+    </div>
+  `;
+  const component = new MDCSelect(fixture);
+  assert.equal(component.ripple, undefined);
 });
 
-test('#selectedOptions should return an empty array if nothing is selected', () => {
-  const {component} = setupTest();
-  component.selectedIndex = -1;
-  assert.equal(component.selectedOptions, undefined);
+test(`creates ripple element if ${cssClasses.BOX} ` +
+  'class is present', () => {
+  const fixture = bel`
+    <div class="mdc-select mdc-select--box">
+      <div class="mdc-select__label"></div>
+      <select class="mdc-select__native-control">
+        <option value="orange">
+          Orange
+        </option>
+        <option value="apple" selected>
+          Apple
+        </option>
+      </select>
+    </div>
+  `;
+  const component = new MDCSelect(fixture);
+  assert.exists(component.ripple);
 });
 
 test('adapter#floatLabel adds a class to the label', () => {
@@ -219,52 +252,55 @@ test('adapter#deactivateBottomLine removes active class from the bottom line', (
   td.verify(bottomLine.deactivate());
 });
 
-test('adapter#registerInteractionHandler adds an event listener to the surface element', () => {
-  const {component, surface} = setupTest();
+test('adapter#registerInteractionHandler adds an event listener to the nativeControl element', () => {
+  const {component, nativeControl} = setupTest();
   const listener = td.func('eventlistener');
   component.getDefaultFoundation().adapter_.registerInteractionHandler('click', listener);
-  domEvents.emit(surface, 'click');
+  domEvents.emit(nativeControl, 'click');
   td.verify(listener(td.matchers.anything()));
 });
 
-test('adapter#deregisterInteractionHandler removes an event listener from the surface element', () => {
-  const {component, surface} = setupTest();
+test('adapter#deregisterInteractionHandler removes an event listener from the nativeControl element', () => {
+  const {component, nativeControl} = setupTest();
   const listener = td.func('eventlistener');
-  surface.addEventListener('click', listener);
+  nativeControl.addEventListener('click', listener);
   component.getDefaultFoundation().adapter_.deregisterInteractionHandler('click', listener);
-  domEvents.emit(surface, 'click');
+  domEvents.emit(nativeControl, 'click');
   td.verify(listener(td.matchers.anything()), {times: 0});
 });
 
-test('adapter#getNumberOfOptions returns the length of the component\'s options property', () => {
-  const {component} = setupTest();
-  assert.equal(component.getDefaultFoundation().adapter_.getNumberOfOptions(), component.options.length);
-});
-
-test('adapter#getValueForOptionAtIndex returns the id of the option at the given index', () => {
-  const {component} = setupTest();
-  assert.equal(component.getDefaultFoundation().adapter_.getValueForOptionAtIndex(1), 'orange');
-});
-
-test('adapter#getIndexForOptionValue returns the index of the option with a value', () => {
-  const {component} = setupTest();
-  assert.equal(component.getDefaultFoundation().adapter_.getIndexForOptionValue('apple'), 2);
-});
-
-test('adapter#getIndexForOptionValue returns null if there is no option with the specific value', () => {
-  const {component} = setupTest();
-  assert.equal(component.getDefaultFoundation().adapter_.getIndexForOptionValue('grape'), null);
-});
-
 test('adapter#setValue sets the value of the select to the correct option', () => {
-  const {surface, component} = setupTest();
+  const {nativeControl, component} = setupTest();
   component.getDefaultFoundation().adapter_.setValue('orange');
-  assert.equal(surface.selectedIndex, 1);
+  assert.equal(nativeControl.selectedIndex, 1);
 });
 
 test('adapter#setValue sets the selectedIndex of the select to -1 if there is ' +
   'no option with the specified value', () => {
-  const {surface, component} = setupTest();
+  const {nativeControl, component} = setupTest();
   component.getDefaultFoundation().adapter_.setValue('grape');
-  assert.equal(surface.selectedIndex, -1);
+  assert.equal(nativeControl.selectedIndex, -1);
+});
+
+test('adapter#getValue returns the nativeControl value', () => {
+  const {component} = setupTest();
+  component.getDefaultFoundation().adapter_.setValue('orange');
+  assert.equal(component.getDefaultFoundation().adapter_.getValue(), 'orange');
+});
+
+test('adapter#getValue returns empty string if nothing is selected', () => {
+  const {component} = setupTest();
+  assert.equal(component.getDefaultFoundation().adapter_.getValue(), '');
+});
+
+test('adapter#getSelectedIndex returns selected index', () => {
+  const {component} = setupTest();
+  component.selectedIndex = 1;
+  assert.equal(component.getDefaultFoundation().adapter_.getSelectedIndex(), 1);
+});
+
+test('adapter#getSelectedIndex returns -1 if selected index is out of range', () => {
+  const {component} = setupTest();
+  component.selectedIndex = 10;
+  assert.equal(component.getDefaultFoundation().adapter_.getSelectedIndex(), -1);
 });

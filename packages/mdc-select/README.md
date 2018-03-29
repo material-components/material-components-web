@@ -41,8 +41,8 @@ npm install @material/select
 
 ```html
 <div class="mdc-select">
-  <select class="mdc-select__surface">
-    <option value="" disabled selected hidden></option>
+  <select class="mdc-select__native-control">
+    <option value="" disabled selected></option>
     <option value="grains">
       Bread, Cereal, Rice, and Pasta
     </option>
@@ -75,11 +75,11 @@ See [Importing the JS component](../../docs/importing-js.md) for more informatio
 When dealing with the select component that has pre-selected values, you'll want to ensure that you
 render `mdc-select__label` with the `mdc-select__label--float-above` modifier class and the selected
 option with the `selected` attribute. This will ensure that the label moves out
-of the way of the select's value and prevents a Flash Of Un-styled Content (**FOUC**).
+of the way of the select's value and prevents a Flash Of Unstyled Content (**FOUC**).
 
 ```html
 <div class="mdc-select">
-  <select class="mdc-select__surface">
+  <select class="mdc-select__native-control">
     <option value="vegetables">
       Vegetables
     </option>
@@ -97,25 +97,23 @@ of the way of the select's value and prevents a Flash Of Un-styled Content (**FO
 
 #### Select with floating label as the placeholder
 
-Use the `<option disabled selected hidden/>` element as a way to display the select having no value.
-The `<select />` will by default select the first `<option />`, which explains why the `selected` and `disabled` attributes. The hidden and disabled attributes depend on your use case. You may want to use this as a placeholder or an initial value for the `<select />`. Remember
-if you do use this option as a placeholder to add the `mdc-select__label--float-above` class. Refer to [pre-selected option](#select-with-pre-selected-option). Also note that not all browsers respect the `hidden` attribute (ie. IE11).
+
+By default, `<select>` elements will select their first enabled option. In order to initially display a placeholder
+instead, add an initial `<option>` element with the `disabled` *and* `selected` attributes set, and with `value` set to `""`.
 
 ```html
-<option value="" disabled selected hidden></option>
+<option value="" disabled selected></option>
 ```
 
 
 #### Disabled select
 
-Add the `mdc-select--disabled` class to the `mdc-select` element. The disabled
-attribute will be added to the `<select />` element once `initialSyncWithDOM`
-is called. If for whatever reason you do not initialize the JS component, you will
-need to manually add the `disabled` attribute to the `<select />` element.
+Add the `mdc-select--disabled` class to the `mdc-select` element and the `disabled` attribute to the
+`<select>` element.
 
 ```html
 <div class="mdc-select mdc-select--disabled">
-  <select class="mdc-select__surface" disabled>
+  <select class="mdc-select__native-control" disabled>
     <option value="grains">
       Bread, Cereal, Rice, and Pasta
     </option>
@@ -133,12 +131,11 @@ need to manually add the `disabled` attribute to the `<select />` element.
 
 #### Disabled options
 
-When used in components such as MDC Select, `<option />`s can be disabled.
-To disable a list item, set the `disabled` attribute.
+Since MDC Select uses native `<select>` and `<option>` elements, simply add the `disabled` attribute to individual options to disable them.
 
 ```html
 <div class="mdc-select">
-  <select class="mdc-select__surface">
+  <select class="mdc-select__native-control">
     <option value="grains">
       Bread, Cereal, Rice, and Pasta
     </option>
@@ -175,9 +172,7 @@ Mixin | Description
 `mdc-select-bottom-line-color($color)` | Customizes the color of the default bottom line of the select.
 `mdc-select-focused-bottom-line-color($color)` | Customizes the color of the bottom line of the select when focused.
 
-To customize the color of the list items, refer to the [List documentation](../mdc-list/README.md).
-
-> NOTE: To customize label color please see [label readme](./label/README.md).
+> NOTE: To customize label color please see the [label readme](./label/README.md).
 
 ### MDC Select Component API
 
@@ -189,20 +184,12 @@ is outlined below.
 | Property Name | Type | Description |
 | --- | --- | --- |
 | `value` | `string` | The `value` of the currently selected option. |
-| `options` | `[]` | _(read-only)_ An _array_ of `<options />` comprising the select's options. |
 | `selectedIndex` | `number` | The index of the currently selected option. Set to -1 if no option is currently selected. Changing this property will update the select element. |
-| `selectedOptions` | `[]` | _(read-only)_ An _array_ of `<options />` either the currently selected option, or no elements if nothing is selected. |
 | `disabled` | `boolean` | Whether or not the component is disabled. Settings this sets the disabled state on the component. |
-
-### `MDCSelect`
-
-| Method Signature | Description |
-| --- | --- |
-| `item(index: number) => HTMLElement?` | Analogous to `HTMLSelectElement.prototype.item`. Returns the option at the specified index, or `null` if the index is out of bounds. |
 
 #### Events
 
-The MDC Select JS component emits an `change` event when the selected option changes as
+The MDC Select JS component emits a `change` event when the selected option changes as
 the result of a user action.
 
 ### `MDCSelectAdapter`
@@ -211,16 +198,15 @@ the result of a user action.
 | --- | --- |
 | `addClass(className: string) => void` | Adds a class to the root element. |
 | `removeClass(className: string) => void` | Removes a class from the root element. |
-| `floatLabel(value: boolean) => void` | Float or defloats label as necessary. |
-| `activateBottomLine() => void` | Activates bottom line as focused. |
-| `deactivateBottomLine() => void` | Deactivates bottom line as root element loses focus. |
-| `setDisabled(disabled: boolean) => void` | Sets the `<select />` element to disabled. |
-| `registerInteractionHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` on the surface element. |
-| `deregisterInteractionHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` on the surface element. |
-| `getNumberOfOptions() => number` | Returns the number of options contained in the select. |
-| `getIndexForOptionValue(value: string) => number` | Returns the index of the option that matches the specified value. Returns -1 if value is not found. |
-| `getValueForOptionAtIndex(index: number) => string` | Returns the value for the option at the specified index within the select. |
+| `floatLabel(value: boolean) => void` | Floats or defloats label as necessary. |
+| `activateBottomLine() => void` | Activates the bottom line component. |
+| `deactivateBottomLine() => void` | Deactivates the bottom line component. |
+| `setDisabled(disabled: boolean) => void` | Sets the `disabled` property of the `<select>` element. |
+| `registerInteractionHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` on the `<select>` element. |
+| `deregisterInteractionHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` on the `<select>` element. |
+| `getSelectedIndex() => number` | Returns the selected index of the `<select>` element. |
 | `setSelectedIndex(index: number) => void` | Sets the select's selectedValue to the option found at the provided index. If the index is out of the select's range, it will default to -1. |
+| `getValue() => string` | Returns the value selected on the `<select>` element. |
 | `setValue(value: string) => void` | Sets the select's value. If no option has the provided value, it sets `value` to empty string. |
 
 ### `MDCSelectFoundation`

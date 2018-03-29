@@ -61,7 +61,7 @@
       <div class="mdc-toolbar-fixed-adjust"></div>
       <section class="hero">
         <div id="hero-js-select" class="mdc-select">
-          <select class="mdc-select__surface">
+          <select class="mdc-select__native-control">
             <option value="grains" selected>
               Bread, Cereal, Rice, and Pasta
             </option>
@@ -90,8 +90,8 @@
         <h2 class="mdc-typography--title">Fully-Featured JS Component</h2>
         <section id="demo-wrapper">
           <div id="js-select" class="mdc-select">
-            <select class="mdc-select__surface">
-              <option value="" disabled selected hidden>
+            <select class="mdc-select__native-control">
+              <option value="" disabled selected>
               </option>
               <option value="grains">
                 Bread, Cereal, Rice, and Pasta
@@ -129,21 +129,23 @@
           <input type="checkbox" id="disabled">
           <label for="disabled">Disabled</label>
         </div>
-        <div>
-          <input type="checkbox" id="set-selected-checkbox">
-          <label for="set-selected-checkbox">Set Selected Index (0)</label>
+        <div class="button-container">
+          <button class="mdc-button mdc-button--raised" id="set-selected-index-zero-button">
+            Set Selected Index (0)
+          </button>
         </div>
-        <div>
-          <input type="checkbox" id="set-value-meat-checkbox">
-          <label for="set-value-meat-checkbox">Set Value to Meat</label>
+        <div class="button-container">
+          <button class="mdc-button mdc-button--raised" id="set-value-meat-button">
+            Set Value to Meat
+          </button>
         </div>
       </section>
       <section class="example">
         <h2 class="mdc-typography--title">Select box</h2>
         <section id="box-demo-wrapper">
           <div id="box-js-select" class="mdc-select mdc-select--box">
-            <select class="mdc-select__surface">
-              <option value="" disabled selected hidden></option>
+            <select class="mdc-select__native-control">
+              <option value="" disabled selected></option>
               <option value="fruit-roll-ups1">
                 Fruit Roll Ups
               </option>
@@ -174,20 +176,22 @@
           <input type="checkbox" id="box-disabled">
           <label for="box-disabled">Disabled</label>
         </div>
-        <div>
-          <input type="checkbox" id="box-set-selected-checkbox">
-          <label for="box-set-selected-checkbox">Set Selected Index (0)</label>
+        <div class="button-container">
+          <button class="mdc-button mdc-button--raised" id="box-set-selected-index-zero-button">
+            Set Selected Index (0)
+          </button>
         </div>
-        <div>
-          <input type="checkbox" id="box-set-value-fruit-roll-ups-checkbox">
-          <label for="box-set-value-fruit-roll-ups-checkbox">Set Value to Fruit Roll Ups</label>
+        <div class="button-container">
+          <button class="mdc-button mdc-button--raised" id="box-set-value-fruit-roll-up-button">
+            Set Value to Fruit Roll Ups
+          </button>
         </div>
       </section>
       <section class="example">
         <h2 class="mdc-typography--title">Pre-selected option via HTML</h2>
         <section>
           <div id="js-pre-selected" class="mdc-select">
-            <select class="mdc-select__surface">
+            <select class="mdc-select__native-control">
               <option value="fruit-roll-ups2" selected>
                 Fruit Roll Ups
               </option>
@@ -207,9 +211,9 @@
         </section>
       </section>
       <section class="example">
-        <h2 class="mdc-typography--title">OptGroup JS Component</h2>
+        <h2 class="mdc-typography--title">MDC Select with optgroups</h2>
         <div id="optgroup-js-select" class="mdc-select">
-          <select class="mdc-select__surface">
+          <select class="mdc-select__native-control">
             <optgroup label="Meats">
               <option value="hot-dog">Steak</option>
               <option value="hamburger">Hamburger</option>
@@ -233,22 +237,21 @@
         mdc.select.MDCSelect.attachTo(document.getElementById('optgroup-js-select'));
 
         var root = document.getElementById('js-select');
+        var nativeSelect = root.querySelector('.mdc-select__native-control');
         var boxCurrentlySelected = document.getElementById('currently-selected');
         var select = new mdc.select.MDCSelect(root);
         var boxDemoWrapper = document.getElementById('demo-wrapper');
         var rtlCb = document.getElementById('rtl');
         var alternateColorsCb = document.getElementById('alternate-colors');
         var disabledCb = document.getElementById('disabled');
-        var setSelectedCb = document.getElementById('set-selected-checkbox');
-        var setValueMeatCb = document.getElementById('set-value-meat-checkbox');
+        var setSelectedButton = document.getElementById('set-selected-index-zero-button');
+        var setValueMeatButton = document.getElementById('set-value-meat-button');
         function updateSelectedTextContent() {
-          var item = select.selectedOptions[0];
-          var index = select.selectedIndex;
+          var item = nativeSelect.selectedOptions[0];
+          var index = nativeSelect.selectedIndex;
           if (item) {
             boxCurrentlySelected.textContent = '"' + item.textContent + '" at index ' + index +
-              ' with value "' + select.value + '"';
-
-            setSelectedCb.checked = index === 0;
+              ' with value "' + nativeSelect.value + '"';
           }
         }
         root.addEventListener('change', function() {
@@ -267,33 +270,33 @@
         disabledCb.addEventListener('change', function() {
           select.disabled = disabledCb.checked;
         });
-        setSelectedCb.addEventListener('change', function() {
-          select.selectedIndex = this.checked ? 0 : -1;
+        setSelectedButton.addEventListener('click', function() {
+          select.selectedIndex = 0;
+          updateSelectedTextContent();
         });
-        setValueMeatCb.addEventListener('change', function() {
-          select.value = this.checked ? 'meat' : '';
+        setValueMeatButton.addEventListener('click', function() {
+          select.value = 'meat';
           updateSelectedTextContent();
         });
       });
 
       demoReady(function() {
         var root = document.getElementById('box-js-select');
+        var nativeSelect = root.querySelector('.mdc-select__native-control');
         var boxCurrentlySelected = document.getElementById('box-currently-selected');
         var select = new mdc.select.MDCSelect(root);
         var boxDemoWrapper = document.getElementById('box-demo-wrapper');
         var rtlCb = document.getElementById('box-rtl');
         var alternateColorsCb = document.getElementById('box-alternate-colors');
         var disabledCb = document.getElementById('box-disabled');
-        var setSelectedCb = document.getElementById('box-set-selected-checkbox');
-        var setValueFruitRollUpsCb = document.getElementById('box-set-value-fruit-roll-ups-checkbox');
+        var setSelectedButton = document.getElementById('box-set-selected-index-zero-button');
+        var setValueFruitRollUpsButton = document.getElementById('box-set-value-fruit-roll-up-button');
         function updateSelectedTextContent() {
-          var item = select.selectedOptions[0];
-          var index = select.selectedIndex;
+          var item = nativeSelect.selectedOptions[0];
+          var index = nativeSelect.selectedIndex;
           if (item) {
             boxCurrentlySelected.textContent = '"' + item.textContent + '" at index ' + index +
-              ' with value "' + select.value + '"';
-
-            setSelectedCb.checked = index === 0;
+              ' with value "' + nativeSelect.value + '"';
           }
         }
         root.addEventListener('change', function() {
@@ -312,11 +315,12 @@
         disabledCb.addEventListener('change', function() {
           select.disabled = disabledCb.checked;
         });
-        setSelectedCb.addEventListener('change', function() {
-          select.selectedIndex = this.checked ? 0 : -1;
+        setSelectedButton.addEventListener('click', function() {
+          select.selectedIndex = 0;
+          updateSelectedTextContent();
         });
-        setValueFruitRollUpsCb.addEventListener('change', function() {
-          select.value = this.checked ? 'fruit-roll-ups1' : '';
+        setValueFruitRollUpsButton.addEventListener('click', function() {
+          select.value = 'fruit-roll-ups1';
           updateSelectedTextContent();
         });
       });

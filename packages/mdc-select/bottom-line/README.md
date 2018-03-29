@@ -40,7 +40,7 @@ Select bottom line animates activation and deactivation state as the select rece
 
 ```html
 <div class="mdc-select">
-  <select class="mdc-select__surface">
+  <select class="mdc-select__native-control">
     <option value="" disabled selected></option>
     <option value="grains">
       Bread, Cereal, Rice, and Pasta

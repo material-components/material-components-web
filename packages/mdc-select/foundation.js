@@ -39,11 +39,10 @@ export default class MDCSelectFoundation extends MDCFoundation {
       deactivateBottomLine: () => {},
       registerInteractionHandler: (/* type: string, handler: EventListener */) => {},
       deregisterInteractionHandler: (/* type: string, handler: EventListener */) => {},
-      getNumberOfOptions: () => /* number */ 0,
-      getIndexForOptionValue: (/* value: string */) => /* number */ -1,
-      getValueForOptionAtIndex: (/* index: number */) => /* index */ '',
+      getSelectedIndex: () => /* number */ -1,
       setSelectedIndex: (/* index: number */) => {},
       setDisabled: (/* disabled: boolean */) => {},
+      getValue: () => /* string */ '',
       setValue: (/* value: string */) => {},
     };
   }
@@ -70,27 +69,22 @@ export default class MDCSelectFoundation extends MDCFoundation {
 
   setSelectedIndex(index) {
     const {IS_CHANGING} = MDCSelectFoundation.cssClasses;
-    const {SELECT_TEXT_TRANSITION_TIME} = MDCSelectFoundation.numbers;
-    const isIndexInRange = index >= 0 && index < this.adapter_.getNumberOfOptions();
+    const {FLOAT_NATIVE_CONTROL_TRANSITION_TIME_MS} = MDCSelectFoundation.numbers;
 
-    const selectedIndex = isIndexInRange ? index : -1;
-    this.adapter_.setSelectedIndex(selectedIndex);
+    this.adapter_.setSelectedIndex(index);
     this.adapter_.addClass(IS_CHANGING);
+    const optionHasValue = this.adapter_.getValue().length > 0;
 
-    const optionHasValue = selectedIndex > -1 ? !!this.adapter_.getValueForOptionAtIndex(selectedIndex) : false;
     this.adapter_.floatLabel(optionHasValue);
 
     setTimeout(() => {
       this.adapter_.removeClass(IS_CHANGING);
-    }, SELECT_TEXT_TRANSITION_TIME);
+    }, FLOAT_NATIVE_CONTROL_TRANSITION_TIME_MS);
   }
 
   setValue(value) {
-    let index = this.adapter_.getIndexForOptionValue(value);
-    index = !index && index !== 0 ? -1 : index;
-
     this.adapter_.setValue(value);
-    this.setSelectedIndex(index);
+    this.setSelectedIndex(this.adapter_.getSelectedIndex());
   }
 
   setDisabled(disabled) {
@@ -111,8 +105,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.adapter_.deactivateBottomLine();
   }
 
-  handleSelect_(evt) {
-    const index = this.adapter_.getIndexForOptionValue(evt.target.value);
-    this.setSelectedIndex(index);
+  handleSelect_() {
+    this.setSelectedIndex(this.adapter_.getSelectedIndex());
   }
 }

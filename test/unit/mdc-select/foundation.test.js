@@ -43,14 +43,13 @@ test('default adapter returns a complete adapter implementation', () => {
     'addClass', 'removeClass', 'floatLabel', 'activateBottomLine',
     'deactivateBottomLine', 'setDisabled',
     'registerInteractionHandler', 'deregisterInteractionHandler',
-    'getNumberOfOptions', 'getIndexForOptionValue', 'getValueForOptionAtIndex',
-    'setValue', 'setSelectedIndex',
+    'getValue', 'setValue', 'getSelectedIndex', 'setSelectedIndex',
   ]);
 });
 
 function setupTest() {
   const {mockAdapter, foundation} = setupFoundationTest(MDCSelectFoundation);
-  td.when(mockAdapter.getNumberOfOptions()).thenReturn(2);
+  td.when(mockAdapter.getValue()).thenReturn('');
   return {mockAdapter, foundation};
 }
 
@@ -108,22 +107,15 @@ test(`#setSelectedIndex calls addClass ${MDCSelectFoundation.cssClasses.IS_CHANG
 
 test('#setSelectedIndex floats label', () => {
   const {mockAdapter, foundation} = setupTest();
-  td.when(mockAdapter.getValueForOptionAtIndex(1)).thenReturn('value');
+  td.when(mockAdapter.getValue()).thenReturn('value');
   foundation.setSelectedIndex(1);
   td.verify(mockAdapter.floatLabel(true));
 });
 
 test('#setSelectedIndex defloats label', () => {
   const {mockAdapter, foundation} = setupTest();
-  td.when(mockAdapter.getValueForOptionAtIndex(1)).thenReturn('');
+  td.when(mockAdapter.getValue(1)).thenReturn('');
   foundation.setSelectedIndex(1);
-  td.verify(mockAdapter.floatLabel(false));
-});
-
-test('#setSelectedIndex defloats label if called with a number out of range', () => {
-  const {mockAdapter, foundation} = setupTest();
-  td.when(mockAdapter.getValueForOptionAtIndex(1)).thenReturn('value');
-  foundation.setSelectedIndex(4);
   td.verify(mockAdapter.floatLabel(false));
 });
 
@@ -131,21 +123,21 @@ test(`#setSelectedIndex removesClass ${MDCSelectFoundation.cssClasses.IS_CHANGIN
   const {mockAdapter, foundation} = setupTest();
   const clock = lolex.install();
   foundation.setSelectedIndex(1);
-  clock.tick(MDCSelectFoundation.numbers.SELECT_TEXT_TRANSITION_TIME);
+  clock.tick(MDCSelectFoundation.numbers.FLOAT_NATIVE_CONTROL_TRANSITION_TIME_MS);
   td.verify(mockAdapter.removeClass(MDCSelectFoundation.cssClasses.IS_CHANGING));
 });
 
 test('#setValue will call setValue on adapter', () => {
   const {mockAdapter, foundation} = setupTest();
-  td.when(mockAdapter.getIndexForOptionValue('value')).thenReturn(1);
+  td.when(mockAdapter.getSelectedIndex()).thenReturn(1);
   foundation.setValue('value');
   td.verify(mockAdapter.setValue('value'));
 });
 
 test('#setValue calls setSelectedIndex, which calls floatLabel true', () => {
   const {mockAdapter, foundation} = setupTest();
-  td.when(mockAdapter.getValueForOptionAtIndex(1)).thenReturn('value');
-  td.when(mockAdapter.getIndexForOptionValue('value')).thenReturn(1);
+  td.when(mockAdapter.getValue()).thenReturn('value');
+  td.when(mockAdapter.getSelectedIndex()).thenReturn(1);
   foundation.setValue('value');
   td.verify(mockAdapter.floatLabel(true));
 });

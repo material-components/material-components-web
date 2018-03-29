@@ -20,7 +20,7 @@ import {MDCSelectBottomLine} from './bottom-line/index';
 import {MDCSelectLabel} from './label/index';
 
 import MDCSelectFoundation from './foundation';
-import {strings} from './constants';
+import {cssClasses, strings} from './constants';
 
 export {MDCSelectFoundation};
 
@@ -30,27 +30,15 @@ export class MDCSelect extends MDCComponent {
   }
 
   get value() {
-    return this.surface_.value;
+    return this.nativeControl_.value;
   }
 
   set value(value) {
     this.foundation_.setValue(value);
   }
 
-  get options() {
-    return [].slice.call(this.surface_.options);
-  }
-
-  get selectedOptions() {
-    // In an array because HTML spec also returns an array.
-    // Cannot access HTMLSelectElement.selectedOptions since it is not supported by IE11.
-    // https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement/selectedOptions
-    const selectedOption = this.item(this.selectedIndex);
-    return selectedOption ? [selectedOption] : undefined;
-  }
-
   get selectedIndex() {
-    return this.surface_.selectedIndex;
+    return this.nativeControl_.selectedIndex;
   }
 
   set selectedIndex(selectedIndex) {
@@ -58,31 +46,17 @@ export class MDCSelect extends MDCComponent {
   }
 
   get disabled() {
-    return this.surface_.disabled;
+    return this.nativeControl_.disabled;
   }
 
   set disabled(disabled) {
     this.foundation_.setDisabled(disabled);
   }
 
-  item(index) {
-    return this.surface_.item(index);
-  }
-
-  indexByValue_(value) {
-    // NOTE: IE11 precludes us from using Array.prototype.find
-    for (let i = 0, options = this.options, option; (option = options[i]); i++) {
-      if (option.value === value) {
-        return i;
-      }
-    }
-    return null;
-  }
-
   initialize(
     labelFactory = (el) => new MDCSelectLabel(el),
     bottomLineFactory = (el) => new MDCSelectBottomLine(el)) {
-    this.surface_ = this.root_.querySelector(strings.SURFACE_SELECTOR);
+    this.nativeControl_ = this.root_.querySelector(strings.NATIVE_CONTROL_SELECTOR);
     const labelElement = this.root_.querySelector(strings.LABEL_SELECTOR);
     if (labelElement) {
       this.label_ = labelFactory(labelElement);
@@ -92,7 +66,9 @@ export class MDCSelect extends MDCComponent {
       this.bottomLine_ = bottomLineFactory(bottomLineElement);
     }
 
-    this.ripple = new MDCRipple(this.root_);
+    if (this.root_.classList.contains(cssClasses.BOX)) {
+      this.ripple = new MDCRipple(this.root_);
+    }
   }
 
   getDefaultFoundation() {
@@ -106,22 +82,21 @@ export class MDCSelect extends MDCComponent {
       },
       activateBottomLine: () => this.bottomLine_.activate(),
       deactivateBottomLine: () => this.bottomLine_.deactivate(),
-      setDisabled: (disabled) => this.surface_.disabled = disabled,
-      registerInteractionHandler: (type, handler) => this.surface_.addEventListener(type, handler),
-      deregisterInteractionHandler: (type, handler) => this.surface_.removeEventListener(type, handler),
-      getNumberOfOptions: () => this.options.length,
-      getIndexForOptionValue: (value) => this.indexByValue_(value),
-      getValueForOptionAtIndex: (index) => this.options[index].value,
-      setSelectedIndex: (index) => this.surface_.selectedIndex = index,
-      setValue: (value) => this.surface_.value = value,
+      setDisabled: (disabled) => this.nativeControl_.disabled = disabled,
+      registerInteractionHandler: (type, handler) => this.nativeControl_.addEventListener(type, handler),
+      deregisterInteractionHandler: (type, handler) => this.nativeControl_.removeEventListener(type, handler),
+      getSelectedIndex: () => this.nativeControl_.selectedIndex,
+      setSelectedIndex: (index) => this.nativeControl_.selectedIndex = index,
+      getValue: () => this.nativeControl_.value,
+      setValue: (value) => this.nativeControl_.value = value,
     });
   }
 
   initialSyncWithDOM() {
     // needed to sync floating label
-    this.selectedIndex = this.surface_.selectedIndex;
+    this.selectedIndex = this.nativeControl_.selectedIndex;
 
-    if (this.root_.classList.contains(MDCSelectFoundation.cssClasses.DISABLED)) {
+    if (this.nativeControl_.disabled) {
       this.disabled = true;
     }
   }

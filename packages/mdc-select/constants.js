@@ -21,12 +21,12 @@ export const cssClasses = {
 };
 
 export const numbers = {
-  SELECT_TEXT_TRANSITION_TIME: 125,
+  FLOAT_NATIVE_CONTROL_TRANSITION_TIME_MS: 125,
 };
 
 export const strings = {
   CHANGE_EVENT: 'MDCSelect:change',
   BOTTOM_LINE_SELECTOR: '.mdc-select__bottom-line',
   LABEL_SELECTOR: '.mdc-select__label',
-  SURFACE_SELECTOR: '.mdc-select__surface',
+  NATIVE_CONTROL_SELECTOR: '.mdc-select__native-control',
 };

@@ -24,7 +24,6 @@ import MDCSelectFoundation from '../../../packages/mdc-select/foundation';
 
 function setupTest() {
   const {foundation, mockAdapter} = setupFoundationTest(MDCSelectFoundation);
-  td.when(mockAdapter.getNumberOfOptions()).thenReturn(2);
 
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   foundation.init();
@@ -53,14 +52,14 @@ test('on blur deactivates bottom line', () => {
 test('on select value change with option value', () => {
   const clock = lolex.install();
   const {mockAdapter, handlers} = setupTest();
-  td.when(mockAdapter.getIndexForOptionValue('abc')).thenReturn(1);
-  td.when(mockAdapter.getValueForOptionAtIndex(1)).thenReturn('value');
+  td.when(mockAdapter.getSelectedIndex()).thenReturn(1);
+  td.when(mockAdapter.getValue()).thenReturn('abc');
   td.when(mockAdapter.setSelectedIndex(1)).thenReturn();
   handlers.change(createEvent({
     target: {value: 'abc'},
   }));
   td.verify(mockAdapter.addClass(MDCSelectFoundation.cssClasses.IS_CHANGING), {times: 1});
   td.verify(mockAdapter.floatLabel(true), {times: 1});
-  clock.tick(MDCSelectFoundation.numbers.SELECT_TEXT_TRANSITION_TIME);
+  clock.tick(MDCSelectFoundation.numbers.FLOAT_NATIVE_CONTROL_TRANSITION_TIME_MS);
   td.verify(mockAdapter.removeClass(MDCSelectFoundation.cssClasses.IS_CHANGING), {times: 1});
 });

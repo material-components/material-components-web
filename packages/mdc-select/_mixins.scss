@@ -34,7 +34,9 @@
 
 @mixin mdc-select-focused-label-color($color, $opacity: .87) {
   &:not(.mdc-select--disabled) {
-    .mdc-select__surface:focus ~ {
+    .mdc-select__native-control:focus ~ {
+      // NOTE: the mdc-select-floating-label-color mixin contains the class
+      // selector .mdc-select__label, which allows the `~` to work.
       @include mdc-select-floating-label-color($color, $opacity);
     }
   }
@@ -60,13 +62,13 @@
 
 // Private
 @mixin mdc-select-focused-bottom-line_ {
-  .mdc-select__surface:focus ~ .mdc-select__bottom-line {
+  .mdc-select__native-control:focus ~ .mdc-select__bottom-line {
     @content;
   }
 }
 
 @mixin mdc-select-ink-color_($color) {
-  .mdc-select__surface {
+  .mdc-select__native-control {
     @include mdc-theme-prop(color, $color);
   }
 }
