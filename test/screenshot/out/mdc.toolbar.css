@@ -1,0 +1,499 @@
+/*!
+ Material Components for the Web
+ Copyright (c) 2018 Google Inc.
+ License: Apache-2.0
+*/
+/**
+ * The css property used for elevation. In most cases this should not be changed. It is exposed
+ * as a variable for abstraction / easy use when needing to reference the property directly, for
+ * example in a `will-change` rule.
+ */
+/**
+ * The default duration value for elevation transitions.
+ */
+/**
+ * The default easing value for elevation transitions.
+ */
+/**
+ * Applies the correct CSS rules to an element to give it the elevation specified by $z-value.
+ * The $z-value must be between 0 and 24.
+ * If $color has an alpha channel, it will be ignored and overridden. To increase the opacity of the shadow, use
+ * $opacity-boost.
+ */
+/**
+ * Returns a string that can be used as the value for a `transition` property for elevation.
+ * Calling this function directly is useful in situations where a component needs to transition
+ * more than one property.
+ *
+ * ```scss
+ * .foo {
+ *   transition: mdc-elevation-transition-value(), opacity 100ms ease;
+ *   will-change: $mdc-elevation-property, opacity;
+ * }
+ * ```
+ */
+/**
+ * Creates a rule that will be applied when an MDC Web component is within the context of an RTL layout.
+ *
+ * Usage Example:
+ * ```scss
+ * .mdc-foo {
+ *   position: absolute;
+ *   left: 0;
+ *
+ *   @include mdc-rtl {
+ *     left: auto;
+ *     right: 0;
+ *   }
+ *
+ *   &__bar {
+ *     margin-left: 4px;
+ *     @include mdc-rtl(".mdc-foo") {
+ *       margin-left: auto;
+ *       margin-right: 4px;
+ *     }
+ *   }
+ * }
+ *
+ * .mdc-foo--mod {
+ *   padding-left: 4px;
+ *
+ *   @include mdc-rtl {
+ *     padding-left: auto;
+ *     padding-right: 4px;
+ *   }
+ * }
+ * ```
+ *
+ * Note that this works by checking for [dir="rtl"] on an ancestor element. While this will work
+ * in most cases, it will in some cases lead to false negatives, e.g.
+ *
+ * ```html
+ * <html dir="rtl">
+ *   <!-- ... -->
+ *   <div dir="ltr">
+ *     <div class="mdc-foo">Styled incorrectly as RTL!</div>
+ *   </div>
+ * </html>
+ * ```
+ *
+ * In the future, selectors such as :dir (http://mdn.io/:dir) will help us mitigate this.
+ */
+/**
+ * Takes a base box-model property - e.g. margin / border / padding - along with a default
+ * direction and value, and emits rules which apply the value to the
+ * "<base-property>-<default-direction>" property by default, but flips the direction
+ * when within an RTL context.
+ *
+ * For example:
+ *
+ * ```scss
+ * .mdc-foo {
+ *   @include mdc-rtl-reflexive-box(margin, left, 8px);
+ * }
+ * ```
+ * is equivalent to:
+ *
+ * ```scss
+ * .mdc-foo {
+ *   margin-left: 8px;
+ *
+ *   @include mdc-rtl {
+ *     margin-right: 8px;
+ *     margin-left: 0;
+ *   }
+ * }
+ * ```
+ * whereas:
+ *
+ * ```scss
+ * .mdc-foo {
+ *   @include mdc-rtl-reflexive-box(margin, right, 8px);
+ * }
+ * ```
+ * is equivalent to:
+ *
+ * ```scss
+ * .mdc-foo {
+ *   margin-right: 8px;
+ *
+ *   @include mdc-rtl {
+ *     margin-right: 0;
+ *     margin-left: 8px;
+ *   }
+ * }
+ * ```
+ *
+ * You can also pass a 4th optional $root-selector argument which will be forwarded to `mdc-rtl`,
+ * e.g. `@include mdc-rtl-reflexive-box(margin, left, 8px, ".mdc-component")`.
+ *
+ * Note that this function will always zero out the original value in an RTL context. If you're
+ * trying to flip the values, use mdc-rtl-reflexive-property().
+ */
+/**
+ * Takes a base property and emits rules that assign <base-property>-left to <left-value> and
+ * <base-property>-right to <right-value> in a LTR context, and vice versa in a RTL context.
+ * For example:
+ *
+ * ```scss
+ * .mdc-foo {
+ *   @include mdc-rtl-reflexive-property(margin, auto, 12px);
+ * }
+ * ```
+ * is equivalent to:
+ *
+ * ```scss
+ * .mdc-foo {
+ *   margin-left: auto;
+ *   margin-right: 12px;
+ *
+ *   @include mdc-rtl {
+ *     margin-left: 12px;
+ *     margin-right: auto;
+ *   }
+ * }
+ * ```
+ *
+ * A 4th optional $root-selector argument can be given, which will be passed to `mdc-rtl`.
+ */
+/**
+ * Takes an argument specifying a horizontal position property (either "left" or "right") as well
+ * as a value, and applies that value to the specified position in a LTR context, and flips it in a
+ * RTL context. For example:
+ *
+ * ```scss
+ * .mdc-foo {
+ *   @include mdc-rtl-reflexive-position(left, 0);
+ *   position: absolute;
+ * }
+ * ```
+ * is equivalent to:
+ *
+ * ```scss
+ *  .mdc-foo {
+ *    position: absolute;
+ *    left: 0;
+ *    right: initial;
+ *
+ *    @include mdc-rtl {
+ *      right: 0;
+ *      left: initial;
+ *    }
+ *  }
+ * ```
+ * An optional third $root-selector argument may also be given, which is passed to `mdc-rtl`.
+ */
+/* TODO(sgomes): Figure out what to do about desktop font sizes. */
+/* TODO(sgomes): Figure out what to do about i18n and i18n font sizes. */
+.mdc-toolbar {
+  background-color: #6200ee;
+  /* @alternate */
+  background-color: var(--mdc-theme-primary, #6200ee);
+  color: white;
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+  width: 100%; }
+  .mdc-toolbar .mdc-toolbar__icon {
+    color: white; }
+    .mdc-toolbar .mdc-toolbar__icon::before, .mdc-toolbar .mdc-toolbar__icon::after {
+      background-color: white; }
+    .mdc-toolbar .mdc-toolbar__icon:hover::before {
+      opacity: 0.08; }
+    .mdc-toolbar .mdc-toolbar__icon:not(.mdc-ripple-upgraded):focus::before, .mdc-toolbar .mdc-toolbar__icon.mdc-ripple-upgraded--background-focused::before {
+      transition-duration: 75ms;
+      opacity: 0.24; }
+    .mdc-toolbar .mdc-toolbar__icon:not(.mdc-ripple-upgraded)::after {
+      transition: opacity 150ms linear; }
+    .mdc-toolbar .mdc-toolbar__icon:not(.mdc-ripple-upgraded):active::after {
+      transition-duration: 75ms;
+      opacity: 0.32; }
+    .mdc-toolbar .mdc-toolbar__icon.mdc-ripple-upgraded {
+      --mdc-ripple-fg-opacity: 0.32; }
+  .mdc-toolbar__row {
+    display: flex;
+    position: relative;
+    align-items: center;
+    box-sizing: border-box;
+    width: 100%;
+    height: auto;
+    min-height: 64px; }
+    @media (max-width: 959px) and (orientation: landscape) {
+      .mdc-toolbar__row {
+        min-height: 48px; } }
+    @media (max-width: 599px) {
+      .mdc-toolbar__row {
+        min-height: 56px; } }
+  .mdc-toolbar__section {
+    display: inline-flex;
+    flex: 1;
+    align-items: start;
+    justify-content: center;
+    box-sizing: border-box;
+    min-width: 0;
+    height: 100%;
+    padding: 8px;
+    z-index: 1; }
+    @media (max-width: 959px) and (orientation: landscape) {
+      .mdc-toolbar__section {
+        padding: 0 0; } }
+    @media (max-width: 599px) {
+      .mdc-toolbar__section {
+        padding: 4px 0; } }
+    .mdc-toolbar__section--align-start {
+      /* @noflip */
+      padding-left: 12px;
+      /* @noflip */
+      padding-right: 0;
+      justify-content: flex-start;
+      order: -1; }
+      [dir="rtl"] .mdc-toolbar__section--align-start, .mdc-toolbar__section--align-start[dir="rtl"] {
+        /* @noflip */
+        padding-left: 0;
+        /* @noflip */
+        padding-right: 12px; }
+      @media (max-width: 959px) and (orientation: landscape) {
+        .mdc-toolbar__section--align-start {
+          /* @noflip */
+          padding-left: 4px;
+          /* @noflip */
+          padding-right: 0; }
+          [dir="rtl"] .mdc-toolbar__section--align-start, .mdc-toolbar__section--align-start[dir="rtl"] {
+            /* @noflip */
+            padding-left: 0;
+            /* @noflip */
+            padding-right: 4px; } }
+      @media (max-width: 599px) {
+        .mdc-toolbar__section--align-start {
+          /* @noflip */
+          padding-left: 4px;
+          /* @noflip */
+          padding-right: 0; }
+          [dir="rtl"] .mdc-toolbar__section--align-start, .mdc-toolbar__section--align-start[dir="rtl"] {
+            /* @noflip */
+            padding-left: 0;
+            /* @noflip */
+            padding-right: 4px; } }
+    .mdc-toolbar__section--align-end {
+      /* @noflip */
+      padding-left: 0;
+      /* @noflip */
+      padding-right: 12px;
+      justify-content: flex-end;
+      order: 1; }
+      [dir="rtl"] .mdc-toolbar__section--align-end, .mdc-toolbar__section--align-end[dir="rtl"] {
+        /* @noflip */
+        padding-left: 12px;
+        /* @noflip */
+        padding-right: 0; }
+      @media (max-width: 959px) and (orientation: landscape) {
+        .mdc-toolbar__section--align-end {
+          /* @noflip */
+          padding-left: 0;
+          /* @noflip */
+          padding-right: 4px; }
+          [dir="rtl"] .mdc-toolbar__section--align-end, .mdc-toolbar__section--align-end[dir="rtl"] {
+            /* @noflip */
+            padding-left: 4px;
+            /* @noflip */
+            padding-right: 0; } }
+      @media (max-width: 599px) {
+        .mdc-toolbar__section--align-end {
+          /* @noflip */
+          padding-left: 0;
+          /* @noflip */
+          padding-right: 4px; }
+          [dir="rtl"] .mdc-toolbar__section--align-end, .mdc-toolbar__section--align-end[dir="rtl"] {
+            /* @noflip */
+            padding-left: 4px;
+            /* @noflip */
+            padding-right: 0; } }
+  .mdc-toolbar__title {
+    font-family: Roboto, sans-serif;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    font-size: 1.25rem;
+    line-height: 2rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    text-decoration: inherit;
+    text-transform: inherit;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    /* @noflip */
+    margin-left: 24px;
+    /* @noflip */
+    margin-right: 0;
+    align-self: center;
+    padding: 12px 0;
+    line-height: 1.5rem;
+    z-index: 1; }
+    [dir="rtl"] .mdc-toolbar__title, .mdc-toolbar__title[dir="rtl"] {
+      /* @noflip */
+      margin-left: 0;
+      /* @noflip */
+      margin-right: 24px; }
+  .mdc-toolbar__icon, .mdc-toolbar__menu-icon {
+    --mdc-ripple-fg-size: 0;
+    --mdc-ripple-left: 0;
+    --mdc-ripple-top: 0;
+    --mdc-ripple-fg-scale: 1;
+    --mdc-ripple-fg-translate-end: 0;
+    --mdc-ripple-fg-translate-start: 0;
+    -webkit-tap-highlight-color: transparent;
+    will-change: transform, opacity;
+    display: flex;
+    position: relative;
+    align-items: start;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 12px;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    fill: currentColor;
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer; }
+    .mdc-toolbar__icon::before, .mdc-toolbar__icon::after, .mdc-toolbar__menu-icon::before, .mdc-toolbar__menu-icon::after {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0;
+      pointer-events: none;
+      content: ""; }
+    .mdc-toolbar__icon::before, .mdc-toolbar__menu-icon::before {
+      transition: opacity 15ms linear;
+      z-index: 1; }
+    .mdc-toolbar__icon.mdc-ripple-upgraded::before, .mdc-toolbar__menu-icon.mdc-ripple-upgraded::before {
+      -webkit-transform: scale(var(--mdc-ripple-fg-scale, 1));
+              transform: scale(var(--mdc-ripple-fg-scale, 1)); }
+    .mdc-toolbar__icon.mdc-ripple-upgraded::after, .mdc-toolbar__menu-icon.mdc-ripple-upgraded::after {
+      top: 0;
+      /* @noflip */
+      left: 0;
+      -webkit-transform: scale(0);
+              transform: scale(0);
+      -webkit-transform-origin: center center;
+              transform-origin: center center; }
+    .mdc-toolbar__icon.mdc-ripple-upgraded--unbounded::after, .mdc-toolbar__menu-icon.mdc-ripple-upgraded--unbounded::after {
+      top: var(--mdc-ripple-top, 0);
+      /* @noflip */
+      left: var(--mdc-ripple-left, 0); }
+    .mdc-toolbar__icon.mdc-ripple-upgraded--foreground-activation::after, .mdc-toolbar__menu-icon.mdc-ripple-upgraded--foreground-activation::after {
+      -webkit-animation: 225ms mdc-ripple-fg-radius-in forwards, 75ms mdc-ripple-fg-opacity-in forwards;
+              animation: 225ms mdc-ripple-fg-radius-in forwards, 75ms mdc-ripple-fg-opacity-in forwards; }
+    .mdc-toolbar__icon.mdc-ripple-upgraded--foreground-deactivation::after, .mdc-toolbar__menu-icon.mdc-ripple-upgraded--foreground-deactivation::after {
+      -webkit-animation: 150ms mdc-ripple-fg-opacity-out;
+              animation: 150ms mdc-ripple-fg-opacity-out;
+      -webkit-transform: translate(var(--mdc-ripple-fg-translate-end, 0)) scale(var(--mdc-ripple-fg-scale, 1));
+              transform: translate(var(--mdc-ripple-fg-translate-end, 0)) scale(var(--mdc-ripple-fg-scale, 1)); }
+    .mdc-toolbar__icon::before, .mdc-toolbar__icon::after, .mdc-toolbar__menu-icon::before, .mdc-toolbar__menu-icon::after {
+      top: calc(50% - 50%);
+      /* @noflip */
+      left: calc(50% - 50%);
+      width: 100%;
+      height: 100%; }
+    .mdc-toolbar__icon.mdc-ripple-upgraded::before, .mdc-toolbar__icon.mdc-ripple-upgraded::after, .mdc-toolbar__menu-icon.mdc-ripple-upgraded::before, .mdc-toolbar__menu-icon.mdc-ripple-upgraded::after {
+      top: var(--mdc-ripple-top, calc(50% - 50%));
+      /* @noflip */
+      left: var(--mdc-ripple-left, calc(50% - 50%));
+      width: var(--mdc-ripple-fg-size, 100%);
+      height: var(--mdc-ripple-fg-size, 100%); }
+    .mdc-toolbar__icon.mdc-ripple-upgraded::after, .mdc-toolbar__menu-icon.mdc-ripple-upgraded::after {
+      width: var(--mdc-ripple-fg-size, 100%);
+      height: var(--mdc-ripple-fg-size, 100%); }
+
+.mdc-toolbar__menu-icon + .mdc-toolbar__title {
+  /* @noflip */
+  margin-left: 8px;
+  /* @noflip */
+  margin-right: 0; }
+  [dir="rtl"] .mdc-toolbar__menu-icon + .mdc-toolbar__title, .mdc-toolbar__menu-icon + .mdc-toolbar__title[dir="rtl"] {
+    /* @noflip */
+    margin-left: 0;
+    /* @noflip */
+    margin-right: 8px; }
+
+@media (max-width: 599px) {
+  .mdc-toolbar__title {
+    /* @noflip */
+    margin-left: 16px;
+    /* @noflip */
+    margin-right: 0; }
+    [dir="rtl"] .mdc-toolbar__title, .mdc-toolbar__title[dir="rtl"] {
+      /* @noflip */
+      margin-left: 0;
+      /* @noflip */
+      margin-right: 16px; } }
+
+.mdc-toolbar--fixed {
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 4; }
+
+.mdc-toolbar--flexible {
+  --mdc-toolbar-ratio-to-extend-flexible: 4; }
+  .mdc-toolbar--flexible .mdc-toolbar__row:first-child {
+    height: 256px;
+    height: calc(64px * var(--mdc-toolbar-ratio-to-extend-flexible, 4)); }
+    @media (max-width: 599px) {
+      .mdc-toolbar--flexible .mdc-toolbar__row:first-child {
+        height: 224px;
+        height: calc(56px * var(--mdc-toolbar-ratio-to-extend-flexible, 4)); } }
+    .mdc-toolbar--flexible .mdc-toolbar__row:first-child::after {
+      position: absolute;
+      content: ""; }
+  .mdc-toolbar--flexible-default-behavior .mdc-toolbar__title {
+    font-family: Roboto, sans-serif;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    font-size: 2.125rem;
+    line-height: 2.5rem;
+    font-weight: 400;
+    letter-spacing: normal;
+    text-decoration: inherit;
+    text-transform: inherit;
+    align-self: flex-end;
+    line-height: 1.5rem; }
+  .mdc-toolbar--flexible-default-behavior .mdc-toolbar__row:first-child::after {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: opacity .2s ease;
+    opacity: 1; }
+  .mdc-toolbar--flexible-default-behavior.mdc-toolbar--flexible-space-minimized .mdc-toolbar__row:first-child::after {
+    opacity: 0; }
+  .mdc-toolbar--flexible-default-behavior.mdc-toolbar--flexible-space-minimized .mdc-toolbar__title {
+    font-weight: 500; }
+
+.mdc-toolbar--waterfall.mdc-toolbar--fixed {
+  box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.2), 0px 0px 0px 0px rgba(0, 0, 0, 0.14), 0px 0px 0px 0px rgba(0, 0, 0, 0.12);
+  transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: box-shadow; }
+  .mdc-toolbar--waterfall.mdc-toolbar--fixed.mdc-toolbar--flexible-space-minimized {
+    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12); }
+  .mdc-toolbar--waterfall.mdc-toolbar--fixed.mdc-toolbar--fixed-lastrow-only.mdc-toolbar--flexible-space-minimized {
+    box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.2), 0px 0px 0px 0px rgba(0, 0, 0, 0.14), 0px 0px 0px 0px rgba(0, 0, 0, 0.12); }
+  .mdc-toolbar--waterfall.mdc-toolbar--fixed.mdc-toolbar--fixed-lastrow-only.mdc-toolbar--fixed-at-last-row {
+    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12); }
+
+.mdc-toolbar-fixed-adjust {
+  margin-top: 64px; }
+  @media (max-width: 959px) and (max-height: 599px) {
+    .mdc-toolbar-fixed-adjust {
+      margin-top: 48px; } }
+  @media (max-width: 599px) {
+    .mdc-toolbar-fixed-adjust {
+      margin-top: 56px; } }
+
+.mdc-toolbar__section--shrink-to-fit {
+  flex: none; }
+
+/*# sourceMappingURL=mdc.toolbar.css.map*/

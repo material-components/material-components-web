@@ -1,0 +1,183 @@
+/*!
+ Material Components for the Web
+ Copyright (c) 2018 Google Inc.
+ License: Apache-2.0
+*/
+/* TODO(sgomes): Figure out what to do about desktop font sizes. */
+/* TODO(sgomes): Figure out what to do about i18n and i18n font sizes. */
+/* TODO(sgomes): Figure out what to do about desktop font sizes. */
+/* TODO(sgomes): Figure out what to do about i18n and i18n font sizes. */
+.mdc-typography {
+  font-family: Roboto, sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased; }
+
+.mdc-typography--display4 {
+  font-family: Roboto, sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-size: 7rem;
+  line-height: 7rem;
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  text-decoration: inherit;
+  text-transform: inherit; }
+
+.mdc-typography--adjust-margin.mdc-typography--display4 {
+  margin: -1rem 0 3.5rem -0.085em; }
+
+.mdc-typography--display3 {
+  font-family: Roboto, sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-size: 3.5rem;
+  line-height: 3.5rem;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  text-decoration: inherit;
+  text-transform: inherit; }
+
+.mdc-typography--adjust-margin.mdc-typography--display3 {
+  margin: -8px 0 64px -0.07em; }
+
+.mdc-typography--display2 {
+  font-family: Roboto, sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-size: 2.8125rem;
+  line-height: 3rem;
+  font-weight: 400;
+  letter-spacing: normal;
+  text-decoration: inherit;
+  text-transform: inherit; }
+
+.mdc-typography--adjust-margin.mdc-typography--display2 {
+  margin: -0.5rem 0 4rem -0.07em; }
+
+.mdc-typography--display1 {
+  font-family: Roboto, sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-size: 2.125rem;
+  line-height: 2.5rem;
+  font-weight: 400;
+  letter-spacing: normal;
+  text-decoration: inherit;
+  text-transform: inherit; }
+
+.mdc-typography--adjust-margin.mdc-typography--display1 {
+  margin: -0.5rem 0 4rem -0.07em; }
+
+.mdc-typography--headline {
+  font-family: Roboto, sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 400;
+  letter-spacing: normal;
+  text-decoration: inherit;
+  text-transform: inherit; }
+
+.mdc-typography--adjust-margin.mdc-typography--headline {
+  margin: -0.5rem 0 1rem -0.06em; }
+
+.mdc-typography--title {
+  font-family: Roboto, sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-size: 1.25rem;
+  line-height: 2rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-decoration: inherit;
+  text-transform: inherit; }
+
+.mdc-typography--adjust-margin.mdc-typography--title {
+  margin: -0.5rem 0 1rem -0.05em; }
+
+.mdc-typography--subheading2 {
+  font-family: Roboto, sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-size: 1rem;
+  line-height: 1.75rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-decoration: inherit;
+  text-transform: inherit; }
+
+.mdc-typography--adjust-margin.mdc-typography--subheading2 {
+  margin: -0.5rem 0 1rem -0.06em; }
+
+.mdc-typography--subheading1 {
+  font-family: Roboto, sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-size: 0.938rem;
+  line-height: 1.5rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-decoration: inherit;
+  text-transform: inherit; }
+
+.mdc-typography--adjust-margin.mdc-typography--subheading1 {
+  margin: -0.313rem 0 0.813rem -0.06em; }
+
+.mdc-typography--body2 {
+  font-family: Roboto, sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-decoration: inherit;
+  text-transform: inherit; }
+
+.mdc-typography--adjust-margin.mdc-typography--body2 {
+  margin: -0.25rem 0 0.75rem 0; }
+
+.mdc-typography--body1 {
+  font-family: Roboto, sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-decoration: inherit;
+  text-transform: inherit; }
+
+.mdc-typography--adjust-margin.mdc-typography--body1 {
+  margin: -0.25rem 0 0.75rem 0; }
+
+.mdc-typography--caption {
+  font-family: Roboto, sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-size: 0.75rem;
+  line-height: 1.25rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-decoration: inherit;
+  text-transform: inherit; }
+
+.mdc-typography--adjust-margin.mdc-typography--caption {
+  margin: -0.5rem 0 1rem -0.04em; }
+
+.mdc-typography--button {
+  font-family: Roboto, sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-size: 0.875rem;
+  line-height: 2.25rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  text-transform: uppercase; }
+
+.mdc-typography--adjust-margin.mdc-typography--button {
+  margin: inherit; }
+
+/*# sourceMappingURL=mdc.typography.css.map*/

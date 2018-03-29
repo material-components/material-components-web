@@ -1,0 +1,18 @@
+/*!
+ Material Components for the Web
+ Copyright (c) 2018 Google Inc.
+ License: Apache-2.0
+*/
+@import url(https://fonts.googleapis.com/css?family=Roboto:300,400,500,600,700);@import url(https://fonts.googleapis.com/icon?family=Material+Icons);.test-main {
+  padding: 16px; }
+
+.test-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 0 0 24px 0; }
+
+.test-cell {
+  margin: 8px; }
+
+/*# sourceMappingURL=fixture.css.map*/

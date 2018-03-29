@@ -1,0 +1,140 @@
+/*!
+ Material Components for the Web
+ Copyright (c) 2018 Google Inc.
+ License: Apache-2.0
+*/
+/**
+ * The css property used for elevation. In most cases this should not be changed. It is exposed
+ * as a variable for abstraction / easy use when needing to reference the property directly, for
+ * example in a `will-change` rule.
+ */
+/**
+ * The default duration value for elevation transitions.
+ */
+/**
+ * The default easing value for elevation transitions.
+ */
+/**
+ * Applies the correct CSS rules to an element to give it the elevation specified by $z-value.
+ * The $z-value must be between 0 and 24.
+ * If $color has an alpha channel, it will be ignored and overridden. To increase the opacity of the shadow, use
+ * $opacity-boost.
+ */
+/**
+ * Returns a string that can be used as the value for a `transition` property for elevation.
+ * Calling this function directly is useful in situations where a component needs to transition
+ * more than one property.
+ *
+ * ```scss
+ * .foo {
+ *   transition: mdc-elevation-transition-value(), opacity 100ms ease;
+ *   will-change: $mdc-elevation-property, opacity;
+ * }
+ * ```
+ */
+/* TODO(sgomes): Figure out what to do about desktop font sizes. */
+/* TODO(sgomes): Figure out what to do about i18n and i18n font sizes. */
+.mdc-menu {
+  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+  background-color: #fff;
+  /* @alternate */
+  background-color: var(--mdc-theme-background, #fff);
+  display: none;
+  position: absolute;
+  box-sizing: border-box;
+  min-width: 170px;
+  max-width: calc(100vw - 32px);
+  max-height: calc(100vh - 32px);
+  margin: 0;
+  padding: 0;
+  -webkit-transform: scale(1);
+          transform: scale(1);
+  -webkit-transform-origin: top left;
+          transform-origin: top left;
+  border-radius: 2px;
+  opacity: 0;
+  white-space: nowrap;
+  overflow-x: hidden;
+  overflow-y: auto;
+  will-change: transform, opacity;
+  z-index: 4; }
+  .mdc-menu:focus {
+    outline: none; }
+  .mdc-menu--animating-open {
+    display: inline-block;
+    -webkit-transform: scale(0.8);
+            transform: scale(0.8);
+    transition: opacity 0.03s linear, -webkit-transform 0.12s cubic-bezier(0, 0, 0.2, 1);
+    transition: opacity 0.03s linear, transform 0.12s cubic-bezier(0, 0, 0.2, 1);
+    transition: opacity 0.03s linear, transform 0.12s cubic-bezier(0, 0, 0.2, 1), -webkit-transform 0.12s cubic-bezier(0, 0, 0.2, 1);
+    opacity: 0;
+    overflow-y: hidden; }
+  .mdc-menu--open {
+    display: inline-block;
+    -webkit-transform: scale(1);
+            transform: scale(1);
+    opacity: 1; }
+  .mdc-menu--animating-closed {
+    display: inline-block;
+    transition: opacity 0.075s linear;
+    opacity: 0;
+    overflow-y: hidden; }
+  .mdc-menu__items {
+    box-sizing: border-box;
+    -webkit-transform: scale(1);
+            transform: scale(1);
+    overflow-x: hidden;
+    overflow-y: auto;
+    will-change: transform; }
+    .mdc-menu__items > .mdc-list-item {
+      cursor: pointer; }
+    .mdc-menu--animating .mdc-menu__items {
+      overflow-y: hidden; }
+  .mdc-menu--animating-open > .mdc-menu__items {
+    -webkit-transform: scale(1.25);
+            transform: scale(1.25); }
+  .mdc-menu--open > .mdc-menu__items {
+    -webkit-transform: scale(1);
+            transform: scale(1); }
+  [dir="rtl"] .mdc-menu {
+    -webkit-transform-origin: top right;
+            transform-origin: top right; }
+  .mdc-menu .mdc-list-group,
+  .mdc-menu .mdc-list {
+    padding: 8px 0; }
+  .mdc-menu .mdc-list-item {
+    font-family: Roboto, sans-serif;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    font-size: 1rem;
+    line-height: 1.75rem;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    text-decoration: inherit;
+    text-transform: inherit;
+    position: relative;
+    outline: none;
+    color: inherit;
+    text-decoration: none;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none; }
+  .mdc-menu .mdc-list-item__graphic {
+    color: rgba(0, 0, 0, 0.54);
+    /* @alternate */
+    color: var(--mdc-theme-text-secondary-on-background, rgba(0, 0, 0, 0.54)); }
+  .mdc-menu .mdc-list-item[aria-disabled="true"] {
+    color: rgba(0, 0, 0, 0.38);
+    /* @alternate */
+    color: var(--mdc-theme-text-disabled-on-background, rgba(0, 0, 0, 0.38));
+    cursor: default;
+    pointer-events: none; }
+    .mdc-menu .mdc-list-item[aria-disabled="true"]:focus::before {
+      opacity: 0; }
+
+.mdc-menu-anchor {
+  position: relative;
+  overflow: visible; }
+
+/*# sourceMappingURL=mdc.menu.css.map*/

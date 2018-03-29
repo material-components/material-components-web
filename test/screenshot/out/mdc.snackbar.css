@@ -1,0 +1,348 @@
+/*!
+ Material Components for the Web
+ Copyright (c) 2018 Google Inc.
+ License: Apache-2.0
+*/
+/**
+ * Creates a rule that will be applied when an MDC Web component is within the context of an RTL layout.
+ *
+ * Usage Example:
+ * ```scss
+ * .mdc-foo {
+ *   position: absolute;
+ *   left: 0;
+ *
+ *   @include mdc-rtl {
+ *     left: auto;
+ *     right: 0;
+ *   }
+ *
+ *   &__bar {
+ *     margin-left: 4px;
+ *     @include mdc-rtl(".mdc-foo") {
+ *       margin-left: auto;
+ *       margin-right: 4px;
+ *     }
+ *   }
+ * }
+ *
+ * .mdc-foo--mod {
+ *   padding-left: 4px;
+ *
+ *   @include mdc-rtl {
+ *     padding-left: auto;
+ *     padding-right: 4px;
+ *   }
+ * }
+ * ```
+ *
+ * Note that this works by checking for [dir="rtl"] on an ancestor element. While this will work
+ * in most cases, it will in some cases lead to false negatives, e.g.
+ *
+ * ```html
+ * <html dir="rtl">
+ *   <!-- ... -->
+ *   <div dir="ltr">
+ *     <div class="mdc-foo">Styled incorrectly as RTL!</div>
+ *   </div>
+ * </html>
+ * ```
+ *
+ * In the future, selectors such as :dir (http://mdn.io/:dir) will help us mitigate this.
+ */
+/**
+ * Takes a base box-model property - e.g. margin / border / padding - along with a default
+ * direction and value, and emits rules which apply the value to the
+ * "<base-property>-<default-direction>" property by default, but flips the direction
+ * when within an RTL context.
+ *
+ * For example:
+ *
+ * ```scss
+ * .mdc-foo {
+ *   @include mdc-rtl-reflexive-box(margin, left, 8px);
+ * }
+ * ```
+ * is equivalent to:
+ *
+ * ```scss
+ * .mdc-foo {
+ *   margin-left: 8px;
+ *
+ *   @include mdc-rtl {
+ *     margin-right: 8px;
+ *     margin-left: 0;
+ *   }
+ * }
+ * ```
+ * whereas:
+ *
+ * ```scss
+ * .mdc-foo {
+ *   @include mdc-rtl-reflexive-box(margin, right, 8px);
+ * }
+ * ```
+ * is equivalent to:
+ *
+ * ```scss
+ * .mdc-foo {
+ *   margin-right: 8px;
+ *
+ *   @include mdc-rtl {
+ *     margin-right: 0;
+ *     margin-left: 8px;
+ *   }
+ * }
+ * ```
+ *
+ * You can also pass a 4th optional $root-selector argument which will be forwarded to `mdc-rtl`,
+ * e.g. `@include mdc-rtl-reflexive-box(margin, left, 8px, ".mdc-component")`.
+ *
+ * Note that this function will always zero out the original value in an RTL context. If you're
+ * trying to flip the values, use mdc-rtl-reflexive-property().
+ */
+/**
+ * Takes a base property and emits rules that assign <base-property>-left to <left-value> and
+ * <base-property>-right to <right-value> in a LTR context, and vice versa in a RTL context.
+ * For example:
+ *
+ * ```scss
+ * .mdc-foo {
+ *   @include mdc-rtl-reflexive-property(margin, auto, 12px);
+ * }
+ * ```
+ * is equivalent to:
+ *
+ * ```scss
+ * .mdc-foo {
+ *   margin-left: auto;
+ *   margin-right: 12px;
+ *
+ *   @include mdc-rtl {
+ *     margin-left: 12px;
+ *     margin-right: auto;
+ *   }
+ * }
+ * ```
+ *
+ * A 4th optional $root-selector argument can be given, which will be passed to `mdc-rtl`.
+ */
+/**
+ * Takes an argument specifying a horizontal position property (either "left" or "right") as well
+ * as a value, and applies that value to the specified position in a LTR context, and flips it in a
+ * RTL context. For example:
+ *
+ * ```scss
+ * .mdc-foo {
+ *   @include mdc-rtl-reflexive-position(left, 0);
+ *   position: absolute;
+ * }
+ * ```
+ * is equivalent to:
+ *
+ * ```scss
+ *  .mdc-foo {
+ *    position: absolute;
+ *    left: 0;
+ *    right: initial;
+ *
+ *    @include mdc-rtl {
+ *      right: 0;
+ *      left: initial;
+ *    }
+ *  }
+ * ```
+ * An optional third $root-selector argument may also be given, which is passed to `mdc-rtl`.
+ */
+/* TODO(sgomes): Figure out what to do about desktop font sizes. */
+/* TODO(sgomes): Figure out what to do about i18n and i18n font sizes. */
+/* postcss-bem-linter: define snackbar */
+.mdc-snackbar {
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  align-items: center;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  padding-right: 24px;
+  padding-left: 24px;
+  -webkit-transform: translate(-50%, 100%);
+          transform: translate(-50%, 100%);
+  transition: -webkit-transform 0.25s 0ms cubic-bezier(0.4, 0, 1, 1);
+  transition: transform 0.25s 0ms cubic-bezier(0.4, 0, 1, 1);
+  transition: transform 0.25s 0ms cubic-bezier(0.4, 0, 1, 1), -webkit-transform 0.25s 0ms cubic-bezier(0.4, 0, 1, 1);
+  background-color: #323232;
+  pointer-events: none;
+  will-change: transform; }
+  @media (max-width: 599px) {
+    .mdc-snackbar {
+      left: 0;
+      width: 100%;
+      -webkit-transform: translate(0, 100%);
+              transform: translate(0, 100%); } }
+  @media (min-width: 600px) {
+    .mdc-snackbar {
+      min-width: 288px;
+      max-width: 568px;
+      border-radius: 2px; } }
+
+@media (min-width: 600px) {
+  .mdc-snackbar--align-start {
+    /* @noflip */
+    left: 24px;
+    /* @noflip */
+    right: initial;
+    bottom: 24px;
+    -webkit-transform: translate(0, 200%);
+            transform: translate(0, 200%); }
+    [dir="rtl"] .mdc-snackbar--align-start, .mdc-snackbar--align-start[dir="rtl"] {
+      /* @noflip */
+      left: initial;
+      /* @noflip */
+      right: 24px; } }
+
+@media (max-width: 599px) {
+  .mdc-snackbar--align-start {
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    -webkit-transform: translate(0, 100%);
+            transform: translate(0, 100%); } }
+
+.mdc-snackbar--active {
+  -webkit-transform: translate(0);
+          transform: translate(0);
+  transition: -webkit-transform 0.25s 0ms cubic-bezier(0, 0, 0.2, 1);
+  transition: transform 0.25s 0ms cubic-bezier(0, 0, 0.2, 1);
+  transition: transform 0.25s 0ms cubic-bezier(0, 0, 0.2, 1), -webkit-transform 0.25s 0ms cubic-bezier(0, 0, 0.2, 1);
+  pointer-events: auto; }
+  .mdc-snackbar--active:not(.mdc-snackbar--align-start) {
+    -webkit-transform: translate(-50%, 0);
+            transform: translate(-50%, 0); }
+    @media (max-width: 599px) {
+      .mdc-snackbar--active:not(.mdc-snackbar--align-start) {
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        -webkit-transform: translate(0);
+                transform: translate(0); } }
+
+.mdc-snackbar__action-wrapper {
+  /* @noflip */
+  padding-left: 24px;
+  /* @noflip */
+  padding-right: 0; }
+  [dir="rtl"] .mdc-snackbar__action-wrapper, .mdc-snackbar__action-wrapper[dir="rtl"] {
+    /* @noflip */
+    padding-left: 0;
+    /* @noflip */
+    padding-right: 24px; }
+
+.mdc-snackbar--action-on-bottom {
+  flex-direction: column; }
+
+.mdc-snackbar__text {
+  font-family: Roboto, sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-decoration: inherit;
+  text-transform: inherit;
+  /* @noflip */
+  margin-left: 0;
+  /* @noflip */
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  height: 48px;
+  transition: opacity 0.3s 0ms cubic-bezier(0.4, 0, 1, 1);
+  opacity: 0;
+  color: white; }
+  .mdc-snackbar[dir="rtl"] .mdc-snackbar__text,
+  [dir="rtl"] .mdc-snackbar .mdc-snackbar__text {
+    /* @noflip */
+    margin-left: auto;
+    /* @noflip */
+    margin-right: 0; }
+  @media (min-width: 600px) {
+    .mdc-snackbar__text {
+      /* @noflip */
+      padding-left: 0;
+      /* @noflip */
+      padding-right: 24px; }
+      [dir="rtl"] .mdc-snackbar__text, .mdc-snackbar__text[dir="rtl"] {
+        /* @noflip */
+        padding-left: 24px;
+        /* @noflip */
+        padding-right: 0; } }
+
+.mdc-snackbar--action-on-bottom .mdc-snackbar__text {
+  margin-right: inherit; }
+
+.mdc-snackbar--action-on-bottom .mdc-snackbar__action-wrapper {
+  /* @noflip */
+  margin-left: auto;
+  /* @noflip */
+  margin-right: 0;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-top: -12px;
+  margin-bottom: 8px; }
+  [dir="rtl"] .mdc-snackbar--action-on-bottom .mdc-snackbar__action-wrapper, .mdc-snackbar--action-on-bottom .mdc-snackbar__action-wrapper[dir="rtl"] {
+    /* @noflip */
+    margin-left: 0;
+    /* @noflip */
+    margin-right: auto; }
+
+.mdc-snackbar--multiline .mdc-snackbar__text {
+  height: 80px; }
+
+.mdc-snackbar__action-button {
+  font-family: Roboto, sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-size: 0.875rem;
+  line-height: 2.25rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: #018786;
+  /* @alternate */
+  color: var(--mdc-theme-secondary, #018786);
+  padding: 0;
+  transition: opacity 0.3s 0ms cubic-bezier(0.4, 0, 1, 1);
+  border: none;
+  outline: none;
+  background-color: transparent;
+  opacity: 0;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  -webkit-appearance: none;
+  visibility: hidden; }
+  .mdc-snackbar__action-button::-moz-focus-inner {
+    border: 0; }
+  .mdc-snackbar__action-button:hover {
+    cursor: pointer; }
+  .mdc-snackbar__action-button:not([aria-hidden]) {
+    visibility: inherit; }
+
+.mdc-snackbar--active .mdc-snackbar__text,
+.mdc-snackbar--active .mdc-snackbar__action-button:not([aria-hidden]) {
+  transition: opacity 0.3s 0ms cubic-bezier(0.4, 0, 1, 1);
+  opacity: 1; }
+
+/* stylelint-disable plugin/selector-bem-pattern */
+.mdc-snackbar--multiline.mdc-snackbar--action-on-bottom .mdc-snackbar__text {
+  margin: 0; }
+
+/* stylelint-enable plugin/selector-bem-pattern */
+/* postcss-bem-linter: end */
+
+/*# sourceMappingURL=mdc.snackbar.css.map*/
