@@ -19,7 +19,6 @@ import td from 'testdouble';
 
 import {captureHandlers} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
-import {createMockRaf} from '../helpers/raf';
 import MDCTabIndicatorIconFoundation from '../../../packages/mdc-tab-indicator/icon-foundation';
 
 suite('MDCTabIndicatorIconFoundation');

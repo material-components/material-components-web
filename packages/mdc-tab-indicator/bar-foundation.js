@@ -22,17 +22,21 @@ import MDCTabIndicatorFoundation from './foundation';
  */
 class MDCTabIndicatorBarFoundation extends MDCTabIndicatorFoundation {
   /**
-   * @param {!ClientRect} previousClientRect
+   * @param {!ClientRect=} previousClientRect
    * @override
    */
   activate(previousClientRect) {
+    // Activate the tab
+    this.adapter_.addClass(MDCTabIndicatorFoundation.cssClasses.ACTIVE);
+    if (!previousClientRect) {
+      return;
+    }
+
     // Calculate the dimensions based on the dimensions of the previous indicator
     const currentClientRect = this.adapter_.getClientRect();
     const widthDelta = previousClientRect.width / currentClientRect.width;
     const xPosition = previousClientRect.left - currentClientRect.left;
     this.adapter_.setStyleProperty('transform', `translateX(${xPosition}px) scaleX(${widthDelta})`);
-    // Activate the tab
-    this.adapter_.addClass(MDCTabIndicatorFoundation.cssClasses.ACTIVE);
     // Force repaint
     this.adapter_.getClientRect();
     // Add class and undo styling in a new frame

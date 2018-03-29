@@ -77,7 +77,7 @@ class MDCTabIndicatorFoundation extends MDCFoundation {
 
   /**
    * Activates the indicator
-   * @param {!ClientRect} previousClientRect
+   * @param {!ClientRect=} previousClientRect
    * @abstract
    */
   activate(previousClientRect) {} // eslint-disable-line no-unused-vars

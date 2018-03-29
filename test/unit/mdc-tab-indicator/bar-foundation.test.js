@@ -67,6 +67,12 @@ test('#activate resets the transform property', () => {
   td.verify(mockAdapter.setStyleProperty('transform', ''));
 });
 
+test('#activate does not modify transform if no client rect is passed', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.activate();
+  td.verify(mockAdapter.setStyleProperty('transform', td.matchers.isA(String)), {times: 0});
+});
+
 test(`#deactivate removes the ${MDCTabIndicatorBarFoundation.cssClasses.ACTIVE} class`, () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.deactivate();

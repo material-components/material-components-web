@@ -53,6 +53,9 @@ class MDCTabIndicator extends MDCComponent {
       return new MDCTabIndicatorBarFoundation(adapter);
     } else if (this.root_.classList.contains(MDCTabIndicatorFoundation.cssClasses.ICON)) {
       return new MDCTabIndicatorIconFoundation(adapter);
+    } else {
+      throw new Error(`Root element must either include ${MDCTabIndicatorFoundation.cssClasses.BAR} or ` +
+        `${MDCTabIndicatorFoundation.cssClasses.ICON}`);
     }
   }
 
@@ -70,7 +73,7 @@ class MDCTabIndicator extends MDCComponent {
   /**
    * @return {!ClientRect}
    */
-  get clientRect() {
+  getClientRect() {
     return this.foundation_.getClientRect();
   }
 }

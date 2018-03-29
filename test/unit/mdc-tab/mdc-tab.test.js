@@ -28,8 +28,8 @@ const getFixture = () => bel`
     <div class="mdc-tab__content">
       <span class="mdc-tab__text-label">Foo</span>
     </div>
-    <span class="mdc-tab__indicator"></span>
     <span class="mdc-tab__ripple"></span>
+    <span class="mdc-tab-indicator mdc-tab-indicator--bar"></span>
   </button>
 `;
 
@@ -39,16 +39,39 @@ test('attachTo returns an MDCTab instance', () => {
   assert.isTrue(MDCTab.attachTo(getFixture()) instanceof MDCTab);
 });
 
-function setupTest() {
+test('#constructor instantiates a ipple on the `.mdc-tab__ripple` element', () => {
   const root = getFixture();
   const component = new MDCTab(root);
-  return {root, component};
-}
-
-test('#initialize creates the ripple', () => {
-  const {component} = setupTest();
   assert.instanceOf(component.ripple_, MDCRipple);
 });
+
+class FakeRipple {
+  constructor(root) {
+    this.root = root;
+    this.layout = td.func('.layout');
+    this.destroy = td.func('.destroy');
+  }
+}
+
+class FakeTabIndicator {
+  constructor() {
+    this.activate = td.func('indicator.activate');
+    this.deactivate = td.func('indicator.deactivate');
+    this.getClientRect = td.func('indicator.getClientRect');
+  }
+}
+
+function setupTest() {
+  const root = getFixture();
+  const indicator = new FakeTabIndicator();
+  const component = new MDCTab(
+    root,
+    undefined,
+    (el) => new FakeRipple(el),
+    () => indicator
+  );
+  return {root, component, indicator};
+}
 
 test('#destroy removes the ripple', () => {
   const raf = createMockRaf();
@@ -88,56 +111,21 @@ test('#adapter.setAttr adds a given attribute to the root element', () => {
   assert.equal(root.getAttribute('foo'), 'bar');
 });
 
-test('#adapter.registerRootEventHandler adds an event listener to the root element for a given event', () => {
+test('#adapter.registerEventHandler adds an event listener to the root element', () => {
   const {root, component} = setupTest();
   const handler = td.func('transitionend handler');
-  component.getDefaultFoundation().adapter_.registerRootEventHandler('transitionend', handler);
+  component.getDefaultFoundation().adapter_.registerEventHandler('transitionend', handler);
   domEvents.emit(root, 'transitionend');
   td.verify(handler(td.matchers.anything()));
 });
 
-test('#adapter.deregisterRootEventHandler removes an event listener from the root element for a given event', () => {
+test('#adapter.deregisterEventHandler removes an event listener from the root element', () => {
   const {root, component} = setupTest();
   const handler = td.func('transitionend handler');
   root.addEventListener('transitionend', handler);
-  component.getDefaultFoundation().adapter_.deregisterRootEventHandler('transitionend', handler);
+  component.getDefaultFoundation().adapter_.deregisterEventHandler('transitionend', handler);
   domEvents.emit(root, 'transitionend');
   td.verify(handler(td.matchers.anything()), {times: 0});
-});
-
-test('#adapter.registerIndicatorEventHandler adds an event listener to the indicator element', () => {
-  const {component} = setupTest();
-  const handler = td.func('transitionend handler');
-  component.getDefaultFoundation().adapter_.registerIndicatorEventHandler('transitionend', handler);
-  domEvents.emit(component.indicator_, 'transitionend');
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('#adapter.deregisterIndicatorEventHandler removes an event listener from the indicator element', () => {
-  const {component} = setupTest();
-  const handler = td.func('transitionend handler');
-  component.indicator_.addEventListener('transitionend', handler);
-  component.getDefaultFoundation().adapter_.deregisterIndicatorEventHandler('transitionend', handler);
-  domEvents.emit(component.indicator_, 'transitionend');
-  td.verify(handler(td.matchers.anything()), {times: 0});
-});
-
-test('#adapter.getIndicatorClientRect returns the indicator client rect', () => {
-  const {component} = setupTest();
-  assert.deepEqual(component.getDefaultFoundation().adapter_.getIndicatorClientRect(),
-    component.indicator_.getBoundingClientRect());
-});
-
-test('#adapter.setIndicatorStyleProperty sets a style property on the indicator element', () => {
-  const {component} = setupTest();
-  component.getDefaultFoundation().adapter_.setIndicatorStyleProperty('background-color', 'red');
-  assert.strictEqual(component.indicator_.style.backgroundColor, 'red');
-});
-
-test('#adapter.indicatorHasClass returns true if a class exists on the indicator element', () => {
-  const {component} = setupTest();
-  component.indicator_.classList.add('foo');
-  assert.ok(component.getDefaultFoundation().adapter_.indicatorHasClass('foo'));
 });
 
 function setupMockFoundationTest(root = getFixture()) {
@@ -151,12 +139,6 @@ test('#active getter calls isActive', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
   component.active;
   td.verify(mockFoundation.isActive(), {times: 1});
-});
-
-test('#indicatorClientRect getter calls getIndicatorClientRect', () => {
-  const {component, mockFoundation} = setupMockFoundationTest();
-  component.indicatorClientRect;
-  td.verify(mockFoundation.getIndicatorClientRect(), {times: 1});
 });
 
 test('#activate calls activate with passed args', () => {
@@ -179,4 +161,10 @@ test('activating the ripples causes changes on the ripple surface', () => {
   raf.flush();
   raf.restore();
   assert.isAtLeast(component.rippleSurface_.classList.length, 2);
+});
+
+test('#getIndicatorClientRect calls getIndicatorClientRect', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.getIndicatorClientRect();
+  td.verify(mockFoundation.getIndicatorClientRect(), {times: 1});
 });

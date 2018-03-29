@@ -33,28 +33,14 @@ class MDCTabAdapter {
    * @param {string} evtType
    * @param {function(!Event): undefined} handler
    */
-  registerRootEventHandler(evtType, handler) {}
+  registerEventHandler(evtType, handler) {}
 
   /**
    * Deregisters an event listener on the root element for a given event.
    * @param {string} evtType
    * @param {function(!Event): undefined} handler
    */
-  deregisterRootEventHandler(evtType, handler) {}
-
-  /**
-   * Registers an event listener on the indicator element
-   * @param {string} evtType
-   * @param {function(!Event): undefined} handler
-   */
-  registerIndicatorEventHandler(evtType, handler) {}
-
-  /**
-   * Deregisters an event listener on the indicator element
-   * @param {string} evtType
-   * @param {function(!Event): undefined} handler
-   */
-  deregisterIndicatorEventHandler(evtType, handler) {}
+  deregisterEventHandler(evtType, handler) {}
 
   /**
    * Adds the given className to the root element.
@@ -81,26 +67,6 @@ class MDCTabAdapter {
    * @param {string} value The value so give the attribute
    */
   setAttr(attr, value) {}
-
-  /**
-   * Returns the client rect of the indicator element.
-   * @return {!ClientRect}
-   */
-  getIndicatorClientRect() {}
-
-  /**
-   * Sets a style property of the indicator element to the passed value
-   * @param {string} propName The style property name to set
-   * @param {string} value The style property value
-   */
-  setIndicatorStyleProperty(propName, value) {}
-
-  /**
-   * Returns whether the indicator element has the given className.
-   * @param {string} className The className to check
-   * @return {boolean}
-   */
-  indicatorHasClass(className) {}
 }
 
 export default MDCTabAdapter;

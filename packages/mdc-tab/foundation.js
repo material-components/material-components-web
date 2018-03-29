@@ -22,6 +22,10 @@ import {
   strings,
 } from './constants';
 
+/* eslint-disable no-unused-vars */
+import MDCTabIndicatorFoundation from '@material/tab-indicator/foundation';
+/* eslint-enable no-unused-vars */
+
 /**
  * @extends {MDCFoundation<!MDCTabAdapter>}
  * @final
@@ -43,51 +47,41 @@ class MDCTabFoundation extends MDCFoundation {
    */
   static get defaultAdapter() {
     return /** @type {!MDCTabAdapter} */ ({
-      registerRootEventHandler: () => {},
-      deregisterRootEventHandler: () => {},
-      registerIndicatorEventHandler: () => {},
-      deregisterIndicatorEventHandler: () => {},
+      registerEventHandler: () => {},
+      deregisterEventHandler: () => {},
       addClass: () => {},
       removeClass: () => {},
       hasClass: () => {},
       setAttr: () => {},
-      getIndicatorClientRect: () => {},
-      setIndicatorStyleProperty: () => {},
-      indicatorHasClass: () => {},
     });
   }
 
-  /** @param {!MDCTabAdapter} adapter */
-  constructor(adapter) {
+  /**
+   * @param {!MDCTabAdapter} adapter
+   * @param {!MDCTabIndicatorFoundation} indicatorFoundation
+   */
+  constructor(adapter, indicatorFoundation) {
     super(Object.assign(MDCTabFoundation.defaultAdapter, adapter));
 
-    /** @private {function(!Event): undefined} */
-    this.handleRootTransitionEnd_ = (evt) => this.handleRootTransitionEnd(evt);
+    /** @type {!MDCTabIndicatorFoundation} */
+    this.indicator_ = indicatorFoundation;
 
-    /** @private {function(?Event): undefined} */
-    this.handleIndicatorTransitionEnd_ = () => this.handleIndicatorTransitionEnd();
+    /** @private {function(!Event): undefined} */
+    this.handleTransitionEnd_ = (evt) => this.handleTransitionEnd(evt);
   }
 
   /**
    * Handles the "transitionend" event for the root element
    * @param {!Event} evt A browser event
    */
-  handleRootTransitionEnd(evt) {
+  handleTransitionEnd(evt) {
     // Early exit for ripple
     if (evt.pseudoElement) {
       return;
     }
-    this.adapter_.deregisterRootEventHandler('transitionend', this.handleRootTransitionEnd_);
+    this.adapter_.deregisterEventHandler('transitionend', this.handleTransitionEnd_);
     this.adapter_.removeClass(cssClasses.ANIMATING_ACTIVATE);
     this.adapter_.removeClass(cssClasses.ANIMATING_DEACTIVATE);
-  }
-
-  /**
-   * Handles the "transitionend" event for the indicator
-   */
-  handleIndicatorTransitionEnd() {
-    this.adapter_.deregisterIndicatorEventHandler('transitionend', this.handleIndicatorTransitionEnd_);
-    this.adapter_.removeClass(cssClasses.ANIMATING_INDICATOR);
   }
 
   /**
@@ -100,52 +94,19 @@ class MDCTabFoundation extends MDCFoundation {
 
   /**
    * Activates the Tab
-   * @param {ClientRect=} previousTabIndicatorRect
+   * @param {!ClientRect=} previousIndicatorClientRect
    */
-  activate(previousTabIndicatorRect) {
+  activate(previousIndicatorClientRect) {
     // Early exit
     if (this.isActive()) {
       return;
     }
 
-    this.activateTab_();
-    this.activateIndicator_(previousTabIndicatorRect);
-  }
-
-  /**
-   * Activates the tab
-   * @private
-   */
-  activateTab_() {
-    this.adapter_.registerRootEventHandler('transitionend', this.handleRootTransitionEnd_);
+    this.adapter_.registerEventHandler('transitionend', this.handleTransitionEnd_);
     this.adapter_.addClass(cssClasses.ANIMATING_ACTIVATE);
     this.adapter_.addClass(cssClasses.ACTIVE);
     this.adapter_.setAttr(strings.ARIA_SELECTED, 'true');
-  }
-
-  /**
-   * Activates the tab indicator
-   * @param {ClientRect=} previousTabIndicatorRect
-   * @private
-   */
-  activateIndicator_(previousTabIndicatorRect) {
-    // Early exit
-    if (!previousTabIndicatorRect || this.adapter_.indicatorHasClass(cssClasses.INDICATOR_ICON)) {
-      return;
-    }
-
-    const currentTabIndicatorRect = this.adapter_.getIndicatorClientRect();
-    const widthDelta = previousTabIndicatorRect.width / currentTabIndicatorRect.width;
-    const xPosition = previousTabIndicatorRect.left - currentTabIndicatorRect.left;
-    this.adapter_.setIndicatorStyleProperty('transform', `translateX(${xPosition}px) scaleX(${widthDelta})`);
-    // Force repaint
-    this.adapter_.getIndicatorClientRect();
-    // Add class and undo styling in a new frame
-    requestAnimationFrame(() => {
-      this.adapter_.addClass(cssClasses.ANIMATING_INDICATOR);
-      this.adapter_.setIndicatorStyleProperty('transform', '');
-    });
-    this.adapter_.registerIndicatorEventHandler('transitionend', this.handleIndicatorTransitionEnd_);
+    this.indicator_.activate(previousIndicatorClientRect);
   }
 
   /**
@@ -156,17 +117,20 @@ class MDCTabFoundation extends MDCFoundation {
     if (!this.isActive()) {
       return;
     }
-    this.adapter_.registerRootEventHandler('transitionend', this.handleRootTransitionEnd_);
+
+    this.adapter_.registerEventHandler('transitionend', this.handleTransitionEnd_);
     this.adapter_.addClass(cssClasses.ANIMATING_DEACTIVATE);
     this.adapter_.removeClass(cssClasses.ACTIVE);
     this.adapter_.setAttr(strings.ARIA_SELECTED, 'false');
+    this.indicator_.deactivate();
   }
 
   /**
+   * Returns the indicator's client rect
    * @return {!ClientRect}
    */
   getIndicatorClientRect() {
-    return this.adapter_.getIndicatorClientRect();
+    return this.indicator_.getClientRect();
   }
 }
 

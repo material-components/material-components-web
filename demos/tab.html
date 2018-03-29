@@ -46,7 +46,7 @@
             <span class="mdc-tab__content">
               <span class="material-icons mdc-tab__icon">favorite</span>
               <span class="mdc-tab__text-label">Favorites</span>
-              <span class="mdc-tab__indicator"></span>
+              <span class="mdc-tab-indicator mdc-tab-indicator--bar"></span>
             </span>
             <span class="mdc-tab__ripple"></span>
           </button>
@@ -54,7 +54,7 @@
             <span class="mdc-tab__content">
               <span class="material-icons mdc-tab__icon">phone</span>
               <span class="mdc-tab__text-label">Recents</span>
-              <span class="mdc-tab__indicator"></span>
+              <span class="mdc-tab-indicator mdc-tab-indicator--bar"></span>
             </span>
             <span class="mdc-tab__ripple"></span>
           </button>
@@ -62,7 +62,7 @@
             <span class="mdc-tab__content">
               <span class="material-icons mdc-tab__icon">explore_nearby</span>
               <span class="mdc-tab__text-label">Nearby</span>
-              <span class="mdc-tab__indicator"></span>
+              <span class="mdc-tab-indicator mdc-tab-indicator--bar"></span>
             </span>
             <span class="mdc-tab__ripple"></span>
           </button>
@@ -84,7 +84,7 @@
             <span class="mdc-tab__content">
               <span class="mdc-tab__text-label">Nearby</span>
             </span>
-            <span class="mdc-tab__indicator"></span>
+            <span class="mdc-tab-indicator mdc-tab-indicator--bar"></span>
             <span class="mdc-tab__ripple"></span>
           </button>
           <div class="demo-controls">
@@ -97,7 +97,7 @@
             <span class="mdc-tab__content">
               <span class="mdc-tab__icon material-icons">favorite</span>
             </span>
-            <span class="mdc-tab__indicator"></span>
+            <span class="mdc-tab-indicator mdc-tab-indicator--bar"></span>
             <span class="mdc-tab__ripple"></span>
           </button>
           <div class="demo-controls">
@@ -111,7 +111,7 @@
               <span class="material-icons mdc-tab__icon">directions_transit</span>
               <span class="mdc-tab__text-label">Transit</span>
             </span>
-            <span class="mdc-tab__indicator"></span>
+            <span class="mdc-tab-indicator mdc-tab-indicator--bar"></span>
             <span class="mdc-tab__ripple"></span>
           </button>
           <div class="demo-controls">
@@ -125,7 +125,9 @@
               <span class="material-icons mdc-tab__icon">people</span>
               <span class="mdc-tab__text-label">Contacts</span>
             </span>
-            <span class="mdc-tab__indicator"></span>
+            <span class="mdc-tab-indicator mdc-tab-indicator--icon">
+              <i class="material-icons">lens</i>
+            </span>
             <span class="mdc-tab__ripple"></span>
           </button>
           <div class="demo-controls">
@@ -134,6 +136,8 @@
           </div>
         </div>
       </section>
+
+      <!--
 
       <section class="example">
         <h2>Basic Tabs with Text-Label Width Matching Indicators</h2>
@@ -222,6 +226,9 @@
           </div>
         </div>
       </section>
+
+      -->
+
     </main>
 
     <script src="/assets/material-components-web.js" async></script>
@@ -240,7 +247,7 @@
             }
             tabElement.addEventListener('click', function () {
               activeTab.deactivate();
-              tab.activate(activeTab.indicatorClientRect);
+              tab.activate(activeTab.getIndicatorClientRect());
               activeTab = tab;
             });
           })(i);

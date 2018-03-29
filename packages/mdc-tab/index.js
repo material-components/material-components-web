@@ -20,6 +20,8 @@ import MDCComponent from '@material/base/component';
 import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
 /* eslint-enable no-unused-vars */
 
+import {MDCTabIndicator, MDCTabIndicatorFoundation} from '@material/tab-indicator/index';
+
 import MDCTabAdapter from './adapter';
 import MDCTabFoundation from './foundation';
 
@@ -41,17 +43,25 @@ class MDCTab extends MDCComponent {
    */
   constructor(...args) {
     super(...args);
-    /** @private {?Element} */
+    /** @private {?MDCTabIndicator} */
     this.indicator_;
-    /** @private {?Element} */
-    this.rippleSurface_;
     /** @type {?MDCRipple} */
     this.ripple_;
+    /** @private {?Element} */
+    this.rippleSurface_;
   };
 
-  initialize() {
-    this.indicator_ = this.root_.querySelector(MDCTabFoundation.strings.INDICATOR_SELECTOR);
+  /**
+   * @param {(function(!Element): !MDCRipple)=} rippleFactory A function which creates a new MDCRipple.
+   * @param {(function(!Element): !MDCTabIndicator)=} indicatorFactory A function which creates a new MDCTabIndicator.
+   */
+  initialize(
+    rippleFactory = (el, foundation) => new MDCRipple(el, foundation),
+    indicatorFactory = (el) => new MDCTabIndicator(el)) {
     this.rippleSurface_ = this.root_.querySelector(MDCTabFoundation.strings.RIPPLE_SELECTOR);
+
+    const indicatorElement = this.root_.querySelector(MDCTabIndicatorFoundation.strings.INDICATOR_SELECTOR);
+    this.indicator_ = indicatorFactory(indicatorElement);
 
     const rippleAdapter = Object.assign(MDCRipple.createAdapter(/** @type {!RippleCapableSurface} */ (this)), {
       addClass: (className) => this.rippleSurface_.classList.add(className),
@@ -60,8 +70,7 @@ class MDCTab extends MDCComponent {
     });
 
     const foundation = new MDCRippleFoundation(rippleAdapter);
-
-    this.ripple_ = new MDCRipple(this.root_, foundation);
+    this.ripple_ = rippleFactory(this.root_, foundation);
   }
 
   destroy() {
@@ -75,17 +84,12 @@ class MDCTab extends MDCComponent {
   getDefaultFoundation() {
     return new MDCTabFoundation(/** @type {!MDCTabAdapter} */ (Object.assign({
       setAttr: (attr, value) => this.root_.setAttribute(attr, value),
-      registerRootEventHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
-      deregisterRootEventHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
+      registerEventHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
+      deregisterEventHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       hasClass: (className) => this.root_.classList.contains(className),
-      registerIndicatorEventHandler: (evtType, handler) => this.indicator_.addEventListener(evtType, handler),
-      deregisterIndicatorEventHandler: (evtType, handler) => this.indicator_.removeEventListener(evtType, handler),
-      getIndicatorClientRect: () => this.indicator_.getBoundingClientRect(),
-      setIndicatorStyleProperty: (prop, value) => this.indicator_.style.setProperty(prop, value),
-      indicatorHasClass: (className) => this.indicator_.classList.contains(className),
-    })));
+    })), this.indicator_);
   }
 
   /**
@@ -98,12 +102,12 @@ class MDCTab extends MDCComponent {
   /**
    * @return {!ClientRect}
    */
-  get indicatorClientRect() {
+  getIndicatorClientRect() {
     return this.foundation_.getIndicatorClientRect();
   }
 
   /**
-   * @param {ClientRect=} previousTabClientRect
+   * @param {!ClientRect=} previousTabClientRect
    */
   activate(previousTabClientRect) {
     this.foundation_.activate(previousTabClientRect);
