@@ -49,11 +49,11 @@ class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
     this.wasDocked_ = true;
 
     /**
-     * isDockedShowing is used to indicate if the top app bar is docked in the fully
+     * isDockedShowing_ is used to indicate if the top app bar is docked in the fully
      * shown position.
      * @private {boolean}
      */
-    this.isDockedShowing = true;
+    this.isDockedShowing_ = true;
 
     /**
      * Variable for current scroll position of the top app bar
@@ -116,8 +116,8 @@ class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
         return true;
       } else {
         // If it was previously docked and now it's docked the opposite way, update the DOM.
-        if (this.isDockedShowing !== hasAnyPixelsOnscreen) {
-          this.isDockedShowing = hasAnyPixelsOnscreen;
+        if (this.isDockedShowing_ !== hasAnyPixelsOnscreen) {
+          this.isDockedShowing_ = hasAnyPixelsOnscreen;
           return true;
         }
       }

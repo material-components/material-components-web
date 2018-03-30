@@ -143,6 +143,7 @@ test('top app bar : checkForUpdate_ returns false if top app bar is docked and f
   foundation.init();
   foundation.currentAppBarScrollPosition_ = -64;
   foundation.wasDocked_ = true;
+  foundation.isDockedShowing_ = false;
   assert.isFalse(foundation.checkForUpdate_());
   assert.isTrue(foundation.wasDocked_);
 });
