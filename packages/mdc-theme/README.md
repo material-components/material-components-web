@@ -72,18 +72,6 @@ $mdc-theme-background: #fff; // White
 > Apps that previously customized `$mdc-theme-accent` will continue to work, but new apps should use
 > `$mdc-theme-secondary` instead.
 
-MDC Theme also exposes _light_ and _dark_ variants of the primary and secondary colors. By default, these values are
-computed by lightening and darkening the main primary/secondary colors in Sass, but you can override them if desired:
-
-```scss
-$mdc-theme-primary-light: #ce93d8; // Purple 200
-$mdc-theme-primary-dark: #6a1b9a; // Purple 800
-$mdc-theme-secondary-light: #ffd180; // Orange A100
-$mdc-theme-secondary-dark: #ff6d00; // Orange A700
-
-@import "@material/theme/mdc-theme";
-```
-
 The text color, for text placed on top of these selected theme colors, is programmatically computed based on color contrast. We follow the Web Content Accessibility Guidelines 2.0.
 
 https://www.w3.org/TR/WCAG20
@@ -95,11 +83,7 @@ https://www.w3.org/TR/WCAG20
 CSS Custom property | Description
 --- | ---
 `--mdc-theme-primary` | The theme primary color
-`--mdc-theme-primary-light` | The theme primary color (light variant)
-`--mdc-theme-primary-dark` | The theme primary color (dark variant)
 `--mdc-theme-secondary` | The theme secondary color
-`--mdc-theme-secondary-light` | The theme secondary color (light variant)
-`--mdc-theme-secondary-dark` | The theme secondary color (dark variant)
 `--mdc-theme-background` | The theme background color
 `--mdc-theme-text-<TEXT_STYLE>-on-<THEME_COLOR>` | Text color for TEXT_STYLE on top of THEME_COLOR background
 `--mdc-theme-text-<TEXT_STYLE>-on-light` | Text color for TEXT_STYLE on top of light background
@@ -116,18 +100,10 @@ If you want to modify an element, which is not a Material Design component, you 
 CSS Class | Description
 --- | ---
 `mdc-theme--primary` | Sets the text color to the theme primary color
-`mdc-theme--primary-light` | Sets the text color to the theme primary color (light variant)
-`mdc-theme--primary-dark` | Sets the text color to the theme primary color (dark variant)
 `mdc-theme--secondary` | Sets the text color to the theme secondary color
-`mdc-theme--secondary-light` | Sets the text color to the theme secondary color (light variant)
-`mdc-theme--secondary-dark` | Sets the text color to the theme secondary color (dark variant)
 `mdc-theme--background` | Sets the background color to the theme background color
 `mdc-theme--primary-bg` | Sets the background color to the theme primary color
-`mdc-theme--primary-light-bg` | Sets the background color to the theme primary color (light variant)
-`mdc-theme--primary-dark-bg` | Sets the background color to the theme primary color (dark variant)
 `mdc-theme--secondary-bg` | Sets the background color to the theme secondary color
-`mdc-theme--secondary-light-bg` | Sets the background color to the theme secondary color (light variant)
-`mdc-theme--secondary-dark-bg` | Sets the background color to the theme secondary color (dark variant)
 `mdc-theme--text-<TEXT_STYLE>-on-<THEME_COLOR>` | Sets text to a suitable color for TEXT_STYLE on top of THEME_COLOR background
 `mdc-theme--text-<TEXT_STYLE>-on-light` | Sets text to a suitable color for TEXT_STYLE on top of light background
 `mdc-theme--text-<TEXT_STYLE>-on-dark` | Sets text to a suitable color for TEXT_STYLE on top of dark background
@@ -147,11 +123,7 @@ The properties below can be used as the `$style` argument for the `mdc-theme-pro
 Property Name | Description
 --- | ---
 `primary` | The theme primary color
-`primary-light` | The theme primary color (light variant)
-`primary-dark` | The theme primary color (dark variant)
 `secondary` | The theme secondary color
-`secondary-light` | The theme secondary color (light variant)
-`secondary-dark` | The theme secondary color (dark variant)
 `background` | The theme background color
 `text-<TEXT_STYLE>-on-<THEME_COLOR>` | TEXT_STYLE on top of THEME_COLOR background
 `text-<TEXT_STYLE>-on-light` | TEXT_STYLE on top of a light background
@@ -191,27 +163,6 @@ Determines whether to use light or dark text on top of a given color.
 ```scss
 @debug mdc-theme-contrast-tone(#9c27b0); // light
 ```
-
-#### `mdc-theme-light-variant($color)` and `mdc-theme-dark-variant($color)`
-
-Function | Description
---- | ---
-`mdc-theme-dark-variant($color, $num-indexes)` | Darken a color by a certain number of indexes within its tonal palette
-`mdc-theme-light-variant($color, $num-indexes)` | Lighten a color by a certain number of indexes within its tonal palette
-
-Both functions are luminance-aware, and will always return a color that is visually distinct from both the input color
-_and_ the other function.
-
-That is, if the color passed to `mdc-theme-dark-variant()` is already so dark that darkening it by the requested amount
-would return `#000000`, the function will _lighten_ the color instead.
-
-Similarly, if the color passed to `mdc-theme-light-variant()` is already so light that lightening it by the requested
-amount would return `#ffffff`, the function will _darken_ the color instead.
-
-To avoid having both functions return the same color in cases of extremely high or low input luminance,
-`mdc-theme-dark-variant()` will return a color that is _twice_ (×2) as dark as requested when the input is already very
-light. Likewise, `mdc-theme-light-variant()` will return a color that is _twice_ (×2) as light as requested when the
-input is already very dark. This ensures that the _light_ variant will always be lighter than the _dark_ variant.
 
 #### `mdc-theme-prop-value($property)`
 
