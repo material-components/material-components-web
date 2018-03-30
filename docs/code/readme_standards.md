@@ -103,7 +103,7 @@ Variable | Description
 `mdc-bar` | Value of baz
 ~~~
 
-Add a section for additional information if applicable.
+You may add additional subsections at your discretion, such as Additional Information, Tips & Tricks, Util API, Caveats, etc.
 
 ~~~
 ### Additional Information
@@ -168,11 +168,11 @@ All tables should follow this pattern:
 * `INLINE_CODE` should always be formatted as inline code, e.g. `foo`
 * `ONE_LINE_DESCRIPTION` should not be more than one line long
 
-If you need more than one sentence to describe code, create a row with a
+If you need more than one line to describe code, create a row with a
 summary description. Then create a note below the table with the longer description, formatted in this way:
 
 ~~~
->_NOTE_: This is the long description.
+> _NOTE_: This is the long description.
 ~~~
 
 Do not add multiple sentences to the tabular format, as this will make the table more difficult to read.

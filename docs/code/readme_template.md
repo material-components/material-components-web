@@ -82,7 +82,7 @@ npm install @material/<MODULE_NAME>
 
 ## Usage within Web Frameworks
 
-If you are using a JavaScript framework, such as React or Angular2, you can create a <COMPONENT_NAME> for your framework by wrapping <JS_COMPONENT_NAME>. Depending on your framework, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](https://github.com/material-components/material-components-web/blob/master/docs/integrating-into-frameworks.md).
+If you are using a JavaScript framework, such as React or Angular2, you can create a <COMPONENT_NAME> for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../integrating-into-frameworks.md).
 
 <FRAMEWORKS_SECTION>
 ~~~
