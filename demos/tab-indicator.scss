@@ -8,14 +8,11 @@
   flex-direction: column;
 }
 
-.demo-container {
-  margin: 2rem 0;
-}
-
 .demo-inner {
   display: flex;
   align-items: center;
   height: 50px;
+  margin: 2rem 0;
 }
 
 .demo-item {
