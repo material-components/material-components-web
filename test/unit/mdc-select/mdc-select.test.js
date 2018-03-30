@@ -193,8 +193,7 @@ test('adapter.activateBottomLine and adapter.deactivateBottomLine ' +
     () => component.getDefaultFoundation().adapter_.deactivateBottomLine());
 });
 
-// WIP(mattgoo)
-test.skip(`activates ripple on focus and ${cssClasses.BOX} ` +
+test(`activates ripple on focus and ${cssClasses.BOX} ` +
   'class is present', () => {
   const fixture = bel`
     <div class="mdc-select mdc-select--box">
@@ -211,7 +210,7 @@ test.skip(`activates ripple on focus and ${cssClasses.BOX} ` +
   `;
   const raf = createMockRaf();
 
-  new MDCSelect(fixture);
+  MDCSelect.attachTo(fixture);
 
   const nativeControl = fixture.querySelector('.mdc-select__native-control');
   raf.flush();
@@ -228,7 +227,38 @@ test.skip(`activates ripple on focus and ${cssClasses.BOX} ` +
   raf.restore();
 });
 
-test.skip('#destroy removes the ripple', () => {
+test('activates ripple on keydown when the select surface is active', () => {
+  const fixture = bel`
+    <div class="mdc-select mdc-select--box">
+      <div class="mdc-select__label"></div>
+      <select class="mdc-select__native-control">
+        <option value="orange">
+          Orange
+        </option>
+        <option value="apple" selected>
+          Apple
+        </option>
+      </select>
+    </div>
+  `;
+  const raf = createMockRaf();
+
+  MDCSelect.attachTo(fixture);
+  const nativeControl = fixture.querySelector('.mdc-select__native-control');
+  raf.flush();
+
+  const fakeMatches = td.func('.matches');
+  td.when(fakeMatches(':active')).thenReturn(true);
+  nativeControl[getMatchesProperty(HTMLElement.prototype)] = fakeMatches;
+  assert.isTrue(fixture.classList.contains('mdc-ripple-upgraded'));
+  domEvents.emit(nativeControl, 'keydown');
+  raf.flush();
+
+  assert.isTrue(fixture.classList.contains('mdc-ripple-upgraded--foreground-activation'));
+  raf.restore();
+});
+
+test('#destroy removes the ripple', () => {
   const fixture = bel`
     <div class="mdc-select mdc-select--box">
       <div class="mdc-select__label"></div>

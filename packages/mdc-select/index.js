@@ -68,7 +68,6 @@ export class MDCSelect extends MDCComponent {
     }
 
     if (this.root_.classList.contains(cssClasses.BOX)) {
-      debugger
       this.ripple = this.initRipple_();
     }
   }
