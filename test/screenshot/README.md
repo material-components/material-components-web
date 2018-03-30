@@ -21,9 +21,9 @@ Guidelines:
 1.  Keep HTML files _small_ and _focused_. This makes it easier to review diffs.
 
 2.  Each page should target a single logical "variant" of a component. For example:
-    - "Block" CSS class (e.g., `mdc-button`)
-    - "Modifier" CSS class (e.g., `mdc-button--dense`)
-    - Sass mixin (e.g., `mdc-button-ink-color`)
+    - One "block" CSS class (e.g., `mdc-button`)
+    - One "modifier" CSS class (e.g., `mdc-button--dense`)
+    - One Sass mixin (e.g., `mdc-button-ink-color`)
 
 3.  File structure:
 
