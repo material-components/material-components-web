@@ -65,7 +65,7 @@ Short description of Foo Button.
 
 ## Style Customization
 
-CSS Classes are documented in [tabular format](#tabular-format).
+CSS classes are documented in [tabular format](#tabular-format).
 
 ~~~
 ### CSS Classes
@@ -75,14 +75,32 @@ CSS Class | Description
 `mdc-foo` | Indicates the foo
 ~~~
 
-Sass mixins are documented in [tabular format](#tabular-format).
+CSS custom properties (if applicable) are also documented in [tabular format](#tabular-format).
 
 ~~~
-### Sass Mixins
+### CSS Custom Properties
+
+CSS Custom Property | Description
+--- | ---
+`mdc-bar` | The bar
+~~~
+
+Sass mixins, variables, and functions are documented in [tabular format](#tabular-format) under a single subsection. Only include the tables that are applicable.
+
+~~~
+### Sass Mixins, Variables, and Functions
 
 Mixin | Description
 --- | ---
 `mdc-foo($value)` | Sets the foo
+
+Function | Description
+--- | ---
+`mdc-bar($value)` | Sets the bar
+
+Variable | Description
+--- | ---
+`mdc-bar` | Value of baz
 ~~~
 
 Add a section for additional information if applicable.
