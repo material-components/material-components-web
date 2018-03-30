@@ -25,6 +25,7 @@
     "test:watch": "karma start --auto-watch",
     "test:unit": "karma start --single-run",
     "test:closure": "./scripts/closure-test.sh",
+    "test:fromclosure": "./scripts/from-closure-test.sh",
     "test:dependency": "./scripts/dependency-test.sh"
   },
   "devDependencies": {
@@ -169,22 +170,6 @@
     }
   },
   "closureWhitelist": [
-    "mdc-animation",
-    "mdc-base",
-    "mdc-checkbox",
-    "mdc-chips",
-    "mdc-floating-label",
-    "mdc-form-field",
-    "mdc-icon-toggle",
-    "mdc-line-ripple",
-    "mdc-menu",
-    "mdc-notched-outline",
-    "mdc-radio",
-    "mdc-ripple",
-    "mdc-selection-control",
-    "mdc-slider",
-    "mdc-tab",
-    "mdc-textfield",
-    "mdc-top-app-bar"
+    "mdc-ripple"
   ]
 }
