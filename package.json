@@ -22,6 +22,7 @@
     "pretest": "npm run lint",
     "test": "npm run test:unit && npm run test:closure && npm run test:dependency && npm run build && npm run clean",
     "posttest": "istanbul report --root coverage text-summary && istanbul check-coverage --lines 95 --statements 95 --branches 95 --functions 95",
+    "start": "npm run clean && webpack-dev-server --config=test/screenshot/webpack.config.js --content-base=test/screenshot/ --progress --colors",
     "test:watch": "karma start --auto-watch",
     "test:unit": "karma start --single-run",
     "test:closure": "./scripts/closure-test.sh",
