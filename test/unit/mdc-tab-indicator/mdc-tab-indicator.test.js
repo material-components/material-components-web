@@ -82,7 +82,9 @@ test('#adapter.deregisterEventHandler remoes an event listener from the root ele
 
 test('#adapter.getClientRect returns the root element client rect', () => {
   const {component, root} = setupTest();
+  document.body.appendChild(root);
   assert.deepEqual(component.getDefaultFoundation().adapter_.getClientRect(), root.getBoundingClientRect());
+  document.body.removeChild(root);
 });
 
 test('#adapter.setStyleProperty sets a style property on the root element', () => {
