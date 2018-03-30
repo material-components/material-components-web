@@ -176,6 +176,17 @@ testFoundation('#destroy removes all CSS variables', ({foundation, adapter, mock
   });
 });
 
+testFoundation('#destroy clears the activation timer if pending', ({foundation, mockRaf}) => {
+  foundation.init();
+  mockRaf.flush();
+
+  foundation.activationTimer_ = 1;
+  foundation.destroy();
+  mockRaf.flush();
+
+  assert.equal(foundation.activationTimer_, 0);
+});
+
 testFoundation('#destroy does nothing if CSS custom properties are not supported', ({foundation, adapter, mockRaf}) => {
   const isA = td.matchers.isA;
   td.when(adapter.browserSupportsCssVars()).thenReturn(false);

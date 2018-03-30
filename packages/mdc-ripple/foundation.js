@@ -218,6 +218,12 @@ class MDCRippleFoundation extends MDCFoundation {
     if (!this.isSupported_()) {
       return;
     }
+
+    if (this.activationTimer_) {
+      clearTimeout(this.activationTimer_);
+      this.activationTimer_ = 0;
+    }
+
     this.deregisterRootHandlers_();
     this.deregisterDeactivationHandlers_();
 
