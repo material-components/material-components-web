@@ -20,7 +20,6 @@ import MDCTopAppBarFoundation from './foundation';
 import MDCComponent from '@material/base/component';
 import {MDCRipple} from '@material/ripple/index';
 import {cssClasses, strings} from './constants';
-import * as util from './util';
 import MDCShortTopAppBarFoundation from './short/foundation';
 
 /**
@@ -89,7 +88,7 @@ class MDCTopAppBar extends MDCComponent {
       notifyNavigationIconClicked: () => {
         this.emit(strings.NAVIGATION_EVENT, {});
       },
-      registerScrollHandler: (handler) => window.addEventListener('scroll', handler, util.applyPassive()),
+      registerScrollHandler: (handler) => window.addEventListener('scroll', handler),
       deregisterScrollHandler: (handler) => window.removeEventListener('scroll', handler),
       getViewportScrollY: () => window.pageYOffset,
       getTotalActionItems: () =>
@@ -108,4 +107,4 @@ class MDCTopAppBar extends MDCComponent {
   }
 }
 
-export {MDCTopAppBar, MDCTopAppBarFoundation, MDCShortTopAppBarFoundation, util};
+export {MDCTopAppBar, MDCTopAppBarFoundation, MDCShortTopAppBarFoundation};
