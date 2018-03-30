@@ -47,11 +47,11 @@ class MDCLineRippleAdapter {
   hasClass(className) {}
 
   /**
-   * Sets an attribute with a given value on the line ripple element.
+   * Sets the style for a given attribute with a given value on the line ripple element.
    * @param {string} attr
    * @param {string} value
    */
-  setAttr(attr, value) {}
+  setStyle(attr, value) {}
 
   /**
    * Registers an event listener on the line ripple element for a given event.
