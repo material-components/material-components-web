@@ -24,12 +24,6 @@ const cssClasses = {
   ANIMATING: 'mdc-tab-indicator--animating',
 };
 
-/** @enum {string} */
-const strings = {
-  INDICATOR_SELECTOR: '.mdc-tab-indicator',
-};
-
 export {
   cssClasses,
-  strings,
 };

@@ -19,7 +19,6 @@ import MDCFoundation from '@material/base/foundation';
 import MDCTabIndcatorAdapter from './adapter';
 import {
   cssClasses,
-  strings,
 } from './constants';
 
 /**
@@ -30,11 +29,6 @@ class MDCTabIndicatorFoundation extends MDCFoundation {
   /** @return enum {string} */
   static get cssClasses() {
     return cssClasses;
-  }
-
-  /** @return enum {string} */
-  static get strings() {
-    return strings;
   }
 
   /**
@@ -65,9 +59,9 @@ class MDCTabIndicatorFoundation extends MDCFoundation {
    */
   handleTransitionEnd() {
     this.adapter_.deregisterEventHandler('transitionend', this.handleTransitionEnd_);
-    this.adapter_.removeClass(cssClasses.ANIMATING_ICON_ACTIVATE);
-    this.adapter_.removeClass(cssClasses.ANIMATING_ICON_DEACTIVATE);
-    this.adapter_.removeClass(cssClasses.ANIMATING);
+    this.adapter_.removeClass(MDCTabIndicatorFoundation.cssClasses.ANIMATING_ICON_ACTIVATE);
+    this.adapter_.removeClass(MDCTabIndicatorFoundation.cssClasses.ANIMATING_ICON_DEACTIVATE);
+    this.adapter_.removeClass(MDCTabIndicatorFoundation.cssClasses.ANIMATING);
   }
 
   /** @return {!ClientRect} */

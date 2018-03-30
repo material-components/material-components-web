@@ -37,13 +37,6 @@ class MDCTabIndicator extends MDCComponent {
   }
 
   /**
-   * @return {!MDCTabIndicatorFoundation}
-   */
-  get foundation() {
-    return this.foundation_;
-  }
-
-  /**
    * @return {!ClientRect}
    */
   get clientRect() {
