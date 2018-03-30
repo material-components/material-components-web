@@ -21,14 +21,12 @@ import MDCTabIndicatorFoundation from './foundation';
  * @final
  */
 class MDCTabIndicatorIconFoundation extends MDCTabIndicatorFoundation {
-  /** @override */
   activate() {
     this.adapter_.registerEventHandler('transitionend', this.handleTransitionEnd_);
     this.adapter_.addClass(MDCTabIndicatorFoundation.cssClasses.ANIMATING_ICON_ACTIVATE);
     this.adapter_.addClass(MDCTabIndicatorFoundation.cssClasses.ACTIVE);
   }
 
-  /** @override */
   deactivate() {
     this.adapter_.registerEventHandler('transitionend', this.handleTransitionEnd_);
     this.adapter_.addClass(MDCTabIndicatorFoundation.cssClasses.ANIMATING_ICON_DEACTIVATE);
