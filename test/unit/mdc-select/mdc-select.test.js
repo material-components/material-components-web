@@ -18,6 +18,8 @@ import {assert} from 'chai';
 import bel from 'bel';
 import domEvents from 'dom-events';
 import td from 'testdouble';
+import {createMockRaf} from '../helpers/raf';
+import {getMatchesProperty} from '../../../packages/mdc-ripple/util';
 
 import {MDCSelect} from '../../../packages/mdc-select';
 import {cssClasses} from '../../../packages/mdc-select/constants';
@@ -39,7 +41,7 @@ function getFixture() {
   return bel`
     <div class="mdc-select">
       <select class="mdc-select__native-control">
-        <option value="" disabled selected hidden></option>
+        <option value="" disabled selected></option>
         <option value="orange">
           Orange
         </option>
@@ -80,7 +82,7 @@ test('#get/setSelectedIndex', () => {
 
 test('#get/setDisabled', () => {
   const {component} = setupTest();
-  assert.equal(component.disabled, false);
+  assert.isFalse(component.disabled);
   component.disabled = true;
   assert.isTrue(component.disabled);
 });
@@ -98,12 +100,6 @@ test('#set value sets the value on the <select>', () => {
   const {component, nativeControl} = setupTest();
   component.value = 'orange';
   assert.equal(nativeControl.value, 'orange');
-});
-
-test('#set value sets non value to empty string on <select>', () => {
-  const {component, nativeControl} = setupTest();
-  component.value = 'grape';
-  assert.equal(nativeControl.value, '');
 });
 
 test('#initialSyncWithDOM sets the selected index if an option has the selected attr', () => {
@@ -156,7 +152,7 @@ test('adapter#removeClass removes a class from the root element', () => {
   assert.isFalse(fixture.classList.contains('foo'));
 });
 
-test('does not create label', () => {
+test('adapter_.floatLabel does not throw error if label does not exist', () => {
   const fixture = bel`
     <div class="mdc-select">
       <div class="mdc-select__bottom-line"></div>
@@ -171,11 +167,12 @@ test('does not create label', () => {
     </div>
   `;
   const component = new MDCSelect(fixture);
-  component.getDefaultFoundation().adapter_.floatLabel('foo');
-  assert.equal(component.label_, undefined);
+  assert.doesNotThrow(
+    () => component.getDefaultFoundation().adapter_.floatLabel('foo'));
 });
 
-test('does not create bottomLine element', () => {
+test('adapter.activateBottomLine and adapter.deactivateBottomLine ' +
+  'does not throw error if bottomLine does not exist', () => {
   const fixture = bel`
     <div class="mdc-select">
       <div class="mdc-select__label"></div>
@@ -190,29 +187,14 @@ test('does not create bottomLine element', () => {
     </div>
   `;
   const component = new MDCSelect(fixture);
-  assert.equal(component.bottomLine_, undefined);
+  assert.doesNotThrow(
+    () => component.getDefaultFoundation().adapter_.activateBottomLine());
+  assert.doesNotThrow(
+    () => component.getDefaultFoundation().adapter_.deactivateBottomLine());
 });
 
-test(`does not create ripple element if ${cssClasses.BOX}` +
-  'class is present', () => {
-  const fixture = bel`
-    <div class="mdc-select">
-      <div class="mdc-select__label"></div>
-      <select class="mdc-select__native-control">
-        <option value="orange">
-          Orange
-        </option>
-        <option value="apple" selected>
-          Apple
-        </option>
-      </select>
-    </div>
-  `;
-  const component = new MDCSelect(fixture);
-  assert.equal(component.ripple, undefined);
-});
-
-test(`creates ripple element if ${cssClasses.BOX} ` +
+// WIP(mattgoo)
+test.skip(`activates ripple on focus and ${cssClasses.BOX} ` +
   'class is present', () => {
   const fixture = bel`
     <div class="mdc-select mdc-select--box">
@@ -227,8 +209,57 @@ test(`creates ripple element if ${cssClasses.BOX} ` +
       </select>
     </div>
   `;
+  const raf = createMockRaf();
+
+  new MDCSelect(fixture);
+
+  const nativeControl = fixture.querySelector('.mdc-select__native-control');
+  raf.flush();
+
+  const fakeMatches = td.func('.matches');
+  td.when(fakeMatches(':active')).thenReturn(true);
+  nativeControl[getMatchesProperty(HTMLElement.prototype)] = fakeMatches;
+
+  assert.isTrue(fixture.classList.contains('mdc-ripple-upgraded'));
+  domEvents.emit(nativeControl, 'focus');
+  raf.flush();
+
+  assert.isTrue(fixture.classList.contains('mdc-ripple-upgraded--background-focused'));
+  raf.restore();
+});
+
+test.skip('#destroy removes the ripple', () => {
+  const fixture = bel`
+    <div class="mdc-select mdc-select--box">
+      <div class="mdc-select__label"></div>
+      <select class="mdc-select__native-control">
+        <option value="orange">
+          Orange
+        </option>
+        <option value="apple" selected>
+          Apple
+        </option>
+      </select>
+    </div>
+  `;
+  const raf = createMockRaf();
+
   const component = new MDCSelect(fixture);
-  assert.exists(component.ripple);
+  const nativeControl = fixture.querySelector('.mdc-select__native-control');
+  raf.flush();
+
+  const fakeMatches = td.func('.matches');
+  td.when(fakeMatches(':active')).thenReturn(true);
+  nativeControl[getMatchesProperty(HTMLElement.prototype)] = fakeMatches;
+
+  assert.isTrue(fixture.classList.contains('mdc-ripple-upgraded'));
+  raf.flush();
+
+  component.destroy();
+  raf.flush();
+
+  assert.isFalse(fixture.classList.contains('mdc-ripple-upgraded'));
+  raf.restore();
 });
 
 test('adapter#floatLabel adds a class to the label', () => {
@@ -272,35 +303,17 @@ test('adapter#deregisterInteractionHandler removes an event listener from the na
 test('adapter#setValue sets the value of the select to the correct option', () => {
   const {nativeControl, component} = setupTest();
   component.getDefaultFoundation().adapter_.setValue('orange');
-  assert.equal(nativeControl.selectedIndex, 1);
-});
-
-test('adapter#setValue sets the selectedIndex of the select to -1 if there is ' +
-  'no option with the specified value', () => {
-  const {nativeControl, component} = setupTest();
-  component.getDefaultFoundation().adapter_.setValue('grape');
-  assert.equal(nativeControl.selectedIndex, -1);
+  assert.equal(nativeControl.value, 'orange');
 });
 
 test('adapter#getValue returns the nativeControl value', () => {
-  const {component} = setupTest();
-  component.getDefaultFoundation().adapter_.setValue('orange');
+  const {nativeControl, component} = setupTest();
+  nativeControl.value = 'orange';
   assert.equal(component.getDefaultFoundation().adapter_.getValue(), 'orange');
-});
-
-test('adapter#getValue returns empty string if nothing is selected', () => {
-  const {component} = setupTest();
-  assert.equal(component.getDefaultFoundation().adapter_.getValue(), '');
 });
 
 test('adapter#getSelectedIndex returns selected index', () => {
   const {component} = setupTest();
   component.selectedIndex = 1;
   assert.equal(component.getDefaultFoundation().adapter_.getSelectedIndex(), 1);
-});
-
-test('adapter#getSelectedIndex returns -1 if selected index is out of range', () => {
-  const {component} = setupTest();
-  component.selectedIndex = 10;
-  assert.equal(component.getDefaultFoundation().adapter_.getSelectedIndex(), -1);
 });

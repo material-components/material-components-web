@@ -146,16 +146,16 @@
           <div id="box-js-select" class="mdc-select mdc-select--box">
             <select class="mdc-select__native-control">
               <option value="" disabled selected></option>
-              <option value="fruit-roll-ups1">
+              <option value="fruit-roll-ups">
                 Fruit Roll Ups
               </option>
-              <option value="cotton-candy1">
+              <option value="cotton-candy">
                 Candy (cotton)&#x200E;
               </option>
-              <option value="vegetables1" disabled>
+              <option value="vegetables" disabled>
                 Vegetables
               </option>
-              <option value="noodles1">
+              <option value="noodles">
                 Noodles
               </option>
             </select>
@@ -192,16 +192,16 @@
         <section>
           <div id="js-pre-selected" class="mdc-select">
             <select class="mdc-select__native-control">
-              <option value="fruit-roll-ups2" selected>
+              <option value="fruit-roll-ups" selected>
                 Fruit Roll Ups
               </option>
-              <option value="cotton-candy2">
+              <option value="cotton-candy">
                 Candy (cotton)
               </option>
-              <option value="vegetables2" disabled>
+              <option value="vegetables" disabled>
                 Vegetables
               </option>
-              <option value="noodles2">
+              <option value="noodles">
                 Noodles
               </option>
             </select>
@@ -215,11 +215,11 @@
         <div id="optgroup-js-select" class="mdc-select">
           <select class="mdc-select__native-control">
             <optgroup label="Meats">
-              <option value="hot-dog">Steak</option>
+              <option value="steak">Steak</option>
               <option value="hamburger">Hamburger</option>
             </optgroup>
             <optgroup label="Vegetables">
-              <option value="beets">Beets</option>
+              <option value="beet">Beet</option>
               <option value="carrot">Carrot</option>
             </optgroup>
           </select>
@@ -320,7 +320,7 @@
           updateSelectedTextContent();
         });
         setValueFruitRollUpsButton.addEventListener('click', function() {
-          select.value = 'fruit-roll-ups1';
+          select.value = 'fruit-roll-ups';
           updateSelectedTextContent();
         });
       });

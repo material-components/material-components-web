@@ -53,15 +53,10 @@ function setupTest() {
   return {mockAdapter, foundation};
 }
 
-test('#setDisabled to true calls adapter.setDisabled', () => {
+test('#setDisabled to true calls adapter.setDisabled and adapter.addClass', () => {
   const {mockAdapter, foundation} = setupTest();
   foundation.setDisabled(true);
   td.verify(mockAdapter.setDisabled(true));
-});
-
-test('#setDisabled to true calls adapter.addClass', () => {
-  const {mockAdapter, foundation} = setupTest();
-  foundation.setDisabled(true);
   td.verify(mockAdapter.addClass(MDCSelectFoundation.cssClasses.DISABLED));
 });
 
@@ -93,16 +88,19 @@ test('#destroy deregisters focus, blur, and change handler', () => {
   td.verify(mockAdapter.deregisterInteractionHandler('change', foundation.selectionHandler_));
 });
 
-test('#setSelectedIndex calls setSelectedIndex', () => {
+test('#setSelectedIndex calls adapter.setSelectedIndex', () => {
   const {mockAdapter, foundation} = setupTest();
   foundation.setSelectedIndex(1);
   td.verify(mockAdapter.setSelectedIndex(1));
 });
 
-test(`#setSelectedIndex calls addClass ${MDCSelectFoundation.cssClasses.IS_CHANGING}`, () => {
+test(`#setSelectedIndex adds then removes ${MDCSelectFoundation.cssClasses.IS_CHANGING}`, () => {
   const {mockAdapter, foundation} = setupTest();
+  const clock = lolex.install();
   foundation.setSelectedIndex(1);
   td.verify(mockAdapter.addClass(MDCSelectFoundation.cssClasses.IS_CHANGING));
+  clock.tick(MDCSelectFoundation.numbers.FLOAT_NATIVE_CONTROL_TRANSITION_TIME_MS);
+  td.verify(mockAdapter.removeClass(MDCSelectFoundation.cssClasses.IS_CHANGING));
 });
 
 test('#setSelectedIndex floats label', () => {
@@ -112,22 +110,14 @@ test('#setSelectedIndex floats label', () => {
   td.verify(mockAdapter.floatLabel(true));
 });
 
-test('#setSelectedIndex defloats label', () => {
+test('#setSelectedIndex with index of an empty value defloats label', () => {
   const {mockAdapter, foundation} = setupTest();
   td.when(mockAdapter.getValue(1)).thenReturn('');
   foundation.setSelectedIndex(1);
   td.verify(mockAdapter.floatLabel(false));
 });
 
-test(`#setSelectedIndex removesClass ${MDCSelectFoundation.cssClasses.IS_CHANGING}`, () => {
-  const {mockAdapter, foundation} = setupTest();
-  const clock = lolex.install();
-  foundation.setSelectedIndex(1);
-  clock.tick(MDCSelectFoundation.numbers.FLOAT_NATIVE_CONTROL_TRANSITION_TIME_MS);
-  td.verify(mockAdapter.removeClass(MDCSelectFoundation.cssClasses.IS_CHANGING));
-});
-
-test('#setValue will call setValue on adapter', () => {
+test('#setValue calls setValue on adapter', () => {
   const {mockAdapter, foundation} = setupTest();
   td.when(mockAdapter.getSelectedIndex()).thenReturn(1);
   foundation.setValue('value');

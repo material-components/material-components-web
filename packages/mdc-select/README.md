@@ -97,14 +97,12 @@ of the way of the select's value and prevents a Flash Of Unstyled Content (**FOU
 
 #### Select with floating label as the placeholder
 
-
 By default, `<select>` elements will select their first enabled option. In order to initially display a placeholder
 instead, add an initial `<option>` element with the `disabled` *and* `selected` attributes set, and with `value` set to `""`.
 
 ```html
 <option value="" disabled selected></option>
 ```
-
 
 #### Disabled select
 
@@ -198,21 +196,21 @@ the result of a user action.
 | --- | --- |
 | `addClass(className: string) => void` | Adds a class to the root element. |
 | `removeClass(className: string) => void` | Removes a class from the root element. |
-| `floatLabel(value: boolean) => void` | Floats or defloats label as necessary. |
+| `floatLabel(value: boolean) => void` | Floats or defloats label. |
 | `activateBottomLine() => void` | Activates the bottom line component. |
 | `deactivateBottomLine() => void` | Deactivates the bottom line component. |
 | `setDisabled(disabled: boolean) => void` | Sets the `disabled` property of the `<select>` element. |
 | `registerInteractionHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` on the `<select>` element. |
 | `deregisterInteractionHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` on the `<select>` element. |
 | `getSelectedIndex() => number` | Returns the selected index of the `<select>` element. |
-| `setSelectedIndex(index: number) => void` | Sets the select's selectedValue to the option found at the provided index. If the index is out of the select's range, it will default to -1. |
+| `setSelectedIndex(index: number) => void` | Sets the selected index of the <select> element. |
 | `getValue() => string` | Returns the value selected on the `<select>` element. |
-| `setValue(value: string) => void` | Sets the select's value. If no option has the provided value, it sets `value` to empty string. |
+| `setValue(value: string) => void` | Sets the value of the <select> element. |
 
 ### `MDCSelectFoundation`
 
 | Method Signature | Description |
 | --- | --- |
-| `setValue(value: string) => void` | Sets the select's value. If value is not found within list of options, it will set it to empty string. |
+| `setValue(value: string) => void` | Sets the value of the component. |
 | `setDisabled(disabled: boolean) => void` | Adds/removes disabled class, and sets disabled attribute on the component. |
 | `setSelectedIndex(selectedIndex: number) => void` | Sets the selected index of the component. |

@@ -15,9 +15,10 @@
  */
 
 import {MDCComponent} from '@material/base/index';
-import {MDCRipple} from '@material/ripple/index';
+import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
 import {MDCSelectBottomLine} from './bottom-line/index';
 import {MDCSelectLabel} from './label/index';
+import {getMatchesProperty} from '@material/ripple/util';
 
 import MDCSelectFoundation from './foundation';
 import {cssClasses, strings} from './constants';
@@ -67,8 +68,20 @@ export class MDCSelect extends MDCComponent {
     }
 
     if (this.root_.classList.contains(cssClasses.BOX)) {
-      this.ripple = new MDCRipple(this.root_);
+      debugger
+      this.ripple = this.initRipple_();
     }
+  }
+
+  initRipple_() {
+    const MATCHES = getMatchesProperty(HTMLElement.prototype);
+    const adapter = Object.assign(MDCRipple.createAdapter(this), {
+      isSurfaceActive: () => this.nativeControl_[MATCHES](':active'),
+      registerInteractionHandler: (type, handler) => this.nativeControl_.addEventListener(type, handler),
+      deregisterInteractionHandler: (type, handler) => this.nativeControl_.removeEventListener(type, handler),
+    });
+    const foundation = new MDCRippleFoundation(adapter);
+    return new MDCRipple(this.root_, foundation);
   }
 
   getDefaultFoundation() {
@@ -80,8 +93,16 @@ export class MDCSelect extends MDCComponent {
           this.label_.float(value);
         }
       },
-      activateBottomLine: () => this.bottomLine_.activate(),
-      deactivateBottomLine: () => this.bottomLine_.deactivate(),
+      activateBottomLine: () => {
+        if (this.bottomLine_) {
+          this.bottomLine_.activate();
+        }
+      },
+      deactivateBottomLine: () => {
+        if (this.bottomLine_) {
+          this.bottomLine_.deactivate();
+        }
+      },
       setDisabled: (disabled) => this.nativeControl_.disabled = disabled,
       registerInteractionHandler: (type, handler) => this.nativeControl_.addEventListener(type, handler),
       deregisterInteractionHandler: (type, handler) => this.nativeControl_.removeEventListener(type, handler),
@@ -99,5 +120,12 @@ export class MDCSelect extends MDCComponent {
     if (this.nativeControl_.disabled) {
       this.disabled = true;
     }
+  }
+
+  destroy() {
+    if (this.ripple) {
+      this.ripple.destroy();
+    }
+    super.destroy();
   }
 }

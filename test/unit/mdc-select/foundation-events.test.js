@@ -32,7 +32,7 @@ function setupTest() {
 }
 
 function createEvent(data) {
-  return Object.assign({preventDefault: td.func('.preventDefault')}, data);
+  return data;
 }
 
 suite('MDCSelectFoundation - Events');

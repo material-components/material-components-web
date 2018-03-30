@@ -52,10 +52,9 @@
 
   &__native-control {
     @include mdc-rtl-reflexive-property(padding, 0, $mdc-select-arrow-padding);
+    @include mdc-typography-base;
 
     &::-ms-expand {
-      @include mdc-typography-base;
-
       display: none;
     }
 
@@ -73,7 +72,6 @@
     white-space: nowrap;
     cursor: pointer;
     appearance: none;
-    overflow: hidden;
   }
 
   @include mdc-select-focused-bottom-line_ {
@@ -95,7 +93,13 @@
   @include mdc-select-container-fill-color(rgba(black, .04));
   @include mdc-ripple-surface;
   @include mdc-ripple-radius-bounded;
-  @include mdc-states(text-primary-on-light, $has-nested-focusable-element: true);
+  // Text Field Box intentionally omits press ripple, so each state needs to be specified individually
+  @include mdc-states-base-color(text-primary-on-background);
+  @include mdc-states-hover-opacity(mdc-states-opacity(text-primary-on-background, hover));
+  @include mdc-states-focus-opacity(
+    mdc-states-opacity(text-primary-on-background, focus),
+    $has-nested-focusable-element: true
+  );
 
   height: 56px;
   border-radius: 4px 4px 0 0;
