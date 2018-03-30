@@ -65,7 +65,7 @@ Short description of Foo Button.
 
 ## Style Customization
 
-CSS Classes are documented in a [tabular format](#tabular-format).
+CSS Classes are documented in [tabular format](#tabular-format).
 
 ~~~
 ### CSS Classes
@@ -113,7 +113,7 @@ Method Signature | Description
 
 ## Usage within Web Frameworks
 
-This section documents usage of the Adapter and the Foundation. Methods are documented in a [tabular format](#tabular-format).
+This section documents usage of the Adapter and the Foundation. Methods are documented in [tabular format](#tabular-format).
 
 ~~~
 #### `MDCTextFieldAdapter`
