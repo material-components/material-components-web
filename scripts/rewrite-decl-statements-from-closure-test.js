@@ -101,6 +101,7 @@ function transform(srcFile, rootDir) {
     },
   });
 
+  console.log("\n\n__________\nProcessing: " + srcFile);
   // traverse(ast, {
   //   ExportNamedDeclaration(path) {
   //     const properties = [];
@@ -115,27 +116,52 @@ function transform(srcFile, rootDir) {
   //
   traverse(ast, {
     ExpressionStatement(path) {
-      //const expression = t.assignmentExpression('=', t.identifier('exports'), path.node.declaration);
-      //path.replaceWith(t.expressionStatement(expression));
-      if (path.node.expression.operator === "=" && path.node.expression.left.type == "Identifier" && path.node.expression.left.name == "exports") {
-        console.log(path.node.expression);
-
-        console.log("exports = " + path.node.expression.right.name);
-        console.log(path.node.expression);
-        console.log('^^^^AAAAA^^^^');
-        if (path.node.expression.right.type == "Identifier") {
-          // export default {right.name}
+      const expression = path.node.expression;
+      if (expression.operator === "=" && expression.left.type === "Identifier" && expression.left.name === "exports") {
+        // Looks for expression statements that look like: exports = SOMETHING;
+        if (path.node.expression.right.type === "Identifier") {
+          // if expression looks like: exports = MDCSomething;
           const declaration = t.exportDefaultDeclaration(t.identifier(path.node.expression.right.name));
-          console.log('++replacing:');
-          console.log(declaration);
+          // rewrite as: export default MDCSomething;
           path.replaceWith(declaration);
-        } else {
-          console.log(path.node.expression.right.properties);
-          console.log('___OBJECT___');
+        } else if (expression.right.type === "ObjectExpression") {
+          // expression looks like exports = {MDCSomething1, Something2, etc};
+          const specifiers = []
+          path.node.expression.right.properties.forEach((objectProperty) => {
+            specifiers.push(t.exportSpecifier(objectProperty.key, objectProperty.key));
+          });
+          const namedDeclaration = t.exportNamedDeclaration(null, specifiers);
+
+          // rewrite as export {MDCSomething1, Something2, etc};
+          path.replaceWith(namedDeclaration)
         }
       }
-      //console.log(path)
     },
+  });
+
+  traverse(ast, {
+    VariableDeclaration(path) {
+      const expression = path.node.expression;
+      if (path.node.kind === "const") {
+        if (path.node.declarations) {
+          const declaration = path.node.declarations[0];
+          const typeName = '';
+          if (declaration.id.type === 'Identifier') {
+            typeName = declaration.id.name;
+          } else {
+            console.log("---object decl");
+//            console.log(declaration);
+          }
+
+          if (declaration.type === 'VariableDeclarator' && declaration.init.type === 'CallExpression' &&
+              declaration.init.callee.type === "MemberExpression" &&
+              declaration.init.callee.object.type === "Identifier" && declaration.init.callee.object.name === 'goog' &&
+              declaration.init.callee.property.type === 'Identifier' && declaration.init.callee.property.name === 'require' ) {
+            console.log("=======" + typeName + " = goog.require(" + declaration.init.arguments[0].value);
+          }
+        }
+      }
+    }
   });
 
   // traverse(ast, {
