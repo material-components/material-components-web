@@ -15,6 +15,7 @@ const writeFilePromise = promisify(writeFile);
 const WAIT_MS = 250;
 const GCLOUD_SERVICE_ACCOUNT_KEY_FILE_PATH = process.env.MDC_GCLOUD_SERVICE_ACCOUNT_KEY_FILE_PATH;
 const GCLOUD_STORAGE_BUCKET_NAME = 'mdc-web-screenshot-tests';
+const GCLOUD_STORAGE_BASE_URL = `https://storage.googleapis.com/${GCLOUD_STORAGE_BUCKET_NAME}/`;
 const LOCAL_DIRECTORY_PREFIX = 'test/screenshot/';
 
 const gitRepo = git();
@@ -149,7 +150,7 @@ async function notify() {
               // TODO(acdvorak): Set default bucket ACL to allow public access, and remove `makePublic()` API call
               await file.makePublic();
               await file.setMetadata(metadata);
-              console.log('✔︎ Uploaded', gcsFilePath);
+              console.log(`✔︎ Uploaded ${GCLOUD_STORAGE_BASE_URL}${gcsFilePath}`);
               resolve();
             } catch (err) {
               reject(err);
