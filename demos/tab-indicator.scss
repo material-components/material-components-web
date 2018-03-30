@@ -1,0 +1,45 @@
+@import "./common";
+@import "../packages/mdc-tab-indicator/mixins";
+@import "../packages/mdc-tab-indicator/mdc-tab-indicator";
+@import "../packages/mdc-elevation/mixins";
+@import "../packages/mdc-theme/color-palette";
+
+.hero {
+  flex-direction: column;
+}
+
+.demo-container {
+  margin: 2rem 0;
+}
+
+.demo-inner {
+  display: flex;
+  align-items: center;
+  height: 50px;
+}
+
+.demo-item {
+  display: flex;
+  position: relative;
+  flex: 1 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+  height: inherit;
+  margin: 1rem;
+  background-color: $material-color-grey-50;
+  text-align: center;
+}
+
+.demo-item--wide {
+  width: 250px;
+}
+
+.demo-item--narrow {
+  width: 100px;
+}
+
+.demo-label {
+  position: relative;
+  z-index: 2;
+}
