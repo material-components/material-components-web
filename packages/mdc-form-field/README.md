@@ -14,7 +14,7 @@ respond to label events.
 ## Installation
 
 ```
-npm install --save @material/form-field
+npm install @material/form-field
 ```
 
 ## CSS Usage

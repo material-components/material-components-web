@@ -22,7 +22,7 @@
 
 const autoprefixer = require('autoprefixer');
 
-module.exports = class {
+class CssBundleFactory {
   constructor({
     env,
     pathResolver,
@@ -153,12 +153,14 @@ module.exports = class {
         'mdc.linear-progress': getAbsolutePath('/packages/mdc-linear-progress/mdc-linear-progress.scss'),
         'mdc.list': getAbsolutePath('/packages/mdc-list/mdc-list.scss'),
         'mdc.menu': getAbsolutePath('/packages/mdc-menu/mdc-menu.scss'),
+        'mdc.notched-outline': getAbsolutePath('/packages/mdc-notched-outline/mdc-notched-outline.scss'),
         'mdc.radio': getAbsolutePath('/packages/mdc-radio/mdc-radio.scss'),
         'mdc.ripple': getAbsolutePath('/packages/mdc-ripple/mdc-ripple.scss'),
         'mdc.select': getAbsolutePath('/packages/mdc-select/mdc-select.scss'),
         'mdc.slider': getAbsolutePath('/packages/mdc-slider/mdc-slider.scss'),
         'mdc.snackbar': getAbsolutePath('/packages/mdc-snackbar/mdc-snackbar.scss'),
         'mdc.switch': getAbsolutePath('/packages/mdc-switch/mdc-switch.scss'),
+        'mdc.tab': getAbsolutePath('/packages/mdc-tab/mdc-tab.scss'),
         'mdc.tabs': getAbsolutePath('/packages/mdc-tabs/mdc-tabs.scss'),
         'mdc.textfield': getAbsolutePath('/packages/mdc-textfield/mdc-text-field.scss'),
         'mdc.theme': getAbsolutePath('/packages/mdc-theme/mdc-theme.scss'),
@@ -205,4 +207,6 @@ module.exports = class {
       ],
     });
   }
-};
+}
+
+module.exports = CssBundleFactory;

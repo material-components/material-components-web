@@ -21,6 +21,7 @@
 $mdc-tab-bar-scroller-indicator-width: 48px;
 
 // postcss-bem-linter: define tab-bar-scroller
+
 .mdc-tab-bar-scroller {
   display: flex;
   align-items: center;
@@ -43,18 +44,18 @@ $mdc-tab-bar-scroller-indicator-width: 48px;
   }
 
   &__indicator {
+    @include mdc-theme-prop(color, text-secondary-on-background);
+
+    &:hover {
+      @include mdc-theme-prop(color, text-primary-on-background);
+    }
+
     display: flex;
     align-items: center;
     justify-content: center;
     width: $mdc-tab-bar-scroller-indicator-width;
     cursor: pointer;
     visibility: hidden;
-
-    @include mdc-theme-prop(color, text-secondary-on-background);
-
-    &:hover {
-      @include mdc-theme-prop(color, text-primary-on-background);
-    }
 
     &__inner {
       color: inherit;

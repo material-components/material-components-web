@@ -1,3 +1,57 @@
+<a name="0.33.0"></a>
+# [0.33.0](https://github.com/material-components/material-components-web/compare/v0.32.0...v0.33.0) (2018-03-19)
+
+
+### Bug Fixes
+
+* **button:** icon in rtl should have margin right flipped. ([#2346](https://github.com/material-components/material-components-web/issues/2346)) ([3c04419](https://github.com/material-components/material-components-web/commit/3c04419))
+* **card:** Center background image ([#2388](https://github.com/material-components/material-components-web/issues/2388)) ([466e7db](https://github.com/material-components/material-components-web/commit/466e7db))
+* **checkbox:** add aria-checked=mixed to indeterminate state ([#2389](https://github.com/material-components/material-components-web/issues/2389)) ([cf45654](https://github.com/material-components/material-components-web/commit/cf45654))
+* **demos:** Correct RTL/LTR toggling in demos in Safari ([#2348](https://github.com/material-components/material-components-web/issues/2348)) ([b9000a4](https://github.com/material-components/material-components-web/commit/b9000a4))
+* **drawer:** Update menu icon to be anchor element ([#2372](https://github.com/material-components/material-components-web/issues/2372)) ([1065a74](https://github.com/material-components/material-components-web/commit/1065a74))
+* **rtl:** Adding noflip annotations to fix downstream rtl issues ([#2344](https://github.com/material-components/material-components-web/issues/2344)) ([dc3d69f](https://github.com/material-components/material-components-web/commit/dc3d69f))
+* **text-field:** Clicking label should focus textfield ([#2353](https://github.com/material-components/material-components-web/issues/2353)) ([f17e0d3](https://github.com/material-components/material-components-web/commit/f17e0d3))
+* Use `var` instead of `const` in menu demo ([#2345](https://github.com/material-components/material-components-web/issues/2345)) ([ab85736](https://github.com/material-components/material-components-web/commit/ab85736))
+* **theme:** Move [@alternate](https://github.com/alternate) annotations for Closure Stylesheets ([#2355](https://github.com/material-components/material-components-web/issues/2355)) ([dc52201](https://github.com/material-components/material-components-web/commit/dc52201))
+* **toolbar:** Fix colors for svg icons. Update custom-toolbar demo ([#2331](https://github.com/material-components/material-components-web/issues/2331)) ([35a5cfc](https://github.com/material-components/material-components-web/commit/35a5cfc))
+* **top-app-bar:** Adjust title padding-left styles ([#2390](https://github.com/material-components/material-components-web/issues/2390)) ([e24480c](https://github.com/material-components/material-components-web/commit/e24480c))
+* **top-app-bar:** Fix border-radius mixin to use parameter instead of variable ([#2396](https://github.com/material-components/material-components-web/issues/2396)) ([671aa4c](https://github.com/material-components/material-components-web/commit/671aa4c))
+* **top-app-bar:** Update short collapsed border-radius to match baseline ([#2407](https://github.com/material-components/material-components-web/issues/2407)) ([cea9de6](https://github.com/material-components/material-components-web/commit/cea9de6))
+
+
+### Chores
+
+* **notched-outline:** separate outline from text-field ([#2326](https://github.com/material-components/material-components-web/issues/2326)) ([e215ca8](https://github.com/material-components/material-components-web/commit/e215ca8))
+
+
+### Code Refactoring
+
+* **button:** Remove compact variant ([#2361](https://github.com/material-components/material-components-web/issues/2361)) ([77b15f4](https://github.com/material-components/material-components-web/commit/77b15f4))
+
+
+### Features
+
+* **button:** Add ability to color icons separately from the text ([#2362](https://github.com/material-components/material-components-web/issues/2362)) ([6e5139c](https://github.com/material-components/material-components-web/commit/6e5139c))
+* **button:** Add support for SVG icons ([#2352](https://github.com/material-components/material-components-web/issues/2352)) ([499ad15](https://github.com/material-components/material-components-web/commit/499ad15))
+* **chips:** Replace leading icon with checkmark in selected filter chips ([#2320](https://github.com/material-components/material-components-web/issues/2320)) ([0b73002](https://github.com/material-components/material-components-web/commit/0b73002))
+* **image-list:** Add base styles and mixins for Standard Image List ([#2367](https://github.com/material-components/material-components-web/issues/2367)) ([71ea82a](https://github.com/material-components/material-components-web/commit/71ea82a))
+* **image-list:** Add corner radius mixin ([#2385](https://github.com/material-components/material-components-web/issues/2385)) ([567deec](https://github.com/material-components/material-components-web/commit/567deec))
+* **image-list:** Add Masonry Image List ([#2381](https://github.com/material-components/material-components-web/issues/2381)) ([d368fa7](https://github.com/material-components/material-components-web/commit/d368fa7))
+* **ripple:** Expose mdc-states-opacity; fix press fallback ([#2402](https://github.com/material-components/material-components-web/issues/2402)) ([2dfaec6](https://github.com/material-components/material-components-web/commit/2dfaec6))
+* **top-app-bar:** Add prominent style ([#2349](https://github.com/material-components/material-components-web/issues/2349)) ([f59b109](https://github.com/material-components/material-components-web/commit/f59b109))
+* **top-app-bar:** Switch to use variant specific foundations ([#2412](https://github.com/material-components/material-components-web/issues/2412)) ([2950b3e](https://github.com/material-components/material-components-web/commit/2950b3e))
+
+
+### BREAKING CHANGES
+
+* **notched-outline:** removed mdc-text-field__outline element for mdc-notched-outline.
+Renamed mdc-text-field-outlined-corner-radius to mdc-text-field-outline-corner-radius.
+* **chips:** renamed (de)registerInteractionHandler to (de)registerEventHandler and added multiple new methods to MDCChipAdapter. Also changed HTML structure of filter chips to include checkmark.
+* **checkbox:** Adds setNativeControlAttr and removeNativeControlAttr adapter APIs.
+* **button:** The compact variant of MDC Button is removed.
+
+
+
 <a name="0.32.0"></a>
 # [0.32.0](https://github.com/material-components/material-components-web/compare/v0.31.0...v0.32.0) (2018-03-05)
 
