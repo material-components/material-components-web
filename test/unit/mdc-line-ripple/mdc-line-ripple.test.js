@@ -58,10 +58,10 @@ test('#adapter.hasClass returns true if a class is on the element', () => {
   assert.isTrue(hasClass);
 });
 
-test('#adapter.setAttr adds a given attribute to the element', () => {
+test('#adapter.setStyle adds a given style property to the element', () => {
   const {root, component} = setupTest();
-  component.getDefaultFoundation().adapter_.setAttr('aria-label', 'foo');
-  assert.equal(root.getAttribute('aria-label'), 'foo');
+  component.getDefaultFoundation().adapter_.setStyle('color', 'blue');
+  assert.equal(root.getAttribute('style'), 'color: blue;');
 });
 
 test('#adapter.registerEventHandler adds event listener for a given event to the element', () => {
