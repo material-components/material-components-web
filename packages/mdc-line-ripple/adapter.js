@@ -47,7 +47,7 @@ class MDCLineRippleAdapter {
   hasClass(className) {}
 
   /**
-   * Sets the style for a given attribute with a given value on the line ripple element.
+   * Sets the style property with propertyName to value on the root element.
    * @param {string} propertyName
    * @param {string} value
    */
