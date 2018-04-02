@@ -1,3 +1,53 @@
+<a name="0.34.0"></a>
+# [0.34.0](https://github.com/material-components/material-components-web/compare/v0.33.0...v0.34.0) (2018-04-02)
+
+
+### Bug Fixes
+
+* Compile demo CSS/JS during `npm run build` ([#2437](https://github.com/material-components/material-components-web/issues/2437)) ([21150c7](https://github.com/material-components/material-components-web/commit/21150c7)), closes [#2325](https://github.com/material-components/material-components-web/issues/2325)
+* **button:** Suppress whitespace between icon and text label ([#2449](https://github.com/material-components/material-components-web/issues/2449)) ([f504aa6](https://github.com/material-components/material-components-web/commit/f504aa6))
+* **drawer:** Update motion to match spec ([#2398](https://github.com/material-components/material-components-web/issues/2398)) ([6417b51](https://github.com/material-components/material-components-web/commit/6417b51))
+* **line-ripple:** Fix CSP inline style rule ([#2491](https://github.com/material-components/material-components-web/issues/2491)) ([4f1cdc1](https://github.com/material-components/material-components-web/commit/4f1cdc1))
+* **select:** Update theme select demo ([#2496](https://github.com/material-components/material-components-web/issues/2496)) ([db424bf](https://github.com/material-components/material-components-web/commit/db424bf))
+* **text-field:** Remove press ripple effect ([#2419](https://github.com/material-components/material-components-web/issues/2419)) ([e207f0f](https://github.com/material-components/material-components-web/commit/e207f0f))
+* **toolbar:** Fix toolbar/top-app-bar button icons ([#2454](https://github.com/material-components/material-components-web/issues/2454)) ([3a149b3](https://github.com/material-components/material-components-web/commit/3a149b3))
+* **top-app-bar:** Remove applyPassive function from toolbar/top app bar ([#2487](https://github.com/material-components/material-components-web/issues/2487)) ([c252aba](https://github.com/material-components/material-components-web/commit/c252aba))
+
+
+### Chores
+
+* **theme:** Remove tonal variants, since they dont match MD guidelines ([#2473](https://github.com/material-components/material-components-web/issues/2473)) ([a99ce40](https://github.com/material-components/material-components-web/commit/a99ce40))
+* **typography:** Remove the adjust margin feature ([#2464](https://github.com/material-components/material-components-web/issues/2464)) ([3f23821](https://github.com/material-components/material-components-web/commit/3f23821))
+
+
+### Code Refactoring
+
+* **notched-outline:** remove text-field notched outline styles and coupling ([#2401](https://github.com/material-components/material-components-web/issues/2401)) ([4f83757](https://github.com/material-components/material-components-web/commit/4f83757))
+
+
+### feature
+
+* **select:** replace menu with native html select ([#2462](https://github.com/material-components/material-components-web/issues/2462)) ([fcc7341](https://github.com/material-components/material-components-web/commit/fcc7341))
+
+
+### Features
+
+* **button:** Add padding mixin, adjust icon margin ([#2420](https://github.com/material-components/material-components-web/issues/2420)) ([819d139](https://github.com/material-components/material-components-web/commit/819d139))
+* **tab:** Add MDCTab component ([#2421](https://github.com/material-components/material-components-web/issues/2421)) ([a8b3193](https://github.com/material-components/material-components-web/commit/a8b3193))
+* **top-app-bar:** Add dense style ([#2475](https://github.com/material-components/material-components-web/issues/2475)) ([3feec58](https://github.com/material-components/material-components-web/commit/3feec58))
+
+
+### BREAKING CHANGES
+
+* **select:** The template and adapter APIs have changed to take advantage of the native select element; see the MDC Select README for more information.
+* **typography:** Removes the `mdc-typography--adjust-margin` CSS class and the `mdc-typography-adjust-margin` Sass mixin
+* **theme:** Removes styles for `mdc-theme--primary/secondary-light/dark` CSS classes and the `mdc-theme-light/dark-variant` Sass functions
+* **notched-outline:** Renamed `mdc-text-field-outlined-corner-radius` to `mdc-text-field-outline-corner-radius`. Made `updateSvgPath_()` private in notched-outline foundation and replaced it
+with `notch()`. Renamed `updateOutline()` in text-field foundation to `notchOutline()`.
+* **line-ripple:** The `setAttr` adapter method has been removed and replaced by `setStyle`.
+
+
+
 <a name="0.33.0"></a>
 # [0.33.0](https://github.com/material-components/material-components-web/compare/v0.32.0...v0.33.0) (2018-03-19)
 
