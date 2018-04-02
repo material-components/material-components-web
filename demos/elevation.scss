@@ -19,5 +19,5 @@
 @import "../packages/mdc-elevation/mdc-elevation";
 
 .demo-elevation--custom-color {
-  @include mdc-elevation(16, secondary-dark, $opacity-boost: .1);
+  @include mdc-elevation(16, secondary, $opacity-boost: .1);
 }

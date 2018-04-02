@@ -30,7 +30,7 @@ The MDC Tabs component contains components which are used to create spec-aligned
 ## Installation
 
 ```
-npm install --save @material/tabs
+npm install @material/tabs
 ```
 
 ## Tabs usage

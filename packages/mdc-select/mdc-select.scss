@@ -14,9 +14,10 @@
 // limitations under the License.
 //
 
+@import "./keyframes";
 @import "./mixins";
 @import "./variables";
-@import "@material/animation/functions";
+@import "@material/animation/variables";
 @import "@material/typography/mixins";
 @import "@material/ripple/common";
 @import "@material/ripple/mixins";
@@ -27,12 +28,7 @@
 // postcss-bem-linter: define select
 .mdc-select {
   @include mdc-typography-base;
-  // We use only a subset of the MDC typography values here as changing things such as line-height
-  // affects how the labels are transformed.
-  @each $prop in (letter-spacing) {
-    #{$prop}: map-get(map-get($mdc-typography-styles, subheading2), $prop);
-  }
-
+  @include mdc-select-container-fill-color(transparent);
   @include mdc-select-dd-arrow-svg-bg_;
   @include mdc-select-ink-color(text-primary-on-light);
   @include mdc-select-label-color(black, .6);
@@ -44,55 +40,38 @@
 
   display: inline-flex;
   position: relative;
-  align-items: center;
-  justify-content: flex-start;
   box-sizing: border-box;
   height: 48px;
-  border: none;
-  outline: none;
   background-repeat: no-repeat;
-  background-position: right 8px bottom 8px;
-  cursor: pointer;
-  overflow: visible;
+  background-position: right 8px bottom 12px;
+  overflow: hidden;
 
   @include mdc-rtl {
-    background-position: left 8px bottom 8px;
+    background-position: left 8px bottom 12px;
   }
 
-  &__menu {
-    position: fixed;
-    top: 0;
-    left: 0;
-    max-height: 100%;
-    transform-origin: center center;
-    z-index: 4; // Should pop up above everything else. temporary-drawer is next highest at 3.
-  }
-
-  &__surface {
+  &__native-control {
     @include mdc-rtl-reflexive-property(padding, 0, $mdc-select-arrow-padding);
-    @include mdc-states;
+    @include mdc-typography-base;
 
-    display: flex;
-    position: relative;
-    flex-grow: 1;
+    &::-ms-expand {
+      display: none;
+    }
+
+    // counteracts the extra text padding that Firefox adds by default
+    @-moz-document url-prefix("") {
+      text-indent: -2px;
+    }
+
     width: 100%;
-    height: 48px;
+    padding-top: 22px;
     padding-bottom: 8px;
     border: none;
     outline: none;
-    overflow: hidden;
-  }
-
-  &__selected-text {
-    display: flex;
-    position: absolute;
-    bottom: 8px;
-    align-items: flex-end;
-    transition:
-      mdc-animation-exit-temporary(opacity, 125ms),
-      mdc-animation-exit-temporary(transform, 125ms);
+    background-color: transparent;
     white-space: nowrap;
-    overflow: hidden;
+    cursor: pointer;
+    appearance: none;
   }
 
   @include mdc-select-focused-bottom-line_ {
@@ -103,8 +82,24 @@
   }
 }
 
+// needed to make this a keyframe animation because having translateY in the
+// not-selected state caused an unwanted scrolling behavior to occur
+.mdc-select--is-changing .mdc-select__native-control {
+  animation: mdc-select-float-native-control 125ms 1;
+  animation-timing-function: $mdc-animation-deceleration-curve-timing-function;
+}
+
 .mdc-select--box {
   @include mdc-select-container-fill-color(rgba(black, .04));
+  @include mdc-ripple-surface;
+  @include mdc-ripple-radius-bounded;
+  // Select Box intentionally omits press ripple, so each state needs to be specified individually
+  @include mdc-states-base-color(text-primary-on-background);
+  @include mdc-states-hover-opacity(mdc-states-opacity(text-primary-on-background, hover));
+  @include mdc-states-focus-opacity(
+    mdc-states-opacity(text-primary-on-background, focus),
+    $has-nested-focusable-element: true
+  );
 
   height: 56px;
   border-radius: 4px 4px 0 0;
@@ -114,14 +109,15 @@
     background-position: left 10px center;
   }
 
-  .mdc-select__surface {
+  .mdc-select__native-control,
+  .mdc-select__label {
     @include mdc-typography(subheading2);
+  }
+
+  .mdc-select__native-control {
     @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding);
-    @include mdc-ripple-surface;
-    @include mdc-ripple-radius-bounded;
 
     height: 56px;
-    padding-bottom: 0;
     border-radius: 4px 4px 0 0;
   }
 
@@ -134,52 +130,20 @@
       transform: translateY(-40%) scale(.75, .75);
     }
   }
-
-  .mdc-select__selected-text {
-    position: inherit;
-    bottom: 0;
-    margin-bottom: 6px;
-  }
-}
-
-.mdc-select--open {
-  .mdc-select__surface::before {
-    opacity: map-get($mdc-ripple-dark-ink-opacities, "focus");
-  }
-
-  .mdc-select__selected-text {
-    transform: translateY(8px);
-    transition:
-      mdc-animation-enter(opacity, 125ms, 125ms),
-      mdc-animation-enter(transform, 125ms, 125ms);
-    opacity: 0;
-  }
-
-  .mdc-select__bottom-line::after {
-    transform: scaleY(2);
-    opacity: 1;
-  }
 }
 
 .mdc-select--disabled {
   @include mdc-select-floating-label-color(text-disabled-on-light);
   @include mdc-select-dd-arrow-svg-bg_(000000, .38);
+  @include mdc-select-container-fill-color_(transparent);
 
   border-bottom-width: 1px;
   border-bottom-style: dotted;
   opacity: .38;
   cursor: default;
   pointer-events: none;
-  // Imitate native disabled functionality
-  user-select: none;
 
   .mdc-select__bottom-line {
     display: none;
   }
-}
-
-// postcss-bem-linter: end
-
-.mdc-select-scroll-lock {
-  overflow: hidden;
 }

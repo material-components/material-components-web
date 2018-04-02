@@ -21,4 +21,9 @@ const strings = {
   IDLE_OUTLINE_SELECTOR: '.mdc-notched-outline__idle',
 };
 
-export {strings};
+/** @enum {string} */
+const cssClasses = {
+  OUTLINE_NOTCHED: 'mdc-notched-outline--notched',
+};
+
+export {cssClasses, strings};

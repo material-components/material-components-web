@@ -98,8 +98,12 @@
             <label for="basic-checkbox">Default checkbox</label>
           </div>
           <div class="demo-toggle-group">
-            <button type="button" class="mdc-button mdc-button--stroked" onclick="this.parentElement.parentElement.hasAttribute('dir') ? this.parentElement.parentElement.removeAttribute('dir') : this.parentElement.parentElement.setAttribute('dir', 'rtl');">Toggle RTL</button>
-            <button type="button" class="mdc-button mdc-button--stroked" onclick="document.querySelector('.mdc-form-field').classList.toggle('mdc-form-field--align-end');">Toggle <code>--align-end</code></button>
+            <button type="button" class="mdc-button mdc-button--stroked" onclick="this.parentElement.parentElement.hasAttribute('dir') ? this.parentElement.parentElement.removeAttribute('dir') : this.parentElement.parentElement.setAttribute('dir', 'rtl');">
+              Toggle RTL
+            </button>
+            <button type="button" class="mdc-button mdc-button--stroked" onclick="document.querySelector('.mdc-form-field').classList.toggle('mdc-form-field--align-end');">
+              <span>Toggle <code>--align-end</code></span>
+            </button>
           </div>
         </div>
         <div>
@@ -210,8 +214,8 @@
             <label for="native-js-checkbox">Default checkbox</label>
           </div>
           <div class="demo-toggle-group">
-            <button type="button" class="mdc-button mdc-button--stroked toggle-indeterminate">Toggle <code>indeterminate</code></button>
-            <button type="button" class="mdc-button mdc-button--stroked toggle-disabled">Toggle <code>disabled</code></button>
+            <button type="button" class="mdc-button mdc-button--stroked toggle-indeterminate"><span>Toggle <code>indeterminate</code></span></button>
+            <button type="button" class="mdc-button mdc-button--stroked toggle-disabled"><span>Toggle <code>disabled</code></span></button>
           </div>
         </div>
         <div>
@@ -235,8 +239,8 @@
             <label for="native-js-checkbox-indeterminate">Indeterminate checkbox</label>
           </div>
           <div class="demo-toggle-group">
-            <button type="button" class="mdc-button mdc-button--stroked toggle-indeterminate">Toggle <code>indeterminate</code></button>
-            <button type="button" class="mdc-button mdc-button--stroked toggle-disabled">Toggle <code>disabled</code></button>
+            <button type="button" class="mdc-button mdc-button--stroked toggle-indeterminate"><span>Toggle <code>indeterminate</code></span></button>
+            <button type="button" class="mdc-button mdc-button--stroked toggle-disabled"><span>Toggle <code>disabled</code></span></button>
           </div>
           <script>
             document.getElementById('native-js-checkbox-indeterminate').indeterminate = true;
@@ -262,8 +266,8 @@
             <label for="native-js-checkbox-custom-all">Custom colored checkbox (stroke, fill, ripple, and focus)</label>
           </div>
           <div class="demo-toggle-group">
-            <button type="button" class="mdc-button mdc-button--stroked toggle-indeterminate">Toggle <code>indeterminate</code></button>
-            <button type="button" class="mdc-button mdc-button--stroked toggle-disabled">Toggle <code>disabled</code></button>
+            <button type="button" class="mdc-button mdc-button--stroked toggle-indeterminate"><span>Toggle <code>indeterminate</code></span></button>
+            <button type="button" class="mdc-button mdc-button--stroked toggle-disabled"><span>Toggle <code>disabled</code></span></button>
           </div>
         </div>
         <div>
@@ -286,8 +290,8 @@
             <label for="native-js-checkbox-custom-stroke-and-fill">Custom colored checkbox (stroke and fill only)</label>
           </div>
           <div class="demo-toggle-group">
-            <button type="button" class="mdc-button mdc-button--stroked toggle-indeterminate">Toggle <code>indeterminate</code></button>
-            <button type="button" class="mdc-button mdc-button--stroked toggle-disabled">Toggle <code>disabled</code></button>
+            <button type="button" class="mdc-button mdc-button--stroked toggle-indeterminate"><span>Toggle <code>indeterminate</code></span></button>
+            <button type="button" class="mdc-button mdc-button--stroked toggle-disabled"><span>Toggle <code>disabled</code></span></button>
           </div>
         </div>
       </section>

@@ -161,7 +161,7 @@
       <h3 class="mdc-typography--title">Demo Controls</h3>
       <div class="demo-row">
         <div class="demo-col">
-          <h4 class="mdc-typography--subheading2 mdc-typography--adjust-margin">Common Options</h4>
+          <span class="mdc-typography--subheading2 demo-options-heading">Common Options</span>
           <div>
             <input type="checkbox" id="rtl-checkbox"/>
             <label for="rtl-checkbox">RTL</label>
@@ -172,14 +172,18 @@
           </div>
         </div>
         <div class="demo-col">
-          <h4 class="mdc-typography--subheading2 mdc-typography--adjust-margin">Top App Bar Specific Options</h4>
+          <span class="mdc-typography--subheading2 demo-options-heading">Top App Bar Specific Options</span>
+          <div>
+            <input type="checkbox" id="dense-checkbox"/>
+            <label for="dense-checkbox">Dense</label>
+          </div>
           <div>
             <input type="checkbox" id="prominent-checkbox"/>
             <label for="prominent-checkbox">Prominent</label>
           </div>
         </div>
         <div class="demo-col">
-          <h4 class="mdc-typography--subheading2 mdc-typography--adjust-margin">Short Top App Bar Specific Options</h4>
+          <span class="mdc-typography--subheading2 demo-options-heading">Short Top App Bar Specific Options</span>
           <div>
             <input type="checkbox" id="short-checkbox"/>
             <label for="short-checkbox">Short</label>
@@ -209,6 +213,7 @@
         var noActionItemCheckbox = document.getElementById('no-action-item-checkbox');
         var shortCheckbox = document.getElementById('short-checkbox');
         var alwaysCollapsedCheckbox = document.getElementById('always-collapsed-checkbox');
+        var denseCheckbox = document.getElementById('dense-checkbox');
         var prominentCheckbox = document.getElementById('prominent-checkbox');
 
         appBarEl.addEventListener('MDCTopAppBar:nav', function() {
@@ -249,6 +254,7 @@
 
           alwaysCollapsedCheckbox.disabled = !this.checked;
           prominentCheckbox.disabled = this.checked;
+          denseCheckbox.disabled = this.checked;
         });
 
         alwaysCollapsedCheckbox.addEventListener('change', function() {
@@ -258,11 +264,17 @@
           appBar = mdc.topAppBar.MDCTopAppBar.attachTo(appBarEl);
         });
 
+        denseCheckbox.addEventListener('change', function()  {
+          appBarEl.classList[this.checked ? 'add' : 'remove']('mdc-top-app-bar--dense');
+
+          shortCheckbox.disabled = this.checked || prominentCheckbox.checked;
+        });
+
         prominentCheckbox.addEventListener('change', function()  {
           appBarEl.classList[this.checked ? 'add' : 'remove']('mdc-top-app-bar--prominent');
           contentMainEl.classList[this.checked ? 'add' : 'remove']('mdc-top-app-bar--prominent-fixed-adjust');
 
-          shortCheckbox.disabled = this.checked;
+          shortCheckbox.disabled = this.checked || denseCheckbox.checked;
 
           // Needs to reset the toolbar height for the default scroll behavior
           appBar.destroy();
