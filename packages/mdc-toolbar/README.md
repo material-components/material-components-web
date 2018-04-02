@@ -7,6 +7,13 @@ iconId: toolbar
 path: /catalog/toolbar/
 -->
 
+# Important - Deprecation Notice
+
+The existing `MDCToolbar` component and styles will be removed in a future release. Some of its functionality
+will be available in the `mdc-top-app-bar` package instead. Bugs and feature requests
+will no longer be accepted for the `mdc-toolbar` package. It is recommended that you migrate to the 
+`mdc-top-app-bar` package to continue to receive new features and updates.
+
 # Toolbars
 
 <!--<div class="article__asset">
