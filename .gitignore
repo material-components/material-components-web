@@ -3,6 +3,7 @@ node_modules
 /build
 /coverage
 packages/*/dist
+out
 *.log
 .idea
 *.sw*
