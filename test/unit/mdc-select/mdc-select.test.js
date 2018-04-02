@@ -19,6 +19,7 @@ import bel from 'bel';
 import domEvents from 'dom-events';
 import td from 'testdouble';
 import {createMockRaf} from '../helpers/raf';
+import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 
 import {MDCRipple, MDCRippleFoundation} from '../../../packages/mdc-ripple';
 import {MDCSelect} from '../../../packages/mdc-select';
@@ -211,7 +212,12 @@ test('adapter.activateBottomLine and adapter.deactivateBottomLine ' +
     () => component.getDefaultFoundation().adapter_.deactivateBottomLine());
 });
 
-test(`instantiates ripple when ${cssClasses.BOX} class is present`, () => {
+test(`instantiates ripple when ${cssClasses.BOX} class is present`, function() {
+  if (!supportsCssVariables(window, true)) {
+    this.skip(); // eslint-disable-line no-invalid-this
+    return;
+  }
+
   const fixture = getBoxFixture();
   const raf = createMockRaf();
 
@@ -223,7 +229,12 @@ test(`instantiates ripple when ${cssClasses.BOX} class is present`, () => {
   raf.restore();
 });
 
-test(`handles ripple focus properly when ${cssClasses.BOX} class is present`, () => {
+test(`handles ripple focus properly when ${cssClasses.BOX} class is present`, function() {
+  if (!supportsCssVariables(window, true)) {
+    this.skip(); // eslint-disable-line no-invalid-this
+    return;
+  }
+
   const fixture = getBoxFixture();
   const raf = createMockRaf();
 
@@ -239,7 +250,12 @@ test(`handles ripple focus properly when ${cssClasses.BOX} class is present`, ()
   raf.restore();
 });
 
-test('#destroy removes the ripple', () => {
+test('#destroy removes the ripple', function() {
+  if (!supportsCssVariables(window, true)) {
+    this.skip(); // eslint-disable-line no-invalid-this
+    return;
+  }
+
   const fixture = getBoxFixture();
   const raf = createMockRaf();
 
