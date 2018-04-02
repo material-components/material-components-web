@@ -42,10 +42,14 @@ const setupTest = () => {
   const mockAdapter = td.object(MDCChipSetFoundation.defaultAdapter);
   const foundation = new MDCChipSetFoundation(mockAdapter);
   const chipA = td.object({
-    toggleSelected: () => {},
+    foundation: {
+      toggleSelected: () => {},
+    },
   });
   const chipB = td.object({
-    toggleSelected: () => {},
+    foundation: {
+      toggleSelected: () => {},
+    },
   });
   return {foundation, mockAdapter, chipA, chipB};
 };
@@ -78,27 +82,27 @@ test('on custom MDCChip:interaction event toggles selected state with single sel
 
   chipInteractionHandler({
     detail: {
-      chipFoundation: chipA,
+      chip: chipA,
     },
   });
-  td.verify(chipA.toggleSelected());
+  td.verify(chipA.foundation.toggleSelected());
   assert.equal(foundation.selectedChips_.length, 1);
 
   chipInteractionHandler({
     detail: {
-      chipFoundation: chipB,
+      chip: chipB,
     },
   });
-  td.verify(chipA.toggleSelected());
-  td.verify(chipB.toggleSelected());
+  td.verify(chipA.foundation.toggleSelected());
+  td.verify(chipB.foundation.toggleSelected());
   assert.equal(foundation.selectedChips_.length, 1);
 
   chipInteractionHandler({
     detail: {
-      chipFoundation: chipB,
+      chip: chipB,
     },
   });
-  td.verify(chipB.toggleSelected());
+  td.verify(chipB.foundation.toggleSelected());
   assert.equal(foundation.selectedChips_.length, 0);
 });
 
@@ -116,33 +120,33 @@ test('on custom MDCChip:interaction event toggles selected state with multi-sele
 
   chipInteractionHandler({
     detail: {
-      chipFoundation: chipA,
+      chip: chipA,
     },
   });
-  td.verify(chipA.toggleSelected());
+  td.verify(chipA.foundation.toggleSelected());
   assert.equal(foundation.selectedChips_.length, 1);
 
   chipInteractionHandler({
     detail: {
-      chipFoundation: chipB,
+      chip: chipB,
     },
   });
-  td.verify(chipB.toggleSelected());
+  td.verify(chipB.foundation.toggleSelected());
   assert.equal(foundation.selectedChips_.length, 2);
 
   chipInteractionHandler({
     detail: {
-      chipFoundation: chipB,
+      chip: chipB,
     },
   });
-  td.verify(chipB.toggleSelected());
+  td.verify(chipB.foundation.toggleSelected());
   assert.equal(foundation.selectedChips_.length, 1);
 
   chipInteractionHandler({
     detail: {
-      chipFoundation: chipA,
+      chip: chipA,
     },
   });
-  td.verify(chipA.toggleSelected());
+  td.verify(chipA.foundation.toggleSelected());
   assert.equal(foundation.selectedChips_.length, 0);
 });

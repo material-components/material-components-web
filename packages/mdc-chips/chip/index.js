@@ -62,6 +62,13 @@ class MDCChip extends MDCComponent {
   /**
    * @return {!MDCChipFoundation}
    */
+  get foundation() {
+    return this.foundation_;
+  }
+
+  /**
+   * @return {!MDCChipFoundation}
+   */
   getDefaultFoundation() {
     return new MDCChipFoundation(/** @type {!MDCChipAdapter} */ (Object.assign({
       addClass: (className) => this.root_.classList.add(className),
@@ -93,9 +100,9 @@ class MDCChip extends MDCComponent {
         }
       },
       notifyInteraction: () => this.emit(
-        strings.INTERACTION_EVENT, {chipFoundation: this.foundation_}, true /* shouldBubble */),
+        strings.INTERACTION_EVENT, {chip: this}, true /* shouldBubble */),
       notifyTrailingIconInteraction: () => this.emit(
-        strings.TRAILING_ICON_INTERACTION_EVENT, {chipFoundation: this.foundation_}, true /* shouldBubble */),
+        strings.TRAILING_ICON_INTERACTION_EVENT, {chip: this}, true /* shouldBubble */),
     })));
   }
 
