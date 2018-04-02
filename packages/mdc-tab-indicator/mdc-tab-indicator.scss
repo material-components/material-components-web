@@ -34,18 +34,18 @@
 .mdc-tab-indicator--icon {
   @include mdc-tab-indicator-icon-color_(secondary);
 
-  top: 50%;
+  display: flex;
   bottom: auto;
-  left: 50%;
-  width: auto;
-  height: auto;
-  transform: translate(-50%, -50%);
+  align-items: center;
+  justify-content: center;
+  height: 34px;
   background: none;
+  font-size: 34px;
   text-align: center;
 }
 
 .mdc-tab-indicator--active {
-  opacity: 1;
+  @include mdc-tab-indicator-active;
 }
 
 .mdc-tab-indicator--animating {

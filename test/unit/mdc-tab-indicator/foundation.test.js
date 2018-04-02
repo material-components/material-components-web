@@ -37,16 +37,16 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'registerEventHandler', 'deregisterEventHandler',
     'addClass', 'removeClass',
     'setStyleProperty',
-    'getClientRect',
+    'computeClientRect',
   ]);
 });
 
 const setupTest = () => setupFoundationTest(MDCTabIndicatorFoundation);
 
-test('#getClientRect returns the client rect', () => {
+test('#computeClientRect returns the client rect', () => {
   const {foundation, mockAdapter} = setupTest();
-  foundation.getClientRect();
-  td.verify(mockAdapter.getClientRect(), {times: 1});
+  foundation.computeClientRect();
+  td.verify(mockAdapter.computeClientRect(), {times: 1});
 });
 
 test('#handleTransitionEnd deregisters the event handler', () => {

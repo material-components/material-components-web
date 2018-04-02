@@ -18,9 +18,10 @@
 import MDCTabIndicatorFoundation from './foundation';
 
 /**
+ * @extends {MDCTabIndicatorFoundation}
  * @final
  */
-class MDCTabIndicatorIconFoundation extends MDCTabIndicatorFoundation {
+class MDCIconTabIndicatorFoundation extends MDCTabIndicatorFoundation {
   activate() {
     this.adapter_.registerEventHandler('transitionend', this.handleTransitionEnd_);
     this.adapter_.addClass(MDCTabIndicatorFoundation.cssClasses.ANIMATING_ICON_ACTIVATE);
@@ -34,4 +35,4 @@ class MDCTabIndicatorIconFoundation extends MDCTabIndicatorFoundation {
   }
 }
 
-export default MDCTabIndicatorIconFoundation;
+export default MDCIconTabIndicatorFoundation;

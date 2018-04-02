@@ -58,7 +58,7 @@ class MDCTabIndicatorAdapter {
    * Returns the client rect of the root element.
    * @return {!ClientRect}
    */
-  getClientRect() {}
+  computeClientRect() {}
 
   /**
    * Sets a style property of the root element to the passed value

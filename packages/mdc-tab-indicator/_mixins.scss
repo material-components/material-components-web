@@ -18,15 +18,11 @@
 @import "@material/theme/mixins";
 
 @mixin mdc-tab-indicator-active {
-  .mdc-tab-indicator {
-    opacity: 1;
-  }
+  opacity: 1;
 }
 
 @mixin mdc-tab-indicator-color($color) {
-  .mdc-tab-indicator {
-    @include mdc-tab-indicator-bar-color_($color);
-  }
+  @include mdc-tab-indicator-bar-color_($color);
 
   .mdc-tab-indicator--icon {
     @include mdc-tab-indicator-icon-color_($color);
@@ -34,9 +30,7 @@
 }
 
 @mixin mdc-tab-indicator-height($height) {
-  .mdc-tab-indicator {
-    @include mdc-tab-indicator-bar-height_($height);
-  }
+  @include mdc-tab-indicator-bar-height_($height);
 
   .mdc-tab-indicator--icon {
     @include mdc-tab-indicator-icon-height_($height);
@@ -44,9 +38,7 @@
 }
 
 @mixin mdc-tab-indicator-top-border-radius($radius) {
-  .mdc-tab-indicator {
-    @include mdc-tab-indicator-bar-top-corner-radius_($radius);
-  }
+  @include mdc-tab-indicator-bar-top-corner-radius_($radius);
 }
 
 // Private mixins

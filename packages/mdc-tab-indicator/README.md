@@ -77,10 +77,7 @@ Method Signature | Description
 --- | ---
 `activate(previousTabClientRect: ClientRect) => void` | Activates the tab indicator
 `deactivate() => void` | Deactivates the tab indicator
-
-Property | Value Type | Description
---- | --- | ---
-`clientRect` | `ClientRect` | Getter for the indicator's bounding client rect
+`computeClientRect() => ClientRect` | Returns the root element bounding client rect
 
 ### `MDCTabIndicatorAdapter`
 
@@ -91,6 +88,7 @@ Method Signature | Description
 `registerEventHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the root element
 `deregisterEventHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the root element
 `setStyleProp(property: string, value: string) => void` | Sets the style property of the root element
+`computeClientRect() => ClientRect` | Returns the root element's bounding client rect
 
 ### `MDCTabIndicatorFoundation`
 
@@ -99,4 +97,4 @@ Method Signature | Description
 `handleTransitionEnd(evt: Event) => void` | Handles the logic for the `"transitionend"` event on the root element
 `activate(previousTabIndicatorRect: ClientRect) => void` | Activates the tab indicator
 `deactivate() => void` | Deactivates the tab indicator
-`getClientRect() => ClientRect` | Returns the root element's bounding client rect
+`computeClientRect() => ClientRect` | Returns the root element's bounding client rect

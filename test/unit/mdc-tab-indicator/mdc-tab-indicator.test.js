@@ -22,8 +22,8 @@ import domEvents from 'dom-events';
 
 import {
   MDCTabIndicator,
-  MDCTabIndicatorBarFoundation,
-  MDCTabIndicatorIconFoundation,
+  MDCSlidingTabIndicatorFoundation,
+  MDCIconTabIndicatorFoundation,
 } from '../../../packages/mdc-tab-indicator';
 
 const getFixture = () => bel`
@@ -80,10 +80,10 @@ test('#adapter.deregisterEventHandler remoes an event listener from the root ele
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test('#adapter.getClientRect returns the root element client rect', () => {
+test('#adapter.computeClientRect returns the root element client rect', () => {
   const {component, root} = setupTest();
   document.body.appendChild(root);
-  assert.deepEqual(component.getDefaultFoundation().adapter_.getClientRect(), root.getBoundingClientRect());
+  assert.deepEqual(component.getDefaultFoundation().adapter_.computeClientRect(), root.getBoundingClientRect());
   document.body.removeChild(root);
 });
 
@@ -94,14 +94,14 @@ test('#adapter.setStyleProperty sets a style property on the root element', () =
 });
 
 function setupMockBarFoundationTest(root = getFixture()) {
-  const MockFoundationConstructor = td.constructor(MDCTabIndicatorBarFoundation);
+  const MockFoundationConstructor = td.constructor(MDCSlidingTabIndicatorFoundation);
   const mockFoundation = new MockFoundationConstructor();
   const component = new MDCTabIndicator(root, mockFoundation);
   return {root, component, mockFoundation};
 }
 
 function setupMockIconFoundationTest(root = getIconFixture()) {
-  const MockFoundationConstructor = td.constructor(MDCTabIndicatorIconFoundation);
+  const MockFoundationConstructor = td.constructor(MDCIconTabIndicatorFoundation);
   const mockFoundation = new MockFoundationConstructor();
   const component = new MDCTabIndicator(root, mockFoundation);
   return {root, component, mockFoundation};
@@ -115,8 +115,8 @@ test('#activate bar indicator calls activate with passed args', () => {
 
 test('#activate icon indicator calls activate with passed args', () => {
   const {component, mockFoundation} = setupMockIconFoundationTest();
-  component.activate({width: 100, left: 0});
-  td.verify(mockFoundation.activate({width: 100, left: 0}), {times: 1});
+  component.activate({width: 1, left: 2});
+  td.verify(mockFoundation.activate({width: 1, left: 2}), {times: 1});
 });
 
 test('#deactivate bar indicator calls deactivate', () => {
@@ -131,8 +131,8 @@ test('#deactivate icon indicator calls deactivate', () => {
   td.verify(mockFoundation.deactivate(), {times: 1});
 });
 
-test('#clientRect getter calls getClientRect', () => {
+test('#computeClientRect calls computeClientRect', () => {
   const {component, mockFoundation} = setupMockBarFoundationTest();
-  component.clientRect;
-  td.verify(mockFoundation.getClientRect(), {times: 1});
+  component.computeClientRect();
+  td.verify(mockFoundation.computeClientRect(), {times: 1});
 });

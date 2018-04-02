@@ -20,8 +20,8 @@ import MDCComponent from '@material/base/component';
 import MDCTabIndicatorAdapter from './adapter';
 import MDCTabIndicatorFoundation from './foundation';
 
-import MDCTabIndicatorBarFoundation from './bar-foundation';
-import MDCTabIndicatorIconFoundation from './icon-foundation';
+import MDCSlidingTabIndicatorFoundation from './sliding-foundation';
+import MDCIconTabIndicatorFoundation from './icon-foundation';
 
 /**
  * @extends {MDCComponent<!MDCTabIndicatorFoundation>}
@@ -39,8 +39,8 @@ class MDCTabIndicator extends MDCComponent {
   /**
    * @return {!ClientRect}
    */
-  get clientRect() {
-    return this.foundation_.getClientRect();
+  computeClientRect() {
+    return this.foundation_.computeClientRect();
   }
 
   /**
@@ -52,16 +52,16 @@ class MDCTabIndicator extends MDCComponent {
       deregisterEventHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
-      getClientRect: () => this.root_.getBoundingClientRect(),
+      computeClientRect: () => this.root_.getBoundingClientRect(),
       setStyleProperty: (prop, value) => this.root_.style.setProperty(prop, value),
     }));
 
     if (this.root_.classList.contains(MDCTabIndicatorFoundation.cssClasses.ICON)) {
-      return new MDCTabIndicatorIconFoundation(adapter);
+      return new MDCIconTabIndicatorFoundation(adapter);
     }
 
     // Default to the bar indicator
-    return new MDCTabIndicatorBarFoundation(adapter);
+    return new MDCSlidingTabIndicatorFoundation(adapter);
   }
 
   /**
@@ -76,4 +76,4 @@ class MDCTabIndicator extends MDCComponent {
   }
 }
 
-export {MDCTabIndicator, MDCTabIndicatorFoundation, MDCTabIndicatorBarFoundation, MDCTabIndicatorIconFoundation};
+export {MDCTabIndicator, MDCTabIndicatorFoundation, MDCSlidingTabIndicatorFoundation, MDCIconTabIndicatorFoundation};

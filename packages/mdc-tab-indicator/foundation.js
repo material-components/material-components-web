@@ -41,7 +41,7 @@ class MDCTabIndicatorFoundation extends MDCFoundation {
       deregisterEventHandler: () => {},
       addClass: () => {},
       removeClass: () => {},
-      getClientRect: () => {},
+      computeClientRect: () => {},
       setStyleProperty: () => {},
     });
   }
@@ -65,8 +65,8 @@ class MDCTabIndicatorFoundation extends MDCFoundation {
   }
 
   /** @return {!ClientRect} */
-  getClientRect() {
-    return this.adapter_.getClientRect();
+  computeClientRect() {
+    return this.adapter_.computeClientRect();
   }
 
   /**

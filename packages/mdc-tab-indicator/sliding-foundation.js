@@ -18,9 +18,10 @@
 import MDCTabIndicatorFoundation from './foundation';
 
 /**
+ * @extends {MDCTabIndicatorFoundation}
  * @final
  */
-class MDCTabIndicatorBarFoundation extends MDCTabIndicatorFoundation {
+class MDCSlidingTabIndicatorFoundation extends MDCTabIndicatorFoundation {
   /**
    * @param {!ClientRect=} previousClientRect
    */
@@ -38,13 +39,13 @@ class MDCTabIndicatorBarFoundation extends MDCTabIndicatorFoundation {
     // https://aerotwist.com/blog/flip-your-animations/
 
     // Calculate the dimensions based on the dimensions of the previous indicator
-    const currentClientRect = this.adapter_.getClientRect();
+    const currentClientRect = this.computeClientRect();
     const widthDelta = previousClientRect.width / currentClientRect.width;
     const xPosition = previousClientRect.left - currentClientRect.left;
     this.adapter_.setStyleProperty('transform', `translateX(${xPosition}px) scaleX(${widthDelta})`);
 
     // Force repaint
-    this.adapter_.getClientRect();
+    this.computeClientRect();
 
     // Add animating class and remove transformation in a new frame
     requestAnimationFrame(() => {
@@ -56,8 +57,11 @@ class MDCTabIndicatorBarFoundation extends MDCTabIndicatorFoundation {
   }
 
   deactivate() {
+    // We remove the animating class in deactivate in case the Tab is deactivated before the animation completes and
+    // the "transitionend" handler isn't called.
+    this.adapter_.removeClass(MDCTabIndicatorFoundation.cssClasses.ANIMATING);
     this.adapter_.removeClass(MDCTabIndicatorFoundation.cssClasses.ACTIVE);
   }
 }
 
-export default MDCTabIndicatorBarFoundation;
+export default MDCSlidingTabIndicatorFoundation;

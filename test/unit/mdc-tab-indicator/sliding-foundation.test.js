@@ -20,47 +20,47 @@ import td from 'testdouble';
 import {captureHandlers} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
 import {createMockRaf} from '../helpers/raf';
-import MDCTabIndicatorBarFoundation from '../../../packages/mdc-tab-indicator/bar-foundation';
+import MDCSlidingTabIndicatorFoundation from '../../../packages/mdc-tab-indicator/sliding-foundation';
 
-suite('MDCTabIndicatorBarFoundation');
+suite('MDCSlidingTabIndicatorFoundation');
 
-const setupTest = () => setupFoundationTest(MDCTabIndicatorBarFoundation);
+const setupTest = () => setupFoundationTest(MDCSlidingTabIndicatorFoundation);
 
-test(`#activate adds the ${MDCTabIndicatorBarFoundation.cssClasses.ACTIVE} class`, () => {
+test(`#activate adds the ${MDCSlidingTabIndicatorFoundation.cssClasses.ACTIVE} class`, () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.getClientRect()).thenReturn({width: 100, left: 10});
+  td.when(mockAdapter.computeClientRect()).thenReturn({width: 100, left: 10});
   foundation.activate({width: 90, left: 25});
-  td.verify(mockAdapter.addClass(MDCTabIndicatorBarFoundation.cssClasses.ACTIVE));
+  td.verify(mockAdapter.addClass(MDCSlidingTabIndicatorFoundation.cssClasses.ACTIVE));
 });
 
 test('#activate sets the transform property', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.getClientRect()).thenReturn({width: 100, left: 10});
+  td.when(mockAdapter.computeClientRect()).thenReturn({width: 100, left: 10});
   foundation.activate({width: 90, left: 25});
   td.verify(mockAdapter.setStyleProperty('transform', 'translateX(15px) scaleX(0.9)'));
 });
 
 test('#activate registers a transitionend handler', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.getClientRect()).thenReturn({width: 100, left: 10});
+  td.when(mockAdapter.computeClientRect()).thenReturn({width: 100, left: 10});
   foundation.activate({width: 90, left: 25});
   td.verify(mockAdapter.registerEventHandler('transitionend', td.matchers.isA(Function)));
 });
 
-test(`#activate adds the ${MDCTabIndicatorBarFoundation.cssClasses.ANIMATING} class`, () => {
+test(`#activate adds the ${MDCSlidingTabIndicatorFoundation.cssClasses.ANIMATING} class`, () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
-  td.when(mockAdapter.getClientRect()).thenReturn({width: 100, left: 10});
+  td.when(mockAdapter.computeClientRect()).thenReturn({width: 100, left: 10});
   foundation.activate({width: 90, left: 25});
   raf.flush();
   raf.restore();
-  td.verify(mockAdapter.addClass(MDCTabIndicatorBarFoundation.cssClasses.ANIMATING));
+  td.verify(mockAdapter.addClass(MDCSlidingTabIndicatorFoundation.cssClasses.ANIMATING));
 });
 
 test('#activate resets the transform property', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
-  td.when(mockAdapter.getClientRect()).thenReturn({width: 100, left: 10});
+  td.when(mockAdapter.computeClientRect()).thenReturn({width: 100, left: 10});
   foundation.activate({width: 90, left: 25});
   raf.flush();
   raf.restore();
@@ -73,17 +73,23 @@ test('#activate does not modify transform if no client rect is passed', () => {
   td.verify(mockAdapter.setStyleProperty('transform', td.matchers.isA(String)), {times: 0});
 });
 
-test(`#deactivate removes the ${MDCTabIndicatorBarFoundation.cssClasses.ACTIVE} class`, () => {
+test(`#deactivate removes the ${MDCSlidingTabIndicatorFoundation.cssClasses.ACTIVE} class`, () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.deactivate();
-  td.verify(mockAdapter.removeClass(MDCTabIndicatorBarFoundation.cssClasses.ACTIVE));
+  td.verify(mockAdapter.removeClass(MDCSlidingTabIndicatorFoundation.cssClasses.ACTIVE));
 });
 
-test(`on transitionend, remove the ${MDCTabIndicatorBarFoundation.cssClasses.ANIMATING} class`, () => {
+test(`#deactivate removes the ${MDCSlidingTabIndicatorFoundation.cssClasses.ANIMATING} class`, () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.deactivate();
+  td.verify(mockAdapter.removeClass(MDCSlidingTabIndicatorFoundation.cssClasses.ANIMATING));
+});
+
+test(`on transitionend, remove the ${MDCSlidingTabIndicatorFoundation.cssClasses.ANIMATING} class`, () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerEventHandler');
-  td.when(mockAdapter.getClientRect()).thenReturn({width: 100, left: 10});
+  td.when(mockAdapter.computeClientRect()).thenReturn({width: 100, left: 10});
   foundation.activate({width: 90, left: 25});
   handlers.transitionend();
-  td.verify(mockAdapter.removeClass(MDCTabIndicatorBarFoundation.cssClasses.ANIMATING));
+  td.verify(mockAdapter.removeClass(MDCSlidingTabIndicatorFoundation.cssClasses.ANIMATING));
 });

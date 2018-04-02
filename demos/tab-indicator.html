@@ -46,36 +46,9 @@
             <label class="demo-label"><input type="radio" name="demo1" checked>&nbsp;Active</label>
             <span class="mdc-tab-indicator mdc-tab-indicator--active demo-indicator"></span>
           </div>
-          <div class="demo-item demo-item--wide">
-            <label class="demo-label"><input type="radio" name="demo1">&nbsp;Active</label>
-            <span class="mdc-tab-indicator demo-indicator"></span>
-          </div>
-          <div class="demo-item demo-item--narrow">
-            <label class="demo-label"><input type="radio" name="demo1">&nbsp;Active</label>
-            <span class="mdc-tab-indicator demo-indicator"></span>
-          </div>
           <div class="demo-item">
             <label class="demo-label"><input type="radio" name="demo1">&nbsp;Active</label>
             <span class="mdc-tab-indicator demo-indicator"></span>
-          </div>
-        </div>
-
-        <div class="demo-inner">
-          <div class="demo-item demo-item--wide">
-            <label class="demo-label"><input type="radio" name="demo2" checked>&nbsp;Active</label>
-            <span class="mdc-tab-indicator mdc-tab-indicator--icon mdc-tab-indicator--active demo-indicator material-icons">favorite</span>
-          </div>
-          <div class="demo-item">
-            <label class="demo-label"><input type="radio" name="demo2">&nbsp;Active</label>
-            <span class="mdc-tab-indicator mdc-tab-indicator--icon demo-indicator material-icons">lens</span>
-          </div>
-          <div class="demo-item">
-            <label class="demo-label"><input type="radio" name="demo2">&nbsp;Active</label>
-            <span class="mdc-tab-indicator mdc-tab-indicator--icon demo-indicator material-icons">change_history</span>
-          </div>
-          <div class="demo-item demo-item--narrow">
-            <label class="demo-label"><input type="radio" name="demo2">&nbsp;Active</label>
-            <span class="mdc-tab-indicator mdc-tab-indicator--icon demo-indicator material-icons">star</span>
           </div>
         </div>
       </section>
@@ -102,7 +75,7 @@
             demoRadio.addEventListener('change', function (event) {
               var activeIndicator = window[activeName];
               activeIndicator.deactivate();
-              window[demoId].activate(activeIndicator.clientRect);
+              window[demoId].activate(activeIndicator.computeClientRect());
               window[activeName] = window[demoId];
             });
           })(i);
