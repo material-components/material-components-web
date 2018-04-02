@@ -1,0 +1,15 @@
+{
+  "name": "@material/shape",
+  "description": "Shape utilities for Material Components for the web",
+  "version": "0.0.0",
+  "license": "Apache-2.0",
+  "keywords": [
+    "material components",
+    "material design",
+    "shape"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/material-components/material-components-web.git"
+  }
+}
