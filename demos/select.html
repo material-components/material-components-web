@@ -60,62 +60,60 @@
     <main>
       <div class="mdc-toolbar-fixed-adjust"></div>
       <section class="hero">
-        <div id="hero-js-select" class="mdc-select" role="listbox">
-          <div class="mdc-select__surface" tabindex="0">
-            <div class="mdc-select__label">Pick a Food Group</div>
-            <div class="mdc-select__selected-text"></div>
-            <div class="mdc-select__bottom-line"></div>
-          </div>
-          <div class="mdc-menu mdc-select__menu">
-            <ul class="mdc-list mdc-menu__items">
-              <li class="mdc-list-item" role="option" tabindex="0">
-                Bread, Cereal, Rice, and Pasta
-              </li>
-              <li class="mdc-list-item" role="option" aria-disabled="true" tabindex="0">
-                Vegetables
-              </li>
-              <li class="mdc-list-item" role="option" tabindex="0">
-                Fruit
-              </li>
-              <li class="mdc-list-item" role="option" tabindex="0">
-                Milk, Yogurt, and Cheese
-              </li>
-              <li class="mdc-list-item" role="option" tabindex="0">
-                Meat, Poultry, Fish, Dry Beans, Eggs, and Nuts
-              </li>
-              <li class="mdc-list-item" role="option" tabindex="0">
-                Fats, Oils, and Sweets
-              </li>
-            </ul>
-          </div>
+        <div id="hero-js-select" class="mdc-select">
+          <select class="mdc-select__native-control">
+            <option value="grains" selected>
+              Bread, Cereal, Rice, and Pasta
+            </option>
+            <option value="vegetables" disabled>
+              Vegetables
+            </option>
+            <option value="fruit">
+              Fruit
+            </option>
+            <option value="dairy">
+              Milk, Yogurt, and Cheese
+            </option>
+            <option value="meat">
+              Meat, Poultry, Fish, Dry Beans, Eggs, and Nuts
+            </option>
+            <option value="fats">
+              Fats, Oils, and Sweets
+            </option>
+          </select>
+          <div class="mdc-select__label mdc-select__label--float-above">Pick a Food Group</div>
+          <div class="mdc-select__bottom-line"></div>
         </div>
       </section>
 
       <section class="example">
         <h2 class="mdc-typography--title">Fully-Featured JS Component</h2>
         <section id="demo-wrapper">
-          <div id="js-select" class="mdc-select" role="listbox">
-            <div class="mdc-select__surface" tabindex="0">
-              <div class="mdc-select__label">Food Group</div>
-              <div class="mdc-select__selected-text"></div>
-              <div class="mdc-select__bottom-line"></div>
-            </div>
-            <div class="mdc-menu mdc-select__menu">
-              <ul class="mdc-list mdc-menu__items">
-                <li class="mdc-list-item" role="option" id="fruit-roll-ups" tabindex="0">
-                  Fruit Roll Ups
-                </li>
-                <li class="mdc-list-item" role="option" id="cotton-candy" tabindex="0">
-                  Candy (cotton)&#x200E;
-                </li>
-                <li class="mdc-list-item" role="option" id="vegetables" aria-disabled="true" tabindex="0">
-                  Vegetables
-                </li>
-                <li class="mdc-list-item" role="option" id="noodles" tabindex="0">
-                  Noodles
-                </li>
-              </ul>
-            </div>
+          <div id="js-select" class="mdc-select">
+            <select class="mdc-select__native-control">
+              <option value="" disabled selected>
+              </option>
+              <option value="grains">
+                Bread, Cereal, Rice, and Pasta
+              </option>
+              <option value="vegetables" disabled>
+                Vegetables
+             </option>
+              <option value="fruit">
+                Fruit
+              </option>
+              <option value="dairy">
+                Milk, Yogurt, and Cheese
+              </option>
+              <option value="meat">
+                Meat, Poultry, Fish, Dry Beans, Eggs, and Nuts
+              </option>
+              <option value="fats">
+                Fats, Oils, and Sweets
+              </option>
+            </select>
+            <div class="mdc-select__label">Food Group</div>
+            <div class="mdc-select__bottom-line"></div>
           </div>
         </section>
         <p>Currently selected: <span id="currently-selected">(none)</span></p>
@@ -131,37 +129,38 @@
           <input type="checkbox" id="disabled">
           <label for="disabled">Disabled</label>
         </div>
-        <div>
-          <input type="checkbox" id="set-selected-checkbox">
-          <label for="set-selected-checkbox">Set Selected Index (0)</label>
+        <div class="button-container">
+          <button class="mdc-button mdc-button--raised" id="set-selected-index-zero-button">
+            Set Selected Index (0)
+          </button>
+        </div>
+        <div class="button-container">
+          <button class="mdc-button mdc-button--raised" id="set-value-meat-button">
+            Set Value to Meat
+          </button>
         </div>
       </section>
-
       <section class="example">
         <h2 class="mdc-typography--title">Select box</h2>
         <section id="box-demo-wrapper">
-          <div id="box-js-select" class="mdc-select mdc-select--box" role="listbox">
-            <div class="mdc-select__surface" tabindex="0">
-              <div class="mdc-select__label">Food Group</div>
-              <div class="mdc-select__selected-text"></div>
-              <div class="mdc-select__bottom-line"></div>
-            </div>
-            <div class="mdc-menu mdc-select__menu">
-              <ul class="mdc-list mdc-menu__items">
-                <li class="mdc-list-item" role="option" id="fruit-roll-ups2" tabindex="0">
-                  Fruit Roll Ups
-                </li>
-                <li class="mdc-list-item" role="option" id="cotton-candy2" tabindex="0">
-                  Candy (cotton)&#x200E;
-                </li>
-                <li class="mdc-list-item" role="option" id="vegetables2" aria-disabled="true" tabindex="0">
-                  Vegetables
-                </li>
-                <li class="mdc-list-item" role="option" id="noodles2" tabindex="0">
-                  Noodles
-                </li>
-              </ul>
-            </div>
+          <div id="box-js-select" class="mdc-select mdc-select--box">
+            <select class="mdc-select__native-control">
+              <option value="" disabled selected></option>
+              <option value="fruit-roll-ups">
+                Fruit Roll Ups
+              </option>
+              <option value="cotton-candy">
+                Candy (cotton)&#x200E;
+              </option>
+              <option value="vegetables" disabled>
+                Vegetables
+              </option>
+              <option value="noodles">
+                Noodles
+              </option>
+            </select>
+            <div class="mdc-select__label">Food Group</div>
+            <div class="mdc-select__bottom-line"></div>
           </div>
         </section>
         <p>Currently selected: <span id="box-currently-selected">(none)</span></p>
@@ -177,39 +176,56 @@
           <input type="checkbox" id="box-disabled">
           <label for="box-disabled">Disabled</label>
         </div>
-        <div>
-          <input type="checkbox" id="box-set-selected-checkbox">
-          <label for="box-set-selected-checkbox">Set Selected Index (0)</label>
+        <div class="button-container">
+          <button class="mdc-button mdc-button--raised" id="box-set-selected-index-zero-button">
+            Set Selected Index (0)
+          </button>
+        </div>
+        <div class="button-container">
+          <button class="mdc-button mdc-button--raised" id="box-set-value-fruit-roll-up-button">
+            Set Value to Fruit Roll Ups
+          </button>
         </div>
       </section>
-
       <section class="example">
         <h2 class="mdc-typography--title">Pre-selected option via HTML</h2>
         <section>
-          <div id="js-pre-selected" class="mdc-select" role="listbox">
-            <div class="mdc-select__surface" tabindex="0">
-              <div class="mdc-select__label">Food Group</div>
-              <div class="mdc-select__selected-text"></div>
-              <div class="mdc-select__bottom-line"></div>
-            </div>
-            <div class="mdc-menu mdc-select__menu">
-              <ul class="mdc-list mdc-menu__items">
-                <li class="mdc-list-item" role="option" id="fruit-roll-ups3" tabindex="0" aria-selected="true">
-                  Fruit Roll Ups
-                </li>
-                <li class="mdc-list-item" role="option" id="cotton-candy3" tabindex="0">
-                  Candy (cotton)
-                </li>
-                <li class="mdc-list-item" role="option" id="vegetables3" aria-disabled="true" tabindex="0">
-                  Vegetables
-                </li>
-                <li class="mdc-list-item" role="option" id="noodles3" tabindex="0">
-                  Noodles
-                </li>
-              </ul>
-            </div>
+          <div id="js-pre-selected" class="mdc-select">
+            <select class="mdc-select__native-control">
+              <option value="fruit-roll-ups" selected>
+                Fruit Roll Ups
+              </option>
+              <option value="cotton-candy">
+                Candy (cotton)
+              </option>
+              <option value="vegetables" disabled>
+                Vegetables
+              </option>
+              <option value="noodles">
+                Noodles
+              </option>
+            </select>
+            <div class="mdc-select__label mdc-select__label--float-above">Food Group</div>
+            <div class="mdc-select__bottom-line"></div>
           </div>
         </section>
+      </section>
+      <section class="example">
+        <h2 class="mdc-typography--title">MDC Select with optgroups</h2>
+        <div id="optgroup-js-select" class="mdc-select">
+          <select class="mdc-select__native-control">
+            <optgroup label="Meats">
+              <option value="steak">Steak</option>
+              <option value="hamburger">Hamburger</option>
+            </optgroup>
+            <optgroup label="Vegetables">
+              <option value="beet">Beet</option>
+              <option value="carrot">Carrot</option>
+            </optgroup>
+          </select>
+          <div class="mdc-select__label">Choose Food</div>
+          <div class="mdc-select__bottom-line"></div>
+        </div>
       </section>
     </main>
 
@@ -218,23 +234,28 @@
       demoReady(function() {
         mdc.select.MDCSelect.attachTo(document.getElementById('hero-js-select'));
         mdc.select.MDCSelect.attachTo(document.getElementById('js-pre-selected'));
+        mdc.select.MDCSelect.attachTo(document.getElementById('optgroup-js-select'));
 
         var root = document.getElementById('js-select');
+        var nativeSelect = root.querySelector('.mdc-select__native-control');
         var boxCurrentlySelected = document.getElementById('currently-selected');
         var select = new mdc.select.MDCSelect(root);
         var boxDemoWrapper = document.getElementById('demo-wrapper');
         var rtlCb = document.getElementById('rtl');
         var alternateColorsCb = document.getElementById('alternate-colors');
         var disabledCb = document.getElementById('disabled');
-        var setSelectedCb = document.getElementById('set-selected-checkbox');
-
-        root.addEventListener('MDCSelect:change', function() {
-          var item = select.selectedOptions[0];
-          var index = select.selectedIndex;
-          boxCurrentlySelected.textContent = '"' + item.textContent + '" at index ' + index +
-            ' with value "' + select.value + '"';
-
-          setSelectedCb.checked = index === 0;
+        var setSelectedButton = document.getElementById('set-selected-index-zero-button');
+        var setValueMeatButton = document.getElementById('set-value-meat-button');
+        function updateSelectedTextContent() {
+          var item = nativeSelect.selectedOptions[0];
+          var index = nativeSelect.selectedIndex;
+          if (item) {
+            boxCurrentlySelected.textContent = '"' + item.textContent + '" at index ' + index +
+              ' with value "' + nativeSelect.value + '"';
+          }
+        }
+        root.addEventListener('change', function() {
+          updateSelectedTextContent();
         });
         rtlCb.addEventListener('change', function() {
           if (rtlCb.checked) {
@@ -249,28 +270,37 @@
         disabledCb.addEventListener('change', function() {
           select.disabled = disabledCb.checked;
         });
-        setSelectedCb.addEventListener('change', function() {
-          select.selectedIndex = this.checked ? 0 : -1;
+        setSelectedButton.addEventListener('click', function() {
+          select.selectedIndex = 0;
+          updateSelectedTextContent();
+        });
+        setValueMeatButton.addEventListener('click', function() {
+          select.value = 'meat';
+          updateSelectedTextContent();
         });
       });
 
       demoReady(function() {
         var root = document.getElementById('box-js-select');
+        var nativeSelect = root.querySelector('.mdc-select__native-control');
         var boxCurrentlySelected = document.getElementById('box-currently-selected');
         var select = new mdc.select.MDCSelect(root);
         var boxDemoWrapper = document.getElementById('box-demo-wrapper');
         var rtlCb = document.getElementById('box-rtl');
         var alternateColorsCb = document.getElementById('box-alternate-colors');
         var disabledCb = document.getElementById('box-disabled');
-        var setSelectedCb = document.getElementById('box-set-selected-checkbox');
-
-        root.addEventListener('MDCSelect:change', function() {
-          var item = select.selectedOptions[0];
-          var index = select.selectedIndex;
-          boxCurrentlySelected.textContent = '"' + item.textContent + '" at index ' + index +
-            ' with value "' + select.value + '"';
-
-          setSelectedCb.checked = index === 0;
+        var setSelectedButton = document.getElementById('box-set-selected-index-zero-button');
+        var setValueFruitRollUpsButton = document.getElementById('box-set-value-fruit-roll-up-button');
+        function updateSelectedTextContent() {
+          var item = nativeSelect.selectedOptions[0];
+          var index = nativeSelect.selectedIndex;
+          if (item) {
+            boxCurrentlySelected.textContent = '"' + item.textContent + '" at index ' + index +
+              ' with value "' + nativeSelect.value + '"';
+          }
+        }
+        root.addEventListener('change', function() {
+          updateSelectedTextContent();
         });
         rtlCb.addEventListener('change', function() {
           if (rtlCb.checked) {
@@ -285,8 +315,13 @@
         disabledCb.addEventListener('change', function() {
           select.disabled = disabledCb.checked;
         });
-        setSelectedCb.addEventListener('change', function() {
-          select.selectedIndex = this.checked ? 0 : -1;
+        setSelectedButton.addEventListener('click', function() {
+          select.selectedIndex = 0;
+          updateSelectedTextContent();
+        });
+        setValueFruitRollUpsButton.addEventListener('click', function() {
+          select.value = 'fruit-roll-ups';
+          updateSelectedTextContent();
         });
       });
     </script>

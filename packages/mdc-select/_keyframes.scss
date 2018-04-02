@@ -1,5 +1,5 @@
 //
-// Copyright 2017 Google Inc. All Rights Reserved.
+// Copyright 2018 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,25 +14,14 @@
 // limitations under the License.
 //
 
-@import "@material/rtl/mixins";
-@import "../variables";
-
-.mdc-select__label {
-  @include mdc-rtl-reflexive-position(left, 0);
-
-  position: absolute;
-  bottom: 8px;
-  left: 0;
-  transform-origin: left top;
-  transition: $mdc-select-native-control-transition;
-  pointer-events: none;
-  will-change: transform;
-
-  @include mdc-rtl(".mdc-select") {
-    transform-origin: right top;
+@keyframes mdc-select-float-native-control {
+  0% {
+    transform: translateY(8px);
+    opacity: 0;
   }
 
-  &--float-above {
-    transform: translateY(-100%) scale(.75);
+  100% {
+    transform: translateY(0);
+    opacity: 1;
   }
 }
