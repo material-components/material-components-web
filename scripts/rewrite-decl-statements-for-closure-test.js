@@ -141,9 +141,11 @@ function transform(srcFile, rootDir) {
       const variableDeclaration = t.variableDeclaration('const', [variableDeclarator]);
       // Preserve comments above import statements, since this is most likely the license comment.
       if (path.node.comments && path.node.comments.length > 0) {
-        const commentValue = path.node.comments[0].value;
-        variableDeclaration.comments = variableDeclaration.comments || [];
-        variableDeclaration.comments.push({type: 'CommentBlock', value: commentValue});
+        for (let i = 0; i < path.node.comments.length; i++) {
+          const commentValue = path.node.comments[i].value;
+          variableDeclaration.comments = variableDeclaration.comments || [];
+          variableDeclaration.comments.push({type: 'CommentBlock', value: commentValue});
+        }
       }
       path.replaceWith(variableDeclaration);
     },

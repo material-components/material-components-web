@@ -43,53 +43,13 @@ rm -fr $FROM_CLOSURE_PKGDIR/**/{node_modules,dist}
 
 log "Rewriting all goog.require statements to be imports" "$FROM_CLOSURE_PKGDIR"
 node scripts/rewrite-decl-statements-from-closure-test.js $FROM_CLOSURE_PKGDIR
-
-log "TODO: Need to npm test packages"
 echo ''
 
-set +e
-# for pkg in $CLOSURIZED_PKGS; do
-#   entry_point="goog:mdc.${pkg/mdc-/}"
-#   entry_point=${entry_point//-/}
-#   # Note that the jscomp_error flags turn all default warnings into errors, so that
-#   # closure exits with a non-zero status if any of them are caught.
-#   # Also note that we disable accessControls checks due to
-#   # https://github.com/google/closure-compiler/issues/2261
-#   CMD="java -jar node_modules/google-closure-compiler/compiler.jar \
-#   --externs closure_externs.js \
-#   --compilation_level ADVANCED \
-#   --js $(find $FROM_CLOSURE_PKGDIR -type f -name "*.js") \
-#   --language_out ECMASCRIPT5_STRICT \
-#   --dependency_mode STRICT \
-#   --module_resolution LEGACY \
-#   --js_module_root $FROM_CLOSURE_PKGDIR \
-#   --entry_point $entry_point \
-#   --checks_only \
-#   --jscomp_error checkTypes \
-#   --jscomp_error conformanceViolations \
-#   --jscomp_error functionParams \
-#   --jscomp_error globalThis \
-#   --jscomp_error invalidCasts \
-#   --jscomp_error misplacedTypeAnnotation \
-#   --jscomp_error nonStandardJsDocs \
-#   --jscomp_error suspiciousCode \
-#   --jscomp_error uselessCode \
-#   --jscomp_off accessControls
-#   "
-#   $CMD
-#
-#   if [ $? -eq 0 ]; then
-#     echo -e "\033[32;1mPASS\033[0m" "$pkg"
-#   else
-#     # Add extra space after compiler output
-#     echo ''
-#     echo -e "\033[31;1mFAIL\033[0m" "$pkg"
-#     echo "Failed with the following command:"
-#     echo $CMD
-#     exit 1
-#   fi
-# done
-set -e
+log "TODO: Need to copy from .from-closure-tmp into the repository"
+
+log "TODO: Need to npm test packages"
+echo 'npm run test'
+echo ''
 
 echo ''
 echo '✨  All tests pass! ✨'

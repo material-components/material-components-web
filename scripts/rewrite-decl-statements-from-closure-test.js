@@ -15,57 +15,37 @@
  */
 
 /**
- * @fileoverview Rewrites JS to match a goog.module format. That means
- *  * Add goog.module to the top of the source code
- *  * Rewrite export {foo, bar} to exports = {foo, bar}
- *  * Rewrite export default Foo, to exports = Foo
- *  * Rewrite import Foo from './foo' to const Foo = goog.require('mdc.foo')
- *  * Rewrite import {foo, bar} from './util' to const {foo, bar} = goog.require('mdc.util')
+ * @fileoverview Rewrites JS to match a es6 format. That means
+ *  * Remove goog.module from the top of the source code
+ *  * Rewrite exports = {foo, bar}, to export {foo, bar}
+ *  * Rewrite exports = Foo, to export default Foo
+ *  * Rewrite const Foo = goog.require('mdc.foo'), to import Foo from './foo'
+ *  * Rewrite const {foo, bar} = goog.require('mdc.util'), to import {foo, bar} from './util'
  *
  *
- * This script rewrites import statements such that:
+ * This script rewrites goog.require statements such that:
  *
- * ```js
- * import [<SPECIFIERS> from] '@material/$PKG[/files...]';
- * ```
- * becomes
  * ```js
  * const [<SPECIFIERS>] = goog.require('mdc.$PKG.<RESOLVED_FILE_NAMESPACE>');
  * ```
+ * becomes
+ * ```js
+ * import [<SPECIFIERS> from] '@material/$PKG[/files...]';
+ * ```
  * The RESOLVED_FILE_NAMESPACE is a namespace matching the directory structure.
  *
- * This script also handles third-party dependencies, e.g.
- *
- * ```js
- * import {thing1, thing2} from 'third-party-lib';
- * ```
- *
- * becomes
- *
+ * Known issues:
+ * 1. Does not handle third-party dependencies, e.g.
+
  * ```js
  * const {thing1, thing2} = goog.require('goog:mdc.thirdparty.thirdPartyLib');
- * ```
- *
- * and
- *
- * ```js
- * import someDefaultExport from 'third-party-lib';
- * ```
- *
- * becomes
- *
- * ```js
+ * // or
  * const {someDefaultExport} = goog.require('goog:mdc.thirdparty.thirdPartyLib')
- * ```
- *
- * This is so closure is able to properly build and check our files without breaking when it encounters
- * node modules. Note that while closure does have a --module_resolution NODE flag
- * (https://github.com/google/closure-compiler/wiki/JS-Modules#node-resolution-mode), it has inherent problems
- * that prevents us from using it. See:
- * - https://github.com/google/closure-compiler/issues/2386
- *
- * Note that for third-party modules, they must be defined in closure_externs.js. See that file for more info.
- * Also note that this works on `export .... from ...` as well.
+ * ```js
+ * 2. Whitespace drift.
+ * rewriting require statements introduces extra whitespace during for and from
+ * scrips. To combat that a separate pass is likely needed to normalize Whitespace
+ * around imports/goog.requires
  */
 
 const assert = require('assert');
@@ -79,6 +59,7 @@ const glob = require('glob');
 const recast = require('recast');
 const resolve = require('resolve');
 const t = require('babel-types');
+let moduleMap = {};
 
 main(process.argv);
 
@@ -90,7 +71,57 @@ function main(argv) {
 
   const rootDir = path.resolve(process.argv[2]);
   const srcFiles = glob.sync(`${rootDir}/**/*.js`);
+
+  // first pass, looks for goog.module('module.namespace') and creates a map of module.namespaces to
+  // path.
+  srcFiles.forEach((srcFile) => visit(srcFile, rootDir));
+  logProgress('');
+  console.log('\r\033[32;1mVisit pass completed.\033[0m\n');
+
+  // second pass, do the transforms.
   srcFiles.forEach((srcFile) => transform(srcFile, rootDir));
+  logProgress('');
+  console.log('\r\033[32;1mTransform pass completed.\033[0m\n');
+}
+
+function logProgress(msg) {
+  if (logProgress.__prev_msg_length) {
+    const lineClear = ' '.repeat(logProgress.__prev_msg_length + 10);
+    process.stdout.write('\r' + lineClear);
+  }
+  logProgress.__prev_msg_length = msg.length;
+  process.stdout.write('\r' + msg);
+}
+
+function visit(srcFile, rootDir) {
+  const src = fs.readFileSync(srcFile, 'utf8');
+  let moduleNamespace = '';
+  let moduleName = '';
+  const ast = recast.parse(src, {
+    parser: {
+      parse: (code) => babylon.parse(code, {sourceType: 'script'}),
+    },
+  });
+
+  // Produce moduleMap. Pam of namespaces to paths where that namespace is declared.
+  traverse(ast, {
+    MemberExpression(path) {
+      if (path.node.object.type === 'Identifier' && path.node.property.type === 'Identifier'
+          && path.node.object.name === 'goog' && path.node.property.name === 'module') {
+        const fullyQualifiedModuleName = path.container.arguments[0].value;
+        const namespaceArray = fullyQualifiedModuleName.split('.');
+        const relativePath = srcFile.substr(rootDir.length);
+        // Assign outerscoped module name and namespace to be used in other transforms.
+        if (srcFile.indexOf('index.js') != srcFile.length - 8) {
+          moduleName = namespaceArray.pop();
+        } else {
+          moduleName = 'index';
+        }
+        moduleMap[fullyQualifiedModuleName] = relativePath.substr(0, relativePath.lastIndexOf('.js'));
+        moduleNamespace = namespaceArray.join('.');
+      }
+    }
+  });
 }
 
 function transform(srcFile, rootDir) {
@@ -103,13 +134,10 @@ function transform(srcFile, rootDir) {
     },
   });
 
-  console.log("\n\n__________\nProcessing: " + srcFile);
-
   traverse(ast, {
     MemberExpression(path) {
       if (path.node.object.type === 'Identifier' && path.node.property.type === 'Identifier'
           && path.node.object.name === 'goog' && path.node.property.name === 'module') {
-        console.log('+++++GModule: ' + path.container.arguments[0].value);
         const fullyQualifiedModuleName = path.container.arguments[0].value;
         const namespaceArray = fullyQualifiedModuleName.split('.');
         // Assign outerscoped module name and namespace to be used in other transforms.
@@ -119,15 +147,10 @@ function transform(srcFile, rootDir) {
           moduleName = 'index';
         }
         moduleNamespace = namespaceArray.join('.');
-        console.log('setting: ' + moduleNamespace);
-
+        //console.log('setting: ' + moduleNamespace);
+        path.parentPath.remove();
       }
     }
-        // Find the goog.module('module.path.Type');
-        // record module.path as moduleNamespace;
-        // record Type as moduleName <- naming issue...
-        // replace with nothing, preserve leading comments
-
   });
 
   // Rewrite `export = STUFF;` conversion to `exports SIMILAR_STUFF;`
@@ -170,79 +193,58 @@ function transform(srcFile, rootDir) {
 
           const requireNamespace = declaration.init.arguments[0].value;
           const isRelativePath = requireNamespace.indexOf(moduleNamespace) === 0;
-          console.log('*****req: ' + requireNamespace + ' => in ' + moduleNamespace);
+          let modulePath = moduleMap[requireNamespace];
           let importPath = '';
+          const relativeFilePath = srcFile.substr(rootDir.length);
+          const currentDirectoryPath = relativeFilePath.substr(0, relativeFilePath.lastIndexOf('/'));
           if (isRelativePath) {
-            const relativeNamespace = requireNamespace.substr(moduleNamespace.length + 1); // +1 for trailing `.`
-            const relativePath = './' + relativeNamespace.replace('.', '/');
-            importPath = relativePath;
-//            console.log('RELATIVE:::: ' + relativePath);
+            importPath = '.' + modulePath.substr(currentDirectoryPath.length);
           } else {
-            const namespaceArray = requireNamespace.split('.');
-            namespaceArray[0] = '@material';
-            const absolutePath = namespaceArray.join('.');
-            importPath = absolutePath;
-//            console.log('ABSOLUTE::::' + absolutePath);
+            importPath = modulePath.replace('/mdc-', '@material/');
           }
 
           let typeName = '';
-          let import = null;
+          let importDeclaration = null;
           if (declaration.id.type === 'Identifier') {
             typeName = declaration.id.name;
-            console.log("=======FOUND======= const " + typeName + " = goog.require(" + requireNamespace + ');');
             // import {typeName} from {normalizedPath};
-            const specifier = t.importSpecifier(typeName);
-            import = t.importDeclaration([specifier], importPath);
+            const requiredType = requireNamespace.substr(requireNamespace.lastIndexOf('.') + 1);
+            if (typeName == requiredType) {
+              const specifier = t.importNamespaceSpecifier(t.identifier(typeName));
+              importDeclaration = t.importDeclaration([specifier], t.stringLiteral(importPath));
+            } else {
+              const specifier = t.importDefaultSpecifier(t.identifier(typeName));
+              importDeclaration = t.importDeclaration([specifier], t.stringLiteral(importPath));
+            }
           } else if (declaration.id.type === 'ObjectPattern') {
             let objString = '';
             const specifiers = [];
             for (let i = 0; i < declaration.id.properties.length; i++) {
-              //objString += declaration.id.properties[i].key.name + ',';
               const typeName = declaration.id.properties[i].key.name;
-              const specifier = t.importSpecifier(typeName);
+              const specifier = t.importSpecifier(t.identifier(typeName), t.identifier(typeName));
               specifiers.push(specifier);
             }
-            import = t.importDeclaration(specifiers, importPath);
-            console.log('=======FOUND======= const {' + objString +
-              '} = goog.require(' + requireNamespace + ');');
+            importDeclaration = t.importDeclaration(specifiers, t.stringLiteral(importPath));
           }
-          path.replace(import);
+
+          // Preserve comments above import statements, since this is most likely the license comment.
+          if (path.node.comments && path.node.comments.length > 0) {
+            for (let i = 0; i < path.node.comments.length; i++) {
+              const commentValue = path.node.comments[i].value;
+              importDeclaration.comments = importDeclaration.comments || [];
+              importDeclaration.comments.push({type: 'CommentBlock', value: commentValue});
+            }
+          }
+
+          path.replaceWith(importDeclaration);
         }
       }
     }
   });
 
-  // traverse(ast, {
-  //   ImportDeclaration(path) {
-  //     const callee = t.memberExpression(t.identifier('goog'), t.identifier('require'), false);
-  //     const packageStr = rewriteDeclarationSource(path.node, srcFile, rootDir);
-  //     const callExpression = t.callExpression(callee, [t.stringLiteral(packageStr)]);
-  //
-  //     let variableDeclaratorId;
-  //     if (path.node.specifiers.length > 1 || (src.substr(path.node.specifiers[0].start - 1, 1) === '{')) {
-  //       const properties = [];
-  //       path.node.specifiers.forEach((specifier) => {
-  //         properties.push(t.objectProperty(specifier.local, specifier.local, false, true, []));
-  //       });
-  //       variableDeclaratorId = t.objectPattern(properties);
-  //     } else {
-  //       variableDeclaratorId = path.node.specifiers[0].local;
-  //     }
-  //
-  //     const variableDeclarator = t.variableDeclarator(variableDeclaratorId, callExpression);
-  //     const variableDeclaration = t.variableDeclaration('const', [variableDeclarator]);
-  //     // Preserve comments above import statements, since this is most likely the license comment.
-  //     if (path.node.comments && path.node.comments.length > 0) {
-  //       const commentValue = path.node.comments[0].value;
-  //       variableDeclaration.comments = variableDeclaration.comments || [];
-  //       variableDeclaration.comments.push({type: 'CommentBlock', value: commentValue});
-  //     }
-  //     path.replaceWith(variableDeclaration);
-  //   },
-  // });
-
   let {code: outputCode} = recast.print(ast, {
     objectCurlySpacing: false,
+    reuseWhitespace: true,
     quote: 'single',
     trailingComma: {
       objects: true,
@@ -251,58 +253,6 @@ function transform(srcFile, rootDir) {
     },
   });
 
-  const relativePath = path.relative(rootDir, srcFile);
-  const packageParts = relativePath.replace('mdc-', '').replace(/-/g, '').replace('.js', '').split('/');
-  const packageStr = 'mdc.' + packageParts.join('.').replace('.index', '');
-
-  console.log("DEBUG\n" + relativePath + "\n" + packageParts + "\n" + packageStr)
-  //outputCode = 'goog.module(\'' + packageStr + '\');\n' + outputCode;
   fs.writeFileSync(srcFile, outputCode, 'utf8');
-  console.log(`[rewrote] ${srcFile}`);
-}
-
-function rewriteDeclarationSource(node, srcFile, rootDir) {
-  let source = node.source.value;
-  const pathParts = source.split('/');
-  const isMDCImport = pathParts[0] === '@material';
-  if (isMDCImport) {
-    const modName = pathParts[1]; // @material/<modName>
-    const atMaterialReplacementPath = `${rootDir}/mdc-${modName}`;
-    const rewrittenSource = [atMaterialReplacementPath].concat(pathParts.slice(2)).join('/');
-    source = rewrittenSource;
-  }
-
-  return patchNodeForDeclarationSource(source, srcFile, rootDir, node);
-}
-
-function patchNodeForDeclarationSource(source, srcFile, rootDir, node) {
-  let resolvedSource = source;
-  // See: https://nodejs.org/api/modules.html#modules_all_together (step 3)
-  const wouldLoadAsFileOrDir = ['./', '/', '../'].some((s) => source.indexOf(s) === 0);
-  const isThirdPartyModule = !wouldLoadAsFileOrDir;
-  if (isThirdPartyModule) {
-    assert(source.indexOf('@material') < 0, '@material/* import sources should have already been rewritten');
-    patchDefaultImportIfNeeded(node);
-    resolvedSource = `goog:mdc.thirdparty.${camelCase(source)}`;
-  } else {
-    const normPath = path.normalize(path.dirname(srcFile), source);
-    const needsClosureModuleRootResolution = path.isAbsolute(source) || fs.statSync(normPath).isDirectory();
-    if (needsClosureModuleRootResolution) {
-      resolvedSource = path.relative(rootDir, resolve.sync(source, {
-        basedir: path.dirname(srcFile),
-      }));
-    }
-  }
-  const packageParts = resolvedSource.replace('mdc-', '').replace(/-/g, '').replace('.js', '').split('/');
-  const packageStr = 'mdc.' + packageParts.join('.').replace('.index', '');
-  return packageStr;
-}
-
-function patchDefaultImportIfNeeded(node) {
-  const defaultImportSpecifierIndex = node.specifiers.findIndex(t.isImportDefaultSpecifier);
-  if (defaultImportSpecifierIndex >= 0) {
-    const defaultImportSpecifier = node.specifiers[defaultImportSpecifierIndex];
-    const defaultPropImportSpecifier = t.importSpecifier(defaultImportSpecifier.local, t.identifier('default'));
-    node.specifiers[defaultImportSpecifierIndex] = defaultPropImportSpecifier;
-  }
+  logProgress(`\r[rewrote] ${srcFile}`);
 }

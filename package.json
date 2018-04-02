@@ -170,6 +170,22 @@
     }
   },
   "closureWhitelist": [
-    "mdc-ripple"
-  ]
+        "mdc-animation",
+        "mdc-base",
+        "mdc-checkbox",
+        "mdc-chips",
+        "mdc-floating-label",
+        "mdc-form-field",
+        "mdc-icon-toggle",
+        "mdc-line-ripple",
+        "mdc-menu",
+        "mdc-notched-outline",
+        "mdc-radio",
+        "mdc-ripple",
+        "mdc-selection-control",
+        "mdc-slider",
+        "mdc-tab",
+        "mdc-textfield",
+        "mdc-top-app-bar"
+      ]
 }
