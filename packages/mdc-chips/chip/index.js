@@ -92,9 +92,10 @@ class MDCChip extends MDCComponent {
           trailingIconEl.removeEventListener(evtType, handler);
         }
       },
-      notifyInteraction: () => this.emit(strings.INTERACTION_EVENT, {chip: this.foundation_}, true /* shouldBubble */),
+      notifyInteraction: () => this.emit(
+        strings.INTERACTION_EVENT, {chipFoundation: this.foundation_}, true /* shouldBubble */),
       notifyTrailingIconInteraction: () => this.emit(
-        strings.TRAILING_ICON_INTERACTION_EVENT, {chip: this.foundation_}, true /* shouldBubble */),
+        strings.TRAILING_ICON_INTERACTION_EVENT, {chipFoundation: this.foundation_}, true /* shouldBubble */),
     })));
   }
 

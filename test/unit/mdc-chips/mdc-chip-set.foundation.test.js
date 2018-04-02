@@ -78,7 +78,7 @@ test('on custom MDCChip:interaction event toggles selected state with single sel
 
   chipInteractionHandler({
     detail: {
-      chip: chipA,
+      chipFoundation: chipA,
     },
   });
   td.verify(chipA.toggleSelected());
@@ -86,7 +86,7 @@ test('on custom MDCChip:interaction event toggles selected state with single sel
 
   chipInteractionHandler({
     detail: {
-      chip: chipB,
+      chipFoundation: chipB,
     },
   });
   td.verify(chipA.toggleSelected());
@@ -95,7 +95,7 @@ test('on custom MDCChip:interaction event toggles selected state with single sel
 
   chipInteractionHandler({
     detail: {
-      chip: chipB,
+      chipFoundation: chipB,
     },
   });
   td.verify(chipB.toggleSelected());
@@ -116,7 +116,7 @@ test('on custom MDCChip:interaction event toggles selected state with multi-sele
 
   chipInteractionHandler({
     detail: {
-      chip: chipA,
+      chipFoundation: chipA,
     },
   });
   td.verify(chipA.toggleSelected());
@@ -124,7 +124,7 @@ test('on custom MDCChip:interaction event toggles selected state with multi-sele
 
   chipInteractionHandler({
     detail: {
-      chip: chipB,
+      chipFoundation: chipB,
     },
   });
   td.verify(chipB.toggleSelected());
@@ -132,7 +132,7 @@ test('on custom MDCChip:interaction event toggles selected state with multi-sele
 
   chipInteractionHandler({
     detail: {
-      chip: chipB,
+      chipFoundation: chipB,
     },
   });
   td.verify(chipB.toggleSelected());
@@ -140,7 +140,7 @@ test('on custom MDCChip:interaction event toggles selected state with multi-sele
 
   chipInteractionHandler({
     detail: {
-      chip: chipA,
+      chipFoundation: chipA,
     },
   });
   td.verify(chipA.toggleSelected());
