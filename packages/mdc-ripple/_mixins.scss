@@ -210,11 +210,6 @@
     width: var(--mdc-ripple-fg-size, $radius);
     height: var(--mdc-ripple-fg-size, $radius);
   }
-
-  &.mdc-ripple-upgraded::after {
-    width: var(--mdc-ripple-fg-size, $radius);
-    height: var(--mdc-ripple-fg-size, $radius);
-  }
 }
 
 @mixin mdc-states-interactions_($color, $has-nested-focusable-element, $opacity-modifier: 0) {

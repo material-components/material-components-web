@@ -488,19 +488,27 @@ class MDCRippleFoundation extends MDCFoundation {
     }
   }
 
-  layout() {
+  /**
+   * Recomputes all dimensions and positions for the ripple element.
+   * Optionally include dimensions for ripple surfaces that change size during animation.
+   * @param {{height:number, width: number}=} dimensions
+   */
+  layout(dimensions) {
     if (this.layoutFrame_) {
       cancelAnimationFrame(this.layoutFrame_);
     }
     this.layoutFrame_ = requestAnimationFrame(() => {
-      this.layoutInternal_();
+      this.layoutInternal_(dimensions);
       this.layoutFrame_ = 0;
     });
   }
 
-  /** @private */
-  layoutInternal_() {
-    this.frame_ = this.adapter_.computeBoundingRect();
+  /**
+   * @param {{height:number, width: number}=} dimensions
+   * @private
+   */
+  layoutInternal_(dimensions) {
+    this.frame_ = /** @type {!ClientRect} */ (dimensions) || this.adapter_.computeBoundingRect();
     const maxDim = Math.max(this.frame_.height, this.frame_.width);
 
     // Surface diameter is treated differently for unbounded vs. bounded ripples.
