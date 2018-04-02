@@ -71,6 +71,8 @@ CSS Custom property | Description
 `--mdc-theme-primary` | The theme primary color
 `--mdc-theme-secondary` | The theme secondary color
 `--mdc-theme-background` | The theme background color
+`--mdc-theme-on-primary` | Text color on top of a primary background
+`--mdc-theme-on-secondary` | Text color on top of a secondary background
 `--mdc-theme-text-<TEXT_STYLE>-on-light` | Text color for TEXT_STYLE on top of light background
 `--mdc-theme-text-<TEXT_STYLE>-on-dark` | Text color for TEXT_STYLE on top of dark background
 
@@ -83,6 +85,8 @@ CSS Class | Description
 `mdc-theme--primary` | Sets the text color to the theme primary color
 `mdc-theme--secondary` | Sets the text color to the theme secondary color
 `mdc-theme--background` | Sets the background color to the theme background color
+`mdc-theme--on-primary` | Sets the text color to the theme on-primary color
+`mdc-theme--on-secondary` | Sets the text color to the theme on-secondary color
 `mdc-theme--primary-bg` | Sets the background color to the theme primary color
 `mdc-theme--secondary-bg` | Sets the background color to the theme secondary color
 `mdc-theme--text-<TEXT_STYLE>-on-light` | Sets text to a suitable color for TEXT_STYLE on top of light background
