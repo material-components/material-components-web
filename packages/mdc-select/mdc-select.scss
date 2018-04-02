@@ -93,7 +93,7 @@
   @include mdc-select-container-fill-color(rgba(black, .04));
   @include mdc-ripple-surface;
   @include mdc-ripple-radius-bounded;
-  // Text Field Box intentionally omits press ripple, so each state needs to be specified individually
+  // Select Box intentionally omits press ripple, so each state needs to be specified individually
   @include mdc-states-base-color(text-primary-on-background);
   @include mdc-states-hover-opacity(mdc-states-opacity(text-primary-on-background, hover));
   @include mdc-states-focus-opacity(

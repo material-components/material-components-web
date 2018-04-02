@@ -60,19 +60,14 @@ test('#setDisabled to true calls adapter.setDisabled and adapter.addClass', () =
   td.verify(mockAdapter.addClass(MDCSelectFoundation.cssClasses.DISABLED));
 });
 
-test('#setDisabled to false calls adapter.setDisabled false', () => {
+test('#setDisabled to false calls adapter.setDisabled false and adapter.removeClass', () => {
   const {mockAdapter, foundation} = setupTest();
   foundation.setDisabled(false);
   td.verify(mockAdapter.setDisabled(false));
-});
-
-test('#setDisabled to false removes disabled class', () => {
-  const {mockAdapter, foundation} = setupTest();
-  foundation.setDisabled(false);
   td.verify(mockAdapter.removeClass(MDCSelectFoundation.cssClasses.DISABLED));
 });
 
-test('#init registers focus, blur, and change handler', () => {
+test('#init registers focus, blur, and change handlers', () => {
   const {mockAdapter, foundation} = setupTest();
   foundation.init();
   td.verify(mockAdapter.registerInteractionHandler('focus', foundation.focusHandler_));
@@ -80,7 +75,7 @@ test('#init registers focus, blur, and change handler', () => {
   td.verify(mockAdapter.registerInteractionHandler('change', foundation.selectionHandler_));
 });
 
-test('#destroy deregisters focus, blur, and change handler', () => {
+test('#destroy deregisters focus, blur, and change handlers', () => {
   const {mockAdapter, foundation} = setupTest();
   foundation.destroy();
   td.verify(mockAdapter.deregisterInteractionHandler('focus', foundation.focusHandler_));

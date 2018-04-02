@@ -203,9 +203,9 @@ the result of a user action.
 | `registerInteractionHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` on the `<select>` element. |
 | `deregisterInteractionHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` on the `<select>` element. |
 | `getSelectedIndex() => number` | Returns the selected index of the `<select>` element. |
-| `setSelectedIndex(index: number) => void` | Sets the selected index of the <select> element. |
+| `setSelectedIndex(index: number) => void` | Sets the selected index of the `<select>` element. |
 | `getValue() => string` | Returns the value selected on the `<select>` element. |
-| `setValue(value: string) => void` | Sets the value of the <select> element. |
+| `setValue(value: string) => void` | Sets the value of the `<select>` element. |
 
 ### `MDCSelectFoundation`
 

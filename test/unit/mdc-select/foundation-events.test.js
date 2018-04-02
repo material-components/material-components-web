@@ -31,21 +31,17 @@ function setupTest() {
   return {foundation, mockAdapter, handlers};
 }
 
-function createEvent(data) {
-  return data;
-}
-
 suite('MDCSelectFoundation - Events');
 
 test('on focus activates bottom line', () => {
   const {mockAdapter, handlers} = setupTest();
-  handlers.focus(createEvent());
+  handlers.focus();
   td.verify(mockAdapter.activateBottomLine(), {times: 1});
 });
 
 test('on blur deactivates bottom line', () => {
   const {mockAdapter, handlers} = setupTest();
-  handlers.blur(createEvent());
+  handlers.blur();
   td.verify(mockAdapter.deactivateBottomLine(), {times: 1});
 });
 
@@ -55,9 +51,9 @@ test('on select value change with option value', () => {
   td.when(mockAdapter.getSelectedIndex()).thenReturn(1);
   td.when(mockAdapter.getValue()).thenReturn('abc');
   td.when(mockAdapter.setSelectedIndex(1)).thenReturn();
-  handlers.change(createEvent({
+  handlers.change({
     target: {value: 'abc'},
-  }));
+  });
   td.verify(mockAdapter.addClass(MDCSelectFoundation.cssClasses.IS_CHANGING), {times: 1});
   td.verify(mockAdapter.floatLabel(true), {times: 1});
   clock.tick(MDCSelectFoundation.numbers.FLOAT_NATIVE_CONTROL_TRANSITION_TIME_MS);

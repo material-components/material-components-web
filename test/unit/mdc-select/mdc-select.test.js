@@ -19,8 +19,8 @@ import bel from 'bel';
 import domEvents from 'dom-events';
 import td from 'testdouble';
 import {createMockRaf} from '../helpers/raf';
-import {getMatchesProperty} from '../../../packages/mdc-ripple/util';
 
+import {MDCRipple, MDCRippleFoundation} from '../../../packages/mdc-ripple';
 import {MDCSelect} from '../../../packages/mdc-select';
 import {cssClasses} from '../../../packages/mdc-select/constants';
 
@@ -42,6 +42,23 @@ function getFixture() {
     <div class="mdc-select">
       <select class="mdc-select__native-control">
         <option value="" disabled selected></option>
+        <option value="orange">
+          Orange
+        </option>
+        <option value="apple">
+          Apple
+        </option>
+      </select>
+      <div class="mdc-select__label">Pick a Food Group</div>
+      <div class="mdc-select__bottom-line"></div>
+    </div>
+  `;
+}
+
+function getBoxFixture() {
+  return bel`
+    <div class="mdc-select mdc-select--box">
+      <select class="mdc-select__native-control">
         <option value="orange">
           Orange
         </option>
@@ -105,8 +122,6 @@ test('#set value sets the value on the <select>', () => {
 test('#initialSyncWithDOM sets the selected index if an option has the selected attr', () => {
   const fixture = bel`
     <div class="mdc-select">
-      <div class="mdc-select__label">Pick a Food Group</div>
-      <div class="mdc-select__bottom-line"></div>
       <select class="mdc-select__native-control">
         <option value="orange">
           Orange
@@ -115,6 +130,8 @@ test('#initialSyncWithDOM sets the selected index if an option has the selected 
           Apple
         </option>
       </select>
+      <div class="mdc-select__label">Pick a Food Group</div>
+      <div class="mdc-select__bottom-line"></div>
     </div>
   `;
   const component = new MDCSelect(fixture, /* foundation */ undefined);
@@ -124,7 +141,6 @@ test('#initialSyncWithDOM sets the selected index if an option has the selected 
 test('#initialSyncWithDOM disables the select if the disabled attr is found on the <select>', () => {
   const fixture = bel`
     <div class="mdc-select">
-      <div class="mdc-select__bottom-line"></div>
       <select class="mdc-select__native-control" disabled>
         <option value="orange">
           Orange
@@ -133,6 +149,8 @@ test('#initialSyncWithDOM disables the select if the disabled attr is found on t
           Apple
         </option>
       </select>
+      <div class="mdc-select__label"></div>
+      <div class="mdc-select__bottom-line"></div>
     </div>
   `;
   const component = new MDCSelect(fixture);
@@ -155,7 +173,6 @@ test('adapter#removeClass removes a class from the root element', () => {
 test('adapter_.floatLabel does not throw error if label does not exist', () => {
   const fixture = bel`
     <div class="mdc-select">
-      <div class="mdc-select__bottom-line"></div>
       <select class="mdc-select__native-control">
         <option value="orange">
           Orange
@@ -164,6 +181,7 @@ test('adapter_.floatLabel does not throw error if label does not exist', () => {
           Apple
         </option>
       </select>
+      <div class="mdc-select__bottom-line"></div>
     </div>
   `;
   const component = new MDCSelect(fixture);
@@ -175,7 +193,6 @@ test('adapter.activateBottomLine and adapter.deactivateBottomLine ' +
   'does not throw error if bottomLine does not exist', () => {
   const fixture = bel`
     <div class="mdc-select">
-      <div class="mdc-select__label"></div>
       <select class="mdc-select__native-control">
         <option value="orange">
           Orange
@@ -184,6 +201,7 @@ test('adapter.activateBottomLine and adapter.deactivateBottomLine ' +
           Apple
         </option>
       </select>
+      <div class="mdc-select__label"></div>
     </div>
   `;
   const component = new MDCSelect(fixture);
@@ -193,103 +211,52 @@ test('adapter.activateBottomLine and adapter.deactivateBottomLine ' +
     () => component.getDefaultFoundation().adapter_.deactivateBottomLine());
 });
 
-test(`activates ripple on focus and ${cssClasses.BOX} ` +
-  'class is present', () => {
-  const fixture = bel`
-    <div class="mdc-select mdc-select--box">
-      <div class="mdc-select__label"></div>
-      <select class="mdc-select__native-control">
-        <option value="orange">
-          Orange
-        </option>
-        <option value="apple" selected>
-          Apple
-        </option>
-      </select>
-    </div>
-  `;
+test(`instantiates ripple when ${cssClasses.BOX} class is present`, () => {
+  const fixture = getBoxFixture();
   const raf = createMockRaf();
 
-  MDCSelect.attachTo(fixture);
-
-  const nativeControl = fixture.querySelector('.mdc-select__native-control');
+  const component = MDCSelect.attachTo(fixture);
   raf.flush();
 
-  const fakeMatches = td.func('.matches');
-  td.when(fakeMatches(':active')).thenReturn(true);
-  nativeControl[getMatchesProperty(HTMLElement.prototype)] = fakeMatches;
-
-  assert.isTrue(fixture.classList.contains('mdc-ripple-upgraded'));
-  domEvents.emit(nativeControl, 'focus');
-  raf.flush();
-
-  assert.isTrue(fixture.classList.contains('mdc-ripple-upgraded--background-focused'));
+  assert.instanceOf(component.ripple, MDCRipple);
+  assert.isTrue(fixture.classList.contains(MDCRippleFoundation.cssClasses.ROOT));
   raf.restore();
 });
 
-test('activates ripple on keydown when the select surface is active', () => {
-  const fixture = bel`
-    <div class="mdc-select mdc-select--box">
-      <div class="mdc-select__label"></div>
-      <select class="mdc-select__native-control">
-        <option value="orange">
-          Orange
-        </option>
-        <option value="apple" selected>
-          Apple
-        </option>
-      </select>
-    </div>
-  `;
+test(`handles ripple focus properly when ${cssClasses.BOX} class is present`, () => {
+  const fixture = getBoxFixture();
   const raf = createMockRaf();
 
   MDCSelect.attachTo(fixture);
+  raf.flush();
+
   const nativeControl = fixture.querySelector('.mdc-select__native-control');
+
+  domEvents.emit(nativeControl, 'focus');
   raf.flush();
 
-  const fakeMatches = td.func('.matches');
-  td.when(fakeMatches(':active')).thenReturn(true);
-  nativeControl[getMatchesProperty(HTMLElement.prototype)] = fakeMatches;
-  assert.isTrue(fixture.classList.contains('mdc-ripple-upgraded'));
-  domEvents.emit(nativeControl, 'keydown');
-  raf.flush();
-
-  assert.isTrue(fixture.classList.contains('mdc-ripple-upgraded--foreground-activation'));
+  assert.isTrue(fixture.classList.contains(MDCRippleFoundation.cssClasses.BG_FOCUSED));
   raf.restore();
 });
 
 test('#destroy removes the ripple', () => {
-  const fixture = bel`
-    <div class="mdc-select mdc-select--box">
-      <div class="mdc-select__label"></div>
-      <select class="mdc-select__native-control">
-        <option value="orange">
-          Orange
-        </option>
-        <option value="apple" selected>
-          Apple
-        </option>
-      </select>
-    </div>
-  `;
+  const fixture = getBoxFixture();
   const raf = createMockRaf();
 
   const component = new MDCSelect(fixture);
-  const nativeControl = fixture.querySelector('.mdc-select__native-control');
   raf.flush();
 
-  const fakeMatches = td.func('.matches');
-  td.when(fakeMatches(':active')).thenReturn(true);
-  nativeControl[getMatchesProperty(HTMLElement.prototype)] = fakeMatches;
-
-  assert.isTrue(fixture.classList.contains('mdc-ripple-upgraded'));
-  raf.flush();
-
+  assert.isTrue(fixture.classList.contains(MDCRippleFoundation.cssClasses.ROOT));
   component.destroy();
   raf.flush();
 
-  assert.isFalse(fixture.classList.contains('mdc-ripple-upgraded'));
+  assert.isFalse(fixture.classList.contains(MDCRippleFoundation.cssClasses.ROOT));
   raf.restore();
+});
+
+test(`does not instantiate ripple when ${cssClasses.BOX} class is not present`, () => {
+  const {component} = setupTest();
+  assert.isUndefined(component.ripple);
 });
 
 test('adapter#floatLabel adds a class to the label', () => {

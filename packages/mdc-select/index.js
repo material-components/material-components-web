@@ -18,7 +18,6 @@ import {MDCComponent} from '@material/base/index';
 import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
 import {MDCSelectBottomLine} from './bottom-line/index';
 import {MDCSelectLabel} from './label/index';
-import {getMatchesProperty} from '@material/ripple/util';
 
 import MDCSelectFoundation from './foundation';
 import {cssClasses, strings} from './constants';
@@ -73,9 +72,7 @@ export class MDCSelect extends MDCComponent {
   }
 
   initRipple_() {
-    const MATCHES = getMatchesProperty(HTMLElement.prototype);
     const adapter = Object.assign(MDCRipple.createAdapter(this), {
-      isSurfaceActive: () => this.nativeControl_[MATCHES](':active'),
       registerInteractionHandler: (type, handler) => this.nativeControl_.addEventListener(type, handler),
       deregisterInteractionHandler: (type, handler) => this.nativeControl_.removeEventListener(type, handler),
     });

@@ -79,6 +79,7 @@ function supportsCssVariables(windowObj, forceRefresh = false) {
   } else {
     supportsCssVariables = false;
   }
+
   if (!forceRefresh) {
     supportsCssVariables_ = supportsCssVariables;
   }
