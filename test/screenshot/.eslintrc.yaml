@@ -2,4 +2,4 @@ extends: ../../.eslintrc.yaml
 env:
   browser: true
 parserOptions:
-  ecmaVersion: 2017
+  ecmaVersion: 2017 # Enable async/await support in Node scripts
