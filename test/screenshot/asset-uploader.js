@@ -18,7 +18,6 @@
 
 const fs = require('fs');
 const path = require('path');
-const uuidv4 = require('uuid/v4');
 
 const Storage = require('@google-cloud/storage');
 const glob = require('glob');
@@ -29,7 +28,6 @@ const GCLOUD_SERVICE_ACCOUNT_KEY_FILE_PATH = process.env.MDC_GCLOUD_SERVICE_ACCO
 const GCLOUD_STORAGE_BUCKET_NAME = 'mdc-web-screenshot-tests';
 const GCLOUD_STORAGE_BASE_URL = `https://storage.googleapis.com/${GCLOUD_STORAGE_BUCKET_NAME}/`;
 const LOCAL_DIRECTORY_PREFIX = 'test/screenshot/';
-const SHORT_HASH_STRING_LENGTH = 8;
 
 const gitRepo = simpleGit();
 const storage = new Storage({
@@ -40,22 +38,19 @@ const bucket = storage.bucket(GCLOUD_STORAGE_BUCKET_NAME);
 async function upload() {
   const promises = [];
 
-  // Every batch of files gets stored in a unique directory to prevent collisions.
-  const uuidFull = createUuid();
-  const uuidShort = shorten(uuidFull);
+  // Attaching Git metadata to the uploaded files makes it easier to track down their source.
+  const gitCommitShort = await git('revparse', ['--short', 'HEAD']);
+  const gitBranchName = await git('revparse', ['--abbrev-ref', 'HEAD']);
 
-  // Attaching Git metadata makes it easier to track down the source of uploaded files.
-  const gitLocalBranchName = await git('revparse', ['--abbrev-ref', 'HEAD']);
-  const gitBaseCommitFull = await git('revparse', ['HEAD']);
-  const gitBaseCommitShort = shorten(gitBaseCommitFull);
-
-  const absoluteGcsBaseDir = `${USERNAME}/${gitBaseCommitShort}/${uuidShort}/assets/`;
-  const relativeLocalFilePaths = glob.sync(path.join(LOCAL_DIRECTORY_PREFIX, '**/*.*'));
+  // Every batch of files gets uploaded to a unique timestamped directory to prevent collisions between developers.
+  const {year, month, day, hour, minute, second, ms} = getUtcDateTime();
+  const baseGcsDir = `${USERNAME}/${year}/${month}/${day}/${hour}_${minute}_${second}_${ms}/${gitCommitShort}/assets/`;
+  const relativeLocalFilePaths = glob.sync(path.join(LOCAL_DIRECTORY_PREFIX, '**/*')).filter(isFile);
 
   relativeLocalFilePaths.forEach((relativeLocalFilePath) => {
     const fileContents = fs.readFileSync(relativeLocalFilePath);
     const relativeGcsFilePath = relativeLocalFilePath.replace(LOCAL_DIRECTORY_PREFIX, '');
-    const absoluteGcsFilePath = `${absoluteGcsBaseDir}${relativeGcsFilePath}`;
+    const absoluteGcsFilePath = `${baseGcsDir}${relativeGcsFilePath}`;
 
     console.log(`➡️ Uploading ${absoluteGcsFilePath} ...`);
 
@@ -65,19 +60,19 @@ async function upload() {
     const fileOptions = {
       contentType: 'auto',
 
-      // The nested `metadata` object is not a typo - it's needed by the GCS `File#save()` API.
+      // The nested `metadata` object is not a typo - it's required by the GCS `File#save()` API.
       metadata: {
         metadata: {
-          'X-MDC-Git-Base-Commit': gitBaseCommitFull,
-          'X-MDC-Git-Branch-Name': gitLocalBranchName,
+          'X-MDC-Git-Commit': gitCommitShort,
+          'X-MDC-Git-Branch': gitBranchName,
         },
       },
     };
 
     promises.push(
       file.save(fileContents, fileOptions).then(
-        () => handleUploadSuccess(absoluteGcsBaseDir, relativeGcsFilePath),
-        (err) => handleUploadFailure(absoluteGcsBaseDir, relativeGcsFilePath, err)
+        () => handleUploadSuccess(baseGcsDir, relativeGcsFilePath),
+        (err) => handleUploadFailure(baseGcsDir, relativeGcsFilePath, err)
       )
     );
   });
@@ -85,40 +80,51 @@ async function upload() {
   return Promise.all(promises);
 }
 
-function handleUploadSuccess(absoluteGcsBaseDir, relativeGcsFilePath) {
-  console.log(`✔︎ Uploaded ${GCLOUD_STORAGE_BASE_URL}${absoluteGcsBaseDir}${relativeGcsFilePath}`);
+function getUtcDateTime() {
+  const pad = (num) => String(num).padStart(2, '0');
+  const date = new Date();
+
+  return {
+    year: date.getUTCFullYear(),
+    month: pad(date.getUTCMonth() + 1), // getUTCMonth() returns a zero-based value (e.g., January is `0`)
+    day: pad(date.getUTCDate()),
+    hour: pad(date.getUTCHours()),
+    minute: pad(date.getUTCMinutes()),
+    second: pad(date.getUTCSeconds()),
+    ms: pad(date.getUTCMilliseconds()),
+  };
+}
+
+function handleUploadSuccess(baseGcsDir, relativeGcsFilePath) {
+  console.log(`✔︎ Uploaded ${GCLOUD_STORAGE_BASE_URL}${baseGcsDir}${relativeGcsFilePath}`);
   return {
     status: 'SUCCESS',
     error: null,
     bucketUrl: GCLOUD_STORAGE_BASE_URL,
-    parentDir: absoluteGcsBaseDir,
+    parentDir: baseGcsDir,
     relativePath: relativeGcsFilePath,
-    fullUrl: `${GCLOUD_STORAGE_BASE_URL}${absoluteGcsBaseDir}${relativeGcsFilePath}`,
+    fullUrl: `${GCLOUD_STORAGE_BASE_URL}${baseGcsDir}${relativeGcsFilePath}`,
   };
 }
 
-function handleUploadFailure(absoluteGcsBaseDir, relativeGcsFilePath, err) {
-  console.error(`❌︎ FAILED to upload ${GCLOUD_STORAGE_BASE_URL}${absoluteGcsBaseDir}${relativeGcsFilePath}:\n`, err);
+function handleUploadFailure(baseGcsDir, relativeGcsFilePath, err) {
+  console.error(`❌︎ FAILED to upload ${GCLOUD_STORAGE_BASE_URL}${baseGcsDir}${relativeGcsFilePath}:\n`, err);
   return {
     status: 'ERROR',
     error: err,
     bucketUrl: GCLOUD_STORAGE_BASE_URL,
-    parentDir: absoluteGcsBaseDir,
+    parentDir: baseGcsDir,
     relativePath: relativeGcsFilePath,
-    fullUrl: `${GCLOUD_STORAGE_BASE_URL}${absoluteGcsBaseDir}${relativeGcsFilePath}`,
+    fullUrl: `${GCLOUD_STORAGE_BASE_URL}${baseGcsDir}${relativeGcsFilePath}`,
   };
+}
+
+function isFile(path) {
+  return fs.statSync(path).isFile();
 }
 
 async function git(cmd, argList = []) {
   return (await gitRepo[cmd](argList) || '').trim();
-}
-
-function createUuid() {
-  return uuidv4().replace(/\W+/g, '');
-}
-
-function shorten(hash) {
-  return hash.substr(0, SHORT_HASH_STRING_LENGTH);
 }
 
 module.exports = {
