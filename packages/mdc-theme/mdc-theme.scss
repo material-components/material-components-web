@@ -36,7 +36,7 @@
 }
 
 // CSS rules for using primary and secondary (plus light/dark variants) as background colors.
-@each $style in ("primary", "primary-light", "primary-dark", "secondary", "secondary-light", "secondary-dark") {
+@each $style in ("primary", "secondary") {
   .mdc-theme--#{$style}-bg {
     @include mdc-theme-prop(background-color, $style, true);
   }

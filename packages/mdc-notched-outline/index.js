@@ -35,14 +35,20 @@ class MDCNotchedOutline extends MDCComponent {
   }
 
   /**
-    * Updates the SVG path of the outline element based on the
-    * notch element width and the RTL context.
+    * Updates outline selectors and SVG path to open notch.
     * @param {number} notchWidth The notch width in the outline.
     * @param {boolean=} isRtl Determines if outline is rtl. If rtl is true, notch
     * will be right justified in outline path, otherwise left justified.
     */
-  updateSvgPath(notchWidth, isRtl) {
-    this.foundation_.updateSvgPath(notchWidth, isRtl);
+  notch(notchWidth, isRtl) {
+    this.foundation_.notch(notchWidth, isRtl);
+  }
+
+  /**
+   * Updates the outline selectors to close notch and return it to idle state.
+   */
+  closeNotch() {
+    this.foundation_.closeNotch();
   }
 
   /**
@@ -52,6 +58,8 @@ class MDCNotchedOutline extends MDCComponent {
     return new MDCNotchedOutlineFoundation({
       getWidth: () => this.root_.offsetWidth,
       getHeight: () => this.root_.offsetHeight,
+      addClass: (className) => this.root_.classList.add(className),
+      removeClass: (className) => this.root_.classList.remove(className),
       setOutlinePathAttr: (value) => {
         const path = this.root_.querySelector(strings.PATH_SELECTOR);
         path.setAttribute('d', value);

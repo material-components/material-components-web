@@ -198,24 +198,8 @@ figure {
   background-color: $demo-color-low-luminance;
 }
 
-.demo-theme-bg--low-luminance-light {
-  background-color: mdc-theme-light-variant($demo-color-low-luminance);
-}
-
-.demo-theme-bg--low-luminance-dark {
-  background-color: mdc-theme-dark-variant($demo-color-low-luminance);
-}
-
 .demo-theme-bg--high-luminance {
   background-color: $demo-color-high-luminance;
-}
-
-.demo-theme-bg--high-luminance-light {
-  background-color: mdc-theme-light-variant($demo-color-high-luminance);
-}
-
-.demo-theme-bg--high-luminance-dark {
-  background-color: mdc-theme-dark-variant($demo-color-high-luminance);
 }
 
 .demo-theme-bg--custom-light {
