@@ -70,10 +70,9 @@ async function upload() {
     };
 
     promises.push(
-      file.save(fileContents, fileOptions).then(
-        () => handleUploadSuccess(baseGcsDir, relativeGcsFilePath),
-        (err) => handleUploadFailure(baseGcsDir, relativeGcsFilePath, err)
-      )
+      file.save(fileContents, fileOptions)
+        .then(() => handleUploadSuccess(baseGcsDir, relativeGcsFilePath))
+        .catch((err) => handleUploadFailure(baseGcsDir, relativeGcsFilePath, err))
     );
   });
 
