@@ -18,10 +18,8 @@ import {MDCComponent} from '@material/base/index';
 import {MDCRipple} from '@material/ripple/index';
 
 import MDCToolbarFoundation from './foundation';
-import * as util from './util';
 
 export {MDCToolbarFoundation};
-export {util};
 
 export class MDCToolbar extends MDCComponent {
   static attachTo(root) {
@@ -66,8 +64,8 @@ export class MDCToolbar extends MDCComponent {
       hasClass: (className) => this.root_.classList.contains(className),
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
-      registerScrollHandler: (handler) => window.addEventListener('scroll', handler, util.applyPassive()),
-      deregisterScrollHandler: (handler) => window.removeEventListener('scroll', handler, util.applyPassive()),
+      registerScrollHandler: (handler) => window.addEventListener('scroll', handler),
+      deregisterScrollHandler: (handler) => window.removeEventListener('scroll', handler),
       registerResizeHandler: (handler) => window.addEventListener('resize', handler),
       deregisterResizeHandler: (handler) => window.removeEventListener('resize', handler),
       getViewportWidth: () => window.innerWidth,
