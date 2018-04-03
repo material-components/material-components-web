@@ -108,7 +108,7 @@ function handleUploadSuccess(baseGcsDir, relativeGcsFilePath) {
 }
 
 function handleUploadFailure(baseGcsDir, relativeGcsFilePath, err) {
-  console.error(`❌︎ FAILED to upload ${GCLOUD_STORAGE_BASE_URL}${baseGcsDir}${relativeGcsFilePath}:\n`, err);
+  console.error(`✗︎ FAILED to upload ${GCLOUD_STORAGE_BASE_URL}${baseGcsDir}${relativeGcsFilePath}:\n`, err);
   return {
     status: 'ERROR',
     error: err,
