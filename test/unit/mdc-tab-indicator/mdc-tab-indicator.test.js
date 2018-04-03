@@ -23,15 +23,15 @@ import domEvents from 'dom-events';
 import {
   MDCTabIndicator,
   MDCSlidingTabIndicatorFoundation,
-  MDCIconTabIndicatorFoundation,
+  MDCFadingTabIndicatorFoundation,
 } from '../../../packages/mdc-tab-indicator';
 
 const getFixture = () => bel`
   <span class="mdc-tab-indicator"></span>
 `;
 
-const getIconFixture = () => bel`
-  <span class="mdc-tab-indicator mdc-tab-indicator--icon"></span>
+const getFadingFixture = () => bel`
+  <span class="mdc-tab-indicator mdc-tab-indicator--fade"></span>
 `;
 
 suite('MDCTabIndicator');
@@ -41,7 +41,7 @@ test('attachTo returns an MDCTabIndicator instance', () => {
 });
 
 test('attachTo an icon returns an MDCTabIndicator instance', () => {
-  assert.isTrue(MDCTabIndicator.attachTo(getIconFixture()) instanceof MDCTabIndicator);
+  assert.isTrue(MDCTabIndicator.attachTo(getFadingFixture()) instanceof MDCTabIndicator);
 });
 
 function setupTest() {
@@ -93,46 +93,46 @@ test('#adapter.setStyleProperty sets a style property on the root element', () =
   assert.strictEqual(root.style.backgroundColor, 'red');
 });
 
-function setupMockBarFoundationTest(root = getFixture()) {
+function setupMockSlidingFoundationTest(root = getFixture()) {
   const MockFoundationConstructor = td.constructor(MDCSlidingTabIndicatorFoundation);
   const mockFoundation = new MockFoundationConstructor();
   const component = new MDCTabIndicator(root, mockFoundation);
   return {root, component, mockFoundation};
 }
 
-function setupMockIconFoundationTest(root = getIconFixture()) {
-  const MockFoundationConstructor = td.constructor(MDCIconTabIndicatorFoundation);
+function setupMockFadingFoundationTest(root = getFadingFixture()) {
+  const MockFoundationConstructor = td.constructor(MDCFadingTabIndicatorFoundation);
   const mockFoundation = new MockFoundationConstructor();
   const component = new MDCTabIndicator(root, mockFoundation);
   return {root, component, mockFoundation};
 }
 
 test('#activate bar indicator calls activate with passed args', () => {
-  const {component, mockFoundation} = setupMockBarFoundationTest();
+  const {component, mockFoundation} = setupMockSlidingFoundationTest();
   component.activate({width: 100, left: 0});
   td.verify(mockFoundation.activate({width: 100, left: 0}), {times: 1});
 });
 
 test('#activate icon indicator calls activate with passed args', () => {
-  const {component, mockFoundation} = setupMockIconFoundationTest();
+  const {component, mockFoundation} = setupMockFadingFoundationTest();
   component.activate({width: 1, left: 2});
   td.verify(mockFoundation.activate({width: 1, left: 2}), {times: 1});
 });
 
 test('#deactivate bar indicator calls deactivate', () => {
-  const {component, mockFoundation} = setupMockBarFoundationTest();
+  const {component, mockFoundation} = setupMockSlidingFoundationTest();
   component.deactivate();
   td.verify(mockFoundation.deactivate(), {times: 1});
 });
 
 test('#deactivate icon indicator calls deactivate', () => {
-  const {component, mockFoundation} = setupMockIconFoundationTest();
+  const {component, mockFoundation} = setupMockFadingFoundationTest();
   component.deactivate();
   td.verify(mockFoundation.deactivate(), {times: 1});
 });
 
 test('#computeClientRect calls computeClientRect', () => {
-  const {component, mockFoundation} = setupMockBarFoundationTest();
+  const {component, mockFoundation} = setupMockSlidingFoundationTest();
   component.computeClientRect();
   td.verify(mockFoundation.computeClientRect(), {times: 1});
 });

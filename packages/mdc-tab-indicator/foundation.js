@@ -23,6 +23,7 @@ import {
 
 /**
  * @extends {MDCFoundation<!MDCTabIndcatorAdapter>}
+ * @abstract
  */
 class MDCTabIndicatorFoundation extends MDCFoundation {
   /** @return enum {string} */
@@ -68,6 +69,7 @@ class MDCTabIndicatorFoundation extends MDCFoundation {
   /**
    * Activates the indicator
    * @param {!ClientRect=} previousClientRect
+   * @abstract
    */
   activate(previousClientRect) {} // eslint-disable-line no-unused-vars
 

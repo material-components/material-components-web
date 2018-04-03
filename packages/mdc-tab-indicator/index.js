@@ -76,4 +76,4 @@ class MDCTabIndicator extends MDCComponent {
   }
 }
 
-export {MDCTabIndicator, MDCTabIndicatorFoundation, MDCSlidingTabIndicatorFoundation, MDCIconTabIndicatorFoundation};
+export {MDCTabIndicator, MDCTabIndicatorFoundation, MDCSlidingTabIndicatorFoundation, MDCFadingTabIndicatorFoundation};

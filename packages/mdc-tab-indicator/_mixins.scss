@@ -22,47 +22,43 @@
 }
 
 @mixin mdc-tab-indicator-color($color) {
-  @include mdc-tab-indicator-bar-color_($color);
-
-  &.mdc-tab-indicator--icon {
-    @include mdc-tab-indicator-icon-color_($color);
-  }
+  @include mdc-tab-indicator-bar-color($color);
+  @include mdc-tab-indicator-icon-color($color);
 }
 
 @mixin mdc-tab-indicator-height($height) {
-  @include mdc-tab-indicator-bar-height_($height);
+  @include mdc-tab-indicator-bar-height($height);
+  @include mdc-tab-indicator-icon-height($height);
+}
 
-  &.mdc-tab-indicator--icon {
-    @include mdc-tab-indicator-icon-height_($height);
+@mixin mdc-tab-indicator-bar-color($color) {
+  .mdc-tab-indicator__bar {
+    @include mdc-theme-prop(background-color, $color);
   }
 }
 
-@mixin mdc-tab-indicator-top-border-radius($radius) {
-  @include mdc-tab-indicator-bar-top-corner-radius_($radius);
+@mixin mdc-tab-indicator-bar-height($height) {
+  .mdc-tab-indicator__bar {
+    height: $height;
+  }
 }
 
-// Private mixins
-
-@mixin mdc-tab-indicator-bar-color_($color) {
-  @include mdc-theme-prop(background-color, $color);
+@mixin mdc-tab-indicator-bar-top-corner-radius($radius) {
+  .mdc-tab-indicator__bar {
+    border-top-left-radius: $radius;
+    border-top-right-radius: $radius;
+  }
 }
 
-@mixin mdc-tab-indicator-bar-height_($height) {
-  height: $height;
+@mixin mdc-tab-indicator-icon-color($color) {
+  .mdc-tab-indicator__icon {
+    @include mdc-theme-prop(color, $color);
+  }
 }
 
-@mixin mdc-tab-indicator-bar-top-corner-radius_($radius) {
-  border-top-left-radius: $radius;
-  border-top-right-radius: $radius;
-}
-
-@mixin mdc-tab-indicator-icon-color_($color) {
-  @include mdc-theme-prop(color, $color);
-
-  background: none;
-}
-
-@mixin mdc-tab-indicator-icon-height_($height) {
-  height: $height;
-  font-size: $height;
+@mixin mdc-tab-indicator-icon-height($height) {
+  .mdc-tab-indicator__icon {
+    height: $height;
+    font-size: $height;
+  }
 }

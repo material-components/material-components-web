@@ -44,13 +44,34 @@ npm install --save @material/tab-indicator
 <span class="mdc-tab-indicator"></span>
 ```
 
-##### Tab Indicator Icon
+#### Sliding Bar Indicator
+```html
+<span class="mdc-tab-indicator">
+  <span class="mdc-tab-indicator__bar"></span>
+</span>
+```
+
+#### Fading Icon Indicator
 
 We recommend you load [Material Icons](https://material.io/icons/) from Google Fonts. However, users are free to use whatever icons they like.
 
 ```html
-<span class="mdc-tab-indicator mdc-tab-indicator--icon">
-  <i class="material-icons">lens</i>
+<span class="mdc-tab-indicator mdc-tab-indicator--fade">
+  <span class="mdc-tab-indicator__icon material-icons">star</span>
+</span>
+```
+
+#### Fading Bar Indicator
+```html
+<span class="mdc-tab-indicator mdc-tab-indicator--fade">
+  <span class="mdc-tab-indicator__bar"></span>
+</span>
+```
+
+#### Sliding Icon Indicator
+```html
+<span class="mdc-tab-indicator">
+  <span class="mdc-tab-indicator__icon material-icons">star</span>
 </span>
 ```
 
@@ -58,8 +79,11 @@ We recommend you load [Material Icons](https://material.io/icons/) from Google F
 
 CSS Class | Description
 --- | ---
-`mdc-tab-indicator` | Mandatory.
-`mdc-tab-indicator--icon` | Optional. Sets up the tab indicator to appear as an icon
+`mdc-tab-indicator` | Mandatory. Sets up the tab indicator to slide between states
+`mdc-tab-indicator--active` | Optional. Visually activates the indicator
+`mdc-tab-indicator--fade` | Optional. Sets up the tab indicator fade in on activation and fade out on deactivation
+`mdc-tab-indicator__bar` | Optional. Denotes a bar in the tab indicator
+`mdc-tab-indicator__icon` | Optional. Denotes an icon in the tab indicator
 
 ### Sass Mixins
 
@@ -69,7 +93,11 @@ Mixin | Description
 --- | ---
 `mdc-tab-indicator-color($color)` | Customizes the color of the tab indicator
 `mdc-tab-indicator-height($height)` | Customizes the height of the tab indicator
-`mdc-tab-indicator-top-radius($radius)` | Customizes the top left and top right border radius of the tab indicator
+`mdc-tab-indicator-bar-color($color)` | Customizes the color of the bar subelement
+`mdc-tab-indicator-icon-color($color)` | Customizes the color of the icon subelement
+`mdc-tab-indicator-bar-height($height)` | Customizes the height of the bar subelement
+`mdc-tab-indicator-icon-height($height)` | Customizes the height of the icon subelement
+`mdc-tab-indicator-bar-top-radius($radius)` | Customizes the top left and top right border radius of the bar subelement
 
 ### `MDCTabIndicator`
 

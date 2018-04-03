@@ -19,11 +19,11 @@ import td from 'testdouble';
 
 import {captureHandlers} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
-import MDCIconTabIndicatorFoundation from '../../../packages/mdc-tab-indicator/icon-foundation';
+import MDCFadingTabIndicatorFoundation from '../../../packages/mdc-tab-indicator/fading-foundation';
 
-suite('MDCIconTabIndicatorFoundation');
+suite('MDCFadingTabIndicatorFoundation');
 
-const setupTest = () => setupFoundationTest(MDCIconTabIndicatorFoundation);
+const setupTest = () => setupFoundationTest(MDCFadingTabIndicatorFoundation);
 
 test('#activate registers a transitionend handler', () => {
   const {foundation, mockAdapter} = setupTest();
@@ -31,16 +31,16 @@ test('#activate registers a transitionend handler', () => {
   td.verify(mockAdapter.registerEventHandler('transitionend', td.matchers.isA(Function)));
 });
 
-test(`#activate adds the ${MDCIconTabIndicatorFoundation.cssClasses.ACTIVE} class`, () => {
+test(`#activate adds the ${MDCFadingTabIndicatorFoundation.cssClasses.ACTIVE} class`, () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.activate();
-  td.verify(mockAdapter.addClass(MDCIconTabIndicatorFoundation.cssClasses.ACTIVE));
+  td.verify(mockAdapter.addClass(MDCFadingTabIndicatorFoundation.cssClasses.ACTIVE));
 });
 
-test(`#activate adds the ${MDCIconTabIndicatorFoundation.cssClasses.ANIMATING_ICON_ACTIVATE} class`, () => {
+test(`#activate adds the ${MDCFadingTabIndicatorFoundation.cssClasses.FADING_ACTIVATE} class`, () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.activate();
-  td.verify(mockAdapter.addClass(MDCIconTabIndicatorFoundation.cssClasses.ANIMATING_ICON_ACTIVATE));
+  td.verify(mockAdapter.addClass(MDCFadingTabIndicatorFoundation.cssClasses.FADING_ACTIVATE));
 });
 
 test('#deactivate registers a transitionend handler', () => {
@@ -49,30 +49,30 @@ test('#deactivate registers a transitionend handler', () => {
   td.verify(mockAdapter.registerEventHandler('transitionend', td.matchers.isA(Function)));
 });
 
-test(`#deactivate removes the ${MDCIconTabIndicatorFoundation.cssClasses.ACTIVE} class`, () => {
+test(`#deactivate removes the ${MDCFadingTabIndicatorFoundation.cssClasses.ACTIVE} class`, () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.deactivate();
-  td.verify(mockAdapter.removeClass(MDCIconTabIndicatorFoundation.cssClasses.ACTIVE));
+  td.verify(mockAdapter.removeClass(MDCFadingTabIndicatorFoundation.cssClasses.ACTIVE));
 });
 
-test(`#deactivate adds the ${MDCIconTabIndicatorFoundation.cssClasses.ANIMATING_ICON_DEACTIVATE} class`, () => {
+test(`#deactivate adds the ${MDCFadingTabIndicatorFoundation.cssClasses.FADING_DEACTIVATE} class`, () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.deactivate();
-  td.verify(mockAdapter.addClass(MDCIconTabIndicatorFoundation.cssClasses.ANIMATING_ICON_DEACTIVATE));
+  td.verify(mockAdapter.addClass(MDCFadingTabIndicatorFoundation.cssClasses.FADING_DEACTIVATE));
 });
 
-test(`on transitionend, remove the ${MDCIconTabIndicatorFoundation.cssClasses.ANIMATING_ICON_ACTIVATE} class`, () => {
+test(`on transitionend, remove the ${MDCFadingTabIndicatorFoundation.cssClasses.FADING_ACTIVATE} class`, () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerEventHandler');
   foundation.activate();
   handlers.transitionend();
-  td.verify(mockAdapter.removeClass(MDCIconTabIndicatorFoundation.cssClasses.ANIMATING_ICON_ACTIVATE));
+  td.verify(mockAdapter.removeClass(MDCFadingTabIndicatorFoundation.cssClasses.FADING_ACTIVATE));
 });
 
-test(`on transitionend, remove the ${MDCIconTabIndicatorFoundation.cssClasses.ANIMATING_ICON_DEACTIVATE} class`, () => {
+test(`on transitionend, remove the ${MDCFadingTabIndicatorFoundation.cssClasses.FADING_DEACTIVATE} class`, () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerEventHandler');
   foundation.activate();
   handlers.transitionend();
-  td.verify(mockAdapter.removeClass(MDCIconTabIndicatorFoundation.cssClasses.ANIMATING_ICON_DEACTIVATE));
+  td.verify(mockAdapter.removeClass(MDCFadingTabIndicatorFoundation.cssClasses.FADING_DEACTIVATE));
 });

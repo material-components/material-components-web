@@ -15,13 +15,20 @@
   * limitations under the License.
 */
 
+@import "@material/animation/functions";
 @import "./mixins";
 
 .mdc-tab-indicator {
+  @include mdc-tab-indicator-bar-color(primary);
+  @include mdc-tab-indicator-bar-height(2px);
+  @include mdc-tab-indicator-icon-color(secondary);
+  @include mdc-tab-indicator-icon-height(34px);
+
   display: flex;
   position: absolute;
   top: 0;
   left: 0;
+  align-items: center;
   justify-content: center;
   width: 100%;
   height: 100%;
@@ -31,29 +38,12 @@
   z-index: 1;
 }
 
-.mdc-tab-indicator__bar {
-  @include mdc-tab-indicator-bar-color_(primary);
-
-  align-self: flex-end;
-  width: 100%;
-  height: 2px;
-  // margin-top: auto;
-}
-
-.mdc-tab-indicator__icon {
-  @include mdc-tab-indicator-icon-color_(secondary);
-
-  align-self: center;
-  font-size: 34px;
-  text-align: center;
-}
-
 .mdc-tab-indicator--active {
   @include mdc-tab-indicator-active;
 }
 
 .mdc-tab-indicator--sliding-activate {
-  transition: 250ms transform cubic-bezier(0, 0, .2, 1);
+  transition: 250ms transform $mdc-animation-standard-curve-timing-function;
 }
 
 .mdc-tab-indicator--fading-activate,
@@ -63,4 +53,15 @@
 
 .mdc-tab-indicator--fading-activate {
   transition-delay: 100ms;
+}
+
+.mdc-tab-indicator__bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+.mdc-tab-indicator__icon {
+  text-align: center;
 }

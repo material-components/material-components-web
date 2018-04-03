@@ -16,8 +16,9 @@
     "url": "https://github.com/material-components/material-components-web.git"
   },
   "dependencies": {
-    "@material/base": "^0.29.0",
-    "@material/theme": "^0.33.0"
+    "@material/animation": "^0.34.0",
+    "@material/base": "^0.34.0",
+    "@material/theme": "^0.34.0"
   },
   "publishConfig": {
     "access": "public"

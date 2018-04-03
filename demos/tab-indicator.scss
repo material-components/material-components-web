@@ -8,25 +8,32 @@
   flex-direction: column;
 }
 
-.demo-inner {
+.demo {
+  @include mdc-elevation(1);
+
   display: flex;
   align-items: center;
+  width: 301px;
   height: 50px;
   margin: 2rem 0;
 }
 
 .demo-item {
-  display: flex;
   position: relative;
   flex: 1 0 auto;
-  align-items: center;
-  justify-content: center;
   width: 150px;
   max-width: 150px;
   height: inherit;
-  margin: 1rem;
   background-color: $material-color-grey-50;
-  text-align: center;
+  cursor: pointer;
+}
+
+.demo-item:hover {
+  background-color: white;
+}
+
+.demo > .demo-item:nth-child(n + 2) {
+  border-left: 1px solid $material-color-grey-300;
 }
 
 .demo-item--wide {
@@ -44,10 +51,6 @@
   z-index: 2;
 }
 
-.demo-indicator .custom-icon {
-  font-size: inherit;
-}
-
 .custom-color {
   @include mdc-tab-indicator-color($material-color-orange-a400);
 }
@@ -61,6 +64,17 @@
 }
 
 .custom-border-radius {
-  @include mdc-tab-indicator-height(8px);
-  @include mdc-tab-indicator-top-border-radius(8px);
+  @include mdc-tab-indicator-height(5px);
+  @include mdc-tab-indicator-bar-top-corner-radius(5px);
+}
+
+.custom-fading-bar {
+  @include mdc-tab-indicator-height(4px);
+  @include mdc-tab-indicator-color($material-color-green-a400);
+  @include mdc-tab-indicator-bar-top-corner-radius(4px);
+}
+
+.custom-sliding-icon {
+  @include mdc-tab-indicator-height(24px);
+  @include mdc-tab-indicator-color($material-color-pink-a400);
 }
