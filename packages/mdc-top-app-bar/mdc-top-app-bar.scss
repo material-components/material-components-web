@@ -129,6 +129,20 @@
   }
 }
 
+.mdc-top-app-bar--dense {
+  .mdc-top-app-bar__row {
+    height: $mdc-top-app-bar-dense-row-height;
+  }
+
+  .mdc-top-app-bar__section {
+    padding: 0 $mdc-top-app-bar-dense-section-horizontal-padding;
+  }
+
+  .mdc-top-app-bar__title {
+    @include mdc-rtl-reflexive-box(padding, left, $mdc-top-app-bar-dense-title-left-padding);
+  }
+}
+
 .mdc-top-app-bar--prominent {
   .mdc-top-app-bar__row {
     height: $mdc-top-app-bar-prominent-row-height;
@@ -144,6 +158,25 @@
     align-self: flex-start;
   }
 }
+
+// Specific styles for prominent and dense styled top app bar
+// stylelint-disable plugin/selector-bem-pattern
+.mdc-top-app-bar--dense.mdc-top-app-bar--prominent {
+  .mdc-top-app-bar__row {
+    height: $mdc-top-app-bar-dense-row-height * 2;
+  }
+
+  .mdc-top-app-bar__section {
+    padding: 0 $mdc-top-app-bar-section-horizontal-padding;
+  }
+
+  .mdc-top-app-bar__title {
+    @include mdc-rtl-reflexive-box(padding, left, $mdc-top-app-bar-title-left-padding);
+
+    padding-bottom: $mdc-top-app-bar-prominent-dense-title-bottom-padding;
+  }
+}
+// stylelint-enable plugin/selector-bem-pattern
 
 // Mobile Styles
 @include mdc-top-app-bar-mobile-breakpoint_;
