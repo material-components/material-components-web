@@ -80,8 +80,7 @@ class MDCChipSetFoundation extends MDCFoundation {
    * @private
    */
   handleChipInteraction_(evt) {
-    const {chip} = evt.detail;
-    const chipFoundation = chip.foundation;
+    const chipFoundation = evt.detail.chip.foundation;
     if (this.adapter_.hasClass(cssClasses.CHOICE)) {
       if (this.selectedChips_.length === 0) {
         this.selectedChips_[0] = chipFoundation;
