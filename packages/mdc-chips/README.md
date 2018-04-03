@@ -154,6 +154,7 @@ To use the `MDCChip` and `MDCChipSet` classes, [import](../../docs/importing-js.
 
 Method Signature | Description
 --- | ---
+`get foundation() => MDCChipFoundation` | Returns the foundation
 `toggleSelected() => void` | Proxies to the foundation's `toggleSelected` method
 
 Property | Value Type | Description
@@ -185,7 +186,7 @@ Method Signature | Description
 `notifyInteraction() => void` | Emits a custom event `MDCChip:interaction` denoting the chip has been interacted with
 `notifyTrailingIconInteraction() => void` | Emits a custom event `MDCChip:trailingIconInteraction` denoting the chip's trailing icon has been interacted with
 
-> _NOTE_: The custom events emitted by `notifyInteraction` and `notifyTrailingIconInteraction` must pass along the target chip in its event details, as well as bubble to the parent `mdc-chip-set` element.
+> _NOTE_: The custom events emitted by `notifyInteraction` and `notifyTrailingIconInteraction` must pass along the target chip in its event `detail`, as well as bubble to the parent `mdc-chip-set` element.
 
 #### `MDCChipSetAdapter`
 
