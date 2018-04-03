@@ -22,6 +22,7 @@
   align-items: center;
   justify-content: center;
   width: 150px;
+  max-width: 150px;
   height: inherit;
   margin: 1rem;
   background-color: $material-color-grey-50;
@@ -30,13 +31,36 @@
 
 .demo-item--wide {
   width: 250px;
+  max-width: 250px;
 }
 
 .demo-item--narrow {
   width: 100px;
+  max-width: 100px;
 }
 
 .demo-label {
   position: relative;
   z-index: 2;
+}
+
+.demo-indicator .custom-icon {
+  font-size: inherit;
+}
+
+.custom-color {
+  @include mdc-tab-indicator-color($material-color-orange-a400);
+}
+
+.custom-height {
+  @include mdc-tab-indicator-height(8px);
+}
+
+.custom-height-icon {
+  @include mdc-tab-indicator-height(44px);
+}
+
+.custom-border-radius {
+  @include mdc-tab-indicator-height(8px);
+  @include mdc-tab-indicator-top-border-radius(8px);
 }

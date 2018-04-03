@@ -21,7 +21,7 @@ import MDCTabIndicatorAdapter from './adapter';
 import MDCTabIndicatorFoundation from './foundation';
 
 import MDCSlidingTabIndicatorFoundation from './sliding-foundation';
-import MDCIconTabIndicatorFoundation from './icon-foundation';
+import MDCFadingTabIndicatorFoundation from './fading-foundation';
 
 /**
  * @extends {MDCComponent<!MDCTabIndicatorFoundation>}
@@ -56,8 +56,8 @@ class MDCTabIndicator extends MDCComponent {
       setStyleProperty: (prop, value) => this.root_.style.setProperty(prop, value),
     }));
 
-    if (this.root_.classList.contains(MDCTabIndicatorFoundation.cssClasses.ICON)) {
-      return new MDCIconTabIndicatorFoundation(adapter);
+    if (this.root_.classList.contains(MDCTabIndicatorFoundation.cssClasses.FADE)) {
+      return new MDCFadingTabIndicatorFoundation(adapter);
     }
 
     // Default to the bar indicator

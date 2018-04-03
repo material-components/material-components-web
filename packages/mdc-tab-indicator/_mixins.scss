@@ -24,7 +24,7 @@
 @mixin mdc-tab-indicator-color($color) {
   @include mdc-tab-indicator-bar-color_($color);
 
-  .mdc-tab-indicator--icon {
+  &.mdc-tab-indicator--icon {
     @include mdc-tab-indicator-icon-color_($color);
   }
 }
@@ -32,7 +32,7 @@
 @mixin mdc-tab-indicator-height($height) {
   @include mdc-tab-indicator-bar-height_($height);
 
-  .mdc-tab-indicator--icon {
+  &.mdc-tab-indicator--icon {
     @include mdc-tab-indicator-icon-height_($height);
   }
 }

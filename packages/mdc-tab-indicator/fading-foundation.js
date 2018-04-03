@@ -21,18 +21,24 @@ import MDCTabIndicatorFoundation from './foundation';
  * @extends {MDCTabIndicatorFoundation}
  * @final
  */
-class MDCIconTabIndicatorFoundation extends MDCTabIndicatorFoundation {
+class MDCFadingTabIndicatorFoundation extends MDCTabIndicatorFoundation {
+  handleTransitionEnd() {
+    super.handleTransitionEnd();
+    this.adapter_.removeClass(MDCTabIndicatorFoundation.cssClasses.FADING_ACTIVATE);
+    this.adapter_.removeClass(MDCTabIndicatorFoundation.cssClasses.FADING_DEACTIVATE);
+  }
+
   activate() {
     this.adapter_.registerEventHandler('transitionend', this.handleTransitionEnd_);
-    this.adapter_.addClass(MDCTabIndicatorFoundation.cssClasses.ANIMATING_ICON_ACTIVATE);
+    this.adapter_.addClass(MDCTabIndicatorFoundation.cssClasses.FADING_ACTIVATE);
     this.adapter_.addClass(MDCTabIndicatorFoundation.cssClasses.ACTIVE);
   }
 
   deactivate() {
     this.adapter_.registerEventHandler('transitionend', this.handleTransitionEnd_);
-    this.adapter_.addClass(MDCTabIndicatorFoundation.cssClasses.ANIMATING_ICON_DEACTIVATE);
+    this.adapter_.addClass(MDCTabIndicatorFoundation.cssClasses.FADING_DEACTIVATE);
     this.adapter_.removeClass(MDCTabIndicatorFoundation.cssClasses.ACTIVE);
   }
 }
 
-export default MDCIconTabIndicatorFoundation;
+export default MDCFadingTabIndicatorFoundation;

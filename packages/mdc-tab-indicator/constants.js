@@ -18,10 +18,10 @@
 /** @enum {string} */
 const cssClasses = {
   ACTIVE: 'mdc-tab-indicator--active',
-  ICON: 'mdc-tab-indicator--icon',
-  ANIMATING_ICON_ACTIVATE: 'mdc-tab-indicator--icon-animating-activate',
-  ANIMATING_ICON_DEACTIVATE: 'mdc-tab-indicator--icon-animating-deactivate',
-  ANIMATING: 'mdc-tab-indicator--animating',
+  FADE: 'mdc-tab-indicator--fade',
+  FADING_ACTIVATE: 'mdc-tab-indicator--fading-activate',
+  FADING_DEACTIVATE: 'mdc-tab-indicator--fading-deactivate',
+  SLIDING_ACTIVATE: 'mdc-tab-indicator--sliding-activate',
 };
 
 export {

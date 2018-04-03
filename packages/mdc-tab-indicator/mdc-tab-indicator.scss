@@ -18,28 +18,32 @@
 @import "./mixins";
 
 .mdc-tab-indicator {
-  @include mdc-tab-indicator-bar-color_(primary);
-
+  display: flex;
   position: absolute;
-  bottom: 0;
+  top: 0;
   left: 0;
+  justify-content: center;
   width: 100%;
-  height: 2px;
+  height: 100%;
   transform-origin: left;
   opacity: 0;
   pointer-events: none;
   z-index: 1;
 }
 
-.mdc-tab-indicator--icon {
+.mdc-tab-indicator__bar {
+  @include mdc-tab-indicator-bar-color_(primary);
+
+  align-self: flex-end;
+  width: 100%;
+  height: 2px;
+  // margin-top: auto;
+}
+
+.mdc-tab-indicator__icon {
   @include mdc-tab-indicator-icon-color_(secondary);
 
-  display: flex;
-  bottom: auto;
-  align-items: center;
-  justify-content: center;
-  height: 34px;
-  background: none;
+  align-self: center;
   font-size: 34px;
   text-align: center;
 }
@@ -48,15 +52,15 @@
   @include mdc-tab-indicator-active;
 }
 
-.mdc-tab-indicator--animating {
+.mdc-tab-indicator--sliding-activate {
   transition: 250ms transform cubic-bezier(0, 0, .2, 1);
 }
 
-.mdc-tab-indicator--icon-animating-activate,
-.mdc-tab-indicator--icon-animating-deactivate {
+.mdc-tab-indicator--fading-activate,
+.mdc-tab-indicator--fading-deactivate {
   transition: 150ms opacity linear;
 }
 
-.mdc-tab-indicator--icon-animating-activate {
+.mdc-tab-indicator--fading-activate {
   transition-delay: 100ms;
 }

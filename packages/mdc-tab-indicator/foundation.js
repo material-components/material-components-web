@@ -23,7 +23,6 @@ import {
 
 /**
  * @extends {MDCFoundation<!MDCTabIndcatorAdapter>}
- * @abstract
  */
 class MDCTabIndicatorFoundation extends MDCFoundation {
   /** @return enum {string} */
@@ -54,25 +53,21 @@ class MDCTabIndicatorFoundation extends MDCFoundation {
     this.handleTransitionEnd_ = () => this.handleTransitionEnd();
   }
 
-  /**
-   * Handles the transitionend event
-   */
-  handleTransitionEnd() {
-    this.adapter_.deregisterEventHandler('transitionend', this.handleTransitionEnd_);
-    this.adapter_.removeClass(MDCTabIndicatorFoundation.cssClasses.ANIMATING_ICON_ACTIVATE);
-    this.adapter_.removeClass(MDCTabIndicatorFoundation.cssClasses.ANIMATING_ICON_DEACTIVATE);
-    this.adapter_.removeClass(MDCTabIndicatorFoundation.cssClasses.ANIMATING);
-  }
-
   /** @return {!ClientRect} */
   computeClientRect() {
     return this.adapter_.computeClientRect();
   }
 
   /**
+   * Handles the transitionend event
+   */
+  handleTransitionEnd() {
+    this.adapter_.deregisterEventHandler('transitionend', this.handleTransitionEnd_);
+  }
+
+  /**
    * Activates the indicator
    * @param {!ClientRect=} previousClientRect
-   * @abstract
    */
   activate(previousClientRect) {} // eslint-disable-line no-unused-vars
 

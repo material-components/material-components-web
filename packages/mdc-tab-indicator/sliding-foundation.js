@@ -22,11 +22,15 @@ import MDCTabIndicatorFoundation from './foundation';
  * @final
  */
 class MDCSlidingTabIndicatorFoundation extends MDCTabIndicatorFoundation {
+  handleTransitionEnd() {
+    super.handleTransitionEnd();
+    this.adapter_.removeClass(MDCTabIndicatorFoundation.cssClasses.SLIDING_ACTIVATE);
+  }
+
   /**
    * @param {!ClientRect=} previousClientRect
    */
   activate(previousClientRect) {
-    // Activate the tab
     this.adapter_.addClass(MDCTabIndicatorFoundation.cssClasses.ACTIVE);
 
     // Early exit if no indicator is present to handle cases where an indicator
@@ -49,7 +53,7 @@ class MDCSlidingTabIndicatorFoundation extends MDCTabIndicatorFoundation {
 
     // Add animating class and remove transformation in a new frame
     requestAnimationFrame(() => {
-      this.adapter_.addClass(MDCTabIndicatorFoundation.cssClasses.ANIMATING);
+      this.adapter_.addClass(MDCTabIndicatorFoundation.cssClasses.SLIDING_ACTIVATE);
       this.adapter_.setStyleProperty('transform', '');
     });
 
@@ -57,10 +61,11 @@ class MDCSlidingTabIndicatorFoundation extends MDCTabIndicatorFoundation {
   }
 
   deactivate() {
+    this.adapter_.removeClass(MDCTabIndicatorFoundation.cssClasses.ACTIVE);
     // We remove the animating class in deactivate in case the Tab is deactivated before the animation completes and
     // the "transitionend" handler isn't called.
-    this.adapter_.removeClass(MDCTabIndicatorFoundation.cssClasses.ANIMATING);
-    this.adapter_.removeClass(MDCTabIndicatorFoundation.cssClasses.ACTIVE);
+    this.adapter_.removeClass(MDCTabIndicatorFoundation.cssClasses.SLIDING_ACTIVATE);
+    this.adapter_.deregisterEventHandler('transitionend', this.handleTransitionEnd_);
   }
 }
 
