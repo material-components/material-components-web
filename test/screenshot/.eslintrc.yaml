@@ -1,0 +1,5 @@
+extends: ../../.eslintrc.yaml
+env:
+  browser: true
+parserOptions:
+  ecmaVersion: 2017

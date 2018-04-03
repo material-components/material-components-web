@@ -76,9 +76,9 @@ async function upload() {
 
     promises.push(
       file.save(fileContents, fileOptions).then(
-          () => handleUploadSuccess(absoluteGcsBaseDir, relativeGcsFilePath),
-          (err) => handleUploadFailure(absoluteGcsBaseDir, relativeGcsFilePath, err)
-        )
+        () => handleUploadSuccess(absoluteGcsBaseDir, relativeGcsFilePath),
+        (err) => handleUploadFailure(absoluteGcsBaseDir, relativeGcsFilePath, err)
+      )
     );
   });
 
