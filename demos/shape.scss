@@ -30,12 +30,8 @@
 // Demo buttons
 // (TODO: padding, possibly through new button mixins)
 
-.left-arrow-container {
-  @include mdc-shape-angled-corner($mdc-theme-background, $mdc-button-height / 2, 0, 0, $mdc-button-height / 2);
-}
-
-.right-arrow-container {
-  @include mdc-shape-angled-corner($mdc-theme-background, 0, $mdc-button-height / 2, $mdc-button-height / 2, 0);
+.two-corner-container {
+  @include mdc-shape-angled-corner($mdc-theme-background, $mdc-button-height / 4, 0);
 }
 
 .four-corner-container {
@@ -43,9 +39,13 @@
   @include mdc-shape-angled-corner($mdc-theme-background, $mdc-button-height / 4 + 1);
 }
 
-.left-arrow-container--stroked,
-.right-arrow-container--stroked,
-.four-corner-container--stroked {
+.right-arrow-container {
+  @include mdc-shape-angled-corner($mdc-theme-background, 0, $mdc-button-height / 2, $mdc-button-height / 2, 0);
+}
+
+.two-corner-container--stroked,
+.four-corner-container--stroked,
+.right-arrow-container--stroked {
   @include mdc-shape-angled-corner-stroke(2px, $mdc-theme-primary);
 }
 
