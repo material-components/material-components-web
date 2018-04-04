@@ -4,7 +4,7 @@ layout: detail
 section: components
 excerpt: "The notched outline is a border around either a text field or select element"
 iconId: text_field
-path: /catalog/input-controls/notched-outline
+path: /catalog/input-controls/notched-outline/
 -->
 
 # Notched Outline
