@@ -14,10 +14,6 @@
 // limitations under the License.
 //
 
-//
-// Corners on filled elements
-//
-
 .mdc-shape-angled-corner-container {
   display: inline-block;
   position: relative;
@@ -54,4 +50,3 @@
 .mdc-shape-angled-corner-container__corner--bottom-left {
   transform: rotate(-135deg);
 }
-
