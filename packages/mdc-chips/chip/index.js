@@ -62,6 +62,13 @@ class MDCChip extends MDCComponent {
   /**
    * @return {!MDCChipFoundation}
    */
+  get foundation() {
+    return this.foundation_;
+  }
+
+  /**
+   * @return {!MDCChipFoundation}
+   */
   getDefaultFoundation() {
     return new MDCChipFoundation(/** @type {!MDCChipAdapter} */ (Object.assign({
       addClass: (className) => this.root_.classList.add(className),

@@ -1,3 +1,14 @@
+<a name="0.34.1"></a>
+## [0.34.1](https://github.com/material-components/material-components-web/compare/v0.34.0...v0.34.1) (2018-04-03)
+
+
+### Bug Fixes
+
+* **infrastructure:** Unexpose private tab  ([#2499](https://github.com/material-components/material-components-web/issues/2499)) ([306fd7f](https://github.com/material-components/material-components-web/commit/306fd7f)), closes [#2498](https://github.com/material-components/material-components-web/issues/2498)
+* **ripple:** Clean activation timer and css when interrupted ([#2490](https://github.com/material-components/material-components-web/issues/2490)) ([18cba98](https://github.com/material-components/material-components-web/commit/18cba98))
+
+
+
 <a name="0.34.0"></a>
 # [0.34.0](https://github.com/material-components/material-components-web/compare/v0.33.0...v0.34.0) (2018-04-02)
 
