@@ -111,7 +111,7 @@
 
   .mdc-select__native-control,
   .mdc-select__label {
-    @include mdc-typography(subheading2);
+    @include mdc-typography(subtitle1);
   }
 
   .mdc-select__native-control {
