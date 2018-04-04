@@ -16,10 +16,9 @@
  */
 
 import MDCComponent from '@material/base/component';
-import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
-import {MDCTabIndicator} from '@material/tab-indictor/index';
+import {MDCRipple} from '@material/ripple/index';
 
-import {MDCTabAdapter, FoundationMapType} from './adapter';
+import MDCTabAdapter from './adapter';
 import MDCTabFoundation from './foundation';
 
 /**
@@ -32,10 +31,9 @@ class MDCTab extends MDCComponent {
    */
   constructor(...args) {
     super(...args);
-    /** @private {?MDCRipple} */
-    this.ripple_;
-    /** @private {?MDCTabIndicator} */
-    this.tabIndicator_;
+
+    /** @private {!MDCRipple} */
+    this.ripple_ = new MDCRipple(this.root_);
   }
 
   /**
@@ -46,39 +44,9 @@ class MDCTab extends MDCComponent {
     return new MDCTab(root);
   }
 
-  /**
-   * @param {(function(!Element): !MDCRipple)=} rippleFactory A function which creates a new MDCRipple.
-   * @param {(function(!Element): !MDCTabIndicator)=} tabIndicatorFactory A function which creates
-   * a new MDCTabIndicator.
-   */
-  initialize(
-    rippleFactory = (el, foundation) => new MDCRipple(el, foundation),
-    tabIndicatorFactory = (el) => new MDCTabIndicator(el)) {
-    const rippleSurface = this.root_.querySelector(strings.RIPPLE_SELECTOR);
-    const rippleAdapter = Object.assign(MDCRipple.createAdapter(/** @type {!RippleCapableSurface} */ (this)), {
-      addClass: (className) => rippleSurface.classList.add(className),
-      removeClass: (className) => rippleSurface.classList.remove(className),
-      updateCssVariable: (varName, value) => rippleSurface.style.setProperty(varName, value),
-    });
-    const rippleFoundation = new MDCRippleFoundation(rippleAdapter);
-    this.ripple_ = rippleFactory(this.root_, rippleFoundation);
-
-    const tabIndicator = this.root_.querySelector(strings.TAB_INDICATOR_SELECTOR);
-    if (tabIndicator) {
-      this.tabIndicator_ = tabIndicatorFactory(tabIndicator);
-    }
-  }
-
   destroy() {
     this.ripple_.destroy();
     super.destroy();
-  }
-
-  /**
-   * @return {boolean}
-   */
-  get active() {
-    return this.foundation_.isActive();
   }
 
   /**
@@ -96,13 +64,21 @@ class MDCTab extends MDCComponent {
   }
 
   /**
-   * Returns a map of all subcomponents to subfoundations.
-   * @return {!FoundationMapType}
+   * @return {boolean}
    */
-  getFoundationMap_() {
-    return {
-      tabIndicator: this.tabIndicator_ ? this.tabIndicator_.foundation : undefined,
-    };
+  get active() {
+    return this.foundation_.isActive();
+  }
+
+  /**
+   * @param {boolean} isActive
+   */
+  set active(isActive) {
+    if (isActive) {
+      this.foundation_.activate();
+    } else {
+      this.foundation_.deactivate();
+    }
   }
 }
 

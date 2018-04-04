@@ -15,17 +15,7 @@
  * limitations under the License.
  */
 
-/* eslint-disable no-unused-vars */
-import MDCTabIndicatorFoundation from '@material/tab-indicator/foundation';
-
 /* eslint no-unused-vars: [2, {"args": "none"}] */
-
-/**
- * @typedef {{
- *   tabIndicator: (!MDCTabIndicatorFoundation|undefined),
- * }}
- */
-let FoundationMapType;
 
 /**
  * Adapter for MDC Tab.
@@ -79,4 +69,4 @@ class MDCTabAdapter {
   setAttr(attr, value) {}
 }
 
-export {MDCTabAdapter, FoundationMapType};
+export default MDCTabAdapter;
