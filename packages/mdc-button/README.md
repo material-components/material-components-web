@@ -143,6 +143,7 @@ Mixin | Description
 `mdc-button-icon-color($color)` | Sets the icon color to the given color.
 `mdc-button-ink-color($color)` | Sets the ink color to the given color. This affects both text and icon, unless `mdc-button-icon-color` is also used.
 `mdc-button-corner-radius($corner-radius)` | Sets the corner radius to the given number (defaults to 2px).
+`mdc-button-angled-corner($background-color, $top-left-size[, $top-right-size, $bottom-right-size, $bottom-left-size, $stroke-width])` | Applies styles for masking angled corners using [MDC Shape](../mdc-shape#sass-mixins), with additional consideration for adjusting padding. `$stroke-width` defaults to 0, but should be specified to match `mdc-button-stroke-width` and `mdc-shape-angled-corner-stroke` if used.
 `mdc-button-horizontal-padding($padding)` | Sets horizontal padding to the given number.
 `mdc-button-stroke-color($color)` | Sets the stroke color to the given color.
 `mdc-button-stroke-width($width, $padding)` | Sets the stroke width to the given number (defaults to 2px) and adjusts padding accordingly. `$padding` is only required in cases where `mdc-button-horizontal-padding` is also included with a custom value.
