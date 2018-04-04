@@ -215,25 +215,17 @@
         var rtlCheckbox = document.getElementById('rtl-checkbox');
         var noActionItemCheckbox = document.getElementById('no-action-item-checkbox');
         var fixedCheckbox = document.getElementById('fixed-checkbox');
+        var denseCheckbox = document.getElementById('dense-checkbox');
         var prominentCheckbox = document.getElementById('prominent-checkbox');
         var shortCheckbox = document.getElementById('short-checkbox');
         var alwaysCollapsedCheckbox = document.getElementById('always-collapsed-checkbox');
-        var denseCheckbox = document.getElementById('dense-checkbox');
-        var prominentCheckbox = document.getElementById('prominent-checkbox');
+
 
         appBarEl.addEventListener('MDCTopAppBar:nav', function() {
           drawer.open = true;
         });
 
         // Generic Options
-        rtlCheckbox.addEventListener('change', function()  {
-          document.body.setAttribute('dir', this.checked ? 'rtl': 'ltr');
-          appBarEl.classList.remove('mdc-top-app-bar--short-has-action-item');
-
-          appBar.destroy();
-          appBar = mdc.topAppBar.MDCTopAppBar.attachTo(appBarEl);
-        });
-
         noActionItemCheckbox.addEventListener('change', function()  {
           if (this.checked) {
             rightSection.removeChild(rightItemEl);
@@ -244,11 +236,19 @@
           }
         });
 
-        // Top App Bar Specific Options
-        prominentCheckbox.addEventListener('change', function()  {
-          appBarEl.classList[this.checked ? 'add' : 'remove']('mdc-top-app-bar--prominent');
+        rtlCheckbox.addEventListener('change', function()  {
+          document.body.setAttribute('dir', this.checked ? 'rtl': 'ltr');
+          appBarEl.classList.remove('mdc-top-app-bar--short-has-action-item');
 
-          shortCheckbox.disabled = this.checked;
+          appBar.destroy();
+          appBar = mdc.topAppBar.MDCTopAppBar.attachTo(appBarEl);
+        });
+
+        // Top App Bar Specific Options
+        denseCheckbox.addEventListener('change', function()  {
+          appBarEl.classList[this.checked ? 'add' : 'remove']('mdc-top-app-bar--dense');
+
+          shortCheckbox.disabled = this.checked || prominentCheckbox.checked || fixedCheckbox.checked;
         });
 
         fixedCheckbox.addEventListener('change', function()  {
@@ -260,6 +260,12 @@
           appBar = mdc.topAppBar.MDCTopAppBar.attachTo(appBarEl);
 
           shortCheckbox.disabled = this.checked || prominentCheckbox.checked || denseCheckbox.checked;
+        });
+
+        prominentCheckbox.addEventListener('change', function()  {
+          appBarEl.classList[this.checked ? 'add' : 'remove']('mdc-top-app-bar--prominent');
+
+          shortCheckbox.disabled = this.checked || denseCheckbox.checked || fixedCheckbox.checked;
         });
 
         // Short Top App Bar Specific Options
@@ -289,17 +295,7 @@
           appBar = mdc.topAppBar.MDCTopAppBar.attachTo(appBarEl);
         });
 
-        denseCheckbox.addEventListener('change', function()  {
-          appBarEl.classList[this.checked ? 'add' : 'remove']('mdc-top-app-bar--dense');
 
-          shortCheckbox.disabled = this.checked || prominentCheckbox.checked || fixedCheckbox.checked;
-        });
-
-        prominentCheckbox.addEventListener('change', function()  {
-          appBarEl.classList[this.checked ? 'add' : 'remove']('mdc-top-app-bar--prominent');
-
-          shortCheckbox.disabled = this.checked || denseCheckbox.checked || fixedCheckbox.checked;
-        });
       });
   </script>
   </body>
