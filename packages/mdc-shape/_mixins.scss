@@ -14,16 +14,12 @@
 // limitations under the License.
 //
 
-@import "./functions";
-
 // Sets 45-degree angle corners of a certain size (akin to border-radius but for flat corners).
-@mixin mdc-shape-angled-corner($background-color, $top-left-size, $top-right-size: null, $bottom-right-size: null, $bottom-left-size: null) {
-  $sizes: mdc-shape-corners($top-left-size, $top-right-size, $bottom-right-size, $bottom-left-size);
-
-  $corners: (top, left, map-get($sizes, top-left)),
-    (top, right, map-get($sizes, top-right)),
-    (bottom, right, map-get($sizes, bottom-right)),
-    (bottom, left, map-get($sizes, bottom-left));
+@mixin mdc-shape-angled-corner($background-color, $top-left-size, $top-right-size: $top-left-size, $bottom-right-size: $top-left-size, $bottom-left-size: $top-right-size) {
+  $corners: (top, left, $top-left-size),
+    (top, right, $top-right-size),
+    (bottom, right, $bottom-right-size),
+    (bottom, left, $bottom-left-size);
 
   @each $y, $x, $size in $corners {
     @if $size > 0 {

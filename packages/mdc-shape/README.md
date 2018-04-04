@@ -11,7 +11,7 @@ path: /catalog/shape/
 <!--<div class="article__asset">
   <a class="article__asset-link"
      href="https://material-components-web.appspot.com/shape.html">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/shape.png" width="<TODO>" alt="Shape screenshot">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/shape.png" width="159" alt="Shape screenshot">
   </a>
 </div>-->
 
@@ -94,14 +94,10 @@ CSS Class | Description
 `mdc-shape-angled-corner-container__corner--top-left` | Element for masking the top left corner of the component.
 `mdc-shape-angled-corner-container__corner--top-right` | Element for masking the top right corner of the component.
 
-### Sass Mixins and Functions
+### Sass Mixins
 
 Mixin | Description
 --- | ---
 `mdc-shape-angled-corner($background-color, $top-left-size[, $top-right-size, $bottom-right-size, $bottom-left-size])` | Applies styles for masking angled corners, using the given background color and corner sizes. If fewer than 4 corner sizes are specified, the mixin automatically determines the other corners similarly to CSS `border-radius`.
 `mdc-shape-angled-corner-background($background-color)` | Sets the background color used to mask angled corners. Useful for styling a subset of components in a section with a different background color.
 `mdc-shape-angled-corner-stroke($stroke-width, $stroke-color[, $stroke-style])` | Applies stroke styles to angled corners. `$stroke-style` defaults to `solid`.
-
-Function | Description
---- | ---
-`mdc-shape-corners($top-left-size[, $top-right-size, $bottom-right-size, $bottom-left-size])` | Given 1-4 corner sizes, returns a map containing `top-left`, `top-right`, `bottom-right`, and `bottom-left` populated using behavior similar to CSS `border-radius`.
