@@ -450,7 +450,7 @@ class MDCTabzBar {
     }
 
     // Sliding left is a negative translation so we invert the value
-    if (shouldSlideLeft) {
+    if (!shouldSlideLeft) {
       slideTo *= -1;
     }
 

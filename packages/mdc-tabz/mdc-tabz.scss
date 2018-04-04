@@ -154,6 +154,7 @@ $mdc-color: $mdc-purple;
   &__text-label {
     display: inline-block;
     padding: 16px 0 20px;
+    user-select: none;
   }
 
   &__icon {
@@ -232,6 +233,7 @@ $mdc-color: $mdc-purple;
     position: relative;
     flex: 1 0 auto;
     transform-origin: left;
+    will-change: transform;
   }
 
   &--animating &__inner {

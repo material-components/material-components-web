@@ -64,11 +64,7 @@ class MDCTabzScroller {
     if (e.target !== this.inner_) return;
     // Remove the animating class
     this.adapter_.removeClass(cssClasses.ANIMATING);
-    if (this.targetScrollPosition_ !== undefined) {
-      this.adapter_.setInnerStyleProp('transform', '');
-      this.adapter_.setRootScrollLeft(this.targetScrollPosition_);
-      this.targetScrollPosition_ = undefined;
-    }
+    this.adapter_.registerEventHandler('transitionend', this.handleTransitionEnd_);
   }
 
   /**
@@ -76,8 +72,16 @@ class MDCTabzScroller {
    * @param {number} targetX The target scrollLeft value
    */
   scrollTo(targetX) {
-    this.targetScrollPosition_ = this.adapter_.getRootScrollLeft() - targetX;
-    this.slideTo(targetX);
+    this.adapter_.removeClass(cssClasses.ANIMATING);
+    this.adapter_.deregisterEventHandler('transitionend', this.handleTransitionEnd_);
+    // const scrollLeft = this.adapter_.getRootScrollLeft();
+    this.adapter_.setInnerStyleProp('transform', `translateX(${targetX}px)`);
+    this.adapter_.setRootScrollLeft(this.adapter_.getRootScrollLeft() + targetX);
+    requestAnimationFrame(() => {
+      this.adapter_.addClass(cssClasses.ANIMATING);
+      this.adapter_.setInnerStyleProp('transform', '');
+    });
+    this.adapter_.registerEventHandler('transitionend', this.handleTransitionEnd_);
   }
 
   /**
@@ -85,7 +89,6 @@ class MDCTabzScroller {
    * @param {number} targetX The target scrollLeft value
    */
   slideTo(targetX) {
-    this.adapter_.addClass(cssClasses.ANIMATING);
     this.adapter_.registerEventHandler('transitionend', this.handleTransitionEnd_);
     this.adapter_.setInnerStyleProp('transform', `translateX(${targetX}px)`);
   }
