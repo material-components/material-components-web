@@ -28,6 +28,8 @@ const getFixture = () => bel`
       <span class="mdc-tab__text-label">Foo</span>
       <span class="mdc-tab__icon"></span>
     </div>
+    <span class="mdc-tab-indicator"></span>
+    <span class="mdc-tab__ripple"></span>
   </button>
 `;
 
@@ -94,6 +96,27 @@ test('#adapter.deregisterEventHandler removes an event listener from the root el
   component.getDefaultFoundation().adapter_.deregisterEventHandler('transitionend', handler);
   domEvents.emit(root, 'transitionend');
   td.verify(handler(td.matchers.anything()), {times: 0});
+});
+
+test('#adapter.activateIndicator activates the indicator subcomponent', () => {
+  const {root, component} = setupTest();
+  component.getDefaultFoundation().adapter_.activateIndicator();
+  assert.ok(root.querySelector('.mdc-tab-indicator').classList.contains('mdc-tab-indicator--active'));
+});
+
+test('#adapter.deactivateIndicator deactivates the indicator subcomponent', () => {
+  const {root, component} = setupTest();
+  component.getDefaultFoundation().adapter_.deactivateIndicator();
+  assert.notOk(root.querySelector('.mdc-tab-indicator').classList.contains('mdc-tab-indicator--active'));
+});
+
+test('#adapter.computeIndicatorClientRect returns the indicator element\'s bounding client rect', () => {
+  const {root, component} = setupTest();
+  component.getDefaultFoundation().adapter_.deactivateIndicator();
+  assert.deepEqual(
+    component.getDefaultFoundation().adapter_.computeIndicatorClientRect(),
+    root.querySelector('.mdc-tab-indicator').getBoundingClientRect()
+  );
 });
 
 function setupMockFoundationTest(root = getFixture()) {

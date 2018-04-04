@@ -36,6 +36,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'registerEventHandler', 'deregisterEventHandler',
     'addClass', 'removeClass', 'hasClass',
     'setAttr',
+    'activateIndicator', 'deactivateIndicator', 'computeIndicatorClientRect',
   ]);
 });
 
@@ -71,6 +72,12 @@ test('#activate sets the root element aria-selected attribute to true', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.activate();
   td.verify(mockAdapter.setAttr(MDCTabFoundation.strings.ARIA_SELECTED, 'true'));
+});
+
+test('#computeIndicatorClientRect calls computeIndicatorClientRect on the adapter', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.computeIndicatorClientRect();
+  td.verify(mockAdapter.computeIndicatorClientRect());
 });
 
 test('#deactivate does nothing if not active', () => {
