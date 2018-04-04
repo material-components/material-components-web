@@ -45,10 +45,10 @@ class MDCSelectLabel extends MDCComponent {
    * @return {!MDCSelectLabelFoundation}
    */
   getDefaultFoundation() {
-    return new MDCSelectLabelFoundation(/** @type {!MDCSelectLabelAdapter} */ (Object.assign({
+    return new MDCSelectLabelFoundation({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
-    })));
+    });
   }
 }
 

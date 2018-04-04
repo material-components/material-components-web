@@ -42,7 +42,7 @@ sliders used on the web, and thus have been endorsed by the Material Design team
 ## Installation
 
 ```
-npm i --save @material/slider
+npm install @material/slider
 ```
 
 ## Usage

@@ -33,6 +33,8 @@ class MDCChip extends MDCComponent {
   constructor(...args) {
     super(...args);
 
+    /** @private {?Element} */
+    this.leadingIcon_ = this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
     /** @private {!MDCRipple} */
     this.ripple_ = new MDCRipple(this.root_);
   }
@@ -51,13 +53,55 @@ class MDCChip extends MDCComponent {
   }
 
   /**
+   * Toggles selected state of the chip.
+   */
+  toggleSelected() {
+    this.foundation_.toggleSelected();
+  }
+
+  /**
+   * @return {!MDCChipFoundation}
+   */
+  get foundation() {
+    return this.foundation_;
+  }
+
+  /**
    * @return {!MDCChipFoundation}
    */
   getDefaultFoundation() {
     return new MDCChipFoundation(/** @type {!MDCChipAdapter} */ (Object.assign({
-      registerInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
-      deregisterInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
+      addClass: (className) => this.root_.classList.add(className),
+      removeClass: (className) => this.root_.classList.remove(className),
+      hasClass: (className) => this.root_.classList.contains(className),
+      addClassToLeadingIcon: (className) => {
+        if (this.leadingIcon_) {
+          this.leadingIcon_.classList.add(className);
+        }
+      },
+      removeClassFromLeadingIcon: (className) => {
+        if (this.leadingIcon_) {
+          this.leadingIcon_.classList.remove(className);
+        }
+      },
+      eventTargetHasClass: (target, className) => target.classList.contains(className),
+      registerEventHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
+      deregisterEventHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
+      registerTrailingIconInteractionHandler: (evtType, handler) => {
+        const trailingIconEl = this.root_.querySelector(strings.TRAILING_ICON_SELECTOR);
+        if (trailingIconEl) {
+          trailingIconEl.addEventListener(evtType, handler);
+        }
+      },
+      deregisterTrailingIconInteractionHandler: (evtType, handler) => {
+        const trailingIconEl = this.root_.querySelector(strings.TRAILING_ICON_SELECTOR);
+        if (trailingIconEl) {
+          trailingIconEl.removeEventListener(evtType, handler);
+        }
+      },
       notifyInteraction: () => this.emit(strings.INTERACTION_EVENT, {chip: this}, true /* shouldBubble */),
+      notifyTrailingIconInteraction: () => this.emit(
+        strings.TRAILING_ICON_INTERACTION_EVENT, {chip: this}, true /* shouldBubble */),
     })));
   }
 

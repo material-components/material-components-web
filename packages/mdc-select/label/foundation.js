@@ -19,7 +19,6 @@ import MDCFoundation from '@material/base/foundation';
 import MDCSelectLabelAdapter from './adapter';
 import {cssClasses} from './constants';
 
-
 /**
  * @extends {MDCFoundation<!MDCSelectLabelAdapter>}
  * @final
@@ -53,8 +52,6 @@ class MDCSelectLabelFoundation extends MDCFoundation {
   /**
    * Styles the label to float or defloat as necessary.
    * @param {string} value The value of the input.
-   * @param {boolean} isFocused Whether the input is focused.
-   * @param {boolean} isBadInput The input's `validity.badInput` value.
    */
   styleFloat(value) {
     const {LABEL_FLOAT_ABOVE} = MDCSelectLabelFoundation.cssClasses;

@@ -31,15 +31,9 @@
 
   @include mdc-typography-base;
 
-  $style-props: map-remove($style-props, margin);
-
   @each $key, $value in $style-props {
     #{$key}: $value;
   }
-}
-
-@mixin mdc-typography-adjust-margin($style) {
-  margin: map-get(map-get($mdc-typography-styles, $style), margin);
 }
 
 // Element must be `display: block` or `display: inline-block` for this to work.

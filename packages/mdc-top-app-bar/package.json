@@ -1,0 +1,29 @@
+{
+  "name": "@material/top-app-bar",
+  "version": "0.34.1",
+  "description": "The Material Components for the web top app bar component",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/material-components/material-components-web.git"
+  },
+  "keywords": [
+    "material components",
+    "material design",
+    "top app bar",
+    "top-app-bar",
+    "topappbar"
+  ],
+  "dependencies": {
+    "@material/animation": "^0.34.0",
+    "@material/base": "^0.34.0",
+    "@material/elevation": "^0.34.0",
+    "@material/ripple": "^0.34.1",
+    "@material/rtl": "^0.34.0",
+    "@material/theme": "^0.34.0",
+    "@material/typography": "^0.34.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

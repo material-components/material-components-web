@@ -29,8 +29,10 @@
 
   @if ($fill-tone == "dark") {
     @include mdc-chip-ink-color(text-primary-on-dark);
+    @include mdc-chip-selected-ink-color(white);
   } @else {
     @include mdc-chip-ink-color(text-primary-on-light);
+    @include mdc-chip-selected-ink-color(black);
   }
 }
 
@@ -41,6 +43,28 @@
 @mixin mdc-chip-ink-color($color) {
   @include mdc-states($color);
   @include mdc-theme-prop(color, $color);
+
+  &:hover {
+    @include mdc-theme-prop(color, $color);
+  }
+}
+
+@mixin mdc-chip-selected-ink-color($color) {
+  &.mdc-chip {
+    @include mdc-states-selected($color);
+  }
+
+  &.mdc-chip--selected {
+    @include mdc-theme-prop(color, $color);
+
+    &:hover {
+      @include mdc-theme-prop(color, $color);
+    }
+  }
+
+  .mdc-chip__checkmark-path {
+    @include mdc-theme-prop(stroke, $color);
+  }
 }
 
 @mixin mdc-chip-stroke($width: 1, $style: solid, $color: black) {
@@ -67,4 +91,12 @@
   padding-bottom: $vertical-padding-value;
   padding-left: $horizontal-padding-value;
   border-width: $width;
+}
+
+@mixin mdc-chip-set-spacing($gap-size) {
+  padding: $gap-size / 2;
+
+  .mdc-chip {
+    margin: $gap-size / 2;
+  }
 }

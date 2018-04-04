@@ -32,7 +32,7 @@ class MDCChipSet extends MDCComponent {
   constructor(...args) {
     super(...args);
 
-    /** @private {!Array<!MDCChip>} */
+    /** @type {!Array<!MDCChip>} */
     this.chips;
   }
 
@@ -64,6 +64,8 @@ class MDCChipSet extends MDCComponent {
   getDefaultFoundation() {
     return new MDCChipSetFoundation(/** @type {!MDCChipSetAdapter} */ (Object.assign({
       hasClass: (className) => this.root_.classList.contains(className),
+      registerInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
+      deregisterInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
     })));
   }
 

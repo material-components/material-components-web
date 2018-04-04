@@ -22,7 +22,7 @@ Material in motion is responsive and natural. Use these easing curves and durati
 ## Installation
 
 ```
-npm install --save @material/animation
+npm install @material/animation
 ```
 
 ## Usage

@@ -22,7 +22,7 @@
 
 const autoprefixer = require('autoprefixer');
 
-module.exports = class {
+class CssBundleFactory {
   constructor({
     env,
     pathResolver,
@@ -55,13 +55,22 @@ module.exports = class {
         filePathPattern = '**/*.scss',
       } = {},
       output: {
-        fsDirAbsolutePath,
-        httpDirAbsolutePath,
+        fsDirAbsolutePath = undefined, // Required for building the npm distribution and writing output files to disk
+        httpDirAbsolutePath = undefined, // Required for running the demo server
         filenamePattern = this.env_.isProd() ? '[name].min.css' : '[name].css',
       },
       plugins = [],
     }) {
     chunks = chunks || this.globber_.getChunks({inputDirectory, filePathPattern});
+
+    const fsCleanupPlugins = [];
+
+    if (fsDirAbsolutePath) {
+      fsCleanupPlugins.push(this.pluginFactory_.createCssCleanupPlugin({
+        cleanupDirRelativePath: fsDirAbsolutePath,
+      }));
+    }
+
     const cssExtractorPlugin = this.pluginFactory_.createCssExtractorPlugin(filenamePattern);
 
     return {
@@ -81,9 +90,7 @@ module.exports = class {
       },
       plugins: [
         cssExtractorPlugin,
-        this.pluginFactory_.createCssCleanupPlugin({
-          cleanupDirRelativePath: fsDirAbsolutePath,
-        }),
+        ...fsCleanupPlugins,
         ...plugins,
       ],
     };
@@ -136,14 +143,17 @@ module.exports = class {
         'mdc.drawer': getAbsolutePath('/packages/mdc-drawer/mdc-drawer.scss'),
         'mdc.elevation': getAbsolutePath('/packages/mdc-elevation/mdc-elevation.scss'),
         'mdc.fab': getAbsolutePath('/packages/mdc-fab/mdc-fab.scss'),
+        'mdc.floating-label': getAbsolutePath('/packages/mdc-floating-label/mdc-floating-label.scss'),
         'mdc.form-field': getAbsolutePath('/packages/mdc-form-field/mdc-form-field.scss'),
         'mdc.grid-list': getAbsolutePath('/packages/mdc-grid-list/mdc-grid-list.scss'),
         'mdc.icon-toggle': getAbsolutePath('/packages/mdc-icon-toggle/mdc-icon-toggle.scss'),
+        'mdc.image-list': getAbsolutePath('/packages/mdc-image-list/mdc-image-list.scss'),
         'mdc.layout-grid': getAbsolutePath('/packages/mdc-layout-grid/mdc-layout-grid.scss'),
         'mdc.line-ripple': getAbsolutePath('/packages/mdc-line-ripple/mdc-line-ripple.scss'),
         'mdc.linear-progress': getAbsolutePath('/packages/mdc-linear-progress/mdc-linear-progress.scss'),
         'mdc.list': getAbsolutePath('/packages/mdc-list/mdc-list.scss'),
         'mdc.menu': getAbsolutePath('/packages/mdc-menu/mdc-menu.scss'),
+        'mdc.notched-outline': getAbsolutePath('/packages/mdc-notched-outline/mdc-notched-outline.scss'),
         'mdc.radio': getAbsolutePath('/packages/mdc-radio/mdc-radio.scss'),
         'mdc.ripple': getAbsolutePath('/packages/mdc-ripple/mdc-ripple.scss'),
         'mdc.select': getAbsolutePath('/packages/mdc-select/mdc-select.scss'),
@@ -154,6 +164,7 @@ module.exports = class {
         'mdc.textfield': getAbsolutePath('/packages/mdc-textfield/mdc-text-field.scss'),
         'mdc.theme': getAbsolutePath('/packages/mdc-theme/mdc-theme.scss'),
         'mdc.toolbar': getAbsolutePath('/packages/mdc-toolbar/mdc-toolbar.scss'),
+        'mdc.top-app-bar': getAbsolutePath('/packages/mdc-top-app-bar/mdc-top-app-bar.scss'),
         'mdc.typography': getAbsolutePath('/packages/mdc-typography/mdc-typography.scss'),
       },
       output: {
@@ -171,7 +182,6 @@ module.exports = class {
     const getAbsolutePath = (...args) => this.pathResolver_.getAbsolutePath(...args);
 
     return extractTextPlugin.extract({
-      fallback: 'style-loader',
       use: [
         {
           loader: 'css-loader',
@@ -196,4 +206,6 @@ module.exports = class {
       ],
     });
   }
-};
+}
+
+module.exports = CssBundleFactory;

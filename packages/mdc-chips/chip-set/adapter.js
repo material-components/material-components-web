@@ -31,8 +31,23 @@ class MDCChipSetAdapter {
   /**
    * Returns true if the root element contains the given class name.
    * @param {string} className
+   * @return {boolean}
    */
   hasClass(className) {}
+
+  /**
+   * Registers an event handler on the root element for a given event.
+   * @param {string} evtType
+   * @param {function(!Event): undefined} handler
+   */
+  registerInteractionHandler(evtType, handler) {}
+
+  /**
+   * Deregisters an event handler on the root element for a given event.
+   * @param {string} evtType
+   * @param {function(!Event): undefined} handler
+   */
+  deregisterInteractionHandler(evtType, handler) {}
 }
 
 export default MDCChipSetAdapter;

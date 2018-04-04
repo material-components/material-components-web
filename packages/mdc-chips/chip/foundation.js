@@ -17,7 +17,7 @@
 
 import MDCFoundation from '@material/base/foundation';
 import MDCChipAdapter from './adapter';
-import {strings} from './constants';
+import {strings, cssClasses} from './constants';
 
 
 /**
@@ -30,6 +30,11 @@ class MDCChipFoundation extends MDCFoundation {
     return strings;
   }
 
+  /** @return enum {string} */
+  static get cssClasses() {
+    return cssClasses;
+  }
+
   /**
    * {@see MDCChipAdapter} for typing information on parameters and return
    * types.
@@ -37,9 +42,18 @@ class MDCChipFoundation extends MDCFoundation {
    */
   static get defaultAdapter() {
     return /** @type {!MDCChipAdapter} */ ({
-      registerInteractionHandler: () => {},
-      deregisterInteractionHandler: () => {},
+      addClass: () => {},
+      removeClass: () => {},
+      hasClass: () => {},
+      addClassToLeadingIcon: () => {},
+      removeClassFromLeadingIcon: () => {},
+      eventTargetHasClass: () => {},
+      registerEventHandler: () => {},
+      deregisterEventHandler: () => {},
+      registerTrailingIconInteractionHandler: () => {},
+      deregisterTrailingIconInteractionHandler: () => {},
       notifyInteraction: () => {},
+      notifyTrailingIconInteraction: () => {},
     });
   }
 
@@ -51,18 +65,41 @@ class MDCChipFoundation extends MDCFoundation {
 
     /** @private {function(!Event): undefined} */
     this.interactionHandler_ = (evt) => this.handleInteraction_(evt);
+    /** @private {function(!Event): undefined} */
+    this.transitionEndHandler_ = (evt) => this.handleTransitionEnd_(evt);
+    /** @private {function(!Event): undefined} */
+    this.trailingIconInteractionHandler_ = (evt) => this.handleTrailingIconInteraction_(evt);
   }
 
   init() {
     ['click', 'keydown'].forEach((evtType) => {
-      this.adapter_.registerInteractionHandler(evtType, this.interactionHandler_);
+      this.adapter_.registerEventHandler(evtType, this.interactionHandler_);
+    });
+    this.adapter_.registerEventHandler('transitionend', this.transitionEndHandler_);
+    ['click', 'keydown', 'touchstart', 'pointerdown', 'mousedown'].forEach((evtType) => {
+      this.adapter_.registerTrailingIconInteractionHandler(evtType, this.trailingIconInteractionHandler_);
     });
   }
 
   destroy() {
     ['click', 'keydown'].forEach((evtType) => {
-      this.adapter_.deregisterInteractionHandler(evtType, this.interactionHandler_);
+      this.adapter_.deregisterEventHandler(evtType, this.interactionHandler_);
     });
+    this.adapter_.deregisterEventHandler('transitionend', this.transitionEndHandler_);
+    ['click', 'keydown', 'touchstart', 'pointerdown', 'mousedown'].forEach((evtType) => {
+      this.adapter_.deregisterTrailingIconInteractionHandler(evtType, this.trailingIconInteractionHandler_);
+    });
+  }
+
+  /**
+   * Toggles the selected class on the chip element.
+   */
+  toggleSelected() {
+    if (this.adapter_.hasClass(cssClasses.SELECTED)) {
+      this.adapter_.removeClass(cssClasses.SELECTED);
+    } else {
+      this.adapter_.addClass(cssClasses.SELECTED);
+    }
   }
 
   /**
@@ -72,6 +109,37 @@ class MDCChipFoundation extends MDCFoundation {
   handleInteraction_(evt) {
     if (evt.type === 'click' || evt.key === 'Enter' || evt.keyCode === 13) {
       this.adapter_.notifyInteraction();
+    }
+  }
+
+  /**
+   * Handles a transition end event on the root element.
+   * This is a proxy for handling a transition end event on the leading icon or checkmark,
+   * since the transition end event bubbles.
+   * @param {!Event} evt
+   */
+  handleTransitionEnd_(evt) {
+    if (evt.propertyName !== 'opacity') {
+      return;
+    }
+    if (this.adapter_.eventTargetHasClass(/** @type {!EventTarget} */ (evt.target), cssClasses.LEADING_ICON) &&
+        this.adapter_.hasClass(cssClasses.SELECTED)) {
+      this.adapter_.addClassToLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
+    } else if (this.adapter_.eventTargetHasClass(/** @type {!EventTarget} */ (evt.target), cssClasses.CHECKMARK) &&
+               !this.adapter_.hasClass(cssClasses.SELECTED)) {
+      this.adapter_.removeClassFromLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
+    }
+  }
+
+  /**
+   * Handles an interaction event on the trailing icon element. This is used to
+   * prevent the ripple from activating on interaction with the trailing icon.
+   * @param {!Event} evt
+   */
+  handleTrailingIconInteraction_(evt) {
+    evt.stopPropagation();
+    if (evt.type === 'click' || evt.key === 'Enter' || evt.keyCode === 13) {
+      this.adapter_.notifyTrailingIconInteraction();
     }
   }
 }

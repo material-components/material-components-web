@@ -36,7 +36,7 @@ the `button` element. See [MDC Ripple](../mdc-ripple) and [Demo](https://materia
 ## Installation
 
 ```
-npm install --save @material/button
+npm install @material/button
 ```
 
 ## Usage
@@ -70,6 +70,17 @@ We recommend you load [Material Icons](https://material.io/icons/) from Google F
 </button>
 ```
 
+It's also possible to use an SVG icon:
+
+```html
+<button class="mdc-button">
+  <svg class="mdc-button__icon" xmlns="http://www.w3.org/2000/svg" viewBox="...">
+  ...
+  </svg>
+  SVG Icon
+</button>
+```
+
 ### CSS Classes
 
 
@@ -81,8 +92,6 @@ CSS Class | Description
 `mdc-button--unelevated` | Optional, a contained button that is flush with the surface
 `mdc-button--stroked` | Optional, a contained button that is flush with the surface and has a visible border
 `mdc-button--dense` | Optional, compresses the button text to make it slightly smaller
-`mdc-button--compact` | Optional, reduces the amount of horizontal padding in the button
-
 
 ### Disabled Button
 
@@ -130,11 +139,13 @@ container color to the given color, and updates the Button's ink and ripple colo
 
 Mixin | Description
 --- | ---
-`mdc-button-container-fill-color` | Sets the container color to the given color
-`mdc-button-ink-color` | Sets the ink color to the given color
-`mdc-button-stroke-color` | Sets the stroke color to the given color
-`mdc-button-corner-radius` | Sets the corner radius to the given number (defaults to 2px)
-`mdc-button-stroke-width` | Sets the stroke width to the given number (defaults to 2px)
+`mdc-button-container-fill-color($color)` | Sets the container color to the given color.
+`mdc-button-icon-color($color)` | Sets the icon color to the given color.
+`mdc-button-ink-color($color)` | Sets the ink color to the given color. This affects both text and icon, unless `mdc-button-icon-color` is also used.
+`mdc-button-corner-radius($corner-radius)` | Sets the corner radius to the given number (defaults to 2px).
+`mdc-button-horizontal-padding($padding)` | Sets horizontal padding to the given number.
+`mdc-button-stroke-color($color)` | Sets the stroke color to the given color.
+`mdc-button-stroke-width($width, $padding)` | Sets the stroke width to the given number (defaults to 2px) and adjusts padding accordingly. `$padding` is only required in cases where `mdc-button-horizontal-padding` is also included with a custom value.
 
 The ripple effect for the Button component is styled using [MDC Ripple](../mdc-ripple) mixins.
 

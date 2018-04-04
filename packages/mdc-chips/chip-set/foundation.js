@@ -17,7 +17,8 @@
 
 import MDCFoundation from '@material/base/foundation';
 import MDCChipSetAdapter from './adapter';
-import {strings} from './constants';
+import MDCChipFoundation from '../chip/foundation';
+import {strings, cssClasses} from './constants';
 
 /**
  * @extends {MDCFoundation<!MDCChipSetAdapter>}
@@ -29,6 +30,11 @@ class MDCChipSetFoundation extends MDCFoundation {
     return strings;
   }
 
+  /** @return enum {string} */
+  static get cssClasses() {
+    return cssClasses;
+  }
+
   /**
    * {@see MDCChipSetAdapter} for typing information on parameters and return
    * types.
@@ -37,6 +43,8 @@ class MDCChipSetFoundation extends MDCFoundation {
   static get defaultAdapter() {
     return /** @type {!MDCChipSetAdapter} */ ({
       hasClass: () => {},
+      registerInteractionHandler: () => {},
+      deregisterInteractionHandler: () => {},
     });
   }
 
@@ -45,6 +53,53 @@ class MDCChipSetFoundation extends MDCFoundation {
    */
   constructor(adapter) {
     super(Object.assign(MDCChipSetFoundation.defaultAdapter, adapter));
+
+    /**
+     * The selected chips in the set. Only used for choice chip set or filter chip set.
+     * @private {!Array<!MDCChipFoundation>}
+     */
+    this.selectedChips_ = [];
+
+    /** @private {function(!Event): undefined} */
+    this.chipInteractionHandler_ = (evt) => this.handleChipInteraction_(evt);
+  }
+
+  init() {
+    this.adapter_.registerInteractionHandler(
+      MDCChipFoundation.strings.INTERACTION_EVENT, this.chipInteractionHandler_);
+  }
+
+  destroy() {
+    this.adapter_.deregisterInteractionHandler(
+      MDCChipFoundation.strings.INTERACTION_EVENT, this.chipInteractionHandler_);
+  }
+
+  /**
+   * Handles a chip interaction event
+   * @param {!Object} evt
+   * @private
+   */
+  handleChipInteraction_(evt) {
+    const chipFoundation = evt.detail.chip.foundation;
+    if (this.adapter_.hasClass(cssClasses.CHOICE)) {
+      if (this.selectedChips_.length === 0) {
+        this.selectedChips_[0] = chipFoundation;
+      } else if (this.selectedChips_[0] !== chipFoundation) {
+        this.selectedChips_[0].toggleSelected();
+        this.selectedChips_[0] = chipFoundation;
+      } else {
+        this.selectedChips_ = [];
+      }
+      chipFoundation.toggleSelected();
+    } else if (this.adapter_.hasClass(cssClasses.FILTER)) {
+      const index = this.selectedChips_.indexOf(chipFoundation);
+      if (index >= 0) {
+        this.selectedChips_.splice(index, 1);
+      } else {
+        this.selectedChips_.push(chipFoundation);
+      }
+      chipFoundation.toggleSelected();
+    }
   }
 }
 
