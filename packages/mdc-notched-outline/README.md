@@ -52,6 +52,7 @@ Mixin | Description
 `mdc-notched-outline-stroke-width($width)` | Changes notched outline width to a specified pixel value.
 `mdc-notched-outline-corner-radius($radius)` | Sets the corner radius of the notched outline element to the given number.
 `mdc-notched-outline-idle-corner-radius($radius)` | Sets the corner radius of the notched outline element in idle state.
+
 > NOTE:
 > Because notched-outline has sibling elements, you need to call the "idle" Sass mixins with parent selectors.
 > Consider the following example HTML:
