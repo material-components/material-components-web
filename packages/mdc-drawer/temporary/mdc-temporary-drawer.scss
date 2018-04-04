@@ -57,7 +57,6 @@
   .mdc-drawer__drawer {
     @include mdc-elevation(16);
     @include mdc-rtl-reflexive-position(left, 0);
-
     @include mdc-slideable-drawer;
 
     display: flex;
@@ -92,20 +91,6 @@
     flex-shrink: 0;
   }
 
-  &.mdc-drawer--animating {
-    &::before {
-      transition: mdc-animation-enter(opacity, .3s);
-    }
-
-    &.mdc-drawer--open .mdc-drawer__drawer {
-      transition: $mdc-slidable-drawer-transition-open;
-    }
-
-    .mdc-drawer__drawer {
-      transition: $mdc-slidable-drawer-transition-close;
-    }
-  }
-
   &.mdc-drawer--open {
     pointer-events: auto;
 
@@ -123,6 +108,20 @@
       .mdc-drawer__drawer {
         @include mdc-slideable-drawer-open;
       }
+    }
+  }
+
+  &.mdc-drawer--animating {
+    &::before {
+      transition: mdc-animation-enter(opacity, .3s);
+    }
+
+    .mdc-drawer__drawer {
+      transition: $mdc-slidable-drawer-transition-close;
+    }
+
+    &.mdc-drawer--open .mdc-drawer__drawer {
+      transition: $mdc-slidable-drawer-transition-open;
     }
   }
 }

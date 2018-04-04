@@ -32,7 +32,6 @@ $mdc-persistent-drawer-width: 240px;
   .mdc-drawer__drawer {
     @include mdc-rtl-reflexive-box(border, right, 1px solid #e4e4e4);
     @include mdc-rtl-reflexive-position(left, 0);
-
     @include mdc-slideable-drawer;
 
     display: inline-flex;
@@ -41,16 +40,6 @@ $mdc-persistent-drawer-width: 240px;
     width: $mdc-persistent-drawer-width;
     overflow: hidden;
     touch-action: none;
-  }
-
-  &.mdc-drawer--animating {
-    .mdc-drawer__drawer {
-      transition: $mdc-slidable-drawer-transition-close;
-    }
-
-    &.mdc-drawer--open .mdc-drawer__drawer {
-      transition: $mdc-slidable-drawer-transition-open;
-    }
   }
 
   &.mdc-drawer--open {
@@ -66,6 +55,16 @@ $mdc-persistent-drawer-width: 240px;
       .mdc-drawer__drawer {
         @include mdc-slideable-drawer-open;
       }
+    }
+  }
+
+  &.mdc-drawer--animating {
+    .mdc-drawer__drawer {
+      transition: $mdc-slidable-drawer-transition-close;
+    }
+
+    &.mdc-drawer--open .mdc-drawer__drawer {
+      transition: $mdc-slidable-drawer-transition-open;
     }
   }
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2018 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,21 @@
  * limitations under the License.
  */
 
-const glob = require('glob');
-const path = require('path');
+'use strict';
 
-glob.sync(path.join(__dirname, '**/*.test.js')).forEach((testFilePath) => require(testFilePath));
+const assetUploader = require('./asset-uploader');
+
+assetUploader.upload()
+  .then((files) => {
+    const htmlFileUrls =
+      files
+        .filter((file) => file.relativePath.endsWith('.html'))
+        .map((file) => file.fullUrl)
+        .sort();
+    console.log('\n\nDONE!\n\n');
+    console.log(htmlFileUrls.join('\n'));
+  })
+  .catch((err) => {
+    console.error('\n\nERROR!\n\n');
+    console.error(err);
+  });

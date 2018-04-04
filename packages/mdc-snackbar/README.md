@@ -34,7 +34,7 @@ It requires JavaScript to show and hide itself.
 ## Installation
 
 ```
-npm install --save @material/snackbar
+npm install @material/snackbar
 ```
 
 ## Usage
@@ -128,7 +128,7 @@ const snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
 
 #### Handling events
 
-When snackbar is shown or dismissed, the component will emit a `MDCSnackbar:show` or 
+When snackbar is shown or dismissed, the component will emit a `MDCSnackbar:show` or
 `MDCSnackbar:hide` custom event with no data attached.
 
 ### Showing a message and action
