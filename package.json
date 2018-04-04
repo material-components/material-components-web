@@ -23,6 +23,7 @@
     "test": "npm run test:unit && npm run test:closure && npm run test:dependency && npm run build && npm run clean",
     "posttest": "istanbul report --root coverage text-summary && istanbul check-coverage --lines 95 --statements 95 --branches 95 --functions 95",
     "screenshot:serve": "node test/screenshot/run-static-server.js",
+    "screenshot:upload-assets": "node test/screenshot/run-upload-assets.js",
     "screenshot:watch": "npm run clean && mkdirp test/screenshot/out/ && webpack --config=test/screenshot/webpack.config.js --watch --progress --colors",
     "start": "npm run clean && npm-run-all --parallel screenshot:serve screenshot:watch",
     "test:watch": "karma start --auto-watch",
@@ -31,6 +32,7 @@
     "test:dependency": "./scripts/dependency-test.sh"
   },
   "devDependencies": {
+    "@google-cloud/storage": "^1.6.0",
     "ascii-table": "0.0.9",
     "autoprefixer": "^8.0.0",
     "babel-core": "^6.22.1",
@@ -88,6 +90,7 @@
     "scss-parser": "^1.0.0",
     "semver": "^5.3.0",
     "serve-index": "^1.9.1",
+    "simple-git": "^1.92.0",
     "standard-changelog": "^1.0.4",
     "stylelint": "^9.0.0",
     "stylelint-config-standard": "^18.0.0",

@@ -47,3 +47,15 @@ Guidelines:
 ## Example test page
 
 ![localhost_8080_mdc-button_classes_baseline html](https://user-images.githubusercontent.com/409245/38001695-05c55d10-31e3-11e8-9f35-91e3ea82f566.png)
+
+## Uploading compiled assets to Google Cloud Storage
+
+1. Start the local dev server:
+    ```bash
+    npm start
+    ```
+2. In a separate terminal, run:
+    ```bash
+    export MDC_GCLOUD_SERVICE_ACCOUNT_KEY_FILE_PATH=path/to/gcloud-service-account-key.json
+    npm run screenshot:upload-assets
+    ```
