@@ -16,11 +16,11 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-import MDCTabAdapter from './adapter';
-import {
-  cssClasses,
-  strings,
-} from './constants';
+import {MDCTabAdapter, FoundationMapType} from './adapter';
+/* eslint-disable no-unused-vars */
+import MDCTabIndicatorFoundation from '@material/tab-indicator/foundation';
+/* eslint-enable no-unused-vars */
+import {cssClasses, strings} from './constants';
 
 /**
  * @extends {MDCFoundation<!MDCTabAdapter>}
@@ -53,8 +53,11 @@ class MDCTabFoundation extends MDCFoundation {
   }
 
   /** @param {!MDCTabAdapter} adapter */
-  constructor(adapter) {
+  constructor(adapter, foundationMap = /** @type {!FoundationMapType} */ ({})) {
     super(Object.assign(MDCTabFoundation.defaultAdapter, adapter));
+
+    /** @type {!MDCTabIndicatorFoundation|undefined} */
+    this.tabIndicator_ = foundationMap.tabIndicator;
 
     /** @private {function(!Event): undefined} */
     this.handleTransitionEnd_ = (evt) => this.handleTransitionEnd(evt);
@@ -84,8 +87,9 @@ class MDCTabFoundation extends MDCFoundation {
 
   /**
    * Activates the Tab
+   * @param {!ClientRect=} previousIndicatorClientRect
    */
-  activate() {
+  activate(previousIndicatorClientRect) {
     // Early exit
     if (this.isActive()) {
       return;
@@ -94,6 +98,10 @@ class MDCTabFoundation extends MDCFoundation {
     this.adapter_.addClass(cssClasses.ANIMATING_ACTIVATE);
     this.adapter_.addClass(cssClasses.ACTIVE);
     this.adapter_.setAttr(strings.ARIA_SELECTED, 'true');
+
+    if (this.tabIndicator_) {
+      this.tabIndicator_.activate(previousIndicatorClientRect);
+    }
   }
 
   /**
@@ -108,6 +116,10 @@ class MDCTabFoundation extends MDCFoundation {
     this.adapter_.addClass(cssClasses.ANIMATING_DEACTIVATE);
     this.adapter_.removeClass(cssClasses.ACTIVE);
     this.adapter_.setAttr(strings.ARIA_SELECTED, 'false');
+
+    if (this.tabIndicator_) {
+      this.tabIndicator_.deactivate();
+    }
   }
 }
 
