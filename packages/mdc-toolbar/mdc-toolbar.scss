@@ -172,7 +172,10 @@
 
       align-self: flex-end;
       font-weight: #{map-get($mdc-typography-font-weight-values, normal)};
-      line-height: 1.5rem;
+
+      @media (max-width: $mdc-toolbar-mobile-breakpoint) { 
+        line-height: 1.5rem;
+      }
     }
 
     .mdc-toolbar__row:first-child::after {
