@@ -1,7 +1,4 @@
 extends: ../../.stylelintrc.yaml
-ignoreFiles:
-  - node_modules/**/*
-  - out/**/*
 rules:
   # Ensure any defined symbols are prefixed with "test-"
   custom-media-pattern: ^(?:test|custom)-.+
