@@ -119,19 +119,3 @@ $mdc-typography-styles: (
     text-transform: uppercase
   ),
 ) !default;
-
-$mdc-typography-styles-overridable_: (
-  headline1: $mdc-typography-styles-headline1,
-  headline2: $mdc-typography-styles-headline2,
-  headline3: $mdc-typography-styles-headline3,
-  headline4: $mdc-typography-styles-headline4,
-  headline5: $mdc-typography-styles-headline5,
-  headline6: $mdc-typography-styles-headline6,
-  subtitle1: $mdc-typography-styles-subtitle1,
-  subtitle2: $mdc-typography-styles-subtitle2,
-  body1: $mdc-typography-styles-body1,
-  body2: $mdc-typography-styles-body2,
-  caption: $mdc-typography-styles-caption,
-  button: $mdc-typography-styles-button,
-  overline: $mdc-typography-styles-overline
-);

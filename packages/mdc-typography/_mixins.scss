@@ -22,14 +22,49 @@
   -webkit-font-smoothing: antialiased;
 }
 
+@function get-global-variable($style) {
+  @if $style == "headline1" {
+    @return $mdc-typography-styles-headline1;
+  } @else if $style == "headline2" {
+    @return $mdc-typography-styles-headline2;
+  } @else if $style == "headline3" {
+    @return $mdc-typography-styles-headline3;
+  } @else if $style == "headline4" {
+    @return $mdc-typography-styles-headline4;
+  } @else if $style == "headline5" {
+    @return $mdc-typography-styles-headline5;
+  } @else if $style == "headline6" {
+    @return $mdc-typography-styles-headline6;
+  } @else if $style == "subtitle1" {
+    @return $mdc-typography-styles-subtitle1;
+  } @else if $style == "subtitle2" {
+    @return $mdc-typography-styles-subtitle2;
+  } @else if $style == "body1" {
+    @return $mdc-typography-styles-body1;
+  } @else if $style == "body2" {
+    @return $mdc-typography-styles-body2;
+  } @else if $style == "caption" {
+    @return $mdc-typography-styles-caption;
+  } @else if $style == "button" {
+    @return $mdc-typography-styles-button;
+  } @else if $style == "overline" {
+    @return $mdc-typography-styles-overline;
+  }
+}
+
 @mixin mdc-typography($style) {
   $style-props: map-get($mdc-typography-styles, $style);
 
   @if not map-has-key($mdc-typography-styles, $style) {
-    @error "Invalid style specified! Choose one of #{map-keys($mdc-typography-styles)}";
+    @error "Invalid style specified! #{$style} doesn't exist. Choose one of #{map-keys($mdc-typography-styles)}";
   }
 
   @include mdc-typography-base;
+
+  @if global_variable_exists(mdc-typography-styles-#{$style}) {
+    $style-props: map-merge($style-props, get-global-variable(#{$style}));
+    $mdc-typography-styles: map-merge($mdc-typography-styles, (#{$style}: $style-props));
+  }
 
   @each $key, $value in $style-props {
     #{$key}: $value;
