@@ -11,7 +11,7 @@ path: /catalog/top-app-bar/
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/top-app-bar/index.html">
+     href="https://material-components-web.appspot.com/top-app-bar.html">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/top-app-bar.png" width="494" alt="Top App Bar screenshot">
   </a>
 </div>-->
