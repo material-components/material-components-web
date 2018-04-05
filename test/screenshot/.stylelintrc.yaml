@@ -4,16 +4,16 @@ ignoreFiles:
   - out/**/*
 rules:
   # Ensure any defined symbols are prefixed with "test-"
-  custom-media-pattern: ^test-.+
-  custom-property-pattern: ^test-.+
+  custom-media-pattern: ^(?:test|custom)-.+
+  custom-property-pattern: ^(?:test|custom)-.+
   selector-class-pattern:
-    - ^test-.+
+    - ^(?:test|custom)-.+
     - resolveNestedSelectors: true
-  selector-id-pattern: ^test-.+
+  selector-id-pattern: ^(?:test|custom)-.+
   # SCSS naming patterns, just like our CSS conventions above.
   scss/dollar-variable-pattern:
-    - ^test-.+
+    - ^(?:test|custom)-.+
     -
       ignore: local
-  scss/at-function-pattern: ^test-.+
-  scss/at-mixin-pattern: ^test-.+
+  scss/at-function-pattern: ^(?:test|custom)-.+
+  scss/at-mixin-pattern: ^(?:test|custom)-.+
