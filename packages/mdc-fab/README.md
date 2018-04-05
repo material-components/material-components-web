@@ -57,7 +57,7 @@ We recommend you load [Material Icons](https://material.io/icons/) from Google F
 </button>
 ```
 
-> _NOTE:_ The floating action button icon can be used with a `span`, `a`, `img`, `i`, or `svg` elements.
+> _NOTE:_ The floating action button icon can be used with a `span`, `a`, `img`, `i`, or `svg` element.
 
 ### CSS Classes
 
