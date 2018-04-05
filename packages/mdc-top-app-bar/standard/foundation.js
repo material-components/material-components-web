@@ -115,12 +115,9 @@ class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
       if (!this.wasDocked_) {
         this.wasDocked_ = true;
         return true;
-      } else {
-        // If it was previously docked and now it's docked the opposite way, update the DOM.
-        if (this.isDockedShowing_ !== hasAnyPixelsOnscreen) {
-          this.isDockedShowing_ = hasAnyPixelsOnscreen;
-          return true;
-        }
+      } else if (this.isDockedShowing_ !== hasAnyPixelsOnscreen) {
+        this.isDockedShowing_ = hasAnyPixelsOnscreen;
+        return true;
       }
     }
 
