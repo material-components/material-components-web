@@ -61,7 +61,7 @@
     "extract-text-webpack-plugin": "^3.0.0",
     "fs-extra": "^5.0.0",
     "glob": "^7.1.1",
-    "google-closure-compiler": "^20170521.0.0",
+    "google-closure-compiler": "^20180402.0.0",
     "husky": "^0.14.0",
     "istanbul": "^0.4.4",
     "istanbul-instrumenter-loader": "^3.0.0",
