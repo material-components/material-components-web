@@ -66,6 +66,24 @@ test('#destroy cleans up child chip components', () => {
   td.verify(component.chips[2].destroy());
 });
 
+class FakeSelectedChip {
+  constructor() {
+    this.foundation = td.object({
+      setSelected: () => {}
+    });
+    this.destroy = td.func('.destroy');
+    this.isSelected = () => true;
+  }
+}
+
+test('#initialSyncWithDOM sets selects chips with mdc-chip--selected class', () => {
+  const root = getFixture();
+  const component = new MDCChipSet(root, undefined, (el) => new FakeSelectedChip(el));
+  td.verify(component.foundation_.select(component.chips[0].foundation));
+  td.verify(component.foundation_.select(component.chips[1].foundation));
+  td.verify(component.foundation_.select(component.chips[2].foundation));
+});
+
 function setupTest() {
   const root = getFixture();
   const component = new MDCChipSet(root);

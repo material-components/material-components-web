@@ -108,7 +108,7 @@ class MDCChipSetFoundation extends MDCFoundation {
 
   /**
    * Handles a chip interaction event
-   * @param {!Object} evt
+   * @param {!Event} evt
    * @private
    */
   handleChipInteraction_(evt) {
