@@ -1,4 +1,20 @@
+<!--docs:
+title: "Top App Bar"
+layout: detail
+section: components
+excerpt: "A container for items such as application title, navigation icon, and action items."
+iconId: toolbar
+path: /catalog/top-app-bar/
+-->
+
 # Top App Bar
+
+<!--<div class="article__asset">
+  <a class="article__asset-link"
+     href="https://material-components-web.appspot.com/top-app-bar.html">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/top-app-bar.png" width="494" alt="Top App Bar screenshot">
+  </a>
+</div>-->
 
 MDC Top App Bar acts as a container for items such as application title, navigation icon, and action items. Top app bars scroll with content by default.
 
@@ -47,6 +63,19 @@ Top app bars can accommodate multiple action items on the opposite side of the n
       <a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="Download" alt="Download">file_download</a>
       <a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="Print this page" alt="Print this page">print</a>
       <a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="Bookmark this page" alt="Bookmark this page">bookmark</a>
+    </section>
+  </div>
+</header>
+```
+
+Top app bars can be fixed at the top of the page:
+
+```html
+<header class="mdc-top-app-bar mdc-top-app-bar--fixed">
+  <div class="mdc-top-app-bar__row">
+    <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+      <a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
+      <span class="mdc-top-app-bar__title">Title</span>
     </section>
   </div>
 </header>
@@ -102,6 +131,8 @@ Short top app bars can be configured to always appear collapsed by applying the 
 Class | Description
 --- | ---
 `mdc-top-app-bar` | Mandatory.
+`mdc-top-app-bar--fixed` | Class used to style the top app bar as a fixed top app bar.
+`mdc-top-app-bar--prominent` | Class used to style the top app bar as a prominent top app bar.
 `mdc-top-app-bar--short` | Class used to style the top app bar as a short top app bar.
 `mdc-top-app-bar--short-collapsed` | Class used to indicate the short top app bar is collapsed.
 
