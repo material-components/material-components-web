@@ -15,41 +15,12 @@
 //
 
 @import "./variables";
+@import "./functions";
 
 @mixin mdc-typography-base {
   font-family: $mdc-typography-font-family;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-}
-
-@function get-global-variable($style) {
-  @if $style == "headline1" {
-    @return $mdc-typography-styles-headline1;
-  } @else if $style == "headline2" {
-    @return $mdc-typography-styles-headline2;
-  } @else if $style == "headline3" {
-    @return $mdc-typography-styles-headline3;
-  } @else if $style == "headline4" {
-    @return $mdc-typography-styles-headline4;
-  } @else if $style == "headline5" {
-    @return $mdc-typography-styles-headline5;
-  } @else if $style == "headline6" {
-    @return $mdc-typography-styles-headline6;
-  } @else if $style == "subtitle1" {
-    @return $mdc-typography-styles-subtitle1;
-  } @else if $style == "subtitle2" {
-    @return $mdc-typography-styles-subtitle2;
-  } @else if $style == "body1" {
-    @return $mdc-typography-styles-body1;
-  } @else if $style == "body2" {
-    @return $mdc-typography-styles-body2;
-  } @else if $style == "caption" {
-    @return $mdc-typography-styles-caption;
-  } @else if $style == "button" {
-    @return $mdc-typography-styles-button;
-  } @else if $style == "overline" {
-    @return $mdc-typography-styles-overline;
-  }
 }
 
 @mixin mdc-typography($style) {
