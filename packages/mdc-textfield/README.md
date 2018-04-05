@@ -31,7 +31,7 @@ Text fields allow users to input, edit, and select text.
 ## Installation
 
 ```
-npm install --save @material/textfield
+npm install @material/textfield
 ```
 
 ## Usage
@@ -41,8 +41,8 @@ npm install --save @material/textfield
 ```html
 <div class="mdc-text-field">
   <input type="text" id="my-text-field" class="mdc-text-field__input">
-  <label class="mdc-text-field__label" for="my-text-field">Hint text</label>
-  <div class="mdc-text-field__bottom-line"></div>
+  <label class="mdc-floating-label" for="my-text-field">Hint text</label>
+  <div class="mdc-line-ripple"></div>
 </div>
 ```
 
@@ -54,8 +54,8 @@ by HTML5's form validation API.
 ```html
 <div class="mdc-text-field">
   <input type="password" id="pw" class="mdc-text-field__input" required minlength=8>
-  <label for="pw" class="mdc-text-field__label">Password</label>
-  <div class="mdc-text-field__bottom-line"></div>
+  <label for="pw" class="mdc-floating-label">Password</label>
+  <div class="mdc-line-ripple"></div>
 </div>
 ```
 
@@ -64,17 +64,17 @@ by HTML5's form validation API.
 #### Pre-filled
 
 When dealing with JS-driven text fields that already have values, you'll want to ensure that you
-render `mdc-text-field__label` with the `mdc-text-field__label--float-above` modifier class, and `mdc-text-field` with the `mdc-text-field--upgraded` modifier class. This will
+render `mdc-floating-label` with the `mdc-floating-label--float-above` modifier class, and `mdc-text-field` with the `mdc-text-field--upgraded` modifier class. This will
 ensure that the label moves out of the way of the text field's value and prevents a Flash Of
 Un-styled Content (**FOUC**).
 
 ```html
 <div class="mdc-text-field mdc-text-field--upgraded">
   <input type="text" id="pre-filled" class="mdc-text-field__input" value="Pre-filled value">
-  <label class="mdc-text-field__label mdc-text-field__label--float-above" for="pre-filled">
+  <label class="mdc-floating-label mdc-floating-label--float-above" for="pre-filled">
     Label in correct place
   </label>
-  <div class="mdc-text-field__bottom-line"></div>
+  <div class="mdc-line-ripple"></div>
 </div>
 ```
 
@@ -93,7 +93,7 @@ Full width text fields are useful for in-depth tasks or entering complex informa
 
 > _NOTE_: Do not use `mdc-text-field--box` or `mdc-text-field--outlined` to style a full width text field.
 
-> _NOTE_: Do not use `mdc-text-field__label` within `mdc-text-field--fullwidth`. Labels should not be
+> _NOTE_: Do not use `mdc-floating-label` within `mdc-text-field--fullwidth`. Labels should not be
 included as part of the DOM structure of a full width text field.
 
 #### Textarea
@@ -101,7 +101,7 @@ included as part of the DOM structure of a full width text field.
 ```html
 <div class="mdc-text-field mdc-text-field--textarea">
   <textarea id="textarea" class="mdc-text-field__input" rows="8" cols="40"></textarea>
-  <label for="textarea" class="mdc-text-field__label">Textarea Label</label>
+  <label for="textarea" class="mdc-floating-label">Textarea Label</label>
 </div>
 ```
 
@@ -112,8 +112,8 @@ Add the `disabled` attribute to `<input>` if the `mdc-text-field` is disabled. Y
 ```html
 <div class="mdc-text-field mdc-text-field--disabled">
   <input type="text" id="disabled-text-field" class="mdc-text-field__input" disabled>
-  <label class="mdc-text-field__label" for="disabled-text-field">Disabled text field</label>
-  <div class="mdc-text-field__bottom-line"></div>
+  <label class="mdc-floating-label" for="disabled-text-field">Disabled text field</label>
+  <div class="mdc-line-ripple"></div>
 </div>
 ```
 
@@ -122,19 +122,19 @@ Add the `disabled` attribute to `<input>` if the `mdc-text-field` is disabled. Y
 ```html
 <div class="mdc-text-field mdc-text-field--outlined">
   <input type="text" id="tf-outlined" class="mdc-text-field__input">
-  <label for="tf-outlined" class="mdc-text-field__label">Your Name</label>
-  <div class="mdc-text-field__outline">
+  <label for="tf-outlined" class="mdc-floating-label">Your Name</label>
+  <div class="mdc-notched-outline">
     <svg>
-      <path class="mdc-text-field__outline-path"/>
+      <path class="mdc-notched-outline__path"/>
     </svg>
   </div>
-  <div class="mdc-text-field__idle-outline"></div>
+  <div class="mdc-notched-outline__idle"></div>
 </div>
 ```
 
-See [here](outline/) for more information on using the outline sub-component.
+See [here](../mdc-notched-outline/) for more information on using the outline sub-component.
 
-> _NOTE_: Do not use `mdc-text-field__bottom-line` inside of `mdc-text-field` _if you plan on using `mdc-text-field--outlined`_. Bottom line should not be included as part of the DOM structure of an outlined text field.
+> _NOTE_: Do not use `mdc-line-ripple` inside of `mdc-text-field` _if you plan on using `mdc-text-field--outlined`_. Bottom line should not be included as part of the DOM structure of an outlined text field.
 
 #### Helper Text
 
@@ -144,8 +144,8 @@ See [here](helper-text/) for more information on using helper text.
 
 #### Leading and Trailing Icons
 
-Leading and trailing icons can be added to MDC Text Fields as visual indicators as well as interaction targets.
-See [here](icon/) for more information on using icons.
+Leading and trailing icons can be added within the box or outlined variants of MDC Text Field as visual indicators as
+well as interaction targets. See [here](icon/) for more information on using icons.
 
 ### CSS Classes
 
@@ -165,32 +165,52 @@ CSS Class | Description
 
 ### Sass Mixins
 
-To customize the colors of any part of the text-field, use the following mixins. We recommend you apply 
-these mixins within CSS selectors like `.foo-text-field:not(.mdc-text-field--focused)` to select your unfocused text fields, 
-and `.foo-tab.mdc-text-field--focused` to select your focused text-fields. To change the invalid state of your text fields, 
+To customize the colors of any part of the text-field, use the following mixins. We recommend you apply
+these mixins within CSS selectors like `.foo-text-field:not(.mdc-text-field--focused)` to select your unfocused text fields,
+and `.foo-text-field.mdc-text-field--focused` to select your focused text-fields. To change the invalid state of your text fields,
 apply these mixins with CSS selectors such as `.foo-text-field.mdc-text-field--invalid`.
 
-> _NOTE_: the `mdc-text-field-focused-bottom-line-color` mixin should be applied from the not focused class `foo-text-field:not(.mdc-tab--focused)`). 
+> _NOTE_: the `mdc-line-ripple-color` mixin should be applied from the not focused class `foo-text-field:not(.mdc-text-field--focused)`).
+
+#### Mixins for Text Field Box
 
 Mixin | Description
 --- | ---
-`mdc-text-field-box-corner-radius($radius)` | Customizes the border radius for a box text field
-`mdc-text-field-textarea-corner-radius($radius)` | Customizes the border radius for a `<textarea>` text field
-`mdc-text-field-ink-color($color)` | Customizes the text entered into the text-field. 
-`mdc-text-field-label-color($color)` | Customizes the label color of the text-field. 
-`mdc-text-field-bottom-line-color($color)` | Customizes the color of the default bottom line of the text-field.
-`mdc-text-field-hover-bottom-line-color($color)` | Customizes the hover color of the bottom line of the text-field. 
-`mdc-text-field-focused-bottom-line-color($color)` | Customizes the bottom-line ripple color when the text-field is focused.  
-`mdc-text-field-outline-color($color)` | Customizes the color of the border of the outlined text-field. 
-`mdc-text-field-hover-outline-color($color)` | Customizes the hover color of the border of the outlined text-field.
-`mdc-text-field-focused-outline-color($color)` | Customizes the outlined border color when the text-field is focused.
-`mdc-text-field-box-fill-color($color)` | Customizes the background color of the text-field box. 
-`mdc-text-field-textarea-stroke-color($color)` | Customizes the color of the border of the textarea. 
-`mdc-text-field-textarea-fill-color($color)` | Customizes the color of the background of the textarea. 
-`mdc-text-field-fullwidth-bottom-line-color($color)` | Customizes the bottom line under a fullwidth text field. Doesn't apply to a textarea.
-`mdc-text-field-icon-color($color)` | Customizes the color for the leading/trailing icons.
-`mdc-text-field-helper-text-color($color)` | Customizes the color of the helper text following a text-field.
-`mdc-text-field-helper-text-validation-color($color)` | Customizes the color of the helper text when it's used as a validation message.
+`mdc-text-field-box-corner-radius($radius)` | Customizes the border radius for the text field box variant.
+`mdc-text-field-box-fill-color($color)` | Customizes the background color of the text field box.
+
+#### Mixins for Text Field Outline
+
+Mixin | Description
+--- | ---
+`mdc-text-field-focused-outline-color($color)` | Customizes the outline border color when the text field is focused.
+`mdc-text-field-hover-outline-color($color)` | Customizes the outline border color when the text field is hovered.
+`mdc-text-field-outline-color($color)` | Customizes the border color of the outline text field.
+`mdc-text-field-outline-corner-radius($radius)` | Sets the border radius of of the text field outline variant.
+
+#### Mixins for Textarea
+
+Mixin | Description
+--- | ---
+`mdc-text-field-textarea-corner-radius($radius)` | Customizes the border radius for a `<textarea>` variant.
+`mdc-text-field-textarea-fill-color($color)` | Customizes the color of the background of the textarea.
+`mdc-text-field-textarea-stroke-color($color)` | Customizes the color of the border of the textarea.
+
+
+#### Mixins for Text Field Fullwidth
+
+Mixin | Description
+--- | ---
+`mdc-text-field-fullwidth-bottom-line-color($color)` | Customizes the fullwidth text field variant bottom line color.
+
+#### Other Mixins
+Mixin | Description
+--- | ---
+`mdc-text-field-bottom-line-color($color)` | Customizes the text field bottom line color except the outline and textarea variants.
+`mdc-text-field-hover-bottom-line-color($color)` | Customizes the hover text field bottom line color except the outline and textarea variants.
+`mdc-text-field-ink-color($color)` | Customizes the text entered into the text field.
+`mdc-text-field-label-color($color)` | Customizes the text color of the label.
+`mdc-text-field-line-ripple-color($color)` | Customizes the color of the default line ripple of the text field.
 
 ### `MDCTextField`
 
@@ -211,7 +231,7 @@ Method Signature | Description
 
 ##### `MDCTextField.ripple`
 
-`MDCRipple` instance. When given an `mdc-text-field--box` root element, this is set to the `MDCRipple` instance on the root element. When given an `mdc-text-field--outlined` root element, this is set to the `MDCRipple` instance on the `mdc-text-field__outline` element. Otherwise, the field is set to `null`.
+`MDCRipple` instance. When given an `mdc-text-field--box` root element, this is set to the `MDCRipple` instance on the root element. When given an `mdc-text-field--outlined` root element, this is set to the `MDCRipple` instance on the `mdc-notched-outline` element. Otherwise, the field is set to `null`.
 
 ### `MDCTextFieldAdapter`
 
@@ -224,11 +244,12 @@ Method Signature | Description
 `deregisterTextFieldInteractionHandler(evtType: string, handler: EventListener)` => void | Deregisters an event handler on the root element for a given event
 `registerInputInteractionHandler(evtType: string, handler: EventListener)` => void | Registers an event listener on the native input element for a given event
 `deregisterInputInteractionHandler(evtType: string, handler: EventListener)` => void | Deregisters an event listener on the native input element for a given event
-`registerBottomLineEventHandler(evtType: string, handler: EventListener)` => void | Registers an event listener on the bottom line element for a given event
-`deregisterBottomLineEventHandler(evtType: string, handler: EventListener)` => void | Deregisters an event listener on the bottom line element for a given event
 `getNativeInput() => {value: string, disabled: boolean, badInput: boolean, checkValidity: () => boolean}?` | Returns an object representing the native text input element, with a similar API shape
 `isFocused() => boolean` | Returns whether the input is focused
 `isRtl() => boolean` | Returns whether the direction of the root element is set to RTL
+`hasOutline() => boolean` | Returns whether there is an outline element
+`notchOutline(labelWidth: number, isRtl: boolean) => void` | Updates the outline path to open the notch and update the notch width for the label element
+`closeOutline() => void` | Closes the notch in the outline element
 
 #### `MDCTextFieldAdapter.getNativeInput()`
 
@@ -253,8 +274,7 @@ Method Signature | Description
 `handleTextFieldInteraction(evt: Event) => void` | Handles click and keydown events originating from inside the Text Field component
 `activateFocus() => void` | Activates the focus state of the Text Field. Normally called in response to the input focus event.
 `deactivateFocus() => void` | Deactivates the focus state of the Text Field. Normally called in response to the input blur event.
-`handleBottomLineAnimationEnd(evt: Event) => void` | Handles the end of the bottom line animation, performing actions that must wait for animations to finish. Expects a transition-end event.
-`setHelperTextContent(content: string) => void` | Sets the content of the helper text
-`updateOutline() => void` | Updates the focus outline for outlined text fields
+`setHelperTextContent(content: string) => void` | Sets the content of the helper text.
+`notchOutline(openNotch: boolean) => void` | Opens/closes the notched outline.
 
-`MDCTextFieldFoundation` supports multiple optional sub-elements: bottom line, helper text, icon, label, and outline. The foundations of these sub-elements must be passed in as constructor arguments to `MDCTextFieldFoundation`.
+`MDCTextFieldFoundation` supports multiple optional sub-elements: helper text and icon. The foundations of these sub-elements must be passed in as constructor arguments to `MDCTextFieldFoundation`.

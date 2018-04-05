@@ -42,14 +42,14 @@
     }
 
     to {
-      opacity: var(--mdc-ripple-fg-opacity, map-get($mdc-ripple-dark-ink-opacities, "press"));
+      opacity: var(--mdc-ripple-fg-opacity, 0);
     }
   }
 
   @keyframes mdc-ripple-fg-opacity-out {
     from {
       animation-timing-function: linear;
-      opacity: var(--mdc-ripple-fg-opacity, map-get($mdc-ripple-dark-ink-opacities, "press"));
+      opacity: var(--mdc-ripple-fg-opacity, 0);
     }
 
     to {

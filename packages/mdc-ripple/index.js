@@ -63,6 +63,7 @@ class MDCRipple extends MDCComponent {
       isSurfaceDisabled: () => instance.disabled,
       addClass: (className) => instance.root_.classList.add(className),
       removeClass: (className) => instance.root_.classList.remove(className),
+      containsEventTarget: (target) => instance.root_.contains(target),
       registerInteractionHandler: (evtType, handler) =>
         instance.root_.addEventListener(evtType, handler, util.applyPassive()),
       deregisterInteractionHandler: (evtType, handler) =>

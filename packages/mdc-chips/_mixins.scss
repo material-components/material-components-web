@@ -1,0 +1,102 @@
+//
+// Copyright 2017 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+@import "@material/ripple/mixins";
+@import "@material/theme/functions";
+@import "@material/theme/mixins";
+
+@mixin mdc-chip-corner-radius($radius) {
+  border-radius: $radius;
+}
+
+@mixin mdc-chip-fill-color-accessible($color) {
+  $fill-tone: mdc-theme-tone($color);
+
+  @include mdc-chip-fill-color($color);
+
+  @if ($fill-tone == "dark") {
+    @include mdc-chip-ink-color(text-primary-on-dark);
+    @include mdc-chip-selected-ink-color(white);
+  } @else {
+    @include mdc-chip-ink-color(text-primary-on-light);
+    @include mdc-chip-selected-ink-color(black);
+  }
+}
+
+@mixin mdc-chip-fill-color($color) {
+  @include mdc-theme-prop(background-color, $color);
+}
+
+@mixin mdc-chip-ink-color($color) {
+  @include mdc-states($color);
+  @include mdc-theme-prop(color, $color);
+
+  &:hover {
+    @include mdc-theme-prop(color, $color);
+  }
+}
+
+@mixin mdc-chip-selected-ink-color($color) {
+  &.mdc-chip {
+    @include mdc-states-selected($color);
+  }
+
+  &.mdc-chip--selected {
+    @include mdc-theme-prop(color, $color);
+
+    &:hover {
+      @include mdc-theme-prop(color, $color);
+    }
+  }
+
+  .mdc-chip__checkmark-path {
+    @include mdc-theme-prop(stroke, $color);
+  }
+}
+
+@mixin mdc-chip-stroke($width: 1, $style: solid, $color: black) {
+  @include mdc-chip-stroke-width($width);
+  @include mdc-chip-stroke-style($style);
+  @include mdc-chip-stroke-color($color);
+}
+
+@mixin mdc-chip-stroke-color($color) {
+  @include mdc-theme-prop(border-color, $color);
+}
+
+@mixin mdc-chip-stroke-style($style) {
+  border-style: $style;
+}
+
+@mixin mdc-chip-stroke-width($width) {
+  // Note: Adjust padding to maintain consistent width with non-stroked chips
+  $horizontal-padding-value: max($mdc-chip-horizontal-padding - $width, 0);
+  $vertical-padding-value: max($mdc-chip-vertical-padding - $width, 0);
+
+  padding-top: $vertical-padding-value;
+  padding-right: $horizontal-padding-value;
+  padding-bottom: $vertical-padding-value;
+  padding-left: $horizontal-padding-value;
+  border-width: $width;
+}
+
+@mixin mdc-chip-set-spacing($gap-size) {
+  padding: $gap-size / 2;
+
+  .mdc-chip {
+    margin: $gap-size / 2;
+  }
+}

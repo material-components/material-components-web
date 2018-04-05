@@ -15,6 +15,7 @@
 @import "@material/ripple/common";
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
+@import "@material/theme/functions";
 @import "@material/typography/mixins";
 @import "@material/typography/variables";
 @import "./mixins";
@@ -31,6 +32,8 @@
 
   // According to the mocks and stickersheet, the line-height is adjusted to 24px for text content,
   // same as for subheading1.
+
+  /* @alternate */
   line-height: map-get(map-get($mdc-typography-styles, subheading1), line-height);
   list-style-type: none;
 }

@@ -34,7 +34,7 @@ MDC Web is made available on [NPM](https://www.npmjs.com/), with packages living
 In order to install e.g. the button component, you can run:
 
 ```
-npm install --save @material/button
+npm install @material/button
 ```
 
 Some packages serve as dependencies for others, so don’t be surprised if you end up with multiple packages in your
@@ -43,7 +43,7 @@ Some packages serve as dependencies for others, so don’t be surprised if you e
 If you want all of MDC Web, you can pull in the meta package:
 
 ```
-npm install --save material-components-web
+npm install material-components-web
 ```
 
 ### Content Distribution Network (CDN)
@@ -92,8 +92,8 @@ MDC Web:
 ```html
 <div class="mdc-text-field">
   <input class="mdc-text-field__input" type="text" id="input">
-  <label for="input" class="mdc-text-field__label">Input Label</label>
-  <div class="mdc-text-field__bottom-line"></div>
+  <label for="input" class="mdc-floating-label">Input Label</label>
+  <div class="mdc-line-ripple"></div>
 </div>
 ```
 
@@ -118,8 +118,8 @@ element, with the component’s class name as the value. For example:
 ```html
 <div class="mdc-text-field" data-mdc-auto-init="MDCTextField">
   <input class="mdc-text-field__input" type="text" id="input">
-  <label for="input" class="mdc-text-field__label">Input Label</label>
-  <div class="mdc-text-field__bottom-line"></div>
+  <label for="input" class="mdc-floating-label">Input Label</label>
+  <div class="mdc-line-ripple"></div>
 </div>
 ```
 
@@ -199,8 +199,8 @@ Like in MDL, styling components with CSS classes is simply a matter of applied t
 ```html
 <div class="mdc-text-field">
   <input type="text" id="my-text-field" class="mdc-text-field__input">
-  <label class="mdc-text-field__label" for="my-text-field">Hint text</label>
-  <div class="mdc-text-field__bottom-line"></div>
+  <label class="mdc-floating-label" for="my-text-field">Hint text</label>
+  <div class="mdc-line-ripple"></div>
 </div>
 ```
 

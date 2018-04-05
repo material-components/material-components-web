@@ -7,6 +7,13 @@ iconId: toolbar
 path: /catalog/toolbar/
 -->
 
+## Important - Deprecation Notice
+
+The existing `MDCToolbar` component and styles will be removed in a future release. Some of its functionality
+will be available in the `mdc-top-app-bar` package instead. Bugs and feature requests
+will no longer be accepted for the `mdc-toolbar` package. It is recommended that you migrate to the
+`mdc-top-app-bar` package to continue to receive new features and updates.
+
 # Toolbars
 
 <!--<div class="article__asset">
@@ -46,7 +53,7 @@ height added to their first rows.
 ## Installation
 
 ```
-npm install --save @material/toolbar
+npm install @material/toolbar
 ```
 
 ## Usage
@@ -140,6 +147,14 @@ a page's title, or an application name.
 Icons can be added as anchor tags, `span`s, or `button`s to `mdc-toolbar`. There are two types of icons,
 `mdc-toolbar__menu-icon` represents the left most icon in `mdc-toolbar` usually to the left of `mdc-toolbar__title`.
 `mdc-toolbar__icon` represents any icons placed on the right side of an `mdc-toolbar`.
+
+When using `svg` icons, ensure you wrap the `svg` element in an `a` and include the `mdc-toolbar__icon` class.
+
+```html
+<a href="#" class="mdc-toolbar__icon">
+  <svg></svg>
+</a>
+```
 
 ### Fixed toolbars
 
@@ -329,7 +344,7 @@ further details.
 
 The provided modifiers are:
 
-Class | Description                            
+Class | Description
 --- | ---
 `mdc-toolbar--fixed` | Makes toolbar fixed on top and have persistent elevation
 `mdc-toolbar--waterfall` | Removes fixed toolbar persistent elevation and makes it gain elevation when a user begins to scroll down the page

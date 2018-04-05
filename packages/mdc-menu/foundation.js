@@ -79,7 +79,6 @@ class MDCMenuFoundation extends MDCFoundation {
       hasClass: () => false,
       hasNecessaryDom: () => false,
       getAttributeForEventTarget: () => {},
-      eventTargetHasClass: () => {},
       getInnerDimensions: () => ({}),
       hasAnchor: () => false,
       getAnchorDimensions: () => ({}),
@@ -145,6 +144,8 @@ class MDCMenuFoundation extends MDCFoundation {
     this.selectedIndex_ = -1;
     /** @private {boolean} */
     this.rememberSelection_ = false;
+    /** @private {boolean} */
+    this.quickOpen_ = false;
 
     // A keyup event on the menu needs to have a corresponding keydown
     // event on the menu. If the user opens the menu with a keydown event on a
@@ -208,6 +209,11 @@ class MDCMenuFoundation extends MDCFoundation {
     this.setSelectedIndex(-1);
   }
 
+  /** @param {boolean} quickOpen */
+  setQuickOpen(quickOpen) {
+    this.quickOpen_ = quickOpen;
+  }
+
   /**
    * @param {?number} focusIndex
    * @private
@@ -232,7 +238,7 @@ class MDCMenuFoundation extends MDCFoundation {
   }
 
   /**
-   * Handle clicks and cancel the menu if not a list item
+   * Handle clicks and cancel the menu if not a child list-item
    * @param {!Event} evt
    * @private
    */
@@ -240,7 +246,7 @@ class MDCMenuFoundation extends MDCFoundation {
     let el = evt.target;
 
     while (el && el !== document.documentElement) {
-      if (this.adapter_.eventTargetHasClass(el, cssClasses.LIST_ITEM)) {
+      if (this.adapter_.getIndexForEventTarget(el) !== -1) {
         return;
       }
       el = el.parentNode;
@@ -555,7 +561,10 @@ class MDCMenuFoundation extends MDCFoundation {
    */
   open({focusIndex = null} = {}) {
     this.adapter_.saveFocus();
-    this.adapter_.addClass(MDCMenuFoundation.cssClasses.ANIMATING_OPEN);
+
+    if (!this.quickOpen_) {
+      this.adapter_.addClass(MDCMenuFoundation.cssClasses.ANIMATING_OPEN);
+    }
 
     this.animationRequestId_ = requestAnimationFrame(() => {
       this.dimensions_ = this.adapter_.getInnerDimensions();
@@ -563,10 +572,12 @@ class MDCMenuFoundation extends MDCFoundation {
       this.adapter_.addClass(MDCMenuFoundation.cssClasses.OPEN);
       this.focusOnOpen_(focusIndex);
       this.adapter_.registerBodyClickHandler(this.documentClickHandler_);
-      this.openAnimationEndTimerId_ = setTimeout(() => {
-        this.openAnimationEndTimerId_ = 0;
-        this.adapter_.removeClass(MDCMenuFoundation.cssClasses.ANIMATING_OPEN);
-      }, numbers.TRANSITION_OPEN_DURATION);
+      if (!this.quickOpen_) {
+        this.openAnimationEndTimerId_ = setTimeout(() => {
+          this.openAnimationEndTimerId_ = 0;
+          this.adapter_.removeClass(MDCMenuFoundation.cssClasses.ANIMATING_OPEN);
+        }, numbers.TRANSITION_OPEN_DURATION);
+      }
     });
     this.isOpen_ = true;
   }
@@ -585,13 +596,19 @@ class MDCMenuFoundation extends MDCFoundation {
     }
 
     this.adapter_.deregisterBodyClickHandler(this.documentClickHandler_);
-    this.adapter_.addClass(MDCMenuFoundation.cssClasses.ANIMATING_CLOSED);
+
+    if (!this.quickOpen_) {
+      this.adapter_.addClass(MDCMenuFoundation.cssClasses.ANIMATING_CLOSED);
+    }
+
     requestAnimationFrame(() => {
       this.adapter_.removeClass(MDCMenuFoundation.cssClasses.OPEN);
-      this.closeAnimationEndTimerId_ = setTimeout(() => {
-        this.closeAnimationEndTimerId_ = 0;
-        this.adapter_.removeClass(MDCMenuFoundation.cssClasses.ANIMATING_CLOSED);
-      }, numbers.TRANSITION_CLOSE_DURATION);
+      if (!this.quickOpen_) {
+        this.closeAnimationEndTimerId_ = setTimeout(() => {
+          this.closeAnimationEndTimerId_ = 0;
+          this.adapter_.removeClass(MDCMenuFoundation.cssClasses.ANIMATING_CLOSED);
+        }, numbers.TRANSITION_CLOSE_DURATION);
+      }
     });
     this.isOpen_ = false;
     this.adapter_.restoreFocus();

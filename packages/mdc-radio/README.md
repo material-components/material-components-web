@@ -33,7 +33,7 @@ interaction UX as well as a component-level API for state modification.
 ## Installation
 
 ```
-npm install --save @material/radio
+npm install @material/radio
 ```
 
 ## Usage
@@ -199,7 +199,7 @@ not return an object.
 
 ## Theming
 
-MDC Radios use the theme's secondary color by default for checked states, and are completely dark theme aware.
+MDC Radios use the theme's secondary color by default for checked states.
 
 ### Sass Mixins
 

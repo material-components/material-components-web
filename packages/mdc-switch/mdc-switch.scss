@@ -21,13 +21,6 @@
 
 // postcss-bem-linter: define switch
 .mdc-switch {
-  @include mdc-switch-unchecked-track-color_($mdc-switch-unchecked-track-color);
-  @include mdc-switch-unchecked-knob-color_($mdc-switch-unchecked-knob-color);
-  @include mdc-switch-unchecked-focus-indicator-color_($mdc-switch-unchecked-focus-ring-color);
-  @include mdc-switch-track-color($mdc-switch-baseline-theme-color);
-  @include mdc-switch-knob-color($mdc-switch-baseline-theme-color);
-  @include mdc-switch-focus-indicator-color($mdc-switch-baseline-theme-color);
-
   display: inline-block;
   position: relative;
 
@@ -45,80 +38,76 @@
       transform: translateX($mdc-switch-knob-active-margin);
     }
   }
+}
 
-  &__background {
+@at-root {
+  @include mdc-switch-unchecked-track-color_($mdc-switch-unchecked-track-color);
+  @include mdc-switch-unchecked-knob-color_($mdc-switch-unchecked-knob-color);
+  @include mdc-switch-unchecked-focus-indicator-color_($mdc-switch-unchecked-focus-ring-color);
+  @include mdc-switch-track-color($mdc-switch-baseline-theme-color);
+  @include mdc-switch-knob-color($mdc-switch-baseline-theme-color);
+  @include mdc-switch-focus-indicator-color($mdc-switch-baseline-theme-color);
+}
+
+.mdc-switch__background {
+  display: block;
+  position: relative;
+  width: $mdc-switch-track-width;
+  height: $mdc-switch-track-height;
+  border-radius: 50%;
+  outline: none;
+  user-select: none;
+
+  // Track
+  &::before {
     display: block;
-    position: relative;
-    width: $mdc-switch-track-width;
-    height: $mdc-switch-track-height;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transition:
+      mdc-switch-transition(opacity),
+      mdc-switch-transition(background-color);
     border-radius: 7px;
-    outline: none;
-    user-select: none;
-
-    // Track
-    &::before {
-      display: block;
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      transition:
-        mdc-switch-transition(opacity),
-        mdc-switch-transition(background-color);
-      border-radius: 7px;
-      opacity: .38;
-      content: "";
-    }
-
-    // postcss-bem-linter: ignore
-    .mdc-switch__knob {
-      @include mdc-elevation(2);
-
-      display: block;
-      position: absolute;
-      top: $mdc-switch-knob-vertical-offset_;
-      left: 0;
-      width: $mdc-switch-knob-diameter;
-      height: $mdc-switch-knob-diameter;
-      transform: translateX(0);
-      transition:
-        mdc-switch-transition(transform),
-        mdc-switch-transition(background-color);
-      border-radius: $mdc-switch-knob-diameter / 2;
-      z-index: 1;
-
-      // Focus indicator
-      // postcss-bem-linter: ignore
-      &::before {
-        @include mdc-switch-tap-target_;
-
-        transform: scale(0);
-        transition:
-          mdc-switch-transition(transform),
-          mdc-switch-transition(background-color);
-        border-radius: $mdc-switch-focus-ring-diameter / 2;
-        opacity: .2;
-        content: "";
-      }
-    }
+    opacity: .38;
+    content: "";
   }
 }
 
-.mdc-switch__native-control:focus ~ .mdc-switch__background {
-  .mdc-switch__knob {
-    // Focus indicator
-    &::before {
-      position: absolute;
-      width: $mdc-switch-focus-ring-diameter;
-      height: $mdc-switch-focus-ring-diameter;
-      transform: scale(1);
-      transition:
-        mdc-switch-transition(transform),
-        mdc-switch-transition(background-color);
-      border-radius: $mdc-switch-focus-ring-diameter / 2;
-    }
+.mdc-switch__knob {
+  @include mdc-elevation(2);
+
+  display: block;
+  position: absolute;
+  top: $mdc-switch-knob-vertical-offset_;
+  left: 0;
+  width: $mdc-switch-knob-diameter;
+  height: $mdc-switch-knob-diameter;
+  transform: translateX(0);
+  transition:
+    mdc-switch-transition(transform),
+    mdc-switch-transition(background-color);
+  border-radius: 50%;
+  z-index: 1;
+
+  // Focus indicator
+  &::before {
+    @include mdc-switch-tap-target_;
+
+    transform: scale(0);
+    transition:
+      mdc-switch-transition(transform),
+      mdc-switch-transition(background-color);
+    border-radius: 50%;
+    opacity: .2;
+    content: "";
   }
+}
+
+// Focus indicator
+.mdc-switch__native-control:focus ~ .mdc-switch__background .mdc-switch__knob::before {
+  transform: scale(1);
 }
 
 .mdc-switch__native-control:checked ~ .mdc-switch__background {
@@ -129,9 +118,6 @@
 
   .mdc-switch__knob {
     transform: translateX($mdc-switch-knob-active-margin);
-    transition:
-      mdc-switch-transition(transform),
-      mdc-switch-transition(background-color);
 
     // Focus indicator
     &::before {

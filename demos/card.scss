@@ -153,7 +153,7 @@
 
 .demo-card__media--music {
   width: 110px;
-  border-top-left-radius: inherit; // for music card
+  border-top-left-radius: inherit;
 
   @include mdc-rtl {
     border-top-left-radius: 0;

@@ -39,4 +39,4 @@ rules:
   mocha/no-nested-tests: error
   mocha/no-pending-tests: error
   mocha/no-skipped-tests: error
-  mocha/valid-suite-description: [error, ^MDC.+]
+  mocha/valid-suite-description: [error, ^MDC.+|^webpack]

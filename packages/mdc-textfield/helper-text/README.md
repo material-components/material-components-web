@@ -32,8 +32,8 @@ Helper text gives context about a field’s input, such as how the input will be
 ```html
 <div class="mdc-text-field">
   <input type="text" id="username" class="mdc-text-field__input">
-  <label for="username" class="mdc-text-field__label">Username</label>
-  <div class="mdc-text-field__bottom-line"></div>
+  <label for="username" class="mdc-floating-label">Username</label>
+  <div class="mdc-line-ripple"></div>
 </div>
 <p class="mdc-text-field-helper-text" aria-hidden="true">
   This will be displayed on your public profile
@@ -51,8 +51,8 @@ the input element.
 ```html
 <div class="mdc-text-field">
   <input type="text" id="username" class="mdc-text-field__input" aria-controls="username-helper-text">
-  <label for="username" class="mdc-text-field__label">Username</label>
-  <div class="mdc-text-field__bottom-line"></div>
+  <label for="username" class="mdc-floating-label">Username</label>
+  <div class="mdc-line-ripple"></div>
 </div>
 <p id="username-helper-text" class="mdc-text-field-helper-text" aria-hidden="true">
   This will be displayed on your public profile
@@ -72,6 +72,14 @@ CSS Class | Description
 `mdc-text-field-helper-text` | Mandatory
 `mdc-text-field-helper-text--persistent` | Makes the helper text permanently visible
 `mdc-text-field-helper-text--validation-msg` | Indicates the helper text is a validation message
+
+
+### Sass Mixins
+
+Mixin | Description
+--- | ---
+`mdc-text-field-helper-text-color($color)` | Customizes the color of the helper text following a text-field.
+`mdc-text-field-helper-text-validation-color($color)` | Customizes the color of the helper text when it's used as a validation message.
 
 ### `MDCTextFieldHelperText`
 

@@ -43,10 +43,17 @@
 // Private
 //
 
-@mixin mdc-card-row-layout_($display: flex) {
+@mixin mdc-card-container-layout_ {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+@mixin mdc-card-actions-layout_($display: flex) {
   display: $display;
   flex-direction: row;
   align-items: center;
+  box-sizing: border-box;
 }
 
 @mixin mdc-card-media-aspect-ratio-base_ {

@@ -126,6 +126,11 @@ class MDCMenu extends MDCComponent {
     this.foundation_.setRememberSelection(rememberSelection);
   }
 
+  /** @param {boolean} quickOpen */
+  set quickOpen(quickOpen) {
+    this.foundation_.setQuickOpen(quickOpen);
+  }
+
   /** @return {!MDCMenuFoundation} */
   getDefaultFoundation() {
     return new MDCMenuFoundation({
@@ -134,7 +139,6 @@ class MDCMenu extends MDCComponent {
       hasClass: (className) => this.root_.classList.contains(className),
       hasNecessaryDom: () => Boolean(this.itemsContainer_),
       getAttributeForEventTarget: (target, attributeName) => target.getAttribute(attributeName),
-      eventTargetHasClass: (target, className) => target.classList.contains(className),
       getInnerDimensions: () => {
         const {itemsContainer_: itemsContainer} = this;
         return {width: itemsContainer.offsetWidth, height: itemsContainer.offsetHeight};

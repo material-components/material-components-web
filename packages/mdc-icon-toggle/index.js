@@ -49,18 +49,6 @@ class MDCIconToggle extends MDCComponent {
     const adapter = Object.assign(MDCRipple.createAdapter(this), {
       isUnbounded: () => true,
       isSurfaceActive: () => this.foundation_.isKeyboardActivated(),
-      computeBoundingRect: () => {
-        const dim = 48;
-        const {left, top} = this.root_.getBoundingClientRect();
-        return {
-          left,
-          top,
-          width: dim,
-          height: dim,
-          right: left + dim,
-          bottom: left + dim,
-        };
-      },
     });
     const foundation = new MDCRippleFoundation(adapter);
     return new MDCRipple(this.root_, foundation);

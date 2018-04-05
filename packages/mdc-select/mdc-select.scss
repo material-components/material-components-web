@@ -14,25 +14,24 @@
 // limitations under the License.
 //
 
+@import "./keyframes";
 @import "./mixins";
-@import "@material/animation/functions";
+@import "./variables";
 @import "@material/animation/variables";
 @import "@material/typography/mixins";
 @import "@material/ripple/common";
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
-
-$mdc-select-arrow-padding: 26px;
-$mdc-select-label-padding: 16px;
-$mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timing-function;
+@import "./label/mdc-select-label";
+@import "./bottom-line/mdc-select-bottom-line";
 
 // postcss-bem-linter: define select
 .mdc-select {
-  @include mdc-typography(subheading2);
+  @include mdc-typography-base;
+  @include mdc-select-container-fill-color(transparent);
   @include mdc-select-dd-arrow-svg-bg_;
-  @include mdc-select-container-fill-color(rgba(black, .04));
   @include mdc-select-ink-color(text-primary-on-light);
-  @include mdc-select-label-color(rgba(black, .6));
+  @include mdc-select-label-color(black, .6);
   @include mdc-select-bottom-line-color(rgba(black, .5));
 
   // Focused state colors
@@ -41,113 +40,38 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
 
   display: inline-flex;
   position: relative;
-  align-items: center;
-  justify-content: flex-start;
   box-sizing: border-box;
-  height: 56px;
-  border: none;
-  border-radius: 4px 4px 0 0;
-  outline: none;
+  height: 48px;
   background-repeat: no-repeat;
-  background-position: right 10px center;
-  cursor: pointer;
-  overflow: visible;
+  background-position: right 8px bottom 12px;
+  overflow: hidden;
 
   @include mdc-rtl {
-    background-position: left 10px center;
+    background-position: left 8px bottom 12px;
   }
 
-  &__menu {
-    position: fixed;
-    top: 0;
-    left: 0;
-    max-height: 100%;
-    transform-origin: center center;
-    z-index: 4; // Should pop up above everything else. temporary-drawer is next highest at 3.
-  }
-
-  &__surface {
-    @include mdc-typography(subheading2);
-    @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding, ".mdc-select");
-    @include mdc-ripple-surface;
-    @include mdc-ripple-radius-bounded;
-    @include mdc-states;
+  &__native-control {
+    @include mdc-rtl-reflexive-property(padding, 0, $mdc-select-arrow-padding);
+    @include mdc-typography-base;
 
     &::-ms-expand {
       display: none;
     }
 
-    display: flex;
-    position: relative;
-    flex-grow: 1;
+    // counteracts the extra text padding that Firefox adds by default
+    @-moz-document url-prefix("") {
+      text-indent: -2px;
+    }
+
     width: 100%;
-    height: 56px;
+    padding-top: 22px;
+    padding-bottom: 8px;
     border: none;
-    border-radius: 4px 4px 0 0;
     outline: none;
-    // Resets for <select> element
-    appearance: none;
-    overflow: hidden;
-  }
-
-  &__label {
-    @include mdc-rtl-reflexive-position(left, 16px);
-
-    position: absolute;
-    bottom: 12px;
-    transform-origin: left top;
-    transition: $mdc-select-menu-transition;
-    pointer-events: none;
-    will-change: transform;
-
-    @include mdc-rtl(".mdc-select") {
-      transform-origin: right top;
-    }
-
-    &--float-above {
-      transform: translateY(-40%) scale(.75, .75);
-    }
-  }
-
-  &__selected-text {
-    display: flex;
-    align-items: flex-end;
-    margin-bottom: 6px;
-    transition:
-      mdc-animation-exit-temporary(opacity, 125ms),
-      mdc-animation-exit-temporary(transform, 125ms);
+    background-color: transparent;
     white-space: nowrap;
-    overflow: hidden;
-  }
-
-  &__bottom-line {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    transform: scaleY(1);
-    transform-origin: bottom;
-    transition: $mdc-select-menu-transition;
-
-    &::after {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 1px;
-      transform: scaleX(0);
-      transition: $mdc-select-menu-transition;
-      opacity: 0;
-      content: "";
-      z-index: 2;
-    }
-  }
-
-  &__bottom-line--active {
-    &::after {
-      opacity: 1;
-    }
+    cursor: pointer;
+    appearance: none;
   }
 
   @include mdc-select-focused-bottom-line_ {
@@ -158,47 +82,68 @@ $mdc-select-menu-transition: transform 180ms $mdc-animation-standard-curve-timin
   }
 }
 
-.mdc-select--open {
-  .mdc-select__surface::before {
-    opacity: map-get($mdc-ripple-dark-ink-opacities, "focus");
+// needed to make this a keyframe animation because having translateY in the
+// not-selected state caused an unwanted scrolling behavior to occur
+.mdc-select--is-changing .mdc-select__native-control {
+  animation: mdc-select-float-native-control 125ms 1;
+  animation-timing-function: $mdc-animation-deceleration-curve-timing-function;
+}
+
+.mdc-select--box {
+  @include mdc-select-container-fill-color(rgba(black, .04));
+  @include mdc-ripple-surface;
+  @include mdc-ripple-radius-bounded;
+  // Select Box intentionally omits press ripple, so each state needs to be specified individually
+  @include mdc-states-base-color(text-primary-on-background);
+  @include mdc-states-hover-opacity(mdc-states-opacity(text-primary-on-background, hover));
+  @include mdc-states-focus-opacity(
+    mdc-states-opacity(text-primary-on-background, focus),
+    $has-nested-focusable-element: true
+  );
+
+  height: 56px;
+  border-radius: 4px 4px 0 0;
+  background-position: right 10px center;
+
+  @include mdc-rtl {
+    background-position: left 10px center;
   }
 
-  .mdc-select__selected-text {
-    transform: translateY(8px);
-    transition:
-      mdc-animation-enter(opacity, 125ms, 125ms),
-      mdc-animation-enter(transform, 125ms, 125ms);
-    opacity: 0;
+  .mdc-select__native-control,
+  .mdc-select__label {
+    @include mdc-typography(subheading2);
   }
 
-  .mdc-select__bottom-line {
-    &::after {
-      transform: scaleY(2);
-      opacity: 1;
+  .mdc-select__native-control {
+    @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding);
+
+    height: 56px;
+    border-radius: 4px 4px 0 0;
+  }
+
+  .mdc-select__label {
+    @include mdc-rtl-reflexive-position(left, 16px);
+
+    bottom: 12px;
+
+    &--float-above {
+      transform: translateY(-40%) scale(.75, .75);
     }
   }
 }
 
-.mdc-select--disabled,
-.mdc-select[disabled] {
-  @include mdc-select-label-color_(text-disabled-on-light);
+.mdc-select--disabled {
+  @include mdc-select-floating-label-color(text-disabled-on-light);
   @include mdc-select-dd-arrow-svg-bg_(000000, .38);
+  @include mdc-select-container-fill-color_(transparent);
 
   border-bottom-width: 1px;
   border-bottom-style: dotted;
   opacity: .38;
   cursor: default;
   pointer-events: none;
-  // Imitate native disabled functionality
-  user-select: none;
 
   .mdc-select__bottom-line {
     display: none;
   }
-}
-
-// postcss-bem-linter: end
-
-.mdc-select-scroll-lock {
-  overflow: hidden;
 }

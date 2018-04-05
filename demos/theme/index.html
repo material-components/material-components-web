@@ -170,13 +170,9 @@
               <div class="demo-theme-color-group">
                 <div class="demo-theme-color-swatches">
                   <div class="demo-theme-color-swatch demo-theme-color-swatch--elevated mdc-theme--primary mdc-typography--body2">Primary</div>
-                  <div class="demo-theme-color-swatch demo-theme-color-swatch--elevated mdc-theme--primary-light mdc-typography--body2">Primary Light</div>
-                  <div class="demo-theme-color-swatch demo-theme-color-swatch--elevated mdc-theme--primary-dark mdc-typography--body2">Primary Dark</div>
                 </div>
                 <div class="demo-theme-color-swatches">
                   <div class="demo-theme-color-swatch demo-theme-color-swatch--elevated mdc-theme--secondary mdc-typography--body2">Secondary</div>
-                  <div class="demo-theme-color-swatch demo-theme-color-swatch--elevated mdc-theme--secondary-light mdc-typography--body2">Secondary Light</div>
-                  <div class="demo-theme-color-swatch demo-theme-color-swatch--elevated mdc-theme--secondary-dark mdc-typography--body2">Secondary Dark</div>
                 </div>
               </div>
             </fieldset>
@@ -187,35 +183,12 @@
               <div class="demo-theme-color-group">
                 <div class="demo-theme-color-swatches">
                   <div class="demo-theme-color-swatch mdc-theme--primary-bg mdc-theme--text-primary-on-primary">Primary</div>
-                  <div class="demo-theme-color-swatch mdc-theme--primary-light-bg mdc-theme--text-primary-on-primary-light">Primary Light</div>
-                  <div class="demo-theme-color-swatch mdc-theme--primary-dark-bg mdc-theme--text-primary-on-primary-dark">Primary Dark</div>
                 </div>
                 <div class="demo-theme-color-swatches">
                   <div class="demo-theme-color-swatch mdc-theme--secondary-bg mdc-theme--text-primary-on-secondary">Secondary</div>
-                  <div class="demo-theme-color-swatch mdc-theme--secondary-light-bg mdc-theme--text-primary-on-secondary-light">Secondary Light</div>
-                  <div class="demo-theme-color-swatch mdc-theme--secondary-dark-bg mdc-theme--text-primary-on-secondary-dark">Secondary Dark</div>
                 </div>
                 <div class="demo-theme-color-swatches">
                   <div class="demo-theme-color-swatch demo-theme-color-swatch--elevated mdc-theme--background mdc-theme--text-primary-on-background">Background</div>
-                </div>
-              </div>
-            </fieldset>
-          </div>
-
-          <div class="demo-theme-color-section__row">
-            <fieldset class="demo-fieldset--color">
-              <legend class="mdc-typography--subheading2">Light and dark tonal variants for extreme input luminance</legend>
-
-              <div class="demo-theme-color-group">
-                <div class="demo-theme-color-swatches">
-                  <div class="demo-theme-color-swatch demo-theme-bg--low-luminance mdc-theme--text-primary-on-dark">Low Luminance</div>
-                  <div class="demo-theme-color-swatch demo-theme-bg--low-luminance-light mdc-theme--text-primary-on-dark">Light Variant</div>
-                  <div class="demo-theme-color-swatch demo-theme-bg--low-luminance-dark mdc-theme--text-primary-on-dark">Dark Variant</div>
-                </div>
-                <div class="demo-theme-color-swatches">
-                  <div class="demo-theme-color-swatch demo-theme-bg--high-luminance mdc-theme--text-primary-on-light">High Luminance</div>
-                  <div class="demo-theme-color-swatch demo-theme-bg--high-luminance-light mdc-theme--text-primary-on-light">Light Variant</div>
-                  <div class="demo-theme-color-swatch demo-theme-bg--high-luminance-dark mdc-theme--text-primary-on-light">Dark Variant</div>
                 </div>
               </div>
             </fieldset>
@@ -459,8 +432,12 @@
             <label for="disabled-checkbox" id="disabled-checkbox-label">Disabled</label>
           </div>
 
-          <button type="button" class="mdc-button mdc-button--stroked demo-checkbox-toggle-button" id="checkbox-toggle--indeterminate">Toggle <code class="demo-button__code">indeterminate</code></button>
-          <button type="button" class="mdc-button mdc-button--stroked demo-checkbox-toggle-button" id="checkbox-toggle--align-end">Toggle <code class="demo-button__code">--align-end</code></button>
+          <button type="button" class="mdc-button mdc-button--stroked demo-checkbox-toggle-button" id="checkbox-toggle--indeterminate">
+            <span>Toggle <code class="demo-button__code">indeterminate</code></span>
+          </button>
+          <button type="button" class="mdc-button mdc-button--stroked demo-checkbox-toggle-button" id="checkbox-toggle--align-end">
+            <span>Toggle <code class="demo-button__code">--align-end</code></span>
+          </button>
         </div>
       </section>
 
@@ -670,37 +647,29 @@
           <a href="#select" class="demo-component-section__permalink" title="Permalink to the theme demo for the select component">#</a>
         </h3>
 
-        <div class="mdc-select" role="listbox">
-          <div class="mdc-select__surface" tabindex="0">
-            <div class="mdc-select__label">Pick a food group</div>
-            <div class="mdc-select__selected-text"></div>
-            <div class="mdc-select__bottom-line"></div>
-          </div>
-          <div class="mdc-menu mdc-select__menu">
-            <ul class="mdc-list mdc-menu__items">
-              <li class="mdc-list-item" role="option" id="none" aria-disabled="true">
-                Pick a food group
-              </li>
-              <li class="mdc-list-item" role="option" id="grains" tabindex="0">
-                Bread, Cereal, Rice, and Pasta
-              </li>
-              <li class="mdc-list-item" role="option" id="vegetables" aria-disabled="true" tabindex="0">
-                Vegetables
-              </li>
-              <li class="mdc-list-item" role="option" id="fruit" tabindex="0">
-                Fruit
-              </li>
-              <li class="mdc-list-item" role="option" id="dairy" tabindex="0">
-                Milk, Yogurt, and Cheese
-              </li>
-              <li class="mdc-list-item" role="option" id="meat" tabindex="0">
-                Meat, Poultry, Fish, Dry Beans, Eggs, and Nuts
-              </li>
-              <li class="mdc-list-item" role="option" id="fats" tabindex="0">
-                Fats, Oils, and Sweets
-              </li>
-            </ul>
-          </div>
+        <div class="mdc-select">
+          <select class="mdc-select__native-control">
+            <option value="grains" selected>
+              Bread, Cereal, Rice, and Pasta
+            </option>
+            <option value="vegetables" disabled>
+              Vegetables
+            </option>
+            <option value="fruit">
+              Fruit
+            </option>
+            <option value="dairy">
+              Milk, Yogurt, and Cheese
+            </option>
+            <option value="meat">
+              Meat, Poultry, Fish, Dry Beans, Eggs, and Nuts
+            </option>
+            <option value="fats">
+              Fats, Oils, and Sweets
+            </option>
+          </select>
+          <div class="mdc-select__label mdc-select__label--float-above">Pick a Food Group</div>
+          <div class="mdc-select__bottom-line"></div>
         </div>
       </section>
 
@@ -836,8 +805,8 @@
                    id="demo-text-field-default"
                    aria-controls="demo-text-field-default-helper-text"
                    autocomplete="email">
-            <label for="demo-text-field-default" class="mdc-text-field__label">Name (optional)</label>
-            <div class="mdc-text-field__bottom-line"></div>
+            <label for="demo-text-field-default" class="mdc-floating-label">Name (optional)</label>
+            <div class="mdc-line-ripple"></div>
           </div>
           <p class="mdc-text-field-helper-text" id="demo-text-field-default-helper-text"
              aria-hidden="true">
@@ -851,8 +820,8 @@
                    aria-controls="demo-text-field-required-helper-text"
                    autocomplete="email"
                    required>
-            <label for="demo-text-field-required" class="mdc-text-field__label">Email (required)</label>
-            <div class="mdc-text-field__bottom-line"></div>
+            <label for="demo-text-field-required" class="mdc-floating-label">Email (required)</label>
+            <div class="mdc-line-ripple"></div>
           </div>
           <p class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" id="demo-text-field-required-helper-text">
             A valid email address is required
@@ -863,8 +832,8 @@
             <input type="text" class="mdc-text-field__input"
                    id="demo-text-field-box"
                    aria-controls="name-validation-message">
-            <label for="demo-text-field-box" class="mdc-text-field__label">With <code>--box</code> modifier</label>
-            <div class="mdc-text-field__bottom-line"></div>
+            <label for="demo-text-field-box" class="mdc-floating-label">With <code>--box</code> modifier</label>
+            <div class="mdc-line-ripple"></div>
           </div>
           <p class="mdc-text-field-helper-text" id="demo-text-field-box-helper-text"
              aria-hidden="true">
