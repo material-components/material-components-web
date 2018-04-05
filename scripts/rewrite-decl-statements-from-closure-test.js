@@ -48,18 +48,15 @@
  * around imports/goog.requires
  */
 
-const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
 
 const {default: traverse} = require('babel-traverse');
 const babylon = require('babylon');
-const camelCase = require('camel-case');
 const glob = require('glob');
 const recast = require('recast');
-const resolve = require('resolve');
 const t = require('babel-types');
-let moduleMap = {};
+const moduleMap = {};
 
 main(process.argv);
 
@@ -95,8 +92,6 @@ function logProgress(msg) {
 
 function visit(srcFile, rootDir) {
   const src = fs.readFileSync(srcFile, 'utf8');
-  let moduleNamespace = '';
-  let moduleName = '';
   const ast = recast.parse(src, {
     parser: {
       parse: (code) => babylon.parse(code, {sourceType: 'script'}),
@@ -111,14 +106,7 @@ function visit(srcFile, rootDir) {
         const fullyQualifiedModuleName = path.container.arguments[0].value;
         const namespaceArray = fullyQualifiedModuleName.split('.');
         const relativePath = srcFile.substr(rootDir.length);
-        // Assign outerscoped module name and namespace to be used in other transforms.
-        if (srcFile.indexOf('index.js') != srcFile.length - 8) {
-          moduleName = namespaceArray.pop();
-        } else {
-          moduleName = 'index';
-        }
         moduleMap[fullyQualifiedModuleName] = relativePath.substr(0, relativePath.lastIndexOf('.js'));
-        moduleNamespace = namespaceArray.join('.');
       }
     }
   });
@@ -127,7 +115,6 @@ function visit(srcFile, rootDir) {
 function transform(srcFile, rootDir) {
   const src = fs.readFileSync(srcFile, 'utf8');
   let moduleNamespace = '';
-  let moduleName = '';
   const ast = recast.parse(src, {
     parser: {
       parse: (code) => babylon.parse(code, {sourceType: 'script'}),
@@ -140,14 +127,7 @@ function transform(srcFile, rootDir) {
           && path.node.object.name === 'goog' && path.node.property.name === 'module') {
         const fullyQualifiedModuleName = path.container.arguments[0].value;
         const namespaceArray = fullyQualifiedModuleName.split('.');
-        // Assign outerscoped module name and namespace to be used in other transforms.
-        if (srcFile.indexOf('index.js') != srcFile.length - 8) {
-          moduleName = namespaceArray.pop();
-        } else {
-          moduleName = 'index';
-        }
         moduleNamespace = namespaceArray.join('.');
-        //console.log('setting: ' + moduleNamespace);
         path.parentPath.remove();
       }
     }
@@ -157,14 +137,14 @@ function transform(srcFile, rootDir) {
   traverse(ast, {
     ExpressionStatement(path) {
       const expression = path.node.expression;
-      if (expression.operator === "=" && expression.left.type === "Identifier" && expression.left.name === "exports") {
+      if (expression.operator === '=' && expression.left.type === 'Identifier' && expression.left.name === 'exports') {
         // Looks for expression statements that look like: exports = SOMETHING;
-        if (path.node.expression.right.type === "Identifier") {
+        if (path.node.expression.right.type === 'Identifier') {
           // if expression looks like: exports = MDCSomething;
           const declaration = t.exportDefaultDeclaration(t.identifier(path.node.expression.right.name));
           // rewrite as: export default MDCSomething;
           path.replaceWith(declaration);
-        } else if (expression.right.type === "ObjectExpression") {
+        } else if (expression.right.type === 'ObjectExpression') {
           // expression looks like exports = {MDCSomething1, Something2, etc};
           const specifiers = [];
           path.node.expression.right.properties.forEach((objectProperty) => {
@@ -183,17 +163,18 @@ function transform(srcFile, rootDir) {
     VariableDeclaration(path) {
       const expression = path.node.expression;
       // Consider all const SOMETHING = SOME_INIT;
-      if (path.node.kind === "const" && path.node.declarations && path.node.declarations.length > 0) {
+      if (path.node.kind === 'const' && path.node.declarations && path.node.declarations.length > 0) {
         const declaration = path.node.declarations[0];
         // SOME_INIT is goog.require(SOME_NAMESPACE)
         if (declaration.type === 'VariableDeclarator' && declaration.init.type === 'CallExpression' &&
-            declaration.init.callee.type === "MemberExpression" &&
-            declaration.init.callee.object.type === "Identifier" && declaration.init.callee.object.name === 'goog' &&
-            declaration.init.callee.property.type === 'Identifier' && declaration.init.callee.property.name === 'require' ) {
+            declaration.init.callee.type === 'MemberExpression' &&
+            declaration.init.callee.object.type === 'Identifier' && declaration.init.callee.object.name === 'goog' &&
+            declaration.init.callee.property.type === 'Identifier' &&
+            declaration.init.callee.property.name === 'require' ) {
 
           const requireNamespace = declaration.init.arguments[0].value;
           const isRelativePath = requireNamespace.indexOf(moduleNamespace) === 0;
-          let modulePath = moduleMap[requireNamespace];
+          const modulePath = moduleMap[requireNamespace];
           let importPath = '';
           const relativeFilePath = srcFile.substr(rootDir.length);
           const currentDirectoryPath = relativeFilePath.substr(0, relativeFilePath.lastIndexOf('/'));
@@ -217,7 +198,6 @@ function transform(srcFile, rootDir) {
               importDeclaration = t.importDeclaration([specifier], t.stringLiteral(importPath));
             }
           } else if (declaration.id.type === 'ObjectPattern') {
-            let objString = '';
             const specifiers = [];
             for (let i = 0; i < declaration.id.properties.length; i++) {
               const typeName = declaration.id.properties[i].key.name;
@@ -242,7 +222,7 @@ function transform(srcFile, rootDir) {
     }
   });
 
-  let {code: outputCode} = recast.print(ast, {
+  const {code: outputCode} = recast.print(ast, {
     objectCurlySpacing: false,
     reuseWhitespace: true,
     quote: 'single',
