@@ -159,6 +159,17 @@
   }
 }
 
+.mdc-top-app-bar--fixed {
+  position: fixed;
+  transition: box-shadow 200ms linear;
+}
+
+.mdc-top-app-bar--fixed-scrolled {
+  @include mdc-elevation(4);
+
+  transition: box-shadow 200ms linear;
+}
+
 // Specific styles for prominent and dense styled top app bar
 // stylelint-disable plugin/selector-bem-pattern
 .mdc-top-app-bar--dense.mdc-top-app-bar--prominent {
