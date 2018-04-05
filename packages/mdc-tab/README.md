@@ -1,12 +1,3 @@
-<!--docs:
-title: "Tab"
-layout: detail
-section: components
-excerpt: "Tab is a selectable element with an active state"
-iconId: tab
-path: /catalog/tab/
--->
-
 # Tab
 
 <!--<div class="article__asset">
@@ -61,7 +52,7 @@ CSS Class | Description
 
 ### Sass Mixins
 
-To customize the colors of any part of the tab, use the following mixins. 
+To customize the colors of any part of the tab, use the following mixins.
 
 Mixin | Description
 --- | ---

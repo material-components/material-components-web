@@ -160,7 +160,6 @@ class CssBundleFactory {
         'mdc.slider': getAbsolutePath('/packages/mdc-slider/mdc-slider.scss'),
         'mdc.snackbar': getAbsolutePath('/packages/mdc-snackbar/mdc-snackbar.scss'),
         'mdc.switch': getAbsolutePath('/packages/mdc-switch/mdc-switch.scss'),
-        'mdc.tab': getAbsolutePath('/packages/mdc-tab/mdc-tab.scss'),
         'mdc.tabs': getAbsolutePath('/packages/mdc-tabs/mdc-tabs.scss'),
         'mdc.textfield': getAbsolutePath('/packages/mdc-textfield/mdc-text-field.scss'),
         'mdc.theme': getAbsolutePath('/packages/mdc-theme/mdc-theme.scss'),
