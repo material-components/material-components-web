@@ -122,7 +122,6 @@ $mdc-fab-icon-enter-duration_: 180ms;
 }
 
 @mixin mdc-fab__icon_ {
-  display: flex;
   margin: auto;
   transition: mdc-animation-enter(transform, $mdc-fab-icon-enter-duration_, $mdc-fab-icon-enter-delay_);
   fill: currentColor;
