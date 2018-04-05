@@ -85,3 +85,18 @@
   background: $mdc-image-list-text-protection-background-color;
   color: #fff;
 }
+
+// Masonry Image List, using CSS columns (i.e. renders down then across)
+
+.mdc-image-list--masonry {
+  display: block; // Override flex
+
+  .mdc-image-list__item {
+    break-inside: avoid-column;
+  }
+
+  .mdc-image-list__image {
+    display: block;
+    height: auto;
+  }
+}

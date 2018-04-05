@@ -19,6 +19,7 @@ import {assert} from 'chai';
 import td from 'testdouble';
 import domEvents from 'dom-events';
 
+import {MDCRipple} from '../../../packages/mdc-ripple';
 import {MDCChip, MDCChipFoundation} from '../../../packages/mdc-chips/chip';
 
 const getFixture = () => bel`
@@ -27,10 +28,14 @@ const getFixture = () => bel`
   </div>
 `;
 
+const getLeadingIcon = () => bel`
+  <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">face</i>
+`;
+
 suite('MDCChip');
 
 test('attachTo returns an MDCChip instance', () => {
-  assert.isOk(MDCChip.attachTo(getFixture()) instanceof MDCChip);
+  assert.isTrue(MDCChip.attachTo(getFixture()) instanceof MDCChip);
 });
 
 function setupTest() {
@@ -38,6 +43,11 @@ function setupTest() {
   const component = new MDCChip(root);
   return {root, component};
 }
+
+test('get ripple returns MDCRipple instance', () => {
+  const {component} = setupTest();
+  assert.isTrue(component.ripple instanceof MDCRipple);
+});
 
 test('#adapter.hasClass returns true if class is set on chip set element', () => {
   const {root, component} = setupTest();
@@ -48,31 +58,69 @@ test('#adapter.hasClass returns true if class is set on chip set element', () =>
 test('#adapter.addClass adds a class to the root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
-  assert.isOk(root.classList.contains('foo'));
+  assert.isTrue(root.classList.contains('foo'));
 });
 
 test('#adapter.removeClass removes a class from the root element', () => {
   const {root, component} = setupTest();
   root.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClass('foo');
-  assert.isNotOk(root.classList.contains('foo'));
+  assert.isFalse(root.classList.contains('foo'));
 });
 
-test('#adapter.registerInteractionHandler adds event listener for a given event to the root element', () => {
+test('#adapter.addClassToLeadingIcon adds a class to the leading icon element', () => {
+  const root = getFixture();
+  const leadingIcon = getLeadingIcon();
+  root.appendChild(leadingIcon);
+  const component = new MDCChip(root);
+
+  component.getDefaultFoundation().adapter_.addClassToLeadingIcon('foo');
+  assert.isTrue(leadingIcon.classList.contains('foo'));
+});
+
+test('#adapter.addClassToLeadingIcon does nothing if no leading icon element is present', () => {
+  const {component} = setupTest();
+  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.addClassToLeadingIcon('foo'));
+});
+
+test('#adapter.removeClassFromLeadingIcon removes a class from the leading icon element', () => {
+  const root = getFixture();
+  const leadingIcon = getLeadingIcon();
+  root.appendChild(leadingIcon);
+  const component = new MDCChip(root);
+
+  leadingIcon.classList.add('foo');
+  component.getDefaultFoundation().adapter_.removeClassFromLeadingIcon('foo');
+  assert.isFalse(leadingIcon.classList.contains('foo'));
+});
+
+test('#adapter.removeClassFromLeadingIcon does nothing if no leading icon element is present', () => {
+  const {component} = setupTest();
+  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.removeClassFromLeadingIcon('foo'));
+});
+
+test('adapter#eventTargetHasClass returns true if given element has class', () => {
+  const {component} = setupTest();
+  const mockEventTarget = bel`<div class="foo">bar</div>`;
+
+  assert.isTrue(component.getDefaultFoundation().adapter_.eventTargetHasClass(mockEventTarget, 'foo'));
+});
+
+test('#adapter.registerEventHandler adds event listener for a given event to the root element', () => {
   const {root, component} = setupTest();
   const handler = td.func('click handler');
-  component.getDefaultFoundation().adapter_.registerInteractionHandler('click', handler);
+  component.getDefaultFoundation().adapter_.registerEventHandler('click', handler);
   domEvents.emit(root, 'click');
 
   td.verify(handler(td.matchers.anything()));
 });
 
-test('#adapter.deregisterInteractionHandler removes event listener for a given event from the root element', () => {
+test('#adapter.deregisterEventHandler removes event listener for a given event from the root element', () => {
   const {root, component} = setupTest();
   const handler = td.func('click handler');
 
   root.addEventListener('click', handler);
-  component.getDefaultFoundation().adapter_.deregisterInteractionHandler('click', handler);
+  component.getDefaultFoundation().adapter_.deregisterEventHandler('click', handler);
   domEvents.emit(root, 'click');
 
   td.verify(handler(td.matchers.anything()), {times: 0});

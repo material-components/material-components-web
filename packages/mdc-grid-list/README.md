@@ -36,7 +36,7 @@ across screen sizes.
 ## Installation
 
 ```
-npm install --save @material/grid-list
+npm install @material/grid-list
 ```
 
 

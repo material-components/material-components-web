@@ -14,6 +14,9 @@
 // limitations under the License.
 //
 
+@import "@material/animation/functions";
+@import "@material/checkbox/functions";
+@import "@material/checkbox/variables";
 @import "@material/ripple/common";
 @import "@material/ripple/mixins";
 @import "@material/theme/mixins";
@@ -23,7 +26,6 @@
 .mdc-chip {
   @include mdc-ripple-surface;
   @include mdc-ripple-radius-bounded;
-  
   @include mdc-chip-corner-radius($mdc-chip-border-radius-default);
   @include mdc-chip-fill-color($mdc-chip-fill-color-default);
   @include mdc-chip-ink-color($mdc-chip-ink-color-default);
@@ -33,8 +35,8 @@
   position: relative;
   align-items: center;
   padding: $mdc-chip-vertical-padding $mdc-chip-horizontal-padding;
-  cursor: pointer;
   outline: none;
+  cursor: pointer;
   overflow: hidden;
 
   &:hover {
@@ -52,14 +54,10 @@
 }
 
 .mdc-chip__icon {
-  color: $mdc-chip-icon-color;
-  vertical-align: middle;
   border-radius: 50%;
   outline: none;
-}
-
-.mdc-chip__icon--leading {
-  margin: -4px 4px -4px -4px;
+  color: $mdc-chip-icon-color;
+  vertical-align: middle;
 }
 
 .mdc-chip__icon--trailing {
@@ -81,4 +79,75 @@
   width: $mdc-chip-trailing-icon-size;
   height: $mdc-chip-trailing-icon-size;
   font-size: $mdc-chip-trailing-icon-size;
+}
+
+.mdc-chip__checkmark,
+.mdc-chip__icon--leading {
+  height: 24px;
+  margin: -4px 4px -4px -4px;
+}
+
+.mdc-chip__checkmark-path {
+  transition:
+    mdc-checkbox-transition-exit(
+      stroke-dashoffset,
+      $mdc-chip-checkmark-animation-delay,
+      $mdc-chip-checkmark-animation-duration
+    );
+  stroke-width: 2px;
+  stroke-dashoffset: $mdc-checkbox-mark-path-length_;
+  stroke-dasharray: $mdc-checkbox-mark-path-length_;
+}
+
+.mdc-chip--selected .mdc-chip__checkmark-path {
+  stroke-dashoffset: 0;
+}
+
+// Add leading checkmark to filter chips with no leading icon
+
+.mdc-chip__checkmark-svg {
+  width: 0;
+  height: 24px;
+  transition: width $mdc-chip-width-animation-duration $mdc-animation-standard-curve-timing-function;
+}
+
+.mdc-chip--selected .mdc-chip__checkmark-svg {
+  width: 24px;
+}
+
+// Add leading checkmark to filter chips with a leading icon
+
+.mdc-chip__icon--leading {
+  transition: opacity $mdc-chip-opacity-animation-duration linear;
+  opacity: 1;
+
+  + .mdc-chip__checkmark {
+    transition: opacity $mdc-chip-opacity-animation-duration linear;
+    opacity: 0;
+
+    .mdc-chip__checkmark-svg {
+      transition: width 0ms;
+    }
+  }
+}
+
+.mdc-chip--selected .mdc-chip__icon--leading {
+  opacity: 0;
+
+  + .mdc-chip__checkmark {
+    // This ensures that the checkmark has zero width while the leading icon is still animating.
+    width: 0;
+    opacity: 1;
+  }
+}
+
+.mdc-chip__icon--hidden-leading.mdc-chip__icon--leading {
+  width: 0;
+
+  // This ensures that the leading icon doesn't fade in while the checkmark is fading out.
+  opacity: 0;
+
+  + .mdc-chip__checkmark {
+    width: 24px;
+  }
 }

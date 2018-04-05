@@ -17,8 +17,7 @@
 
 import MDCFoundation from '@material/base/foundation';
 import MDCChipSetAdapter from './adapter';
-// eslint-disable-next-line no-unused-vars
-import {MDCChip, MDCChipFoundation} from '../chip/index';
+import MDCChipFoundation from '../chip/foundation';
 import {strings, cssClasses} from './constants';
 
 /**
@@ -57,7 +56,7 @@ class MDCChipSetFoundation extends MDCFoundation {
 
     /**
      * The selected chips in the set. Only used for choice chip set or filter chip set.
-     * @private {!Array<!MDCChip>}
+     * @private {!Array<!MDCChipFoundation>}
      */
     this.selectedChips_ = [];
 
@@ -77,24 +76,24 @@ class MDCChipSetFoundation extends MDCFoundation {
 
   /**
    * Manages the selection state of the chip set, given a chip that was just selected/deselected.
-   * @param {!MDCChip} chip
+   * @param {!MDCChipFoundation} chip
    */
-  manageSelection(chip) {
+  manageSelection(chipFoundation) {
     if (this.adapter_.hasClass(cssClasses.CHOICE)) {
       if (this.selectedChips_.length === 0) {
-        this.selectedChips_[0] = chip;
-      } else if (this.selectedChips_[0] !== chip) {
+        this.selectedChips_[0] = chipFoundation;
+      } else if (this.selectedChips_[0] !== chipFoundation) {
         this.selectedChips_[0].toggleSelected();
-        this.selectedChips_[0] = chip;
+        this.selectedChips_[0] = chipFoundation;
       } else {
         this.selectedChips_ = [];
       }
     } else if (this.adapter_.hasClass(cssClasses.FILTER)) {
-      const index = this.selectedChips_.indexOf(chip);
+      const index = this.selectedChips_.indexOf(chipFoundation);
       if (index >= 0) {
         this.selectedChips_.splice(index, 1);
       } else {
-        this.selectedChips_.push(chip);
+        this.selectedChips_.push(chipFoundation);
       }
     }
   }
@@ -105,10 +104,10 @@ class MDCChipSetFoundation extends MDCFoundation {
    * @private
    */
   handleChipInteraction_(evt) {
-    const {chip} = evt.detail;
+    const chipFoundation = evt.detail.chip.foundation;
     if (this.adapter_.hasClass(cssClasses.CHOICE) || this.adapter_.hasClass(cssClasses.FILTER)) {
-      chip.toggleSelected();
-      this.manageSelection(chip);
+      chipFoundation.toggleSelected();
+      this.manageSelection(chipFoundation);
     }
   }
 }

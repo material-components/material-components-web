@@ -32,8 +32,14 @@
 }
 
 .mdc-image-list.standard-image-list {
+  @include mdc-image-list-aspect(1.5); // Images are 3:2
   @include mdc-image-list-standard-columns(5);
 
+  max-width: 1000px;
+}
+
+.mdc-image-list.masonry-image-list {
+  @include mdc-image-list-masonry-columns(5);
   max-width: 1000px;
 }
 
@@ -41,8 +47,16 @@
   display: none;
 }
 
+.rounded-corners {
+  @include mdc-image-list-corner-radius(8px);
+}
+
 @media (max-width: 599px) {
   .mdc-image-list.standard-image-list {
     @include mdc-image-list-standard-columns(3);
+  }
+
+  .mdc-image-list.masonry-image-list {
+    @include mdc-image-list-masonry-columns(3);
   }
 }

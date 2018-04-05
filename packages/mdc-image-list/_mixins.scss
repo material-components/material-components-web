@@ -20,6 +20,16 @@
   }
 }
 
+@mixin mdc-image-list-corner-radius($radius) {
+  .mdc-image-list__image {
+    border-radius: $radius;
+  }
+
+  .mdc-image-list__supporting {
+    border-radius: 0 0 $radius $radius;
+  }
+}
+
 // Standard Image List
 
 @mixin mdc-image-list-standard-columns($column-count, $gutter-size: $mdc-image-list-standard-gutter-size) {
@@ -29,5 +39,16 @@
     // Subtract extra fraction from each item's width to ensure correct wrapping in IE and Edge which round differently
     width: calc(100% / #{$column-count} - #{$gutter-size + 1 / $column-count});
     margin: $gutter-size / 2;
+  }
+}
+
+// Masonry Image List
+
+@mixin mdc-image-list-masonry-columns($column-count, $gutter-size: $mdc-image-list-masonry-gutter-size) {
+  column-count: $column-count;
+  column-gap: $gutter-size;
+
+  .mdc-image-list__item {
+    margin-bottom: $gutter-size;
   }
 }

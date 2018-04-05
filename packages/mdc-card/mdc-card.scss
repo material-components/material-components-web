@@ -30,11 +30,8 @@
 }
 
 .mdc-card--stroked {
-  $fill-color: mdc-theme-prop-value(background);
-  $stroke-color: mdc-theme-dark-variant($fill-color, 1);
-
   @include mdc-elevation(0);
-  @include mdc-card-stroke($stroke-color);
+  @include mdc-card-stroke(#dbdbdb);
 }
 
 //
@@ -47,6 +44,7 @@
   position: relative; // Child element `__media-content` has `position: absolute`
   box-sizing: border-box;
   background-repeat: no-repeat;
+  background-position: center;
   background-size: cover;
 }
 

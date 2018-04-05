@@ -1,4 +1,20 @@
+<!--docs:
+title: "Top App Bar"
+layout: detail
+section: components
+excerpt: "A container for items such as application title, navigation icon, and action items."
+iconId: toolbar
+path: /catalog/top-app-bar/
+-->
+
 # Top App Bar
+
+<!--<div class="article__asset">
+  <a class="article__asset-link"
+     href="https://material-components-web.appspot.com/top-app-bar.html">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/top-app-bar.png" width="494" alt="Top App Bar screenshot">
+  </a>
+</div>-->
 
 MDC Top App Bar acts as a container for items such as application title, navigation icon, and action items. Top app bars scroll with content by default.
 
@@ -16,7 +32,7 @@ MDC Top App Bar acts as a container for items such as application title, navigat
 ## Installation
 
 ```
-npm install --save @material/top-app-bar
+npm install @material/top-app-bar
 ```
 
 ## Usage
@@ -52,6 +68,19 @@ Top app bars can accommodate multiple action items on the opposite side of the n
 </header>
 ```
 
+Top app bars can be fixed at the top of the page:
+
+```html
+<header class="mdc-top-app-bar mdc-top-app-bar--fixed">
+  <div class="mdc-top-app-bar__row">
+    <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+      <a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
+      <span class="mdc-top-app-bar__title">Title</span>
+    </section>
+  </div>
+</header>
+```
+
 Short top app bars should only be used with one action item:
 
 ```html
@@ -68,7 +97,7 @@ Short top app bars should only be used with one action item:
 </header>
 ```
 
-Short top app bars can be configured to always appear collapsed by applying the `mdc-top-app-bar--short-collapsed` before instantiating the component : 
+Short top app bars can be configured to always appear collapsed by applying the `mdc-top-app-bar--short-collapsed` before instantiating the component :
 
 ```html
 <header class="mdc-top-app-bar mdc-top-app-bar--short mdc-top-app-bar--short-collapsed">
@@ -90,8 +119,8 @@ Short top app bars can be configured to always appear collapsed by applying the 
   // Instantiation
   var topAppBarElement = document.querySelector('#topAppBar');
   var topAppBar = mdc.topAppBar.MDCTopAppBar.attachTo(topAppBarElement);
-  
-  // Listen for navigation icon events 
+
+  // Listen for navigation icon events
   topAppBarElement.addEventListener('MDCTopAppBar:nav', function () {
     // do something
   });
@@ -99,11 +128,13 @@ Short top app bars can be configured to always appear collapsed by applying the 
 
 ### CSS Classes
 
-Class | Description                            
+Class | Description
 --- | ---
 `mdc-top-app-bar` | Mandatory.
+`mdc-top-app-bar--fixed` | Class used to style the top app bar as a fixed top app bar.
+`mdc-top-app-bar--prominent` | Class used to style the top app bar as a prominent top app bar.
 `mdc-top-app-bar--short` | Class used to style the top app bar as a short top app bar.
-`mdc-top-app-bar--short-collapsed` | Class used to indicate the short top app bar is collapsed. 
+`mdc-top-app-bar--short-collapsed` | Class used to indicate the short top app bar is collapsed.
 
 ### Sass Mixins
 
@@ -128,7 +159,7 @@ Method Signature | Description
 `removeClass(className: string) => void` | Removes a class from the root element of the component.
 `registerNavigationIconInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the native navigation icon element for a given event.
 `deregisterNavigationIconInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the native navigation icon element for a given event.
-`notifyNavigationIconClicked() => void` | Emits a custom event `MDCTopAppBar:nav` when the navigation icon is clicked. 
+`notifyNavigationIconClicked() => void` | Emits a custom event `MDCTopAppBar:nav` when the navigation icon is clicked.
 `registerScrollHandler(handler) => void` | Registers a handler to be called when user scrolls. Our default implementation adds the handler as a listener to the window's `scroll` event.
 `deregisterScrollHandler(handler) => void` | Unregisters a handler to be called when user scrolls. Our default implementation removes the handler as a listener to the window's `scroll` event.
 `getViewportScrollY() => number` | Gets the number of pixels that the content of body is scrolled from the top of the page.

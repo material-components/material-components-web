@@ -33,7 +33,7 @@ interaction UX as well as a component-level API for state modification.
 ## Installation
 
 ```
-npm install --save @material/radio
+npm install @material/radio
 ```
 
 ## Usage

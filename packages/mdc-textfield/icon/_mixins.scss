@@ -35,7 +35,7 @@
       @include mdc-rtl-reflexive-property(padding, $padding /* left-value */, $position  /* right-value */);
     }
   } @else {
-  	.mdc-text-field__input {
+    .mdc-text-field__input {
       @include mdc-rtl-reflexive-property(padding, $position /* left-value */, $padding  /* right-value */);
     }
   }
