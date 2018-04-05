@@ -52,7 +52,7 @@ Select bottom line animates activation and deactivation state as the select rece
       Fruit
     </option>
   </select>
-  <div class="mdc-select__label">Pick a Food Group</div>
+  <div class="mdc-floating-label">Pick a Food Group</div>
   <div class="mdc-select__bottom-line"></div>
 </div>
 ```

@@ -18,11 +18,11 @@
 @import "./mixins";
 @import "./variables";
 @import "@material/animation/variables";
+@import "@material/floating-label/mdc-floating-label";
 @import "@material/typography/mixins";
 @import "@material/ripple/common";
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
-@import "./label/mdc-select-label";
 @import "./bottom-line/mdc-select-bottom-line";
 
 // postcss-bem-linter: define select
@@ -110,7 +110,7 @@
   }
 
   .mdc-select__native-control,
-  .mdc-select__label {
+  .mdc-floating-label {
     @include mdc-typography(subheading2);
   }
 
@@ -121,7 +121,8 @@
     border-radius: 4px 4px 0 0;
   }
 
-  .mdc-select__label {
+  // stylelint-disable plugin/selector-bem-pattern
+  .mdc-floating-label {
     @include mdc-rtl-reflexive-position(left, 16px);
 
     bottom: 12px;
@@ -130,12 +131,16 @@
       transform: translateY(-40%) scale(.75, .75);
     }
   }
+  // stylelint-enable plugin/selector-bem-pattern
 }
 
 .mdc-select--disabled {
-  @include mdc-select-floating-label-color(text-disabled-on-light);
   @include mdc-select-dd-arrow-svg-bg_(000000, .38);
   @include mdc-select-container-fill-color_(transparent);
+
+  .mdc-floating-label {
+    @include mdc-floating-label-ink-color(text-disabled-on-light);
+  }
 
   border-bottom-width: 1px;
   border-bottom-style: dotted;

@@ -17,6 +17,7 @@
   "dependencies": {
     "@material/animation": "^0.34.0",
     "@material/base": "^0.34.0",
+    "@material/floating-label": "^0.34.0",
     "@material/ripple": "^0.34.1",
     "@material/rtl": "^0.34.0",
     "@material/theme": "^0.34.0",
