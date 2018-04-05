@@ -101,3 +101,5 @@ Mixin | Description
 `mdc-shape-angled-corner($background-color, $top-left-size[, $top-right-size, $bottom-right-size, $bottom-left-size])` | Applies styles for masking angled corners, using the given background color and corner sizes. If fewer than 4 corner sizes are specified, the mixin automatically determines the other corners similarly to CSS `border-radius`.
 `mdc-shape-angled-corner-background($background-color)` | Sets the background color used to mask angled corners. Useful for styling a subset of components in a section with a different background color.
 `mdc-shape-angled-corner-stroke($stroke-width, $stroke-color[, $stroke-style])` | Applies stroke styles to angled corners. `$stroke-style` defaults to `solid`.
+
+> **Note:** These mixins should be applied in the context of the container element (or an ancestor).
