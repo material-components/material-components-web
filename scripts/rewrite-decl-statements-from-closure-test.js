@@ -76,12 +76,12 @@ function main(argv) {
   // path.
   srcFiles.forEach((srcFile) => visit(srcFile, rootDir));
   logProgress('');
-  console.log('\r\033[32;1mVisit pass completed.\033[0m\n');
+  console.log('\rVisit pass completed.\n');
 
   // second pass, do the transforms.
   srcFiles.forEach((srcFile) => transform(srcFile, rootDir));
   logProgress('');
-  console.log('\r\033[32;1mTransform pass completed.\033[0m\n');
+  console.log('\rTransform pass completed.\n');
 }
 
 function logProgress(msg) {
