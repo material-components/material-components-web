@@ -16,10 +16,10 @@
  */
 
 import MDCTopAppBarAdapter from './adapter';
-import MDCTopAppBarBaseFoundation from './foundation';
 import MDCComponent from '@material/base/component';
 import {MDCRipple} from '@material/ripple/index';
 import {cssClasses, strings} from './constants';
+import MDCFixedTopAppBarFoundation from './fixed/foundation';
 import MDCShortTopAppBarFoundation from './short/foundation';
 import MDCTopAppBarFoundation from './standard/foundation';
 
@@ -105,6 +105,8 @@ class MDCTopAppBar extends MDCComponent {
     let foundation;
     if (this.root_.classList.contains(cssClasses.SHORT_CLASS)) {
       foundation = new MDCShortTopAppBarFoundation(adapter);
+    } else if (this.root_.classList.contains(cssClasses.FIXED_CLASS)) {
+      foundation = new MDCFixedTopAppBarFoundation(adapter);
     } else {
       foundation = new MDCTopAppBarFoundation(adapter);
     }
@@ -113,4 +115,4 @@ class MDCTopAppBar extends MDCComponent {
   }
 }
 
-export {MDCTopAppBar, MDCTopAppBarBaseFoundation, MDCTopAppBarFoundation, MDCShortTopAppBarFoundation};
+export {MDCTopAppBar, MDCTopAppBarFoundation, MDCFixedTopAppBarFoundation, MDCShortTopAppBarFoundation};

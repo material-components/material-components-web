@@ -17,9 +17,11 @@
 
 /** @enum {string} */
 const cssClasses = {
+  FIXED_CLASS: 'mdc-top-app-bar--fixed',
+  FIXED_SCROLLED_CLASS: 'mdc-top-app-bar--fixed-scrolled',
   SHORT_CLASS: 'mdc-top-app-bar--short',
-  SHORT_COLLAPSED_CLASS: 'mdc-top-app-bar--short-collapsed',
   SHORT_HAS_ACTION_ITEM_CLASS: 'mdc-top-app-bar--short-has-action-item',
+  SHORT_COLLAPSED_CLASS: 'mdc-top-app-bar--short-collapsed',
 };
 
 /** @enum {number} */
