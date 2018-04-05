@@ -75,27 +75,35 @@ class MDCChipSetFoundation extends MDCFoundation {
   }
 
   /**
-   * Manages the selection state of the chip set, given a chip that was just selected/deselected.
-   * @param {!MDCChipFoundation} chip
+   * Selects the given chip. Deselects all other chips if the chip set is of the choice variant.
+   * @param {!MDCChipFoundation}
    */
-  manageSelection(chipFoundation) {
+  select(chipFoundation) {
     if (this.adapter_.hasClass(cssClasses.CHOICE)) {
-      if (this.selectedChips_.length === 0) {
-        this.selectedChips_[0] = chipFoundation;
-      } else if (this.selectedChips_[0] !== chipFoundation) {
-        this.selectedChips_[0].toggleSelected();
-        this.selectedChips_[0] = chipFoundation;
-      } else {
-        this.selectedChips_ = [];
-      }
-    } else if (this.adapter_.hasClass(cssClasses.FILTER)) {
-      const index = this.selectedChips_.indexOf(chipFoundation);
-      if (index >= 0) {
-        this.selectedChips_.splice(index, 1);
-      } else {
-        this.selectedChips_.push(chipFoundation);
-      }
+      this.deselectAll_();
     }
+    chipFoundation.setSelected(true);
+    this.selectedChips_.push(chipFoundation);
+  }
+  
+  /**
+   * Deselects the given chip.
+   * @param {!MDCChipFoundation}
+   */
+  deselect(chipFoundation) {
+    const index = this.selectedChips_.indexOf(chipFoundation);
+    if (index >= 0) {
+      this.selectedChips_.splice(index, 1);
+    }
+    chipFoundation.setSelected(false);
+  }
+
+  /** Deselects all selected chips. */
+  deselectAll_() {
+    this.selectedChips_.forEach((chipFoundation) => {
+      chipFoundation.setSelected(false);
+    });
+    this.selectedChips_.length = 0;
   }
 
   /**
@@ -106,8 +114,11 @@ class MDCChipSetFoundation extends MDCFoundation {
   handleChipInteraction_(evt) {
     const chipFoundation = evt.detail.chip.foundation;
     if (this.adapter_.hasClass(cssClasses.CHOICE) || this.adapter_.hasClass(cssClasses.FILTER)) {
-      chipFoundation.toggleSelected();
-      this.manageSelection(chipFoundation);
+      if (chipFoundation.isSelected()) {
+        this.deselect(chipFoundation);
+      } else {
+        this.select(chipFoundation);
+      }
     }
   }
 }
