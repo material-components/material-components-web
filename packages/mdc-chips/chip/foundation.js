@@ -100,7 +100,6 @@ class MDCChipFoundation extends MDCFoundation {
   setSelected(selected) {
     if (selected) {
       this.adapter_.addClass(cssClasses.SELECTED);
-      this.adapter_.addClassToLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
     } else {
       this.adapter_.removeClass(cssClasses.SELECTED);
     }

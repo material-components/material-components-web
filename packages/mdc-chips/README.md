@@ -115,7 +115,7 @@ To display a pre-selected chip, add the class `mdc-chip--selected` to the root c
 </div>
 ```
 
-To pre-select filter chips that have a leading icon, also add the class `mdc-chip__icon--hidden-leading` to the `mdc-chip__icon--leading` element. This will ensure that the checkmark displaces the leading icon and prevents a Flash Of Un-styled Content (FOUC).
+To pre-select filter chips that have a leading icon, also add the class `mdc-chip__icon--hidden-leading` to the `mdc-chip__icon--leading` element. This will ensure that the checkmark displaces the leading icon.
 
 ```html
 <div class="mdc-chip mdc-chip--selected">
