@@ -48,7 +48,7 @@ class MDCTopAppBarBaseFoundation extends MDCFoundation {
       hasClass: (/* className: string */) => {},
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
-      setStyle: (/* attribute: string, value: string */) => {},
+      setStyle: (/* property: string, value: string */) => {},
       getTopAppBarHeight: () => {},
       registerNavigationIconInteractionHandler: (/* type: string, handler: EventListener */) => {},
       deregisterNavigationIconInteractionHandler: (/* type: string, handler: EventListener */) => {},

@@ -19,6 +19,7 @@ import MDCTopAppBarAdapter from './adapter';
 import MDCComponent from '@material/base/component';
 import {MDCRipple} from '@material/ripple/index';
 import {cssClasses, strings} from './constants';
+import MDCTopAppBarBaseFoundation from './foundation';
 import MDCFixedTopAppBarFoundation from './fixed/foundation';
 import MDCShortTopAppBarFoundation from './short/foundation';
 import MDCTopAppBarFoundation from './standard/foundation';
@@ -76,7 +77,7 @@ class MDCTopAppBar extends MDCComponent {
       hasClass: (className) => this.root_.classList.contains(className),
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
-      setStyle: (attribute, value) => this.root_.style.setProperty(attribute, value),
+      setStyle: (property, value) => this.root_.style.setProperty(property, value),
       getTopAppBarHeight: () => this.root_.clientHeight,
       registerNavigationIconInteractionHandler: (evtType, handler) => {
         if (this.navIcon_) {
@@ -115,4 +116,6 @@ class MDCTopAppBar extends MDCComponent {
   }
 }
 
-export {MDCTopAppBar, MDCTopAppBarFoundation, MDCFixedTopAppBarFoundation, MDCShortTopAppBarFoundation};
+export {MDCTopAppBar, MDCTopAppBarBaseFoundation,
+  MDCTopAppBarFoundation, MDCFixedTopAppBarFoundation,
+  MDCShortTopAppBarFoundation};

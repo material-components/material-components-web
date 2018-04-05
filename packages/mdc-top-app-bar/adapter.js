@@ -48,11 +48,11 @@ class MDCTopAppBarAdapter {
   hasClass(className) {}
 
   /**
-   * Adds the specified attribute and value to the root Element.
-   * @param {string} attribute
+   * Sets the specified inline style property on the root Element to the given value.
+   * @param {string} property
    * @param {string} value
    */
-  setStyle(attribute, value) {}
+  setStyle(property, value) {}
 
   /**
    * Gets the height of the top app bar.
