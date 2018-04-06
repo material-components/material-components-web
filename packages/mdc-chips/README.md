@@ -120,7 +120,7 @@ To pre-select filter chips that have a leading icon, also add the class `mdc-chi
 ```html
 <div class="mdc-chip mdc-chip--selected">
   <i class="material-icons mdc-chip__icon mdc-chip__icon--leading mdc-chip__icon--leading-hidden">face</i>
-  <div class="mdc-chip__checkmark" >
+  <div class="mdc-chip__checkmark">
     <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
       <path class="mdc-chip__checkmark-path" fill="none" stroke="black"
             d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
