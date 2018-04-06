@@ -45,12 +45,19 @@
   }
 }
 
-@function mdc-set-typography-styles($mdc-typography-base, $mdc-typography-styles-temp) {
+@function mdc-set-typography-styles_($mdc-typography-base, $mdc-typography-styles-temp) {
   @each $style, $style-props in $mdc-typography-styles-temp {
+
+    // Merge base properties for all styles.
+    $style-props: map-merge($style-props, $mdc-typography-base);
+
+    // Merge global overrides onto each style.
     @if global_variable_exists(mdc-typography-styles-#{$style}) {
-      $style-props: map-merge($style-props, map-merge($mdc-typography-base, mdc-get-global-variable_(#{$style})));
-      $mdc-typography-styles-temp: map-merge($mdc-typography-styles-temp, (#{$style}: $style-props));
+      $style-props: map-merge($style-props, mdc-get-global-variable_(#{$style}));
     }
+
+    // Override original styles with new styles.
+    $mdc-typography-styles-temp: map-merge($mdc-typography-styles-temp, (#{$style}: $style-props));
   }
 
   @return $mdc-typography-styles-temp;
