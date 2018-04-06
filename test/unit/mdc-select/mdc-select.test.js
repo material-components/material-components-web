@@ -50,7 +50,7 @@ function getFixture() {
           Apple
         </option>
       </select>
-      <div class="mdc-select__label">Pick a Food Group</div>
+      <div class="mdc-floating-label">Pick a Food Group</div>
       <div class="mdc-select__bottom-line"></div>
     </div>
   `;
@@ -67,7 +67,7 @@ function getBoxFixture() {
           Apple
         </option>
       </select>
-      <div class="mdc-select__label">Pick a Food Group</div>
+      <div class="mdc-floating-label">Pick a Food Group</div>
       <div class="mdc-select__bottom-line"></div>
     </div>
   `;
@@ -84,7 +84,7 @@ function setupTest() {
   const label = new FakeLabel();
   const fixture = getFixture();
   const nativeControl = fixture.querySelector('.mdc-select__native-control');
-  const labelEl = fixture.querySelector('.mdc-select__label');
+  const labelEl = fixture.querySelector('.mdc-floating-label');
   const bottomLineEl = fixture.querySelector('.mdc-select__bottom-line');
   const component = new MDCSelect(fixture, /* foundation */ undefined, () => label, () => bottomLine);
 
@@ -131,7 +131,7 @@ test('#initialSyncWithDOM sets the selected index if an option has the selected 
           Apple
         </option>
       </select>
-      <div class="mdc-select__label">Pick a Food Group</div>
+      <div class="mdc-floating-label">Pick a Food Group</div>
       <div class="mdc-select__bottom-line"></div>
     </div>
   `;
@@ -150,7 +150,7 @@ test('#initialSyncWithDOM disables the select if the disabled attr is found on t
           Apple
         </option>
       </select>
-      <div class="mdc-select__label"></div>
+      <div class="mdc-floating-label"></div>
       <div class="mdc-select__bottom-line"></div>
     </div>
   `;
@@ -202,7 +202,7 @@ test('adapter.activateBottomLine and adapter.deactivateBottomLine ' +
           Apple
         </option>
       </select>
-      <div class="mdc-select__label"></div>
+      <div class="mdc-floating-label"></div>
     </div>
   `;
   const component = new MDCSelect(fixture);
