@@ -190,6 +190,10 @@ Property | Value Type | Description
 
 #### `MDCChipSet`
 
+Method Signature | Description
+--- | ---
+`addChip(text: string, leadingIcon: Element, trailingIcon: Element) => void` | Creates a new chip in the chip set with the given text, leading icon, and trailing icon
+
 Property | Value Type | Description
 --- | --- | ---
 `chips` | Array<`MDCChip`> | An array of the `MDCChip` objects that represent chips in the set
@@ -220,8 +224,10 @@ Method Signature | Description
 Method Signature | Description
 --- | ---
 `hasClass(className: string) => boolean` | Returns whether the chip set element has the given class
-`registerInteractionHandler(evtType, handler) => void` | Registers an event handler on the root element for a given event
-`deregisterInteractionHandler(evtType, handler) => void` | Deregisters an event handler on the root element for a given event
+`registerInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event handler on the root element for a given event
+`deregisterInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event handler on the root element for a given event
+`createChipElement(text: string, leadingIcon: Element, trailingIcon: Element) => Element` | Returns a chip element with the given text, leading icon, and trailing icon
+`appendChild(el: Element) => void` | Appends the given element as a child of the root element
 
 ### Foundations: `MDCChipFoundation` and `MDCChipSetFoundation`
 
@@ -236,5 +242,6 @@ Method Signature | Description
 
 Method Signature | Description
 --- | ---
+`addChip(text: string, leadingIcon: Element, trailingIcon: Element) => Element` | Returns a new chip element with the given text, leading icon, and trailing icon, added to the root chip set element
 `select(chipFoundation: MDCChipFoundation) => void` | Selects the given chip
 `deselect(chipFoundation: MDCChipFoundation) => void` | Deselects the given chip

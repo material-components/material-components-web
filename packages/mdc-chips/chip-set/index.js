@@ -19,7 +19,7 @@ import MDCComponent from '@material/base/component';
 
 import MDCChipSetAdapter from './adapter';
 import MDCChipSetFoundation from './foundation';
-import {MDCChip} from '../chip/index';
+import {MDCChip, MDCChipFoundation} from '../chip/index';
 
 /**
  * @extends {MDCComponent<!MDCChipSetFoundation>}
@@ -34,6 +34,8 @@ class MDCChipSet extends MDCComponent {
 
     /** @type {!Array<!MDCChip>} */
     this.chips;
+    /** @type {(function(!Element): !MDCChip)} */
+    this.chipFactory_;
   }
 
   /**
@@ -49,7 +51,8 @@ class MDCChipSet extends MDCComponent {
    * creates a new MDCChip.
    */
   initialize(chipFactory = (el) => new MDCChip(el)) {
-    this.chips = this.instantiateChips_(chipFactory);
+    this.chipFactory_ = chipFactory;
+    this.chips = this.instantiateChips_(this.chipFactory_);
   }
 
   destroy() {
@@ -67,6 +70,17 @@ class MDCChipSet extends MDCComponent {
   }
 
   /**
+   * Creates a new chip in the chip set with the given text, leading icon, and trailing icon.
+   * @param {string} text
+   * @param {?Element} leadingIcon
+   * @param {?Element} trailingIcon
+   */
+  addChip(text, leadingIcon, trailingIcon) {
+    const chipEl = this.foundation_.addChip(text, leadingIcon, trailingIcon);
+    this.chips.push(this.chipFactory_(chipEl));
+  }
+
+  /**
    * @return {!MDCChipSetFoundation}
    */
   getDefaultFoundation() {
@@ -74,6 +88,23 @@ class MDCChipSet extends MDCComponent {
       hasClass: (className) => this.root_.classList.contains(className),
       registerInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
+      createChipElement: (text, leadingIcon, trailingIcon) => {
+        const chipTextEl = document.createElement('div');
+        chipTextEl.classList.add(MDCChipFoundation.cssClasses.TEXT);
+        chipTextEl.appendChild(document.createTextNode(text));
+
+        const chipEl = document.createElement('div');
+        chipEl.classList.add(MDCChipFoundation.cssClasses.CHIP);
+        if (leadingIcon) {
+          chipEl.appendChild(leadingIcon);
+        }
+        chipEl.appendChild(chipTextEl);
+        if (trailingIcon) {
+          chipEl.appendChild(trailingIcon);
+        }
+        return chipEl;
+      },
+      appendChild: (el) => this.root_.appendChild(el),
     })));
   }
 
