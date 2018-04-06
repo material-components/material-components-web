@@ -55,11 +55,15 @@
 
       <section class="example">
         <h2>Entry Chips</h2>
-        <div class="mdc-chip-set">
+        <input id="entry-chip-set-input" placeholder="Chip text">
+        <button id="entry-chip-set-button" class="mdc-button mdc-button--dense">
+          Add Entry Chip
+        </button>
+        <div id="entry-chip-set" class="mdc-chip-set mdc-chip-set--entry">
           <div class="demo-chip mdc-chip" tabindex="0">
-            <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">face</i>
+            <i id="entry-leading-icon" class="material-icons mdc-chip__icon mdc-chip__icon--leading">face</i>
             <div class="mdc-chip__text">Jane Smith</div>
-            <i class="material-icons mdc-chip__icon mdc-chip__icon--trailing" tabindex="0" role="button" title="More options">more_vert</i>
+            <i  id="entry-trailing-icon" class="material-icons mdc-chip__icon mdc-chip__icon--trailing" tabindex="0" role="button" title="More options">more_vert</i>
           </div>
           <div class="demo-chip mdc-chip" tabindex="0">
             <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">face</i>
@@ -231,9 +235,27 @@
     <script src="/assets/material-components-web.js" async></script>
     <script>
       demoReady(function() {
-        var chipSets = document.querySelectorAll('.mdc-chip-set');
+        var entryChipSet = document.getElementById('entry-chip-set');
+        var chipSets = document.querySelectorAll('.mdc-chip-set:not(#entry-chip-set)');
+        var entryInput = document.getElementById('entry-chip-set-input');
+        var entryButton = document.getElementById('entry-chip-set-button');
+
         [].forEach.call(chipSets, function(chipSet) {
           mdc.chips.MDCChipSet.attachTo(chipSet);
+        });
+        var entryChipSetComponent = mdc.chips.MDCChipSet.attachTo(entryChipSet);
+
+        function addChip(evt) {
+          if ((evt.type === 'click' || evt.key === 'Enter' || evt.keyCode === 13) && 
+              entryInput.value !== '') {
+            var leadingIcon = document.getElementById('entry-leading-icon').cloneNode(true);
+            var trailingIcon = document.getElementById('entry-trailing-icon').cloneNode(true);
+            entryChipSetComponent.addChip(entryInput.value, leadingIcon, trailingIcon);
+            entryInput.value = '';
+          }
+        };
+        ['click', 'keydown'].forEach(function(evtType) {
+          entryButton.addEventListener(evtType, addChip);
         });
       });
     </script>

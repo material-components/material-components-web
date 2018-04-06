@@ -114,3 +114,18 @@ test('#adapter.deregisterInteractionHandler removes a handler from the root elem
   domEvents.emit(root, 'click');
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
+
+test('#adapter.createChipElement returns a new chip element', () => {
+  const {component} = setupTest();
+  const chipEl = component.getDefaultFoundation().adapter_.createChipElement('hello world');
+  assert.isTrue(chipEl.classList.contains('mdc-chip'));
+  assert.isTrue(chipEl.childNodes[0].classList.contains('mdc-chip__text'));
+  assert.equal(chipEl.childNodes[0].textContent, 'hello world');
+});
+
+test('#adapter.appendChild adds a child to the chip set element', () => {
+  const {root, component} = setupTest();
+  const chipEl = bel`<div class="mdc-chip"><div class="mdc-chip__text">hello world</div></div>`;
+  component.getDefaultFoundation().adapter_.appendChild(chipEl);
+  assert.equal(root.childNodes[3], chipEl);
+});
