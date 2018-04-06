@@ -15,12 +15,11 @@
 //
 
 @import "./variables";
-@import "./functions";
 
 @mixin mdc-typography-base {
-  font-family: $mdc-typography-font-family;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
+  @each $key, $value in $mdc-typography-base {
+    #{$key}: $value;
+  }
 }
 
 @mixin mdc-typography($style) {
@@ -28,13 +27,6 @@
 
   @if not map-has-key($mdc-typography-styles, $style) {
     @error "Invalid style specified! #{$style} doesn't exist. Choose one of #{map-keys($mdc-typography-styles)}";
-  }
-
-  @include mdc-typography-base;
-
-  @if global_variable_exists(mdc-typography-styles-#{$style}) {
-    $style-props: map-merge($style-props, get-global-variable(#{$style}));
-    $mdc-typography-styles: map-merge($mdc-typography-styles, (#{$style}: $style-props));
   }
 
   @each $key, $value in $style-props {

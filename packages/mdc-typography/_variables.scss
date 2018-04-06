@@ -14,7 +14,15 @@
 // limitations under the License.
 //
 
+@import "./functions";
+
 $mdc-typography-font-family: Roboto, sans-serif !default;
+
+$mdc-typography-base: (
+  font-family: $mdc-typography-font-family,
+  -moz-osx-font-smoothing: grayscale,
+  -webkit-font-smoothing: antialiased,
+);
 
 $mdc-typography-font-weight-values: (
   thin: 100,
@@ -26,96 +34,98 @@ $mdc-typography-font-weight-values: (
 ) !default;
 
 // letter-spacing == $tracking-value / ($font-size-rem * $font-base)
-$mdc-typography-styles: (
-  headline1: (
-    font-size: 6rem, /* 96sp */
-    font-weight: map-get($mdc-typography-font-weight-values, light),
-    letter-spacing: -1.5 / (6 * 16) * 1em,
-    text-decoration: inherit,
-    text-transform: inherit
-  ),
-  headline2: (
-    font-size: 3.75rem, /* 60sp */
-    font-weight: map-get($mdc-typography-font-weight-values, light),
-    letter-spacing: -.5 / (3.75 * 16) * 1em,
-    text-decoration: inherit,
-    text-transform: inherit
-  ),
-  headline3: (
-    font-size: 3rem, /* 48px */
-    font-weight: map-get($mdc-typography-font-weight-values, regular),
-    letter-spacing: normal,
-    text-decoration: inherit,
-    text-transform: inherit
-  ),
-  headline4: (
-    font-size: 2.125rem, /* 34sp */
-    font-weight: map-get($mdc-typography-font-weight-values, regular),
-    letter-spacing: .25 / (2.125 * 16) * 1em,
-    text-decoration: inherit,
-    text-transform: inherit
-  ),
-  headline5: (
-    font-size: 1.5rem, /* 34sp */
-    font-weight: map-get($mdc-typography-font-weight-values, regular),
-    letter-spacing: normal,
-    text-decoration: inherit,
-    text-transform: inherit
-  ),
-  headline6: (
-    font-size: 1.25rem, /* 20sp */
-    font-weight: map-get($mdc-typography-font-weight-values, medium),
-    letter-spacing: .25 / (1.25 * 16) * 1em,
-    text-decoration: inherit,
-    text-transform: inherit
-  ),
-  subtitle1: (
-    font-size: 1rem, /* 16sp */
-    font-weight: map-get($mdc-typography-font-weight-values, regular),
-    letter-spacing: .15 / (1 * 16) * 1em,
-    text-decoration: inherit,
-    text-transform: inherit
-  ),
-  subtitle2: (
-    font-size: .875rem, /* 14sp */
-    font-weight: map-get($mdc-typography-font-weight-values, medium),
-    letter-spacing: .1 / (.875 * 16) * 1em,
-    text-decoration: inherit,
-    text-transform: inherit
-  ),
-  body1: (
-    font-size: 1rem, /* 16sp */
-    font-weight: map-get($mdc-typography-font-weight-values, regular),
-    letter-spacing: .5 / (1 * 16) * 1em,
-    text-decoration: inherit,
-    text-transform: inherit
-  ),
-  body2: (
-    font-size: .875rem, /* 14sp */
-    font-weight: map-get($mdc-typography-font-weight-values, regular),
-    letter-spacing: .25 / (.875 * 16) * 1em,
-    text-decoration: inherit,
-    text-transform: inherit
-  ),
-  caption: (
-    font-size: .75rem, /* 12sp */
-    font-weight: map-get($mdc-typography-font-weight-values, regular),
-    letter-spacing: .4 / (.75 * 16) * 1em,
-    text-decoration: inherit,
-    text-transform: inherit
-  ),
-  button: (
-    font-size: .875rem, /* 14sp */
-    font-weight: map-get($mdc-typography-font-weight-values, medium),
-    letter-spacing: 1.25 / (.875 * 16) * 1em,
-    text-decoration: none,
-    text-transform: uppercase
-  ),
-  overline: (
-    font-size: .75rem, /* 14sp */
-    font-weight: map-get($mdc-typography-font-weight-values, medium),
-    letter-spacing: 2 / (.75 * 16) * 1em,
-    text-decoration: none,
-    text-transform: uppercase
-  ),
-) !default;
+$mdc-typography-styles: mdc-set-typography-styles(
+  $mdc-typography-base,
+  (
+    headline1: (
+      font-size: 6rem, /* 96sp */
+      font-weight: map-get($mdc-typography-font-weight-values, light),
+      letter-spacing: -1.5 / (6 * 16) * 1em,
+      text-decoration: inherit,
+      text-transform: inherit
+    ),
+    headline2: (
+      font-size: 3.75rem, /* 60sp */
+      font-weight: map-get($mdc-typography-font-weight-values, light),
+      letter-spacing: -.5 / (3.75 * 16) * 1em,
+      text-decoration: inherit,
+      text-transform: inherit
+    ),
+    headline3: (
+      font-size: 3rem, /* 48px */
+      font-weight: map-get($mdc-typography-font-weight-values, regular),
+      letter-spacing: normal,
+      text-decoration: inherit,
+      text-transform: inherit
+    ),
+    headline4: (
+      font-size: 2.125rem, /* 34sp */
+      font-weight: map-get($mdc-typography-font-weight-values, regular),
+      letter-spacing: .25 / (2.125 * 16) * 1em,
+      text-decoration: inherit,
+      text-transform: inherit
+    ),
+    headline5: (
+      font-size: 1.5rem, /* 34sp */
+      font-weight: map-get($mdc-typography-font-weight-values, regular),
+      letter-spacing: normal,
+      text-decoration: inherit,
+      text-transform: inherit
+    ),
+    headline6: (
+      font-size: 1.25rem, /* 20sp */
+      font-weight: map-get($mdc-typography-font-weight-values, medium),
+      letter-spacing: .25 / (1.25 * 16) * 1em,
+      text-decoration: inherit,
+      text-transform: inherit
+    ),
+    subtitle1: (
+      font-size: 1rem, /* 16sp */
+      font-weight: map-get($mdc-typography-font-weight-values, regular),
+      letter-spacing: .15 / (1 * 16) * 1em,
+      text-decoration: inherit,
+      text-transform: inherit
+    ),
+    subtitle2: (
+      font-size: .875rem, /* 14sp */
+      font-weight: map-get($mdc-typography-font-weight-values, medium),
+      letter-spacing: .1 / (.875 * 16) * 1em,
+      text-decoration: inherit,
+      text-transform: inherit
+    ),
+    body1: (
+      font-size: 1rem, /* 16sp */
+      font-weight: map-get($mdc-typography-font-weight-values, regular),
+      letter-spacing: .5 / (1 * 16) * 1em,
+      text-decoration: inherit,
+      text-transform: inherit
+    ),
+    body2: (
+      font-size: .875rem, /* 14sp */
+      font-weight: map-get($mdc-typography-font-weight-values, regular),
+      letter-spacing: .25 / (.875 * 16) * 1em,
+      text-decoration: inherit,
+      text-transform: inherit
+    ),
+    caption: (
+      font-size: .75rem, /* 12sp */
+      font-weight: map-get($mdc-typography-font-weight-values, regular),
+      letter-spacing: .4 / (.75 * 16) * 1em,
+      text-decoration: inherit,
+      text-transform: inherit
+    ),
+    button: (
+      font-size: .875rem, /* 14sp */
+      font-weight: map-get($mdc-typography-font-weight-values, medium),
+      letter-spacing: 1.25 / (.875 * 16) * 1em,
+      text-decoration: none,
+      text-transform: uppercase
+    ),
+    overline: (
+      font-size: .75rem, /* 14sp */
+      font-weight: map-get($mdc-typography-font-weight-values, medium),
+      letter-spacing: 2 / (.75 * 16) * 1em,
+      text-decoration: none,
+      text-transform: uppercase
+    ),
+)) !default;

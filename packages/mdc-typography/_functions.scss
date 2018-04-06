@@ -1,3 +1,4 @@
+
 //
 // Copyright 2018 Google Inc. All Rights Reserved.
 //
@@ -14,7 +15,7 @@
 // limitations under the License.
 //
 
-@function get-global-variable($style) {
+@function mdc-get-global-variable_($style) {
   @if $style == "headline1" {
     @return $mdc-typography-styles-headline1;
   } @else if $style == "headline2" {
@@ -42,4 +43,15 @@
   } @else if $style == "overline" {
     @return $mdc-typography-styles-overline;
   }
+}
+
+@function mdc-set-typography-styles($mdc-typography-base, $mdc-typography-styles-temp) {
+  @each $style, $style-props in $mdc-typography-styles-temp {
+    @if global_variable_exists(mdc-typography-styles-#{$style}) {
+      $style-props: map-merge($style-props, map-merge($mdc-typography-base, mdc-get-global-variable_(#{$style})));
+      $mdc-typography-styles-temp: map-merge($mdc-typography-styles-temp, (#{$style}: $style-props));
+    }
+  }
+
+  @return $mdc-typography-styles-temp;
 }
