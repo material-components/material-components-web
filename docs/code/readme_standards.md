@@ -25,7 +25,7 @@ The 'Basic Usage' section documents the bare minimum to get the most basic versi
 ```
 ~~~
 
-In the 'Styles' subsection, include any mixin invocations necessary to make the component look as desired.
+In the 'Styles' subsection, include any imports and mixin invocations necessary to make the component look as desired.
 ~~~
 ### Styles
 
@@ -85,7 +85,7 @@ CSS Custom Property | Description
 `mdc-bar` | The bar
 ~~~
 
-Sass mixins, variables, and functions are documented in [tabular format](#tabular-format) under a single subsection. Only include the tables that are applicable.
+Sass mixins, variables, and functions are documented in [tabular format](#tabular-format) under a single subsection. Only include the tables that are applicable. You can include subsections or separate the tables into smaller tables if it makes the documentation easier to read (e.g. having two tables for Basic Mixins and Advanced Mixins). 
 
 ~~~
 ### Sass Mixins, Variables, and Functions
@@ -175,4 +175,4 @@ summary description. Then create a note below the table with the longer descript
 > _NOTE_: This is the long description.
 ~~~
 
-Do not add multiple sentences to the tabular format, as this will make the table more difficult to read.
+Keep descriptions brief, to make the table as easy to read as possible.
