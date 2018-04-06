@@ -38,7 +38,7 @@
   @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
 }
 
-@mixin mdc-fab-icon-size($width: 24px, $height: $width) {
+@mixin mdc-fab-icon-size($width, $height: $width) {
   .mdc-fab__icon {
     width: $width;
     height: $height;
