@@ -15,6 +15,7 @@
  */
 
 import bel from 'bel';
+import td from 'testdouble';
 import {assert} from 'chai';
 
 import {MDCFloatingLabel} from '../../../packages/mdc-floating-label/index';
@@ -34,6 +35,27 @@ function setupTest() {
   const component = new MDCFloatingLabel(root);
   return {root, component};
 }
+
+test('#shake calls the foundation shake method', () => {
+  const {component} = setupTest();
+  component.foundation_.shake = td.func();
+  component.shake(true);
+  td.verify(component.foundation_.shake(true), {times: 1});
+});
+
+test('#getWidth calls the foundation getWidth method', () => {
+  const {component} = setupTest();
+  component.foundation_.getWidth = td.func();
+  component.getWidth();
+  td.verify(component.foundation_.getWidth(), {times: 1});
+});
+
+test('#float calls the foundation float method', () => {
+  const {component} = setupTest();
+  component.foundation_.float = td.func();
+  component.float(true);
+  td.verify(component.foundation_.float(true), {times: 1});
+});
 
 test('#adapter.addClass adds a class to the element', () => {
   const {root, component} = setupTest();
