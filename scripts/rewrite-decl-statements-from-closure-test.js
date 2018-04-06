@@ -104,11 +104,10 @@ function visit(srcFile, rootDir) {
       if (path.node.object.type === 'Identifier' && path.node.property.type === 'Identifier'
           && path.node.object.name === 'goog' && path.node.property.name === 'module') {
         const fullyQualifiedModuleName = path.container.arguments[0].value;
-        const namespaceArray = fullyQualifiedModuleName.split('.');
         const relativePath = srcFile.substr(rootDir.length);
         moduleMap[fullyQualifiedModuleName] = relativePath.substr(0, relativePath.lastIndexOf('.js'));
       }
-    }
+    },
   });
 }
 
@@ -130,7 +129,7 @@ function transform(srcFile, rootDir) {
         moduleNamespace = namespaceArray.join('.');
         path.parentPath.remove();
       }
-    }
+    },
   });
 
   // Rewrite `export = STUFF;` conversion to `exports SIMILAR_STUFF;`
@@ -152,7 +151,7 @@ function transform(srcFile, rootDir) {
           });
           const namedDeclaration = t.exportNamedDeclaration(null, specifiers);
           // rewrite as: export {MDCSomething1, Something2, etc};
-          path.replaceWith(namedDeclaration)
+          path.replaceWith(namedDeclaration);
         }
       }
     },
@@ -161,7 +160,6 @@ function transform(srcFile, rootDir) {
   // Rewrite all the goog.require
   traverse(ast, {
     VariableDeclaration(path) {
-      const expression = path.node.expression;
       // Consider all const SOMETHING = SOME_INIT;
       if (path.node.kind === 'const' && path.node.declarations && path.node.declarations.length > 0) {
         const declaration = path.node.declarations[0];
@@ -171,7 +169,6 @@ function transform(srcFile, rootDir) {
             declaration.init.callee.object.type === 'Identifier' && declaration.init.callee.object.name === 'goog' &&
             declaration.init.callee.property.type === 'Identifier' &&
             declaration.init.callee.property.name === 'require' ) {
-
           const requireNamespace = declaration.init.arguments[0].value;
           const isRelativePath = requireNamespace.indexOf(moduleNamespace) === 0;
           const modulePath = moduleMap[requireNamespace];
@@ -206,7 +203,6 @@ function transform(srcFile, rootDir) {
             }
             importDeclaration = t.importDeclaration(specifiers, t.stringLiteral(importPath));
           }
-
           // Preserve comments above import statements, since this is most likely the license comment.
           if (path.node.comments && path.node.comments.length > 0) {
             for (let i = 0; i < path.node.comments.length; i++) {
@@ -219,7 +215,7 @@ function transform(srcFile, rootDir) {
           path.replaceWith(importDeclaration);
         }
       }
-    }
+    },
   });
 
   const {code: outputCode} = recast.print(ast, {
