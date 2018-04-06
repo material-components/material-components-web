@@ -66,7 +66,7 @@ We recommend you load Roboto from Google Fonts
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
 </head>
 <body class="mdc-typography">
-  <h1 class="mdc-typography--display4">Big header</h1>
+  <h1 class="mdc-typography--headline1">Big header</h1>
 </body>
 ```
 
@@ -107,15 +107,53 @@ Mixin | Description
 
 These styles can be used as the `$style` argument for `mdc-typography` mixin.
 
-* `display4`
-* `display3`
-* `display2`
-* `display1`
-* `headline`
-* `title`
-* `subheading2`
-* `subheading1`
-* `body2`
+* `headline1`
+* `headline2`
+* `headline3`
+* `headline4`
+* `headline5`
+* `headline6`
+* `subtitle1`
+* `subtitle2`
 * `body1`
+* `body2`
 * `caption`
 * `button`
+* `overline`
+
+#### Overriding Styles
+
+All the styles can be overridden using Sass global variables _before_ the component is imported by setting a global 
+variable named `$mdc-typography-styles-{style}`. The variable should be assigned a map that contains all the properties
+you want to override for a particular style.
+
+Example: Overriding the button `font-size` and `text-transform` property.
+```scss
+$mdc-typography-styles-button: (
+  font-size: 16px,
+  text-transform: none,
+);
+
+@import "@material/button/mdc-button";
+```
+
+Example: Overriding the global `font-family` property. 
+```scss
+$mdc-typography-font-family: "Arial, Helvetica, sans-serif";
+
+...
+@import ...
+```
+
+Example: Overriding the `font-family` property for `headline1` and `headline2`.
+```scss
+$mdc-typography-styles-headline1: (
+  font-family: "Arial, Helvetica, sans-serif";
+);
+$mdc-typography-styles-headline2: (
+  font-family: "Arial, Helvetica, sans-serif";
+);
+
+...
+@import ...
+```
