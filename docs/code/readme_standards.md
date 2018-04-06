@@ -46,7 +46,7 @@ import {MDCButton} from '@material/button';
 const button = new MDCButton(document.querySelector('.mdc-button'));
 ```
 
->See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
+> See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
 ~~~
 
 ## Variants
