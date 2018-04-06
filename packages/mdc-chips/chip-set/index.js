@@ -87,6 +87,7 @@ class MDCChipSet extends MDCComponent {
     return new MDCChipSetFoundation(/** @type {!MDCChipSetAdapter} */ (Object.assign({
       hasClass: (className) => this.root_.classList.contains(className),
       registerInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
+      deregisterInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
       createChip: (text, leadingIcon, trailingIcon) => {
         const chipTextEl = document.createElement('div');
         chipTextEl.classList.add(MDCChipFoundation.cssClasses.TEXT);
@@ -104,7 +105,6 @@ class MDCChipSet extends MDCComponent {
         return chipEl;
       },
       appendChild: (el) => this.root_.appendChild(el),
-      deregisterInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
     })));
   }
 
