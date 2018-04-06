@@ -68,10 +68,10 @@ open http://localhost:8080
 
 `npm run dev` runs a [webpack-dev-server](https://webpack.github.io/docs/webpack-dev-server.html) instance that uses `demos/` as its content base. This should aid you in initial development of a component. It's served on port 8080.
 
-#### Appengine development server
+#### App Engine development server
 
 ```
-MDC_ENV=development npm run build && gcloud app deploy app.yaml --project google.com:mdc-web-dev --version $USER
+MDC_ENV=development npm run build:demos && gcloud app deploy app.yaml --project google.com:mdc-web-dev --version $USER
 gcloud app browse
 ```
 
@@ -80,9 +80,10 @@ The above script will build and deploy the app to MDC Web's dev server with your
 ### Building MDC Web
 
 ```
-npm run build # Builds an unminified version of MDC Web within build/
-npm run build:min # Same as above, but enables minification
-npm run dist # Cleans out build/ and runs both of the above commands sequentially
+npm run build # Cleans out build/ and builds unminified files for each MDC Web package
+npm run build:min # Builds minified files for each MDC Web package
+npm run dist # Runs both of the above commands sequentially
+npm run build:demos # Cleans out build/ and builds demo CSS/JS files, e.g. for deploying to App Engine
 ```
 
 ### Linting / Testing / Coverage Enforcement

@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-/**
- * Temporarily overwrites environment variables and restores their original values.
- */
-module.exports = class {
-  constructor() {
-    this.saved_ = new Map();
-  }
+'use strict';
 
-  mock(key, value) {
-    this.saved_[key] = process.env[key];
-    process.env[key] = value;
-  }
+const express = require('express');
+const serveIndex = require('serve-index');
 
-  restoreAll() {
-    this.saved_.forEach((value, key) => {
-      process.env[key] = value;
-    });
-    this.saved_.clear();
-  }
-};
+const PathResolver = require('../../scripts/build/path-resolver');
+const pathResolver = new PathResolver();
+
+const absolutePath = pathResolver.getAbsolutePath('/test/screenshot');
+const app = express();
+
+app.use('/', express.static(absolutePath), serveIndex(absolutePath));
+
+app.listen(8080, () => {
+  console.log(`
+==========================================================
+Local development server running on http://localhost:8080/
+==========================================================
+`);
+});

@@ -113,20 +113,16 @@ class MDCTextField extends MDCComponent {
     }
 
     this.ripple = null;
-    if (this.root_.classList.contains(cssClasses.BOX) || this.root_.classList.contains(cssClasses.OUTLINED)) {
-      // For outlined text fields, the ripple is instantiated on the outline element instead of the root element
-      // to clip the ripple at the outline while still allowing the label to be visible beyond the outline.
-      const rippleCapableSurface = outlineElement ? this.outline_ : this;
-      const rippleRoot = outlineElement ? outlineElement : this.root_;
+    if (this.root_.classList.contains(cssClasses.BOX)) {
       const MATCHES = getMatchesProperty(HTMLElement.prototype);
       const adapter =
-        Object.assign(MDCRipple.createAdapter(/** @type {!RippleCapableSurface} */ (rippleCapableSurface)), {
+        Object.assign(MDCRipple.createAdapter(/** @type {!RippleCapableSurface} */ (this)), {
           isSurfaceActive: () => this.input_[MATCHES](':active'),
           registerInteractionHandler: (type, handler) => this.input_.addEventListener(type, handler),
           deregisterInteractionHandler: (type, handler) => this.input_.removeEventListener(type, handler),
         });
       const foundation = new MDCRippleFoundation(adapter);
-      this.ripple = rippleFactory(rippleRoot, foundation);
+      this.ripple = rippleFactory(this.root_, foundation);
     }
   }
 
@@ -318,7 +314,8 @@ class MDCTextField extends MDCComponent {
    * all dimensions and positions for the ripple element.
    */
   layout() {
-    this.foundation_.updateOutline();
+    const openNotch = this.foundation_.shouldFloat;
+    this.foundation_.notchOutline(openNotch);
     if (this.ripple) {
       this.ripple.layout();
     }
@@ -401,14 +398,15 @@ class MDCTextField extends MDCComponent {
 
   /**
    * @return {!{
+   *   notchOutline: function(number, boolean): undefined,
    *   hasOutline: function(): boolean,
-   *   updateOutlinePath: function(number, boolean): undefined,
    * }}
    */
   getOutlineAdapterMethods_() {
     return {
+      notchOutline: (labelWidth, isRtl) => this.outline_.notch(labelWidth, isRtl),
+      closeOutline: () => this.outline_.closeNotch(),
       hasOutline: () => !!this.outline_,
-      updateOutlinePath: (labelWidth, isRtl) => this.outline_.updateSvgPath(labelWidth, isRtl),
     };
   }
 

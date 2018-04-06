@@ -95,8 +95,9 @@
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  width: $mdc-top-app-bar-icon-size;
-  height: $mdc-top-app-bar-icon-size;
+  box-sizing: border-box;
+  width: $mdc-top-app-bar-icon-size + $mdc-top-app-bar-icon-padding * 2;
+  height: $mdc-top-app-bar-icon-size + $mdc-top-app-bar-icon-padding * 2;
   padding: $mdc-top-app-bar-icon-padding;
   border: none;
   outline: none;

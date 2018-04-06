@@ -240,18 +240,6 @@
   @include mdc-text-field-textarea-disabled_;
 }
 
-// Never show the idle outline when the label is floating, otherwise the label
-// will collide with the idle outline.
-.mdc-floating-label--float-above ~ .mdc-notched-outline__idle {
-  opacity: 0;
-}
-
-// Show the outline when the label is floating, since the outline has a
-// notch for the label to fit into.
-.mdc-floating-label--float-above ~ .mdc-notched-outline {
-  opacity: 1;
-}
-
 @include mdc-floating-label-shake-keyframes(text-field-box, $mdc-text-field-box-label-position-y);
 @include mdc-floating-label-shake-keyframes(text-field-box-dense, $mdc-text-field-box-dense-label-position-y, 0%, $mdc-text-field-dense-label-scale);
 @include mdc-floating-label-shake-keyframes(text-field-outlined, $mdc-text-field-outlined-label-position-y);

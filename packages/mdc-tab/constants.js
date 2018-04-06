@@ -1,5 +1,6 @@
 /**
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * @license
+ * Copyright 2018 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +15,19 @@
  * limitations under the License.
  */
 
-let supportsPassive_;
+/** @enum {string} */
+const cssClasses = {
+  ACTIVE: 'mdc-tab--active',
+  ANIMATING_ACTIVATE: 'mdc-tab--animating-activate',
+  ANIMATING_DEACTIVATE: 'mdc-tab--animating-deactivate',
+};
 
-// Determine whether the current browser supports passive event listeners, and if so, use them.
-export function applyPassive(globalObj = window, forceRefresh = false) {
-  if (supportsPassive_ === undefined || forceRefresh) {
-    let isSupported = false;
-    try {
-      globalObj.document.addEventListener('test', null, {get passive() {
-        isSupported = true;
-      }});
-    } catch (e) { }
+/** @enum {string} */
+const strings = {
+  ARIA_SELECTED: 'aria-selected',
+};
 
-    supportsPassive_ = isSupported;
-  }
-
-  return supportsPassive_ ? {passive: true} : false;
-}
+export {
+  cssClasses,
+  strings,
+};

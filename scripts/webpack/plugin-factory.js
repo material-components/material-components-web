@@ -15,7 +15,7 @@
  */
 
 /**
- * Factory for Webpack plugins. Allows us to more easily mock and test our config generator code.
+ * @fileoverview Factory for Webpack plugins. Allows us to more easily mock and test our config generator code.
  */
 
 'use strict';
@@ -24,7 +24,7 @@ const CopyrightBannerPlugin = require('./copyright-banner-plugin');
 const CssCleanupPlugin = require('./css-cleanup-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-module.exports = class {
+class PluginFactory {
   constructor({globber} = {}) {
     this.globber_ = globber;
   }
@@ -47,4 +47,6 @@ module.exports = class {
   createCssExtractorPlugin(outputFilenamePattern) {
     return new ExtractTextPlugin(outputFilenamePattern);
   }
-};
+}
+
+module.exports = PluginFactory;

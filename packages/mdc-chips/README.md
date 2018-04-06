@@ -31,7 +31,7 @@ Chips are compact elements that allow users to enter information, select a choic
 
 ## Installation
 ```
-npm install --save @material/chips
+npm install @material/chips
 ```
 
 ## Usage
@@ -125,7 +125,7 @@ CSS Class | Description
 
 ### Sass Mixins
 
-To customize the colors of any part of the chip, use the following mixins. 
+To customize the colors of any part of the chip, use the following mixins.
 
 Mixin | Description
 --- | ---
@@ -144,7 +144,7 @@ Mixin | Description
 
 ### `MDCChip` and `MDCChipSet`
 
-The MDC Chips module is comprised of two JavaScript classes: 
+The MDC Chips module is comprised of two JavaScript classes:
 * `MDCChip` defines the behavior of a single chip
 * `MDCChipSet` defines the behavior of chips within a specific set. For example, chips in an entry chip set behave differently from those in a filter chip set.
 
@@ -154,6 +154,7 @@ To use the `MDCChip` and `MDCChipSet` classes, [import](../../docs/importing-js.
 
 Method Signature | Description
 --- | ---
+`get foundation() => MDCChipFoundation` | Returns the foundation
 `toggleSelected() => void` | Proxies to the foundation's `toggleSelected` method
 
 Property | Value Type | Description
@@ -186,8 +187,10 @@ Method Signature | Description
 `deregisterEventHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the root element
 `registerTrailingIconInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the trailing icon element
 `deregisterTrailingIconInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the trailing icon element
-`notifyInteraction() => void` | Emits a custom event `MDCChip:interaction` denoting the chip has been interacted with, which bubbles to the parent `mdc-chip-set` element
-`notifyTrailingIconInteraction() => void` | Emits a custom event `MDCChip:trailingIconInteraction` denoting the chip's trailing icon has been interacted with, which bubbles to the parent `mdc-chip-set` element
+`notifyInteraction() => void` | Emits a custom event `MDCChip:interaction` denoting the chip has been interacted with
+`notifyTrailingIconInteraction() => void` | Emits a custom event `MDCChip:trailingIconInteraction` denoting the chip's trailing icon has been interacted with
+
+> _NOTE_: The custom events emitted by `notifyInteraction` and `notifyTrailingIconInteraction` must pass along the target chip in its event `detail`, as well as bubble to the parent `mdc-chip-set` element.
 
 #### `MDCChipSetAdapter`
 
