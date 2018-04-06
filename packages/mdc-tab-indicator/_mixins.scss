@@ -17,18 +17,8 @@
 
 @import "@material/theme/mixins";
 
-@mixin mdc-tab-indicator-active {
+@mixin mdc-tab-indicator-active_ {
   opacity: 1;
-}
-
-@mixin mdc-tab-indicator-color($color) {
-  @include mdc-tab-indicator-bar-color($color);
-  @include mdc-tab-indicator-icon-color($color);
-}
-
-@mixin mdc-tab-indicator-height($height) {
-  @include mdc-tab-indicator-bar-height($height);
-  @include mdc-tab-indicator-icon-height($height);
 }
 
 @mixin mdc-tab-indicator-bar-color($color) {

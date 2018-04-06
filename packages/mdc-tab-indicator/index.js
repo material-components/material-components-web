@@ -60,7 +60,7 @@ class MDCTabIndicator extends MDCComponent {
       return new MDCFadingTabIndicatorFoundation(adapter);
     }
 
-    // Default to the bar indicator
+    // Default to the sliding indicator
     return new MDCSlidingTabIndicatorFoundation(adapter);
   }
 

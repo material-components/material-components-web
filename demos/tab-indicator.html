@@ -47,7 +47,12 @@
               <span class="mdc-tab-indicator__bar"></span>
             </span>
           </div>
-          <div class="demo-item hero-demo-item">
+          <div class="demo-item demo-item--wide hero-demo-item">
+            <span class="mdc-tab-indicator">
+              <span class="mdc-tab-indicator__bar"></span>
+            </span>
+          </div>
+          <div class="demo-item demo-item--narrow hero-demo-item">
             <span class="mdc-tab-indicator">
               <span class="mdc-tab-indicator__bar"></span>
             </span>
@@ -63,7 +68,12 @@
               <span class="mdc-tab-indicator__bar"></span>
             </span>
           </div>
-          <div class="demo-item">
+          <div class="demo-item demo-item--narrow">
+            <span class="mdc-tab-indicator custom-sliding-bar">
+              <span class="mdc-tab-indicator__bar"></span>
+            </span>
+          </div>
+          <div class="demo-item demo-item--wide">
             <span class="mdc-tab-indicator custom-sliding-bar">
               <span class="mdc-tab-indicator__bar"></span>
             </span>
@@ -74,13 +84,18 @@
 
         <h4>Custom Color</h4>
         <div class="demo">
-          <div class="demo-item">
-            <span class="mdc-tab-indicator mdc-tab-indicator--active custom-color">
+          <div class="demo-item demo-item--narrow">
+            <span class="mdc-tab-indicator mdc-tab-indicator--active custom-color-bar">
               <span class="mdc-tab-indicator__bar"></span>
             </span>
           </div>
           <div class="demo-item">
-            <span class="mdc-tab-indicator custom-color">
+            <span class="mdc-tab-indicator custom-color-bar">
+              <span class="mdc-tab-indicator__bar"></span>
+            </span>
+          </div>
+          <div class="demo-item demo-item--wide">
+            <span class="mdc-tab-indicator custom-color-bar">
               <span class="mdc-tab-indicator__bar"></span>
             </span>
           </div>
@@ -90,13 +105,18 @@
 
         <h4>Custom Height</h4>
         <div class="demo">
-          <div class="demo-item">
-            <span class="mdc-tab-indicator mdc-tab-indicator--active custom-height">
+          <div class="demo-item demo-item--narrow">
+            <span class="mdc-tab-indicator mdc-tab-indicator--active custom-height-bar">
               <span class="mdc-tab-indicator__bar"></span>
             </span>
           </div>
-          <div class="demo-item">
-            <span class="mdc-tab-indicator custom-height">
+          <div class="demo-item demo-item--wide">
+            <span class="mdc-tab-indicator custom-height-bar">
+              <span class="mdc-tab-indicator__bar"></span>
+            </span>
+          </div>
+          <div class="demo-item demo-item">
+            <span class="mdc-tab-indicator custom-height-bar">
               <span class="mdc-tab-indicator__bar"></span>
             </span>
           </div>
@@ -111,7 +131,12 @@
               <span class="mdc-tab-indicator__bar"></span>
             </span>
           </div>
-          <div class="demo-item">
+          <div class="demo-item demo-item--narrow">
+            <span class="mdc-tab-indicator custom-border-radius">
+              <span class="mdc-tab-indicator__bar"></span>
+            </span>
+          </div>
+          <div class="demo-item demo-item--wide">
             <span class="mdc-tab-indicator custom-border-radius">
               <span class="mdc-tab-indicator__bar"></span>
             </span>
@@ -127,9 +152,14 @@
               <span class="mdc-tab-indicator__icon material-icons">favorite</span>
             </span>
           </div>
-          <div class="demo-item">
+          <div class="demo-item demo-item--wide">
             <span class="mdc-tab-indicator mdc-tab-indicator--fade">
               <span class="mdc-tab-indicator__icon material-icons">star</span>
+            </span>
+          </div>
+          <div class="demo-item demo-item--narrow">
+            <span class="mdc-tab-indicator mdc-tab-indicator--fade">
+              <span class="mdc-tab-indicator__icon material-icons">lens</span>
             </span>
           </div>
         </div>
@@ -138,14 +168,19 @@
 
         <h4>Custom Color</h4>
         <div class="demo">
-          <div class="demo-item">
-            <span class="mdc-tab-indicator mdc-tab-indicator--fade mdc-tab-indicator--active custom-color">
+          <div class="demo-item demo-item--wide">
+            <span class="mdc-tab-indicator mdc-tab-indicator--fade mdc-tab-indicator--active custom-color-icon">
               <span class="mdc-tab-indicator__icon material-icons">favorite</span>
             </span>
           </div>
           <div class="demo-item">
-            <span class="mdc-tab-indicator mdc-tab-indicator--fade custom-color">
+            <span class="mdc-tab-indicator mdc-tab-indicator--fade custom-color-icon">
               <span class="mdc-tab-indicator__icon material-icons">star</span>
+            </span>
+          </div>
+          <div class="demo-item demo-item--narrow">
+            <span class="mdc-tab-indicator mdc-tab-indicator--fade custom-color-icon">
+              <span class="mdc-tab-indicator__icon material-icons">lens</span>
             </span>
           </div>
         </div>
@@ -154,14 +189,19 @@
 
         <h4>Custom Height</h4>
         <div class="demo">
-          <div class="demo-item">
+          <div class="demo-item demo-item--narrow">
             <span class="mdc-tab-indicator mdc-tab-indicator--fade mdc-tab-indicator--active custom-height-icon">
               <span class="mdc-tab-indicator__icon material-icons">favorite</span>
             </span>
           </div>
-          <div class="demo-item">
+          <div class="demo-item demo-item--wide">
             <span class="mdc-tab-indicator mdc-tab-indicator--fade custom-height-icon">
               <span class="mdc-tab-indicator__icon material-icons">star</span>
+            </span>
+          </div>
+          <div class="demo-item">
+            <span class="mdc-tab-indicator mdc-tab-indicator--fade custom-height-icon">
+              <span class="mdc-tab-indicator__icon material-icons">lens</span>
             </span>
           </div>
         </div>
@@ -169,33 +209,31 @@
 
       <section class="example">
         <h2>Mix and Match</h2>
-        <p>These demos show how to use a fading indicator with bar content or a sliding indicator with icon content.</p>
-        <h4>Fading Bar</h4>
+        <p>This demo shows how to use a sliding indicator with icon content.</p>
         <div class="demo">
-          <div class="demo-item">
-            <span class="mdc-tab-indicator mdc-tab-indicator--fade mdc-tab-indicator--active custom-fading-bar">
-              <span class="mdc-tab-indicator__bar"></span>
-            </span>
-          </div>
-          <div class="demo-item">
-            <span class="mdc-tab-indicator mdc-tab-indicator--fade custom-fading-bar">
-              <span class="mdc-tab-indicator__bar"></span>
-            </span>
-          </div>
-        </div>
-
-        <br>
-
-        <h4>Sliding Icon</h4>
-        <div class="demo">
-          <div class="demo-item">
+          <div class="demo-item demo-item--narrow">
             <span class="mdc-tab-indicator mdc-tab-indicator--active custom-sliding-icon">
-              <span class="mdc-tab-indicator__icon material-icons">lens</span>
+              <span class="mdc-tab-indicator__icon material-icons">star</span>
             </span>
           </div>
-          <div class="demo-item">
+          <div class="demo-item demo-item--narrow">
             <span class="mdc-tab-indicator custom-sliding-icon">
-              <span class="mdc-tab-indicator__icon material-icons">lens</span>
+              <span class="mdc-tab-indicator__icon material-icons">star</span>
+            </span>
+          </div>
+          <div class="demo-item demo-item--narrow">
+            <span class="mdc-tab-indicator custom-sliding-icon">
+              <span class="mdc-tab-indicator__icon material-icons">star</span>
+            </span>
+          </div>
+          <div class="demo-item demo-item--narrow">
+            <span class="mdc-tab-indicator custom-sliding-icon">
+              <span class="mdc-tab-indicator__icon material-icons">star</span>
+            </span>
+          </div>
+          <div class="demo-item demo-item--narrow">
+            <span class="mdc-tab-indicator custom-sliding-icon">
+              <span class="mdc-tab-indicator__icon material-icons">star</span>
             </span>
           </div>
         </div>

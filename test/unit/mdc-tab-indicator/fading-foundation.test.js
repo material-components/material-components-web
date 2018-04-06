@@ -61,6 +61,14 @@ test(`#deactivate adds the ${MDCFadingTabIndicatorFoundation.cssClasses.FADING_D
   td.verify(mockAdapter.addClass(MDCFadingTabIndicatorFoundation.cssClasses.FADING_DEACTIVATE));
 });
 
+test('on transitionend, deregister the transitionend handler', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerEventHandler');
+  foundation.activate();
+  handlers.transitionend();
+  td.verify(mockAdapter.deregisterEventHandler('transitionend', td.matchers.isA(Function)));
+});
+
 test(`on transitionend, remove the ${MDCFadingTabIndicatorFoundation.cssClasses.FADING_ACTIVATE} class`, () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerEventHandler');

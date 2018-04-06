@@ -91,6 +91,15 @@ test('#deactivate deregisters the transitionend handler', () => {
   td.verify(mockAdapter.deregisterEventHandler('transitionend', td.matchers.isA(Function)));
 });
 
+test('on transitionend, deregister the transitionend handler', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerEventHandler');
+  td.when(mockAdapter.computeClientRect()).thenReturn({width: 100, left: 10});
+  foundation.activate({width: 90, left: 25});
+  handlers.transitionend();
+  td.verify(mockAdapter.deregisterEventHandler('transitionend', td.matchers.isA(Function)));
+});
+
 test(`on transitionend, remove the ${MDCSlidingTabIndicatorFoundation.cssClasses.SLIDING_ACTIVATE} class`, () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerEventHandler');

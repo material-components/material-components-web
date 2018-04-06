@@ -61,13 +61,6 @@ We recommend you load [Material Icons](https://material.io/icons/) from Google F
 </span>
 ```
 
-#### Fading Bar Indicator
-```html
-<span class="mdc-tab-indicator mdc-tab-indicator--fade">
-  <span class="mdc-tab-indicator__bar"></span>
-</span>
-```
-
 #### Sliding Icon Indicator
 ```html
 <span class="mdc-tab-indicator">
@@ -91,8 +84,6 @@ To customize the tab indicator, use the following mixins.
 
 Mixin | Description
 --- | ---
-`mdc-tab-indicator-color($color)` | Customizes the color of the tab indicator
-`mdc-tab-indicator-height($height)` | Customizes the height of the tab indicator
 `mdc-tab-indicator-bar-color($color)` | Customizes the color of the bar subelement
 `mdc-tab-indicator-icon-color($color)` | Customizes the color of the icon subelement
 `mdc-tab-indicator-bar-height($height)` | Customizes the height of the bar subelement

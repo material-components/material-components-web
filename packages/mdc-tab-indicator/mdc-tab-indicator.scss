@@ -39,7 +39,7 @@
 }
 
 .mdc-tab-indicator--active {
-  @include mdc-tab-indicator-active;
+  @include mdc-tab-indicator-active_;
 }
 
 .mdc-tab-indicator--sliding-activate {

@@ -22,8 +22,17 @@ import MDCTabIndicatorFoundation from './foundation';
  * @final
  */
 class MDCFadingTabIndicatorFoundation extends MDCTabIndicatorFoundation {
+  /** @param {...?} args */
+  constructor(...args) {
+    super(...args);
+
+    /** @private {function(?Event): undefined} */
+    this.handleTransitionEnd_ = () => this.handleTransitionEnd();
+  }
+
+  /** Handles the transitionend event */
   handleTransitionEnd() {
-    super.handleTransitionEnd();
+    this.adapter_.deregisterEventHandler('transitionend', this.handleTransitionEnd_);
     this.adapter_.removeClass(MDCTabIndicatorFoundation.cssClasses.FADING_ACTIVATE);
     this.adapter_.removeClass(MDCTabIndicatorFoundation.cssClasses.FADING_DEACTIVATE);
   }

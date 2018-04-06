@@ -49,21 +49,11 @@ class MDCTabIndicatorFoundation extends MDCFoundation {
   /** @param {!MDCTabIndcatorAdapter} adapter */
   constructor(adapter) {
     super(Object.assign(MDCTabIndicatorFoundation.defaultAdapter, adapter));
-
-    /** @private {function(?Event): undefined} */
-    this.handleTransitionEnd_ = () => this.handleTransitionEnd();
   }
 
   /** @return {!ClientRect} */
   computeClientRect() {
     return this.adapter_.computeClientRect();
-  }
-
-  /**
-   * Handles the transitionend event
-   */
-  handleTransitionEnd() {
-    this.adapter_.deregisterEventHandler('transitionend', this.handleTransitionEnd_);
   }
 
   /**

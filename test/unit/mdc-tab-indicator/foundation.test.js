@@ -49,12 +49,6 @@ test('#computeClientRect returns the client rect', () => {
   td.verify(mockAdapter.computeClientRect(), {times: 1});
 });
 
-test('#handleTransitionEnd deregisters the event handler', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.handleTransitionEnd();
-  td.verify(mockAdapter.deregisterEventHandler('transitionend', td.matchers.isA(Function)));
-});
-
 test('#activate is abstract and does nothing', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.activate();
