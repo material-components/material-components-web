@@ -16,15 +16,6 @@
  */
 
 /** @enum {string} */
-const strings = {
-  NAVIGATION_EVENT: 'MDCTopAppBar:nav',
-  ROOT_SELECTOR: '.mdc-top-app-bar',
-  TITLE_SELECTOR: '.mdc-top-app-bar__title',
-  NAVIGATION_ICON_SELECTOR: '.mdc-top-app-bar__navigation-icon',
-  ACTION_ITEM_SELECTOR: '.mdc-top-app-bar__action-item',
-};
-
-/** @enum {string} */
 const cssClasses = {
   FIXED_CLASS: 'mdc-top-app-bar--fixed',
   FIXED_SCROLLED_CLASS: 'mdc-top-app-bar--fixed-scrolled',
@@ -33,4 +24,19 @@ const cssClasses = {
   SHORT_COLLAPSED_CLASS: 'mdc-top-app-bar--short-collapsed',
 };
 
-export {strings, cssClasses};
+/** @enum {number} */
+const numbers = {
+  DEBOUNCE_THROTTLE_RESIZE_TIME_MS: 100,
+  MAX_TOP_APP_BAR_HEIGHT: 128,
+};
+
+/** @enum {string} */
+const strings = {
+  ACTION_ITEM_SELECTOR: '.mdc-top-app-bar__action-item',
+  NAVIGATION_EVENT: 'MDCTopAppBar:nav',
+  NAVIGATION_ICON_SELECTOR: '.mdc-top-app-bar__navigation-icon',
+  ROOT_SELECTOR: '.mdc-top-app-bar',
+  TITLE_SELECTOR: '.mdc-top-app-bar__title',
+};
+
+export {strings, cssClasses, numbers};
