@@ -56,7 +56,7 @@ class MDCChipSetAdapter {
    * @param {?Element} trailingIcon
    * @return {!Element}
    */
-  createChip(text, leadingIcon, trailingIcon) {}
+  createChipElement(text, leadingIcon, trailingIcon) {}
 
   /**
    * Appends the given element as a child of the root element.

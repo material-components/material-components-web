@@ -76,7 +76,7 @@ class MDCChipSet extends MDCComponent {
    * @param {?Element} trailingIcon
    */
   addChip(text, leadingIcon, trailingIcon) {
-    const chipEl = this.foundation_.createChipElement(text, leadingIcon, trailingIcon);
+    const chipEl = this.foundation_.addChip(text, leadingIcon, trailingIcon);
     this.chips.push(this.chipFactory_(chipEl));
   }
 
@@ -88,7 +88,7 @@ class MDCChipSet extends MDCComponent {
       hasClass: (className) => this.root_.classList.contains(className),
       registerInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
-      createChip: (text, leadingIcon, trailingIcon) => {
+      createChipElement: (text, leadingIcon, trailingIcon) => {
         const chipTextEl = document.createElement('div');
         chipTextEl.classList.add(MDCChipFoundation.cssClasses.TEXT);
         chipTextEl.appendChild(document.createTextNode(text));
