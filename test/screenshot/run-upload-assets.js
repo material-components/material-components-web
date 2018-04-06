@@ -1,5 +1,5 @@
 /**
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2018 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,23 @@
  * limitations under the License.
  */
 
-let supportsPassive_;
+'use strict';
 
-// Determine whether the current browser supports passive event listeners, and if so, use them.
-export function applyPassive(globalObj = window, forceRefresh = false) {
-  if (supportsPassive_ === undefined || forceRefresh) {
-    let isSupported = false;
-    try {
-      globalObj.document.addEventListener('test', null, {get passive() {
-        isSupported = true;
-      }});
-    } catch (e) { }
+const assetUploader = require('./asset-uploader');
 
-    supportsPassive_ = isSupported;
-  }
+assetUploader.upload().then(handleUploadSuccess, handleUploadFailure);
 
-  return supportsPassive_ ? {passive: true} : false;
+function handleUploadSuccess(files) {
+  const htmlFileUrls =
+    files
+      .filter((file) => file.relativePath.endsWith('.html'))
+      .map((file) => file.fullUrl)
+      .sort();
+  console.log('\n\nDONE!\n\n');
+  console.log(htmlFileUrls.join('\n'));
+}
+
+function handleUploadFailure(err) {
+  console.error('\n\nERROR!\n\n');
+  console.error(err);
 }
