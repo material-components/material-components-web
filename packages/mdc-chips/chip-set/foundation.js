@@ -75,30 +75,50 @@ class MDCChipSetFoundation extends MDCFoundation {
   }
 
   /**
+   * Selects the given chip. Deselects all other chips if the chip set is of the choice variant.
+   * @param {!MDCChipFoundation} chipFoundation
+   */
+  select(chipFoundation) {
+    if (this.adapter_.hasClass(cssClasses.CHOICE)) {
+      this.deselectAll_();
+    }
+    chipFoundation.setSelected(true);
+    this.selectedChips_.push(chipFoundation);
+  }
+
+  /**
+   * Deselects the given chip.
+   * @param {!MDCChipFoundation} chipFoundation
+   */
+  deselect(chipFoundation) {
+    const index = this.selectedChips_.indexOf(chipFoundation);
+    if (index >= 0) {
+      this.selectedChips_.splice(index, 1);
+    }
+    chipFoundation.setSelected(false);
+  }
+
+  /** Deselects all selected chips. */
+  deselectAll_() {
+    this.selectedChips_.forEach((chipFoundation) => {
+      chipFoundation.setSelected(false);
+    });
+    this.selectedChips_.length = 0;
+  }
+
+  /**
    * Handles a chip interaction event
-   * @param {!Object} evt
+   * @param {!Event} evt
    * @private
    */
   handleChipInteraction_(evt) {
     const chipFoundation = evt.detail.chip.foundation;
-    if (this.adapter_.hasClass(cssClasses.CHOICE)) {
-      if (this.selectedChips_.length === 0) {
-        this.selectedChips_[0] = chipFoundation;
-      } else if (this.selectedChips_[0] !== chipFoundation) {
-        this.selectedChips_[0].toggleSelected();
-        this.selectedChips_[0] = chipFoundation;
+    if (this.adapter_.hasClass(cssClasses.CHOICE) || this.adapter_.hasClass(cssClasses.FILTER)) {
+      if (chipFoundation.isSelected()) {
+        this.deselect(chipFoundation);
       } else {
-        this.selectedChips_ = [];
+        this.select(chipFoundation);
       }
-      chipFoundation.toggleSelected();
-    } else if (this.adapter_.hasClass(cssClasses.FILTER)) {
-      const index = this.selectedChips_.indexOf(chipFoundation);
-      if (index >= 0) {
-        this.selectedChips_.splice(index, 1);
-      } else {
-        this.selectedChips_.push(chipFoundation);
-      }
-      chipFoundation.toggleSelected();
     }
   }
 }
