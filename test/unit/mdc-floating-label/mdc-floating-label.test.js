@@ -40,7 +40,7 @@ test('#shake calls the foundation shake method', () => {
   const {component} = setupTest();
   component.foundation_.shake = td.func();
   component.shake(true);
-  td.verify(component.shake(true), {times: 1});
+  td.verify(component.foundation_.shake(true), {times: 1});
 });
 
 test('#getWidth calls the foundation getWidth method', () => {
