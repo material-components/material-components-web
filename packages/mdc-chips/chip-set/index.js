@@ -61,6 +61,14 @@ class MDCChipSet extends MDCComponent {
     });
   }
 
+  initialSyncWithDOM() {
+    this.chips.forEach((chip) => {
+      if (chip.isSelected()) {
+        this.foundation_.select(chip.foundation);
+      }
+    });
+  }
+
   /**
    * Creates a new chip in the chip set with the given text, leading icon, and trailing icon.
    * @param {string} text
