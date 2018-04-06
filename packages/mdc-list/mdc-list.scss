@@ -30,8 +30,11 @@
   margin: 0;
   padding: 8px 0;
 
+  // According to the mocks and stickersheet, the line-height is adjusted to 24px for text content,
+  // same as for body1.
+
   /* @alternate */
-  line-height: 24px;
+  line-height: map-get(map-get($mdc-typography-styles, body1), line-height);
   list-style-type: none;
 }
 
@@ -207,7 +210,7 @@ a.mdc-list-item {
 
 .mdc-list-group__subheader {
   $mdc-list-subheader-virtual-height: 3rem;
-  $mdc-list-subheader-leading: 1.5rem;
+  $mdc-list-subheader-leading: map-get(map-get($mdc-typography-styles, body1), line-height);
   $mdc-list-subheader-margin:
     ($mdc-list-subheader-virtual-height - $mdc-list-subheader-leading) / 2;
 
