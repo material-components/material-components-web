@@ -17,7 +17,7 @@
 import {assert} from 'chai';
 import td from 'testdouble';
 
-import {verifyDefaultAdapter} from '../helpers/foundation';
+import {captureHandlers, verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
 import MDCFloatingLabelFoundation from '../../../packages/mdc-floating-label/foundation';
 
@@ -90,5 +90,13 @@ test('#float called with shouldFloat is false, should remove shake class', () =>
 test('#handleShakeAnimationEnd_ should remove LABEL_SHAKE class', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.handleShakeAnimationEnd_();
+  td.verify(mockAdapter.removeClass(cssClasses.LABEL_SHAKE));
+});
+
+test(`on animationend removes ${cssClasses.LABEL_SHAKE} class`, () => {
+  const {foundation, mockAdapter} = setupFoundationTest(MDCFloatingLabelFoundation);
+  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  foundation.init();
+  handlers.animationend();
   td.verify(mockAdapter.removeClass(cssClasses.LABEL_SHAKE));
 });
