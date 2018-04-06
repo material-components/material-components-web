@@ -50,17 +50,17 @@ $mdc-theme-on-secondary: #442b2d;
 @import "@material/button/mdc-button";
 ```
 
-We suggest you follow the Web Content Accessibility Guidelines 2.0 we picking the values for on-primary, on-secondary, etc. These values should be accessible on top of the corresponding value, e.g. primary and secondar.
+We suggest you follow the Web Content Accessibility Guidelines 2.0 when picking the values for on-primary, on-secondary, etc. These values should be accessible on top of the corresponding value, e.g. primary and secondary.
 
 https://www.w3.org/TR/WCAG20
 
 ### Advanced customization
 
-Color scheme will only get your app 80% of the way to a well designed app. Inevitably there will be some components that do not work "out of the box". To fix problems with accessbility and design, we suggest you use our SASS mixins, such as `mdc-button-filled-accessible`. For more information, consult the documentation for each component.
+Color scheme will only get you 80% of the way to a well-designed app. Inevitably there will be some components that do not work "out of the box". To fix problems with accessibility and design, we suggest you use our Sass mixins, such as `mdc-button-filled-accessible`. For more information, consult the documentation for each component.
 
 ### Non-Sass customization
 
-Only a very limited number of Material Design color customization features are supported for non-Sass clients. They are a set of CSS custom properties, and a set of CSS classes
+Only a very limited number of Material Design color customization features are supported for non-Sass clients. They are a set of CSS custom properties, and a set of CSS classes.
 
 #### CSS Custom Properties
 
