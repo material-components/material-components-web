@@ -21,6 +21,9 @@ import td from 'testdouble';
 
 import {MDCTopAppBar} from '../../../packages/mdc-top-app-bar';
 import {strings} from '../../../packages/mdc-top-app-bar/constants';
+import MDCTopAppBarFoundation from '../../../packages/mdc-top-app-bar/foundation';
+import MDCFixedTopAppBarFoundation from '../../../packages/mdc-top-app-bar/fixed/foundation';
+import MDCShortTopAppBarFoundation from '../../../packages/mdc-top-app-bar/short/foundation';
 
 function getFixture(removeIcon) {
   const html = bel`
@@ -99,6 +102,33 @@ test('destroy destroys icon ripples', () => {
   component.iconRipples_.forEach((icon) => {
     td.verify(icon.destroy());
   });
+});
+
+test('getDefaultFoundation returns the appropriate foundation for default', () => {
+  const fixture = getFixture();
+  const root = fixture.querySelector(strings.ROOT_SELECTOR);
+  const component = new MDCTopAppBar(root, undefined, (el) => new FakeRipple(el));
+  assert.isTrue(component.foundation_ instanceof MDCTopAppBarFoundation);
+  assert.isFalse(component.foundation_ instanceof MDCShortTopAppBarFoundation);
+  assert.isFalse(component.foundation_ instanceof MDCFixedTopAppBarFoundation);
+});
+
+test('getDefaultFoundation returns the appropriate foundation for fixed', () => {
+  const fixture = getFixture();
+  const root = fixture.querySelector(strings.ROOT_SELECTOR);
+  root.classList.add(MDCTopAppBarFoundation.cssClasses.FIXED_CLASS);
+  const component = new MDCTopAppBar(root, undefined, (el) => new FakeRipple(el));
+  assert.isFalse(component.foundation_ instanceof MDCShortTopAppBarFoundation);
+  assert.isTrue(component.foundation_ instanceof MDCFixedTopAppBarFoundation);
+});
+
+test('getDefaultFoundation returns the appropriate foundation for short', () => {
+  const fixture = getFixture();
+  const root = fixture.querySelector(strings.ROOT_SELECTOR);
+  root.classList.add(MDCTopAppBarFoundation.cssClasses.SHORT_CLASS);
+  const component = new MDCTopAppBar(root, undefined, (el) => new FakeRipple(el));
+  assert.isTrue(component.foundation_ instanceof MDCShortTopAppBarFoundation);
+  assert.isFalse(component.foundation_ instanceof MDCFixedTopAppBarFoundation);
 });
 
 test('adapter#hasClass returns true if the root element has specified class', () => {
