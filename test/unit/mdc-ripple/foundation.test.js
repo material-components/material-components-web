@@ -167,6 +167,15 @@ testFoundation(`#destroy removes ${cssClasses.UNBOUNDED}`, ({foundation, adapter
   td.verify(adapter.removeClass(cssClasses.UNBOUNDED));
 });
 
+testFoundation(`#destroy removes ${cssClasses.FG_ACTIVATION} if activation is interrupted`,
+  ({foundation, adapter, mockRaf}) => {
+    foundation.activationTimer_ = 1;
+    foundation.destroy();
+    mockRaf.flush();
+
+    td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION));
+  });
+
 testFoundation('#destroy removes all CSS variables', ({foundation, adapter, mockRaf}) => {
   const cssVars = Object.keys(strings).filter((s) => s.indexOf('VAR_') === 0).map((s) => strings[s]);
   foundation.destroy();
@@ -175,6 +184,18 @@ testFoundation('#destroy removes all CSS variables', ({foundation, adapter, mock
     td.verify(adapter.updateCssVariable(cssVar, null));
   });
 });
+
+testFoundation('#destroy clears the timer if activation is interrupted',
+  ({foundation, mockRaf}) => {
+    foundation.init();
+    mockRaf.flush();
+
+    foundation.activationTimer_ = 1;
+    foundation.destroy();
+    mockRaf.flush();
+
+    assert.equal(foundation.activationTimer_, 0);
+  });
 
 testFoundation('#destroy does nothing if CSS custom properties are not supported', ({foundation, adapter, mockRaf}) => {
   const isA = td.matchers.isA;

@@ -23,9 +23,6 @@ Select bottom line animates activation and deactivation state as the select rece
   <li class="icon-list-item icon-list-item--spec">
     <a href="https://material.io/guidelines/components/text-fields.html">Material Design guidelines: Text Fields</a>
   </li>
-  <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/menus.html">Material Design guidelines: Menus</a>
-  </li>
   <li class="icon-list-item icon-list-item--link">
     <a href="https://material-components-web.appspot.com/select.html">Demo</a>
   </li>
@@ -42,25 +39,21 @@ Select bottom line animates activation and deactivation state as the select rece
 ### Usage within `mdc-select`
 
 ```html
-<div class="mdc-select" role="listbox">
-  <div class="mdc-select__surface" tabindex="0">
-    <div class="mdc-select__label">Pick a Food Group</div>
-    <div class="mdc-select__selected-text"></div>
-    <div class="mdc-select__bottom-line"></div>
-  </div>
-  <div class="mdc-menu mdc-select__menu">
-    <ul class="mdc-list mdc-menu__items">
-      <li class="mdc-list-item" role="option" tabindex="0">
-        Dairy
-      </li>
-      <li class="mdc-list-item" role="option" tabindex="0">
-        Vegetables
-      </li>
-      <li class="mdc-list-item" role="option" tabindex="0">
-        Fruit
-      </li>
-    </ul>
-  </div>
+<div class="mdc-select">
+  <select class="mdc-select__native-control">
+    <option value="" disabled selected></option>
+    <option value="grains">
+      Bread, Cereal, Rice, and Pasta
+    </option>
+    <option value="vegetables">
+      Vegetables
+    </option>
+    <option value="fruit">
+      Fruit
+    </option>
+  </select>
+  <div class="mdc-select__label">Pick a Food Group</div>
+  <div class="mdc-select__bottom-line"></div>
 </div>
 ```
 
