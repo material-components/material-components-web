@@ -115,11 +115,11 @@ To display a pre-selected chip, add the class `mdc-chip--selected` to the root c
 </div>
 ```
 
-To pre-select filter chips that have a leading icon, also add the class `mdc-chip__icon--hidden-leading` to the `mdc-chip__icon--leading` element. This will ensure that the checkmark displaces the leading icon.
+To pre-select filter chips that have a leading icon, also add the class `mdc-chip__icon--leading-hidden` to the `mdc-chip__icon--leading` element. This will ensure that the checkmark displaces the leading icon.
 
 ```html
 <div class="mdc-chip mdc-chip--selected">
-  <i class="material-icons mdc-chip__icon mdc-chip__icon--leading mdc-chip__icon--hidden-leading">face</i>
+  <i class="material-icons mdc-chip__icon mdc-chip__icon--leading mdc-chip__icon--leading-hidden">face</i>
   <div class="mdc-chip__checkmark" >
     <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
       <path class="mdc-chip__checkmark-path" fill="none" stroke="black"
@@ -142,7 +142,7 @@ CSS Class | Description
 `mdc-chip__text` | Mandatory. Indicates the text content of the chip.
 `mdc-chip__icon` | Optional. Indicates an icon in the chip.
 `mdc-chip__icon--leading` | Optional. Indicates a leading icon in the chip.
-`mdc-chip__icon--hidden-leading` | Optional. Hides the leading icon in a filter chip when the chip is selected.
+`mdc-chip__icon--leading-hidden` | Optional. Hides the leading icon in a filter chip when the chip is selected.
 `mdc-chip__icon--trailing` | Optional. Indicates a trailing icon in the chip.
 `mdc-chip__checkmark` | Optional. Indicates the checkmark in a filter chip.
 `mdc-chip__checkmark-svg` | Mandatory with the use of `mdc-chip__checkmark`. Indicates the checkmark SVG element in a filter chip.

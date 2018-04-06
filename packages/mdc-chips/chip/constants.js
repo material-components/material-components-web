@@ -27,7 +27,7 @@ const strings = {
 /** @enum {string} */
 const cssClasses = {
   CHECKMARK: 'mdc-chip__checkmark',
-  HIDDEN_LEADING_ICON: 'mdc-chip__icon--hidden-leading',
+  HIDDEN_LEADING_ICON: 'mdc-chip__icon--leading-hidden',
   LEADING_ICON: 'mdc-chip__icon--leading',
   SELECTED: 'mdc-chip--selected',
 };
