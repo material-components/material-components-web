@@ -91,12 +91,16 @@ class MDCChipFoundation extends MDCFoundation {
     });
   }
 
-  /** @return {boolean} */
+  /**
+   * @return {boolean}
+   */
   isSelected() {
     return this.adapter_.hasClass(cssClasses.SELECTED);
   }
 
-  /** @param {boolean} */
+  /**
+   * @param {boolean} selected
+   */
   setSelected(selected) {
     if (selected) {
       this.adapter_.addClass(cssClasses.SELECTED);

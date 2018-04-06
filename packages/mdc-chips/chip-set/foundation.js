@@ -76,7 +76,7 @@ class MDCChipSetFoundation extends MDCFoundation {
 
   /**
    * Selects the given chip. Deselects all other chips if the chip set is of the choice variant.
-   * @param {!MDCChipFoundation}
+   * @param {!MDCChipFoundation} chipFoundation
    */
   select(chipFoundation) {
     if (this.adapter_.hasClass(cssClasses.CHOICE)) {
@@ -85,10 +85,10 @@ class MDCChipSetFoundation extends MDCFoundation {
     chipFoundation.setSelected(true);
     this.selectedChips_.push(chipFoundation);
   }
-  
+
   /**
    * Deselects the given chip.
-   * @param {!MDCChipFoundation}
+   * @param {!MDCChipFoundation} chipFoundation
    */
   deselect(chipFoundation) {
     const index = this.selectedChips_.indexOf(chipFoundation);

@@ -69,7 +69,7 @@ test('#destroy cleans up child chip components', () => {
 class FakeSelectedChip {
   constructor() {
     this.foundation = td.object({
-      setSelected: () => {}
+      setSelected: () => {},
     });
     this.destroy = td.func('.destroy');
     this.isSelected = () => true;
