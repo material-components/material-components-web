@@ -92,11 +92,14 @@ const SL_LAUNCHERS = {
   // },
 };
 
+// Added Chrome --no-sandbox option because
+// https://github.com/travis-ci/docs-travis-ci-com/blob/
+// c1da4af0b7ee5de35fa4490fa8e0fc4b44881089/user/chrome.md#sandboxing
 const ALL_LAUNCHERS = Object.assign({
   ChromeHeadlessNoSandbox: {
     base: 'ChromeHeadless',
-    flags: ['--no-sandbox']
-  }
+    flags: ['--no-sandbox'],
+  },
 }, SL_LAUNCHERS);
 
 module.exports = function(config) {
