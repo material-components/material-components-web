@@ -90,12 +90,37 @@ Filter chips are a variant of chips which allow multiple selection from a set of
 </div>
 ```
 
-> _NOTE_: To use a leading icon in a filter chip, put the `mdc-chip__icon--leading` element _before_ the `mdc-chip__checkmark` element:
+To use a leading icon in a filter chip, put the `mdc-chip__icon--leading` element _before_ the `mdc-chip__checkmark` element:
 
 ```html
 <div class="mdc-chip">
   <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">face</i>
   <div class="mdc-chip__checkmark" >
+    <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
+      <path class="mdc-chip__checkmark-path" fill="none" stroke="black"
+            d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+    </svg>
+  </div>
+  <div class="mdc-chip__text">Filterable content</div>
+</div>
+```
+
+#### Pre-selected
+
+To display a pre-selected chip, add the class `mdc-chip--selected` to the root chip element.
+
+```html
+<div class="mdc-chip mdc-chip--selected">
+  <div class="mdc-chip__text">Add to calendar</div>
+</div>
+```
+
+To pre-select filter chips that have a leading icon, also add the class `mdc-chip__icon--leading-hidden` to the `mdc-chip__icon--leading` element. This will ensure that the checkmark displaces the leading icon.
+
+```html
+<div class="mdc-chip mdc-chip--selected">
+  <i class="material-icons mdc-chip__icon mdc-chip__icon--leading mdc-chip__icon--leading-hidden">face</i>
+  <div class="mdc-chip__checkmark">
     <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
       <path class="mdc-chip__checkmark-path" fill="none" stroke="black"
             d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
@@ -113,9 +138,11 @@ CSS Class | Description
 `mdc-chip-set--choice` | Optional. Indicates that the chips in the set are choice chips, which allow a single selection from a set of options.
 `mdc-chip-set--filter` | Optional. Indicates that the chips in the set are filter chips, which allow multiple selection from a set of options.
 `mdc-chip` | Mandatory.
+`mdc-chip--selected` | Optional. Indicates that the chip is selected.
 `mdc-chip__text` | Mandatory. Indicates the text content of the chip.
 `mdc-chip__icon` | Optional. Indicates an icon in the chip.
 `mdc-chip__icon--leading` | Optional. Indicates a leading icon in the chip.
+`mdc-chip__icon--leading-hidden` | Optional. Hides the leading icon in a filter chip when the chip is selected.
 `mdc-chip__icon--trailing` | Optional. Indicates a trailing icon in the chip.
 `mdc-chip__checkmark` | Optional. Indicates the checkmark in a filter chip.
 `mdc-chip__checkmark-svg` | Mandatory with the use of `mdc-chip__checkmark`. Indicates the checkmark SVG element in a filter chip.
@@ -155,7 +182,7 @@ To use the `MDCChip` and `MDCChipSet` classes, [import](../../docs/importing-js.
 Method Signature | Description
 --- | ---
 `get foundation() => MDCChipFoundation` | Returns the foundation
-`toggleSelected() => void` | Proxies to the foundation's `toggleSelected` method
+`isSelected() => boolean` | Proxies to the foundation's `isSelected` method
 
 Property | Value Type | Description
 --- | --- | ---
@@ -202,7 +229,12 @@ Method Signature | Description
 
 Method Signature | Description
 --- | ---
-`toggleSelected() => void` | Toggles the selected class on the chip element
+`isSelected() => boolean` | Returns true if the chip is selected
+`setSelected(selected: boolean) => void` | Sets the chip's selected state
 
 #### `MDCChipSetFoundation`
-None yet, coming soon.
+
+Method Signature | Description
+--- | ---
+`select(chipFoundation: MDCChipFoundation) => void` | Selects the given chip
+`deselect(chipFoundation: MDCChipFoundation) => void` | Deselects the given chip

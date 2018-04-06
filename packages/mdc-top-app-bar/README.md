@@ -1,4 +1,20 @@
+<!--docs:
+title: "Top App Bar"
+layout: detail
+section: components
+excerpt: "A container for items such as application title, navigation icon, and action items."
+iconId: toolbar
+path: /catalog/top-app-bar/
+-->
+
 # Top App Bar
+
+<!--<div class="article__asset">
+  <a class="article__asset-link"
+     href="https://material-components-web.appspot.com/top-app-bar.html">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/top-app-bar.png" width="494" alt="Top App Bar screenshot">
+  </a>
+</div>-->
 
 MDC Top App Bar acts as a container for items such as application title, navigation icon, and action items. Top app bars scroll with content by default.
 
