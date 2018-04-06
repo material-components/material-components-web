@@ -39,7 +39,7 @@ $mdc-typography-styles: mdc-set-typography-styles_(
   (
     headline1: (
       font-size: 6rem, /* 96sp */
-      line-height: 6rem, /* 96sp */
+      line-height: 6rem,
       font-weight: map-get($mdc-typography-font-weight-values, light),
       letter-spacing: -1.5 / (6 * 16) * 1em,
       text-decoration: inherit,
@@ -47,7 +47,7 @@ $mdc-typography-styles: mdc-set-typography-styles_(
     ),
     headline2: (
       font-size: 3.75rem, /* 60sp */
-      line-height: 3.75rem, /* 60sp */
+      line-height: 3.75rem,
       font-weight: map-get($mdc-typography-font-weight-values, light),
       letter-spacing: -.5 / (3.75 * 16) * 1em,
       text-decoration: inherit,
