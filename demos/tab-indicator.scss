@@ -11,7 +11,8 @@
 .demo {
   @include mdc-elevation(1);
 
-  display: inline-flex;
+  display: flex;
+  width: 400px;
   height: 50px;
   margin: 2rem 0;
 }
@@ -19,23 +20,18 @@
 .demo-item {
   @include mdc-tab-indicator-surface;
 
-  position: relative;
-  flex: 1 0 auto;
-  width: 150px;
-  max-width: 150px;
+  flex: 2 0 auto;
   height: inherit;
   background-color: $material-color-grey-50;
   cursor: pointer;
 }
 
 .demo-item--narrow {
-  width: 100px;
-  max-width: 100px;
+  flex: 1 0 auto;
 }
 
 .demo-item--wide {
-  width: 250px;
-  max-width: 250px;
+  flex: 3 0 auto;
 }
 
 .demo-item:hover {
@@ -44,16 +40,6 @@
 
 .demo > .demo-item:nth-child(n + 2) {
   border-left: 1px solid $material-color-grey-300;
-}
-
-.demo-item--wide {
-  width: 250px;
-  max-width: 250px;
-}
-
-.demo-item--narrow {
-  width: 100px;
-  max-width: 100px;
 }
 
 .demo-label {
