@@ -11,14 +11,14 @@
 .demo {
   @include mdc-elevation(1);
 
-  display: flex;
-  align-items: center;
-  width: 502px;
+  display: inline-flex;
   height: 50px;
   margin: 2rem 0;
 }
 
 .demo-item {
+  @include mdc-tab-indicator-surface;
+
   position: relative;
   flex: 1 0 auto;
   width: 150px;
@@ -89,6 +89,11 @@
 }
 
 .custom-sliding-icon {
-  @include mdc-tab-indicator-icon-height(24px);
+  @include mdc-tab-indicator-icon-height(30px);
   @include mdc-tab-indicator-icon-color($material-color-pink-a400);
+}
+
+.custom-icon {
+  height: inherit;
+  fill: currentColor;
 }
