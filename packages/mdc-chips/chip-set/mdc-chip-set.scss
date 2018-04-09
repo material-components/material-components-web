@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 
+@import "@material/animation/variables";
 @import "../mixins";
 
 .mdc-chip-set {
@@ -22,4 +23,20 @@
   display: flex;
   flex-wrap: wrap;
   box-sizing: border-box;
+}
+
+.mdc-chip-set--entry .mdc-chip {
+  @keyframes mdc-chip-entry {
+    from {
+      transform: scale(0.8);
+      opacity: 0.4;
+    }
+
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  animation: mdc-chip-entry 100ms $mdc-animation-deceleration-curve-timing-function;
 }

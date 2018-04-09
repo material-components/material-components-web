@@ -68,6 +68,8 @@ class MDCChipFoundation extends MDCFoundation {
     /** @private {function(!Event): undefined} */
     this.transitionEndHandler_ = (evt) => this.handleTransitionEnd_(evt);
     /** @private {function(!Event): undefined} */
+    this.animationEndHandler_ = (evt) => this.handleAnimationEnd_(evt);
+    /** @private {function(!Event): undefined} */
     this.trailingIconInteractionHandler_ = (evt) => this.handleTrailingIconInteraction_(evt);
   }
 
@@ -76,6 +78,7 @@ class MDCChipFoundation extends MDCFoundation {
       this.adapter_.registerEventHandler(evtType, this.interactionHandler_);
     });
     this.adapter_.registerEventHandler('transitionend', this.transitionEndHandler_);
+    this.adapter_.registerEventHandler('animationend', this.animationEndHandler_);
     ['click', 'keydown', 'touchstart', 'pointerdown', 'mousedown'].forEach((evtType) => {
       this.adapter_.registerTrailingIconInteractionHandler(evtType, this.trailingIconInteractionHandler_);
     });
@@ -86,6 +89,7 @@ class MDCChipFoundation extends MDCFoundation {
       this.adapter_.deregisterEventHandler(evtType, this.interactionHandler_);
     });
     this.adapter_.deregisterEventHandler('transitionend', this.transitionEndHandler_);
+    this.adapter_.deregisterEventHandler('animationend', this.animationEndHandler_);
     ['click', 'keydown', 'touchstart', 'pointerdown', 'mousedown'].forEach((evtType) => {
       this.adapter_.deregisterTrailingIconInteractionHandler(evtType, this.trailingIconInteractionHandler_);
     });
@@ -135,6 +139,17 @@ class MDCChipFoundation extends MDCFoundation {
     } else if (this.adapter_.eventTargetHasClass(/** @type {!EventTarget} */ (evt.target), cssClasses.CHECKMARK) &&
                !this.adapter_.hasClass(cssClasses.SELECTED)) {
       this.adapter_.removeClassFromLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
+    }
+  }
+
+  /**
+   * Handles an animation end event on the root element.
+   * @param {!Event} evt
+   */
+  handleAnimationEnd_(evt) {
+    if (evt.animationName === 'mdc-chip-entry') {
+      // The chip's ripple size must be recalculated because of the entry animation.
+      this.adapter_.layout();
     }
   }
 
