@@ -14,20 +14,20 @@
 // limitations under the License.
 //
 
-.mdc-shape-angled-corner-container {
+.mdc-shape-container {
   display: inline-block;
   position: relative;
   overflow: hidden; // Prevent overflowed borders from encroaching on surrounding elements
 }
 
-.mdc-shape-angled-corner-container__corner {
+.mdc-shape-container__corner {
   position: absolute;
   // IE and Edge require z-index set to 1 to properly mask ripple.
   z-index: 1;
 }
 
-.mdc-shape-angled-corner-container__corner::before,
-.mdc-shape-angled-corner-container__corner::after {
+.mdc-shape-container__corner::before,
+.mdc-shape-container__corner::after {
   position: absolute;
   box-sizing: border-box;
   width: 100%;
@@ -35,18 +35,18 @@
   content: "";
 }
 
-.mdc-shape-angled-corner-container__corner--top-left {
+.mdc-shape-container__corner--top-left {
   transform: rotate(-45deg);
 }
 
-.mdc-shape-angled-corner-container__corner--top-right {
+.mdc-shape-container__corner--top-right {
   transform: rotate(45deg);
 }
 
-.mdc-shape-angled-corner-container__corner--bottom-right {
+.mdc-shape-container__corner--bottom-right {
   transform: rotate(135deg);
 }
 
-.mdc-shape-angled-corner-container__corner--bottom-left {
+.mdc-shape-container__corner--bottom-left {
   transform: rotate(-135deg);
 }

@@ -44,12 +44,12 @@ The following example demonstrates angled corners applied to a MDC Button, but t
 unelevated component.
 
 ```html
-<div class="mdc-shape-angled-corner-container my-shape-container">
+<div class="mdc-shape-container my-shape-container">
   <button class="mdc-button mdc-button--unelevated">Button</button>
-  <div class="mdc-shape-angled-corner-container__corner mdc-shape-angled-corner-container__corner--top-left"></div>
-  <div class="mdc-shape-angled-corner-container__corner mdc-shape-angled-corner-container__corner--top-right"></div>
-  <div class="mdc-shape-angled-corner-container__corner mdc-shape-angled-corner-container__corner--bottom-right"></div>
-  <div class="mdc-shape-angled-corner-container__corner mdc-shape-angled-corner-container__corner--bottom-left"></div>
+  <div class="mdc-shape-container__corner mdc-shape-container__corner--top-left"></div>
+  <div class="mdc-shape-container__corner mdc-shape-container__corner--top-right"></div>
+  <div class="mdc-shape-container__corner mdc-shape-container__corner--bottom-right"></div>
+  <div class="mdc-shape-container__corner mdc-shape-container__corner--bottom-left"></div>
 </div>
 ```
 
@@ -87,12 +87,12 @@ Stroked angled corners involve the same markup and styles as above, with the add
 
 CSS Class | Description
 --- | ---
-`mdc-shape-angled-corner-container` | Mandatory. Parent element containing the component to be masked.
-`mdc-shape-angled-corner-container__corner` | Mandatory. Element for masking a specific corner; there may be up to 4.
-`mdc-shape-angled-corner-container__corner--bottom-left` | Element for masking the bottom left corner of the component.
-`mdc-shape-angled-corner-container__corner--bottom-right` | Element for masking the bottom right corner of the component.
-`mdc-shape-angled-corner-container__corner--top-left` | Element for masking the top left corner of the component.
-`mdc-shape-angled-corner-container__corner--top-right` | Element for masking the top right corner of the component.
+`mdc-shape-container` | Mandatory. Parent element containing the component to be masked.
+`mdc-shape-container__corner` | Mandatory. Element for masking a specific corner; there may be up to 4.
+`mdc-shape-container__corner--bottom-left` | Element for masking the bottom left corner of the component.
+`mdc-shape-container__corner--bottom-right` | Element for masking the bottom right corner of the component.
+`mdc-shape-container__corner--top-left` | Element for masking the top left corner of the component.
+`mdc-shape-container__corner--top-right` | Element for masking the top right corner of the component.
 
 ### Sass Mixins
 
