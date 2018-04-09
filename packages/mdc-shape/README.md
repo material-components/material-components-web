@@ -102,4 +102,6 @@ Mixin | Description
 `mdc-shape-angled-corner-background($background-color)` | Sets the background color used to mask angled corners. Useful for styling a subset of components in a section with a different background color.
 `mdc-shape-angled-corner-stroke($stroke-width, $stroke-color[, $stroke-style])` | Applies stroke styles to angled corners. `$stroke-style` defaults to `solid`.
 
-> **Note:** These mixins should be applied in the context of the container element (or an ancestor).
+> **Note:** When mentioned above, "background color" specifically refers to the color of the background behind the surface (_not_ the fill color of the surface). These mixins operate by masking the corners of the surface to match the background.
+
+> **Note:** These mixins should be included in the context of the container element (or an ancestor) in order to apply styles to the corner elements.
