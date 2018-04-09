@@ -19,11 +19,6 @@
 @import "./mixins";
 
 .mdc-tab-indicator {
-  @include mdc-tab-indicator-underline-color(primary);
-  @include mdc-tab-indicator-underline-height(2px);
-  @include mdc-tab-indicator-icon-color(secondary);
-  @include mdc-tab-indicator-icon-height(34px);
-
   position: relative;
   transform-origin: left;
   opacity: 0;
@@ -32,11 +27,17 @@
 }
 
 .mdc-tab-indicator--underline {
+  @include mdc-tab-indicator-underline-color(primary);
+  @include mdc-tab-indicator-underline-height(2px);
+
   align-self: flex-end;
   width: 100%;
 }
 
 .mdc-tab-indicator--icon {
+  @include mdc-tab-indicator-icon-color(secondary);
+  @include mdc-tab-indicator-icon-height(34px);
+
   align-self: center;
   margin: 0 auto;
 }
