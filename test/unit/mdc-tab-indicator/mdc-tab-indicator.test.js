@@ -107,7 +107,7 @@ function setupMockFadingFoundationTest(root = getFadingFixture()) {
   return {root, component, mockFoundation};
 }
 
-test('#activate bar indicator calls activate with passed args', () => {
+test('#activate sliding indicator calls activate with passed args', () => {
   const {component, mockFoundation} = setupMockSlidingFoundationTest();
   component.activate({width: 100, left: 0});
   td.verify(mockFoundation.activate({width: 100, left: 0}), {times: 1});
@@ -119,7 +119,7 @@ test('#activate icon indicator calls activate with passed args', () => {
   td.verify(mockFoundation.activate({width: 1, left: 2}), {times: 1});
 });
 
-test('#deactivate bar indicator calls deactivate', () => {
+test('#deactivate sliding indicator calls deactivate', () => {
   const {component, mockFoundation} = setupMockSlidingFoundationTest();
   component.deactivate();
   td.verify(mockFoundation.deactivate(), {times: 1});
