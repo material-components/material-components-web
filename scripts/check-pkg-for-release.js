@@ -51,8 +51,12 @@ function main() {
   checkPublicConfigForNewComponent();
   if (pkg.name !== MASTER_PKG.name) {
     checkNameIsPresentInAllowedScope();
-    checkDependencyAddedInWebpackConfig();
-    checkDependencyAddedInMDCPackage();
+    if (pkg.private) {
+      console.log('Skipping private component', pkg.name);
+    } else {
+      checkDependencyAddedInWebpackConfig();
+      checkDependencyAddedInMDCPackage();
+    }
   }
 }
 
@@ -112,10 +116,6 @@ function checkCSSDependencyAddedInWebpackConfig() {
 }
 
 function checkDependencyAddedInMDCPackage() {
-  if (pkg.private) {
-    console.log('Skipping private component', pkg.name);
-    return;
-  }
   // Package is added to package.json
   checkPkgDependencyAddedInMDCPackage();
 

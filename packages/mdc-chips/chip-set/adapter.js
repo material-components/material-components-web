@@ -48,6 +48,21 @@ class MDCChipSetAdapter {
    * @param {function(!Event): undefined} handler
    */
   deregisterInteractionHandler(evtType, handler) {}
+
+  /**
+   * Returns a chip element with the given text, leading icon, and trailing icon.
+   * @param {string} text
+   * @param {?Element} leadingIcon
+   * @param {?Element} trailingIcon
+   * @return {!Element}
+   */
+  createChipElement(text, leadingIcon, trailingIcon) {}
+
+  /**
+   * Appends the given element as a child of the root element.
+   * @param {?Element} el
+   */
+  appendChild(el) {}
 }
 
 export default MDCChipSetAdapter;

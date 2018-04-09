@@ -16,6 +16,7 @@
 
 @import "./common";
 @import "../packages/mdc-chips/mdc-chips";
+@import "../packages/mdc-button/mdc-button";
 
 .custom-chip-primary {
   @include mdc-chip-fill-color-accessible($mdc-theme-primary);

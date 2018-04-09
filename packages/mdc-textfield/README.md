@@ -223,15 +223,11 @@ Property | Value Type | Description
 `valid` | Boolean | Proxies to the foundation's `isValid`/`setValid` methods.
 `required` | Boolean | Proxies to the foundation's `isRequired`/`setRequired` methods.
 `helperTextContent` | String | Proxies to the foundation's `setHelperTextContent` method when set
-`ripple` | `MDCRipple` | The `MDCRipple` instance for the root element that `MDCTextField` initializes
+`ripple` | `MDCRipple` | The `MDCRipple` instance for the root element that `MDCTextField` initializes; this only applies to Text Field Box, and is `null` for other variants
 
 Method Signature | Description
 --- | ---
 `layout() => void` | Adjusts the dimensions and positions for all sub-elements
-
-##### `MDCTextField.ripple`
-
-`MDCRipple` instance. When given an `mdc-text-field--box` root element, this is set to the `MDCRipple` instance on the root element. When given an `mdc-text-field--outlined` root element, this is set to the `MDCRipple` instance on the `mdc-notched-outline` element. Otherwise, the field is set to `null`.
 
 ### `MDCTextFieldAdapter`
 
