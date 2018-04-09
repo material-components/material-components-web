@@ -45,7 +45,7 @@
 }
 
 .mdc-chip--selected {
-  @include mdc-theme-prop(background-color, white);
+  @include mdc-theme-prop(background-color, surface);
 }
 
 .mdc-chip__text {

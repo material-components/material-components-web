@@ -19,7 +19,9 @@
 @import "../packages/mdc-button/mdc-button";
 
 .custom-chip-primary {
-  @include mdc-chip-fill-color-accessible($mdc-theme-primary);
+  @include mdc-chip-fill-color($mdc-theme-primary);
+  @include mdc-chip-ink-color(white);
+  @include mdc-chip-selected-ink-color(white);
 }
 
 .custom-chip-secondary {
