@@ -153,8 +153,10 @@
   }
   // stylelint-enable plugin/selector-bem-pattern
 
-  border-bottom-width: 1px;
-  border-bottom-style: dotted;
+  .mdc-select__native-control {
+    border-bottom-style: dotted;
+  }
+
   opacity: .38;
   cursor: default;
   pointer-events: none;
