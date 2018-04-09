@@ -75,10 +75,11 @@ class MDCChip extends MDCComponent {
   }
 
   /**
-   * Toggles selected state of the chip.
+   * Returns true if the chip is selected.
+   * @return {boolean}
    */
-  toggleSelected() {
-    this.foundation_.toggleSelected();
+  isSelected() {
+    return this.foundation_.isSelected();
   }
 
   /**
