@@ -16,7 +16,7 @@ path: /catalog/top-app-bar/
   </a>
 </div>-->
 
-MDC Top App Bar acts as a container for items such as application title, navigation icon, and action items. Top app bars scroll with content by default.
+MDC Top App Bar acts as a container for items such as application title, navigation icon, and action items.
 
 ## Design & API Documentation
 

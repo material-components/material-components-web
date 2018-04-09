@@ -38,6 +38,14 @@
   @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
 }
 
+@mixin mdc-fab-icon-size($width, $height: $width) {
+  .mdc-fab__icon {
+    width: $width;
+    height: $height;
+    font-size: $height;
+  }
+}
+
 @mixin mdc-fab-ink-color($color) {
   @include mdc-theme-prop(color, $color);
 }
@@ -114,11 +122,9 @@ $mdc-fab-icon-enter-duration_: 180ms;
 }
 
 @mixin mdc-fab__icon_ {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
+  margin: auto;
   transition: mdc-animation-enter(transform, $mdc-fab-icon-enter-duration_, $mdc-fab-icon-enter-delay_);
+  fill: currentColor;
   will-change: transform;
 }
 
