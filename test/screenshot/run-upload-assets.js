@@ -18,17 +18,19 @@
 
 const assetUploader = require('./asset-uploader');
 
-assetUploader.upload()
-  .then((files) => {
-    const htmlFileUrls =
-      files
-        .filter((file) => file.relativePath.endsWith('.html'))
-        .map((file) => file.fullUrl)
-        .sort();
-    console.log('\n\nDONE!\n\n');
-    console.log(htmlFileUrls.join('\n'));
-  })
-  .catch((err) => {
-    console.error('\n\nERROR!\n\n');
-    console.error(err);
-  });
+assetUploader.upload().then(handleUploadSuccess, handleUploadFailure);
+
+function handleUploadSuccess(files) {
+  const htmlFileUrls =
+    files
+      .filter((file) => file.relativePath.endsWith('.html'))
+      .map((file) => file.fullUrl)
+      .sort();
+  console.log('\n\nDONE!\n\n');
+  console.log(htmlFileUrls.join('\n'));
+}
+
+function handleUploadFailure(err) {
+  console.error('\n\nERROR!\n\n');
+  console.error(err);
+}

@@ -51,6 +51,9 @@ fieldset {
   text-decoration: none;
 }
 
+// Use full-opacity equivalent of rgba(0, 0, 0, .05) and expose for demos to reference
+$hero-background-color: #f2f2f2;
+
 .hero {
   display: flex;
   flex-flow: row nowrap;
@@ -58,7 +61,7 @@ fieldset {
   justify-content: center;
   height: 360px;
   min-height: 360px;
-  background-color: rgba(0, 0, 0, .05);
+  background-color: $hero-background-color;
 }
 
 // Default padding on all examples.
