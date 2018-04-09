@@ -44,6 +44,7 @@ test('attachTo returns an MDCChipSet instance', () => {
 class FakeChip {
   constructor() {
     this.destroy = td.func('.destroy');
+    this.isSelected = td.func('.isSelected');
   }
 }
 
@@ -63,6 +64,24 @@ test('#destroy cleans up child chip components', () => {
   td.verify(component.chips[0].destroy());
   td.verify(component.chips[1].destroy());
   td.verify(component.chips[2].destroy());
+});
+
+class FakeSelectedChip {
+  constructor() {
+    this.foundation = td.object({
+      setSelected: () => {},
+    });
+    this.destroy = td.func('.destroy');
+    this.isSelected = () => true;
+  }
+}
+
+test('#initialSyncWithDOM sets selects chips with mdc-chip--selected class', () => {
+  const root = getFixture();
+  const component = new MDCChipSet(root, undefined, (el) => new FakeSelectedChip(el));
+  td.verify(component.foundation_.select(component.chips[0].foundation));
+  td.verify(component.foundation_.select(component.chips[1].foundation));
+  td.verify(component.foundation_.select(component.chips[2].foundation));
 });
 
 function setupTest() {
@@ -94,4 +113,19 @@ test('#adapter.deregisterInteractionHandler removes a handler from the root elem
   component.getDefaultFoundation().adapter_.deregisterInteractionHandler('click', handler);
   domEvents.emit(root, 'click');
   td.verify(handler(td.matchers.anything()), {times: 0});
+});
+
+test('#adapter.createChipElement returns a new chip element', () => {
+  const {component} = setupTest();
+  const chipEl = component.getDefaultFoundation().adapter_.createChipElement('hello world');
+  assert.isTrue(chipEl.classList.contains('mdc-chip'));
+  assert.isTrue(chipEl.childNodes[0].classList.contains('mdc-chip__text'));
+  assert.equal(chipEl.childNodes[0].textContent, 'hello world');
+});
+
+test('#adapter.appendChild adds a child to the chip set element', () => {
+  const {root, component} = setupTest();
+  const chipEl = bel`<div class="mdc-chip"><div class="mdc-chip__text">hello world</div></div>`;
+  component.getDefaultFoundation().adapter_.appendChild(chipEl);
+  assert.equal(root.childNodes[3], chipEl);
 });

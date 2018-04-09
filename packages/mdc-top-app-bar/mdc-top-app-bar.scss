@@ -27,7 +27,7 @@
   @include mdc-top-app-bar-icon-ink-color(text-primary-on-primary);
 
   display: flex;
-  position: relative;
+  position: fixed;
   flex-direction: column;
   justify-content: space-between;
   box-sizing: border-box;
@@ -159,6 +159,7 @@
   }
 }
 
+// stylelint-disable-next-line plugin/selector-bem-pattern
 .mdc-top-app-bar--fixed {
   position: fixed;
   transition: box-shadow 200ms linear;
@@ -188,6 +189,26 @@
   }
 }
 // stylelint-enable plugin/selector-bem-pattern
+
+.mdc-top-app-bar--fixed-adjust {
+  margin-top: $mdc-top-app-bar-row-height;
+}
+
+.mdc-top-app-bar--dense-fixed-adjust {
+  margin-top: $mdc-top-app-bar-dense-row-height;
+}
+
+.mdc-top-app-bar--short-fixed-adjust {
+  margin-top: $mdc-top-app-bar-mobile-row-height;
+}
+
+.mdc-top-app-bar--prominent-fixed-adjust {
+  margin-top: $mdc-top-app-bar-prominent-row-height;
+}
+
+.mdc-top-app-bar--dense-prominent-fixed-adjust {
+  margin-top: $mdc-top-app-bar-dense-row-height * 2;
+}
 
 // Mobile Styles
 @include mdc-top-app-bar-mobile-breakpoint_;

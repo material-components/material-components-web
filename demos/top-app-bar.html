@@ -80,7 +80,7 @@
     </aside>
 
     <main class="demo-main">
-      <div>
+      <div id="content-main" class="mdc-top-app-bar--fixed-adjust">
         <p class="demo-paragraph">
           Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
         </p>
@@ -208,6 +208,7 @@
         var rightItemEl = document.getElementById('right-item');
         var rightSection = document.getElementById('iconSection');
         var drawerEl = document.querySelector('.mdc-drawer');
+        var contentMainEl = document.getElementById('content-main');
 
         var drawer = new mdc.drawer.MDCTemporaryDrawer(drawerEl);
         var appBar = mdc.topAppBar.MDCTopAppBar.attachTo(appBarEl);
@@ -247,6 +248,14 @@
         // Top App Bar Specific Options
         denseCheckbox.addEventListener('change', function()  {
           appBarEl.classList[this.checked ? 'add' : 'remove']('mdc-top-app-bar--dense');
+          contentMainEl.classList[this.checked ? 'add' : 'remove']('mdc-top-app-bar--dense-fixed-adjust');
+          if (prominentCheckbox.checked) {
+            contentMainEl.classList[this.checked ? 'add' : 'remove']('mdc-top-app-bar--dense-prominent-fixed-adjust');
+          }
+
+
+          appBar.destroy();
+          appBar = mdc.topAppBar.MDCTopAppBar.attachTo(appBarEl);
 
           shortCheckbox.disabled = this.checked || prominentCheckbox.checked || fixedCheckbox.checked;
         });
@@ -264,6 +273,14 @@
 
         prominentCheckbox.addEventListener('change', function()  {
           appBarEl.classList[this.checked ? 'add' : 'remove']('mdc-top-app-bar--prominent');
+          contentMainEl.classList[this.checked ? 'add' : 'remove']('mdc-top-app-bar--prominent-fixed-adjust');
+
+          if (denseCheckbox.checked) {
+            contentMainEl.classList[this.checked ? 'add' : 'remove']('mdc-top-app-bar--dense-prominent-fixed-adjust');
+          }
+
+          appBar.destroy();
+          appBar = mdc.topAppBar.MDCTopAppBar.attachTo(appBarEl);
 
           shortCheckbox.disabled = this.checked || denseCheckbox.checked || fixedCheckbox.checked;
         });
@@ -272,6 +289,7 @@
         shortCheckbox.addEventListener('change', function() {
           appBarEl.classList[this.checked ? 'add' : 'remove']('mdc-top-app-bar--short');
           appBarEl.classList.remove('mdc-top-app-bar--short-has-action-item');
+          contentMainEl.classList[this.checked ? 'add' : 'remove']('mdc-top-app-bar--short-fixed-adjust');
 
           appBar.destroy();
           appBar = mdc.topAppBar.MDCTopAppBar.attachTo(appBarEl);
@@ -294,8 +312,6 @@
           appBar.destroy();
           appBar = mdc.topAppBar.MDCTopAppBar.attachTo(appBarEl);
         });
-
-
       });
   </script>
   </body>
