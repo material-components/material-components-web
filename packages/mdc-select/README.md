@@ -54,7 +54,7 @@ npm install @material/select
     </option>
   </select>
   <div class="mdc-floating-label">Pick a Food Group</div>
-  <div class="mdc-select__bottom-line"></div>
+  <div class="mdc-line-ripple"></div>
 </div>
 ```
 
@@ -90,7 +90,7 @@ of the way of the select's value and prevents a Flash Of Unstyled Content (**FOU
     </option>
   </select>
   <div class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</div>
-  <div class="mdc-select__bottom-line"></div>
+  <div class="mdc-line-ripple"></div>
 </div>
 ```
 
@@ -122,7 +122,7 @@ Add the `mdc-select--disabled` class to the `mdc-select` element and the `disabl
     </option>
   </select>
   <div class="mdc-floating-label">Pick a Food Group</div>
-  <div class="mdc-select__bottom-line"></div>
+  <div class="mdc-line-ripple"></div>
 </div>
 ```
 
@@ -144,7 +144,7 @@ Since MDC Select uses native `<select>` and `<option>` elements, simply add the 
     </option>
   </select>
   <div class="mdc-floating-label">Pick a Food Group</div>
-  <div class="mdc-select__bottom-line"></div>
+  <div class="mdc-line-ripple"></div>
 </div>
 ```
 

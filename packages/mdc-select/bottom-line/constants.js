@@ -15,5 +15,5 @@
  */
 
 export const cssClasses = {
-  BOTTOM_LINE_ACTIVE: 'mdc-select__bottom-line--active',
+  BOTTOM_LINE_ACTIVE: 'mdc-line-ripple--active',
 };

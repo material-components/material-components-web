@@ -89,4 +89,4 @@ Method Signature | Description
 
 Mixin | Description
 --- | ---
-`mdc-select-bottom-line-fill-color($color)` | Customizes the color of the background color.
+`mdc-line-ripple-color($color)` | Customizes the color of the background color.

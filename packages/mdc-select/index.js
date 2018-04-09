@@ -16,8 +16,8 @@
 
 import {MDCComponent} from '@material/base/index';
 import {MDCFloatingLabel} from '@material/floating-label/index';
+import {MDCLineRipple} from '@material/line-ripple/index';
 import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
-import {MDCSelectBottomLine} from './bottom-line/index';
 
 import MDCSelectFoundation from './foundation';
 import {cssClasses, strings} from './constants';
@@ -55,7 +55,7 @@ export class MDCSelect extends MDCComponent {
 
   initialize(
     labelFactory = (el) => new MDCFloatingLabel(el),
-    bottomLineFactory = (el) => new MDCSelectBottomLine(el)) {
+    lineRippleFactory = (el) => new MDCLineRipple(el)) {
     this.nativeControl_ = this.root_.querySelector(strings.NATIVE_CONTROL_SELECTOR);
     const labelElement = this.root_.querySelector(strings.LABEL_SELECTOR);
     if (labelElement) {
@@ -63,7 +63,7 @@ export class MDCSelect extends MDCComponent {
     }
     const bottomLineElement = this.root_.querySelector(strings.BOTTOM_LINE_SELECTOR);
     if (bottomLineElement) {
-      this.bottomLine_ = bottomLineFactory(bottomLineElement);
+      this.lineRipple_ = lineRippleFactory(bottomLineElement);
     }
 
     if (this.root_.classList.contains(cssClasses.BOX)) {
@@ -90,13 +90,13 @@ export class MDCSelect extends MDCComponent {
         }
       },
       activateBottomLine: () => {
-        if (this.bottomLine_) {
-          this.bottomLine_.activate();
+        if (this.lineRipple_) {
+          this.lineRipple_.activate();
         }
       },
       deactivateBottomLine: () => {
-        if (this.bottomLine_) {
-          this.bottomLine_.deactivate();
+        if (this.lineRipple_) {
+          this.lineRipple_.deactivate();
         }
       },
       setDisabled: (disabled) => this.nativeControl_.disabled = disabled,
