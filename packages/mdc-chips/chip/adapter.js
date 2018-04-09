@@ -106,6 +106,11 @@ class MDCChipAdapter {
    * interacted with (typically on click or keydown).
    */
   notifyTrailingIconInteraction() {}
+
+  /**
+   * Recomputes all dimensions and positions for the ripple element.
+   */
+  layout() {}
 }
 
 export default MDCChipAdapter;

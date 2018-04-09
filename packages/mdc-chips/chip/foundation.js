@@ -54,6 +54,7 @@ class MDCChipFoundation extends MDCFoundation {
       deregisterTrailingIconInteractionHandler: () => {},
       notifyInteraction: () => {},
       notifyTrailingIconInteraction: () => {},
+      layout: () => {},
     });
   }
 
