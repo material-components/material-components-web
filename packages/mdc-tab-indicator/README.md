@@ -44,9 +44,9 @@ npm install --save @material/tab-indicator
 <span class="mdc-tab-indicator"></span>
 ```
 
-#### Sliding Bar Indicator
+#### Sliding Underline Indicator
 ```html
-<span class="mdc-tab-indicator mdc-tab-indicator--bar"></span>
+<span class="mdc-tab-indicator mdc-tab-indicator--underline"></span>
 ```
 
 #### Fading Icon Indicator
@@ -69,8 +69,8 @@ CSS Class | Description
 `mdc-tab-indicator` | Mandatory. Sets up the tab indicator to slide between states
 `mdc-tab-indicator--active` | Optional. Visually activates the indicator
 `mdc-tab-indicator--fade` | Optional. Sets up the tab indicator fade in on activation and fade out on deactivation
-`mdc-tab-indicator--bar` | Optional. Denotes a bar in the tab indicator
-`mdc-tab-indicator--icon` | Optional. Denotes an icon in the tab indicator
+`mdc-tab-indicator--underline` | Optional. Denotes an underline tab indicator
+`mdc-tab-indicator--icon` | Optional. Denotes an icon tab indicator
 
 ### Sass Mixins
 
@@ -79,11 +79,11 @@ To customize the tab indicator, use the following mixins.
 Mixin | Description
 --- | ---
 `mdc-tab-indicator-surface` | Mandatory. Applied to the parent element of the `mdc-tab-indicator`.
-`mdc-tab-indicator-bar-color($color)` | Customizes the color of the bar subelement
+`mdc-tab-indicator-underline-color($color)` | Customizes the color of the underline
 `mdc-tab-indicator-icon-color($color)` | Customizes the color of the icon subelement
-`mdc-tab-indicator-bar-height($height)` | Customizes the height of the bar subelement
+`mdc-tab-indicator-underline-height($height)` | Customizes the height of the underline
 `mdc-tab-indicator-icon-height($height)` | Customizes the height of the icon subelement
-`mdc-tab-indicator-bar-top-radius($radius)` | Customizes the top left and top right border radius of the bar subelement
+`mdc-tab-indicator-underline-top-radius($radius)` | Customizes the top left and top right border radius of the underline subelement
 
 ### `MDCTabIndicator`
 

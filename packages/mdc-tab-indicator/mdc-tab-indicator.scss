@@ -19,8 +19,8 @@
 @import "./mixins";
 
 .mdc-tab-indicator {
-  @include mdc-tab-indicator-bar-color(primary);
-  @include mdc-tab-indicator-bar-height(2px);
+  @include mdc-tab-indicator-underline-color(primary);
+  @include mdc-tab-indicator-underline-height(2px);
   @include mdc-tab-indicator-icon-color(secondary);
   @include mdc-tab-indicator-icon-height(34px);
 
@@ -31,7 +31,7 @@
   z-index: 1;
 }
 
-.mdc-tab-indicator--bar {
+.mdc-tab-indicator--underline {
   align-self: flex-end;
   width: 100%;
 }

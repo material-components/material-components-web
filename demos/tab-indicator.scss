@@ -47,16 +47,16 @@
   z-index: 2;
 }
 
-.custom-color-bar {
-  @include mdc-tab-indicator-bar-color($material-color-orange-a400);
+.custom-color-underline {
+  @include mdc-tab-indicator-underline-color($material-color-orange-a400);
 }
 
 .custom-color-icon {
   @include mdc-tab-indicator-icon-color($material-color-orange-a400);
 }
 
-.custom-height-bar {
-  @include mdc-tab-indicator-bar-height(8px);
+.custom-height-underline {
+  @include mdc-tab-indicator-underline-height(8px);
 }
 
 .custom-height-icon {
@@ -64,14 +64,14 @@
 }
 
 .custom-border-radius {
-  @include mdc-tab-indicator-bar-height(5px);
-  @include mdc-tab-indicator-bar-top-corner-radius(5px);
+  @include mdc-tab-indicator-underline-height(5px);
+  @include mdc-tab-indicator-underline-top-corner-radius(5px);
 }
 
-.custom-fading-bar {
-  @include mdc-tab-indicator-bar-height(4px);
-  @include mdc-tab-indicator-bar-color($material-color-green-a400);
-  @include mdc-tab-indicator-bar-top-corner-radius(4px);
+.custom-fading-underline {
+  @include mdc-tab-indicator-underline-height(4px);
+  @include mdc-tab-indicator-underline-color($material-color-green-a400);
+  @include mdc-tab-indicator-underline-top-corner-radius(4px);
 }
 
 .custom-sliding-icon {

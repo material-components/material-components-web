@@ -25,15 +25,15 @@
   opacity: 1;
 }
 
-@mixin mdc-tab-indicator-bar-color($color) {
+@mixin mdc-tab-indicator-underline-color($color) {
   @include mdc-theme-prop(background-color, $color);
 }
 
-@mixin mdc-tab-indicator-bar-height($height) {
+@mixin mdc-tab-indicator-underline-height($height) {
   height: $height;
 }
 
-@mixin mdc-tab-indicator-bar-top-corner-radius($radius) {
+@mixin mdc-tab-indicator-underline-top-corner-radius($radius) {
   border-top-left-radius: $radius;
   border-top-right-radius: $radius;
 }
