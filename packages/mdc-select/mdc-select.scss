@@ -147,13 +147,15 @@
     @include mdc-floating-label-ink-color(text-disabled-on-light);
   }
 
+  // stylelint-disable plugin/selector-bem-pattern
+  .mdc-line-ripple {
+    display: none;
+  }
+  // stylelint-enable plugin/selector-bem-pattern
+
   border-bottom-width: 1px;
   border-bottom-style: dotted;
   opacity: .38;
   cursor: default;
   pointer-events: none;
-
-  .mdc-line-ripple {
-    display: none;
-  }
 }
