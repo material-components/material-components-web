@@ -26,28 +26,20 @@
 }
 
 @mixin mdc-tab-indicator-bar-color($color) {
-  &.mdc-tab-indicator--bar {
-    @include mdc-theme-prop(background-color, $color);
-  }
+  @include mdc-theme-prop(background-color, $color);
 }
 
 @mixin mdc-tab-indicator-bar-height($height) {
-  &.mdc-tab-indicator--bar {
-    height: $height;
-  }
+  height: $height;
 }
 
 @mixin mdc-tab-indicator-bar-top-corner-radius($radius) {
-  &.mdc-tab-indicator--bar {
-    border-top-left-radius: $radius;
-    border-top-right-radius: $radius;
-  }
+  border-top-left-radius: $radius;
+  border-top-right-radius: $radius;
 }
 
 @mixin mdc-tab-indicator-icon-color($color) {
-  &.mdc-tab-indicator--icon {
-    @include mdc-theme-prop(color, $color);
-  }
+  @include mdc-theme-prop(color, $color);
 }
 
 @mixin mdc-tab-indicator-icon-height($height) {
