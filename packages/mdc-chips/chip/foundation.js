@@ -147,8 +147,8 @@ class MDCChipFoundation extends MDCFoundation {
    * @param {!Event} evt
    */
   handleAnimationEnd_(evt) {
-    if (evt.animationName === 'mdc-chip-entry') {
-      // The chip's ripple size must be recalculated because of the entry animation.
+    // The chip's ripple size must be recalculated after the entry animation.
+    if (evt.animationName === strings.ENTRY_ANIMATION_NAME) {
       this.adapter_.layout();
     }
   }
