@@ -98,7 +98,7 @@
 }
 
 .mdc-list-item__secondary-text {
-  @include mdc-typography(body1);
+  @include mdc-typography(body2);
 }
 
 // Match the font size to the primary text when dense
