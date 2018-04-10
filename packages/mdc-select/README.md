@@ -53,7 +53,7 @@ npm install @material/select
       Fruit
     </option>
   </select>
-  <div class="mdc-floating-label">Pick a Food Group</div>
+  <label class="mdc-floating-label">Pick a Food Group</label>
   <div class="mdc-line-ripple"></div>
 </div>
 ```
@@ -89,7 +89,7 @@ of the way of the select's value and prevents a Flash Of Unstyled Content (**FOU
       Milk, Yogurt, and Cheese
     </option>
   </select>
-  <div class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</div>
+  <label class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</label>
   <div class="mdc-line-ripple"></div>
 </div>
 ```
@@ -121,7 +121,7 @@ Add the `mdc-select--disabled` class to the `mdc-select` element and the `disabl
       Fruit
     </option>
   </select>
-  <div class="mdc-floating-label">Pick a Food Group</div>
+  <label class="mdc-floating-label">Pick a Food Group</label>
   <div class="mdc-line-ripple"></div>
 </div>
 ```
@@ -143,7 +143,7 @@ Since MDC Select uses native `<select>` and `<option>` elements, simply add the 
       Fruit
     </option>
   </select>
-  <div class="mdc-floating-label">Pick a Food Group</div>
+  <label class="mdc-floating-label">Pick a Food Group</label>
   <div class="mdc-line-ripple"></div>
 </div>
 ```
