@@ -64,5 +64,5 @@
 }
 
 @function mdc-get-letter-spacing_($tracking, $font-size) {
-  @return $tracking/ ($font-size * 16) * 1em;
+  @return $tracking / ($font-size * 16) * 1em;
 }
