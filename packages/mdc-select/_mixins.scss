@@ -82,10 +82,6 @@
 }
 
 @mixin mdc-select-bottom-line-color_($color) {
-  .mdc-line-ripple {
-    @include mdc-line-ripple-color($color);
-  }
-
   .mdc-select__native-control {
     @include mdc-select-native-control-bottom-line-color_($color);
   }
@@ -97,10 +93,6 @@
 
 @mixin mdc-select-focused-line-ripple-color_($color) {
   @include mdc-select-focused-line-ripple_ {
-    @include mdc-line-ripple-color($color);
-  }
-
-  .mdc-line-ripple::after {
     @include mdc-line-ripple-color($color);
   }
 }

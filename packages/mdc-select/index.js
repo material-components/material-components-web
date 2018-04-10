@@ -61,9 +61,9 @@ export class MDCSelect extends MDCComponent {
     if (labelElement) {
       this.label_ = labelFactory(labelElement);
     }
-    const bottomLineElement = this.root_.querySelector(strings.BOTTOM_LINE_SELECTOR);
-    if (bottomLineElement) {
-      this.lineRipple_ = lineRippleFactory(bottomLineElement);
+    const lineRippleElement = this.root_.querySelector(strings.LINE_RIPPLE_SELECTOR);
+    if (lineRippleElement) {
+      this.lineRipple_ = lineRippleFactory(lineRippleElement);
     }
 
     if (this.root_.classList.contains(cssClasses.BOX)) {
