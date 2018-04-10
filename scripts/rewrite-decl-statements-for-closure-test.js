@@ -58,16 +58,14 @@
  * const {someDefaultExport} = goog.require('goog:mdc.thirdparty.thirdPartyLib')
  * ```
  *
- * This is so closure is able to properly build and check our files without
- * breaking when it encounters node modules. Note that while closure does have a
- * --module_resolution NODE flag
+ * This is so closure is able to properly build and check our files without breaking when it encounters
+ * node modules. Note that while closure does have a --module_resolution NODE flag
  * (https://github.com/google/closure-compiler/wiki/JS-Modules#node-resolution-mode),
  * it has inherent problems that prevents us from using it. See:
  * - https://github.com/google/closure-compiler/issues/2386
  *
- * Note that for third-party modules, they must be defined in
- * closure_externs.js. See that file for more info. Also note that this works on
- * `export .... from ...` as well.
+ * Note that for third-party modules, they must be defined in closure_externs.js. See that file for more info.
+ * Also note that this works on `export .... from ...` as well.
  */
 
 const assert = require('assert');
