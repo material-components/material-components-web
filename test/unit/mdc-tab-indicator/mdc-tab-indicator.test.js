@@ -24,14 +24,19 @@ import {
   MDCTabIndicator,
   MDCSlidingTabIndicatorFoundation,
   MDCFadingTabIndicatorFoundation,
+  MDCTabIndicatorFoundation,
 } from '../../../packages/mdc-tab-indicator';
 
 const getFixture = () => bel`
-  <span class="mdc-tab-indicator"></span>
+  <span class="mdc-tab-indicator">
+    <span class="mdc-tab-indicator__content"></span>
+  </span>
 `;
 
 const getFadingFixture = () => bel`
-  <span class="mdc-tab-indicator mdc-tab-indicator--fade"></span>
+  <span class="mdc-tab-indicator mdc-tab-indicator--fade">
+    <span class="mdc-tab-indicator__content"></span>
+  </span>
 `;
 
 suite('MDCTabIndicator');
@@ -47,7 +52,8 @@ test('attachTo an icon returns an MDCTabIndicator instance', () => {
 function setupTest() {
   const root = getFixture();
   const component = new MDCTabIndicator(root);
-  return {root, component};
+  const content = root.querySelector(MDCTabIndicatorFoundation.strings.CONTENT_SELECTOR);
+  return {root, component, content};
 }
 
 test('#adapter.addClass adds a class to the root element', () => {
@@ -80,17 +86,20 @@ test('#adapter.deregisterEventHandler remoes an event listener from the root ele
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test('#adapter.computeClientRect returns the root element client rect', () => {
-  const {component, root} = setupTest();
+test('#adapter.computeContentClientRect returns the root element client rect', () => {
+  const {component, root, content} = setupTest();
   document.body.appendChild(root);
-  assert.deepEqual(component.getDefaultFoundation().adapter_.computeClientRect(), root.getBoundingClientRect());
+  assert.deepEqual(
+    component.getDefaultFoundation().adapter_.computeContentClientRect(),
+    content.getBoundingClientRect()
+  );
   document.body.removeChild(root);
 });
 
-test('#adapter.setStyleProperty sets a style property on the root element', () => {
-  const {component, root} = setupTest();
-  component.getDefaultFoundation().adapter_.setStyleProperty('background-color', 'red');
-  assert.strictEqual(root.style.backgroundColor, 'red');
+test('#adapter.setContentStyleProperty sets a style property on the root element', () => {
+  const {component, content} = setupTest();
+  component.getDefaultFoundation().adapter_.setContentStyleProperty('background-color', 'red');
+  assert.strictEqual(content.style.backgroundColor, 'red');
 });
 
 function setupMockSlidingFoundationTest(root = getFixture()) {
@@ -131,8 +140,8 @@ test('#deactivate icon indicator calls deactivate', () => {
   td.verify(mockFoundation.deactivate(), {times: 1});
 });
 
-test('#computeClientRect calls computeClientRect', () => {
+test('#computeContentClientRect calls computeClientRect', () => {
   const {component, mockFoundation} = setupMockSlidingFoundationTest();
-  component.computeClientRect();
-  td.verify(mockFoundation.computeClientRect(), {times: 1});
+  component.computeContentClientRect();
+  td.verify(mockFoundation.computeContentClientRect(), {times: 1});
 });

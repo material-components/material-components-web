@@ -28,21 +28,21 @@ const setupTest = () => setupFoundationTest(MDCSlidingTabIndicatorFoundation);
 
 test(`#activate adds the ${MDCSlidingTabIndicatorFoundation.cssClasses.ACTIVE} class`, () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.computeClientRect()).thenReturn({width: 100, left: 10});
+  td.when(mockAdapter.computeContentClientRect()).thenReturn({width: 100, left: 10});
   foundation.activate({width: 90, left: 25});
   td.verify(mockAdapter.addClass(MDCSlidingTabIndicatorFoundation.cssClasses.ACTIVE));
 });
 
 test('#activate sets the transform property', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.computeClientRect()).thenReturn({width: 100, left: 10});
+  td.when(mockAdapter.computeContentClientRect()).thenReturn({width: 100, left: 10});
   foundation.activate({width: 90, left: 25});
-  td.verify(mockAdapter.setStyleProperty('transform', 'translateX(15px) scaleX(0.9)'));
+  td.verify(mockAdapter.setContentStyleProperty('transform', 'translateX(15px) scaleX(0.9)'));
 });
 
 test('#activate registers a transitionend handler', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.computeClientRect()).thenReturn({width: 100, left: 10});
+  td.when(mockAdapter.computeContentClientRect()).thenReturn({width: 100, left: 10});
   foundation.activate({width: 90, left: 25});
   td.verify(mockAdapter.registerEventHandler('transitionend', td.matchers.isA(Function)));
 });
@@ -50,7 +50,7 @@ test('#activate registers a transitionend handler', () => {
 test(`#activate adds the ${MDCSlidingTabIndicatorFoundation.cssClasses.SLIDING_ACTIVATE} class`, () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
-  td.when(mockAdapter.computeClientRect()).thenReturn({width: 100, left: 10});
+  td.when(mockAdapter.computeContentClientRect()).thenReturn({width: 100, left: 10});
   foundation.activate({width: 90, left: 25});
   raf.flush();
   raf.restore();
@@ -60,17 +60,17 @@ test(`#activate adds the ${MDCSlidingTabIndicatorFoundation.cssClasses.SLIDING_A
 test('#activate resets the transform property', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
-  td.when(mockAdapter.computeClientRect()).thenReturn({width: 100, left: 10});
+  td.when(mockAdapter.computeContentClientRect()).thenReturn({width: 100, left: 10});
   foundation.activate({width: 90, left: 25});
   raf.flush();
   raf.restore();
-  td.verify(mockAdapter.setStyleProperty('transform', ''));
+  td.verify(mockAdapter.setContentStyleProperty('transform', ''));
 });
 
 test('#activate does not modify transform if no client rect is passed', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.activate();
-  td.verify(mockAdapter.setStyleProperty('transform', td.matchers.isA(String)), {times: 0});
+  td.verify(mockAdapter.setContentStyleProperty('transform', td.matchers.isA(String)), {times: 0});
 });
 
 test(`#deactivate removes the ${MDCSlidingTabIndicatorFoundation.cssClasses.ACTIVE} class`, () => {
@@ -94,7 +94,7 @@ test('#deactivate deregisters the transitionend handler', () => {
 test('on transitionend, deregister the transitionend handler', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerEventHandler');
-  td.when(mockAdapter.computeClientRect()).thenReturn({width: 100, left: 10});
+  td.when(mockAdapter.computeContentClientRect()).thenReturn({width: 100, left: 10});
   foundation.activate({width: 90, left: 25});
   handlers.transitionend();
   td.verify(mockAdapter.deregisterEventHandler('transitionend', td.matchers.isA(Function)));
@@ -103,7 +103,7 @@ test('on transitionend, deregister the transitionend handler', () => {
 test(`on transitionend, remove the ${MDCSlidingTabIndicatorFoundation.cssClasses.SLIDING_ACTIVATE} class`, () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerEventHandler');
-  td.when(mockAdapter.computeClientRect()).thenReturn({width: 100, left: 10});
+  td.when(mockAdapter.computeContentClientRect()).thenReturn({width: 100, left: 10});
   foundation.activate({width: 90, left: 25});
   handlers.transitionend();
   td.verify(mockAdapter.removeClass(MDCSlidingTabIndicatorFoundation.cssClasses.SLIDING_ACTIVATE));

@@ -24,6 +24,12 @@ const cssClasses = {
   SLIDING_ACTIVATE: 'mdc-tab-indicator--sliding-activate',
 };
 
+/** @enum {string} */
+const strings = {
+  CONTENT_SELECTOR: '.mdc-tab-indicator__content',
+};
+
 export {
   cssClasses,
+  strings,
 };

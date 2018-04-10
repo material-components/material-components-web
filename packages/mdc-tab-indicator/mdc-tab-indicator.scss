@@ -19,43 +19,50 @@
 @import "./mixins";
 
 .mdc-tab-indicator {
-  position: relative;
-  transform-origin: left;
-  opacity: 0;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.mdc-tab-indicator--underline {
   @include mdc-tab-indicator-underline-color(primary);
   @include mdc-tab-indicator-underline-height(2px);
-
-  align-self: flex-end;
-  width: 100%;
-}
-
-.mdc-tab-indicator--icon {
   @include mdc-tab-indicator-icon-color(secondary);
   @include mdc-tab-indicator-icon-height(34px);
 
-  align-self: center;
-  margin: 0 auto;
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
 }
 
 .mdc-tab-indicator--active {
   @include mdc-tab-indicator-active_;
 }
 
-.mdc-tab-indicator--sliding-activate {
+.mdc-tab-indicator__content {
+  transform-origin: left;
+  opacity: 0;
+}
+
+.mdc-tab-indicator__content--underline {
+  align-self: flex-end;
+  width: 100%;
+}
+
+.mdc-tab-indicator__content--icon {
+  align-self: center;
+  margin: 0 auto;
+}
+
+.mdc-tab-indicator--sliding-activate > .mdc-tab-indicator__content {
   transition: 250ms transform $mdc-animation-standard-curve-timing-function;
 }
 
-.mdc-tab-indicator--fading-activate,
-.mdc-tab-indicator--fading-deactivate {
+.mdc-tab-indicator--fading-activate > .mdc-tab-indicator__content,
+.mdc-tab-indicator--fading-deactivate > .mdc-tab-indicator__content {
   transition: 150ms opacity linear;
 }
 
-.mdc-tab-indicator--fading-activate {
+.mdc-tab-indicator--fading-activate > .mdc-tab-indicator__content {
   transition-delay: 100ms;
 }
 

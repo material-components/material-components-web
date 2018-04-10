@@ -41,12 +41,16 @@ npm install --save @material/tab-indicator
 ### HTML Structure
 
 ```html
-<span class="mdc-tab-indicator"></span>
+<span class="mdc-tab-indicator">
+  <span class="mdc-tab-indicator__content"></span>
+</span>
 ```
 
 #### Sliding Underline Indicator
 ```html
-<span class="mdc-tab-indicator mdc-tab-indicator--underline"></span>
+<span class="mdc-tab-indicator">
+  <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+</span>
 ```
 
 #### Fading Icon Indicator
@@ -54,23 +58,28 @@ npm install --save @material/tab-indicator
 You can use [Material Icons](https://material.io/icons/) from Google Fonts within your Fading Icon Indicator, or you can use your own icons.
 
 ```html
-<span class="mdc-tab-indicator mdc-tab-indicator--fade mdc-tab-indicator--icon material-icons">star</span>
+<span class="mdc-tab-indicator mdc-tab-indicator--fade">
+  <span class="mdc-tab-indicator__content mdc-tab-indicator__content--icon material-icons">star</span>
+</span>
 ```
 
 #### Sliding Icon Indicator
 ```html
-<span class="mdc-tab-indicator mdc-tab-indicator--icon material-icons">star</span>
+<span class="mdc-tab-indicator">
+  <span class="mdc-tab-indicator__content mdc-tab-indicator__content--icon material-icons">star</span>
+</span>
 ```
 
 ### CSS Classes
 
 CSS Class | Description
 --- | ---
-`mdc-tab-indicator` | Mandatory. Sets up the tab indicator to slide between states
+`mdc-tab-indicator` | Mandatory. Contains the tab indicator content.
+`mdc-tab-indicator__content` | Mandatory. Denotes the tab indicator content.
 `mdc-tab-indicator--active` | Optional. Visually activates the indicator
-`mdc-tab-indicator--fade` | Optional. Sets up the tab indicator fade in on activation and fade out on deactivation
-`mdc-tab-indicator--underline` | Optional. Denotes an underline tab indicator
-`mdc-tab-indicator--icon` | Optional. Denotes an icon tab indicator
+`mdc-tab-indicator--fade` | Optional. Sets up the tab indicator to fade in on activation and fade out on deactivation
+`mdc-tab-indicator__content--underline` | Optional. Denotes an underline tab indicator
+`mdc-tab-indicator__content--icon` | Optional. Denotes an icon tab indicator
 
 ### Sass Mixins
 
@@ -89,9 +98,9 @@ Mixin | Description
 
 Method Signature | Description
 --- | ---
-`activate(previousTabClientRect: ClientRect) => void` | Activates the tab indicator
+`activate(previousIndicatorClientRect: ClientRect) => void` | Activates the tab indicator
 `deactivate() => void` | Deactivates the tab indicator
-`computeClientRect() => ClientRect` | Returns the root element bounding client rect
+`computeContentClientRect() => ClientRect` | Returns the content element bounding client rect
 
 ### `MDCTabIndicatorAdapter`
 
@@ -101,14 +110,14 @@ Method Signature | Description
 `removeClass(className: string) => void` | Removes a class from the root element
 `registerEventHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the root element
 `deregisterEventHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the root element
-`setStyleProp(property: string, value: string) => void` | Sets the style property of the root element
-`computeClientRect() => ClientRect` | Returns the root element's bounding client rect
+`setContentStyleProp(property: string, value: string) => void` | Sets the style property of the content element
+`computeContentClientRect() => ClientRect` | Returns the content element's bounding client rect
 
 ### `MDCTabIndicatorFoundation`
 
 Method Signature | Description
 --- | ---
 `handleTransitionEnd(evt: Event) => void` | Handles the logic for the `"transitionend"` event on the root element
-`activate(previousTabIndicatorRect: ClientRect) => void` | Activates the tab indicator
+`activate(previousIndicatorClientRect: ClientRect) => void` | Activates the tab indicator
 `deactivate() => void` | Deactivates the tab indicator
-`computeClientRect() => ClientRect` | Returns the root element's bounding client rect
+`computeContentClientRect() => ClientRect` | Returns the content element's bounding client rect
