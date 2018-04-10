@@ -121,15 +121,35 @@ class MDCChipFoundation extends MDCFoundation {
 
   /**
    * Handles a transition end event on the root element.
-   * This is a proxy for handling a transition end event on the leading icon or checkmark,
-   * since the transition end event bubbles.
    * @param {!Event} evt
    */
   handleTransitionEnd_(evt) {
-    if (evt.propertyName === 'width') {
-      this.adapter_.remove();
+    // Handle transition end events on the chip when the it is about to be removed.
+    if (this.adapter_.eventTargetHasClass(/** @type {!EventTarget} */ (evt.target), cssClasses.CHIP_EXIT)) {
+      if (evt.propertyName === 'width') {
+        this.adapter_.removeFromDOM();
+      } else if (evt.propertyName === 'opacity') {
+        var chipWidth = this.adapter_.getComputedStyleValue('width');
+        
+        // On the next frame (once we get the computed width), explicitly set the chip's width
+        // to its current pixel width, so we aren't transitioning out of 'auto'.
+        requestAnimationFrame(() => {
+          this.adapter_.setStyleProperty('width', chipWidth);
+
+          // To mitigate jitter, start transitioning padding before width.
+          this.adapter_.setStyleProperty('padding', 0);
+          
+          // On the next frame (once width is explicitly set), transition width to 0.
+          requestAnimationFrame(() => {
+            this.adapter_.setStyleProperty('width', 0);
+          });
+        });
+      }
       return;
     }
+    
+
+    // Handle a transition end event on the leading icon or checkmark, since the transition end event bubbles.
     if (evt.propertyName !== 'opacity') {
       return;
     }
@@ -139,27 +159,6 @@ class MDCChipFoundation extends MDCFoundation {
     } else if (this.adapter_.eventTargetHasClass(/** @type {!EventTarget} */ (evt.target), cssClasses.CHECKMARK) &&
                !this.adapter_.hasClass(cssClasses.SELECTED)) {
       this.adapter_.removeClassFromLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
-    }
-
-    else if (this.adapter_.eventTargetHasClass(/** @type {!EventTarget} */ (evt.target), 'mdc-chip--exit')) {
-      var element = this.adapter_.getRoot();
-      var chipWidth = this.adapter_.getWidth() -
-        parseInt(window.getComputedStyle(element).getPropertyValue('padding-left')) -
-        parseInt(window.getComputedStyle(element).getPropertyValue('padding-right'));
-      
-      // on the next frame (as soon as the previous style change has taken effect),
-      // explicitly set the element's height to its current pixel height, so we 
-      // aren't transitioning out of 'auto'
-      requestAnimationFrame(function() {
-        element.style.width = chipWidth + 'px';
-        element.style.padding = '0px';
-        
-        // on the next frame (as soon as the previous style change has taken effect),
-        // have the element transition to height: 0
-        requestAnimationFrame(function() {
-          element.style.width = '0px';
-        });
-      });
     }
   }
 

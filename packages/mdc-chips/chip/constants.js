@@ -28,6 +28,7 @@ const strings = {
 const cssClasses = {
   CHECKMARK: 'mdc-chip__checkmark',
   CHIP: 'mdc-chip',
+  CHIP_EXIT: 'mdc-chip--exit',
   HIDDEN_LEADING_ICON: 'mdc-chip__icon--leading-hidden',
   LEADING_ICON: 'mdc-chip__icon--leading',
   SELECTED: 'mdc-chip--selected',
