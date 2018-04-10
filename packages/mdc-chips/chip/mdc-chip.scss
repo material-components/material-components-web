@@ -37,11 +37,19 @@
   padding: $mdc-chip-vertical-padding $mdc-chip-horizontal-padding;
   outline: none;
   cursor: pointer;
-  overflow: hidden;
+  overflow: hidden; 
 
   &:hover {
     @include mdc-theme-prop(color, black);
   }
+}
+
+.mdc-chip--exit {
+  opacity: 0;
+  transition:
+    opacity 75ms $mdc-animation-standard-curve-timing-function,
+    width 150ms $mdc-animation-deceleration-curve-timing-function,
+    padding 100ms linear;
 }
 
 .mdc-chip--selected {

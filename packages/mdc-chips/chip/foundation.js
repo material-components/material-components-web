@@ -126,6 +126,10 @@ class MDCChipFoundation extends MDCFoundation {
    * @param {!Event} evt
    */
   handleTransitionEnd_(evt) {
+    if (evt.propertyName === 'width') {
+      this.adapter_.remove();
+      return;
+    }
     if (evt.propertyName !== 'opacity') {
       return;
     }
@@ -135,6 +139,27 @@ class MDCChipFoundation extends MDCFoundation {
     } else if (this.adapter_.eventTargetHasClass(/** @type {!EventTarget} */ (evt.target), cssClasses.CHECKMARK) &&
                !this.adapter_.hasClass(cssClasses.SELECTED)) {
       this.adapter_.removeClassFromLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
+    }
+
+    else if (this.adapter_.eventTargetHasClass(/** @type {!EventTarget} */ (evt.target), 'mdc-chip--exit')) {
+      var element = this.adapter_.getRoot();
+      var chipWidth = this.adapter_.getWidth() -
+        parseInt(window.getComputedStyle(element).getPropertyValue('padding-left')) -
+        parseInt(window.getComputedStyle(element).getPropertyValue('padding-right'));
+      
+      // on the next frame (as soon as the previous style change has taken effect),
+      // explicitly set the element's height to its current pixel height, so we 
+      // aren't transitioning out of 'auto'
+      requestAnimationFrame(function() {
+        element.style.width = chipWidth + 'px';
+        element.style.padding = '0px';
+        
+        // on the next frame (as soon as the previous style change has taken effect),
+        // have the element transition to height: 0
+        requestAnimationFrame(function() {
+          element.style.width = '0px';
+        });
+      });
     }
   }
 
@@ -147,6 +172,9 @@ class MDCChipFoundation extends MDCFoundation {
     evt.stopPropagation();
     if (evt.type === 'click' || evt.key === 'Enter' || evt.keyCode === 13) {
       this.adapter_.notifyTrailingIconInteraction();
+
+      //Close
+      this.adapter_.addClass('mdc-chip--exit');
     }
   }
 }

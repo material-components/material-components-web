@@ -125,6 +125,16 @@ class MDCChip extends MDCComponent {
       notifyInteraction: () => this.emit(strings.INTERACTION_EVENT, {chip: this}, true /* shouldBubble */),
       notifyTrailingIconInteraction: () => this.emit(
         strings.TRAILING_ICON_INTERACTION_EVENT, {chip: this}, true /* shouldBubble */),
+      remove: () => this.root_.remove(),
+      getWidth: () => this.root_.getBoundingClientRect().width,
+      setWidth: (width) => {
+        this.root_.style.setProperty('width', width);
+      },
+      getTransition: () => this.root_.style.transition,
+      setTransition: (transition) => {
+        this.root_.style.transition = transition;
+      },
+      getRoot: () => this.root_,
     })));
   }
 
