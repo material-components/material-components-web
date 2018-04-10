@@ -50,7 +50,7 @@ function getFixture() {
           Apple
         </option>
       </select>
-      <div class="mdc-floating-label">Pick a Food Group</div>
+      <label class="mdc-floating-label">Pick a Food Group</label>
       <div class="mdc-line-ripple"></div>
     </div>
   `;
@@ -67,7 +67,7 @@ function getBoxFixture() {
           Apple
         </option>
       </select>
-      <div class="mdc-floating-label">Pick a Food Group</div>
+      <label class="mdc-floating-label">Pick a Food Group</label>
       <div class="mdc-line-ripple"></div>
     </div>
   `;
@@ -131,7 +131,7 @@ test('#initialSyncWithDOM sets the selected index if an option has the selected 
           Apple
         </option>
       </select>
-      <div class="mdc-floating-label">Pick a Food Group</div>
+      <label class="mdc-floating-label">Pick a Food Group</label>
       <div class="mdc-line-ripple"></div>
     </div>
   `;
@@ -150,7 +150,7 @@ test('#initialSyncWithDOM disables the select if the disabled attr is found on t
           Apple
         </option>
       </select>
-      <div class="mdc-floating-label"></div>
+      <label class="mdc-floating-label"></label>
       <div class="mdc-line-ripple"></div>
     </div>
   `;
@@ -202,7 +202,7 @@ test('adapter.activateBottomLine and adapter.deactivateBottomLine ' +
           Apple
         </option>
       </select>
-      <div class="mdc-floating-label"></div>
+      <label class="mdc-floating-label"></label>
     </div>
   `;
   const component = new MDCSelect(fixture);
