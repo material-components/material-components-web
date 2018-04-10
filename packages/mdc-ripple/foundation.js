@@ -339,7 +339,7 @@ class MDCRippleFoundation extends MDCFoundation {
       // Reset array on next frame after the current event has had a chance to bubble to prevent ancestor ripples
       activatedTargets = [];
 
-      if (!activationState.wasElementMadeActive && e && e.type === 'keydown' && (e.key === ' ' || e.keyCode === 32)) {
+      if (!activationState.wasElementMadeActive && (e.key === ' ' || e.keyCode === 32)) {
         // If space was pressed, try again within an rAF call to detect :active, because different UAs report
         // active states inconsistently when they're called within event handling code:
         // - https://bugs.chromium.org/p/chromium/issues/detail?id=635971
