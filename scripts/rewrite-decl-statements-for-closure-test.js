@@ -115,7 +115,6 @@ function visit(srcFile, rootDir) {
 
   traverse(ast, {
     ExportDefaultDeclaration(path) {
-      const expression = t.assignmentExpression('=', t.identifier('exports'), path.node.declaration);
       const pathbasedPackageName = getPathbasedPackage(rootDir, srcFile);
       const packageNameParts = pathbasedPackageName.split('.');
       packageNameParts.pop();
@@ -178,8 +177,7 @@ function transform(srcFile, rootDir) {
         for (let i = 0; i < path.node.comments.length; i++) {
           const commentValue = path.node.comments[i].value;
           variableDeclaration.comments = variableDeclaration.comments || [];
-          variableDeclaration.comments.push(
-              {type: 'CommentBlock', value: commentValue});
+          variableDeclaration.comments.push({type: 'CommentBlock', value: commentValue});
         }
       }
       path.replaceWith(variableDeclaration);
@@ -199,7 +197,7 @@ function transform(srcFile, rootDir) {
   let packageStr = '';
   const pathbasedPackageName = getPathbasedPackage(rootDir, srcFile);
   if (pathbasedPackageName in defaultTypesMap) {
-    packageStr = defaultTypesMap[pathbasedPackageName]
+    packageStr = defaultTypesMap[pathbasedPackageName];
   } else {
     packageStr = pathbasedPackageName;
   }
@@ -214,7 +212,7 @@ function rewriteDeclarationSource(node, srcFile, rootDir) {
   const pathParts = source.split('/');
   const isMDCImport = pathParts[0] === '@material';
   if (isMDCImport) {
-    const modName = pathParts[1];  // @material/<modName>
+    const modName = pathParts[1]; // @material/<modName>
     const atMaterialReplacementPath = `${rootDir}/mdc-${modName}`;
     const rewrittenSource = [atMaterialReplacementPath].concat(pathParts.slice(2)).join('/');
     source = rewrittenSource;
@@ -254,8 +252,7 @@ function patchDefaultImportIfNeeded(node) {
       node.specifiers.findIndex(t.isImportDefaultSpecifier);
   if (defaultImportSpecifierIndex >= 0) {
     const defaultImportSpecifier = node.specifiers[defaultImportSpecifierIndex];
-    const defaultPropImportSpecifier = t.importSpecifier(
-        defaultImportSpecifier.local, t.identifier('default'));
+    const defaultPropImportSpecifier = t.importSpecifier(defaultImportSpecifier.local, t.identifier('default'));
     node.specifiers[defaultImportSpecifierIndex] = defaultPropImportSpecifier;
   }
 }
