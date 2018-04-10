@@ -130,6 +130,7 @@ function visit(srcFile, rootDir) {
 
 function transform(srcFile, rootDir) {
   const src = fs.readFileSync(srcFile, 'utf8');
+  //  let defaultExportType = null;
   const ast = recast.parse(src, {
     parser: {
       parse: (code) => babylon.parse(code, {sourceType: 'module'}),
