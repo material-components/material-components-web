@@ -18,32 +18,42 @@
 @import "@material/theme/mixins";
 
 @mixin mdc-tab-indicator-surface {
-  display: flex;
+  position: relative;
 }
 
 @mixin mdc-tab-indicator-active_ {
-  opacity: 1;
+  > .mdc-tab-indicator__content {
+    opacity: 1;
+  }
 }
 
 @mixin mdc-tab-indicator-underline-color($color) {
-  @include mdc-theme-prop(background-color, $color);
+  > .mdc-tab-indicator__content--underline {
+    @include mdc-theme-prop(background-color, $color);
+  }
 }
 
 @mixin mdc-tab-indicator-underline-height($height) {
-  height: $height;
+  > .mdc-tab-indicator__content--underline {
+    height: $height;
+  }
 }
 
 @mixin mdc-tab-indicator-underline-top-corner-radius($radius) {
-  border-top-left-radius: $radius;
-  border-top-right-radius: $radius;
+  > .mdc-tab-indicator__content--underline {
+    border-top-left-radius: $radius;
+    border-top-right-radius: $radius;
+  }
 }
 
 @mixin mdc-tab-indicator-icon-color($color) {
-  @include mdc-theme-prop(color, $color);
+  > .mdc-tab-indicator__content--icon {
+    @include mdc-theme-prop(color, $color);
+  }
 }
 
 @mixin mdc-tab-indicator-icon-height($height) {
-  &.mdc-tab-indicator--icon {
+  > .mdc-tab-indicator__content--icon {
     height: $height;
     font-size: $height;
   }

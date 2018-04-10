@@ -19,6 +19,7 @@ import MDCFoundation from '@material/base/foundation';
 import MDCTabIndcatorAdapter from './adapter';
 import {
   cssClasses,
+  strings,
 } from './constants';
 
 /**
@@ -31,6 +32,11 @@ class MDCTabIndicatorFoundation extends MDCFoundation {
     return cssClasses;
   }
 
+  /** @return enum {string} */
+  static get strings() {
+    return strings;
+  }
+
   /**
    * @see MDCTabIndcatorAdapter for typing information
    * @return {!MDCTabIndcatorAdapter}
@@ -41,8 +47,8 @@ class MDCTabIndicatorFoundation extends MDCFoundation {
       deregisterEventHandler: () => {},
       addClass: () => {},
       removeClass: () => {},
-      computeClientRect: () => {},
-      setStyleProperty: () => {},
+      computeContentClientRect: () => {},
+      setContentStyleProperty: () => {},
     });
   }
 
@@ -52,8 +58,8 @@ class MDCTabIndicatorFoundation extends MDCFoundation {
   }
 
   /** @return {!ClientRect} */
-  computeClientRect() {
-    return this.adapter_.computeClientRect();
+  computeContentClientRect() {
+    return this.adapter_.computeContentClientRect();
   }
 
   /**

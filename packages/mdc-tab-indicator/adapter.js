@@ -55,17 +55,17 @@ class MDCTabIndicatorAdapter {
   removeClass(className) {}
 
   /**
-   * Returns the client rect of the root element.
+   * Returns the client rect of the content element.
    * @return {!ClientRect}
    */
-  computeClientRect() {}
+  computeContentClientRect() {}
 
   /**
-   * Sets a style property of the root element to the passed value
+   * Sets a style property of the content element to the passed value
    * @param {string} propName The style property name to set
    * @param {string} value The style property value
    */
-  setStyleProperty(propName, value) {}
+  setContentStyleProperty(propName, value) {}
 }
 
 export default MDCTabIndicatorAdapter;

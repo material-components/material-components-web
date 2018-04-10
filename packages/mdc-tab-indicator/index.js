@@ -36,11 +36,22 @@ class MDCTabIndicator extends MDCComponent {
     return new MDCTabIndicator(root);
   }
 
+  constructor(...args) {
+    super(...args);
+
+    /** @type {?Element} */
+    this.content_;
+  }
+
+  initialize() {
+    this.content_ = this.root_.querySelector(MDCTabIndicatorFoundation.strings.CONTENT_SELECTOR);
+  }
+
   /**
    * @return {!ClientRect}
    */
-  computeClientRect() {
-    return this.foundation_.computeClientRect();
+  computeContentClientRect() {
+    return this.foundation_.computeContentClientRect();
   }
 
   /**
@@ -52,8 +63,8 @@ class MDCTabIndicator extends MDCComponent {
       deregisterEventHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
-      computeClientRect: () => this.root_.getBoundingClientRect(),
-      setStyleProperty: (prop, value) => this.root_.style.setProperty(prop, value),
+      computeContentClientRect: () => this.content_.getBoundingClientRect(),
+      setContentStyleProperty: (prop, value) => this.content_.style.setProperty(prop, value),
     }));
 
     if (this.root_.classList.contains(MDCTabIndicatorFoundation.cssClasses.FADE)) {
@@ -65,10 +76,10 @@ class MDCTabIndicator extends MDCComponent {
   }
 
   /**
-   * @param {!ClientRect=} previousTabClientRect
+   * @param {!ClientRect=} previousIndicatorClientRect
    */
-  activate(previousTabClientRect) {
-    this.foundation_.activate(previousTabClientRect);
+  activate(previousIndicatorClientRect) {
+    this.foundation_.activate(previousIndicatorClientRect);
   }
 
   deactivate() {
