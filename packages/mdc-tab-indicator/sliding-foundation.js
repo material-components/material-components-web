@@ -36,13 +36,13 @@ class MDCSlidingTabIndicatorFoundation extends MDCTabIndicatorFoundation {
     this.adapter_.removeClass(MDCTabIndicatorFoundation.cssClasses.SLIDING_ACTIVATE);
   }
 
-  /** @param {!ClientRect=} previousClientRect */
-  activate(previousClientRect) {
+  /** @param {!ClientRect=} previousIndicatorClientRect */
+  activate(previousIndicatorClientRect) {
     this.adapter_.addClass(MDCTabIndicatorFoundation.cssClasses.ACTIVE);
 
     // Early exit if no indicator is present to handle cases where an indicator
     // may be activated without a prior indicator state
-    if (!previousClientRect) {
+    if (!previousIndicatorClientRect) {
       return;
     }
 
@@ -51,8 +51,8 @@ class MDCSlidingTabIndicatorFoundation extends MDCTabIndicatorFoundation {
 
     // Calculate the dimensions based on the dimensions of the previous indicator
     const currentClientRect = this.computeContentClientRect();
-    const widthDelta = previousClientRect.width / currentClientRect.width;
-    const xPosition = previousClientRect.left - currentClientRect.left;
+    const widthDelta = previousIndicatorClientRect.width / currentClientRect.width;
+    const xPosition = previousIndicatorClientRect.left - currentClientRect.left;
     this.adapter_.setContentStyleProperty('transform', `translateX(${xPosition}px) scaleX(${widthDelta})`);
 
     // Force repaint

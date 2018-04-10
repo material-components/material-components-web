@@ -98,7 +98,7 @@ Mixin | Description
 
 Method Signature | Description
 --- | ---
-`activate(previousTabClientRect: ClientRect) => void` | Activates the tab indicator
+`activate(previousIndicatorClientRect: ClientRect) => void` | Activates the tab indicator
 `deactivate() => void` | Deactivates the tab indicator
 `computeContentClientRect() => ClientRect` | Returns the content element bounding client rect
 
@@ -118,6 +118,6 @@ Method Signature | Description
 Method Signature | Description
 --- | ---
 `handleTransitionEnd(evt: Event) => void` | Handles the logic for the `"transitionend"` event on the root element
-`activate(previousTabIndicatorRect: ClientRect) => void` | Activates the tab indicator
+`activate(previousIndicatorClientRect: ClientRect) => void` | Activates the tab indicator
 `deactivate() => void` | Deactivates the tab indicator
 `computeContentClientRect() => ClientRect` | Returns the content element's bounding client rect
