@@ -158,6 +158,7 @@
           "tabs",
           "tab",
           "tab-indicator",
+          "tab-scroller",
           "text-field",
           "theme",
           "toolbar",
@@ -191,6 +192,7 @@
     "mdc-slider",
     "mdc-tab",
     "mdc-tab-indicator",
+    "mdc-tab-scroller",
     "mdc-textfield",
     "mdc-top-app-bar"
   ]

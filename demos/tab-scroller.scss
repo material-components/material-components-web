@@ -1,0 +1,11 @@
+@import "./common";
+@import "../packages/mdc-tab-scroller/mdc-tab-scroller";
+
+.hero-scroller {
+  width: 300px;
+}
+
+.demo-content {
+  height: 50px;
+  white-space: nowrap;
+}
