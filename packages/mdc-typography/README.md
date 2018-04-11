@@ -127,7 +127,8 @@ All styles can be overridden using Sass global variables _before_ the component 
 variable named `$mdc-typography-styles-{style}`. The variable should be assigned a map that contains all the properties
 you want to override for a particular style.
 
-Example: Overriding the button `font-size` and `text-transform` property.
+Example: Overriding the button `font-size` and `text-transform` properties.
+
 ```scss
 $mdc-typography-styles-button: (
   font-size: 16px,
