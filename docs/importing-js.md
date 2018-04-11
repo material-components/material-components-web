@@ -1,3 +1,11 @@
+<!--docs:
+title: "Importing JS Components"
+navTitle: "Importing JS Components"
+layout: landing
+section: docs
+path: /docs/importing-js/
+-->
+
 # Importing the JS component
 
 Most components ship with Component / Foundation classes which are used to provide a full-fidelity Material Design component. Depending on what technology you use in your stack, there are several ways to import the JavaScript.

@@ -90,12 +90,37 @@ Filter chips are a variant of chips which allow multiple selection from a set of
 </div>
 ```
 
-> _NOTE_: To use a leading icon in a filter chip, put the `mdc-chip__icon--leading` element _before_ the `mdc-chip__checkmark` element:
+To use a leading icon in a filter chip, put the `mdc-chip__icon--leading` element _before_ the `mdc-chip__checkmark` element:
 
 ```html
 <div class="mdc-chip">
   <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">face</i>
   <div class="mdc-chip__checkmark" >
+    <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
+      <path class="mdc-chip__checkmark-path" fill="none" stroke="black"
+            d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+    </svg>
+  </div>
+  <div class="mdc-chip__text">Filterable content</div>
+</div>
+```
+
+#### Pre-selected
+
+To display a pre-selected chip, add the class `mdc-chip--selected` to the root chip element.
+
+```html
+<div class="mdc-chip mdc-chip--selected">
+  <div class="mdc-chip__text">Add to calendar</div>
+</div>
+```
+
+To pre-select filter chips that have a leading icon, also add the class `mdc-chip__icon--leading-hidden` to the `mdc-chip__icon--leading` element. This will ensure that the checkmark displaces the leading icon.
+
+```html
+<div class="mdc-chip mdc-chip--selected">
+  <i class="material-icons mdc-chip__icon mdc-chip__icon--leading mdc-chip__icon--leading-hidden">face</i>
+  <div class="mdc-chip__checkmark">
     <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
       <path class="mdc-chip__checkmark-path" fill="none" stroke="black"
             d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
@@ -113,9 +138,11 @@ CSS Class | Description
 `mdc-chip-set--choice` | Optional. Indicates that the chips in the set are choice chips, which allow a single selection from a set of options.
 `mdc-chip-set--filter` | Optional. Indicates that the chips in the set are filter chips, which allow multiple selection from a set of options.
 `mdc-chip` | Mandatory.
+`mdc-chip--selected` | Optional. Indicates that the chip is selected.
 `mdc-chip__text` | Mandatory. Indicates the text content of the chip.
 `mdc-chip__icon` | Optional. Indicates an icon in the chip.
 `mdc-chip__icon--leading` | Optional. Indicates a leading icon in the chip.
+`mdc-chip__icon--leading-hidden` | Optional. Hides the leading icon in a filter chip when the chip is selected.
 `mdc-chip__icon--trailing` | Optional. Indicates a trailing icon in the chip.
 `mdc-chip__checkmark` | Optional. Indicates the checkmark in a filter chip.
 `mdc-chip__checkmark-svg` | Mandatory with the use of `mdc-chip__checkmark`. Indicates the checkmark SVG element in a filter chip.
@@ -154,13 +181,18 @@ To use the `MDCChip` and `MDCChipSet` classes, [import](../../docs/importing-js.
 
 Method Signature | Description
 --- | ---
-`toggleSelected() => void` | Proxies to the foundation's `toggleSelected` method
+`get foundation() => MDCChipFoundation` | Returns the foundation
+`isSelected() => boolean` | Proxies to the foundation's `isSelected` method
 
 Property | Value Type | Description
 --- | --- | ---
 `ripple` | `MDCRipple` | The `MDCRipple` instance for the root element that `MDCChip` initializes
 
 #### `MDCChipSet`
+
+Method Signature | Description
+--- | ---
+`addChip(text: string, leadingIcon: Element, trailingIcon: Element) => void` | Creates a new chip in the chip set with the given text, leading icon, and trailing icon
 
 Property | Value Type | Description
 --- | --- | ---
@@ -182,16 +214,20 @@ Method Signature | Description
 `deregisterEventHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the root element
 `registerTrailingIconInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the trailing icon element
 `deregisterTrailingIconInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the trailing icon element
-`notifyInteraction() => void` | Emits a custom event `MDCChip:interaction` denoting the chip has been interacted with, which bubbles to the parent `mdc-chip-set` element
-`notifyTrailingIconInteraction() => void` | Emits a custom event `MDCChip:trailingIconInteraction` denoting the chip's trailing icon has been interacted with, which bubbles to the parent `mdc-chip-set` element
+`notifyInteraction() => void` | Emits a custom event `MDCChip:interaction` denoting the chip has been interacted with
+`notifyTrailingIconInteraction() => void` | Emits a custom event `MDCChip:trailingIconInteraction` denoting the chip's trailing icon has been interacted with
+
+> _NOTE_: The custom events emitted by `notifyInteraction` and `notifyTrailingIconInteraction` must pass along the target chip in its event `detail`, as well as bubble to the parent `mdc-chip-set` element.
 
 #### `MDCChipSetAdapter`
 
 Method Signature | Description
 --- | ---
 `hasClass(className: string) => boolean` | Returns whether the chip set element has the given class
-`registerInteractionHandler(evtType, handler) => void` | Registers an event handler on the root element for a given event
-`deregisterInteractionHandler(evtType, handler) => void` | Deregisters an event handler on the root element for a given event
+`registerInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event handler on the root element for a given event
+`deregisterInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event handler on the root element for a given event
+`createChipElement(text: string, leadingIcon: Element, trailingIcon: Element) => Element` | Returns a chip element with the given text, leading icon, and trailing icon
+`appendChild(el: Element) => void` | Appends the given element as a child of the root element
 
 ### Foundations: `MDCChipFoundation` and `MDCChipSetFoundation`
 
@@ -199,7 +235,13 @@ Method Signature | Description
 
 Method Signature | Description
 --- | ---
-`toggleSelected() => void` | Toggles the selected class on the chip element
+`isSelected() => boolean` | Returns true if the chip is selected
+`setSelected(selected: boolean) => void` | Sets the chip's selected state
 
 #### `MDCChipSetFoundation`
-None yet, coming soon.
+
+Method Signature | Description
+--- | ---
+`addChip(text: string, leadingIcon: Element, trailingIcon: Element) => Element` | Returns a new chip element with the given text, leading icon, and trailing icon, added to the root chip set element
+`select(chipFoundation: MDCChipFoundation) => void` | Selects the given chip
+`deselect(chipFoundation: MDCChipFoundation) => void` | Deselects the given chip

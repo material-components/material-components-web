@@ -15,14 +15,14 @@
  * limitations under the License.
  */
 
-import {strings, cssClasses} from './constants';
+import {strings, cssClasses, numbers} from './constants';
 import MDCTopAppBarAdapter from './adapter';
 import MDCFoundation from '@material/base/foundation';
 
 /**
  * @extends {MDCFoundation<!MDCTopAppBarAdapter>}
  */
-class MDCTopAppBarFoundation extends MDCFoundation {
+class MDCTopAppBarBaseFoundation extends MDCFoundation {
   /** @return enum {string} */
   static get strings() {
     return strings;
@@ -31,6 +31,11 @@ class MDCTopAppBarFoundation extends MDCFoundation {
   /** @return enum {string} */
   static get cssClasses() {
     return cssClasses;
+  }
+
+  /** @return enum {number} */
+  static get numbers() {
+    return numbers;
   }
 
   /**
@@ -43,11 +48,15 @@ class MDCTopAppBarFoundation extends MDCFoundation {
       hasClass: (/* className: string */) => {},
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
+      setStyle: (/* property: string, value: string */) => {},
+      getTopAppBarHeight: () => {},
       registerNavigationIconInteractionHandler: (/* type: string, handler: EventListener */) => {},
       deregisterNavigationIconInteractionHandler: (/* type: string, handler: EventListener */) => {},
       notifyNavigationIconClicked: () => {},
       registerScrollHandler: (/* handler: EventListener */) => {},
       deregisterScrollHandler: (/* handler: EventListener */) => {},
+      registerResizeHandler: (/* handler: EventListener */) => {},
+      deregisterResizeHandler: (/* handler: EventListener */) => {},
       getViewportScrollY: () => /* number */ 0,
       getTotalActionItems: () => /* number */ 0,
     });
@@ -56,8 +65,8 @@ class MDCTopAppBarFoundation extends MDCFoundation {
   /**
    * @param {!MDCTopAppBarAdapter} adapter
    */
-  constructor(adapter) {
-    super(Object.assign(MDCTopAppBarFoundation.defaultAdapter, adapter));
+  constructor(/** @type {!MDCTopAppBarAdapter} */ adapter) {
+    super(Object.assign(MDCTopAppBarBaseFoundation.defaultAdapter, adapter));
 
     this.navClickHandler_ = () => this.adapter_.notifyNavigationIconClicked();
   }
@@ -71,4 +80,4 @@ class MDCTopAppBarFoundation extends MDCFoundation {
   }
 }
 
-export default MDCTopAppBarFoundation;
+export default MDCTopAppBarBaseFoundation;

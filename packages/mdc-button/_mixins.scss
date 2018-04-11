@@ -67,16 +67,16 @@
 }
 
 @mixin mdc-button-horizontal-padding($padding) {
-  padding-right: $padding;
-  padding-left: $padding;
+  // $padding should be a single value; enforce it by specifying all 4 sides in the output
+  padding: 0 $padding 0 $padding;
 }
 
 @mixin mdc-button-stroke-width($stroke-width, $padding: $mdc-button-contained-horizontal-padding) {
   // Note: Adjust padding to maintain consistent width with non-stroked buttons
   $padding-value: max($padding - $stroke-width, 0);
 
-  padding-right: $padding-value;
-  padding-left: $padding-value;
+  @include mdc-button-horizontal-padding($padding-value);
+
   border-width: $stroke-width;
   // Note: line height is adjusted for stroke button because borders are not
   // considered as space available to text on the Web
@@ -95,14 +95,18 @@
   @include mdc-ripple-radius-bounded;
   @include mdc-button-horizontal-padding($mdc-button-horizontal-padding);
 
-  display: inline-block;
+  display: inline-flex;
   position: relative;
+  align-items: center;
+  justify-content: center;
   box-sizing: border-box;
   min-width: 64px;
   height: $mdc-button-height;
   border: none;
   outline: none;
-  text-align: center;
+
+  /* @alternate */
+  line-height: inherit;
   user-select: none;
   -webkit-appearance: none;
   overflow: hidden;
@@ -138,14 +142,11 @@
   width: 18px;
   height: 18px;
   font-size: 18px;
-  line-height: inherit;
   vertical-align: top;
 }
 
 @mixin mdc-button__icon-svg_ {
-  margin-top: -2px;
   fill: currentColor;
-  vertical-align: middle;
 }
 
 @mixin mdc-button__icon-contained_ {

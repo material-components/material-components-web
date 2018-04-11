@@ -90,9 +90,6 @@ CSS Class | Description
 `mdc-typography--body1` | Sets font properties as Body 1
 `mdc-typography--caption` | Sets font properties as Caption
 `mdc-typography--button` | Sets font properties as Button
-`mdc-typography--adjust-margin` | Positions text, used in conjunction with font classes above
-
-> **A note about `mdc-typography--adjust-margin`**, `mdc-typography--adjust-margin` will change the margin properties of the element it is applied to, to align text correctly. `mdc-typography--adjust-margin` should only be used in a text context; using this property on UI elements such as buttons may cause them to be positioned incorrectly.
 
 ### Sass Variables and Mixins
 
@@ -100,16 +97,13 @@ Mixin | Description
 --- | ---
 `mdc-typography-base` | Sets the font to Roboto
 `mdc-typography($style)` | Applies one of the typography styles, including setting the font to Roboto
-`mdc-typography-adjust-margin($style)` | Positions text
 `mdc-typography-overflow-ellipsis` | Truncates overflow text to one line with an ellipsis
-
-> **A note about `mdc-typography-adjust-margin`**, `mdc-typography-adjust-margin` will change the margin properties of the element it is applied to, to align text correctly. `mdc-typography-adjust-margin` should only be used in a text context; using this property on UI elements such as buttons may cause them to be positioned incorrectly.
 
 > **A note about `mdc-typography-overflow-ellipsis`**, `mdc-typography-overflow-ellipsis` should only be used if the element is `display: block` or `display: inline-block`.
 
 #### `$style` Values
 
-These styles can be used as the `$style` argument for `mdc-typography` and `mdc-typography-adjust-margin` mixins.
+These styles can be used as the `$style` argument for `mdc-typography` mixin.
 
 * `display4`
 * `display3`
