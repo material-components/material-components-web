@@ -15,7 +15,7 @@
 // limitations under the License.
 //
 
-@function mdc-get-global-variable_($style) {
+@function mdc-typography-get-global-variable_($style) {
   @if $style == "headline1" {
     @return $mdc-typography-styles-headline1;
   } @else if $style == "headline2" {
@@ -42,10 +42,12 @@
     @return $mdc-typography-styles-button;
   } @else if $style == "overline" {
     @return $mdc-typography-styles-overline;
+  } @else {
+    @return ();
   }
 }
 
-@function mdc-set-typography-styles_($mdc-typography-base, $mdc-typography-styles-temp) {
+@function mdc-typography-set-styles_($mdc-typography-base, $mdc-typography-styles-temp) {
   @each $style, $style-props in $mdc-typography-styles-temp {
 
     // Merge base properties for all styles.
@@ -53,7 +55,7 @@
 
     // Merge global overrides onto each style.
     @if global_variable_exists(mdc-typography-styles-#{$style}) {
-      $style-props: map-merge($style-props, mdc-get-global-variable_(#{$style}));
+      $style-props: map-merge($style-props, mdc-typography-get-global-variable_(#{$style}));
     }
 
     // Override original styles with new styles.
@@ -63,6 +65,6 @@
   @return $mdc-typography-styles-temp;
 }
 
-@function mdc-get-letter-spacing_($tracking, $font-size) {
+@function mdc-typography-get-letter-spacing_($tracking, $font-size) {
   @return $tracking / ($font-size * 16) * 1em;
 }
