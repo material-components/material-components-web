@@ -22,3 +22,7 @@
 .mdc-fab.lightGreen800Fab {
   @include mdc-fab-accessible($material-color-light-green-800);
 }
+
+.demo-fab-icon-size {
+  @include mdc-fab-icon-size(36px);
+}

@@ -72,19 +72,27 @@ test('#destroy removes event listeners', () => {
   td.verify(mockAdapter.deregisterTrailingIconInteractionHandler('mousedown', td.matchers.isA(Function)));
 });
 
-test('#toggleSelected adds mdc-chip--selected class if the class does not exist', () => {
+test('#isSelected returns true if mdc-chip--selected class is present', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(cssClasses.SELECTED)).thenReturn(true);
+  assert.isTrue(foundation.isSelected());
+});
+
+test('#isSelected returns false if mdc-chip--selected class is not present', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.hasClass(cssClasses.SELECTED)).thenReturn(false);
+  assert.isFalse(foundation.isSelected());
+});
 
-  foundation.toggleSelected();
+test('#setSelected adds mdc-chip--selected class if true', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.setSelected(true);
   td.verify(mockAdapter.addClass(cssClasses.SELECTED));
 });
 
-test('#toggleSelected removes mdc-chip--selected class if the class exists', () => {
+test('#setSelected removes mdc-chip--selected class if false', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(cssClasses.SELECTED)).thenReturn(true);
-
-  foundation.toggleSelected();
+  foundation.setSelected(false);
   td.verify(mockAdapter.removeClass(cssClasses.SELECTED));
 });
 
