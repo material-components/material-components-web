@@ -48,6 +48,19 @@ class MDCTopAppBarAdapter {
   hasClass(className) {}
 
   /**
+   * Sets the specified inline style property on the root Element to the given value.
+   * @param {string} property
+   * @param {string} value
+   */
+  setStyle(property, value) {}
+
+  /**
+   * Gets the height of the top app bar.
+   * @return {number}
+   */
+  getTopAppBarHeight() {}
+
+  /**
    * Registers an event handler on the navigation icon element for a given event.
    * @param {string} type
    * @param {function(!Event): undefined} handler
@@ -71,6 +84,12 @@ class MDCTopAppBarAdapter {
 
   /** @param {function(!Event)} handler */
   deregisterScrollHandler(handler) {}
+
+  /** @param {function(!Event)} handler */
+  registerResizeHandler(handler) {}
+
+  /** @param {function(!Event)} handler */
+  deregisterResizeHandler(handler) {}
 
   /** @return {number} */
   getViewportScrollY() {}

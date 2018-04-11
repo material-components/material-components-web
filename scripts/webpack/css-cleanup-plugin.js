@@ -28,7 +28,7 @@
 
 const fsx = require('fs-extra');
 
-module.exports = class {
+class CssCleanupPlugin {
   constructor({
     cleanupDirRelativePath,
     globber,
@@ -55,4 +55,6 @@ module.exports = class {
       this.fsExtraLib_.removeSync(absolutePath);
     });
   }
-};
+}
+
+module.exports = CssCleanupPlugin;

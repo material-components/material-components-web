@@ -12,7 +12,7 @@ path: /catalog/image-lists/
 <!--<div class="article__asset">
   <a class="article__asset-link"
      href="https://material-components-web.appspot.com/image-list.html">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/image-list.png" width="320" alt="Image list screenshot">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/image-list.png" width="294" alt="Image list screenshot">
   </a>
 </div>-->
 
@@ -34,7 +34,7 @@ An Image List consists of several items, each containing an image and optionally
 ## Installation
 
 ```
-npm install --save @material/image-list
+npm install @material/image-list
 ```
 
 ## Basic Usage
