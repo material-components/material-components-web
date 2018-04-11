@@ -17,8 +17,7 @@
 
 import MDCFoundation from '@material/base/foundation';
 import MDCChipSetAdapter from './adapter';
-// eslint-disable-next-line no-unused-vars
-import {MDCChip, MDCChipFoundation} from '../chip/index';
+import MDCChipFoundation from '../chip/foundation';
 import {strings, cssClasses} from './constants';
 
 /**
@@ -57,7 +56,7 @@ class MDCChipSetFoundation extends MDCFoundation {
 
     /**
      * The selected chips in the set. Only used for choice chip set or filter chip set.
-     * @private {!Array<!MDCChip>}
+     * @private {!Array<!MDCChipFoundation>}
      */
     this.selectedChips_ = [];
 
@@ -76,30 +75,64 @@ class MDCChipSetFoundation extends MDCFoundation {
   }
 
   /**
+   * Returns a new chip element with the given text, leading icon, and trailing icon,
+   * added to the root chip set element.
+   * @param {string} text
+   * @param {?Element} leadingIcon
+   * @param {?Element} trailingIcon
+   * @return {!Element}
+   */
+  addChip(text, leadingIcon, trailingIcon) {
+    const chipEl = this.adapter_.createChipElement(text, leadingIcon, trailingIcon);
+    this.adapter_.appendChild(chipEl);
+    return chipEl;
+  }
+
+  /**
+   * Selects the given chip. Deselects all other chips if the chip set is of the choice variant.
+   * @param {!MDCChipFoundation} chipFoundation
+   */
+  select(chipFoundation) {
+    if (this.adapter_.hasClass(cssClasses.CHOICE)) {
+      this.deselectAll_();
+    }
+    chipFoundation.setSelected(true);
+    this.selectedChips_.push(chipFoundation);
+  }
+
+  /**
+   * Deselects the given chip.
+   * @param {!MDCChipFoundation} chipFoundation
+   */
+  deselect(chipFoundation) {
+    const index = this.selectedChips_.indexOf(chipFoundation);
+    if (index >= 0) {
+      this.selectedChips_.splice(index, 1);
+    }
+    chipFoundation.setSelected(false);
+  }
+
+  /** Deselects all selected chips. */
+  deselectAll_() {
+    this.selectedChips_.forEach((chipFoundation) => {
+      chipFoundation.setSelected(false);
+    });
+    this.selectedChips_.length = 0;
+  }
+
+  /**
    * Handles a chip interaction event
-   * @param {!Object} evt
+   * @param {!Event} evt
    * @private
    */
   handleChipInteraction_(evt) {
-    const {chip} = evt.detail;
-    if (this.adapter_.hasClass(cssClasses.CHOICE)) {
-      if (this.selectedChips_.length === 0) {
-        this.selectedChips_[0] = chip;
-      } else if (this.selectedChips_[0] !== chip) {
-        this.selectedChips_[0].toggleSelected();
-        this.selectedChips_[0] = chip;
+    const chipFoundation = evt.detail.chip.foundation;
+    if (this.adapter_.hasClass(cssClasses.CHOICE) || this.adapter_.hasClass(cssClasses.FILTER)) {
+      if (chipFoundation.isSelected()) {
+        this.deselect(chipFoundation);
       } else {
-        this.selectedChips_ = [];
+        this.select(chipFoundation);
       }
-      chip.toggleSelected();
-    } else if (this.adapter_.hasClass(cssClasses.FILTER)) {
-      const index = this.selectedChips_.indexOf(chip);
-      if (index >= 0) {
-        this.selectedChips_.splice(index, 1);
-      } else {
-        this.selectedChips_.push(chip);
-      }
-      chip.toggleSelected();
     }
   }
 }

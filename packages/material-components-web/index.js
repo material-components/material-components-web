@@ -34,7 +34,6 @@ import * as select from '@material/select/index';
 import * as selectionControl from '@material/selection-control/index';
 import * as slider from '@material/slider/index';
 import * as snackbar from '@material/snackbar/index';
-import * as tab from '@material/tab/index';
 import * as tabs from '@material/tabs/index';
 import * as textField from '@material/textfield/index';
 import * as toolbar from '@material/toolbar/index';
@@ -57,7 +56,6 @@ autoInit.register('MDCLinearProgress', linearProgress.MDCLinearProgress);
 autoInit.register('MDCNotchedOutline', notchedOutline.MDCNotchedOutline);
 autoInit.register('MDCRadio', radio.MDCRadio);
 autoInit.register('MDCSnackbar', snackbar.MDCSnackbar);
-autoInit.register('MDCTab_', tab.MDCTab);
 autoInit.register('MDCTab', tabs.MDCTab);
 autoInit.register('MDCTabBar', tabs.MDCTabBar);
 autoInit.register('MDCTextField', textField.MDCTextField);
@@ -89,7 +87,6 @@ export {
   selectionControl,
   slider,
   snackbar,
-  tab,
   tabs,
   textField,
   toolbar,

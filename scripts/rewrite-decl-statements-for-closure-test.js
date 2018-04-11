@@ -60,8 +60,8 @@
  *
  * This is so closure is able to properly build and check our files without breaking when it encounters
  * node modules. Note that while closure does have a --module_resolution NODE flag
- * (https://github.com/google/closure-compiler/wiki/JS-Modules#node-resolution-mode), it has inherent problems
- * that prevents us from using it. See:
+ * (https://github.com/google/closure-compiler/wiki/JS-Modules#node-resolution-mode),
+ * it has inherent problems that prevents us from using it. See:
  * - https://github.com/google/closure-compiler/issues/2386
  *
  * Note that for third-party modules, they must be defined in closure_externs.js. See that file for more info.
@@ -79,6 +79,7 @@ const glob = require('glob');
 const recast = require('recast');
 const resolve = require('resolve');
 const t = require('babel-types');
+const defaultTypesMap = {};
 
 main(process.argv);
 
@@ -90,7 +91,38 @@ function main(argv) {
 
   const rootDir = path.resolve(process.argv[2]);
   const srcFiles = glob.sync(`${rootDir}/**/*.js`);
+
+  // first pass, construct a map of default exports (adapters, foundations,
+  // components).
+  srcFiles.forEach((srcFile) => visit(srcFile, rootDir));
+  logProgress('');
+  console.log('\rVisit pass completed. ' + Object.keys(defaultTypesMap).length + ' default types found.\n');
+
+  // second pass, rewrite exports, rewrite imports with goog.require, and add goog.module declarations
   srcFiles.forEach((srcFile) => transform(srcFile, rootDir));
+  logProgress('');
+  console.log('\rTransform pass completed. ' + srcFiles.length + ' files written.\n');
+}
+
+function visit(srcFile, rootDir) {
+  const src = fs.readFileSync(srcFile, 'utf8');
+  logProgress(`[processing] ${srcFile}`);
+  const ast = recast.parse(src, {
+    parser: {
+      parse: (code) => babylon.parse(code, {sourceType: 'module'}),
+    },
+  });
+
+  traverse(ast, {
+    ExportDefaultDeclaration(path) {
+      const pathbasedPackageName = getPathbasedPackage(rootDir, srcFile);
+      const packageNameParts = pathbasedPackageName.split('.');
+      packageNameParts.pop();
+      packageNameParts.push(path.node.declaration.name);
+      const packageName = packageNameParts.join('.');
+      defaultTypesMap[pathbasedPackageName] = packageName;
+    },
+  });
 }
 
 function transform(srcFile, rootDir) {
@@ -139,11 +171,14 @@ function transform(srcFile, rootDir) {
 
       const variableDeclarator = t.variableDeclarator(variableDeclaratorId, callExpression);
       const variableDeclaration = t.variableDeclaration('const', [variableDeclarator]);
-      // Preserve comments above import statements, since this is most likely the license comment.
+      // Preserve comments above import statements, since this is most likely
+      // the license comment.
       if (path.node.comments && path.node.comments.length > 0) {
-        const commentValue = path.node.comments[0].value;
-        variableDeclaration.comments = variableDeclaration.comments || [];
-        variableDeclaration.comments.push({type: 'CommentBlock', value: commentValue});
+        for (let i = 0; i < path.node.comments.length; i++) {
+          const commentValue = path.node.comments[i].value;
+          variableDeclaration.comments = variableDeclaration.comments || [];
+          variableDeclaration.comments.push({type: 'CommentBlock', value: commentValue});
+        }
       }
       path.replaceWith(variableDeclaration);
     },
@@ -153,19 +188,23 @@ function transform(srcFile, rootDir) {
     objectCurlySpacing: false,
     quote: 'single',
     trailingComma: {
-      objects: true,
+      objects: false,
       arrays: true,
       parameters: false,
     },
   });
 
-  const relativePath = path.relative(rootDir, srcFile);
-  const packageParts = relativePath.replace('mdc-', '').replace(/-/g, '').replace('.js', '').split('/');
-  const packageStr = 'mdc.' + packageParts.join('.').replace('.index', '');
+  let packageStr = '';
+  const pathbasedPackageName = getPathbasedPackage(rootDir, srcFile);
+  if (pathbasedPackageName in defaultTypesMap) {
+    packageStr = defaultTypesMap[pathbasedPackageName];
+  } else {
+    packageStr = pathbasedPackageName;
+  }
 
   outputCode = 'goog.module(\'' + packageStr + '\');\n' + outputCode;
   fs.writeFileSync(srcFile, outputCode, 'utf8');
-  console.log(`[rewrite] ${srcFile}`);
+  logProgress(`[rewrite] ${srcFile}`);
 }
 
 function rewriteDeclarationSource(node, srcFile, rootDir) {
@@ -202,14 +241,34 @@ function patchNodeForDeclarationSource(source, srcFile, rootDir, node) {
   }
   const packageParts = resolvedSource.replace('mdc-', '').replace(/-/g, '').replace('.js', '').split('/');
   const packageStr = 'mdc.' + packageParts.join('.').replace('.index', '');
+  if (packageStr in defaultTypesMap) {
+    return defaultTypesMap[packageStr];
+  }
   return packageStr;
 }
 
 function patchDefaultImportIfNeeded(node) {
-  const defaultImportSpecifierIndex = node.specifiers.findIndex(t.isImportDefaultSpecifier);
+  const defaultImportSpecifierIndex =
+      node.specifiers.findIndex(t.isImportDefaultSpecifier);
   if (defaultImportSpecifierIndex >= 0) {
     const defaultImportSpecifier = node.specifiers[defaultImportSpecifierIndex];
     const defaultPropImportSpecifier = t.importSpecifier(defaultImportSpecifier.local, t.identifier('default'));
     node.specifiers[defaultImportSpecifierIndex] = defaultPropImportSpecifier;
   }
+}
+
+function getPathbasedPackage(rootDir, srcFile) {
+  const relativePath = path.relative(rootDir, srcFile);
+  const packageParts = relativePath.replace('mdc-', '').replace(/-/g, '').replace('.js', '').split('/');
+  const packageStr = 'mdc.' + packageParts.join('.').replace('.index', '');
+  return packageStr;
+}
+
+function logProgress(msg) {
+  if (logProgress.__prev_msg_length) {
+    const lineClear = ' '.repeat(logProgress.__prev_msg_length + 10);
+    process.stdout.write('\r' + lineClear);
+  }
+  logProgress.__prev_msg_length = msg.length;
+  process.stdout.write('\r' + msg);
 }

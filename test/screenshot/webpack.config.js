@@ -32,6 +32,7 @@ const copyrightBannerPlugin = pluginFactory.createCopyrightBannerPlugin();
 const cssBundleFactory = new CssBundleFactory({env, pathResolver, globber, pluginFactory});
 
 const OUTPUT = {
+  fsDirAbsolutePath: pathResolver.getAbsolutePath('/test/screenshot/out'),
   httpDirAbsolutePath: '/out/',
 };
 
