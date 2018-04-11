@@ -22,7 +22,7 @@
 
 const autoprefixer = require('autoprefixer');
 
-module.exports = class {
+class CssBundleFactory {
   constructor({
     env,
     pathResolver,
@@ -153,9 +153,11 @@ module.exports = class {
         'mdc.linear-progress': getAbsolutePath('/packages/mdc-linear-progress/mdc-linear-progress.scss'),
         'mdc.list': getAbsolutePath('/packages/mdc-list/mdc-list.scss'),
         'mdc.menu': getAbsolutePath('/packages/mdc-menu/mdc-menu.scss'),
+        'mdc.notched-outline': getAbsolutePath('/packages/mdc-notched-outline/mdc-notched-outline.scss'),
         'mdc.radio': getAbsolutePath('/packages/mdc-radio/mdc-radio.scss'),
         'mdc.ripple': getAbsolutePath('/packages/mdc-ripple/mdc-ripple.scss'),
         'mdc.select': getAbsolutePath('/packages/mdc-select/mdc-select.scss'),
+        'mdc.shape': getAbsolutePath('/packages/mdc-shape/mdc-shape.scss'),
         'mdc.slider': getAbsolutePath('/packages/mdc-slider/mdc-slider.scss'),
         'mdc.snackbar': getAbsolutePath('/packages/mdc-snackbar/mdc-snackbar.scss'),
         'mdc.switch': getAbsolutePath('/packages/mdc-switch/mdc-switch.scss'),
@@ -205,4 +207,6 @@ module.exports = class {
       ],
     });
   }
-};
+}
+
+module.exports = CssBundleFactory;

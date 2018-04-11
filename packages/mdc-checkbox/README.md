@@ -33,7 +33,7 @@ It works without JavaScript with basic functionality for all states. If you use 
 ## Installation
 
 ```
-npm install --save @material/checkbox
+npm install @material/checkbox
 ```
 
 ## Usage

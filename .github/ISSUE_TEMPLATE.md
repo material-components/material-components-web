@@ -48,7 +48,7 @@ Follow the template below to ensure the quickest and most accurate response to y
 > 4. Observe the component's behavior
 >
 > We also have a [template on CodePen](http://codepen.io/traviskaufman/pen/pNQmRp) which we encourage you to use to create a reproduction of
-> the issue. The less time it takes for us to repro the issue, the less time it takes to verify and
+> the issue. The less time it takes for us to reproduce the issue, the less time it takes to verify and
 > fix it!
 
 ### What is the expected behavior?

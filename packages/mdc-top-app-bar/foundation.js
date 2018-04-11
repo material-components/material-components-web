@@ -15,15 +15,14 @@
  * limitations under the License.
  */
 
-import {strings, cssClasses} from './constants';
+import {strings, cssClasses, numbers} from './constants';
 import MDCTopAppBarAdapter from './adapter';
 import MDCFoundation from '@material/base/foundation';
 
 /**
  * @extends {MDCFoundation<!MDCTopAppBarAdapter>}
- * @final
  */
-class MDCTopAppBarFoundation extends MDCFoundation {
+class MDCTopAppBarBaseFoundation extends MDCFoundation {
   /** @return enum {string} */
   static get strings() {
     return strings;
@@ -32,6 +31,11 @@ class MDCTopAppBarFoundation extends MDCFoundation {
   /** @return enum {string} */
   static get cssClasses() {
     return cssClasses;
+  }
+
+  /** @return enum {number} */
+  static get numbers() {
+    return numbers;
   }
 
   /**
@@ -44,11 +48,15 @@ class MDCTopAppBarFoundation extends MDCFoundation {
       hasClass: (/* className: string */) => {},
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
+      setStyle: (/* property: string, value: string */) => {},
+      getTopAppBarHeight: () => {},
       registerNavigationIconInteractionHandler: (/* type: string, handler: EventListener */) => {},
       deregisterNavigationIconInteractionHandler: (/* type: string, handler: EventListener */) => {},
       notifyNavigationIconClicked: () => {},
       registerScrollHandler: (/* handler: EventListener */) => {},
       deregisterScrollHandler: (/* handler: EventListener */) => {},
+      registerResizeHandler: (/* handler: EventListener */) => {},
+      deregisterResizeHandler: (/* handler: EventListener */) => {},
       getViewportScrollY: () => /* number */ 0,
       getTotalActionItems: () => /* number */ 0,
     });
@@ -57,65 +65,19 @@ class MDCTopAppBarFoundation extends MDCFoundation {
   /**
    * @param {!MDCTopAppBarAdapter} adapter
    */
-  constructor(adapter) {
-    super(Object.assign(MDCTopAppBarFoundation.defaultAdapter, adapter));
-    // State variable for the current top app bar state
-    this.isCollapsed = false;
+  constructor(/** @type {!MDCTopAppBarAdapter} */ adapter) {
+    super(Object.assign(MDCTopAppBarBaseFoundation.defaultAdapter, adapter));
 
     this.navClickHandler_ = () => this.adapter_.notifyNavigationIconClicked();
-    this.scrollHandler_ = () => this.shortAppBarScrollHandler_();
   }
 
   init() {
-    const isShortTopAppBar = this.adapter_.hasClass(cssClasses.SHORT_CLASS);
-
-    if (isShortTopAppBar) {
-      this.initShortTopAppBar_();
-    }
-
     this.adapter_.registerNavigationIconInteractionHandler('click', this.navClickHandler_);
   }
 
   destroy() {
     this.adapter_.deregisterNavigationIconInteractionHandler('click', this.navClickHandler_);
-    this.adapter_.deregisterScrollHandler(this.scrollHandler_);
-  }
-
-  /**
-   * Used to set the initial style of the short top app bar
-   */
-  initShortTopAppBar_() {
-    const isAlwaysCollapsed = this.adapter_.hasClass(cssClasses.SHORT_COLLAPSED_CLASS);
-
-    if (this.adapter_.getTotalActionItems() > 0) {
-      this.adapter_.addClass(cssClasses.SHORT_HAS_ACTION_ITEM_CLASS);
-    }
-
-    if (!isAlwaysCollapsed) {
-      this.adapter_.registerScrollHandler(this.scrollHandler_);
-      this.shortAppBarScrollHandler_();
-    }
-  }
-
-  /**
-   * Scroll handler for applying/removing the collapsed modifier class
-   * on the short top app bar.
-   */
-  shortAppBarScrollHandler_() {
-    const currentScroll = this.adapter_.getViewportScrollY();
-
-    if (currentScroll <= 0) {
-      if (this.isCollapsed) {
-        this.adapter_.removeClass(cssClasses.SHORT_COLLAPSED_CLASS);
-        this.isCollapsed = false;
-      }
-    } else {
-      if (!this.isCollapsed) {
-        this.adapter_.addClass(cssClasses.SHORT_COLLAPSED_CLASS);
-        this.isCollapsed = true;
-      }
-    }
   }
 }
 
-export default MDCTopAppBarFoundation;
+export default MDCTopAppBarBaseFoundation;
