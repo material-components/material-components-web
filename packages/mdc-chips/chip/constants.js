@@ -31,6 +31,7 @@ const cssClasses = {
   CHIP_EXIT: 'mdc-chip--exit',
   HIDDEN_LEADING_ICON: 'mdc-chip__icon--leading-hidden',
   LEADING_ICON: 'mdc-chip__icon--leading',
+  CLOSE_ICON: 'mdc-chip__icon--close',
   SELECTED: 'mdc-chip--selected',
   TEXT: 'mdc-chip__text',
 };

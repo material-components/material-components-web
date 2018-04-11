@@ -49,7 +49,8 @@
   transition:
     opacity 75ms $mdc-animation-standard-curve-timing-function,
     width 150ms $mdc-animation-deceleration-curve-timing-function,
-    padding 100ms linear;
+    padding 100ms linear,
+    margin 100ms linear;
 }
 
 .mdc-chip--selected {

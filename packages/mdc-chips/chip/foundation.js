@@ -136,8 +136,9 @@ class MDCChipFoundation extends MDCFoundation {
         requestAnimationFrame(() => {
           this.adapter_.setStyleProperty('width', chipWidth);
 
-          // To mitigate jitter, start transitioning padding before width.
+          // To mitigate jitter, start transitioning padding and margin before width.
           this.adapter_.setStyleProperty('padding', 0);
+          this.adapter_.setStyleProperty('margin', 0);
           
           // On the next frame (once width is explicitly set), transition width to 0.
           requestAnimationFrame(() => {
@@ -172,8 +173,9 @@ class MDCChipFoundation extends MDCFoundation {
     if (evt.type === 'click' || evt.key === 'Enter' || evt.keyCode === 13) {
       this.adapter_.notifyTrailingIconInteraction();
 
-      //Close
-      this.adapter_.addClass('mdc-chip--exit');
+      if (this.adapter_.eventTargetHasClass(/** @type {!EventTarget} */ (evt.target), cssClasses.CLOSE_ICON)) {
+        this.adapter_.addClass(cssClasses.CHIP_EXIT);
+      }
     }
   }
 }
