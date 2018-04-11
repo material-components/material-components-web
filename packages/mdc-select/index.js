@@ -15,13 +15,12 @@
  */
 
 import {MDCComponent} from '@material/base/index';
-import {MDCRipple} from '@material/ripple/index';
-import {MDCMenu} from '@material/menu/index';
+import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
 import {MDCSelectBottomLine} from './bottom-line/index';
 import {MDCSelectLabel} from './label/index';
 
 import MDCSelectFoundation from './foundation';
-import {strings} from './constants';
+import {cssClasses, strings} from './constants';
 
 export {MDCSelectFoundation};
 
@@ -31,19 +30,15 @@ export class MDCSelect extends MDCComponent {
   }
 
   get value() {
-    return this.foundation_.getValue();
+    return this.nativeControl_.value;
   }
 
-  get options() {
-    return this.menu_.items;
-  }
-
-  get selectedOptions() {
-    return this.root_.querySelectorAll('[aria-selected]');
+  set value(value) {
+    this.foundation_.setValue(value);
   }
 
   get selectedIndex() {
-    return this.foundation_.getSelectedIndex();
+    return this.nativeControl_.selectedIndex;
   }
 
   set selectedIndex(selectedIndex) {
@@ -51,32 +46,17 @@ export class MDCSelect extends MDCComponent {
   }
 
   get disabled() {
-    return this.foundation_.isDisabled();
+    return this.nativeControl_.disabled;
   }
 
   set disabled(disabled) {
     this.foundation_.setDisabled(disabled);
   }
 
-  item(index) {
-    return this.options[index] || null;
-  }
-
-  nameditem(key) {
-    // NOTE: IE11 precludes us from using Array.prototype.find
-    for (let i = 0, options = this.options, option; (option = options[i]); i++) {
-      if (option.id === key || option.getAttribute('name') === key) {
-        return option;
-      }
-    }
-    return null;
-  }
-
   initialize(
-    menuFactory = (el) => new MDCMenu(el),
     labelFactory = (el) => new MDCSelectLabel(el),
     bottomLineFactory = (el) => new MDCSelectBottomLine(el)) {
-    this.surface_ = this.root_.querySelector(strings.SURFACE_SELECTOR);
+    this.nativeControl_ = this.root_.querySelector(strings.NATIVE_CONTROL_SELECTOR);
     const labelElement = this.root_.querySelector(strings.LABEL_SELECTOR);
     if (labelElement) {
       this.label_ = labelFactory(labelElement);
@@ -85,11 +65,19 @@ export class MDCSelect extends MDCComponent {
     if (bottomLineElement) {
       this.bottomLine_ = bottomLineFactory(bottomLineElement);
     }
-    this.selectedText_ = this.root_.querySelector(strings.SELECTED_TEXT_SELECTOR);
-    this.menuEl_ = this.root_.querySelector(strings.MENU_SELECTOR);
-    this.menu_ = menuFactory(this.menuEl_);
 
-    this.ripple = new MDCRipple(this.surface_);
+    if (this.root_.classList.contains(cssClasses.BOX)) {
+      this.ripple = this.initRipple_();
+    }
+  }
+
+  initRipple_() {
+    const adapter = Object.assign(MDCRipple.createAdapter(this), {
+      registerInteractionHandler: (type, handler) => this.nativeControl_.addEventListener(type, handler),
+      deregisterInteractionHandler: (type, handler) => this.nativeControl_.removeEventListener(type, handler),
+    });
+    const foundation = new MDCRippleFoundation(adapter);
+    return new MDCRipple(this.root_, foundation);
   }
 
   getDefaultFoundation() {
@@ -101,56 +89,39 @@ export class MDCSelect extends MDCComponent {
           this.label_.float(value);
         }
       },
-      activateBottomLine: () => this.bottomLine_.activate(),
-      deactivateBottomLine: () => this.bottomLine_.deactivate(),
-      setAttr: (attr, value) => this.root_.setAttribute(attr, value),
-      rmAttr: (attr, value) => this.root_.removeAttribute(attr, value),
-      computeBoundingRect: () => this.surface_.getBoundingClientRect(),
-      registerInteractionHandler: (type, handler) => this.surface_.addEventListener(type, handler),
-      deregisterInteractionHandler: (type, handler) => this.surface_.removeEventListener(type, handler),
-      focus: () => this.surface_.focus(),
-      makeTabbable: () => {
-        this.surface_.tabIndex = 0;
+      activateBottomLine: () => {
+        if (this.bottomLine_) {
+          this.bottomLine_.activate();
+        }
       },
-      makeUntabbable: () => {
-        this.surface_.tabIndex = -1;
+      deactivateBottomLine: () => {
+        if (this.bottomLine_) {
+          this.bottomLine_.deactivate();
+        }
       },
-      getComputedStyleValue: (prop) => window.getComputedStyle(this.surface_).getPropertyValue(prop),
-      setStyle: (propertyName, value) => this.surface_.style.setProperty(propertyName, value),
-      create2dRenderingContext: () => document.createElement('canvas').getContext('2d'),
-      setMenuElStyle: (propertyName, value) => this.menuEl_.style.setProperty(propertyName, value),
-      setMenuElAttr: (attr, value) => this.menuEl_.setAttribute(attr, value),
-      rmMenuElAttr: (attr) => this.menuEl_.removeAttribute(attr),
-      getMenuElOffsetHeight: () => this.menuEl_.offsetHeight,
-      openMenu: (focusIndex) => this.menu_.show({focusIndex}),
-      isMenuOpen: () => this.menu_.open,
-      setSelectedTextContent: (selectedTextContent) => {
-        this.selectedText_.textContent = selectedTextContent;
-      },
-      getNumberOfOptions: () => this.options.length,
-      getTextForOptionAtIndex: (index) => this.options[index].textContent,
-      getValueForOptionAtIndex: (index) => this.options[index].id || this.options[index].textContent,
-      setAttrForOptionAtIndex: (index, attr, value) => this.options[index].setAttribute(attr, value),
-      rmAttrForOptionAtIndex: (index, attr) => this.options[index].removeAttribute(attr),
-      getOffsetTopForOptionAtIndex: (index) => this.options[index].offsetTop,
-      registerMenuInteractionHandler: (type, handler) => this.menu_.listen(type, handler),
-      deregisterMenuInteractionHandler: (type, handler) => this.menu_.unlisten(type, handler),
-      notifyChange: () => this.emit(MDCSelectFoundation.strings.CHANGE_EVENT, this),
-      getWindowInnerHeight: () => window.innerHeight,
-      addBodyClass: (className) => document.body.classList.add(className),
-      removeBodyClass: (className) => document.body.classList.remove(className),
+      setDisabled: (disabled) => this.nativeControl_.disabled = disabled,
+      registerInteractionHandler: (type, handler) => this.nativeControl_.addEventListener(type, handler),
+      deregisterInteractionHandler: (type, handler) => this.nativeControl_.removeEventListener(type, handler),
+      getSelectedIndex: () => this.nativeControl_.selectedIndex,
+      setSelectedIndex: (index) => this.nativeControl_.selectedIndex = index,
+      getValue: () => this.nativeControl_.value,
+      setValue: (value) => this.nativeControl_.value = value,
     });
   }
 
   initialSyncWithDOM() {
-    const selectedOption = this.selectedOptions[0];
-    const idx = selectedOption ? this.options.indexOf(selectedOption) : -1;
-    if (idx >= 0) {
-      this.selectedIndex = idx;
-    }
+    // needed to sync floating label
+    this.selectedIndex = this.nativeControl_.selectedIndex;
 
-    if (this.root_.getAttribute('aria-disabled') === 'true') {
+    if (this.nativeControl_.disabled) {
       this.disabled = true;
     }
+  }
+
+  destroy() {
+    if (this.ripple) {
+      this.ripple.destroy();
+    }
+    super.destroy();
   }
 }

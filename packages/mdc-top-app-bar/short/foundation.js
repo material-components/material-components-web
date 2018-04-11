@@ -15,15 +15,15 @@
  * limitations under the License.
  */
 
-import {cssClasses} from '../constants';
 import MDCTopAppBarAdapter from '../adapter';
-import MDCTopAppBarFoundation from '../foundation';
+import MDCTopAppBarBaseFoundation from '../foundation';
+import {cssClasses} from '../constants';
 
 /**
- * @extends {MDCTopAppBarFoundation<!MDCShortTopAppBarFoundation>}
+ * @extends {MDCTopAppBarBaseFoundation<!MDCShortTopAppBarFoundation>}
  * @final
  */
-class MDCShortTopAppBarFoundation extends MDCTopAppBarFoundation {
+class MDCShortTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
   /**
    * @param {!MDCTopAppBarAdapter} adapter
    */
@@ -58,6 +58,7 @@ class MDCShortTopAppBarFoundation extends MDCTopAppBarFoundation {
   /**
    * Scroll handler for applying/removing the collapsed modifier class
    * on the short top app bar.
+   * @private
    */
   shortAppBarScrollHandler_() {
     const currentScroll = this.adapter_.getViewportScrollY();

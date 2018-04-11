@@ -15,9 +15,7 @@
 //
 
 @import "./common";
-@import "../packages/mdc-list/mdc-list";
-@import "../packages/mdc-menu/mdc-menu";
-@import "../packages/mdc-select/label/mixins";
+@import "../packages/mdc-button/mdc-button";
 @import "../packages/mdc-select/mdc-select";
 
 // stylelint-disable selector-class-pattern
@@ -33,5 +31,9 @@
 
 .demo-select-custom-colors.mdc-select--box {
   @include mdc-select-container-fill-color(rgba(blue, .1));
+}
+
+.button-container {
+  margin: 8px 0;
 }
 // stylelint-enable selector-class-pattern

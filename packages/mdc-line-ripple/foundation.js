@@ -40,7 +40,7 @@ class MDCLineRippleFoundation extends MDCFoundation {
       addClass: () => {},
       removeClass: () => {},
       hasClass: () => {},
-      setAttr: () => {},
+      setStyle: () => {},
       registerEventHandler: () => {},
       deregisterEventHandler: () => {},
     });
@@ -77,10 +77,7 @@ class MDCLineRippleFoundation extends MDCFoundation {
    * @param {!number} xCoordinate
    */
   setRippleCenter(xCoordinate) {
-    const attributeString =
-        `transform-origin: ${xCoordinate}px center`;
-
-    this.adapter_.setAttr('style', attributeString);
+    this.adapter_.setStyle('transform-origin', `${xCoordinate}px center`);
   }
 
   /**
