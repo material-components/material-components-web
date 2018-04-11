@@ -67,6 +67,21 @@ class MDCTabAdapter {
    * @param {string} value The value so give the attribute
    */
   setAttr(attr, value) {}
+
+  /**
+   * Activates the indicator element.
+   * @param {!ClientRect=} previousIndicatorClientRect The client rect of the previously activated indicator
+   */
+  activateIndicator(previousIndicatorClientRect) {}
+
+  /** Deactivates the indicator */
+  deactivateIndicator() {}
+
+  /**
+   * Returns the client rect of the indicator
+   * @return {!ClientRect}
+   */
+  computeIndicatorClientRect() {}
 }
 
 export default MDCTabAdapter;
