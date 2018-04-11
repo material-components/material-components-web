@@ -30,6 +30,7 @@
   left: 0;
   transform-origin: left top;
   transition: mdc-floating-label-transition(transform), mdc-floating-label-transition(color);
+  line-height: 1.15rem;
   cursor: text;
 
   @include mdc-rtl {
