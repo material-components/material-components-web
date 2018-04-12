@@ -22,7 +22,7 @@ const strings = {
   LABEL_SELECTOR: '.mdc-floating-label',
   ICON_SELECTOR: '.mdc-text-field__icon',
   OUTLINE_SELECTOR: '.mdc-notched-outline',
-  BOTTOM_LINE_SELECTOR: '.mdc-line-ripple',
+  LINE_RIPPLE_SELECTOR: '.mdc-line-ripple',
 };
 
 /** @enum {string} */
