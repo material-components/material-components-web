@@ -18,12 +18,12 @@
 @import "./mixins";
 @import "./variables";
 @import "@material/animation/variables";
+@import "@material/line-ripple/mdc-line-ripple";
 @import "@material/floating-label/mdc-floating-label";
 @import "@material/typography/mixins";
 @import "@material/ripple/common";
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
-@import "./bottom-line/mdc-select-bottom-line";
 
 // postcss-bem-linter: define select
 .mdc-select {
@@ -37,6 +37,9 @@
   // Focused state colors
   @include mdc-select-focused-bottom-line-color(primary);
   @include mdc-select-focused-label-color(primary);
+
+  // Hover state colors
+  @include mdc-select-hover-bottom-line-color(rgba(black, .87));
 
   display: inline-flex;
   position: relative;
@@ -67,6 +70,8 @@
     padding-top: 22px;
     padding-bottom: 8px;
     border: none;
+    border-bottom: 1px solid;
+    border-radius: 0;
     outline: none;
     background-color: transparent;
     white-space: nowrap;
@@ -74,7 +79,7 @@
     appearance: none;
   }
 
-  @include mdc-select-focused-bottom-line_ {
+  @include mdc-select-focused-line-ripple_ {
     &::after {
       transform: scale(1, 2);
       opacity: 1;
@@ -142,13 +147,17 @@
     @include mdc-floating-label-ink-color(text-disabled-on-light);
   }
 
-  border-bottom-width: 1px;
-  border-bottom-style: dotted;
+  // stylelint-disable plugin/selector-bem-pattern
+  .mdc-line-ripple {
+    display: none;
+  }
+  // stylelint-enable plugin/selector-bem-pattern
+
+  .mdc-select__native-control {
+    border-bottom-style: dotted;
+  }
+
   opacity: .38;
   cursor: default;
   pointer-events: none;
-
-  .mdc-select__bottom-line {
-    display: none;
-  }
 }

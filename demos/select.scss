@@ -27,6 +27,9 @@
   // Focused colors
   @include mdc-select-focused-bottom-line-color(green);
   @include mdc-select-focused-label-color(green);
+
+  // Hover colors
+  @include mdc-select-hover-bottom-line-color(rgba(blue, .87));
 }
 
 .demo-select-custom-colors.mdc-select--box {

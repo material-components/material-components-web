@@ -21,7 +21,7 @@ import {assert} from 'chai';
 import {MDCFloatingLabel} from '../../../packages/mdc-floating-label/index';
 
 const getFixture = () => bel`
-  <div class="mdc-floating-label"></div>
+  <label class="mdc-floating-label"></label>
 `;
 
 suite('MDCFloatingLabel');

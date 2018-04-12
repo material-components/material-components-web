@@ -16,7 +16,7 @@
 
 @import "@material/floating-label/mixins";
 @import "@material/theme/mixins";
-@import "./bottom-line/mixins";
+@import "@material/line-ripple/mixins";
 
 // Public
 
@@ -40,6 +40,12 @@
   }
 }
 
+@mixin mdc-select-hover-bottom-line-color($color) {
+  &:not(.mdc-select--disabled) .mdc-select__native-control:hover {
+    @include mdc-select-native-control-bottom-line-color_($color);
+  }
+}
+
 @mixin mdc-select-bottom-line-color($color) {
   &:not(.mdc-select--disabled) {
     @include mdc-select-bottom-line-color_($color);
@@ -48,7 +54,7 @@
 
 @mixin mdc-select-focused-bottom-line-color($color) {
   &:not(.mdc-select--disabled) {
-    @include mdc-select-focused-bottom-line-color_($color);
+    @include mdc-select-focused-line-ripple-color_($color);
   }
 }
 
@@ -59,8 +65,8 @@
 }
 
 // Private
-@mixin mdc-select-focused-bottom-line_ {
-  .mdc-select__native-control:focus ~ .mdc-select__bottom-line {
+@mixin mdc-select-focused-line-ripple_ {
+  .mdc-select__native-control:focus ~ .mdc-line-ripple {
     @content;
   }
 }
@@ -76,18 +82,18 @@
 }
 
 @mixin mdc-select-bottom-line-color_($color) {
-  .mdc-select__bottom-line {
-    @include mdc-select-bottom-line-fill-color($color);
+  .mdc-select__native-control {
+    @include mdc-select-native-control-bottom-line-color_($color);
   }
 }
 
-@mixin mdc-select-focused-bottom-line-color_($color) {
-  @include mdc-select-focused-bottom-line_ {
-    @include mdc-select-bottom-line-fill-color($color);
-  }
+@mixin mdc-select-native-control-bottom-line-color_($color) {
+  border-bottom-color: $color;
+}
 
-  .mdc-select__bottom-line::after {
-    @include mdc-select-bottom-line-fill-color($color);
+@mixin mdc-select-focused-line-ripple-color_($color) {
+  @include mdc-select-focused-line-ripple_ {
+    @include mdc-line-ripple-color($color);
   }
 }
 
