@@ -19,7 +19,8 @@
   },
   "dependencies": {
     "@material/base": "^0.34.0",
+    "@material/rtl": "^0.34.0",
     "@material/theme": "^0.34.0",
-    "@material/rtl": "^0.34.0"
+    "@material/typography": "^0.34.0"
   }
 }

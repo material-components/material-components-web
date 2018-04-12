@@ -47,8 +47,7 @@
     flex-grow: 1;
   }
 
-  @include mdc-typography(display2);
-  font-size: 24px;
+  @include mdc-typography(headline6);
   display: flex;
 }
 
