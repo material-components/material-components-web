@@ -53,8 +53,8 @@ npm install @material/select
       Fruit
     </option>
   </select>
-  <div class="mdc-floating-label">Pick a Food Group</div>
-  <div class="mdc-select__bottom-line"></div>
+  <label class="mdc-floating-label">Pick a Food Group</label>
+  <div class="mdc-line-ripple"></div>
 </div>
 ```
 
@@ -89,8 +89,8 @@ of the way of the select's value and prevents a Flash Of Unstyled Content (**FOU
       Milk, Yogurt, and Cheese
     </option>
   </select>
-  <div class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</div>
-  <div class="mdc-select__bottom-line"></div>
+  <label class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</label>
+  <div class="mdc-line-ripple"></div>
 </div>
 ```
 
@@ -121,8 +121,8 @@ Add the `mdc-select--disabled` class to the `mdc-select` element and the `disabl
       Fruit
     </option>
   </select>
-  <div class="mdc-floating-label">Pick a Food Group</div>
-  <div class="mdc-select__bottom-line"></div>
+  <label class="mdc-floating-label">Pick a Food Group</label>
+  <div class="mdc-line-ripple"></div>
 </div>
 ```
 
@@ -143,8 +143,8 @@ Since MDC Select uses native `<select>` and `<option>` elements, simply add the 
       Fruit
     </option>
   </select>
-  <div class="mdc-floating-label">Pick a Food Group</div>
-  <div class="mdc-select__bottom-line"></div>
+  <label class="mdc-floating-label">Pick a Food Group</label>
+  <div class="mdc-line-ripple"></div>
 </div>
 ```
 
@@ -168,6 +168,7 @@ Mixin | Description
 `mdc-select-focused-label-color($color, $opacity: 0.87)` | Customizes the label color of the select when focused. Changing opacity for the label when floating is optional.
 `mdc-select-bottom-line-color($color)` | Customizes the color of the default bottom line of the select.
 `mdc-select-focused-bottom-line-color($color)` | Customizes the color of the bottom line of the select when focused.
+`mdc-select-hover-bottom-line-color($color)` | Customizes the color of the bottom line when select is hovered.
 
 > NOTE: To further customize label color please see the [floating label readme](./../mdc-floating-label/README.md).
 
