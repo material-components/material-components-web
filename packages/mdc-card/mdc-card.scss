@@ -19,6 +19,7 @@
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
 @import "./mixins";
+@import "./variables";
 
 // postcss-bem-linter: define card
 
@@ -31,7 +32,7 @@
 
 .mdc-card--stroked {
   @include mdc-elevation(0);
-  @include mdc-card-stroke(#dbdbdb);
+  @include mdc-card-stroke($mdc-card-stroke-color);
 }
 
 //

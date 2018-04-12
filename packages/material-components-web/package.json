@@ -40,6 +40,7 @@
     "@material/rtl": "^0.34.0",
     "@material/select": "^0.34.1",
     "@material/selection-control": "^0.34.1",
+    "@material/shape": "^0.0.0",
     "@material/slider": "^0.34.0",
     "@material/snackbar": "^0.34.0",
     "@material/switch": "^0.34.0",
