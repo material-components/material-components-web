@@ -27,17 +27,6 @@ MDC Typography is a foundational module that applies these styles to MDC Web com
 * Button
 * Overline
 
-### Usage
-
-```html
-<head>
-  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
-</head>
-<body class="mdc-typography">
-  <h1 class="mdc-typography--headline1">Big header</h1>
-</body>
-```
-
 ## Design & API Documentation
 
 <ul class="icon-list">
@@ -56,8 +45,6 @@ npm install @material/typography
 ```
 
 ## Usage
-
-### Load Roboto
 
 We recommend you load Roboto from Google Fonts
 
@@ -105,7 +92,7 @@ Mixin | Description
 
 #### `$style` Values
 
-These styles can be used as the `$style` argument for `mdc-typography` mixin.
+These styles can be used as the `$style` argument for the `mdc-typography` mixin.
 
 * `headline1`
 * `headline2`

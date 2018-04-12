@@ -47,11 +47,11 @@
   }
 }
 
-@function mdc-typography-set-styles_($mdc-typography-base, $mdc-typography-styles-temp) {
-  @each $style, $style-props in $mdc-typography-styles-temp {
+@function mdc-typography-set-styles_($base-styles, $scale-styles) {
+  @each $style, $style-props in $scale-styles {
 
     // Merge base properties for all styles.
-    $style-props: map-merge($style-props, $mdc-typography-base);
+    $style-props: map-merge($base-styles, $style-props);
 
     // Merge global overrides onto each style.
     @if global_variable_exists(mdc-typography-styles-#{$style}) {
@@ -59,10 +59,10 @@
     }
 
     // Override original styles with new styles.
-    $mdc-typography-styles-temp: map-merge($mdc-typography-styles-temp, (#{$style}: $style-props));
+    $scale-styles: map-merge($scale-styles, (#{$style}: $style-props));
   }
 
-  @return $mdc-typography-styles-temp;
+  @return $scale-styles;
 }
 
 @function mdc-typography-get-letter-spacing_($tracking, $font-size) {
