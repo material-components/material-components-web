@@ -69,7 +69,7 @@
 
 @mixin mdc-drawer-list_() {
   .mdc-list-item {
-    @include mdc-typography(body2);
+    @include mdc-typography(subtitle2);
 
     position: relative;
     outline: none;
