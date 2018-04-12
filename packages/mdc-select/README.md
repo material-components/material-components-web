@@ -53,7 +53,7 @@ npm install @material/select
       Fruit
     </option>
   </select>
-  <div class="mdc-select__label">Pick a Food Group</div>
+  <div class="mdc-floating-label">Pick a Food Group</div>
   <div class="mdc-select__bottom-line"></div>
 </div>
 ```
@@ -72,7 +72,7 @@ See [Importing the JS component](../../docs/importing-js.md) for more informatio
 #### Select with pre-selected option
 
 When dealing with the select component that has pre-selected values, you'll want to ensure that you
-render `mdc-select__label` with the `mdc-select__label--float-above` modifier class and the selected
+render `mdc-floating-label` with the `mdc-floating-label--float-above` modifier class and the selected
 option with the `selected` attribute. This will ensure that the label moves out
 of the way of the select's value and prevents a Flash Of Unstyled Content (**FOUC**).
 
@@ -89,7 +89,7 @@ of the way of the select's value and prevents a Flash Of Unstyled Content (**FOU
       Milk, Yogurt, and Cheese
     </option>
   </select>
-  <div class="mdc-select__label mdc-select__label--float-above">Pick a Food Group</div>
+  <div class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</div>
   <div class="mdc-select__bottom-line"></div>
 </div>
 ```
@@ -121,7 +121,7 @@ Add the `mdc-select--disabled` class to the `mdc-select` element and the `disabl
       Fruit
     </option>
   </select>
-  <div class="mdc-select__label">Pick a Food Group</div>
+  <div class="mdc-floating-label">Pick a Food Group</div>
   <div class="mdc-select__bottom-line"></div>
 </div>
 ```
@@ -143,7 +143,7 @@ Since MDC Select uses native `<select>` and `<option>` elements, simply add the 
       Fruit
     </option>
   </select>
-  <div class="mdc-select__label">Pick a Food Group</div>
+  <div class="mdc-floating-label">Pick a Food Group</div>
   <div class="mdc-select__bottom-line"></div>
 </div>
 ```
@@ -164,12 +164,12 @@ Mixin | Description
 --- | ---
 `mdc-select-ink-color($color)` | Customizes the color of the selected item displayed in the select.
 `mdc-select-container-fill-color($color)` | Customizes the background color of the select.
-`mdc-select-label-color($color)` | Customizes the label color of the select in the unfocused state.
+`mdc-select-label-color($color, $opacity: 1)` | Customizes the label color of the select in the unfocused state.
 `mdc-select-focused-label-color($color, $opacity: 0.87)` | Customizes the label color of the select when focused. Changing opacity for the label when floating is optional.
 `mdc-select-bottom-line-color($color)` | Customizes the color of the default bottom line of the select.
 `mdc-select-focused-bottom-line-color($color)` | Customizes the color of the bottom line of the select when focused.
 
-> NOTE: To customize label color please see the [label readme](./label/README.md).
+> NOTE: To further customize label color please see the [floating label readme](./../mdc-floating-label/README.md).
 
 ### MDC Select Component API
 
