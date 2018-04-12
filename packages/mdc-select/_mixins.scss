@@ -14,9 +14,9 @@
 // limitations under the License.
 //
 
+@import "@material/floating-label/mixins";
 @import "@material/theme/mixins";
 @import "./bottom-line/mixins";
-@import "./label/mixins";
 
 // Public
 
@@ -34,10 +34,8 @@
 
 @mixin mdc-select-focused-label-color($color, $opacity: .87) {
   &:not(.mdc-select--disabled) {
-    .mdc-select__native-control:focus ~ {
-      // NOTE: the mdc-select-floating-label-color mixin contains the class
-      // selector .mdc-select__label, which allows the `~` to work.
-      @include mdc-select-floating-label-color($color, $opacity);
+    .mdc-select__native-control:focus ~ .mdc-floating-label {
+      @include mdc-floating-label-ink-color(rgba(mdc-theme-prop-value($color), $opacity));
     }
   }
 }
@@ -55,8 +53,8 @@
 }
 
 @mixin mdc-select-label-color($color, $opacity: 1) {
-  &:not(.mdc-select--disabled) {
-    @include mdc-select-floating-label-color($color, $opacity);
+  &:not(.mdc-select--disabled) .mdc-floating-label {
+    @include mdc-floating-label-ink-color(rgba(mdc-theme-prop-value($color), $opacity));
   }
 }
 
