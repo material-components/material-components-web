@@ -169,7 +169,7 @@ Mixin | Description
 `mdc-select-bottom-line-color($color)` | Customizes the color of the default bottom line of the select.
 `mdc-select-focused-bottom-line-color($color)` | Customizes the color of the bottom line of the select when focused.
 
-> NOTE: To customize label color please see the [floating label readme](./../mdc-floating-label/README.md).
+> NOTE: To further customize label color please see the [floating label readme](./../mdc-floating-label/README.md).
 
 ### MDC Select Component API
 
