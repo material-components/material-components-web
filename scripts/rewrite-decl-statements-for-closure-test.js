@@ -202,7 +202,8 @@ function transform(srcFile, rootDir) {
     packageStr = pathbasedPackageName;
   }
 
-  outputCode = 'goog.module(\'' + packageStr + '\');\n' + outputCode;
+  // Specify goog.module and append newline at the end of the file.
+  outputCode = 'goog.module(\'' + packageStr + '\');\n' + outputCode + '\n';
   fs.writeFileSync(srcFile, outputCode, 'utf8');
   logProgress(`[rewrite] ${srcFile}`);
 }
