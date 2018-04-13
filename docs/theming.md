@@ -19,7 +19,7 @@ MDC Web theming, like Material Design theming, uses two main colors: **primary**
 throughout most of the application and components, as the main color for your application. The secondary color is used
 for floating action buttons and other interactive elements, serving as visual contrast to the primary.
 
-In addition to the primary and secondary colors, MDC Web also defines a _background_ color, which is used as a background in
+In addition to the primary and secondary colors, MDC Web also defines a _surface_ color, which is used as a background in
 components, and usually as the page background as well.
 
 Finally, MDC Web has a number of text colors, which are used for rendering text and other shapes on top of the primary,
@@ -31,6 +31,8 @@ what's behind them, and have
 - Hint, used for text hints (such as those in text fields and labels).
 - Disabled, used for text in disabled components and content.
 - Icon, used for icons.
+- On-surface, used for text that is on top of a surface background.
+- On-primary, used for text that is on top of a primary background.
 
 ## Building a themed application
 
@@ -51,13 +53,11 @@ Here's the markup:
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Elements</title>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link rel="stylesheet" href="material-components-web.min.css" />
     <style>
       .cards {
         display: flex;
@@ -65,7 +65,7 @@ Here's the markup:
       }
 
       .element-card {
-        width: 16em;
+        width: 20em;
         margin: 16px;
       }
 
@@ -85,47 +85,46 @@ Here's the markup:
     <h1>Choose your element</h1>
     <div class="cards">
       <div class="mdc-card element-card earth">
-        <section class="mdc-card__media">
-          <h1 class="mdc-card__title mdc-card__title--large">Earth</h1>
-          <h2 class="mdc-card__subtitle">A solid decision.</h2>
-        </section>
-        <section class="mdc-card__supporting-text">
+        <div class="mdc-card__media">
+          <div class="mdc-card__media-content">
+            <h1 class="mdc-typography--headline4">Earth</h1>
+            <h2 class="mdc-typography--headline6">A solid decision.</h2>
+          </div>
+        </div>
+        <p>
           Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
           Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        </section>
+        </p>
       </div>
-
       <div class="mdc-card element-card wind">
-        <section class="mdc-card__media">
-          <h1 class="mdc-card__title mdc-card__title--large">Wind</h1>
-          <h2 class="mdc-card__subtitle">Stormy weather ahead.</h2>
-        </section>
-        <section class="mdc-card__supporting-text">
+        <div class="mdc-card__media">
+          <h1 class="mdc-typography--headline4">Wind</h1>
+          <h2 class="mdc-typography--headline6">Stormy weather ahead.</h2>
+        </div>
+        <p>
           Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
           Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        </section>
+        </p>
       </div>
-
       <div class="mdc-card element-card fire">
-        <section class="mdc-card__media">
-          <h1 class="mdc-card__title mdc-card__title--large">Fire</h1>
-          <h2 class="mdc-card__subtitle">Hot-headed much?</h2>
-        </section>
-        <section class="mdc-card__supporting-text">
+        <div class="mdc-card__media">
+          <h1 class="mdc-typography--headline4">Fire</h1>
+          <h2 class="mdc-typography--headline6">Hot-headed much?</h2>
+        </div>
+        <p>
           Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
           Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        </section>
+        </p>
       </div>
-
       <div class="mdc-card element-card water">
-        <section class="mdc-card__media">
-          <h1 class="mdc-card__title mdc-card__title--large">Water</h1>
-          <h2 class="mdc-card__subtitle">Go with the flow.</h2>
-        </section>
-        <section class="mdc-card__supporting-text">
+        <div class="mdc-card__media">
+          <h1 class="mdc-typography--headline4">Water</h1>
+          <h2 class="mdc-typography--headline6">Go with the flow.</h2>
+        </div>
+        <p>
           Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
           Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        </section>
+        </p>
       </div>
     </div>
     <button class="mdc-fab material-icons" id="demo-absolute-fab" aria-label="Favorite">
@@ -161,34 +160,32 @@ copied to your CSS rules, adding a maintenance cost.
 MDC Web provides a number of CSS classes as part of the `mdc-theme` module to help you tackle this problem in a more
 maintainable way. Here are the classes that deal with primary, secondary and background colors:
 
-| Class                           | Description                                                             |
-| ------------------------------- | ----------------------------------------------------------------------- |
-| `mdc-theme--primary`            | Sets the text color to the theme primary color.                         |
-| `mdc-theme--primary-light`      | Sets the text color to the theme primary color (light variant).         |
-| `mdc-theme--primary-dark`       | Sets the text color to the theme primary color (dark variant).          |
-| `mdc-theme--secondary`          | Sets the text color to the theme secondary color.                       |
-| `mdc-theme--secondary-light`    | Sets the text color to the theme secondary color (light variant).       |
-| `mdc-theme--secondary-dark`     | Sets the text color to the theme secondary color (dark variant).        |
-| `mdc-theme--background`         | Sets the background color to the theme background color.                |
-| `mdc-theme--primary-bg`         | Sets the background color to the theme primary color.                   |
-| `mdc-theme--primary-light-bg`   | Sets the background color to the theme primary color (light variant).   |
-| `mdc-theme--primary-dark-bg`    | Sets the background color to the theme primary color (dark variant).    |
-| `mdc-theme--secondary-bg`       | Sets the background color to the theme secondary color.                 |
-| `mdc-theme--secondary-light-bg` | Sets the background color to the theme secondary color (light variant). |
-| `mdc-theme--secondary-dark-bg`  | Sets the background color to the theme secondary color (dark variant).  |
+| Class                           | Description                                                                  |
+| ------------------------------- | -----------------------------------------------------------------------      |
+| `mdc-theme--primary`            | Sets the text color to the theme primary color.                              |
+| `mdc-theme--on-primary`         | Sets the text color to the color configured for text on the primary color.   |
+| `mdc-theme--secondary`          | Sets the text color to the theme secondary color.                            |
+| `mdc-theme--on-secondary`       | Sets the text color to the color configured for text on the secondary color. |
+| `mdc-theme--surface`            | Sets the background color to the surface background color.                   |
+| `mdc-theme--on-secondary`       | Sets the text color to the color configured for text on the surface color.   |
+| `mdc-theme--background`         | Sets the background color to the theme background color.                     |
+| `mdc-theme--primary-bg`         | Sets the background color to the theme primary color.                        |
+| `mdc-theme--secondary-bg`       | Sets the background color to the theme secondary color.                      |
 
 From here, we can see that we want to apply `mdc-theme--primary-bg` to the cards' media areas:
 
 ```html
-<div class="mdc-card element-card">
-  <section class="mdc-card__media mdc-theme--primary-bg">
-    <h1 class="mdc-card__title mdc-card__title--large">Earth</h1>
-    <h2 class="mdc-card__subtitle">A solid decision.</h2>
-  </section>
-  <section class="mdc-card__supporting-text">
+<div class="mdc-card element-card earth">
+  <div class="mdc-card__media mdc-theme--primary-bg">
+    <div class="mdc-card__media-content">
+      <h1 class="mdc-typography--headline4">Earth</h1>
+      <h2 class="mdc-typography--headline6">A solid decision.</h2>
+    </div>
+  </div>
+  <p>
     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
     Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-  </section>
+  </p>
 </div>
 ```
 
@@ -203,23 +200,11 @@ takes into account the primary color, in order to determine whether to overlay w
 `mdc-theme` provides utility classes for that purpose as well. Namely, for overlaying text on a primary color
 background, there are:
 
-| Class                                        | Description                                                                                               |
-| -------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| `mdc-theme--text-primary-on-primary`         | Set text to suitable color for primary text on top of a theme primary color background.                   |
-| `mdc-theme--text-primary-on-primary-light`   | Set text to suitable color for primary text on top of a theme primary color background (light variant).   |
-| `mdc-theme--text-primary-on-primary-dark`    | Set text to suitable color for primary text on top of a theme primary color background (dark variant).    |
-| `mdc-theme--text-secondary-on-primary`       | Set text to suitable color for secondary text on top of a theme primary color background.                 |
-| `mdc-theme--text-secondary-on-primary-light` | Set text to suitable color for secondary text on top of a theme primary color background (light variant). |
-| `mdc-theme--text-secondary-on-primary-dark`  | Set text to suitable color for secondary text on top of a theme primary color background (dark variant).  |
-| `mdc-theme--text-hint-on-primary`            | Set text to suitable color for hint text on top of a theme primary color background.                      |
-| `mdc-theme--text-hint-on-primary-light`      | Set text to suitable color for hint text on top of a theme primary color background (light variant).      |
-| `mdc-theme--text-hint-on-primary-dark`       | Set text to suitable color for hint text on top of a theme primary color background (dark variant).       |
-| `mdc-theme--text-disabled-on-primary`        | Set text to suitable color for disabled text on top of a theme primary color background.                  |
-| `mdc-theme--text-disabled-on-primary-light`  | Set text to suitable color for disabled text on top of a theme primary color background (light variant).  |
-| `mdc-theme--text-disabled-on-primary-dark`   | Set text to suitable color for disabled text on top of a theme primary color background (dark variant).   |
-| `mdc-theme--text-icon-on-primary`            | Set text to suitable color for icons on top of a theme primary color background.                          |
-| `mdc-theme--text-icon-on-primary-light`      | Set text to suitable color for icons on top of a theme primary color background (light variant).          |
-| `mdc-theme--text-icon-on-primary-dark`       | Set text to suitable color for icons on top of a theme primary color background (dark variant).           |
+| Class                        | Description                                                                         |
+| -----------------------------| ------------------------------------------------------------------------------------|
+| `mdc-theme--on-primary`      | Set text to suitable color for text on top of a theme primary color background.     |
+| `mdc-theme--on-secondary`    | Set text to suitable color for text on top of a theme secondary color background.   |
+| `mdc-theme--on-surface`      | Set text to suitable color for text on top of a theme surface color background.     |
 
 > Note: `primary`, `secondary`, `hint`, `disabled` and `icon` refer to the text's function. The fact that we use the
 word _primary_ in the different contexts of _primary color_ and _primary function text_ can be confusing at first.
