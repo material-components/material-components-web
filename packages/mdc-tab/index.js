@@ -102,6 +102,7 @@ class MDCTab extends MDCComponent {
   }
 
   /**
+   * Getter for the active state of the tab
    * @return {boolean}
    */
   get active() {
@@ -109,10 +110,18 @@ class MDCTab extends MDCComponent {
   }
 
   /**
+   * Activates the tab
    * @param {!ClientRect=} previousTabClientRect
    */
   activate(previousTabClientRect) {
     this.foundation_.activate(previousTabClientRect);
+  }
+
+  /**
+   * Deactivates the tab
+   */
+  deactivate() {
+    this.foundation_.deactivate();
   }
 
   /**
@@ -121,10 +130,6 @@ class MDCTab extends MDCComponent {
    */
   computeIndicatorClientRect() {
     return this.foundation_.computeIndicatorClientRect();
-  }
-
-  deactivate() {
-    this.foundation_.deactivate();
   }
 }
 

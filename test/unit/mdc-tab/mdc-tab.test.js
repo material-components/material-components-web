@@ -28,6 +28,10 @@ const getFixture = () => bel`
       <span class="mdc-tab__text-label">Foo</span>
       <span class="mdc-tab__icon"></span>
     </div>
+    <span class="mdc-tab__ripple"></span>
+    <span class="mdc-tab-indicator">
+      <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+    </span>
   </button>
 `;
 
@@ -96,6 +100,27 @@ test('#adapter.deregisterEventHandler removes an event listener from the root el
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
+test('#adapter.activateIndicator activates the indicator subcomponent', () => {
+  const {root, component} = setupTest();
+  component.getDefaultFoundation().adapter_.activateIndicator();
+  assert.ok(root.querySelector('.mdc-tab-indicator').classList.contains('mdc-tab-indicator--active'));
+});
+
+test('#adapter.deactivateIndicator deactivates the indicator subcomponent', () => {
+  const {root, component} = setupTest();
+  component.getDefaultFoundation().adapter_.deactivateIndicator();
+  assert.notOk(root.querySelector('.mdc-tab-indicator').classList.contains('mdc-tab-indicator--active'));
+});
+
+test('#adapter.computeIndicatorClientRect returns the indicator element\'s bounding client rect', () => {
+  const {root, component} = setupTest();
+  component.getDefaultFoundation().adapter_.deactivateIndicator();
+  assert.deepEqual(
+    component.getDefaultFoundation().adapter_.computeIndicatorClientRect(),
+    root.querySelector('.mdc-tab-indicator').getBoundingClientRect()
+  );
+});
+
 function setupMockFoundationTest(root = getFixture()) {
   const MockFoundationConstructor = td.constructor(MDCTabFoundation);
   const mockFoundation = new MockFoundationConstructor();
@@ -109,14 +134,26 @@ test('#active getter calls isActive', () => {
   td.verify(mockFoundation.isActive(), {times: 1});
 });
 
-test('#active set to true calls activate', () => {
+test('#activate() calls activate', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
-  component.active = true;
-  td.verify(mockFoundation.activate(), {times: 1});
+  component.activate();
+  td.verify(mockFoundation.activate(undefined), {times: 1});
 });
 
-test('#active set to false calls deactivate', () => {
+test('#activate({ClientRect}) calls activate', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
-  component.active = false;
+  component.activate({width: 100, left: 200});
+  td.verify(mockFoundation.activate({width: 100, left: 200}), {times: 1});
+});
+
+test('#deactivate() calls deactivate', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.deactivate();
   td.verify(mockFoundation.deactivate(), {times: 1});
+});
+
+test('#computeIndicatorClientRect() calls computeIndicatorClientRect', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.computeIndicatorClientRect();
+  td.verify(mockFoundation.computeIndicatorClientRect(), {times: 1});
 });

@@ -18,6 +18,7 @@
 @import "../packages/mdc-tab/mixins";
 @import "../packages/mdc-tab/mdc-tab";
 @import "../packages/mdc-tab-indicator/mdc-tab-indicator";
+@import "../packages/mdc-tab-indicator/mixins";
 @import "../packages/mdc-elevation/mixins";
 @import "../packages/mdc-ripple/mixins";
 @import "../packages/mdc-theme/color-palette";
@@ -40,22 +41,22 @@
   padding: 24px;
 }
 
-.custom-tab1 {
-  @include mdc-states($material-color-yellow-a700);
-  @include mdc-tab-text-label-color($material-color-pink-600);
-
-  &.mdc-tab--active {
-    @include mdc-tab-text-label-color($material-color-cyan-600);
-  }
-}
-
-.custom-tab2 {
-  @include mdc-states($material-color-amber-a700);
-  @include mdc-tab-text-label-color($material-color-red-300);
+.custom-tab {
+  @include mdc-tab-text-label-color($material-color-blue-300);
   @include mdc-tab-icon-color($material-color-orange-300);
 
+  .custom-tab-indicator {
+    @include mdc-tab-indicator-underline-color($material-color-pink-a700);
+    @include mdc-tab-indicator-underline-height(5px);
+    @include mdc-tab-indicator-underline-top-corner-radius(5px);
+  }
+
+  .mdc-tab__ripple {
+    @include mdc-states($material-color-pink-100);
+  }
+
   &.mdc-tab--active {
-    @include mdc-tab-text-label-color($material-color-red-900);
+    @include mdc-tab-text-label-color($material-color-blue-900);
     @include mdc-tab-icon-color($material-color-orange-900);
   }
 }
