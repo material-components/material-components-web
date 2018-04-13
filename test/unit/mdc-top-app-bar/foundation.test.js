@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,33 +20,34 @@ import td from 'testdouble';
 import {captureHandlers} from '../helpers/foundation';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
-import MDCTopAppBarFoundation from '../../../packages/mdc-top-app-bar/foundation';
+import MDCTopAppBarBaseFoundation from '../../../packages/mdc-top-app-bar/foundation';
 import {strings, cssClasses} from '../../../packages/mdc-top-app-bar/constants';
 
-suite('MDCTopAppBarFoundation');
+suite('MDCTopAppBarBaseFoundation');
 
 test('exports strings', () => {
-  assert.isTrue('strings' in MDCTopAppBarFoundation);
-  assert.deepEqual(MDCTopAppBarFoundation.strings, strings);
+  assert.isTrue('strings' in MDCTopAppBarBaseFoundation);
+  assert.deepEqual(MDCTopAppBarBaseFoundation.strings, strings);
 });
 
 test('exports cssClasses', () => {
-  assert.isTrue('cssClasses' in MDCTopAppBarFoundation);
-  assert.deepEqual(MDCTopAppBarFoundation.cssClasses, cssClasses);
+  assert.isTrue('cssClasses' in MDCTopAppBarBaseFoundation);
+  assert.deepEqual(MDCTopAppBarBaseFoundation.cssClasses, cssClasses);
 });
 
 test('defaultAdapter returns a complete adapter implementation', () => {
-  verifyDefaultAdapter(MDCTopAppBarFoundation, [
-    'hasClass', 'addClass', 'removeClass', 'registerNavigationIconInteractionHandler',
+  verifyDefaultAdapter(MDCTopAppBarBaseFoundation, [
+    'hasClass', 'addClass', 'removeClass', 'setStyle', 'getTopAppBarHeight', 'registerNavigationIconInteractionHandler',
     'deregisterNavigationIconInteractionHandler', 'notifyNavigationIconClicked', 'registerScrollHandler',
-    'deregisterScrollHandler', 'getViewportScrollY', 'getTotalActionItems',
+    'deregisterScrollHandler', 'registerResizeHandler', 'deregisterResizeHandler', 'getViewportScrollY',
+    'getTotalActionItems',
   ]);
 });
 
 const setupTest = () => {
-  const mockAdapter = td.object(MDCTopAppBarFoundation.defaultAdapter);
+  const mockAdapter = td.object(MDCTopAppBarBaseFoundation.defaultAdapter);
 
-  const foundation = new MDCTopAppBarFoundation(mockAdapter);
+  const foundation = new MDCTopAppBarBaseFoundation(mockAdapter);
 
   return {foundation, mockAdapter};
 };
