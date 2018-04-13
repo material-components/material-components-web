@@ -56,7 +56,7 @@
   // setting it here has no effect because it is overriden by the font-size
   // given below).
   @each $prop in (letter-spacing) {
-    #{$prop}: map-get(map-get($mdc-typography-styles, subheading2), $prop);
+    #{$prop}: map-get(map-get($mdc-typography-styles, subtitle1), $prop);
   }
 
   width: 100%;

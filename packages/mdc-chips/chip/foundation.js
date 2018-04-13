@@ -54,6 +54,7 @@ class MDCChipFoundation extends MDCFoundation {
       deregisterTrailingIconInteractionHandler: () => {},
       notifyInteraction: () => {},
       notifyTrailingIconInteraction: () => {},
+      layout: () => {},
     });
   }
 
@@ -68,6 +69,8 @@ class MDCChipFoundation extends MDCFoundation {
     /** @private {function(!Event): undefined} */
     this.transitionEndHandler_ = (evt) => this.handleTransitionEnd_(evt);
     /** @private {function(!Event): undefined} */
+    this.animationEndHandler_ = (evt) => this.handleAnimationEnd_(evt);
+    /** @private {function(!Event): undefined} */
     this.trailingIconInteractionHandler_ = (evt) => this.handleTrailingIconInteraction_(evt);
   }
 
@@ -76,6 +79,7 @@ class MDCChipFoundation extends MDCFoundation {
       this.adapter_.registerEventHandler(evtType, this.interactionHandler_);
     });
     this.adapter_.registerEventHandler('transitionend', this.transitionEndHandler_);
+    this.adapter_.registerEventHandler('animationend', this.animationEndHandler_);
     ['click', 'keydown', 'touchstart', 'pointerdown', 'mousedown'].forEach((evtType) => {
       this.adapter_.registerTrailingIconInteractionHandler(evtType, this.trailingIconInteractionHandler_);
     });
@@ -86,19 +90,27 @@ class MDCChipFoundation extends MDCFoundation {
       this.adapter_.deregisterEventHandler(evtType, this.interactionHandler_);
     });
     this.adapter_.deregisterEventHandler('transitionend', this.transitionEndHandler_);
+    this.adapter_.deregisterEventHandler('animationend', this.animationEndHandler_);
     ['click', 'keydown', 'touchstart', 'pointerdown', 'mousedown'].forEach((evtType) => {
       this.adapter_.deregisterTrailingIconInteractionHandler(evtType, this.trailingIconInteractionHandler_);
     });
   }
 
   /**
-   * Toggles the selected class on the chip element.
+   * @return {boolean}
    */
-  toggleSelected() {
-    if (this.adapter_.hasClass(cssClasses.SELECTED)) {
-      this.adapter_.removeClass(cssClasses.SELECTED);
-    } else {
+  isSelected() {
+    return this.adapter_.hasClass(cssClasses.SELECTED);
+  }
+
+  /**
+   * @param {boolean} selected
+   */
+  setSelected(selected) {
+    if (selected) {
       this.adapter_.addClass(cssClasses.SELECTED);
+    } else {
+      this.adapter_.removeClass(cssClasses.SELECTED);
     }
   }
 
@@ -128,6 +140,17 @@ class MDCChipFoundation extends MDCFoundation {
     } else if (this.adapter_.eventTargetHasClass(/** @type {!EventTarget} */ (evt.target), cssClasses.CHECKMARK) &&
                !this.adapter_.hasClass(cssClasses.SELECTED)) {
       this.adapter_.removeClassFromLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
+    }
+  }
+
+  /**
+   * Handles an animation end event on the root element.
+   * @param {!Event} evt
+   */
+  handleAnimationEnd_(evt) {
+    // The chip's ripple size must be recalculated after the entry animation.
+    if (evt.animationName === strings.ENTRY_ANIMATION_NAME) {
+      this.adapter_.layout();
     }
   }
 

@@ -57,6 +57,8 @@ We recommend you load [Material Icons](https://material.io/icons/) from Google F
 </button>
 ```
 
+> _NOTE:_ The floating action button icon can be used with a `span`, `i`, `img`, or `svg` element.
+
 ### CSS Classes
 
 CSS Class | Description
@@ -134,6 +136,7 @@ Changes the FAB's container color to the given color, and updates the FAB's ink 
 Mixin | Description
 --- | ---
 `mdc-fab-container-color($color)` | Sets the container color to the given color
+`mdc-fab-icon-size($width, $height)` | Sets the icon `width`, `height`, and `font-size` properties to the specified `width` and `height`. `$height` is optional and will default to `$width` if omitted. The `font-size` will be set to the provided `$width` value.
 `mdc-fab-ink-color($color)` | Sets the ink color to the given color
 
 The ripple effect for the FAB component is styled using [MDC Ripple](../mdc-ripple) mixins.
