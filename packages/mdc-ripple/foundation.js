@@ -245,7 +245,10 @@ class MDCRippleFoundation extends MDCFoundation {
     });
     this.adapter_.registerInteractionHandler('focus', this.focusHandler_);
     this.adapter_.registerInteractionHandler('blur', this.blurHandler_);
-    this.adapter_.registerResizeHandler(this.resizeHandler_);
+
+    if (this.adapter_.isUnbounded()) {
+      this.adapter_.registerResizeHandler(this.resizeHandler_);
+    }
   }
 
   /**
@@ -269,7 +272,10 @@ class MDCRippleFoundation extends MDCFoundation {
     });
     this.adapter_.deregisterInteractionHandler('focus', this.focusHandler_);
     this.adapter_.deregisterInteractionHandler('blur', this.blurHandler_);
-    this.adapter_.deregisterResizeHandler(this.resizeHandler_);
+
+    if (this.adapter_.isUnbounded()) {
+      this.adapter_.deregisterResizeHandler(this.resizeHandler_);
+    }
   }
 
   /** @private */
