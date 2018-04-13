@@ -78,35 +78,6 @@ testFoundation('#init gracefully exits when css variables are not supported', fa
     td.verify(adapter.addClass(cssClasses.ROOT), {times: 0});
   });
 
-testFoundation(`#init sets ${strings.VAR_FG_SIZE} to the circumscribing circle's diameter`,
-  ({foundation, adapter, mockRaf}) => {
-    const size = 200;
-    td.when(adapter.computeBoundingRect()).thenReturn({width: size, height: size / 2});
-    foundation.init();
-    mockRaf.flush();
-    const initialSize = size * numbers.INITIAL_ORIGIN_SCALE;
-
-    td.verify(adapter.updateCssVariable(strings.VAR_FG_SIZE, `${initialSize}px`));
-  });
-
-testFoundation(`#init centers via ${strings.VAR_LEFT} and ${strings.VAR_TOP} when unbounded`,
-  ({foundation, adapter, mockRaf}) => {
-    const width = 200;
-    const height = 100;
-    const maxSize = Math.max(width, height);
-    const initialSize = maxSize * numbers.INITIAL_ORIGIN_SCALE;
-
-    td.when(adapter.computeBoundingRect()).thenReturn({width, height});
-    td.when(adapter.isUnbounded()).thenReturn(true);
-    foundation.init();
-    mockRaf.flush();
-
-    td.verify(adapter.updateCssVariable(strings.VAR_LEFT,
-      `${Math.round((width / 2) - (initialSize / 2))}px`));
-    td.verify(adapter.updateCssVariable(strings.VAR_TOP,
-      `${Math.round((height / 2) - (initialSize / 2))}px`));
-  });
-
 testFoundation('#init registers events for interactions on root element', ({foundation, adapter}) => {
   foundation.init();
 

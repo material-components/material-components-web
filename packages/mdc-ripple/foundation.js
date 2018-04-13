@@ -209,8 +209,9 @@ class MDCRippleFoundation extends MDCFoundation {
       this.adapter_.addClass(ROOT);
       if (this.adapter_.isUnbounded()) {
         this.adapter_.addClass(UNBOUNDED);
+        // Unbounded ripples need layout logic applied immediately to set coordinates for both shade and ripple
+        this.layoutInternal_();
       }
-      this.layoutInternal_();
     });
   }
 
@@ -379,6 +380,8 @@ class MDCRippleFoundation extends MDCFoundation {
     const {VAR_FG_TRANSLATE_START, VAR_FG_TRANSLATE_END} = MDCRippleFoundation.strings;
     const {FG_DEACTIVATION, FG_ACTIVATION} = MDCRippleFoundation.cssClasses;
     const {DEACTIVATION_TIMEOUT_MS} = MDCRippleFoundation.numbers;
+
+    this.layoutInternal_();
 
     let translateStart = '';
     let translateEnd = '';
