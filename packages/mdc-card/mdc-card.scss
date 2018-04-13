@@ -31,7 +31,7 @@
 
 .mdc-card--stroked {
   @include mdc-elevation(0);
-  @include mdc-card-stroke(rgba(mdc-theme-prop-value(on-surface), .12));
+  @include mdc-card-stroke(mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 12%));
 }
 
 //
