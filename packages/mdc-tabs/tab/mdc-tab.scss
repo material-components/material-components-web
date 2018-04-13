@@ -32,7 +32,7 @@ $mdc-tab-with-icon-and-text-height: 72px;
 // postcss-bem-linter: define tab
 
 .mdc-tab {
-  @include mdc-typography(body2);
+  @include mdc-typography(button);
   @include mdc-tab-ink-color(text-secondary-on-background);
   @include mdc-ripple-surface;
   @include mdc-states;

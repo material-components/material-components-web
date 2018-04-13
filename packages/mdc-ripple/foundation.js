@@ -330,23 +330,41 @@ class MDCRippleFoundation extends MDCFoundation {
       this.registerDeactivationHandlers_(e);
     }
 
+    activationState.wasElementMadeActive = this.checkElementMadeActive_(e);
+    if (activationState.wasElementMadeActive) {
+      this.animateActivation_();
+    }
+
     requestAnimationFrame(() => {
-      // This needs to be wrapped in an rAF call b/c web browsers
-      // report active states inconsistently when they're called within
-      // event handling code:
-      // - https://bugs.chromium.org/p/chromium/issues/detail?id=635971
-      // - https://bugzilla.mozilla.org/show_bug.cgi?id=1293741
-      activationState.wasElementMadeActive = (e && e.type === 'keydown') ? this.adapter_.isSurfaceActive() : true;
-      if (activationState.wasElementMadeActive) {
-        this.animateActivation_();
-      } else {
+      // Reset array on next frame after the current event has had a chance to bubble to prevent ancestor ripples
+      activatedTargets = [];
+
+      if (!activationState.wasElementMadeActive && (e.key === ' ' || e.keyCode === 32)) {
+        // If space was pressed, try again within an rAF call to detect :active, because different UAs report
+        // active states inconsistently when they're called within event handling code:
+        // - https://bugs.chromium.org/p/chromium/issues/detail?id=635971
+        // - https://bugzilla.mozilla.org/show_bug.cgi?id=1293741
+        // We try first outside rAF to support Edge, which does not exhibit this problem, but will crash if a CSS
+        // variable is set within a rAF callback for a submit button interaction (#2241).
+        activationState.wasElementMadeActive = this.checkElementMadeActive_(e);
+        if (activationState.wasElementMadeActive) {
+          this.animateActivation_();
+        }
+      }
+
+      if (!activationState.wasElementMadeActive) {
         // Reset activation state immediately if element was not made active.
         this.activationState_ = this.defaultActivationState_();
       }
-
-      // Reset array on next frame after the current event has had a chance to bubble to prevent ancestor ripples
-      activatedTargets = [];
     });
+  }
+
+  /**
+   * @param {?Event} e
+   * @private
+   */
+  checkElementMadeActive_(e) {
+    return (e && e.type === 'keydown') ? this.adapter_.isSurfaceActive() : true;
   }
 
   /**

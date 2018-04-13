@@ -254,9 +254,8 @@
             entryInput.value = '';
           }
         };
-        ['click', 'keydown'].forEach(function(evtType) {
-          entryButton.addEventListener(evtType, addChip);
-        });
+        entryButton.addEventListener('click', addChip);
+        entryInput.addEventListener('keydown', addChip);
       });
     </script>
   </body>

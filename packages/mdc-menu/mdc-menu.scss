@@ -111,7 +111,7 @@ $mdc-menu-scale-duration: .12s;
   }
 
   .mdc-list-item {
-    @include mdc-typography(subheading2);
+    @include mdc-typography(subtitle1);
 
     position: relative;
     outline: none;
