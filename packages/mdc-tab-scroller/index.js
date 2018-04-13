@@ -62,8 +62,20 @@ class MDCTabScroller extends MDCComponent {
     });
   }
 
+  /**
+   * Scrolls to the given pixel position
+   * @param {number} scrollX The pixel value to scroll to
+   */
   scrollTo(scrollX) {
     this.foundation_.scrollTo(scrollX);
+  }
+
+  /**
+   * Slides to the given pixel position
+   * @param {number} slideX The pixel value to slide to
+   */
+  slideTo(slideX) {
+    this.foundation_.slideTo(slideX);
   }
 }
 

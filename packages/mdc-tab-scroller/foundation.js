@@ -22,8 +22,7 @@ import {
   strings,
 } from './constants';
 
-// Interaction events registered on the root element
-const INTERACTION_EVENT_TYPES = ['scroll', 'touchstart', 'pointerdown', 'mousedown', 'keydown'];
+const INTERACTION_EVENTS = ['scroll', 'touchstart', 'pointerdown', 'mousedown', 'keydown'];
 
 /**
  * @extends {MDCFoundation<!MDCTabScrollerAdapter>}
@@ -90,8 +89,7 @@ class MDCTabScrollerFoundation extends MDCFoundation {
     this.adapter_.deregisterEventHandler('transitionend', this.handleTransitionEnd_);
 
     // Compute the current translateX value
-    const transform = this.adapter_.getContentStyleValue('transform');
-    const currentTranslateX = this.calculateTranslateX_(transform);
+    const currentTranslateX = this.calculateCurrentTranslateX_();
     // Stop animating
     this.adapter_.removeClass(MDCTabScrollerFoundation.cssClasses.ANIMATING);
     // Instead of unsetting the transform property, we need to set it to a
@@ -131,27 +129,42 @@ class MDCTabScrollerFoundation extends MDCFoundation {
 
     // Apply the transformation
     this.adapter_.setContentStyleProperty('transform', `translateX(${scrollDelta}px)`);
+    // Setting scrollLeft triggers a repaint
     this.adapter_.setScrollLeft(scrollLeft);
     this.shouldHandleInteraction_ = false;
 
     requestAnimationFrame(() => {
       this.adapter_.addClass(MDCTabScrollerFoundation.cssClasses.ANIMATING);
       this.adapter_.setContentStyleProperty('transform', 'none');
-      this.registerInteractionHandlers_();
+      requestAnimationFrame(() => {
+        // Double-wrapped in a rAF because Firefox gets frisky with the scroll
+        // event and triggers a scroll event even though the handlers are bound
+        // *after* the scrollLeft value is set. This double-wrapped rAF ensures
+        // that we don't accidentally handle the scrollEvent we've triggered.
+        // See https://youtu.be/mmq-KVeO-uU?t=14m0s for a great explanation.
+        this.registerInteractionHandlers_();
+      });
     });
 
     this.adapter_.registerEventHandler('transitionend', this.handleTransitionEnd_);
+    this.shouldHandleInteraction_ = true;
+  }
 
-    // Double-wrapped in a rAF because Firefox gets frisky with the scroll
-    // event and triggers a scroll event even though the handlers are bound
-    // *after* the scrollLeft value is set. This double-wrapped rAF ensures
-    // that we don't accidentally cancel the transition before it happens.
-    // See https://youtu.be/mmq-KVeO-uU?t=14m0s for an excellent explanation.
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        this.shouldHandleInteraction_ = true;
-      });
-    });
+  /**
+   * Slides to the given slideX value
+   * @param {number} slideX The pixel number to slide to
+   */
+  slideTo(slideX) {
+    const slideLeft = -this.calculateSafeScrollValue_(slideX);
+    const currentTranslateX = this.calculateCurrentTranslateX_();
+    const slideXDelta = currentTranslateX - slideLeft;
+    // Early exit if the translate value is the same
+    if (slideXDelta === 0) {
+      return;
+    }
+    this.adapter_.registerEventHandler('transitionend', this.handleTransitionEnd_);
+    this.adapter_.addClass(MDCTabScrollerFoundation.cssClasses.ANIMATING);
+    this.adapter_.setContentStyleProperty('transform', `translateX(${slideLeft}px)`);
   }
 
   /**
@@ -159,7 +172,7 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * @private
    */
   registerInteractionHandlers_() {
-    INTERACTION_EVENT_TYPES.forEach((eventName) => {
+    INTERACTION_EVENTS.forEach((eventName) => {
       this.adapter_.registerEventHandler(eventName, this.handleInteraction_);
     });
   }
@@ -169,27 +182,45 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * @private
    */
   deregisterInteractionHandlers_() {
-    INTERACTION_EVENT_TYPES.forEach((eventName) => {
+    INTERACTION_EVENTS.forEach((eventName) => {
       this.adapter_.deregisterEventHandler(eventName, this.handleInteraction_);
     });
   }
 
-  calculateTranslateX_(transformValue) {
+  /**
+   * Returns the translateX value from a CSS matrix transform function string
+   * @return {number}
+   * @private
+   */
+  calculateCurrentTranslateX_() {
+    const transformValue = this.adapter_.getContentStyleValue('transform');
+    // Early exit if no transform is present
+    if (transformValue === 'none') {
+      return 0;
+    }
     // The transform value comes back as a matrix transformation in the form
     // of `matrix(a, b, c, d, tx, ty)`. We only care about tx (translateX) so
     // we're going to grab all the values, strip out tx, and parse it.
     const results = /\((.+)\)/.exec(transformValue)[1];
-    return parseFloat(results.split(',')[4]);
+    const parts = results.split(',');
+    return parseFloat(parts[4]);
   }
 
-  calculateSafeScrollValue_(scrollLeft) {
-    if (scrollLeft < 0) {
+  /**
+   * Calculates a safe scroll value that is > 0 and < the max scroll value
+   * @param {number} scrollX The distance to scroll
+   * @return {number}
+   * @private
+   */
+  calculateSafeScrollValue_(scrollX) {
+    if (scrollX < 0) {
       return 0;
     }
     const contentClientRect = this.adapter_.computeContentClientRect();
     const rootClientRect = this.adapter_.computeClientRect();
-    const maxScrollValue = Math.floor(contentClientRect.width - rootClientRect.width);
-    return Math.min(scrollLeft, maxScrollValue);
+    // Scroll values on most browsers are ints instead of floats so we round this.
+    const maxScrollValue = Math.round(contentClientRect.width - rootClientRect.width);
+    return Math.min(scrollX, maxScrollValue);
   }
 }
 

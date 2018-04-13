@@ -66,7 +66,7 @@
           var controllerScrollEl = controllerEl.querySelector('.demo-scroll-value');
           controllerEl.addEventListener('submit', function(evt) {
             evt.preventDefault();
-            scroller.scrollTo(Number(controllerScrollEl.value));
+            scroller.slideTo(parseInt(controllerScrollEl.value));
           });
         }
 
