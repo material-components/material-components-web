@@ -17,19 +17,17 @@
 @import "./variables";
 
 @mixin mdc-typography-base {
-  font-family: $mdc-typography-font-family;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
+  @each $key, $value in $mdc-typography-base {
+    #{$key}: $value;
+  }
 }
 
 @mixin mdc-typography($style) {
   $style-props: map-get($mdc-typography-styles, $style);
 
   @if not map-has-key($mdc-typography-styles, $style) {
-    @error "Invalid style specified! Choose one of #{map-keys($mdc-typography-styles)}";
+    @error "Invalid style specified! #{$style} doesn't exist. Choose one of #{map-keys($mdc-typography-styles)}";
   }
-
-  @include mdc-typography-base;
 
   @each $key, $value in $style-props {
     #{$key}: $value;

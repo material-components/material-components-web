@@ -26,7 +26,7 @@ export const numbers = {
 
 export const strings = {
   CHANGE_EVENT: 'MDCSelect:change',
-  BOTTOM_LINE_SELECTOR: '.mdc-select__bottom-line',
+  LINE_RIPPLE_SELECTOR: '.mdc-line-ripple',
   LABEL_SELECTOR: '.mdc-floating-label',
   NATIVE_CONTROL_SELECTOR: '.mdc-select__native-control',
 };
