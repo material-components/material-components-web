@@ -176,7 +176,7 @@ testFoundation('sets FG position from the coords to the center within surface on
     ));
   });
 
-testFoundation('adds activation classes on keydown when surface is made active',
+testFoundation('adds activation classes on keydown when surface is made active on same frame',
   ({foundation, adapter, mockRaf}) => {
     const handlers = captureHandlers(adapter, 'registerInteractionHandler');
     td.when(adapter.isSurfaceActive()).thenReturn(true);
@@ -184,9 +184,34 @@ testFoundation('adds activation classes on keydown when surface is made active',
     mockRaf.flush();
 
     handlers.keydown();
+    td.verify(adapter.addClass(cssClasses.FG_ACTIVATION));
+  });
+
+testFoundation('adds activation classes on keydown when surface only reflects :active on next frame for space keydown',
+  ({foundation, adapter, mockRaf}) => {
+    const handlers = captureHandlers(adapter, 'registerInteractionHandler');
+    td.when(adapter.isSurfaceActive()).thenReturn(false, true);
+    foundation.init();
     mockRaf.flush();
 
-    td.verify(adapter.addClass(cssClasses.FG_ACTIVATION));
+    handlers.keydown({key: ' '});
+    td.verify(adapter.addClass(cssClasses.FG_ACTIVATION), {times: 0});
+
+    mockRaf.flush();
+    td.verify(adapter.addClass(cssClasses.FG_ACTIVATION), {times: 1});
+  });
+
+testFoundation('does not add activation classes on keydown when surface is not made active',
+  ({foundation, adapter, mockRaf}) => {
+    const handlers = captureHandlers(adapter, 'registerInteractionHandler');
+    td.when(adapter.isSurfaceActive()).thenReturn(false, false);
+    foundation.init();
+    mockRaf.flush();
+
+    handlers.keydown({key: ' '});
+    mockRaf.flush();
+
+    td.verify(adapter.addClass(cssClasses.FG_ACTIVATION), {times: 0});
   });
 
 testFoundation('sets FG position to center on non-pointer activation', ({foundation, adapter, mockRaf}) => {

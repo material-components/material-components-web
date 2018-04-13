@@ -17,17 +17,21 @@
 @import "@material/rtl/mixins";
 @import "@material/theme/variables";
 @import "@material/theme/mixins";
+@import "@material/typography/mixins";
 @import "./functions";
 @import "./mixins";
 @import "./variables";
 
 // postcss-bem-linter: define floating-label
 .mdc-floating-label {
+  @include mdc-typography(subtitle1);
+
   position: absolute;
   bottom: 8px;
   left: 0;
   transform-origin: left top;
   transition: mdc-floating-label-transition(transform), mdc-floating-label-transition(color);
+  line-height: 1.15rem;
   cursor: text;
 
   @include mdc-rtl {

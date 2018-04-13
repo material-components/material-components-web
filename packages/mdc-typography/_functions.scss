@@ -1,0 +1,70 @@
+
+//
+// Copyright 2018 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+@function mdc-typography-get-global-variable_($style) {
+  @if $style == "headline1" {
+    @return $mdc-typography-styles-headline1;
+  } @else if $style == "headline2" {
+    @return $mdc-typography-styles-headline2;
+  } @else if $style == "headline3" {
+    @return $mdc-typography-styles-headline3;
+  } @else if $style == "headline4" {
+    @return $mdc-typography-styles-headline4;
+  } @else if $style == "headline5" {
+    @return $mdc-typography-styles-headline5;
+  } @else if $style == "headline6" {
+    @return $mdc-typography-styles-headline6;
+  } @else if $style == "subtitle1" {
+    @return $mdc-typography-styles-subtitle1;
+  } @else if $style == "subtitle2" {
+    @return $mdc-typography-styles-subtitle2;
+  } @else if $style == "body1" {
+    @return $mdc-typography-styles-body1;
+  } @else if $style == "body2" {
+    @return $mdc-typography-styles-body2;
+  } @else if $style == "caption" {
+    @return $mdc-typography-styles-caption;
+  } @else if $style == "button" {
+    @return $mdc-typography-styles-button;
+  } @else if $style == "overline" {
+    @return $mdc-typography-styles-overline;
+  } @else {
+    @return ();
+  }
+}
+
+@function mdc-typography-set-styles_($base-styles, $scale-styles) {
+  @each $style, $style-props in $scale-styles {
+
+    // Merge base properties for all styles.
+    $style-props: map-merge($base-styles, $style-props);
+
+    // Merge global overrides onto each style.
+    @if global_variable_exists(mdc-typography-styles-#{$style}) {
+      $style-props: map-merge($style-props, mdc-typography-get-global-variable_(#{$style}));
+    }
+
+    // Override original styles with new styles.
+    $scale-styles: map-merge($scale-styles, (#{$style}: $style-props));
+  }
+
+  @return $scale-styles;
+}
+
+@function mdc-typography-get-letter-spacing_($tracking, $font-size) {
+  @return $tracking / ($font-size * 16) * 1em;
+}
