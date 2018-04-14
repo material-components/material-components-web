@@ -1,0 +1,19 @@
+@import "./common";
+@import "../packages/mdc-theme/color-palette";
+@import "../packages/mdc-tab-scroller/mdc-tab-scroller";
+
+.demo-scroller {
+  width: 360px;
+  border: 1px solid $material-color-grey-400;
+}
+
+.demo-cube {
+  width: 55px;
+  height: 55px;
+  margin: 10px;
+  background: $material-color-grey-300;
+}
+
+.demo-cube--alt {
+  background: $material-color-grey-600;
+}

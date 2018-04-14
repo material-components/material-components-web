@@ -161,6 +161,7 @@
           "switch",
           "tabs",
           "tab",
+          "tab-scroller",
           "text-field",
           "theme",
           "toolbar",
@@ -193,6 +194,7 @@
     "mdc-selection-control",
     "mdc-slider",
     "mdc-tab",
+    "mdc-tab-scroller",
     "mdc-textfield",
     "mdc-top-app-bar"
   ]
