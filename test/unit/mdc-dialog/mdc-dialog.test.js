@@ -21,7 +21,6 @@ import td from 'testdouble';
 import {createMockRaf} from '../helpers/raf';
 import {strings} from '../../../packages/mdc-dialog/constants';
 import {MDCDialog, util} from '../../../packages/mdc-dialog';
-import {MDCRipple} from '../../../packages/mdc-ripple';
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 
 function getFixture() {
