@@ -48,11 +48,7 @@ npm install --save @material/tab-indicator
 
 #### Active Indicator
 
-```html
-<span class="mdc-tab-indicator mdc-tab-indicator--active">
-  <span class="mdc-tab-indicator__content"></span>
-</span>
-```
+Add the `mdc-tab-indicator--active` class to the `mdc-tab-indicator` element to make the Tab Indicator active.
 
 #### Sliding Underline Indicator
 ```html
