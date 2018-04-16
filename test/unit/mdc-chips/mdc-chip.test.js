@@ -179,6 +179,16 @@ test('#adapter.notifyTrailingIconInteraction emits ' +
   td.verify(handler(td.matchers.anything()));
 });
 
+test('#adapter.removeFromDOM removes the root element from the DOM', () => {
+  const wrapper = bel`<div></div>`;
+  const {root, component} = setupTest();
+  wrapper.appendChild(root);
+  assert.equal(wrapper.childNodes.length, 1);
+
+  component.getDefaultFoundation().adapter_.removeFromDOM();
+  assert.equal(wrapper.childNodes.length, 0);
+});
+
 function setupMockFoundationTest(root = getFixture()) {
   const MockFoundationConstructor = td.constructor(MDCChipFoundation);
   const mockFoundation = new MockFoundationConstructor();
