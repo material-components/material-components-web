@@ -116,9 +116,6 @@
 
   .mdc-select__native-control {
     @include mdc-typography(subtitle1);
-  }
-
-  .mdc-select__native-control {
     @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding);
 
     height: 56px;
