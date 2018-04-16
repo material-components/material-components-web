@@ -88,11 +88,12 @@ To customize the tab indicator, use the following mixins.
 Mixin | Description
 --- | ---
 `mdc-tab-indicator-surface` | Mandatory. Applied to the parent element of the `mdc-tab-indicator`.
+`mdc-tab-indicator-active` | Displays the tab indicator as active until initialization. Used by parent components that need to display an active tab indicator before JavaScript has loaded.
 `mdc-tab-indicator-underline-color($color)` | Customizes the color of the underline
 `mdc-tab-indicator-icon-color($color)` | Customizes the color of the icon subelement
 `mdc-tab-indicator-underline-height($height)` | Customizes the height of the underline
 `mdc-tab-indicator-icon-height($height)` | Customizes the height of the icon subelement
-`mdc-tab-indicator-underline-top-radius($radius)` | Customizes the top left and top right border radius of the underline subelement
+`mdc-tab-indicator-underline-top-corner-radius($radius)` | Customizes the top left and top right border radius of the underline subelement
 
 ### `MDCTabIndicator`
 

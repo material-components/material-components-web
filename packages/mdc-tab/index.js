@@ -75,30 +75,17 @@ class MDCTab extends MDCComponent {
    */
   getDefaultFoundation() {
     return new MDCTabFoundation(
-      /** @type {!MDCTabAdapter} */ (Object.assign({
+      /** @type {!MDCTabAdapter} */ ({
         setAttr: (attr, value) => this.root_.setAttribute(attr, value),
         registerEventHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
         deregisterEventHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
         addClass: (className) => this.root_.classList.add(className),
         removeClass: (className) => this.root_.classList.remove(className),
         hasClass: (className) => this.root_.classList.contains(className),
-      },
-      this.getIndicatorAdapterMethods_())));
-  }
-
-  /**
-   * @return {!{
-   *   activateIndicator: function(!ClientRect): undefined,
-   *   deactivateIndicator: function(): undefined,
-   *   computeIndicatorClientRect: function(): !ClientRect,
-   * }}
-   */
-  getIndicatorAdapterMethods_() {
-    return {
-      activateIndicator: (previousIndicatorClientRect) => this.tabIndicator_.activate(previousIndicatorClientRect),
-      deactivateIndicator: () => this.tabIndicator_.deactivate(),
-      computeIndicatorClientRect: () => this.tabIndicator_.computeContentClientRect(),
-    };
+        activateIndicator: (previousIndicatorClientRect) => this.tabIndicator_.activate(previousIndicatorClientRect),
+        deactivateIndicator: () => this.tabIndicator_.deactivate(),
+        computeIndicatorClientRect: () => this.tabIndicator_.computeContentClientRect(),
+      }));
   }
 
   /**
@@ -111,10 +98,10 @@ class MDCTab extends MDCComponent {
 
   /**
    * Activates the tab
-   * @param {!ClientRect=} previousTabClientRect
+   * @param {!ClientRect=} computeIndicatorClientRect
    */
-  activate(previousTabClientRect) {
-    this.foundation_.activate(previousTabClientRect);
+  activate(computeIndicatorClientRect) {
+    this.foundation_.activate(computeIndicatorClientRect);
   }
 
   /**

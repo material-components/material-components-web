@@ -21,13 +21,7 @@
   position: relative;
 }
 
-@mixin mdc-tab-indicator-active_ {
-  > .mdc-tab-indicator__content {
-    opacity: 1;
-  }
-}
-
-@mixin mdc-tab-indicator-not-upgraded-active_ {
+@mixin mdc-tab-indicator-active {
   &:not(.mdc-tab-indicator--upgraded) > .mdc-tab-indicator__content {
     opacity: 1;
   }

@@ -125,9 +125,14 @@
 }
 
 .mdc-tab--active .mdc-tab-indicator {
-  @include mdc-tab-indicator-not-upgraded-active_;
+  @include mdc-tab-indicator-active;
 }
 
-.mdc-tab:not(.mdc-tab--stacked) .mdc-tab__icon + .mdc-tab__text-label {
+.mdc-tab .mdc-tab__icon + .mdc-tab__text-label {
   @include mdc-rtl-reflexive-box(padding, left, 8px);
+}
+
+.mdc-tab--stacked .mdc-tab__icon + .mdc-tab__text-label {
+  padding-right: 0;
+  padding-left: 0;
 }

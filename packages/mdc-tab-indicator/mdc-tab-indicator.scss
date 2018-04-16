@@ -34,10 +34,6 @@
   z-index: 1;
 }
 
-.mdc-tab-indicator--active {
-  @include mdc-tab-indicator-active_;
-}
-
 .mdc-tab-indicator__content {
   transform-origin: left;
   opacity: 0;
@@ -51,6 +47,10 @@
 .mdc-tab-indicator__content--icon {
   align-self: center;
   margin: 0 auto;
+}
+
+.mdc-tab-indicator--active > .mdc-tab-indicator__content {
+  opacity: 1;
 }
 
 .mdc-tab-indicator--sliding-activate > .mdc-tab-indicator__content {
