@@ -70,7 +70,7 @@
 }
 
 .mdc-image-list__label {
-  @include mdc-typography(subheading2);
+  @include mdc-typography(subtitle1);
   @include mdc-typography-overflow-ellipsis;
 }
 

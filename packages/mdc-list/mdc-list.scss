@@ -24,17 +24,17 @@
 // postcss-bem-linter: define list
 
 .mdc-list {
-  @include mdc-typography(subheading2);
+  @include mdc-typography(subtitle1);
   @include mdc-list-item-primary-text-ink-color(text-primary-on-background);
 
   margin: 0;
   padding: 8px 0;
 
   // According to the mocks and stickersheet, the line-height is adjusted to 24px for text content,
-  // same as for subheading1.
+  // same as for body1.
 
   /* @alternate */
-  line-height: map-get(map-get($mdc-typography-styles, subheading1), line-height);
+  line-height: map-get(map-get($mdc-typography-styles, body1), line-height);
   list-style-type: none;
 }
 
@@ -98,7 +98,7 @@
 }
 
 .mdc-list-item__secondary-text {
-  @include mdc-typography(body1);
+  @include mdc-typography(body2);
 }
 
 // Match the font size to the primary text when dense
@@ -210,11 +210,11 @@ a.mdc-list-item {
 
 .mdc-list-group__subheader {
   $mdc-list-subheader-virtual-height: 3rem;
-  $mdc-list-subheader-leading: map-get(map-get($mdc-typography-styles, body2), line-height);
+  $mdc-list-subheader-leading: map-get(map-get($mdc-typography-styles, body1), line-height);
   $mdc-list-subheader-margin:
     ($mdc-list-subheader-virtual-height - $mdc-list-subheader-leading) / 2;
 
-  @include mdc-typography(body2);
+  @include mdc-typography(subtitle1);
 
   margin: $mdc-list-subheader-margin $mdc-list-side-padding;
 }

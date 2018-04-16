@@ -115,8 +115,8 @@
   }
 
   .mdc-select__native-control,
-  .mdc-floating-label {
-    @include mdc-typography(subheading2);
+  .mdc-select__label {
+    @include mdc-typography(subtitle1);
   }
 
   .mdc-select__native-control {
