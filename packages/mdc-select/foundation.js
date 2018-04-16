@@ -73,9 +73,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
 
     this.adapter_.setSelectedIndex(index);
     this.adapter_.addClass(IS_CHANGING);
-    const optionHasValue = this.adapter_.getValue().length > 0;
-
-    this.adapter_.floatLabel(optionHasValue);
+    this.floatLabelWithValue_();
 
     setTimeout(() => {
       this.adapter_.removeClass(IS_CHANGING);
@@ -97,11 +95,18 @@ export default class MDCSelectFoundation extends MDCFoundation {
     }
   }
 
+  floatLabelWithValue_() {
+    const optionHasValue = this.adapter_.getValue().length > 0;
+    this.adapter_.floatLabel(optionHasValue);
+  }
+
   handleFocus_() {
+    this.adapter_.floatLabel(true);
     this.adapter_.activateBottomLine();
   }
 
   handleBlur_() {
+    this.floatLabelWithValue_();
     this.adapter_.deactivateBottomLine();
   }
 
