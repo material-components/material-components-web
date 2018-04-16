@@ -317,36 +317,6 @@
           </button>
         </section>
       </section>
-
-      <!--
-
-      <section class="example">
-        <h2>Basic Tabs with Custom Colors</h2>
-        <div class="demo">
-          <button class="mdc-tab demo-tab custom-tab1" role="tab" data-demo="customColorsTab1">
-            <span class="mdc-tab__content">
-              <span class="mdc-tab__text-label">Showtimes</span>
-            </span>
-          </button>
-          <div class="demo-controls">
-            <input type="checkbox" id="id2" data-controls="customColorsTab1"/>
-            <label for="id2">Active</label>
-          </div>
-        </div>
-        <div class="demo">
-          <button class="mdc-tab demo-tab custom-tab2" role="tab" data-demo="customColorsTab2">
-            <span class="mdc-tab__content">
-              <span class="material-icons mdc-tab__icon">directions_car</span>
-              <span class="mdc-tab__text-label">Directions</span>
-            </span>
-          </button>
-          <div class="demo-controls">
-            <input type="checkbox" id="id3" data-controls="customColorsTab2"/>
-            <label for="id3">Active</label>
-          </div>
-        </div>
-      </section>
-      -->
     </main>
 
     <script src="/assets/material-components-web.js" async></script>
@@ -373,10 +343,10 @@
         var demos = document.querySelectorAll('.demo');
         [].forEach.call(demos, initDemo);
 
-        // var rtlControls = document.getElementById('rtl-checkbox');
-        // rtlControls.addEventListener('change', function(event) {
-        //   document.body.setAttribute('dir', event.currentTarget.checked ? 'rtl': 'ltr');
-        // });
+        var rtlControls = document.getElementById('rtl-checkbox');
+        rtlControls.addEventListener('change', function(event) {
+          document.body.setAttribute('dir', event.currentTarget.checked ? 'rtl': 'ltr');
+        });
       });
     </script>
   </body>

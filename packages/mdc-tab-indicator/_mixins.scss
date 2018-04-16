@@ -27,6 +27,12 @@
   }
 }
 
+@mixin mdc-tab-indicator-not-upgraded-active_ {
+  &:not(.mdc-tab-indicator--upgraded) > .mdc-tab-indicator__content {
+    opacity: 1;
+  }
+}
+
 @mixin mdc-tab-indicator-underline-color($color) {
   > .mdc-tab-indicator__content--underline {
     @include mdc-theme-prop(background-color, $color);

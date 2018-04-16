@@ -57,6 +57,13 @@ class MDCTabIndicatorFoundation extends MDCFoundation {
     super(Object.assign(MDCTabIndicatorFoundation.defaultAdapter, adapter));
   }
 
+  /**
+   * Upgrade the indicator
+   */
+  init() {
+    this.adapter_.addClass(MDCTabIndicatorFoundation.cssClasses.UPGRADED);
+  }
+
   /** @return {!ClientRect} */
   computeContentClientRect() {
     return this.adapter_.computeContentClientRect();

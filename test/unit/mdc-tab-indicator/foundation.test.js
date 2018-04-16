@@ -43,6 +43,12 @@ test('defaultAdapter returns a complete adapter implementation', () => {
 
 const setupTest = () => setupFoundationTest(MDCTabIndicatorFoundation);
 
+test(`#init adds the ${MDCTabIndicatorFoundation.cssClasses.UPGRADED} class`, () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.init();
+  td.verify(mockAdapter.addClass(MDCTabIndicatorFoundation.cssClasses.UPGRADED), {times: 1});
+});
+
 test('#computeContentClientRect returns the client rect', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.computeContentClientRect();

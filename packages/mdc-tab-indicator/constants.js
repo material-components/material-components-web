@@ -17,6 +17,7 @@
 
 /** @enum {string} */
 const cssClasses = {
+  UPGRADED: 'mdc-tab-indicator--upgraded',
   ACTIVE: 'mdc-tab-indicator--active',
   FADE: 'mdc-tab-indicator--fade',
   FADING_ACTIVATE: 'mdc-tab-indicator--fading-activate',

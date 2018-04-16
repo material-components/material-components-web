@@ -125,7 +125,7 @@
 }
 
 .mdc-tab--active .mdc-tab-indicator {
-  @include mdc-tab-indicator-active_;
+  @include mdc-tab-indicator-not-upgraded-active_;
 }
 
 .mdc-tab:not(.mdc-tab--stacked) .mdc-tab__icon + .mdc-tab__text-label {
