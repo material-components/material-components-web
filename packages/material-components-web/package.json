@@ -44,6 +44,8 @@
     "@material/slider": "^0.34.0",
     "@material/snackbar": "^0.34.0",
     "@material/switch": "^0.34.0",
+    "@material/tab": "^0.34.0",
+    "@material/tab-indicator": "^0.0.0",
     "@material/tabs": "^0.34.1",
     "@material/tab-scroller": "^0.0.0",
     "@material/textfield": "^0.34.1",
