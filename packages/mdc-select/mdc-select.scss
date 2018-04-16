@@ -79,6 +79,10 @@
     appearance: none;
   }
 
+  .mdc-floating-label {
+    pointer-events: none;
+  }
+
   @include mdc-select-focused-line-ripple_ {
     &::after {
       transform: scale(1, 2);
@@ -131,7 +135,6 @@
 
     bottom: 12px;
     line-height: 1.75rem;
-    pointer-events: none;
 
     &--float-above {
       transform: translateY(-40%) scale(.75, .75);
