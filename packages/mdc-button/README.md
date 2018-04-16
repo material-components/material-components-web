@@ -149,6 +149,8 @@ Mixin | Description
 
 The ripple effect for the Button component is styled using [MDC Ripple](../mdc-ripple) mixins.
 
+> **Note:** If you want to customize both horizontal padding and stroke width, simply include the `mdc-button-stroke-width` mixin with both arguments. It will include `mdc-button-horizontal-padding` for you.
+
 #### Caveat: Edge and CSS Variables
 
 In browsers that fully support CSS variables, the above mixins will hook up styles using CSS variables if a theme property is passed.

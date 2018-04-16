@@ -14,10 +14,5 @@
 // limitations under the License.
 //
 
-@import "@material/theme/mixins";
-
-@mixin mdc-select-floating-label-color($color, $opacity: 1) {
-  .mdc-select__label {
-    @include mdc-theme-prop(color, rgba(mdc-theme-prop-value($color), $opacity));
-  }
-}
+$mdc-card-stroke-color: #dbdbdb;
+$mdc-card-stroke-width: 1px;

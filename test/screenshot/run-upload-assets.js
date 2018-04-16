@@ -1,5 +1,5 @@
 /**
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2018 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,23 @@
  * limitations under the License.
  */
 
-export const cssClasses = {
-  BOTTOM_LINE_ACTIVE: 'mdc-select__bottom-line--active',
-};
+'use strict';
+
+const assetUploader = require('./asset-uploader');
+
+assetUploader.upload().then(handleUploadSuccess, handleUploadFailure);
+
+function handleUploadSuccess(files) {
+  const htmlFileUrls =
+    files
+      .filter((file) => file.relativePath.endsWith('.html'))
+      .map((file) => file.fullUrl)
+      .sort();
+  console.log('\n\nDONE!\n\n');
+  console.log(htmlFileUrls.join('\n'));
+}
+
+function handleUploadFailure(err) {
+  console.error('\n\nERROR!\n\n');
+  console.error(err);
+}

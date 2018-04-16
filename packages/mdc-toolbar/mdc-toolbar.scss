@@ -67,7 +67,7 @@
 
     @media (max-width: $mdc-toolbar-mobile-landscape-width-breakpoint)
       and (orientation: landscape) {
-      padding: 0 0;
+      padding: 0;
     }
 
     @media (max-width: $mdc-toolbar-mobile-breakpoint) {
@@ -108,7 +108,7 @@
   }
 
   &__title {
-    @include mdc-typography(title);
+    @include mdc-typography(headline6);
     @include mdc-typography-overflow-ellipsis;
     @include mdc-rtl-reflexive-box(margin, left, $mdc-toolbar-element-horizontal-padding-desktop);
 
@@ -168,10 +168,9 @@
   // bem linter is disabled because it cannot handle multiple top level selector
   &-default-behavior {
     .mdc-toolbar__title {
-      @include mdc-typography(display1);
+      @include mdc-typography(headline6);
 
       align-self: flex-end;
-      font-weight: #{map-get($mdc-typography-font-weight-values, normal)};
       line-height: 1.5rem;
     }
 

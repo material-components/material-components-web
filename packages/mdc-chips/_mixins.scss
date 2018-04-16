@@ -86,10 +86,7 @@
   $horizontal-padding-value: max($mdc-chip-horizontal-padding - $width, 0);
   $vertical-padding-value: max($mdc-chip-vertical-padding - $width, 0);
 
-  padding-top: $vertical-padding-value;
-  padding-right: $horizontal-padding-value;
-  padding-bottom: $vertical-padding-value;
-  padding-left: $horizontal-padding-value;
+  padding: $vertical-padding-value $horizontal-padding-value;
   border-width: $width;
 }
 

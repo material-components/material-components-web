@@ -4,7 +4,7 @@ layout: detail
 section: components
 excerpt: "The notched outline is a border around either a text field or select element"
 iconId: text_field
-path: /catalog/input-controls/notched-outline
+path: /catalog/input-controls/notched-outline/
 -->
 
 # Notched Outline
@@ -52,6 +52,7 @@ Mixin | Description
 `mdc-notched-outline-stroke-width($width)` | Changes notched outline width to a specified pixel value.
 `mdc-notched-outline-corner-radius($radius)` | Sets the corner radius of the notched outline element to the given number.
 `mdc-notched-outline-idle-corner-radius($radius)` | Sets the corner radius of the notched outline element in idle state.
+
 > NOTE:
 > Because notched-outline has sibling elements, you need to call the "idle" Sass mixins with parent selectors.
 > Consider the following example HTML:
