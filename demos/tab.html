@@ -40,18 +40,36 @@
     </header>
 
     <main class="mdc-toolbar-fixed-adjust">
-      <section class="hero">
-        <button class="mdc-tab demo-tab" role="tab" data-demo="demoTabFavorite">
+      <section class="hero demo">
+        <button class="mdc-tab mdc-tab--stacked mdc-tab--active demo-tab" role="tab">
           <span class="mdc-tab__content">
             <span class="material-icons mdc-tab__icon">favorite</span>
             <span class="mdc-tab__text-label">Favorites</span>
+            <span class="mdc-tab-indicator mdc-tab-indicator--active">
+              <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+            </span>
           </span>
+          <span class="mdc-tab__ripple"></span>
         </button>
-        <button class="mdc-tab mdc-tab--active demo-tab" role="tab" data-demo="demoRecentsTabRecents">
+        <button class="mdc-tab mdc-tab--stacked demo-tab" role="tab">
           <span class="mdc-tab__content">
             <span class="material-icons mdc-tab__icon">phone</span>
             <span class="mdc-tab__text-label">Recents</span>
+            <span class="mdc-tab-indicator">
+              <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+            </span>
           </span>
+          <span class="mdc-tab__ripple"></span>
+        </button>
+        <button class="mdc-tab mdc-tab--stacked demo-tab" role="tab">
+          <span class="mdc-tab__content">
+            <span class="material-icons mdc-tab__icon">near_me</span>
+            <span class="mdc-tab__text-label">Nearby</span>
+            <span class="mdc-tab-indicator">
+              <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+            </span>
+          </span>
+          <span class="mdc-tab__ripple"></span>
         </button>
       </section>
 
@@ -64,57 +82,240 @@
       </div>
 
       <section class="example">
-        <h2>Basic Tabs</h2>
+        <h2>Tabs</h2>
+
+        <h4>Text Label</h4>
         <div class="demo">
-          <button class="mdc-tab demo-tab" role="tab" data-demo="basicTab">
+          <button class="mdc-tab mdc-tab--active demo-tab" role="tab">
+            <span class="mdc-tab__content">
+              <span class="mdc-tab__text-label">Favorites</span>
+            </span>
+            <span class="mdc-tab-indicator mdc-tab-indicator--active">
+              <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+            </span>
+            <span class="mdc-tab__ripple"></span>
+          </button>
+          <button class="mdc-tab demo-tab" role="tab">
+            <span class="mdc-tab__content">
+              <span class="mdc-tab__text-label">Recents</span>
+            </span>
+            <span class="mdc-tab-indicator">
+              <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+            </span>
+            <span class="mdc-tab__ripple"></span>
+          </button>
+          <button class="mdc-tab demo-tab" role="tab">
             <span class="mdc-tab__content">
               <span class="mdc-tab__text-label">Nearby</span>
             </span>
-          </button>
-          <div class="demo-controls">
-            <input type="checkbox" id="id0" data-controls="basicTab"/>
-            <label for="id0">Active</label>
-          </div>
-        </div>
-        <div class="demo">
-          <button class="mdc-tab demo-tab" role="tab" data-demo="basicTabWithIcon">
-            <span class="mdc-tab__content">
-              <span class="material-icons mdc-tab__icon">directions_transit</span>
-              <span class="mdc-tab__text-label">Transit</span>
+            <span class="mdc-tab-indicator">
+              <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
             </span>
+            <span class="mdc-tab__ripple"></span>
           </button>
-          <div class="demo-controls">
-            <input type="checkbox" id="id1" data-controls="basicTabWithIcon"/>
-            <label for="id1">Active</label>
-          </div>
+        </div>
+
+        <br>
+        <h4>Icon</h4>
+        <div class="demo">
+          <button class="mdc-tab mdc-tab--active demo-tab" role="tab">
+            <span class="mdc-tab__content">
+              <span class="mdc-tab__icon material-icons">favorite</span>
+            </span>
+            <span class="mdc-tab-indicator mdc-tab-indicator--active">
+              <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+            </span>
+            <span class="mdc-tab__ripple"></span>
+          </button>
+          <button class="mdc-tab demo-tab" role="tab">
+            <span class="mdc-tab__content">
+              <span class="mdc-tab__icon material-icons">phone</span>
+            </span>
+            <span class="mdc-tab-indicator">
+              <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+            </span>
+            <span class="mdc-tab__ripple"></span>
+          </button>
+          <button class="mdc-tab demo-tab" role="tab">
+            <span class="mdc-tab__content">
+              <span class="mdc-tab__icon material-icons">near_me</span>
+            </span>
+            <span class="mdc-tab-indicator">
+              <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+            </span>
+            <span class="mdc-tab__ripple"></span>
+          </button>
+        </div>
+
+        <br>
+        <h4>Text Label and Icon</h4>
+        <div class="demo">
+          <button class="mdc-tab mdc-tab--active demo-tab" role="tab">
+            <span class="mdc-tab__content">
+              <span class="mdc-tab__icon material-icons">favorite</span>
+              <span class="mdc-tab__text-label">Favorites</span>
+            </span>
+            <span class="mdc-tab-indicator mdc-tab-indicator--active">
+              <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+            </span>
+            <span class="mdc-tab__ripple"></span>
+          </button>
+          <button class="mdc-tab demo-tab" role="tab">
+            <span class="mdc-tab__content">
+              <span class="mdc-tab__icon material-icons">phone</span>
+              <span class="mdc-tab__text-label">Recent</span>
+            </span>
+            <span class="mdc-tab-indicator">
+              <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+            </span>
+            <span class="mdc-tab__ripple"></span>
+          </button>
+          <button class="mdc-tab demo-tab" role="tab">
+            <span class="mdc-tab__content">
+              <span class="mdc-tab__icon material-icons">near_me</span>
+              <span class="mdc-tab__text-label">Nearby</span>
+            </span>
+            <span class="mdc-tab-indicator">
+              <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+            </span>
+            <span class="mdc-tab__ripple"></span>
+          </button>
+        </div>
+
+        <br>
+        <h4>Stacked Text Label and Icon</h4>
+        <div class="demo">
+          <button class="mdc-tab mdc-tab--stacked mdc-tab--active demo-tab" role="tab">
+            <span class="mdc-tab__content">
+              <span class="mdc-tab__icon material-icons">favorite</span>
+              <span class="mdc-tab__text-label">Favorites</span>
+            </span>
+            <span class="mdc-tab-indicator mdc-tab-indicator--active">
+              <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+            </span>
+            <span class="mdc-tab__ripple"></span>
+          </button>
+          <button class="mdc-tab mdc-tab--stacked demo-tab" role="tab">
+            <span class="mdc-tab__content">
+              <span class="mdc-tab__icon material-icons">phone</span>
+              <span class="mdc-tab__text-label">Recent</span>
+            </span>
+            <span class="mdc-tab-indicator">
+              <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+            </span>
+            <span class="mdc-tab__ripple"></span>
+          </button>
+          <button class="mdc-tab mdc-tab--stacked demo-tab" role="tab">
+            <span class="mdc-tab__content">
+              <span class="mdc-tab__icon material-icons">near_me</span>
+              <span class="mdc-tab__text-label">Nearby</span>
+            </span>
+            <span class="mdc-tab-indicator">
+              <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+            </span>
+            <span class="mdc-tab__ripple"></span>
+          </button>
+        </div>
+
+        <br>
+        <h4>Text Label Width-Matching Indicator</h4>
+        <div class="demo">
+          <button class="mdc-tab mdc-tab--active demo-tab" role="tab">
+            <span class="mdc-tab__content">
+              <span class="mdc-tab__text-label">Favorites</span>
+              <span class="mdc-tab-indicator mdc-tab-indicator--active">
+                <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+              </span>
+            </span>
+            <span class="mdc-tab__ripple"></span>
+          </button>
+          <button class="mdc-tab demo-tab" role="tab">
+            <span class="mdc-tab__content">
+              <span class="mdc-tab__text-label">Recent</span>
+              <span class="mdc-tab-indicator">
+                <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+              </span>
+            </span>
+            <span class="mdc-tab__ripple"></span>
+          </button>
+          <button class="mdc-tab demo-tab" role="tab">
+            <span class="mdc-tab__content">
+              <span class="mdc-tab__text-label">Nearby</span>
+              <span class="mdc-tab-indicator">
+                <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+              </span>
+            </span>
+            <span class="mdc-tab__ripple"></span>
+          </button>
+        </div>
+
+        <br>
+        <h4>Text Label with Icon Indicator</h4>
+        <div class="demo">
+          <button class="mdc-tab mdc-tab--active demo-tab" role="tab">
+            <span class="mdc-tab__content">
+              <span class="mdc-tab__text-label">Favorites</span>
+            </span>
+            <span class="mdc-tab-indicator mdc-tab-indicator--fade mdc-tab-indicator--active">
+              <span class="mdc-tab-indicator__content mdc-tab-indicator__content--icon material-icons">crop_square</span>
+            </span>
+            <span class="mdc-tab__ripple"></span>
+          </button>
+          <button class="mdc-tab demo-tab" role="tab">
+            <span class="mdc-tab__content">
+              <span class="mdc-tab__text-label">Recents</span>
+            </span>
+            <span class="mdc-tab-indicator mdc-tab-indicator--fade">
+              <span class="mdc-tab-indicator__content mdc-tab-indicator__content--icon material-icons">panorama_fish_eye</span>
+            </span>
+            <span class="mdc-tab__ripple"></span>
+          </button>
+          <button class="mdc-tab demo-tab" role="tab">
+            <span class="mdc-tab__content">
+              <span class="mdc-tab__text-label">Nearby</span>
+            </span>
+            <span class="mdc-tab-indicator mdc-tab-indicator--fade">
+              <span class="mdc-tab-indicator__content mdc-tab-indicator__content--icon material-icons">change_history</span>
+            </span>
+            <span class="mdc-tab__ripple"></span>
+          </button>
         </div>
       </section>
 
       <section class="example">
-        <h2>Basic Tabs with Custom Colors</h2>
-        <div class="demo">
-          <button class="mdc-tab demo-tab custom-tab1" role="tab" data-demo="customColorsTab1">
+        <h2>Customization</h2>
+        <section class="custom-demo demo">
+          <button class="mdc-tab mdc-tab--stacked mdc-tab--active demo-tab custom-tab" role="tab">
             <span class="mdc-tab__content">
-              <span class="mdc-tab__text-label">Showtimes</span>
+              <span class="material-icons mdc-tab__icon">favorite</span>
+              <span class="mdc-tab__text-label">Favorites</span>
+              <span class="mdc-tab-indicator mdc-tab-indicator--active custom-tab-indicator">
+                <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+              </span>
             </span>
+            <span class="mdc-tab__ripple"></span>
           </button>
-          <div class="demo-controls">
-            <input type="checkbox" id="id2" data-controls="customColorsTab1"/>
-            <label for="id2">Active</label>
-          </div>
-        </div>
-        <div class="demo">
-          <button class="mdc-tab demo-tab custom-tab2" role="tab" data-demo="customColorsTab2">
+          <button class="mdc-tab mdc-tab--stacked demo-tab custom-tab" role="tab">
             <span class="mdc-tab__content">
-              <span class="material-icons mdc-tab__icon">directions_car</span>
-              <span class="mdc-tab__text-label">Directions</span>
+              <span class="material-icons mdc-tab__icon">phone</span>
+              <span class="mdc-tab__text-label">Recents</span>
+              <span class="mdc-tab-indicator custom-tab-indicator">
+                <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+              </span>
             </span>
+            <span class="mdc-tab__ripple"></span>
           </button>
-          <div class="demo-controls">
-            <input type="checkbox" id="id3" data-controls="customColorsTab2"/>
-            <label for="id3">Active</label>
-          </div>
-        </div>
+          <button class="mdc-tab mdc-tab--stacked demo-tab custom-tab" role="tab">
+            <span class="mdc-tab__content">
+              <span class="material-icons mdc-tab__icon">near_me</span>
+              <span class="mdc-tab__text-label">Nearby</span>
+              <span class="mdc-tab-indicator custom-tab-indicator">
+                <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+              </span>
+            </span>
+            <span class="mdc-tab__ripple"></span>
+          </button>
+        </section>
       </section>
     </main>
 
@@ -122,21 +323,25 @@
     <script src="/assets/common.js" async></script>
     <script>
       demoReady(function() {
-        var demos = document.querySelectorAll('[data-demo]');
-        for (var i = 0; i < demos.length; i++) {
-          var demoName = demos[i].dataset.demo;
-          window[demoName] = new mdc.tab.MDCTab(demos[i]);
-        }
-
-        var controls = document.querySelectorAll('[data-controls]');
-        for (var i = 0; i < controls.length; i++) {
-          controls[i].addEventListener('change', function(event) {
-            var controlTarget = event.currentTarget.dataset.controls;
-            if (window[controlTarget]) {
-              window[controlTarget].active = event.currentTarget.checked;
+        function initDemo(demoRoot) {
+          var demoTabs = demoRoot.querySelectorAll('.mdc-tab');
+          var activeTab;
+          [].forEach.call(demoTabs, function (tabEl) {
+            var tab = new mdc.tab.MDCTab(tabEl);
+            if (tab.active) {
+              activeTab = tab;
             }
+
+            tabEl.addEventListener('click', function() {
+              activeTab.deactivate();
+              tab.activate(activeTab.computeIndicatorClientRect());
+              activeTab = tab;
+            });
           });
         }
+
+        var demos = document.querySelectorAll('.demo');
+        [].forEach.call(demos, initDemo);
 
         var rtlControls = document.getElementById('rtl-checkbox');
         rtlControls.addEventListener('change', function(event) {

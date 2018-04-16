@@ -32,11 +32,32 @@ npm install --save @material/tab
 ### HTML Structure
 
 ```html
-<button class="mdc-tab" role="tab" aria-selected="false">
+<button class="mdc-tab" role="tab" aria-selected="false" tabindex="-1">
   <div class="mdc-tab__content">
     <span class="mdc-tab__icon">heart</div>
     <span class="mdc-tab__text-label">Favorites</div>
   </div>
+  <span class="mdc-tab-indicator">
+    <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+  </span>
+  <div class="mdc-tab__ripple"></div>
+</button>
+```
+
+#### Active Tab
+
+>*NOTE*: Don't forget to add the `mdc-tab-indicator--active` class to the `mdc-tab-indicator` subcomponent.
+
+```html
+<button class="mdc-tab mdc-tab--active" role="tab" aria-selected="true">
+  <div class="mdc-tab__content">
+    <span class="mdc-tab__icon">heart</div>
+    <span class="mdc-tab__text-label">Favorites</div>
+  </div>
+  <span class="mdc-tab-indicator mdc-tab-indicator--active">
+    <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+  </span>
+  <div class="mdc-tab__ripple"></div>
 </button>
 ```
 
@@ -45,8 +66,10 @@ npm install --save @material/tab
 CSS Class | Description
 --- | ---
 `mdc-tab` | Mandatory.
-`mdc-tab--active` | Optional. Indicates that the tab is active.
 `mdc-tab__content` | Mandatory. Indicates the text label of the tab
+`mdc-tab__ripple` | Mandatory. Denotes the ripple surface for the tab
+`mdc-tab--active` | Optional. Indicates that the tab is active
+`mdc-tab--stacked` | Optional. Indicates that the tab content should be displayed vertically instead of horizontally
 `mdc-tab__text-label` | Optional. Indicates an icon in the tab
 `mdc-tab__icon` | Optional. Indicates a leading icon in the tab
 
@@ -63,8 +86,13 @@ Mixin | Description
 
 Property | Value Type | Description
 --- | --- | ---
-`active` | `boolean` | Allows getting/setting the active state of the tab
-`ripple` | `MDCRipple` | The `MDCRipple` instance for the root element that `MDCChip` initializes
+`active` | `boolean` | Allows getting the active state of the tab
+
+Method Signature | Description
+--- | ---
+`activate(previousIndicatorClientRect: ClientRect=) => void` | Activates the indicator.  `previousIndicatorClientRect` is an optional argument
+`deactivate() => void` | Deactivates the indicator
+
 
 ### `MDCTabAdapter`
 
@@ -76,6 +104,9 @@ Method Signature | Description
 `registerEventHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the root element
 `deregisterEventHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the root element
 `setAttr(attr: string, value: string) => void` | Sets the given attribute on the root element to the given value
+`activateIndicator(previousIndicatorClientRect: ClientRect=) => void` | Activates the tab indicator subcomponent. `previousIndicatorClientRect` is an optional argument
+`deactivateIndicator() => void` | Deactivates the tab indicator subcomponent
+`computeIndicatorClientRect() => ClientRect` | Returns the tab indicator subcomponent's content bounding client rect
 
 ### `MDCTabFoundation`
 
@@ -83,5 +114,6 @@ Method Signature | Description
 --- | ---
 `handleTransitionEnd(evt: Event) => void` | Handles the logic for the `"transitionend"` event
 `isActive() => boolean` | Returns whether the tab is active
-`activate() => void` | Activates the tab
+`activate(previousIndicatorClientRect: ClientRect=) => void` | Activates the tab. `previousIndicatorClientRect` is an optional argument
 `deactivate() => void` | Deactivates the tab
+`computeIndicatorClientRect() => ClientRect` | Returns the tab indicator subcomponent's content bounding client rect

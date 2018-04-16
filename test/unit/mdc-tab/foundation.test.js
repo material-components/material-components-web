@@ -36,6 +36,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'registerEventHandler', 'deregisterEventHandler',
     'addClass', 'removeClass', 'hasClass',
     'setAttr',
+    'activateIndicator', 'deactivateIndicator', 'computeIndicatorClientRect',
   ]);
 });
 
@@ -73,6 +74,24 @@ test('#activate sets the root element aria-selected attribute to true', () => {
   td.verify(mockAdapter.setAttr(MDCTabFoundation.strings.ARIA_SELECTED, 'true'));
 });
 
+test('#activate sets the root element tabindex to 0', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.activate();
+  td.verify(mockAdapter.setAttr(MDCTabFoundation.strings.TABINDEX, '0'));
+});
+
+test('#activate activates the indicator', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.activate({width: 100, left: 200});
+  td.verify(mockAdapter.activateIndicator({width: 100, left: 200}));
+});
+
+test('#computeIndicatorClientRect calls computeIndicatorClientRect on the adapter', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.computeIndicatorClientRect();
+  td.verify(mockAdapter.computeIndicatorClientRect());
+});
+
 test('#deactivate does nothing if not active', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.deactivate();
@@ -106,6 +125,20 @@ test('#deactivate sets the root element aria-selected attribute to false', () =>
   td.when(mockAdapter.hasClass(MDCTabFoundation.cssClasses.ACTIVE)).thenReturn(true);
   foundation.deactivate();
   td.verify(mockAdapter.setAttr(MDCTabFoundation.strings.ARIA_SELECTED, 'false'));
+});
+
+test('#deactivate deactivates the indicator', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(MDCTabFoundation.cssClasses.ACTIVE)).thenReturn(true);
+  foundation.deactivate();
+  td.verify(mockAdapter.deactivateIndicator());
+});
+
+test('#deactivate sets the root element tabindex to -1', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(MDCTabFoundation.cssClasses.ACTIVE)).thenReturn(true);
+  foundation.deactivate();
+  td.verify(mockAdapter.setAttr(MDCTabFoundation.strings.TABINDEX, '-1'));
 });
 
 test('#handleTransitionEnd removes mdc-tab--animating-activate class', () => {

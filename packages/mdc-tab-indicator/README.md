@@ -46,6 +46,10 @@ npm install --save @material/tab-indicator
 </span>
 ```
 
+#### Active Indicator
+
+Add the `mdc-tab-indicator--active` class to the `mdc-tab-indicator` element to make the Tab Indicator active.
+
 #### Sliding Underline Indicator
 ```html
 <span class="mdc-tab-indicator">
@@ -92,7 +96,7 @@ Mixin | Description
 `mdc-tab-indicator-icon-color($color)` | Customizes the color of the icon subelement
 `mdc-tab-indicator-underline-height($height)` | Customizes the height of the underline
 `mdc-tab-indicator-icon-height($height)` | Customizes the height of the icon subelement
-`mdc-tab-indicator-underline-top-radius($radius)` | Customizes the top left and top right border radius of the underline subelement
+`mdc-tab-indicator-underline-top-corner-radius($radius)` | Customizes the top left and top right border radius of the underline subelement
 
 ### `MDCTabIndicator`
 
