@@ -129,13 +129,14 @@ class MDCChipFoundation extends MDCFoundation {
    * @param {!Event} evt
    */
   handleTransitionEnd_(evt) {
-    // Handle transition end events on the chip when the it is about to be removed.
+    // Handle transition end event on the chip when the it is about to be removed.
     if (this.adapter_.eventTargetHasClass(/** @type {!EventTarget} */ (evt.target), cssClasses.CHIP_EXIT)) {
       if (evt.propertyName === 'width') {
         this.adapter_.removeFromDOM();
       } else if (evt.propertyName === 'opacity') {
-        var chipWidth = this.adapter_.getComputedStyleValue('width');
-        
+        // See: https://css-tricks.com/using-css-transitions-auto-dimensions/#article-header-id-5
+        const chipWidth = this.adapter_.getComputedStyleValue('width');
+
         // On the next frame (once we get the computed width), explicitly set the chip's width
         // to its current pixel width, so we aren't transitioning out of 'auto'.
         requestAnimationFrame(() => {
@@ -144,7 +145,7 @@ class MDCChipFoundation extends MDCFoundation {
           // To mitigate jitter, start transitioning padding and margin before width.
           this.adapter_.setStyleProperty('padding', 0);
           this.adapter_.setStyleProperty('margin', 0);
-          
+
           // On the next frame (once width is explicitly set), transition width to 0.
           requestAnimationFrame(() => {
             this.adapter_.setStyleProperty('width', 0);
@@ -153,7 +154,6 @@ class MDCChipFoundation extends MDCFoundation {
       }
       return;
     }
-    
 
     // Handle a transition end event on the leading icon or checkmark, since the transition end event bubbles.
     if (evt.propertyName !== 'opacity') {
