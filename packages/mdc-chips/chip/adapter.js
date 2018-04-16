@@ -108,6 +108,25 @@ class MDCChipAdapter {
   notifyTrailingIconInteraction() {}
 
   /**
+   * Returns the computed property value of the given style property on the root element.
+   * @param {string} propertyName
+   * @return {string}
+   */
+  getComputedStyleValue(propertyName) {}
+
+  /**
+   * Sets the property value of the given style property on the root element. 
+   * @param {string} propertyName
+   * @param {string} value
+   */
+  setStyleProperty(propertyName, value) {}
+
+  /**
+   * Removes the root element from the DOM.
+   */
+  removeFromDOM() {}
+
+  /**
    * Recomputes all dimensions and positions for the ripple element.
    */
   layout() {}

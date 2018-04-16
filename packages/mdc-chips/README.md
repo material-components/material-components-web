@@ -145,6 +145,7 @@ CSS Class | Description
 `mdc-chip__icon--leading` | Optional. Indicates a leading icon in the chip.
 `mdc-chip__icon--leading-hidden` | Optional. Hides the leading icon in a filter chip when the chip is selected.
 `mdc-chip__icon--trailing` | Optional. Indicates a trailing icon in the chip.
+`mdc-chip__icon--remove` | Optional. Indicates a trailing icon that removes the chip from the DOM. Only use with entry chips or filter chips.
 `mdc-chip__checkmark` | Optional. Indicates the checkmark in a filter chip.
 `mdc-chip__checkmark-svg` | Mandatory with the use of `mdc-chip__checkmark`. Indicates the checkmark SVG element in a filter chip.
 `mdc-chip__checkmark-path` | Mandatory with the use of `mdc-chip__checkmark`. Indicates the checkmark SVG path in a filter chip.
@@ -217,6 +218,9 @@ Method Signature | Description
 `deregisterTrailingIconInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the trailing icon element
 `notifyInteraction() => void` | Emits a custom event `MDCChip:interaction` denoting the chip has been interacted with
 `notifyTrailingIconInteraction() => void` | Emits a custom event `MDCChip:trailingIconInteraction` denoting the chip's trailing icon has been interacted with
+`getComputedStyleValue(propertyName: string) => string` | Returns the computed property value of the given style property on the root element
+`setStyleProperty(propertyName: string, value: string) => void` | Sets the property value of the given style property on the root element
+`removeFromDOM() => void` | Removes the root element from the DOM
 `layout() => void` | Recomputes all dimensions and positions for the ripple element
 
 > _NOTE_: The custom events emitted by `notifyInteraction` and `notifyTrailingIconInteraction` must pass along the target chip in its event `detail`, as well as bubble to the parent `mdc-chip-set` element.
