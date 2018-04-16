@@ -64,15 +64,6 @@ class MDCTabFoundation extends MDCFoundation {
   }
 
   /**
-   * Activate the indicator if this Tab is active
-   */
-  init() {
-    if (this.isActive()) {
-      this.adapter_.activateIndicator();
-    }
-  }
-
-  /**
    * Handles the "transitionend" event
    * @param {!Event} evt A browser event
    */

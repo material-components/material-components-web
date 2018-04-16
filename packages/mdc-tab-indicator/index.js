@@ -36,9 +36,11 @@ class MDCTabIndicator extends MDCComponent {
     return new MDCTabIndicator(root);
   }
 
+  /**
+   * @param {...?} args
+   */
   constructor(...args) {
     super(...args);
-
     /** @type {?Element} */
     this.content_;
   }

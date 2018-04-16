@@ -32,12 +32,29 @@ npm install --save @material/tab
 ### HTML Structure
 
 ```html
-<button class="mdc-tab" role="tab" aria-selected="false">
+<button class="mdc-tab" role="tab" aria-selected="false" tabindex="-1">
   <div class="mdc-tab__content">
     <span class="mdc-tab__icon">heart</div>
     <span class="mdc-tab__text-label">Favorites</div>
   </div>
   <span class="mdc-tab-indicator">
+    <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+  </span>
+  <div class="mdc-tab__ripple"></div>
+</button>
+```
+
+#### Active Tab
+
+>*NOTE*: Don't forget to add the `mdc-tab-indicator--active` class to the `mdc-tab-indicator` subcomponent.
+
+```html
+<button class="mdc-tab mdc-tab--active" role="tab" aria-selected="true">
+  <div class="mdc-tab__content">
+    <span class="mdc-tab__icon">heart</div>
+    <span class="mdc-tab__text-label">Favorites</div>
+  </div>
+  <span class="mdc-tab-indicator mdc-tab-indicator--active">
     <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
   </span>
   <div class="mdc-tab__ripple"></div>

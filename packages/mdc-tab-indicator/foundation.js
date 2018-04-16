@@ -16,14 +16,14 @@
 */
 
 import MDCFoundation from '@material/base/foundation';
-import MDCTabIndcatorAdapter from './adapter';
+import MDCTabIndicatorAdapter from './adapter';
 import {
   cssClasses,
   strings,
 } from './constants';
 
 /**
- * @extends {MDCFoundation<!MDCTabIndcatorAdapter>}
+ * @extends {MDCFoundation<!MDCTabIndicatorAdapter>}
  * @abstract
  */
 class MDCTabIndicatorFoundation extends MDCFoundation {
@@ -38,11 +38,11 @@ class MDCTabIndicatorFoundation extends MDCFoundation {
   }
 
   /**
-   * @see MDCTabIndcatorAdapter for typing information
-   * @return {!MDCTabIndcatorAdapter}
+   * @see MDCTabIndicatorAdapter for typing information
+   * @return {!MDCTabIndicatorAdapter}
    */
   static get defaultAdapter() {
-    return /** @type {!MDCTabIndcatorAdapter} */ ({
+    return /** @type {!MDCTabIndicatorAdapter} */ ({
       registerEventHandler: () => {},
       deregisterEventHandler: () => {},
       addClass: () => {},
@@ -52,16 +52,9 @@ class MDCTabIndicatorFoundation extends MDCFoundation {
     });
   }
 
-  /** @param {!MDCTabIndcatorAdapter} adapter */
+  /** @param {!MDCTabIndicatorAdapter} adapter */
   constructor(adapter) {
     super(Object.assign(MDCTabIndicatorFoundation.defaultAdapter, adapter));
-  }
-
-  /**
-   * Upgrade the indicator
-   */
-  init() {
-    this.adapter_.addClass(MDCTabIndicatorFoundation.cssClasses.UPGRADED);
   }
 
   /** @return {!ClientRect} */

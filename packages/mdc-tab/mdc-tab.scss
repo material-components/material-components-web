@@ -124,10 +124,6 @@
   @include mdc-tab-icon-color(primary);
 }
 
-.mdc-tab--active .mdc-tab-indicator {
-  @include mdc-tab-indicator-active;
-}
-
 .mdc-tab .mdc-tab__icon + .mdc-tab__text-label {
   @include mdc-rtl-reflexive-box(padding, left, 8px);
 }
