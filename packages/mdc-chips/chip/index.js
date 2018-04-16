@@ -128,6 +128,7 @@ class MDCChip extends MDCComponent {
       getComputedStyleValue: (propertyName) => window.getComputedStyle(this.root_).getPropertyValue(propertyName),
       setStyleProperty: (propertyName, value) => this.root_.style.setProperty(propertyName, value),
       removeFromDOM: () => this.root_.remove(),
+      layout: () => this.ripple_.layout(),
     })));
   }
 
