@@ -67,8 +67,8 @@
     }
 
     width: 100%;
-    padding-top: 22px;
-    padding-bottom: 8px;
+    padding-top: 20px;
+    padding-bottom: 6px;
     border: none;
     border-bottom: 1px solid;
     border-radius: 0;
@@ -114,8 +114,7 @@
     background-position: left 10px center;
   }
 
-  .mdc-select__native-control,
-  .mdc-select__label {
+  .mdc-select__native-control {
     @include mdc-typography(subtitle1);
   }
 
@@ -131,6 +130,8 @@
     @include mdc-rtl-reflexive-position(left, 16px);
 
     bottom: 12px;
+    line-height: 1.75rem;
+    pointer-events: none;
 
     &--float-above {
       transform: translateY(-40%) scale(.75, .75);
