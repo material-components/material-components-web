@@ -158,11 +158,11 @@ test('on chip opacity transition end, animate width if chip is exiting', () => {
 
   raf.flush();
   td.verify(mockAdapter.setStyleProperty('width', '100px'));
-  td.verify(mockAdapter.setStyleProperty('padding', 0));
-  td.verify(mockAdapter.setStyleProperty('margin', 0));
+  td.verify(mockAdapter.setStyleProperty('padding', '0'));
+  td.verify(mockAdapter.setStyleProperty('margin', '0'));
 
   raf.flush();
-  td.verify(mockAdapter.setStyleProperty('width', 0));
+  td.verify(mockAdapter.setStyleProperty('width', '0'));
 });
 
 test(`on leading icon opacity transition end, add ${cssClasses.HIDDEN_LEADING_ICON}` +

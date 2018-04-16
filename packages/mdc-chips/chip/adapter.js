@@ -115,7 +115,7 @@ class MDCChipAdapter {
   getComputedStyleValue(propertyName) {}
 
   /**
-   * Sets the property value of the given style property on the root element. 
+   * Sets the property value of the given style property on the root element.
    * @param {string} propertyName
    * @param {string} value
    */

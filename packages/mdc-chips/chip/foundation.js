@@ -146,12 +146,12 @@ class MDCChipFoundation extends MDCFoundation {
           this.adapter_.setStyleProperty('width', chipWidth);
 
           // To mitigate jitter, start transitioning padding and margin before width.
-          this.adapter_.setStyleProperty('padding', 0);
-          this.adapter_.setStyleProperty('margin', 0);
+          this.adapter_.setStyleProperty('padding', '0');
+          this.adapter_.setStyleProperty('margin', '0');
 
           // On the next frame (once width is explicitly set), transition width to 0.
           requestAnimationFrame(() => {
-            this.adapter_.setStyleProperty('width', 0);
+            this.adapter_.setStyleProperty('width', '0');
           });
         });
       }
