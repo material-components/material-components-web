@@ -42,7 +42,7 @@ npm install @material/switch
 
 ```html
 <div class="mdc-switch">
-  <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" />
+  <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" role="switch">
   <div class="mdc-switch__background">
     <div class="mdc-switch__knob"></div>
   </div>
@@ -56,7 +56,7 @@ Users can add `disabled` directly to the input element or set the fieldset conta
 
 ```html
 <div class="mdc-switch">
-  <input type="checkbox" id="another-basic-switch" class="mdc-switch__native-control" disabled />
+  <input type="checkbox" id="another-basic-switch" class="mdc-switch__native-control" role="switch" disabled>
   <div class="mdc-switch__background">
     <div class="mdc-switch__knob"></div>
   </div>
