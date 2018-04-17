@@ -80,7 +80,7 @@ class MDCTextFieldIconFoundation extends MDCFoundation {
   setDisabled(disabled) {
     if (disabled) {
       this.savedTabIndex_= this.adapter_.getTabIndex();
-      this.adapter_.setTabIndex('-1');
+      this.adapter_.setTabIndex(-1);
     } else {
       this.adapter_.setTabIndex(this.savedTabIndex_);
     }
