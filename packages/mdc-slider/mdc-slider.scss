@@ -155,7 +155,7 @@
   }
 
   &__pin-value-marker {
-    @include mdc-typography(caption);
+    @include mdc-typography(body2);
 
     transform: rotate(45deg);
   }

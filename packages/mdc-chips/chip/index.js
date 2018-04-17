@@ -75,10 +75,11 @@ class MDCChip extends MDCComponent {
   }
 
   /**
-   * Toggles selected state of the chip.
+   * Returns true if the chip is selected.
+   * @return {boolean}
    */
-  toggleSelected() {
-    this.foundation_.toggleSelected();
+  isSelected() {
+    return this.foundation_.isSelected();
   }
 
   /**
@@ -124,6 +125,7 @@ class MDCChip extends MDCComponent {
       notifyInteraction: () => this.emit(strings.INTERACTION_EVENT, {chip: this}, true /* shouldBubble */),
       notifyTrailingIconInteraction: () => this.emit(
         strings.TRAILING_ICON_INTERACTION_EVENT, {chip: this}, true /* shouldBubble */),
+      layout: () => this.ripple_.layout(),
     })));
   }
 

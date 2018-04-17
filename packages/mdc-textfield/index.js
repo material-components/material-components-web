@@ -93,7 +93,7 @@ class MDCTextField extends MDCComponent {
     if (labelElement) {
       this.label_ = labelFactory(labelElement);
     }
-    const lineRippleElement = this.root_.querySelector(strings.BOTTOM_LINE_SELECTOR);
+    const lineRippleElement = this.root_.querySelector(strings.LINE_RIPPLE_SELECTOR);
     if (lineRippleElement) {
       this.lineRipple_ = lineRippleFactory(lineRippleElement);
     }
@@ -310,15 +310,11 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
-   * Recomputes the outline SVG path for the outline element, and recomputes
-   * all dimensions and positions for the ripple element.
+   * Recomputes the outline SVG path for the outline element.
    */
   layout() {
     const openNotch = this.foundation_.shouldFloat;
     this.foundation_.notchOutline(openNotch);
-    if (this.ripple) {
-      this.ripple.layout();
-    }
   }
 
   /**
