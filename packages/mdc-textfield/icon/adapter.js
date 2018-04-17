@@ -29,11 +29,23 @@
  */
 class MDCTextFieldIconAdapter {
   /**
+   * @param {string} name
+   * @return {string}
+   */
+  getAttr(name) {}
+
+  /**
    * Sets an attribute on the icon element.
    * @param {string} attr
    * @param {string} value
    */
   setAttr(attr, value) {}
+
+  /** @return {number} */
+  getTabIndex() {}
+
+  /** @param {number} tabIndex */
+  setTabIndex(tabIndex) {}
 
   /**
    * Registers an event listener on the icon element for a given event.

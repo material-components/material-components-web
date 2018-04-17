@@ -31,8 +31,11 @@ test('attachTo returns an MDCTextFieldIcon instance', () => {
   assert.isOk(MDCTextFieldIcon.attachTo(getFixture()) instanceof MDCTextFieldIcon);
 });
 
-function setupTest() {
+function setupTest({tabIndex = undefined} = {}) {
   const root = getFixture();
+  if (tabIndex !== undefined) {
+    root.tabIndex = tabIndex;
+  }
   const component = new MDCTextFieldIcon(root);
   return {root, component};
 }
@@ -71,4 +74,22 @@ test('#adapter.notifyIconAction emits ' + `${MDCTextFieldIconFoundation.strings.
   component.getDefaultFoundation().adapter_.notifyIconAction();
 
   td.verify(handler(td.matchers.anything()));
+});
+
+
+test('#adapter.getTabIndex returns the tabIndex of the element', () => {
+  const {component} = setupTest({tabIndex: 4});
+  assert.equal(component.getDefaultFoundation().adapter_.getTabIndex(), 4);
+});
+
+test('#adapter.setTabIndex sets the tabIndex of the element', () => {
+  const {root, component} = setupTest({tabIndex: 4});
+  component.getDefaultFoundation().adapter_.setTabIndex(2);
+  assert.equal(root.tabIndex, 2);
+});
+
+test('#adapter.getAttr retrieves an attribute from the root element', () => {
+  const {root, component} = setupTest();
+  root.setAttribute('aria-label', 'hello');
+  assert.equal(component.getDefaultFoundation().adapter_.getAttr('aria-label'), 'hello');
 });

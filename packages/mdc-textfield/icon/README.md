@@ -106,6 +106,9 @@ This allows the parent `MDCTextField` component to access the public methods on 
 Method Signature | Description
 --- | ---
 `setAttr(attr: string, value: string) => void` | Sets an attribute with a given value on the icon element
+`getAttr(name: string) => string` | Returns the value of the attribute `name` on the icon element. Can also return `null`, similar to `getAttribute()`.
+`getTabIndex() => number` | Returns the tab index of the icon element.
+`setTabIndex(tabIndex: number) => void` | Sets the tab index of the icon element.
 `registerInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event listener for a given event
 `deregisterInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener for a given event
 `notifyIconAction() => void` | Emits a custom event "MDCTextField:icon" denoting a user has clicked the icon, which bubbles to the top-level text field element
