@@ -23,48 +23,48 @@ where necessary.
 Ping the Slack announcements channel first! This will let other members of the
 team know NOT to merge PRs during this release process.
 
-### Pull
-
-> Ensure you are on the `master` branch
-
-`git checkout master && git pull --tags`
-
-This will pull the latest of `master` onto your git clone.
-
 ### Pre-Release
 
 `./scripts/pre-release.sh`
 
-This will ensure you can publish/tag, build all release files, and ensure all tests
-pass prior to releasing (lerna will update versions for us in the next step).
+This will:
+ 
+1. Check out the `master` branch and pull down the latest commits from GitHub
+1. Ensure that you can publish/tag on GitHub and NPM
+1. Verify that all tests pass
 
 ### Release
 
-```
-$(npm bin)/lerna publish --skip-git
-git commit -am "chore: Publish"
-```
+`./scripts/release.sh`
 
-When lerna prompts for version, you should pick Minor for typical releases,
-or Patch for hotfix releases with no breaking changes.
+This will:
+ 
+1. Run lerna to generate a new version number
+1. Compile our code and write distributable JS/CSS files to `packages/*/dist/`
+1. Generate a new `CHANGELOG.md`
 
-> **Do not forget** `--skip-git` - we want to generate the changelog before
-> generating and pushing the new tag.
+When lerna prompts for version, you should pick `Minor` for typical releases,
+or `Patch` for hotfix releases with no breaking changes.
+
+**Note:** lerna asks "Are you sure you want to publish the above changes?", but
+it will _not_ actually publish anything. We'll do that in the next step.
 
 ### Post-Release
 
 `./scripts/post-release.sh`
 
-This will update our CHANGELOG.md and generate a vX.Y.Z semver tag.
+This will:
+
+1. Commit the new package versions
+1. Commit the updated `CHANGELOG.md`
+1. Generate a new `vX.Y.Z` semver tag
+1. Push the commits up to GitHub
+1. Publish packages to NPM
+1. Deploy the catalog server
 
 > Make sure that a CHANGELOG commit actually appears in your `git log`!
 
-### Push
-
-`git push && git push --tags`
-
-This will ensure the commits *and* tags are pushed to the remote git repository.
-(This shouldn't be necessary; lerna should already do this in fixed mode.)
+[Double check that the catalog server is live](https://material-components-web.appspot.com/)
 
 > If you run into CLI errors such as:
 > ```
@@ -79,9 +79,3 @@ This will ensure the commits *and* tags are pushed to the remote git repository.
 > 1. Click Save changes
 > 1. Perform `git push && git push --tags`
 > 1. Don't forget to toggle on `Include administrators` & click Save changes
-
-### Deploy Catalog Server
-
-`MDC_ENV=development npm run build:demos && gcloud app deploy`
-
-[Double check it is live](https://material-components-web.appspot.com/)

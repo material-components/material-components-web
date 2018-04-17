@@ -19,13 +19,24 @@
 set -e
 
 function log() {
-  echo -e '\033[36m[dependency-test]\033[0m' "$@"
+  echo -e '\033[36m[release]\033[0m' "$@"
 }
 
-for f in $(find packages -name 'package.json' -not -path "*/node_modules/*"); do
-  log "\tChecking dependency in $f"
-  node scripts/check-pkg-for-release.js "$f"
-done
-echo ""
-echo "Dependency check passed."
-echo ""
+log "Updating package version numbers..."
+$(npm bin)/lerna publish --skip-git --skip-npm
+echo
+
+log "Building packages..."
+npm run dist
+echo
+
+log "Moving built assets to package directories..."
+node scripts/cp-pkgs.js
+echo
+
+log "Generating changelog..."
+npm run changelog
+echo
+
+log "Release steps done! Next, you should run: ./scripts/post-release.sh"
+echo

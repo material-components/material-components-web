@@ -19,20 +19,47 @@
 set -e
 
 function log() {
-  echo '\033[36m[post-release]\033[0m' "$@"
+  echo -e '\033[36m[post-release]\033[0m' "$@"
 }
 
-log "Generating and committing changelog"
-npm run changelog
+# Extract repo version from updated lerna.json
+REPO_VERSION=$(grep 'version' lerna.json | sed -E 's/[^0-9.]+//g')
+export SEMVER_TAG="v$REPO_VERSION"
+
+# Get list of package directories that have new version numbers
+PACKAGE_DIRS=$(git status --porcelain=v1 packages/*/package.json | sed 's/^ M //' | xargs dirname)
+
+function npm_publish() {
+  log "Publishing $1..."
+  npm publish "$1" --tag $SEMVER_TAG
+}
+
+log "Committing new package versions..."
+git add lerna.json packages/*/package.json
+git commit -m "chore: Publish"
+echo
+
+log "Committing changelog..."
 git add CHANGELOG.md
 git commit -m "docs: Update CHANGELOG.md"
-echo ""
+echo
 
-# Extract repo version from updated lerna.json
-REPO_VERSION=$(grep 'version' lerna.json | sed 's/ *"version": "//' | sed 's/",//')
-SEMVER_TAG="v$REPO_VERSION"
-log "Tagging repo using semver tag $SEMVER_TAG"
-git tag $SEMVER_TAG -m "Material Components for the web release $SEMVER_TAG"
-echo ""
+log "Tagging repo using semver tag $SEMVER_TAG..."
+git tag $SEMVER_TAG -m "Material Components for the Web release $SEMVER_TAG"
+echo
 
-log "Done! You should now git push to master and git push --tags"
+log "Pushing commits to GitHub..."
+git push && git push --tags
+echo
+
+log "Publishing to NPM..."
+export -f log
+export -f npm_publish
+echo "$PACKAGE_DIRS" | xargs -I '{}' /bin/sh -c 'npm_publish "$@"' _ '{}'
+echo
+
+log "Deploying catalog server..."
+MDC_ENV=development npm run build:demos && gcloud app deploy
+echo
+
+log "Post-release steps done! $SEMVER_TAG has been published to NPM, GitHub, and the catalog server"
