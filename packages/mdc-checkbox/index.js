@@ -68,11 +68,6 @@ class MDCCheckbox extends MDCComponent {
     return new MDCRipple(this.root_, foundation);
   }
 
-  initialSyncWithDOM() {
-    // Force indeterminate logic to run, to synchronize aria-checked attribute
-    this.foundation_.setIndeterminate(this.nativeCb_.indeterminate);
-  }
-
   /** @return {!MDCCheckboxFoundation} */
   getDefaultFoundation() {
     return new MDCCheckboxFoundation({

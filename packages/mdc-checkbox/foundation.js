@@ -82,6 +82,7 @@ class MDCCheckboxFoundation extends MDCFoundation {
 
   init() {
     this.currentCheckState_ = this.determineCheckState_(this.getNativeControl_());
+    this.updateAriaChecked_();
     this.adapter_.addClass(cssClasses.UPGRADED);
     this.adapter_.registerChangeHandler(this.changeHandler_);
     this.installPropertyChangeHooks_();
@@ -110,7 +111,6 @@ class MDCCheckboxFoundation extends MDCFoundation {
   /** @param {boolean} indeterminate */
   setIndeterminate(indeterminate) {
     this.getNativeControl_().indeterminate = indeterminate;
-    this.updateAriaChecked_();
   }
 
   /** @return {boolean} */
