@@ -78,45 +78,24 @@ testFoundation('#init gracefully exits when css variables are not supported', fa
     td.verify(adapter.addClass(cssClasses.ROOT), {times: 0});
   });
 
-testFoundation(`#init sets ${strings.VAR_FG_SIZE} to the circumscribing circle's diameter`,
-  ({foundation, adapter, mockRaf}) => {
-    const size = 200;
-    td.when(adapter.computeBoundingRect()).thenReturn({width: size, height: size / 2});
-    foundation.init();
-    mockRaf.flush();
-    const initialSize = size * numbers.INITIAL_ORIGIN_SCALE;
-
-    td.verify(adapter.updateCssVariable(strings.VAR_FG_SIZE, `${initialSize}px`));
-  });
-
-testFoundation(`#init centers via ${strings.VAR_LEFT} and ${strings.VAR_TOP} when unbounded`,
-  ({foundation, adapter, mockRaf}) => {
-    const width = 200;
-    const height = 100;
-    const maxSize = Math.max(width, height);
-    const initialSize = maxSize * numbers.INITIAL_ORIGIN_SCALE;
-
-    td.when(adapter.computeBoundingRect()).thenReturn({width, height});
-    td.when(adapter.isUnbounded()).thenReturn(true);
-    foundation.init();
-    mockRaf.flush();
-
-    td.verify(adapter.updateCssVariable(strings.VAR_LEFT,
-      `${Math.round((width / 2) - (initialSize / 2))}px`));
-    td.verify(adapter.updateCssVariable(strings.VAR_TOP,
-      `${Math.round((height / 2) - (initialSize / 2))}px`));
-  });
-
 testFoundation('#init registers events for interactions on root element', ({foundation, adapter}) => {
   foundation.init();
 
   td.verify(adapter.registerInteractionHandler(td.matchers.isA(String), td.matchers.isA(Function)));
 });
 
-testFoundation('#init registers an event for when a resize occurs', ({foundation, adapter}) => {
+testFoundation('#init registers a resize handler for unbounded ripple', ({foundation, adapter}) => {
+  td.when(adapter.isUnbounded()).thenReturn(true);
   foundation.init();
 
   td.verify(adapter.registerResizeHandler(td.matchers.isA(Function)));
+});
+
+testFoundation('#init does not register a resize handler for bounded ripple', ({foundation, adapter}) => {
+  td.when(adapter.isUnbounded()).thenReturn(false);
+  foundation.init();
+
+  td.verify(adapter.registerResizeHandler(td.matchers.isA(Function)), {times: 0});
 });
 
 testFoundation('#init does not register events if CSS custom properties not supported', ({foundation, adapter}) => {
@@ -144,8 +123,9 @@ testFoundation('#destroy unregisters all bound interaction handlers', ({foundati
   td.verify(adapter.deregisterDocumentInteractionHandler(td.matchers.isA(String), td.matchers.isA(Function)));
 });
 
-testFoundation('#destroy unregisters the resize handler', ({foundation, adapter}) => {
+testFoundation('#destroy unregisters the resize handler for unbounded ripple', ({foundation, adapter}) => {
   let resizeHandler;
+  td.when(adapter.isUnbounded()).thenReturn(true);
   td.when(adapter.registerResizeHandler(td.matchers.isA(Function))).thenDo((handler) => {
     resizeHandler = handler;
   });
@@ -153,6 +133,14 @@ testFoundation('#destroy unregisters the resize handler', ({foundation, adapter}
   foundation.destroy();
 
   td.verify(adapter.deregisterResizeHandler(resizeHandler));
+});
+
+testFoundation('#destroy does not unregister resize handler for bounded ripple', ({foundation, adapter}) => {
+  td.when(adapter.isUnbounded()).thenReturn(false);
+  foundation.init();
+  foundation.destroy();
+
+  td.verify(adapter.deregisterResizeHandler(td.matchers.isA(Function)), {times: 0});
 });
 
 testFoundation(`#destroy removes ${cssClasses.ROOT}`, ({foundation, adapter, mockRaf}) => {
@@ -167,6 +155,15 @@ testFoundation(`#destroy removes ${cssClasses.UNBOUNDED}`, ({foundation, adapter
   td.verify(adapter.removeClass(cssClasses.UNBOUNDED));
 });
 
+testFoundation(`#destroy removes ${cssClasses.FG_ACTIVATION} if activation is interrupted`,
+  ({foundation, adapter, mockRaf}) => {
+    foundation.activationTimer_ = 1;
+    foundation.destroy();
+    mockRaf.flush();
+
+    td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION));
+  });
+
 testFoundation('#destroy removes all CSS variables', ({foundation, adapter, mockRaf}) => {
   const cssVars = Object.keys(strings).filter((s) => s.indexOf('VAR_') === 0).map((s) => strings[s]);
   foundation.destroy();
@@ -175,6 +172,18 @@ testFoundation('#destroy removes all CSS variables', ({foundation, adapter, mock
     td.verify(adapter.updateCssVariable(cssVar, null));
   });
 });
+
+testFoundation('#destroy clears the timer if activation is interrupted',
+  ({foundation, mockRaf}) => {
+    foundation.init();
+    mockRaf.flush();
+
+    foundation.activationTimer_ = 1;
+    foundation.destroy();
+    mockRaf.flush();
+
+    assert.equal(foundation.activationTimer_, 0);
+  });
 
 testFoundation('#destroy does nothing if CSS custom properties are not supported', ({foundation, adapter, mockRaf}) => {
   const isA = td.matchers.isA;

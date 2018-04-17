@@ -25,7 +25,7 @@
 
 const glob = require('glob');
 
-module.exports = class {
+class Globber {
   constructor({
     pathResolver,
     globLib = glob,
@@ -91,4 +91,6 @@ module.exports = class {
 
     return chunks;
   }
-};
+}
+
+module.exports = Globber;

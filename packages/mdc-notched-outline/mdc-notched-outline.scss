@@ -21,11 +21,6 @@
 @import "./mixins";
 
 .mdc-notched-outline {
-  @include mdc-ripple-surface;
-  @include mdc-ripple-radius-bounded;
-  @include mdc-states-base-color(text-primary-on-background);
-  @include mdc-states-press-opacity(map-get($mdc-ripple-dark-ink-opacities, "press"));
-
   position: absolute;
   top: 0;
   left: 0;
@@ -64,4 +59,12 @@
     mdc-text-field-transition(stroke-width),
     mdc-text-field-transition(opacity);
   fill: transparent;
+}
+
+.mdc-notched-outline--notched {
+  opacity: 1;
+}
+
+.mdc-notched-outline--notched ~ .mdc-notched-outline__idle {
+  opacity: 0;
 }
