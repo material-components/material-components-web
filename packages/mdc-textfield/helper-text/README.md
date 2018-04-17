@@ -43,17 +43,17 @@ Helper text gives context about a field’s input, such as how the input will be
 #### Accessibility
 
 Note that in every example where the helper text is dependent on the state of the input element, we
-assign an id to the `mdc-text-field-helper-text` element and set that id to the value of the
-`aria-controls` and `aria-describedby` attributes on the input element. We recommend doing this as well as it will help
+assign an id to the `mdc-text-field-helper-text` and `mdc-floating-label` elements and set the ID's to the 
+value of the `aria-labelledby` attribute on the input element. We also add the `mdc-text-field-helper-text`
+to the `aria-controls` attribute on the input element. We recommend doing this as well as it will help
 indicate to assistive devices that the display of the helper text is dependent on the interaction with
 the input element.
 
 ```html
 <div class="mdc-text-field">
-  <input type="text" id="username" class="mdc-text-field__input"
-         aria-controls="username-helper-text"
-         aria-describedby="username-helper-text">
-  <label for="username" class="mdc-floating-label">Username</label>
+  <input type="text" id="username" class="mdc-text-field__input" aria-labelledby="username-label username-helper-text" 
+  aria-controls="username-helper-text">
+  <label for="username" id="username-label" class="mdc-floating-label">Username</label>
   <div class="mdc-line-ripple"></div>
 </div>
 <p id="username-helper-text" class="mdc-text-field-helper-text" aria-hidden="true">

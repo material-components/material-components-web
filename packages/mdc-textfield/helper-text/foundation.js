@@ -102,13 +102,14 @@ class MDCTextFieldHelperTextFoundation extends MDCFoundation {
     const validationMsgNeedsDisplay = helperTextIsValidationMsg && !inputIsValid;
 
     if (validationMsgNeedsDisplay) {
+      this.showToScreenReader();
       this.adapter_.setAttr(strings.ROLE, 'alert');
     } else {
       this.adapter_.removeAttr(strings.ROLE);
-    }
 
-    if (!helperTextIsPersistent && !validationMsgNeedsDisplay) {
-      this.hide_();
+      if (!helperTextIsPersistent) {
+        this.hide_();
+      }
     }
   }
 
