@@ -216,6 +216,18 @@ test('#setIndeterminate updates the value of nativeControl.indeterminate', () =>
   assert.isNotOk(nativeControl.indeterminate);
 });
 
+test('#setIndeterminate adds aria-checked=mixed when indeterminate is true', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.setIndeterminate(true);
+  td.verify(mockAdapter.setNativeControlAttr('aria-checked', strings.ARIA_CHECKED_INDETERMINATE_VALUE));
+});
+
+test('#setIndeterminate removes aria-checked when indeterminate is false', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.setIndeterminate(false);
+  td.verify(mockAdapter.removeNativeControlAttr('aria-checked'));
+});
+
 test('#setIndeterminate works when no native control is returned', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getNativeControl()).thenReturn(null);
