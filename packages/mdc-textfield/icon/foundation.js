@@ -38,6 +38,7 @@ class MDCTextFieldIconFoundation extends MDCFoundation {
   static get defaultAdapter() {
     return /** @type {!MDCTextFieldIconAdapter} */ ({
       setAttr: () => {},
+      removeAttr: () => {},
       registerInteractionHandler: () => {},
       deregisterInteractionHandler: () => {},
       notifyIconAction: () => {},
@@ -73,8 +74,10 @@ class MDCTextFieldIconFoundation extends MDCFoundation {
   setDisabled(disabled) {
     if (disabled) {
       this.adapter_.setAttr('tabindex', '-1');
+      this.adapter_.removeAttr('role');
     } else {
       this.adapter_.setAttr('tabindex', '0');
+      this.adapter_.setAttr('role', strings.ICON_ROLE);
     }
   }
 

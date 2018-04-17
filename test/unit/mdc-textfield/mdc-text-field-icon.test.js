@@ -43,6 +43,13 @@ test('#adapter.setAttr adds a given attribute to the element', () => {
   assert.equal(root.getAttribute('aria-label'), 'foo');
 });
 
+test('#adapter.removeAttr removes a given attribute from the element', () => {
+  const {root, component} = setupTest();
+  root.setAttribute('role', 'button');
+  component.getDefaultFoundation().adapter_.removeAttr('role');
+  assert.isFalse(root.hasAttribute('role'));
+});
+
 test('#adapter.registerInteractionHandler adds event listener for a given event to the element', () => {
   const {root, component} = setupTest();
   const handler = td.func('keydown handler');
