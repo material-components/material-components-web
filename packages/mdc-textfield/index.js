@@ -369,7 +369,7 @@ class MDCTextField extends MDCComponent {
    * @return {!{
    *   activateLineRipple: function(): undefined,
    *   deactivateLineRipple: function(): undefined,
-   *   setLineRippleTransformOrigin: function(!number): undefined,
+   *   setLineRippleTransformOrigin: function(number): undefined,
    * }}
    */
   getLineRippleAdapterMethods_() {
