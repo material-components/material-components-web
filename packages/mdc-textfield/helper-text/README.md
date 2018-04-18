@@ -61,6 +61,9 @@ the input element.
 </p>
 ```
 
+> _NOTE: You should not put `aria-describedby` on validation messages. These should not be read by screen readers until
+they become visible, which is after the user leaves the text field.
+
 When using our vanilla JS component, if the browser sees that the input element has an `aria-controls`
 attribute, it will look for an element with the id specified and treat it as the text field's helper
 text element, taking care of adding/removing `aria-hidden` and other accessibility attributes. Adding
