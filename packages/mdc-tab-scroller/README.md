@@ -18,19 +18,6 @@ path: /catalog/tab-scroller/
 
 Tab Scroller allows for smoothing animated scrolling of tab content
 
-## Design & API Documentation
-
-<!--
-<ul class="icon-list">
-  <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/tab.html">Material Design guidelines: Tab</a>
-  </li>
-  <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/tab-scroller.html">Demo</a>
-  </li>
-</ul>
--->
-
 ## Installation
 ```
 npm install --save @material/tab-scroller
