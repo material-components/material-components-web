@@ -54,8 +54,8 @@
 .mdc-button--unelevated {
   @include mdc-button--filled_;
   @include mdc-button-container-fill-color(primary);
-  @include mdc-button-ink-color(text-primary-on-primary);
-  @include mdc-states(text-primary-on-primary);
+  @include mdc-button-ink-color(on-primary);
+  @include mdc-states(on-primary);
 }
 
 .mdc-button--raised {

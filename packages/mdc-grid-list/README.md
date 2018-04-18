@@ -272,7 +272,7 @@ it, or its ancestors, have a `dir="rtl"` attribute.
 
 `mdc-grid-list` supports theming. `mdc-grid-tile__primary` uses the theme's background
 color for its background color. `mdc-grid-tile__secondary` uses the theme's primary
-color for it's background color, and the theme's `text-primary-on-primary` color for its text color.
+color for its background color, and the theme's `on-primary` color for its text color.
 
 ### Using the Foundation Class
 
