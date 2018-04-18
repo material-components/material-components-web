@@ -38,7 +38,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'addClass', 'removeClass', 'hasClass', 'addClassToLeadingIcon', 'removeClassFromLeadingIcon',
     'eventTargetHasClass', 'registerEventHandler', 'deregisterEventHandler',
     'registerTrailingIconInteractionHandler', 'deregisterTrailingIconInteractionHandler',
-    'notifyInteraction', 'notifyTrailingIconInteraction', 'layout',
+    'notifyInteraction', 'notifyTrailingIconInteraction',
   ]);
 });
 
@@ -107,20 +107,6 @@ test('on click, emit custom event', () => {
   handlers.click(mockEvt);
 
   td.verify(mockAdapter.notifyInteraction());
-});
-
-test('on entry animation end, call layout', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const handlers = captureHandlers(mockAdapter, 'registerEventHandler');
-  const mockEvt = {
-    type: 'animationend',
-    animationName: 'mdc-chip-entry',
-  };
-
-  foundation.init();
-  handlers.animationend(mockEvt);
-
-  td.verify(mockAdapter.layout());
 });
 
 test(`on leading icon opacity transition end, add ${cssClasses.HIDDEN_LEADING_ICON}` +
