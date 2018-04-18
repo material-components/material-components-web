@@ -35,21 +35,46 @@ class MDCTabPagingFoundation extends MDCTabScrollerFoundation {
     this.adapter_.removeClass(MDCTabScrollerFoundation.cssClasses.ANIMATING);
   }
 
+  /**
+   * Scroll to the given position
+   * @param {number} scrollX The position to scroll to
+   */
   scrollTo(scrollX) {
+    const currentScrollX = this.computeCurrentScrollPosition();
     // Negate the scrollX value so translation happens in the same direction
     // as normal browser scrolling (to the left).
-    const scrollLeft = this.calculateSafeScrollValue(scrollX) * -1;
-    const currentTranslateX = this.calculateCurrentTranslateX();
-    const scrollXDelta = currentTranslateX - scrollLeft;
+    const newScrollX = -this.calculateSafeScrollValue(scrollX);
+    this.scrollTo_(newScrollX, currentScrollX);
+  }
 
-    // Early exit if the translate value is the same
+  /**
+   * Increment the scroll value by the given amount
+   * @param {number} scrollXIncrement The value by which to increment the scroll position
+   */
+  incrementScroll(scrollXIncrement) {
+    const currentScrollX = this.computeCurrentScrollPosition();
+    // Negate the scrollX value so translation happens in the same direction
+    // as normal browser scrolling (to the left).
+    const newScrollX = -this.calculateSafeScrollValue(currentScrollX + scrollXIncrement);
+    this.scrollTo_(newScrollX, currentScrollX);
+  }
+
+  /**
+   * Internal scroll method
+   * @param {number} newScrollX The new scroll position
+   * @param {number} currentScrollX The current scroll position
+   * @private
+   */
+  scrollTo_(newScrollX, currentScrollX) {
+    const scrollXDelta = currentScrollX + newScrollX;
+    // Early exit if the scroll values are the same
     if (scrollXDelta === 0) {
       return;
     }
 
     this.adapter_.registerEventHandler('transitionend', this.handleTransitionEnd_);
     this.adapter_.addClass(MDCTabScrollerFoundation.cssClasses.ANIMATING);
-    this.adapter_.setContentStyleProperty('transform', `translateX(${scrollLeft}px)`);
+    this.adapter_.setContentStyleProperty('transform', `translateX(${newScrollX}px)`);
   }
 };
 

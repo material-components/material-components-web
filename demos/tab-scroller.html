@@ -79,8 +79,15 @@
             </div>
           </div>
           <form class="demo-controller">
-            <input class="demo-scroll-value" type="number" name="scrollLeft" value="0">
-            <button type="submit">Scroll</button>
+            <div class="demo-controller-row">
+              <label for="id0">Scroll to</label>
+              <input id="id0" class="demo-scroll-value" type="number" name="scrollLeft" value="0">
+              <button type="submit">Scroll</button>
+            </div>
+            <div class="demo-controller-row">
+              <button type="button" class="demo-decrement">-50</button>
+              <button type="button" class="demo-increment">+50</button>
+            </div>
           </form>
         </div>
       </section>
@@ -126,8 +133,15 @@
             </div>
           </div>
           <form class="demo-controller">
-            <input class="demo-scroll-value" type="number" name="scrollLeft" value="0">
-            <button type="submit">Scroll</button>
+            <div class="demo-controller-row">
+              <label for="id0">Scroll to</label>
+              <input id="id0" class="demo-scroll-value" type="number" name="scrollLeft" value="0">
+              <button type="submit">Scroll</button>
+            </div>
+            <div class="demo-controller-row">
+              <button type="button" class="demo-decrement">-50</button>
+              <button type="button" class="demo-increment">+50</button>
+            </div>
           </form>
         </div>
       </section>
@@ -145,6 +159,16 @@
           controllerEl.addEventListener('submit', function(evt) {
             evt.preventDefault();
             scroller.scrollTo(parseInt(controllerScrollEl.value));
+          });
+
+          var decrementButton = controllerEl.querySelector('.demo-decrement');
+          decrementButton.addEventListener('click', function() {
+            scroller.incrementScroll(-50);
+          });
+
+          var incrementButton = controllerEl.querySelector('.demo-increment');
+          incrementButton.addEventListener('click', function() {
+            scroller.incrementScroll(50);
           });
         }
 

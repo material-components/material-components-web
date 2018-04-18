@@ -8,16 +8,20 @@
 }
 
 .demo-cube {
-  width: 55px;
-  height: 55px;
+  width: 43px;
+  height: 43px;
   margin: 10px;
-  background: $material-color-grey-300;
+  background: $material-color-grey-400;
 }
 
 .demo-cube--alt {
-  background: $material-color-grey-600;
+  background: $material-color-grey-700;
 }
 
 .demo-controller {
   padding: 10px 0;
+}
+
+.demo-controller-row {
+  padding: 5px 0;
 }

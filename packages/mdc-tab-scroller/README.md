@@ -68,7 +68,8 @@ CSS Class | Description
 
 Method Signature | Description
 --- | ---
-`scrollTo(scrollX: number) => void` | Scrolls to the tab scrollX value
+`scrollTo(scrollX: number) => void` | Scrolls to the scrollX value
+`incrementScroll(scrollX: number) => void` | Increments the current scroll value by the scrollX value
 
 ### `MDCTabScrollerAdapter`
 
@@ -82,11 +83,12 @@ Method Signature | Description
 `getContentStyleValue(property: string) => string` | Returns the style property value of the content element
 `setScrollLeft(scrollLeft: number) => void` | Sets the root element scrollLeft
 `getScrollLeft() => number` | Returns the root element scroll left
-`computeContentClientRect() => ClientRect` | Returns the content element's bounding client rect
-`computeClientRect() => ClientRect` | Returns the root element's bounding client rect
+`getContentOffsetWidth() => number` | Returns the content element's offsetWidth
+`getOffsetWidth() => number` | Returns the root element's offsetWidth
 
 ### `MDCTabScrollerFoundation`
 
 Method Signature | Description
 --- | ---
 `scrollTo(scrollX: number) => void` | Scrolls to the scrollX value
+`incrementScroll(scrollX: number) => void` | Increments the current scroll value by the scrollX value

@@ -82,16 +82,16 @@ class MDCTabScrollerAdapter {
   getScrollLeft() {}
 
   /**
-   * Returns the bounding client rect of the content element
-   * @return {!ClientRect}
+   * Returns the offsetWidth of the content element
+   * @return {number}
    */
-  computeContentClientRect() {}
+  getContentOffsetWidth() {}
 
   /**
-   * Returns the bounding client rect of the root element
-   * @return {!ClientRect}
+   * Returns the offsetWitdth of the root element
+   * @return {number}
    */
-  computeClientRect() {}
+  getOffsetWidth() {}
 }
 
 export default MDCTabScrollerAdapter;

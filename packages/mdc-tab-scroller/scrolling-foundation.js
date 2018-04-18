@@ -36,6 +36,9 @@ class MDCTabScrollingFoundation extends MDCTabScrollerFoundation {
 
     /** @private {boolean} */
     this.shouldHandleInteraction_ = false;
+
+    /** @private {boolean} */
+    this.isAnimating_ = false;
   }
 
   /**
@@ -51,21 +54,15 @@ class MDCTabScrollingFoundation extends MDCTabScrollerFoundation {
 
     // Prevent other event listeners from handling this event
     this.shouldHandleInteraction_ = false;
+    this.stopScrollAnimation_();
     this.deregisterInteractionHandlers_();
-    this.adapter_.deregisterEventHandler('transitionend', this.handleTransitionEnd_);
-    this.adapter_.removeClass(MDCTabScrollerFoundation.cssClasses.ANIMATING);
-    // Instead of unsetting the transform property, we need to set it to a
-    // valid property, otherwise Firefox will keep animating
-    this.adapter_.setContentStyleProperty('transform', 'translateX(0px)');
-
-    // Update the scrollLeft to include the calculated translateX
-    this.adapter_.setScrollLeft(this.adapter_.getScrollLeft() - this.calculateCurrentTranslateX());
   }
 
   /**
    * Handles the transitionend event
    */
   handleTransitionEnd() {
+    this.isAnimating_ = false;
     this.deregisterInteractionHandlers_();
     this.adapter_.deregisterEventHandler('transitionend', this.handleTransitionEnd_);
     this.adapter_.removeClass(MDCTabScrollerFoundation.cssClasses.ANIMATING);
@@ -76,26 +73,48 @@ class MDCTabScrollingFoundation extends MDCTabScrollerFoundation {
    * @param {number} scrollX
    */
   scrollTo(scrollX) {
-    const scrollLeft = this.calculateSafeScrollValue(scrollX);
-    const currentScrollLeft = this.adapter_.getScrollLeft();
-    const scrollDelta = scrollLeft - currentScrollLeft;
+    const currentScrollX = this.computeCurrentScrollPosition();
+    const safeScrollX = this.calculateSafeScrollValue(scrollX);
+    this.scrollTo_(safeScrollX, currentScrollX);
+  }
 
-    // Early exit if there scroll values are the same
+  /**
+   * Increment the scroll value by the given amount
+   * @param {number} scrollXIncrement The value by which to increment the scroll position
+   */
+  incrementScroll(scrollXIncrement) {
+    const currentScrollX = this.computeCurrentScrollPosition();
+    const safeScrollX = this.calculateSafeScrollValue(currentScrollX + scrollXIncrement);
+    this.scrollTo_(safeScrollX, currentScrollX);
+  }
+
+  /**
+   * Internal scroll method
+   * @param {number} newScrollX The new scroll position
+   * @param {number} currentScrollX The current scroll position
+   * @private
+   */
+  scrollTo_(newScrollX, currentScrollX) {
+    const scrollDelta = newScrollX - currentScrollX;
+    // Early exit if the scroll values are the same
     if (scrollDelta === 0) {
       return;
     }
+
+    this.stopScrollAnimation_();
+    this.shouldHandleInteraction_ = false;
 
     // This animation uses the FLIP approach.
     // Read more here: https://aerotwist.com/blog/flip-your-animations/
 
     this.adapter_.setContentStyleProperty('transform', `translateX(${scrollDelta}px)`);
-    // Setting scrollLeft triggers a repaint
-    this.adapter_.setScrollLeft(scrollLeft);
-    this.shouldHandleInteraction_ = false;
+    // Setting scrollLeft triggers the repaint necessary for FLIP
+    this.adapter_.setScrollLeft(newScrollX);
 
     requestAnimationFrame(() => {
       this.adapter_.addClass(MDCTabScrollerFoundation.cssClasses.ANIMATING);
       this.adapter_.setContentStyleProperty('transform', 'none');
+      this.isAnimating_ = true;
       requestAnimationFrame(() => {
         // Double-wrapped in a rAF because Firefox gets frisky with the scroll
         // event and triggers a scroll event even though the handlers are bound
@@ -108,6 +127,24 @@ class MDCTabScrollingFoundation extends MDCTabScrollerFoundation {
 
     this.adapter_.registerEventHandler('transitionend', this.handleTransitionEnd_);
     this.shouldHandleInteraction_ = true;
+  }
+
+  /**
+   * Stops scroll animation
+   * @private
+   */
+  stopScrollAnimation_() {
+    // Early exit if not animating
+    if (!this.isAnimating_) {
+      return;
+    }
+
+    this.isAnimating_ = false;
+    const currentScrollPosition = this.computeCurrentScrollPosition();
+    this.adapter_.deregisterEventHandler('transitionend', this.handleTransitionEnd_);
+    this.adapter_.removeClass(MDCTabScrollerFoundation.cssClasses.ANIMATING);
+    this.adapter_.setContentStyleProperty('transform', 'translateX(0px)');
+    this.adapter_.setScrollLeft(currentScrollPosition);
   }
 
   /**

@@ -37,7 +37,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'addClass', 'removeClass',
     'setContentStyleProperty', 'getContentStyleValue',
     'setScrollLeft', 'getScrollLeft',
-    'computeContentClientRect', 'computeClientRect',
+    'getContentOffsetWidth', 'getOffsetWidth',
   ]);
 });
 
@@ -46,20 +46,29 @@ const setupTest = () => setupFoundationTest(MDCTabScrollerFoundation);
 test('#scrollTo is abstract and does nothing', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.scrollTo(999);
-  td.verify(mockAdapter.setScrollLeft(td.matchers.anything), {times: 0});
-  td.verify(mockAdapter.setContentStyleProperty(td.matchers.anything, td.matchers.anything), {times: 0});
+  td.verify(mockAdapter.setScrollLeft(td.matchers.isA(Number)), {times: 0});
+  td.verify(mockAdapter.setContentStyleProperty('transform', td.matchers.isA(String)), {times: 0});
 });
 
-test('#calculateCurrentTranslateX() returns 0 when transform is none', () => {
+test('#incrementScroll is abstract and does nothing', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.incrementScroll(999);
+  td.verify(mockAdapter.setScrollLeft(td.matchers.isA(Number)), {times: 0});
+  td.verify(mockAdapter.setContentStyleProperty('transform', td.matchers.isA(String)), {times: 0});
+});
+
+test('#computeCurrentScrollPosition() returns scroll value when transform is none', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getContentStyleValue('transform')).thenReturn('none');
-  assert.strictEqual(foundation.calculateCurrentTranslateX(), 0);
+  td.when(mockAdapter.getScrollLeft()).thenReturn(0);
+  assert.strictEqual(foundation.computeCurrentScrollPosition(), 0);
 });
 
-test('#calculateCurrentTranslateX() returns the translateX value from the matrix transformation', () => {
+test('#computeCurrentScrollPosition() returns difference between scrollLeft and translateX', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.getContentStyleValue('transform')).thenReturn('matrix(1, 0, 0, 0, 416, 0)');
-  assert.strictEqual(foundation.calculateCurrentTranslateX(), 416);
+  td.when(mockAdapter.getContentStyleValue('transform')).thenReturn('matrix(1, 0, 0, 0, 101, 0)');
+  td.when(mockAdapter.getScrollLeft()).thenReturn(212);
+  assert.strictEqual(foundation.computeCurrentScrollPosition(), 111);
 });
 
 test('#calculateSafeScrollValue() returns 0 when given a negative value', () => {
@@ -69,14 +78,14 @@ test('#calculateSafeScrollValue() returns 0 when given a negative value', () => 
 
 test('#calculateSafeScrollValue() returns the given value when less than max scroll value', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.computeContentClientRect()).thenReturn({width: 1000});
-  td.when(mockAdapter.computeClientRect()).thenReturn({width: 100});
+  td.when(mockAdapter.getContentOffsetWidth()).thenReturn(1000);
+  td.when(mockAdapter.getOffsetWidth()).thenReturn(100);
   assert.strictEqual(foundation.calculateSafeScrollValue(101), 101);
 });
 
 test('#calculateSafeScrollValue() returns the max scroll value when greater than max scroll value', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.computeContentClientRect()).thenReturn({width: 1000});
-  td.when(mockAdapter.computeClientRect()).thenReturn({width: 100});
+  td.when(mockAdapter.getContentOffsetWidth()).thenReturn(1000);
+  td.when(mockAdapter.getOffsetWidth()).thenReturn(100);
   assert.strictEqual(foundation.calculateSafeScrollValue(901), 900);
 });

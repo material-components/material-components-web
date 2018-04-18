@@ -39,13 +39,14 @@ test(`#handleTransitionEnd() removes the ${MDCTabPagingFoundation.cssClasses.ANI
 
 function setupScrollToTest({rootWidth=300, contentWidth=1000, translateX=0}={}) {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.computeClientRect()).thenReturn({width: rootWidth});
-  td.when(mockAdapter.computeContentClientRect()).thenReturn({width: contentWidth});
-  td.when(mockAdapter.getContentStyleValue('transform')).thenReturn(`matrix(1, 0, 0, 0, ${translateX}, 0)`);
+  td.when(mockAdapter.getOffsetWidth()).thenReturn(rootWidth);
+  td.when(mockAdapter.getContentOffsetWidth()).thenReturn(contentWidth);
+  td.when(mockAdapter.getScrollLeft()).thenReturn(0);
+  td.when(mockAdapter.getContentStyleValue('transform')).thenReturn(`matrix(1, 0, 0, 1, ${translateX}, 0)`);
   return {foundation, mockAdapter};
 }
 
-test('#scrollTo() exits early if difference between scrollX and translateX is 0', () => {
+test('#scrollTo() exits early if the difference between scrollX and translateX is 0', () => {
   const {foundation, mockAdapter} = setupScrollToTest({translateX: -212});
   foundation.scrollTo(212);
   td.verify(mockAdapter.setContentStyleProperty('transform', td.matchers.isA(String)), {times: 0});
@@ -64,10 +65,48 @@ test(`#scrollTo() adds the ${MDCTabPagingFoundation.cssClasses.ANIMATING} class`
   td.verify(mockAdapter.addClass(MDCTabPagingFoundation.cssClasses.ANIMATING), {times: 1});
 });
 
-test('#scrollTo() sets the content transform property to the transform delta', () => {
-  const {foundation, mockAdapter} = setupScrollToTest();
+test('#scrollTo() sets the content transform property to the negated value', () => {
+  const {foundation, mockAdapter} = setupScrollToTest({translateX: -100});
   foundation.scrollTo(313);
   td.verify(mockAdapter.setContentStyleProperty('transform', 'translateX(-313px)'), {times: 1});
+});
+
+test('#incrementScroll() exits early if the given value would scroll further left than possilbe', () => {
+  const {foundation, mockAdapter} = setupScrollToTest();
+  foundation.incrementScroll(-1);
+  td.verify(mockAdapter.setContentStyleProperty('transform', td.matchers.isA(String)), {times: 0});
+  td.verify(mockAdapter.addClass(td.matchers.isA(String)), {times: 0});
+});
+
+test('#incrementScroll() exits early if the given value would scroll further right than possilbe', () => {
+  const {foundation, mockAdapter} = setupScrollToTest({translateX: -100, rootWidth: 100, contentWidth: 200});
+  foundation.incrementScroll(1);
+  td.verify(mockAdapter.setContentStyleProperty('transform', td.matchers.isA(String)), {times: 0});
+  td.verify(mockAdapter.addClass(td.matchers.isA(String)), {times: 0});
+});
+
+test('#incrementScroll() increments the transform value by the given amount when positive', () => {
+  const {foundation, mockAdapter} = setupScrollToTest({translateX: -100});
+  foundation.incrementScroll(10);
+  td.verify(mockAdapter.setContentStyleProperty('transform', 'translateX(-110px)'));
+});
+
+test('#incrementScroll() increments the transform value by the given amount when negative', () => {
+  const {foundation, mockAdapter} = setupScrollToTest({translateX: -100});
+  foundation.incrementScroll(-10);
+  td.verify(mockAdapter.setContentStyleProperty('transform', 'translateX(-90px)'));
+});
+
+test('#incrementScroll() registers a transitionend handler', () => {
+  const {foundation, mockAdapter} = setupScrollToTest();
+  foundation.incrementScroll(10);
+  td.verify(mockAdapter.registerEventHandler('transitionend', td.matchers.isA(Function)));
+});
+
+test(`#incrementScroll() adds the ${MDCTabPagingFoundation.cssClasses.ANIMATING} class`, () => {
+  const {foundation, mockAdapter} = setupScrollToTest();
+  foundation.incrementScroll(11);
+  td.verify(mockAdapter.addClass(MDCTabPagingFoundation.cssClasses.ANIMATING));
 });
 
 function setupTransitionendTest() {

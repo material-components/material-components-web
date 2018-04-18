@@ -59,8 +59,8 @@ class MDCTabScroller extends MDCComponent {
       getContentStyleValue: (propName) => window.getComputedStyle(this.content_).getPropertyValue(propName),
       setScrollLeft: (scrollX) => this.root_.scrollLeft = scrollX,
       getScrollLeft: () => this.root_.scrollLeft,
-      computeContentClientRect: () => this.content_.getBoundingClientRect(),
-      computeClientRect: () => this.root_.getBoundingClientRect(),
+      getContentOffsetWidth: () => this.content_.offsetWidth,
+      getOffsetWidth: () => this.root_.offsetWidth,
     });
 
     if (this.root_.classList.contains(MDCTabScrollerFoundation.cssClasses.PAGING)) {
@@ -77,6 +77,14 @@ class MDCTabScroller extends MDCComponent {
    */
   scrollTo(scrollX) {
     this.foundation_.scrollTo(scrollX);
+  }
+
+  /**
+   * Increments the scroll value by the given amount
+   * @param {number} scrollXIncrement The pixel value by which to increment the scroll value
+   */
+  incrementScroll(scrollXIncrement) {
+    this.foundation_.incrementScroll(scrollXIncrement);
   }
 }
 

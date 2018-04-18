@@ -99,13 +99,18 @@ test('#adapter.getContentStyleValue returns the style property value on the cont
   );
 });
 
-test('#adapter.setScrollLeft sets the scrollLeft value of the root element', () => {
+function setupScrollLeftTests() {
   const {component, root, content} = setupTest();
   root.style.setProperty('width', '100px');
   root.style.setProperty('height', '10px');
   root.style.setProperty('overflow-x', 'scroll');
   content.style.setProperty('width', '10000px');
   content.style.setProperty('height', '10px');
+  return {component, root};
+}
+
+test('#adapter.setScrollLeft sets the scrollLeft value of the root element', () => {
+  const {component, root} = setupScrollLeftTests();
   document.body.appendChild(root);
   component.getDefaultFoundation().adapter_.setScrollLeft(101);
   assert.strictEqual(root.scrollLeft, 101);
@@ -113,34 +118,29 @@ test('#adapter.setScrollLeft sets the scrollLeft value of the root element', () 
 });
 
 test('#adapter.getScrollLeft returns the scrollLeft value of the root element', () => {
-  const {component, root, content} = setupTest();
-  root.style.setProperty('width', '100px');
-  root.style.setProperty('height', '10px');
-  root.style.setProperty('overflow-x', 'scroll');
-  content.style.setProperty('width', '10000px');
-  content.style.setProperty('height', '10px');
+  const {component, root} = setupScrollLeftTests();
   document.body.appendChild(root);
   root.scrollLeft = 416;
   assert.strictEqual(component.getDefaultFoundation().adapter_.getScrollLeft(), 416);
   document.body.removeChild(root);
 });
 
-test('#adapter.computeContentClientRect returns the content element client rect', () => {
+test('#adapter.getContentOffsetWidth returns the content element offsetWidth', () => {
   const {component, root, content} = setupTest();
   document.body.appendChild(root);
   assert.deepEqual(
-    component.getDefaultFoundation().adapter_.computeContentClientRect(),
-    content.getBoundingClientRect()
+    component.getDefaultFoundation().adapter_.getContentOffsetWidth(),
+    content.offsetWidth
   );
   document.body.removeChild(root);
 });
 
-test('#adapter.computeClientRect returns the root element client rect', () => {
+test('#adapter.getOffsetWidth returns the root element offsetWidth', () => {
   const {component, root} = setupTest();
   document.body.appendChild(root);
   assert.deepEqual(
-    component.getDefaultFoundation().adapter_.computeClientRect(),
-    root.getBoundingClientRect()
+    component.getDefaultFoundation().adapter_.getOffsetWidth(),
+    root.offsetWidth
   );
   document.body.removeChild(root);
 });
@@ -156,4 +156,10 @@ test('#scrollTo calls scrollTo', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
   component.scrollTo(703);
   td.verify(mockFoundation.scrollTo(703), {times: 1});
+});
+
+test('#incrementScroll calls incrementScroll', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.incrementScroll(10);
+  td.verify(mockFoundation.incrementScroll(10), {times: 1});
 });

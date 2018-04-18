@@ -51,8 +51,8 @@ class MDCTabScrollerFoundation extends MDCFoundation {
       getContentStyleValue: () => {},
       setScrollLeft: () => {},
       getScrollLeft: () => {},
-      computeContentClientRect: () => {},
-      computeClientRect: () => {},
+      getContentOffsetWidth: () => {},
+      getOffsetWidth: () => {},
     });
   }
 
@@ -62,18 +62,39 @@ class MDCTabScrollerFoundation extends MDCFoundation {
   }
 
   /**
-   * Scrolls to the given scrollX value
-   * @param {number} scrollX
-   * @abstract
+   * Calculates a safe scroll value that is > 0 and < the max scroll value
+   * @param {number} scrollX The distance to scroll
+   * @return {number}
+   * @protected
    */
-  scrollTo(scrollX) {} // eslint-disable-line no-unused-vars
+  calculateSafeScrollValue(scrollX) {
+    // Early exit for negative scroll values
+    if (scrollX < 0) {
+      return 0;
+    }
+    const contentWidth = this.adapter_.getContentOffsetWidth();
+    const rootWidth = this.adapter_.getOffsetWidth();
+    // Scroll values on most browsers are ints instead of floats so we round
+    const maxScrollValue = Math.round(contentWidth - rootWidth);
+    return Math.min(scrollX, maxScrollValue);
+  }
+
+  /**
+   * Computes the current visual scroll position
+   * @return {number}
+   */
+  computeCurrentScrollPosition() {
+    const currentTranslateX = this.calculateCurrentTranslateX_();
+    const scrollLeft = this.adapter_.getScrollLeft();
+    return scrollLeft - currentTranslateX;
+  }
 
   /**
    * Returns the translateX value from a CSS matrix transform function string
    * @return {number}
-   * @protected
+   * @private
    */
-  calculateCurrentTranslateX() {
+  calculateCurrentTranslateX_() {
     const transformValue = this.adapter_.getContentStyleValue('transform');
     // Early exit if no transform is present
     if (transformValue === 'none') {
@@ -89,23 +110,18 @@ class MDCTabScrollerFoundation extends MDCFoundation {
   }
 
   /**
-   * Calculates a safe scroll value that is > 0 and < the max scroll value
-   * @param {number} scrollX The distance to scroll
-   * @return {number}
-   * @protected
+   * Scrolls to the given scrollX value
+   * @param {number} scrollX
+   * @abstract
    */
-  calculateSafeScrollValue(scrollX) {
-    // Early exit for negative scroll values
-    if (scrollX < 0) {
-      return 0;
-    }
+  scrollTo(scrollX) {} // eslint-disable-line no-unused-vars
 
-    const contentClientRect = this.adapter_.computeContentClientRect();
-    const rootClientRect = this.adapter_.computeClientRect();
-    // Scroll values on most browsers are ints instead of floats
-    const maxScrollValue = Math.round(contentClientRect.width - rootClientRect.width);
-    return Math.min(scrollX, maxScrollValue);
-  }
+  /**
+   * Increments the current scroll value by the given amount
+   * @param {number} scrollXIncrement
+   * @abstract
+   */
+  incrementScroll(scrollXIncrement) {} // eslint-disable-line no-unused-vars
 }
 
 export default MDCTabScrollerFoundation;
