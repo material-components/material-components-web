@@ -310,15 +310,11 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
-   * Recomputes the outline SVG path for the outline element, and recomputes
-   * all dimensions and positions for the ripple element.
+   * Recomputes the outline SVG path for the outline element.
    */
   layout() {
     const openNotch = this.foundation_.shouldFloat;
     this.foundation_.notchOutline(openNotch);
-    if (this.ripple) {
-      this.ripple.layout();
-    }
   }
 
   /**

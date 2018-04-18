@@ -40,7 +40,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'eventTargetHasClass', 'registerEventHandler', 'deregisterEventHandler',
     'registerTrailingIconInteractionHandler', 'deregisterTrailingIconInteractionHandler',
     'notifyInteraction', 'notifyTrailingIconInteraction', 'getComputedStyleValue',
-    'setStyleProperty', 'removeFromDOM', 'layout',
+    'setStyleProperty', 'removeFromDOM',
   ]);
 });
 
@@ -109,20 +109,6 @@ test('on click, emit custom event', () => {
   handlers.click(mockEvt);
 
   td.verify(mockAdapter.notifyInteraction());
-});
-
-test('on entry animation end, call layout', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const handlers = captureHandlers(mockAdapter, 'registerEventHandler');
-  const mockEvt = {
-    type: 'animationend',
-    animationName: 'mdc-chip-entry',
-  };
-
-  foundation.init();
-  handlers.animationend(mockEvt);
-
-  td.verify(mockAdapter.layout());
 });
 
 test('on chip width transition end, remove chip', () => {

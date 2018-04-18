@@ -221,7 +221,6 @@ Method Signature | Description
 `getComputedStyleValue(propertyName: string) => string` | Returns the computed property value of the given style property on the root element
 `setStyleProperty(propertyName: string, value: string) => void` | Sets the property value of the given style property on the root element
 `removeFromDOM() => void` | Removes the root element from the DOM
-`layout() => void` | Recomputes all dimensions and positions for the ripple element
 
 > _NOTE_: The custom events emitted by `notifyInteraction` and `notifyTrailingIconInteraction` must pass along the target chip in its event `detail`, as well as bubble to the parent `mdc-chip-set` element.
 

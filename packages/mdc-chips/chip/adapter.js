@@ -125,11 +125,6 @@ class MDCChipAdapter {
    * Removes the root element from the DOM.
    */
   removeFromDOM() {}
-
-  /**
-   * Recomputes all dimensions and positions for the ripple element.
-   */
-  layout() {}
 }
 
 export default MDCChipAdapter;
