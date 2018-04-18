@@ -55,9 +55,9 @@ semantically correct.
 ### Adding Icon
 
 Users can nest `mdc-button__icon` inside the button element to add an icon. The icon in button
-is set to 18px to meet legibility requirements.
+is set to 18px to meet legibility requirements. This element should also include `aria-hidden="true"`.
 
-We recommend you load [Material Icons](https://material.io/icons/) from Google Fonts
+We recommend you load [Material Icons](https://material.io/icons/) from Google Fonts:
 
 ```html
 <head>
@@ -65,7 +65,7 @@ We recommend you load [Material Icons](https://material.io/icons/) from Google F
 </head>
 
 <button class="mdc-button">
-  <i class="material-icons mdc-button__icon">favorite</i>
+  <i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i>
   Button
 </button>
 ```
@@ -74,7 +74,7 @@ It's also possible to use an SVG icon:
 
 ```html
 <button class="mdc-button">
-  <svg class="mdc-button__icon" xmlns="http://www.w3.org/2000/svg" viewBox="...">
+  <svg class="mdc-button__icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="...">
   ...
   </svg>
   SVG Icon
