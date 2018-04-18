@@ -73,6 +73,8 @@ class MDCCheckbox extends MDCComponent {
     return new MDCCheckboxFoundation({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
+      setNativeControlAttr: (attr, value) => this.nativeCb_.setAttribute(attr, value),
+      removeNativeControlAttr: (attr) => this.nativeCb_.removeAttribute(attr),
       registerAnimationEndHandler:
         (handler) => this.root_.addEventListener(getCorrectEventName(window, 'animationend'), handler),
       deregisterAnimationEndHandler:
