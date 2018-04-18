@@ -39,7 +39,7 @@ class MDCTextFieldIconAdapter {
    * Removes an attribute from the icon element.
    * @param {string} attr
    */
-  removeAttr(attr, value) {}
+  removeAttr(attr) {}
 
   /**
    * Registers an event listener on the icon element for a given event.
