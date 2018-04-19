@@ -34,8 +34,8 @@ test('exports cssClasses', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCChipSetFoundation, [
-    'hasClass', 'registerInteractionHandler', 'deregisterInteractionHandler', 'createChipElement',
-    'appendChild', 'removeChip',
+    'hasClass', 'registerInteractionHandler', 'deregisterInteractionHandler',
+    'appendChip', 'removeChip',
   ]);
 });
 

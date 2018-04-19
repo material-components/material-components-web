@@ -45,8 +45,7 @@ class MDCChipSetFoundation extends MDCFoundation {
       hasClass: () => {},
       registerInteractionHandler: () => {},
       deregisterInteractionHandler: () => {},
-      createChipElement: () => {},
-      appendChild: () => {},
+      appendChip: () => {},
       removeChip: () => {},
     });
   }
@@ -92,8 +91,7 @@ class MDCChipSetFoundation extends MDCFoundation {
    * @return {!Element}
    */
   addChip(text, leadingIcon, trailingIcon) {
-    const chipEl = this.adapter_.createChipElement(text, leadingIcon, trailingIcon);
-    this.adapter_.appendChild(chipEl);
+    const chipEl = this.adapter_.appendChip(text, leadingIcon, trailingIcon);
     return chipEl;
   }
 
