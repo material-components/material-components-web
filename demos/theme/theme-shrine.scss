@@ -38,7 +38,7 @@ $mdc-typography-styles-button: (
 );
 
 $mdc-typography-styles-overline: (
-  font-size: .875rem, /* 14sp */
+  font-size: .875rem, // 14sp
   font-weight: 400,
   letter-spacing: mdc-typography-get-letter-spacing_(2, .75),
 );
