@@ -176,7 +176,10 @@
 
   margin-top: 12px;
   margin-bottom: 4px;
-  font-size: .813rem;
+
+  .mdc-floating-label {
+    font-size: .813rem;
+  }
 }
 
 @mixin mdc-required-text-field-label-asterisk_() {
@@ -231,7 +234,7 @@
   }
 
   .mdc-floating-label {
-    bottom: 18px;
+    bottom: 16px;
   }
 
   .mdc-text-field__icon {
@@ -382,11 +385,19 @@
 @mixin mdc-text-field-outlined-with-leading-icon_ {
   @include mdc-floating-label-float-position($mdc-text-field-outlined-label-position-y, $mdc-text-field-outlined-with-leading-icon-label-position-x);
   @include mdc-floating-label-shake-animation(text-field-outlined-leading-icon);
+
+  @include mdc-rtl {
+    @include mdc-floating-label-shake-animation(text-field-outlined-leading-icon-rtl);
+  }
 }
 
 @mixin mdc-text-field-outlined-dense-with-leading-icon_ {
   @include mdc-floating-label-float-position($mdc-text-field-outlined-dense-label-position-y, $mdc-text-field-outlined-dense-with-leading-icon-label-position-x, $mdc-text-field-dense-label-scale);
   @include mdc-floating-label-shake-animation(text-field-outlined-leading-icon-dense);
+
+  @include mdc-rtl {
+    @include mdc-floating-label-shake-animation(text-field-outlined-leading-icon-dense-rtl);
+  }
 }
 
 @mixin mdc-text-field-with-trailing-icon_ {
