@@ -52,7 +52,7 @@ class MDCTextFieldIconFoundation extends MDCFoundation {
   constructor(adapter) {
     super(Object.assign(MDCTextFieldIconFoundation.defaultAdapter, adapter));
 
-    /** @private {number?} */
+    /** @private {string?} */
     this.savedTabIndex_ = null;
 
     /** @private {function(!Event): undefined} */
