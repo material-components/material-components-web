@@ -51,8 +51,9 @@ function getFixture() {
 
 function setupTest() {
   const root = getFixture();
+  const cb = root.querySelector(strings.NATIVE_CONTROL_SELECTOR);
   const component = new MDCCheckbox(root);
-  return {root, component};
+  return {root, cb, component};
 }
 
 suite('MDCCheckbox');
@@ -100,32 +101,28 @@ test('attachTo initializes and returns a MDCCheckbox instance', () => {
 });
 
 test('get/set checked updates the checked property on the native checkbox element', () => {
-  const {root, component} = setupTest();
-  const cb = root.querySelector(strings.NATIVE_CONTROL_SELECTOR);
+  const {cb, component} = setupTest();
   component.checked = true;
   assert.isOk(cb.checked);
   assert.equal(component.checked, cb.checked);
 });
 
 test('get/set indeterminate updates the indeterminate property on the native checkbox element', () => {
-  const {root, component} = setupTest();
-  const cb = root.querySelector(strings.NATIVE_CONTROL_SELECTOR);
+  const {cb, component} = setupTest();
   component.indeterminate = true;
   assert.isOk(cb.indeterminate);
   assert.equal(component.indeterminate, cb.indeterminate);
 });
 
 test('get/set disabled updates the indeterminate property on the native checkbox element', () => {
-  const {root, component} = setupTest();
-  const cb = root.querySelector(strings.NATIVE_CONTROL_SELECTOR);
+  const {cb, component} = setupTest();
   component.disabled = true;
   assert.isOk(cb.disabled);
   assert.equal(component.disabled, cb.disabled);
 });
 
 test('get/set value updates the value of the native checkbox element', () => {
-  const {root, component} = setupTest();
-  const cb = root.querySelector(strings.NATIVE_CONTROL_SELECTOR);
+  const {cb, component} = setupTest();
   component.value = 'new value';
   assert.equal(cb.value, 'new value');
   assert.equal(component.value, cb.value);
@@ -147,6 +144,19 @@ test('adapter#removeClass removes a class from the root element', () => {
   root.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClass('foo');
   assert.isNotOk(root.classList.contains('foo'));
+});
+
+test('adapter#setNativeControlAttr sets an attribute on the input element', () => {
+  const {cb, component} = setupTest();
+  component.getDefaultFoundation().adapter_.setNativeControlAttr('aria-checked', 'mixed');
+  assert.equal(cb.getAttribute('aria-checked'), 'mixed');
+});
+
+test('adapter#removeNativeControlAttr removes an attribute from the input element', () => {
+  const {cb, component} = setupTest();
+  cb.setAttribute('aria-checked', 'mixed');
+  component.getDefaultFoundation().adapter_.removeNativeControlAttr('aria-checked');
+  assert.isFalse(cb.hasAttribute('aria-checked'));
 });
 
 test('adapter#registerAnimationEndHandler adds an animation end event listener on the root element', () => {

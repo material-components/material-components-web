@@ -14,11 +14,13 @@
 // limitations under the License.
 //
 
+@import "@material/animation/variables";
 @import "@material/ripple/mixins";
 @import "@material/ripple/variables";
 @import "@material/textfield/functions";
 @import "@material/theme/mixins";
 @import "./mixins";
+@import "./variables";
 
 .mdc-notched-outline {
   position: absolute;
@@ -26,7 +28,7 @@
   left: 0;
   width: calc(100% - 1px);
   height: calc(100% - 2px);
-  transition: mdc-text-field-transition(opacity);
+  transition: opacity $mdc-notched-outline-transition-duration $mdc-animation-standard-curve-timing-function;
   opacity: 0;
   overflow: hidden;
 
@@ -45,19 +47,18 @@
   left: 0;
   width: calc(100% - 4px);
   height: calc(100% - 4px);
-  transition: opacity 100ms ease;
+  transition:
+    opacity $mdc-notched-outline-transition-duration $mdc-animation-standard-curve-timing-function,
+    border-color $mdc-notched-outline-transition-duration $mdc-animation-standard-curve-timing-function;
   border: 1px solid;
   opacity: 1;
 }
 
 .mdc-notched-outline__path {
   stroke-width: 1px;
-
-  // TODO(mattgoo): remove this text-field dep from notched-outline
   transition:
-    mdc-text-field-transition(stroke),
-    mdc-text-field-transition(stroke-width),
-    mdc-text-field-transition(opacity);
+    stroke $mdc-notched-outline-transition-duration $mdc-animation-standard-curve-timing-function,
+    stroke-width $mdc-notched-outline-transition-duration $mdc-animation-standard-curve-timing-function;
   fill: transparent;
 }
 

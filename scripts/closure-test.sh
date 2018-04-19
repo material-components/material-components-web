@@ -60,7 +60,6 @@ for pkg in $CLOSURIZED_PKGS; do
   --js $(find $CLOSURE_PKGDIR -type f -name "*.js") \
   --language_out ECMASCRIPT5_STRICT \
   --dependency_mode STRICT \
-  --module_resolution LEGACY \
   --js_module_root $CLOSURE_PKGDIR \
   --entry_point $entry_point \
   --checks_only \

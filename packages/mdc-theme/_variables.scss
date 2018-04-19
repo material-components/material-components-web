@@ -32,7 +32,7 @@ $mdc-theme-secondary: $mdc-theme-accent !default;
 $mdc-theme-on-secondary: if(mdc-theme-contrast-tone($mdc-theme-secondary) == "dark", #000, #fff) !default;
 $mdc-theme-background: #fff !default; // White
 
-$mdc-theme-surface: white !default;
+$mdc-theme-surface: #fff !default;
 $mdc-theme-on-surface: if(mdc-theme-contrast-tone($mdc-theme-surface) == "dark", #000, #fff) !default;
 
 //

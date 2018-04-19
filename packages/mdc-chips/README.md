@@ -217,7 +217,6 @@ Method Signature | Description
 `deregisterTrailingIconInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the trailing icon element
 `notifyInteraction() => void` | Emits a custom event `MDCChip:interaction` denoting the chip has been interacted with
 `notifyTrailingIconInteraction() => void` | Emits a custom event `MDCChip:trailingIconInteraction` denoting the chip's trailing icon has been interacted with
-`layout() => void` | Recomputes all dimensions and positions for the ripple element
 
 > _NOTE_: The custom events emitted by `notifyInteraction` and `notifyTrailingIconInteraction` must pass along the target chip in its event `detail`, as well as bubble to the parent `mdc-chip-set` element.
 

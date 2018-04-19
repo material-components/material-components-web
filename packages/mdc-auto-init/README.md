@@ -26,8 +26,10 @@ npm install @material/auto-init
 
 If you are using mdc-auto-init as part of the [material-components-web](../material-components-web)
 package, simply write the necessary DOM needed for a component, and attach a `data-mdc-auto-init`
-attribute to the root element with its value set to the Component's class name. Then, after
-writing the markup, simply insert a script tag that calls `mdc.autoInit()`. Make sure you call `mdc.autoInit()` after all scripts are loaded so it works properly.
+attribute to the root element with its value set to the component's JavaScript class name (e.g.,
+`MDCTextField`). Then, after writing the markup, simply insert a script tag that calls
+`mdc.autoInit()`. Make sure you call `mdc.autoInit()` after all scripts are loaded so it works
+properly.
 
 ```html
 <div class="mdc-text-field" data-mdc-auto-init="MDCTextField">
