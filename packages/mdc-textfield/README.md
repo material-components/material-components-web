@@ -46,6 +46,12 @@ npm install @material/textfield
 </div>
 ```
 
+#### Input Types
+
+Text field supports `text` and `password` input types (e.g., `<input type="password" class="mdc-text-field__input">`).
+
+Other input types (such as `number` and `date`) are not currently supported.
+
 #### HTML5 Validation
 
 `MDCTextFieldFoundation` provides validity styling by using the `:invalid` and `:required` attributes provided

@@ -14,8 +14,11 @@
 // limitations under the License.
 //
 
-@import "@material/animation/variables";
+@import "../../packages/mdc-theme/color-palette";
 
-@function mdc-floating-label-transition($property) {
-  @return #{$property} 180ms $mdc-animation-standard-curve-timing-function;
-}
+$mdc-theme-primary: #fcb8ab;
+$mdc-theme-secondary: #feeae6;
+$mdc-theme-on-primary: #442b2d;
+$mdc-theme-on-secondary: #442b2d;
+
+@import "./theme-shared";
