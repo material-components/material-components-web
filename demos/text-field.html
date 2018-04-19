@@ -63,7 +63,7 @@
       <div class="mdc-toolbar-fixed-adjust"></div>
       <section class="hero">
         <div class="mdc-text-field">
-          <input type="text" class="mdc-text-field__input" id="my-text-field" aria-controls="my-text-field-helper-text">
+          <input type="text" class="mdc-text-field__input" id="my-text-field">
           <label for="my-text-field" class="mdc-floating-label">Text Field</label>
           <div class="mdc-line-ripple"></div>
         </div>
@@ -73,7 +73,9 @@
         <h2>Full Functionality JS Component (Floating Label, Validation)</h2>
         <section id="demo-text-field-wrapper">
           <div class="mdc-text-field">
-            <input type="text" class="mdc-text-field__input" id="full-func-text-field" aria-controls="my-text-field-helper-text">
+            <input type="text" class="mdc-text-field__input" id="full-func-text-field"
+                   aria-controls="my-text-field-helper-text"
+                   aria-describedby="my-text-field-helper-text">
             <label for="full-func-text-field" class="mdc-floating-label">Email Address</label>
             <div class="mdc-line-ripple"></div>
           </div>
@@ -123,6 +125,7 @@
         <div class="mdc-text-field">
           <input required pattern=".{8,}" type="password" class="mdc-text-field__input" id="pw"
                  aria-controls="pw-validation-msg"
+                 aria-describedby="pw-validation-msg"
                  autocomplete="current-password">
           <label for="pw" class="mdc-floating-label">Choose password</label>
           <div class="mdc-line-ripple"></div>
@@ -138,7 +141,8 @@
         <div id="demo-tf-outlined-wrapper">
           <div id="tf-outlined-example" class="mdc-text-field mdc-text-field--outlined" data-demo-no-auto-js>
             <input type="text" id="tf-outlined-input" class="mdc-text-field__input"
-                   aria-controls="name-validation-message">
+                   aria-controls="name-validation-message"
+                   aria-describedby="name-validation-message">
             <label for="tf-outlined-input" class="mdc-floating-label">Your Name</label>
             <div class="mdc-notched-outline">
               <svg>
@@ -187,7 +191,8 @@
         <div id="demo-tf-box-wrapper">
           <div id="tf-box-example" class="mdc-text-field mdc-text-field--box" data-demo-no-auto-js>
             <input type="text" id="tf-box" class="mdc-text-field__input"
-                   aria-controls="box-name-validation-message">
+                   aria-controls="box-name-validation-message"
+                   aria-describedby="box-name-validation-message">
             <label for="tf-box" class="mdc-floating-label">Your Name</label>
             <div class="mdc-line-ripple"></div>
           </div>

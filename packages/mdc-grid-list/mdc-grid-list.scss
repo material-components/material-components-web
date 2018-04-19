@@ -117,7 +117,7 @@ $mdc-grid-list-tile-secondary-icon-size: 24px;
 
 .mdc-grid-tile__secondary {
   @include mdc-theme-prop(background-color, primary);
-  @include mdc-theme-prop(color, text-primary-on-primary);
+  @include mdc-theme-prop(color, on-primary);
 
   position: absolute;
   bottom: 0;
