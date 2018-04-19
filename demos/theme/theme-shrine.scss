@@ -21,4 +21,26 @@ $mdc-theme-secondary: #feeae6;
 $mdc-theme-on-primary: #442b2d;
 $mdc-theme-on-secondary: #442b2d;
 
+@import "../../packages/mdc-typography/functions";
+
+$mdc-typography-font-family: Rubik, sans-serif;
+
+$mdc-typography-styles-headline5: (
+  font-weight: 500
+);
+
+$mdc-typography-styles-subtitle1: (
+  font-weight: 400,
+);
+
+$mdc-typography-styles-button: (
+  letter-spacing: mdc-typography-get-letter-spacing_(1, .875),
+);
+
+$mdc-typography-styles-overline: (
+  font-size: .875rem, /* 14sp */
+  font-weight: 400,
+  letter-spacing: mdc-typography-get-letter-spacing_(2, .75),
+);
+
 @import "./theme-shared";
