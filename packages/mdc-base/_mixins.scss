@@ -21,6 +21,7 @@ $mdc-base-styles-emitted_: () !default;
 @mixin mdc-base-emit-once($key) {
   @if not index($mdc-base-styles-emitted_, $key) {
     $mdc-base-styles-emitted_: append($mdc-base-styles-emitted_, $key, comma) !global;
+
     @content;
   }
 }
