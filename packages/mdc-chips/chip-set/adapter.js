@@ -63,6 +63,12 @@ class MDCChipSetAdapter {
    * @param {?Element} el
    */
   appendChild(el) {}
+
+  /**
+   * Removes the chip object from the chip set.
+   * @param {!Object} chip
+   */
+  removeChip(chip) {}
 }
 
 export default MDCChipSetAdapter;

@@ -45,6 +45,7 @@ class FakeChip {
   constructor() {
     this.destroy = td.func('.destroy');
     this.isSelected = td.func('.isSelected');
+    this.remove = td.func('.remove');
   }
 }
 
@@ -138,4 +139,12 @@ test('#adapter.appendChild adds a child to the chip set element', () => {
   const chipEl = bel`<div class="mdc-chip"><div class="mdc-chip__text">hello world</div></div>`;
   component.getDefaultFoundation().adapter_.appendChild(chipEl);
   assert.equal(root.childNodes[3], chipEl);
+});
+
+test('#adapter.removeChip removes the chip object from the chip set', () => {
+  const root = getFixture();
+  const component = new MDCChipSet(root, undefined, (el) => new FakeChip(el));
+  const chip = component.chips[0];
+  component.getDefaultFoundation().adapter_.removeChip(chip);
+  td.verify(chip.remove());
 });

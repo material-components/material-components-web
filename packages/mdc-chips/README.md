@@ -185,6 +185,7 @@ Method Signature | Description
 --- | ---
 `get foundation() => MDCChipFoundation` | Returns the foundation
 `isSelected() => boolean` | Proxies to the foundation's `isSelected` method
+`remove() => void` | Destroys the chip and removes the root element from the DOM
 
 Property | Value Type | Description
 --- | --- | ---
@@ -218,9 +219,9 @@ Method Signature | Description
 `deregisterTrailingIconInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the trailing icon element
 `notifyInteraction() => void` | Emits a custom event `MDCChip:interaction` denoting the chip has been interacted with
 `notifyTrailingIconInteraction() => void` | Emits a custom event `MDCChip:trailingIconInteraction` denoting the chip's trailing icon has been interacted with
+`notifyRemoval() => void` | Emits a custom event `MDCChip:removal` denoting the chip will be removed
 `getComputedStyleValue(propertyName: string) => string` | Returns the computed property value of the given style property on the root element
 `setStyleProperty(propertyName: string, value: string) => void` | Sets the property value of the given style property on the root element
-`removeFromDOM() => void` | Removes the root element from the DOM
 
 > _NOTE_: The custom events emitted by `notifyInteraction` and `notifyTrailingIconInteraction` must pass along the target chip in its event `detail`, as well as bubble to the parent `mdc-chip-set` element.
 
@@ -233,6 +234,7 @@ Method Signature | Description
 `deregisterInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event handler on the root element for a given event
 `createChipElement(text: string, leadingIcon: Element, trailingIcon: Element) => Element` | Returns a chip element with the given text, leading icon, and trailing icon
 `appendChild(el: Element) => void` | Appends the given element as a child of the root element
+`removeChip(chip: MDCChip) => void` | Removes the chip object from the chip set
 
 ### Foundations: `MDCChipFoundation` and `MDCChipSetFoundation`
 

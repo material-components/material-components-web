@@ -54,9 +54,9 @@ class MDCChipFoundation extends MDCFoundation {
       deregisterTrailingIconInteractionHandler: () => {},
       notifyInteraction: () => {},
       notifyTrailingIconInteraction: () => {},
+      notifyRemoval: () => {},
       getComputedStyleValue: () => {},
       setStyleProperty: () => {},
-      removeFromDOM: () => {},
     });
   }
 
@@ -130,7 +130,7 @@ class MDCChipFoundation extends MDCFoundation {
     // Handle transition end event on the chip when it is about to be removed.
     if (this.adapter_.eventTargetHasClass(/** @type {!EventTarget} */ (evt.target), cssClasses.CHIP_EXIT)) {
       if (evt.propertyName === 'width') {
-        this.adapter_.removeFromDOM();
+        this.adapter_.notifyRemoval();
       } else if (evt.propertyName === 'opacity') {
         // See: https://css-tricks.com/using-css-transitions-auto-dimensions/#article-header-id-5
         const chipWidth = this.adapter_.getComputedStyleValue('width');

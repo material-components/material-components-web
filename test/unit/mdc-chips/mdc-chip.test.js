@@ -49,6 +49,16 @@ test('get ripple returns MDCRipple instance', () => {
   assert.isTrue(component.ripple instanceof MDCRipple);
 });
 
+test('#remove removes the root element from the DOM', () => {
+  const wrapper = bel`<div></div>`;
+  const {root, component} = setupTest();
+  wrapper.appendChild(root);
+  assert.equal(wrapper.childNodes.length, 1);
+
+  component.remove();
+  assert.equal(wrapper.childNodes.length, 0);
+});
+
 test('#adapter.hasClass returns true if class is set on chip set element', () => {
   const {root, component} = setupTest();
   root.classList.add('foo');
@@ -179,14 +189,15 @@ test('#adapter.notifyTrailingIconInteraction emits ' +
   td.verify(handler(td.matchers.anything()));
 });
 
-test('#adapter.removeFromDOM removes the root element from the DOM', () => {
-  const wrapper = bel`<div></div>`;
-  const {root, component} = setupTest();
-  wrapper.appendChild(root);
-  assert.equal(wrapper.childNodes.length, 1);
+test('#adapter.notifyRemoval emits ' + MDCChipFoundation.strings.REMOVAL_EVENT, () => {
+  const {component} = setupTest();
+  const handler = td.func('interaction handler');
 
-  component.getDefaultFoundation().adapter_.removeFromDOM();
-  assert.equal(wrapper.childNodes.length, 0);
+  component.listen(
+    MDCChipFoundation.strings.REMOVAL_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyRemoval();
+
+  td.verify(handler(td.matchers.anything()));
 });
 
 function setupMockFoundationTest(root = getFixture()) {

@@ -45,6 +45,9 @@ class MDCChipSetFoundation extends MDCFoundation {
       hasClass: () => {},
       registerInteractionHandler: () => {},
       deregisterInteractionHandler: () => {},
+      createChipElement: () => {},
+      appendChild: () => {},
+      removeChip: () => {},
     });
   }
 
@@ -62,16 +65,22 @@ class MDCChipSetFoundation extends MDCFoundation {
 
     /** @private {function(!Event): undefined} */
     this.chipInteractionHandler_ = (evt) => this.handleChipInteraction_(evt);
+    /** @private {function(!Event): undefined} */
+    this.chipRemovalHandler_ = (evt) => this.handleChipRemoval_(evt);
   }
 
   init() {
     this.adapter_.registerInteractionHandler(
       MDCChipFoundation.strings.INTERACTION_EVENT, this.chipInteractionHandler_);
+    this.adapter_.registerInteractionHandler(
+      MDCChipFoundation.strings.REMOVAL_EVENT, this.chipRemovalHandler_);
   }
 
   destroy() {
     this.adapter_.deregisterInteractionHandler(
       MDCChipFoundation.strings.INTERACTION_EVENT, this.chipInteractionHandler_);
+    this.adapter_.deregisterInteractionHandler(
+      MDCChipFoundation.strings.REMOVAL_EVENT, this.chipRemovalHandler_);
   }
 
   /**
@@ -134,6 +143,17 @@ class MDCChipSetFoundation extends MDCFoundation {
         this.select(chipFoundation);
       }
     }
+  }
+
+  /**
+   * Handles the event when a chip is removed.
+   * @param {!Event} evt
+   * @private
+   */
+  handleChipRemoval_(evt) {
+    const {chip} = evt.detail;
+    this.deselect(chip.foundation);
+    this.adapter_.removeChip(chip);
   }
 }
 

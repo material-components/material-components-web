@@ -105,6 +105,11 @@ class MDCChipSet extends MDCComponent {
         return chipEl;
       },
       appendChild: (el) => this.root_.appendChild(el),
+      removeChip: (chip) => {
+        const index = this.chips.indexOf(chip);
+        this.chips.splice(index, 1);
+        chip.remove();
+      },
     })));
   }
 

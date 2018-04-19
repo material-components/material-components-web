@@ -39,8 +39,8 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'addClass', 'removeClass', 'hasClass', 'addClassToLeadingIcon', 'removeClassFromLeadingIcon',
     'eventTargetHasClass', 'registerEventHandler', 'deregisterEventHandler',
     'registerTrailingIconInteractionHandler', 'deregisterTrailingIconInteractionHandler',
-    'notifyInteraction', 'notifyTrailingIconInteraction', 'getComputedStyleValue',
-    'setStyleProperty', 'removeFromDOM',
+    'notifyInteraction', 'notifyTrailingIconInteraction', 'notifyRemoval',
+    'getComputedStyleValue', 'setStyleProperty',
   ]);
 });
 
@@ -111,7 +111,7 @@ test('on click, emit custom event', () => {
   td.verify(mockAdapter.notifyInteraction());
 });
 
-test('on chip width transition end, remove chip', () => {
+test('on chip width transition end, notify removal of chip', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerEventHandler');
   const mockEvt = {
@@ -124,7 +124,7 @@ test('on chip width transition end, remove chip', () => {
   foundation.init();
   handlers.transitionend(mockEvt);
 
-  td.verify(mockAdapter.removeFromDOM());
+  td.verify(mockAdapter.notifyRemoval());
 });
 
 test('on chip opacity transition end, animate width if chip is exiting', () => {

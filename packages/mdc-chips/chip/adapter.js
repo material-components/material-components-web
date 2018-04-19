@@ -108,6 +108,11 @@ class MDCChipAdapter {
   notifyTrailingIconInteraction() {}
 
   /**
+   * Emits a custom event "MDCChip:removal" denoting the chip will be removed.
+   */
+  notifyRemoval() {}
+
+  /**
    * Returns the computed property value of the given style property on the root element.
    * @param {string} propertyName
    * @return {string}
@@ -120,11 +125,6 @@ class MDCChipAdapter {
    * @param {string} value
    */
   setStyleProperty(propertyName, value) {}
-
-  /**
-   * Removes the root element from the DOM.
-   */
-  removeFromDOM() {}
 }
 
 export default MDCChipAdapter;
