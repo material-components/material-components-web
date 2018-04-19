@@ -128,8 +128,8 @@
 
   &:disabled {
     @include mdc-theme-prop(background-color, transparent);
-    @include mdc-theme-prop(color, text-disabled-on-light);
 
+    color: $mdc-button-disabled-ink-color;
     cursor: default;
     pointer-events: none;
   }
@@ -157,7 +157,7 @@
   border-style: solid;
 
   &:disabled {
-    @include mdc-theme-prop(border-color, text-disabled-on-light);
+    border-color: $mdc-button-disabled-ink-color;
   }
 }
 
@@ -165,8 +165,8 @@
   @include mdc-button-horizontal-padding($mdc-button-contained-horizontal-padding);
 
   &:disabled {
-    @include mdc-theme-prop(background-color, rgba(black, .12));
-    @include mdc-theme-prop(color, text-disabled-on-light);
+    background-color: rgba(mdc-theme-prop-value(on-surface), .12);
+    color: $mdc-button-disabled-ink-color;
   }
 }
 
