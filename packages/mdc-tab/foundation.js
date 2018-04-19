@@ -22,6 +22,9 @@ import {
   strings,
 } from './constants';
 
+/** @typedef {{rootLeft: number, rootRight: number, contentLeft: number, contentRight: number}} */
+let MDCTabDimensions;
+
 /**
  * @extends {MDCFoundation<!MDCTabAdapter>}
  * @final
@@ -49,6 +52,10 @@ class MDCTabFoundation extends MDCFoundation {
       removeClass: () => {},
       hasClass: () => {},
       setAttr: () => {},
+      getOffsetLeft: () => {},
+      getOffsetWidth: () => {},
+      getContentOffsetLeft: () => {},
+      getContentOffsetWidth: () => {},
     });
   }
 
@@ -109,6 +116,23 @@ class MDCTabFoundation extends MDCFoundation {
     this.adapter_.removeClass(cssClasses.ACTIVE);
     this.adapter_.setAttr(strings.ARIA_SELECTED, 'false');
   }
+
+  /**
+   * @return {!MDCTabDimensions}
+   */
+  computeDimensions() {
+    const rootWidth = this.adapter_.getOffsetWidth();
+    const rootLeft = this.adapter_.getOffsetLeft();
+    const contentWidth = this.adapter_.getContentOffsetWidth();
+    const contentLeft = this.adapter_.getContentOffsetLeft();
+
+    return {
+      rootLeft,
+      rootRight: rootLeft + rootWidth,
+      contentLeft: rootLeft + contentLeft,
+      contentRight: rootLeft + contentLeft + contentWidth,
+    };
+  }
 }
 
-export default MDCTabFoundation;
+export {MDCTabFoundation, MDCTabDimensions};

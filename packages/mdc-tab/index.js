@@ -60,6 +60,10 @@ class MDCTab extends MDCComponent {
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       hasClass: (className) => this.root_.classList.contains(className),
+      getOffsetLeft: () => this.root_.offsetLeft,
+      getOffsetWidth: () => this.root_.offsetWidth,
+      getContentOffsetLeft: () => this.content_.offsetLeft,
+      getContentOffsetWidth: () => this.content_.offsetWidth,
     })));
   }
 

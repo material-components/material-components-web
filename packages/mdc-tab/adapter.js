@@ -67,6 +67,30 @@ class MDCTabAdapter {
    * @param {string} value The value so give the attribute
    */
   setAttr(attr, value) {}
+
+  /**
+   * Returns the offsetLeft of the root element
+   * @return {number}
+   */
+  getOffsetLeft() {}
+
+  /**
+   * Returns the offsetWidth of the root element
+   * @return {number}
+   */
+  getOffsetWidth() {}
+
+  /**
+   * Returns the offsetLeft of the content element
+   * @return {number}
+   */
+  getContentOffsetLeft() {}
+
+  /**
+   * Returns the offsetLeft of the content element
+   * @return {number}
+   */
+  getContentOffsetWidth() {}
 }
 
 export default MDCTabAdapter;
