@@ -24,7 +24,7 @@ Icons describe the type of input a text field requires. They can also be interac
 ### HTML Structure
 
 ```html
-<i class="material-icons mdc-text-field__icon" tabindex="0">event</i>
+<i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
 ```
 
 ### Usage within `mdc-text-field`
@@ -36,7 +36,7 @@ Leading and trailing icons can be applied to text fields styled as `mdc-text-fie
 In text field box:
 ```html
 <div class="mdc-text-field mdc-text-field--box mdc-text-field--with-leading-icon">
-  <i class="material-icons mdc-text-field__icon" tabindex="0">event</i>
+  <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
   <input type="text" id="my-input" class="mdc-text-field__input">
   <label for="my-input" class="mdc-floating-label">Your Name</label>
   <div class="mdc-text-field__bottom-line"></div>
@@ -46,7 +46,7 @@ In text field box:
 In outlined text field:
 ```html
 <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon">
-  <i class="material-icons mdc-text-field__icon" tabindex="0">event</i>
+  <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
   <input type="text" id="my-input" class="mdc-text-field__input">
   <label for="my-input" class="mdc-floating-label">Your Name</label>
   <div class="mdc-notched-outline">
@@ -65,7 +65,7 @@ In text field box:
 <div class="mdc-text-field mdc-text-field--box mdc-text-field--with-trailing-icon">
   <input type="text" id="my-input" class="mdc-text-field__input">
   <label for="my-input" class="mdc-floating-label">Your Name</label>
-  <i class="material-icons mdc-text-field__icon" tabindex="0">event</i>
+  <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
   <div class="mdc-text-field__bottom-line"></div>
 </div>
 ```
@@ -75,7 +75,7 @@ In outlined text field:
 <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-trailing-icon">
   <input type="text" id="my-input" class="mdc-text-field__input">
   <label for="my-input" class="mdc-floating-label">Your Name</label>
-  <i class="material-icons mdc-text-field__icon" tabindex="0">event</i>
+  <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
   <div class="mdc-notched-outline">
     <svg>
       <path class="mdc-notched-outline__path"/>
@@ -85,8 +85,8 @@ In outlined text field:
 </div>
 ```
 
->**NOTE:** if you would like to display un-clickable icons, simply remove `tabindex="0"`,
-and the css will ensure the cursor is set to default, and that actioning on an icon doesn't
+>**NOTE:** if you would like to display un-clickable icons, simply remove `tabindex="0"` and `role="button"`,
+and the CSS will ensure the cursor is set to default, and that interacting with an icon doesn't
 do anything unexpected.
 
 ### Sass Mixins
@@ -106,6 +106,7 @@ This allows the parent `MDCTextField` component to access the public methods on 
 Method Signature | Description
 --- | ---
 `setAttr(attr: string, value: string) => void` | Sets an attribute with a given value on the icon element
+`removeAttr(attr: string) => void` | Removes an attribute from the icon element
 `registerInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event listener for a given event
 `deregisterInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener for a given event
 `notifyIconAction() => void` | Emits a custom event "MDCTextField:icon" denoting a user has clicked the icon, which bubbles to the top-level text field element
