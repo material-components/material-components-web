@@ -27,10 +27,6 @@
   }
 }
 
-.mdc-tab-scroller--paging {
-  overflow-x: hidden;
-}
-
 .mdc-tab-scroller__content {
   display: flex;
   flex: 1 0 auto;
@@ -39,6 +35,6 @@
   will-change: transform;
 }
 
-.mdc-tab-scroller--animating > .mdc-tab-scroller__content {
+.mdc-tab-scroller--animating .mdc-tab-scroller__content {
   transition: 250ms transform $mdc-animation-standard-curve-timing-function;
 }

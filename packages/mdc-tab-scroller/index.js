@@ -19,8 +19,6 @@ import MDCComponent from '@material/base/component';
 
 import MDCTabScrollerAdapter from './adapter';
 import MDCTabScrollerFoundation from './foundation';
-import MDCTabScrollingFoundation from './scrolling-foundation';
-import MDCTabPagingFoundation from './paging-foundation';
 
 /**
  * @extends {MDCComponent<!MDCTabScrollerFoundation>}
@@ -63,20 +61,15 @@ class MDCTabScroller extends MDCComponent {
       getOffsetWidth: () => this.root_.offsetWidth,
     });
 
-    if (this.root_.classList.contains(MDCTabScrollerFoundation.cssClasses.PAGING)) {
-      return new MDCTabPagingFoundation(adapter);
-    }
-
-    // Default to the scrolling foundation
-    return new MDCTabScrollingFoundation(adapter);
+    return new MDCTabScrollerFoundation(adapter);
   }
 
   /**
-   * Scrolls to the given pixel position
-   * @param {number} scrollX The pixel value to scroll to
+   * Returns the current visual scroll position
+   * @return {number}
    */
-  scrollTo(scrollX) {
-    this.foundation_.scrollTo(scrollX);
+  computeCurrentScrollPosition() {
+    return this.foundation_.computeCurrentScrollPosition();
   }
 
   /**
@@ -85,6 +78,14 @@ class MDCTabScroller extends MDCComponent {
    */
   incrementScroll(scrollXIncrement) {
     this.foundation_.incrementScroll(scrollXIncrement);
+  }
+
+  /**
+   * Scrolls to the given pixel position
+   * @param {number} scrollX The pixel value to scroll to
+   */
+  scrollTo(scrollX) {
+    this.foundation_.scrollTo(scrollX);
   }
 }
 

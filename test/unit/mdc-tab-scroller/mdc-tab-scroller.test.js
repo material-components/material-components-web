@@ -31,20 +31,10 @@ const getFixture = () => bel`
   </div>
 `;
 
-const getPagingFixture = () => bel`
-  <div class="mdc-tab-scroller mdc-tab-scroller--paging">
-    <div class="mdc-tab-scroller__content"></div>
-  </div>
-`;
-
 suite('MDCTabScroller');
 
 test('attachTo returns an MDCTabScroller instance', () => {
   assert.isTrue(MDCTabScroller.attachTo(getFixture()) instanceof MDCTabScroller);
-});
-
-test('attachTo paging component returns an MDCTabScroller instance', () => {
-  assert.isTrue(MDCTabScroller.attachTo(getPagingFixture()) instanceof MDCTabScroller);
 });
 
 function setupTest() {
@@ -162,4 +152,10 @@ test('#incrementScroll calls incrementScroll', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
   component.incrementScroll(10);
   td.verify(mockFoundation.incrementScroll(10), {times: 1});
+});
+
+test('#computeCurrentScrollPosition() calls computeCurrentScrollPosition', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.computeCurrentScrollPosition();
+  td.verify(mockFoundation.computeCurrentScrollPosition(), {times: 1});
 });

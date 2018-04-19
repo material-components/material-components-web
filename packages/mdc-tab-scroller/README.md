@@ -57,6 +57,7 @@ Method Signature | Description
 --- | ---
 `scrollTo(scrollX: number) => void` | Scrolls to the scrollX value
 `incrementScroll(scrollX: number) => void` | Increments the current scroll value by the scrollX value
+`computeCurrentScrollPosition() => number` | Returns the current visual scroll position
 
 ### `MDCTabScrollerAdapter`
 
@@ -79,3 +80,4 @@ Method Signature | Description
 --- | ---
 `scrollTo(scrollX: number) => void` | Scrolls to the scrollX value
 `incrementScroll(scrollX: number) => void` | Increments the current scroll value by the scrollX value
+`computeCurrentScrollPosition() => number` | Returns the current visual scroll position
