@@ -1,5 +1,5 @@
 //
-// Copyright 2018 Google Inc. All Rights Reserved.
+// Copyright 2017 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,10 +14,11 @@
 // limitations under the License.
 //
 
-@import "@material/theme/mixins";
+@import "../../packages/mdc-theme/color-palette";
 
-@mixin mdc-select-floating-label-color($color, $opacity: 1) {
-  .mdc-select__label {
-    @include mdc-theme-prop(color, rgba(mdc-theme-prop-value($color), $opacity));
-  }
-}
+$mdc-theme-primary: #fcb8ab;
+$mdc-theme-secondary: #feeae6;
+$mdc-theme-on-primary: #442b2d;
+$mdc-theme-on-secondary: #442b2d;
+
+@import "./theme-shared";

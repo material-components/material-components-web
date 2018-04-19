@@ -92,13 +92,20 @@ class MDCChipFoundation extends MDCFoundation {
   }
 
   /**
-   * Toggles the selected class on the chip element.
+   * @return {boolean}
    */
-  toggleSelected() {
-    if (this.adapter_.hasClass(cssClasses.SELECTED)) {
-      this.adapter_.removeClass(cssClasses.SELECTED);
-    } else {
+  isSelected() {
+    return this.adapter_.hasClass(cssClasses.SELECTED);
+  }
+
+  /**
+   * @param {boolean} selected
+   */
+  setSelected(selected) {
+    if (selected) {
       this.adapter_.addClass(cssClasses.SELECTED);
+    } else {
+      this.adapter_.removeClass(cssClasses.SELECTED);
     }
   }
 

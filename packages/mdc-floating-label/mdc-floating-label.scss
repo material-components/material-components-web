@@ -14,20 +14,26 @@
 // limitations under the License.
 //
 
+@import "@material/animation/variables";
 @import "@material/rtl/mixins";
 @import "@material/theme/variables";
 @import "@material/theme/mixins";
-@import "./functions";
+@import "@material/typography/mixins";
 @import "./mixins";
 @import "./variables";
 
 // postcss-bem-linter: define floating-label
 .mdc-floating-label {
+  @include mdc-typography(subtitle1);
+
   position: absolute;
   bottom: 8px;
   left: 0;
   transform-origin: left top;
-  transition: mdc-floating-label-transition(transform), mdc-floating-label-transition(color);
+  transition:
+    transform $mdc-floating-label-transition-duration $mdc-animation-standard-curve-timing-function,
+    color $mdc-floating-label-transition-duration $mdc-animation-standard-curve-timing-function;
+  line-height: 1.15rem;
   cursor: text;
 
   @include mdc-rtl {

@@ -1,5 +1,5 @@
 //
-// Copyright 2017 Google Inc. All Rights Reserved.
+// Copyright 2018 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,8 +14,7 @@
 // limitations under the License.
 //
 
-@import "@material/animation/variables";
+@import "@material/theme/mixins";
 
-@function mdc-floating-label-transition($property) {
-  @return #{$property} 180ms $mdc-animation-standard-curve-timing-function;
-}
+$mdc-card-stroke-color: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 12%);
+$mdc-card-stroke-width: 1px;

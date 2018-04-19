@@ -45,7 +45,7 @@
 }
 
 .mdc-chip--selected {
-  @include mdc-theme-prop(background-color, white);
+  @include mdc-theme-prop(background-color, surface);
 }
 
 .mdc-chip__text {
@@ -141,7 +141,7 @@
   }
 }
 
-.mdc-chip__icon--hidden-leading.mdc-chip__icon--leading {
+.mdc-chip__icon--leading-hidden.mdc-chip__icon--leading {
   width: 0;
 
   // This ensures that the leading icon doesn't fade in while the checkmark is fading out.

@@ -55,9 +55,9 @@ semantically correct.
 ### Adding Icon
 
 Users can nest `mdc-button__icon` inside the button element to add an icon. The icon in button
-is set to 18px to meet legibility requirements.
+is set to 18px to meet legibility requirements. This element should also include `aria-hidden="true"`.
 
-We recommend you load [Material Icons](https://material.io/icons/) from Google Fonts
+We recommend you load [Material Icons](https://material.io/icons/) from Google Fonts:
 
 ```html
 <head>
@@ -65,7 +65,7 @@ We recommend you load [Material Icons](https://material.io/icons/) from Google F
 </head>
 
 <button class="mdc-button">
-  <i class="material-icons mdc-button__icon">favorite</i>
+  <i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i>
   Button
 </button>
 ```
@@ -74,7 +74,7 @@ It's also possible to use an SVG icon:
 
 ```html
 <button class="mdc-button">
-  <svg class="mdc-button__icon" xmlns="http://www.w3.org/2000/svg" viewBox="...">
+  <svg class="mdc-button__icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="...">
   ...
   </svg>
   SVG Icon
@@ -148,6 +148,8 @@ Mixin | Description
 `mdc-button-stroke-width($width, $padding)` | Sets the stroke width to the given number (defaults to 2px) and adjusts padding accordingly. `$padding` is only required in cases where `mdc-button-horizontal-padding` is also included with a custom value.
 
 The ripple effect for the Button component is styled using [MDC Ripple](../mdc-ripple) mixins.
+
+> **Note:** If you want to customize both horizontal padding and stroke width, simply include the `mdc-button-stroke-width` mixin with both arguments. It will include `mdc-button-horizontal-padding` for you.
 
 #### Caveat: Edge and CSS Variables
 

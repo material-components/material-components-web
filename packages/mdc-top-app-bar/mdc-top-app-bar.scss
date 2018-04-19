@@ -24,10 +24,10 @@
 // postcss-bem-linter: define top-app-bar
 .mdc-top-app-bar {
   @include mdc-top-app-bar-fill-color-accessible(primary);
-  @include mdc-top-app-bar-icon-ink-color(text-primary-on-primary);
+  @include mdc-top-app-bar-icon-ink-color(on-primary);
 
   display: flex;
-  position: relative;
+  position: fixed;
   flex-direction: column;
   justify-content: space-between;
   box-sizing: border-box;
@@ -61,7 +61,7 @@
   }
 
   &__title {
-    @include mdc-typography(title);
+    @include mdc-typography(headline6);
     @include mdc-rtl-reflexive-box(padding, left, $mdc-top-app-bar-title-left-padding);
 
     text-overflow: ellipsis;
@@ -159,6 +159,18 @@
   }
 }
 
+// stylelint-disable-next-line plugin/selector-bem-pattern
+.mdc-top-app-bar--fixed {
+  position: fixed;
+  transition: box-shadow 200ms linear;
+}
+
+.mdc-top-app-bar--fixed-scrolled {
+  @include mdc-elevation(4);
+
+  transition: box-shadow 200ms linear;
+}
+
 // Specific styles for prominent and dense styled top app bar
 // stylelint-disable plugin/selector-bem-pattern
 .mdc-top-app-bar--dense.mdc-top-app-bar--prominent {
@@ -177,6 +189,26 @@
   }
 }
 // stylelint-enable plugin/selector-bem-pattern
+
+.mdc-top-app-bar--fixed-adjust {
+  margin-top: $mdc-top-app-bar-row-height;
+}
+
+.mdc-top-app-bar--dense-fixed-adjust {
+  margin-top: $mdc-top-app-bar-dense-row-height;
+}
+
+.mdc-top-app-bar--short-fixed-adjust {
+  margin-top: $mdc-top-app-bar-mobile-row-height;
+}
+
+.mdc-top-app-bar--prominent-fixed-adjust {
+  margin-top: $mdc-top-app-bar-prominent-row-height;
+}
+
+.mdc-top-app-bar--dense-prominent-fixed-adjust {
+  margin-top: $mdc-top-app-bar-dense-row-height * 2;
+}
 
 // Mobile Styles
 @include mdc-top-app-bar-mobile-breakpoint_;

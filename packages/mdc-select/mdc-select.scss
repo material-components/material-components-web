@@ -18,12 +18,12 @@
 @import "./mixins";
 @import "./variables";
 @import "@material/animation/variables";
+@import "@material/line-ripple/mdc-line-ripple";
+@import "@material/floating-label/mdc-floating-label";
 @import "@material/typography/mixins";
 @import "@material/ripple/common";
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
-@import "./label/mdc-select-label";
-@import "./bottom-line/mdc-select-bottom-line";
 
 // postcss-bem-linter: define select
 .mdc-select {
@@ -37,6 +37,9 @@
   // Focused state colors
   @include mdc-select-focused-bottom-line-color(primary);
   @include mdc-select-focused-label-color(primary);
+
+  // Hover state colors
+  @include mdc-select-hover-bottom-line-color(rgba(black, .87));
 
   display: inline-flex;
   position: relative;
@@ -64,9 +67,11 @@
     }
 
     width: 100%;
-    padding-top: 22px;
-    padding-bottom: 8px;
+    padding-top: 20px;
+    padding-bottom: 6px;
     border: none;
+    border-bottom: 1px solid;
+    border-radius: 0;
     outline: none;
     background-color: transparent;
     white-space: nowrap;
@@ -74,7 +79,12 @@
     appearance: none;
   }
 
-  @include mdc-select-focused-bottom-line_ {
+  // stylelint-disable-next-line plugin/selector-bem-pattern
+  .mdc-floating-label {
+    pointer-events: none;
+  }
+
+  @include mdc-select-focused-line-ripple_ {
     &::after {
       transform: scale(1, 2);
       opacity: 1;
@@ -109,41 +119,47 @@
     background-position: left 10px center;
   }
 
-  .mdc-select__native-control,
-  .mdc-select__label {
-    @include mdc-typography(subheading2);
-  }
-
   .mdc-select__native-control {
+    @include mdc-typography(subtitle1);
     @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding);
 
     height: 56px;
     border-radius: 4px 4px 0 0;
   }
 
-  .mdc-select__label {
+  // stylelint-disable plugin/selector-bem-pattern
+  .mdc-floating-label {
     @include mdc-rtl-reflexive-position(left, 16px);
 
     bottom: 12px;
+    line-height: 1.75rem;
 
     &--float-above {
       transform: translateY(-40%) scale(.75, .75);
     }
   }
+  // stylelint-enable plugin/selector-bem-pattern
 }
 
 .mdc-select--disabled {
-  @include mdc-select-floating-label-color(text-disabled-on-light);
   @include mdc-select-dd-arrow-svg-bg_(000000, .38);
   @include mdc-select-container-fill-color_(transparent);
 
-  border-bottom-width: 1px;
-  border-bottom-style: dotted;
+  .mdc-floating-label {
+    @include mdc-floating-label-ink-color(text-disabled-on-light);
+  }
+
+  // stylelint-disable plugin/selector-bem-pattern
+  .mdc-line-ripple {
+    display: none;
+  }
+  // stylelint-enable plugin/selector-bem-pattern
+
+  .mdc-select__native-control {
+    border-bottom-style: dotted;
+  }
+
   opacity: .38;
   cursor: default;
   pointer-events: none;
-
-  .mdc-select__bottom-line {
-    display: none;
-  }
 }

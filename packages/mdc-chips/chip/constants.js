@@ -17,19 +17,22 @@
 
 /** @enum {string} */
 const strings = {
+  ENTRY_ANIMATION_NAME: 'mdc-chip-entry',
   INTERACTION_EVENT: 'MDCChip:interaction',
+  TRAILING_ICON_INTERACTION_EVENT: 'MDCChip:trailingIconInteraction',
   CHECKMARK_SELECTOR: '.mdc-chip__checkmark',
   LEADING_ICON_SELECTOR: '.mdc-chip__icon--leading',
-  TRAILING_ICON_INTERACTION_EVENT: 'MDCChip:trailingIconInteraction',
   TRAILING_ICON_SELECTOR: '.mdc-chip__icon--trailing',
 };
 
 /** @enum {string} */
 const cssClasses = {
   CHECKMARK: 'mdc-chip__checkmark',
-  HIDDEN_LEADING_ICON: 'mdc-chip__icon--hidden-leading',
+  CHIP: 'mdc-chip',
+  HIDDEN_LEADING_ICON: 'mdc-chip__icon--leading-hidden',
   LEADING_ICON: 'mdc-chip__icon--leading',
   SELECTED: 'mdc-chip--selected',
+  TEXT: 'mdc-chip__text',
 };
 
 export {strings, cssClasses};
