@@ -176,7 +176,10 @@
 
   margin-top: 12px;
   margin-bottom: 4px;
+
+  .mdc-floating-label {
   font-size: .813rem;
+}
 }
 
 @mixin mdc-required-text-field-label-asterisk_() {
@@ -231,7 +234,7 @@
   }
 
   .mdc-floating-label {
-    bottom: 18px;
+    bottom: 16px;
   }
 
   .mdc-text-field__icon {
