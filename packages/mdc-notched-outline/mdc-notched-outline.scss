@@ -47,7 +47,8 @@
   left: 0;
   width: calc(100% - 4px);
   height: calc(100% - 4px);
-  transition: opacity 100ms ease;
+  transition: opacity $mdc-notched-outline-transition-duration $mdc-animation-standard-curve-timing-function,
+    border-color $mdc-notched-outline-transition-duration $mdc-animation-standard-curve-timing-function;
   border: 1px solid;
   opacity: 1;
 }
