@@ -49,16 +49,6 @@ test('get ripple returns MDCRipple instance', () => {
   assert.isTrue(component.ripple instanceof MDCRipple);
 });
 
-test('#remove removes the root element from the DOM', () => {
-  const wrapper = bel`<div></div>`;
-  const {root, component} = setupTest();
-  wrapper.appendChild(root);
-  assert.equal(wrapper.childNodes.length, 1);
-
-  component.remove();
-  assert.equal(wrapper.childNodes.length, 0);
-});
-
 test('#adapter.hasClass returns true if class is set on chip set element', () => {
   const {root, component} = setupTest();
   root.classList.add('foo');
@@ -211,4 +201,15 @@ test('#isSelected proxies to foundation', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
   component.isSelected();
   td.verify(mockFoundation.isSelected());
+});
+
+test('#remove removes the root element from the DOM', () => {
+  const wrapper = bel`<div></div>`;
+  const {root, component, mockFoundation} = setupMockFoundationTest();
+  wrapper.appendChild(root);
+  assert.equal(wrapper.childNodes.length, 1);
+
+  component.remove();
+  td.verify(mockFoundation.destroy());
+  assert.equal(wrapper.childNodes.length, 0);
 });
