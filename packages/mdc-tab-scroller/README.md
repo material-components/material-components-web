@@ -33,23 +33,12 @@ npm install --save @material/tab-scroller
 </span>
 ```
 
-#### Paging Scroller
-
-In some cases, native scrolling may not be desirable. The paging scroller allows animated scrolling but does not support native scrolling.
-
-```html
-<span class="mdc-tab-scroller mdc-tab-scroller--paging">
-  <span class="mdc-tab-scroller__content"></span>
-</span>
-```
-
 ### CSS Classes
 
 CSS Class | Description
 --- | ---
 `mdc-tab-scroller` | Mandatory. Contains the tab scroller content.
 `mdc-tab-scroller__content` | Mandatory. Denotes the tab scroller content.
-`mdc-tab-scroller--paging` | Optional. Disables native scrolling of the Tab Scroller content
 
 ### `MDCTabScroller`
 
