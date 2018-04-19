@@ -20,7 +20,7 @@
 
 $mdc-form-field-item-spacing: 4px;
 
-/* stylelint-disable selector-max-type */
+// stylelint-disable selector-max-type
 .mdc-form-field {
   @include mdc-typography(body2);
   @include mdc-theme-prop(color, text-primary-on-background);
@@ -57,4 +57,4 @@ $mdc-form-field-item-spacing: 4px;
     }
   }
 }
-/* stylelint-enable selector-max-type */
+// stylelint-enable selector-max-type
