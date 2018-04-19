@@ -178,8 +178,8 @@
   margin-bottom: 4px;
 
   .mdc-floating-label {
-  font-size: .813rem;
-}
+    font-size: .813rem;
+  }
 }
 
 @mixin mdc-required-text-field-label-asterisk_() {
@@ -385,6 +385,7 @@
 @mixin mdc-text-field-outlined-with-leading-icon_ {
   @include mdc-floating-label-float-position($mdc-text-field-outlined-label-position-y, $mdc-text-field-outlined-with-leading-icon-label-position-x);
   @include mdc-floating-label-shake-animation(text-field-outlined-leading-icon);
+
   @include mdc-rtl {
     @include mdc-floating-label-shake-animation(text-field-outlined-leading-icon-rtl);
   }
@@ -393,6 +394,7 @@
 @mixin mdc-text-field-outlined-dense-with-leading-icon_ {
   @include mdc-floating-label-float-position($mdc-text-field-outlined-dense-label-position-y, $mdc-text-field-outlined-dense-with-leading-icon-label-position-x, $mdc-text-field-dense-label-scale);
   @include mdc-floating-label-shake-animation(text-field-outlined-leading-icon-dense);
+
   @include mdc-rtl {
     @include mdc-floating-label-shake-animation(text-field-outlined-leading-icon-dense-rtl);
   }
