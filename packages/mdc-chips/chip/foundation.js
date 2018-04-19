@@ -127,7 +127,7 @@ class MDCChipFoundation extends MDCFoundation {
    * @param {!Event} evt
    */
   handleTransitionEnd_(evt) {
-    // Handle transition end event on the chip when the it is about to be removed.
+    // Handle transition end event on the chip when it is about to be removed.
     if (this.adapter_.eventTargetHasClass(/** @type {!EventTarget} */ (evt.target), cssClasses.CHIP_EXIT)) {
       if (evt.propertyName === 'width') {
         this.adapter_.removeFromDOM();
