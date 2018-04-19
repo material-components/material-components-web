@@ -30,7 +30,7 @@ const {cssClasses} = MDCTextFieldFoundation;
 
 const getFixture = () => bel`
   <div class="mdc-text-field">
-    <i class="material-icons mdc-text-field__icon" tabindex="0">event</i>
+    <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
     <input type="text" class="mdc-text-field__input" id="my-text-field">
     <label class="mdc-floating-label" for="my-text-field">My Label</label>
     <div class="mdc-line-ripple"></div>

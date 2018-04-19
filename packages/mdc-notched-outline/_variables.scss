@@ -1,5 +1,5 @@
 //
-// Copyright 2017 Google Inc. All Rights Reserved.
+// Copyright 2018 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,8 +14,4 @@
 // limitations under the License.
 //
 
-@import "@material/animation/variables";
-
-@function mdc-floating-label-transition($property) {
-  @return #{$property} 180ms $mdc-animation-standard-curve-timing-function;
-}
+$mdc-notched-outline-transition-duration: 150ms;

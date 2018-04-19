@@ -14,11 +14,11 @@
 // limitations under the License.
 //
 
+@import "@material/animation/variables";
 @import "@material/rtl/mixins";
 @import "@material/theme/variables";
 @import "@material/theme/mixins";
 @import "@material/typography/mixins";
-@import "./functions";
 @import "./mixins";
 @import "./variables";
 
@@ -30,7 +30,9 @@
   bottom: 8px;
   left: 0;
   transform-origin: left top;
-  transition: mdc-floating-label-transition(transform), mdc-floating-label-transition(color);
+  transition:
+    transform $mdc-floating-label-transition-duration $mdc-animation-standard-curve-timing-function,
+    color $mdc-floating-label-transition-duration $mdc-animation-standard-curve-timing-function;
   line-height: 1.15rem;
   cursor: text;
 
