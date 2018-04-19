@@ -76,13 +76,7 @@
   }
 
   .mdc-drawer__content {
-    flex-grow: 1;
-    box-sizing: border-box;
-    margin: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    touch-action: pan-y;
+    @include mdc-slideable-drawer-content;
   }
 
   .mdc-drawer__footer {

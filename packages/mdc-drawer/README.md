@@ -138,6 +138,7 @@ CSS classes:
 | `mdc-drawer`                            | Mandatory. Needs to be set on the root element of the component.           |
 | `mdc-drawer--persistent`                | Mandatory. Needs to be set on the root element of the component.           |
 | `mdc-drawer__drawer`                    | Mandatory. Needs to be set on the container node for the drawer content.   |
+| `mdc-drawer__content`                   |	Optional. Should be set on scrollable content within the drawer.           |
 
 ### Sass Mixins
 
@@ -345,7 +346,7 @@ CSS classes:
 | `mdc-drawer`                           | Mandatory. Needs to be set on the root element of the component.           |
 | `mdc-drawer--temporary`                | Mandatory. Needs to be set on the root element of the component.           |
 | `mdc-drawer__drawer`                   | Mandatory. Needs to be set on the container node for the drawer content.   |
-| `mdc-drawer__content`                  | Optional. Should be set on the list of items inside the drawer.            |
+| `mdc-drawer__content`                  | Optional. Should be set on scrollable content within the drawer.           |
 | `mdc-drawer__toolbar-spacer`           | Optional. Add to node to provide the matching amount of space for toolbar. |
 | `mdc-drawer__header`                   | Optional. Add to container node to create a 16:9 drawer header.            |
 | `mdc-drawer__header-content`           | Optional. Add to content node inside `mdc-temporary-drawer__header`.       |

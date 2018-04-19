@@ -42,6 +42,10 @@ $mdc-persistent-drawer-width: 240px;
     touch-action: none;
   }
 
+  .mdc-drawer__content {
+    @include mdc-slideable-drawer-content;
+  }
+
   &.mdc-drawer--open {
     width: $mdc-persistent-drawer-width;
     pointer-events: auto;
