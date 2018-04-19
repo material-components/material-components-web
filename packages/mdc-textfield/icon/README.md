@@ -105,6 +105,7 @@ This allows the parent `MDCTextField` component to access the public methods on 
 
 Method Signature | Description
 --- | ---
+`getAttr(attr: string) => string` | Gets the value of an attribute on the icon element
 `setAttr(attr: string, value: string) => void` | Sets an attribute with a given value on the icon element
 `removeAttr(attr: string) => void` | Removes an attribute from the icon element
 `registerInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event listener for a given event
