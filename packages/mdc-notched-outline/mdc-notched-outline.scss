@@ -47,7 +47,8 @@
   left: 0;
   width: calc(100% - 4px);
   height: calc(100% - 4px);
-  transition: opacity $mdc-notched-outline-transition-duration $mdc-animation-standard-curve-timing-function,
+  transition:
+    opacity $mdc-notched-outline-transition-duration $mdc-animation-standard-curve-timing-function,
     border-color $mdc-notched-outline-transition-duration $mdc-animation-standard-curve-timing-function;
   border: 1px solid;
   opacity: 1;
@@ -55,7 +56,6 @@
 
 .mdc-notched-outline__path {
   stroke-width: 1px;
-
   transition:
     stroke $mdc-notched-outline-transition-duration $mdc-animation-standard-curve-timing-function,
     stroke-width $mdc-notched-outline-transition-duration $mdc-animation-standard-curve-timing-function;
