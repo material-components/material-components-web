@@ -84,7 +84,7 @@ class MDCIconToggleAdapter {
 }
 
 /**
- * @typedef {!{
+ * @typedef {{
  *   isOn: boolean,
  * }}
  */
