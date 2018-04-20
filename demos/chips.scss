@@ -28,3 +28,7 @@
   @include mdc-chip-selected-ink-color($mdc-theme-secondary);
   @include mdc-chip-stroke(2px, solid, $mdc-theme-secondary);
 }
+
+.demo-icon-color {
+  @include mdc-chip-icon-color(orange);
+}

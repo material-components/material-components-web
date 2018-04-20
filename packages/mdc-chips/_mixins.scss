@@ -49,6 +49,12 @@
   }
 }
 
+@mixin mdc-chip-icon-color($color) {
+  .mdc-chip__icon {
+    @include mdc-theme-prop(color, $color);
+  }
+}
+
 @mixin mdc-chip-selected-ink-color($color) {
   &.mdc-chip {
     @include mdc-states-selected($color);

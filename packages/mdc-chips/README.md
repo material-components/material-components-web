@@ -161,7 +161,8 @@ Mixin | Description
 `mdc-chip-corner-radius($radius)` | Customizes the corner radius for a chip
 `mdc-chip-fill-color-accessible($color)` | Customizes the background fill color for a chip, and updates the chip's ink and ripple color to meet accessibility standards
 `mdc-chip-fill-color($color)` | Customizes the background fill color for a chip
-`mdc-chip-ink-color($color)` | Customizes the text ink color for a chip, and updates the chip's ripple color to match
+`mdc-chip-ink-color($color)` | Customizes the text ink color for a chip, and updates the chip's ripple color to match. This affects both text and icon, unless `mdc-chip-icon-color` is also used.
+`mdc-chip-icon-color($color)` | Customizes the icon color for a chip.
 `mdc-chip-selected-ink-color($color)` | Customizes text ink and ripple color of a chip in the _selected_ state
 `mdc-chip-stroke($width, $style, $color)` | Customizes the border stroke properties for a chip
 `mdc-chip-stroke-width($width)` | Customizes the border stroke width for a chip
