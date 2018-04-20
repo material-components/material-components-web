@@ -29,10 +29,10 @@
 
   @if ($fill-tone == "dark") {
     @include mdc-chip-ink-color(text-primary-on-dark);
-    @include mdc-chip-selected-ink-color(white);
+    @include mdc-chip-selected-ink-color(text-primary-on-dark);
   } @else {
     @include mdc-chip-ink-color(text-primary-on-light);
-    @include mdc-chip-selected-ink-color(black);
+    @include mdc-chip-selected-ink-color(text-primary-on-light);
   }
 }
 
@@ -67,7 +67,7 @@
   }
 }
 
-@mixin mdc-chip-stroke($width: 1, $style: solid, $color: black) {
+@mixin mdc-chip-stroke($width: 1, $style: solid, $color: mdc-theme-prop-value(on-surface)) {
   @include mdc-chip-stroke-width($width);
   @include mdc-chip-stroke-style($style);
   @include mdc-chip-stroke-color($color);

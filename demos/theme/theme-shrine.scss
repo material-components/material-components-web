@@ -21,4 +21,26 @@ $mdc-theme-secondary: #feeae6;
 $mdc-theme-on-primary: #442b2d;
 $mdc-theme-on-secondary: #442b2d;
 
+$mdc-typography-font-family: Rubik, sans-serif;
+
+$mdc-typography-styles-headline5: (
+  font-weight: 500
+);
+
+$mdc-typography-styles-subtitle1: (
+  font-weight: 400,
+);
+
+// letter-spacing from Sketch is in pixels and is relative to the font size in pixels.
+// This is calculated using $letter-spacing / ($font-size * $root-em)
+$mdc-typography-styles-button: (
+  letter-spacing: calc(1 / (.875 * 16) * 1em),
+);
+
+$mdc-typography-styles-overline: (
+  font-size: .875rem, // 14sp
+  font-weight: 400,
+  letter-spacing: calc(2.1 / (.875 * 16) * 1em),
+);
+
 @import "./theme-shared";
