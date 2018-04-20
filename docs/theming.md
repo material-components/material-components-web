@@ -32,6 +32,7 @@ what's behind them, and have
 - Disabled, used for text in disabled components and content.
 - Icon, used for icons.
 - On-surface, used for text that is on top of a surface background.
+- On-secondary, used for text that is on top of a secondary background.
 - On-primary, used for text that is on top of a primary background.
 
 ## Building a themed application
@@ -376,8 +377,9 @@ Since our cards only contain text and no components, let's keep it simple for no
 }
 ```
 
-Let's see ho wit looks with another component inside it. Add the following code to each card just after the `p`
+Let's see how it looks with another component inside it. Add the following code to each card just after the `p`
 tag: 
+
 ```html
 <button class="mdc-button mdc-card__actions">
   <i class="material-icons mdc-button__icon">favorite</i>
