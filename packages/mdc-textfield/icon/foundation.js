@@ -78,15 +78,15 @@ class MDCTextFieldIconFoundation extends MDCFoundation {
    * @param {boolean} disabled
    */
   setDisabled(disabled) {
+    if (!this.savedTabIndex_) {
+      return;
+    }
+
     if (disabled) {
-      if (this.savedTabIndex_) {
-        this.adapter_.setAttr('tabindex', '-1');
-      }
+      this.adapter_.setAttr('tabindex', '-1');
       this.adapter_.removeAttr('role');
     } else {
-      if (this.savedTabIndex_) {
-        this.adapter_.setAttr('tabindex', this.savedTabIndex_);
-      }
+      this.adapter_.setAttr('tabindex', this.savedTabIndex_);
       this.adapter_.setAttr('role', strings.ICON_ROLE);
     }
   }
