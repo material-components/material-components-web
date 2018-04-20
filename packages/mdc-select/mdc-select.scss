@@ -92,13 +92,6 @@
   }
 }
 
-// needed to make this a keyframe animation because having translateY in the
-// not-selected state caused an unwanted scrolling behavior to occur
-.mdc-select--is-changing .mdc-select__native-control {
-  animation: mdc-select-float-native-control 125ms 1;
-  animation-timing-function: $mdc-animation-deceleration-curve-timing-function;
-}
-
 .mdc-select--box {
   @include mdc-select-container-fill-color(rgba(black, .04));
   @include mdc-ripple-surface;
