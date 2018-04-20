@@ -13,12 +13,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-$mdc-text-field-error: #d50000;
-$mdc-text-field-divider: rgba(mdc-theme-prop-value(on-surface), .12);
+$mdc-text-field-error: #c51162;
+$mdc-text-field-fullwidth-bottom-line-color: rgba(mdc-theme-prop-value(on-surface), .12);
 $mdc-text-field-disabled-border: rgba(#231f20, .26);
 $mdc-text-field-disabled-icon: rgba(mdc-theme-prop-value(on-surface), .3);
-$mdc-text-field-underline-hover: rgba(mdc-theme-prop-value(on-surface), .87);
-$mdc-text-field-underline-idle: rgba(mdc-theme-prop-value(on-surface), .42);
+$mdc-text-field-bottom-line-hover: rgba(mdc-theme-prop-value(on-surface), .87);
+$mdc-text-field-bottom-line-idle: rgba(mdc-theme-prop-value(on-surface), .42);
 $mdc-text-field-label: rgba(mdc-theme-prop-value(on-surface), .6);
 $mdc-text-field-placeholder: rgba(mdc-theme-prop-value(on-surface), .6);
 

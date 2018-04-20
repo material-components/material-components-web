@@ -133,7 +133,7 @@
   @include mdc-text-field-label-ink-color_($mdc-text-field-disabled-label-color);
   @include mdc-text-field-helper-text-color_($mdc-text-field-disabled-helper-text-color);
   @include mdc-text-field-icon-color_($mdc-text-field-disabled-icon);
-  @include mdc-text-field-fullwidth-bottom-line-color_($mdc-text-field-divider);
+  @include mdc-text-field-fullwidth-bottom-line-color_($mdc-text-field-fullwidth-bottom-line-color);
 
   pointer-events: none;
 
