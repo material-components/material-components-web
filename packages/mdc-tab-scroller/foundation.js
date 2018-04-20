@@ -283,7 +283,7 @@ class MDCTabScrollerFoundation extends MDCFoundation {
     const contentClientRect = this.adapter_.computeContentClientRect();
     const rightEdgeDelta = Math.round(contentClientRect.right - rootClientRect.right);
 
-    if (rightEdgeDelta === initialScrollLeft) {
+    if (rightEdgeDelta === newScrollLeft) {
       // IE/Edge
       this.rtlScrollType_ = MDCTabScrollerFoundation.strings.RTL_REVERSE;
     } else {
