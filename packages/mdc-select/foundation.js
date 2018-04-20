@@ -22,10 +22,6 @@ export default class MDCSelectFoundation extends MDCFoundation {
     return cssClasses;
   }
 
-  static get numbers() {
-    return numbers;
-  }
-
   static get strings() {
     return strings;
   }
@@ -68,16 +64,8 @@ export default class MDCSelectFoundation extends MDCFoundation {
   }
 
   setSelectedIndex(index) {
-    const {IS_CHANGING} = MDCSelectFoundation.cssClasses;
-    const {FLOAT_NATIVE_CONTROL_TRANSITION_TIME_MS} = MDCSelectFoundation.numbers;
-
     this.adapter_.setSelectedIndex(index);
-    this.adapter_.addClass(IS_CHANGING);
     this.floatLabelWithValue_();
-
-    setTimeout(() => {
-      this.adapter_.removeClass(IS_CHANGING);
-    }, FLOAT_NATIVE_CONTROL_TRANSITION_TIME_MS);
   }
 
   setValue(value) {
