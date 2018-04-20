@@ -16,8 +16,8 @@
 
 'use strict';
 
-const Screenshot = require('./lib/screenshot');
 const AssetUploader = require('./asset-uploader');
+const Screenshot = require('./lib/screenshot');
 
 AssetUploader.upload().then(handleUploadSuccess, handleUploadFailure);
 
