@@ -171,7 +171,7 @@ Mixin | Description
 `mdc-chip-leading-icon-color($color, $opacity)` | Customizes the color of a leading icon in a chip, optionally customizes opacity
 `mdc-chip-trailing-icon-color($color, $opacity, $hover-opacity, $focus-opacity)` | Customizes the color of a trailing icon in a chip, optionally customizes regular/hover/focus opacities
 `mdc-chip-leading-icon-size($size)` | Customizes the size of a leading icon in a chip
-`mdc-chip-trailing-icon-color($size)` | Customizes the size of a trailing icon in a chip
+`mdc-chip-trailing-icon-size($size)` | Customizes the size of a trailing icon in a chip
 
 > _NOTE_: `mdc-chip-set-spacing` also sets the amount of space between a chip and the edge of the set it's contained in.
 
