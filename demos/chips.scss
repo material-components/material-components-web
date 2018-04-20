@@ -18,6 +18,10 @@
 @import "../packages/mdc-chips/mdc-chips";
 @import "../packages/mdc-button/mdc-button";
 
+#entry-chip-icon-clones {
+  display: none;
+}
+
 .custom-chip-primary {
   @include mdc-chip-fill-color-accessible($mdc-theme-primary);
 }
