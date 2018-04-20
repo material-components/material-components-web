@@ -35,10 +35,6 @@ class Progress {
     return this.successful + this.failed + this.cancelled;
   }
 
-  get waiting() {
-    return this.total - this.finished;
-  }
-
   get percent() {
     return this.total > 0 ? (100 * this.finished / this.total) : 0;
   }
