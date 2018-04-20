@@ -15,7 +15,7 @@
  */
 
 import {MDCFoundation} from '@material/base/index';
-import {cssClasses, numbers, strings} from './constants';
+import {cssClasses, strings} from './constants';
 
 export default class MDCSelectFoundation extends MDCFoundation {
   static get cssClasses() {
