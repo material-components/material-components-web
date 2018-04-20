@@ -39,7 +39,7 @@
   contain: strict;
   z-index: 5;
 
-  /* Shaded background */
+  // Shaded background
   &::before {
     display: block;
     position: absolute;
@@ -68,7 +68,7 @@
     overflow: hidden;
     touch-action: none;
 
-    /* TODO(sgomes): replace with global breakpoints when we have them */
+    // TODO(sgomes): replace with global breakpoints when we have them
     @media (min-width: 600px) {
       width: calc(100% - 64px);
       max-width: 320px;
