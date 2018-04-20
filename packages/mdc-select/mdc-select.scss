@@ -27,7 +27,6 @@
 
 // postcss-bem-linter: define select
 .mdc-select {
-  @include mdc-typography-base;
   @include mdc-select-container-fill-color(transparent);
   @include mdc-select-dd-arrow-svg-bg_;
   @include mdc-select-ink-color($mdc-select-ink-color);
@@ -44,7 +43,7 @@
   display: inline-flex;
   position: relative;
   box-sizing: border-box;
-  height: 48px;
+  height: 52px;
   background-repeat: no-repeat;
   background-position: right 8px bottom 12px;
   overflow: hidden;
@@ -55,7 +54,7 @@
 
   &__native-control {
     @include mdc-rtl-reflexive-property(padding, 0, $mdc-select-arrow-padding);
-    @include mdc-typography-base;
+    @include mdc-typography(subtitle1);
 
     &::-ms-expand {
       display: none;
@@ -68,7 +67,7 @@
 
     width: 100%;
     padding-top: 20px;
-    padding-bottom: 6px;
+    padding-bottom: 4px;
     border: none;
     border-bottom: 1px solid;
     border-radius: 0;
@@ -113,7 +112,6 @@
   }
 
   .mdc-select__native-control {
-    @include mdc-typography(subtitle1);
     @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding);
 
     height: 56px;
