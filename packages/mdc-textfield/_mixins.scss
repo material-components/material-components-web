@@ -129,11 +129,11 @@
 
 @mixin mdc-text-field-disabled_ {
   @include mdc-text-field-bottom-line-color_($mdc-text-field-disabled-border);
-  @include mdc-text-field-ink-color_(text-disabled-on-background);
-  @include mdc-text-field-label-ink-color_(text-disabled-on-background);
-  @include mdc-text-field-helper-text-color_(text-disabled-on-background);
+  @include mdc-text-field-ink-color_($mdc-text-field-disabled-ink-color);
+  @include mdc-text-field-label-ink-color_($mdc-text-field-disabled-label-color);
+  @include mdc-text-field-helper-text-color_($mdc-text-field-disabled-helper-text-color);
   @include mdc-text-field-icon-color_($mdc-text-field-disabled-icon);
-  @include mdc-text-field-fullwidth-bottom-line-color_($mdc-text-field-divider);
+  @include mdc-text-field-fullwidth-bottom-line-color_($mdc-text-field-fullwidth-bottom-line-color);
 
   pointer-events: none;
 
@@ -159,7 +159,7 @@
 }
 
 @mixin mdc-text-field-focused_ {
-  @include mdc-text-field-label-color(primary);
+  @include mdc-text-field-label-color($mdc-text-field-focused-label-color);
 
   @include mdc-required-text-field-label-asterisk_ {
     color: $mdc-text-field-error;
@@ -313,10 +313,10 @@
 @mixin mdc-text-field-box_ {
   @include mdc-ripple-surface;
   // Text Field Box intentionally omits press ripple, so each state needs to be specified individually
-  @include mdc-states-base-color(text-primary-on-background);
-  @include mdc-states-hover-opacity(mdc-states-opacity(text-primary-on-background, hover));
+  @include mdc-states-base-color($mdc-text-field-ink-color);
+  @include mdc-states-hover-opacity(mdc-states-opacity($mdc-text-field-ink-color, hover));
   @include mdc-states-focus-opacity(
-    mdc-states-opacity(text-primary-on-background, focus),
+    mdc-states-opacity($mdc-text-field-ink-color, focus),
     $has-nested-focusable-element: true
   );
   @include mdc-ripple-radius-bounded;
@@ -357,7 +357,7 @@
 @mixin mdc-text-field-box-disabled_ {
   @include mdc-text-field-box-fill-color_($mdc-text-field-box-disabled-background);
   @include mdc-text-field-bottom-line-color_($mdc-text-field-outlined-disabled-border);
-  @include mdc-text-field-label-color(text-hint-on-background);
+  @include mdc-text-field-label-color($mdc-text-field-disabled-label-color);
 
   border-bottom: none;
 }
