@@ -159,7 +159,7 @@ Mixin | Description
 --- | ---
 `mdc-chip-set-spacing($gap-size)` | Customizes the amount of space between each chip in the set
 `mdc-chip-corner-radius($radius)` | Customizes the corner radius for a chip
-`mdc-chip-fill-color-accessible($color)` | Customizes the background fill color for a chip, and updates the chip's ink and ripple color to meet accessibility standards
+`mdc-chip-fill-color-accessible($color)` | Customizes the background fill color for a chip, and updates the chip's ink, icon and ripple colors to meet accessibility standards
 `mdc-chip-fill-color($color)` | Customizes the background fill color for a chip
 `mdc-chip-ink-color($color)` | Customizes the text ink color for a chip, and updates the chip's ripple color to match
 `mdc-chip-selected-ink-color($color)` | Customizes text ink and ripple color of a chip in the _selected_ state
@@ -167,6 +167,10 @@ Mixin | Description
 `mdc-chip-stroke-width($width)` | Customizes the border stroke width for a chip
 `mdc-chip-stroke-style($style)` | Customizes the border stroke style for a chip
 `mdc-chip-stroke-color($color)` | Customizes the border stroke color for a chip
+`mdc-chip-leading-icon-color($color, $opacity)` | Customizes the color of a leading icon in a chip, optionally customizes opacity
+`mdc-chip-trailing-icon-color($color, $opacity, $hover-opacity, $focus-opacity)` | Customizes the color of a trailing icon in a chip, optionally customizes regular/hover/focus opacities
+`mdc-chip-leading-icon-size($size)` | Customizes the size of a leading icon in a chip
+`mdc-chip-trailing-icon-size($size)` | Customizes the size of a trailing icon in a chip
 
 > _NOTE_: `mdc-chip-set-spacing` also sets the amount of space between a chip and the edge of the set it's contained in.
 
