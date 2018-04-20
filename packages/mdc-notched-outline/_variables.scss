@@ -1,5 +1,5 @@
 //
-// Copyright 2017 Google Inc. All Rights Reserved.
+// Copyright 2018 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,10 +14,4 @@
 // limitations under the License.
 //
 
-@import "../../packages/mdc-theme/color-palette";
-
-// TODO: Use theme mixin(s) instead
-$mdc-theme-primary: $material-color-yellow-500;
-$mdc-theme-secondary: $material-color-blue-500;
-
-@import "./theme-shared";
+$mdc-notched-outline-transition-duration: 150ms;
