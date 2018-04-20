@@ -106,6 +106,25 @@ class MDCChipAdapter {
    * interacted with (typically on click or keydown).
    */
   notifyTrailingIconInteraction() {}
+
+  /**
+   * Emits a custom event "MDCChip:removal" denoting the chip will be removed.
+   */
+  notifyRemoval() {}
+
+  /**
+   * Returns the computed property value of the given style property on the root element.
+   * @param {string} propertyName
+   * @return {string}
+   */
+  getComputedStyleValue(propertyName) {}
+
+  /**
+   * Sets the property value of the given style property on the root element.
+   * @param {string} propertyName
+   * @param {string} value
+   */
+  setStyleProperty(propertyName, value) {}
 }
 
 export default MDCChipAdapter;

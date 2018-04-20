@@ -145,6 +145,7 @@ CSS Class | Description
 `mdc-chip__icon--leading` | Optional. Indicates a leading icon in the chip.
 `mdc-chip__icon--leading-hidden` | Optional. Hides the leading icon in a filter chip when the chip is selected.
 `mdc-chip__icon--trailing` | Optional. Indicates a trailing icon in the chip.
+`mdc-chip__icon--remove` | Optional. Indicates a trailing icon that removes the chip from the DOM. Only use with entry chips or filter chips.
 `mdc-chip__checkmark` | Optional. Indicates the checkmark in a filter chip.
 `mdc-chip__checkmark-svg` | Mandatory with the use of `mdc-chip__checkmark`. Indicates the checkmark SVG element in a filter chip.
 `mdc-chip__checkmark-path` | Mandatory with the use of `mdc-chip__checkmark`. Indicates the checkmark SVG path in a filter chip.
@@ -184,6 +185,7 @@ Method Signature | Description
 --- | ---
 `get foundation() => MDCChipFoundation` | Returns the foundation
 `isSelected() => boolean` | Proxies to the foundation's `isSelected` method
+`remove() => void` | Destroys the chip and removes the root element from the DOM
 
 Property | Value Type | Description
 --- | --- | ---
@@ -217,6 +219,9 @@ Method Signature | Description
 `deregisterTrailingIconInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the trailing icon element
 `notifyInteraction() => void` | Emits a custom event `MDCChip:interaction` denoting the chip has been interacted with
 `notifyTrailingIconInteraction() => void` | Emits a custom event `MDCChip:trailingIconInteraction` denoting the chip's trailing icon has been interacted with
+`notifyRemoval() => void` | Emits a custom event `MDCChip:removal` denoting the chip will be removed
+`getComputedStyleValue(propertyName: string) => string` | Returns the computed property value of the given style property on the root element
+`setStyleProperty(propertyName: string, value: string) => void` | Sets the property value of the given style property on the root element
 
 > _NOTE_: The custom events emitted by `notifyInteraction` and `notifyTrailingIconInteraction` must pass along the target chip in its event `detail`, as well as bubble to the parent `mdc-chip-set` element.
 
@@ -227,8 +232,8 @@ Method Signature | Description
 `hasClass(className: string) => boolean` | Returns whether the chip set element has the given class
 `registerInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event handler on the root element for a given event
 `deregisterInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event handler on the root element for a given event
-`createChipElement(text: string, leadingIcon: Element, trailingIcon: Element) => Element` | Returns a chip element with the given text, leading icon, and trailing icon
-`appendChild(el: Element) => void` | Appends the given element as a child of the root element
+`appendChip(text: string, leadingIcon: Element, trailingIcon: Element) => Element` | Appends and returns a chip element with the given text, leading icon, and trailing icon
+`removeChip(chip: MDCChip) => void` | Removes the chip object from the chip set
 
 ### Foundations: `MDCChipFoundation` and `MDCChipSetFoundation`
 

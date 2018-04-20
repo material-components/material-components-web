@@ -17,12 +17,10 @@
 @import "@material/theme/variables";
 @import "./variables";
 
-/**
- * Applies the correct CSS rules to an element to give it the elevation specified by $z-value.
- * The $z-value must be between 0 and 24.
- * If $color has an alpha channel, it will be ignored and overridden. To increase the opacity of the shadow, use
- * $opacity-boost.
- */
+// Applies the correct CSS rules to an element to give it the elevation specified by $z-value.
+// The $z-value must be between 0 and 24.
+// If $color has an alpha channel, it will be ignored and overridden. To increase the opacity of the shadow, use
+// $opacity-boost.
 @mixin mdc-elevation($z-value, $color: $mdc-elevation-baseline-color, $opacity-boost: 0) {
   @if type-of($z-value) != number or not unitless($z-value) {
     @error "$z-value must be a unitless number, but received '#{$z-value}'";
@@ -54,18 +52,16 @@
     #{$ambient-z-value} $ambient-color;
 }
 
-/**
- * Returns a string that can be used as the value for a `transition` property for elevation.
- * Calling this function directly is useful in situations where a component needs to transition
- * more than one property.
- *
- * ```scss
- * .foo {
- *   transition: mdc-elevation-transition-value(), opacity 100ms ease;
- *   will-change: $mdc-elevation-property, opacity;
- * }
- * ```
- */
+// Returns a string that can be used as the value for a `transition` property for elevation.
+// Calling this function directly is useful in situations where a component needs to transition
+// more than one property.
+//
+// ```scss
+// .foo {
+//   transition: mdc-elevation-transition-value(), opacity 100ms ease;
+//   will-change: $mdc-elevation-property, opacity;
+// }
+// ```
 @function mdc-elevation-transition-value(
   $duration: $mdc-elevation-transition-duration,
   $easing: $mdc-elevation-transition-timing-function) {
