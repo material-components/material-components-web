@@ -74,7 +74,7 @@ class MDCLineRippleFoundation extends MDCFoundation {
 
   /**
    * Sets the center of the ripple animation to the given X coordinate.
-   * @param {!number} xCoordinate
+   * @param {number} xCoordinate
    */
   setRippleCenter(xCoordinate) {
     this.adapter_.setStyle('transform-origin', `${xCoordinate}px center`);

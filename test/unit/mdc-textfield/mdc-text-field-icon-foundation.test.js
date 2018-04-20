@@ -20,16 +20,17 @@ import td from 'testdouble';
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
 import MDCTextFieldIconFoundation from '../../../packages/mdc-textfield/icon/foundation';
+import {strings} from '../../../packages/mdc-textfield/icon/constants';
 
 suite('MDCTextFieldIconFoundation');
 
 test('exports strings', () => {
-  assert.isOk('strings' in MDCTextFieldIconFoundation);
+  assert.deepEqual(MDCTextFieldIconFoundation.strings, strings);
 });
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTextFieldIconFoundation, [
-    'setAttr', 'registerInteractionHandler', 'deregisterInteractionHandler',
+    'setAttr', 'removeAttr', 'registerInteractionHandler', 'deregisterInteractionHandler',
     'notifyIconAction',
   ]);
 });
@@ -58,10 +59,22 @@ test('#setDisabled sets icon tabindex to -1 when set to true', () => {
   td.verify(mockAdapter.setAttr('tabindex', '-1'));
 });
 
+test('#setDisabled removes icon role when set to true', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.setDisabled(true);
+  td.verify(mockAdapter.removeAttr('role'));
+});
+
 test('#setDisabled sets icon tabindex to 0 when set to false', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setDisabled(false);
   td.verify(mockAdapter.setAttr('tabindex', '0'));
+});
+
+test(`#setDisabled sets icon role to ${strings.ICON_ROLE} when set to false`, () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.setDisabled(false);
+  td.verify(mockAdapter.setAttr('role', strings.ICON_ROLE));
 });
 
 test('on click notifies custom icon event', () => {
