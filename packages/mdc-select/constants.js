@@ -17,11 +17,6 @@ export const cssClasses = {
   BOX: 'mdc-select--box',
   DISABLED: 'mdc-select--disabled',
   ROOT: 'mdc-select',
-  IS_CHANGING: 'mdc-select--is-changing',
-};
-
-export const numbers = {
-  FLOAT_NATIVE_CONTROL_TRANSITION_TIME_MS: 125,
 };
 
 export const strings = {
