@@ -21,7 +21,7 @@ import {cssClasses, strings, numbers} from './constants';
 import {getNormalizedEventCoords} from './util';
 
 /**
- * @typedef {!{
+ * @typedef {{
  *   isActivated: (boolean|undefined),
  *   hasDeactivationUXRun: (boolean|undefined),
  *   wasActivatedByPointer: (boolean|undefined),
@@ -33,7 +33,7 @@ import {getNormalizedEventCoords} from './util';
 let ActivationStateType;
 
 /**
- * @typedef {!{
+ * @typedef {{
  *   activate: (string|undefined),
  *   deactivate: (string|undefined),
  *   focus: (string|undefined),
@@ -43,7 +43,7 @@ let ActivationStateType;
 let ListenerInfoType;
 
 /**
- * @typedef {!{
+ * @typedef {{
  *   activate: function(!Event),
  *   deactivate: function(!Event),
  *   focus: function(),
@@ -53,7 +53,7 @@ let ListenerInfoType;
 let ListenersType;
 
 /**
- * @typedef {!{
+ * @typedef {{
  *   x: number,
  *   y: number
  * }}
@@ -144,7 +144,7 @@ class MDCRippleFoundation extends MDCFoundation {
     /** @private {!Function} */
     this.resizeHandler_ = () => this.layout();
 
-    /** @private {!{left: number, top:number}} */
+    /** @private {{left: number, top:number}} */
     this.unboundedCoords_ = {
       left: 0,
       top: 0,

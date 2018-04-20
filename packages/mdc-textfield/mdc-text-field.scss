@@ -246,4 +246,6 @@
 @include mdc-floating-label-shake-keyframes(text-field-outlined-dense, $mdc-text-field-outlined-dense-label-position-y, 0%, $mdc-text-field-dense-label-scale);
 @include mdc-floating-label-shake-keyframes(text-field-outlined-leading-icon, $mdc-text-field-outlined-label-position-y, $mdc-text-field-outlined-with-leading-icon-label-position-x);
 @include mdc-floating-label-shake-keyframes(text-field-outlined-leading-icon-dense, $mdc-text-field-outlined-dense-label-position-y, $mdc-text-field-outlined-dense-with-leading-icon-label-position-x, $mdc-text-field-dense-label-scale);
+@include mdc-floating-label-shake-keyframes(text-field-outlined-leading-icon-rtl, $mdc-text-field-outlined-label-position-y, -$mdc-text-field-outlined-with-leading-icon-label-position-x);
+@include mdc-floating-label-shake-keyframes(text-field-outlined-leading-icon-dense-rtl, $mdc-text-field-outlined-dense-label-position-y, -$mdc-text-field-outlined-dense-with-leading-icon-label-position-x, $mdc-text-field-dense-label-scale);
 @include mdc-floating-label-shake-keyframes(textarea, $mdc-text-field-textarea-label-position-y, 0%, $mdc-text-field-textarea-label-scale);

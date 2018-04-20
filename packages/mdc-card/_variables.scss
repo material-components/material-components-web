@@ -14,5 +14,7 @@
 // limitations under the License.
 //
 
-$mdc-card-stroke-color: #dbdbdb;
+@import "@material/theme/mixins";
+
+$mdc-card-stroke-color: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 12%);
 $mdc-card-stroke-width: 1px;

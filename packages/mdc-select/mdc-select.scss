@@ -67,8 +67,8 @@
     }
 
     width: 100%;
-    padding-top: 22px;
-    padding-bottom: 8px;
+    padding-top: 20px;
+    padding-bottom: 6px;
     border: none;
     border-bottom: 1px solid;
     border-radius: 0;
@@ -77,6 +77,11 @@
     white-space: nowrap;
     cursor: pointer;
     appearance: none;
+  }
+
+  // stylelint-disable-next-line plugin/selector-bem-pattern
+  .mdc-floating-label {
+    pointer-events: none;
   }
 
   @include mdc-select-focused-line-ripple_ {
@@ -114,12 +119,8 @@
     background-position: left 10px center;
   }
 
-  .mdc-select__native-control,
-  .mdc-select__label {
-    @include mdc-typography(subtitle1);
-  }
-
   .mdc-select__native-control {
+    @include mdc-typography(subtitle1);
     @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding);
 
     height: 56px;
@@ -131,6 +132,7 @@
     @include mdc-rtl-reflexive-position(left, 16px);
 
     bottom: 12px;
+    line-height: 1.75rem;
 
     &--float-above {
       transform: translateY(-40%) scale(.75, .75);
