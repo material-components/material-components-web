@@ -98,7 +98,35 @@
   }
 }
 
-@mixin mdc-chip-icon-size($size) {
+// For customizing icon styles, we need to increase specifity to ensure
+// overrides apply. Styles defined in the .material-icons CSS class are
+// loaded separately, so the order of CSS definitions is not guaranteed.
+
+@mixin mdc-chip-leading-icon-color($color) {
+  .mdc-chip__icon.mdc-chip__icon--leading {
+    @include mdc-theme-prop(color, $color);
+  }
+}
+
+@mixin mdc-chip-trailing-icon-color($color) {
+  .mdc-chip__icon.mdc-chip__icon--trailing {
+    @include mdc-theme-prop(color, $color);
+  }
+}
+
+@mixin mdc-chip-leading-icon-size($size) {
+  .mdc-chip__icon.mdc-chip__icon--leading {
+    @include mdc-chip-icon-size_($size);
+  }
+}
+
+@mixin mdc-chip-trailing-icon-size($size) {
+  .mdc-chip__icon.mdc-chip__icon--trailing {
+    @include mdc-chip-icon-size_($size);
+  }
+}
+
+@mixin mdc-chip-icon-size_($size) {
   width: $size;
   height: $size;
   font-size: $size;

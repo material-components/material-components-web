@@ -31,6 +31,10 @@
   @include mdc-chip-fill-color($mdc-chip-fill-color-default);
   @include mdc-chip-ink-color($mdc-chip-ink-color-default);
   @include mdc-chip-selected-ink-color(primary);
+  @include mdc-chip-leading-icon-size($mdc-chip-leading-icon-size);
+  @include mdc-chip-leading-icon-color($mdc-chip-icon-color);
+  @include mdc-chip-trailing-icon-size($mdc-chip-trailing-icon-size);
+  @include mdc-chip-trailing-icon-color($mdc-chip-icon-color);
   @include mdc-typography(body2);
 
   display: inline-flex;
@@ -67,7 +71,6 @@
 .mdc-chip__icon {
   border-radius: 50%;
   outline: none;
-  color: $mdc-chip-icon-color;
   vertical-align: middle;
 }
 
@@ -81,17 +84,6 @@
   &:focus {
     color: $mdc-chip-trailing-icon-focus-color;
   }
-}
-
-// This overrides styles defined in the .material-icons CSS class
-// which is loaded separately, so the order of CSS definitions is not
-// guaranteed. Therefore, increase specifity to ensure overrides apply.
-.mdc-chip__icon.mdc-chip__icon--leading {
-  @include mdc-chip-icon-size($mdc-chip-leading-icon-size);
-}
-
-.mdc-chip__icon.mdc-chip__icon--trailing {
-  @include mdc-chip-icon-size($mdc-chip-trailing-icon-size);
 }
 
 .mdc-chip__checkmark,
