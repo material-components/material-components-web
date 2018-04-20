@@ -22,7 +22,7 @@ import {
   strings,
 } from './constants';
 
-const INTERACTION_EVENTS = ['scroll', 'touchstart', 'pointerdown', 'mousedown', 'keydown'];
+const INTERACTION_EVENTS = ['wheel', 'touchstart', 'pointerdown', 'mousedown', 'keydown'];
 
 /**
  * @extends {MDCFoundation<!MDCTabScrollerAdapter>}
@@ -55,6 +55,8 @@ class MDCTabScrollerFoundation extends MDCFoundation {
       getScrollLeft: () => {},
       getContentOffsetWidth: () => {},
       getOffsetWidth: () => {},
+      computeClientRect: () => {},
+      computeContentClientRect: () => {},
     });
   }
 
@@ -73,6 +75,9 @@ class MDCTabScrollerFoundation extends MDCFoundation {
 
     /** @private {boolean} */
     this.isAnimating_ = false;
+
+    /** @private {?string} */
+    this.rtlScrollType_;
   }
 
   /**
@@ -107,6 +112,7 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    */
   handleTransitionEnd() {
     this.isAnimating_ = false;
+    this.shouldHandleInteraction_ = false;
     this.deregisterInteractionHandlers_();
     this.adapter_.deregisterEventHandler('transitionend', this.handleTransitionEnd_);
     this.adapter_.removeClass(MDCTabScrollerFoundation.cssClasses.ANIMATING);
@@ -179,6 +185,15 @@ class MDCTabScrollerFoundation extends MDCFoundation {
     INTERACTION_EVENTS.forEach((eventName) => {
       this.adapter_.deregisterEventHandler(eventName, this.handleInteraction_);
     });
+    this.shouldHandleInteraction_ = false;
+  }
+
+  /**
+   * @return {boolean}
+   * @private
+   */
+  isRTL_() {
+    return this.adapter_.getContentStyleValue('direction') === 'rtl';
   }
 
   /**
@@ -189,6 +204,7 @@ class MDCTabScrollerFoundation extends MDCFoundation {
     INTERACTION_EVENTS.forEach((eventName) => {
       this.adapter_.registerEventHandler(eventName, this.handleInteraction_);
     });
+    this.shouldHandleInteraction_ = true;
   }
 
   /**
@@ -204,8 +220,13 @@ class MDCTabScrollerFoundation extends MDCFoundation {
       return;
     }
 
+    this.deregisterInteractionHandlers_();
     this.stopScrollAnimation_();
-    this.shouldHandleInteraction_ = false;
+
+    if (this.isRTL_()) {
+      const direction = this.computeScrollDirection_();
+      console.log('scroll direction', direction);
+    }
 
     // This animation uses the FLIP approach.
     // Read more here: https://aerotwist.com/blog/flip-your-animations/
@@ -218,18 +239,10 @@ class MDCTabScrollerFoundation extends MDCFoundation {
       this.adapter_.addClass(MDCTabScrollerFoundation.cssClasses.ANIMATING);
       this.adapter_.setContentStyleProperty('transform', 'none');
       this.isAnimating_ = true;
-      requestAnimationFrame(() => {
-        // Double-wrapped in a rAF because Firefox gets frisky with the scroll
-        // event and triggers a scroll event even though the handlers are bound
-        // *after* the scrollLeft value is set. This double-wrapped rAF ensures
-        // that we don't accidentally handle the scrollEvent we've triggered.
-        // See https://youtu.be/mmq-KVeO-uU?t=14m0s for a great explanation.
-        this.registerInteractionHandlers_();
-      });
     });
 
+    this.registerInteractionHandlers_();
     this.adapter_.registerEventHandler('transitionend', this.handleTransitionEnd_);
-    this.shouldHandleInteraction_ = true;
   }
 
   /**
@@ -248,6 +261,37 @@ class MDCTabScrollerFoundation extends MDCFoundation {
     this.adapter_.removeClass(MDCTabScrollerFoundation.cssClasses.ANIMATING);
     this.adapter_.setContentStyleProperty('transform', 'translateX(0px)');
     this.adapter_.setScrollLeft(currentScrollPosition);
+  }
+
+  computeScrollDirection_() {
+    if (this.rtlScrollType_) {
+      return this.rtlScrollType_;
+    }
+
+    const initialScrollLeft = this.adapter_.getScrollLeft();
+    this.adapter_.setScrollLeft(initialScrollLeft - 1);
+    const newScrollLeft = this.adapter_.getScrollLeft();
+
+    // Firefox/Opera
+    if (newScrollLeft < 0) {
+      this.rtlScrollType_ = MDCTabScrollerFoundation.strings.RTL_NEGATIVE;
+      // Early exit
+      return this.rtlScrollType_;
+    }
+
+    const rootClientRect = this.adapter_.computeClientRect();
+    const contentClientRect = this.adapter_.computeContentClientRect();
+    const rightEdgeDelta = Math.round(contentClientRect.right - rootClientRect.right);
+
+    if (rightEdgeDelta === initialScrollLeft) {
+      // IE/Edge
+      this.rtlScrollType_ = MDCTabScrollerFoundation.strings.RTL_REVERSE;
+    } else {
+      // Webkit
+      this.rtlScrollType_ = MDCTabScrollerFoundation.strings.RTL_DEFAULT;
+    }
+
+    return this.rtlScrollType_;
   }
 }
 

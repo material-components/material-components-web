@@ -20,7 +20,7 @@ Tab Scroller allows for smoothing animated scrolling of tab content
 
 ## Installation
 ```
-npm install --save @material/tab-scroller
+npm install @material/tab-scroller
 ```
 
 ## Usage

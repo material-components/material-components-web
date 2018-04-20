@@ -100,10 +100,10 @@ test('#handleInteraction() deregisters the transitionend handler', () => {
   td.verify(mockAdapter.deregisterEventHandler('transitionend', td.matchers.isA(Function)), {times: 1});
 });
 
-test('#handleInteraction() deregisters the scroll handler', () => {
+test('#handleInteraction() deregisters the wheel handler', () => {
   const {foundation, mockAdapter} = setupHandleInteractionTest();
   foundation.handleInteraction();
-  td.verify(mockAdapter.deregisterEventHandler('scroll', td.matchers.isA(Function)), {times: 1});
+  td.verify(mockAdapter.deregisterEventHandler('wheel', td.matchers.isA(Function)), {times: 1});
 });
 
 test('#handleInteraction() deregisters the touchstart handler', () => {
@@ -157,7 +157,7 @@ test('#handleTransitionEnd() deregisters the transitionend handler', () => {
 test('#handleTransitionEnd() deregisters the scroll handler', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.handleTransitionEnd();
-  td.verify(mockAdapter.deregisterEventHandler('scroll', td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterEventHandler('wheel', td.matchers.isA(Function)));
 });
 
 test('#handleTransitionEnd() deregisters the touchstart handler', () => {
@@ -246,6 +246,49 @@ test('#scrollTo() registers a transitionend handler', () => {
   td.verify(mockAdapter.registerEventHandler('transitionend', td.matchers.isA(Function)), {times: 1});
 });
 
+test('#scrollTo() deregisters the wheel handler', () => {
+  const {foundation, mockAdapter} = setupScrollToTest();
+  foundation.scrollTo(100);
+  td.verify(mockAdapter.deregisterEventHandler('wheel', td.matchers.isA(Function)), {times: 1});
+});
+
+test('#scrollTo() deregisters the touchstart handler', () => {
+  const {foundation, mockAdapter} = setupScrollToTest();
+  foundation.scrollTo(100);
+  td.verify(mockAdapter.deregisterEventHandler('touchstart', td.matchers.isA(Function)), {times: 1});
+});
+
+test('#scrollTo() deregisters the pointerdown handler', () => {
+  const {foundation, mockAdapter} = setupScrollToTest();
+  foundation.scrollTo(100);
+  td.verify(mockAdapter.deregisterEventHandler('pointerdown', td.matchers.isA(Function)), {times: 1});
+});
+
+test('#scrollTo() deregisters the mousedown handler', () => {
+  const {foundation, mockAdapter} = setupScrollToTest();
+  foundation.scrollTo(100);
+  td.verify(mockAdapter.deregisterEventHandler('mousedown', td.matchers.isA(Function)), {times: 1});
+});
+
+test('#scrollTo() deregisters the keydown handler', () => {
+  const {foundation, mockAdapter} = setupScrollToTest();
+  foundation.scrollTo(100);
+  td.verify(mockAdapter.deregisterEventHandler('keydown', td.matchers.isA(Function)), {times: 1});
+});
+
+test('#scrollTo() deregisters handlers before registering them', () => {
+  const {foundation, mockAdapter} = setupScrollToTest();
+  const callQueue = [];
+  td.when(mockAdapter.deregisterEventHandler(td.matchers.isA(String), td.matchers.isA(Function))).thenDo(() => {
+    callQueue.push('deregister');
+  });
+  td.when(mockAdapter.registerEventHandler(td.matchers.isA(String), td.matchers.isA(Function))).thenDo(() => {
+    callQueue.push('register');
+  });
+  foundation.scrollTo(100);
+  assert.isAbove(callQueue.indexOf('register'), callQueue.indexOf('deregister'));
+});
+
 test('#scrollTo() sets scrollLeft to the visual scroll position if called during an animation', () => {
   const {foundation, mockAdapter} = setupScrollToTest({
     scrollLeft: 50,
@@ -305,7 +348,7 @@ test('#scrollTo() registers a scroll handler in a double rAF', () => {
   raf.flush();
   raf.flush();
   raf.restore();
-  td.verify(mockAdapter.registerEventHandler('scroll', td.matchers.isA(Function)), {times: 1});
+  td.verify(mockAdapter.registerEventHandler('wheel', td.matchers.isA(Function)), {times: 1});
 });
 
 test('#scrollTo() registers a touchstart handler in a double rAF', () => {
@@ -426,7 +469,7 @@ test('#incrementScroll() registers a scroll handler in a double rAF', () => {
   raf.flush();
   raf.flush();
   raf.restore();
-  td.verify(mockAdapter.registerEventHandler('scroll', td.matchers.isA(Function)), {times: 1});
+  td.verify(mockAdapter.registerEventHandler('wheel', td.matchers.isA(Function)), {times: 1});
 });
 
 test('#incrementScroll() registers a touchstart handler in a double rAF', () => {
@@ -481,14 +524,14 @@ function setupInteractionDuringScrollTest({translateX=66.123}={}) {
   return {foundation, mockAdapter, raf, handlers};
 }
 
-test('on scroll after scrollTo call, deregister the scroll handler', () => {
+test('on wheel after scrollTo call, deregister the scroll handler', () => {
   const {foundation, mockAdapter, raf, handlers} = setupInteractionDuringScrollTest();
   foundation.scrollTo(101);
   raf.flush();
   raf.flush();
   raf.restore();
   handlers.scroll();
-  td.verify(mockAdapter.deregisterEventHandler('scroll', td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterEventHandler('wheel', td.matchers.isA(Function)));
 });
 
 test('on touchstart after scrollTo call, deregister the touchstart handler', () => {

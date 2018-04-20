@@ -92,59 +92,13 @@
         </div>
       </section>
 
-      <section class="example">
-        <h2>Paging</h2>
-        <p>The paging scroller does not allow native scrolling inside the area.</p>
-        <div class="demo">
-          <div class="mdc-tab-scroller mdc-tab-scroller--paging demo-scroller">
-            <div class="mdc-tab-scroller__content demo-content">
-              <span class="demo-cube"></span>
-              <span class="demo-cube demo-cube--alt"></span>
-              <span class="demo-cube"></span>
-              <span class="demo-cube demo-cube--alt"></span>
-              <span class="demo-cube"></span>
-              <span class="demo-cube demo-cube--alt"></span>
-              <span class="demo-cube"></span>
-              <span class="demo-cube demo-cube--alt"></span>
-              <span class="demo-cube"></span>
-              <span class="demo-cube demo-cube--alt"></span>
-              <span class="demo-cube"></span>
-              <span class="demo-cube demo-cube--alt"></span>
-              <span class="demo-cube"></span>
-              <span class="demo-cube demo-cube--alt"></span>
-              <span class="demo-cube"></span>
-              <span class="demo-cube demo-cube--alt"></span>
-              <span class="demo-cube"></span>
-              <span class="demo-cube demo-cube--alt"></span>
-              <span class="demo-cube"></span>
-              <span class="demo-cube demo-cube--alt"></span>
-              <span class="demo-cube"></span>
-              <span class="demo-cube demo-cube--alt"></span>
-              <span class="demo-cube"></span>
-              <span class="demo-cube demo-cube--alt"></span>
-              <span class="demo-cube"></span>
-              <span class="demo-cube demo-cube--alt"></span>
-              <span class="demo-cube"></span>
-              <span class="demo-cube demo-cube--alt"></span>
-              <span class="demo-cube"></span>
-              <span class="demo-cube demo-cube--alt"></span>
-              <span class="demo-cube"></span>
-              <span class="demo-cube demo-cube--alt"></span>
-            </div>
-          </div>
-          <form class="demo-controller">
-            <div class="demo-controller-row">
-              <label for="id0">Scroll to</label>
-              <input id="id0" class="demo-scroll-value" type="number" name="scrollLeft" value="0">
-              <button type="submit">Scroll</button>
-            </div>
-            <div class="demo-controller-row">
-              <button type="button" class="demo-decrement">-50</button>
-              <button type="button" class="demo-increment">+50</button>
-            </div>
-          </form>
+      <div class="rtl-container">
+        <h3>RTL</h3>
+        <div>
+          <input type="checkbox" id="rtl-checkbox"/>
+          <label for="rtl-checkbox">Enabled</label>
         </div>
-      </section>
+      </div>
     </main>
 
     <script src="/assets/material-components-web.js" async></script>
@@ -174,6 +128,11 @@
 
         var demos = document.querySelectorAll('.demo');
         [].forEach.call(demos, initDemo);
+
+        var rtlControls = document.getElementById('rtl-checkbox');
+        rtlControls.addEventListener('change', function(event) {
+          document.body.setAttribute('dir', event.currentTarget.checked ? 'rtl': 'ltr');
+        });
       });
     </script>
   </body>

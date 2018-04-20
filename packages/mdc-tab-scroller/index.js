@@ -59,6 +59,8 @@ class MDCTabScroller extends MDCComponent {
       getScrollLeft: () => this.root_.scrollLeft,
       getContentOffsetWidth: () => this.content_.offsetWidth,
       getOffsetWidth: () => this.root_.offsetWidth,
+      computeClientRect: () => this.root_.getBoundingClientRect(),
+      computeContentClientRect: () => this.content_.getBoundingClientRect(),
     });
 
     return new MDCTabScrollerFoundation(adapter);

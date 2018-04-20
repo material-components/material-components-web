@@ -92,6 +92,16 @@ class MDCTabScrollerAdapter {
    * @return {number}
    */
   getOffsetWidth() {}
+
+  /**
+   * @return {!ClientRect}
+   */
+  computeClientRect() {}
+
+  /**
+   * @return {!ClientRect}
+   */
+  computeContentClientRect() {}
 }
 
 export default MDCTabScrollerAdapter;
