@@ -86,15 +86,17 @@
 // This overrides styles defined in the .material-icons CSS class
 // which is loaded separately, so the order of CSS definitions is not
 // guaranteed. Therefore, increase specifity to ensure overrides apply.
+.mdc-chip__icon.mdc-chip__icon--leading {
+  @include mdc-chip-icon-size($mdc-chip-leading-icon-size);
+}
+
 .mdc-chip__icon.mdc-chip__icon--trailing {
-  width: $mdc-chip-trailing-icon-size;
-  height: $mdc-chip-trailing-icon-size;
-  font-size: $mdc-chip-trailing-icon-size;
+  @include mdc-chip-icon-size($mdc-chip-trailing-icon-size);
 }
 
 .mdc-chip__checkmark,
 .mdc-chip__icon--leading {
-  height: 24px;
+  height: $mdc-chip-leading-icon-size;
   margin: -4px 4px -4px -4px;
 }
 
@@ -118,12 +120,12 @@
 
 .mdc-chip__checkmark-svg {
   width: 0;
-  height: 24px;
+  height: $mdc-chip-leading-icon-size;
   transition: width $mdc-chip-width-animation-duration $mdc-animation-standard-curve-timing-function;
 }
 
 .mdc-chip--selected .mdc-chip__checkmark-svg {
-  width: 24px;
+  width: $mdc-chip-leading-icon-size;
 }
 
 // Add leading checkmark to filter chips with a leading icon
@@ -159,6 +161,6 @@
   opacity: 0;
 
   + .mdc-chip__checkmark {
-    width: 24px;
+    width: $mdc-chip-leading-icon-size;
   }
 }

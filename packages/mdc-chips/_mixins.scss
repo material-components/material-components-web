@@ -97,3 +97,9 @@
     margin: $gap-size / 2;
   }
 }
+
+@mixin mdc-chip-icon-size($size) {
+  width: $size;
+  height: $size;
+  font-size: $size;
+}

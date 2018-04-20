@@ -168,6 +168,7 @@ Mixin | Description
 `mdc-chip-stroke-width($width)` | Customizes the border stroke width for a chip
 `mdc-chip-stroke-style($style)` | Customizes the border stroke style for a chip
 `mdc-chip-stroke-color($color)` | Customizes the border stroke color for a chip
+`mdc-chip-icon-size($size)` | Customizes the size of an icon in a chip
 
 > _NOTE_: `mdc-chip-set-spacing` also sets the amount of space between a chip and the edge of the set it's contained in.
 
