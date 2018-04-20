@@ -30,7 +30,7 @@ test('exports strings', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTextFieldIconFoundation, [
-    'setAttr', 'removeAttr', 'registerInteractionHandler', 'deregisterInteractionHandler',
+    'getAttr', 'setAttr', 'removeAttr', 'registerInteractionHandler', 'deregisterInteractionHandler',
     'notifyIconAction',
   ]);
 });
@@ -53,28 +53,45 @@ test('#destroy removes event listeners', () => {
   td.verify(mockAdapter.deregisterInteractionHandler('keydown', td.matchers.isA(Function)));
 });
 
-test('#setDisabled sets icon tabindex to -1 when set to true', () => {
+test('#setDisabled sets icon tabindex to -1 and removes role when set to true if icon initially had a tabindex', () => {
   const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getAttr('tabindex')).thenReturn('1');
+  foundation.init();
+
   foundation.setDisabled(true);
   td.verify(mockAdapter.setAttr('tabindex', '-1'));
-});
-
-test('#setDisabled removes icon role when set to true', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.setDisabled(true);
   td.verify(mockAdapter.removeAttr('role'));
 });
 
-test('#setDisabled sets icon tabindex to 0 when set to false', () => {
+test('#setDisabled does not change icon tabindex or role when set to true if icon initially had no tabindex', () => {
   const {foundation, mockAdapter} = setupTest();
-  foundation.setDisabled(false);
-  td.verify(mockAdapter.setAttr('tabindex', '0'));
+  td.when(mockAdapter.getAttr('tabindex')).thenReturn(null);
+  foundation.init();
+
+  foundation.setDisabled(true);
+  td.verify(mockAdapter.setAttr('tabindex', td.matchers.isA(String)), {times: 0});
+  td.verify(mockAdapter.removeAttr('role'), {times: 0});
 });
 
-test(`#setDisabled sets icon role to ${strings.ICON_ROLE} when set to false`, () => {
+test('#setDisabled restores icon tabindex and role when set to false if icon initially had a tabindex', () => {
   const {foundation, mockAdapter} = setupTest();
+  const expectedTabIndex = '1';
+  td.when(mockAdapter.getAttr('tabindex')).thenReturn(expectedTabIndex);
+  foundation.init();
+
   foundation.setDisabled(false);
+  td.verify(mockAdapter.setAttr('tabindex', expectedTabIndex));
   td.verify(mockAdapter.setAttr('role', strings.ICON_ROLE));
+});
+
+test('#setDisabled does not change icon tabindex or role when set to false if icon initially had no tabindex', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getAttr('tabindex')).thenReturn(null);
+  foundation.init();
+
+  foundation.setDisabled(false);
+  td.verify(mockAdapter.setAttr('tabindex', td.matchers.isA(String)), {times: 0});
+  td.verify(mockAdapter.setAttr('role', td.matchers.isA(String)), {times: 0});
 });
 
 test('on click notifies custom icon event', () => {

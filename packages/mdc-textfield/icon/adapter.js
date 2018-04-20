@@ -29,6 +29,13 @@
  */
 class MDCTextFieldIconAdapter {
   /**
+   * Gets the value of an attribute on the icon element.
+   * @param {string} attr
+   * @return {string}
+   */
+  getAttr(attr) {}
+
+  /**
    * Sets an attribute on the icon element.
    * @param {string} attr
    * @param {string} value
