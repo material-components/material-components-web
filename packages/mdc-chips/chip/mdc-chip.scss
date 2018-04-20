@@ -31,10 +31,10 @@
   @include mdc-chip-fill-color($mdc-chip-fill-color-default);
   @include mdc-chip-ink-color($mdc-chip-ink-color-default);
   @include mdc-chip-selected-ink-color(primary);
-  @include mdc-chip-leading-icon-size($mdc-chip-leading-icon-size);
   @include mdc-chip-leading-icon-color($mdc-chip-icon-color);
-  @include mdc-chip-trailing-icon-size($mdc-chip-trailing-icon-size);
   @include mdc-chip-trailing-icon-color($mdc-chip-icon-color);
+  @include mdc-chip-leading-icon-size($mdc-chip-leading-icon-size);
+  @include mdc-chip-trailing-icon-size($mdc-chip-trailing-icon-size);
   @include mdc-typography(body2);
 
   display: inline-flex;
@@ -76,14 +76,6 @@
 
 .mdc-chip__icon--trailing {
   margin: 0 -4px 0 4px;
-
-  &:hover {
-    color: $mdc-chip-trailing-icon-hover-color;
-  }
-
-  &:focus {
-    color: $mdc-chip-trailing-icon-focus-color;
-  }
 }
 
 .mdc-chip__checkmark,
