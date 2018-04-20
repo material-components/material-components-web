@@ -43,7 +43,7 @@
   display: inline-flex;
   position: relative;
   box-sizing: border-box;
-  height: 48px;
+  height: 52px;
   background-repeat: no-repeat;
   background-position: right 8px bottom 12px;
   overflow: hidden;
@@ -67,13 +67,12 @@
 
     width: 100%;
     padding-top: 20px;
-    padding-bottom: 6px;
+    padding-bottom: 4px;
     border: none;
     border-bottom: 1px solid;
     border-radius: 0;
     outline: none;
     background-color: transparent;
-    line-height: 1.15rem;
     white-space: nowrap;
     cursor: pointer;
     appearance: none;
