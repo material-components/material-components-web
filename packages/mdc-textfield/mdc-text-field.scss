@@ -52,13 +52,13 @@
   @include mdc-typography(subtitle1);
 
   width: 100%;
-  padding: 20px 0 8px;
+  height: 30px;
+  padding: 20px 0 1px;
   transition: mdc-text-field-transition(opacity);
   border: none;
   border-bottom: 1px solid;
   border-radius: 0;
   background: none;
-  line-height: 1.15rem;
   appearance: none;
 
   &::placeholder {
