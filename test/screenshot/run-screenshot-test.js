@@ -17,21 +17,55 @@
 'use strict';
 
 const Screenshot = require('./lib/screenshot');
+const AssetUploader = require('./asset-uploader');
 
-/* eslint-disable max-len */
-const TEST_PAGE_URLS = [
-  'https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/04/03/23_34_00_262/94417356/assets/mdc-button/classes/baseline.html',
-  'https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/04/03/23_34_00_262/94417356/assets/mdc-button/classes/dense.html',
-  'https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/04/03/23_34_00_262/94417356/assets/mdc-button/mixins/container-fill-color.html',
-  'https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/04/03/23_34_00_262/94417356/assets/mdc-button/mixins/corner-radius.html',
-  'https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/04/03/23_34_00_262/94417356/assets/mdc-button/mixins/filled-accessible.html',
-  'https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/04/03/23_34_00_262/94417356/assets/mdc-button/mixins/horizontal-padding-baseline.html',
-  'https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/04/03/23_34_00_262/94417356/assets/mdc-button/mixins/horizontal-padding-dense.html',
-  'https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/04/03/23_34_00_262/94417356/assets/mdc-button/mixins/icon-color.html',
-  'https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/04/03/23_34_00_262/94417356/assets/mdc-button/mixins/ink-color.html',
-  'https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/04/03/23_34_00_262/94417356/assets/mdc-button/mixins/stroke-color.html',
-  'https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/04/03/23_34_00_262/94417356/assets/mdc-button/mixins/stroke-width.html',
-];
-/* eslint-enable max-len */
+AssetUploader.upload().then(handleUploadSuccess, handleUploadFailure);
 
-Screenshot.captureAll(TEST_PAGE_URLS);
+function handleUploadSuccess(files) {
+  const htmlFileUrls =
+    files
+      .filter((file) => file.relativePath.endsWith('.html'))
+      .map((file) => file.fullUrl)
+      .sort();
+
+  console.log('\n\nDONE uploading HTML/CSS/JS assets to Google Cloud Storage!\n\n');
+  console.log(htmlFileUrls.join('\n'));
+  console.log('');
+  console.log('');
+
+  Screenshot.capture(htmlFileUrls)
+    .then(
+      (screenshotInfos) => {
+        console.log('\n\n\nSUCCESS!\n\n');
+        screenshotInfos.forEach(logScreenshotInfo);
+      },
+      (err) => {
+        console.error('\n\n\nERROR:\n\n');
+        console.error(err);
+      }
+    );
+}
+
+function handleUploadFailure(err) {
+  console.error('\n\nERROR uploading HTML/CSS/JS assets to Google Cloud Storage!\n\n');
+  console.error(err);
+}
+
+function logScreenshotInfo(infoResponseBody) {
+  console.log(infoResponseBody.url);
+
+  // We don't use CBT's screenshot versioning features, so there should only ever be one version.
+  // Each "result" is an individual browser screenshot for a single URL.
+  infoResponseBody.versions[0].results.forEach((result) => {
+    logScreenshotInfoResult(result);
+  });
+
+  console.log('');
+}
+
+function logScreenshotInfoResult(result) {
+  console.log(`
+  - ${result.os.device} > ${result.os.name} > ${result.browser.name}:
+      ${result.images.chromeless}
+`.replace(/[\n\r\f]+$/g, ''));
+}

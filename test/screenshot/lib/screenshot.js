@@ -16,42 +16,54 @@
 
 'use strict';
 
-const fs = require('fs');
 const request = require('request-promise-native');
 const Progress = require('./progress');
 
-const API_BASE_URL = 'https://crossbrowsertesting.com/api/v3/';
+const API_BASE_URL = 'https://crossbrowsertesting.com/api/v3';
 const API_USERNAME = process.env.CBT_USERNAME;
 const API_AUTHKEY = process.env.CBT_AUTHKEY;
-const API_POLL_INTERVAL_MS = 1000 * 5; // how long to wait between polling the API for status changes
-const API_MAX_WAIT_MS = 1000 * 60; // how long to wait for all browsers to finish taking a single screenshot
 
-// Format: "[OS api_name]|[Browser api_name]|[OS resolution]".
-// [Browser api_name] is required, but the [OS ...] properties are optional.
-// See https://crossbrowsertesting.com/apidocs/v3/screenshots.html#!/default/post_screenshots
+/** How long to wait between polling the API for status changes. */
+const API_POLL_INTERVAL_MS = 1000 * 5;
+
+/** How long to wait for a single URL to be captured in all browsers. */
+const API_MAX_WAIT_MS = 1000 * 60;
+
+/**
+ * List of browsers to use.
+ *
+ * API documentation for the name format can be found at:
+ * https://crossbrowsertesting.com/apidocs/v3/screenshots.html#!/default/post_screenshots
+ *
+ * TODO(acdvorak): Use CBT's API that returns the full list of browser names available:
+ * https://crossbrowsertesting.com/apidocs/v3/screenshots.html#!/default/get_screenshots_browsers
+ *
+ * @type {!Array<string>}
+ */
 const BROWSERS = [
   'Chrome63x64',
   'Edge16',
 ];
 
-// Map of URLs to `Progress` objects.
+/** Map of URLs to `Progress` objects. */
 const progressMap = new Map();
 
 module.exports = {
-  captureAll,
+  capture,
 };
 
-async function captureAll(testPageUrls) {
-  return Promise.all(testPageUrls.map(captureOne));
+async function capture(testPageUrls) {
+  return Promise.all(testPageUrls.map(captureOneUrl));
 }
 
-async function captureOne(testPageUrl) {
-  logScreenshotProgress(testPageUrl, Progress.enqueued(BROWSERS.length));
+async function captureOneUrl(testPageUrl) {
+  logTestCaseProgress(testPageUrl, Progress.enqueued(BROWSERS.length));
 
   return sendCaptureRequest(testPageUrl)
-    .then(async (captureResponseBody) => {
-      return handleCaptureResponse(testPageUrl, captureResponseBody);
-    });
+    .then(
+      async (captureResponseBody) => handleCaptureResponse(testPageUrl, captureResponseBody),
+      async (err) => rejectWithError('captureOne', testPageUrl, err)
+    );
 }
 
 async function sendCaptureRequest(testPageUrl) {
@@ -70,25 +82,57 @@ async function sendCaptureRequest(testPageUrl) {
   };
 
   return request(options)
-    .then(
-      (captureResponseBody) => {
-        logScreenshotInfoResponse(captureResponseBody, '/tmp/cbt-capture-response.json');
-        return captureResponseBody;
-      },
-      async (err) => {
-        if (reachedParallelExecutionLimit(err.response.body)) {
-          // Wait a few seconds, then try again.
-          await sleep(API_POLL_INTERVAL_MS);
-          return sendCaptureRequest(testPageUrl);
-        }
+    .catch(async (err) => {
+      if (reachedParallelExecutionLimit(err)) {
+        // Wait a few seconds, then try again.
+        await sleep(API_POLL_INTERVAL_MS);
+        return sendCaptureRequest(testPageUrl);
+      }
 
-        // Unknown error.
-        return Promise.reject(err);
-      });
+      return rejectWithError('sendCaptureRequest', testPageUrl, err);
+    });
+}
+
+async function handleCaptureResponse(testPageUrl, captureResponseBody) {
+  let infoResponseBody;
+  let infoProgress = computeTestCaseProgress(testPageUrl, captureResponseBody);
+
+  const startTime = Date.now();
+  const isStillRunning = () => infoProgress.running > 0;
+  const isTimedOut = () => (Date.now() - startTime) > API_MAX_WAIT_MS;
+
+  while (isStillRunning() && !isTimedOut()) {
+    // Wait a few seconds, then try again.
+    await sleep(API_POLL_INTERVAL_MS);
+    infoResponseBody = await fetchScreenshotInfo(captureResponseBody.screenshot_test_id);
+    infoProgress = computeTestCaseProgress(testPageUrl, infoResponseBody);
+    logTestCaseProgress(testPageUrl, infoProgress);
+  }
+
+  if (isStillRunning() && isTimedOut()) {
+    const err = new Error([
+      `Timed out after ${Date.now() - startTime} ms waiting for CBT`,
+      `to finish capturing a screenshot of "${testPageUrl}".`,
+    ].join('\n'));
+    return rejectWithError('handleCaptureResponse', testPageUrl, err);
+  }
+
+  if (infoResponseBody.statusCode === 524) {
+    const err = new Error([
+      `Timed out after ${Date.now() - startTime} ms waiting for CBT`,
+      `to finish capturing a screenshot of "${testPageUrl}".`,
+      'See https://support.cloudflare.com/hc/en-us/articles/200171926-Error-524',
+    ].join('\n'));
+    return rejectWithError('handleCaptureResponse', testPageUrl, err);
+  }
+
+  logTestCaseProgress(testPageUrl, infoProgress);
+
+  return Promise.resolve(infoResponseBody);
 }
 
 async function fetchScreenshotInfo(screenshotTestId) {
-  const options = {
+  return request({
     method: 'GET',
     uri: apiUrl(`/screenshots/${screenshotTestId}`),
     auth: {
@@ -96,133 +140,53 @@ async function fetchScreenshotInfo(screenshotTestId) {
       password: API_AUTHKEY,
     },
     json: true, // Automatically stringify the request body and parse the response body as JSON
-  };
-
-  return request(options)
-    .then((infoResponseBody) => {
-      logScreenshotInfoResponse(infoResponseBody, '/tmp/cbt-status-response.json');
-      return infoResponseBody;
-    });
-}
-
-async function handleCaptureResponse(testPageUrl, captureResponseBody) {
-  let infoResponseBody;
-  let infoProgress = computeIndividualProgress(testPageUrl, captureResponseBody);
-
-  const startTime = Date.now();
-  const isStillRunning = () => infoProgress.running > 0;
-  const isTimedOut = () => (Date.now() - startTime) > API_MAX_WAIT_MS;
-
-  while (isStillRunning() && !isTimedOut()) {
-    await sleep(API_POLL_INTERVAL_MS);
-
-    infoResponseBody = await fetchScreenshotInfo(captureResponseBody.screenshot_test_id);
-    infoProgress = computeIndividualProgress(testPageUrl, infoResponseBody);
-  }
-
-  if (isStillRunning() && isTimedOut()) {
-    console.error(`ERROR: Timed out after ${API_MAX_WAIT_MS} ms while waiting for ${testPageUrl} to complete.`);
-    return;
-  }
-
-  // TODO(acdvorak): Figure out if there will ever be multiple versions.
-  // TODO(acdvorak): Figure out how (and if) to version our screenshot images.
-  infoResponseBody.versions[0].results.forEach((result) => {
-    logScreenshotInfoResult(testPageUrl, result);
   });
 }
 
-function computeIndividualProgress(testPageUrl, screenshotInfoResponseBody) {
-  let progress = Progress.none();
-
-  // TODO(acdvorak): Expose this (and any other interesting) information to the user somehow.
-  // Console output or a dynamic status page?
-  const details = {
-    url: screenshotInfoResponseBody.url,
-    screenshot_test_id: screenshotInfoResponseBody.screenshot_test_id,
-
-    versions: screenshotInfoResponseBody.versions.map((version) => {
-      // `result_count` has the same properties as `Progress`.
-      progress = progress.plus(version.result_count);
-
-      return {
-        version_id: version.version_id,
-
-        show_results_web_url: version.show_results_web_url,
-        show_results_public_url: version.show_results_public_url,
-        show_comparisons_web_url: version.show_comparisons_web_url,
-        show_comparisons_public_url: version.show_comparisons_public_url,
-        download_results_zip_url: version.download_results_zip_url,
-        download_results_zip_public_url: version.download_results_zip_public_url,
-
-        active: version.active,
-        result_count: version.result_count,
-        results: version.results.map((result) => {
-          return {
-            result_id: result.result_id,
-            state: result.state,
-            successful: result.successful,
-            os_name: result.os.name,
-            browser_name: result.browser.name,
-            images: result.images,
-            thumbs: result.thumbs,
-            resolution: result.resolution,
-            initialized_date: result.initialized_date,
-            start_date: result.start_date,
-            finish_date: result.finish_date,
-            description: result.description,
-            tags: result.tags,
-          };
-        }),
-      };
-    }),
-  };
-
-  logScreenshotProgress(testPageUrl, progress);
-
-  return progress;
+function computeTestCaseProgress(testPageUrl, screenshotInfoResponseBody) {
+  const progress = Progress.none();
+  return screenshotInfoResponseBody.versions
+    .map((version) => new Progress(version.result_count)) // `result_count` has the same properties as `Progress`
+    .reduce((total, current) => progress.plus(current));
 }
 
-function computeAggregateProgress() {
+function computeTestSuiteProgress() {
   return Array.from(progressMap.values()).reduce((total, current) => total.plus(current));
 }
 
-function reachedParallelExecutionLimit(responseBody) {
-  return responseBody.message.indexOf('maximum number of parallel');
+function reachedParallelExecutionLimit(requestError) {
+  try {
+    // The try/catch is necessary because some of these properties might not exist.
+    return requestError.response.body.message.indexOf('maximum number of parallel');
+  } catch (e) {
+    return false;
+  }
 }
 
-function logScreenshotProgress(testPageUrl, testPageProgress) {
-  progressMap.set(testPageUrl, testPageProgress);
-
-  const aggregateProgress = computeAggregateProgress();
-  const finished = aggregateProgress.finished;
-  const total = aggregateProgress.total;
-  const pct = Math.floor(aggregateProgress.percent);
-
-  process.stdout.write(`\rProgress: ${finished} of ${total} captures finished (${pct}% complete)`);
-}
-
-function logScreenshotInfoResponse(responseBody, logFilePath) {
-  const responseBodyJson = JSON.stringify(responseBody, null, 2);
-  fs.writeFileSync(logFilePath, responseBodyJson, {encoding: 'utf8'});
-}
-
-function logScreenshotInfoResult(testPageUrl, result) {
-  // console.log('');
-  // console.log(testPageUrl);
-  // console.log('');
-  // console.log(`  ${result.os.device} > ${result.os.name} > ${result.browser.name}:`);
-  // console.log(`    - thumb (chromeless): ${result.thumbs.chromeless}`);
-  // console.log(`    - image (chromeless): ${result.images.chromeless}`);
+function rejectWithError(functionName, testPageUrl, err) {
+  console.error(`ERROR in ${functionName}("${testPageUrl}"):`);
+  console.error('');
+  console.error(err);
+  return Promise.reject(err);
 }
 
 function apiUrl(apiEndpointPath) {
-  const apiEndpointPathWithoutLeadingSlash = apiEndpointPath.replace(new RegExp('^/+'), '');
-  return `${API_BASE_URL}${apiEndpointPathWithoutLeadingSlash}`;
+  return `${API_BASE_URL}${apiEndpointPath}`;
 }
 
 async function sleep(ms) {
   return new Promise((resolve) => {
     setTimeout(() => resolve(), ms);
   });
+}
+
+function logTestCaseProgress(testPageUrl, testPageProgress) {
+  progressMap.set(testPageUrl, testPageProgress);
+
+  const aggregateProgress = computeTestSuiteProgress();
+  const finished = aggregateProgress.finished;
+  const total = aggregateProgress.total;
+  const pct = Math.floor(aggregateProgress.percent);
+
+  process.stdout.write(`\r${finished} of ${total} screenshots finished (${pct}% complete)`);
 }
