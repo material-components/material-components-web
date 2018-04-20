@@ -45,6 +45,7 @@ class FakeChip {
   constructor() {
     this.destroy = td.func('.destroy');
     this.isSelected = td.func('.isSelected');
+    this.remove = td.func('.remove');
   }
 }
 
@@ -125,17 +126,20 @@ test('#adapter.deregisterInteractionHandler removes a handler from the root elem
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test('#adapter.createChipElement returns a new chip element', () => {
-  const {component} = setupTest();
-  const chipEl = component.getDefaultFoundation().adapter_.createChipElement('hello world');
+test('#adapter.appendChip adds a new chip to the chip set element', () => {
+  const {root, component} = setupTest();
+  const chipEl = component.getDefaultFoundation().adapter_.appendChip('hello world');
   assert.isTrue(chipEl.classList.contains('mdc-chip'));
   assert.isTrue(chipEl.childNodes[0].classList.contains('mdc-chip__text'));
   assert.equal(chipEl.childNodes[0].textContent, 'hello world');
+  assert.equal(root.childNodes[3], chipEl);
 });
 
-test('#adapter.appendChild adds a child to the chip set element', () => {
-  const {root, component} = setupTest();
-  const chipEl = bel`<div class="mdc-chip"><div class="mdc-chip__text">hello world</div></div>`;
-  component.getDefaultFoundation().adapter_.appendChild(chipEl);
-  assert.equal(root.childNodes[3], chipEl);
+test('#adapter.removeChip removes the chip object from the chip set', () => {
+  const root = getFixture();
+  const component = new MDCChipSet(root, undefined, (el) => new FakeChip(el));
+  const chip = component.chips[0];
+  component.getDefaultFoundation().adapter_.removeChip(chip);
+  assert.equal(component.chips.length, 2);
+  td.verify(chip.remove());
 });
