@@ -233,5 +233,6 @@ test('on click in trailing icon, emit custom event', () => {
   handlers.click(mockEvt);
 
   td.verify(mockAdapter.notifyTrailingIconInteraction());
+  td.verify(mockAdapter.addClass(cssClasses.CHIP_EXIT));
   td.verify(mockEvt.stopPropagation());
 });
