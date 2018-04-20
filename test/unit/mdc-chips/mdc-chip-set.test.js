@@ -126,7 +126,7 @@ test('#adapter.deregisterInteractionHandler removes a handler from the root elem
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test('#adapter.appendChip add a new chip to the chip set element', () => {
+test('#adapter.appendChip adds a new chip to the chip set element', () => {
   const {root, component} = setupTest();
   const chipEl = component.getDefaultFoundation().adapter_.appendChip('hello world');
   assert.isTrue(chipEl.classList.contains('mdc-chip'));
