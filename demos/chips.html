@@ -54,6 +54,10 @@
       </section>
 
       <section class="example">
+        <div id="entry-chip-icon-clones">
+            <i class="entry-leading-icon material-icons mdc-chip__icon mdc-chip__icon--leading">face</i>
+            <i class="entry-trailing-icon material-icons mdc-chip__icon mdc-chip__icon--trailing" tabindex="0" role="button">cancel</i>
+        </div>
         <h2>Entry Chips</h2>
         <input id="entry-chip-set-input" placeholder="Chip text">
         <button id="entry-chip-set-button" class="mdc-button mdc-button--dense">
@@ -61,14 +65,14 @@
         </button>
         <div id="entry-chip-set" class="mdc-chip-set mdc-chip-set--entry">
           <div class="demo-chip mdc-chip" tabindex="0">
-            <i id="entry-leading-icon" class="material-icons mdc-chip__icon mdc-chip__icon--leading">face</i>
+            <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">face</i>
             <div class="mdc-chip__text">Jane Smith</div>
-            <i  id="entry-trailing-icon" class="material-icons mdc-chip__icon mdc-chip__icon--trailing" tabindex="0" role="button" title="More options">more_vert</i>
+            <i class="material-icons mdc-chip__icon mdc-chip__icon--trailing" tabindex="0" role="button">cancel</i>
           </div>
           <div class="demo-chip mdc-chip" tabindex="0">
             <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">face</i>
             <div class="mdc-chip__text">John Doe</div>
-            <i class="material-icons mdc-chip__icon mdc-chip__icon--trailing" tabindex="0" role="button" title="More options">more_vert</i>
+            <i class="material-icons mdc-chip__icon mdc-chip__icon--trailing" tabindex="0" role="button">cancel</i>
           </div>
         </div>
       </section>
@@ -105,7 +109,6 @@
               </svg>
             </div>
             <div class="mdc-chip__text">Tops</div>
-            <i class="material-icons mdc-chip__icon mdc-chip__icon--trailing mdc-chip__icon--remove" tabindex="0" role="button">cancel</i>
           </div>
           <div class="demo-chip mdc-chip mdc-chip--selected" tabindex="0">
             <div class="mdc-chip__checkmark" >
@@ -114,7 +117,6 @@
               </svg>
             </div>
             <div class="mdc-chip__text">Bottoms</div>
-            <i class="material-icons mdc-chip__icon mdc-chip__icon--trailing mdc-chip__icon--remove" tabindex="0" role="button">cancel</i>
           </div>
           <div class="demo-chip mdc-chip" tabindex="0">
             <div class="mdc-chip__checkmark" >
@@ -123,7 +125,6 @@
               </svg>
             </div>
             <div class="mdc-chip__text">Shoes</div>
-            <i class="material-icons mdc-chip__icon mdc-chip__icon--trailing mdc-chip__icon--remove" tabindex="0" role="button">cancel</i>
           </div>
           <div class="demo-chip mdc-chip" tabindex="0">
             <div class="mdc-chip__checkmark" >
@@ -132,7 +133,6 @@
               </svg>
             </div>
             <div class="mdc-chip__text">Accessories</div>
-            <i class="material-icons mdc-chip__icon mdc-chip__icon--trailing mdc-chip__icon--remove" tabindex="0" role="button">cancel</i>
           </div>
         </div>
         <br>
@@ -248,8 +248,8 @@
         function addChip(evt) {
           if ((evt.type === 'click' || evt.key === 'Enter' || evt.keyCode === 13) && 
               entryInput.value !== '') {
-            var leadingIcon = document.getElementById('entry-leading-icon').cloneNode(true);
-            var trailingIcon = document.getElementById('entry-trailing-icon').cloneNode(true);
+            var leadingIcon = document.querySelector('.entry-leading-icon').cloneNode(true);
+            var trailingIcon = document.querySelector('.entry-trailing-icon').cloneNode(true);
             entryChipSetComponent.addChip(entryInput.value, leadingIcon, trailingIcon);
             entryInput.value = '';
           }
