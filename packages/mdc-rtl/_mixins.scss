@@ -14,53 +14,51 @@
 // limitations under the License.
 //
 
-/**
- * Creates a rule that will be applied when an MDC Web component is within the context of an RTL layout.
- *
- * Usage Example:
- * ```scss
- * .mdc-foo {
- *   position: absolute;
- *   left: 0;
- *
- *   @include mdc-rtl {
- *     left: auto;
- *     right: 0;
- *   }
- *
- *   &__bar {
- *     margin-left: 4px;
- *     @include mdc-rtl(".mdc-foo") {
- *       margin-left: auto;
- *       margin-right: 4px;
- *     }
- *   }
- * }
- *
- * .mdc-foo--mod {
- *   padding-left: 4px;
- *
- *   @include mdc-rtl {
- *     padding-left: auto;
- *     padding-right: 4px;
- *   }
- * }
- * ```
- *
- * Note that this works by checking for [dir="rtl"] on an ancestor element. While this will work
- * in most cases, it will in some cases lead to false negatives, e.g.
- *
- * ```html
- * <html dir="rtl">
- *   <!-- ... -->
- *   <div dir="ltr">
- *     <div class="mdc-foo">Styled incorrectly as RTL!</div>
- *   </div>
- * </html>
- * ```
- *
- * In the future, selectors such as :dir (http://mdn.io/:dir) will help us mitigate this.
- */
+// Creates a rule that will be applied when an MDC Web component is within the context of an RTL layout.
+//
+// Usage Example:
+// ```scss
+// .mdc-foo {
+//   position: absolute;
+//   left: 0;
+//
+//   @include mdc-rtl {
+//     left: auto;
+//     right: 0;
+//   }
+//
+//   &__bar {
+//     margin-left: 4px;
+//     @include mdc-rtl(".mdc-foo") {
+//       margin-left: auto;
+//       margin-right: 4px;
+//     }
+//   }
+// }
+//
+// .mdc-foo--mod {
+//   padding-left: 4px;
+//
+//   @include mdc-rtl {
+//     padding-left: auto;
+//     padding-right: 4px;
+//   }
+// }
+// ```
+//
+// Note that this works by checking for [dir="rtl"] on an ancestor element. While this will work
+// in most cases, it will in some cases lead to false negatives, e.g.
+//
+// ```html
+// <html dir="rtl">
+//   <!-- ... -->
+//   <div dir="ltr">
+//     <div class="mdc-foo">Styled incorrectly as RTL!</div>
+//   </div>
+// </html>
+// ```
+//
+// In the future, selectors such as :dir (http://mdn.io/:dir) will help us mitigate this.
 @mixin mdc-rtl($root-selector: null) {
   @if ($root-selector) {
     @at-root {
@@ -77,57 +75,55 @@
   }
 }
 
-/**
- * Takes a base box-model property - e.g. margin / border / padding - along with a default
- * direction and value, and emits rules which apply the value to the
- * "<base-property>-<default-direction>" property by default, but flips the direction
- * when within an RTL context.
- *
- * For example:
- *
- * ```scss
- * .mdc-foo {
- *   @include mdc-rtl-reflexive-box(margin, left, 8px);
- * }
- * ```
- * is equivalent to:
- *
- * ```scss
- * .mdc-foo {
- *   margin-left: 8px;
- *
- *   @include mdc-rtl {
- *     margin-right: 8px;
- *     margin-left: 0;
- *   }
- * }
- * ```
- * whereas:
- *
- * ```scss
- * .mdc-foo {
- *   @include mdc-rtl-reflexive-box(margin, right, 8px);
- * }
- * ```
- * is equivalent to:
- *
- * ```scss
- * .mdc-foo {
- *   margin-right: 8px;
- *
- *   @include mdc-rtl {
- *     margin-right: 0;
- *     margin-left: 8px;
- *   }
- * }
- * ```
- *
- * You can also pass a 4th optional $root-selector argument which will be forwarded to `mdc-rtl`,
- * e.g. `@include mdc-rtl-reflexive-box(margin, left, 8px, ".mdc-component")`.
- *
- * Note that this function will always zero out the original value in an RTL context. If you're
- * trying to flip the values, use mdc-rtl-reflexive-property().
- */
+// Takes a base box-model property - e.g. margin / border / padding - along with a default
+// direction and value, and emits rules which apply the value to the
+// "<base-property>-<default-direction>" property by default, but flips the direction
+// when within an RTL context.
+//
+// For example:
+//
+// ```scss
+// .mdc-foo {
+//   @include mdc-rtl-reflexive-box(margin, left, 8px);
+// }
+// ```
+// is equivalent to:
+//
+// ```scss
+// .mdc-foo {
+//   margin-left: 8px;
+//
+//   @include mdc-rtl {
+//     margin-right: 8px;
+//     margin-left: 0;
+//   }
+// }
+// ```
+// whereas:
+//
+// ```scss
+// .mdc-foo {
+//   @include mdc-rtl-reflexive-box(margin, right, 8px);
+// }
+// ```
+// is equivalent to:
+//
+// ```scss
+// .mdc-foo {
+//   margin-right: 8px;
+//
+//   @include mdc-rtl {
+//     margin-right: 0;
+//     margin-left: 8px;
+//   }
+// }
+// ```
+//
+// You can also pass a 4th optional $root-selector argument which will be forwarded to `mdc-rtl`,
+// e.g. `@include mdc-rtl-reflexive-box(margin, left, 8px, ".mdc-component")`.
+//
+// Note that this function will always zero out the original value in an RTL context. If you're
+// trying to flip the values, use mdc-rtl-reflexive-property().
 @mixin mdc-rtl-reflexive-box($base-property, $default-direction, $value, $root-selector: null) {
   @if (index((right, left), $default-direction) == null) {
     @error "Invalid default direction: '#{$default-direction}'. Please specifiy either 'right' or 'left'.";
@@ -144,32 +140,30 @@
   @include mdc-rtl-reflexive-property($base-property, $left-value, $right-value, $root-selector);
 }
 
-/**
- * Takes a base property and emits rules that assign <base-property>-left to <left-value> and
- * <base-property>-right to <right-value> in a LTR context, and vice versa in a RTL context.
- * For example:
- *
- * ```scss
- * .mdc-foo {
- *   @include mdc-rtl-reflexive-property(margin, auto, 12px);
- * }
- * ```
- * is equivalent to:
- *
- * ```scss
- * .mdc-foo {
- *   margin-left: auto;
- *   margin-right: 12px;
- *
- *   @include mdc-rtl {
- *     margin-left: 12px;
- *     margin-right: auto;
- *   }
- * }
- * ```
- *
- * A 4th optional $root-selector argument can be given, which will be passed to `mdc-rtl`.
- */
+// Takes a base property and emits rules that assign <base-property>-left to <left-value> and
+// <base-property>-right to <right-value> in a LTR context, and vice versa in a RTL context.
+// For example:
+//
+// ```scss
+// .mdc-foo {
+//   @include mdc-rtl-reflexive-property(margin, auto, 12px);
+// }
+// ```
+// is equivalent to:
+//
+// ```scss
+// .mdc-foo {
+//   margin-left: auto;
+//   margin-right: 12px;
+//
+//   @include mdc-rtl {
+//     margin-left: 12px;
+//     margin-right: auto;
+//   }
+// }
+// ```
+//
+// A 4th optional $root-selector argument can be given, which will be passed to `mdc-rtl`.
 @mixin mdc-rtl-reflexive-property($base-property, $left-value, $right-value, $root-selector: null) {
   $prop-left: #{$base-property}-left;
   $prop-right: #{$base-property}-right;
@@ -177,33 +171,31 @@
   @include mdc-rtl-reflexive_($prop-left, $left-value, $prop-right, $right-value, $root-selector);
 }
 
-/**
- * Takes an argument specifying a horizontal position property (either "left" or "right") as well
- * as a value, and applies that value to the specified position in a LTR context, and flips it in a
- * RTL context. For example:
- *
- * ```scss
- * .mdc-foo {
- *   @include mdc-rtl-reflexive-position(left, 0);
- *   position: absolute;
- * }
- * ```
- * is equivalent to:
- *
- * ```scss
- *  .mdc-foo {
- *    position: absolute;
- *    left: 0;
- *    right: initial;
- *
- *    @include mdc-rtl {
- *      right: 0;
- *      left: initial;
- *    }
- *  }
- * ```
- * An optional third $root-selector argument may also be given, which is passed to `mdc-rtl`.
- */
+// Takes an argument specifying a horizontal position property (either "left" or "right") as well
+// as a value, and applies that value to the specified position in a LTR context, and flips it in a
+// RTL context. For example:
+//
+// ```scss
+// .mdc-foo {
+//   @include mdc-rtl-reflexive-position(left, 0);
+//   position: absolute;
+// }
+// ```
+// is equivalent to:
+//
+// ```scss
+//  .mdc-foo {
+//    position: absolute;
+//    left: 0;
+//    right: initial;
+//
+//    @include mdc-rtl {
+//      right: 0;
+//      left: initial;
+//    }
+//  }
+// ```
+// An optional third $root-selector argument may also be given, which is passed to `mdc-rtl`.
 @mixin mdc-rtl-reflexive-position($position-property, $value, $root-selector: null) {
   @if (index((right, left), $position-property) == null) {
     @error "Invalid position #{position-property}. Please specifiy either right or left";
