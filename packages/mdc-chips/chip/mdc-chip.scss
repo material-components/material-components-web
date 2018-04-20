@@ -20,6 +20,7 @@
 @import "@material/ripple/common";
 @import "@material/ripple/mixins";
 @import "@material/theme/mixins";
+@import "@material/typography/mixins";
 @import "../mixins";
 @import "../variables";
 
@@ -30,6 +31,7 @@
   @include mdc-chip-fill-color($mdc-chip-fill-color-default);
   @include mdc-chip-ink-color($mdc-chip-ink-color-default);
   @include mdc-chip-selected-ink-color(primary);
+  @include mdc-typography(body2);
 
   display: inline-flex;
   position: relative;
@@ -40,7 +42,7 @@
   overflow: hidden;
 
   &:hover {
-    @include mdc-theme-prop(color, black);
+    @include mdc-theme-prop(color, on-surface);
   }
 }
 

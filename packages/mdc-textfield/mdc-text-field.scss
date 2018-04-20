@@ -33,14 +33,14 @@
 // postcss-bem-linter: define text-field
 
 .mdc-text-field {
-  @include mdc-text-field-bottom-line-color($mdc-text-field-underline-idle);
-  @include mdc-text-field-hover-bottom-line-color($mdc-text-field-underline-hover);
+  @include mdc-text-field-bottom-line-color($mdc-text-field-bottom-line-idle);
+  @include mdc-text-field-hover-bottom-line-color($mdc-text-field-bottom-line-hover);
   @include mdc-text-field-line-ripple-color_(primary);
-  @include mdc-text-field-ink-color(text-primary-on-background);
+  @include mdc-text-field-ink-color($mdc-text-field-ink-color);
   @include mdc-text-field-label-color($mdc-text-field-label);
-  @include mdc-text-field-helper-text-color(text-hint-on-background);
-  @include mdc-text-field-fullwidth-bottom-line-color($mdc-text-field-divider);
-  @include mdc-text-field-icon-color($mdc-text-field-underline-hover);
+  @include mdc-text-field-helper-text-color($mdc-text-field-helper-text-color);
+  @include mdc-text-field-fullwidth-bottom-line-color($mdc-text-field-fullwidth-bottom-line-color);
+  @include mdc-text-field-icon-color($mdc-text-field-icon-color);
 
   display: inline-block;
   position: relative;
