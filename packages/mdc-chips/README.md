@@ -135,7 +135,7 @@ To pre-select filter chips that have a leading icon, also add the class `mdc-chi
 CSS Class | Description
 --- | ---
 `mdc-chip-set` | Mandatory. Indicates the set that the chip belongs to.
-`mdc-chip-set--entry` | Optional. Indicates that the chips in the set are entry chips, which enable user input by converting text into chips.
+`mdc-chip-set--input` | Optional. Indicates that the chips in the set are input chips, which enable user input by converting text into chips.
 `mdc-chip-set--choice` | Optional. Indicates that the chips in the set are choice chips, which allow a single selection from a set of options.
 `mdc-chip-set--filter` | Optional. Indicates that the chips in the set are filter chips, which allow multiple selection from a set of options.
 `mdc-chip` | Mandatory.
@@ -144,7 +144,7 @@ CSS Class | Description
 `mdc-chip__icon` | Optional. Indicates an icon in the chip.
 `mdc-chip__icon--leading` | Optional. Indicates a leading icon in the chip.
 `mdc-chip__icon--leading-hidden` | Optional. Hides the leading icon in a filter chip when the chip is selected.
-`mdc-chip__icon--trailing` | Optional. Indicates a trailing icon which removes the chip from the DOM. Only use with entry chips.
+`mdc-chip__icon--trailing` | Optional. Indicates a trailing icon which removes the chip from the DOM. Only use with input chips.
 `mdc-chip__checkmark` | Optional. Indicates the checkmark in a filter chip.
 `mdc-chip__checkmark-svg` | Mandatory with the use of `mdc-chip__checkmark`. Indicates the checkmark SVG element in a filter chip.
 `mdc-chip__checkmark-path` | Mandatory with the use of `mdc-chip__checkmark`. Indicates the checkmark SVG path in a filter chip.
@@ -178,7 +178,7 @@ Mixin | Description
 
 The MDC Chips module is comprised of two JavaScript classes:
 * `MDCChip` defines the behavior of a single chip
-* `MDCChipSet` defines the behavior of chips within a specific set. For example, chips in an entry chip set behave differently from those in a filter chip set.
+* `MDCChipSet` defines the behavior of chips within a specific set. For example, chips in an input chip set behave differently from those in a filter chip set.
 
 To use the `MDCChip` and `MDCChipSet` classes, [import](../../docs/importing-js.md) both classes from `@material/chips`.
 
