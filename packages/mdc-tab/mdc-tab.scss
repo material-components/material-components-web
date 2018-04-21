@@ -75,9 +75,7 @@
   @include mdc-rtl-reflexive-box(padding, left, 8px);
 }
 
-/**
- * The [de]activation animation affects color for text label and icon
- */
+// The [de]activation animation affects color for text label and icon
 .mdc-tab--animating-activate .mdc-tab__text-label,
 .mdc-tab--animating-activate .mdc-tab__icon,
 .mdc-tab--animating-deactivate .mdc-tab__text-label,
@@ -85,9 +83,7 @@
   transition: 150ms color linear;
 }
 
-/**
- * The activation animation has a delay of 100ms
- */
+// The activation animation has a delay of 100ms
 .mdc-tab--animating-activate .mdc-tab__text-label,
 .mdc-tab--animating-activate .mdc-tab__icon {
   transition-delay: 100ms;

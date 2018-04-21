@@ -15,15 +15,11 @@
  */
 
 import {MDCFoundation} from '@material/base/index';
-import {cssClasses, numbers, strings} from './constants';
+import {cssClasses, strings} from './constants';
 
 export default class MDCSelectFoundation extends MDCFoundation {
   static get cssClasses() {
     return cssClasses;
-  }
-
-  static get numbers() {
-    return numbers;
   }
 
   static get strings() {
@@ -68,16 +64,8 @@ export default class MDCSelectFoundation extends MDCFoundation {
   }
 
   setSelectedIndex(index) {
-    const {IS_CHANGING} = MDCSelectFoundation.cssClasses;
-    const {FLOAT_NATIVE_CONTROL_TRANSITION_TIME_MS} = MDCSelectFoundation.numbers;
-
     this.adapter_.setSelectedIndex(index);
-    this.adapter_.addClass(IS_CHANGING);
     this.floatLabelWithValue_();
-
-    setTimeout(() => {
-      this.adapter_.removeClass(IS_CHANGING);
-    }, FLOAT_NATIVE_CONTROL_TRANSITION_TIME_MS);
   }
 
   setValue(value) {

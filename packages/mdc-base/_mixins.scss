@@ -1,5 +1,5 @@
 //
-// Copyright 2017 Google Inc. All Rights Reserved.
+// Copyright 2018 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,21 +14,14 @@
 // limitations under the License.
 //
 
-@import "./common";
-@import "../packages/mdc-chips/mdc-chips";
-@import "../packages/mdc-button/mdc-button";
+// This variable is not intended to be overridden externally; it uses !default to avoid being reset
+// every time this file is imported.
+$mdc-base-styles-emitted_: () !default;
 
-#entry-chip-icon-clones {
-  display: none;
-}
+@mixin mdc-base-emit-once($key) {
+  @if not index($mdc-base-styles-emitted_, $key) {
+    $mdc-base-styles-emitted_: append($mdc-base-styles-emitted_, $key, comma) !global;
 
-.custom-chip-primary {
-  @include mdc-chip-fill-color-accessible($mdc-theme-primary);
-}
-
-.custom-chip-secondary {
-  @include mdc-chip-fill-color(white);
-  @include mdc-chip-ink-color($mdc-theme-secondary);
-  @include mdc-chip-selected-ink-color($mdc-theme-secondary);
-  @include mdc-chip-stroke(2px, solid, $mdc-theme-secondary);
+    @content;
+  }
 }
