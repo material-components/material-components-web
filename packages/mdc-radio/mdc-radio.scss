@@ -23,7 +23,7 @@
 
 // postcss-bem-linter: define radio
 .mdc-radio {
-  @include mdc-radio-unchecked-stroke-color(text-secondary-on-background);
+  @include mdc-radio-unchecked-stroke-color($mdc-radio-unchecked-color);
   @include mdc-radio-checked-stroke-color($mdc-radio-baseline-theme-color);
   @include mdc-radio-ink-color($mdc-radio-baseline-theme-color);
   @include mdc-radio-focus-indicator-color($mdc-radio-baseline-theme-color);
@@ -149,11 +149,11 @@
     cursor: default;
 
     .mdc-radio__outer-circle {
-      border-color: rgba(black, .26);
+      border-color: $mdc-radio-circle-color;
     }
 
     .mdc-radio__inner-circle {
-      background-color: rgba(black, .26);
+      background-color: $mdc-radio-circle-color;
     }
   }
 }
