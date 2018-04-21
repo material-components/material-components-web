@@ -14,12 +14,12 @@
 // limitations under the License.
 //
 
-@import "@material/typography/mixins";
+@import "@material/theme/variables";
 
-$mdc-checkbox-mark-color: mdc-theme-prop-value(on-primary) !default;
-$mdc-checkbox-border-color: rgba(mdc-theme-prop-value(on-surface), .54) !default;
-$mdc-checkbox-disabled-color: rgba(mdc-theme-prop-value(on-surface), .26) !default;
-$mdc-checkbox-baseline-theme-color: secondary !default;
+$mdc-checkbox-mark-color: mdc-theme-prop-value(on-primary);
+$mdc-checkbox-border-color: rgba(mdc-theme-prop-value(on-surface), .54);
+$mdc-checkbox-disabled-color: rgba(mdc-theme-prop-value(on-surface), .26);
+$mdc-checkbox-baseline-theme-color: secondary;
 
 $mdc-checkbox-touch-area: 40px;
 $mdc-checkbox-size: 18px;
