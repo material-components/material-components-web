@@ -35,6 +35,10 @@ const storage = new Storage({
 });
 const bucket = storage.bucket(GCLOUD_STORAGE_BUCKET_NAME);
 
+module.exports = {
+  upload,
+};
+
 async function upload() {
   const promises = [];
 
@@ -128,7 +132,3 @@ function isFile(path) {
 async function git(cmd, argList = []) {
   return (await gitRepo[cmd](argList) || '').trim();
 }
-
-module.exports = {
-  upload,
-};
