@@ -30,9 +30,9 @@
   @include mdc-card-container-layout_;
 }
 
-.mdc-card--stroked {
+.mdc-card--outlined {
   @include mdc-elevation(0);
-  @include mdc-card-stroke($mdc-card-stroke-color);
+  @include mdc-card-outline($mdc-card-outline-color);
 }
 
 //
