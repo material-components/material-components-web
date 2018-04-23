@@ -61,7 +61,7 @@
 
 .card-container {
   @include mdc-shape-angled-corner($mdc-theme-background, 24px, 4px);
-  @include mdc-shape-angled-corner-stroke($mdc-card-stroke-width, $mdc-card-stroke-color);
+  @include mdc-shape-angled-corner-stroke($mdc-card-outline-width, $mdc-card-outline-color);
 }
 
 .demo-card {
