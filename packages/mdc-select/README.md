@@ -164,8 +164,8 @@ Mixin | Description
 --- | ---
 `mdc-select-ink-color($color)` | Customizes the color of the selected item displayed in the select.
 `mdc-select-container-fill-color($color)` | Customizes the background color of the select.
-`mdc-select-label-color($color, $opacity: 1)` | Customizes the label color of the select in the unfocused state.
-`mdc-select-focused-label-color($color, $opacity: 0.87)` | Customizes the label color of the select when focused. Changing opacity for the label when floating is optional.
+`mdc-select-label-color($color)` | Customizes the label color of the select in the unfocused state.
+`mdc-select-focused-label-color($color)` | Customizes the label color of the select when focused.
 `mdc-select-bottom-line-color($color)` | Customizes the color of the default bottom line of the select.
 `mdc-select-focused-bottom-line-color($color)` | Customizes the color of the bottom line of the select when focused.
 `mdc-select-hover-bottom-line-color($color)` | Customizes the color of the bottom line when select is hovered.

@@ -15,23 +15,18 @@
  */
 
 import {assert} from 'chai';
-import lolex from 'lolex';
 import td from 'testdouble';
 
 import {setupFoundationTest} from '../helpers/setup';
 import {verifyDefaultAdapter} from '../helpers/foundation';
 
 import MDCSelectFoundation from '../../../packages/mdc-select/foundation';
-import {cssClasses, numbers, strings} from '../../../packages/mdc-select/constants';
+import {cssClasses, strings} from '../../../packages/mdc-select/constants';
 
 suite('MDCSelectFoundation');
 
 test('exports cssClasses', () => {
   assert.deepEqual(MDCSelectFoundation.cssClasses, cssClasses);
-});
-
-test('exports numbers', () => {
-  assert.deepEqual(MDCSelectFoundation.numbers, numbers);
 });
 
 test('exports strings', () => {
@@ -89,14 +84,6 @@ test('#setSelectedIndex calls adapter.setSelectedIndex', () => {
   td.verify(mockAdapter.setSelectedIndex(1));
 });
 
-test(`#setSelectedIndex adds then removes ${MDCSelectFoundation.cssClasses.IS_CHANGING}`, () => {
-  const {mockAdapter, foundation} = setupTest();
-  const clock = lolex.install();
-  foundation.setSelectedIndex(1);
-  td.verify(mockAdapter.addClass(MDCSelectFoundation.cssClasses.IS_CHANGING));
-  clock.tick(MDCSelectFoundation.numbers.FLOAT_NATIVE_CONTROL_TRANSITION_TIME_MS);
-  td.verify(mockAdapter.removeClass(MDCSelectFoundation.cssClasses.IS_CHANGING));
-});
 
 test('#setSelectedIndex floats label', () => {
   const {mockAdapter, foundation} = setupTest();

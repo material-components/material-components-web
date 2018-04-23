@@ -179,6 +179,17 @@ test('#adapter.notifyTrailingIconInteraction emits ' +
   td.verify(handler(td.matchers.anything()));
 });
 
+test('#adapter.notifyRemoval emits ' + MDCChipFoundation.strings.REMOVAL_EVENT, () => {
+  const {component} = setupTest();
+  const handler = td.func('interaction handler');
+
+  component.listen(
+    MDCChipFoundation.strings.REMOVAL_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyRemoval();
+
+  td.verify(handler(td.matchers.anything()));
+});
+
 function setupMockFoundationTest(root = getFixture()) {
   const MockFoundationConstructor = td.constructor(MDCChipFoundation);
   const mockFoundation = new MockFoundationConstructor();
@@ -190,4 +201,15 @@ test('#isSelected proxies to foundation', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
   component.isSelected();
   td.verify(mockFoundation.isSelected());
+});
+
+test('#remove removes the root element from the DOM', () => {
+  const wrapper = bel`<div></div>`;
+  const {root, component, mockFoundation} = setupMockFoundationTest();
+  wrapper.appendChild(root);
+  assert.equal(wrapper.childNodes.length, 1);
+
+  component.remove();
+  td.verify(mockFoundation.destroy());
+  assert.equal(wrapper.childNodes.length, 0);
 });

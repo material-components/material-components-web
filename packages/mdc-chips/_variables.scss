@@ -22,10 +22,12 @@ $mdc-chip-ink-color-default: rgba(mdc-theme-prop-value(on-surface), .87);
 $mdc-chip-horizontal-padding: 12px;
 $mdc-chip-vertical-padding: 7px;
 
-$mdc-chip-icon-color: rgba(mdc-theme-prop-value(on-surface), .54);
+$mdc-chip-icon-color: mdc-theme-prop-value(on-surface);
+$mdc-chip-icon-opacity: .54;
+$mdc-chip-trailing-icon-hover-opacity: .62;
+$mdc-chip-trailing-icon-focus-opacity: .87;
+$mdc-chip-leading-icon-size: 20px;
 $mdc-chip-trailing-icon-size: 18px;
-$mdc-chip-trailing-icon-hover-color: rgba(mdc-theme-prop-value(on-surface), .62);
-$mdc-chip-trailing-icon-focus-color: rgba(mdc-theme-prop-value(on-surface), .87);
 
 $mdc-chip-checkmark-animation-delay: 50ms;
 $mdc-chip-checkmark-animation-duration: 150ms;
