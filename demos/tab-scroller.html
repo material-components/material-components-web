@@ -107,7 +107,7 @@
 
         function initDemo(demoRoot) {
           var scrollerEl = demoRoot.querySelector('.mdc-tab-scroller');
-          var scroller = new mdc.tabScroller.MDCTabScroller(scrollerEl);
+          window.scroller = new mdc.tabScroller.MDCTabScroller(scrollerEl);
           var controllerEl = demoRoot.querySelector('.demo-controller');
           var controllerScrollEl = controllerEl.querySelector('.demo-scroll-value');
           controllerEl.addEventListener('submit', function(evt) {
