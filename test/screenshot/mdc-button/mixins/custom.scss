@@ -19,7 +19,7 @@
 
 $custom-button-color: $material-color-red-300;
 $custom-button-custom-corner-radius: 8px;
-$custom-button-custom-stroke-width: 4px;
+$custom-button-custom-outline-width: 4px;
 $custom-button-custom-horizontal-padding: 36px;
 
 .custom-button--ink-color {
@@ -34,12 +34,12 @@ $custom-button-custom-horizontal-padding: 36px;
   @include mdc-button-filled-accessible($custom-button-color);
 }
 
-.custom-button--stroke-color {
-  @include mdc-button-stroke-color($custom-button-color);
+.custom-button--outline-color {
+  @include mdc-button-outline-color($custom-button-color);
 }
 
-.custom-button--stroke-width {
-  @include mdc-button-stroke-width($custom-button-custom-stroke-width);
+.custom-button--outline-width {
+  @include mdc-button-outline-width($custom-button-custom-outline-width);
 }
 
 .custom-button--corner-radius {
