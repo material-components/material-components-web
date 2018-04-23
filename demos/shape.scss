@@ -39,9 +39,9 @@
   @include mdc-shape-angled-corner($mdc-theme-background, $mdc-button-height / 4 + 1);
 }
 
-.two-corner-container--stroked,
-.four-corner-container--stroked {
-  @include mdc-shape-angled-corner-stroke(2px, $mdc-theme-primary);
+.two-corner-container--outlined,
+.four-corner-container--outlined {
+  @include mdc-shape-angled-corner-outline(2px, $mdc-theme-primary);
 }
 
 .hero {
@@ -61,7 +61,7 @@
 
 .card-container {
   @include mdc-shape-angled-corner($mdc-theme-background, 24px, 4px);
-  @include mdc-shape-angled-corner-stroke($mdc-card-outline-width, $mdc-card-outline-color);
+  @include mdc-shape-angled-corner-outline($mdc-card-outline-width, $mdc-card-outline-color);
 }
 
 .demo-card {
