@@ -1,3 +1,90 @@
+<a name="0.35.0"></a>
+# [0.35.0](https://github.com/material-components/material-components-web/compare/v0.34.1...v0.35.0) (2018-04-23)
+
+
+### Bug Fixes
+
+* **button:** Fix vertical alignment of contents ([#2534](https://github.com/material-components/material-components-web/issues/2534)) ([6bc73ca](https://github.com/material-components/material-components-web/commit/6bc73ca))
+* **button:** Rename stroke to outline ([#2632](https://github.com/material-components/material-components-web/issues/2632)) ([0033990](https://github.com/material-components/material-components-web/commit/0033990))
+* **button:** Update colors to match guidance ([#2598](https://github.com/material-components/material-components-web/issues/2598)) ([1be9d96](https://github.com/material-components/material-components-web/commit/1be9d96))
+* **card:** Rename stroke to outline ([#2633](https://github.com/material-components/material-components-web/issues/2633)) ([6657e6f](https://github.com/material-components/material-components-web/commit/6657e6f))
+* **checkbox:** Implement component/adapter APIs to sync aria-checked ([#2580](https://github.com/material-components/material-components-web/issues/2580)) ([30710a4](https://github.com/material-components/material-components-web/commit/30710a4))
+* **checkbox:** Update to match new colors ([#2622](https://github.com/material-components/material-components-web/issues/2622)) ([68f4ad0](https://github.com/material-components/material-components-web/commit/68f4ad0))
+* **chips:** Extend ripple to fill the chip when animating width ([#2423](https://github.com/material-components/material-components-web/issues/2423)) ([ec705e1](https://github.com/material-components/material-components-web/commit/ec705e1))
+* **chips:** Manage chip selection for classes added manually ([#2391](https://github.com/material-components/material-components-web/issues/2391)) ([66f2464](https://github.com/material-components/material-components-web/commit/66f2464))
+* **chips:** Rename all entry chips to input chips ([#2619](https://github.com/material-components/material-components-web/issues/2619)) ([a694a34](https://github.com/material-components/material-components-web/commit/a694a34))
+* **chips:** Rename stroke to outline ([#2635](https://github.com/material-components/material-components-web/issues/2635)) ([604ddad](https://github.com/material-components/material-components-web/commit/604ddad))
+* **chips:** Trailing icon and remove icon are the same thing ([#2616](https://github.com/material-components/material-components-web/issues/2616)) ([9e64c32](https://github.com/material-components/material-components-web/commit/9e64c32))
+* **chips:** Update to guidance ([#2601](https://github.com/material-components/material-components-web/issues/2601)) ([c529cea](https://github.com/material-components/material-components-web/commit/c529cea))
+* **floating-label:** achieved 100% test coverage ([#2523](https://github.com/material-components/material-components-web/issues/2523)) ([2e7f904](https://github.com/material-components/material-components-web/commit/2e7f904))
+* **floating-label:** Update transition durations ([#2590](https://github.com/material-components/material-components-web/issues/2590)) ([099738c](https://github.com/material-components/material-components-web/commit/099738c))
+* **infrastructure:** Remove deprecated JWT addon in .travis.yml ([#2521](https://github.com/material-components/material-components-web/issues/2521)) ([4876cf2](https://github.com/material-components/material-components-web/commit/4876cf2)), closes [#2151](https://github.com/material-components/material-components-web/issues/2151)
+* **radio:** Update colors to latest guidance ([#2623](https://github.com/material-components/material-components-web/issues/2623)) ([e164a24](https://github.com/material-components/material-components-web/commit/e164a24))
+* **ripple:** Re-flow logic to avoid crashing Edge ([#2542](https://github.com/material-components/material-components-web/issues/2542)) ([4ca8925](https://github.com/material-components/material-components-web/commit/4ca8925))
+* **select:** Float label on focus/blur ([#2560](https://github.com/material-components/material-components-web/issues/2560)) ([68c08f7](https://github.com/material-components/material-components-web/commit/68c08f7))
+* **select:** Override floating label properties in select box ([#2574](https://github.com/material-components/material-components-web/issues/2574)) ([f71d905](https://github.com/material-components/material-components-web/commit/f71d905))
+* **select:** Remove animation causing the bottom line to flash ([#2612](https://github.com/material-components/material-components-web/issues/2612)) ([639387e](https://github.com/material-components/material-components-web/commit/639387e))
+* **select:** Update colors to match latest guidance. ([#2617](https://github.com/material-components/material-components-web/issues/2617)) ([5aa7ec7](https://github.com/material-components/material-components-web/commit/5aa7ec7))
+* **select:** Update typography to match latest guidance ([#2615](https://github.com/material-components/material-components-web/issues/2615)) ([0f18f39](https://github.com/material-components/material-components-web/commit/0f18f39))
+* **shape:** Rename stroke to outline ([#2634](https://github.com/material-components/material-components-web/issues/2634)) ([ec9d7a5](https://github.com/material-components/material-components-web/commit/ec9d7a5))
+* **text-field:** Add error state to trailing icon ([#2620](https://github.com/material-components/material-components-web/issues/2620)) ([fc6cdd3](https://github.com/material-components/material-components-web/commit/fc6cdd3))
+* **text-field:** Add role="button" to icon ([#2584](https://github.com/material-components/material-components-web/issues/2584)) ([4c52589](https://github.com/material-components/material-components-web/commit/4c52589))
+* **text-field:** Restore icon tabindex according to its initial value ([#2600](https://github.com/material-components/material-components-web/issues/2600)) ([02a3def](https://github.com/material-components/material-components-web/commit/02a3def))
+* **text-field:** Update colors to match guidance ([#2597](https://github.com/material-components/material-components-web/issues/2597)) ([444f14f](https://github.com/material-components/material-components-web/commit/444f14f))
+* **text-field:** Update helper text to use correct typography ([#2618](https://github.com/material-components/material-components-web/issues/2618)) ([2703580](https://github.com/material-components/material-components-web/commit/2703580))
+* **text-field:** Update label position and shake animation ([#2594](https://github.com/material-components/material-components-web/issues/2594)) ([bd84694](https://github.com/material-components/material-components-web/commit/bd84694))
+* **text-field:** Update typography to subtitle1. Updated height and padding. ([#2606](https://github.com/material-components/material-components-web/issues/2606)) ([127375e](https://github.com/material-components/material-components-web/commit/127375e))
+
+
+### Code Refactoring
+
+* **chips:** Manage chip foundations instead of chips in the chip set foundation ([#2397](https://github.com/material-components/material-components-web/issues/2397)) ([10a75f6](https://github.com/material-components/material-components-web/commit/10a75f6))
+
+
+### Features
+
+* **base:** Add mdc-emit-once utility mixin; deduplicate styles ([#2578](https://github.com/material-components/material-components-web/issues/2578)) ([64a00b2](https://github.com/material-components/material-components-web/commit/64a00b2))
+* **chips:** Add animation for entry chips ([#2543](https://github.com/material-components/material-components-web/issues/2543)) ([68006fb](https://github.com/material-components/material-components-web/commit/68006fb))
+* **chips:** Add entry chips ([#2414](https://github.com/material-components/material-components-web/issues/2414)) ([afe5367](https://github.com/material-components/material-components-web/commit/afe5367))
+* **chips:** Allow close icon and exit animation ([#2571](https://github.com/material-components/material-components-web/issues/2571)) ([3d8a27b](https://github.com/material-components/material-components-web/commit/3d8a27b))
+* **chips:** Customize icon size and color ([#2613](https://github.com/material-components/material-components-web/issues/2613)) ([0f5af21](https://github.com/material-components/material-components-web/commit/0f5af21))
+* **color:** Add on-surface and surface to theme.  ([#2556](https://github.com/material-components/material-components-web/issues/2556)) ([9639689](https://github.com/material-components/material-components-web/commit/9639689))
+* **fab:** Add support for svg icons ([#2504](https://github.com/material-components/material-components-web/issues/2504)) ([3895376](https://github.com/material-components/material-components-web/commit/3895376))
+* **infrastructure:** Add newline at end of js files as part of the transform. ([#2557](https://github.com/material-components/material-components-web/issues/2557)) ([4fe967d](https://github.com/material-components/material-components-web/commit/4fe967d))
+* **infrastructure:** different namespacing for default exports ([#2553](https://github.com/material-components/material-components-web/issues/2553)) ([4ff505e](https://github.com/material-components/material-components-web/commit/4ff505e))
+* **infrastructure:** Upload compiled screenshot test assets to GCS ([#2500](https://github.com/material-components/material-components-web/issues/2500)) ([5ada5b4](https://github.com/material-components/material-components-web/commit/5ada5b4))
+* **ripple:** Call layout on each activation ([#2567](https://github.com/material-components/material-components-web/issues/2567)) ([c6076e1](https://github.com/material-components/material-components-web/commit/c6076e1))
+* **shape:** Add MDC Shape with support for unelevated angled corners ([#2506](https://github.com/material-components/material-components-web/issues/2506)) ([dc87f18](https://github.com/material-components/material-components-web/commit/dc87f18))
+* **theme:** Add new mdc-theme-on-primary global variable ([#2483](https://github.com/material-components/material-components-web/issues/2483)) ([777a0fd](https://github.com/material-components/material-components-web/commit/777a0fd))
+* **theme:** Add typography styles to shrine demo ([#2605](https://github.com/material-components/material-components-web/issues/2605)) ([976affd](https://github.com/material-components/material-components-web/commit/976affd))
+* **top-app-bar:** Add --fixed variant to top app bar ([#2474](https://github.com/material-components/material-components-web/issues/2474)) ([1d40fa9](https://github.com/material-components/material-components-web/commit/1d40fa9))
+* **top-app-bar:** add default scroll behavior ([#2417](https://github.com/material-components/material-components-web/issues/2417)) ([18be342](https://github.com/material-components/material-components-web/commit/18be342))
+* **typography:** Update styles to match guidance ([#2527](https://github.com/material-components/material-components-web/issues/2527)) ([f750ec7](https://github.com/material-components/material-components-web/commit/f750ec7))
+
+
+### BREAKING CHANGES
+
+* **chips:** Renames variant, classes and mixins containing the word stroke to use the word outline.
+* **chips:** Expose a foundation getter in MDCChips 
+* **card:** Renames variant, classes and mixins containing the word stroke to use the word outline.
+* **button:** Renames variant, classes and mixins containing stroke to use outline.
+* **chips:** Entry chips renamed to input chips.
+* **chips:** Add Sass mixins to customize color and size of leading/trailing icons.
+* **chips:** Get rid of mdc-chip__icon--remove API.
+* **text-field:** Adds getAttr adapter API to text field icon
+* **chips:** Add API for remove icon including mdc-chip__icon--remove, remove() method and adapter methods to MDCChip. Modify appendChip() and add removeChip() adapter method to MDCChipSet.
+* **shape:** Renames variant, classes and mixins containing the word stroke to use the word outline.
+* **text-field:** Adds removeAttr(attr) adapter API
+* **theme:** Removes the --mdc-theme-text-<TEXT_STYLE>-on-<THEME_COLOR> CSS custom properties, and the mdc-theme--text-<TEXT_STYLE>-on-<THEME_COLOR> CSS classes
+* **chips:** layout() method added to MDCChipAdapter.
+* **typography:** Previous typography styles are removed. The new styles are listed in the readme. 
+* **top-app-bar:** New adapter methods for setting the top app bar position and adding resize event handlers that must be implemented. 
+* **chips:** Added a new chip variant (entry chips). Added new methods to MDCChipSet, MDCChipSetFoundation, and MDCChipSetAdapter.
+* **chips:** isSelected method added to MDCChip, and related methods added to MDCChipFoundation and MDCChipSetFoundation.
+* **floating-label:** Removes the (undocumented) mdc-floating-label-transition function
+
+
+
 <a name="0.34.1"></a>
 ## [0.34.1](https://github.com/material-components/material-components-web/compare/v0.34.0...v0.34.1) (2018-04-03)
 
