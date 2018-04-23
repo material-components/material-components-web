@@ -31,9 +31,9 @@
   @include mdc-button-filled-accessible($mdc-theme-secondary);
 }
 
-.mdc-button.secondary-stroked-button {
+.mdc-button.secondary-outlined-button {
   @include mdc-button-ink-color($mdc-theme-secondary);
-  @include mdc-button-stroke-color($mdc-theme-secondary);
+  @include mdc-button-outline-color($mdc-theme-secondary);
 
 }
 
@@ -41,8 +41,8 @@
   @include mdc-button-corner-radius(8px);
 }
 
-.mdc-button.thick-stroke-button {
-  @include mdc-button-stroke-width(4px);
+.mdc-button.thick-outline-button {
+  @include mdc-button-outline-width(4px);
 }
 
 .demo-ink-color {

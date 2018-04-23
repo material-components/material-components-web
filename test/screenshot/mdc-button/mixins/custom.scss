@@ -35,11 +35,11 @@ $custom-button-custom-horizontal-padding: 36px;
 }
 
 .custom-button--stroke-color {
-  @include mdc-button-stroke-color($custom-button-color);
+  @include mdc-button-outline-color($custom-button-color);
 }
 
 .custom-button--stroke-width {
-  @include mdc-button-stroke-width($custom-button-custom-stroke-width);
+  @include mdc-button-outline-width($custom-button-custom-stroke-width);
 }
 
 .custom-button--corner-radius {

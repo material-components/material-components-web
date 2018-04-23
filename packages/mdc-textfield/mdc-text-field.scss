@@ -209,7 +209,7 @@
 }
 
 .mdc-text-field--textarea.mdc-text-field--focused {
-  @include mdc-text-field-textarea-stroke-color(primary);
+  @include mdc-text-field-textarea-outline-color(primary);
 }
 
 .mdc-text-field--invalid {

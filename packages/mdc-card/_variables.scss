@@ -16,5 +16,5 @@
 
 @import "@material/theme/mixins";
 
-$mdc-card-stroke-color: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 12%);
-$mdc-card-stroke-width: 1px;
+$mdc-card-outline-color: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 12%);
+$mdc-card-outline-width: 1px;

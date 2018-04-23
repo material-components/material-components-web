@@ -28,7 +28,7 @@
   }
 }
 
-@mixin mdc-notched-outline-stroke-width($width) {
+@mixin mdc-notched-outline-width($width) {
   .mdc-notched-outline__path {
     stroke-width: $width;
   }
