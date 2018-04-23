@@ -44,7 +44,7 @@
   }
 }
 
-@mixin mdc-button-stroke-color($color) {
+@mixin mdc-button-outline-color($color) {
   &:not(:disabled) {
     @include mdc-theme-prop(border-color, $color);
   }
@@ -71,21 +71,21 @@
   padding: 0 $padding 0 $padding;
 }
 
-@mixin mdc-button-stroke-width($stroke-width, $padding: $mdc-button-contained-horizontal-padding) {
-  // Note: Adjust padding to maintain consistent width with non-stroked buttons
-  $padding-value: max($padding - $stroke-width, 0);
+@mixin mdc-button-outline-width($outline-width, $padding: $mdc-button-contained-horizontal-padding) {
+  // Note: Adjust padding to maintain consistent width with non-outlined buttons
+  $padding-value: max($padding - $outline-width, 0);
 
   @include mdc-button-horizontal-padding($padding-value);
 
-  border-width: $stroke-width;
-  // Note: line height is adjusted for stroke button because borders are not
+  border-width: $outline-width;
+  // Note: line height is adjusted for outline button because borders are not
   // considered as space available to text on the Web
-  line-height: $mdc-button-height - $stroke-width * 2;
+  line-height: $mdc-button-height - $outline-width * 2;
 
   // postcss-bem-linter: ignore
   &.mdc-button--dense {
     // Minus extra 1 to accommodate odd font size of dense button
-    line-height: $mdc-dense-button-height - $stroke-width * 2 - 1;
+    line-height: $mdc-dense-button-height - $outline-width * 2 - 1;
   }
 }
 
@@ -153,7 +153,7 @@
   @include mdc-rtl-reflexive-property(margin, -4px, 8px);
 }
 
-@mixin mdc-button--stroked_() {
+@mixin mdc-button--outlined_() {
   border-style: solid;
 
   &:disabled {
