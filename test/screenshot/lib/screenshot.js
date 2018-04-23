@@ -50,6 +50,7 @@ const progressMap = new Map();
 
 module.exports = {
   capture,
+  captureOneUrl,
 };
 
 async function capture(testPageUrls) {
@@ -188,5 +189,6 @@ function logTestCaseProgress(testPageUrl, testPageProgress) {
   const total = aggregateProgress.total;
   const pct = Math.floor(aggregateProgress.percent);
 
-  process.stdout.write(`\r${finished} of ${total} screenshots finished (${pct}% complete)`);
+  // process.stdout.write(`\r${finished} of ${total} screenshots finished (${pct}% complete)`);
+  process.stdout.write(`${finished} of ${total} screenshots finished (${pct}% complete)\n`);
 }
