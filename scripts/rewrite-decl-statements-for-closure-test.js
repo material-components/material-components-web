@@ -189,7 +189,7 @@ function transform(srcFile, rootDir) {
       if (path.node.comments && path.node.comments.some((comment) => comment.value.includes('@abstract'))) {
         path.node.body.body = [];
       }
-    }
+    },
   });
 
   let {code: outputCode} = recast.print(ast, {
