@@ -62,12 +62,6 @@ npm install @material/select
 
 ```scss
 @import "@material/select/mdc-select";
-
-// Invoke mixins in the context of a custom class applied to the component's root element:
-.my-select {
-  @include mdc-select-ink-color(blue);
-  ...
-}
 ```
 
 ### JavaScript Instantiation
@@ -175,12 +169,16 @@ Since MDC Select uses native `<select>` and `<option>` elements, simply add the 
 
 #### CSS Classes
 
-| Class                    | Description                                     |
-| ------------------------ | ----------------------------------------------- |
-| `mdc-select`             | Mandatory.                                      |
-| `mdc-select--box`        | Styles the select as a box select.              |
+| Class | Description |
+| --- | --- |
+| `mdc-select` | Mandatory. |
+| `mdc-select--box` | Styles the select as a box select. |
+| `mdc-select--disabled` | Styles the select as disabled. This class should be applied to the root element when the `disabled` attribute is applied to the `<select>` element. |
+| `mdc-select__native-control` | Mandatory. The native `<select>` element. |
 
 ### Sass Mixins
+
+Mixins should be included in the context of a custom class applied to the component's root element, e.g. `.my-select`.
 
 Mixin | Description
 --- | ---
