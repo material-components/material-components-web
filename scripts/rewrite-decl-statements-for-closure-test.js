@@ -210,8 +210,9 @@ function transform(srcFile, rootDir) {
     packageStr = pathbasedPackageName;
   }
 
-  // Specify goog.module and append newline at the end of the file.
-  outputCode = 'goog.module(\'' + packageStr + '\');\n' + outputCode + '\n';
+  // Specify goog.module after the @license comment and append newline at the end of the file.
+  const pos = outputCode.indexOf(' */') + 3;
+  outputCode = outputCode.substr(0, pos) + '\ngoog.module(\'' + packageStr + '\');\n' + outputCode.substr(pos) + '\n';
   fs.writeFileSync(srcFile, outputCode, 'utf8');
   logProgress(`[rewrite] ${srcFile}`);
 }
