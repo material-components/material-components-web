@@ -16,21 +16,75 @@
 
 'use strict';
 
-const assetUploader = require('./lib/asset-uploader');
+const fs = require('fs');
+const glob = require('glob');
+const path = require('path');
+const util = require('util');
 
-assetUploader.upload().then(handleUploadSuccess, handleUploadFailure);
+const Storage = require('./lib/storage');
 
-function handleUploadSuccess(files) {
-  const htmlFileUrls =
-    files
-      .filter((file) => file.relativePath.endsWith('.html'))
-      .map((file) => file.fullUrl)
-      .sort();
-  console.log('\n\nDONE!\n\n');
-  console.log(htmlFileUrls.join('\n'));
-}
+const SCREENSHOT_TEST_DIR_RELATIVE_PATH = 'test/screenshot/';
+const SCREENSHOT_TEST_DIR_ABSOLUTE_PATH = path.resolve(SCREENSHOT_TEST_DIR_RELATIVE_PATH);
 
-function handleUploadFailure(err) {
-  console.error('\n\nERROR!\n\n');
-  console.error(err);
+const readFileAsync = util.promisify(fs.readFile);
+
+captureAllScreenshots();
+
+async function captureAllScreenshots() {
+  const storage = new Storage();
+
+  /**
+   * Unique timestamped directory path to prevent collisions between developers.
+   * @type {string}
+   */
+  const uploadDir = await storage.generateUniqueUploadDir();
+
+  /**
+   * Relative paths of all files to be uploaded as assets (HTML, CSS, JS).
+   * @type {!Array<string>}
+   */
+  const assetFileRelativePaths = glob.sync('**/*', {cwd: SCREENSHOT_TEST_DIR_ABSOLUTE_PATH, nodir: true});
+
+  /**
+   * List of public URLs to uploaded HTML files.
+   * @type {!Array<string>}
+   */
+  const htmlFileUrls = [];
+
+  return uploadAllAssets();
+
+  async function uploadAllAssets() {
+    const uploadPromises = assetFileRelativePaths.map(uploadOneAsset);
+    const allDonePromise = Promise.all(uploadPromises);
+    allDonePromise.then(logHtmlFiles);
+    return allDonePromise;
+  }
+
+  async function uploadOneAsset(assetFileRelativePath) {
+    return storage
+      .uploadFile({
+        uploadDir: `${uploadDir}assets/`,
+        relativeGcsFilePath: assetFileRelativePath,
+        fileContents: await readFileAsync(`${SCREENSHOT_TEST_DIR_ABSOLUTE_PATH}/${assetFileRelativePath}`),
+      })
+      .then(
+        handleOneAssetUploadSuccess,
+        handleOneAssetUploadFailure
+      );
+  }
+
+  function handleOneAssetUploadSuccess(assetFile) {
+    if (assetFile.relativePath.endsWith('.html')) {
+      htmlFileUrls.push(assetFile.fullUrl);
+    }
+  }
+
+  function handleOneAssetUploadFailure(err) {
+    return Promise.reject(err);
+  }
+
+  function logHtmlFiles() {
+    console.log('\n\nDONE!\n\n');
+    console.log(htmlFileUrls.concat().sort().join('\n'));
+  }
 }
