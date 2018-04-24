@@ -15,11 +15,15 @@
  */
 
 import {MDCFoundation} from '@material/base/index';
-import {cssClasses, strings} from './constants';
+import {cssClasses, strings, numbers} from './constants';
 
 export default class MDCSelectFoundation extends MDCFoundation {
   static get cssClasses() {
     return cssClasses;
+  }
+
+  static get numbers() {
+    return numbers;
   }
 
   static get strings() {
@@ -86,10 +90,12 @@ export default class MDCSelectFoundation extends MDCFoundation {
   floatLabelWithValue_() {
     const optionHasValue = this.adapter_.getValue().length > 0;
     this.adapter_.floatLabel(optionHasValue);
+    this.notchOutline(optionHasValue);
   }
 
   handleFocus_() {
     this.adapter_.floatLabel(true);
+    this.notchOutline(true);
     this.adapter_.activateBottomLine();
   }
 
@@ -100,5 +106,25 @@ export default class MDCSelectFoundation extends MDCFoundation {
 
   handleSelect_() {
     this.setSelectedIndex(this.adapter_.getSelectedIndex());
+  }
+
+  /**
+   * Opens/closes the notched outline.
+   * @param {boolean} openNotch
+   */
+  notchOutline(openNotch) {
+    if (!this.adapter_.hasOutline() || !this.adapter_.hasLabel()) {
+      return;
+    }
+
+    if (openNotch) {
+      const isDense = this.adapter_.hasClass(cssClasses.DENSE);
+      const labelScale = isDense ? numbers.DENSE_LABEL_SCALE : numbers.LABEL_SCALE;
+      const labelWidth = this.adapter_.getLabelWidth() * labelScale;
+      const isRtl = this.adapter_.isRtl();
+      this.adapter_.notchOutline(labelWidth, isRtl);
+    } else {
+      this.adapter_.closeOutline();
+    }
   }
 }
