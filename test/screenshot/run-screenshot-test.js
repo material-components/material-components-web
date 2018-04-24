@@ -39,7 +39,7 @@ async function runScreenshotTests() {
    * Unique timestamped directory path to prevent collisions between developers.
    * @type {string}
    */
-  const uploadDir = await storage.generateUniqueUploadDir();
+  const baseUploadDir = await storage.generateUniqueUploadDir();
 
   /**
    * Relative paths of all files to be uploaded as assets (HTML, CSS, JS).
@@ -49,7 +49,7 @@ async function runScreenshotTests() {
 
   /**
    * Map of `assetFileRelativePath` to `Object`.
-   * @type {Map<string, {file, screenshots}>}
+   * @type {!Map<string, {file, screenshots}>}
    */
   const screenshotMap = new Map();
 
@@ -66,7 +66,7 @@ async function runScreenshotTests() {
     screenshotMap.set(assetFileRelativePath, {file: null, screenshots: []});
     return storage
       .uploadFile({
-        uploadDir: `${uploadDir}assets/`,
+        uploadDir: `${baseUploadDir}assets/`,
         relativeGcsFilePath: assetFileRelativePath,
         fileContents: await readFileAsync(`${SCREENSHOT_TEST_DIR_ABSOLUTE_PATH}/${assetFileRelativePath}`),
       })
@@ -131,7 +131,7 @@ async function runScreenshotTests() {
 
     return storage
       .uploadFile({
-        uploadDir: `${uploadDir}screenshots/`,
+        uploadDir: `${baseUploadDir}screenshots/`,
         relativeGcsFilePath: `${assetFile.relativePath}/${imageName}`,
         fileContents: imageData,
       });
