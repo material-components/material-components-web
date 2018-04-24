@@ -49,13 +49,8 @@ const BROWSERS = [
 const progressMap = new Map();
 
 module.exports = {
-  capture,
   captureOneUrl,
 };
-
-async function capture(testPageUrls) {
-  return Promise.all(testPageUrls.map(captureOneUrl));
-}
 
 async function captureOneUrl(testPageUrl) {
   logTestCaseProgress(testPageUrl, Progress.enqueued(BROWSERS.length));
