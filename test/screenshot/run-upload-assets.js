@@ -16,7 +16,7 @@
 
 'use strict';
 
-const assetUploader = require('./asset-uploader');
+const assetUploader = require('./lib/asset-uploader');
 
 assetUploader.upload().then(handleUploadSuccess, handleUploadFailure);
 
