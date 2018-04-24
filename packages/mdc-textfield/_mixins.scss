@@ -129,11 +129,11 @@
 
 @mixin mdc-text-field-disabled_ {
   @include mdc-text-field-bottom-line-color_($mdc-text-field-disabled-border);
-  @include mdc-text-field-ink-color_(text-disabled-on-background);
-  @include mdc-text-field-label-ink-color_(text-disabled-on-background);
-  @include mdc-text-field-helper-text-color_(text-disabled-on-background);
+  @include mdc-text-field-ink-color_($mdc-text-field-disabled-ink-color);
+  @include mdc-text-field-label-ink-color_($mdc-text-field-disabled-label-color);
+  @include mdc-text-field-helper-text-color_($mdc-text-field-disabled-helper-text-color);
   @include mdc-text-field-icon-color_($mdc-text-field-disabled-icon);
-  @include mdc-text-field-fullwidth-bottom-line-color_($mdc-text-field-divider);
+  @include mdc-text-field-fullwidth-bottom-line-color_($mdc-text-field-fullwidth-bottom-line-color);
 
   pointer-events: none;
 
@@ -153,13 +153,17 @@
   @include mdc-text-field-label-color($mdc-text-field-error);
   @include mdc-text-field-helper-text-validation-color($mdc-text-field-error);
 
+  &.mdc-text-field--with-trailing-icon {
+    @include mdc-text-field-icon-color($mdc-text-field-error);
+  }
+
   + .mdc-text-field-helper-text--validation-msg {
     opacity: 1;
   }
 }
 
 @mixin mdc-text-field-focused_ {
-  @include mdc-text-field-label-color(primary);
+  @include mdc-text-field-label-color($mdc-text-field-focused-label-color);
 
   @include mdc-required-text-field-label-asterisk_ {
     color: $mdc-text-field-error;
@@ -176,7 +180,10 @@
 
   margin-top: 12px;
   margin-bottom: 4px;
-  font-size: .813rem;
+
+  .mdc-floating-label {
+    font-size: .813rem;
+  }
 }
 
 @mixin mdc-required-text-field-label-asterisk_() {
@@ -231,7 +238,7 @@
   }
 
   .mdc-floating-label {
-    bottom: 18px;
+    bottom: 16px;
   }
 
   .mdc-text-field__icon {
@@ -252,7 +259,6 @@
 
   .mdc-text-field__input {
     display: flex;
-    height: 30px;
     padding: 12px;
     border: none;
     background-color: transparent;
@@ -264,7 +270,6 @@
 
     position: absolute;
     bottom: 20px;
-    transition: transform 260ms ease;
   }
 
   .mdc-text-field__icon {
@@ -311,10 +316,10 @@
 @mixin mdc-text-field-box_ {
   @include mdc-ripple-surface;
   // Text Field Box intentionally omits press ripple, so each state needs to be specified individually
-  @include mdc-states-base-color(text-primary-on-background);
-  @include mdc-states-hover-opacity(mdc-states-opacity(text-primary-on-background, hover));
+  @include mdc-states-base-color($mdc-text-field-ink-color);
+  @include mdc-states-hover-opacity(mdc-states-opacity($mdc-text-field-ink-color, hover));
   @include mdc-states-focus-opacity(
-    mdc-states-opacity(text-primary-on-background, focus),
+    mdc-states-opacity($mdc-text-field-ink-color, focus),
     $has-nested-focusable-element: true
   );
   @include mdc-ripple-radius-bounded;
@@ -355,7 +360,7 @@
 @mixin mdc-text-field-box-disabled_ {
   @include mdc-text-field-box-fill-color_($mdc-text-field-box-disabled-background);
   @include mdc-text-field-bottom-line-color_($mdc-text-field-outlined-disabled-border);
-  @include mdc-text-field-label-color(text-hint-on-background);
+  @include mdc-text-field-label-color($mdc-text-field-disabled-label-color);
 
   border-bottom: none;
 }
@@ -382,11 +387,19 @@
 @mixin mdc-text-field-outlined-with-leading-icon_ {
   @include mdc-floating-label-float-position($mdc-text-field-outlined-label-position-y, $mdc-text-field-outlined-with-leading-icon-label-position-x);
   @include mdc-floating-label-shake-animation(text-field-outlined-leading-icon);
+
+  @include mdc-rtl {
+    @include mdc-floating-label-shake-animation(text-field-outlined-leading-icon-rtl);
+  }
 }
 
 @mixin mdc-text-field-outlined-dense-with-leading-icon_ {
   @include mdc-floating-label-float-position($mdc-text-field-outlined-dense-label-position-y, $mdc-text-field-outlined-dense-with-leading-icon-label-position-x, $mdc-text-field-dense-label-scale);
   @include mdc-floating-label-shake-animation(text-field-outlined-leading-icon-dense);
+
+  @include mdc-rtl {
+    @include mdc-floating-label-shake-animation(text-field-outlined-leading-icon-dense-rtl);
+  }
 }
 
 @mixin mdc-text-field-with-trailing-icon_ {

@@ -135,7 +135,7 @@ To pre-select filter chips that have a leading icon, also add the class `mdc-chi
 CSS Class | Description
 --- | ---
 `mdc-chip-set` | Mandatory. Indicates the set that the chip belongs to.
-`mdc-chip-set--entry` | Optional. Indicates that the chips in the set are entry chips, which enable user input by converting text into chips.
+`mdc-chip-set--input` | Optional. Indicates that the chips in the set are input chips, which enable user input by converting text into chips.
 `mdc-chip-set--choice` | Optional. Indicates that the chips in the set are choice chips, which allow a single selection from a set of options.
 `mdc-chip-set--filter` | Optional. Indicates that the chips in the set are filter chips, which allow multiple selection from a set of options.
 `mdc-chip` | Mandatory.
@@ -144,7 +144,7 @@ CSS Class | Description
 `mdc-chip__icon` | Optional. Indicates an icon in the chip.
 `mdc-chip__icon--leading` | Optional. Indicates a leading icon in the chip.
 `mdc-chip__icon--leading-hidden` | Optional. Hides the leading icon in a filter chip when the chip is selected.
-`mdc-chip__icon--trailing` | Optional. Indicates a trailing icon in the chip.
+`mdc-chip__icon--trailing` | Optional. Indicates a trailing icon which removes the chip from the DOM. Only use with input chips.
 `mdc-chip__checkmark` | Optional. Indicates the checkmark in a filter chip.
 `mdc-chip__checkmark-svg` | Mandatory with the use of `mdc-chip__checkmark`. Indicates the checkmark SVG element in a filter chip.
 `mdc-chip__checkmark-path` | Mandatory with the use of `mdc-chip__checkmark`. Indicates the checkmark SVG path in a filter chip.
@@ -159,14 +159,18 @@ Mixin | Description
 --- | ---
 `mdc-chip-set-spacing($gap-size)` | Customizes the amount of space between each chip in the set
 `mdc-chip-corner-radius($radius)` | Customizes the corner radius for a chip
-`mdc-chip-fill-color-accessible($color)` | Customizes the background fill color for a chip, and updates the chip's ink and ripple color to meet accessibility standards
+`mdc-chip-fill-color-accessible($color)` | Customizes the background fill color for a chip, and updates the chip's ink, icon and ripple colors to meet accessibility standards
 `mdc-chip-fill-color($color)` | Customizes the background fill color for a chip
 `mdc-chip-ink-color($color)` | Customizes the text ink color for a chip, and updates the chip's ripple color to match
 `mdc-chip-selected-ink-color($color)` | Customizes text ink and ripple color of a chip in the _selected_ state
-`mdc-chip-stroke($width, $style, $color)` | Customizes the border stroke properties for a chip
-`mdc-chip-stroke-width($width)` | Customizes the border stroke width for a chip
-`mdc-chip-stroke-style($style)` | Customizes the border stroke style for a chip
-`mdc-chip-stroke-color($color)` | Customizes the border stroke color for a chip
+`mdc-chip-outline($width, $style, $color)` | Customizes the outline properties for a chip
+`mdc-chip-outline-width($width)` | Customizes the outline width for a chip
+`mdc-chip-outline-style($style)` | Customizes the outline style for a chip
+`mdc-chip-outline-color($color)` | Customizes the outline color for a chip
+`mdc-chip-leading-icon-color($color, $opacity)` | Customizes the color of a leading icon in a chip, optionally customizes opacity
+`mdc-chip-trailing-icon-color($color, $opacity, $hover-opacity, $focus-opacity)` | Customizes the color of a trailing icon in a chip, optionally customizes regular/hover/focus opacities
+`mdc-chip-leading-icon-size($size)` | Customizes the size of a leading icon in a chip
+`mdc-chip-trailing-icon-size($size)` | Customizes the size of a trailing icon in a chip
 
 > _NOTE_: `mdc-chip-set-spacing` also sets the amount of space between a chip and the edge of the set it's contained in.
 
@@ -174,7 +178,7 @@ Mixin | Description
 
 The MDC Chips module is comprised of two JavaScript classes:
 * `MDCChip` defines the behavior of a single chip
-* `MDCChipSet` defines the behavior of chips within a specific set. For example, chips in an entry chip set behave differently from those in a filter chip set.
+* `MDCChipSet` defines the behavior of chips within a specific set. For example, chips in an input chip set behave differently from those in a filter chip set.
 
 To use the `MDCChip` and `MDCChipSet` classes, [import](../../docs/importing-js.md) both classes from `@material/chips`.
 
@@ -184,6 +188,7 @@ Method Signature | Description
 --- | ---
 `get foundation() => MDCChipFoundation` | Returns the foundation
 `isSelected() => boolean` | Proxies to the foundation's `isSelected` method
+`remove() => void` | Destroys the chip and removes the root element from the DOM
 
 Property | Value Type | Description
 --- | --- | ---
@@ -217,7 +222,9 @@ Method Signature | Description
 `deregisterTrailingIconInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the trailing icon element
 `notifyInteraction() => void` | Emits a custom event `MDCChip:interaction` denoting the chip has been interacted with
 `notifyTrailingIconInteraction() => void` | Emits a custom event `MDCChip:trailingIconInteraction` denoting the chip's trailing icon has been interacted with
-`layout() => void` | Recomputes all dimensions and positions for the ripple element
+`notifyRemoval() => void` | Emits a custom event `MDCChip:removal` denoting the chip will be removed
+`getComputedStyleValue(propertyName: string) => string` | Returns the computed property value of the given style property on the root element
+`setStyleProperty(propertyName: string, value: string) => void` | Sets the property value of the given style property on the root element
 
 > _NOTE_: The custom events emitted by `notifyInteraction` and `notifyTrailingIconInteraction` must pass along the target chip in its event `detail`, as well as bubble to the parent `mdc-chip-set` element.
 
@@ -228,8 +235,8 @@ Method Signature | Description
 `hasClass(className: string) => boolean` | Returns whether the chip set element has the given class
 `registerInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event handler on the root element for a given event
 `deregisterInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event handler on the root element for a given event
-`createChipElement(text: string, leadingIcon: Element, trailingIcon: Element) => Element` | Returns a chip element with the given text, leading icon, and trailing icon
-`appendChild(el: Element) => void` | Appends the given element as a child of the root element
+`appendChip(text: string, leadingIcon: Element, trailingIcon: Element) => Element` | Appends and returns a chip element with the given text, leading icon, and trailing icon
+`removeChip(chip: MDCChip) => void` | Removes the chip object from the chip set
 
 ### Foundations: `MDCChipFoundation` and `MDCChipSetFoundation`
 

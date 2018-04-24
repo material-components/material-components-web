@@ -182,6 +182,14 @@ function transform(srcFile, rootDir) {
       }
       path.replaceWith(variableDeclaration);
     },
+
+    ClassMethod(path) {
+      // Remove any statements from abstract function bodies.
+      // Closure doesn't like seeing this, but we like to include a throw statement for non-closure clients.
+      if (path.node.comments && path.node.comments.some((comment) => comment.value.includes('@abstract'))) {
+        path.node.body.body = [];
+      }
+    },
   });
 
   let {code: outputCode} = recast.print(ast, {

@@ -18,3 +18,16 @@
 
 $mdc-select-arrow-padding: 26px;
 $mdc-select-label-padding: 16px;
+
+$mdc-select-ink-color: rgba(mdc-theme-prop-value(on-surface), .87);
+$mdc-select-disabled-ink-color: rgba(mdc-theme-prop-value(on-surface), .37);
+
+$mdc-select-label-color: rgba(mdc-theme-prop-value(on-surface), .6);
+$mdc-select-focused-label-color: rgba(mdc-theme-prop-value(primary), .87);
+$mdc-select-disabled-label-color: rgba(mdc-theme-prop-value(on-surface), .37);
+
+$mdc-select-bottom-line-idle-color: rgba(mdc-theme-prop-value(on-surface), .42);
+$mdc-select-bottom-line-hover-color: rgba(mdc-theme-prop-value(on-surface), .87);
+
+$mdc-select-box-fill-color: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 4%);
+$mdc-select-box-disabled-fill-color: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 2%);
