@@ -71,22 +71,22 @@
   }
 }
 
-@mixin mdc-chip-stroke($width: 1, $style: solid, $color: mdc-theme-prop-value(on-surface)) {
-  @include mdc-chip-stroke-width($width);
-  @include mdc-chip-stroke-style($style);
-  @include mdc-chip-stroke-color($color);
+@mixin mdc-chip-outline($width: 1, $style: solid, $color: mdc-theme-prop-value(on-surface)) {
+  @include mdc-chip-outline-width($width);
+  @include mdc-chip-outline-style($style);
+  @include mdc-chip-outline-color($color);
 }
 
-@mixin mdc-chip-stroke-color($color) {
+@mixin mdc-chip-outline-color($color) {
   @include mdc-theme-prop(border-color, $color);
 }
 
-@mixin mdc-chip-stroke-style($style) {
+@mixin mdc-chip-outline-style($style) {
   border-style: $style;
 }
 
-@mixin mdc-chip-stroke-width($width) {
-  // Note: Adjust padding to maintain consistent width with non-stroked chips
+@mixin mdc-chip-outline-width($width) {
+  // Note: Adjust padding to maintain consistent width with non-outlined chips
   $horizontal-padding-value: max($mdc-chip-horizontal-padding - $width, 0);
   $vertical-padding-value: max($mdc-chip-vertical-padding - $width, 0);
 

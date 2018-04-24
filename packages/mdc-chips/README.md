@@ -163,10 +163,10 @@ Mixin | Description
 `mdc-chip-fill-color($color)` | Customizes the background fill color for a chip
 `mdc-chip-ink-color($color)` | Customizes the text ink color for a chip, and updates the chip's ripple color to match
 `mdc-chip-selected-ink-color($color)` | Customizes text ink and ripple color of a chip in the _selected_ state
-`mdc-chip-stroke($width, $style, $color)` | Customizes the border stroke properties for a chip
-`mdc-chip-stroke-width($width)` | Customizes the border stroke width for a chip
-`mdc-chip-stroke-style($style)` | Customizes the border stroke style for a chip
-`mdc-chip-stroke-color($color)` | Customizes the border stroke color for a chip
+`mdc-chip-outline($width, $style, $color)` | Customizes the outline properties for a chip
+`mdc-chip-outline-width($width)` | Customizes the outline width for a chip
+`mdc-chip-outline-style($style)` | Customizes the outline style for a chip
+`mdc-chip-outline-color($color)` | Customizes the outline color for a chip
 `mdc-chip-leading-icon-color($color, $opacity)` | Customizes the color of a leading icon in a chip, optionally customizes opacity
 `mdc-chip-trailing-icon-color($color, $opacity, $hover-opacity, $focus-opacity)` | Customizes the color of a trailing icon in a chip, optionally customizes regular/hover/focus opacities
 `mdc-chip-leading-icon-size($size)` | Customizes the size of a leading icon in a chip
