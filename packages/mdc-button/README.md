@@ -90,7 +90,7 @@ CSS Class | Description
 `mdc-button__icon`    | Optional, for the icon element
 `mdc-button--raised` | Optional, a contained button that is elevated upon the surface
 `mdc-button--unelevated` | Optional, a contained button that is flush with the surface
-`mdc-button--stroked` | Optional, a contained button that is flush with the surface and has a visible border
+`mdc-button--outlined` | Optional, a contained button that is flush with the surface and has a visible border
 `mdc-button--dense` | Optional, compresses the button text to make it slightly smaller
 
 ### Disabled Button
@@ -135,7 +135,7 @@ container color to the given color, and updates the Button's ink and ripple colo
 
 ### Advanced Sass Mixins
 
-> **A note about advanced mixins**, The following mixins are intended for advanced users. These mixins will override the color of the container, ink, stroke or ripple. You can use all of them if you want to completely customize a Button. Or you can use only one of them, e.g. if you only need to override the ripple color. **It is up to you to pick container, ink, stroke and ripple colors that work together, and meet accessibility standards.**
+> **A note about advanced mixins**, The following mixins are intended for advanced users. These mixins will override the color of the container, ink, outline or ripple. You can use all of them if you want to completely customize a Button. Or you can use only one of them, e.g. if you only need to override the ripple color. **It is up to you to pick container, ink, outline and ripple colors that work together, and meet accessibility standards.**
 
 Mixin | Description
 --- | ---
@@ -144,12 +144,12 @@ Mixin | Description
 `mdc-button-ink-color($color)` | Sets the ink color to the given color. This affects both text and icon, unless `mdc-button-icon-color` is also used.
 `mdc-button-corner-radius($corner-radius)` | Sets the corner radius to the given number (defaults to 2px).
 `mdc-button-horizontal-padding($padding)` | Sets horizontal padding to the given number.
-`mdc-button-stroke-color($color)` | Sets the stroke color to the given color.
-`mdc-button-stroke-width($width, $padding)` | Sets the stroke width to the given number (defaults to 2px) and adjusts padding accordingly. `$padding` is only required in cases where `mdc-button-horizontal-padding` is also included with a custom value.
+`mdc-button-outline-color($color)` | Sets the outline color to the given color.
+`mdc-button-outline-width($width, $padding)` | Sets the outline width to the given number (defaults to 2px) and adjusts padding accordingly. `$padding` is only required in cases where `mdc-button-horizontal-padding` is also included with a custom value.
 
 The ripple effect for the Button component is styled using [MDC Ripple](../mdc-ripple) mixins.
 
-> **Note:** If you want to customize both horizontal padding and stroke width, simply include the `mdc-button-stroke-width` mixin with both arguments. It will include `mdc-button-horizontal-padding` for you.
+> **Note:** If you want to customize both horizontal padding and the outline width, simply include the `mdc-button-outline-width` mixin with both arguments. It will include `mdc-button-horizontal-padding` for you.
 
 #### Caveat: Edge and CSS Variables
 

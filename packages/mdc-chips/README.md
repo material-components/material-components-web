@@ -135,7 +135,7 @@ To pre-select filter chips that have a leading icon, also add the class `mdc-chi
 CSS Class | Description
 --- | ---
 `mdc-chip-set` | Mandatory. Indicates the set that the chip belongs to.
-`mdc-chip-set--entry` | Optional. Indicates that the chips in the set are entry chips, which enable user input by converting text into chips.
+`mdc-chip-set--input` | Optional. Indicates that the chips in the set are input chips, which enable user input by converting text into chips.
 `mdc-chip-set--choice` | Optional. Indicates that the chips in the set are choice chips, which allow a single selection from a set of options.
 `mdc-chip-set--filter` | Optional. Indicates that the chips in the set are filter chips, which allow multiple selection from a set of options.
 `mdc-chip` | Mandatory.
@@ -144,7 +144,7 @@ CSS Class | Description
 `mdc-chip__icon` | Optional. Indicates an icon in the chip.
 `mdc-chip__icon--leading` | Optional. Indicates a leading icon in the chip.
 `mdc-chip__icon--leading-hidden` | Optional. Hides the leading icon in a filter chip when the chip is selected.
-`mdc-chip__icon--trailing` | Optional. Indicates a trailing icon which removes the chip from the DOM. Only use with entry chips.
+`mdc-chip__icon--trailing` | Optional. Indicates a trailing icon which removes the chip from the DOM. Only use with input chips.
 `mdc-chip__checkmark` | Optional. Indicates the checkmark in a filter chip.
 `mdc-chip__checkmark-svg` | Mandatory with the use of `mdc-chip__checkmark`. Indicates the checkmark SVG element in a filter chip.
 `mdc-chip__checkmark-path` | Mandatory with the use of `mdc-chip__checkmark`. Indicates the checkmark SVG path in a filter chip.
@@ -163,10 +163,10 @@ Mixin | Description
 `mdc-chip-fill-color($color)` | Customizes the background fill color for a chip
 `mdc-chip-ink-color($color)` | Customizes the text ink color for a chip, and updates the chip's ripple color to match
 `mdc-chip-selected-ink-color($color)` | Customizes text ink and ripple color of a chip in the _selected_ state
-`mdc-chip-stroke($width, $style, $color)` | Customizes the border stroke properties for a chip
-`mdc-chip-stroke-width($width)` | Customizes the border stroke width for a chip
-`mdc-chip-stroke-style($style)` | Customizes the border stroke style for a chip
-`mdc-chip-stroke-color($color)` | Customizes the border stroke color for a chip
+`mdc-chip-outline($width, $style, $color)` | Customizes the outline properties for a chip
+`mdc-chip-outline-width($width)` | Customizes the outline width for a chip
+`mdc-chip-outline-style($style)` | Customizes the outline style for a chip
+`mdc-chip-outline-color($color)` | Customizes the outline color for a chip
 `mdc-chip-leading-icon-color($color, $opacity)` | Customizes the color of a leading icon in a chip, optionally customizes opacity
 `mdc-chip-trailing-icon-color($color, $opacity, $hover-opacity, $focus-opacity)` | Customizes the color of a trailing icon in a chip, optionally customizes regular/hover/focus opacities
 `mdc-chip-leading-icon-size($size)` | Customizes the size of a leading icon in a chip
@@ -178,7 +178,7 @@ Mixin | Description
 
 The MDC Chips module is comprised of two JavaScript classes:
 * `MDCChip` defines the behavior of a single chip
-* `MDCChipSet` defines the behavior of chips within a specific set. For example, chips in an entry chip set behave differently from those in a filter chip set.
+* `MDCChipSet` defines the behavior of chips within a specific set. For example, chips in an input chip set behave differently from those in a filter chip set.
 
 To use the `MDCChip` and `MDCChipSet` classes, [import](../../docs/importing-js.md) both classes from `@material/chips`.
 
