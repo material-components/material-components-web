@@ -43,6 +43,12 @@ class Storage {
     return `${USERNAME}/${year}/${month}/${day}/${hour}_${minute}_${second}_${ms}/${gitCommitShort}/`;
   }
 
+  /**
+   * @param {string} uploadDir Base GCS directory (e.g., from `generateUniqueUploadDir()`)
+   * @param {string} relativeGcsFilePath File path relative to the base GCS `uploadDir`
+   * @param {string|!Buffer} fileContents
+   * @return {!Promise<{parentDir, relativePath, fullUrl, errors}>}
+   */
   async uploadFile({uploadDir, relativeGcsFilePath, fileContents}) {
     // Attaching Git metadata to the uploaded files makes it easier to track down their source.
     const gitCommitShort = await this.mdcGitRepo_.getShortCommitHash();
@@ -93,22 +99,20 @@ class Storage {
   handleUploadSuccess_(uploadDir, relativeGcsFilePath) {
     console.log(`✔︎ Uploaded ${GCLOUD_STORAGE_BASE_URL}${uploadDir}${relativeGcsFilePath}`);
     return {
-      errors: [],
-      bucketUrl: GCLOUD_STORAGE_BASE_URL,
       parentDir: uploadDir,
       relativePath: relativeGcsFilePath,
       fullUrl: `${GCLOUD_STORAGE_BASE_URL}${uploadDir}${relativeGcsFilePath}`,
+      errors: [],
     };
   }
 
   handleUploadFailure_(uploadDir, relativeGcsFilePath, err) {
     console.error(`✗︎ FAILED to upload ${GCLOUD_STORAGE_BASE_URL}${uploadDir}${relativeGcsFilePath}:\n`, err);
     return {
-      errors: [err],
-      bucketUrl: GCLOUD_STORAGE_BASE_URL,
       parentDir: uploadDir,
       relativePath: relativeGcsFilePath,
       fullUrl: `${GCLOUD_STORAGE_BASE_URL}${uploadDir}${relativeGcsFilePath}`,
+      errors: [err],
     };
   }
 }
