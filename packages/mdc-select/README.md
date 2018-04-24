@@ -35,9 +35,9 @@ browser's native `<select>` element. It is fully accessible, and fully RTL-aware
 npm install @material/select
 ```
 
-## Usage
+## Basic Usage
 
-### Using the full-fidelity JS component
+### HTML Structure
 
 ```html
 <div class="mdc-select">
@@ -58,7 +58,13 @@ npm install @material/select
 </div>
 ```
 
-Then with JS
+### Styles
+
+```scss
+@import "@material/select/mdc-select";
+```
+
+### JavaScript Instantiation
 
 ```js
 const select = new mdc.select.MDCSelect(document.querySelector('.mdc-select'));
@@ -69,12 +75,31 @@ select.listen('change', () => {
 
 See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
 
+## Variants
+
+### Select Box
+
+The Select Box variant uses the same markup as the standard variant, with the addition of the `mdc-select--box`
+modifier class on the root element.
+
+```html
+<div class="mdc-select mdc-select--box">
+  <select class="mdc-select__native-control">
+    ...
+  </select>
+  <label class="mdc-floating-label">Pick a Food Group</label>
+  <div class="mdc-line-ripple"></div>
+</div>
+```
+
+### Additional Information
+
 #### Select with pre-selected option
 
-When dealing with the select component that has pre-selected values, you'll want to ensure that you
-render `mdc-floating-label` with the `mdc-floating-label--float-above` modifier class and the selected
-option with the `selected` attribute. This will ensure that the label moves out
-of the way of the select's value and prevents a Flash Of Unstyled Content (**FOUC**).
+When dealing with a select component that has a pre-selected value, include the `mdc-floating-label--float-above`
+modifier class on the `mdc-floating-label` element, and add the `selected` attribute to the selected option.
+This will ensure that the label moves out of the way of the select's value and prevents a Flash Of Unstyled Content
+(**FOUC**).
 
 ```html
 <div class="mdc-select">
@@ -94,7 +119,7 @@ of the way of the select's value and prevents a Flash Of Unstyled Content (**FOU
 </div>
 ```
 
-#### Select with floating label as the placeholder
+#### Using the floating label as the placeholder
 
 By default, `<select>` elements will select their first enabled option. In order to initially display a placeholder
 instead, add an initial `<option>` element with the `disabled` *and* `selected` attributes set, and with `value` set to `""`.
@@ -105,21 +130,13 @@ instead, add an initial `<option>` element with the `disabled` *and* `selected` 
 
 #### Disabled select
 
-Add the `mdc-select--disabled` class to the `mdc-select` element and the `disabled` attribute to the
+Add the `mdc-select--disabled` class to the `mdc-select` element, and add the `disabled` attribute to the
 `<select>` element.
 
 ```html
 <div class="mdc-select mdc-select--disabled">
   <select class="mdc-select__native-control" disabled>
-    <option value="grains">
-      Bread, Cereal, Rice, and Pasta
-    </option>
-    <option value="vegetables">
-      Vegetables
-    </option>
-    <option value="fruit">
-      Fruit
-    </option>
+    ...
   </select>
   <label class="mdc-floating-label">Pick a Food Group</label>
   <div class="mdc-line-ripple"></div>
@@ -148,17 +165,20 @@ Since MDC Select uses native `<select>` and `<option>` elements, simply add the 
 </div>
 ```
 
+## Style Customization
+
 #### CSS Classes
 
-| Class                    | Description                                     |
-| ------------------------ | ----------------------------------------------- |
-| `mdc-select`             | Mandatory.                                      |
-| `mdc-select--box`        | Styles the select as a box select.              |
+| Class | Description |
+| --- | --- |
+| `mdc-select` | Mandatory. |
+| `mdc-select--box` | Styles the select as a box select. |
+| `mdc-select--disabled` | Styles the select as disabled. This class should be applied to the root element when the `disabled` attribute is applied to the `<select>` element. |
+| `mdc-select__native-control` | Mandatory. The native `<select>` element. |
 
 ### Sass Mixins
 
-To customize the colors of any part of the select, use the following mixins. We recommend you use
-these mixins within CSS selectors like `.foo-select` to apply styling.
+Mixins should be included in the context of a custom class applied to the component's root element, e.g. `.my-select`.
 
 Mixin | Description
 --- | ---
@@ -170,25 +190,25 @@ Mixin | Description
 `mdc-select-focused-bottom-line-color($color)` | Customizes the color of the bottom line of the select when focused.
 `mdc-select-hover-bottom-line-color($color)` | Customizes the color of the bottom line when select is hovered.
 
-> NOTE: To further customize label color please see the [floating label readme](./../mdc-floating-label/README.md).
+> NOTE: To further customize the floating label, please see the [floating label documentation](./../mdc-floating-label/README.md).
 
-### MDC Select Component API
+## `MDCSelect` API
 
-The MDC Select component API is modeled after a subset of the `HTMLSelectElement` functionality, and
-is outlined below.
+The `MDCSelect` component API is modeled after a subset of the `HTMLSelectElement` functionality.
 
-#### Properties
-
-| Property Name | Type | Description |
+| Property | Type | Description |
 | --- | --- | --- |
 | `value` | `string` | The `value` of the currently selected option. |
 | `selectedIndex` | `number` | The index of the currently selected option. Set to -1 if no option is currently selected. Changing this property will update the select element. |
 | `disabled` | `boolean` | Whether or not the component is disabled. Settings this sets the disabled state on the component. |
 
-#### Events
+### Events
 
-The MDC Select JS component emits a `change` event when the selected option changes as
-the result of a user action.
+The MDC Select JS component emits a `change` event when the selected option changes as the result of a user action.
+
+## Usage within Web Frameworks
+
+If you are using a JavaScript framework, such as React or Angular, you can create a Select for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../integrating-into-frameworks.md).
 
 ### `MDCSelectAdapter`
 
