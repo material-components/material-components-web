@@ -35,121 +35,106 @@ runScreenshotTests();
 async function runScreenshotTests() {
   const storage = new Storage();
 
-  // Every batch of files gets uploaded to a unique timestamped directory to prevent collisions between developers.
+  /**
+   * Unique timestamped directory path to prevent collisions between developers.
+   * @type {string}
+   */
   const uploadDir = await storage.generateUniqueUploadDir();
 
-  /** @type {!Array<string>} */
+  /**
+   * Relative paths of all files to be uploaded as assets (HTML, CSS, JS).
+   * @type {!Array<string>}
+   */
   const assetFileRelativePaths = glob.sync('**/*', {cwd: SCREENSHOT_TEST_DIR_ABSOLUTE_PATH, nodir: true});
 
+  /**
+   * Map of `assetFileRelativePath` to `Object`.
+   * @type {Map<string, {file, screenshots}>}
+   */
   const screenshotMap = new Map();
 
-  const promises = assetFileRelativePaths.map(async (assetFileRelativePath) => {
+  return uploadAllAssets();
+
+  async function uploadAllAssets() {
+    const uploadPromises = assetFileRelativePaths.map(uploadOneAsset);
+    const allDonePromise = Promise.all(uploadPromises);
+    allDonePromise.then(logCapturedScreenshots);
+    return allDonePromise;
+  }
+
+  async function uploadOneAsset(assetFileRelativePath) {
     screenshotMap.set(assetFileRelativePath, {file: null, screenshots: []});
-
-    const assetFileAbsolutePath = path.join(SCREENSHOT_TEST_DIR_ABSOLUTE_PATH, assetFileRelativePath);
-
     return storage
       .uploadFile({
         uploadDir: `${uploadDir}assets/`,
         relativeGcsFilePath: assetFileRelativePath,
-        fileContents: await readFileAsync(assetFileAbsolutePath),
+        fileContents: await readFileAsync(`${SCREENSHOT_TEST_DIR_ABSOLUTE_PATH}/${assetFileRelativePath}`),
       })
       .then(
-        handleAssetUploadSuccess,
-        handleAssetUploadFailure
+        handleUploadOneAssetSuccess,
+        handleUploadOneAssetFailure
       );
-  });
+  }
 
-  Promise.all(promises)
-    .then(
-      (assetFiles) => {
-        console.log('');
-        console.log('');
-        screenshotMap.forEach((assetFileData, relativeAssetFilePath) => {
-          if (relativeAssetFilePath.endsWith('.html')) {
-            console.log(`${assetFileData.file.fullUrl}:`);
-            assetFileData.screenshots.forEach((imageFile) => {
-              console.log(`  - ${imageFile.fullUrl}`);
-            });
-            console.log('');
-          }
-        });
-        console.log('');
-        console.log('');
-      },
-      (err) => {
-        return Promise.reject(err);
-      }
-    );
-
-  let numHtmlFiles = 0;
-
-  return promises;
-
-  function handleAssetUploadSuccess(assetFile) {
+  function handleUploadOneAssetSuccess(assetFile) {
     screenshotMap.set(assetFile.relativePath, {file: assetFile, screenshots: []});
-
     if (assetFile.relativePath.endsWith('.html')) {
-      if (numHtmlFiles > 0) {
-        // return Promise.resolve(assetFile);
-      }
-
-      numHtmlFiles++;
-
-      return Screenshot
-        .captureOneUrl(assetFile.fullUrl)
-        .then(
-          (screenshotInfo) => handleScreenshotCaptureSuccess(assetFile, screenshotInfo),
-          (err) => handleScreenshotCaptureFailure(assetFile, err)
-        );
+      return capturePage(assetFile);
     }
-
     return Promise.resolve(assetFile);
   }
 
-  function handleAssetUploadFailure(err) {
-    console.error('\n\nERROR uploading HTML/CSS/JS assets to Google Cloud Storage!\n\n');
-    console.error(err);
+  function handleUploadOneAssetFailure(err) {
+    return Promise.reject(err);
   }
 
-  async function handleScreenshotCaptureSuccess(assetFile, screenshotInfo) {
+  function capturePage(assetFile) {
+    return Screenshot
+      .captureOneUrl(assetFile.fullUrl)
+      .then(
+        (screenshotInfo) => handleCapturePageSuccess(assetFile, screenshotInfo),
+        (err) => handleCapturePageFailure(assetFile, err)
+      );
+  }
+
+  async function handleCapturePageSuccess(assetFile, screenshotInfo) {
     const screenshots = [];
 
     screenshotMap.set(assetFile.relativePath, {file: assetFile, screenshots: screenshots});
 
     // We don't use CBT's screenshot versioning features, so there should only ever be one version.
     // Each "result" is an individual browser screenshot for a single URL.
-    return Promise.all(
-      screenshotInfo.versions[0].results.map(async (result) => {
-        const imageName =
-          `${result.os.api_name}_${result.browser.api_name}_ltr`
-            .toLowerCase()
-            .replace(/\W+/g, '');
-        const imageFileName = `${imageName}.png`;
+    const imageUploadPromises = screenshotInfo.versions[0].results.map((cbtResult) => {
+      return uploadScreenshotImage(assetFile, cbtResult);
+    });
 
-        return (
-          storage
-            .uploadFile({
-              uploadDir: `${uploadDir}screenshots/`,
-              relativeGcsFilePath: `${assetFile.relativePath}/${imageFileName}`,
-              fileContents: await downloadImage(result.images.chromeless),
-            })
-            .then(
-              (imageFile) => {
-                screenshots.push(imageFile);
-                return imageFile;
-              },
-              (err) => Promise.reject(err)
-            )
-        );
-      })
-    );
+    imageUploadPromises.forEach((imageUploadPromise) => {
+      imageUploadPromise.then((imageFile) => screenshots.push(imageFile));
+    });
+
+    return Promise.all(imageUploadPromises);
   }
 
-  function handleScreenshotCaptureFailure(assetFile, err) {
+  function handleCapturePageFailure(assetFile, err) {
     console.error('\n\n\nERROR capturing screenshot with CrossBrowserTesting:\n\n');
     console.error(`  - ${assetFile.fullUrl}`);
     console.error(err);
+  }
+
+  async function uploadScreenshotImage(assetFile, cbtResult) {
+    const sanitize = (apiName) => apiName.toLowerCase().replace(/\W+/g, '');
+
+    const os = sanitize(cbtResult.os.api_name);
+    const browser = sanitize(cbtResult.browser.api_name);
+    const imageName = `${os}_${browser}_ltr.png`;
+    const imageData = await downloadImage(cbtResult.images.chromeless);
+
+    return storage
+      .uploadFile({
+        uploadDir: `${uploadDir}screenshots/`,
+        relativeGcsFilePath: `${assetFile.relativePath}/${imageName}`,
+        fileContents: imageData,
+      });
   }
 
   async function downloadImage(uri) {
@@ -163,5 +148,18 @@ async function runScreenshotTests() {
           return Promise.reject(err);
         }
       );
+  }
+
+  function logCapturedScreenshots() {
+    console.log('');
+    screenshotMap.forEach((assetFileData, relativeAssetFilePath) => {
+      if (relativeAssetFilePath.endsWith('.html')) {
+        console.log(`${assetFileData.file.fullUrl}:`);
+        assetFileData.screenshots.forEach((imageFile) => {
+          console.log(`  - ${imageFile.fullUrl}`);
+        });
+        console.log('');
+      }
+    });
   }
 }
