@@ -15,6 +15,8 @@
 //
 
 @import "./common";
+@import "../packages/mdc-checkbox/mdc-checkbox";
+@import "../packages/mdc-form-field/mdc-form-field";
 @import "../packages/mdc-switch/mdc-switch";
 @import "../packages/mdc-theme/color-palette";
 
@@ -29,4 +31,8 @@
   @include mdc-switch-track-color($color);
   @include mdc-switch-knob-color($color);
   @include mdc-switch-focus-indicator-color($color);
+}
+
+.rtl-toggle {
+  margin: 16px;
 }
