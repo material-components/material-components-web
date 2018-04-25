@@ -77,9 +77,12 @@ async function sendCaptureRequest(testPageUrl) {
     json: true, // Automatically stringify the request body and parse the response body as JSON
   };
 
+  console.log(`sendCaptureRequest("${testPageUrl}")...`);
+
   return request(options)
     .catch(async (err) => {
       if (reachedParallelExecutionLimit(err)) {
+        console.warn(`Parallel execution limit reached - waiting for ${API_POLL_INTERVAL_MS} ms before retrying...`);
         // Wait a few seconds, then try again.
         await sleep(API_POLL_INTERVAL_MS);
         return sendCaptureRequest(testPageUrl);
@@ -181,8 +184,9 @@ function logTestCaseProgress(testPageUrl, testPageProgress) {
 
   const aggregateProgress = computeTestSuiteProgress();
   const finished = aggregateProgress.finished;
+  const running = aggregateProgress.running;
   const total = aggregateProgress.total;
   const pct = Math.floor(aggregateProgress.percent);
 
-  console.log(`${finished} of ${total} screenshots finished (${pct}% complete)`);
+  console.log(`${finished} of ${total} screenshots finished, ${running} running (${pct}% complete)`);
 }
