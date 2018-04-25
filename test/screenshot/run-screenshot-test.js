@@ -23,7 +23,7 @@ const request = require('request-promise-native');
 const util = require('util');
 
 const Screenshot = require('./lib/screenshot');
-const {Storage, UploadableFile, TestCase} = require('./lib/storage');
+const {Storage, UploadableFile, UploadableTestCase} = require('./lib/storage');
 
 const SCREENSHOT_TEST_DIR_RELATIVE_PATH = 'test/screenshot/';
 const SCREENSHOT_TEST_DIR_ABSOLUTE_PATH = path.resolve(SCREENSHOT_TEST_DIR_RELATIVE_PATH);
@@ -42,7 +42,7 @@ async function run() {
   const baseUploadDir = await storage.generateUniqueUploadDir();
 
   /**
-   * @type {!Array<!TestCase>}
+   * @type {!Array<!UploadableTestCase>}
    */
   const testCases = [];
 
@@ -91,7 +91,7 @@ async function run() {
   async function handleUploadOneAssetSuccess(assetFile) {
     const isHtmlFile = assetFile.destinationRelativeFilePath.endsWith('.html');
     if (isHtmlFile) {
-      const testCase = new TestCase({assetFile});
+      const testCase = new UploadableTestCase({htmlFile: assetFile});
       testCases.push(testCase);
       return capturePage(testCase);
     }
@@ -108,15 +108,15 @@ async function run() {
   }
 
   /**
-   * @param {!TestCase} testCase
+   * @param {!UploadableTestCase} testCase
    * @return {!Promise<!Array<!UploadableFile>>}
    */
   async function capturePage(testCase) {
     /** @type {!UploadableFile} */
-    const assetFile = testCase.assetFile;
+    const htmlFile = testCase.htmlFile;
 
     return Screenshot
-      .captureOneUrl(assetFile.publicUrl)
+      .captureOneUrl(htmlFile.publicUrl)
       .then(
         (cbtInfo) => handleCapturePageSuccess(testCase, cbtInfo),
         (err) => handleCapturePageFailure(testCase, err)
@@ -124,7 +124,7 @@ async function run() {
   }
 
   /**
-   * @param {!TestCase} testCase
+   * @param {!UploadableTestCase} testCase
    * @param {!Object} cbtScreenshotInfo
    * @return {!Promise<!Array<!UploadableFile>>}
    */
@@ -137,20 +137,20 @@ async function run() {
   }
 
   /**
-   * @param {!TestCase} testCase
+   * @param {!UploadableTestCase} testCase
    * @param {T} err
    * @return {!Promise<T>}
    * @template T
    */
   function handleCapturePageFailure(testCase, err) {
     console.error('\n\n\nERROR capturing screenshot with CrossBrowserTesting:\n\n');
-    console.error(`  - ${testCase.assetFile.publicUrl}`);
+    console.error(`  - ${testCase.htmlFile.publicUrl}`);
     console.error(err);
     return Promise.reject(err);
   }
 
   /**
-   * @param {!TestCase} testCase
+   * @param {!UploadableTestCase} testCase
    * @param {!Object} cbtResult
    * @return {!Promise<!UploadableFile>}
    */
@@ -164,7 +164,7 @@ async function run() {
     const imageData = await downloadImage(cbtResult.images.chromeless);
     const imageFile = new UploadableFile({
       destinationParentDirectory: `${baseUploadDir}screenshots/`,
-      destinationRelativeFilePath: `${testCase.assetFile.destinationRelativeFilePath}/${imageName}`,
+      destinationRelativeFilePath: `${testCase.htmlFile.destinationRelativeFilePath}/${imageName}`,
       fileContent: imageData,
     });
 
@@ -195,10 +195,10 @@ async function run() {
 
     testCases.forEach((testCase) => {
       /** @type {!UploadableFile} */
-      const assetFile = testCase.assetFile;
+      const htmlFile = testCase.htmlFile;
 
-      if (assetFile.destinationRelativeFilePath.endsWith('.html')) {
-        console.log(`${assetFile.publicUrl}:`);
+      if (htmlFile.destinationRelativeFilePath.endsWith('.html')) {
+        console.log(`${htmlFile.publicUrl}:`);
         testCase.screenshotImageFiles.forEach((screenshotImageFile) => {
           console.log(`  - ${screenshotImageFile.publicUrl}`);
         });

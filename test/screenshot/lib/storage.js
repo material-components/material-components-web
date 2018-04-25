@@ -55,12 +55,6 @@ class Storage {
     const gitCommitShort = await this.mdcGitRepo_.getShortCommitHash();
     const gitBranchName = await this.mdcGitRepo_.getBranchName();
 
-    const absoluteGcsFilePath = uploadableFile.destinationAbsoluteFilePath;
-
-    console.log(`➡ Uploading ${absoluteGcsFilePath} ...`);
-
-    const file = this.storageBucket_.file(absoluteGcsFilePath);
-
     // Note: The GCS API mutates this object, so we need to create a new object every time we call the API.
     const fileOptions = {
       contentType: 'auto',
@@ -74,6 +68,9 @@ class Storage {
       },
     };
 
+    console.log(`➡ Uploading ${uploadableFile.destinationAbsoluteFilePath} ...`);
+
+    const file = this.storageBucket_.file(uploadableFile.destinationAbsoluteFilePath);
     return file
       .save(uploadableFile.fileContent, fileOptions)
       .then(
@@ -153,10 +150,10 @@ class UploadableFile {
 /**
  * An HTML file with screenshots.
  */
-class TestCase {
-  constructor({assetFile}) {
+class UploadableTestCase {
+  constructor({htmlFile}) {
     /** @type {!UploadableFile} */
-    this.assetFile = assetFile;
+    this.htmlFile = htmlFile;
 
     /** @type {!Array<UploadableFile>} */
     this.screenshotImageFiles = [];
@@ -166,5 +163,5 @@ class TestCase {
 module.exports = {
   Storage,
   UploadableFile,
-  TestCase,
+  UploadableTestCase,
 };
