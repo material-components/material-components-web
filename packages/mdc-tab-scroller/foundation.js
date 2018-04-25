@@ -17,10 +17,7 @@
 
 import MDCFoundation from '@material/base/foundation';
 import MDCTabScrollerAdapter from './adapter';
-import {
-  cssClasses,
-  strings,
-} from './constants';
+import {cssClasses, strings} from './constants';
 
 const INTERACTION_EVENTS = ['wheel', 'touchstart', 'pointerdown', 'mousedown', 'keydown'];
 
@@ -94,13 +91,6 @@ class MDCTabScrollerFoundation extends MDCFoundation {
     return scrollLeft - currentTranslateX;
   }
 
-  computeCurrentScrollPositionRTL_() {
-    // TODO(prodee): Finish calculating the current scroll position in RTL
-    const scrollDirection = this.computeScrollDirection_();
-    const currentTranslateX = this.calculateCurrentTranslateX_();
-    const scrollLeft = this.adapter_.getScrollLeft();
-  }
-
   /**
    * Handles interaction events that occur during transition
    */
@@ -134,8 +124,6 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * @param {number} scrollXIncrement The value by which to increment the scroll position
    */
   incrementScroll(scrollXIncrement) {
-    // const currentScrollX = this.computeCurrentScrollPosition();
-    // const safeScrollX = this.calculateSafeScrollValue_(currentScrollX + scrollXIncrement);
     this.scrollTo_(scrollXIncrement, true);
   }
 
@@ -144,8 +132,6 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * @param {number} scrollX
    */
   scrollTo(scrollX) {
-    // const currentScrollX = this.computeCurrentScrollPosition();
-    // const safeScrollX = this.calculateSafeScrollValue_(scrollX);
     this.scrollTo_(scrollX, false);
   }
 
@@ -185,65 +171,25 @@ class MDCTabScrollerFoundation extends MDCFoundation {
   }
 
   /**
-   * Calcualte the safe scroll value in RTL
-   * @param {number} scrollX The new scrollX value
-   * @param {string} scrollDirection The scroll direction determined by the browser
    * @return {number}
    * @private
    */
-  calculateSafeScrollValueRTL_(scrollX, maxScrollX, scrollDirection) {
+  computeCurrentScrollPositionRTL_() {
+    const scrollDirection = this.computeRTLScrollDirection_();
+    const currentScrollLeft = this.adapter_.getScrollLeft();
+    const currentTranslateX = this.calculateCurrentTranslateX_();
+    const maxScrollX = this.calculateMaxScrollValue_();
+
     if (scrollDirection === MDCTabScrollerFoundation.strings.RTL_DEFAULT) {
-      const newScrollX = maxScrollX - scrollX;
-      if (newScrollX < 0) {
-        return 0;
-      }
-      return Math.min(newScrollX, maxScrollX);
+      // Chrome takes translateX into account when calculating scrollLeft position in RTL
+      return currentScrollLeft - maxScrollX;
     }
 
     if (scrollDirection === MDCTabScrollerFoundation.strings.RTL_REVERSE) {
-      const newScrollX = -scrollX;
-      if (newScrollX > 0) {
-        return 0;
-      }
-      return Math.max(newScrollX, -maxScrollX);
+      return -currentScrollLeft + currentTranslateX;
     }
 
-    if (scrollX > 0) {
-      return 0;
-    }
-    return Math.max(-maxScrollX, -scrollX);
-  }
-
-  /**
-   * Calculate the safe incremental scroll value in RTL
-   * @param {number} scrollX The scrollX increment
-   * @param {number} currentScrollX The current scroll position
-   * @param {string} scrollDirection The scroll direction determined by the browser
-   * @return {number}
-   * @private
-   */
-  calculateSafeIncrementScrollValueRTL_(scrollX, currentScrollX, maxScrollX, scrollDirection) {
-    if (scrollDirection === MDCTabScrollerFoundation.strings.RTL_DEFAULT) {
-      const newScrollValue = currentScrollX - scrollX;
-      if (newScrollValue < 0) {
-        return 0;
-      }
-      return Math.min(newScrollValue, maxScrollX);
-    }
-
-    if (scrollDirection === MDCTabScrollerFoundation.strings.RTL_REVERSE) {
-      const newScrollValue = currentScrollX + currentScrollX;
-      if (newScrollValue < 0) {
-        return 0;
-      }
-      return Math.min(newScrollValue, maxScrollX);
-    }
-
-    const newScrollValue = currentScrollX - scrollX;
-    if (newScrollValue > 0) {
-      return 0;
-    }
-    return Math.max(newScrollValue, -maxScrollX);
+    return currentScrollLeft - currentTranslateX;
   }
 
   /**
@@ -270,14 +216,6 @@ class MDCTabScrollerFoundation extends MDCFoundation {
   }
 
   /**
-   * @return {boolean}
-   * @private
-   */
-  isRTL_() {
-    return this.adapter_.getContentStyleValue('direction') === 'rtl';
-  }
-
-  /**
    * Registers interaction events
    * @private
    */
@@ -297,20 +235,18 @@ class MDCTabScrollerFoundation extends MDCFoundation {
   scrollTo_(scrollX, shouldIncrement) {
     // Early exit
     if (this.isRTL_()) {
-      this.scrollToRTL_(scrollX, shouldIncrement);
-      return;
+      return this.scrollToRTL_(scrollX, shouldIncrement);
     }
 
     const currentScrollX = this.computeCurrentScrollPosition();
-    const safeScrollX = this.calculateSafeScrollValue_(scrollX + (shouldIncrement ? currentScrollX : 0));
+    const targetScrollX = scrollX + (shouldIncrement ? currentScrollX : 0);
+    const safeScrollX = this.calculateSafeScrollValue_(targetScrollX);
     const scrollDelta = safeScrollX - currentScrollX;
     // Early exit if the scroll values are the same
     if (scrollDelta === 0) {
       return;
     }
 
-    this.deregisterInteractionHandlers_();
-    this.stopScrollAnimation_();
     this.animate_(safeScrollX, scrollDelta);
   }
 
@@ -321,14 +257,110 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * @private
    */
   scrollToRTL_(scrollX, shouldIncrement) {
-    const currentScrollX = this.computeCurrentScrollPosition();
-    const scrollDirection = this.computeScrollDirection_();
-    const maxScrollX = this.calculateMaxScrollValue_();
-    const safeScrollX = shouldIncrement
-      ? this.calculateSafeIncrementScrollValueRTL_(scrollX, currentScrollX, maxScrollX, scrollDirection)
-      : this.calculateSafeScrollValueRTL_(scrollX, maxScrollX, scrollDirection);
+    const scrollDirection = this.computeRTLScrollDirection_();
+    if (scrollDirection === MDCTabScrollerFoundation.strings.RTL_DEFAULT) {
+      return this.scrollToRTLDefault_(scrollX, shouldIncrement);
+    }
 
-    this.animate_(safeScrollX, -(currentScrollX - safeScrollX));
+    if (scrollDirection === MDCTabScrollerFoundation.strings.RTL_NEGATIVE) {
+      return this.scrollToRTLNegative_(scrollX, shouldIncrement);
+    }
+
+    if (scrollDirection === MDCTabScrollerFoundation.strings.RTL_REVERSE) {
+      return this.scrollToRTLReverse_(scrollX, shouldIncrement);
+    }
+  }
+
+  /**
+   * Calculates scrolling for RTL browsers with default behavior (Chrome)
+   * @param {number} scrollX The target scrollX
+   * @param {boolean} shouldIncrement Whether the scrollX should be applied as an increment
+   * @private
+   */
+  scrollToRTLDefault_(scrollX, shouldIncrement) {
+    const maxScrollLeft = this.calculateMaxScrollValue_();
+    const currentScrollLeft = this.adapter_.getScrollLeft();
+    // Calculates the safe scrollLeft value
+    const calculateSafeScrollLeft = () => {
+      const targetScrollLeft = shouldIncrement
+        ? currentScrollLeft + scrollX
+        : maxScrollLeft + scrollX;
+
+      if (targetScrollLeft > maxScrollLeft) {
+        return maxScrollLeft;
+      }
+
+      return Math.max(0, targetScrollLeft);
+    };
+
+    const targetScrollLeft = calculateSafeScrollLeft();
+    if (targetScrollLeft === currentScrollLeft) {
+      // Early exit
+      return;
+    }
+
+    this.animate_(targetScrollLeft, targetScrollLeft - currentScrollLeft);
+  }
+
+  /**
+   * Calculates scrolling for RTL browsers with negative behavior (Safari, Firefox)
+   * @param {number} scrollX
+   * @param {boolean} shouldIncrement
+   * @private
+   */
+  scrollToRTLNegative_(scrollX, shouldIncrement) {
+    const maxScrollLeft = -this.calculateMaxScrollValue_();
+    const currentScrollLeft = this.computeCurrentScrollPosition();
+    // Calculates the safe scrollLeft value
+    const calculateSafeScrollLeft = () => {
+      const targetScrollLeft = shouldIncrement
+        ? currentScrollLeft + scrollX
+        : scrollX;
+
+      if (targetScrollLeft < maxScrollLeft) {
+        return maxScrollLeft;
+      }
+
+      return Math.min(0, targetScrollLeft);
+    };
+
+    const targetScrollLeft = calculateSafeScrollLeft();
+    if (targetScrollLeft === currentScrollLeft) {
+      // Early exit
+      return;
+    }
+
+    this.animate_(targetScrollLeft, targetScrollLeft - currentScrollLeft);
+  }
+
+  /**
+   * Calculates scrolling for RTL browsers with reverse behavior (IE11, Edge)
+   * @param {number} scrollX
+   * @param {boolean} shouldIncrement
+   */
+  scrollToRTLReverse_(scrollX, shouldIncrement) {
+    const maxScrollLeft = this.calculateMaxScrollValue_();
+    const currentScrollLeft = this.adapter_.getScrollLeft();
+    // Calculates the safe scrollLeft value
+    const calculateSafeScrollLeft = () => {
+      const targetScrollLeft = shouldIncrement
+        ? currentScrollLeft - scrollX
+        : -scrollX;
+
+      if (targetScrollLeft > maxScrollLeft) {
+        return maxScrollLeft;
+      }
+
+      return Math.max(0, targetScrollLeft);
+    };
+
+    const targetScrollLeft = calculateSafeScrollLeft();
+    if (targetScrollLeft === currentScrollLeft) {
+      // Early exit
+      return;
+    }
+
+    this.animate_(targetScrollLeft, currentScrollLeft - targetScrollLeft);
   }
 
   /**
@@ -338,6 +370,8 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * @private
    */
   animate_(scrollX, translateX) {
+    this.deregisterInteractionHandlers_();
+    this.stopScrollAnimation_();
     // This animation uses the FLIP approach.
     // Read more here: https://aerotwist.com/blog/flip-your-animations/
     this.adapter_.setScrollLeft(scrollX);
@@ -378,7 +412,7 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * @return {string}
    * @private
    */
-  computeScrollDirection_() {
+  computeRTLScrollDirection_() {
     if (this.rtlScrollType_) {
       return this.rtlScrollType_;
     }
@@ -386,18 +420,20 @@ class MDCTabScrollerFoundation extends MDCFoundation {
     const initialScrollLeft = this.adapter_.getScrollLeft();
     this.adapter_.setScrollLeft(initialScrollLeft - 1);
     const newScrollLeft = this.adapter_.getScrollLeft();
-    this.adapter_.setScrollLeft(initialScrollLeft);
 
-    // Firefox/Opera/Webkit
     if (newScrollLeft < 0) {
+      // Firefox/Opera/Webkit
       this.rtlScrollType_ = MDCTabScrollerFoundation.strings.RTL_NEGATIVE;
-      // Early exit
+      // Undo the scrollLeft test check
+      this.adapter_.setScrollLeft(initialScrollLeft);
       return this.rtlScrollType_;
     }
 
     const rootClientRect = this.adapter_.computeClientRect();
     const contentClientRect = this.adapter_.computeContentClientRect();
     const rightEdgeDelta = Math.round(contentClientRect.right - rootClientRect.right);
+    // Undo the scrollLeft test check
+    this.adapter_.setScrollLeft(initialScrollLeft);
 
     if (rightEdgeDelta === newScrollLeft) {
       // IE/Edge
@@ -408,6 +444,14 @@ class MDCTabScrollerFoundation extends MDCFoundation {
     }
 
     return this.rtlScrollType_;
+  }
+
+  /**
+   * @return {boolean}
+   * @private
+   */
+  isRTL_() {
+    return this.adapter_.getContentStyleValue('direction') === 'rtl';
   }
 }
 

@@ -135,6 +135,26 @@ test('#adapter.getOffsetWidth returns the root element offsetWidth', () => {
   document.body.removeChild(root);
 });
 
+test('#adapter.computeClientRect returns the root element bounding client rect', () => {
+  const {component, root} = setupTest();
+  document.body.appendChild(root);
+  assert.deepEqual(
+    component.getDefaultFoundation().adapter_.computeClientRect(),
+    root.getBoundingClientRect()
+  );
+  document.body.removeChild(root);
+});
+
+test('#adapter.computeContentClientRect returns the root element bounding client rect', () => {
+  const {component, root, content} = setupTest();
+  document.body.appendChild(root);
+  assert.deepEqual(
+    component.getDefaultFoundation().adapter_.computeContentClientRect(),
+    content.getBoundingClientRect()
+  );
+  document.body.removeChild(root);
+});
+
 function setupMockFoundationTest(root = getFixture()) {
   const MockFoundationConstructor = td.constructor(MDCTabScrollerFoundation);
   const mockFoundation = new MockFoundationConstructor();

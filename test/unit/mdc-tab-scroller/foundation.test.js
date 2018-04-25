@@ -39,6 +39,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'setContentStyleProperty', 'getContentStyleValue',
     'setScrollLeft', 'getScrollLeft',
     'getContentOffsetWidth', 'getOffsetWidth',
+    'computeClientRect', 'computeContentClientRect',
   ]);
 });
 
@@ -524,13 +525,13 @@ function setupInteractionDuringScrollTest({translateX=66.123}={}) {
   return {foundation, mockAdapter, raf, handlers};
 }
 
-test('on wheel after scrollTo call, deregister the scroll handler', () => {
+test('on wheel after scrollTo call, deregister the wheel handler', () => {
   const {foundation, mockAdapter, raf, handlers} = setupInteractionDuringScrollTest();
   foundation.scrollTo(101);
   raf.flush();
   raf.flush();
   raf.restore();
-  handlers.scroll();
+  handlers.wheel();
   td.verify(mockAdapter.deregisterEventHandler('wheel', td.matchers.isA(Function)));
 });
 
