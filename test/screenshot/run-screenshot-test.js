@@ -187,7 +187,7 @@ async function run() {
   }
 
   function logTestCases() {
-    console.log('\nDONE!\n');
+    console.log('\n\nDONE!\n\n');
 
     testCases.forEach((testCase) => {
       /** @type {!UploadableFile} */
