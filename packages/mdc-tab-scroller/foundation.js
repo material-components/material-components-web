@@ -180,16 +180,16 @@ class MDCTabScrollerFoundation extends MDCFoundation {
     const currentTranslateX = this.calculateCurrentTranslateX_();
     const maxScrollX = this.calculateMaxScrollValue_();
 
-    if (scrollDirection === MDCTabScrollerFoundation.strings.RTL_DEFAULT) {
-      // Chrome takes translateX into account when calculating scrollLeft position in RTL
-      return currentScrollLeft - maxScrollX;
+    if (scrollDirection === MDCTabScrollerFoundation.strings.RTL_NEGATIVE) {
+      return currentScrollLeft - currentTranslateX;
     }
 
     if (scrollDirection === MDCTabScrollerFoundation.strings.RTL_REVERSE) {
       return -currentScrollLeft + currentTranslateX;
     }
 
-    return currentScrollLeft - currentTranslateX;
+    // Chrome takes translateX into account when calculating scrollLeft position in RTL
+    return currentScrollLeft - maxScrollX;
   }
 
   /**
