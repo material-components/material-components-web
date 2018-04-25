@@ -23,8 +23,7 @@ const request = require('request-promise-native');
 const util = require('util');
 
 const Screenshot = require('./lib/screenshot');
-const Storage = require('./lib/storage');
-const {TestCase, UploadableFile} = require('./lib/status');
+const {Storage, UploadableFile, TestCase} = require('./lib/storage');
 
 const SCREENSHOT_TEST_DIR_RELATIVE_PATH = 'test/screenshot/';
 const SCREENSHOT_TEST_DIR_ABSOLUTE_PATH = path.resolve(SCREENSHOT_TEST_DIR_RELATIVE_PATH);
@@ -104,7 +103,7 @@ async function runScreenshotTests() {
    * @param {!TestCase} testCase
    * @return {!Promise<!Array<!UploadableFile>>}
    */
-  function capturePage(testCase) {
+  async function capturePage(testCase) {
     /** @type {!UploadableFile} */
     const assetFile = testCase.assetFile;
 
@@ -184,7 +183,7 @@ async function runScreenshotTests() {
   }
 
   function logTestCases() {
-    console.log('');
+    console.log('\nDONE!\n');
 
     testCases.forEach((testCase) => {
       /** @type {!UploadableFile} */

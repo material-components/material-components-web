@@ -24,6 +24,9 @@ const GCLOUD_STORAGE_BUCKET_NAME = 'mdc-web-screenshot-tests';
 const GCLOUD_STORAGE_BASE_URL = `https://storage.googleapis.com/${GCLOUD_STORAGE_BUCKET_NAME}/`;
 const USERNAME = process.env.USER || process.env.USERNAME;
 
+/**
+ * A wrapper around the Google Cloud Storage API.
+ */
 class Storage {
   constructor() {
     const cloudStorage = new CloudStorage({
@@ -104,6 +107,7 @@ class Storage {
     return Promise.reject(err);
   }
 
+  /** @private */
   getUtcDateTime_() {
     const pad = (num) => String(num).padStart(2, '0');
     const date = new Date();
@@ -120,4 +124,47 @@ class Storage {
   }
 }
 
-module.exports = Storage;
+/**
+ * A file to be uploaded to Cloud Storage.
+ */
+class UploadableFile {
+  constructor({
+    destinationParentDirectory,
+    destinationRelativeFilePath,
+    fileContent,
+  }) {
+    /** @type {string} */
+    this.destinationParentDirectory = destinationParentDirectory;
+
+    /** @type {string} */
+    this.destinationRelativeFilePath = destinationRelativeFilePath;
+
+    /** @type {string} */
+    this.destinationAbsoluteFilePath = this.destinationParentDirectory + this.destinationRelativeFilePath;
+
+    /** @type {!Buffer} */
+    this.fileContent = fileContent;
+
+    /** @type {?string} */
+    this.publicUrl = null;
+  }
+}
+
+/**
+ * An HTML file with screenshots.
+ */
+class TestCase {
+  constructor({assetFile}) {
+    /** @type {!UploadableFile} */
+    this.assetFile = assetFile;
+
+    /** @type {!Array<UploadableFile>} */
+    this.screenshotImageFiles = [];
+  }
+}
+
+module.exports = {
+  Storage,
+  UploadableFile,
+  TestCase,
+};
