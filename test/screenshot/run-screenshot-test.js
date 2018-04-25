@@ -30,10 +30,9 @@ const SCREENSHOT_TEST_DIR_ABSOLUTE_PATH = path.resolve(SCREENSHOT_TEST_DIR_RELAT
 
 const readFileAsync = util.promisify(fs.readFile);
 
-runScreenshotTests();
+run();
 
-async function runScreenshotTests() {
-  const testCases = [];
+async function run() {
   const storage = new Storage();
 
   /**
@@ -41,6 +40,11 @@ async function runScreenshotTests() {
    * @type {string}
    */
   const baseUploadDir = await storage.generateUniqueUploadDir();
+
+  /**
+   * @type {!Array<!TestCase>}
+   */
+  const testCases = [];
 
   return uploadAllAssets();
 
