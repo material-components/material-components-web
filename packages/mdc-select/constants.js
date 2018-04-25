@@ -17,8 +17,7 @@ const cssClasses = {
   BOX: 'mdc-select--box',
   DISABLED: 'mdc-select--disabled',
   ROOT: 'mdc-select',
-  OUTLINED: 'mdc-text-field--outlined',
-  DENSE: 'mdc-text-field--dense',
+  OUTLINED: 'mdc-select--outlined',
 };
 
 const strings = {

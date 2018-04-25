@@ -125,8 +125,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
     }
 
     if (openNotch) {
-      const isDense = this.adapter_.hasClass(cssClasses.DENSE);
-      const labelScale = isDense ? numbers.DENSE_LABEL_SCALE : numbers.LABEL_SCALE;
+      const labelScale = numbers.LABEL_SCALE;
       const labelWidth = this.adapter_.getLabelWidth() * labelScale;
       const isRtl = this.adapter_.isRtl();
       this.adapter_.notchOutline(labelWidth, isRtl);

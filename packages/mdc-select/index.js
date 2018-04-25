@@ -18,10 +18,10 @@ import {MDCComponent} from '@material/base/index';
 import {MDCFloatingLabel} from '@material/floating-label/index';
 import {MDCLineRipple} from '@material/line-ripple/index';
 import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
+import {MDCNotchedOutline} from '@material/notched-outline/index';
 
 import MDCSelectFoundation from './foundation';
 import {cssClasses, strings} from './constants';
-import {MDCNotchedOutline} from '../mdc-notched-outline';
 
 export {MDCSelectFoundation};
 
@@ -150,8 +150,16 @@ export class MDCSelect extends MDCComponent {
    */
   getOutlineAdapterMethods_() {
     return {
-      notchOutline: (labelWidth, isRtl) => this.outline_.notch(labelWidth, isRtl),
-      closeOutline: () => this.outline_.closeNotch(),
+      notchOutline: (labelWidth, isRtl) => {
+        if (this.outline_) {
+          this.outline_.notch(labelWidth, isRtl);
+        }
+      },
+      closeOutline: () => {
+        if (this.outline_) {
+          this.outline_.closeNotch();
+        }
+      },
       hasOutline: () => !!this.outline_,
     };
   }
@@ -165,9 +173,17 @@ export class MDCSelect extends MDCComponent {
    */
   getLabelAdapterMethods_() {
     return {
-      floatLabel: (shouldFloat) => this.label_.float(shouldFloat),
+      floatLabel: (shouldFloat) => {
+        if (this.label_) {
+          this.label_.float(shouldFloat);
+        }
+      },
       hasLabel: () => !!this.label_,
-      getLabelWidth: () => this.label_.getWidth(),
+      getLabelWidth: () => {
+        if (this.label_) {
+          this.label_.getWidth();
+        }
+      },
     };
   }
 }

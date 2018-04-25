@@ -161,6 +161,7 @@
       // outline html structure has .mdc-notched-outline
       // and .mdc-notched-outline__idle as siblings, while
       // .mdc-notched-outline__path is a child of .mdc-notched-outline
+      // stylelint-disable-next-line selector-max-specificity
       .mdc-notched-outline {
         @include mdc-notched-outline-color($color);
       }
