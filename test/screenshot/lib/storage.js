@@ -57,6 +57,7 @@ class Storage {
 
     // Note: The GCS API mutates this object, so we need to create a new object every time we call the API.
     const fileOptions = {
+      // Automatically set the file's HTTP `Content-Type` response header to the correct value.
       contentType: 'auto',
 
       // The nested `metadata` object is not a typo - it's required by the GCS `File#save()` API.
@@ -70,8 +71,8 @@ class Storage {
 
     console.log(`➡ Uploading ${uploadableFile.destinationAbsoluteFilePath} ...`);
 
-    const file = this.storageBucket_.file(uploadableFile.destinationAbsoluteFilePath);
-    return file
+    const cloudFile = this.storageBucket_.file(uploadableFile.destinationAbsoluteFilePath);
+    return cloudFile
       .save(uploadableFile.fileContent, fileOptions)
       .then(
         () => this.handleUploadSuccess_(uploadableFile),
