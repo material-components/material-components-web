@@ -34,6 +34,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
     return {
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
+      hasClass: (/* className: string */) => false,
       floatLabel: (/* value: boolean */) => {},
       activateBottomLine: () => {},
       deactivateBottomLine: () => {},
@@ -44,6 +45,12 @@ export default class MDCSelectFoundation extends MDCFoundation {
       setDisabled: (/* disabled: boolean */) => {},
       getValue: () => /* string */ '',
       setValue: (/* value: string */) => {},
+      isRtl: () => false,
+      hasLabel: () => {},
+      getLabelWidth: () => {},
+      hasOutline: () => {},
+      notchOutline: () => {},
+      closeOutline: () => {},
     };
   }
 

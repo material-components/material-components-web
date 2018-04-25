@@ -35,10 +35,11 @@ test('exports strings', () => {
 
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSelectFoundation, [
-    'addClass', 'removeClass', 'floatLabel', 'activateBottomLine',
-    'deactivateBottomLine', 'setDisabled',
-    'registerInteractionHandler', 'deregisterInteractionHandler',
-    'getValue', 'setValue', 'getSelectedIndex', 'setSelectedIndex',
+    'addClass', 'removeClass', 'hasClass', 'floatLabel', 'activateBottomLine',
+    'deactivateBottomLine', 'setDisabled', 'registerInteractionHandler',
+    'deregisterInteractionHandler', 'getValue', 'setValue', 'getSelectedIndex',
+    'setSelectedIndex', 'isRtl', 'hasLabel', 'getLabelWidth', 'hasOutline',
+    'notchOutline', 'closeOutline',
   ]);
 });
 
