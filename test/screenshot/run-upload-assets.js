@@ -98,8 +98,9 @@ async function run() {
   }
 
   /**
-   * @param {*} err
-   * @return {!Promise<*>}
+   * @param {T} err
+   * @return {!Promise<T>}
+   * @template T
    */
   function handleOneAssetUploadFailure(err) {
     return Promise.reject(err);

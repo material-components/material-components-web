@@ -48,9 +48,6 @@ async function run() {
 
   return uploadAllAssets();
 
-  /**
-   * @return {!Promise<!Array<!TestCase>>}
-   */
   async function uploadAllAssets() {
     /**
      * Relative paths of all asset files (HTML, CSS, JS) that will be uploaded.
@@ -60,10 +57,7 @@ async function run() {
 
     return Promise.all(assetFileRelativePaths.map(uploadOneAsset))
       .then(
-        () => {
-          logTestCases();
-          return testCases;
-        },
+        () => logTestCases(),
         (err) => Promise.reject(err)
       );
   }
@@ -78,29 +72,39 @@ async function run() {
       destinationRelativeFilePath: assetFileRelativePath,
       fileContent: await readFileAsync(`${SCREENSHOT_TEST_DIR_ABSOLUTE_PATH}/${assetFileRelativePath}`),
     });
-    const isHtmlFile = assetFile.destinationRelativeFilePath.endsWith('.html');
-    const uploadPromise = storage.uploadFile(assetFile);
 
+    return storage.uploadFile(assetFile)
+      .then(
+        () => handleUploadOneAssetSuccess(assetFile),
+        (err) => handleUploadOneAssetFailure(err)
+      )
+      .then(
+        () => assetFile,
+        (err) => handleUploadOneAssetFailure(err)
+      );
+  }
+
+  /**
+   * @param {!UploadableFile} assetFile
+   * @return {!Promise<!Array<!UploadableFile>>}
+   */
+  async function handleUploadOneAssetSuccess(assetFile) {
+    const isHtmlFile = assetFile.destinationRelativeFilePath.endsWith('.html');
     if (isHtmlFile) {
       const testCase = new TestCase({assetFile});
       testCases.push(testCase);
-
-      return uploadPromise
-        .then(
-          () => capturePage(testCase),
-          (err) => Promise.reject(err)
-        )
-        .then(
-          () => assetFile,
-          (err) => Promise.reject(err)
-        );
+      return capturePage(testCase);
     }
+    return Promise.resolve([]);
+  }
 
-    return uploadPromise
-      .then(
-        () => assetFile,
-        (err) => Promise.reject(err)
-      );
+  /**
+   * @param {T} err
+   * @return {!Promise<T>}
+   * @template T
+   */
+  async function handleUploadOneAssetFailure(err) {
+    return Promise.reject(err);
   }
 
   /**
@@ -134,8 +138,9 @@ async function run() {
 
   /**
    * @param {!TestCase} testCase
-   * @param {*} err
-   * @return {!Promise<*>}
+   * @param {T} err
+   * @return {!Promise<T>}
+   * @template T
    */
   function handleCapturePageFailure(testCase, err) {
     console.error('\n\n\nERROR capturing screenshot with CrossBrowserTesting:\n\n');
@@ -155,12 +160,11 @@ async function run() {
     const os = sanitize(cbtResult.os.api_name);
     const browser = sanitize(cbtResult.browser.api_name);
     const imageName = `${os}_${browser}_ltr.png`;
-    const imageData = await downloadImage(cbtResult.images.chromeless);
 
-    const assetFile = testCase.assetFile;
+    const imageData = await downloadImage(cbtResult.images.chromeless);
     const imageFile = new UploadableFile({
       destinationParentDirectory: `${baseUploadDir}screenshots/`,
-      destinationRelativeFilePath: `${assetFile.destinationRelativeFilePath}/${imageName}`,
+      destinationRelativeFilePath: `${testCase.assetFile.destinationRelativeFilePath}/${imageName}`,
       fileContent: imageData,
     });
 
