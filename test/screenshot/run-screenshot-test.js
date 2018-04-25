@@ -24,7 +24,7 @@ const util = require('util');
 
 const Screenshot = require('./lib/screenshot');
 const Storage = require('./lib/storage');
-const {TestCase, TestSuite, UploadableFile} = require('./lib/status');
+const {TestCase, UploadableFile} = require('./lib/status');
 
 const SCREENSHOT_TEST_DIR_RELATIVE_PATH = 'test/screenshot/';
 const SCREENSHOT_TEST_DIR_ABSOLUTE_PATH = path.resolve(SCREENSHOT_TEST_DIR_RELATIVE_PATH);
@@ -34,7 +34,7 @@ const readFileAsync = util.promisify(fs.readFile);
 runScreenshotTests();
 
 async function runScreenshotTests() {
-  const testSuite = new TestSuite();
+  const testCases = [];
   const storage = new Storage();
 
   /**
@@ -43,23 +43,23 @@ async function runScreenshotTests() {
    */
   const baseUploadDir = await storage.generateUniqueUploadDir();
 
-  /**
-   * Relative paths of all asset files (HTML, CSS, JS) that will be uploaded.
-   * @type {!Array<string>}
-   */
-  const assetFileRelativePaths = glob.sync('**/*', {cwd: SCREENSHOT_TEST_DIR_ABSOLUTE_PATH, nodir: true});
-
   return uploadAllAssets();
 
   /**
-   * @return {!Promise<!TestSuite>}
+   * @return {!Promise<!Array<!TestCase>>}
    */
   async function uploadAllAssets() {
+    /**
+     * Relative paths of all asset files (HTML, CSS, JS) that will be uploaded.
+     * @type {!Array<string>}
+     */
+    const assetFileRelativePaths = glob.sync('**/*', {cwd: SCREENSHOT_TEST_DIR_ABSOLUTE_PATH, nodir: true});
+
     return Promise.all(assetFileRelativePaths.map(uploadOneAsset))
       .then(
         () => {
-          logCapturedScreenshots();
-          return testSuite;
+          logTestCases();
+          return testCases;
         },
         (err) => Promise.reject(err)
       );
@@ -67,7 +67,7 @@ async function runScreenshotTests() {
 
   /**
    * @param {string} assetFileRelativePath
-   * @return {!Promise<!TestCase>}
+   * @return {!Promise<!UploadableFile>}
    */
   async function uploadOneAsset(assetFileRelativePath) {
     const assetFile = new UploadableFile({
@@ -75,18 +75,27 @@ async function runScreenshotTests() {
       destinationRelativeFilePath: assetFileRelativePath,
       fileContent: await readFileAsync(`${SCREENSHOT_TEST_DIR_ABSOLUTE_PATH}/${assetFileRelativePath}`),
     });
+    const isHtmlFile = assetFile.destinationRelativeFilePath.endsWith('.html');
+    const uploadPromise = storage.uploadFile(assetFile);
 
-    const testCase = new TestCase({assetFile});
-    testSuite.addTestCase(testCase);
+    if (isHtmlFile) {
+      const testCase = new TestCase({assetFile});
+      testCases.push(testCase);
 
-    return storage
-      .uploadFile(assetFile)
+      return uploadPromise
+        .then(
+          () => capturePage(testCase),
+          (err) => Promise.reject(err)
+        )
+        .then(
+          () => assetFile,
+          (err) => Promise.reject(err)
+        );
+    }
+
+    return uploadPromise
       .then(
-        () => capturePage(testCase),
-        (err) => Promise.reject(err)
-      )
-      .then(
-        () => testCase,
+        () => assetFile,
         (err) => Promise.reject(err)
       );
   }
@@ -96,10 +105,6 @@ async function runScreenshotTests() {
    * @return {!Promise<!Array<!UploadableFile>>}
    */
   function capturePage(testCase) {
-    if (!testCase.assetFile.destinationRelativeFilePath.endsWith('.html')) {
-      return Promise.resolve([]);
-    }
-
     /** @type {!UploadableFile} */
     const assetFile = testCase.assetFile;
 
@@ -178,10 +183,10 @@ async function runScreenshotTests() {
       );
   }
 
-  function logCapturedScreenshots() {
+  function logTestCases() {
     console.log('');
 
-    testSuite.getTestCases().forEach((testCase) => {
+    testCases.forEach((testCase) => {
       /** @type {!UploadableFile} */
       const assetFile = testCase.assetFile;
 
