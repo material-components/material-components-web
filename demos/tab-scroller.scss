@@ -11,11 +11,12 @@
   width: 43px;
   height: 43px;
   margin: 10px;
-  background: $material-color-grey-400;
 }
 
-.demo-cube--alt {
-  background: $material-color-grey-700;
+@for $i from 1 through 34 {
+  .demo-cube:nth-child(#{$i}) {
+    background-color: rgb(10 + random(230), 10 + random(230), 10 + random(230));
+  }
 }
 
 .demo-controller {

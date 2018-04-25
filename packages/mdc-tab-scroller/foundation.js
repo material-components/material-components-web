@@ -310,7 +310,7 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    */
   scrollToRTLNegative_(scrollX, shouldIncrement) {
     const maxScrollLeft = -this.calculateMaxScrollValue_();
-    const currentScrollLeft = this.computeCurrentScrollPosition();
+    const currentScrollLeft = this.computeCurrentScrollPositionRTL_();
     // Calculates the safe scrollLeft value
     const calculateSafeScrollLeft = () => {
       const targetScrollLeft = shouldIncrement

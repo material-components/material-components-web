@@ -27,6 +27,10 @@
   }
 }
 
+.mdc-tab-scroller--animating {
+  -webkit-overflow-scrolling: auto;
+}
+
 .mdc-tab-scroller__content {
   display: flex;
   flex: 1 0 auto;
