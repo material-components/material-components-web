@@ -44,17 +44,15 @@ class Storage {
   }
 
   /**
-   * @param {string} uploadDir Base GCS directory (e.g., from `generateUniqueUploadDir()`)
-   * @param {string} relativeGcsFilePath File path relative to the base GCS `uploadDir`
-   * @param {string|!Buffer} fileContents
-   * @return {!Promise<{parentDir, relativePath, fullUrl, errors}>}
+   * @param {!UploadableFile} uploadableFile
+   * @return {!Promise<!UploadableFile>}
    */
-  async uploadFile({uploadDir, relativeGcsFilePath, fileContents}) {
+  async uploadFile(uploadableFile) {
     // Attaching Git metadata to the uploaded files makes it easier to track down their source.
     const gitCommitShort = await this.mdcGitRepo_.getShortCommitHash();
     const gitBranchName = await this.mdcGitRepo_.getBranchName();
 
-    const absoluteGcsFilePath = `${uploadDir}${relativeGcsFilePath}`;
+    const absoluteGcsFilePath = uploadableFile.destinationAbsoluteFilePath;
 
     console.log(`➡ Uploading ${absoluteGcsFilePath} ...`);
 
@@ -74,11 +72,36 @@ class Storage {
     };
 
     return file
-      .save(fileContents, fileOptions)
+      .save(uploadableFile.fileContent, fileOptions)
       .then(
-        () => this.handleUploadSuccess_(uploadDir, relativeGcsFilePath),
-        (err) => this.handleUploadFailure_(uploadDir, relativeGcsFilePath, err)
+        () => this.handleUploadSuccess_(uploadableFile),
+        (err) => this.handleUploadFailure_(uploadableFile, err)
       );
+  }
+
+  /**
+   * @param {!UploadableFile} uploadableFile
+   * @return {!Promise<!UploadableFile>}
+   * @private
+   */
+  handleUploadSuccess_(uploadableFile) {
+    const publicUrl = `${GCLOUD_STORAGE_BASE_URL}${uploadableFile.destinationAbsoluteFilePath}`;
+    console.log(`✔︎ Uploaded ${publicUrl}`);
+    uploadableFile.publicUrl = publicUrl;
+    return Promise.resolve(uploadableFile);
+  }
+
+  /**
+   * @param {!UploadableFile} uploadableFile
+   * @param {*} err
+   * @return {!Promise<*>}
+   * @private
+   */
+  handleUploadFailure_(uploadableFile, err) {
+    const publicUrl = `${GCLOUD_STORAGE_BASE_URL}${uploadableFile.destinationAbsoluteFilePath}`;
+    console.error(`✗︎ FAILED to upload ${publicUrl}:`);
+    console.error(err);
+    return Promise.reject(err);
   }
 
   getUtcDateTime_() {
@@ -93,26 +116,6 @@ class Storage {
       minute: pad(date.getUTCMinutes()),
       second: pad(date.getUTCSeconds()),
       ms: pad(date.getUTCMilliseconds()),
-    };
-  }
-
-  handleUploadSuccess_(uploadDir, relativeGcsFilePath) {
-    console.log(`✔︎ Uploaded ${GCLOUD_STORAGE_BASE_URL}${uploadDir}${relativeGcsFilePath}`);
-    return {
-      parentDir: uploadDir,
-      relativePath: relativeGcsFilePath,
-      fullUrl: `${GCLOUD_STORAGE_BASE_URL}${uploadDir}${relativeGcsFilePath}`,
-      errors: [],
-    };
-  }
-
-  handleUploadFailure_(uploadDir, relativeGcsFilePath, err) {
-    console.error(`✗︎ FAILED to upload ${GCLOUD_STORAGE_BASE_URL}${uploadDir}${relativeGcsFilePath}:\n`, err);
-    return {
-      parentDir: uploadDir,
-      relativePath: relativeGcsFilePath,
-      fullUrl: `${GCLOUD_STORAGE_BASE_URL}${uploadDir}${relativeGcsFilePath}`,
-      errors: [err],
     };
   }
 }

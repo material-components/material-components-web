@@ -24,6 +24,7 @@ const util = require('util');
 
 const Screenshot = require('./lib/screenshot');
 const Storage = require('./lib/storage');
+const {TestCase, TestSuite, UploadableFile} = require('./lib/status');
 
 const SCREENSHOT_TEST_DIR_RELATIVE_PATH = 'test/screenshot/';
 const SCREENSHOT_TEST_DIR_ABSOLUTE_PATH = path.resolve(SCREENSHOT_TEST_DIR_RELATIVE_PATH);
@@ -33,6 +34,7 @@ const readFileAsync = util.promisify(fs.readFile);
 runScreenshotTests();
 
 async function runScreenshotTests() {
+  const testSuite = new TestSuite();
   const storage = new Storage();
 
   /**
@@ -42,86 +44,104 @@ async function runScreenshotTests() {
   const baseUploadDir = await storage.generateUniqueUploadDir();
 
   /**
-   * Relative paths of all files to be uploaded as assets (HTML, CSS, JS).
+   * Relative paths of all asset files (HTML, CSS, JS) that will be uploaded.
    * @type {!Array<string>}
    */
   const assetFileRelativePaths = glob.sync('**/*', {cwd: SCREENSHOT_TEST_DIR_ABSOLUTE_PATH, nodir: true});
 
-  /**
-   * Map of `assetFileRelativePath` to `Object`.
-   * @type {!Map<string, {file, screenshots}>}
-   */
-  const screenshotMap = new Map();
-
   return uploadAllAssets();
 
+  /**
+   * @return {!Promise<!TestSuite>}
+   */
   async function uploadAllAssets() {
-    const uploadPromises = assetFileRelativePaths.map(uploadOneAsset);
-    const allDonePromise = Promise.all(uploadPromises);
-    allDonePromise.then(logCapturedScreenshots);
-    return allDonePromise;
-  }
-
-  async function uploadOneAsset(assetFileRelativePath) {
-    screenshotMap.set(assetFileRelativePath, {file: null, screenshots: []});
-    return storage
-      .uploadFile({
-        uploadDir: `${baseUploadDir}assets/`,
-        relativeGcsFilePath: assetFileRelativePath,
-        fileContents: await readFileAsync(`${SCREENSHOT_TEST_DIR_ABSOLUTE_PATH}/${assetFileRelativePath}`),
-      })
+    return Promise.all(assetFileRelativePaths.map(uploadOneAsset))
       .then(
-        handleUploadOneAssetSuccess,
-        handleUploadOneAssetFailure
+        () => {
+          logCapturedScreenshots();
+          return testSuite;
+        },
+        (err) => Promise.reject(err)
       );
   }
 
-  function handleUploadOneAssetSuccess(assetFile) {
-    screenshotMap.set(assetFile.relativePath, {file: assetFile, screenshots: []});
-    if (assetFile.relativePath.endsWith('.html')) {
-      return capturePage(assetFile);
-    }
-    return Promise.resolve(assetFile);
+  /**
+   * @param {string} assetFileRelativePath
+   * @return {!Promise<!TestCase>}
+   */
+  async function uploadOneAsset(assetFileRelativePath) {
+    const assetFile = new UploadableFile({
+      destinationParentDirectory: `${baseUploadDir}assets/`,
+      destinationRelativeFilePath: assetFileRelativePath,
+      fileContent: await readFileAsync(`${SCREENSHOT_TEST_DIR_ABSOLUTE_PATH}/${assetFileRelativePath}`),
+    });
+
+    const testCase = new TestCase({assetFile});
+    testSuite.addTestCase(testCase);
+
+    return storage
+      .uploadFile(assetFile)
+      .then(
+        () => capturePage(testCase),
+        (err) => Promise.reject(err)
+      )
+      .then(
+        () => testCase,
+        (err) => Promise.reject(err)
+      );
   }
 
-  function handleUploadOneAssetFailure(err) {
+  /**
+   * @param {!TestCase} testCase
+   * @return {!Promise<!Array<!UploadableFile>>}
+   */
+  function capturePage(testCase) {
+    if (!testCase.assetFile.destinationRelativeFilePath.endsWith('.html')) {
+      return Promise.resolve([]);
+    }
+
+    /** @type {!UploadableFile} */
+    const assetFile = testCase.assetFile;
+
+    return Screenshot
+      .captureOneUrl(assetFile.publicUrl)
+      .then(
+        (cbtInfo) => handleCapturePageSuccess(testCase, cbtInfo),
+        (err) => handleCapturePageFailure(testCase, err)
+      );
+  }
+
+  /**
+   * @param {!TestCase} testCase
+   * @param {!Object} cbtScreenshotInfo
+   * @return {!Promise<!Array<!UploadableFile>>}
+   */
+  async function handleCapturePageSuccess(testCase, cbtScreenshotInfo) {
+    // We don't use CBT's screenshot versioning features, so there should only ever be one version.
+    // Each "result" is an individual browser screenshot for a single URL.
+    return Promise.all(cbtScreenshotInfo.versions[0].results.map((cbtResult) => {
+      return uploadScreenshotImage(testCase, cbtResult);
+    }));
+  }
+
+  /**
+   * @param {!TestCase} testCase
+   * @param {*} err
+   * @return {!Promise<*>}
+   */
+  function handleCapturePageFailure(testCase, err) {
+    console.error('\n\n\nERROR capturing screenshot with CrossBrowserTesting:\n\n');
+    console.error(`  - ${testCase.assetFile.publicUrl}`);
+    console.error(err);
     return Promise.reject(err);
   }
 
-  function capturePage(assetFile) {
-    return Screenshot
-      .captureOneUrl(assetFile.fullUrl)
-      .then(
-        (screenshotInfo) => handleCapturePageSuccess(assetFile, screenshotInfo),
-        (err) => handleCapturePageFailure(assetFile, err)
-      );
-  }
-
-  async function handleCapturePageSuccess(assetFile, screenshotInfo) {
-    const screenshots = [];
-
-    screenshotMap.set(assetFile.relativePath, {file: assetFile, screenshots: screenshots});
-
-    // We don't use CBT's screenshot versioning features, so there should only ever be one version.
-    // Each "result" is an individual browser screenshot for a single URL.
-    const imageUploadPromises = screenshotInfo.versions[0].results.map((cbtResult) => {
-      return uploadScreenshotImage(assetFile, cbtResult);
-    });
-
-    imageUploadPromises.forEach((imageUploadPromise) => {
-      imageUploadPromise.then((imageFile) => screenshots.push(imageFile));
-    });
-
-    return Promise.all(imageUploadPromises);
-  }
-
-  function handleCapturePageFailure(assetFile, err) {
-    console.error('\n\n\nERROR capturing screenshot with CrossBrowserTesting:\n\n');
-    console.error(`  - ${assetFile.fullUrl}`);
-    console.error(err);
-  }
-
-  async function uploadScreenshotImage(assetFile, cbtResult) {
+  /**
+   * @param {!TestCase} testCase
+   * @param {!Object} cbtResult
+   * @return {!Promise<!UploadableFile>}
+   */
+  async function uploadScreenshotImage(testCase, cbtResult) {
     const sanitize = (apiName) => apiName.toLowerCase().replace(/\W+/g, '');
 
     const os = sanitize(cbtResult.os.api_name);
@@ -129,14 +149,22 @@ async function runScreenshotTests() {
     const imageName = `${os}_${browser}_ltr.png`;
     const imageData = await downloadImage(cbtResult.images.chromeless);
 
-    return storage
-      .uploadFile({
-        uploadDir: `${baseUploadDir}screenshots/`,
-        relativeGcsFilePath: `${assetFile.relativePath}/${imageName}`,
-        fileContents: imageData,
-      });
+    const assetFile = testCase.assetFile;
+    const imageFile = new UploadableFile({
+      destinationParentDirectory: `${baseUploadDir}screenshots/`,
+      destinationRelativeFilePath: `${assetFile.destinationRelativeFilePath}/${imageName}`,
+      fileContent: imageData,
+    });
+
+    testCase.screenshotImageFiles.push(imageFile);
+
+    return storage.uploadFile(imageFile);
   }
 
+  /**
+   * @param {string} uri
+   * @return {!Promise<!Buffer>}
+   */
   async function downloadImage(uri) {
     // For binary data, set `encoding: null` to return the response body as a `Buffer` instead of a `string`.
     // https://github.com/request/request#requestoptions-callback
@@ -152,11 +180,15 @@ async function runScreenshotTests() {
 
   function logCapturedScreenshots() {
     console.log('');
-    screenshotMap.forEach((assetFileData, relativeAssetFilePath) => {
-      if (relativeAssetFilePath.endsWith('.html')) {
-        console.log(`${assetFileData.file.fullUrl}:`);
-        assetFileData.screenshots.forEach((imageFile) => {
-          console.log(`  - ${imageFile.fullUrl}`);
+
+    testSuite.getTestCases().forEach((testCase) => {
+      /** @type {!UploadableFile} */
+      const assetFile = testCase.assetFile;
+
+      if (assetFile.destinationRelativeFilePath.endsWith('.html')) {
+        console.log(`${assetFile.publicUrl}:`);
+        testCase.screenshotImageFiles.forEach((screenshotImageFile) => {
+          console.log(`  - ${screenshotImageFile.publicUrl}`);
         });
         console.log('');
       }
