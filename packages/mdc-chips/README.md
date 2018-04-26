@@ -88,9 +88,13 @@ You can optionally add a leading icon (i.e. thumbnail) and/or a trailing icon to
 </div>
 ```
 
+### Choice Chips
+
+Choice chips are a variant of chips which allow single selection from a set of options. To define a set of chips as choice chips, add the class `mdc-chip-set--choice` to the chip set element.
+
 ### Filter Chips
 
-Filter chips are a variant of chips which allow multiple selection from a set of options. When a filter chip is selected, a checkmark appears as the leading icon. If the chip already has a leading icon, the checkmark replaces it. This requires the HTML structure of a filter chip to differ from other chips:
+Filter chips are a variant of chips which allow multiple selection from a set of options. To define a set of chips as filter chips, add the class `mdc-chip-set--filter` to the chip set element. When a filter chip is selected, a checkmark appears as the leading icon. If the chip already has a leading icon, the checkmark replaces it. This requires the HTML structure of a filter chip to differ from other chips:
 
 ```html
 <div class="mdc-chip">
@@ -119,9 +123,13 @@ To use a leading icon in a filter chip, put the `mdc-chip__icon--leading` elemen
 </div>
 ```
 
+### Input Chips
+
+Input chips are a variant of chips which enable user input by converting text into chips. To define a set of chips as input chips, add the class `mdc-chip-set--input` to the chip set element. You'd also want to add an event listener that calls `addChip` on the `MDCChipSet` to convert text to a chip. More information can be found in the "`MDCChip` Properties and Methods" section below.
+
 ### Pre-selected
 
-To display a pre-selected chip, add the class `mdc-chip--selected` to the root chip element.
+To display a pre-selected filter or choice chip, add the class `mdc-chip--selected` to the root chip element.
 
 ```html
 <div class="mdc-chip mdc-chip--selected">
