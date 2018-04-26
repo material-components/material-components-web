@@ -165,10 +165,17 @@ Mixin | Description
 
 ## `MDCTopAppBar` Properties and Methods
 
-### `MDCTopAppBarComponent`
+MDCTopAppBar does not contain any properties or methods aside from those inherited from MDCComponent.
 
-Method Signature | Description
---- | ---
+### Events
+
+Event Name | Event Data Structure | Description
+--- | --- | ---
+`MDCTopAppBar:nav` | None | Emits when the navigation icon is clicked.
+
+## Usage within Web Frameworks
+
+If you are using a JavaScript framework, such as React or Angular, you can create a Top App Bar for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
 ### `MDCTopAppBarAdapter`
 
@@ -185,12 +192,6 @@ Method Signature | Description
 `getViewportScrollY() => number` | Gets the number of pixels that the content of body is scrolled from the top of the page.
 `getTotalActionItems() => number` | Gets the number of action items in the top app bar.
 
-### Events
+### Foundations: `MDCTopAppBarBaseFoundation`, `MDCTopAppBarFoundation`, `MDCFixedTopAppBarFoundation` and `MDCShortTopAppBarFoundation`
 
-Event Name | Event Data Structure | Description
---- | --- | ---
-`MDCTopAppBar:nav` | None | Emits when the navigation icon is clicked.
-
-## Usage within Web Frameworks
-
-If you are using a JavaScript framework, such as React or Angular, you can create a Top App Bar for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
+The foundations do not contain any public properties or methods aside from those inherited from MDCFoundation. 
