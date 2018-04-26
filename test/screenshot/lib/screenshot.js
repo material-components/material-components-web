@@ -76,7 +76,10 @@ async function captureOneUrl(testPageUrl) {
             requestQueue.dequeue(testPageUrl);
             return infoResponseBody;
           },
-          (err) => Promise.reject(err)
+          (err) => {
+            requestQueue.dequeue(testPageUrl);
+            return Promise.reject(err);
+          }
         );
     });
 }
