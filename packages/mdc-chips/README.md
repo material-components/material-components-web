@@ -81,7 +81,7 @@ You can optionally add a leading icon (i.e. thumbnail) and/or a trailing "remove
 
 #### Trailing icon
 
-A trailing icon comes with the functionality to remove the chip from the set. If you're adding a trailing icon, also set `tabindex="0"` and `role="button"` to make it accessible by keyboard and screenreader. Trailing icons should only be added to [input chips](###input-chips).
+A trailing icon comes with the functionality to remove the chip from the set. If you're adding a trailing icon, also set `tabindex="0"` and `role="button"` to make it accessible by keyboard and screenreader. Trailing icons should only be added to [input chips](#input-chips).
 
 ```html
 <div class="mdc-chip">
