@@ -63,8 +63,6 @@ We recommend you load [Material Icons](https://material.io/icons/) from Google F
 
 ```scss
 @import "@material/fab/mdc-fab";
-
-// Include necessary mixin invocations here
 ```
 
 ## Style Customization
@@ -136,7 +134,9 @@ In browsers that fully support CSS variables, the above mixins will hook up styl
 However, due to Edge's buggy CSS variable support, `mdc-fab-container-color` will not honor CSS variables in Edge.
 This means you will need to override FAB container styles manually for Edge if you are altering the affected CSS variables for theme properties (FAB uses secondary by default for the container fill color).
 
-### Adding MDC Ripple
+### Additional Information
+
+#### Adding MDC Ripple
 
 To add the ripple effect to an MDC FAB, attach a [ripple](../mdc-ripple) instance to the
 `mdc-fab` element.
@@ -156,7 +156,3 @@ You can also do this declaratively when using the [material-components-web](../m
 ```
 
 MDC FAB is fully aware of MDC Ripple styles, so no DOM or CSS changes are required.
-
-## Usage within Web Frameworks
-
-If you are using a JavaScript framework, such as React or Angular, you can create a Select for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../integrating-into-frameworks.md).
