@@ -150,7 +150,7 @@ Fixed top app bars stay at the top of the page and elevate above the content whe
 The prominent top app bar is taller. 
 
 ```html
-<header class="mdc-top-app-bar mdc-top-app-bar--fixed">
+<header class="mdc-top-app-bar mdc-top-app-bar--prominent">
   <div class="mdc-top-app-bar__row">
     <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
       <a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
