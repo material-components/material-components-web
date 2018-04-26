@@ -105,7 +105,10 @@ class Storage {
     return Promise.reject(err);
   }
 
-  /** @private */
+  /**
+   * @return {{year: number, month: number, day: number, hour: number, minute: number, second: number, ms: number}}
+   * @private
+   */
   getUtcDateTime_() {
     const pad = (num) => String(num).padStart(2, '0');
     const date = new Date();
