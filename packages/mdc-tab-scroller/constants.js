@@ -24,9 +24,6 @@ const cssClasses = {
 /** @enum {string} */
 const strings = {
   CONTENT_SELECTOR: '.mdc-tab-scroller__content',
-  RTL_DEFAULT: 'default',
-  RTL_NEGATIVE: 'negative',
-  RTL_REVERSE: 'reverse',
 };
 
 export {

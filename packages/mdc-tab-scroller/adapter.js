@@ -17,6 +17,12 @@
 
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
+/** @typedef {{scrollX: number, translateX: number}} */
+let MDCTabScrollerAnimation;
+
+/** @typedef {{left: number, right: number}} */
+let MDCTabScrollerEdges;
+
 /**
  * Adapter for MDC Tab Scroller.
  *
@@ -104,4 +110,4 @@ class MDCTabScrollerAdapter {
   computeContentClientRect() {}
 }
 
-export default MDCTabScrollerAdapter;
+export {MDCTabScrollerAnimation, MDCTabScrollerEdges, MDCTabScrollerAdapter};

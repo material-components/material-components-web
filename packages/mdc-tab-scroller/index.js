@@ -17,7 +17,7 @@
 
 import MDCComponent from '@material/base/component';
 
-import MDCTabScrollerAdapter from './adapter';
+import {MDCTabScrollerAdapter} from './adapter';
 import MDCTabScrollerFoundation from './foundation';
 
 /**
