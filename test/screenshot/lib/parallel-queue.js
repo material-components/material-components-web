@@ -80,7 +80,6 @@ class ParallelQueue {
       if (this.allEntries_.has(uniqueId)) {
         throw new Error(`Key '${uniqueId}' already exists in the queue`);
       }
-
       const entry = {
         state: State.QUEUED,
         run: () => {
