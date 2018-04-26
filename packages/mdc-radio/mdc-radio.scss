@@ -89,6 +89,8 @@
     height: 100%;
     transform: scale(0, 0);
     transition: mdc-radio-exit(transform), mdc-radio-exit(background-color);
+    border-width: 10px;
+    border-style: solid;
     border-radius: 50%;
   }
 
@@ -153,7 +155,7 @@
     }
 
     .mdc-radio__inner-circle {
-      background-color: $mdc-radio-circle-color;
+      border-color: $mdc-radio-circle-color;
     }
   }
 }
