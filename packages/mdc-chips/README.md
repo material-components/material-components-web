@@ -200,7 +200,7 @@ Mixin | Description
 
 ## `MDCChip` and `MDCChipSet` Properties and Methods
 
-The MDC Chips module is comprised of two JavaScript classes:
+The MDC Chips package is composed of two JavaScript classes:
 * `MDCChip` defines the behavior of a single chip.
 * `MDCChipSet` defines the behavior of chips within a specific set. For example, chips in an input chip set behave differently from those in a filter chip set.
 
