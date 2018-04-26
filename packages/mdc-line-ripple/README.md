@@ -18,7 +18,7 @@ The line ripple is used to highlight user-specified text above it. When a line r
   </li>
 </ul>
 
-## Usage
+## Basic Usage
 
 ### HTML Structure
 
@@ -36,6 +36,8 @@ The line ripple is used to highlight user-specified text above it. When a line r
 </div>
 ```
 
+## Style Customization
+
 ### CSS Classes
 
 CSS Class | Description
@@ -50,13 +52,19 @@ Mixin | Description
 --- | ---
 `mdc-line-ripple-color($color)` | Customizes the color of the line ripple when active.
 
-### `MDCLineRipple`
+### `MDCLineRipple` Properties and Methods
+
+### Methods
 
 Method Signature | Description
 --- | ---
 `activate() => void` | Proxies to the foundation's `activate()` method.
 `deactivate() => void` | Proxies to the foundation's `deactivate()` method.
 `setRippleCenter(xCoordinate: number) => void` | Proxies to the foundation's `setRippleCenter(xCoordinate: number)` method.
+
+## Usage Within Frameworks
+
+If you are using a JavaScript framework, such as React or Angular, you can create a `MDCTextField` for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
 ### `MDCLineRippleAdapter`
 

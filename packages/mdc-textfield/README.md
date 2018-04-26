@@ -34,7 +34,7 @@ Text fields allow users to input, edit, and select text.
 npm install @material/textfield
 ```
 
-## Usage
+## Basic Usage
 
 ### HTML Structure
 
@@ -45,6 +45,18 @@ npm install @material/textfield
   <div class="mdc-line-ripple"></div>
 </div>
 ```
+
+#### Helper Text
+
+The helper text provides supplemental information and/or validation messages to users. It appears on input field focus
+and disappears on input field blur by default, or it can be persistent.
+See [here](helper-text/) for more information on using helper text.
+
+#### Leading and Trailing Icons
+
+Leading and trailing icons can be added within the box or outlined variants of MDC Text Field as visual indicators as
+well as interaction targets. See [here](icon/) for more information on using icons.
+
 
 #### Input Types
 
@@ -84,6 +96,25 @@ Un-styled Content (**FOUC**).
 </div>
 ```
 
+
+### Styles
+
+```scss
+@import "@material/textfield/mdc-text-field";
+```
+
+### JavaScript Instantiation
+
+```js
+import {MDCTextField} from '@material/textfield';
+
+const textField = new MDCTextField(document.querySelector('.mdc-text-field'));
+```
+
+> See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
+
+## Variants
+
 #### Full Width
 
 Full width text fields are useful for in-depth tasks or entering complex information.
@@ -111,18 +142,6 @@ included as part of the DOM structure of a full width text field.
 </div>
 ```
 
-#### Disabled
-
-Add the `disabled` attribute to `<input>` if the `mdc-text-field` is disabled. You also need to add `mdc-text-field--disabled` to the `mdc-text-field`.
-
-```html
-<div class="mdc-text-field mdc-text-field--disabled">
-  <input type="text" id="disabled-text-field" class="mdc-text-field__input" disabled>
-  <label class="mdc-floating-label" for="disabled-text-field">Disabled text field</label>
-  <div class="mdc-line-ripple"></div>
-</div>
-```
-
 #### Outlined
 
 ```html
@@ -142,16 +161,21 @@ See [here](../mdc-notched-outline/) for more information on using the outline su
 
 > _NOTE_: Do not use `mdc-line-ripple` inside of `mdc-text-field` _if you plan on using `mdc-text-field--outlined`_. Bottom line should not be included as part of the DOM structure of an outlined text field.
 
-#### Helper Text
+### States
 
-The helper text provides supplemental information and/or validation messages to users. It appears on input field focus
-and disappears on input field blur by default, or it can be persistent.
-See [here](helper-text/) for more information on using helper text.
+#### Disabled
 
-#### Leading and Trailing Icons
+Add the `disabled` attribute to `<input>` if the `mdc-text-field` is disabled. You also need to add `mdc-text-field--disabled` to the `mdc-text-field`.
 
-Leading and trailing icons can be added within the box or outlined variants of MDC Text Field as visual indicators as
-well as interaction targets. See [here](icon/) for more information on using icons.
+```html
+<div class="mdc-text-field mdc-text-field--disabled">
+  <input type="text" id="disabled-text-field" class="mdc-text-field__input" disabled>
+  <label class="mdc-floating-label" for="disabled-text-field">Disabled text field</label>
+  <div class="mdc-line-ripple"></div>
+</div>
+```
+
+## Style Customization
 
 ### CSS Classes
 
@@ -218,9 +242,9 @@ Mixin | Description
 `mdc-text-field-label-color($color)` | Customizes the text color of the label.
 `mdc-text-field-line-ripple-color($color)` | Customizes the color of the default line ripple of the text field.
 
-### `MDCTextField`
+## `MDCTextField` Properties and Methods
 
-See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
+### Properties
 
 Property | Value Type | Description
 --- | --- | ---
@@ -228,30 +252,37 @@ Property | Value Type | Description
 `disabled` | Boolean | Proxies to the foundation's `isDisabled`/`setDisabled` methods.
 `valid` | Boolean | Proxies to the foundation's `isValid`/`setValid` methods.
 `required` | Boolean | Proxies to the foundation's `isRequired`/`setRequired` methods.
-`helperTextContent` | String | Proxies to the foundation's `setHelperTextContent` method when set
-`ripple` | `MDCRipple` | The `MDCRipple` instance for the root element that `MDCTextField` initializes; this only applies to Text Field Box, and is `null` for other variants
+`helperTextContent` | String | Proxies to the foundation's `setHelperTextContent` method when set.
+`ripple` | `MDCRipple` | The `MDCRipple` instance for the root element that `MDCTextField` initializes; this only applies to Text Field Box, and is `null` for other variants.
+
+### Methods
 
 Method Signature | Description
 --- | ---
-`layout() => void` | Adjusts the dimensions and positions for all sub-elements
+`layout() => void` | Adjusts the dimensions and positions for all sub-elements.
+
+## Usage Within Frameworks
+
+If you are using a JavaScript framework, such as React or Angular, you can create a `MDCTextField` for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
+
 
 ### `MDCTextFieldAdapter`
 
 Method Signature | Description
 --- | ---
-`addClass(className: string) => void` | Adds a class to the root element
-`removeClass(className: string) => void` | Removes a class from the root element
-`hasClass(className: string) => boolean` | Returns true if the root element contains the given class name
-`registerTextFieldInteractionHandler(evtType: string, handler: EventListener)` => void | Registers an event handler on the root element for a given event
-`deregisterTextFieldInteractionHandler(evtType: string, handler: EventListener)` => void | Deregisters an event handler on the root element for a given event
-`registerInputInteractionHandler(evtType: string, handler: EventListener)` => void | Registers an event listener on the native input element for a given event
-`deregisterInputInteractionHandler(evtType: string, handler: EventListener)` => void | Deregisters an event listener on the native input element for a given event
-`getNativeInput() => {value: string, disabled: boolean, badInput: boolean, checkValidity: () => boolean}?` | Returns an object representing the native text input element, with a similar API shape
-`isFocused() => boolean` | Returns whether the input is focused
-`isRtl() => boolean` | Returns whether the direction of the root element is set to RTL
-`hasOutline() => boolean` | Returns whether there is an outline element
-`notchOutline(labelWidth: number, isRtl: boolean) => void` | Updates the outline path to open the notch and update the notch width for the label element
-`closeOutline() => void` | Closes the notch in the outline element
+`addClass(className: string) => void` | Adds a class to the root element.
+`removeClass(className: string) => void` | Removes a class from the root element.
+`hasClass(className: string) => boolean` | Returns true if the root element contains the given class name.
+`registerTextFieldInteractionHandler(evtType: string, handler: EventListener)` => void | Registers an event handler on the root element for a given event.
+`deregisterTextFieldInteractionHandler(evtType: string, handler: EventListener)` => void | Deregisters an event handler on the root element for a given event.
+`registerInputInteractionHandler(evtType: string, handler: EventListener)` => void | Registers an event listener on the native input element for a given event.
+`deregisterInputInteractionHandler(evtType: string, handler: EventListener)` => void | Deregisters an event listener on the native input element for a given event.
+`getNativeInput() => {value: string, disabled: boolean, badInput: boolean, checkValidity: () => boolean}?` | Returns an object representing the native text input element, with a similar API shape.
+`isFocused() => boolean` | Returns whether the input is focused.
+`isRtl() => boolean` | Returns whether the direction of the root element is set to RTL.
+`hasOutline() => boolean` | Returns whether there is an outline element.
+`notchOutline(labelWidth: number, isRtl: boolean) => void` | Updates the outline path to open the notch and update the notch width for the label element.
+`closeOutline() => void` | Closes the notch in the outline element.
 
 #### `MDCTextFieldAdapter.getNativeInput()`
 
@@ -269,11 +300,11 @@ Method Signature | Description
 `setValue(value: string)` | Sets the input's value.
 `isValid() => boolean` | If a custom validity is set, returns that value. Otherwise, returns the result of native validity checks.
 `setValid(isValid: boolean)` | Sets custom validity. Once set, native validity checking is ignored.
-`isDisabled() => boolean` | Returns whether or not the input is disabled
-`setDisabled(disabled: boolean) => void` | Updates the input's disabled state
+`isDisabled() => boolean` | Returns whether or not the input is disabled.
+`setDisabled(disabled: boolean) => void` | Updates the input's disabled state.
 `isRequired() => boolean` | Returns whether the input is required.
 `setRequired(isRequired: boolean)` | Sets whether the input is required.
-`handleTextFieldInteraction(evt: Event) => void` | Handles click and keydown events originating from inside the Text Field component
+`handleTextFieldInteraction(evt: Event) => void` | Handles click and keydown events originating from inside the Text Field component.
 `activateFocus() => void` | Activates the focus state of the Text Field. Normally called in response to the input focus event.
 `deactivateFocus() => void` | Deactivates the focus state of the Text Field. Normally called in response to the input blur event.
 `setHelperTextContent(content: string) => void` | Sets the content of the helper text.

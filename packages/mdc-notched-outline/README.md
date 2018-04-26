@@ -19,7 +19,7 @@ The outline is a border around all sides of either a text field or select compon
   </li>
 </ul>
 
-## Usage
+## Basic Usage
 
 ### HTML Structure
 
@@ -32,7 +32,25 @@ The outline is a border around all sides of either a text field or select compon
 <div class="mdc-notched-outline__idle"></div>
 ```
 
-> For usage within a text field see [here](../mdc-textfield/README.md#outlined/).
+> For usage within a text field see [here](../mdc-textfield/README.md#outlined).
+
+### Styles
+
+```scss
+@import "@material/notched-outline/mdc-notched-outline";
+```
+
+### JavaScript Instantiation
+
+```js
+import {MDCNotchedOutline} from '@material/notched-outline';
+
+const notchedOutline = new MDCNotchedOutline(document.querySelector('.mdc-notched-outline'));
+```
+
+> See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
+
+## Style Customization
 
 ### CSS Classes
 
@@ -80,12 +98,18 @@ Mixin | Description
 > }
 > ```
 
-### `MDCNotchedOutline`
+## `MDCNotchedOutline` Properties and Methods
+
+### Methods
 
 Method Signature | Description
 --- | ---
 `notch(notchWidth: number, isRtl: boolean) => void` | Updates outline to open notch in outline path.
 `closeNotch() => void` | Updates the outline to close notch in outline path.
+
+## Usage Within Frameworks
+
+If you are using a JavaScript framework, such as React or Angular, you can create a `MDCNotchedOutline` for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
 ### `MDCNotchedOutlineAdapter`
 

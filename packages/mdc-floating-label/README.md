@@ -18,7 +18,7 @@ Floating labels display the type of input a field requires. Every text field and
   </li>
 </ul>
 
-## Usage
+## Basic Usage
 
 ### HTML Structure
 
@@ -36,7 +36,22 @@ Floating labels display the type of input a field requires. Every text field and
 </div>
 ```
 
-<!-- TODO(mattgoo): add ### Usage within `mdc-select` once select uses mdc-floating-label -->
+### Usage within `mdc-select`
+
+```html
+<div class="mdc-select">
+  <select class="mdc-select__native-control" id="my-select">
+    <option value="vegetables" selected>
+      Vegetables
+    </option>
+    <option value="fruit">
+      Fruit
+    </option>
+  </select>
+  <label class="mdc-floating-label mdc-floating-label--float-above" for="my-select">Pick a Food Group</label>
+  <div class="mdc-line-ripple"></div>
+</div>
+```
 
 #### Avoid Dynamic ID Generation
 
@@ -51,6 +66,8 @@ a unique `id` to each `<input>` by wrapping `mdc-text-field__input` within a `<l
 </label>
 ```
 
+## Style Customization
+
 ### CSS Classes
 
 CSS Class | Description
@@ -59,7 +76,7 @@ CSS Class | Description
 `mdc-floating-label--float-above` | Indicates the label is floating above the text field.
 `mdc-floating-label--shake` | Shakes the label.
 
-### SCSS Mixins
+### Scss Mixins
 
 Mixin | Description
 --- | ---
@@ -69,13 +86,17 @@ Mixin | Description
 `mdc-floating-label-shake-animation($modifier)` | Applies shake keyframe animation to label.
 `mdc-floating-label-float-position($positionY, $positionX, $scale)` | Sets position of label when floating.
 
-### `MDCFloatingLabel`
+## `MDCFloatingLabel` Properties and Methods
 
 Method Signature | Description
 --- | ---
 `shake(shouldShake: boolean) => void` | Shakes or stops shaking the label, depending on the value of `shouldShake`. Proxies to the foundation method of the same name.
 `float(shouldFloat: boolean) => void` | Floats or docks the label, depending on the value of `shouldFloat`. Proxies to the foundation method of the same name.
 `getWidth() => number` | Returns the width of the label element.
+
+## Usage Within Frameworks
+
+If you are using a JavaScript framework, such as React or Angular, you can create a `MDCTextField` for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../../docs/integrating-into-frameworks.md).
 
 ### `MDCFloatingLabelAdapter`
 
