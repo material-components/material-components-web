@@ -35,7 +35,7 @@ A floating action button represents the primary action in an application.
 npm install @material/fab
 ```
 
-## Usage
+## Basic Usage
 
 ### Load Material Icons
 
@@ -58,6 +58,12 @@ We recommend you load [Material Icons](https://material.io/icons/) from Google F
 ```
 
 > _NOTE:_ The floating action button icon can be used with a `span`, `i`, `img`, or `svg` element.
+
+## Style Customization
+
+```scss
+@import "@material/fab/mdc-fab";
+```
 
 ### CSS Classes
 
@@ -100,6 +106,32 @@ Developers must position MDC FAB as needed within their application's design.
 </button>
 ```
 
+### Sass Mixins
+
+Mixin | Description
+--- | ---
+`mdc-fab-accessible($container-color)` | Changes the FAB's container color to the given color, and updates the FAB's ink and ripple color to meet accessibility standards.
+
+By default an MDC FAB will inherit its color from the theme. The `mdc-fab-accessible` mixin will override the color of the MDC FAB's container, but maintain accessibility standards for the ink and ripple. The mixin is intended for customizing an MDC FAB's color to a non-theme color.
+
+#### Advanced Sass Mixins
+
+> **A note about advanced mixins**, The following mixins are intended for advanced users. These mixins will override the color of the container, ink, or ripple. You can use all of them if you want to completely customize a FAB. Or you can use only one of them, e.g. if you only need to override the ripple color. **It is up to you to pick container, ink, and ripple colors that work together, and meet accessibility standards.**
+
+Mixin | Description
+--- | ---
+`mdc-fab-container-color($color)` | Sets the container color to the given color
+`mdc-fab-icon-size($width, $height)` | Sets the icon `width`, `height`, and `font-size` properties to the specified `width` and `height`. `$height` is optional and will default to `$width` if omitted. The `font-size` will be set to the provided `$width` value.
+`mdc-fab-ink-color($color)` | Sets the ink color to the given color
+
+The ripple effect for the FAB component is styled using [MDC Ripple](../mdc-ripple) mixins.
+
+#### Caveat: Edge and CSS Variables
+
+In browsers that fully support CSS variables, the above mixins will hook up styles using CSS variables if a theme property is passed.
+However, due to Edge's buggy CSS variable support, `mdc-fab-container-color` will not honor CSS variables in Edge.
+This means you will need to override FAB container styles manually for Edge if you are altering the affected CSS variables for theme properties (FAB uses secondary by default for the container fill color).
+
 ### Adding MDC Ripple
 
 To add the ripple effect to an MDC FAB, attach a [ripple](../mdc-ripple) instance to the
@@ -121,29 +153,6 @@ You can also do this declaratively when using the [material-components-web](../m
 
 MDC FAB is fully aware of MDC Ripple styles, so no DOM or CSS changes are required.
 
-### Sass Mixins
+## Usage within Web Frameworks
 
-Mixin | Description
---- | ---
-`mdc-fab-accessible($container-color)` | Changes the FAB's container color to the given color, and updates the FAB's ink and ripple color to meet accessibility standards.
-
-By default an MDC FAB will inherit its color from the theme. The `mdc-fab-accessible` mixin will override the color of the MDC FAB's container, but maintain accessibility standards for the ink and ripple. The mixin is intended for customizing an MDC FAB's color to a non-theme color.
-
-
-#### Advanced Sass Mixins
-
-> **A note about advanced mixins**, The following mixins are intended for advanced users. These mixins will override the color of the container, ink, or ripple. You can use all of them if you want to completely customize a FAB. Or you can use only one of them, e.g. if you only need to override the ripple color. **It is up to you to pick container, ink, and ripple colors that work together, and meet accessibility standards.**
-
-Mixin | Description
---- | ---
-`mdc-fab-container-color($color)` | Sets the container color to the given color
-`mdc-fab-icon-size($width, $height)` | Sets the icon `width`, `height`, and `font-size` properties to the specified `width` and `height`. `$height` is optional and will default to `$width` if omitted. The `font-size` will be set to the provided `$width` value.
-`mdc-fab-ink-color($color)` | Sets the ink color to the given color
-
-The ripple effect for the FAB component is styled using [MDC Ripple](../mdc-ripple) mixins.
-
-#### Caveat: Edge and CSS Variables
-
-In browsers that fully support CSS variables, the above mixins will hook up styles using CSS variables if a theme property is passed.
-However, due to Edge's buggy CSS variable support, `mdc-fab-container-color` will not honor CSS variables in Edge.
-This means you will need to override FAB container styles manually for Edge if you are altering the affected CSS variables for theme properties (FAB uses secondary by default for the container fill color).
+If you are using a JavaScript framework, such as React or Angular, you can create a Select for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../integrating-into-frameworks.md).
