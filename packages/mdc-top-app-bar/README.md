@@ -71,9 +71,9 @@ const topAppBar = new MDCTopAppBar(topAppBarElement);
 
 ## Variants
 
-### Top App Bar With Action Icons
+### Top App Bar With Action Items
 
-Top app bars can contain action which are placed on the side opposite the menu icon. 
+Top app bars can contain action items which are placed on the side opposite the navigation icon. 
 
 ```html
 <header class="mdc-top-app-bar">
@@ -109,7 +109,7 @@ Short top app bars are top app bars that can collapse to the navigation icon sid
 </header>
 ```
 
-> Short top app bars should be used with no more than 1 action icon.
+> Short top app bars should be used with no more than 1 action item.
 
 ### Short - Always Closed
 
@@ -140,7 +140,7 @@ Fixed top app bars stay at the top of the page and elevate above the content whe
       <a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
       <span class="mdc-top-app-bar__title">Title</span>
     </section>
-    <!-- Action Icons --> 
+    ...
   </div>
 </header>
 ```
@@ -156,8 +156,8 @@ The prominent top app bar is taller.
       <a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
       <span class="mdc-top-app-bar__title">Title</span>
     </section>
-    <!-- Action Icons --> 
-  </div>
+      ...
+    </div>
 </header>
 ```
 
@@ -213,4 +213,4 @@ Event Name | Event Data Structure | Description
 
 ## Usage within Web Frameworks
 
-If you are using a JavaScript framework, such as React or Angular, you can create a `MDCTopAppBarComponent` for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../integrating-into-frameworks.md).
+If you are using a JavaScript framework, such as React or Angular, you can create a Top App Bar for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
