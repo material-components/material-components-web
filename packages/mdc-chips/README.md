@@ -177,8 +177,6 @@ CSS Class | Description
 
 ### Sass Mixins
 
-To customize a chip, use the following mixins.
-
 Mixin | Description
 --- | ---
 `mdc-chip-set-spacing($gap-size)` | Customizes the amount of space between each chip in the set
@@ -230,7 +228,7 @@ Property | Value Type | Description
 
 ## Usage within Web Frameworks
 
-If you are using a JavaScript framework, such as React or Angular, you can create a <COMPONENT_NAME> for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../integrating-into-frameworks.md).
+If you are using a JavaScript framework, such as React or Angular, you can create Chips for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../integrating-into-frameworks.md).
 
 ### Adapters: `MDCChipAdapter` and `MDCChipSetAdapter`
 
