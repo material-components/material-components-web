@@ -123,13 +123,14 @@ MDC FAB is fully aware of MDC Ripple styles, so no DOM or CSS changes are requir
 
 ### Sass Mixins
 
-By default an MDC FAB will inherit its color from the theme. This mixin will override the color of the MDC FAB's container, but maintain accessibility standards for the ink and ripple. The mixin is intended for customizing an MDC FAB's color to a non-theme color.
+Mixin | Description
+--- | ---
+`mdc-fab-accessible($container-color)` | Changes the FAB's container color to the given color, and updates the FAB's ink and ripple color to meet accessibility standards.
 
-#### `mdc-fab-accessible($container-color)`
+By default an MDC FAB will inherit its color from the theme. The `mdc-fab-accessible` mixin will override the color of the MDC FAB's container, but maintain accessibility standards for the ink and ripple. The mixin is intended for customizing an MDC FAB's color to a non-theme color.
 
-Changes the FAB's container color to the given color, and updates the FAB's ink and ripple color to meet accessibility standards.
 
-### Advanced Sass Mixins
+#### Advanced Sass Mixins
 
 > **A note about advanced mixins**, The following mixins are intended for advanced users. These mixins will override the color of the container, ink, or ripple. You can use all of them if you want to completely customize a FAB. Or you can use only one of them, e.g. if you only need to override the ripple color. **It is up to you to pick container, ink, and ripple colors that work together, and meet accessibility standards.**
 
