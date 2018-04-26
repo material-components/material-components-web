@@ -18,22 +18,29 @@
 
 const SOURCE_DIR = 'test/screenshot/';
 
-const Runner = require('./lib/runner');
-const runner = new Runner({sourceDir: SOURCE_DIR});
+const Controller = require('./lib/controller');
+const controller = new Controller({sourceDir: SOURCE_DIR});
 
-runner.uploadAllAssets()
-  .then((testCases) => {
-    return runner.captureAllPages(testCases)
-      .then(() => Promise.resolve(testCases), (err) => Promise.reject(err));
-  })
-  .then((testCases) => {
-    console.log('\n\nDONE!\n\n');
+controller.uploadAllAssets()
+  .then(captureAllPages)
+  .then(logResults);
 
-    testCases.forEach((testCase) => {
-      console.log(`${testCase.htmlFile.publicUrl}:`);
-      testCase.screenshotImageFiles.forEach((screenshotImageFile) => {
-        console.log(`  - ${screenshotImageFile.publicUrl}`);
-      });
-      console.log('');
+function captureAllPages(testCases) {
+  return controller.captureAllPages(testCases)
+    .then(
+      () => Promise.resolve(testCases),
+      (err) => Promise.reject(err)
+    );
+}
+
+function logResults(testCases) {
+  console.log('\n\nDONE!\n\n');
+
+  testCases.forEach((testCase) => {
+    console.log(`${testCase.htmlFile.publicUrl}:`);
+    testCase.screenshotImageFiles.forEach((screenshotImageFile) => {
+      console.log(`  - ${screenshotImageFile.publicUrl}`);
     });
+    console.log('');
   });
+}

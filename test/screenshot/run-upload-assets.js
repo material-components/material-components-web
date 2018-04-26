@@ -18,12 +18,14 @@
 
 const SOURCE_DIR = 'test/screenshot/';
 
-const Runner = require('./lib/runner');
-const runner = new Runner({sourceDir: SOURCE_DIR});
+const Controller = require('./lib/controller');
+const controller = new Controller({sourceDir: SOURCE_DIR});
 
-runner.uploadAllAssets()
-  .then((testCases) => {
-    const publicHtmlFileUrls = testCases.map((testCase) => testCase.htmlFile.publicUrl).sort();
-    console.log('\n\nDONE!\n\n');
-    console.log(publicHtmlFileUrls.join('\n'));
-  });
+controller.uploadAllAssets()
+  .then(logResults);
+
+function logResults(testCases) {
+  const publicHtmlFileUrls = testCases.map((testCase) => testCase.htmlFile.publicUrl).sort();
+  console.log('\n\nDONE!\n\n');
+  console.log(publicHtmlFileUrls.join('\n'));
+}

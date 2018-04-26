@@ -33,7 +33,7 @@ const readFileAsync = util.promisify(fs.readFile);
  * 3. [SOON] Write captured screenshot URLs to a golden.json file
  * 4. [SOON] Diff captured screenshots against the existing golden.json file
  */
-class Runner {
+class Controller {
   /**
    * @param {string} sourceDir Relative or absolute path to the local `test/screenshot/` directory.
    */
@@ -56,7 +56,7 @@ class Runner {
    */
   async uploadAllAssets() {
     if (this.testCases.length > 0) {
-      throw new Error('Runner cannot be started more than once');
+      throw new Error('Controller cannot be started more than once');
     }
 
     /**
@@ -240,4 +240,4 @@ class Runner {
   }
 }
 
-module.exports = Runner;
+module.exports = Controller;
