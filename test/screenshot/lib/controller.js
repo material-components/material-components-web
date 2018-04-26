@@ -27,11 +27,11 @@ const {Storage, UploadableFile, UploadableTestCase} = require('./storage');
 const readFileAsync = util.promisify(fs.readFile);
 
 /**
- * High-level screenshot test executor with composable methods to:
+ * High-level screenshot workflow controller that provides composable async methods to:
  * 1. Upload files to GCS
  * 2. Capture screenshots with CBT
- * 3. [SOON] Write captured screenshot URLs to a golden.json file
- * 4. [SOON] Diff captured screenshots against the existing golden.json file
+ * 3. [COMING SOON] Update local golden.json with new screenshot URLs
+ * 4. [COMING SOON] Diff captured screenshots against existing golden.json
  */
 class Controller {
   /**
