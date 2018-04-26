@@ -38,26 +38,36 @@ class Controller {
    * @param {string} sourceDir Relative or absolute path to the local `test/screenshot/` directory.
    */
   constructor({sourceDir}) {
-    /** @type {string} */
+    /**
+     * @type {string}
+     * @private
+     */
     this.sourceDir_ = sourceDir;
 
-    /** @type {!Storage} */
-    this.storage = new Storage();
+    /**
+     * @type {!Storage}
+     * @private
+     */
+    this.storage_ = new Storage();
 
-    /** @type {!Array<!UploadableTestCase>} */
-    this.testCases = [];
-
-    /** @type {?string} */
+    /**
+     * Unique timestamped directory path to prevent collisions between developers.
+     * @type {?string}
+     * @private
+     */
     this.baseUploadDir_ = null;
+  }
+
+  async initialize() {
+    this.baseUploadDir_ = await this.storage_.generateUniqueUploadDir();
   }
 
   /**
    * @return {!Promise<!Array<!UploadableTestCase>>}
    */
   async uploadAllAssets() {
-    if (this.testCases.length > 0) {
-      throw new Error('Controller cannot be started more than once');
-    }
+    /** @type {!Array<!UploadableTestCase>} */
+    const testCases = [];
 
     /**
      * Relative paths of all asset files (HTML, CSS, JS) that will be uploaded.
@@ -65,57 +75,58 @@ class Controller {
      */
     const assetFileRelativePaths = glob.sync('**/*', {cwd: this.sourceDir_, nodir: true});
 
-    return Promise.all(assetFileRelativePaths.map((path) => this.uploadOneAsset(path)))
+    /** @type {!Array<!Promise<!UploadableFile>>} */
+    const uploadPromises = assetFileRelativePaths.map((path) => {
+      return this.uploadOneAsset_(path, testCases);
+    });
+
+    return Promise.all(uploadPromises)
       .then(
-        () => this.logTestCases_(),
-        (err) => Promise.reject(err)
-      )
-      .then(
-        () => this.testCases,
+        () => {
+          this.logUploadAllAssetsSuccess_(testCases);
+          return testCases;
+        },
         (err) => Promise.reject(err)
       );
   }
 
   /**
    * @param {string} assetFileRelativePath
+   * @param {!Array<!UploadableTestCase>} testCases
    * @return {!Promise<!UploadableFile>}
+   * @private
    */
-  async uploadOneAsset(assetFileRelativePath) {
-    const baseUploadDir = await this.getBaseUploadDir_();
+  async uploadOneAsset_(assetFileRelativePath, testCases) {
     const assetFile = new UploadableFile({
-      destinationParentDirectory: `${baseUploadDir}/assets`,
+      destinationParentDirectory: `${this.baseUploadDir_}/assets`,
       destinationRelativeFilePath: assetFileRelativePath,
       fileContent: await readFileAsync(`${this.sourceDir_}/${assetFileRelativePath}`),
     });
 
-    return this.storage.uploadFile(assetFile)
+    return this.storage_.uploadFile(assetFile)
       .then(
-        () => this.handleUploadOneAssetSuccess_(assetFile),
-        (err) => this.handleUploadOneAssetFailure_(err)
-      )
-      .then(
-        () => assetFile,
+        () => this.handleUploadOneAssetSuccess_(assetFile, testCases),
         (err) => this.handleUploadOneAssetFailure_(err)
       );
   }
 
   /**
    * @param {!UploadableFile} assetFile
-   * @return {!Promise<!Array<!UploadableFile>>}
+   * @param {!Array<!UploadableTestCase>} testCases
+   * @return {!Promise<!UploadableFile>}
    * @private
    */
-  async handleUploadOneAssetSuccess_(assetFile) {
+  async handleUploadOneAssetSuccess_(assetFile, testCases) {
     const isHtmlFile = assetFile.destinationRelativeFilePath.endsWith('.html');
     if (isHtmlFile) {
-      const testCase = new UploadableTestCase({htmlFile: assetFile});
-      this.testCases.push(testCase);
+      testCases.push(new UploadableTestCase({htmlFile: assetFile}));
     }
-    return Promise.resolve(assetFile);
+    return assetFile;
   }
 
   /**
-   * @param {T} err
-   * @return {!Promise<T>}
+   * @param {!T} err
+   * @return {!Promise<!T>}
    * @template T
    * @private
    */
@@ -125,17 +136,29 @@ class Controller {
 
   /**
    * @param {!Array<!UploadableTestCase>} testCases
-   * @return {!Promise<!Array<!Array<!UploadableFile>>>}
+   * @return {!Promise<!Array<!UploadableTestCase>>}
    */
   async captureAllPages(testCases) {
-    return Promise.all(testCases.map((testCase) => this.captureOnePage(testCase)));
+    const capturePromises = testCases.map((testCase) => {
+      return this.captureOnePage_(testCase);
+    });
+
+    return Promise.all(capturePromises)
+      .then(
+        () => {
+          this.logCaptureAllPagesSuccess_(testCases);
+          return testCases;
+        },
+        (err) => Promise.reject(err)
+      );
   }
 
   /**
    * @param {!UploadableTestCase} testCase
    * @return {!Promise<!Array<!UploadableFile>>}
+   * @private
    */
-  async captureOnePage(testCase) {
+  async captureOnePage_(testCase) {
     return Screenshot
       .captureOneUrl(testCase.htmlFile.publicUrl)
       .then(
@@ -160,8 +183,8 @@ class Controller {
 
   /**
    * @param {!UploadableTestCase} testCase
-   * @param {T} err
-   * @return {!Promise<T>}
+   * @param {!T} err
+   * @return {!Promise<!T>}
    * @template T
    * @private
    */
@@ -185,17 +208,16 @@ class Controller {
     const browser = sanitize(cbtResult.browser.api_name);
     const imageName = `${os}_${browser}_ltr.png`;
 
-    const baseUploadDir = await this.getBaseUploadDir_();
     const imageData = await this.downloadImage_(cbtResult.images.chromeless);
     const imageFile = new UploadableFile({
-      destinationParentDirectory: `${baseUploadDir}/screenshots`,
+      destinationParentDirectory: `${this.baseUploadDir_}/screenshots`,
       destinationRelativeFilePath: `${testCase.htmlFile.destinationRelativeFilePath}/${imageName}`,
       fileContent: imageData,
     });
 
     testCase.screenshotImageFiles.push(imageFile);
 
-    return this.storage.uploadFile(imageFile);
+    return this.storage_.uploadFile(imageFile);
   }
 
   /**
@@ -217,20 +239,23 @@ class Controller {
   }
 
   /**
-   * Unique timestamped directory path to prevent collisions between developers.
-   * @type {string}
-   * @return {!Promise<string>}
+   * @param {!Array<!UploadableTestCase>} testCases
    * @private
    */
-  async getBaseUploadDir_() {
-    return this.baseUploadDir_ || (this.baseUploadDir_ = await this.storage.generateUniqueUploadDir());
+  logUploadAllAssetsSuccess_(testCases) {
+    const publicHtmlFileUrls = testCases.map((testCase) => testCase.htmlFile.publicUrl).sort();
+    console.log('\n\nDONE uploading asset files to GCS!\n\n');
+    console.log(publicHtmlFileUrls.join('\n'));
   }
 
-  /** @private */
-  logTestCases_() {
-    console.log('\n\nDONE!\n\n');
+  /**
+   * @param {!Array<!UploadableTestCase>} testCases
+   * @private
+   */
+  logCaptureAllPagesSuccess_(testCases) {
+    console.log('\n\nDONE capturing screenshot images!\n\n');
 
-    this.testCases.forEach((testCase) => {
+    testCases.forEach((testCase) => {
       console.log(`${testCase.htmlFile.publicUrl}:`);
       testCase.screenshotImageFiles.forEach((screenshotImageFile) => {
         console.log(`  - ${screenshotImageFile.publicUrl}`);

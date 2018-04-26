@@ -21,26 +21,6 @@ const SOURCE_DIR = 'test/screenshot/';
 const Controller = require('./lib/controller');
 const controller = new Controller({sourceDir: SOURCE_DIR});
 
-controller.uploadAllAssets()
-  .then(captureAllPages)
-  .then(logResults);
-
-function captureAllPages(testCases) {
-  return controller.captureAllPages(testCases)
-    .then(
-      () => Promise.resolve(testCases),
-      (err) => Promise.reject(err)
-    );
-}
-
-function logResults(testCases) {
-  console.log('\n\nDONE!\n\n');
-
-  testCases.forEach((testCase) => {
-    console.log(`${testCase.htmlFile.publicUrl}:`);
-    testCase.screenshotImageFiles.forEach((screenshotImageFile) => {
-      console.log(`  - ${screenshotImageFile.publicUrl}`);
-    });
-    console.log('');
-  });
-}
+controller.initialize()
+  .then(() => controller.uploadAllAssets())
+  .then((testCases) => controller.captureAllPages(testCases));

@@ -21,11 +21,5 @@ const SOURCE_DIR = 'test/screenshot/';
 const Controller = require('./lib/controller');
 const controller = new Controller({sourceDir: SOURCE_DIR});
 
-controller.uploadAllAssets()
-  .then(logResults);
-
-function logResults(testCases) {
-  const publicHtmlFileUrls = testCases.map((testCase) => testCase.htmlFile.publicUrl).sort();
-  console.log('\n\nDONE!\n\n');
-  console.log(publicHtmlFileUrls.join('\n'));
-}
+controller.initialize()
+  .then(() => controller.uploadAllAssets());
