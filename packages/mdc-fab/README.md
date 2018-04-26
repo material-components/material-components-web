@@ -78,36 +78,6 @@ CSS Class | Description
 
 > **A note about `:disabled`**, No disabled styles are defined for FABs. The FAB promotes action, and should not be displayed in a disabled state. If you want to present a FAB that does *not* perform an action, you should also present an explanation to the user.
 
-### Absolutely Positioned
-
-Developers must position MDC FAB as needed within their application's design.
-
-```html
-<!--
-  This will position the FAB in the bottom-right corner.
-  Modify to fit your design's requirements.
--->
-<style>
-.app-fab--absolute {
-  position: fixed;
-  bottom: 1rem;
-  right: 1rem;
-}
-
-@media(min-width: 1024px) {
-   .app-fab--absolute {
-    bottom: 1.5rem;
-    right: 1.5rem;
-  }
-}
-</style>
-<button class="mdc-fab material-icons app-fab--absolute" aria-label="Favorite">
-  <span class="mdc-fab__icon">
-    favorite
-  </span>
-</button>
-```
-
 ### Sass Mixins
 
 Mixin | Description
@@ -156,3 +126,33 @@ You can also do this declaratively when using the [material-components-web](../m
 ```
 
 MDC FAB is fully aware of MDC Ripple styles, so no DOM or CSS changes are required.
+
+#### Positioning
+
+Developers must position MDC FAB as needed within their application's design.
+
+```html
+<!--
+  This will position the FAB in the bottom-right corner.
+  Modify to fit your design's requirements.
+-->
+<style>
+.app-fab--absolute {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+}
+
+@media(min-width: 1024px) {
+   .app-fab--absolute {
+    bottom: 1.5rem;
+    right: 1.5rem;
+  }
+}
+</style>
+<button class="mdc-fab material-icons app-fab--absolute" aria-label="Favorite">
+  <span class="mdc-fab__icon">
+    favorite
+  </span>
+</button>
+```
