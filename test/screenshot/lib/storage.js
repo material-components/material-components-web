@@ -106,21 +106,22 @@ class Storage {
   }
 
   /**
-   * @return {{year: number, month: number, day: number, hour: number, minute: number, second: number, ms: number}}
+   * Returns the date and time in UTC as a map of component parts. Each part value is padded with leading zeros.
+   * @return {{year: string, month: string, day: string, hour: string, minute: string, second: string, ms: string}}
    * @private
    */
   getUtcDateTime_() {
-    const pad = (num) => String(num).padStart(2, '0');
+    const pad = (number, length = 2) => String(number).padStart(length, '0');
     const date = new Date();
 
     return {
-      year: date.getUTCFullYear(),
+      year: pad(date.getUTCFullYear()),
       month: pad(date.getUTCMonth() + 1), // getUTCMonth() returns a zero-based value (e.g., January is `0`)
       day: pad(date.getUTCDate()),
       hour: pad(date.getUTCHours()),
       minute: pad(date.getUTCMinutes()),
       second: pad(date.getUTCSeconds()),
-      ms: pad(date.getUTCMilliseconds()),
+      ms: pad(date.getUTCMilliseconds(), 3),
     };
   }
 }
