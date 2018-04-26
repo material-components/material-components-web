@@ -68,7 +68,7 @@ async function run() {
    */
   async function uploadOneAsset(assetFileRelativePath) {
     const assetFile = new UploadableFile({
-      destinationParentDirectory: `${baseUploadDir}assets/`,
+      destinationParentDirectory: `${baseUploadDir}/assets`,
       destinationRelativeFilePath: assetFileRelativePath,
       fileContent: await readFileAsync(`${SCREENSHOT_TEST_DIR_ABSOLUTE_PATH}/${assetFileRelativePath}`),
     });
@@ -163,7 +163,7 @@ async function run() {
 
     const imageData = await downloadImage(cbtResult.images.chromeless);
     const imageFile = new UploadableFile({
-      destinationParentDirectory: `${baseUploadDir}screenshots/`,
+      destinationParentDirectory: `${baseUploadDir}/screenshots`,
       destinationRelativeFilePath: `${testCase.htmlFile.destinationRelativeFilePath}/${imageName}`,
       fileContent: imageData,
     });
