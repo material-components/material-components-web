@@ -13,7 +13,7 @@ path: /catalog/top-app-bar/
   <a class="article__asset-link"
      href="https://material-components-web.appspot.com/top-app-bar.html">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/top-app-bar.png"
-    width="494" alt="Top App Bar screenshot">
+         width="494" alt="Top App Bar screenshot">
   </a>
 </div>-->
 
@@ -71,6 +71,26 @@ const topAppBar = new MDCTopAppBar(topAppBarElement);
 
 ## Variants
 
+### Top App Bar With Action Icons
+
+Top app bars can contain action which are placed on the side opposite the menu icon. 
+
+```html
+<header class="mdc-top-app-bar">
+  <div class="mdc-top-app-bar__row">
+    <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+      <a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
+      <span class="mdc-top-app-bar__title">Title</span>
+    </section>
+    <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="top-app-bar">
+      <a href="#" class='material-icons mdc-top-app-bar__action-item' aria-label='Download'>file_download</a>
+      <a href="#" class='material-icons mdc-top-app-bar__action-item' aria-label='Print this page'>print</a>
+      <a href="#" class='material-icons mdc-top-app-bar__action-item' aria-label='Bookmark this page'>bookmark</a>
+    </section>
+  </div>
+</header>
+```
+
 ### Short
 
 Short top app bars are top app bars that can collapse to the navigation icon side when scrolled.
@@ -120,11 +140,7 @@ Fixed top app bars stay at the top of the page and elevate above the content whe
       <a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
       <span class="mdc-top-app-bar__title">Title</span>
     </section>
-    <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="top-app-bar">
-      <a href="#" class='material-icons mdc-top-app-bar__action-item' aria-label='Download'>file_download</a>
-      <a href="#" class='material-icons mdc-top-app-bar__action-item' aria-label='Print this page'>print</a>
-      <a href="#" class='material-icons mdc-top-app-bar__action-item' aria-label='Bookmark this page'>bookmark</a>
-    </section>
+    <!-- Action Icons --> 
   </div>
 </header>
 ```
@@ -140,11 +156,7 @@ The prominent top app bar is taller.
       <a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
       <span class="mdc-top-app-bar__title">Title</span>
     </section>
-    <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="top-app-bar">
-      <a href="#" class='material-icons mdc-top-app-bar__action-item' aria-label='Download'>file_download</a>
-      <a href="#" class='material-icons mdc-top-app-bar__action-item' aria-label='Print this page'>print</a>
-      <a href="#" class='material-icons mdc-top-app-bar__action-item' aria-label='Bookmark this page'>bookmark</a>
-    </section>
+    <!-- Action Icons --> 
   </div>
 </header>
 ```
@@ -198,3 +210,7 @@ Method Signature | Description
 Event Name | Event Data Structure | Description
 --- | --- | ---
 `MDCTopAppBar:nav` | None | Emits when the navigation icon is clicked.
+
+## Usage within Web Frameworks
+
+If you are using a JavaScript framework, such as React or Angular, you can create a `MDCTopAppBarComponent` for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../integrating-into-frameworks.md).
