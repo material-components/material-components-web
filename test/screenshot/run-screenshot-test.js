@@ -112,11 +112,8 @@ async function run() {
    * @return {!Promise<!Array<!UploadableFile>>}
    */
   async function capturePage(testCase) {
-    /** @type {!UploadableFile} */
-    const htmlFile = testCase.htmlFile;
-
     return Screenshot
-      .captureOneUrl(htmlFile.publicUrl)
+      .captureOneUrl(testCase.htmlFile.publicUrl)
       .then(
         (cbtInfo) => handleCapturePageSuccess(testCase, cbtInfo),
         (err) => handleCapturePageFailure(testCase, err)
