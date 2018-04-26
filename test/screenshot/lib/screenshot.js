@@ -65,23 +65,23 @@ async function captureOneUrl(testPageUrl) {
   logTestCaseProgress(testPageUrl, Progress.enqueued(BROWSERS.length));
 
   return requestQueue.enqueue(testPageUrl)
-    .then(() => {
-      return sendCaptureRequest(testPageUrl)
-        .then(
-          (captureResponseBody) => handleCaptureResponse(testPageUrl, captureResponseBody),
-          (err) => rejectWithError('captureOne', testPageUrl, err)
-        )
-        .then(
-          (infoResponseBody) => {
-            requestQueue.dequeue(testPageUrl);
-            return infoResponseBody;
-          },
-          (err) => {
-            requestQueue.dequeue(testPageUrl);
-            return Promise.reject(err);
-          }
-        );
-    });
+    .then(
+      () => sendCaptureRequest(testPageUrl)
+    )
+    .then(
+      (captureResponseBody) => handleCaptureResponse(testPageUrl, captureResponseBody),
+      (err) => rejectWithError('captureOne', testPageUrl, err)
+    )
+    .then(
+      (infoResponseBody) => {
+        requestQueue.dequeue(testPageUrl);
+        return infoResponseBody;
+      },
+      (err) => {
+        requestQueue.dequeue(testPageUrl);
+        return Promise.reject(err);
+      }
+    );
 }
 
 async function sendCaptureRequest(testPageUrl) {
