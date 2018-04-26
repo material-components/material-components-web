@@ -68,7 +68,7 @@ const chipSet = new MDCChipSet(document.querySelector('.mdc-chip-set'));
 
 ### Leading and Trailing Icons
 
-You can optionally add a leading icon (i.e. thumbnail) and/or a trailing icon to a chip. To add an icon, add an `i` element with your preferred icon, give it a class of `mdc-chip__icon`, and a class of either `mdc-chip__icon--leading` or `mdc-chip__icon--trailing`. If you're adding a trailing icon, also set `tabindex="0"` and `role="button"` to make it accessible by keyboard and screenreader.
+You can optionally add a leading icon (i.e. thumbnail) and/or a trailing "remove" icon to a chip. To add an icon, add an `i` element with your preferred icon, give it a class of `mdc-chip__icon`, and a class of either `mdc-chip__icon--leading` or `mdc-chip__icon--trailing`.
 
 #### Leading icon
 
@@ -80,6 +80,8 @@ You can optionally add a leading icon (i.e. thumbnail) and/or a trailing icon to
 ```
 
 #### Trailing icon
+
+A trailing icon comes with the functionality to remove the chip from the set. If you're adding a trailing icon, also set `tabindex="0"` and `role="button"` to make it accessible by keyboard and screenreader. Trailing icons should only be added to [input chips](###input-chips).
 
 ```html
 <div class="mdc-chip">
