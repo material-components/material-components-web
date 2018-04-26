@@ -72,7 +72,7 @@ async function run() {
    */
   async function uploadOneAsset(assetFileRelativePath) {
     const assetFile = new UploadableFile({
-      destinationParentDirectory: `${baseUploadDir}assets/`,
+      destinationParentDirectory: `${baseUploadDir}/assets`,
       destinationRelativeFilePath: assetFileRelativePath,
       fileContent: await readFileAsync(`${SCREENSHOT_TEST_DIR_ABSOLUTE_PATH}/${assetFileRelativePath}`),
     });

@@ -43,7 +43,7 @@ class Storage {
   async generateUniqueUploadDir() {
     const gitCommitShort = await this.mdcGitRepo_.getShortCommitHash();
     const {year, month, day, hour, minute, second, ms} = this.getUtcDateTime_();
-    return `${USERNAME}/${year}/${month}/${day}/${hour}_${minute}_${second}_${ms}/${gitCommitShort}/`;
+    return `${USERNAME}/${year}/${month}/${day}/${hour}_${minute}_${second}_${ms}/${gitCommitShort}`;
   }
 
   /**
@@ -141,7 +141,7 @@ class UploadableFile {
     this.destinationRelativeFilePath = destinationRelativeFilePath;
 
     /** @type {string} */
-    this.destinationAbsoluteFilePath = this.destinationParentDirectory + this.destinationRelativeFilePath;
+    this.destinationAbsoluteFilePath = `${this.destinationParentDirectory}/${this.destinationRelativeFilePath}`;
 
     /** @type {!Buffer} */
     this.fileContent = fileContent;
