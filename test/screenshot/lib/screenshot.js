@@ -31,7 +31,7 @@ const API_PARALLEL_REQUEST_LIMIT = 5;
 const API_POLL_INTERVAL_MS = 1000 * 5;
 
 /** How long to wait for a single URL to be captured in all browsers. */
-const API_MAX_WAIT_MS = 1000 * 60;
+const API_MAX_WAIT_MS = 1000 * 60 * 3;
 
 /**
  * List of browsers to use.

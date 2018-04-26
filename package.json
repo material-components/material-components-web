@@ -25,6 +25,7 @@
     "screenshot:build": "npm run clean && mkdirp test/screenshot/out/ && webpack --config=test/screenshot/webpack.config.js --progress",
     "screenshot:serve": "node test/screenshot/run-static-server.js",
     "screenshot:test": "node test/screenshot/run-screenshot-test.js",
+    "screenshot:update-goldens": "node test/screenshot/run-update-goldens.js",
     "screenshot:upload-assets": "node test/screenshot/run-upload-assets.js",
     "screenshot:watch": "npm run clean && mkdirp test/screenshot/out/ && webpack --config=test/screenshot/webpack.config.js --progress --watch",
     "start": "npm run clean && npm-run-all --parallel screenshot:serve screenshot:watch",
