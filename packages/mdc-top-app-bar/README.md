@@ -82,7 +82,7 @@ Top app bars can contain action items which are placed on the side opposite the 
       <a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
       <span class="mdc-top-app-bar__title">Title</span>
     </section>
-    <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="top-app-bar">
+    <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
       <a href="#" class='material-icons mdc-top-app-bar__action-item' aria-label='Download'>file_download</a>
       <a href="#" class='material-icons mdc-top-app-bar__action-item' aria-label='Print this page'>print</a>
       <a href="#" class='material-icons mdc-top-app-bar__action-item' aria-label='Bookmark this page'>bookmark</a>
@@ -117,15 +117,7 @@ Short top app bars can be configured to always appear collapsed by applying the 
 
 ```html
 <header class="mdc-top-app-bar mdc-top-app-bar--short mdc-top-app-bar--short-collapsed">
-  <div class="mdc-top-app-bar__row">
-    <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-      <a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
-      <span class="mdc-top-app-bar__title">Title</span>
-    </section>
-    <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="top-app-bar">
-      <a href="#" class="material-icons mdc-top-app-bar__icon" aria-label="Bookmark this page" alt="Bookmark this page">bookmark</a>
-    </section>
-  </div>
+  ...
 </header>
 ```
 
@@ -135,13 +127,7 @@ Fixed top app bars stay at the top of the page and elevate above the content whe
 
 ```html
 <header class="mdc-top-app-bar mdc-top-app-bar--fixed">
-  <div class="mdc-top-app-bar__row">
-    <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-      <a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
-      <span class="mdc-top-app-bar__title">Title</span>
-    </section>
-    ...
-  </div>
+  ...
 </header>
 ```
 
@@ -151,13 +137,7 @@ The prominent top app bar is taller.
 
 ```html
 <header class="mdc-top-app-bar mdc-top-app-bar--prominent">
-  <div class="mdc-top-app-bar__row">
-    <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-      <a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
-      <span class="mdc-top-app-bar__title">Title</span>
-    </section>
-      ...
-    </div>
+  ...
 </header>
 ```
 
