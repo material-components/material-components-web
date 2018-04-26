@@ -58,39 +58,6 @@ npm install @material/select
 </div>
 ```
 
-### Styles
-
-```scss
-@import "@material/select/mdc-select";
-```
-
-### JavaScript Instantiation
-
-```js
-const select = new mdc.select.MDCSelect(document.querySelector('.mdc-select'));
-select.listen('change', () => {
-  alert(`Selected option at index ${select.selectedIndex} with value "${select.value}"`);
-});
-```
-
-See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
-
-## Variants
-
-### Select Box
-
-The Select Box variant uses the same markup as the standard variant, with the addition of the `mdc-select--box`
-modifier class on the root element.
-
-```html
-<div class="mdc-select mdc-select--box">
-  <select class="mdc-select__native-control">
-    ...
-  </select>
-  <label class="mdc-floating-label">Pick a Food Group</label>
-  <div class="mdc-line-ripple"></div>
-</div>
-```
 
 ### Additional Information
 
@@ -165,6 +132,40 @@ Since MDC Select uses native `<select>` and `<option>` elements, simply add the 
 </div>
 ```
 
+### Styles
+
+```scss
+@import "@material/select/mdc-select";
+```
+
+### JavaScript Instantiation
+
+```js
+const select = new mdc.select.MDCSelect(document.querySelector('.mdc-select'));
+select.listen('change', () => {
+  alert(`Selected option at index ${select.selectedIndex} with value "${select.value}"`);
+});
+```
+
+See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
+
+## Variants
+
+### Select Box
+
+The Select Box variant uses the same markup as the standard variant, with the addition of the `mdc-select--box`
+modifier class on the root element.
+
+```html
+<div class="mdc-select mdc-select--box">
+  <select class="mdc-select__native-control">
+    ...
+  </select>
+  <label class="mdc-floating-label">Pick a Food Group</label>
+  <div class="mdc-line-ripple"></div>
+</div>
+```
+
 ## Style Customization
 
 #### CSS Classes
@@ -192,15 +193,17 @@ Mixin | Description
 
 > NOTE: To further customize the floating label, please see the [floating label documentation](./../mdc-floating-label/README.md).
 
-## `MDCSelect` API
+## `MDCSelect` Properties and Methods
 
 The `MDCSelect` component API is modeled after a subset of the `HTMLSelectElement` functionality.
 
-| Property | Type | Description |
-| --- | --- | --- |
-| `value` | `string` | The `value` of the currently selected option. |
-| `selectedIndex` | `number` | The index of the currently selected option. Set to -1 if no option is currently selected. Changing this property will update the select element. |
-| `disabled` | `boolean` | Whether or not the component is disabled. Settings this sets the disabled state on the component. |
+### Properties
+
+Property | Type | Description
+--- | --- | ---
+`value` | `string` | The `value` of the currently selected option.
+`selectedIndex` | `number` | The index of the currently selected option. Set to -1 if no option is currently selected. Changing this property will update the select element.
+`disabled` | `boolean` | Whether or not the component is disabled. Settings this sets the disabled state on the component.
 
 ### Events
 
@@ -212,25 +215,25 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 
 ### `MDCSelectAdapter`
 
-| Method Signature | Description |
-| --- | --- |
-| `addClass(className: string) => void` | Adds a class to the root element. |
-| `removeClass(className: string) => void` | Removes a class from the root element. |
-| `floatLabel(value: boolean) => void` | Floats or defloats label. |
-| `activateBottomLine() => void` | Activates the bottom line component. |
-| `deactivateBottomLine() => void` | Deactivates the bottom line component. |
-| `setDisabled(disabled: boolean) => void` | Sets the `disabled` property of the `<select>` element. |
-| `registerInteractionHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` on the `<select>` element. |
-| `deregisterInteractionHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` on the `<select>` element. |
-| `getSelectedIndex() => number` | Returns the selected index of the `<select>` element. |
-| `setSelectedIndex(index: number) => void` | Sets the selected index of the `<select>` element. |
-| `getValue() => string` | Returns the value selected on the `<select>` element. |
-| `setValue(value: string) => void` | Sets the value of the `<select>` element. |
+Method Signature | Description
+--- | ---
+`addClass(className: string) => void` | Adds a class to the root element.
+`removeClass(className: string) => void` | Removes a class from the root element.
+`floatLabel(value: boolean) => void` | Floats or defloats label.
+`activateBottomLine() => void` | Activates the bottom line component.
+`deactivateBottomLine() => void` | Deactivates the bottom line component.
+`setDisabled(disabled: boolean) => void` | Sets the `disabled` property of the `<select>` element.
+`registerInteractionHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` on the `<select>` element.
+`deregisterInteractionHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` on the `<select>` element.
+`getSelectedIndex() => number` | Returns the selected index of the `<select>` element.
+`setSelectedIndex(index: number) => void` | Sets the selected index of the `<select>` element.
+`getValue() => string` | Returns the value selected on the `<select>` element.
+`setValue(value: string) => void` | Sets the value of the `<select>` element.
 
 ### `MDCSelectFoundation`
 
-| Method Signature | Description |
-| --- | --- |
-| `setValue(value: string) => void` | Sets the value of the component. |
-| `setDisabled(disabled: boolean) => void` | Adds/removes disabled class, and sets disabled attribute on the component. |
-| `setSelectedIndex(selectedIndex: number) => void` | Sets the selected index of the component. |
+Method Signature | Description
+--- | ---
+`setValue(value: string) => void` | Sets the value of the component.
+`setDisabled(disabled: boolean) => void` | Adds/removes disabled class, and sets disabled attribute on the component.
+`setSelectedIndex(selectedIndex: number) => void` | Sets the selected index of the component.
