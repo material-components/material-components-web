@@ -191,16 +191,11 @@ async function run() {
     console.log('\n\nDONE!\n\n');
 
     testCases.forEach((testCase) => {
-      /** @type {!UploadableFile} */
-      const htmlFile = testCase.htmlFile;
-
-      if (htmlFile.destinationRelativeFilePath.endsWith('.html')) {
-        console.log(`${htmlFile.publicUrl}:`);
-        testCase.screenshotImageFiles.forEach((screenshotImageFile) => {
-          console.log(`  - ${screenshotImageFile.publicUrl}`);
-        });
-        console.log('');
-      }
+      console.log(`${testCase.htmlFile.publicUrl}:`);
+      testCase.screenshotImageFiles.forEach((screenshotImageFile) => {
+        console.log(`  - ${screenshotImageFile.publicUrl}`);
+      });
+      console.log('');
     });
   }
 }
