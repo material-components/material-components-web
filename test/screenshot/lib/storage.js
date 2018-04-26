@@ -159,7 +159,7 @@ class UploadableTestCase {
     /** @type {!UploadableFile} */
     this.htmlFile = htmlFile;
 
-    /** @type {!Array<UploadableFile>} */
+    /** @type {!Array<!UploadableFile>} */
     this.screenshotImageFiles = [];
   }
 }
