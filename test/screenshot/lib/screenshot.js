@@ -58,7 +58,7 @@ async function captureOneUrl(testPageUrl) {
   return sendCaptureRequest(testPageUrl)
     .then(
       async (captureResponseBody) => handleCaptureResponse(testPageUrl, captureResponseBody),
-      async (err) => rejectWithError('captureOne', testPageUrl, err)
+      async (err) => rejectWithError('captureOneUrl', testPageUrl, err)
     );
 }
 
