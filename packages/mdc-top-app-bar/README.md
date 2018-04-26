@@ -12,7 +12,8 @@ path: /catalog/top-app-bar/
 <!--<div class="article__asset">
   <a class="article__asset-link"
      href="https://material-components-web.appspot.com/top-app-bar.html">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/top-app-bar.png" width="494" alt="Top App Bar screenshot">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/top-app-bar.png"
+    width="494" alt="Top App Bar screenshot">
   </a>
 </div>-->
 
@@ -35,7 +36,7 @@ MDC Top App Bar acts as a container for items such as application title, navigat
 npm install @material/top-app-bar
 ```
 
-## Usage
+## Basic Usage
 
 ### HTML Structure
 
@@ -50,38 +51,29 @@ npm install @material/top-app-bar
 </header>
 ```
 
-Top app bars can accommodate multiple action items on the opposite side of the navigation icon:
+### Styles
 
-```html
-<header class="mdc-top-app-bar">
-  <div class="mdc-top-app-bar__row">
-    <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-      <a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
-      <span class="mdc-top-app-bar__title">Title</span>
-    </section>
-    <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
-      <a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="Download" alt="Download">file_download</a>
-      <a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="Print this page" alt="Print this page">print</a>
-      <a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="Bookmark this page" alt="Bookmark this page">bookmark</a>
-    </section>
-  </div>
-</header>
+```scss
+@import "@material/top-app-bar/mdc-top-app-bar";
 ```
 
-Top app bars can be fixed at the top of the page:
+### JavaScript Instantiation
 
-```html
-<header class="mdc-top-app-bar mdc-top-app-bar--fixed">
-  <div class="mdc-top-app-bar__row">
-    <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-      <a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
-      <span class="mdc-top-app-bar__title">Title</span>
-    </section>
-  </div>
-</header>
+```js
+import {MDCTopAppBar} from '@material/top-app-bar/index';
+
+// Instantiation
+const topAppBarElement = document.querySelector('.mdc-top-app-bar');
+const topAppBar = new MDCTopAppBar(topAppBarElement);
 ```
 
-Short top app bars should only be used with one action item:
+> See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
+
+## Variants
+
+### Short
+
+Short top app bars are top app bars that can collapse to the navigation icon side when scrolled.
 
 ```html
 <header class="mdc-top-app-bar mdc-top-app-bar--short">
@@ -96,6 +88,10 @@ Short top app bars should only be used with one action item:
   </div>
 </header>
 ```
+
+> Short top app bars should be used with no more than 1 action icon.
+
+### Short - Always Closed
 
 Short top app bars can be configured to always appear collapsed by applying the `mdc-top-app-bar--short-collapsed` before instantiating the component :
 
@@ -113,18 +109,47 @@ Short top app bars can be configured to always appear collapsed by applying the 
 </header>
 ```
 
-### JavaScript
+### Fixed
 
-```js
-  // Instantiation
-  var topAppBarElement = document.querySelector('#topAppBar');
-  var topAppBar = mdc.topAppBar.MDCTopAppBar.attachTo(topAppBarElement);
+Fixed top app bars stay at the top of the page and elevate above the content when scrolled. 
 
-  // Listen for navigation icon events
-  topAppBarElement.addEventListener('MDCTopAppBar:nav', function () {
-    // do something
-  });
+```html
+<header class="mdc-top-app-bar mdc-top-app-bar--fixed">
+  <div class="mdc-top-app-bar__row">
+    <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+      <a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
+      <span class="mdc-top-app-bar__title">Title</span>
+    </section>
+    <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="top-app-bar">
+      <a href="#" class='material-icons mdc-top-app-bar__action-item' aria-label='Download'>file_download</a>
+      <a href="#" class='material-icons mdc-top-app-bar__action-item' aria-label='Print this page'>print</a>
+      <a href="#" class='material-icons mdc-top-app-bar__action-item' aria-label='Bookmark this page'>bookmark</a>
+    </section>
+  </div>
+</header>
 ```
+
+### Prominent
+
+The prominent top app bar is taller. 
+
+```html
+<header class="mdc-top-app-bar mdc-top-app-bar--fixed">
+  <div class="mdc-top-app-bar__row">
+    <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+      <a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
+      <span class="mdc-top-app-bar__title">Title</span>
+    </section>
+    <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="top-app-bar">
+      <a href="#" class='material-icons mdc-top-app-bar__action-item' aria-label='Download'>file_download</a>
+      <a href="#" class='material-icons mdc-top-app-bar__action-item' aria-label='Print this page'>print</a>
+      <a href="#" class='material-icons mdc-top-app-bar__action-item' aria-label='Bookmark this page'>bookmark</a>
+    </section>
+  </div>
+</header>
+```
+
+## Style Customization
 
 ### CSS Classes
 
@@ -146,11 +171,14 @@ Mixin | Description
 `mdc-top-app-bar-fill-color-accessible($color)` | Sets the fill color of the top app bar and automatically sets a high-contrast ink color.
 `mdc-top-app-bar-short-border-radius($border-radius)` | Sets the `border-bottom-radius` property on the action item side. Used only for the short top app bar when collapsed.
 
-### `MDCTopAppBar`
+## `MDCTopAppBar` Properties and Methods
 
-See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
+### `MDCTopAppBarComponent`
 
-#### `MDCTopAppBarAdapter`
+Method Signature | Description
+--- | ---
+
+### `MDCTopAppBarAdapter`
 
 Method Signature | Description
 --- | ---
