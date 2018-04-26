@@ -75,7 +75,7 @@ async function captureOneUrl(testPageUrl) {
     .then(
       (infoResponseBody) => {
         requestQueue.dequeue(testPageUrl);
-        return infoResponseBody;
+        return Promise.resolve(infoResponseBody);
       },
       (err) => {
         requestQueue.dequeue(testPageUrl);
