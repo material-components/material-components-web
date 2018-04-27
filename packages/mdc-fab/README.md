@@ -120,9 +120,7 @@ The ripple effect for the FAB component is styled using [MDC Ripple](../mdc-ripp
 
 #### Caveat: Edge and CSS Variables
 
-In browsers that fully support CSS variables, the above mixins will hook up styles using CSS variables if a theme property is passed.
-However, due to Edge's buggy CSS variable support, `mdc-fab-container-color` will not honor CSS variables in Edge.
-This means you will need to override FAB container styles manually for Edge if you are altering the affected CSS variables for theme properties (FAB uses secondary by default for the container fill color).
+In browsers that fully support CSS custom properties, the above mixins will work if you pass in a [MDC Theme](mdc-theme) property (e.g. `primary`) as an argument. However, Edge does not fully support CSS custom properties. If you are using the `mdc-fab-container-color` mixin, you must pass in an actual color value for support in Edge.
 
 ### Additional Information
 
