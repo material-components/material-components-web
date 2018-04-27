@@ -29,17 +29,17 @@ const setup = () => {
   return {scroller};
 };
 
-test('#computeCurrentScrollPositionRTL() is abstract and throws an error', () => {
+test('#computeCurrentScrollPositionRTL() is abstract and does nothing', () => {
   const {scroller} = setup();
-  assert.throws(scroller.computeCurrentScrollPositionRTL);
+  assert.isUndefined(scroller.computeCurrentScrollPositionRTL());
 });
 
-test('#scrollToRTL() is abstract and throws an error', () => {
+test('#scrollToRTL() is abstract and does nothing', () => {
   const {scroller} = setup();
-  assert.throws(scroller.scrollToRTL);
+  assert.isUndefined(scroller.scrollToRTL());
 });
 
-test('#incrementScrollRTL() is abstract and throws an error', () => {
+test('#incrementScrollRTL() is abstract and does nothing', () => {
   const {scroller} = setup();
-  assert.throws(scroller.incrementScrollRTL);
+  assert.isUndefined(scroller.incrementScrollRTL());
 });
