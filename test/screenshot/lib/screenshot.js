@@ -16,12 +16,16 @@
 
 'use strict';
 
-const request = require('request-promise-native');
+const ParallelQueue = require('./parallel-queue');
 const Progress = require('./progress');
+const request = require('request-promise-native');
 
 const API_BASE_URL = 'https://crossbrowsertesting.com/api/v3';
 const API_USERNAME = process.env.CBT_USERNAME;
 const API_AUTHKEY = process.env.CBT_AUTHKEY;
+
+/** Maximum number of parallel screenshot requests allowed by our CBT plan. */
+const API_PARALLEL_REQUEST_LIMIT = 5;
 
 /** How long to wait between polling the API for status changes. */
 const API_POLL_INTERVAL_MS = 1000 * 5;
@@ -48,6 +52,11 @@ const BROWSERS = [
 /** Map of URLs to `Progress` objects. */
 const progressMap = new Map();
 
+/**
+ * @type {!ParallelQueue<string>}
+ */
+const requestQueue = new ParallelQueue({maxParallels: API_PARALLEL_REQUEST_LIMIT});
+
 module.exports = {
   captureOneUrl,
 };
@@ -55,10 +64,23 @@ module.exports = {
 async function captureOneUrl(testPageUrl) {
   logTestCaseProgress(testPageUrl, Progress.enqueued(BROWSERS.length));
 
-  return sendCaptureRequest(testPageUrl)
+  return requestQueue.enqueue(testPageUrl)
     .then(
-      async (captureResponseBody) => handleCaptureResponse(testPageUrl, captureResponseBody),
-      async (err) => rejectWithError('captureOneUrl', testPageUrl, err)
+      () => sendCaptureRequest(testPageUrl)
+    )
+    .then(
+      (captureResponseBody) => handleCaptureResponse(testPageUrl, captureResponseBody),
+      (err) => rejectWithError('captureOneUrl', testPageUrl, err)
+    )
+    .then(
+      (infoResponseBody) => {
+        requestQueue.dequeue(testPageUrl);
+        return Promise.resolve(infoResponseBody);
+      },
+      (err) => {
+        requestQueue.dequeue(testPageUrl);
+        return Promise.reject(err);
+      }
     );
 }
 
