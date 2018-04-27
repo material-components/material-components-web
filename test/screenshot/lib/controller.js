@@ -20,6 +20,7 @@ const fs = require('fs');
 const glob = require('glob');
 const path = require('path');
 const request = require('request-promise-native');
+const stringify = require('json-stable-stringify');
 const util = require('util');
 
 const Screenshot = require('./screenshot');
@@ -267,7 +268,7 @@ class Controller {
     });
 
     const goldenFilePath = path.join(this.sourceDir_, 'golden.json');
-    const goldenFileContent = JSON.stringify(goldenData, null, 2) + '\n';
+    const goldenFileContent = stringify(goldenData, {space: '  '}) + '\n';
 
     return writeFileAsync(goldenFilePath, goldenFileContent)
       .then(
