@@ -43,10 +43,10 @@ class MDCTabScrollerRTLDefault extends MDCTabScrollerRTL {
   scrollToRTL(scrollX) {
     const edges = this.calculateScrollEdges_();
     const currentScrollLeft = this.adapter_.getScrollLeft();
-    const safeScrollLeft = this.computeSafeScrollValue_(edges.right + scrollX);
+    const clampedScrollLeft = this.clampScrollValue_(edges.right + scrollX);
     return /** @type {!MDCTabScrollerAnimation} */ ({
-      scrollX: safeScrollLeft,
-      translateX: safeScrollLeft - currentScrollLeft,
+      scrollX: clampedScrollLeft,
+      translateX: clampedScrollLeft - currentScrollLeft,
     });
   }
 
@@ -56,10 +56,10 @@ class MDCTabScrollerRTLDefault extends MDCTabScrollerRTL {
    */
   incrementScrollRTL(scrollX) {
     const currentScrollLeft = this.adapter_.getScrollLeft();
-    const safeScrollLeft = this.computeSafeScrollValue_(scrollX + currentScrollLeft);
+    const clampedScrollLeft = this.clampScrollValue_(scrollX + currentScrollLeft);
     return /** @type {!MDCTabScrollerAnimation} */ ({
-      scrollX: safeScrollLeft,
-      translateX: safeScrollLeft - currentScrollLeft,
+      scrollX: clampedScrollLeft,
+      translateX: clampedScrollLeft - currentScrollLeft,
     });
   }
 
@@ -82,17 +82,9 @@ class MDCTabScrollerRTLDefault extends MDCTabScrollerRTL {
    * @return {number}
    * @private
    */
-  computeSafeScrollValue_(scrollX) {
+  clampScrollValue_(scrollX) {
     const edges = this.calculateScrollEdges_();
-    if (scrollX < edges.left) {
-      return edges.left;
-    }
-
-    if (scrollX > edges.right) {
-      return edges.right;
-    }
-
-    return scrollX;
+    return Math.min(Math.max(edges.left, scrollX), edges.right);
   }
 }
 

@@ -25,6 +25,8 @@ import {
   MDCTabScrollerFoundation,
 } from '../../../packages/mdc-tab-scroller';
 
+import MDCTabScrollerRTL from '../../../packages/mdc-tab-scroller/rtl-scroller';
+
 const getFixture = () => bel`
   <div class="mdc-tab-scroller">
     <div class="mdc-tab-scroller__content"></div>
@@ -178,4 +180,23 @@ test('#computeCurrentScrollPosition() calls computeCurrentScrollPosition', () =>
   const {component, mockFoundation} = setupMockFoundationTest();
   component.computeCurrentScrollPosition();
   td.verify(mockFoundation.computeCurrentScrollPosition(), {times: 1});
+});
+
+function setupTestRTL() {
+  const {root, content, component} = setupTest();
+  root.style.setProperty('width', '100px');
+  root.style.setProperty('height', '10px');
+  root.style.setProperty('overflow-x', 'scroll');
+  content.style.setProperty('width', '10000px');
+  content.style.setProperty('height', '10px');
+  content.style.setProperty('backgroundColor', 'red');
+  root.setAttribute('dir', 'rtl');
+  return {root, component, content};
+}
+
+test('#getRTLScroller() returns an instance of MDCTabScrollerRTL', () => {
+  const {root, component} = setupTestRTL();
+  document.body.appendChild(root);
+  assert.instanceOf( component.getDefaultFoundation().getRTLScroller(), MDCTabScrollerRTL);
+  document.body.removeChild(root);
 });

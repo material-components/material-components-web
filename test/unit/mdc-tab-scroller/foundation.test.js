@@ -59,25 +59,6 @@ test('#computeCurrentScrollPosition() returns difference between scrollLeft and 
   assert.strictEqual(foundation.computeCurrentScrollPosition(), 111);
 });
 
-test('#calculateSafeScrollValue_() returns 0 when given a negative value', () => {
-  const {foundation} = setupTest();
-  assert.strictEqual(foundation.calculateSafeScrollValue_(-1), 0);
-});
-
-test('#calculateSafeScrollValue_() returns the given value when less than max scroll value', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.getContentOffsetWidth()).thenReturn(1000);
-  td.when(mockAdapter.getOffsetWidth()).thenReturn(100);
-  assert.strictEqual(foundation.calculateSafeScrollValue_(101), 101);
-});
-
-test('#calculateSafeScrollValue_() returns the max scroll value when greater than max scroll value', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.getContentOffsetWidth()).thenReturn(1000);
-  td.when(mockAdapter.getOffsetWidth()).thenReturn(100);
-  assert.strictEqual(foundation.calculateSafeScrollValue_(901), 900);
-});
-
 test('#handleInteraction() does nothing if should not handle interaction', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.handleInteraction();
@@ -192,13 +173,20 @@ test(`#handleTransitionEnd() removes the ${MDCTabScrollerFoundation.cssClasses.A
 });
 
 function setupScrollToTest({rootWidth=300, contentWidth=1000, scrollLeft=0, translateX=0, isAnimating=false}={}) {
+  const opts = {
+    rootWidth,
+    contentWidth,
+    scrollLeft,
+    translateX,
+    isAnimating,
+  };
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getOffsetWidth()).thenReturn(rootWidth);
   td.when(mockAdapter.getContentOffsetWidth()).thenReturn(contentWidth);
   td.when(mockAdapter.getScrollLeft()).thenReturn(scrollLeft);
   foundation.isAnimating_ = isAnimating;
   td.when(mockAdapter.getContentStyleValue('transform')).thenReturn(`matrix(1, 0, 0, 1, ${translateX}, 0)`);
-  return {foundation, mockAdapter};
+  return {foundation, mockAdapter, opts};
 }
 
 test('#scrollTo() exits early if difference between scrollX and scrollLeft is 0', () => {
@@ -573,4 +561,43 @@ test('on keydown after scrollTo call, deregister the keydown handler', () => {
   raf.restore();
   handlers.keydown();
   td.verify(mockAdapter.deregisterEventHandler('keydown', td.matchers.isA(Function)));
+});
+
+// RTL Mode
+
+function setupScrollToRTLTest() {
+  const {foundation, mockAdapter, opts} = setupScrollToTest();
+  td.when(mockAdapter.getContentStyleValue('direction')).thenReturn('rtl');
+  td.when(mockAdapter.computeClientRect()).thenReturn({right: opts.rootWidth});
+  td.when(mockAdapter.computeContentClientRect()).thenReturn({right: opts.contentWidth});
+  return {foundation, mockAdapter};
+}
+
+test('#scrollTo() sets the scrollLeft property in RTL', () => {
+  const {foundation, mockAdapter} = setupScrollToRTLTest();
+  foundation.scrollTo(-10);
+  td.verify(mockAdapter.setScrollLeft(td.matchers.isA(Number)));
+});
+
+test('#scrollTo() sets the transform style property in RTL', () => {
+  const {foundation, mockAdapter} = setupScrollToRTLTest();
+  foundation.scrollTo(-10);
+  td.verify(mockAdapter.setContentStyleProperty('transform', td.matchers.isA(String)), {times: 1});
+});
+
+test('#incrementScroll() sets the scrollLeft property in RTL', () => {
+  const {foundation, mockAdapter} = setupScrollToRTLTest();
+  foundation.incrementScroll(-10);
+  td.verify(mockAdapter.setScrollLeft(td.matchers.isA(Number)));
+});
+
+test('#incrementScroll() sets the transform style property in RTL', () => {
+  const {foundation, mockAdapter} = setupScrollToRTLTest();
+  foundation.incrementScroll(10);
+  td.verify(mockAdapter.setContentStyleProperty('transform', td.matchers.isA(String)), {times: 1});
+});
+
+test('#computeCurrentScrollPosition() returns a numeric scroll position in RTL', () => {
+  const {foundation} = setupScrollToRTLTest();
+  assert.typeOf(foundation.computeCurrentScrollPosition(), 'number');
 });

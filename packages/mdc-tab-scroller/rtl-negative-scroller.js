@@ -37,29 +37,27 @@ class MDCTabScrollerRTLNegative extends MDCTabScrollerRTL {
 
   /**
    * @param {number} scrollX
-   * @param {number} translateX
    * @return {!MDCTabScrollerAnimation}
    */
-  scrollToRTL(scrollX, translateX) {
-    const currentScrollLeft = this.computeCurrentScrollPositionRTL(translateX);
-    const safeScrollLeft = this.computeSafeScrollValue_(scrollX);
+  scrollToRTL(scrollX) {
+    const currentScrollLeft = this.adapter_.getScrollLeft();
+    const clampedScrollLeft = this.clampScrollValue_(scrollX);
     return /** @type {!MDCTabScrollerAnimation} */ ({
-      scrollX: safeScrollLeft,
-      translateX: safeScrollLeft - currentScrollLeft,
+      scrollX: clampedScrollLeft,
+      translateX: clampedScrollLeft - currentScrollLeft,
     });
   }
 
   /**
    * @param {number} scrollX
-   * @param {number} translateX
    * @return {!MDCTabScrollerAnimation}
    */
-  incrementScrollRTL(scrollX, translateX) {
-    const currentScrollLeft = this.computeCurrentScrollPositionRTL(translateX);
-    const safeScrollLeft = this.computeSafeScrollValue_(scrollX + currentScrollLeft);
+  incrementScrollRTL(scrollX) {
+    const currentScrollLeft = this.adapter_.getScrollLeft();
+    const clampedScrollLeft = this.clampScrollValue_(scrollX + currentScrollLeft);
     return /** @type {!MDCTabScrollerAnimation} */ ({
-      scrollX: safeScrollLeft,
-      translateX: safeScrollLeft - currentScrollLeft,
+      scrollX: clampedScrollLeft,
+      translateX: clampedScrollLeft - currentScrollLeft,
     });
   }
 
@@ -82,17 +80,9 @@ class MDCTabScrollerRTLNegative extends MDCTabScrollerRTL {
    * @return {number}
    * @private
    */
-  computeSafeScrollValue_(scrollX) {
+  clampScrollValue_(scrollX) {
     const edges = this.calculateScrollEdges_();
-    if (scrollX < edges.left) {
-      return edges.left;
-    }
-
-    if (scrollX > edges.right) {
-      return edges.right;
-    }
-
-    return scrollX;
+    return Math.max(Math.min(edges.right, scrollX), edges.left);
   }
 }
 

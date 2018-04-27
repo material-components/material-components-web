@@ -36,23 +36,27 @@ class MDCTabScrollerRTL {
    * @return {number}
    * @abstract
    */
-  computeCurrentScrollPositionRTL(translateX) {}
+  computeCurrentScrollPositionRTL(translateX) {
+    throw new Error('Subclasses must implement computeCurrentScrollPositionRTL');
+  }
 
   /**
    * @param {number} scrollX
-   * @param {number} translateX
    * @return {!MDCTabScrollerAnimation}
    * @abstract
    */
-  scrollToRTL(scrollX, translateX) {}
+  scrollToRTL(scrollX, translateX) {
+    throw new Error('Subclasses must implement scrollToRTL');
+  }
 
   /**
    * @param {number} scrollX
-   * @param {number} translateX
    * @return {!MDCTabScrollerAnimation}
    * @abstract
    */
-  incrementScrollRTL(scrollX, translateX) {}
+  incrementScrollRTL(scrollX, translateX) {
+    throw new Error('Subclasses must implement incrementScrollRTL');
+  }
 }
 
 export default MDCTabScrollerRTL;

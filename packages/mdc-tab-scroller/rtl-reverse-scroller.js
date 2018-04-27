@@ -42,10 +42,10 @@ class MDCTabScrollerRTLReverse extends MDCTabScrollerRTL {
    */
   scrollToRTL(scrollX) {
     const currentScrollLeft = this.adapter_.getScrollLeft();
-    const safeScrollLeft = this.computeSafeScrollValue_(-scrollX);
+    const clampedScrollLeft = this.clampScrollValue_(-scrollX);
     return /** @type {!MDCTabScrollerAnimation} */ ({
-      scrollX: safeScrollLeft,
-      translateX: safeScrollLeft - currentScrollLeft,
+      scrollX: clampedScrollLeft,
+      translateX: clampedScrollLeft - currentScrollLeft,
     });
   }
 
@@ -55,10 +55,10 @@ class MDCTabScrollerRTLReverse extends MDCTabScrollerRTL {
    */
   incrementScrollRTL(scrollX) {
     const currentScrollLeft = this.adapter_.getScrollLeft();
-    const safeScrollLeft = this.computeSafeScrollValue_(currentScrollLeft - scrollX);
+    const clampedScrollLeft = this.clampScrollValue_(currentScrollLeft - scrollX);
     return /** @type {!MDCTabScrollerAnimation} */ ({
-      scrollX: safeScrollLeft,
-      translateX: currentScrollLeft - safeScrollLeft,
+      scrollX: clampedScrollLeft,
+      translateX: clampedScrollLeft - currentScrollLeft,
     });
   }
 
@@ -81,17 +81,9 @@ class MDCTabScrollerRTLReverse extends MDCTabScrollerRTL {
    * @return {number}
    * @private
    */
-  computeSafeScrollValue_(scrollX) {
+  clampScrollValue_(scrollX) {
     const edges = this.calculateScrollEdges_();
-    if (scrollX > edges.left) {
-      return edges.left;
-    }
-
-    if (scrollX < edges.right) {
-      return edges.right;
-    }
-
-    return scrollX;
+    return Math.min(Math.max(edges.right, scrollX), edges.left);
   }
 }
 

@@ -150,6 +150,17 @@ class MDCTabScrollerFoundation extends MDCFoundation {
   }
 
   /**
+   * @return {!MDCTabScrollerRTL}
+   */
+  getRTLScroller() {
+    if (!this.rtlScrollerInstance_) {
+      this.rtlScrollerInstance_ = this.rtlScrollerFactory_();
+    }
+
+    return this.rtlScrollerInstance_;
+  }
+
+  /**
    * Returns the translateX value from a CSS matrix transform function string
    * @return {number}
    * @private
@@ -175,17 +186,9 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * @return {number}
    * @private
    */
-  calculateSafeScrollValue_(scrollX) {
+  clampScrollValue_(scrollX) {
     const edges = this.calculateScrollEdges_();
-    if (scrollX < edges.left) {
-      return edges.left;
-    }
-
-    if (scrollX > edges.right) {
-      return edges.right;
-    }
-
-    return scrollX;
+    return Math.min(Math.max(edges.left, scrollX), edges.right);
   }
 
   /**
@@ -194,7 +197,7 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    */
   computeCurrentScrollPositionRTL_() {
     const translateX = this.calculateCurrentTranslateX_();
-    return this.getRTLScroller_().computeCurrentScrollPositionRTL(translateX);
+    return this.getRTLScroller().computeCurrentScrollPositionRTL(translateX);
   }
 
   /**
@@ -239,7 +242,7 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    */
   scrollTo_(scrollX) {
     const currentScrollX = this.computeCurrentScrollPosition();
-    const safeScrollX = this.calculateSafeScrollValue_(scrollX);
+    const safeScrollX = this.clampScrollValue_(scrollX);
     const scrollDelta = safeScrollX - currentScrollX;
     this.animate_(/** @type {!MDCTabScrollerAnimation} */ ({
       scrollX: safeScrollX,
@@ -253,10 +256,7 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * @private
    */
   scrollToRTL_(scrollX) {
-    const translateX = this.calculateCurrentTranslateX_();
-    const rtlScroller = this.getRTLScroller_();
-    const animation = rtlScroller.scrollToRTL(scrollX, translateX);
-    this.animate_(animation);
+    this.animate_(this.getRTLScroller().scrollToRTL(scrollX));
   }
 
   /**
@@ -267,7 +267,7 @@ class MDCTabScrollerFoundation extends MDCFoundation {
   incrementScroll_(scrollX) {
     const currentScrollX = this.computeCurrentScrollPosition();
     const targetScrollX = scrollX + currentScrollX;
-    const safeScrollX = this.calculateSafeScrollValue_(targetScrollX);
+    const safeScrollX = this.clampScrollValue_(targetScrollX);
     const scrollDelta = safeScrollX - currentScrollX;
     this.animate_(/** @type {!MDCTabScrollerAnimation} */ ({
       scrollX: safeScrollX,
@@ -281,10 +281,7 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * @private
    */
   incrementScrollRTL_(scrollX) {
-    const translateX = this.calculateCurrentTranslateX_();
-    const rtlScroller = this.getRTLScroller_();
-    const animation = rtlScroller.incrementScrollRTL(scrollX, translateX);
-    this.animate_(animation);
+    this.animate_(this.getRTLScroller().incrementScrollRTL(scrollX));
   }
 
   /**
@@ -293,7 +290,6 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * @private
    */
   animate_(animation) {
-    console.table(animation);
     // Early exit if there's no animation to perform
     if (animation.translateX === 0) {
       return;
@@ -371,18 +367,6 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    */
   isRTL_() {
     return this.adapter_.getContentStyleValue('direction') === 'rtl';
-  }
-
-  /**
-   * @return {!MDCTabScrollerRTL}
-   * @private
-   */
-  getRTLScroller_() {
-    if (!this.rtlScrollerInstance_) {
-      this.rtlScrollerInstance_ = this.rtlScrollerFactory_();
-    }
-
-    return this.rtlScrollerInstance_;
   }
 }
 
