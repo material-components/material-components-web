@@ -242,6 +242,11 @@ class Controller {
       );
   }
 
+  /**
+   * @param {!Buffer} imageData Uncropped image buffer
+   * @return {!Promise<!Buffer>} Cropped image buffer
+   * @private
+   */
   async autoCropImage_(imageData) {
     return jimp.read(imageData)
       .then(
