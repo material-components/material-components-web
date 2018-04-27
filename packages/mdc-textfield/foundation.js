@@ -226,7 +226,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
       this.adapter_.shakeLabel(this.shouldShake);
       this.adapter_.floatLabel(this.shouldFloat);
     }
-    if (this.helperText_) {
+    if (this.helperText_ && !this.helperText_.isValidationMessage()) {
       this.helperText_.showToScreenReader();
     }
   }

@@ -59,6 +59,13 @@ class MDCTextFieldHelperTextFoundation extends MDCFoundation {
   }
 
   /**
+   * @return {boolean} True if helper text is a validation message.
+   */
+  isValidationMessage() {
+    return this.adapter_.hasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG);
+  }
+
+  /**
    * Sets the content of the helper text field.
    * @param {string} content
    */
