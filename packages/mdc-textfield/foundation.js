@@ -368,8 +368,10 @@ class MDCTextFieldFoundation extends MDCFoundation {
     const {INVALID} = MDCTextFieldFoundation.cssClasses;
     if (isValid) {
       this.adapter_.removeClass(INVALID);
+      this.getNativeInput_().removeAttribute('aria-invalid');
     } else {
       this.adapter_.addClass(INVALID);
+      this.getNativeInput_().setAttribute('aria-invalid', true);
     }
     if (this.helperText_) {
       this.helperText_.setValidity(isValid);
@@ -400,6 +402,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     if (isDisabled) {
       this.adapter_.addClass(DISABLED);
       this.adapter_.removeClass(INVALID);
+      this.getNativeInput_().removeAttribute('aria-invalid');
     } else {
       this.adapter_.removeClass(DISABLED);
     }
