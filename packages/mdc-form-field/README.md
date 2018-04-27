@@ -84,14 +84,11 @@ By default, the input will be positioned before the label. You can position the 
 
 Property | Value Type | Description
 --- | --- | ---
-`input` | String | Proxies to the foundation's `getFoo`/`setFoo` methods
+`input` | String | Gets and sets the form field input. 
 
-#### MDCFormField.input
+In order for the label ripple integration to work correctly, this property needs to be set to a valid instance of an MDC Web input element which exposes a `ripple` getter. No action is taken if the `input` property is not set or the input instance doesn't expose a `ripple` getter.
 
-Read-write property that works with an instance of an MDC Web input element.
-
-In order for the label ripple integration to work correctly, this property needs to be set to a
-valid instance of an MDC Web input element which exposes a `ripple` getter.
+For example, using [MDC Radio](../mdc-radio):
 
 ```javascript
 const formField = new MDCFormField(document.querySelector('.mdc-form-field'));
@@ -100,11 +97,11 @@ const radio = new MDCRadio(document.querySelector('.mdc-radio'));
 formField.input = radio;
 ```
 
-No action is taken if the `input` property is not set or the input instance doesn't expose a
-`ripple` getter.
+## Usage within Web Frameworks
 
+If you are using a JavaScript framework, such as React or Angular, you can create a Form Field for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
-### Adapter
+### `MDCFormFieldAdapter`
 
 | Method Signature | Description |
 | --- | --- |
