@@ -15,9 +15,7 @@ path: /catalog/input-controls/switches/
   </a>
 </div>-->
 
-The MDC Switch component is a spec-aligned switch component adhering to the
-[Material Design Switch requirements](https://material.io/guidelines/components/selection-controls.html#selection-controls-switch).
-It works without JavaScript.
+Switches toggle the state of a single settings option on or off, and are mobile preferred.
 
 ## Design & API Documentation
 
