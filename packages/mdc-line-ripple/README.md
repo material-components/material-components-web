@@ -26,16 +26,6 @@ The line ripple is used to highlight user-specified text above it. When a line r
 <div class="mdc-line-ripple"></div>
 ```
 
-### Usage within `mdc-text-field`
-
-```html
-<div class="mdc-text-field">
-  <input type="text" id="my-text-field-id" class="mdc-text-field__input">
-  <label class="mdc-floating-label" for="my-text-field-id">Hint text</label>
-  <div class="mdc-line-ripple"></div>
-</div>
-```
-
 ## Style Customization
 
 ### CSS Classes
