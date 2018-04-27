@@ -14,15 +14,28 @@
  * limitations under the License.
  */
 
-'use strict';
+const jimp = require('jimp');
 
-const SOURCE_DIR = 'test/screenshot/';
+class ImageCropper {
+  /**
+   * @param {!Buffer} imageData Uncropped image buffer
+   * @return {!Promise<!Buffer>} Cropped image buffer
+   */
+  async autoCropImage(imageData) {
+    return jimp.read(imageData)
+      .then(
+        (image) => {
+          return new Promise((resolve, reject) => {
+            image
+              .autocrop()
+              .getBuffer(jimp.MIME_PNG, (err, buffer) => {
+                return err ? reject(err) : resolve(buffer);
+              });
+          });
+        },
+        (err) => Promise.reject(err)
+      );
+  }
+}
 
-const Controller = require('./lib/controller');
-const controller = new Controller({sourceDir: SOURCE_DIR});
-
-controller.initialize()
-  .then(() => controller.uploadAllAssets())
-  .then((testCases) => controller.captureAllPages(testCases.slice(0, 1)))
-  .then((testCases) => controller.diffGoldenJson(testCases))
-;
+module.exports = ImageCropper;

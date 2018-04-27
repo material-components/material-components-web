@@ -16,19 +16,16 @@
 
 'use strict';
 
-const fs = require('fs');
+const fs = require('mz/fs');
 const glob = require('glob');
-const jimp = require('jimp');
 const path = require('path');
-const request = require('request-promise-native');
-const stringify = require('json-stable-stringify');
-const util = require('util');
 
+const GoldenStore = require('./golden-store');
+const ImageCache = require('./image-cache');
+const ImageCropper = require('./image-cropper');
+const ImageDiffer = require('./image-differ');
 const Screenshot = require('./screenshot');
 const {Storage, UploadableFile, UploadableTestCase} = require('./storage');
-
-const readFileAsync = util.promisify(fs.readFile);
-const writeFileAsync = util.promisify(fs.writeFile);
 
 /**
  * High-level screenshot workflow controller that provides composable async methods to:
@@ -39,7 +36,7 @@ const writeFileAsync = util.promisify(fs.writeFile);
  */
 class Controller {
   /**
-   * @param {string} sourceDir Relative or absolute path to the local `test/screenshot/` directory.
+   * @param {string} sourceDir Relative path to the local `test/screenshot/` directory, relative to Node's $PWD.
    */
   constructor({sourceDir}) {
     /**
@@ -47,6 +44,12 @@ class Controller {
      * @private
      */
     this.sourceDir_ = sourceDir;
+
+    /**
+     * @type {string}
+     * @private
+     */
+    this.goldenJsonFilePath_ = path.join(this.sourceDir_, 'golden.json');
 
     /**
      * @type {!Storage}
@@ -60,6 +63,24 @@ class Controller {
      * @private
      */
     this.baseUploadDir_ = null;
+
+    /**
+     * @type {!ImageCache}
+     * @private
+     */
+    this.imageCache_ = new ImageCache();
+
+    /**
+     * @type {!ImageCropper}
+     * @private
+     */
+    this.imageCropper_ = new ImageCropper();
+
+    /**
+     * @type {!ImageDiffer}
+     * @private
+     */
+    this.imageDiffer_ = new ImageDiffer();
   }
 
   async initialize() {
@@ -104,7 +125,7 @@ class Controller {
     const assetFile = new UploadableFile({
       destinationParentDirectory: `${this.baseUploadDir_}/assets`,
       destinationRelativeFilePath: assetFileRelativePath,
-      fileContent: await readFileAsync(`${this.sourceDir_}/${assetFileRelativePath}`),
+      fileContent: await fs.readFile(`${this.sourceDir_}/${assetFileRelativePath}`),
     });
 
     return this.storage_.uploadFile(assetFile)
@@ -212,7 +233,7 @@ class Controller {
     const browser = sanitize(cbtResult.browser.api_name);
     const imageName = `${os}_${browser}_ltr.png`;
 
-    const imageData = await this.downloadImage_(cbtResult.images.chromeless);
+    const imageData = await this.downloadAndCropImage_(cbtResult.images.chromeless);
     const imageFile = new UploadableFile({
       destinationParentDirectory: `${this.baseUploadDir_}/screenshots`,
       destinationRelativeFilePath: `${testCase.htmlFile.destinationRelativeFilePath}/${imageName}`,
@@ -229,77 +250,85 @@ class Controller {
    * @return {!Promise<!Buffer>}
    * @private
    */
-  async downloadImage_(uri) {
-    // For binary data, set `encoding: null` to return the response body as a `Buffer` instead of a `string`.
-    // https://github.com/request/request#requestoptions-callback
-    return request({uri, encoding: null})
-      .then(
-        (body) => this.autoCropImage_(body),
-        (err) => {
-          console.error(`FAILED to download "${uri}"`);
-          return Promise.reject(err);
-        }
-      );
-  }
-
-  /**
-   * @param {!Buffer} imageData Uncropped image buffer
-   * @return {!Promise<!Buffer>} Cropped image buffer
-   * @private
-   */
-  async autoCropImage_(imageData) {
-    return jimp.read(imageData)
-      .then(
-        (image) => {
-          return new Promise((resolve, reject) => {
-            image
-              .autocrop()
-              .getBuffer(jimp.MIME_PNG, (err, buffer) => {
-                return err ? reject(err) : resolve(buffer);
-              });
-          });
-        },
-        (err) => Promise.reject(err)
-      );
+  async downloadAndCropImage_(uri) {
+    const uncroppedImageData = await this.imageCache_.getImageData(uri);
+    const croppedImageData = this.imageCropper_.autoCropImage(uncroppedImageData);
+    return croppedImageData;
   }
 
   /**
    * Writes the given `testCases` to a `golden.json` file in `sourceDir_`.
    * If the file already exists, it will be overwritten.
    * @param {!Array<!UploadableTestCase>} testCases
-   * @return {!Promise<{goldenFilePath:string, goldenData:!Object}>}
+   * @return {!Promise<void>}
    */
   async updateGoldenJson(testCases) {
-    const goldenData = {};
+    const goldenStore = await GoldenStore.fromTestCases(testCases);
+    return goldenStore.writeToDisk(this.goldenJsonFilePath_);
+  }
 
-    testCases.forEach((testCase) => {
-      const htmlFileKey = testCase.htmlFile.destinationRelativeFilePath;
-      const htmlFileUrl = testCase.htmlFile.publicUrl;
+  async diffGoldenJson(testCases) {
+    // TODO(acdvorak): Diff images and upload diffs to GCS in parallel
+    // TODO(acdvorak): Handle golden.json key mismatches between master and current
 
-      goldenData[htmlFileKey] = {
-        publicUrl: htmlFileUrl,
-        screenshots: {},
-      };
+    const diffResults = [];
 
-      testCase.screenshotImageFiles.forEach((screenshotImageFile) => {
-        const screenshotKey = path.parse(screenshotImageFile.destinationRelativeFilePath).name;
-        const screenshotUrl = screenshotImageFile.publicUrl;
+    const current = (await GoldenStore.fromTestCases(testCases)).jsonData;
+    const master = (await GoldenStore.fromMaster(this.goldenJsonFilePath_)).jsonData;
 
-        goldenData[htmlFileKey].screenshots[screenshotKey] = screenshotUrl;
-      });
-    });
+    for (const [htmlFilePath, currentCapture] of Object.entries(current)) {
+      const masterCapture = master[htmlFilePath];
 
-    const goldenFilePath = path.join(this.sourceDir_, 'golden.json');
-    const goldenFileContent = stringify(goldenData, {space: '  '}) + '\n';
+      if (!masterCapture) {
+        continue;
+      }
 
-    return writeFileAsync(goldenFilePath, goldenFileContent)
-      .then(
-        () => {
-          console.log(`\n\nDONE updating "${goldenFilePath}"!\n\n`);
-          return {goldenFilePath, goldenData};
-        },
-        (err) => Promise.reject(err)
-      );
+      const currentScreenshots = currentCapture.screenshots;
+      const masterScreenshots = masterCapture.screenshots;
+
+      for (const [browserKey, currentImageUrl] of Object.entries(currentScreenshots)) {
+        const masterImageUrl = masterScreenshots[browserKey];
+
+        if (!masterImageUrl) {
+          continue;
+        }
+
+        const currentImageData = await this.imageCache_.getImageData(currentImageUrl);
+        const masterImageData = await this.imageCache_.getImageData(masterImageUrl);
+
+        const diffResult = await this.imageDiffer_.getDiff({
+          snapshotImageData: currentImageData,
+          goldenImageData: masterImageData,
+        });
+
+        if (diffResult.rawMisMatchPercentage < 0.01) {
+          continue;
+        }
+
+        /** @type {!UploadableFile} */
+        const diffImageFile = await this.storage_.uploadFile(new UploadableFile({
+          destinationParentDirectory: `${this.baseUploadDir_}/screenshots`,
+          destinationRelativeFilePath: `${htmlFilePath}/${browserKey}.diff.png`,
+          fileContent: diffResult.getBuffer(),
+        }));
+
+        const diffImageUrl = diffImageFile.publicUrl;
+
+        diffResults.push({
+          htmlFilePath,
+          goldenImageUrl: masterImageUrl,
+          snapshotImageUrl: currentImageUrl,
+          diffImageUrl,
+        });
+      }
+    }
+
+    console.log('\n\nDONE diffing screenshot images!\n\n');
+    console.log(diffResults);
+
+    return diffResults;
+
+    // return assert.isBelow(Number(data.misMatchPercentage), 0.01);
   }
 
   /**

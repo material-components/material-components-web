@@ -23,6 +23,10 @@ class GitRepo {
     this.repo_ = simpleGit(workingDirPath);
   }
 
+  async fetch() {
+    return await this.repo_.fetch();
+  }
+
   /**
    * @return {!Promise<string>}
    */
@@ -35,6 +39,13 @@ class GitRepo {
    */
   async getBranchName() {
     return await this.exec_('revparse', ['--abbrev-ref', 'HEAD']);
+  }
+
+  /**
+   * @return {!Promise<string>}
+   */
+  async getFileAtRevision(filePath, revision = 'master') {
+    return await this.repo_.show([`${revision}:${filePath}`]);
   }
 
   /**
