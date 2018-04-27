@@ -65,6 +65,26 @@ We recommend you load [Material Icons](https://material.io/icons/) from Google F
 @import "@material/fab/mdc-fab";
 ```
 
+### JavaScript Instantiation
+
+The FAB will work without JavaScript, but you can enhance it to have a ripple effect by instantiating `MDCRipple` on the root element. See [MDC Ripple](../mdc-ripple) for details.
+
+```js
+mdc.ripple.MDCRipple.attachTo(document.querySelector('.mdc-fab'));
+```
+
+You can also do this declaratively when using the [material-components-web](../material-components-web) package.
+
+```html
+<button class="mdc-fab material-icons" aria-label="Favorite" data-mdc-auto-init="MDCRipple">
+  <span class="mdc-fab__icon">
+    favorite
+  </span>
+</button>
+```
+
+MDC FAB is fully aware of MDC Ripple styles, so no DOM or CSS changes are required.
+
 ## Style Customization
 
 ### CSS Classes
@@ -105,27 +125,6 @@ However, due to Edge's buggy CSS variable support, `mdc-fab-container-color` wil
 This means you will need to override FAB container styles manually for Edge if you are altering the affected CSS variables for theme properties (FAB uses secondary by default for the container fill color).
 
 ### Additional Information
-
-#### Adding MDC Ripple
-
-To add the ripple effect to an MDC FAB, attach a [ripple](../mdc-ripple) instance to the
-`mdc-fab` element.
-
-```js
-mdc.ripple.MDCRipple.attachTo(document.querySelector('.mdc-fab'));
-```
-
-You can also do this declaratively when using the [material-components-web](../material-components-web) package.
-
-```html
-<button class="mdc-fab material-icons" aria-label="Favorite" data-mdc-auto-init="MDCRipple">
-  <span class="mdc-fab__icon">
-    favorite
-  </span>
-</button>
-```
-
-MDC FAB is fully aware of MDC Ripple styles, so no DOM or CSS changes are required.
 
 #### Positioning
 
