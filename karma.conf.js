@@ -58,12 +58,12 @@ const SL_LAUNCHERS = {
     platform: 'Windows 8.1',
   },
   // TODO(sgomes): Re-enable Edge and Safari after Sauce Labs problems are fixed.
-  // 'sl-edge': {
-  //   base: 'SauceLabs',
-  //   browserName: 'microsoftedge',
-  //   version: 'latest',
-  //   platform: 'Windows 10',
-  // },
+  'sl-edge': {
+    base: 'SauceLabs',
+    browserName: 'microsoftedge',
+    version: 'latest',
+    platform: 'Windows 10',
+  },
   // 'sl-safari-stable': {
   //   base: 'SauceLabs',
   //   browserName: 'safari',
