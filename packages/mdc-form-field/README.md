@@ -7,9 +7,8 @@ path: /catalog/input-controls/form-fields/
 
 # Form Fields
 
-MDC Form Field provides an `mdc-form-field` helper class for easily making theme-aware, RTL-aware
-form field + label combos. It also provides an `MDCFormField` class for easily making input ripples
-respond to label events.
+MDC Form Field aligns a form field (for example, a checkbox) with its label, and makes it RTL-aware and [theme](../mdc-theme)-aware.
+When used with JavaScript, it can activate a [ripple](../mdc-ripple) effect upon interacting with the label.
 
 ## Installation
 
@@ -17,111 +16,75 @@ respond to label events.
 npm install @material/form-field
 ```
 
-## CSS Usage
+## Demos
 
-The `mdc-form-field` class can be used as a parent element, with any combination of adjacent `input` and `label` as
+<ul class="icon-list">
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/checkbox.html">Demo with checkbox</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components-web.appspot.com/radio.html">Demo with radio button</a>
+  </li>
+</ul>
+
+## Basic Usage
+
+### HTML Structure
+
+The `mdc-form-field` class is used as a parent element, with any combination of adjacent `input` and `label` elements as
 immediate children:
 
 ```html
 <div class="mdc-form-field">
   <input type="checkbox" id="input">
-  <label for="input">Input Label</label>
+  <label for="input">Label</label>
 </div>
 ```
 
-By default, this will position the label after the input. You can change this behavior using the
-`align-end` modifier class.
-
-```html
-<div class="mdc-form-field mdc-form-field--align-end">
-  <input type="checkbox" id="input">
-  <label for="input">Input Label</label>
-</div>
-```
-
-Now the label will be positioned before the checkbox.
-
-### Usage with MDC Web Components
-
-`mdc-form-field` works not just with `input` elements, but with _any_ immediate child element as long as its
-successive sibling is a `label` element. This means it will work for MDC Web form controls such as Checkbox and Radio:
+MDC Form Field works with _any_ type of immediate child element as long as its successive sibling is a `label` element.
+This means it will work for MDC Web form controls such as [MDC Checkbox](../mdc-checkbox) and [MDC Radio](../mdc-radio):
 
 ```html
 <div class="mdc-form-field">
   <div class="mdc-checkbox">
-    <input type="checkbox"
-           id="my-checkbox"
-           class="mdc-checkbox__native-control"/>
-    <div class="mdc-checkbox__background">
-      <svg class="mdc-checkbox__checkmark"
-           viewBox="0 0 24 24">
-        <path class="mdc-checkbox__checkmark-path"
-              fill="none"
-              stroke="white"
-              d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-      </svg>
-      <div class="mdc-checkbox__mixedmark"></div>
-    </div>
+    ...
   </div>
-  <label for="my-checkbox" id="my-checkbox-label">This is my checkbox</label>
+  <label for="my-checkbox">Checkbox label</label>
 </div>
 ```
 
-> Note that MDC Form Field is **not** intended for cases where a label and input are already handled together by
-> another component's styles and logic. For example, JavaScript-enhanced instances of MDC Text Field already manage
-> a label and input together under their own root element.
+> _NOTE_: MDC Form Field is **not** intended for cases where a label and input are already handled together in a component's styles and logic. For example, [MDC Text Field](../mdc-text-field) already manages a label and input together under its own root element.
 
-### RTL Support
+### JavaScript Instantiation
 
-`mdc-form-field` is automatically RTL-aware, and will re-position elements within an RTL context.
-`mdc-form-field` will apply RTL styles whenever it, or its ancestors, has a `dir="rtl"` attribute.
+If you are using MDC Form Field with a component that has a [ripple](../mdc-ripple) effect, you can instantiate `MDCFormField` on the `mdc-form-field` element to activate the ripple effect upon interacting with the label.
 
-
-## JS Usage
-
-### Including in code
-
-#### ES2015
-
-```javascript
-import {MDCFormField, MDCFormFieldFoundation} from '@material/form-field';
-```
-
-#### CommonJS
-
-```javascript
-const mdcFormField = require('mdc-form-field');
-const MDCFormField = mdcFormField.MDCFormField;
-const MDCFormFieldFoundation = mdcFormField.MDCFormFieldFoundation;
-```
-
-#### AMD
-
-```javascript
-require(['path/to/mdc-form-field'], mdcFormField => {
-  const MDCFormField = mdcFormField.MDCFormField;
-  const MDCFormFieldFoundation = mdcFormField.MDCFormFieldFoundation;
-});
-```
-
-#### Global
-
-```javascript
-const MDCFormField = mdc.formField.MDCFormField;
-const MDCFormFieldFoundation = mdc.formField.MDCFormFieldFoundation;
-```
-
-### Instantiation
-
-```javascript
+```js
 import {MDCFormField} from '@material/form-field';
 
 const formField = new MDCFormField(document.querySelector('.mdc-form-field'));
 ```
 
-### MDCFormField API
+> See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
 
-The `MDCFormField` functionality is exposed through a single accessor method.
+## Variants
+
+### Label position
+
+By default, the input will be positioned before the label. You can position the input after the label by adding the `mdc-form-field--align-end` class:
+
+```html
+<div class="mdc-form-field mdc-form-field--align-end">
+  <input type="checkbox" id="input">
+  <label for="input">Label</label>
+</div>
+```
+
+## `MDCFormField` Properties and Methods
+
+Property | Value Type | Description
+--- | --- | ---
+`input` | String | Proxies to the foundation's `getFoo`/`setFoo` methods
 
 #### MDCFormField.input
 
