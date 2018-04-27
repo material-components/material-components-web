@@ -23,4 +23,6 @@ const controller = new Controller({sourceDir: SOURCE_DIR});
 
 controller.initialize()
   .then(() => controller.uploadAllAssets())
+  .then((testCases) => controller.captureAllPages(testCases))
+  .then((testCases) => controller.updateGoldenJson(testCases))
 ;
