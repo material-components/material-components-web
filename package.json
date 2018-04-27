@@ -32,6 +32,7 @@
     "test:watch": "karma start --auto-watch",
     "test:unit": "karma start --single-run",
     "test:closure": "./scripts/closure-test.sh",
+    "test:fromclosure": "./scripts/from-closure-test.sh",
     "test:dependency": "./scripts/dependency-test.sh"
   },
   "devDependencies": {
