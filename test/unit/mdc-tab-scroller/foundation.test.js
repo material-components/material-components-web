@@ -21,6 +21,9 @@ import {captureHandlers, verifyDefaultAdapter} from '../helpers/foundation';
 import {createMockRaf} from '../helpers/raf';
 import {setupFoundationTest} from '../helpers/setup';
 import MDCTabScrollerFoundation from '../../../packages/mdc-tab-scroller/foundation';
+import MDCTabScrollerRTLDefault from '../../../packages/mdc-tab-scroller/rtl-default-scroller';
+import MDCTabScrollerRTLNegative from '../../../packages/mdc-tab-scroller/rtl-negative-scroller';
+import MDCTabScrollerRTLReverse from '../../../packages/mdc-tab-scroller/rtl-reverse-scroller';
 
 suite('MDCTabScrollerFoundation');
 
@@ -600,4 +603,79 @@ test('#incrementScroll() sets the transform style property in RTL', () => {
 test('#computeCurrentScrollPosition() returns a numeric scroll position in RTL', () => {
   const {foundation} = setupScrollToRTLTest();
   assert.typeOf(foundation.computeCurrentScrollPosition(), 'number');
+});
+
+// RTLScroller
+
+function setupNegativeScroller() {
+  const {foundation, mockAdapter} = setupTest();
+  const rootWidth = 200;
+  const contentWidth = 1000;
+  let scrollLeft = 0;
+  td.when(mockAdapter.getOffsetWidth()).thenDo(() => rootWidth);
+  td.when(mockAdapter.getContentOffsetWidth()).thenDo(() => contentWidth);
+  td.when(mockAdapter.getScrollLeft()).thenDo(() => scrollLeft);
+  td.when(mockAdapter.setScrollLeft(td.matchers.isA(Number))).thenDo((newScrollLeft) => scrollLeft = newScrollLeft);
+  td.when(mockAdapter.computeClientRect()).thenDo(() => {
+    return {right: rootWidth};
+  });
+  td.when(mockAdapter.computeContentClientRect()).thenDo(() => {
+    return {right: rootWidth - scrollLeft};
+  });
+  return {foundation, mockAdapter};
+}
+
+test('#getRTLScroller() returns an instance of MDCTabScrollerRTLNegative', () => {
+  const {foundation} = setupNegativeScroller();
+  assert.instanceOf(foundation.getRTLScroller(), MDCTabScrollerRTLNegative);
+});
+
+function setupReverseScroller() {
+  const {foundation, mockAdapter} = setupTest();
+  const rootWidth = 200;
+  const contentWidth = 1000;
+  let scrollLeft = 0;
+  td.when(mockAdapter.getOffsetWidth()).thenDo(() => rootWidth);
+  td.when(mockAdapter.getContentOffsetWidth()).thenDo(() => contentWidth);
+  td.when(mockAdapter.getScrollLeft()).thenDo(() => scrollLeft);
+  td.when(mockAdapter.setScrollLeft(td.matchers.isA(Number))).thenDo((newScrollLeft) => {
+    scrollLeft = Math.max(newScrollLeft, scrollLeft);
+  });
+  td.when(mockAdapter.computeClientRect()).thenDo(() => {
+    return {right: rootWidth};
+  });
+  td.when(mockAdapter.computeContentClientRect()).thenDo(() => {
+    return {right: rootWidth - scrollLeft};
+  });
+  return {foundation, mockAdapter};
+}
+
+test('#getRTLScroller() returns an instance of MDCTabScrollerRTLReverse', () => {
+  const {foundation} = setupReverseScroller();
+  assert.instanceOf(foundation.getRTLScroller(), MDCTabScrollerRTLReverse);
+});
+
+function setupDefaultScroller() {
+  const {foundation, mockAdapter} = setupTest();
+  const rootWidth = 200;
+  const contentWidth = 1000;
+  let scrollLeft = 800;
+  td.when(mockAdapter.getOffsetWidth()).thenDo(() => rootWidth);
+  td.when(mockAdapter.getContentOffsetWidth()).thenDo(() => contentWidth);
+  td.when(mockAdapter.getScrollLeft()).thenDo(() => scrollLeft);
+  td.when(mockAdapter.setScrollLeft(td.matchers.isA(Number))).thenDo((newScrollLeft) => {
+    scrollLeft = newScrollLeft;
+  });
+  td.when(mockAdapter.computeClientRect()).thenDo(() => {
+    return {right: rootWidth};
+  });
+  td.when(mockAdapter.computeContentClientRect()).thenDo(() => {
+    return {right: contentWidth - scrollLeft};
+  });
+  return {foundation, mockAdapter};
+}
+
+test('#getRTLScroller() returns an instance of MDCTabScrollerRTLDefault', () => {
+  const {foundation} = setupDefaultScroller();
+  assert.instanceOf(foundation.getRTLScroller(), MDCTabScrollerRTLDefault);
 });

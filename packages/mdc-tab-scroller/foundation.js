@@ -354,9 +354,11 @@ class MDCTabScrollerFoundation extends MDCFoundation {
     // Undo the scrollLeft test check
     this.adapter_.setScrollLeft(initialScrollLeft);
 
-    return rightEdgeDelta === newScrollLeft
-      ? new MDCTabScrollerRTLReverse(this.adapter_)
-      : new MDCTabScrollerRTLDefault(this.adapter_);
+    if (rightEdgeDelta === newScrollLeft) {
+      return new MDCTabScrollerRTLReverse(this.adapter_);
+    }
+
+    return new MDCTabScrollerRTLDefault(this.adapter_);
   }
 
   /**
