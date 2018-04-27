@@ -65,6 +65,24 @@
   }
 }
 
+@mixin mdc-select-outline-color($color) {
+  &:not(.mdc-select--disabled) {
+    @include mdc-select-outline-color_($color);
+  }
+}
+
+@mixin mdc-select-hover-outline-color($color) {
+  &:not(.mdc-select--disabled) {
+    @include mdc-select-hover-outline-color_($color);
+  }
+}
+
+@mixin mdc-select-focused-outline-color($color) {
+  &:not(.mdc-select--disabled) {
+    @include mdc-select-focused-outline-color_($color);
+  }
+}
+
 // Private
 @mixin mdc-select-focused-line-ripple_ {
   .mdc-select__native-control:focus ~ .mdc-line-ripple {
@@ -121,24 +139,6 @@
   }
 
   @include mdc-notched-outline-idle-corner-radius($radius);
-}
-
-@mixin mdc-select-outline-color($color) {
-  &:not(.mdc-select--disabled) {
-    @include mdc-select-outline-color_($color);
-  }
-}
-
-@mixin mdc-select-hover-outline-color($color) {
-  &:not(.mdc-select--disabled) {
-    @include mdc-select-hover-outline-color_($color);
-  }
-}
-
-@mixin mdc-select-focused-outline-color($color) {
-  &:not(.mdc-select--disabled) {
-    @include mdc-select-focused-outline-color_($color);
-  }
 }
 
 @mixin mdc-select-outline-color_($color) {
