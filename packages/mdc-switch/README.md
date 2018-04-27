@@ -51,7 +51,7 @@ npm install @material/switch
 
 ### Disabled Switch
 
-Users can add the `disabled` attribute directly to the `<input >`element or a parent `<fieldset>` element to disable a switch.
+Users can add the `disabled` attribute directly to the `<input >` element or a parent `<fieldset>` element to disable a switch.
 
 ```html
 <div class="mdc-switch">
