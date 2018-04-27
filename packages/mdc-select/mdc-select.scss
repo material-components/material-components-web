@@ -170,7 +170,7 @@
 }
 
 .mdc-select--disabled {
-  @include mdc-select-dd-arrow-svg-bg_($mdc-select-disabled-ink-color);
+  @include mdc-select-dd-arrow-svg-bg_($mdc-select-disabled-arrow-color);
 
   .mdc-floating-label {
     @include mdc-floating-label-ink-color($mdc-select-disabled-label-color);
