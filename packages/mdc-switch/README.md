@@ -51,7 +51,7 @@ npm install @material/switch
 
 ### Disabled Switch
 
-Users can add `disabled` directly to the input element or set the fieldset containing the switch to `disabled` to disable a switch. Disabled switches cannot be interacted with and have no visual interaction effect.
+Users can add the `disabled` attribute directly to the `<input >`element or set the `<fieldset>` containing the switch to disable a switch.
 
 ```html
 <div class="mdc-switch">
@@ -84,7 +84,3 @@ Mixin | Description
 `mdc-switch-track-color($color)` | Sets the track color.
 `mdc-switch-knob-color($color)` | Sets the knob color.
 `mdc-switch-focus-indicator-color($color)` | Sets the focus indicator color.
-
-## Usage within Web Frameworks
-
-If you are using a JavaScript framework, such as React or Angular, you can create a Switch for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
