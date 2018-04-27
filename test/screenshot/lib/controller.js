@@ -18,13 +18,16 @@
 
 const fs = require('fs');
 const glob = require('glob');
+const path = require('path');
 const request = require('request-promise-native');
+const stringify = require('json-stable-stringify');
 const util = require('util');
 
 const Screenshot = require('./screenshot');
 const {Storage, UploadableFile, UploadableTestCase} = require('./storage');
 
 const readFileAsync = util.promisify(fs.readFile);
+const writeFileAsync = util.promisify(fs.writeFile);
 
 /**
  * High-level screenshot workflow controller that provides composable async methods to:
@@ -76,8 +79,8 @@ class Controller {
     const assetFileRelativePaths = glob.sync('**/*', {cwd: this.sourceDir_, nodir: true});
 
     /** @type {!Array<!Promise<!UploadableFile>>} */
-    const uploadPromises = assetFileRelativePaths.map((path) => {
-      return this.uploadOneAsset_(path, testCases);
+    const uploadPromises = assetFileRelativePaths.map((assetFileRelativePath) => {
+      return this.uploadOneAsset_(assetFileRelativePath, testCases);
     });
 
     return Promise.all(uploadPromises)
@@ -235,6 +238,45 @@ class Controller {
           console.error(`FAILED to download "${uri}"`);
           return Promise.reject(err);
         }
+      );
+  }
+
+  /**
+   * Writes the given `testCases` to a `golden.json` file in `sourceDir_`.
+   * If the file already exists, it will be overwritten.
+   * @param {!Array<!UploadableTestCase>} testCases
+   * @return {!Promise<{goldenFilePath:string, goldenData:!Object}>}
+   */
+  async updateGoldenJson(testCases) {
+    const goldenData = {};
+
+    testCases.forEach((testCase) => {
+      const htmlFileKey = testCase.htmlFile.destinationRelativeFilePath;
+      const htmlFileUrl = testCase.htmlFile.publicUrl;
+
+      goldenData[htmlFileKey] = {
+        publicUrl: htmlFileUrl,
+        screenshots: {},
+      };
+
+      testCase.screenshotImageFiles.forEach((screenshotImageFile) => {
+        const screenshotKey = path.parse(screenshotImageFile.destinationRelativeFilePath).name;
+        const screenshotUrl = screenshotImageFile.publicUrl;
+
+        goldenData[htmlFileKey].screenshots[screenshotKey] = screenshotUrl;
+      });
+    });
+
+    const goldenFilePath = path.join(this.sourceDir_, 'golden.json');
+    const goldenFileContent = stringify(goldenData, {space: '  '}) + '\n';
+
+    return writeFileAsync(goldenFilePath, goldenFileContent)
+      .then(
+        () => {
+          console.log(`\n\nDONE updating "${goldenFilePath}"!\n\n`);
+          return {goldenFilePath, goldenData};
+        },
+        (err) => Promise.reject(err)
       );
   }
 
