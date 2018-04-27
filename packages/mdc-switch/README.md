@@ -36,7 +36,7 @@ It works without JavaScript.
 npm install @material/switch
 ```
 
-## Usage
+## Basic Usage
 
 ### HTML Structure
 
@@ -49,8 +49,9 @@ npm install @material/switch
 </div>
 <label for="basic-switch">off/on</label>
 ```
+## Variant
 
-#### Disabled Switch
+### Disabled Switch
 
 Users can add `disabled` directly to the input element or set the fieldset containing the switch to `disabled` to disable a switch. Disabled switches cannot be interacted with and have no visual interaction effect.
 
@@ -64,14 +65,16 @@ Users can add `disabled` directly to the input element or set the fieldset conta
 <label for="another-basic-switch">off/on</label>
 ```
 
+## Style Customization
+
 ### CSS Classes
 
 CSS Class | Description
 --- | ---
-`mdc-switch` | Mandatory, for the parent element
-`mdc-switch__native-control` | Mandatory, for the input checkbox
-`mdc-switch__background` | Mandatory, for the background element
-`mdc-switch__knob` | Mandatory, for the knob element
+`mdc-switch` | Mandatory, for the parent element.
+`mdc-switch__native-control` | Mandatory, for the input checkbox.
+`mdc-switch__background` | Mandatory, for the background element.
+`mdc-switch__knob` | Mandatory, for the knob element.
 
 ### Sass Mixins
 
@@ -80,6 +83,10 @@ It is not currently possible to customize the color of a _disabled_ or _off_ (un
 
 Mixin | Description
 --- | ---
-`mdc-switch-track-color($color)` | Sets the track color
-`mdc-switch-knob-color($color)` | Sets the knob color
-`mdc-switch-focus-indicator-color($color)` | Sets the focus indicator color
+`mdc-switch-track-color($color)` | Sets the track color.
+`mdc-switch-knob-color($color)` | Sets the knob color.
+`mdc-switch-focus-indicator-color($color)` | Sets the focus indicator color.
+
+## Usage within Web Frameworks
+
+If you are using a JavaScript framework, such as React or Angular, you can create a Switch for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
