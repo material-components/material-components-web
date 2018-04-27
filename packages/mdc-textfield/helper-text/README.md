@@ -27,19 +27,6 @@ Helper text gives context about a field’s input, such as how the input will be
 <p class="mdc-text-field-helper-text" aria-hidden="true">
 ```
 
-### Usage within `mdc-text-field`
-
-```html
-<div class="mdc-text-field">
-  <input type="text" id="username" class="mdc-text-field__input">
-  <label for="username" class="mdc-floating-label">Username</label>
-  <div class="mdc-line-ripple"></div>
-</div>
-<p class="mdc-text-field-helper-text" aria-hidden="true">
-  This will be displayed on your public profile
-</p>
-```
-
 #### Accessibility
 
 Note that in every example where the helper text is dependent on the state of the input element, we

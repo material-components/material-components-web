@@ -27,10 +27,6 @@ Icons describe the type of input a text field requires. They can also be interac
 <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
 ```
 
-### Usage within `mdc-text-field`
-
-Leading and trailing icons can be applied to text fields styled as `mdc-text-field--box` or `mdc-text-field--outlined`. To add an icon, add the relevant class (either `mdc-text-field--with-leading-icon` or `mdc-text-field--with-trailing-icon`) to the root element, add an `i` element with your preferred icon, and give it a class of `mdc-text-field__icon`.
-
 ## Variants
 
 ### Leading icon

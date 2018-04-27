@@ -26,33 +26,6 @@ Floating labels display the type of input a field requires. Every text field and
 <label class="mdc-floating-label" for="my-text-field-id">Hint text</label>
 ```
 
-### Usage within `mdc-text-field`
-
-```html
-<div class="mdc-text-field">
-  <input type="text" id="my-text-field-id" class="mdc-text-field__input">
-  <label class="mdc-floating-label" for="my-text-field-id">Hint text</label>
-  <div class="mdc-text-field__bottom-line"></div>
-</div>
-```
-
-### Usage within `mdc-select`
-
-```html
-<div class="mdc-select">
-  <select class="mdc-select__native-control" id="my-select">
-    <option value="vegetables" selected>
-      Vegetables
-    </option>
-    <option value="fruit">
-      Fruit
-    </option>
-  </select>
-  <label class="mdc-floating-label mdc-floating-label--float-above" for="my-select">Pick a Food Group</label>
-  <div class="mdc-line-ripple"></div>
-</div>
-```
-
 #### Avoid Dynamic ID Generation
 
 If you're using the JavaScript-enabled version of floating label, you can avoid needing to assign
