@@ -17,15 +17,37 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,600,700");
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
+// https://stackoverflow.com/a/35362074/467582
+@mixin test-checkerboard-background($color: #f2f2f2, $size: 10px) {
+  background-image:
+    linear-gradient(45deg, #{$color} 25%, transparent 25%),
+    linear-gradient(-45deg, #{$color} 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #{$color} 75%),
+    linear-gradient(-45deg, transparent 75%, #{$color} 75%);
+  background-position: 0 0, 0 #{$size}, #{$size} -#{$size}, -#{$size} 0;
+  background-size: #{$size * 2} #{$size * 2};
+}
+
+.test-body {
+  display: flex;
+}
+
 .test-main {
+  @include test-checkerboard-background;
+
   padding: 16px;
+  border: 1px solid #000;
 }
 
 .test-row {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  margin: 0 0 24px 0;
+  margin: 0;
+}
+
+.test-row + .test-row {
+  margin-top: 24px;
 }
 
 .test-cell {
