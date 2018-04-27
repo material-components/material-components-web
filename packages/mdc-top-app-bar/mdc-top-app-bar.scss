@@ -191,23 +191,23 @@
 // stylelint-enable plugin/selector-bem-pattern
 
 .mdc-top-app-bar--fixed-adjust {
-  margin-top: $mdc-top-app-bar-row-height;
+  padding-top: $mdc-top-app-bar-row-height;
 }
 
 .mdc-top-app-bar--dense-fixed-adjust {
-  margin-top: $mdc-top-app-bar-dense-row-height;
+  padding-top: $mdc-top-app-bar-dense-row-height;
 }
 
 .mdc-top-app-bar--short-fixed-adjust {
-  margin-top: $mdc-top-app-bar-mobile-row-height;
+  padding-top: $mdc-top-app-bar-mobile-row-height;
 }
 
 .mdc-top-app-bar--prominent-fixed-adjust {
-  margin-top: $mdc-top-app-bar-prominent-row-height;
+  padding-top: $mdc-top-app-bar-prominent-row-height;
 }
 
 .mdc-top-app-bar--dense-prominent-fixed-adjust {
-  margin-top: $mdc-top-app-bar-dense-row-height * 2;
+  padding-top: $mdc-top-app-bar-dense-row-height * 2;
 }
 
 // Mobile Styles
