@@ -44,6 +44,7 @@ npm install @material/button
   Button
 </button>
 ```
+
 > _NOTE_: Examples here use the generic `<button>`, but users can also apply the `mdc-button` class to `<a>` elements.
 
 ### Styles
@@ -68,7 +69,7 @@ const buttonRipple = new MDCRipple(document.querySelector('.mdc-button'));
 
 ### Contained Button
 
-To style a contained button, add the class `mdc-button--raised` to the `<button>` element for a contained button with elevation, or the class `mdc-button--unelevated` for a contained button flush with the surface.
+To style a contained button, add the `mdc-button--raised` class to the `<button>` element for a contained button with elevation, or the `mdc-button--unelevated` class for a contained button flush with the surface.
 
 ### Outlined Button
 
@@ -76,7 +77,7 @@ To style an outlined button, add the class `mdc-button--outlined` to the `<butto
 
 ### Icons 
 
-To add an icon, add `mdc-button__icon` inside the button element and set the attribute `aria-hidden="true"`. The icon is set to 18px to meet legibility requirements.
+To add an icon, add an element with the `mdc-button__icon` class inside the button element and set the attribute `aria-hidden="true"`. The icon is set to 18px to meet legibility requirements.
 
 We recommend you use [Material Icons](https://material.io/icons/) from Google Fonts:
 
@@ -100,7 +101,7 @@ It's also possible to use an SVG icon:
 
 ### Disabled
 
-To disable a button, add `disabled` directly to the `<button>`, or set `disabled` on the `<fieldset>` containing the button.
+To disable a button, add the `disabled` attribute directly to the `<button>`, or set the `disabled` attribute on the `<fieldset>` containing the button.
 Disabled buttons cannot be interacted with and have no visual interaction effect.
 
 ```html
@@ -127,6 +128,8 @@ CSS Class | Description
 To customize a button's color and properties, you can use the following mixins.
 
 #### Basic Sass Mixins
+
+MDC Button uses [MDC Theme](../mdc-theme)'s `primary` color by default. Use the following mixins to customize it.
 
 Mixin | Description
 --- | ---
