@@ -197,6 +197,8 @@ function setupTestRTL() {
 test('#getRTLScroller() returns an instance of MDCTabScrollerRTL', () => {
   const {root, component} = setupTestRTL();
   document.body.appendChild(root);
-  assert.instanceOf( component.getDefaultFoundation().getRTLScroller(), MDCTabScrollerRTL);
+  const rtlScroller = component.getDefaultFoundation().getRTLScroller();
+  console.log('RTL Scroller type', rtlScroller.constructor.name);
+  assert.instanceOf(component.getDefaultFoundation().getRTLScroller(), MDCTabScrollerRTL);
   document.body.removeChild(root);
 });

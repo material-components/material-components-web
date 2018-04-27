@@ -45,7 +45,7 @@ class MDCTabScrollerRTL {
    * @return {!MDCTabScrollerAnimation}
    * @abstract
    */
-  scrollToRTL(scrollX, translateX) {
+  scrollToRTL(scrollX) {
     throw new Error('Subclasses must implement scrollToRTL');
   }
 
@@ -54,7 +54,7 @@ class MDCTabScrollerRTL {
    * @return {!MDCTabScrollerAnimation}
    * @abstract
    */
-  incrementScrollRTL(scrollX, translateX) {
+  incrementScrollRTL(scrollX) {
     throw new Error('Subclasses must implement incrementScrollRTL');
   }
 }
