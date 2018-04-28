@@ -17,7 +17,7 @@ path: /catalog/buttons/
 </div>-->
 
 The MDC Button component is a spec-aligned button component adhering to the
-[Material Design button requirements](https://material.io/guidelines/components/buttons.html).
+[Material Design button requirements](https://material.io/go/design-buttons).
 It works without JavaScript with basic functionality for all states.
 You can enhance the button to have ripple effects by instantiating `MDCRipple` on
 the `button` element. See [MDC Ripple](../mdc-ripple) and [Demo](https://material-components-web.appspot.com/button.html) for details.
@@ -26,7 +26,7 @@ the `button` element. See [MDC Ripple](../mdc-ripple) and [Demo](https://materia
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/buttons.html">Material Design guidelines: Buttons</a>
+    <a href="https://material.io/go/design-buttons">Material Design guidelines: Buttons</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
     <a href="https://material-components-web.appspot.com/button.html">Demo</a>
@@ -126,7 +126,7 @@ Buttons are fully aware of ripple styles, so no DOM or CSS changes are required 
 
 ### Sass Mixins
 
-By default an MDC Button will inherit its color from the theme and align with [Material Design button requirements](https://material.io/guidelines/components/buttons.html). To customize a Button's color and properties, you can use the following mixins.
+By default an MDC Button will inherit its color from the theme and align with [Material Design button requirements](https://material.io/go/design-buttons). To customize a Button's color and properties, you can use the following mixins.
 
 #### `mdc-button-filled-accessible($container-fill-color)`
 

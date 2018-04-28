@@ -14,7 +14,7 @@ UIs for languages that are read from right-to-left (RTL), such as Arabic and Heb
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/usability/bidirectionality.html">Material Design guidelines: Bidirectionality</a>
+    <a href="https://material.io/go/design-bidirectionality">Material Design guidelines: Bidirectionality</a>
   </li>
 </ul>
 
