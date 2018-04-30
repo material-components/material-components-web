@@ -133,7 +133,7 @@
 }
 
 .mdc-select--disabled {
-  @include mdc-select-dd-arrow-svg-bg_($mdc-select-disabled-ink-color);
+  @include mdc-select-dd-arrow-svg-bg_($mdc-select-disabled-arrow-color);
 
   &.mdc-select--box {
     @include mdc-select-container-fill-color_($mdc-select-box-disabled-fill-color);
