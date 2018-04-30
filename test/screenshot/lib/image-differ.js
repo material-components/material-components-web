@@ -16,6 +16,106 @@
 
 const compareImages = require('resemblejs/compareImages');
 
+class ImageDiffer {
+  constructor({imageCache}) {
+    /**
+     * @type {!ImageCache}
+     * @private
+     */
+    this.imageCache_ = imageCache;
+  }
+
+  async compare({
+    actualStore,
+    expectedStore,
+  }) {
+    // TODO(acdvorak): Diff images and upload diffs to GCS in parallel
+    // TODO(acdvorak): Handle golden.json key mismatches between master and current
+
+    const diffs = [];
+
+    const actualJsonData = actualStore.jsonData;
+    const expectedJsonData = expectedStore.jsonData;
+
+    for (const [htmlFilePath, actualCapture] of Object.entries(actualJsonData)) {
+      const expectedCapture = expectedJsonData[htmlFilePath];
+      if (!expectedCapture) {
+        continue;
+      }
+
+      const actualScreenshots = actualCapture.screenshots;
+      const expectedScreenshots = expectedCapture.screenshots;
+
+      for (const [browserKey, actualImageUrl] of Object.entries(actualScreenshots)) {
+        const expectedImageUrl = expectedScreenshots[browserKey];
+        if (!expectedImageUrl) {
+          continue;
+        }
+
+        const [actualImageBuffer, expectedImageBuffer] = await Promise.all([
+          this.imageCache_.getImageBuffer(actualImageUrl),
+          this.imageCache_.getImageBuffer(expectedImageUrl),
+        ]);
+
+        const diffResult = await this.computeDiff_({
+          actualImageBuffer,
+          expectedImageBuffer,
+        });
+
+        if (diffResult.rawMisMatchPercentage < 0.01) {
+          continue;
+        }
+
+        diffs.push({
+          htmlFilePath,
+          browserKey,
+          actualImageUrl,
+          expectedImageUrl,
+          diffImageBuffer: diffResult.getBuffer(),
+          diffImageUrl: null,
+        });
+      }
+    }
+
+    return diffs;
+  }
+
+  /**
+   * @param {!Buffer} actualImageBuffer
+   * @param {!Buffer} expectedImageBuffer
+   * @return {!Promise<!ResembleData>}
+   * @private
+   */
+  async computeDiff_({
+    actualImageBuffer,
+    expectedImageBuffer,
+  }) {
+    const options = {
+      output: {
+        errorColor: {
+          red: 255,
+          green: 0,
+          blue: 255,
+          alpha: 150,
+        },
+        errorType: ErrorType.movementDifferenceIntensity,
+        transparency: 0.3,
+      },
+      ignore: [Ignore.antialiasing],
+    };
+
+    // The parameters can be Node Buffers
+    // data is the same as usual with an additional getBuffer() function
+    return await compareImages(
+      actualImageBuffer,
+      expectedImageBuffer,
+      options
+    );
+  }
+}
+
+module.exports = ImageDiffer;
+
 const ErrorType = {
   flat: 'flat',
   movement: 'movement',
@@ -41,13 +141,13 @@ const Ignore = {
  * }}
  */
 // eslint-disable-next-line no-unused-vars
-let ResembleDiffBounds;
+let BoundingBox;
 
 /**
  * @typedef {{
  *   rawMisMatchPercentage: number,
  *   misMatchPercentage: string,
- *   diffBounds: !ResembleDiffBounds,
+ *   diffBounds: !BoundingBox,
  *   analysisTime: number,
  *   getImageDataUrl: function(text: string): string,
  *   getBuffer: function(includeOriginal: boolean): !Buffer,
@@ -55,42 +155,3 @@ let ResembleDiffBounds;
  */
 // eslint-disable-next-line no-unused-vars
 let ResembleData;
-
-class ImageDiffer {
-  constructor() {}
-
-  /**
-   * @param {!Buffer} snapshotImageData
-   * @param {!Buffer} goldenImageData
-   * @return {!Promise<!ResembleData>}
-   * @private
-   */
-  async getDiff({
-    snapshotImageData,
-    goldenImageData,
-  }) {
-    const options = {
-      output: {
-        errorColor: {
-          red: 255,
-          green: 0,
-          blue: 255,
-          alpha: 150,
-        },
-        errorType: ErrorType.movementDifferenceIntensity,
-        transparency: 0.3,
-      },
-      ignore: [Ignore.antialiasing],
-    };
-
-    // The parameters can be Node Buffers
-    // data is the same as usual with an additional getBuffer() function
-    return await compareImages(
-      snapshotImageData,
-      goldenImageData,
-      options
-    );
-  }
-}
-
-module.exports = ImageDiffer;

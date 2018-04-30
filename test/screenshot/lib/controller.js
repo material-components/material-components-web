@@ -80,7 +80,7 @@ class Controller {
      * @type {!ImageDiffer}
      * @private
      */
-    this.imageDiffer_ = new ImageDiffer();
+    this.imageDiffer_ = new ImageDiffer({imageCache: this.imageCache_});
   }
 
   async initialize() {
@@ -251,7 +251,7 @@ class Controller {
    * @private
    */
   async downloadAndCropImage_(uri) {
-    const uncroppedImageData = await this.imageCache_.getImageData(uri);
+    const uncroppedImageData = await this.imageCache_.getImageBuffer(uri);
     const croppedImageData = this.imageCropper_.autoCropImage(uncroppedImageData);
     return croppedImageData;
   }
@@ -271,62 +271,27 @@ class Controller {
     // TODO(acdvorak): Diff images and upload diffs to GCS in parallel
     // TODO(acdvorak): Handle golden.json key mismatches between master and current
 
-    const diffResults = [];
+    const diffs = await this.imageDiffer_.compare({
+      actualStore: await GoldenStore.fromTestCases(testCases),
+      expectedStore: await GoldenStore.fromMaster(this.goldenJsonFilePath_),
+    });
 
-    const current = (await GoldenStore.fromTestCases(testCases)).jsonData;
-    const master = (await GoldenStore.fromMaster(this.goldenJsonFilePath_)).jsonData;
+    for (const diff of diffs) {
+      /** @type {!UploadableFile} */
+      const diffImageFile = await this.storage_.uploadFile(new UploadableFile({
+        destinationParentDirectory: `${this.baseUploadDir_}/screenshots`,
+        destinationRelativeFilePath: `${diff.htmlFilePath}/${diff.browserKey}.diff.png`,
+        fileContent: diff.diffImageBuffer,
+      }));
 
-    for (const [htmlFilePath, currentCapture] of Object.entries(current)) {
-      const masterCapture = master[htmlFilePath];
-
-      if (!masterCapture) {
-        continue;
-      }
-
-      const currentScreenshots = currentCapture.screenshots;
-      const masterScreenshots = masterCapture.screenshots;
-
-      for (const [browserKey, currentImageUrl] of Object.entries(currentScreenshots)) {
-        const masterImageUrl = masterScreenshots[browserKey];
-
-        if (!masterImageUrl) {
-          continue;
-        }
-
-        const currentImageData = await this.imageCache_.getImageData(currentImageUrl);
-        const masterImageData = await this.imageCache_.getImageData(masterImageUrl);
-
-        const diffResult = await this.imageDiffer_.getDiff({
-          snapshotImageData: currentImageData,
-          goldenImageData: masterImageData,
-        });
-
-        if (diffResult.rawMisMatchPercentage < 0.01) {
-          continue;
-        }
-
-        /** @type {!UploadableFile} */
-        const diffImageFile = await this.storage_.uploadFile(new UploadableFile({
-          destinationParentDirectory: `${this.baseUploadDir_}/screenshots`,
-          destinationRelativeFilePath: `${htmlFilePath}/${browserKey}.diff.png`,
-          fileContent: diffResult.getBuffer(),
-        }));
-
-        const diffImageUrl = diffImageFile.publicUrl;
-
-        diffResults.push({
-          htmlFilePath,
-          goldenImageUrl: masterImageUrl,
-          snapshotImageUrl: currentImageUrl,
-          diffImageUrl,
-        });
-      }
+      diff.diffImageUrl = diffImageFile.publicUrl;
+      diff.diffImageBuffer = null; // free up memory
     }
 
     console.log('\n\nDONE diffing screenshot images!\n\n');
-    console.log(diffResults);
+    console.log(diffs);
 
-    return diffResults;
+    return diffs;
 
     // return assert.isBelow(Number(data.misMatchPercentage), 0.01);
   }

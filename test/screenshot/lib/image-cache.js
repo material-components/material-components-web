@@ -36,13 +36,11 @@ class ImageCache {
    * @param {string} uri
    * @return {!Promise<!Buffer>}
    */
-  async getImageData(uri) {
+  async getImageBuffer(uri) {
     await fsx.ensureDir(this.tempDirPath_);
 
     const imageFileName = this.getFilename_(uri);
     const imageFilePath = path.join(this.tempDirPath_, imageFileName);
-
-    console.log('imageFilePath:', imageFilePath);
 
     if (await fs.exists(imageFilePath)) {
       return await fs.readFile(imageFilePath);
@@ -52,7 +50,7 @@ class ImageCache {
 
     fs.writeFile(imageFilePath, imageData)
       .catch(async (err) => {
-        console.error(`getImageData("${uri}"):`);
+        console.error(`getImageBuffer("${uri}"):`);
         console.error(err);
         if (await fs.exists(imageFilePath)) {
           await fs.unlink(imageFilePath);
