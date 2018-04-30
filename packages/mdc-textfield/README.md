@@ -181,17 +181,17 @@ Add the `disabled` attribute to `<input>` if the `mdc-text-field` is disabled. Y
 
 CSS Class | Description
 --- | ---
-`mdc-text-field` | Mandatory
-`mdc-text-field--upgraded` | Indicates the text field is upgraded, normally by JavaScript
-`mdc-text-field--box` | Styles the text field as a box text field
-`mdc-text-field--outlined` | Styles the text field as an outlined text field
-`mdc-text-field--fullwidth` | Styles the text field as a full width text field
-`mdc-text-field--textarea` | Indicates the text field is a `<textarea>`
-`mdc-text-field--disabled` | Styles the text field as a disabled text field
-`mdc-text-field--dense` | Styles the text field as a dense text field
-`mdc-text-field--with-leading-icon` | Styles the text field as a text field with a leading icon
-`mdc-text-field--with-trailing-icon` | Styles the text field as a text field with a trailing icon
-`mdc-text-field--focused` | Styles the text field as a text field in focus
+`mdc-text-field` | Mandatory.
+`mdc-text-field--upgraded` | Indicates the text field is upgraded, normally by JavaScript.
+`mdc-text-field--box` | Styles the text field as a box text field.
+`mdc-text-field--outlined` | Styles the text field as an outlined text field.
+`mdc-text-field--fullwidth` | Styles the text field as a full width text field.
+`mdc-text-field--textarea` | Indicates the text field is a `<textarea>`.
+`mdc-text-field--disabled` | Styles the text field as a disabled text field.
+`mdc-text-field--dense` | Styles the text field as a dense text field.
+`mdc-text-field--with-leading-icon` | Styles the text field as a text field with a leading icon.
+`mdc-text-field--with-trailing-icon` | Styles the text field as a text field with a trailing icon.
+`mdc-text-field--focused` | Styles the text field as a text field in focus.
 
 ### Sass Mixins
 

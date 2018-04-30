@@ -42,7 +42,7 @@ Mixin | Description
 --- | ---
 `mdc-line-ripple-color($color)` | Customizes the color of the line ripple when active.
 
-### `MDCLineRipple` Properties and Methods
+## `MDCLineRipple` Properties and Methods
 
 ### Methods
 

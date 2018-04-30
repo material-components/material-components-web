@@ -61,6 +61,8 @@ Mixin | Description
 
 ## `MDCFloatingLabel` Properties and Methods
 
+### Methods
+
 Method Signature | Description
 --- | ---
 `shake(shouldShake: boolean) => void` | Shakes or stops shaking the label, depending on the value of `shouldShake`. Proxies to the foundation method of the same name.
