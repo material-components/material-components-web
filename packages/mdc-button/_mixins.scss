@@ -135,6 +135,32 @@
   }
 }
 
+
+@import "@material/ripple/mixins";
+@import "./variables";
+
+@mixin mdc-button--icon-base_() {
+  @include mdc-ripple-surface;
+  @include mdc-ripple-radius-unbounded;
+
+  display: flex;
+  position: relative;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: $mdc-button-icon-size + $mdc-button-icon-padding * 2;
+  height: $mdc-button-icon-size + $mdc-button-icon-padding * 2;
+  padding: $mdc-button-icon-padding;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  fill: currentColor;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 @mixin mdc-button__icon_ {
   @include mdc-rtl-reflexive-box(margin, right, 8px);
 
