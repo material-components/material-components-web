@@ -70,20 +70,12 @@ We recommend you load [Material Icons](https://material.io/icons/) from Google F
 The FAB will work without JavaScript, but you can enhance it to have a ripple effect by instantiating `MDCRipple` on the root element. See [MDC Ripple](../mdc-ripple) for details.
 
 ```js
-mdc.ripple.MDCRipple.attachTo(document.querySelector('.mdc-fab'));
+import {MDCRipple} from '@material/ripple';
+
+const fabRipple = new MDCRipple(document.querySelector('.mdc-fab'));
 ```
 
-You can also do this declaratively when using the [material-components-web](../material-components-web) package.
-
-```html
-<button class="mdc-fab material-icons" aria-label="Favorite" data-mdc-auto-init="MDCRipple">
-  <span class="mdc-fab__icon">
-    favorite
-  </span>
-</button>
-```
-
-MDC FAB is fully aware of MDC Ripple styles, so no DOM or CSS changes are required.
+> See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
 
 ## Style Customization
 
@@ -100,11 +92,13 @@ CSS Class | Description
 
 ### Sass Mixins
 
+#### Basic Sass Mixins
+
+MDC FAB uses [MDC Theme](../mdc-theme)'s `secondary` color by default. Use the following mixins to customize it.
+
 Mixin | Description
 --- | ---
 `mdc-fab-accessible($container-color)` | Changes the FAB's container color to the given color, and updates the FAB's ink and ripple color to meet accessibility standards.
-
-By default an MDC FAB will inherit its color from the theme. The `mdc-fab-accessible` mixin will override the color of the MDC FAB's container, but maintain accessibility standards for the ink and ripple. The mixin is intended for customizing an MDC FAB's color to a non-theme color.
 
 #### Advanced Sass Mixins
 
