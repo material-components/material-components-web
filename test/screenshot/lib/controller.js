@@ -272,9 +272,6 @@ class Controller {
    * @return {!Promise<!Array<!ImageDiff>>}
    */
   async diffGoldenJson(testCases) {
-    // TODO(acdvorak): Diff images and upload diffs to GCS in parallel
-    // TODO(acdvorak): Handle golden.json key mismatches between master and current
-
     const diffs = await this.imageDiffer_.compare({
       actualStore: await GoldenStore.fromTestCases(testCases),
       expectedStore: await GoldenStore.fromMaster(this.goldenJsonFilePath_),
@@ -291,8 +288,6 @@ class Controller {
         (err) => Promise.reject(err)
       )
     ;
-
-    // return assert.isBelow(Number(data.misMatchPercentage), 0.01);
   }
 
   async uploadOneDiffImage_(diff) {
