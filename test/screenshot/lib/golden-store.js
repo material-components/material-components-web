@@ -21,7 +21,7 @@ const stringify = require('json-stable-stringify');
 const GitRepo = require('./git-repo');
 
 /**
- * Reads and writes (selectively updates) `golden.json`
+ * Reads and writes a `golden.json` file.
  */
 class GoldenStore {
   constructor({
@@ -46,10 +46,7 @@ class GoldenStore {
 
     const getFrom = (rev) => mdcGitRepo.getFileAtRevision(jsonFilePath, rev);
 
-    // const masterJsonStr = await getFrom('origin/master').catch(() => getFrom('HEAD'));
-    // TODO(acdvorak): REMOVE THIS
-    const masterJsonStr = await getFrom('origin/feat/infra/crop-screenshots').catch(() => getFrom('HEAD'));
-
+    const masterJsonStr = await getFrom('origin/master').catch(() => getFrom('HEAD'));
     return new GoldenStore({
       jsonData: JSON.parse(masterJsonStr),
     });

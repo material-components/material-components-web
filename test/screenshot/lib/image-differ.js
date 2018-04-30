@@ -34,9 +34,6 @@ class ImageDiffer {
     actualStore,
     expectedStore,
   }) {
-    // TODO(acdvorak): Diff images and upload diffs to GCS in parallel
-    // TODO(acdvorak): Handle golden.json key mismatches between master and current
-
     /** @type {!Array<!Promise<!Array<!ImageDiff>>>} */
     const pagePromises = [];
 
@@ -59,7 +56,7 @@ class ImageDiffer {
     }
 
     // Flatten the array of arrays
-    const diffResults = [].concat.call([], ...(await Promise.all(pagePromises)));
+    const diffResults = [].concat(...(await Promise.all(pagePromises)));
 
     // Filter out images with no diffs
     return diffResults.filter((diffResult) => Boolean(diffResult.diffImageBuffer));
@@ -138,7 +135,7 @@ class ImageDiffer {
   /**
    * @param {!Buffer} actualImageBuffer
    * @param {!Buffer} expectedImageBuffer
-   * @return {!Promise<!ResembleData>}
+   * @return {!Promise<!ResembleApiComparisonResult>}
    * @private
    */
   async computeDiff_({
@@ -153,10 +150,10 @@ class ImageDiffer {
           blue: 255,
           alpha: 150,
         },
-        errorType: ErrorType.movementDifferenceIntensity,
+        errorType: ResembleApiErrorType.movementDifferenceIntensity,
         transparency: 0.3,
       },
-      ignore: [Ignore.antialiasing],
+      ignore: [ResembleApiIgnore.antialiasing],
     };
 
     // The parameters can be Node Buffers
@@ -170,6 +167,12 @@ class ImageDiffer {
 }
 
 module.exports = ImageDiffer;
+
+
+/*
+ * JSON typedefs
+ */
+
 
 /**
  * @typedef {{
@@ -193,7 +196,14 @@ let CaptureJson;
 // eslint-disable-next-line no-unused-vars
 let ImageDiff;
 
-const ErrorType = {
+
+/*
+ * Resemble.js API externs
+ */
+
+
+/** @enum {string} */
+const ResembleApiErrorType = {
   flat: 'flat',
   movement: 'movement',
   flatDifferenceIntensity: 'flatDifferenceIntensity',
@@ -201,7 +211,8 @@ const ErrorType = {
   diffOnly: 'diffOnly',
 };
 
-const Ignore = {
+/** @enum {string} */
+const ResembleApiIgnore = {
   nothing: 'nothing',
   less: 'less',
   antialiasing: 'antialiasing',
@@ -218,17 +229,17 @@ const Ignore = {
  * }}
  */
 // eslint-disable-next-line no-unused-vars
-let BoundingBox;
+let ResembleApiBoundingBox;
 
 /**
  * @typedef {{
  *   rawMisMatchPercentage: number,
  *   misMatchPercentage: string,
- *   diffBounds: !BoundingBox,
+ *   diffBounds: !ResembleApiBoundingBox,
  *   analysisTime: number,
  *   getImageDataUrl: function(text: string): string,
  *   getBuffer: function(includeOriginal: boolean): !Buffer,
  * }}
  */
 // eslint-disable-next-line no-unused-vars
-let ResembleData;
+let ResembleApiComparisonResult;

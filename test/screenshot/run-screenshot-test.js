@@ -23,6 +23,6 @@ const controller = new Controller({sourceDir: SOURCE_DIR});
 
 controller.initialize()
   .then(() => controller.uploadAllAssets())
-  .then((testCases) => controller.captureAllPages(testCases.slice(0, 1)))
+  .then((testCases) => controller.captureAllPages(testCases))
   .then((testCases) => controller.diffGoldenJson(testCases))
 ;

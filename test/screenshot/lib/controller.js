@@ -285,7 +285,7 @@ class Controller {
         () => {
           console.log('\n\nDONE diffing screenshot images!\n\n');
           console.log(diffs);
-          console.log(`\n\nFound ${diffs.length} screenshot diffs!`);
+          console.log(`\n\nFound ${diffs.length} screenshot diffs!\n\n`);
           return diffs;
         },
         (err) => Promise.reject(err)
