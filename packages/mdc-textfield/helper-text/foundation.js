@@ -111,9 +111,11 @@ class MDCTextFieldHelperTextFoundation extends MDCFoundation {
     const validationMsgNeedsDisplay = helperTextIsValidationMsg && !inputIsValid;
 
     if (validationMsgNeedsDisplay) {
+      this.adapter_.removeAttr('aria-hidden');
       this.adapter_.setAttr(strings.ROLE, 'alert');
     } else {
       this.adapter_.removeAttr(strings.ROLE);
+      this.adapter_.setAttr('aria-hidden', 'true');
     }
   }
 }
