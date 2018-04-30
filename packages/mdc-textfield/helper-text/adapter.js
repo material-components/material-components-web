@@ -68,9 +68,9 @@ class MDCTextFieldHelperTextAdapter {
 
   /**
    * Returns the id value of the helper text element.
-   * @param {string} content
+   * @return {string}
    */
-  getId(content) {}
+  getId() {}
 }
 
 export default MDCTextFieldHelperTextAdapter;
