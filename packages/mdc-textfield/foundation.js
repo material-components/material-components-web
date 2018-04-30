@@ -115,6 +115,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.useCustomValidityChecking_ = false;
     /** @private {boolean} */
     this.isValid_ = true;
+    /** @private {boolean} */
+    this.initiallyHadDescribedBy_ = false;
     /** @private {function(): undefined} */
     this.inputFocusHandler_ = () => this.activateFocus();
     /** @private {function(): undefined} */
@@ -154,6 +156,10 @@ class MDCTextFieldFoundation extends MDCFoundation {
     });
     this.validationObserver_ = this.adapter_.registerValidationAttributeChangeHandler(
       this.validationAttributeChangeHandler_);
+
+    if (this.helperText_) {
+      this.initiallyHadDescribedBy_ = this.getNativeInput_().getAttribute('aria-describedby') !== null;
+    }
   }
 
   destroy() {
@@ -225,9 +231,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
     if (this.adapter_.hasLabel()) {
       this.adapter_.shakeLabel(this.shouldShake);
       this.adapter_.floatLabel(this.shouldFloat);
-    }
-    if (this.helperText_ && !this.helperText_.isValidationMessage()) {
-      this.helperText_.showToScreenReader();
     }
   }
 
@@ -373,8 +376,17 @@ class MDCTextFieldFoundation extends MDCFoundation {
       this.adapter_.addClass(INVALID);
       this.getNativeInput_().setAttribute('aria-invalid', true);
     }
+
     if (this.helperText_) {
       this.helperText_.setValidity(isValid);
+
+      if (isValid) {
+        if (!this.initiallyHadDescribedBy_) {
+          this.getNativeInput_().removeAttribute('aria-describedby');
+        }
+      } else {
+        this.getNativeInput_().setAttribute('aria-describedby', this.helperText_.getId());
+      }
     }
   }
 
