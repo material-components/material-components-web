@@ -46,17 +46,6 @@ npm install @material/textfield
 </div>
 ```
 
-#### Helper Text
-
-The helper text provides supplemental information and/or validation messages to users. It appears on input field focus
-and disappears on input field blur by default, or it can be persistent.
-See [here](helper-text/) for more information on using helper text.
-
-#### Leading and Trailing Icons
-
-Leading and trailing icons can be added within the box or outlined variants of MDC Text Field as visual indicators as
-well as interaction targets. See [here](icon/) for more information on using icons.
-
 #### Input Types
 
 Text field supports `text` and `password` input types (e.g., `<input type="password" class="mdc-text-field__input">`).
@@ -170,6 +159,17 @@ Add the `disabled` attribute to `<input>` if the `mdc-text-field` is disabled. Y
   <div class="mdc-line-ripple"></div>
 </div>
 ```
+
+### Text Field with Helper Text
+
+The helper text provides supplemental information and/or validation messages to users. It appears on input field focus
+and disappears on input field blur by default, or it can be persistent.
+See [here](helper-text/) for more information on using helper text.
+
+### Text Field with Leading and Trailing Icons
+
+Leading and trailing icons can be added within the box or outlined variants of MDC Text Field as visual indicators as
+well as interaction targets. See [here](icon/) for more information on using icons.
 
 ## Style Customization
 
