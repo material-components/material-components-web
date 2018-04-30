@@ -17,18 +17,43 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,600,700");
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
+$test-background-grid-color: #ddd;
+$test-background-grid-size: 10px;
+$test-cell-margin: 16px;
+
+@mixin test-checkerboard-background($color: $test-background-grid-color, $size: $test-background-grid-size) {
+  // https://stackoverflow.com/a/32861765/467582
+  background-image:
+    linear-gradient(to right, #{$color} 1px, transparent 1px),
+    linear-gradient(to bottom, #{$color} 1px, transparent 1px);
+  background-size: #{$size} #{$size};
+}
+
+.test-body {
+  display: flex;
+}
+
 .test-main {
-  padding: 16px;
+  padding: #{$test-cell-margin} 0 0 #{$test-cell-margin};
+  border: 1px solid #000;
 }
 
 .test-row {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  margin: 0 0 24px 0;
+  margin: 0;
+}
+
+.test-row + .test-row {
+  margin-top: #{$test-cell-margin};
 }
 
 .test-cell {
+  @include test-checkerboard-background;
+
+  margin: 0 #{$test-cell-margin} #{$test-cell-margin} 0;
+
   // Ensure that shadows from adjacent components don't overlap
-  margin: 8px;
+  padding: $test-background-grid-size;
 }
