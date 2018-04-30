@@ -20,6 +20,9 @@ const webpackConfig = require('./webpack.config')[0];
 const USING_TRAVISCI = Boolean(process.env.TRAVIS);
 const USING_SL = Boolean(process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY);
 
+console.log('Using Travis?', USING_TRAVISCI);
+console.log('Using Sauce Labs?', USING_SL);
+
 const SL_LAUNCHERS = {
   'sl-chrome-stable': {
     base: 'SauceLabs',
