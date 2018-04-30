@@ -32,10 +32,10 @@
   }
 }
 
-@mixin mdc-select-focused-label-color($color, $opacity: .87) {
+@mixin mdc-select-focused-label-color($color) {
   &:not(.mdc-select--disabled) {
     .mdc-select__native-control:focus ~ .mdc-floating-label {
-      @include mdc-floating-label-ink-color(rgba(mdc-theme-prop-value($color), $opacity));
+      @include mdc-floating-label-ink-color(mdc-theme-prop-value($color));
     }
   }
 }
@@ -58,9 +58,9 @@
   }
 }
 
-@mixin mdc-select-label-color($color, $opacity: 1) {
+@mixin mdc-select-label-color($color) {
   &:not(.mdc-select--disabled) .mdc-floating-label {
-    @include mdc-floating-label-ink-color(rgba(mdc-theme-prop-value($color), $opacity));
+    @include mdc-floating-label-ink-color($color);
   }
 }
 

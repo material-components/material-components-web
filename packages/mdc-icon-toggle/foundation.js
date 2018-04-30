@@ -194,7 +194,7 @@ class MDCIconToggleFoundation extends MDCFoundation {
 }
 
 /**
- * @typedef {!{
+ * @typedef {{
  *   key: string,
  *   keyCode: number
  * }}

@@ -20,7 +20,7 @@ import {MDCRipple} from '@material/ripple/index';
 /* eslint-enable no-unused-vars */
 
 /**
- * @typedef {!{
+ * @typedef {{
  *   checked: boolean,
  *   indeterminate: boolean,
  *   disabled: boolean,
