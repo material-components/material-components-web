@@ -13,26 +13,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-
-$mdc-text-field-error: #d50000;
-$mdc-text-field-divider: rgba(black, .12);
+$mdc-text-field-error: #c51162;
+$mdc-text-field-fullwidth-bottom-line-color: rgba(mdc-theme-prop-value(on-surface), .12);
 $mdc-text-field-disabled-border: rgba(#231f20, .26);
-$mdc-text-field-disabled-icon: rgba(black, .3);
-$mdc-text-field-underline-hover: rgba(black, 1);
-$mdc-text-field-underline-idle: rgba(black, .5);
-$mdc-text-field-label: rgba(black, .6);
-$mdc-text-field-placeholder: rgba(black, .38);
+$mdc-text-field-disabled-icon: rgba(mdc-theme-prop-value(on-surface), .3);
+$mdc-text-field-bottom-line-hover: rgba(mdc-theme-prop-value(on-surface), .87);
+$mdc-text-field-bottom-line-idle: rgba(mdc-theme-prop-value(on-surface), .42);
+$mdc-text-field-label: rgba(mdc-theme-prop-value(on-surface), .6);
+$mdc-text-field-placeholder: rgba(mdc-theme-prop-value(on-surface), .6);
 
-$mdc-text-field-box-background: rgba(black, .04);
-$mdc-text-field-box-disabled-background: rgba(black, .02);
-$mdc-text-field-box-secondary-text: rgba(black, .6);
+$mdc-text-field-ink-color: rgba(mdc-theme-prop-value(on-surface), .87);
+$mdc-text-field-helper-text-color: rgba(mdc-theme-prop-value(on-surface), .6);
+$mdc-text-field-icon-color: rgba(mdc-theme-prop-value(on-surface), .54);
+$mdc-text-field-focused-label-color: rgba(mdc-theme-prop-value(primary), .87);
 
-$mdc-text-field-outlined-idle-border: rgba(black, .12);
-$mdc-text-field-outlined-disabled-border: rgba(black, .06);
-$mdc-text-field-outlined-hover-border: rgba(black, .87);
+$mdc-text-field-disabled-label-color: rgba(mdc-theme-prop-value(on-surface), .37);
+$mdc-text-field-disabled-ink-color: rgba(mdc-theme-prop-value(on-surface), .37);
+$mdc-text-field-disabled-helper-text-color: rgba(mdc-theme-prop-value(on-surface), .37);
 
-$mdc-textarea-border: rgba(black, .73);
-$mdc-textarea-background: rgba(white, 1);
+$mdc-text-field-box-background: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 4%);
+$mdc-text-field-box-disabled-background: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 2%);
+$mdc-text-field-box-secondary-text: rgba(mdc-theme-prop-value(on-surface), .6);
+
+$mdc-text-field-outlined-idle-border: rgba(mdc-theme-prop-value(on-surface), .24);
+$mdc-text-field-outlined-disabled-border: rgba(mdc-theme-prop-value(on-surface), .06);
+$mdc-text-field-outlined-hover-border: rgba(mdc-theme-prop-value(on-surface), .87);
+
+$mdc-textarea-border: rgba(mdc-theme-prop-value(on-surface), .73);
+$mdc-textarea-background: rgba(mdc-theme-prop-value(surface), 1);
 // cannot be transparent because multiline textarea input
 // will make text unreadable
 $mdc-textarea-disabled-background: rgba(249, 249, 249, 1);
@@ -40,10 +48,10 @@ $mdc-textarea-disabled-background: rgba(249, 249, 249, 1);
 $mdc-text-field-border-radius: 4px !default;
 
 $mdc-text-field-box-label-position-y: 50%;
-$mdc-text-field-box-dense-label-position-y: 90%;
+$mdc-text-field-box-dense-label-position-y: 70%;
 $mdc-text-field-dense-label-scale: .923;
 $mdc-text-field-outlined-label-position-y: 130%;
-$mdc-text-field-outlined-dense-label-position-y: 145%;
+$mdc-text-field-outlined-dense-label-position-y: 110%;
 $mdc-text-field-outlined-with-leading-icon-label-position-x: 32px;
 $mdc-text-field-outlined-dense-with-leading-icon-label-position-x: 21px;
 $mdc-text-field-textarea-label-position-y: 50%;

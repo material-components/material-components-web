@@ -18,6 +18,7 @@ import {assert} from 'chai';
 import td from 'testdouble';
 
 import {verifyDefaultAdapter, captureHandlers} from '../helpers/foundation';
+import {createMockRaf} from '../helpers/raf';
 import {setupFoundationTest} from '../helpers/setup';
 import MDCChipFoundation from '../../../packages/mdc-chips/chip/foundation';
 
@@ -38,7 +39,8 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'addClass', 'removeClass', 'hasClass', 'addClassToLeadingIcon', 'removeClassFromLeadingIcon',
     'eventTargetHasClass', 'registerEventHandler', 'deregisterEventHandler',
     'registerTrailingIconInteractionHandler', 'deregisterTrailingIconInteractionHandler',
-    'notifyInteraction', 'notifyTrailingIconInteraction', 'layout',
+    'notifyInteraction', 'notifyTrailingIconInteraction', 'notifyRemoval',
+    'getComputedStyleValue', 'setStyleProperty',
   ]);
 });
 
@@ -109,18 +111,44 @@ test('on click, emit custom event', () => {
   td.verify(mockAdapter.notifyInteraction());
 });
 
-test('on entry animation end, call layout', () => {
+test('on chip width transition end, notify removal of chip', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerEventHandler');
   const mockEvt = {
-    type: 'animationend',
-    animationName: 'mdc-chip-entry',
+    type: 'transitionend',
+    target: {},
+    propertyName: 'width',
   };
+  td.when(mockAdapter.eventTargetHasClass(mockEvt.target, cssClasses.CHIP_EXIT)).thenReturn(true);
 
   foundation.init();
-  handlers.animationend(mockEvt);
+  handlers.transitionend(mockEvt);
 
-  td.verify(mockAdapter.layout());
+  td.verify(mockAdapter.notifyRemoval());
+});
+
+test('on chip opacity transition end, animate width if chip is exiting', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const raf = createMockRaf();
+  const handlers = captureHandlers(mockAdapter, 'registerEventHandler');
+  const mockEvt = {
+    type: 'transitionend',
+    target: {},
+    propertyName: 'opacity',
+  };
+  td.when(mockAdapter.eventTargetHasClass(mockEvt.target, cssClasses.CHIP_EXIT)).thenReturn(true);
+  td.when(mockAdapter.getComputedStyleValue('width')).thenReturn('100px');
+
+  foundation.init();
+  handlers.transitionend(mockEvt);
+
+  raf.flush();
+  td.verify(mockAdapter.setStyleProperty('width', '100px'));
+  td.verify(mockAdapter.setStyleProperty('padding', '0'));
+  td.verify(mockAdapter.setStyleProperty('margin', '0'));
+
+  raf.flush();
+  td.verify(mockAdapter.setStyleProperty('width', '0'));
 });
 
 test(`on leading icon opacity transition end, add ${cssClasses.HIDDEN_LEADING_ICON}` +
@@ -205,5 +233,6 @@ test('on click in trailing icon, emit custom event', () => {
   handlers.click(mockEvt);
 
   td.verify(mockAdapter.notifyTrailingIconInteraction());
+  td.verify(mockAdapter.addClass(cssClasses.CHIP_EXIT));
   td.verify(mockEvt.stopPropagation());
 });

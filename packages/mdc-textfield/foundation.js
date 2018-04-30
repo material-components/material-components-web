@@ -16,14 +16,11 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-import {MDCTextFieldAdapter, NativeInputType, FoundationMapType} from './adapter';
 /* eslint-disable no-unused-vars */
-import MDCLineRippleFoundation from '@material/line-ripple/foundation';
 import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
 import MDCTextFieldIconFoundation from './icon/foundation';
-import MDCFloatingLabelFoundation from '@material/floating-label/foundation';
-import MDCNotchedOutlineFoundation from '@material/notched-outline/foundation';
 /* eslint-enable no-unused-vars */
+import {MDCTextFieldAdapter, NativeInputType, FoundationMapType} from './adapter';
 import {cssClasses, strings, numbers} from './constants';
 
 

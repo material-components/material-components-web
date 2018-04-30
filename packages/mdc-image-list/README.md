@@ -59,8 +59,12 @@ The HTML structure for a Standard Image List is as follows:
 
 ### Styles
 
-The structure above would be combined with an invocation of the `mdc-image-list-standard-columns` mixin, to establish how many
-columns should be displayed per line:
+```scss
+@import "@material/image-list/mdc-image-list";
+```
+
+The HTML structure above would be combined with an invocation of the `mdc-image-list-standard-columns` mixin,
+to establish how many columns should be displayed per line:
 
 ```scss
 .my-image-list {
