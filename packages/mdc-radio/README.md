@@ -36,7 +36,7 @@ npm install @material/radio
 
 ## Basic Usage
 
-We recommend using MDC Radio with [MDC Form Field](../mdc-form-field) for enhancements such as label alignment, label activation of the ripple interaction effect, RTL-awareness, and theme-awareness.
+We recommend using MDC Radio with [MDC Form Field](../mdc-form-field) for enhancements such as label alignment, label activation of the ripple interaction effect, and RTL-awareness.
 
 ### HTML Structure
 
@@ -97,7 +97,7 @@ Disabled radio buttons cannot be interacted with and have no visual interaction 
 
 ## Style Customization
 
-MDC Radio uses [MDC Theme](mdc-theme)'s `secondary` color by default. Use the following mixins to customize it.
+MDC Radio uses [MDC Theme](../mdc-theme)'s `secondary` color by default. Use the following mixins to customize it.
 
 ### Sass Mixins
 
@@ -110,7 +110,7 @@ Mixin | Description
 
 #### Caveat: Edge and CSS Custom Properties
 
-In browsers that fully support CSS custom properties, the above mixins will work if you pass in a [MDC Theme](mdc-theme) property (e.g. `primary`) as an argument. However, Edge does not fully support CSS custom properties. If you are using any of the Sass mixins, you must pass in an actual color value for support in Edge.
+In browsers that fully support CSS custom properties, the above mixins will work if you pass in a [MDC Theme](../mdc-theme) property (e.g. `primary`) as an argument. However, Edge does not fully support CSS custom properties. If you are using any of the Sass mixins, you must pass in an actual color value for support in Edge.
 
 ## `MDCRadio` Properties and Methods
 
