@@ -7,7 +7,7 @@ path: /catalog/input-controls/form-fields/
 
 # Form Fields
 
-MDC Form Field aligns a form field (for example, a checkbox) with its label, and makes it RTL-aware and [theme](../mdc-theme)-aware.
+MDC Form Field aligns a form field (for example, a checkbox) with its label and makes it RTL-aware.
 When used with JavaScript, it can activate a [ripple](../mdc-ripple) effect upon interacting with the label.
 
 ## Installation
@@ -47,9 +47,12 @@ This means it will work for MDC Web form controls such as [MDC Checkbox](../mdc-
 ```html
 <div class="mdc-form-field">
   <div class="mdc-checkbox">
-    ...
+    <input type="checkbox" id="my-checkbox" class="mdc-checkbox__native-control"/>
+    <div class="mdc-checkbox__background">
+      ...
+    </div>
   </div>
-  <label for="my-checkbox">Checkbox label</label>
+  <label for="my-checkbox">This is my checkbox</label>
 </div>
 ```
 
@@ -61,7 +64,7 @@ If you are using MDC Form Field with an MDC Web component that has a [ripple](..
 
 ```js
 import {MDCFormField} from '@material/form-field';
-import {MDCFormField} from '@material/radio';
+import {MDCRadio} from '@material/radio';
 
 const formField = new MDCFormField(document.querySelector('.mdc-form-field'));
 const radio = new MDCRadio(document.querySelector('.mdc-radio'));
@@ -78,8 +81,13 @@ By default, the input will be positioned before the label. You can position the 
 
 ```html
 <div class="mdc-form-field mdc-form-field--align-end">
-  <input type="checkbox" id="input">
-  <label for="input">Label</label>
+  <div class="mdc-checkbox">
+    <input type="checkbox" id="my-checkbox" class="mdc-checkbox__native-control"/>
+    <div class="mdc-checkbox__background">
+      ...
+    </div>
+  </div>
+  <label for="my-checkbox">This is my checkbox</label>
 </div>
 ```
 
@@ -89,7 +97,7 @@ Property | Value Type | Description
 --- | --- | ---
 `input` | String | Gets and sets the form field input. 
 
-In order for the label ripple integration to work correctly, this property needs to be set to a valid instance of an MDC Web input element which exposes a `ripple` getter. No action is taken if the `input` property is not set or the input instance doesn't expose a `ripple` getter.
+In order for the label ripple integration to work correctly, the `input` property needs to be set to a valid instance of an MDC Web input element which exposes a `ripple` getter. No action is taken if the `input` property is not set or the input instance doesn't expose a `ripple` getter.
 
 ## Usage within Web Frameworks
 
