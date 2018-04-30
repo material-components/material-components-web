@@ -23,6 +23,9 @@ class GitRepo {
     this.repo_ = simpleGit(workingDirPath);
   }
 
+  /**
+   * @return {!Promise<void>}
+   */
   async fetch() {
     return await this.repo_.fetch();
   }
@@ -42,6 +45,9 @@ class GitRepo {
   }
 
   /**
+   * @param {string} filePath Relative to the local Git repo
+   * @param {string=} revision Git revision (branch name or commit hash).
+   *   E.g., "master", "origin/master", "feat/foo/bar", "e450da9".
    * @return {!Promise<string>}
    */
   async getFileAtRevision(filePath, revision = 'master') {

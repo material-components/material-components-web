@@ -272,6 +272,7 @@ class Controller {
    * @return {!Promise<!Array<!ImageDiff>>}
    */
   async diffGoldenJson(testCases) {
+    /** @type {!Array<!ImageDiff>} */
     const diffs = await this.imageDiffer_.compare({
       actualStore: await GoldenStore.fromTestCases(testCases),
       expectedStore: await GoldenStore.fromMaster(this.goldenJsonFilePath_),
@@ -290,6 +291,11 @@ class Controller {
     ;
   }
 
+  /**
+   * @param {!ImageDiff} diff
+   * @return {!Promise<void>}
+   * @private
+   */
   async uploadOneDiffImage_(diff) {
     /** @type {!UploadableFile} */
     const diffImageFile = await this.storage_.uploadFile(new UploadableFile({
