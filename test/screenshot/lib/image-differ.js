@@ -115,6 +115,8 @@ class ImageDiffer {
     actualImageUrl,
     expectedImageUrl,
   }) {
+    console.log(`➡ Comparing snapshot to golden: "${actualImageUrl}" vs. "${expectedImageUrl}"...`);
+
     const [actualImageBuffer, expectedImageBuffer] = await Promise.all([
       this.imageCache_.getImageBuffer(actualImageUrl),
       this.imageCache_.getImageBuffer(expectedImageUrl),
@@ -126,9 +128,11 @@ class ImageDiffer {
     });
 
     if (diffResult.rawMisMatchPercentage < 0.01) {
+      console.log(`✔ No diffs found for "${actualImageUrl}"!`);
       return null;
     }
 
+    console.log(`✗︎ Image "${actualImageUrl}" has changed!`);
     return diffResult.getBuffer();
   }
 
