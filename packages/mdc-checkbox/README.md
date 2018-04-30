@@ -2,7 +2,8 @@
 title: "Checkboxes"
 layout: detail
 section: components
-iconId: selection_control
+excerpt: "Checkboxes allow the user to select multiple options from a set."
+iconId: <ICON_ID>
 path: /catalog/input-controls/checkboxes/
 -->
 
@@ -11,13 +12,12 @@ path: /catalog/input-controls/checkboxes/
 <!--<div class="article__asset">
   <a class="article__asset-link"
      href="https://material-components-web.appspot.com/checkbox.html">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/checkboxes.png" width="99" alt="Checkboxes screenshot">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/checkboxes.png"
+    width="99" alt="Checkbox screenshot">
   </a>
 </div>-->
 
-The MDC Checkbox component is a spec-aligned checkbox component adhering to the
-[Material Design checkbox requirements](https://material.io/guidelines/components/selection-controls.html#selection-controls-checkbox).
-It works without JavaScript with basic functionality for all states. If you use the JavaScript object for a checkbox, it will add more intricate animation effects when switching between states.
+Checkboxes allow the user to select multiple options from a set.
 
 ## Design & API Documentation
 
@@ -36,9 +36,7 @@ It works without JavaScript with basic functionality for all states. If you use 
 npm install @material/checkbox
 ```
 
-## Usage
-
-### Standalone Checkbox
+## Basic Usage
 
 ```html
 <div class="mdc-checkbox">
@@ -88,7 +86,9 @@ easily position checkboxes and their labels.
 
 > **Note**: If you are using IE, you need to include a closing `</path>` tag if you wish to avoid console warnings.
 
-#### Disabled Checkboxes
+## Variants
+
+### Disabled
 
 Note that `mdc-checkbox--disabled` is necessary on the root element of CSS-only checkboxes to prevent hover states from activating. Checkboxes that use the JavaScript component do not need this class; a `disabled` attribute on the `<input>` element is sufficient.
 
@@ -112,92 +112,48 @@ Note that `mdc-checkbox--disabled` is necessary on the root element of CSS-only 
 <label for="basic-disabled-checkbox" id="basic-disabled-checkbox-label">This is my disabled checkbox</label>
 ```
 
-### Using the JS Component
+## Style Customization
 
-MDC Checkbox ships with a Component / Foundation combo which progressively enhances the checkbox
-state transitions to achieve full parity with the Material Design motion for switching checkbox
-states.
+MDC Checkboxes use the theme's secondary color by default for "marked" states (i.e., checked or indeterminate).
 
-#### Including in code
+### Sass Mixins
 
-##### ES2015
+To customize a checkbox's color and properties, you can use the following mixins.
 
-```javascript
-import {MDCCheckbox, MDCCheckboxFoundation} from '@material/checkbox';
-```
+#### Basic Sass Mixins
 
-##### CommonJS
+The following mixins apply only to _enabled_ checkboxes. It is not currently possible to customize the color of a _disabled_ checkbox.
 
-```javascript
-const mdcCheckbox = require('mdc-checkbox');
-const MDCCheckbox = mdcCheckbox.MDCCheckbox;
-const MDCCheckboxFoundation = mdcCheckbox.MDCCheckboxFoundation;
-```
+Mixin | Description
+--- | ---
+`mdc-checkbox-container-colors($unmarked-stroke-color, $unmarked-fill-color, $marked-fill-color, $generate-keyframes)` | Generates CSS classes to set and animate the stroke color and/or container fill color of a checkbox
+`mdc-checkbox-ink-color($color)` | Sets the ink color of the checked and indeterminate icons
+`mdc-checkbox-focus-indicator-color($color)` | Sets the color of the focus indicator
 
-##### AMD
+The ripple effect for the Checkbox component is styled using [MDC Ripple](../mdc-ripple) mixins.
 
-```javascript
-require(['path/to/mdc-checkbox'], mdcCheckbox => {
-  const MDCCheckbox = mdcCheckbox.MDCCheckbox;
-  const MDCCheckboxFoundation = mdcCheckbox.MDCCheckboxFoundation;
-});
-```
+##### Caveat: Edge and CSS Variables
 
-##### Global
+In browsers that fully support CSS variables, MDC Checkbox references CSS variables wherever theme properties are used.
+However, due to Edge's buggy CSS variable support, the `background-color` for `.mdc-checkbox__background::before` will not honor CSS variables in Edge.
+This means you will need to override this style manually for Edge if you alter the CSS variable for the primary color.
 
-```javascript
-const MDCCheckbox = mdc.checkbox.MDCCheckbox;
-const MDCCheckboxFoundation = mdc.checkbox.MDCCheckboxFoundation;
-```
+## `MDCCheckbox` Properties and Methods
 
-#### Automatic Instantiation
+### Properties
 
-If you do not care about retaining the component instance for the checkbox, simply call `attachTo()`
-and pass it a DOM element.
+Property Name | Type | Description
+--- | --- | ---
+`checked` | Boolean | Setter/getter for the checkbox's checked state
+`indeterminate` | Boolean | Setter/getter for the checkbox's indeterminate state
+`disabled` | Boolean | Setter/getter for the checkbox's disabled state
+`value` | String | Setter/getter for the checkbox's 
 
-```javascript
-mdc.checkbox.MDCCheckbox.attachTo(document.querySelector('.mdc-checkbox'));
-```
+## Usage within Web Frameworks
 
-#### Manual Instantiation
+If you are using a JavaScript framework, such as React or Angular, you can create a Checkbox for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
-Checkboxes can easily be initialized using their default constructors as well, similar to `attachTo`.
-
-```javascript
-import {MDCCheckbox} from '@material/checkbox';
-
-const checkbox = new MDCCheckbox(document.querySelector('.mdc-checkbox'));
-```
-
-#### MDCCheckbox API
-
-The MDCCheckbox API provides accessor properties similar to those found on a native checkbox element.
-
-##### MDCCheckbox.checked
-
-Boolean. Returns whether or not the checkbox is checked. Setting this property will update the
-underlying checkbox element.
-
-##### MDCCheckbox.indeterminate
-
-Boolean. Returns whether or not the checkbox is indeterminate. Setting this property will update the
-underlying checkbox element.
-
-##### MDCCheckbox.disabled
-
-Boolean. Returns whether or not the checkbox is disabled. Setting this property will update the
-underlying checkbox element.
-
-##### MDCCheckbox.value
-
-String. Returns the checkbox's value. Setting this property will update the underlying checkbox
-element.
-
-### Using the Foundation Class
-
-MDC Checkbox ships with an `MDCCheckboxFoundation` class that external frameworks and libraries can
-use to integrate the component. As with all foundation classes, an adapter object must be provided.
-The adapter for checkboxes must provide the following functions, with correct signatures:
+### `MDCCheckboxAdapter`
 
 | Method Signature | Description |
 | --- | --- |
@@ -211,75 +167,15 @@ The adapter for checkboxes must provide the following functions, with correct si
 | `forceLayout() => void` | Force-trigger a layout on the root element. This is needed to restart animations correctly. If you find that you do not need to do this, you can simply make it a no-op. |
 | `isAttachedToDOM() => boolean` | Returns true if the component is currently attached to the DOM, false otherwise. |
 
+### `MDCCheckboxFoundation`
 
-#### MDCCheckboxFoundation API
-
-##### MDCCheckboxFoundation.isChecked() => boolean
-
-Returns whether or not the underlying input is checked. Returns false when no input is available.
-
-##### MDCCheckboxFoundation.setChecked(checked: boolean)
-
-Updates the `checked` property on the underlying input. Does nothing when the underlying input is
-not present.
-
-##### MDCCheckboxFoundation.isIndeterminate() => boolean
-
-Returns whether or not the underlying input is indeterminate. Returns false when no input is
-available.
-
-##### MDCCheckboxFoundation.setIndeterminate(indeterminate: boolean)
-
-Updates the `indeterminate` property on the underlying input. Does nothing when the underlying input
-is not present.
-
-##### MDCCheckboxFoundation.isDisabled() => boolean
-
-Returns whether or not the underlying input is disabled. Returns false when no input is available.
-
-##### MDCCheckboxFoundation.setDisabled(disabled: boolean)
-
-Updates the `disabled` property on the underlying input. Does nothing when the underlying input is
-not present.
-
-##### MDCCheckboxFoundation.getValue() => string
-
-Returns the value of `adapter.getNativeControl().value`. Returns `null` if `getNativeControl()`
-does not return an object.
-
-##### MDCCheckboxFoundation.setValue(value: string) => void
-
-Sets the value of `adapter.getNativeControl().value`. Does nothing if `getNativeControl()` does
-not return an object.
-
-## Theming
-
-MDC Checkboxes use the theme's secondary color by default for "marked" states (i.e., checked or indeterminate).
-
-### Sass Mixins
-
-The following mixins apply only to _enabled_ checkboxes. It is not currently possible to customize the color of a _disabled_ checkbox.
-
-Mixin | Description
+Method Signature | Description
 --- | ---
-`mdc-checkbox-container-colors($unmarked-stroke-color, $unmarked-fill-color, $marked-fill-color, $generate-keyframes)` | Generates CSS classes to set and animate the stroke color and/or container fill color of a checkbox
-`mdc-checkbox-ink-color($color)` | Sets the ink color of the checked and indeterminate icons
-`mdc-checkbox-focus-indicator-color($color)` | Sets the color of the focus indicator
-
-The ripple effect for the Checkbox component is styled using [MDC Ripple](../mdc-ripple) mixins.
-
-#### `mdc-checkbox-container-colors($unmarked-stroke-color, $unmarked-fill-color, $marked-fill-color, $generate-keyframes)`
-
-Generates CSS classes to set the container stroke color and/or fill color of a checkbox in its marked and unmarked states.
-In the unmarked state, stroke and fill color may be customized independently; in the marked state, only the fill color
-may be customized, and the stroke will automatically match the fill color.
-
-All parameters are optional, and if left unspecified will use their default values.
-
-If you plan to use CSS-only checkboxes, set `$generate-keyframes` to `false` to prevent the mixin from generating `@keyframes` and CSS classes used by the JavaScript component.
-
-### Caveat: Edge and CSS Variables
-
-In browsers that fully support CSS variables, MDC Checkbox references CSS variables wherever theme properties are used.
-However, due to Edge's buggy CSS variable support, the `background-color` for `.mdc-checkbox__background::before` will not honor CSS variables in Edge.
-This means you will need to override this style manually for Edge if you alter the CSS variable for the primary color.
+`isChecked() => boolean` | Returns whether or not the underlying input is checked. Returns false when no input is available.
+`setChecked(checked: boolean) => void` | Updates the `checked` property on the underlying input. Does nothing when the underlying input is not present.
+`isIndeterminate() => boolean` | Returns whether or not the underlying input is indeterminate. Returns false when no input is available.
+`setIndeterminate(indeterminate: boolean) => void` | Updates the `indeterminate` property on the underlying input. Does nothing when the underlying input is not present.
+`isDisabled() => boolean` | Returns whether or not the underlying input is disabled. Returns false when no input is available.
+`setDisabled(disabled: boolean) => void` | Updates the `disabled` property on the underlying input. Does nothing when the underlying input is not present.
+`getValue() => string` | Returns the value of `MDCCheckboxAdapter.getNativeControl().value`. Returns `null` if `getNativeControl()` does not return an object.
+`setValue(value: string) => void` | Sets the value of `adapter.getNativeControl().value`. Does nothing if `getNativeControl()` does not return an object.
