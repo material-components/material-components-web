@@ -57,7 +57,6 @@ See [here](helper-text/) for more information on using helper text.
 Leading and trailing icons can be added within the box or outlined variants of MDC Text Field as visual indicators as
 well as interaction targets. See [here](icon/) for more information on using icons.
 
-
 #### Input Types
 
 Text field supports `text` and `password` input types (e.g., `<input type="password" class="mdc-text-field__input">`).
@@ -96,7 +95,6 @@ Un-styled Content (**FOUC**).
 </div>
 ```
 
-
 ### Styles
 
 ```scss
@@ -115,7 +113,7 @@ const textField = new MDCTextField(document.querySelector('.mdc-text-field'));
 
 ## Variants
 
-#### Full Width
+### Full Width
 
 Full width text fields are useful for in-depth tasks or entering complex information.
 
@@ -133,7 +131,7 @@ Full width text fields are useful for in-depth tasks or entering complex informa
 > _NOTE_: Do not use `mdc-floating-label` within `mdc-text-field--fullwidth`. Labels should not be
 included as part of the DOM structure of a full width text field.
 
-#### Textarea
+### Textarea
 
 ```html
 <div class="mdc-text-field mdc-text-field--textarea">
@@ -142,7 +140,7 @@ included as part of the DOM structure of a full width text field.
 </div>
 ```
 
-#### Outlined
+### Outlined
 
 ```html
 <div class="mdc-text-field mdc-text-field--outlined">
@@ -161,9 +159,7 @@ See [here](../mdc-notched-outline/) for more information on using the outline su
 
 > _NOTE_: Do not use `mdc-line-ripple` inside of `mdc-text-field` _if you plan on using `mdc-text-field--outlined`_. Bottom line should not be included as part of the DOM structure of an outlined text field.
 
-### States
-
-#### Disabled
+### Disabled
 
 Add the `disabled` attribute to `<input>` if the `mdc-text-field` is disabled. You also need to add `mdc-text-field--disabled` to the `mdc-text-field`.
 
@@ -244,8 +240,6 @@ Mixin | Description
 
 ## `MDCTextField` Properties and Methods
 
-### Properties
-
 Property | Value Type | Description
 --- | --- | ---
 `value` | String | Proxies to the foundation's `getValue`/`setValue` methods.
@@ -255,15 +249,13 @@ Property | Value Type | Description
 `helperTextContent` | String | Proxies to the foundation's `setHelperTextContent` method when set.
 `ripple` | `MDCRipple` | The `MDCRipple` instance for the root element that `MDCTextField` initializes; this only applies to Text Field Box, and is `null` for other variants.
 
-### Methods
-
 Method Signature | Description
 --- | ---
 `layout() => void` | Adjusts the dimensions and positions for all sub-elements.
 
 ## Usage Within Frameworks
 
-If you are using a JavaScript framework, such as React or Angular, you can create a `MDCTextField` for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
+If you are using a JavaScript framework, such as React or Angular, you can create a Text field for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
 
 ### `MDCTextFieldAdapter`

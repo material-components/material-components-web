@@ -26,6 +26,20 @@ The line ripple is used to highlight user-specified text above it. When a line r
 <div class="mdc-line-ripple"></div>
 ```
 
+### Styles
+
+```scss
+@import "@material/line-ripple/mdc-line-ripple";
+```
+
+### JavaScript Instantiation
+
+```js
+import {MDCLineRipple} from '@material/line-ripple';
+
+const lineRipple = new MDCLineRipple(document.querySelector('.mdc-line-ripple'));
+```
+
 ## Style Customization
 
 ### CSS Classes
@@ -44,8 +58,6 @@ Mixin | Description
 
 ## `MDCLineRipple` Properties and Methods
 
-### Methods
-
 Method Signature | Description
 --- | ---
 `activate() => void` | Proxies to the foundation's `activate()` method.
@@ -54,7 +66,7 @@ Method Signature | Description
 
 ## Usage Within Frameworks
 
-If you are using a JavaScript framework, such as React or Angular, you can create a `MDCTextField` for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
+If you are using a JavaScript framework, such as React or Angular, you can create a Line ripple for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
 ### `MDCLineRippleAdapter`
 

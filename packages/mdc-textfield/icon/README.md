@@ -27,7 +27,22 @@ Icons describe the type of input a text field requires. They can also be interac
 <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
 ```
 
+### Styles
+
+```scss
+@import "@material/textfield/icon/mdc-text-field-icon";
+```
+
+### JavaScript Instantiation
+
+```js
+import {MDCTextFieldIcon} from '@material/textfield/icon';
+
+const icon = new MDCTextFieldIcon(document.querySelector('.mdc-text-field-icon'));
+```
 ## Variants
+
+Leading and trailing icons can be applied to text fields styled as `mdc-text-field--box` or `mdc-text-field--outlined`. To add an icon, add the relevant class (either `mdc-text-field--with-leading-icon` or `mdc-text-field--with-trailing-icon`) to the root element, add an `i` element with your preferred icon, and give it a class of `mdc-text-field__icon`.
 
 ### Leading icon
 
@@ -103,15 +118,13 @@ Mixin | Description
 
 ## `MDCTextFieldIcon` Properties and Methods
 
-### Properties
-
 Property | Value Type | Description
 --- | --- | ---
 `foundation` | `MDCTextFieldIconFoundation` | Returns the icon's foundation. This allows the parent `MDCTextField` component to access the public methods on the `MDCTextFieldIconFoundation` class.
 
 ## Usage Within Frameworks
 
-If you are using a JavaScript framework, such as React or Angular, you can create a `MDCTextField` for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../../docs/integrating-into-frameworks.md).
+If you are using a JavaScript framework, such as React or Angular, you can create a Text field icon for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../../docs/integrating-into-frameworks.md).
 
 ### `MDCTextFieldIconAdapter`
 

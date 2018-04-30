@@ -27,6 +27,20 @@ Helper text gives context about a field’s input, such as how the input will be
 <p class="mdc-text-field-helper-text" aria-hidden="true">
 ```
 
+### Styles
+
+```scss
+@import "@material/textfield/helper-text/mdc-text-field-helper-text";
+```
+
+### JavaScript Instantiation
+
+```js
+import {MDCTextFieldHelperText} from '@material/textfield/helper-text';
+
+const helperText = new MDCTextFieldHelperText(document.querySelector('.mdc-text-field-helper-text'));
+```
+
 #### Accessibility
 
 Note that in every example where the helper text is dependent on the state of the input element, we
@@ -73,15 +87,13 @@ Mixin | Description
 
 ## `MDCTextFieldHelperText` Properties and Methods
 
-### Properties
-
 Property | Value Type | Description
 --- | --- | ---
 `foundation` | `MDCTextFieldHelperTextFoundation` | Returns the helper text's foundation. This allows the parent `MDCTextField` component to access the public methods on the `MDCTextFieldHelperTextFoundation` class.
 
 ## Usage Within Frameworks
 
-If you are using a JavaScript framework, such as React or Angular, you can create a `MDCTextField` for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../../docs/integrating-into-frameworks.md).
+If you are using a JavaScript framework, such as React or Angular, you can create a Helper text for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../../docs/integrating-into-frameworks.md).
 
 ### `MDCTextFieldHelperTextAdapter`
 
