@@ -58,7 +58,7 @@ class MDCTabBarAdapter {
    * Returns the current scroll distance
    * @return {number}
    */
-  computeScrollDistance() {}
+  computeScrollPosition() {}
 
   /**
    * Returns the scroller's width

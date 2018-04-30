@@ -16,14 +16,11 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-import MDCTabAdapter from './adapter';
+import {MDCTabAdapter} from './adapter';
 import {
   cssClasses,
   strings,
 } from './constants';
-
-/** @typedef {{rootLeft: number, rootRight: number, contentLeft: number, contentRight: number}} */
-let MDCTabDimensions;
 
 /**
  * @extends {MDCFoundation<!MDCTabAdapter>}
@@ -135,4 +132,4 @@ class MDCTabFoundation extends MDCFoundation {
   }
 }
 
-export {MDCTabFoundation, MDCTabDimensions};
+export default MDCTabFoundation;

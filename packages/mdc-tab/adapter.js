@@ -17,6 +17,9 @@
 
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
+/** @typedef {{rootLeft: number, rootRight: number, contentLeft: number, contentRight: number}} */
+let MDCTabDimensions;
+
 /**
  * Adapter for MDC Tab.
  *
@@ -93,4 +96,4 @@ class MDCTabAdapter {
   getContentOffsetWidth() {}
 }
 
-export default MDCTabAdapter;
+export {MDCTabDimensions, MDCTabAdapter};
