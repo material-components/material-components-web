@@ -382,7 +382,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
           this.getNativeInput_().removeAttribute('aria-describedby');
         }
       } else {
-        this.getNativeInput_().setAttribute('aria-describedby', this.helperText_.getId());
+        if (!this.initiallyHadDescribedBy_) {
+          this.getNativeInput_().setAttribute('aria-describedby', this.helperText_.getId());
+        }
       }
     }
   }
