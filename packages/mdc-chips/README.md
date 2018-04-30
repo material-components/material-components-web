@@ -30,11 +30,12 @@ Chips are compact elements that allow users to enter information, select a choic
 </ul>
 
 ## Installation
+
 ```
 npm install @material/chips
 ```
 
-## Usage
+## Basic Usage
 
 ### HTML Structure
 
@@ -43,20 +44,33 @@ npm install @material/chips
   <div class="mdc-chip" tabindex="0">
     <div class="mdc-chip__text">Chip content</div>
   </div>
-  <div class="mdc-chip" tabindex="0">
-    <div class="mdc-chip__text">Chip content</div>
-  </div>
-  <div class="mdc-chip" tabindex="0">
-    <div class="mdc-chip__text">Chip content</div>
-  </div>
+  ...
 </div>
 ```
 
-#### Leading and Trailing Icons
+### Styles
 
-You can optionally add a leading icon (i.e. thumbnail) and/or a trailing icon to a chip. To add an icon, add an `i` element with your preferred icon, give it a class of `mdc-chip__icon`, and a class of either `mdc-chip__icon--leading` or `mdc-chip__icon--trailing`. If you're adding a trailing icon, also set `tabindex="0"` and `role="button"` to make it accessible by keyboard and screenreader.
+```scss
+@import "@material/chips/mdc-chips";
+```
 
-##### Leading icon
+### JavaScript Instantiation
+
+```js
+import {MDCChipSet} from '@material/chips';
+
+const chipSet = new MDCChipSet(document.querySelector('.mdc-chip-set'));
+```
+
+> See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
+
+## Variants
+
+### Leading and Trailing Icons
+
+You can optionally add a leading icon (i.e. thumbnail) and/or a trailing "remove" icon to a chip. To add an icon, add an `i` element with your preferred icon, give it a class of `mdc-chip__icon`, and a class of either `mdc-chip__icon--leading` or `mdc-chip__icon--trailing`.
+
+#### Leading icon
 
 ```html
 <div class="mdc-chip">
@@ -65,7 +79,9 @@ You can optionally add a leading icon (i.e. thumbnail) and/or a trailing icon to
 </div>
 ```
 
-##### Trailing icon
+#### Trailing icon
+
+A trailing icon comes with the functionality to remove the chip from the set. If you're adding a trailing icon, also set `tabindex="0"` and `role="button"` to make it accessible by keyboard and screenreader. Trailing icons should only be added to [input chips](#input-chips).
 
 ```html
 <div class="mdc-chip">
@@ -74,9 +90,13 @@ You can optionally add a leading icon (i.e. thumbnail) and/or a trailing icon to
 </div>
 ```
 
-#### Filter Chips
+### Choice Chips
 
-Filter chips are a variant of chips which allow multiple selection from a set of options. When a filter chip is selected, a checkmark appears as the leading icon. If the chip already has a leading icon, the checkmark replaces it. This requires the HTML structure of a filter chip to differ from other chips:
+Choice chips are a variant of chips which allow single selection from a set of options. To define a set of chips as choice chips, add the class `mdc-chip-set--choice` to the chip set element.
+
+### Filter Chips
+
+Filter chips are a variant of chips which allow multiple selection from a set of options. To define a set of chips as filter chips, add the class `mdc-chip-set--filter` to the chip set element. When a filter chip is selected, a checkmark appears as the leading icon. If the chip already has a leading icon, the checkmark replaces it. This requires the HTML structure of a filter chip to differ from other chips:
 
 ```html
 <div class="mdc-chip">
@@ -105,9 +125,13 @@ To use a leading icon in a filter chip, put the `mdc-chip__icon--leading` elemen
 </div>
 ```
 
-#### Pre-selected
+### Input Chips
 
-To display a pre-selected chip, add the class `mdc-chip--selected` to the root chip element.
+Input chips are a variant of chips which enable user input by converting text into chips. To define a set of chips as input chips, add the class `mdc-chip-set--input` to the chip set element. You'd also want to add an event listener that calls `addChip` on the `MDCChipSet` to convert text to a chip. More information can be found in the "`MDCChip` Properties and Methods" section below.
+
+### Pre-selected
+
+To display a pre-selected filter or choice chip, add the class `mdc-chip--selected` to the root chip element.
 
 ```html
 <div class="mdc-chip mdc-chip--selected">
@@ -129,6 +153,8 @@ To pre-select filter chips that have a leading icon, also add the class `mdc-chi
   <div class="mdc-chip__text">Filterable content</div>
 </div>
 ```
+
+## Style Customization
 
 ### CSS Classes
 
@@ -153,8 +179,6 @@ CSS Class | Description
 
 ### Sass Mixins
 
-To customize the colors of any part of the chip, use the following mixins.
-
 Mixin | Description
 --- | ---
 `mdc-chip-set-spacing($gap-size)` | Customizes the amount of space between each chip in the set
@@ -174,10 +198,10 @@ Mixin | Description
 
 > _NOTE_: `mdc-chip-set-spacing` also sets the amount of space between a chip and the edge of the set it's contained in.
 
-### `MDCChip` and `MDCChipSet`
+## `MDCChip` and `MDCChipSet` Properties and Methods
 
-The MDC Chips module is comprised of two JavaScript classes:
-* `MDCChip` defines the behavior of a single chip
+The MDC Chips package is composed of two JavaScript classes:
+* `MDCChip` defines the behavior of a single chip.
 * `MDCChipSet` defines the behavior of chips within a specific set. For example, chips in an input chip set behave differently from those in a filter chip set.
 
 To use the `MDCChip` and `MDCChipSet` classes, [import](../../docs/importing-js.md) both classes from `@material/chips`.
@@ -203,6 +227,10 @@ Method Signature | Description
 Property | Value Type | Description
 --- | --- | ---
 `chips` | Array<`MDCChip`> | An array of the `MDCChip` objects that represent chips in the set
+
+## Usage within Web Frameworks
+
+If you are using a JavaScript framework, such as React or Angular, you can create Chips for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
 ### Adapters: `MDCChipAdapter` and `MDCChipSetAdapter`
 
