@@ -22,6 +22,5 @@ git clone https://github.com/material-components/material-components-site-genera
 cd .site-generator-tmp
 yarn install
 # Avoid Jekyll step which requires Ruby setup, just run JS portion to catch link/metadata errors
-sed -e 's/buildJekyll();//' -e "s/require(.*check-deps');//" scripts/build > scripts/build.new
-mv scripts/build.new scripts/build
-node scripts/build --apidocs ..
+sed -e 's/buildJekyll();//' -e "s/require(.*check-deps');//" scripts/build > scripts/build.nojekyll
+node scripts/build.nojekyll --apidocs ..
