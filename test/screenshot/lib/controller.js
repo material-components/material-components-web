@@ -267,6 +267,10 @@ class Controller {
     return goldenStore.writeToDisk(this.goldenJsonFilePath_);
   }
 
+  /**
+   * @param {!Array<!UploadableTestCase>} testCases
+   * @return {!Promise<!Array<!ImageDiff>>}
+   */
   async diffGoldenJson(testCases) {
     // TODO(acdvorak): Diff images and upload diffs to GCS in parallel
     // TODO(acdvorak): Handle golden.json key mismatches between master and current
@@ -276,24 +280,31 @@ class Controller {
       expectedStore: await GoldenStore.fromMaster(this.goldenJsonFilePath_),
     });
 
-    for (const diff of diffs) {
-      /** @type {!UploadableFile} */
-      const diffImageFile = await this.storage_.uploadFile(new UploadableFile({
-        destinationParentDirectory: `${this.baseUploadDir_}/screenshots`,
-        destinationRelativeFilePath: `${diff.htmlFilePath}/${diff.browserKey}.diff.png`,
-        fileContent: diff.diffImageBuffer,
-      }));
-
-      diff.diffImageUrl = diffImageFile.publicUrl;
-      diff.diffImageBuffer = null; // free up memory
-    }
-
-    console.log('\n\nDONE diffing screenshot images!\n\n');
-    console.log(diffs);
-
-    return diffs;
+    return Promise.all(diffs.map((diff) => this.uploadOneDiffImage_(diff)))
+      .then(
+        () => {
+          console.log('\n\nDONE diffing screenshot images!\n\n');
+          console.log(diffs);
+          console.log(`\n\nFound ${diffs.length} screenshot diffs!`);
+          return diffs;
+        },
+        (err) => Promise.reject(err)
+      )
+    ;
 
     // return assert.isBelow(Number(data.misMatchPercentage), 0.01);
+  }
+
+  async uploadOneDiffImage_(diff) {
+    /** @type {!UploadableFile} */
+    const diffImageFile = await this.storage_.uploadFile(new UploadableFile({
+      destinationParentDirectory: `${this.baseUploadDir_}/screenshots`,
+      destinationRelativeFilePath: `${diff.htmlFilePath}/${diff.browserKey}.diff.png`,
+      fileContent: diff.diffImageBuffer,
+    }));
+
+    diff.diffImageUrl = diffImageFile.publicUrl;
+    diff.diffImageBuffer = null; // free up memory
   }
 
   /**

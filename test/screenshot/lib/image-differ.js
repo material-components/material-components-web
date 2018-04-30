@@ -25,6 +25,11 @@ class ImageDiffer {
     this.imageCache_ = imageCache;
   }
 
+  /**
+   * @param {!GoldenStore} actualStore
+   * @param {!GoldenStore} expectedStore
+   * @return {!Promise<!Array<!ImageDiff>>}
+   */
   async compare({
     actualStore,
     expectedStore,
@@ -32,7 +37,8 @@ class ImageDiffer {
     // TODO(acdvorak): Diff images and upload diffs to GCS in parallel
     // TODO(acdvorak): Handle golden.json key mismatches between master and current
 
-    const diffs = [];
+    /** @type {!Array<!Promise<!Array<!ImageDiff>>>} */
+    const pagePromises = [];
 
     const actualJsonData = actualStore.jsonData;
     const expectedJsonData = expectedStore.jsonData;
@@ -43,41 +49,90 @@ class ImageDiffer {
         continue;
       }
 
-      const actualScreenshots = actualCapture.screenshots;
-      const expectedScreenshots = expectedCapture.screenshots;
-
-      for (const [browserKey, actualImageUrl] of Object.entries(actualScreenshots)) {
-        const expectedImageUrl = expectedScreenshots[browserKey];
-        if (!expectedImageUrl) {
-          continue;
-        }
-
-        const [actualImageBuffer, expectedImageBuffer] = await Promise.all([
-          this.imageCache_.getImageBuffer(actualImageUrl),
-          this.imageCache_.getImageBuffer(expectedImageUrl),
-        ]);
-
-        const diffResult = await this.computeDiff_({
-          actualImageBuffer,
-          expectedImageBuffer,
-        });
-
-        if (diffResult.rawMisMatchPercentage < 0.01) {
-          continue;
-        }
-
-        diffs.push({
+      pagePromises.push(
+        this.compareOnePage_({
           htmlFilePath,
-          browserKey,
-          actualImageUrl,
-          expectedImageUrl,
-          diffImageBuffer: diffResult.getBuffer(),
-          diffImageUrl: null,
-        });
-      }
+          actualCapture,
+          expectedCapture,
+        })
+      );
     }
 
-    return diffs;
+    // Flatten the array of arrays
+    const diffResults = [].concat.call([], ...(await Promise.all(pagePromises)));
+
+    // Filter out images with no diffs
+    return diffResults.filter((diffResult) => Boolean(diffResult.diffImageBuffer));
+  }
+
+  /**
+   * @param {string} htmlFilePath
+   * @param {!CaptureJson} actualCapture
+   * @param {!CaptureJson} expectedCapture
+   * @return {!Promise<!Array<!ImageDiff>>}
+   * @private
+   */
+  async compareOnePage_({
+    htmlFilePath,
+    actualCapture,
+    expectedCapture,
+  }) {
+    /** @type {!Array<!Promise<!ImageDiff>>} */
+    const imagePromises = [];
+
+    const actualScreenshots = actualCapture.screenshots;
+    const expectedScreenshots = expectedCapture.screenshots;
+
+    for (const [browserKey, actualImageUrl] of Object.entries(actualScreenshots)) {
+      const expectedImageUrl = expectedScreenshots[browserKey];
+      if (!expectedImageUrl) {
+        continue;
+      }
+
+      imagePromises.push(
+        this.compareOneImage_({actualImageUrl, expectedImageUrl})
+          .then(
+            (diffImageBuffer) => ({
+              htmlFilePath,
+              browserKey,
+              expectedImageUrl,
+              actualImageUrl,
+              diffImageUrl: null, // populated by `Controller`
+              diffImageBuffer,
+            }),
+            (err) => Promise.reject(err)
+          )
+      );
+    }
+
+    return Promise.all(imagePromises);
+  }
+
+  /**
+   * @param {string} actualImageUrl
+   * @param {string} expectedImageUrl
+   * @return {!Promise<?Buffer>}
+   * @private
+   */
+  async compareOneImage_({
+    actualImageUrl,
+    expectedImageUrl,
+  }) {
+    const [actualImageBuffer, expectedImageBuffer] = await Promise.all([
+      this.imageCache_.getImageBuffer(actualImageUrl),
+      this.imageCache_.getImageBuffer(expectedImageUrl),
+    ]);
+
+    const diffResult = await this.computeDiff_({
+      actualImageBuffer,
+      expectedImageBuffer,
+    });
+
+    if (diffResult.rawMisMatchPercentage < 0.01) {
+      return null;
+    }
+
+    return diffResult.getBuffer();
   }
 
   /**
@@ -115,6 +170,28 @@ class ImageDiffer {
 }
 
 module.exports = ImageDiffer;
+
+/**
+ * @typedef {{
+ *   publicUrl: string,
+ *   screenshots: !Object,
+ * }}
+ */
+// eslint-disable-next-line no-unused-vars
+let CaptureJson;
+
+/**
+ * @typedef {{
+ *   htmlFilePath: string,
+ *   browserKey: string,
+ *   actualImageUrl: string,
+ *   expectedImageUrl: string,
+ *   diffImageBuffer ?Buffer,
+ *   diffImageUrl: string,
+ * }}
+ */
+// eslint-disable-next-line no-unused-vars
+let ImageDiff;
 
 const ErrorType = {
   flat: 'flat',
