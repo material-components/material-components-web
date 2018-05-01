@@ -153,20 +153,9 @@ class ImageDiffer {
   }) {
     const options = {
       output: {
-        errorColor: {
-          red: 255,
-          green: 0,
-          blue: 255,
-          alpha: 150,
-        },
-        errorType: ResembleApiErrorType.movementDifferenceIntensity,
-        transparency: 0.3,
+        transparency: 0.2,
       },
-      ignore: [ResembleApiIgnore.antialiasing],
     };
-
-    // The parameters can be Node Buffers
-    // data is the same as usual with an additional getBuffer() function
     return await compareImages(
       actualImageBuffer,
       expectedImageBuffer,
@@ -211,35 +200,6 @@ let ImageDiff;
  */
 
 
-/** @enum {string} */
-const ResembleApiErrorType = {
-  flat: 'flat',
-  movement: 'movement',
-  flatDifferenceIntensity: 'flatDifferenceIntensity',
-  movementDifferenceIntensity: 'movementDifferenceIntensity',
-  diffOnly: 'diffOnly',
-};
-
-/** @enum {string} */
-const ResembleApiIgnore = {
-  nothing: 'nothing',
-  less: 'less',
-  antialiasing: 'antialiasing',
-  colors: 'colors',
-  alpha: 'alpha',
-};
-
-/**
- * @typedef {{
- *   top: number,
- *   left: number,
- *   bottom: number,
- *   right: number,
- * }}
- */
-// eslint-disable-next-line no-unused-vars
-let ResembleApiBoundingBox;
-
 /**
  * @typedef {{
  *   rawMisMatchPercentage: number,
@@ -252,3 +212,14 @@ let ResembleApiBoundingBox;
  */
 // eslint-disable-next-line no-unused-vars
 let ResembleApiComparisonResult;
+
+/**
+ * @typedef {{
+ *   top: number,
+ *   left: number,
+ *   bottom: number,
+ *   right: number,
+ * }}
+ */
+// eslint-disable-next-line no-unused-vars
+let ResembleApiBoundingBox;
