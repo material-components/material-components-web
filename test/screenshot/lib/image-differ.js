@@ -44,6 +44,7 @@ class ImageDiffer {
     const expectedJsonData = expectedStore.jsonData;
 
     for (const [htmlFilePath, actualCapture] of Object.entries(actualJsonData)) {
+      // HTML file is not present in `golden.json` on `master`
       const expectedCapture = expectedJsonData[htmlFilePath];
       if (!expectedCapture) {
         continue;
@@ -84,6 +85,7 @@ class ImageDiffer {
     const expectedScreenshots = expectedCapture.screenshots;
 
     for (const [browserKey, actualImageUrl] of Object.entries(actualScreenshots)) {
+      // Screenshot image for this browser is not present in `golden.json` on `master`
       const expectedImageUrl = expectedScreenshots[browserKey];
       if (!expectedImageUrl) {
         continue;
@@ -177,7 +179,7 @@ module.exports = ImageDiffer;
 
 
 /*
- * JSON typedefs
+ * JSON file typedefs
  */
 
 
