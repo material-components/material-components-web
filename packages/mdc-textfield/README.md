@@ -113,7 +113,7 @@ included as part of the DOM structure of a full width text field.
 </div>
 ```
 
-See [here](../mdc-notched-outline/) for more information on using the outline sub-component.
+See [here](../mdc-notched-outline/) for more information on using the notched outline sub-component.
 
 > _NOTE_: Do not use `mdc-line-ripple` inside of `mdc-text-field` _if you plan on using `mdc-text-field--outlined`_. Line Ripple should not be included as part of the DOM structure of an outlined text field.
 
@@ -234,8 +234,8 @@ Mixin | Description
 #### Other Mixins
 Mixin | Description
 --- | ---
-`mdc-text-field-bottom-line-color($color)` | Customizes the text field bottom line color except the outline and textarea variants.
-`mdc-text-field-hover-bottom-line-color($color)` | Customizes the hover text field bottom line color except the outline and textarea variants.
+`mdc-text-field-bottom-line-color($color)` | Customizes the text field bottom line color except the outlined and textarea variants.
+`mdc-text-field-hover-bottom-line-color($color)` | Customizes the hover text field bottom line color except the outlined and textarea variants.
 `mdc-text-field-ink-color($color)` | Customizes the text entered into the text field.
 `mdc-text-field-label-color($color)` | Customizes the text color of the label.
 `mdc-text-field-line-ripple-color($color)` | Customizes the color of the default line ripple of the text field.
@@ -275,8 +275,8 @@ Method Signature | Description
 `isFocused() => boolean` | Returns whether the input is focused.
 `isRtl() => boolean` | Returns whether the direction of the root element is set to RTL.
 `hasOutline() => boolean` | Returns whether there is an outline element.
-`notchOutline(labelWidth: number, isRtl: boolean) => void` | Updates the outline path to open the notch and update the notch width for the label element.
-`closeOutline() => void` | Closes the notch in the outline element.
+`notchOutline(labelWidth: number, isRtl: boolean) => void` | Updates the notched outline path to open the notch and update the notch width for the label element.
+`closeOutline() => void` | Closes the notch in the notched outline element.
 
 #### `MDCTextFieldAdapter.getNativeInput()`
 
