@@ -21,11 +21,9 @@ const SOURCE_DIR = 'test/screenshot/';
 const Controller = require('./lib/controller');
 const controller = new Controller({sourceDir: SOURCE_DIR});
 
-const isBaselineTestCase = (testCase) => testCase.htmlFile.destinationRelativeFilePath.endsWith('/baseline.html');
-
 controller.initialize()
   .then(() => controller.uploadAllAssets(), handleError)
-  .then((testCases) => controller.captureAllPages(testCases.filter(isBaselineTestCase)), handleError)
+  .then((testCases) => controller.captureAllPages(testCases), handleError)
   .then((testCases) => controller.diffGoldenJson(testCases), handleError)
 ;
 
