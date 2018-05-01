@@ -110,7 +110,7 @@ class MDCTemporarySurface extends MDCComponent {
       },
       isFocused: () => document.activeElement === this.root_,
       isElementInContainer: (el) => {
-        return (this.root_ === el) ? false : this.root_.contains(el);
+        return (this.root_ === el) ? true : this.root_.contains(el);
       },
       focus: () => this.root_.focus(),
       isRtl: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',

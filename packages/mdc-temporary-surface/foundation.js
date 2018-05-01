@@ -120,8 +120,6 @@ class MDCTemporarySurfaceFoundation extends MDCFoundation {
     super(Object.assign(MDCTemporarySurfaceFoundation.defaultAdapter, adapter));
 
     /** @private {function(!Event)} */
-    this.clickHandler_ = (evt) => this.handlePossibleSelected_(evt);
-    /** @private {function(!Event)} */
     this.keydownHandler_ = (evt) => this.handleKeyboardDown_(evt);
     /** @private {function(!Event)} */
     this.keyupHandler_ = (evt) => this.handleKeyboardUp_(evt);
@@ -172,7 +170,6 @@ class MDCTemporarySurfaceFoundation extends MDCFoundation {
       this.isOpen_ = true;
     }
 
-    this.adapter_.registerInteractionHandler('click', this.clickHandler_);
     this.adapter_.registerInteractionHandler('keyup', this.keyupHandler_);
     this.adapter_.registerInteractionHandler('keydown', this.keydownHandler_);
   }
@@ -183,7 +180,6 @@ class MDCTemporarySurfaceFoundation extends MDCFoundation {
     clearTimeout(this.closeAnimationEndTimerId_);
     // Cancel any currently running animations.
     cancelAnimationFrame(this.animationRequestId_);
-    this.adapter_.deregisterInteractionHandler('click', this.clickHandler_);
     this.adapter_.deregisterInteractionHandler('keyup', this.keyupHandler_);
     this.adapter_.deregisterInteractionHandler('keydown', this.keydownHandler_);
     this.adapter_.deregisterBodyClickHandler(this.documentClickHandler_);
@@ -224,13 +220,10 @@ class MDCTemporarySurfaceFoundation extends MDCFoundation {
    * @private
    */
   handleDocumentClick_(evt) {
-    let el = evt.target;
+    const el = evt.target;
 
-    while (el && el !== document.documentElement) {
-      if (this.adapter_.isElementInContainer(el)) {
-        return;
-      }
-      el = el.parentNode;
+    if (this.adapter_.isElementInContainer(el)) {
+      return;
     }
 
     this.close(evt);
