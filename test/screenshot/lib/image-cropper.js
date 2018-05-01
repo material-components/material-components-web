@@ -18,6 +18,7 @@ const jimp = require('jimp');
 
 class ImageCropper {
   /**
+   * Automatically crops an image based on its background color.
    * @param {!Buffer} imageData Uncropped image buffer
    * @return {!Promise<!Buffer>} Cropped image buffer
    */

@@ -30,6 +30,11 @@ class GoldenStore {
     this.jsonData = jsonData;
   }
 
+  /**
+   * Writes the data to the given `golden.json` file path.
+   * @param {string} jsonFilePath
+   * @return {!Promise<void>}
+   */
   async writeToDisk(jsonFilePath) {
     const jsonFileContent = stringify(this.jsonData, {space: '  '}) + '\n';
     await fs.writeFile(jsonFilePath, jsonFileContent);
@@ -37,6 +42,7 @@ class GoldenStore {
   }
 
   /**
+   * Parses the `golden.json` file from the `master` Git branch.
    * @param {string} jsonFilePath
    * @return {!Promise<!GoldenStore>}
    */
@@ -53,6 +59,7 @@ class GoldenStore {
   }
 
   /**
+   * Transforms the given test cases into `golden.json` format.
    * @param {!Array<!UploadableTestCase>} testCases
    * @return {!Promise<!GoldenStore>}
    */

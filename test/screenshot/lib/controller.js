@@ -31,8 +31,8 @@ const {Storage, UploadableFile, UploadableTestCase} = require('./storage');
  * High-level screenshot workflow controller that provides composable async methods to:
  * 1. Upload files to GCS
  * 2. Capture screenshots with CBT
- * 3. [COMING SOON] Update local golden.json with new screenshot URLs
- * 4. [COMING SOON] Diff captured screenshots against existing golden.json
+ * 3. Update local golden.json with new screenshot URLs
+ * 4. Diff captured screenshots against existing golden.json
  */
 class Controller {
   /**

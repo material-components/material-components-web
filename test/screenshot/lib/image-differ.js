@@ -16,6 +16,9 @@
 
 const compareImages = require('resemblejs/compareImages');
 
+/**
+ * Computes the difference between two screenshot images and generates an image that highlights the pixels that changed.
+ */
 class ImageDiffer {
   constructor({imageCache}) {
     /**
