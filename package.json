@@ -8,6 +8,7 @@
     "build:min": "mkdirp build && cross-env MDC_ENV=production webpack -p --progress --colors",
     "changelog": "standard-changelog -i CHANGELOG.md -k packages/material-components-web/package.json -w",
     "clean": "del-cli build/** build .closure-tmp/** .closure-tmp test/screenshot/out/",
+    "clean:site": "del-cli .site-generator-tmp/** .site-generator-tmp",
     "commitmsg": "validate-commit-msg",
     "dist": "npm run build && npm run build:min",
     "dev": "npm run clean && cross-env MDC_ENV=development webpack-dev-server --config=demos/webpack.config.js --progress --inline --hot --host 0.0.0.0",
@@ -32,7 +33,8 @@
     "test:watch": "karma start --auto-watch",
     "test:unit": "karma start --single-run",
     "test:closure": "./scripts/closure-test.sh",
-    "test:dependency": "./scripts/dependency-test.sh"
+    "test:dependency": "./scripts/dependency-test.sh",
+    "test:site": "npm run clean:site && ./scripts/site-generator-test.sh"
   },
   "devDependencies": {
     "@google-cloud/storage": "^1.6.0",
