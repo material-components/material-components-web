@@ -250,21 +250,6 @@ class MDCTemporarySurfaceFoundation extends MDCFoundation {
     // The menu needs to know if the keydown event was triggered on the menu
     this.keyDownWithinMenu_ = isEnter || isSpace;
 
-    const focusedItemIndex = this.adapter_.getFocusedItemIndex();
-    const lastItemIndex = this.adapter_.getNumberOfItems() - 1;
-
-    if (shiftKey && isTab && focusedItemIndex === 0) {
-      this.adapter_.focusItemAtIndex(lastItemIndex);
-      evt.preventDefault();
-      return false;
-    }
-
-    if (!shiftKey && isTab && focusedItemIndex === lastItemIndex) {
-      this.adapter_.focusItemAtIndex(0);
-      evt.preventDefault();
-      return false;
-    }
-
     // Ensure Arrow{Up,Down} and space do not cause inadvertent scrolling
     if (isArrowUp || isArrowDown || isSpace) {
       evt.preventDefault();

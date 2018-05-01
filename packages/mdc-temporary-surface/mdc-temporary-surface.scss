@@ -27,7 +27,7 @@ $mdc-temporary-surface-scale-duration: .12s;
 // postcss-bem-linter: define menu
 .mdc-temporary-surface {
   @include mdc-elevation(2);
-  @include mdc-theme-prop(background-color, background);
+  @include mdc-theme-prop(background-color, surface);
 
   display: none;
   position: absolute;
