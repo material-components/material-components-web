@@ -66,9 +66,6 @@ class MDCTemporarySurfaceAdapter {
    */
   hasClass(className) {}
 
-  /** @return {boolean} */
-  hasNecessaryDom() {}
-
   /**
    * @param {EventTarget} target
    * @param {string} attributeName

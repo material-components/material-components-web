@@ -162,6 +162,7 @@ class CssBundleFactory {
         'mdc.snackbar': getAbsolutePath('/packages/mdc-snackbar/mdc-snackbar.scss'),
         'mdc.switch': getAbsolutePath('/packages/mdc-switch/mdc-switch.scss'),
         'mdc.tabs': getAbsolutePath('/packages/mdc-tabs/mdc-tabs.scss'),
+        'mdc.temporary-surface': getAbsolutePath('/packages/mdc-temporary-surface/mdc-temporary-surface.scss'),
         'mdc.textfield': getAbsolutePath('/packages/mdc-textfield/mdc-text-field.scss'),
         'mdc.theme': getAbsolutePath('/packages/mdc-theme/mdc-theme.scss'),
         'mdc.toolbar': getAbsolutePath('/packages/mdc-toolbar/mdc-toolbar.scss'),

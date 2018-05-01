@@ -7,7 +7,7 @@ iconId: menu
 path: /catalog/menus/
 -->
 
-# Menus
+# Temporary Surface
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
@@ -16,9 +16,9 @@ path: /catalog/menus/
   </a>
 </div>-->
 
-The MDC Menu component is a spec-aligned menu component adhering to the
-[Material Design menu specification](https://material.io/guidelines/components/menus.html).
-Menus require JavaScript to properly position themselves when opening.
+The MDC Temporary Surface component is a reusable temporary surface that appears above the content of the 
+page and can be position adjacent to an element. Temporary Surfaces require JavaScript to properly position 
+themselves when opening.
 
 ## Design & API Documentation
 
@@ -34,104 +34,20 @@ Menus require JavaScript to properly position themselves when opening.
 ## Installation
 
 ```
-npm install @material/menu
+npm install @material/temporary-surface
 ```
 
 ## Usage
 
 ### HTML Structure
 
-A menu is initially hidden, appearing when opened via the JS API. It is appropriate for any display size.
-
-```html
-<div class="mdc-menu" tabindex="-1">
-  <ul class="mdc-menu__items mdc-list" role="menu" aria-hidden="true">
-    <li class="mdc-list-item" role="menuitem" tabindex="0">
-      A Menu Item
-    </li>
-    <li class="mdc-list-item" role="menuitem" tabindex="0">
-      Another Menu Item
-    </li>
-  </ul>
-</div>
-```
-
-#### Anchor To Parent
-
-The menu can be positioned to automatically anchor to a parent element when opened.
-
-```html
-<div id="toolbar" class="toolbar mdc-menu-anchor">
-  <div class="mdc-menu">
-  ...
-  </div>
-</div>
-```
-
-#### Anchor To Element Within Wrapper
-
-The menu can be positioned to automatically anchor to another element, by wrapping the other element with the anchor class.
-
-```html
-<div id="demo-menu" class="mdc-menu-anchor">
-  <button id="menu-button">Open Menu</button>
-  <div class="mdc-menu">
-  ...
-  </div>
-</div>
-```
-
 #### Disabled menu items
-
-When used in components such as MDC Menu, list items can be disabled.
-To disable a list item, set `aria-disabled` property to `"true"`, and set `tabindex` to `"-1"`.
-
-```html
-<div class="mdc-menu" tabindex="-1">
-  <ul class="mdc-menu__items mdc-list" role="menu" aria-hidden="true">
-    <li class="mdc-list-item" role="menuitem" tabindex="0">
-      A Menu Item
-    </li>
-    <li class="mdc-list-item" role="menuitem" tabindex="-1" aria-disabled="true">
-      Disabled Menu Item
-    </li>
-  </ul>
-</div>
-```
 
 ### CSS Classes
 
-CSS Class | Description
---- | ---
-`mdc-menu` | Mandatory
-`mdc-menu--animating-open` | Indicates the menu is currently animating open. This class is removed once the animation completes.
-`mdc-menu--open` | Indicates the menu is currently open, or is currently animating open.
-`mdc-menu--animating-closed` | Indicates the menu is currently animating closed. This class is removed once the animation completes.
 
 ### JS Examples
 
-```js
-  // Instantiation
-  var menuEl = document.querySelector('#toolbar');
-  var menu = new mdc.menu.MDCMenu(menuEl);
-  var menuButtonEl = document.querySelector('#menu-button');
-
-  // Toggle menu open
-  menuButtonEl.addEventListener('click', function() {
-    menu.open = !menu.open;
-  });
-
-  // Listen for selected item
-  menuEl.addEventListener('MDCMenu:selected', function(evt) {
-     var detail = evt.detail;
-  });
-
-  // Set Anchor Corner to Bottom End
-  menu.setAnchorCorner(Corner.BOTTOM_END);
-
-  // Turn off menu open animations
-  menu.quickOpen = true;
-```
 
 ### `MDCMenu`
 

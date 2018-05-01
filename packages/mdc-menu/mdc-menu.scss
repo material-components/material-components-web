@@ -26,53 +26,6 @@ $mdc-menu-scale-duration: .12s;
 
 // postcss-bem-linter: define menu
 .mdc-menu {
-  @include mdc-elevation(2);
-  @include mdc-theme-prop(background-color, background);
-
-  display: none;
-  position: absolute;
-  box-sizing: border-box;
-  min-width: 170px;
-  max-width: calc(100vw - 32px);
-  max-height: calc(100vh - 32px);
-  margin: 0;
-  padding: 0;
-  transform: scale(1);
-  transform-origin: top left;
-  border-radius: 2px;
-  opacity: 0;
-  white-space: nowrap;
-  overflow-x: hidden;
-  overflow-y: auto;
-  will-change: transform, opacity;
-  z-index: 4;
-
-  &:focus {
-    outline: none;
-  }
-
-  &--animating-open {
-    display: inline-block;
-    transform: scale(.8);
-    transition:
-      opacity $mdc-menu-fade-in-duration linear,
-      transform $mdc-menu-scale-duration $mdc-animation-deceleration-curve-timing-function;
-    opacity: 0;
-    overflow-y: hidden;
-  }
-
-  &--open {
-    display: inline-block;
-    transform: scale(1);
-    opacity: 1;
-  }
-
-  &--animating-closed {
-    display: inline-block;
-    transition: opacity $mdc-menu-fade-out-duration linear;
-    opacity: 0;
-    overflow-y: hidden;
-  }
 
   &__items {
     box-sizing: border-box;
@@ -90,14 +43,6 @@ $mdc-menu-scale-duration: .12s;
     .mdc-menu--animating & {
       overflow-y: hidden;
     }
-  }
-
-  &--animating-open > .mdc-menu__items {
-    transform: scale(1.25);
-  }
-
-  &--open > .mdc-menu__items {
-    transform: scale(1);
   }
 
   // stylelint-disable plugin/selector-bem-pattern
@@ -144,5 +89,13 @@ $mdc-menu-scale-duration: .12s;
   overflow: visible;
 }
 // stylelint-enable plugin/selector-bem-pattern
+
+.mdc-temporary-surface--animating-open > .mdc-menu__items {
+  transform: scale(1.25);
+}
+
+.mdc-temporary-surface--open > .mdc-menu__items {
+  transform: scale(1);
+}
 
 // postcss-bem-linter: end

@@ -122,39 +122,39 @@
       </section>
       <div class="demo-content">
         <div id="demo-wrapper">
-          <div class="mdc-menu-anchor">
+          <div class="mdc-temporary-surface--anchor">
             <button id="menu-button" class="mdc-button mdc-button--raised demo-button demo-button--normal">
               <span>
                 Show<span class="demo-button__normal-text"> Menu</span><span class="demo-button__long-text"> From Here Now!</span>
               </span>
             </button>
 
-            <div class="mdc-menu" style="position: absolute;" tabindex="-1" id="demo-menu">
-              <ul class="mdc-menu__items mdc-list" role="menu" aria-hidden="true">
-                <li class="mdc-list-item" role="menuitem" tabindex="0">Back</li>
-                <li class="mdc-list-item" role="menuitem" tabindex="0">Forward</li>
-                <li class="mdc-list-item" role="menuitem" tabindex="0">Reload</li>
-                <li class="mdc-list-divider" role="separator"></li>
+            <div class="mdc-temporary-surface" style="position: absolute; width: 100px; height: 100px;" tabindex="-1" id="demo-menu">
+              <!--<ul class="mdc-menu__items mdc-list" role="menu" aria-hidden="true">-->
+                <!--<li class="mdc-list-item" role="menuitem" tabindex="0">Back</li>-->
+                <!--<li class="mdc-list-item" role="menuitem" tabindex="0">Forward</li>-->
+                <!--<li class="mdc-list-item" role="menuitem" tabindex="0">Reload</li>-->
+                <!--<li class="mdc-list-divider" role="separator"></li>-->
 
-                <li class="mdc-list-item" role="menuitem" tabindex="0">Save As...</li>
-                <li class="mdc-list-item" role="menuitem" tabindex="0">Help</li>
-                <span class="demo-menu__long-items">
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Settings</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Feedback</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Options...</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 1</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 2</li>
-                </span>
-                <span class="demo-menu__extra-long-items">
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 3</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 4</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 5</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 6</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 7</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 8</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 9</li>
-                </span>
-              </ul>
+                <!--<li class="mdc-list-item" role="menuitem" tabindex="0">Save As...</li>-->
+                <!--<li class="mdc-list-item" role="menuitem" tabindex="0">Help</li>-->
+                <!--<span class="demo-menu__long-items">-->
+                  <!--<li class="mdc-list-item" role="menuitem" tabindex="0">Settings</li>-->
+                  <!--<li class="mdc-list-item" role="menuitem" tabindex="0">Feedback</li>-->
+                  <!--<li class="mdc-list-item" role="menuitem" tabindex="0">Options...</li>-->
+                  <!--<li class="mdc-list-item" role="menuitem" tabindex="0">Item 1</li>-->
+                  <!--<li class="mdc-list-item" role="menuitem" tabindex="0">Item 2</li>-->
+                <!--</span>-->
+                <!--<span class="demo-menu__extra-long-items">-->
+                  <!--<li class="mdc-list-item" role="menuitem" tabindex="0">Item 3</li>-->
+                  <!--<li class="mdc-list-item" role="menuitem" tabindex="0">Item 4</li>-->
+                  <!--<li class="mdc-list-item" role="menuitem" tabindex="0">Item 5</li>-->
+                  <!--<li class="mdc-list-item" role="menuitem" tabindex="0">Item 6</li>-->
+                  <!--<li class="mdc-list-item" role="menuitem" tabindex="0">Item 7</li>-->
+                  <!--<li class="mdc-list-item" role="menuitem" tabindex="0">Item 8</li>-->
+                  <!--<li class="mdc-list-item" role="menuitem" tabindex="0">Item 9</li>-->
+                <!--</span>-->
+              <!--</ul>-->
             </div>
           </div>
         </div>
@@ -257,7 +257,7 @@
     <script>
       demoReady(function() {
         var menuEl = document.querySelector('#demo-menu');
-        var menu = new mdc.menu.MDCMenu(menuEl);
+        var menu = mdc.temporarySurface.MDCTemporarySurface.attachTo(menuEl);
         var menuButtonEl = document.querySelector('#menu-button');
         menuButtonEl.addEventListener('click', function() {
           menu.open = !menu.open;
@@ -273,131 +273,131 @@
           menu.quickOpen = evt.target.checked;
         });
 
-        var radios = document.querySelectorAll('input[name="position"]');
-        var anchor = document.querySelector('.mdc-menu-anchor');
-        // Initialize to top left.
-        anchor.style.setProperty('top', '0');
-        anchor.style.setProperty('left', '0');
-        for (var i = 0; i < radios.length; i++) {
-          radios[i].addEventListener('change', function(evt) {
-            if (evt.target.checked) {
-              if (evt.target.value) {
-                anchor.style.removeProperty('top');
-                anchor.style.removeProperty('right');
-                anchor.style.removeProperty('bottom');
-                anchor.style.removeProperty('left');
-
-                var vertical = evt.target.value.split(' ')[0];
-                var horizontal = evt.target.value.split(' ')[1];
-                if (vertical === 'middle') {
-                  anchor.style.setProperty('top', '35%');
-                } else {
-                  anchor.style.setProperty(vertical, '0');
-                }
-                anchor.style.setProperty(horizontal, '0');
-              }
-            }
-          });
-        }
-
-        radios = document.querySelectorAll('input[name="menu-position"]');
-        for (var i = 0; i < radios.length; i++) {
-          radios[i].addEventListener('change', function(evt) {
-            if (evt.target.checked) {
-              switch (evt.target.value) {
-                case "top start":
-                  menu.setAnchorCorner(mdc.menu.MDCMenuFoundation.Corner.TOP_START);
-                  break;
-                case "bottom start":
-                  menu.setAnchorCorner(mdc.menu.MDCMenuFoundation.Corner.BOTTOM_START);
-                  break;
-                case "top end":
-                  menu.setAnchorCorner(mdc.menu.MDCMenuFoundation.Corner.TOP_END);
-                  break;
-                case "bottom end":
-                  menu.setAnchorCorner(mdc.menu.MDCMenuFoundation.Corner.BOTTOM_END);
-                  break;
-              }
-            }
-          });
-        }
-
-        var marginInputsEl = document.querySelector('#margin-inputs');
-        var inputs = marginInputsEl.querySelectorAll('input[type="text"]');
-        for (var i = 0; i < inputs.length; i++) {
-          inputs[i].addEventListener('change', function(evt) {
-            var topMarginInput = document.getElementById('top-margin');
-            var bottomMarginInput = document.getElementById('bottom-margin');
-            var rightMarginInput = document.getElementById('right-margin');
-            var leftMarginInput = document.getElementById('left-margin');
-            var margin = {top: parseInt(topMarginInput.value, 10),
-                          right: parseInt(rightMarginInput.value, 10),
-                          bottom: parseInt(bottomMarginInput.value, 10),
-                          left: parseInt(leftMarginInput.value, 10)};
-            menu.setAnchorMargin(margin);
-          });
-        }
-
-        var rtl = document.querySelector('input[name="is-rtl"]');
-        rtl.addEventListener('change', function() {
-          var demoWrapper = document.getElementById('demo-wrapper');
-          if (rtl.checked) {
-            demoWrapper.setAttribute('dir', 'rtl');
-          } else {
-            demoWrapper.removeAttribute('dir');
-          }
-        });
-
-        radios = document.querySelectorAll('input[name="menu-length"]');
-        for (var i = 0; i < radios.length; i++) {
-          radios[i].addEventListener('change', function(evt) {
-            if (evt.target.checked) {
-              switch (evt.target.value) {
-                case "small":
-                  menuEl.classList.remove('demo-menu--long');
-                  menuEl.classList.remove('demo-menu--extra-long');
-                  break;
-                case "large":
-                  menuEl.classList.add('demo-menu--long');
-                  menuEl.classList.remove('demo-menu--extra-long');
-                  break;
-                case "tall":
-                  menuEl.classList.remove('demo-menu--long');
-                  menuEl.classList.add('demo-menu--extra-long');
-                  break;
-              }
-            }
-          });
-        }
-
-        radios = document.querySelectorAll('input[name="anchor-width"]');
-        for (var i = 0; i < radios.length; i++) {
-          radios[i].addEventListener('change', function(evt) {
-            if (evt.target.checked) {
-              switch (evt.target.value) {
-                case "tiny":
-                  menuButtonEl.classList.remove('demo-button--normal');
-                  menuButtonEl.classList.remove('demo-button--long');
-                  break;
-                case "regular":
-                  menuButtonEl.classList.add('demo-button--normal');
-                  menuButtonEl.classList.remove('demo-button--long');
-                  break;
-                case "wide":
-                  menuButtonEl.classList.remove('demo-button--normal');
-                  menuButtonEl.classList.add('demo-button--long');
-                  break;
-              }
-            }
-          });
-        }
-
-        var lastSelected = document.getElementById('last-selected');
-        menuEl.addEventListener('MDCMenu:selected', function(evt) {
-          var detail = evt.detail;
-          lastSelected.textContent = '"' + detail.item.textContent.trim() +
-            '" at index ' + detail.index;
-        });
+        // var radios = document.querySelectorAll('input[name="position"]');
+        // var anchor = document.querySelector('.mdc-menu-anchor');
+        // // Initialize to top left.
+        // anchor.style.setProperty('top', '0');
+        // anchor.style.setProperty('left', '0');
+        // for (var i = 0; i < radios.length; i++) {
+        //   radios[i].addEventListener('change', function(evt) {
+        //     if (evt.target.checked) {
+        //       if (evt.target.value) {
+        //         anchor.style.removeProperty('top');
+        //         anchor.style.removeProperty('right');
+        //         anchor.style.removeProperty('bottom');
+        //         anchor.style.removeProperty('left');
+        //
+        //         var vertical = evt.target.value.split(' ')[0];
+        //         var horizontal = evt.target.value.split(' ')[1];
+        //         if (vertical === 'middle') {
+        //           anchor.style.setProperty('top', '35%');
+        //         } else {
+        //           anchor.style.setProperty(vertical, '0');
+        //         }
+        //         anchor.style.setProperty(horizontal, '0');
+        //       }
+        //     }
+        //   });
+        // }
+        //
+        // radios = document.querySelectorAll('input[name="menu-position"]');
+        // for (var i = 0; i < radios.length; i++) {
+        //   radios[i].addEventListener('change', function(evt) {
+        //     if (evt.target.checked) {
+        //       switch (evt.target.value) {
+        //         case "top start":
+        //           menu.setAnchorCorner(mdc.menu.MDCMenuFoundation.Corner.TOP_START);
+        //           break;
+        //         case "bottom start":
+        //           menu.setAnchorCorner(mdc.menu.MDCMenuFoundation.Corner.BOTTOM_START);
+        //           break;
+        //         case "top end":
+        //           menu.setAnchorCorner(mdc.menu.MDCMenuFoundation.Corner.TOP_END);
+        //           break;
+        //         case "bottom end":
+        //           menu.setAnchorCorner(mdc.menu.MDCMenuFoundation.Corner.BOTTOM_END);
+        //           break;
+        //       }
+        //     }
+        //   });
+        // }
+        //
+        // var marginInputsEl = document.querySelector('#margin-inputs');
+        // var inputs = marginInputsEl.querySelectorAll('input[type="text"]');
+        // for (var i = 0; i < inputs.length; i++) {
+        //   inputs[i].addEventListener('change', function(evt) {
+        //     var topMarginInput = document.getElementById('top-margin');
+        //     var bottomMarginInput = document.getElementById('bottom-margin');
+        //     var rightMarginInput = document.getElementById('right-margin');
+        //     var leftMarginInput = document.getElementById('left-margin');
+        //     var margin = {top: parseInt(topMarginInput.value, 10),
+        //                   right: parseInt(rightMarginInput.value, 10),
+        //                   bottom: parseInt(bottomMarginInput.value, 10),
+        //                   left: parseInt(leftMarginInput.value, 10)};
+        //     menu.setAnchorMargin(margin);
+        //   });
+        // }
+        //
+        // var rtl = document.querySelector('input[name="is-rtl"]');
+        // rtl.addEventListener('change', function() {
+        //   var demoWrapper = document.getElementById('demo-wrapper');
+        //   if (rtl.checked) {
+        //     demoWrapper.setAttribute('dir', 'rtl');
+        //   } else {
+        //     demoWrapper.removeAttribute('dir');
+        //   }
+        // });
+        //
+        // radios = document.querySelectorAll('input[name="menu-length"]');
+        // for (var i = 0; i < radios.length; i++) {
+        //   radios[i].addEventListener('change', function(evt) {
+        //     if (evt.target.checked) {
+        //       switch (evt.target.value) {
+        //         case "small":
+        //           menuEl.classList.remove('demo-menu--long');
+        //           menuEl.classList.remove('demo-menu--extra-long');
+        //           break;
+        //         case "large":
+        //           menuEl.classList.add('demo-menu--long');
+        //           menuEl.classList.remove('demo-menu--extra-long');
+        //           break;
+        //         case "tall":
+        //           menuEl.classList.remove('demo-menu--long');
+        //           menuEl.classList.add('demo-menu--extra-long');
+        //           break;
+        //       }
+        //     }
+        //   });
+        // }
+        //
+        // radios = document.querySelectorAll('input[name="anchor-width"]');
+        // for (var i = 0; i < radios.length; i++) {
+        //   radios[i].addEventListener('change', function(evt) {
+        //     if (evt.target.checked) {
+        //       switch (evt.target.value) {
+        //         case "tiny":
+        //           menuButtonEl.classList.remove('demo-button--normal');
+        //           menuButtonEl.classList.remove('demo-button--long');
+        //           break;
+        //         case "regular":
+        //           menuButtonEl.classList.add('demo-button--normal');
+        //           menuButtonEl.classList.remove('demo-button--long');
+        //           break;
+        //         case "wide":
+        //           menuButtonEl.classList.remove('demo-button--normal');
+        //           menuButtonEl.classList.add('demo-button--long');
+        //           break;
+        //       }
+        //     }
+        //   });
+        // }
+        //
+        // var lastSelected = document.getElementById('last-selected');
+        // menuEl.addEventListener('MDCMenu:selected', function(evt) {
+        //   var detail = evt.detail;
+        //   lastSelected.textContent = '"' + detail.item.textContent.trim() +
+        //     '" at index ' + detail.index;
+        // });
       });
     </script>
   </body>

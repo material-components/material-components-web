@@ -27,6 +27,7 @@ const cssClasses = {
 const strings = {
   CANCEL_EVENT: 'MDCTemporarySurface:cancel',
   ARIA_DISABLED_ATTR: 'aria-disabled',
+  CLOSE_EVENT: 'MDCTemporarySurface:close',
 };
 
 /** @enum {number} */

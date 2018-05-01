@@ -35,6 +35,7 @@ import * as selectionControl from '@material/selection-control/index';
 import * as slider from '@material/slider/index';
 import * as snackbar from '@material/snackbar/index';
 import * as tabs from '@material/tabs/index';
+import * as temporarySurface from '@material/temporary-surface/index';
 import * as textField from '@material/textfield/index';
 import * as toolbar from '@material/toolbar/index';
 import * as topAppBar from '@material/top-app-bar/index';
@@ -58,6 +59,7 @@ autoInit.register('MDCRadio', radio.MDCRadio);
 autoInit.register('MDCSnackbar', snackbar.MDCSnackbar);
 autoInit.register('MDCTab', tabs.MDCTab);
 autoInit.register('MDCTabBar', tabs.MDCTabBar);
+autoInit.register('MDCTemporarySurface', temporarySurface.MDCTemporarySurface);
 autoInit.register('MDCTextField', textField.MDCTextField);
 autoInit.register('MDCMenu', menu.MDCMenu);
 autoInit.register('MDCSelect', select.MDCSelect);
@@ -88,6 +90,7 @@ export {
   slider,
   snackbar,
   tabs,
+  temporarySurface,
   textField,
   toolbar,
   topAppBar,

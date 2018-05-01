@@ -94,7 +94,6 @@ class MDCTemporarySurfaceFoundation extends MDCFoundation {
       addClass: () => {},
       removeClass: () => {},
       hasClass: () => false,
-      hasNecessaryDom: () => false,
       getAttributeForEventTarget: () => {},
       getInnerDimensions: () => ({}),
       hasAnchor: () => false,
@@ -107,6 +106,7 @@ class MDCTemporarySurfaceFoundation extends MDCFoundation {
       saveFocus: () => {},
       restoreFocus: () => {},
       isFocused: () => false,
+      isElementInContainer: () => false,
       focus: () => {},
       isRtl: () => false,
       setTransformOrigin: () => {},
@@ -168,10 +168,6 @@ class MDCTemporarySurfaceFoundation extends MDCFoundation {
       throw new Error(`${ROOT} class required in root element.`);
     }
 
-    if (!this.adapter_.hasNecessaryDom()) {
-      throw new Error(`Required DOM nodes missing in ${ROOT} component.`);
-    }
-
     if (this.adapter_.hasClass(OPEN)) {
       this.isOpen_ = true;
     }
@@ -210,12 +206,6 @@ class MDCTemporarySurfaceFoundation extends MDCFoundation {
     this.anchorMargin_.left = typeof margin.left === 'number' ? margin.left : 0;
   }
 
-  /** @param {boolean} rememberSelection */
-  setRememberSelection(rememberSelection) {
-    this.rememberSelection_ = rememberSelection;
-    this.setSelectedIndex(-1);
-  }
-
   /** @param {boolean} quickOpen */
   setQuickOpen(quickOpen) {
     this.quickOpen_ = quickOpen;
@@ -226,22 +216,6 @@ class MDCTemporarySurfaceFoundation extends MDCFoundation {
    * @private
    */
   focusOnOpen_(focusIndex) {
-    if (focusIndex === null) {
-      // If this instance of MDCMenu remembers selections, and the user has
-      // made a selection, then focus the last selected item
-      if (this.rememberSelection_ && this.selectedIndex_ >= 0) {
-        this.adapter_.focusItemAtIndex(this.selectedIndex_);
-        return;
-      }
-
-      this.adapter_.focus();
-      // If that doesn't work, focus first item instead.
-      if (!this.adapter_.isFocused()) {
-        this.adapter_.focusItemAtIndex(0);
-      }
-    } else {
-      this.adapter_.focusItemAtIndex(focusIndex);
-    }
   }
 
   /**
@@ -253,13 +227,12 @@ class MDCTemporarySurfaceFoundation extends MDCFoundation {
     let el = evt.target;
 
     while (el && el !== document.documentElement) {
-      if (this.adapter_.getIndexForEventTarget(el) !== -1) {
+      if (this.adapter_.isElementInContainer(el)) {
         return;
       }
       el = el.parentNode;
     }
 
-    this.adapter_.notifyCancel();
     this.close(evt);
   };
 
@@ -334,18 +307,7 @@ class MDCTemporarySurfaceFoundation extends MDCFoundation {
     }
 
     const {keyCode, key} = evt;
-    const isEnter = key === 'Enter' || keyCode === 13;
-    const isSpace = key === 'Space' || keyCode === 32;
     const isEscape = key === 'Escape' || keyCode === 27;
-
-    if (isEnter || isSpace) {
-      // If the keydown event didn't occur on the menu, then it should
-      // disregard the possible selected event.
-      if (this.keyDownWithinMenu_) {
-        this.handlePossibleSelected_(evt);
-      }
-      this.keyDownWithinMenu_ = false;
-    }
 
     if (isEscape) {
       this.adapter_.notifyCancel();
@@ -353,32 +315,6 @@ class MDCTemporarySurfaceFoundation extends MDCFoundation {
     }
 
     return true;
-  }
-
-  /**
-   * @param {!Event} evt
-   * @private
-   */
-  handlePossibleSelected_(evt) {
-    if (this.adapter_.getAttributeForEventTarget(evt.target, strings.ARIA_DISABLED_ATTR) === 'true') {
-      return;
-    }
-    const targetIndex = this.adapter_.getIndexForEventTarget(evt.target);
-    if (targetIndex < 0) {
-      return;
-    }
-    // Debounce multiple selections
-    if (this.selectedTriggerTimerId_) {
-      return;
-    }
-    this.selectedTriggerTimerId_ = setTimeout(() => {
-      this.selectedTriggerTimerId_ = 0;
-      this.close();
-      if (this.rememberSelection_) {
-        this.setSelectedIndex(targetIndex);
-      }
-      this.adapter_.notifySelected({index: targetIndex});
-    }, numbers.SELECTED_TRIGGER_DELAY);
   }
 
   /**
@@ -624,32 +560,6 @@ class MDCTemporarySurfaceFoundation extends MDCFoundation {
   /** @return {boolean} */
   isOpen() {
     return this.isOpen_;
-  }
-
-  /** @return {number} */
-  getSelectedIndex() {
-    return this.selectedIndex_;
-  }
-
-  /**
-   * @param {number} index Index of the item to set as selected.
-   */
-  setSelectedIndex(index) {
-    if (index === this.selectedIndex_) {
-      return;
-    }
-
-    const prevSelectedIndex = this.selectedIndex_;
-    if (prevSelectedIndex >= 0) {
-      this.adapter_.rmAttrForOptionAtIndex(prevSelectedIndex, 'aria-selected');
-      this.adapter_.rmClassForOptionAtIndex(prevSelectedIndex, cssClasses.SELECTED_LIST_ITEM);
-    }
-
-    this.selectedIndex_ = index >= 0 && index < this.adapter_.getNumberOfItems() ? index : -1;
-    if (this.selectedIndex_ >= 0) {
-      this.adapter_.setAttrForOptionAtIndex(this.selectedIndex_, 'aria-selected', 'true');
-      this.adapter_.addClassForOptionAtIndex(this.selectedIndex_, cssClasses.SELECTED_LIST_ITEM);
-    }
   }
 }
 
