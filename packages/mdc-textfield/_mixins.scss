@@ -485,6 +485,7 @@
   overflow: hidden;
 
   .mdc-text-field__input {
+    height: auto;
     margin: 0;
     padding: $padding-inset;
     padding-top: $padding-inset * 2;
