@@ -22,5 +22,10 @@ const Controller = require('./lib/controller');
 const controller = new Controller({sourceDir: SOURCE_DIR});
 
 controller.initialize()
-  .then(() => controller.uploadAllAssets())
+  .then(() => controller.uploadAllAssets(), handleError)
 ;
+
+function handleError(err) {
+  console.error(err);
+  process.exit(1);
+}
