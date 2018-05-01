@@ -9,7 +9,7 @@ path: /docs/getting-started/
 
 ## Quick Start
 
-To get up and running with Material Components for web with minimal setup, load the CSS and JS from unpkg:
+To try Material Components for the web with minimal setup, load the CSS and JS from unpkg:
 
 ```html
 https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css
@@ -28,7 +28,7 @@ Then include MDC markup...
 mdc.ripple.MDCRipple.attachTo(document.querySelector('.foo-button'));
 ```
 
-Alternatively, to make full use of Material Components for web, including the ability to customize its styles via Sass, follow the steps below.
+However, it is highly recommended to install Material Components for the web via npm and consume its ES2015 modules and Sass directly. This is outlined in the steps below.
 
 ## Using MDC Web with ES2015 and Sass
 
