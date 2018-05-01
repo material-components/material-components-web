@@ -132,6 +132,9 @@
             <a href="javascript:void(0)" class="mdc-button">
               Link
             </a>
+            <button class="mdc-button--icon">
+              <i class="material-icons" aria-hidden="true">favorite</i>
+            </button>
           </div>
         </fieldset>
 
@@ -401,6 +404,12 @@
         for (var i = 0, btn; btn = btns[i]; i++) {
           mdc.ripple.MDCRipple.attachTo(btn);
         }
+        var unboundedButtons = document.querySelectorAll('.mdc-button--icon');
+        for (var x = 0, button; button = unboundedButtons[x]; x++) {
+          var temp = new mdc.ripple.MDCRipple(button);
+          temp.unbounded = true;
+        }
+
 
         document.getElementById('toggle-disabled').addEventListener('change', function() {
           var isDisabled = this.checked;

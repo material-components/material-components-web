@@ -135,15 +135,11 @@
   }
 }
 
-
-@import "@material/ripple/mixins";
-@import "./variables";
-
 @mixin mdc-button--icon-base_() {
   @include mdc-ripple-surface;
   @include mdc-ripple-radius-unbounded;
 
-  display: flex;
+  display: inline-flex;
   position: relative;
   flex-shrink: 0;
   align-items: center;
