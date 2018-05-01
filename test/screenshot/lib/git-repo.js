@@ -27,21 +27,21 @@ class GitRepo {
    * @return {!Promise<void>}
    */
   async fetch() {
-    return await this.repo_.fetch();
+    return this.repo_.fetch();
   }
 
   /**
    * @return {!Promise<string>}
    */
   async getShortCommitHash() {
-    return await this.exec_('revparse', ['--short', 'HEAD']);
+    return this.exec_('revparse', ['--short', 'HEAD']);
   }
 
   /**
    * @return {!Promise<string>}
    */
   async getBranchName() {
-    return await this.exec_('revparse', ['--abbrev-ref', 'HEAD']);
+    return this.exec_('revparse', ['--abbrev-ref', 'HEAD']);
   }
 
   /**
@@ -51,7 +51,7 @@ class GitRepo {
    * @return {!Promise<string>}
    */
   async getFileAtRevision(filePath, revision = 'master') {
-    return await this.repo_.show([`${revision}:${filePath}`]);
+    return this.repo_.show([`${revision}:${filePath}`]);
   }
 
   /**
