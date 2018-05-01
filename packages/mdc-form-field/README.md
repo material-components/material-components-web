@@ -48,7 +48,7 @@ Use the `mdc-form-field` element to wrap any combination of adjacent _input_ and
 
 ### JavaScript Instantiation
 
-If you are using MDC Form Field with an MDC Web component that has a [ripple](../mdc-ripple) effect, you can instantiate `MDCFormField` and set its [`input` property](#MDCFormField-properties-and-methods) to activate the ripple effect upon interacting with the label. Here is an example with [MDC Checkbox](../mdc-checkbox):
+If you are using MDC Form Field with an MDC Web component that has a [ripple](../mdc-ripple) effect, you can instantiate `MDCFormField` and set its [`input` property](#mdcformfield-properties-and-methods) to activate the ripple effect upon interacting with the label. Here is an example with [MDC Checkbox](../mdc-checkbox):
 
 ```js
 import {MDCFormField} from '@material/form-field';
