@@ -52,7 +52,7 @@ In text field box:
   <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
   <input type="text" id="my-input" class="mdc-text-field__input">
   <label for="my-input" class="mdc-floating-label">Your Name</label>
-  <div class="mdc-text-field__bottom-line"></div>
+  <div class="mdc-line-ripple"></div>
 </div>
 ```
 
@@ -79,7 +79,7 @@ In text field box:
   <input type="text" id="my-input" class="mdc-text-field__input">
   <label for="my-input" class="mdc-floating-label">Your Name</label>
   <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
-  <div class="mdc-text-field__bottom-line"></div>
+  <div class="mdc-line-ripple"></div>
 </div>
 ```
 
