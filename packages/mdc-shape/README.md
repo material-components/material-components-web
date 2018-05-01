@@ -68,16 +68,16 @@ unelevated component.
 
 ## Variants
 
-### Stroked Angled Corners
+### Outlined Angled Corners
 
-Stroked angled corners involve the same markup and styles as above, with the addition of including a mixin for stroke:
+Outlined angled corners involve the same markup and styles as above, with the addition of including a mixin for outline:
 
 ```scss
 @import "@material/shape/mixins";
 
 .my-shape-container {
   @include mdc-shape-angled-corner(#fff, 10px);
-  @include mdc-shape-angled-corner-stroke(2px, blue);
+  @include mdc-shape-angled-corner-outline(2px, blue);
 }
 ```
 
@@ -100,7 +100,7 @@ Mixin | Description
 --- | ---
 `mdc-shape-angled-corner($background-color, $top-left-size[, $top-right-size, $bottom-right-size, $bottom-left-size])` | Applies styles for masking angled corners, using the given background color and corner sizes. If fewer than 4 corner sizes are specified, the mixin automatically determines the other corners similarly to CSS `border-radius`.
 `mdc-shape-angled-corner-background($background-color)` | Sets the background color used to mask angled corners. Useful for styling a subset of components in a section with a different background color.
-`mdc-shape-angled-corner-stroke($stroke-width, $stroke-color[, $stroke-style])` | Applies stroke styles to angled corners. `$stroke-style` defaults to `solid`.
+`mdc-shape-angled-corner-outline($outline-width, $outline-color[, $outline-style])` | Applies outline styles to angled corners. `$outline-style` defaults to `solid`.
 
 > **Note:** When mentioned above, "background color" specifically refers to the color of the background behind the surface (_not_ the fill color of the surface). These mixins operate by masking the corners of the surface to match the background.
 

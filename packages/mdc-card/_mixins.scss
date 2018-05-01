@@ -24,7 +24,7 @@
   @include mdc-theme-prop(background-color, $color);
 }
 
-@mixin mdc-card-stroke($color, $thickness: $mdc-card-stroke-width) {
+@mixin mdc-card-outline($color, $thickness: $mdc-card-outline-width) {
   border: $thickness solid mdc-theme-prop-value($color);
 }
 
