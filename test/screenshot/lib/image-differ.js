@@ -31,13 +31,13 @@ class ImageDiffer {
   /**
    * @param {!GoldenStore} actualStore
    * @param {!GoldenStore} expectedStore
-   * @return {!Promise<!Array<!ImageDiff>>}
+   * @return {!Promise<!Array<!ImageDiffJson>>}
    */
   async compareAllPages({
     actualStore,
     expectedStore,
   }) {
-    /** @type {!Array<!Promise<!Array<!ImageDiff>>>} */
+    /** @type {!Array<!Promise<!Array<!ImageDiffJson>>>} */
     const pagePromises = [];
 
     const actualJsonData = actualStore.jsonData;
@@ -70,7 +70,7 @@ class ImageDiffer {
    * @param {string} htmlFilePath
    * @param {!CaptureJson} actualCapture
    * @param {!CaptureJson} expectedCapture
-   * @return {!Promise<!Array<!ImageDiff>>}
+   * @return {!Promise<!Array<!ImageDiffJson>>}
    * @private
    */
   async compareOnePage_({
@@ -78,7 +78,7 @@ class ImageDiffer {
     actualCapture,
     expectedCapture,
   }) {
-    /** @type {!Array<!Promise<!ImageDiff>>} */
+    /** @type {!Array<!Promise<!ImageDiffJson>>} */
     const imagePromises = [];
 
     const actualScreenshots = actualCapture.screenshots;
@@ -165,61 +165,3 @@ class ImageDiffer {
 }
 
 module.exports = ImageDiffer;
-
-
-/*
- * JSON file typedefs
- */
-
-
-/**
- * @typedef {{
- *   publicUrl: string,
- *   screenshots: !Object,
- * }}
- */
-// eslint-disable-next-line no-unused-vars
-let CaptureJson;
-
-/**
- * @typedef {{
- *   htmlFilePath: string,
- *   browserKey: string,
- *   actualImageUrl: string,
- *   expectedImageUrl: string,
- *   diffImageBuffer ?Buffer,
- *   diffImageUrl: string,
- * }}
- */
-// eslint-disable-next-line no-unused-vars
-let ImageDiff;
-
-
-/*
- * Resemble.js API externs
- */
-
-
-/**
- * @typedef {{
- *   rawMisMatchPercentage: number,
- *   misMatchPercentage: string,
- *   diffBounds: !ResembleApiBoundingBox,
- *   analysisTime: number,
- *   getImageDataUrl: function(text: string): string,
- *   getBuffer: function(includeOriginal: boolean): !Buffer,
- * }}
- */
-// eslint-disable-next-line no-unused-vars
-let ResembleApiComparisonResult;
-
-/**
- * @typedef {{
- *   top: number,
- *   left: number,
- *   bottom: number,
- *   right: number,
- * }}
- */
-// eslint-disable-next-line no-unused-vars
-let ResembleApiBoundingBox;

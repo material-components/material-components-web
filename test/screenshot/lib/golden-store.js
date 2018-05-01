@@ -24,9 +24,13 @@ const GitRepo = require('./git-repo');
  * Reads and writes a `golden.json` file.
  */
 class GoldenStore {
-  constructor({
-    jsonData,
-  }) {
+  /**
+   * @param {!GoldenJson} jsonData
+   */
+  constructor({jsonData}) {
+    /**
+     * @type {!GoldenJson}
+     */
     this.jsonData = jsonData;
   }
 
