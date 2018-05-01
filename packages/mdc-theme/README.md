@@ -71,8 +71,10 @@ CSS Custom property | Description
 `--mdc-theme-primary` | The theme primary color
 `--mdc-theme-secondary` | The theme secondary color
 `--mdc-theme-background` | The theme background color
+`--mdc-theme-surface` | The theme surface color
 `--mdc-theme-on-primary` | Text color on top of a primary background
 `--mdc-theme-on-secondary` | Text color on top of a secondary background
+`--mdc-theme-on-surface` | Text color on top of a surface background
 `--mdc-theme-text-<TEXT_STYLE>-on-light` | Text color for TEXT_STYLE on top of light background
 `--mdc-theme-text-<TEXT_STYLE>-on-dark` | Text color for TEXT_STYLE on top of dark background
 
@@ -85,8 +87,10 @@ CSS Class | Description
 `mdc-theme--primary` | Sets the text color to the theme primary color
 `mdc-theme--secondary` | Sets the text color to the theme secondary color
 `mdc-theme--background` | Sets the background color to the theme background color
+`mdc-theme--surface` | Sets the surface color to the theme surface color
 `mdc-theme--on-primary` | Sets the text color to the theme on-primary color
 `mdc-theme--on-secondary` | Sets the text color to the theme on-secondary color
+`mdc-theme--on-surface` | Sets the text color to the theme on-surface color
 `mdc-theme--primary-bg` | Sets the background color to the theme primary color
 `mdc-theme--secondary-bg` | Sets the background color to the theme secondary color
 `mdc-theme--text-<TEXT_STYLE>-on-light` | Sets text to a suitable color for TEXT_STYLE on top of light background
@@ -109,10 +113,12 @@ Property Name | Description
 `primary` | The theme primary color
 `secondary` | The theme secondary color
 `background` | The theme background color
+`surface` | The theme surface color
 `text-<TEXT_STYLE>-on-light` | TEXT_STYLE on top of a light background
 `text-<TEXT_STYLE>-on-dark` | TEXT_STYLE on top of a dark background
 `on-primary` | A text/iconography color that is usable on top of primary color
 `on-secondary` | A text/iconography color that is usable on top of secondary color
+`on-surface` | A text/iconography color that is usable on top of surface color
 
 
 #### `mdc-theme-luminance($color)`
