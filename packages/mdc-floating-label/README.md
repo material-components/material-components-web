@@ -67,7 +67,7 @@ a unique `id` to each `<input>` by wrapping `mdc-text-field__input` within a `<l
 CSS Class | Description
 --- | ---
 `mdc-floating-label` | Mandatory.
-`mdc-floating-label--float-above` | Indicates the label is floating above the text field.
+`mdc-floating-label--float-above` | Indicates the label is floating in the floating position.
 `mdc-floating-label--shake` | Shakes the label.
 
 ### Sass Mixins

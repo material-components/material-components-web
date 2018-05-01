@@ -80,8 +80,8 @@ Because notched-outline has sibling elements, you need to call the "idle" Sass m
 Consider the following example HTML:
 
 ```html
-<div class="foo-line-ripple-parent">
-  <div class="mdc-notched-outline foo-line-ripple">
+<div class="foo__parent">
+  <div class="mdc-notched-outline foo__child">
     <svg>
       <path class="mdc-notched-outline__path"/>
     </svg>
@@ -89,15 +89,15 @@ Consider the following example HTML:
   <div class="mdc-notched-outline__idle"></div>
 </div>
 ```
-In order to customize any "non-idle" part of notched-outline, use the .foo-line-ripple CSS selector:
+In order to customize any "non-idle" part of notched-outline, use the .foo__child CSS selector:
 ```scss
-.foo-line-ripple {
+.foo__child {
   @include mdc-notched-outline-color($fooColor);
 }
 ```
-But in order to customize any "idle" part of the notched-outline, you must use the .foo-line-ripple-parent CSS selector:
+But in order to customize any "idle" part of the notched-outline, you must use the .foo__parent CSS selector:
 ```scss
-.foo-line-ripple-parent {
+.foo__parent {
   @include mdc-notched-outline-idle-color($fooColor);
 }
 ```
