@@ -7,8 +7,7 @@ path: /catalog/input-controls/form-fields/
 
 # Form Fields
 
-MDC Form Field aligns a form field (for example, a checkbox) with its label and makes it RTL-aware.
-When used with JavaScript, it can activate a [ripple](../mdc-ripple) effect upon interacting with the label.
+MDC Form Field aligns an MDC Web form field (for example, a checkbox) with its label and makes it RTL-aware. It also activates a [ripple](../mdc-ripple) effect upon interacting with the label.
 
 ## Installation
 
@@ -31,18 +30,7 @@ npm install @material/form-field
 
 ### HTML Structure
 
-The `mdc-form-field` class is used as a parent element, with any combination of adjacent `input` and `label` elements as
-immediate children:
-
-```html
-<div class="mdc-form-field">
-  <input type="checkbox" id="input">
-  <label for="input">Label</label>
-</div>
-```
-
-MDC Form Field works with _any_ type of immediate child element as long as its successive sibling is a `label` element.
-This means it will work for MDC Web form controls such as [MDC Checkbox](../mdc-checkbox) and [MDC Radio](../mdc-radio):
+Use the `mdc-form-field` element to wrap any combination of adjacent _input_ and _label_ elements of MDC Web form controls, such as [MDC Checkbox](../mdc-checkbox) or [MDC Radio](../mdc-radio). Here's an example with MDC Checkbox:
 
 ```html
 <div class="mdc-form-field">
@@ -60,15 +48,15 @@ This means it will work for MDC Web form controls such as [MDC Checkbox](../mdc-
 
 ### JavaScript Instantiation
 
-If you are using MDC Form Field with an MDC Web component that has a [ripple](../mdc-ripple) effect, you can instantiate `MDCFormField` and set its [`input` property](#MDCFormField-properties-and-methods) to activate the ripple effect upon interacting with the label. Here is an example using [MDC Radio](../mdc-radio):
+If you are using MDC Form Field with an MDC Web component that has a [ripple](../mdc-ripple) effect, you can instantiate `MDCFormField` and set its [`input` property](#MDCFormField-properties-and-methods) to activate the ripple effect upon interacting with the label. Here is an example with [MDC Checkbox](../mdc-checkbox):
 
 ```js
 import {MDCFormField} from '@material/form-field';
-import {MDCRadio} from '@material/radio';
+import {MDCCheckbox} from '@material/checkbox';
 
 const formField = new MDCFormField(document.querySelector('.mdc-form-field'));
-const radio = new MDCRadio(document.querySelector('.mdc-radio'));
-formField.input = radio;
+const checkbox = new MDCCheckbox(document.querySelector('.mdc-checkbox'));
+formField.input = checkbox;
 ```
 
 > See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
