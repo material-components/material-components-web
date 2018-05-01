@@ -2,19 +2,22 @@
 title: "Floating Label"
 layout: detail
 section: components
-excerpt: "An animated text caption for a text field or select."
+excerpt: "An animated text caption for a Text Field or Select."
 path: /catalog/input-controls/floating-label/
 -->
 
 # Floating Label
 
-Floating labels display the type of input a field requires. Every text field and select should have a label. Labels are aligned with the input line and always visible. They can be resting (when a field is inactive and empty) or floating. The label is a text caption or description for the text field.
+Floating labels display the type of input a field requires. Every Text Field and Select should have a label. Labels are aligned with the input line and always visible. They can be resting (when a field is inactive and empty) or floating. The label is a text caption or description for the Text Field.
 
 ## Design & API Documentation
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
     <a href="https://material.io/guidelines/components/text-fields.html#text-fields-layout">Material Design guidelines: Text Fields Layout</a>
+  </li>
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material-components-web.appspot.com/text-field.html">Demo with Text Field</a>
   </li>
 </ul>
 
@@ -40,7 +43,9 @@ import {MDCFloatingLabel} from '@material/floating-label';
 const floatingLabel = new MDCFloatingLabel(document.querySelector('.mdc-floating-label'));
 ```
 
-#### Avoid Dynamic ID Generation
+## Variants
+
+### Avoid Dynamic ID Generation
 
 If you're using the JavaScript-enabled version of floating label, you can avoid needing to assign
 a unique `id` to each `<input>` by wrapping `mdc-text-field__input` within a `<label>`:
@@ -52,6 +57,8 @@ a unique `id` to each `<input>` by wrapping `mdc-text-field__input` within a `<l
   <div class="mdc-text-field__bottom-line"></div>
 </label>
 ```
+
+> NOTE: This method also works with `<select>`.
 
 ## Style Customization
 
@@ -77,9 +84,9 @@ Mixin | Description
 
 Method Signature | Description
 --- | ---
-`shake(shouldShake: boolean) => void` | Shakes or stops shaking the label, depending on the value of `shouldShake`. Proxies to the foundation method of the same name.
-`float(shouldFloat: boolean) => void` | Floats or docks the label, depending on the value of `shouldFloat`. Proxies to the foundation method of the same name.
-`getWidth() => number` | Returns the width of the label element.
+`shake(shouldShake: boolean) => void` | Proxies to the foundation's `shake()` method.
+`float(shouldFloat: boolean) => void` | Proxies to the foundation's `float()` method.
+`getWidth() => number` | Proxies to the foundation's `getWidth()` method.
 
 ## Usage Within Frameworks
 

@@ -46,43 +46,12 @@ npm install @material/textfield
 </div>
 ```
 
-#### Input Types
+> NOTE: Text field supports `text` and `password` input types (e.g., `<input type="password" class="mdc-text-field__input">`).
+>
+> Other input types (such as `number` and `date`) are not currently supported.
 
-Text field supports `text` and `password` input types (e.g., `<input type="password" class="mdc-text-field__input">`).
-
-Other input types (such as `number` and `date`) are not currently supported.
-
-#### HTML5 Validation
-
-`MDCTextFieldFoundation` provides validity styling by using the `:invalid` and `:required` attributes provided
-by HTML5's form validation API.
-
-```html
-<div class="mdc-text-field">
-  <input type="password" id="pw" class="mdc-text-field__input" required minlength=8>
-  <label for="pw" class="mdc-floating-label">Password</label>
-  <div class="mdc-line-ripple"></div>
-</div>
-```
-
-`MDCTextFieldFoundation` automatically appends an asterisk to the label text if the required attribute is set.
-
-#### Pre-filled
-
-When dealing with JS-driven text fields that already have values, you'll want to ensure that you
-render `mdc-floating-label` with the `mdc-floating-label--float-above` modifier class, and `mdc-text-field` with the `mdc-text-field--upgraded` modifier class. This will
-ensure that the label moves out of the way of the text field's value and prevents a Flash Of
-Un-styled Content (**FOUC**).
-
-```html
-<div class="mdc-text-field mdc-text-field--upgraded">
-  <input type="text" id="pre-filled" class="mdc-text-field__input" value="Pre-filled value">
-  <label class="mdc-floating-label mdc-floating-label--float-above" for="pre-filled">
-    Label in correct place
-  </label>
-  <div class="mdc-line-ripple"></div>
-</div>
-```
+> NOTE: For more details, see [MDC Line Ripple](https://github.com/material-components/material-components-web/blob/master/packages/mdc-line-ripple/README.md)
+> and [MDC Floating Label](https://github.com/material-components/material-components-web/blob/master/packages/mdc-floating-label/README.md).
 
 ### Styles
 
@@ -146,11 +115,11 @@ included as part of the DOM structure of a full width text field.
 
 See [here](../mdc-notched-outline/) for more information on using the outline sub-component.
 
-> _NOTE_: Do not use `mdc-line-ripple` inside of `mdc-text-field` _if you plan on using `mdc-text-field--outlined`_. Bottom line should not be included as part of the DOM structure of an outlined text field.
+> _NOTE_: Do not use `mdc-line-ripple` inside of `mdc-text-field` _if you plan on using `mdc-text-field--outlined`_. Line Ripple should not be included as part of the DOM structure of an outlined text field.
 
 ### Disabled
 
-Add the `disabled` attribute to `<input>` if the `mdc-text-field` is disabled. You also need to add `mdc-text-field--disabled` to the `mdc-text-field`.
+To disable the text field, add the `disabled` attribute to the `<input>` element and add the `mdc-text-field--disabled` class to the `mdc-text-field` element.
 
 ```html
 <div class="mdc-text-field mdc-text-field--disabled">
@@ -171,6 +140,39 @@ See [here](helper-text/) for more information on using helper text.
 Leading and trailing icons can be added within the box or outlined variants of MDC Text Field as visual indicators as
 well as interaction targets. See [here](icon/) for more information on using icons.
 
+
+### HTML5 Validation
+
+`MDCTextFieldFoundation` provides validity styling by using the `:invalid` and `:required` attributes provided
+by HTML5's form validation API.
+
+```html
+<div class="mdc-text-field">
+  <input type="password" id="pw" class="mdc-text-field__input" required minlength=8>
+  <label for="pw" class="mdc-floating-label">Password</label>
+  <div class="mdc-line-ripple"></div>
+</div>
+```
+
+`MDCTextFieldFoundation` automatically appends an asterisk to the label text if the required attribute is set.
+
+### Pre-filled
+
+When dealing with JS-driven text fields that already have values, you'll want to ensure that you
+render `mdc-floating-label` with the `mdc-floating-label--float-above` modifier class, and `mdc-text-field` with the `mdc-text-field--upgraded` modifier class. This will
+ensure that the label moves out of the way of the text field's value and prevents a Flash Of
+Un-styled Content (**FOUC**).
+
+```html
+<div class="mdc-text-field mdc-text-field--upgraded">
+  <input type="text" id="pre-filled" class="mdc-text-field__input" value="Pre-filled value">
+  <label class="mdc-floating-label mdc-floating-label--float-above" for="pre-filled">
+    Label in correct place
+  </label>
+  <div class="mdc-line-ripple"></div>
+</div>
+```
+
 ## Style Customization
 
 ### CSS Classes
@@ -178,7 +180,7 @@ well as interaction targets. See [here](icon/) for more information on using ico
 CSS Class | Description
 --- | ---
 `mdc-text-field` | Mandatory.
-`mdc-text-field--upgraded` | Indicates the text field is upgraded, normally by JavaScript.
+`mdc-text-field--upgraded` | Indicates the text field is upgraded, using JavaScript.
 `mdc-text-field--box` | Styles the text field as a box text field.
 `mdc-text-field--outlined` | Styles the text field as an outlined text field.
 `mdc-text-field--fullwidth` | Styles the text field as a full width text field.
@@ -205,14 +207,14 @@ Mixin | Description
 `mdc-text-field-box-corner-radius($radius)` | Customizes the border radius for the text field box variant.
 `mdc-text-field-box-fill-color($color)` | Customizes the background color of the text field box.
 
-#### Mixins for Text Field Outline
+#### Mixins for Outlined Text Field
 
 Mixin | Description
 --- | ---
 `mdc-text-field-focused-outline-color($color)` | Customizes the outline border color when the text field is focused.
 `mdc-text-field-hover-outline-color($color)` | Customizes the outline border color when the text field is hovered.
-`mdc-text-field-outline-color($color)` | Customizes the border color of the outline text field.
-`mdc-text-field-outline-corner-radius($radius)` | Sets the border radius of of the text field outline variant.
+`mdc-text-field-outline-color($color)` | Customizes the border color of the outlined text field.
+`mdc-text-field-outline-corner-radius($radius)` | Sets the border radius of of the outlined text field variant.
 
 #### Mixins for Textarea
 

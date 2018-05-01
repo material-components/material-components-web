@@ -8,13 +8,16 @@ path: /catalog/input-controls/line-ripple/
 
 # Line Ripple
 
-The line ripple is used to highlight user-specified text above it. When a line ripple is active, the line’s color and thickness vary.
+The line ripple is used to highlight user-specified text above it. When a line ripple is active, the line’s color and thickness changes.
 
 ## Design & API Documentation
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
     <a href="https://material.io/guidelines/components/text-fields.html#text-fields-layout">Material Design guidelines: Text Fields Layout</a>
+  </li>
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material-components-web.appspot.com/text-field.html">Demo with floating label on Text Field</a>
   </li>
 </ul>
 
