@@ -33,7 +33,7 @@ class ImageDiffer {
    * @param {!GoldenStore} expectedStore
    * @return {!Promise<!Array<!ImageDiff>>}
    */
-  async compare({
+  async compareAllPages({
     actualStore,
     expectedStore,
   }) {

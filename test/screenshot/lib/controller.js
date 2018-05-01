@@ -273,7 +273,7 @@ class Controller {
    */
   async diffGoldenJson(testCases) {
     /** @type {!Array<!ImageDiff>} */
-    const diffs = await this.imageDiffer_.compare({
+    const diffs = await this.imageDiffer_.compareAllPages({
       actualStore: await GoldenStore.fromTestCases(testCases),
       expectedStore: await GoldenStore.fromMaster(this.goldenJsonFilePath_),
     });
