@@ -44,7 +44,7 @@ Use the `mdc-form-field` element to wrap any combination of adjacent _input_ and
 </div>
 ```
 
-> _NOTE_: MDC Form Field is **not** intended for cases where a label and input are already handled together in a component's styles and logic. For example, [MDC Text Field](../mdc-text-field) already manages a label and input together under its own root element.
+> _NOTE_: MDC Form Field is **not** intended for cases where a label and input are already handled together in a component's styles and logic. For example, [MDC Text Field](../mdc-textfield) already manages a label and input together under its own root element.
 
 ### JavaScript Instantiation
 
