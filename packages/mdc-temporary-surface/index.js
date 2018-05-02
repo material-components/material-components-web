@@ -18,7 +18,7 @@
 import MDCComponent from '@material/base/component';
 import {getTransformPropertyName} from './util';
 import {MDCTemporarySurfaceFoundation, AnchorMargin} from './foundation';
-import {Corner, CornerBit} from './constants';
+import {Corner, CornerBit, strings} from './constants';
 
 /**
  * @extends MDCComponent<!MDCTemporarySurfaceFoundation>
@@ -27,6 +27,8 @@ class MDCTemporarySurface extends MDCComponent {
   /** @param {...?} args */
   constructor(...args) {
     super(...args);
+
+    this.focusableElements_ = [];
   }
 
   /**
@@ -45,7 +47,7 @@ class MDCTemporarySurface extends MDCComponent {
   /** @param {boolean} value */
   set open(value) {
     if (value) {
-      this.foundation_.open();
+      this.show();
     } else {
       this.foundation_.close();
     }
@@ -54,6 +56,7 @@ class MDCTemporarySurface extends MDCComponent {
   /** @param {{focusIndex: ?number}=} options */
   show({focusIndex = null} = {}) {
     this.foundation_.open({focusIndex: focusIndex});
+    this.focusableElements_ = [].slice.call(this.root_.querySelectorAll(strings.FOCUSABLE_ELEMENTS));
   }
 
   hide() {
@@ -95,6 +98,15 @@ class MDCTemporarySurface extends MDCComponent {
       getWindowDimensions: () => {
         return {width: window.innerWidth, height: window.innerHeight};
       },
+      getNumberFocusableElements: () => this.focusableElements_.length,
+      getFocusedItemIndex: () => this.focusableElements_.indexOf(document.activeElement),
+      focusItemAtIndex: (index) => this.focusableElements_[index].focus(),
+      getFirstFocusableElement: () => this.root_.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[0],
+      getLastFocusableElement: () => {
+        const nodeList = this.root_.querySelectorAll(strings.FOCUSABLE_ELEMENTS);
+        return nodeList[nodeList.length - 1];
+      },
+      getIndexForEventTarget: (target) => this.focusableElements_.indexOf(target),
       registerInteractionHandler: (type, handler) => this.root_.addEventListener(type, handler),
       deregisterInteractionHandler: (type, handler) => this.root_.removeEventListener(type, handler),
       registerBodyClickHandler: (handler) => document.body.addEventListener('click', handler),

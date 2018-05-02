@@ -99,6 +99,11 @@ class MDCTemporarySurfaceFoundation extends MDCFoundation {
       hasAnchor: () => false,
       getAnchorDimensions: () => ({}),
       getWindowDimensions: () => ({}),
+      getNumberFocusableElements: () => 0,
+      getFocusedItemIndex: () => () => 0,
+      focusItemAtIndex: () => {},
+      getFirstFocusableElement: () => {},
+      getLastFocusableElement: () => {},
       registerInteractionHandler: () => {},
       deregisterInteractionHandler: () => {},
       registerBodyClickHandler: () => {},
@@ -208,10 +213,10 @@ class MDCTemporarySurfaceFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {?number} focusIndex
    * @private
    */
-  focusOnOpen_(focusIndex) {
+  focusOnOpen_() {
+    this.adapter_.focus();
   }
 
   /**
@@ -250,26 +255,40 @@ class MDCTemporarySurfaceFoundation extends MDCFoundation {
     // The menu needs to know if the keydown event was triggered on the menu
     this.keyDownWithinMenu_ = isEnter || isSpace;
 
+    const focusedItemIndex = this.adapter_.getFocusedItemIndex();
+    const lastItemIndex = this.adapter_.getNumberFocusableElements() - 1;
+
     // Ensure Arrow{Up,Down} and space do not cause inadvertent scrolling
-    if (isArrowUp || isArrowDown || isSpace) {
+    if (isArrowUp || isArrowDown || isTab) {
       evt.preventDefault();
     }
 
-    // if (isArrowUp) {
-    //   if (focusedItemIndex === 0 || this.adapter_.isFocused()) {
-    //     this.adapter_.focusItemAtIndex(lastItemIndex);
-    //   } else {
-    //     this.adapter_.focusItemAtIndex(focusedItemIndex - 1);
-    //   }
-    // } else if (isArrowDown) {
-    //   if (focusedItemIndex === lastItemIndex || this.adapter_.isFocused()) {
-    //     this.adapter_.focusItemAtIndex(0);
-    //   } else {
-    //     this.adapter_.focusItemAtIndex(focusedItemIndex + 1);
-    //   }
-    // }
+    if (isSpace && this.isValidSpaceKey_(evt)) {
+      evt.preventDefault();
+    }
+
+    if (isArrowUp || (isTab && shiftKey)) {
+      if (focusedItemIndex === 0 || this.adapter_.isFocused()) {
+        this.adapter_.focusItemAtIndex(lastItemIndex);
+      } else {
+        this.adapter_.focusItemAtIndex(focusedItemIndex - 1);
+      }
+    } else if (isArrowDown || (isTab && !shiftKey)) {
+      if (focusedItemIndex === lastItemIndex || this.adapter_.isFocused()) {
+        this.adapter_.focusItemAtIndex(0);
+      } else {
+        this.adapter_.focusItemAtIndex(focusedItemIndex + 1);
+      }
+    }
 
     return true;
+  }
+
+  isValidSpaceKey_(evt) {
+    const tagName = evt.target.tagName.toLocaleLowerCase();
+    const okSpaceValues = ['index', 'button', 'textarea'];
+
+    return okSpaceValues.indexOf(tagName) === -1;
   }
 
   /**
@@ -288,7 +307,6 @@ class MDCTemporarySurfaceFoundation extends MDCFoundation {
     const isEscape = key === 'Escape' || keyCode === 27;
 
     if (isEscape) {
-      this.adapter_.notifyCancel();
       this.close();
     }
 

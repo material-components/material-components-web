@@ -28,6 +28,7 @@ const strings = {
   CANCEL_EVENT: 'MDCTemporarySurface:cancel',
   ARIA_DISABLED_ATTR: 'aria-disabled',
   CLOSE_EVENT: 'MDCTemporarySurface:close',
+  FOCUSABLE_ELEMENTS: 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
 };
 
 /** @enum {number} */
