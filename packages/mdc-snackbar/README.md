@@ -17,14 +17,14 @@ path: /catalog/snackbars/
 </div>-->
 
 The MDC Snackbar component is a spec-aligned snackbar/toast component adhering to the
-[Material Design snackbars & toasts requirements](https://material.io/guidelines/components/snackbars-toasts.html#snackbars-toasts-specs).
+[Material Design snackbars & toasts requirements](https://material.io/go/design-snackbars#snackbars-toasts-specs).
 It requires JavaScript to show and hide itself.
 
 ## Design & API Documentation
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/snackbars-toasts.html">Material Design guidelines: Snackbars & toasts</a>
+    <a href="https://material.io/go/design-snackbars">Material Design guidelines: Snackbars & toasts</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
     <a href="https://material-components-web.appspot.com/snackbar.html">Demo</a>

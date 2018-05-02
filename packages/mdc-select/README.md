@@ -22,7 +22,7 @@ browser's native `<select>` element. It is fully accessible, and fully RTL-aware
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/text-fields.html">Material Design guidelines: Text Fields</a>
+    <a href="https://material.io/go/design-text-fields">Material Design guidelines: Text Fields</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
     <a href="https://material-components-web.appspot.com/select.html">Demo</a>
