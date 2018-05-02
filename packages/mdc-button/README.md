@@ -22,7 +22,7 @@ Buttons allow users to take actions, and make choices, with a single tap.
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/buttons.html">Material Design guidelines: Buttons</a>
+    <a href="https://material.io/go/design-buttons">Material Design guidelines: Buttons</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
     <a href="https://material-components-web.appspot.com/button.html">Demo</a>

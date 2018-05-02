@@ -21,7 +21,7 @@ Switches toggle the state of a single settings option on or off, and are mobile 
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/selection-controls.html#selection-controls-switch">Material Design guidelines: Switches</a>
+    <a href="https://material.io/go/design-switches">Material Design guidelines: Switches</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
     <a href="https://material-components-web.appspot.com/switch.html">Demo</a>
