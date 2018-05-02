@@ -15,7 +15,7 @@ The outline is a border around all sides of either a text field or select compon
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/text-fields.html#text-fields-field-variations">Material Design guidelines: Text Field Variations</a>
+    <a href="https://material.io/go/design-text-fields#text-fields-field-variations">Material Design guidelines: Text Field Variations</a>
   </li>
 </ul>
 

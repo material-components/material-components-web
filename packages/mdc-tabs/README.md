@@ -10,7 +10,7 @@ path: /catalog/tabs/
 # MDC Tabs
 
 The MDC Tabs component contains components which are used to create spec-aligned tabbed navigation components adhering to the
-[Material Design tabs guidelines](https://material.io/guidelines/components/tabs.html). These components are:
+[Material Design tabs guidelines](https://material.io/go/design-tabs). These components are:
 
 - **mdc-tab**: The individual tab elements
 - **mdc-tab-bar**: The main component which is composed of `mdc-tab` elements
@@ -20,7 +20,7 @@ The MDC Tabs component contains components which are used to create spec-aligned
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/tabs.html">Material Design guidelines: Tabs</a>
+    <a href="https://material.io/go/design-tabs">Material Design guidelines: Tabs</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
     <a href="http://material-components-web.appspot.com/tabs.html">Demo</a>
