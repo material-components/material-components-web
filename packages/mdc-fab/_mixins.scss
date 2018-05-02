@@ -58,7 +58,7 @@ $mdc-fab-icon-enter-duration_: 180ms;
   @include mdc-ripple-radius-bounded;
   @include mdc-elevation(6);
 
-  display: inline-flex;
+  display: inline-block;
   position: relative;
   justify-content: center;
   box-sizing: border-box;
