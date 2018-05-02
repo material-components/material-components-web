@@ -38,39 +38,17 @@ npm install @material/checkbox
 
 ## Basic Usage
 
-```html
-<div class="mdc-checkbox">
-  <input type="checkbox"
-         class="mdc-checkbox__native-control"/>
-  <div class="mdc-checkbox__background">
-    <svg class="mdc-checkbox__checkmark"
-         viewBox="0 0 24 24">
-      <path class="mdc-checkbox__checkmark-path"
-            fill="none"
-            stroke="white"
-            d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-    </svg>
-    <div class="mdc-checkbox__mixedmark"></div>
-  </div>
-</div>
-```
-
-The checkbox component is driven by an underlying native checkbox element. This element is sized and
-positioned the same way as the checkbox component itself, allowing for proper behavior of assistive
-devices.
-
-Additionally, the checkbox can be used in conjunction with [mdc-form-field](../mdc-form-field) to
-easily position checkboxes and their labels.
+We recommend using MDC Checkbox with [MDC Form Field](../mdc-form-field) for enhancements such as label alignment, label activation of the ripple interaction effect, and RTL-awareness.
 
 ```html
 <div class="mdc-form-field">
   <div class="mdc-checkbox">
     <input type="checkbox"
-           id="my-checkbox"
-           class="mdc-checkbox__native-control"/>
+           class="mdc-checkbox__native-control"
+           id="checkbox-1"/>
     <div class="mdc-checkbox__background">
       <svg class="mdc-checkbox__checkmark"
-           viewBox="0 0 24 24">
+          viewBox="0 0 24 24">
         <path class="mdc-checkbox__checkmark-path"
               fill="none"
               stroke="white"
@@ -79,12 +57,37 @@ easily position checkboxes and their labels.
       <div class="mdc-checkbox__mixedmark"></div>
     </div>
   </div>
-
-  <label for="my-checkbox">My Checkbox Label</label>
+  <label for="checkbox-1">Checkbox 1</label>
 </div>
 ```
 
+The checkbox component is driven by an underlying native checkbox element. This element is sized and
+positioned the same way as the checkbox component itself, allowing for proper behavior of assistive
+devices.
+
 > **Note**: If you are using IE, you need to include a closing `</path>` tag if you wish to avoid console warnings.
+
+### Styles
+
+```scss
+@import "@material/form-field/mdc-form-field";
+@import "@material/checkbox/mdc-checkbox";
+```
+
+### JavaScript Instantiation
+
+The checkbox will work without JavaScript, but you can enhance it with a ripple interaction effect by instantiating `MDCCheckbox` on the `mdc-checkbox` element. To activate the ripple effect upon interacting with the label, you must also instantiate `MDCFormField` on the `mdc-form-field` element and set the `MDCCheckbox` instance as its `input`.
+
+```js
+import {MDCFormField} from '@material/form-field';
+import {MDCCheckbox} from '@material/checkbox';
+
+const checkbox = new MDCCheckbox(document.querySelector('.mdc-checkbox'));
+const formField = new MDCFormField(document.querySelector('.mdc-form-field'));
+formField.input = checkbox;
+```
+
+> See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
 
 ## Variants
 
