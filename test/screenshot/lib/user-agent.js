@@ -23,13 +23,13 @@ const CBT_FILTERS = {
   formFactor: {
     any:     () => (device) => true,
     desktop: () => (device) => device.device === 'desktop',
-    mobile:  () => (device) => device.device === 'mobile',
+    mobile:  () => (device) => device.device === 'mobile' && device.device_type !== 'tablet',
   },
 
   operatingSystemName: {
     any:     () => (device) => true,
     android: () => (device) => device.type === 'Android',
-    ios:     () => (device) => device.type === 'iPad' || device.type === 'iPhone',
+    ios:     () => (device) => device.type === 'iPhone',
     mac:     () => (device) => device.type === 'Mac',
     windows: () => (device) => device.type === 'Windows',
   },
