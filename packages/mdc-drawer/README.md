@@ -10,7 +10,7 @@ path: /catalog/drawers/
 # Drawers
 
 The MDC Drawer component is a spec-aligned drawer component adhering to the
-[Material Design navigation drawer pattern](https://material.io/guidelines/patterns/navigation-drawer.html).
+[Material Design navigation drawer pattern](https://material.io/go/design-navigation-drawer).
 It implements permanent, persistent, and temporary drawers. Permanent drawers are CSS-only and require no JavaScript, whereas persistent and temporary drawers require JavaScript to function, in order to respond to
 user interaction.
 
@@ -18,7 +18,7 @@ user interaction.
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/patterns/navigation-drawer.html">Material Design guidelines: Navigation drawer</a>
+    <a href="https://material.io/go/design-navigation-drawer">Material Design guidelines: Navigation drawer</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
     <a href="https://material-components-web.appspot.com/drawer/temporary-drawer.html">Demo: Temporary Drawer</a>

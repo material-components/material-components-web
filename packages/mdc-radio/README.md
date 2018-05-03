@@ -21,7 +21,7 @@ Radio buttons allow the user to select one option from a set while seeing all av
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/selection-controls.html#selection-controls-radio-button">Material Design guidelines: Selection Controls – Radio buttons</a>
+    <a href="https://material.io/go/design-radio-buttons">Material Design guidelines: Selection Controls – Radio buttons</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
     <a href="https://material-components-web.appspot.com/radio.html">Demo</a>
