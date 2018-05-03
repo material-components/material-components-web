@@ -39,17 +39,6 @@ changes as the user scrolls. Flexible is defined as a modifier class of toolbar
 but not a standalone component. Toolbars using this modifier will have additional
 height added to their first rows.
 
-## Design & API Documentation
-
-<ul class="icon-list">
-  <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/toolbars.html">Material Design guidelines: Toolbars</a>
-  </li>
-  <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/toolbar/index.html">Demo</a>
-  </li>
-</ul>
-
 ## Installation
 
 ```
