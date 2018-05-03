@@ -15,7 +15,7 @@ The notched outline is a border around all sides of either a Text Field or Selec
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/text-fields.html#text-fields-field-variations">Material Design guidelines: Text Field Variations</a>
+    <a href="https://material.io/go/design-text-fields#text-fields-field-variations">Material Design guidelines: Text Field Variations</a>
   </li>
   <li class="icon-list-item icon-list-item--spec">
     <a href="https://material-components-web.appspot.com/text-field.html">Demo with floating label on Text Field</a>

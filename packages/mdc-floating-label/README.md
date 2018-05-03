@@ -14,7 +14,7 @@ Floating labels display the type of input a field requires. Every Text Field and
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/text-fields.html#text-fields-layout">Material Design guidelines: Text Fields Layout</a>
+    <a href="https://material.io/go/design-text-fields#text-fields-layout">Material Design guidelines: Text Fields Layout</a>
   </li>
   <li class="icon-list-item icon-list-item--spec">
     <a href="https://material-components-web.appspot.com/text-field.html">Demo with Text Field</a>
