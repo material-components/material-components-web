@@ -26,7 +26,7 @@ It works without JavaScript.
     <a href="https://material.io/guidelines/components/selection-controls.html#selection-controls-switch">Material Design guidelines: Switches</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/switch.html">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/switch">Demo</a>
   </li>
 </ul>
 
