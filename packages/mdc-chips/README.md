@@ -25,7 +25,7 @@ Chips are compact elements that allow users to enter information, select a choic
     <a href="https://material.io/go/design-chips">Material Design guidelines: Chips</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/chips.html">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/chips">Demo</a>
   </li>
 </ul>
 

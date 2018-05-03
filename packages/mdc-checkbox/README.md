@@ -26,7 +26,7 @@ Checkboxes allow the user to select one or more items from a set.
     <a href="https://material.io/go/design-checkboxes">Material Design guidelines: Selection Controls – Checkbox</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/checkbox.html">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/checkbox">Demo</a>
   </li>
 </ul>
 
