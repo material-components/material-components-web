@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-const FILTERS = {
+const CbtApi = require('./cbt-api');
+const cbtApi = new CbtApi();
+
+const CBT_FILTERS = {
   formFactor: {
     any:     () => (device) => true,
     desktop: () => (device) => device.device === 'desktop',
@@ -29,27 +32,27 @@ const FILTERS = {
     windows: () => (device) => device.type === 'Windows',
   },
 
-  browserName: {
-    any:     () => (browser) => true,
-    chrome:  () => (browser) => browser.type === 'Chrome' || browser.type === 'Chrome Mobile',
-    edge:    () => (browser) => browser.type === 'Microsoft Edge',
-    firefox: () => (browser) => browser.type === 'Firefox',
-    ie:      () => (browser) => browser.type === 'Internet Explorer',
-    opera:   () => (browser) => browser.type === 'Opera',
-    safari:  () => (browser) => browser.type === 'Safari' || browser.type === 'Mobile Safari',
+  userAgentName: {
+    any:     () => (userAgent) => true,
+    chrome:  () => (userAgent) => userAgent.type === 'Chrome' || userAgent.type === 'Chrome Mobile',
+    edge:    () => (userAgent) => userAgent.type === 'Microsoft Edge',
+    firefox: () => (userAgent) => userAgent.type === 'Firefox',
+    ie:      () => (userAgent) => userAgent.type === 'Internet Explorer',
+    opera:   () => (userAgent) => userAgent.type === 'Opera',
+    safari:  () => (userAgent) => userAgent.type === 'Safari' || userAgent.type === 'Mobile Safari',
   },
 
-  browserVersion: {
+  userAgentVersion: {
     any:     (desiredVersion) => (actualVersion) => true,
     exactly: (desiredVersion) => (actualVersion) => compareVersions(actualVersion, desiredVersion) === 0,
-    latest: (n = 1) => (actualVersion, actualVersionIndex, actualVersionList) => {
-      return actualVersionList
+    latest: (n = 1) => (actualVersion, actualVersionIndex, actualVersionListSortedDesc) => {
+      return actualVersionListSortedDesc
         .slice(0, n)
         .includes(actualVersion)
       ;
     },
-    previous: (n = 1) => (actualVersion, actualVersionIndex, actualVersionList) => {
-      return actualVersionList
+    previous: (n = 1) => (actualVersion, actualVersionIndex, actualVersionListSortedDesc) => {
+      return actualVersionListSortedDesc
         .slice(1, 1 + n)
         .includes(actualVersion)
       ;
@@ -57,36 +60,67 @@ const FILTERS = {
   },
 };
 
+let browserConfigsPromise;
+
 module.exports = {
-  getApiConfigs,
+  fetchBrowserConfigs,
+  fetchBrowserConfigFromApiName,
 };
 
-function getApiConfigs(browserSpecs, rawBrowserJson) {
-  return browserSpecs.map((browserSpec) => getApiConfig(browserSpec, rawBrowserJson));
+async function fetchBrowserConfigs() {
+  return browserConfigsPromise || (browserConfigsPromise = new Promise((resolve, reject) => {
+    cbtApi.fetchAvailableBrowsers()
+      .then(
+        (cbtBrowsers) => {
+          const browserSpecs = require('../browser.json').browserSpecs;
+          const browserConfigs = getMatchingApiConfigs(browserSpecs, cbtBrowsers);
+
+          // Log it
+          const loggableConfigs = browserConfigs.map((config) => `${config.spec}: ${config.fullApiName}`);
+          console.log('\n\nCBT browser configs:\n\n', loggableConfigs, '\n\n');
+
+          resolve(browserConfigs);
+        },
+        (err) => reject(err)
+      );
+  }));
 }
 
-function getApiConfig(browserSpec, rawBrowserJson) {
-  // We need to mutate the JSON object, so deep clone it first to avoid altering shared global state.
-  rawBrowserJson = deepCopyJson(rawBrowserJson);
+async function fetchBrowserConfigFromApiName(deviceApiName, userAgentApiName) {
+  const browserConfigs = await fetchBrowserConfigs();
+  return browserConfigs.find((curConfig) => {
+    // TODO(acdvorak): Why does the CBT browser API return "Win10" but the screenshot info API returns "Win10-E17"?
+    return curConfig.device.api_name.replace(/-E\d+$/, '') === deviceApiName.replace(/-E\d+$/, '')
+      && curConfig.userAgent.api_name === userAgentApiName;
+  });
+}
 
-  const [_, formFactor, operatingSystemName, browserName, browserVersion] =
+function getMatchingApiConfigs(browserSpecs, cbtBrowsers) {
+  return browserSpecs.map((browserSpec) => getMatchingApiConfig(browserSpec, cbtBrowsers));
+}
+
+function getMatchingApiConfig(browserSpec, cbtBrowsers) {
+  // Avoid mutating the object passed by the caller
+  cbtBrowsers = deepCopyJson(cbtBrowsers);
+
+  const [_, formFactor, operatingSystemName, userAgentName, userAgentVersion] =
     /^([a-z]+)_([a-z]+)_([a-z]+)@([a-z0-9.]+)$/.exec(browserSpec);
 
-  const devices = rawBrowserJson
-    .filter(FILTERS.formFactor[formFactor]())
-    .filter(FILTERS.operatingSystemName[operatingSystemName]())
+  const devices = cbtBrowsers
+    .filter(CBT_FILTERS.formFactor[formFactor]())
+    .filter(CBT_FILTERS.operatingSystemName[operatingSystemName]())
   ;
 
   filterBrowsersByName(
     devices,
-    FILTERS.browserName[browserName]()
+    CBT_FILTERS.userAgentName[userAgentName]()
   );
 
   filterBrowsersByVersion(
     devices,
-    FILTERS.browserVersion[browserVersion]
-      ? FILTERS.browserVersion[browserVersion]()
-      : FILTERS.browserVersion.exactly(browserVersion)
+    CBT_FILTERS.userAgentVersion[userAgentVersion]
+      ? CBT_FILTERS.userAgentVersion[userAgentVersion]()
+      : CBT_FILTERS.userAgentVersion.exactly(userAgentVersion)
   );
 
   const [firstDevice] = devices
@@ -95,25 +129,25 @@ function getApiConfig(browserSpec, rawBrowserJson) {
     .reverse()
   ;
 
-  const [firstBrowser] = firstDevice.browsers;
+  const [firstUserAgent] = firstDevice.browsers;
 
   return {
     /**
      * API documentation for the name format can be found at:
      * https://crossbrowsertesting.com/apidocs/v3/screenshots.html#!/default/post_screenshots
      */
-    fullApiName: `${firstDevice.api_name}|${firstBrowser.api_name}`,
+    fullApiName: `${firstDevice.api_name}|${firstUserAgent.api_name}`,
     spec: browserSpec,
     device: firstDevice,
-    browser: firstBrowser,
+    userAgent: firstUserAgent,
   };
 }
 
-function filterBrowsersByName(devices, browserNameFilter) {
+function filterBrowsersByName(devices, userAgentNameFilter) {
   devices.forEach((device) => {
     device.browsers = device.browsers
       .filter((browser) => is64Bit(browser, device.browsers))
-      .filter(browserNameFilter)
+      .filter(userAgentNameFilter)
       .map((browser) => {
         browser.parsedVersionNumber = parseVersionNumber(browser.version).join('.');
         return browser;
@@ -125,20 +159,20 @@ function filterBrowsersByName(devices, browserNameFilter) {
   });
 }
 
-function filterBrowsersByVersion(devices, browserVersionFilter) {
-  const browserVersionSet = new Set();
+function filterBrowsersByVersion(devices, userAgentVersionFilter) {
+  const userAgentVersionSet = new Set();
 
   devices.forEach((device) => {
     device.browsers.forEach((browser) => {
-      browserVersionSet.add(browser.version);
+      userAgentVersionSet.add(browser.version);
     });
   });
 
-  const browserVersionListSorted = Array.from(browserVersionSet).sort(compareVersions).reverse();
-  const matchingBrowserVersionSet = new Set(browserVersionListSorted.filter(browserVersionFilter));
+  const userAgentVersionListSorted = Array.from(userAgentVersionSet).sort(compareVersions).reverse();
+  const matchingUserAgentVersionSet = new Set(userAgentVersionListSorted.filter(userAgentVersionFilter));
 
   devices.forEach((device) => {
-    device.browsers = device.browsers.filter((browser) => matchingBrowserVersionSet.has(browser.version));
+    device.browsers = device.browsers.filter((browser) => matchingUserAgentVersionSet.has(browser.version));
   });
 
   return devices;

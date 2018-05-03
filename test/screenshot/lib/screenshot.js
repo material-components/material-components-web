@@ -17,13 +17,9 @@
 'use strict';
 
 const Browser = require('./browser');
+const CbtApi = require('./cbt-api');
 const ParallelQueue = require('./parallel-queue');
 const Progress = require('./progress');
-const request = require('request-promise-native');
-
-const API_BASE_URL = 'https://crossbrowsertesting.com/api/v3';
-const API_USERNAME = process.env.CBT_USERNAME;
-const API_AUTHKEY = process.env.CBT_AUTHKEY;
 
 /** Maximum number of parallel screenshot requests allowed by our CBT plan. */
 const API_PARALLEL_REQUEST_LIMIT = 5;
@@ -37,44 +33,21 @@ const API_MAX_WAIT_MS = 1000 * 60 * 5;
 /** Map of URLs to `Progress` objects. */
 const progressMap = new Map();
 
+const cbtApi = new CbtApi();
+
 /**
  * @type {!ParallelQueue<string>}
  */
 const requestQueue = new ParallelQueue({maxParallels: API_PARALLEL_REQUEST_LIMIT});
 
-let browserApiConfigsCached;
-
 module.exports = {
   captureOneUrl,
-  getBrowserApiConfigs,
-  getSpecForApiNames,
 };
 
-async function getBrowserApiConfigs() {
-  async function fetchAndParse() {
-    const browserSpecs = require('../browser.json').browserSpecs;
-    const rawBrowserJson = await fetchBrowsers();
-    const apiConfigs = Browser.getApiConfigs(browserSpecs, rawBrowserJson);
-    const configStrs = apiConfigs.map((config) => `${config.spec}: ${config.fullApiName}`);
-    console.log('\n\nCBT browser API configs:\n\n', configStrs);
-    return apiConfigs;
-  }
-  return browserApiConfigsCached || (browserApiConfigsCached = await fetchAndParse());
-}
-
-function getSpecForApiNames(deviceApiName, browserApiName, browserApiConfigs) {
-  const config = browserApiConfigs.find((cfg) => {
-    // TODO(acdvorak): Why does the browser API return "Win10" but the screenshot info API returns "Win10-E17"?
-    return cfg.device.api_name.replace(/-E\d+$/, '') === deviceApiName.replace(/-E\d+$/, '')
-      && cfg.browser.api_name === browserApiName;
-  });
-  return config.spec;
-}
-
 async function captureOneUrl(testPageUrl) {
-  const browserApiConfigs = await getBrowserApiConfigs();
+  const browserConfigs = await Browser.fetchBrowserConfigs();
 
-  logTestCaseProgress(testPageUrl, Progress.enqueued(browserApiConfigs.length));
+  logTestCaseProgress(testPageUrl, Progress.enqueued(browserConfigs.length));
 
   return requestQueue.enqueue(testPageUrl)
     .then(
@@ -97,24 +70,8 @@ async function captureOneUrl(testPageUrl) {
 }
 
 async function sendCaptureRequest(testPageUrl) {
-  const browserApiConfigs = await getBrowserApiConfigs();
-  const options = {
-    method: 'POST',
-    uri: apiUrl('/screenshots/'),
-    auth: {
-      username: API_USERNAME,
-      password: API_AUTHKEY,
-    },
-    body: {
-      url: testPageUrl,
-      browsers: browserApiConfigs.map((config) => config.fullApiName).join(','),
-    },
-    json: true, // Automatically stringify the request body and parse the response body as JSON
-  };
-
-  console.log(`sendCaptureRequest("${testPageUrl}")...`);
-
-  return request(options)
+  const browserConfigs = await Browser.fetchBrowserConfigs();
+  return cbtApi.sendCaptureRequest(testPageUrl, browserConfigs)
     .catch(async (err) => {
       if (reachedParallelExecutionLimit(err)) {
         console.warn(`Parallel execution limit reached - waiting for ${API_POLL_INTERVAL_MS} ms before retrying...`);
@@ -138,7 +95,7 @@ async function handleCaptureResponse(testPageUrl, captureResponseBody) {
   while (isStillRunning() && !isTimedOut()) {
     // Wait a few seconds, then try again.
     await sleep(API_POLL_INTERVAL_MS);
-    infoResponseBody = await fetchScreenshotInfo(captureResponseBody.screenshot_test_id);
+    infoResponseBody = await cbtApi.fetchScreenshotInfo(captureResponseBody.screenshot_test_id);
     infoProgress = computeTestCaseProgress(testPageUrl, infoResponseBody);
     logTestCaseProgress(testPageUrl, infoProgress);
   }
@@ -163,30 +120,6 @@ async function handleCaptureResponse(testPageUrl, captureResponseBody) {
   logTestCaseProgress(testPageUrl, infoProgress);
 
   return Promise.resolve(infoResponseBody);
-}
-
-async function fetchBrowsers() {
-  return request({
-    method: 'GET',
-    uri: apiUrl('/screenshots/browsers'),
-    auth: {
-      username: API_USERNAME,
-      password: API_AUTHKEY,
-    },
-    json: true, // Automatically stringify the request body and parse the response body as JSON
-  });
-}
-
-async function fetchScreenshotInfo(screenshotTestId) {
-  return request({
-    method: 'GET',
-    uri: apiUrl(`/screenshots/${screenshotTestId}`),
-    auth: {
-      username: API_USERNAME,
-      password: API_AUTHKEY,
-    },
-    json: true, // Automatically stringify the request body and parse the response body as JSON
-  });
 }
 
 function computeTestCaseProgress(testPageUrl, screenshotInfoResponseBody) {
@@ -214,10 +147,6 @@ function rejectWithError(functionName, testPageUrl, err) {
   console.error('');
   console.error(err);
   return Promise.reject(err);
-}
-
-function apiUrl(apiEndpointPath) {
-  return `${API_BASE_URL}${apiEndpointPath}`;
 }
 
 async function sleep(ms) {

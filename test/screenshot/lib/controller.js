@@ -24,6 +24,7 @@ const request = require('request-promise-native');
 const stringify = require('json-stable-stringify');
 const util = require('util');
 
+const Browser = require('./browser');
 const Screenshot = require('./screenshot');
 const {Storage, UploadableFile, UploadableTestCase} = require('./storage');
 
@@ -199,10 +200,6 @@ class Controller {
     return Promise.reject(err);
   }
 
-  sanitizeImageFileName_(apiName) {
-    return apiName.toLowerCase().replace(/[^\w.]+/g, '');
-  }
-
   /**
    * @param {!UploadableTestCase} testCase
    * @param {!Object} cbtResult
@@ -210,17 +207,20 @@ class Controller {
    * @private
    */
   async uploadScreenshotImage_(testCase, cbtResult) {
-    const os = this.sanitizeImageFileName_(cbtResult.os.api_name);
-    const browser = this.sanitizeImageFileName_(cbtResult.browser.api_name);
-    const imageName = `${os}_${browser}.png`;
+    const osApiName = cbtResult.os.api_name;
+    const uaApiName = cbtResult.browser.api_name;
+
+    const sanitize = (apiName) => apiName.toLowerCase().replace(/[^\w.]+/g, '');
+    const os = sanitize(osApiName);
+    const ua = sanitize(uaApiName);
+    const imageName = `${os}_${ua}.png`;
 
     const imageData = await this.downloadImage_(cbtResult.images.chromeless);
     const imageFile = new UploadableFile({
       destinationParentDirectory: `${this.baseUploadDir_}/screenshots`,
       destinationRelativeFilePath: `${testCase.htmlFile.destinationRelativeFilePath}/${imageName}`,
       fileContent: imageData,
-      osApiName: cbtResult.os.api_name,
-      browserApiName: cbtResult.browser.api_name,
+      browserConfig: await Browser.fetchBrowserConfigFromApiName(osApiName, uaApiName),
     });
 
     testCase.screenshotImageFiles.push(imageFile);
@@ -275,7 +275,6 @@ class Controller {
    */
   async updateGoldenJson(testCases) {
     const goldenData = {};
-    const browserApiConfigs = await Screenshot.getBrowserApiConfigs();
 
     testCases.forEach((testCase) => {
       const htmlFileKey = testCase.htmlFile.destinationRelativeFilePath;
@@ -287,10 +286,7 @@ class Controller {
       };
 
       testCase.screenshotImageFiles.forEach((screenshotImageFile) => {
-        const osApiName = screenshotImageFile.osApiName;
-        const browserApiName = screenshotImageFile.browserApiName;
-
-        const screenshotKey = Screenshot.getSpecForApiNames(osApiName, browserApiName, browserApiConfigs);
+        const screenshotKey = screenshotImageFile.browserConfig.spec;
         const screenshotUrl = screenshotImageFile.publicUrl;
 
         goldenData[htmlFileKey].screenshots[screenshotKey] = screenshotUrl;
