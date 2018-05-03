@@ -22,11 +22,8 @@ Material design’s responsive UI is based on a column-variate grid layout. It h
 ## Design & API Documentation
 
 <ul class="icon-list">
-  <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/layout/responsive-ui.html#responsive-ui-grid">Material Design guidelines: Layout grid</a>
-  </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/layout-grid.html">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/layout-grid">Demo</a>
   </li>
 </ul>
 

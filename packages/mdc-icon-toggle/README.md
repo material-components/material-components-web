@@ -25,7 +25,7 @@ designed to work with any icon set.
     <a href="https://material.io/go/design-buttons#buttons-toggle-buttons">Material Design guidelines: Toggle buttons</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/icon-toggle.html">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/icon-toggle">Demo</a>
   </li>
 </ul>
 

@@ -15,7 +15,7 @@ Material in motion is responsive and natural. Use these easing curves and durati
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/motion/duration-easing.html">Material Design guidelines: Duration & easing</a>
+    <a href="https://material.io/go/design-motion">Material Design guidelines: Duration & easing</a>
   </li>
 </ul>
 

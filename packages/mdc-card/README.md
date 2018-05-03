@@ -27,7 +27,7 @@ developers as a set of CSS classes.
     <a href="https://material.io/go/design-cards">Material Design guidelines: Cards</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/card.html">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/card">Demo</a>
   </li>
 </ul>
 
