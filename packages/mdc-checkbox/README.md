@@ -17,9 +17,7 @@ path: /catalog/input-controls/checkboxes/
   </a>
 </div>-->
 
-The MDC Checkbox component is a spec-aligned checkbox component adhering to the
-[Material Design checkbox requirements](https://material.io/go/design-checkboxes).
-It works without JavaScript with basic functionality for all states. If you use the JavaScript object for a checkbox, it will add more intricate animation effects when switching between states.
+Checkboxes allow the user to select one or more items from a set.
 
 ## Design & API Documentation
 
