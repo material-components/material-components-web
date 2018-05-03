@@ -20,7 +20,7 @@ MDC Ripple also works without JavaScript, where it gracefully degrades to a simp
     <a href="https://material.io/go/design-states">Material Design guidelines: States</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/ripple.html">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/ripple">Demo</a>
   </li>
 </ul>
 
