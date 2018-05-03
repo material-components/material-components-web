@@ -35,7 +35,7 @@ sliders used on the web, and thus have been endorsed by the Material Design team
     <a href="https://material.io/go/design-sliders">Material Design guidelines: Sliders</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/slider.html">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/slider">Demo</a>
   </li>
 </ul>
 

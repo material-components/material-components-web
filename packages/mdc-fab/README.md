@@ -25,7 +25,7 @@ A floating action button represents the primary action in an application.
     <a href="https://material.io/go/design-fab">Material Design guidelines: Floating Action Button</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/fab.html">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/fab">Demo</a>
   </li>
 </ul>
 
