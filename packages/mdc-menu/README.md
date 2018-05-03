@@ -27,7 +27,7 @@ Menus require JavaScript to properly position themselves when opening.
     <a href="https://material.io/go/design-menus">Material Design guidelines: Menus</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/menu.html">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/menu">Demo</a>
   </li>
 </ul>
 

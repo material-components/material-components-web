@@ -26,7 +26,7 @@ MDC Top App Bar acts as a container for items such as application title, navigat
     <a href="https://material.io/go/design-app-bar-top">Material Design guidelines: Top app bar</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/top-app-bar.html">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/top-app-bar">Demo</a>
   </li>
 </ul>
 

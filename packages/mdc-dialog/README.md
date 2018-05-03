@@ -29,7 +29,7 @@ a dialog should be.
     <a href="https://material.io/go/design-dialogs">Material Design guidelines: Dialogs</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/dialog.html">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/dialog">Demo</a>
   </li>
 </ul>
 

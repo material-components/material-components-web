@@ -24,9 +24,6 @@ The Material Design color system can be used to create a color scheme that refle
   <li class="icon-list-item icon-list-item--spec">
     <a href="https://material.io/go/design-theming">Material Design guidelines: Color</a>
   </li>
-  <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/theme/index.html">Demo</a>
-  </li>
 </ul>
 
 ## Installation

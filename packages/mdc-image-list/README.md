@@ -26,7 +26,7 @@ each containing an image and optionally supporting content (i.e. a text label).
     <a href="https://material.io/go/design-image-list">Material Design guidelines: Image list</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/image-list.html">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/image-list">Demo</a>
   </li>
 </ul>
 
