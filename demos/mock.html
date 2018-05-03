@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2016 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>MDC Top App Bar Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
+    <link rel="stylesheet" href="/assets/mock.css">
+    <script src="/ready.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  </head>
+  <body class="mdc-typography demo-body">
+    <header id="demo-mock" class="mdc-top-app-bar mdc-top-app-bar--fixed" style="top:0; z-index: 2;">
+      <div class="mdc-top-app-bar__row">
+        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+          <a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
+          <nav id="basic-tab-bar" class="mdc-tab-bar demo-tabs">
+            <a class="demo-tab mdc-tab mdc-tab--active" href="#">Fly</a>
+            <a class="demo-tab mdc-tab" href="#">Sleep</a>
+            <a class="demo-tab mdc-tab" href="#">Eat</a>
+            <span class="mdc-tab-bar__indicator"></span>
+          </nav>
+        </section>
+      </div>
+      <div id="demo-text-row" class="mdc-top-app-bar__row demo-text-row">
+        <div class="mdc-text-field mdc-text-field--box mdc-text-field--with-leading-icon">
+          <i class="material-icons mdc-text-field__icon" tabindex="-1" role="button">person</i>
+          <input type="text" class="mdc-text-field__input" id="tf-passengers" value="1 Passenger, Economy"/>
+          <label for="tf-passengers" class="mdc-floating-label mdc-floating-label--float-above">Passengers/Class</label>
+          <div class="mdc-line-ripple"></div>
+        </div>
+        <div class="mdc-text-field mdc-text-field--box mdc-text-field--with-leading-icon">
+          <i class="material-icons mdc-text-field__icon" tabindex="-1" role="button">location_on</i>
+          <input type="text" class="mdc-text-field__input" id="tf-origin" value="Seoul, Korea" />
+          <label for="tf-origin" class="mdc-floating-label mdc-floating-label--float-above">Origin</label>
+          <div class="mdc-line-ripple"></div>
+        </div>
+        <div class="mdc-text-field mdc-text-field--box mdc-text-field--with-leading-icon">
+        <i class="material-icons mdc-text-field__icon" tabindex="-1" role="button">airplanemode_active</i>
+        <input type="text" class="mdc-text-field__input" id="tf-destination" />
+          <label for="tf-destination" class="mdc-floating-label">Choose Destination</label>
+          <div class="mdc-line-ripple"></div>
+        </div>
+        <div class="mdc-text-field mdc-text-field--box mdc-text-field--with-leading-icon">
+          <i class="material-icons mdc-text-field__icon" tabindex="-1" role="button">date_range</i>
+          <input type="text" class="mdc-text-field__input" id="tf-dates"/>
+          <label for="tf-dates" class="mdc-floating-label">Select Dates</label>
+          <div class="mdc-line-ripple"></div>
+        </div>
+      </div>
+    </header>
+
+    <main class="demo-main">
+      <div class="content-main">
+        <div class="demo-header">
+          <span class="mdc-typography--subtitle2">Explore Flights by Destination</span>
+        </div>
+        <ul id="masonry-image-list" class="mdc-image-list mdc-image-list--masonry masonry-image-list">
+          <li class="mdc-image-list__item">
+            <img class="mdc-image-list__image" src="images/photos/3x2/16.jpg">
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <img class="mdc-image-list__image" src="images/photos/2x3/1.jpg">
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <img class="mdc-image-list__image" src="images/photos/3x2/1.jpg">
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <img class="mdc-image-list__image" src="images/photos/2x3/2.jpg">
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <img class="mdc-image-list__image" src="images/photos/2x3/3.jpg">
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <img class="mdc-image-list__image" src="images/photos/3x2/3.jpg">
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <img class="mdc-image-list__image" src="images/photos/2x3/4.jpg">
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <img class="mdc-image-list__image" src="images/photos/2x3/5.jpg">
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <img class="mdc-image-list__image" src="images/photos/3x2/2.jpg">
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <img class="mdc-image-list__image" src="images/photos/3x2/4.jpg">
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <img class="mdc-image-list__image" src="images/photos/2x3/6.jpg">
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <img class="mdc-image-list__image" src="images/photos/3x2/5.jpg">
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <img class="mdc-image-list__image" src="images/photos/2x3/7.jpg">
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <img class="mdc-image-list__image" src="images/photos/3x2/6.jpg">
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li class="mdc-image-list__item">
+            <img class="mdc-image-list__image" src="images/photos/3x2/7.jpg">
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </main>
+
+    <script src="/assets/material-components-web.js" async></script>
+    <script src="/assets/common.js" async></script>
+    <script type="text/javascript">
+      demoReady(function() {
+        var appBarEl = document.getElementById('demo-mock');
+        var tabBar = document.getElementById('basic-tab-bar');
+        var tfPassengers = new mdc.textField.MDCTextField(document.getElementById('tf-passengers').parentNode);
+        var tfOrigin = new mdc.textField.MDCTextField(document.getElementById('tf-origin').parentNode);
+        var tfDestination = new mdc.textField.MDCTextField(document.getElementById('tf-destination').parentNode);
+        var tfDates = new mdc.textField.MDCTextField(document.getElementById('tf-dates').parentNode);
+
+        var appBar = mdc.topAppBar.MDCTopAppBar.attachTo(appBarEl);
+        var tabs = new mdc.tabs.MDCTabBar(tabBar);
+
+      });
+  </script>
+  </body>
+</html>
