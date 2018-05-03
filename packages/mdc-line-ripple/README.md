@@ -17,7 +17,7 @@ The line ripple is used to highlight user-specified text above it. When a line r
     <a href="https://material.io/go/design-text-fields#text-fields-layout">Material Design guidelines: Text Fields Layout</a>
   </li>
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material-components-web.appspot.com/text-field.html">Demo with floating label on Text Field</a>
+    <a href="https://material-components-web.appspot.com/text-field.html">Demo with Line Ripple on Text Field</a>
   </li>
 </ul>
 
