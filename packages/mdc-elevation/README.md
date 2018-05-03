@@ -24,10 +24,10 @@ Shadows provide important visual cues about objects’ depth and directional mov
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/go/design-elevation">Material Design guidelines: Shadows & elevation</a>
+    <a href="https://material.io/guidelines/what-is-material/elevation-shadows.html">Material Design guidelines: Shadows & elevation</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/elevation.html">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/elevation">Demo</a>
   </li>
 </ul>
 

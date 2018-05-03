@@ -24,91 +24,73 @@ path: /
 
 # Getting Started
 
-## Quick Start
+Get up and running with Material Components for web
 
-To try Material Components for the web with minimal setup, load the CSS and JS from unpkg:
+1.  {: .step-list-item } ### Install the library
 
-```html
-https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css
-https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js
-```
-
-Then include MDC markup...
-
-```html
-<button class="foo-button mdc-button">Button</button>
-```
-
-...and instantiate JavaScript:
-
-```js
-mdc.ripple.MDCRipple.attachTo(document.querySelector('.foo-button'));
-```
-
-However, it is highly recommended to install Material Components for the web via npm and consume its ES2015 modules and Sass directly. This is outlined in the steps below.
-
-## Using MDC Web with ES2015 and Sass
-
-> **Note:** This assumes you have Node.js and npm installed locally, and have configured webpack to compile Sass and ES2015. See the [Getting Started Guide](getting-started.md) for pointers on how to configure webpack.
-
-1.  {: .step-list-item } ### Install components
-
-    Install dependencies for the components you wish to use:
+    Start by installing the library from [npm](https://npmjs.com):
 
     ```
-    npm install @material/button @material/ripple
+    npm install material-components-web
     ```
 
-2.  {: .step-list-item } ### Import the stylesheet and include styles
+2.  {: .step-list-item } ### Include the stylesheet
 
-    Import the Sass files into your application, and use Sass mixins to customize components:
+    Include the MDC Web stylesheet in the head of your file
 
-    ```scss
-    @import "@material/button/mdc-button";
-
-    .foo-button {
-      @include mdc-button-ink-color(teal);
-      @include mdc-states(teal);
-    }
-    ```
-
-    You also need to configure sass-loader to understand the `@material` imports used by MDC Web. Update your `webpack.config.js` by changing `{ loader: 'sass-loader' }` to:
-
-    ```js
-    {
-      loader: 'sass-loader',
-      options: {
-        includePaths: ['./node_modules']
-      }
-    }
+    ```html
+    <html>
+      <head>
+        <title>Material Components for the web</title>
+        <link rel="stylesheet"
+              href="node_modules/material-components-web/dist/material-components-web.css">
+      </head>
     ```
 
 3.  {: .step-list-item } ### Add components
 
-    Each component (e.g. [`@material/button`](../packages/mdc-button/README.md)) includes documentation about its required HTML structure. Update your application's HTML to include the MDC Button markup, and add the `foo-button` class to the element:
+    Add components to the body of your HTML
 
     ```html
-    <button class="foo-button mdc-button">
-      Button
-    </button>
+      <body class="mdc-typography">
+        <h2 class="mdc-typography--display2">Hello, Material Components!</h2>
+        <div class="mdc-text-field" data-mdc-auto-init="MDCTextField">
+          <input type="text" class="mdc-text-field__input" id="demo-input">
+          <label for="demo-input" class="mdc-floating-label">Tell us how you feel!</label>
+        </div>
+      </body>
     ```
 
-    Combined with the styles above, this will produce a customized Material Design button!
+4.  {: .step-list-item } ### Add scripts and instantiate
 
-    <img src="button.png" alt="Button" width="90" height="36">
+    Add the MDC Web scripts and call MDC Auto Init.
 
-4.  {: .step-list-item } ### Add scripts and instantiate components
-
-    Next, import the ES2015 file for `@material/ripple` into your application, and initialize an `MDCRipple` with a DOM element:
-
-    ```js
-    import {MDCRipple} from '@material/ripple';
-    const ripple = new MDCRipple(document.querySelector('.foo-button'));
+    ```html
+    <script src="node_modules/material-components-web/dist/material-components-web.js"></script>
+    <script>mdc.autoInit()</script>
     ```
 
-    This will produce a Material Design ripple on the button when it is pressed!
+    A full example of the HTML could look like this:
 
-    <img src="button_with_ripple.png" alt="Button with Ripple" width="90" height="36">
+    ```html
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>Material Components for the web</title>
+        <link rel="stylesheet"
+              href="node_modules/material-components-web/dist/material-components-web.css">
+      </head>
+      <body class="mdc-typography">
+        <h2 class="mdc-typography--display2">Hello, Material Components!</h2>
+        <div class="mdc-text-field" data-mdc-auto-init="MDCTextField">
+          <input type="text" class="mdc-text-field__input" id="demo-input">
+          <label for="demo-input" class="mdc-floating-label">Tell us how you feel!</label>
+        </div>
+        <script src="node_modules/material-components-web/dist/material-components-web.js"></script>
+        <script>mdc.autoInit()</script>
+      </body>
+    </html>
+    ```
 
 5.  {: .step-list-item } ### What's next?
 

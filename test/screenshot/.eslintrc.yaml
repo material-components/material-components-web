@@ -3,5 +3,3 @@ env:
   browser: true
 parserOptions:
   ecmaVersion: 2017 # Enable async/await support in Node scripts
-rules:
-  space-before-function-paren: [error, {"anonymous": "never", "named": "never", "asyncArrow": "always"}]

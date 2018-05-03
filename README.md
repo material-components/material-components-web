@@ -26,11 +26,11 @@ MDC Web strives to seamlessly incorporate into a wider range of usage contexts, 
 
 ## Quick start
 
-> Note: This guide assumes you have Node.js and npm installed locally.
+> Note: This guide assumes you have npm installed locally.
 
 ### Include CSS for a component
 
-> Note: This guide assumes you have webpack configured to compile Sass into CSS. See the [getting started guide](docs/getting-started.md) for pointers on how to configure webpack.
+> Note: This guide assumes you have webpack configured to compile Sass into CSS. See this [getting started guide](docs/getting-started.md) for pointers on how to configure webpack.
 
 To include the Sass files for the Material Design button, install the Node dependency:
 
@@ -38,7 +38,7 @@ To include the Sass files for the Material Design button, install the Node depen
 npm install @material/button
 ```
 
-Then import the Sass files for `@material/button` into your application. You can also use Sass mixins to customize the button:
+Then import the Sass files for @material/button into your application. You can also use Sass mixins to customize the button:
 
 ```scss
 @import "@material/button/mdc-button";
@@ -48,10 +48,17 @@ Then import the Sass files for `@material/button` into your application. You can
   @include mdc-states(teal);
 }
 ```
+@material/button has [documentation](packages/mdc-button/README.md) about the required HTML of a button. Update your application's HTML to include this HTML, and add the foo-button class onto the element:
 
-You also need to configure sass-loader to understand the `@material` imports used by MDC Web. Update your `webpack.config.js` by changing `{ loader: 'sass-loader' }` to:
+```html
+<button class="foo-button mdc-button">
+  Button
+</button>
+```
 
-```js
+You also need to configure the sass-loader to understand the @material syntax. Update your webpack.config.js by changing `{ loader: 'sass-loader' }` to:
+
+```javascript
 {
   loader: 'sass-loader',
   options: {
@@ -60,23 +67,15 @@ You also need to configure sass-loader to understand the `@material` imports use
 }
 ```
 
-`@material/button` has [documentation](packages/mdc-button/README.md) about the required HTML for a button. Update your application's HTML to include the MDC Button markup, and add the `foo-button` class to the element:
-
-```html
-<button class="foo-button mdc-button">
-  Button
-</button>
-```
-
 This will produce a customized Material Design button!
 
-<img src="docs/button.png" alt="Button" width="90" height="36">
+![Button](docs/button.png)
 
 ### Include JavaScript for a component
 
-> Note: This guide assumes you have webpack configured to compile ES2015 into JavaScript. See the [getting started guide](docs/getting-started.md) for pointers on how to configure webpack.
+> Note: This guide assumes you have webpack configured to compile ES2015 into JavaScript. See this [getting started guide](docs/getting-started.md) for pointers on how to configure webpack.
 
-To include the ES2015 files for the Material Design ripple, install the dependency:
+To include the ES2015 files for the Material Design ripple, install the Node dependency:
 
 ```
 npm install @material/ripple
@@ -84,14 +83,14 @@ npm install @material/ripple
 
 Then import the ES2015 file for @material/ripple into your application, and initialize an MDCRipple with a DOM element:
 
-```js
+```javascript
 import {MDCRipple} from '@material/ripple';
 const ripple = new MDCRipple(document.querySelector('.foo-button'));
 ```
 
 This will produce a Material Design ripple on the button!
 
-<img src="docs/button_with_ripple.png" alt="Button with Ripple" width="90" height="36">
+![Button with Ripple](docs/button_with_ripple.png)
 
 ## Useful Links
 
