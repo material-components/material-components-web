@@ -1,3 +1,18 @@
+<a name="0.35.1"></a>
+## [0.35.1](https://github.com/material-components/material-components-web/compare/v0.35.0...v0.35.1) (2018-05-03)
+
+
+### Bug Fixes
+
+* **chips:** Add nowrap to chip text ([#2671](https://github.com/material-components/material-components-web/issues/2671)) ([7abb3a2](https://github.com/material-components/material-components-web/commit/7abb3a2))
+* **select:** Fix dropdown arrow mixin setting an invalid color ([#2637](https://github.com/material-components/material-components-web/issues/2637)) ([6450613](https://github.com/material-components/material-components-web/commit/6450613))
+* **select:** Fix SassC compilation error ([#2678](https://github.com/material-components/material-components-web/issues/2678)) ([b0b3337](https://github.com/material-components/material-components-web/commit/b0b3337))
+* **text-field:** Fix textarea height ([#2638](https://github.com/material-components/material-components-web/issues/2638)) ([75fe98d](https://github.com/material-components/material-components-web/commit/75fe98d))
+* **text-field:** Update error color ([#2690](https://github.com/material-components/material-components-web/issues/2690)) ([d16a42e](https://github.com/material-components/material-components-web/commit/d16a42e))
+* **top-app-bar:** Change margin-top to padding-top to prevent margin collapsing ([#2643](https://github.com/material-components/material-components-web/issues/2643)) ([8bba12d](https://github.com/material-components/material-components-web/commit/8bba12d))
+
+
+
 <a name="0.35.0"></a>
 # [0.35.0](https://github.com/material-components/material-components-web/compare/v0.34.1...v0.35.0) (2018-04-23)
 
@@ -65,7 +80,7 @@
 ### BREAKING CHANGES
 
 * **chips:** Renames variant, classes and mixins containing the word stroke to use the word outline.
-* **chips:** Expose a foundation getter in MDCChips 
+* **chips:** Expose a foundation getter in MDCChips
 * **card:** Renames variant, classes and mixins containing the word stroke to use the word outline.
 * **button:** Renames variant, classes and mixins containing stroke to use outline.
 * **chips:** Entry chips renamed to input chips.
@@ -77,8 +92,8 @@
 * **text-field:** Adds removeAttr(attr) adapter API
 * **theme:** Removes the --mdc-theme-text-<TEXT_STYLE>-on-<THEME_COLOR> CSS custom properties, and the mdc-theme--text-<TEXT_STYLE>-on-<THEME_COLOR> CSS classes
 * **chips:** layout() method added to MDCChipAdapter.
-* **typography:** Previous typography styles are removed. The new styles are listed in the readme. 
-* **top-app-bar:** New adapter methods for setting the top app bar position and adding resize event handlers that must be implemented. 
+* **typography:** Previous typography styles are removed. The new styles are listed in the readme.
+* **top-app-bar:** New adapter methods for setting the top app bar position and adding resize event handlers that must be implemented.
 * **chips:** Added a new chip variant (entry chips). Added new methods to MDCChipSet, MDCChipSetFoundation, and MDCChipSetAdapter.
 * **chips:** isSelected method added to MDCChip, and related methods added to MDCChipFoundation and MDCChipSetFoundation.
 * **floating-label:** Removes the (undocumented) mdc-floating-label-transition function
