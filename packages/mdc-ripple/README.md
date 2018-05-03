@@ -17,7 +17,7 @@ MDC Ripple also works without JavaScript, where it gracefully degrades to a simp
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/motion/choreography.html#choreography-radial-reaction">Material Design guidelines: Choreography</a>
+    <a href="https://material.io/go/design-states">Material Design guidelines: States</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
     <a href="https://material-components-web.appspot.com/ripple.html">Demo</a>
