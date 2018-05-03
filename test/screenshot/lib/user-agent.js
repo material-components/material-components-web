@@ -76,11 +76,7 @@ async function fetchConfigs() {
         (cbtDevices) => {
           const userAgentAliases = require('../browser.json').user_agent_aliases;
           const userAgentConfigs = getAllMatchingConfigs(userAgentAliases, cbtDevices);
-
-          // Log it
-          const loggableConfigs = userAgentConfigs.map((config) => `${config.alias}: ${config.fullApiName}`);
-          console.log('\n\nCBT user agents:\n\n', loggableConfigs, '\n\n');
-
+          console.log(userAgentConfigs.map((config) => `${config.alias}: ${config.fullApiName}`));
           resolve(userAgentConfigs);
         },
         (err) => reject(err)

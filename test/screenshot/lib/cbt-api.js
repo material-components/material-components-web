@@ -21,8 +21,6 @@ const API_USERNAME = process.env.CBT_USERNAME;
 const API_AUTHKEY = process.env.CBT_AUTHKEY;
 
 class CbtApi {
-  constructor() {}
-
   async fetchAvailableDevices() {
     console.log('fetchAvailableDevices()...');
     return request({
