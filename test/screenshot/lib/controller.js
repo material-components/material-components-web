@@ -199,6 +199,10 @@ class Controller {
     return Promise.reject(err);
   }
 
+  sanitizeImageFileName_(apiName) {
+    return apiName.toLowerCase().replace(/[^\w.]+/g, '');
+  }
+
   /**
    * @param {!UploadableTestCase} testCase
    * @param {!Object} cbtResult
@@ -206,17 +210,17 @@ class Controller {
    * @private
    */
   async uploadScreenshotImage_(testCase, cbtResult) {
-    const sanitize = (apiName) => apiName.toLowerCase().replace(/\W+/g, '');
-
-    const os = sanitize(cbtResult.os.api_name);
-    const browser = sanitize(cbtResult.browser.api_name);
-    const imageName = `${os}_${browser}_ltr.png`;
+    const os = this.sanitizeImageFileName_(cbtResult.os.api_name);
+    const browser = this.sanitizeImageFileName_(cbtResult.browser.api_name);
+    const imageName = `${os}_${browser}.png`;
 
     const imageData = await this.downloadImage_(cbtResult.images.chromeless);
     const imageFile = new UploadableFile({
       destinationParentDirectory: `${this.baseUploadDir_}/screenshots`,
       destinationRelativeFilePath: `${testCase.htmlFile.destinationRelativeFilePath}/${imageName}`,
       fileContent: imageData,
+      osApiName: cbtResult.os.api_name,
+      browserApiName: cbtResult.browser.api_name,
     });
 
     testCase.screenshotImageFiles.push(imageFile);
@@ -271,6 +275,7 @@ class Controller {
    */
   async updateGoldenJson(testCases) {
     const goldenData = {};
+    const browserApiConfigs = await Screenshot.getBrowserApiConfigs();
 
     testCases.forEach((testCase) => {
       const htmlFileKey = testCase.htmlFile.destinationRelativeFilePath;
@@ -282,7 +287,10 @@ class Controller {
       };
 
       testCase.screenshotImageFiles.forEach((screenshotImageFile) => {
-        const screenshotKey = path.parse(screenshotImageFile.destinationRelativeFilePath).name;
+        const osApiName = screenshotImageFile.osApiName;
+        const browserApiName = screenshotImageFile.browserApiName;
+
+        const screenshotKey = Screenshot.getSpecForApiNames(osApiName, browserApiName, browserApiConfigs);
         const screenshotUrl = screenshotImageFile.publicUrl;
 
         goldenData[htmlFileKey].screenshots[screenshotKey] = screenshotUrl;

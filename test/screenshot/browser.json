@@ -1,0 +1,17 @@
+{
+  "browserSpecs": [
+    "desktop_windows_chrome@latest",
+    "desktop_windows_chrome@previous",
+    "desktop_windows_firefox@latest",
+    "desktop_windows_firefox@previous",
+    "desktop_windows_edge@latest",
+    "desktop_windows_edge@previous",
+    "desktop_windows_ie@11",
+    "desktop_windows_opera@latest",
+    "desktop_windows_opera@previous",
+    "desktop_mac_safari@latest",
+    "desktop_mac_safari@previous",
+    "mobile_android_chrome@latest",
+    "mobile_android_chrome@previous"
+  ]
+}

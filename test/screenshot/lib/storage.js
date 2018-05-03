@@ -134,6 +134,8 @@ class UploadableFile {
     destinationParentDirectory,
     destinationRelativeFilePath,
     fileContent,
+    osApiName = null,
+    browserApiName = null,
   }) {
     /** @type {string} */
     this.destinationParentDirectory = destinationParentDirectory;
@@ -146,6 +148,12 @@ class UploadableFile {
 
     /** @type {!Buffer} */
     this.fileContent = fileContent;
+
+    /** @type {?string} */
+    this.osApiName = osApiName;
+
+    /** @type {?string} */
+    this.browserApiName = browserApiName;
 
     /** @type {?string} */
     this.publicUrl = null;

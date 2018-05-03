@@ -16,6 +16,7 @@
 
 'use strict';
 
+const Browser = require('./browser');
 const ParallelQueue = require('./parallel-queue');
 const Progress = require('./progress');
 const request = require('request-promise-native');
@@ -31,23 +32,7 @@ const API_PARALLEL_REQUEST_LIMIT = 5;
 const API_POLL_INTERVAL_MS = 1000 * 5;
 
 /** How long to wait for a single URL to be captured in all browsers. */
-const API_MAX_WAIT_MS = 1000 * 60 * 3;
-
-/**
- * List of browsers to use.
- *
- * API documentation for the name format can be found at:
- * https://crossbrowsertesting.com/apidocs/v3/screenshots.html#!/default/post_screenshots
- *
- * TODO(acdvorak): Use CBT's API that returns the full list of browser names available:
- * https://crossbrowsertesting.com/apidocs/v3/screenshots.html#!/default/get_screenshots_browsers
- *
- * @type {!Array<string>}
- */
-const BROWSERS = [
-  'Chrome63x64',
-  'Edge16',
-];
+const API_MAX_WAIT_MS = 1000 * 60 * 5;
 
 /** Map of URLs to `Progress` objects. */
 const progressMap = new Map();
@@ -57,12 +42,39 @@ const progressMap = new Map();
  */
 const requestQueue = new ParallelQueue({maxParallels: API_PARALLEL_REQUEST_LIMIT});
 
+let browserApiConfigsCached;
+
 module.exports = {
   captureOneUrl,
+  getBrowserApiConfigs,
+  getSpecForApiNames,
 };
 
+async function getBrowserApiConfigs() {
+  async function fetchAndParse() {
+    const browserSpecs = require('../browser.json').browserSpecs;
+    const rawBrowserJson = await fetchBrowsers();
+    const apiConfigs = Browser.getApiConfigs(browserSpecs, rawBrowserJson);
+    const configStrs = apiConfigs.map((config) => `${config.spec}: ${config.fullApiName}`);
+    console.log('\n\nCBT browser API configs:\n\n', configStrs);
+    return apiConfigs;
+  }
+  return browserApiConfigsCached || (browserApiConfigsCached = await fetchAndParse());
+}
+
+function getSpecForApiNames(deviceApiName, browserApiName, browserApiConfigs) {
+  const config = browserApiConfigs.find((cfg) => {
+    // TODO(acdvorak): Why does the browser API return "Win10" but the screenshot info API returns "Win10-E17"?
+    return cfg.device.api_name.replace(/-E\d+$/, '') === deviceApiName.replace(/-E\d+$/, '')
+      && cfg.browser.api_name === browserApiName;
+  });
+  return config.spec;
+}
+
 async function captureOneUrl(testPageUrl) {
-  logTestCaseProgress(testPageUrl, Progress.enqueued(BROWSERS.length));
+  const browserApiConfigs = await getBrowserApiConfigs();
+
+  logTestCaseProgress(testPageUrl, Progress.enqueued(browserApiConfigs.length));
 
   return requestQueue.enqueue(testPageUrl)
     .then(
@@ -85,6 +97,7 @@ async function captureOneUrl(testPageUrl) {
 }
 
 async function sendCaptureRequest(testPageUrl) {
+  const browserApiConfigs = await getBrowserApiConfigs();
   const options = {
     method: 'POST',
     uri: apiUrl('/screenshots/'),
@@ -94,7 +107,7 @@ async function sendCaptureRequest(testPageUrl) {
     },
     body: {
       url: testPageUrl,
-      browsers: BROWSERS.join(','),
+      browsers: browserApiConfigs.map((config) => config.fullApiName).join(','),
     },
     json: true, // Automatically stringify the request body and parse the response body as JSON
   };
@@ -150,6 +163,18 @@ async function handleCaptureResponse(testPageUrl, captureResponseBody) {
   logTestCaseProgress(testPageUrl, infoProgress);
 
   return Promise.resolve(infoResponseBody);
+}
+
+async function fetchBrowsers() {
+  return request({
+    method: 'GET',
+    uri: apiUrl('/screenshots/browsers'),
+    auth: {
+      username: API_USERNAME,
+      password: API_AUTHKEY,
+    },
+    json: true, // Automatically stringify the request body and parse the response body as JSON
+  });
 }
 
 async function fetchScreenshotInfo(screenshotTestId) {
