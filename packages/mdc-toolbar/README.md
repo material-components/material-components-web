@@ -45,9 +45,6 @@ height added to their first rows.
   <li class="icon-list-item icon-list-item--spec">
     <a href="https://material.io/guidelines/components/toolbars.html">Material Design guidelines: Toolbars</a>
   </li>
-  <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/toolbar/index.html">Demo</a>
-  </li>
 </ul>
 
 ## Installation

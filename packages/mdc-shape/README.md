@@ -20,14 +20,6 @@ Shapes direct attention, identify components, communicate state, and express bra
 Many MDC Web components include direct support for rounded corners; this package provides additional support for
 applying angled corners to unelevated surfaces.
 
-## Design
-
-<ul class="icon-list">
-  <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/shape.html">Demo</a>
-  </li>
-</ul>
-
 ## Installation
 
 ```
