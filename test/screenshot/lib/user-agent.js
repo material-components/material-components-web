@@ -85,11 +85,13 @@ async function fetchConfigs() {
 }
 
 async function fetchConfigFromApiName(deviceApiName, browserApiName) {
+  // TODO(acdvorak): Why does the CBT browser API return "Win10" but the screenshot info API returns "Win10-E17"?
+  deviceApiName = deviceApiName.replace(/-E\d+$/, '');
+
   const userAgentConfigs = await fetchConfigs();
-  return userAgentConfigs.find((curConfig) => {
-    // TODO(acdvorak): Why does the CBT browser API return "Win10" but the screenshot info API returns "Win10-E17"?
-    return curConfig.device.api_name.replace(/-E\d+$/, '') === deviceApiName.replace(/-E\d+$/, '')
-      && curConfig.browser.api_name === browserApiName;
+  return userAgentConfigs.find((userAgentConfig) => {
+    return userAgentConfig.device.api_name === deviceApiName
+      && userAgentConfig.browser.api_name === browserApiName;
   });
 }
 
