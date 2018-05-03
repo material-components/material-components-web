@@ -66,6 +66,7 @@
 .mdc-chip__text {
   // Set line-height to be <18px to force the content height of mdc-chip to be 18px.
   line-height: 17px;
+  white-space: nowrap;
 }
 
 .mdc-chip__icon {
