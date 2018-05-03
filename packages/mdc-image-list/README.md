@@ -27,7 +27,7 @@ An Image List consists of several items, each containing an image and optionally
     <a href="https://material.io/guidelines/components/grid-lists.html">Material Design guidelines: Grid lists</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/image-list.html">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/image-list">Demo</a>
   </li>
 </ul>
 

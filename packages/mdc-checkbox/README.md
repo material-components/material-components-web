@@ -26,7 +26,7 @@ It works without JavaScript with basic functionality for all states. If you use 
     <a href="https://material.io/guidelines/components/selection-controls.html#selection-controls-checkbox">Material Design guidelines: Selection Controls – Checkbox</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/checkbox.html">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/checkbox">Demo</a>
   </li>
 </ul>
 

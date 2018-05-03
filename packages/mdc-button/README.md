@@ -29,7 +29,7 @@ the `button` element. See [MDC Ripple](../mdc-ripple) and [Demo](https://materia
     <a href="https://material.io/guidelines/components/buttons.html">Material Design guidelines: Buttons</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/button.html">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/button">Demo</a>
   </li>
 </ul>
 
