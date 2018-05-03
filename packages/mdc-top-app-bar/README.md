@@ -23,7 +23,7 @@ MDC Top App Bar acts as a container for items such as application title, navigat
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/toolbars.html">Material Design guidelines: Toolbars</a>
+    <a href="https://material.io/go/design-app-bar-top">Material Design guidelines: Top app bar</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
     <a href="https://material-components-web.appspot.com/top-app-bar.html">Demo</a>
@@ -73,7 +73,7 @@ const topAppBar = new MDCTopAppBar(topAppBarElement);
 
 ### Top App Bar With Action Items
 
-Top app bars can contain action items which are placed on the side opposite the navigation icon. 
+Top app bars can contain action items which are placed on the side opposite the navigation icon.
 
 ```html
 <header class="mdc-top-app-bar">
@@ -123,7 +123,7 @@ Short top app bars can be configured to always appear collapsed by applying the 
 
 ### Fixed
 
-Fixed top app bars stay at the top of the page and elevate above the content when scrolled. 
+Fixed top app bars stay at the top of the page and elevate above the content when scrolled.
 
 ```html
 <header class="mdc-top-app-bar mdc-top-app-bar--fixed">
@@ -133,7 +133,7 @@ Fixed top app bars stay at the top of the page and elevate above the content whe
 
 ### Prominent
 
-The prominent top app bar is taller. 
+The prominent top app bar is taller.
 
 ```html
 <header class="mdc-top-app-bar mdc-top-app-bar--prominent">
@@ -194,4 +194,4 @@ Method Signature | Description
 
 ### Foundations: `MDCTopAppBarBaseFoundation`, `MDCTopAppBarFoundation`, `MDCFixedTopAppBarFoundation` and `MDCShortTopAppBarFoundation`
 
-The foundations do not contain any public properties or methods aside from those inherited from MDCFoundation. 
+The foundations do not contain any public properties or methods aside from those inherited from MDCFoundation.

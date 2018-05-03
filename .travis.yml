@@ -25,3 +25,7 @@ matrix:
         - TEST_SUITE=closure
         - CLOSURE=1
       script: npm run test:closure
+    - node_js: 8
+      env:
+        - TEST_SUITE=site-generator
+      script: npm run test:site

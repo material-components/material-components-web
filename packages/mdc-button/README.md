@@ -22,7 +22,7 @@ Buttons allow users to take actions, and make choices, with a single tap.
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/buttons.html">Material Design guidelines: Buttons</a>
+    <a href="https://material.io/go/design-buttons">Material Design guidelines: Buttons</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
     <a href="https://material-components-web.appspot.com/button.html">Demo</a>
@@ -151,4 +151,4 @@ Mixin | Description
 
 ##### Caveat: Edge and CSS Custom Properties
 
-In browsers that fully support CSS custom properties, the above mixins will work if you pass in a [MDC Theme](mdc-theme) property (e.g. `primary`) as an argument. However, Edge does not fully support CSS custom properties. If you are using the `mdc-button-container-fill-color` mixin, you must pass in an actual color value for support in Edge.
+In browsers that fully support CSS custom properties, the above mixins will work if you pass in a [MDC Theme](../mdc-theme) property (e.g. `primary`) as an argument. However, Edge does not fully support CSS custom properties. If you are using the `mdc-button-container-fill-color` mixin, you must pass in an actual color value for support in Edge.

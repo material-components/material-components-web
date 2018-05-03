@@ -14,7 +14,7 @@ Tab is a selectable element with an active state
 <!--
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/chips.html">Material Design guidelines: Chips</a>
+    <a href="https://material.io/go/design-chips">Material Design guidelines: Chips</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
     <a href="https://material-components-web.appspot.com/chips.html">Demo</a>

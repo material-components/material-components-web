@@ -18,6 +18,7 @@
 
 const fs = require('fs');
 const glob = require('glob');
+const jimp = require('jimp');
 const path = require('path');
 const request = require('request-promise-native');
 const stringify = require('json-stable-stringify');
@@ -233,11 +234,32 @@ class Controller {
     // https://github.com/request/request#requestoptions-callback
     return request({uri, encoding: null})
       .then(
-        (body) => body,
+        (body) => this.autoCropImage_(body),
         (err) => {
           console.error(`FAILED to download "${uri}"`);
           return Promise.reject(err);
         }
+      );
+  }
+
+  /**
+   * @param {!Buffer} imageData Uncropped image buffer
+   * @return {!Promise<!Buffer>} Cropped image buffer
+   * @private
+   */
+  async autoCropImage_(imageData) {
+    return jimp.read(imageData)
+      .then(
+        (image) => {
+          return new Promise((resolve, reject) => {
+            image
+              .autocrop()
+              .getBuffer(jimp.MIME_PNG, (err, buffer) => {
+                return err ? reject(err) : resolve(buffer);
+              });
+          });
+        },
+        (err) => Promise.reject(err)
       );
   }
 

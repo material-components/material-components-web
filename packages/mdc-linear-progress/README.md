@@ -17,13 +17,13 @@ path: /catalog/linear-progress/
 </div>-->
 
 The MDC Linear Progress component is a spec-aligned linear progress indicator component adhering to the
-[Material Design progress & activity requirements](https://material.io/guidelines/components/progress-activity.html).
+[Material Design progress & activity requirements](https://material.io/go/design-progress-indicators).
 
 ## Design & API Documentation
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/progress-activity.html">Guidelines</a>
+    <a href="https://material.io/go/design-progress-indicators">Guidelines</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
     <a href="https://material-components-web.appspot.com/linear-progress.html">Demo</a>

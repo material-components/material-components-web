@@ -16,15 +16,14 @@ path: /catalog/image-lists/
   </a>
 </div>-->
 
-MDC Image List provides a RTL-aware Material Design image list component, representing an evolution of the
-[Material Design Grid List spec](https://material.io/guidelines/components/grid-lists.html).
-An Image List consists of several items, each containing an image and optionally supporting content (i.e. a text label).
+MDC Image List provides a RTL-aware Material Design image list component. An Image List consists of several items,
+each containing an image and optionally supporting content (i.e. a text label).
 
 ## Design & API Documentation
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/grid-lists.html">Material Design guidelines: Grid lists</a>
+    <a href="https://material.io/go/design-image-list">Material Design guidelines: Image list</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
     <a href="https://material-components-web.appspot.com/image-list.html">Demo</a>
