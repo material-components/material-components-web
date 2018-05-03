@@ -15,6 +15,8 @@
  */
 
 import td from 'testdouble';
+import lolex from 'lolex';
+
 import {setupFoundationTest} from '../helpers/setup';
 import {captureHandlers} from '../helpers/foundation';
 
@@ -60,6 +62,7 @@ test('on blur with value floats label', () => {
 });
 
 test('on select value change with option value', () => {
+  const clock = lolex.install();
   const {mockAdapter, handlers} = setupTest();
   td.when(mockAdapter.getSelectedIndex()).thenReturn(1);
   td.when(mockAdapter.getValue()).thenReturn('abc');
@@ -67,5 +70,8 @@ test('on select value change with option value', () => {
   handlers.change({
     target: {value: 'abc'},
   });
+  td.verify(mockAdapter.addClass(MDCSelectFoundation.cssClasses.IS_CHANGING), {times: 1});
   td.verify(mockAdapter.floatLabel(true), {times: 1});
+  clock.tick(MDCSelectFoundation.numbers.FLOAT_NATIVE_CONTROL_TRANSITION_TIME_MS);
+  td.verify(mockAdapter.removeClass(MDCSelectFoundation.cssClasses.IS_CHANGING), {times: 1});
 });

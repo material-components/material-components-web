@@ -31,7 +31,17 @@ if [ -z "$CLOSURIZED_PKGS" ]; then
   exit 0
 fi
 
-./scripts/closure-rewrite.sh
+log "Prepping whitelisted packages for JS compilation"
+
+rm -fr $CLOSURE_TMP/**
+mkdir -p $CLOSURE_PKGDIR
+for pkg in $CLOSURIZED_PKGS; do
+  cp -r "packages/$pkg" $CLOSURE_PKGDIR
+done
+rm -fr $CLOSURE_PKGDIR/**/{node_modules,dist}
+
+log "Rewriting all import statements to be closure compatible"
+node scripts/rewrite-decl-statements-for-closure-test.js $CLOSURE_PKGDIR
 
 log "Testing packages"
 echo ''

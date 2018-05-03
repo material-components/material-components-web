@@ -33,14 +33,14 @@
 // postcss-bem-linter: define text-field
 
 .mdc-text-field {
-  @include mdc-text-field-bottom-line-color($mdc-text-field-bottom-line-idle);
-  @include mdc-text-field-hover-bottom-line-color($mdc-text-field-bottom-line-hover);
+  @include mdc-text-field-bottom-line-color($mdc-text-field-underline-idle);
+  @include mdc-text-field-hover-bottom-line-color($mdc-text-field-underline-hover);
   @include mdc-text-field-line-ripple-color_(primary);
-  @include mdc-text-field-ink-color($mdc-text-field-ink-color);
+  @include mdc-text-field-ink-color(text-primary-on-background);
   @include mdc-text-field-label-color($mdc-text-field-label);
-  @include mdc-text-field-helper-text-color($mdc-text-field-helper-text-color);
-  @include mdc-text-field-fullwidth-bottom-line-color($mdc-text-field-fullwidth-bottom-line-color);
-  @include mdc-text-field-icon-color($mdc-text-field-icon-color);
+  @include mdc-text-field-helper-text-color(text-hint-on-background);
+  @include mdc-text-field-fullwidth-bottom-line-color($mdc-text-field-divider);
+  @include mdc-text-field-icon-color($mdc-text-field-underline-hover);
 
   display: inline-block;
   position: relative;
@@ -49,16 +49,24 @@
 }
 
 .mdc-text-field__input {
-  @include mdc-typography(subtitle1);
+  @include mdc-typography-base;
+  // We use only a subset of the MDC typography values here as changing things such as line-height
+  // affects how the labels are transformed.
+  // TODO: Re-add setting the font-size from mdc-typography-styles (currently
+  // setting it here has no effect because it is overriden by the font-size
+  // given below).
+  @each $prop in (letter-spacing) {
+    #{$prop}: map-get(map-get($mdc-typography-styles, subtitle1), $prop);
+  }
 
   width: 100%;
-  height: 30px;
-  padding: 20px 0 1px;
+  padding: 20px 0 8px;
   transition: mdc-text-field-transition(opacity);
   border: none;
   border-bottom: 1px solid;
   border-radius: 0;
   background: none;
+  font-size: inherit;
   appearance: none;
 
   &::placeholder {

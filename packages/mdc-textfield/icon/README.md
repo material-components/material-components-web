@@ -15,7 +15,7 @@ Icons describe the type of input a text field requires. They can also be interac
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/go/design-text-fields#text-fields-layout">Material Design guidelines: Text Fields Layout</a>
+    <a href="https://material.io/guidelines/components/text-fields.html#text-fields-layout">Material Design guidelines: Text Fields Layout</a>
   </li>
 </ul>
 
@@ -105,7 +105,6 @@ This allows the parent `MDCTextField` component to access the public methods on 
 
 Method Signature | Description
 --- | ---
-`getAttr(attr: string) => string` | Gets the value of an attribute on the icon element
 `setAttr(attr: string, value: string) => void` | Sets an attribute with a given value on the icon element
 `removeAttr(attr: string) => void` | Removes an attribute from the icon element
 `registerInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event listener for a given event
