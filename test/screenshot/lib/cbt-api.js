@@ -23,8 +23,8 @@ const API_AUTHKEY = process.env.CBT_AUTHKEY;
 class CbtApi {
   constructor() {}
 
-  async fetchAvailableBrowsers() {
-    console.log('fetchAvailableBrowsers()...');
+  async fetchAvailableDevices() {
+    console.log('fetchAvailableDevices()...');
     return request({
       method: 'GET',
       uri: apiUrl('/screenshots/browsers'),
@@ -48,9 +48,9 @@ class CbtApi {
     });
   }
 
-  async sendCaptureRequest(url, browserConfigs) {
+  async sendCaptureRequest(url, userAgentConfigs) {
     console.log(`sendCaptureRequest("${url}")...`);
-    const browsers = browserConfigs.map((config) => config.fullApiName).join(',');
+    const browsers = userAgentConfigs.map((config) => config.fullApiName).join(',');
     return request({
       method: 'POST',
       uri: apiUrl('/screenshots/'),

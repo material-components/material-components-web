@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+/* eslint-disable key-spacing, no-unused-vars */
+
 const CbtApi = require('./cbt-api');
 const cbtApi = new CbtApi();
 
@@ -32,20 +34,20 @@ const CBT_FILTERS = {
     windows: () => (device) => device.type === 'Windows',
   },
 
-  userAgentName: {
-    any:     () => (userAgent) => true,
-    chrome:  () => (userAgent) => userAgent.type === 'Chrome' || userAgent.type === 'Chrome Mobile',
-    edge:    () => (userAgent) => userAgent.type === 'Microsoft Edge',
-    firefox: () => (userAgent) => userAgent.type === 'Firefox',
-    ie:      () => (userAgent) => userAgent.type === 'Internet Explorer',
-    opera:   () => (userAgent) => userAgent.type === 'Opera',
-    safari:  () => (userAgent) => userAgent.type === 'Safari' || userAgent.type === 'Mobile Safari',
+  browserName: {
+    any:     () => (browser) => true,
+    chrome:  () => (browser) => browser.type === 'Chrome' || browser.type === 'Chrome Mobile',
+    edge:    () => (browser) => browser.type === 'Microsoft Edge',
+    firefox: () => (browser) => browser.type === 'Firefox',
+    ie:      () => (browser) => browser.type === 'Internet Explorer',
+    opera:   () => (browser) => browser.type === 'Opera',
+    safari:  () => (browser) => browser.type === 'Safari' || browser.type === 'Mobile Safari',
   },
 
-  userAgentVersion: {
-    any:     (desiredVersion) => (actualVersion) => true,
-    exactly: (desiredVersion) => (actualVersion) => compareVersions(actualVersion, desiredVersion) === 0,
-    latest: (n = 1) => (actualVersion, actualVersionIndex, actualVersionListSortedDesc) => {
+  browserVersion: {
+    any:      (desiredVersion) => (actualVersion) => true,
+    exactly:  (desiredVersion) => (actualVersion) => compareVersions(actualVersion, desiredVersion) === 0,
+    latest:   (n = 1) => (actualVersion, actualVersionIndex, actualVersionListSortedDesc) => {
       return actualVersionListSortedDesc
         .slice(0, n)
         .includes(actualVersion)
@@ -60,67 +62,67 @@ const CBT_FILTERS = {
   },
 };
 
-let browserConfigsPromise;
+let userAgentConfigsPromise;
 
 module.exports = {
-  fetchBrowserConfigs,
-  fetchBrowserConfigFromApiName,
+  fetchConfigs,
+  fetchConfigFromApiName,
 };
 
-async function fetchBrowserConfigs() {
-  return browserConfigsPromise || (browserConfigsPromise = new Promise((resolve, reject) => {
-    cbtApi.fetchAvailableBrowsers()
+async function fetchConfigs() {
+  return userAgentConfigsPromise || (userAgentConfigsPromise = new Promise((resolve, reject) => {
+    cbtApi.fetchAvailableDevices()
       .then(
-        (cbtBrowsers) => {
-          const browserSpecs = require('../browser.json').browserSpecs;
-          const browserConfigs = getMatchingApiConfigs(browserSpecs, cbtBrowsers);
+        (cbtDevices) => {
+          const userAgentAliases = require('../browser.json').user_agent_aliases;
+          const userAgentConfigs = getAllMatchingConfigs(userAgentAliases, cbtDevices);
 
           // Log it
-          const loggableConfigs = browserConfigs.map((config) => `${config.spec}: ${config.fullApiName}`);
-          console.log('\n\nCBT browser configs:\n\n', loggableConfigs, '\n\n');
+          const loggableConfigs = userAgentConfigs.map((config) => `${config.alias}: ${config.fullApiName}`);
+          console.log('\n\nCBT user agents:\n\n', loggableConfigs, '\n\n');
 
-          resolve(browserConfigs);
+          resolve(userAgentConfigs);
         },
         (err) => reject(err)
       );
   }));
 }
 
-async function fetchBrowserConfigFromApiName(deviceApiName, userAgentApiName) {
-  const browserConfigs = await fetchBrowserConfigs();
-  return browserConfigs.find((curConfig) => {
+async function fetchConfigFromApiName(deviceApiName, browserApiName) {
+  const userAgentConfigs = await fetchConfigs();
+  return userAgentConfigs.find((curConfig) => {
     // TODO(acdvorak): Why does the CBT browser API return "Win10" but the screenshot info API returns "Win10-E17"?
     return curConfig.device.api_name.replace(/-E\d+$/, '') === deviceApiName.replace(/-E\d+$/, '')
-      && curConfig.userAgent.api_name === userAgentApiName;
+      && curConfig.browser.api_name === browserApiName;
   });
 }
 
-function getMatchingApiConfigs(browserSpecs, cbtBrowsers) {
-  return browserSpecs.map((browserSpec) => getMatchingApiConfig(browserSpec, cbtBrowsers));
+function getAllMatchingConfigs(userAgentAliases, cbtDevices) {
+  return userAgentAliases.map((userAgentAlias) => getOneMatchingConfig(userAgentAlias, cbtDevices));
 }
 
-function getMatchingApiConfig(browserSpec, cbtBrowsers) {
+function getOneMatchingConfig(userAgentAlias, cbtDevices) {
   // Avoid mutating the object passed by the caller
-  cbtBrowsers = deepCopyJson(cbtBrowsers);
+  cbtDevices = deepCopyJson(cbtDevices);
 
-  const [_, formFactor, operatingSystemName, userAgentName, userAgentVersion] =
-    /^([a-z]+)_([a-z]+)_([a-z]+)@([a-z0-9.]+)$/.exec(browserSpec);
+  const [_, formFactor, operatingSystemName, browserName, browserVersion] =
+    /^([a-z]+)_([a-z]+)_([a-z]+)@([a-z0-9.]+)$/.exec(userAgentAlias);
 
-  const devices = cbtBrowsers
+  const devices = cbtDevices
     .filter(CBT_FILTERS.formFactor[formFactor]())
     .filter(CBT_FILTERS.operatingSystemName[operatingSystemName]())
   ;
 
   filterBrowsersByName(
     devices,
-    CBT_FILTERS.userAgentName[userAgentName]()
+    CBT_FILTERS.browserName[browserName]()
   );
 
   filterBrowsersByVersion(
     devices,
-    CBT_FILTERS.userAgentVersion[userAgentVersion]
-      ? CBT_FILTERS.userAgentVersion[userAgentVersion]()
-      : CBT_FILTERS.userAgentVersion.exactly(userAgentVersion)
+    CBT_FILTERS.browserVersion[browserVersion]
+      ? CBT_FILTERS.browserVersion[browserVersion]()
+      : CBT_FILTERS.browserVersion.exactly(browserVersion)
   );
 
   const [firstDevice] = devices
@@ -129,25 +131,25 @@ function getMatchingApiConfig(browserSpec, cbtBrowsers) {
     .reverse()
   ;
 
-  const [firstUserAgent] = firstDevice.browsers;
+  const [firstBrowser] = firstDevice.browsers;
 
   return {
     /**
      * API documentation for the name format can be found at:
      * https://crossbrowsertesting.com/apidocs/v3/screenshots.html#!/default/post_screenshots
      */
-    fullApiName: `${firstDevice.api_name}|${firstUserAgent.api_name}`,
-    spec: browserSpec,
+    fullApiName: `${firstDevice.api_name}|${firstBrowser.api_name}`,
+    alias: userAgentAlias,
     device: firstDevice,
-    userAgent: firstUserAgent,
+    browser: firstBrowser,
   };
 }
 
-function filterBrowsersByName(devices, userAgentNameFilter) {
+function filterBrowsersByName(devices, browserNameFilter) {
   devices.forEach((device) => {
     device.browsers = device.browsers
       .filter((browser) => is64Bit(browser, device.browsers))
-      .filter(userAgentNameFilter)
+      .filter(browserNameFilter)
       .map((browser) => {
         browser.parsedVersionNumber = parseVersionNumber(browser.version).join('.');
         return browser;
@@ -159,20 +161,20 @@ function filterBrowsersByName(devices, userAgentNameFilter) {
   });
 }
 
-function filterBrowsersByVersion(devices, userAgentVersionFilter) {
-  const userAgentVersionSet = new Set();
+function filterBrowsersByVersion(devices, browserVersionFilter) {
+  const browserVersionSet = new Set();
 
   devices.forEach((device) => {
     device.browsers.forEach((browser) => {
-      userAgentVersionSet.add(browser.version);
+      browserVersionSet.add(browser.version);
     });
   });
 
-  const userAgentVersionListSorted = Array.from(userAgentVersionSet).sort(compareVersions).reverse();
-  const matchingUserAgentVersionSet = new Set(userAgentVersionListSorted.filter(userAgentVersionFilter));
+  const browserVersionListSorted = Array.from(browserVersionSet).sort(compareVersions).reverse();
+  const matchingBrowserVersionSet = new Set(browserVersionListSorted.filter(browserVersionFilter));
 
   devices.forEach((device) => {
-    device.browsers = device.browsers.filter((browser) => matchingUserAgentVersionSet.has(browser.version));
+    device.browsers = device.browsers.filter((browser) => matchingBrowserVersionSet.has(browser.version));
   });
 
   return devices;

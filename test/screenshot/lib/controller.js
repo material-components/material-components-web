@@ -24,8 +24,8 @@ const request = require('request-promise-native');
 const stringify = require('json-stable-stringify');
 const util = require('util');
 
-const Browser = require('./browser');
 const Screenshot = require('./screenshot');
+const UserAgent = require('./user-agent');
 const {Storage, UploadableFile, UploadableTestCase} = require('./storage');
 
 const readFileAsync = util.promisify(fs.readFile);
@@ -208,19 +208,15 @@ class Controller {
    */
   async uploadScreenshotImage_(testCase, cbtResult) {
     const osApiName = cbtResult.os.api_name;
-    const uaApiName = cbtResult.browser.api_name;
+    const browserApiName = cbtResult.browser.api_name;
 
-    const sanitize = (apiName) => apiName.toLowerCase().replace(/[^\w.]+/g, '');
-    const os = sanitize(osApiName);
-    const ua = sanitize(uaApiName);
-    const imageName = `${os}_${ua}.png`;
-
+    const imageName = `${osApiName}_${browserApiName}.png`.toLowerCase().replace(/[^\w.]+/g, '');
     const imageData = await this.downloadImage_(cbtResult.images.chromeless);
     const imageFile = new UploadableFile({
       destinationParentDirectory: `${this.baseUploadDir_}/screenshots`,
       destinationRelativeFilePath: `${testCase.htmlFile.destinationRelativeFilePath}/${imageName}`,
       fileContent: imageData,
-      browserConfig: await Browser.fetchBrowserConfigFromApiName(osApiName, uaApiName),
+      userAgentConfig: await UserAgent.fetchConfigFromApiName(osApiName, browserApiName),
     });
 
     testCase.screenshotImageFiles.push(imageFile);
@@ -286,7 +282,7 @@ class Controller {
       };
 
       testCase.screenshotImageFiles.forEach((screenshotImageFile) => {
-        const screenshotKey = screenshotImageFile.browserConfig.spec;
+        const screenshotKey = screenshotImageFile.userAgentConfig.alias;
         const screenshotUrl = screenshotImageFile.publicUrl;
 
         goldenData[htmlFileKey].screenshots[screenshotKey] = screenshotUrl;

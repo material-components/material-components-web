@@ -16,10 +16,10 @@
 
 'use strict';
 
-const Browser = require('./browser');
 const CbtApi = require('./cbt-api');
 const ParallelQueue = require('./parallel-queue');
 const Progress = require('./progress');
+const UserAgent = require('./user-agent');
 
 /** Maximum number of parallel screenshot requests allowed by our CBT plan. */
 const API_PARALLEL_REQUEST_LIMIT = 5;
@@ -45,9 +45,9 @@ module.exports = {
 };
 
 async function captureOneUrl(testPageUrl) {
-  const browserConfigs = await Browser.fetchBrowserConfigs();
+  const userAgentConfigs = await UserAgent.fetchConfigs();
 
-  logTestCaseProgress(testPageUrl, Progress.enqueued(browserConfigs.length));
+  logTestCaseProgress(testPageUrl, Progress.enqueued(userAgentConfigs.length));
 
   return requestQueue.enqueue(testPageUrl)
     .then(
@@ -70,8 +70,8 @@ async function captureOneUrl(testPageUrl) {
 }
 
 async function sendCaptureRequest(testPageUrl) {
-  const browserConfigs = await Browser.fetchBrowserConfigs();
-  return cbtApi.sendCaptureRequest(testPageUrl, browserConfigs)
+  const userAgentConfigs = await UserAgent.fetchConfigs();
+  return cbtApi.sendCaptureRequest(testPageUrl, userAgentConfigs)
     .catch(async (err) => {
       if (reachedParallelExecutionLimit(err)) {
         console.warn(`Parallel execution limit reached - waiting for ${API_POLL_INTERVAL_MS} ms before retrying...`);

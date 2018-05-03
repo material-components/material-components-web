@@ -1,5 +1,5 @@
 {
-  "browserSpecs": [
+  "user_agent_aliases": [
     "desktop_windows_chrome@latest",
     "desktop_windows_chrome@previous",
     "desktop_windows_firefox@latest",
