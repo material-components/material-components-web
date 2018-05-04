@@ -11,7 +11,7 @@ path: /catalog/input-controls/sliders/
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/slider.html">
+     href="https://material-components.github.io/material-components-web-catalog/#/component/slider">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/slider.png" width="400" alt="Select screenshot">
   </a>
 </div>-->

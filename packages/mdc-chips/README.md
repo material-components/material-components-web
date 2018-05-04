@@ -11,7 +11,7 @@ path: /catalog/chips/
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/chips.html">
+     href="https://material-components.github.io/material-components-web-catalog/#/component/chips">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/chips.png" width="363" alt="Chips screenshot">
   </a>
 </div>-->

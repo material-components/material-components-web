@@ -16,13 +16,6 @@ will no longer be accepted for the `mdc-grid-list` package. It is recommended th
 
 # Grid Lists
 
-<!--<div class="article__asset">
-  <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/grid-list.html">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/grids.png" width="320" alt="Grid lists screenshot">
-  </a>
-</div>-->
-
 MDC Grid List provides a RTL-aware Material Design Grid list component adhering to the Material Design Grid list spec.
 Grid Lists are best suited for presenting homogeneous data, typically images.
 Each item in a grid list is called a **tile**. Tiles maintain consistent width, height, and padding

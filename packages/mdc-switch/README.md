@@ -10,7 +10,7 @@ path: /catalog/input-controls/switches/
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/switch.html">
+     href="https://material-components.github.io/material-components-web-catalog/#/component/switch">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/switches.png" width="37" alt="Switches screenshot">
   </a>
 </div>-->
