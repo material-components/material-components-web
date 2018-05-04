@@ -8,7 +8,7 @@ path: /catalog/input-controls/floating-label/
 
 # Floating Label
 
-Floating labels display the type of input a field requires. Every Text Field and Select should have a label. Labels are aligned with the input line and always visible. They can be resting (when a field is inactive and empty) or floating. The label is a text caption or description for the Text Field.
+Floating labels display the type of input a field requires. Every Text Field and Select should have a label, except for full-width text fields, which use the input's `placeholder` attribute instead. Labels are aligned with the input line and always visible. They can be resting (when a field is inactive and empty) or floating. The label is a text caption or description for the Text Field.
 
 ## Design & API Documentation
 
@@ -17,7 +17,7 @@ Floating labels display the type of input a field requires. Every Text Field and
     <a href="https://material.io/go/design-text-fields#text-fields-layout">Material Design guidelines: Text Fields Layout</a>
   </li>
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material-components-web.appspot.com/text-field.html">Demo with Text Field</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/text-field">Demo with Text Field</a>
   </li>
 </ul>
 

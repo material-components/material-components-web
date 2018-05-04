@@ -50,8 +50,8 @@ npm install @material/textfield
 >
 > Other input types (such as `number` and `date`) are not currently supported.
 
-> NOTE: For more details, see [MDC Line Ripple](https://github.com/material-components/material-components-web/blob/master/packages/mdc-line-ripple/README.md)
-> and [MDC Floating Label](https://github.com/material-components/material-components-web/blob/master/packages/mdc-floating-label/README.md).
+> NOTE: For more details, see [MDC Line Ripple](../mdc-line-ripple/README.md)
+> and [MDC Floating Label](../mdc-floating-label/README.md).
 
 ### Styles
 
