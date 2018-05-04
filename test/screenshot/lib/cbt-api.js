@@ -25,7 +25,7 @@ class CbtApi {
     console.log('fetchAvailableDevices()...');
     return request({
       method: 'GET',
-      uri: apiUrl('/screenshots/browsers'),
+      uri: CbtApi.getFullUrl_('/screenshots/browsers'),
       auth: {
         username: API_USERNAME,
         password: API_AUTHKEY,
@@ -37,7 +37,7 @@ class CbtApi {
   async fetchScreenshotInfo(cbtScreenshotId) {
     return request({
       method: 'GET',
-      uri: apiUrl(`/screenshots/${cbtScreenshotId}`),
+      uri: CbtApi.getFullUrl_(`/screenshots/${cbtScreenshotId}`),
       auth: {
         username: API_USERNAME,
         password: API_AUTHKEY,
@@ -51,7 +51,7 @@ class CbtApi {
     const browsers = userAgentConfigs.map((config) => config.fullApiName).join(',');
     return request({
       method: 'POST',
-      uri: apiUrl('/screenshots/'),
+      uri: CbtApi.getFullUrl_('/screenshots/'),
       auth: {
         username: API_USERNAME,
         password: API_AUTHKEY,
@@ -63,10 +63,15 @@ class CbtApi {
       json: true, // Automatically stringify the request body and parse the response body as JSON
     });
   }
-}
 
-function apiUrl(apiEndpointPath) {
-  return `${API_BASE_URL}${apiEndpointPath}`;
+  /**
+   * @param {string} apiEndpointPath
+   * @return {string}
+   * @private
+   */
+  static getFullUrl_(apiEndpointPath) {
+    return `${API_BASE_URL}${apiEndpointPath}`;
+  }
 }
 
 module.exports = CbtApi;
