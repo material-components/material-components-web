@@ -11,7 +11,7 @@ path: /catalog/layout-grid/
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/layout-grid.html">
+     href="https://material-components.github.io/material-components-web-catalog/#/component/layout-grid">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/layout.png" width="256" alt="Layout grid screenshot">
   </a>
 </div>-->

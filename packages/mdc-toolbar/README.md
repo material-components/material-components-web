@@ -16,13 +16,6 @@ will no longer be accepted for the `mdc-toolbar` package. It is recommended that
 
 # Toolbars
 
-<!--<div class="article__asset">
-  <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/toolbar/index.html">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/toolbars.png" width="494" alt="Toolbars screenshot">
-  </a>
-</div>-->
-
 MDC Toolbar acts as a container for multiple rows containing items such as
 application title, navigation menu, and tabs, among other things. Toolbars
 scroll with content by default, but support fixed behavior as well.

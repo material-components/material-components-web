@@ -11,7 +11,7 @@ path: /catalog/snackbars/
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/snackbar.html">
+     href="https://material-components.github.io/material-components-web-catalog/#/component/snackbar">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/snackbars.png" width="336" alt="Snackbars screenshot">
   </a>
 </div>-->
