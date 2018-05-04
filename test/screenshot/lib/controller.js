@@ -251,9 +251,7 @@ class Controller {
    * @private
    */
   async downloadAndCropImage_(uri) {
-    const uncroppedImageData = await this.imageCache_.getImageBuffer(uri);
-    const croppedImageData = this.imageCropper_.autoCropImage(uncroppedImageData);
-    return croppedImageData;
+    return this.imageCropper_.autoCropImage(await this.imageCache_.getImageBuffer(uri));
   }
 
   /**
