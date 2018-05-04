@@ -151,11 +151,7 @@ class ImageDiffer {
     actualImageBuffer,
     expectedImageBuffer,
   }) {
-    const options = {
-      output: {
-        transparency: 0.2,
-      },
-    };
+    const options = require('../resemble.json');
     return await compareImages(
       actualImageBuffer,
       expectedImageBuffer,
