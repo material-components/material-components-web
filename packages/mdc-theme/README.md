@@ -9,13 +9,6 @@ path: /catalog/theme/
 
 # Theme
 
-<!--<div class="article__asset">
-  <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/theme/index.html">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/themes.png" width="241" alt="Themes screenshot">
-  </a>
-</div>-->
-
 The Material Design color system can be used to create a color scheme that reflects your brand or style.
 
 ## Design & API Documentation

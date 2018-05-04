@@ -10,7 +10,7 @@ path: /catalog/input-controls/text-field/
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/text-field.html">
+     href="https://material-components.github.io/material-components-web-catalog/#/component/text-field">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/textfields.png" width="240" alt="Text fields screenshot">
   </a>
 </div>-->

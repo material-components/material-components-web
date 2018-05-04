@@ -2,7 +2,7 @@
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/tab.html">
+     href="https://material-components.github.io/material-components-web-catalog/#/component/tabs">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/tab.png" width="363" alt="Tab screenshot">
   </a>
 </div>-->
@@ -11,16 +11,14 @@ Tab is a selectable element with an active state
 
 ## Design & API Documentation
 
-<!--
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/go/design-chips">Material Design guidelines: Chips</a>
+    <a href="https://material.io/go/design-tabs">Material Design guidelines: Tabs</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/chips.html">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/tabs">Demo</a>
   </li>
 </ul>
--->
 
 ## Installation
 ```
