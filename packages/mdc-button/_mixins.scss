@@ -78,15 +78,6 @@
   @include mdc-button-horizontal-padding($padding-value);
 
   border-width: $stroke-width;
-  // Note: line height is adjusted for stroke button because borders are not
-  // considered as space available to text on the Web
-  line-height: $mdc-button-height - $stroke-width * 2;
-
-  // postcss-bem-linter: ignore
-  &.mdc-button--dense {
-    // Minus extra 1 to accommodate odd font size of dense button
-    line-height: $mdc-dense-button-height - $stroke-width * 2 - 1;
-  }
 }
 
 @mixin mdc-button-base_() {
