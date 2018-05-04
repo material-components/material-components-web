@@ -22,7 +22,7 @@ const API_AUTHKEY = process.env.CBT_AUTHKEY;
 
 class CbtApi {
   async fetchAvailableDevices() {
-    console.log('fetchAvailableDevices()...');
+    console.log('Fetching available devices...');
     return request({
       method: 'GET',
       uri: CbtApi.getFullUrl_('/screenshots/browsers'),
@@ -47,7 +47,7 @@ class CbtApi {
   }
 
   async sendCaptureRequest(url, userAgentConfigs) {
-    console.log(`sendCaptureRequest("${url}")...`);
+    console.log(`Sending screenshot capture request for "${url}"...`);
     const browsers = userAgentConfigs.map((config) => config.fullApiName).join(',');
     return request({
       method: 'POST',
