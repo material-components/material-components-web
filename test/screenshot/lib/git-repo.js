@@ -26,8 +26,8 @@ class GitRepo {
   /**
    * @return {!Promise<void>}
    */
-  async fetch() {
-    return this.repo_.fetch();
+  async fetchMasterShallow() {
+    return this.repo_.fetch(['--depth=1', 'origin', 'master']);
   }
 
   /**

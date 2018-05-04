@@ -52,7 +52,7 @@ class GoldenStore {
    */
   static async fromMaster(jsonFilePath) {
     const mdcGitRepo = new GitRepo();
-    await mdcGitRepo.fetch();
+    await mdcGitRepo.fetchMasterShallow();
 
     const getFrom = (rev) => mdcGitRepo.getFileAtRevision(jsonFilePath, rev);
 
