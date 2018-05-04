@@ -26,6 +26,9 @@ applying angled corners to unelevated surfaces.
   <li class="icon-list-item icon-list-item--spec">
     <a href="https://material.io/go/design-shape">Material Design guidelines: Shape</a>
   </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/shape">Demo</a>
+  </li>
 </ul>
 
 ## Installation
