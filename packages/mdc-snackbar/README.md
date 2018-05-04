@@ -2,7 +2,7 @@
 title: "Snackbars"
 layout: detail
 section: components
-excerpt: "Brief feedback for an action through a message at the bottom of the screen."
+excerpt: "Snackbars provide brief messages about app processes at the bottom of the screen."
 iconId: toast
 path: /catalog/snackbars/
 -->
@@ -16,9 +16,7 @@ path: /catalog/snackbars/
   </a>
 </div>-->
 
-The MDC Snackbar component is a spec-aligned snackbar/toast component adhering to the
-[Material Design snackbars & toasts requirements](https://material.io/go/design-snackbars#snackbars-toasts-specs).
-It requires JavaScript to show and hide itself.
+Snackbars provide brief messages about app processes at the bottom of the screen.
 
 ## Design & API Documentation
 
