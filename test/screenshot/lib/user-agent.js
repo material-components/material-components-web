@@ -48,12 +48,14 @@ const CBT_FILTERS = {
     any:      (desiredVersion) => (actualVersion) => true,
     exactly:  (desiredVersion) => (actualVersion) => compareVersions(actualVersion, desiredVersion) === 0,
     latest:   (n = 1) => (actualVersion, actualVersionIndex, actualVersionListSortedDesc) => {
+      // Array is sorted by `filterBrowsersByVersion()`
       return actualVersionListSortedDesc
         .slice(0, n)
         .includes(actualVersion)
       ;
     },
     previous: (n = 1) => (actualVersion, actualVersionIndex, actualVersionListSortedDesc) => {
+      // Array is sorted by `filterBrowsersByVersion()`
       return actualVersionListSortedDesc
         .slice(1, 1 + n)
         .includes(actualVersion)
@@ -160,19 +162,23 @@ function filterBrowsersByName(devices, browserNameFilter) {
 }
 
 function filterBrowsersByVersion(devices, browserVersionFilter) {
-  const browserVersionSet = new Set();
+  const allBrowserVersions = new Set();
 
+  // When this function is called, `devices` should only contain a single browser vendor (e.g., "chrome") at multiple
+  // versions.
   devices.forEach((device) => {
     device.browsers.forEach((browser) => {
-      browserVersionSet.add(browser.version);
+      allBrowserVersions.add(browser.version);
     });
   });
 
-  const browserVersionListSorted = Array.from(browserVersionSet).sort(compareVersions).reverse();
-  const matchingBrowserVersionSet = new Set(browserVersionListSorted.filter(browserVersionFilter));
+  // Certain filters (`latest` and `previous`) need access to the entire array of available versions, sorted from
+  // newest to oldest.
+  const sortedBrowserVersionList = Array.from(allBrowserVersions).sort(compareVersions).reverse();
+  const matchingBrowserVersions = new Set(sortedBrowserVersionList.filter(browserVersionFilter));
 
   devices.forEach((device) => {
-    device.browsers = device.browsers.filter((browser) => matchingBrowserVersionSet.has(browser.version));
+    device.browsers = device.browsers.filter((browser) => matchingBrowserVersions.has(browser.version));
   });
 
   return devices;
