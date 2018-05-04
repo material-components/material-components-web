@@ -24,7 +24,7 @@ It requires JavaScript to show and hide itself.
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/go/design-snackbars">Material Design guidelines: Snackbars & toasts</a>
+    <a href="https://material.io/go/design-snackbar">Material Design guidelines: Snackbars & toasts</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
     <a href="https://material-components.github.io/material-components-web-catalog/#/component/snackbar">Demo</a>
