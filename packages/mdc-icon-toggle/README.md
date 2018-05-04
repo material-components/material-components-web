@@ -10,7 +10,7 @@ path: /catalog/buttons/icon-toggle-buttons/
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/icon-toggle.html">
+     href="https://material-components.github.io/material-components-web-catalog/#/component/icon-toggle">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/icon-toggles.png" width="20" alt="Icon toggles screenshot">
   </a>
 </div>-->
@@ -22,10 +22,10 @@ designed to work with any icon set.
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/buttons.html#buttons-toggle-buttons">Material Design guidelines: Toggle buttons</a>
+    <a href="https://material.io/go/design-buttons#buttons-toggle-buttons">Material Design guidelines: Toggle buttons</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/icon-toggle.html">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/icon-toggle">Demo</a>
   </li>
 </ul>
 

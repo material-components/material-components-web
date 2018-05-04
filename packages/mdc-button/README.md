@@ -11,7 +11,7 @@ path: /catalog/buttons/
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/button.html">
+     href="https://material-components.github.io/material-components-web-catalog/#/component/button">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/buttons.png" width="363" alt="Buttons screenshot">
   </a>
 </div>-->
@@ -22,10 +22,10 @@ Buttons allow users to take actions, and make choices, with a single tap.
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/buttons.html">Material Design guidelines: Buttons</a>
+    <a href="https://material.io/go/design-buttons">Material Design guidelines: Buttons</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/button.html">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/button">Demo</a>
   </li>
 </ul>
 
