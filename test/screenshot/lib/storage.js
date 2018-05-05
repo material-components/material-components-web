@@ -134,7 +134,7 @@ class UploadableFile {
     destinationParentDirectory,
     destinationRelativeFilePath,
     fileContent,
-    userAgentConfig = null,
+    userAgent = null,
   }) {
     /** @type {string} */
     this.destinationParentDirectory = destinationParentDirectory;
@@ -149,7 +149,7 @@ class UploadableFile {
     this.fileContent = fileContent;
 
     /** @type {?Object} */
-    this.userAgentConfig = userAgentConfig;
+    this.userAgent = userAgent;
 
     /** @type {?string} */
     this.publicUrl = null;

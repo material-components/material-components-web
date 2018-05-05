@@ -46,9 +46,9 @@ class CbtApi {
     });
   }
 
-  async sendCaptureRequest(url, userAgentConfigs) {
+  async sendCaptureRequest(url, userAgents) {
     console.log(`Sending screenshot capture request for "${url}"...`);
-    const browsers = userAgentConfigs.map((config) => config.fullApiName).join(',');
+    const browsers = userAgents.map((config) => config.fullCbtApiName).join(',');
     return request({
       method: 'POST',
       uri: CbtApi.getFullUrl_('/screenshots/'),

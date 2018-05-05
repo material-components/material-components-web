@@ -64,44 +64,64 @@ const CBT_FILTERS = {
   },
 };
 
-let userAgentConfigsPromise;
+let userAgentsPromise;
 
 module.exports = {
-  fetchConfigs,
-  fetchConfigFromApiName,
+  fetchBrowsersToRun,
+  fetchBrowserByApiName,
 };
 
-async function fetchConfigs() {
-  return userAgentConfigsPromise || (userAgentConfigsPromise = new Promise((resolve, reject) => {
+/**
+ * Resolves aliases in `browser.json` and returns their corresponding CBT API representations.
+ * @return {!Promise<!Array<!CbtUserAgent>>}
+ */
+async function fetchBrowsersToRun() {
+  return userAgentsPromise || (userAgentsPromise = new Promise((resolve, reject) => {
     cbtApi.fetchAvailableDevices()
       .then(
         (cbtDevices) => {
           const userAgentAliases = require('../browser.json').user_agent_aliases;
-          const userAgentConfigs = getAllMatchingConfigs(userAgentAliases, cbtDevices);
-          console.log(userAgentConfigs.map((config) => `${config.alias}: ${config.fullApiName}`));
-          resolve(userAgentConfigs);
+          const userAgents = findAllMatchingUAs(userAgentAliases, cbtDevices);
+          console.log(userAgents.map((config) => `${config.alias}: ${config.fullCbtApiName}`));
+          resolve(userAgents);
         },
         (err) => reject(err)
       );
   }));
 }
 
-async function fetchConfigFromApiName(deviceApiName, browserApiName) {
+/**
+ * Returns the CBT API representation of the given device and browser API names.
+ * @param {string} cbtDeviceApiName
+ * @param {string} cbtBrowserApiName
+ * @return {!Promise<?CbtUserAgent>}
+ */
+async function fetchBrowserByApiName(cbtDeviceApiName, cbtBrowserApiName) {
   // TODO(acdvorak): Why does the CBT browser API return "Win10" but the screenshot info API returns "Win10-E17"?
-  deviceApiName = deviceApiName.replace(/-E\d+$/, '');
+  cbtDeviceApiName = cbtDeviceApiName.replace(/-E\d+$/, '');
 
-  const userAgentConfigs = await fetchConfigs();
-  return userAgentConfigs.find((userAgentConfig) => {
-    return userAgentConfig.device.api_name === deviceApiName
-      && userAgentConfig.browser.api_name === browserApiName;
+  const userAgents = await fetchBrowsersToRun();
+  return userAgents.find((userAgent) => {
+    return userAgent.device.api_name === cbtDeviceApiName
+      && userAgent.browser.api_name === cbtBrowserApiName;
   });
 }
 
-function getAllMatchingConfigs(userAgentAliases, cbtDevices) {
-  return userAgentAliases.map((userAgentAlias) => getOneMatchingConfig(userAgentAlias, cbtDevices));
+/**
+ * @param {!Array<string>} userAgentAliases
+ * @param {!Array<!CbtDevice>} cbtDevices
+ * @return {!Array<!CbtUserAgent>}
+ */
+function findAllMatchingUAs(userAgentAliases, cbtDevices) {
+  return userAgentAliases.map((userAgentAlias) => findOneMatchingUA(userAgentAlias, cbtDevices));
 }
 
-function getOneMatchingConfig(userAgentAlias, cbtDevices) {
+/**
+ * @param {string} userAgentAlias
+ * @param {!Array<!CbtDevice>} cbtDevices
+ * @return {!CbtUserAgent}
+ */
+function findOneMatchingUA(userAgentAlias, cbtDevices) {
   // Avoid mutating the object passed by the caller
   cbtDevices = deepCopyJson(cbtDevices);
 
@@ -138,13 +158,18 @@ function getOneMatchingConfig(userAgentAlias, cbtDevices) {
      * API documentation for the name format can be found at:
      * https://crossbrowsertesting.com/apidocs/v3/screenshots.html#!/default/post_screenshots
      */
-    fullApiName: `${firstDevice.api_name}|${firstBrowser.api_name}`,
+    fullCbtApiName: `${firstDevice.api_name}|${firstBrowser.api_name}`,
     alias: userAgentAlias,
     device: firstDevice,
     browser: firstBrowser,
   };
 }
 
+/**
+ * Mutates `devices` in-place by removing browsers that do not match the given filter.
+ * @param {!Array<!CbtDevice>} devices
+ * @param {function(browser: !CbtBrowser): boolean} browserNameFilter
+ */
 function filterBrowsersByName(devices, browserNameFilter) {
   devices.forEach((device) => {
     device.browsers = device.browsers
@@ -161,6 +186,11 @@ function filterBrowsersByName(devices, browserNameFilter) {
   });
 }
 
+/**
+ * Mutates `devices` in-place by removing browsers that do not match the given filter.
+ * @param {!Array<!CbtDevice>} devices
+ * @param {function(version: string): boolean} browserVersionFilter
+ */
 function filterBrowsersByVersion(devices, browserVersionFilter) {
   const allBrowserVersions = new Set();
 
@@ -180,8 +210,6 @@ function filterBrowsersByVersion(devices, browserVersionFilter) {
   devices.forEach((device) => {
     device.browsers = device.browsers.filter((browser) => matchingBrowserVersions.has(browser.version));
   });
-
-  return devices;
 }
 
 /**
@@ -235,3 +263,66 @@ function is64Bit(browser, otherBrowsers) {
 function deepCopyJson(json) {
   return JSON.parse(JSON.stringify(json));
 }
+
+/**
+ * Represents a single browser/device combination.
+ * E.g., "Chrome 62" on "Nexus 6P with Android 7.0".
+ * This is a custom, MDC-specific data type; it does not come from the CBT API.
+ * @typedef {{
+ *   fullCbtApiName: string,
+ *   alias: string,
+ *   device: !CbtDevice,
+ *   browser: !CbtBrowser,
+ * }}
+ */
+let CbtUserAgent;
+
+/**
+ * A "physical" device (phone, tablet, or desktop) with a specific OS version.
+ * E.g., "iPhone 8 with iOS 11", "Nexus 6P with Android 7.0", "macOS 10.13", "Windows 10".
+ * Returned by the CBT API.
+ * @typedef {{
+ *   api_name: string,
+ *   name: string,
+ *   version: string,
+ *   type: string,
+ *   device: string,
+ *   device_type: string,
+ *   browsers: !Array<!CbtBrowser>,
+ *   resolutions: !Array<!CbtDeviceResolution>,
+ *   parsedVersionNumber: ?string,
+ * }}
+ */
+let CbtDevice;
+
+/**
+ * A specific version of a browser vendor's software.
+ * E.g., "Safari 11", "Chrome 63 (64-bit)", "Edge 17".
+ * Returned by the CBT API.
+ * @typedef {{
+ *   api_name: string,
+ *   name: string,
+ *   version: string,
+ *   type: string,
+ *   device: string,
+ *   selenium_version: string,
+ *   webdriver_type: string,
+ *   webdriver_version: string,
+ *   parsedVersionNumber: ?string,
+ * }}
+ */
+let CbtBrowser;
+
+/**
+ * A "physical" device pixel resolution.
+ * E.g., "1125x2436 (portrait)", "2436x1125 (landscape)".
+ * Returned by the CBT API.
+ * @typedef {{
+ *   name: string,
+ *   width: number,
+ *   height: number,
+ *   orientation: string,
+ *   default: boolean,
+ * }}
+ */
+let CbtDeviceResolution;

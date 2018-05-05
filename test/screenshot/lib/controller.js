@@ -24,8 +24,8 @@ const request = require('request-promise-native');
 const stringify = require('json-stable-stringify');
 const util = require('util');
 
+const CbtUserAgent = require('./cbt-user-agent');
 const Screenshot = require('./screenshot');
-const UserAgent = require('./user-agent');
 const {Storage, UploadableFile, UploadableTestCase} = require('./storage');
 
 const readFileAsync = util.promisify(fs.readFile);
@@ -216,7 +216,7 @@ class Controller {
       destinationParentDirectory: `${this.baseUploadDir_}/screenshots`,
       destinationRelativeFilePath: `${testCase.htmlFile.destinationRelativeFilePath}/${imageName}`,
       fileContent: imageData,
-      userAgentConfig: await UserAgent.fetchConfigFromApiName(osApiName, browserApiName),
+      userAgent: await CbtUserAgent.fetchBrowserByApiName(osApiName, browserApiName),
     });
 
     testCase.screenshotImageFiles.push(imageFile);
@@ -282,7 +282,7 @@ class Controller {
       };
 
       testCase.screenshotImageFiles.forEach((screenshotImageFile) => {
-        const screenshotKey = screenshotImageFile.userAgentConfig.alias;
+        const screenshotKey = screenshotImageFile.userAgent.alias;
         const screenshotUrl = screenshotImageFile.publicUrl;
 
         goldenData[htmlFileKey].screenshots[screenshotKey] = screenshotUrl;
