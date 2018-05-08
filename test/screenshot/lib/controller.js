@@ -25,6 +25,7 @@ const stringify = require('json-stable-stringify');
 const util = require('util');
 
 const CbtUserAgent = require('./cbt-user-agent');
+const CliArgParser = require('./cli-arg-parser');
 const Screenshot = require('./screenshot');
 const {Storage, UploadableFile, UploadableTestCase} = require('./storage');
 
@@ -65,6 +66,7 @@ class Controller {
 
   async initialize() {
     this.baseUploadDir_ = await this.storage_.generateUniqueUploadDir();
+    this.cliArgs_ = new CliArgParser();
   }
 
   /**
@@ -122,10 +124,18 @@ class Controller {
    * @private
    */
   async handleUploadOneAssetSuccess_(assetFile, testCases) {
-    const isHtmlFile = assetFile.destinationRelativeFilePath.endsWith('.html');
-    if (isHtmlFile) {
+    const relativePath = assetFile.destinationRelativeFilePath;
+    const isHtmlFile = relativePath.endsWith('.html');
+    const isIncluded =
+      this.cliArgs_.includeUrlPatterns.length === 0 ||
+      this.cliArgs_.includeUrlPatterns.some((pattern) => pattern.test(relativePath));
+    const isExcluded = this.cliArgs_.excludeUrlPatterns.some((pattern) => pattern.test(relativePath));
+    const shouldInclude = isIncluded && !isExcluded;
+
+    if (isHtmlFile && shouldInclude) {
       testCases.push(new UploadableTestCase({htmlFile: assetFile}));
     }
+
     return assetFile;
   }
 

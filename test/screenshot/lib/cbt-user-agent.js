@@ -17,7 +17,10 @@
 /* eslint-disable key-spacing, no-unused-vars */
 
 const CbtApi = require('./cbt-api');
+const CliArgParser = require('./cli-arg-parser');
+
 const cbtApi = new CbtApi();
+const cliArg = new CliArgParser();
 
 const CBT_FILTERS = {
   formFactor: {
@@ -80,7 +83,7 @@ async function fetchBrowsersToRun() {
     cbtApi.fetchAvailableDevices()
       .then(
         (cbtDevices) => {
-          const userAgentAliases = require('../browser.json').user_agent_aliases;
+          const userAgentAliases = getFilteredAliases();
           const userAgents = findAllMatchingUAs(userAgentAliases, cbtDevices);
           console.log(userAgents.map((config) => `${config.alias}: ${config.fullCbtApiName}`));
           resolve(userAgents);
@@ -104,6 +107,20 @@ async function fetchBrowserByApiName(cbtDeviceApiName, cbtBrowserApiName) {
   return userAgents.find((userAgent) => {
     return userAgent.device.api_name === cbtDeviceApiName
       && userAgent.browser.api_name === cbtBrowserApiName;
+  });
+}
+
+/**
+ * @return {!Array<string>}
+ */
+function getFilteredAliases() {
+  return require('../browser.json').user_agent_aliases.filter((alias) => {
+    const isIncluded =
+      cliArg.includeBrowserPatterns.length === 0 ||
+      cliArg.includeBrowserPatterns.some((pattern) => pattern.test(alias));
+    const isExcluded =
+      cliArg.excludeBrowserPatterns.some((pattern) => pattern.test(alias));
+    return isIncluded && !isExcluded;
   });
 }
 
