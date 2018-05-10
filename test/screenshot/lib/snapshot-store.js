@@ -54,7 +54,7 @@ class SnapshotStore {
    */
   static async fromMaster(jsonFilePath) {
     const mdcGitRepo = new GitRepo();
-    await mdcGitRepo.fetch();
+    await mdcGitRepo.fetch('master');
 
     const cliArgParser = new CliArgParser();
     const goldenJsonStr = await mdcGitRepo.getFileAtRevision(jsonFilePath, cliArgParser.diffBase);
