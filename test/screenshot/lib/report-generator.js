@@ -155,13 +155,13 @@ class ReportGenerator {
         <tr>
           <th class="report-metadata__cell report-metadata__cell--key">Golden Commit:</th>
           <td class="report-metadata__cell report-metadata__cell--val">
-            ${this.getCommitLinkMarkup_(gitGoldenCommit, gitGoldenBranch}
+            ${this.getCommitLinkMarkup_(gitGoldenCommit, gitGoldenBranch)}
           </td>
         </tr>
         <tr>
           <th class="report-metadata__cell report-metadata__cell--key">Snapshot Commit:</th>
           <td class="report-metadata__cell report-metadata__cell--val">
-            ${this.getCommitLinkMarkup_(gitHeadCommit, gitHeadBranch}
+            ${this.getCommitLinkMarkup_(gitHeadCommit, gitHeadBranch)}
           </td>
         </tr>
         <tr>
