@@ -24,6 +24,7 @@ const GoldenStore = require('./golden-store');
 const ImageCache = require('./image-cache');
 const ImageCropper = require('./image-cropper');
 const ImageDiffer = require('./image-differ');
+const ReportGenerator = require('./report-generator');
 const Screenshot = require('./screenshot');
 const {Storage, UploadableFile, UploadableTestCase} = require('./storage');
 
@@ -282,7 +283,7 @@ class Controller {
           console.log('\n\nDONE diffing screenshot images!\n\n');
           console.log(diffs);
           console.log(`\n\nFound ${diffs.length} screenshot diffs!\n\n`);
-          return diffs;
+          return {diffs, testCases};
         },
         (err) => Promise.reject(err)
       )
@@ -304,6 +305,27 @@ class Controller {
 
     diff.diffImageUrl = diffImageFile.publicUrl;
     diff.diffImageBuffer = null; // free up memory
+  }
+
+  /**
+   * @param {!Array<!UploadableTestCase>} testCases
+   * @param {!Array<!ImageDiffJson>} diffs
+   * @return {!Promise<string>}
+   */
+  async uploadDiffReport({testCases, diffs}) {
+    const reportGenerator = new ReportGenerator({testCases, diffs});
+
+    /** @type {!UploadableFile} */
+    const reportFile = await this.storage_.uploadFile(new UploadableFile({
+      destinationParentDirectory: this.baseUploadDir_,
+      destinationRelativeFilePath: 'report.html',
+      fileContent: await reportGenerator.generateHtml(),
+    }));
+
+    console.log('\n\nDONE uploading diff report to GCS!\n\n');
+    console.log(reportFile.publicUrl);
+
+    return reportFile.publicUrl;
   }
 
   /**
