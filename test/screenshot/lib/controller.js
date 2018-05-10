@@ -268,19 +268,24 @@ class Controller {
       );
   }
 
-  getCropMatches_(image) {
+  /**
+   * @param {!Jimp} jimpImage
+   * @return {{rows: !Array<!Array<boolean>, cols: !Array<!Array<boolean>}}
+   * @private
+   */
+  getCropMatches_(jimpImage) {
     const trimColors = [0x333333FF];
     const rows = [];
     const cols = [];
 
-    image.scan(0, 0, image.bitmap.width, image.bitmap.height, (x, y) => {
+    jimpImage.scan(0, 0, jimpImage.bitmap.width, jimpImage.bitmap.height, (x, y) => {
       if (!rows[y]) {
         rows[y] = [];
       }
       if (!cols[x]) {
         cols[x] = [];
       }
-      const isMatch = trimColors.includes(image.getPixelColor(x, y));
+      const isMatch = trimColors.includes(jimpImage.getPixelColor(x, y));
       rows[y][x] = isMatch;
       cols[x][y] = isMatch;
     });
@@ -288,6 +293,12 @@ class Controller {
     return {rows, cols};
   }
 
+  /**
+   * @param {!Array<!Array<boolean>>} rows
+   * @param {!Array<!Array<boolean>>} cols
+   * @return {{x: number, y: number, w: number, h: number}}
+   * @private
+   */
   getCropRect_({rows, cols}) {
     const HIGH_MATCH_PERCENTAGE = 0.95;
     const LOW_MATCH_PERCENTAGE = 0.67;
