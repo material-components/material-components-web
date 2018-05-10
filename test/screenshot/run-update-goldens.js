@@ -22,7 +22,19 @@ const Controller = require('./lib/controller');
 const controller = new Controller({sourceDir: SOURCE_DIR});
 
 controller.initialize()
-  .then(() => controller.uploadAllAssets())
-  .then((testCases) => controller.captureAllPages(testCases))
-  .then((testCases) => controller.updateGoldenJson(testCases))
+  .then(() => controller.uploadAllAssets(), handleError)
+  .then((testCases) => controller.captureAllPages(testCases), handleError)
+  .then((testCases) => controller.diffGoldenJson(testCases), handleError)
+  .then(
+    async ({testCases, diffs}) => {
+      const diffReportUrl = await controller.uploadDiffReport({testCases, diffs});
+      await controller.updateGoldenJson({testCases, diffReportUrl});
+    },
+    handleError
+  )
 ;
+
+function handleError(err) {
+  console.error(err);
+  process.exit(1);
+}

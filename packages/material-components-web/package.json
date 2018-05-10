@@ -1,7 +1,7 @@
 {
   "name": "material-components-web",
   "description": "Modular and customizable Material Design UI components for the web",
-  "version": "0.35.0",
+  "version": "0.35.1",
   "license": "Apache-2.0",
   "keywords": [
     "material components",
@@ -19,7 +19,7 @@
     "@material/button": "^0.35.0",
     "@material/card": "^0.35.0",
     "@material/checkbox": "^0.35.0",
-    "@material/chips": "^0.35.0",
+    "@material/chips": "^0.35.1",
     "@material/dialog": "^0.35.0",
     "@material/drawer": "^0.35.0",
     "@material/elevation": "^0.35.0",
@@ -38,17 +38,17 @@
     "@material/radio": "^0.35.0",
     "@material/ripple": "^0.35.0",
     "@material/rtl": "^0.35.0",
-    "@material/select": "^0.35.0",
+    "@material/select": "^0.35.1",
     "@material/selection-control": "^0.35.0",
     "@material/shape": "^0.35.0",
     "@material/slider": "^0.35.0",
     "@material/snackbar": "^0.35.0",
     "@material/switch": "^0.35.0",
     "@material/tabs": "^0.35.0",
-    "@material/textfield": "^0.35.0",
+    "@material/textfield": "^0.35.1",
     "@material/theme": "^0.35.0",
     "@material/toolbar": "^0.35.0",
-    "@material/top-app-bar": "^0.35.0",
+    "@material/top-app-bar": "^0.35.1",
     "@material/typography": "^0.35.0"
   }
 }
