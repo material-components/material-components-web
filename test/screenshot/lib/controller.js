@@ -25,6 +25,7 @@ const stringify = require('json-stable-stringify');
 const util = require('util');
 
 const CbtUserAgent = require('./cbt-user-agent');
+const CliArgParser = require('./cli-arg-parser');
 const Screenshot = require('./screenshot');
 const {Storage, UploadableFile, UploadableTestCase} = require('./storage');
 
@@ -65,6 +66,7 @@ class Controller {
 
   async initialize() {
     this.baseUploadDir_ = await this.storage_.generateUniqueUploadDir();
+    this.cliArgs_ = new CliArgParser();
   }
 
   /**
@@ -122,10 +124,18 @@ class Controller {
    * @private
    */
   async handleUploadOneAssetSuccess_(assetFile, testCases) {
-    const isHtmlFile = assetFile.destinationRelativeFilePath.endsWith('.html');
-    if (isHtmlFile) {
+    const relativePath = assetFile.destinationRelativeFilePath;
+    const isHtmlFile = relativePath.endsWith('.html');
+    const isIncluded =
+      this.cliArgs_.includeUrlPatterns.length === 0 ||
+      this.cliArgs_.includeUrlPatterns.some((pattern) => pattern.test(relativePath));
+    const isExcluded = this.cliArgs_.excludeUrlPatterns.some((pattern) => pattern.test(relativePath));
+    const shouldInclude = isIncluded && !isExcluded;
+
+    if (isHtmlFile && shouldInclude) {
       testCases.push(new UploadableTestCase({htmlFile: assetFile}));
     }
+
     return assetFile;
   }
 
@@ -266,6 +276,93 @@ class Controller {
         },
         (err) => Promise.reject(err)
       );
+  }
+
+  getCropMatches_(image) {
+    const trimColors = [0x333333FF];
+    const rows = [];
+    const cols = [];
+
+    image.scan(0, 0, image.bitmap.width, image.bitmap.height, (x, y) => {
+      if (!rows[y]) {
+        rows[y] = [];
+      }
+      if (!cols[x]) {
+        cols[x] = [];
+      }
+      const isMatch = trimColors.includes(image.getPixelColor(x, y));
+      rows[y][x] = isMatch;
+      cols[x][y] = isMatch;
+    });
+
+    return {rows, cols};
+  }
+
+  getCropRect_({rows, cols}) {
+    const HIGH_MATCH_PERCENTAGE = 0.95;
+    const LOW_MATCH_PERCENTAGE = 0.67;
+
+    const amounts = {
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+    };
+
+    for (const row of rows) {
+      if (matchPercentage(row) > HIGH_MATCH_PERCENTAGE) {
+        amounts.top++;
+      } else {
+        break;
+      }
+    }
+
+    for (const row of rows.concat().reverse()) {
+      if (matchPercentage(row) > HIGH_MATCH_PERCENTAGE) {
+        amounts.bottom++;
+      } else {
+        break;
+      }
+    }
+
+
+    for (const col of cols) {
+      if (matchPercentage(skipCroppedRows(col)) > HIGH_MATCH_PERCENTAGE) {
+        amounts.left++;
+      } else {
+        break;
+      }
+    }
+
+    /* eslint-disable max-len */
+    for (const col of cols.concat().reverse()) {
+      // Use a lower match percentage on the right side of the image in order to crop Edge popovers:
+      // https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/08/20_40_45_142/c6cc25f87/mdc-button/classes/baseline.html.win10e17_edge17.png
+      if (matchPercentage(skipCroppedRows(col)) > LOW_MATCH_PERCENTAGE) {
+        amounts.right++;
+      } else {
+        break;
+      }
+    }
+    /* eslint-enable max-len */
+
+    return {
+      x: amounts.left,
+      y: amounts.top,
+      w: cols.length - amounts.right - amounts.left,
+      h: rows.length - amounts.bottom - amounts.top,
+    };
+
+    function skipCroppedRows(col) {
+      const startRowIndex = amounts.top;
+      const endRowIndex = rows.length - amounts.bottom;
+      return col.slice(startRowIndex, endRowIndex);
+    }
+
+    function matchPercentage(matchList) {
+      const numMatchingPixelsInRow = matchList.filter((isMatch) => isMatch).length;
+      return numMatchingPixelsInRow / matchList.length;
+    }
   }
 
   /**
