@@ -37,7 +37,7 @@ The `material-components-web` package automatically registers all MDC Web compon
 with zero configuration or manual work.
 
 For example, say you want to use an [icon toggle](../mdc-icon-toggle). Simply render the necessary
-DOM, an attach the `data-mdc-auto-init="MDCIconToggle"` attribute.
+DOM, and attach the `data-mdc-auto-init="MDCIconToggle"` attribute.
 
 ```html
 <i class="mdc-icon-toggle material-icons" role="button" aria-pressed="false"
