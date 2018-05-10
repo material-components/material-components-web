@@ -97,15 +97,15 @@ class ReportGenerator {
     ;
 
     const [nodeBinPath, scriptPath, ...scriptArgs] = process.argv;
-    const nodeBinPathRedacted = nodeBinPath.replace(process.env.HOME + '/', '');
-    const scriptPathRedacted = scriptPath.replace(process.env.PWD + '/', '');
+    const nodeBinPathRedacted = nodeBinPath.replace(process.env.HOME, '~');
+    const scriptPathRedacted = scriptPath.replace(process.env.PWD, '.');
     const nodeArgs = process.execArgv;
     const cliInvocation = [nodeBinPathRedacted, ...nodeArgs, scriptPathRedacted, ...scriptArgs]
       .map((arg) => {
         // Heuristic for "safe" characters that don't need to be escaped or wrapped in single quotes to be copy/pasted
         // and run in a shell. This includes the letters a-z and A-Z, the numbers 0-9,
         // See https://ascii.cl/
-        if (/^[,-9@-Z_a-z]+$/.test(arg)) {
+        if (/^[,-9@-Z_a-z=~]+$/.test(arg)) {
           return arg;
         }
         return `'${arg.replace(/'/g, "\\'")}'`;
@@ -115,7 +115,7 @@ class ReportGenerator {
 
     const gitHeadBranch = await this.gitRepo_.getBranchName();
     const gitHeadCommit = await this.gitRepo_.getShortCommitHash();
-    const gitGoldenBranch = this.cliArgs_.diffBase;
+    const gitGoldenBranch = await this.gitRepo_.getBranchName(this.cliArgs_.diffBase);
     const gitGoldenCommit = await this.gitRepo_.getShortCommitHash(this.cliArgs_.diffBase);
     const gitUserName = await this.gitRepo_.getUserName();
     const gitUserEmail = await this.gitRepo_.getUserEmail();
@@ -149,24 +149,20 @@ class ReportGenerator {
           <td class="report-metadata__cell report-metadata__cell--val">${numTestCases}</td>
         </tr>
         <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">Git User:</th>
+          <th class="report-metadata__cell report-metadata__cell--key">User:</th>
           <td class="report-metadata__cell report-metadata__cell--val">${gitUser}</td>
         </tr>
         <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">Git HEAD Branch:</th>
-          <td class="report-metadata__cell report-metadata__cell--val">${gitHeadBranch}</td>
+          <th class="report-metadata__cell report-metadata__cell--key">Golden Commit:</th>
+          <td class="report-metadata__cell report-metadata__cell--val">
+            ${this.getCommitLinkMarkup_(gitGoldenCommit, gitGoldenBranch)}
+          </td>
         </tr>
         <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">Git HEAD Commit:</th>
-          <td class="report-metadata__cell report-metadata__cell--val">${gitHeadCommit}</td>
-        </tr>
-        <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">Git Golden Branch:</th>
-          <td class="report-metadata__cell report-metadata__cell--val">${gitGoldenBranch}</td>
-        </tr>
-        <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">Git Golden Commit:</th>
-          <td class="report-metadata__cell report-metadata__cell--val">${gitGoldenCommit}</td>
+          <th class="report-metadata__cell report-metadata__cell--key">Snapshot Commit:</th>
+          <td class="report-metadata__cell report-metadata__cell--val">
+            ${this.getCommitLinkMarkup_(gitHeadCommit, gitHeadBranch)}
+          </td>
         </tr>
         <tr>
           <th class="report-metadata__cell report-metadata__cell--key">Node Version:</th>
@@ -187,6 +183,15 @@ class ReportGenerator {
 `;
   }
 
+  getCommitLinkMarkup_(commit, branch) {
+    const GITHUB_REPO_URL = 'https://github.com/material-components/material-components-web';
+    return `
+<a href="${GITHUB_REPO_URL}/commit/${commit}">${commit}</a>
+on
+<a href="${GITHUB_REPO_URL}/tree/${branch.replace('origin/', '')}">${branch}</a>
+`;
+  }
+
   getCollapseButtonMarkup_() {
     const numDiffs = this.diffList_.length;
     if (numDiffs === 0) {
@@ -194,7 +199,7 @@ class ReportGenerator {
     }
 
     return `
-<button onclick="Array.from(document.querySelectorAll('.report-file')).forEach((detailsEl) => detailsEl.open = false)">
+<button onclick="Array.from(document.querySelectorAll('.report-file, .report-browser')).forEach((e) => e.open = false)">
   collapse all
 </button>
 `;
@@ -212,10 +217,15 @@ class ReportGenerator {
 
   getTestCaseMarkup_(htmlFilePath) {
     const diffs = this.diffMap_.get(htmlFilePath);
+    const goldenPageUrl = diffs[0].goldenPageUrl;
+    const snapshotPageUrl = diffs[0].snapshotPageUrl;
 
     return `
 <details class="report-file" open>
-  <summary class="report-file__heading">${htmlFilePath}</summary>
+  <summary class="report-file__heading">
+    ${htmlFilePath}
+    (<a href="${goldenPageUrl}">golden</a> | <a href="${snapshotPageUrl}">snapshot</a>)
+  </summary>
   <div class="report-file__content">
     ${diffs.map((diff) => this.getDiffRowMarkup_(diff)).join('\n')}
   </div>
@@ -228,7 +238,7 @@ class ReportGenerator {
 <details class="report-browser" open>
   <summary class="report-browser__heading">${diff.browserKey}</summary>
   <div class="report-browser__content">
-    ${this.getDiffCellMarkup_('Master Golden', diff.expectedImageUrl)}
+    ${this.getDiffCellMarkup_('Golden', diff.expectedImageUrl)}
     ${this.getDiffCellMarkup_('Diff', diff.diffImageUrl)}
     ${this.getDiffCellMarkup_('Snapshot', diff.actualImageUrl)}
   </div>

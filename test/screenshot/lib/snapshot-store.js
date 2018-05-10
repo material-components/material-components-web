@@ -21,9 +21,9 @@ const GitRepo = require('./git-repo');
 const CliArgParser = require('./cli-arg-parser');
 
 /**
- * Reads and writes a `golden.json` file.
+ * Reads and writes a `golden.json` or `snapshot.json` file.
  */
-class GoldenStore {
+class SnapshotStore {
   /**
    * @param {!GoldenJson} jsonData
    */
@@ -50,25 +50,22 @@ class GoldenStore {
   /**
    * Parses the `golden.json` file from the `master` Git branch.
    * @param {string} jsonFilePath
-   * @return {!Promise<!GoldenStore>}
+   * @return {!Promise<!SnapshotStore>}
    */
   static async fromMaster(jsonFilePath) {
+    const cliArgs = new CliArgParser();
     const mdcGitRepo = new GitRepo();
-    await mdcGitRepo.fetchMasterShallow();
-
-    const getFrom = (rev) => mdcGitRepo.getFileAtRevision(jsonFilePath, rev);
-
-    const cliArgParser = new CliArgParser();
-    const masterJsonStr = await getFrom(cliArgParser.diffBase);
-    return new GoldenStore({
-      jsonData: JSON.parse(masterJsonStr),
+    await mdcGitRepo.fetch(cliArgs.diffBase);
+    const goldenJsonStr = await mdcGitRepo.getFileAtRevision(jsonFilePath, cliArgs.diffBase);
+    return new SnapshotStore({
+      jsonData: JSON.parse(goldenJsonStr),
     });
   }
 
   /**
    * Transforms the given test cases into `golden.json` format.
    * @param {!Array<!UploadableTestCase>} testCases
-   * @return {!Promise<!GoldenStore>}
+   * @return {!Promise<!SnapshotStore>}
    */
   static async fromTestCases(testCases) {
     const jsonData = {};
@@ -90,8 +87,8 @@ class GoldenStore {
       });
     });
 
-    return new GoldenStore({jsonData});
+    return new SnapshotStore({jsonData});
   }
 }
 
-module.exports = GoldenStore;
+module.exports = SnapshotStore;
