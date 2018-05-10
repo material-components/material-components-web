@@ -184,10 +184,11 @@ class ReportGenerator {
   }
 
   getCommitLinkMarkup_(commit, branch) {
+    const GITHUB_REPO_URL = 'https://github.com/material-components/material-components-web';
     return `
-<a href="https://github.com/material-components/material-components-web/commit/${commit}">${commit}</a>
+<a href="${GITHUB_REPO_URL}/commit/${commit}">${commit}</a>
 on
-<a href="https://github.com/material-components/material-components-web/tree/${branch.replace('origin/', '')}">${branch}</a>
+<a href="${GITHUB_REPO_URL}/tree/${branch.replace('origin/', '')}">${branch}</a>
 `;
   }
 
