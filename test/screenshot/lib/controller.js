@@ -24,6 +24,7 @@ const request = require('request-promise-native');
 const stringify = require('json-stable-stringify');
 const util = require('util');
 
+const CbtUserAgent = require('./cbt-user-agent');
 const Screenshot = require('./screenshot');
 const {Storage, UploadableFile, UploadableTestCase} = require('./storage');
 
@@ -206,17 +207,16 @@ class Controller {
    * @private
    */
   async uploadScreenshotImage_(testCase, cbtResult) {
-    const sanitize = (apiName) => apiName.toLowerCase().replace(/\W+/g, '');
+    const osApiName = cbtResult.os.api_name;
+    const browserApiName = cbtResult.browser.api_name;
 
-    const os = sanitize(cbtResult.os.api_name);
-    const browser = sanitize(cbtResult.browser.api_name);
-    const imageName = `${os}_${browser}_ltr.png`;
-
+    const imageName = `${osApiName}_${browserApiName}.png`.toLowerCase().replace(/[^\w.]+/g, '');
     const imageData = await this.downloadImage_(cbtResult.images.chromeless);
     const imageFile = new UploadableFile({
       destinationParentDirectory: `${this.baseUploadDir_}/screenshots`,
       destinationRelativeFilePath: `${testCase.htmlFile.destinationRelativeFilePath}/${imageName}`,
       fileContent: imageData,
+      userAgent: await CbtUserAgent.fetchBrowserByApiName(osApiName, browserApiName),
     });
 
     testCase.screenshotImageFiles.push(imageFile);
@@ -282,7 +282,7 @@ class Controller {
       };
 
       testCase.screenshotImageFiles.forEach((screenshotImageFile) => {
-        const screenshotKey = path.parse(screenshotImageFile.destinationRelativeFilePath).name;
+        const screenshotKey = screenshotImageFile.userAgent.alias;
         const screenshotUrl = screenshotImageFile.publicUrl;
 
         goldenData[htmlFileKey].screenshots[screenshotKey] = screenshotUrl;
