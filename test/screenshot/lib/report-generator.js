@@ -82,9 +82,31 @@ class ReportGenerator {
 
   async getMetadataMarkup_() {
     const timestamp = (new Date()).toISOString();
+    const numTestCases = this.testCases_.length;
+
+    const [nodeBinPath, scriptPath, ...scriptArgs] = process.argv;
+    const nodeBinPathRedacted = nodeBinPath.replace(process.env.HOME + '/', '');
+    const scriptPathRedacted = scriptPath.replace(process.env.PWD + '/', '');
+    const nodeArgs = process.execArgv;
+    const cliInvocation = [nodeBinPathRedacted, ...nodeArgs, scriptPathRedacted, ...scriptArgs]
+      .map((arg) => {
+        // Heuristic for "safe" characters that don't need to be escaped or wrapped in single quotes to be copy/pasted
+        // and run in a shell. This includes the letters a-z and A-Z, the numbers 0-9,
+        // See https://ascii.cl/
+        if (/^[,-9@-Z_a-z]+$/.test(arg)) {
+          return arg;
+        }
+        return `'${arg.replace(/'/g, "\\'")}'`;
+      })
+      .join(' ')
+    ;
+
     const gitBranch = await this.gitRepo_.getBranchName();
     const gitCommit = await this.gitRepo_.getShortCommitHash();
-    const numTestCases = this.testCases_.length;
+    const gitUserName = await this.gitRepo_.getUserName();
+    const gitUserEmail = await this.gitRepo_.getUserEmail();
+    const gitUser = `&lt;${gitUserName}&gt; ${gitUserEmail}`;
+
     console.log(this.testCases_);
     const numScreenshots = this.testCases_
       .map((testCase) => testCase.screenshotImageFiles.length)
@@ -102,6 +124,18 @@ class ReportGenerator {
           <td class="report-metadata__cell report-metadata__cell--val">${timestamp}</td>
         </tr>
         <tr>
+          <th class="report-metadata__cell report-metadata__cell--key">Screenshots:</th>
+          <td class="report-metadata__cell report-metadata__cell--val">${numScreenshots}</td>
+        </tr>
+        <tr>
+          <th class="report-metadata__cell report-metadata__cell--key">Test Cases:</th>
+          <td class="report-metadata__cell report-metadata__cell--val">${numTestCases}</td>
+        </tr>
+        <tr>
+          <th class="report-metadata__cell report-metadata__cell--key">Git User:</th>
+          <td class="report-metadata__cell report-metadata__cell--val">${gitUser}</td>
+        </tr>
+        <tr>
           <th class="report-metadata__cell report-metadata__cell--key">Git Branch:</th>
           <td class="report-metadata__cell report-metadata__cell--val">${gitBranch}</td>
         </tr>
@@ -110,12 +144,8 @@ class ReportGenerator {
           <td class="report-metadata__cell report-metadata__cell--val">${gitCommit}</td>
         </tr>
         <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">Screenshots:</th>
-          <td class="report-metadata__cell report-metadata__cell--val">${numScreenshots}</td>
-        </tr>
-        <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">Test Cases:</th>
-          <td class="report-metadata__cell report-metadata__cell--val">${numTestCases}</td>
+          <th class="report-metadata__cell report-metadata__cell--key">CLI Invocation:</th>
+          <td class="report-metadata__cell report-metadata__cell--val">${cliInvocation}</td>
         </tr>
       </tbody>
     </table>

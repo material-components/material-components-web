@@ -24,6 +24,20 @@ class GitRepo {
   }
 
   /**
+   * @return {!Promise<string>}
+   */
+  async getUserName() {
+    return this.exec_('raw', ['config', 'user.name']);
+  }
+
+  /**
+   * @return {!Promise<string>}
+   */
+  async getUserEmail() {
+    return this.exec_('raw', ['config', 'user.email']);
+  }
+
+  /**
    * @return {!Promise<void>}
    */
   async fetchMasterShallow() {
