@@ -26,15 +26,46 @@ class GitRepo {
   /**
    * @return {!Promise<string>}
    */
-  async getShortCommitHash() {
-    return await this.exec_('revparse', ['--short', 'HEAD']);
+  async getUserName() {
+    return this.exec_('raw', ['config', 'user.name']);
   }
 
   /**
    * @return {!Promise<string>}
    */
-  async getBranchName() {
-    return await this.exec_('revparse', ['--abbrev-ref', 'HEAD']);
+  async getUserEmail() {
+    return this.exec_('raw', ['config', 'user.email']);
+  }
+
+  /**
+   * @return {!Promise<void>}
+   */
+  async fetchMasterShallow() {
+    return this.repo_.fetch(['--depth=1', 'origin', 'master']);
+  }
+
+  /**
+   * @return {!Promise<string>}
+   */
+  async getShortCommitHash(ref = 'HEAD') {
+    return this.exec_('revparse', ['--short', ref]);
+  }
+
+  /**
+   * @return {!Promise<string>}
+   */
+  async getBranchName(ref = 'HEAD') {
+    return this.exec_('revparse', ['--abbrev-ref', ref]);
+  }
+
+  /**
+   * @param {string} filePath Relative to the local Git repo
+   * @param {string=} revision Git revision (branch name or commit hash).
+   *   E.g., "master", "origin/master", "feat/foo/bar", "e450da9".
+   * @return {!Promise<string>}
+   */
+  async getFileAtRevision(filePath, revision = 'master') {
+    return this.repo_.show([`${revision}:${filePath}`]);
   }
 
   /**
