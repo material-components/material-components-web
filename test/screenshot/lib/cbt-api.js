@@ -59,6 +59,7 @@ class CbtApi {
       body: {
         url,
         browsers,
+        delay: 2, // in seconds. helps reduce flakes due to missing icon fonts
       },
       json: true, // Automatically stringify the request body and parse the response body as JSON
     });
