@@ -36,9 +36,11 @@ class GoldenStore {
   /**
    * Writes the data to the given `golden.json` file path.
    * @param {string} jsonFilePath
+   * @param {string} diffReportUrl
    * @return {!Promise<void>}
    */
-  async writeToDisk(jsonFilePath) {
+  async writeToDisk({jsonFilePath, diffReportUrl}) {
+    this.jsonData.diffReportUrl = diffReportUrl;
     const jsonFileContent = stringify(this.jsonData, {space: '  '}) + '\n';
     await fs.writeFile(jsonFilePath, jsonFileContent);
     console.log(`\n\nDONE updating "${jsonFilePath}"!\n\n`);

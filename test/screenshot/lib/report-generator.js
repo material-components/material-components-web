@@ -15,6 +15,7 @@
  */
 
 const GitRepo = require('./git-repo');
+const child_process = require('mz/child_process');
 
 class ReportGenerator {
   constructor({testCases, diffs}) {
@@ -83,6 +84,10 @@ class ReportGenerator {
   async getMetadataMarkup_() {
     const timestamp = (new Date()).toISOString();
     const numTestCases = this.testCases_.length;
+    const numScreenshots = this.testCases_
+      .map((testCase) => testCase.screenshotImageFiles.length)
+      .reduce((total, current) => total + current, 0)
+    ;
 
     const [nodeBinPath, scriptPath, ...scriptArgs] = process.argv;
     const nodeBinPathRedacted = nodeBinPath.replace(process.env.HOME + '/', '');
@@ -107,11 +112,14 @@ class ReportGenerator {
     const gitUserEmail = await this.gitRepo_.getUserEmail();
     const gitUser = `&lt;${gitUserName}&gt; ${gitUserEmail}`;
 
-    console.log(this.testCases_);
-    const numScreenshots = this.testCases_
-      .map((testCase) => testCase.screenshotImageFiles.length)
-      .reduce((total, current) => total + current, 0)
-    ;
+    const getVersion = async (cmd) => {
+      const options = {cwd: process.env.PWD, env: process.env};
+      const stdOut = await child_process.exec(`${cmd} --version`, options);
+      return stdOut[0].trim();
+    };
+
+    const nodeVersion = await getVersion('node');
+    const npmVersion = await getVersion('npm');
 
     return `
 <details class="report-metadata" open>
@@ -142,6 +150,14 @@ class ReportGenerator {
         <tr>
           <th class="report-metadata__cell report-metadata__cell--key">Git Commit:</th>
           <td class="report-metadata__cell report-metadata__cell--val">${gitCommit}</td>
+        </tr>
+        <tr>
+          <th class="report-metadata__cell report-metadata__cell--key">Node Version:</th>
+          <td class="report-metadata__cell report-metadata__cell--val">${nodeVersion}</td>
+        </tr>
+        <tr>
+          <th class="report-metadata__cell report-metadata__cell--key">NPM Version:</th>
+          <td class="report-metadata__cell report-metadata__cell--val">${npmVersion}</td>
         </tr>
         <tr>
           <th class="report-metadata__cell report-metadata__cell--key">CLI Invocation:</th>
