@@ -239,11 +239,17 @@ class Controller {
    * @private
    */
   async uploadScreenshotImage_(testCase, cbtResult) {
+    const cbtImageUrl = cbtResult.images.chromeless;
+    if (!cbtImageUrl) {
+      console.error('cbtResult:\n', cbtResult);
+      throw new Error('cbtResult.images.chromeless is null');
+    }
+
     const osApiName = cbtResult.os.api_name;
     const browserApiName = cbtResult.browser.api_name;
 
     const imageName = `${osApiName}_${browserApiName}.png`.toLowerCase().replace(/[^\w.]+/g, '');
-    const imageData = await this.downloadAndCropImage_(cbtResult.images.chromeless);
+    const imageData = await this.downloadAndCropImage_(cbtImageUrl);
     const imageFile = new UploadableFile({
       destinationParentDirectory: this.baseUploadDir_,
       destinationRelativeFilePath: `${testCase.htmlFile.destinationRelativeFilePath}.${imageName}`,
