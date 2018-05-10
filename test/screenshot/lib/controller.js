@@ -16,32 +16,29 @@
 
 'use strict';
 
-const fs = require('fs');
+const fs = require('mz/fs');
 const glob = require('glob');
-const jimp = require('jimp');
 const path = require('path');
-const request = require('request-promise-native');
-const stringify = require('json-stable-stringify');
-const util = require('util');
 
 const CbtUserAgent = require('./cbt-user-agent');
 const CliArgParser = require('./cli-arg-parser');
+const GoldenStore = require('./golden-store');
+const ImageCache = require('./image-cache');
+const ImageCropper = require('./image-cropper');
+const ImageDiffer = require('./image-differ');
 const Screenshot = require('./screenshot');
 const {Storage, UploadableFile, UploadableTestCase} = require('./storage');
-
-const readFileAsync = util.promisify(fs.readFile);
-const writeFileAsync = util.promisify(fs.writeFile);
 
 /**
  * High-level screenshot workflow controller that provides composable async methods to:
  * 1. Upload files to GCS
  * 2. Capture screenshots with CBT
- * 3. [COMING SOON] Update local golden.json with new screenshot URLs
- * 4. [COMING SOON] Diff captured screenshots against existing golden.json
+ * 3. Update local golden.json with new screenshot URLs
+ * 4. Diff captured screenshots against existing golden.json
  */
 class Controller {
   /**
-   * @param {string} sourceDir Relative or absolute path to the local `test/screenshot/` directory.
+   * @param {string} sourceDir Relative path to the local `test/screenshot/` directory, relative to Node's $PWD.
    */
   constructor({sourceDir}) {
     /**
@@ -49,6 +46,12 @@ class Controller {
      * @private
      */
     this.sourceDir_ = sourceDir;
+
+    /**
+     * @type {string}
+     * @private
+     */
+    this.goldenJsonFilePath_ = path.join(this.sourceDir_, 'golden.json');
 
     /**
      * @type {!Storage}
@@ -62,6 +65,24 @@ class Controller {
      * @private
      */
     this.baseUploadDir_ = null;
+
+    /**
+     * @type {!ImageCache}
+     * @private
+     */
+    this.imageCache_ = new ImageCache();
+
+    /**
+     * @type {!ImageCropper}
+     * @private
+     */
+    this.imageCropper_ = new ImageCropper();
+
+    /**
+     * @type {!ImageDiffer}
+     * @private
+     */
+    this.imageDiffer_ = new ImageDiffer({imageCache: this.imageCache_});
   }
 
   async initialize() {
@@ -107,7 +128,7 @@ class Controller {
     const assetFile = new UploadableFile({
       destinationParentDirectory: this.baseUploadDir_,
       destinationRelativeFilePath: assetFileRelativePath,
-      fileContent: await readFileAsync(`${this.sourceDir_}/${assetFileRelativePath}`),
+      fileContent: await fs.readFile(`${this.sourceDir_}/${assetFileRelativePath}`),
     });
 
     return this.storage_.uploadFile(assetFile)
@@ -221,7 +242,7 @@ class Controller {
     const browserApiName = cbtResult.browser.api_name;
 
     const imageName = `${osApiName}_${browserApiName}.png`.toLowerCase().replace(/[^\w.]+/g, '');
-    const imageData = await this.downloadImage_(cbtResult.images.chromeless);
+    const imageData = await this.downloadAndCropImage_(cbtResult.images.chromeless);
     const imageFile = new UploadableFile({
       destinationParentDirectory: this.baseUploadDir_,
       destinationRelativeFilePath: `${testCase.htmlFile.destinationRelativeFilePath}.${imageName}`,
@@ -239,269 +260,60 @@ class Controller {
    * @return {!Promise<!Buffer>}
    * @private
    */
-  async downloadImage_(uri) {
-    // For binary data, set `encoding: null` to return the response body as a `Buffer` instead of a `string`.
-    // https://github.com/request/request#requestoptions-callback
-    return request({uri, encoding: null})
-      .then(
-        (body) => this.autoCropImage_(body),
-        (err) => {
-          console.error(`FAILED to download "${uri}"`);
-          return Promise.reject(err);
-        }
-      );
-  }
-
-  /**
-   * @param {!Buffer} imageData Uncropped image buffer
-   * @return {!Promise<!Buffer>} Cropped image buffer
-   * @private
-   */
-  async autoCropImage_(imageData) {
-    return jimp.read(imageData)
-      .then(
-        (image) => {
-          return new Promise((resolve, reject) => {
-            const {rows, cols} = this.getCropMatches_(image);
-            const cropRect = this.getCropRect_({rows, cols});
-            const {x, y, w, h} = cropRect;
-
-            image
-              .crop(x, y, w, h)
-              .getBuffer(jimp.MIME_PNG, (err, buffer) => {
-                return err ? reject(err) : resolve(buffer);
-              })
-            ;
-          });
-        },
-        (err) => Promise.reject(err)
-      );
-  }
-
-  getCropMatches_(image) {
-    const trimColors = [0x333333FF];
-    const rows = [];
-    const cols = [];
-
-    image.scan(0, 0, image.bitmap.width, image.bitmap.height, (x, y) => {
-      if (!rows[y]) {
-        rows[y] = [];
-      }
-      if (!cols[x]) {
-        cols[x] = [];
-      }
-      const isMatch = trimColors.includes(image.getPixelColor(x, y));
-      rows[y][x] = isMatch;
-      cols[x][y] = isMatch;
-    });
-
-    return {rows, cols};
-  }
-
-  getCropRect_({rows, cols}) {
-    const HIGH_MATCH_PERCENTAGE = 0.95;
-    const LOW_MATCH_PERCENTAGE = 0.67;
-
-    const amounts = {
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-    };
-
-    for (const row of rows) {
-      if (matchPercentage(row) > HIGH_MATCH_PERCENTAGE) {
-        amounts.top++;
-      } else {
-        break;
-      }
-    }
-
-    for (const row of rows.concat().reverse()) {
-      if (matchPercentage(row) > HIGH_MATCH_PERCENTAGE) {
-        amounts.bottom++;
-      } else {
-        break;
-      }
-    }
-
-
-    for (const col of cols) {
-      if (matchPercentage(skipCroppedRows(col)) > HIGH_MATCH_PERCENTAGE) {
-        amounts.left++;
-      } else {
-        break;
-      }
-    }
-
-    /* eslint-disable max-len */
-    for (const col of cols.concat().reverse()) {
-      // Use a lower match percentage on the right side of the image in order to crop Edge popovers:
-      // https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/08/20_40_45_142/c6cc25f87/mdc-button/classes/baseline.html.win10e17_edge17.png
-      if (matchPercentage(skipCroppedRows(col)) > LOW_MATCH_PERCENTAGE) {
-        amounts.right++;
-      } else {
-        break;
-      }
-    }
-    /* eslint-enable max-len */
-
-    return {
-      x: amounts.left,
-      y: amounts.top,
-      w: cols.length - amounts.right - amounts.left,
-      h: rows.length - amounts.bottom - amounts.top,
-    };
-
-    function skipCroppedRows(col) {
-      const startRowIndex = amounts.top;
-      const endRowIndex = rows.length - amounts.bottom;
-      return col.slice(startRowIndex, endRowIndex);
-    }
-
-    function matchPercentage(matchList) {
-      const numMatchingPixelsInRow = matchList.filter((isMatch) => isMatch).length;
-      return numMatchingPixelsInRow / matchList.length;
-    }
-  }
-
-  /**
-   * @param {!Jimp} jimpImage
-   * @return {{rows: !Array<!Array<boolean>, cols: !Array<!Array<boolean>}}
-   * @private
-   */
-  getCropMatches_(jimpImage) {
-    const trimColors = [0x333333FF];
-    const rows = [];
-    const cols = [];
-
-    jimpImage.scan(0, 0, jimpImage.bitmap.width, jimpImage.bitmap.height, (x, y) => {
-      if (!rows[y]) {
-        rows[y] = [];
-      }
-      if (!cols[x]) {
-        cols[x] = [];
-      }
-      const isMatch = trimColors.includes(jimpImage.getPixelColor(x, y));
-      rows[y][x] = isMatch;
-      cols[x][y] = isMatch;
-    });
-
-    return {rows, cols};
-  }
-
-  /**
-   * @param {!Array<!Array<boolean>>} rows
-   * @param {!Array<!Array<boolean>>} cols
-   * @return {{x: number, y: number, w: number, h: number}}
-   * @private
-   */
-  getCropRect_({rows, cols}) {
-    const HIGH_MATCH_PERCENTAGE = 0.95;
-    const LOW_MATCH_PERCENTAGE = 0.67;
-
-    const amounts = {
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-    };
-
-    for (const row of rows) {
-      if (matchPercentage(row) > HIGH_MATCH_PERCENTAGE) {
-        amounts.top++;
-      } else {
-        break;
-      }
-    }
-
-    // `reverse()` mutates the array in-place, so we call `concat()` first to create a copy of the array.
-    for (const row of rows.concat().reverse()) {
-      if (matchPercentage(row) > HIGH_MATCH_PERCENTAGE) {
-        amounts.bottom++;
-      } else {
-        break;
-      }
-    }
-
-
-    for (const col of cols) {
-      if (matchPercentage(skipCroppedRows(col)) > HIGH_MATCH_PERCENTAGE) {
-        amounts.left++;
-      } else {
-        break;
-      }
-    }
-
-    /* eslint-disable max-len */
-    // `reverse()` mutates the array in-place, so we call `concat()` first to create a copy of the array.
-    for (const col of cols.concat().reverse()) {
-      // Use a lower match percentage on the right side of the image in order to crop Edge popovers:
-      // https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/08/20_40_45_142/c6cc25f87/mdc-button/classes/baseline.html.win10e17_edge17.png
-      if (matchPercentage(skipCroppedRows(col)) > LOW_MATCH_PERCENTAGE) {
-        amounts.right++;
-      } else {
-        break;
-      }
-    }
-    /* eslint-enable max-len */
-
-    return {
-      x: amounts.left,
-      y: amounts.top,
-      w: cols.length - amounts.right - amounts.left,
-      h: rows.length - amounts.bottom - amounts.top,
-    };
-
-    function skipCroppedRows(col) {
-      const startRowIndex = amounts.top;
-      const endRowIndex = rows.length - amounts.bottom;
-      return col.slice(startRowIndex, endRowIndex);
-    }
-
-    function matchPercentage(matchList) {
-      const numMatchingPixelsInRow = matchList.filter((isMatch) => isMatch).length;
-      return numMatchingPixelsInRow / matchList.length;
-    }
+  async downloadAndCropImage_(uri) {
+    return this.imageCropper_.autoCropImage(await this.imageCache_.getImageBuffer(uri));
   }
 
   /**
    * Writes the given `testCases` to a `golden.json` file in `sourceDir_`.
    * If the file already exists, it will be overwritten.
    * @param {!Array<!UploadableTestCase>} testCases
-   * @return {!Promise<{goldenFilePath:string, goldenData:!Object}>}
+   * @return {!Promise<void>}
    */
   async updateGoldenJson(testCases) {
-    const goldenData = {};
+    const goldenStore = await GoldenStore.fromTestCases(testCases);
+    return goldenStore.writeToDisk(this.goldenJsonFilePath_);
+  }
 
-    testCases.forEach((testCase) => {
-      const htmlFileKey = testCase.htmlFile.destinationRelativeFilePath;
-      const htmlFileUrl = testCase.htmlFile.publicUrl;
-
-      goldenData[htmlFileKey] = {
-        publicUrl: htmlFileUrl,
-        screenshots: {},
-      };
-
-      testCase.screenshotImageFiles.forEach((screenshotImageFile) => {
-        const screenshotKey = screenshotImageFile.userAgent.alias;
-        const screenshotUrl = screenshotImageFile.publicUrl;
-
-        goldenData[htmlFileKey].screenshots[screenshotKey] = screenshotUrl;
-      });
+  /**
+   * @param {!Array<!UploadableTestCase>} testCases
+   * @return {!Promise<!Array<!ImageDiffJson>>}
+   */
+  async diffGoldenJson(testCases) {
+    /** @type {!Array<!ImageDiffJson>} */
+    const diffs = await this.imageDiffer_.compareAllPages({
+      actualStore: await GoldenStore.fromTestCases(testCases),
+      expectedStore: await GoldenStore.fromMaster(this.goldenJsonFilePath_),
     });
 
-    const goldenFilePath = path.join(this.sourceDir_, 'golden.json');
-    const goldenFileContent = stringify(goldenData, {space: '  '}) + '\n';
-
-    return writeFileAsync(goldenFilePath, goldenFileContent)
+    return Promise.all(diffs.map((diff) => this.uploadOneDiffImage_(diff)))
       .then(
         () => {
-          console.log(`\n\nDONE updating "${goldenFilePath}"!\n\n`);
-          return {goldenFilePath, goldenData};
+          console.log('\n\nDONE diffing screenshot images!\n\n');
+          console.log(diffs);
+          console.log(`\n\nFound ${diffs.length} screenshot diffs!\n\n`);
+          return diffs;
         },
         (err) => Promise.reject(err)
-      );
+      )
+    ;
+  }
+
+  /**
+   * @param {!ImageDiffJson} diff
+   * @return {!Promise<void>}
+   * @private
+   */
+  async uploadOneDiffImage_(diff) {
+    /** @type {!UploadableFile} */
+    const diffImageFile = await this.storage_.uploadFile(new UploadableFile({
+      destinationParentDirectory: `${this.baseUploadDir_}/screenshots`,
+      destinationRelativeFilePath: `${diff.htmlFilePath}/${diff.browserKey}.diff.png`,
+      fileContent: diff.diffImageBuffer,
+    }));
+
+    diff.diffImageUrl = diffImageFile.publicUrl;
+    diff.diffImageBuffer = null; // free up memory
   }
 
   /**
