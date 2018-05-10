@@ -298,6 +298,10 @@ class Controller {
     return Promise.all(diffs.map((diff) => this.uploadOneDiffImage_(diff)))
       .then(
         () => {
+          diffs.sort((a, b) => {
+            return a.htmlFilePath.localeCompare(b.htmlFilePath, 'en-US') ||
+              a.browserKey.localeCompare(b.browserKey, 'en-US');
+          });
           console.log('\n\nDONE diffing screenshot images!\n\n');
           console.log(diffs);
           console.log(`\n\nFound ${diffs.length} screenshot diffs!\n\n`);

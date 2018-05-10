@@ -17,8 +17,7 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,600,700");
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
-$test-trim-color: #333;
-$test-background-color: #fff;
+$test-trim-color: #abc123; // Value must match `TRIM_COLOR_CSS_VALUE` in `image-cropper.js`
 $test-ruler-color: #ddd;
 $test-ruler-granularity: 10px;
 $test-button-cell-margin: $test-ruler-granularity - 1;
@@ -26,21 +25,17 @@ $test-button-cell-width: 171px;
 $test-button-cell-height: 71px;
 $test-button-columns: 2;
 
-html {
-  height: 100%;
-  background: $test-trim-color;
-}
-
 .test-body {
   display: flex;
   box-sizing: border-box;
   margin: 0;
-  padding: 2px;
+  padding: 0 0 100px 0; // Extra padding at the bottom ensures that CBT's "chromeless" screenshots don't get cut off
 }
 
 .test-main {
   box-sizing: border-box;
-  background: $test-background-color;
+  border-right: 1px solid $test-trim-color;
+  border-bottom: 1px solid $test-trim-color;
 }
 
 .test-grid {
