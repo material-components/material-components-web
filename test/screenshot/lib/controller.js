@@ -268,7 +268,7 @@ class Controller {
 
   /**
    * @param {!Array<!UploadableTestCase>} testCases
-   * @return {!Promise<!Array<!ImageDiffJson>>}
+   * @return {!Promise<{diffs: !Array<!ImageDiffJson>, testCases: !Array<!UploadableTestCase>}>}
    */
   async diffGoldenJson(testCases) {
     /** @type {!Array<!ImageDiffJson>} */
