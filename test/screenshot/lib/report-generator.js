@@ -115,7 +115,7 @@ class ReportGenerator {
 
     const gitHeadBranch = await this.gitRepo_.getBranchName();
     const gitHeadCommit = await this.gitRepo_.getShortCommitHash();
-    const gitGoldenBranch = this.cliArgs_.diffBase;
+    const gitGoldenBranch = await this.gitRepo_.getBranchName(this.cliArgs_.diffBase);
     const gitGoldenCommit = await this.gitRepo_.getShortCommitHash(this.cliArgs_.diffBase);
     const gitUserName = await this.gitRepo_.getUserName();
     const gitUserEmail = await this.gitRepo_.getUserEmail();

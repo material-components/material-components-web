@@ -53,11 +53,10 @@ class SnapshotStore {
    * @return {!Promise<!SnapshotStore>}
    */
   static async fromMaster(jsonFilePath) {
+    const cliArgs = new CliArgParser();
     const mdcGitRepo = new GitRepo();
-    await mdcGitRepo.fetch('master');
-
-    const cliArgParser = new CliArgParser();
-    const goldenJsonStr = await mdcGitRepo.getFileAtRevision(jsonFilePath, cliArgParser.diffBase);
+    await mdcGitRepo.fetch(cliArgs.diffBase);
+    const goldenJsonStr = await mdcGitRepo.getFileAtRevision(jsonFilePath, cliArgs.diffBase);
     return new SnapshotStore({
       jsonData: JSON.parse(goldenJsonStr),
     });
