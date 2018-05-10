@@ -15,6 +15,7 @@
  */
 
 const GitRepo = require('./git-repo');
+const CliArgParser = require('./cli-arg-parser');
 const child_process = require('mz/child_process'); // eslint-disable-line
 
 class ReportGenerator {
@@ -26,16 +27,22 @@ class ReportGenerator {
     this.testCases_ = testCases;
 
     /**
+     * @type {!Array<!ImageDiffJson>}
+     * @private
+     */
+    this.diffList_ = diffs;
+
+    /**
      * @type {!GitRepo}
      * @private
      */
     this.gitRepo_ = new GitRepo();
 
     /**
-     * @type {!Array<!ImageDiffJson>}
+     * @type {!CliArgParser}
      * @private
      */
-    this.diffList_ = diffs;
+    this.cliArgs_ = new CliArgParser();
 
     /**
      * @type {!Map<string, !Array<!ImageDiffJson>>}
@@ -106,8 +113,10 @@ class ReportGenerator {
       .join(' ')
     ;
 
-    const gitBranch = await this.gitRepo_.getBranchName();
-    const gitCommit = await this.gitRepo_.getShortCommitHash();
+    const gitHeadBranch = await this.gitRepo_.getBranchName();
+    const gitHeadCommit = await this.gitRepo_.getShortCommitHash();
+    const gitGoldenBranch = this.cliArgs_.diffBase;
+    const gitGoldenCommit = await this.gitRepo_.getShortCommitHash(this.cliArgs_.diffBase);
     const gitUserName = await this.gitRepo_.getUserName();
     const gitUserEmail = await this.gitRepo_.getUserEmail();
     const gitUser = `&lt;${gitUserName}&gt; ${gitUserEmail}`;
@@ -144,12 +153,20 @@ class ReportGenerator {
           <td class="report-metadata__cell report-metadata__cell--val">${gitUser}</td>
         </tr>
         <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">Git Branch:</th>
-          <td class="report-metadata__cell report-metadata__cell--val">${gitBranch}</td>
+          <th class="report-metadata__cell report-metadata__cell--key">Git HEAD Branch:</th>
+          <td class="report-metadata__cell report-metadata__cell--val">${gitHeadBranch}</td>
         </tr>
         <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">Git Commit:</th>
-          <td class="report-metadata__cell report-metadata__cell--val">${gitCommit}</td>
+          <th class="report-metadata__cell report-metadata__cell--key">Git HEAD Commit:</th>
+          <td class="report-metadata__cell report-metadata__cell--val">${gitHeadCommit}</td>
+        </tr>
+        <tr>
+          <th class="report-metadata__cell report-metadata__cell--key">Git Golden Branch:</th>
+          <td class="report-metadata__cell report-metadata__cell--val">${gitGoldenBranch}</td>
+        </tr>
+        <tr>
+          <th class="report-metadata__cell report-metadata__cell--key">Git Golden Commit:</th>
+          <td class="report-metadata__cell report-metadata__cell--val">${gitGoldenCommit}</td>
         </tr>
         <tr>
           <th class="report-metadata__cell report-metadata__cell--key">Node Version:</th>

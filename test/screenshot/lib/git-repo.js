@@ -47,15 +47,15 @@ class GitRepo {
   /**
    * @return {!Promise<string>}
    */
-  async getShortCommitHash() {
-    return this.exec_('revparse', ['--short', 'HEAD']);
+  async getShortCommitHash(ref = 'HEAD') {
+    return this.exec_('revparse', ['--short', ref]);
   }
 
   /**
    * @return {!Promise<string>}
    */
-  async getBranchName() {
-    return this.exec_('revparse', ['--abbrev-ref', 'HEAD']);
+  async getBranchName(ref = 'HEAD') {
+    return this.exec_('revparse', ['--abbrev-ref', ref]);
   }
 
   /**
