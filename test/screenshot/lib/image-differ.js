@@ -29,8 +29,8 @@ class ImageDiffer {
   }
 
   /**
-   * @param {!GoldenStore} actualStore
-   * @param {!GoldenStore} expectedStore
+   * @param {!SnapshotStore} actualStore
+   * @param {!SnapshotStore} expectedStore
    * @return {!Promise<!Array<!ImageDiffJson>>}
    */
   async compareAllPages({

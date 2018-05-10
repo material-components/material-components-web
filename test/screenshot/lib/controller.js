@@ -22,12 +22,12 @@ const path = require('path');
 
 const CbtUserAgent = require('./cbt-user-agent');
 const CliArgParser = require('./cli-arg-parser');
-const GoldenStore = require('./golden-store');
 const ImageCache = require('./image-cache');
 const ImageCropper = require('./image-cropper');
 const ImageDiffer = require('./image-differ');
 const ReportGenerator = require('./report-generator');
 const Screenshot = require('./screenshot');
+const SnapshotStore = require('./snapshot-store');
 const {Storage, UploadableFile, UploadableTestCase} = require('./storage');
 
 /**
@@ -279,8 +279,8 @@ class Controller {
    * @return {!Promise<!Array<!UploadableTestCase>>}
    */
   async updateGoldenJson({testCases, diffReportUrl}) {
-    const goldenStore = await GoldenStore.fromTestCases(testCases);
-    await goldenStore.writeToDisk({jsonFilePath: this.goldenJsonFilePath_, diffReportUrl});
+    const snapshotStore = await SnapshotStore.fromTestCases(testCases);
+    await snapshotStore.writeToDisk({jsonFilePath: this.goldenJsonFilePath_, diffReportUrl});
     return testCases;
   }
 
@@ -291,8 +291,8 @@ class Controller {
   async diffGoldenJson(testCases) {
     /** @type {!Array<!ImageDiffJson>} */
     const diffs = await this.imageDiffer_.compareAllPages({
-      actualStore: await GoldenStore.fromTestCases(testCases),
-      expectedStore: await GoldenStore.fromMaster(this.goldenJsonFilePath_),
+      actualStore: await SnapshotStore.fromTestCases(testCases),
+      expectedStore: await SnapshotStore.fromMaster(this.goldenJsonFilePath_),
     });
 
     return Promise.all(diffs.map((diff) => this.uploadOneDiffImage_(diff)))
