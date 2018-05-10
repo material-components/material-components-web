@@ -16,7 +16,16 @@
 
 const jimp = require('jimp');
 
+const TRIM_COLOR_CSS_VALUE = '#abc123'; // Value must match `$test-trim-color` in `fixture.scss`
+
 class ImageCropper {
+  constructor() {
+    /**
+     * @type {number}
+     * @private
+     */
+    this.trimColorInt_ = ImageCropper.getTrimColorAsInt_();
+  }
   /**
    * Automatically crops an image based on its background color.
    * @param {!Buffer} imageData Uncropped image buffer
@@ -25,13 +34,10 @@ class ImageCropper {
   async autoCropImage(imageData) {
     return jimp.read(imageData)
       .then(
-        (image) => {
+        (jimpImage) => {
           return new Promise((resolve, reject) => {
-            const {rows, cols} = this.getCropMatches_(image);
-            const cropRect = this.getCropRect_({rows, cols});
-            const {x, y, w, h} = cropRect;
-
-            image
+            const {x, y, w, h} = this.getCropRect_(jimpImage);
+            jimpImage
               .crop(x, y, w, h)
               .getBuffer(jimp.MIME_PNG, (err, buffer) => {
                 return err ? reject(err) : resolve(buffer);
@@ -45,11 +51,39 @@ class ImageCropper {
 
   /**
    * @param {!Jimp} jimpImage
+   * @return {{x: number, y: number, w: number, h: number}}
+   * @private
+   */
+  getCropRect_(jimpImage) {
+    const MIN_MATCH_PERCENTAGE = 0.05;
+    const MIN_CROP_INDEX = 10;
+
+    const {rows, cols} = this.findPixelsWithTrimColor_(jimpImage);
+
+    return {
+      x: 0,
+      y: 0,
+      w: getCropIndex(cols),
+      h: getCropIndex(rows),
+    };
+
+    function getCropIndex(rows) {
+      const index = rows.findIndex((row) => matchPercentage(row) >= MIN_MATCH_PERCENTAGE);
+      return index >= MIN_CROP_INDEX ? index - 1 : rows.length;
+    }
+
+    function matchPercentage(matchList) {
+      const numMatchingPixelsInRow = matchList.filter((isMatch) => isMatch).length;
+      return numMatchingPixelsInRow / matchList.length;
+    }
+  }
+
+  /**
+   * @param {!Jimp} jimpImage
    * @return {{rows: !Array<!Array<boolean>, cols: !Array<!Array<boolean>}}
    * @private
    */
-  getCropMatches_(jimpImage) {
-    const trimColors = [0x333333FF];
+  findPixelsWithTrimColor_(jimpImage) {
     const rows = [];
     const cols = [];
 
@@ -60,7 +94,7 @@ class ImageCropper {
       if (!cols[x]) {
         cols[x] = [];
       }
-      const isMatch = trimColors.includes(jimpImage.getPixelColor(x, y));
+      const isMatch = jimpImage.getPixelColor(x, y) === this.trimColorInt_;
       rows[y][x] = isMatch;
       cols[x][y] = isMatch;
     });
@@ -69,78 +103,12 @@ class ImageCropper {
   }
 
   /**
-   * @param {!Array<!Array<boolean>>} rows
-   * @param {!Array<!Array<boolean>>} cols
-   * @return {{x: number, y: number, w: number, h: number}}
+   * @return {number}
    * @private
    */
-  getCropRect_({rows, cols}) {
-    const HIGH_MATCH_PERCENTAGE = 0.95;
-    const LOW_MATCH_PERCENTAGE = 0.67;
-
-    const amounts = {
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-    };
-
-    for (const row of rows) {
-      if (matchPercentage(row) > HIGH_MATCH_PERCENTAGE) {
-        amounts.top++;
-      } else {
-        break;
-      }
-    }
-
-    // `reverse()` mutates the array in-place, so we call `concat()` first to create a copy of the array.
-    for (const row of rows.concat().reverse()) {
-      if (matchPercentage(row) > HIGH_MATCH_PERCENTAGE) {
-        amounts.bottom++;
-      } else {
-        break;
-      }
-    }
-
-
-    for (const col of cols) {
-      if (matchPercentage(skipCroppedRows(col)) > HIGH_MATCH_PERCENTAGE) {
-        amounts.left++;
-      } else {
-        break;
-      }
-    }
-
-    /* eslint-disable max-len */
-    // `reverse()` mutates the array in-place, so we call `concat()` first to create a copy of the array.
-    for (const col of cols.concat().reverse()) {
-      // Use a lower match percentage on the right side of the image in order to crop Edge popovers:
-      // https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/08/20_40_45_142/c6cc25f87/mdc-button/classes/baseline.html.win10e17_edge17.png
-      if (matchPercentage(skipCroppedRows(col)) > LOW_MATCH_PERCENTAGE) {
-        amounts.right++;
-      } else {
-        break;
-      }
-    }
-    /* eslint-enable max-len */
-
-    return {
-      x: amounts.left,
-      y: amounts.top,
-      w: cols.length - amounts.right - amounts.left,
-      h: rows.length - amounts.bottom - amounts.top,
-    };
-
-    function skipCroppedRows(col) {
-      const startRowIndex = amounts.top;
-      const endRowIndex = rows.length - amounts.bottom;
-      return col.slice(startRowIndex, endRowIndex);
-    }
-
-    function matchPercentage(matchList) {
-      const numMatchingPixelsInRow = matchList.filter((isMatch) => isMatch).length;
-      return numMatchingPixelsInRow / matchList.length;
-    }
+  static getTrimColorAsInt_() {
+    const [, r, g, b] = /^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(TRIM_COLOR_CSS_VALUE);
+    return jimp.rgbaToInt(parseInt(r, 16), parseInt(g, 16), parseInt(b, 16), 255);
   }
 }
 
