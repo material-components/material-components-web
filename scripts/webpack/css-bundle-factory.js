@@ -83,10 +83,16 @@ class CssBundleFactory {
       },
       devtool: 'source-map',
       module: {
-        rules: [{
-          test: /\.scss$/,
-          use: this.createCssLoader_(cssExtractorPlugin),
-        }],
+        rules: [
+          {
+            test: /\.scss$/,
+            use: this.createCssLoader_(cssExtractorPlugin),
+          },
+          {
+            test: /\.(jpe?g|png|gif|svg)$/,
+            use: 'base64-inline-loader',
+          },
+        ],
       },
       plugins: [
         cssExtractorPlugin,
