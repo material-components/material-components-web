@@ -57,7 +57,7 @@ $test-button-columns: 2;
   // Ruler grid pattern
   // https://stackoverflow.com/a/32861765/467582
   background-image:
-    linear-gradient(to right, #{$test-ruler-color} 1px, transparent 1px),
+    linear-gradient(to right, #{$test-ruler-color} 1px, transparent 1.01px),  // fraction for IE 11
     linear-gradient(to bottom, #{$test-ruler-color} 1px, transparent 1.01px); // fraction for IE 11
 
   background-size: #{$test-ruler-granularity} #{$test-ruler-granularity};

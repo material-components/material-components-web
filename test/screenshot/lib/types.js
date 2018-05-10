@@ -66,6 +66,8 @@ let ScreenshotDictionaryJson;
 /**
  * @typedef {{
  *   htmlFilePath: string,
+ *   goldenPageUrl: string,
+ *   snapshotPageUrl: string,
  *   browserKey: string,
  *   actualImageUrl: string,
  *   expectedImageUrl: string,

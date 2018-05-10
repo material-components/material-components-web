@@ -97,15 +97,15 @@ class ReportGenerator {
     ;
 
     const [nodeBinPath, scriptPath, ...scriptArgs] = process.argv;
-    const nodeBinPathRedacted = nodeBinPath.replace(process.env.HOME + '/', '');
-    const scriptPathRedacted = scriptPath.replace(process.env.PWD + '/', '');
+    const nodeBinPathRedacted = nodeBinPath.replace(process.env.HOME, '~');
+    const scriptPathRedacted = scriptPath.replace(process.env.PWD, '.');
     const nodeArgs = process.execArgv;
     const cliInvocation = [nodeBinPathRedacted, ...nodeArgs, scriptPathRedacted, ...scriptArgs]
       .map((arg) => {
         // Heuristic for "safe" characters that don't need to be escaped or wrapped in single quotes to be copy/pasted
         // and run in a shell. This includes the letters a-z and A-Z, the numbers 0-9,
         // See https://ascii.cl/
-        if (/^[,-9@-Z_a-z]+$/.test(arg)) {
+        if (/^[,-9@-Z_a-z=~]+$/.test(arg)) {
           return arg;
         }
         return `'${arg.replace(/'/g, "\\'")}'`;
@@ -194,7 +194,7 @@ class ReportGenerator {
     }
 
     return `
-<button onclick="Array.from(document.querySelectorAll('.report-file')).forEach((detailsEl) => detailsEl.open = false)">
+<button onclick="Array.from(document.querySelectorAll('.report-file, .report-browser')).forEach((e) => e.open = false)">
   collapse all
 </button>
 `;
@@ -212,10 +212,15 @@ class ReportGenerator {
 
   getTestCaseMarkup_(htmlFilePath) {
     const diffs = this.diffMap_.get(htmlFilePath);
+    const goldenPageUrl = diffs[0].goldenPageUrl;
+    const snapshotPageUrl = diffs[0].snapshotPageUrl;
 
     return `
 <details class="report-file" open>
-  <summary class="report-file__heading">${htmlFilePath}</summary>
+  <summary class="report-file__heading">
+    ${htmlFilePath}
+    (<a href="${goldenPageUrl}">golden</a> | <a href="${snapshotPageUrl}">snapshot</a>)
+  </summary>
   <div class="report-file__content">
     ${diffs.map((diff) => this.getDiffRowMarkup_(diff)).join('\n')}
   </div>
@@ -228,7 +233,7 @@ class ReportGenerator {
 <details class="report-browser" open>
   <summary class="report-browser__heading">${diff.browserKey}</summary>
   <div class="report-browser__content">
-    ${this.getDiffCellMarkup_('Master Golden', diff.expectedImageUrl)}
+    ${this.getDiffCellMarkup_('Golden', diff.expectedImageUrl)}
     ${this.getDiffCellMarkup_('Diff', diff.diffImageUrl)}
     ${this.getDiffCellMarkup_('Snapshot', diff.actualImageUrl)}
   </div>

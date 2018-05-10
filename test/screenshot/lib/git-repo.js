@@ -40,8 +40,8 @@ class GitRepo {
   /**
    * @return {!Promise<void>}
    */
-  async fetchMasterShallow() {
-    return this.repo_.fetch(['--depth=1', 'origin', 'master']);
+  async fetch(branch = 'master', remote = 'origin') {
+    return this.repo_.fetch([remote, branch]);
   }
 
   /**
