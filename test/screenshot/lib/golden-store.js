@@ -18,6 +18,7 @@ const fs = require('mz/fs');
 const stringify = require('json-stable-stringify');
 
 const GitRepo = require('./git-repo');
+const CliArgParser = require('./cli-arg-parser');
 
 /**
  * Reads and writes a `golden.json` file.
@@ -57,7 +58,8 @@ class GoldenStore {
 
     const getFrom = (rev) => mdcGitRepo.getFileAtRevision(jsonFilePath, rev);
 
-    const masterJsonStr = await getFrom('origin/master').catch(() => getFrom('HEAD'));
+    const cliArgParser = new CliArgParser();
+    const masterJsonStr = await getFrom(cliArgParser.diffBase);
     return new GoldenStore({
       jsonData: JSON.parse(masterJsonStr),
     });

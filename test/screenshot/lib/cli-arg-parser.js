@@ -79,6 +79,18 @@ Takes precedence over '--mdc-include-browser'.
       }
     );
 
+    this.parser_.addArgument(
+      ['--mdc-diff-base'],
+      {
+        defaultValue: 'origin/master',
+        help: `
+Git ref to diff against. Typically a branch name or commit hash.
+E.g., 'origin/master' (default), 'HEAD', 'feat/foo/bar', 'fad7ed3'.
+`
+          .trim(),
+      }
+    );
+
     this.args_ = this.parser_.parseArgs();
   }
 
@@ -100,6 +112,11 @@ Takes precedence over '--mdc-include-browser'.
   /** @return {!Array<!RegExp>} */
   get excludeBrowserPatterns() {
     return (this.args_['mdc_exclude_browser'] || []).map((pattern) => new RegExp(pattern));
+  }
+
+  /** @return {string} */
+  get diffBase() {
+    return this.args_['mdc_diff_base'];
   }
 }
 
