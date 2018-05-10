@@ -15,7 +15,6 @@
  */
 
 const fs = require('mz/fs');
-const path = require('path');
 const stringify = require('json-stable-stringify');
 
 const GitRepo = require('./git-repo');
