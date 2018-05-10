@@ -15,7 +15,7 @@
  */
 
 const GitRepo = require('./git-repo');
-const child_process = require('mz/child_process');
+const child_process = require('mz/child_process'); // eslint-disable-line
 
 class ReportGenerator {
   constructor({testCases, diffs}) {
