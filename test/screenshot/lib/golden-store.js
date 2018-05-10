@@ -80,7 +80,7 @@ class GoldenStore {
       };
 
       testCase.screenshotImageFiles.forEach((screenshotImageFile) => {
-        const screenshotKey = path.parse(screenshotImageFile.destinationRelativeFilePath).name;
+        const screenshotKey = screenshotImageFile.userAgent.alias;
         const screenshotUrl = screenshotImageFile.publicUrl;
 
         jsonData[htmlFileKey].screenshots[screenshotKey] = screenshotUrl;

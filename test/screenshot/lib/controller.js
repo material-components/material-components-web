@@ -20,6 +20,8 @@ const fs = require('mz/fs');
 const glob = require('glob');
 const path = require('path');
 
+const CbtUserAgent = require('./cbt-user-agent');
+const CliArgParser = require('./cli-arg-parser');
 const GoldenStore = require('./golden-store');
 const ImageCache = require('./image-cache');
 const ImageCropper = require('./image-cropper');
@@ -85,6 +87,7 @@ class Controller {
 
   async initialize() {
     this.baseUploadDir_ = await this.storage_.generateUniqueUploadDir();
+    this.cliArgs_ = new CliArgParser();
   }
 
   /**
@@ -123,7 +126,7 @@ class Controller {
    */
   async uploadOneAsset_(assetFileRelativePath, testCases) {
     const assetFile = new UploadableFile({
-      destinationParentDirectory: `${this.baseUploadDir_}/assets`,
+      destinationParentDirectory: this.baseUploadDir_,
       destinationRelativeFilePath: assetFileRelativePath,
       fileContent: await fs.readFile(`${this.sourceDir_}/${assetFileRelativePath}`),
     });
@@ -142,10 +145,18 @@ class Controller {
    * @private
    */
   async handleUploadOneAssetSuccess_(assetFile, testCases) {
-    const isHtmlFile = assetFile.destinationRelativeFilePath.endsWith('.html');
-    if (isHtmlFile) {
+    const relativePath = assetFile.destinationRelativeFilePath;
+    const isHtmlFile = relativePath.endsWith('.html');
+    const isIncluded =
+      this.cliArgs_.includeUrlPatterns.length === 0 ||
+      this.cliArgs_.includeUrlPatterns.some((pattern) => pattern.test(relativePath));
+    const isExcluded = this.cliArgs_.excludeUrlPatterns.some((pattern) => pattern.test(relativePath));
+    const shouldInclude = isIncluded && !isExcluded;
+
+    if (isHtmlFile && shouldInclude) {
       testCases.push(new UploadableTestCase({htmlFile: assetFile}));
     }
+
     return assetFile;
   }
 
@@ -227,17 +238,16 @@ class Controller {
    * @private
    */
   async uploadScreenshotImage_(testCase, cbtResult) {
-    const sanitize = (apiName) => apiName.toLowerCase().replace(/\W+/g, '');
+    const osApiName = cbtResult.os.api_name;
+    const browserApiName = cbtResult.browser.api_name;
 
-    const os = sanitize(cbtResult.os.api_name);
-    const browser = sanitize(cbtResult.browser.api_name);
-    const imageName = `${os}_${browser}_ltr.png`;
-
+    const imageName = `${osApiName}_${browserApiName}.png`.toLowerCase().replace(/[^\w.]+/g, '');
     const imageData = await this.downloadAndCropImage_(cbtResult.images.chromeless);
     const imageFile = new UploadableFile({
-      destinationParentDirectory: `${this.baseUploadDir_}/screenshots`,
-      destinationRelativeFilePath: `${testCase.htmlFile.destinationRelativeFilePath}/${imageName}`,
+      destinationParentDirectory: this.baseUploadDir_,
+      destinationRelativeFilePath: `${testCase.htmlFile.destinationRelativeFilePath}.${imageName}`,
       fileContent: imageData,
+      userAgent: await CbtUserAgent.fetchBrowserByApiName(osApiName, browserApiName),
     });
 
     testCase.screenshotImageFiles.push(imageFile);
