@@ -149,24 +149,20 @@ class ReportGenerator {
           <td class="report-metadata__cell report-metadata__cell--val">${numTestCases}</td>
         </tr>
         <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">Git User:</th>
+          <th class="report-metadata__cell report-metadata__cell--key">User:</th>
           <td class="report-metadata__cell report-metadata__cell--val">${gitUser}</td>
         </tr>
         <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">Git HEAD Branch:</th>
-          <td class="report-metadata__cell report-metadata__cell--val">${gitHeadBranch}</td>
+          <th class="report-metadata__cell report-metadata__cell--key">Golden Commit:</th>
+          <td class="report-metadata__cell report-metadata__cell--val">
+            ${this.getCommitLinkMarkup_(gitGoldenCommit, gitGoldenBranch}
+          </td>
         </tr>
         <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">Git HEAD Commit:</th>
-          <td class="report-metadata__cell report-metadata__cell--val">${gitHeadCommit}</td>
-        </tr>
-        <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">Git Golden Branch:</th>
-          <td class="report-metadata__cell report-metadata__cell--val">${gitGoldenBranch}</td>
-        </tr>
-        <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">Git Golden Commit:</th>
-          <td class="report-metadata__cell report-metadata__cell--val">${gitGoldenCommit}</td>
+          <th class="report-metadata__cell report-metadata__cell--key">Snapshot Commit:</th>
+          <td class="report-metadata__cell report-metadata__cell--val">
+            ${this.getCommitLinkMarkup_(gitHeadCommit, gitHeadBranch}
+          </td>
         </tr>
         <tr>
           <th class="report-metadata__cell report-metadata__cell--key">Node Version:</th>
@@ -184,6 +180,14 @@ class ReportGenerator {
     </table>
   </div>
 </details>
+`;
+  }
+
+  getCommitLinkMarkup_(commit, branch) {
+    return `
+<a href="https://github.com/material-components/material-components-web/commit/${commit}">${commit}</a>
+on
+<a href="https://github.com/material-components/material-components-web/tree/${branch.replace('origin/', '')}">${branch}</a>
 `;
   }
 
