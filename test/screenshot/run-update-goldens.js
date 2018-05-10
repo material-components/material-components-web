@@ -24,7 +24,14 @@ const controller = new Controller({sourceDir: SOURCE_DIR});
 controller.initialize()
   .then(() => controller.uploadAllAssets(), handleError)
   .then((testCases) => controller.captureAllPages(testCases), handleError)
-  .then((testCases) => controller.updateGoldenJson(testCases), handleError)
+  .then((testCases) => controller.diffGoldenJson(testCases), handleError)
+  .then(
+    async ({testCases, diffs}) => {
+      await controller.uploadDiffReport({testCases, diffs});
+      await controller.updateGoldenJson(testCases);
+    },
+    handleError
+  )
 ;
 
 function handleError(err) {

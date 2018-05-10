@@ -269,11 +269,12 @@ class Controller {
    * Writes the given `testCases` to a `golden.json` file in `sourceDir_`.
    * If the file already exists, it will be overwritten.
    * @param {!Array<!UploadableTestCase>} testCases
-   * @return {!Promise<void>}
+   * @return {!Promise<!Array<!UploadableTestCase>>}
    */
   async updateGoldenJson(testCases) {
     const goldenStore = await GoldenStore.fromTestCases(testCases);
-    return goldenStore.writeToDisk(this.goldenJsonFilePath_);
+    await goldenStore.writeToDisk(this.goldenJsonFilePath_);
+    return testCases;
   }
 
   /**
