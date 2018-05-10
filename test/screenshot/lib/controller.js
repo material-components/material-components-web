@@ -307,6 +307,7 @@ class Controller {
       }
     }
 
+    // `reverse()` mutates the array in-place, so we call `concat()` first to create a copy of the array.
     for (const row of rows.concat().reverse()) {
       if (matchPercentage(row) > HIGH_MATCH_PERCENTAGE) {
         amounts.bottom++;
@@ -325,6 +326,7 @@ class Controller {
     }
 
     /* eslint-disable max-len */
+    // `reverse()` mutates the array in-place, so we call `concat()` first to create a copy of the array.
     for (const col of cols.concat().reverse()) {
       // Use a lower match percentage on the right side of the image in order to crop Edge popovers:
       // https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/08/20_40_45_142/c6cc25f87/mdc-button/classes/baseline.html.win10e17_edge17.png
