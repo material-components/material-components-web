@@ -1,4 +1,5 @@
 {
+  "diffReportUrl": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/10/06_25_32_226/73aba9982/report.html",
   "mdc-button/classes/baseline.html": {
     "publicUrl": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/10/03_51_46_386/d10381ea7/mdc-button/classes/baseline.html",
     "screenshots": {
@@ -63,7 +64,7 @@
     "publicUrl": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/10/03_51_46_386/d10381ea7/mdc-button/mixins/horizontal-padding-dense.html",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/10/03_51_46_386/d10381ea7/mdc-button/mixins/horizontal-padding-dense.html.win10e15_chrome66x64.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/10/03_51_46_386/d10381ea7/mdc-button/mixins/horizontal-padding-dense.html.win10e17_edge17.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/10/04_20_50_752/53fbd00fe/mdc-button/mixins/horizontal-padding-dense.html.win10e17_edge17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/10/03_51_46_386/d10381ea7/mdc-button/mixins/horizontal-padding-dense.html.win10e14_ff59x64.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/10/03_51_46_386/d10381ea7/mdc-button/mixins/horizontal-padding-dense.html.win10e14_ie11.png",
       "mobile_android_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/10/03_51_46_386/d10381ea7/mdc-button/mixins/horizontal-padding-dense.html.galaxys7and70_mblchrome64.png"
@@ -105,7 +106,7 @@
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/10/03_51_46_386/d10381ea7/mdc-button/mixins/stroke-width.html.win10e15_chrome66x64.png",
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/10/03_51_46_386/d10381ea7/mdc-button/mixins/stroke-width.html.win10e17_edge17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/10/03_51_46_386/d10381ea7/mdc-button/mixins/stroke-width.html.win10e14_ff59x64.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/10/03_51_46_386/d10381ea7/mdc-button/mixins/stroke-width.html.win10e14_ie11.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/10/04_20_50_752/53fbd00fe/mdc-button/mixins/stroke-width.html.win10e14_ie11.png",
       "mobile_android_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/10/03_51_46_386/d10381ea7/mdc-button/mixins/stroke-width.html.galaxys7and70_mblchrome64.png"
     }
   }

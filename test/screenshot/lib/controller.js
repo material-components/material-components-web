@@ -26,6 +26,7 @@ const GoldenStore = require('./golden-store');
 const ImageCache = require('./image-cache');
 const ImageCropper = require('./image-cropper');
 const ImageDiffer = require('./image-differ');
+const ReportGenerator = require('./report-generator');
 const Screenshot = require('./screenshot');
 const {Storage, UploadableFile, UploadableTestCase} = require('./storage');
 
@@ -238,11 +239,17 @@ class Controller {
    * @private
    */
   async uploadScreenshotImage_(testCase, cbtResult) {
+    const cbtImageUrl = cbtResult.images.chromeless;
+    if (!cbtImageUrl) {
+      console.error('cbtResult:\n', cbtResult);
+      throw new Error('cbtResult.images.chromeless is null');
+    }
+
     const osApiName = cbtResult.os.api_name;
     const browserApiName = cbtResult.browser.api_name;
 
     const imageName = `${osApiName}_${browserApiName}.png`.toLowerCase().replace(/[^\w.]+/g, '');
-    const imageData = await this.downloadAndCropImage_(cbtResult.images.chromeless);
+    const imageData = await this.downloadAndCropImage_(cbtImageUrl);
     const imageFile = new UploadableFile({
       destinationParentDirectory: this.baseUploadDir_,
       destinationRelativeFilePath: `${testCase.htmlFile.destinationRelativeFilePath}.${imageName}`,
@@ -268,16 +275,18 @@ class Controller {
    * Writes the given `testCases` to a `golden.json` file in `sourceDir_`.
    * If the file already exists, it will be overwritten.
    * @param {!Array<!UploadableTestCase>} testCases
-   * @return {!Promise<void>}
+   * @param {string} diffReportUrl
+   * @return {!Promise<!Array<!UploadableTestCase>>}
    */
-  async updateGoldenJson(testCases) {
+  async updateGoldenJson({testCases, diffReportUrl}) {
     const goldenStore = await GoldenStore.fromTestCases(testCases);
-    return goldenStore.writeToDisk(this.goldenJsonFilePath_);
+    await goldenStore.writeToDisk({jsonFilePath: this.goldenJsonFilePath_, diffReportUrl});
+    return testCases;
   }
 
   /**
    * @param {!Array<!UploadableTestCase>} testCases
-   * @return {!Promise<!Array<!ImageDiffJson>>}
+   * @return {!Promise<{diffs: !Array<!ImageDiffJson>, testCases: !Array<!UploadableTestCase>}>}
    */
   async diffGoldenJson(testCases) {
     /** @type {!Array<!ImageDiffJson>} */
@@ -292,7 +301,7 @@ class Controller {
           console.log('\n\nDONE diffing screenshot images!\n\n');
           console.log(diffs);
           console.log(`\n\nFound ${diffs.length} screenshot diffs!\n\n`);
-          return diffs;
+          return {diffs, testCases};
         },
         (err) => Promise.reject(err)
       )
@@ -314,6 +323,27 @@ class Controller {
 
     diff.diffImageUrl = diffImageFile.publicUrl;
     diff.diffImageBuffer = null; // free up memory
+  }
+
+  /**
+   * @param {!Array<!UploadableTestCase>} testCases
+   * @param {!Array<!ImageDiffJson>} diffs
+   * @return {!Promise<string>}
+   */
+  async uploadDiffReport({testCases, diffs}) {
+    const reportGenerator = new ReportGenerator({testCases, diffs});
+
+    /** @type {!UploadableFile} */
+    const reportFile = await this.storage_.uploadFile(new UploadableFile({
+      destinationParentDirectory: this.baseUploadDir_,
+      destinationRelativeFilePath: 'report.html',
+      fileContent: await reportGenerator.generateHtml(),
+    }));
+
+    console.log('\n\nDONE uploading diff report to GCS!\n\n');
+    console.log(reportFile.publicUrl);
+
+    return reportFile.publicUrl;
   }
 
   /**
