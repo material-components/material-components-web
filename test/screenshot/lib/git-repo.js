@@ -38,13 +38,16 @@ class GitRepo {
   }
 
   /**
+   * @param {string} branch
+   * @param {string=} remote
    * @return {!Promise<void>}
    */
-  async fetchMasterShallow() {
-    return this.repo_.fetch(['--depth=1', 'origin', 'master']);
+  async fetch(branch, remote = 'origin') {
+    return this.repo_.fetch([remote, branch]);
   }
 
   /**
+   * @param {string=} ref
    * @return {!Promise<string>}
    */
   async getShortCommitHash(ref = 'HEAD') {
@@ -52,6 +55,7 @@ class GitRepo {
   }
 
   /**
+   * @param {string=} ref
    * @return {!Promise<string>}
    */
   async getBranchName(ref = 'HEAD') {

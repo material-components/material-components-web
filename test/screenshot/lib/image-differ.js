@@ -29,8 +29,8 @@ class ImageDiffer {
   }
 
   /**
-   * @param {!GoldenStore} actualStore
-   * @param {!GoldenStore} expectedStore
+   * @param {!SnapshotStore} actualStore
+   * @param {!SnapshotStore} expectedStore
    * @return {!Promise<!Array<!ImageDiffJson>>}
    */
   async compareAllPages({
@@ -53,6 +53,8 @@ class ImageDiffer {
       pagePromises.push(
         this.compareOnePage_({
           htmlFilePath,
+          goldenPageUrl: expectedCapture.publicUrl,
+          snapshotPageUrl: actualCapture.publicUrl,
           actualCapture,
           expectedCapture,
         })
@@ -68,6 +70,8 @@ class ImageDiffer {
 
   /**
    * @param {string} htmlFilePath
+   * @param {string} goldenPageUrl
+   * @param {string} snapshotPageUrl
    * @param {!CaptureJson} actualCapture
    * @param {!CaptureJson} expectedCapture
    * @return {!Promise<!Array<!ImageDiffJson>>}
@@ -75,6 +79,8 @@ class ImageDiffer {
    */
   async compareOnePage_({
     htmlFilePath,
+    goldenPageUrl,
+    snapshotPageUrl,
     actualCapture,
     expectedCapture,
   }) {
@@ -96,6 +102,8 @@ class ImageDiffer {
           .then(
             (diffImageBuffer) => ({
               htmlFilePath,
+              goldenPageUrl,
+              snapshotPageUrl,
               browserKey,
               expectedImageUrl,
               actualImageUrl,
