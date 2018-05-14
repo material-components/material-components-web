@@ -21,6 +21,7 @@
 @import "helper-text/mixins";
 @import "icon/mixins";
 @import "icon/variables";
+@import "./variables";
 
 @mixin mdc-text-field-box-corner-radius($radius) {
   border-radius: $radius $radius 0 0;
