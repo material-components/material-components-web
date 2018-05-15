@@ -37,10 +37,25 @@ function setupTest() {
   return {root, component};
 }
 
+test('#adapter.getAttr returns the value of a given attribute on the element', () => {
+  const {root, component} = setupTest();
+  const expectedAttr = 'tabindex';
+  const expectedValue = '0';
+  root.setAttribute(expectedAttr, expectedValue);
+  assert.equal(component.getDefaultFoundation().adapter_.getAttr(expectedAttr), expectedValue);
+});
+
 test('#adapter.setAttr adds a given attribute to the element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.setAttr('aria-label', 'foo');
   assert.equal(root.getAttribute('aria-label'), 'foo');
+});
+
+test('#adapter.removeAttr removes a given attribute from the element', () => {
+  const {root, component} = setupTest();
+  root.setAttribute('role', 'button');
+  component.getDefaultFoundation().adapter_.removeAttr('role');
+  assert.isFalse(root.hasAttribute('role'));
 });
 
 test('#adapter.registerInteractionHandler adds event listener for a given event to the element', () => {

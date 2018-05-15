@@ -123,6 +123,14 @@ test('#init adds the upgraded class to the root element', () => {
   td.verify(mockAdapter.addClass(cssClasses.UPGRADED));
 });
 
+test('#init adds aria-checked="mixed" if checkbox is initially indeterminate', () => {
+  const {foundation, mockAdapter, nativeControl} = setupTest();
+  nativeControl.indeterminate = true;
+
+  foundation.init();
+  td.verify(mockAdapter.setNativeControlAttr('aria-checked', strings.ARIA_CHECKED_INDETERMINATE_VALUE));
+});
+
 test('#init calls adapter.registerChangeHandler() with a change handler function', () => {
   const {foundation, mockAdapter} = setupTest();
   const {isA} = td.matchers;
@@ -214,6 +222,20 @@ test('#setIndeterminate updates the value of nativeControl.indeterminate', () =>
   foundation.setIndeterminate(false);
   assert.isNotOk(foundation.isIndeterminate());
   assert.isNotOk(nativeControl.indeterminate);
+});
+
+test('#setIndeterminate adds aria-checked="mixed" when indeterminate is true', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.init();
+  foundation.setIndeterminate(true);
+  td.verify(mockAdapter.setNativeControlAttr('aria-checked', strings.ARIA_CHECKED_INDETERMINATE_VALUE));
+});
+
+test('#setIndeterminate removes aria-checked when indeterminate is false', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.init();
+  foundation.setIndeterminate(false);
+  td.verify(mockAdapter.removeNativeControlAttr('aria-checked'));
 });
 
 test('#setIndeterminate works when no native control is returned', () => {
