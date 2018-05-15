@@ -123,12 +123,15 @@ $mdc-fab-icon-enter-duration_: 180ms;
 }
 
 @mixin mdc-fab__icon_ {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   transition: mdc-animation-enter(transform, $mdc-fab-icon-enter-duration_, $mdc-fab-icon-enter-delay_);
   fill: currentColor;
   will-change: transform;
+}
+
+@mixin mdc-fab__icon-overrides_ {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @mixin mdc-fab--exited_ {
