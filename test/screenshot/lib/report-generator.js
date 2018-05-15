@@ -113,10 +113,11 @@ class ReportGenerator {
       .join(' ')
     ;
 
-    const gitHeadBranch = await this.gitRepo_.getBranchName();
-    const gitHeadCommit = await this.gitRepo_.getShortCommitHash();
-    const gitGoldenBranch = await this.gitRepo_.getBranchName(this.cliArgs_.diffBase);
-    const gitGoldenCommit = await this.gitRepo_.getShortCommitHash(this.cliArgs_.diffBase);
+    const diffBase = this.cliArgs_.diffBase;
+    const gitSnapshotCommit = await this.gitRepo_.getShortCommitHash();
+    const gitSnapshotBranch = await this.gitRepo_.getBranchName();
+    const gitGoldenCommit = await this.gitRepo_.getShortCommitHash(diffBase).catch(() => null);
+    const gitGoldenBranch = await this.gitRepo_.getBranchName(diffBase).catch(() => diffBase);
     const gitUserName = await this.gitRepo_.getUserName();
     const gitUserEmail = await this.gitRepo_.getUserEmail();
     const gitUser = `&lt;${gitUserName}&gt; ${gitUserEmail}`;
@@ -149,24 +150,24 @@ class ReportGenerator {
           <td class="report-metadata__cell report-metadata__cell--val">${numTestCases}</td>
         </tr>
         <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">User:</th>
-          <td class="report-metadata__cell report-metadata__cell--val">${gitUser}</td>
-        </tr>
-        <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">Golden Commit:</th>
+          <th class="report-metadata__cell report-metadata__cell--key">Golden:</th>
           <td class="report-metadata__cell report-metadata__cell--val">
             ${this.getCommitLinkMarkup_(gitGoldenCommit, gitGoldenBranch)}
           </td>
         </tr>
         <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">Snapshot Commit:</th>
+          <th class="report-metadata__cell report-metadata__cell--key">Snapshot:</th>
           <td class="report-metadata__cell report-metadata__cell--val">
-            ${this.getCommitLinkMarkup_(gitHeadCommit, gitHeadBranch)}
+            ${this.getCommitLinkMarkup_(gitSnapshotCommit, gitSnapshotBranch)}
           </td>
         </tr>
         <tr>
           <th class="report-metadata__cell report-metadata__cell--key">Node Version:</th>
           <td class="report-metadata__cell report-metadata__cell--val">${nodeVersion}</td>
+        </tr>
+        <tr>
+          <th class="report-metadata__cell report-metadata__cell--key">User:</th>
+          <td class="report-metadata__cell report-metadata__cell--val">${gitUser}</td>
         </tr>
         <tr>
           <th class="report-metadata__cell report-metadata__cell--key">NPM Version:</th>
@@ -184,12 +185,20 @@ class ReportGenerator {
   }
 
   getCommitLinkMarkup_(commit, branch) {
-    const GITHUB_REPO_URL = 'https://github.com/material-components/material-components-web';
-    return `
+    if (commit) {
+      const GITHUB_REPO_URL = 'https://github.com/material-components/material-components-web';
+      return `
 <a href="${GITHUB_REPO_URL}/commit/${commit}">${commit}</a>
 on
 <a href="${GITHUB_REPO_URL}/tree/${branch.replace('origin/', '')}">${branch}</a>
 `;
+    }
+
+    if (/^https?:/.test(branch)) {
+      return `<a href="${branch}">${branch}</a>`;
+    }
+
+    return `${branch} (local)`;
   }
 
   getCollapseButtonMarkup_() {

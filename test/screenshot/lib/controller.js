@@ -61,13 +61,6 @@ class Controller {
     this.storage_ = new Storage();
 
     /**
-     * Unique timestamped directory path to prevent collisions between developers.
-     * @type {?string}
-     * @private
-     */
-    this.baseUploadDir_ = null;
-
-    /**
      * @type {!ImageCache}
      * @private
      */
@@ -84,11 +77,29 @@ class Controller {
      * @private
      */
     this.imageDiffer_ = new ImageDiffer({imageCache: this.imageCache_});
+
+    /**
+     * @type {!CliArgParser}
+     * @private
+     */
+    this.cliArgs_ = new CliArgParser();
+
+    /**
+     * @type {!SnapshotStore}
+     * @private
+     */
+    this.snapshotStore_ = new SnapshotStore();
+
+    /**
+     * Unique timestamped directory path to prevent collisions between developers.
+     * @type {?string}
+     * @private
+     */
+    this.baseUploadDir_ = null;
   }
 
   async initialize() {
     this.baseUploadDir_ = await this.storage_.generateUniqueUploadDir();
-    this.cliArgs_ = new CliArgParser();
   }
 
   /**
@@ -275,12 +286,13 @@ class Controller {
    * Writes the given `testCases` to a `golden.json` file in `sourceDir_`.
    * If the file already exists, it will be overwritten.
    * @param {!Array<!UploadableTestCase>} testCases
-   * @param {string} diffReportUrl
    * @return {!Promise<!Array<!UploadableTestCase>>}
    */
-  async updateGoldenJson({testCases, diffReportUrl}) {
-    const snapshotStore = await SnapshotStore.fromTestCases(testCases);
-    await snapshotStore.writeToDisk({jsonFilePath: this.goldenJsonFilePath_, diffReportUrl});
+  async updateGoldenJson({testCases}) {
+    await this.snapshotStore_.writeToDisk({
+      jsonData: await this.snapshotStore_.fromTestCases(testCases),
+      jsonFilePath: this.goldenJsonFilePath_,
+    });
     return testCases;
   }
 
@@ -291,8 +303,8 @@ class Controller {
   async diffGoldenJson(testCases) {
     /** @type {!Array<!ImageDiffJson>} */
     const diffs = await this.imageDiffer_.compareAllPages({
-      actualStore: await SnapshotStore.fromTestCases(testCases),
-      expectedStore: await SnapshotStore.fromMaster(this.goldenJsonFilePath_),
+      actualSuite: await this.snapshotStore_.fromTestCases(testCases),
+      expectedSuite: await this.snapshotStore_.fromMaster(this.goldenJsonFilePath_),
     });
 
     return Promise.all(diffs.map((diff) => this.uploadOneDiffImage_(diff)))

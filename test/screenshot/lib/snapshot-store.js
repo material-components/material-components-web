@@ -15,34 +15,40 @@
  */
 
 const fs = require('mz/fs');
+const request = require('request-promise-native');
 const stringify = require('json-stable-stringify');
 
 const GitRepo = require('./git-repo');
 const CliArgParser = require('./cli-arg-parser');
 
+const HTTP_URL_REGEX = new RegExp('^https?://');
+
 /**
  * Reads and writes a `golden.json` or `snapshot.json` file.
  */
 class SnapshotStore {
-  /**
-   * @param {!GoldenJson} jsonData
-   */
-  constructor({jsonData}) {
+  constructor() {
     /**
-     * @type {!GoldenJson}
+     * @type {!CliArgParser}
+     * @private
      */
-    this.jsonData = jsonData;
+    this.cliArgs_ = new CliArgParser();
+
+    /**
+     * @type {!GitRepo}
+     * @private
+     */
+    this.gitRepo_ = new GitRepo();
   }
 
   /**
    * Writes the data to the given `golden.json` file path.
+   * @param {!SnapshotSuiteJson} jsonData
    * @param {string} jsonFilePath
-   * @param {string} diffReportUrl
    * @return {!Promise<void>}
    */
-  async writeToDisk({jsonFilePath, diffReportUrl}) {
-    this.jsonData.diffReportUrl = diffReportUrl;
-    const jsonFileContent = stringify(this.jsonData, {space: '  '}) + '\n';
+  async writeToDisk({jsonData, jsonFilePath}) {
+    const jsonFileContent = stringify(jsonData, {space: '  '}) + '\n';
     await fs.writeFile(jsonFilePath, jsonFileContent);
     console.log(`\n\nDONE updating "${jsonFilePath}"!\n\n`);
   }
@@ -50,24 +56,19 @@ class SnapshotStore {
   /**
    * Parses the `golden.json` file from the `master` Git branch.
    * @param {string} jsonFilePath
-   * @return {!Promise<!SnapshotStore>}
+   * @return {!Promise<!SnapshotSuiteJson>}
    */
-  static async fromMaster(jsonFilePath) {
-    const cliArgs = new CliArgParser();
-    const mdcGitRepo = new GitRepo();
-    await mdcGitRepo.fetch(cliArgs.diffBase);
-    const goldenJsonStr = await mdcGitRepo.getFileAtRevision(jsonFilePath, cliArgs.diffBase);
-    return new SnapshotStore({
-      jsonData: JSON.parse(goldenJsonStr),
-    });
+  async fromMaster(jsonFilePath) {
+    const goldenJsonStr = await this.fetchGoldenJsonString_(jsonFilePath);
+    return JSON.parse(goldenJsonStr);
   }
 
   /**
    * Transforms the given test cases into `golden.json` format.
    * @param {!Array<!UploadableTestCase>} testCases
-   * @return {!Promise<!SnapshotStore>}
+   * @return {!Promise<!SnapshotSuiteJson>}
    */
-  static async fromTestCases(testCases) {
+  async fromTestCases(testCases) {
     const jsonData = {};
 
     testCases.forEach((testCase) => {
@@ -87,7 +88,72 @@ class SnapshotStore {
       });
     });
 
-    return new SnapshotStore({jsonData});
+    return jsonData;
+  }
+
+  /**
+   * @param {string} defaultGoldenPath
+   * @return {!Promise<string>}
+   * @private
+   */
+  async fetchGoldenJsonString_(defaultGoldenPath) {
+    const rawDiffBase = this.cliArgs_.diffBase;
+
+    // Diff against a public `golden.json` URL.
+    // E.g.: `--mdc-diff-base=https://storage.googleapis.com/.../golden.json`
+    const isUrl = HTTP_URL_REGEX.test(rawDiffBase);
+    if (isUrl) {
+      return request({
+        method: 'GET',
+        uri: rawDiffBase,
+      });
+    }
+
+    // Diff against a local `golden.json` file.
+    // E.g.: `--mdc-diff-base=/tmp/golden.json`
+    const isLocalFile = await fs.exists(rawDiffBase);
+    if (isLocalFile) {
+      return fs.readFile(rawDiffBase, {encoding: 'utf8'});
+    }
+
+    const [inputGoldenRef, inputGoldenPath] = rawDiffBase.split(':');
+    const goldenFilePath = inputGoldenPath || defaultGoldenPath;
+    const fullGoldenRef = await this.gitRepo_.getFullSymbolicName(inputGoldenRef);
+
+    // Diff against a specific git commit.
+    // E.g.: `--mdc-diff-base=abcd1234`
+    if (!fullGoldenRef) {
+      return this.gitRepo_.getFileAtRevision(goldenFilePath, inputGoldenRef);
+    }
+
+    const [, remoteRef] = fullGoldenRef.split(new RegExp('^refs/remotes/'));
+    const [, localRef] = fullGoldenRef.split(new RegExp('^refs/heads/'));
+    const [, tagRef] = fullGoldenRef.split(new RegExp('^refs/tags/'));
+
+    // Diff against a remote git branch.
+    // E.g.: `--mdc-diff-base=origin/master` or `--mdc-diff-base=origin/feat/button/my-fancy-feature`
+    if (remoteRef) {
+      const remoteNames = await this.gitRepo_.getRemoteNames();
+      console.log('');
+      console.log('remoteRef:', remoteRef);
+      console.log('remoteNames:', remoteNames);
+      console.log('');
+      const remoteName = remoteNames.find((curRemoteName) => remoteRef.startsWith(curRemoteName + '/'));
+      const remoteBranch = remoteRef.substr(remoteName.length + 1); // add 1 for forward-slash separator
+      await this.gitRepo_.fetch(remoteBranch, remoteName);
+      return this.gitRepo_.getFileAtRevision(goldenFilePath, remoteRef);
+    }
+
+    // Diff against a remote git tag.
+    // E.g.: `--mdc-diff-base=v0.34.1`
+    if (tagRef) {
+      await this.gitRepo_.fetch(tagRef);
+      return this.gitRepo_.getFileAtRevision(goldenFilePath, tagRef);
+    }
+
+    // Diff against a local git branch.
+    // E.g.: `--mdc-diff-base=master` or `--mdc-diff-base=HEAD`
+    return this.gitRepo_.getFileAtRevision(goldenFilePath, localRef);
   }
 }
 
