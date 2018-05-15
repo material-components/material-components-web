@@ -19,10 +19,7 @@ npm install @material/form-field
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/checkbox.html">Demo with checkbox</a>
-  </li>
-  <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/radio.html">Demo with radio button</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/radio">Demo with radio button</a>
   </li>
 </ul>
 

@@ -2,13 +2,13 @@
 title: "Floating Label"
 layout: detail
 section: components
-excerpt: "An animated text caption for a text field or select."
+excerpt: "An animated text caption for a Text Field or Select."
 path: /catalog/input-controls/floating-label/
 -->
 
 # Floating Label
 
-Floating labels display the type of input a field requires. Every text field and select should have a label. Labels are aligned with the input line and always visible. They can be resting (when a field is inactive and empty) or floating. The label is a text caption or description for the text field.
+Floating labels display the type of input a field requires. Every Text Field and Select should have a label, except for full-width text fields, which use the input's `placeholder` attribute instead. Labels are aligned with the input line and always visible. They can be resting (when a field is inactive and empty) or floating. The label is a text caption or description for the Text Field.
 
 ## Design & API Documentation
 
@@ -16,9 +16,12 @@ Floating labels display the type of input a field requires. Every text field and
   <li class="icon-list-item icon-list-item--spec">
     <a href="https://material.io/go/design-text-fields#text-fields-layout">Material Design guidelines: Text Fields Layout</a>
   </li>
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/text-field">Demo with Text Field</a>
+  </li>
 </ul>
 
-## Usage
+## Basic Usage
 
 ### HTML Structure
 
@@ -26,19 +29,23 @@ Floating labels display the type of input a field requires. Every text field and
 <label class="mdc-floating-label" for="my-text-field-id">Hint text</label>
 ```
 
-### Usage within `mdc-text-field`
+### Styles
 
-```html
-<div class="mdc-text-field">
-  <input type="text" id="my-text-field-id" class="mdc-text-field__input">
-  <label class="mdc-floating-label" for="my-text-field-id">Hint text</label>
-  <div class="mdc-text-field__bottom-line"></div>
-</div>
+```scss
+@import "@material/floating-label/mdc-floating-label";
 ```
 
-<!-- TODO(mattgoo): add ### Usage within `mdc-select` once select uses mdc-floating-label -->
+### JavaScript Instantiation
 
-#### Avoid Dynamic ID Generation
+```js
+import {MDCFloatingLabel} from '@material/floating-label';
+
+const floatingLabel = new MDCFloatingLabel(document.querySelector('.mdc-floating-label'));
+```
+
+## Variants
+
+### Avoid Dynamic ID Generation
 
 If you're using the JavaScript-enabled version of floating label, you can avoid needing to assign
 a unique `id` to each `<input>` by wrapping `mdc-text-field__input` within a `<label>`:
@@ -51,15 +58,19 @@ a unique `id` to each `<input>` by wrapping `mdc-text-field__input` within a `<l
 </label>
 ```
 
+> NOTE: This method also works with `<select>`.
+
+## Style Customization
+
 ### CSS Classes
 
 CSS Class | Description
 --- | ---
 `mdc-floating-label` | Mandatory.
-`mdc-floating-label--float-above` | Indicates the label is floating above the text field.
+`mdc-floating-label--float-above` | Indicates the label is floating in the floating position.
 `mdc-floating-label--shake` | Shakes the label.
 
-### SCSS Mixins
+### Sass Mixins
 
 Mixin | Description
 --- | ---
@@ -69,13 +80,17 @@ Mixin | Description
 `mdc-floating-label-shake-animation($modifier)` | Applies shake keyframe animation to label.
 `mdc-floating-label-float-position($positionY, $positionX, $scale)` | Sets position of label when floating.
 
-### `MDCFloatingLabel`
+## `MDCFloatingLabel` Properties and Methods
 
 Method Signature | Description
 --- | ---
-`shake(shouldShake: boolean) => void` | Shakes or stops shaking the label, depending on the value of `shouldShake`. Proxies to the foundation method of the same name.
-`float(shouldFloat: boolean) => void` | Floats or docks the label, depending on the value of `shouldFloat`. Proxies to the foundation method of the same name.
-`getWidth() => number` | Returns the width of the label element.
+`shake(shouldShake: boolean) => void` | Proxies to the foundation's `shake()` method.
+`float(shouldFloat: boolean) => void` | Proxies to the foundation's `float()` method.
+`getWidth() => number` | Proxies to the foundation's `getWidth()` method.
+
+## Usage Within Frameworks
+
+If you are using a JavaScript framework, such as React or Angular, you can create a Floating Label for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
 ### `MDCFloatingLabelAdapter`
 

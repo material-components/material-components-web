@@ -10,7 +10,7 @@ path: /catalog/input-controls/radio-buttons/
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/radio.html">
+     href="https://material-components.github.io/material-components-web-catalog/#/component/radio">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/radios.png" width="60" alt="Radio buttons screenshot">
   </a>
 </div>-->
@@ -24,7 +24,7 @@ Radio buttons allow the user to select one option from a set while seeing all av
     <a href="https://material.io/go/design-radio-buttons">Material Design guidelines: Selection Controls – Radio buttons</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/radio.html">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/radio">Demo</a>
   </li>
 </ul>
 
