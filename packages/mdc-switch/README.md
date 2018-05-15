@@ -10,7 +10,7 @@ path: /catalog/input-controls/switches/
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/switch.html">
+     href="https://material-components.github.io/material-components-web-catalog/#/component/switch">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/switches.png" width="37" alt="Switches screenshot">
   </a>
 </div>-->
@@ -21,10 +21,10 @@ Switches toggle the state of a single settings option on or off, and are mobile 
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/selection-controls.html#selection-controls-switch">Material Design guidelines: Switches</a>
+    <a href="https://material.io/go/design-switches">Material Design guidelines: Switches</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/switch.html">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/switch">Demo</a>
   </li>
 </ul>
 

@@ -16,30 +16,30 @@
 
 'use strict';
 
-const fs = require('fs');
+const fs = require('mz/fs');
 const glob = require('glob');
-const jimp = require('jimp');
 const path = require('path');
-const request = require('request-promise-native');
-const stringify = require('json-stable-stringify');
-const util = require('util');
 
+const CbtUserAgent = require('./cbt-user-agent');
+const CliArgParser = require('./cli-arg-parser');
+const ImageCache = require('./image-cache');
+const ImageCropper = require('./image-cropper');
+const ImageDiffer = require('./image-differ');
+const ReportGenerator = require('./report-generator');
 const Screenshot = require('./screenshot');
+const SnapshotStore = require('./snapshot-store');
 const {Storage, UploadableFile, UploadableTestCase} = require('./storage');
-
-const readFileAsync = util.promisify(fs.readFile);
-const writeFileAsync = util.promisify(fs.writeFile);
 
 /**
  * High-level screenshot workflow controller that provides composable async methods to:
  * 1. Upload files to GCS
  * 2. Capture screenshots with CBT
- * 3. [COMING SOON] Update local golden.json with new screenshot URLs
- * 4. [COMING SOON] Diff captured screenshots against existing golden.json
+ * 3. Update local golden.json with new screenshot URLs
+ * 4. Diff captured screenshots against existing golden.json
  */
 class Controller {
   /**
-   * @param {string} sourceDir Relative or absolute path to the local `test/screenshot/` directory.
+   * @param {string} sourceDir Relative path to the local `test/screenshot/` directory, relative to Node's $PWD.
    */
   constructor({sourceDir}) {
     /**
@@ -47,6 +47,12 @@ class Controller {
      * @private
      */
     this.sourceDir_ = sourceDir;
+
+    /**
+     * @type {string}
+     * @private
+     */
+    this.goldenJsonFilePath_ = path.join(this.sourceDir_, 'golden.json');
 
     /**
      * @type {!Storage}
@@ -60,10 +66,29 @@ class Controller {
      * @private
      */
     this.baseUploadDir_ = null;
+
+    /**
+     * @type {!ImageCache}
+     * @private
+     */
+    this.imageCache_ = new ImageCache();
+
+    /**
+     * @type {!ImageCropper}
+     * @private
+     */
+    this.imageCropper_ = new ImageCropper();
+
+    /**
+     * @type {!ImageDiffer}
+     * @private
+     */
+    this.imageDiffer_ = new ImageDiffer({imageCache: this.imageCache_});
   }
 
   async initialize() {
     this.baseUploadDir_ = await this.storage_.generateUniqueUploadDir();
+    this.cliArgs_ = new CliArgParser();
   }
 
   /**
@@ -102,9 +127,9 @@ class Controller {
    */
   async uploadOneAsset_(assetFileRelativePath, testCases) {
     const assetFile = new UploadableFile({
-      destinationParentDirectory: `${this.baseUploadDir_}/assets`,
+      destinationParentDirectory: this.baseUploadDir_,
       destinationRelativeFilePath: assetFileRelativePath,
-      fileContent: await readFileAsync(`${this.sourceDir_}/${assetFileRelativePath}`),
+      fileContent: await fs.readFile(`${this.sourceDir_}/${assetFileRelativePath}`),
     });
 
     return this.storage_.uploadFile(assetFile)
@@ -121,10 +146,18 @@ class Controller {
    * @private
    */
   async handleUploadOneAssetSuccess_(assetFile, testCases) {
-    const isHtmlFile = assetFile.destinationRelativeFilePath.endsWith('.html');
-    if (isHtmlFile) {
+    const relativePath = assetFile.destinationRelativeFilePath;
+    const isHtmlFile = relativePath.endsWith('.html');
+    const isIncluded =
+      this.cliArgs_.includeUrlPatterns.length === 0 ||
+      this.cliArgs_.includeUrlPatterns.some((pattern) => pattern.test(relativePath));
+    const isExcluded = this.cliArgs_.excludeUrlPatterns.some((pattern) => pattern.test(relativePath));
+    const shouldInclude = isIncluded && !isExcluded;
+
+    if (isHtmlFile && shouldInclude) {
       testCases.push(new UploadableTestCase({htmlFile: assetFile}));
     }
+
     return assetFile;
   }
 
@@ -206,17 +239,22 @@ class Controller {
    * @private
    */
   async uploadScreenshotImage_(testCase, cbtResult) {
-    const sanitize = (apiName) => apiName.toLowerCase().replace(/\W+/g, '');
+    const cbtImageUrl = cbtResult.images.chromeless;
+    if (!cbtImageUrl) {
+      console.error('cbtResult:\n', cbtResult);
+      throw new Error('cbtResult.images.chromeless is null');
+    }
 
-    const os = sanitize(cbtResult.os.api_name);
-    const browser = sanitize(cbtResult.browser.api_name);
-    const imageName = `${os}_${browser}_ltr.png`;
+    const osApiName = cbtResult.os.api_name;
+    const browserApiName = cbtResult.browser.api_name;
 
-    const imageData = await this.downloadImage_(cbtResult.images.chromeless);
+    const imageName = `${osApiName}_${browserApiName}.png`.toLowerCase().replace(/[^\w.]+/g, '');
+    const imageData = await this.downloadAndCropImage_(cbtImageUrl);
     const imageFile = new UploadableFile({
-      destinationParentDirectory: `${this.baseUploadDir_}/screenshots`,
-      destinationRelativeFilePath: `${testCase.htmlFile.destinationRelativeFilePath}/${imageName}`,
+      destinationParentDirectory: this.baseUploadDir_,
+      destinationRelativeFilePath: `${testCase.htmlFile.destinationRelativeFilePath}.${imageName}`,
       fileContent: imageData,
+      userAgent: await CbtUserAgent.fetchBrowserByApiName(osApiName, browserApiName),
     });
 
     testCase.screenshotImageFiles.push(imageFile);
@@ -229,77 +267,87 @@ class Controller {
    * @return {!Promise<!Buffer>}
    * @private
    */
-  async downloadImage_(uri) {
-    // For binary data, set `encoding: null` to return the response body as a `Buffer` instead of a `string`.
-    // https://github.com/request/request#requestoptions-callback
-    return request({uri, encoding: null})
-      .then(
-        (body) => this.autoCropImage_(body),
-        (err) => {
-          console.error(`FAILED to download "${uri}"`);
-          return Promise.reject(err);
-        }
-      );
-  }
-
-  /**
-   * @param {!Buffer} imageData Uncropped image buffer
-   * @return {!Promise<!Buffer>} Cropped image buffer
-   * @private
-   */
-  async autoCropImage_(imageData) {
-    return jimp.read(imageData)
-      .then(
-        (image) => {
-          return new Promise((resolve, reject) => {
-            image
-              .autocrop()
-              .getBuffer(jimp.MIME_PNG, (err, buffer) => {
-                return err ? reject(err) : resolve(buffer);
-              });
-          });
-        },
-        (err) => Promise.reject(err)
-      );
+  async downloadAndCropImage_(uri) {
+    return this.imageCropper_.autoCropImage(await this.imageCache_.getImageBuffer(uri));
   }
 
   /**
    * Writes the given `testCases` to a `golden.json` file in `sourceDir_`.
    * If the file already exists, it will be overwritten.
    * @param {!Array<!UploadableTestCase>} testCases
-   * @return {!Promise<{goldenFilePath:string, goldenData:!Object}>}
+   * @param {string} diffReportUrl
+   * @return {!Promise<!Array<!UploadableTestCase>>}
    */
-  async updateGoldenJson(testCases) {
-    const goldenData = {};
+  async updateGoldenJson({testCases, diffReportUrl}) {
+    const snapshotStore = await SnapshotStore.fromTestCases(testCases);
+    await snapshotStore.writeToDisk({jsonFilePath: this.goldenJsonFilePath_, diffReportUrl});
+    return testCases;
+  }
 
-    testCases.forEach((testCase) => {
-      const htmlFileKey = testCase.htmlFile.destinationRelativeFilePath;
-      const htmlFileUrl = testCase.htmlFile.publicUrl;
-
-      goldenData[htmlFileKey] = {
-        publicUrl: htmlFileUrl,
-        screenshots: {},
-      };
-
-      testCase.screenshotImageFiles.forEach((screenshotImageFile) => {
-        const screenshotKey = path.parse(screenshotImageFile.destinationRelativeFilePath).name;
-        const screenshotUrl = screenshotImageFile.publicUrl;
-
-        goldenData[htmlFileKey].screenshots[screenshotKey] = screenshotUrl;
-      });
+  /**
+   * @param {!Array<!UploadableTestCase>} testCases
+   * @return {!Promise<{diffs: !Array<!ImageDiffJson>, testCases: !Array<!UploadableTestCase>}>}
+   */
+  async diffGoldenJson(testCases) {
+    /** @type {!Array<!ImageDiffJson>} */
+    const diffs = await this.imageDiffer_.compareAllPages({
+      actualStore: await SnapshotStore.fromTestCases(testCases),
+      expectedStore: await SnapshotStore.fromMaster(this.goldenJsonFilePath_),
     });
 
-    const goldenFilePath = path.join(this.sourceDir_, 'golden.json');
-    const goldenFileContent = stringify(goldenData, {space: '  '}) + '\n';
-
-    return writeFileAsync(goldenFilePath, goldenFileContent)
+    return Promise.all(diffs.map((diff) => this.uploadOneDiffImage_(diff)))
       .then(
         () => {
-          console.log(`\n\nDONE updating "${goldenFilePath}"!\n\n`);
-          return {goldenFilePath, goldenData};
+          diffs.sort((a, b) => {
+            return a.htmlFilePath.localeCompare(b.htmlFilePath, 'en-US') ||
+              a.browserKey.localeCompare(b.browserKey, 'en-US');
+          });
+          console.log('\n\nDONE diffing screenshot images!\n\n');
+          console.log(diffs);
+          console.log(`\n\nFound ${diffs.length} screenshot diffs!\n\n`);
+          return {diffs, testCases};
         },
         (err) => Promise.reject(err)
-      );
+      )
+    ;
+  }
+
+  /**
+   * @param {!ImageDiffJson} diff
+   * @return {!Promise<void>}
+   * @private
+   */
+  async uploadOneDiffImage_(diff) {
+    /** @type {!UploadableFile} */
+    const diffImageFile = await this.storage_.uploadFile(new UploadableFile({
+      destinationParentDirectory: `${this.baseUploadDir_}/screenshots`,
+      destinationRelativeFilePath: `${diff.htmlFilePath}/${diff.browserKey}.diff.png`,
+      fileContent: diff.diffImageBuffer,
+    }));
+
+    diff.diffImageUrl = diffImageFile.publicUrl;
+    diff.diffImageBuffer = null; // free up memory
+  }
+
+  /**
+   * @param {!Array<!UploadableTestCase>} testCases
+   * @param {!Array<!ImageDiffJson>} diffs
+   * @return {!Promise<string>}
+   */
+  async uploadDiffReport({testCases, diffs}) {
+    const reportGenerator = new ReportGenerator({testCases, diffs});
+
+    /** @type {!UploadableFile} */
+    const reportFile = await this.storage_.uploadFile(new UploadableFile({
+      destinationParentDirectory: this.baseUploadDir_,
+      destinationRelativeFilePath: 'report.html',
+      fileContent: await reportGenerator.generateHtml(),
+    }));
+
+    console.log('\n\nDONE uploading diff report to GCS!\n\n');
+    console.log(reportFile.publicUrl);
+
+    return reportFile.publicUrl;
   }
 
   /**

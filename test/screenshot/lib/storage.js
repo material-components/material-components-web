@@ -87,8 +87,9 @@ class Storage {
    */
   handleUploadSuccess_(uploadableFile) {
     const publicUrl = `${GCLOUD_STORAGE_BASE_URL}${uploadableFile.destinationAbsoluteFilePath}`;
-    console.log(`✔︎ Uploaded ${publicUrl}`);
+    uploadableFile.fileContent = null; // Free up memory
     uploadableFile.publicUrl = publicUrl;
+    console.log(`✔︎ Uploaded ${publicUrl}`);
     return Promise.resolve(uploadableFile);
   }
 
@@ -100,6 +101,7 @@ class Storage {
    */
   handleUploadFailure_(uploadableFile, err) {
     const publicUrl = `${GCLOUD_STORAGE_BASE_URL}${uploadableFile.destinationAbsoluteFilePath}`;
+    uploadableFile.fileContent = null; // Free up memory
     console.error(`✗︎ FAILED to upload ${publicUrl}:`);
     console.error(err);
     return Promise.reject(err);
@@ -134,6 +136,7 @@ class UploadableFile {
     destinationParentDirectory,
     destinationRelativeFilePath,
     fileContent,
+    userAgent = null,
   }) {
     /** @type {string} */
     this.destinationParentDirectory = destinationParentDirectory;
@@ -144,8 +147,11 @@ class UploadableFile {
     /** @type {string} */
     this.destinationAbsoluteFilePath = `${this.destinationParentDirectory}/${this.destinationRelativeFilePath}`;
 
-    /** @type {!Buffer} */
+    /** @type {?Buffer} */
     this.fileContent = fileContent;
+
+    /** @type {?Object} */
+    this.userAgent = userAgent;
 
     /** @type {?string} */
     this.publicUrl = null;
