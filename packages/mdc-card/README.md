@@ -11,7 +11,7 @@ path: /catalog/cards/
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/card.html">
+     href="https://material-components.github.io/material-components-web-catalog/#/component/card">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/cards.png" width="328" alt="Cards screenshot">
   </a>
 </div>-->
@@ -27,7 +27,7 @@ developers as a set of CSS classes.
     <a href="https://material.io/go/design-cards">Material Design guidelines: Cards</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/card.html">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/card">Demo</a>
   </li>
 </ul>
 

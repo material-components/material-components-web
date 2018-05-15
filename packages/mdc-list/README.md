@@ -11,7 +11,7 @@ path: /catalog/lists/
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/list.html">
+     href="https://material-components.github.io/material-components-web-catalog/#/component/list">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/lists.png" width="365" alt="Lists screenshot">
   </a>
 </div>-->
@@ -28,7 +28,7 @@ MDC Lists are designed to be accessible and RTL aware.
     <a href="https://material.io/go/design-lists">Material Design guidelines: Lists</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/list.html">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/list">Demo</a>
   </li>
 </ul>
 

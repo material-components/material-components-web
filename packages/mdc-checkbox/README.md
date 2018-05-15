@@ -11,7 +11,7 @@ path: /catalog/input-controls/checkboxes/
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/checkbox.html">
+     href="https://material-components.github.io/material-components-web-catalog/#/component/checkbox">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/checkboxes.png"
     width="99" alt="Checkbox screenshot">
   </a>
@@ -26,7 +26,7 @@ Checkboxes allow the user to select one or more items from a set.
     <a href="https://material.io/go/design-checkboxes">Material Design guidelines: Selection Controls – Checkbox</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/checkbox.html">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/checkbox">Demo</a>
   </li>
 </ul>
 

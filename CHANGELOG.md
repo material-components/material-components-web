@@ -54,7 +54,8 @@
 ### Code Refactoring
 
 * **chips:** Manage chip foundations instead of chips in the chip set foundation ([#2397](https://github.com/material-components/material-components-web/issues/2397)) ([10a75f6](https://github.com/material-components/material-components-web/commit/10a75f6))
-
+* **select**: removed label and replaced with floating-label ([#2522](https://github.com/material-components/material-components-web/issues/2130)) ([9a9a8905](https://github.com/material-components/material-components-web/commit/9a9a8905dd07e8ef6559c3e67637993ab4ce2d5c))
+* **select**: use line ripple package to replace bottom line ([#2544](https://github.com/material-components/material-components-web/issues/2129)) ([9938d31a](https://github.com/material-components/material-components-web/commit/9938d31abc8edd97f88f3b4f11b2de12521e9579))
 
 ### Features
 
@@ -97,7 +98,8 @@
 * **chips:** Added a new chip variant (entry chips). Added new methods to MDCChipSet, MDCChipSetFoundation, and MDCChipSetAdapter.
 * **chips:** isSelected method added to MDCChip, and related methods added to MDCChipFoundation and MDCChipSetFoundation.
 * **floating-label:** Removes the (undocumented) mdc-floating-label-transition function
-
+* **select:** Removes the mdc-select__label class and uses mdc-floating-label for the floating label.
+* **select:** Removes the mdc-select__bottom-line class and uses the mdc-line-ripple instead. 
 
 
 <a name="0.34.1"></a>
