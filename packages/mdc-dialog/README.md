@@ -11,7 +11,7 @@ path: /catalog/dialogs/
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/dialog.html">
+     href="https://material-components.github.io/material-components-web-catalog/#/component/dialog">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/dialogs.png" width="714" alt="Dialogs screenshot">
   </a>
 </div>-->

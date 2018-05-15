@@ -11,7 +11,7 @@ path: /catalog/buttons/floating-action-buttons/
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/fab.html">
+     href="https://material-components.github.io/material-components-web-catalog/#/component/fab">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/fabs.png" width="78" alt="Floating action button screenshot">
   </a>
 </div>-->
