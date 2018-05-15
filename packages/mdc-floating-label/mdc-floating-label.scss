@@ -40,8 +40,13 @@
     cursor: text;
 
     @include mdc-rtl {
+      /* @noflip */
       right: 0;
+
+      /* @noflip */
       left: auto;
+
+      /* @noflip */
       transform-origin: right top;
     }
   }
