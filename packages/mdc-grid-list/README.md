@@ -7,31 +7,19 @@ iconId: card
 path: /catalog/grid-lists/
 -->
 
+## Important - Deprecation Notice
+
+The existing `MDCGridList` component and styles will be removed in a future release. Some of its functionality
+will be available in the [MDC Image List](../mdc-image-list) package instead. Bugs and feature requests
+will no longer be accepted for the `mdc-grid-list` package. It is recommended that you migrate to the
+`mdc-image-list` package to continue to receive new features and updates.
+
 # Grid Lists
 
-<!--<div class="article__asset">
-  <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/grid-list.html">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/grids.png" width="320" alt="Grid lists screenshot">
-  </a>
-</div>-->
-
-MDC Grid List provides a RTL-aware Material Design Grid list component adhering to the
-[Material Design Grid list spec](https://material.io/guidelines/components/grid-lists.html).
+MDC Grid List provides a RTL-aware Material Design Grid list component adhering to the Material Design Grid list spec.
 Grid Lists are best suited for presenting homogeneous data, typically images.
 Each item in a grid list is called a **tile**. Tiles maintain consistent width, height, and padding
 across screen sizes.
-
-## Design & API Documentation
-
-<ul class="icon-list">
-  <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/grid-lists.html">Material Design guidelines: Grid lists</a>
-  </li>
-  <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/grid-list.html">Demo</a>
-  </li>
-</ul>
 
 ## Installation
 
