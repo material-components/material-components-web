@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2018 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,21 +16,16 @@
 
 'use strict';
 
-const assetUploader = require('./lib/asset-uploader');
+const SOURCE_DIR = 'test/screenshot/';
 
-assetUploader.upload().then(handleUploadSuccess, handleUploadFailure);
+const Controller = require('./lib/controller');
+const controller = new Controller({sourceDir: SOURCE_DIR});
 
-function handleUploadSuccess(files) {
-  const htmlFileUrls =
-    files
-      .filter((file) => file.relativePath.endsWith('.html'))
-      .map((file) => file.fullUrl)
-      .sort();
-  console.log('\n\nDONE!\n\n');
-  console.log(htmlFileUrls.join('\n'));
-}
+controller.initialize()
+  .then(() => controller.uploadAllAssets(), handleError)
+;
 
-function handleUploadFailure(err) {
-  console.error('\n\nERROR!\n\n');
+function handleError(err) {
   console.error(err);
+  process.exit(1);
 }

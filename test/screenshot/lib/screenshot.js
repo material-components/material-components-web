@@ -16,74 +16,65 @@
 
 'use strict';
 
-const request = require('request-promise-native');
+const CbtApi = require('./cbt-api');
+const ParallelQueue = require('./parallel-queue');
 const Progress = require('./progress');
+const CbtUserAgent = require('./cbt-user-agent');
 
-const API_BASE_URL = 'https://crossbrowsertesting.com/api/v3';
-const API_USERNAME = process.env.CBT_USERNAME;
-const API_AUTHKEY = process.env.CBT_AUTHKEY;
+/** Maximum number of parallel screenshot requests allowed by our CBT plan. */
+const API_PARALLEL_REQUEST_LIMIT = 5;
 
 /** How long to wait between polling the API for status changes. */
 const API_POLL_INTERVAL_MS = 1000 * 5;
 
 /** How long to wait for a single URL to be captured in all browsers. */
-const API_MAX_WAIT_MS = 1000 * 60;
-
-/**
- * List of browsers to use.
- *
- * API documentation for the name format can be found at:
- * https://crossbrowsertesting.com/apidocs/v3/screenshots.html#!/default/post_screenshots
- *
- * TODO(acdvorak): Use CBT's API that returns the full list of browser names available:
- * https://crossbrowsertesting.com/apidocs/v3/screenshots.html#!/default/get_screenshots_browsers
- *
- * @type {!Array<string>}
- */
-const BROWSERS = [
-  'Chrome63x64',
-  'Edge16',
-];
+const API_MAX_WAIT_MS = 1000 * 60 * 5;
 
 /** Map of URLs to `Progress` objects. */
 const progressMap = new Map();
 
+const cbtApi = new CbtApi();
+
+/**
+ * @type {!ParallelQueue<string>}
+ */
+const requestQueue = new ParallelQueue({maxParallels: API_PARALLEL_REQUEST_LIMIT});
+
 module.exports = {
-  capture,
+  captureOneUrl,
 };
 
-async function capture(testPageUrls) {
-  return Promise.all(testPageUrls.map(captureOneUrl));
-}
-
 async function captureOneUrl(testPageUrl) {
-  logTestCaseProgress(testPageUrl, Progress.enqueued(BROWSERS.length));
+  const userAgents = await CbtUserAgent.fetchBrowsersToRun();
 
-  return sendCaptureRequest(testPageUrl)
+  logTestCaseProgress(testPageUrl, Progress.enqueued(userAgents.length));
+
+  return requestQueue.enqueue(testPageUrl)
     .then(
-      async (captureResponseBody) => handleCaptureResponse(testPageUrl, captureResponseBody),
-      async (err) => rejectWithError('captureOne', testPageUrl, err)
+      () => sendCaptureRequest(testPageUrl)
+    )
+    .then(
+      (captureResponseBody) => handleCaptureResponse(testPageUrl, captureResponseBody),
+      (err) => rejectWithError('captureOneUrl', testPageUrl, err)
+    )
+    .then(
+      (infoResponseBody) => {
+        requestQueue.dequeue(testPageUrl);
+        return Promise.resolve(infoResponseBody);
+      },
+      (err) => {
+        requestQueue.dequeue(testPageUrl);
+        return Promise.reject(err);
+      }
     );
 }
 
 async function sendCaptureRequest(testPageUrl) {
-  const options = {
-    method: 'POST',
-    uri: apiUrl('/screenshots/'),
-    auth: {
-      username: API_USERNAME,
-      password: API_AUTHKEY,
-    },
-    body: {
-      url: testPageUrl,
-      browsers: BROWSERS.join(','),
-    },
-    json: true, // Automatically stringify the request body and parse the response body as JSON
-  };
-
-  return request(options)
+  const userAgents = await CbtUserAgent.fetchBrowsersToRun();
+  return cbtApi.sendCaptureRequest(testPageUrl, userAgents)
     .catch(async (err) => {
       if (reachedParallelExecutionLimit(err)) {
+        console.warn(`Parallel execution limit reached - waiting for ${API_POLL_INTERVAL_MS} ms before retrying...`);
         // Wait a few seconds, then try again.
         await sleep(API_POLL_INTERVAL_MS);
         return sendCaptureRequest(testPageUrl);
@@ -104,7 +95,7 @@ async function handleCaptureResponse(testPageUrl, captureResponseBody) {
   while (isStillRunning() && !isTimedOut()) {
     // Wait a few seconds, then try again.
     await sleep(API_POLL_INTERVAL_MS);
-    infoResponseBody = await fetchScreenshotInfo(captureResponseBody.screenshot_test_id);
+    infoResponseBody = await cbtApi.fetchScreenshotInfo(captureResponseBody.screenshot_test_id);
     infoProgress = computeTestCaseProgress(testPageUrl, infoResponseBody);
     logTestCaseProgress(testPageUrl, infoProgress);
   }
@@ -129,18 +120,6 @@ async function handleCaptureResponse(testPageUrl, captureResponseBody) {
   logTestCaseProgress(testPageUrl, infoProgress);
 
   return Promise.resolve(infoResponseBody);
-}
-
-async function fetchScreenshotInfo(screenshotTestId) {
-  return request({
-    method: 'GET',
-    uri: apiUrl(`/screenshots/${screenshotTestId}`),
-    auth: {
-      username: API_USERNAME,
-      password: API_AUTHKEY,
-    },
-    json: true, // Automatically stringify the request body and parse the response body as JSON
-  });
 }
 
 function computeTestCaseProgress(testPageUrl, screenshotInfoResponseBody) {
@@ -170,10 +149,6 @@ function rejectWithError(functionName, testPageUrl, err) {
   return Promise.reject(err);
 }
 
-function apiUrl(apiEndpointPath) {
-  return `${API_BASE_URL}${apiEndpointPath}`;
-}
-
 async function sleep(ms) {
   return new Promise((resolve) => {
     setTimeout(() => resolve(), ms);
@@ -185,8 +160,9 @@ function logTestCaseProgress(testPageUrl, testPageProgress) {
 
   const aggregateProgress = computeTestSuiteProgress();
   const finished = aggregateProgress.finished;
+  const running = aggregateProgress.running;
   const total = aggregateProgress.total;
   const pct = Math.floor(aggregateProgress.percent);
 
-  process.stdout.write(`\r${finished} of ${total} screenshots finished (${pct}% complete)`);
+  console.log(`${finished} of ${total} screenshots finished, ${running} running (${pct}% complete)`);
 }
