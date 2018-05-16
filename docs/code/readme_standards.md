@@ -134,7 +134,7 @@ Method Signature | Description
 This section documents usage of the Adapter and the Foundation. Methods are documented in [tabular format](#tabular-format).
 
 ~~~
-#### `MDCTextFieldAdapter`
+### `MDCTextFieldAdapter`
 
 Method Signature | Description
 --- | ---
@@ -142,7 +142,7 @@ Method Signature | Description
 ~~~
 
 ~~~
-#### `MDCTextFieldFoundation`
+### `MDCTextFieldFoundation`
 
 Method Signature | Description
 --- | ---

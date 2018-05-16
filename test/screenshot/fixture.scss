@@ -17,18 +17,42 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,600,700");
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
-.test-main {
-  padding: 16px;
+$test-trim-color: #abc123; // Value must match `TRIM_COLOR_CSS_VALUE` in `image-cropper.js`
+$test-button-cell-padding: 10px;
+$test-button-cell-margin: $test-button-cell-padding - 1; // account for 1px border
+$test-button-cell-width: 171px;
+$test-button-cell-height: 71px;
+$test-button-columns: 2;
+
+.test-body {
+  display: flex;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0 0 100px 0; // Extra padding at the bottom ensures that CBT's "chromeless" screenshots don't get cut off
 }
 
-.test-row {
+.test-main {
+  box-sizing: border-box;
+  border-right: 1px solid $test-trim-color;
+  border-bottom: 1px solid $test-trim-color;
+}
+
+.test-grid {
   display: flex;
-  flex-direction: row;
   flex-wrap: wrap;
-  margin: 0 0 24px 0;
+  box-sizing: border-box;
+  width: ($test-button-cell-width * $test-button-columns) + ($test-button-cell-margin * $test-button-columns);
 }
 
 .test-cell {
+  box-sizing: border-box;
+  width: $test-button-cell-width;
+  height: $test-button-cell-height;
+  margin: 0 #{$test-button-cell-margin} #{$test-button-cell-margin} 0;
+
   // Ensure that shadows from adjacent components don't overlap
-  margin: 8px;
+  padding: $test-button-cell-padding;
+
+  // Ruler grid pattern
+  background-image: url("data:image/png;charset=utf-8;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAQAAAAnOwc2AAAAFElEQVQI12O4+x8TMgAJBnQ4VAQB8L1pQveqdHAAAAAASUVORK5CYII=");
 }
