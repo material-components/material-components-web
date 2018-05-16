@@ -24,6 +24,8 @@
   width: $width + $padding * 2;
   height: $height + $padding * 2;
   padding: $padding;
+
+
 }
 
 @mixin mdc-icon-button-font-size($font-size: 1.5rem) {
@@ -65,5 +67,12 @@
 
     cursor: default;
     pointer-events: none;
+  }
+
+  // stylelint-disable-next-line selector-max-type
+  svg,
+  img {
+    width: $mdc-icon-button-size;
+    height: $mdc-icon-button-size;
   }
 }

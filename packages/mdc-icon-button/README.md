@@ -43,7 +43,7 @@ npm install @material/icon-button
   favorite
 </button>
 ```
-> Note: The MDC Icon Button can be used with `<button>`, `<span>`, `<i>`, and `<a>` tags.
+> Note: The MDC Icon Button can be used with `<button>` and `<a>` tags.
 
 ### Styles
 
@@ -71,15 +71,14 @@ The icon button can be used to toggle between an on and off icon. To style an ic
 `data-toggle-on` and `data-toggle-off` attributes to the `mdc-icon-button` element. Then instantiate an `MDCIconToggle` on the root element. 
 
 ```html
-<i id="add-to-favorites"
+<button id="add-to-favorites"
    class="mdc-icon-button material-icons"
-   role="button"
    aria-label="Add to favorites"
    aria-hidden="true"
    data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
    data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
     favorites_border
-   </i>
+</button>
 ```
 
 ```js
@@ -107,8 +106,8 @@ an standard icon library. We recommend you use [Material Icons](https://material
 
 ### Disabled
 
-To disable an icon, add the `disabled` attribute directly to the `<button>` element, or set the `mdc-icon-button--disabled` 
-class on the icon button or toggle. Disabled icon buttons cannot be interacted with and have no visual interaction effect.
+To disable an icon, add the `disabled` attribute directly to the `<button>` element. Icon buttons that use the `<a>` tag
+cannot be disabled. Disabled icon buttons cannot be interacted with and have no visual interaction effect.
 
 ```html
 <button class="mdc-icon-button material-icons" disabled>
