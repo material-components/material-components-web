@@ -60,54 +60,84 @@
     <main>
       <div class="mdc-toolbar-fixed-adjust"></div>
 
-      <section class="hero">
-        <div class="mdc-switch">
-          <input type="checkbox" class="mdc-switch__native-control" role="switch">
-          <div class="mdc-switch__background">
-            <div class="mdc-switch__knob"></div>
+      <div class="demo-wrapper">
+        <section class="hero">
+          <div class="mdc-switch">
+            <input type="checkbox" class="mdc-switch__native-control" role="switch">
+            <div class="mdc-switch__background">
+              <div class="mdc-switch__knob"></div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section class="example">
-        <h2>Enabled</h2>
-        <div class="demo-switch-wrapper">
-          <div class="mdc-switch">
-            <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" role="switch">
-            <div class="mdc-switch__background">
-              <div class="mdc-switch__knob"></div>
+        <section class="example">
+          <h2>Enabled</h2>
+          <div class="demo-switch-wrapper">
+            <div class="mdc-switch">
+              <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" role="switch">
+              <div class="mdc-switch__background">
+                <div class="mdc-switch__knob"></div>
+              </div>
             </div>
+            <label for="basic-switch" class="mdc-switch-label">off/on</label>
           </div>
-          <label for="basic-switch" class="mdc-switch-label">off/on</label>
-        </div>
-        <div class="demo-switch-wrapper">
-          <div class="mdc-switch demo-switch--custom">
-            <input type="checkbox" id="basic-switch-custom" class="mdc-switch__native-control" role="switch" checked>
-            <div class="mdc-switch__background">
-              <div class="mdc-switch__knob"></div>
+          <div class="demo-switch-wrapper">
+            <div class="mdc-switch demo-switch--custom">
+              <input type="checkbox" 
+                    id="basic-switch-custom" 
+                    class="mdc-switch__native-control" 
+                    role="switch" checked>
+              <div class="mdc-switch__background">
+                <div class="mdc-switch__knob"></div>
+              </div>
             </div>
+            <label for="basic-switch-custom" class="mdc-switch-label">custom color</label>
           </div>
-          <label for="basic-switch-custom" class="mdc-switch-label">custom color</label>
-        </div>
-      </section>
-      <section class="example">
-        <h2>Disabled</h2>
-        <div class="demo-switch-wrapper">
-          <div class="mdc-switch">
+        </section>
+        <section class="example">
+          <h2>Disabled</h2>
+          <div class="demo-switch-wrapper">
+            <div class="mdc-switch">
+              <input type="checkbox"
+                    id="basic-switch--disabled"
+                    class="mdc-switch__native-control"
+                    role="switch"
+                    disabled>
+              <div class="mdc-switch__background">
+                <div class="mdc-switch__knob"></div>
+              </div>
+            </div>
+            <label for="basic-switch--disabled" class="mdc-switch-label">off/on</label>
+          </div>
+        </section>
+      </div>
+
+      <section class="rtl-toggle">
+        <div class="mdc-form-field">
+          <div class="mdc-checkbox">
             <input type="checkbox"
-                   id="basic-switch--disabled"
-                   class="mdc-switch__native-control"
-                   role="switch"
-                   disabled>
-            <div class="mdc-switch__background">
-              <div class="mdc-switch__knob"></div>
+                  class="mdc-checkbox__native-control"
+                  id="toggle-rtl"
+                  aria-labelledby="toggle-rtl-label" />
+            <div class="mdc-checkbox__background">
+              <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                <path class="mdc-checkbox__checkmark-path" fill="none" stroke="white"
+                      d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+              </svg>
+              <div class="mdc-checkbox__mixedmark"></div>
             </div>
           </div>
-          <label for="basic-switch--disabled" class="mdc-switch-label">off/on</label>
+          <label for="toggle-rtl" id="toggle-rtl-label">Toggle RTL</label>
         </div>
       </section>
     </main>
 
     <script src="/assets/material-components-web.js" async></script>
+    <script>
+      const demoWrapper = document.querySelector('.demo-wrapper');
+      document.getElementById('toggle-rtl').addEventListener('change', function() {
+        this.checked ? demoWrapper.setAttribute('dir', 'rtl') : demoWrapper.removeAttribute('dir');
+      });
+    </script>
   </body>
 </html>

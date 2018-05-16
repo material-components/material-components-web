@@ -15,6 +15,7 @@
 //
 
 @import "@material/elevation/mixins";
+@import "@material/rtl/mixins";
 @import "./functions";
 @import "./mixins";
 @import "./variables";
@@ -36,6 +37,10 @@
 
     &:checked {
       transform: translateX($mdc-switch-knob-active-margin);
+
+      @include mdc-rtl {
+        transform: translateX(-($mdc-switch-knob-active-margin));
+      }
     }
   }
 }
@@ -77,11 +82,11 @@
 
 .mdc-switch__knob {
   @include mdc-elevation(2);
+  @include mdc-rtl-reflexive-position(left, 0);
 
   display: block;
   position: absolute;
   top: $mdc-switch-knob-vertical-offset_;
-  left: 0;
   width: $mdc-switch-knob-diameter;
   height: $mdc-switch-knob-diameter;
   transform: translateX(0);
@@ -118,6 +123,10 @@
 
   .mdc-switch__knob {
     transform: translateX($mdc-switch-knob-active-margin);
+
+    @include mdc-rtl {
+      transform: translateX(-($mdc-switch-knob-active-margin));
+    }
 
     // Focus indicator
     &::before {

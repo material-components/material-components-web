@@ -18,9 +18,8 @@
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
 $test-trim-color: #abc123; // Value must match `TRIM_COLOR_CSS_VALUE` in `image-cropper.js`
-$test-ruler-color: #ddd;
-$test-ruler-granularity: 10px;
-$test-button-cell-margin: $test-ruler-granularity - 1;
+$test-button-cell-padding: 10px;
+$test-button-cell-margin: $test-button-cell-padding - 1; // account for 1px border
 $test-button-cell-width: 171px;
 $test-button-cell-height: 71px;
 $test-button-columns: 2;
@@ -52,13 +51,8 @@ $test-button-columns: 2;
   margin: 0 #{$test-button-cell-margin} #{$test-button-cell-margin} 0;
 
   // Ensure that shadows from adjacent components don't overlap
-  padding: $test-ruler-granularity;
+  padding: $test-button-cell-padding;
 
   // Ruler grid pattern
-  // https://stackoverflow.com/a/32861765/467582
-  background-image:
-    linear-gradient(to right, #{$test-ruler-color} 1px, transparent 1.01px),  // fraction for IE 11
-    linear-gradient(to bottom, #{$test-ruler-color} 1px, transparent 1.01px); // fraction for IE 11
-
-  background-size: #{$test-ruler-granularity} #{$test-ruler-granularity};
+  background-image: url("data:image/png;charset=utf-8;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAQAAAAnOwc2AAAAFElEQVQI12O4+x8TMgAJBnQ4VAQB8L1pQveqdHAAAAAASUVORK5CYII=");
 }
