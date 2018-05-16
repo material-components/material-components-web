@@ -25,10 +25,10 @@ const cpFile = require('cp-file');
 const toSlugCase = require('to-slug-case');
 const {sync: globSync} = require('glob');
 
-const PKG_RE = /(?:material\-components\-web)|(?:mdc\.[a-zA-Z\-]+)/;
+const PKG_RE = /(?:material-components-web)|(?:mdc\.[a-zA-Z\-]+)/;
 
 const isValidCwd = (
-  path.basename(process.cwd()) === 'material-components-web' &&
+  require('../package.json').description === 'Material Components Web' &&
   fs.existsSync('packages') &&
   fs.existsSync('build')
 );
@@ -38,7 +38,7 @@ if (!isValidCwd) {
     'Invalid CWD. Please ensure you are running this from the root of the repo, ' +
     'and that you have run `npm run dist`'
   );
-  process.exit(0);
+  process.exit(1);
 }
 
 function getAssetEntry(asset) {

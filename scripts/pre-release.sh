@@ -19,10 +19,34 @@
 set -e
 
 function log() {
-  echo '\033[36m[pre-release]\033[0m' "$@"
+  echo -e '\033[36m[pre-release]\033[0m' "$@"
+}
+
+function prompt() {
+  local REPLY='...dummy value...'
+  while [[ $REPLY != '' ]] && [[ ! $REPLY =~ ^[YyNn]$ ]]; do
+    echo -e -n '\033[31m[pre-release]\033[0m' "$@" '[y/N]: '
+    read -r
+  done
+  [[ $REPLY =~ ^[Yy]$ ]] && return 0 || return 1
 }
 
 log "Running pre-flight sanity checks..."
+
+log "Checking out 'master' and pulling latest commits from GitHub..."
+git checkout master
+git pull --tags
+LOCAL_CHANGE_COUNT=$(git status --porcelain=v1 | wc -l)
+if [[ $LOCAL_CHANGE_COUNT -gt 0 ]]; then
+  git status
+  echo
+  if prompt "WARNING: There are $LOCAL_CHANGE_COUNT locally modified files. Continue?"; then
+    log 'YOU HAVE BEEN WARNED! Continuing...'
+  else
+    log 'Aborting!'
+    exit 1
+  fi
+fi
 
 log "Checking that you can publish to npm..."
 NPM_USER=$(npm whoami)
@@ -51,16 +75,7 @@ sh ./scripts/dependency-test.sh
 
 log "Running npm test to ensure no breakages..."
 npm test
-echo ""
+echo
 
-log "Building packages..."
-npm run dist
-echo ""
-
-log "Moving built assets to package directories..."
-node scripts/cp-pkgs.js
-echo ""
-
-log "Pre-release steps done! Next, you should run:" \
-    "\$(npm bin)/lerna publish --skip-git"
-echo ""
+log "Pre-release steps done! Next, you should run: ./scripts/release.sh"
+echo

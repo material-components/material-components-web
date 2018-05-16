@@ -31,10 +31,11 @@ class PluginFactory {
 
   createCopyrightBannerPlugin({
     projectName = 'Material Components for the Web',
+    projectVersion = this.getProjectVersion_(),
     authorName = 'Google Inc.',
     licenseName = 'Apache-2.0',
   } = {}) {
-    return new CopyrightBannerPlugin({projectName, authorName, licenseName});
+    return new CopyrightBannerPlugin({projectName, projectVersion, authorName, licenseName});
   }
 
   createCssCleanupPlugin({cleanupDirRelativePath} = {}) {
@@ -46,6 +47,11 @@ class PluginFactory {
 
   createCssExtractorPlugin(outputFilenamePattern) {
     return new ExtractTextPlugin(outputFilenamePattern);
+  }
+
+  getProjectVersion_() {
+    const lernaJson = require('../../lerna.json');
+    return lernaJson.version;
   }
 }
 
