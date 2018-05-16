@@ -18,7 +18,6 @@
 
 const fs = require('mz/fs');
 const glob = require('glob');
-const path = require('path');
 
 const CbtUserAgent = require('./cbt-user-agent');
 const CliArgParser = require('./cli-arg-parser');
@@ -38,21 +37,12 @@ const {Storage, UploadableFile, UploadableTestCase} = require('./storage');
  * 4. Diff captured screenshots against existing golden.json
  */
 class Controller {
-  /**
-   * @param {string} sourceDir Relative path to the local `test/screenshot/` directory, relative to Node's $PWD.
-   */
-  constructor({sourceDir}) {
+  constructor() {
     /**
-     * @type {string}
+     * @type {!CliArgParser}
      * @private
      */
-    this.sourceDir_ = sourceDir;
-
-    /**
-     * @type {string}
-     * @private
-     */
-    this.goldenJsonFilePath_ = path.join(this.sourceDir_, 'golden.json');
+    this.cliArgs_ = new CliArgParser();
 
     /**
      * @type {!Storage}
@@ -77,12 +67,6 @@ class Controller {
      * @private
      */
     this.imageDiffer_ = new ImageDiffer({imageCache: this.imageCache_});
-
-    /**
-     * @type {!CliArgParser}
-     * @private
-     */
-    this.cliArgs_ = new CliArgParser();
 
     /**
      * @type {!SnapshotStore}
@@ -113,7 +97,7 @@ class Controller {
      * Relative paths of all asset files (HTML, CSS, JS) that will be uploaded.
      * @type {!Array<string>}
      */
-    const assetFileRelativePaths = glob.sync('**/*', {cwd: this.sourceDir_, nodir: true});
+    const assetFileRelativePaths = glob.sync('**/*', {cwd: this.cliArgs_.testDir, nodir: true});
 
     /** @type {!Array<!Promise<!UploadableFile>>} */
     const uploadPromises = assetFileRelativePaths.map((assetFileRelativePath) => {
@@ -140,7 +124,7 @@ class Controller {
     const assetFile = new UploadableFile({
       destinationParentDirectory: this.baseUploadDir_,
       destinationRelativeFilePath: assetFileRelativePath,
-      fileContent: await fs.readFile(`${this.sourceDir_}/${assetFileRelativePath}`),
+      fileContent: await fs.readFile(`${this.cliArgs_.testDir}/${assetFileRelativePath}`),
     });
 
     return this.storage_.uploadFile(assetFile)
@@ -289,10 +273,8 @@ class Controller {
    * @return {!Promise<!Array<!UploadableTestCase>>}
    */
   async updateGoldenJson({testCases}) {
-    await this.snapshotStore_.writeToDisk({
-      jsonData: await this.snapshotStore_.fromTestCases(testCases),
-      jsonFilePath: this.goldenJsonFilePath_,
-    });
+    const jsonData = await this.snapshotStore_.fromTestCases(testCases);
+    await this.snapshotStore_.writeToDisk(jsonData);
     return testCases;
   }
 
@@ -304,7 +286,7 @@ class Controller {
     /** @type {!Array<!ImageDiffJson>} */
     const diffs = await this.imageDiffer_.compareAllPages({
       actualSuite: await this.snapshotStore_.fromTestCases(testCases),
-      expectedSuite: await this.snapshotStore_.fromMaster(this.goldenJsonFilePath_),
+      expectedSuite: await this.snapshotStore_.fromDiffBase(),
     });
 
     return Promise.all(diffs.map((diff) => this.uploadOneDiffImage_(diff)))

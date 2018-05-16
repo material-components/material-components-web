@@ -38,12 +38,11 @@ class GitRepo {
   }
 
   /**
-   * @param {string} branch
-   * @param {string=} remote
+   * @param {!Array<string>} args
    * @return {!Promise<void>}
    */
-  async fetch(branch, remote = 'origin') {
-    return this.repo_.fetch([remote, branch]);
+  async fetch(args = []) {
+    return this.repo_.fetch(args);
   }
 
   /**

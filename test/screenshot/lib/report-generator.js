@@ -18,6 +18,8 @@ const GitRepo = require('./git-repo');
 const CliArgParser = require('./cli-arg-parser');
 const child_process = require('mz/child_process'); // eslint-disable-line
 
+const GITHUB_REPO_URL = 'https://github.com/material-components/material-components-web';
+
 class ReportGenerator {
   constructor({testCases, diffs}) {
     /**
@@ -113,11 +115,11 @@ class ReportGenerator {
       .join(' ')
     ;
 
-    const diffBase = this.cliArgs_.diffBase;
-    const gitSnapshotCommit = await this.gitRepo_.getShortCommitHash();
-    const gitSnapshotBranch = await this.gitRepo_.getBranchName();
-    const gitGoldenCommit = await this.gitRepo_.getShortCommitHash(diffBase).catch(() => null);
-    const gitGoldenBranch = await this.gitRepo_.getBranchName(diffBase).catch(() => diffBase);
+    const goldenDiffSource = await this.cliArgs_.parseDiffBase();
+    const snapshotDiffSource = await this.cliArgs_.parseDiffBase({
+      rawDiffBase: 'HEAD',
+    });
+
     const gitUserName = await this.gitRepo_.getUserName();
     const gitUserEmail = await this.gitRepo_.getUserEmail();
     const gitUser = `&lt;${gitUserName}&gt; ${gitUserEmail}`;
@@ -152,22 +154,22 @@ class ReportGenerator {
         <tr>
           <th class="report-metadata__cell report-metadata__cell--key">Golden:</th>
           <td class="report-metadata__cell report-metadata__cell--val">
-            ${this.getCommitLinkMarkup_(gitGoldenCommit, gitGoldenBranch)}
+            ${this.getCommitLinkMarkup_(goldenDiffSource)}
           </td>
         </tr>
         <tr>
           <th class="report-metadata__cell report-metadata__cell--key">Snapshot:</th>
           <td class="report-metadata__cell report-metadata__cell--val">
-            ${this.getCommitLinkMarkup_(gitSnapshotCommit, gitSnapshotBranch)}
+            ${this.getCommitLinkMarkup_(snapshotDiffSource)}
           </td>
-        </tr>
-        <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">Node Version:</th>
-          <td class="report-metadata__cell report-metadata__cell--val">${nodeVersion}</td>
         </tr>
         <tr>
           <th class="report-metadata__cell report-metadata__cell--key">User:</th>
           <td class="report-metadata__cell report-metadata__cell--val">${gitUser}</td>
+        </tr>
+        <tr>
+          <th class="report-metadata__cell report-metadata__cell--key">Node Version:</th>
+          <td class="report-metadata__cell report-metadata__cell--val">${nodeVersion}</td>
         </tr>
         <tr>
           <th class="report-metadata__cell report-metadata__cell--key">NPM Version:</th>
@@ -184,21 +186,42 @@ class ReportGenerator {
 `;
   }
 
-  getCommitLinkMarkup_(commit, branch) {
-    if (commit) {
-      const GITHUB_REPO_URL = 'https://github.com/material-components/material-components-web';
-      return `
-<a href="${GITHUB_REPO_URL}/commit/${commit}">${commit}</a>
-on
-<a href="${GITHUB_REPO_URL}/tree/${branch.replace('origin/', '')}">${branch}</a>
+  /**
+   * @param {!DiffSource} diffSource
+   * @return {string}
+   * @private
+   */
+  getCommitLinkMarkup_(diffSource) {
+    if (diffSource.publicUrl) {
+      return `<a href="${diffSource.publicUrl}">${diffSource.publicUrl}</a>`;
+    }
+
+    if (diffSource.localFilePath) {
+      return `${diffSource.localFilePath} (local file)`;
+    }
+
+    if (diffSource.gitRevision) {
+      const rev = diffSource.gitRevision;
+
+      if (rev.branch) {
+        const branchDisplayName = rev.remote ? `${rev.remote}/${rev.branch}` : rev.branch;
+        return `
+<a href="${GITHUB_REPO_URL}/blob/${rev.commit}/${rev.snapshotFilePath}">${rev.commit}</a>
+on branch
+<a href="${GITHUB_REPO_URL}/blob/${rev.branch}/${rev.snapshotFilePath}">${branchDisplayName}</a>
 `;
-    }
+      }
 
-    if (/^https?:/.test(branch)) {
-      return `<a href="${branch}">${branch}</a>`;
-    }
+      if (rev.tag) {
+        return `
+<a href="${GITHUB_REPO_URL}/blob/${rev.commit}/${rev.snapshotFilePath}">${rev.commit}</a>
+on tag
+<a href="${GITHUB_REPO_URL}/blob/${rev.tag}/${rev.snapshotFilePath}">${rev.tag}</a>
+`;
+      }
 
-    return `${branch} (local)`;
+      throw new Error('Unable to generate markup for invalid diff source');
+    }
   }
 
   getCollapseButtonMarkup_() {

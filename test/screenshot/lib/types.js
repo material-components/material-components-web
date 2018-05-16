@@ -79,6 +79,32 @@ let ImageDiffJson;
 
 
 /*
+ * CLI args
+ */
+
+
+/**
+ * @typedef {{
+ *   publicUrl: ?string,
+ *   localFilePath: ?string,
+ *   gitRevision: ?GitRevision,
+ * }}
+ */
+let DiffSource;
+
+/**
+ * @typedef {{
+ *   snapshotFilePath: string,
+ *   commit: string,
+ *   remote: ?string,
+ *   branch: ?string,
+ *   tag: ?string,
+ * }}
+ */
+let GitRevision;
+
+
+/*
  * Resemble.js API externs
  */
 
