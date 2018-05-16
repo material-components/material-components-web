@@ -163,6 +163,8 @@ E.g., 'origin/master' (default), 'HEAD', 'feat/foo/bar', 'fad7ed3:path/to/golden
   }
 
   /**
+   * @param {string} rawDiffBase
+   * @param {string} defaultGoldenPath
    * @return {!Promise<!DiffSource>}
    */
   async parseDiffBase({
@@ -175,22 +177,14 @@ E.g., 'origin/master' (default), 'HEAD', 'feat/foo/bar', 'fad7ed3:path/to/golden
     // E.g.: `--mdc-diff-base=https://storage.googleapis.com/.../golden.json`
     const isUrl = HTTP_URL_REGEX.test(rawDiffBase);
     if (isUrl) {
-      return {
-        publicUrl: rawDiffBase,
-        localFilePath: null,
-        gitRevision: null,
-      };
+      return this.createPublicUrlDiffSource_(rawDiffBase);
     }
 
     // Diff against a local `golden.json` file.
     // E.g.: `--mdc-diff-base=/tmp/golden.json`
     const isLocalFile = await fs.exists(rawDiffBase);
     if (isLocalFile) {
-      return {
-        publicUrl: null,
-        localFilePath: rawDiffBase,
-        gitRevision: null,
-      };
+      return this.createLocalFileDiffSource_(rawDiffBase);
     }
 
     const [inputGoldenRef, inputGoldenPath] = rawDiffBase.split(':');
@@ -200,22 +194,62 @@ E.g., 'origin/master' (default), 'HEAD', 'feat/foo/bar', 'fad7ed3:path/to/golden
     // Diff against a specific git commit.
     // E.g.: `--mdc-diff-base=abcd1234`
     if (!fullGoldenRef) {
-      return {
-        publicUrl: null,
-        localFilePath: null,
-        gitRevision: {
-          commit: inputGoldenRef,
-          snapshotFilePath: goldenFilePath,
-          remote: null,
-          branch: null,
-          tag: null,
-        },
-      };
+      return this.createCommitDiffSource_(inputGoldenRef, goldenFilePath);
     }
 
+    const {remoteRef, localRef, tagRef} = this.getRefType_(fullGoldenRef);
+
+    // Diff against a remote git branch.
+    // E.g.: `--mdc-diff-base=origin/master` or `--mdc-diff-base=origin/feat/button/my-fancy-feature`
+    if (remoteRef) {
+      return this.createRemoteBranchDiffSource_(remoteRef, goldenFilePath);
+    }
+
+    // Diff against a remote git tag.
+    // E.g.: `--mdc-diff-base=v0.34.1`
+    if (tagRef) {
+      return this.createRemoteTagDiffSource_(tagRef, goldenFilePath);
+    }
+
+    // Diff against a local git branch.
+    // E.g.: `--mdc-diff-base=master` or `--mdc-diff-base=HEAD`
+    return this.createLocalBranchDiffSource_(localRef, goldenFilePath);
+  }
+
+  createPublicUrlDiffSource_(publicUrl) {
+    return {
+      publicUrl,
+      localFilePath: null,
+      gitRevision: null,
+    };
+  }
+
+  createLocalFileDiffSource_(localFilePath) {
+    return {
+      publicUrl: null,
+      localFilePath,
+      gitRevision: null,
+    };
+  }
+
+  createCommitDiffSource_(commit, snapshotFilePath) {
+    return {
+      publicUrl: null,
+      localFilePath: null,
+      gitRevision: {
+        commit,
+        snapshotFilePath,
+        remote: null,
+        branch: null,
+        tag: null,
+      },
+    };
+  }
+
+  getRefType_(fullRef) {
     const getShortGoldenRef = (type) => {
       const regex = new RegExp(`^refs/${type}s/(.+)$`);
-      const match = regex.exec(fullGoldenRef) || [];
+      const match = regex.exec(fullRef) || [];
       return match[1];
     };
 
@@ -223,55 +257,53 @@ E.g., 'origin/master' (default), 'HEAD', 'feat/foo/bar', 'fad7ed3:path/to/golden
     const localRef = getShortGoldenRef('head');
     const tagRef = getShortGoldenRef('tag');
 
-    // Diff against a remote git branch.
-    // E.g.: `--mdc-diff-base=origin/master` or `--mdc-diff-base=origin/feat/button/my-fancy-feature`
-    if (remoteRef) {
-      const allRemoteNames = await this.gitRepo_.getRemoteNames();
-      const remoteName = allRemoteNames.find((curRemoteName) => remoteRef.startsWith(curRemoteName + '/'));
-      const remoteBranch = remoteRef.substr(remoteName.length + 1); // add 1 for forward-slash separator
-      const remoteCommit = await this.gitRepo_.getShortCommitHash(remoteRef);
+    return {remoteRef, localRef, tagRef};
+  }
 
-      return {
-        publicUrl: null,
-        localFilePath: null,
-        gitRevision: {
-          snapshotFilePath: goldenFilePath,
-          commit: remoteCommit,
-          remote: remoteName,
-          branch: remoteBranch,
-          tag: null,
-        },
-      };
-    }
+  async createRemoteBranchDiffSource_(remoteRef, snapshotFilePath) {
+    const allRemoteNames = await this.gitRepo_.getRemoteNames();
+    const remote = allRemoteNames.find((curRemoteName) => remoteRef.startsWith(curRemoteName + '/'));
+    const branch = remoteRef.substr(remote.length + 1); // add 1 for forward-slash separator
+    const commit = await this.gitRepo_.getShortCommitHash(remoteRef);
 
-    // Diff against a remote git tag.
-    // E.g.: `--mdc-diff-base=v0.34.1`
-    if (tagRef) {
-      const tagCommit = await this.gitRepo_.getShortCommitHash(tagRef);
-      return {
-        publicUrl: null,
-        localFilePath: null,
-        gitRevision: {
-          snapshotFilePath: goldenFilePath,
-          commit: tagCommit,
-          remote: 'origin',
-          branch: null,
-          tag: tagRef,
-        },
-      };
-    }
-
-    // Diff against a local git branch.
-    // E.g.: `--mdc-diff-base=master` or `--mdc-diff-base=HEAD`
-    const localCommit = await this.gitRepo_.getShortCommitHash(localRef);
     return {
       publicUrl: null,
       localFilePath: null,
       gitRevision: {
-        snapshotFilePath: goldenFilePath,
-        commit: localCommit,
+        snapshotFilePath,
+        commit,
+        remote,
+        branch,
+        tag: null,
+      },
+    };
+  }
+
+  async createRemoteTagDiffSource_(tagRef, snapshotFilePath) {
+    const commit = await this.gitRepo_.getShortCommitHash(tagRef);
+    return {
+      publicUrl: null,
+      localFilePath: null,
+      gitRevision: {
+        snapshotFilePath,
+        commit,
+        remote: 'origin',
+        branch: null,
+        tag: tagRef,
+      },
+    };
+  }
+
+  async createLocalBranchDiffSource_(branch, snapshotFilePath) {
+    const commit = await this.gitRepo_.getShortCommitHash(branch);
+    return {
+      publicUrl: null,
+      localFilePath: null,
+      gitRevision: {
+        snapshotFilePath,
+        commit,
         remote: null,
-        branch: localRef,
+        branch,
         tag: null,
       },
     };

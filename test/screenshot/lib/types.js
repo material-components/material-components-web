@@ -40,6 +40,7 @@
  * ```
  * @typedef {!Object<string, !SnapshotPageJson>}
  */
+
 let SnapshotSuiteJson;
 
 /**
