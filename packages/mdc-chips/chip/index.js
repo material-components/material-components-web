@@ -83,14 +83,6 @@ class MDCChip extends MDCComponent {
   }
 
   /**
-   * Destroys the chip and removes the root element from the DOM.
-   */
-  // remove() {
-  //   this.root_.parentNode.removeChild(this.root_);
-  //   this.destroy();
-  // }
-
-  /**
    * @return {!MDCChipFoundation}
    */
   get foundation() {
