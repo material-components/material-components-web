@@ -1,5 +1,22 @@
 /**
  * @license
+ * Copyright 2018 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * @license
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,15 +33,15 @@
  */
 
 import MDCComponent from '@material/base/component';
-import MDCIconToggleFoundation from './foundation';
+import MDCIconButtonToggleFoundation from './foundation';
 import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
 
 /**
- * @extends {MDCComponent<!MDCIconToggleFoundation>}
+ * @extends {MDCComponent<!MDCIconButtonToggleFoundation>}
  */
-class MDCIconToggle extends MDCComponent {
+class MDCIconButtonToggle extends MDCComponent {
   static attachTo(root) {
-    return new MDCIconToggle(root);
+    return new MDCIconButtonToggle(root);
   }
 
   constructor(...args) {
@@ -59,9 +76,9 @@ class MDCIconToggle extends MDCComponent {
     super.destroy();
   }
 
-  /** @return {!MDCIconToggleFoundation} */
+  /** @return {!MDCIconButtonToggleFoundation} */
   getDefaultFoundation() {
-    return new MDCIconToggleFoundation({
+    return new MDCIconButtonToggleFoundation({
       addClass: (className) => this.iconEl_.classList.add(className),
       removeClass: (className) => this.iconEl_.classList.remove(className),
       registerInteractionHandler: (type, handler) => this.root_.addEventListener(type, handler),
@@ -72,13 +89,13 @@ class MDCIconToggle extends MDCComponent {
       getAttr: (name, value) => this.root_.getAttribute(name, value),
       setAttr: (name, value) => this.root_.setAttribute(name, value),
       rmAttr: (name) => this.root_.removeAttribute(name),
-      notifyChange: (evtData) => this.emit(MDCIconToggleFoundation.strings.CHANGE_EVENT, evtData),
+      notifyChange: (evtData) => this.emit(MDCIconButtonToggleFoundation.strings.CHANGE_EVENT, evtData),
     });
   }
 
   initialSyncWithDOM() {
-    this.on = this.root_.getAttribute(MDCIconToggleFoundation.strings.ARIA_PRESSED) === 'true';
-    this.disabled = this.root_.getAttribute(MDCIconToggleFoundation.strings.ARIA_DISABLED) === 'true';
+    this.on = this.root_.getAttribute(MDCIconButtonToggleFoundation.strings.ARIA_PRESSED) === 'true';
+    this.disabled = this.root_.getAttribute(MDCIconButtonToggleFoundation.strings.ARIA_DISABLED) === 'true';
   }
 
   /** @return {!MDCRipple} */
@@ -111,4 +128,4 @@ class MDCIconToggle extends MDCComponent {
   }
 }
 
-export {MDCIconToggle, MDCIconToggleFoundation};
+export {MDCIconButtonToggle, MDCIconButtonToggleFoundation};

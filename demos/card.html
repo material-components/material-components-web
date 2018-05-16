@@ -58,7 +58,7 @@
               <button class="mdc-button mdc-card__action mdc-card__action--button">Bookmark</button>
             </div>
             <div class="mdc-card__action-icons">
-              <i class="mdc-icon-toggle material-icons mdc-card__action mdc-card__action--icon"
+              <i class="mdc-icon-button material-icons mdc-card__action mdc-card__action--icon"
                  tabindex="0"
                  role="button"
                  aria-pressed="false"
@@ -152,7 +152,7 @@
             </div>
           </a>
           <div class="mdc-card__actions mdc-card__action-icons">
-            <i class="mdc-icon-toggle material-icons mdc-card__action mdc-card__action--icon"
+            <i class="mdc-icon-button material-icons mdc-card__action mdc-card__action--icon"
                tabindex="0"
                role="button"
                aria-pressed="false"
@@ -162,7 +162,7 @@
                data-toggle-off='{"content": "favorite_border", "label": "Add to favorites"}'>
               favorite_border
             </i>
-            <i class="mdc-icon-toggle material-icons mdc-card__action mdc-card__action--icon"
+            <i class="mdc-icon-button material-icons mdc-card__action mdc-card__action--icon"
                tabindex="0"
                role="button"
                aria-pressed="false"
@@ -245,11 +245,11 @@
           mdc.ripple.MDCRipple.attachTo(surface);
         });
 
-        [].forEach.call(document.querySelectorAll('.mdc-icon-toggle'), function(iconToggle) {
-          mdc.iconToggle.MDCIconToggle.attachTo(iconToggle);
+        [].forEach.call(document.querySelectorAll('.mdc-icon-button'), function(iconButtonToggle) {
+          mdc.iconButton.MDCIconButtonToggle.attachTo(iconButtonToggle);
         });
 
-        document.addEventListener('MDCIconToggle:change', function(evt) {
+        document.addEventListener('MDCIconButtonToggle:change', function(evt) {
           evt.target.setAttribute('title', evt.target.getAttribute('aria-label'));
         });
 

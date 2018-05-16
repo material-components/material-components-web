@@ -51,7 +51,7 @@ autoInit.register('MDCFloatingLabel', floatingLabel.MDCFloatingLabel);
 autoInit.register('MDCFormField', formField.MDCFormField);
 autoInit.register('MDCRipple', ripple.MDCRipple);
 autoInit.register('MDCGridList', gridList.MDCGridList);
-autoInit.register('MDCIconButton', iconButton.MDCIconToggle);
+autoInit.register('MDCIconButtonToggle', iconButton.MDCIconButtonToggle);
 autoInit.register('MDCIconToggle', iconToggle.MDCIconToggle);
 autoInit.register('MDCLineRipple', lineRipple.MDCLineRipple);
 autoInit.register('MDCLinearProgress', linearProgress.MDCLinearProgress);

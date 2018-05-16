@@ -15,12 +15,7 @@ path: /catalog/buttons/icon-buttons/
   </a>
 </div>-->
 
-The MDC Icon Button component is a spec-aligned button component designed to be used with icons 
-and unbounded ripples. It works without JavaScript with basic functionality for all states.
-You can enhance the icon button to have ripple effects by instantiating `MDCRipple` on
-the `mdc-icon-button` element. See [MDC Ripple](../mdc-ripple) and 
-[Demo](https://material-components.github.io/material-components-web-catalog/#/component/icon-toggle) for details. 
-You can also use the icon button as a toggle button, where it uses 2 icons to represent an on and off state. 
+Icon buttons allow users to take actions, and make choices, with a single tap.
 
 ## Design & API Documentation
 
@@ -41,8 +36,6 @@ npm install @material/icon-button
 
 ## Usage
 
-In order to use MDC Icon Button, you will need to import an icon set or use an `svg` element. 
-
 ### HTML Structure
 
 ```html
@@ -52,44 +45,48 @@ In order to use MDC Icon Button, you will need to import an icon set or use an `
 ```
 > Note: The MDC Icon Button can be used with `<button>`, `<span>`, `<i>`, and `<a>` tags.
 
+### Styles
 
-Then in JS
+```scss
+@import "@material/icon-button/mdc-icon-button";
+```
+### JavaScript Instantiation
+
+The icon button will work without Javascript, but you can enhance it to hav ea ripple effect by instantiating `MDCRipple` on the root element. 
+See [MDC Ripple](../mdc-ripple) for details.
 
 ```js
-import {MDCIconToggle} from '@material/icon-toggle';
+import {MDCRipple} from '@material/ripple';
 
-MDCIconToggle.attachTo(document.querySelector('.mdc-icon-toggle'));
+const iconButtonRipple = new MDCRipple(document.querySelector('.mdc-icon-button'));
 ```
 
-Note that you can access `MDCIconToggle` via CommonJS/AMD using the `default` property of the
-`require`d object, as well as globally via `mdc.IconToggle`.
+> See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
 
-Also note that you may omit the initial `aria-label` attribute and `favorite_border` content since
-they will be added by the component. However, we recommend adding to prevent an initial flash of
-un-styled content.
+## Variants
 
-### Using with Font Awesome and similar libraries
+### Icon Toggle
 
-Font Awesome - as well as other popular icon font libraries - use pseudo-elements in order to
-provide the icon, via the `content` property. However, MDC Web uses pseudo-elements for ripple styles.
-In order to get around this, you can nest the icon itself inside the icon toggle.
+The icon button can be used to toggle between an on and off icon. To style an icon button as an icon toggle, add the 
+`data-toggle-on` and `data-toggle-off` attributes to the `mdc-icon-button` element. Then instantiate an `MDCIconToggle` on the root element. 
 
 ```html
-<span class="mdc-icon-toggle" role="button" aria-pressed="false"
-      aria-label="Star this item" tabindex="0"
-      data-icon-inner-selector=".fa"
-      data-toggle-on='{"cssClass": "fa-star", "label": "Unstar this item"}'
-      data-toggle-off='{"cssClass": "fa-star-o", "label": "Star this item"}'>
-  <i class="fa fa-star-o" aria-hidden="true"></i>
-</span>
+<i id="add-to-favorites"
+   class="mdc-icon-button material-icons"
+   role="button"
+   aria-label="Add to favorites"
+   aria-hidden="true"
+   data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
+   data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
+    favorites_border
+   </i>
 ```
 
-`data-icon-inner-selector` tells MDCIconToggle to look for an element within itself that matches
-that selector, and treat it as the element containing the icon. Also note the `aria-hidden`
-attribute on the icon. This is important to ensure that screen readers produce the correct output
-when reading this element.
+```js
+var toggleButton = new mdc.iconButton.MDCIconToggle(document.getElementById('add-to-favorites'));
+```
 
-### Configuring the icon toggle states
+#### Icon Toggle States
 
 Note the use of `data-toggle-on` and `data-toggle-off` in the above examples. When an MDCIconToggle
 instance is toggled, it looks at this data to determine how to update the element. This is what
@@ -103,69 +100,59 @@ Property | Description
 `content` | The text content to set on the element. Note that if an inner icon is used, the text content will be set on that element instead.
 `cssClass` | A css class to apply to the icon element for the given toggle state. The same rules regarding inner icon elements described for `content` apply here as well.
 
-### Disabled icon toggles
+### Icons 
+
+The icon button can be used with a standard icon library or an `svg`. The icon toggle should only be used with 
+an standard icon library. We recommend you use [Material Icons](https://material.io/icons/) from Google Fonts.
+
+### Disabled
+
+To disable an icon, add the `disabled` attribute directly to the `<button>` element, or set the `mdc-icon-button--disabled` 
+class on the icon button or toggle. Disabled icon buttons cannot be interacted with and have no visual interaction effect.
 
 ```html
-<i class="material-icon mdc-icon-toggle mdc-icon-toggle--disabled"
-   role="button" tabindex="-1" aria-pressed="false" aria-disabled="true"
-   data-toggle-on='{"content": "favorite"}' data-toggle-off='{"content": "favorite_border"}'></i>
+<button class="mdc-icon-button material-icons" disabled>
+  favorite
+</button>
 ```
 
-### Listening for change events
+## Style Customization
 
-`MDCIconToggle` emits an `MDCIconToggle:change` custom event when the value of the icon toggle
-changes _as a result of user input_. This decision was made to align with how `change` events work
-for normal inputs. In addition, these events do not bubble and cannot be cancelled.
+### CSS Classes
 
-The custom event's `detail` object contains a property `isOn` denoting whether or not the component
-is toggled on.
+CSS Class | Description
+--- | ---
+`mdc-icon-button` | Mandatory.
 
-```js
-const iconEl = document.querySelector('.mdc-icon-toggle');
-const status = document.getElementById('status');
-iconEl.addEventListener('MDCIconToggle:change', ({detail}) => {
-  status.textContent = `Icon Toggle is ${detail.isOn ? 'on' : 'off'}`;
-});
-```
+### Sass Mixins
 
-### Refreshing the toggle data via the vanilla component.
+To customize an icon button's color and properties, you can use the following mixins.
 
-When the icon toggle is initialized, the `data-toggle-on` and `data-toggle-off` attributes are
-cached to prevent redundant JSON parsing whenever the element is interacted with. However, if you
-need to, you can call `refreshToggleData()`:
+Mixin | Description
+--- | ---
+`mdc-icon-button-size($height, $width, $padding)` | Sets the height, width an padding for the icon and ripple. `$width` is optional and defaults to `$height`. `$padding` is optional and defaults to `$height/2`.
+`mdc-icon-font-size($font-size)` | Sets the font size for an icon. It will also set the height, width and padding of the element for the ripple to render correctly.
+`mdc-icon-button-ink-color($color)` | Sets the font color and the ripple color to the provided color value.
 
-```js
-iconToggle.refreshToggleData();
-```
 
-This simply forwards a call to the foundation's `refreshToggleData()` method, causing the
-`data-toggle-*` attributes to be re-parsed and updated.
+## `MDCIconToggle` Properties and Methods
 
-This method is useful for frameworks that incrementally render DOM. If an icon toggle's data
-attributes change, the component needs a way to update itself. This is the reason why this method is
-exposed on the foundation, and simply proxied by the vanilla component.
+Method Signature | Description
+--- | ---
+`on(isOn: boolean) => void` | Sets the toggle state to the provided `isOn` value.
+`disabled(isDisabled: boolean) => void` | Sets the icon toggle to the `disabled` state.
 
-### MDCIconToggle API
+### Events
 
-Similar to regular DOM elements, the `MDCIconToggle` functionality is exposed through accessor
-methods.
+Event Name | Event Data Structure | Description
+--- | --- | ---
+`MDCIconToggle` | `{"detail": {"isOn": boolean}}` | Emits when the icon is toggled.
 
-#### MDCIconToggle.on
+## Usage within Web Frameworks
 
-Boolean. Returns whether or not the icon toggle is currently toggled on. Setting this property
-will update the toggle state.
+If you are using a JavaScript framework, such as React or Angular, you can create a Icon Toggle for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
-#### MDCIconToggle.disabled
-
-Boolean. Returns whether or not the icon toggle is currently disabled. Setting this property will
-update the disabled state.
-
-### Using the Foundation Class
-
-MDCIconToggle ships with an `MDCIconToggleFoundation` class that external frameworks and libraries
-can use to build their own MDCIconToggle components with minimal effort. As with all foundation
-classes, an adapter object must be provided. The adapter for icon toggles must provide the following
-functions, with correct signatures:
+### `MDCIconToggleAdapter`
 
 Method Signature | Description
 --- | ---
@@ -181,51 +168,6 @@ Method Signature | Description
 `rmAttr(name: string) => void` | Removes the attribute `name` on the root element.
 `notifyChange(evtData: {isOn: boolean}) => void` | Broadcasts a change notification, passing along the `evtData` to the environment's event handling system. In our vanilla implementation, Custom Events are used for this.
 
-#### Adapter implementer considerations
+### Foundation: `MDCIconToggleFoundation`
 
-If you are writing your own adapter, one thing that needs to be considered is the use of
-`data-icon-inner-selector`. This is handled by us at the _component_ level, which means our
-foundation is completely unaware of it. To that end, if your framework's Icon Toggle support inner
-icon elements, you must ensure that `addClass`, `removeClass`, and `setText` apply to the correct
-icon element.
-
-Also note that _ripples require their own foundation at the component level_. Check out our vanilla
-implementation in `index.js` as a starting point.
-
-#### Full foundation API
-
-##### MDCIconToggleFoundation.refreshToggleData() => void
-
-As described above, the `data-toggle-*` attributes are cached so as not to have to perform redundant
-parsing. If your framework performs incremental rendering, and these attributes change without
-re-rendering the component itself, you can call this method to re-parse the data attributes and keep
-the foundation updated.
-
-##### MDCIconToggleFoundation.isOn() => boolean
-
-Returns true if the foundation's state is toggled on, false otherwise.
-
-##### MDCIconToggleFoundation.toggle(isOn: boolean = !this.isOn()) => void
-
-Toggles the foundation's state, updating the component via the adapter methods. Defaults to the
-toggling the opposite of the current state if no argument given. If an argument is given, will
-toggle on if true, off if false.
-
-##### MDCIconToggleFoundation.isDisabled() => boolean
-
-Returns true if the foundation's state is disabled, false otherwise.
-
-##### MDCIconToggleFoundation.setDisabled(isDisabled: boolean) => void
-
-Enables / disables the foundation's state, updating the component via the adapter methods.
-
-##### MDCIconToggleFoundation.isKeyboardActivated() => boolean
-
-Returns true if the foundation is currently activated by a keyboard event, false otherwise.
-Useful for MDCRippleFoundation's `isSurfaceActive()` adapter method.
-
-### Sass Mixins
-
-Mixin | Description
---- | ---
-`mdc-icon-toggle-ink-color($color)` | Sets the ink color of the icon toggle
+The foundation does not contain any public properties or methods aside from those inherited from MDCFoundation.

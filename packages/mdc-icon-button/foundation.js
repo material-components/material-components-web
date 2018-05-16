@@ -1,5 +1,22 @@
 /**
  * @license
+ * Copyright 2018 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * @license
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,13 +34,13 @@
 
 import MDCFoundation from '@material/base/foundation';
 /* eslint-disable no-unused-vars */
-import {MDCIconToggleAdapter, IconToggleEvent} from './adapter';
+import {MDCIconButtonToggleAdapter, IconButtonToggleEvent} from './adapter';
 import {cssClasses, strings} from './constants';
 
 /**
- * @extends {MDCFoundation<!MDCIconToggleAdapter>}
+ * @extends {MDCFoundation<!MDCIconButtonToggleAdapter>}
  */
-class MDCIconToggleFoundation extends MDCFoundation {
+class MDCIconButtonToggleFoundation extends MDCFoundation {
   static get cssClasses() {
     return cssClasses;
   }
@@ -44,12 +61,12 @@ class MDCIconToggleFoundation extends MDCFoundation {
       getAttr: (/* name: string */) => /* string */ '',
       setAttr: (/* name: string, value: string */) => {},
       rmAttr: (/* name: string */) => {},
-      notifyChange: (/* evtData: IconToggleEvent */) => {},
+      notifyChange: (/* evtData: IconButtonToggleEvent */) => {},
     };
   }
 
   constructor(adapter) {
-    super(Object.assign(MDCIconToggleFoundation.defaultAdapter, adapter));
+    super(Object.assign(MDCIconButtonToggleFoundation.defaultAdapter, adapter));
 
     /** @private {boolean} */
     this.on_ = false;
@@ -96,7 +113,7 @@ class MDCIconToggleFoundation extends MDCFoundation {
   }
 
   refreshToggleData() {
-    const {DATA_TOGGLE_ON, DATA_TOGGLE_OFF} = MDCIconToggleFoundation.strings;
+    const {DATA_TOGGLE_ON, DATA_TOGGLE_OFF} = MDCIconButtonToggleFoundation.strings;
     this.toggleOnData_ = this.parseJsonDataAttr_(DATA_TOGGLE_ON);
     this.toggleOffData_ = this.parseJsonDataAttr_(DATA_TOGGLE_OFF);
   }
@@ -111,7 +128,7 @@ class MDCIconToggleFoundation extends MDCFoundation {
   toggleFromEvt_() {
     this.toggle();
     const {on_: isOn} = this;
-    this.adapter_.notifyChange(/** @type {!IconToggleEvent} */ ({isOn}));
+    this.adapter_.notifyChange(/** @type {!IconButtonToggleEvent} */ ({isOn}));
   }
 
   /** @return {boolean} */
@@ -123,7 +140,7 @@ class MDCIconToggleFoundation extends MDCFoundation {
   toggle(isOn = !this.on_) {
     this.on_ = isOn;
 
-    const {ARIA_LABEL, ARIA_PRESSED} = MDCIconToggleFoundation.strings;
+    const {ARIA_LABEL, ARIA_PRESSED} = MDCIconButtonToggleFoundation.strings;
 
     if (this.on_) {
       this.adapter_.setAttr(ARIA_PRESSED, 'true');
@@ -172,8 +189,8 @@ class MDCIconToggleFoundation extends MDCFoundation {
   setDisabled(isDisabled) {
     this.disabled_ = isDisabled;
 
-    const {DISABLED} = MDCIconToggleFoundation.cssClasses;
-    const {ARIA_DISABLED} = MDCIconToggleFoundation.strings;
+    const {DISABLED} = MDCIconButtonToggleFoundation.cssClasses;
+    const {ARIA_DISABLED} = MDCIconButtonToggleFoundation.strings;
 
     if (this.disabled_) {
       this.savedTabIndex_ = this.adapter_.getTabIndex();
@@ -231,4 +248,4 @@ IconToggleState.prototype.content;
  */
 IconToggleState.prototype.cssClass;
 
-export default MDCIconToggleFoundation;
+export default MDCIconButtonToggleFoundation;

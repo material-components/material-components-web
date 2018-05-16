@@ -21,7 +21,7 @@ import {assert} from 'chai';
 
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 import {createMockRaf} from '../helpers/raf';
-import {MDCIconToggle, MDCIconToggleFoundation} from '../../../packages/mdc-icon-toggle';
+import {MDCIconButtonToggle, MDCIconButtonToggleFoundation} from '../../../packages/mdc-icon-button';
 import {MDCRipple} from '../../../packages/mdc-ripple';
 import {cssClasses} from '../../../packages/mdc-ripple/constants';
 
@@ -36,14 +36,14 @@ function setupTest({tabIndex = undefined, useInnerIconElement = false} = {}) {
   if (tabIndex !== undefined) {
     root.tabIndex = tabIndex;
   }
-  const component = new MDCIconToggle(root);
+  const component = new MDCIconButtonToggle(root);
   return {root, component};
 }
 
-suite('MDCIconToggle');
+suite('MDCIconButtonToggle');
 
-test('attachTo initializes and returns a MDCIconToggle instance', () => {
-  assert.isOk(MDCIconToggle.attachTo(document.createElement('i')) instanceof MDCIconToggle);
+test('attachTo initializes and returns a MDCIconButtonToggle instance', () => {
+  assert.isOk(MDCIconButtonToggle.attachTo(document.createElement('i')) instanceof MDCIconButtonToggle);
 });
 
 if (supportsCssVariables(window)) {
@@ -83,7 +83,7 @@ test('set/get disabled to true', () => {
   component.disabled = true;
   assert.isOk(component.disabled);
   assert.equal(root.getAttribute('aria-disabled'), 'true');
-  assert.isOk(root.classList.contains(MDCIconToggleFoundation.cssClasses.DISABLED));
+  assert.isOk(root.classList.contains(MDCIconButtonToggleFoundation.cssClasses.DISABLED));
   assert.equal(root.tabIndex, -1);
 });
 
@@ -93,7 +93,7 @@ test('set/get disabled to false', () => {
   component.disabled = false;
   assert.isNotOk(component.disabled);
   assert.isNotOk(root.hasAttribute('aria-disabled'));
-  assert.isNotOk(root.classList.contains(MDCIconToggleFoundation.cssClasses.DISABLED));
+  assert.isNotOk(root.classList.contains(MDCIconButtonToggleFoundation.cssClasses.DISABLED));
   assert.equal(root.tabIndex, 0, 'element\'s tabIndex should be the same value it already had');
 });
 
@@ -103,34 +103,34 @@ test('set/get disabled to true, then false', () => {
   component.disabled = true;
   assert.isOk(component.disabled);
   assert.equal(root.getAttribute('aria-disabled'), 'true');
-  assert.isOk(root.classList.contains(MDCIconToggleFoundation.cssClasses.DISABLED));
+  assert.isOk(root.classList.contains(MDCIconButtonToggleFoundation.cssClasses.DISABLED));
   assert.equal(root.tabIndex, -1);
 
   component.disabled = false;
   assert.isNotOk(component.disabled);
   assert.isNotOk(root.hasAttribute('aria-disabled'));
-  assert.isNotOk(root.classList.contains(MDCIconToggleFoundation.cssClasses.DISABLED));
+  assert.isNotOk(root.classList.contains(MDCIconButtonToggleFoundation.cssClasses.DISABLED));
   assert.equal(root.tabIndex, 0, 'element\'s tabIndex should be the same value it originally had');
 });
 
 test('#refreshToggleData proxies to foundation.refreshToggleData()', () => {
-  const MockIconToggleFoundation = td.constructor(MDCIconToggleFoundation);
+  const MockIconToggleFoundation = td.constructor(MDCIconButtonToggleFoundation);
   const root = document.createElement('i');
   const foundation = new MockIconToggleFoundation();
-  const component = new MDCIconToggle(root, foundation);
+  const component = new MDCIconButtonToggle(root, foundation);
   component.refreshToggleData();
   td.verify(foundation.refreshToggleData());
 });
 
 test('intially set to on if root has aria-pressed=true', () => {
-  const root = bel`<i class="mdc-icon-toggle" aria-pressed="true"></i>`;
-  const component = new MDCIconToggle(root);
+  const root = bel`<i class="mdc-icon-button" aria-pressed="true"></i>`;
+  const component = new MDCIconButtonToggle(root);
   assert.isOk(component.on);
 });
 
 test('intially set to disabled if root has aria-disabled=true', () => {
-  const root = bel`<i class="mdc-icon-toggle" aria-disabled="true"></i>`;
-  const component = new MDCIconToggle(root);
+  const root = bel`<i class="mdc-icon-button" aria-disabled="true"></i>`;
+  const component = new MDCIconButtonToggle(root);
   assert.isOk(component.disabled);
 });
 
@@ -229,10 +229,10 @@ test('#adapter.rmAttr removes an attribute from the root element', () => {
   assert.isNotOk(root.hasAttribute('aria-label'));
 });
 
-test(`#adapter.notifyChange broadcasts a ${MDCIconToggleFoundation.strings.CHANGE_EVENT} custom event`, () => {
+test(`#adapter.notifyChange broadcasts a ${MDCIconButtonToggleFoundation.strings.CHANGE_EVENT} custom event`, () => {
   const {root, component} = setupTest();
   const handler = td.func('custom event handler');
-  root.addEventListener(MDCIconToggleFoundation.strings.CHANGE_EVENT, handler);
+  root.addEventListener(MDCIconButtonToggleFoundation.strings.CHANGE_EVENT, handler);
   component.getDefaultFoundation().adapter_.notifyChange({});
   td.verify(handler(td.matchers.anything()));
 });

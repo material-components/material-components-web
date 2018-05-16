@@ -327,7 +327,7 @@
                 <button class="mdc-button mdc-card__action mdc-card__action--button">Bookmark</button>
               </div>
               <div class="mdc-card__action-icons">
-                <i class="mdc-icon-toggle material-icons mdc-card__action mdc-card__action--icon"
+                <i class="mdc-icon-button material-icons mdc-card__action mdc-card__action--icon"
                    tabindex="0"
                    role="button"
                    aria-pressed="false"
@@ -509,7 +509,7 @@
           <div class="mdc-elevation--z2 demo-icon-toggle-tile">
             <h4 class="mdc-typography--subtitle1">Enabled</h4>
 
-            <i class="mdc-icon-toggle mdc-icon-toggle--primary material-icons"
+            <i class="mdc-icon-button mdc-icon-button--primary material-icons"
                role="button"
                aria-label="Add to favorites"
                aria-pressed="false"
@@ -523,7 +523,7 @@
           <div class="mdc-elevation--z2 demo-icon-toggle-tile">
             <h4 class="mdc-typography--subtitle1">Disabled</h4>
 
-            <i class="mdc-icon-toggle mdc-icon-toggle--disabled material-icons"
+            <i class="mdc-icon-button mdc-icon-button--disabled material-icons"
                role="button"
                aria-label="Add to favorites"
                aria-pressed="false"
@@ -898,8 +898,8 @@
          * Icon Toggle
          */
 
-        [].forEach.call(document.querySelectorAll('.mdc-icon-toggle'), function(iconToggleEl) {
-          mdc.iconToggle.MDCIconToggle.attachTo(iconToggleEl);
+        [].forEach.call(document.querySelectorAll('.mdc-icon-button'), function(iconButtonToggleEl) {
+          mdc.iconButton.MDCIconButtonToggle.attachTo(iconButtonToggleEl);
         });
 
         /*

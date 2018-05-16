@@ -19,28 +19,28 @@ import td from 'testdouble';
 
 import {setupFoundationTest} from '../helpers/setup';
 import {verifyDefaultAdapter, captureHandlers as baseCaptureHandlers} from '../helpers/foundation';
-import MDCIconToggleFoundation from '../../../packages/mdc-icon-toggle/foundation';
+import MDCIconButtonToggleFoundation from '../../../packages/mdc-icon-button/foundation';
 
-const {strings, cssClasses} = MDCIconToggleFoundation;
+const {strings, cssClasses} = MDCIconButtonToggleFoundation;
 
-suite('MDCIconToggleFoundation');
+suite('MDCIconButtonToggleFoundation');
 
 test('exports strings', () => {
-  assert.isOk('strings' in MDCIconToggleFoundation);
+  assert.isOk('strings' in MDCIconButtonToggleFoundation);
 });
 
 test('exports cssClasses', () => {
-  assert.isOk('cssClasses' in MDCIconToggleFoundation);
+  assert.isOk('cssClasses' in MDCIconButtonToggleFoundation);
 });
 
 test('defaultAdapter returns a complete adapter implementation', () => {
-  verifyDefaultAdapter(MDCIconToggleFoundation, [
+  verifyDefaultAdapter(MDCIconButtonToggleFoundation, [
     'addClass', 'removeClass', 'registerInteractionHandler', 'deregisterInteractionHandler',
     'setText', 'getTabIndex', 'setTabIndex', 'getAttr', 'setAttr', 'rmAttr', 'notifyChange',
   ]);
 });
 
-const setupTest = () => setupFoundationTest(MDCIconToggleFoundation);
+const setupTest = () => setupFoundationTest(MDCIconButtonToggleFoundation);
 
 test('#constructor sets on to false', () => {
   const {foundation} = setupTest();
@@ -183,7 +183,7 @@ test('#setDisabled sets "aria-disabled" to true when disabled', () => {
   td.verify(mockAdapter.setAttr(strings.ARIA_DISABLED, 'true'));
 });
 
-test('#setDisabled adds "mdc-icon-toggle--disabled" class when disabled', () => {
+test('#setDisabled adds "mdc-icon-button--disabled" class when disabled', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setDisabled(true);
   td.verify(mockAdapter.addClass(cssClasses.DISABLED));
@@ -205,7 +205,7 @@ test('#setDisabled removes "aria-disabled" when enabled', () => {
   td.verify(mockAdapter.rmAttr(strings.ARIA_DISABLED));
 });
 
-test('#setDisabled removes "mdc-icon-toggle--disabled" class when enabled', () => {
+test('#setDisabled removes "mdc-icon-button--disabled" class when enabled', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setDisabled(false);
   td.verify(mockAdapter.removeClass(cssClasses.DISABLED));
