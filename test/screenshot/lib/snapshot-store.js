@@ -37,18 +37,93 @@ class SnapshotStore {
      * @private
      */
     this.gitRepo_ = new GitRepo();
+
+    /**
+     * @type {?SnapshotSuiteJson}
+     * @private
+     */
+    this.cachedGoldenJsonFromDiffBase_ = null;
   }
 
   /**
    * Writes the data to the given `golden.json` file path.
-   * @param {!SnapshotSuiteJson} jsonData
+   * @param {!Array<!UploadableTestCase>} testCases
+   * @param {!Array<!ImageDiffJson>} diffs
    * @return {!Promise<void>}
    */
-  async writeToDisk(jsonData) {
+  async writeToDisk({testCases, diffs}) {
+    const jsonData = await this.getJsonData_({testCases, diffs});
     const jsonFilePath = this.cliArgs_.goldenPath;
     const jsonFileContent = stringify(jsonData, {space: '  '}) + '\n';
+
     await fs.writeFile(jsonFilePath, jsonFileContent);
+
     console.log(`\n\nDONE updating "${jsonFilePath}"!\n\n`);
+  }
+
+  async getJsonData_({testCases, diffs}) {
+    let jsonData;
+
+    if (this.cliArgs_.hasAnyFilters()) {
+      // Selective update: Keep existing `golden.json`, and only update screenshots that have changed.
+      jsonData = await this.partialUpdate_({testCases, diffs});
+    } else {
+      // Full update: Overwrite existing `golden.json` with new data, but retain unchanged screenshots.
+      jsonData = await this.fullUpdate_({testCases, diffs});
+    }
+
+    return jsonData;
+  }
+
+  async partialUpdate_({testCases, diffs}) {
+    const oldJsonData = await this.fromDiffBase();
+    const newJsonData = await this.fromTestCases(testCases);
+    const jsonData = this.deepCloneJson_(oldJsonData);
+
+    diffs.forEach((diff) => {
+      const htmlFilePath = diff.htmlFilePath;
+      const browserKey = diff.browserKey;
+      if (jsonData[htmlFilePath]) {
+        jsonData[htmlFilePath].publicUrl = newJsonData[htmlFilePath].publicUrl;
+        jsonData[htmlFilePath].screenshots[browserKey] = newJsonData[htmlFilePath].screenshots[browserKey];
+      } else {
+        jsonData[htmlFilePath] = this.deepCloneJson_(newJsonData[htmlFilePath]);
+      }
+    });
+
+    return jsonData;
+  }
+
+  async fullUpdate_({testCases, diffs}) {
+    const oldJsonData = await this.fromDiffBase();
+    const newJsonData = await this.fromTestCases(testCases);
+    const jsonData = this.deepCloneJson_(newJsonData);
+
+    for (const [htmlFilePath, page] of Object.entries(jsonData)) {
+      if (!oldJsonData[htmlFilePath]) {
+        continue;
+      }
+
+      let pageHasChanges = false;
+
+      for (const [browserKey, newUrl] of Object.entries(page.screenshots)) {
+        const changedUrl = diffs.find((diff) => diff.htmlFilePath === htmlFilePath && diff.browserKey === browserKey);
+        const oldUrl = oldJsonData[htmlFilePath].screenshots[browserKey];
+        if (!changedUrl && oldUrl) {
+          page.screenshots[browserKey] = oldUrl;
+        }
+
+        if (changedUrl) {
+          pageHasChanges = true;
+        }
+      }
+
+      if (!pageHasChanges) {
+        page.publicUrl = oldJsonData[htmlFilePath].publicUrl;
+      }
+    }
+
+    return jsonData;
   }
 
   /**
@@ -56,8 +131,16 @@ class SnapshotStore {
    * @return {!Promise<!SnapshotSuiteJson>}
    */
   async fromDiffBase() {
-    const goldenJsonStr = await this.fetchGoldenJsonString_();
-    return JSON.parse(goldenJsonStr);
+    if (!this.cachedGoldenJsonFromDiffBase_) {
+      this.cachedGoldenJsonFromDiffBase_ = JSON.parse(await this.fetchGoldenJsonString_());
+    }
+
+    // Deep-clone the cached object to avoid accidental mutation of shared state
+    return this.deepCloneJson_(this.cachedGoldenJsonFromDiffBase_);
+  }
+
+  deepCloneJson_(json) {
+    return JSON.parse(JSON.stringify(json));
   }
 
   /**

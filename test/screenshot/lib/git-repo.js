@@ -42,6 +42,7 @@ class GitRepo {
    * @return {!Promise<void>}
    */
   async fetch(args = []) {
+    console.log('Fetching git remotes...');
     return this.repo_.fetch(args);
   }
 

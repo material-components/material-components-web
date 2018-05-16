@@ -78,7 +78,7 @@ class ParallelQueue {
   async enqueue(uniqueId) {
     return new Promise((resolve) => {
       if (this.allEntries_.has(uniqueId)) {
-        throw new Error(`Key '${uniqueId}' already exists in the queue`);
+        console.warn(`Key '${uniqueId}' already exists in the queue - replacing it with new entry`);
       }
       const entry = {
         state: State.QUEUED,
