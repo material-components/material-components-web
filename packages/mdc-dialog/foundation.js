@@ -93,6 +93,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
 
   close() {
     this.isOpen_ = false;
+    this.enableScroll_();
     this.adapter_.deregisterSurfaceInteractionHandler('click', this.dialogClickHandler_);
     this.adapter_.deregisterDocumentKeydownHandler(this.documentKeydownHandler_);
     this.adapter_.deregisterInteractionHandler('click', this.componentClickHandler_);
@@ -137,8 +138,6 @@ export default class MDCDialogFoundation extends MDCFoundation {
       this.adapter_.removeClass(MDCDialogFoundation.cssClasses.ANIMATING);
       if (this.isOpen_) {
         this.adapter_.trapFocusOnSurface();
-      } else {
-        this.enableScroll_();
       };
     };
   };
