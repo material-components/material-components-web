@@ -14,8 +14,28 @@
 // limitations under the License.
 //
 
+@import "@material/animation/functions";
+@import "@material/ripple/common";
 @import "@material/ripple/mixins";
+@import "@material/theme/mixins";
 @import "./variables";
+
+@mixin mdc-icon-button-size($height: 1.5rem, $width: $height, $padding: $height/2) {
+  width: $width + $padding * 2;
+  height: $height + $padding * 2;
+  padding: $padding;
+}
+
+@mixin mdc-icon-button-font-size($font-size: 1.5rem) {
+  @include mdc-icon-button-size($font-size);
+
+  font-size: $font-size;
+}
+
+@mixin mdc-icon-button-ink-color($color) {
+  @include mdc-theme-prop(color, $color);
+  @include mdc-states($color);
+}
 
 @mixin mdc-icon-button-base_() {
   @include mdc-ripple-surface;
@@ -35,14 +55,15 @@
   background-color: transparent;
   fill: currentColor;
   color: inherit;
+  font-size: 1.5rem;
   text-decoration: none;
   cursor: pointer;
-}
+  user-select: none;
 
-@mixin mdc-icon-button-ink-color($color) {
-  @include mdc-theme-prop(color, $color);
-}
+  &:disabled {
+    @include mdc-theme-prop(color, text-disabled-on-light);
 
-@mixin mdc-icon-button-ripple-color($color) {
-  @include mdc-states-base-color($color);
+    cursor: default;
+    pointer-events: none;
+  }
 }

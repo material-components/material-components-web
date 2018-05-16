@@ -14,8 +14,19 @@
 // limitations under the License.
 //
 
+// postcss-bem-linter: define icon-button
+
 @import "./mixins";
 
 .mdc-icon-button {
   @include mdc-icon-button-base_;
+  @include mdc-states(on-surface);
 }
+
+.mdc-icon-button--disabled {
+  @include mdc-theme-prop(color, text-disabled-on-light);
+
+  pointer-events: none;
+}
+
+// postcss-bem-linter: end

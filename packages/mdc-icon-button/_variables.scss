@@ -14,5 +14,7 @@
 // limitations under the License.
 //
 
-$mdc-icon-button-padding: 12px;
+@import "@material/theme/mixins";
+
 $mdc-icon-button-size: 24px;
+$mdc-icon-button-padding: 12px;

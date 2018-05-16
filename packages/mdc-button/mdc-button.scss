@@ -68,11 +68,6 @@
   @include mdc-button-outline-color(primary);
 }
 
-.mdc-button--icon {
-  @include mdc-button--icon-base_;
-  @include mdc-states(primary);
-}
-
 .mdc-button--dense {
   @include mdc-button--dense_;
 }
