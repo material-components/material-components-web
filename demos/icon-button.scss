@@ -82,3 +82,7 @@
   @include mdc-states-focus-opacity(.26);
   @include mdc-states-press-opacity(.35);
 }
+
+.demo-icon-button-large {
+  @include mdc-icon-button-font-size(36px);
+}

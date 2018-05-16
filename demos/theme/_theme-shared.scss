@@ -294,6 +294,8 @@ figure {
 //
 
 .demo-drawer-toggle {
+  @include mdc-states(on-primary);
+
   vertical-align: middle;
   cursor: pointer;
 }

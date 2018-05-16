@@ -25,7 +25,12 @@
   height: $height + $padding * 2;
   padding: $padding;
 
-
+  // stylelint-disable-next-line selector-max-type
+  svg,
+  img {
+    width: $width;
+    height: $height;
+  }
 }
 
 @mixin mdc-icon-button-font-size($font-size: 1.5rem) {
