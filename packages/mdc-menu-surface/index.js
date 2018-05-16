@@ -17,13 +17,13 @@
 
 import MDCComponent from '@material/base/component';
 import {getTransformPropertyName} from './util';
-import {MDCTemporarySurfaceFoundation, AnchorMargin} from './foundation';
+import {MDCMenuSurfaceFoundation, AnchorMargin} from './foundation';
 import {Corner, CornerBit, strings} from './constants';
 
 /**
- * @extends MDCComponent<!MDCTemporarySurfaceFoundation>
+ * @extends MDCComponent<!MDCMenuSurfaceFoundation>
  */
-class MDCTemporarySurface extends MDCComponent {
+class MDCMenuSurface extends MDCComponent {
   /** @param {...?} args */
   constructor(...args) {
     super(...args);
@@ -33,10 +33,10 @@ class MDCTemporarySurface extends MDCComponent {
 
   /**
    * @param {!Element} root
-   * @return {!MDCTemporarySurface}
+   * @return {!MDCMenuSurface}
    */
   static attachTo(root) {
-    return new MDCTemporarySurface(root);
+    return new MDCMenuSurface(root);
   }
 
   /** @return {boolean} */
@@ -83,9 +83,9 @@ class MDCTemporarySurface extends MDCComponent {
     this.foundation_.setQuickOpen(quickOpen);
   }
 
-  /** @return {!MDCTemporarySurfaceFoundation} */
+  /** @return {!MDCMenuSurfaceFoundation} */
   getDefaultFoundation() {
-    return new MDCTemporarySurfaceFoundation({
+    return new MDCMenuSurfaceFoundation({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       hasClass: (className) => this.root_.classList.contains(className),
@@ -111,7 +111,7 @@ class MDCTemporarySurface extends MDCComponent {
       deregisterInteractionHandler: (type, handler) => this.root_.removeEventListener(type, handler),
       registerBodyClickHandler: (handler) => document.body.addEventListener('click', handler),
       deregisterBodyClickHandler: (handler) => document.body.removeEventListener('click', handler),
-      notifyClose: () => this.emit(MDCTemporarySurfaceFoundation.strings.CANCEL_EVENT, {}),
+      notifyClose: () => this.emit(MDCMenuSurfaceFoundation.strings.CANCEL_EVENT, {}),
       saveFocus: () => {
         this.previousFocus_ = document.activeElement;
       },
@@ -142,4 +142,4 @@ class MDCTemporarySurface extends MDCComponent {
   }
 }
 
-export {MDCTemporarySurfaceFoundation, MDCTemporarySurface, AnchorMargin, Corner, CornerBit};
+export {MDCMenuSurfaceFoundation, MDCMenuSurface, AnchorMargin, Corner, CornerBit};

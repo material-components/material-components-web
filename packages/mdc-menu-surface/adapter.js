@@ -35,7 +35,7 @@
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
- * Adapter for MDC TemporarySurface. Provides an interface for managing
+ * Adapter for MDCMenuSurface. Provides an interface for managing
  * - classes
  * - dom
  * - focus
@@ -53,7 +53,7 @@
  *
  * @record
  */
-class MDCTemporarySurfaceAdapter {
+class MDCMenuSurfaceAdapter {
   /** @param {string} className */
   addClass(className) {}
 
@@ -136,4 +136,4 @@ class MDCTemporarySurfaceAdapter {
   setMaxHeight(height) {}
 }
 
-export {MDCTemporarySurfaceAdapter};
+export {MDCMenuSurfaceAdapter};

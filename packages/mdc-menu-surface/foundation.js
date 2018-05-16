@@ -57,13 +57,13 @@ let AutoLayoutMeasurements;
 /* eslint-enable no-unused-vars */
 
 import MDCFoundation from '@material/base/foundation';
-import {MDCTemporarySurfaceAdapter} from './adapter';
+import {MDCMenuSurfaceAdapter} from './adapter';
 import {cssClasses, strings, numbers, Corner, CornerBit} from './constants';
 
 /**
- * @extends {MDCFoundation<!MDCTemporarySurfaceAdapter>}
+ * @extends {MDCFoundation<!MDCMenuSurfaceAdapter>}
  */
-class MDCTemporarySurfaceFoundation extends MDCFoundation {
+class MDCMenuSurfaceFoundation extends MDCFoundation {
   /** @return enum{cssClasses} */
   static get cssClasses() {
     return cssClasses;
@@ -85,12 +85,12 @@ class MDCTemporarySurfaceFoundation extends MDCFoundation {
   }
 
   /**
-   * {@see MDCTemporarySurfaceAdapter} for typing information on parameters and return
+   * {@see MDCMenuSurfaceAdapter} for typing information on parameters and return
    * types.
-   * @return {!MDCTemporarySurfaceAdapter}
+   * @return {!MDCMenuSurfaceAdapter}
    */
   static get defaultAdapter() {
-    return /** @type {!MDCTemporarySurfaceAdapter} */ ({
+    return /** @type {!MDCMenuSurfaceAdapter} */ ({
       addClass: () => {},
       removeClass: () => {},
       hasClass: () => false,
@@ -120,9 +120,9 @@ class MDCTemporarySurfaceFoundation extends MDCFoundation {
     });
   }
 
-  /** @param {!MDCTemporarySurfaceAdapter} adapter */
+  /** @param {!MDCMenuSurfaceAdapter} adapter */
   constructor(adapter) {
-    super(Object.assign(MDCTemporarySurfaceFoundation.defaultAdapter, adapter));
+    super(Object.assign(MDCMenuSurfaceFoundation.defaultAdapter, adapter));
 
     /** @private {function(!Event)} */
     this.keydownHandler_ = (evt) => this.handleKeyboardDown_(evt);
@@ -165,7 +165,7 @@ class MDCTemporarySurfaceFoundation extends MDCFoundation {
   }
 
   init() {
-    const {ROOT, OPEN} = MDCTemporarySurfaceFoundation.cssClasses;
+    const {ROOT, OPEN} = MDCMenuSurfaceFoundation.cssClasses;
 
     if (!this.adapter_.hasClass(ROOT)) {
       throw new Error(`${ROOT} class required in root element.`);
@@ -407,7 +407,7 @@ class MDCTemporarySurfaceFoundation extends MDCFoundation {
   getVerticalOriginOffset_(corner) {
     const {viewport, viewportDistance, anchorHeight, menuHeight} = this.measures_;
     const isBottomAligned = Boolean(corner & CornerBit.BOTTOM);
-    const {MARGIN_TO_EDGE} = MDCTemporarySurfaceFoundation.numbers;
+    const {MARGIN_TO_EDGE} = MDCMenuSurfaceFoundation.numbers;
     const avoidVerticalOverlap = Boolean(this.anchorCorner_ & CornerBit.BOTTOM);
     const canOverlapVertically = !avoidVerticalOverlap;
     let y = 0;
@@ -502,19 +502,19 @@ class MDCTemporarySurfaceFoundation extends MDCFoundation {
     this.adapter_.saveFocus();
 
     if (!this.quickOpen_) {
-      this.adapter_.addClass(MDCTemporarySurfaceFoundation.cssClasses.ANIMATING_OPEN);
+      this.adapter_.addClass(MDCMenuSurfaceFoundation.cssClasses.ANIMATING_OPEN);
     }
 
     this.animationRequestId_ = requestAnimationFrame(() => {
       this.dimensions_ = this.adapter_.getInnerDimensions();
       this.autoPosition_();
-      this.adapter_.addClass(MDCTemporarySurfaceFoundation.cssClasses.OPEN);
+      this.adapter_.addClass(MDCMenuSurfaceFoundation.cssClasses.OPEN);
       this.focusOnOpen_(focusIndex);
       this.adapter_.registerBodyClickHandler(this.documentClickHandler_);
       if (!this.quickOpen_) {
         this.openAnimationEndTimerId_ = setTimeout(() => {
           this.openAnimationEndTimerId_ = 0;
-          this.adapter_.removeClass(MDCTemporarySurfaceFoundation.cssClasses.ANIMATING_OPEN);
+          this.adapter_.removeClass(MDCMenuSurfaceFoundation.cssClasses.ANIMATING_OPEN);
         }, numbers.TRANSITION_OPEN_DURATION);
       }
     });
@@ -537,15 +537,15 @@ class MDCTemporarySurfaceFoundation extends MDCFoundation {
     this.adapter_.deregisterBodyClickHandler(this.documentClickHandler_);
 
     if (!this.quickOpen_) {
-      this.adapter_.addClass(MDCTemporarySurfaceFoundation.cssClasses.ANIMATING_CLOSED);
+      this.adapter_.addClass(MDCMenuSurfaceFoundation.cssClasses.ANIMATING_CLOSED);
     }
 
     requestAnimationFrame(() => {
-      this.adapter_.removeClass(MDCTemporarySurfaceFoundation.cssClasses.OPEN);
+      this.adapter_.removeClass(MDCMenuSurfaceFoundation.cssClasses.OPEN);
       if (!this.quickOpen_) {
         this.closeAnimationEndTimerId_ = setTimeout(() => {
           this.closeAnimationEndTimerId_ = 0;
-          this.adapter_.removeClass(MDCTemporarySurfaceFoundation.cssClasses.ANIMATING_CLOSED);
+          this.adapter_.removeClass(MDCMenuSurfaceFoundation.cssClasses.ANIMATING_CLOSED);
         }, numbers.TRANSITION_CLOSE_DURATION);
       }
     });
@@ -559,4 +559,4 @@ class MDCTemporarySurfaceFoundation extends MDCFoundation {
   }
 }
 
-export {MDCTemporarySurfaceFoundation, AnchorMargin};
+export {MDCMenuSurfaceFoundation, AnchorMargin};

@@ -17,17 +17,17 @@
 
 /** @enum {string} */
 const cssClasses = {
-  ROOT: 'mdc-temporary-surface',
-  OPEN: 'mdc-temporary-surface--open',
-  ANIMATING_OPEN: 'mdc-temporary-surface--animating-open',
-  ANIMATING_CLOSED: 'mdc-temporary-surface--animating-closed',
+  ROOT: 'mdc-menu-surface',
+  OPEN: 'mdc-menu-surface--open',
+  ANIMATING_OPEN: 'mdc-menu-surface--animating-open',
+  ANIMATING_CLOSED: 'mdc-menu-surface--animating-closed',
 };
 
 /** @enum {string} */
 const strings = {
-  CANCEL_EVENT: 'MDCTemporarySurface:cancel',
+  CANCEL_EVENT: 'MDCMenuSurface:cancel',
   ARIA_DISABLED_ATTR: 'aria-disabled',
-  CLOSE_EVENT: 'MDCTemporarySurface:close',
+  CLOSE_EVENT: 'MDCMenuSurface:close',
   FOCUSABLE_ELEMENTS: 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
 };
 
