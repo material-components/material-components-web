@@ -60,7 +60,7 @@ class MDCIconButtonToggleFoundation extends MDCFoundation {
       setTabIndex: (/* tabIndex: number */) => {},
       getAttr: (/* name: string */) => /* string */ '',
       setAttr: (/* name: string, value: string */) => {},
-      rmAttr: (/* name: string */) => {},
+      removeAttr: (/* name: string */) => {},
       notifyChange: (/* evtData: IconButtonToggleEvent */) => {},
     };
   }
@@ -199,7 +199,7 @@ class MDCIconButtonToggleFoundation extends MDCFoundation {
       this.adapter_.addClass(DISABLED);
     } else {
       this.adapter_.setTabIndex(this.savedTabIndex_);
-      this.adapter_.rmAttr(ARIA_DISABLED);
+      this.adapter_.removeAttr(ARIA_DISABLED);
       this.adapter_.removeClass(DISABLED);
     }
   }

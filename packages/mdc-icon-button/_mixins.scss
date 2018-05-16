@@ -14,13 +14,12 @@
 // limitations under the License.
 //
 
-@import "@material/animation/functions";
 @import "@material/ripple/common";
 @import "@material/ripple/mixins";
 @import "@material/theme/mixins";
 @import "./variables";
 
-@mixin mdc-icon-button-size($height: 1.5rem, $width: $height, $padding: $height/2) {
+@mixin mdc-icon-button-size($width, $height: $width, $padding: max($width, $height)/2) {
   width: $width + $padding * 2;
   height: $height + $padding * 2;
   padding: $padding;
@@ -33,7 +32,7 @@
   }
 }
 
-@mixin mdc-icon-button-font-size($font-size: 1.5rem) {
+@mixin mdc-icon-button-font-size($font-size) {
   @include mdc-icon-button-size($font-size);
 
   font-size: $font-size;
@@ -47,6 +46,7 @@
 @mixin mdc-icon-button-base_() {
   @include mdc-ripple-surface;
   @include mdc-ripple-radius-unbounded;
+  @include mdc-icon-button-font-size(24px);
 
   display: inline-flex;
   position: relative;
@@ -54,15 +54,11 @@
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  width: $mdc-icon-button-size + $mdc-icon-button-padding * 2;
-  height: $mdc-icon-button-size + $mdc-icon-button-padding * 2;
-  padding: $mdc-icon-button-padding;
   border: none;
   outline: none;
   background-color: transparent;
   fill: currentColor;
   color: inherit;
-  font-size: 1.5rem;
   text-decoration: none;
   cursor: pointer;
   user-select: none;
@@ -72,12 +68,5 @@
 
     cursor: default;
     pointer-events: none;
-  }
-
-  // stylelint-disable-next-line selector-max-type
-  svg,
-  img {
-    width: $mdc-icon-button-size;
-    height: $mdc-icon-button-size;
   }
 }

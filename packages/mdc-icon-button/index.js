@@ -88,7 +88,7 @@ class MDCIconButtonToggle extends MDCComponent {
       setTabIndex: (tabIndex) => this.root_.tabIndex = tabIndex,
       getAttr: (name, value) => this.root_.getAttribute(name, value),
       setAttr: (name, value) => this.root_.setAttribute(name, value),
-      rmAttr: (name) => this.root_.removeAttribute(name),
+      removeAttr: (name) => this.root_.removeAttribute(name),
       notifyChange: (evtData) => this.emit(MDCIconButtonToggleFoundation.strings.CHANGE_EVENT, evtData),
     });
   }

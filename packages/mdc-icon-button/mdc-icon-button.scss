@@ -20,7 +20,7 @@
 
 .mdc-icon-button {
   @include mdc-icon-button-base_;
-  @include mdc-states(on-surface);
+  @include mdc-states;
 }
 
 .mdc-icon-button--disabled {

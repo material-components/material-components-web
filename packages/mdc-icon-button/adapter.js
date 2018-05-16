@@ -94,7 +94,7 @@ class MDCIconButtonToggleAdapter {
   setAttr(name, value) {}
 
   /** @param {string} name */
-  rmAttr(name) {}
+  removeAttr(name) {}
 
   /** @param {!IconButtonToggleEvent} evtData */
   notifyChange(evtData) {}
