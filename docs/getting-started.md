@@ -197,9 +197,9 @@ Then configure webpack to convert `app.js` into `bundle.js` by adding the follow
 
 ```js
 module.exports.push({
-  entry: "./app.js",
+  entry: './app.js',
   output: {
-    filename: "bundle.js"
+    filename: 'bundle.js'
   },
   module: {
     loaders: [{
