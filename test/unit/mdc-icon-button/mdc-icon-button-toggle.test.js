@@ -1,5 +1,5 @@
 /**
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2018 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -83,7 +83,6 @@ test('set/get disabled to true', () => {
   component.disabled = true;
   assert.isOk(component.disabled);
   assert.equal(root.getAttribute('aria-disabled'), 'true');
-  assert.isOk(root.classList.contains(MDCIconButtonToggleFoundation.cssClasses.DISABLED));
   assert.equal(root.tabIndex, -1);
 });
 
@@ -93,7 +92,6 @@ test('set/get disabled to false', () => {
   component.disabled = false;
   assert.isNotOk(component.disabled);
   assert.isNotOk(root.hasAttribute('aria-disabled'));
-  assert.isNotOk(root.classList.contains(MDCIconButtonToggleFoundation.cssClasses.DISABLED));
   assert.equal(root.tabIndex, 0, 'element\'s tabIndex should be the same value it already had');
 });
 
@@ -103,13 +101,11 @@ test('set/get disabled to true, then false', () => {
   component.disabled = true;
   assert.isOk(component.disabled);
   assert.equal(root.getAttribute('aria-disabled'), 'true');
-  assert.isOk(root.classList.contains(MDCIconButtonToggleFoundation.cssClasses.DISABLED));
   assert.equal(root.tabIndex, -1);
 
   component.disabled = false;
   assert.isNotOk(component.disabled);
   assert.isNotOk(root.hasAttribute('aria-disabled'));
-  assert.isNotOk(root.classList.contains(MDCIconButtonToggleFoundation.cssClasses.DISABLED));
   assert.equal(root.tabIndex, 0, 'element\'s tabIndex should be the same value it originally had');
 });
 
@@ -222,10 +218,10 @@ test('#adapter.setAttr sets an attribute on the root element', () => {
   assert.equal(root.getAttribute('aria-label'), 'hello');
 });
 
-test('#adapter.rmAttr removes an attribute from the root element', () => {
+test('#adapter.removeAttr removes an attribute from the root element', () => {
   const {root, component} = setupTest();
   root.setAttribute('aria-label', 'hello');
-  component.getDefaultFoundation().adapter_.rmAttr('aria-label');
+  component.getDefaultFoundation().adapter_.removeAttr('aria-label');
   assert.isNotOk(root.hasAttribute('aria-label'));
 });
 

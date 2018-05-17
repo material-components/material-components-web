@@ -111,7 +111,7 @@ class MDCIconButtonToggleFoundation extends MDCFoundation {
 
     const {ARIA_LABEL, ARIA_PRESSED} = MDCIconButtonToggleFoundation.strings;
 
-    this.adapter_.setAttr(ARIA_PRESSED, this.on_);
+    this.adapter_.setAttr(ARIA_PRESSED, this.on_.toString());
 
     const {cssClass: classToRemove} =
         this.on_ ? this.toggleOffData_ : this.toggleOnData_;
