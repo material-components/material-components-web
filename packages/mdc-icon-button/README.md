@@ -75,8 +75,11 @@ The icon button can be used to toggle between an on and off icon. To style an ic
    class="mdc-icon-button material-icons"
    aria-label="Add to favorites"
    aria-hidden="true"
-   data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
-   data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
+   aria-pressed="false"
+   data-toggle-on-content="favorite"
+   data-toggle-on-label="Remove from favorites"
+   data-toggle-off-content="favorite_border"
+   data-toggle-off-label="Add to favorites">
     favorites_border
 </button>
 ```
@@ -87,17 +90,16 @@ var toggleButton = new mdc.iconButton.MDCIconButtonToggle(document.getElementByI
 
 #### Icon Button Toggle States
 
-Note the use of `data-toggle-on` and `data-toggle-off` in the above examples. When an MDCIconToggle
-instance is toggled, it looks at this data to determine how to update the element. This is what
-allows MDCIconToggle to be so flexible. The `data-toggle-on` configuration will be used when the is
-MDCIconToggle is toggled on, and vice versa for `data-toggle-off`. Both data attributes are encoded
-as JSON and can contain the following properties:
+Note the use of `data-toggle-*` properties in the above examples. When an MDCIconToggle
+instance is toggled, it looks at these data attributes to determine how to update the element. This is what
+allows MDCIconToggle to be so flexible. The `data-toggle-on-*` properties will be used when the is
+MDCIconToggle is toggled on, and vice versa for `data-toggle-off-*`. 
 
-Property | Description
+Attribute | Description
 --- | ---
-`label` | The value to apply to the element's "aria-label" attribute.
-`content` | The text content to set on the element.
-`cssClass` | A css class to apply to the icon element for the given toggle state.
+`data-toggle-<TOGGLE STATE>-label` | The value to apply to the element's "aria-label" attribute.
+`data-toggle-<TOGGLE STATE>-content` | The text content to set on the element. Note that if an inner icon is used, the text content will be set on that element instead.
+`data-toggle-<TOGGLE STATE>-class` | A css class to apply to the icon element. The same rules regarding inner icon elements described for `content` apply here as well.
 
 ### Icons 
 
@@ -155,11 +157,11 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 
 Method Signature | Description
 --- | ---
-`addClass(className: string) => void` | Adds a class to the root element.
-`removeClass(className: string) => void` | Removes a class from the root element.
+`addClass(className: string) => void` | Adds a class to the root element, or the inner icon element.
+`removeClass(className: string) => void` | Removes a class from the root element, or the inner icon element.
 `registerInteractionHandler(type: string, handler: EventListener) => void` | Registers an event handler for an interaction event, such as `click` or `keydown`.
 `deregisterInteractionHandler(type: string, handler: EventListener) => void` | Removes an event handler for an interaction event, such as `click` or `keydown`.
-`setText(text: string) => void` | Sets the text content of the root element.
+`setText(text: string) => void` | Sets the text content of the root element, or the inner icon element.
 `getTabIndex() => number` | Returns the tab index of the root element.
 `setTabIndex(tabIndex: number) => void` | Sets the tab index of the root element.
 `getAttr(name: string) => string` | Returns the value of the attribute `name` on the root element. Can also return `null`, similar to `getAttribute()`.

@@ -40,10 +40,12 @@ For example, say you want to use an [icon toggle](../mdc-icon-toggle). Simply re
 DOM, and attach the `data-mdc-auto-init="MDCIconToggle"` attribute.
 
 ```html
-<i class="mdc-icon-toggle material-icons" role="button" aria-pressed="false"
-   aria-label="Add to favorites" tabindex="0"
-   data-toggle-on='{"label": "Remove from favorites", "content": "favorite"}'
-   data-toggle-off='{"label": "Add to favorites", "content": "favorite_border"}'
+<button class="mdc-icon-toggle material-icons" 
+   aria-label="Add to favorites"
+   data-toggle-on-content="favorite"
+   data-toggle-on-label="Remove from favorites"
+   data-toggle-off-content="favorite_border"
+   data-toggle-off-label="Add to favorites"
    data-mdc-auto-init="MDCIconToggle">
   favorite_border
 </i>

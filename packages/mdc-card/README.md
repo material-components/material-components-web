@@ -125,8 +125,10 @@ above, or with icon buttons, as below:
      aria-pressed="false"
      aria-label="Add to favorites"
      title="Add to favorites"
-     data-toggle-on='{"content": "favorite", "label": "Remove from favorites"}'
-     data-toggle-off='{"content": "favorite_border", "label": "Add to favorites"}'>
+     data-toggle-on-content="favorite"
+     data-toggle-on-label="Remove from favorites"
+     data-toggle-off-content="favorite_border"
+     data-toggle-off-label="Add to favorites">
     favorite_border
   </button>
   <button class="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon" title="Share">share</button>

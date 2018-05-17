@@ -331,8 +331,10 @@
                    aria-pressed="false"
                    aria-label="Add to favorites"
                    title="Add to favorites"
-                   data-toggle-on='{"content": "favorite", "label": "Remove from favorites"}'
-                   data-toggle-off='{"content": "favorite_border", "label": "Add to favorites"}'>
+                   data-toggle-on-content="favorite"
+                   data-toggle-on-label="Remove from favorites"
+                   data-toggle-off-content="favorite_border"
+                   data-toggle-off-label="Add to favorites">
                   favorite_border
                 </button>
                 <button class="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon"
@@ -506,8 +508,10 @@
             <button class="mdc-icon-button material-icons"
                aria-label="Add to favorites"
                aria-pressed="false"
-               data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
-               data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
+               data-toggle-on-content="favorite"
+               data-toggle-on-label="Remove from favorites"
+               data-toggle-off-content="favorite_border"
+               data-toggle-off-label="Add to favorites">
               favorite_border
             </button>
           </div>
@@ -519,8 +523,10 @@
                aria-label="Add to favorites"
                aria-pressed="false"
                disabled
-               data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
-               data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
+               data-toggle-on-content="favorite"
+               data-toggle-on-label="Remove from favorites"
+               data-toggle-off-content="favorite_border"
+               data-toggle-off-label="Add to favorites">
               favorite_border
             </button>
           </div>
@@ -896,7 +902,7 @@
          * Icon Toggle
          */
 
-        [].forEach.call(document.querySelectorAll('.mdc-icon-button[data-toggle-on]'), function(iconButtonToggleEl) {
+        [].forEach.call(document.querySelectorAll('.mdc-icon-button[data-toggle-on-content]'), function(iconButtonToggleEl) {
           mdc.iconButton.MDCIconButtonToggle.attachTo(iconButtonToggleEl);
         });
 
