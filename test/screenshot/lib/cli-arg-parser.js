@@ -216,6 +216,11 @@ E.g., 'origin/master' (default), 'HEAD', 'feat/foo/bar', 'fad7ed3:path/to/golden
     return this.createLocalBranchDiffSource_(localRef, goldenFilePath);
   }
 
+  /**
+   * @param {string} publicUrl
+   * @return {!DiffSource}
+   * @private
+   */
   createPublicUrlDiffSource_(publicUrl) {
     return {
       publicUrl,
@@ -224,6 +229,11 @@ E.g., 'origin/master' (default), 'HEAD', 'feat/foo/bar', 'fad7ed3:path/to/golden
     };
   }
 
+  /**
+   * @param {string} localFilePath
+   * @return {!DiffSource}
+   * @private
+   */
   createLocalFileDiffSource_(localFilePath) {
     return {
       publicUrl: null,
@@ -232,6 +242,12 @@ E.g., 'origin/master' (default), 'HEAD', 'feat/foo/bar', 'fad7ed3:path/to/golden
     };
   }
 
+  /**
+   * @param {string} commit
+   * @param {string} snapshotFilePath
+   * @return {!DiffSource}
+   * @private
+   */
   createCommitDiffSource_(commit, snapshotFilePath) {
     return {
       publicUrl: null,
@@ -246,20 +262,12 @@ E.g., 'origin/master' (default), 'HEAD', 'feat/foo/bar', 'fad7ed3:path/to/golden
     };
   }
 
-  getRefType_(fullRef) {
-    const getShortGoldenRef = (type) => {
-      const regex = new RegExp(`^refs/${type}s/(.+)$`);
-      const match = regex.exec(fullRef) || [];
-      return match[1];
-    };
-
-    const remoteRef = getShortGoldenRef('remote');
-    const localRef = getShortGoldenRef('head');
-    const tagRef = getShortGoldenRef('tag');
-
-    return {remoteRef, localRef, tagRef};
-  }
-
+  /**
+   * @param {string} remoteRef
+   * @param {string} snapshotFilePath
+   * @return {!DiffSource}
+   * @private
+   */
   async createRemoteBranchDiffSource_(remoteRef, snapshotFilePath) {
     const allRemoteNames = await this.gitRepo_.getRemoteNames();
     const remote = allRemoteNames.find((curRemoteName) => remoteRef.startsWith(curRemoteName + '/'));
@@ -279,6 +287,12 @@ E.g., 'origin/master' (default), 'HEAD', 'feat/foo/bar', 'fad7ed3:path/to/golden
     };
   }
 
+  /**
+   * @param {string} tagRef
+   * @param {string} snapshotFilePath
+   * @return {!DiffSource}
+   * @private
+   */
   async createRemoteTagDiffSource_(tagRef, snapshotFilePath) {
     const commit = await this.gitRepo_.getShortCommitHash(tagRef);
     return {
@@ -294,6 +308,12 @@ E.g., 'origin/master' (default), 'HEAD', 'feat/foo/bar', 'fad7ed3:path/to/golden
     };
   }
 
+  /**
+   * @param {string} branch
+   * @param {string} snapshotFilePath
+   * @return {!DiffSource}
+   * @private
+   */
   async createLocalBranchDiffSource_(branch, snapshotFilePath) {
     const commit = await this.gitRepo_.getShortCommitHash(branch);
     return {
@@ -307,6 +327,25 @@ E.g., 'origin/master' (default), 'HEAD', 'feat/foo/bar', 'fad7ed3:path/to/golden
         tag: null,
       },
     };
+  }
+
+  /**
+   * @param {string} fullRef
+   * @return {{remoteRef: string, localRef: string, tagRef: string}}
+   * @private
+   */
+  getRefType_(fullRef) {
+    const getShortGoldenRef = (type) => {
+      const regex = new RegExp(`^refs/${type}s/(.+)$`);
+      const match = regex.exec(fullRef) || [];
+      return match[1];
+    };
+
+    const remoteRef = getShortGoldenRef('remote');
+    const localRef = getShortGoldenRef('head');
+    const tagRef = getShortGoldenRef('tag');
+
+    return {remoteRef, localRef, tagRef};
   }
 }
 
