@@ -52,7 +52,6 @@ class MDCIconButtonToggleFoundation extends MDCFoundation {
     super(Object.assign(MDCIconButtonToggleFoundation.defaultAdapter, adapter));
 
     /** @private {boolean} */
-    /** @private {boolean} */
     this.on_ = false;
 
     /** @private {boolean} */
@@ -143,18 +142,15 @@ class MDCIconButtonToggleFoundation extends MDCFoundation {
   setDisabled(isDisabled) {
     this.disabled_ = isDisabled;
 
-    const {DISABLED} = MDCIconButtonToggleFoundation.cssClasses;
     const {ARIA_DISABLED} = MDCIconButtonToggleFoundation.strings;
 
     if (this.disabled_) {
       this.savedTabIndex_ = this.adapter_.getTabIndex();
       this.adapter_.setTabIndex(-1);
       this.adapter_.setAttr(ARIA_DISABLED, 'true');
-      this.adapter_.addClass(DISABLED);
     } else {
       this.adapter_.setTabIndex(this.savedTabIndex_);
       this.adapter_.removeAttr(ARIA_DISABLED);
-      this.adapter_.removeClass(DISABLED);
     }
   }
 }

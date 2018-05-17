@@ -52,7 +52,7 @@ npm install @material/icon-button
 ```
 ### JavaScript Instantiation
 
-The icon button will work without Javascript, but you can enhance it to have a ripple effect by instantiating `MDCRipple` on the root element. 
+The icon button will work without JavaScript, but you can enhance it to have a ripple effect by instantiating `MDCRipple` on the root element. 
 See [MDC Ripple](../mdc-ripple) for details.
 
 ```js

@@ -18,7 +18,6 @@
 /** @enum {string} */
 const cssClasses = {
   ROOT: 'mdc-icon-button',
-  DISABLED: 'mdc-icon-button--disabled',
 };
 
 /** @enum {string} */
