@@ -16,23 +16,6 @@
  */
 
 /**
- * @license
- * Copyright 2016 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-/**
  * @typedef {{
  *   top: number,
  *   right: number,
@@ -59,6 +42,8 @@ let AutoLayoutMeasurements;
 import MDCFoundation from '@material/base/foundation';
 import {MDCMenuSurfaceAdapter} from './adapter';
 import {cssClasses, strings, numbers, Corner, CornerBit} from './constants';
+
+const SPACE_ALLOWED_ELEMENTS = ['index', 'button', 'textarea'];
 
 /**
  * @extends {MDCFoundation<!MDCMenuSurfaceAdapter>}
@@ -286,9 +271,8 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
 
   isValidSpaceKey_(evt) {
     const tagName = evt.target.tagName.toLocaleLowerCase();
-    const okSpaceValues = ['index', 'button', 'textarea'];
 
-    return okSpaceValues.indexOf(tagName) === -1;
+    return SPACE_ALLOWED_ELEMENTS.indexOf(tagName) === -1;
   }
 
   /**

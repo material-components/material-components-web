@@ -20,12 +20,12 @@
 @import "@material/theme/variables";
 @import "@material/typography/mixins";
 
-$mdc-temporary-surface-fade-in-duration: .03s;
-$mdc-temporary-surface-fade-out-duration: .075s;
-$mdc-temporary-surface-scale-duration: .12s;
+$mdc-menu-surface-fade-in-duration: .03s;
+$mdc-menu-surface-fade-out-duration: .075s;
+$mdc-menu-surface-scale-duration: .12s;
 
-// postcss-bem-linter: define menu
-.mdc-temporary-surface {
+// postcss-bem-linter: define menu-surface
+.mdc-menu-surface {
   @include mdc-elevation(2);
   @include mdc-theme-prop(background-color, surface);
 
@@ -55,8 +55,8 @@ $mdc-temporary-surface-scale-duration: .12s;
     display: inline-block;
     transform: scale(.8);
     transition:
-      opacity $mdc-temporary-surface-fade-in-duration linear,
-      transform $mdc-temporary-surface-scale-duration $mdc-animation-deceleration-curve-timing-function;
+      opacity $mdc-menu-surface-fade-in-duration linear,
+      transform $mdc-menu-surface-scale-duration $mdc-animation-deceleration-curve-timing-function;
     opacity: 0;
     overflow-y: hidden;
   }
@@ -69,7 +69,7 @@ $mdc-temporary-surface-scale-duration: .12s;
 
   &--animating-closed {
     display: inline-block;
-    transition: opacity $mdc-temporary-surface-fade-out-duration linear;
+    transition: opacity $mdc-menu-surface-fade-out-duration linear;
     opacity: 0;
     overflow-y: hidden;
   }
@@ -78,11 +78,6 @@ $mdc-temporary-surface-scale-duration: .12s;
   [dir="rtl"] & {
     transform-origin: top right;
   }
-}
-
-.mdc-temporary-surface--anchor {
-  position: relative;
-  overflow: visible;
 }
 // stylelint-enable plugin/selector-bem-pattern
 
