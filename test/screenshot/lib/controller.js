@@ -267,7 +267,7 @@ class Controller {
   }
 
   /**
-   * Writes the given `testCases` to a `golden.json` file in `sourceDir_`.
+   * Writes the given `testCases` to a `golden.json` file.
    * If the file already exists, it will be overwritten.
    * @param {!Array<!UploadableTestCase>} testCases
    * @return {!Promise<!Array<!UploadableTestCase>>}
