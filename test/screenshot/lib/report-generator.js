@@ -219,9 +219,9 @@ on tag
 <a href="${GITHUB_REPO_URL}/blob/${rev.tag}/${rev.snapshotFilePath}">${rev.tag}</a>
 `;
       }
-
-      throw new Error('Unable to generate markup for invalid diff source');
     }
+
+    throw new Error('Unable to generate markup for invalid diff source');
   }
 
   getCollapseButtonMarkup_() {
