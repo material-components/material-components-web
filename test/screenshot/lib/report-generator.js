@@ -124,16 +124,14 @@ class ReportGenerator {
     const gitUserEmail = await this.gitRepo_.getUserEmail();
     const gitUser = `&lt;${gitUserName}&gt; ${gitUserEmail}`;
 
-    const getExecutableVersion = async (cmd) => {
+    const getVersion = async (cmd) => {
       const options = {cwd: process.env.PWD, env: process.env};
       const stdOut = await child_process.exec(`${cmd} --version`, options);
       return stdOut[0].trim();
     };
 
-    const mdcVersion = require('../../../lerna.json').version;
-    const mdcVersionDistance = await this.getCommitDistanceMarkup_(mdcVersion);
-    const nodeVersion = await getExecutableVersion('node');
-    const npmVersion = await getExecutableVersion('npm');
+    const nodeVersion = await getVersion('node');
+    const npmVersion = await getVersion('npm');
 
     return `
 <details class="report-metadata" open>
@@ -156,23 +154,18 @@ class ReportGenerator {
         <tr>
           <th class="report-metadata__cell report-metadata__cell--key">Golden:</th>
           <td class="report-metadata__cell report-metadata__cell--val">
-            ${await this.getCommitLinkMarkup_(goldenDiffSource)}
+            ${this.getCommitLinkMarkup_(goldenDiffSource)}
           </td>
         </tr>
         <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">Snapshot Base:</th>
+          <th class="report-metadata__cell report-metadata__cell--key">Snapshot:</th>
           <td class="report-metadata__cell report-metadata__cell--val">
-            ${await this.getCommitLinkMarkup_(snapshotDiffSource)}
-            ${await this.getLocalChangesMarkup_(snapshotDiffSource)}
+            ${this.getCommitLinkMarkup_(snapshotDiffSource)}
           </td>
         </tr>
         <tr>
           <th class="report-metadata__cell report-metadata__cell--key">User:</th>
           <td class="report-metadata__cell report-metadata__cell--val">${gitUser}</td>
-        </tr>
-        <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">MDC Version:</th>
-          <td class="report-metadata__cell report-metadata__cell--val">${mdcVersion} ${mdcVersionDistance}</td>
         </tr>
         <tr>
           <th class="report-metadata__cell report-metadata__cell--key">Node Version:</th>
@@ -195,10 +188,10 @@ class ReportGenerator {
 
   /**
    * @param {!DiffSource} diffSource
-   * @return {!Promise<string>}
+   * @return {string}
    * @private
    */
-  async getCommitLinkMarkup_(diffSource) {
+  getCommitLinkMarkup_(diffSource) {
     if (diffSource.publicUrl) {
       return `<a href="${diffSource.publicUrl}">${diffSource.publicUrl}</a>`;
     }
@@ -229,32 +222,6 @@ on tag
     }
 
     throw new Error('Unable to generate markup for invalid diff source');
-  }
-
-  /**
-   * @param {string} mdcVersion
-   * @return {!Promise<string>}
-   */
-  async getCommitDistanceMarkup_(mdcVersion) {
-    const mdcCommitCount = (await this.gitRepo_.getLog([`v${mdcVersion}..HEAD`])).length;
-    return mdcCommitCount > 0 ? `+ ${mdcCommitCount} commit${mdcCommitCount === 1 ? '' : 's'}` : '';
-  }
-
-  async getLocalChangesMarkup_() {
-    const fragments = [];
-    const gitStatus = await this.gitRepo_.getStatus();
-    const numUntracked = gitStatus.not_added.length;
-    const numModified = gitStatus.files.length - numUntracked;
-
-    if (numModified > 0) {
-      fragments.push(`${numModified} locally modified file${numModified === 1 ? '' : 's'}`);
-    }
-
-    if (numUntracked > 0) {
-      fragments.push(`${numUntracked} untracked file${numUntracked === 1 ? '' : 's'}`);
-    }
-
-    return fragments.length > 0 ? `(${fragments.join(', ')})` : '';
   }
 
   getCollapseButtonMarkup_() {
@@ -351,12 +318,10 @@ html {
   padding: 2px 10px 2px 0;
   text-align: left;
   font-weight: normal;
-  vertical-align: top;
 }
 
 .report-metadata__cell--key {
   font-style: italic;
-  width: 10em;
 }
 
 .report-file {
