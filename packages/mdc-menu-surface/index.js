@@ -69,24 +69,12 @@ class MDCMenuSurface extends MDCComponent {
     this.foundation_.close();
   }
 
-  hoistToBody() {
-    document.body.appendChild(this.root_.parentElement.removeChild(this.root_));
-  }
-
-  disableHorizontalAutoAlignment() {
-    this.foundation_.disableHorizontalAutoAlignment();
-  }
-
   /**
    * @param {Corner} corner Default anchor corner alignment of top-left
    *     menu corner.
    */
   setAnchorCorner(corner) {
     this.foundation_.setAnchorCorner(corner);
-  }
-
-  setAnchorElement(element) {
-    this.anchorElement = element;
   }
 
   /**
