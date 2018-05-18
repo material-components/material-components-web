@@ -10,7 +10,7 @@ path: /catalog/buttons/icon-buttons/
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/icon-button.html">
+     href="https://material.io/design/components/buttons.html#toggle-button">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/icon-toggles.png" width="20" alt="Icon buttons screenshot">
   </a>
 </div>-->
@@ -67,7 +67,7 @@ const iconButtonRipple = new MDCRipple(document.querySelector('.mdc-icon-button'
 
 ### Icon Button Toggle
 
-The icon button can be used to toggle between an on and off icon. To style an icon button as an icon toggle, add the 
+The icon button can be used to toggle between an on and off icon. To style an icon button as an icon button toggle, add the 
 `data-toggle-on` and `data-toggle-off` attributes to the `mdc-icon-button` element. Then instantiate an `MDCIconToggle` on the root element. 
 
 ```html
@@ -103,7 +103,7 @@ Attribute | Description
 
 ### Icons 
 
-The icon button can be used with a standard icon library or an `svg`. The icon toggle should only be used with 
+The icon button can be used with a standard icon library or an `svg`. The icon button toggle should only be used with 
 an standard icon library. We recommend you use [Material Icons](https://material.io/icons/) from Google Fonts.
 
 ### Disabled
@@ -131,12 +131,11 @@ To customize an icon button's color and properties, you can use the following mi
 
 Mixin | Description
 --- | ---
-`mdc-icon-button-size($width, $height, $padding)` | Sets the width, height and padding for the icon and ripple. `$height` is optional and defaults to `$width`. `$padding` is optional and defaults to `max($width, $height)/2`.
-`mdc-icon-font-size($font-size)` | Sets the font size for an icon. It will also set the height, width and padding of the element for the ripple to render correctly.
+`mdc-icon-button-size($width, $height, $padding)` | Sets the width, height, font-size and padding for the icon and ripple. `$height` is optional and defaults to `$width`. `$padding` is optional and defaults to `max($width, $height)/2`. `font-size` is set to `max($width, $height)`.
 `mdc-icon-button-ink-color($color)` | Sets the font color and the ripple color to the provided color value.
 
 
-## `MDCIconToggle` Properties and Methods
+## `MDCIconButtonToggle` Properties and Methods
 
 Property | Value Type | Description
 --- | --- | ---
@@ -151,9 +150,9 @@ Event Name | Event Data Structure | Description
 
 ## Usage within Web Frameworks
 
-If you are using a JavaScript framework, such as React or Angular, you can create a Icon Toggle for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
+If you are using a JavaScript framework, such as React or Angular, you can create an Icon Button Toggle for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
-### `MDCIconToggleAdapter`
+### `MDCIconButtonToggleAdapter`
 
 Method Signature | Description
 --- | ---
@@ -169,6 +168,6 @@ Method Signature | Description
 `removeAttr(name: string) => void` | Removes the attribute `name` on the root element.
 `notifyChange(evtData: {isOn: boolean}) => void` | Broadcasts a change notification, passing along the `evtData` to the environment's event handling system. In our vanilla implementation, Custom Events are used for this.
 
-### Foundation: `MDCIconToggleFoundation`
+### Foundation: `MDCIconButtonToggleFoundation`
 
 The foundation does not contain any public properties or methods aside from those inherited from MDCFoundation.

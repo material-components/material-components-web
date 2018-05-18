@@ -23,6 +23,7 @@
   width: $width + $padding * 2;
   height: $height + $padding * 2;
   padding: $padding;
+  font-size: max($width, $height);
 
   // stylelint-disable-next-line selector-max-type
   svg,
@@ -30,12 +31,6 @@
     width: $width;
     height: $height;
   }
-}
-
-@mixin mdc-icon-button-font-size($font-size) {
-  @include mdc-icon-button-size($font-size);
-
-  font-size: $font-size;
 }
 
 @mixin mdc-icon-button-ink-color($color) {
@@ -46,12 +41,10 @@
 @mixin mdc-icon-button-base_() {
   @include mdc-ripple-surface;
   @include mdc-ripple-radius-unbounded;
-  @include mdc-icon-button-font-size(24px);
+  @include mdc-icon-button-size($mdc-icon-button-size);
 
   display: inline-block;
   position: relative;
-  align-items: center;
-  justify-content: center;
   box-sizing: border-box;
   border: none;
   outline: none;
