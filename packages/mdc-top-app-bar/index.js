@@ -46,7 +46,9 @@ class MDCTopAppBar extends MDCComponent {
 
     // Get all icons in the toolbar and instantiate the ripples
     const icons = [].slice.call(this.root_.querySelectorAll(strings.ACTION_ITEM_SELECTOR));
-    icons.push(this.navIcon_);
+    if (this.navIcon_) {
+      icons.push(this.navIcon_);
+    }
 
     this.iconRipples_ = icons.map((icon) => {
       const ripple = rippleFactory(icon);
