@@ -71,9 +71,10 @@ class Storage {
 
     const queueIndex = uploadableFile.queueIndex;
     const queueLength = uploadableFile.queueLength;
-    console.log(`➡ Uploading file ${queueIndex + 1} of ${queueLength} - ${uploadableFile.destinationAbsoluteFilePath} ...`);
+    const destinationAbsoluteFilePath = uploadableFile.destinationAbsoluteFilePath;
+    console.log(`➡ Uploading file ${queueIndex + 1} of ${queueLength} - ${destinationAbsoluteFilePath} ...`);
 
-    const cloudFile = this.storageBucket_.file(uploadableFile.destinationAbsoluteFilePath);
+    const cloudFile = this.storageBucket_.file(destinationAbsoluteFilePath);
     return cloudFile
       .save(uploadableFile.fileContent, fileOptions)
       .then(
