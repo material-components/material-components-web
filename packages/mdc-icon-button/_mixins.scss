@@ -48,9 +48,8 @@
   @include mdc-ripple-radius-unbounded;
   @include mdc-icon-button-font-size(24px);
 
-  display: inline-flex;
+  display: inline-block;
   position: relative;
-  flex-shrink: 0;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
