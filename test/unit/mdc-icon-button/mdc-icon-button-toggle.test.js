@@ -26,9 +26,9 @@ import {MDCRipple} from '../../../packages/mdc-ripple';
 import {cssClasses} from '../../../packages/mdc-ripple/constants';
 
 function setupTest({tabIndex = undefined, useInnerIconElement = false} = {}) {
-  const root = document.createElement(useInnerIconElement ? 'span' : 'i');
+  const root = document.createElement(useInnerIconElement ? 'span' : 'button');
   if (useInnerIconElement) {
-    const icon = document.createElement('i');
+    const icon = document.createElement('button');
     icon.id = 'icon';
     root.dataset.iconInnerSelector = `#${icon.id}`;
     root.appendChild(icon);
@@ -77,37 +77,6 @@ test('set/get on', () => {
   assert.equal(root.getAttribute('aria-pressed'), 'false');
 });
 
-test('set/get disabled to true', () => {
-  const {root, component} = setupTest({tabIndex: 0});
-
-  component.disabled = true;
-  assert.isOk(component.disabled);
-  assert.equal(root.getAttribute('aria-disabled'), 'true');
-  assert.equal(root.tabIndex, -1);
-});
-
-test('set/get disabled to false', () => {
-  const {root, component} = setupTest({tabIndex: 0});
-
-  component.disabled = false;
-  assert.isNotOk(component.disabled);
-  assert.isNotOk(root.hasAttribute('aria-disabled'));
-  assert.equal(root.tabIndex, 0, 'element\'s tabIndex should be the same value it already had');
-});
-
-test('set/get disabled to true, then false', () => {
-  const {root, component} = setupTest({tabIndex: 0});
-
-  component.disabled = true;
-  assert.isOk(component.disabled);
-  assert.equal(root.getAttribute('aria-disabled'), 'true');
-  assert.equal(root.tabIndex, -1);
-
-  component.disabled = false;
-  assert.isNotOk(component.disabled);
-  assert.isNotOk(root.hasAttribute('aria-disabled'));
-  assert.equal(root.tabIndex, 0, 'element\'s tabIndex should be the same value it originally had');
-});
 
 test('#refreshToggleData proxies to foundation.refreshToggleData()', () => {
   const MockIconToggleFoundation = td.constructor(MDCIconButtonToggleFoundation);
@@ -119,15 +88,9 @@ test('#refreshToggleData proxies to foundation.refreshToggleData()', () => {
 });
 
 test('intially set to on if root has aria-pressed=true', () => {
-  const root = bel`<i class="mdc-icon-button" aria-pressed="true"></i>`;
+  const root = bel`<button class="mdc-icon-button" aria-pressed="true"></button>`;
   const component = new MDCIconButtonToggle(root);
   assert.isOk(component.on);
-});
-
-test('intially set to disabled if root has aria-disabled=true', () => {
-  const root = bel`<i class="mdc-icon-button" aria-disabled="true"></i>`;
-  const component = new MDCIconButtonToggle(root);
-  assert.isOk(component.disabled);
 });
 
 test('get ripple returns a MDCRipple instance', () => {

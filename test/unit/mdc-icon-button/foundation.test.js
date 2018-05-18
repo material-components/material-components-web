@@ -163,42 +163,6 @@ test('#toggle sets aria-label to label in "data-toggle-off-label" if specified w
   td.verify(mockAdapter.setAttr(strings.ARIA_LABEL, label));
 });
 
-test('#setDisabled updates the disabled state', () => {
-  const {foundation} = setupTest();
-  foundation.setDisabled(true);
-  assert.isOk(foundation.isDisabled());
-  foundation.setDisabled(false);
-  assert.isNotOk(foundation.isDisabled());
-});
-
-test('#setDisabled sets the tabindex to -1 when disabled', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.setDisabled(true);
-  td.verify(mockAdapter.setTabIndex(-1));
-});
-
-test('#setDisabled sets "aria-disabled" to true when disabled', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.setDisabled(true);
-  td.verify(mockAdapter.setAttr(strings.ARIA_DISABLED, 'true'));
-});
-
-test('#setDisabled restores the previously set tab index when enabled', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const tabIndex = 5;
-  td.when(mockAdapter.getTabIndex()).thenReturn(tabIndex);
-  foundation.setDisabled(true);
-
-  foundation.setDisabled(false);
-  td.verify(mockAdapter.setTabIndex(tabIndex));
-});
-
-test('#setDisabled removes "aria-disabled" when enabled', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.setDisabled(false);
-  td.verify(mockAdapter.removeAttr(strings.ARIA_DISABLED));
-});
-
 test('#refreshToggleData syncs the foundation state with data-toggle-on, data-toggle-off', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getAttr(strings.DATA_TOGGLE_ON_CLASS)).thenReturn('first-class-on');

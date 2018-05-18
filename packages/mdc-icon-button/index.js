@@ -75,7 +75,6 @@ class MDCIconButtonToggle extends MDCComponent {
 
   initialSyncWithDOM() {
     this.on = this.root_.getAttribute(MDCIconButtonToggleFoundation.strings.ARIA_PRESSED) === 'true';
-    this.disabled = this.root_.getAttribute(MDCIconButtonToggleFoundation.strings.ARIA_DISABLED) === 'true';
   }
 
   /** @return {!MDCRipple} */
@@ -91,16 +90,6 @@ class MDCIconButtonToggle extends MDCComponent {
   /** @param {boolean} isOn */
   set on(isOn) {
     this.foundation_.toggle(isOn);
-  }
-
-  /** @return {boolean} */
-  get disabled() {
-    return this.foundation_.isDisabled();
-  }
-
-  /** @param {boolean} isDisabled */
-  set disabled(isDisabled) {
-    this.foundation_.setDisabled(isDisabled);
   }
 
   refreshToggleData() {

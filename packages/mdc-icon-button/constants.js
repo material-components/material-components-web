@@ -29,7 +29,6 @@ const strings = {
   DATA_TOGGLE_OFF_CONTENT: 'data-toggle-off-content',
   DATA_TOGGLE_OFF_CLASS: 'data-toggle-off-class',
   ARIA_PRESSED: 'aria-pressed',
-  ARIA_DISABLED: 'aria-disabled',
   ARIA_LABEL: 'aria-label',
   CHANGE_EVENT: 'MDCIconButtonToggle:change',
 };
