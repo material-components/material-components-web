@@ -27,6 +27,7 @@ import * as iconToggle from '@material/icon-toggle/index';
 import * as linearProgress from '@material/linear-progress/index';
 import * as lineRipple from '@material/line-ripple/index';
 import * as menu from '@material/menu/index';
+import * as menuSurface from '@material/menu-surface/index';
 import * as notchedOutline from '@material/notched-outline/index';
 import * as radio from '@material/radio/index';
 import * as ripple from '@material/ripple/index';
@@ -35,7 +36,6 @@ import * as selectionControl from '@material/selection-control/index';
 import * as slider from '@material/slider/index';
 import * as snackbar from '@material/snackbar/index';
 import * as tabs from '@material/tabs/index';
-import * as temporarySurface from '@material/temporary-surface/index';
 import * as textField from '@material/textfield/index';
 import * as toolbar from '@material/toolbar/index';
 import * as topAppBar from '@material/top-app-bar/index';
@@ -59,9 +59,9 @@ autoInit.register('MDCRadio', radio.MDCRadio);
 autoInit.register('MDCSnackbar', snackbar.MDCSnackbar);
 autoInit.register('MDCTab', tabs.MDCTab);
 autoInit.register('MDCTabBar', tabs.MDCTabBar);
-autoInit.register('MDCTemporarySurface', temporarySurface.MDCTemporarySurface);
 autoInit.register('MDCTextField', textField.MDCTextField);
 autoInit.register('MDCMenu', menu.MDCMenu);
+autoInit.register('MDCMenuSurface', menuSurface.MDCMenuSurface);
 autoInit.register('MDCSelect', select.MDCSelect);
 autoInit.register('MDCSlider', slider.MDCSlider);
 autoInit.register('MDCToolbar', toolbar.MDCToolbar);
@@ -82,6 +82,7 @@ export {
   lineRipple,
   linearProgress,
   menu,
+  menuSurface,
   notchedOutline,
   radio,
   ripple,
@@ -90,7 +91,6 @@ export {
   slider,
   snackbar,
   tabs,
-  temporarySurface,
   textField,
   toolbar,
   topAppBar,

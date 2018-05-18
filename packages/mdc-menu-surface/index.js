@@ -39,6 +39,12 @@ class MDCMenuSurface extends MDCComponent {
     return new MDCMenuSurface(root);
   }
 
+  initialSyncWithDOM() {
+    if (this.root_.parentElement.classList.contains('mdc-menu-surface--anchor')) {
+      this.anchorElement = this.root_.parentElement;
+    }
+  }
+
   /** @return {boolean} */
   get open() {
     return this.foundation_.isOpen();
@@ -63,12 +69,24 @@ class MDCMenuSurface extends MDCComponent {
     this.foundation_.close();
   }
 
+  hoistToBody() {
+    document.body.appendChild(this.root_.parentElement.removeChild(this.root_));
+  }
+
+  disableHorizontalAutoAlignment() {
+    this.foundation_.disableHorizontalAutoAlignment();
+  }
+
   /**
    * @param {Corner} corner Default anchor corner alignment of top-left
    *     menu corner.
    */
   setAnchorCorner(corner) {
     this.foundation_.setAnchorCorner(corner);
+  }
+
+  setAnchorElement(element) {
+    this.anchorElement = element;
   }
 
   /**
@@ -93,19 +111,14 @@ class MDCMenuSurface extends MDCComponent {
       getInnerDimensions: () => {
         return {width: this.root_.offsetWidth, height: this.root_.offsetHeight};
       },
-      hasAnchor: () => this.root_.parentElement && this.root_.parentElement.classList.contains('mdc-menu-anchor'),
-      getAnchorDimensions: () => this.root_.parentElement.getBoundingClientRect(),
+      hasAnchor: () => !!this.anchorElement,
+      getAnchorDimensions: () => this.anchorElement && this.anchorElement.getBoundingClientRect(),
       getWindowDimensions: () => {
         return {width: window.innerWidth, height: window.innerHeight};
       },
       getNumberFocusableElements: () => this.focusableElements_.length,
       getFocusedItemIndex: () => this.focusableElements_.indexOf(document.activeElement),
       focusItemAtIndex: (index) => this.focusableElements_[index].focus(),
-      getFirstFocusableElement: () => this.root_.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[0],
-      getLastFocusableElement: () => {
-        const nodeList = this.root_.querySelectorAll(strings.FOCUSABLE_ELEMENTS);
-        return nodeList[nodeList.length - 1];
-      },
       getIndexForEventTarget: (target) => this.focusableElements_.indexOf(target),
       registerInteractionHandler: (type, handler) => this.root_.addEventListener(type, handler),
       deregisterInteractionHandler: (type, handler) => this.root_.removeEventListener(type, handler),

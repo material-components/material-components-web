@@ -263,8 +263,9 @@
     <script>
       demoReady(function() {
         var menuEl = document.querySelector('#demo-menu');
-        var menu = mdc.temporarySurface.MDCTemporarySurface.attachTo(menuEl);
+        var menu = mdc.menuSurface.MDCMenuSurface.attachTo(menuEl);
         var menuButtonEl = document.querySelector('#menu-button');
+        menu.hoistToBody();
         menuButtonEl.addEventListener('click', function() {
           menu.open = !menu.open;
         });
