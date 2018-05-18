@@ -100,8 +100,8 @@ class Controller {
     const assetFileRelativePaths = glob.sync('**/*', {cwd: this.cliArgs_.testDir, nodir: true});
 
     /** @type {!Array<!Promise<!UploadableFile>>} */
-    const uploadPromises = assetFileRelativePaths.map((assetFileRelativePath, index) => {
-      return this.uploadOneAsset_(assetFileRelativePath, testCases, index, assetFileRelativePaths.length);
+    const uploadPromises = assetFileRelativePaths.map((assetFileRelativePath) => {
+      return this.uploadOneAsset_(assetFileRelativePath, testCases);
     });
 
     return Promise.all(uploadPromises)
