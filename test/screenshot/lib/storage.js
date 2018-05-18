@@ -69,7 +69,9 @@ class Storage {
       },
     };
 
-    console.log(`➡ Uploading ${uploadableFile.destinationAbsoluteFilePath} ...`);
+    const queueIndex = uploadableFile.queueIndex;
+    const queueLength = uploadableFile.queueLength;
+    console.log(`➡ Uploading file ${queueIndex + 1} of ${queueLength} - ${uploadableFile.destinationAbsoluteFilePath} ...`);
 
     const cloudFile = this.storageBucket_.file(uploadableFile.destinationAbsoluteFilePath);
     return cloudFile
@@ -89,7 +91,9 @@ class Storage {
     const publicUrl = `${GCLOUD_STORAGE_BASE_URL}${uploadableFile.destinationAbsoluteFilePath}`;
     uploadableFile.fileContent = null; // Free up memory
     uploadableFile.publicUrl = publicUrl;
-    console.log(`✔︎ Uploaded ${publicUrl}`);
+    const queueIndex = uploadableFile.queueIndex;
+    const queueLength = uploadableFile.queueLength;
+    console.log(`✔︎ Uploaded file ${queueIndex + 1} of ${queueLength} - ${publicUrl}`);
     return Promise.resolve(uploadableFile);
   }
 
@@ -102,8 +106,14 @@ class Storage {
   handleUploadFailure_(uploadableFile, err) {
     const publicUrl = `${GCLOUD_STORAGE_BASE_URL}${uploadableFile.destinationAbsoluteFilePath}`;
     uploadableFile.fileContent = null; // Free up memory
-    console.error(`✗︎ FAILED to upload ${publicUrl}:`);
+    const queueIndex = uploadableFile.queueIndex;
+    const queueLength = uploadableFile.queueLength;
+    console.error(`✗︎ FAILED to upload file ${queueIndex + 1} of ${queueLength} - ${publicUrl}:`);
     console.error(err);
+    if (err.code >= 500 && err.code < 600) {
+      console.error(`ERROR: GCP server returned HTTP ${err.code}. Retrying upload request...`);
+      return this.uploadFile(uploadableFile);
+    }
     return Promise.reject(err);
   }
 
@@ -137,6 +147,8 @@ class UploadableFile {
     destinationRelativeFilePath,
     fileContent,
     userAgent = null,
+    queueIndex = 0,
+    queueLength = 1,
   }) {
     /** @type {string} */
     this.destinationParentDirectory = destinationParentDirectory;
@@ -152,6 +164,12 @@ class UploadableFile {
 
     /** @type {?Object} */
     this.userAgent = userAgent;
+
+    /** @type {number} */
+    this.queueIndex = queueIndex;
+
+    /** @type {number} */
+    this.queueLength = queueLength;
 
     /** @type {?string} */
     this.publicUrl = null;

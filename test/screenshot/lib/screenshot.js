@@ -1,14 +1,14 @@
-/**
+/*
  * Copyright 2018 Google Inc. All Rights Reserved.
  *
- * Licensed under the Apache License, Version 2.0 (the 'License');
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an 'AS IS' BASIS,
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -25,10 +25,10 @@ const CbtUserAgent = require('./cbt-user-agent');
 const API_PARALLEL_REQUEST_LIMIT = 5;
 
 /** How long to wait between polling the API for status changes. */
-const API_POLL_INTERVAL_MS = 1000 * 5;
+const API_POLL_INTERVAL_MS = seconds(5);
 
 /** How long to wait for a single URL to be captured in all browsers. */
-const API_MAX_WAIT_MS = 1000 * 60 * 5;
+const API_MAX_WAIT_MS = minutes(10);
 
 /** Map of URLs to `Progress` objects. */
 const progressMap = new Map();
@@ -73,9 +73,17 @@ async function sendCaptureRequest(testPageUrl) {
   const userAgents = await CbtUserAgent.fetchBrowsersToRun();
   return cbtApi.sendCaptureRequest(testPageUrl, userAgents)
     .catch(async (err) => {
+      const waitInSeconds = millisToSeconds(API_POLL_INTERVAL_MS);
+
       if (reachedParallelExecutionLimit(err)) {
-        console.warn(`Parallel execution limit reached - waiting for ${API_POLL_INTERVAL_MS} ms before retrying...`);
-        // Wait a few seconds, then try again.
+        console.warn(`Parallel execution limit reached - waiting for ${waitInSeconds} seconds before retrying...`);
+        await sleep(API_POLL_INTERVAL_MS);
+        return sendCaptureRequest(testPageUrl);
+      }
+
+      // TODO(acdvorak): Abstract this logic into CbtApi for every HTTP request?
+      if (isServerError(err)) {
+        logServerError(err);
         await sleep(API_POLL_INTERVAL_MS);
         return sendCaptureRequest(testPageUrl);
       }
@@ -92,34 +100,67 @@ async function handleCaptureResponse(testPageUrl, captureResponseBody) {
   const isStillRunning = () => infoProgress.running > 0;
   const isTimedOut = () => (Date.now() - startTime) > API_MAX_WAIT_MS;
 
-  while (isStillRunning() && !isTimedOut()) {
+  do {
     // Wait a few seconds, then try again.
     await sleep(API_POLL_INTERVAL_MS);
-    infoResponseBody = await cbtApi.fetchScreenshotInfo(captureResponseBody.screenshot_test_id);
+    infoResponseBody = await fetchScreenshotInfo(captureResponseBody.screenshot_test_id);
     infoProgress = computeTestCaseProgress(testPageUrl, infoResponseBody);
     logTestCaseProgress(testPageUrl, infoProgress);
-  }
+  } while (isStillRunning() && !isTimedOut());
+
+  const elapsedTimeInMinutes = millisToMinutes(Date.now() - startTime);
 
   if (isStillRunning() && isTimedOut()) {
     const err = new Error([
-      `Timed out after ${Date.now() - startTime} ms waiting for CBT`,
+      `Timed out waiting for CBT after ${elapsedTimeInMinutes} minutes`,
       `to finish capturing a screenshot of "${testPageUrl}".`,
     ].join('\n'));
     return rejectWithError('handleCaptureResponse', testPageUrl, err);
   }
 
-  if (infoResponseBody.statusCode === 524) {
-    const err = new Error([
-      `Timed out after ${Date.now() - startTime} ms waiting for CBT`,
-      `to finish capturing a screenshot of "${testPageUrl}".`,
-      'See https://support.cloudflare.com/hc/en-us/articles/200171926-Error-524',
-    ].join('\n'));
-    return rejectWithError('handleCaptureResponse', testPageUrl, err);
+  // We don't use CBT's screenshot versioning features, so there should only ever be one version.
+  // Each "result" is an individual browser screenshot for a single URL.
+  const allResults = infoResponseBody.versions[0].results;
+  const resultsWithNoFullpageImage = allResults.filter((cbtResult) => !cbtResult.images.fullpage);
+  const resultsWithNoChromelessImage = allResults.filter((cbtResult) => !cbtResult.images.chromeless);
+
+  async function sleepAndLogError(nullPropertyName, resultsWithNullProperties) {
+    const waitInSeconds = millisToSeconds(API_POLL_INTERVAL_MS);
+    console.error(resultsWithNullProperties);
+    console.error(`
+ERROR: ${nullPropertyName} is null
+Waiting for ${waitInSeconds} seconds before retrying...
+`);
+    return sleep(API_POLL_INTERVAL_MS);
+  }
+
+  // At least one browser failed to capture. Retry all browsers.
+  if (resultsWithNoFullpageImage.length > 0) {
+    await sleepAndLogError('cbtResult.images.fullpage', resultsWithNoFullpageImage);
+    return sendCaptureRequest(testPageUrl);
+  }
+
+  // CBT generated a fullpage screenshot, but has not yet generated the chromeless version. Send a new info request.
+  if (resultsWithNoChromelessImage.length > 0) {
+    await sleepAndLogError('cbtResult.images.chromeless', resultsWithNoChromelessImage);
+    return handleCaptureResponse(testPageUrl, infoResponseBody);
   }
 
   logTestCaseProgress(testPageUrl, infoProgress);
 
   return Promise.resolve(infoResponseBody);
+}
+
+async function fetchScreenshotInfo(screenshotTestId) {
+  return cbtApi.fetchScreenshotInfo(screenshotTestId)
+    .catch(async (err) => {
+      // TODO(acdvorak): Abstract this logic into CbtApi for every HTTP request?
+      if (isServerError(err)) {
+        logServerError(err);
+        await sleep(API_POLL_INTERVAL_MS);
+        return fetchScreenshotInfo(screenshotTestId);
+      }
+    });
 }
 
 function computeTestCaseProgress(testPageUrl, screenshotInfoResponseBody) {
@@ -142,6 +183,10 @@ function reachedParallelExecutionLimit(requestError) {
   }
 }
 
+function isServerError(requestError) {
+  return requestError.statusCode >= 500 && requestError.statusCode < 600;
+}
+
 function rejectWithError(functionName, testPageUrl, err) {
   console.error(`ERROR in ${functionName}("${testPageUrl}"):`);
   console.error('');
@@ -153,6 +198,32 @@ async function sleep(ms) {
   return new Promise((resolve) => {
     setTimeout(() => resolve(), ms);
   });
+}
+
+function seconds(seconds) {
+  return seconds * 1000;
+}
+
+function minutes(minutes) {
+  return minutes * 1000 * 60;
+}
+
+function millisToSeconds(millis) {
+  return Math.floor(millis / 1000);
+}
+
+function millisToMinutes(millis) {
+  return Math.floor(millis / 1000 / 60);
+}
+
+function logServerError(requestError) {
+  const waitInSeconds = millisToSeconds(API_POLL_INTERVAL_MS);
+  console.warn(requestError.options); // HTTP request params
+  console.warn(requestError.error); // HTTP response body
+  console.warn(`
+CBT server error: HTTP ${requestError.statusCode}
+Waiting for ${waitInSeconds} seconds before retrying...
+`);
 }
 
 function logTestCaseProgress(testPageUrl, testPageProgress) {

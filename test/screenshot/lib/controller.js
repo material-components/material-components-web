@@ -100,8 +100,8 @@ class Controller {
     const assetFileRelativePaths = glob.sync('**/*', {cwd: this.cliArgs_.testDir, nodir: true});
 
     /** @type {!Array<!Promise<!UploadableFile>>} */
-    const uploadPromises = assetFileRelativePaths.map((assetFileRelativePath) => {
-      return this.uploadOneAsset_(assetFileRelativePath, testCases);
+    const uploadPromises = assetFileRelativePaths.map((assetFileRelativePath, index) => {
+      return this.uploadOneAsset_(assetFileRelativePath, testCases, index, assetFileRelativePaths.length);
     });
 
     return Promise.all(uploadPromises)
@@ -117,14 +117,18 @@ class Controller {
   /**
    * @param {string} assetFileRelativePath
    * @param {!Array<!UploadableTestCase>} testCases
+   * @param {number} queueIndex
+   * @param {number} queueLength
    * @return {!Promise<!UploadableFile>}
    * @private
    */
-  async uploadOneAsset_(assetFileRelativePath, testCases) {
+  async uploadOneAsset_(assetFileRelativePath, testCases, queueIndex, queueLength) {
     const assetFile = new UploadableFile({
       destinationParentDirectory: this.baseUploadDir_,
       destinationRelativeFilePath: assetFileRelativePath,
       fileContent: await fs.readFile(`${this.cliArgs_.testDir}/${assetFileRelativePath}`),
+      queueIndex,
+      queueLength,
     });
 
     return this.storage_.uploadFile(assetFile)
@@ -289,7 +293,7 @@ class Controller {
       expectedSuite: await this.snapshotStore_.fromDiffBase(),
     });
 
-    return Promise.all(diffs.map((diff) => this.uploadOneDiffImage_(diff)))
+    return Promise.all(diffs.map((diff, index) => this.uploadOneDiffImage_(diff, index, diffs.length)))
       .then(
         () => {
           diffs.sort((a, b) => {
@@ -308,15 +312,19 @@ class Controller {
 
   /**
    * @param {!ImageDiffJson} diff
+   * @param {number} queueIndex
+   * @param {number} queueLength
    * @return {!Promise<void>}
    * @private
    */
-  async uploadOneDiffImage_(diff) {
+  async uploadOneDiffImage_(diff, queueIndex, queueLength) {
     /** @type {!UploadableFile} */
     const diffImageFile = await this.storage_.uploadFile(new UploadableFile({
       destinationParentDirectory: `${this.baseUploadDir_}/screenshots`,
       destinationRelativeFilePath: `${diff.htmlFilePath}/${diff.browserKey}.diff.png`,
       fileContent: diff.diffImageBuffer,
+      queueIndex,
+      queueLength,
     }));
 
     diff.diffImageUrl = diffImageFile.publicUrl;
