@@ -95,6 +95,22 @@ class GitRepo {
   }
 
   /**
+   * @return {!Promise<!StatusSummary>}
+   */
+  async getStatus() {
+    return this.repo_.status();
+  }
+
+  /**
+   * @param {!Array<string>=} args
+   * @return {!Promise<!Array<!DefaultLogFields>>}
+   */
+  async getLog(args = []) {
+    const logEntries = await this.repo_.log([...args]);
+    return logEntries.all.concat(); // convert TypeScript ReadonlyArray to mutable Array
+  }
+
+  /**
    * @param {string} cmd
    * @param {!Array<string>=} argList
    * @return {!Promise<string>}
