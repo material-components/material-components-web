@@ -289,7 +289,7 @@ class Controller {
       expectedSuite: await this.snapshotStore_.fromDiffBase(),
     });
 
-    return Promise.all(diffs.map((diff, index) => this.uploadOneDiffImage_(diff, index, diffs.length)))
+    return Promise.all(diffs.map((diff) => this.uploadOneDiffImage_(diff)))
       .then(
         () => {
           diffs.sort((a, b) => {
