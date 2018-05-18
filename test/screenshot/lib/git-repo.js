@@ -38,12 +38,11 @@ class GitRepo {
   }
 
   /**
-   * @param {string} branch
-   * @param {string=} remote
+   * @param {!Array<string>} args
    * @return {!Promise<void>}
    */
-  async fetch(branch, remote = 'origin') {
-    return this.repo_.fetch([remote, branch]);
+  async fetch(args = []) {
+    return this.repo_.fetch(args);
   }
 
   /**
@@ -63,6 +62,21 @@ class GitRepo {
   }
 
   /**
+   * Examples:
+   * ```
+   * getFullSymbolicName("master")        = "refs/heads/master"
+   * getFullSymbolicName("origin/master") = "refs/remotes/origin/master"
+   * getFullSymbolicName("HEAD")          = "refs/heads/feat/button/my-fancy-feature"
+   * getFullSymbolicName("v0.34.1")       = "refs/tags/v0.34.1"
+   * ```
+   * @param {string=} ref
+   * @return {!Promise<string>}
+   */
+  async getFullSymbolicName(ref = 'HEAD') {
+    return this.exec_('revparse', ['--symbolic-full-name', ref]);
+  }
+
+  /**
    * @param {string} filePath Relative to the local Git repo
    * @param {string=} revision Git revision (branch name or commit hash).
    *   E.g., "master", "origin/master", "feat/foo/bar", "e450da9".
@@ -70,6 +84,13 @@ class GitRepo {
    */
   async getFileAtRevision(filePath, revision = 'master') {
     return this.repo_.show([`${revision}:${filePath}`]);
+  }
+
+  /**
+   * @return {!Promise<!Array<string>>}
+   */
+  async getRemoteNames() {
+    return (await this.repo_.getRemotes()).map((remote) => remote.name);
   }
 
   /**

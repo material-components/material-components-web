@@ -16,10 +16,8 @@
 
 'use strict';
 
-const SOURCE_DIR = 'test/screenshot/';
-
 const Controller = require('./lib/controller');
-const controller = new Controller({sourceDir: SOURCE_DIR});
+const controller = new Controller();
 
 controller.initialize()
   .then(() => controller.uploadAllAssets(), handleError)
