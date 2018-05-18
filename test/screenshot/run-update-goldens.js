@@ -16,10 +16,8 @@
 
 'use strict';
 
-const SOURCE_DIR = 'test/screenshot/';
-
 const Controller = require('./lib/controller');
-const controller = new Controller({sourceDir: SOURCE_DIR});
+const controller = new Controller();
 
 controller.initialize()
   .then(() => controller.uploadAllAssets(), handleError)
@@ -27,8 +25,8 @@ controller.initialize()
   .then((testCases) => controller.diffGoldenJson(testCases), handleError)
   .then(
     async ({testCases, diffs}) => {
-      const diffReportUrl = await controller.uploadDiffReport({testCases, diffs});
-      await controller.updateGoldenJson({testCases, diffReportUrl});
+      await controller.uploadDiffReport({testCases, diffs});
+      await controller.updateGoldenJson({testCases});
     },
     handleError
   )
