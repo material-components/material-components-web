@@ -117,18 +117,14 @@ class Controller {
   /**
    * @param {string} assetFileRelativePath
    * @param {!Array<!UploadableTestCase>} testCases
-   * @param {number} queueIndex
-   * @param {number} queueLength
    * @return {!Promise<!UploadableFile>}
    * @private
    */
-  async uploadOneAsset_(assetFileRelativePath, testCases, queueIndex, queueLength) {
+  async uploadOneAsset_(assetFileRelativePath, testCases) {
     const assetFile = new UploadableFile({
       destinationParentDirectory: this.baseUploadDir_,
       destinationRelativeFilePath: assetFileRelativePath,
       fileContent: await fs.readFile(`${this.cliArgs_.testDir}/${assetFileRelativePath}`),
-      queueIndex,
-      queueLength,
     });
 
     return this.storage_.uploadFile(assetFile)
@@ -312,12 +308,10 @@ class Controller {
 
   /**
    * @param {!ImageDiffJson} diff
-   * @param {number} queueIndex
-   * @param {number} queueLength
    * @return {!Promise<void>}
    * @private
    */
-  async uploadOneDiffImage_(diff, queueIndex, queueLength) {
+  async uploadOneDiffImage_(diff) {
     /** @type {?CbtUserAgent} */
     const userAgent = await CbtUserAgent.fetchBrowserByAlias(diff.userAgentAlias);
 
@@ -326,8 +320,6 @@ class Controller {
       destinationParentDirectory: this.baseUploadDir_,
       destinationRelativeFilePath: `${diff.htmlFilePath}.${userAgent.fullCbtApiName}.diff.png`,
       fileContent: diff.diffImageBuffer,
-      queueIndex,
-      queueLength,
       userAgent,
     }));
 
