@@ -46,87 +46,6 @@ class SnapshotStore {
   }
 
   /**
-   * Writes the data to the given `golden.json` file path.
-   * @param {!Array<!UploadableTestCase>} testCases
-   * @param {!Array<!ImageDiffJson>} diffs
-   * @return {!Promise<void>}
-   */
-  async writeToDisk({testCases, diffs}) {
-    const jsonData = await this.getJsonData_({testCases, diffs});
-    const jsonFilePath = this.cliArgs_.goldenPath;
-    const jsonFileContent = stringify(jsonData, {space: '  '}) + '\n';
-
-    await fs.writeFile(jsonFilePath, jsonFileContent);
-
-    console.log(`\n\nDONE updating "${jsonFilePath}"!\n\n`);
-  }
-
-  async getJsonData_({testCases, diffs}) {
-    let jsonData;
-
-    if (this.cliArgs_.hasAnyFilters()) {
-      // Selective update: Keep existing `golden.json`, and only update screenshots that have changed.
-      jsonData = await this.partialUpdate_({testCases, diffs});
-    } else {
-      // Full update: Overwrite existing `golden.json` with new data, but retain unchanged screenshots.
-      jsonData = await this.fullUpdate_({testCases, diffs});
-    }
-
-    return jsonData;
-  }
-
-  async partialUpdate_({testCases, diffs}) {
-    const oldJsonData = await this.fromDiffBase();
-    const newJsonData = await this.fromTestCases(testCases);
-    const jsonData = this.deepCloneJson_(oldJsonData);
-
-    diffs.forEach((diff) => {
-      const htmlFilePath = diff.htmlFilePath;
-      const browserKey = diff.browserKey;
-      if (jsonData[htmlFilePath]) {
-        jsonData[htmlFilePath].publicUrl = newJsonData[htmlFilePath].publicUrl;
-        jsonData[htmlFilePath].screenshots[browserKey] = newJsonData[htmlFilePath].screenshots[browserKey];
-      } else {
-        jsonData[htmlFilePath] = this.deepCloneJson_(newJsonData[htmlFilePath]);
-      }
-    });
-
-    return jsonData;
-  }
-
-  async fullUpdate_({testCases, diffs}) {
-    const oldJsonData = await this.fromDiffBase();
-    const newJsonData = await this.fromTestCases(testCases);
-    const jsonData = this.deepCloneJson_(newJsonData);
-
-    for (const [htmlFilePath, page] of Object.entries(jsonData)) {
-      if (!oldJsonData[htmlFilePath]) {
-        continue;
-      }
-
-      let pageHasChanges = false;
-
-      for (const [browserKey, newUrl] of Object.entries(page.screenshots)) {
-        const changedUrl = diffs.find((diff) => diff.htmlFilePath === htmlFilePath && diff.browserKey === browserKey);
-        const oldUrl = oldJsonData[htmlFilePath].screenshots[browserKey];
-        if (!changedUrl && oldUrl) {
-          page.screenshots[browserKey] = oldUrl;
-        }
-
-        if (changedUrl) {
-          pageHasChanges = true;
-        }
-      }
-
-      if (!pageHasChanges) {
-        page.publicUrl = oldJsonData[htmlFilePath].publicUrl;
-      }
-    }
-
-    return jsonData;
-  }
-
-  /**
    * Parses the `golden.json` file specified by the `--mdc-diff-base` CLI arg.
    * @return {!Promise<!SnapshotSuiteJson>}
    */
@@ -137,10 +56,6 @@ class SnapshotStore {
 
     // Deep-clone the cached object to avoid accidental mutation of shared state
     return this.deepCloneJson_(this.cachedGoldenJsonFromDiffBase_);
-  }
-
-  deepCloneJson_(json) {
-    return JSON.parse(JSON.stringify(json));
   }
 
   /**
@@ -172,6 +87,22 @@ class SnapshotStore {
   }
 
   /**
+   * Writes the data to the given `golden.json` file path.
+   * @param {!Array<!UploadableTestCase>} testCases
+   * @param {!Array<!ImageDiffJson>} diffs
+   * @return {!Promise<void>}
+   */
+  async writeToDisk({testCases, diffs}) {
+    const jsonData = await this.getJsonData_({testCases, diffs});
+    const jsonFilePath = this.cliArgs_.goldenPath;
+    const jsonFileContent = stringify(jsonData, {space: '  '}) + '\n';
+
+    await fs.writeFile(jsonFilePath, jsonFileContent);
+
+    console.log(`\n\nDONE updating "${jsonFilePath}"!\n\n`);
+  }
+
+  /**
    * @return {!Promise<string>}
    * @private
    */
@@ -199,6 +130,104 @@ class SnapshotStore {
 
     const rawDiffBase = this.cliArgs_.diffBase;
     throw new Error(`Unable to parse '--mdc-diff-base=${rawDiffBase}': Expected a URL, local file path, or git ref`);
+  }
+
+  /**
+   * @param {!Array<!UploadableTestCase>} testCases
+   * @param {!Array<!ImageDiffJson>} diffs
+   * @return {!Promise<!SnapshotSuiteJson>}
+   * @private
+   */
+  async getJsonData_({testCases, diffs}) {
+    let jsonData;
+
+    if (this.cliArgs_.hasAnyFilters()) {
+      // Selective update: Keep existing `golden.json`, and only update screenshots that have changed.
+      jsonData = await this.partialUpdate_({testCases, diffs});
+    } else {
+      // Full update: Overwrite existing `golden.json` with new data, but retain unchanged screenshots.
+      jsonData = await this.fullUpdate_({testCases, diffs});
+    }
+
+    return jsonData;
+  }
+
+  /**
+   * @param {!Array<!UploadableTestCase>} testCases
+   * @param {!Array<!ImageDiffJson>} diffs
+   * @return {!Promise<!SnapshotSuiteJson>}
+   * @private
+   */
+  async partialUpdate_({testCases, diffs}) {
+    const oldJsonData = await this.fromDiffBase();
+    const newJsonData = await this.fromTestCases(testCases);
+    const jsonData = this.deepCloneJson_(oldJsonData);
+
+    diffs.forEach((diff) => {
+      const htmlFilePath = diff.htmlFilePath;
+      const browserKey = diff.browserKey;
+      if (jsonData[htmlFilePath]) {
+        jsonData[htmlFilePath].publicUrl = newJsonData[htmlFilePath].publicUrl;
+        jsonData[htmlFilePath].screenshots[browserKey] = newJsonData[htmlFilePath].screenshots[browserKey];
+      } else {
+        jsonData[htmlFilePath] = this.deepCloneJson_(newJsonData[htmlFilePath]);
+      }
+    });
+
+    return jsonData;
+  }
+
+  /**
+   * @param {!Array<!UploadableTestCase>} testCases
+   * @param {!Array<!ImageDiffJson>} diffs
+   * @return {!Promise<!SnapshotSuiteJson>}
+   * @private
+   */
+  async fullUpdate_({testCases, diffs}) {
+    const oldJsonData = await this.fromDiffBase();
+    const newJsonData = await this.fromTestCases(testCases);
+    const jsonData = this.deepCloneJson_(newJsonData);
+
+    for (const [htmlFilePath, page] of Object.entries(jsonData)) {
+      if (!oldJsonData[htmlFilePath]) {
+        continue;
+      }
+
+      let pageHasChanges = false;
+
+      for (const browserKey of Object.keys(page.screenshots)) {
+        const changedUrl = diffs.find((diff) => diff.htmlFilePath === htmlFilePath && diff.browserKey === browserKey);
+        const oldUrl = oldJsonData[htmlFilePath].screenshots[browserKey];
+        if (!changedUrl && oldUrl) {
+          page.screenshots[browserKey] = oldUrl;
+        }
+
+        if (changedUrl) {
+          pageHasChanges = true;
+        }
+      }
+
+      if (!pageHasChanges) {
+        page.publicUrl = oldJsonData[htmlFilePath].publicUrl;
+      }
+    }
+
+    return jsonData;
+  }
+
+  /**
+   * Creates a deep clone of the given `source` object's own enumerable properties.
+   * Non-JSON-serializable properties (such as functions or symbols) are silently discarded.
+   * The returned value is structurally equivalent, but not referentially equal, to the input.
+   * In Java parlance:
+   *   clone.equals(source) // true
+   *   clone == source      // false
+   * @param {!Object} source JSON object to clone
+   * @return {!Object} Deep clone of `source` object
+   * @private
+   */
+  deepCloneJson_(source) {
+    return JSON.parse(JSON.stringify(source));
   }
 }
 
