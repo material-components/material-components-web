@@ -142,4 +142,5 @@ Method Signature | Description
 Method Signature | Description
 --- | ---
 `setDisabled(disabled: boolean) => void` | Updates the icon's disabled state.
+`setAriaLabel(label: string) => void` | Updates the icon's aria-label.
 `handleInteraction(evt: Event) => void` | Handles a text field interaction event.
