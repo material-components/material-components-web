@@ -26,3 +26,43 @@
 .demo-fab-icon-size {
   @include mdc-fab-icon-size(36px);
 }
+
+.demo-figure-extended-fab {
+  display: block;
+  width: 100%;
+}
+
+.mdc-fab--extended,
+.mdc-fab--extended-fluid {
+  background: #191919;
+  width: auto;
+  min-width: 132px;
+  border-radius: 48px;
+  padding: 0 20px;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.mdc-fab--extended-fluid {
+  width: 100%;
+}
+
+.mdc-fab__label {
+  color: white;
+  font-size: 14px;
+  text-transform: uppercase;
+  font-family: Roboto;
+  font-weight: 500;
+  margin-left: 8px;
+  justify-content: flex-start;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.demo-extended-fab-fixed {
+  width: 180px;  
+}
