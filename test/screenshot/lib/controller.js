@@ -275,6 +275,18 @@ class Controller {
   }
 
   /**
+   * Writes the given `testCases` to a `golden.json` file.
+   * If the file already exists, it will be overwritten.
+   * @param {!Array<!UploadableTestCase>} testCases
+   * @param {!Array<!ImageDiffJson>} diffs
+   * @return {!Promise<{diffs: !Array<!ImageDiffJson>, testCases: !Array<!UploadableTestCase>}>}
+   */
+  async updateGoldenJson({testCases, diffs}) {
+    await this.snapshotStore_.writeToDisk({testCases, diffs});
+    return {testCases, diffs};
+  }
+
+  /**
    * @param {!Array<!UploadableTestCase>} testCases
    * @return {!Promise<{diffs: !Array<!ImageDiffJson>, testCases: !Array<!UploadableTestCase>}>}
    */
@@ -338,18 +350,6 @@ class Controller {
     console.log(reportFile.publicUrl);
 
     return reportFile.publicUrl;
-  }
-
-  /**
-   * Writes the given `testCases` to a `golden.json` file.
-   * If the file already exists, it will be overwritten.
-   * @param {!Array<!UploadableTestCase>} testCases
-   * @param {!Array<!ImageDiffJson>} diffs
-   * @return {!Promise<{diffs: !Array<!ImageDiffJson>, testCases: !Array<!UploadableTestCase>}>}
-   */
-  async updateGoldenJson({testCases, diffs}) {
-    await this.snapshotStore_.writeToDisk({testCases, diffs});
-    return {testCases, diffs};
   }
 
   /**
