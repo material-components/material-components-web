@@ -103,7 +103,7 @@ test('constructor instantiates icon ripples for all icons', () => {
   td.verify(rippleFactory(td.matchers.anything()), {times: totalIcons});
 });
 
-test('constructor instantiates icon ripples except for nav icon', () => {
+test('constructor does not instantiate ripple for nav icon when not present', () => {
   const rippleFactory = td.function();
   td.when(rippleFactory(td.matchers.anything())).thenReturn((el) => new FakeRipple(el));
   const {root} = setupTest(/** removeIcon */ true, rippleFactory);
