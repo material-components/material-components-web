@@ -19,6 +19,7 @@
 const ArgumentParser = require('argparse').ArgumentParser;
 const GitRepo = require('./git-repo');
 const fs = require('mz/fs');
+const ps = require('ps-node');
 
 const HTTP_URL_REGEX = new RegExp('^https?://');
 
@@ -124,6 +125,18 @@ E.g., 'origin/master' (default), 'HEAD', 'feat/foo/bar', 'fad7ed3:path/to/golden
       }
     );
 
+    this.parser_.addArgument(
+      ['--mdc-skip-build'],
+      {
+        action: 'storeTrue',
+        help: `
+If this flag is present, JS and CSS files will not be compiled prior to running screenshot tests.
+The default behavior is to always build assets before running the tests.
+`
+          .trim(),
+      }
+    );
+
     this.args_ = this.parser_.parseArgs();
   }
 
@@ -160,6 +173,11 @@ E.g., 'origin/master' (default), 'HEAD', 'feat/foo/bar', 'fad7ed3:path/to/golden
   /** @return {string} */
   get diffBase() {
     return this.args_['mdc_diff_base'];
+  }
+
+  /** @return {boolean} */
+  get skipBuild() {
+    return this.args_['mdc_skip_build'];
   }
 
   /**
@@ -214,6 +232,31 @@ E.g., 'origin/master' (default), 'HEAD', 'feat/foo/bar', 'fad7ed3:path/to/golden
     // Diff against a local git branch.
     // E.g.: `--mdc-diff-base=master` or `--mdc-diff-base=HEAD`
     return this.createLocalBranchDiffSource_(localRef, goldenFilePath);
+  }
+
+  async shouldBuild() {
+    if (await this.isAlreadyBuilding_()) {
+      return false;
+    }
+    return !this.skipBuild;
+  }
+
+  async isAlreadyBuilding_() {
+    return new Promise((resolve, reject) => {
+      ps.lookup(
+        {
+          command: 'node',
+          arguments: 'screenshot:build|screenshot:watch', // Regular expression
+        },
+        (err, resultList) => {
+          if (err) {
+            reject(err);
+            return;
+          }
+          const buildProcsInPwd = resultList.filter((proc) => proc['arguments'][0].startsWith(process.env.PWD));
+          resolve(buildProcsInPwd.length > 0);
+        });
+    });
   }
 
   /**
