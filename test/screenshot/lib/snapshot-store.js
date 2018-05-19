@@ -46,6 +46,22 @@ class SnapshotStore {
   }
 
   /**
+   * Writes the data to the given `golden.json` file path.
+   * @param {!Array<!UploadableTestCase>} testCases
+   * @param {!Array<!ImageDiffJson>} diffs
+   * @return {!Promise<void>}
+   */
+  async writeToDisk({testCases, diffs}) {
+    const jsonData = await this.getJsonData_({testCases, diffs});
+    const jsonFilePath = this.cliArgs_.goldenPath;
+    const jsonFileContent = stringify(jsonData, {space: '  '}) + '\n';
+
+    await fs.writeFile(jsonFilePath, jsonFileContent);
+
+    console.log(`\n\nDONE updating "${jsonFilePath}"!\n\n`);
+  }
+
+  /**
    * Parses the `golden.json` file specified by the `--mdc-diff-base` CLI arg.
    * @return {!Promise<!SnapshotSuiteJson>}
    */
@@ -84,22 +100,6 @@ class SnapshotStore {
     });
 
     return jsonData;
-  }
-
-  /**
-   * Writes the data to the given `golden.json` file path.
-   * @param {!Array<!UploadableTestCase>} testCases
-   * @param {!Array<!ImageDiffJson>} diffs
-   * @return {!Promise<void>}
-   */
-  async writeToDisk({testCases, diffs}) {
-    const jsonData = await this.getJsonData_({testCases, diffs});
-    const jsonFilePath = this.cliArgs_.goldenPath;
-    const jsonFileContent = stringify(jsonData, {space: '  '}) + '\n';
-
-    await fs.writeFile(jsonFilePath, jsonFileContent);
-
-    console.log(`\n\nDONE updating "${jsonFilePath}"!\n\n`);
   }
 
   /**
