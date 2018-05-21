@@ -38,17 +38,17 @@
  *   ...
  * }
  * ```
- * @typedef {!Object<string, !CaptureJson>}
+ * @typedef {!Object<string, !SnapshotPageJson>}
  */
-let GoldenJson;
+let SnapshotSuiteJson;
 
 /**
  * @typedef {{
  *   publicUrl: string,
- *   screenshots: !ScreenshotDictionaryJson,
+ *   screenshots: !SnapshotResultJson,
  * }}
  */
-let CaptureJson;
+let SnapshotPageJson;
 
 /**
  * Dictionary of browser API names to public screenshot image URLs.
@@ -61,7 +61,7 @@ let CaptureJson;
  * ```
  * @typedef {!Object<string, string>}
  */
-let ScreenshotDictionaryJson;
+let SnapshotResultJson;
 
 /**
  * @typedef {{
@@ -76,6 +76,32 @@ let ScreenshotDictionaryJson;
  * }}
  */
 let ImageDiffJson;
+
+
+/*
+ * CLI args
+ */
+
+
+/**
+ * @typedef {{
+ *   publicUrl: ?string,
+ *   localFilePath: ?string,
+ *   gitRevision: ?GitRevision,
+ * }}
+ */
+let DiffSource;
+
+/**
+ * @typedef {{
+ *   snapshotFilePath: string,
+ *   commit: string,
+ *   remote: ?string,
+ *   branch: ?string,
+ *   tag: ?string,
+ * }}
+ */
+let GitRevision;
 
 
 /*

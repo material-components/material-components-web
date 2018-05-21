@@ -29,34 +29,31 @@ class ImageDiffer {
   }
 
   /**
-   * @param {!SnapshotStore} actualStore
-   * @param {!SnapshotStore} expectedStore
+   * @param {!SnapshotSuiteJson} actualSuite
+   * @param {!SnapshotSuiteJson} expectedSuite
    * @return {!Promise<!Array<!ImageDiffJson>>}
    */
   async compareAllPages({
-    actualStore,
-    expectedStore,
+    actualSuite,
+    expectedSuite,
   }) {
     /** @type {!Array<!Promise<!Array<!ImageDiffJson>>>} */
     const pagePromises = [];
 
-    const actualJsonData = actualStore.jsonData;
-    const expectedJsonData = expectedStore.jsonData;
-
-    for (const [htmlFilePath, actualCapture] of Object.entries(actualJsonData)) {
+    for (const [htmlFilePath, actualPage] of Object.entries(actualSuite)) {
       // HTML file is not present in `golden.json` on `master`
-      const expectedCapture = expectedJsonData[htmlFilePath];
-      if (!expectedCapture) {
+      const expectedPage = expectedSuite[htmlFilePath];
+      if (!expectedPage) {
         continue;
       }
 
       pagePromises.push(
         this.compareOnePage_({
           htmlFilePath,
-          goldenPageUrl: expectedCapture.publicUrl,
-          snapshotPageUrl: actualCapture.publicUrl,
-          actualCapture,
-          expectedCapture,
+          goldenPageUrl: expectedPage.publicUrl,
+          snapshotPageUrl: actualPage.publicUrl,
+          actualPage,
+          expectedPage,
         })
       );
     }
@@ -72,8 +69,8 @@ class ImageDiffer {
    * @param {string} htmlFilePath
    * @param {string} goldenPageUrl
    * @param {string} snapshotPageUrl
-   * @param {!CaptureJson} actualCapture
-   * @param {!CaptureJson} expectedCapture
+   * @param {!SnapshotPageJson} actualPage
+   * @param {!SnapshotPageJson} expectedPage
    * @return {!Promise<!Array<!ImageDiffJson>>}
    * @private
    */
@@ -81,14 +78,14 @@ class ImageDiffer {
     htmlFilePath,
     goldenPageUrl,
     snapshotPageUrl,
-    actualCapture,
-    expectedCapture,
+    actualPage,
+    expectedPage,
   }) {
     /** @type {!Array<!Promise<!ImageDiffJson>>} */
     const imagePromises = [];
 
-    const actualScreenshots = actualCapture.screenshots;
-    const expectedScreenshots = expectedCapture.screenshots;
+    const actualScreenshots = actualPage.screenshots;
+    const expectedScreenshots = expectedPage.screenshots;
 
     for (const [browserKey, actualImageUrl] of Object.entries(actualScreenshots)) {
       // Screenshot image for this browser is not present in `golden.json` on `master`

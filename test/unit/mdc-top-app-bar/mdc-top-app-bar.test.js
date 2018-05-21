@@ -66,6 +66,11 @@ function getFixture(removeIcon) {
   return html;
 }
 
+function getIconsCount(root) {
+  const selector = strings.ACTION_ITEM_SELECTOR + ',' + strings.NAVIGATION_ICON_SELECTOR;
+  return root.querySelectorAll(selector).length;
+}
+
 class FakeRipple {
   constructor(root) {
     this.root = root;
@@ -74,11 +79,11 @@ class FakeRipple {
   }
 }
 
-function setupTest(removeIcon = false) {
+function setupTest(removeIcon = false, rippleFactory = (el) => new FakeRipple(el)) {
   const fixture = getFixture(removeIcon);
   const root = fixture.querySelector(strings.ROOT_SELECTOR);
   const icon = root.querySelector(strings.NAVIGATION_ICON_SELECTOR);
-  const component = new MDCTopAppBar(root, undefined, (el) => new FakeRipple(el));
+  const component = new MDCTopAppBar(root, undefined, rippleFactory);
 
   return {root, component, icon};
 }
@@ -89,12 +94,22 @@ test('attachTo initializes and returns an MDCTopAppBar instance', () => {
   assert.isTrue(MDCTopAppBar.attachTo(getFixture()) instanceof MDCTopAppBar);
 });
 
-test('constructor instantiates icon ripples', () => {
-  const {root, component} = setupTest();
-  const selector = strings.ACTION_ITEM_SELECTOR + ',' + strings.NAVIGATION_ICON_SELECTOR;
-  const totalIcons = root.querySelectorAll(selector).length;
+test('constructor instantiates icon ripples for all icons', () => {
+  const rippleFactory = td.function();
+  td.when(rippleFactory(td.matchers.anything())).thenReturn((el) => new FakeRipple(el));
+  const {root} = setupTest(/** removeIcon */ false, rippleFactory);
 
-  assert.isTrue(component.iconRipples_.length === totalIcons);
+  const totalIcons = getIconsCount(root);
+  td.verify(rippleFactory(td.matchers.anything()), {times: totalIcons});
+});
+
+test('constructor does not instantiate ripple for nav icon when not present', () => {
+  const rippleFactory = td.function();
+  td.when(rippleFactory(td.matchers.anything())).thenReturn((el) => new FakeRipple(el));
+  const {root} = setupTest(/** removeIcon */ true, rippleFactory);
+
+  const totalIcons = getIconsCount(root);
+  td.verify(rippleFactory(td.matchers.anything()), {times: totalIcons});
 });
 
 test('destroy destroys icon ripples', () => {
