@@ -26,9 +26,9 @@ import {MDCRipple} from '../../../packages/mdc-ripple';
 import {cssClasses} from '../../../packages/mdc-ripple/constants';
 
 function setupTest({tabIndex = undefined, useInnerIconElement = false} = {}) {
-  const root = document.createElement(useInnerIconElement ? 'span' : 'button');
+  const root = document.createElement('button');
   if (useInnerIconElement) {
-    const icon = document.createElement('button');
+    const icon = document.createElement('i');
     icon.id = 'icon';
     root.dataset.iconInnerSelector = `#${icon.id}`;
     root.appendChild(icon);
