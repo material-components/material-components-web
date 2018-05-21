@@ -91,28 +91,36 @@ class MDCMenuSurface extends MDCComponent {
 
   /** @return {!MDCMenuSurfaceFoundation} */
   getDefaultFoundation() {
-    return new MDCMenuSurfaceFoundation({
-      addClass: (className) => this.root_.classList.add(className),
-      removeClass: (className) => this.root_.classList.remove(className),
-      hasClass: (className) => this.root_.classList.contains(className),
-      getAttributeForEventTarget: (target, attributeName) => target.getAttribute(attributeName),
-      getInnerDimensions: () => {
-        return {width: this.root_.offsetWidth, height: this.root_.offsetHeight};
+    return new MDCMenuSurfaceFoundation(
+      /** @type {!MDCMenuSurfaceAdapter} */ Object.assign({
+        addClass: (className) => this.root_.classList.add(className),
+        removeClass: (className) => this.root_.classList.remove(className),
+        hasClass: (className) => this.root_.classList.contains(className),
+        getAttributeForEventTarget: (target, attributeName) => target.getAttribute(attributeName),
+        getIndexForEventTarget: (target) => this.focusableElements_.indexOf(target),
+        hasAnchor: () => !!this.anchorElement,
+        registerInteractionHandler: (type, handler) => this.root_.addEventListener(type, handler),
+        deregisterInteractionHandler: (type, handler) => this.root_.removeEventListener(type, handler),
+        registerBodyClickHandler: (handler) => document.body.addEventListener('click', handler),
+        deregisterBodyClickHandler: (handler) => document.body.removeEventListener('click', handler),
+        notifyClose: () => this.emit(MDCMenuSurfaceFoundation.strings.CANCEL_EVENT, {}),
+        isElementInContainer: (el) => {
+          return (this.root_ === el) ? true : this.root_.contains(el);
+        },
+        isRtl: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
+        setTransformOrigin: (origin) => {
+          this.root_.style[`${getTransformPropertyName(window)}-origin`] = origin;
+        },
       },
-      hasAnchor: () => !!this.anchorElement,
-      getAnchorDimensions: () => this.anchorElement && this.anchorElement.getBoundingClientRect(),
-      getWindowDimensions: () => {
-        return {width: window.innerWidth, height: window.innerHeight};
-      },
-      getNumberFocusableElements: () => this.focusableElements_.length,
-      getFocusedItemIndex: () => this.focusableElements_.indexOf(document.activeElement),
-      focusItemAtIndex: (index) => this.focusableElements_[index].focus(),
-      getIndexForEventTarget: (target) => this.focusableElements_.indexOf(target),
-      registerInteractionHandler: (type, handler) => this.root_.addEventListener(type, handler),
-      deregisterInteractionHandler: (type, handler) => this.root_.removeEventListener(type, handler),
-      registerBodyClickHandler: (handler) => document.body.addEventListener('click', handler),
-      deregisterBodyClickHandler: (handler) => document.body.removeEventListener('click', handler),
-      notifyClose: () => this.emit(MDCMenuSurfaceFoundation.strings.CANCEL_EVENT, {}),
+      this.getFocusAdapterMethods_(),
+      this.getDimensionAdapterMethods_())
+    );
+  }
+
+  getFocusAdapterMethods_() {
+    return {
+      focus: () => this.root_.focus(),
+      isFocused: () => document.activeElement === this.root_,
       saveFocus: () => {
         this.previousFocus_ = document.activeElement;
       },
@@ -121,14 +129,20 @@ class MDCMenuSurface extends MDCComponent {
           this.previousFocus_.focus();
         }
       },
-      isFocused: () => document.activeElement === this.root_,
-      isElementInContainer: (el) => {
-        return (this.root_ === el) ? true : this.root_.contains(el);
+      getNumberFocusableElements: () => this.focusableElements_.length,
+      getFocusedItemIndex: () => this.focusableElements_.indexOf(document.activeElement),
+      focusItemAtIndex: (index) => this.focusableElements_[index] && this.focusableElements_[index].focus(),
+    };
+  }
+
+  getDimensionAdapterMethods_() {
+    return {
+      getInnerDimensions: () => {
+        return {width: this.root_.offsetWidth, height: this.root_.offsetHeight};
       },
-      focus: () => this.root_.focus(),
-      isRtl: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
-      setTransformOrigin: (origin) => {
-        this.root_.style[`${getTransformPropertyName(window)}-origin`] = origin;
+      getAnchorDimensions: () => this.anchorElement && this.anchorElement.getBoundingClientRect(),
+      getWindowDimensions: () => {
+        return {width: window.innerWidth, height: window.innerHeight};
       },
       setPosition: (position) => {
         this.root_.style.left = 'left' in position ? position.left : null;
@@ -139,7 +153,7 @@ class MDCMenuSurface extends MDCComponent {
       setMaxHeight: (height) => {
         this.root_.style.maxHeight = height;
       },
-    });
+    };
   }
 }
 

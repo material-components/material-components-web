@@ -29,8 +29,6 @@ class MDCMenu extends MDCComponent {
     super(...args);
     /** @private {!Element} */
     this.previousFocus_;
-    /** @private {MDCTemporarySurface} */
-    this.temporarySurface_ = new MDCTemporarySurface(...args);
   }
 
   /**
@@ -41,12 +39,42 @@ class MDCMenu extends MDCComponent {
     return new MDCMenu(root);
   }
 
+  /** @return {boolean} */
+  get open() {
+    return this.foundation_.isOpen();
+  }
+
+  /** @param {boolean} value */
+  set open(value) {
+    if (value) {
+      this.foundation_.open();
+    } else {
+      this.foundation_.close();
+    }
+  }
+
+  /** @param {{focusIndex: ?number}=} options */
+  show({focusIndex = null} = {}) {
+    this.foundation_.open({focusIndex: focusIndex});
+  }
+
+  hide() {
+    this.foundation_.close();
+  }
+
   /**
-   * Returns the temporary surface this menu is contained within
-   * @return {MDCTemporarySurface}
+   * @param {Corner} corner Default anchor corner alignment of top-left
+   *     menu corner.
    */
-  getTemporarySurface() {
-    return this.temporarySurface_;
+  setAnchorCorner(corner) {
+    this.foundation_.setAnchorCorner(corner);
+  }
+
+  /**
+   * @param {AnchorMargin} margin
+   */
+  setAnchorMargin(margin) {
+    this.foundation_.setAnchorMargin(margin);
   }
 
   /**
@@ -98,6 +126,11 @@ class MDCMenu extends MDCComponent {
     this.foundation_.setRememberSelection(rememberSelection);
   }
 
+  /** @param {boolean} quickOpen */
+  set quickOpen(quickOpen) {
+    this.foundation_.setQuickOpen(quickOpen);
+  }
+
   /** @return {!MDCMenuFoundation} */
   getDefaultFoundation() {
     return new MDCMenuFoundation({
@@ -110,14 +143,22 @@ class MDCMenu extends MDCComponent {
         const {itemsContainer_: itemsContainer} = this;
         return {width: itemsContainer.offsetWidth, height: itemsContainer.offsetHeight};
       },
+      hasAnchor: () => this.root_.parentElement && this.root_.parentElement.classList.contains('mdc-menu-anchor'),
+      getAnchorDimensions: () => this.root_.parentElement.getBoundingClientRect(),
+      getWindowDimensions: () => {
+        return {width: window.innerWidth, height: window.innerHeight};
+      },
       getNumberOfItems: () => this.items.length,
       registerInteractionHandler: (type, handler) => this.root_.addEventListener(type, handler),
       deregisterInteractionHandler: (type, handler) => this.root_.removeEventListener(type, handler),
+      registerBodyClickHandler: (handler) => document.body.addEventListener('click', handler),
+      deregisterBodyClickHandler: (handler) => document.body.removeEventListener('click', handler),
       getIndexForEventTarget: (target) => this.items.indexOf(target),
       notifySelected: (evtData) => this.emit(MDCMenuFoundation.strings.SELECTED_EVENT, {
         index: evtData.index,
         item: this.items[evtData.index],
       }),
+      notifyCancel: () => this.emit(MDCMenuFoundation.strings.CANCEL_EVENT, {}),
       saveFocus: () => {
         this.previousFocus_ = document.activeElement;
       },
@@ -131,6 +172,15 @@ class MDCMenu extends MDCComponent {
       getFocusedItemIndex: () => this.items.indexOf(document.activeElement),
       focusItemAtIndex: (index) => this.items[index].focus(),
       isRtl: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
+      setTransformOrigin: (origin) => {
+        this.root_.style[`${getTransformPropertyName(window)}-origin`] = origin;
+      },
+      setPosition: (position) => {
+        this.root_.style.left = 'left' in position ? position.left : null;
+        this.root_.style.right = 'right' in position ? position.right : null;
+        this.root_.style.top = 'top' in position ? position.top : null;
+        this.root_.style.bottom = 'bottom' in position ? position.bottom : null;
+      },
       setMaxHeight: (height) => {
         this.root_.style.maxHeight = height;
       },

@@ -17,4 +17,15 @@
 @import "./common";
 @import "../packages/mdc-button/mdc-button";
 @import "../packages/mdc-list/mdc-list";
-@import "../packages/mdc-menu/mdc-menu";
+@import "../packages/mdc-menu-surface/mdc-menu-surface";
+@import "../packages/mdc-image-list/mdc-image-list";
+
+.standard-image-list {
+  @include mdc-image-list-aspect(1.5); // Images are 3:2
+  @include mdc-image-list-standard-columns(2);
+
+  //TODO(williamernest): The menu surface will flow to the size of it's contained elements, but
+  //the menu surface is also constrained by the size of the element that it is in until
+  //we hoist it to the body. Setting min-width on the contained element will fix this for now
+  min-width: 300px;
+}

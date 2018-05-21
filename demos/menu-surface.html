@@ -17,14 +17,14 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Menu Surface - Material Components Catalog</title>
+    <title>Menu - Material Components Catalog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
-    <link rel="stylesheet" href="/assets/menu.css">
     <script src="/ready.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="/assets/menu-surface.css">
     <style>
       html,
       body,
@@ -33,7 +33,7 @@
         flex-direction: column;
       }
 
-      .hero .mdc-menu {
+      .hero .mdc-menu-surface {
         z-index: initial;
       }
 
@@ -50,10 +50,10 @@
       .demo-controls {
         margin-left: auto;
         margin-right: auto;
-        width: 360px;
+        width: 420px;
       }
 
-      .mdc-menu-anchor {
+      .mdc-menu-surface--anchor {
         position: absolute;
         margin: 16px;
       }
@@ -101,7 +101,7 @@
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
           <a href="/" class="catalog-back mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
-          <span class="mdc-toolbar__title catalog-title">Menu</span>
+          <span class="mdc-toolbar__title catalog-title">Menu Surface</span>
         </section>
       </div>
     </header>
@@ -109,8 +109,8 @@
     <main>
       <div class="mdc-toolbar-fixed-adjust"></div>
       <section class="hero">
-        <div class="mdc-menu mdc-menu--open">
-          <ul class="mdc-menu__items mdc-list">
+        <div class="mdc-menu-surface mdc-menu-surface--open">
+          <ul class="mdc-list">
             <li class="mdc-list-item" role="menuitem">Back</li>
             <li class="mdc-list-item" role="menuitem">Forward</li>
             <li class="mdc-list-item" role="menuitem">Reload</li>
@@ -122,38 +122,47 @@
       </section>
       <div class="demo-content">
         <div id="demo-wrapper">
-          <div class="mdc-menu-anchor">
+          <div class="mdc-menu-surface--anchor">
             <button id="menu-button" class="mdc-button mdc-button--raised demo-button demo-button--normal">
               <span>
-                Show<span class="demo-button__normal-text"> Menu</span><span class="demo-button__long-text"> From Here Now!</span>
+                Show<span class="demo-button__normal-text"> Menu Surface</span><span class="demo-button__long-text"> From Here Now!</span>
               </span>
             </button>
 
-            <div class="mdc-menu" style="position: absolute;" tabindex="-1" id="demo-menu">
-              <ul class="mdc-menu__items mdc-list" role="menu" aria-hidden="true">
-                <li class="mdc-list-item" role="menuitem" tabindex="0">Back</li>
-                <li class="mdc-list-item" role="menuitem" tabindex="0">Forward</li>
-                <li class="mdc-list-item" role="menuitem" tabindex="0">Reload</li>
-                <li class="mdc-list-divider" role="separator"></li>
-
-                <li class="mdc-list-item" role="menuitem" tabindex="0">Save As...</li>
-                <li class="mdc-list-item" role="menuitem" tabindex="0">Help</li>
-                <span class="demo-menu__long-items">
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Settings</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Feedback</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Options...</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 1</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 2</li>
-                </span>
-                <span class="demo-menu__extra-long-items">
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 3</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 4</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 5</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 6</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 7</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 8</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 9</li>
-                </span>
+            <div class="mdc-menu-surface" tabindex="-1" id="demo-menu">
+              <ul class="mdc-image-list standard-image-list demo-menu-surface">
+                <li class="mdc-image-list__item" tabindex="0">
+                  <div class="mdc-image-list__image-aspect-container">
+                    <img class="mdc-image-list__image" src="images/photos/3x2/1.jpg">
+                  </div>
+                  <div class="mdc-image-list__supporting">
+                    <span class="mdc-image-list__label">Text label</span>
+                  </div>
+                </li>
+                <li class="mdc-image-list__item" tabindex="0">
+                  <div class="mdc-image-list__image-aspect-container">
+                    <img class="mdc-image-list__image" src="images/photos/3x2/2.jpg">
+                  </div>
+                  <div class="mdc-image-list__supporting">
+                    <span class="mdc-image-list__label">Text label</span>
+                  </div>
+                </li>
+                <li class="mdc-image-list__item" tabindex="0">
+                  <div class="mdc-image-list__image-aspect-container">
+                    <img class="mdc-image-list__image" src="images/photos/3x2/3.jpg">
+                  </div>
+                  <div class="mdc-image-list__supporting">
+                    <span class="mdc-image-list__label">Text label</span>
+                  </div>
+                </li>
+                <li class="mdc-image-list__item" tabindex="0">
+                  <div class="mdc-image-list__image-aspect-container">
+                    <img class="mdc-image-list__image" src="images/photos/3x2/4.jpg">
+                  </div>
+                  <div class="mdc-image-list__supporting">
+                    <span class="mdc-image-list__label">Text label</span>
+                  </div>
+                </li>
               </ul>
             </div>
           </div>
@@ -183,7 +192,7 @@
               </div>
             </div>
             <div class="right-column-controls">
-              Default Menu Position:
+              Default Menu Surface Position:
               <div>
                 <label><input type="radio" name="menu-position" value="top start" checked> Top start</label>
               </div>
@@ -220,7 +229,7 @@
             </div>
             <p>
               <div class="left-column-controls">
-                Menu Sizes:
+                Menu Surface Sizes:
                 <div>
                   <label><input type="radio" name="menu-length" value="small" checked> Regular menu</label>
                 </div>
@@ -245,9 +254,6 @@
               </div>
             </p>
             <hr>
-            <div>
-              <span>Last Selected item: <em id="last-selected">&lt;none selected&gt;</em></span>
-            </div>
           </div>
         </div>
       </div>
@@ -257,8 +263,9 @@
     <script>
       demoReady(function() {
         var menuEl = document.querySelector('#demo-menu');
-        var menu = new mdc.menu.MDCMenu(menuEl);
+        var menu = mdc.menuSurface.MDCMenuSurface.attachTo(menuEl);
         var menuButtonEl = document.querySelector('#menu-button');
+
         menuButtonEl.addEventListener('click', function() {
           menu.open = !menu.open;
         });
@@ -274,7 +281,7 @@
         });
 
         var radios = document.querySelectorAll('input[name="position"]');
-        var anchor = document.querySelector('.mdc-menu-anchor');
+        var anchor = document.querySelector('.mdc-menu-surface--anchor');
         // Initialize to top left.
         anchor.style.setProperty('top', '0');
         anchor.style.setProperty('left', '0');
@@ -306,16 +313,16 @@
             if (evt.target.checked) {
               switch (evt.target.value) {
                 case "top start":
-                  menu.setAnchorCorner(mdc.menu.MDCMenuFoundation.Corner.TOP_START);
+                  menu.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.Corner.TOP_START);
                   break;
                 case "bottom start":
-                  menu.setAnchorCorner(mdc.menu.MDCMenuFoundation.Corner.BOTTOM_START);
+                  menu.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.Corner.BOTTOM_START);
                   break;
                 case "top end":
-                  menu.setAnchorCorner(mdc.menu.MDCMenuFoundation.Corner.TOP_END);
+                  menu.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.Corner.TOP_END);
                   break;
                 case "bottom end":
-                  menu.setAnchorCorner(mdc.menu.MDCMenuFoundation.Corner.BOTTOM_END);
+                  menu.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.Corner.BOTTOM_END);
                   break;
               }
             }
@@ -391,13 +398,6 @@
             }
           });
         }
-
-        var lastSelected = document.getElementById('last-selected');
-        menuEl.addEventListener('MDCMenu:selected', function(evt) {
-          var detail = evt.detail;
-          lastSelected.textContent = '"' + detail.item.textContent.trim() +
-            '" at index ' + detail.index;
-        });
       });
     </script>
   </body>

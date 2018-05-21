@@ -43,7 +43,7 @@ import MDCFoundation from '@material/base/foundation';
 import {MDCMenuSurfaceAdapter} from './adapter';
 import {cssClasses, strings, numbers, Corner, CornerBit} from './constants';
 
-const SPACE_ALLOWED_ELEMENTS = ['index', 'button', 'textarea'];
+const ELEMENTS_SPACE_IS_ALLOWED = ['index', 'button', 'textarea'];
 
 /**
  * @extends {MDCFoundation<!MDCMenuSurfaceAdapter>}
@@ -87,8 +87,6 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
       getNumberFocusableElements: () => 0,
       getFocusedItemIndex: () => () => 0,
       focusItemAtIndex: () => {},
-      getFirstFocusableElement: () => {},
-      getLastFocusableElement: () => {},
       registerInteractionHandler: () => {},
       deregisterInteractionHandler: () => {},
       registerBodyClickHandler: () => {},
@@ -198,10 +196,26 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
   }
 
   /**
+   * @param {?number} focusIndex
    * @private
    */
-  focusOnOpen_() {
-    this.adapter_.focus();
+  focusOnOpen_(focusIndex) {
+    if (focusIndex === null) {
+      // If this instance of MDCMenuSurface remembers selections, and the user has
+      // made a selection, then focus the last selected item
+      if (this.rememberSelection_ && this.selectedIndex_ >= 0) {
+        this.adapter_.focusItemAtIndex(this.selectedIndex_);
+        return;
+      }
+
+      this.adapter_.focus();
+      // If that doesn't work, focus first item instead.
+      if (!this.adapter_.isFocused()) {
+        this.adapter_.focusItemAtIndex(0);
+      }
+    } else {
+      this.adapter_.focusItemAtIndex(focusIndex);
+    }
   }
 
   /**
@@ -272,7 +286,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
   isValidSpaceKey_(evt) {
     const tagName = evt.target.tagName.toLocaleLowerCase();
 
-    return SPACE_ALLOWED_ELEMENTS.indexOf(tagName) === -1;
+    return ELEMENTS_SPACE_IS_ALLOWED.indexOf(tagName) === -1;
   }
 
   /**

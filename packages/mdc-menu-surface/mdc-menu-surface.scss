@@ -32,7 +32,6 @@ $mdc-menu-surface-scale-duration: .12s;
   display: none;
   position: absolute;
   box-sizing: border-box;
-  min-width: 170px;
   max-width: calc(100vw - 32px);
   max-height: calc(100vh - 32px);
   margin: 0;
@@ -42,8 +41,7 @@ $mdc-menu-surface-scale-duration: .12s;
   border-radius: 2px;
   opacity: 0;
   white-space: nowrap;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: auto;
   will-change: transform, opacity;
   z-index: 4;
 
