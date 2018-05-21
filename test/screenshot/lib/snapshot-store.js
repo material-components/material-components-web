@@ -139,17 +139,9 @@ class SnapshotStore {
    * @private
    */
   async getJsonData_({testCases, diffs}) {
-    let jsonData;
-
-    if (this.cliArgs_.hasAnyFilters()) {
-      // Selective update: Keep existing `golden.json`, and only update screenshots that have changed.
-      jsonData = await this.partialUpdate_({testCases, diffs});
-    } else {
-      // Full update: Overwrite existing `golden.json` with new data, but retain unchanged screenshots.
-      jsonData = await this.fullUpdate_({testCases, diffs});
-    }
-
-    return jsonData;
+    return this.cliArgs_.hasAnyFilters()
+      ? await this.updateFilteredScreenshots_({testCases, diffs})
+      : await this.updateAllScreenshots_({testCases, diffs});
   }
 
   /**
@@ -158,7 +150,7 @@ class SnapshotStore {
    * @return {!Promise<!SnapshotSuiteJson>}
    * @private
    */
-  async partialUpdate_({testCases, diffs}) {
+  async updateFilteredScreenshots_({testCases, diffs}) {
     const oldJsonData = await this.fromDiffBase();
     const newJsonData = await this.fromTestCases(testCases);
     const jsonData = this.deepCloneJson_(oldJsonData);
@@ -183,36 +175,37 @@ class SnapshotStore {
    * @return {!Promise<!SnapshotSuiteJson>}
    * @private
    */
-  async fullUpdate_({testCases, diffs}) {
+  async updateAllScreenshots_({testCases, diffs}) {
     const oldJsonData = await this.fromDiffBase();
     const newJsonData = await this.fromTestCases(testCases);
-    const jsonData = this.deepCloneJson_(newJsonData);
 
-    for (const [htmlFilePath, page] of Object.entries(jsonData)) {
-      if (!oldJsonData[htmlFilePath]) {
-        continue;
-      }
+    const existsInOldJsonData = ([htmlFilePath]) => htmlFilePath in oldJsonData;
 
+    /** @type {!Array<[string, !SnapshotPageJson]>} */
+    const newMatchingPageEntries = Object.entries(newJsonData).filter(existsInOldJsonData);
+
+    for (const [htmlFilePath, newPage] of newMatchingPageEntries) {
       let pageHasChanges = false;
 
-      for (const browserKey of Object.keys(page.screenshots)) {
-        const changedUrl = diffs.find((diff) => diff.htmlFilePath === htmlFilePath && diff.browserKey === browserKey);
+      for (const browserKey of Object.keys(newPage.screenshots)) {
         const oldUrl = oldJsonData[htmlFilePath].screenshots[browserKey];
-        if (!changedUrl && oldUrl) {
-          page.screenshots[browserKey] = oldUrl;
+        const matchingDiff = diffs.find((diff) => diff.htmlFilePath === htmlFilePath && diff.browserKey === browserKey);
+
+        if (oldUrl && !matchingDiff) {
+          newPage.screenshots[browserKey] = oldUrl;
         }
 
-        if (changedUrl) {
+        if (matchingDiff) {
           pageHasChanges = true;
         }
       }
 
       if (!pageHasChanges) {
-        page.publicUrl = oldJsonData[htmlFilePath].publicUrl;
+        newPage.publicUrl = oldJsonData[htmlFilePath].publicUrl;
       }
     }
 
-    return jsonData;
+    return newJsonData;
   }
 
   /**
