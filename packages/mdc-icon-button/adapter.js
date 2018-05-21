@@ -18,7 +18,7 @@
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
- * Adapter for MDC Icon Button ToggleToggle. Provides an interface for managing
+ * Adapter for MDC Icon Button Toggle. Provides an interface for managing
  * - classes
  * - dom
  * - inner text
