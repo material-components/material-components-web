@@ -30,7 +30,7 @@
     "screenshot:update-goldens": "node test/screenshot/run-update-goldens.js",
     "screenshot:upload-assets": "node test/screenshot/run-upload-assets.js",
     "screenshot:watch": "npm run screenshot:clean && mkdirp test/screenshot/out/ && webpack --config=test/screenshot/webpack.config.js --progress --watch",
-    "start": "npm run clean && npm-run-all --parallel screenshot:serve screenshot:watch",
+    "start": "npm run screenshot:clean && npm-run-all --parallel screenshot:serve screenshot:watch",
     "test:watch": "karma start --auto-watch",
     "test:unit": "karma start --single-run",
     "test:closure": "./scripts/closure-test.sh",
