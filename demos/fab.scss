@@ -32,12 +32,11 @@
   width: 100%;
 }
 
-.mdc-fab--extended,
-.mdc-fab--extended-fluid {
+.mdc-fab--extended {
   background: #191919;
   width: auto;
   min-width: 132px;
-  border-radius: 48px;
+  border-radius: 32px;
   padding: 0 20px;
   height: 48px;
 
@@ -45,10 +44,10 @@
   align-items: center;
   justify-content: center;
   white-space: nowrap;
-}
 
-.mdc-fab--extended-fluid {
-  width: 100%;
+  .mdc-fab__icon {
+    margin: 0;
+  }
 }
 
 .mdc-fab__label {
@@ -65,4 +64,8 @@
 
 .demo-extended-fab-fixed {
   width: 180px;  
+}
+
+.demo-extended-fab-fluid {
+  width: 100%;
 }
