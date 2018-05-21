@@ -179,7 +179,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
 
   /**
    * Handles validation attribute changes
-   * @param {Array<MutationRecord>} mutationsList
+   * @param {!Array<MutationRecord>} mutationsList
    */
   handleValidationAttributeMutation(mutationsList) {
     mutationsList.some((mutation) => {
