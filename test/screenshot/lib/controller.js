@@ -16,7 +16,7 @@
 
 'use strict';
 
-const child_process = require('child_process'); // eslint-disable-line
+const child_process = require('child_process'); // eslint-disable-line camelcase
 const fs = require('mz/fs');
 const glob = require('glob');
 
