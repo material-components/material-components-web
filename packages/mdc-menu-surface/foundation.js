@@ -32,8 +32,8 @@ let AnchorMargin;
  *   viewportDistance: {top: number, right: number, bottom: number, left: number},
  *   anchorHeight: number,
  *   anchorWidth: number,
- *   menuHeight: number,
- *   menuWidth: number,
+ *   surfaceHeight: number,
+ *   surfaceWidth: number,
  * }}
  */
 let AutoLayoutMeasurements;
@@ -95,8 +95,8 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
       saveFocus: () => {},
       restoreFocus: () => {},
       getNumberFocusableElements: () => 0,
-      getFocusedItemIndex: () => () => 0,
-      focusItemAtIndex: () => {},
+      getFocusedElementIndex: () => () => 0,
+      focusElementAtIndex: () => {},
       getInnerDimensions: () => ({}),
       getAnchorDimensions: () => ({}),
       getWindowDimensions: () => ({}),
@@ -204,10 +204,10 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
       this.adapter_.focus();
       // If that doesn't work, focus first item instead.
       if (!this.adapter_.isFocused()) {
-        this.adapter_.focusItemAtIndex(0);
+        this.adapter_.focusElementAtIndex(0);
       }
     } else {
-      this.adapter_.focusItemAtIndex(focusIndex);
+      this.adapter_.focusElementAtIndex(focusIndex);
     }
   }
 
@@ -249,7 +249,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     // The menu needs to know if the keydown event was triggered on the menu
     this.keyDownWithinMenu_ = isEnter || isSpace;
 
-    const focusedItemIndex = this.adapter_.getFocusedItemIndex();
+    const focusedItemIndex = this.adapter_.getFocusedElementIndex();
     const lastItemIndex = this.adapter_.getNumberFocusableElements() - 1;
 
     // Ensure Arrow{Up,Down} and space do not cause inadvertent scrolling
@@ -263,15 +263,15 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
 
     if (isArrowUp || (isTab && shiftKey)) {
       if (focusedItemIndex === 0 || this.adapter_.isFocused()) {
-        this.adapter_.focusItemAtIndex(lastItemIndex);
+        this.adapter_.focusElementAtIndex(lastItemIndex);
       } else {
-        this.adapter_.focusItemAtIndex(focusedItemIndex - 1);
+        this.adapter_.focusElementAtIndex(focusedItemIndex - 1);
       }
     } else if (isArrowDown || (isTab && !shiftKey)) {
       if (focusedItemIndex === lastItemIndex || this.adapter_.isFocused()) {
-        this.adapter_.focusItemAtIndex(0);
+        this.adapter_.focusElementAtIndex(0);
       } else {
-        this.adapter_.focusItemAtIndex(focusedItemIndex + 1);
+        this.adapter_.focusElementAtIndex(focusedItemIndex + 1);
       }
     }
 
@@ -329,8 +329,8 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
       },
       anchorHeight: anchorRect.height,
       anchorWidth: anchorRect.width,
-      menuHeight: this.dimensions_.height,
-      menuWidth: this.dimensions_.width,
+      surfaceHeight: this.dimensions_.height,
+      surfaceWidth: this.dimensions_.width,
     };
   }
 
@@ -343,15 +343,15 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     // Defaults: open from the top left.
     let corner = Corner.TOP_LEFT;
 
-    const {viewportDistance, anchorHeight, anchorWidth, menuHeight, menuWidth} = this.measures_;
+    const {viewportDistance, anchorHeight, anchorWidth, surfaceHeight, surfaceWidth} = this.measures_;
     const isBottomAligned = Boolean(this.anchorCorner_ & CornerBit.BOTTOM);
     const availableTop = isBottomAligned ? viewportDistance.top + anchorHeight + this.anchorMargin_.bottom
       : viewportDistance.top + this.anchorMargin_.top;
     const availableBottom = isBottomAligned ? viewportDistance.bottom - this.anchorMargin_.bottom
       : viewportDistance.bottom + anchorHeight - this.anchorMargin_.top;
 
-    const topOverflow = menuHeight - availableTop;
-    const bottomOverflow = menuHeight - availableBottom;
+    const topOverflow = surfaceHeight - availableTop;
+    const bottomOverflow = surfaceHeight - availableBottom;
     if (bottomOverflow > 0 && topOverflow < bottomOverflow) {
       corner |= CornerBit.BOTTOM;
     }
@@ -366,8 +366,8 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     const availableRight = isAlignedRight ? viewportDistance.right - this.anchorMargin_.right :
       viewportDistance.right + anchorWidth - this.anchorMargin_.left;
 
-    const leftOverflow = menuWidth - availableLeft;
-    const rightOverflow = menuWidth - availableRight;
+    const leftOverflow = surfaceWidth - availableLeft;
+    const rightOverflow = surfaceWidth - availableRight;
 
     if ((leftOverflow < 0 && isAlignedRight && isRtl) ||
         (avoidHorizontalOverlap && !isAlignedRight && leftOverflow < 0) ||
@@ -404,7 +404,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
    * @private
    */
   getVerticalOriginOffset_(corner) {
-    const {viewport, viewportDistance, anchorHeight, menuHeight} = this.measures_;
+    const {viewport, viewportDistance, anchorHeight, surfaceHeight} = this.measures_;
     const isBottomAligned = Boolean(corner & CornerBit.BOTTOM);
     const {MARGIN_TO_EDGE} = MDCMenuSurfaceFoundation.numbers;
     const avoidVerticalOverlap = Boolean(this.anchorCorner_ & CornerBit.BOTTOM);
@@ -415,15 +415,15 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
       y = avoidVerticalOverlap ? anchorHeight - this.anchorMargin_.top : -this.anchorMargin_.bottom;
       // adjust for when menu can overlap anchor, but too tall to be aligned to bottom
       // anchor corner. Bottom margin is ignored in such cases.
-      if (canOverlapVertically && menuHeight > viewportDistance.top + anchorHeight) {
-        y = -(Math.min(menuHeight, viewport.height - MARGIN_TO_EDGE) - (viewportDistance.top + anchorHeight));
+      if (canOverlapVertically && surfaceHeight > viewportDistance.top + anchorHeight) {
+        y = -(Math.min(surfaceHeight, viewport.height - MARGIN_TO_EDGE) - (viewportDistance.top + anchorHeight));
       }
     } else {
       y = avoidVerticalOverlap ? (anchorHeight + this.anchorMargin_.bottom) : this.anchorMargin_.top;
       // adjust for when menu can overlap anchor, but too tall to be aligned to top
       // anchor corners. Top margin is ignored in that case.
-      if (canOverlapVertically && menuHeight > viewportDistance.bottom + anchorHeight) {
-        y = -(Math.min(menuHeight, viewport.height - MARGIN_TO_EDGE) - (viewportDistance.bottom + anchorHeight));
+      if (canOverlapVertically && surfaceHeight > viewportDistance.bottom + anchorHeight) {
+        y = -(Math.min(surfaceHeight, viewport.height - MARGIN_TO_EDGE) - (viewportDistance.bottom + anchorHeight));
       }
     }
     return y;
@@ -434,7 +434,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
    * @return {number} Maximum height of the menu, based on available space. 0 indicates should not be set.
    * @private
    */
-  getMenuMaxHeight_(corner) {
+  getMenuSurfaceMaxHeight_(corner) {
     let maxHeight = 0;
     const {viewportDistance} = this.measures_;
     const isBottomAligned = Boolean(corner & CornerBit.BOTTOM);
@@ -461,7 +461,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     this.measures_ = this.getAutoLayoutMeasurements_();
 
     const corner = this.getOriginCorner_();
-    const maxMenuHeight = this.getMenuMaxHeight_(corner);
+    const maxMenuSurfaceHeight = this.getMenuSurfaceMaxHeight_(corner);
     let verticalAlignment = (corner & CornerBit.BOTTOM) ? 'bottom' : 'top';
     let horizontalAlignment = (corner & CornerBit.RIGHT) ? 'right' : 'left';
     const horizontalOffset = this.getHorizontalOriginOffset_(corner);
@@ -470,24 +470,24 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
       [horizontalAlignment]: horizontalOffset ? horizontalOffset + 'px' : '0',
       [verticalAlignment]: verticalOffset ? verticalOffset + 'px' : '0',
     };
-    const {anchorWidth, menuHeight, menuWidth} = this.measures_;
-    // Center align when anchor width is comparable or greater than menu, otherwise keep corner.
-    if (anchorWidth / menuWidth > numbers.ANCHOR_TO_MENU_SURFACE_WIDTH_RATIO) {
+    const {anchorWidth, surfaceHeight, surfaceWidth} = this.measures_;
+    // Center align when anchor width is comparable or greater than menu surface, otherwise keep corner.
+    if (anchorWidth / surfaceWidth > numbers.ANCHOR_TO_MENU_SURFACE_WIDTH_RATIO) {
       horizontalAlignment = 'center';
     }
 
-    // Adjust vertical origin when menu is positioned with significant offset from anchor. This is done so that
+    // Adjust vertical origin when menu surface is positioned with significant offset from anchor. This is done so that
     // scale animation is "anchored" on the anchor.
     if (!(this.anchorCorner_ & CornerBit.BOTTOM) &&
-        Math.abs(verticalOffset / menuHeight) > numbers.OFFSET_TO_MENU_SURFACE_HEIGHT_RATIO) {
-      const verticalOffsetPercent = Math.abs(verticalOffset / menuHeight) * 100;
+        Math.abs(verticalOffset / surfaceHeight) > numbers.OFFSET_TO_MENU_SURFACE_HEIGHT_RATIO) {
+      const verticalOffsetPercent = Math.abs(verticalOffset / surfaceHeight) * 100;
       const originPercent = (corner & CornerBit.BOTTOM) ? 100 - verticalOffsetPercent : verticalOffsetPercent;
       verticalAlignment = Math.round(originPercent * 100) / 100 + '%';
     }
 
     this.adapter_.setTransformOrigin(`${horizontalAlignment} ${verticalAlignment}`);
     this.adapter_.setPosition(position);
-    this.adapter_.setMaxHeight(maxMenuHeight ? maxMenuHeight + 'px' : '');
+    this.adapter_.setMaxHeight(maxMenuSurfaceHeight ? maxMenuSurfaceHeight + 'px' : '');
 
     // Clear measures after positioning is complete.
     this.measures_ = null;
@@ -521,18 +521,9 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
   }
 
   /**
-   * Closes the menu.
-   * @param {Event=} evt
+   * Closes the menu surface.
    */
-  close(evt = null) {
-    const targetIsDisabled = evt ?
-      this.adapter_.getAttributeForEventTarget(evt.target, strings.ARIA_DISABLED_ATTR) === 'true' :
-      false;
-
-    if (targetIsDisabled) {
-      return;
-    }
-
+  close() {
     this.adapter_.deregisterBodyClickHandler(this.documentClickHandler_);
 
     if (!this.quickOpen_) {
@@ -549,8 +540,20 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
         }, numbers.TRANSITION_CLOSE_DURATION);
       }
     });
+
     this.isOpen_ = false;
-    this.adapter_.restoreFocus();
+    this.shouldRestoreFocus_();
+  }
+
+  /**
+   * If the user is focused on or within the menu surface when it is closed, the last focused
+   * element when the menu surface was opened is focused.
+   * @private
+   */
+  shouldRestoreFocus_() {
+    if (this.adapter_.isFocused() || this.adapter_.isElementInContainer(document.activeElement)) {
+      this.adapter_.restoreFocus();
+    }
   }
 
   /** @return {boolean} */

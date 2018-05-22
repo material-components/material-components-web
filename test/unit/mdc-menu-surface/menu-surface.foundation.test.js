@@ -93,8 +93,8 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'addClass', 'removeClass', 'hasClass', 'getAttributeForEventTarget', 'getIndexForEventTarget',
     'hasAnchor', 'registerInteractionHandler', 'deregisterInteractionHandler', 'registerBodyClickHandler',
     'deregisterBodyClickHandler', 'notifyClose', 'isElementInContainer', 'isRtl', 'setTransformOrigin',
-    'focus', 'isFocused', 'saveFocus', 'restoreFocus', 'getNumberFocusableElements', 'getFocusedItemIndex',
-    'focusItemAtIndex', 'getInnerDimensions', 'getAnchorDimensions', 'getWindowDimensions', 'setPosition',
+    'focus', 'isFocused', 'saveFocus', 'restoreFocus', 'getNumberFocusableElements', 'getFocusedElementIndex',
+    'focusElementAtIndex', 'getInnerDimensions', 'getAnchorDimensions', 'getWindowDimensions', 'setPosition',
     'setMaxHeight',
   ]);
 });
@@ -150,7 +150,7 @@ testFoundation('#open with focusIndex focuses the element at the index when the 
   ({foundation, mockAdapter, mockRaf}) => {
     foundation.open({focusIndex: 1});
     mockRaf.flush();
-    td.verify(mockAdapter.focusItemAtIndex(1));
+    td.verify(mockAdapter.focusElementAtIndex(1));
   });
 
 testFoundation('#open on a focused menu-surface does not focus at index 0', ({foundation, mockAdapter, mockRaf}) => {
@@ -158,7 +158,7 @@ testFoundation('#open on a focused menu-surface does not focus at index 0', ({fo
 
   foundation.open();
   mockRaf.flush();
-  td.verify(mockAdapter.focusItemAtIndex(0), {times: 0});
+  td.verify(mockAdapter.focusElementAtIndex(0), {times: 0});
 });
 
 /** Testing various layout cases for autopositioning */
@@ -443,21 +443,6 @@ testFoundation('#open anchors the menu to the bottom left in RTL when close to t
     td.verify(mockAdapter.setPosition({right: '7px', bottom: '15px'}));
   });
 
-testFoundation('#close does nothing if event target has aria-disabled set to true',
-  ({foundation, mockAdapter}) => {
-    const mockEvt = {
-      target: {},
-      stopPropagation: td.func('stopPropagation'),
-    };
-
-    td.when(mockAdapter.getAttributeForEventTarget(td.matchers.anything(), strings.ARIA_DISABLED_ATTR))
-      .thenReturn('true');
-
-    foundation.close(mockEvt);
-
-    td.verify(mockAdapter.deregisterBodyClickHandler(td.matchers.anything()), {times: 0});
-  });
-
 testFoundation('#close adds the animation class to start an animation', ({foundation, mockAdapter}) => {
   foundation.close();
   td.verify(mockAdapter.addClass(cssClasses.ANIMATING_CLOSED));
@@ -555,7 +540,7 @@ test('on Ctrl+Tab keydown does nothing', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const target = {};
-  td.when(mockAdapter.getFocusedItemIndex()).thenReturn(2);
+  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(2);
 
   foundation.init();
   handlers.keydown({target, key: 'Tab', ctrlKey: true, preventDefault: () => {}});
@@ -569,13 +554,13 @@ test('on Tab keydown on the last element, it moves to the first', () => {
   const raf = createMockRaf();
   const target = {};
   td.when(mockAdapter.getNumberFocusableElements()).thenReturn(3);
-  td.when(mockAdapter.getFocusedItemIndex()).thenReturn(2);
+  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(2);
 
   foundation.init();
   handlers.keydown({target, key: 'Tab', preventDefault: () => {}});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
   raf.flush();
-  td.verify(mockAdapter.focusItemAtIndex(0));
+  td.verify(mockAdapter.focusElementAtIndex(0));
 
   raf.restore();
   clock.uninstall();
@@ -588,13 +573,13 @@ test('on Shift+Tab keydown on the first element, it moves to the last', () => {
   const raf = createMockRaf();
   const target = {};
   td.when(mockAdapter.getNumberFocusableElements()).thenReturn(3);
-  td.when(mockAdapter.getFocusedItemIndex()).thenReturn(0);
+  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(0);
 
   foundation.init();
   handlers.keydown({target, key: 'Tab', shiftKey: true, preventDefault: () => {}});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
   raf.flush();
-  td.verify(mockAdapter.focusItemAtIndex(2));
+  td.verify(mockAdapter.focusElementAtIndex(2));
 
   raf.restore();
   clock.uninstall();
@@ -607,13 +592,13 @@ test('on ArrowDown keydown on the last element, it moves to the first', () => {
   const raf = createMockRaf();
   const target = {};
   td.when(mockAdapter.getNumberFocusableElements()).thenReturn(3);
-  td.when(mockAdapter.getFocusedItemIndex()).thenReturn(2);
+  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(2);
 
   foundation.init();
   handlers.keydown({target, key: 'ArrowDown', preventDefault: () => {}});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
   raf.flush();
-  td.verify(mockAdapter.focusItemAtIndex(0));
+  td.verify(mockAdapter.focusElementAtIndex(0));
 
   raf.restore();
   clock.uninstall();
@@ -626,13 +611,13 @@ test('on ArrowDown keydown on the first element, it moves to the second', () => 
   const raf = createMockRaf();
   const target = {};
   td.when(mockAdapter.getNumberFocusableElements()).thenReturn(3);
-  td.when(mockAdapter.getFocusedItemIndex()).thenReturn(0);
+  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(0);
 
   foundation.init();
   handlers.keydown({target, key: 'ArrowDown', preventDefault: () => {}});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
   raf.flush();
-  td.verify(mockAdapter.focusItemAtIndex(1));
+  td.verify(mockAdapter.focusElementAtIndex(1));
 
   raf.restore();
   clock.uninstall();
@@ -646,7 +631,7 @@ test('on ArrowDown keydown prevents default on the event', () => {
   const target = {};
   const preventDefault = td.func('event.preventDefault');
   td.when(mockAdapter.getNumberFocusableElements()).thenReturn(3);
-  td.when(mockAdapter.getFocusedItemIndex()).thenReturn(0);
+  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(0);
 
   foundation.init();
   handlers.keydown({target, key: 'ArrowDown', preventDefault});
@@ -665,13 +650,13 @@ test('on ArrowUp keydown on the first element, it moves to the last', () => {
   const raf = createMockRaf();
   const target = {};
   td.when(mockAdapter.getNumberFocusableElements()).thenReturn(3);
-  td.when(mockAdapter.getFocusedItemIndex()).thenReturn(0);
+  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(0);
 
   foundation.init();
   handlers.keydown({target, key: 'ArrowUp', preventDefault: () => {}});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
   raf.flush();
-  td.verify(mockAdapter.focusItemAtIndex(2));
+  td.verify(mockAdapter.focusElementAtIndex(2));
 
   raf.restore();
   clock.uninstall();
@@ -684,13 +669,13 @@ test('on ArrowUp keydown on the last element, it moves to the previous', () => {
   const raf = createMockRaf();
   const target = {};
   td.when(mockAdapter.getNumberFocusableElements()).thenReturn(3);
-  td.when(mockAdapter.getFocusedItemIndex()).thenReturn(2);
+  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(2);
 
   foundation.init();
   handlers.keydown({target, key: 'ArrowUp', preventDefault: () => {}});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
   raf.flush();
-  td.verify(mockAdapter.focusItemAtIndex(1));
+  td.verify(mockAdapter.focusElementAtIndex(1));
 
   raf.restore();
   clock.uninstall();
@@ -704,7 +689,7 @@ test('on ArrowUp keydown prevents default on the event', () => {
   const target = {};
   const preventDefault = td.func('event.preventDefault');
   td.when(mockAdapter.getNumberFocusableElements()).thenReturn(3);
-  td.when(mockAdapter.getFocusedItemIndex()).thenReturn(2);
+  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(2);
 
   foundation.init();
   handlers.keydown({target, key: 'ArrowUp', preventDefault});
@@ -724,7 +709,7 @@ test('on ArrowLeft keydown prevents default on the event', () => {
   const target = {};
   const preventDefault = td.func('event.preventDefault');
   td.when(mockAdapter.getNumberFocusableElements()).thenReturn(3);
-  td.when(mockAdapter.getFocusedItemIndex()).thenReturn(2);
+  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(2);
 
   foundation.init();
   handlers.keydown({target, key: 'ArrowLeft', preventDefault});
@@ -744,7 +729,7 @@ test('on ArrowRight keydown prevents default on the event', () => {
   const target = {};
   const preventDefault = td.func('event.preventDefault');
   td.when(mockAdapter.getNumberFocusableElements()).thenReturn(3);
-  td.when(mockAdapter.getFocusedItemIndex()).thenReturn(2);
+  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(2);
 
   foundation.init();
   handlers.keydown({target, key: 'ArrowRight', preventDefault});
@@ -764,7 +749,7 @@ test('on any other keydown event, do not prevent default on the event', () => {
   const target = {};
   const preventDefault = td.func('event.preventDefault');
   td.when(mockAdapter.getNumberFocusableElements()).thenReturn(3);
-  td.when(mockAdapter.getFocusedItemIndex()).thenReturn(2);
+  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(2);
 
   foundation.init();
   handlers.keydown({target, key: 'Foo', preventDefault});
@@ -783,7 +768,7 @@ test('on space, keydown prevents default on the event', () => {
   const raf = createMockRaf();
   const target = {};
   const preventDefault = td.func('event.preventDefault');
-  td.when(mockAdapter.getFocusedItemIndex()).thenReturn(2);
+  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(2);
 
   foundation.init();
   handlers.keydown({target, key: 'Space', preventDefault});

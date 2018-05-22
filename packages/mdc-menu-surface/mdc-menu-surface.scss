@@ -1,5 +1,5 @@
 //
-// Copyright 2017 Google Inc. All Rights Reserved.
+// Copyright 2018 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,8 +17,6 @@
 @import "@material/animation/variables";
 @import "@material/elevation/mixins";
 @import "@material/theme/mixins";
-@import "@material/theme/variables";
-@import "@material/typography/mixins";
 
 $mdc-menu-surface-fade-in-duration: .03s;
 $mdc-menu-surface-fade-out-duration: .075s;
@@ -27,7 +25,8 @@ $mdc-menu-surface-scale-duration: .12s;
 // postcss-bem-linter: define menu-surface
 .mdc-menu-surface {
   @include mdc-elevation(2);
-  @include mdc-theme-prop(background-color, surface);
+  @include mdc-menu-surface-color(surface);
+  @include mdc-menu-surface-ink-color(on-surface);
 
   display: none;
   position: absolute;

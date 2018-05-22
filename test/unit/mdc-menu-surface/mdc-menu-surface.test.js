@@ -236,33 +236,33 @@ test('adapter#focus focuses the menu-surface', () => {
   document.body.removeChild(root);
 });
 
-test('adapter#getFocusedItemIndex returns the index of the focused element', () => {
+test('adapter#getFocusedElementIndex returns the index of the focused element', () => {
   const {root, component} = setupTest(true);
   const item = root.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[1];
   document.body.appendChild(root);
   item.focus();
-  assert.equal(component.getDefaultFoundation().adapter_.getFocusedItemIndex(), 1);
+  assert.equal(component.getDefaultFoundation().adapter_.getFocusedElementIndex(), 1);
   root.focus();
-  assert.equal(component.getDefaultFoundation().adapter_.getFocusedItemIndex(), -1, 'missing index = -1');
+  assert.equal(component.getDefaultFoundation().adapter_.getFocusedElementIndex(), -1, 'missing index = -1');
   document.body.removeChild(root);
 });
 
-test('adapter#focusItemAtIndex focuses the correct menu-surface element', () => {
+test('adapter#focusElementAtIndex focuses the correct menu-surface element', () => {
   const {root, component} = setupTest(true);
   const item1 = root.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[1];
   const item2 = root.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[0];
   document.body.appendChild(root);
-  component.getDefaultFoundation().adapter_.focusItemAtIndex(1);
+  component.getDefaultFoundation().adapter_.focusElementAtIndex(1);
   assert.equal(document.activeElement, item1);
-  component.getDefaultFoundation().adapter_.focusItemAtIndex(0);
+  component.getDefaultFoundation().adapter_.focusElementAtIndex(0);
   assert.equal(document.activeElement, item2);
   document.body.removeChild(root);
 });
 
-test('adapter#focusItemAtIndex does nothing if index is greater than number of focusable elements', () => {
+test('adapter#focusElementAtIndex does nothing if index is greater than number of focusable elements', () => {
   const {root, component} = setupTest(true);
   document.body.appendChild(root);
-  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.focusItemAtIndex(9));
+  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.focusElementAtIndex(9));
 });
 
 test('adapter#hasAnchor returns true if the menu-surface has an anchor', () => {

@@ -132,8 +132,8 @@ class MDCMenuSurface extends MDCComponent {
    * saveFocus: function(),
    * restoreFocus: function(),
    * getNumberFocusableElements: function(): number,
-   * getFocusedItemIndex: function(): number,
-   * focusItemAtIndex: function(number)
+   * getFocusedElementIndex: function(): number,
+   * focusElementAtIndex: function(number)
    * }}
    * @private
    */
@@ -150,8 +150,8 @@ class MDCMenuSurface extends MDCComponent {
         }
       },
       getNumberFocusableElements: () => this.focusableElements_.length,
-      getFocusedItemIndex: () => this.focusableElements_.indexOf(document.activeElement),
-      focusItemAtIndex: (index) => this.focusableElements_[index] && this.focusableElements_[index].focus(),
+      getFocusedElementIndex: () => this.focusableElements_.indexOf(document.activeElement),
+      focusElementAtIndex: (index) => this.focusableElements_[index] && this.focusableElements_[index].focus(),
     };
   }
 

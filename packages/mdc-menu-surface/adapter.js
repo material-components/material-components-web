@@ -83,6 +83,7 @@ class MDCMenuSurfaceAdapter {
   /** @param {function(!Event)} handler */
   deregisterBodyClickHandler(handler) {}
 
+  /** Emits an event when the menu surface is closed. */
   notifyClose() {}
 
   /**
@@ -97,23 +98,26 @@ class MDCMenuSurfaceAdapter {
   /** @param {string} origin */
   setTransformOrigin(origin) {}
 
+  /** Focuses the menu surface. */
   focus() {}
 
   /** @return {boolean} */
   isFocused() {}
 
+  /** Saves the element that was focused before the menu surface was opened. */
   saveFocus() {}
 
+  /** Restores focus to the element that was focused before the menu surface was opened. */
   restoreFocus() {}
 
   /** @return {number} */
   getNumberFocusableElements() {}
 
   /** @return {number} */
-  getFocusedItemIndex() {}
+  getFocusedElementIndex() {}
 
   /** @param {number} index */
-  focusItemAtIndex(index) {}
+  focusElementAtIndex(index) {}
 
   /** @return {{width: number, height: number}} */
   getInnerDimensions() {}
