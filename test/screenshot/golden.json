@@ -111,23 +111,23 @@
     }
   },
   "mdc-fab/classes/baseline.html": {
-    "publicUrl": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/10/09_48_12_584/3ead4f4c7/mdc-fab/classes/baseline.html",
+    "publicUrl": "https://storage.googleapis.com/mdc-web-screenshot-tests/kfranqueiro/2018/05/18/14_55_24_813/a420fc01/mdc-fab/classes/baseline.html",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/10/09_48_12_584/3ead4f4c7/mdc-fab/classes/baseline.html.win10e15_chrome66x64.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/10/09_48_12_584/3ead4f4c7/mdc-fab/classes/baseline.html.win10e17_edge17.png",
-      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/10/09_48_12_584/3ead4f4c7/mdc-fab/classes/baseline.html.win10e14_ff59x64.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/10/09_48_12_584/3ead4f4c7/mdc-fab/classes/baseline.html.win10e14_ie11.png",
-      "mobile_android_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/10/09_48_12_584/3ead4f4c7/mdc-fab/classes/baseline.html.galaxys7and70_mblchrome64.png"
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/kfranqueiro/2018/05/18/14_55_24_813/a420fc01/mdc-fab/classes/baseline.html.win10e15_chrome66x64.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/kfranqueiro/2018/05/18/14_55_24_813/a420fc01/mdc-fab/classes/baseline.html.win10e17_edge17.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/kfranqueiro/2018/05/18/14_55_24_813/a420fc01/mdc-fab/classes/baseline.html.win10e14_ff59x64.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/kfranqueiro/2018/05/18/14_55_24_813/a420fc01/mdc-fab/classes/baseline.html.win10e14_ie11.png",
+      "mobile_android_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/kfranqueiro/2018/05/18/14_55_24_813/a420fc01/mdc-fab/classes/baseline.html.galaxys7and70_mblchrome64.png"
     }
   },
   "mdc-fab/classes/mini.html": {
-    "publicUrl": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/10/09_48_12_584/3ead4f4c7/mdc-fab/classes/mini.html",
+    "publicUrl": "https://storage.googleapis.com/mdc-web-screenshot-tests/kfranqueiro/2018/05/18/14_55_24_813/a420fc01/mdc-fab/classes/mini.html",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/10/09_48_12_584/3ead4f4c7/mdc-fab/classes/mini.html.win10e15_chrome66x64.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/10/09_48_12_584/3ead4f4c7/mdc-fab/classes/mini.html.win10e17_edge17.png",
-      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/10/09_48_12_584/3ead4f4c7/mdc-fab/classes/mini.html.win10e14_ff59x64.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/10/09_48_12_584/3ead4f4c7/mdc-fab/classes/mini.html.win10e14_ie11.png",
-      "mobile_android_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/10/09_48_12_584/3ead4f4c7/mdc-fab/classes/mini.html.galaxys7and70_mblchrome64.png"
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/kfranqueiro/2018/05/18/14_55_24_813/a420fc01/mdc-fab/classes/mini.html.win10e15_chrome66x64.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/kfranqueiro/2018/05/18/14_55_24_813/a420fc01/mdc-fab/classes/mini.html.win10e17_edge17.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/kfranqueiro/2018/05/18/14_55_24_813/a420fc01/mdc-fab/classes/mini.html.win10e14_ff59x64.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/kfranqueiro/2018/05/18/14_55_24_813/a420fc01/mdc-fab/classes/mini.html.win10e14_ie11.png",
+      "mobile_android_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/kfranqueiro/2018/05/18/14_55_24_813/a420fc01/mdc-fab/classes/mini.html.galaxys7and70_mblchrome64.png"
     }
   }
 }

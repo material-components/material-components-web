@@ -16,6 +16,7 @@
 
 'use strict';
 
+const childProcess = require('child_process');
 const fs = require('mz/fs');
 const glob = require('glob');
 
@@ -84,6 +85,10 @@ class Controller {
 
   async initialize() {
     this.baseUploadDir_ = await this.storage_.generateUniqueUploadDir();
+
+    if (await this.cliArgs_.shouldBuild()) {
+      childProcess.spawnSync('npm', ['run', 'screenshot:build'], {shell: true, stdio: 'inherit'});
+    }
   }
 
   /**
