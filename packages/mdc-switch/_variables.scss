@@ -14,17 +14,14 @@
 // limitations under the License.
 //
 
+@import "@material/theme/variables";
+
 $mdc-switch-track-width: 34px;
 $mdc-switch-track-height: 14px;
 $mdc-switch-knob-diameter: 20px;
 $mdc-switch-focus-ring-diameter: 48px;
 $mdc-switch-knob-active-margin: $mdc-switch-track-width - $mdc-switch-knob-diameter;
 
-$mdc-switch-unchecked-track-color: #000;
-$mdc-switch-unchecked-knob-color: #fafafa;
-$mdc-switch-unchecked-focus-ring-color: #9e9e9e;
-$mdc-switch-disabled-knob-color: #bdbdbd;
-
-$mdc-switch-baseline-theme-color: secondary;
+$mdc-switch-baseline-theme-color: mdc-theme-prop-value(secondary);
 
 $mdc-switch-knob-vertical-offset_: -3px;

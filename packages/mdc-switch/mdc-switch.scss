@@ -46,12 +46,7 @@
 }
 
 @at-root {
-  @include mdc-switch-unchecked-track-color_($mdc-switch-unchecked-track-color);
-  @include mdc-switch-unchecked-knob-color_($mdc-switch-unchecked-knob-color);
-  @include mdc-switch-unchecked-focus-indicator-color_($mdc-switch-unchecked-focus-ring-color);
-  @include mdc-switch-track-color($mdc-switch-baseline-theme-color);
-  @include mdc-switch-knob-color($mdc-switch-baseline-theme-color);
-  @include mdc-switch-focus-indicator-color($mdc-switch-baseline-theme-color);
+  @include mdc-switch-baseline-theme-color($mdc-switch-baseline-theme-color);
 }
 
 .mdc-switch__background {
@@ -75,7 +70,6 @@
       mdc-switch-transition(opacity),
       mdc-switch-transition(background-color);
     border-radius: 7px;
-    opacity: .38;
     content: "";
   }
 }
@@ -105,7 +99,6 @@
       mdc-switch-transition(transform),
       mdc-switch-transition(background-color);
     border-radius: 50%;
-    opacity: .2;
     content: "";
   }
 }
@@ -116,21 +109,11 @@
 }
 
 .mdc-switch__native-control:checked ~ .mdc-switch__background {
-  // Track
-  &::before {
-    opacity: .5;
-  }
-
   .mdc-switch__knob {
     transform: translateX($mdc-switch-knob-active-margin);
 
     @include mdc-rtl {
       transform: translateX(-($mdc-switch-knob-active-margin));
-    }
-
-    // Focus indicator
-    &::before {
-      opacity: .15;
     }
   }
 }
@@ -142,13 +125,27 @@
 }
 
 .mdc-switch__native-control:disabled ~ .mdc-switch__background {
+  opacity: .38;
+
   // Track
   &::before {
     background-color: $mdc-switch-unchecked-track-color;
-    opacity: .12;
   }
 
   .mdc-switch__knob {
-    background-color: $mdc-switch-disabled-knob-color;
+    background-color: $mdc-switch-unchecked-knob-color;
+  }
+}
+
+.mdc-switch__native-control:checked:disabled ~ .mdc-switch__background {
+  opacity: .38;
+
+  // Track
+  &::before {
+    background-color: $mdc-switch-track-color;
+  }
+
+  .mdc-switch__knob {
+    background-color: $mdc-switch-knob-color;
   }
 }

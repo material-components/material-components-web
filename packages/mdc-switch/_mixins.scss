@@ -45,13 +45,13 @@
 // Private
 //
 
-@mixin mdc-switch-unchecked-track-color_($color) {
+@mixin mdc-switch-unchecked-track-color($color) {
   .mdc-switch__native-control:enabled:not(:checked) ~ .mdc-switch__background::before {
     @include mdc-theme-prop(background-color, $color);
   }
 }
 
-@mixin mdc-switch-unchecked-knob-color_($color) {
+@mixin mdc-switch-unchecked-knob-color($color) {
   // stylelint-disable-next-line selector-max-specificity
   .mdc-switch__native-control:enabled:not(:checked) ~ .mdc-switch__background .mdc-switch__knob {
     @include mdc-theme-prop(background-color, $color);
@@ -64,6 +64,24 @@
     @include mdc-theme-prop(background-color, $color);
   }
 }
+
+@mixin mdc-switch-baseline-theme-color($color) {
+  $mdc-switch-baseline-theme-color: $color;
+  $mdc-switch-knob-color: $mdc-switch-baseline-theme-color;
+  $mdc-switch-track-color: rgba($mdc-switch-baseline-theme-color, .54);
+  $mdc-switch-focus-indicator-color: rgba($mdc-switch-baseline-theme-color, .20);
+  $mdc-switch-unchecked-knob-color: mdc-theme-prop-value(surface);
+  $mdc-switch-unchecked-track-color: rgba(mdc-theme-prop-value(on-surface), .32);
+  $mdc-switch-unchecked-focus-indicator-color: rgba(mdc-theme-prop-value(on-surface), .12);
+
+  @include mdc-switch-unchecked-track-color($mdc-switch-unchecked-track-color);
+  @include mdc-switch-unchecked-knob-color($mdc-switch-unchecked-knob-color);
+  @include mdc-switch-unchecked-focus-indicator-color_($mdc-switch-unchecked-focus-indicator-color);
+  @include mdc-switch-track-color($mdc-switch-track-color);
+  @include mdc-switch-knob-color($mdc-switch-knob-color);
+  @include mdc-switch-focus-indicator-color($mdc-switch-focus-indicator-color);
+}
+
 
 @mixin mdc-switch-tap-target_ {
   position: absolute;
