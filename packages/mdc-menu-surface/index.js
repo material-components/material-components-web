@@ -142,10 +142,10 @@ class MDCMenuSurface extends MDCComponent {
       focus: () => this.root_.focus(),
       isFocused: () => document.activeElement === this.root_,
       saveFocus: () => {
-        this.previousFocus_ = document.activeElement ? document.activeElement: null;
+        this.previousFocus_ = document.activeElement;
       },
       restoreFocus: () => {
-        if (this.previousFocus_) {
+        if (this.previousFocus_ && this.previousFocus_.focus) {
           this.previousFocus_.focus();
         }
       },
