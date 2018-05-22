@@ -123,8 +123,8 @@ class ImageCropper {
       if (!cols[x]) {
         cols[x] = [];
       }
-      const pixelColorIng = jimpImage.getPixelColor(x, y);
-      const isTrimColor = this.isTrimColor_(pixelColorIng);
+      const pixelColorInt = jimpImage.getPixelColor(x, y);
+      const isTrimColor = this.isTrimColor_(pixelColorInt);
       rows[y][x] = isTrimColor;
       cols[x][y] = isTrimColor;
     });
