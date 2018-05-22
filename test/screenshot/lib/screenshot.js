@@ -30,6 +30,9 @@ const API_POLL_INTERVAL_MS = 1000 * 5;
 /** How long to wait for a single URL to be captured in all browsers. */
 const API_MAX_WAIT_MS = 1000 * 60 * 5;
 
+/** Maximum number of times to retry a failed HTTP request. */
+const API_MAX_RETRIES = 5;
+
 /** Map of URLs to `Progress` objects. */
 const progressMap = new Map();
 
@@ -69,7 +72,11 @@ async function captureOneUrl(testPageUrl) {
     );
 }
 
-async function sendCaptureRequest(testPageUrl) {
+async function sendCaptureRequest(testPageUrl, retryCount = 0) {
+  if (retryCount > API_MAX_RETRIES) {
+    throw new Error(`Capture request failed after ${retryCount} retry attempts - ${testPageUrl}`);
+  }
+
   const userAgents = await CbtUserAgent.fetchBrowsersToRun();
   return cbtApi.sendCaptureRequest(testPageUrl, userAgents)
     .catch(async (err) => {
@@ -78,21 +85,25 @@ async function sendCaptureRequest(testPageUrl) {
       if (reachedParallelExecutionLimit(err)) {
         console.warn(`Parallel execution limit reached - waiting for ${waitInSeconds} seconds before retrying...`);
         await sleep(API_POLL_INTERVAL_MS);
-        return sendCaptureRequest(testPageUrl);
+        return sendCaptureRequest(testPageUrl, retryCount + 1);
       }
 
       // TODO(acdvorak): Abstract this logic into CbtApi for every HTTP request?
       if (isServerError(err)) {
         logServerError(err);
         await sleep(API_POLL_INTERVAL_MS);
-        return sendCaptureRequest(testPageUrl);
+        return sendCaptureRequest(testPageUrl, retryCount + 1);
       }
 
       return rejectWithError('sendCaptureRequest', testPageUrl, err);
     });
 }
 
-async function handleCaptureResponse(testPageUrl, captureResponseBody) {
+async function handleCaptureResponse(testPageUrl, captureResponseBody, retryCount = 0) {
+  if (retryCount > API_MAX_RETRIES) {
+    throw new Error(`Capture response failed after ${retryCount} retry attempts - ${testPageUrl}`);
+  }
+
   let infoResponseBody;
   let infoProgress;
 
@@ -136,13 +147,13 @@ Waiting for ${waitInSeconds} seconds before retrying...
   // At least one browser failed to capture. Retry all browsers.
   if (resultsWithNoFullpageImage.length > 0) {
     await sleepAndLogError('cbtResult.images.fullpage', resultsWithNoFullpageImage);
-    return sendCaptureRequest(testPageUrl);
+    return sendCaptureRequest(testPageUrl, retryCount + 1);
   }
 
   // CBT generated a fullpage screenshot, but has not yet generated the chromeless version. Send a new info request.
   if (resultsWithNoChromelessImage.length > 0) {
     await sleepAndLogError('cbtResult.images.chromeless', resultsWithNoChromelessImage);
-    return handleCaptureResponse(testPageUrl, infoResponseBody);
+    return handleCaptureResponse(testPageUrl, infoResponseBody, retryCount + 1);
   }
 
   logTestCaseProgress(testPageUrl, infoProgress);
