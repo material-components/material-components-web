@@ -54,12 +54,12 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     return cssClasses;
   }
 
-  /** @return enum{strings} */
+  /** @return enum{string} */
   static get strings() {
     return strings;
   }
 
-  /** @return enum{numbers} */
+  /** @return enum {number} */
   static get numbers() {
     return numbers;
   }
@@ -80,24 +80,26 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
       removeClass: () => {},
       hasClass: () => false,
       getAttributeForEventTarget: () => {},
-      getInnerDimensions: () => ({}),
+      getIndexForEventTarget: () => {},
       hasAnchor: () => false,
-      getAnchorDimensions: () => ({}),
-      getWindowDimensions: () => ({}),
-      getNumberFocusableElements: () => 0,
-      getFocusedItemIndex: () => () => 0,
-      focusItemAtIndex: () => {},
       registerInteractionHandler: () => {},
       deregisterInteractionHandler: () => {},
       registerBodyClickHandler: () => {},
       deregisterBodyClickHandler: () => {},
-      saveFocus: () => {},
-      restoreFocus: () => {},
-      isFocused: () => false,
+      notifyClose: () => {},
       isElementInContainer: () => false,
-      focus: () => {},
       isRtl: () => false,
       setTransformOrigin: () => {},
+      focus: () => {},
+      isFocused: () => false,
+      saveFocus: () => {},
+      restoreFocus: () => {},
+      getNumberFocusableElements: () => 0,
+      getFocusedItemIndex: () => () => 0,
+      focusItemAtIndex: () => {},
+      getInnerDimensions: () => ({}),
+      getAnchorDimensions: () => ({}),
+      getWindowDimensions: () => ({}),
       setPosition: () => {},
       setMaxHeight: () => {},
     });
@@ -133,8 +135,6 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     this.anchorMargin_ = {top: 0, right: 0, bottom: 0, left: 0};
     /** @private {?AutoLayoutMeasurements} */
     this.measures_ = null;
-    /** @private {number} */
-    this.selectedIndex_ = -1;
     /** @private {boolean} */
     this.rememberSelection_ = false;
     /** @private {boolean} */
@@ -201,13 +201,6 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
    */
   focusOnOpen_(focusIndex) {
     if (focusIndex === null) {
-      // If this instance of MDCMenuSurface remembers selections, and the user has
-      // made a selection, then focus the last selected item
-      if (this.rememberSelection_ && this.selectedIndex_ >= 0) {
-        this.adapter_.focusItemAtIndex(this.selectedIndex_);
-        return;
-      }
-
       this.adapter_.focus();
       // If that doesn't work, focus first item instead.
       if (!this.adapter_.isFocused()) {
@@ -219,7 +212,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
   }
 
   /**
-   * Handle clicks and cancel the menu if not a child list-item
+   * Handle clicks and cancel the menu if not within menu-surface element.
    * @param {!Event} evt
    * @private
    */
@@ -247,7 +240,9 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
 
     const {keyCode, key, shiftKey} = evt;
     const isTab = key === 'Tab' || keyCode === 9;
+    const isArrowLeft = key === 'ArrowLeft' || keyCode === 37;
     const isArrowUp = key === 'ArrowUp' || keyCode === 38;
+    const isArrowRight = key === 'ArrowRight' || keyCode === 39;
     const isArrowDown = key === 'ArrowDown' || keyCode === 40;
     const isSpace = key === 'Space' || keyCode === 32;
     const isEnter = key === 'Enter' || keyCode === 13;
@@ -258,11 +253,11 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     const lastItemIndex = this.adapter_.getNumberFocusableElements() - 1;
 
     // Ensure Arrow{Up,Down} and space do not cause inadvertent scrolling
-    if (isArrowUp || isArrowDown || isTab) {
+    if (isArrowUp || isArrowDown || isArrowLeft || isArrowRight || isTab) {
       evt.preventDefault();
     }
 
-    if (isSpace && this.isValidSpaceKey_(evt)) {
+    if (isSpace && this.willSpaceKeyCauseScroll_(evt)) {
       evt.preventDefault();
     }
 
@@ -283,8 +278,14 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     return true;
   }
 
-  isValidSpaceKey_(evt) {
-    const tagName = evt.target.tagName.toLocaleLowerCase();
+  /**
+   * Returns true if the space key will cause a scroll event on the body.
+   * @param evt
+   * @return {boolean}
+   * @private
+   */
+  willSpaceKeyCauseScroll_(evt) {
+    const tagName = ('' + evt.target.tagName).toLowerCase();
 
     return ELEMENTS_SPACE_IS_ALLOWED.indexOf(tagName) === -1;
   }
@@ -471,14 +472,14 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     };
     const {anchorWidth, menuHeight, menuWidth} = this.measures_;
     // Center align when anchor width is comparable or greater than menu, otherwise keep corner.
-    if (anchorWidth / menuWidth > numbers.ANCHOR_TO_MENU_WIDTH_RATIO) {
+    if (anchorWidth / menuWidth > numbers.ANCHOR_TO_MENU_SURFACE_WIDTH_RATIO) {
       horizontalAlignment = 'center';
     }
 
     // Adjust vertical origin when menu is positioned with significant offset from anchor. This is done so that
     // scale animation is "anchored" on the anchor.
     if (!(this.anchorCorner_ & CornerBit.BOTTOM) &&
-        Math.abs(verticalOffset / menuHeight) > numbers.OFFSET_TO_MENU_HEIGHT_RATIO) {
+        Math.abs(verticalOffset / menuHeight) > numbers.OFFSET_TO_MENU_SURFACE_HEIGHT_RATIO) {
       const verticalOffsetPercent = Math.abs(verticalOffset / menuHeight) * 100;
       const originPercent = (corner & CornerBit.BOTTOM) ? 100 - verticalOffsetPercent : verticalOffsetPercent;
       verticalAlignment = Math.round(originPercent * 100) / 100 + '%';
@@ -544,6 +545,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
         this.closeAnimationEndTimerId_ = setTimeout(() => {
           this.closeAnimationEndTimerId_ = 0;
           this.adapter_.removeClass(MDCMenuSurfaceFoundation.cssClasses.ANIMATING_CLOSED);
+          this.adapter_.notifyClose();
         }, numbers.TRANSITION_CLOSE_DURATION);
       }
     });

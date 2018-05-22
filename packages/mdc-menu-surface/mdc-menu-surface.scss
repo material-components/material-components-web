@@ -72,11 +72,14 @@ $mdc-menu-surface-scale-duration: .12s;
     overflow-y: hidden;
   }
 
-  // stylelint-disable plugin/selector-bem-pattern
+  // stylelint-disable-next-line plugin/selector-bem-pattern
   [dir="rtl"] & {
     transform-origin: top right;
   }
 }
-// stylelint-enable plugin/selector-bem-pattern
 
+.mdc-menu-surface--anchor {
+  position: relative;
+  overflow: visible;
+}
 // postcss-bem-linter: end

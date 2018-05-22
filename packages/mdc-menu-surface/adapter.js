@@ -15,23 +15,6 @@
  * limitations under the License.
  */
 
-/**
- * @license
- * Copyright 2016 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
@@ -73,18 +56,14 @@ class MDCMenuSurfaceAdapter {
    */
   getAttributeForEventTarget(target, attributeName) {}
 
-  /** @return {{ width: number, height: number }} */
-  getInnerDimensions() {}
+  /**
+   * @param {EventTarget} target
+   * @return {number}
+   */
+  getIndexForEventTarget(target) {}
 
   /** @return {boolean} */
   hasAnchor() {}
-
-  /** @return {{width: number, height: number, top: number, right: number, bottom: number, left: number}} */
-  getAnchorDimensions() {}
-
-  /** @return {{ width: number, height: number }} */
-  getWindowDimensions() {}
-
 
   /**
    * @param {string} type
@@ -104,19 +83,13 @@ class MDCMenuSurfaceAdapter {
   /** @param {function(!Event)} handler */
   deregisterBodyClickHandler(handler) {}
 
-  /** @param {{index: number}} evtData */
-  notifySelected(evtData) {}
+  notifyClose() {}
 
-  notifyCancel() {}
-
-  saveFocus() {}
-
-  restoreFocus() {}
-
-  /** @return {boolean} */
-  isFocused() {}
-
-  focus() {}
+  /**
+   * @return {boolean}
+   * @param {EventTarget} el
+   */
+  isElementInContainer(el) {}
 
   /** @return {boolean} */
   isRtl() {}
@@ -124,6 +97,32 @@ class MDCMenuSurfaceAdapter {
   /** @param {string} origin */
   setTransformOrigin(origin) {}
 
+  focus() {}
+
+  /** @return {boolean} */
+  isFocused() {}
+
+  saveFocus() {}
+
+  restoreFocus() {}
+
+  /** @return {number} */
+  getNumberFocusableElements() {}
+
+  /** @return {number} */
+  getFocusedItemIndex() {}
+
+  /** @param {number} index */
+  focusItemAtIndex(index) {}
+
+  /** @return {{width: number, height: number}} */
+  getInnerDimensions() {}
+
+  /** @return {{width: number, height: number, top: number, right: number, bottom: number, left: number}} */
+  getAnchorDimensions() {}
+
+  /** @return {{ width: number, height: number }} */
+  getWindowDimensions() {}
   /** @param {{
   *   top: (string|undefined),
   *   right: (string|undefined),

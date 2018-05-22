@@ -18,6 +18,7 @@
 import MDCComponent from '@material/base/component';
 import {getTransformPropertyName} from './util';
 import {MDCMenuSurfaceFoundation, AnchorMargin} from './foundation';
+import {MDCMenuSurfaceAdapter} from './adapter';
 import {Corner, CornerBit, strings} from './constants';
 
 /**
@@ -28,7 +29,12 @@ class MDCMenuSurface extends MDCComponent {
   constructor(...args) {
     super(...args);
 
+    /** @private {!Array<Element>} */
     this.focusableElements_ = [];
+    /** @private {!Element} */
+    this.previousFocus_;
+    /** @private {!Element} */
+    this.anchorElement;
   }
 
   /**
@@ -40,9 +46,11 @@ class MDCMenuSurface extends MDCComponent {
   }
 
   initialSyncWithDOM() {
-    if (this.root_.parentElement.classList.contains('mdc-menu-surface--anchor')) {
+    if (this.root_.parentElement && this.root_.parentElement.classList.contains('mdc-menu-surface--anchor')) {
       this.anchorElement = this.root_.parentElement;
     }
+
+    this.focusableElements_ = [].slice.call(this.root_.querySelectorAll(strings.FOCUSABLE_ELEMENTS));
   }
 
   /** @return {boolean} */
@@ -61,8 +69,8 @@ class MDCMenuSurface extends MDCComponent {
 
   /** @param {{focusIndex: ?number}=} options */
   show({focusIndex = null} = {}) {
-    this.foundation_.open({focusIndex: focusIndex});
     this.focusableElements_ = [].slice.call(this.root_.querySelectorAll(strings.FOCUSABLE_ELEMENTS));
+    this.foundation_.open({focusIndex: focusIndex});
   }
 
   hide() {
@@ -92,7 +100,7 @@ class MDCMenuSurface extends MDCComponent {
   /** @return {!MDCMenuSurfaceFoundation} */
   getDefaultFoundation() {
     return new MDCMenuSurfaceFoundation(
-      /** @type {!MDCMenuSurfaceAdapter} */ Object.assign({
+      /** @type {!MDCMenuSurfaceAdapter} */ (Object.assign({
         addClass: (className) => this.root_.classList.add(className),
         removeClass: (className) => this.root_.classList.remove(className),
         hasClass: (className) => this.root_.classList.contains(className),
@@ -103,7 +111,7 @@ class MDCMenuSurface extends MDCComponent {
         deregisterInteractionHandler: (type, handler) => this.root_.removeEventListener(type, handler),
         registerBodyClickHandler: (handler) => document.body.addEventListener('click', handler),
         deregisterBodyClickHandler: (handler) => document.body.removeEventListener('click', handler),
-        notifyClose: () => this.emit(MDCMenuSurfaceFoundation.strings.CANCEL_EVENT, {}),
+        notifyClose: () => this.emit(MDCMenuSurfaceFoundation.strings.CLOSE_EVENT, {}),
         isElementInContainer: (el) => {
           return (this.root_ === el) ? true : this.root_.contains(el);
         },
@@ -114,9 +122,21 @@ class MDCMenuSurface extends MDCComponent {
       },
       this.getFocusAdapterMethods_(),
       this.getDimensionAdapterMethods_())
-    );
+      ));
   }
 
+  /**
+   * @return {{
+   * focus: function(),
+   * isFocused: function(): boolean,
+   * saveFocus: function(),
+   * restoreFocus: function(),
+   * getNumberFocusableElements: function(): number,
+   * getFocusedItemIndex: function(): number,
+   * focusItemAtIndex: function(number)
+   * }}
+   * @private
+   */
   getFocusAdapterMethods_() {
     return {
       focus: () => this.root_.focus(),
@@ -135,6 +155,15 @@ class MDCMenuSurface extends MDCComponent {
     };
   }
 
+  /**
+   * @return {{
+   * getInnerDimensions: function(),
+   * getAnchorDimensions: function(): (HTMLElement | null | * | ClientRect),
+   * getWindowDimensions: function(),
+   * setPosition: function(*),
+   * setMaxHeight: function(string)}}
+   * @private
+   */
   getDimensionAdapterMethods_() {
     return {
       getInnerDimensions: () => {

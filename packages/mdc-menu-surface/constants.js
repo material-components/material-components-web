@@ -25,15 +25,15 @@ const cssClasses = {
 
 /** @enum {string} */
 const strings = {
-  CANCEL_EVENT: 'MDCMenuSurface:cancel',
   ARIA_DISABLED_ATTR: 'aria-disabled',
   CLOSE_EVENT: 'MDCMenuSurface:close',
-  FOCUSABLE_ELEMENTS: 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+  FOCUSABLE_ELEMENTS: 'button:not(:disabled), [href]:not([aria-disabled="true"]), input:not(:disabled), ' +
+  'select:not(:disabled), textarea:not(:disabled), [tabindex]:not([tabindex="-1"]):not([aria-disabled="true"])',
 };
 
 /** @enum {number} */
 const numbers = {
-  // Amount of time to wait before triggering a selected event on the temporary-surface. Note that this time
+  // Amount of time to wait before triggering a selected event on the menu-surface. Note that this time
   // will most likely be bumped up once interactive lists are supported to allow for the ripple to
   // animate before closing the temporary-surface
   SELECTED_TRIGGER_DELAY: 50,
@@ -41,12 +41,12 @@ const numbers = {
   TRANSITION_OPEN_DURATION: 120,
   // Total duration of temporary-surface close animation.
   TRANSITION_CLOSE_DURATION: 75,
-  // Margin left to the edge of the viewport when temporary-surface is at maximum possible height.
+  // Margin left to the edge of the viewport when menu-surface is at maximum possible height.
   MARGIN_TO_EDGE: 32,
-  // Ratio of anchor width to temporary-surface width for switching from corner positioning to center positioning.
-  ANCHOR_TO_TEMPORARY_SURFACE_WIDTH_RATIO: 0.67,
-  // Ratio of vertical offset to temporary-surface height for switching from corner to mid-way origin positioning.
-  OFFSET_TO_TEMPORARY_SURFACE_HEIGHT_RATIO: 0.1,
+  // Ratio of anchor width to menu-surface width for switching from corner positioning to center positioning.
+  ANCHOR_TO_MENU_SURFACE_WIDTH_RATIO: 0.67,
+  // Ratio of vertical offset to menu-surface height for switching from corner to mid-way origin positioning.
+  OFFSET_TO_MENU_SURFACE_HEIGHT_RATIO: 0.1,
 };
 
 /**
@@ -61,7 +61,7 @@ const CornerBit = {
 };
 
 /**
- * Enum for representing an element corner for positioning the temporary-surface.
+ * Enum for representing an element corner for positioning the menu-surface.
  *
  * The START constants map to LEFT if element directionality is left
  * to right and RIGHT if the directionality is right to left.
