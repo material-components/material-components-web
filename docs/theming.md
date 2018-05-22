@@ -41,7 +41,7 @@ Let's start with a simple application, which displays several cards for differen
 card to have a color scheme that matches its category, but we'll start with the default theming provided by MDC Web.
 
 You can [take a look at the end result here](https://plnkr.co/edit/jeBSvWC8mAIhUmUQvHSA?p=preview), but let's start from
-scratch. 
+scratch.
 
 > Note: We won't cover the basics of starting an MDC Web project in this guide, so please take a look at the
 [getting started guide](./getting-started.md) if you need more information.
@@ -128,8 +128,8 @@ Here's the markup:
         </p>
       </div>
     </div>
-    <button class="mdc-fab material-icons" id="demo-absolute-fab" aria-label="Favorite">
-      <span class="mdc-fab__icon">
+    <button class="mdc-fab" id="demo-absolute-fab" aria-label="Favorite">
+      <span class="mdc-fab__icon material-icons">
         favorite
       </span>
     </button>
@@ -137,7 +137,7 @@ Here's the markup:
 </html>
 ```
 
-You'll see that we have a number of pretty empty looking cards, with black text on a white background. The only hint of 
+You'll see that we have a number of pretty empty looking cards, with black text on a white background. The only hint of
 color comes from the FAB, which adopts the secondary color by default.
 
 ### Step 2: Use the MDC Web colors in your own markup
@@ -378,7 +378,7 @@ Since our cards only contain text and no components, let's keep it simple for no
 ```
 
 Let's see how it looks with another component inside it. Add the following code to each card just after the `p`
-tag: 
+tag:
 
 ```html
 <button class="mdc-button mdc-card__actions">

@@ -50,8 +50,8 @@ We recommend you load [Material Icons](https://material.io/icons/) from Google F
 ### HTML Structure
 
 ```html
-<button class="mdc-fab material-icons" aria-label="Favorite">
-  <span class="mdc-fab__icon">
+<button class="mdc-fab" aria-label="Favorite">
+  <span class="mdc-fab__icon material-icons">
     favorite
   </span>
 </button>
@@ -141,8 +141,8 @@ Developers must position MDC FAB as needed within their application's design.
   }
 }
 </style>
-<button class="mdc-fab material-icons app-fab--absolute" aria-label="Favorite">
-  <span class="mdc-fab__icon">
+<button class="mdc-fab app-fab--absolute" aria-label="Favorite">
+  <span class="mdc-fab__icon material-icons">
     favorite
   </span>
 </button>

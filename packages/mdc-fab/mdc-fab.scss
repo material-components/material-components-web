@@ -35,6 +35,12 @@
   @include mdc-fab__icon_;
 }
 
+// Increase specificity for FAB icon styles that need to override styles defined for .material-icons
+// (which is loaded separately so the order of CSS definitions is not guaranteed)
+.mdc-fab .mdc-fab__icon {
+  @include mdc-fab__icon-overrides_;
+}
+
 .mdc-fab--exited {
   @include mdc-fab--exited_;
 }
