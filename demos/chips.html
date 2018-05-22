@@ -278,7 +278,7 @@
 
         function removeChip(evt) {
           const {root} = evt.detail;
-          inputChipSetEl.removeChild(root);
+          root && inputChipSetEl.removeChild(root);
         }
 
         inputButton.addEventListener('click', addInputChip);
