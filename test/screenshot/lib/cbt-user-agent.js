@@ -85,7 +85,7 @@ async function fetchBrowsersToRun() {
         (cbtDevices) => {
           const userAgentAliases = getFilteredAliases();
           const userAgents = findAllMatchingUAs(userAgentAliases, cbtDevices);
-          console.log(userAgents.map((config) => `${config.alias}: ${config.fullCbtApiName}`));
+          console.log(userAgents.map((config) => `${config.alias}: ${config.fullCbtApiName}`), '\n\n');
           resolve(userAgents);
         },
         (err) => reject(err)
