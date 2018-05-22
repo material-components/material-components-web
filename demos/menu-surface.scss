@@ -22,10 +22,10 @@
 
 .standard-image-list {
   @include mdc-image-list-aspect(1.5); // Images are 3:2
-  @include mdc-image-list-standard-columns(2);
+  @include mdc-image-list-standard-columns(1);
 
   //TODO(williamernest): The menu surface will flow to the size of it's contained elements, but
   //the menu surface is also constrained by the size of the element that it is in until
   //we hoist it to the body. Setting min-width on the contained element will fix this for now
-  min-width: 300px;
+  min-width: 200px;
 }
