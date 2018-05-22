@@ -35,7 +35,7 @@ class CliArgParser {
     this.parser_.addArgument(
       ['--mdc-include-url'],
       {
-        action: 'append',
+        action: 'append', // Argument may be passed multiple times. Transformed into an array of strings.
         help: `
 Regular expression pattern. Only HTML files that match the pattern will be tested.
 Multiple patterns can be 'OR'-ed together by passing more than one '--mdc-include-url'.
@@ -48,7 +48,7 @@ Can be overridden by '--mdc-exclude-url'.
     this.parser_.addArgument(
       ['--mdc-exclude-url'],
       {
-        action: 'append',
+        action: 'append', // Argument may be passed multiple times. Transformed into an array of strings.
         help: `
 Regular expression pattern. HTML files that match the pattern will be excluded from testing.
 Multiple patterns can be 'OR'-ed together by passing more than one '--mdc-exclude-url'.
@@ -61,7 +61,7 @@ Takes precedence over '--mdc-include-url'.
     this.parser_.addArgument(
       ['--mdc-include-browser'],
       {
-        action: 'append',
+        action: 'append', // Argument may be passed multiple times. Transformed into an array of strings.
         help: `
 Regular expression pattern. Only browser aliases that match the pattern will be tested.
 See 'test/screenshot/browser.json' for examples.
@@ -75,7 +75,7 @@ Can be overridden by '--mdc-exclude-browser'.
     this.parser_.addArgument(
       ['--mdc-exclude-browser'],
       {
-        action: 'append',
+        action: 'append', // Argument may be passed multiple times. Transformed into an array of strings.
         help: `
 Regular expression pattern. Browser aliases that match the pattern will be excluded from testing.
 See 'test/screenshot/browser.json' for examples.
@@ -128,7 +128,7 @@ E.g., 'origin/master' (default), 'HEAD', 'feat/foo/bar', 'fad7ed3:path/to/golden
     this.parser_.addArgument(
       ['--mdc-skip-build'],
       {
-        action: 'storeTrue',
+        action: 'storeTrue', // Boolean value. `true` if argument is present, or `false` if omitted.
         help: `
 If this flag is present, JS and CSS files will not be compiled prior to running screenshot tests.
 The default behavior is to always build assets before running the tests.
