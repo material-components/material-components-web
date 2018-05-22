@@ -94,19 +94,18 @@ async function sendCaptureRequest(testPageUrl) {
 
 async function handleCaptureResponse(testPageUrl, captureResponseBody) {
   let infoResponseBody;
-  let infoProgress = computeTestCaseProgress(testPageUrl, captureResponseBody);
+  let infoProgress;
 
   const startTime = Date.now();
-  const isStillRunning = () => infoProgress.running > 0;
+  const isStillRunning = () => !infoProgress || infoProgress.running > 0;
   const isTimedOut = () => (Date.now() - startTime) > API_MAX_WAIT_MS;
 
-  do {
-    // Wait a few seconds, then try again.
+  while (isStillRunning() && !isTimedOut()) {
     await sleep(API_POLL_INTERVAL_MS);
     infoResponseBody = await fetchScreenshotInfo(captureResponseBody.screenshot_test_id);
     infoProgress = computeTestCaseProgress(testPageUrl, infoResponseBody);
     logTestCaseProgress(testPageUrl, infoProgress);
-  } while (isStillRunning() && !isTimedOut());
+  }
 
   const elapsedTimeInMinutes = millisToMinutes(Date.now() - startTime);
 
