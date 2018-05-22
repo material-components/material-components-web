@@ -72,7 +72,8 @@ class Storage {
     const queueIndex = uploadableFile.queueIndex;
     const queueLength = uploadableFile.queueLength;
     const destinationAbsoluteFilePath = uploadableFile.destinationAbsoluteFilePath;
-    console.log(`➡ Uploading file ${queueIndex + 1} of ${queueLength} - ${destinationAbsoluteFilePath} ...`);
+    const queueIndexStr = String(queueIndex + 1).padStart(String(queueLength).length, '0');
+    console.log(`➡ Uploading file ${queueIndexStr} of ${queueLength} - ${destinationAbsoluteFilePath} ...`);
 
     const cloudFile = this.storageBucket_.file(destinationAbsoluteFilePath);
     return cloudFile
@@ -94,7 +95,8 @@ class Storage {
     uploadableFile.publicUrl = publicUrl;
     const queueIndex = uploadableFile.queueIndex;
     const queueLength = uploadableFile.queueLength;
-    console.log(`✔︎ Uploaded file ${queueIndex + 1} of ${queueLength} - ${publicUrl}`);
+    const queueIndexStr = String(queueIndex + 1).padStart(String(queueLength).length, '0');
+    console.log(`✔︎ Uploaded file ${queueIndexStr} of ${queueLength} - ${publicUrl}`);
     return Promise.resolve(uploadableFile);
   }
 
