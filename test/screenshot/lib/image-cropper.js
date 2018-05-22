@@ -55,27 +55,56 @@ class ImageCropper {
    * @private
    */
   getCropRect_(jimpImage) {
-    const MIN_MATCH_PERCENTAGE = 0.05;
-    const MIN_CROP_INDEX = 10;
-
     const {rows, cols} = this.findPixelsWithTrimColor_(jimpImage);
 
-    return {
-      x: 0,
-      y: 0,
-      w: getCropIndex(cols),
-      h: getCropIndex(rows),
+    const left = this.getCropAmount_(cols);
+    const top = this.getCropAmount_(rows);
+    const right = this.getCropAmount_(cols.slice(left).reverse());
+    const bottom = this.getCropAmount_(rows.slice(top).reverse());
+
+    const cropAmounts = {
+      left,
+      top,
+      right,
+      bottom,
     };
 
-    function getCropIndex(rows) {
-      const index = rows.findIndex((row) => matchPercentage(row) >= MIN_MATCH_PERCENTAGE);
-      return index >= MIN_CROP_INDEX ? index - 1 : rows.length;
+    const rect = {
+      x: cropAmounts.left,
+      y: cropAmounts.top,
+      w: cols.length - cropAmounts.left - cropAmounts.right,
+      h: rows.length - cropAmounts.top - cropAmounts.bottom,
+    };
+
+    console.log('image rect:', {w: cols.length, h: rows.length});
+    console.log('crop rect:', rect);
+
+    return rect;
+  }
+
+  getCropAmount_(rows) {
+    const MIN_MATCH_PERCENTAGE = 0.05;
+    let foundTrimColor = false;
+
+    for (const [rowIndex, row] of rows.entries()) {
+      const isTrimColor = this.getMatchPercentage_(row) >= MIN_MATCH_PERCENTAGE;
+
+      if (isTrimColor) {
+        foundTrimColor = true;
+        continue;
+      }
+
+      if (foundTrimColor) {
+        return rowIndex;
+      }
     }
 
-    function matchPercentage(matchList) {
-      const numMatchingPixelsInRow = matchList.filter((isMatch) => isMatch).length;
-      return numMatchingPixelsInRow / matchList.length;
-    }
+    return 0;
+  }
+
+  getMatchPercentage_(row) {
+    const numMatchingPixelsInRow = row.filter((isMatch) => isMatch).length;
+    return numMatchingPixelsInRow / row.length;
   }
 
   /**
@@ -94,12 +123,23 @@ class ImageCropper {
       if (!cols[x]) {
         cols[x] = [];
       }
-      const isMatch = jimpImage.getPixelColor(x, y) === this.trimColorInt_;
-      rows[y][x] = isMatch;
-      cols[x][y] = isMatch;
+      const pixelColorIng = jimpImage.getPixelColor(x, y);
+      const isTrimColor = this.isTrimColor_(pixelColorIng);
+      rows[y][x] = isTrimColor;
+      cols[x][y] = isTrimColor;
     });
 
     return {rows, cols};
+  }
+
+  isTrimColor_(pixelColorInt) {
+    const pixel = jimp.intToRGBA(pixelColorInt);
+    const trim = jimp.intToRGBA(this.trimColorInt_);
+    return (
+      Math.abs(pixel.r - trim.r) < 20 &&
+      Math.abs(pixel.g - trim.g) < 20 &&
+      Math.abs(pixel.b - trim.b) < 20
+    );
   }
 
   /**
