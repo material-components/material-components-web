@@ -122,13 +122,9 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     /** @private {number} */
     this.closeAnimationEndTimerId_ = 0;
     /** @private {number} */
-    this.selectedTriggerTimerId_ = 0;
-    /** @private {number} */
     this.animationRequestId_ = 0;
     /** @private {!{ width: number, height: number }} */
     this.dimensions_;
-    /** @private {number} */
-    this.itemHeight_;
     /** @private {Corner} */
     this.anchorCorner_ = Corner.TOP_START;
     /** @private {AnchorMargin} */
@@ -136,13 +132,11 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     /** @private {?AutoLayoutMeasurements} */
     this.measures_ = null;
     /** @private {boolean} */
-    this.rememberSelection_ = false;
-    /** @private {boolean} */
     this.quickOpen_ = false;
 
-    // A keyup event on the menu needs to have a corresponding keydown
-    // event on the menu. If the user opens the menu with a keydown event on a
-    // button, the menu will only get the key up event causing buggy behavior with selected elements.
+    // A keyup event on the menu surface needs to have a corresponding keydown
+    // event on the menu surface. If the user opens the menu surface with a keydown event on a
+    // button, the menu surface will only get the key up event causing buggy behavior with selected elements.
     /** @private {boolean} */
     this.keyDownWithinMenu_ = false;
   }
@@ -163,7 +157,6 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
   }
 
   destroy() {
-    clearTimeout(this.selectedTriggerTimerId_);
     clearTimeout(this.openAnimationEndTimerId_);
     clearTimeout(this.closeAnimationEndTimerId_);
     // Cancel any currently running animations.
@@ -174,7 +167,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {!Corner} corner Default anchor corner alignment of top-left menu corner.
+   * @param {!Corner} corner Default anchor corner alignment of top-left menu surface corner.
    */
   setAnchorCorner(corner) {
     this.anchorCorner_ = corner;
@@ -202,7 +195,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
   focusOnOpen_(focusIndex) {
     if (focusIndex === null) {
       this.adapter_.focus();
-      // If that doesn't work, focus first item instead.
+      // If that doesn't work, focus first focusable element instead.
       if (!this.adapter_.isFocused()) {
         this.adapter_.focusElementAtIndex(0);
       }
@@ -223,7 +216,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
       return;
     }
 
-    this.close(evt);
+    this.close();
   };
 
   /**
@@ -246,13 +239,13 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     const isArrowDown = key === 'ArrowDown' || keyCode === 40;
     const isSpace = key === 'Space' || keyCode === 32;
     const isEnter = key === 'Enter' || keyCode === 13;
-    // The menu needs to know if the keydown event was triggered on the menu
+    // The menu surface needs to know if the keydown event was triggered on the menu surface.
     this.keyDownWithinMenu_ = isEnter || isSpace;
 
     const focusedItemIndex = this.adapter_.getFocusedElementIndex();
     const lastItemIndex = this.adapter_.getNumberFocusableElements() - 1;
 
-    // Ensure Arrow{Up,Down} and space do not cause inadvertent scrolling
+    // Ensure Arrow keys and space do not cause inadvertent scrolling.
     if (isArrowUp || isArrowDown || isArrowLeft || isArrowRight || isTab) {
       evt.preventDefault();
     }
@@ -313,7 +306,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
   }
 
   /**
-   * @return {AutoLayoutMeasurements} Measurements used to position menu popup.
+   * @return {AutoLayoutMeasurements} Measurements used to position menu surface popup.
    */
   getAutoLayoutMeasurements_() {
     const anchorRect = this.adapter_.getAnchorDimensions();
@@ -335,7 +328,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
   }
 
   /**
-   * Computes the corner of the anchor from which to animate and position the menu.
+   * Computes the corner of the anchor from which to animate and position the menu surface.
    * @return {Corner}
    * @private
    */
@@ -379,8 +372,8 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {Corner} corner Origin corner of the menu.
-   * @return {number} Horizontal offset of menu origin corner from corresponding anchor corner.
+   * @param {Corner} corner Origin corner of the menu surface.
+   * @return {number} Horizontal offset of menu surface origin corner from corresponding anchor corner.
    * @private
    */
   getHorizontalOriginOffset_(corner) {
@@ -399,8 +392,8 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {Corner} corner Origin corner of the menu.
-   * @return {number} Vertical offset of menu origin corner from corresponding anchor corner.
+   * @param {Corner} corner Origin corner of the menu surface.
+   * @return {number} Vertical offset of menu surface origin corner from corresponding anchor corner.
    * @private
    */
   getVerticalOriginOffset_(corner) {
@@ -413,14 +406,14 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
 
     if (isBottomAligned) {
       y = avoidVerticalOverlap ? anchorHeight - this.anchorMargin_.top : -this.anchorMargin_.bottom;
-      // adjust for when menu can overlap anchor, but too tall to be aligned to bottom
+      // adjust for when menu surface can overlap anchor, but too tall to be aligned to bottom
       // anchor corner. Bottom margin is ignored in such cases.
       if (canOverlapVertically && surfaceHeight > viewportDistance.top + anchorHeight) {
         y = -(Math.min(surfaceHeight, viewport.height - MARGIN_TO_EDGE) - (viewportDistance.top + anchorHeight));
       }
     } else {
       y = avoidVerticalOverlap ? (anchorHeight + this.anchorMargin_.bottom) : this.anchorMargin_.top;
-      // adjust for when menu can overlap anchor, but too tall to be aligned to top
+      // adjust for when menu surface can overlap anchor, but too tall to be aligned to top
       // anchor corners. Top margin is ignored in that case.
       if (canOverlapVertically && surfaceHeight > viewportDistance.bottom + anchorHeight) {
         y = -(Math.min(surfaceHeight, viewport.height - MARGIN_TO_EDGE) - (viewportDistance.bottom + anchorHeight));
@@ -430,8 +423,8 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {Corner} corner Origin corner of the menu.
-   * @return {number} Maximum height of the menu, based on available space. 0 indicates should not be set.
+   * @param {Corner} corner Origin corner of the menu surface.
+   * @return {number} Maximum height of the menu surface, based on available space. 0 indicates should not be set.
    * @private
    */
   getMenuSurfaceMaxHeight_(corner) {
@@ -494,7 +487,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
   }
 
   /**
-   * Open the menu.
+   * Open the menu surface.
    * @param {{focusIndex: ?number}=} options
    */
   open({focusIndex = null} = {}) {

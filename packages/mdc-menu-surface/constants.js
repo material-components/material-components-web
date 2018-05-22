@@ -35,11 +35,11 @@ const strings = {
 const numbers = {
   // Amount of time to wait before triggering a selected event on the menu-surface. Note that this time
   // will most likely be bumped up once interactive lists are supported to allow for the ripple to
-  // animate before closing the temporary-surface
+  // animate before closing the menu-surface
   SELECTED_TRIGGER_DELAY: 50,
-  // Total duration of temporary-surface open animation.
+  // Total duration of menu-surface open animation.
   TRANSITION_OPEN_DURATION: 120,
-  // Total duration of temporary-surface close animation.
+  // Total duration of menu-surface close animation.
   TRANSITION_CLOSE_DURATION: 75,
   // Margin left to the edge of the viewport when menu-surface is at maximum possible height.
   MARGIN_TO_EDGE: 32,

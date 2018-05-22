@@ -17,6 +17,7 @@
 @import "@material/animation/variables";
 @import "@material/elevation/mixins";
 @import "@material/theme/mixins";
+@import "./mixins";
 
 $mdc-menu-surface-fade-in-duration: .03s;
 $mdc-menu-surface-fade-out-duration: .075s;
@@ -25,7 +26,7 @@ $mdc-menu-surface-scale-duration: .12s;
 // postcss-bem-linter: define menu-surface
 .mdc-menu-surface {
   @include mdc-elevation(2);
-  @include mdc-menu-surface-color(surface);
+  @include mdc-menu-surface-background-color(surface);
   @include mdc-menu-surface-ink-color(on-surface);
 
   display: none;
