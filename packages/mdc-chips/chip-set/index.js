@@ -70,7 +70,7 @@ class MDCChipSet extends MDCComponent {
   }
 
   /**
-   * Creates a new chip in the chip set with the given chip element.
+   * Adds a new chip object to the chip set from the given chip element.
    * @param {!Element} chipEl
    */
   addChip(chipEl) {
