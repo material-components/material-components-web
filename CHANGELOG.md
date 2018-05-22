@@ -1,3 +1,21 @@
+<a name="0.35.2"></a>
+## [0.35.2](https://github.com/material-components/material-components-web/compare/v0.35.1...v0.35.2) (2018-05-21)
+
+
+### Bug Fixes
+
+* **dialog:** Dialog scroll-lock fix when calling destroy immediately after close ([#2120](https://github.com/material-components/material-components-web/issues/2120)) ([c961a5d](https://github.com/material-components/material-components-web/commit/c961a5d))
+* **floating-label:** Add [@noflip](https://github.com/noflip) annotation to floating label ([#2696](https://github.com/material-components/material-components-web/issues/2696)) ([d9d695a](https://github.com/material-components/material-components-web/commit/d9d695a))
+* **floating-label:** Import RTL in mixin since it is being used ([#2743](https://github.com/material-components/material-components-web/issues/2743)) ([f75df26](https://github.com/material-components/material-components-web/commit/f75df26))
+* **infrastructure:** Ensure grid pattern renders correctly in IE ([#2729](https://github.com/material-components/material-components-web/issues/2729)) ([34f73e8](https://github.com/material-components/material-components-web/commit/34f73e8))
+* **switch:** Fix switch RTL ([#2645](https://github.com/material-components/material-components-web/issues/2645)) ([e5ad26a](https://github.com/material-components/material-components-web/commit/e5ad26a))
+* **text-field:** Add missing import to _mixins file ([#2740](https://github.com/material-components/material-components-web/issues/2740)) ([581e8f4](https://github.com/material-components/material-components-web/commit/581e8f4))
+* **text-field:** Made handleValidationAttributeMutation method public. ([#2779](https://github.com/material-components/material-components-web/issues/2779)) ([1949989](https://github.com/material-components/material-components-web/commit/1949989))
+* **top-app-bar:** Fix JS error when navigation icon is not present. ([#2751](https://github.com/material-components/material-components-web/issues/2751)) ([7643f3b](https://github.com/material-components/material-components-web/commit/7643f3b))
+* **top-app-bar:** Replace margin-top in media query with padding-top ([#2704](https://github.com/material-components/material-components-web/issues/2704)) ([88c78b3](https://github.com/material-components/material-components-web/commit/88c78b3))
+
+
+
 <a name="0.35.1"></a>
 ## [0.35.1](https://github.com/material-components/material-components-web/compare/v0.35.0...v0.35.1) (2018-05-03)
 
@@ -99,7 +117,7 @@
 * **chips:** isSelected method added to MDCChip, and related methods added to MDCChipFoundation and MDCChipSetFoundation.
 * **floating-label:** Removes the (undocumented) mdc-floating-label-transition function
 * **select:** Removes the mdc-select__label class and uses mdc-floating-label for the floating label.
-* **select:** Removes the mdc-select__bottom-line class and uses the mdc-line-ripple instead. 
+* **select:** Removes the mdc-select__bottom-line class and uses the mdc-line-ripple instead.
 
 
 <a name="0.34.1"></a>
