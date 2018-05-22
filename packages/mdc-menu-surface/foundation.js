@@ -43,7 +43,7 @@ import MDCFoundation from '@material/base/foundation';
 import {MDCMenuSurfaceAdapter} from './adapter';
 import {cssClasses, strings, numbers, Corner, CornerBit} from './constants';
 
-const ELEMENTS_SPACE_IS_ALLOWED = ['index', 'button', 'textarea'];
+const ELEMENTS_SPACE_IS_ALLOWED_IN = ['index', 'button', 'textarea'];
 
 /**
  * @extends {MDCFoundation<!MDCMenuSurfaceAdapter>}
@@ -205,7 +205,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
   }
 
   /**
-   * Handle clicks and cancel the menu if not within menu-surface element.
+   * Handle clicks and close if not within menu-surface element.
    * @param {!Event} evt
    * @private
    */
@@ -248,9 +248,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     // Ensure Arrow keys and space do not cause inadvertent scrolling.
     if (isArrowUp || isArrowDown || isArrowLeft || isArrowRight || isTab) {
       evt.preventDefault();
-    }
-
-    if (isSpace && this.willSpaceKeyCauseScroll_(evt)) {
+    } else if (isSpace && this.isSpaceKeyAllowedOnTarget_(evt)) {
       evt.preventDefault();
     }
 
@@ -272,15 +270,15 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
   }
 
   /**
-   * Returns true if the space key will cause a scroll event on the body.
+   * Returns true if the event will cause a scroll event.
    * @param evt
    * @return {boolean}
    * @private
    */
-  willSpaceKeyCauseScroll_(evt) {
+  isSpaceKeyAllowedOnTarget_(evt) {
     const tagName = ('' + evt.target.tagName).toLowerCase();
 
-    return ELEMENTS_SPACE_IS_ALLOWED.indexOf(tagName) === -1;
+    return ELEMENTS_SPACE_IS_ALLOWED_IN.indexOf(tagName) === -1;
   }
 
   /**

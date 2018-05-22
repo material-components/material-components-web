@@ -18,7 +18,7 @@ path: /catalog/menus/
 
 The MDC Menu Surface component is a reusable surface that appears above the content of the 
 page and can be positioned adjacent to an element. Menu Surfaces require Javascript to properly position 
-itself when opening.
+themselves when opening.
 
 ## Design & API Documentation
 
@@ -43,6 +43,7 @@ npm install @material/menu-surface
 
 ```html
 <div class="mdc-menu-surface">
+...
 </div>
 ```
 

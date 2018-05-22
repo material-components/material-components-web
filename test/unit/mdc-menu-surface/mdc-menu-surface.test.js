@@ -70,7 +70,7 @@ test('show with a focus index opens the menu surface', () => {
   assert.isOk(component.open);
 });
 
-test('hide closes the menu', () => {
+test('hide closes the menu surface', () => {
   const {component} = setupTest();
   component.open = true;
   component.hide();
@@ -220,7 +220,7 @@ test('adapter#restoreFocus does not restores the focus if never called adapter#s
   document.body.removeChild(root);
 });
 
-test('adapter#isFocused returns whether the menu-surface is focused', () => {
+test('adapter#isFocused returns whether the menu surface is focused', () => {
   const {root, component} = setupTest(true);
   document.body.appendChild(root);
   root.focus();
@@ -228,7 +228,7 @@ test('adapter#isFocused returns whether the menu-surface is focused', () => {
   document.body.removeChild(root);
 });
 
-test('adapter#focus focuses the menu-surface', () => {
+test('adapter#focus focuses the menu surface', () => {
   const {root, component} = setupTest(true);
   document.body.appendChild(root);
   component.getDefaultFoundation().adapter_.focus();
@@ -247,7 +247,7 @@ test('adapter#getFocusedElementIndex returns the index of the focused element', 
   document.body.removeChild(root);
 });
 
-test('adapter#focusElementAtIndex focuses the correct menu-surface element', () => {
+test('adapter#focusElementAtIndex focuses the correct menu surface element', () => {
   const {root, component} = setupTest(true);
   const item1 = root.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[1];
   const item2 = root.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[0];
@@ -265,7 +265,7 @@ test('adapter#focusElementAtIndex does nothing if index is greater than number o
   assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.focusElementAtIndex(9));
 });
 
-test('adapter#hasAnchor returns true if the menu-surface has an anchor', () => {
+test('adapter#hasAnchor returns true if the menu surface has an anchor', () => {
   const anchor = bel`<div class="mdc-menu-surface--anchor"></div>`;
   const {root, component} = setupTest(true);
   anchor.appendChild(root);
@@ -327,7 +327,7 @@ test('adapter#isRtl returns false for implicit LTR documents', () => {
   document.body.removeChild(anchor);
 });
 
-test('adapter#setTransformOrigin sets the correct transform origin on the menu element', () => {
+test('adapter#setTransformOrigin sets the correct transform origin on the menu surface element', () => {
   const {root, component} = setupTest();
   // Write expected value and read canonical value from browser.
   root.style.webkitTransformOrigin = root.style.transformOrigin = 'left top 10px';
@@ -339,7 +339,7 @@ test('adapter#setTransformOrigin sets the correct transform origin on the menu e
   assert.equal(root.style.getPropertyValue(`${getTransformPropertyName(window)}-origin`), expected);
 });
 
-test('adapter#setPosition sets the correct position on the menu element', () => {
+test('adapter#setPosition sets the correct position on the menu surface element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.setPosition({top: '10px', left: '11px'});
   assert.equal(root.style.top, '10px');
@@ -349,7 +349,7 @@ test('adapter#setPosition sets the correct position on the menu element', () => 
   assert.equal(root.style.right, '11px');
 });
 
-test('adapter#setMaxHeight sets the maxHeight style on the menu element', () => {
+test('adapter#setMaxHeight sets the maxHeight style on the menu surface element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.setMaxHeight('100px');
   assert.equal(root.style.maxHeight, '100px');

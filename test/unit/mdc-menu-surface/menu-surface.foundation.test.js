@@ -46,19 +46,19 @@ const wideCenter = {height: 20, width: 150, top: 490, bottom: 510, left: 450, ri
 const wideTopLeft = {height: 20, width: 150, top: 20, bottom: 40, left: 20, right: 170};
 
 /**
- * Initializes viewport, anchor and menu dimensions. Viewport is 1000x1000. Default menu-surface size is 100x200.
+ * Initializes viewport, anchor and menu surface dimensions. Viewport is 1000x1000. Default surface size is 100x200.
  * @param {Object} mockAdapter Mock double for the adapter.
  * @param {{height:number, width: number, top: number, bottom: number, left: number, right: number}} anchorDimensions
  *   Approximate viewport corner where anchor is located.
  * @param {boolean=} isRtl Indicates whether layout is RTL.
- * @param {number=} menuHeight Optional height of the menu-surface.
+ * @param {number=} menuSurfaceHeight Optional height of the menu surface.
  */
-function initAnchorLayout(mockAdapter, anchorDimensions, isRtl = false, menuHeight = 200) {
+function initAnchorLayout(mockAdapter, anchorDimensions, isRtl = false, menuSurfaceHeight = 200) {
   td.when(mockAdapter.hasAnchor()).thenReturn(true);
   td.when(mockAdapter.getWindowDimensions()).thenReturn({height: 1000, width: 1000});
   td.when(mockAdapter.getAnchorDimensions()).thenReturn(anchorDimensions);
   td.when(mockAdapter.isRtl()).thenReturn(isRtl);
-  td.when(mockAdapter.getInnerDimensions()).thenReturn({height: menuHeight, width: 100});
+  td.when(mockAdapter.getInnerDimensions()).thenReturn({height: menuSurfaceHeight, width: 100});
 }
 
 function testFoundation(desc, runTests) {
@@ -121,7 +121,7 @@ testFoundation('#open does not add the animation class to start an animation whe
     td.verify(mockAdapter.removeClass(cssClasses.ANIMATING_OPEN), {times: 0});
   });
 
-testFoundation('#open adds the open class to the menu', ({foundation, mockAdapter, mockRaf}) => {
+testFoundation('#open adds the open class to the menu surface', ({foundation, mockAdapter, mockRaf}) => {
   foundation.open();
   mockRaf.flush();
   mockRaf.flush();
@@ -140,7 +140,7 @@ testFoundation('#open removes the animation class at the end of the animation',
     td.verify(mockAdapter.removeClass(cssClasses.ANIMATING_OPEN));
   });
 
-testFoundation('#open focuses the menu after open.', ({foundation, mockAdapter, mockRaf}) => {
+testFoundation('#open focuses the menu surface after open.', ({foundation, mockAdapter, mockRaf}) => {
   foundation.open();
   mockRaf.flush();
   td.verify(mockAdapter.focus());
@@ -153,7 +153,7 @@ testFoundation('#open with focusIndex focuses the element at the index when the 
     td.verify(mockAdapter.focusElementAtIndex(1));
   });
 
-testFoundation('#open on a focused menu-surface does not focus at index 0', ({foundation, mockAdapter, mockRaf}) => {
+testFoundation('#open on a focused menu surface does not focus at index 0', ({foundation, mockAdapter, mockRaf}) => {
   td.when(mockAdapter.isFocused()).thenReturn(true);
 
   foundation.open();
@@ -318,7 +318,7 @@ testFoundation('#open from small anchor in left bottom of viewport, BOTTOM_END a
     td.verify(mockAdapter.setPosition({left: '40px', bottom: '20px'}));
   });
 
-testFoundation('#open tall menu from small anchor in left above middle of viewport, BOTTOM_START anchor corner, LTR',
+testFoundation('#open tall surface from small anchor in left above middle of viewport, BOTTOM_START anchor corner, LTR',
   ({foundation, mockAdapter, mockRaf}) => {
     initAnchorLayout(mockAdapter, smallAboveMiddleLeft, false, 700);
     foundation.setAnchorCorner(Corner.BOTTOM_START);
@@ -329,7 +329,7 @@ testFoundation('#open tall menu from small anchor in left above middle of viewpo
     td.verify(mockAdapter.setMaxHeight('580px'));
   });
 
-testFoundation('#open tall menu from small anchor in left above middle of viewport, TOP_START anchor corner, LTR',
+testFoundation('#open tall surface from small anchor in left above middle of viewport, TOP_START anchor corner, LTR',
   ({foundation, mockAdapter, mockRaf}) => {
     initAnchorLayout(mockAdapter, smallAboveMiddleLeft, false, 700);
     foundation.setAnchorCorner(Corner.TOP_START);
@@ -339,7 +339,7 @@ testFoundation('#open tall menu from small anchor in left above middle of viewpo
     td.verify(mockAdapter.setPosition({left: '0', top: '-100px'}));
   });
 
-testFoundation('#open tall menu from small anchor in left below middle of viewport, BOTTOM_START anchor corner, LTR',
+testFoundation('#open tall surface from small anchor in left below middle of viewport, BOTTOM_START anchor corner, LTR',
   ({foundation, mockAdapter, mockRaf}) => {
     initAnchorLayout(mockAdapter, smallBelowMiddleLeft, false, 700);
     foundation.setAnchorCorner(Corner.BOTTOM_START);
@@ -350,7 +350,7 @@ testFoundation('#open tall menu from small anchor in left below middle of viewpo
     td.verify(mockAdapter.setMaxHeight('600px'));
   });
 
-testFoundation('#open tall menu from small anchor in left above middle of viewport, TOP_START anchor corner, LTR',
+testFoundation('#open tall surface from small anchor in left above middle of viewport, TOP_START anchor corner, LTR',
   ({foundation, mockAdapter, mockRaf}) => {
     initAnchorLayout(mockAdapter, smallBelowMiddleLeft, false, 700);
     foundation.setAnchorCorner(Corner.TOP_START);
@@ -410,7 +410,7 @@ testFoundation('#open from wide anchor top left of viewport, TOP_END anchor corn
     td.verify(mockAdapter.setPosition({left: '150px', top: '0'}));
   });
 
-testFoundation('#open anchors the menu to the bottom left in LTR when not close to the bottom edge with margin',
+testFoundation('#open anchors the surface to the bottom left in LTR when not close to the bottom edge with margin',
   ({foundation, mockAdapter, mockRaf}) => {
     initAnchorLayout(mockAdapter, smallTopLeft);
     foundation.setAnchorCorner(Corner.BOTTOM_START);
@@ -421,7 +421,7 @@ testFoundation('#open anchors the menu to the bottom left in LTR when not close 
     td.verify(mockAdapter.setPosition({left: '7px', top: '30px'}));
   });
 
-testFoundation('#open anchors the menu to the bottom left in LTR when close to the bottom edge with margin',
+testFoundation('#open anchors the surface to the bottom left in LTR when close to the bottom edge with margin',
   ({foundation, mockAdapter, mockRaf}) => {
     initAnchorLayout(mockAdapter, smallBottomLeft);
     foundation.setAnchorCorner(Corner.BOTTOM_START);
@@ -432,7 +432,7 @@ testFoundation('#open anchors the menu to the bottom left in LTR when close to t
     td.verify(mockAdapter.setPosition({left: '7px', bottom: '15px'}));
   });
 
-testFoundation('#open anchors the menu to the bottom left in RTL when close to the bottom and right edge with margin',
+testFoundation('#open anchors the surface to the bottom left in RTL when close to the bottom & right edge with margin',
   ({foundation, mockAdapter, mockRaf}) => {
     initAnchorLayout(mockAdapter, smallBottomRight, true);
     foundation.setAnchorCorner(Corner.BOTTOM_START);
@@ -455,7 +455,7 @@ testFoundation('#close does not add animation class if quickOpen is set to true'
   td.verify(mockAdapter.removeClass(cssClasses.ANIMATING_CLOSED), {times: 0});
 });
 
-testFoundation('#close removes the open class from the menu', ({foundation, mockAdapter, mockRaf}) => {
+testFoundation('#close removes the open class from the menu surface', ({foundation, mockAdapter, mockRaf}) => {
   foundation.close();
   mockRaf.flush();
   mockRaf.flush();
@@ -486,21 +486,21 @@ testFoundation('#close emits the close event at the end of the animation',
     td.verify(mockAdapter.notifyClose());
   });
 
-test('#isOpen returns true when the menu is open', () => {
+test('#isOpen returns true when the menu surface is open', () => {
   const {foundation} = setupTest();
 
   foundation.open();
   assert.isOk(foundation.isOpen());
 });
 
-test('#isOpen returns false when the menu is closed', () => {
+test('#isOpen returns false when the menu surface is closed', () => {
   const {foundation} = setupTest();
 
   foundation.close();
   assert.isNotOk(foundation.isOpen());
 });
 
-test('#isOpen returns true when the menu is initiated with the open class present', () => {
+test('#isOpen returns true when the menu surface is initiated with the open class present', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.hasClass(cssClasses.OPEN)).thenReturn(true);
 
@@ -508,7 +508,7 @@ test('#isOpen returns true when the menu is initiated with the open class presen
   assert.isOk(foundation.isOpen());
 });
 
-test('#isOpen returns false when the menu is initiated without the open class present', () => {
+test('#isOpen returns false when the menu surface is initiated without the open class present', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.hasClass(cssClasses.OPEN)).thenReturn(false);
 
@@ -516,7 +516,7 @@ test('#isOpen returns false when the menu is initiated without the open class pr
   assert.isNotOk(foundation.isOpen());
 });
 
-test('on escape keyup closes the menu and sends close event', () => {
+test('on escape keyup closes the menu surface and sends close event', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
@@ -781,7 +781,7 @@ test('on space, keydown prevents default on the event', () => {
   clock.uninstall();
 });
 
-test('on document click closes the menu-surface', () => {
+test('on document click closes the menu surface', () => {
   const {foundation, mockAdapter} = setupTest();
   const mockRaf = createMockRaf();
 
@@ -811,7 +811,7 @@ test('on document click closes the menu-surface', () => {
   mockRaf.restore();
 });
 
-test('on menu-surface click does not emit close', () => {
+test('on menu surface click does not emit close', () => {
   const {foundation, mockAdapter} = setupTest();
   const mockRaf = createMockRaf();
   const mockEvt = {
