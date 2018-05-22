@@ -99,7 +99,7 @@
     <main>
       <div class="mdc-toolbar-fixed-adjust"></div>
       <section class="hero">
-        <div class="mdc-menu-surface mdc-menu-surface--open">
+        <div class="mdc-menu-surface mdc-menu-surface--open" role="menu">
           <ul class="mdc-list">
             <li class="mdc-list-item" role="menuitem">Back</li>
             <li class="mdc-list-item" role="menuitem">Forward</li>
@@ -120,7 +120,7 @@
             </button>
 
             <div class="mdc-menu-surface" tabindex="-1" id="demo-menu">
-              <ul class="mdc-image-list standard-image-list demo-menu-surface">
+              <ul class="mdc-image-list standard-image-list demo-menu-surface" role="menu">
                 <li class="mdc-image-list__item" tabindex="0">
                   <div class="mdc-image-list__image-aspect-container">
                     <img class="mdc-image-list__image" src="images/photos/3x2/1.jpg">
@@ -202,7 +202,7 @@
             <p>
               Anchor Margins:
               <div id="margin-inputs" class="margin-inputs">
-                <label>T: <input type="text" id="top-margin" value="0" size="3" max-length="3"></label>
+                <label>T: <input type="text" id="top-margin" value="0" size="3"></label>
                 <label>B: <input type="text" id="bottom-margin" value="0" size="3"></label>
                 <label>L: <input type="text" id="left-margin" value="0" size="3"></label>
                 <label>R: <input type="text" id="right-margin" value="0" size="3"></label>
@@ -214,32 +214,6 @@
             <div>
               <label><input type="checkbox" name="animation"> Disable Open Animation</label>
             </div>
-            <p>
-              <div class="left-column-controls">
-                Menu Surface Sizes:
-                <div>
-                  <label><input type="radio" name="menu-length" value="small" checked> Regular menu</label>
-                </div>
-                <div>
-                  <label><input type="radio" name="menu-length" value="large"> Large menu</label>
-                </div>
-                <div>
-                  <label><input type="radio" name="menu-length" value="tall"> Extra tall menu</label>
-                </div>
-              </div>
-              <div class="right-column-controls">
-                Anchor Widths
-                <div>
-                  <label><input type="radio" name="anchor-width" value="tiny"> Small button</label>
-                </div>
-                <div>
-                  <label><input type="radio" name="anchor-width" value="regular" checked> Comparable to menu</label>
-                </div>
-                <div>
-                  <label><input type="radio" name="anchor-width" value="wide"> Wider than menu</label>
-                </div>
-              </div>
-            </p>
             <hr>
           </div>
         </div>
@@ -336,50 +310,6 @@
             demoWrapper.removeAttribute('dir');
           }
         });
-
-        radios = document.querySelectorAll('input[name="menu-length"]');
-        for (var i = 0; i < radios.length; i++) {
-          radios[i].addEventListener('change', function(evt) {
-            if (evt.target.checked) {
-              switch (evt.target.value) {
-                case "small":
-                  menuEl.classList.remove('demo-menu--long');
-                  menuEl.classList.remove('demo-menu--extra-long');
-                  break;
-                case "large":
-                  menuEl.classList.add('demo-menu--long');
-                  menuEl.classList.remove('demo-menu--extra-long');
-                  break;
-                case "tall":
-                  menuEl.classList.remove('demo-menu--long');
-                  menuEl.classList.add('demo-menu--extra-long');
-                  break;
-              }
-            }
-          });
-        }
-
-        radios = document.querySelectorAll('input[name="anchor-width"]');
-        for (var i = 0; i < radios.length; i++) {
-          radios[i].addEventListener('change', function(evt) {
-            if (evt.target.checked) {
-              switch (evt.target.value) {
-                case "tiny":
-                  menuButtonEl.classList.remove('demo-button--normal');
-                  menuButtonEl.classList.remove('demo-button--long');
-                  break;
-                case "regular":
-                  menuButtonEl.classList.add('demo-button--normal');
-                  menuButtonEl.classList.remove('demo-button--long');
-                  break;
-                case "wide":
-                  menuButtonEl.classList.remove('demo-button--normal');
-                  menuButtonEl.classList.add('demo-button--long');
-                  break;
-              }
-            }
-          });
-        }
       });
     </script>
   </body>
