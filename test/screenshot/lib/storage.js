@@ -147,9 +147,9 @@ class UploadableFile {
     destinationParentDirectory,
     destinationRelativeFilePath,
     fileContent,
+    queueIndex,
+    queueLength,
     userAgent = null,
-    queueIndex = 0,
-    queueLength = 1,
   }) {
     /** @type {string} */
     this.destinationParentDirectory = destinationParentDirectory;
