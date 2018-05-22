@@ -19,8 +19,8 @@
 
 $test-trim-color: #abc123; // Value must match `TRIM_COLOR_CSS_VALUE` in `image-cropper.js`
 $test-grid-color: #dddddd;
+$test-fixture-width: 348px;
 $test-button-cell-padding: 10px;
-$test-button-cell-margin: $test-button-cell-padding - 1; // account for 1px border
 $test-button-cell-width: 171px;
 $test-button-cell-height: 71px;
 $test-button-columns: 2;
@@ -29,11 +29,12 @@ $test-button-columns: 2;
   display: flex;
   box-sizing: border-box;
   margin: 0;
-  padding: #{$test-button-cell-margin} 0 100px #{$test-button-cell-margin}; // Extra padding at the bottom ensures that CBT's "chromeless" screenshots don't get cut off
+  padding: 1px 0 100px 1px; // Extra padding at the bottom ensures that CBT's "chromeless" screenshots don't get cut off
 }
 
 .test-main {
   box-sizing: border-box;
+  width: $test-fixture-width;
   border: 1px solid $test-trim-color;
 }
 
@@ -41,15 +42,13 @@ $test-button-columns: 2;
   display: flex;
   flex-wrap: wrap;
   box-sizing: border-box;
-  width: ($test-button-cell-width * $test-button-columns) + ($test-button-cell-margin * ($test-button-columns + 1));
-  padding: 0 #{$test-button-cell-margin} #{$test-button-cell-margin} 0;
 }
 
 .test-cell {
   box-sizing: border-box;
   width: $test-button-cell-width;
   height: $test-button-cell-height;
-  margin: #{$test-button-cell-margin} 0 0 #{$test-button-cell-margin};
+  margin: 1px;
 
   // Ensure that shadows from adjacent components don't overlap
   padding: $test-button-cell-padding;
