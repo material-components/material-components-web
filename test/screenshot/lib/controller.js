@@ -16,7 +16,7 @@
 
 'use strict';
 
-const child_process = require('child_process'); // eslint-disable-line camelcase
+const childProcess = require('child_process');
 const fs = require('mz/fs');
 const glob = require('glob');
 
@@ -87,7 +87,7 @@ class Controller {
     this.baseUploadDir_ = await this.storage_.generateUniqueUploadDir();
 
     if (await this.cliArgs_.shouldBuild()) {
-      child_process.spawnSync('npm', ['run', 'screenshot:build'], {shell: true, stdio: 'inherit'});
+      childProcess.spawnSync('npm', ['run', 'screenshot:build'], {shell: true, stdio: 'inherit'});
     }
   }
 
