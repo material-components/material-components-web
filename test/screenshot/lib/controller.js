@@ -16,9 +16,9 @@
 
 'use strict';
 
+const childProcess = require('child_process');
 const fs = require('mz/fs');
 const glob = require('glob');
-const path = require('path');
 
 const CbtUserAgent = require('./cbt-user-agent');
 const CliArgParser = require('./cli-arg-parser');
@@ -38,34 +38,18 @@ const {Storage, UploadableFile, UploadableTestCase} = require('./storage');
  * 4. Diff captured screenshots against existing golden.json
  */
 class Controller {
-  /**
-   * @param {string} sourceDir Relative path to the local `test/screenshot/` directory, relative to Node's $PWD.
-   */
-  constructor({sourceDir}) {
+  constructor() {
     /**
-     * @type {string}
+     * @type {!CliArgParser}
      * @private
      */
-    this.sourceDir_ = sourceDir;
-
-    /**
-     * @type {string}
-     * @private
-     */
-    this.goldenJsonFilePath_ = path.join(this.sourceDir_, 'golden.json');
+    this.cliArgs_ = new CliArgParser();
 
     /**
      * @type {!Storage}
      * @private
      */
     this.storage_ = new Storage();
-
-    /**
-     * Unique timestamped directory path to prevent collisions between developers.
-     * @type {?string}
-     * @private
-     */
-    this.baseUploadDir_ = null;
 
     /**
      * @type {!ImageCache}
@@ -84,11 +68,27 @@ class Controller {
      * @private
      */
     this.imageDiffer_ = new ImageDiffer({imageCache: this.imageCache_});
+
+    /**
+     * @type {!SnapshotStore}
+     * @private
+     */
+    this.snapshotStore_ = new SnapshotStore();
+
+    /**
+     * Unique timestamped directory path to prevent collisions between developers.
+     * @type {?string}
+     * @private
+     */
+    this.baseUploadDir_ = null;
   }
 
   async initialize() {
     this.baseUploadDir_ = await this.storage_.generateUniqueUploadDir();
-    this.cliArgs_ = new CliArgParser();
+
+    if (await this.cliArgs_.shouldBuild()) {
+      childProcess.spawnSync('npm', ['run', 'screenshot:build'], {shell: true, stdio: 'inherit'});
+    }
   }
 
   /**
@@ -102,7 +102,7 @@ class Controller {
      * Relative paths of all asset files (HTML, CSS, JS) that will be uploaded.
      * @type {!Array<string>}
      */
-    const assetFileRelativePaths = glob.sync('**/*', {cwd: this.sourceDir_, nodir: true});
+    const assetFileRelativePaths = glob.sync('**/*', {cwd: this.cliArgs_.testDir, nodir: true});
 
     /** @type {!Array<!Promise<!UploadableFile>>} */
     const uploadPromises = assetFileRelativePaths.map((assetFileRelativePath) => {
@@ -129,7 +129,7 @@ class Controller {
     const assetFile = new UploadableFile({
       destinationParentDirectory: this.baseUploadDir_,
       destinationRelativeFilePath: assetFileRelativePath,
-      fileContent: await fs.readFile(`${this.sourceDir_}/${assetFileRelativePath}`),
+      fileContent: await fs.readFile(`${this.cliArgs_.testDir}/${assetFileRelativePath}`),
     });
 
     return this.storage_.uploadFile(assetFile)
@@ -272,15 +272,14 @@ class Controller {
   }
 
   /**
-   * Writes the given `testCases` to a `golden.json` file in `sourceDir_`.
+   * Writes the given `testCases` to a `golden.json` file.
    * If the file already exists, it will be overwritten.
    * @param {!Array<!UploadableTestCase>} testCases
-   * @param {string} diffReportUrl
    * @return {!Promise<!Array<!UploadableTestCase>>}
    */
-  async updateGoldenJson({testCases, diffReportUrl}) {
-    const snapshotStore = await SnapshotStore.fromTestCases(testCases);
-    await snapshotStore.writeToDisk({jsonFilePath: this.goldenJsonFilePath_, diffReportUrl});
+  async updateGoldenJson({testCases}) {
+    const jsonData = await this.snapshotStore_.fromTestCases(testCases);
+    await this.snapshotStore_.writeToDisk(jsonData);
     return testCases;
   }
 
@@ -291,8 +290,8 @@ class Controller {
   async diffGoldenJson(testCases) {
     /** @type {!Array<!ImageDiffJson>} */
     const diffs = await this.imageDiffer_.compareAllPages({
-      actualStore: await SnapshotStore.fromTestCases(testCases),
-      expectedStore: await SnapshotStore.fromMaster(this.goldenJsonFilePath_),
+      actualSuite: await this.snapshotStore_.fromTestCases(testCases),
+      expectedSuite: await this.snapshotStore_.fromDiffBase(),
     });
 
     return Promise.all(diffs.map((diff) => this.uploadOneDiffImage_(diff)))

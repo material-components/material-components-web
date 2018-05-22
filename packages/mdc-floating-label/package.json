@@ -1,7 +1,7 @@
 {
   "name": "@material/floating-label",
   "description": "The Material Components for the web floating-label component",
-  "version": "0.35.0",
+  "version": "0.35.2",
   "license": "Apache-2.0",
   "keywords": [
     "material components",
