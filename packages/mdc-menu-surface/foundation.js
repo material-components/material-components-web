@@ -95,7 +95,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
       saveFocus: () => {},
       restoreFocus: () => {},
       getNumberFocusableElements: () => 0,
-      getFocusedElementIndex: () => () => 0,
+      getFocusedElementIndex: () => 0,
       focusElementAtIndex: () => {},
       getInnerDimensions: () => ({}),
       getAnchorDimensions: () => ({}),
