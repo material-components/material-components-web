@@ -133,12 +133,13 @@ class ImageCropper {
   }
 
   isTrimColor_(pixelColorInt) {
+    const MIN_CHANNEL_DIFF = 20;
     const pixel = jimp.intToRGBA(pixelColorInt);
     const trim = jimp.intToRGBA(this.trimColorInt_);
     return (
-      Math.abs(pixel.r - trim.r) < 20 &&
-      Math.abs(pixel.g - trim.g) < 20 &&
-      Math.abs(pixel.b - trim.b) < 20
+      Math.abs(pixel.r - trim.r) < MIN_CHANNEL_DIFF &&
+      Math.abs(pixel.g - trim.g) < MIN_CHANNEL_DIFF &&
+      Math.abs(pixel.b - trim.b) < MIN_CHANNEL_DIFF
     );
   }
 
