@@ -25,10 +25,10 @@ const CbtUserAgent = require('./cbt-user-agent');
 const API_PARALLEL_REQUEST_LIMIT = 5;
 
 /** How long to wait between polling the API for status changes. */
-const API_POLL_INTERVAL_MS = seconds(5);
+const API_POLL_INTERVAL_MS = 5 * 1000;
 
 /** How long to wait for a single URL to be captured in all browsers. */
-const API_MAX_WAIT_MS = minutes(10);
+const API_MAX_WAIT_MS = 10 * 1000 * 60;
 
 /** Map of URLs to `Progress` objects. */
 const progressMap = new Map();
@@ -198,14 +198,6 @@ async function sleep(ms) {
   return new Promise((resolve) => {
     setTimeout(() => resolve(), ms);
   });
-}
-
-function seconds(seconds) {
-  return seconds * 1000;
-}
-
-function minutes(minutes) {
-  return minutes * 1000 * 60;
 }
 
 function millisToSeconds(millis) {
