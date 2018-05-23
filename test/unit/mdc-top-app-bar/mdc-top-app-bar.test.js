@@ -26,6 +26,8 @@ import MDCTopAppBarFoundation from '../../../packages/mdc-top-app-bar/foundation
 import MDCFixedTopAppBarFoundation from '../../../packages/mdc-top-app-bar/fixed/foundation';
 import MDCShortTopAppBarFoundation from '../../../packages/mdc-top-app-bar/short/foundation';
 
+const MENU_ICONS_COUNT = 3;
+
 function getFixture(removeIcon) {
   const html = bel`
     <div>
@@ -66,11 +68,6 @@ function getFixture(removeIcon) {
   return html;
 }
 
-function getIconsCount(root) {
-  const selector = strings.ACTION_ITEM_SELECTOR + ',' + strings.NAVIGATION_ICON_SELECTOR;
-  return root.querySelectorAll(selector).length;
-}
-
 class FakeRipple {
   constructor(root) {
     this.root = root;
@@ -96,20 +93,19 @@ test('attachTo initializes and returns an MDCTopAppBar instance', () => {
 
 test('constructor instantiates icon ripples for all icons', () => {
   const rippleFactory = td.function();
-  td.when(rippleFactory(td.matchers.anything())).thenReturn((el) => new FakeRipple(el));
-  const {root} = setupTest(/** removeIcon */ false, rippleFactory);
+  // Including navigation icon.
+  const totalIcons = MENU_ICONS_COUNT + 1;
 
-  const totalIcons = getIconsCount(root);
-  td.verify(rippleFactory(td.matchers.anything()), {times: totalIcons});
+  td.when(rippleFactory(td.matchers.anything()), {times: totalIcons}).thenReturn((el) => new FakeRipple(el));
+  setupTest(/** removeIcon */ false, rippleFactory);
 });
 
 test('constructor does not instantiate ripple for nav icon when not present', () => {
   const rippleFactory = td.function();
-  td.when(rippleFactory(td.matchers.anything())).thenReturn((el) => new FakeRipple(el));
-  const {root} = setupTest(/** removeIcon */ true, rippleFactory);
+  const totalIcons = MENU_ICONS_COUNT;
 
-  const totalIcons = getIconsCount(root);
-  td.verify(rippleFactory(td.matchers.anything()), {times: totalIcons});
+  td.when(rippleFactory(td.matchers.anything()), {times: totalIcons}).thenReturn((el) => new FakeRipple(el));
+  setupTest(/** removeIcon */ true, rippleFactory);
 });
 
 test('destroy destroys icon ripples', () => {
