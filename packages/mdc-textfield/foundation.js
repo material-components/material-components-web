@@ -123,7 +123,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     /** @private {function(!Event): undefined} */
     this.textFieldInteractionHandler_ = () => this.handleTextFieldInteraction();
     /** @private {function(!Array): undefined} */
-    this.validationAttributeChangeHandler_ = (mutations) => this.handleValidationAttributeMutation_(mutations);
+    this.validationAttributeChangeHandler_ = (mutations) => this.handleValidationAttributeMutation(mutations);
     /** @private {!MutationObserver} */
     this.validationObserver_;
   }
@@ -179,10 +179,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
 
   /**
    * Handles validation attribute changes
-   * @param {Array<MutationRecord>} mutationsList
-   * @private
+   * @param {!Array<MutationRecord>} mutationsList
    */
-  handleValidationAttributeMutation_(mutationsList) {
+  handleValidationAttributeMutation(mutationsList) {
     mutationsList.some((mutation) => {
       if (VALIDATION_ATTR_WHITELIST.indexOf(mutation.attributeName) > -1) {
         this.styleValidity_(true);

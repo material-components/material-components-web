@@ -42,6 +42,7 @@ class GitRepo {
    * @return {!Promise<void>}
    */
   async fetch(args = []) {
+    console.log('\n\nFetching remote git commits...\n\n');
     return this.repo_.fetch(args);
   }
 
@@ -91,6 +92,22 @@ class GitRepo {
    */
   async getRemoteNames() {
     return (await this.repo_.getRemotes()).map((remote) => remote.name);
+  }
+
+  /**
+   * @return {!Promise<!StatusSummary>}
+   */
+  async getStatus() {
+    return this.repo_.status();
+  }
+
+  /**
+   * @param {!Array<string>=} args
+   * @return {!Promise<!Array<!DefaultLogFields>>}
+   */
+  async getLog(args = []) {
+    const logEntries = await this.repo_.log([...args]);
+    return logEntries.all.concat(); // convert TypeScript ReadonlyArray to mutable Array
   }
 
   /**
