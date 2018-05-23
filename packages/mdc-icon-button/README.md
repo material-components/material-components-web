@@ -10,7 +10,7 @@ path: /catalog/buttons/icon-buttons/
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
-     href="https://material.io/design/components/buttons.html#toggle-button">
+     href="https://material-components.github.io/material-components-web-catalog/#/component/icon-toggle">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/icon-toggles.png" width="20" alt="Icon buttons screenshot">
   </a>
 </div>-->
@@ -60,6 +60,7 @@ See [MDC Ripple](../mdc-ripple) for details.
 import {MDCRipple} from '@material/ripple';
 
 const iconButtonRipple = new MDCRipple(document.querySelector('.mdc-icon-button'));
+iconButtonRipple.unbounded = true;
 ```
 
 > See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
@@ -98,12 +99,12 @@ Attribute | Description
 --- | ---
 `data-toggle-<TOGGLE STATE>-label` | The value to apply to the element's "aria-label" attribute.
 `data-toggle-<TOGGLE STATE>-content` | The text content to set on the element. Note that if an inner icon is used, the text content will be set on that element instead.
-`data-toggle-<TOGGLE STATE>-class` | A css class to apply to the icon element. The same rules regarding inner icon elements described for `content` apply here as well.
+`data-toggle-<TOGGLE STATE>-class` | A CSS class to apply to the icon element. The same rules regarding inner icon elements described for `content` apply here as well.
 
 ### Icons 
 
 The icon button can be used with a standard icon library or an `svg`. The icon button toggle should only be used with 
-an standard icon library. We recommend you use [Material Icons](https://material.io/icons/) from Google Fonts.
+an standard icon library. We recommend you use [Material Icons](https://material.io/tools/icons) from Google Fonts.
 
 ### Disabled
 
@@ -137,7 +138,6 @@ Mixin | Description
 Property | Value Type | Description
 --- | --- | ---
 `on` | Boolean | Sets the toggle state to the provided `isOn` value.
-`disabled` | Boolean | Sets the icon toggle to the `disabled` state.
 
 ### Events
 
