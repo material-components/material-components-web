@@ -6,7 +6,7 @@ Prevent visual regressions by running screenshot tests on every PR.
 
 ### API credentials
 
-Add the following to your `~/.bash_profile` (Mac) or `~/.bashrc` (Linux):
+Add the following to your `~/.bash_profile` or `~/.bashrc` file:
 
 ```bash
 export CBT_USERNAME='you@example.com'
