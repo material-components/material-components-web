@@ -75,6 +75,14 @@ npm run screenshot:update-goldens -- \
   --mdc-include-browser=chrome
 ```
 
+You can also _exclude_ specific browsers and URLs:
+
+```bash
+npm run screenshot:update-goldens -- \
+  --mdc-exclude-url=mdc-button \
+  --mdc-exclude-browser=edge
+```
+
 These flags are treated as regular expressions, so partial matches are possible. For example:
 
 * `ie@11` matches `desktop_windows_ie@11`
