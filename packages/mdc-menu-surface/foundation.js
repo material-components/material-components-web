@@ -41,7 +41,7 @@ let AutoLayoutMeasurements;
 
 import MDCFoundation from '@material/base/foundation';
 import {MDCMenuSurfaceAdapter} from './adapter';
-import {cssClasses, strings, numbers, Corner, CornerBit} from './constants';
+import {cssClasses, strings, numbers, MenuSurfaceCorner, MenuSurfaceCornerBit} from './constants';
 
 const ELEMENTS_SPACE_IS_ALLOWED_IN = ['index', 'button', 'textarea'];
 
@@ -65,8 +65,8 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
   }
 
   /** @return enum{number} */
-  static get Corner() {
-    return Corner;
+  static get MenuSurfaceCorner() {
+    return MenuSurfaceCorner;
   }
 
   /**
@@ -125,8 +125,8 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     this.animationRequestId_ = 0;
     /** @private {!{ width: number, height: number }} */
     this.dimensions_;
-    /** @private {Corner} */
-    this.anchorCorner_ = Corner.TOP_START;
+    /** @private {MenuSurfaceCorner} */
+    this.anchorCorner_ = MenuSurfaceCorner.TOP_START;
     /** @private {AnchorMargin} */
     this.anchorMargin_ = {top: 0, right: 0, bottom: 0, left: 0};
     /** @private {?AutoLayoutMeasurements} */
@@ -167,7 +167,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {!Corner} corner Default anchor corner alignment of top-left menu surface corner.
+   * @param {!MenuSurfaceCorner} corner Default anchor corner alignment of top-left menu surface corner.
    */
   setAnchorCorner(corner) {
     this.anchorCorner_ = corner;
@@ -327,15 +327,15 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
 
   /**
    * Computes the corner of the anchor from which to animate and position the menu surface.
-   * @return {Corner}
+   * @return {MenuSurfaceCorner}
    * @private
    */
   getOriginCorner_() {
     // Defaults: open from the top left.
-    let corner = Corner.TOP_LEFT;
+    let corner = MenuSurfaceCorner.TOP_LEFT;
 
     const {viewportDistance, anchorHeight, anchorWidth, surfaceHeight, surfaceWidth} = this.measures_;
-    const isBottomAligned = Boolean(this.anchorCorner_ & CornerBit.BOTTOM);
+    const isBottomAligned = Boolean(this.anchorCorner_ & MenuSurfaceCornerBit.BOTTOM);
     const availableTop = isBottomAligned ? viewportDistance.top + anchorHeight + this.anchorMargin_.bottom
       : viewportDistance.top + this.anchorMargin_.top;
     const availableBottom = isBottomAligned ? viewportDistance.bottom - this.anchorMargin_.bottom
@@ -344,12 +344,12 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     const topOverflow = surfaceHeight - availableTop;
     const bottomOverflow = surfaceHeight - availableBottom;
     if (bottomOverflow > 0 && topOverflow < bottomOverflow) {
-      corner |= CornerBit.BOTTOM;
+      corner |= MenuSurfaceCornerBit.BOTTOM;
     }
 
     const isRtl = this.adapter_.isRtl();
-    const isFlipRtl = Boolean(this.anchorCorner_ & CornerBit.FLIP_RTL);
-    const avoidHorizontalOverlap = Boolean(this.anchorCorner_ & CornerBit.RIGHT);
+    const isFlipRtl = Boolean(this.anchorCorner_ & MenuSurfaceCornerBit.FLIP_RTL);
+    const avoidHorizontalOverlap = Boolean(this.anchorCorner_ & MenuSurfaceCornerBit.RIGHT);
     const isAlignedRight = (avoidHorizontalOverlap && !isRtl) ||
       (!avoidHorizontalOverlap && isFlipRtl && isRtl);
     const availableLeft = isAlignedRight ? viewportDistance.left + anchorWidth + this.anchorMargin_.right :
@@ -363,21 +363,21 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     if ((leftOverflow < 0 && isAlignedRight && isRtl) ||
         (avoidHorizontalOverlap && !isAlignedRight && leftOverflow < 0) ||
         (rightOverflow > 0 && leftOverflow < rightOverflow)) {
-      corner |= CornerBit.RIGHT;
+      corner |= MenuSurfaceCornerBit.RIGHT;
     }
 
     return corner;
   }
 
   /**
-   * @param {Corner} corner Origin corner of the menu surface.
+   * @param {MenuSurfaceCorner} corner Origin corner of the menu surface.
    * @return {number} Horizontal offset of menu surface origin corner from corresponding anchor corner.
    * @private
    */
   getHorizontalOriginOffset_(corner) {
     const {anchorWidth} = this.measures_;
-    const isRightAligned = Boolean(corner & CornerBit.RIGHT);
-    const avoidHorizontalOverlap = Boolean(this.anchorCorner_ & CornerBit.RIGHT);
+    const isRightAligned = Boolean(corner & MenuSurfaceCornerBit.RIGHT);
+    const avoidHorizontalOverlap = Boolean(this.anchorCorner_ & MenuSurfaceCornerBit.RIGHT);
     let x = 0;
     if (isRightAligned) {
       const rightOffset = avoidHorizontalOverlap ? anchorWidth - this.anchorMargin_.left : this.anchorMargin_.right;
@@ -390,15 +390,15 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {Corner} corner Origin corner of the menu surface.
+   * @param {MenuSurfaceCorner} corner Origin corner of the menu surface.
    * @return {number} Vertical offset of menu surface origin corner from corresponding anchor corner.
    * @private
    */
   getVerticalOriginOffset_(corner) {
     const {viewport, viewportDistance, anchorHeight, surfaceHeight} = this.measures_;
-    const isBottomAligned = Boolean(corner & CornerBit.BOTTOM);
+    const isBottomAligned = Boolean(corner & MenuSurfaceCornerBit.BOTTOM);
     const {MARGIN_TO_EDGE} = MDCMenuSurfaceFoundation.numbers;
-    const avoidVerticalOverlap = Boolean(this.anchorCorner_ & CornerBit.BOTTOM);
+    const avoidVerticalOverlap = Boolean(this.anchorCorner_ & MenuSurfaceCornerBit.BOTTOM);
     const canOverlapVertically = !avoidVerticalOverlap;
     let y = 0;
 
@@ -421,17 +421,17 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {Corner} corner Origin corner of the menu surface.
+   * @param {MenuSurfaceCorner} corner Origin corner of the menu surface.
    * @return {number} Maximum height of the menu surface, based on available space. 0 indicates should not be set.
    * @private
    */
   getMenuSurfaceMaxHeight_(corner) {
     let maxHeight = 0;
     const {viewportDistance} = this.measures_;
-    const isBottomAligned = Boolean(corner & CornerBit.BOTTOM);
+    const isBottomAligned = Boolean(corner & MenuSurfaceCornerBit.BOTTOM);
 
     // When maximum height is not specified, it is handled from css.
-    if (this.anchorCorner_ & CornerBit.BOTTOM) {
+    if (this.anchorCorner_ & MenuSurfaceCornerBit.BOTTOM) {
       if (isBottomAligned) {
         maxHeight = viewportDistance.top + this.anchorMargin_.top;
       } else {
@@ -453,8 +453,8 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
 
     const corner = this.getOriginCorner_();
     const maxMenuSurfaceHeight = this.getMenuSurfaceMaxHeight_(corner);
-    let verticalAlignment = (corner & CornerBit.BOTTOM) ? 'bottom' : 'top';
-    let horizontalAlignment = (corner & CornerBit.RIGHT) ? 'right' : 'left';
+    let verticalAlignment = (corner & MenuSurfaceCornerBit.BOTTOM) ? 'bottom' : 'top';
+    let horizontalAlignment = (corner & MenuSurfaceCornerBit.RIGHT) ? 'right' : 'left';
     const horizontalOffset = this.getHorizontalOriginOffset_(corner);
     const verticalOffset = this.getVerticalOriginOffset_(corner);
     const position = {
@@ -469,10 +469,11 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
 
     // Adjust vertical origin when menu surface is positioned with significant offset from anchor. This is done so that
     // scale animation is "anchored" on the anchor.
-    if (!(this.anchorCorner_ & CornerBit.BOTTOM) &&
+    if (!(this.anchorCorner_ & MenuSurfaceCornerBit.BOTTOM) &&
         Math.abs(verticalOffset / surfaceHeight) > numbers.OFFSET_TO_MENU_SURFACE_HEIGHT_RATIO) {
       const verticalOffsetPercent = Math.abs(verticalOffset / surfaceHeight) * 100;
-      const originPercent = (corner & CornerBit.BOTTOM) ? 100 - verticalOffsetPercent : verticalOffsetPercent;
+      const originPercent = (corner & MenuSurfaceCornerBit.BOTTOM)
+        ? 100 - verticalOffsetPercent : verticalOffsetPercent;
       verticalAlignment = Math.round(originPercent * 100) / 100 + '%';
     }
 

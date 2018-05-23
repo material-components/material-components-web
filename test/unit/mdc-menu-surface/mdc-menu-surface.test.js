@@ -21,7 +21,7 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 
 import {MDCMenuSurface} from '../../../packages/mdc-menu-surface/index';
-import {strings, Corner} from '../../../packages/mdc-menu-surface/constants';
+import {strings, MenuSurfaceCorner} from '../../../packages/mdc-menu-surface/constants';
 import {getTransformPropertyName} from '../../../packages/mdc-menu-surface/util';
 
 function getFixture(open) {
@@ -79,7 +79,7 @@ test('hide closes the menu surface', () => {
 
 test('setAnchorCorner', () => {
   const {component} = setupTest();
-  component.setAnchorCorner(Corner.TOP_START);
+  component.setAnchorCorner(MenuSurfaceCorner.TOP_START);
   // The method sets private variable on the foundation, nothing to verify.
 });
 
