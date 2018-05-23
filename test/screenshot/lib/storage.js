@@ -19,6 +19,9 @@
 const GitRepo = require('./git-repo');
 const CloudStorage = require('@google-cloud/storage');
 
+/** Maximum number of times to retry a failed HTTP request. */
+const API_MAX_RETRIES = 5;
+
 const GCLOUD_SERVICE_ACCOUNT_KEY_FILE_PATH = process.env.MDC_GCLOUD_SERVICE_ACCOUNT_KEY_FILE_PATH;
 const GCLOUD_STORAGE_BUCKET_NAME = 'mdc-web-screenshot-tests';
 const GCLOUD_STORAGE_BASE_URL = `https://storage.googleapis.com/${GCLOUD_STORAGE_BUCKET_NAME}/`;
@@ -48,9 +51,15 @@ class Storage {
 
   /**
    * @param {!UploadableFile} uploadableFile
+   * @param {number=} retryCount
    * @return {!Promise<!UploadableFile>}
    */
-  async uploadFile(uploadableFile) {
+  async uploadFile(uploadableFile, retryCount = 0) {
+    if (retryCount > API_MAX_RETRIES) {
+      const relativeFilePath = uploadableFile.destinationRelativeFilePath;
+      throw new Error(`File upload failed after ${retryCount} retry attempts - ${relativeFilePath}`);
+    }
+
     // Attaching Git metadata to the uploaded files makes it easier to track down their source.
     const gitCommitShort = await this.mdcGitRepo_.getShortCommitHash();
     const gitBranchName = await this.mdcGitRepo_.getBranchName();
@@ -69,14 +78,18 @@ class Storage {
       },
     };
 
-    console.log(`➡ Uploading ${uploadableFile.destinationAbsoluteFilePath} ...`);
+    const queueIndex = uploadableFile.queueIndex;
+    const queueLength = uploadableFile.queueLength;
+    const destinationAbsoluteFilePath = uploadableFile.destinationAbsoluteFilePath;
+    const queueIndexStr = String(queueIndex + 1).padStart(String(queueLength).length, '0');
+    console.log(`➡ Uploading file ${queueIndexStr} of ${queueLength} - ${destinationAbsoluteFilePath} ...`);
 
-    const cloudFile = this.storageBucket_.file(uploadableFile.destinationAbsoluteFilePath);
+    const cloudFile = this.storageBucket_.file(destinationAbsoluteFilePath);
     return cloudFile
       .save(uploadableFile.fileContent, fileOptions)
       .then(
         () => this.handleUploadSuccess_(uploadableFile),
-        (err) => this.handleUploadFailure_(uploadableFile, err)
+        (err) => this.handleUploadFailure_(uploadableFile, err, retryCount)
       );
   }
 
@@ -89,21 +102,31 @@ class Storage {
     const publicUrl = `${GCLOUD_STORAGE_BASE_URL}${uploadableFile.destinationAbsoluteFilePath}`;
     uploadableFile.fileContent = null; // Free up memory
     uploadableFile.publicUrl = publicUrl;
-    console.log(`✔︎ Uploaded ${publicUrl}`);
+    const queueIndex = uploadableFile.queueIndex;
+    const queueLength = uploadableFile.queueLength;
+    const queueIndexStr = String(queueIndex + 1).padStart(String(queueLength).length, '0');
+    console.log(`✔︎ Uploaded file ${queueIndexStr} of ${queueLength} - ${publicUrl}`);
     return Promise.resolve(uploadableFile);
   }
 
   /**
    * @param {!UploadableFile} uploadableFile
    * @param {*} err
+   * @param {number} retryCount
    * @return {!Promise<*>}
    * @private
    */
-  handleUploadFailure_(uploadableFile, err) {
+  handleUploadFailure_(uploadableFile, err, retryCount) {
     const publicUrl = `${GCLOUD_STORAGE_BASE_URL}${uploadableFile.destinationAbsoluteFilePath}`;
     uploadableFile.fileContent = null; // Free up memory
-    console.error(`✗︎ FAILED to upload ${publicUrl}:`);
+    const queueIndex = uploadableFile.queueIndex;
+    const queueLength = uploadableFile.queueLength;
+    console.error(`✗︎ FAILED to upload file ${queueIndex + 1} of ${queueLength} - ${publicUrl}:`);
     console.error(err);
+    if (err.code >= 500 && err.code < 600) {
+      console.error(`ERROR: GCP server returned HTTP ${err.code}. Retrying upload request...`);
+      return this.uploadFile(uploadableFile, retryCount + 1);
+    }
     return Promise.reject(err);
   }
 
@@ -136,6 +159,8 @@ class UploadableFile {
     destinationParentDirectory,
     destinationRelativeFilePath,
     fileContent,
+    queueIndex,
+    queueLength,
     userAgent = null,
   }) {
     /** @type {string} */
@@ -152,6 +177,12 @@ class UploadableFile {
 
     /** @type {?Object} */
     this.userAgent = userAgent;
+
+    /** @type {number} */
+    this.queueIndex = queueIndex;
+
+    /** @type {number} */
+    this.queueLength = queueLength;
 
     /** @type {?string} */
     this.publicUrl = null;
