@@ -36,10 +36,11 @@ test('exports cssClasses', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCChipFoundation, [
-    'addClass', 'removeClass', 'hasClass', 'hasCheckmark', 'addClassToLeadingIcon', 'removeClassFromLeadingIcon',
-    'eventTargetHasClass', 'registerEventHandler', 'deregisterEventHandler',
-    'registerTrailingIconInteractionHandler', 'deregisterTrailingIconInteractionHandler',
-    'notifyInteraction', 'notifyTrailingIconInteraction', 'notifyRemoval',
+    'addClass', 'removeClass', 'hasClass', 'hasCheckmark', 'addClassToLeadingIcon',
+    'removeClassFromLeadingIcon', 'eventTargetHasClass', 'registerEventHandler',
+    'deregisterEventHandler', 'registerTrailingIconInteractionHandler',
+    'deregisterTrailingIconInteractionHandler', 'notifyInteraction',
+    'notifyTrailingIconInteraction', 'notifyRemoval',
     'getComputedStyleValue', 'setStyleProperty',
   ]);
 });
@@ -149,6 +150,24 @@ test('on chip opacity transition end, animate width if chip is exiting', () => {
 
   raf.flush();
   td.verify(mockAdapter.setStyleProperty('width', '0'));
+});
+
+test('on leading icon opacity transition end, do nothing if ' +
+  'checkmark not present', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerEventHandler');
+  const mockEvt = {
+    type: 'transitionend',
+    target: {},
+    propertyName: 'opacity',
+  };
+  td.when(mockAdapter.eventTargetHasClass(mockEvt.target, cssClasses.LEADING_ICON)).thenReturn(true);
+  td.when(mockAdapter.hasCheckmark()).thenReturn(false);
+
+  foundation.init();
+  handlers.transitionend(mockEvt);
+
+  td.verify(mockAdapter.addClassToLeadingIcon(cssClasses.HIDDEN_LEADING_ICON), {times: 0});
 });
 
 test(`on leading icon opacity transition end, add ${cssClasses.HIDDEN_LEADING_ICON}` +
