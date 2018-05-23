@@ -53,9 +53,9 @@ npm run screenshot:update-goldens
 In addition to running the tests, this command will also update your local `test/screenshot/golden.json` file with the 
 newly captured screenshots.
 
-### Rerunning flaky tests
+### Rerunning a subset of tests
 
-If a single screenshot fails to render, you can rerun it without running the entire suite:
+You can rerun a subset of the tests without running the entire suite, filtering by browser and/or URL:
 
 ```bash
 npm run screenshot:update-goldens -- \
