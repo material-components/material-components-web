@@ -4,6 +4,8 @@ Prevent visual regressions by running screenshot tests on every PR.
 
 ## Quick start
 
+### API credentials
+
 Add the following to your `~/.bash_profile` (Mac) or `~/.bashrc` (Linux):
 
 ```bash
@@ -12,25 +14,24 @@ export CBT_AUTHKEY='example'
 export MDC_GCLOUD_SERVICE_ACCOUNT_KEY_FILE_PATH='path/to/gcp-credentials.json'
 ```
 
-In a new terminal, run:
+Credentials can be found here:
 
-```bash
-npm run screenshot:test
-```
+* [CrossBrowserTesting.com > Account](https://crossbrowsertesting.com/account) \
+    `Authkey` is listed under the `User Profile` section
+* [Google Cloud Console > IAM & admin > Service accounts](https://console.cloud.google.com/iam-admin/serviceaccounts?project=material-components-web) \
+    Click the `︙` icon on the right side of the service account, then choose `Create key` 
 
-This will take several minutes to complete.
+### Test your changes
 
-When the tests finish, you should see a link to the diff report page in the terminal:
-
-```
-Found 0 screenshot diffs!
-https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/22/17_49_05_673/d3a549bb4/report.html
-```
-
-Next, modify a Sass file, and rerun the tests:
+Modify a Sass file:
 
 ```bash
 echo '.mdc-button:not(:disabled){color:red}' >> packages/mdc-button/mdc-button.scss
+```
+ 
+Run the tests:
+
+```bash
 npm run screenshot:test
 ```
 
@@ -58,36 +59,38 @@ If a single screenshot fails to render, you can rerun it without running the ent
 
 ```bash
 npm run screenshot:update-goldens -- \
-  --mdc-include-browser=ie@11 \
-  --mdc-include-url=mdc-button/classes/dense
+  --mdc-include-url=mdc-button/classes/dense \
+  --mdc-include-browser=ie@11
 ```
 
 **IMPORTANT:** Note the `--` between `screenshot:test` and `--help`. This is required by `npm`.
 
-You can rerun multiple screenshots by passing the arguments multiple times:
+You can rerun multiple screenshots by passing an argument multiple times:
 
 ```bash
 npm run screenshot:update-goldens -- \
-  --mdc-include-browser=ie@11 \
-  --mdc-include-browser=android_chrome \
   --mdc-include-url=mdc-button/classes/dense \
-  --mdc-include-url=mdc-fab/classes/mini
+  --mdc-include-url=mdc-fab/classes/mini \
+  --mdc-include-browser=ie@11 \
+  --mdc-include-browser=chrome
 ```
 
-Partial matches are allowed, so `ie@11` is equivalent to `desktop_windows_ie@11`, and `chrome` is equivalent to 
-`desktop_windows_chrome@latest` and `mobile_android_chrome@latest`.
+These flags are treated as regular expressions, so partial matches are possible. For example:
+
+* `ie@11` matches `desktop_windows_ie@11`
+* `chrome` matches `desktop_windows_chrome@latest` and `mobile_android_chrome@latest`
 
 See `test/screenshot/browser.json` for the full list of supported browsers.
 
 ### Local dev server
 
+The deprecated `npm run dev` command has been replaced by:
+
 ```bash
 npm start
 ```
 
-Then open http://localhost:8080/ in your browser.
-
-This replaces the deprecated `npm run dev` command.
+Open http://localhost:8080/ in your browser to view the test pages.
 
 Source files are automatically recompiled when they change.
 
@@ -101,6 +104,16 @@ npm run screenshot:test -- --help
 
 **IMPORTANT:** Note the `--` between `screenshot:test` and `--help`. This is required by `npm`.
 
+### Public demos
+
+```bash
+npm run screenshot:upload-assets
+```
+
+This will upload all test assets (HTML/CSS/JS files) to a public URL and print the URL to the terminal.
+
+The URL can then be shared with designers or other developers.
+
 ### Diffing against a local `golden.json` file
 
 By default, screenshots are diffed against `origin/master:test/screenshot/golden.json`.
@@ -108,13 +121,13 @@ By default, screenshots are diffed against `origin/master:test/screenshot/golden
 To diff against a local `golden.json` file, run:
 
 ```bash
-npm run screenshot:update-goldens -- --mdc-diff-base=test/screenshot/golden.json
+npm run screenshot:test -- --mdc-diff-base=test/screenshot/golden.json
 ```
 
 URLs are also supported:
 
 ```bash
-npm run screenshot:update-goldens -- --mdc-diff-base=https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/22/17_34_19_887/c8c29033e/golden.json
+npm run screenshot:test -- --mdc-diff-base=https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/22/17_34_19_887/c8c29033e/golden.json
 ```
 
 ### Diffing against another branch
@@ -124,15 +137,8 @@ By default, screenshots are diffed against `origin/master:test/screenshot/golden
 To diff against a different branch, run:
 
 ```bash
-npm run screenshot:update-goldens -- --mdc-diff-base=fix/fab/icon-alignment-ie11
+npm run screenshot:test -- --mdc-diff-base=fix/fab/icon-alignment-ie11
 ```
-### Public demos
-
-```bash
-npm run screenshot:upload-assets
-```
-
-This will upload all test assets (HTML/CSS/JS files) to a public URL and print the URL in the terminal.
 
 ## Writing tests
 
