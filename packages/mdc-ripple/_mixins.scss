@@ -163,14 +163,12 @@
 @mixin mdc-states-selected($color, $has-nested-focusable-element: false) {
   $selected-opacity: mdc-states-opacity($color, selected);
 
-  &--selected {
-    // stylelint-disable-next-line selector-max-type
-    &::before {
-      opacity: $selected-opacity;
-    }
-
-    @include mdc-states-interactions_($color, $has-nested-focusable-element, $selected-opacity);
+  // stylelint-disable-next-line selector-max-type
+  &::before {
+    opacity: $selected-opacity;
   }
+
+  @include mdc-states-interactions_($color, $has-nested-focusable-element, $selected-opacity);
 }
 
 @mixin mdc-ripple-radius-bounded($radius: 100%) {

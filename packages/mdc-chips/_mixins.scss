@@ -54,20 +54,17 @@
 }
 
 @mixin mdc-chip-selected-ink-color($color) {
-  &.mdc-chip {
+  .mdc-chip--selected {
     @include mdc-states-selected($color);
-  }
-
-  &.mdc-chip--selected {
     @include mdc-theme-prop(color, $color);
 
     &:hover {
       @include mdc-theme-prop(color, $color);
     }
-  }
-
-  .mdc-chip__checkmark-path {
-    @include mdc-theme-prop(stroke, $color);
+    
+    .mdc-chip__checkmark-path {
+      @include mdc-theme-prop(stroke, $color);
+    }
   }
 }
 
