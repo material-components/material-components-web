@@ -35,6 +35,8 @@ class MDCChip extends MDCComponent {
 
     /** @private {?Element} */
     this.leadingIcon_;
+    /** @private {?Element} */
+    this.checkmark_;
     /** @private {!MDCRipple} */
     this.ripple_;
   }
@@ -49,17 +51,17 @@ class MDCChip extends MDCComponent {
 
   initialize() {
     this.leadingIcon_ = this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
+    this.checkmark_ = this.root_.querySelector(strings.CHECKMARK_SELECTOR);
 
     // Adjust ripple size for chips with animated growing width. This applies when filter chips without
     // a leading icon are selected, and a leading checkmark will cause the chip width to expand.
-    const checkmarkEl = this.root_.querySelector(strings.CHECKMARK_SELECTOR);
-    if (checkmarkEl && !this.leadingIcon_) {
+    if (this.checkmark_ && !this.leadingIcon_) {
       const adapter = Object.assign(MDCRipple.createAdapter(this), {
         computeBoundingRect: () => {
           const height = this.root_.getBoundingClientRect().height;
           // The checkmark's width is initially set to 0, so use the checkmark's height as a proxy since the
           // checkmark should always be square.
-          const width = this.root_.getBoundingClientRect().width + checkmarkEl.getBoundingClientRect().height;
+          const width = this.root_.getBoundingClientRect().width + this.checkmark_.getBoundingClientRect().height;
           return {height, width};
         },
       });
@@ -105,6 +107,7 @@ class MDCChip extends MDCComponent {
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       hasClass: (className) => this.root_.classList.contains(className),
+      hasCheckmark: () => this.checkmark_ ? true : false,
       addClassToLeadingIcon: (className) => {
         if (this.leadingIcon_) {
           this.leadingIcon_.classList.add(className);

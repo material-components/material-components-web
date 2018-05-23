@@ -45,6 +45,7 @@ class MDCChipFoundation extends MDCFoundation {
       addClass: () => {},
       removeClass: () => {},
       hasClass: () => {},
+      hasCheckmark: () => {},
       addClassToLeadingIcon: () => {},
       removeClassFromLeadingIcon: () => {},
       eventTargetHasClass: () => {},
@@ -157,12 +158,14 @@ class MDCChipFoundation extends MDCFoundation {
     if (evt.propertyName !== 'opacity') {
       return;
     }
-    if (this.adapter_.eventTargetHasClass(/** @type {!EventTarget} */ (evt.target), cssClasses.LEADING_ICON) &&
-        this.adapter_.hasClass(cssClasses.SELECTED)) {
-      this.adapter_.addClassToLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
-    } else if (this.adapter_.eventTargetHasClass(/** @type {!EventTarget} */ (evt.target), cssClasses.CHECKMARK) &&
-               !this.adapter_.hasClass(cssClasses.SELECTED)) {
-      this.adapter_.removeClassFromLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
+    if (this.adapter_.hasCheckmark()) {
+      if (this.adapter_.eventTargetHasClass(/** @type {!EventTarget} */ (evt.target), cssClasses.LEADING_ICON) &&
+          this.adapter_.hasClass(cssClasses.SELECTED)) {
+        this.adapter_.addClassToLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
+      } else if (this.adapter_.eventTargetHasClass(/** @type {!EventTarget} */ (evt.target), cssClasses.CHECKMARK) &&
+                 !this.adapter_.hasClass(cssClasses.SELECTED)) {
+        this.adapter_.removeClassFromLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
+      }
     }
   }
 

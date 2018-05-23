@@ -115,7 +115,7 @@
 
 // Add leading checkmark to filter chips with a leading icon
 
-.mdc-chip__icon--leading {
+.mdc-chip-set--filter .mdc-chip__icon--leading {
   transition: opacity $mdc-chip-opacity-animation-duration linear;
   opacity: 1;
 
@@ -129,7 +129,7 @@
   }
 }
 
-.mdc-chip--selected .mdc-chip__icon--leading {
+.mdc-chip-set--filter .mdc-chip--selected .mdc-chip__icon--leading {
   opacity: 0;
 
   + .mdc-chip__checkmark {
@@ -139,7 +139,7 @@
   }
 }
 
-.mdc-chip__icon--leading-hidden.mdc-chip__icon--leading {
+.mdc-chip-set--filter .mdc-chip__icon--leading-hidden.mdc-chip__icon--leading {
   width: 0;
 
   // This ensures that the leading icon doesn't fade in while the checkmark is fading out.
