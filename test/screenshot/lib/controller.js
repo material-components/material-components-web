@@ -105,8 +105,8 @@ class Controller {
     const assetFileRelativePaths = glob.sync('**/*', {cwd: this.cliArgs_.testDir, nodir: true});
 
     /** @type {!Array<!Promise<!UploadableFile>>} */
-    const uploadPromises = assetFileRelativePaths.map((assetFileRelativePath) => {
-      return this.uploadOneAsset_(assetFileRelativePath, testCases);
+    const uploadPromises = assetFileRelativePaths.map((assetFileRelativePath, assetFileIndex) => {
+      return this.uploadOneAsset_(assetFileRelativePath, testCases, assetFileIndex, assetFileRelativePaths.length);
     });
 
     return Promise.all(uploadPromises)
@@ -122,14 +122,18 @@ class Controller {
   /**
    * @param {string} assetFileRelativePath
    * @param {!Array<!UploadableTestCase>} testCases
+   * @param {number} queueIndex
+   * @param {number} queueLength
    * @return {!Promise<!UploadableFile>}
    * @private
    */
-  async uploadOneAsset_(assetFileRelativePath, testCases) {
+  async uploadOneAsset_(assetFileRelativePath, testCases, queueIndex, queueLength) {
     const assetFile = new UploadableFile({
       destinationParentDirectory: this.baseUploadDir_,
       destinationRelativeFilePath: assetFileRelativePath,
       fileContent: await fs.readFile(`${this.cliArgs_.testDir}/${assetFileRelativePath}`),
+      queueIndex,
+      queueLength,
     });
 
     return this.storage_.uploadFile(assetFile)
@@ -176,8 +180,8 @@ class Controller {
    * @return {!Promise<!Array<!UploadableTestCase>>}
    */
   async captureAllPages(testCases) {
-    const capturePromises = testCases.map((testCase) => {
-      return this.captureOnePage_(testCase);
+    const capturePromises = testCases.map((testCase, testCaseIndex) => {
+      return this.captureOnePage_(testCase, testCaseIndex, testCases.length);
     });
 
     return Promise.all(capturePromises)
@@ -192,42 +196,55 @@ class Controller {
 
   /**
    * @param {!UploadableTestCase} testCase
+   * @param {number} testCaseQueueIndex
+   * @param {number} testCaseQueueLength
    * @return {!Promise<!Array<!UploadableFile>>}
    * @private
    */
-  async captureOnePage_(testCase) {
+  async captureOnePage_(testCase, testCaseQueueIndex, testCaseQueueLength) {
     return Screenshot
       .captureOneUrl(testCase.htmlFile.publicUrl)
       .then(
-        (cbtInfo) => this.handleCapturePageSuccess_(testCase, cbtInfo),
-        (err) => this.handleCapturePageFailure_(testCase, err)
+        (cbtInfo) => this.handleCapturePageSuccess_(testCase, cbtInfo, testCaseQueueIndex, testCaseQueueLength),
+        (err) => this.handleCapturePageFailure_(testCase, err, testCaseQueueIndex, testCaseQueueLength)
       );
   }
 
   /**
    * @param {!UploadableTestCase} testCase
+   * @param {number} testCaseQueueIndex
+   * @param {number} testCaseQueueLength
    * @param {!Object} cbtScreenshotInfo
    * @return {!Promise<!Array<!UploadableFile>>}
    * @private
    */
-  async handleCapturePageSuccess_(testCase, cbtScreenshotInfo) {
+  async handleCapturePageSuccess_(testCase, cbtScreenshotInfo, testCaseQueueIndex, testCaseQueueLength) {
     // We don't use CBT's screenshot versioning features, so there should only ever be one version.
     // Each "result" is an individual browser screenshot for a single URL.
-    return Promise.all(cbtScreenshotInfo.versions[0].results.map((cbtResult) => {
-      return this.uploadScreenshotImage_(testCase, cbtResult);
+    const results = cbtScreenshotInfo.versions[0].results;
+    return Promise.all(results.map((cbtResult, cbtResultIndex) => {
+      return this.uploadScreenshotImage_(
+        testCase,
+        cbtResult,
+        testCaseQueueIndex * results.length + cbtResultIndex,
+        testCaseQueueLength * results.length
+      );
     }));
   }
 
   /**
    * @param {!UploadableTestCase} testCase
    * @param {!T} err
+   * @param {number} testCaseQueueIndex
+   * @param {number} testCaseQueueLength
    * @return {!Promise<!T>}
    * @template T
    * @private
    */
-  async handleCapturePageFailure_(testCase, err) {
+  async handleCapturePageFailure_(testCase, err, testCaseQueueIndex, testCaseQueueLength) {
     console.error('\n\n\nERROR capturing screenshot with CrossBrowserTesting:\n\n');
     console.error(`  - ${testCase.htmlFile.publicUrl}`);
+    console.error(`  - Test case ${testCaseQueueIndex} of ${testCaseQueueLength}`);
     console.error(err);
     return Promise.reject(err);
   }
@@ -235,10 +252,12 @@ class Controller {
   /**
    * @param {!UploadableTestCase} testCase
    * @param {!Object} cbtResult
+   * @param {number} uploadQueueIndex
+   * @param {number} uploadQueueLength
    * @return {!Promise<!UploadableFile>}
    * @private
    */
-  async uploadScreenshotImage_(testCase, cbtResult) {
+  async uploadScreenshotImage_(testCase, cbtResult, uploadQueueIndex, uploadQueueLength) {
     const cbtImageUrl = cbtResult.images.chromeless;
     if (!cbtImageUrl) {
       console.error('cbtResult:\n', cbtResult);
@@ -255,6 +274,8 @@ class Controller {
       destinationRelativeFilePath: `${testCase.htmlFile.destinationRelativeFilePath}.${imageName}`,
       fileContent: imageData,
       userAgent: await CbtUserAgent.fetchBrowserByApiName(osApiName, browserApiName),
+      queueIndex: uploadQueueIndex,
+      queueLength: uploadQueueLength,
     });
 
     testCase.screenshotImageFiles.push(imageFile);
@@ -294,7 +315,7 @@ class Controller {
       expectedSuite: await this.snapshotStore_.fromDiffBase(),
     });
 
-    return Promise.all(diffs.map((diff) => this.uploadOneDiffImage_(diff)))
+    return Promise.all(diffs.map((diff, index) => this.uploadOneDiffImage_(diff, index, diffs.length)))
       .then(
         () => {
           diffs.sort((a, b) => {
@@ -313,15 +334,19 @@ class Controller {
 
   /**
    * @param {!ImageDiffJson} diff
+   * @param {number} queueIndex
+   * @param {number} queueLength
    * @return {!Promise<void>}
    * @private
    */
-  async uploadOneDiffImage_(diff) {
+  async uploadOneDiffImage_(diff, queueIndex, queueLength) {
     /** @type {!UploadableFile} */
     const diffImageFile = await this.storage_.uploadFile(new UploadableFile({
       destinationParentDirectory: `${this.baseUploadDir_}/screenshots`,
       destinationRelativeFilePath: `${diff.htmlFilePath}/${diff.browserKey}.diff.png`,
       fileContent: diff.diffImageBuffer,
+      queueIndex,
+      queueLength,
     }));
 
     diff.diffImageUrl = diffImageFile.publicUrl;
@@ -341,6 +366,8 @@ class Controller {
       destinationParentDirectory: this.baseUploadDir_,
       destinationRelativeFilePath: 'report.html',
       fileContent: await reportGenerator.generateHtml(),
+      queueIndex: 0,
+      queueLength: 1,
     }));
 
     console.log('\n\nDONE uploading diff report to GCS!\n\n');
