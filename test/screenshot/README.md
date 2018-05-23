@@ -112,6 +112,8 @@ npm run screenshot:test -- --help
 
 **IMPORTANT:** Note the `--` between `screenshot:test` and `--help`. This is required by `npm`.
 
+The same set of flags work in both `screenshot:test` and `screenshot:update-goldens`.
+
 ### Public demos
 
 ```bash
