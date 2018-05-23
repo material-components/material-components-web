@@ -123,7 +123,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
     /** @private {function(!Event): undefined} */
     this.textFieldInteractionHandler_ = () => this.handleTextFieldInteraction();
     /** @private {function(!Array): undefined} */
-    this.validationAttributeChangeHandler_ = (mutations) => this.handleValidationAttributeMutation(mutations);
+    this.validationAttributeChangeHandler_ =
+        (mutations) => this.handleValidationAttributeMutation(this.getMutationAttributeNames_(mutations));
+
     /** @private {!MutationObserver} */
     this.validationObserver_;
   }
@@ -149,8 +151,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.registerTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
     });
-    this.validationObserver_ = this.adapter_.registerValidationAttributeChangeHandler(
-      this.validationAttributeChangeHandler_);
+    this.validationObserver_ =
+        this.adapter_.registerValidationAttributeChangeHandler(this.validationAttributeChangeHandler_);
   }
 
   destroy() {
@@ -179,11 +181,11 @@ class MDCTextFieldFoundation extends MDCFoundation {
 
   /**
    * Handles validation attribute changes
-   * @param {!Array<MutationRecord>} mutationsList
+   * @param {!Array<string>} attributesList
    */
-  handleValidationAttributeMutation(mutationsList) {
-    mutationsList.some((mutation) => {
-      if (VALIDATION_ATTR_WHITELIST.indexOf(mutation.attributeName) > -1) {
+  handleValidationAttributeMutation(attributesList) {
+    attributesList.some((attributeName) => {
+      if (VALIDATION_ATTR_WHITELIST.indexOf(attributeName) > -1) {
         this.styleValidity_(true);
         return true;
       }
@@ -419,6 +421,14 @@ class MDCTextFieldFoundation extends MDCFoundation {
         valid: true,
       },
     });
+  }
+
+  /**
+   * @param {!Array<!MutationRecord>} mutationsList 
+   * @return {!Array<string>} Returns list of attribute names.
+   */
+  getMutationAttributeNames_(mutationsList) {
+    return mutationsList.map((mutation) => mutation.attributeName);
   }
 }
 
