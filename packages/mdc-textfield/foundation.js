@@ -131,7 +131,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
   init() {
     this.adapter_.addClass(MDCTextFieldFoundation.cssClasses.UPGRADED);
     // Ensure label does not collide with any pre-filled value.
-    if (this.adapter_.hasLabel() && this.getValue()) {
+    if (this.adapter_.hasLabel() && (this.getValue() || this.isBadInput_())) {
       this.adapter_.floatLabel(this.shouldFloat);
       this.notchOutline(this.shouldFloat);
     }
