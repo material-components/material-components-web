@@ -39,11 +39,12 @@ npm install @material/icon-button
 ### HTML Structure
 
 ```html
-<button class="mdc-icon-button material-icons">
-  favorite
-</button>
+<button class="mdc-icon-button material-icons">favorite</button>
 ```
+
 > Note: The MDC Icon Button can be used with `<button>` and `<a>` tags.
+
+> Note: IE11 will not center the icon properly if there is a newline or space after the material icon text.
 
 ### Styles
 
@@ -79,9 +80,7 @@ The icon button can be used to toggle between an on and off icon. To style an ic
    data-toggle-on-content="favorite"
    data-toggle-on-label="Remove from favorites"
    data-toggle-off-content="favorite_border"
-   data-toggle-off-label="Add to favorites">
-    favorites_border
-</button>
+   data-toggle-off-label="Add to favorites">favorites_border</button>
 ```
 
 ```js
@@ -112,9 +111,7 @@ To disable an icon, add the `disabled` attribute directly to the `<button>` elem
 cannot be disabled. Disabled icon buttons cannot be interacted with and have no visual interaction effect.
 
 ```html
-<button class="mdc-icon-button material-icons" disabled>
-  favorite
-</button>
+<button class="mdc-icon-button material-icons" disabled>favorite</button>
 ```
 
 ## Style Customization

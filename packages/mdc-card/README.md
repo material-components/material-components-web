@@ -128,9 +128,7 @@ above, or with icon buttons, as below:
      data-toggle-on-content="favorite"
      data-toggle-on-label="Remove from favorites"
      data-toggle-off-content="favorite_border"
-     data-toggle-off-label="Add to favorites">
-    favorite_border
-  </button>
+     data-toggle-off-label="Add to favorites">favorite_border</button>
   <button class="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon" title="Share">share</button>
   <button class="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon" title="More options">more_vert</button>
 </div>
