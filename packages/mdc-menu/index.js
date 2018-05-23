@@ -160,7 +160,7 @@ class MDCMenu extends MDCComponent {
       }),
       notifyCancel: () => this.emit(MDCMenuFoundation.strings.CANCEL_EVENT, {}),
       saveFocus: () => {
-        this.previousFocus_ = document.activeElement ? document.activeElement : null;
+        this.previousFocus_ = document.activeElement;
       },
       restoreFocus: () => {
         if (this.previousFocus_) {
