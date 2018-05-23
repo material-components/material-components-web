@@ -80,17 +80,33 @@ class Storage {
 
     const queueIndex = uploadableFile.queueIndex;
     const queueLength = uploadableFile.queueLength;
-    const destinationAbsoluteFilePath = uploadableFile.destinationAbsoluteFilePath;
     const queueIndexStr = String(queueIndex + 1).padStart(String(queueLength).length, '0');
-    console.log(`➡ Uploading file ${queueIndexStr} of ${queueLength} - ${destinationAbsoluteFilePath} ...`);
-
+    const destinationAbsoluteFilePath = uploadableFile.destinationAbsoluteFilePath;
     const cloudFile = this.storageBucket_.file(destinationAbsoluteFilePath);
-    return cloudFile
-      .save(uploadableFile.fileContent, fileOptions)
-      .then(
-        () => this.handleUploadSuccess_(uploadableFile),
-        (err) => this.handleUploadFailure_(uploadableFile, err, retryCount)
-      );
+
+    const uploadPromise = new Promise(((resolve, reject) => {
+      console.log(`➡ Uploading file ${queueIndexStr} of ${queueLength} - ${destinationAbsoluteFilePath} ...`);
+      cloudFile.createWriteStream(fileOptions)
+        .on('error', (err) => reject(err))
+        .on('finish', () => resolve())
+        .on('response', () => {
+          // Workaround for a bug in the Google Cloud Storage `File.createWriteStream()` API.
+          //
+          // If you send a lot of parallel upload requests to GCS, the 'finish' event is not always fired - even if the
+          // file was successfully uploaded.
+          //
+          // A brief delay before resolving the promise allows us to:
+          // 1. Avoid resolving the promise prematurely (e.g., if an 'error' event is fired after the 'response' event)
+          // 2. Prevent Node.js from exiting prematurely (see https://stackoverflow.com/a/46916601/467582)
+          setTimeout(() => resolve(), 1000);
+        })
+        .end(uploadableFile.fileContent);
+    }));
+
+    return uploadPromise.then(
+      () => this.handleUploadSuccess_(uploadableFile),
+      (err) => this.handleUploadFailure_(uploadableFile, err, retryCount)
+    );
   }
 
   /**
