@@ -63,7 +63,7 @@ npm run screenshot:update-goldens -- \
   --mdc-include-browser=ie@11
 ```
 
-**IMPORTANT:** Note the `--` between `screenshot:update-goldens` and `--help`. This is required by `npm`.
+**IMPORTANT:** Note the `--` between the script name and its arguments. This is required by `npm`.
 
 You can rerun multiple screenshots by passing an argument multiple times:
 
@@ -110,7 +110,7 @@ To see all available CLI flags, run:
 npm run screenshot:test -- --help
 ```
 
-**IMPORTANT:** Note the `--` between `screenshot:test` and `--help`. This is required by `npm`.
+**IMPORTANT:** Note the `--` between the script name and its arguments. This is required by `npm`.
 
 The same set of flags work in both `screenshot:test` and `screenshot:update-goldens`.
 
