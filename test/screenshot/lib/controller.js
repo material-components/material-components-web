@@ -290,6 +290,7 @@ class Controller {
    * @private
    */
   getBrowserFileName_(osApiName, browserApiName) {
+    // Remove MS Edge version number from Windows OS API name. E.g.: "Win10-E17" -> "Win10".
     // TODO(acdvorak): Why does the CBT browser API return "Win10" but the screenshot info API returns "Win10-E17"?
     osApiName = osApiName.replace(/-E\d+$/, '');
     return `${osApiName}_${browserApiName}`.toLowerCase().replace(/[^\w.]+/g, '');
