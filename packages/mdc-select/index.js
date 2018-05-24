@@ -152,12 +152,12 @@ export class MDCSelect extends MDCComponent {
     return {
       notchOutline: (labelWidth, isRtl) => {
         if (this.outline_) {
-          return this.outline_.notch(labelWidth, isRtl);
+          this.outline_.notch(labelWidth, isRtl);
         }
       },
       closeOutline: () => {
         if (this.outline_) {
-          return this.outline_.closeNotch();
+          this.outline_.closeNotch();
         }
       },
       hasOutline: () => !!this.outline_,
@@ -175,7 +175,7 @@ export class MDCSelect extends MDCComponent {
     return {
       floatLabel: (shouldFloat) => {
         if (this.label_) {
-          return this.label_.float(shouldFloat);
+          this.label_.float(shouldFloat);
         }
       },
       hasLabel: () => !!this.label_,

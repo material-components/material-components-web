@@ -31,7 +31,6 @@ const strings = {
 /** @enum {number} */
 const numbers = {
   LABEL_SCALE: 0.75,
-  DENSE_LABEL_SCALE: 0.923,
 };
 
 export {cssClasses, strings, numbers};
