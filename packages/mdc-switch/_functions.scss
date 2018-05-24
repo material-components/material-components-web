@@ -13,9 +13,3 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-
-@import "@material/animation/variables";
-
-@function mdc-switch-transition($property) {
-  @return $property 90ms $mdc-animation-standard-curve-timing-function;
-}
