@@ -70,7 +70,7 @@ iconButtonRipple.unbounded = true;
 ### Icon Button Toggle
 
 The icon button can be used to toggle between an on and off icon. To style an icon button as an icon button toggle, add the 
-`data-toggle-on` and `data-toggle-off` attributes to the `mdc-icon-button` element. Then instantiate an `MDCIconToggleButton` on the root element. 
+`data-toggle-on` and `data-toggle-off` attributes to the `mdc-icon-button` element. Then instantiate an `MDCIconButtonToggle` on the root element. 
 
 ```html
 <button id="add-to-favorites"
@@ -90,10 +90,10 @@ var toggleButton = new mdc.iconButton.MDCIconButtonToggle(document.getElementByI
 
 #### Icon Button Toggle States
 
-Note the use of `data-toggle-*` properties in the above examples. When an MDCIconToggleButton
+Note the use of `data-toggle-*` properties in the above examples. When an MDCIconButtonToggle
 instance is toggled, it looks at these data attributes to determine how to update the element. This is what
-allows MDCIconToggleButton to be so flexible. The `data-toggle-on-*` properties will be used when the is
-MDCIconToggleButton is toggled on, and vice versa for `data-toggle-off-*`. 
+allows MDCIconButtonToggle to be so flexible. The `data-toggle-on-*` properties will be used when the is
+MDCIconButtonToggle is toggled on, and vice versa for `data-toggle-off-*`. 
 
 Attribute | Description
 --- | ---
