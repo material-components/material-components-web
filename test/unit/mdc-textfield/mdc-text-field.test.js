@@ -319,7 +319,7 @@ test('#adapter.deregisterTextFieldInteractionHandler removes an event handler fo
 test('#adapter.registerValidationAttributeChangeHandler creates a working mutation observer', (done) => {
   const {root, component} = setupTest();
   const handler = td.func('ValidationAttributeChangeHandler');
-  td.when(handler(td.matchers.anything(), td.matchers.anything())).thenDo(() => {
+  td.when(handler(td.matchers.contains('required'))).thenDo(() => {
     done();
   });
 
