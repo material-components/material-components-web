@@ -19,7 +19,7 @@ import MDCComponent from '@material/base/component';
 
 import MDCChipSetAdapter from './adapter';
 import MDCChipSetFoundation from './foundation';
-import {MDCChip, MDCChipFoundation} from '../chip/index';
+import {MDCChip} from '../chip/index';
 
 /**
  * @extends {MDCComponent<!MDCChipSetFoundation>}

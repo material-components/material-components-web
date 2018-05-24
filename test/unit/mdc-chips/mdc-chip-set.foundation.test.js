@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import bel from 'bel';
 import {assert} from 'chai';
 import td from 'testdouble';
 
