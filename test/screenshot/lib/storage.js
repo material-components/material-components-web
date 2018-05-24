@@ -66,7 +66,7 @@ class Storage {
 
     if (retryCount > API_MAX_RETRIES) {
       throw new Error(
-        `Failed to upload file ${queuePosition} after ${retryCount} retry attempts - ${gcsAbsoluteFilePath}`
+        `Failed to upload file ${queuePosition} after ${API_MAX_RETRIES} retry attempts - ${gcsAbsoluteFilePath}`
       );
     }
 
