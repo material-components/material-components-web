@@ -329,7 +329,8 @@ class MDCTextField extends MDCComponent {
         registerTextFieldInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
         deregisterTextFieldInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
         registerValidationAttributeChangeHandler: (handler) => {
-          const observer = new MutationObserver(handler);
+          const getAttributesList = (mutationsList) => mutationsList.map((mutation) => mutation.attributeName);
+          const observer = new MutationObserver((mutationsList) => handler(getAttributesList(mutationsList)));
           const targetNode = this.root_.querySelector(strings.INPUT_SELECTOR);
           const config = {attributes: true};
           observer.observe(targetNode, config);

@@ -123,8 +123,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     /** @private {function(!Event): undefined} */
     this.textFieldInteractionHandler_ = () => this.handleTextFieldInteraction();
     /** @private {function(!Array): undefined} */
-    this.validationAttributeChangeHandler_ =
-        (mutations) => this.handleValidationAttributeMutation(this.getMutationAttributeNames_(mutations));
+    this.validationAttributeChangeHandler_ = (attributesList) => this.handleValidationAttributeMutation(attributesList);
 
     /** @private {!MutationObserver} */
     this.validationObserver_;
@@ -421,14 +420,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
         valid: true,
       },
     });
-  }
-
-  /**
-   * @param {!Array<!MutationRecord>} mutationsList 
-   * @return {!Array<string>} Returns list of attribute names.
-   */
-  getMutationAttributeNames_(mutationsList) {
-    return mutationsList.map((mutation) => mutation.attributeName);
   }
 }
 

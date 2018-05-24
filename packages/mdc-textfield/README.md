@@ -271,6 +271,8 @@ Method Signature | Description
 `deregisterTextFieldInteractionHandler(evtType: string, handler: EventListener)` => void | Deregisters an event handler on the root element for a given event.
 `registerInputInteractionHandler(evtType: string, handler: EventListener)` => void | Registers an event listener on the native input element for a given event.
 `deregisterInputInteractionHandler(evtType: string, handler: EventListener)` => void | Deregisters an event listener on the native input element for a given event.
+`registerValidationAttributeChangeHandler(handler: function(!Array<string>) => undefined)` => !MutationObserver | Registers a validation attribute change listener on the input element. Handler accepts list of attribute changes.
+`deregisterValidationAttributeChangeHandler(!MutationObserver) => void` | Disconnects a validation attribute observer on the input element.
 `getNativeInput() => {value: string, disabled: boolean, badInput: boolean, checkValidity: () => boolean}?` | Returns an object representing the native text input element, with a similar API shape.
 `isFocused() => boolean` | Returns whether the input is focused.
 `isRtl() => boolean` | Returns whether the direction of the root element is set to RTL.
