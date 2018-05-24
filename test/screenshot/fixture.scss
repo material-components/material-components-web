@@ -18,8 +18,9 @@
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
 $test-trim-color: #abc123; // Value must match `TRIM_COLOR_CSS_VALUE` in `image-cropper.js`
+$test-grid-color: #dddddd;
+$test-fixture-width: 348px;
 $test-button-cell-padding: 10px;
-$test-button-cell-margin: $test-button-cell-padding - 1; // account for 1px border
 $test-button-cell-width: 171px;
 $test-button-cell-height: 71px;
 $test-button-columns: 2;
@@ -28,31 +29,35 @@ $test-button-columns: 2;
   display: flex;
   box-sizing: border-box;
   margin: 0;
-  padding: 0 0 100px 0; // Extra padding at the bottom ensures that CBT's "chromeless" screenshots don't get cut off
+  padding: 1px 0 100px 1px; // Extra padding at the bottom ensures that CBT's "chromeless" screenshots don't get cut off
 }
 
 .test-main {
   box-sizing: border-box;
-  border-right: 1px solid $test-trim-color;
-  border-bottom: 1px solid $test-trim-color;
+  width: $test-fixture-width;
+  border: 1px solid $test-trim-color;
 }
 
 .test-grid {
   display: flex;
   flex-wrap: wrap;
   box-sizing: border-box;
-  width: ($test-button-cell-width * $test-button-columns) + ($test-button-cell-margin * $test-button-columns);
 }
 
 .test-cell {
   box-sizing: border-box;
   width: $test-button-cell-width;
   height: $test-button-cell-height;
-  margin: 0 #{$test-button-cell-margin} #{$test-button-cell-margin} 0;
+  margin: 1px;
 
   // Ensure that shadows from adjacent components don't overlap
   padding: $test-button-cell-padding;
 
   // Ruler grid pattern
-  background-image: url("data:image/png;charset=utf-8;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAQAAAAnOwc2AAAAFElEQVQI12O4+x8TMgAJBnQ4VAQB8L1pQveqdHAAAAAASUVORK5CYII=");
+  // https://stackoverflow.com/a/32861765/467582
+  background-image:
+    linear-gradient(to right, #{$test-grid-color} 1px, transparent 1.01px),  // fraction for IE 11
+    linear-gradient(to bottom, #{$test-grid-color} 1px, transparent 1.01px); // fraction for IE 11
+
+  background-size: #{$test-button-cell-padding} #{$test-button-cell-padding};
 }
