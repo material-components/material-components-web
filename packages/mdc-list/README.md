@@ -138,6 +138,7 @@ OR
 ```
 
 ### CSS Classes
+
 CSS Class | Description
 --- | ---
 `mdc-list` | Mandatory, for the list element
@@ -168,6 +169,7 @@ CSS Class | Description
 * *Activated* state is more permanent than selected state, and will **NOT** change soon relative to the lifetime of the page.
 
 ### Sass Mixins
+
 Mixin | Description
 --- | ---
 `mdc-list-item-primary-text-ink-color($color)` | Sets the ink color of the primary text of the list item

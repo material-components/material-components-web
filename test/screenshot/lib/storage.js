@@ -66,7 +66,7 @@ class Storage {
 
     if (retryCount > API_MAX_RETRIES) {
       throw new Error(
-        `Failed to upload file ${queuePosition} after ${retryCount} retry attempts - ${gcsAbsoluteFilePath}`
+        `Failed to upload file ${queuePosition} after ${API_MAX_RETRIES} retry attempts - ${gcsAbsoluteFilePath}`
       );
     }
 
@@ -90,6 +90,17 @@ class Storage {
 
 
     const cloudFile = this.storageBucket_.file(gcsAbsoluteFilePath);
+    const [cloudFileExists] = await cloudFile.exists();
+
+    if (cloudFileExists) {
+      console.warn([
+        `WARNING: GCS file ${queuePosition} already exists - ${gcsAbsoluteFilePath}`,
+        'This is a bug in the screenshot testing logic. Tell acdvorak to fix it.',
+        'The file will NOT be overwritten. Continuing.',
+      ].join('\n'));
+      return this.handleUploadSuccess_(uploadableFile);
+    }
+
     const uploadPromise = new Promise(((resolve, reject) => {
       console.log(`➡ Uploading file ${queuePosition} - ${gcsAbsoluteFilePath}`);
 
