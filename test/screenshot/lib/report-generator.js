@@ -301,7 +301,7 @@ on tag
   getDiffRowMarkup_(diff) {
     return `
 <details class="report-browser" open>
-  <summary class="report-browser__heading">${diff.browserKey}</summary>
+  <summary class="report-browser__heading">${diff.userAgentAlias}</summary>
   <div class="report-browser__content">
     ${this.getDiffCellMarkup_('Golden', diff.expectedImageUrl)}
     ${this.getDiffCellMarkup_('Diff', diff.diffImageUrl)}
