@@ -85,7 +85,7 @@ async function sendCaptureRequest(testPageUrl, retryCount = 0) {
       if (reachedParallelExecutionLimit(err)) {
         console.warn(`Parallel execution limit reached - waiting for ${waitInSeconds} seconds before retrying...`);
         await sleep(API_POLL_INTERVAL_MS);
-        return sendCaptureRequest(testPageUrl, retryCount + 1);
+        return sendCaptureRequest(testPageUrl, retryCount); // don't increment the retry count for parallel execution
       }
 
       // TODO(acdvorak): Abstract this logic into CbtApi for every HTTP request?
