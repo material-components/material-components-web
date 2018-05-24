@@ -745,7 +745,7 @@ test('on validation attribute change calls styleValidity_', () => {
     .thenDo((handler) => attributeChange = handler);
   foundation.init();
 
-  attributeChange([{attributeName: 'required'}]);
+  attributeChange(['required']);
   td.verify(mockAdapter.removeClass(cssClasses.INVALID));
   td.verify(helperText.setValidity(true));
 
