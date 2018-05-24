@@ -68,7 +68,7 @@ let SnapshotResultJson;
  *   htmlFilePath: string,
  *   goldenPageUrl: string,
  *   snapshotPageUrl: string,
- *   browserKey: string,
+ *   userAgentAlias: string,
  *   actualImageUrl: string,
  *   expectedImageUrl: string,
  *   diffImageBuffer ?Buffer,
