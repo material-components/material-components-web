@@ -189,13 +189,15 @@ class SnapshotStore {
 
       for (const browserKey of Object.keys(newPage.screenshots)) {
         const oldUrl = oldJsonData[htmlFilePath].screenshots[browserKey];
-        const matchingDiff = diffs.find((diff) => diff.htmlFilePath === htmlFilePath && diff.browserKey === browserKey);
+        const hasMatchingDiff = diffs.find((diff) => {
+          return diff.htmlFilePath === htmlFilePath && diff.browserKey === browserKey;
+        });
 
-        if (oldUrl && !matchingDiff) {
+        if (oldUrl && !hasMatchingDiff) {
           newPage.screenshots[browserKey] = oldUrl;
         }
 
-        if (matchingDiff) {
+        if (hasMatchingDiff) {
           pageHasChanges = true;
         }
       }
