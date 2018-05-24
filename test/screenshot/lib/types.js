@@ -68,7 +68,7 @@ let SnapshotResultJson;
  *   htmlFilePath: string,
  *   goldenPageUrl: string,
  *   snapshotPageUrl: string,
- *   browserKey: string,
+ *   userAgentAlias: string,
  *   actualImageUrl: string,
  *   expectedImageUrl: string,
  *   diffImageBuffer ?Buffer,
@@ -131,3 +131,13 @@ let ResembleApiComparisonResult;
  */
 let ResembleApiBoundingBox;
 
+
+/*
+ * Image cropping
+ */
+
+
+/**
+ * @typedef {{r: number, g: number, b: number, a: number}}
+ */
+let RGBA;
