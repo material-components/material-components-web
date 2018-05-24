@@ -161,7 +161,6 @@ test(`on leading icon opacity transition end, add ${cssClasses.HIDDEN_LEADING_IC
     target: {},
     propertyName: 'opacity',
   };
-  td.when(mockAdapter.hasCheckmark()).thenReturn(true);
   td.when(mockAdapter.eventTargetHasClass(mockEvt.target, cssClasses.LEADING_ICON)).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.SELECTED)).thenReturn(true);
 
@@ -197,7 +196,6 @@ test(`on checkmark opacity transition end, remove ${cssClasses.HIDDEN_LEADING_IC
     target: {},
     propertyName: 'opacity',
   };
-  td.when(mockAdapter.hasCheckmark()).thenReturn(true);
   td.when(mockAdapter.eventTargetHasClass(mockEvt.target, cssClasses.CHECKMARK)).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.SELECTED)).thenReturn(false);
 
