@@ -21,14 +21,8 @@ import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
 import MDCTextFieldIconFoundation from './icon/foundation';
 /* eslint-enable no-unused-vars */
 import {MDCTextFieldAdapter, NativeInputType, FoundationMapType} from './adapter';
-import {cssClasses, strings, numbers} from './constants';
+import {cssClasses, strings, numbers, VALIDATION_ATTR_WHITELIST} from './constants';
 
-
-// whitelist based off of https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
-// under section: `Validation-related attributes`
-const VALIDATION_ATTR_WHITELIST = [
-  'pattern', 'min', 'max', 'required', 'step', 'minlength', 'maxlength',
-];
 
 /**
  * @extends {MDCFoundation<!MDCTextFieldAdapter>}

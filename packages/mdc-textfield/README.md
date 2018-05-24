@@ -232,6 +232,7 @@ Mixin | Description
 `mdc-text-field-fullwidth-bottom-line-color($color)` | Customizes the fullwidth text field variant bottom line color.
 
 #### Other Mixins
+
 Mixin | Description
 --- | ---
 `mdc-text-field-bottom-line-color($color)` | Customizes the text field bottom line color except the outlined and textarea variants.
