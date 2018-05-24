@@ -32,6 +32,12 @@ const TRIM_COLOR_PIXEL_MATCH_PCT = 0.05;
  */
 const TRIM_COLOR_CHANNEL_DISTANCE = 20;
 
+/**
+ * Maximum distance (in pixels) from the top-left corner of the image to the top and left trim borders.
+ * @type {number}
+ */
+const TRIM_COLOR_TOP_LEFT_DISTANCE = 20;
+
 class ImageCropper {
   constructor() {
     /**
@@ -40,6 +46,7 @@ class ImageCropper {
      */
     this.trimColorRGB_ = ImageCropper.parseTrimColorRGB_();
   }
+
   /**
    * Automatically crops an image based on its background color.
    * @param {!Buffer} imageData Uncropped image buffer
@@ -71,8 +78,8 @@ class ImageCropper {
   getCropRect_(jimpImage) {
     const {rows, cols} = this.findPixelsWithTrimColor_(jimpImage);
 
-    const left = this.getCropAmount_(cols);
-    const top = this.getCropAmount_(rows);
+    const left = this.getCropAmount_(cols, TRIM_COLOR_TOP_LEFT_DISTANCE);
+    const top = this.getCropAmount_(rows, TRIM_COLOR_TOP_LEFT_DISTANCE);
     const right = this.getCropAmount_(cols.slice(left).reverse());
     const bottom = this.getCropAmount_(rows.slice(top).reverse());
 
@@ -132,10 +139,11 @@ class ImageCropper {
 
   /**
    * @param {!Array<!Array<boolean>>} rows
+   * @param {number} max
    * @return {number}
    * @private
    */
-  getCropAmount_(rows) {
+  getCropAmount_(rows, max = rows.length - 1) {
     let foundTrimColor = false;
 
     for (const [rowIndex, row] of rows.entries()) {
@@ -147,7 +155,7 @@ class ImageCropper {
       }
 
       if (foundTrimColor) {
-        return rowIndex;
+        return rowIndex < max ? rowIndex : 0;
       }
     }
 

@@ -29,7 +29,7 @@ $test-button-columns: 2;
   display: flex;
   box-sizing: border-box;
   margin: 0;
-  padding: 1px 0 100px 1px; // Extra padding at the bottom ensures that CBT's "chromeless" screenshots don't get cut off
+  padding: 5px 0 100px 5px; // Extra padding ensures that CBT's "chromeless" screenshots don't get cut off
 }
 
 .test-main {
