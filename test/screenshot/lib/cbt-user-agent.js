@@ -67,7 +67,7 @@ const CBT_FILTERS = {
   },
 };
 
-let userAgentsPromise;
+let allUserAgentsPromise;
 
 module.exports = {
   fetchBrowsersToRun,
@@ -76,15 +76,15 @@ module.exports = {
 };
 
 /**
- * Resolves aliases in `browser.json` and returns their corresponding CBT API representations.
- * @param {!Array<string>=} aliases
+ * Resolves all aliases in `browser.json` and returns their corresponding CBT API representations.
  * @return {!Promise<!Array<!CbtUserAgent>>}
  */
-async function fetchBrowsersToRun(aliases = getFilteredAliases()) {
-  return userAgentsPromise || (userAgentsPromise = new Promise((resolve, reject) => {
+async function fetchBrowsersToRun() {
+  return allUserAgentsPromise || (allUserAgentsPromise = new Promise((resolve, reject) => {
     cbtApi.fetchAvailableDevices()
       .then(
         (cbtDevices) => {
+          const aliases = getFilteredAliases();
           const userAgents = findAllMatchingUAs(aliases, cbtDevices);
           console.log(userAgents.map((config) => `${config.alias}: ${config.fullCbtApiName}`));
           console.log('\n');
@@ -117,7 +117,10 @@ async function fetchBrowserByApiName(cbtDeviceApiName, cbtBrowserApiName) {
  * @return {!Promise<?CbtUserAgent>}
  */
 async function fetchBrowserByAlias(userAgentAlias) {
-  return (await fetchBrowsersToRun([userAgentAlias]))[0];
+  const userAgents = await fetchBrowsersToRun();
+  return userAgents.find((userAgent) => {
+    return userAgent.alias === userAgentAlias;
+  });
 }
 
 /**
