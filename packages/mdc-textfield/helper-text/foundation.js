@@ -48,6 +48,7 @@ class MDCTextFieldHelperTextFoundation extends MDCFoundation {
       setAttr: () => {},
       removeAttr: () => {},
       setContent: () => {},
+      getId: () => {},
     });
   }
 
@@ -56,6 +57,20 @@ class MDCTextFieldHelperTextFoundation extends MDCFoundation {
    */
   constructor(adapter) {
     super(Object.assign(MDCTextFieldHelperTextFoundation.defaultAdapter, adapter));
+  }
+
+  /**
+   * @return {boolean} True if helper text is a validation message.
+   */
+  isValidationMessage() {
+    return this.adapter_.hasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG);
+  }
+
+  /**
+   * @return {string} id value of the helper text element
+   */
+  getId() {
+    return this.adapter_.getId();
   }
 
   /**
@@ -87,37 +102,21 @@ class MDCTextFieldHelperTextFoundation extends MDCFoundation {
     }
   }
 
-  /** Makes the helper text visible to the screen reader. */
-  showToScreenReader() {
-    this.adapter_.removeAttr(strings.ARIA_HIDDEN);
-  }
-
   /**
    * Sets the validity of the helper text based on the input validity.
    * @param {boolean} inputIsValid
    */
   setValidity(inputIsValid) {
-    const helperTextIsPersistent = this.adapter_.hasClass(cssClasses.HELPER_TEXT_PERSISTENT);
     const helperTextIsValidationMsg = this.adapter_.hasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG);
     const validationMsgNeedsDisplay = helperTextIsValidationMsg && !inputIsValid;
 
     if (validationMsgNeedsDisplay) {
+      this.adapter_.removeAttr('aria-hidden');
       this.adapter_.setAttr(strings.ROLE, 'alert');
     } else {
       this.adapter_.removeAttr(strings.ROLE);
+      this.adapter_.setAttr('aria-hidden', 'true');
     }
-
-    if (!helperTextIsPersistent && !validationMsgNeedsDisplay) {
-      this.hide_();
-    }
-  }
-
-  /**
-   * Hides the help text from screen readers.
-   * @private
-   */
-  hide_() {
-    this.adapter_.setAttr(strings.ARIA_HIDDEN, 'true');
   }
 }
 

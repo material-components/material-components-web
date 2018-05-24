@@ -44,23 +44,26 @@ const helperText = new MDCTextFieldHelperText(document.querySelector('.mdc-text-
 #### Accessibility
 
 Note that in every example where the helper text is dependent on the state of the input element, we
-assign an id to the `mdc-text-field-helper-text` element and set that id to the value of the
-`aria-controls` and `aria-describedby` attributes on the input element. We recommend doing this as well as it will help
+assign an id to the `mdc-text-field-helper-text` and `mdc-floating-label` elements and set the ID's to the 
+value of the `aria-labelledby` attribute on the input element. We also add the `mdc-text-field-helper-text`
+to the `aria-controls` attribute on the input element. We recommend doing this as well as it will help
 indicate to assistive devices that the display of the helper text is dependent on the interaction with
 the input element.
 
 ```html
 <div class="mdc-text-field">
-  <input type="text" id="username" class="mdc-text-field__input"
-         aria-controls="username-helper-text"
-         aria-describedby="username-helper-text">
-  <label for="username" class="mdc-floating-label">Username</label>
+  <input type="text" id="username" class="mdc-text-field__input" aria-labelledby="username-label username-helper-text" 
+  aria-controls="username-helper-text">
+  <label for="username" id="username-label" class="mdc-floating-label">Username</label>
   <div class="mdc-line-ripple"></div>
 </div>
 <p id="username-helper-text" class="mdc-text-field-helper-text" aria-hidden="true">
   This will be displayed on your public profile
 </p>
 ```
+
+> _NOTE: You should not put `aria-describedby` on validation messages. These should not be read by screen readers until
+they become visible, which is after the user leaves the text field if the text field value is invalid.
 
 When using our vanilla JS component, if the browser sees that the input element has an `aria-controls`
 attribute, it will look for an element with the id specified and treat it as the text field's helper

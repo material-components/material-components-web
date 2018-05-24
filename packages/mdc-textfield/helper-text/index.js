@@ -53,6 +53,7 @@ class MDCTextFieldHelperText extends MDCComponent {
       setContent: (content) => {
         this.root_.textContent = content;
       },
+      getId: () => this.root_.id,
     })));
   }
 }
