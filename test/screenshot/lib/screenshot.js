@@ -74,7 +74,7 @@ async function captureOneUrl(testPageUrl) {
 
 async function sendCaptureRequest(testPageUrl, retryCount = 0) {
   if (retryCount > API_MAX_RETRIES) {
-    throw new Error(`Capture request failed after ${retryCount} retry attempts - ${testPageUrl}`);
+    throw new Error(`Capture request failed after ${API_MAX_RETRIES} retry attempts - ${testPageUrl}`);
   }
 
   const userAgents = await CbtUserAgent.fetchBrowsersToRun();
@@ -101,7 +101,7 @@ async function sendCaptureRequest(testPageUrl, retryCount = 0) {
 
 async function handleCaptureResponse(testPageUrl, captureResponseBody, retryCount = 0) {
   if (retryCount > API_MAX_RETRIES) {
-    throw new Error(`Capture response failed after ${retryCount} retry attempts - ${testPageUrl}`);
+    throw new Error(`Capture response failed after ${API_MAX_RETRIES} retry attempts - ${testPageUrl}`);
   }
 
   let infoResponseBody;
