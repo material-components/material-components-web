@@ -22,6 +22,9 @@ const CloudStorage = require('@google-cloud/storage');
 /** Maximum number of times to retry a failed HTTP request. */
 const API_MAX_RETRIES = 5;
 
+/** Maximum amount of time to wait for the GCS API to fire a "finish" event after it fires a "response" event. */
+const API_FINISH_EVENT_TIMEOUT_MS = 10 * 1000;
+
 const GCLOUD_SERVICE_ACCOUNT_KEY_FILE_PATH = process.env.MDC_GCLOUD_SERVICE_ACCOUNT_KEY_FILE_PATH;
 const GCLOUD_STORAGE_BUCKET_NAME = 'mdc-web-screenshot-tests';
 const GCLOUD_STORAGE_BASE_URL = `https://storage.googleapis.com/${GCLOUD_STORAGE_BUCKET_NAME}/`;
@@ -55,9 +58,16 @@ class Storage {
    * @return {!Promise<!UploadableFile>}
    */
   async uploadFile(uploadableFile, retryCount = 0) {
+    const queueIndex = uploadableFile.queueIndex;
+    const queueLength = uploadableFile.queueLength;
+    const queueIndexStr = String(queueIndex + 1).padStart(String(queueLength).length, '0');
+    const queuePosition = `${queueIndexStr} of ${queueLength}`;
+    const gcsAbsoluteFilePath = uploadableFile.destinationAbsoluteFilePath;
+
     if (retryCount > API_MAX_RETRIES) {
-      const relativeFilePath = uploadableFile.destinationRelativeFilePath;
-      throw new Error(`File upload failed after ${retryCount} retry attempts - ${relativeFilePath}`);
+      throw new Error(
+        `Failed to upload file ${queuePosition} after ${retryCount} retry attempts - ${gcsAbsoluteFilePath}`
+      );
     }
 
     // Attaching Git metadata to the uploaded files makes it easier to track down their source.
@@ -78,19 +88,43 @@ class Storage {
       },
     };
 
-    const queueIndex = uploadableFile.queueIndex;
-    const queueLength = uploadableFile.queueLength;
-    const destinationAbsoluteFilePath = uploadableFile.destinationAbsoluteFilePath;
-    const queueIndexStr = String(queueIndex + 1).padStart(String(queueLength).length, '0');
-    console.log(`➡ Uploading file ${queueIndexStr} of ${queueLength} - ${destinationAbsoluteFilePath} ...`);
 
-    const cloudFile = this.storageBucket_.file(destinationAbsoluteFilePath);
-    return cloudFile
-      .save(uploadableFile.fileContent, fileOptions)
-      .then(
-        () => this.handleUploadSuccess_(uploadableFile),
-        (err) => this.handleUploadFailure_(uploadableFile, err, retryCount)
-      );
+    const cloudFile = this.storageBucket_.file(gcsAbsoluteFilePath);
+    const uploadPromise = new Promise(((resolve, reject) => {
+      console.log(`➡ Uploading file ${queuePosition} - ${gcsAbsoluteFilePath}`);
+
+      let timer;
+
+      cloudFile.createWriteStream(fileOptions)
+        .on('error', (err) => reject(err))
+        .on('finish', () => {
+          clearTimeout(timer);
+          resolve();
+        })
+        .on('response', () => {
+          // Workaround for a bug in the Google Cloud Storage `File.createWriteStream()` API.
+          //
+          // If you send a lot of parallel upload requests to GCS, the 'finish' event is not always fired - even if the
+          // file was successfully uploaded.
+          //
+          // A brief delay before resolving the promise allows us to:
+          // 1. Avoid resolving the promise prematurely (e.g., if an 'error' event is fired after the 'response' event)
+          // 2. Prevent Node.js from exiting prematurely (see https://stackoverflow.com/a/46916601/467582)
+          timer = setTimeout(() => {
+            console.warn([
+              `WARNING: The GCS API did not fire a "finish" event for file ${queuePosition} - ${gcsAbsoluteFilePath}`,
+              'This is a bug in GCS. The file has probably finished uploading.',
+            ].join('\n'));
+            resolve();
+          }, API_FINISH_EVENT_TIMEOUT_MS);
+        })
+        .end(uploadableFile.fileContent);
+    }));
+
+    return uploadPromise.then(
+      () => this.handleUploadSuccess_(uploadableFile),
+      (err) => this.handleUploadFailure_(uploadableFile, err, retryCount)
+    );
   }
 
   /**

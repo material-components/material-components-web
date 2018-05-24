@@ -131,3 +131,13 @@ let ResembleApiComparisonResult;
  */
 let ResembleApiBoundingBox;
 
+
+/*
+ * Image cropping
+ */
+
+
+/**
+ * @typedef {{r: number, g: number, b: number, a: number}}
+ */
+let RGBA;
