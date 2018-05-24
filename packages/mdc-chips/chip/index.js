@@ -35,8 +35,6 @@ class MDCChip extends MDCComponent {
 
     /** @private {?Element} */
     this.leadingIcon_;
-    /** @private {?Element} */
-    this.checkmark_;
     /** @private {!MDCRipple} */
     this.ripple_;
   }
@@ -51,11 +49,11 @@ class MDCChip extends MDCComponent {
 
   initialize() {
     this.leadingIcon_ = this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
-    this.checkmark_ = this.root_.querySelector(strings.CHECKMARK_SELECTOR);
 
     // Adjust ripple size for chips with animated growing width. This applies when filter chips without
     // a leading icon are selected, and a leading checkmark will cause the chip width to expand.
-    if (this.checkmark_ && !this.leadingIcon_) {
+    const checkmarkEl = this.root_.querySelector(strings.CHECKMARK_SELECTOR);
+    if (checkmarkEl && !this.leadingIcon_) {
       const adapter = Object.assign(MDCRipple.createAdapter(this), {
         computeBoundingRect: () => {
           const height = this.root_.getBoundingClientRect().height;

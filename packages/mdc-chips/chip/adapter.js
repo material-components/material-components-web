@@ -48,12 +48,6 @@ class MDCChipAdapter {
   hasClass(className) {}
 
   /**
-   * Returns true if contains the checkmark class.
-   * @return {boolean}
-   */
-  hasCheckmark() {}
-
-  /**
    * Adds a class to the leading icon element.
    * @param {string} className
    */
