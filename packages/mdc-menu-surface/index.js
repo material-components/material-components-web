@@ -70,7 +70,7 @@ class MDCMenuSurface extends MDCComponent {
   /** @param {{focusIndex: ?number}=} options */
   show({focusIndex = null} = {}) {
     this.focusableElements_ = [].slice.call(this.root_.querySelectorAll(strings.FOCUSABLE_ELEMENTS));
-    this.foundation_.open({focusIndex: focusIndex});
+    this.foundation_.open({focusIndex});
   }
 
   hide() {

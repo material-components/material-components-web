@@ -311,7 +311,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     const viewport = this.adapter_.getWindowDimensions();
 
     return {
-      viewport: viewport,
+      viewport,
       viewportDistance: {
         top: anchorRect.top,
         right: viewport.width - anchorRect.right,
@@ -378,15 +378,12 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     const {anchorWidth} = this.measures_;
     const isRightAligned = Boolean(corner & MenuSurfaceCornerBit.RIGHT);
     const avoidHorizontalOverlap = Boolean(this.anchorCorner_ & MenuSurfaceCornerBit.RIGHT);
-    let x = 0;
     if (isRightAligned) {
       const rightOffset = avoidHorizontalOverlap ? anchorWidth - this.anchorMargin_.left : this.anchorMargin_.right;
-      x = rightOffset;
-    } else {
-      const leftOffset = avoidHorizontalOverlap ? anchorWidth - this.anchorMargin_.right : this.anchorMargin_.left;
-      x = leftOffset;
+      return rightOffset;
     }
-    return x;
+    const leftOffset = avoidHorizontalOverlap ? anchorWidth - this.anchorMargin_.right : this.anchorMargin_.left;
+    return leftOffset;
   }
 
   /**

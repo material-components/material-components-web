@@ -16,8 +16,8 @@ path: /catalog/menus/
   </a>
 </div>-->
 
-The MDC Menu Surface component is a reusable surface that appears above the content of the 
-page and can be positioned adjacent to an element. Menu Surfaces require Javascript to properly position 
+The MDC Menu Surface component is a reusable surface that appears above the content of the
+page and can be positioned adjacent to an element. Menu Surfaces require JavaScript to properly position
 themselves when opening.
 
 ## Design & API Documentation
@@ -47,6 +47,12 @@ npm install @material/menu-surface
 </div>
 ```
 
+### Styles
+
+```css
+@import "@material/menu-surface/mdc-menu-surface";
+```
+
 ### JavaScript Instantiation
 
 ```js
@@ -65,7 +71,7 @@ CSS Class | Description
 `mdc-menu-surface--animating-open` | Indicates the menu surface is currently animating open. This class is removed once the animation completes.
 `mdc-menu-surface--open` | Indicates the menu surface is currently open, or is currently animating open.
 `mdc-menu-surface--animating-closed` | Indicates the menu surface is currently animating closed. This class is removed once the animation completes.
-`mdc-menu-surface--anchor` | Used to indicate the element the menu should be anchored to.
+`mdc-menu-surface--anchor` | Used to indicate which element the menu should be anchored to.
 
 ### Sass Mixins
 
@@ -107,8 +113,8 @@ Method Signature | Description
 `getIndexForEventTarget(target: EventTarget) => number` | Checks to see if the `target` of an event pertains to one of the menu surface focusable elements, and if so returns the index of that item. Returns -1 if the target is not one of the focusable elements.
 `registerInteractionHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type`.
 `deregisterInteractionHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type`.
-`registerBodyClickHandler(handler: EventListener) => void` | Adds an event listener `handler` for event type `click`.
-`deregisterBodyClickHandler(handler: EventListener) => void` | Removes an event listener `handler` for event type `click`.
+`registerBodyClickHandler(handler: EventListener) => void` | Adds an event listener `handler` for event type `click` on the body.
+`deregisterBodyClickHandler(handler: EventListener) => void` | Removes an event listener `handler` for event type `click` on the body.
 `notifyClose() => void` | Dispatches an event notifying listeners that the menu surface has been closed.
 `isElementInContainer(el: Element) => Boolean` | Returns true if the `el` Element is inside the `mdc-menu-surface` container.
 `isRtl() => boolean` | Returns boolean indicating whether the current environment is RTL.
@@ -117,7 +123,7 @@ Method Signature | Description
 `isFocused() => boolean` | Returns a boolean value indicating whether the root element of the menu surface is focused.
 `saveFocus() => void` | Stores the currently focused element on the document, for restoring with `restoreFocus`.
 `restoreFocus() => void` | Restores the previously saved focus state, by making the previously focused element the active focus again.
-`getNumberFocusableElements() => number` | Returns the number of focusable elements inside the menu surface. 
+`getNumberFocusableElements() => number` | Returns the number of focusable elements inside the menu surface.
 `getFocusedElementIndex() => number` | Returns the index of the currently focused element inside the menu (-1 if none).
 `focusElementAtIndex(index: number) => void` | Focuses the element with the provided index.
 `getInnerDimensions() => {width: number, height: number}` | Returns an object with the items container width and height.
