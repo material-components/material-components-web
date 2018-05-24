@@ -117,11 +117,15 @@
 
 .mdc-chip__icon--leading {
   transition: opacity $mdc-chip-opacity-animation-duration linear;
+
+  // Speed up delay to bridge gap between leading icon and checkmark transition.
   transition-delay: -50ms;
   opacity: 1;
 
   + .mdc-chip__checkmark {
     transition: opacity $mdc-chip-opacity-animation-duration linear;
+
+    // Delay the checkmark transition.
     transition-delay: 80ms;
     opacity: 0;
 
