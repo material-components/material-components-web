@@ -18,13 +18,27 @@ const jimp = require('jimp');
 
 const TRIM_COLOR_CSS_VALUE = '#abc123'; // Value must match `$test-trim-color` in `fixture.scss`
 
+/**
+ * Fractional value (0 to 1 inclusive) indicating the minimum percentage of pixels in a row or column that must
+ * match the trim color in order for that row or column to be cropped out.
+ * @type {number}
+ */
+const TRIM_COLOR_PIXEL_MATCH_PCT = 0.05;
+
+/**
+ * Maximum distance (0 to 255 inclusive) that a pixel's R, G, and B color channels can be from the corresponding
+ * channels in the trim color in order to be considered a "match" with the trim color.
+ * @type {number}
+ */
+const TRIM_COLOR_CHANNEL_DISTANCE = 20;
+
 class ImageCropper {
   constructor() {
     /**
-     * @type {number}
+     * @type {!RGBA}
      * @private
      */
-    this.trimColorInt_ = ImageCropper.getTrimColorAsInt_();
+    this.trimColorRGB_ = ImageCropper.parseTrimColorRGB_();
   }
   /**
    * Automatically crops an image based on its background color.
@@ -55,27 +69,27 @@ class ImageCropper {
    * @private
    */
   getCropRect_(jimpImage) {
-    const MIN_MATCH_PERCENTAGE = 0.05;
-    const MIN_CROP_INDEX = 10;
-
     const {rows, cols} = this.findPixelsWithTrimColor_(jimpImage);
 
-    return {
-      x: 0,
-      y: 0,
-      w: getCropIndex(cols),
-      h: getCropIndex(rows),
+    const left = this.getCropAmount_(cols);
+    const top = this.getCropAmount_(rows);
+    const right = this.getCropAmount_(cols.slice(left).reverse());
+    const bottom = this.getCropAmount_(rows.slice(top).reverse());
+
+    const rect = {
+      x: left,
+      y: top,
+      w: cols.length - left - right,
+      h: rows.length - top - bottom,
     };
 
-    function getCropIndex(rows) {
-      const index = rows.findIndex((row) => matchPercentage(row) >= MIN_MATCH_PERCENTAGE);
-      return index >= MIN_CROP_INDEX ? index - 1 : rows.length;
+    if (rect.x < 0 || rect.y < 0 || rect.w < 1 || rect.h < 1) {
+      const rectStr = JSON.stringify(rect);
+      const imageStr = JSON.stringify({w: cols.length, h: rows.length});
+      throw new Error(`Invalid cropping rect: ${rectStr} (source image: ${imageStr})`);
     }
 
-    function matchPercentage(matchList) {
-      const numMatchingPixelsInRow = matchList.filter((isMatch) => isMatch).length;
-      return numMatchingPixelsInRow / matchList.length;
-    }
+    return rect;
   }
 
   /**
@@ -94,21 +108,74 @@ class ImageCropper {
       if (!cols[x]) {
         cols[x] = [];
       }
-      const isMatch = jimpImage.getPixelColor(x, y) === this.trimColorInt_;
-      rows[y][x] = isMatch;
-      cols[x][y] = isMatch;
+      const pixelColorRGB = jimp.intToRGBA(jimpImage.getPixelColor(x, y));
+      const isTrimColor = this.isTrimColor_(pixelColorRGB);
+      rows[y][x] = isTrimColor;
+      cols[x][y] = isTrimColor;
     });
 
     return {rows, cols};
   }
 
   /**
+   * @param {!RGBA} pixelColorRGB
+   * @return {boolean}
+   * @private
+   */
+  isTrimColor_(pixelColorRGB) {
+    return (
+      Math.abs(pixelColorRGB.r - this.trimColorRGB_.r) < TRIM_COLOR_CHANNEL_DISTANCE &&
+      Math.abs(pixelColorRGB.g - this.trimColorRGB_.g) < TRIM_COLOR_CHANNEL_DISTANCE &&
+      Math.abs(pixelColorRGB.b - this.trimColorRGB_.b) < TRIM_COLOR_CHANNEL_DISTANCE
+    );
+  }
+
+  /**
+   * @param {!Array<!Array<boolean>>} rows
    * @return {number}
    * @private
    */
-  static getTrimColorAsInt_() {
+  getCropAmount_(rows) {
+    let foundTrimColor = false;
+
+    for (const [rowIndex, row] of rows.entries()) {
+      const isTrimColor = this.getMatchPercentage_(row) >= TRIM_COLOR_PIXEL_MATCH_PCT;
+
+      if (isTrimColor) {
+        foundTrimColor = true;
+        continue;
+      }
+
+      if (foundTrimColor) {
+        return rowIndex;
+      }
+    }
+
+    return 0;
+  }
+
+  /**
+   * @param {!Array<boolean>} row
+   * @return {number}
+   * @private
+   */
+  getMatchPercentage_(row) {
+    const numMatchingPixelsInRow = row.filter((isMatch) => isMatch).length;
+    return numMatchingPixelsInRow / row.length;
+  }
+
+  /**
+   * @return {!RGBA}
+   * @private
+   */
+  static parseTrimColorRGB_() {
     const [, r, g, b] = /^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(TRIM_COLOR_CSS_VALUE);
-    return jimp.rgbaToInt(parseInt(r, 16), parseInt(g, 16), parseInt(b, 16), 255);
+    return {
+      r: parseInt(r, 16),
+      g: parseInt(g, 16),
+      b: parseInt(b, 16),
+      a: 255,
+    };
   }
 }
 

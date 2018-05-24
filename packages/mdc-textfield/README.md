@@ -299,6 +299,7 @@ Method Signature | Description
 `isRequired() => boolean` | Returns whether the input is required.
 `setRequired(isRequired: boolean)` | Sets whether the input is required.
 `handleTextFieldInteraction(evt: Event) => void` | Handles click and keydown events originating from inside the Text Field component.
+`handleValidationAttributeMutation(mutationsList: !Array<MutationRecord>) => void` | Handles validation attribute changes.
 `activateFocus() => void` | Activates the focus state of the Text Field. Normally called in response to the input focus event.
 `deactivateFocus() => void` | Deactivates the focus state of the Text Field. Normally called in response to the input blur event.
 `setHelperTextContent(content: string) => void` | Sets the content of the helper text.
