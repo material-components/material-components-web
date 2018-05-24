@@ -46,7 +46,7 @@ npm install @material/textfield
 </div>
 ```
 
-> NOTE: Text field supports `text`, `number` `password` input types (e.g., `<input type="password" class="mdc-text-field__input">`).
+> NOTE: Text field supports `text`, `number`, and `password` input types (e.g., `<input type="password" class="mdc-text-field__input">`).
 >
 > Other input types (such as `date`) are not currently supported.
 
