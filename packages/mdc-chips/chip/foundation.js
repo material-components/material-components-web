@@ -161,7 +161,7 @@ class MDCChipFoundation extends MDCFoundation {
         this.adapter_.hasClass(cssClasses.SELECTED)) {
       this.adapter_.addClassToLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
     } else if (this.adapter_.eventTargetHasClass(/** @type {!EventTarget} */ (evt.target), cssClasses.CHECKMARK) &&
-                !this.adapter_.hasClass(cssClasses.SELECTED)) {
+               !this.adapter_.hasClass(cssClasses.SELECTED)) {
       this.adapter_.removeClassFromLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
     }
   }
