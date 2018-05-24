@@ -59,7 +59,7 @@ class MDCChip extends MDCComponent {
           const height = this.root_.getBoundingClientRect().height;
           // The checkmark's width is initially set to 0, so use the checkmark's height as a proxy since the
           // checkmark should always be square.
-          const width = this.root_.getBoundingClientRect().width + this.checkmark_.getBoundingClientRect().height;
+          const width = this.root_.getBoundingClientRect().width + checkmarkEl.getBoundingClientRect().height;
           return {height, width};
         },
       });
@@ -105,7 +105,6 @@ class MDCChip extends MDCComponent {
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       hasClass: (className) => this.root_.classList.contains(className),
-      hasCheckmark: () => this.checkmark_ ? true : false,
       addClassToLeadingIcon: (className) => {
         if (this.leadingIcon_) {
           this.leadingIcon_.classList.add(className);
