@@ -18,6 +18,8 @@ const GitRepo = require('./git-repo');
 const CliArgParser = require('./cli-arg-parser');
 const child_process = require('mz/child_process'); // eslint-disable-line
 
+const GITHUB_REPO_URL = 'https://github.com/material-components/material-components-web';
+
 class ReportGenerator {
   constructor({testCases, diffs}) {
     /**
@@ -113,22 +115,25 @@ class ReportGenerator {
       .join(' ')
     ;
 
-    const gitHeadBranch = await this.gitRepo_.getBranchName();
-    const gitHeadCommit = await this.gitRepo_.getShortCommitHash();
-    const gitGoldenBranch = await this.gitRepo_.getBranchName(this.cliArgs_.diffBase);
-    const gitGoldenCommit = await this.gitRepo_.getShortCommitHash(this.cliArgs_.diffBase);
+    const goldenDiffSource = await this.cliArgs_.parseDiffBase();
+    const snapshotDiffSource = await this.cliArgs_.parseDiffBase({
+      rawDiffBase: 'HEAD',
+    });
+
     const gitUserName = await this.gitRepo_.getUserName();
     const gitUserEmail = await this.gitRepo_.getUserEmail();
     const gitUser = `&lt;${gitUserName}&gt; ${gitUserEmail}`;
 
-    const getVersion = async (cmd) => {
+    const getExecutableVersion = async (cmd) => {
       const options = {cwd: process.env.PWD, env: process.env};
       const stdOut = await child_process.exec(`${cmd} --version`, options);
       return stdOut[0].trim();
     };
 
-    const nodeVersion = await getVersion('node');
-    const npmVersion = await getVersion('npm');
+    const mdcVersion = require('../../../lerna.json').version;
+    const mdcVersionDistance = await this.getCommitDistanceMarkup_(mdcVersion);
+    const nodeVersion = await getExecutableVersion('node');
+    const npmVersion = await getExecutableVersion('npm');
 
     return `
 <details class="report-metadata" open>
@@ -149,20 +154,25 @@ class ReportGenerator {
           <td class="report-metadata__cell report-metadata__cell--val">${numTestCases}</td>
         </tr>
         <tr>
+          <th class="report-metadata__cell report-metadata__cell--key">Golden:</th>
+          <td class="report-metadata__cell report-metadata__cell--val">
+            ${await this.getCommitLinkMarkup_(goldenDiffSource)}
+          </td>
+        </tr>
+        <tr>
+          <th class="report-metadata__cell report-metadata__cell--key">Snapshot Base:</th>
+          <td class="report-metadata__cell report-metadata__cell--val">
+            ${await this.getCommitLinkMarkup_(snapshotDiffSource)}
+            ${await this.getLocalChangesMarkup_(snapshotDiffSource)}
+          </td>
+        </tr>
+        <tr>
           <th class="report-metadata__cell report-metadata__cell--key">User:</th>
           <td class="report-metadata__cell report-metadata__cell--val">${gitUser}</td>
         </tr>
         <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">Golden Commit:</th>
-          <td class="report-metadata__cell report-metadata__cell--val">
-            ${this.getCommitLinkMarkup_(gitGoldenCommit, gitGoldenBranch)}
-          </td>
-        </tr>
-        <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">Snapshot Commit:</th>
-          <td class="report-metadata__cell report-metadata__cell--val">
-            ${this.getCommitLinkMarkup_(gitHeadCommit, gitHeadBranch)}
-          </td>
+          <th class="report-metadata__cell report-metadata__cell--key">MDC Version:</th>
+          <td class="report-metadata__cell report-metadata__cell--val">${mdcVersion} ${mdcVersionDistance}</td>
         </tr>
         <tr>
           <th class="report-metadata__cell report-metadata__cell--key">Node Version:</th>
@@ -183,13 +193,68 @@ class ReportGenerator {
 `;
   }
 
-  getCommitLinkMarkup_(commit, branch) {
-    const GITHUB_REPO_URL = 'https://github.com/material-components/material-components-web';
-    return `
-<a href="${GITHUB_REPO_URL}/commit/${commit}">${commit}</a>
-on
-<a href="${GITHUB_REPO_URL}/tree/${branch.replace('origin/', '')}">${branch}</a>
+  /**
+   * @param {!DiffSource} diffSource
+   * @return {!Promise<string>}
+   * @private
+   */
+  async getCommitLinkMarkup_(diffSource) {
+    if (diffSource.publicUrl) {
+      return `<a href="${diffSource.publicUrl}">${diffSource.publicUrl}</a>`;
+    }
+
+    if (diffSource.localFilePath) {
+      return `${diffSource.localFilePath} (local file)`;
+    }
+
+    if (diffSource.gitRevision) {
+      const rev = diffSource.gitRevision;
+
+      if (rev.branch) {
+        const branchDisplayName = rev.remote ? `${rev.remote}/${rev.branch}` : rev.branch;
+        return `
+<a href="${GITHUB_REPO_URL}/blob/${rev.commit}/${rev.snapshotFilePath}">${rev.commit}</a>
+on branch
+<a href="${GITHUB_REPO_URL}/blob/${rev.branch}/${rev.snapshotFilePath}">${branchDisplayName}</a>
 `;
+      }
+
+      if (rev.tag) {
+        return `
+<a href="${GITHUB_REPO_URL}/blob/${rev.commit}/${rev.snapshotFilePath}">${rev.commit}</a>
+on tag
+<a href="${GITHUB_REPO_URL}/blob/${rev.tag}/${rev.snapshotFilePath}">${rev.tag}</a>
+`;
+      }
+    }
+
+    throw new Error('Unable to generate markup for invalid diff source');
+  }
+
+  /**
+   * @param {string} mdcVersion
+   * @return {!Promise<string>}
+   */
+  async getCommitDistanceMarkup_(mdcVersion) {
+    const mdcCommitCount = (await this.gitRepo_.getLog([`v${mdcVersion}..HEAD`])).length;
+    return mdcCommitCount > 0 ? `+ ${mdcCommitCount} commit${mdcCommitCount === 1 ? '' : 's'}` : '';
+  }
+
+  async getLocalChangesMarkup_() {
+    const fragments = [];
+    const gitStatus = await this.gitRepo_.getStatus();
+    const numUntracked = gitStatus.not_added.length;
+    const numModified = gitStatus.files.length - numUntracked;
+
+    if (numModified > 0) {
+      fragments.push(`${numModified} locally modified file${numModified === 1 ? '' : 's'}`);
+    }
+
+    if (numUntracked > 0) {
+      fragments.push(`${numUntracked} untracked file${numUntracked === 1 ? '' : 's'}`);
+    }
+
+    return fragments.length > 0 ? `(${fragments.join(', ')})` : '';
   }
 
   getCollapseButtonMarkup_() {
@@ -236,7 +301,7 @@ on
   getDiffRowMarkup_(diff) {
     return `
 <details class="report-browser" open>
-  <summary class="report-browser__heading">${diff.browserKey}</summary>
+  <summary class="report-browser__heading">${diff.userAgentAlias}</summary>
   <div class="report-browser__content">
     ${this.getDiffCellMarkup_('Golden', diff.expectedImageUrl)}
     ${this.getDiffCellMarkup_('Diff', diff.diffImageUrl)}
@@ -286,10 +351,12 @@ html {
   padding: 2px 10px 2px 0;
   text-align: left;
   font-weight: normal;
+  vertical-align: top;
 }
 
 .report-metadata__cell--key {
   font-style: italic;
+  width: 10em;
 }
 
 .report-file {
