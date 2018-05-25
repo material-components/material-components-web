@@ -122,7 +122,7 @@
   }
 }
 
-.mdc-dialog__action {
+.mdc-dialog__action:not(:disabled) {
   @include mdc-theme-prop(color, secondary);
 }
 
