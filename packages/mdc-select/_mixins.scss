@@ -151,17 +151,8 @@
 }
 
 @mixin mdc-select-hover-outline-color_($color) {
-  &:not(.mdc-select__native-control:focus) {
-    .mdc-select__native-control:hover ~ {
+  &:not(.mdc-select__native-control:focus) .mdc-select__native-control:hover ~ {
       @include mdc-notched-outline-idle-color($color);
-
-      // tldr; this doesn't break BEM:
-      // We need to wrap this mixin with the .mdc-notched-outline
-      // selector, because of the sibling selector '~'. The notched
-      // outline html structure has .mdc-notched-outline
-      // and .mdc-notched-outline__idle as siblings, while
-      // .mdc-notched-outline__path is a child of .mdc-notched-outline
-      // stylelint-disable-next-line selector-max-specificity
       .mdc-notched-outline {
         @include mdc-notched-outline-color($color);
       }
