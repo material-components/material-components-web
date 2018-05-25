@@ -266,6 +266,20 @@ test('set helperTextContent has no effect when no helper text element is present
   });
 });
 
+test('set iconAriaLabel has no effect when no icon element is present', () => {
+  const {component} = setupTest();
+  assert.doesNotThrow(() => {
+    component.iconAriaLabel = 'foo';
+  });
+});
+
+test('set iconContent has no effect when no icon element is present', () => {
+  const {component} = setupTest();
+  assert.doesNotThrow(() => {
+    component.iconContent = 'foo';
+  });
+});
+
 test('#adapter.addClass adds a class to the root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
@@ -319,7 +333,7 @@ test('#adapter.deregisterTextFieldInteractionHandler removes an event handler fo
 test('#adapter.registerValidationAttributeChangeHandler creates a working mutation observer', (done) => {
   const {root, component} = setupTest();
   const handler = td.func('ValidationAttributeChangeHandler');
-  td.when(handler(td.matchers.anything(), td.matchers.anything())).thenDo(() => {
+  td.when(handler(td.matchers.contains('required'))).thenDo(() => {
     done();
   });
 

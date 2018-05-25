@@ -58,6 +58,12 @@ test('#adapter.removeAttr removes a given attribute from the element', () => {
   assert.isFalse(root.hasAttribute('role'));
 });
 
+test('#adapter.setContent sets the text content of the element', () => {
+  const {root, component} = setupTest();
+  component.getDefaultFoundation().adapter_.setContent('foo');
+  assert.equal(root.textContent, 'foo');
+});
+
 test('#adapter.registerInteractionHandler adds event listener for a given event to the element', () => {
   const {root, component} = setupTest();
   const handler = td.func('keydown handler');

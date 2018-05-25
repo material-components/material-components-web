@@ -26,7 +26,7 @@ controller.initialize()
   .then(
     async ({testCases, diffs}) => {
       await controller.uploadDiffReport({testCases, diffs});
-      await controller.updateGoldenJson({testCases});
+      await controller.updateGoldenJson({testCases, diffs});
     },
     handleError
   )

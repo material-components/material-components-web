@@ -1,7 +1,7 @@
 {
   "name": "@material/select",
   "description": "The Material Components web select (text field drop-down) component",
-  "version": "0.35.1",
+  "version": "0.35.2",
   "license": "Apache-2.0",
   "keywords": [
     "material components",
@@ -17,7 +17,7 @@
   "dependencies": {
     "@material/animation": "^0.34.0",
     "@material/base": "^0.35.0",
-    "@material/floating-label": "^0.35.0",
+    "@material/floating-label": "^0.35.2",
     "@material/line-ripple": "^0.35.0",
     "@material/ripple": "^0.35.0",
     "@material/rtl": "^0.35.0",

@@ -37,17 +37,27 @@ class SnapshotStore {
      * @private
      */
     this.gitRepo_ = new GitRepo();
+
+    /**
+     * @type {?SnapshotSuiteJson}
+     * @private
+     */
+    this.cachedGoldenJsonFromDiffBase_ = null;
   }
 
   /**
    * Writes the data to the given `golden.json` file path.
-   * @param {!SnapshotSuiteJson} jsonData
+   * @param {!Array<!UploadableTestCase>} testCases
+   * @param {!Array<!ImageDiffJson>} diffs
    * @return {!Promise<void>}
    */
-  async writeToDisk(jsonData) {
+  async writeToDisk({testCases, diffs}) {
+    const jsonData = await this.getJsonData_({testCases, diffs});
     const jsonFilePath = this.cliArgs_.goldenPath;
     const jsonFileContent = stringify(jsonData, {space: '  '}) + '\n';
+
     await fs.writeFile(jsonFilePath, jsonFileContent);
+
     console.log(`\n\nDONE updating "${jsonFilePath}"!\n\n`);
   }
 
@@ -56,8 +66,12 @@ class SnapshotStore {
    * @return {!Promise<!SnapshotSuiteJson>}
    */
   async fromDiffBase() {
-    const goldenJsonStr = await this.fetchGoldenJsonString_();
-    return JSON.parse(goldenJsonStr);
+    if (!this.cachedGoldenJsonFromDiffBase_) {
+      this.cachedGoldenJsonFromDiffBase_ = JSON.parse(await this.fetchGoldenJsonString_());
+    }
+
+    // Deep-clone the cached object to avoid accidental mutation of shared state
+    return this.deepCloneJson_(this.cachedGoldenJsonFromDiffBase_);
   }
 
   /**
@@ -116,6 +130,101 @@ class SnapshotStore {
 
     const rawDiffBase = this.cliArgs_.diffBase;
     throw new Error(`Unable to parse '--mdc-diff-base=${rawDiffBase}': Expected a URL, local file path, or git ref`);
+  }
+
+  /**
+   * @param {!Array<!UploadableTestCase>} testCases
+   * @param {!Array<!ImageDiffJson>} diffs
+   * @return {!Promise<!SnapshotSuiteJson>}
+   * @private
+   */
+  async getJsonData_({testCases, diffs}) {
+    return this.cliArgs_.hasAnyFilters()
+      ? await this.updateFilteredScreenshots_({testCases, diffs})
+      : await this.updateAllScreenshots_({testCases, diffs});
+  }
+
+  /**
+   * @param {!Array<!UploadableTestCase>} testCases
+   * @param {!Array<!ImageDiffJson>} diffs
+   * @return {!Promise<!SnapshotSuiteJson>}
+   * @private
+   */
+  async updateFilteredScreenshots_({testCases, diffs}) {
+    const oldJsonData = await this.fromDiffBase();
+    const newJsonData = await this.fromTestCases(testCases);
+    const jsonData = this.deepCloneJson_(oldJsonData);
+
+    diffs.forEach((diff) => {
+      const htmlFilePath = diff.htmlFilePath;
+      const browserKey = diff.browserKey;
+      if (jsonData[htmlFilePath]) {
+        jsonData[htmlFilePath].publicUrl = newJsonData[htmlFilePath].publicUrl;
+        jsonData[htmlFilePath].screenshots[browserKey] = newJsonData[htmlFilePath].screenshots[browserKey];
+      } else {
+        jsonData[htmlFilePath] = this.deepCloneJson_(newJsonData[htmlFilePath]);
+      }
+    });
+
+    return jsonData;
+  }
+
+  /**
+   * @param {!Array<!UploadableTestCase>} testCases
+   * @param {!Array<!ImageDiffJson>} diffs
+   * @return {!Promise<!SnapshotSuiteJson>}
+   * @private
+   */
+  async updateAllScreenshots_({testCases, diffs}) {
+    const oldJsonData = await this.fromDiffBase();
+    const newJsonData = await this.fromTestCases(testCases);
+
+    const existsInOldJsonData = ([htmlFilePath]) => htmlFilePath in oldJsonData;
+
+    /** @type {!Array<[string, !SnapshotPageJson]>} */
+    const newMatchingPageEntries = Object.entries(newJsonData).filter(existsInOldJsonData);
+
+    // TODO(acdvorak): Refactor this method for clarity. See
+    // https://github.com/material-components/material-components-web/pull/2777#discussion_r190439992
+    for (const [htmlFilePath, newPage] of newMatchingPageEntries) {
+      let pageHasDiffs = false;
+
+      for (const browserKey of Object.keys(newPage.screenshots)) {
+        const oldUrl = oldJsonData[htmlFilePath].screenshots[browserKey];
+        const screenshotHasDiff = diffs.find((diff) => {
+          return diff.htmlFilePath === htmlFilePath && diff.browserKey === browserKey;
+        });
+
+        if (oldUrl && !screenshotHasDiff) {
+          newPage.screenshots[browserKey] = oldUrl;
+        }
+
+        if (screenshotHasDiff) {
+          pageHasDiffs = true;
+        }
+      }
+
+      if (!pageHasDiffs) {
+        newPage.publicUrl = oldJsonData[htmlFilePath].publicUrl;
+      }
+    }
+
+    return newJsonData;
+  }
+
+  /**
+   * Creates a deep clone of the given `source` object's own enumerable properties.
+   * Non-JSON-serializable properties (such as functions or symbols) are silently discarded.
+   * The returned value is structurally equivalent, but not referentially equal, to the input.
+   * In Java parlance:
+   *   clone.equals(source) // true
+   *   clone == source      // false
+   * @param {!Object} source JSON object to clone
+   * @return {!Object} Deep clone of `source` object
+   * @private
+   */
+  deepCloneJson_(source) {
+    return JSON.parse(JSON.stringify(source));
   }
 }
 
