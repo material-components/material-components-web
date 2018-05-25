@@ -785,3 +785,8 @@ test('should not call styleValidity_ on non-whitelisted attribute change', () =>
   td.verify(mockAdapter.addClass(cssClasses.DISABLED), {times: 0});
   td.verify(mockAdapter.removeClass(cssClasses.DISABLED), {times: 0});
 });
+
+test('label floats on invalid input even if value is empty', () => {
+  const {mockAdapter} = setupValueTest('', false, true, true);
+  td.verify(mockAdapter.floatLabel(true));
+});
