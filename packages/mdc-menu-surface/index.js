@@ -19,7 +19,7 @@ import MDCComponent from '@material/base/component';
 import {getTransformPropertyName} from './util';
 import {MDCMenuSurfaceFoundation, AnchorMargin} from './foundation';
 import {MDCMenuSurfaceAdapter} from './adapter';
-import {MenuSurfaceCorner, MenuSurfaceCornerBit, strings} from './constants';
+import {MenuSurfaceCorner, MenuSurfaceCornerBit, strings, cssClasses} from './constants';
 
 /**
  * @extends MDCComponent<!MDCMenuSurfaceFoundation>
@@ -46,7 +46,7 @@ class MDCMenuSurface extends MDCComponent {
   }
 
   initialSyncWithDOM() {
-    if (this.root_.parentElement && this.root_.parentElement.classList.contains('mdc-menu-surface--anchor')) {
+    if (this.root_.parentElement && this.root_.parentElement.classList.contains(cssClasses.ANCHOR)) {
       this.anchorElement = this.root_.parentElement;
     }
 

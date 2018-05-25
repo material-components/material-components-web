@@ -110,11 +110,11 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     super(Object.assign(MDCMenuSurfaceFoundation.defaultAdapter, adapter));
 
     /** @private {function(!Event)} */
-    this.keydownHandler_ = (evt) => this.handleKeyboardDown_(evt);
+    this.keydownHandler_ = (evt) => this.handleKeyboardDown(evt);
     /** @private {function(!Event)} */
-    this.keyupHandler_ = (evt) => this.handleKeyboardUp_(evt);
+    this.keyupHandler_ = (evt) => this.handleKeyboardUp(evt);
     /** @private {function(!Event)} */
-    this.documentClickHandler_ = (evt) => this.handleDocumentClick_(evt);
+    this.documentClickHandler_ = (evt) => this.handleDocumentClick(evt);
     /** @private {boolean} */
     this.isOpen_ = false;
     /** @private {number} */
@@ -209,7 +209,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
    * @param {!Event} evt
    * @private
    */
-  handleDocumentClick_(evt) {
+  handleDocumentClick(evt) {
     const el = evt.target;
 
     if (this.adapter_.isElementInContainer(el)) {
@@ -222,13 +222,12 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
   /**
    * Handle keys that we want to repeat on hold (tab and arrows).
    * @param {!Event} evt
-   * @return {boolean}
    * @private
    */
-  handleKeyboardDown_(evt) {
+  handleKeyboardDown(evt) {
     // Do nothing if Alt, Ctrl or Meta are pressed.
     if (evt.altKey || evt.ctrlKey || evt.metaKey) {
-      return true;
+      return;
     }
 
     const {keyCode, key, shiftKey} = evt;
@@ -265,14 +264,11 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
         this.adapter_.focusElementAtIndex(focusedItemIndex + 1);
       }
     }
-
-    return true;
   }
 
   /**
    * Returns true if the event will cause a scroll event.
    * @param evt
-   * @return {boolean}
    * @private
    */
   isSpaceKeyAllowedOnTarget_(evt) {
@@ -284,13 +280,12 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
   /**
    * Handle keys that we don't want to repeat on hold (Enter, Space, Escape).
    * @param {!Event} evt
-   * @return {boolean}
    * @private
    */
-  handleKeyboardUp_(evt) {
+  handleKeyboardUp(evt) {
     // Do nothing if Alt, Ctrl or Meta are pressed.
     if (evt.altKey || evt.ctrlKey || evt.metaKey) {
-      return true;
+      return;
     }
 
     const {keyCode, key} = evt;
@@ -299,8 +294,6 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     if (isEscape) {
       this.close();
     }
-
-    return true;
   }
 
   /**
@@ -535,8 +528,8 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
   }
 
   /**
-   * If the user is focused on or within the menu surface when it is closed, the last focused
-   * element when the menu surface was opened is focused.
+   * The last focused element when the menu surface was opened should regain focus, if the user is
+   * focused on or within the menu surface when it is closed.
    * @private
    */
   shouldRestoreFocus_() {
