@@ -266,6 +266,20 @@ test('set helperTextContent has no effect when no helper text element is present
   });
 });
 
+test('set iconAriaLabel has no effect when no icon element is present', () => {
+  const {component} = setupTest();
+  assert.doesNotThrow(() => {
+    component.iconAriaLabel = 'foo';
+  });
+});
+
+test('set iconContent has no effect when no icon element is present', () => {
+  const {component} = setupTest();
+  assert.doesNotThrow(() => {
+    component.iconContent = 'foo';
+  });
+});
+
 test('#adapter.addClass adds a class to the root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
