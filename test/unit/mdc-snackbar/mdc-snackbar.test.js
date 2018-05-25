@@ -147,7 +147,7 @@ test('adapter#setFocus sets focus on the action button', () => {
 });
 
 test('adapter#isFocused detects focus on the action button', () => {
-  const {root, actionButton, component} = setupTest();
+  const {root, component} = setupTest();
   const handler = td.func('fixture focus handler');
   root.addEventListener('focus', handler);
   document.body.appendChild(root);
