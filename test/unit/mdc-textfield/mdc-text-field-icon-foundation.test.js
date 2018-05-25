@@ -30,7 +30,7 @@ test('exports strings', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTextFieldIconFoundation, [
-    'getAttr', 'setAttr', 'removeAttr', 'registerInteractionHandler', 'deregisterInteractionHandler',
+    'getAttr', 'setAttr', 'removeAttr', 'setContent', 'registerInteractionHandler', 'deregisterInteractionHandler',
     'notifyIconAction',
   ]);
 });
@@ -101,6 +101,15 @@ test('#setAriaLabel updates the aria-label', () => {
 
   foundation.setAriaLabel(ariaLabel);
   td.verify(mockAdapter.setAttr('aria-label', ariaLabel));
+});
+
+test('#setContent updates the text content', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const content = 'test';
+  foundation.init();
+
+  foundation.setContent(content);
+  td.verify(mockAdapter.setContent(content));
 });
 
 test('on click notifies custom icon event', () => {

@@ -40,6 +40,7 @@ class MDCTextFieldIconFoundation extends MDCFoundation {
       getAttr: () => {},
       setAttr: () => {},
       removeAttr: () => {},
+      setContent: () => {},
       registerInteractionHandler: () => {},
       deregisterInteractionHandler: () => {},
       notifyIconAction: () => {},
@@ -91,6 +92,11 @@ class MDCTextFieldIconFoundation extends MDCFoundation {
   /** @param {string} label */
   setAriaLabel(label) {
     this.adapter_.setAttr('aria-label', label);
+  }
+
+  /** @param {string} content */
+  setContent(content) {
+    this.adapter_.setContent(content);
   }
 
   /**
