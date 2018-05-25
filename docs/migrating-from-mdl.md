@@ -305,7 +305,7 @@ The following table summarizes the current situation (TBI = to be investigated):
 | `mdl-dialog` | [`@material/dialog`](../packages/mdc-dialog/README.md) | Sufficiently different from MDL. MDL uses the `dialog` element which has limited cross-browser support. `mdc-dialog` relies on elements with more cross-browser support. |
 | `mdl-footer` | None | Not currently planned for MDC Web. |
 | `mdl-grid` | [`@material/layout-grid`](../packages/mdc-layout-grid/README.md) | Very similar. No offsets in MDC Web. |
-| `mdl-icon-toggle` | [`@material/icon-toggle`](../packages/mdc-icon-toggle/README.md) | Very different DOM. |
+| `mdl-icon-toggle` | [`@material/icon-button`](../packages/mdc-icon-button/README.md) | Very different DOM. |
 | `mdl-layout` | Split into [`@material/drawer`](../packages/mdc-drawer/README.md), [`@material/top-app-bar`](../packages/mdc-top-app-bar/README.md), [`@material/layout-grid`](../packages/mdc-layout-grid/README.md), and [`@material/tabs`](../packages/mdc-tabs/README.md) | Different DOM and variants. |
 | `mdl-list` | [`@material/list`](../packages/mdc-list/README.md) | Very different DOM. |
 | `mdl-menu` | [`@material/menu`](../packages/mdc-menu/README.md) | Very different DOM. |
