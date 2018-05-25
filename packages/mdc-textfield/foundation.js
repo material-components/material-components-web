@@ -334,6 +334,26 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
+   * Sets the aria label of the icon.
+   * @param {string} label
+   */
+  setIconAriaLabel(label) {
+    if (this.icon_) {
+      this.icon_.setAriaLabel(label);
+    }
+  }
+
+  /**
+   * Sets the text content of the icon.
+   * @param {string} content
+   */
+  setIconContent(content) {
+    if (this.icon_) {
+      this.icon_.setContent(content);
+    }
+  }
+
+  /**
    * @return {boolean} True if the Text Field input fails in converting the
    *     user-supplied value.
    * @private

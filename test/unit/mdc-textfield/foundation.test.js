@@ -57,6 +57,8 @@ const setupTest = () => {
   });
   const icon = td.object({
     setDisabled: () => {},
+    setAriaLabel: () => {},
+    setContent: () => {},
     registerInteractionHandler: () => {},
     deregisterInteractionHandler: () => {},
     handleInteraction: () => {},
@@ -371,6 +373,18 @@ test('#setHelperTextContent sets the content of the helper text element', () => 
   const {foundation, helperText} = setupTest();
   foundation.setHelperTextContent('foo');
   td.verify(helperText.setContent('foo'));
+});
+
+test('#setIconAriaLabel sets the aria-label of the icon element', () => {
+  const {foundation, icon} = setupTest();
+  foundation.setIconAriaLabel('foo');
+  td.verify(icon.setAriaLabel('foo'));
+});
+
+test('#setIconContent sets the content of the icon element', () => {
+  const {foundation, icon} = setupTest();
+  foundation.setIconContent('foo');
+  td.verify(icon.setContent('foo'));
 });
 
 test('#notchOutline updates the SVG path of the outline element', () => {
