@@ -22,7 +22,7 @@ const API_AUTHKEY = process.env.CBT_AUTHKEY;
 
 class CbtApi {
   async fetchAvailableDevices() {
-    console.log('Fetching available devices...');
+    console.log('\n\nFetching available devices...\n\n');
     return request({
       method: 'GET',
       uri: CbtApi.getFullUrl_('/screenshots/browsers'),
