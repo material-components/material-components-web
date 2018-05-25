@@ -14,122 +14,25 @@
 // limitations under the License.
 //
 
-@import "./functions";
-
 //
 // Main theme colors for your brand.
-//
-// If you're a user customizing your color scheme in SASS, these are probably the only variables you need to change.
+// If you're a user customizing your color scheme in SASS, these are probably the only variables you need to override.
 //
 
 $mdc-theme-primary: #6200ee !default; // baseline purple, 500 tone
-$mdc-theme-on-primary: if(mdc-theme-contrast-tone($mdc-theme-primary) == "dark", #000, #fff) !default;
+$mdc-theme-on-primary: #fff !default;
 
 // The $mdc-theme-accent variable is DEPRECATED - it exists purely for backward compatibility.
 // The $mdc-theme-secondary* variables should be used for all new projects.
 $mdc-theme-accent: #018786 !default; // baseline teal, 600 tone
 $mdc-theme-secondary: $mdc-theme-accent !default;
-$mdc-theme-on-secondary: if(mdc-theme-contrast-tone($mdc-theme-secondary) == "dark", #000, #fff) !default;
+$mdc-theme-on-secondary: #000 !default;
+
 $mdc-theme-background: #fff !default; // White
+$mdc-theme-on-background: #000 !default;
 
 $mdc-theme-surface: #fff !default;
-$mdc-theme-on-surface: if(mdc-theme-contrast-tone($mdc-theme-surface) == "dark", #000, #fff) !default;
+$mdc-theme-on-surface: #000 !default;
 
-//
-// Text colors according to light vs dark and text type.
-//
-
-$mdc-theme-text-colors: (
-  dark: (
-    primary: rgba(black, .87),
-    secondary: rgba(black, .54),
-    hint: rgba(black, .38),
-    disabled: rgba(black, .38),
-    icon: rgba(black, .38)
-  ),
-  light: (
-    primary: white,
-    secondary: rgba(white, .7),
-    hint: rgba(white, .5),
-    disabled: rgba(white, .5),
-    icon: rgba(white, .5)
-  )
-) !default;
-
-@function mdc-theme-ink-color-for-fill_($text-style, $fill-color) {
-  $contrast-tone: mdc-theme-contrast-tone($fill-color);
-
-  @return map-get(map-get($mdc-theme-text-colors, $contrast-tone), $text-style);
-}
-
-//
-// Primary text colors for each of the theme colors.
-//
-
-$mdc-theme-property-values: (
-  // Primary
-  primary: $mdc-theme-primary,
-  // Secondary
-  secondary: $mdc-theme-secondary,
-  // Background
-  background: $mdc-theme-background,
-  // Surface
-  surface: $mdc-theme-surface,
-  on-primary: $mdc-theme-on-primary,
-  on-secondary: $mdc-theme-on-secondary,
-  on-surface: $mdc-theme-on-surface,
-  // Text-primary on "background" background
-  text-primary-on-background: mdc-theme-ink-color-for-fill_(primary, $mdc-theme-background),
-  text-secondary-on-background: mdc-theme-ink-color-for-fill_(secondary, $mdc-theme-background),
-  text-hint-on-background: mdc-theme-ink-color-for-fill_(hint, $mdc-theme-background),
-  text-disabled-on-background: mdc-theme-ink-color-for-fill_(disabled, $mdc-theme-background),
-  text-icon-on-background: mdc-theme-ink-color-for-fill_(icon, $mdc-theme-background),
-  // Text-primary on "light" background
-  text-primary-on-light: mdc-theme-ink-color-for-fill_(primary, light),
-  text-secondary-on-light: mdc-theme-ink-color-for-fill_(secondary, light),
-  text-hint-on-light: mdc-theme-ink-color-for-fill_(hint, light),
-  text-disabled-on-light: mdc-theme-ink-color-for-fill_(disabled, light),
-  text-icon-on-light: mdc-theme-ink-color-for-fill_(icon, light),
-  // Text-primary on "dark" background
-  text-primary-on-dark: mdc-theme-ink-color-for-fill_(primary, dark),
-  text-secondary-on-dark: mdc-theme-ink-color-for-fill_(secondary, dark),
-  text-hint-on-dark: mdc-theme-ink-color-for-fill_(hint, dark),
-  text-disabled-on-dark: mdc-theme-ink-color-for-fill_(disabled, dark),
-  text-icon-on-dark: mdc-theme-ink-color-for-fill_(icon, dark)
-);
-
-// If `$property` is a literal color value (e.g., `blue`, `#fff`), it is returned verbatim. Otherwise, the value of the
-// corresponding theme property (from `$mdc-theme-property-values`) is returned. If `$property` is not a color and no
-// such theme property exists, an error is thrown.
-//
-// This is mainly useful in situations where `mdc-theme-prop` cannot be used directly (e.g., `box-shadow`).
-//
-// Examples:
-//
-// 1. mdc-theme-prop-value(primary) => "#3f51b5"
-// 2. mdc-theme-prop-value(blue)    => "blue"
-//
-// NOTE: This function must be defined in _variables.scss instead of _functions.scss to avoid circular imports.
-@function mdc-theme-prop-value($property) {
-  @if type-of($property) == "color" or $property == "currentColor" {
-    @return $property;
-  }
-
-  @if not map-has-key($mdc-theme-property-values, $property) {
-    @error "Invalid theme property: '#{$property}'. Choose one of: #{map-keys($mdc-theme-property-values)}";
-  }
-
-  @return map-get($mdc-theme-property-values, $property);
-}
-
-// NOTE: This function must be defined in _variables.scss instead of _functions.scss to avoid circular imports.
-@function mdc-theme-accessible-ink-color($fill-color, $text-style: primary) {
-  $fill-color-value: mdc-theme-prop-value($fill-color);
-  $color-map-for-tone: map-get($mdc-theme-text-colors, mdc-theme-contrast-tone($fill-color-value));
-
-  @if not map-has-key($color-map-for-tone, $text-style) {
-    @error "Invalid $text-style: '#{$text-style}'. Choose one of: #{map-keys($color-map-for-tone)}";
-  }
-
-  @return map-get($color-map-for-tone, $text-style);
-}
+$mdc-theme-error: #b00020 !default;
+$mdc-theme-on-error: #fff !default;

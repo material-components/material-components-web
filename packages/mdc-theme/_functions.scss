@@ -15,13 +15,59 @@
 //
 
 @import "./constants";
+@import "./variables";
+
+// Map of each of the theme colors.
+
+$mdc-theme-property-values: (
+  // Primary
+  primary: $mdc-theme-primary,
+  // Secondary
+  secondary: $mdc-theme-secondary,
+  // Background
+  background: $mdc-theme-background,
+  // Surface
+  surface: $mdc-theme-surface,
+  // Error
+  error: $mdc-theme-error,
+  // Text "on" colors
+  on-primary: $mdc-theme-on-primary,
+  on-secondary: $mdc-theme-on-secondary,
+  on-background: $mdc-theme-on-background,
+  on-surface: $mdc-theme-on-surface,
+  on-error: $mdc-theme-on-error
+);
+
+// If `$property` is a literal color value (e.g., `blue`, `#fff`), it is returned verbatim. Otherwise, the value of the
+// corresponding theme property (from `$mdc-theme-property-values`) is returned. If `$property` is not a color and no
+// such theme property exists, an error is thrown.
+//
+// This is mainly useful in situations where `mdc-theme-prop` cannot be used directly (e.g., `box-shadow`).
+//
+// Examples:
+//
+// 1. mdc-theme-prop-value(primary) => "#3f51b5"
+// 2. mdc-theme-prop-value(blue)    => "blue"
+@function mdc-theme-prop-value($property) {
+  @if type-of($property) == "color" or $property == "currentColor" {
+    @return $property;
+  }
+
+  @if not map-has-key($mdc-theme-property-values, $property) {
+    @error "Invalid theme property: '#{$property}'. Choose one of: #{map-keys($mdc-theme-property-values)}";
+  }
+
+  @return map-get($mdc-theme-property-values, $property);
+}
 
 // Calculate the luminance for a color.
 // See https://www.w3.org/TR/WCAG20-TECHS/G17.html#G17-tests
 @function mdc-theme-luminance($color) {
-  $red: nth($mdc-theme-linear-channel-values, red($color) + 1);
-  $green: nth($mdc-theme-linear-channel-values, green($color) + 1);
-  $blue: nth($mdc-theme-linear-channel-values, blue($color) + 1);
+  $color-value: mdc-theme-prop-value($color);
+
+  $red: nth($mdc-theme-linear-channel-values, red($color-value) + 1);
+  $green: nth($mdc-theme-linear-channel-values, green($color-value) + 1);
+  $blue: nth($mdc-theme-linear-channel-values, blue($color-value) + 1);
 
   @return .2126 * $red + .7152 * $green + .0722 * $blue;
 }
@@ -57,4 +103,14 @@
 // Returns "dark" if the given color is light and "light" if the given color is dark.
 @function mdc-theme-contrast-tone($color) {
   @return if(mdc-theme-tone($color) == "dark", "light", "dark");
+}
+
+// Determine what color to use on top of given color to meet accessibility standards for contrast.
+// Returns "black" if the given color is light and "white" if the given color is dark.
+@function mdc-theme-accessible-ink-color($fill-color) {
+  @if mdc-theme-contrast-tone($fill-color) == "dark" {
+    @return #000;
+  } @else {
+    @return #fff;
+  }
 }
