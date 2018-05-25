@@ -184,6 +184,8 @@ class SnapshotStore {
     /** @type {!Array<[string, !SnapshotPageJson]>} */
     const newMatchingPageEntries = Object.entries(newJsonData).filter(existsInOldJsonData);
 
+    // TODO(acdvorak): Refactor this method for clarity. See
+    // https://github.com/material-components/material-components-web/pull/2777#discussion_r190439992
     for (const [htmlFilePath, newPage] of newMatchingPageEntries) {
       let pageHasDiffs = false;
 
