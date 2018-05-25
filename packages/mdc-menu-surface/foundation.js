@@ -245,9 +245,8 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     const lastItemIndex = this.adapter_.getNumberFocusableElements() - 1;
 
     // Ensure Arrow keys and space do not cause inadvertent scrolling.
-    if (isArrowUp || isArrowDown || isArrowLeft || isArrowRight || isTab) {
-      evt.preventDefault();
-    } else if (isSpace && this.isSpaceKeyAllowedOnTarget_(evt)) {
+    if (isArrowUp || isArrowDown || isArrowLeft || isArrowRight ||
+        isTab || (isSpace && this.isSpaceKeyAllowedOnTarget_(evt))) {
       evt.preventDefault();
     }
 

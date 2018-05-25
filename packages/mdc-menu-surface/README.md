@@ -78,7 +78,7 @@ CSS Class | Description
 Mixin | Description
 --- | ---
 `mdc-menu-surface-ink-color($color)` | Sets the `color` property of the `mdc-menu-surface`.
-`mdc-menu-surface-background-color($color)` | Sets the `background-color` property of the `mdc-menu-surface`.
+`mdc-menu-surface-fill-color($color)` | Sets the `background-color` property of the `mdc-menu-surface`.
 
 ### `MDCMenuSurface`
 
