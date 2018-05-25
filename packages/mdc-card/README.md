@@ -39,10 +39,6 @@ npm install --save @material/card
 
 ## Usage
 
-```css
-@import "@material/card/mdc-card";
-```
-
 ### HTML Structure
 
 ```html
@@ -168,6 +164,11 @@ elements:
     <i class="material-icons mdc-card__action mdc-card__action--icon" tabindex="0" role="button" title="More options">more_vert</i>
   </div>
 </div>
+```
+
+### Styles
+```css
+@import "@material/card/mdc-card";
 ```
 
 ### CSS Classes
