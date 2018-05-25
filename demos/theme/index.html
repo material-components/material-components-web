@@ -35,12 +35,12 @@
     <header class="mdc-toolbar mdc-toolbar--fixed demo-toolbar">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-          <button class="material-icons mdc-toolbar__menu-icon demo-drawer-toggle">menu</button>
+          <button class="material-icons mdc-toolbar__menu-icon demo-drawer-toggle mdc-icon-button" data-mdc-ripple-is-unbounded>menu</button>
           <span class="mdc-toolbar__title catalog-title">Color Theming</span>
         </section>
         <section class="mdc-toolbar__section mdc-toolbar__section--align-end mdc-toolbar__section--shrink-to-fit" role="toolbar">
           <div class="mdc-menu-anchor">
-            <button id="theme-color-action" class="mdc-toolbar__icon" title="Change theme colors" data-theme="baseline">
+            <button id="theme-color-action" class="mdc-toolbar__icon mdc-icon-button" title="Change theme colors" data-theme="baseline" data-mdc-ripple-is-unbounded>
               <i class="demo-theme-color-radio">
                 <span class="demo-theme-color-radio__inner"></span>
               </i>
@@ -327,26 +327,20 @@
                 <button class="mdc-button mdc-card__action mdc-card__action--button">Bookmark</button>
               </div>
               <div class="mdc-card__action-icons">
-                <i class="mdc-icon-toggle material-icons mdc-card__action mdc-card__action--icon"
-                   tabindex="0"
-                   role="button"
+                <button class="mdc-icon-button material-icons mdc-card__action mdc-card__action--icon"
                    aria-pressed="false"
                    aria-label="Add to favorites"
                    title="Add to favorites"
-                   data-toggle-on='{"content": "favorite", "label": "Remove from favorites"}'
-                   data-toggle-off='{"content": "favorite_border", "label": "Add to favorites"}'>
-                  favorite_border
-                </i>
-                <i class="material-icons mdc-card__action mdc-card__action--icon mdc-ripple-surface"
-                   tabindex="0"
-                   role="button"
+                   data-toggle-on-content="favorite"
+                   data-toggle-on-label="Remove from favorites"
+                   data-toggle-off-content="favorite_border"
+                   data-toggle-off-label="Add to favorites">favorite_border</button>
+                <button class="mdc-icon-button material-icons mdc-card__action mdc-card__action--icon"
                    data-mdc-ripple-is-unbounded
-                   title="Share">share</i>
-                <i class="material-icons mdc-card__action mdc-card__action--icon mdc-ripple-surface"
-                   tabindex="0"
-                   role="button"
+                   title="Share">share</button>
+                <button class="mdc-icon-button material-icons mdc-card__action mdc-card__action--icon"
                    data-mdc-ripple-is-unbounded
-                   title="More options">more_vert</i>
+                   title="More options">more_vert</button>
               </div>
             </div>
           </div>
@@ -509,30 +503,26 @@
           <div class="mdc-elevation--z2 demo-icon-toggle-tile">
             <h4 class="mdc-typography--subtitle1">Enabled</h4>
 
-            <i class="mdc-icon-toggle mdc-icon-toggle--primary material-icons"
-               role="button"
+            <button class="mdc-icon-button material-icons"
                aria-label="Add to favorites"
                aria-pressed="false"
-               tabindex="0"
-               data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
-               data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
-              favorite_border
-            </i>
+               data-toggle-on-content="favorite"
+               data-toggle-on-label="Remove from favorites"
+               data-toggle-off-content="favorite_border"
+               data-toggle-off-label="Add to favorites">favorite_border</button>
           </div>
 
           <div class="mdc-elevation--z2 demo-icon-toggle-tile">
             <h4 class="mdc-typography--subtitle1">Disabled</h4>
 
-            <i class="mdc-icon-toggle mdc-icon-toggle--disabled material-icons"
-               role="button"
+            <button class="mdc-icon-button  material-icons"
                aria-label="Add to favorites"
                aria-pressed="false"
-               aria-disabled="true"
-               tabindex="-1"
-               data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
-               data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
-              favorite_border
-            </i>
+               disabled
+               data-toggle-on-content="favorite"
+               data-toggle-on-label="Remove from favorites"
+               data-toggle-off-content="favorite_border"
+               data-toggle-off-label="Add to favorites">favorite_border</button>
           </div>
         </div>
       </section>
@@ -895,11 +885,19 @@
         });
 
         /*
+         * Icon Button
+         */
+
+        [].forEach.call(document.querySelectorAll('[data-mdc-ripple-is-unbounded]'), function(iconButtonEl) {
+          mdc.ripple.MDCRipple.attachTo(iconButtonEl);
+        });
+
+        /*
          * Icon Toggle
          */
 
-        [].forEach.call(document.querySelectorAll('.mdc-icon-toggle'), function(iconToggleEl) {
-          mdc.iconToggle.MDCIconToggle.attachTo(iconToggleEl);
+        [].forEach.call(document.querySelectorAll('.mdc-icon-button[data-toggle-on-content]'), function(iconButtonToggleEl) {
+          mdc.iconButton.MDCIconButtonToggle.attachTo(iconButtonToggleEl);
         });
 
         /*
