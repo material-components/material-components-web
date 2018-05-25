@@ -174,7 +174,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {!AnchorMargin} margin 4-plet of margins from anchor.
+   * @param {!AnchorMargin} margin set of margin values from anchor.
    */
   setAnchorMargin(margin) {
     this.anchorMargin_.top = typeof margin.top === 'number' ? margin.top : 0;
