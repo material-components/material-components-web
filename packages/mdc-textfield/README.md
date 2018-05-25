@@ -306,6 +306,8 @@ Method Signature | Description
 `activateFocus() => void` | Activates the focus state of the Text Field. Normally called in response to the input focus event.
 `deactivateFocus() => void` | Deactivates the focus state of the Text Field. Normally called in response to the input blur event.
 `setHelperTextContent(content: string) => void` | Sets the content of the helper text.
+`setIconAriaLabel(label: string) => void` | Sets the aria label of the icon.
+`setIconContent(content: string) => void` | Sets the text content of the icon.
 `notchOutline(openNotch: boolean) => void` | Opens/closes the notched outline.
 
 `MDCTextFieldFoundation` supports multiple optional sub-elements: helper text and icon. The foundations of these sub-elements must be passed in as constructor arguments to `MDCTextFieldFoundation`.
