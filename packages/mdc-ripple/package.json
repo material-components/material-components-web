@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@material/base": "^0.35.0",
-    "@material/theme": "^0.35.0"
+    "@material/theme": "^0.35.0",
+    "@material/animation": "^0.34.0"
   }
 }
