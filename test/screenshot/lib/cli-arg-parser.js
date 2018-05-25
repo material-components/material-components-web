@@ -181,6 +181,18 @@ The default behavior is to always build assets before running the tests.
   }
 
   /**
+   * @return {boolean}
+   */
+  hasAnyFilters() {
+    return (
+      this.includeUrlPatterns.length > 0 ||
+      this.excludeUrlPatterns.length > 0 ||
+      this.includeBrowserPatterns.length > 0 ||
+      this.excludeBrowserPatterns.length > 0
+    );
+  }
+
+  /**
    * @param {string} rawDiffBase
    * @param {string} defaultGoldenPath
    * @return {!Promise<!DiffSource>}
@@ -189,8 +201,6 @@ The default behavior is to always build assets before running the tests.
     rawDiffBase = this.diffBase,
     defaultGoldenPath = this.goldenPath,
   } = {}) {
-    await this.gitRepo_.fetch();
-
     // Diff against a public `golden.json` URL.
     // E.g.: `--mdc-diff-base=https://storage.googleapis.com/.../golden.json`
     const isUrl = HTTP_URL_REGEX.test(rawDiffBase);

@@ -1,4 +1,5 @@
-/*
+/**
+ * @license
  * Copyright 2018 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,25 +15,22 @@
  * limitations under the License.
  */
 
-'use strict';
+/** @enum {string} */
+const cssClasses = {
+  ROOT: 'mdc-icon-button',
+};
 
-const Controller = require('./lib/controller');
-const controller = new Controller();
+/** @enum {string} */
+const strings = {
+  DATA_TOGGLE_ON_LABEL: 'data-toggle-on-label',
+  DATA_TOGGLE_ON_CONTENT: 'data-toggle-on-content',
+  DATA_TOGGLE_ON_CLASS: 'data-toggle-on-class',
+  DATA_TOGGLE_OFF_LABEL: 'data-toggle-off-label',
+  DATA_TOGGLE_OFF_CONTENT: 'data-toggle-off-content',
+  DATA_TOGGLE_OFF_CLASS: 'data-toggle-off-class',
+  ARIA_PRESSED: 'aria-pressed',
+  ARIA_LABEL: 'aria-label',
+  CHANGE_EVENT: 'MDCIconButtonToggle:change',
+};
 
-controller.initialize()
-  .then(() => controller.uploadAllAssets(), handleError)
-  .then((testCases) => controller.captureAllPages(testCases), handleError)
-  .then((testCases) => controller.diffGoldenJson(testCases), handleError)
-  .then(
-    async ({testCases, diffs}) => {
-      await controller.uploadDiffReport({testCases, diffs});
-      await controller.updateGoldenJson({testCases, diffs});
-    },
-    handleError
-  )
-;
-
-function handleError(err) {
-  console.error(err);
-  process.exit(1);
-}
+export {cssClasses, strings};
