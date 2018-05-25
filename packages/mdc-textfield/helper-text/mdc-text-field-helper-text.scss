@@ -28,11 +28,6 @@
   opacity: 0;
   will-change: opacity;
 
-  // stylelint-disable plugin/selector-bem-pattern
-  .mdc-text-field + & {
-    margin-bottom: 8px;
-  }
-
   // stylelint-enable plugin/selector-bem-pattern
 }
 
