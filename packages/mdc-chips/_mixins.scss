@@ -94,6 +94,10 @@
   border-width: $width;
 }
 
+@mixin mdc-chip-height($height) {
+  height: $height;
+}
+
 @mixin mdc-chip-set-spacing($gap-size) {
   padding: $gap-size / 2;
 
