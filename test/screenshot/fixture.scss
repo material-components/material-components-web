@@ -19,11 +19,6 @@
 
 $test-trim-color: #abc123; // Value must match `TRIM_COLOR_CSS_VALUE` in `image-cropper.js`
 $test-grid-color: #dddddd;
-$test-fixture-width: 348px;
-$test-button-cell-padding: 10px;
-$test-button-cell-width: 171px;
-$test-button-cell-height: 71px;
-$test-button-columns: 2;
 
 .test-body {
   display: flex;
@@ -34,7 +29,6 @@ $test-button-columns: 2;
 
 .test-main {
   box-sizing: border-box;
-  width: $test-fixture-width;
   border: 1px solid $test-trim-color;
 }
 
@@ -46,12 +40,10 @@ $test-button-columns: 2;
 
 .test-cell {
   box-sizing: border-box;
-  width: $test-button-cell-width;
-  height: $test-button-cell-height;
   margin: 1px;
 
   // Ensure that shadows from adjacent components don't overlap
-  padding: $test-button-cell-padding;
+  padding: 10px;
 
   // Ruler grid pattern
   // https://stackoverflow.com/a/32861765/467582
@@ -59,5 +51,5 @@ $test-button-columns: 2;
     linear-gradient(to right, #{$test-grid-color} 1px, transparent 1.01px),  // fraction for IE 11
     linear-gradient(to bottom, #{$test-grid-color} 1px, transparent 1.01px); // fraction for IE 11
 
-  background-size: #{$test-button-cell-padding} #{$test-button-cell-padding};
+  background-size: 10px 10px;
 }
