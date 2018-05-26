@@ -50,18 +50,21 @@ const API_MAX_WAIT = Duration.minutes(10);
  */
 const API_POLL_INTERVAL = Duration.seconds(5);
 
+/**
+ * How long to wait between retrying failed requests.
+ * @type {!Duration}
+ */
+const API_RETRY_WAIT = Duration.seconds(10);
+
 /*
  * Non-configurable
  */
 
-/** @type {number} */
-const API_MAX_WAIT_MS = API_MAX_WAIT.toMillis();
-
-/** @type {number} */
-const API_POLL_INTERVAL_MS = API_POLL_INTERVAL.toMillis();
-
-/** @type {string} */
-const API_POLL_INTERVAL_HUMAN = API_POLL_INTERVAL.toHuman();
+/** @type {number} */ const API_MAX_WAIT_MS = API_MAX_WAIT.toMillis();
+/** @type {number} */ const API_POLL_INTERVAL_MS = API_POLL_INTERVAL.toMillis();
+/** @type {string} */ const API_POLL_INTERVAL_HUMAN = API_POLL_INTERVAL.toHuman();
+/** @type {number} */ const API_RETRY_WAIT_MS = API_RETRY_WAIT.toMillis();
+/** @type {string} */ const API_RETRY_WAIT_HUMAN = API_RETRY_WAIT.toHuman();
 
 /** @type {!CbtApi} */
 const cbtApi = new CbtApi();
@@ -113,15 +116,13 @@ async function sendCaptureRequest(testPageUrl, retryCount = 0) {
   return cbtApi.sendCaptureRequest(testPageUrl, userAgents)
     .catch(async (err) => {
       if (reachedParallelExecutionLimit(err)) {
-        console.warn(`Parallel execution limit reached - waiting for ${API_POLL_INTERVAL_HUMAN} before retrying...`);
-        await sleep(API_POLL_INTERVAL_MS);
+        await logParallelExecutionAndSleep();
         return sendCaptureRequest(testPageUrl, retryCount); // don't increment the retry count for parallel execution
       }
 
       // TODO(acdvorak): Abstract this logic into CbtApi for every HTTP request?
       if (isServerError(err)) {
-        logServerError(err);
-        await sleep(API_POLL_INTERVAL_MS);
+        await logServerErrorAndSleep(err);
         return sendCaptureRequest(testPageUrl, retryCount + 1);
       }
 
@@ -164,24 +165,16 @@ async function handleCaptureResponse(testPageUrl, captureResponseBody, retryCoun
   const resultsWithNoFullpageImage = allResults.filter((cbtResult) => !cbtResult.images.fullpage);
   const resultsWithNoChromelessImage = allResults.filter((cbtResult) => !cbtResult.images.chromeless);
 
-  async function sleepAndLogError(nullPropertyName, resultsWithNullProperties) {
-    console.error(resultsWithNullProperties);
-    console.error(`
-ERROR: ${nullPropertyName} is null
-Waiting for ${API_POLL_INTERVAL_HUMAN} before retrying...
-`);
-    return sleep(API_POLL_INTERVAL_MS);
-  }
-
   // At least one browser failed to capture. Retry all browsers.
   if (resultsWithNoFullpageImage.length > 0) {
-    await sleepAndLogError('cbtResult.images.fullpage', resultsWithNoFullpageImage);
+    // TODO(acdvorak): Use CBT "retry" API instead of rerunning in all browsers?
+    await logNullResponseErrorAndSleep('cbtResult.images.fullpage', resultsWithNoFullpageImage);
     return sendCaptureRequest(testPageUrl, retryCount + 1);
   }
 
-  // CBT generated a fullpage screenshot, but has not yet generated the chromeless version. Send a new info request.
   if (resultsWithNoChromelessImage.length > 0) {
-    await sleepAndLogError('cbtResult.images.chromeless', resultsWithNoChromelessImage);
+    // TODO(acdvorak): Use CBT "retry" API instead of rerunning in all browsers?
+    await logNullResponseErrorAndSleep('cbtResult.images.chromeless', resultsWithNoChromelessImage);
     return sendCaptureRequest(testPageUrl, retryCount + 1);
   }
 
@@ -195,8 +188,7 @@ async function fetchScreenshotInfo(screenshotTestId) {
     .catch(async (err) => {
       // TODO(acdvorak): Abstract this logic into CbtApi for every HTTP request?
       if (isServerError(err)) {
-        logServerError(err);
-        await sleep(API_POLL_INTERVAL_MS);
+        await logServerErrorAndSleep(err);
         return fetchScreenshotInfo(screenshotTestId);
       }
     });
@@ -239,13 +231,28 @@ async function sleep(ms) {
   });
 }
 
-function logServerError(requestError) {
-  console.warn(requestError.options); // HTTP request params
-  console.warn(requestError.error); // HTTP response body
+async function logParallelExecutionAndSleep() {
+  console.warn(`Parallel execution limit reached - waiting for ${API_POLL_INTERVAL_HUMAN} before retrying...`);
+  return sleep(API_POLL_INTERVAL_MS);
+}
+
+async function logServerErrorAndSleep(requestError) {
+  console.warn('requestError.options:', requestError.options); // HTTP request params
+  console.warn('requestError.error:', requestError.error); // HTTP response body
   console.warn(`
 CBT server error: HTTP ${requestError.statusCode}
-Waiting for ${API_POLL_INTERVAL_HUMAN} before retrying...
+Waiting for ${API_RETRY_WAIT_HUMAN} before retrying...
 `);
+  return sleep(API_RETRY_WAIT_MS);
+}
+
+async function logNullResponseErrorAndSleep(nullPropertyName, resultsWithNullProperties) {
+  console.error(resultsWithNullProperties);
+  console.error(`
+ERROR: ${nullPropertyName} is null
+Waiting for ${API_RETRY_WAIT_HUMAN} before retrying...
+`);
+  return sleep(API_RETRY_WAIT_MS);
 }
 
 function logTestCaseProgress(testPageUrl, testPageProgress) {
