@@ -51,8 +51,10 @@
       </div>
     </div>
 
-    <aside class="mdc-drawer mdc-drawer--temporary demo-drawer">
-      <nav class="mdc-drawer__drawer">
+
+    <aside class="mdc-drawer mdc-drawer--modal demo-drawer">
+      <div class="mdc-drawer__scrim"></div>
+      <nav class="mdc-drawer__surface">
         <header class="mdc-drawer__header">
           <div class="mdc-drawer__header-content mdc-theme--on-primary mdc-theme--primary-bg">
             Header here
@@ -89,6 +91,7 @@
           </div>
         </nav>
       </nav>
+
     </aside>
     <main class="demo-main mdc-toolbar-fixed-adjust">
       <h1 class="mdc-typography--headline4">Temporary Drawer</h1>
@@ -149,7 +152,7 @@
 
         // Demonstrate application of --activated modifier to drawer menu items
         var activatedClass = 'mdc-list-item--selected';
-        document.querySelector('.mdc-drawer__drawer').addEventListener('click', function(event) {
+        document.querySelector('.mdc-drawer__surface').addEventListener('click', function(event) {
           var el = event.target;
           while (el && !el.classList.contains('mdc-list-item')) {
             el = el.parentElement;

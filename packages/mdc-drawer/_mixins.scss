@@ -100,7 +100,7 @@
 }
 
 @mixin mdc-drawer-scrim-color($color, $opacity) {
-  &::before {
+  .mdc-drawer__scrim {
     background-color: rgba(mdc-theme-prop-value($color), $opacity);
   }
 }

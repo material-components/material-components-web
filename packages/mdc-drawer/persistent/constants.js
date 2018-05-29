@@ -17,13 +17,13 @@
 import {FOCUSABLE_ELEMENTS} from '../slidable/index';
 
 export const cssClasses = {
-  ROOT: 'mdc-drawer--persistent',
+  ROOT: 'mdc-drawer--dismissible',
   OPEN: 'mdc-drawer--open',
   ANIMATING: 'mdc-drawer--animating',
 };
 
 export const strings = {
-  DRAWER_SELECTOR: '.mdc-drawer--persistent .mdc-drawer__drawer',
+  DRAWER_SELECTOR: '.mdc-drawer--dismissible .mdc-drawer__surface',
   FOCUSABLE_ELEMENTS,
   OPEN_EVENT: 'MDCPersistentDrawer:open',
   CLOSE_EVENT: 'MDCPersistentDrawer:close',

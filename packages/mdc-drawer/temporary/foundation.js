@@ -44,9 +44,7 @@ export default class MDCTemporaryDrawerFoundation extends MDCSlidableDrawerFound
       MDCTemporaryDrawerFoundation.cssClasses.OPEN);
 
     this.componentClickHandler_ = (evt) => {
-      if (this.adapter_.eventTargetHasClass(evt.target, cssClasses.ROOT)) {
-        this.close(true);
-      }
+      this.close(true);
     };
   }
 
@@ -55,7 +53,6 @@ export default class MDCTemporaryDrawerFoundation extends MDCSlidableDrawerFound
 
     // Make browser aware of custom property being used in this element.
     // Workaround for certain types of hard-to-reproduce heisenbugs.
-    this.adapter_.updateCssVariable(0);
     this.adapter_.registerInteractionHandler('click', this.componentClickHandler_);
   }
 
@@ -69,29 +66,13 @@ export default class MDCTemporaryDrawerFoundation extends MDCSlidableDrawerFound
   open() {
     this.disableScroll_();
     // Make sure custom property values are cleared before starting.
-    this.adapter_.updateCssVariable('');
 
     super.open();
   }
 
   close() {
     // Make sure custom property values are cleared before making any changes.
-    this.adapter_.updateCssVariable('');
-
     super.close();
-  }
-
-  prepareForTouchEnd_() {
-    super.prepareForTouchEnd_();
-
-    this.adapter_.updateCssVariable('');
-  }
-
-  updateDrawer_() {
-    super.updateDrawer_();
-
-    const newOpacity = Math.max(0, 1 + this.direction_ * (this.newPosition_ / this.drawerWidth_));
-    this.adapter_.updateCssVariable(newOpacity);
   }
 
   isRootTransitioningEventTarget_(el) {

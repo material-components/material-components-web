@@ -22,7 +22,7 @@
 @import "../slidable/mixins";
 @import "../slidable/variables";
 
-.mdc-drawer--temporary {
+.mdc-drawer--modal {
   @include mdc-drawer-base_;
   @include mdc-drawer-ink-color($mdc-temporary-drawer-ink-color);
   @include mdc-drawer-fill-color($mdc-temporary-drawer-fill-color);
@@ -32,32 +32,32 @@
   top: 0;
   left: 0;
   box-sizing: border-box;
-  width: 100%;
   height: 100%;
+  width: 100%;
   pointer-events: none;
   overflow: hidden;
   contain: strict;
   z-index: 5;
 
   // Shaded background
-  &::before {
+  .mdc-drawer__scrim {
     display: block;
     position: absolute;
     top: 0;
     left: 0;
     box-sizing: border-box;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     opacity: 0;
     opacity: var(--mdc-temporary-drawer-opacity, 0);
-    content: "";
     will-change: opacity;
   }
 
-  .mdc-drawer__drawer {
+  .mdc-drawer__surface {
     @include mdc-elevation(16);
     @include mdc-rtl-reflexive-position(left, 0);
     @include mdc-slideable-drawer;
+    background: white;
 
     display: flex;
     position: absolute;
@@ -85,43 +85,24 @@
     touch-action: pan-y;
   }
 
-  .mdc-drawer__footer {
-    @include mdc-elevation(2);
-
-    flex-shrink: 0;
-  }
-
   &.mdc-drawer--open {
     pointer-events: auto;
+    left: 0;
 
-    &::before {
+    .mdc-drawer__scrim {
       opacity: 1;
       opacity: var(--mdc-temporary-drawer-opacity, 1);
     }
 
-    .mdc-drawer__drawer {
+    .mdc-drawer__surface {
       @include mdc-slideable-drawer-open;
     }
 
     // Specificity fix to ensure that mdc-drawer is not translated off-screen within an RTL context
     @include mdc-rtl {
-      .mdc-drawer__drawer {
+      .mdc-drawer__surface {
         @include mdc-slideable-drawer-open;
       }
-    }
-  }
-
-  &.mdc-drawer--animating {
-    &::before {
-      transition: mdc-animation-enter(opacity, .3s);
-    }
-
-    .mdc-drawer__drawer {
-      transition: $mdc-slidable-drawer-transition-close;
-    }
-
-    &.mdc-drawer--open .mdc-drawer__drawer {
-      transition: $mdc-slidable-drawer-transition-open;
     }
   }
 }

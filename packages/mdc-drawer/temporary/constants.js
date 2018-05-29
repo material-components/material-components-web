@@ -17,14 +17,14 @@
 import {FOCUSABLE_ELEMENTS} from '../slidable/index';
 
 export const cssClasses = {
-  ROOT: 'mdc-drawer--temporary',
+  ROOT: 'mdc-drawer--modal',
   OPEN: 'mdc-drawer--open',
   ANIMATING: 'mdc-drawer--animating',
   SCROLL_LOCK: 'mdc-drawer-scroll-lock',
 };
 
 export const strings = {
-  DRAWER_SELECTOR: '.mdc-drawer--temporary .mdc-drawer__drawer',
+  DRAWER_SELECTOR: '.mdc-drawer--modal .mdc-drawer__surface',
   OPACITY_VAR_NAME: '--mdc-temporary-drawer-opacity',
   FOCUSABLE_ELEMENTS,
   OPEN_EVENT: 'MDCTemporaryDrawer:open',

@@ -17,3 +17,27 @@
 @import "./persistent/mdc-persistent-drawer";
 @import "./permanent/mdc-permanent-drawer";
 @import "./temporary/mdc-temporary-drawer";
+
+
+.mdc-drawer {
+  border-right: 1px solid grey;
+  overflow: hidden;
+}
+
+.mdc-drawer .mdc-drawer__surface {
+  width: 200px;
+}
+
+.mdc-list-item {
+  padding: 0 20px;
+}
+
+.mdc-drawer--dismissible {
+  @include mdc-slideable-drawer;
+  width: 0;
+}
+
+.mdc-drawer--dismissible.mdc-drawer--open {
+  @include mdc-slideable-drawer-open;
+  width: 200px;
+}

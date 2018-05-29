@@ -55,7 +55,7 @@ export class MDCTemporaryDrawer extends MDCComponent {
       eventTargetHasClass: (target, className) => target.classList.contains(className),
       hasNecessaryDom: () => Boolean(this.drawer),
       registerInteractionHandler: (evt, handler) =>
-        this.root_.addEventListener(util.remapEvent(evt), handler, util.applyPassive()),
+        this.root_.querySelector('.mdc-drawer__scrim').addEventListener(util.remapEvent(evt), handler, util.applyPassive()),
       deregisterInteractionHandler: (evt, handler) =>
         this.root_.removeEventListener(util.remapEvent(evt), handler, util.applyPassive()),
       registerDrawerInteractionHandler: (evt, handler) =>
