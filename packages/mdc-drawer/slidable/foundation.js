@@ -50,8 +50,6 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
     this.animatingCssClass_ = animatingCssClass;
     this.openCssClass_ = openCssClass;
 
-    this.transitionEndHandler_ = (evt) => this.handleTransitionEnd_(evt);
-
     this.inert_ = false;
 
     this.documentKeydownHandler_ = (evt) => {
@@ -79,7 +77,6 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
   }
 
   open() {
-    this.adapter_.registerTransitionEndHandler(this.transitionEndHandler_);
     this.adapter_.registerDocumentKeydownHandler(this.documentKeydownHandler_);
     // this.adapter_.addClass(this.animatingCssClass_);
     this.adapter_.addClass(this.openCssClass_);
@@ -93,7 +90,6 @@ export class MDCSlidableDrawerFoundation extends MDCFoundation {
 
   close() {
     this.adapter_.deregisterDocumentKeydownHandler(this.documentKeydownHandler_);
-    this.adapter_.registerTransitionEndHandler(this.transitionEndHandler_);
     this.adapter_.removeClass(this.openCssClass_);
     // Debounce multiple calls
     if (this.isOpen_) {
