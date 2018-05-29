@@ -17,13 +17,13 @@
 @import "../../../packages/mdc-icon-button/mixins";
 @import "../../../packages/mdc-theme/color-palette";
 
-$custom-icon-button-color: $material-color-red-500;
-$custom-icon-button-custom-icon-size: 36px;
+$custom-icon-button-icon-color: $material-color-red-500;
+$custom-icon-button-size: 36px;
 
 .custom-icon-button--ink-color {
-  @include mdc-icon-button-ink-color($custom-icon-button-color);
+  @include mdc-icon-button-ink-color($custom-icon-button-icon-color);
 }
 
 .custom-icon-button--icon-size {
-  @include mdc-icon-button-size($custom-icon-button-custom-icon-size);
+  @include mdc-icon-button-size($custom-icon-button-size);
 }
