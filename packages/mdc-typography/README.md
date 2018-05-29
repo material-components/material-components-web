@@ -44,9 +44,11 @@ MDC Typography is a foundational module that applies these styles to MDC Web com
 npm install @material/typography
 ```
 
-## Usage
+## Basic Usage
 
-We recommend you load Roboto from Google Fonts
+### HTML Structure
+
+We recommend you load Roboto from Google Fonts:
 
 ```html
 <head>
@@ -56,6 +58,14 @@ We recommend you load Roboto from Google Fonts
   <h1 class="mdc-typography--headline1">Big header</h1>
 </body>
 ```
+
+### Styles
+
+```css
+@import "@material/typography/mdc-typography";
+```
+
+## Style Customization
 
 ### CSS Classes
 
