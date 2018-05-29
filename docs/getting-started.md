@@ -168,7 +168,7 @@ npm install --save-dev autoprefixer postcss-loader
 Add `autoprefixer` at the top of your `webpack.config.js`:
 
 ```js
-const autoprefixer= require('autoprefixer');
+const autoprefixer = require('autoprefixer');
 ```
 
 Then add `postcss-loader`, using `autoprefixer` as a plugin:
@@ -181,7 +181,7 @@ Then add `postcss-loader`, using `autoprefixer` as a plugin:
      plugins: () => [autoprefixer({ grid: false })]
   }
 },
-{ loader: 'sass-loader' }
+{ loader: 'sass-loader' },
 ```
 
 > Note: We disable autoprefixer for CSS Grid in order for MDC Web Layout Grid to work properly. Please also note that the order of loaders in webpack matters.
