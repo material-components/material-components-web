@@ -22,6 +22,7 @@ const glob = require('glob');
 
 const CbtUserAgent = require('./cbt-user-agent');
 const CliArgParser = require('./cli-arg-parser');
+const GitRepo = require('./git-repo');
 const ImageCache = require('./image-cache');
 const ImageCropper = require('./image-cropper');
 const ImageDiffer = require('./image-differ');
@@ -44,6 +45,12 @@ class Controller {
      * @private
      */
     this.cliArgs_ = new CliArgParser();
+
+    /**
+     * @type {!GitRepo}
+     * @private
+     */
+    this.gitRepo_ = new GitRepo();
 
     /**
      * @type {!Storage}
@@ -85,6 +92,8 @@ class Controller {
 
   async initialize() {
     this.baseUploadDir_ = await this.storage_.generateUniqueUploadDir();
+
+    await this.gitRepo_.fetch();
 
     if (await this.cliArgs_.shouldBuild()) {
       childProcess.spawnSync('npm', ['run', 'screenshot:build'], {shell: true, stdio: 'inherit'});
@@ -309,12 +318,12 @@ class Controller {
    * Writes the given `testCases` to a `golden.json` file.
    * If the file already exists, it will be overwritten.
    * @param {!Array<!UploadableTestCase>} testCases
-   * @return {!Promise<!Array<!UploadableTestCase>>}
+   * @param {!Array<!ImageDiffJson>} diffs
+   * @return {!Promise<{diffs: !Array<!ImageDiffJson>, testCases: !Array<!UploadableTestCase>}>}
    */
-  async updateGoldenJson({testCases}) {
-    const jsonData = await this.snapshotStore_.fromTestCases(testCases);
-    await this.snapshotStore_.writeToDisk(jsonData);
-    return testCases;
+  async updateGoldenJson({testCases, diffs}) {
+    await this.snapshotStore_.writeToDisk({testCases, diffs});
+    return {testCases, diffs};
   }
 
   /**
@@ -338,7 +347,7 @@ class Controller {
           console.log('\n\nDONE diffing screenshot images!\n\n');
           console.log(diffs);
           console.log(`\n\nFound ${diffs.length} screenshot diffs!\n\n`);
-          return {diffs, testCases};
+          return {testCases, diffs};
         },
         (err) => Promise.reject(err)
       )

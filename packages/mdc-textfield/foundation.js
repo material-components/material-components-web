@@ -51,7 +51,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
 
   /** @return {boolean} */
   get shouldFloat() {
-    return !this.isBadInput_() && (!!this.getValue() || this.isFocused_);
+    return this.isFocused_ || !!this.getValue() || this.isBadInput_();
   }
 
   /**
@@ -126,7 +126,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
   init() {
     this.adapter_.addClass(MDCTextFieldFoundation.cssClasses.UPGRADED);
     // Ensure label does not collide with any pre-filled value.
-    if (this.adapter_.hasLabel() && this.getValue()) {
+    if (this.adapter_.hasLabel() && (this.getValue() || this.isBadInput_())) {
       this.adapter_.floatLabel(this.shouldFloat);
       this.notchOutline(this.shouldFloat);
     }
@@ -330,6 +330,26 @@ class MDCTextFieldFoundation extends MDCFoundation {
   setHelperTextContent(content) {
     if (this.helperText_) {
       this.helperText_.setContent(content);
+    }
+  }
+
+  /**
+   * Sets the aria label of the icon.
+   * @param {string} label
+   */
+  setIconAriaLabel(label) {
+    if (this.icon_) {
+      this.icon_.setAriaLabel(label);
+    }
+  }
+
+  /**
+   * Sets the text content of the icon.
+   * @param {string} content
+   */
+  setIconContent(content) {
+    if (this.icon_) {
+      this.icon_.setContent(content);
     }
   }
 

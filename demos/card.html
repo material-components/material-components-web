@@ -58,26 +58,20 @@
               <button class="mdc-button mdc-card__action mdc-card__action--button">Bookmark</button>
             </div>
             <div class="mdc-card__action-icons">
-              <i class="mdc-icon-toggle material-icons mdc-card__action mdc-card__action--icon"
-                 tabindex="0"
-                 role="button"
+              <button class="mdc-icon-button material-icons mdc-card__action mdc-card__action--icon"
                  aria-pressed="false"
                  aria-label="Add to favorites"
                  title="Add to favorites"
-                 data-toggle-on='{"content": "favorite", "label": "Remove from favorites"}'
-                 data-toggle-off='{"content": "favorite_border", "label": "Add to favorites"}'>
-                favorite_border
-              </i>
-              <i class="material-icons mdc-card__action mdc-card__action--icon mdc-ripple-surface"
-                 tabindex="0"
-                 role="button"
+                 data-toggle-on-content="favorite"
+                 data-toggle-on-label="Remove from favorites"
+                 data-toggle-off-content="favorite_border"
+                 data-toggle-off-label="Add to favorites">favorite_border</button>
+              <button class="mdc-icon-button material-icons mdc-card__action mdc-card__action--icon"
                  data-mdc-ripple-is-unbounded
-                 title="Share">share</i>
-              <i class="material-icons mdc-card__action mdc-card__action--icon mdc-ripple-surface"
-                 tabindex="0"
-                 role="button"
+                 title="Share">share</button>
+              <button class="mdc-icon-button material-icons mdc-card__action mdc-card__action--icon"
                  data-mdc-ripple-is-unbounded
-                 title="More options">more_vert</i>
+                 title="More options">more_vert</button>
             </div>
           </div>
         </div>
@@ -152,31 +146,25 @@
             </div>
           </a>
           <div class="mdc-card__actions mdc-card__action-icons">
-            <i class="mdc-icon-toggle material-icons mdc-card__action mdc-card__action--icon"
-               tabindex="0"
-               role="button"
+            <button class="mdc-icon-button material-icons mdc-card__action mdc-card__action--icon"
                aria-pressed="false"
                aria-label="Add to favorites"
                title="Add to favorites"
-               data-toggle-on='{"content": "favorite", "label": "Remove from favorites"}'
-               data-toggle-off='{"content": "favorite_border", "label": "Add to favorites"}'>
-              favorite_border
-            </i>
-            <i class="mdc-icon-toggle material-icons mdc-card__action mdc-card__action--icon"
-               tabindex="0"
-               role="button"
+               data-toggle-on-content="favorite"
+               data-toggle-on-label="Remove from favorites"
+               data-toggle-off-content="favorite_border"
+               data-toggle-off-label="Add to favorites">favorite_border</button>
+            <button class="mdc-icon-button material-icons mdc-card__action mdc-card__action--icon"
                aria-pressed="false"
                aria-label="Add bookmark"
                title="Add bookmark"
-               data-toggle-on='{"content": "bookmark", "label": "Remove bookmark"}'
-               data-toggle-off='{"content": "bookmark_border", "label": "Add bookmark"}'>
-              bookmark_border
-            </i>
-            <i class="material-icons mdc-card__action mdc-card__action--icon mdc-ripple-surface"
-               tabindex="0"
-               role="button"
+               data-toggle-on-content="bookmark"
+               data-toggle-on-label="Remove bookmark"
+               data-toggle-off-content="bookmark_border"
+               data-toggle-off-label="Add bookmark">bookmark_border</button>
+            <button class="mdc-icon-button material-icons mdc-card__action mdc-card__action--icon"
                data-mdc-ripple-is-unbounded
-               title="Share">share</i>
+               title="Share">share</button>
           </div>
         </div>
 
@@ -245,15 +233,15 @@
           mdc.ripple.MDCRipple.attachTo(surface);
         });
 
-        [].forEach.call(document.querySelectorAll('.mdc-icon-toggle'), function(iconToggle) {
-          mdc.iconToggle.MDCIconToggle.attachTo(iconToggle);
+        [].forEach.call(document.querySelectorAll('.mdc-icon-button[data-toggle-on-content]'), function(iconButtonToggle) {
+          mdc.iconButton.MDCIconButtonToggle.attachTo(iconButtonToggle);
         });
 
-        document.addEventListener('MDCIconToggle:change', function(evt) {
+        document.addEventListener('MDCIconButtonToggle:change', function(evt) {
           evt.target.setAttribute('title', evt.target.getAttribute('aria-label'));
         });
 
-        [].forEach.call(document.querySelectorAll('.mdc-ripple-surface'), function(surface) {
+        [].forEach.call(document.querySelectorAll('.mdc-ripple-surface, [data-mdc-ripple-is-unbounded]'), function(surface) {
           mdc.ripple.MDCRipple.attachTo(surface);
         });
 

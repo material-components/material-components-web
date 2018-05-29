@@ -40,6 +40,7 @@ class MDCTextFieldIconFoundation extends MDCFoundation {
       getAttr: () => {},
       setAttr: () => {},
       removeAttr: () => {},
+      setContent: () => {},
       registerInteractionHandler: () => {},
       deregisterInteractionHandler: () => {},
       notifyIconAction: () => {},
@@ -73,10 +74,7 @@ class MDCTextFieldIconFoundation extends MDCFoundation {
     });
   }
 
-  /**
-   * Sets the content of the helper text field.
-   * @param {boolean} disabled
-   */
+  /** @param {boolean} disabled */
   setDisabled(disabled) {
     if (!this.savedTabIndex_) {
       return;
@@ -89,6 +87,16 @@ class MDCTextFieldIconFoundation extends MDCFoundation {
       this.adapter_.setAttr('tabindex', this.savedTabIndex_);
       this.adapter_.setAttr('role', strings.ICON_ROLE);
     }
+  }
+
+  /** @param {string} label */
+  setAriaLabel(label) {
+    this.adapter_.setAttr('aria-label', label);
+  }
+
+  /** @param {string} content */
+  setContent(content) {
+    this.adapter_.setContent(content);
   }
 
   /**
