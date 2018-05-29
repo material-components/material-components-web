@@ -152,10 +152,9 @@
 
 @mixin mdc-select-hover-outline-color_($color) {
   &:not(.mdc-select__native-control:focus) .mdc-select__native-control:hover ~ {
-      @include mdc-notched-outline-idle-color($color);
-      .mdc-notched-outline {
-        @include mdc-notched-outline-color($color);
-      }
+    @include mdc-notched-outline-idle-color($color);
+    .mdc-notched-outline {
+      @include mdc-notched-outline-color($color);
     }
   }
 }
