@@ -310,6 +310,22 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
+   * Sets the aria label of the icon.
+   * @param {string} label
+   */
+  set iconAriaLabel(label) {
+    this.foundation_.setIconAriaLabel(label);
+  }
+
+  /**
+   * Sets the text content of the icon.
+   * @param {string} content
+   */
+  set iconContent(content) {
+    this.foundation_.setIconContent(content);
+  }
+
+  /**
    * Recomputes the outline SVG path for the outline element.
    */
   layout() {
