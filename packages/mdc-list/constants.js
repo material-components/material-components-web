@@ -23,6 +23,7 @@ const cssClasses = {
 const strings = {
   ARIA_ORIENTATION: 'aria-orientation',
   ARIA_ORIENTATION_VERTICAL: 'vertical',
+  ITEMS_SELECTOR: '.mdc-list-item',
 };
 
 

@@ -44,10 +44,10 @@ class MDCListFoundation extends MDCFoundation {
   }
 
   handleKeydown(evt) {
-    const arrowLeft = evt.key === 'ArrowLeft';
-    const arrowDown = evt.key === 'ArrowDown';
-    const arrowRight = evt.key === 'ArrowRight';
-    const arrowUp = evt.key === 'ArrowUp';
+    const arrowLeft = evt.key === 'ArrowLeft' || evt.keyCode === 37;
+    const arrowUp = evt.key === 'ArrowUp' || evt.keyCode === 38;
+    const arrowRight = evt.key === 'ArrowRight' || evt.keyCode === 39;
+    const arrowDown = evt.key === 'ArrowDown' || evt.keyCode === 40;
     const isHome = evt.key === 'Home' || evt.keyCode === 36;
     const isEnd = evt.key === 'End' || evt.keyCode === 35;
     const currentIndex = this.adapter_.getCurrentFocusedIndex();

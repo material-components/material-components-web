@@ -28,6 +28,7 @@ export class MDCList extends MDCComponent {
     /** @private {!Function} */
     this.handleKeydown_ = null;
   }
+
   /**
    * @param {!Element} root
    * @return {!MDCList}
@@ -58,18 +59,22 @@ export class MDCList extends MDCComponent {
     }
   }
 
+  /** @return {boolean} */
   get vertical() {
     return this.foundation_.isVertical;
   }
 
+  /** @param {boolean} value */
   set vertical(value) {
     this.foundation_.isVertical = value;
   }
 
+  /** @return Array<!Element>*/
   get listElements_() {
-    return Array.from(this.root_.querySelectorAll('.mdc-list-item'));
+    return Array.from(this.root_.querySelectorAll(strings.ITEMS_SELECTOR));
   }
 
+  /** @param {boolean} value */
   set wrapFocus(value) {
     this.foundation_.wrapFocus = value;
   }
@@ -80,8 +85,6 @@ export class MDCList extends MDCComponent {
       getListItemCount: () => this.listElements_.length,
       getCurrentFocusedIndex: () => this.listElements_.indexOf(document.activeElement),
       focusItemAtIndex: (ndx) => this.listElements_[ndx].focus(),
-      addEventListener: (type, action) => this.root_.addEventListener(type, action),
-      removeEventListener: (type, action) => this.root_.removeEventListener(type, action),
     });
   }
 }
