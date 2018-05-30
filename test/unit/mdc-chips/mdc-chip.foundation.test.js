@@ -36,10 +36,11 @@ test('exports cssClasses', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCChipFoundation, [
-    'addClass', 'removeClass', 'hasClass', 'addClassToLeadingIcon', 'removeClassFromLeadingIcon',
-    'eventTargetHasClass', 'registerEventHandler', 'deregisterEventHandler',
-    'registerTrailingIconInteractionHandler', 'deregisterTrailingIconInteractionHandler',
-    'notifyInteraction', 'notifyTrailingIconInteraction', 'notifyRemoval',
+    'addClass', 'removeClass', 'hasClass', 'addClassToLeadingIcon',
+    'removeClassFromLeadingIcon', 'eventTargetHasClass', 'registerEventHandler',
+    'deregisterEventHandler', 'registerTrailingIconInteractionHandler',
+    'deregisterTrailingIconInteractionHandler', 'notifyInteraction',
+    'notifyTrailingIconInteraction', 'notifyRemoval',
     'getComputedStyleValue', 'setStyleProperty',
   ]);
 });
