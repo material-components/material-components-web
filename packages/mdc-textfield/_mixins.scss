@@ -197,7 +197,7 @@
   @include mdc-text-field-label-color($mdc-text-field-focused-ink-color, $mdc-text-field-focused-label-opacity);
 
   @include mdc-required-text-field-label-asterisk_ {
-    color: $mdc-text-field-error;
+    color: $mdc-text-field-error-color;
   }
 
   + .mdc-text-field-helper-text:not(.mdc-text-field-helper-text--validation-msg) {
@@ -378,7 +378,7 @@
 @mixin mdc-text-field-box-disabled_ {
   @include mdc-text-field-box-fill-color_($mdc-text-field-box-fill-color, $mdc-text-field-box-disabled-fill-opacity);
   @include mdc-text-field-bottom-line-color_($mdc-text-field-border-color, $mdc-text-field-bottom-line-disabled-opacity);
-  @include mdc-text-field-label-color($mdc-text-field-disabled-label-color, $mdc-text-field-disabled-label-opacity);
+  @include mdc-text-field-label-color($mdc-text-field-ink-color, $mdc-text-field-disabled-label-opacity);
 
   border-bottom: none;
 }
@@ -464,7 +464,7 @@
 // Textarea
 
 @mixin mdc-text-field-textarea-disabled_ {
-  @include mdc-text-field-textarea-stroke-color_($mdc-text-field-textarea-border-color, $mdc-text-field-textarea-disabled-border-opacity);
+  @include mdc-text-field-textarea-stroke-color_($mdc-text-field-border-color, $mdc-text-field-textarea-disabled-border-opacity);
   @include mdc-text-field-textarea-fill-color_($mdc-text-field-textarea-disabled-fill-color, $mdc-text-field-textarea-disabled-fill-opacity);
 
   border-style: solid;
@@ -479,12 +479,12 @@
 }
 
 @mixin mdc-text-field-textarea-invalid_ {
-  @include mdc-text-field-textarea-stroke-color($mdc-text-field-error-color, 1);
+  @include mdc-text-field-textarea-stroke-color($mdc-text-field-error-color, $mdc-text-field-error-opacity);
 }
 
 @mixin mdc-text-field-textarea_ {
   @include mdc-text-field-textarea-corner-radius($mdc-text-field-border-radius);
-  @include mdc-text-field-textarea-stroke-color($mdc-text-field-textarea-border-color);
+  @include mdc-text-field-textarea-stroke-color($mdc-text-field-border-color);
   @include mdc-text-field-textarea-fill-color($mdc-text-field-textarea-fill-color);
 
   // Translate above the top of the input, and compensate for the amount of offset needed

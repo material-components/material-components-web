@@ -104,7 +104,7 @@
   @include mdc-text-field-outline-color($idle-border);
   @include mdc-text-field-hover-outline-color($hover-border);
   @include mdc-text-field-focused-outline-color($focused-border);
-  @include mdc-text-field-helper-text-validation-color($hover-border);
+  @include mdc-text-field-helper-text-validation-color($hover-border, 1);
   @include mdc-text-field-textarea-stroke-color($idle-border);
 
   @include mdc-text-field-icon-color($focused-border);

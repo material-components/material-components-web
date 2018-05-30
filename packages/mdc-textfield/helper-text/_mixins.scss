@@ -16,28 +16,30 @@
 
 // Public mixins
 
-@mixin mdc-text-field-helper-text-color($color) {
+@mixin mdc-text-field-helper-text-color($color, $opacity) {
   &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-helper-text-color_($color);
+    @include mdc-text-field-helper-text-color_($color, $opacity);
   }
 }
 
-@mixin mdc-text-field-helper-text-validation-color($color) {
+@mixin mdc-text-field-helper-text-validation-color($color, $opacity) {
   &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-helper-text-validation-color_($color);
+    @include mdc-text-field-helper-text-validation-color_($color, $opacity);
   }
 }
 
 // Private mixins
 
-@mixin mdc-text-field-helper-text-color_($color) {
+@mixin mdc-text-field-helper-text-color_($color, $opacity) {
+  $solid-color: mdc-theme-solid-color-value($color, $opacity);
   + .mdc-text-field-helper-text {
-    @include mdc-theme-prop(color, $color);
+    @include mdc-theme-prop(color, $solid-color);
   }
 }
 
-@mixin mdc-text-field-helper-text-validation-color_($color) {
+@mixin mdc-text-field-helper-text-validation-color_($color, $opacity) {
+  $solid-color: mdc-theme-solid-color-value($color, $opacity);
   &.mdc-text-field--invalid + .mdc-text-field-helper-text--validation-msg {
-    @include mdc-theme-prop(color, $color);
+    @include mdc-theme-prop(color, $solid-color);
   }
 }
