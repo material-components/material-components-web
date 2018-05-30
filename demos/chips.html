@@ -277,7 +277,7 @@
         };
 
         function removeChip(evt) {
-          const {root} = evt.detail;
+          const root = evt.detail.root;
           root && inputChipSetEl.removeChild(root);
         }
 
