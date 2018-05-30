@@ -35,26 +35,6 @@ $mdc-theme-background: #fff !default; // White
 $mdc-theme-surface: #fff !default;
 $mdc-theme-on-surface: if(mdc-theme-contrast-tone($mdc-theme-surface) == "dark", #000, #fff) !default;
 
-$mdc-theme-opacities: (
-  dark: (
-    high: .87,
-    medium: .6,
-    disabled: .38
-  ),
-  light: (
-    high: 1,
-    medium: .6,
-    disabled: .38
-  )
-) !default;
-
-@function mdc-theme-opacity($color, $opacity-type) {
-  $tone: mdc-theme-tone($color);
-  $tone-opacity-map: map-get($mdc-theme-opacities, $tone);
-
-  @return map-get($tone-opacity-map, $opacity-type);
-}
-
 //
 // Text colors according to light vs dark and text type.
 //
