@@ -52,10 +52,10 @@ class MDCListFoundation extends MDCFoundation {
     const isEnd = evt.key === 'End' || evt.keyCode === 35;
     const currentIndex = this.adapter_.getCurrentFocusedIndex();
 
-    if ((this.isVertical && arrowDown) || (!this.isVertical && arrowLeft)) {
+    if ((this.isVertical && arrowDown) || (!this.isVertical && arrowRight)) {
       this.preventDefaultEvent_(evt);
       this.focusNextElement(currentIndex);
-    } else if ((this.isVertical && arrowUp) || (!this.isVertical && arrowRight)) {
+    } else if ((this.isVertical && arrowUp) || (!this.isVertical && arrowLeft)) {
       this.preventDefaultEvent_(evt);
       this.focusPrevElement(currentIndex);
     } else if (isHome) {
