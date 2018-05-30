@@ -40,6 +40,7 @@ Both `mdc-rtl-reflexive-property` and `mdc-rtl-reflexive-box` work with one base
 | `mdc-rtl-reflexive-box($base-property, $default-direction, $value, $root-selector)` | Applies the value to the `#{$base-property}-#{$default-direction}` property  in a LTR context, and flips the direction in an RTL context. **This mixin zeros out the original value in an RTL context.**  |
 | `mdc-rtl-reflexive-property($base-property, $left-value, $right-value, $root-selector)` | Emits rules that assign `#{$base-property}`-left to `#{left-value}` and `#{base-property}`-right to `#{right-value}` in a LTR context, and vice versa in a RTL context. **Basically it flips values between a LTR and RTL context.** |
 | `mdc-rtl-reflexive-position($position-property, $value, $root-selector)` | Applies the value to the specified position in a LTR context, and flips the direction in an RTL context. `$position-property` is a horizontal position, either "left" or "right". |
+| `mdc-rtl-reflexive($left-property, $left-value, $right-property, $right-value, $root-selector)` | Applies the pair of property values to the specified position in a LTR context, and flips the direction in an RTL context. |
 
 **A note about [dir="rtl"]**: `mdc-rtl($root-selector)` checks for `[dir="rtl"]` on the ancestor element. This works in most cases, it will sometimes lead to false negatives for more complex layouts, e.g.
 
