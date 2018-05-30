@@ -36,10 +36,12 @@
   @include mdc-chip-leading-icon-size($mdc-chip-leading-icon-size);
   @include mdc-chip-trailing-icon-size($mdc-chip-trailing-icon-size);
   @include mdc-typography(body2);
+  @include mdc-chip-height($mdc-chip-height-default);
 
   display: inline-flex;
   position: relative;
   align-items: center;
+  box-sizing: border-box;
   padding: $mdc-chip-vertical-padding $mdc-chip-horizontal-padding;
   outline: none;
   cursor: pointer;
@@ -64,8 +66,6 @@
 }
 
 .mdc-chip__text {
-  // Set line-height to be <18px to force the content height of mdc-chip to be 18px.
-  line-height: 17px;
   white-space: nowrap;
 }
 

@@ -191,6 +191,7 @@ Mixin | Description
 `mdc-chip-outline-width($width)` | Customizes the outline width for a chip
 `mdc-chip-outline-style($style)` | Customizes the outline style for a chip
 `mdc-chip-outline-color($color)` | Customizes the outline color for a chip
+`mdc-chip-height($height)` | Customizes the height for a chip
 `mdc-chip-leading-icon-color($color, $opacity)` | Customizes the color of a leading icon in a chip, optionally customizes opacity
 `mdc-chip-trailing-icon-color($color, $opacity, $hover-opacity, $focus-opacity)` | Customizes the color of a trailing icon in a chip, optionally customizes regular/hover/focus opacities
 `mdc-chip-leading-icon-size($size)` | Customizes the size of a leading icon in a chip
