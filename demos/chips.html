@@ -235,7 +235,7 @@
     <script src="/assets/material-components-web.js" async></script>
     <script>
       demoReady(function() {
-        var inputChipSet = document.getElementById('input-chip-set');
+        var inputChipSetEl = document.getElementById('input-chip-set');
         var chipSets = document.querySelectorAll('.mdc-chip-set:not(#input-chip-set)');
         var input = document.getElementById('input-chip-set-input');
         var inputButton = document.getElementById('input-chip-set-button');
@@ -243,19 +243,47 @@
         [].forEach.call(chipSets, function(chipSet) {
           mdc.chips.MDCChipSet.attachTo(chipSet);
         });
-        var inputChipSetComponent = mdc.chips.MDCChipSet.attachTo(inputChipSet);
+        var inputChipSetComponent = mdc.chips.MDCChipSet.attachTo(inputChipSetEl);
 
-        function addChip(evt) {
+        function createChipEl(text, leadingIcon, trailingIcon) {
+          const chipTextEl = document.createElement('div');
+          chipTextEl.classList.add('mdc-chip__text');
+          chipTextEl.appendChild(document.createTextNode(text));
+
+          const chipEl = document.createElement('div');
+          chipEl.classList.add('mdc-chip');
+          if (leadingIcon) {
+            chipEl.appendChild(leadingIcon);
+          }
+          chipEl.appendChild(chipTextEl);
+          if (trailingIcon) {
+            chipEl.appendChild(trailingIcon);
+          }
+          return chipEl;
+        }
+
+        function addInputChip(evt) {
           if ((evt.type === 'click' || evt.key === 'Enter' || evt.keyCode === 13) && 
               input.value !== '') {
             var leadingIcon = document.querySelector('.input-leading-icon').cloneNode(true);
             var trailingIcon = document.querySelector('.input-trailing-icon').cloneNode(true);
-            inputChipSetComponent.addChip(input.value, leadingIcon, trailingIcon);
+
+            var newChipEl = createChipEl(input.value, leadingIcon, trailingIcon);
+            inputChipSetEl.appendChild(newChipEl);
+            inputChipSetComponent.addChip(newChipEl);
+
             input.value = '';
           }
         };
-        inputButton.addEventListener('click', addChip);
-        input.addEventListener('keydown', addChip);
+
+        function removeChip(evt) {
+          const root = evt.detail.root;
+          root && inputChipSetEl.removeChild(root);
+        }
+
+        inputButton.addEventListener('click', addInputChip);
+        input.addEventListener('keydown', addInputChip);
+        inputChipSetEl.addEventListener('MDCChip:removal', removeChip);
       });
     </script>
   </body>
