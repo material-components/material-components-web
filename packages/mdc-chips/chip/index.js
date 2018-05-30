@@ -83,7 +83,7 @@ class MDCChip extends MDCComponent {
   }
 
   /**
-   * Begins the exit animation and eventually removes the chip.
+   * Begins the exit animation which leads to removal of the chip.
    */
   beginExit() {
     this.root_.classList.add(cssClasses.CHIP_EXIT);
