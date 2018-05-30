@@ -2,23 +2,26 @@
 title: "Line Ripple"
 layout: detail
 section: components
-excerpt: "The line ripple is used to highlight user-specified text above it."
+excerpt: "The line ripple is used to highlight user-specified input above it."
 path: /catalog/input-controls/line-ripple/
 -->
 
 # Line Ripple
 
-The line ripple is used to highlight user-specified text above it. When a line ripple is active, the line’s color and thickness vary.
+The line ripple is used to highlight user-specified input above it. When a line ripple is active, the line’s color and thickness changes.
 
 ## Design & API Documentation
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/text-fields.html#text-fields-layout">Material Design guidelines: Text Fields Layout</a>
+    <a href="https://material.io/go/design-text-fields#text-fields-layout">Material Design guidelines: Text Fields Layout</a>
+  </li>
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/text-field">Demo with Line Ripple on Text Field</a>
   </li>
 </ul>
 
-## Usage
+## Basic Usage
 
 ### HTML Structure
 
@@ -26,53 +29,63 @@ The line ripple is used to highlight user-specified text above it. When a line r
 <div class="mdc-line-ripple"></div>
 ```
 
-### Usage within `mdc-text-field`
+### Styles
 
-```html
-<div class="mdc-text-field">
-  <input type="text" id="my-text-field-id" class="mdc-text-field__input">
-  <label class="mdc-floating-label" for="my-text-field-id">Hint text</label>
-  <div class="mdc-line-ripple"></div>
-</div>
+```scss
+@import "@material/line-ripple/mdc-line-ripple";
 ```
+
+### JavaScript Instantiation
+
+```js
+import {MDCLineRipple} from '@material/line-ripple';
+
+const lineRipple = new MDCLineRipple(document.querySelector('.mdc-line-ripple'));
+```
+
+## Style Customization
 
 ### CSS Classes
 
 CSS Class | Description
 --- | ---
-`mdc-line-ripple` | Mandatory
-`mdc-line-ripple--active` | Styles the line ripple as an active line ripple
-`mdc-line-ripple--deactivating` | Styles the line ripple as a deactivating line ripple
+`mdc-line-ripple` | Mandatory.
+`mdc-line-ripple--active` | Styles the line ripple as an active line ripple.
+`mdc-line-ripple--deactivating` | Styles the line ripple as a deactivating line ripple.
 
 ### Sass Mixins
 
 Mixin | Description
 --- | ---
-`mdc-line-ripple-color($color)` | Customizes the color of the line ripple when active
+`mdc-line-ripple-color($color)` | Customizes the color of the line ripple when active.
 
-### `MDCLineRipple`
+## `MDCLineRipple` Properties and Methods
 
 Method Signature | Description
 --- | ---
-`activate() => void` | Proxies to the foundation's `activate()` method
-`deactivate() => void` | Proxies to the foundation's `deactivate()` method
-`setRippleCenter(xCoordinate: number) => void` | Proxies to the foundation's `setRippleCenter(xCoordinate: number)` method
+`activate() => void` | Proxies to the foundation's `activate()` method.
+`deactivate() => void` | Proxies to the foundation's `deactivate()` method.
+`setRippleCenter(xCoordinate: number) => void` | Proxies to the foundation's `setRippleCenter(xCoordinate: number)` method.
+
+## Usage Within Frameworks
+
+If you are using a JavaScript framework, such as React or Angular, you can create a Line Ripple for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
 ### `MDCLineRippleAdapter`
 
 Method Signature | Description
 --- | ---
-`addClass(className: string) => void` | Adds a class to the root element
-`removeClass(className: string) => void` | Removes a class from the root element
-`setAttr(attr: string, value: string) => void` | Sets an attribute with a given value on the root element
-`registerEventHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the root element for a given event
-`deregisterEventHandler(handler: EventListener) => void` | Deregisters an event listener on the root element for a given event
+`addClass(className: string) => void` | Adds a class to the root element.
+`removeClass(className: string) => void` | Removes a class from the root element.
+`setStyle(propertyName: string, value: string) => void` | Sets the style property with `propertyName` to `value` on the root element.
+`registerEventHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the root element for a given event.
+`deregisterEventHandler(handler: EventListener) => void` | Deregisters an event listener on the root element for a given event.
 
 ### `MDCLineRippleFoundation`
 
 Method Signature | Description
 --- | ---
-`activate() => void` | Activates the line ripple
-`deactivate() => void` |  Deactivates the line ripple
-`setRippleCenter(xCoordinate: number) => void` | Sets the center of the ripple to the `xCoordinate` given
-`handleTransitionEnd(evt: Event) => void` | Handles a `transitionend` event
+`activate() => void` | Activates the line ripple.
+`deactivate() => void` |  Deactivates the line ripple.
+`setRippleCenter(xCoordinate: number) => void` | Sets the center of the ripple to the `xCoordinate` given.
+`handleTransitionEnd(evt: Event) => void` | Handles a `transitionend` event.

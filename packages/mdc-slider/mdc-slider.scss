@@ -147,15 +147,13 @@
     transition: transform 100ms ease-out;
     border-radius: 50% 50% 50% 0%;
 
-    /**
-     * Ensuring that the pin is higher than the thumb in the stacking order
-     * removes some rendering jank observed in Chrome.
-     */
+    // Ensuring that the pin is higher than the thumb in the stacking order
+    // removes some rendering jank observed in Chrome.
     z-index: 1;
   }
 
   &__pin-value-marker {
-    @include mdc-typography(caption);
+    @include mdc-typography(body2);
 
     transform: rotate(45deg);
   }

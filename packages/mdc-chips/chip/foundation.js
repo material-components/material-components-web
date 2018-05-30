@@ -54,6 +54,9 @@ class MDCChipFoundation extends MDCFoundation {
       deregisterTrailingIconInteractionHandler: () => {},
       notifyInteraction: () => {},
       notifyTrailingIconInteraction: () => {},
+      notifyRemoval: () => {},
+      getComputedStyleValue: () => {},
+      setStyleProperty: () => {},
     });
   }
 
@@ -92,13 +95,20 @@ class MDCChipFoundation extends MDCFoundation {
   }
 
   /**
-   * Toggles the selected class on the chip element.
+   * @return {boolean}
    */
-  toggleSelected() {
-    if (this.adapter_.hasClass(cssClasses.SELECTED)) {
-      this.adapter_.removeClass(cssClasses.SELECTED);
-    } else {
+  isSelected() {
+    return this.adapter_.hasClass(cssClasses.SELECTED);
+  }
+
+  /**
+   * @param {boolean} selected
+   */
+  setSelected(selected) {
+    if (selected) {
       this.adapter_.addClass(cssClasses.SELECTED);
+    } else {
+      this.adapter_.removeClass(cssClasses.SELECTED);
     }
   }
 
@@ -114,11 +124,36 @@ class MDCChipFoundation extends MDCFoundation {
 
   /**
    * Handles a transition end event on the root element.
-   * This is a proxy for handling a transition end event on the leading icon or checkmark,
-   * since the transition end event bubbles.
    * @param {!Event} evt
    */
   handleTransitionEnd_(evt) {
+    // Handle transition end event on the chip when it is about to be removed.
+    if (this.adapter_.eventTargetHasClass(/** @type {!EventTarget} */ (evt.target), cssClasses.CHIP_EXIT)) {
+      if (evt.propertyName === 'width') {
+        this.adapter_.notifyRemoval();
+      } else if (evt.propertyName === 'opacity') {
+        // See: https://css-tricks.com/using-css-transitions-auto-dimensions/#article-header-id-5
+        const chipWidth = this.adapter_.getComputedStyleValue('width');
+
+        // On the next frame (once we get the computed width), explicitly set the chip's width
+        // to its current pixel width, so we aren't transitioning out of 'auto'.
+        requestAnimationFrame(() => {
+          this.adapter_.setStyleProperty('width', chipWidth);
+
+          // To mitigate jitter, start transitioning padding and margin before width.
+          this.adapter_.setStyleProperty('padding', '0');
+          this.adapter_.setStyleProperty('margin', '0');
+
+          // On the next frame (once width is explicitly set), transition width to 0.
+          requestAnimationFrame(() => {
+            this.adapter_.setStyleProperty('width', '0');
+          });
+        });
+      }
+      return;
+    }
+
+    // Handle a transition end event on the leading icon or checkmark, since the transition end event bubbles.
     if (evt.propertyName !== 'opacity') {
       return;
     }
@@ -140,6 +175,7 @@ class MDCChipFoundation extends MDCFoundation {
     evt.stopPropagation();
     if (evt.type === 'click' || evt.key === 'Enter' || evt.keyCode === 13) {
       this.adapter_.notifyTrailingIconInteraction();
+      this.adapter_.addClass(cssClasses.CHIP_EXIT);
     }
   }
 }

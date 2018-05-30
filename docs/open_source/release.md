@@ -40,6 +40,8 @@ pass prior to releasing (lerna will update versions for us in the next step).
 
 ### Release
 
+#### Normal Releases
+
 ```
 $(npm bin)/lerna publish --skip-git
 git commit -am "chore: Publish"
@@ -48,8 +50,17 @@ git commit -am "chore: Publish"
 When lerna prompts for version, you should pick Minor for typical releases,
 or Patch for hotfix releases with no breaking changes.
 
-> **Do not forget** `--skip-git` - we want to generate the changelog before
-> generating and pushing the new tag.
+#### Pre-releases
+
+```
+$(npm bin)/lerna publish --skip-git --npm-tag=next
+git commit -am "chore: Publish"
+```
+
+When lerna prompts for version, choose pre-minor (e.g. 0.36.0-0).
+
+> **Do not forget** both arguments to `publish` - we want to avoid updating the `latest` tag, and we want to
+> generate the changelog before generating and pushing the new tag.
 
 ### Post-Release
 
@@ -82,6 +93,6 @@ This will ensure the commits *and* tags are pushed to the remote git repository.
 
 ### Deploy Catalog Server
 
-`MDC_ENV=development npm run build && gcloud app deploy`
+`MDC_ENV=development npm run build:demos && gcloud app deploy`
 
 [Double check it is live](https://material-components-web.appspot.com/)

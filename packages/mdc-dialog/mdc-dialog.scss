@@ -83,7 +83,7 @@
 }
 
 .mdc-dialog__header__title {
-  @include mdc-typography(title);
+  @include mdc-typography(headline6);
 
   flex: 1;
   margin: 0;
@@ -122,7 +122,7 @@
   }
 }
 
-.mdc-dialog__action {
+.mdc-dialog__action:not(:disabled) {
   @include mdc-theme-prop(color, secondary);
 }
 

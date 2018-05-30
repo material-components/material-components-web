@@ -23,6 +23,7 @@ import * as drawer from '@material/drawer/index';
 import * as floatingLabel from '@material/floating-label/index';
 import * as formField from '@material/form-field/index';
 import * as gridList from '@material/grid-list/index';
+import * as iconButton from '@material/icon-button/index';
 import * as iconToggle from '@material/icon-toggle/index';
 import * as linearProgress from '@material/linear-progress/index';
 import * as lineRipple from '@material/line-ripple/index';
@@ -50,6 +51,7 @@ autoInit.register('MDCFloatingLabel', floatingLabel.MDCFloatingLabel);
 autoInit.register('MDCFormField', formField.MDCFormField);
 autoInit.register('MDCRipple', ripple.MDCRipple);
 autoInit.register('MDCGridList', gridList.MDCGridList);
+autoInit.register('MDCIconButtonToggle', iconButton.MDCIconButtonToggle);
 autoInit.register('MDCIconToggle', iconToggle.MDCIconToggle);
 autoInit.register('MDCLineRipple', lineRipple.MDCLineRipple);
 autoInit.register('MDCLinearProgress', linearProgress.MDCLinearProgress);
@@ -76,6 +78,7 @@ export {
   floatingLabel,
   formField,
   gridList,
+  iconButton,
   iconToggle,
   lineRipple,
   linearProgress,

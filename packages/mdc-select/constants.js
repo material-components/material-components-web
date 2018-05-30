@@ -16,16 +16,12 @@
 export const cssClasses = {
   BOX: 'mdc-select--box',
   DISABLED: 'mdc-select--disabled',
-  OPEN: 'mdc-select--open',
   ROOT: 'mdc-select',
-  SCROLL_LOCK: 'mdc-select-scroll-lock',
 };
 
 export const strings = {
   CHANGE_EVENT: 'MDCSelect:change',
-  BOTTOM_LINE_SELECTOR: '.mdc-select__bottom-line',
-  LABEL_SELECTOR: '.mdc-select__label',
-  MENU_SELECTOR: '.mdc-select__menu',
-  SURFACE_SELECTOR: '.mdc-select__surface',
-  SELECTED_TEXT_SELECTOR: '.mdc-select__selected-text',
+  LINE_RIPPLE_SELECTOR: '.mdc-line-ripple',
+  LABEL_SELECTOR: '.mdc-floating-label',
+  NATIVE_CONTROL_SELECTOR: '.mdc-select__native-control',
 };

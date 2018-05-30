@@ -17,7 +17,7 @@
 
 import MDCFoundation from '@material/base/foundation';
 import MDCNotchedOutlineAdapter from './adapter';
-import {strings} from './constants';
+import {cssClasses, strings} from './constants';
 
 /**
  * @extends {MDCFoundation<!MDCNotchedOutlineAdapter>}
@@ -29,6 +29,11 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
     return strings;
   }
 
+  /** @return enum {string} */
+  static get cssClasses() {
+    return cssClasses;
+  }
+
   /**
    * {@see MDCNotchedOutlineAdapter} for typing information on parameters and return
    * types.
@@ -38,6 +43,8 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
     return /** @type {!MDCNotchedOutlineAdapter} */ ({
       getWidth: () => {},
       getHeight: () => {},
+      addClass: () => {},
+      removeClass: () => {},
       setOutlinePathAttr: () => {},
       getIdleOutlineStyleValue: () => {},
     });
@@ -51,12 +58,33 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
   }
 
   /**
+   * Adds the outline notched selector and updates the notch width
+   * calculated based off of notchWidth and isRtl.
+   * @param {number} notchWidth
+   * @param {boolean=} isRtl
+   */
+  notch(notchWidth, isRtl = false) {
+    const {OUTLINE_NOTCHED} = MDCNotchedOutlineFoundation.cssClasses;
+    this.adapter_.addClass(OUTLINE_NOTCHED);
+    this.updateSvgPath_(notchWidth, isRtl);
+  }
+
+  /**
+   * Removes notched outline selector to close the notch in the outline.
+   */
+  closeNotch() {
+    const {OUTLINE_NOTCHED} = MDCNotchedOutlineFoundation.cssClasses;
+    this.adapter_.removeClass(OUTLINE_NOTCHED);
+  }
+
+  /**
    * Updates the SVG path of the focus outline element based on the notchWidth
    * and the RTL context.
    * @param {number} notchWidth
    * @param {boolean=} isRtl
+   * @private
    */
-  updateSvgPath(notchWidth, isRtl = false) {
+  updateSvgPath_(notchWidth, isRtl) {
     // Fall back to reading a specific corner's style because Firefox doesn't report the style on border-radius.
     const radiusStyleValue = this.adapter_.getIdleOutlineStyleValue('border-radius') ||
         this.adapter_.getIdleOutlineStyleValue('border-top-left-radius');

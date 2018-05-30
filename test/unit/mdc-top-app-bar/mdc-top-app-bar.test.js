@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2017 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,6 +22,11 @@ import td from 'testdouble';
 
 import {MDCTopAppBar} from '../../../packages/mdc-top-app-bar';
 import {strings} from '../../../packages/mdc-top-app-bar/constants';
+import MDCTopAppBarFoundation from '../../../packages/mdc-top-app-bar/foundation';
+import MDCFixedTopAppBarFoundation from '../../../packages/mdc-top-app-bar/fixed/foundation';
+import MDCShortTopAppBarFoundation from '../../../packages/mdc-top-app-bar/short/foundation';
+
+const MENU_ICONS_COUNT = 3;
 
 function getFixture(removeIcon) {
   const html = bel`
@@ -70,11 +76,11 @@ class FakeRipple {
   }
 }
 
-function setupTest(removeIcon = false) {
+function setupTest(removeIcon = false, rippleFactory = (el) => new FakeRipple(el)) {
   const fixture = getFixture(removeIcon);
   const root = fixture.querySelector(strings.ROOT_SELECTOR);
   const icon = root.querySelector(strings.NAVIGATION_ICON_SELECTOR);
-  const component = new MDCTopAppBar(root, undefined, (el) => new FakeRipple(el));
+  const component = new MDCTopAppBar(root, undefined, rippleFactory);
 
   return {root, component, icon};
 }
@@ -85,12 +91,21 @@ test('attachTo initializes and returns an MDCTopAppBar instance', () => {
   assert.isTrue(MDCTopAppBar.attachTo(getFixture()) instanceof MDCTopAppBar);
 });
 
-test('constructor instantiates icon ripples', () => {
-  const {root, component} = setupTest();
-  const selector = strings.ACTION_ITEM_SELECTOR + ',' + strings.NAVIGATION_ICON_SELECTOR;
-  const totalIcons = root.querySelectorAll(selector).length;
+test('constructor instantiates icon ripples for all icons', () => {
+  const rippleFactory = td.function();
+  // Including navigation icon.
+  const totalIcons = MENU_ICONS_COUNT + 1;
 
-  assert.isTrue(component.iconRipples_.length === totalIcons);
+  td.when(rippleFactory(td.matchers.anything()), {times: totalIcons}).thenReturn((el) => new FakeRipple(el));
+  setupTest(/** removeIcon */ false, rippleFactory);
+});
+
+test('constructor does not instantiate ripple for nav icon when not present', () => {
+  const rippleFactory = td.function();
+  const totalIcons = MENU_ICONS_COUNT;
+
+  td.when(rippleFactory(td.matchers.anything()), {times: totalIcons}).thenReturn((el) => new FakeRipple(el));
+  setupTest(/** removeIcon */ true, rippleFactory);
 });
 
 test('destroy destroys icon ripples', () => {
@@ -99,6 +114,33 @@ test('destroy destroys icon ripples', () => {
   component.iconRipples_.forEach((icon) => {
     td.verify(icon.destroy());
   });
+});
+
+test('getDefaultFoundation returns the appropriate foundation for default', () => {
+  const fixture = getFixture();
+  const root = fixture.querySelector(strings.ROOT_SELECTOR);
+  const component = new MDCTopAppBar(root, undefined, (el) => new FakeRipple(el));
+  assert.isTrue(component.foundation_ instanceof MDCTopAppBarFoundation);
+  assert.isFalse(component.foundation_ instanceof MDCShortTopAppBarFoundation);
+  assert.isFalse(component.foundation_ instanceof MDCFixedTopAppBarFoundation);
+});
+
+test('getDefaultFoundation returns the appropriate foundation for fixed', () => {
+  const fixture = getFixture();
+  const root = fixture.querySelector(strings.ROOT_SELECTOR);
+  root.classList.add(MDCTopAppBarFoundation.cssClasses.FIXED_CLASS);
+  const component = new MDCTopAppBar(root, undefined, (el) => new FakeRipple(el));
+  assert.isFalse(component.foundation_ instanceof MDCShortTopAppBarFoundation);
+  assert.isTrue(component.foundation_ instanceof MDCFixedTopAppBarFoundation);
+});
+
+test('getDefaultFoundation returns the appropriate foundation for short', () => {
+  const fixture = getFixture();
+  const root = fixture.querySelector(strings.ROOT_SELECTOR);
+  root.classList.add(MDCTopAppBarFoundation.cssClasses.SHORT_CLASS);
+  const component = new MDCTopAppBar(root, undefined, (el) => new FakeRipple(el));
+  assert.isTrue(component.foundation_ instanceof MDCShortTopAppBarFoundation);
+  assert.isFalse(component.foundation_ instanceof MDCFixedTopAppBarFoundation);
 });
 
 test('adapter#hasClass returns true if the root element has specified class', () => {
@@ -123,6 +165,13 @@ test('adapter#removeClass removes a class from the root element', () => {
   root.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClass('foo');
   assert.isFalse(root.classList.contains('foo'));
+});
+
+test('adapter#setStyle sets a style attribute on the root element', () => {
+  const {root, component} = setupTest();
+  assert.isFalse(root.style.getPropertyValue('top') === '1px');
+  component.getDefaultFoundation().adapter_.setStyle('top', '1px');
+  assert.isTrue(root.style.getPropertyValue('top') === '1px');
 });
 
 test('registerNavigationIconInteractionHandler does not add a handler to the nav icon if the nav icon is null', () => {
@@ -188,6 +237,34 @@ test('#adapter.deregisterScrollHandler removes a scroll handler from the window 
   } finally {
     // Just to be safe
     window.removeEventListener('scroll', handler);
+  }
+});
+
+test('#adapter.registerResizeHandler adds a resize handler to the window', () => {
+  const {component} = setupTest();
+  const handler = td.func('resizeHandler');
+  component.getDefaultFoundation().adapter_.registerResizeHandler(handler);
+
+  domEvents.emit(window, 'resize');
+  try {
+    td.verify(handler(td.matchers.anything()));
+  } finally {
+    // Just to be safe
+    window.removeEventListener('resize', handler);
+  }
+});
+
+test('#adapter.deregisterResizeHandler removes a resize handler from the window', () => {
+  const {component} = setupTest();
+  const handler = td.func('resizeHandler');
+  window.addEventListener('resize', handler);
+  component.getDefaultFoundation().adapter_.deregisterResizeHandler(handler);
+  domEvents.emit(window, 'resize');
+  try {
+    td.verify(handler(td.matchers.anything()), {times: 0});
+  } finally {
+    // Just to be safe
+    window.removeEventListener('resize', handler);
   }
 });
 

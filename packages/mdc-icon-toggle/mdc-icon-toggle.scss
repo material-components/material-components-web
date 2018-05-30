@@ -14,7 +14,7 @@
 // limitations under the License.
 //
 
-/** postcss-bem-linter: define icon-toggle */
+// postcss-bem-linter: define icon-toggle
 
 @import "@material/animation/functions";
 @import "@material/ripple/common";
@@ -41,6 +41,8 @@
   cursor: pointer;
   user-select: none;
   // For some reason, GPU layer promotion makes ripples look terrible on Chrome
+
+  /* @alternate */
   will-change: initial;
 
   &::after {
@@ -58,4 +60,4 @@
   pointer-events: none;
 }
 
-/** postcss-bem-linter: end */
+// postcss-bem-linter: end

@@ -11,12 +11,12 @@ path: /catalog/lists/
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/list.html">
+     href="https://material-components.github.io/material-components-web-catalog/#/component/list">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/lists.png" width="365" alt="Lists screenshot">
   </a>
 </div>-->
 
-MDC List provides styles which implement [Material Design Lists](https://material.io/guidelines/components/lists.html) -
+MDC List provides styles which implement [Material Design Lists](https://material.io/go/design-lists) -
 "A single continuous column of tessellated subdivisions of equal width." Both single-line and two-line lists are
 supported (with three-line lists [planned](https://github.com/material-components/material-components-web/issues/31)).
 MDC Lists are designed to be accessible and RTL aware.
@@ -25,16 +25,16 @@ MDC Lists are designed to be accessible and RTL aware.
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/lists.html">Material Design guidelines: Lists</a>
+    <a href="https://material.io/go/design-lists">Material Design guidelines: Lists</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/list.html">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/list">Demo</a>
   </li>
 </ul>
 
 ## Installation
 ```
-npm install --save @material/list
+npm install @material/list
 ```
 
 ## Usage
@@ -56,7 +56,7 @@ List items (rows) can contain primary and secondary actions. Lists items can con
 ```
 
 #### Two-Line List
-While in theory you can add any number of "lines" to a list item, you can use the `mdc-list--two-line` combined with some extra markup around the text to style a list in the two-line list style as defined by [the spec](https://material.io/guidelines/components/lists.html#lists-specs) (see "Two-line lists").
+While in theory you can add any number of "lines" to a list item, you can use the `mdc-list--two-line` combined with some extra markup around the text to style a list in the two-line list style as defined by [the spec](https://material.io/go/design-lists#lists-specs) (see "Two-line lists").
 
 ```html
 <ul class="mdc-list mdc-list--two-line">
@@ -138,6 +138,7 @@ OR
 ```
 
 ### CSS Classes
+
 CSS Class | Description
 --- | ---
 `mdc-list` | Mandatory, for the list element
@@ -168,6 +169,7 @@ CSS Class | Description
 * *Activated* state is more permanent than selected state, and will **NOT** change soon relative to the lifetime of the page.
 
 ### Sass Mixins
+
 Mixin | Description
 --- | ---
 `mdc-list-item-primary-text-ink-color($color)` | Sets the ink color of the primary text of the list item

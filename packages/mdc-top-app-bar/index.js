@@ -16,15 +16,16 @@
  */
 
 import MDCTopAppBarAdapter from './adapter';
-import MDCTopAppBarFoundation from './foundation';
 import MDCComponent from '@material/base/component';
 import {MDCRipple} from '@material/ripple/index';
 import {cssClasses, strings} from './constants';
-import * as util from './util';
+import MDCTopAppBarBaseFoundation from './foundation';
+import MDCFixedTopAppBarFoundation from './fixed/foundation';
 import MDCShortTopAppBarFoundation from './short/foundation';
+import MDCTopAppBarFoundation from './standard/foundation';
 
 /**
- * @extends {MDCComponent<!MDCTopAppBarFoundation>}
+ * @extends {MDCComponent<!MDCTopAppBarBaseFoundation>}
  * @final
  */
 class MDCTopAppBar extends MDCComponent {
@@ -45,7 +46,9 @@ class MDCTopAppBar extends MDCComponent {
 
     // Get all icons in the toolbar and instantiate the ripples
     const icons = [].slice.call(this.root_.querySelectorAll(strings.ACTION_ITEM_SELECTOR));
-    icons.push(this.navIcon_);
+    if (this.navIcon_) {
+      icons.push(this.navIcon_);
+    }
 
     this.iconRipples_ = icons.map((icon) => {
       const ripple = rippleFactory(icon);
@@ -68,7 +71,7 @@ class MDCTopAppBar extends MDCComponent {
   }
 
   /**
-   * @return {!MDCTopAppBarFoundation}
+   * @return {!MDCTopAppBarBaseFoundation}
    */
   getDefaultFoundation() {
     /** @type {!MDCTopAppBarAdapter} */
@@ -76,6 +79,8 @@ class MDCTopAppBar extends MDCComponent {
       hasClass: (className) => this.root_.classList.contains(className),
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
+      setStyle: (property, value) => this.root_.style.setProperty(property, value),
+      getTopAppBarHeight: () => this.root_.clientHeight,
       registerNavigationIconInteractionHandler: (evtType, handler) => {
         if (this.navIcon_) {
           this.navIcon_.addEventListener(evtType, handler);
@@ -89,17 +94,22 @@ class MDCTopAppBar extends MDCComponent {
       notifyNavigationIconClicked: () => {
         this.emit(strings.NAVIGATION_EVENT, {});
       },
-      registerScrollHandler: (handler) => window.addEventListener('scroll', handler, util.applyPassive()),
+      registerScrollHandler: (handler) => window.addEventListener('scroll', handler),
       deregisterScrollHandler: (handler) => window.removeEventListener('scroll', handler),
+      registerResizeHandler: (handler) => window.addEventListener('resize', handler),
+      deregisterResizeHandler: (handler) => window.removeEventListener('resize', handler),
       getViewportScrollY: () => window.pageYOffset,
       getTotalActionItems: () =>
         this.root_.querySelectorAll(strings.ACTION_ITEM_SELECTOR).length,
     })
     );
 
+    /** @type {!MDCTopAppBarBaseFoundation} */
     let foundation;
     if (this.root_.classList.contains(cssClasses.SHORT_CLASS)) {
       foundation = new MDCShortTopAppBarFoundation(adapter);
+    } else if (this.root_.classList.contains(cssClasses.FIXED_CLASS)) {
+      foundation = new MDCFixedTopAppBarFoundation(adapter);
     } else {
       foundation = new MDCTopAppBarFoundation(adapter);
     }
@@ -108,4 +118,6 @@ class MDCTopAppBar extends MDCComponent {
   }
 }
 
-export {MDCTopAppBar, MDCTopAppBarFoundation, MDCShortTopAppBarFoundation, util};
+export {MDCTopAppBar, MDCTopAppBarBaseFoundation,
+  MDCTopAppBarFoundation, MDCFixedTopAppBarFoundation,
+  MDCShortTopAppBarFoundation};

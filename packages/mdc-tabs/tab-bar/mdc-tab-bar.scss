@@ -37,8 +37,8 @@
 .mdc-tab-bar__indicator {
   @include mdc-tab-bar-indicator-mixin_;
 
-  width: 100%;
   left: 0;
+  width: 100%;
   transform-origin: left top;
   transition: mdc-animation-enter(transform, 240ms);
   will-change: transform;

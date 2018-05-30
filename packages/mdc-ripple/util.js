@@ -56,8 +56,9 @@ function detectEdgePseudoVarBug(windowObj) {
  */
 
 function supportsCssVariables(windowObj, forceRefresh = false) {
+  let supportsCssVariables = supportsCssVariables_;
   if (typeof supportsCssVariables_ === 'boolean' && !forceRefresh) {
-    return supportsCssVariables_;
+    return supportsCssVariables;
   }
 
   const supportsFunctionPresent = windowObj.CSS && typeof windowObj.CSS.supports === 'function';
@@ -74,11 +75,15 @@ function supportsCssVariables(windowObj, forceRefresh = false) {
   );
 
   if (explicitlySupportsCssVars || weAreFeatureDetectingSafari10plus) {
-    supportsCssVariables_ = !detectEdgePseudoVarBug(windowObj);
+    supportsCssVariables = !detectEdgePseudoVarBug(windowObj);
   } else {
-    supportsCssVariables_ = false;
+    supportsCssVariables = false;
   }
-  return supportsCssVariables_;
+
+  if (!forceRefresh) {
+    supportsCssVariables_ = supportsCssVariables;
+  }
+  return supportsCssVariables;
 }
 
 //
@@ -115,9 +120,9 @@ function getMatchesProperty(HTMLElementPrototype) {
 
 /**
  * @param {!Event} ev
- * @param {!{x: number, y: number}} pageOffset
+ * @param {{x: number, y: number}} pageOffset
  * @param {!ClientRect} clientRect
- * @return {!{x: number, y: number}}
+ * @return {{x: number, y: number}}
  */
 function getNormalizedEventCoords(ev, pageOffset, clientRect) {
   const {x, y} = pageOffset;

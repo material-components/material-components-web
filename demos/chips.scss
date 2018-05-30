@@ -16,6 +16,11 @@
 
 @import "./common";
 @import "../packages/mdc-chips/mdc-chips";
+@import "../packages/mdc-button/mdc-button";
+
+#input-chip-icon-clones {
+  display: none;
+}
 
 .custom-chip-primary {
   @include mdc-chip-fill-color-accessible($mdc-theme-primary);
@@ -25,5 +30,5 @@
   @include mdc-chip-fill-color(white);
   @include mdc-chip-ink-color($mdc-theme-secondary);
   @include mdc-chip-selected-ink-color($mdc-theme-secondary);
-  @include mdc-chip-stroke(2px, solid, $mdc-theme-secondary);
+  @include mdc-chip-outline(2px, solid, $mdc-theme-secondary);
 }

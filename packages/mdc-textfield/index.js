@@ -93,7 +93,7 @@ class MDCTextField extends MDCComponent {
     if (labelElement) {
       this.label_ = labelFactory(labelElement);
     }
-    const lineRippleElement = this.root_.querySelector(strings.BOTTOM_LINE_SELECTOR);
+    const lineRippleElement = this.root_.querySelector(strings.LINE_RIPPLE_SELECTOR);
     if (lineRippleElement) {
       this.lineRipple_ = lineRippleFactory(lineRippleElement);
     }
@@ -113,20 +113,16 @@ class MDCTextField extends MDCComponent {
     }
 
     this.ripple = null;
-    if (this.root_.classList.contains(cssClasses.BOX) || this.root_.classList.contains(cssClasses.OUTLINED)) {
-      // For outlined text fields, the ripple is instantiated on the outline element instead of the root element
-      // to clip the ripple at the outline while still allowing the label to be visible beyond the outline.
-      const rippleCapableSurface = outlineElement ? this.outline_ : this;
-      const rippleRoot = outlineElement ? outlineElement : this.root_;
+    if (this.root_.classList.contains(cssClasses.BOX)) {
       const MATCHES = getMatchesProperty(HTMLElement.prototype);
       const adapter =
-        Object.assign(MDCRipple.createAdapter(/** @type {!RippleCapableSurface} */ (rippleCapableSurface)), {
+        Object.assign(MDCRipple.createAdapter(/** @type {!RippleCapableSurface} */ (this)), {
           isSurfaceActive: () => this.input_[MATCHES](':active'),
           registerInteractionHandler: (type, handler) => this.input_.addEventListener(type, handler),
           deregisterInteractionHandler: (type, handler) => this.input_.removeEventListener(type, handler),
         });
       const foundation = new MDCRippleFoundation(adapter);
-      this.ripple = rippleFactory(rippleRoot, foundation);
+      this.ripple = rippleFactory(this.root_, foundation);
     }
   }
 
@@ -314,14 +310,27 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
-   * Recomputes the outline SVG path for the outline element, and recomputes
-   * all dimensions and positions for the ripple element.
+   * Sets the aria label of the icon.
+   * @param {string} label
+   */
+  set iconAriaLabel(label) {
+    this.foundation_.setIconAriaLabel(label);
+  }
+
+  /**
+   * Sets the text content of the icon.
+   * @param {string} content
+   */
+  set iconContent(content) {
+    this.foundation_.setIconContent(content);
+  }
+
+  /**
+   * Recomputes the outline SVG path for the outline element.
    */
   layout() {
-    this.foundation_.updateOutline();
-    if (this.ripple) {
-      this.ripple.layout();
-    }
+    const openNotch = this.foundation_.shouldFloat;
+    this.foundation_.notchOutline(openNotch);
   }
 
   /**
@@ -336,7 +345,8 @@ class MDCTextField extends MDCComponent {
         registerTextFieldInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
         deregisterTextFieldInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
         registerValidationAttributeChangeHandler: (handler) => {
-          const observer = new MutationObserver(handler);
+          const getAttributesList = (mutationsList) => mutationsList.map((mutation) => mutation.attributeName);
+          const observer = new MutationObserver((mutationsList) => handler(getAttributesList(mutationsList)));
           const targetNode = this.root_.querySelector(strings.INPUT_SELECTOR);
           const config = {attributes: true};
           observer.observe(targetNode, config);
@@ -376,7 +386,7 @@ class MDCTextField extends MDCComponent {
    * @return {!{
    *   activateLineRipple: function(): undefined,
    *   deactivateLineRipple: function(): undefined,
-   *   setLineRippleTransformOrigin: function(!number): undefined,
+   *   setLineRippleTransformOrigin: function(number): undefined,
    * }}
    */
   getLineRippleAdapterMethods_() {
@@ -401,14 +411,15 @@ class MDCTextField extends MDCComponent {
 
   /**
    * @return {!{
+   *   notchOutline: function(number, boolean): undefined,
    *   hasOutline: function(): boolean,
-   *   updateOutlinePath: function(number, boolean): undefined,
    * }}
    */
   getOutlineAdapterMethods_() {
     return {
+      notchOutline: (labelWidth, isRtl) => this.outline_.notch(labelWidth, isRtl),
+      closeOutline: () => this.outline_.closeNotch(),
       hasOutline: () => !!this.outline_,
-      updateOutlinePath: (labelWidth, isRtl) => this.outline_.updateSvgPath(labelWidth, isRtl),
     };
   }
 

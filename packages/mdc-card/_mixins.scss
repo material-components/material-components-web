@@ -15,6 +15,7 @@
 //
 
 @import "@material/theme/mixins";
+@import "./variables";
 
 //
 // Public
@@ -24,7 +25,7 @@
   @include mdc-theme-prop(background-color, $color);
 }
 
-@mixin mdc-card-stroke($color, $thickness: 1px) {
+@mixin mdc-card-outline($color, $thickness: $mdc-card-outline-width) {
   border: $thickness solid mdc-theme-prop-value($color);
 }
 

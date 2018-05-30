@@ -35,7 +35,7 @@ test('exports strings', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCLineRippleFoundation, [
-    'addClass', 'removeClass', 'hasClass', 'setAttr',
+    'addClass', 'removeClass', 'hasClass', 'setStyle',
     'registerEventHandler', 'deregisterEventHandler',
   ]);
 });
@@ -116,5 +116,5 @@ test('setRippleCenter sets style attribute', () => {
   foundation.init();
   foundation.setRippleCenter(transformOriginValue);
 
-  td.verify(mockAdapter.setAttr('style', td.matchers.isA(String)));
+  td.verify(mockAdapter.setStyle('transform-origin', td.matchers.isA(String)));
 });
