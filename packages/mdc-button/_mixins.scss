@@ -81,19 +81,10 @@
 }
 
 @mixin mdc-button-base_() {
-  // TODO: Try keeping inherit but ditching
-  // @include mdc-typography(button);
+  @include mdc-typography(button);
   @include mdc-ripple-surface;
   @include mdc-ripple-radius-bounded;
   @include mdc-button-horizontal-padding($mdc-button-horizontal-padding);
-
-  // From mdc-typography(button):
-  @include mdc-typography-base;
-  font-size: .875rem; // 14sp
-  font-weight: map-get($mdc-typography-font-weight-values, medium);
-  letter-spacing: mdc-typography-get-letter-spacing_(1.25, .875);
-  text-decoration: none;
-  text-transform: uppercase;
 
   display: inline-flex;
   position: relative;
@@ -106,7 +97,7 @@
   outline: none;
 
   /* @alternate */
-  // line-height: inherit;
+  line-height: inherit;
   user-select: none;
   -webkit-appearance: none;
   overflow: hidden;
