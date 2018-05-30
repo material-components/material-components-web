@@ -221,7 +221,7 @@ Property | Value Type | Description
 
 Method Signature | Description
 --- | ---
-`addChip(chipEl: Element) => void` | Adds a new chip object to the chip set from the given chip element
+`addChip(chipEl: Element) => void` | Adds a new `MDCChip` instance to the chip set based on the given `mdc-chip` element
 
 Property | Value Type | Description
 --- | --- | ---

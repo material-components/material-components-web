@@ -137,4 +137,5 @@ test('#adapter.removeChip removes the chip object from the chip set', () => {
   const chip = component.chips[0];
   component.getDefaultFoundation().adapter_.removeChip(chip);
   assert.equal(component.chips.length, 2);
+  td.verify(chip.destroy());
 });
