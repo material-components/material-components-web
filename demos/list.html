@@ -39,7 +39,7 @@
       <div class="mdc-toolbar-fixed-adjust"></div>
       <section class="hero">
         <ul class="mdc-list mdc-list--two-line mdc-list--avatar-list demo-list demo-list--with-avatars">
-          <li class="mdc-list-item">
+          <li class="mdc-list-item" aria-selected="true" tabindex="0">
             <span class="mdc-list-item__graphic" role="presentation">
               <i class="material-icons" aria-hidden="true">folder</i>
             </span>
@@ -1107,6 +1107,9 @@
             });
           });
         };
+
+        var listComponent = new mdc.list.MDCList(hero.querySelector('.mdc-list'));
+        listComponent.wrapFocus = true;
 
         addRippleToListItems(document.getElementById('leading-checkbox-list'));
         addRippleToListItems(document.getElementById('trailing-checkbox-list'));
