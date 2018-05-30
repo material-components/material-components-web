@@ -13,37 +13,61 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-$mdc-text-field-error: #b00020;
-$mdc-text-field-fullwidth-bottom-line-color: rgba(mdc-theme-prop-value(on-surface), .12);
-$mdc-text-field-bottom-line-hover: rgba(mdc-theme-prop-value(on-surface), .87);
-$mdc-text-field-bottom-line-idle: rgba(mdc-theme-prop-value(on-surface), .42);
-$mdc-text-field-label: rgba(mdc-theme-prop-value(on-surface), .6);
-$mdc-text-field-placeholder: rgba(mdc-theme-prop-value(on-surface), .6);
 
-$mdc-text-field-ink-color: rgba(mdc-theme-prop-value(on-surface), .87);
-$mdc-text-field-helper-text-color: rgba(mdc-theme-prop-value(on-surface), .6);
-$mdc-text-field-icon-color: rgba(mdc-theme-prop-value(on-surface), .54);
-$mdc-text-field-focused-label-color: rgba(mdc-theme-prop-value(primary), .87);
+//
+// Color & opacity
+//
 
-$mdc-text-field-disabled-label-color: rgba(mdc-theme-prop-value(on-surface), .37);
-$mdc-text-field-disabled-ink-color: rgba(mdc-theme-prop-value(on-surface), .37);
-$mdc-text-field-disabled-helper-text-color: rgba(mdc-theme-prop-value(on-surface), .37);
-$mdc-text-field-disabled-border: rgba(#231f20, .26);
-$mdc-text-field-disabled-icon: rgba(mdc-theme-prop-value(on-surface), .3);
+$mdc-text-field-error-color: #b00020;
+$mdc-text-field-error-opacity: 1;
 
-$mdc-text-field-box-background: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 4%);
-$mdc-text-field-box-disabled-background: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 2%);
-$mdc-text-field-box-secondary-text: rgba(mdc-theme-prop-value(on-surface), .6);
+// Border and ink color
+$mdc-text-field-border-color: mdc-theme-prop-value(on-surface);
+$mdc-text-field-focused-border-color: mdc-theme-prop-value(primary);
+$mdc-text-field-ink-color: mdc-theme-prop-value(on-surface);
+$mdc-text-field-focused-ink-color: mdc-theme-prop-value(primary);
 
-$mdc-text-field-outlined-idle-border: rgba(mdc-theme-prop-value(on-surface), .24);
-$mdc-text-field-outlined-disabled-border: rgba(mdc-theme-prop-value(on-surface), .06);
-$mdc-text-field-outlined-hover-border: rgba(mdc-theme-prop-value(on-surface), .87);
+// Bottom line opacity
+$mdc-text-field-bottom-line-hover-opacity: .87;
+$mdc-text-field-bottom-line-idle-opacity: .42;
+$mdc-text-field-bottom-line-disabled-opacity: $mdc-text-field-bottom-line-idle-opacity * .38;
+$mdc-text-field-fullwidth-bottom-line-opacity: .12;
+$mdc-text-field-fullwidth-bottom-line-disabled-opacity: $mdc-text-field-fullwidth-bottom-line-opacity * .38;
+$mdc-text-field-line-ripple-opacity: 1;
 
-$mdc-textarea-border: rgba(mdc-theme-prop-value(on-surface), .73);
-$mdc-textarea-background: rgba(mdc-theme-prop-value(surface), 1);
-// cannot be transparent because multiline textarea input
-// will make text unreadable
-$mdc-textarea-disabled-background: rgba(249, 249, 249, 1);
+// Label opacity
+$mdc-text-field-idle-label-opacity: .6;
+$mdc-text-field-disabled-label-opacity: .38;
+$mdc-text-field-focused-label-opacity: .87;
+
+// Ink opacity (including icon and helper text)
+$mdc-text-field-ink-opacity: .87;
+$mdc-text-field-helper-text-opacity: .6;
+$mdc-text-field-icon-opacity: .54;
+$mdc-text-field-disabled-ink-opacity: .38;
+
+// Box text field color & opacity
+$mdc-text-field-box-fill-color: mdc-theme-prop-value(on-surface);
+$mdc-text-field-box-fill-opacity: .04;
+$mdc-text-field-box-disabled-fill-opacity: .02;
+
+// Outlined text field color & opacity
+$mdc-text-field-outlined-idle-border-opacity: .24;
+$mdc-text-field-outlined-hover-border-opacity: .87;
+$mdc-text-field-outlined-focused-border-opacity: 1;
+$mdc-text-field-outlined-disabled-border-opacity: .06;
+
+// Textarea color & opacity
+$mdc-text-field-textarea-border-opacity: .73;
+$mdc-text-field-textarea-disabled-border-opacity: $mdc-text-field-textarea-border-opacity * .38;
+$mdc-text-field-textarea-fill-color: mdc-theme-prop-value(surface);
+$mdc-text-field-textarea-fill-opacity: 1;
+$mdc-text-field-textarea-disabled-fill-color: mdc-theme-prop-value(on-surface);
+$mdc-text-field-textarea-disabled-fill-opacity: .02;
+
+//
+// Positioning
+//
 
 $mdc-text-field-border-radius: 4px !default;
 

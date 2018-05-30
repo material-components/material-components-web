@@ -33,9 +33,9 @@
   border-radius: $radius $radius 0 0;
 }
 
-@mixin mdc-text-field-box-fill-color($color) {
+@mixin mdc-text-field-box-fill-color($color, $opacity: $mdc-text-field-box-fill-opacity, $translucent: false) {
   &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-box-fill-color_($color);
+    @include mdc-text-field-box-fill-color_($color, $opacity, $translucent);
   }
 }
 
@@ -55,21 +55,21 @@
   @include mdc-notched-outline-idle-corner-radius($radius);
 }
 
-@mixin mdc-text-field-outline-color($color) {
+@mixin mdc-text-field-outline-color($color, $opacity: $mdc-text-field-outlined-idle-border-opacity) {
   &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-outline-color_($color);
+    @include mdc-text-field-outline-color_($color, $opacity);
   }
 }
 
-@mixin mdc-text-field-hover-outline-color($color) {
+@mixin mdc-text-field-hover-outline-color($color, $opacity: $mdc-text-field-outlined-hover-border-opacity) {
   &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-hover-outline-color_($color);
+    @include mdc-text-field-hover-outline-color_($color, $opacity);
   }
 }
 
-@mixin mdc-text-field-focused-outline-color($color) {
+@mixin mdc-text-field-focused-outline-color($color, $opacity: $mdc-text-field-outlined-focused-border-opacity) {
   &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-focused-outline-color_($color);
+    @include mdc-text-field-focused-outline-color_($color, $opacity);
   }
 }
 
@@ -94,61 +94,61 @@
   }
 }
 
-@mixin mdc-text-field-textarea-stroke-color($color) {
+@mixin mdc-text-field-textarea-stroke-color($color, $opacity: $mdc-text-field-textarea-border-opacity) {
   &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-textarea-stroke-color_($color);
+    @include mdc-text-field-textarea-stroke-color_($color, $opacity);
   }
 }
 
-@mixin mdc-text-field-textarea-fill-color($color) {
+@mixin mdc-text-field-textarea-fill-color($color, $opacity: $mdc-text-field-textarea-fill-opacity, $translucent: false) {
   &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-textarea-fill-color_($color);
+    @include mdc-text-field-textarea-fill-color_($color, $opacity, $translucent);
 
     // Automatically add label background color the same color as well to ensure
     // the label can be seen if the input scrolls behind the label
     .mdc-floating-label {
-      @include mdc-floating-label-fill-color($color);
+      @include mdc-floating-label-fill-color($color, $opacity, $translucent);
     }
   }
 }
 
 // Mixins for Text Field Fullwidth
 
-@mixin mdc-text-field-fullwidth-bottom-line-color($color) {
+@mixin mdc-text-field-fullwidth-bottom-line-color($color, $opacity: $mdc-text-field-fullwidth-bottom-line-opacity) {
   &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-fullwidth-bottom-line-color_($color);
+    @include mdc-text-field-fullwidth-bottom-line-color_($color, $opacity);
   }
 }
 
 // Other Public Mixins
 
-@mixin mdc-text-field-bottom-line-color($color) {
+@mixin mdc-text-field-bottom-line-color($color, $opacity: $mdc-text-field-bottom-line-idle-opacity) {
   &:not(.mdc-text-field--disabled):not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) {
-    @include mdc-text-field-bottom-line-color_($color);
+    @include mdc-text-field-bottom-line-color_($color, $opacity);
   }
 }
 
-@mixin mdc-text-field-hover-bottom-line-color($color) {
+@mixin mdc-text-field-hover-bottom-line-color($color, $opacity: $mdc-text-field-bottom-line-hover-opacity) {
   &:not(.mdc-text-field--disabled):not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) {
-    @include mdc-text-field-hover-bottom-line-color_($color);
+    @include mdc-text-field-hover-bottom-line-color_($color, $opacity);
   }
 }
 
-@mixin mdc-text-field-ink-color($color) {
+@mixin mdc-text-field-ink-color($color, $opacity: $mdc-text-field-ink-opacity) {
   &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-ink-color_($color);
+    @include mdc-text-field-ink-color_($color, $opacity);
   }
 }
 
-@mixin mdc-text-field-label-color($color) {
+@mixin mdc-text-field-label-color($color, $opacity: $mdc-text-field-idle-label-opacity) {
   &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-label-ink-color_($color);
+    @include mdc-text-field-label-ink-color_($color, $opacity);
   }
 }
 
-@mixin mdc-text-field-line-ripple-color($color) {
+@mixin mdc-text-field-line-ripple-color($color, $opacity: $mdc-text-field-line-ripple-opacity) {
   &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-line-ripple-color_($color);
+    @include mdc-text-field-line-ripple-color_($color, $opacity);
   }
 }
 
@@ -159,12 +159,12 @@
 // Baseline
 
 @mixin mdc-text-field-disabled_ {
-  @include mdc-text-field-bottom-line-color_($mdc-text-field-disabled-border);
-  @include mdc-text-field-ink-color_($mdc-text-field-disabled-ink-color);
-  @include mdc-text-field-label-ink-color_($mdc-text-field-disabled-label-color);
-  @include mdc-text-field-helper-text-color_($mdc-text-field-disabled-helper-text-color);
-  @include mdc-text-field-icon-color_($mdc-text-field-disabled-icon);
-  @include mdc-text-field-fullwidth-bottom-line-color_($mdc-text-field-fullwidth-bottom-line-color);
+  @include mdc-text-field-bottom-line-color_($mdc-text-field-border-color, $mdc-text-field-bottom-line-disabled-opacity);
+  @include mdc-text-field-ink-color_($mdc-text-field-ink-color, $mdc-text-field-disabled-ink-opacity);
+  @include mdc-text-field-label-ink-color_($mdc-text-field-ink-color, $mdc-text-field-disabled-label-opacity);
+  @include mdc-text-field-helper-text-color_($mdc-text-field-ink-color, $mdc-text-field-disabled-ink-opacity);
+  @include mdc-text-field-icon-color_($mdc-text-field-ink-color, $mdc-text-field-disabled-ink-opacity);
+  @include mdc-text-field-fullwidth-bottom-line-color_($mdc-text-field-border-color, $mdc-text-field-fullwidth-bottom-line-disabled-opacity);
 
   pointer-events: none;
 
@@ -178,14 +178,14 @@
 }
 
 @mixin mdc-text-field-invalid_ {
-  @include mdc-text-field-bottom-line-color($mdc-text-field-error);
-  @include mdc-text-field-hover-bottom-line-color($mdc-text-field-error);
-  @include mdc-text-field-line-ripple-color($mdc-text-field-error);
-  @include mdc-text-field-label-color($mdc-text-field-error);
-  @include mdc-text-field-helper-text-validation-color($mdc-text-field-error);
+  @include mdc-text-field-bottom-line-color($mdc-text-field-error-color, $mdc-text-field-error-opacity);
+  @include mdc-text-field-hover-bottom-line-color($mdc-text-field-error-color, $mdc-text-field-error-opacity);
+  @include mdc-text-field-line-ripple-color($mdc-text-field-error-color, $mdc-text-field-error-opacity);
+  @include mdc-text-field-label-color($mdc-text-field-error-color, $mdc-text-field-error-opacity);
+  @include mdc-text-field-helper-text-validation-color($mdc-text-field-error-color, $mdc-text-field-error-opacity);
 
   &.mdc-text-field--with-trailing-icon {
-    @include mdc-text-field-icon-color($mdc-text-field-error);
+    @include mdc-text-field-icon-color($mdc-text-field-error-color, $mdc-text-field-error-opacity);
   }
 
   + .mdc-text-field-helper-text--validation-msg {
@@ -194,7 +194,7 @@
 }
 
 @mixin mdc-text-field-focused_ {
-  @include mdc-text-field-label-color($mdc-text-field-focused-label-color);
+  @include mdc-text-field-label-color($mdc-text-field-focused-ink-color, $mdc-text-field-focused-label-opacity);
 
   @include mdc-required-text-field-label-asterisk_ {
     color: $mdc-text-field-error;
@@ -227,8 +227,8 @@
 // Outlined
 
 @mixin mdc-text-field-outlined-disabled_ {
-  @include mdc-text-field-ink-color_($mdc-text-field-placeholder);
-  @include mdc-text-field-outline-color_($mdc-text-field-outlined-disabled-border);
+  @include mdc-text-field-ink-color_($mdc-text-field-ink-color, $mdc-text-field-disabled-ink-opacity);
+  @include mdc-text-field-outline-color_($mdc-text-field-border-color, $mdc-text-field-outlined-disabled-border-opacity);
 
   .mdc-text-field__input {
     border-bottom: none;
@@ -236,9 +236,9 @@
 }
 
 @mixin mdc-text-field-outlined-invalid_ {
-  @include mdc-text-field-outline-color($mdc-text-field-error);
-  @include mdc-text-field-hover-outline-color($mdc-text-field-error);
-  @include mdc-text-field-focused-outline-color($mdc-text-field-error);
+  @include mdc-text-field-outline-color($mdc-text-field-error-color, $mdc-text-field-error-opacity);
+  @include mdc-text-field-hover-outline-color($mdc-text-field-error-color, $mdc-text-field-error-opacity);
+  @include mdc-text-field-focused-outline-color($mdc-text-field-error-color, $mdc-text-field-error-opacity);
 }
 
 @mixin mdc-text-field-outlined-focused_ {
@@ -265,9 +265,9 @@
 }
 
 @mixin mdc-text-field-outlined_ {
-  @include mdc-text-field-outline-color($mdc-text-field-outlined-idle-border);
-  @include mdc-text-field-hover-outline-color($mdc-text-field-outlined-hover-border);
-  @include mdc-text-field-focused-outline-color(primary);
+  @include mdc-text-field-outline-color($mdc-text-field-border-color, $mdc-text-field-outlined-idle-border-opacity);
+  @include mdc-text-field-hover-outline-color($mdc-text-field-border-color, $mdc-text-field-outlined-hover-border-opacity);
+  @include mdc-text-field-focused-outline-color($mdc-text-field-focused-ink-color, $mdc-text-field-outlined-focused-border-opacity);
   @include mdc-floating-label-float-position($mdc-text-field-outlined-label-position-y);
   @include mdc-floating-label-shake-animation(text-field-outlined);
   @include mdc-text-field-outline-corner-radius_($mdc-text-field-border-radius);
@@ -295,20 +295,20 @@
   }
 }
 
-@mixin mdc-text-field-outline-color_($color) {
+@mixin mdc-text-field-outline-color_($color, $opacity) {
   // NOTE: outlined version of text-field wants the "idle" and
   // "notched" outline to have the same color. This covers two cases:
   // 1) text field renders with NO value in the "idle" state
   // 2) text field renders with a value in the "notched" state
-  @include mdc-notched-outline-idle-color($color);
-  @include mdc-notched-outline-color($color);
+  @include mdc-notched-outline-idle-color($color, $opacity);
+  @include mdc-notched-outline-color($color, $opacity);
 }
 
-@mixin mdc-text-field-hover-outline-color_($color) {
+@mixin mdc-text-field-hover-outline-color_($color, $opacity) {
   &:not(.mdc-text-field--focused) {
     .mdc-text-field__input:hover ~,
     .mdc-text-field__icon:hover ~ {
-      @include mdc-notched-outline-idle-color($color);
+      @include mdc-notched-outline-idle-color($color, $opacity);
 
       // tldr; this doesn't break BEM:
       // We need to wrap this mixin with the .mdc-notched-outline
@@ -317,15 +317,15 @@
       // and .mdc-notched-outline__idle as siblings, while
       // .mdc-notched-outline__path is a child of .mdc-notched-outline
       .mdc-notched-outline {
-        @include mdc-notched-outline-color($color);
+        @include mdc-notched-outline-color($color, $opacity);
       }
     }
   }
 }
 
-@mixin mdc-text-field-focused-outline-color_($color) {
+@mixin mdc-text-field-focused-outline-color_($color, $opacity) {
   &.mdc-text-field--focused {
-    @include mdc-notched-outline-color($color);
+    @include mdc-notched-outline-color($color, $opacity);
   }
 }
 
@@ -342,7 +342,7 @@
   );
   @include mdc-ripple-radius-bounded;
   @include mdc-text-field-box-corner-radius($mdc-text-field-border-radius);
-  @include mdc-text-field-box-fill-color($mdc-text-field-box-background);
+  @include mdc-text-field-box-fill-color($mdc-text-field-box-fill-color);
   @include mdc-floating-label-float-position($mdc-text-field-box-label-position-y);
   @include mdc-floating-label-shake-animation(text-field-box);
 
@@ -376,9 +376,9 @@
 }
 
 @mixin mdc-text-field-box-disabled_ {
-  @include mdc-text-field-box-fill-color_($mdc-text-field-box-disabled-background);
-  @include mdc-text-field-bottom-line-color_($mdc-text-field-outlined-disabled-border);
-  @include mdc-text-field-label-color($mdc-text-field-disabled-label-color);
+  @include mdc-text-field-box-fill-color_($mdc-text-field-box-fill-color, $mdc-text-field-box-disabled-fill-opacity);
+  @include mdc-text-field-bottom-line-color_($mdc-text-field-border-color, $mdc-text-field-bottom-line-disabled-opacity);
+  @include mdc-text-field-label-color($mdc-text-field-disabled-label-color, $mdc-text-field-disabled-label-opacity);
 
   border-bottom: none;
 }
@@ -458,14 +458,14 @@
 }
 
 @mixin mdc-text-field-fullwidth-invalid_ {
-  @include mdc-text-field-fullwidth-bottom-line-color($mdc-text-field-error);
+  @include mdc-text-field-fullwidth-bottom-line-color($mdc-text-field-error-color, $mdc-text-field-error-opacity);
 }
 
 // Textarea
 
 @mixin mdc-text-field-textarea-disabled_ {
-  @include mdc-text-field-textarea-stroke-color_($mdc-text-field-disabled-border);
-  @include mdc-text-field-textarea-fill-color_($mdc-textarea-disabled-background);
+  @include mdc-text-field-textarea-stroke-color_($mdc-text-field-textarea-border-color, $mdc-text-field-textarea-disabled-border-opacity);
+  @include mdc-text-field-textarea-fill-color_($mdc-text-field-textarea-disabled-fill-color, $mdc-text-field-textarea-disabled-fill-opacity);
 
   border-style: solid;
 
@@ -474,17 +474,18 @@
   }
 
   .mdc-floating-label {
-    @include mdc-floating-label-fill-color($mdc-textarea-disabled-background);
+    @include mdc-floating-label-fill-color($mdc-text-field-textarea-disabled-fill-color, $mdc-text-field-textarea-disabled-fill-opacity);
   }
 }
 
 @mixin mdc-text-field-textarea-invalid_ {
-  @include mdc-text-field-textarea-stroke-color($mdc-text-field-error);
+  @include mdc-text-field-textarea-stroke-color($mdc-text-field-error-color, 1);
 }
 
 @mixin mdc-text-field-textarea_ {
   @include mdc-text-field-textarea-corner-radius($mdc-text-field-border-radius);
-  @include mdc-text-field-textarea-stroke-color($mdc-textarea-border);
+  @include mdc-text-field-textarea-stroke-color($mdc-text-field-textarea-border-color);
+  @include mdc-text-field-textarea-fill-color($mdc-text-field-textarea-fill-color);
 
   // Translate above the top of the input, and compensate for the amount of offset needed
   // to position the label within the bounds of the inset padding.
@@ -512,7 +513,6 @@
 
   .mdc-floating-label {
     @include mdc-rtl-reflexive-position(left, 1px);
-    @include mdc-floating-label-fill-color($mdc-textarea-background);
 
     top: $label-offset-y;
     bottom: auto;
@@ -525,59 +525,79 @@
 
 // Customization
 
-@mixin mdc-text-field-ink-color_($color) {
+@mixin mdc-text-field-ink-color_($color, $opacity) {
+  $solid-color: mdc-theme-solid-color-value($color, $opacity);
   .mdc-text-field__input {
-    @include mdc-theme-prop(color, $color);
+    @include mdc-theme-prop(color, $solid-color);
   }
 }
 
-@mixin mdc-text-field-box-fill-color_($color) {
-  @include mdc-theme-prop(background-color, $color);
+@mixin mdc-text-field-box-fill-color_($color, $opacity, $translucent: false) {
+  @if $translucent {
+    $color-value: mdc-theme-solid-color-value($color, $opacity);
+    @include mdc-theme-prop(background-color, $color-value);
+  } @else {
+    $color-value: mdc-theme-translucent-color-value($color, $opacity);
+    @include mdc-theme-prop(background-color, $color-value);
+  }
 }
 
-@mixin mdc-text-field-textarea-stroke-color_($color) {
-  @include mdc-theme-prop(border-color, $color);
+@mixin mdc-text-field-textarea-stroke-color_($color, $opacity) {
+  $solid-color: mdc-theme-solid-color-value($color, $opacity);
+  @include mdc-theme-prop(border-color, $solid-color);
 
   .mdc-text-field__input:focus {
-    @include mdc-theme-prop(border-color, $color);
+    @include mdc-theme-prop(border-color, $solid-color);
   }
 }
 
-@mixin mdc-text-field-textarea-fill-color_($color) {
-  @include mdc-theme-prop(background-color, $color);
+@mixin mdc-text-field-textarea-fill-color_($color, $opacity, $translucent) {
+  @if $translucent {
+    $color-value: mdc-theme-solid-color-value($color, $opacity);
+    @include mdc-theme-prop(background-color, $color-value);
+  } @else {
+    $color-value: mdc-theme-translucent-color-value($color, $opacity);
+    @include mdc-theme-prop(background-color, $color-value);
+  }
 }
 
-@mixin mdc-text-field-fullwidth-bottom-line-color_($color) {
+@mixin mdc-text-field-fullwidth-bottom-line-color_($color, $opacity) {
+  $solid-color: mdc-theme-solid-color-value($color, $opacity);
   &:not(.mdc-text-field--textarea) {
-    @include mdc-theme-prop(border-bottom-color, $color);
+    @include mdc-theme-prop(border-bottom-color, $solid-color);
   }
 }
 
-@mixin mdc-text-field-bottom-line-color_($color) {
+@mixin mdc-text-field-bottom-line-color_($color, $opacity) {
+  $solid-color: mdc-theme-solid-color-value($color, $opacity);
   .mdc-text-field__input {
-    @include mdc-theme-prop(border-bottom-color, $color);
+    @include mdc-theme-prop(border-bottom-color, $solid-color);
   }
 }
 
-@mixin mdc-text-field-hover-bottom-line-color_($color) {
+@mixin mdc-text-field-hover-bottom-line-color_($color, $opacity) {
+  $solid-color: mdc-theme-solid-color-value($color, $opacity);
   .mdc-text-field__input:hover {
-    @include mdc-theme-prop(border-bottom-color, $color);
+    @include mdc-theme-prop(border-bottom-color, $solid-color);
   }
 }
 
-@mixin mdc-text-field-line-ripple-color_($color) {
+@mixin mdc-text-field-line-ripple-color_($color, $opacity) {
+  $solid-color: mdc-theme-solid-color-value($color, $opacity);
   .mdc-line-ripple {
-    @include mdc-line-ripple-color($color);
+    @include mdc-line-ripple-color($solid-color);
   }
 }
 
-@mixin mdc-text-field-label-ink-color_($color) {
+@mixin mdc-text-field-label-ink-color_($color, $opacity) {
+  $solid-color: mdc-theme-solid-color-value($color, $opacity);
+
   .mdc-floating-label {
-    @include mdc-floating-label-ink-color($color);
+    @include mdc-floating-label-ink-color($solid-color);
   }
 
   // CSS-only version
   .mdc-text-field__input::placeholder {
-    @include mdc-theme-prop(color, $color);
+    @include mdc-theme-prop(color, $solid-color);
   }
 }

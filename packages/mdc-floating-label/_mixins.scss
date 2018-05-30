@@ -22,8 +22,14 @@
 }
 
 // Used for textarea in case of scrolling
-@mixin mdc-floating-label-fill-color($color) {
-  @include mdc-theme-prop(background-color, $color);
+@mixin mdc-floating-label-fill-color($color, $opacity, $translucent) {
+  @if $translucent {
+    $color-value: mdc-theme-solid-color-value($color, $opacity);
+    @include mdc-theme-prop(background-color, $color-value);
+  } @else {
+    $color-value: mdc-theme-translucent-color-value($color, $opacity);
+    @include mdc-theme-prop(background-color, $color-value);
+  }
 }
 
 @mixin mdc-floating-label-shake-keyframes($modifier, $positionY, $positionX: 0%, $scale: .75) {

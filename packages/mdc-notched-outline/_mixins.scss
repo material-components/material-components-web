@@ -16,15 +16,17 @@
 
 @import "@material/theme/mixins";
 
-@mixin mdc-notched-outline-idle-color($color) {
+@mixin mdc-notched-outline-idle-color($color, $opacity) {
+  $solid-color: mdc-theme-solid-color-value($color, $opacity);
   .mdc-notched-outline__idle {
-    @include mdc-theme-prop(border-color, $color);
+    @include mdc-theme-prop(border-color, $solid-color);
   }
 }
 
-@mixin mdc-notched-outline-color($color) {
+@mixin mdc-notched-outline-color($color, $opacity) {
+  $solid-color: mdc-theme-solid-color-value($color, $opacity);
   .mdc-notched-outline__path {
-    @include mdc-theme-prop(stroke, $color);
+    @include mdc-theme-prop(stroke, $solid-color);
   }
 }
 

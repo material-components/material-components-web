@@ -153,3 +153,15 @@ $mdc-theme-property-values: (
 
   @return map-get($color-map-for-tone, $text-style);
 }
+
+@function mdc-theme-solid-color-value($color, $opacity) {
+  $opacity-percentage: if(unit($opacity) == "%", $opacity, percentage($opacity));
+
+  @return mix(mdc-theme-prop-value($color), white, $opacity-percentage);
+}
+
+@function mdc-theme-translucent-color-value($color, $opacity) {
+  $opacity-percentage: if(unit($opacity) == "%", $opacity, percentage($opacity));
+
+  @return rgba(mdc-theme-prop-value($color), percentage($opacity));
+}
