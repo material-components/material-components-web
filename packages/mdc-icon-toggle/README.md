@@ -6,6 +6,13 @@ iconId: button
 path: /catalog/buttons/icon-toggle-buttons/
 -->
 
+## Important - Deprecation Notice
+
+The existing `MDCIconToggle` component and styles will be removed in a future release. Some of its functionality
+will be available in the [MDC Icon Button](../mdc-icon-button) package instead. Bugs and feature requests
+will no longer be accepted for the `mdc-icon-toggle` package. It is recommended that you migrate to the
+`mdc-icon-button` package to continue to receive new features and updates.
+
 # Icon Toggle Buttons
 
 <!--<div class="article__asset">
