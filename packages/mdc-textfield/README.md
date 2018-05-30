@@ -6,6 +6,13 @@ iconId: text_field
 path: /catalog/input-controls/text-field/
 -->
 
+## Important - Default Style Deprecation Notice
+
+The existing default text field style will be changed in an upcoming release. The Material spec indicates that
+the default style will be the filled variant (currently referred to as the box variant). This will become the  
+default style. Continuing to add the `mdc-text-field--box` class to the text field will
+result in no change. 
+
 # Text Field
 
 <!--<div class="article__asset">
@@ -46,9 +53,9 @@ npm install @material/textfield
 </div>
 ```
 
-> NOTE: Text field supports `text` and `password` input types (e.g., `<input type="password" class="mdc-text-field__input">`).
+> NOTE: Text field supports `text`, `number`, and `password` input types (e.g., `<input type="password" class="mdc-text-field__input">`).
 >
-> Other input types (such as `number` and `date`) are not currently supported.
+> Other input types (such as `date`) are not currently supported.
 
 > NOTE: For more details, see [MDC Line Ripple](../mdc-line-ripple/README.md)
 > and [MDC Floating Label](../mdc-floating-label/README.md).
@@ -306,6 +313,8 @@ Method Signature | Description
 `activateFocus() => void` | Activates the focus state of the Text Field. Normally called in response to the input focus event.
 `deactivateFocus() => void` | Deactivates the focus state of the Text Field. Normally called in response to the input blur event.
 `setHelperTextContent(content: string) => void` | Sets the content of the helper text.
+`setIconAriaLabel(label: string) => void` | Sets the aria label of the icon.
+`setIconContent(content: string) => void` | Sets the text content of the icon.
 `notchOutline(openNotch: boolean) => void` | Opens/closes the notched outline.
 
 `MDCTextFieldFoundation` supports multiple optional sub-elements: helper text and icon. The foundations of these sub-elements must be passed in as constructor arguments to `MDCTextFieldFoundation`.
