@@ -48,6 +48,17 @@ class MDCFoundation {
     return {};
   }
 
+  /** @return enum{Function} */
+  get eventHandlers() {
+    console.log('get eventHandlers');
+    return {};
+  }
+
+  /** @return enum{Function} */
+  get windowEventHandlers() {
+    return {};
+  }
+
   /**
    * @param {A=} adapter
    */

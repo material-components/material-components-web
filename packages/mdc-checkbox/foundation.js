@@ -44,6 +44,13 @@ class MDCCheckboxFoundation extends MDCFoundation {
     return numbers;
   }
 
+  get eventHandlers() {
+    return {
+      'animationend': this.handleAnimationEnd,
+      'change': this.handleChange,
+    };
+  }
+
   /** @return {!MDCCheckboxAdapter} */
   static get defaultAdapter() {
     return /** @type {!MDCCheckboxAdapter} */ ({
@@ -51,10 +58,6 @@ class MDCCheckboxFoundation extends MDCFoundation {
       removeClass: (/* className: string */) => {},
       setNativeControlAttr: (/* attr: string, value: string */) => {},
       removeNativeControlAttr: (/* attr: string */) => {},
-      registerAnimationEndHandler: (/* handler: EventListener */) => {},
-      deregisterAnimationEndHandler: (/* handler: EventListener */) => {},
-      registerChangeHandler: (/* handler: EventListener */) => {},
-      deregisterChangeHandler: (/* handler: EventListener */) => {},
       getNativeControl: () => /* !MDCSelectionControlState */ {},
       forceLayout: () => {},
       isAttachedToDOM: () => /* boolean */ {},
@@ -73,23 +76,18 @@ class MDCCheckboxFoundation extends MDCFoundation {
     /** @private {number} */
     this.animEndLatchTimer_ = 0;
 
-    this.animEndHandler_ = /** @private {!EventListener} */ (
-      () => this.handleAnimationEnd());
-
-    this.changeHandler_ = /** @private {!EventListener} */ (
-      () => this.handleChange());
+    /** @private {boolean} */
+    this.shouldHandleAnimationEnd_ = false;
   }
 
   init() {
     this.currentCheckState_ = this.determineCheckState_(this.getNativeControl_());
     this.updateAriaChecked_();
     this.adapter_.addClass(cssClasses.UPGRADED);
-    this.adapter_.registerChangeHandler(this.changeHandler_);
     this.installPropertyChangeHooks_();
   }
 
   destroy() {
-    this.adapter_.deregisterChangeHandler(this.changeHandler_);
     this.uninstallPropertyChangeHooks_();
   }
 
@@ -142,10 +140,15 @@ class MDCCheckboxFoundation extends MDCFoundation {
    * Handles the animationend event for the checkbox
    */
   handleAnimationEnd() {
+    // Early exit
+    if (!this.shouldHandleAnimationEnd_) {
+      return;
+    }
+
     clearTimeout(this.animEndLatchTimer_);
     this.animEndLatchTimer_ = setTimeout(() => {
       this.adapter_.removeClass(this.currentAnimationClass_);
-      this.adapter_.deregisterAnimationEndHandler(this.animEndHandler_);
+      this.shouldHandleAnimationEnd_ = false;
     }, numbers.ANIM_END_LATCH_MS);
   }
 
@@ -223,7 +226,7 @@ class MDCCheckboxFoundation extends MDCFoundation {
     // to the DOM.
     if (this.adapter_.isAttachedToDOM() && this.currentAnimationClass_.length > 0) {
       this.adapter_.addClass(this.currentAnimationClass_);
-      this.adapter_.registerAnimationEndHandler(this.animEndHandler_);
+      this.shouldHandleAnimationEnd_ = true;
     }
   }
 

@@ -61,40 +61,6 @@ class MDCRippleAdapter {
   containsEventTarget(target) {}
 
   /**
-   * @param {string} evtType
-   * @param {!Function} handler
-   */
-  registerInteractionHandler(evtType, handler) {}
-
-  /**
-   * @param {string} evtType
-   * @param {!Function} handler
-   */
-  deregisterInteractionHandler(evtType, handler) {}
-
-  /**
-   * @param {string} evtType
-   * @param {!Function} handler
-   */
-  registerDocumentInteractionHandler(evtType, handler) {}
-
-  /**
-   * @param {string} evtType
-   * @param {!Function} handler
-   */
-  deregisterDocumentInteractionHandler(evtType, handler) {}
-
-  /**
-   * @param {!Function} handler
-   */
-  registerResizeHandler(handler) {}
-
-  /**
-   * @param {!Function} handler
-   */
-  deregisterResizeHandler(handler) {}
-
-  /**
    * @param {string} varName
    * @param {?number|string} value
    */

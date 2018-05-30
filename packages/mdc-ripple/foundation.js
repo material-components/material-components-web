@@ -60,12 +60,6 @@ let ListenersType;
  */
 let PointType;
 
-// Activation events registered on the root element of each instance for activation
-const ACTIVATION_EVENT_TYPES = ['touchstart', 'pointerdown', 'mousedown', 'keydown'];
-
-// Deactivation events registered on documentElement when a pointer-related down event occurs
-const POINTER_DEACTIVATION_EVENT_TYPES = ['touchend', 'pointerup', 'mouseup'];
-
 // Tracks activations that have occurred on the current frame, to avoid simultaneous nested activations
 /** @type {!Array<!EventTarget>} */
 let activatedTargets = [];
@@ -95,15 +89,33 @@ class MDCRippleFoundation extends MDCFoundation {
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
       containsEventTarget: (/* target: !EventTarget */) => {},
-      registerInteractionHandler: (/* evtType: string, handler: EventListener */) => {},
-      deregisterInteractionHandler: (/* evtType: string, handler: EventListener */) => {},
-      registerDocumentInteractionHandler: (/* evtType: string, handler: EventListener */) => {},
-      deregisterDocumentInteractionHandler: (/* evtType: string, handler: EventListener */) => {},
-      registerResizeHandler: (/* handler: EventListener */) => {},
-      deregisterResizeHandler: (/* handler: EventListener */) => {},
       updateCssVariable: (/* varName: string, value: string */) => {},
       computeBoundingRect: () => /* ClientRect */ {},
       getWindowPageOffset: () => /* {x: number, y: number} */ {},
+    };
+  }
+
+  get eventHandlers() {
+    return {
+      'touchstart': this.activate,
+      'touchend': this.deactivate,
+      'pointerdown': this.activate,
+      'pointerup': this.deactivate,
+      'mousedown': this.activate,
+      'mouseup': this.deactivate,
+      'keydown': this.activate,
+      'keyup': this.deactivate,
+      'focus': this.handleFocus,
+      'blur': this.handleBlur,
+    };
+  }
+
+  get windowEventHandlers() {
+    return {
+      'touchend': this.deactivate,
+      'pointerup': this.deactivate,
+      'mouseup': this.deactivate,
+      'resize': this.handleResize,
     };
   }
 
@@ -125,24 +137,11 @@ class MDCRippleFoundation extends MDCFoundation {
     /** @private {number} */
     this.maxRadius_ = 0;
 
-    /** @private {function(!Event)} */
-    this.activateHandler_ = (e) => this.activate_(e);
+    /** @private {boolean} */
+    this.shouldHandleKeyUp_ = false;
 
-    /** @private {function(!Event)} */
-    this.deactivateHandler_ = (e) => this.deactivate_(e);
-
-    /** @private {function(?Event=)} */
-    this.focusHandler_ = () => requestAnimationFrame(
-      () => this.adapter_.addClass(MDCRippleFoundation.cssClasses.BG_FOCUSED)
-    );
-
-    /** @private {function(?Event=)} */
-    this.blurHandler_ = () => requestAnimationFrame(
-      () => this.adapter_.removeClass(MDCRippleFoundation.cssClasses.BG_FOCUSED)
-    );
-
-    /** @private {!Function} */
-    this.resizeHandler_ = () => this.layout();
+    /** @private {boolean} */
+    this.shouldHandleWindowPointersUp_ = false;
 
     /** @private {{left: number, top:number}} */
     this.unboundedCoords_ = {
@@ -202,7 +201,6 @@ class MDCRippleFoundation extends MDCFoundation {
     if (!this.isSupported_()) {
       return;
     }
-    this.registerRootHandlers_();
 
     const {ROOT, UNBOUNDED} = MDCRippleFoundation.cssClasses;
     requestAnimationFrame(() => {
@@ -227,9 +225,6 @@ class MDCRippleFoundation extends MDCFoundation {
       this.adapter_.removeClass(FG_ACTIVATION);
     }
 
-    this.deregisterRootHandlers_();
-    this.deregisterDeactivationHandlers_();
-
     const {ROOT, UNBOUNDED} = MDCRippleFoundation.cssClasses;
     requestAnimationFrame(() => {
       this.adapter_.removeClass(ROOT);
@@ -238,17 +233,21 @@ class MDCRippleFoundation extends MDCFoundation {
     });
   }
 
-  /** @private */
-  registerRootHandlers_() {
-    ACTIVATION_EVENT_TYPES.forEach((type) => {
-      this.adapter_.registerInteractionHandler(type, this.activateHandler_);
-    });
-    this.adapter_.registerInteractionHandler('focus', this.focusHandler_);
-    this.adapter_.registerInteractionHandler('blur', this.blurHandler_);
+  handleFocus() {
+    requestAnimationFrame(() => this.adapter_.addClass(MDCRippleFoundation.cssClasses.BG_FOCUSED));
+  }
 
-    if (this.adapter_.isUnbounded()) {
-      this.adapter_.registerResizeHandler(this.resizeHandler_);
+  handleBlur() {
+    requestAnimationFrame(() => this.adapter_.removeClass(MDCRippleFoundation.cssClasses.BG_FOCUSED));
+  }
+
+  handleResize() {
+    // Early exit if not unbounded
+    if (!this.adapter_.isUnbounded()) {
+      return;
     }
+
+    this.layout();
   }
 
   /**
@@ -257,33 +256,16 @@ class MDCRippleFoundation extends MDCFoundation {
    */
   registerDeactivationHandlers_(e) {
     if (e.type === 'keydown') {
-      this.adapter_.registerInteractionHandler('keyup', this.deactivateHandler_);
+      this.shouldHandleKeyUp_ = true;
     } else {
-      POINTER_DEACTIVATION_EVENT_TYPES.forEach((type) => {
-        this.adapter_.registerDocumentInteractionHandler(type, this.deactivateHandler_);
-      });
-    }
-  }
-
-  /** @private */
-  deregisterRootHandlers_() {
-    ACTIVATION_EVENT_TYPES.forEach((type) => {
-      this.adapter_.deregisterInteractionHandler(type, this.activateHandler_);
-    });
-    this.adapter_.deregisterInteractionHandler('focus', this.focusHandler_);
-    this.adapter_.deregisterInteractionHandler('blur', this.blurHandler_);
-
-    if (this.adapter_.isUnbounded()) {
-      this.adapter_.deregisterResizeHandler(this.resizeHandler_);
+      this.shouldHandleWindowPointersUp_ = true;
     }
   }
 
   /** @private */
   deregisterDeactivationHandlers_() {
-    this.adapter_.deregisterInteractionHandler('keyup', this.deactivateHandler_);
-    POINTER_DEACTIVATION_EVENT_TYPES.forEach((type) => {
-      this.adapter_.deregisterDocumentInteractionHandler(type, this.deactivateHandler_);
-    });
+    this.shouldHandleKeyUp_ = false;
+    this.shouldHandleWindowPointersUp_ = false;
   }
 
   /** @private */
@@ -483,6 +465,11 @@ class MDCRippleFoundation extends MDCFoundation {
    * @private
    */
   deactivate_(e) {
+    // Early exit if should not handle deactivation
+    if (!this.shouldHandleWindowPointersUp_ && !this.shouldHandleKeyUp_) {
+      return;
+    }
+
     const activationState = this.activationState_;
     // This can happen in scenarios such as when you have a keyup event that blurs the element.
     if (!activationState.isActivated) {

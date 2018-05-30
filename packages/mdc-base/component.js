@@ -47,6 +47,7 @@ class MDCComponent {
     /** @protected {!F} */
     this.foundation_ = foundation === undefined ? this.getDefaultFoundation() : foundation;
     this.foundation_.init();
+    this.registerEventHandlers();
     this.initialSyncWithDOM();
   }
 
@@ -66,6 +67,36 @@ class MDCComponent {
       'foundation class');
   }
 
+  registerEventHandlers() {
+    Object.keys(this.foundation_.eventHandlers).forEach((evtName) => {
+      this.root_.addEventListener(evtName, this);
+    });
+
+    Object.keys(this.foundation_.windowEventHandlers).forEach((evtName) => {
+      window.addEventListener(evtName, this);
+    });
+  }
+
+  deregisterEventHandlers() {
+    Object.keys(this.foundation_.eventHandlers).forEach((evtName) => {
+      this.root_.removeEventListener(evtName, this);
+    });
+
+    Object.keys(this.foundation_.windowEventHandlers).forEach((evtName) => {
+      window.removeEventListener(evtName, this);
+    });
+  }
+
+  /** @param {!Event} evt */
+  handleEvent(evt) {
+    // Get the associated handler from the foundation's event handlers enums
+    if (evt.currentTarget === this.root_ && this.foundation_.eventHandlers[evt.type]) {
+      this.foundation_.eventHandlers[evt.type].call(this.foundation_, evt);
+    } else if (this.foundation_.windowEventHandlers[evt.type]) {
+      this.foundation_.windowEventHandlers[evt.type].call(this.foundation_, evt);
+    }
+  }
+
   initialSyncWithDOM() {
     // Subclasses should override this method if they need to perform work to synchronize with a host DOM
     // object. An example of this would be a form control wrapper that needs to synchronize its internal state
@@ -76,6 +107,7 @@ class MDCComponent {
   destroy() {
     // Subclasses may implement this method to release any resources / deregister any listeners they have
     // attached. An example of this might be deregistering a resize event from the window object.
+    this.deregisterEventHandlers();
     this.foundation_.destroy();
   }
 
