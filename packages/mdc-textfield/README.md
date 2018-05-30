@@ -6,6 +6,13 @@ iconId: text_field
 path: /catalog/input-controls/text-field/
 -->
 
+## Important - Default Style Deprecation Notice
+
+The existing default text field style will be changed in an upcoming release. The Material spec indicates that
+the default style will be the filled variant (currently referred to as the box variant). This will become the  
+default style. Continuing to add the `mdc-text-field--box` class to the text field will
+result in no change. 
+
 # Text Field
 
 <!--<div class="article__asset">
