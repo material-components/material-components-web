@@ -153,6 +153,39 @@ We also need to configure sass-loader to understand the `@material` imports used
 }
 ```
 
+In order to add vendor-specific styles to the Sass files, we need to configure `autoprefixer` through PostCSS. 
+
+You'll need all of these Node dependencies:
+- [autoprefixer](https://www.npmjs.com/package/autoprefixer): Parses CSS and adds vendor prefixes to CSS rules
+- [postcss-loader](https://github.com/postcss/postcss-loader): Loader for Webpack used in conjunction with autoprefixer
+
+You can install all of them by running this command:
+
+```
+npm install --save-dev autoprefixer postcss-loader
+```
+
+Add `autoprefixer` at the top of your `webpack.config.js`:
+
+```js
+const autoprefixer = require('autoprefixer');
+```
+
+Then add `postcss-loader`, using `autoprefixer` as a plugin:
+
+```js
+{ loader: 'extract-loader' },
+{ loader: 'css-loader' },
+{ loader: 'postcss-loader',
+  options: {
+     plugins: () => [autoprefixer({ grid: false })]
+  }
+},
+{ loader: 'sass-loader' },
+```
+
+> Note: We disable autoprefixer for CSS Grid in order for MDC Web Layout Grid to work properly. Please also note that the order of loaders in webpack matters.
+
 `@material/button` has [documentation](../packages/mdc-button/README.md) about the required HTML for a button. Update your `index.html` to include the MDC Button markup, and add the `foo-button` class to the element:
 
 ```html
