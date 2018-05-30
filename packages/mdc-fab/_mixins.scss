@@ -50,6 +50,10 @@
   @include mdc-theme-prop(color, $color);
 }
 
+@mixin mdc-fab-extended-fluid() {
+  width: 100%;
+}
+
 $mdc-fab-icon-enter-delay_: 90ms;
 $mdc-fab-icon-enter-duration_: 180ms;
 

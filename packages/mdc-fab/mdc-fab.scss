@@ -15,7 +15,10 @@
 @import "@material/ripple/common";
 @import "@material/ripple/mixins";
 @import "@material/ripple/variables";
+@import "@material/typography/mixins";
 @import "./mixins";
+
+$mdc-fab-extended-height_: 48px;
 
 // postcss-bem-linter: define fab
 
@@ -29,6 +32,27 @@
 
 .mdc-fab--mini {
   @include mdc-fab--mini_;
+}
+
+.mdc-fab--extended {
+  @include mdc-typography(button);
+  width: auto;
+  padding: 0 20px;
+  height: $mdc-fab-extended-height_;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  border-radius: $mdc-fab-extended-height_ / 2;
+}
+
+.mdc-fab__label {
+  font-size: 14px;
+  text-transform: uppercase;
+  padding-left: 8px;
+  justify-content: flex-start;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .mdc-fab__icon {

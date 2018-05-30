@@ -26,3 +26,18 @@
 .demo-fab-icon-size {
   @include mdc-fab-icon-size(36px);
 }
+
+.demo-fab-extended-fluid,
+.demo-figure-fab-extended {
+  width: 100%;
+}
+
+.demo-fab-extended-fluid {
+  @include mdc-fab-extended-fluid();
+}
+
+@media (max-width: 700px) {
+  .demo-fab-extended-fluid-responsive {
+    @include mdc-fab-extended-fluid();
+  }
+}
