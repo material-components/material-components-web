@@ -117,10 +117,14 @@
 
 .mdc-chip__icon--leading {
   transition: opacity $mdc-chip-opacity-animation-duration linear;
+  transition-delay: $mdc-chip-leading-icon-delay;
   opacity: 1;
 
   + .mdc-chip__checkmark {
     transition: opacity $mdc-chip-opacity-animation-duration linear;
+
+    // Delay the checkmark transition.
+    transition-delay: $mdc-chip-checkmark-with-leading-icon-delay;
     opacity: 0;
 
     .mdc-chip__checkmark-svg {
