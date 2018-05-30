@@ -1109,7 +1109,7 @@
         };
 
         [].slice.call(document.querySelectorAll('.mdc-list')).forEach(function(ele) {
-          mdc.list.MDCList.attachTo(ele);
+          mdc.list.MDCList.attachTo(ele).wrapFocus = true;
         });
 
         addRippleToListItems(document.getElementById('leading-checkbox-list'));

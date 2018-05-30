@@ -30,8 +30,6 @@ class MDCListFoundation extends MDCFoundation {
       getListItemCount: () => {},
       getCurrentFocusedIndex: () => {},
       focusItemAtIndex: () => {},
-      addEventListener: () => {},
-      removeEventListener: () => {},
     });
   }
 

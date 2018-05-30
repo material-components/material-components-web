@@ -52,6 +52,7 @@ export class MDCList extends MDCComponent {
       const direction = this.root_.getAttribute(strings.ARIA_ORIENTATION);
       this.foundation_.isVertical = direction !== strings.ARIA_ORIENTATION_VERTICAL;
 
+      // list items need to have at least tabIndex=-1 to be focusable
       Array.from(this.root_.querySelectorAll('.mdc-list-item:not([tabIndex])'))
         .forEach((ele) => {
           ele.setAttribute('tabIndex', -1);
