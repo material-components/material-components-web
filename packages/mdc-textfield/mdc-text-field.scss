@@ -44,6 +44,7 @@
 
   display: inline-block;
   position: relative;
+  margin-bottom: 8px;
   will-change: opacity, transform, color;
 }
 
@@ -51,7 +52,7 @@
   @include mdc-typography(subtitle1);
 
   width: 100%;
-  height: 30px;
+  // height: 30px;
   padding: 20px 0 1px;
   transition: mdc-text-field-transition(opacity);
   border: none;

@@ -259,11 +259,37 @@
   border: none;
 
   .mdc-text-field__input {
-    display: flex;
-    padding: 12px;
+    display: inline-flex;
+    position: relative;
+    padding: 14px 16px 14px;
     border: none;
+    height: 100%;
     background-color: transparent;
+    align-self: flex-end;
+    margin: 0;
     z-index: 1;
+    box-sizing: border-box;
+  }
+
+  .mdc-text-field__input-alignment {
+    height: 56px;
+
+    &:before {
+      display: inline-block;
+      height: 34px;
+      width: 0;
+      vertical-align: 0px;
+      content: "";
+      margin-left: -4px;
+    }
+
+    &:after {
+      display: inline-block;
+      height: 22px;
+      width: 0;
+      vertical-align: -22px;
+      content: "";
+    }
   }
 
   .mdc-floating-label {
@@ -332,13 +358,34 @@
   display: inline-flex;
   position: relative;
   height: 56px;
+  margin-top: 16px;
   overflow: hidden;
 
   .mdc-text-field__input {
     align-self: flex-end;
     box-sizing: border-box;
     height: 100%;
-    padding: 16px 16px 4px;
+    padding: 18px 16px 4px;
+    margin: 0;
+  }
+
+  .mdc-text-field__input-alignment {
+    &:before {
+      display: inline-block;
+      height: 40px;
+      width: 0;
+      vertical-align: 0px;
+      content: "";
+      margin-left: -4px;
+    }
+
+    &:after {
+      display: inline-block;
+      height: 16px;
+      width: 0;
+      vertical-align: -16px;
+      content: "";
+    }
   }
 
   .mdc-floating-label {
