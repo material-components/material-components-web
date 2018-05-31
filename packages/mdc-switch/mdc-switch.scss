@@ -13,3 +13,132 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
+
+@import "@material/elevation/mixins";
+@import "@material/rtl/mixins";
+@import "@material/ripple/common";
+@import "@material/ripple/mixins";
+@import "./functions";
+@import "./mixins";
+@import "./variables";
+
+// postcss-bem-linter: define switch
+.mdc-switch {
+  @include mdc-switch-unchecked-track-color_($mdc-switch-unchecked-track-color);
+  @include mdc-switch-unchecked-thumb-color_($mdc-switch-unchecked-thumb-color);
+  @include mdc-switch-unchecked-ripple-color_($mdc-switch-unchecked-ripple-color);
+
+  display: inline-block;
+  position: relative;
+
+  &__native-control {
+    @include mdc-switch-tap-target_;
+
+    display: inline-block;
+    transition: mdc-switch-transition(transform);
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
+  }
+}
+
+@at-root {
+  @include mdc-switch-track-color($mdc-switch-baseline-theme-color);
+  @include mdc-switch-thumb-color($mdc-switch-baseline-theme-color);
+}
+
+.mdc-switch__background {
+  display: block;
+  position: relative;
+  width: $mdc-switch-track-width;
+  height: $mdc-switch-track-height;
+  border-radius: 50%;
+  outline: none;
+  user-select: none;
+}
+
+.mdc-switch__track {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transition:
+    mdc-switch-transition(opacity),
+    mdc-switch-transition(background-color);
+  border-radius: 7px;
+  opacity: .38;
+}
+
+.mdc-switch__thumb-underlay {
+  @include mdc-switch-tap-target_;
+
+  @include mdc-ripple-surface();
+  @include mdc-ripple-radius-unbounded;
+  @include mdc-states(
+    $mdc-switch-baseline-theme-color,
+    $has-nested-focusable-element: true);
+
+  margin-top: $mdc-switch-thumb-vertical-offset_;
+
+  transform: translateX(0);
+  transition:
+    mdc-switch-transition(transform),
+    mdc-switch-transition(background-color);
+}
+
+.mdc-switch__thumb {
+  @include mdc-elevation(2);
+  @include mdc-rtl-reflexive-position(left, 0);
+
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  display: block;
+  position: absolute;
+
+  width: $mdc-switch-thumb-diameter;
+  height: $mdc-switch-thumb-diameter;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.mdc-switch--checked .mdc-switch__background {
+  // Track
+  .mdc-switch__track {
+    opacity: .5;
+  }
+
+  .mdc-switch__thumb-underlay {
+    transform: translateX($mdc-switch-thumb-active-margin);
+
+    @include mdc-rtl {
+      transform: translateX(-($mdc-switch-thumb-active-margin));
+    }
+  }
+}
+
+// postcss-bem-linter: end
+
+.mdc-switch--disabled .mdc-switch__native-control {
+  cursor: initial;
+}
+
+.mdc-switch--disabled .mdc-switch__background {
+  // Track
+  .mdc-switch__track {
+    background-color: $mdc-switch-unchecked-track-color;
+    opacity: .12;
+  }
+
+  .mdc-switch__thumb {
+    background-color: $mdc-switch-disabled-thumb-color;
+  }
+
+  // Disable ripple.
+  .mdc-switch__thumb-underlay::before {
+    content: none;
+  }
+}

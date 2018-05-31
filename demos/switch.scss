@@ -29,8 +29,7 @@
   $color: $material-color-red-500;
 
   @include mdc-switch-track-color($color);
-  @include mdc-switch-knob-color($color);
-  @include mdc-switch-focus-indicator-color($color);
+  @include mdc-switch-thumb-color($color);
 }
 
 .rtl-toggle {
