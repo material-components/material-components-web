@@ -73,10 +73,12 @@
     left: 0;
     transition:
       mdc-switch-transition(opacity),
-      mdc-switch-transition(background-color);
+      mdc-switch-transition(background-color),
+      mdc-switch-transition(border-color);
     border-radius: 7px;
     opacity: .38;
     content: "";
+    border: 1px solid;
   }
 }
 
@@ -95,6 +97,8 @@
     mdc-switch-transition(background-color);
   border-radius: 50%;
   z-index: 1;
+  box-sizing: border-box;
+  border: $mdc-switch-knob-diameter / 2 solid;
 
   // Focus indicator
   &::before {
@@ -150,5 +154,7 @@
 
   .mdc-switch__knob {
     background-color: $mdc-switch-disabled-knob-color;
+    border-color: $mdc-switch-disabled-knob-color;
+    border-width: 1px;  // In high contrast mode, only show outline of the knob.
   }
 }
