@@ -204,7 +204,7 @@ test('#isSelected proxies to foundation', () => {
 });
 
 test(`#beginExit adds ${MDCChipFoundation.cssClasses.CHIP_EXIT} class`, () => {
-  const {component, root, mockFoundation} = setupMockFoundationTest();
+  const {component, root} = setupMockFoundationTest();
   component.beginExit();
   assert.isTrue(root.classList.contains(MDCChipFoundation.cssClasses.CHIP_EXIT));
 });
