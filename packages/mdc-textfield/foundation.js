@@ -21,8 +21,7 @@ import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
 import MDCTextFieldIconFoundation from './icon/foundation';
 /* eslint-enable no-unused-vars */
 import {MDCTextFieldAdapter, NativeInputType, FoundationMapType} from './adapter';
-import {cssClasses, strings, numbers, VALIDATION_ATTR_WHITELIST} from './constants';
-
+import {cssClasses, strings, numbers, VALIDATION_ATTR_WHITELIST, ALWAYS_FLOAT_TYPES} from './constants';
 
 /**
  * @extends {MDCFoundation<!MDCTextFieldAdapter>}
@@ -50,8 +49,19 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /** @return {boolean} */
+  get shouldAlwaysFloat() {
+    const type = this.getType();
+    for (const alwaysFloatType of ALWAYS_FLOAT_TYPES) {
+      if (alwaysFloatType === type) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /** @return {boolean} */
   get shouldFloat() {
-    return this.isFocused_ || !!this.getValue() || this.isBadInput_();
+    return this.shouldAlwaysFloat || this.isFocused_ || !!this.getValue() || this.isBadInput_();
   }
 
   /**
@@ -125,14 +135,12 @@ class MDCTextFieldFoundation extends MDCFoundation {
 
   init() {
     this.adapter_.addClass(MDCTextFieldFoundation.cssClasses.UPGRADED);
-    // Ensure label does not collide with any pre-filled value.
-    if (this.adapter_.hasLabel() && (this.getValue() || this.isBadInput_())) {
-      this.adapter_.floatLabel(this.shouldFloat);
-      this.notchOutline(this.shouldFloat);
-    }
 
     if (this.adapter_.isFocused()) {
       this.inputFocusHandler_();
+    } else if (this.adapter_.hasLabel() && this.shouldFloat) {
+      this.notchOutline(true);
+      this.adapter_.floatLabel(true);
     }
 
     this.adapter_.registerInputInteractionHandler('focus', this.inputFocusHandler_);
@@ -190,7 +198,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
    * @param {boolean} openNotch
    */
   notchOutline(openNotch) {
-    if (!this.adapter_.hasOutline() || !this.adapter_.hasLabel()) {
+    if (!this.adapter_.hasOutline()) {
       return;
     }
 
@@ -212,10 +220,10 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.isFocused_ = true;
     this.styleFocused_(this.isFocused_);
     this.adapter_.activateLineRipple();
-    this.notchOutline(this.shouldFloat);
     if (this.adapter_.hasLabel()) {
-      this.adapter_.shakeLabel(this.shouldShake);
+      this.notchOutline(this.shouldFloat);
       this.adapter_.floatLabel(this.shouldFloat);
+      this.adapter_.shakeLabel(this.shouldShake);
     }
     if (this.helperText_) {
       this.helperText_.showToScreenReader();
@@ -250,18 +258,37 @@ class MDCTextFieldFoundation extends MDCFoundation {
   deactivateFocus() {
     this.isFocused_ = false;
     this.adapter_.deactivateLineRipple();
-    const input = this.getNativeInput_();
-    const shouldRemoveLabelFloat = !input.value && !this.isBadInput_();
     const isValid = this.isValid();
     this.styleValidity_(isValid);
     this.styleFocused_(this.isFocused_);
     if (this.adapter_.hasLabel()) {
-      this.adapter_.shakeLabel(this.shouldShake);
-      this.adapter_.floatLabel(this.shouldFloat);
       this.notchOutline(this.shouldFloat);
+      this.adapter_.floatLabel(this.shouldFloat);
+      this.adapter_.shakeLabel(this.shouldShake);
     }
-    if (shouldRemoveLabelFloat) {
+    if (!this.shouldFloat) {
       this.receivedUserInput_ = false;
+    }
+  }
+
+  /** 
+   * @return {string} The type of the input Element.
+   */
+  getType() {
+    return this.getNativeInput_().type
+  }
+
+  /** 
+   * @param {string} type The type to set on the input Element.
+   */
+  setType(type) {
+    this.getNativeInput_().type = type
+    const isValid = this.isValid();
+    this.styleValidity_(isValid);
+    if (this.adapter_.hasLabel()) {
+      this.notchOutline(this.shouldFloat);
+      this.adapter_.floatLabel(this.shouldFloat);
+      this.adapter_.shakeLabel(this.shouldShake);
     }
   }
 
@@ -280,9 +307,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
     const isValid = this.isValid();
     this.styleValidity_(isValid);
     if (this.adapter_.hasLabel()) {
-      this.adapter_.shakeLabel(this.shouldShake);
-      this.adapter_.floatLabel(this.shouldFloat);
       this.notchOutline(this.shouldFloat);
+      this.adapter_.floatLabel(this.shouldFloat);
+      this.adapter_.shakeLabel(this.shouldShake);
     }
   }
 
