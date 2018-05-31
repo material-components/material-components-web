@@ -805,4 +805,4 @@ test('label floats when type is date even if value is empty', () => {
   td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
   foundation.init();
   td.verify(mockAdapter.floatLabel(true));
-})
+});
