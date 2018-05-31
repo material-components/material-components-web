@@ -115,41 +115,43 @@
 
 // Add leading checkmark to filter chips with a leading icon
 
-.mdc-chip__icon--leading {
-  transition: opacity $mdc-chip-opacity-animation-duration linear;
-  transition-delay: $mdc-chip-leading-icon-delay;
-  opacity: 1;
-
-  + .mdc-chip__checkmark {
+.mdc-chip-set--filter {
+  .mdc-chip__icon--leading {
     transition: opacity $mdc-chip-opacity-animation-duration linear;
+    transition-delay: $mdc-chip-leading-icon-delay;
+    opacity: 1;
 
-    // Delay the checkmark transition.
-    transition-delay: $mdc-chip-checkmark-with-leading-icon-delay;
-    opacity: 0;
+    + .mdc-chip__checkmark {
+      transition: opacity $mdc-chip-opacity-animation-duration linear;
 
-    .mdc-chip__checkmark-svg {
-      transition: width 0ms;
+      // Delay the checkmark transition.
+      transition-delay: $mdc-chip-checkmark-with-leading-icon-delay;
+      opacity: 0;
+
+      .mdc-chip__checkmark-svg {
+        transition: width 0ms;
+      }
     }
   }
-}
 
-.mdc-chip--selected .mdc-chip__icon--leading {
-  opacity: 0;
+  .mdc-chip--selected .mdc-chip__icon--leading {
+    opacity: 0;
 
-  + .mdc-chip__checkmark {
-    // This ensures that the checkmark has zero width while the leading icon is still animating.
-    width: 0;
-    opacity: 1;
+    + .mdc-chip__checkmark {
+      // This ensures that the checkmark has zero width while the leading icon is still animating.
+      width: 0;
+      opacity: 1;
+    }
   }
-}
 
-.mdc-chip__icon--leading-hidden.mdc-chip__icon--leading {
-  width: 0;
+  .mdc-chip__icon--leading-hidden.mdc-chip__icon--leading {
+    width: 0;
 
-  // This ensures that the leading icon doesn't fade in while the checkmark is fading out.
-  opacity: 0;
+    // This ensures that the leading icon doesn't fade in while the checkmark is fading out.
+    opacity: 0;
 
-  + .mdc-chip__checkmark {
-    width: $mdc-chip-leading-icon-size;
+    + .mdc-chip__checkmark {
+      width: $mdc-chip-leading-icon-size;
+    }
   }
 }

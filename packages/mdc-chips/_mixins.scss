@@ -60,6 +60,7 @@
 
   &.mdc-chip--selected {
     @include mdc-theme-prop(color, $color);
+    @include mdc-chip-leading-icon-color($color);
 
     &:hover {
       @include mdc-theme-prop(color, $color);
