@@ -271,18 +271,18 @@ class MDCTextFieldFoundation extends MDCFoundation {
     }
   }
 
-  /** 
+  /**
    * @return {string} The type of the input Element.
    */
   getType() {
-    return this.getNativeInput_().type
+    return this.getNativeInput_().type;
   }
 
-  /** 
+  /**
    * @param {string} type The type to set on the input Element.
    */
   setType(type) {
-    this.getNativeInput_().type = type
+    this.getNativeInput_().type = type;
     const isValid = this.isValid();
     this.styleValidity_(isValid);
     if (this.adapter_.hasLabel()) {
