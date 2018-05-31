@@ -85,6 +85,7 @@ CSS Class | Description
 --- | ---
 `mdc-fab` | Mandatory, for the button element
 `mdc-fab__icon` | Mandatory, for the icon element
+`mdc-fab__label` | Optional, for the text label. Applicable only for Extended FAB.
 `mdc-fab--mini` | Optional, modifies the FAB to a smaller size
 `mdc-fab--extended` | Optional, modifies the FAB to wider size which includes a text label.
 `mdc-fab--exited` | Optional, animates the FAB out of view.<br>When this class is removed, the FAB will return to view.
