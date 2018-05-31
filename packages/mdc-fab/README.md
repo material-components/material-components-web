@@ -86,6 +86,7 @@ CSS Class | Description
 `mdc-fab` | Mandatory, for the button element
 `mdc-fab__icon` | Mandatory, for the icon element
 `mdc-fab--mini` | Optional, modifies the FAB to a smaller size
+`mdc-fab--extended` | Optional, modifies the FAB to wider size which includes a text label.
 `mdc-fab--exited` | Optional, animates the FAB out of view.<br>When this class is removed, the FAB will return to view.
 
 > **A note about `:disabled`**, No disabled styles are defined for FABs. The FAB promotes action, and should not be displayed in a disabled state. If you want to present a FAB that does *not* perform an action, you should also present an explanation to the user.
@@ -99,6 +100,7 @@ MDC FAB uses [MDC Theme](../mdc-theme)'s `secondary` color by default. Use the f
 Mixin | Description
 --- | ---
 `mdc-fab-accessible($container-color)` | Changes the FAB's container color to the given color, and updates the FAB's ink and ripple color to meet accessibility standards.
+`mdc-fab-extended-fluid()` | Makes the Extended FAB fluid to container, such as screen width or the layout grid.
 
 #### Advanced Sass Mixins
 
