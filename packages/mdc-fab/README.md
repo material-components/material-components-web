@@ -50,14 +50,14 @@ We recommend you load [Material Icons](https://material.io/icons/) from Google F
 ### HTML Structure
 
 ```html
-<button class="mdc-fab material-icons" aria-label="Favorite">
-  <span class="mdc-fab__icon">
-    favorite
-  </span>
+<button class="mdc-fab" aria-label="Favorite">
+  <span class="mdc-fab__icon material-icons">favorite</span>
 </button>
 ```
 
 > _NOTE:_ The floating action button icon can be used with a `span`, `i`, `img`, or `svg` element.
+
+> _NOTE:_ IE 11 will not center the icon properly if there is a newline or space after the material icon text.
 
 ### Styles
 
@@ -141,9 +141,7 @@ Developers must position MDC FAB as needed within their application's design.
   }
 }
 </style>
-<button class="mdc-fab material-icons app-fab--absolute" aria-label="Favorite">
-  <span class="mdc-fab__icon">
-    favorite
-  </span>
+<button class="mdc-fab app-fab--absolute" aria-label="Favorite">
+  <span class="mdc-fab__icon material-icons">favorite</span>
 </button>
 ```

@@ -81,7 +81,7 @@ CSS Class | Description
 `mdc-layout-grid__inner` | Mandatory, for wrapping grid cell
 `mdc-layout-grid__cell` | Mandatory, for the layout grid cell
 `mdc-layout-grid__cell--span-<NUMBER_OF_COLUMNS>` | Optional, specifies the number of columns the cell spans
-`mdc-layout-grid__cell--span-<NUMBER_OF_COLUMNS>-<TYPE_OF_DEVICE>` | Optional, specifies the number of columns the cell spans on a type of device (desktop, tablet, mobile)
+`mdc-layout-grid__cell--span-<NUMBER_OF_COLUMNS>-<TYPE_OF_DEVICE>` | Optional, specifies the number of columns the cell spans on a type of device (desktop, tablet, phone)
 `mdc-layout-grid__cell--order-<INDEX>` | Optional, specifies the order of the cell
 `mdc-layout-grid__cell--align-<POSITION>` | Optional, specifies the alignment of cell
 `mdc-layout-grid--fixed-column-width` | Optional, specifies the grid should have fixed column width
@@ -172,7 +172,7 @@ Generates CSS for a fixed column width container on certain device type. The mix
 Variables | Description
 --- | ---
 `mdc-layout-grid-breakpoints` | A SASS Map specifies the breakpoints width
-`mdc-layout-grid-default-margin` | A SASS Map specifies the number of columns
+`mdc-layout-grid-columns` | A SASS Map specifies the number of columns
 `mdc-layout-grid-default-margin` | A SASS Map specifies the space between the edge of the grid and the edge of the first cell
 `mdc-layout-grid-default-gutter` | A SASS Map specifies the space between edges of adjacent cells
 `mdc-layout-grid-column-width` | A SASS Map specifies the column width of grid columns

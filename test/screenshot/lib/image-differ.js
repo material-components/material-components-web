@@ -87,9 +87,9 @@ class ImageDiffer {
     const actualScreenshots = actualPage.screenshots;
     const expectedScreenshots = expectedPage.screenshots;
 
-    for (const [browserKey, actualImageUrl] of Object.entries(actualScreenshots)) {
+    for (const [userAgentAlias, actualImageUrl] of Object.entries(actualScreenshots)) {
       // Screenshot image for this browser is not present in `golden.json` on `master`
-      const expectedImageUrl = expectedScreenshots[browserKey];
+      const expectedImageUrl = expectedScreenshots[userAgentAlias];
       if (!expectedImageUrl) {
         continue;
       }
@@ -101,7 +101,7 @@ class ImageDiffer {
               htmlFilePath,
               goldenPageUrl,
               snapshotPageUrl,
-              browserKey,
+              userAgentAlias,
               expectedImageUrl,
               actualImageUrl,
               diffImageUrl: null, // populated by `Controller`

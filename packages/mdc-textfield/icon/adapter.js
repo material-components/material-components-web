@@ -49,6 +49,12 @@ class MDCTextFieldIconAdapter {
   removeAttr(attr) {}
 
   /**
+   * Sets the text content of the icon element.
+   * @param {string} content
+   */
+  setContent(content) {}
+
+  /**
    * Registers an event listener on the icon element for a given event.
    * @param {string} evtType
    * @param {function(!Event): undefined} handler

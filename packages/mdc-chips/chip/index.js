@@ -83,14 +83,6 @@ class MDCChip extends MDCComponent {
   }
 
   /**
-   * Destroys the chip and removes the root element from the DOM.
-   */
-  remove() {
-    this.root_.parentNode.removeChild(this.root_);
-    this.destroy();
-  }
-
-  /**
    * @return {!MDCChipFoundation}
    */
   get foundation() {
@@ -133,7 +125,7 @@ class MDCChip extends MDCComponent {
       notifyInteraction: () => this.emit(strings.INTERACTION_EVENT, {chip: this}, true /* shouldBubble */),
       notifyTrailingIconInteraction: () => this.emit(
         strings.TRAILING_ICON_INTERACTION_EVENT, {chip: this}, true /* shouldBubble */),
-      notifyRemoval: () => this.emit(strings.REMOVAL_EVENT, {chip: this}, true /* shouldBubble */),
+      notifyRemoval: () => this.emit(strings.REMOVAL_EVENT, {chip: this, root: this.root_}, true /* shouldBubble */),
       getComputedStyleValue: (propertyName) => window.getComputedStyle(this.root_).getPropertyValue(propertyName),
       setStyleProperty: (propertyName, value) => this.root_.style.setProperty(propertyName, value),
     })));
