@@ -31,9 +31,9 @@ $mdc-text-field-disabled-label-color: rgba(mdc-theme-prop-value(on-surface), .37
 $mdc-text-field-disabled-ink-color: rgba(mdc-theme-prop-value(on-surface), .37);
 $mdc-text-field-disabled-helper-text-color: rgba(mdc-theme-prop-value(on-surface), .37);
 
-$mdc-text-field-box-background: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 4%);
-$mdc-text-field-box-disabled-background: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 2%);
-$mdc-text-field-box-secondary-text: rgba(mdc-theme-prop-value(on-surface), .6);
+$mdc-text-field-background: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 4%);
+$mdc-text-field-disabled-background: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 2%);
+$mdc-text-field-secondary-text: rgba(mdc-theme-prop-value(on-surface), .6);
 
 $mdc-text-field-outlined-idle-border: rgba(mdc-theme-prop-value(on-surface), .24);
 $mdc-text-field-outlined-disabled-border: rgba(mdc-theme-prop-value(on-surface), .06);
@@ -47,8 +47,8 @@ $mdc-textarea-disabled-background: rgba(249, 249, 249, 1);
 
 $mdc-text-field-border-radius: 4px !default;
 
-$mdc-text-field-box-label-position-y: 50%;
-$mdc-text-field-box-dense-label-position-y: 70%;
+$mdc-text-field-label-position-y: 50%;
+$mdc-text-field-dense-label-position-y: 70%;
 $mdc-text-field-dense-label-scale: .923;
 $mdc-text-field-outlined-label-position-y: 130%;
 $mdc-text-field-outlined-dense-label-position-y: 110%;

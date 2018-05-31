@@ -113,7 +113,7 @@ class MDCTextField extends MDCComponent {
     }
 
     this.ripple = null;
-    if (this.root_.classList.contains(cssClasses.BOX)) {
+    if (!this.root_.classList.contains(cssClasses.TEXTAREA) || !this.root_.classList.contains(cssClasses.OUTLINED)) {
       const MATCHES = getMatchesProperty(HTMLElement.prototype);
       const adapter =
         Object.assign(MDCRipple.createAdapter(/** @type {!RippleCapableSurface} */ (this)), {
@@ -307,22 +307,6 @@ class MDCTextField extends MDCComponent {
    */
   set helperTextContent(content) {
     this.foundation_.setHelperTextContent(content);
-  }
-
-  /**
-   * Sets the aria label of the icon.
-   * @param {string} label
-   */
-  set iconAriaLabel(label) {
-    this.foundation_.setIconAriaLabel(label);
-  }
-
-  /**
-   * Sets the text content of the icon.
-   * @param {string} content
-   */
-  set iconContent(content) {
-    this.foundation_.setIconContent(content);
   }
 
   /**
