@@ -41,7 +41,7 @@
   cursor: pointer;
 
   /* @alternate */
-  will-change: opacity, transform, border-color, background-color, color;
+  will-change: opacity, transform, border-color, color;
 
   // Container for radio circles and ripple.
   &__background {
@@ -88,7 +88,9 @@
     width: 100%;
     height: 100%;
     transform: scale(0, 0);
-    transition: mdc-radio-exit(transform), mdc-radio-exit(background-color);
+    transition: mdc-radio-exit(transform), mdc-radio-exit(border-color);
+    border-width: 10px;
+    border-style: solid;
     border-radius: 50%;
   }
 
@@ -124,7 +126,7 @@
     }
 
     .mdc-radio__inner-circle {
-      transition: mdc-radio-enter(transform), mdc-radio-enter(background-color);
+      transition: mdc-radio-enter(transform), mdc-radio-enter(border-color);
     }
   }
 }
@@ -138,7 +140,7 @@
   + .mdc-radio__background {
     .mdc-radio__inner-circle {
       transform: scale(.5);
-      transition: mdc-radio-enter(transform), mdc-radio-enter(background-color);
+      transition: mdc-radio-enter(transform), mdc-radio-enter(border-color);
     }
   }
 }
@@ -153,7 +155,7 @@
     }
 
     .mdc-radio__inner-circle {
-      background-color: $mdc-radio-circle-color;
+      border-color: $mdc-radio-circle-color;
     }
   }
 }
