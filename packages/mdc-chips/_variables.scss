@@ -21,6 +21,7 @@ $mdc-chip-fill-color-default: mix(mdc-theme-prop-value(on-surface), mdc-theme-pr
 $mdc-chip-ink-color-default: rgba(mdc-theme-prop-value(on-surface), .87);
 $mdc-chip-horizontal-padding: 12px;
 $mdc-chip-vertical-padding: 7px;
+$mdc-chip-height-default: 32px;
 
 $mdc-chip-icon-color: mdc-theme-prop-value(on-surface);
 $mdc-chip-icon-opacity: .54;

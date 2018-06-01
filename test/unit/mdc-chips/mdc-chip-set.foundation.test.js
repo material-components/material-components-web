@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import bel from 'bel';
 import {assert} from 'chai';
 import td from 'testdouble';
 
@@ -35,8 +34,7 @@ test('exports cssClasses', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCChipSetFoundation, [
-    'hasClass', 'registerInteractionHandler', 'deregisterInteractionHandler',
-    'appendChip', 'removeChip',
+    'hasClass', 'registerInteractionHandler', 'deregisterInteractionHandler', 'removeChip',
   ]);
 });
 
@@ -70,14 +68,6 @@ test('#destroy removes event listeners', () => {
   foundation.destroy();
 
   td.verify(mockAdapter.deregisterInteractionHandler('MDCChip:interaction', td.matchers.isA(Function)));
-});
-
-test('#addChip proxies to adapter and returns chip element', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const leadingIcon = bel`<i>face</i>`;
-  const trailingIcon = bel`<i>cancel</i>`;
-  foundation.addChip('Hello world', leadingIcon, trailingIcon);
-  td.verify(mockAdapter.appendChip('Hello world', leadingIcon, trailingIcon));
 });
 
 test('in choice chips, on custom MDCChip:interaction event selects chip if no chips are selected', () => {
