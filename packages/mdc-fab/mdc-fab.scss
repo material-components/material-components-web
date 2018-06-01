@@ -41,6 +41,7 @@ $mdc-fab-extended-height_: 48px;
   align-items: center;
   justify-content: center;
   width: auto;
+  max-width: 100%;
   height: $mdc-fab-extended-height_;
   padding: 0 20px 0 16px;
   border-radius: $mdc-fab-extended-height_ / 2;

@@ -50,7 +50,7 @@
   @include mdc-theme-prop(color, $color);
 }
 
-@mixin mdc-fab-extended-fluid() {
+@mixin mdc-fab-extended-fluid {
   width: 100%;
 }
 
