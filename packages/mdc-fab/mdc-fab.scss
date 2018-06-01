@@ -40,7 +40,7 @@ $mdc-fab-extended-height_: 48px;
   width: auto;
   padding: 0 20px 0 16px;
   height: $mdc-fab-extended-height_;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   white-space: nowrap;
