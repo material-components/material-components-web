@@ -78,3 +78,20 @@
     }
   }
 }
+
+@mixin mdc-theme-disabled-prop-opacity($property, $opacity, $color: $mdc-theme-disabled-color, $edgeOptOut: false) {
+  @if $opacity == 0 {
+    @include mdc-theme-prop($property, transparent, false, $edgeOptOut);
+  } @else {
+    $solid-color: mdc-theme-solid-color-value($color, $opacity);
+    @include mdc-theme-prop($property, $solid-color, false, $edgeOptOut);
+  }
+}
+
+@mixin mdc-theme-disabled-ink-prop($property, $color: $mdc-theme-disabled-color, $edgeOptOut: false) {
+  @include mdc-theme-disabled-prop-opacity($property, $mdc-theme-disabled-ink-opacity, $color, $edgeOptOut);
+}
+
+@mixin mdc-theme-disabled-fill-prop($property, $color: $mdc-theme-disabled-color, $edgeOptOut: false) {
+  @include mdc-theme-disabled-prop-opacity($property, $mdc-theme-disabled-fill-opacity, $color, $edgeOptOut);
+}

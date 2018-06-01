@@ -107,12 +107,12 @@
 
 @mixin mdc-checkbox-disabled-container-color_ {
   @include mdc-checkbox-unmarked-background-selector-disabled_ {
-    @include mdc-theme-prop(border-color, $mdc-checkbox-disabled-color);
+    @include mdc-theme-disabled-ink-prop(border-color);
   }
 
   @include mdc-checkbox-marked-background-selector-disabled_ {
-    @include mdc-theme-prop(border-color, transparent);
-    @include mdc-theme-prop(background-color, $mdc-checkbox-disabled-color);
+    @include mdc-theme-disabled-prop-opacity(border-color, 0);
+    @include mdc-theme-disabled-ink-prop(background-color);
   }
 }
 

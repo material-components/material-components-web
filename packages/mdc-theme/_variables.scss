@@ -35,6 +35,12 @@ $mdc-theme-background: #fff !default; // White
 $mdc-theme-surface: #fff !default;
 $mdc-theme-on-surface: if(mdc-theme-contrast-tone($mdc-theme-surface) == "dark", #000, #fff) !default;
 
+$mdc-theme-disabled-color: $mdc-theme-on-surface;
+$mdc-theme-disabled-ink-opacity: 38%;
+$mdc-theme-disabled-fill-opacity: 12%;
+$mdc-theme-disabled-ink-value: mix($mdc-theme-disabled-color, white, $mdc-theme-disabled-ink-opacity);
+$mdc-theme-disabled-fill-value: mix($mdc-theme-disabled-color, white, $mdc-theme-disabled-fill-opacity);
+
 //
 // Text colors according to light vs dark and text type.
 //
@@ -132,4 +138,15 @@ $mdc-theme-property-values: (
   }
 
   @return map-get($color-map-for-tone, $text-style);
+}
+
+// Mixes $color with white to create a solid color
+@function mdc-theme-solid-color-value($color, $opacity) {
+  $opacity-percentage: if(unit($opacity) == "%", $opacity, percentage($opacity));
+  @return mix(mdc-theme-prop-value($color), white, $opacity-percentage);
+}
+
+@function mdc-theme-translucent-color-value($color, $opacity) {
+  $opacity-percentage: if(unit($opacity) == "%", $opacity, percentage($opacity));
+  @return rgba(mdc-theme-prop-value($color), percentage($opacity));
 }

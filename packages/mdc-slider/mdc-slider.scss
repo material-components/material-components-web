@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 
+@import "@material/theme/variables";
 @import "@material/typography/mixins";
 @import "@material/rtl/mixins";
 @import "./keyframes";
@@ -26,12 +27,10 @@
   @include mdc-slider-color-accessible(secondary);
 
   &--disabled {
-    $disabled-color: #9a9a9a;
-
-    @include mdc-slider-highlight-color_($disabled-color);
-    @include mdc-slider-rail-color_($disabled-color);
-    @include mdc-slider-rail-tick-mark-color_($disabled-color);
-    @include mdc-slider-thumb-color_($disabled-color);
+    @include mdc-slider-highlight-color_($mdc-theme-disabled-ink-value);
+    @include mdc-slider-rail-color_($mdc-theme-disabled-ink-value);
+    @include mdc-slider-rail-tick-mark-color_($mdc-theme-disabled-ink-value);
+    @include mdc-slider-thumb-color_($mdc-theme-disabled-ink-value);
     @include mdc-slider-thumb-stroke-cutout_(white);
 
     cursor: auto;

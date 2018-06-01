@@ -129,12 +129,12 @@
 // Baseline
 
 @mixin mdc-text-field-disabled_ {
-  @include mdc-text-field-bottom-line-color_($mdc-text-field-disabled-border);
-  @include mdc-text-field-ink-color_($mdc-text-field-disabled-ink-color);
-  @include mdc-text-field-label-ink-color_($mdc-text-field-disabled-label-color);
-  @include mdc-text-field-helper-text-color_($mdc-text-field-disabled-helper-text-color);
-  @include mdc-text-field-icon-color_($mdc-text-field-disabled-icon);
-  @include mdc-text-field-fullwidth-bottom-line-color_($mdc-text-field-fullwidth-bottom-line-color);
+  @include mdc-text-field-bottom-line-color_($mdc-theme-disabled-ink-value);
+  @include mdc-text-field-ink-color_($mdc-theme-disabled-ink-value);
+  @include mdc-text-field-label-ink-color_($mdc-theme-disabled-ink-value);
+  @include mdc-text-field-helper-text-color_($mdc-theme-disabled-ink-value);
+  @include mdc-text-field-icon-color_($mdc-theme-disabled-ink-value);
+  @include mdc-text-field-fullwidth-bottom-line-color_($mdc-theme-disabled-ink-value);
 
   pointer-events: none;
 
@@ -210,8 +210,8 @@
 // Outlined
 
 @mixin mdc-text-field-outlined-disabled_ {
-  @include mdc-text-field-ink-color_($mdc-text-field-placeholder);
-  @include mdc-text-field-outline-color_($mdc-text-field-outlined-disabled-border);
+  @include mdc-text-field-ink-color_($mdc-theme-disabled-ink-value);
+  @include mdc-text-field-outline-color_($mdc-theme-disabled-fill-value);
 
   .mdc-text-field__input {
     border-bottom: none;
@@ -359,9 +359,9 @@
 }
 
 @mixin mdc-text-field-box-disabled_ {
-  @include mdc-text-field-box-fill-color_($mdc-text-field-box-disabled-background);
-  @include mdc-text-field-bottom-line-color_($mdc-text-field-outlined-disabled-border);
-  @include mdc-text-field-label-color($mdc-text-field-disabled-label-color);
+  @include mdc-text-field-box-fill-color_(mdc-theme-solid-color-value($mdc-theme-disabled-color, .02));
+  @include mdc-text-field-bottom-line-color_($mdc-theme-disabled-ink-value);
+  @include mdc-text-field-label-color($mdc-theme-disabled-ink-value);
 
   border-bottom: none;
 }
@@ -447,8 +447,8 @@
 // Textarea
 
 @mixin mdc-text-field-textarea-disabled_ {
-  @include mdc-text-field-textarea-stroke-color_($mdc-text-field-disabled-border);
-  @include mdc-text-field-textarea-fill-color_($mdc-textarea-disabled-background);
+  @include mdc-text-field-textarea-stroke-color_($mdc-theme-disabled-ink-value);
+  @include mdc-text-field-textarea-fill-color_(mdc-theme-solid-color-value($mdc-theme-disabled-color, .02));
 
   border-style: solid;
 
@@ -457,7 +457,7 @@
   }
 
   .mdc-floating-label {
-    @include mdc-floating-label-fill-color($mdc-textarea-disabled-background);
+    @include mdc-floating-label-fill-color(transparent);
   }
 }
 

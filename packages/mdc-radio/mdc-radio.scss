@@ -149,13 +149,13 @@
 [aria-disabled="true"] .mdc-radio__native-control {
   + .mdc-radio__background {
     cursor: default;
-
+    
     .mdc-radio__outer-circle {
-      border-color: $mdc-radio-circle-color;
+      @include mdc-theme-disabled-ink-prop(border-color);
     }
 
     .mdc-radio__inner-circle {
-      border-color: $mdc-radio-circle-color;
+      @include mdc-theme-disabled-ink-prop(border-color);
     }
   }
 }

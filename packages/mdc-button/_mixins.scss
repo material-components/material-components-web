@@ -89,6 +89,10 @@
   }
 }
 
+//
+// Private mixins
+//
+
 @mixin mdc-button-base_() {
   @include mdc-typography(button);
   @include mdc-ripple-surface;
@@ -127,9 +131,10 @@
   }
 
   &:disabled {
-    @include mdc-theme-prop(background-color, transparent);
+    @include mdc-theme-disabled-ink-prop(color);
+    @include mdc-theme-disabled-ink-prop(border-color);
+    @include mdc-theme-disabled-prop-opacity(background-color, 0);
 
-    color: $mdc-button-disabled-ink-color;
     cursor: default;
     pointer-events: none;
   }
@@ -155,19 +160,10 @@
 
 @mixin mdc-button--outlined_() {
   border-style: solid;
-
-  &:disabled {
-    border-color: $mdc-button-disabled-ink-color;
-  }
 }
 
 @mixin mdc-button--filled_() {
   @include mdc-button-horizontal-padding($mdc-button-contained-horizontal-padding);
-
-  &:disabled {
-    background-color: rgba(mdc-theme-prop-value(on-surface), .12);
-    color: $mdc-button-disabled-ink-color;
-  }
 }
 
 @mixin mdc-button--raised_() {
@@ -185,6 +181,7 @@
   }
 
   &:disabled {
+    @include mdc-theme-disabled-fill-prop(background-color);
     @include mdc-elevation(0);
   }
 }
