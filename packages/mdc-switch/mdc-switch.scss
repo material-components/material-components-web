@@ -24,9 +24,11 @@
 
 // postcss-bem-linter: define switch
 .mdc-switch {
-  @include mdc-switch-unchecked-track-color_($mdc-switch-unchecked-track-color);
-  @include mdc-switch-unchecked-thumb-color_($mdc-switch-unchecked-thumb-color);
-  @include mdc-switch-unchecked-ripple-color_($mdc-switch-unchecked-ripple-color);
+  @include mdc-switch-toggled-on-track-color($mdc-switch-baseline-theme-color);
+  @include mdc-switch-toggled-on-thumb-color($mdc-switch-baseline-theme-color);
+  @include mdc-switch-toggled-off-track-color($mdc-switch-toggled-off-track-color);
+  @include mdc-switch-toggled-off-thumb-color($mdc-switch-toggled-off-thumb-color);
+  @include mdc-switch-toggled-off-ripple-color($mdc-switch-toggled-off-ripple-color);
 
   display: inline-block;
   position: relative;
@@ -40,11 +42,6 @@
     cursor: pointer;
     z-index: 2;
   }
-}
-
-@at-root {
-  @include mdc-switch-track-color($mdc-switch-baseline-theme-color);
-  @include mdc-switch-thumb-color($mdc-switch-baseline-theme-color);
 }
 
 .mdc-switch__background {
@@ -128,13 +125,30 @@
 
 .mdc-switch--disabled .mdc-switch__background {
   // Track
+  opacity: .38;
   .mdc-switch__track {
-    background-color: $mdc-switch-unchecked-track-color;
-    opacity: .12;
+    background-color: $mdc-switch-toggled-off-track-color;
   }
 
   .mdc-switch__thumb {
-    background-color: $mdc-switch-disabled-thumb-color;
+    background-color: $mdc-switch-toggled-off-thumb-color;
+  }
+
+  // Disable ripple.
+  .mdc-switch__thumb-underlay::before {
+    content: none;
+  }
+}
+
+.mdc-switch--checked.mdc-switch--disabled .mdc-switch__background {
+  // Track
+  opacity: .38;
+  .mdc-switch__track {
+    background-color: $mdc-switch-baseline-theme-color;
+  }
+
+  .mdc-switch__thumb {
+    background-color: $mdc-switch-baseline-theme-color;
   }
 
   // Disable ripple.

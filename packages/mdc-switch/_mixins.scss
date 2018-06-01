@@ -15,49 +15,50 @@
 //
 
 @import "@material/theme/mixins";
+@import "@material/ripple/mixins";
 @import "./variables";
 
 //
 // Public
 //
 
-@mixin mdc-switch-track-color($color) {
-  .mdc-switch--checked:not(.mdc-switch--disabled) .mdc-switch__track  {
+@mixin mdc-switch-toggled-on-track-color($color) {
+  &.mdc-switch--checked:not(.mdc-switch--disabled) .mdc-switch__background .mdc-switch__track  {
     @include mdc-theme-prop(background-color, $color);
   }
 }
 
-@mixin mdc-switch-thumb-color($color) {
+@mixin mdc-switch-toggled-on-thumb-color($color) {
   // stylelint-disable-next-line selector-max-specificity
-  .mdc-switch--checked:not(.mdc-switch--disabled) .mdc-switch__background .mdc-switch__thumb {
+  &.mdc-switch--checked:not(.mdc-switch--disabled) .mdc-switch__background .mdc-switch__thumb {
     @include mdc-theme-prop(background-color, $color);
   }
 }
 
-//
-// Private
-//
-
-@mixin mdc-switch-unchecked-track-color_($color) {
+@mixin mdc-switch-toggled-off-track-color($color) {
   &:not(.mdc-switch--disabled):not(.mdc-switch--checked) .mdc-switch__track {
     @include mdc-theme-prop(background-color, $color);
   }
 }
 
-@mixin mdc-switch-unchecked-thumb-color_($color) {
+@mixin mdc-switch-toggled-off-thumb-color($color) {
   // stylelint-disable-next-line selector-max-specificity
   &:not(.mdc-switch--disabled):not(.mdc-switch--checked) .mdc-switch__background .mdc-switch__thumb {
     @include mdc-theme-prop(background-color, $color);
   }
 }
 
-@mixin mdc-switch-unchecked-ripple-color_($color) {
+@mixin mdc-switch-toggled-on-ripple-color($color) {
   // stylelint-disable-next-line selector-max-specificity
-  &:not(.mdc-switch--disabled):not(.mdc-switch--checked) .mdc-switch__background .mdc-switch__thumb-container {
-    &::before,
-    &::after {
-      @include mdc-theme-prop(background-color, $color);
-    }
+  &.mdc-switch--checked:not(.mdc-switch--disabled) .mdc-switch__thumb-underlay {
+    @include mdc-states($color);
+  }
+}
+
+@mixin mdc-switch-toggled-off-ripple-color($color) {
+  // stylelint-disable-next-line selector-max-specificity
+  &:not(.mdc-switch--disabled):not(.mdc-switch--checked) .mdc-switch__thumb-underlay {
+    @include mdc-states($color);
   }
 }
 

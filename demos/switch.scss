@@ -17,6 +17,7 @@
 @import "./common";
 @import "../packages/mdc-checkbox/mdc-checkbox";
 @import "../packages/mdc-form-field/mdc-form-field";
+@import "../packages/mdc-ripple/mixins";
 @import "../packages/mdc-switch/mdc-switch";
 @import "../packages/mdc-theme/color-palette";
 
@@ -27,9 +28,10 @@
 
 .demo-switch--custom {
   $color: $material-color-red-500;
-
-  @include mdc-switch-track-color($color);
-  @include mdc-switch-thumb-color($color);
+  
+  @include mdc-switch-toggled-on-track-color($color);
+  @include mdc-switch-toggled-on-thumb-color($color);
+  @include mdc-switch-toggled-on-ripple-color($color);
 }
 
 .rtl-toggle {
