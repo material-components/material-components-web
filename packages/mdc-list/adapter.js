@@ -18,8 +18,7 @@
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
- * Adapter for MDC List. Provides an interface for managing
- * - focus
+ * Adapter for MDC List. Provides an interface for managing focus.
  *
  * Additionally, provides type information for the adapter to the Closure
  * compiler.
@@ -34,10 +33,27 @@
 class MDCListAdapter {
   /** @return {Number} */
   getListItemCount() {}
-  /** @return {Number} */
-  getCurrentFocusedIndex() {}
-  /** @param {Number} ndx */
+
+  /**
+   * @return {Number} */
+  getFocusedElementIndex() {}
+
+  /** @param {Element} node */
+  getListItemIndex(node) {}
+
+  /**
+   * Focuses list item at the index specified.
+   * @param {Number} ndx
+   */
   focusItemAtIndex(ndx) {}
+
+  /**
+   * Sets the tabindex to the value specified for all button/a element children of
+   * the list item at the index specified.
+   * @param {Number} listItemIndex
+   * @param {Number} tabIndexValue
+   */
+  setTabIndexForListItemChildren(listItemIndex, tabIndexValue) {}
 }
 
 export {MDCListAdapter};

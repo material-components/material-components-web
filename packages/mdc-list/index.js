@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import MDCComponent from '../mdc-base/component';
+import MDCComponent from '@material/base/component';
 import {MDCListFoundation} from './foundation';
 import {strings} from './constants';
 
@@ -26,7 +26,11 @@ export class MDCList extends MDCComponent {
   constructor(...args) {
     super(...args);
     /** @private {!Function} */
-    this.handleKeydown_ = null;
+    this.handleKeydown_;
+    /** @private {!Function} */
+    this.focusInEventListener_;
+    /** @private {!Function} */
+    this.focusOutEventListener_;
   }
 
   /**
@@ -39,53 +43,63 @@ export class MDCList extends MDCComponent {
 
   destroy() {
     this.root_.removeEventListener('keydown', this.handleKeydown_);
+    this.root_.removeEventListener('focusin', this.focusInEventListener_);
+    this.root_.removeEventListener('focusout', this.focusOutEventListener_);
   }
 
   initialSyncWithDOM() {
     this.handleKeydown_ = this.foundation_.handleKeydown.bind(this.foundation_);
+    this.focusInEventListener_ = this.foundation_.handleFocusIn.bind(this.foundation_);
+    this.focusOutEventListener_ = this.foundation_.handleFocusOut.bind(this.foundation_);
     this.root_.addEventListener('keydown', this.handleKeydown_);
+    this.root_.addEventListener('focusin', this.focusInEventListener_);
+    this.root_.addEventListener('focusout', this.focusOutEventListener_);
     this.layout();
   }
 
   layout() {
-    if (this.root_) {
-      const direction = this.root_.getAttribute(strings.ARIA_ORIENTATION);
-      this.foundation_.isVertical = direction !== strings.ARIA_ORIENTATION_VERTICAL;
+    const direction = this.root_.getAttribute(strings.ARIA_ORIENTATION);
+    this.vertical = direction === strings.ARIA_ORIENTATION_VERTICAL;
 
-      // list items need to have at least tabIndex=-1 to be focusable
-      Array.from(this.root_.querySelectorAll('.mdc-list-item:not([tabIndex])'))
-        .forEach((ele) => {
-          ele.setAttribute('tabIndex', -1);
-        });
-    }
-  }
+    // List items need to have at least tabindex=-1 to be focusable.
+    Array.from(this.root_.querySelectorAll('.mdc-list-item:not([tabindex])'))
+      .forEach((ele) => {
+        ele.setAttribute('tabindex', -1);
+      });
 
-  /** @return {boolean} */
-  get vertical() {
-    return this.foundation_.isVertical;
+    // Child button/a elements are not tabbable until the list item is focused.
+    Array.from(this.root_.querySelectorAll(strings.FOCUSABLE_CHILD_ELEMENTS))
+      .forEach((ele) => ele.setAttribute('tabindex', -1));
   }
 
   /** @param {boolean} value */
   set vertical(value) {
-    this.foundation_.isVertical = value;
+    this.foundation_.setVerticalOrientation(value);
   }
 
   /** @return Array<!Element>*/
   get listElements_() {
-    return Array.from(this.root_.querySelectorAll(strings.ITEMS_SELECTOR));
+    return Array.from(this.root_.querySelectorAll(strings.ITEMS_SELECTOR))
+      .filter((ele) => ele.parentElement === this.root_);
   }
 
   /** @param {boolean} value */
   set wrapFocus(value) {
-    this.foundation_.wrapFocus = value;
+    this.foundation_.setWrapFocus(value);
   }
 
   /** @return {!MDCListFoundation} */
   getDefaultFoundation() {
     return new MDCListFoundation(/** @type {!MDCListAdapter} */{
       getListItemCount: () => this.listElements_.length,
-      getCurrentFocusedIndex: () => this.listElements_.indexOf(document.activeElement),
+      getFocusedElementIndex: () => this.listElements_.indexOf(document.activeElement),
+      getListItemIndex: (node) => this.listElements_.indexOf(node),
       focusItemAtIndex: (ndx) => this.listElements_[ndx].focus(),
+      setTabIndexForListItemChildren: (listItemIndex, tabIndexValue) => {
+        const listItemChildren = Array.from(this.listElements_[listItemIndex]
+          .querySelectorAll(strings.FOCUSABLE_CHILD_ELEMENTS));
+        listItemChildren.forEach((ele) => ele.setAttribute('tabindex', tabIndexValue));
+      },
     });
   }
 }

@@ -16,15 +16,11 @@
  */
 
 /** @enum {string} */
-const cssClasses = {
-};
-
-/** @enum {string} */
 const strings = {
   ARIA_ORIENTATION: 'aria-orientation',
   ARIA_ORIENTATION_VERTICAL: 'vertical',
+  FOCUSABLE_CHILD_ELEMENTS: 'button:not(:disabled), a',
   ITEMS_SELECTOR: '.mdc-list-item',
 };
 
-
-export {cssClasses, strings};
+export {strings};
