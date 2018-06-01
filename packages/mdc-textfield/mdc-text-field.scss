@@ -41,7 +41,6 @@
   @include mdc-text-field-helper-text-color($mdc-text-field-helper-text-color);
   @include mdc-text-field-fullwidth-bottom-line-color($mdc-text-field-fullwidth-bottom-line-color);
   @include mdc-text-field-icon-color($mdc-text-field-icon-color);
-
   @include mdc-ripple-surface;
   // Text Field Box intentionally omits press ripple, so each state needs to be specified individually
   @include mdc-states-base-color($mdc-text-field-ink-color);
@@ -55,44 +54,26 @@
   @include mdc-text-field-fill-color($mdc-text-field-background);
   @include mdc-floating-label-float-position($mdc-text-field-label-position-y);
   @include mdc-floating-label-shake-animation(text-field);
+  @include mdc-floating-label-width($mdc-text-field-icon-padding);
+  @include mdc-text-field-floating-label_;
 
-  margin-bottom: 8px;
-  will-change: opacity, transform, color;
   display: inline-flex;
   position: relative;
   height: 56px;
   margin-top: 16px;
+  margin-bottom: 8px;
   overflow: hidden;
-
-  .mdc-text-field__input {
-    align-self: flex-end;
-    box-sizing: border-box;
-    height: 100%;
-    padding: 20px 16px 0;
-  }
-
-  .mdc-floating-label {
-    @include mdc-rtl-reflexive-position(left, 16px);
-
-    position: absolute;
-    bottom: 20px;
-    width: calc(100% - #{$mdc-text-field-icon-padding});
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    pointer-events: none;
-    overflow: hidden;
-    // Force the label into its own layer to prevent to prevent visible layer promotion adjustments
-    // when the ripple is activated behind it.
-    will-change: transform;
-  }
+  will-change: opacity, transform, color;
 }
 
 .mdc-text-field__input {
   @include mdc-typography(subtitle1);
 
+  align-self: flex-end;
+  box-sizing: border-box;
   width: 100%;
-  height: 30px;
-  padding: 20px 0 1px;
+  height: 100%;
+  padding: 20px 16px 0;
   transition: mdc-text-field-transition(opacity);
   border: none;
   border-bottom: 1px solid;

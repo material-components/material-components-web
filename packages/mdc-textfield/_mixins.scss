@@ -215,6 +215,14 @@
   @include mdc-notched-outline-idle-corner-radius($radius);
 }
 
+@mixin mdc-text-field-floating-label_ {
+  .mdc-floating-label {
+    @include mdc-rtl-reflexive-position(left, 16px);
+
+    bottom: 20px;
+  }
+}
+
 // Outlined
 
 @mixin mdc-text-field-outlined-disabled_ {
@@ -283,10 +291,6 @@
 
   .mdc-floating-label {
     width: auto;
-    text-overflow: clip;
-    white-space: normal;
-    pointer-events: auto;
-    overflow: visible;
   }
 
   .mdc-text-field__icon {
@@ -372,6 +376,7 @@
   &:not(.mdc-text-field--textarea) {
     @include mdc-states-base-color(transparent);
     @include mdc-text-field-fill-color(transparent);
+
     display: block;
 
     .mdc-text-field__input {
@@ -390,8 +395,8 @@
   @include mdc-text-field-textarea-stroke-color_($mdc-text-field-disabled-border);
   @include mdc-text-field-textarea-fill-color_($mdc-textarea-disabled-background);
 
-  border-style: solid;
   border-bottom-width: 1px;
+  border-style: solid;
 
   .mdc-text-field__input {
     border: 1px solid transparent;
@@ -445,13 +450,13 @@
     top: $label-offset-y;
     bottom: auto;
     width: auto;
-    text-overflow: clip;
-    white-space: normal;
-    pointer-events: auto;
     margin-top: 2px;
     margin-left: 8px;
     padding: 8px;
     line-height: 1.15;
+    text-overflow: clip;
+    white-space: normal;
+    pointer-events: auto;
     overflow: visible;
   }
 }
