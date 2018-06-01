@@ -71,123 +71,6 @@
 
       <section class="example">
         <h2>Full Functionality JS Component (Floating Label, Validation)</h2>
-        <section id="demo-text-field-wrapper">
-          <div class="mdc-text-field">
-            <input type="text" class="mdc-text-field__input" id="full-func-text-field"
-                   aria-controls="my-text-field-helper-text"
-                   aria-describedby="my-text-field-helper-text">
-            <label for="full-func-text-field" class="mdc-floating-label">Email Address</label>
-            <div class="mdc-line-ripple"></div>
-          </div>
-          <p id="my-text-field-helper-text" class="mdc-text-field-helper-text"
-             aria-hidden="true" style="display:none;">
-            Helper Text (possibly validation message)
-          </p>
-        </section>
-        <div>
-          <input id="disable" type="checkbox">
-          <label for="disable">Disabled</label>
-        </div>
-        <div>
-          <input id="rtl" type="checkbox">
-          <label for="rtl">RTL</label>
-        </div>
-        <div>
-          <input id="dense" type="checkbox">
-          <label for="dense">Dense</label>
-        </div>
-        <div>
-          <input id="required" type="checkbox">
-          <label for="required">Required</label>
-        </div>
-        <div>
-          <input id="alternate-colors" type="checkbox">
-          <label for="alternate-colors">Alternate Colors</label>
-        </div>
-        <div>
-          <input id="use-helper-text" type="checkbox">
-          <label for="use-helper-text">Use Helper Text</label>
-        </div>
-        <div>
-          <input id="persistent-helper-text" type="checkbox" disabled>
-          <label for="persistent-helper-text">Make helper text persistent</label>
-        </div>
-        <div>
-          <input id="helper-text-as-validation" type="checkbox" disabled>
-          <label for="helper-text-as-validation">
-            Use helper text as validation message
-          </label>
-        </div>
-      </section>
-
-      <section class="example">
-        <h2>Password field with validation</h2>
-        <div class="mdc-text-field">
-          <input required pattern=".{8,}" type="password" class="mdc-text-field__input" id="pw"
-                 aria-controls="pw-validation-msg"
-                 aria-describedby="pw-validation-msg"
-                 autocomplete="current-password">
-          <label for="pw" class="mdc-floating-label">Choose password</label>
-          <div class="mdc-line-ripple"></div>
-        </div>
-        <p class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent mdc-text-field-helper-text--validation-msg"
-           id="pw-validation-msg">
-          Must be at least 8 characters long
-        </p>
-      </section>
-
-      <section class="example">
-        <h2>Outlined Text Field</h2>
-        <div id="demo-tf-outlined-wrapper">
-          <div id="tf-outlined-example" class="mdc-text-field mdc-text-field--outlined" data-demo-no-auto-js>
-            <input type="text" id="tf-outlined-input" class="mdc-text-field__input"
-                   aria-controls="name-validation-message"
-                   aria-describedby="name-validation-message">
-            <label for="tf-outlined-input" class="mdc-floating-label">Your Name</label>
-            <div class="mdc-notched-outline">
-              <svg>
-                <path class="mdc-notched-outline__path"/>
-              </svg>
-            </div>
-            <div class="mdc-notched-outline__idle"></div>
-          </div>
-          <p class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
-             id="name-validation-message">
-            Helper Text (possibly validation message)
-          </p>
-        </div>
-        <div>
-          <input id="outlined-disable" type="checkbox">
-          <label for="outlined-disable">Disabled</label>
-        </div>
-        <div>
-          <input id="outlined-rtl" type="checkbox">
-          <label for="outlined-rtl">RTL</label>
-        </div>
-        <div>
-          <input id="outlined-custom-colors" type="checkbox">
-          <label for="outlined-custom-colors">Alternate Colors</label>
-        </div>
-        <div>
-          <input id="outlined-dense" type="checkbox">
-          <label for="outlined-dense">Dense</label>
-        </div>
-        <div>
-          <input id="outlined-required" type="checkbox">
-          <label for="outlined-required">Required</label>
-        </div>
-        <div>
-          <input id="outlined-minlength" type="checkbox">
-          <label for="outlined-minlength">Must be at least 8 characters</label>
-        </div>
-        <div>
-          <input id="outlined-maxlength" type="checkbox">
-          <label for="outlined-maxlength">Must not exceed 10 characters</label>
-        </div>
-      </section>
-
-      <section class="example" id="text-field-box-example">
-        <h2>Text Field box</h2>
         <div id="demo-tf-box-wrapper">
           <div id="tf-box-example" class="mdc-text-field" data-demo-no-auto-js>
             <input type="text" id="tf-box" class="mdc-text-field__input"
@@ -239,6 +122,56 @@
           <label for="box-helper-text-as-validation">
             Use helper text as validation message
           </label>
+        </div>
+      </section>
+
+      <section class="example">
+        <h2>Outlined Text Field</h2>
+        <div id="demo-tf-outlined-wrapper">
+          <div id="tf-outlined-example" class="mdc-text-field mdc-text-field--outlined" data-demo-no-auto-js>
+            <input type="text" id="tf-outlined-input" class="mdc-text-field__input"
+                   aria-controls="name-validation-message"
+                   aria-describedby="name-validation-message">
+            <label for="tf-outlined-input" class="mdc-floating-label">Your Name</label>
+            <div class="mdc-notched-outline">
+              <svg>
+                <path class="mdc-notched-outline__path"/>
+              </svg>
+            </div>
+            <div class="mdc-notched-outline__idle"></div>
+          </div>
+          <p class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
+             id="name-validation-message">
+            Helper Text (possibly validation message)
+          </p>
+        </div>
+        <div>
+          <input id="outlined-disable" type="checkbox">
+          <label for="outlined-disable">Disabled</label>
+        </div>
+        <div>
+          <input id="outlined-rtl" type="checkbox">
+          <label for="outlined-rtl">RTL</label>
+        </div>
+        <div>
+          <input id="outlined-custom-colors" type="checkbox">
+          <label for="outlined-custom-colors">Alternate Colors</label>
+        </div>
+        <div>
+          <input id="outlined-dense" type="checkbox">
+          <label for="outlined-dense">Dense</label>
+        </div>
+        <div>
+          <input id="outlined-required" type="checkbox">
+          <label for="outlined-required">Required</label>
+        </div>
+        <div>
+          <input id="outlined-minlength" type="checkbox">
+          <label for="outlined-minlength">Must be at least 8 characters</label>
+        </div>
+        <div>
+          <input id="outlined-maxlength" type="checkbox">
+          <label for="outlined-maxlength">Must not exceed 10 characters</label>
         </div>
       </section>
 
