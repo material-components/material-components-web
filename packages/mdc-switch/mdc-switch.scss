@@ -26,9 +26,10 @@
   position: relative;
 
   &__native-control {
-    @include mdc-switch-tap-target_;
+    @include mdc-switch-native-control_;
 
     display: inline-block;
+    margin-left: 0;
     margin-top: $mdc-switch-knob-vertical-offset_;
     transition: mdc-switch-transition(transform);
     opacity: 0;
@@ -95,7 +96,8 @@
   transform: translateX(0);
   transition:
     mdc-switch-transition(transform),
-    mdc-switch-transition(background-color);
+    mdc-switch-transition(background-color),
+    mdc-switch-transition(border-color);
   border: $mdc-switch-knob-diameter / 2 solid;
   border-radius: 50%;
   z-index: 1;
