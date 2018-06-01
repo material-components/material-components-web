@@ -29,8 +29,8 @@
     @include mdc-switch-native-control_;
 
     display: inline-block;
-    margin-left: 0;
     margin-top: $mdc-switch-knob-vertical-offset_;
+    margin-left: 0;
     transition: mdc-switch-transition(transform);
     opacity: 0;
     cursor: pointer;
