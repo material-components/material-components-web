@@ -37,19 +37,19 @@ $mdc-fab-extended-height_: 48px;
 .mdc-fab--extended {
   @include mdc-typography(button);
 
-  width: auto;
-  padding: 0 20px 0 16px;
-  height: $mdc-fab-extended-height_;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  white-space: nowrap;
+  width: auto;
+  height: $mdc-fab-extended-height_;
+  padding: 0 20px 0 16px;
   border-radius: $mdc-fab-extended-height_ / 2;
+  white-space: nowrap;
 }
 
 .mdc-fab__label {
-  padding-left: 8px;
   justify-content: flex-start;
+  padding-left: 8px;
   text-overflow: ellipsis;
   overflow: hidden;
 }
