@@ -34,10 +34,10 @@ The Catalog and React repositories will each have a `next` branch, which will be
 Pull requests should be filed against this branch for changes needed for the upcoming MDC Web release.
 
 Later, when the new version of MDC Web is released, the `next` branch will again be updated to point to the new release,
-and we will open a PR to squash & merge its contents onto `master`. Once this is done, the `next` branch will be reset
-against `master` to accommodate the subsequent release.
+and we will open a PR to squash & merge its contents onto `master`. Once this is done, the `next` branch will be
+hard-reset against `master` and force-pushed to accommodate the subsequent release.
 
-The release process for pre-releases should be largely similar to for regular releases, with minor changes
+The process for pre-releases should be largely similar to the process for regular releases, with minor changes
 (such as the addition of a very important `lerna` option to avoid updating the `latest` tag on npm).
 
 Pre-releases will also involve updates to the CHANGELOG. We should consolidate these when tagging the final
@@ -56,7 +56,10 @@ involving breaking changes cherry-picked in. The process would look as follows (
 A branch can be created in/after step 1 if desired, but should be temporary - the bugfix release can be referenced via
 its git tag once the release process is done.
 
-We're planning to investigate scripting the process of finding non-breaking chores/fixes and cherry-picking them.
+We're working on automating the task of finding non-breaking/non-feature commits, cherry-picking them, and test-running
+the build and unit tests, but it will still require manually checking for commits dependent on features or breaking
+changes that were pruned.
+
 We may refine this process (and move some documentation to the Release Process page) based on our experiences after our
 next bugfix release.
 
