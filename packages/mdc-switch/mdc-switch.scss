@@ -63,9 +63,11 @@
   left: 0;
   transition:
     mdc-switch-transition(opacity),
-    mdc-switch-transition(background-color);
+    mdc-switch-transition(background-color),
+    mdc-switch-transition(border-color);
   border-radius: 7px;
   opacity: .38;
+  border: 1px solid;
 }
 
 .mdc-switch__thumb-underlay {
@@ -82,7 +84,9 @@
   transform: translateX(0);
   transition:
     mdc-switch-transition(transform),
-    mdc-switch-transition(background-color);
+    mdc-switch-transition(background-color),
+    mdc-switch-transition(border-color);
+
 }
 
 .mdc-switch__thumb {
@@ -92,6 +96,9 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+
+  box-sizing: border-box;
+  border: $mdc-switch-knob-diameter / 2 solid;
 
   display: block;
   position: absolute;
@@ -132,6 +139,8 @@
 
   .mdc-switch__thumb {
     background-color: $mdc-switch-toggled-off-thumb-color;
+    border-width: 1px;  // In high contrast mode, only show outline of knob.
+    border-color: $mdc-switch-toggled-off-thumb-color;
   }
 
   // Disable ripple.

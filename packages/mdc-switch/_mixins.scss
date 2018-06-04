@@ -25,6 +25,7 @@
 @mixin mdc-switch-toggled-on-track-color($color) {
   &.mdc-switch--checked:not(.mdc-switch--disabled) .mdc-switch__background .mdc-switch__track  {
     @include mdc-theme-prop(background-color, $color);
+    @include mdc-theme-prop(border-color, $color);
   }
 }
 
@@ -32,12 +33,14 @@
   // stylelint-disable-next-line selector-max-specificity
   &.mdc-switch--checked:not(.mdc-switch--disabled) .mdc-switch__background .mdc-switch__thumb {
     @include mdc-theme-prop(background-color, $color);
+    @include mdc-theme-prop(border-color, $color);
   }
 }
 
 @mixin mdc-switch-toggled-off-track-color($color) {
   &:not(.mdc-switch--disabled):not(.mdc-switch--checked) .mdc-switch__track {
     @include mdc-theme-prop(background-color, $color);
+    @include mdc-theme-prop(border-color, $color);
   }
 }
 
@@ -45,6 +48,7 @@
   // stylelint-disable-next-line selector-max-specificity
   &:not(.mdc-switch--disabled):not(.mdc-switch--checked) .mdc-switch__background .mdc-switch__thumb {
     @include mdc-theme-prop(background-color, $color);
+    @include mdc-theme-prop(border-color, $color);
   }
 }
 

@@ -44,7 +44,6 @@ class MDCSwitchFoundation extends MDCFoundation {
       registerChangeHandler: (/* handler: EventListener */) => {},
       deregisterChangeHandler: (/* handler: EventListener */) => {},
       getNativeControl: () => /* !MDCSelectionControlState */ {},
-
     });
   }
   
