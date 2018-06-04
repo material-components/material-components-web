@@ -68,6 +68,8 @@ next bugfix release.
 
 ## Feature Branches
 
+The `master` branch remains the default target of development, for both bug fixes and breaking changes.
+
 If we foresee a new component requiring a large amount of work across multiple PRs and release cycles, we
 should keep the work in a collective feature branch first, in an attempt to avoid API churn across releases.
 (The new work on MDC Tab and associated packages is one example.)
