@@ -213,6 +213,7 @@ Method Signature | Description
 --- | ---
 `get foundation() => MDCChipFoundation` | Returns the foundation
 `isSelected() => boolean` | Proxies to the foundation's `isSelected` method
+`beginExit() => void` | Begins the exit animation which leads to removal of the chip
 
 Property | Value Type | Description
 --- | --- | ---
