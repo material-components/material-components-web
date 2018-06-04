@@ -130,13 +130,13 @@
     }
   },
   "mdc-fab/classes/extended.html": {
-    "publicUrl": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2018/06/04/21_59_09_993/55502acb/mdc-fab/classes/extended.html",
+    "publicUrl": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2018/06/04/23_29_42_021/4c97428c/mdc-fab/classes/extended.html",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2018/06/04/22_02_34_596/55502acb/mdc-fab/classes/extended.html.win10_chrome66x64.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2018/06/04/22_02_34_596/55502acb/mdc-fab/classes/extended.html.win10_edge17.png",
-      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2018/06/04/22_02_34_596/55502acb/mdc-fab/classes/extended.html.win10_ff59x64.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2018/06/04/22_02_34_596/55502acb/mdc-fab/classes/extended.html.win10_ie11.png",
-      "mobile_android_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2018/06/04/22_02_34_596/55502acb/mdc-fab/classes/extended.html.galaxys7and70_mblchrome64.png"
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2018/06/04/23_29_42_021/4c97428c/mdc-fab/classes/extended.html.win10_chrome66x64.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2018/06/04/23_29_42_021/4c97428c/mdc-fab/classes/extended.html.win10_edge17.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2018/06/04/23_29_42_021/4c97428c/mdc-fab/classes/extended.html.win10_ff59x64.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2018/06/04/23_29_42_021/4c97428c/mdc-fab/classes/extended.html.win10_ie11.png",
+      "mobile_android_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2018/06/04/23_29_42_021/4c97428c/mdc-fab/classes/extended.html.galaxys7and70_mblchrome64.png"
     }
   },
   "mdc-icon-button/classes/baseline.html": {
