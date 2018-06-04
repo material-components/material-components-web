@@ -30,13 +30,7 @@
     @error "$z-value must be between 0 and 24, but received '#{$z-value}'";
   }
 
-  @if map-has-key($mdc-theme-property-values, $color) {
-    $color: map-get($mdc-theme-property-values, $color);
-  }
-
-  @if type-of($color) != color {
-    @error "$color must be a valid color, but '#{$color}' is of type #{type-of($color)}";
-  }
+  $color: mdc-theme-prop-value($color);
 
   $umbra-z-value: map-get($mdc-elevation-umbra-map, $z-value);
   $penumbra-z-value: map-get($mdc-elevation-penumbra-map, $z-value);
