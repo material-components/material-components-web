@@ -34,7 +34,7 @@
 @mixin mdc-radio-ink-color($color) {
   // stylelint-disable-next-line selector-max-specificity
   .mdc-radio__native-control:enabled + .mdc-radio__background .mdc-radio__inner-circle {
-    @include mdc-theme-prop(background-color, $color);
+    @include mdc-theme-prop(border-color, $color);
   }
 }
 

@@ -35,6 +35,18 @@
   @include mdc-checkbox-disabled-container-color_;
 }
 
+@media screen and (-ms-high-contrast: active) {
+  .mdc-checkbox__mixedmark {
+    margin: 0 1px;  // Extra horizontal space around mixedmark symbol.
+  }
+}
+
+@media screen and (-ms-high-contrast: black-on-white) {
+  @at-root {
+    @include mdc-checkbox-ink-color($mdc-checkbox-mark-color-high-contrast-black-on-white);
+  }
+}
+
 // Needed to disable hover effects on CSS-only (non-JS) checkboxes
 .mdc-checkbox--disabled {
   @include mdc-checkbox--disabled_;

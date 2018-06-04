@@ -1,5 +1,5 @@
-<a name="0.36.0-0"></a>
-# [0.36.0-0](https://github.com/material-components/material-components-web/compare/v0.35.2...v0.36.0-0) (2018-05-29)
+<a name="0.36.0"></a>
+# [0.36.0](https://github.com/material-components/material-components-web/compare/v0.36.0-0...v0.36.0) (2018-06-04)
 
 
 ### Bug Fixes
@@ -14,6 +14,17 @@
 * **text-field:** Update floating-label to work properly for number fields ([#2781](https://github.com/material-components/material-components-web/issues/2781)) ([d0bff1f](https://github.com/material-components/material-components-web/commit/d0bff1f))
 * **top-app-bar:** Add z-index. Cleanup redundant properties. ([#2828](https://github.com/material-components/material-components-web/issues/2828)) ([3f6bbc1](https://github.com/material-components/material-components-web/commit/3f6bbc1))
 * **top-app-bar:** Fix testdouble warning about using both stub & verify. ([#2793](https://github.com/material-components/material-components-web/issues/2793)) ([d79af08](https://github.com/material-components/material-components-web/commit/d79af08))
+* **checkbox:** Fix visibility in Windows high-contrast mode ([#2672](https://github.com/material-components/material-components-web/issues/2672)) ([eadec3c](https://github.com/material-components/material-components-web/commit/eadec3c))
+* **checkbox:** make checkmark in high contrast mode on IE visible. ([#2848](https://github.com/material-components/material-components-web/issues/2848)) ([9b2c6a1](https://github.com/material-components/material-components-web/commit/9b2c6a1))
+* **chips:** Add delay to filter chip checkmark ([#2804](https://github.com/material-components/material-components-web/issues/2804)) ([9e35b1e](https://github.com/material-components/material-components-web/commit/9e35b1e))
+* **chips:** Fix choice-chips leading icon being hidden ([#2796](https://github.com/material-components/material-components-web/issues/2796)) ([7d406fa](https://github.com/material-components/material-components-web/commit/7d406fa)), closes [#2728](https://github.com/material-components/material-components-web/issues/2728)
+* **switch:** Refactor switch styles to show up in HC windows mode. ([#2853](https://github.com/material-components/material-components-web/issues/2853)) ([ef159c8](https://github.com/material-components/material-components-web/commit/ef159c8))
+* **text-field:** Changes to text area label positioning to cover text content ([#2816](https://github.com/material-components/material-components-web/issues/2816)) ([d6f4dc1](https://github.com/material-components/material-components-web/commit/d6f4dc1))
+
+
+### Code Refactoring
+
+* **chips:** Stop handling DOM manipulation in input chips ([#2791](https://github.com/material-components/material-components-web/issues/2791)) ([5a8ada5](https://github.com/material-components/material-components-web/commit/5a8ada5))
 
 
 ### Documentation
@@ -25,6 +36,7 @@
 
 * **icon-button:** Add new package ([#2748](https://github.com/material-components/material-components-web/issues/2748)) ([39a4815](https://github.com/material-components/material-components-web/commit/39a4815))
 * **text-field:** Add methods to set text field icon aria-label and content ([#2771](https://github.com/material-components/material-components-web/issues/2771)) ([02d7dca](https://github.com/material-components/material-components-web/commit/02d7dca))
+* **rtl:** Make mdc-rtl-reflexive sass mixin public ([#2823](https://github.com/material-components/material-components-web/issues/2823)) ([ca018a7](https://github.com/material-components/material-components-web/commit/ca018a7))
 
 
 ### BREAKING CHANGES
@@ -32,6 +44,7 @@
 * **text-field:** Adds setContent adapter API to text field icon
 * **icon-toggle:** The icon-toggle package has been deprecated. The functionality was moved to the icon-button package. Please refer to the icon-button readme for changes and how to update.
 * **text-field:** registerValidationAttributeChangeHandler adapter API now expects the handler to accept an array of strings, not mutation objects
+* **chips:** MDCChipSet/MDCChip no longer manipulates DOM directly. Removed MDCChipSetAdapter.appendChip, MDCChipSetFoundation.addChip, and MDCChip.remove. Modified signature of MDCChipSet.addChip
 
 
 

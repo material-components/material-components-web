@@ -6,6 +6,12 @@ iconId: menu
 path: /catalog/input-controls/select-menus/
 -->
 
+## Important - Default Style Deprecation Notice
+
+The existing default select style will be changed in an upcoming release. The Material spec indicates that
+the default style will be the filled variant (currently referred to as the box variant). This will become the  
+default style. Continuing to add the `mdc-select--box` class to the select will result in no change. 
+
 # Select Menus
 
 <!--<div class="article__asset">
