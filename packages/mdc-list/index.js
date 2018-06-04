@@ -63,13 +63,13 @@ export class MDCList extends MDCComponent {
     this.vertical = direction === strings.ARIA_ORIENTATION_VERTICAL;
 
     // List items need to have at least tabindex=-1 to be focusable.
-    Array.from(this.root_.querySelectorAll('.mdc-list-item:not([tabindex])'))
+    [].slice.call(this.root_.querySelectorAll('.mdc-list-item:not([tabindex])'))
       .forEach((ele) => {
         ele.setAttribute('tabindex', -1);
       });
 
     // Child button/a elements are not tabbable until the list item is focused.
-    Array.from(this.root_.querySelectorAll(strings.FOCUSABLE_CHILD_ELEMENTS))
+    [].slice.call(this.root_.querySelectorAll(strings.FOCUSABLE_CHILD_ELEMENTS))
       .forEach((ele) => ele.setAttribute('tabindex', -1));
   }
 
@@ -80,7 +80,7 @@ export class MDCList extends MDCComponent {
 
   /** @return Array<!Element>*/
   get listElements_() {
-    return Array.from(this.root_.querySelectorAll(strings.ITEMS_SELECTOR))
+    return [].slice.call(this.root_.querySelectorAll(strings.ITEMS_SELECTOR))
       .filter((ele) => ele.parentElement === this.root_);
   }
 
@@ -97,7 +97,7 @@ export class MDCList extends MDCComponent {
       getListItemIndex: (node) => this.listElements_.indexOf(node),
       focusItemAtIndex: (ndx) => this.listElements_[ndx].focus(),
       setTabIndexForListItemChildren: (listItemIndex, tabIndexValue) => {
-        const listItemChildren = Array.from(this.listElements_[listItemIndex]
+        const listItemChildren = [].slice.call(this.listElements_[listItemIndex]
           .querySelectorAll(strings.FOCUSABLE_CHILD_ELEMENTS));
         listItemChildren.forEach((ele) => ele.setAttribute('tabindex', tabIndexValue));
       },
