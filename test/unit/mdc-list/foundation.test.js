@@ -37,6 +37,20 @@ test('defaultAdapter returns a complete adapter implementation', () => {
   ]);
 });
 
+// The foundation needs to use a classList object that has a
+// `contains` method. This adds that method onto an array
+// for the tests.
+// eslint-disable-next-line no-extend-native
+Object.defineProperty(Array.prototype, 'contains',
+  {
+    enumerable: false,
+    configurable: false,
+    writable: false,
+    value: function(find) {
+      return (this.indexOf(find) > -1);
+    },
+  });
+
 const setupTest = () => setupFoundationTest(MDCListFoundation);
 
 test('#handleFocusIn switches list item button/a elements to tabindex=0', () => {
@@ -143,6 +157,7 @@ test('#handleKeydown navigation key on an empty list does nothing', () => {
 
   td.when(mockAdapter.getFocusedElementIndex()).thenReturn(-1);
   td.when(mockAdapter.getListItemCount()).thenReturn(0);
+  td.when(mockAdapter.getListItemIndex(td.matchers.anything())).thenReturn(-1);
   foundation.handleKeydown(event);
 
   td.verify(mockAdapter.focusItemAtIndex(td.matchers.anything()), {times: 0});
@@ -315,6 +330,7 @@ test('#handleKeydown End key on empty list does nothing', () => {
 
   td.when(mockAdapter.getFocusedElementIndex()).thenReturn(-1);
   td.when(mockAdapter.getListItemCount()).thenReturn(0);
+  td.when(mockAdapter.getListItemIndex(td.matchers.anything())).thenReturn(-1);
   foundation.handleKeydown(event);
 
   td.verify(mockAdapter.focusItemAtIndex(td.matchers.anything()), {times: 0});
@@ -361,7 +377,7 @@ test('#handleKeydown does not find ancestor with mdc-list-item so returns early'
   const event = {key: 'ArrowUp', target, preventDefault};
 
   td.when(mockAdapter.getFocusedElementIndex()).thenReturn(-1);
-  td.when(mockAdapter.getListItemIndex()).thenReturn(-1);
+  td.when(mockAdapter.getListItemIndex(td.matchers.anything())).thenReturn(-1);
   td.when(mockAdapter.getListItemCount()).thenReturn(3);
   foundation.handleKeydown(event);
 

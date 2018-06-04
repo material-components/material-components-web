@@ -97,9 +97,9 @@ class MDCListFoundation extends MDCFoundation {
     if (currentIndex === -1) {
       currentIndex = this.adapter_.getListItemIndex(this.getListItem_(evt.target));
 
-      if (!currentIndex) {
+      if (currentIndex < 0) {
         // If this event doesn't have a mdc-list-item ancestor from the
-        // current list (not from a sublist, but this list), return early.
+        // current list (not from a sublist), return early.
         return;
       }
     }
@@ -185,7 +185,7 @@ class MDCListFoundation extends MDCFoundation {
    * @private
    */
   getListItem_(target) {
-    while (target.classList.indexOf('mdc-list-item') === -1) {
+    while (!target.classList.contains('mdc-list-item')) {
       if (!target.parentElement) return null;
       target = target.parentElement;
     }
