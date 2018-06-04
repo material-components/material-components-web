@@ -45,8 +45,8 @@ release to make it easier to read, since the pre-releases will be irrelevant at 
 
 ### Bugfix Releases
 
-Bugfix releases for MDC Web will be released based on the last tagged release, with any docs/chores/fixes not
-involving breaking changes cherry-picked in. The process would look as follows (using 0.36.x as an example):
+Bugfix releases for MDC Web will be released based on the last tagged release, with any commits not involving
+breaking changes or features cherry-picked in. The process would look as follows (using 0.36.x as an example):
 
 1. `git checkout v0.36.0` (or e.g. `v0.36.1` if this is the second bugfix release since the last breaking-change release)
 2. `git cherry-pick -x <commits>`
