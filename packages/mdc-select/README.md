@@ -6,11 +6,17 @@ iconId: menu
 path: /catalog/input-controls/select-menus/
 -->
 
+## Important - Default Style Deprecation Notice
+
+The existing default select style will be changed in an upcoming release. The Material spec indicates that
+the default style will be the filled variant (currently referred to as the box variant). This will become the  
+default style. Continuing to add the `mdc-select--box` class to the select will result in no change. 
+
 # Select Menus
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/select.html">
+     href="https://material-components.github.io/material-components-web-catalog/#/component/select">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/selects.png" width="376" alt="Select screenshot">
   </a>
 </div>-->
@@ -22,10 +28,10 @@ browser's native `<select>` element. It is fully accessible, and fully RTL-aware
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/text-fields.html">Material Design guidelines: Text Fields</a>
+    <a href="https://material.io/go/design-text-fields">Material Design guidelines: Text Fields</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/select.html">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/select">Demo</a>
   </li>
 </ul>
 

@@ -20,7 +20,7 @@ import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
 
 import MDCChipAdapter from './adapter';
 import MDCChipFoundation from './foundation';
-import {strings} from './constants';
+import {strings, cssClasses} from './constants';
 
 /**
  * @extends {MDCComponent<!MDCChipFoundation>}
@@ -83,11 +83,10 @@ class MDCChip extends MDCComponent {
   }
 
   /**
-   * Destroys the chip and removes the root element from the DOM.
+   * Begins the exit animation which leads to removal of the chip.
    */
-  remove() {
-    this.root_.parentNode.removeChild(this.root_);
-    this.destroy();
+  beginExit() {
+    this.root_.classList.add(cssClasses.CHIP_EXIT);
   }
 
   /**
@@ -133,7 +132,7 @@ class MDCChip extends MDCComponent {
       notifyInteraction: () => this.emit(strings.INTERACTION_EVENT, {chip: this}, true /* shouldBubble */),
       notifyTrailingIconInteraction: () => this.emit(
         strings.TRAILING_ICON_INTERACTION_EVENT, {chip: this}, true /* shouldBubble */),
-      notifyRemoval: () => this.emit(strings.REMOVAL_EVENT, {chip: this}, true /* shouldBubble */),
+      notifyRemoval: () => this.emit(strings.REMOVAL_EVENT, {chip: this, root: this.root_}, true /* shouldBubble */),
       getComputedStyleValue: (propertyName) => window.getComputedStyle(this.root_).getPropertyValue(propertyName),
       setStyleProperty: (propertyName, value) => this.root_.style.setProperty(propertyName, value),
     })));

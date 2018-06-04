@@ -17,18 +17,39 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,600,700");
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
-.test-main {
-  padding: 16px;
+$test-trim-color: #abc123; // Value must match `TRIM_COLOR_CSS_VALUE` in `image-cropper.js`
+$test-grid-color: #dddddd;
+
+.test-body {
+  display: flex;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 5px 0 100px 5px; // Extra padding ensures that CBT's "chromeless" screenshots don't get cut off
 }
 
-.test-row {
+.test-main {
+  box-sizing: border-box;
+  border: 1px solid $test-trim-color;
+}
+
+.test-grid {
   display: flex;
-  flex-direction: row;
   flex-wrap: wrap;
-  margin: 0 0 24px 0;
+  box-sizing: border-box;
 }
 
 .test-cell {
+  box-sizing: border-box;
+  margin: 1px;
+
   // Ensure that shadows from adjacent components don't overlap
-  margin: 8px;
+  padding: 10px;
+
+  // Ruler grid pattern
+  // https://stackoverflow.com/a/32861765/467582
+  background-image:
+    linear-gradient(to right, #{$test-grid-color} 1px, transparent 1.01px),  // fraction for IE 11
+    linear-gradient(to bottom, #{$test-grid-color} 1px, transparent 1.01px); // fraction for IE 11
+
+  background-size: 10px 10px;
 }

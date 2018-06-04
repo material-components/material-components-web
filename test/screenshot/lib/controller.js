@@ -16,42 +16,71 @@
 
 'use strict';
 
-const fs = require('fs');
+const childProcess = require('child_process');
+const fs = require('mz/fs');
 const glob = require('glob');
-const path = require('path');
-const request = require('request-promise-native');
-const stringify = require('json-stable-stringify');
-const util = require('util');
 
+const CbtUserAgent = require('./cbt-user-agent');
+const CliArgParser = require('./cli-arg-parser');
+const GitRepo = require('./git-repo');
+const ImageCache = require('./image-cache');
+const ImageCropper = require('./image-cropper');
+const ImageDiffer = require('./image-differ');
+const ReportGenerator = require('./report-generator');
 const Screenshot = require('./screenshot');
+const SnapshotStore = require('./snapshot-store');
 const {Storage, UploadableFile, UploadableTestCase} = require('./storage');
-
-const readFileAsync = util.promisify(fs.readFile);
-const writeFileAsync = util.promisify(fs.writeFile);
 
 /**
  * High-level screenshot workflow controller that provides composable async methods to:
  * 1. Upload files to GCS
  * 2. Capture screenshots with CBT
- * 3. [COMING SOON] Update local golden.json with new screenshot URLs
- * 4. [COMING SOON] Diff captured screenshots against existing golden.json
+ * 3. Update local golden.json with new screenshot URLs
+ * 4. Diff captured screenshots against existing golden.json
  */
 class Controller {
-  /**
-   * @param {string} sourceDir Relative or absolute path to the local `test/screenshot/` directory.
-   */
-  constructor({sourceDir}) {
+  constructor() {
     /**
-     * @type {string}
+     * @type {!CliArgParser}
      * @private
      */
-    this.sourceDir_ = sourceDir;
+    this.cliArgs_ = new CliArgParser();
+
+    /**
+     * @type {!GitRepo}
+     * @private
+     */
+    this.gitRepo_ = new GitRepo();
 
     /**
      * @type {!Storage}
      * @private
      */
     this.storage_ = new Storage();
+
+    /**
+     * @type {!ImageCache}
+     * @private
+     */
+    this.imageCache_ = new ImageCache();
+
+    /**
+     * @type {!ImageCropper}
+     * @private
+     */
+    this.imageCropper_ = new ImageCropper();
+
+    /**
+     * @type {!ImageDiffer}
+     * @private
+     */
+    this.imageDiffer_ = new ImageDiffer({imageCache: this.imageCache_});
+
+    /**
+     * @type {!SnapshotStore}
+     * @private
+     */
+    this.snapshotStore_ = new SnapshotStore();
 
     /**
      * Unique timestamped directory path to prevent collisions between developers.
@@ -63,6 +92,12 @@ class Controller {
 
   async initialize() {
     this.baseUploadDir_ = await this.storage_.generateUniqueUploadDir();
+
+    await this.gitRepo_.fetch();
+
+    if (await this.cliArgs_.shouldBuild()) {
+      childProcess.spawnSync('npm', ['run', 'screenshot:build'], {shell: true, stdio: 'inherit'});
+    }
   }
 
   /**
@@ -76,11 +111,11 @@ class Controller {
      * Relative paths of all asset files (HTML, CSS, JS) that will be uploaded.
      * @type {!Array<string>}
      */
-    const assetFileRelativePaths = glob.sync('**/*', {cwd: this.sourceDir_, nodir: true});
+    const assetFileRelativePaths = glob.sync('**/*', {cwd: this.cliArgs_.testDir, nodir: true});
 
     /** @type {!Array<!Promise<!UploadableFile>>} */
-    const uploadPromises = assetFileRelativePaths.map((assetFileRelativePath) => {
-      return this.uploadOneAsset_(assetFileRelativePath, testCases);
+    const uploadPromises = assetFileRelativePaths.map((assetFileRelativePath, assetFileIndex) => {
+      return this.uploadOneAsset_(assetFileRelativePath, testCases, assetFileIndex, assetFileRelativePaths.length);
     });
 
     return Promise.all(uploadPromises)
@@ -96,14 +131,18 @@ class Controller {
   /**
    * @param {string} assetFileRelativePath
    * @param {!Array<!UploadableTestCase>} testCases
+   * @param {number} queueIndex
+   * @param {number} queueLength
    * @return {!Promise<!UploadableFile>}
    * @private
    */
-  async uploadOneAsset_(assetFileRelativePath, testCases) {
+  async uploadOneAsset_(assetFileRelativePath, testCases, queueIndex, queueLength) {
     const assetFile = new UploadableFile({
-      destinationParentDirectory: `${this.baseUploadDir_}/assets`,
+      destinationParentDirectory: this.baseUploadDir_,
       destinationRelativeFilePath: assetFileRelativePath,
-      fileContent: await readFileAsync(`${this.sourceDir_}/${assetFileRelativePath}`),
+      fileContent: await fs.readFile(`${this.cliArgs_.testDir}/${assetFileRelativePath}`),
+      queueIndex,
+      queueLength,
     });
 
     return this.storage_.uploadFile(assetFile)
@@ -120,10 +159,18 @@ class Controller {
    * @private
    */
   async handleUploadOneAssetSuccess_(assetFile, testCases) {
-    const isHtmlFile = assetFile.destinationRelativeFilePath.endsWith('.html');
-    if (isHtmlFile) {
+    const relativePath = assetFile.destinationRelativeFilePath;
+    const isHtmlFile = relativePath.endsWith('.html');
+    const isIncluded =
+      this.cliArgs_.includeUrlPatterns.length === 0 ||
+      this.cliArgs_.includeUrlPatterns.some((pattern) => pattern.test(relativePath));
+    const isExcluded = this.cliArgs_.excludeUrlPatterns.some((pattern) => pattern.test(relativePath));
+    const shouldInclude = isIncluded && !isExcluded;
+
+    if (isHtmlFile && shouldInclude) {
       testCases.push(new UploadableTestCase({htmlFile: assetFile}));
     }
+
     return assetFile;
   }
 
@@ -142,8 +189,8 @@ class Controller {
    * @return {!Promise<!Array<!UploadableTestCase>>}
    */
   async captureAllPages(testCases) {
-    const capturePromises = testCases.map((testCase) => {
-      return this.captureOnePage_(testCase);
+    const capturePromises = testCases.map((testCase, testCaseIndex) => {
+      return this.captureOnePage_(testCase, testCaseIndex, testCases.length);
     });
 
     return Promise.all(capturePromises)
@@ -158,42 +205,55 @@ class Controller {
 
   /**
    * @param {!UploadableTestCase} testCase
+   * @param {number} testCaseQueueIndex
+   * @param {number} testCaseQueueLength
    * @return {!Promise<!Array<!UploadableFile>>}
    * @private
    */
-  async captureOnePage_(testCase) {
+  async captureOnePage_(testCase, testCaseQueueIndex, testCaseQueueLength) {
     return Screenshot
       .captureOneUrl(testCase.htmlFile.publicUrl)
       .then(
-        (cbtInfo) => this.handleCapturePageSuccess_(testCase, cbtInfo),
-        (err) => this.handleCapturePageFailure_(testCase, err)
+        (cbtInfo) => this.handleCapturePageSuccess_(testCase, cbtInfo, testCaseQueueIndex, testCaseQueueLength),
+        (err) => this.handleCapturePageFailure_(testCase, err, testCaseQueueIndex, testCaseQueueLength)
       );
   }
 
   /**
    * @param {!UploadableTestCase} testCase
+   * @param {number} testCaseQueueIndex
+   * @param {number} testCaseQueueLength
    * @param {!Object} cbtScreenshotInfo
    * @return {!Promise<!Array<!UploadableFile>>}
    * @private
    */
-  async handleCapturePageSuccess_(testCase, cbtScreenshotInfo) {
+  async handleCapturePageSuccess_(testCase, cbtScreenshotInfo, testCaseQueueIndex, testCaseQueueLength) {
     // We don't use CBT's screenshot versioning features, so there should only ever be one version.
     // Each "result" is an individual browser screenshot for a single URL.
-    return Promise.all(cbtScreenshotInfo.versions[0].results.map((cbtResult) => {
-      return this.uploadScreenshotImage_(testCase, cbtResult);
+    const results = cbtScreenshotInfo.versions[0].results;
+    return Promise.all(results.map((cbtResult, cbtResultIndex) => {
+      return this.uploadScreenshotImage_(
+        testCase,
+        cbtResult,
+        testCaseQueueIndex * results.length + cbtResultIndex,
+        testCaseQueueLength * results.length
+      );
     }));
   }
 
   /**
    * @param {!UploadableTestCase} testCase
    * @param {!T} err
+   * @param {number} testCaseQueueIndex
+   * @param {number} testCaseQueueLength
    * @return {!Promise<!T>}
    * @template T
    * @private
    */
-  async handleCapturePageFailure_(testCase, err) {
+  async handleCapturePageFailure_(testCase, err, testCaseQueueIndex, testCaseQueueLength) {
     console.error('\n\n\nERROR capturing screenshot with CrossBrowserTesting:\n\n');
     console.error(`  - ${testCase.htmlFile.publicUrl}`);
+    console.error(`  - Test case ${testCaseQueueIndex} of ${testCaseQueueLength}`);
     console.error(err);
     return Promise.reject(err);
   }
@@ -201,21 +261,30 @@ class Controller {
   /**
    * @param {!UploadableTestCase} testCase
    * @param {!Object} cbtResult
+   * @param {number} uploadQueueIndex
+   * @param {number} uploadQueueLength
    * @return {!Promise<!UploadableFile>}
    * @private
    */
-  async uploadScreenshotImage_(testCase, cbtResult) {
-    const sanitize = (apiName) => apiName.toLowerCase().replace(/\W+/g, '');
+  async uploadScreenshotImage_(testCase, cbtResult, uploadQueueIndex, uploadQueueLength) {
+    const cbtImageUrl = cbtResult.images.chromeless;
+    if (!cbtImageUrl) {
+      console.error('cbtResult:\n', cbtResult);
+      throw new Error('cbtResult.images.chromeless is null');
+    }
 
-    const os = sanitize(cbtResult.os.api_name);
-    const browser = sanitize(cbtResult.browser.api_name);
-    const imageName = `${os}_${browser}_ltr.png`;
+    const osApiName = cbtResult.os.api_name;
+    const browserApiName = cbtResult.browser.api_name;
 
-    const imageData = await this.downloadImage_(cbtResult.images.chromeless);
+    const imageName = `${this.getBrowserFileName_(osApiName, browserApiName)}.png`;
+    const imageData = await this.downloadAndCropImage_(cbtImageUrl);
     const imageFile = new UploadableFile({
-      destinationParentDirectory: `${this.baseUploadDir_}/screenshots`,
-      destinationRelativeFilePath: `${testCase.htmlFile.destinationRelativeFilePath}/${imageName}`,
+      destinationParentDirectory: this.baseUploadDir_,
+      destinationRelativeFilePath: `${testCase.htmlFile.destinationRelativeFilePath}.${imageName}`,
       fileContent: imageData,
+      userAgent: await CbtUserAgent.fetchBrowserByApiName(osApiName, browserApiName),
+      queueIndex: uploadQueueIndex,
+      queueLength: uploadQueueLength,
     });
 
     testCase.screenshotImageFiles.push(imageFile);
@@ -224,60 +293,114 @@ class Controller {
   }
 
   /**
+   * @param {string} osApiName
+   * @param {string} browserApiName
+   * @return {string}
+   * @private
+   */
+  getBrowserFileName_(osApiName, browserApiName) {
+    // Remove MS Edge version number from Windows OS API name. E.g.: "Win10-E17" -> "Win10".
+    // TODO(acdvorak): Why does the CBT browser API return "Win10" but the screenshot info API returns "Win10-E17"?
+    osApiName = osApiName.replace(/-E\d+$/, '');
+    return `${osApiName}_${browserApiName}`.toLowerCase().replace(/[^\w.]+/g, '');
+  }
+
+  /**
    * @param {string} uri
    * @return {!Promise<!Buffer>}
    * @private
    */
-  async downloadImage_(uri) {
-    // For binary data, set `encoding: null` to return the response body as a `Buffer` instead of a `string`.
-    // https://github.com/request/request#requestoptions-callback
-    return request({uri, encoding: null})
-      .then(
-        (body) => body,
-        (err) => {
-          console.error(`FAILED to download "${uri}"`);
-          return Promise.reject(err);
-        }
-      );
+  async downloadAndCropImage_(uri) {
+    return this.imageCropper_.autoCropImage(await this.imageCache_.getImageBuffer(uri));
   }
 
   /**
-   * Writes the given `testCases` to a `golden.json` file in `sourceDir_`.
+   * Writes the given `testCases` to a `golden.json` file.
    * If the file already exists, it will be overwritten.
    * @param {!Array<!UploadableTestCase>} testCases
-   * @return {!Promise<{goldenFilePath:string, goldenData:!Object}>}
+   * @param {!Array<!ImageDiffJson>} diffs
+   * @return {!Promise<{diffs: !Array<!ImageDiffJson>, testCases: !Array<!UploadableTestCase>}>}
    */
-  async updateGoldenJson(testCases) {
-    const goldenData = {};
+  async updateGoldenJson({testCases, diffs}) {
+    await this.snapshotStore_.writeToDisk({testCases, diffs});
+    return {testCases, diffs};
+  }
 
-    testCases.forEach((testCase) => {
-      const htmlFileKey = testCase.htmlFile.destinationRelativeFilePath;
-      const htmlFileUrl = testCase.htmlFile.publicUrl;
-
-      goldenData[htmlFileKey] = {
-        publicUrl: htmlFileUrl,
-        screenshots: {},
-      };
-
-      testCase.screenshotImageFiles.forEach((screenshotImageFile) => {
-        const screenshotKey = path.parse(screenshotImageFile.destinationRelativeFilePath).name;
-        const screenshotUrl = screenshotImageFile.publicUrl;
-
-        goldenData[htmlFileKey].screenshots[screenshotKey] = screenshotUrl;
-      });
+  /**
+   * @param {!Array<!UploadableTestCase>} testCases
+   * @return {!Promise<{diffs: !Array<!ImageDiffJson>, testCases: !Array<!UploadableTestCase>}>}
+   */
+  async diffGoldenJson(testCases) {
+    /** @type {!Array<!ImageDiffJson>} */
+    const diffs = await this.imageDiffer_.compareAllPages({
+      actualSuite: await this.snapshotStore_.fromTestCases(testCases),
+      expectedSuite: await this.snapshotStore_.fromDiffBase(),
     });
 
-    const goldenFilePath = path.join(this.sourceDir_, 'golden.json');
-    const goldenFileContent = stringify(goldenData, {space: '  '}) + '\n';
-
-    return writeFileAsync(goldenFilePath, goldenFileContent)
+    return Promise.all(diffs.map((diff, index) => this.uploadOneDiffImage_(diff, index, diffs.length)))
       .then(
         () => {
-          console.log(`\n\nDONE updating "${goldenFilePath}"!\n\n`);
-          return {goldenFilePath, goldenData};
+          diffs.sort((a, b) => {
+            return a.htmlFilePath.localeCompare(b.htmlFilePath, 'en-US') ||
+              a.userAgentAlias.localeCompare(b.userAgentAlias, 'en-US');
+          });
+          console.log('\n\nDONE diffing screenshot images!\n\n');
+          console.log(diffs);
+          console.log(`\n\nFound ${diffs.length} screenshot diffs!\n\n`);
+          return {testCases, diffs};
         },
         (err) => Promise.reject(err)
-      );
+      )
+    ;
+  }
+
+  /**
+   * @param {!ImageDiffJson} diff
+   * @param {number} queueIndex
+   * @param {number} queueLength
+   * @return {!Promise<void>}
+   * @private
+   */
+  async uploadOneDiffImage_(diff, queueIndex, queueLength) {
+    /** @type {?CbtUserAgent} */
+    const userAgent = await CbtUserAgent.fetchBrowserByAlias(diff.userAgentAlias);
+    const browserFileName = this.getBrowserFileName_(userAgent.device.api_name, userAgent.browser.api_name);
+
+    /** @type {!UploadableFile} */
+    const diffImageFile = await this.storage_.uploadFile(new UploadableFile({
+      destinationParentDirectory: this.baseUploadDir_,
+      destinationRelativeFilePath: `${diff.htmlFilePath}.${browserFileName}.diff.png`,
+      fileContent: diff.diffImageBuffer,
+      queueIndex,
+      queueLength,
+      userAgent,
+    }));
+
+    diff.diffImageUrl = diffImageFile.publicUrl;
+    diff.diffImageBuffer = null; // free up memory
+  }
+
+  /**
+   * @param {!Array<!UploadableTestCase>} testCases
+   * @param {!Array<!ImageDiffJson>} diffs
+   * @return {!Promise<string>}
+   */
+  async uploadDiffReport({testCases, diffs}) {
+    const reportGenerator = new ReportGenerator({testCases, diffs});
+
+    /** @type {!UploadableFile} */
+    const reportFile = await this.storage_.uploadFile(new UploadableFile({
+      destinationParentDirectory: this.baseUploadDir_,
+      destinationRelativeFilePath: 'report.html',
+      fileContent: await reportGenerator.generateHtml(),
+      queueIndex: 0,
+      queueLength: 1,
+    }));
+
+    console.log('\n\nDONE uploading diff report to GCS!\n\n');
+    console.log(reportFile.publicUrl);
+
+    return reportFile.publicUrl;
   }
 
   /**

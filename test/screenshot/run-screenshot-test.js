@@ -16,12 +16,17 @@
 
 'use strict';
 
-const SOURCE_DIR = 'test/screenshot/';
-
 const Controller = require('./lib/controller');
-const controller = new Controller({sourceDir: SOURCE_DIR});
+const controller = new Controller();
 
 controller.initialize()
-  .then(() => controller.uploadAllAssets())
-  .then((testCases) => controller.captureAllPages(testCases))
+  .then(() => controller.uploadAllAssets(), handleError)
+  .then((testCases) => controller.captureAllPages(testCases), handleError)
+  .then((testCases) => controller.diffGoldenJson(testCases), handleError)
+  .then(({testCases, diffs}) => controller.uploadDiffReport({testCases, diffs}), handleError)
 ;
+
+function handleError(err) {
+  console.error(err);
+  process.exit(1);
+}

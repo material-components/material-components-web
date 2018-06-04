@@ -29,13 +29,11 @@ const strings = {
 /** @enum {string} */
 const cssClasses = {
   CHECKMARK: 'mdc-chip__checkmark',
-  CHIP: 'mdc-chip',
   CHIP_EXIT: 'mdc-chip--exit',
   HIDDEN_LEADING_ICON: 'mdc-chip__icon--leading-hidden',
   LEADING_ICON: 'mdc-chip__icon--leading',
   TRAILING_ICON: 'mdc-chip__icon--trailing',
   SELECTED: 'mdc-chip--selected',
-  TEXT: 'mdc-chip__text',
 };
 
 export {strings, cssClasses};

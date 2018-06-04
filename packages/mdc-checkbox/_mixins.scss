@@ -76,7 +76,7 @@
   }
 
   .mdc-checkbox__mixedmark {
-    @include mdc-theme-prop(background-color, $color);
+    @include mdc-theme-prop(border-color, $color);
   }
 }
 
@@ -365,9 +365,11 @@
 
 @mixin mdc-checkbox__mixedmark_ {
   width: 100%;
-  height: floor($mdc-checkbox-mark-stroke-size);
+  height: 0;
   transform: scaleX(0) rotate(0deg);
   transition: mdc-checkbox-transition-exit(opacity), mdc-checkbox-transition-exit(transform);
+  border-width: floor($mdc-checkbox-mark-stroke-size) / 2;
+  border-style: solid;
   opacity: 0;
 }
 
