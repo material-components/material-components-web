@@ -18,7 +18,7 @@
 /** @enum {string} */
 const cssClasses = {
   LIST_ITEM_CLASS: 'mdc-list-item',
-}
+};
 
 /** @enum {string} */
 const strings = {
