@@ -929,15 +929,6 @@
     <script src="/assets/material-components-web.js" async></script>
     <script>
       demoReady(function() {
-        var checkboxes = document.querySelectorAll('.mdc-checkbox');
-        [].forEach.call(checkboxes, function(checkbox) {
-          var cbInstance = mdc.checkbox.MDCCheckbox.attachTo(checkbox);
-          if (checkbox.parentElement.classList.contains('mdc-form-field')) {
-            var ffInstance = mdc.formField.MDCFormField.attachTo(checkbox.parentElement);
-            ffInstance.input = cbInstance;
-          }
-        });
-
         var demoWrapper = document.getElementById('demo-wrapper');
         var hero = document.querySelector('.hero');
         document.getElementById('toggle-rtl').addEventListener('change', function() {
@@ -978,9 +969,6 @@
             });
           });
         };
-
-        addRippleToListItems(document.getElementById('leading-checkbox-list'));
-        addRippleToListItems(document.getElementById('trailing-checkbox-list'));
       });
     </script>
   </body>
