@@ -49,19 +49,6 @@ class MDCMenuSurfaceAdapter {
    */
   hasClass(className) {}
 
-  /**
-   * @param {EventTarget} target
-   * @param {string} attributeName
-   * @return {string}
-   */
-  getAttributeForEventTarget(target, attributeName) {}
-
-  /**
-   * @param {EventTarget} target
-   * @return {number}
-   */
-  getIndexForEventTarget(target) {}
-
   /** @return {boolean} */
   hasAnchor() {}
 
@@ -110,14 +97,17 @@ class MDCMenuSurfaceAdapter {
   /** Restores focus to the element that was focused before the menu surface was opened. */
   restoreFocus() {}
 
-  /** @return {number} */
-  getNumberFocusableElements() {}
+  /** @return {boolean} */
+  isFirstElementFocused() {}
 
-  /** @return {number} */
-  getFocusedElementIndex() {}
+  /** @return {boolean} */
+  isLastElementFocused() {}
 
-  /** @param {number} index */
-  focusElementAtIndex(index) {}
+  /** Focuses the first focusable element in the menu-surface. */
+  focusFirstElement() {}
+
+  /** Focuses the first focusable element in the menu-surface. */
+  focusLastElement() {}
 
   /** @return {{width: number, height: number}} */
   getInnerDimensions() {}

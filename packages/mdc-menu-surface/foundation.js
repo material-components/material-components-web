@@ -43,8 +43,6 @@ import MDCFoundation from '@material/base/foundation';
 import {MDCMenuSurfaceAdapter} from './adapter';
 import {cssClasses, strings, numbers, MenuSurfaceCorner, MenuSurfaceCornerBit} from './constants';
 
-const ELEMENTS_SPACE_IS_ALLOWED_IN = ['index', 'button', 'textarea'];
-
 /**
  * @extends {MDCFoundation<!MDCMenuSurfaceAdapter>}
  */
@@ -79,8 +77,6 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
       addClass: () => {},
       removeClass: () => {},
       hasClass: () => false,
-      getAttributeForEventTarget: () => {},
-      getIndexForEventTarget: () => {},
       hasAnchor: () => false,
       registerInteractionHandler: () => {},
       deregisterInteractionHandler: () => {},
@@ -90,13 +86,13 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
       isElementInContainer: () => false,
       isRtl: () => false,
       setTransformOrigin: () => {},
-      focus: () => {},
       isFocused: () => false,
       saveFocus: () => {},
       restoreFocus: () => {},
-      getNumberFocusableElements: () => 0,
-      getFocusedElementIndex: () => 0,
-      focusElementAtIndex: () => {},
+      isFirstElementFocused: () => {},
+      isLastElementFocused: () => {},
+      focusFirstElement: () => {},
+      focusLastElement: () => {},
       getInnerDimensions: () => ({}),
       getAnchorDimensions: () => ({}),
       getWindowDimensions: () => ({}),
@@ -111,8 +107,6 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
 
     /** @private {function(!Event)} */
     this.keydownHandler_ = (evt) => this.handleKeyboardDown(evt);
-    /** @private {function(!Event)} */
-    this.keyupHandler_ = (evt) => this.handleKeyboardUp(evt);
     /** @private {function(!Event)} */
     this.documentClickHandler_ = (evt) => this.handleDocumentClick(evt);
     /** @private {boolean} */
@@ -152,7 +146,6 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
       this.isOpen_ = true;
     }
 
-    this.adapter_.registerInteractionHandler('keyup', this.keyupHandler_);
     this.adapter_.registerInteractionHandler('keydown', this.keydownHandler_);
   }
 
@@ -161,7 +154,6 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     clearTimeout(this.closeAnimationEndTimerId_);
     // Cancel any currently running animations.
     cancelAnimationFrame(this.animationRequestId_);
-    this.adapter_.deregisterInteractionHandler('keyup', this.keyupHandler_);
     this.adapter_.deregisterInteractionHandler('keydown', this.keydownHandler_);
     this.adapter_.deregisterBodyClickHandler(this.documentClickHandler_);
   }
@@ -189,22 +181,6 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {?number} focusIndex
-   * @private
-   */
-  focusOnOpen_(focusIndex) {
-    if (focusIndex === null) {
-      this.adapter_.focus();
-      // If that doesn't work, focus first focusable element instead.
-      if (!this.adapter_.isFocused()) {
-        this.adapter_.focusElementAtIndex(0);
-      }
-    } else {
-      this.adapter_.focusElementAtIndex(focusIndex);
-    }
-  }
-
-  /**
    * Handle clicks and close if not within menu-surface element.
    * @param {!Event} evt
    * @private
@@ -220,78 +196,27 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
   };
 
   /**
-   * Handle keys that we want to repeat on hold (tab and arrows).
+   * Handle keys that close the surface.
    * @param {!Event} evt
    * @private
    */
   handleKeyboardDown(evt) {
-    // Do nothing if Alt, Ctrl or Meta are pressed.
-    if (evt.altKey || evt.ctrlKey || evt.metaKey) {
-      return;
-    }
-
     const {keyCode, key, shiftKey} = evt;
-    const isTab = key === 'Tab' || keyCode === 9;
-    const isArrowLeft = key === 'ArrowLeft' || keyCode === 37;
-    const isArrowUp = key === 'ArrowUp' || keyCode === 38;
-    const isArrowRight = key === 'ArrowRight' || keyCode === 39;
-    const isArrowDown = key === 'ArrowDown' || keyCode === 40;
-    const isSpace = key === 'Space' || keyCode === 32;
-    const isEnter = key === 'Enter' || keyCode === 13;
-    // The menu surface needs to know if the keydown event was triggered on the menu surface.
-    this.keyDownWithinMenu_ = isEnter || isSpace;
 
-    const focusedItemIndex = this.adapter_.getFocusedElementIndex();
-    const lastItemIndex = this.adapter_.getNumberFocusableElements() - 1;
-
-    // Ensure Arrow keys and space do not cause inadvertent scrolling.
-    if (isArrowUp || isArrowDown || isArrowLeft || isArrowRight ||
-        isTab || (isSpace && this.isSpaceKeyAllowedOnTarget_(evt))) {
-      evt.preventDefault();
-    }
-
-    if (isArrowUp || (isTab && shiftKey)) {
-      if (focusedItemIndex === 0 || this.adapter_.isFocused()) {
-        this.adapter_.focusElementAtIndex(lastItemIndex);
-      } else {
-        this.adapter_.focusElementAtIndex(focusedItemIndex - 1);
-      }
-    } else if (isArrowDown || (isTab && !shiftKey)) {
-      if (focusedItemIndex === lastItemIndex || this.adapter_.isFocused()) {
-        this.adapter_.focusElementAtIndex(0);
-      } else {
-        this.adapter_.focusElementAtIndex(focusedItemIndex + 1);
-      }
-    }
-  }
-
-  /**
-   * Returns true if the event will cause a scroll event.
-   * @param evt
-   * @private
-   */
-  isSpaceKeyAllowedOnTarget_(evt) {
-    const tagName = ('' + evt.target.tagName).toLowerCase();
-
-    return ELEMENTS_SPACE_IS_ALLOWED_IN.indexOf(tagName) === -1;
-  }
-
-  /**
-   * Handle keys that we don't want to repeat on hold (Enter, Space, Escape).
-   * @param {!Event} evt
-   * @private
-   */
-  handleKeyboardUp(evt) {
-    // Do nothing if Alt, Ctrl or Meta are pressed.
-    if (evt.altKey || evt.ctrlKey || evt.metaKey) {
-      return;
-    }
-
-    const {keyCode, key} = evt;
     const isEscape = key === 'Escape' || keyCode === 27;
+    const isTab = key === 'Tab' || keyCode === 9;
 
     if (isEscape) {
+      evt.preventDefault();
       this.close();
+    } else if (isTab) {
+      if (this.adapter_.isLastElementFocused() && !shiftKey) {
+        this.adapter_.focusFirstElement();
+        event.preventDefault();
+      } else if (this.adapter_.isFirstElementFocused() && shiftKey) {
+        this.adapter_.focusLastElement();
+        evt.preventDefault();
+      }
     }
   }
 
@@ -476,9 +401,8 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
 
   /**
    * Open the menu surface.
-   * @param {{focusIndex: ?number}=} options
    */
-  open({focusIndex = null} = {}) {
+  open() {
     this.adapter_.saveFocus();
 
     if (!this.quickOpen_) {
@@ -489,7 +413,6 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
       this.dimensions_ = this.adapter_.getInnerDimensions();
       this.autoPosition_();
       this.adapter_.addClass(MDCMenuSurfaceFoundation.cssClasses.OPEN);
-      this.focusOnOpen_(focusIndex);
       this.adapter_.registerBodyClickHandler(this.documentClickHandler_);
       if (!this.quickOpen_) {
         this.openAnimationEndTimerId_ = setTimeout(() => {

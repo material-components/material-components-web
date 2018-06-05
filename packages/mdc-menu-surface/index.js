@@ -29,12 +29,14 @@ class MDCMenuSurface extends MDCComponent {
   constructor(...args) {
     super(...args);
 
-    /** @private {!Array<Element>} */
-    this.focusableElements_ = [];
     /** @private {!Element} */
     this.previousFocus_;
     /** @private {!Element} */
     this.anchorElement;
+    /** @private {!Element} */
+    this.firstFocusableElement_;
+    /** @private {!Element} */
+    this.lastFocusableElement_;
   }
 
   /**
@@ -49,8 +51,6 @@ class MDCMenuSurface extends MDCComponent {
     if (this.root_.parentElement && this.root_.parentElement.classList.contains(cssClasses.ANCHOR)) {
       this.anchorElement = this.root_.parentElement;
     }
-
-    this.focusableElements_ = [].slice.call(this.root_.querySelectorAll(strings.FOCUSABLE_ELEMENTS));
   }
 
   /** @return {boolean} */
@@ -67,10 +67,11 @@ class MDCMenuSurface extends MDCComponent {
     }
   }
 
-  /** @param {{focusIndex: ?number}=} options */
-  show({focusIndex = null} = {}) {
-    this.focusableElements_ = [].slice.call(this.root_.querySelectorAll(strings.FOCUSABLE_ELEMENTS));
-    this.foundation_.open({focusIndex});
+  show() {
+    const fosuableElements = this.root_.querySelectorAll(strings.FOCUSABLE_ELEMENTS);
+    this.firstFocusableElement_ = fosuableElements.length > 0 ? fosuableElements[0] : null;
+    this.lastFocusableElement_ = fosuableElements.length > 0 ? fosuableElements[fosuableElements.length - 1]: null;
+    this.foundation_.open();
   }
 
   hide() {
@@ -104,8 +105,6 @@ class MDCMenuSurface extends MDCComponent {
         addClass: (className) => this.root_.classList.add(className),
         removeClass: (className) => this.root_.classList.remove(className),
         hasClass: (className) => this.root_.classList.contains(className),
-        getAttributeForEventTarget: (target, attributeName) => target.getAttribute(attributeName),
-        getIndexForEventTarget: (target) => this.focusableElements_.indexOf(target),
         hasAnchor: () => !!this.anchorElement,
         registerInteractionHandler: (type, handler) => this.root_.addEventListener(type, handler),
         deregisterInteractionHandler: (type, handler) => this.root_.removeEventListener(type, handler),
@@ -131,27 +130,30 @@ class MDCMenuSurface extends MDCComponent {
    * isFocused: function(): boolean,
    * saveFocus: function(),
    * restoreFocus: function(),
-   * getNumberFocusableElements: function(): number,
-   * getFocusedElementIndex: function(): number,
-   * focusElementAtIndex: function(number)
    * }}
    * @private
    */
   getFocusAdapterMethods_() {
     return {
-      focus: () => this.root_.focus(),
       isFocused: () => document.activeElement === this.root_,
       saveFocus: () => {
         this.previousFocus_ = document.activeElement;
       },
       restoreFocus: () => {
-        if (this.previousFocus_ && this.previousFocus_.focus) {
-          this.previousFocus_.focus();
+        if (this.root_.contains(document.activeElement)) {
+          if (this.previousFocus_ && this.previousFocus_.focus) {
+            this.previousFocus_.focus();
+          }
         }
       },
-      getNumberFocusableElements: () => this.focusableElements_.length,
-      getFocusedElementIndex: () => this.focusableElements_.indexOf(document.activeElement),
-      focusElementAtIndex: (index) => this.focusableElements_[index] && this.focusableElements_[index].focus(),
+      isFirstElementFocused: () =>
+        this.firstFocusableElement_ && this.firstFocusableElement_ === document.activeElement,
+      isLastElementFocused: () =>
+        this.lastFocusableElement_ && this.lastFocusableElement_ === document.activeElement,
+      focusFirstElement: () =>
+        this.firstFocusableElement_ && this.firstFocusableElement_.focus && this.firstFocusableElement_.focus(),
+      focusLastElement: () =>
+        this.lastFocusableElement_ && this.lastFocusableElement_.focus && this.lastFocusableElement_.focus(),
     };
   }
 
