@@ -15,19 +15,10 @@
 //
 
 @import "@material/rtl/mixins";
+@import "../variables";
+@import "../mixins";
 
-@mixin mdc-slideable-drawer {
-  height: 100%;
-  transform: translateX(-107%);
-  transform: translateX(calc(-100% - 20px));
-  will-change: transform;
+$mdc-standard-drawer-width: 256px;
 
-  @include mdc-rtl {
-    transform: translateX(107%);
-    transform: translateX(calc(100% + 20px));
-  }
-}
-
-@mixin mdc-slideable-drawer-open {
-  transform: none;
+.mdc-drawer {
 }

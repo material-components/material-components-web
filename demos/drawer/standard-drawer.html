@@ -17,7 +17,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Drawer Above Toolbar - Material Components Catalog</title>
+    <title>Standard Drawer - Material Components Catalog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <link rel="stylesheet" href="/assets/drawer/drawer.css">
@@ -30,49 +30,12 @@
       html {
         height: 100%;
       }
-
-      /* Place drawer and content side by side. */
-      .demo-body {
-        display: flex;
-        flex-direction: row;
-        padding: 0;
-        margin: 0;
-        box-sizing: border-box;
-        min-height: 100%;
-        width: 100%;
-      }
-
-      /* Stack toolbar and main on top of each other. */
-      .demo-content {
-        display: inline-flex;
-        flex-direction: column;
-        flex-grow: 1;
-        height: 100%;
-        box-sizing: border-box;
-      }
-
-      /* Place drawer above toolbar shadow. */
-      .mdc-drawer--permanent {
-        z-index: 2;
-      }
-
-      .demo-main {
-        padding-left: 16px;
-        padding-right: 16px;
-      }
-
-      #extra-wide-content {
-        width: 200vw;
-      }
-
-      #extra-tall-content {
-        height: 200vh;
-      }
     </style>
   </head>
   <body class="mdc-typography demo-body">
     <nav id="demo-drawer" class="mdc-drawer mdc-drawer--permanent demo-drawer">
       <div class="mdc-list-group">
+        <h3 class="mdc-list-group__subheader">Inbox</h3>
         <nav class="mdc-list">
           <a class="mdc-list-item mdc-list-item--selected demo-drawer-list-item" href="#">
             <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
