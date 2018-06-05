@@ -951,24 +951,6 @@
             evt.preventDefault();
           });
         }
-
-        function clickHandler(evt, li) {
-          if (evt.target === li) {
-            var checkbox = li.querySelector('.mdc-checkbox__native-control');
-            checkbox.checked = !checkbox.checked;
-          }
-        };
-
-        function addRippleToListItems(list) {
-          var listItems = list.querySelectorAll('.mdc-list-item');
-
-          [].forEach.call(listItems, function(li) {
-            mdc.ripple.MDCRipple.attachTo(li);
-            li.addEventListener('click', function(e) {
-              clickHandler(e, li);
-            });
-          });
-        };
       });
     </script>
   </body>
