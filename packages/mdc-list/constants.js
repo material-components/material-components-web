@@ -16,6 +16,11 @@
  */
 
 /** @enum {string} */
+const cssClasses = {
+  LIST_ITEM_CLASS: 'mdc-list-item',
+}
+
+/** @enum {string} */
 const strings = {
   ARIA_ORIENTATION: 'aria-orientation',
   ARIA_ORIENTATION_VERTICAL: 'vertical',
@@ -23,4 +28,4 @@ const strings = {
   ITEMS_SELECTOR: '.mdc-list-item',
 };
 
-export {strings};
+export {strings, cssClasses};

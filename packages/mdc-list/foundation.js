@@ -16,13 +16,17 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-import {strings} from './constants';
+import {strings, cssClasses} from './constants';
 
 const ELEMENTS_KEY_ALLOWED_IN = ['input', 'button', 'textarea', 'select'];
 
 class MDCListFoundation extends MDCFoundation {
   static get strings() {
     return strings;
+  }
+
+  static get cssClasses() {
+    return cssClasses;
   }
 
   static get defaultAdapter() {
@@ -126,7 +130,7 @@ class MDCListFoundation extends MDCFoundation {
    * @private
    */
   preventDefaultEvent_(evt) {
-    const tagName = ('' + evt.target.tagName).toLowerCase();
+    const tagName = `${evt.target.tagName}`.toLowerCase();
     if (ELEMENTS_KEY_ALLOWED_IN.indexOf(tagName) === -1) {
       evt.preventDefault();
     }
@@ -168,7 +172,9 @@ class MDCListFoundation extends MDCFoundation {
   }
 
   focusFirstElement() {
-    this.adapter_.focusItemAtIndex(0);
+    if (this.adapter_.getListItemCount() > 0) {
+      this.adapter_.focusItemAtIndex(0);
+    }
   }
 
   focusLastElement() {
@@ -185,7 +191,7 @@ class MDCListFoundation extends MDCFoundation {
    * @private
    */
   getListItem_(target) {
-    while (!target.classList.contains('mdc-list-item')) {
+    while (!target.classList.contains(cssClasses.LIST_ITEM_CLASS)) {
       if (!target.parentElement) return null;
       target = target.parentElement;
     }

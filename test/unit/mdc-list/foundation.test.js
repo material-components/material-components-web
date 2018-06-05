@@ -22,12 +22,16 @@ import td from 'testdouble';
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
 import {MDCListFoundation} from '../../../packages/mdc-list/foundation';
-import {strings} from '../../../packages/mdc-list/constants';
+import {strings, cssClasses} from '../../../packages/mdc-list/constants';
 
 suite('MDCListFoundation');
 
 test('exports strings', () => {
   assert.deepEqual(MDCListFoundation.strings, strings);
+});
+
+test('exports cssClasses', () => {
+  assert.deepEqual(MDCListFoundation.cssClasses, cssClasses);
 });
 
 test('defaultAdapter returns a complete adapter implementation', () => {

@@ -20,7 +20,7 @@ import {MDCListFoundation} from './foundation';
 import {strings} from './constants';
 
 /**
- * @extends MDCComponent<!MDCistFoundation>
+ * @extends MDCComponent<!MDCListFoundation>
  */
 export class MDCList extends MDCComponent {
   /** @param {...?} args */
