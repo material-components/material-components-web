@@ -20,7 +20,7 @@ import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
 
 import MDCChipAdapter from './adapter';
 import MDCChipFoundation from './foundation';
-import {strings} from './constants';
+import {strings, cssClasses} from './constants';
 
 /**
  * @extends {MDCComponent<!MDCChipFoundation>}
@@ -80,6 +80,13 @@ class MDCChip extends MDCComponent {
    */
   isSelected() {
     return this.foundation_.isSelected();
+  }
+
+  /**
+   * Begins the exit animation which leads to removal of the chip.
+   */
+  beginExit() {
+    this.root_.classList.add(cssClasses.CHIP_EXIT);
   }
 
   /**
