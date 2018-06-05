@@ -51,12 +51,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
   /** @return {boolean} */
   get shouldAlwaysFloat() {
     const type = this.getType();
-    for (const alwaysFloatType of ALWAYS_FLOAT_TYPES) {
-      if (alwaysFloatType === type) {
-        return true;
-      }
-    }
-    return false;
+    return ALWAYS_FLOAT_TYPES.indexOf(type) >= 0;
   }
 
   /** @return {boolean} */
