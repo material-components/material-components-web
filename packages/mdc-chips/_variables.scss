@@ -21,6 +21,7 @@ $mdc-chip-fill-color-default: mix(mdc-theme-prop-value(on-surface), mdc-theme-pr
 $mdc-chip-ink-color-default: rgba(mdc-theme-prop-value(on-surface), .87);
 $mdc-chip-horizontal-padding: 12px;
 $mdc-chip-vertical-padding: 7px;
+$mdc-chip-height-default: 32px;
 
 $mdc-chip-icon-color: mdc-theme-prop-value(on-surface);
 $mdc-chip-icon-opacity: .54;
@@ -28,6 +29,8 @@ $mdc-chip-trailing-icon-hover-opacity: .62;
 $mdc-chip-trailing-icon-focus-opacity: .87;
 $mdc-chip-leading-icon-size: 20px;
 $mdc-chip-trailing-icon-size: 18px;
+$mdc-chip-leading-icon-delay: -50ms; // Speed up delay to bridge gap between leading icon and checkmark transition.
+$mdc-chip-checkmark-with-leading-icon-delay: 80ms;
 
 $mdc-chip-checkmark-animation-delay: 50ms;
 $mdc-chip-checkmark-animation-duration: 150ms;

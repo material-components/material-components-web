@@ -60,6 +60,7 @@
 
   &.mdc-chip--selected {
     @include mdc-theme-prop(color, $color);
+    @include mdc-chip-leading-icon-color($color);
 
     &:hover {
       @include mdc-theme-prop(color, $color);
@@ -92,6 +93,10 @@
 
   padding: $vertical-padding-value $horizontal-padding-value;
   border-width: $width;
+}
+
+@mixin mdc-chip-height($height) {
+  height: $height;
 }
 
 @mixin mdc-chip-set-spacing($gap-size) {

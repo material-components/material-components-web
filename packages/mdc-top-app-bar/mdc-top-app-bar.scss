@@ -32,6 +32,7 @@
   justify-content: space-between;
   box-sizing: border-box;
   width: 100%;
+  z-index: 4;
 
   &__row {
     display: flex;
@@ -77,13 +78,11 @@
 }
 
 .mdc-top-app-bar--short {
-  position: fixed;
   top: 0;
   right: auto;
   left: 0;
   width: 100%;
   transition: width 250ms $mdc-animation-standard-curve-timing-function;
-  z-index: 4;
 
   @include mdc-rtl {
     right: 0;
@@ -161,7 +160,6 @@
 
 // stylelint-disable-next-line plugin/selector-bem-pattern
 .mdc-top-app-bar--fixed {
-  position: fixed;
   transition: box-shadow 200ms linear;
 }
 

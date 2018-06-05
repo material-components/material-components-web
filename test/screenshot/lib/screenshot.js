@@ -74,7 +74,7 @@ async function captureOneUrl(testPageUrl) {
 
 async function sendCaptureRequest(testPageUrl, retryCount = 0) {
   if (retryCount > API_MAX_RETRIES) {
-    throw new Error(`Capture request failed after ${retryCount} retry attempts - ${testPageUrl}`);
+    throw new Error(`Capture request failed after ${API_MAX_RETRIES} retry attempts - ${testPageUrl}`);
   }
 
   const userAgents = await CbtUserAgent.fetchBrowsersToRun();
@@ -85,7 +85,7 @@ async function sendCaptureRequest(testPageUrl, retryCount = 0) {
       if (reachedParallelExecutionLimit(err)) {
         console.warn(`Parallel execution limit reached - waiting for ${waitInSeconds} seconds before retrying...`);
         await sleep(API_POLL_INTERVAL_MS);
-        return sendCaptureRequest(testPageUrl, retryCount + 1);
+        return sendCaptureRequest(testPageUrl, retryCount); // don't increment the retry count for parallel execution
       }
 
       // TODO(acdvorak): Abstract this logic into CbtApi for every HTTP request?
@@ -101,7 +101,7 @@ async function sendCaptureRequest(testPageUrl, retryCount = 0) {
 
 async function handleCaptureResponse(testPageUrl, captureResponseBody, retryCount = 0) {
   if (retryCount > API_MAX_RETRIES) {
-    throw new Error(`Capture response failed after ${retryCount} retry attempts - ${testPageUrl}`);
+    throw new Error(`Capture response failed after ${API_MAX_RETRIES} retry attempts - ${testPageUrl}`);
   }
 
   let infoResponseBody;

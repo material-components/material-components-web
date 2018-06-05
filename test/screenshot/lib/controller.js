@@ -22,6 +22,7 @@ const glob = require('glob');
 
 const CbtUserAgent = require('./cbt-user-agent');
 const CliArgParser = require('./cli-arg-parser');
+const GitRepo = require('./git-repo');
 const ImageCache = require('./image-cache');
 const ImageCropper = require('./image-cropper');
 const ImageDiffer = require('./image-differ');
@@ -44,6 +45,12 @@ class Controller {
      * @private
      */
     this.cliArgs_ = new CliArgParser();
+
+    /**
+     * @type {!GitRepo}
+     * @private
+     */
+    this.gitRepo_ = new GitRepo();
 
     /**
      * @type {!Storage}
@@ -85,6 +92,8 @@ class Controller {
 
   async initialize() {
     this.baseUploadDir_ = await this.storage_.generateUniqueUploadDir();
+
+    await this.gitRepo_.fetch();
 
     if (await this.cliArgs_.shouldBuild()) {
       childProcess.spawnSync('npm', ['run', 'screenshot:build'], {shell: true, stdio: 'inherit'});
@@ -267,7 +276,7 @@ class Controller {
     const osApiName = cbtResult.os.api_name;
     const browserApiName = cbtResult.browser.api_name;
 
-    const imageName = `${osApiName}_${browserApiName}.png`.toLowerCase().replace(/[^\w.]+/g, '');
+    const imageName = `${this.getBrowserFileName_(osApiName, browserApiName)}.png`;
     const imageData = await this.downloadAndCropImage_(cbtImageUrl);
     const imageFile = new UploadableFile({
       destinationParentDirectory: this.baseUploadDir_,
@@ -284,6 +293,19 @@ class Controller {
   }
 
   /**
+   * @param {string} osApiName
+   * @param {string} browserApiName
+   * @return {string}
+   * @private
+   */
+  getBrowserFileName_(osApiName, browserApiName) {
+    // Remove MS Edge version number from Windows OS API name. E.g.: "Win10-E17" -> "Win10".
+    // TODO(acdvorak): Why does the CBT browser API return "Win10" but the screenshot info API returns "Win10-E17"?
+    osApiName = osApiName.replace(/-E\d+$/, '');
+    return `${osApiName}_${browserApiName}`.toLowerCase().replace(/[^\w.]+/g, '');
+  }
+
+  /**
    * @param {string} uri
    * @return {!Promise<!Buffer>}
    * @private
@@ -296,12 +318,12 @@ class Controller {
    * Writes the given `testCases` to a `golden.json` file.
    * If the file already exists, it will be overwritten.
    * @param {!Array<!UploadableTestCase>} testCases
-   * @return {!Promise<!Array<!UploadableTestCase>>}
+   * @param {!Array<!ImageDiffJson>} diffs
+   * @return {!Promise<{diffs: !Array<!ImageDiffJson>, testCases: !Array<!UploadableTestCase>}>}
    */
-  async updateGoldenJson({testCases}) {
-    const jsonData = await this.snapshotStore_.fromTestCases(testCases);
-    await this.snapshotStore_.writeToDisk(jsonData);
-    return testCases;
+  async updateGoldenJson({testCases, diffs}) {
+    await this.snapshotStore_.writeToDisk({testCases, diffs});
+    return {testCases, diffs};
   }
 
   /**
@@ -320,12 +342,12 @@ class Controller {
         () => {
           diffs.sort((a, b) => {
             return a.htmlFilePath.localeCompare(b.htmlFilePath, 'en-US') ||
-              a.browserKey.localeCompare(b.browserKey, 'en-US');
+              a.userAgentAlias.localeCompare(b.userAgentAlias, 'en-US');
           });
           console.log('\n\nDONE diffing screenshot images!\n\n');
           console.log(diffs);
           console.log(`\n\nFound ${diffs.length} screenshot diffs!\n\n`);
-          return {diffs, testCases};
+          return {testCases, diffs};
         },
         (err) => Promise.reject(err)
       )
@@ -340,13 +362,18 @@ class Controller {
    * @private
    */
   async uploadOneDiffImage_(diff, queueIndex, queueLength) {
+    /** @type {?CbtUserAgent} */
+    const userAgent = await CbtUserAgent.fetchBrowserByAlias(diff.userAgentAlias);
+    const browserFileName = this.getBrowserFileName_(userAgent.device.api_name, userAgent.browser.api_name);
+
     /** @type {!UploadableFile} */
     const diffImageFile = await this.storage_.uploadFile(new UploadableFile({
-      destinationParentDirectory: `${this.baseUploadDir_}/screenshots`,
-      destinationRelativeFilePath: `${diff.htmlFilePath}/${diff.browserKey}.diff.png`,
+      destinationParentDirectory: this.baseUploadDir_,
+      destinationRelativeFilePath: `${diff.htmlFilePath}.${browserFileName}.diff.png`,
       fileContent: diff.diffImageBuffer,
       queueIndex,
       queueLength,
+      userAgent,
     }));
 
     diff.diffImageUrl = diffImageFile.publicUrl;

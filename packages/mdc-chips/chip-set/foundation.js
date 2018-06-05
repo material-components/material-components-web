@@ -45,7 +45,6 @@ class MDCChipSetFoundation extends MDCFoundation {
       hasClass: () => {},
       registerInteractionHandler: () => {},
       deregisterInteractionHandler: () => {},
-      appendChip: () => {},
       removeChip: () => {},
     });
   }
@@ -80,19 +79,6 @@ class MDCChipSetFoundation extends MDCFoundation {
       MDCChipFoundation.strings.INTERACTION_EVENT, this.chipInteractionHandler_);
     this.adapter_.deregisterInteractionHandler(
       MDCChipFoundation.strings.REMOVAL_EVENT, this.chipRemovalHandler_);
-  }
-
-  /**
-   * Returns a new chip element with the given text, leading icon, and trailing icon,
-   * added to the root chip set element.
-   * @param {string} text
-   * @param {?Element} leadingIcon
-   * @param {?Element} trailingIcon
-   * @return {!Element}
-   */
-  addChip(text, leadingIcon, trailingIcon) {
-    const chipEl = this.adapter_.appendChip(text, leadingIcon, trailingIcon);
-    return chipEl;
   }
 
   /**
