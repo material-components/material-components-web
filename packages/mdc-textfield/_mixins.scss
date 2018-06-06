@@ -129,21 +129,19 @@
 // Baseline
 
 @mixin mdc-text-field-disabled_ {
-  @include mdc-text-field-bottom-line-color_($mdc-text-field-outlined-disabled-border);
+  @include mdc-text-field-bottom-line-color_($mdc-text-field-disabled-border);
   @include mdc-text-field-ink-color_($mdc-text-field-disabled-ink-color);
   @include mdc-text-field-label-ink-color_($mdc-text-field-disabled-label-color);
   @include mdc-text-field-helper-text-color_($mdc-text-field-disabled-helper-text-color);
   @include mdc-text-field-icon-color_($mdc-text-field-disabled-icon);
   @include mdc-text-field-fullwidth-bottom-line-color_($mdc-text-field-fullwidth-bottom-line-color);
   @include mdc-text-field-fill-color_($mdc-text-field-disabled-background);
-  @include mdc-text-field-label-color($mdc-text-field-disabled-label-color);
 
-  border-bottom: none;
   pointer-events: none;
 
   .mdc-text-field__input {
-    border-bottom-width: 1px;
-    border-bottom-style: dotted;
+    // border-bottom-width: 1px;
+    // border-bottom-style: dotted;
   }
 
   .mdc-floating-label {
@@ -274,15 +272,11 @@
   @include mdc-states-base-color(transparent);
   @include mdc-text-field-fill-color(transparent);
 
-  display: inline-flex;
-  align-items: flex-end;
   border: none;
   overflow: visible;
 
   .mdc-text-field__input {
     display: flex;
-    box-sizing: content-box;
-    height: 30px;
     padding: 12px;
     border: none;
     background-color: transparent;
@@ -290,7 +284,7 @@
   }
 
   .mdc-floating-label {
-    width: auto;
+    @include mdc-floating-label-width(auto);
   }
 
   .mdc-text-field__icon {
@@ -446,10 +440,10 @@
   .mdc-floating-label {
     @include mdc-rtl-reflexive-position(left, 1px);
     @include mdc-floating-label-fill-color($mdc-textarea-background);
+    @include mdc-floating-label-width(auto);
 
     top: $label-offset-y;
     bottom: auto;
-    width: auto;
     margin-top: 2px;
     margin-left: 8px;
     padding: 8px;

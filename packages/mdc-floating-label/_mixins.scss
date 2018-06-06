@@ -70,6 +70,6 @@
 
 @mixin mdc-floating-label-width($width) {
   .mdc-floating-label {
-    width: calc(100% - #{$width});
+    width: $width;
   }
 }

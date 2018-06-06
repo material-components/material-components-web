@@ -46,9 +46,9 @@ npm install @material/textfield
 </div>
 ```
 
-> NOTE: Text field supports `text` and `password` input types (e.g., `<input type="password" class="mdc-text-field__input">`).
+> NOTE: Text field supports `text`, `number`, and `password` input types (e.g., `<input type="password" class="mdc-text-field__input">`).
 >
-> Other input types (such as `number` and `date`) are not currently supported.
+> Other input types (such as `date`) are not currently supported.
 
 > NOTE: For more details, see [MDC Line Ripple](../mdc-line-ripple/README.md)
 > and [MDC Floating Label](../mdc-floating-label/README.md).
@@ -205,6 +205,11 @@ Mixin | Description
 --- | ---
 `mdc-text-field-corner-radius($radius)` | Customizes the border radius for the text field.
 `mdc-text-field-fill-color($color)` | Customizes the background color of the text field.
+`mdc-text-field-bottom-line-color($color)` | Customizes the text field bottom line color except the outlined and textarea variants.
+`mdc-text-field-hover-bottom-line-color($color)` | Customizes the hover text field bottom line color except the outlined and textarea variants.
+`mdc-text-field-ink-color($color)` | Customizes the text entered into the text field.
+`mdc-text-field-label-color($color)` | Customizes the text color of the label.
+`mdc-text-field-line-ripple-color($color)` | Customizes the color of the default line ripple of the text field.
 
 #### Mixins for Outlined Text Field
 
@@ -229,16 +234,6 @@ Mixin | Description
 Mixin | Description
 --- | ---
 `mdc-text-field-fullwidth-bottom-line-color($color)` | Customizes the fullwidth text field variant bottom line color.
-
-#### Other Mixins
-
-Mixin | Description
---- | ---
-`mdc-text-field-bottom-line-color($color)` | Customizes the text field bottom line color except the outlined and textarea variants.
-`mdc-text-field-hover-bottom-line-color($color)` | Customizes the hover text field bottom line color except the outlined and textarea variants.
-`mdc-text-field-ink-color($color)` | Customizes the text entered into the text field.
-`mdc-text-field-label-color($color)` | Customizes the text color of the label.
-`mdc-text-field-line-ripple-color($color)` | Customizes the color of the default line ripple of the text field.
 
 ## `MDCTextField` Properties and Methods
 
@@ -305,6 +300,8 @@ Method Signature | Description
 `activateFocus() => void` | Activates the focus state of the Text Field. Normally called in response to the input focus event.
 `deactivateFocus() => void` | Deactivates the focus state of the Text Field. Normally called in response to the input blur event.
 `setHelperTextContent(content: string) => void` | Sets the content of the helper text.
+`setIconAriaLabel(label: string) => void` | Sets the aria label of the icon.
+`setIconContent(content: string) => void` | Sets the text content of the icon.
 `notchOutline(openNotch: boolean) => void` | Opens/closes the notched outline.
 
 `MDCTextFieldFoundation` supports multiple optional sub-elements: helper text and icon. The foundations of these sub-elements must be passed in as constructor arguments to `MDCTextFieldFoundation`.
