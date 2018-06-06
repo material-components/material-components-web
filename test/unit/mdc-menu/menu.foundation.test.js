@@ -63,10 +63,12 @@ function initAnchorLayout(mockAdapter, anchorDimensions, isRtl = false, menuHeig
 
 function testFoundation(desc, runTests) {
   test(desc, () => {
+    const clock = lolex.install();
     const {mockAdapter, foundation} = setupTest();
     const mockRaf = createMockRaf();
-    runTests({mockAdapter, foundation, mockRaf});
+    runTests({mockAdapter, foundation, mockRaf, clock});
     mockRaf.restore();
+    clock.uninstall();
   });
 }
 
@@ -135,8 +137,7 @@ testFoundation('#open adds the open class to the menu', ({foundation, mockAdapte
 });
 
 testFoundation('#open removes the animation class at the end of the animation',
-  ({foundation, mockAdapter, mockRaf}) => {
-    const clock = lolex.install();
+  ({foundation, mockAdapter, mockRaf, clock}) => {
     foundation.open();
     td.verify(mockAdapter.addClass(cssClasses.ANIMATING_OPEN));
     mockRaf.flush();
@@ -443,9 +444,8 @@ testFoundation('#open anchors the menu to the bottom left in RTL when close to t
   });
 
 testFoundation('opening menu should automatically select the last selected item if rememberSelection is true',
-  ({foundation, mockAdapter, mockRaf}) => {
+  ({foundation, mockAdapter, mockRaf, clock}) => {
     const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
-    const clock = lolex.install();
     const target = {};
     const expectedIndex = 2;
     td.when(mockAdapter.getIndexForEventTarget(target)).thenReturn(expectedIndex);
@@ -460,8 +460,6 @@ testFoundation('opening menu should automatically select the last selected item 
     mockRaf.flush();
 
     td.verify(mockAdapter.focusItemAtIndex(expectedIndex), {times: 1});
-
-    clock.uninstall();
   });
 
 testFoundation('#close does nothing if event target has aria-disabled set to true',

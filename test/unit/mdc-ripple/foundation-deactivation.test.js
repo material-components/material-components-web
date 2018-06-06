@@ -168,10 +168,9 @@ testFoundation('runs deactivation UX on public deactivate() call', ({foundation,
 });
 
 testFoundation('runs deactivation UX when activation UX timer finishes first (activation held for a long time)',
-  ({foundation, adapter, mockRaf}) => {
+  ({foundation, adapter, mockRaf, clock}) => {
     const handlers = captureHandlers(adapter, 'registerInteractionHandler');
     const documentHandlers = captureHandlers(adapter, 'registerDocumentInteractionHandler');
-    const clock = lolex.install();
     foundation.init();
     mockRaf.flush();
 
@@ -187,8 +186,6 @@ testFoundation('runs deactivation UX when activation UX timer finishes first (ac
 
     clock.tick(numbers.FG_DEACTIVATION_MS);
     td.verify(adapter.removeClass(cssClasses.FG_DEACTIVATION));
-
-    clock.uninstall();
   });
 
 testFoundation('clears any pending deactivation UX timers when re-triggered', ({foundation, adapter, mockRaf}) => {
@@ -297,10 +294,9 @@ testFoundation('waits until actual deactivation UX is needed if animation finish
   });
 
 testFoundation('only re-activates when there are no additional pointer events to be processed',
-  ({foundation, adapter, mockRaf}) => {
+  ({foundation, adapter, mockRaf, clock}) => {
     const handlers = captureHandlers(adapter, 'registerInteractionHandler');
     const documentHandlers = captureHandlers(adapter, 'registerDocumentInteractionHandler');
-    const clock = lolex.install();
 
     foundation.init();
     mockRaf.flush();
@@ -339,5 +335,4 @@ testFoundation('only re-activates when there are no additional pointer events to
     handlers.mousedown({pageX: 0, pageY: 0});
     mockRaf.flush();
     td.verify(adapter.addClass(cssClasses.FG_ACTIVATION), {times: 2});
-    clock.uninstall();
   });
