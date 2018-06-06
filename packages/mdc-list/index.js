@@ -89,12 +89,29 @@ export class MDCList extends MDCComponent {
     this.foundation_.setWrapFocus(value);
   }
 
+  /** @param {boolean} value */
+  set singleSelection(value) {
+    this.foundation_.setSingleSelection(value);
+    const selectedElement = this.root_.querySelector('.mdc-list-item[aria-selected="true"]');
+    [].slice.call(this.root_.querySelector('.mdc-list-item:not([aria-selected="true"])'))
+      .forEach((ele) => ele.setAttribute(strings.ARIA_SELECTED, false));
+
+    if (selectedElement) {
+      this.selectedIndex = this.listElements_.indexOf(selectedElement);
+    }
+  }
+
+  set selectedIndex(value) {
+    this.foundation_.setSelectedIndex(value);
+  }
+
   /** @return {!MDCListFoundation} */
   getDefaultFoundation() {
     return new MDCListFoundation(/** @type {!MDCListAdapter} */{
       getListItemCount: () => this.listElements_.length,
       getFocusedElementIndex: () => this.listElements_.indexOf(document.activeElement),
       getListItemIndex: (node) => this.listElements_.indexOf(node),
+      setAttributeForElementIndex: (ndx, attr, value) => this.listElements_[ndx].setAttribute(attr, value),
       focusItemAtIndex: (ndx) => this.listElements_[ndx].focus(),
       setTabIndexForListItemChildren: (listItemIndex, tabIndexValue) => {
         const listItemChildren = [].slice.call(this.listElements_[listItemIndex]

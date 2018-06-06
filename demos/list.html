@@ -1139,7 +1139,9 @@
         };
 
         [].slice.call(document.querySelectorAll('.mdc-list')).forEach(function(ele) {
-          mdc.list.MDCList.attachTo(ele).wrapFocus = true;
+          var list = mdc.list.MDCList.attachTo(ele);
+          list.wrapFocus = true;
+          list.singleSelection = true;
         });
 
         addRippleToListItems(document.getElementById('leading-checkbox-list'));

@@ -24,6 +24,7 @@ const cssClasses = {
 const strings = {
   ARIA_ORIENTATION: 'aria-orientation',
   ARIA_ORIENTATION_VERTICAL: 'vertical',
+  ARIA_SELECTED: 'aria-selected',
   FOCUSABLE_CHILD_ELEMENTS: 'button:not(:disabled), a',
   ITEMS_SELECTOR: '.mdc-list-item',
 };

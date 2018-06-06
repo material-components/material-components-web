@@ -97,3 +97,7 @@ a.material-icons {
   background-color: white;
   min-width: 320px;
 }
+
+.mdc-list-item[aria-selected="true"] {
+  background-color: blue;
+}

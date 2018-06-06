@@ -34,8 +34,10 @@ class MDCListFoundation extends MDCFoundation {
       getListItemCount: () => {},
       getFocusedElementIndex: () => {},
       getListItemIndex: () => {},
+      setAttributeForElementIndex: () => {},
       focusItemAtIndex: () => {},
       setTabIndexForListItemChildren: () => {},
+
     });
   }
 
@@ -45,6 +47,10 @@ class MDCListFoundation extends MDCFoundation {
     this.wrapFocus_ = false;
     /** {boolean} */
     this.isVertical_ = true;
+    /** {boolean} */
+    this.isSingleSelectionList_ = true;
+    /** {number} */
+    this.selectedIndex_ = -1;
   }
 
   /**
@@ -61,6 +67,43 @@ class MDCListFoundation extends MDCFoundation {
    */
   setVerticalOrientation(value) {
     this.isVertical_ = value;
+  }
+
+  /**
+   * Sets the isSingleSelectionList_ private variable.
+   * @param {boolean} value
+   */
+  setSingleSelection(value) {
+    this.isSingleSelectionList_ = value;
+  }
+
+  /**
+   *
+   * @param value
+   */
+  setSelectedIndex(value) {
+    if (value === this.selectedIndex_) {
+      this.adapter_.setAttributeForElementIndex(this.selectedIndex_, strings.ARIA_SELECTED, false);
+      if (this.selectedIndex_ > 0) {
+        this.adapter_.setAttributeForElementIndex(this.selectedIndex_, 'tabindex', -1);
+        this.adapter_.setAttributeForElementIndex(0, 'tabindex', 0);
+      }
+      this.selectedIndex_ = -1;
+      return;
+    }
+
+    if (this.selectedIndex_ >= 0) {
+      this.adapter_.setAttributeForElementIndex(this.selectedIndex_, strings.ARIA_SELECTED, false);
+      this.adapter_.setAttributeForElementIndex(this.selectedIndex_, 'tabindex', -1);
+    }
+
+    if (value >= 0) {
+      if (this.adapter_.getListItemCount() > value) {
+        this.selectedIndex_ = value;
+        this.adapter_.setAttributeForElementIndex(this.selectedIndex_, strings.ARIA_SELECTED, true);
+        this.adapter_.setAttributeForElementIndex(this.selectedIndex_, 'tabindex', 0);
+      }
+    }
   }
 
   /**
@@ -96,6 +139,9 @@ class MDCListFoundation extends MDCFoundation {
     const arrowDown = evt.key === 'ArrowDown' || evt.keyCode === 40;
     const isHome = evt.key === 'Home' || evt.keyCode === 36;
     const isEnd = evt.key === 'End' || evt.keyCode === 35;
+    const isEnter = evt.key === 'Enter' || evt.keyCode === 13;
+    const isSpace = evt.key === 'Space' || evt.keyCode === 32;
+
     let currentIndex = this.adapter_.getFocusedElementIndex();
 
     if (currentIndex === -1) {
@@ -120,6 +166,12 @@ class MDCListFoundation extends MDCFoundation {
     } else if (isEnd) {
       this.preventDefaultEvent_(evt);
       this.focusLastElement();
+    } else if (this.isSingleSelectionList_ && (isEnter || isSpace)) {
+      this.preventDefaultEvent_(evt);
+      // Check if the space key was pressed on the list item or a child element.
+      if (evt.target.classList.contains(cssClasses.LIST_ITEM_CLASS)) {
+        this.setSelectedIndex(currentIndex);
+      }
     }
   }
 
