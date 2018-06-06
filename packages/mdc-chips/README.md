@@ -211,12 +211,13 @@ To use the `MDCChip` and `MDCChipSet` classes, [import](../../docs/importing-js.
 
 Method Signature | Description
 --- | ---
-`get foundation() => MDCChipFoundation` | Returns the foundation
 `isSelected() => boolean` | Proxies to the foundation's `isSelected` method
 `beginExit() => void` | Begins the exit animation which leads to removal of the chip
 
 Property | Value Type | Description
 --- | --- | ---
+`foundation` | MDCChipFoundation | The foundation
+`shouldRemoveOnTrailingIconClick` | Boolean | Proxies to the foundation's `shouldRemoveOnTrailingIconClick`/`setShouldRemoveOnTrailingIconClick` methods
 `ripple` | `MDCRipple` | The `MDCRipple` instance for the root element that `MDCChip` initializes
 
 #### `MDCChipSet`
@@ -276,6 +277,8 @@ Method Signature | Description
 --- | ---
 `isSelected() => boolean` | Returns true if the chip is selected
 `setSelected(selected: boolean) => void` | Sets the chip's selected state
+`shouldRemoveOnTrailingIconClick() => boolean` | Returns whether a trailing icon click should trigger exit/removal of the chip
+`setShouldRemoveOnTrailingIconClick(shouldRemove: boolean) => void` | Sets whether a trailing icon click should trigger exit/removal of the chip
 
 #### `MDCChipSetFoundation`
 

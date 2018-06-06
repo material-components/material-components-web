@@ -263,6 +263,27 @@
         });
         var inputChipSetComponent = mdc.chips.MDCChipSet.attachTo(inputChipSetEl);
 
+        inputButton.addEventListener('click', addInputChip);
+        input.addEventListener('keydown', addInputChip);
+        deleteButton.addEventListener('click', deleteLastChip);
+        inputChipSetEl.addEventListener('MDCChip:removal', removeChip);
+        trailingIconToggle.addEventListener('change', resetInputChipSet);
+
+        function resetInputChipSet() {
+          inputChipSetComponent.destroy();
+          if (this.checked) {
+            inputChipSetComponent = new mdc.chips.MDCChipSet(inputChipSetEl, undefined, (chipEl) => {
+              const chip = new mdc.chips.MDCChip(chipEl);
+              chip.shouldRemoveOnTrailingIconClick = false;
+              return chip;
+            });
+            inputChipSetEl.addEventListener('MDCChip:trailingIconInteraction', confirmChipRemoval);
+          } else {
+            inputChipSetComponent = mdc.chips.MDCChipSet.attachTo(inputChipSetEl);
+            inputChipSetEl.removeEventListener('MDCChip:trailingIconInteraction', confirmChipRemoval);
+          }
+        }
+
         function createChipEl(text, leadingIcon, trailingIcon) {
           const chipTextEl = document.createElement('div');
           chipTextEl.classList.add('mdc-chip__text');
@@ -311,26 +332,6 @@
           const lastChip = inputChipSetComponent.chips[lastChipIndex];
           lastChip.beginExit();
         };
-
-        inputButton.addEventListener('click', addInputChip);
-        input.addEventListener('keydown', addInputChip);
-        deleteButton.addEventListener('click', deleteLastChip);
-        inputChipSetEl.addEventListener('MDCChip:removal', removeChip);
-
-        trailingIconToggle.addEventListener('change', function() {
-          inputChipSetComponent.destroy();
-          if (this.checked) {
-            inputChipSetComponent = new mdc.chips.MDCChipSet(inputChipSetEl, undefined, (chipEl) => {
-              const chip = new mdc.chips.MDCChip(chipEl);
-              chip.shouldRemoveOnTrailingIconClick = false;
-              return chip;
-            });
-            inputChipSetEl.addEventListener('MDCChip:trailingIconInteraction', confirmChipRemoval);
-          } else {
-            inputChipSetComponent = mdc.chips.MDCChipSet.attachTo(inputChipSetEl);
-            inputChipSetEl.removeEventListener('MDCChip:trailingIconInteraction', confirmChipRemoval);
-          }
-        });
       });
     </script>
   </body>

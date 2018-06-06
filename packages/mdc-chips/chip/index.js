@@ -97,6 +97,7 @@ class MDCChip extends MDCComponent {
   }
 
   /**
+   * Returns whether a trailing icon click should trigger exit/removal of the chip.
    * @return {boolean}
    */
   get shouldRemoveOnTrailingIconClick() {
@@ -104,6 +105,7 @@ class MDCChip extends MDCComponent {
   }
 
   /**
+   * Sets whether a trailing icon click should trigger exit/removal of the chip.
    * @param {boolean}
    */
   set shouldRemoveOnTrailingIconClick(shouldRemove) {
