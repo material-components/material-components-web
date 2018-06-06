@@ -97,6 +97,20 @@ class MDCChip extends MDCComponent {
   }
 
   /**
+   * @return {boolean}
+   */
+  get shouldRemoveOnTrailingIconClick() {
+    return this.foundation_.shouldRemoveOnTrailingIconClick();
+  }
+
+  /**
+   * @param {boolean}
+   */
+  set shouldRemoveOnTrailingIconClick(shouldRemove) {
+    return this.foundation_.setShouldRemoveOnTrailingIconClick(shouldRemove);
+  }
+
+  /**
    * @return {!MDCChipFoundation}
    */
   getDefaultFoundation() {
