@@ -106,7 +106,7 @@ class MDCChip extends MDCComponent {
 
   /**
    * Sets whether a trailing icon click should trigger exit/removal of the chip.
-   * @param {boolean}
+   * @param {boolean} shouldRemove
    */
   set shouldRemoveOnTrailingIconClick(shouldRemove) {
     return this.foundation_.setShouldRemoveOnTrailingIconClick(shouldRemove);
