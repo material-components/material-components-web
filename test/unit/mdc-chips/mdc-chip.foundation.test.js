@@ -234,6 +234,40 @@ test('on click in trailing icon, emit custom event', () => {
   handlers.click(mockEvt);
 
   td.verify(mockAdapter.notifyTrailingIconInteraction());
+  td.verify(mockEvt.stopPropagation());
+});
+
+test(`on click in trailing icon, add ${cssClasses.CHIP_EXIT} class by default`, () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerTrailingIconInteractionHandler');
+  const mockEvt = {
+    type: 'click',
+    stopPropagation: td.func('stopPropagation'),
+  };
+
+  foundation.init();
+  handlers.click(mockEvt);
+
+  assert.isTrue(foundation.shouldRemoveOnTrailingIconClick());
   td.verify(mockAdapter.addClass(cssClasses.CHIP_EXIT));
   td.verify(mockEvt.stopPropagation());
 });
+
+test(`on click in trailing icon, do not add ${cssClasses.CHIP_EXIT} class if shouldRemoveOnTrailingIconClick_ is false`,
+  () => {
+    const {foundation, mockAdapter} = setupTest();
+    const handlers = captureHandlers(mockAdapter, 'registerTrailingIconInteractionHandler');
+    const mockEvt = {
+      type: 'click',
+      stopPropagation: td.func('stopPropagation'),
+    };
+
+    foundation.init();
+    foundation.setShouldRemoveOnTrailingIconClick(false);
+    handlers.click(mockEvt);
+
+    assert.isFalse(foundation.shouldRemoveOnTrailingIconClick());
+    td.verify(mockAdapter.addClass(cssClasses.CHIP_EXIT), {times: 0});
+    td.verify(mockEvt.stopPropagation());
+  }
+);
