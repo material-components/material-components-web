@@ -31,3 +31,13 @@
 @mixin mdc-slideable-drawer-open {
   transform: none;
 }
+
+@mixin mdc-slideable-drawer-content {
+  flex-grow: 1;
+  box-sizing: border-box;
+  margin: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+}
