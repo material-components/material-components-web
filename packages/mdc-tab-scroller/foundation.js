@@ -150,6 +150,7 @@ class MDCTabScrollerFoundation extends MDCFoundation {
   }
 
   /**
+   * Returns the appropriate version of the MDCTabScrollerRTL
    * @return {!MDCTabScrollerRTL}
    */
   getRTLScroller() {
@@ -256,7 +257,8 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * @private
    */
   scrollToRTL_(scrollX) {
-    this.animate_(this.getRTLScroller().scrollToRTL(scrollX));
+    const animation = this.getRTLScroller().scrollToRTL(scrollX);
+    this.animate_(animation);
   }
 
   /**
@@ -281,7 +283,8 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * @private
    */
   incrementScrollRTL_(scrollX) {
-    this.animate_(this.getRTLScroller().incrementScrollRTL(scrollX));
+    const animation = this.getRTLScroller().incrementScrollRTL(scrollX);
+    this.animate_(animation);
   }
 
   /**
@@ -290,7 +293,7 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * @private
    */
   animate_(animation) {
-    // Early exit if there's no animation to perform
+    // Early exit if translateX is 0, which means there's no animation to perform
     if (animation.translateX === 0) {
       return;
     }
@@ -338,10 +341,31 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * @private
    */
   rtlScrollerFactory_() {
+    // Browsers have three different implementations of scrollLeft in RTL mode,
+    // dependent on the browser. The behavior is based off the max LTR
+    // scrollleft value and 0.
+    //
+    // * Default scrolling in RTL *
+    //    - Left-most value: 0
+    //    - Right-most value: Max LTR scrollLeft value
+    //
+    // * Negative scrolling in RTL *
+    //    - Left-most value: Negated max LTR scrollLeft value
+    //    - Right-most value: 0
+    //
+    // * Reverse scrolling in RTL *
+    //    - Left-most value: Max LTR scrollLeft value
+    //    - Right-most value: 0
+    //
+    // We use those principles below to determine which RTL scrollLeft
+    // behavior is implemented in the current browser.
     const initialScrollLeft = this.adapter_.getScrollLeft();
     this.adapter_.setScrollLeft(initialScrollLeft - 1);
     const newScrollLeft = this.adapter_.getScrollLeft();
 
+    // If the newScrollLeft value is negative,then we know that the browser has
+    // implemented negative RTL scrolling, since all other implementations have
+    // only positive values.
     if (newScrollLeft < 0) {
       // Undo the scrollLeft test check
       this.adapter_.setScrollLeft(initialScrollLeft);
@@ -354,6 +378,9 @@ class MDCTabScrollerFoundation extends MDCFoundation {
     // Undo the scrollLeft test check
     this.adapter_.setScrollLeft(initialScrollLeft);
 
+    // By calculating the clientRect of the root element and the clientRect of
+    // the content element, we can determine how much the scroll value changed
+    // when we performed the scrollLeft subtraction above.
     if (rightEdgeDelta === newScrollLeft) {
       return new MDCTabScrollerRTLReverse(this.adapter_);
     }
