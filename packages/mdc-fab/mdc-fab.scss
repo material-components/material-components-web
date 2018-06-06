@@ -18,8 +18,6 @@
 @import "@material/typography/mixins";
 @import "./mixins";
 
-$mdc-fab-extended-height_: 48px;
-
 // postcss-bem-linter: define fab
 
 .mdc-fab {
@@ -36,20 +34,11 @@ $mdc-fab-extended-height_: 48px;
 
 .mdc-fab--extended {
   @include mdc-typography(button);
-
-  width: auto;
-  max-width: 100%;
-  height: $mdc-fab-extended-height_;
-  padding: 0 20px 0 16px;
-  border-radius: $mdc-fab-extended-height_ / 2;
-  white-space: nowrap;
+  @include mdc-fab--extended_;
 }
 
 .mdc-fab__label {
-  justify-content: flex-start;
-  padding-left: 8px;
-  text-overflow: ellipsis;
-  overflow: hidden;
+  @include mdc-fab--label_;
 }
 
 .mdc-fab__icon {

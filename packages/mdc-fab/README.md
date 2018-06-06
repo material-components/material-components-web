@@ -101,7 +101,7 @@ MDC FAB uses [MDC Theme](../mdc-theme)'s `secondary` color by default. Use the f
 Mixin | Description
 --- | ---
 `mdc-fab-accessible($container-color)` | Changes the FAB's container color to the given color, and updates the FAB's ink and ripple color to meet accessibility standards.
-`mdc-fab-extended-fluid` | Makes the Extended FAB fluid to container, such as screen width or the layout grid.
+`mdc-fab-extended-fluid` | Makes the Extended FAB fluid to container, such as screen width or the layout grid. Exposed as a mixin to support use within `@media` queries.
 
 #### Advanced Sass Mixins
 
