@@ -153,7 +153,6 @@
   @include mdc-text-field-line-ripple-color($mdc-text-field-error);
   @include mdc-text-field-label-color($mdc-text-field-error);
   @include mdc-text-field-helper-text-validation-color($mdc-text-field-error);
-  @include mdc-theme-prop(caret-color, $mdc-text-field-error);
 
   &.mdc-text-field--with-trailing-icon {
     @include mdc-text-field-icon-color($mdc-text-field-error);
