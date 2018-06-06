@@ -203,6 +203,17 @@ test('#isSelected proxies to foundation', () => {
   td.verify(mockFoundation.isSelected());
 });
 
+test('#get shouldRemoveOnTrailingIconClick proxies to foundation', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  assert.equal(component.shouldRemoveOnTrailingIconClick, mockFoundation.shouldRemoveOnTrailingIconClick());
+});
+
+test('#set shouldRemoveOnTrailingIconClick proxies to foundation', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.shouldRemoveOnTrailingIconClick = false;
+  td.verify(mockFoundation.setShouldRemoveOnTrailingIconClick(false));
+});
+
 test(`#beginExit adds ${MDCChipFoundation.cssClasses.CHIP_EXIT} class`, () => {
   const {component, root} = setupMockFoundationTest();
   component.beginExit();
