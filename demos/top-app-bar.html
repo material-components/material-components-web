@@ -210,7 +210,6 @@
         var drawerEl = document.querySelector('.mdc-drawer');
         var contentMainEl = document.getElementById('content-main');
 
-        var drawer = new mdc.drawer.MDCTemporaryDrawer(drawerEl);
         var appBar = mdc.topAppBar.MDCTopAppBar.attachTo(appBarEl);
 
         var rtlCheckbox = document.getElementById('rtl-checkbox');
@@ -221,10 +220,6 @@
         var shortCheckbox = document.getElementById('short-checkbox');
         var alwaysCollapsedCheckbox = document.getElementById('always-collapsed-checkbox');
 
-
-        appBarEl.addEventListener('MDCTopAppBar:nav', function() {
-          drawer.open = true;
-        });
 
         // Generic Options
         noActionItemCheckbox.addEventListener('change', function()  {

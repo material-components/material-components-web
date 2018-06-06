@@ -1,5 +1,5 @@
 //
-// Copyright 2017 Google Inc. All Rights Reserved.
+// Copyright 2018 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,10 +15,77 @@
 //
 
 @import "@material/rtl/mixins";
+@import "@material/typography/mixins";
+@import "@material/typography/variables";
+@import "@material/theme/variables";
+@import "@material/theme/mixins";
 @import "../variables";
 @import "../mixins";
 
-$mdc-standard-drawer-width: 256px;
+$mdc-drawer-width: 256px;
+$mdc-drawer-list-item-spacing: 4px;
+$mdc-drawer-surface-padding: 16px;
 
 .mdc-drawer {
+  @include mdc-drawer-border-color($mdc-drawer-divider-color, $mdc-drawer-divider-opacity);
+  @include mdc-drawer-group-header-text-color($mdc-drawer-subtitle-ink-color, $mdc-drawer-subtitle-ink-opacity);
+  @include mdc-drawer-surface-fill-color($mdc-drawer-surface-fill-color, $mdc-drawer-surface-fill-opacity);
+  @include mdc-drawer-icon-ink-color($mdc-drawer-icon-ink-color, $mdc-drawer-icon-ink-opacity);
+  @include mdc-drawer-meta-ink-color($mdc-drawer-icon-ink-color, $mdc-drawer-icon-ink-opacity);
+  @include mdc-drawer-text-color($mdc-drawer-inactive-ink-color, $mdc-drawer-inactive-ink-opacity);
+
+  width: $mdc-drawer-width;
+  min-width: $mdc-drawer-width;
+  border-right-width: 1px;
+  border-right-style: solid;
+  @include mdc-rtl {
+    border-left-width: 1px;
+    border-right-width: 0;
+    border-right-style: none;
+    border-left-style: solid;
+  }
+
+  .mdc-list-group .mdc-list,
+  .mdc-list {
+    padding: 0 $mdc-drawer-surface-padding/2;
+  }
+
+  .mdc-list-item {
+    @include mdc-typography(body2);
+    height: calc(48px - 2*#{$mdc-drawer-list-item-spacing});
+    padding: 0 $mdc-drawer-surface-padding/2;
+    margin: $mdc-drawer-list-item-spacing 0;
+  }
+
+  .mdc-list-item--selected {
+    @include mdc-drawer-text-color($mdc-drawer-activated-ink-color, $mdc-drawer-activated-ink-opacity);
+  }
+
+  .mdc-list-group__subheader {
+    @include mdc-typography(subtitle2);
+    margin: 0;
+    padding: 0 $mdc-drawer-surface-padding;
+  }
+}
+
+.mdc-drawer__header {
+  padding: $mdc-drawer-surface-padding;
+  padding-bottom: 0;
+  min-height: 64px;
+  box-sizing: border-box;
+}
+
+.mdc-drawer__title {
+  @include mdc-typography(headline6);
+  margin: 0;
+}
+
+.mdc-drawer__subtitle {
+  @include mdc-typography(subtitle2);
+  margin: 0;
+}
+
+.mdc-drawer__scrollable {
+  height: 100%;
+  overflow-y: auto;
 }

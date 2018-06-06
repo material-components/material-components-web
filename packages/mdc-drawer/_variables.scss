@@ -16,14 +16,19 @@
 
 @import "@material/theme/variables";
 
-$mdc-temporary-drawer-fill-color: $mdc-theme-background !default;
-$mdc-temporary-drawer-ink-color: map-get($mdc-theme-property-values, text-primary-on-background) !default;
+// Colors
+$mdc-drawer-divider-color: mdc-theme-prop-value(on-surface);
+$mdc-drawer-activated-ink-color: mdc-theme-prop-value(primary);
+$mdc-drawer-subtitle-ink-color: mdc-theme-prop-value(on-surface);
+$mdc-drawer-surface-fill-color: mdc-theme-prop-value(surface);
+$mdc-drawer-icon-ink-color: mdc-theme-prop-value(on-surface);
+$mdc-drawer-inactive-ink-color: mdc-theme-prop-value(on-surface);
 
-$mdc-temporary-drawer-scrim-color: #000 !default;
-$mdc-temporary-drawer-scrim-opacity: .6 !default;
 
-$mdc-persistent-drawer-fill-color: $mdc-theme-background !default;
-$mdc-persistent-drawer-ink-color: map-get($mdc-theme-property-values, text-primary-on-background) !default;
-
-$mdc-permanent-drawer-fill-color: $mdc-theme-background !default;
-$mdc-permanent-drawer-ink-color: map-get($mdc-theme-property-values, text-primary-on-background) !default;
+// Opacity
+$mdc-drawer-divider-opacity: .12;
+$mdc-drawer-activated-ink-opacity: 1;
+$mdc-drawer-subtitle-ink-opacity: .6;
+$mdc-drawer-surface-fill-opacity: 1;
+$mdc-drawer-icon-ink-opacity: .6;
+$mdc-drawer-inactive-ink-opacity: 1;

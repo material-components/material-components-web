@@ -18,10 +18,10 @@
 @import "../../packages/mdc-form-field/mdc-form-field";
 @import "../common";
 @import "../../packages/mdc-drawer/mdc-drawer";
-@import "../../packages/mdc-drawer/mixins";
 @import "../../packages/mdc-elevation/mdc-elevation";
 @import "../../packages/mdc-list/mdc-list";
 @import "../../packages/mdc-button/mdc-button";
+@import "../../packages/mdc-top-app-bar/mdc-top-app-bar";
 
 .examples {
   display: flex;
@@ -59,36 +59,6 @@
   padding: 10px;
 }
 
-.demo-drawer--custom {
-  @include mdc-drawer-fill-color($material-color-teal-900);
-  @include mdc-drawer-ink-color(#fff);
-  @include mdc-list-item-graphic-ink-color(#fff);
-
-  .demo-drawer-list-item {
-    @include mdc-list-item-graphic-ink-color(text-icon-on-dark);
-    @include mdc-list-item-primary-text-ink-color(text-secondary-on-dark);
-  }
-
-  .demo-drawer-list-item.mdc-list-item--selected {
-    @include mdc-list-item-graphic-ink-color(text-primary-on-dark);
-    @include mdc-list-item-primary-text-ink-color(text-primary-on-dark);
-  }
-}
-
-.demo-drawer--accessible {
-  @include mdc-drawer-fill-color-accessible($material-color-indigo-500);
-
-  .demo-drawer-list-item {
-    @include mdc-list-item-graphic-ink-color(text-icon-on-dark);
-    @include mdc-list-item-primary-text-ink-color(text-secondary-on-dark);
-  }
-
-  .demo-drawer-list-item.mdc-list-item--selected {
-    @include mdc-list-item-graphic-ink-color(text-primary-on-dark);
-    @include mdc-list-item-primary-text-ink-color(text-primary-on-dark);
-  }
-}
-
 .demo-form-field {
   margin: 16px 0;
 }
@@ -96,26 +66,17 @@
 /* Place drawer and content side by side. */
 .demo-body {
   display: flex;
-  flex-direction: row;
   padding: 0;
   margin: 0;
-  box-sizing: border-box;
-  min-height: 100%;
-  width: 100%;
+  height: 100vh;
 }
 
-/* Stack toolbar and main on top of each other. */
 .demo-content {
-  display: inline-flex;
-  flex-direction: column;
-  flex-grow: 1;
+  // display: inline-flex;
+  // flex-direction: column;
   height: 100%;
-  box-sizing: border-box;
-}
-
-/* Place drawer above toolbar shadow. */
-.mdc-drawer--permanent {
-  z-index: 2;
+  width: 100%;
+  overflow: auto;
 }
 
 .demo-main {
