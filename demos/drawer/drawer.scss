@@ -72,8 +72,6 @@
 }
 
 .demo-content {
-  // display: inline-flex;
-  // flex-direction: column;
   height: 100%;
   width: 100%;
   overflow: auto;
@@ -90,4 +88,19 @@
 
 #extra-tall-content {
   height: 200vh;
+}
+
+.demo-drawer--custom {
+  @include mdc-drawer-border-color(lightblue, $mdc-drawer-divider-opacity);
+  @include mdc-drawer-group-header-text-color(darkolivegreen, $mdc-drawer-subtitle-ink-opacity);
+  @include mdc-drawer-surface-fill-color(pink, $mdc-drawer-surface-fill-opacity);
+  @include mdc-drawer-icon-ink-color(darkolivegreen, $mdc-drawer-icon-ink-opacity);
+  @include mdc-drawer-title-ink-color(darkolivegreen, 1);
+  @include mdc-drawer-text-color(darkolivegreen, $mdc-drawer-inactive-ink-opacity);
+  @include mdc-drawer-active-overlay-color(darkcyan);
+
+  .mdc-list-item--selected {
+    @include mdc-drawer-text-color(darkcyan, 1);
+    @include mdc-drawer-icon-ink-color(darkcyan, 1);
+  }
 }

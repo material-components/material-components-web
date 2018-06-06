@@ -16,6 +16,7 @@
 
 @import "@material/theme/mixins";
 @import "@material/list/mixins";
+@import "@material/ripple/mixins";
 
 @mixin mdc-drawer-border-color($color, $opacity) {
   $value: rgba(mdc-theme-prop-value($color), $opacity);
@@ -27,13 +28,24 @@
   @include mdc-theme-prop(background-color, $value);
 }
 
+@mixin mdc-drawer-active-overlay-color($color) {
+  :not(.mdc-list--non-interactive) > .mdc-list-item {
+    @include mdc-states-activated($color);
+    @include mdc-states-selected($color);
+  }
+}
 @mixin mdc-drawer-title-ink-color($color, $opacity) {
   $value: rgba(mdc-theme-prop-value($color), $opacity);
-
+  .mdc-drawer__title {
+    @include mdc-theme-prop(color, $value);
+  }
 }
 @mixin mdc-drawer-text-color($color, $opacity) {
   $value: rgba(mdc-theme-prop-value($color), $opacity);
-  @include mdc-list-item-primary-text-ink-color($value);
+  a.mdc-list-item,
+  .mdc-list-item {
+    @include mdc-list-item-primary-text-ink-color($value);
+  }
 }
 
 @mixin mdc-drawer-icon-fill-color($color, $opacity) {
