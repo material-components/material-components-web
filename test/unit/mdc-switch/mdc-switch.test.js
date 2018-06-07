@@ -19,13 +19,13 @@ import bel from 'bel';
 
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 import {createMockRaf} from '../helpers/raf';
-import {MdcSwitch, MDCSwitchFoundation, MDCSwitch} from '../../../packages/mdc-switch';
+import {MDCSwitchFoundation, MDCSwitch} from '../../../packages/mdc-switch';
 import {MDCRipple} from '../../../packages/mdc-ripple';
 
 const {NATIVE_CONTROL_SELECTOR, RIPLE_SURFACE_SELECTOR} = MDCSwitchFoundation.strings;
 
 function getFixture() {
-    return bel`
+  return bel`
     <div class="mdc-switch">
       <div class="mdc-switch__background">
         <div class="mdc-switch__track"></div>
@@ -46,6 +46,10 @@ function setupTest() {
 }
 
 suite('MDCSwitch');
+
+test('attachTo initializes and returns a MDCSwitch instance', () => {
+  assert.isOk(MDCSwitch.attachTo(getFixture()) instanceof MDCSwitch);
+});
 
 if (supportsCssVariables(window)) {
   test('#constructor initializes the root element with a ripple', () => {

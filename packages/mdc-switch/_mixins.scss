@@ -16,6 +16,7 @@
 
 @import "@material/theme/mixins";
 @import "@material/ripple/mixins";
+@import "@material/rtl/mixins";
 @import "./variables";
 
 //
@@ -23,7 +24,7 @@
 //
 
 @mixin mdc-switch-toggled-on-track-color($color) {
-  &.mdc-switch--checked:not(.mdc-switch--disabled) .mdc-switch__background .mdc-switch__track  {
+  &.mdc-switch--checked:not(.mdc-switch--disabled) .mdc-switch__background .mdc-switch__track {
     @include mdc-theme-prop(background-color, $color);
     @include mdc-theme-prop(border-color, $color);
   }
@@ -67,9 +68,10 @@
 }
 
 @mixin mdc-switch-tap-target_ {
+  @include mdc-rtl-reflexive-position(left, -14px);
+
   position: absolute;
   top: -14px;
-  left: -14px;
-  width: $mdc-switch-focus-ring-diameter;
-  height: $mdc-switch-focus-ring-diameter;
+  width: $mdc-switch-tap-target-size;
+  height: $mdc-switch-tap-target-size;
 }

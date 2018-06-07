@@ -34,9 +34,10 @@
   position: relative;
 
   &__native-control {
-    @include mdc-switch-tap-target_;
-
     display: inline-block;
+    position: absolute;
+    width: $mdc-switch-tap-target-size;
+    height: $mdc-switch-tap-target-size;
     transition: mdc-switch-transition(transform);
     opacity: 0;
     cursor: pointer;
@@ -65,46 +66,41 @@
     mdc-switch-transition(opacity),
     mdc-switch-transition(background-color),
     mdc-switch-transition(border-color);
+  border: 1px solid;
   border-radius: 7px;
   opacity: .38;
-  border: 1px solid;
 }
 
 .mdc-switch__thumb-underlay {
   @include mdc-switch-tap-target_;
-
   @include mdc-ripple-surface();
   @include mdc-ripple-radius-unbounded;
   @include mdc-states(
     $mdc-switch-baseline-theme-color,
     $has-nested-focusable-element: true);
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-top: $mdc-switch-thumb-vertical-offset_;
-
   transform: translateX(0);
   transition:
     mdc-switch-transition(transform),
     mdc-switch-transition(background-color),
     mdc-switch-transition(border-color);
-
 }
 
 .mdc-switch__thumb {
   @include mdc-elevation(2);
-  @include mdc-rtl-reflexive-position(left, 0);
 
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  box-sizing: border-box;
-  border: $mdc-switch-knob-diameter / 2 solid;
-
-  display: block;
+  display: flex;
   position: absolute;
-
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
   width: $mdc-switch-thumb-diameter;
   height: $mdc-switch-thumb-diameter;
+  border: $mdc-switch-thumb-diameter / 2 solid;
   border-radius: 50%;
   z-index: 1;
 }
@@ -133,14 +129,16 @@
 .mdc-switch--disabled .mdc-switch__background {
   // Track
   opacity: .38;
+
   .mdc-switch__track {
+    border-color: $mdc-switch-toggled-off-track-color;
     background-color: $mdc-switch-toggled-off-track-color;
   }
 
   .mdc-switch__thumb {
-    background-color: $mdc-switch-toggled-off-thumb-color;
     border-width: 1px;  // In high contrast mode, only show outline of knob.
     border-color: $mdc-switch-toggled-off-thumb-color;
+    background-color: $mdc-switch-toggled-off-thumb-color;
   }
 
   // Disable ripple.
@@ -152,12 +150,11 @@
 .mdc-switch--checked.mdc-switch--disabled .mdc-switch__background {
   // Track
   opacity: .38;
-  .mdc-switch__track {
-    background-color: $mdc-switch-baseline-theme-color;
-  }
 
+  .mdc-switch__track,
   .mdc-switch__thumb {
-    background-color: $mdc-switch-baseline-theme-color;
+    @include mdc-theme-prop(background-color, $mdc-switch-baseline-theme-color);
+    @include mdc-theme-prop(border-color, $mdc-switch-baseline-theme-color);
   }
 
   // Disable ripple.

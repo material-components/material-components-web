@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-/* eslint no-unused-vars: [2, {"args": "none"}] */
+/* eslint-disable no-unused-vars */
 import {MDCSelectionControlState} from '@material/selection-control/index';
 
 /**

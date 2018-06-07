@@ -120,7 +120,7 @@ class JsBundleFactory {
       plugins = [],
     }) {
     const getAbsolutePath = (...args) => this.pathResolver_.getAbsolutePath(...args);
-    
+
     return this.createCustomJs({
       bundleName: 'main-js-a-la-carte',
       chunks: {
