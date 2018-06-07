@@ -127,12 +127,6 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     this.measures_ = null;
     /** @private {boolean} */
     this.quickOpen_ = false;
-
-    // A keyup event on the menu surface needs to have a corresponding keydown
-    // event on the menu surface. If the user opens the menu surface with a keydown event on a
-    // button, the menu surface will only get the key up event causing buggy behavior with selected elements.
-    /** @private {boolean} */
-    this.keyDownWithinMenu_ = false;
   }
 
   init() {
@@ -207,12 +201,11 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     const isTab = key === 'Tab' || keyCode === 9;
 
     if (isEscape) {
-      evt.preventDefault();
       this.close();
     } else if (isTab) {
       if (this.adapter_.isLastElementFocused() && !shiftKey) {
         this.adapter_.focusFirstElement();
-        event.preventDefault();
+        evt.preventDefault();
       } else if (this.adapter_.isFirstElementFocused() && shiftKey) {
         this.adapter_.focusLastElement();
         evt.preventDefault();

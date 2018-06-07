@@ -119,27 +119,10 @@ test('adapter#hasClass returns false if the root element does not have specified
   assert.isNotOk(component.getDefaultFoundation().adapter_.hasClass('foo'));
 });
 
-test('adapter#getAttributeForEventTarget returns the value of an attribute for a given event target', () => {
-  const {root, component} = setupTest();
-  const attrName = 'aria-disabled';
-  const attrVal = 'true';
-  const target = root.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[1];
-
-  target.setAttribute(attrName, attrVal);
-
-  assert.equal(component.getDefaultFoundation().adapter_.getAttributeForEventTarget(target, attrName), attrVal);
-});
-
 test('adapter#getInnerDimensions returns the dimensions of the container', () => {
   const {root, component} = setupTest();
   assert.equal(component.getDefaultFoundation().adapter_.getInnerDimensions().width, root.offsetWidth);
   assert.equal(component.getDefaultFoundation().adapter_.getInnerDimensions().height, root.offsetHeight);
-});
-
-test('adapter#getNumberFocusableElements returns the number of focusable elements within the items container', () => {
-  const {root, component} = setupTest();
-  const numberOfItems = root.querySelectorAll(strings.FOCUSABLE_ELEMENTS).length;
-  assert.equal(component.getDefaultFoundation().adapter_.getNumberFocusableElements(), numberOfItems);
 });
 
 test('adapter#registerInteractionHandler proxies to addEventListener', () => {
@@ -176,13 +159,6 @@ test('adapter#deregisterBodyClickHandler proxies to removeEventListener', () => 
   component.getDefaultFoundation().adapter_.deregisterBodyClickHandler(handler);
   domEvents.emit(document.body, 'click');
   td.verify(handler(td.matchers.anything()), {times: 0});
-});
-
-test('adapter#getIndexForEventTarget returns the item index of the event target', () => {
-  const {root, component} = setupTest();
-  const target = root.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[1];
-  assert.equal(component.getDefaultFoundation().adapter_.getIndexForEventTarget(target), 1);
-  assert.equal(component.getDefaultFoundation().adapter_.getIndexForEventTarget({}), -1, 'missing index = -1');
 });
 
 test(`adapter#notifyClose fires an ${strings.CLOSE_EVENT} custom event`, () => {
@@ -228,41 +204,56 @@ test('adapter#isFocused returns whether the menu surface is focused', () => {
   document.body.removeChild(root);
 });
 
-test('adapter#focus focuses the menu surface', () => {
+test('adapter#isFirstElementFocused returns true if the first element is focused', () => {
   const {root, component} = setupTest(true);
+  const item = root.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[0];
   document.body.appendChild(root);
-  component.getDefaultFoundation().adapter_.focus();
-  assert.equal(document.activeElement, root);
+  component.show();
+
+  assert.isFalse(component.getDefaultFoundation().adapter_.isFirstElementFocused());
+  item.focus();
+  assert.isTrue(component.getDefaultFoundation().adapter_.isFirstElementFocused());
+  component.hide();
+
   document.body.removeChild(root);
 });
 
-test('adapter#getFocusedElementIndex returns the index of the focused element', () => {
+test('adapter#isLastElementFocused returns true if the last element is focused', () => {
   const {root, component} = setupTest(true);
   const item = root.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[1];
   document.body.appendChild(root);
+  component.show();
+
+  assert.isFalse(component.getDefaultFoundation().adapter_.isLastElementFocused());
   item.focus();
-  assert.equal(component.getDefaultFoundation().adapter_.getFocusedElementIndex(), 1);
-  root.focus();
-  assert.equal(component.getDefaultFoundation().adapter_.getFocusedElementIndex(), -1, 'missing index = -1');
+  assert.isTrue(component.getDefaultFoundation().adapter_.isLastElementFocused());
+
+  component.hide();
   document.body.removeChild(root);
 });
 
-test('adapter#focusElementAtIndex focuses the correct menu surface element', () => {
+test('adapter#focusFirstElement focuses the first menu surface element', () => {
   const {root, component} = setupTest(true);
-  const item1 = root.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[1];
-  const item2 = root.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[0];
+  const item = root.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[0];
   document.body.appendChild(root);
-  component.getDefaultFoundation().adapter_.focusElementAtIndex(1);
-  assert.equal(document.activeElement, item1);
-  component.getDefaultFoundation().adapter_.focusElementAtIndex(0);
-  assert.equal(document.activeElement, item2);
+  component.show();
+
+  component.getDefaultFoundation().adapter_.focusFirstElement();
+  assert.equal(document.activeElement, item);
+  component.hide();
   document.body.removeChild(root);
 });
 
-test('adapter#focusElementAtIndex does nothing if index is greater than number of focusable elements', () => {
+test('adapter#focusLastElement focuses the last menu surface element', () => {
   const {root, component} = setupTest(true);
+  const item = root.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[1];
   document.body.appendChild(root);
-  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.focusElementAtIndex(9));
+  component.show();
+
+  component.getDefaultFoundation().adapter_.focusLastElement();
+  assert.equal(document.activeElement, item);
+  component.hide();
+  document.body.removeChild(root);
 });
 
 test('adapter#hasAnchor returns true if the menu surface has an anchor', () => {
