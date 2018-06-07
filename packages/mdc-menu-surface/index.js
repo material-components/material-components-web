@@ -33,9 +33,9 @@ class MDCMenuSurface extends MDCComponent {
     this.previousFocus_;
     /** @private {!Element} */
     this.anchorElement;
-    /** @private {!Element} */
+    /** @private {Element} */
     this.firstFocusableElement_;
-    /** @private {!Element} */
+    /** @private {Element} */
     this.lastFocusableElement_;
   }
 
@@ -70,7 +70,7 @@ class MDCMenuSurface extends MDCComponent {
   show() {
     const fosuableElements = this.root_.querySelectorAll(strings.FOCUSABLE_ELEMENTS);
     this.firstFocusableElement_ = fosuableElements.length > 0 ? fosuableElements[0] : null;
-    this.lastFocusableElement_ = fosuableElements.length > 0 ? fosuableElements[fosuableElements.length - 1]: null;
+    this.lastFocusableElement_ = fosuableElements.length > 0 ? fosuableElements[fosuableElements.length - 1] : null;
     this.foundation_.open();
   }
 
@@ -126,10 +126,13 @@ class MDCMenuSurface extends MDCComponent {
 
   /**
    * @return {{
-   * focus: function(),
    * isFocused: function(): boolean,
    * saveFocus: function(),
    * restoreFocus: function(),
+   * isFirstElementFocused: function(): boolean,
+   * isLastElementFocused: function(): boolean,
+   * focusFirstElement: function(),
+   * focusLastElement: function(),
    * }}
    * @private
    */
