@@ -55,10 +55,10 @@ async function getCommitsAfterTag(tag) {
     format: {
       hash: '%H', // Contains full hash only, for cherry-picking
       message: '%s\n\n%b', // Contains subject + body for passing to conventional-commits-parser
-      oneline: '%h %s' // Contains abbreviated hash + subject for summary lists
+      oneline: '%h %s', // Contains abbreviated hash + subject for summary lists
     },
     // Use a splitter that is very unlikely to be included in commit descriptions
-    splitter: ';;;'
+    splitter: ';;;',
   });
   return log.all.reverse();
 }
@@ -78,12 +78,12 @@ async function attemptCherryPicks(tag, list) {
     successful: [],
     conflicted: [],
     skipped: [],
-  }
+  };
 
-  console.log(`Checking out ${tag}`)
+  console.log(`Checking out ${tag}`);
   await simpleGit.checkout([tag]);
 
-  for (let logLine of list) {
+  for (const logLine of list) {
     if (shouldSkipCommit(logLine)) {
       results.skipped.push(logLine);
       continue;
@@ -127,11 +127,11 @@ async function run() {
   const results = await attemptCherryPicks(tag, list);
 
   console.log('');
-  console.log('Test-running build...')
+  console.log('Test-running build...');
   const buildSucceeded = checkSpawnSuccess('npm run build');
 
   console.log('');
-  console.log('Running unit tests...')
+  console.log('Running unit tests...');
   const testsSucceeded = checkSpawnSuccess('npm run test:unit');
 
   console.log('');
@@ -160,7 +160,7 @@ async function run() {
 
   console.log('');
   console.log('Please review `git log` to make sure there are no commits dependent on omitted feature commits.');
-  console.log('You are now on a detached HEAD. If you want to create a local branch, use git checkout -b <branchname>.')
+  console.log('You are now on a detached HEAD. If you want to create a local branch, use git checkout -b <branchname>');
 }
 
 run();
