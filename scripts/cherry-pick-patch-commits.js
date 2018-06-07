@@ -93,6 +93,7 @@ async function attemptCherryPicks(tag, list) {
       await simpleGit.raw(['cherry-pick', '-x', logLine.hash]);
       results.successful.push(logLine);
     } catch (e) {
+      // Detect conflicted cherry-picks and abort them (e.message contains the command's output)
       if (e.message.includes(CONFLICT_MESSAGE)) {
         results.conflicted.push(logLine);
         await simpleGit.raw(['cherry-pick', '--abort']);
@@ -108,6 +109,7 @@ async function attemptCherryPicks(tag, list) {
 // Given a string containing a command and arguments, runs the command and returns true if it exits successfully.
 // The command's I/O is piped through to the parent process intentionally to be visible in the console.
 function checkSpawnSuccess(command) {
+  // spawn expects a command and a separate array containing each argument
   const parts = command.split(' ');
   return spawnSync(parts[0], parts.slice(1), {stdio: 'inherit'}).status === 0;
 }
