@@ -54,6 +54,8 @@
     "chai": "^4.0.2",
     "cli-table": "^0.3.1",
     "codecov": "^3.0.0",
+    "conventional-changelog-angular": "^4.0.0",
+    "conventional-commits-parser": "^3.0.0",
     "cp-file": "^6.0.0",
     "cross-env": "^5.0.0",
     "css-loader": "^0.28.0",
