@@ -91,7 +91,7 @@ Property | Value Type | Description
 
 Method Signature | Description
 --- | ---
-`show({focusIndex: ?number}) => void` | Proxies to the foundation's `open()` method. An optional config parameter allows the caller to specify which element should receive focus after the menu surface opens.
+`show() => void` | Proxies to the foundation's `open()` method.
 `hide() => void` | Proxies to the foundation's `close()` method.
 `setAnchorCorner(Corner) => void` | Proxies to the foundation's `setAnchorCorner(Corner)` method.
 `setAnchorMargin(AnchorMargin) => void` | Proxies to the foundation's `setAnchorMargin(AnchorMargin)` method.
@@ -108,9 +108,7 @@ Method Signature | Description
 `addClass(className: string) => void` | Adds a class to the root element.
 `removeClass(className: string) => void` | Removes a class from the root element.
 `hasClass(className: string) => boolean` | Returns a boolean indicating whether the root element has a given class.
-`getAttributeForEventTarget(target: EventTarget, attributeName: string) => string` | Returns the value of a given attribute on an event target.
 `hasAnchor: () => boolean` | Returns whether the menu surface has an anchor for positioning.
-`getIndexForEventTarget(target: EventTarget) => number` | Checks to see if the `target` of an event pertains to one of the menu surface focusable elements, and if so returns the index of that item. Returns -1 if the target is not one of the focusable elements.
 `registerInteractionHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type`.
 `deregisterInteractionHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type`.
 `registerBodyClickHandler(handler: EventListener) => void` | Adds an event listener `handler` for event type `click` on the body.
@@ -123,9 +121,10 @@ Method Signature | Description
 `isFocused() => boolean` | Returns a boolean value indicating whether the root element of the menu surface is focused.
 `saveFocus() => void` | Stores the currently focused element on the document, for restoring with `restoreFocus`.
 `restoreFocus() => void` | Restores the previously saved focus state, by making the previously focused element the active focus again.
-`getNumberFocusableElements() => number` | Returns the number of focusable elements inside the menu surface.
-`getFocusedElementIndex() => number` | Returns the index of the currently focused element inside the menu (-1 if none).
-`focusElementAtIndex(index: number) => void` | Focuses the element with the provided index.
+`isFirstElementFocused() => boolean` | Returns a boolean value indicating if the first focusable element of the menu-surface is focused.
+`isLastElementFocused() => boolean` | Returns a boolean value indicating if the last focusable element of the menu-surface is focused.
+`focusFirstElement() => void` | Focuses the first focusable element of the menu-surface.
+`focusLastElement() => void` | Focuses the last focusable element of the menu-surface.
 `getInnerDimensions() => {width: number, height: number}` | Returns an object with the items container width and height.
 `getAnchorDimensions() => {width: number, height: number, top: number, right: number, bottom: number, left: number}` | Returns an object with the dimensions and position of the anchor (same semantics as `DOMRect`).
 `getWindowDimensions() => {width: number, height: number}` | Returns an object with width and height of the page, in pixels.
@@ -138,7 +137,7 @@ Method Signature | Description
 --- | ---
 `setAnchorCorner(corder: Corner) => void` | Sets the corner that the menu surface will be anchored to. See [constants.js](./constants.js)
 `setAnchorMargin(margin: AnchorMargin) => void` | Sets the distance from the anchor point that the menu surface should be shown.
-`open({focusIndex: ?number}) => void` | Opens the menu surface. Optionally accepts an object with a `focusIndex` parameter to indicate which element should receive focus when the menu surface is opened.
+`open() => void` | Opens the menu surface. Optionally accepts an object with a `focusIndex` parameter to indicate which element should receive focus when the menu surface is opened.
 `close()` | Closes the menu.
 `isOpen() => boolean` | Returns a boolean indicating whether the menu surface is open.
 `setQuickOpen(quickOpen: boolean) => void` | Sets whether the menu surface should open and close without animation when the `open`/`close` methods are called.
