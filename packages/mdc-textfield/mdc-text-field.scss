@@ -181,8 +181,7 @@
     margin-bottom: 4px;
   }
 
-  .mdc-text-field + &,
-  .mdc-text-field--outlined + & {
+  .mdc-text-field + & {
     margin-right: 16px;
     margin-left: 16px;
   }
