@@ -4,6 +4,11 @@
 > for v0.23.0. Look at older versions for reference of how this worked in
 > independent mode.
 
+## Vocabulary
+
+This document reuses the [terminology for release types](./releases-and-branches.md#release-types) summarized in the
+Releases and Branches documentation.
+
 ## First-time Setup
 
 > Employees are supposed to do this as part of onboarding, but we've put it here
@@ -33,7 +38,7 @@ git checkout master && git pull
 
 This will pull the latest tags and `master` commits into your local repository.
 
-### Additional Step for Bugfix Releases
+### Additional Step for Patch Releases
 
 Run the following script to automatically cherry-pick new bugfixes on top of the last release:
 
@@ -51,6 +56,9 @@ Read the output carefully:
 
 After running the script, you are in a detached HEAD state. You can create a temporary local branch if desired, but all
 that should need to be pushed is the tag produced at the end of the release process.
+
+> Note: In the rare event that zero commits were skipped, you can simply cut the release from master as you would
+> normally do for a minor release, and skip all of the cherry-picking back and forth.
 
 ## Preparation
 
@@ -75,22 +83,22 @@ When lerna prompts for version, choose prerelease.
 > **Do not forget** both arguments to `publish` - we want to avoid updating the `latest` tag, and we want to
 > generate the changelog before generating and pushing the new tag.
 
-### For All Other Releases (Minor/Patch)
+### For Minor and Patch Releases
 
 ```
 $(npm bin)/lerna publish --skip-git
 git commit -am "chore: Publish"
 ```
 
-When lerna prompts for version, you should pick Minor for feature/breaking-change releases,
-or Patch for bugfix releases.
+When lerna prompts for version, pick Minor or Patch as appropriate
+(for breaking-change/feature releases or bugfix releases, respectively).
 
 > **Do not forget** the `--skip-git` argument - we want to generate the changelog before generating and pushing the
 > new tag.
 
 ## Post-Release
 
-### For Pre-Releases and Bugfix Releases
+### For Pre-Releases and Patch Releases
 
 Simply run the post-release script to update and commit the changelog and apply an annotated vX.Y.Z git tag:
 
@@ -114,7 +122,7 @@ git diff # Review the changelog and make sure it looks OK
 ./scripts/post-release.sh
 ```
 
-### For Feature/Breaking-Change Releases
+### For Minor Releases
 
 > Note: In the rare case there were no pre-releases leading up to this release, you can follow the same steps above.
 
@@ -143,7 +151,7 @@ Finally, run the post-release script to commit the updated changelog and apply a
 
 ## Push
 
-### For All Releases
+### Common First Step for All Releases
 
 You will need to temporarily alter Github's master branch protection in order to push after the release:
 
@@ -171,21 +179,60 @@ Run `git log` and take note of the publish and changelog commit hashes. Then swi
 
 ```
 git checkout master
-git cherry-pick -x <publish hash> <changelog hash>
+git cherry-pick -x <publish-hash> <changelog-hash>
 git push
 ```
 
-## (Deprecated) Deploy Catalog Server
+## Update and Deploy Catalog Repository
 
-> Note: We now update and redeploy the [MDC Web Catalog](https://github.com/material-components/material-components-web-catalog)
-> repository instead.
+We maintain a `next` branch on the MDC Web Catalog repository to keep ahead of breaking changes in new releases.
 
-`MDC_ENV=development npm run build:demos && gcloud app deploy`
+1. Ensure you have the latest `master` checked out: `git checkout master && git pull`
+1. Create a new branch, e.g.: `git checkout -b chore/0.36.0`
+1. Merge `next` into the branch: `git merge next`
+1. Deal with any conflicts if necessary
+1. Update `package.json` to reference the newly-released final versions of MDC Web packages
+1. `rm -rf node_modules && npm i` to cause `package-lock.json` to update
+1. `npm start` and test the catalog, in case any further breaking changes occurred since the last pre-release
+1. `npm run build` to double-check that there are no unforeseen errors when building resources for deployment
+1. If necessary, perform additional changes and commit them to the chore branch
+1. Push the chore branch and send a pull request for one last review
+1. Squash and merge the PR in GitHub
+1. Update your local `master` branch and deploy:
+  1. `git checkout master && git pull`
+  1. `npm start` if you want to double-check one last time (`master` should contain the same changes you tested in your PR)
+  1. `npm run deploy`
+1. Reset the `next` branch against master to be reused for the next release (this will change the `next` branch's history):
+  1. `git checkout next`
+  1. `git fetch origin && git reset --hard origin/master`
+  1. Temporarily turn off branch protection for the `next` branch
+  1. `git push -f origin next`
+  1. Re-protect the `next` branch - check the following, then click Save changes:
+    * Protect this branch
+    * Require pull request reviews before merging
+    * Require status checks to pass before merging
+    * Require branches to be up to date before merging
+    * cla/google status check
+    * Include administrators
+    * Restrict who can push to this branch
 
-[Double check it is live](https://material-components-web.appspot.com/)
+## Log Issues in MDC React Repository
+
+MDC React does not currently maintain a branch that gets updated ahead of release against pre-releases.
+After release, ensure that any breaking changes likely to require MDC React changes have issues logged on the
+MDC React repository, with the "required for sync" label.
 
 ## Notify material.io Team
 
 Our markdown documentation is transformed and mirrored to the Develop section of material.io.
 
 Currently, this requires some manual work by the Tools team, so we need to notify them to update the site content.
+
+## (Deprecated) Deploy Catalog Server
+
+> Note: We now promote the [MDC Web Catalog](https://github.com/material-components/material-components-web-catalog)
+> instead. The old catalog server is no longer linked from our documentation.
+
+`MDC_ENV=development npm run build:demos && gcloud app deploy`
+
+[Double check it is live](https://material-components-web.appspot.com/)
