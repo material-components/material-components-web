@@ -22,17 +22,9 @@ function log() {
   echo '\033[36m[post-release]\033[0m' "$@"
 }
 
-if [[ $(git diff --cached CHANGELOG.md) ]]; then
-  log "Found modified CHANGELOG; committing as-is"
-else
-  if [[ $(git diff CHANGELOG.md) ]]; then
-    log "Found modified CHANGELOG; committing as-is"
-  else
-    log "Generating changelog"
-    npm run changelog
-  fi
-  git add CHANGELOG.md
-fi
+log "Generating and committing changelog"
+npm run changelog
+git add CHANGELOG.md
 git commit -m "docs: Update CHANGELOG.md"
 echo ""
 
