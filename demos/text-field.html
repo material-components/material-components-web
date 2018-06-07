@@ -547,56 +547,6 @@
         });
       });
 
-      // demoReady(function() {
-      //   var section = document.getElementById('demo-text-field-wrapper');
-      //   var tfRoot = section.querySelector('.mdc-text-field');
-      //   var helperText = section.querySelector('.mdc-text-field-helper-text');
-      //   var tf = new mdc.textField.MDCTextField(tfRoot);
-
-      //   document.getElementById('disable').addEventListener('change', function(evt) {
-      //     var target = evt.target;
-      //     tf.disabled = target.checked;
-      //   });
-      //   document.getElementById('rtl').addEventListener('change', function(evt) {
-      //     var target = evt.target;
-      //     if (target.checked) {
-      //       section.setAttribute('dir', 'rtl');
-      //     } else {
-      //       section.removeAttribute('dir');
-      //     }
-      //   });
-      //   document.getElementById('dense').addEventListener('change', function(evt) {
-      //     var target = evt.target;
-      //     tfRoot.classList[target.checked ? 'add' : 'remove']('mdc-text-field--dense');
-      //   });
-      //   document.getElementById('required').addEventListener('change', function(evt) {
-      //     toggleRequired(tf, evt.target.checked);
-      //   });
-      //   document.getElementById('alternate-colors').addEventListener('change', function (evt) {
-      //     var target = evt.target;
-      //     tfRoot.classList[target.checked ? 'add' : 'remove']('demo-text-field-custom-colors');
-      //     tfRoot.classList[target.checked ? 'add' : 'remove']('demo-text-field-custom-error-colors');
-      //   });
-      //   document.getElementById('use-helper-text').addEventListener('change', function(evt) {
-      //     var target = evt.target;
-      //     helperText.style.display = target.checked ? 'block' : 'none';
-      //     document.getElementById('persistent-helper-text').disabled = !target.checked;
-      //     document.getElementById('helper-text-as-validation').disabled = !target.checked;
-      //   });
-      //   document.getElementById('persistent-helper-text').addEventListener('change', function(evt) {
-      //     var target = evt.target;
-      //     helperText.classList[target.checked ? 'add' : 'remove'](
-      //       'mdc-text-field-helper-text--persistent'
-      //     );
-      //   });
-      //   document.getElementById('helper-text-as-validation').addEventListener('change', function(evt) {
-      //     var target = evt.target;
-      //     helperText.classList[target.checked ? 'add' : 'remove'](
-      //       'mdc-text-field-helper-text--validation-msg'
-      //     );
-      //   });
-      // });
-
       demoReady(function() {
         var section = document.getElementById('demo-text-field-textarea-wrapper');
         var tfRoot = section.querySelector('.mdc-text-field');
