@@ -32,7 +32,8 @@ $mdc-drawer-surface-padding: 16px;
   @include mdc-drawer-surface-fill-color($mdc-drawer-surface-fill-color, $mdc-drawer-surface-fill-opacity);
   @include mdc-drawer-icon-ink-color($mdc-drawer-icon-ink-color, $mdc-drawer-icon-ink-opacity);
   @include mdc-drawer-meta-ink-color($mdc-drawer-icon-ink-color, $mdc-drawer-icon-ink-opacity);
-  @include mdc-drawer-text-color($mdc-drawer-inactive-ink-color, $mdc-drawer-inactive-ink-opacity);
+  @include mdc-drawer-item-text-color($mdc-drawer-inactive-ink-color, $mdc-drawer-inactive-ink-opacity);
+  @include mdc-drawer-item-activated-text-color($mdc-drawer-activated-ink-color, $mdc-drawer-activated-ink-opacity);
 
   width: $mdc-drawer-width;
   min-width: $mdc-drawer-width;
@@ -47,31 +48,30 @@ $mdc-drawer-surface-padding: 16px;
 
   .mdc-list-group .mdc-list,
   .mdc-list {
-    padding: 0 $mdc-drawer-surface-padding/2;
+    padding: $mdc-drawer-surface-padding/2;
+    padding-top: 0;
   }
 
-  .mdc-list-item {
+  .mdc-list-item,
+  a.mdc-list-item {
     @include mdc-typography(body2);
     height: calc(48px - 2*#{$mdc-drawer-list-item-spacing});
     padding: 0 $mdc-drawer-surface-padding/2;
     margin: $mdc-drawer-list-item-spacing 0;
   }
 
-  .mdc-list-item--selected {
-    @include mdc-drawer-text-color($mdc-drawer-activated-ink-color, $mdc-drawer-activated-ink-opacity);
-  }
-
   .mdc-list-group__subheader {
     @include mdc-typography(subtitle2);
     margin: 0;
     padding: 0 $mdc-drawer-surface-padding;
+    height: 28px;
   }
 }
 
 .mdc-drawer__header {
   padding: $mdc-drawer-surface-padding;
-  padding-bottom: 0;
-  min-height: 64px;
+  padding-bottom: 4px;
+  min-height: 64px; // same as $mdc-top-app-bar-row-height
   box-sizing: border-box;
 }
 

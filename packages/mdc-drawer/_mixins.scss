@@ -40,10 +40,21 @@
     @include mdc-theme-prop(color, $value);
   }
 }
-@mixin mdc-drawer-text-color($color, $opacity) {
+
+@mixin mdc-drawer-item-text-color($color, $opacity) {
   $value: rgba(mdc-theme-prop-value($color), $opacity);
-  a.mdc-list-item,
-  .mdc-list-item {
+  .mdc-list-item,
+  a.mdc-list-item {
+    @include mdc-list-item-primary-text-ink-color($value);
+  }
+}
+
+@mixin mdc-drawer-item-activated-text-color($color, $opacity) {
+  $value: rgba(mdc-theme-prop-value($color), $opacity);
+  .mdc-list-item--selected,
+  .mdc-list-item--activated,
+  a.mdc-list-item--selected,
+  a.mdc-list-item--activated, {
     @include mdc-list-item-primary-text-ink-color($value);
   }
 }
