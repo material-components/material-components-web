@@ -20,11 +20,13 @@
 
 @mixin mdc-drawer-border-color($color, $opacity) {
   $value: rgba(mdc-theme-prop-value($color), $opacity);
+
   @include mdc-theme-prop(border-color, $value);
 }
 
 @mixin mdc-drawer-surface-fill-color($color, $opacity) {
   $value: rgba(mdc-theme-prop-value($color), $opacity);
+
   @include mdc-theme-prop(background-color, $value);
 }
 
@@ -34,8 +36,10 @@
     @include mdc-states-selected($color);
   }
 }
+
 @mixin mdc-drawer-title-ink-color($color, $opacity) {
   $value: rgba(mdc-theme-prop-value($color), $opacity);
+
   .mdc-drawer__title {
     @include mdc-theme-prop(color, $value);
   }
@@ -43,44 +47,53 @@
 
 @mixin mdc-drawer-item-text-color($color, $opacity) {
   $value: rgba(mdc-theme-prop-value($color), $opacity);
+  // stylelint-disable selector-no-qualifying-type
   .mdc-list-item,
   a.mdc-list-item {
     @include mdc-list-item-primary-text-ink-color($value);
   }
+  // stylelint-enable selector-no-qualifying-type
 }
 
 @mixin mdc-drawer-item-activated-text-color($color, $opacity) {
   $value: rgba(mdc-theme-prop-value($color), $opacity);
+  // stylelint-disable selector-no-qualifying-type
   .mdc-list-item--selected,
   .mdc-list-item--activated,
   a.mdc-list-item--selected,
   a.mdc-list-item--activated, {
     @include mdc-list-item-primary-text-ink-color($value);
   }
+  // stylelint-enable selector-no-qualifying-type
 }
 
 @mixin mdc-drawer-icon-fill-color($color, $opacity) {
   $value: rgba(mdc-theme-prop-value($color), $opacity);
+
   @include mdc-list-item-graphic-fill-color($value);
 }
 
 @mixin mdc-drawer-icon-ink-color($color, $opacity) {
   $value: rgba(mdc-theme-prop-value($color), $opacity);
+
   @include mdc-list-item-graphic-ink-color($value);
 }
 
 @mixin mdc-drawer-meta-ink-color($color, $opacity) {
   $value: rgba(mdc-theme-prop-value($color), $opacity);
+
   @include mdc-list-item-meta-ink-color($value);
 }
 
 @mixin mdc-drawer-divider-color($color, $opacity) {
   $value: rgba(mdc-theme-prop-value($color), $opacity);
+
   @include mdc-list-divider-color($value);
 }
 
 @mixin mdc-drawer-group-header-text-color($color, $opacity) {
   $value: rgba(mdc-theme-prop-value($color), $opacity);
+
   @include mdc-list-group-subheader-ink-color($value);
 
   .mdc-drawer__subtitle {
