@@ -18,6 +18,7 @@
 
 $mdc-select-arrow-padding: 26px;
 $mdc-select-label-padding: 16px;
+$mdc-select-border-radius: 4px;
 
 $mdc-select-ink-color: rgba(mdc-theme-prop-value(on-surface), .87);
 $mdc-select-disabled-ink-color: rgba(mdc-theme-prop-value(on-surface), .37);
@@ -32,3 +33,12 @@ $mdc-select-bottom-line-hover-color: rgba(mdc-theme-prop-value(on-surface), .87)
 
 $mdc-select-box-fill-color: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 4%);
 $mdc-select-box-disabled-fill-color: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 2%);
+
+$mdc-select-outlined-idle-border: rgba(mdc-theme-prop-value(on-surface), .24);
+
+// should be .06 after mdc-select opacity is applied
+$mdc-select-outlined-disabled-border: rgba(mdc-theme-prop-value(on-surface), .16);
+$mdc-select-outlined-hover-border: rgba(mdc-theme-prop-value(on-surface), .87);
+
+$mdc-select-outlined-label-position-y: 130%;
+$mdc-select-outlined-dense-label-position-y: 110%;
