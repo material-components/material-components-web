@@ -128,12 +128,13 @@ $mdc-fab-extended-height_: 48px;
 }
 
 @mixin mdc-fab--extended_ {
+  @include mdc-typography(button);
+
   width: auto;
   max-width: 100%;
   height: $mdc-fab-extended-height_;
   padding: 0 20px 0 16px;
   border-radius: $mdc-fab-extended-height_ / 2;
-  white-space: nowrap;
 }
 
 @mixin mdc-fab__icon_ {
@@ -146,6 +147,7 @@ $mdc-fab-extended-height_: 48px;
   justify-content: flex-start;
   padding-left: 8px;
   text-overflow: ellipsis;
+  white-space: nowrap;
   overflow: hidden;
 }
 

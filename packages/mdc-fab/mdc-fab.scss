@@ -33,7 +33,6 @@
 }
 
 .mdc-fab--extended {
-  @include mdc-typography(button);
   @include mdc-fab--extended_;
 }
 
