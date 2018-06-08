@@ -39,6 +39,7 @@ $mdc-drawer-surface-padding: 16px;
   min-width: $mdc-drawer-width;
   border-right-width: 1px;
   border-right-style: solid;
+  overflow: hidden;
 
   @include mdc-rtl {
     border-right-width: 0;
