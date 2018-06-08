@@ -50,8 +50,8 @@ npm install @material/list
 
 ### Two-Line List
 
-You can use the `mdc-list--two-line` combined with some extra markup around the text to style a list 
-in the double line list style as defined by 
+You can use the `mdc-list--two-line` combined with some extra markup around the text to style a list
+in the double line list style as defined by
 [the spec](https://material.io/design/components/lists.html#specs) (see "Double line").
 
 ```html
@@ -177,6 +177,7 @@ Mixin | Description
 `mdc-list-item-graphic-fill-color($color)` | Sets background ink color of the graphic element within list item.
 `mdc-list-item-graphic-ink-color($color)` | Sets ink color of the graphic element within list item.
 `mdc-list-item-meta-ink-color($color)` | Sets ink color of the meta element within list item.
+`mdc-list-item-corner-radius($radius)` | Sets the corner border radius of the list item.
 `mdc-list-divider-color($color)` | Sets divider ink color.
 `mdc-list-group-subheader-ink-color($color)` | Sets ink color of subheader text within list group.
 
@@ -187,7 +188,7 @@ The MDCList JavaScript component implements the WAI-ARIA best practices for
 within the list component. You should not add `tabindex` to any of the `li` elements in a list.
 
 As the user navigates through the list, any `button` or `a` elements within the list will receive `tabindex="-1"`
-when the list item is not focused. When the list item receives focus, the child `button` and `a` elements will 
+when the list item is not focused. When the list item receives focus, the child `button` and `a` elements will
 receive `tabIndex="0"`. This allows for the user to tab through list items elements and then tab to the
 first element after the list. The `Arrow`, `Home`, and `End` keys should be used for navigating internal list elements.
 The MDCList will perform the following actions for each key press
@@ -219,11 +220,11 @@ Method Signature | Description
 
 Method Signature | Description
 --- | ---
-`setWrapFocus(value: Boolean) => void` | Sets the list to allow the up arrow on the first element to focus the last element of the list and vice versa. 
-`setVerticalOrientation(value: Boolean) => void` | Sets the list to an orientation causing the keys used for navigation to change. `true` results in the Up/Down arrow keys being used. `false` results in the Left/Right arrow keys being used. 
-`handleFocusIn(evt: Event) => void` | Handles the changing of `tabindex` to `0` for all `button` and `a` elements when a list item receives focus. 
+`setWrapFocus(value: Boolean) => void` | Sets the list to allow the up arrow on the first element to focus the last element of the list and vice versa.
+`setVerticalOrientation(value: Boolean) => void` | Sets the list to an orientation causing the keys used for navigation to change. `true` results in the Up/Down arrow keys being used. `false` results in the Left/Right arrow keys being used.
+`handleFocusIn(evt: Event) => void` | Handles the changing of `tabindex` to `0` for all `button` and `a` elements when a list item receives focus.
 `handleFocusOut(evt: Event) => void` | Handles the changing of `tabindex` to `-1` for all `button` and `a` elements when a list item loses focus.
-`handleKeydown(evt: Event) => void` | Handles determining if a focus action should occur when a key event is triggered. 
+`handleKeydown(evt: Event) => void` | Handles determining if a focus action should occur when a key event is triggered.
 `focusNextElement(index: Number) => void` | Handles focusing the next element using the current `index`.
 `focusPrevElement(index: Number) => void` | Handles focusing the previous element using the current `index`.
 `focusFirstElement() => void` | Handles focusing the first element in a list.

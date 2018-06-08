@@ -101,8 +101,9 @@ Mixin | Description
 --- | ---
 `mdc-drawer-border-color($color, $opacity)` | Sets border color of `mdc-drawer` surface.
 `mdc-drawer-surface-fill-color($color, $opacity)` | Sets the background color of `mdc-drawer`.
-`mdc-drawer-active-overlay-color($color)` | Sets the active overlay color of a drawer list item.
+`mdc-drawer-active-overlay-color($color)` | Sets the overlay color of the activated drawer list item.
 `mdc-drawer-title-ink-color($color, $opacity)` | Sets the ink color of `mdc-drawer__title`.
+`mdc-drawer-item-corner-radius($radius)` | Sets the corner border radius of the drawer list item.
 `mdc-drawer-item-text-color($color, $opacity)` | Sets drawer list item ink color.
 `mdc-drawer-item-activated-text-color($color, $opacity)` | Sets activated drawer list item ink color.
 `mdc-drawer-icon-fill-color($color, $opacity)` | Sets drawer list item graphic icon background color.

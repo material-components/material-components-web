@@ -45,6 +45,10 @@
   }
 }
 
+@mixin mdc-drawer-item-corner-radius($radius) {
+  @include mdc-list-item-corner-radius($radius);
+}
+
 @mixin mdc-drawer-item-text-color($color, $opacity) {
   $value: rgba(mdc-theme-prop-value($color), $opacity);
   // stylelint-disable selector-no-qualifying-type
