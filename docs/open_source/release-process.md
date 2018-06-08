@@ -1,9 +1,5 @@
 # Release Process
 
-> **Note**: This process changed somewhat when we switched lerna to fixed mode
-> for v0.23.0. Look at older versions for reference of how this worked in
-> independent mode.
-
 ## Vocabulary
 
 This document reuses the [terminology for release types](./releases-and-branches.md#release-types) summarized in the
