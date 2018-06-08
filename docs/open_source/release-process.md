@@ -205,7 +205,7 @@ We maintain a `next` branch on the MDC Web Catalog repository to keep ahead of b
 1. Reset the `next` branch against master to be reused for the next release (this will change the `next` branch's history):
   1. `git checkout next`
   1. `git fetch origin && git reset --hard origin/master`
-  1. Temporarily turn off branch protection for the `next` branch
+  1. Temporarily turn off branch protection *completely* for the `next` branch (to enable force-push)
   1. `git push -f origin next`
   1. Re-protect the `next` branch - check the following, then click Save changes:
     * Protect this branch
