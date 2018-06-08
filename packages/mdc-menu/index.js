@@ -163,7 +163,7 @@ class MDCMenu extends MDCComponent {
         this.previousFocus_ = document.activeElement;
       },
       restoreFocus: () => {
-        if (this.previousFocus_) {
+        if (this.previousFocus_ && this.previousFocus_.focus) {
           this.previousFocus_.focus();
         }
       },
