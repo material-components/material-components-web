@@ -141,7 +141,6 @@
           extraTall.style.display = extraTall.style.display ? '' : 'none';
         });
 
-        // Demonstrate application of --activated modifier to drawer menu items
         var activatedClass = 'mdc-list-item--selected';
         document.querySelector('.mdc-drawer').addEventListener('click', function(event) {
           var el = event.target;
@@ -161,11 +160,8 @@
         var radioEl = document.querySelector('#demo-radio-buttons');
         radioEl.addEventListener('change', function(e) {
           drawerEl.classList.remove('demo-drawer--custom');
-          drawerEl.classList.remove('demo-drawer--accessible');
 
-          if(e.target.id === 'theme-radio-accessible') {
-            drawerEl.classList.add('demo-drawer--accessible');
-          } else if(e.target.id === 'theme-radio-custom') {
+          if(e.target.id === 'theme-radio-custom') {
             drawerEl.classList.add('demo-drawer--custom');
           }
         });
