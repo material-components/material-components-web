@@ -195,22 +195,22 @@ We maintain a `next` branch on the MDC Web Catalog repository to keep ahead of b
 1. Push the chore branch and send a pull request for one last review
 1. Squash and merge the PR in GitHub
 1. Update your local `master` branch and deploy:
-  1. `git checkout master && git pull`
-  1. `npm start` if you want to double-check one last time (`master` should contain the same changes you tested in your PR)
-  1. `npm run deploy`
+   1. `git checkout master && git pull`
+   1. `npm start` if you want to double-check one last time (`master` should contain the same changes you tested in your PR)
+   1. `npm run deploy`
 1. Reset the `next` branch against master to be reused for the next release (this will change the `next` branch's history):
-  1. `git checkout next`
-  1. `git fetch origin && git reset --hard origin/master`
-  1. Temporarily turn off branch protection *completely* for the `next` branch (to enable force-push)
-  1. `git push -f origin next`
-  1. Re-protect the `next` branch - check the following, then click Save changes:
-    * Protect this branch
-    * Require pull request reviews before merging
-    * Require status checks to pass before merging
-    * Require branches to be up to date before merging
-    * cla/google status check
-    * Include administrators
-    * Restrict who can push to this branch
+   1. `git checkout next`
+   1. `git fetch origin && git reset --hard origin/master`
+   1. Temporarily turn off branch protection *completely* for the `next` branch (to enable force-push)
+   1. `git push -f origin next`
+   1. Re-protect the `next` branch - check the following, then click Save changes:
+      * Protect this branch
+      * Require pull request reviews before merging
+      * Require status checks to pass before merging
+      * Require branches to be up to date before merging
+      * cla/google status check
+      * Include administrators
+      * Restrict who can push to this branch
 
 ## Log Issues in MDC React Repository
 
