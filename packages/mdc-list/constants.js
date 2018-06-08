@@ -1,5 +1,6 @@
 /**
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * @license
+ * Copyright 2018 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,24 +14,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+/** @enum {string} */
 const cssClasses = {
-  BOX: 'mdc-select--box',
-  DISABLED: 'mdc-select--disabled',
-  ROOT: 'mdc-select',
-  OUTLINED: 'mdc-select--outlined',
+  LIST_ITEM_CLASS: 'mdc-list-item',
 };
 
+/** @enum {string} */
 const strings = {
-  CHANGE_EVENT: 'MDCSelect:change',
-  LINE_RIPPLE_SELECTOR: '.mdc-line-ripple',
-  LABEL_SELECTOR: '.mdc-floating-label',
-  NATIVE_CONTROL_SELECTOR: '.mdc-select__native-control',
-  OUTLINE_SELECTOR: '.mdc-notched-outline',
+  ARIA_ORIENTATION: 'aria-orientation',
+  ARIA_ORIENTATION_VERTICAL: 'vertical',
+  FOCUSABLE_CHILD_ELEMENTS: 'button:not(:disabled), a',
+  ITEMS_SELECTOR: '.mdc-list-item',
 };
 
-/** @enum {number} */
-const numbers = {
-  LABEL_SCALE: 0.75,
-};
-
-export {cssClasses, strings, numbers};
+export {strings, cssClasses};
