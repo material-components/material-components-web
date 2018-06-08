@@ -19,6 +19,7 @@
 @import "./variables";
 @import "@material/animation/variables";
 @import "@material/line-ripple/mdc-line-ripple";
+@import "@material/notched-outline/mdc-notched-outline";
 @import "@material/floating-label/mdc-floating-label";
 @import "@material/typography/mixins";
 @import "@material/ripple/common";
@@ -46,7 +47,6 @@
   height: 52px;
   background-repeat: no-repeat;
   background-position: right 8px bottom 12px;
-  overflow: hidden;
 
   @include mdc-rtl {
     background-position: left 8px bottom 12px;
@@ -106,6 +106,7 @@
   height: 56px;
   border-radius: 4px 4px 0 0;
   background-position: right 10px center;
+  overflow: hidden;
 
   @include mdc-rtl {
     background-position: left 10px center;
@@ -132,12 +133,44 @@
   // stylelint-enable plugin/selector-bem-pattern
 }
 
+.mdc-select--outlined {
+  @include mdc-select-outline-color($mdc-select-outlined-idle-border);
+  @include mdc-select-hover-outline-color($mdc-select-outlined-hover-border);
+  @include mdc-select-focused-outline-color(primary);
+  @include mdc-floating-label-float-position($mdc-select-outlined-label-position-y);
+  @include mdc-floating-label-shake-animation(text-field-outlined);
+  @include mdc-select-outline-corner-radius($mdc-select-border-radius);
+
+  height: 56px;
+  border: none;
+  background-position: right 10px center;
+
+  @include mdc-rtl {
+    background-position: left 10px center;
+  }
+
+  .mdc-select__native-control {
+    @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding);
+
+    display: flex;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    border: none;
+    background-color: transparent;
+    z-index: 1;
+  }
+
+  // stylelint-disable-next-line plugin/selector-bem-pattern
+  .mdc-floating-label {
+    @include mdc-rtl-reflexive-position(left, 16px);
+
+    position: absolute;
+    bottom: 20px;
+  }
+}
+
 .mdc-select--disabled {
   @include mdc-select-dd-arrow-svg-bg_($mdc-select-disabled-arrow-color);
-
-  &.mdc-select--box {
-    @include mdc-select-container-fill-color_($mdc-select-box-disabled-fill-color);
-  }
 
   .mdc-floating-label {
     @include mdc-floating-label-ink-color($mdc-select-disabled-label-color);
@@ -147,10 +180,23 @@
   .mdc-line-ripple {
     display: none;
   }
-  // stylelint-enable plugin/selector-bem-pattern
 
   .mdc-select__native-control {
     border-bottom-style: dotted;
+  }
+  // stylelint-enable plugin/selector-bem-pattern
+
+  &.mdc-select--box {
+    @include mdc-select-container-fill-color_($mdc-select-box-disabled-fill-color);
+  }
+
+  &.mdc-select--outlined {
+    // stylelint-disable-next-line plugin/selector-bem-pattern
+    .mdc-select__native-control {
+      border-bottom-style: none;
+    }
+
+    @include mdc-select-outline-color_($mdc-select-outlined-disabled-border);
   }
 
   opacity: .38;
