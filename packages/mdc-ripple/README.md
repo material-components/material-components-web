@@ -150,6 +150,8 @@ Method Signature | Description
 `activate() => void` | Proxies to the foundation's `activate` method
 `deactivate() => void` | Proxies to the foundation's `deactivate` method
 `layout() => void` | Proxies to the foundation's `layout` method
+`handleFocus() => void` | Adds `BG_FOCUSED` class to the ripple surface
+`handleBlur() => void` | Removes `BG_FOCUSED` class from the ripple surface
 
 ### `MDCRippleAdapter`
 
