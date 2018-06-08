@@ -61,6 +61,8 @@ import {MDCMenuSurface} from '@material/menu-surface';
 const menuSurface = new MDCMenuSurface(document.querySelector('.mdc-menu-surface'));
 ```
 
+> See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
+
 ## Style Customization
 
 ### CSS Classes
@@ -80,9 +82,7 @@ Mixin | Description
 `mdc-menu-surface-ink-color($color)` | Sets the `color` property of the `mdc-menu-surface`.
 `mdc-menu-surface-fill-color($color)` | Sets the `background-color` property of the `mdc-menu-surface`.
 
-### `MDCMenuSurface`
-
-See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
+## `MDCMenuSurface` Properties and Methods
 
 Property | Value Type | Description
 --- | --- | ---
