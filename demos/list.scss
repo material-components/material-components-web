@@ -59,12 +59,6 @@ a.material-icons {
   margin-left: 72px;
 }
 
-.checkbox-list-ripple-surface:not(.mdc-ripple-upgraded):active::after {
-  // TODO(moog16): Update mdc-ripple to prevent duplicate ripples on parent elements, and remove this hack
-  // Prevent checkbox clicks from activating a second ripple on the list item.
-  opacity: 0 !important;
-}
-
 #demo-wrapper {
   margin: 24px;
 }
