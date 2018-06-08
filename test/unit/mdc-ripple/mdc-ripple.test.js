@@ -222,3 +222,16 @@ test('adapter#getWindowPageOffset returns page{X,Y}Offset as {x,y} respectively'
     y: window.pageYOffset,
   });
 });
+
+test(`handleFocus() adds class ${cssClasses.BG_FOCUSED}`, () => {
+  const {root, component} = setupTest();
+  component.handleFocus();
+  assert.isTrue(root.classList.contains(cssClasses.BG_FOCUSED));
+});
+
+test(`handleBlur() removes class ${cssClasses.BG_FOCUSED}`, () => {
+  const {root, component} = setupTest();
+  root.classList.add(cssClasses.BG_FOCUSED);
+  component.blurFocus();
+  assert.isFalse(root.classList.contains(cssClasses.BG_FOCUSED));
+});
