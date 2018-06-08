@@ -63,6 +63,9 @@
         <button id="input-chip-set-button" class="mdc-button mdc-button--dense">
           Add Input Chip
         </button>
+        <button id="input-chip-set-delete-button" class="mdc-button mdc-button--dense">
+          Delete Last Chip
+        </button>
         <div id="input-chip-set" class="mdc-chip-set mdc-chip-set--input">
           <div class="demo-chip mdc-chip" tabindex="0">
             <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">face</i>
@@ -239,6 +242,7 @@
         var chipSets = document.querySelectorAll('.mdc-chip-set:not(#input-chip-set)');
         var input = document.getElementById('input-chip-set-input');
         var inputButton = document.getElementById('input-chip-set-button');
+        var deleteButton = document.getElementById('input-chip-set-delete-button');
 
         [].forEach.call(chipSets, function(chipSet) {
           mdc.chips.MDCChipSet.attachTo(chipSet);
@@ -281,8 +285,15 @@
           root && inputChipSetEl.removeChild(root);
         }
 
+        function deleteLastChip() {
+          const lastChipIndex = inputChipSetComponent.chips.length - 1;
+          const lastChip = inputChipSetComponent.chips[lastChipIndex];
+          lastChip.beginExit();
+        };
+
         inputButton.addEventListener('click', addInputChip);
         input.addEventListener('keydown', addInputChip);
+        deleteButton.addEventListener('click', deleteLastChip);
         inputChipSetEl.addEventListener('MDCChip:removal', removeChip);
       });
     </script>
