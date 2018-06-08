@@ -69,6 +69,8 @@ class MDCTopAppBarBaseFoundation extends MDCFoundation {
     super(Object.assign(MDCTopAppBarBaseFoundation.defaultAdapter, adapter));
 
     this.navClickHandler_ = () => this.adapter_.notifyNavigationIconClicked();
+
+    this.scrollHandler_ = () => {};
   }
 
   init() {
@@ -77,6 +79,14 @@ class MDCTopAppBarBaseFoundation extends MDCFoundation {
 
   destroy() {
     this.adapter_.deregisterNavigationIconInteractionHandler('click', this.navClickHandler_);
+  }
+
+  initScrollHandler() {
+    this.adapter_.registerScrollHandler(this.scrollHandler_);
+  }
+
+  destroyScrollHandler() {
+    this.adapter_.deregisterScrollHandler(this.scrollHandler_);
   }
 }
 
