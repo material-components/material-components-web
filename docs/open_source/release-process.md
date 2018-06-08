@@ -151,11 +151,11 @@ Finally, run the post-release script to commit the updated changelog and apply a
 
 You will need to temporarily alter Github's master branch protection in order to push after the release:
 
-1. Go to: [settings page](https://github.com/material-components/material-components-web/settings/branches/master)
-1. Uncheck `Include administrators`
-1. Click Save changes
+1. Go to the [settings page](https://github.com/material-components/material-components-web/settings/branches/master)
+1. Uncheck "Include administrators"
+1. Click "Save changes"
 1. Perform the process outlined in one of the sections below
-1. Don't forget to toggle on `Include administrators` & click Save changes afterwards
+1. Don't forget to re-enable "Include administrators" & click "Save changes" afterwards
 
 ### For Pre-releases and Feature/Breaking-Change Releases
 
@@ -168,10 +168,10 @@ This will ensure the new commits *and* tag are pushed to the remote git reposito
 `git push origin <tag>`
 
 We don't need to push a branch for bugfix releases since we only cherry-pick commits for them at release time and they
-are not tagged from master (which contains all commits, not just bugfixes). However, we *do* need to sync the new
-release versions and changelog with master.
+are not tagged from master (which contains all commits, not just bugfixes).
 
-Run `git log` and take note of the publish and changelog commit hashes. Then switch to master and cherry-pick them:
+However, we *do* need to sync the new release versions and changelog with master. Run `git log` and take note of the
+publish and changelog commit hashes. Then switch to master and cherry-pick them:
 
 ```
 git checkout master

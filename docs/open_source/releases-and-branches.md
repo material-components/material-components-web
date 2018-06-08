@@ -20,9 +20,9 @@ within the two-week cycle, and would rev the version number accordingly based on
 
 In summary, MDC Web has the following types of releases:
 
-* Minor release: A release with new features and/or breaking changes; this revs the minor version number (e.g. 0.36.0)
-* Patch release: A release consisting primarily of bugfixes, with no features or breaking changes; this revs the patch version number (e.g. 0.36.1)
-* Pre-release: A preview release containing breaking changes, cut before the next scheduled minor release (e.g. 0.37.0-pre.0)
+* **Minor release:** A release with new features and/or breaking changes; this revs the minor version number (e.g. 0.36.0)
+* **Patch release:** A release consisting primarily of bugfixes, with no features or breaking changes; this revs the patch version number (e.g. 0.36.1)
+* **Pre-release:** A preview release containing breaking changes, cut before the next scheduled minor release (e.g. 0.37.0-pre.0)
 
 See [Release Process](./release-process.md) for steps to perform for each type of release.
 
