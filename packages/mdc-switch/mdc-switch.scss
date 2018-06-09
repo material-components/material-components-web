@@ -22,7 +22,6 @@
 @import "./mixins";
 @import "./variables";
 
-// postcss-bem-linter: define switch
 .mdc-switch {
   @include mdc-switch-toggled-on-track-color($mdc-switch-baseline-theme-color);
   @include mdc-switch-toggled-on-thumb-color($mdc-switch-baseline-theme-color);
@@ -32,36 +31,21 @@
 
   display: inline-block;
   position: relative;
-
-  &__native-control {
-    display: inline-block;
-    position: absolute;
-    width: $mdc-switch-tap-target-size;
-    height: $mdc-switch-tap-target-size;
-    transition: mdc-switch-transition(transform);
-    opacity: 0;
-    cursor: pointer;
-    z-index: 2;
-  }
-}
-
-.mdc-switch__background {
-  display: block;
-  position: relative;
-  width: $mdc-switch-track-width;
-  height: $mdc-switch-track-height;
-  border-radius: 50%;
   outline: none;
   user-select: none;
 }
 
+.mdc-switch__native-control {
+  @include mdc-switch-tap-target_;
+
+  opacity: 0;
+  cursor: pointer;
+}
+
 .mdc-switch__track {
-  display: block;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  box-sizing: border-box;
+  width: $mdc-switch-track-width;
+  height: $mdc-switch-track-height;
   transition:
     mdc-switch-transition(opacity),
     mdc-switch-transition(background-color),
@@ -73,6 +57,7 @@
 
 .mdc-switch__thumb-underlay {
   @include mdc-switch-tap-target_;
+  @include mdc-rtl-reflexive-position(left, -14px);
   @include mdc-ripple-surface();
   @include mdc-ripple-radius-unbounded;
   @include mdc-states(
@@ -80,6 +65,7 @@
     $has-nested-focusable-element: true);
 
   display: flex;
+  top: -14px;
   align-items: center;
   justify-content: center;
   margin-top: $mdc-switch-thumb-vertical-offset_;
@@ -105,10 +91,9 @@
   z-index: 1;
 }
 
-.mdc-switch--checked .mdc-switch__background {
-  // Track
+.mdc-switch--checked {
   .mdc-switch__track {
-    opacity: .5;
+    opacity: .54;
   }
 
   .mdc-switch__thumb-underlay {
@@ -120,41 +105,15 @@
   }
 }
 
-// postcss-bem-linter: end
-
 .mdc-switch--disabled .mdc-switch__native-control {
   cursor: initial;
 }
 
-.mdc-switch--disabled .mdc-switch__background {
-  // Track
+.mdc-switch--disabled {
   opacity: .38;
-
-  .mdc-switch__track {
-    border-color: $mdc-switch-toggled-off-track-color;
-    background-color: $mdc-switch-toggled-off-track-color;
-  }
 
   .mdc-switch__thumb {
     border-width: 1px;  // In high contrast mode, only show outline of knob.
-    border-color: $mdc-switch-toggled-off-thumb-color;
-    background-color: $mdc-switch-toggled-off-thumb-color;
-  }
-
-  // Disable ripple.
-  .mdc-switch__thumb-underlay::before {
-    content: none;
-  }
-}
-
-.mdc-switch--checked.mdc-switch--disabled .mdc-switch__background {
-  // Track
-  opacity: .38;
-
-  .mdc-switch__track,
-  .mdc-switch__thumb {
-    @include mdc-theme-prop(background-color, $mdc-switch-baseline-theme-color);
-    @include mdc-theme-prop(border-color, $mdc-switch-baseline-theme-color);
   }
 
   // Disable ripple.

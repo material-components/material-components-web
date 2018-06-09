@@ -1,5 +1,5 @@
 //
-// Copyright 2016 Google Inc. All Rights Reserved.
+// Copyright 2018 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,59 +19,48 @@
 @import "@material/rtl/mixins";
 @import "./variables";
 
-//
-// Public
-//
-
 @mixin mdc-switch-toggled-on-track-color($color) {
-  &.mdc-switch--checked:not(.mdc-switch--disabled) .mdc-switch__background .mdc-switch__track {
+  &.mdc-switch--checked .mdc-switch__track {
     @include mdc-theme-prop(background-color, $color);
     @include mdc-theme-prop(border-color, $color);
   }
 }
 
 @mixin mdc-switch-toggled-on-thumb-color($color) {
-  // stylelint-disable-next-line selector-max-specificity
-  &.mdc-switch--checked:not(.mdc-switch--disabled) .mdc-switch__background .mdc-switch__thumb {
+  &.mdc-switch--checked .mdc-switch__thumb {
     @include mdc-theme-prop(background-color, $color);
     @include mdc-theme-prop(border-color, $color);
   }
 }
 
 @mixin mdc-switch-toggled-off-track-color($color) {
-  &:not(.mdc-switch--disabled):not(.mdc-switch--checked) .mdc-switch__track {
+  &:not(.mdc-switch--checked) .mdc-switch__track {
     @include mdc-theme-prop(background-color, $color);
     @include mdc-theme-prop(border-color, $color);
   }
 }
 
 @mixin mdc-switch-toggled-off-thumb-color($color) {
-  // stylelint-disable-next-line selector-max-specificity
-  &:not(.mdc-switch--disabled):not(.mdc-switch--checked) .mdc-switch__background .mdc-switch__thumb {
+  &:not(.mdc-switch--checked) .mdc-switch__thumb {
     @include mdc-theme-prop(background-color, $color);
     @include mdc-theme-prop(border-color, $color);
   }
 }
 
 @mixin mdc-switch-toggled-on-ripple-color($color) {
-  // stylelint-disable-next-line selector-max-specificity
-  &.mdc-switch--checked:not(.mdc-switch--disabled) .mdc-switch__thumb-underlay {
+  &.mdc-switch--checked .mdc-switch__thumb-underlay {
     @include mdc-states($color);
   }
 }
 
 @mixin mdc-switch-toggled-off-ripple-color($color) {
-  // stylelint-disable-next-line selector-max-specificity
-  &:not(.mdc-switch--disabled):not(.mdc-switch--checked) .mdc-switch__thumb-underlay {
+  &:not(.mdc-switch--checked) .mdc-switch__thumb-underlay {
     @include mdc-states($color);
   }
 }
 
 @mixin mdc-switch-tap-target_ {
-  @include mdc-rtl-reflexive-position(left, -14px);
-
   position: absolute;
-  top: -14px;
   width: $mdc-switch-tap-target-size;
   height: $mdc-switch-tap-target-size;
 }

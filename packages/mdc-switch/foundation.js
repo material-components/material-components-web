@@ -89,7 +89,7 @@ class MDCSwitchFoundation extends MDCFoundation {
   }
 
   /**
-   * Handles the change event for the switch.
+   * Handles the change event for the switch native control.
    */
   handleChange() {
     this.updateCheckedStyling_();
@@ -106,6 +106,10 @@ class MDCSwitchFoundation extends MDCFoundation {
     };
   }
 
+  /**
+   * Updates the styling of the switch based on its checked state.
+   * @private
+   */
   updateCheckedStyling_() {
     this.isChecked() ? this.adapter_.addClass(cssClasses.TOGGLED_ON) : this.adapter_.removeClass(cssClasses.TOGGLED_ON);
   }
