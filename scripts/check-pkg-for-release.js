@@ -193,8 +193,7 @@ function checkAutoInitAddedInMDCPackage(ast) {
   let nameCamel = camelCase(pkg.name.replace('@material/', ''));
   if (nameCamel === 'textfield') {
     nameCamel = 'textField';
-  }
-  if (nameCamel === 'switch') {
+  } else if (nameCamel === 'switch') {
     nameCamel = 'switchComponent';
   }
   let autoInitedCount = 0;
@@ -219,8 +218,7 @@ function checkComponentExportedAddedInMDCPackage(ast) {
   let nameCamel = camelCase(pkg.name.replace('@material/', ''));
   if (nameCamel === 'textfield') {
     nameCamel = 'textField';
-  }
-  if (nameCamel === 'switch') {
+  } else if (nameCamel === 'switch') {
     nameCamel = 'switchComponent';
   }
   let isExported = false;

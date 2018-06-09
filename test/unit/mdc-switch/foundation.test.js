@@ -93,20 +93,20 @@ test('#setChecked exits gracefully if getNativeControl() does not return anythin
   assert.doesNotThrow(() => foundation.setChecked(true));
 });
 
-test('#setChecked adds mdc-switch--toggled-on to the switch element when set to true', () => {
+test('#setChecked adds mdc-switch--checked to the switch element when set to true', () => {
   const {foundation, mockAdapter} = setupTest();
   const nativeControl = {checked: false};
   td.when(mockAdapter.getNativeControl()).thenReturn(nativeControl);
   foundation.setChecked(true);
-  td.verify(mockAdapter.addClass(MDCSwitchFoundation.cssClasses.TOGGLED_ON));
+  td.verify(mockAdapter.addClass(MDCSwitchFoundation.cssClasses.CHECKED));
 });
 
-test('#setChecked removes mdc-switch--toggled-on from the switch element when set to false', () => {
+test('#setChecked removes mdc-switch--checked from the switch element when set to false', () => {
   const {foundation, mockAdapter} = setupTest();
   const nativeControl = {checked: true};
   td.when(mockAdapter.getNativeControl()).thenReturn(nativeControl);
   foundation.setChecked(false);
-  td.verify(mockAdapter.removeClass(MDCSwitchFoundation.cssClasses.TOGGLED_ON));
+  td.verify(mockAdapter.removeClass(MDCSwitchFoundation.cssClasses.CHECKED));
 });
 
 test('#isDisabled returns the value of nativeControl.disabled', () => {
@@ -152,7 +152,7 @@ test('#setDisabled exits gracefully if getNativeControl() does not return anythi
 });
 
 test('a native control change event fired when the switch changes to a checked state results in adding ' +
-      'mdc-switch--toggled-on to the switch ', () => {
+      'mdc-switch--checked to the switch ', () => {
   const {foundation, mockAdapter} = setupTest();
 
   let changeHandler;
@@ -164,11 +164,11 @@ test('a native control change event fired when the switch changes to a checked s
   td.when(mockAdapter.getNativeControl()).thenReturn({checked: true});
 
   changeHandler();
-  td.verify(mockAdapter.addClass(MDCSwitchFoundation.cssClasses.TOGGLED_ON));
+  td.verify(mockAdapter.addClass(MDCSwitchFoundation.cssClasses.CHECKED));
 });
 
 test('a native control change event fired when the switch changes to an unchecked state results in removing ' +
-      'mdc-switch--toggled-on from the switch ', () => {
+      'mdc-switch--checked from the switch ', () => {
   const {foundation, mockAdapter} = setupTest();
 
   let changeHandler;
@@ -180,5 +180,5 @@ test('a native control change event fired when the switch changes to an unchecke
   td.when(mockAdapter.getNativeControl()).thenReturn({checked: false});
 
   changeHandler();
-  td.verify(mockAdapter.removeClass(MDCSwitchFoundation.cssClasses.TOGGLED_ON));
+  td.verify(mockAdapter.removeClass(MDCSwitchFoundation.cssClasses.CHECKED));
 });

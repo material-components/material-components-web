@@ -20,7 +20,7 @@ const ROOT = 'mdc-switch';
 
 /** @enum {string} */
 const cssClasses = {
-  TOGGLED_ON: 'mdc-switch--checked',
+  CHECKED: 'mdc-switch--checked',
   DISABLED: 'mdc-switch--disabled',
 };
 

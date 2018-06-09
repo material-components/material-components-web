@@ -111,7 +111,7 @@ class MDCSwitchFoundation extends MDCFoundation {
    * @private
    */
   updateCheckedStyling_() {
-    this.isChecked() ? this.adapter_.addClass(cssClasses.TOGGLED_ON) : this.adapter_.removeClass(cssClasses.TOGGLED_ON);
+    this.isChecked() ? this.adapter_.addClass(cssClasses.CHECKED) : this.adapter_.removeClass(cssClasses.CHECKED);
   }
 }
 

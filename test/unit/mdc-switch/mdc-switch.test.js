@@ -27,12 +27,10 @@ const {NATIVE_CONTROL_SELECTOR, RIPLE_SURFACE_SELECTOR} = MDCSwitchFoundation.st
 function getFixture() {
   return bel`
     <div class="mdc-switch">
-      <div class="mdc-switch__background">
-        <div class="mdc-switch__track"></div>
-        <div class="mdc-switch__thumb-underlay">
-          <div class="mdc-switch__thumb">
-          <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" role="switch">
-        </div>
+      <div class="mdc-switch__track"></div>
+      <div class="mdc-switch__thumb-underlay">
+        <div class="mdc-switch__thumb">
+        <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" role="switch">
       </div>
     </div>
   `;
