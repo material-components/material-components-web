@@ -15,6 +15,7 @@
 @import "@material/ripple/common";
 @import "@material/ripple/mixins";
 @import "@material/ripple/variables";
+@import "@material/typography/mixins";
 @import "./mixins";
 
 // postcss-bem-linter: define fab
@@ -29,6 +30,14 @@
 
 .mdc-fab--mini {
   @include mdc-fab--mini_;
+}
+
+.mdc-fab--extended {
+  @include mdc-fab--extended_;
+}
+
+.mdc-fab__label {
+  @include mdc-fab--label_;
 }
 
 .mdc-fab__icon {
