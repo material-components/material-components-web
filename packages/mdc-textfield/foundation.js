@@ -48,15 +48,18 @@ class MDCTextFieldFoundation extends MDCFoundation {
     return !this.isValid() && !this.isFocused_;
   }
 
-  /** @return {boolean} */
-  get shouldAlwaysFloat() {
-    const type = this.getType();
+  /**
+   * @return {boolean}
+   * @private
+   */
+  get shouldAlwaysFloat_() {
+    const type = this.getNativeInput_().type;
     return ALWAYS_FLOAT_TYPES.indexOf(type) >= 0;
   }
 
   /** @return {boolean} */
   get shouldFloat() {
-    return this.shouldAlwaysFloat || this.isFocused_ || !!this.getValue() || this.isBadInput_();
+    return this.shouldAlwaysFloat_ || this.isFocused_ || !!this.getValue() || this.isBadInput_();
   }
 
   /**
@@ -263,27 +266,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
     }
     if (!this.shouldFloat) {
       this.receivedUserInput_ = false;
-    }
-  }
-
-  /**
-   * @return {string} The type of the input Element.
-   */
-  getType() {
-    return this.getNativeInput_().type;
-  }
-
-  /**
-   * @param {string} type The type to set on the input Element.
-   */
-  setType(type) {
-    this.getNativeInput_().type = type;
-    const isValid = this.isValid();
-    this.styleValidity_(isValid);
-    if (this.adapter_.hasLabel()) {
-      this.notchOutline(this.shouldFloat);
-      this.adapter_.floatLabel(this.shouldFloat);
-      this.adapter_.shakeLabel(this.shouldShake);
     }
   }
 
