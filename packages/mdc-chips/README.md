@@ -217,8 +217,9 @@ Method Signature | Description
 Property | Value Type | Description
 --- | --- | ---
 `foundation` | MDCChipFoundation | The foundation
-`shouldRemoveOnTrailingIconClick` | Boolean | Proxies to the foundation's `shouldRemoveOnTrailingIconClick`/`setShouldRemoveOnTrailingIconClick` methods
+`shouldRemoveOnTrailingIconClick` | Boolean | Proxies to the foundation's `getShouldRemoveOnTrailingIconClick`/`setShouldRemoveOnTrailingIconClick` methods
 `ripple` | `MDCRipple` | The `MDCRipple` instance for the root element that `MDCChip` initializes
+>_NOTE_: If `shouldRemoveOnTrailingIconClick` is set to false, you must manually call `beginExit()` on the chip to remove it.
 
 #### `MDCChipSet`
 
