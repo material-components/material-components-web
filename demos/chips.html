@@ -302,7 +302,7 @@
         }
 
         function addInputChip(evt) {
-          if ((evt.type === 'click' || evt.key === 'Enter' || evt.keyCode === 13) && 
+          if ((evt.type === 'click' || evt.key === 'Enter' || evt.keyCode === 13) &&
               input.value !== '') {
             var leadingIcon = document.querySelector('.input-leading-icon').cloneNode(true);
             var trailingIcon = document.querySelector('.input-trailing-icon').cloneNode(true);
@@ -316,9 +316,8 @@
         };
 
         function confirmChipRemoval(evt) {
-          const {chip} = evt.detail;
           if (confirm('Are you sure you want to remove this chip?')) {
-            chip.beginExit();
+            evt.detail.chip.beginExit();
           }
         }
 
