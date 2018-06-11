@@ -199,7 +199,14 @@ apply these mixins with CSS selectors such as `.foo-text-field.mdc-text-field--i
 
 > _NOTE_: the `mdc-line-ripple-color` mixin should be applied from the not focused class `foo-text-field:not(.mdc-text-field--focused)`).
 
-#### Mixins for Text Field
+#### Mixins for all Text Field
+
+Mixin | Description
+--- | ---
+`mdc-text-field-ink-color($color)` | Customizes the text entered into the text field.
+`mdc-text-field-label-color($color)` | Customizes the text color of the label.
+
+#### Mixins for Filled Text Field
 
 Mixin | Description
 --- | ---
@@ -207,8 +214,6 @@ Mixin | Description
 `mdc-text-field-fill-color($color)` | Customizes the background color of the text field.
 `mdc-text-field-bottom-line-color($color)` | Customizes the text field bottom line color except the outlined and textarea variants.
 `mdc-text-field-hover-bottom-line-color($color)` | Customizes the hover text field bottom line color except the outlined and textarea variants.
-`mdc-text-field-ink-color($color)` | Customizes the text entered into the text field.
-`mdc-text-field-label-color($color)` | Customizes the text color of the label.
 `mdc-text-field-line-ripple-color($color)` | Customizes the color of the default line ripple of the text field.
 
 #### Mixins for Outlined Text Field

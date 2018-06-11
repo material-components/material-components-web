@@ -139,11 +139,6 @@
 
   pointer-events: none;
 
-  .mdc-text-field__input {
-    // border-bottom-width: 1px;
-    // border-bottom-style: dotted;
-  }
-
   .mdc-floating-label {
     cursor: default;
   }
@@ -450,7 +445,6 @@
     line-height: 1.15;
     text-overflow: clip;
     white-space: normal;
-    pointer-events: auto;
     overflow: visible;
   }
 }
