@@ -39,6 +39,12 @@ npm install @material/elevation
 
 ## Usage
 
+### Styles
+
+```scss
+@import "@material/elevation/mdc-elevation";
+```
+
 ### CSS Classes
 
 Some components have a set elevation. For example, a raised MDC Button has elevation 2.
