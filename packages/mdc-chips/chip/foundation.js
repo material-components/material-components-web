@@ -132,6 +132,13 @@ class MDCChipFoundation extends MDCFoundation {
   }
 
   /**
+   * Begins the exit animation which leads to removal of the chip.
+   */
+  beginExit() {
+    this.adapter_.addClass(cssClasses.CHIP_EXIT);
+  }
+
+  /**
    * Handles an interaction event on the root element.
    * @param {!Event} evt
    */
@@ -195,8 +202,7 @@ class MDCChipFoundation extends MDCFoundation {
     if (evt.type === 'click' || evt.key === 'Enter' || evt.keyCode === 13) {
       this.adapter_.notifyTrailingIconInteraction();
       if (this.shouldRemoveOnTrailingIconClick_) {
-        // Begins the exit animation which leads to removal of the chip
-        this.adapter_.addClass(cssClasses.CHIP_EXIT);
+        this.beginExit();
       }
     }
   }

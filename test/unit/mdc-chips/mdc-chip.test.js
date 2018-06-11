@@ -214,8 +214,8 @@ test('#set shouldRemoveOnTrailingIconClick proxies to foundation', () => {
   td.verify(mockFoundation.setShouldRemoveOnTrailingIconClick(false));
 });
 
-test(`#beginExit adds ${MDCChipFoundation.cssClasses.CHIP_EXIT} class`, () => {
-  const {component, root} = setupMockFoundationTest();
+test('#beginExit proxies to foundation', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
   component.beginExit();
-  assert.isTrue(root.classList.contains(MDCChipFoundation.cssClasses.CHIP_EXIT));
+  td.verify(mockFoundation.beginExit());
 });

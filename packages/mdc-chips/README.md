@@ -212,7 +212,7 @@ To use the `MDCChip` and `MDCChipSet` classes, [import](../../docs/importing-js.
 Method Signature | Description
 --- | ---
 `isSelected() => boolean` | Proxies to the foundation's `isSelected` method
-`beginExit() => void` | Begins the exit animation which leads to removal of the chip
+`beginExit() => void` | Proxies to the foundation's `beginExit` method
 
 Property | Value Type | Description
 --- | --- | ---
@@ -281,6 +281,7 @@ Method Signature | Description
 `setSelected(selected: boolean) => void` | Sets the chip's selected state
 `getShouldRemoveOnTrailingIconClick() => boolean` | Returns whether a trailing icon click should trigger exit/removal of the chip
 `setShouldRemoveOnTrailingIconClick(shouldRemove: boolean) => void` | Sets whether a trailing icon click should trigger exit/removal of the chip
+`beginExit() => void` | Begins the exit animation which leads to removal of the chip
 
 #### `MDCChipSetFoundation`
 

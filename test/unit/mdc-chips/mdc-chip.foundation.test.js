@@ -99,6 +99,12 @@ test('#setSelected removes mdc-chip--selected class if false', () => {
   td.verify(mockAdapter.removeClass(cssClasses.SELECTED));
 });
 
+test(`#beginExit adds ${cssClasses.CHIP_EXIT} class`, () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.beginExit();
+  td.verify(mockAdapter.addClass(cssClasses.CHIP_EXIT));
+});
+
 test('on click, emit custom event', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerEventHandler');
