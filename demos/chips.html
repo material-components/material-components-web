@@ -272,7 +272,7 @@
         function resetInputChipSet() {
           inputChipSetComponent.destroy();
           if (this.checked) {
-            inputChipSetComponent = new mdc.chips.MDCChipSet(inputChipSetEl, undefined, (chipEl) => {
+            inputChipSetComponent = new mdc.chips.MDCChipSet(inputChipSetEl, undefined, function(chipEl) {
               const chip = new mdc.chips.MDCChip(chipEl);
               chip.shouldRemoveOnTrailingIconClick = false;
               return chip;
