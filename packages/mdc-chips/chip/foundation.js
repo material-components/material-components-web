@@ -120,7 +120,7 @@ class MDCChipFoundation extends MDCFoundation {
   /**
    * @return {boolean}
    */
-  shouldRemoveOnTrailingIconClick() {
+  getShouldRemoveOnTrailingIconClick() {
     return this.shouldRemoveOnTrailingIconClick_;
   }
 

@@ -277,7 +277,7 @@ Method Signature | Description
 --- | ---
 `isSelected() => boolean` | Returns true if the chip is selected
 `setSelected(selected: boolean) => void` | Sets the chip's selected state
-`shouldRemoveOnTrailingIconClick() => boolean` | Returns whether a trailing icon click should trigger exit/removal of the chip
+`getShouldRemoveOnTrailingIconClick() => boolean` | Returns whether a trailing icon click should trigger exit/removal of the chip
 `setShouldRemoveOnTrailingIconClick(shouldRemove: boolean) => void` | Sets whether a trailing icon click should trigger exit/removal of the chip
 
 #### `MDCChipSetFoundation`

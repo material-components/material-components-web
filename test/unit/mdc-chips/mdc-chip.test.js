@@ -205,7 +205,7 @@ test('#isSelected proxies to foundation', () => {
 
 test('#get shouldRemoveOnTrailingIconClick proxies to foundation', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
-  assert.equal(component.shouldRemoveOnTrailingIconClick, mockFoundation.shouldRemoveOnTrailingIconClick());
+  assert.equal(component.shouldRemoveOnTrailingIconClick, mockFoundation.getShouldRemoveOnTrailingIconClick());
 });
 
 test('#set shouldRemoveOnTrailingIconClick proxies to foundation', () => {
