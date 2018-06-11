@@ -25,71 +25,6 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script src="/ready.js"></script>
-    <style>
-      .demo-fabs {
-        display: flex;
-        flex-wrap: wrap;
-      }
-
-      legend {
-        display: block;
-        padding: 16px;
-        padding-top: 64px;
-        padding-bottom: 24px;
-      }
-
-      figcaption > div {
-        margin: 8px;
-      }
-
-      .mdc-fab {
-        margin: 16px;
-      }
-
-      .demo-absolute-fab,
-      .demo-fixed-fab {
-        position: absolute;
-        bottom: 1rem;
-        right: 1rem;
-        z-index: 1;
-      }
-
-      .demo-fixed-fab {
-        position: fixed;
-      }
-
-      @media(min-width: 1024px) {
-        .demo-fixed-fab {
-          bottom: 1.5rem;
-          right: 1.5rem;
-        }
-      }
-
-      .fab-motion-container {
-        border: 1px solid #ccc;
-        margin: 1rem;
-        padding: 0 1rem;
-        overflow: hidden;
-        position: relative;
-        height: 10rem;
-        width: 20rem;
-      }
-
-      .fab-motion-container__view {
-        background-color: #fff;
-        box-sizing: border-box;
-        position: absolute;
-        transition: transform 375ms cubic-bezier(0.0, 0.0, 0.2, 1);
-        height: 100%;
-        width: 100%;
-        will-change: transform;
-      }
-
-      .fab-motion-container__view--exited {
-        transition-timing-function: cubic-bezier(.4, 0, 1, 1);
-        transform: translateY(100%);
-      }
-    </style>
   </head>
   <body class="mdc-typography">
     <header class="mdc-toolbar mdc-toolbar--fixed">
@@ -208,6 +143,21 @@
             </button>
             <figcaption>
               <div>SVG FAB</div>
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section>
+        <legend>Extended FAB</legend>
+        <div class="demo-fabs">
+          <figure class="demo-figure-fab-extended">
+            <button class="mdc-fab mdc-fab--extended demo-fab-extended-fluid" aria-label="Favorite">
+              <span class="material-icons mdc-fab__icon">shopping_cart</span>
+              <span class="mdc-fab__label">Add to cart</span>
+            </button>
+            <figcaption>
+              <div>Auto width extended FAB (Responsive)</div>
             </figcaption>
           </figure>
         </div>
