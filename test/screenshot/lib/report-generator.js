@@ -21,7 +21,12 @@ const child_process = require('mz/child_process'); // eslint-disable-line
 const GITHUB_REPO_URL = 'https://github.com/material-components/material-components-web';
 
 class ReportGenerator {
-  constructor({testCases, diffs}) {
+  /**
+   * @param {!ReportData} reportData
+   */
+  constructor(reportData) {
+    const {testCases, diffs} = reportData;
+
     /**
      * @type {!Array<!UploadableTestCase>}
      * @private
