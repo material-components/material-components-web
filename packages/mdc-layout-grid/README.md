@@ -50,6 +50,12 @@ npm install @material/layout-grid
 </div>
 ```
 
+### Styles
+
+```scss
+@import "@material/layout-grid/mdc-layout-grid";
+```
+
 #### Nested grid
 
 When your contents need extra structure that cannot be supported by single layout grid, you can nest layout grid within each other. To nest layout grid, add a new `mdc-layout-grid__inner` to wrap around nested `mdc-layout-grid__cell` within an existing `mdc-layout-grid__cell`.
