@@ -317,18 +317,17 @@ class Controller {
   /**
    * Writes the given `testCases` to a `golden.json` file.
    * If the file already exists, it will be overwritten.
-   * @param {!Array<!UploadableTestCase>} testCases
-   * @param {!Array<!ImageDiffJson>} diffs
-   * @return {!Promise<{diffs: !Array<!ImageDiffJson>, testCases: !Array<!UploadableTestCase>}>}
+   * @param {!ReportData} reportData
+   * @return {!Promise<!ReportData>}
    */
-  async updateGoldenJson({testCases, diffs}) {
-    await this.snapshotStore_.writeToDisk({testCases, diffs});
-    return {testCases, diffs};
+  async updateGoldenJson(reportData) {
+    await this.snapshotStore_.writeToDisk(reportData);
+    return reportData;
   }
 
   /**
    * @param {!Array<!UploadableTestCase>} testCases
-   * @return {!Promise<{diffs: !Array<!ImageDiffJson>, testCases: !Array<!UploadableTestCase>}>}
+   * @return {!Promise<!ReportData>}
    */
   async diffGoldenJson(testCases) {
     /** @type {!Array<!ImageDiffJson>} */
@@ -381,12 +380,11 @@ class Controller {
   }
 
   /**
-   * @param {!Array<!UploadableTestCase>} testCases
-   * @param {!Array<!ImageDiffJson>} diffs
+   * @param {!ReportData} reportData
    * @return {!Promise<string>}
    */
-  async uploadDiffReport({testCases, diffs}) {
-    const reportGenerator = new ReportGenerator({testCases, diffs});
+  async uploadDiffReport(reportData) {
+    const reportGenerator = new ReportGenerator(reportData);
 
     /** @type {!UploadableFile} */
     const reportFile = await this.storage_.uploadFile(new UploadableFile({
