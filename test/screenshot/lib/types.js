@@ -77,6 +77,14 @@ let SnapshotResultJson;
  */
 let ImageDiffJson;
 
+/**
+ * @typedef {{
+ *   diffs: !Array<!ImageDiffJson>,
+ *   testCases: !Array<!UploadableTestCase>,
+ * }}
+ */
+let ReportData;
+
 
 /*
  * CLI args
