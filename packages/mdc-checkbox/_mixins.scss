@@ -69,10 +69,8 @@
 }
 
 @mixin mdc-checkbox-ink-color($color) {
-  .mdc-checkbox__checkmark-path {
-    // !important is needed here because a stroke must be set as an attribute on the SVG in order
-    // for line animation to work properly.
-    @include mdc-theme-prop(stroke, $color, $important: true);
+  .mdc-checkbox__checkmark {
+    @include mdc-theme-prop(color, $color);
   }
 
   .mdc-checkbox__mixedmark {
@@ -322,6 +320,7 @@
   width: 100%;
   transition: mdc-checkbox-transition-exit(opacity, 0ms, $mdc-checkbox-transition-duration * 2);
   opacity: 0;
+  stroke: currentColor;
 
   .mdc-checkbox--upgraded & {
     opacity: 1;
