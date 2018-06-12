@@ -94,6 +94,7 @@ class Controller {
     this.baseUploadDir_ = await this.storage_.generateUniqueUploadDir();
 
     await this.gitRepo_.fetch();
+    await CbtUserAgent.fetchBrowsersToRun();
 
     if (await this.cliArgs_.shouldBuild()) {
       childProcess.spawnSync('npm', ['run', 'screenshot:build'], {shell: true, stdio: 'inherit'});
@@ -408,7 +409,7 @@ class Controller {
   logUploadAllAssetsSuccess_(testCases) {
     const publicHtmlFileUrls = testCases.map((testCase) => testCase.htmlFile.publicUrl).sort();
     console.log('\n\nDONE uploading asset files to GCS!\n\n');
-    console.log(publicHtmlFileUrls.join('\n'));
+    console.log(publicHtmlFileUrls.join('\n') + '\n\n');
   }
 
   /**
