@@ -75,7 +75,8 @@ class ReportGenerator {
     <meta charset="utf-8">
     <title>${numDiffs} Diffs - Screenshot Test Report - MDC Web</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    ${this.getStyleMarkup_()}
+    <link rel="stylesheet" href="./out/report.css">
+    <script src="./report.js"></script>
   </head>
   <body class="report-body">
     <h1>
@@ -127,7 +128,7 @@ class ReportGenerator {
 
     const gitUserName = await this.gitRepo_.getUserName();
     const gitUserEmail = await this.gitRepo_.getUserEmail();
-    const gitUser = `&lt;${gitUserName}&gt; ${gitUserEmail}`;
+    const gitUser = `${gitUserName} &lt;${gitUserEmail}&gt;`;
 
     const getExecutableVersion = async (cmd) => {
       const options = {cwd: process.env.PWD, env: process.env};
@@ -269,7 +270,7 @@ on tag
     }
 
     return `
-<button onclick="Array.from(document.querySelectorAll('.report-file, .report-browser')).forEach((e) => e.open = false)">
+<button onclick="mdc.report.collapseAll()">
   collapse all
 </button>
 `;
@@ -324,102 +325,6 @@ on tag
     <img class="report-browser__image" src="${url}">
   </a>
 </div>
-`;
-  }
-
-  getStyleMarkup_() {
-    return `
-<style>
-/* https://www.paulirish.com/2012/box-sizing-border-box-ftw/ */
-/* apply a natural box layout model to all elements, but allowing components to change */
-html {
-  box-sizing: border-box;
-}
-*, *:before, *:after {
-  box-sizing: inherit;
-}
-
-.report-body {
-  font-family: "Roboto Mono", Consolas, monospace;
-  font-size: smaller;
-}
-
-.report-metadata__content {
-  padding: 0 24px;
-}
-
-.report-metadata__table {
-  border-collapse: collapse;
-}
-
-.report-metadata__cell {
-  padding: 2px 10px 2px 0;
-  text-align: left;
-  font-weight: normal;
-  vertical-align: top;
-}
-
-.report-metadata__cell--key {
-  font-style: italic;
-  width: 10em;
-}
-
-.report-file {
-  margin-bottom: 20px;
-  border: 1px solid #aaa;
-  border-radius: 3px;
-  background-color: #eee;
-}
-
-.report-file__heading {
-  font-size: larger;
-}
-
-.report-metadata__heading,
-.report-file__heading,
-.report-browser__heading {
-  font-weight: bold;
-  padding: 8px 10px;
-  cursor: pointer;
-}
-
-.report-metadata__heading:hover,
-.report-file__heading:hover,
-.report-browser__heading:hover {
-  background-color: #ddd;
-}
-
-.report-file__content {
-  padding: 0 24px;
-}
-
-.report-browser__content {
-  display: flex;
-  padding: 10px 24px;
-}
-
-.report-browser__image-cell {
-  width: calc(33% - 5px);
-}
-
-.report-browser__image-cell + .report-browser__image-cell {
-  margin-left: 5px;
-}
-
-.report-browser__image-link {
-  display: block;
-}
-
-.report-browser__image {
-  max-width: 100%;
-  vertical-align: top;
-}
-
-.report-congrats {
-  font-size: 3rem;
-  color: green;
-}
-</style>
 `;
   }
 }
