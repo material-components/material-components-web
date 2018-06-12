@@ -26,10 +26,11 @@
   position: relative;
 
   &__native-control {
-    @include mdc-switch-tap-target_;
+    @include mdc-switch-native-control_;
 
     display: inline-block;
     margin-top: $mdc-switch-knob-vertical-offset_;
+    margin-left: 0;
     transition: mdc-switch-transition(transform);
     opacity: 0;
     cursor: pointer;
@@ -73,7 +74,9 @@
     left: 0;
     transition:
       mdc-switch-transition(opacity),
-      mdc-switch-transition(background-color);
+      mdc-switch-transition(background-color),
+      mdc-switch-transition(border-color);
+    border: 1px solid;
     border-radius: 7px;
     opacity: .38;
     content: "";
@@ -87,12 +90,15 @@
   display: block;
   position: absolute;
   top: $mdc-switch-knob-vertical-offset_;
+  box-sizing: border-box;
   width: $mdc-switch-knob-diameter;
   height: $mdc-switch-knob-diameter;
   transform: translateX(0);
   transition:
     mdc-switch-transition(transform),
-    mdc-switch-transition(background-color);
+    mdc-switch-transition(background-color),
+    mdc-switch-transition(border-color);
+  border: $mdc-switch-knob-diameter / 2 solid;
   border-radius: 50%;
   z-index: 1;
 
@@ -149,6 +155,8 @@
   }
 
   .mdc-switch__knob {
+    border-width: 1px;  // In high contrast mode, only show outline of the knob.
+    border-color: $mdc-switch-disabled-knob-color;
     background-color: $mdc-switch-disabled-knob-color;
   }
 }

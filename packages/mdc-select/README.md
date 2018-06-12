@@ -6,6 +6,12 @@ iconId: menu
 path: /catalog/input-controls/select-menus/
 -->
 
+## Important - Default Style Deprecation Notice
+
+The existing default select style will be changed in an upcoming release. The Material spec indicates that
+the default style will be the filled variant (currently referred to as the box variant). This will become the  
+default style. Continuing to add the `mdc-select--box` class to the select will result in no change. 
+
 # Select Menus
 
 <!--<div class="article__asset">
@@ -89,6 +95,26 @@ modifier class on the root element.
   </select>
   <label class="mdc-floating-label">Pick a Food Group</label>
   <div class="mdc-line-ripple"></div>
+</div>
+```
+
+### Outlined Select
+
+The Select Outlined variant uses the `mdc-notched-outline` in place of the `mdc-line-ripple` element and adds the 
+`mdc-select--outlined` modifier class on the root element.
+
+```html
+<div class="mdc-select mdc-select--outlined">
+  <select class="mdc-select__native-control">
+   ...
+  </select>
+  <label class="mdc-floating-label">Pick a Food Group</label>
+   <div class="mdc-notched-outline">
+     <svg>
+       <path class="mdc-notched-outline__path"></path>
+     </svg>
+   </div>
+   <div class="mdc-notched-outline__idle"></div>
 </div>
 ```
 
@@ -189,6 +215,7 @@ Mixin | Description
 `mdc-select-bottom-line-color($color)` | Customizes the color of the default bottom line of the select.
 `mdc-select-focused-bottom-line-color($color)` | Customizes the color of the bottom line of the select when focused.
 `mdc-select-hover-bottom-line-color($color)` | Customizes the color of the bottom line when select is hovered.
+`mdc-select-outline-corner-radius($color)` | Customizes the color of the notched outline when select is focused.
 
 > NOTE: To further customize the floating label, please see the [floating label documentation](./../mdc-floating-label/README.md).
 
@@ -231,6 +258,7 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 
 | Method Signature | Description |
 | --- | --- |
+| `notchOutline(openNotch: boolean) => void` | Opens/closes the notched outline. |
 | `setValue(value: string) => void` | Sets the value of the component. |
 | `setDisabled(disabled: boolean) => void` | Adds/removes disabled class, and sets disabled attribute on the component. |
 | `setSelectedIndex(selectedIndex: number) => void` | Sets the selected index of the component. |

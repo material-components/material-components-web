@@ -51,13 +51,13 @@ We recommend you load [Material Icons](https://material.io/icons/) from Google F
 
 ```html
 <button class="mdc-fab" aria-label="Favorite">
-  <span class="mdc-fab__icon material-icons">
-    favorite
-  </span>
+  <span class="mdc-fab__icon material-icons">favorite</span>
 </button>
 ```
 
 > _NOTE:_ The floating action button icon can be used with a `span`, `i`, `img`, or `svg` element.
+
+> _NOTE:_ IE 11 will not center the icon properly if there is a newline or space after the material icon text.
 
 ### Styles
 
@@ -85,7 +85,9 @@ CSS Class | Description
 --- | ---
 `mdc-fab` | Mandatory, for the button element
 `mdc-fab__icon` | Mandatory, for the icon element
+`mdc-fab__label` | Optional, for the text label. Applicable only for Extended FAB.
 `mdc-fab--mini` | Optional, modifies the FAB to a smaller size
+`mdc-fab--extended` | Optional, modifies the FAB to wider size which includes a text label.
 `mdc-fab--exited` | Optional, animates the FAB out of view.<br>When this class is removed, the FAB will return to view.
 
 > **A note about `:disabled`**, No disabled styles are defined for FABs. The FAB promotes action, and should not be displayed in a disabled state. If you want to present a FAB that does *not* perform an action, you should also present an explanation to the user.
@@ -99,6 +101,7 @@ MDC FAB uses [MDC Theme](../mdc-theme)'s `secondary` color by default. Use the f
 Mixin | Description
 --- | ---
 `mdc-fab-accessible($container-color)` | Changes the FAB's container color to the given color, and updates the FAB's ink and ripple color to meet accessibility standards.
+`mdc-fab-extended-fluid` | Makes the Extended FAB fluid to container, such as screen width or the layout grid. Exposed as a mixin to support use within `@media` queries.
 
 #### Advanced Sass Mixins
 
@@ -142,8 +145,6 @@ Developers must position MDC FAB as needed within their application's design.
 }
 </style>
 <button class="mdc-fab app-fab--absolute" aria-label="Favorite">
-  <span class="mdc-fab__icon material-icons">
-    favorite
-  </span>
+  <span class="mdc-fab__icon material-icons">favorite</span>
 </button>
 ```
