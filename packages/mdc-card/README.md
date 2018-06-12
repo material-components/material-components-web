@@ -164,6 +164,11 @@ elements:
 </div>
 ```
 
+### Styles
+```css
+@import "@material/card/mdc-card";
+```
+
 ### CSS Classes
 
 CSS Class | Description

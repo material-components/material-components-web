@@ -19,10 +19,94 @@
 @import "../packages/mdc-fab/mdc-fab";
 @import "../packages/mdc-fab/mixins";
 
+.demo-fabs {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+legend {
+  display: block;
+  padding: 16px;
+  padding-top: 64px;
+  padding-bottom: 24px;
+}
+
+figcaption > div {
+  margin: 8px;
+}
+
+.mdc-fab {
+  margin: 16px;
+}
+
+.demo-absolute-fab,
+.demo-fixed-fab {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 1;
+}
+
+.demo-fixed-fab {
+  position: fixed;
+}
+
+@media(min-width: 1024px) {
+  .demo-fixed-fab {
+    bottom: 1.5rem;
+    right: 1.5rem;
+  }
+}
+
+.fab-motion-container {
+  border: 1px solid #ccc;
+  margin: 1rem;
+  padding: 0 1rem;
+  overflow: hidden;
+  position: relative;
+  height: 10rem;
+  width: 20rem;
+}
+
+.fab-motion-container__view {
+  background-color: #fff;
+  box-sizing: border-box;
+  position: absolute;
+  transition: transform 375ms cubic-bezier(0.0, 0.0, 0.2, 1);
+  height: 100%;
+  width: 100%;
+  will-change: transform;
+}
+
+.fab-motion-container__view--exited {
+  transition-timing-function: cubic-bezier(.4, 0, 1, 1);
+  transform: translateY(100%);
+}
+
 .mdc-fab.lightGreen800Fab {
   @include mdc-fab-accessible($material-color-light-green-800);
 }
 
 .demo-fab-icon-size {
   @include mdc-fab-icon-size(36px);
+}
+
+.demo-figure-fab-extended {
+  width: 100%;
+  padding: 0;
+  margin: 1em 40px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 700px) {
+  .demo-figure-fab-extended {
+    padding: 0 16px;
+    margin: 0;
+  }
+
+  .demo-fab-extended-fluid {
+    @include mdc-fab-extended-fluid;
+
+    margin: 16px 0;
+  }
 }

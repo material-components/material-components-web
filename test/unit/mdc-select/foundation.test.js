@@ -21,12 +21,16 @@ import {setupFoundationTest} from '../helpers/setup';
 import {verifyDefaultAdapter} from '../helpers/foundation';
 
 import MDCSelectFoundation from '../../../packages/mdc-select/foundation';
-import {cssClasses, strings} from '../../../packages/mdc-select/constants';
+import {cssClasses, strings, numbers} from '../../../packages/mdc-select/constants';
 
 suite('MDCSelectFoundation');
 
 test('exports cssClasses', () => {
   assert.deepEqual(MDCSelectFoundation.cssClasses, cssClasses);
+});
+
+test('exports numbers', () => {
+  assert.deepEqual(MDCSelectFoundation.numbers, numbers);
 });
 
 test('exports strings', () => {
@@ -35,10 +39,11 @@ test('exports strings', () => {
 
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSelectFoundation, [
-    'addClass', 'removeClass', 'floatLabel', 'activateBottomLine',
-    'deactivateBottomLine', 'setDisabled',
-    'registerInteractionHandler', 'deregisterInteractionHandler',
-    'getValue', 'setValue', 'getSelectedIndex', 'setSelectedIndex',
+    'addClass', 'removeClass', 'hasClass', 'floatLabel', 'activateBottomLine',
+    'deactivateBottomLine', 'setDisabled', 'registerInteractionHandler',
+    'deregisterInteractionHandler', 'getValue', 'setValue', 'getSelectedIndex',
+    'setSelectedIndex', 'isRtl', 'hasLabel', 'getLabelWidth', 'hasOutline',
+    'notchOutline', 'closeOutline',
   ]);
 });
 
@@ -112,4 +117,43 @@ test('#setValue calls setSelectedIndex, which calls floatLabel true', () => {
   td.when(mockAdapter.getSelectedIndex()).thenReturn(1);
   foundation.setValue('value');
   td.verify(mockAdapter.floatLabel(true));
+});
+
+test('#notchOutline updates the SVG path of the outline element', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getLabelWidth()).thenReturn(30);
+  td.when(mockAdapter.hasLabel()).thenReturn(true);
+  td.when(mockAdapter.hasOutline()).thenReturn(true);
+  td.when(mockAdapter.isRtl()).thenReturn(false);
+
+  foundation.notchOutline(true);
+  td.verify(mockAdapter.notchOutline(30 * numbers.LABEL_SCALE, false));
+});
+
+test('#notchOutline does nothing if no outline is present', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasOutline()).thenReturn(false);
+  td.when(mockAdapter.hasLabel()).thenReturn(true);
+
+  foundation.notchOutline(true);
+  td.verify(mockAdapter.notchOutline(td.matchers.anything()), {times: 0});
+});
+
+test('#notchOutline does nothing if no label is present', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasOutline()).thenReturn(true);
+  td.when(mockAdapter.hasLabel()).thenReturn(false);
+
+  foundation.notchOutline(true);
+  td.verify(mockAdapter.notchOutline(td.matchers.anything()), {times: 0});
+});
+
+test('#notchOutline calls updates notched outline to return to idle state when ' +
+  'openNotch is false', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasLabel()).thenReturn(true);
+  td.when(mockAdapter.hasOutline()).thenReturn(true);
+
+  foundation.notchOutline(false);
+  td.verify(mockAdapter.closeOutline());
 });

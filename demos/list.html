@@ -38,8 +38,8 @@
     <main>
       <div class="mdc-toolbar-fixed-adjust"></div>
       <section class="hero">
-        <ul class="mdc-list mdc-list--two-line mdc-list--avatar-list demo-list demo-list--with-avatars">
-          <li class="mdc-list-item">
+        <ul class="mdc-list mdc-list--two-line mdc-list--avatar-list demo-list demo-list--with-avatars" aria-orientation="vertical">
+          <li class="mdc-list-item" tabindex="0">
             <span class="mdc-list-item__graphic" role="presentation">
               <i class="material-icons" aria-hidden="true">folder</i>
             </span>
@@ -118,8 +118,9 @@
             <h3>Example - Two-Line Lists, Avatars, Metadata, Inset Dividers</h3>
             <div class="mdc-list-group demo-list-group--custom">
               <h3 class="mdc-list-group__subheader">Folders</h3>
-              <ul class="mdc-list mdc-list--two-line mdc-list--avatar-list demo-list demo-list--with-avatars demo-list--custom demo-list--icon-placeholders">
-                <li class="mdc-list-item">
+              <ul class="mdc-list mdc-list--two-line mdc-list--avatar-list demo-list demo-list--with-avatars demo-list--custom demo-list--icon-placeholders"
+                  aria-orientation="vertical">
+                <li class="mdc-list-item" tabindex="0">
                   <span class="mdc-list-item__graphic" role="presentation">
                     <i class="material-icons" aria-hidden="true">folder</i>
                   </span>
@@ -164,8 +165,9 @@
               </ul>
               <hr class="mdc-list-divider mdc-list-divider--inset">
               <h3 class="mdc-list-group__subheader">Files</h3>
-              <ul class="mdc-list mdc-list--two-line mdc-list--avatar-list demo-list demo-list--with-avatars demo-list--custom demo-list--icon-placeholders">
-                <li class="mdc-list-item">
+              <ul class="mdc-list mdc-list--two-line mdc-list--avatar-list demo-list demo-list--with-avatars demo-list--custom demo-list--icon-placeholders"
+                  aria-orientation="vertical">
+                <li class="mdc-list-item" tabindex="0">
                   <span class="mdc-list-item__graphic" role="presentation">
                     <i class="material-icons" aria-hidden="true">insert_drive_file</i>
                   </span>
@@ -209,8 +211,9 @@
           </section>
           <section>
             <h3>Text only (dense)</h3>
-            <ul class="mdc-list mdc-list--dense demo-list">
-              <li class="mdc-list-item">Single-line item</li>
+            <ul class="mdc-list mdc-list--dense demo-list"
+                aria-orientation="vertical">
+              <li class="mdc-list-item" tabindex="0">Single-line item</li>
               <li class="mdc-list-item">Single-line item</li>
               <li class="mdc-list-item">Single-line item</li>
             </ul>
@@ -218,8 +221,9 @@
           <section>
             <h3>Graphic</h3>
             <aside><p><em>Note: The grey background is styled using demo placeholder styles</em></p></aside>
-            <ul class="mdc-list demo-list demo-list--icon-placeholders">
-              <li class="mdc-list-item">
+            <ul class="mdc-list demo-list demo-list--icon-placeholders"
+                aria-orientation="vertical">
+              <li class="mdc-list-item" tabindex="0">
                 <span class="mdc-list-item__graphic"></span>
                 Single-line item
               </li>
@@ -235,8 +239,9 @@
           </section>
           <section>
             <h3>Graphic (dense)</h3>
-            <ul class="mdc-list mdc-list--dense demo-list demo-list--icon-placeholders">
-              <li class="mdc-list-item">
+            <ul class="mdc-list mdc-list--dense demo-list demo-list--icon-placeholders"
+                aria-orientation="vertical">
+              <li class="mdc-list-item" tabindex="0">
                 <span class="mdc-list-item__graphic"></span>
                 Single-line item
               </li>
@@ -252,8 +257,9 @@
           </section>
           <section>
             <h3>Graphic Example - Icon with Text</h3>
-            <ul class="mdc-list demo-list">
-              <li class="mdc-list-item">
+            <ul class="mdc-list demo-list"
+                aria-orientation="vertical">
+              <li class="mdc-list-item" tabindex="0">
                 <i class="material-icons mdc-list-item__graphic" aria-hidden="true">
                   network_wifi
                 </i>
@@ -274,74 +280,10 @@
             </ul>
           </section>
           <section>
-            <h3>Leading Checkbox</h3>
-            <ul class="mdc-list demo-list" id="leading-checkbox-list">
-              <li class="mdc-list-item checkbox-list-ripple-surface">
-                <span class="mdc-list-item__graphic">
-                  <div class="mdc-checkbox">
-                    <input type="checkbox"
-                           class="mdc-checkbox__native-control"
-                           id="leading-checkbox-blueberries"/>
-                    <div class="mdc-checkbox__background">
-                      <svg class="mdc-checkbox__checkmark"
-                           viewBox="0 0 24 24">
-                        <path class="mdc-checkbox__checkmark-path"
-                              fill="none"
-                              stroke="white"
-                              d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-                      </svg>
-                      <div class="mdc-checkbox__mixedmark"></div>
-                    </div>
-                  </div>
-                </span>
-                <label for="leading-checkbox-blueberries">Blueberries</label>
-              </li>
-              <li class="mdc-list-item checkbox-list-ripple-surface">
-                <span class="mdc-list-item__graphic">
-                  <div class="mdc-checkbox">
-                    <input type="checkbox"
-                           class="mdc-checkbox__native-control"
-                           id="leading-checkbox-boysenberries"/>
-                    <div class="mdc-checkbox__background">
-                      <svg class="mdc-checkbox__checkmark"
-                           viewBox="0 0 24 24">
-                        <path class="mdc-checkbox__checkmark-path"
-                              fill="none"
-                              stroke="white"
-                              d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-                      </svg>
-                      <div class="mdc-checkbox__mixedmark"></div>
-                    </div>
-                  </div>
-                </span>
-                <label for="leading-checkbox-boysenberries">Boysenberries</label>
-              </li>
-              <li class="mdc-list-item checkbox-list-ripple-surface">
-                <span class="mdc-list-item__graphic">
-                  <div class="mdc-checkbox">
-                    <input type="checkbox"
-                           class="mdc-checkbox__native-control"
-                           id="leading-checkbox-strawberries"/>
-                    <div class="mdc-checkbox__background">
-                      <svg class="mdc-checkbox__checkmark"
-                           viewBox="0 0 24 24">
-                        <path class="mdc-checkbox__checkmark-path"
-                              fill="none"
-                              stroke="white"
-                              d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-                      </svg>
-                      <div class="mdc-checkbox__mixedmark"></div>
-                    </div>
-                  </div>
-                </span>
-                <label for="leading-checkbox-strawberries">Strawberries</label>
-              </li>
-            </ul>
-          </section>
-          <section>
             <h3>Avatar List</h3>
-            <ul class="mdc-list mdc-list--avatar-list demo-list demo-list--with-avatars demo-list--icon-placeholders">
-              <li class="mdc-list-item">
+            <ul class="mdc-list mdc-list--avatar-list demo-list demo-list--with-avatars demo-list--icon-placeholders"
+                aria-orientation="vertical">
+              <li class="mdc-list-item" tabindex="0">
                 <span class="mdc-list-item__graphic"></span>
                 Single-line item
               </li>
@@ -357,8 +299,9 @@
           </section>
           <section>
             <h3>Avatar List (dense)</h3>
-            <ul class="mdc-list mdc-list--dense mdc-list--avatar-list demo-list demo-list--with-avatars demo-list--icon-placeholders">
-              <li class="mdc-list-item">
+            <ul class="mdc-list mdc-list--dense mdc-list--avatar-list demo-list demo-list--with-avatars demo-list--icon-placeholders"
+                aria-orientation="vertical">
+              <li class="mdc-list-item" tabindex="0">
                 <span class="mdc-list-item__graphic"></span>
                 Single-line item
               </li>
@@ -374,8 +317,9 @@
           </section>
           <section>
             <h3>Example - Avatar with Text</h3>
-            <ul class="mdc-list mdc-list--avatar-list demo-list demo-list--with-avatars">
-              <li class="mdc-list-item">
+            <ul class="mdc-list mdc-list--avatar-list demo-list demo-list--with-avatars"
+                aria-orientation="vertical">
+              <li class="mdc-list-item" tabindex="0">
                 <img class="mdc-list-item__graphic"
                      src="/images/animal1.svg"
                      width="56" height="56" alt="Panda">
@@ -397,8 +341,9 @@
           </section>
           <section>
             <h3>Metadata</h3>
-            <ul class="mdc-list demo-list">
-              <li class="mdc-list-item">
+            <ul class="mdc-list demo-list"
+                aria-orientation="vertical">
+              <li class="mdc-list-item" tabindex="0">
                 Single-line item
                 <span class="mdc-list-item__meta">$10.00</span>
               </li>
@@ -414,8 +359,9 @@
           </section>
           <section>
             <h3>Metadata (Dense)</h3>
-            <ul class="mdc-list mdc-list--dense demo-list">
-              <li class="mdc-list-item">
+            <ul class="mdc-list mdc-list--dense demo-list"
+                aria-orientation="vertical">
+              <li class="mdc-list-item" tabindex="0">
                 Single-line item
                 <span class="mdc-list-item__meta">$10.00</span>
               </li>
@@ -430,73 +376,10 @@
             </ul>
           </section>
           <section>
-            <h3>Trailing Checkbox</h3>
-            <ul class="mdc-list demo-list" id="trailing-checkbox-list">
-              <li class="mdc-list-item checkbox-list-ripple-surface">
-                <label for="trailing-checkbox-blueberries">Blueberries</label>
-                <span class="mdc-list-item__meta">
-                  <div class="mdc-checkbox">
-                    <input type="checkbox"
-                           class="mdc-checkbox__native-control"
-                           id="trailing-checkbox-blueberries"/>
-                    <div class="mdc-checkbox__background">
-                      <svg class="mdc-checkbox__checkmark"
-                           viewBox="0 0 24 24">
-                        <path class="mdc-checkbox__checkmark-path"
-                              fill="none"
-                              stroke="white" d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-                      </svg>
-                      <div class="mdc-checkbox__mixedmark"></div>
-                    </div>
-                  </div>
-                </span>
-              </li>
-              <li class="mdc-list-item checkbox-list-ripple-surface">
-                <label for="trailing-checkbox-boysenberries">Boysenberries</label>
-                <span class="mdc-list-item__meta">
-                  <div class="mdc-checkbox">
-                    <input type="checkbox"
-                           class="mdc-checkbox__native-control"
-                           id="trailing-checkbox-boysenberries"/>
-                    <div class="mdc-checkbox__background">
-                      <svg class="mdc-checkbox__checkmark"
-                           viewBox="0 0 24 24">
-                        <path class="mdc-checkbox__checkmark-path"
-                              fill="none"
-                              stroke="white"
-                              d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-                      </svg>
-                      <div class="mdc-checkbox__mixedmark"></div>
-                    </div>
-                  </div>
-                </span>
-              </li>
-              <li class="mdc-list-item checkbox-list-ripple-surface">
-                <label for="trailing-checkbox-strawberries">Strawberries</label>
-                <span class="mdc-list-item__meta">
-                  <div class="mdc-checkbox">
-                    <input type="checkbox"
-                           class="mdc-checkbox__native-control"
-                           id="trailing-checkbox-strawberries"/>
-                    <div class="mdc-checkbox__background">
-                      <svg class="mdc-checkbox__checkmark"
-                           viewBox="0 0 24 24">
-                        <path class="mdc-checkbox__checkmark-path"
-                              fill="none"
-                              stroke="white"
-                              d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-                      </svg>
-                      <div class="mdc-checkbox__mixedmark"></div>
-                    </div>
-                  </div>
-                </span>
-              </li>
-            </ul>
-          </section>
-          <section>
             <h3>Avatar + Metadata</h3>
-            <ul class="mdc-list mdc-list--avatar-list demo-list demo-list--with-avatars demo-list--icon-placeholders">
-              <li class="mdc-list-item">
+            <ul class="mdc-list mdc-list--avatar-list demo-list demo-list--with-avatars demo-list--icon-placeholders"
+                aria-orientation="vertical">
+              <li class="mdc-list-item" tabindex="0">
                 <span class="mdc-list-item__graphic"></span>
                 Single-line item
                 <span class="mdc-list-item__meta">$10.00</span>
@@ -515,8 +398,9 @@
           </section>
           <section>
             <h3>Avatar + Metadata (Dense)</h3>
-            <ul class="mdc-list mdc-list--dense mdc-list--avatar-list demo-list demo-list--with-avatars demo-list--icon-placeholders">
-              <li class="mdc-list-item">
+            <ul class="mdc-list mdc-list--dense mdc-list--avatar-list demo-list demo-list--with-avatars demo-list--icon-placeholders"
+                aria-orientation="vertical">
+              <li class="mdc-list-item" tabindex="0">
                 <span class="mdc-list-item__graphic"></span>
                 Single-line item
                 <span class="mdc-list-item__meta">$10.00</span>
@@ -535,8 +419,9 @@
           </section>
           <section>
             <h3>Example - Avatar with Text and Icon</h3>
-            <ul class="mdc-list mdc-list--avatar-list demo-list demo-list--with-avatars demo-list--avatar-and-meta-icon">
-              <li class="mdc-list-item">
+            <ul class="mdc-list mdc-list--avatar-list demo-list demo-list--with-avatars demo-list--avatar-and-meta-icon"
+                aria-orientation="vertical">
+              <li class="mdc-list-item" tabindex="0">
                 <img class="mdc-list-item__graphic"
                      src="/images/animal3.svg"
                      width="56" height="56" alt="Brown Bear">
@@ -576,8 +461,9 @@
           <h2>Two-Line List</h2>
           <section>
             <h3>Text-Only</h3>
-            <ul class="mdc-list mdc-list--two-line demo-list">
-              <li class="mdc-list-item">
+            <ul class="mdc-list mdc-list--two-line demo-list"
+                aria-orientation="vertical">
+              <li class="mdc-list-item" tabindex="0">
                 <span class="mdc-list-item__text">
                   Two-line item
                   <span class="mdc-list-item__secondary-text">Secondary text</span>
@@ -599,8 +485,9 @@
           </section>
           <section>
             <h3>Text-Only (Dense)</h3>
-            <ul class="mdc-list mdc-list--two-line mdc-list--dense demo-list">
-              <li class="mdc-list-item">
+            <ul class="mdc-list mdc-list--two-line mdc-list--dense demo-list"
+                aria-orientation="vertical">
+              <li class="mdc-list-item" tabindex="0">
                 <span class="mdc-list-item__text">
                   Two-line item
                   <span class="mdc-list-item__secondary-text">Secondary text</span>
@@ -622,8 +509,9 @@
           </section>
           <section>
             <h3>Graphic</h3>
-            <ul class="mdc-list mdc-list--two-line demo-list  demo-list--icon-placeholders">
-              <li class="mdc-list-item">
+            <ul class="mdc-list mdc-list--two-line demo-list  demo-list--icon-placeholders"
+                aria-orientation="vertical">
+              <li class="mdc-list-item" tabindex="0">
                 <span class="mdc-list-item__graphic"></span>
                 <span class="mdc-list-item__text">
                   Two-line item
@@ -648,8 +536,9 @@
           </section>
           <section>
             <h3>Graphic (Dense)</h3>
-            <ul class="mdc-list mdc-list--two-line mdc-list--dense demo-list demo-list--icon-placeholders">
-              <li class="mdc-list-item">
+            <ul class="mdc-list mdc-list--two-line mdc-list--dense demo-list demo-list--icon-placeholders"
+                aria-orientation="vertical">
+              <li class="mdc-list-item" tabindex="0">
                 <span class="mdc-list-item__graphic"></span>
                 <span class="mdc-list-item__text">
                   Two-line item
@@ -674,8 +563,9 @@
           </section>
           <section>
             <h3>Avatar List</h3>
-            <ul class="mdc-list mdc-list--two-line mdc-list--avatar-list demo-list demo-list--with-avatars demo-list--icon-placeholders">
-              <li class="mdc-list-item">
+            <ul class="mdc-list mdc-list--two-line mdc-list--avatar-list demo-list demo-list--with-avatars demo-list--icon-placeholders"
+                aria-orientation="vertical">
+              <li class="mdc-list-item" tabindex="0">
                 <span class="mdc-list-item__graphic"></span>
                 <span class="mdc-list-item__text">
                   Two-line item
@@ -700,8 +590,9 @@
           </section>
           <section>
             <h3>Avatar List (dense)</h3>
-            <ul class="mdc-list mdc-list--two-line mdc-list--dense mdc-list--avatar-list demo-list demo-list--with-avatars demo-list--icon-placeholders">
-              <li class="mdc-list-item">
+            <ul class="mdc-list mdc-list--two-line mdc-list--dense mdc-list--avatar-list demo-list demo-list--with-avatars demo-list--icon-placeholders"
+                aria-orientation="vertical">
+              <li class="mdc-list-item" tabindex="0">
                 <span class="mdc-list-item__graphic"></span>
                 <span class="mdc-list-item__text">
                   Two-line item
@@ -726,8 +617,9 @@
           </section>
           <section>
             <h3>Metadata</h3>
-            <ul class="mdc-list mdc-list--two-line demo-list">
-              <li class="mdc-list-item">
+            <ul class="mdc-list mdc-list--two-line demo-list"
+                aria-orientation="vertical">
+              <li class="mdc-list-item" tabindex="0">
                 <span class="mdc-list-item__text">
                   Two-line item
                   <span class="mdc-list-item__secondary-text">Secondary text</span>
@@ -752,8 +644,9 @@
           </section>
           <section>
             <h3>Metadata (Dense)</h3>
-            <ul class="mdc-list mdc-list--two-line mdc-list--dense demo-list">
-              <li class="mdc-list-item">
+            <ul class="mdc-list mdc-list--two-line mdc-list--dense demo-list"
+                aria-orientation="vertical">
+              <li class="mdc-list-item" tabindex="0">
                 <span class="mdc-list-item__text">
                   Two-line item
                   <span class="mdc-list-item__secondary-text">Secondary text</span>
@@ -778,8 +671,9 @@
           </section>
           <section>
             <h3>Example - Two-line Avatar + Text + Icon</h3>
-            <ul class="mdc-list mdc-list--two-line mdc-list--avatar-list demo-list demo-list--with-avatars demo-list--icon-placeholders">
-              <li class="mdc-list-item">
+            <ul class="mdc-list mdc-list--two-line mdc-list--avatar-list demo-list demo-list--with-avatars demo-list--icon-placeholders"
+                aria-orientation="vertical">
+              <li class="mdc-list-item" tabindex="0">
                 <span class="mdc-list-item__graphic" role="presentation">
                   <i class="material-icons" aria-hidden="true">folder</i>
                 </span>
@@ -825,8 +719,9 @@
           </section>
           <section>
             <h3>Lists w/ Ellipsis</h3>
-            <ul class="mdc-list mdc-list--two-line mdc-list--avatar-list demo-list demo-list--with-avatars demo-list--icon-placeholders">
-              <li href="#" class="mdc-list-item">
+            <ul class="mdc-list mdc-list--two-line mdc-list--avatar-list demo-list demo-list--with-avatars demo-list--icon-placeholders"
+                aria-orientation="vertical">
+              <li href="#" class="mdc-list-item" tabindex="0">
                   <span class="mdc-list-item__graphic">
                   <i class="material-icons" aria-hidden="true">
                     folder
@@ -887,8 +782,9 @@
           <h2>List Dividers</h2>
           <section>
             <h3>Full-Width Dividers</h3>
-            <ul class="mdc-list demo-list">
-              <li class="mdc-list-item">Single-line item - section 1</li>
+            <ul class="mdc-list demo-list"
+                aria-orientation="vertical">
+              <li class="mdc-list-item" tabindex="0">Single-line item - section 1</li>
               <li class="mdc-list-item">Single-line item - section 1</li>
               <li class="mdc-list-item">Single-line item - section 1</li>
               <li class="mdc-list-divider" role="separator"></li>
@@ -898,8 +794,9 @@
           </section>
           <section>
             <h3>Inset Dividers</h3>
-            <ul class="mdc-list mdc-list--avatar-list demo-list demo-list--with-avatars demo-list demo-list--icon-placeholders">
-              <li class="mdc-list-item">
+            <ul class="mdc-list mdc-list--avatar-list demo-list demo-list--with-avatars demo-list demo-list--icon-placeholders"
+                aria-orientation="vertical">
+              <li class="mdc-list-item" tabindex="0">
                 <span class="mdc-list-item__graphic"></span>
                 Single-line item - section 1
               </li>
@@ -929,15 +826,15 @@
             <h3>Basic Usage</h3>
             <div class="mdc-list-group">
               <h3 class="mdc-list-group__subheader">List 1</h3>
-              <ul class="mdc-list demo-list">
-                <li class="mdc-list-item">Single-line item</li>
+              <ul class="mdc-list demo-list" aria-orientation="vertical">
+                <li class="mdc-list-item" tabindex="0">Single-line item</li>
                 <li class="mdc-list-item">Single-line item</li>
                 <li class="mdc-list-item">Single-line item</li>
               </ul>
               <hr class="mdc-list-divider">
               <h3 class="mdc-list-group__subheader">List 2</h3>
-              <ul class="mdc-list demo-list">
-                <li class="mdc-list-item">Single-line item</li>
+              <ul class="mdc-list demo-list" aria-orientation="vertical">
+                <li class="mdc-list-item" tabindex="0">Single-line item</li>
                 <li class="mdc-list-item">Single-line item</li>
                 <li class="mdc-list-item">Single-line item</li>
               </ul>
@@ -947,8 +844,9 @@
             <h3>Example - Two-Line Lists, Avatars, Metadata, Inset Dividers</h3>
             <div class="mdc-list-group">
               <h3 class="mdc-list-group__subheader">Folders</h3>
-              <ul class="mdc-list mdc-list--two-line mdc-list--avatar-list demo-list demo-list--with-avatars demo-list--icon-placeholders">
-                <li class="mdc-list-item">
+              <ul class="mdc-list mdc-list--two-line mdc-list--avatar-list demo-list demo-list--with-avatars demo-list--icon-placeholders"
+                  aria-orientation="vertical">
+                <li class="mdc-list-item" tabindex="0">
                   <span class="mdc-list-item__graphic" role="presentation">
                     <i class="material-icons" aria-hidden="true">folder</i>
                   </span>
@@ -993,8 +891,9 @@
               </ul>
               <hr class="mdc-list-divider mdc-list-divider--inset">
               <h3 class="mdc-list-group__subheader">Files</h3>
-              <ul class="mdc-list mdc-list--two-line mdc-list--avatar-list demo-list demo-list--with-avatars demo-list--icon-placeholders">
-                <li class="mdc-list-item">
+              <ul class="mdc-list mdc-list--two-line mdc-list--avatar-list demo-list demo-list--with-avatars demo-list--icon-placeholders"
+                  aria-orientation="vertical">
+                <li class="mdc-list-item" tabindex="0">
                   <span class="mdc-list-item__graphic" role="presentation">
                     <i class="material-icons" aria-hidden="true">insert_drive_file</i>
                   </span>
@@ -1031,7 +930,7 @@
           <section>
             <h3>Example - Interactive List</h3>
             <nav class="mdc-list demo-list" data-demo-interactive-list>
-              <a href="#" class="mdc-list-item">
+              <a href="#" class="mdc-list-item" tabindex="0">
                 <i class="material-icons mdc-list-item__graphic" aria-hidden="true">
                   network_wifi
                 </i>
@@ -1058,15 +957,6 @@
     <script src="/assets/material-components-web.js" async></script>
     <script>
       demoReady(function() {
-        var checkboxes = document.querySelectorAll('.mdc-checkbox');
-        [].forEach.call(checkboxes, function(checkbox) {
-          var cbInstance = mdc.checkbox.MDCCheckbox.attachTo(checkbox);
-          if (checkbox.parentElement.classList.contains('mdc-form-field')) {
-            var ffInstance = mdc.formField.MDCFormField.attachTo(checkbox.parentElement);
-            ffInstance.input = cbInstance;
-          }
-        });
-
         var demoWrapper = document.getElementById('demo-wrapper');
         var hero = document.querySelector('.hero');
         document.getElementById('toggle-rtl').addEventListener('change', function() {
@@ -1089,27 +979,6 @@
             evt.preventDefault();
           });
         }
-
-        function clickHandler(evt, li) {
-          if (evt.target === li) {
-            var checkbox = li.querySelector('.mdc-checkbox__native-control');
-            checkbox.checked = !checkbox.checked;
-          }
-        };
-
-        function addRippleToListItems(list) {
-          var listItems = list.querySelectorAll('.mdc-list-item');
-
-          [].forEach.call(listItems, function(li) {
-            mdc.ripple.MDCRipple.attachTo(li);
-            li.addEventListener('click', function(e) {
-              clickHandler(e, li);
-            });
-          });
-        };
-
-        addRippleToListItems(document.getElementById('leading-checkbox-list'));
-        addRippleToListItems(document.getElementById('trailing-checkbox-list'));
       });
     </script>
   </body>

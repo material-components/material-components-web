@@ -46,9 +46,6 @@ if ! gcloud config get-value project 2>/dev/null | grep -q material-components-w
   exit 1
 fi
 
-log "Checking that all packages have correct dependency rules..."
-sh ./scripts/dependency-test.sh
-
 log "Running npm test to ensure no breakages..."
 npm test
 echo ""

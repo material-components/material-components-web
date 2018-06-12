@@ -203,13 +203,8 @@ test('#isSelected proxies to foundation', () => {
   td.verify(mockFoundation.isSelected());
 });
 
-test('#remove removes the root element from the DOM', () => {
-  const wrapper = bel`<div></div>`;
-  const {root, component, mockFoundation} = setupMockFoundationTest();
-  wrapper.appendChild(root);
-  assert.equal(wrapper.childNodes.length, 1);
-
-  component.remove();
-  td.verify(mockFoundation.destroy());
-  assert.equal(wrapper.childNodes.length, 0);
+test(`#beginExit adds ${MDCChipFoundation.cssClasses.CHIP_EXIT} class`, () => {
+  const {component, root} = setupMockFoundationTest();
+  component.beginExit();
+  assert.isTrue(root.classList.contains(MDCChipFoundation.cssClasses.CHIP_EXIT));
 });
