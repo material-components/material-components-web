@@ -47,12 +47,11 @@ class SnapshotStore {
 
   /**
    * Writes the data to the given `golden.json` file path.
-   * @param {!Array<!UploadableTestCase>} testCases
-   * @param {!Array<!ImageDiffJson>} diffs
+   * @param {!ReportData} reportData
    * @return {!Promise<void>}
    */
-  async writeToDisk({testCases, diffs}) {
-    const jsonData = await this.getJsonData_({testCases, diffs});
+  async writeToDisk(reportData) {
+    const jsonData = await this.getJsonData_(reportData);
     const jsonFilePath = this.cliArgs_.goldenPath;
     const jsonFileContent = stringify(jsonData, {space: '  '}) + '\n';
 
@@ -133,24 +132,23 @@ class SnapshotStore {
   }
 
   /**
-   * @param {!Array<!UploadableTestCase>} testCases
-   * @param {!Array<!ImageDiffJson>} diffs
+   * @param {!ReportData} reportData
    * @return {!Promise<!SnapshotSuiteJson>}
    * @private
    */
-  async getJsonData_({testCases, diffs}) {
+  async getJsonData_(reportData) {
     return this.cliArgs_.hasAnyFilters()
-      ? await this.updateFilteredScreenshots_({testCases, diffs})
-      : await this.updateAllScreenshots_({testCases, diffs});
+      ? await this.updateFilteredScreenshots_(reportData)
+      : await this.updateAllScreenshots_(reportData);
   }
 
   /**
-   * @param {!Array<!UploadableTestCase>} testCases
-   * @param {!Array<!ImageDiffJson>} diffs
+   * @param {!ReportData} reportData
    * @return {!Promise<!SnapshotSuiteJson>}
    * @private
    */
-  async updateFilteredScreenshots_({testCases, diffs}) {
+  async updateFilteredScreenshots_(reportData) {
+    const {testCases, diffs} = reportData;
     const oldJsonData = await this.fromDiffBase();
     const newJsonData = await this.fromTestCases(testCases);
     const jsonData = this.deepCloneJson_(oldJsonData);
@@ -170,12 +168,12 @@ class SnapshotStore {
   }
 
   /**
-   * @param {!Array<!UploadableTestCase>} testCases
-   * @param {!Array<!ImageDiffJson>} diffs
+   * @param {!ReportData} reportData
    * @return {!Promise<!SnapshotSuiteJson>}
    * @private
    */
-  async updateAllScreenshots_({testCases, diffs}) {
+  async updateAllScreenshots_(reportData) {
+    const {testCases, diffs} = reportData;
     const oldJsonData = await this.fromDiffBase();
     const newJsonData = await this.fromTestCases(testCases);
 
