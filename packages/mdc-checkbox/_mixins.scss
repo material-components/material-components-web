@@ -322,6 +322,7 @@
   width: 100%;
   transition: mdc-checkbox-transition-exit(opacity, 0ms, $mdc-checkbox-transition-duration * 2);
   opacity: 0;
+  stroke: currentColor;
 
   .mdc-checkbox--upgraded & {
     opacity: 1;
