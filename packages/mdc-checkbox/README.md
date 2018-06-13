@@ -51,7 +51,7 @@ We recommend using MDC Checkbox with [MDC Form Field](../mdc-form-field) for enh
            viewBox="0 0 24 24">
         <path class="mdc-checkbox__checkmark-path"
               fill="none"
-              stroke="white"
+              stroke="currentColor"
               d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
       </svg>
       <div class="mdc-checkbox__mixedmark"></div>

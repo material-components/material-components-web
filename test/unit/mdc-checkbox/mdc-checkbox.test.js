@@ -40,7 +40,7 @@ function getFixture() {
              viewBox="0 0 24 24">
           <path class="mdc-checkbox__checkmark-path"
                 fill="none"
-                stroke="white"
+                stroke="currentColor"
                 d="M4.1,12.7 9,17.6 20.3,6.3"/>
         </svg>
         <div class="mdc-checkbox__mixedmark"></div>
