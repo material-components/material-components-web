@@ -143,7 +143,7 @@ Property | Value Type | Description
 
 Event Name | Event Data Structure | Description
 --- | --- | ---
-`MDCIconButtonToggle` | `{"detail": {"isOn": boolean}}` | Emits when the icon is toggled.
+`MDCIconButtonToggle:change` | `{"detail": {"isOn": boolean}}` | Emits when the icon is toggled.
 
 ## Usage within Web Frameworks
 
