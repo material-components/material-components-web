@@ -261,7 +261,7 @@
   .mdc-text-field__input {
     display: flex;
     padding: 12px;
-    border: none;
+    border: 0 none !important;
     background-color: transparent;
     z-index: 1;
   }
