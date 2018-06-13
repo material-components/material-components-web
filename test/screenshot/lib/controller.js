@@ -94,6 +94,7 @@ class Controller {
     this.baseUploadDir_ = await this.storage_.generateUniqueUploadDir();
 
     await this.gitRepo_.fetch();
+    await CbtUserAgent.fetchBrowsersToRun();
 
     if (await this.cliArgs_.shouldBuild()) {
       childProcess.spawnSync('npm', ['run', 'screenshot:build'], {shell: true, stdio: 'inherit'});
@@ -317,18 +318,17 @@ class Controller {
   /**
    * Writes the given `testCases` to a `golden.json` file.
    * If the file already exists, it will be overwritten.
-   * @param {!Array<!UploadableTestCase>} testCases
-   * @param {!Array<!ImageDiffJson>} diffs
-   * @return {!Promise<{diffs: !Array<!ImageDiffJson>, testCases: !Array<!UploadableTestCase>}>}
+   * @param {!ReportData} reportData
+   * @return {!Promise<!ReportData>}
    */
-  async updateGoldenJson({testCases, diffs}) {
-    await this.snapshotStore_.writeToDisk({testCases, diffs});
-    return {testCases, diffs};
+  async updateGoldenJson(reportData) {
+    await this.snapshotStore_.writeToDisk(reportData);
+    return reportData;
   }
 
   /**
    * @param {!Array<!UploadableTestCase>} testCases
-   * @return {!Promise<{diffs: !Array<!ImageDiffJson>, testCases: !Array<!UploadableTestCase>}>}
+   * @return {!Promise<!ReportData>}
    */
   async diffGoldenJson(testCases) {
     /** @type {!Array<!ImageDiffJson>} */
@@ -381,12 +381,11 @@ class Controller {
   }
 
   /**
-   * @param {!Array<!UploadableTestCase>} testCases
-   * @param {!Array<!ImageDiffJson>} diffs
+   * @param {!ReportData} reportData
    * @return {!Promise<string>}
    */
-  async uploadDiffReport({testCases, diffs}) {
-    const reportGenerator = new ReportGenerator({testCases, diffs});
+  async uploadDiffReport(reportData) {
+    const reportGenerator = new ReportGenerator(reportData);
 
     /** @type {!UploadableFile} */
     const reportFile = await this.storage_.uploadFile(new UploadableFile({
@@ -410,7 +409,7 @@ class Controller {
   logUploadAllAssetsSuccess_(testCases) {
     const publicHtmlFileUrls = testCases.map((testCase) => testCase.htmlFile.publicUrl).sort();
     console.log('\n\nDONE uploading asset files to GCS!\n\n');
-    console.log(publicHtmlFileUrls.join('\n'));
+    console.log(publicHtmlFileUrls.join('\n') + '\n\n');
   }
 
   /**
