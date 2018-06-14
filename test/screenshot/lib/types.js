@@ -80,6 +80,9 @@ let ImageDiffJson;
 /**
  * @typedef {{
  *   diffs: !Array<!ImageDiffJson>,
+ *   added: !Array<!ImageDiffJson>,
+ *   removed: !Array<!ImageDiffJson>,
+ *   unchanged: !Array<!ImageDiffJson>,
  *   testCases: !Array<!UploadableTestCase>,
  * }}
  */
