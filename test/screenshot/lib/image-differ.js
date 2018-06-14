@@ -43,7 +43,7 @@ class ImageDiffer {
   }) {
     const added = this.getAddedToSuite_({expectedSuite, actualSuite});
     const removed = this.getRemovedFromSuite_({expectedSuite, actualSuite, runReport});
-    const skipped = this.getSkippedFromRunReport_({runReport, expectedSuite});
+    const skipped = this.getSkipped_({expectedSuite, actualSuite, runReport});
     const {diffs, unchanged} = await this.getChangedFromSuite_({expectedSuite, actualSuite});
 
     [added, removed, diffs, unchanged, skipped].forEach((array) => {
@@ -57,130 +57,6 @@ class ImageDiffer {
       unchanged,
       skipped,
     };
-  }
-
-  /**
-   * @param {!RunReport} runReport
-   * @param {!SnapshotSuiteJson} expectedSuite
-   * @return {!Array<!ImageDiffJson>}
-   * @private
-   */
-  getSkippedFromRunReport_({runReport, expectedSuite}) {
-    /** @type {!Array<!ImageDiffJson>} */
-    const skipped = [];
-
-    const runTarget = runReport.runTarget;
-
-    /** @type {!Array<!UploadableTestCase>} */
-    const allTestCases = [].concat(runTarget.runnableTestCases, runTarget.skippedTestCases);
-
-    /** @type {!Array<!CbtUserAgent>} */
-    const allUserAgents = [].concat(runTarget.runnableUserAgents, runTarget.skippedUserAgents);
-
-    function isUnique(newSkippedDiff) {
-      return !skipped.some((existingSkippedDiff) => {
-        return existingSkippedDiff.htmlFilePath === newSkippedDiff.htmlFilePath &&
-          existingSkippedDiff.userAgentAlias === newSkippedDiff.userAgentAlias;
-      });
-    }
-
-    allTestCases.forEach((testCase) => {
-      if (!testCase.isRunnable) {
-        const skippedFromTestCase =
-          this.getSkippedFromTestCase_({allUserAgents, expectedSuite, testCase}).filter(isUnique);
-        skipped.push(...skippedFromTestCase);
-      }
-    });
-
-    allUserAgents.forEach((userAgent) => {
-      if (!userAgent.isRunnable) {
-        const skippedFromUserAgent =
-          this.getSkippedFromUserAgent_({allTestCases, expectedSuite, userAgent}).filter(isUnique);
-        skipped.push(...skippedFromUserAgent);
-      }
-    });
-
-    return skipped;
-  }
-
-  /**
-   * @param {!Array<!CbtUserAgent>} allUserAgents
-   * @param {!SnapshotSuiteJson} expectedSuite
-   * @param {!UploadableTestCase} testCase
-   * @return {!Array<!ImageDiffJson>}
-   * @private
-   */
-  getSkippedFromTestCase_({allUserAgents, expectedSuite, testCase}) {
-    const skipped = [];
-    const htmlFilePath = testCase.htmlFile.destinationRelativeFilePath;
-    const expectedPage = expectedSuite[htmlFilePath];
-
-    allUserAgents.forEach((userAgent) => {
-      const userAgentAlias = userAgent.alias;
-
-      const goldenPageUrl =
-        expectedPage
-          ? expectedPage.publicUrl
-          : null;
-
-      const expectedImageUrl =
-        expectedPage && expectedPage.screenshots[userAgentAlias]
-          ? expectedPage.screenshots[userAgentAlias]
-          : null;
-
-      skipped.push({
-        htmlFilePath,
-        userAgentAlias: userAgent.alias,
-        goldenPageUrl,
-        snapshotPageUrl: null,
-        actualImageUrl: null,
-        expectedImageUrl,
-        diffImageBuffer: null,
-        diffImageUrl: null,
-      });
-    });
-
-    return skipped;
-  }
-
-  /**
-   * @param {!Array<!UploadableTestCase>} allTestCases
-   * @param {!SnapshotSuiteJson} expectedSuite
-   * @param {!CbtUserAgent} userAgent
-   * @return {!Array<!ImageDiffJson>}
-   * @private
-   */
-  getSkippedFromUserAgent_({allTestCases, expectedSuite, userAgent}) {
-    const skipped = [];
-    const userAgentAlias = userAgent.alias;
-
-    allTestCases.forEach((testCase) => {
-      const htmlFilePath = testCase.htmlFile.destinationRelativeFilePath;
-      const expectedPage = expectedSuite[htmlFilePath];
-
-      const goldenPageUrl =
-        expectedPage
-          ? expectedPage.publicUrl
-          : null;
-
-      const expectedImageUrl =
-        expectedPage && expectedPage.screenshots[userAgentAlias]
-          ? expectedPage.screenshots[userAgentAlias]
-          : null;
-
-      skipped.push({
-        htmlFilePath,
-        userAgentAlias: userAgent.alias,
-        goldenPageUrl,
-        snapshotPageUrl: null,
-        actualImageUrl: null,
-        expectedImageUrl,
-        diffImageBuffer: null,
-        diffImageUrl: null,
-      });
-    });
-
-    return skipped;
   }
 
   /**
@@ -300,6 +176,54 @@ class ImageDiffer {
     }
 
     return true;
+  }
+
+  /**
+   * @param {!SnapshotSuiteJson} expectedSuite
+   * @param {!SnapshotSuiteJson} actualSuite
+   * @param {!RunReport} runReport
+   * @return {!Array<!ImageDiffJson>}
+   * @private
+   */
+  getSkipped_({expectedSuite, actualSuite, runReport}) {
+    /** @type {!Array<!ImageDiffJson>} */
+    const skipped = [];
+
+    const runTarget = runReport.runTarget;
+
+    /** @type {!Array<!UploadableTestCase>} */
+    const allTestCases = [].concat(runTarget.runnableTestCases, runTarget.skippedTestCases);
+
+    /** @type {!Array<!CbtUserAgent>} */
+    const allUserAgents = [].concat(runTarget.runnableUserAgents, runTarget.skippedUserAgents);
+
+    allTestCases.forEach((testCase) => {
+      allUserAgents.forEach((userAgent) => {
+        const htmlFilePath = testCase.htmlFile.destinationRelativeFilePath;
+        const userAgentAlias = userAgent.alias;
+
+        if (actualSuite[htmlFilePath] && actualSuite[htmlFilePath].screenshots[userAgentAlias]) {
+          return;
+        }
+
+        const expectedPage = expectedSuite[htmlFilePath];
+        const goldenPageUrl = expectedPage ? expectedPage.publicUrl : null;
+        const expectedImageUrl = expectedPage ? expectedPage.screenshots[userAgentAlias] : null;
+
+        skipped.push({
+          htmlFilePath,
+          userAgentAlias,
+          goldenPageUrl,
+          snapshotPageUrl: null,
+          actualImageUrl: null,
+          expectedImageUrl,
+          diffImageBuffer: null,
+          diffImageUrl: null,
+        });
+      });
+    });
+
+    return skipped;
   }
 
   /**
