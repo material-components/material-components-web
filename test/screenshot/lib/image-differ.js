@@ -29,16 +29,142 @@ class ImageDiffer {
   }
 
   /**
+   * @param {!Array<!UploadableTestCase>} testCases
    * @param {!SnapshotSuiteJson} actualSuite
    * @param {!SnapshotSuiteJson} expectedSuite
-   * @return {!Promise<!Array<!ImageDiffJson>>}
+   * @return {!Promise<!ReportData>}
    */
   async compareAllPages({
+    testCases,
     actualSuite,
     expectedSuite,
   }) {
+    const added = this.getAddedToSuite_({expectedSuite, actualSuite});
+    const removed = this.getRemovedFromSuite_({expectedSuite, actualSuite});
+    const {diffs, unchanged} = await this.getChangedFromSuite_({expectedSuite, actualSuite});
+
+    [added, removed, diffs, unchanged].forEach((array) => {
+      array.sort(this.sortDiffs_);
+    });
+
+    return {
+      diffs,
+      added,
+      removed,
+      unchanged,
+      testCases,
+    };
+  }
+
+  /**
+   * @param {!SnapshotSuiteJson} expectedSuite
+   * @param {!SnapshotSuiteJson} actualSuite
+   * @return {!Array<!ImageDiffJson>}
+   * @private
+   */
+  getAddedToSuite_({expectedSuite, actualSuite}) {
+    const added = [];
+
+    for (const [htmlFilePath, actualPage] of Object.entries(actualSuite)) {
+      const expectedPage = expectedSuite[htmlFilePath];
+      added.push(...this.getAddedToPage_({expectedPage, actualPage, htmlFilePath}));
+    }
+
+    return added;
+  }
+
+  /**
+   * @param {?SnapshotPageJson} expectedPage
+   * @param {!SnapshotPageJson} actualPage
+   * @param {string} htmlFilePath
+   * @return {!Array<!ImageDiffJson>}
+   * @private
+   */
+  getAddedToPage_({expectedPage, actualPage, htmlFilePath}) {
+    const added = [];
+
+    for (const [userAgentAlias, actualImageUrl] of Object.entries(actualPage.screenshots)) {
+      if (expectedPage && expectedPage.screenshots[userAgentAlias]) {
+        continue;
+      }
+
+      added.push({
+        htmlFilePath,
+        goldenPageUrl: null,
+        snapshotPageUrl: actualPage.publicUrl,
+        userAgentAlias,
+        actualImageUrl,
+        expectedImageUrl: null,
+        diffImageBuffer: null,
+        diffImageUrl: null,
+      });
+    }
+
+    return added;
+  }
+
+  /**
+   * @param {!SnapshotSuiteJson} expectedSuite
+   * @param {!SnapshotSuiteJson} actualSuite
+   * @return {!Array<!ImageDiffJson>}
+   * @private
+   */
+  getRemovedFromSuite_({expectedSuite, actualSuite}) {
+    const removed = [];
+
+    for (const [htmlFilePath, expectedPage] of Object.entries(expectedSuite)) {
+      const actualPage = actualSuite[htmlFilePath];
+      removed.push(...this.getRemovedFromPage_({expectedPage, actualPage, htmlFilePath}));
+    }
+
+    return removed;
+  }
+
+  /**
+   * @param {!SnapshotPageJson} expectedPage
+   * @param {?SnapshotPageJson} actualPage
+   * @param {string} htmlFilePath
+   * @return {!Array<!ImageDiffJson>}
+   * @private
+   */
+  getRemovedFromPage_({expectedPage, actualPage, htmlFilePath}) {
+    const removed = [];
+
+    for (const [userAgentAlias, expectedImageUrl] of Object.entries(expectedPage.screenshots)) {
+      if (actualPage && actualPage.screenshots[userAgentAlias]) {
+        continue;
+      }
+
+      removed.push({
+        htmlFilePath,
+        goldenPageUrl: expectedPage.publicUrl,
+        snapshotPageUrl: null,
+        userAgentAlias,
+        actualImageUrl: null,
+        expectedImageUrl,
+        diffImageBuffer: null,
+        diffImageUrl: null,
+      });
+    }
+
+    return removed;
+  }
+
+  /**
+   * @param {!SnapshotSuiteJson} expectedSuite
+   * @param {!SnapshotSuiteJson} actualSuite
+   * @return {!Promise<{diffs: !Array<!ImageDiffJson>, unchanged: !Array<!ImageDiffJson>}>}
+   * @private
+   */
+  async getChangedFromSuite_({expectedSuite, actualSuite}) {
+    /** @type {!Array<!ImageDiffJson>} */
+    const diffs = [];
+
+    /** @type {!Array<!ImageDiffJson>} */
+    const unchanged = [];
+
     /** @type {!Array<!Promise<!Array<!ImageDiffJson>>>} */
-    const pagePromises = [];
+    const pageComparisonPromises = [];
 
     for (const [htmlFilePath, actualPage] of Object.entries(actualSuite)) {
       // HTML file is not present in `golden.json` on `master`
@@ -47,7 +173,7 @@ class ImageDiffer {
         continue;
       }
 
-      pagePromises.push(
+      pageComparisonPromises.push(
         this.compareOnePage_({
           htmlFilePath,
           goldenPageUrl: expectedPage.publicUrl,
@@ -59,18 +185,25 @@ class ImageDiffer {
     }
 
     // Flatten the array of arrays
-    const diffResults = [].concat(...(await Promise.all(pagePromises)));
+    const pageComparisonResults = [].concat(...(await Promise.all(pageComparisonPromises)));
 
-    // Filter out images with no diffs
-    return diffResults.filter((diffResult) => Boolean(diffResult.diffImageBuffer));
+    pageComparisonResults.forEach((diffResult) => {
+      if (diffResult.diffImageBuffer) {
+        diffs.push(diffResult);
+      } else {
+        unchanged.push(diffResult);
+      }
+    });
+
+    return {diffs, unchanged};
   }
 
   /**
    * @param {string} htmlFilePath
    * @param {string} goldenPageUrl
    * @param {string} snapshotPageUrl
-   * @param {!SnapshotPageJson} actualPage
    * @param {!SnapshotPageJson} expectedPage
+   * @param {!SnapshotPageJson} actualPage
    * @return {!Promise<!Array<!ImageDiffJson>>}
    * @private
    */
@@ -162,6 +295,16 @@ class ImageDiffer {
       expectedImageBuffer,
       options
     );
+  }
+
+  /**
+   * @param {!ImageDiffJson} a
+   * @param {!ImageDiffJson} b
+   * @return {number}
+   */
+  sortDiffs_(a, b) {
+    return a.htmlFilePath.localeCompare(b.htmlFilePath, 'en-US') ||
+      a.userAgentAlias.localeCompare(b.userAgentAlias, 'en-US');
   }
 }
 

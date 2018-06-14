@@ -24,7 +24,7 @@
     "test": "npm run test:unit && npm run test:closure && npm run test:dependency && npm run build && npm run clean",
     "posttest": "istanbul report --root coverage text-summary && istanbul check-coverage --lines 95 --statements 95 --branches 95 --functions 95",
     "screenshot:build": "npm run screenshot:clean && mkdirp test/screenshot/out/ && webpack --config=test/screenshot/webpack.config.js --progress",
-    "screenshot:clean": "del-cli test/screenshot/out/",
+    "screenshot:clean": "del-cli test/screenshot/{out,report.html,report.json,snapshot.json}",
     "screenshot:serve": "node test/screenshot/bin/run-static-server.js",
     "screenshot:test": "node test/screenshot/bin/run-screenshot-test.js",
     "screenshot:update-goldens": "node test/screenshot/bin/run-update-goldens.js",
