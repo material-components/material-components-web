@@ -19,6 +19,7 @@
 const ArgumentParser = require('argparse').ArgumentParser;
 const GitRepo = require('./git-repo');
 const fs = require('mz/fs');
+const path = require('path');
 const ps = require('ps-node');
 
 const HTTP_URL_REGEX = new RegExp('^https?://');
@@ -148,6 +149,17 @@ The default behavior is to always build assets before running the tests.
       }
     );
 
+    this.parser_.addArgument(
+      ['--mdc-gcs-bucket'],
+      {
+        defaultValue: 'mdc-web-screenshot-tests',
+        help: `
+Name of the Google Cloud Storage bucket to use for public file uploads.
+`
+          .trim(),
+      }
+    );
+
     this.args_ = this.parser_.parseArgs();
   }
 
@@ -173,7 +185,8 @@ The default behavior is to always build assets before running the tests.
 
   /** @return {string} */
   get testDir() {
-    return this.args_['mdc_test_dir'];
+    // Ensure that the path has a trailing slash
+    return path.format(path.parse(this.args_['mdc_test_dir'])) + path.sep;
   }
 
   /** @return {string} */
@@ -189,6 +202,16 @@ The default behavior is to always build assets before running the tests.
   /** @return {boolean} */
   get skipBuild() {
     return this.args_['mdc_skip_build'];
+  }
+
+  /** @return {string} */
+  get gcsBucket() {
+    return this.args_['mdc_gcs_bucket'];
+  }
+
+  /** @return {string} */
+  get gcsBaseUrl() {
+    return `https://storage.googleapis.com/${this.gcsBucket}/`;
   }
 
   /**

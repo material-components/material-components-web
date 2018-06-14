@@ -83,9 +83,10 @@ module.exports = {
 };
 
 async function captureOneUrl(testPageUrl) {
-  const userAgents = await CbtUserAgent.fetchBrowsersToRun();
+  /** @type {!Array<!CbtUserAgent>} */
+  const {runnableUserAgents} = await CbtUserAgent.fetchUserAgents();
 
-  logTestCaseProgress(testPageUrl, Progress.enqueued(userAgents.length));
+  logTestCaseProgress(testPageUrl, Progress.enqueued(runnableUserAgents.length));
 
   return requestQueue.enqueue(testPageUrl)
     .then(
@@ -112,8 +113,10 @@ async function sendCaptureRequest(testPageUrl, retryCount = 0) {
     throw new Error(`Capture request failed after ${API_MAX_RETRIES} retry attempts - ${testPageUrl}`);
   }
 
-  const userAgents = await CbtUserAgent.fetchBrowsersToRun();
-  return cbtApi.sendCaptureRequest(testPageUrl, userAgents)
+  /** @type {!Array<!CbtUserAgent>} */
+  const {runnableUserAgents} = await CbtUserAgent.fetchUserAgents();
+
+  return cbtApi.sendCaptureRequest(testPageUrl, runnableUserAgents)
     .catch(async (err) => {
       if (reachedParallelExecutionLimit(err)) {
         await logParallelExecutionAndSleep();

@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+'use strict';
+
 const compareImages = require('resemblejs/compareImages');
 
 /**
@@ -29,19 +31,20 @@ class ImageDiffer {
   }
 
   /**
-   * @param {!Array<!UploadableTestCase>} testCases
    * @param {!SnapshotSuiteJson} actualSuite
    * @param {!SnapshotSuiteJson} expectedSuite
-   * @return {!Promise<!ReportData>}
+   * @return {!Promise<!RunReport>}
    */
   async compareAllPages({
-    testCases,
     actualSuite,
     expectedSuite,
   }) {
     const added = this.getAddedToSuite_({expectedSuite, actualSuite});
     const removed = this.getRemovedFromSuite_({expectedSuite, actualSuite});
     const {diffs, unchanged} = await this.getChangedFromSuite_({expectedSuite, actualSuite});
+
+    // TODO(acdvorak)
+    const skipped = [];
 
     [added, removed, diffs, unchanged].forEach((array) => {
       array.sort(this.sortDiffs_);
@@ -52,7 +55,7 @@ class ImageDiffer {
       added,
       removed,
       unchanged,
-      testCases,
+      skipped,
     };
   }
 
