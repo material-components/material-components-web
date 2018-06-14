@@ -20,7 +20,8 @@ const Controller = require('../lib/controller');
 const controller = new Controller();
 
 controller.initialize()
-  .then(() => controller.uploadAllAssets(), handleError)
+  .then((runReport) => controller.uploadAllAssets(runReport), handleError)
+  .catch(handleError)
 ;
 
 function handleError(err) {
