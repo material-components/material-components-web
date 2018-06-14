@@ -46,20 +46,20 @@ class SnapshotStore {
   }
 
   /**
-   * @param {!ReportData} reportData
+   * @param {!RunReport} runReport
    * @return {!Promise<string>}
    */
-  async getSnapshotJsonString(reportData) {
-    const jsonData = await this.getJsonData_(reportData);
+  async getSnapshotJsonString(runReport) {
+    const jsonData = await this.getJsonData_(runReport);
     return stringify(jsonData, {space: '  '}) + '\n';
   }
 
   /**
-   * @param {!ReportData} reportData
+   * @param {!RunReport} runReport
    * @return {!Promise<void>}
    */
-  async writeToDisk(reportData) {
-    const jsonFileContent = await this.getSnapshotJsonString(reportData);
+  async writeToDisk(runReport) {
+    const jsonFileContent = await this.getSnapshotJsonString(runReport);
     const jsonFilePath = this.cliArgs_.goldenPath;
 
     await fs.writeFile(jsonFilePath, jsonFileContent);
@@ -139,25 +139,26 @@ class SnapshotStore {
   }
 
   /**
-   * @param {!ReportData} reportData
+   * @param {!RunReport} runReport
    * @return {!Promise<!SnapshotSuiteJson>}
    * @private
    */
-  async getJsonData_(reportData) {
+  async getJsonData_(runReport) {
     return this.cliArgs_.hasAnyFilters()
-      ? await this.updateFilteredScreenshots_(reportData)
-      : await this.updateAllScreenshots_(reportData);
+      ? await this.updateFilteredScreenshots_(runReport)
+      : await this.updateAllScreenshots_(runReport);
   }
 
   /**
-   * @param {!ReportData} reportData
+   * @param {!RunReport} runReport
    * @return {!Promise<!SnapshotSuiteJson>}
    * @private
    */
-  async updateFilteredScreenshots_(reportData) {
-    const {testCases, diffs} = reportData;
+  async updateFilteredScreenshots_(runReport) {
+    const {runnableTestCases} = runReport.runTarget;
+    const {diffs} = runReport.runResult;
     const oldJsonData = await this.fromDiffBase();
-    const newJsonData = await this.fromTestCases(testCases);
+    const newJsonData = await this.fromTestCases(runnableTestCases);
     const jsonData = this.deepCloneJson_(oldJsonData);
 
     diffs.forEach((diff) => {
@@ -176,14 +177,15 @@ class SnapshotStore {
   }
 
   /**
-   * @param {!ReportData} reportData
+   * @param {!RunReport} runReport
    * @return {!Promise<!SnapshotSuiteJson>}
    * @private
    */
-  async updateAllScreenshots_(reportData) {
-    const {testCases, diffs} = reportData;
+  async updateAllScreenshots_(runReport) {
+    const {runnableTestCases} = runReport.runTarget;
+    const {diffs} = runReport.runResult;
     const oldJsonData = await this.fromDiffBase();
-    const newJsonData = await this.fromTestCases(testCases);
+    const newJsonData = await this.fromTestCases(runnableTestCases);
 
     const existsInOldJsonData = ([htmlFilePath]) => htmlFilePath in oldJsonData;
 

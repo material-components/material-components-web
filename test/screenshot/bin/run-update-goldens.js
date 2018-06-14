@@ -20,13 +20,13 @@ const Controller = require('../lib/controller');
 const controller = new Controller();
 
 controller.initialize()
-  .then(() => controller.uploadAllAssets(), handleError)
-  .then((testCases) => controller.captureAllPages(testCases), handleError)
-  .then((testCases) => controller.diffGoldenJson(testCases), handleError)
+  .then((runReport) => controller.uploadAllAssets(runReport), handleError)
+  .then((runReport) => controller.captureAllPages(runReport), handleError)
+  .then((runReport) => controller.diffGoldenJson(runReport), handleError)
   .then(
-    async (reportData) => {
-      await controller.uploadDiffReport(reportData);
-      await controller.updateGoldenJson(reportData);
+    async (runReport) => {
+      await controller.uploadDiffReport(runReport);
+      await controller.updateGoldenJson(runReport);
     },
     handleError
   )

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2018 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,11 +17,10 @@
 'use strict';
 
 const CliArgParser = require('./cli-arg-parser');
-const CloudStorage = require('@google-cloud/storage');
 const GitRepo = require('./git-repo');
+const GoogleCloudStorage = require('@google-cloud/storage');
+const LocalStorage = require('./local-storage');
 const childProcess = require('child_process');
-const fs = require('mz/fs');
-const path = require('path');
 
 /** Maximum number of times to retry a failed HTTP request. */
 const API_MAX_RETRIES = 5;
@@ -30,36 +29,40 @@ const API_MAX_RETRIES = 5;
 const API_FINISH_EVENT_TIMEOUT_MS = 10 * 1000;
 
 const GCLOUD_SERVICE_ACCOUNT_KEY_FILE_PATH = process.env.MDC_GCLOUD_SERVICE_ACCOUNT_KEY_FILE_PATH;
-const GCLOUD_STORAGE_BUCKET_NAME = 'mdc-web-screenshot-tests';
-const GCLOUD_STORAGE_BASE_URL = `https://storage.googleapis.com/${GCLOUD_STORAGE_BUCKET_NAME}/`;
 const USERNAME = process.env.USER || process.env.USERNAME;
 
 /**
  * A wrapper around the Google Cloud Storage API.
  */
-class Storage {
+class CloudStorage {
   constructor() {
-    const cloudStorage = new CloudStorage({
+    const gcs = new GoogleCloudStorage({
       credentials: require(GCLOUD_SERVICE_ACCOUNT_KEY_FILE_PATH),
     });
-
-    /**
-     * @type {!Bucket}
-     * @private
-     */
-    this.storageBucket_ = cloudStorage.bucket(GCLOUD_STORAGE_BUCKET_NAME);
-
-    /**
-     * @type {!GitRepo}
-     * @private
-     */
-    this.mdcGitRepo_ = new GitRepo();
 
     /**
      * @type {!CliArgParser}
      * @private
      */
     this.cliArgs_ = new CliArgParser();
+
+    /**
+     * @type {!GitRepo}
+     * @private
+     */
+    this.gitRepo_ = new GitRepo();
+
+    /**
+     * @type {!LocalStorage}
+     * @private
+     */
+    this.localStorage_ = new LocalStorage();
+
+    /**
+     * @type {!Bucket}
+     * @private
+     */
+    this.gcsBucket_ = gcs.bucket(this.cliArgs_.gcsBucket);
   }
 
   /**
@@ -73,22 +76,15 @@ class Storage {
 
   /**
    * @param {string} baseUploadDir
-   * @return {!Promise<!Array<!UploadableTestCase>>}
+   * @return {!Promise<void>}
    */
   async uploadAllAssets(baseUploadDir) {
     return new Promise(async (resolve, reject) => {
       const gsutilProcess = await this.spawnGsutilUploadProcess_(baseUploadDir);
-
-      let stderr = '';
-      gsutilProcess.stderr.on('data', (buffer) => {
-        stderr += buffer;
-        process.stderr.write(buffer);
-      });
-
       gsutilProcess.on('close', (exitCode) => {
+        console.log('');
         if (exitCode === 0) {
-          const htmlFiles = this.parseHtmlFilesFromGsutilOutput_(baseUploadDir, stderr);
-          resolve(htmlFiles);
+          resolve();
         } else {
           reject(new Error(`gsutil processes exited with code ${exitCode}`));
         }
@@ -102,78 +98,25 @@ class Storage {
    * @private
    */
   async spawnGsutilUploadProcess_(baseUploadDir) {
-    const topLevelAssetFilesAndDirs = await this.fetchTopLevelAssetFilesAndDirs_();
+    const topLevelAssetFilesAndDirs = await this.localStorage_.fetchAllTopLevelAssetFileAndDirPaths();
     const cmd = 'gsutil';
     const args = [
-      '-m', 'cp', '-r', ...topLevelAssetFilesAndDirs, `gs://${GCLOUD_STORAGE_BUCKET_NAME}/${baseUploadDir}/`,
+      '-m', 'cp', '-r', ...topLevelAssetFilesAndDirs, `gs://${this.cliArgs_.gcsBucket}/${baseUploadDir}/`,
     ];
-    console.log(`${cmd} ${args.join(' ')}\n\n`);
+
+    console.log(`${cmd} ${args.join(' ')}\n`);
+
     return childProcess.spawn(
       cmd,
       args,
       {
         wd: process.env.PWD,
         env: process.env,
-        stdio: 'pipe',
+        stdio: 'inherit',
         shell: true,
         windowsHide: true,
       }
     );
-  }
-
-  /**
-   * @return {!Promise<!Array<string>>}
-   * @private
-   */
-  async fetchTopLevelAssetFilesAndDirs_() {
-    const localAssetDir = this.cliArgs_.testDir;
-
-    /** @type {!Array<string>} */
-    const allTopLevelFilesAndDirs = (await fs.readdir(localAssetDir)).map((name) => path.join(localAssetDir, name));
-
-    /** @type {!Array<string>} */
-    const ignoredTopLevelFilesAndDirs = await this.mdcGitRepo_.getIgnoredPaths(allTopLevelFilesAndDirs);
-
-    return allTopLevelFilesAndDirs.filter((relativePath) => {
-      const isBuildOutputDir = relativePath.split('/').includes('out');
-      const isIgnoredFile = ignoredTopLevelFilesAndDirs.includes(relativePath);
-      return isBuildOutputDir || !isIgnoredFile;
-    });
-  }
-
-  /**
-   * @param {string} baseUploadDir
-   * @param {string} gsutilStderr
-   * @return {!Array<!UploadableTestCase>}
-   * @private
-   */
-  parseHtmlFilesFromGsutilOutput_(baseUploadDir, gsutilStderr) {
-    const localAssetDir = this.cliArgs_.testDir;
-
-    return gsutilStderr
-      .trim()
-      .split('\n')
-      .map((line) => {
-        // Example line:
-        // Copying file://test/screenshot/mdc-button/classes/baseline.html [Content-Type=text/html]...
-        return (new RegExp('file://([^ ]+)').exec(line) || [])[1];
-      })
-      .filter((relativeFilePath) => Boolean(relativeFilePath))
-      .filter((relativeFilePath) => relativeFilePath.includes('/mdc-'))
-      .filter((relativeFilePath) => relativeFilePath.endsWith('.html'))
-      .map((filePath) => filePath)
-      .map((relativeFilePath, fileIndex, fileArray) => {
-        return new UploadableTestCase({
-          htmlFile: new UploadableFile({
-            destinationParentDirectory: baseUploadDir,
-            destinationRelativeFilePath: relativeFilePath.replace(localAssetDir, ''),
-            queueIndex: fileIndex,
-            queueLength: fileArray.length,
-          }),
-        });
-      })
-      .sort()
-    ;
   }
 
   /**
@@ -195,8 +138,8 @@ class Storage {
     }
 
     // Attaching Git metadata to the uploaded files makes it easier to track down their source.
-    const gitCommitShort = await this.mdcGitRepo_.getShortCommitHash();
-    const gitBranchName = await this.mdcGitRepo_.getBranchName();
+    const gitCommitShort = await this.gitRepo_.getShortCommitHash();
+    const gitBranchName = await this.gitRepo_.getBranchName();
 
     // Note: The GCS API mutates this object, so we need to create a new object every time we call the API.
     const fileOptions = {
@@ -213,7 +156,7 @@ class Storage {
     };
 
 
-    const cloudFile = this.storageBucket_.file(gcsAbsoluteFilePath);
+    const cloudFile = this.gcsBucket_.file(gcsAbsoluteFilePath);
     const [cloudFileExists] = await cloudFile.exists();
 
     if (cloudFileExists) {
@@ -285,7 +228,7 @@ class Storage {
    * @private
    */
   handleUploadFailure_(uploadableFile, err, retryCount) {
-    const publicUrl = `${GCLOUD_STORAGE_BASE_URL}${uploadableFile.destinationAbsoluteFilePath}`;
+    const {publicUrl} = uploadableFile;
     uploadableFile.fileContent = null; // Free up memory
     const queueIndex = uploadableFile.queueIndex;
     const queueLength = uploadableFile.queueLength;
@@ -319,59 +262,4 @@ class Storage {
   }
 }
 
-/**
- * A file to be uploaded to Cloud Storage.
- */
-class UploadableFile {
-  constructor({
-    destinationParentDirectory,
-    destinationRelativeFilePath,
-    queueIndex,
-    queueLength,
-    fileContent = null,
-    userAgent = null,
-  }) {
-    /** @type {string} */
-    this.destinationParentDirectory = destinationParentDirectory;
-
-    /** @type {string} */
-    this.destinationRelativeFilePath = destinationRelativeFilePath;
-
-    /** @type {string} */
-    this.destinationAbsoluteFilePath = `${this.destinationParentDirectory}/${this.destinationRelativeFilePath}`;
-
-    /** @type {string} */
-    this.publicUrl = `${GCLOUD_STORAGE_BASE_URL}${this.destinationAbsoluteFilePath}`;
-
-    /** @type {?Buffer} */
-    this.fileContent = fileContent;
-
-    /** @type {?Object} */
-    this.userAgent = userAgent;
-
-    /** @type {number} */
-    this.queueIndex = queueIndex;
-
-    /** @type {number} */
-    this.queueLength = queueLength;
-  }
-}
-
-/**
- * An HTML file with screenshots.
- */
-class UploadableTestCase {
-  constructor({htmlFile}) {
-    /** @type {!UploadableFile} */
-    this.htmlFile = htmlFile;
-
-    /** @type {!Array<!UploadableFile>} */
-    this.screenshotImageFiles = [];
-  }
-}
-
-module.exports = {
-  Storage,
-  UploadableFile,
-  UploadableTestCase,
-};
+module.exports = CloudStorage;
