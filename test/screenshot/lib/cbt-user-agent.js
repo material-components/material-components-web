@@ -71,24 +71,25 @@ let allUserAgentsPromise;
 
 module.exports = {
   fetchBrowsersToRun,
+  fetchSkippedBrowsers,
   fetchBrowserByApiName,
   fetchBrowserByAlias,
 };
 
 /**
- * Resolves all aliases in `browser.json` and returns their corresponding CBT API representations.
+ * Fetches the CBT API representations of all user agents listed in `browser.json`.
+ * CLI filters (e.g., `--mdc-include-browser`) are ignored.
  * @return {!Promise<!Array<!CbtUserAgent>>}
  */
-async function fetchBrowsersToRun() {
+async function fetchAllBrowsers() {
   return allUserAgentsPromise || (allUserAgentsPromise = new Promise((resolve, reject) => {
     cbtApi.fetchAvailableDevices()
       .then(
         (cbtDevices) => {
-          const aliases = getFilteredAliases();
-          const userAgents = findAllMatchingUAs(aliases, cbtDevices);
-          console.log(userAgents.map((config) => `${config.alias}: ${config.fullCbtApiName}`));
-          console.log('\n');
-          resolve(userAgents);
+          const allAliases = getAllAliases();
+          const allUserAgents = findAllMatchingUAs(allAliases, cbtDevices);
+          logUserAgents(allUserAgents);
+          resolve(allUserAgents);
         },
         (err) => reject(err)
       );
@@ -96,7 +97,37 @@ async function fetchBrowsersToRun() {
 }
 
 /**
- * Returns the CBT API representation of the given device and browser API names.
+ * Fetches the CBT API representations of all user agents listed in `browser.json`, *except* those that are excluded by
+ * the user's CLI filters (e.g., `--mdc-include-browser`, `--mdc-exclude-browser`).
+ * @return {!Promise<!Array<!CbtUserAgent>>}
+ */
+async function fetchBrowsersToRun() {
+  /** @type {!Array<!CbtUserAgent>} */
+  const allBrowsers = await fetchAllBrowsers();
+
+  /** @type {!Array<string>} */
+  const filteredAliases = getFilteredAliases();
+
+  return allBrowsers.filter((browser) => filteredAliases.includes(browser.alias));
+}
+
+/**
+ * Fetches the CBT API representations of all user agents listed in `browser.json` that are excluded by
+ * the user's CLI filters (e.g., `--mdc-include-browser`, `--mdc-exclude-browser`).
+ * @return {!Promise<!Array<!CbtUserAgent>>}
+ */
+async function fetchSkippedBrowsers() {
+  /** @type {!Array<!CbtUserAgent>} */
+  const allBrowsers = await fetchAllBrowsers();
+
+  /** @type {!Array<string>} */
+  const filteredAliases = getFilteredAliases();
+
+  return allBrowsers.filter((browser) => !filteredAliases.includes(browser.alias));
+}
+
+/**
+ * Returns the CBT API representation of the given device/browser.
  * @param {string} cbtDeviceApiName
  * @param {string} cbtBrowserApiName
  * @return {!Promise<?CbtUserAgent>}
@@ -105,8 +136,8 @@ async function fetchBrowserByApiName(cbtDeviceApiName, cbtBrowserApiName) {
   // TODO(acdvorak): Why does the CBT browser API return "Win10" but the screenshot info API returns "Win10-E17"?
   cbtDeviceApiName = cbtDeviceApiName.replace(/-E\d+$/, '');
 
-  const userAgents = await fetchBrowsersToRun();
-  return userAgents.find((userAgent) => {
+  const allUserAgents = await fetchAllBrowsers();
+  return allUserAgents.find((userAgent) => {
     return userAgent.device.api_name === cbtDeviceApiName
       && userAgent.browser.api_name === cbtBrowserApiName;
   });
@@ -117,8 +148,8 @@ async function fetchBrowserByApiName(cbtDeviceApiName, cbtBrowserApiName) {
  * @return {!Promise<?CbtUserAgent>}
  */
 async function fetchBrowserByAlias(userAgentAlias) {
-  const userAgents = await fetchBrowsersToRun();
-  return userAgents.find((userAgent) => {
+  const allUserAgents = await fetchAllBrowsers();
+  return allUserAgents.find((userAgent) => {
     return userAgent.alias === userAgentAlias;
   });
 }
@@ -126,8 +157,15 @@ async function fetchBrowserByAlias(userAgentAlias) {
 /**
  * @return {!Array<string>}
  */
+function getAllAliases() {
+  return require('../browser.json').user_agent_aliases;
+}
+
+/**
+ * @return {!Array<string>}
+ */
 function getFilteredAliases() {
-  return require('../browser.json').user_agent_aliases.filter((alias) => {
+  return getAllAliases().filter((alias) => {
     const isIncluded =
       cliArg.includeBrowserPatterns.length === 0 ||
       cliArg.includeBrowserPatterns.some((pattern) => pattern.test(alias));
@@ -292,6 +330,13 @@ function is64Bit(browser, otherBrowsers) {
 
 function deepCopyJson(json) {
   return JSON.parse(JSON.stringify(json));
+}
+
+function logUserAgents(allUserAgents) {
+  const aliasToApiNameMap = {};
+  allUserAgents.forEach((config) => aliasToApiNameMap[config.alias] = config.fullCbtApiName);
+  console.log(JSON.stringify(aliasToApiNameMap, null, 2));
+  console.log('\n');
 }
 
 /**

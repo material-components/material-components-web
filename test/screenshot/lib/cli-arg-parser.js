@@ -25,11 +25,22 @@ const HTTP_URL_REGEX = new RegExp('^https?://');
 
 class CliArgParser {
   constructor() {
+    /**
+     * @type {!GitRepo}
+     * @private
+     */
     this.gitRepo_ = new GitRepo();
 
+    /**
+     * @type {!ArgumentParser}
+     * @private
+     */
     this.parser_ = new ArgumentParser({
       addHelp: true,
       description: 'Run screenshot tests and display diffs.',
+
+      // argparse throws an error if `process.argv[1]` is undefined, which happens when you run `node --interactive`.
+      prog: process.argv[1] || '--interactive',
     });
 
     this.parser_.addArgument(
