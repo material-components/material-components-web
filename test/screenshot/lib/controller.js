@@ -311,6 +311,7 @@ class Controller {
 
     /** @type {!Array<!ImageDiffJson>} */
     const {diffs, added, removed, unchanged, skipped} = await this.imageDiffer_.compareAllPages({
+      runReport,
       actualSuite: await this.snapshotStore_.fromTestCases(runnableTestCases),
       expectedSuite: await this.snapshotStore_.fromDiffBase(),
     });
