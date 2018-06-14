@@ -153,6 +153,14 @@ class ImageDiffer {
     return removed;
   }
 
+  /**
+   * @param {!RunReport} runReport
+   * @param {?SnapshotPageJson} actualPage
+   * @param {string} userAgentAlias
+   * @param {string} htmlFilePath
+   * @return {boolean}
+   * @private
+   */
   isRemovedFromPage_({
     runReport,
     actualPage,
