@@ -21,6 +21,7 @@ const controller = new Controller();
 
 controller.initialize()
   .then(() => controller.uploadAllAssets(), handleError)
+  .catch(handleError)
 ;
 
 function handleError(err) {
