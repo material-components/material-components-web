@@ -17,31 +17,66 @@
 'use strict';
 
 const CbtApi = require('./cbt-api');
+const CbtUserAgent = require('./cbt-user-agent');
+const Duration = require('./duration');
 const ParallelQueue = require('./parallel-queue');
 const Progress = require('./progress');
-const CbtUserAgent = require('./cbt-user-agent');
 
-/** Maximum number of parallel screenshot requests allowed by our CBT plan. */
-const API_PARALLEL_REQUEST_LIMIT = 5;
-
-/** How long to wait between polling the API for status changes. */
-const API_POLL_INTERVAL_MS = 1000 * 5;
-
-/** How long to wait for a single URL to be captured in all browsers. */
-const API_MAX_WAIT_MS = 1000 * 60 * 5;
-
-/** Maximum number of times to retry a failed HTTP request. */
-const API_MAX_RETRIES = 5;
-
-/** Map of URLs to `Progress` objects. */
-const progressMap = new Map();
-
-const cbtApi = new CbtApi();
+/*
+ * Configurable
+ */
 
 /**
- * @type {!ParallelQueue<string>}
+ * Maximum number of parallel screenshot requests allowed by our CBT plan.
+ * @type {number}
  */
+const API_PARALLEL_REQUEST_LIMIT = 5;
+
+/**
+ * Maximum number of times to retry a failed HTTP request.
+ * @type {number}
+ */
+const API_MAX_RETRIES = 5;
+
+/**
+ * How long to wait for a single URL to be captured in all browsers.
+ * @type {!Duration}
+ */
+const API_MAX_WAIT = Duration.minutes(10);
+
+/**
+ * How long to wait between polling the API for status changes.
+ * @type {!Duration}
+ */
+const API_POLL_INTERVAL = Duration.seconds(5);
+
+/**
+ * How long to wait between retrying failed requests.
+ * @type {!Duration}
+ */
+const API_RETRY_WAIT = Duration.seconds(10);
+
+/*
+ * Non-configurable
+ */
+
+/** @type {number} */ const API_MAX_WAIT_MS = API_MAX_WAIT.toMillis();
+/** @type {number} */ const API_POLL_INTERVAL_MS = API_POLL_INTERVAL.toMillis();
+/** @type {string} */ const API_POLL_INTERVAL_HUMAN = API_POLL_INTERVAL.toHuman();
+/** @type {number} */ const API_RETRY_WAIT_MS = API_RETRY_WAIT.toMillis();
+/** @type {string} */ const API_RETRY_WAIT_HUMAN = API_RETRY_WAIT.toHuman();
+
+/** @type {!CbtApi} */
+const cbtApi = new CbtApi();
+
+/** @type {!ParallelQueue<string>} */
 const requestQueue = new ParallelQueue({maxParallels: API_PARALLEL_REQUEST_LIMIT});
+
+/**
+ * Map of URLs to `Progress` objects.
+ * @type {!Map<string, !Progress>}
+ */
+const progressMap = new Map();
 
 module.exports = {
   captureOneUrl,
@@ -80,18 +115,14 @@ async function sendCaptureRequest(testPageUrl, retryCount = 0) {
   const userAgents = await CbtUserAgent.fetchBrowsersToRun();
   return cbtApi.sendCaptureRequest(testPageUrl, userAgents)
     .catch(async (err) => {
-      const waitInSeconds = millisToSeconds(API_POLL_INTERVAL_MS);
-
       if (reachedParallelExecutionLimit(err)) {
-        console.warn(`Parallel execution limit reached - waiting for ${waitInSeconds} seconds before retrying...`);
-        await sleep(API_POLL_INTERVAL_MS);
+        await logParallelExecutionAndSleep();
         return sendCaptureRequest(testPageUrl, retryCount); // don't increment the retry count for parallel execution
       }
 
       // TODO(acdvorak): Abstract this logic into CbtApi for every HTTP request?
       if (isServerError(err)) {
-        logServerError(err);
-        await sleep(API_POLL_INTERVAL_MS);
+        await logServerErrorAndSleep(err);
         return sendCaptureRequest(testPageUrl, retryCount + 1);
       }
 
@@ -107,9 +138,9 @@ async function handleCaptureResponse(testPageUrl, captureResponseBody, retryCoun
   let infoResponseBody;
   let infoProgress;
 
-  const startTime = Date.now();
+  const startTimeMs = Date.now();
   const isStillRunning = () => !infoProgress || infoProgress.running > 0;
-  const isTimedOut = () => (Date.now() - startTime) > API_MAX_WAIT_MS;
+  const isTimedOut = () => Duration.hasElapsed(API_MAX_WAIT_MS, startTimeMs);
 
   while (isStillRunning() && !isTimedOut()) {
     await sleep(API_POLL_INTERVAL_MS);
@@ -118,11 +149,11 @@ async function handleCaptureResponse(testPageUrl, captureResponseBody, retryCoun
     logTestCaseProgress(testPageUrl, infoProgress);
   }
 
-  const elapsedTimeInMinutes = millisToMinutes(Date.now() - startTime);
+  const elapsedTimeHuman = Duration.getElapsed(startTimeMs).toHuman();
 
   if (isStillRunning() && isTimedOut()) {
     const err = new Error([
-      `Timed out waiting for CBT after ${elapsedTimeInMinutes} minutes`,
+      `Timed out waiting for CBT after ${elapsedTimeHuman}`,
       `to finish capturing a screenshot of "${testPageUrl}".`,
     ].join('\n'));
     return rejectWithError('handleCaptureResponse', testPageUrl, err);
@@ -134,26 +165,17 @@ async function handleCaptureResponse(testPageUrl, captureResponseBody, retryCoun
   const resultsWithNoFullpageImage = allResults.filter((cbtResult) => !cbtResult.images.fullpage);
   const resultsWithNoChromelessImage = allResults.filter((cbtResult) => !cbtResult.images.chromeless);
 
-  async function sleepAndLogError(nullPropertyName, resultsWithNullProperties) {
-    const waitInSeconds = millisToSeconds(API_POLL_INTERVAL_MS);
-    console.error(resultsWithNullProperties);
-    console.error(`
-ERROR: ${nullPropertyName} is null
-Waiting for ${waitInSeconds} seconds before retrying...
-`);
-    return sleep(API_POLL_INTERVAL_MS);
-  }
-
   // At least one browser failed to capture. Retry all browsers.
   if (resultsWithNoFullpageImage.length > 0) {
-    await sleepAndLogError('cbtResult.images.fullpage', resultsWithNoFullpageImage);
+    // TODO(acdvorak): Use CBT "retry" API instead of rerunning in all browsers?
+    await logNullResponseErrorAndSleep('cbtResult.images.fullpage', resultsWithNoFullpageImage);
     return sendCaptureRequest(testPageUrl, retryCount + 1);
   }
 
-  // CBT generated a fullpage screenshot, but has not yet generated the chromeless version. Send a new info request.
   if (resultsWithNoChromelessImage.length > 0) {
-    await sleepAndLogError('cbtResult.images.chromeless', resultsWithNoChromelessImage);
-    return handleCaptureResponse(testPageUrl, infoResponseBody, retryCount + 1);
+    // TODO(acdvorak): Use CBT "retry" API instead of rerunning in all browsers?
+    await logNullResponseErrorAndSleep('cbtResult.images.chromeless', resultsWithNoChromelessImage);
+    return sendCaptureRequest(testPageUrl, retryCount + 1);
   }
 
   logTestCaseProgress(testPageUrl, infoProgress);
@@ -166,8 +188,7 @@ async function fetchScreenshotInfo(screenshotTestId) {
     .catch(async (err) => {
       // TODO(acdvorak): Abstract this logic into CbtApi for every HTTP request?
       if (isServerError(err)) {
-        logServerError(err);
-        await sleep(API_POLL_INTERVAL_MS);
+        await logServerErrorAndSleep(err);
         return fetchScreenshotInfo(screenshotTestId);
       }
     });
@@ -210,22 +231,28 @@ async function sleep(ms) {
   });
 }
 
-function millisToSeconds(millis) {
-  return Math.floor(millis / 1000);
+async function logParallelExecutionAndSleep() {
+  console.warn(`Parallel execution limit reached - waiting for ${API_POLL_INTERVAL_HUMAN} before retrying...`);
+  return sleep(API_POLL_INTERVAL_MS);
 }
 
-function millisToMinutes(millis) {
-  return Math.floor(millis / 1000 / 60);
-}
-
-function logServerError(requestError) {
-  const waitInSeconds = millisToSeconds(API_POLL_INTERVAL_MS);
-  console.warn(requestError.options); // HTTP request params
-  console.warn(requestError.error); // HTTP response body
+async function logServerErrorAndSleep(requestError) {
+  console.warn('requestError.options:', requestError.options); // HTTP request params
+  console.warn('requestError.error:', requestError.error); // HTTP response body
   console.warn(`
 CBT server error: HTTP ${requestError.statusCode}
-Waiting for ${waitInSeconds} seconds before retrying...
+Waiting for ${API_RETRY_WAIT_HUMAN} before retrying...
 `);
+  return sleep(API_RETRY_WAIT_MS);
+}
+
+async function logNullResponseErrorAndSleep(nullPropertyName, resultsWithNullProperties) {
+  console.error(resultsWithNullProperties);
+  console.error(`
+ERROR: ${nullPropertyName} is null
+Waiting for ${API_RETRY_WAIT_HUMAN} before retrying...
+`);
+  return sleep(API_RETRY_WAIT_MS);
 }
 
 function logTestCaseProgress(testPageUrl, testPageProgress) {
