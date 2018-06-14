@@ -24,6 +24,7 @@ controller.initialize()
   .then((testCases) => controller.captureAllPages(testCases), handleError)
   .then((testCases) => controller.diffGoldenJson(testCases), handleError)
   .then((reportData) => controller.uploadDiffReport(reportData), handleError)
+  .catch(handleError)
 ;
 
 function handleError(err) {
