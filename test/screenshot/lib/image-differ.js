@@ -31,22 +31,22 @@ class ImageDiffer {
   }
 
   /**
+   * @param {!RunReport} runReport
    * @param {!SnapshotSuiteJson} actualSuite
    * @param {!SnapshotSuiteJson} expectedSuite
    * @return {!Promise<!RunReport>}
    */
   async compareAllPages({
+    runReport,
     actualSuite,
     expectedSuite,
   }) {
     const added = this.getAddedToSuite_({expectedSuite, actualSuite});
-    const removed = this.getRemovedFromSuite_({expectedSuite, actualSuite});
+    const removed = this.getRemovedFromSuite_({expectedSuite, actualSuite, runReport});
+    const skipped = this.getSkipped_({expectedSuite, actualSuite, runReport});
     const {diffs, unchanged} = await this.getChangedFromSuite_({expectedSuite, actualSuite});
 
-    // TODO(acdvorak)
-    const skipped = [];
-
-    [added, removed, diffs, unchanged].forEach((array) => {
+    [added, removed, diffs, unchanged, skipped].forEach((array) => {
       array.sort(this.sortDiffs_);
     });
 
@@ -93,9 +93,9 @@ class ImageDiffer {
 
       added.push({
         htmlFilePath,
+        userAgentAlias,
         goldenPageUrl: null,
         snapshotPageUrl: actualPage.publicUrl,
-        userAgentAlias,
         actualImageUrl,
         expectedImageUrl: null,
         diffImageBuffer: null,
@@ -109,15 +109,16 @@ class ImageDiffer {
   /**
    * @param {!SnapshotSuiteJson} expectedSuite
    * @param {!SnapshotSuiteJson} actualSuite
+   * @param {!RunReport} runReport
    * @return {!Array<!ImageDiffJson>}
    * @private
    */
-  getRemovedFromSuite_({expectedSuite, actualSuite}) {
+  getRemovedFromSuite_({expectedSuite, actualSuite, runReport}) {
     const removed = [];
 
     for (const [htmlFilePath, expectedPage] of Object.entries(expectedSuite)) {
       const actualPage = actualSuite[htmlFilePath];
-      removed.push(...this.getRemovedFromPage_({expectedPage, actualPage, htmlFilePath}));
+      removed.push(...this.getRemovedFromPage_({expectedPage, actualPage, runReport, htmlFilePath}));
     }
 
     return removed;
@@ -126,31 +127,111 @@ class ImageDiffer {
   /**
    * @param {!SnapshotPageJson} expectedPage
    * @param {?SnapshotPageJson} actualPage
+   * @param {!RunReport} runReport
    * @param {string} htmlFilePath
    * @return {!Array<!ImageDiffJson>}
    * @private
    */
-  getRemovedFromPage_({expectedPage, actualPage, htmlFilePath}) {
+  getRemovedFromPage_({expectedPage, actualPage, runReport, htmlFilePath}) {
     const removed = [];
 
     for (const [userAgentAlias, expectedImageUrl] of Object.entries(expectedPage.screenshots)) {
-      if (actualPage && actualPage.screenshots[userAgentAlias]) {
-        continue;
+      if (this.isRemovedFromPage_({runReport, actualPage, userAgentAlias, htmlFilePath})) {
+        removed.push({
+          htmlFilePath,
+          userAgentAlias,
+          goldenPageUrl: expectedPage.publicUrl,
+          snapshotPageUrl: null,
+          actualImageUrl: null,
+          expectedImageUrl,
+          diffImageBuffer: null,
+          diffImageUrl: null,
+        });
       }
-
-      removed.push({
-        htmlFilePath,
-        goldenPageUrl: expectedPage.publicUrl,
-        snapshotPageUrl: null,
-        userAgentAlias,
-        actualImageUrl: null,
-        expectedImageUrl,
-        diffImageBuffer: null,
-        diffImageUrl: null,
-      });
     }
 
     return removed;
+  }
+
+  /**
+   * @param {!RunReport} runReport
+   * @param {?SnapshotPageJson} actualPage
+   * @param {string} userAgentAlias
+   * @param {string} htmlFilePath
+   * @return {boolean}
+   * @private
+   */
+  isRemovedFromPage_({
+    runReport,
+    actualPage,
+    userAgentAlias,
+    htmlFilePath,
+  }) {
+    if (actualPage && actualPage.screenshots[userAgentAlias]) {
+      return false;
+    }
+
+    const isSkippedTestCase = runReport.runTarget.skippedTestCases.some((skippedTestCase) => {
+      return skippedTestCase.htmlFile.destinationRelativeFilePath === htmlFilePath;
+    });
+
+    const isSkippedUserAgent = runReport.runTarget.skippedUserAgents.some((skippedUserAgent) => {
+      return skippedUserAgent.alias === userAgentAlias;
+    });
+
+    if (isSkippedTestCase || isSkippedUserAgent) {
+      return false;
+    }
+
+    return true;
+  }
+
+  /**
+   * @param {!SnapshotSuiteJson} expectedSuite
+   * @param {!SnapshotSuiteJson} actualSuite
+   * @param {!RunReport} runReport
+   * @return {!Array<!ImageDiffJson>}
+   * @private
+   */
+  getSkipped_({expectedSuite, actualSuite, runReport}) {
+    /** @type {!Array<!ImageDiffJson>} */
+    const skipped = [];
+
+    const runTarget = runReport.runTarget;
+
+    /** @type {!Array<!UploadableTestCase>} */
+    const allTestCases = [].concat(runTarget.runnableTestCases, runTarget.skippedTestCases);
+
+    /** @type {!Array<!CbtUserAgent>} */
+    const allUserAgents = [].concat(runTarget.runnableUserAgents, runTarget.skippedUserAgents);
+
+    allTestCases.forEach((testCase) => {
+      allUserAgents.forEach((userAgent) => {
+        const htmlFilePath = testCase.htmlFile.destinationRelativeFilePath;
+        const userAgentAlias = userAgent.alias;
+
+        if (actualSuite[htmlFilePath] && actualSuite[htmlFilePath].screenshots[userAgentAlias]) {
+          return;
+        }
+
+        const expectedPage = expectedSuite[htmlFilePath];
+        const goldenPageUrl = expectedPage ? expectedPage.publicUrl : null;
+        const expectedImageUrl = expectedPage ? expectedPage.screenshots[userAgentAlias] : null;
+
+        skipped.push({
+          htmlFilePath,
+          userAgentAlias,
+          goldenPageUrl,
+          snapshotPageUrl: null,
+          actualImageUrl: null,
+          expectedImageUrl,
+          diffImageBuffer: null,
+          diffImageUrl: null,
+        });
+      });
+    });
+
+    return skipped;
   }
 
   /**
@@ -235,9 +316,9 @@ class ImageDiffer {
           .then(
             (diffImageBuffer) => ({
               htmlFilePath,
+              userAgentAlias,
               goldenPageUrl,
               snapshotPageUrl,
-              userAgentAlias,
               expectedImageUrl,
               actualImageUrl,
               diffImageUrl: null, // populated by `Controller`
