@@ -30,6 +30,7 @@ controller.initialize()
     },
     handleError
   )
+  .catch(handleError)
 ;
 
 function handleError(err) {
