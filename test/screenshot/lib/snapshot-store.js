@@ -46,14 +46,21 @@ class SnapshotStore {
   }
 
   /**
-   * Writes the data to the given `golden.json` file path.
+   * @param {!ReportData} reportData
+   * @return {!Promise<string>}
+   */
+  async getSnapshotJsonString(reportData) {
+    const jsonData = await this.getJsonData_(reportData);
+    return stringify(jsonData, {space: '  '}) + '\n';
+  }
+
+  /**
    * @param {!ReportData} reportData
    * @return {!Promise<void>}
    */
   async writeToDisk(reportData) {
-    const jsonData = await this.getJsonData_(reportData);
+    const jsonFileContent = await this.getSnapshotJsonString(reportData);
     const jsonFilePath = this.cliArgs_.goldenPath;
-    const jsonFileContent = stringify(jsonData, {space: '  '}) + '\n';
 
     await fs.writeFile(jsonFilePath, jsonFileContent);
 
@@ -156,11 +163,12 @@ class SnapshotStore {
     diffs.forEach((diff) => {
       const htmlFilePath = diff.htmlFilePath;
       const browserKey = diff.browserKey;
+      const newPage = newJsonData[htmlFilePath];
       if (jsonData[htmlFilePath]) {
-        jsonData[htmlFilePath].publicUrl = newJsonData[htmlFilePath].publicUrl;
-        jsonData[htmlFilePath].screenshots[browserKey] = newJsonData[htmlFilePath].screenshots[browserKey];
+        jsonData[htmlFilePath].publicUrl = newPage.publicUrl;
+        jsonData[htmlFilePath].screenshots[browserKey] = newPage.screenshots[browserKey];
       } else {
-        jsonData[htmlFilePath] = this.deepCloneJson_(newJsonData[htmlFilePath]);
+        jsonData[htmlFilePath] = this.deepCloneJson_(newPage);
       }
     });
 

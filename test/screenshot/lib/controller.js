@@ -18,7 +18,7 @@
 
 const childProcess = require('child_process');
 const fs = require('mz/fs');
-const glob = require('glob');
+const path = require('path');
 
 const CbtUserAgent = require('./cbt-user-agent');
 const CliArgParser = require('./cli-arg-parser');
@@ -29,7 +29,7 @@ const ImageDiffer = require('./image-differ');
 const ReportGenerator = require('./report-generator');
 const Screenshot = require('./screenshot');
 const SnapshotStore = require('./snapshot-store');
-const {Storage, UploadableFile, UploadableTestCase} = require('./storage');
+const {Storage, UploadableFile} = require('./storage');
 
 /**
  * High-level screenshot workflow controller that provides composable async methods to:
@@ -296,7 +296,8 @@ class Controller {
    */
   async diffGoldenJson(testCases) {
     /** @type {!Array<!ImageDiffJson>} */
-    const diffs = await this.imageDiffer_.compareAllPages({
+    const {diffs, added, removed, unchanged} = await this.imageDiffer_.compareAllPages({
+      testCases,
       actualSuite: await this.snapshotStore_.fromTestCases(testCases),
       expectedSuite: await this.snapshotStore_.fromDiffBase(),
     });
@@ -304,14 +305,8 @@ class Controller {
     return Promise.all(diffs.map((diff, index) => this.uploadOneDiffImage_(diff, index, diffs.length)))
       .then(
         () => {
-          diffs.sort((a, b) => {
-            return a.htmlFilePath.localeCompare(b.htmlFilePath, 'en-US') ||
-              a.userAgentAlias.localeCompare(b.userAgentAlias, 'en-US');
-          });
           console.log('\n\nDONE diffing screenshot images!\n\n');
-          console.log(diffs);
-          console.log(`\n\nFound ${diffs.length} screenshot diffs!\n\n`);
-          return {testCases, diffs};
+          return {testCases, diffs, added, removed, unchanged};
         },
         (err) => Promise.reject(err)
       )
@@ -350,20 +345,53 @@ class Controller {
    */
   async uploadDiffReport(reportData) {
     const reportGenerator = new ReportGenerator(reportData);
+    const diffReportHtml = await reportGenerator.generateHtml();
+    const diffReportJsonStr = JSON.stringify(reportData, null, 2);
+    const snapshotJsonStr = await this.snapshotStore_.getSnapshotJsonString(reportData);
+
+    const writeFile = async ({filename, content, queueIndex, queueLength}) => {
+      const filePath = path.join(this.cliArgs_.testDir, filename);
+      console.log(`Writing ${filePath} to disk...`);
+
+      await fs.writeFile(filePath, content, {encoding: 'utf8'});
+
+      return this.storage_.uploadFile(new UploadableFile({
+        destinationParentDirectory: this.baseUploadDir_,
+        destinationRelativeFilePath: filename,
+        fileContent: content,
+        queueIndex,
+        queueLength,
+      }));
+    };
 
     /** @type {!UploadableFile} */
-    const reportFile = await this.storage_.uploadFile(new UploadableFile({
-      destinationParentDirectory: this.baseUploadDir_,
-      destinationRelativeFilePath: 'report.html',
-      fileContent: await reportGenerator.generateHtml(),
-      queueIndex: 0,
-      queueLength: 1,
-    }));
+    const [reportPageFile] = await Promise.all([
+      writeFile({
+        filename: 'report.html',
+        content: diffReportHtml,
+        queueIndex: 0,
+        queueLength: 3,
+      }),
+
+      writeFile({
+        filename: 'report.json',
+        content: diffReportJsonStr,
+        queueIndex: 1,
+        queueLength: 3,
+      }),
+
+      writeFile({
+        filename: 'snapshot.json',
+        content: snapshotJsonStr,
+        queueIndex: 2,
+        queueLength: 3,
+      }),
+    ]);
 
     console.log('\n\nDONE uploading diff report to GCS!\n\n');
-    console.log(reportFile.publicUrl);
+    console.log(reportPageFile.publicUrl);
 
-    return reportFile.publicUrl;
+    return reportPageFile.publicUrl;
   }
 
   /**
