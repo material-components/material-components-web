@@ -106,83 +106,47 @@ class Controller {
    */
   async uploadAllAssets() {
     /** @type {!Array<!UploadableTestCase>} */
-    const testCases = [];
+    const allTestCases = await this.storage_.uploadAllAssets(this.baseUploadDir_);
 
-    /**
-     * Relative paths of all asset files (HTML, CSS, JS) that will be uploaded.
-     * @type {!Array<string>}
-     */
-    const assetFileRelativePaths = glob.sync('**/*', {cwd: this.cliArgs_.testDir, nodir: true});
+    /** @type {!Array<!UploadableTestCase>} */
+    const activeTestCases = [];
 
-    /** @type {!Array<!Promise<!UploadableFile>>} */
-    const uploadPromises = assetFileRelativePaths.map((assetFileRelativePath, assetFileIndex) => {
-      return this.uploadOneAsset_(assetFileRelativePath, testCases, assetFileIndex, assetFileRelativePaths.length);
+    /** @type {!Array<!UploadableTestCase>} */
+    const skippedTestCases = [];
+
+    allTestCases.forEach((testCase) => {
+      if (this.isTestCaseRunnable_(testCase)) {
+        activeTestCases.push(testCase);
+      } else {
+        skippedTestCases.push(testCase);
+      }
     });
 
-    return Promise.all(uploadPromises)
-      .then(
-        () => {
-          this.logUploadAllAssetsSuccess_(testCases);
-          return testCases;
-        },
-        (err) => Promise.reject(err)
+    this.logTestCases_('SKIPPING', skippedTestCases);
+    this.logTestCases_('RUNNING', activeTestCases);
+
+    if (activeTestCases.length === 0) {
+      throw new Error(
+        'No test pages matched the provided URL filters! ' +
+        'Try making --mdc-include-url and --mdc-exclude-url less restrictive.'
       );
+    }
+
+    return activeTestCases;
   }
 
   /**
-   * @param {string} assetFileRelativePath
-   * @param {!Array<!UploadableTestCase>} testCases
-   * @param {number} queueIndex
-   * @param {number} queueLength
-   * @return {!Promise<!UploadableFile>}
+   * @param {!UploadableTestCase} testCase
+   * @return {boolean}
    * @private
    */
-  async uploadOneAsset_(assetFileRelativePath, testCases, queueIndex, queueLength) {
-    const assetFile = new UploadableFile({
-      destinationParentDirectory: this.baseUploadDir_,
-      destinationRelativeFilePath: assetFileRelativePath,
-      fileContent: await fs.readFile(`${this.cliArgs_.testDir}/${assetFileRelativePath}`),
-      queueIndex,
-      queueLength,
-    });
-
-    return this.storage_.uploadFile(assetFile)
-      .then(
-        () => this.handleUploadOneAssetSuccess_(assetFile, testCases),
-        (err) => this.handleUploadOneAssetFailure_(err)
-      );
-  }
-
-  /**
-   * @param {!UploadableFile} assetFile
-   * @param {!Array<!UploadableTestCase>} testCases
-   * @return {!Promise<!UploadableFile>}
-   * @private
-   */
-  async handleUploadOneAssetSuccess_(assetFile, testCases) {
-    const relativePath = assetFile.destinationRelativeFilePath;
-    const isHtmlFile = relativePath.endsWith('.html');
+  isTestCaseRunnable_(testCase) {
+    const relativePath = testCase.htmlFile.destinationRelativeFilePath;
     const isIncluded =
       this.cliArgs_.includeUrlPatterns.length === 0 ||
       this.cliArgs_.includeUrlPatterns.some((pattern) => pattern.test(relativePath));
     const isExcluded = this.cliArgs_.excludeUrlPatterns.some((pattern) => pattern.test(relativePath));
-    const shouldInclude = isIncluded && !isExcluded;
-
-    if (isHtmlFile && shouldInclude) {
-      testCases.push(new UploadableTestCase({htmlFile: assetFile}));
-    }
-
-    return assetFile;
-  }
-
-  /**
-   * @param {!T} err
-   * @return {!Promise<!T>}
-   * @template T
-   * @private
-   */
-  async handleUploadOneAssetFailure_(err) {
-    return Promise.reject(err);
+    return isIncluded && !isExcluded;
   }
 
   /**
@@ -254,7 +218,7 @@ class Controller {
   async handleCapturePageFailure_(testCase, err, testCaseQueueIndex, testCaseQueueLength) {
     console.error('\n\n\nERROR capturing screenshot with CrossBrowserTesting:\n\n');
     console.error(`  - ${testCase.htmlFile.publicUrl}`);
-    console.error(`  - Test case ${testCaseQueueIndex} of ${testCaseQueueLength}`);
+    console.error(`  - Test case ${testCaseQueueIndex + 1} of ${testCaseQueueLength}`);
     console.error(err);
     return Promise.reject(err);
   }
@@ -403,13 +367,22 @@ class Controller {
   }
 
   /**
+   * @param {string} verb
    * @param {!Array<!UploadableTestCase>} testCases
    * @private
    */
-  logUploadAllAssetsSuccess_(testCases) {
-    const publicHtmlFileUrls = testCases.map((testCase) => testCase.htmlFile.publicUrl).sort();
-    console.log('\n\nDONE uploading asset files to GCS!\n\n');
-    console.log(publicHtmlFileUrls.join('\n') + '\n\n');
+  logTestCases_(verb, testCases) {
+    if (testCases.length === 0) {
+      return;
+    }
+
+    const num = testCases.length;
+    const plural = num === 1 ? '' : 's';
+
+    console.log(`
+${verb} ${num} test${plural}:
+${['', ...testCases.map((testCase) => '\n  - ' + testCase.htmlFile.publicUrl)].join('')}
+`);
   }
 
   /**

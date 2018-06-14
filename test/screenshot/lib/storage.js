@@ -16,8 +16,12 @@
 
 'use strict';
 
-const GitRepo = require('./git-repo');
+const CliArgParser = require('./cli-arg-parser');
 const CloudStorage = require('@google-cloud/storage');
+const GitRepo = require('./git-repo');
+const childProcess = require('child_process');
+const fs = require('mz/fs');
+const path = require('path');
 
 /** Maximum number of times to retry a failed HTTP request. */
 const API_MAX_RETRIES = 5;
@@ -38,8 +42,24 @@ class Storage {
     const cloudStorage = new CloudStorage({
       credentials: require(GCLOUD_SERVICE_ACCOUNT_KEY_FILE_PATH),
     });
+
+    /**
+     * @type {!Bucket}
+     * @private
+     */
     this.storageBucket_ = cloudStorage.bucket(GCLOUD_STORAGE_BUCKET_NAME);
+
+    /**
+     * @type {!GitRepo}
+     * @private
+     */
     this.mdcGitRepo_ = new GitRepo();
+
+    /**
+     * @type {!CliArgParser}
+     * @private
+     */
+    this.cliArgs_ = new CliArgParser();
   }
 
   /**
@@ -47,9 +67,113 @@ class Storage {
    * @return {!Promise<string>}
    */
   async generateUniqueUploadDir() {
-    const gitCommitShort = await this.mdcGitRepo_.getShortCommitHash();
     const {year, month, day, hour, minute, second, ms} = this.getUtcDateTime_();
-    return `${USERNAME}/${year}/${month}/${day}/${hour}_${minute}_${second}_${ms}/${gitCommitShort}`;
+    return `${USERNAME}/${year}/${month}/${day}/${hour}_${minute}_${second}_${ms}`;
+  }
+
+  /**
+   * @param {string} baseUploadDir
+   * @return {!Promise<!Array<!UploadableTestCase>>}
+   */
+  async uploadAllAssets(baseUploadDir) {
+    return new Promise(async (resolve, reject) => {
+      const gsutilProcess = await this.spawnGsutilUploadProcess_(baseUploadDir);
+
+      let stderr = '';
+      gsutilProcess.stderr.on('data', (buffer) => {
+        stderr += buffer;
+        process.stderr.write(buffer);
+      });
+
+      gsutilProcess.on('close', (exitCode) => {
+        if (exitCode === 0) {
+          const htmlFiles = this.parseHtmlFilesFromGsutilOutput_(baseUploadDir, stderr);
+          resolve(htmlFiles);
+        } else {
+          reject(new Error(`gsutil processes exited with code ${exitCode}`));
+        }
+      });
+    });
+  }
+
+  /**
+   * @param {string} baseUploadDir
+   * @return {!Promise<!ChildProcess>}
+   * @private
+   */
+  async spawnGsutilUploadProcess_(baseUploadDir) {
+    const topLevelAssetFilesAndDirs = await this.fetchTopLevelAssetFilesAndDirs_();
+    const cmd = 'gsutil';
+    const args = [
+      '-m', 'cp', '-r', ...topLevelAssetFilesAndDirs, `gs://${GCLOUD_STORAGE_BUCKET_NAME}/${baseUploadDir}/`,
+    ];
+    console.log(`${cmd} ${args.join(' ')}\n\n`);
+    return childProcess.spawn(
+      cmd,
+      args,
+      {
+        wd: process.env.PWD,
+        env: process.env,
+        stdio: 'pipe',
+        shell: true,
+        windowsHide: true,
+      }
+    );
+  }
+
+  /**
+   * @return {!Promise<!Array<string>>}
+   * @private
+   */
+  async fetchTopLevelAssetFilesAndDirs_() {
+    const localAssetDir = this.cliArgs_.testDir;
+
+    /** @type {!Array<string>} */
+    const allTopLevelFilesAndDirs = (await fs.readdir(localAssetDir)).map((name) => path.join(localAssetDir, name));
+
+    /** @type {!Array<string>} */
+    const ignoredTopLevelFilesAndDirs = await this.mdcGitRepo_.getIgnoredPaths(allTopLevelFilesAndDirs);
+
+    return allTopLevelFilesAndDirs.filter((relativePath) => {
+      const isBuildOutputDir = relativePath.split('/').includes('out');
+      const isIgnoredFile = ignoredTopLevelFilesAndDirs.includes(relativePath);
+      return isBuildOutputDir || !isIgnoredFile;
+    });
+  }
+
+  /**
+   * @param {string} baseUploadDir
+   * @param {string} gsutilStderr
+   * @return {!Array<!UploadableTestCase>}
+   * @private
+   */
+  parseHtmlFilesFromGsutilOutput_(baseUploadDir, gsutilStderr) {
+    const localAssetDir = this.cliArgs_.testDir;
+
+    return gsutilStderr
+      .trim()
+      .split('\n')
+      .map((line) => {
+        // Example line:
+        // Copying file://test/screenshot/mdc-button/classes/baseline.html [Content-Type=text/html]...
+        return (new RegExp('file://([^ ]+)').exec(line) || [])[1];
+      })
+      .filter((relativeFilePath) => Boolean(relativeFilePath))
+      .filter((relativeFilePath) => relativeFilePath.includes('/mdc-'))
+      .filter((relativeFilePath) => relativeFilePath.endsWith('.html'))
+      .map((filePath) => filePath)
+      .map((relativeFilePath, fileIndex, fileArray) => {
+        return new UploadableTestCase({
+          htmlFile: new UploadableFile({
+            destinationParentDirectory: baseUploadDir,
+            destinationRelativeFilePath: relativeFilePath.replace(localAssetDir, ''),
+            queueIndex: fileIndex,
+            queueLength: fileArray.length,
+          }),
+        });
+      })
+      .sort()
+    ;
   }
 
   /**
@@ -144,9 +268,8 @@ class Storage {
    * @private
    */
   handleUploadSuccess_(uploadableFile) {
-    const publicUrl = `${GCLOUD_STORAGE_BASE_URL}${uploadableFile.destinationAbsoluteFilePath}`;
     uploadableFile.fileContent = null; // Free up memory
-    uploadableFile.publicUrl = publicUrl;
+    const publicUrl = uploadableFile.publicUrl;
     const queueIndex = uploadableFile.queueIndex;
     const queueLength = uploadableFile.queueLength;
     const queueIndexStr = String(queueIndex + 1).padStart(String(queueLength).length, '0');
@@ -203,9 +326,9 @@ class UploadableFile {
   constructor({
     destinationParentDirectory,
     destinationRelativeFilePath,
-    fileContent,
     queueIndex,
     queueLength,
+    fileContent = null,
     userAgent = null,
   }) {
     /** @type {string} */
@@ -216,6 +339,9 @@ class UploadableFile {
 
     /** @type {string} */
     this.destinationAbsoluteFilePath = `${this.destinationParentDirectory}/${this.destinationRelativeFilePath}`;
+
+    /** @type {string} */
+    this.publicUrl = `${GCLOUD_STORAGE_BASE_URL}${this.destinationAbsoluteFilePath}`;
 
     /** @type {?Buffer} */
     this.fileContent = fileContent;
@@ -228,9 +354,6 @@ class UploadableFile {
 
     /** @type {number} */
     this.queueLength = queueLength;
-
-    /** @type {?string} */
-    this.publicUrl = null;
   }
 }
 
