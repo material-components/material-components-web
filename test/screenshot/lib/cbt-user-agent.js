@@ -68,10 +68,10 @@ const CBT_FILTERS = {
 };
 
 let allUserAgentsPromise;
+let runnableAliasesCache;
 
 module.exports = {
-  fetchBrowsersToRun,
-  fetchSkippedBrowsers,
+  fetchUserAgents,
   fetchBrowserByApiName,
   fetchBrowserByAlias,
 };
@@ -79,51 +79,28 @@ module.exports = {
 /**
  * Fetches the CBT API representations of all user agents listed in `browser.json`.
  * CLI filters (e.g., `--mdc-include-browser`) are ignored.
- * @return {!Promise<!Array<!CbtUserAgent>>}
+ * @return {!Promise<{
+ *   allUserAgents: !Array<!CbtUserAgent>,
+ *   runnableUserAgents: !Array<!CbtUserAgent>,
+ *   skippedUserAgents: !Array<!CbtUserAgent>,
+ * }>}
  */
-async function fetchAllBrowsers() {
+async function fetchUserAgents() {
   return allUserAgentsPromise || (allUserAgentsPromise = new Promise((resolve, reject) => {
     cbtApi.fetchAvailableDevices()
       .then(
         (cbtDevices) => {
           const allAliases = getAllAliases();
           const allUserAgents = findAllMatchingUAs(allAliases, cbtDevices);
-          logUserAgents(allUserAgents);
-          resolve(allUserAgents);
+          resolve({
+            allUserAgents,
+            runnableUserAgents: allUserAgents.filter((userAgent) => userAgent.isRunnable),
+            skippedUserAgents: allUserAgents.filter((userAgent) => !userAgent.isRunnable),
+          });
         },
         (err) => reject(err)
       );
   }));
-}
-
-/**
- * Fetches the CBT API representations of all user agents listed in `browser.json`, *except* those that are excluded by
- * the user's CLI filters (e.g., `--mdc-include-browser`, `--mdc-exclude-browser`).
- * @return {!Promise<!Array<!CbtUserAgent>>}
- */
-async function fetchBrowsersToRun() {
-  /** @type {!Array<!CbtUserAgent>} */
-  const allBrowsers = await fetchAllBrowsers();
-
-  /** @type {!Array<string>} */
-  const filteredAliases = getFilteredAliases();
-
-  return allBrowsers.filter((browser) => filteredAliases.includes(browser.alias));
-}
-
-/**
- * Fetches the CBT API representations of all user agents listed in `browser.json` that are excluded by
- * the user's CLI filters (e.g., `--mdc-include-browser`, `--mdc-exclude-browser`).
- * @return {!Promise<!Array<!CbtUserAgent>>}
- */
-async function fetchSkippedBrowsers() {
-  /** @type {!Array<!CbtUserAgent>} */
-  const allBrowsers = await fetchAllBrowsers();
-
-  /** @type {!Array<string>} */
-  const filteredAliases = getFilteredAliases();
-
-  return allBrowsers.filter((browser) => !filteredAliases.includes(browser.alias));
 }
 
 /**
@@ -136,7 +113,7 @@ async function fetchBrowserByApiName(cbtDeviceApiName, cbtBrowserApiName) {
   // TODO(acdvorak): Why does the CBT browser API return "Win10" but the screenshot info API returns "Win10-E17"?
   cbtDeviceApiName = cbtDeviceApiName.replace(/-E\d+$/, '');
 
-  const allUserAgents = await fetchAllBrowsers();
+  const {allUserAgents} = await fetchUserAgents();
   return allUserAgents.find((userAgent) => {
     return userAgent.device.api_name === cbtDeviceApiName
       && userAgent.browser.api_name === cbtBrowserApiName;
@@ -148,7 +125,7 @@ async function fetchBrowserByApiName(cbtDeviceApiName, cbtBrowserApiName) {
  * @return {!Promise<?CbtUserAgent>}
  */
 async function fetchBrowserByAlias(userAgentAlias) {
-  const allUserAgents = await fetchAllBrowsers();
+  const {allUserAgents} = await fetchUserAgents();
   return allUserAgents.find((userAgent) => {
     return userAgent.alias === userAgentAlias;
   });
@@ -164,15 +141,15 @@ function getAllAliases() {
 /**
  * @return {!Array<string>}
  */
-function getFilteredAliases() {
-  return getAllAliases().filter((alias) => {
+function getRunnableAliases() {
+  return runnableAliasesCache || (runnableAliasesCache = getAllAliases().filter((alias) => {
     const isIncluded =
       cliArg.includeBrowserPatterns.length === 0 ||
       cliArg.includeBrowserPatterns.some((pattern) => pattern.test(alias));
     const isExcluded =
       cliArg.excludeBrowserPatterns.some((pattern) => pattern.test(alias));
     return isIncluded && !isExcluded;
-  });
+  }));
 }
 
 /**
@@ -230,6 +207,7 @@ function findOneMatchingUA(userAgentAlias, cbtDevices) {
     alias: userAgentAlias,
     device: firstDevice,
     browser: firstBrowser,
+    isRunnable: getRunnableAliases().includes(userAgentAlias),
   };
 }
 
@@ -331,73 +309,3 @@ function is64Bit(browser, otherBrowsers) {
 function deepCopyJson(json) {
   return JSON.parse(JSON.stringify(json));
 }
-
-function logUserAgents(allUserAgents) {
-  const aliasToApiNameMap = {};
-  allUserAgents.forEach((config) => aliasToApiNameMap[config.alias] = config.fullCbtApiName);
-  console.log(JSON.stringify(aliasToApiNameMap, null, 2));
-  console.log('\n');
-}
-
-/**
- * Represents a single browser/device combination.
- * E.g., "Chrome 62" on "Nexus 6P with Android 7.0".
- * This is a custom, MDC-specific data type; it does not come from the CBT API.
- * @typedef {{
- *   fullCbtApiName: string,
- *   alias: string,
- *   device: !CbtDevice,
- *   browser: !CbtBrowser,
- * }}
- */
-let CbtUserAgent;
-
-/**
- * A "physical" device (phone, tablet, or desktop) with a specific OS version.
- * E.g., "iPhone 8 with iOS 11", "Nexus 6P with Android 7.0", "macOS 10.13", "Windows 10".
- * Returned by the CBT API.
- * @typedef {{
- *   api_name: string,
- *   name: string,
- *   version: string,
- *   type: string,
- *   device: string,
- *   device_type: string,
- *   browsers: !Array<!CbtBrowser>,
- *   resolutions: !Array<!CbtDeviceResolution>,
- *   parsedVersionNumber: ?string,
- * }}
- */
-let CbtDevice;
-
-/**
- * A specific version of a browser vendor's software.
- * E.g., "Safari 11", "Chrome 63 (64-bit)", "Edge 17".
- * Returned by the CBT API.
- * @typedef {{
- *   api_name: string,
- *   name: string,
- *   version: string,
- *   type: string,
- *   device: string,
- *   selenium_version: string,
- *   webdriver_type: string,
- *   webdriver_version: string,
- *   parsedVersionNumber: ?string,
- * }}
- */
-let CbtBrowser;
-
-/**
- * A "physical" device pixel resolution.
- * E.g., "1125x2436 (portrait)", "2436x1125 (landscape)".
- * Returned by the CBT API.
- * @typedef {{
- *   name: string,
- *   width: number,
- *   height: number,
- *   orientation: string,
- *   default: boolean,
- * }}
- */
-let CbtDeviceResolution;

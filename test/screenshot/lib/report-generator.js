@@ -22,14 +22,14 @@ const GITHUB_REPO_URL = 'https://github.com/material-components/material-compone
 
 class ReportGenerator {
   /**
-   * @param {!ReportData} reportData
+   * @param {!RunReport} runReport
    */
-  constructor(reportData) {
+  constructor(runReport) {
     /**
-     * @type {!ReportData}
+     * @type {!RunReport}
      * @private
      */
-    this.reportData_ = reportData;
+    this.runReport_ = runReport;
 
     /**
      * @type {{
@@ -66,10 +66,12 @@ class ReportGenerator {
    * @private
    */
   groupAllChangelistsByFile_() {
-    this.groupOneChangelistByFile_(this.reportData_.diffs, this.reportMaps_.diffs);
-    this.groupOneChangelistByFile_(this.reportData_.added, this.reportMaps_.added);
-    this.groupOneChangelistByFile_(this.reportData_.removed, this.reportMaps_.removed);
-    this.groupOneChangelistByFile_(this.reportData_.unchanged, this.reportMaps_.unchanged);
+    // TODO(acdvorak): Move most of the logic out of this file so that we can serialize all the data displayed on
+    // the page to `report.json`.
+    this.groupOneChangelistByFile_(this.runReport_.runResult.diffs, this.reportMaps_.diffs);
+    this.groupOneChangelistByFile_(this.runReport_.runResult.added, this.reportMaps_.added);
+    this.groupOneChangelistByFile_(this.runReport_.runResult.removed, this.reportMaps_.removed);
+    this.groupOneChangelistByFile_(this.runReport_.runResult.unchanged, this.reportMaps_.unchanged);
   }
 
   /**
@@ -90,10 +92,10 @@ class ReportGenerator {
    * @return {!Promise<string>}
    */
   async generateHtml() {
-    const numDiffs = this.reportData_.diffs.length;
-    const numAdded = this.reportData_.added.length;
-    const numRemoved = this.reportData_.removed.length;
-    const numUnchanged = this.reportData_.unchanged.length;
+    const numDiffs = this.runReport_.runResult.diffs.length;
+    const numAdded = this.runReport_.runResult.added.length;
+    const numRemoved = this.runReport_.runResult.removed.length;
+    const numUnchanged = this.runReport_.runResult.unchanged.length;
 
     const title = [
       `${numDiffs} Diff${numDiffs !== 1 ? 's' : ''}`,
@@ -121,28 +123,28 @@ class ReportGenerator {
     ${this.getCollapseButtonMarkup_()}
     ${await this.getMetadataMarkup_()}
     ${await this.getChangelistMarkup_({
-      changelist: this.reportData_.diffs,
+      changelist: this.runReport_.runResult.diffs,
       map: this.reportMaps_.diffs,
       isOpen: true,
       heading: 'Diff',
       pluralize: true,
     })}
     ${await this.getChangelistMarkup_({
-      changelist: this.reportData_.added,
+      changelist: this.runReport_.runResult.added,
       map: this.reportMaps_.added,
       isOpen: true,
       heading: 'Added',
       pluralize: false,
     })}
     ${await this.getChangelistMarkup_({
-      changelist: this.reportData_.removed,
+      changelist: this.runReport_.runResult.removed,
       map: this.reportMaps_.removed,
       isOpen: true,
       heading: 'Removed',
       pluralize: false,
     })}
     ${await this.getChangelistMarkup_({
-      changelist: this.reportData_.unchanged,
+      changelist: this.runReport_.runResult.unchanged,
       map: this.reportMaps_.unchanged,
       isOpen: false,
       heading: 'Unchanged',
@@ -178,8 +180,8 @@ class ReportGenerator {
 
   async getMetadataMarkup_() {
     const timestamp = (new Date()).toISOString();
-    const numTestCases = this.reportData_.testCases.length;
-    const numScreenshots = this.reportData_.testCases
+    const numTestCases = this.runReport_.runTarget.runnableTestCases.length;
+    const numScreenshots = this.runReport_.runTarget.runnableTestCases
       .map((testCase) => testCase.screenshotImageFiles.length)
       .reduce((total, current) => total + current, 0)
     ;
