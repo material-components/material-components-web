@@ -57,13 +57,13 @@ let RunResult;
 /**
  * @typedef {{
  *   htmlFilePath: string,
- *   goldenPageUrl: string,
- *   snapshotPageUrl: string,
  *   userAgentAlias: string,
- *   actualImageUrl: string,
- *   expectedImageUrl: string,
+ *   goldenPageUrl: ?string,
+ *   snapshotPageUrl: ?string,
+ *   actualImageUrl: ?string,
+ *   expectedImageUrl: ?string,
  *   diffImageBuffer ?Buffer,
- *   diffImageUrl: string,
+ *   diffImageUrl: ?string,
  * }}
  */
 let ImageDiffJson;
@@ -125,7 +125,7 @@ class UploadableFile {
     /** @type {?Buffer} */
     this.fileContent = fileContent;
 
-    /** @type {?Object} */
+    /** @type {?CbtUserAgent} */
     this.userAgent = userAgent;
 
     /** @type {number} */

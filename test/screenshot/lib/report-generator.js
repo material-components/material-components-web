@@ -37,6 +37,7 @@ class ReportGenerator {
      *   added: !Map<string, !Array<!ImageDiffJson>>,
      *   removed: !Map<string, !Array<!ImageDiffJson>>,
      *   unchanged: !Map<string, !Array<!ImageDiffJson>>,
+     *   skipped: !Map<string, !Array<!ImageDiffJson>>,
      * }}
      * @private
      */
@@ -45,6 +46,7 @@ class ReportGenerator {
       added: new Map(),
       removed: new Map(),
       unchanged: new Map(),
+      skipped: new Map(),
     };
 
     /**
@@ -72,6 +74,7 @@ class ReportGenerator {
     this.groupOneChangelistByFile_(this.runReport_.runResult.added, this.reportMaps_.added);
     this.groupOneChangelistByFile_(this.runReport_.runResult.removed, this.reportMaps_.removed);
     this.groupOneChangelistByFile_(this.runReport_.runResult.unchanged, this.reportMaps_.unchanged);
+    this.groupOneChangelistByFile_(this.runReport_.runResult.skipped, this.reportMaps_.skipped);
   }
 
   /**
@@ -92,16 +95,20 @@ class ReportGenerator {
    * @return {!Promise<string>}
    */
   async generateHtml() {
-    const numDiffs = this.runReport_.runResult.diffs.length;
-    const numAdded = this.runReport_.runResult.added.length;
-    const numRemoved = this.runReport_.runResult.removed.length;
-    const numUnchanged = this.runReport_.runResult.unchanged.length;
+    const runResult = this.runReport_.runResult;
+
+    const numDiffs = runResult.diffs.length;
+    const numAdded = runResult.added.length;
+    const numRemoved = runResult.removed.length;
+    const numUnchanged = runResult.unchanged.length;
+    const numSkipped = runResult.skipped.length;
 
     const title = [
       `${numDiffs} Diff${numDiffs !== 1 ? 's' : ''}`,
       `${numAdded} Added`,
       `${numRemoved} Removed`,
       `${numUnchanged} Unchanged`,
+      `${numSkipped} Skipped`,
     ].join(', ');
 
     /* eslint-disable indent */
@@ -123,31 +130,38 @@ class ReportGenerator {
     ${this.getCollapseButtonMarkup_()}
     ${await this.getMetadataMarkup_()}
     ${await this.getChangelistMarkup_({
-      changelist: this.runReport_.runResult.diffs,
+      changelist: runResult.diffs,
       map: this.reportMaps_.diffs,
       isOpen: true,
       heading: 'Diff',
       pluralize: true,
     })}
     ${await this.getChangelistMarkup_({
-      changelist: this.runReport_.runResult.added,
+      changelist: runResult.added,
       map: this.reportMaps_.added,
       isOpen: true,
       heading: 'Added',
       pluralize: false,
     })}
     ${await this.getChangelistMarkup_({
-      changelist: this.runReport_.runResult.removed,
+      changelist: runResult.removed,
       map: this.reportMaps_.removed,
       isOpen: true,
       heading: 'Removed',
       pluralize: false,
     })}
     ${await this.getChangelistMarkup_({
-      changelist: this.runReport_.runResult.unchanged,
+      changelist: runResult.unchanged,
       map: this.reportMaps_.unchanged,
       isOpen: false,
       heading: 'Unchanged',
+      pluralize: false,
+    })}
+    ${await this.getChangelistMarkup_({
+      changelist: runResult.skipped,
+      map: this.reportMaps_.skipped,
+      isOpen: false,
+      heading: 'Skipped',
       pluralize: false,
     })}
   </body>
@@ -178,13 +192,34 @@ class ReportGenerator {
 `;
   }
 
+  getMetadataFilterCountMarkup_(numRunnable, numSkipped) {
+    const numTotal = numRunnable + numSkipped;
+    if (numSkipped > 0) {
+      return `${numRunnable} of ${numTotal} (skipped ${numSkipped})`;
+    }
+    return String(numRunnable);
+  }
+
   async getMetadataMarkup_() {
     const timestamp = (new Date()).toISOString();
-    const numTestCases = this.runReport_.runTarget.runnableTestCases.length;
-    const numScreenshots = this.runReport_.runTarget.runnableTestCases
-      .map((testCase) => testCase.screenshotImageFiles.length)
-      .reduce((total, current) => total + current, 0)
-    ;
+
+    const {runnableTestCases, skippedTestCases, runnableUserAgents, skippedUserAgents} = this.runReport_.runTarget;
+
+    const numRunnableTestCases = runnableTestCases.length;
+    const numSkippedTestCases = skippedTestCases.length;
+    const numTotalTestCases = numRunnableTestCases + numSkippedTestCases;
+
+    const numRunnableUserAgents = runnableUserAgents.length;
+    const numSkippedUserAgents = skippedUserAgents.length;
+    const numTotalUserAgents = numRunnableUserAgents + numSkippedUserAgents;
+
+    const numTotalScreenshots = numTotalTestCases * numTotalUserAgents;
+    const numRunnableScreenshots = numRunnableTestCases * numRunnableUserAgents;
+    const numSkippedScreenshots = numTotalScreenshots - numRunnableScreenshots;
+
+    const testCaseCountMarkup = this.getMetadataFilterCountMarkup_(numRunnableTestCases, numSkippedTestCases);
+    const browserCountMarkup = this.getMetadataFilterCountMarkup_(numRunnableUserAgents, numSkippedUserAgents);
+    const screenshotCountMarkup = this.getMetadataFilterCountMarkup_(numRunnableScreenshots, numSkippedScreenshots);
 
     const [nodeBinPath, scriptPath, ...scriptArgs] = process.argv;
     const nodeBinPathRedacted = nodeBinPath.replace(process.env.HOME, '~');
@@ -234,12 +269,16 @@ class ReportGenerator {
           <td class="report-metadata__cell report-metadata__cell--val">${timestamp}</td>
         </tr>
         <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">Screenshots:</th>
-          <td class="report-metadata__cell report-metadata__cell--val">${numScreenshots}</td>
+          <th class="report-metadata__cell report-metadata__cell--key">Test Cases:</th>
+          <td class="report-metadata__cell report-metadata__cell--val">${testCaseCountMarkup}</td>
         </tr>
         <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">Test Cases:</th>
-          <td class="report-metadata__cell report-metadata__cell--val">${numTestCases}</td>
+          <th class="report-metadata__cell report-metadata__cell--key">Browsers:</th>
+          <td class="report-metadata__cell report-metadata__cell--val">${browserCountMarkup}</td>
+        </tr>
+        <tr>
+          <th class="report-metadata__cell report-metadata__cell--key">Screenshots:</th>
+          <td class="report-metadata__cell report-metadata__cell--val">${screenshotCountMarkup}</td>
         </tr>
         <tr>
           <th class="report-metadata__cell report-metadata__cell--key">Golden:</th>
@@ -373,14 +412,28 @@ on tag
     return `
 <details class="report-file" open>
   <summary class="report-file__heading">
-    ${htmlFilePath}
-    (<a href="${goldenPageUrl}">golden</a> | <a href="${snapshotPageUrl}">snapshot</a>)
+    ${diffs.length} in ${htmlFilePath}
+    ${this.getGoldenAndSnapshotLinkMarkup_({goldenPageUrl, snapshotPageUrl})}
   </summary>
   <div class="report-file__content">
     ${diffs.map((diff) => this.getDiffRowMarkup_(diff)).join('\n')}
   </div>
 </details>
 `;
+  }
+
+  getGoldenAndSnapshotLinkMarkup_({goldenPageUrl, snapshotPageUrl}) {
+    const fragments = [];
+    if (goldenPageUrl) {
+      fragments.push(`<a href="${goldenPageUrl}">golden</a>`);
+    }
+    if (snapshotPageUrl) {
+      fragments.push(`<a href="${snapshotPageUrl}">snapshot</a>`);
+    }
+    if (fragments.length === 0) {
+      return '';
+    }
+    return `(${fragments.join(' | ')})`;
   }
 
   getDiffRowMarkup_(diff) {
@@ -414,7 +467,7 @@ on tag
 `;
     }
 
-    return '<div>(null)</div>';
+    return '<div>(none)</div>';
   }
 }
 
