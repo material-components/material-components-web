@@ -111,6 +111,14 @@ class GitRepo {
   }
 
   /**
+   * @param {!Array<string>} filePaths
+   * @return {!Promise<!Array<string>>}
+   */
+  async getIgnoredPaths(filePaths) {
+    return this.repo_.checkIgnore(filePaths);
+  }
+
+  /**
    * @param {string} cmd
    * @param {!Array<string>=} argList
    * @return {!Promise<string>}

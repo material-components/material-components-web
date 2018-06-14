@@ -120,6 +120,10 @@ async function sendCaptureRequest(testPageUrl, retryCount = 0) {
         return sendCaptureRequest(testPageUrl, retryCount); // don't increment the retry count for parallel execution
       }
 
+      if (isBadUrl(err)) {
+        return rejectWithError('sendCaptureRequest', testPageUrl, new Error(err.response.body.message));
+      }
+
       // TODO(acdvorak): Abstract this logic into CbtApi for every HTTP request?
       if (isServerError(err)) {
         await logServerErrorAndSleep(err);
@@ -208,7 +212,16 @@ function computeTestSuiteProgress() {
 function reachedParallelExecutionLimit(requestError) {
   try {
     // The try/catch is necessary because some of these properties might not exist.
-    return requestError.response.body.message.indexOf('maximum number of parallel');
+    return requestError.response.body.message.includes('maximum number of parallel');
+  } catch (e) {
+    return false;
+  }
+}
+
+function isBadUrl(requestError) {
+  try {
+    // The try/catch is necessary because some of these properties might not exist.
+    return requestError.response.body.message.includes('URL check failed');
   } catch (e) {
     return false;
   }
