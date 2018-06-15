@@ -39,6 +39,7 @@
   },
   "devDependencies": {
     "@google-cloud/storage": "^1.6.0",
+    "@octokit/rest": "^15.8.2",
     "argparse": "^1.0.10",
     "ascii-table": "0.0.9",
     "autoprefixer": "^8.0.0",

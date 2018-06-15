@@ -343,7 +343,7 @@ class ReportGenerator {
 <a href="${GITHUB_REPO_URL}/commit/${rev.commit}">${rev.commit}</a>
 on branch
 <a href="${GITHUB_REPO_URL}/tree/${rev.branch}">${branchDisplayName}</a>
-${await this.getPullRequestLinkMarkup_(rev)}
+${await this.getPullRequestLinkMarkup_(rev.branch)}
 `;
       }
 
@@ -360,16 +360,16 @@ on tag
   }
 
   /**
-   * @param {!GitRevision} rev
+   * @param {string} branch
    * @return {!Promise<string>}
    * @private
    */
-  async getPullRequestLinkMarkup_(rev) {
-    const pr = await this.gitRepo_.getPullRequestNumber(rev.commit);
+  async getPullRequestLinkMarkup_(branch) {
+    const pr = await this.gitRepo_.getPullRequestNumber(branch);
     if (!pr) {
       return '';
     }
-    return ` in PR <a href="${GITHUB_REPO_URL}/pull/${pr}">#${pr}</a>`;
+    return ` from PR <a href="${GITHUB_REPO_URL}/pull/${pr}">#${pr}</a>`;
   }
 
   /**
