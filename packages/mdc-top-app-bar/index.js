@@ -38,7 +38,7 @@ class MDCTopAppBar extends MDCComponent {
     this.navIcon_;
     /** @type {?Array<MDCRipple>} */
     this.iconRipples_;
-    /** @type {Element} */
+    /** @type {Object} */
     this.scrollTarget_;
   }
 
@@ -107,7 +107,7 @@ class MDCTopAppBar extends MDCComponent {
       registerResizeHandler: (handler) => window.addEventListener('resize', handler),
       deregisterResizeHandler: (handler) => window.removeEventListener('resize', handler),
       getViewportScrollY: () =>
-        this.scrollTarget_ === window ? window.pageYOffset : this.scrollTarget_.scrollTop,
+      this.scrollTarget_[this.scrollTarget_ === window ? 'pageYOffset' : 'scrollTop'],
       getTotalActionItems: () =>
         this.root_.querySelectorAll(strings.ACTION_ITEM_SELECTOR).length,
     })
