@@ -257,8 +257,8 @@ window.mdc.report = window.mdc.report || (() => {
 
     getStatusBadgeText_(reviewStatus) {
       const names = {
-        'approve': 'approved',
-        'retry': 'retried',
+        'approve': 'approve',
+        'retry': 'retry',
         'mixed': 'mixed',
         'unreviewed': 'unreviewed',
       };
