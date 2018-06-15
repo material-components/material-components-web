@@ -397,7 +397,9 @@ on tag
     const numDiffs = changelist.length;
 
     return `
-<details class="report-changelist" ${isOpen && numDiffs > 0 ? 'open' : ''}>
+<details class="report-changelist" ${isOpen && numDiffs > 0 ? 'open' : ''}
+  data-change-group-id="${changeGroupId}"
+>
   <summary class="report-changelist__heading">
     ${this.getCheckboxMarkup_({changeGroupId, isCheckable, numScreenshots: numDiffs})}
     ${numDiffs} ${heading}${pluralize && numDiffs !== 1 ? 's' : ''}
@@ -443,7 +445,10 @@ on tag
     const snapshotPageUrl = diffs[0].snapshotPageUrl;
 
     return `
-<details class="report-file" open>
+<details class="report-file" open
+  data-change-group-id="${changeGroupId}"
+  data-html-file-path="${htmlFilePath}"
+>
   <summary class="report-file__heading">
     ${this.getCheckboxMarkup_({changeGroupId, htmlFilePath, isCheckable, numScreenshots: diffs.length})}
     ${diffs.length} in ${htmlFilePath}
@@ -487,7 +492,11 @@ on tag
   getDiffRowMarkup_({diff, changeGroupId, htmlFilePath, isCheckable}) {
     const {userAgentAlias} = diff;
     return `
-<details class="report-browser" open>
+<details class="report-browser" open
+  data-change-group-id="${changeGroupId}"
+  data-html-file-path="${htmlFilePath}"
+  data-user-agent-alias="${userAgentAlias}"
+>
   <summary class="report-browser__heading">
     ${this.getCheckboxMarkup_({changeGroupId, htmlFilePath, userAgentAlias, isCheckable, numScreenshots: 1})}
     ${diff.userAgentAlias}
@@ -533,14 +542,16 @@ on tag
     <button class="report-toolbar__button" id="report-toolbar__select-inverse-button" onclick="mdc.report.selectInverse()">Inverse</button>
   </div>
   <div class="report-toolbar__column">
-    <span id="report-toolbar__selected-count"></span> selected:
     <button class="report-toolbar__button report-toolbar__button--approve" id="report-toolbar__approve-selected-button" onclick="mdc.report.approveSelected()">Approve</button>
     <button class="report-toolbar__button report-toolbar__button--retry" id="report-toolbar__retry-selected-button" onclick="mdc.report.retrySelected()">Retry</button>
     <button class="report-toolbar__button report-toolbar__button--reject" id="report-toolbar__reject-selected-button" onclick="mdc.report.rejectSelected()">Reject</button>
+    <span id="report-toolbar__selected-count"></span> selected
   </div>
   <div class="report-toolbar__column">
     <button class="report-toolbar__button report-toolbar__button--copy" id="report-toolbar__copy-cli-command-button" onclick="mdc.report.copyCliCommand()">Copy CLI command</button>
-    to approve 3 and retry 1
+    to approve <span id="report-toolbar__approve-count"></span>
+    and retry <span id="report-toolbar__retry-count"></span>
+    (<span id="report-toolbar__reject-count"></span> rejected)
   </div>
 </footer>
 `;
@@ -594,7 +605,7 @@ of
   data-change-group-id="${changeGroupId}"
   data-html-file-path="${htmlFilePath}"
   data-user-agent-alias="${userAgentAlias}"
-  data-approval-status="unreviewed"
+  data-review-status="unreviewed"
   onchange="${eventHandlerJs}"
 >
 ${checkedCountMarkup}

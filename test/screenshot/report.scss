@@ -157,6 +157,7 @@ th {
 
 .report-browser__image {
   max-width: 100%;
+  background-color: white;
   vertical-align: top;
 }
 
@@ -185,7 +186,7 @@ th {
 }
 
 .report-toolbar__column {
-  width: 33%;
+  flex-grow: 1;
 }
 
 .report-toolbar__column:nth-of-type(2) {
@@ -226,5 +227,28 @@ th {
 
 .report-toolbar__button--copy {
   //color:
+}
+
+
+
+
+[data-review-status="unreviewed"]:not(input) {
+  //background-color: rgba(black, .2);
+}
+
+[data-review-status="approve"]:not(input) {
+  background-color: #cfefc5;
+}
+
+[data-review-status="reject"]:not(input) {
+  background-color: #ffc6c3;
+}
+
+[data-review-status="retry"]:not(input) {
+  background-color: #ffe6b9;
+}
+
+[data-review-status="mixed"]:not(input) {
+  background-color: #ebb7fb;
 }
 

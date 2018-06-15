@@ -90,15 +90,27 @@ window.mdc.report = window.mdc.report || (() => {
     }
 
     approveSelected() {
-
+      this.queryAll_('.report-browser__checkbox:checked').forEach((cbEl) => {
+        cbEl.dataset.reviewStatus = 'approve';
+        cbEl.closest('.report-browser').dataset.reviewStatus = 'approve';
+      });
+      this.updateAll_();
     }
 
     rejectSelected() {
-
+      this.queryAll_('.report-browser__checkbox:checked').forEach((cbEl) => {
+        cbEl.dataset.reviewStatus = 'reject';
+        cbEl.closest('.report-browser').dataset.reviewStatus = 'reject';
+      });
+      this.updateAll_();
     }
 
     retrySelected() {
-
+      this.queryAll_('.report-browser__checkbox:checked').forEach((cbEl) => {
+        cbEl.dataset.reviewStatus = 'retry';
+        cbEl.closest('.report-browser').dataset.reviewStatus = 'retry';
+      });
+      this.updateAll_();
     }
 
     copyCliCommand() {
@@ -118,12 +130,14 @@ window.mdc.report = window.mdc.report || (() => {
       //     diffs: {
       //       cbEl: null,
       //       countEl: null,
+      //       containerEl: null,
       //       checkedBrowserCbEls: [],
       //       uncheckedBrowserCbEls: [],
       //       pageMap: {
       //         'baseline.html': {
       //           cbEl: null,
       //           countEl: null,
+      //           containerEl: null,
       //           checkedBrowserCbEls: [],
       //           uncheckedBrowserCbEls: [],
       //         },
@@ -135,6 +149,7 @@ window.mdc.report = window.mdc.report || (() => {
         checkedBrowserCbEls: [],
         uncheckedBrowserCbEls: [],
         changelists: {},
+        reviewStatuses: {},
       };
 
       const browserCbEls = this.queryAll_('.report-browser__checkbox');
@@ -152,16 +167,20 @@ window.mdc.report = window.mdc.report || (() => {
         changelists[changeGroupId] = changelists[changeGroupId] || {
           cbEl: this.queryOne_(`.report-changelist__checkbox${changelistDataAttr}`),
           countEl: this.queryOne_(`.report-changelist__checked-count${changelistDataAttr}`),
+          containerEl: this.queryOne_(`.report-changelist${changelistDataAttr}`),
           checkedBrowserCbEls: [],
           uncheckedBrowserCbEls: [],
+          reviewStatuses: {},
           pageMap: {},
         };
 
         changelists[changeGroupId].pageMap[htmlFilePath] = changelists[changeGroupId].pageMap[htmlFilePath] || {
           cbEl: this.queryOne_(`.report-file__checkbox${pageDataAttr}`),
           countEl: this.queryOne_(`.report-file__checked-count${pageDataAttr}`),
+          containerEl: this.queryOne_(`.report-file${pageDataAttr}`),
           checkedBrowserCbEls: [],
           uncheckedBrowserCbEls: [],
+          reviewStatuses: {},
         };
 
         if (browserCbEl.checked) {
@@ -173,13 +192,27 @@ window.mdc.report = window.mdc.report || (() => {
           changelists[changeGroupId].uncheckedBrowserCbEls.push(browserCbEl);
           changelists[changeGroupId].pageMap[htmlFilePath].uncheckedBrowserCbEls.push(browserCbEl);
         }
+
+        const reviewStatus = browserCbEl.dataset.reviewStatus;
+        report.reviewStatuses[reviewStatus] =
+          (report.reviewStatuses[reviewStatus] || 0) + 1;
+        changelists[changeGroupId].reviewStatuses[reviewStatus] =
+          (changelists[changeGroupId].reviewStatuses[reviewStatus] || 0) + 1;
+        changelists[changeGroupId].pageMap[htmlFilePath].reviewStatuses[reviewStatus] =
+          (changelists[changeGroupId].pageMap[htmlFilePath].reviewStatuses[reviewStatus] || 0) + 1;
       });
 
       for (const [changeGroupId, changelist] of Object.entries(report.changelists)) {
         const hasCheckedBrowsers = changelist.checkedBrowserCbEls.length > 0;
         const hasUncheckedBrowsers = changelist.uncheckedBrowserCbEls.length > 0;
+
         changelist.cbEl.checked = hasCheckedBrowsers;
         changelist.cbEl.indeterminate = hasCheckedBrowsers && hasUncheckedBrowsers;
+
+        // TODO(acdvorak)
+        const clStatuses = Object.keys(changelist.reviewStatuses);
+        changelist.containerEl.dataset.reviewStatus = clStatuses.length === 1 ? clStatuses[0] : 'mixed';
+
         if (changelist.countEl) {
           changelist.countEl.innerText = String(changelist.checkedBrowserCbEls.length);
         }
@@ -187,8 +220,14 @@ window.mdc.report = window.mdc.report || (() => {
         for (const [htmlFilePath, page] of Object.entries(changelist.pageMap)) {
           const hasCheckedBrowsers = page.checkedBrowserCbEls.length > 0;
           const hasUncheckedBrowsers = page.uncheckedBrowserCbEls.length > 0;
+
           page.cbEl.checked = hasCheckedBrowsers;
           page.cbEl.indeterminate = hasCheckedBrowsers && hasUncheckedBrowsers;
+
+          // TODO(acdvorak)
+          const pageStatuses = Object.keys(page.reviewStatuses);
+          page.containerEl.dataset.reviewStatus = pageStatuses.length === 1 ? pageStatuses[0] : 'mixed';
+
           if (page.countEl) {
             page.countEl.innerText = String(page.checkedBrowserCbEls.length);
           }
@@ -201,8 +240,16 @@ window.mdc.report = window.mdc.report || (() => {
     updateToolbar_(report) {
       const numChecked = report.checkedBrowserCbEls.length;
       const numUnchecked = report.uncheckedBrowserCbEls.length;
+
       const hasCheckedScreenshots = numChecked > 0;
       const hasUncheckedScreenshots = numUnchecked > 0;
+
+      const numApprove = report.reviewStatuses['approve'] || 0;
+      const numRetry = report.reviewStatuses['retry'] || 0;
+      const numReject = report.reviewStatuses['reject'] || 0;
+
+      const hasApprove = numApprove > 0;
+      const hasRetry = numRetry > 0;
 
       if (!hasUncheckedScreenshots && !hasCheckedScreenshots) {
         this.queryOne_('.report-toolbar').classList.add('report-toolbar--hidden');
@@ -216,7 +263,11 @@ window.mdc.report = window.mdc.report || (() => {
       const rejectSelectedButton = this.queryOne_('#report-toolbar__reject-selected-button');
       const retrySelectedButton = this.queryOne_('#report-toolbar__retry-selected-button');
       const copyCliCommandButton = this.queryOne_('#report-toolbar__copy-cli-command-button');
+
       const selectedCountEl = this.queryOne_('#report-toolbar__selected-count');
+      const approveCountEl = this.queryOne_('#report-toolbar__approve-count');
+      const retryCountEl = this.queryOne_('#report-toolbar__retry-count');
+      const rejectCountEl = this.queryOne_('#report-toolbar__reject-count');
 
       selectAllButton.disabled = !hasUncheckedScreenshots;
       selectNoneButton.disabled = !hasCheckedScreenshots;
@@ -226,7 +277,12 @@ window.mdc.report = window.mdc.report || (() => {
       rejectSelectedButton.disabled = !hasCheckedScreenshots;
       retrySelectedButton.disabled = !hasCheckedScreenshots;
 
+      copyCliCommandButton.disabled = !(hasApprove || hasRetry);
+
       selectedCountEl.innerText = `${numChecked}`;
+      approveCountEl.innerText = `${numApprove}`;
+      retryCountEl.innerText = `${numRetry}`;
+      rejectCountEl.innerText = `${numReject}`;
     }
 
     /**
