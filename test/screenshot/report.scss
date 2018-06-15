@@ -72,6 +72,13 @@ th {
   font-size: x-large;
 }
 
+.report-changelist__checkbox--hidden,
+.report-file__checkbox--hidden,
+.report-browser__checkbox--hidden {
+  pointer-events: none;
+  visibility: hidden;
+}
+
 /*
  * Metadata
  */
@@ -157,3 +164,67 @@ th {
   color: green;
   font-size: 3rem;
 }
+
+/*
+ * Toolbar
+ */
+
+.report-toolbar {
+  display: flex;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 24px;
+  background-color: #ffff8e;
+  box-shadow: 0 0 10px rgba(0, 0, 0, .3);
+}
+
+.report-toolbar--hidden {
+  display: none;
+}
+
+.report-toolbar__column {
+  width: 33%;
+}
+
+.report-toolbar__column:nth-of-type(2) {
+  text-align: center;
+}
+
+.report-toolbar__column:last-of-type {
+  text-align: right;
+}
+
+.report-toolbar__button--approve,
+.report-toolbar__button--retry,
+.report-toolbar__button--reject,
+.report-toolbar__button--copy {
+  font-weight: bold;
+}
+
+.report-toolbar__button--approve {
+  color: green;
+}
+.report-toolbar__button--approve:disabled {
+  color: rgba(green, .5);
+}
+
+.report-toolbar__button--reject {
+  color: red;
+}
+.report-toolbar__button--reject:disabled {
+  color: rgba(red, .5);
+}
+
+.report-toolbar__button--retry {
+  color: orange;
+}
+.report-toolbar__button--retry:disabled {
+  color: rgba(orange, .5);
+}
+
+.report-toolbar__button--copy {
+  //color:
+}
+
