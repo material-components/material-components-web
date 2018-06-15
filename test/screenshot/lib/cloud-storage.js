@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2018 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,8 +16,11 @@
 
 'use strict';
 
+const CliArgParser = require('./cli-arg-parser');
 const GitRepo = require('./git-repo');
-const CloudStorage = require('@google-cloud/storage');
+const GoogleCloudStorage = require('@google-cloud/storage');
+const LocalStorage = require('./local-storage');
+const childProcess = require('child_process');
 
 /** Maximum number of times to retry a failed HTTP request. */
 const API_MAX_RETRIES = 5;
@@ -26,20 +29,40 @@ const API_MAX_RETRIES = 5;
 const API_FINISH_EVENT_TIMEOUT_MS = 10 * 1000;
 
 const GCLOUD_SERVICE_ACCOUNT_KEY_FILE_PATH = process.env.MDC_GCLOUD_SERVICE_ACCOUNT_KEY_FILE_PATH;
-const GCLOUD_STORAGE_BUCKET_NAME = 'mdc-web-screenshot-tests';
-const GCLOUD_STORAGE_BASE_URL = `https://storage.googleapis.com/${GCLOUD_STORAGE_BUCKET_NAME}/`;
 const USERNAME = process.env.USER || process.env.USERNAME;
 
 /**
  * A wrapper around the Google Cloud Storage API.
  */
-class Storage {
+class CloudStorage {
   constructor() {
-    const cloudStorage = new CloudStorage({
+    const gcs = new GoogleCloudStorage({
       credentials: require(GCLOUD_SERVICE_ACCOUNT_KEY_FILE_PATH),
     });
-    this.storageBucket_ = cloudStorage.bucket(GCLOUD_STORAGE_BUCKET_NAME);
-    this.mdcGitRepo_ = new GitRepo();
+
+    /**
+     * @type {!CliArgParser}
+     * @private
+     */
+    this.cliArgs_ = new CliArgParser();
+
+    /**
+     * @type {!GitRepo}
+     * @private
+     */
+    this.gitRepo_ = new GitRepo();
+
+    /**
+     * @type {!LocalStorage}
+     * @private
+     */
+    this.localStorage_ = new LocalStorage();
+
+    /**
+     * @type {!Bucket}
+     * @private
+     */
+    this.gcsBucket_ = gcs.bucket(this.cliArgs_.gcsBucket);
   }
 
   /**
@@ -47,9 +70,53 @@ class Storage {
    * @return {!Promise<string>}
    */
   async generateUniqueUploadDir() {
-    const gitCommitShort = await this.mdcGitRepo_.getShortCommitHash();
     const {year, month, day, hour, minute, second, ms} = this.getUtcDateTime_();
-    return `${USERNAME}/${year}/${month}/${day}/${hour}_${minute}_${second}_${ms}/${gitCommitShort}`;
+    return `${USERNAME}/${year}/${month}/${day}/${hour}_${minute}_${second}_${ms}`;
+  }
+
+  /**
+   * @param {string} baseUploadDir
+   * @return {!Promise<void>}
+   */
+  async uploadAllAssets(baseUploadDir) {
+    return new Promise(async (resolve, reject) => {
+      const gsutilProcess = await this.spawnGsutilUploadProcess_(baseUploadDir);
+      gsutilProcess.on('close', (exitCode) => {
+        console.log('');
+        if (exitCode === 0) {
+          resolve();
+        } else {
+          reject(new Error(`gsutil processes exited with code ${exitCode}`));
+        }
+      });
+    });
+  }
+
+  /**
+   * @param {string} baseUploadDir
+   * @return {!Promise<!ChildProcess>}
+   * @private
+   */
+  async spawnGsutilUploadProcess_(baseUploadDir) {
+    const topLevelAssetFilesAndDirs = await this.localStorage_.fetchAllTopLevelAssetFileAndDirPaths();
+    const cmd = 'gsutil';
+    const args = [
+      '-m', 'cp', '-r', ...topLevelAssetFilesAndDirs, `gs://${this.cliArgs_.gcsBucket}/${baseUploadDir}/`,
+    ];
+
+    console.log(`${cmd} ${args.join(' ')}\n`);
+
+    return childProcess.spawn(
+      cmd,
+      args,
+      {
+        wd: process.env.PWD,
+        env: process.env,
+        stdio: 'inherit',
+        shell: true,
+        windowsHide: true,
+      }
+    );
   }
 
   /**
@@ -71,8 +138,8 @@ class Storage {
     }
 
     // Attaching Git metadata to the uploaded files makes it easier to track down their source.
-    const gitCommitShort = await this.mdcGitRepo_.getShortCommitHash();
-    const gitBranchName = await this.mdcGitRepo_.getBranchName();
+    const gitCommitShort = await this.gitRepo_.getShortCommitHash();
+    const gitBranchName = await this.gitRepo_.getBranchName();
 
     // Note: The GCS API mutates this object, so we need to create a new object every time we call the API.
     const fileOptions = {
@@ -89,7 +156,7 @@ class Storage {
     };
 
 
-    const cloudFile = this.storageBucket_.file(gcsAbsoluteFilePath);
+    const cloudFile = this.gcsBucket_.file(gcsAbsoluteFilePath);
     const [cloudFileExists] = await cloudFile.exists();
 
     if (cloudFileExists) {
@@ -144,9 +211,8 @@ class Storage {
    * @private
    */
   handleUploadSuccess_(uploadableFile) {
-    const publicUrl = `${GCLOUD_STORAGE_BASE_URL}${uploadableFile.destinationAbsoluteFilePath}`;
     uploadableFile.fileContent = null; // Free up memory
-    uploadableFile.publicUrl = publicUrl;
+    const publicUrl = uploadableFile.publicUrl;
     const queueIndex = uploadableFile.queueIndex;
     const queueLength = uploadableFile.queueLength;
     const queueIndexStr = String(queueIndex + 1).padStart(String(queueLength).length, '0');
@@ -162,7 +228,7 @@ class Storage {
    * @private
    */
   handleUploadFailure_(uploadableFile, err, retryCount) {
-    const publicUrl = `${GCLOUD_STORAGE_BASE_URL}${uploadableFile.destinationAbsoluteFilePath}`;
+    const {publicUrl} = uploadableFile;
     uploadableFile.fileContent = null; // Free up memory
     const queueIndex = uploadableFile.queueIndex;
     const queueLength = uploadableFile.queueLength;
@@ -196,59 +262,4 @@ class Storage {
   }
 }
 
-/**
- * A file to be uploaded to Cloud Storage.
- */
-class UploadableFile {
-  constructor({
-    destinationParentDirectory,
-    destinationRelativeFilePath,
-    fileContent,
-    queueIndex,
-    queueLength,
-    userAgent = null,
-  }) {
-    /** @type {string} */
-    this.destinationParentDirectory = destinationParentDirectory;
-
-    /** @type {string} */
-    this.destinationRelativeFilePath = destinationRelativeFilePath;
-
-    /** @type {string} */
-    this.destinationAbsoluteFilePath = `${this.destinationParentDirectory}/${this.destinationRelativeFilePath}`;
-
-    /** @type {?Buffer} */
-    this.fileContent = fileContent;
-
-    /** @type {?Object} */
-    this.userAgent = userAgent;
-
-    /** @type {number} */
-    this.queueIndex = queueIndex;
-
-    /** @type {number} */
-    this.queueLength = queueLength;
-
-    /** @type {?string} */
-    this.publicUrl = null;
-  }
-}
-
-/**
- * An HTML file with screenshots.
- */
-class UploadableTestCase {
-  constructor({htmlFile}) {
-    /** @type {!UploadableFile} */
-    this.htmlFile = htmlFile;
-
-    /** @type {!Array<!UploadableFile>} */
-    this.screenshotImageFiles = [];
-  }
-}
-
-module.exports = {
-  Storage,
-  UploadableFile,
-  UploadableTestCase,
-};
+module.exports = CloudStorage;

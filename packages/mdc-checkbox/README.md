@@ -51,7 +51,6 @@ We recommend using MDC Checkbox with [MDC Form Field](../mdc-form-field) for enh
            viewBox="0 0 24 24">
         <path class="mdc-checkbox__checkmark-path"
               fill="none"
-              stroke="white"
               d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
       </svg>
       <div class="mdc-checkbox__mixedmark"></div>
@@ -102,7 +101,6 @@ Note that `mdc-checkbox--disabled` is necessary on the root element of CSS-only 
          viewBox="0 0 24 24">
       <path class="mdc-checkbox__checkmark-path"
             fill="none"
-            stroke="white"
             d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
     </svg>
     <div class="mdc-checkbox__mixedmark"></div>
@@ -149,7 +147,7 @@ Property Name | Type | Description
 `checked` | Boolean | Setter/getter for the checkbox's checked state
 `indeterminate` | Boolean | Setter/getter for the checkbox's indeterminate state
 `disabled` | Boolean | Setter/getter for the checkbox's disabled state
-`value` | String | Setter/getter for the checkbox's 
+`value` | String | Setter/getter for the checkbox's
 
 ## Usage within Web Frameworks
 
