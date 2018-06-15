@@ -23,8 +23,18 @@ window.mdc.report = window.mdc.report || (() => {
 
     collapseAll() {
       const detailsElems = Array.from(document.querySelectorAll('details'));
-      const areAnyOpen = detailsElems.some((detailsElem) => detailsElem.open);
-      detailsElems.forEach((detailsElem) => detailsElem.open = !areAnyOpen);
+      detailsElems.forEach((detailsElem) => detailsElem.open = false);
+    }
+
+    collapseNone() {
+      const detailsElems = Array.from(document.querySelectorAll('details'));
+      detailsElems.forEach((detailsElem) => detailsElem.open = true);
+    }
+
+    collapseBrowsers() {
+      this.collapseNone();
+      const detailsElems = Array.from(document.querySelectorAll('.report-browser'));
+      detailsElems.forEach((detailsElem) => detailsElem.open = false);
     }
 
     /**
@@ -93,24 +103,28 @@ window.mdc.report = window.mdc.report || (() => {
       this.queryAll_('.report-browser__checkbox:checked').forEach((cbEl) => {
         cbEl.dataset.reviewStatus = 'approve';
         cbEl.closest('.report-browser').dataset.reviewStatus = 'approve';
+        cbEl.parentElement.querySelector('.report-review-status').dataset.reviewStatus = 'approve';
+        cbEl.parentElement.querySelector('.report-review-status').innerText = this.getStatusBadgeText_('approve');
+        cbEl.checked = false;
       });
       this.updateAll_();
-    }
-
-    rejectSelected() {
-      this.queryAll_('.report-browser__checkbox:checked').forEach((cbEl) => {
-        cbEl.dataset.reviewStatus = 'reject';
-        cbEl.closest('.report-browser').dataset.reviewStatus = 'reject';
+      setTimeout(() => {
+        window.alert('CLI command copied to clipboard!');
       });
-      this.updateAll_();
     }
 
     retrySelected() {
       this.queryAll_('.report-browser__checkbox:checked').forEach((cbEl) => {
         cbEl.dataset.reviewStatus = 'retry';
         cbEl.closest('.report-browser').dataset.reviewStatus = 'retry';
+        cbEl.parentElement.querySelector('.report-review-status').dataset.reviewStatus = 'retry';
+        cbEl.parentElement.querySelector('.report-review-status').innerText = this.getStatusBadgeText_('retry');
+        cbEl.checked = false;
       });
       this.updateAll_();
+      setTimeout(() => {
+        window.alert('CLI command copied to clipboard!');
+      });
     }
 
     copyCliCommand() {
@@ -130,14 +144,14 @@ window.mdc.report = window.mdc.report || (() => {
       //     diffs: {
       //       cbEl: null,
       //       countEl: null,
-      //       containerEl: null,
+      //       reviewStatusEl: null,
       //       checkedBrowserCbEls: [],
       //       uncheckedBrowserCbEls: [],
       //       pageMap: {
       //         'baseline.html': {
       //           cbEl: null,
       //           countEl: null,
-      //           containerEl: null,
+      //           reviewStatusEl: null,
       //           checkedBrowserCbEls: [],
       //           uncheckedBrowserCbEls: [],
       //         },
@@ -167,7 +181,7 @@ window.mdc.report = window.mdc.report || (() => {
         changelists[changeGroupId] = changelists[changeGroupId] || {
           cbEl: this.queryOne_(`.report-changelist__checkbox${changelistDataAttr}`),
           countEl: this.queryOne_(`.report-changelist__checked-count${changelistDataAttr}`),
-          containerEl: this.queryOne_(`.report-changelist${changelistDataAttr}`),
+          reviewStatusEl: this.queryOne_(`.report-review-status--changelist${changelistDataAttr}`),
           checkedBrowserCbEls: [],
           uncheckedBrowserCbEls: [],
           reviewStatuses: {},
@@ -177,7 +191,7 @@ window.mdc.report = window.mdc.report || (() => {
         changelists[changeGroupId].pageMap[htmlFilePath] = changelists[changeGroupId].pageMap[htmlFilePath] || {
           cbEl: this.queryOne_(`.report-file__checkbox${pageDataAttr}`),
           countEl: this.queryOne_(`.report-file__checked-count${pageDataAttr}`),
-          containerEl: this.queryOne_(`.report-file${pageDataAttr}`),
+          reviewStatusEl: this.queryOne_(`.report-review-status--file${pageDataAttr}`),
           checkedBrowserCbEls: [],
           uncheckedBrowserCbEls: [],
           reviewStatuses: {},
@@ -211,7 +225,9 @@ window.mdc.report = window.mdc.report || (() => {
 
         // TODO(acdvorak)
         const clStatuses = Object.keys(changelist.reviewStatuses);
-        changelist.containerEl.dataset.reviewStatus = clStatuses.length === 1 ? clStatuses[0] : 'mixed';
+        changelist.reviewStatusEl.dataset.reviewStatus = clStatuses.length === 1 ? clStatuses[0] : 'mixed';
+        changelist.reviewStatusEl.innerText =
+          this.getStatusBadgeText_(clStatuses.length === 1 ? clStatuses[0] : 'mixed');
 
         if (changelist.countEl) {
           changelist.countEl.innerText = String(changelist.checkedBrowserCbEls.length);
@@ -226,7 +242,9 @@ window.mdc.report = window.mdc.report || (() => {
 
           // TODO(acdvorak)
           const pageStatuses = Object.keys(page.reviewStatuses);
-          page.containerEl.dataset.reviewStatus = pageStatuses.length === 1 ? pageStatuses[0] : 'mixed';
+          page.reviewStatusEl.dataset.reviewStatus = pageStatuses.length === 1 ? pageStatuses[0] : 'mixed';
+          page.reviewStatusEl.innerText =
+            this.getStatusBadgeText_(pageStatuses.length === 1 ? pageStatuses[0] : 'mixed');
 
           if (page.countEl) {
             page.countEl.innerText = String(page.checkedBrowserCbEls.length);
@@ -237,19 +255,22 @@ window.mdc.report = window.mdc.report || (() => {
       return report;
     }
 
+    getStatusBadgeText_(reviewStatus) {
+      const names = {
+        'approve': 'approved',
+        'retry': 'retried',
+        'mixed': 'mixed',
+        'unreviewed': 'unreviewed',
+      };
+      return names[reviewStatus] || reviewStatus;
+    }
+
     updateToolbar_(report) {
       const numChecked = report.checkedBrowserCbEls.length;
       const numUnchecked = report.uncheckedBrowserCbEls.length;
 
       const hasCheckedScreenshots = numChecked > 0;
       const hasUncheckedScreenshots = numUnchecked > 0;
-
-      const numApprove = report.reviewStatuses['approve'] || 0;
-      const numRetry = report.reviewStatuses['retry'] || 0;
-      const numReject = report.reviewStatuses['reject'] || 0;
-
-      const hasApprove = numApprove > 0;
-      const hasRetry = numRetry > 0;
 
       if (!hasUncheckedScreenshots && !hasCheckedScreenshots) {
         this.queryOne_('.report-toolbar').classList.add('report-toolbar--hidden');
@@ -260,29 +281,17 @@ window.mdc.report = window.mdc.report || (() => {
       const selectNoneButton = this.queryOne_('#report-toolbar__select-none-button');
       const selectInverseButton = this.queryOne_('#report-toolbar__select-inverse-button');
       const approveSelectedButton = this.queryOne_('#report-toolbar__approve-selected-button');
-      const rejectSelectedButton = this.queryOne_('#report-toolbar__reject-selected-button');
       const retrySelectedButton = this.queryOne_('#report-toolbar__retry-selected-button');
-      const copyCliCommandButton = this.queryOne_('#report-toolbar__copy-cli-command-button');
-
       const selectedCountEl = this.queryOne_('#report-toolbar__selected-count');
-      const approveCountEl = this.queryOne_('#report-toolbar__approve-count');
-      const retryCountEl = this.queryOne_('#report-toolbar__retry-count');
-      const rejectCountEl = this.queryOne_('#report-toolbar__reject-count');
 
       selectAllButton.disabled = !hasUncheckedScreenshots;
       selectNoneButton.disabled = !hasCheckedScreenshots;
       selectInverseButton.disabled = !(hasCheckedScreenshots || hasUncheckedScreenshots);
 
       approveSelectedButton.disabled = !hasCheckedScreenshots;
-      rejectSelectedButton.disabled = !hasCheckedScreenshots;
       retrySelectedButton.disabled = !hasCheckedScreenshots;
 
-      copyCliCommandButton.disabled = !(hasApprove || hasRetry);
-
       selectedCountEl.innerText = `${numChecked}`;
-      approveCountEl.innerText = `${numApprove}`;
-      retryCountEl.innerText = `${numRetry}`;
-      rejectCountEl.innerText = `${numReject}`;
     }
 
     /**

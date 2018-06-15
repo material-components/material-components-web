@@ -93,14 +93,14 @@ th {
 
 .report-metadata__cell {
   padding: 2px 10px 2px 0;
-  text-align: left;
   font-weight: normal;
+  text-align: left;
   vertical-align: top;
 }
 
 .report-metadata__cell--key {
-  font-style: italic;
   width: 10em;
+  font-style: italic;
 }
 
 /*
@@ -170,6 +170,10 @@ th {
  * Toolbar
  */
 
+body {
+  padding-bottom: 100px; // add space for .report-toolbar
+}
+
 .report-toolbar {
   display: flex;
   position: fixed;
@@ -189,18 +193,16 @@ th {
   flex-grow: 1;
 }
 
-.report-toolbar__column:nth-of-type(2) {
-  text-align: center;
+.report-toolbar__column + .report-toolbar__column {
+  margin-left: 64px;
 }
 
-.report-toolbar__column:last-of-type {
+.report-toolbar__column:last-child {
   text-align: right;
 }
 
 .report-toolbar__button--approve,
-.report-toolbar__button--retry,
-.report-toolbar__button--reject,
-.report-toolbar__button--copy {
+.report-toolbar__button--retry {
   font-weight: bold;
 }
 
@@ -211,44 +213,42 @@ th {
   color: rgba(green, .5);
 }
 
-.report-toolbar__button--reject {
+.report-toolbar__button--retry {
   color: red;
 }
-.report-toolbar__button--reject:disabled {
+.report-toolbar__button--retry:disabled {
   color: rgba(red, .5);
 }
 
-.report-toolbar__button--retry {
-  color: orange;
-}
-.report-toolbar__button--retry:disabled {
-  color: rgba(orange, .5);
-}
-
-.report-toolbar__button--copy {
-  //color:
-}
-
-
-
-
-[data-review-status="unreviewed"]:not(input) {
-  //background-color: rgba(black, .2);
+.report-review-status {
+  display: inline-block;
+  padding: 2px 6px;
+  border: 1px solid #aaa;
+  border-radius: 3px;
+  background: #ccc;
+  color: #000;
+  text-align: center;
 }
 
-[data-review-status="approve"]:not(input) {
+.report-review-status--hidden {
+  visibility: hidden;
+}
+
+.report-review-status[data-review-status="approve"] {
+  border-color: green;
   background-color: #cfefc5;
+  color: green;
 }
 
-[data-review-status="reject"]:not(input) {
+.report-review-status[data-review-status="retry"] {
+  border-color: red;
   background-color: #ffc6c3;
+  color: red;
 }
 
-[data-review-status="retry"]:not(input) {
-  background-color: #ffe6b9;
-}
-
-[data-review-status="mixed"]:not(input) {
+.report-review-status[data-review-status="mixed"] {
+  border-color: purple;
   background-color: #ebb7fb;
+  color: purple;
 }
 

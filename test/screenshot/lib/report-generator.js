@@ -395,6 +395,7 @@ on tag
    */
   async getChangelistMarkup_({changelist, map, isOpen, isCheckable, changeGroupId, heading, pluralize}) {
     const numDiffs = changelist.length;
+    const headingPluralized = `${heading}${pluralize && numDiffs !== 1 ? 's' : ''}`;
 
     return `
 <details class="report-changelist" ${isOpen && numDiffs > 0 ? 'open' : ''}
@@ -402,10 +403,11 @@ on tag
 >
   <summary class="report-changelist__heading">
     ${this.getCheckboxMarkup_({changeGroupId, isCheckable, numScreenshots: numDiffs})}
-    ${numDiffs} ${heading}${pluralize && numDiffs !== 1 ? 's' : ''}
+    ${numDiffs} ${headingPluralized}
+    ${this.getReviewStatusMarkup_({changeGroupId, isCheckable, numScreenshots: numDiffs})}
   </summary>
   <div class="report-changelist__content">
-    ${this.getDiffListMarkup_({changelist, map, isCheckable, changeGroupId})}
+    ${this.getDiffListMarkup_({changelist, map, isCheckable, changeGroupId, headingPluralized})}
   </div>
 </details>
 `;
@@ -416,10 +418,11 @@ on tag
    * @param {!Map<string, !Array<!ImageDiffJson>>} map
    * @param {boolean} isCheckable
    * @param {string} changeGroupId
+   * @param {string} headingPluralized
    * @return {string}
    * @private
    */
-  getDiffListMarkup_({changelist, map, isCheckable, changeGroupId}) {
+  getDiffListMarkup_({changelist, map, isCheckable, changeGroupId, headingPluralized}) {
     const numDiffs = changelist.length;
     if (numDiffs === 0) {
       return '<div class="report-congrats">Woohoo! 🎉</div>';
@@ -427,7 +430,7 @@ on tag
 
     const htmlFilePaths = Array.from(map.keys());
     return htmlFilePaths.map((htmlFilePath) => {
-      return this.getTestCaseMarkup_({htmlFilePath, map, isCheckable, changeGroupId});
+      return this.getTestCaseMarkup_({htmlFilePath, map, isCheckable, changeGroupId, headingPluralized});
     }).join('\n');
   }
 
@@ -436,10 +439,11 @@ on tag
    * @param {!Map<string, !Array<!ImageDiffJson>>} map
    * @param {boolean} isCheckable
    * @param {string} changeGroupId
+   * @param {string} headingPluralized
    * @return {string}
    * @private
    */
-  getTestCaseMarkup_({htmlFilePath, map, isCheckable, changeGroupId}) {
+  getTestCaseMarkup_({htmlFilePath, map, isCheckable, changeGroupId, headingPluralized}) {
     const diffs = map.get(htmlFilePath);
     const goldenPageUrl = diffs[0].goldenPageUrl;
     const snapshotPageUrl = diffs[0].snapshotPageUrl;
@@ -451,8 +455,9 @@ on tag
 >
   <summary class="report-file__heading">
     ${this.getCheckboxMarkup_({changeGroupId, htmlFilePath, isCheckable, numScreenshots: diffs.length})}
-    ${diffs.length} in ${htmlFilePath}
+    ${diffs.length} ${headingPluralized} in ${htmlFilePath}
     ${this.getGoldenAndSnapshotLinkMarkup_({goldenPageUrl, snapshotPageUrl})}
+    ${this.getReviewStatusMarkup_({changeGroupId, htmlFilePath, isCheckable, numScreenshots: diffs.length})}
   </summary>
   <div class="report-file__content">
     ${diffs.map((diff) => this.getDiffRowMarkup_({diff, changeGroupId, htmlFilePath, isCheckable})).join('\n')}
@@ -500,6 +505,7 @@ on tag
   <summary class="report-browser__heading">
     ${this.getCheckboxMarkup_({changeGroupId, htmlFilePath, userAgentAlias, isCheckable, numScreenshots: 1})}
     ${diff.userAgentAlias}
+    ${this.getReviewStatusMarkup_({changeGroupId, htmlFilePath, userAgentAlias, isCheckable, numScreenshots: 1})}
   </summary>
   <div class="report-browser__content">
     ${this.getDiffCellMarkup_('Golden', diff.expectedImageUrl)}
@@ -536,22 +542,29 @@ on tag
     return `
 <footer class="report-toolbar">
   <div class="report-toolbar__column">
+    <button class="report-toolbar__button report-toolbar__button--approve"
+            id="report-toolbar__approve-selected-button"
+            onclick="mdc.report.approveSelected()">
+      Approval Command
+    </button>
+    <button class="report-toolbar__button report-toolbar__button--retry"
+            id="report-toolbar__retry-selected-button"
+            onclick="mdc.report.retrySelected()">
+      Retry Command
+    </button>
+    <span id="report-toolbar__selected-count"></span> selected screenshots
+  </div>
+  <div class="report-toolbar__column">
     Select:
     <button class="report-toolbar__button" id="report-toolbar__select-all-button" onclick="mdc.report.selectAll()">All</button>
     <button class="report-toolbar__button" id="report-toolbar__select-none-button" onclick="mdc.report.selectNone()">None</button>
     <button class="report-toolbar__button" id="report-toolbar__select-inverse-button" onclick="mdc.report.selectInverse()">Inverse</button>
   </div>
   <div class="report-toolbar__column">
-    <button class="report-toolbar__button report-toolbar__button--approve" id="report-toolbar__approve-selected-button" onclick="mdc.report.approveSelected()">Approve</button>
-    <button class="report-toolbar__button report-toolbar__button--retry" id="report-toolbar__retry-selected-button" onclick="mdc.report.retrySelected()">Retry</button>
-    <button class="report-toolbar__button report-toolbar__button--reject" id="report-toolbar__reject-selected-button" onclick="mdc.report.rejectSelected()">Reject</button>
-    <span id="report-toolbar__selected-count"></span> selected
-  </div>
-  <div class="report-toolbar__column">
-    <button class="report-toolbar__button report-toolbar__button--copy" id="report-toolbar__copy-cli-command-button" onclick="mdc.report.copyCliCommand()">Copy CLI command</button>
-    to approve <span id="report-toolbar__approve-count"></span>
-    and retry <span id="report-toolbar__retry-count"></span>
-    (<span id="report-toolbar__reject-count"></span> rejected)
+    Collapse:
+    <button class="report-toolbar__button" id="report-toolbar__collapse-all-button" onclick="mdc.report.collapseAll()">All</button>
+    <button class="report-toolbar__button" id="report-toolbar__collapse-none-button" onclick="mdc.report.collapseNone()">None</button>
+    <button class="report-toolbar__button" id="report-toolbar__collapse-inverse-button" onclick="mdc.report.collapseBrowsers()">Browsers</button>
   </div>
 </footer>
 `;
@@ -569,46 +582,66 @@ on tag
    */
   getCheckboxMarkup_({changeGroupId, htmlFilePath = '', userAgentAlias = '', isCheckable, numScreenshots}) {
     const isVisible = isCheckable && numScreenshots > 0;
-    const attribute = isVisible ? 'checked' : 'disabled';
+    const checkboxAttribute = isVisible ? 'checked' : 'disabled';
+
     let checkboxClassName;
-    let countClassName;
     let eventHandlerJs;
 
     if (htmlFilePath && userAgentAlias) {
       checkboxClassName = 'report-browser__checkbox' + (isVisible ? '' : ' report-browser__checkbox--hidden');
-      countClassName = 'report-browser__checked-count';
       eventHandlerJs = 'mdc.report.browserCheckboxChanged(this)';
     } else if (htmlFilePath) {
       checkboxClassName = 'report-file__checkbox' + (isVisible ? '' : ' report-file__checkbox--hidden');
-      countClassName = 'report-file__checked-count';
       eventHandlerJs = 'mdc.report.fileCheckboxChanged(this)';
     } else {
       checkboxClassName = 'report-changelist__checkbox' + (isVisible ? '' : ' report-changelist__checkbox--hidden');
-      countClassName = 'report-changelist__checked-count';
       eventHandlerJs = 'mdc.report.changelistCheckboxChanged(this)';
     }
 
-    const checkedCountMarkup = isVisible && !userAgentAlias ? `
-<span class="${countClassName}"
-  data-change-group-id="${changeGroupId}"
-  data-html-file-path="${htmlFilePath}"
-  data-user-agent-alias="${userAgentAlias}"
->
-  ${numScreenshots}
-</span>
-of
-` : '';
-
     return `
 <input type="checkbox" class="${checkboxClassName}"
-  ${attribute}
+  ${checkboxAttribute}
   data-change-group-id="${changeGroupId}"
   data-html-file-path="${htmlFilePath}"
   data-user-agent-alias="${userAgentAlias}"
   data-review-status="unreviewed"
   onchange="${eventHandlerJs}"
 >
-${checkedCountMarkup}
+`.trim();
+  }
+
+  /**
+   * @param {string} changeGroupId
+   * @param {string=} htmlFilePath
+   * @param {string=} userAgentAlias
+   * @param {boolean} isCheckable
+   * @param {number} numScreenshots
+   * @return {string}
+   * @private
+   */
+  getReviewStatusMarkup_({changeGroupId, htmlFilePath = '', userAgentAlias = '', isCheckable, numScreenshots}) {
+    const isVisible = isCheckable && numScreenshots > 0;
+
+    let reviewStatusClassName;
+
+    if (htmlFilePath && userAgentAlias) {
+      reviewStatusClassName = 'report-review-status report-review-status--browser' +
+        (isVisible ? '' : ' report-review-status--hidden');
+    } else if (htmlFilePath) {
+      reviewStatusClassName = 'report-review-status report-review-status--file' +
+        (isVisible ? '' : ' report-review-status--hidden');
+    } else {
+      reviewStatusClassName = 'report-review-status report-review-status--changelist' +
+        (isVisible ? '' : ' report-review-status--hidden');
+    }
+
+    return `
+<span class="${reviewStatusClassName}"
+  data-change-group-id="${changeGroupId}"
+  data-html-file-path="${htmlFilePath}"
+  data-user-agent-alias="${userAgentAlias}"
+  data-review-status="unreviewed"
+>unreviewed</span>
 `.trim();
   }
 }
