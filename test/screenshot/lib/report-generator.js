@@ -343,7 +343,7 @@ class ReportGenerator {
 <a href="${GITHUB_REPO_URL}/commit/${rev.commit}">${rev.commit}</a>
 on branch
 <a href="${GITHUB_REPO_URL}/tree/${rev.branch}">${branchDisplayName}</a>
-${this.getPullRequestLinkMarkup_(rev)}
+${await this.getPullRequestLinkMarkup_(rev)}
 `;
       }
 
