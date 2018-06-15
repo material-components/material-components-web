@@ -43,6 +43,14 @@ class GitRepo {
    */
   async fetch(args = []) {
     console.log('Fetching remote git commits...');
+
+    const prFetchRef = '+refs/pull/*/head:refs/remotes/origin/pr/*';
+    const existingFetchRefs = (await this.exec_('raw', ['config', '--get-all', 'remote.origin.fetch'])).split('\n');
+
+    if (!existingFetchRefs.includes(prFetchRef)) {
+      await this.exec_('raw', ['config', '--add', 'remote.origin.fetch', prFetchRef]).split('\n');
+    }
+
     return this.repo_.fetch(args);
   }
 
@@ -116,6 +124,25 @@ class GitRepo {
    */
   async getIgnoredPaths(filePaths) {
     return this.repo_.checkIgnore(filePaths);
+  }
+
+  /**
+   * @param {string} ref
+   * @return {!Promise<?number>}
+   */
+  async getPullRequestNumber(ref) {
+    const stdout = await this.exec_('raw', ['branch', '--all', '--contains', ref]);
+    const prNumbers = stdout
+      .split('\n')
+      .map((line) => {
+        return (/[/\b]pr[/](\d+)/.exec(line) || [])[1];
+      })
+      .filter((prNumber) => Boolean(prNumber))
+      .map((prNumber) => Number(prNumber))
+      .sort()
+      .reverse()
+    ;
+    return prNumbers[0];
   }
 
   /**

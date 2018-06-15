@@ -340,22 +340,36 @@ class ReportGenerator {
       if (rev.branch) {
         const branchDisplayName = rev.remote ? `${rev.remote}/${rev.branch}` : rev.branch;
         return `
-<a href="${GITHUB_REPO_URL}/blob/${rev.commit}/${rev.snapshotFilePath}">${rev.commit}</a>
+<a href="${GITHUB_REPO_URL}/commit/${rev.commit}">${rev.commit}</a>
 on branch
-<a href="${GITHUB_REPO_URL}/blob/${rev.branch}/${rev.snapshotFilePath}">${branchDisplayName}</a>
+<a href="${GITHUB_REPO_URL}/tree/${rev.branch}">${branchDisplayName}</a>
+${this.getPullRequestLinkMarkup_()}
 `;
       }
 
       if (rev.tag) {
         return `
-<a href="${GITHUB_REPO_URL}/blob/${rev.commit}/${rev.snapshotFilePath}">${rev.commit}</a>
+<a href="${GITHUB_REPO_URL}/commit/${rev.commit}">${rev.commit}</a>
 on tag
-<a href="${GITHUB_REPO_URL}/blob/${rev.tag}/${rev.snapshotFilePath}">${rev.tag}</a>
+<a href="${GITHUB_REPO_URL}/tree/${rev.tag}">${rev.tag}</a>
 `;
       }
     }
 
     throw new Error('Unable to generate markup for invalid diff source');
+  }
+
+  /**
+   * @param {!GitRevision} rev
+   * @return {!Promise<string>}
+   * @private
+   */
+  async getPullRequestLinkMarkup_(rev) {
+    const pr = await this.gitRepo_.getPullRequestNumber(rev.commit);
+    if (!pr) {
+      return '';
+    }
+    return ` in PR <a href="${GITHUB_REPO_URL}/pull/${pr}">#${pr}</a>`;
   }
 
   /**
