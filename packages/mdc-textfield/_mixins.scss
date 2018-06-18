@@ -125,8 +125,8 @@
 }
 
 @mixin mdc-text-field-caret-color($color) {
-  &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-caret-color_($color);
+  .mdc-text-field__input {
+    @include mdc-theme-prop(caret-color, $color);
   }
 }
 
@@ -570,11 +570,5 @@
   // CSS-only version
   .mdc-text-field__input::placeholder {
     @include mdc-theme-prop(color, $color);
-  }
-}
-
-@mixin mdc-text-field-caret-color_($color) {
-  .mdc-text-field__input {
-    @include mdc-theme-prop(caret-color, $color);
   }
 }
