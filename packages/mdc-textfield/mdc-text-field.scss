@@ -56,6 +56,7 @@
   @include mdc-text-field-ink-color($mdc-text-field-ink-color);
   @include mdc-text-field-label-color($mdc-text-field-label);
   @include mdc-text-field-line-ripple-color_(primary);
+  @include mdc-text-field-caret-color(primary);
 
   display: inline-flex;
   position: relative;

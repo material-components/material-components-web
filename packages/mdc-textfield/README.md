@@ -205,6 +205,7 @@ Mixin | Description
 --- | ---
 `mdc-text-field-ink-color($color)` | Customizes the text entered into the text field.
 `mdc-text-field-label-color($color)` | Customizes the text color of the label.
+`mdc-text-field-caret-color($color)` | Customizes the color of the cursor caret of the text field.
 
 #### Mixins for Filled Text Field
 
