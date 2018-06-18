@@ -121,7 +121,7 @@ class Controller {
     /** @type {!RunReport} */
     const runReport = await request({
       method: 'GET',
-      uri: this.cliArgs_.runReportUrl,
+      uri: this.cliArgs_.runReportJsonUrl,
       json: true, // Automatically stringify the request body and parse the response body as JSON
     });
 

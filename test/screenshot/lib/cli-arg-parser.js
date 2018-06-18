@@ -297,7 +297,7 @@ The default behavior is to always build assets before running the tests.
   }
 
   /** @return {string} */
-  get runReportUrl() {
+  get runReportJsonUrl() {
     return this.args_['report'];
   }
 
