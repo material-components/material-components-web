@@ -104,16 +104,16 @@ Attribute | Description
 
 #### Icon Button Toggle with Font Awesome
 
-The icon button toggle can be used with other font libraries such as Font Awesome. 
+The icon button toggle can be used with other font libraries such as Font Awesome that use an inner icon element.
 
 ```html
 <button id="star-this-item"
    class="mdc-icon-button"
-   aria-label="Star this item"
+   aria-label="Unstar this item"
    aria-hidden="true"
    aria-pressed="true"
    data-toggle-on-class="fa-star"
-   data-toggle-on-label="Remove star"
+   data-toggle-on-label="Unstar this item"
    data-toggle-off-class="fa-star-o"
    data-toggle-off-label="Star this item"><i class="fa fa-2x fa-star"></i></button>
 ```
