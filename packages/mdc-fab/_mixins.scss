@@ -19,7 +19,6 @@
 @import "@material/ripple/variables";
 @import "@material/theme/functions";
 @import "@material/theme/mixins";
-
 @import "./variables";
 
 @mixin mdc-fab-accessible($container-color) {
@@ -135,12 +134,12 @@ $mdc-fab-extended-height_: 48px;
   width: auto;
   max-width: 100%;
   height: $mdc-fab-extended-height_;
-  border-radius: $mdc-fab-extended-height_ / 2;
   padding: 0 $mdc-fab-extended-label-padding;
+  border-radius: $mdc-fab-extended-height_ / 2;
 
   .mdc-fab__icon {
-    margin-left: $mdc-fab-extended-icon-padding - $mdc-fab-extended-label-padding;
     margin-right: $mdc-fab-extended-icon-padding;
+    margin-left: $mdc-fab-extended-icon-padding - $mdc-fab-extended-label-padding;
   }
 }
 

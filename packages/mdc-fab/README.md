@@ -119,7 +119,7 @@ The ripple effect for the FAB component is styled using [MDC Ripple](../mdc-ripp
 
 Variable | Description
 --- | ---
-`$mdc-fab-extended-icon-padding` | The gutter space around the Extended FAB icon. The left & right padding of the icon is always the same.
+`$mdc-fab-extended-icon-padding` | The gutter space around the Extended FAB icon. The left & right padding of the icon are equal.
 `$mdc-fab-extended-label-padding` | Label side padding for Extended FAB. This padding size will be applied to both sides when Extended FAB is rendered without icon.
 
 #### Caveat: Edge and CSS Variables
