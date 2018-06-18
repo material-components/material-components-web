@@ -42,6 +42,7 @@ th {
  */
 
 .report-body {
+  padding-bottom: 100px; // add space for .report-toolbar
   font-family: "Roboto Mono", Consolas, monospace;
   font-size: smaller;
 }
@@ -170,10 +171,6 @@ th {
  * Toolbar
  */
 
-body {
-  padding-bottom: 100px; // add space for .report-toolbar
-}
-
 .report-toolbar {
   display: flex;
   position: fixed;
@@ -220,6 +217,10 @@ body {
   color: rgba(red, .5);
 }
 
+/*
+ * Review status bubble
+ */
+
 .report-review-status {
   display: inline-block;
   padding: 2px 6px;
@@ -252,7 +253,9 @@ body {
   color: purple;
 }
 
-
+/*
+ * CLI command modal window
+ */
 
 .report-cli-modal {
   display: flex;
@@ -307,4 +310,3 @@ body {
 .report-cli-modal__button--copy {
   font-weight: bold;
 }
-
