@@ -27,7 +27,7 @@ window.mdc.reportUi = (() => {
          * @private
          */
         this.runReport_ = runReport;
-        this.updateAll_();
+        this.updateAllAndGetState_();
       });
     }
 
@@ -111,7 +111,7 @@ window.mdc.reportUi = (() => {
         childCbEl.indeterminate = false;
       });
 
-      this.updateAll_();
+      this.updateAllAndGetState_();
     }
 
     /**
@@ -128,14 +128,11 @@ window.mdc.reportUi = (() => {
         childCbEl.indeterminate = false;
       });
 
-      this.updateAll_();
+      this.updateAllAndGetState_();
     }
 
-    /**
-     * @param {!HTMLInputElement} cbEl
-     */
-    browserCheckboxChanged(cbEl) {
-      this.updateAll_();
+    browserCheckboxChanged() {
+      this.updateAllAndGetState_();
     }
 
     selectAll() {
@@ -143,7 +140,7 @@ window.mdc.reportUi = (() => {
         cbEl.checked = true;
         cbEl.indeterminate = false;
       });
-      this.updateAll_();
+      this.updateAllAndGetState_();
     }
 
     selectNone() {
@@ -151,7 +148,7 @@ window.mdc.reportUi = (() => {
         cbEl.checked = false;
         cbEl.indeterminate = false;
       });
-      this.updateAll_();
+      this.updateAllAndGetState_();
     }
 
     selectInverse() {
@@ -159,21 +156,21 @@ window.mdc.reportUi = (() => {
         cbEl.checked = !cbEl.checked;
         cbEl.indeterminate = false;
       });
-      this.updateAll_();
+      this.updateAllAndGetState_();
     }
 
     approveSelected() {
       const cbEls = this.queryAll_('.report-browser__checkbox:checked');
       this.setReviewStatus_(cbEls, 'approve');
-      const report = this.updateAll_();
+      const report = this.updateAllAndGetState_();
       this.showCliCommand_('screenshot:approve', this.getApproveCommandArgs_(report));
     }
 
     retrySelected() {
       const cbEls = this.queryAll_('.report-browser__checkbox:checked');
       this.setReviewStatus_(cbEls, 'retry');
-      const report = this.updateAll_();
-      this.showCliCommand_('screenshot:test', this.getRetryCommandArgs_(report));
+      const reportUiState = this.updateAllAndGetState_();
+      this.showCliCommand_('screenshot:test', this.getRetryCommandArgs_(reportUiState));
     }
 
     /**
@@ -206,14 +203,14 @@ window.mdc.reportUi = (() => {
     }
 
     /**
-     * @param {!Object} report
+     * @param {!ReportUiState} reportUiState
      * @return {!Array<string>}
      * @private
      */
-    getApproveCommandArgs_(report) {
+    getApproveCommandArgs_(reportUiState) {
       const args = [];
 
-      for (const [changeGroupId, changelist] of Object.entries(report.changelistDict)) {
+      for (const [changeGroupId, changelist] of Object.entries(reportUiState.changelistDict)) {
         if (changelist.checkedBrowserCbEls.length === 0) {
           continue;
         }
@@ -265,7 +262,11 @@ window.mdc.reportUi = (() => {
       ];
     }
 
-    updateAll_() {
+    /**
+     * @return {!ReportUiState}
+     * @private
+     */
+    updateAllAndGetState_() {
       const reportUiState = this.updateCountsAndGetState_();
       this.updateToolbar_(reportUiState);
       return reportUiState;
