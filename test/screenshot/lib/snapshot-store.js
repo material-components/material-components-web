@@ -216,7 +216,7 @@ class SnapshotStore {
 
     await fs.writeFile(jsonFilePath, jsonFileContent);
 
-    console.log(`\n\nDONE updating "${jsonFilePath}"!\n\n`);
+    console.log(`DONE updating "${jsonFilePath}"!`);
   }
 
   /**
