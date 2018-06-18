@@ -110,3 +110,52 @@ figcaption > div {
     margin: 16px 0;
   }
 }
+
+.mdc-fab--collapsed {
+  height: 56px;
+  border-radius: 28px;
+  padding: 0;
+  width: 100%;
+  max-width: 56px;
+
+  transition: all 0.24s ease-in-out;
+
+  .mdc-fab__label {
+    padding-left: 0;
+    visibility: hidden;
+    opacity: 0;
+    max-width: 0;
+
+    transition: all 0.24s ease-in-out;
+  }
+}
+
+.mdc-fab--collapsed:hover {
+  height: 48px;
+  border-radius: 24px;
+  padding: 0 20px 0 16px;
+  max-width: 250px;
+
+  .mdc-fab__label {
+    padding-left: 8px;
+    visibility: visible;
+    opacity: 1;
+    max-width: 250px;
+  }
+}
+
+@keyframes expand {
+  0% {
+    max-width: 0;
+    padding-left: 0;
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  100% {
+    max-width: 200px;
+    padding-left: 8px;
+    visibility: visible;
+    opacity: 1;
+  }
+}
