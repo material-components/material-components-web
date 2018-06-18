@@ -50,8 +50,13 @@
   @include mdc-theme-prop(color, $color);
 }
 
+@mixin mdc-fab-extended-fluid {
+  width: 100%;
+}
+
 $mdc-fab-icon-enter-delay_: 90ms;
 $mdc-fab-icon-enter-duration_: 180ms;
+$mdc-fab-extended-height_: 48px;
 
 @mixin mdc-fab-base_ {
   @include mdc-ripple-surface;
@@ -122,10 +127,28 @@ $mdc-fab-icon-enter-duration_: 180ms;
   height: 40px;
 }
 
+@mixin mdc-fab--extended_ {
+  @include mdc-typography(button);
+
+  width: auto;
+  max-width: 100%;
+  height: $mdc-fab-extended-height_;
+  padding: 0 20px 0 16px;
+  border-radius: $mdc-fab-extended-height_ / 2;
+}
+
 @mixin mdc-fab__icon_ {
   transition: mdc-animation-enter(transform, $mdc-fab-icon-enter-duration_, $mdc-fab-icon-enter-delay_);
   fill: currentColor;
   will-change: transform;
+}
+
+@mixin mdc-fab__label_ {
+  justify-content: flex-start;
+  padding-left: 8px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 @mixin mdc-fab__icon-overrides_ {

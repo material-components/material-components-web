@@ -1,3 +1,15 @@
+<a name="0.36.1"></a>
+## [0.36.1](https://github.com/material-components/material-components-web/compare/v0.36.0...v0.36.1) (2018-06-18)
+
+
+### Bug Fixes
+
+* **checkbox:** support high contrast mode in Firefox on Windows ([#2927](https://github.com/material-components/material-components-web/issues/2927)) ([8b7d77e](https://github.com/material-components/material-components-web/commit/8b7d77e))
+* **menu:** Update adapter to check for focus before calling ([#2880](https://github.com/material-components/material-components-web/issues/2880)) ([84fcc08](https://github.com/material-components/material-components-web/commit/84fcc08))
+* **text-field:** Hide extraneous border in FF in HC mode. ([#2931](https://github.com/material-components/material-components-web/issues/2931)) ([bd4c563](https://github.com/material-components/material-components-web/commit/bd4c563))
+
+
+
 <a name="0.36.0"></a>
 # [0.36.0](https://github.com/material-components/material-components-web/compare/v0.36.0-0...v0.36.0) (2018-06-04)
 

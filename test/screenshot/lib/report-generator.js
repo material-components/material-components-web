@@ -16,23 +16,38 @@
 
 const GitRepo = require('./git-repo');
 const CliArgParser = require('./cli-arg-parser');
-const child_process = require('mz/child_process'); // eslint-disable-line
+const childProcess = require('mz/child_process');
 
 const GITHUB_REPO_URL = 'https://github.com/material-components/material-components-web';
 
 class ReportGenerator {
-  constructor({testCases, diffs}) {
+  /**
+   * @param {!RunReport} runReport
+   */
+  constructor(runReport) {
     /**
-     * @type {!Array<!UploadableTestCase>}
+     * @type {!RunReport}
      * @private
      */
-    this.testCases_ = testCases;
+    this.runReport_ = runReport;
 
     /**
-     * @type {!Array<!ImageDiffJson>}
+     * @type {{
+     *   diffs: !Map<string, !Array<!ImageDiffJson>>,
+     *   added: !Map<string, !Array<!ImageDiffJson>>,
+     *   removed: !Map<string, !Array<!ImageDiffJson>>,
+     *   unchanged: !Map<string, !Array<!ImageDiffJson>>,
+     *   skipped: !Map<string, !Array<!ImageDiffJson>>,
+     * }}
      * @private
      */
-    this.diffList_ = diffs;
+    this.reportMaps_ = {
+      diffs: new Map(),
+      added: new Map(),
+      removed: new Map(),
+      unchanged: new Map(),
+      skipped: new Map(),
+    };
 
     /**
      * @type {!GitRepo}
@@ -46,57 +61,165 @@ class ReportGenerator {
      */
     this.cliArgs_ = new CliArgParser();
 
-    /**
-     * @type {!Map<string, !Array<!ImageDiffJson>>}
-     * @private
-     */
-    this.diffMap_ = new Map();
+    this.groupAllChangelistsByFile_();
+  }
 
-    diffs.forEach((diff) => {
-      if (!this.diffMap_.has(diff.htmlFilePath)) {
-        this.diffMap_.set(diff.htmlFilePath, []);
+  /**
+   * @private
+   */
+  groupAllChangelistsByFile_() {
+    // TODO(acdvorak): Move most of the logic out of this file so that we can serialize all the data displayed on
+    // the page to `report.json`.
+    this.groupOneChangelistByFile_(this.runReport_.runResult.diffs, this.reportMaps_.diffs);
+    this.groupOneChangelistByFile_(this.runReport_.runResult.added, this.reportMaps_.added);
+    this.groupOneChangelistByFile_(this.runReport_.runResult.removed, this.reportMaps_.removed);
+    this.groupOneChangelistByFile_(this.runReport_.runResult.unchanged, this.reportMaps_.unchanged);
+    this.groupOneChangelistByFile_(this.runReport_.runResult.skipped, this.reportMaps_.skipped);
+  }
+
+  /**
+   * @param {!Array<!ImageDiffJson>} changelist
+   * @param {!Map<string, !Array<!ImageDiffJson>>} map
+   * @private
+   */
+  groupOneChangelistByFile_(changelist, map) {
+    changelist.forEach((diff) => {
+      if (!map.has(diff.htmlFilePath)) {
+        map.set(diff.htmlFilePath, []);
       }
-      this.diffMap_.get(diff.htmlFilePath).push(diff);
+      map.get(diff.htmlFilePath).push(diff);
     });
   }
 
+  /**
+   * @return {!Promise<string>}
+   */
   async generateHtml() {
-    const numDiffs = this.diffList_.length;
+    const runResult = this.runReport_.runResult;
 
+    const numDiffs = runResult.diffs.length;
+    const numAdded = runResult.added.length;
+    const numRemoved = runResult.removed.length;
+    const numUnchanged = runResult.unchanged.length;
+    const numSkipped = runResult.skipped.length;
+
+    const title = [
+      `${numDiffs} Diff${numDiffs !== 1 ? 's' : ''}`,
+      `${numAdded} Added`,
+      `${numRemoved} Removed`,
+      `${numUnchanged} Unchanged`,
+      `${numSkipped} Skipped`,
+    ].join(', ');
+
+    /* eslint-disable indent */
     return `
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>${numDiffs} Diffs - Screenshot Test Report - MDC Web</title>
+    <title>${title} - Screenshot Test Report - MDC Web</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    ${this.getStyleMarkup_()}
+    <link rel="stylesheet" href="./out/report.css">
+    <script src="./report.js"></script>
   </head>
   <body class="report-body">
     <h1>
       Screenshot Test Report for
       <a href="https://github.com/material-components/material-components-web" target="_blank">MDC Web</a>
     </h1>
+    ${this.getCollapseButtonMarkup_()}
     ${await this.getMetadataMarkup_()}
-    <h2>
-      ${numDiffs} Diff${numDiffs !== 1 ? 's' : ''}
-      ${this.getCollapseButtonMarkup_()}
-    </h2>
-    <div>
-      ${this.getDiffListMarkup_()}
-    </div>
+    ${await this.getChangelistMarkup_({
+      changelist: runResult.diffs,
+      map: this.reportMaps_.diffs,
+      isOpen: true,
+      heading: 'Diff',
+      pluralize: true,
+    })}
+    ${await this.getChangelistMarkup_({
+      changelist: runResult.added,
+      map: this.reportMaps_.added,
+      isOpen: true,
+      heading: 'Added',
+      pluralize: false,
+    })}
+    ${await this.getChangelistMarkup_({
+      changelist: runResult.removed,
+      map: this.reportMaps_.removed,
+      isOpen: true,
+      heading: 'Removed',
+      pluralize: false,
+    })}
+    ${await this.getChangelistMarkup_({
+      changelist: runResult.unchanged,
+      map: this.reportMaps_.unchanged,
+      isOpen: false,
+      heading: 'Unchanged',
+      pluralize: false,
+    })}
+    ${await this.getChangelistMarkup_({
+      changelist: runResult.skipped,
+      map: this.reportMaps_.skipped,
+      isOpen: false,
+      heading: 'Skipped',
+      pluralize: false,
+    })}
   </body>
 </html>
 `;
+    /* eslint-enable indent */
+  }
+
+  /**
+   * @param {!Array<!ImageDiffJson>} changelist
+   * @param {!Map<string, !Array<!ImageDiffJson>>} map
+   * @param {boolean} isOpen
+   * @param {string} heading
+   * @param {boolean} pluralize
+   * @return {!Promise<string>}
+   * @private
+   */
+  async getChangelistMarkup_({changelist, map, isOpen, heading, pluralize}) {
+    const numDiffs = changelist.length;
+
+    return `
+<details class="report-changelist" ${isOpen && numDiffs > 0 ? 'open' : ''}>
+  <summary class="report-changelist__heading">${numDiffs} ${heading}${pluralize && numDiffs !== 1 ? 's' : ''}</summary>
+  <div class="report-changelist__content">
+    ${this.getDiffListMarkup_({changelist, map})}
+  </div>
+</details>
+`;
+  }
+
+  getMetadataFilterCountMarkup_(numRunnable, numSkipped) {
+    const numTotal = numRunnable + numSkipped;
+    if (numSkipped > 0) {
+      return `${numRunnable} of ${numTotal} (skipped ${numSkipped})`;
+    }
+    return String(numRunnable);
   }
 
   async getMetadataMarkup_() {
     const timestamp = (new Date()).toISOString();
-    const numTestCases = this.testCases_.length;
-    const numScreenshots = this.testCases_
-      .map((testCase) => testCase.screenshotImageFiles.length)
-      .reduce((total, current) => total + current, 0)
-    ;
+
+    const {runnableTestCases, skippedTestCases, runnableUserAgents, skippedUserAgents} = this.runReport_.runTarget;
+
+    const numRunnableTestCases = runnableTestCases.length;
+    const numSkippedTestCases = skippedTestCases.length;
+    const numTotalTestCases = numRunnableTestCases + numSkippedTestCases;
+
+    const numRunnableUserAgents = runnableUserAgents.length;
+    const numSkippedUserAgents = skippedUserAgents.length;
+    const numTotalUserAgents = numRunnableUserAgents + numSkippedUserAgents;
+
+    const numTotalScreenshots = numTotalTestCases * numTotalUserAgents;
+    const numRunnableScreenshots = numRunnableTestCases * numRunnableUserAgents;
+    const numSkippedScreenshots = numTotalScreenshots - numRunnableScreenshots;
+
+    const testCaseCountMarkup = this.getMetadataFilterCountMarkup_(numRunnableTestCases, numSkippedTestCases);
+    const browserCountMarkup = this.getMetadataFilterCountMarkup_(numRunnableUserAgents, numSkippedUserAgents);
+    const screenshotCountMarkup = this.getMetadataFilterCountMarkup_(numRunnableScreenshots, numSkippedScreenshots);
 
     const [nodeBinPath, scriptPath, ...scriptArgs] = process.argv;
     const nodeBinPathRedacted = nodeBinPath.replace(process.env.HOME, '~');
@@ -122,11 +245,11 @@ class ReportGenerator {
 
     const gitUserName = await this.gitRepo_.getUserName();
     const gitUserEmail = await this.gitRepo_.getUserEmail();
-    const gitUser = `&lt;${gitUserName}&gt; ${gitUserEmail}`;
+    const gitUser = `${gitUserName} &lt;${gitUserEmail}&gt;`;
 
     const getExecutableVersion = async (cmd) => {
       const options = {cwd: process.env.PWD, env: process.env};
-      const stdOut = await child_process.exec(`${cmd} --version`, options);
+      const stdOut = await childProcess.exec(`${cmd} --version`, options);
       return stdOut[0].trim();
     };
 
@@ -146,12 +269,16 @@ class ReportGenerator {
           <td class="report-metadata__cell report-metadata__cell--val">${timestamp}</td>
         </tr>
         <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">Screenshots:</th>
-          <td class="report-metadata__cell report-metadata__cell--val">${numScreenshots}</td>
+          <th class="report-metadata__cell report-metadata__cell--key">Test Cases:</th>
+          <td class="report-metadata__cell report-metadata__cell--val">${testCaseCountMarkup}</td>
         </tr>
         <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">Test Cases:</th>
-          <td class="report-metadata__cell report-metadata__cell--val">${numTestCases}</td>
+          <th class="report-metadata__cell report-metadata__cell--key">Browsers:</th>
+          <td class="report-metadata__cell report-metadata__cell--val">${browserCountMarkup}</td>
+        </tr>
+        <tr>
+          <th class="report-metadata__cell report-metadata__cell--key">Screenshots:</th>
+          <td class="report-metadata__cell report-metadata__cell--val">${screenshotCountMarkup}</td>
         </tr>
         <tr>
           <th class="report-metadata__cell report-metadata__cell--key">Golden:</th>
@@ -258,44 +385,55 @@ on tag
   }
 
   getCollapseButtonMarkup_() {
-    const numDiffs = this.diffList_.length;
-    if (numDiffs === 0) {
-      return '';
-    }
-
     return `
-<button onclick="Array.from(document.querySelectorAll('.report-file, .report-browser')).forEach((e) => e.open = false)">
-  collapse all
-</button>
+<p>
+  <button onclick="mdc.report.collapseAll()">
+    collapse all
+  </button>
+</p>
 `;
   }
 
-  getDiffListMarkup_() {
-    const numDiffs = this.diffList_.length;
+  getDiffListMarkup_({changelist, map}) {
+    const numDiffs = changelist.length;
     if (numDiffs === 0) {
       return '<div class="report-congrats">Woohoo! 🎉</div>';
     }
 
-    const htmlFilePaths = Array.from(this.diffMap_.keys());
-    return htmlFilePaths.map((htmlFilePath) => this.getTestCaseMarkup_(htmlFilePath)).join('\n');
+    const htmlFilePaths = Array.from(map.keys());
+    return htmlFilePaths.map((htmlFilePath) => this.getTestCaseMarkup_({htmlFilePath, map})).join('\n');
   }
 
-  getTestCaseMarkup_(htmlFilePath) {
-    const diffs = this.diffMap_.get(htmlFilePath);
+  getTestCaseMarkup_({htmlFilePath, map}) {
+    const diffs = map.get(htmlFilePath);
     const goldenPageUrl = diffs[0].goldenPageUrl;
     const snapshotPageUrl = diffs[0].snapshotPageUrl;
 
     return `
 <details class="report-file" open>
   <summary class="report-file__heading">
-    ${htmlFilePath}
-    (<a href="${goldenPageUrl}">golden</a> | <a href="${snapshotPageUrl}">snapshot</a>)
+    ${diffs.length} in ${htmlFilePath}
+    ${this.getGoldenAndSnapshotLinkMarkup_({goldenPageUrl, snapshotPageUrl})}
   </summary>
   <div class="report-file__content">
     ${diffs.map((diff) => this.getDiffRowMarkup_(diff)).join('\n')}
   </div>
 </details>
 `;
+  }
+
+  getGoldenAndSnapshotLinkMarkup_({goldenPageUrl, snapshotPageUrl}) {
+    const fragments = [];
+    if (goldenPageUrl) {
+      fragments.push(`<a href="${goldenPageUrl}">golden</a>`);
+    }
+    if (snapshotPageUrl) {
+      fragments.push(`<a href="${snapshotPageUrl}">snapshot</a>`);
+    }
+    if (fragments.length === 0) {
+      return '';
+    }
+    return `(${fragments.join(' | ')})`;
   }
 
   getDiffRowMarkup_(diff) {
@@ -315,107 +453,21 @@ on tag
     return `
 <div class="report-browser__image-cell">
   ${description}:
-  <a href="${url}" class="report-browser__image-link">
-    <img class="report-browser__image" src="${url}">
-  </a>
+  ${this.getDiffImageLinkMarkup_(url)}
 </div>
 `;
   }
 
-  getStyleMarkup_() {
-    return `
-<style>
-/* https://www.paulirish.com/2012/box-sizing-border-box-ftw/ */
-/* apply a natural box layout model to all elements, but allowing components to change */
-html {
-  box-sizing: border-box;
-}
-*, *:before, *:after {
-  box-sizing: inherit;
-}
-
-.report-body {
-  font-family: "Roboto Mono", Consolas, monospace;
-  font-size: smaller;
-}
-
-.report-metadata__content {
-  padding: 0 24px;
-}
-
-.report-metadata__table {
-  border-collapse: collapse;
-}
-
-.report-metadata__cell {
-  padding: 2px 10px 2px 0;
-  text-align: left;
-  font-weight: normal;
-  vertical-align: top;
-}
-
-.report-metadata__cell--key {
-  font-style: italic;
-  width: 10em;
-}
-
-.report-file {
-  margin-bottom: 20px;
-  border: 1px solid #aaa;
-  border-radius: 3px;
-  background-color: #eee;
-}
-
-.report-file__heading {
-  font-size: larger;
-}
-
-.report-metadata__heading,
-.report-file__heading,
-.report-browser__heading {
-  font-weight: bold;
-  padding: 8px 10px;
-  cursor: pointer;
-}
-
-.report-metadata__heading:hover,
-.report-file__heading:hover,
-.report-browser__heading:hover {
-  background-color: #ddd;
-}
-
-.report-file__content {
-  padding: 0 24px;
-}
-
-.report-browser__content {
-  display: flex;
-  padding: 10px 24px;
-}
-
-.report-browser__image-cell {
-  width: calc(33% - 5px);
-}
-
-.report-browser__image-cell + .report-browser__image-cell {
-  margin-left: 5px;
-}
-
-.report-browser__image-link {
-  display: block;
-}
-
-.report-browser__image {
-  max-width: 100%;
-  vertical-align: top;
-}
-
-.report-congrats {
-  font-size: 3rem;
-  color: green;
-}
-</style>
+  getDiffImageLinkMarkup_(url) {
+    if (url) {
+      return `
+  <a href="${url}" class="report-browser__image-link">
+    <img class="report-browser__image" src="${url}">
+  </a>
 `;
+    }
+
+    return '<div>(none)</div>';
   }
 }
 
