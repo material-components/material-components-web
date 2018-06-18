@@ -159,15 +159,15 @@ Class | Description
 --- | ---
 `mdc-top-app-bar` | Mandatory.
 `mdc-top-app-bar--fixed` | Class used to style the top app bar as a fixed top app bar.
-`mdc-top-app-bar--fixed-adjust` | Class used to style the content below the standard and fixed top app bar to prevent it from appearing below the top app bar.
+`mdc-top-app-bar--fixed-adjust` | Class used to style the content below the standard and fixed top app bar to prevent the top app bar from covering it.
 `mdc-top-app-bar--prominent` | Class used to style the top app bar as a prominent top app bar.
-`mdc-top-app-bar--prominent-fixed-adjust` | Class used to style the content below the prominent top app bar to prevent it from appearing below the top app bar.
+`mdc-top-app-bar--prominent-fixed-adjust` | Class used to style the content below the prominent top app bar to prevent the top app bar from covering it.
 `mdc-top-app-bar--dense` | Class used to style the top app bar as a dense top app bar.
-`mdc-top-app-bar--dense-fixed-adjust` | Class used to style the content below the dense top app bar to prevent it from appearing below the top app bar.
+`mdc-top-app-bar--dense-fixed-adjust` | Class used to style the content below the dense top app bar to prevent the top app bar from covering it.
+`mdc-top-app-bar--dense-prominent-fixed-adjust` | Class used to style the content below the top app bar when styled as both prominent and dense, to prevent the top app bar from covering it.
 `mdc-top-app-bar--short` | Class used to style the top app bar as a short top app bar.
 `mdc-top-app-bar--short-collapsed` | Class used to indicate the short top app bar is collapsed.
-`mdc-top-app-bar--short-fixed-adjust` | Class used to style the content below the short top app bar to prevent it from appearing below the top app bar.
-`mdc-top-app-bar--dense-prominent-fixed-adjust` | Class used to style the content below the prominent with dense top app bar to prevent it from appearing below the top app bar.
+`mdc-top-app-bar--short-fixed-adjust` | Class used to style the content below the short top app bar to prevent the top app bar from covering it.
 
 ### Sass Mixins
 
