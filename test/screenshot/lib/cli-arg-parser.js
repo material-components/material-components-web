@@ -57,6 +57,29 @@ class CliArgParser {
 
   initCommonFlags_() {
     this.parser_.addArgument(
+      ['--mdc-test-dir'],
+      {
+        defaultValue: 'test/screenshot/',
+        help: `
+Relative path to a local directory containing static test assets (HTML/CSS/JS files) to be captured and diffed.
+Relative to $PWD.
+`
+          .trim(),
+      }
+    );
+
+    this.parser_.addArgument(
+      ['--mdc-gcs-bucket'],
+      {
+        defaultValue: 'mdc-web-screenshot-tests',
+        help: `
+Name of the Google Cloud Storage bucket to use for public file uploads.
+`
+          .trim(),
+      }
+    );
+
+    this.parser_.addArgument(
       ['--mdc-golden-path'],
       {
         defaultValue: 'test/screenshot/golden.json',
@@ -127,18 +150,6 @@ Takes precedence over '--mdc-include-browser'.
     );
 
     subparser.addArgument(
-      ['--mdc-test-dir'],
-      {
-        defaultValue: 'test/screenshot/',
-        help: `
-Relative path to a local directory containing static test assets (HTML/CSS/JS files) to be captured and diffed.
-Relative to $PWD.
-`
-          .trim(),
-      }
-    );
-
-    subparser.addArgument(
       ['--mdc-diff-base'],
       {
         defaultValue: 'origin/master',
@@ -160,17 +171,6 @@ E.g., 'origin/master' (default), 'HEAD', 'feat/foo/bar', 'fad7ed3:path/to/golden
         help: `
 If this flag is present, JS and CSS files will not be compiled prior to running screenshot tests.
 The default behavior is to always build assets before running the tests.
-`
-          .trim(),
-      }
-    );
-
-    subparser.addArgument(
-      ['--mdc-gcs-bucket'],
-      {
-        defaultValue: 'mdc-web-screenshot-tests',
-        help: `
-Name of the Google Cloud Storage bucket to use for public file uploads.
 `
           .trim(),
       }
@@ -303,17 +303,26 @@ Name of the Google Cloud Storage bucket to use for public file uploads.
 
   /** @return {!Set<string>} */
   get diffs() {
-    return new Set([].concat(...this.args_['diffs'].map((value) => value.split(','))));
+    return this.parseApprovedChangeTargets_(this.args_['diffs']);
   }
 
   /** @return {!Set<string>} */
   get added() {
-    return new Set([].concat(...this.args_['added'].map((value) => value.split(','))));
+    return this.parseApprovedChangeTargets_(this.args_['added']);
   }
 
   /** @return {!Set<string>} */
   get removed() {
-    return new Set([].concat(...this.args_['removed'].map((value) => value.split(','))));
+    return this.parseApprovedChangeTargets_(this.args_['removed']);
+  }
+
+  /**
+   * @param {!Array<string>} list
+   * @return {!Set<string>}
+   */
+  parseApprovedChangeTargets_(list) {
+    list = list || [];
+    return new Set([].concat(...list.map((value) => value.split(','))));
   }
 
   /** @return {boolean} */

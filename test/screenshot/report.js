@@ -234,7 +234,7 @@ window.mdc.reportUi = (() => {
         args.push(`--${changeGroupId}=${targets.join(',')}`);
       }
 
-      if (args.length > 0 && args.every((arg) => arg.startsWith('--all-'))) {
+      if (args.length === ['diffs', 'added', 'removed'].length && args.every((arg) => arg.startsWith('--all-'))) {
         args.length = 0;
         args.push('--all');
       }

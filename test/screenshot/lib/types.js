@@ -45,7 +45,6 @@ let RunTarget;
  * @typedef {{
  *   publicReportPageUrl: ?string,
  *   publicReportJsonUrl: ?string,
- *   publicSnapshotJsonUrl: ?string,
  *   diffs: !Array<!ImageDiffJson>,
  *   added: !Array<!ImageDiffJson>,
  *   removed: !Array<!ImageDiffJson>,

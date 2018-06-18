@@ -39,32 +39,34 @@ class SnapshotStore {
     this.gitRepo_ = new GitRepo();
 
     /**
-     * @type {?SnapshotSuiteJson}
+     * @type {!Object<string, !SnapshotSuiteJson>}
      * @private
      */
-    this.cachedGoldenJsonFromDiffBase_ = null;
+    this.cachedGoldenJsonMap_ = {};
   }
 
   /**
    * Parses the `golden.json` file specified by the `--mdc-diff-base` CLI arg.
+   * @param {string=} diffBase
    * @return {!Promise<!SnapshotSuiteJson>}
    */
-  async fromDiffBase() {
-    if (!this.cachedGoldenJsonFromDiffBase_) {
-      this.cachedGoldenJsonFromDiffBase_ = JSON.parse(await this.fetchGoldenJsonString_());
+  async fromDiffBase(diffBase = this.cliArgs_.diffBase) {
+    if (!this.cachedGoldenJsonMap_[diffBase]) {
+      this.cachedGoldenJsonMap_[diffBase] = JSON.parse(await this.fetchGoldenJsonString_(diffBase));
     }
 
     // Deep-clone the cached object to avoid accidental mutation of shared state
-    return this.deepCloneJson_(this.cachedGoldenJsonFromDiffBase_);
+    return this.deepCloneJson_(this.cachedGoldenJsonMap_[diffBase]);
   }
 
   /**
+   * @param {string} diffBase
    * @return {!Promise<string>}
    * @private
    */
-  async fetchGoldenJsonString_() {
+  async fetchGoldenJsonString_(diffBase) {
     /** @type {!DiffSource} */
-    const diffSource = await this.cliArgs_.parseDiffBase();
+    const diffSource = await this.cliArgs_.parseDiffBase({rawDiffBase: diffBase});
 
     const publicUrl = diffSource.publicUrl;
     if (publicUrl) {
@@ -118,14 +120,19 @@ class SnapshotStore {
 
   /**
    * @param {!RunReport} runReport
-   * @return {!SnapshotSuiteJson}
+   * @return {!Promise<!SnapshotSuiteJson>}
    */
-  fromApproval(runReport) {
+  async fromApproval(runReport) {
     const approvedRunReport = this.filterReportForApproval_(runReport);
 
-    const newGolden = this.deepCloneJson_(approvedRunReport.runTarget.baseGoldenJsonData);
+    // Update the user's local `golden.json` file in-place.
+    const newGolden = this.deepCloneJson_(await this.fromDiffBase(this.cliArgs_.goldenPath));
 
     runReport.runResult.diffs.forEach((diff) => {
+      newGolden[diff.htmlFilePath] = newGolden[diff.htmlFilePath] || {
+        publicUrl: diff.snapshotPageUrl,
+        screenshots: {},
+      };
       newGolden[diff.htmlFilePath].publicUrl = diff.snapshotPageUrl;
       newGolden[diff.htmlFilePath].screenshots[diff.userAgentAlias] = diff.actualImageUrl;
     });
@@ -140,13 +147,15 @@ class SnapshotStore {
     });
 
     runReport.runResult.removed.forEach((diff) => {
+      if (!newGolden[diff.htmlFilePath]) {
+        return;
+      }
       delete newGolden[diff.htmlFilePath].screenshots[diff.userAgentAlias];
-      if (newGolden[diff.htmlFilePath].screenshots.length === 0) {
+      if (Object.keys(newGolden[diff.htmlFilePath].screenshots).length === 0) {
         delete newGolden[diff.htmlFilePath];
       }
     });
 
-    // TODO(acdvorak): Is this necessary?
     approvedRunReport.runResult.approvedGoldenJsonData = newGolden;
 
     return newGolden;
@@ -201,45 +210,23 @@ class SnapshotStore {
 
   /**
    * @param {!RunReport} runReport
-   * @return {!Promise<string>}
-   */
-  async getSnapshotJsonString(runReport) {
-    /** @type {!SnapshotSuiteJson} */
-    const snapshot = this.deepCloneJson_(runReport.runTarget.baseGoldenJsonData);
-
-    runReport.runResult.diffs.forEach((diff) => {
-      snapshot[diff.htmlFilePath].screenshots[diff.userAgentAlias] = diff.actualImageUrl;
-    });
-
-    runReport.runResult.added.forEach((diff) => {
-      snapshot[diff.htmlFilePath] = snapshot[diff.htmlFilePath] || {
-        publicUrl: diff.snapshotPageUrl,
-        screenshots: {},
-      };
-      snapshot[diff.htmlFilePath].screenshots[diff.userAgentAlias] = diff.actualImageUrl;
-    });
-
-    runReport.runResult.removed.forEach((diff) => {
-      delete snapshot[diff.htmlFilePath].screenshots[diff.userAgentAlias];
-      if (Object.keys(snapshot[diff.htmlFilePath].screenshots).length === 0) {
-        delete snapshot[diff.htmlFilePath];
-      }
-    });
-
-    return stringify(snapshot, {space: '  '}) + '\n';
-  }
-
-  /**
-   * @param {!RunReport} runReport
    * @return {!Promise<void>}
    */
   async writeToDisk(runReport) {
-    const jsonFileContent = await this.getSnapshotJsonString(runReport);
+    const jsonFileContent = await this.toJson_(runReport.runResult.approvedGoldenJsonData);
     const jsonFilePath = this.cliArgs_.goldenPath;
 
     await fs.writeFile(jsonFilePath, jsonFileContent);
 
     console.log(`\n\nDONE updating "${jsonFilePath}"!\n\n`);
+  }
+
+  /**
+   * @param {!Object|!Array} object
+   * @return {!Promise<string>}
+   */
+  async toJson_(object) {
+    return stringify(object, {space: '  '}) + '\n';
   }
 
   /**
@@ -249,8 +236,9 @@ class SnapshotStore {
    * In Java parlance:
    *   clone.equals(source) // true
    *   clone == source      // false
-   * @param {!Object} source JSON object to clone
-   * @return {!Object} Deep clone of `source` object
+   * @param {!T} source JSON object to clone
+   * @return {!T} Deep clone of `source` object
+   * @template T
    * @private
    */
   deepCloneJson_(source) {

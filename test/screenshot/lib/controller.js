@@ -125,7 +125,7 @@ class Controller {
       json: true, // Automatically stringify the request body and parse the response body as JSON
     });
 
-    runReport.runResult.approvedGoldenJsonData = this.snapshotStore_.fromApproval(runReport);
+    runReport.runResult.approvedGoldenJsonData = await this.snapshotStore_.fromApproval(runReport);
 
     return runReport;
   }
@@ -393,24 +393,21 @@ class Controller {
       });
     };
 
-    const [reportPageFile, reportJsonFile, snapshotJsonFile] = [
-      'report.html', 'report.json', 'snapshot.json',
+    const [reportPageFile, reportJsonFile] = [
+      'report.html', 'report.json',
     ].map((filename, index, array) => {
       return createFile({filename, queueLength: array.length});
     });
 
     runReport.runResult.publicReportPageUrl = reportPageFile.publicUrl;
     runReport.runResult.publicReportJsonUrl = reportJsonFile.publicUrl;
-    runReport.runResult.publicSnapshotJsonUrl = snapshotJsonFile.publicUrl;
 
     const reportGenerator = new ReportGenerator(runReport);
     const reportHtml = await reportGenerator.generateHtml();
     const reportJson = JSON.stringify(runReport, null, 2);
-    const snapshotJsonStr = await this.snapshotStore_.getSnapshotJsonString(runReport);
 
     reportPageFile.fileContent = reportHtml;
     reportJsonFile.fileContent = reportJson;
-    snapshotJsonFile.fileContent = snapshotJsonStr;
 
     /**
      * @param {!UploadableFile} file
@@ -423,7 +420,7 @@ class Controller {
       return this.cloudStorage_.uploadFile(file);
     };
 
-    await Promise.all([reportPageFile, reportJsonFile, snapshotJsonFile].map((file) => {
+    await Promise.all([reportPageFile, reportJsonFile].map((file) => {
       return writeFile(file);
     }));
 
