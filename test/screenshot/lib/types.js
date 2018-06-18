@@ -122,7 +122,7 @@ class UploadableFile {
     /** @type {string} */
     this.publicUrl = `${destinationBaseUrl}${this.destinationAbsoluteFilePath}`;
 
-    /** @type {?Buffer} */
+    /** @type {?Buffer|?string} */
     this.fileContent = fileContent;
 
     /** @type {?CbtUserAgent} */

@@ -359,59 +359,59 @@ class Controller {
    * @return {!Promise<!RunReport>}
    */
   async uploadDiffReport(runReport) {
+    let nextQueueIndex = 0;
+
+    /**
+     * @param {string} filename
+     * @param {number} queueLength
+     * @return {!UploadableFile}
+     */
+    const createFile = ({filename, queueLength}) => {
+      return new UploadableFile({
+        destinationBaseUrl: this.cliArgs_.gcsBaseUrl,
+        destinationParentDirectory: this.baseUploadDir_,
+        destinationRelativeFilePath: filename,
+        queueIndex: nextQueueIndex++,
+        queueLength,
+      });
+    };
+
+    const [reportPageFile, reportJsonFile, snapshotJsonFile] = [
+      'report.html', 'report.json', 'snapshot.json',
+    ].map((filename, index, array) => {
+      return createFile({filename, queueLength: array.length});
+    });
+
+    runReport.runResult.publicReportPageUrl = reportPageFile.publicUrl;
+    runReport.runResult.publicReportJsonUrl = reportJsonFile.publicUrl;
+    runReport.runResult.publicSnapshotJsonUrl = snapshotJsonFile.publicUrl;
+
     const reportGenerator = new ReportGenerator(runReport);
     const reportHtml = await reportGenerator.generateHtml();
     const reportJson = JSON.stringify(runReport, null, 2);
     const snapshotJsonStr = await this.snapshotStore_.getSnapshotJsonString(runReport);
 
-    const writeFile = async ({filename, content, queueIndex, queueLength}) => {
-      const filePath = path.join(this.cliArgs_.testDir, filename);
+    reportPageFile.fileContent = reportHtml;
+    reportJsonFile.fileContent = reportJson;
+    snapshotJsonFile.fileContent = snapshotJsonStr;
+
+    /**
+     * @param {!UploadableFile} file
+     * @return {!Promise<!UploadableFile>}
+     */
+    const writeFile = async (file) => {
+      const filePath = path.join(this.cliArgs_.testDir, file.destinationRelativeFilePath);
       console.log(`Writing ${filePath} to disk...`);
-
-      await fs.writeFile(filePath, content, {encoding: 'utf8'});
-
-      return this.cloudStorage_.uploadFile(new UploadableFile({
-        destinationBaseUrl: this.cliArgs_.gcsBaseUrl,
-        destinationParentDirectory: this.baseUploadDir_,
-        destinationRelativeFilePath: filename,
-        fileContent: content,
-        queueIndex,
-        queueLength,
-      }));
+      await fs.writeFile(filePath, file.fileContent, {encoding: 'utf8'});
+      return this.cloudStorage_.uploadFile(file);
     };
 
-    let nextQueueIndex = 0;
-
-    /** @type {!UploadableFile} */
-    const [reportPageFile, reportJsonFile, snapshotJsonFile] = await Promise.all([
-      writeFile({
-        filename: 'report.html',
-        content: reportHtml,
-        queueIndex: nextQueueIndex++,
-        queueLength: 3,
-      }),
-
-      writeFile({
-        filename: 'report.json',
-        content: reportJson,
-        queueIndex: nextQueueIndex++,
-        queueLength: 3,
-      }),
-
-      writeFile({
-        filename: 'snapshot.json',
-        content: snapshotJsonStr,
-        queueIndex: nextQueueIndex++,
-        queueLength: 3,
-      }),
-    ]);
+    await Promise.all([reportPageFile, reportJsonFile, snapshotJsonFile].map((file) => {
+      return writeFile(file);
+    }));
 
     console.log('\n\nDONE uploading diff report to GCS!\n\n');
     console.log(reportPageFile.publicUrl);
-
-    runReport.runResult.publicReportPageUrl = reportPageFile.publicUrl;
-    runReport.runResult.publicReportJsonUrl = reportJsonFile.publicUrl;
-    runReport.runResult.publicSnapshotJsonUrl = snapshotJsonFile.publicUrl;
 
     return runReport;
   }

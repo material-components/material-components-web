@@ -173,6 +173,7 @@ class ReportGenerator {
       pluralize: false,
     })}
     ${this.getFloatingToolbarMarkup_()}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
     <script src="./report.js"></script>
   </body>
 </html>
@@ -183,7 +184,7 @@ class ReportGenerator {
   getCollapseButtonMarkup_() {
     return `
 <p>
-  <button onclick="mdc.report.collapseAll()">
+  <button onclick="mdc.reportUi.collapseAll()">
     collapse all
   </button>
 </p>
@@ -544,29 +545,43 @@ on tag
   <div class="report-toolbar__column">
     <button class="report-toolbar__button report-toolbar__button--approve"
             id="report-toolbar__approve-selected-button"
-            onclick="mdc.report.approveSelected()">
-      Approval Command
+            onclick="mdc.reportUi.approveSelected()">
+      Approve
     </button>
     <button class="report-toolbar__button report-toolbar__button--retry"
             id="report-toolbar__retry-selected-button"
-            onclick="mdc.report.retrySelected()">
-      Retry Command
+            onclick="mdc.reportUi.retrySelected()">
+      Retry
     </button>
     <span id="report-toolbar__selected-count"></span> selected screenshots
   </div>
   <div class="report-toolbar__column">
     Select:
-    <button class="report-toolbar__button" id="report-toolbar__select-all-button" onclick="mdc.report.selectAll()">All</button>
-    <button class="report-toolbar__button" id="report-toolbar__select-none-button" onclick="mdc.report.selectNone()">None</button>
-    <button class="report-toolbar__button" id="report-toolbar__select-inverse-button" onclick="mdc.report.selectInverse()">Inverse</button>
+    <button class="report-toolbar__button" id="report-toolbar__select-all-button" onclick="mdc.reportUi.selectAll()">All</button>
+    <button class="report-toolbar__button" id="report-toolbar__select-none-button" onclick="mdc.reportUi.selectNone()">None</button>
+    <button class="report-toolbar__button" id="report-toolbar__select-inverse-button" onclick="mdc.reportUi.selectInverse()">Inverse</button>
   </div>
   <div class="report-toolbar__column">
     Collapse:
-    <button class="report-toolbar__button" id="report-toolbar__collapse-all-button" onclick="mdc.report.collapseAll()">All</button>
-    <button class="report-toolbar__button" id="report-toolbar__collapse-none-button" onclick="mdc.report.collapseNone()">None</button>
-    <button class="report-toolbar__button" id="report-toolbar__collapse-inverse-button" onclick="mdc.report.collapseBrowsers()">Browsers</button>
+    <button class="report-toolbar__button" onclick="mdc.reportUi.collapseAll()">All</button>
+    <button class="report-toolbar__button" onclick="mdc.reportUi.collapseNone()">None</button>
+    <button class="report-toolbar__button" onclick="mdc.reportUi.collapseImages()">Images</button>
   </div>
 </footer>
+
+<aside class="report-cli-modal" id="report-cli-modal" data-state="closed">
+  <div class="report-cli-modal__window">
+    <div class="report-cli-modal__content">  
+      <textarea class="report-cli-modal__command" id="report-cli-modal__command" readonly></textarea>
+    </div>
+    <div class="report-cli-modal__footer">  
+      <button class="report-cli-modal__button report-cli-modal__button--copy"
+              id="report-cli-modal__button--copy">Copy</button>
+      <button class="report-cli-modal__button report-cli-modal__button--close"
+              id="report-cli-modal__button--close">Close</button>
+    </div>
+  </div>
+</aside>
 `;
     /* eslint-enable max-len */
   }
@@ -589,13 +604,13 @@ on tag
 
     if (htmlFilePath && userAgentAlias) {
       checkboxClassName = 'report-browser__checkbox' + (isVisible ? '' : ' report-browser__checkbox--hidden');
-      eventHandlerJs = 'mdc.report.browserCheckboxChanged(this)';
+      eventHandlerJs = 'mdc.reportUi.browserCheckboxChanged(this)';
     } else if (htmlFilePath) {
       checkboxClassName = 'report-file__checkbox' + (isVisible ? '' : ' report-file__checkbox--hidden');
-      eventHandlerJs = 'mdc.report.fileCheckboxChanged(this)';
+      eventHandlerJs = 'mdc.reportUi.fileCheckboxChanged(this)';
     } else {
       checkboxClassName = 'report-changelist__checkbox' + (isVisible ? '' : ' report-changelist__checkbox--hidden');
-      eventHandlerJs = 'mdc.report.changelistCheckboxChanged(this)';
+      eventHandlerJs = 'mdc.reportUi.changelistCheckboxChanged(this)';
     }
 
     return `

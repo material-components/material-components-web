@@ -15,10 +15,72 @@
  */
 
 window.mdc = window.mdc || {};
-window.mdc.report = window.mdc.report || (() => {
-  class Report {
+
+/** @type {!ReportUi} */
+window.mdc.reportUi = (() => {
+  class ReportUi {
     constructor() {
-      this.updateAll_();
+      this.bindEventListeners_();
+      this.fetchRunReportData_().then((runReport) => {
+        /**
+         * @type {!RunReport}
+         * @private
+         */
+        this.runReport_ = runReport;
+        this.updateAll_();
+      });
+    }
+
+    bindEventListeners_() {
+      this.bindCopyCliCommandEventListener_();
+      this.bindCloseCliCommandEventListener_();
+    }
+
+    bindCopyCliCommandEventListener_() {
+      const copyButtonEl = this.queryOne_('#report-cli-modal__button--copy');
+
+      const clipboard = new ClipboardJS('#report-cli-modal__button--copy', {
+        target: () => this.queryOne_('#report-cli-modal__command'),
+      });
+
+      clipboard.on('success', () => {
+        copyButtonEl.innerText = 'Copied!';
+        setTimeout(() => {
+          copyButtonEl.innerText = 'Copy';
+        }, 2000);
+      });
+
+      clipboard.on('error', (err) => {
+        console.error(err);
+        copyButtonEl.innerText = 'Error!';
+      });
+    }
+
+    bindCloseCliCommandEventListener_() {
+      this.queryOne_('#report-cli-modal__button--close').addEventListener('click', () => {
+        this.closeCliCommandModal_();
+      });
+
+      document.addEventListener('keydown', (evt) => {
+        if (evt.code === 'Escape' || evt.key === 'Escape' || evt.keyCode === 27) {
+          this.closeCliCommandModal_();
+        }
+      });
+    }
+
+    closeCliCommandModal_() {
+      this.queryOne_('#report-cli-modal').dataset.state = 'closed';
+    }
+
+    fetchRunReportData_() {
+      return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.addEventListener('load', () => resolve(JSON.parse(xhr.responseText)));
+        xhr.addEventListener('error', (evt) => reject(evt));
+        xhr.addEventListener('abort', (evt) => reject(evt));
+        xhr.open('GET', './report.json');
+        xhr.send();
+      });
     }
 
     collapseAll() {
@@ -31,7 +93,7 @@ window.mdc.report = window.mdc.report || (() => {
       detailsElems.forEach((detailsElem) => detailsElem.open = true);
     }
 
-    collapseBrowsers() {
+    collapseImages() {
       this.collapseNone();
       const detailsElems = Array.from(document.querySelectorAll('.report-browser'));
       detailsElems.forEach((detailsElem) => detailsElem.open = false);
@@ -100,40 +162,97 @@ window.mdc.report = window.mdc.report || (() => {
     }
 
     approveSelected() {
-      this.queryAll_('.report-browser__checkbox:checked').forEach((cbEl) => {
-        cbEl.dataset.reviewStatus = 'approve';
-        cbEl.closest('.report-browser').dataset.reviewStatus = 'approve';
-        cbEl.parentElement.querySelector('.report-review-status').dataset.reviewStatus = 'approve';
-        cbEl.parentElement.querySelector('.report-review-status').innerText = this.getStatusBadgeText_('approve');
-        cbEl.checked = false;
-      });
-      this.updateAll_();
+      const cbEls = this.queryAll_('.report-browser__checkbox:checked');
+      this.setReviewStatus_(cbEls, 'approve');
+      const report = this.updateAll_();
+      this.showCliCommand_('screenshot:approve', this.getCliCommandArgs_(report));
       setTimeout(() => {
-        window.alert('CLI command copied to clipboard!');
+        this.selectNone();
       });
     }
 
     retrySelected() {
-      this.queryAll_('.report-browser__checkbox:checked').forEach((cbEl) => {
-        cbEl.dataset.reviewStatus = 'retry';
-        cbEl.closest('.report-browser').dataset.reviewStatus = 'retry';
-        cbEl.parentElement.querySelector('.report-review-status').dataset.reviewStatus = 'retry';
-        cbEl.parentElement.querySelector('.report-review-status').innerText = this.getStatusBadgeText_('retry');
-        cbEl.checked = false;
-      });
-      this.updateAll_();
+      const cbEls = this.queryAll_('.report-browser__checkbox:checked');
+      this.setReviewStatus_(cbEls, 'retry');
+      const report = this.updateAll_();
+      this.showCliCommand_('screenshot:retry', this.getCliCommandArgs_(report));
       setTimeout(() => {
-        window.alert('CLI command copied to clipboard!');
+        this.selectNone();
       });
     }
 
-    copyCliCommand() {
+    /**
+     * @param {!Array<!HTMLInputElement>} cbEls
+     * @param {string} reviewStatus
+     * @private
+     */
+    setReviewStatus_(cbEls, reviewStatus) {
+      cbEls.forEach((cbEl) => {
+        cbEl.dataset.reviewStatus = reviewStatus;
+        cbEl.closest('.report-browser').dataset.reviewStatus = reviewStatus;
+        cbEl.parentElement.querySelector('.report-review-status').dataset.reviewStatus = reviewStatus;
+        cbEl.parentElement.querySelector('.report-review-status').innerText = this.getStatusBadgeText_(reviewStatus);
+      });
+    }
 
+    /**
+     * @param {string} npmCommand
+     * @param {!Array<string>} commandArgs
+     * @private
+     */
+    showCliCommand_(npmCommand, commandArgs) {
+      const cliCommandStr = `npm run ${npmCommand} -- ${commandArgs.join(' ')}`;
+      const cliCommandModalEl = this.queryOne_('#report-cli-modal');
+      const cliCommandInputEl = this.queryOne_('#report-cli-modal__command');
+      cliCommandModalEl.dataset.state = 'open';
+      cliCommandInputEl.value = cliCommandStr;
+      cliCommandInputEl.select();
+      setTimeout(() => cliCommandInputEl.focus());
+    }
+
+    /**
+     * @param {!Object} report
+     * @return {!Array<string>}
+     * @private
+     */
+    getCliCommandArgs_(report) {
+      const args = [];
+
+      for (const [changeGroupId, changelist] of Object.entries(report.changelists)) {
+        if (changelist.checkedBrowserCbEls.length === 0) {
+          continue;
+        }
+
+        if (changelist.uncheckedBrowserCbEls.length === 0) {
+          args.push(`--all-${changeGroupId}`);
+          continue;
+        }
+
+        const targets = [];
+
+        for (const [htmlFilePath, page] of Object.entries(changelist.pageMap)) {
+          for (const browserCbEl of page.checkedBrowserCbEls) {
+            targets.push(`${htmlFilePath}:${browserCbEl.dataset.userAgentAlias}`);
+          }
+        }
+
+        args.push(`--${changeGroupId}=${targets.join(',')}`);
+      }
+
+      if (args.length > 0 && args.every((arg) => arg.startsWith('--all-'))) {
+        args.length = 0;
+        args.push('--all');
+      }
+
+      args.push(`--report=${this.runReport_.runResult.publicReportJsonUrl}`);
+
+      return args;
     }
 
     updateAll_() {
       const report = this.updateCounts_();
       this.updateToolbar_(report);
+      return report;
     }
 
     updateCounts_() {
@@ -223,7 +342,6 @@ window.mdc.report = window.mdc.report || (() => {
         changelist.cbEl.checked = hasCheckedBrowsers;
         changelist.cbEl.indeterminate = hasCheckedBrowsers && hasUncheckedBrowsers;
 
-        // TODO(acdvorak)
         const clStatuses = Object.keys(changelist.reviewStatuses);
         changelist.reviewStatusEl.dataset.reviewStatus = clStatuses.length === 1 ? clStatuses[0] : 'mixed';
         changelist.reviewStatusEl.innerText =
@@ -240,7 +358,6 @@ window.mdc.report = window.mdc.report || (() => {
           page.cbEl.checked = hasCheckedBrowsers;
           page.cbEl.indeterminate = hasCheckedBrowsers && hasUncheckedBrowsers;
 
-          // TODO(acdvorak)
           const pageStatuses = Object.keys(page.reviewStatuses);
           page.reviewStatusEl.dataset.reviewStatus = pageStatuses.length === 1 ? pageStatuses[0] : 'mixed';
           page.reviewStatusEl.innerText =
@@ -313,5 +430,5 @@ window.mdc.report = window.mdc.report || (() => {
     }
   }
 
-  return new Report();
+  return new ReportUi();
 })();
