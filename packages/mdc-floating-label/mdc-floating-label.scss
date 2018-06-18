@@ -41,7 +41,7 @@
     white-space: nowrap;
     cursor: text;
     overflow: hidden;
-    // Force the label into its own layer to prevent to prevent visible layer promotion adjustments
+    // Force the label into its own layer to prevent visible layer promotion adjustments
     // when the ripple is activated behind it.
     will-change: transform;
 
