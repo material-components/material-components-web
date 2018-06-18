@@ -66,6 +66,11 @@ class MDCChipFoundation extends MDCFoundation {
   constructor(adapter) {
     super(Object.assign(MDCChipFoundation.defaultAdapter, adapter));
 
+    /**
+     * Whether a trailing icon click should immediately trigger exit/removal of the chip.
+     * @private {boolean}
+     * */
+    this.shouldRemoveOnTrailingIconClick_ = true;
     /** @private {function(!Event): undefined} */
     this.interactionHandler_ = (evt) => this.handleInteraction_(evt);
     /** @private {function(!Event): undefined} */
@@ -110,6 +115,27 @@ class MDCChipFoundation extends MDCFoundation {
     } else {
       this.adapter_.removeClass(cssClasses.SELECTED);
     }
+  }
+
+  /**
+   * @return {boolean}
+   */
+  getShouldRemoveOnTrailingIconClick() {
+    return this.shouldRemoveOnTrailingIconClick_;
+  }
+
+  /**
+   * @param {boolean} shouldRemove
+   */
+  setShouldRemoveOnTrailingIconClick(shouldRemove) {
+    this.shouldRemoveOnTrailingIconClick_ = shouldRemove;
+  }
+
+  /**
+   * Begins the exit animation which leads to removal of the chip.
+   */
+  beginExit() {
+    this.adapter_.addClass(cssClasses.CHIP_EXIT);
   }
 
   /**
@@ -175,7 +201,9 @@ class MDCChipFoundation extends MDCFoundation {
     evt.stopPropagation();
     if (evt.type === 'click' || evt.key === 'Enter' || evt.keyCode === 13) {
       this.adapter_.notifyTrailingIconInteraction();
-      this.adapter_.addClass(cssClasses.CHIP_EXIT);
+      if (this.shouldRemoveOnTrailingIconClick_) {
+        this.beginExit();
+      }
     }
   }
 }

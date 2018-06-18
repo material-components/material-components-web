@@ -46,15 +46,21 @@ class SnapshotStore {
   }
 
   /**
-   * Writes the data to the given `golden.json` file path.
-   * @param {!Array<!UploadableTestCase>} testCases
-   * @param {!Array<!ImageDiffJson>} diffs
+   * @param {!RunReport} runReport
+   * @return {!Promise<string>}
+   */
+  async getSnapshotJsonString(runReport) {
+    const jsonData = await this.getJsonData_(runReport);
+    return stringify(jsonData, {space: '  '}) + '\n';
+  }
+
+  /**
+   * @param {!RunReport} runReport
    * @return {!Promise<void>}
    */
-  async writeToDisk({testCases, diffs}) {
-    const jsonData = await this.getJsonData_({testCases, diffs});
+  async writeToDisk(runReport) {
+    const jsonFileContent = await this.getSnapshotJsonString(runReport);
     const jsonFilePath = this.cliArgs_.goldenPath;
-    const jsonFileContent = stringify(jsonData, {space: '  '}) + '\n';
 
     await fs.writeFile(jsonFilePath, jsonFileContent);
 
@@ -133,36 +139,37 @@ class SnapshotStore {
   }
 
   /**
-   * @param {!Array<!UploadableTestCase>} testCases
-   * @param {!Array<!ImageDiffJson>} diffs
+   * @param {!RunReport} runReport
    * @return {!Promise<!SnapshotSuiteJson>}
    * @private
    */
-  async getJsonData_({testCases, diffs}) {
+  async getJsonData_(runReport) {
     return this.cliArgs_.hasAnyFilters()
-      ? await this.updateFilteredScreenshots_({testCases, diffs})
-      : await this.updateAllScreenshots_({testCases, diffs});
+      ? await this.updateFilteredScreenshots_(runReport)
+      : await this.updateAllScreenshots_(runReport);
   }
 
   /**
-   * @param {!Array<!UploadableTestCase>} testCases
-   * @param {!Array<!ImageDiffJson>} diffs
+   * @param {!RunReport} runReport
    * @return {!Promise<!SnapshotSuiteJson>}
    * @private
    */
-  async updateFilteredScreenshots_({testCases, diffs}) {
+  async updateFilteredScreenshots_(runReport) {
+    const {runnableTestCases} = runReport.runTarget;
+    const {diffs} = runReport.runResult;
     const oldJsonData = await this.fromDiffBase();
-    const newJsonData = await this.fromTestCases(testCases);
+    const newJsonData = await this.fromTestCases(runnableTestCases);
     const jsonData = this.deepCloneJson_(oldJsonData);
 
     diffs.forEach((diff) => {
       const htmlFilePath = diff.htmlFilePath;
       const browserKey = diff.browserKey;
+      const newPage = newJsonData[htmlFilePath];
       if (jsonData[htmlFilePath]) {
-        jsonData[htmlFilePath].publicUrl = newJsonData[htmlFilePath].publicUrl;
-        jsonData[htmlFilePath].screenshots[browserKey] = newJsonData[htmlFilePath].screenshots[browserKey];
+        jsonData[htmlFilePath].publicUrl = newPage.publicUrl;
+        jsonData[htmlFilePath].screenshots[browserKey] = newPage.screenshots[browserKey];
       } else {
-        jsonData[htmlFilePath] = this.deepCloneJson_(newJsonData[htmlFilePath]);
+        jsonData[htmlFilePath] = this.deepCloneJson_(newPage);
       }
     });
 
@@ -170,14 +177,15 @@ class SnapshotStore {
   }
 
   /**
-   * @param {!Array<!UploadableTestCase>} testCases
-   * @param {!Array<!ImageDiffJson>} diffs
+   * @param {!RunReport} runReport
    * @return {!Promise<!SnapshotSuiteJson>}
    * @private
    */
-  async updateAllScreenshots_({testCases, diffs}) {
+  async updateAllScreenshots_(runReport) {
+    const {runnableTestCases} = runReport.runTarget;
+    const {diffs} = runReport.runResult;
     const oldJsonData = await this.fromDiffBase();
-    const newJsonData = await this.fromTestCases(testCases);
+    const newJsonData = await this.fromTestCases(runnableTestCases);
 
     const existsInOldJsonData = ([htmlFilePath]) => htmlFilePath in oldJsonData;
 

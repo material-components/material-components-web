@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,20 +16,12 @@
 
 'use strict';
 
-const Controller = require('./lib/controller');
+const Controller = require('../lib/controller');
 const controller = new Controller();
 
 controller.initialize()
-  .then(() => controller.uploadAllAssets(), handleError)
-  .then((testCases) => controller.captureAllPages(testCases), handleError)
-  .then((testCases) => controller.diffGoldenJson(testCases), handleError)
-  .then(
-    async ({testCases, diffs}) => {
-      await controller.uploadDiffReport({testCases, diffs});
-      await controller.updateGoldenJson({testCases, diffs});
-    },
-    handleError
-  )
+  .then((runReport) => controller.uploadAllAssets(runReport), handleError)
+  .catch(handleError)
 ;
 
 function handleError(err) {

@@ -1,0 +1,159 @@
+//
+// Copyright 2018 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+/*
+ * Global
+ */
+
+// https://www.paulirish.com/2012/box-sizing-border-box-ftw/
+// apply a natural box layout model to all elements, but allowing components to change
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+button,
+input,
+textarea,
+table,
+td,
+th {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/*
+ * Body
+ */
+
+.report-body {
+  font-family: "Roboto Mono", Consolas, monospace;
+  font-size: smaller;
+}
+
+/*
+ * Headings
+ */
+
+.report-metadata__heading,
+.report-changelist__heading,
+.report-file__heading,
+.report-browser__heading {
+  padding: 8px 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.report-metadata__heading:hover,
+.report-changelist__heading:hover,
+.report-file__heading:hover,
+.report-browser__heading:hover {
+  background-color: #ddd;
+}
+
+.report-metadata__heading,
+.report-changelist__heading {
+  margin: 20px 0;
+  font-size: x-large;
+}
+
+/*
+ * Metadata
+ */
+
+.report-metadata__content {
+  padding: 0 24px;
+}
+
+.report-metadata__table {
+  border-collapse: collapse;
+}
+
+.report-metadata__cell {
+  padding: 2px 10px 2px 0;
+  text-align: left;
+  font-weight: normal;
+  vertical-align: top;
+}
+
+.report-metadata__cell--key {
+  font-style: italic;
+  width: 10em;
+}
+
+/*
+ * Changelist
+ */
+
+.report-changelist__heading {
+  margin: 20px 0;
+}
+
+.report-changelist__content {
+  padding: 0 24px;
+}
+
+/*
+ * File
+ */
+
+.report-file {
+  margin-bottom: 20px;
+  border: 1px solid #aaa;
+  border-radius: 3px;
+  background-color: #eee;
+}
+
+.report-file__heading {
+  font-size: larger;
+}
+
+.report-file__content {
+  padding: 0 24px;
+}
+
+/*
+ * Browser
+ */
+
+.report-browser__content {
+  display: flex;
+  padding: 10px 24px;
+}
+
+.report-browser__image-cell {
+  width: calc(33% - 5px);
+}
+
+.report-browser__image-cell + .report-browser__image-cell {
+  margin-left: 5px;
+}
+
+.report-browser__image-link {
+  display: block;
+}
+
+.report-browser__image {
+  max-width: 100%;
+  vertical-align: top;
+}
+
+.report-congrats {
+  color: green;
+  font-size: 3rem;
+}
