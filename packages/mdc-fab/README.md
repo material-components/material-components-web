@@ -115,6 +115,13 @@ Mixin | Description
 
 The ripple effect for the FAB component is styled using [MDC Ripple](../mdc-ripple) mixins.
 
+### Sass Variables
+
+Variable | Description
+--- | ---
+`$mdc-fab-extended-icon-padding` | The gutter space around the Extended FAB icon. The left & right padding of the icon is always the same.
+`$mdc-fab-extended-label-padding` | Label side padding for Extended FAB. This padding size will be applied to both sides when Extended FAB is rendered without icon.
+
 #### Caveat: Edge and CSS Variables
 
 In browsers that fully support CSS custom properties, the above mixins will work if you pass in a [MDC Theme](../mdc-theme) property (e.g. `primary`) as an argument. However, Edge does not fully support CSS custom properties. If you are using the `mdc-fab-container-color` mixin, you must pass in an actual color value for support in Edge.
