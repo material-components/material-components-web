@@ -51,6 +51,7 @@ npm install @material/icon-button
 ```scss
 @import "@material/icon-button/mdc-icon-button";
 ```
+
 ### JavaScript Instantiation
 
 The icon button will work without JavaScript, but you can enhance it to have a ripple effect by instantiating `MDCRipple` on the root element.
@@ -81,7 +82,7 @@ The icon button can be used to toggle between an on and off icon. To style an ic
    data-toggle-on-content="favorite"
    data-toggle-on-label="Remove from favorites"
    data-toggle-off-content="favorite_border"
-   data-toggle-off-label="Add to favorites">favorites_border</button>
+   data-toggle-off-label="Add to favorites">favorite_border</button>
 ```
 
 ```js
@@ -100,6 +101,22 @@ Attribute | Description
 `data-toggle-<TOGGLE STATE>-label` | The value to apply to the element's "aria-label" attribute.
 `data-toggle-<TOGGLE STATE>-content` | The text content to set on the element. Note that if an inner icon is used, the text content will be set on that element instead.
 `data-toggle-<TOGGLE STATE>-class` | A CSS class to apply to the icon element. The same rules regarding inner icon elements described for `content` apply here as well.
+
+#### Icon Button Toggle with Font Awesome
+
+The icon button toggle can be used with other font libraries such as Font Awesome. 
+
+```html
+<button id="star-this-item"
+   class="mdc-icon-button"
+   aria-label="Star this item"
+   aria-hidden="true"
+   aria-pressed="true"
+   data-toggle-on-class="fa-star"
+   data-toggle-on-label="Remove star"
+   data-toggle-off-class="fa-star-o"
+   data-toggle-off-label="Star this item"><i class="fa fa-2x fa-star"></i></button>
+```
 
 ### Icons
 
