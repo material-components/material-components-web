@@ -119,16 +119,16 @@ class SnapshotStore {
   }
 
   /**
-   * @param {!RunReport} runReport
+   * @param {!RunReport} fullRunReport
    * @return {!Promise<!SnapshotSuiteJson>}
    */
-  async fromApproval(runReport) {
-    const approvedRunReport = this.filterReportForApproval_(runReport);
+  async fromApproval(fullRunReport) {
+    const approvedRunReport = this.filterReportForApproval_(fullRunReport);
 
     // Update the user's local `golden.json` file in-place.
     const newGolden = this.deepCloneJson_(await this.fromDiffBase(this.cliArgs_.goldenPath));
 
-    runReport.runResult.diffs.forEach((diff) => {
+    approvedRunReport.runResult.diffs.forEach((diff) => {
       newGolden[diff.htmlFilePath] = newGolden[diff.htmlFilePath] || {
         publicUrl: diff.snapshotPageUrl,
         screenshots: {},
@@ -137,7 +137,7 @@ class SnapshotStore {
       newGolden[diff.htmlFilePath].screenshots[diff.userAgentAlias] = diff.actualImageUrl;
     });
 
-    runReport.runResult.added.forEach((diff) => {
+    approvedRunReport.runResult.added.forEach((diff) => {
       newGolden[diff.htmlFilePath] = newGolden[diff.htmlFilePath] || {
         publicUrl: diff.snapshotPageUrl,
         screenshots: {},
@@ -146,7 +146,7 @@ class SnapshotStore {
       newGolden[diff.htmlFilePath].screenshots[diff.userAgentAlias] = diff.actualImageUrl;
     });
 
-    runReport.runResult.removed.forEach((diff) => {
+    approvedRunReport.runResult.removed.forEach((diff) => {
       if (!newGolden[diff.htmlFilePath]) {
         return;
       }
@@ -156,50 +156,48 @@ class SnapshotStore {
       }
     });
 
-    approvedRunReport.runResult.approvedGoldenJsonData = newGolden;
-
     return newGolden;
   }
 
   /**
-   * @param {!RunReport} runReport
+   * @param {!RunReport} fullRunReport
    * @return {!RunReport}
    */
-  filterReportForApproval_(runReport) {
-    const approvedRunReport = this.deepCloneJson_(runReport);
+  filterReportForApproval_(fullRunReport) {
+    const approvedRunReport = this.deepCloneJson_(fullRunReport);
 
     if (this.cliArgs_.all) {
       return approvedRunReport;
     }
 
     if (!this.cliArgs_.allDiffs) {
-      runReport.runResult.diffs = runReport.runResult.diffs.filter((diff) => {
+      approvedRunReport.runResult.diffs = approvedRunReport.runResult.diffs.filter((diff) => {
         // TODO(acdvorak): Document the ':' separator format
         const isApproved = this.cliArgs_.diffs.has(`${diff.htmlFilePath}:${diff.userAgentAlias}`);
         if (!isApproved) {
-          runReport.runResult.skipped.push(diff);
+          approvedRunReport.runResult.skipped.push(diff);
         }
         return isApproved;
       });
     }
 
     if (!this.cliArgs_.allAdded) {
-      runReport.runResult.added = runReport.runResult.added.filter((diff) => {
+      approvedRunReport.runResult.added = approvedRunReport.runResult.added.filter((diff) => {
         // TODO(acdvorak): Document the ':' separator format
         const isApproved = this.cliArgs_.added.has(`${diff.htmlFilePath}:${diff.userAgentAlias}`);
         if (!isApproved) {
-          runReport.runResult.skipped.push(diff);
+          approvedRunReport.runResult.skipped.push(diff);
         }
         return isApproved;
       });
     }
 
     if (!this.cliArgs_.allRemoved) {
-      runReport.runResult.removed = runReport.runResult.removed.filter((diff) => {
+      approvedRunReport.runResult.removed = approvedRunReport.runResult.removed.filter((diff) => {
         // TODO(acdvorak): Document the ':' separator format
         const isApproved = this.cliArgs_.removed.has(`${diff.htmlFilePath}:${diff.userAgentAlias}`);
         if (!isApproved) {
-          runReport.runResult.skipped.push(diff);
+          approvedRunReport.runResult.skipped.push(diff);
         }
         return isApproved;
       });
