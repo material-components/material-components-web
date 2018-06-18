@@ -33,7 +33,7 @@ const cssClasses = {
   DENSE: 'mdc-text-field--dense',
   FOCUSED: 'mdc-text-field--focused',
   INVALID: 'mdc-text-field--invalid',
-  BOX: 'mdc-text-field--box',
+  TEXTAREA: 'mdc-text-field--textarea',
   OUTLINED: 'mdc-text-field--outlined',
 };
 
