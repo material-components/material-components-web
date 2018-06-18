@@ -79,6 +79,7 @@ Mixin | Description
 `mdc-floating-label-shake-keyframes($modifier, $positionY, $positionX, $scale)` | Generates a CSS `@keyframes` at-rule for an invalid label shake. Used in conjunction with the `mdc-floating-label-shake-animation` mixin.
 `mdc-floating-label-shake-animation($modifier)` | Applies shake keyframe animation to label.
 `mdc-floating-label-float-position($positionY, $positionX, $scale)` | Sets position of label when floating.
+`mdc-floating-label-width($width))` | Sets the width of the label.
 
 ## `MDCFloatingLabel` Properties and Methods
 
