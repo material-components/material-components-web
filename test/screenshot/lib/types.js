@@ -36,6 +36,7 @@ let RunReport;
  *   skippedUserAgents: !Array<!CbtUserAgent>,
  *   runnableTestCases: !Array<!UploadableTestCase>,
  *   skippedTestCases: !Array<!UploadableTestCase>,
+ *   baseGoldenJsonData: !SnapshotSuiteJson,
  * }}
  */
 let RunTarget;
@@ -50,6 +51,7 @@ let RunTarget;
  *   removed: !Array<!ImageDiffJson>,
  *   unchanged: !Array<!ImageDiffJson>,
  *   skipped: !Array<!ImageDiffJson>,
+ *   approvedGoldenJsonData: ?SnapshotSuiteJson,
  * }}
  */
 let RunResult;

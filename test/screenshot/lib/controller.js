@@ -19,6 +19,7 @@
 const childProcess = require('child_process');
 const fs = require('mz/fs');
 const path = require('path');
+const request = require('request-promise-native');
 
 const CbtUserAgent = require('./cbt-user-agent');
 const CloudStorage = require('./cloud-storage');
@@ -101,7 +102,7 @@ class Controller {
   /**
    * @return {!Promise<!RunReport>}
    */
-  async initialize() {
+  async initForTest() {
     this.baseUploadDir_ = await this.cloudStorage_.generateUniqueUploadDir();
 
     await this.gitRepo_.fetch();
@@ -114,6 +115,19 @@ class Controller {
       runTarget: await this.getRunTarget_(),
       runResult: null,
     };
+  }
+
+  async initForApproval() {
+    /** @type {!RunReport} */
+    const runReport = await request({
+      method: 'GET',
+      uri: this.cliArgs_.runReportUrl,
+      json: true, // Automatically stringify the request body and parse the response body as JSON
+    });
+
+    runReport.runResult.approvedGoldenJsonData = this.snapshotStore_.fromApproval(runReport);
+
+    return runReport;
   }
 
   /**
@@ -146,11 +160,14 @@ class Controller {
       );
     }
 
+    const baseGoldenJsonData = await this.snapshotStore_.fromDiffBase();
+
     return {
       runnableUserAgents,
       skippedUserAgents,
       runnableTestCases,
       skippedTestCases,
+      baseGoldenJsonData,
     };
   }
 

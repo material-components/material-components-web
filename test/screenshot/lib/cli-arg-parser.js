@@ -160,6 +160,69 @@ Name of the Google Cloud Storage bucket to use for public file uploads.
       }
     );
 
+    this.parser_.addArgument(
+      ['--report'],
+      {
+        help: 'TODO(acdvorak)'.trim(),
+      }
+    );
+
+    this.parser_.addArgument(
+      ['--diffs'],
+      {
+        action: 'append', // Argument may be passed multiple times. Transformed into an array of strings.
+        help: 'TODO(acdvorak)'.trim(),
+      }
+    );
+
+    this.parser_.addArgument(
+      ['--added'],
+      {
+        action: 'append', // Argument may be passed multiple times. Transformed into an array of strings.
+        help: 'TODO(acdvorak)'.trim(),
+      }
+    );
+
+    this.parser_.addArgument(
+      ['--removed'],
+      {
+        action: 'append', // Argument may be passed multiple times. Transformed into an array of strings.
+        help: 'TODO(acdvorak)'.trim(),
+      }
+    );
+
+    this.parser_.addArgument(
+      ['--all-diffs'],
+      {
+        action: 'storeTrue', // Boolean value. `true` if argument is present, or `false` if omitted.
+        help: 'TODO(acdvorak)'.trim(),
+      }
+    );
+
+    this.parser_.addArgument(
+      ['--all-added'],
+      {
+        action: 'storeTrue', // Boolean value. `true` if argument is present, or `false` if omitted.
+        help: 'TODO(acdvorak)'.trim(),
+      }
+    );
+
+    this.parser_.addArgument(
+      ['--all-removed'],
+      {
+        action: 'storeTrue', // Boolean value. `true` if argument is present, or `false` if omitted.
+        help: 'TODO(acdvorak)'.trim(),
+      }
+    );
+
+    this.parser_.addArgument(
+      ['--all'],
+      {
+        action: 'storeTrue', // Boolean value. `true` if argument is present, or `false` if omitted.
+        help: 'TODO(acdvorak)'.trim(),
+      }
+    );
+
     this.args_ = this.parser_.parseArgs();
   }
 
@@ -212,6 +275,46 @@ Name of the Google Cloud Storage bucket to use for public file uploads.
   /** @return {string} */
   get gcsBaseUrl() {
     return `https://storage.googleapis.com/${this.gcsBucket}/`;
+  }
+
+  /** @return {string} */
+  get runReportUrl() {
+    return this.args_['report'];
+  }
+
+  /** @return {!Set<string>} */
+  get diffs() {
+    return new Set([].concat(...this.args_['diffs'].map((value) => value.split(','))));
+  }
+
+  /** @return {!Set<string>} */
+  get added() {
+    return new Set([].concat(...this.args_['added'].map((value) => value.split(','))));
+  }
+
+  /** @return {!Set<string>} */
+  get removed() {
+    return new Set([].concat(...this.args_['removed'].map((value) => value.split(','))));
+  }
+
+  /** @return {boolean} */
+  get all() {
+    return this.args_['all'];
+  }
+
+  /** @return {boolean} */
+  get allDiffs() {
+    return this.args_['all_diffs'];
+  }
+
+  /** @return {boolean} */
+  get allAdded() {
+    return this.args_['all_added'];
+  }
+
+  /** @return {boolean} */
+  get allRemoved() {
+    return this.args_['all_removed'];
   }
 
   /**

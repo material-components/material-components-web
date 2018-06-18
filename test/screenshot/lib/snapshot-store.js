@@ -46,28 +46,6 @@ class SnapshotStore {
   }
 
   /**
-   * @param {!RunReport} runReport
-   * @return {!Promise<string>}
-   */
-  async getSnapshotJsonString(runReport) {
-    const jsonData = await this.getJsonData_(runReport);
-    return stringify(jsonData, {space: '  '}) + '\n';
-  }
-
-  /**
-   * @param {!RunReport} runReport
-   * @return {!Promise<void>}
-   */
-  async writeToDisk(runReport) {
-    const jsonFileContent = await this.getSnapshotJsonString(runReport);
-    const jsonFilePath = this.cliArgs_.goldenPath;
-
-    await fs.writeFile(jsonFilePath, jsonFileContent);
-
-    console.log(`\n\nDONE updating "${jsonFilePath}"!\n\n`);
-  }
-
-  /**
    * Parses the `golden.json` file specified by the `--mdc-diff-base` CLI arg.
    * @return {!Promise<!SnapshotSuiteJson>}
    */
@@ -78,34 +56,6 @@ class SnapshotStore {
 
     // Deep-clone the cached object to avoid accidental mutation of shared state
     return this.deepCloneJson_(this.cachedGoldenJsonFromDiffBase_);
-  }
-
-  /**
-   * Transforms the given test cases into `golden.json` format.
-   * @param {!Array<!UploadableTestCase>} testCases
-   * @return {!Promise<!SnapshotSuiteJson>}
-   */
-  async fromTestCases(testCases) {
-    const jsonData = {};
-
-    testCases.forEach((testCase) => {
-      const htmlFileKey = testCase.htmlFile.destinationRelativeFilePath;
-      const htmlFileUrl = testCase.htmlFile.publicUrl;
-
-      jsonData[htmlFileKey] = {
-        publicUrl: htmlFileUrl,
-        screenshots: {},
-      };
-
-      testCase.screenshotImageFiles.forEach((screenshotImageFile) => {
-        const screenshotKey = screenshotImageFile.userAgent.alias;
-        const screenshotUrl = screenshotImageFile.publicUrl;
-
-        jsonData[htmlFileKey].screenshots[screenshotKey] = screenshotUrl;
-      });
-    });
-
-    return jsonData;
   }
 
   /**
@@ -139,38 +89,28 @@ class SnapshotStore {
   }
 
   /**
-   * @param {!RunReport} runReport
+   * Transforms the given test cases into `golden.json` format.
+   * @param {!Array<!UploadableTestCase>} testCases
    * @return {!Promise<!SnapshotSuiteJson>}
-   * @private
    */
-  async getJsonData_(runReport) {
-    return this.cliArgs_.hasAnyFilters()
-      ? await this.updateFilteredScreenshots_(runReport)
-      : await this.updateAllScreenshots_(runReport);
-  }
+  async fromTestCases(testCases) {
+    const jsonData = {};
 
-  /**
-   * @param {!RunReport} runReport
-   * @return {!Promise<!SnapshotSuiteJson>}
-   * @private
-   */
-  async updateFilteredScreenshots_(runReport) {
-    const {runnableTestCases} = runReport.runTarget;
-    const {diffs} = runReport.runResult;
-    const oldJsonData = await this.fromDiffBase();
-    const newJsonData = await this.fromTestCases(runnableTestCases);
-    const jsonData = this.deepCloneJson_(oldJsonData);
+    testCases.forEach((testCase) => {
+      const htmlFileKey = testCase.htmlFile.destinationRelativeFilePath;
+      const htmlFileUrl = testCase.htmlFile.publicUrl;
 
-    diffs.forEach((diff) => {
-      const htmlFilePath = diff.htmlFilePath;
-      const browserKey = diff.browserKey;
-      const newPage = newJsonData[htmlFilePath];
-      if (jsonData[htmlFilePath]) {
-        jsonData[htmlFilePath].publicUrl = newPage.publicUrl;
-        jsonData[htmlFilePath].screenshots[browserKey] = newPage.screenshots[browserKey];
-      } else {
-        jsonData[htmlFilePath] = this.deepCloneJson_(newPage);
-      }
+      jsonData[htmlFileKey] = {
+        publicUrl: htmlFileUrl,
+        screenshots: {},
+      };
+
+      testCase.screenshotImageFiles.forEach((screenshotImageFile) => {
+        const screenshotKey = screenshotImageFile.userAgent.alias;
+        const screenshotUrl = screenshotImageFile.publicUrl;
+
+        jsonData[htmlFileKey].screenshots[screenshotKey] = screenshotUrl;
+      });
     });
 
     return jsonData;
@@ -178,46 +118,128 @@ class SnapshotStore {
 
   /**
    * @param {!RunReport} runReport
-   * @return {!Promise<!SnapshotSuiteJson>}
-   * @private
+   * @return {!SnapshotSuiteJson}
    */
-  async updateAllScreenshots_(runReport) {
-    const {runnableTestCases} = runReport.runTarget;
-    const {diffs} = runReport.runResult;
-    const oldJsonData = await this.fromDiffBase();
-    const newJsonData = await this.fromTestCases(runnableTestCases);
+  fromApproval(runReport) {
+    const approvedRunReport = this.filterReportForApproval_(runReport);
 
-    const existsInOldJsonData = ([htmlFilePath]) => htmlFilePath in oldJsonData;
+    const newGolden = this.deepCloneJson_(approvedRunReport.runTarget.baseGoldenJsonData);
 
-    /** @type {!Array<[string, !SnapshotPageJson]>} */
-    const newMatchingPageEntries = Object.entries(newJsonData).filter(existsInOldJsonData);
+    runReport.runResult.diffs.forEach((diff) => {
+      newGolden[diff.htmlFilePath].publicUrl = diff.snapshotPageUrl;
+      newGolden[diff.htmlFilePath].screenshots[diff.userAgentAlias] = diff.actualImageUrl;
+    });
 
-    // TODO(acdvorak): Refactor this method for clarity. See
-    // https://github.com/material-components/material-components-web/pull/2777#discussion_r190439992
-    for (const [htmlFilePath, newPage] of newMatchingPageEntries) {
-      let pageHasDiffs = false;
+    runReport.runResult.added.forEach((diff) => {
+      newGolden[diff.htmlFilePath] = newGolden[diff.htmlFilePath] || {
+        publicUrl: diff.snapshotPageUrl,
+        screenshots: {},
+      };
+      newGolden[diff.htmlFilePath].publicUrl = diff.snapshotPageUrl;
+      newGolden[diff.htmlFilePath].screenshots[diff.userAgentAlias] = diff.actualImageUrl;
+    });
 
-      for (const browserKey of Object.keys(newPage.screenshots)) {
-        const oldUrl = oldJsonData[htmlFilePath].screenshots[browserKey];
-        const screenshotHasDiff = diffs.find((diff) => {
-          return diff.htmlFilePath === htmlFilePath && diff.browserKey === browserKey;
-        });
-
-        if (oldUrl && !screenshotHasDiff) {
-          newPage.screenshots[browserKey] = oldUrl;
-        }
-
-        if (screenshotHasDiff) {
-          pageHasDiffs = true;
-        }
+    runReport.runResult.removed.forEach((diff) => {
+      delete newGolden[diff.htmlFilePath].screenshots[diff.userAgentAlias];
+      if (newGolden[diff.htmlFilePath].screenshots.length === 0) {
+        delete newGolden[diff.htmlFilePath];
       }
+    });
 
-      if (!pageHasDiffs) {
-        newPage.publicUrl = oldJsonData[htmlFilePath].publicUrl;
-      }
+    // TODO(acdvorak): Is this necessary?
+    approvedRunReport.runResult.approvedGoldenJsonData = newGolden;
+
+    return newGolden;
+  }
+
+  /**
+   * @param {!RunReport} runReport
+   * @return {!RunReport}
+   */
+  filterReportForApproval_(runReport) {
+    const approvedRunReport = this.deepCloneJson_(runReport);
+
+    if (this.cliArgs_.all) {
+      return approvedRunReport;
     }
 
-    return newJsonData;
+    if (!this.cliArgs_.allDiffs) {
+      runReport.runResult.diffs = runReport.runResult.diffs.filter((diff) => {
+        // TODO(acdvorak): Document the ':' separator format
+        const isApproved = this.cliArgs_.diffs.has(`${diff.htmlFilePath}:${diff.userAgentAlias}`);
+        if (!isApproved) {
+          runReport.runResult.skipped.push(diff);
+        }
+        return isApproved;
+      });
+    }
+
+    if (!this.cliArgs_.allAdded) {
+      runReport.runResult.added = runReport.runResult.added.filter((diff) => {
+        // TODO(acdvorak): Document the ':' separator format
+        const isApproved = this.cliArgs_.added.has(`${diff.htmlFilePath}:${diff.userAgentAlias}`);
+        if (!isApproved) {
+          runReport.runResult.skipped.push(diff);
+        }
+        return isApproved;
+      });
+    }
+
+    if (!this.cliArgs_.allRemoved) {
+      runReport.runResult.removed = runReport.runResult.removed.filter((diff) => {
+        // TODO(acdvorak): Document the ':' separator format
+        const isApproved = this.cliArgs_.removed.has(`${diff.htmlFilePath}:${diff.userAgentAlias}`);
+        if (!isApproved) {
+          runReport.runResult.skipped.push(diff);
+        }
+        return isApproved;
+      });
+    }
+
+    return approvedRunReport;
+  }
+
+  /**
+   * @param {!RunReport} runReport
+   * @return {!Promise<string>}
+   */
+  async getSnapshotJsonString(runReport) {
+    /** @type {!SnapshotSuiteJson} */
+    const snapshot = this.deepCloneJson_(runReport.runTarget.baseGoldenJsonData);
+
+    runReport.runResult.diffs.forEach((diff) => {
+      snapshot[diff.htmlFilePath].screenshots[diff.userAgentAlias] = diff.actualImageUrl;
+    });
+
+    runReport.runResult.added.forEach((diff) => {
+      snapshot[diff.htmlFilePath] = snapshot[diff.htmlFilePath] || {
+        publicUrl: diff.snapshotPageUrl,
+        screenshots: {},
+      };
+      snapshot[diff.htmlFilePath].screenshots[diff.userAgentAlias] = diff.actualImageUrl;
+    });
+
+    runReport.runResult.removed.forEach((diff) => {
+      delete snapshot[diff.htmlFilePath].screenshots[diff.userAgentAlias];
+      if (Object.keys(snapshot[diff.htmlFilePath].screenshots).length === 0) {
+        delete snapshot[diff.htmlFilePath];
+      }
+    });
+
+    return stringify(snapshot, {space: '  '}) + '\n';
+  }
+
+  /**
+   * @param {!RunReport} runReport
+   * @return {!Promise<void>}
+   */
+  async writeToDisk(runReport) {
+    const jsonFileContent = await this.getSnapshotJsonString(runReport);
+    const jsonFilePath = this.cliArgs_.goldenPath;
+
+    await fs.writeFile(jsonFilePath, jsonFileContent);
+
+    console.log(`\n\nDONE updating "${jsonFilePath}"!\n\n`);
   }
 
   /**
