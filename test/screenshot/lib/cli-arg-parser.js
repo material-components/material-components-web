@@ -316,15 +316,6 @@ The default behavior is to always build assets before running the tests.
     return this.parseApprovedChangeTargets_(this.args_['removed']);
   }
 
-  /**
-   * @param {!Array<string>} list
-   * @return {!Set<string>}
-   */
-  parseApprovedChangeTargets_(list) {
-    list = list || [];
-    return new Set([].concat(...list.map((value) => value.split(','))));
-  }
-
   /** @return {boolean} */
   get allDiffs() {
     return this.args_['all_diffs'];
@@ -343,6 +334,16 @@ The default behavior is to always build assets before running the tests.
   /** @return {boolean} */
   get all() {
     return this.args_['all'];
+  }
+
+  /**
+   * @param {!Array<string>} list
+   * @return {!Set<string>}
+   * @private
+   */
+  parseApprovedChangeTargets_(list) {
+    list = list || [];
+    return new Set([].concat(...list.map((value) => value.split(','))));
   }
 
   /**
