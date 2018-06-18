@@ -285,10 +285,12 @@ let CbtDevice;
  *   version: string,
  *   type: string,
  *   device: string,
+ *   icon_class: string,
  *   selenium_version: string,
  *   webdriver_type: string,
  *   webdriver_version: string,
  *   parsedVersionNumber: ?string,
+ *   parsedIconUrl: ?string,
  * }}
  */
 let CbtBrowser;

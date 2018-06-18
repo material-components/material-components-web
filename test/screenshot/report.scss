@@ -139,6 +139,12 @@ th {
  * Browser
  */
 
+.report-browser__icon {
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+}
+
 .report-browser__content {
   display: flex;
   padding: 10px 24px;

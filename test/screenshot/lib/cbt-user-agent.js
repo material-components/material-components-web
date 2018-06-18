@@ -212,6 +212,28 @@ function findOneMatchingUA(userAgentAlias, cbtDevices) {
 }
 
 /**
+ * @param {!CbtBrowser} browser
+ * @return {?string}
+ */
+function getIconUrl(browser) {
+  if (browser.device === 'desktop') {
+    if (browser.icon_class === 'chrome') {
+      return 'https://cdnjs.cloudflare.com/ajax/libs/browser-logos/45.8.0/chrome/chrome.svg';
+    }
+    if (browser.icon_class === 'firefox') {
+      return 'https://cdnjs.cloudflare.com/ajax/libs/browser-logos/45.8.0/firefox/firefox.svg';
+    }
+    if (browser.icon_class === 'edge') {
+      return 'https://cdnjs.cloudflare.com/ajax/libs/browser-logos/45.8.0/edge/edge.svg';
+    }
+    if (browser.icon_class === 'ie') {
+      return 'https://cdnjs.cloudflare.com/ajax/libs/browser-logos/45.8.0/archive/internet-explorer_9-11/internet-explorer_9-11.svg';
+    }
+  }
+  return null;
+}
+
+/**
  * Mutates `devices` in-place by removing browsers that do not match the given filter.
  * @param {!Array<!CbtDevice>} devices
  * @param {function(browser: !CbtBrowser): boolean} browserNameFilter
@@ -223,6 +245,7 @@ function filterBrowsersByName(devices, browserNameFilter) {
       .filter(browserNameFilter)
       .map((browser) => {
         browser.parsedVersionNumber = parseVersionNumber(browser.version).join('.');
+        browser.parsedIconUrl = getIconUrl(browser);
         return browser;
       })
       .sort(compareDeviceOrBrowserDisplayOrder)

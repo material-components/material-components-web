@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+const CbtUserAgent = require('./cbt-user-agent');
 const GitRepo = require('./git-repo');
 const CliArgParser = require('./cli-arg-parser');
 const childProcess = require('mz/child_process');
@@ -102,6 +103,12 @@ class ReportGenerator {
     const numRemoved = runResult.removed.length;
     const numUnchanged = runResult.unchanged.length;
     const numSkipped = runResult.skipped.length;
+
+    this.iconUrlMap_ = {};
+    const allUserAgents = (await CbtUserAgent.fetchUserAgents()).allUserAgents;
+    for (const userAgent of allUserAgents) {
+      this.iconUrlMap_[userAgent.alias] = userAgent.browser.parsedIconUrl;
+    }
 
     const title = [
       `${numDiffs} Diff${numDiffs !== 1 ? 's' : ''}`,
@@ -505,6 +512,7 @@ on tag
 >
   <summary class="report-browser__heading">
     ${this.getCheckboxMarkup_({changeGroupId, htmlFilePath, userAgentAlias, isCheckable, numScreenshots: 1})}
+    <img src="${this.iconUrlMap_[userAgentAlias]}" class="report-browser__icon">
     ${diff.userAgentAlias}
     ${this.getReviewStatusMarkup_({changeGroupId, htmlFilePath, userAgentAlias, isCheckable, numScreenshots: 1})}
   </summary>

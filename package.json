@@ -50,6 +50,7 @@
     "babel-types": "^6.24.1",
     "babylon": "^6.16.1",
     "bel": "^6.0.0",
+    "browser-logos": "github:alrra/browser-logos#45.8.0",
     "camel-case": "^3.0.0",
     "chai": "^4.0.2",
     "cli-table": "^0.3.1",
