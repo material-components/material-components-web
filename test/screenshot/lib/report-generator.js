@@ -504,6 +504,7 @@ on tag
    */
   getDiffRowMarkup_({diff, changeGroupId, htmlFilePath, isCheckable}) {
     const {userAgentAlias} = diff;
+    const browserIconUrl = this.iconUrlMap_[userAgentAlias];
     return `
 <details class="report-browser" open
   data-change-group-id="${changeGroupId}"
@@ -512,7 +513,7 @@ on tag
 >
   <summary class="report-browser__heading">
     ${this.getCheckboxMarkup_({changeGroupId, htmlFilePath, userAgentAlias, isCheckable, numScreenshots: 1})}
-    <img src="${this.iconUrlMap_[userAgentAlias]}" class="report-browser__icon">
+    <img src="${browserIconUrl}" class="report-browser__icon">
     ${diff.userAgentAlias}
     ${this.getReviewStatusMarkup_({changeGroupId, htmlFilePath, userAgentAlias, isCheckable, numScreenshots: 1})}
   </summary>
