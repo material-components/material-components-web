@@ -70,6 +70,7 @@ window.mdc.reportUi = (() => {
 
     closeCliCommandModal_() {
       this.queryOne_('#report-cli-modal').dataset.state = 'closed';
+      this.selectNone();
     }
 
     fetchRunReportData_() {
@@ -165,20 +166,14 @@ window.mdc.reportUi = (() => {
       const cbEls = this.queryAll_('.report-browser__checkbox:checked');
       this.setReviewStatus_(cbEls, 'approve');
       const report = this.updateAll_();
-      this.showCliCommand_('screenshot:approve', this.getCliCommandArgs_(report));
-      setTimeout(() => {
-        this.selectNone();
-      });
+      this.showCliCommand_('screenshot:approve', this.getApproveCommandArgs_(report));
     }
 
     retrySelected() {
       const cbEls = this.queryAll_('.report-browser__checkbox:checked');
       this.setReviewStatus_(cbEls, 'retry');
       const report = this.updateAll_();
-      this.showCliCommand_('screenshot:retry', this.getCliCommandArgs_(report));
-      setTimeout(() => {
-        this.selectNone();
-      });
+      this.showCliCommand_('screenshot:test', this.getRetryCommandArgs_(report));
     }
 
     /**
@@ -215,7 +210,7 @@ window.mdc.reportUi = (() => {
      * @return {!Array<string>}
      * @private
      */
-    getCliCommandArgs_(report) {
+    getApproveCommandArgs_(report) {
       const args = [];
 
       for (const [changeGroupId, changelist] of Object.entries(report.changelists)) {
@@ -247,6 +242,26 @@ window.mdc.reportUi = (() => {
       args.push(`--report=${this.runReport_.runResult.publicReportJsonUrl}`);
 
       return args;
+    }
+
+    /**
+     * @param {!Object} report
+     * @return {!Array<string>}
+     * @private
+     */
+    getRetryCommandArgs_(report) {
+      const htmlFilePathSet = new Set();
+      const userAgentAliasSet = new Set();
+
+      for (const browserCbEl of report.checkedBrowserCbEls) {
+        htmlFilePathSet.add(browserCbEl.dataset.htmlFilePath);
+        userAgentAliasSet.add(browserCbEl.dataset.userAgentAlias);
+      }
+
+      return [
+        ...Array.from(htmlFilePathSet.values()).map((htmlFilePath) => `--mdc-include=url=${htmlFilePath}`),
+        ...Array.from(userAgentAliasSet.values()).map((userAgentAlias) => `--mdc-include=browser=${userAgentAlias}`),
+      ];
     }
 
     updateAll_() {

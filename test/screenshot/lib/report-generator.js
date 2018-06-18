@@ -571,6 +571,9 @@ on tag
 
 <aside class="report-cli-modal" id="report-cli-modal" data-state="closed">
   <div class="report-cli-modal__window">
+    <div class="report-cli-modal__title">
+      CLI Command
+    </div>
     <div class="report-cli-modal__content">  
       <textarea class="report-cli-modal__command" id="report-cli-modal__command" readonly></textarea>
     </div>
