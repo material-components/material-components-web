@@ -111,9 +111,7 @@ class MDCMenuSurface extends MDCComponent {
         registerBodyClickHandler: (handler) => document.body.addEventListener('click', handler),
         deregisterBodyClickHandler: (handler) => document.body.removeEventListener('click', handler),
         notifyClose: () => this.emit(MDCMenuSurfaceFoundation.strings.CLOSE_EVENT, {}),
-        isElementInContainer: (el) => {
-          return (this.root_ === el) ? true : this.root_.contains(el);
-        },
+        isElementInContainer: (el) => this.root_ === el || this.root_.contains(el),
         isRtl: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
         setTransformOrigin: (origin) => {
           this.root_.style[`${getTransformPropertyName(window)}-origin`] = origin;

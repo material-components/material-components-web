@@ -17,6 +17,7 @@
 @import "@material/animation/variables";
 @import "@material/elevation/mixins";
 @import "@material/theme/mixins";
+@import "@material/rtl/mixins";
 @import "./mixins";
 
 $mdc-menu-surface-fade-in-duration: .03s;
@@ -28,6 +29,7 @@ $mdc-menu-surface-scale-duration: .12s;
   @include mdc-elevation(2);
   @include mdc-menu-surface-fill-color(surface);
   @include mdc-menu-surface-ink-color(on-surface);
+  @include mdc-rtl-reflexive-property(transform-origin, top left, top right);
 
   display: none;
   position: absolute;
@@ -70,11 +72,6 @@ $mdc-menu-surface-scale-duration: .12s;
     transition: opacity $mdc-menu-surface-fade-out-duration linear;
     opacity: 0;
     overflow-y: hidden;
-  }
-
-  // stylelint-disable-next-line plugin/selector-bem-pattern
-  [dir="rtl"] & {
-    transform-origin: top right;
   }
 }
 
