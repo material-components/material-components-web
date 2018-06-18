@@ -71,6 +71,66 @@ let ImageDiffJson;
 
 
 /*
+ * Report UI
+ */
+
+
+/**
+ * @typedef {{
+ *   checkedBrowserCbEls: !Array<!HTMLInputElement>,
+ *   uncheckedBrowserCbEls: !Array<!HTMLInputElement>,
+ *   changelistDict: !ReportUiChangelistDict,
+ *   reviewStatusCountDict: !ReportUiReviewStatusCountDict,
+ * }}
+ */
+let ReportUiState;
+
+/**
+ * @typedef {{
+ *   diffs: !ReportUiChangelistState,
+ *   added: !ReportUiChangelistState,
+ *   removed: !ReportUiChangelistState,
+ * }}
+ */
+let ReportUiChangelistDict;
+
+/**
+ * @typedef {{
+ *   cbEl: !HTMLInputElement,
+ *   countEl: !HTMLElement,
+ *   reviewStatusEl: !HTMLElement,
+ *   checkedBrowserCbEls: !Array<!HTMLInputElement>,
+ *   uncheckedBrowserCbEls: !Array<!HTMLInputElement>,
+ *   reviewStatusCountDict: !ReportUiReviewStatusCountDict,
+ *   pageDict: !ReportUiPageDict,
+ * }}
+ */
+let ReportUiChangelistState;
+
+/**
+ * @typedef {!Object<string, !ReportUiPageState>}
+ */
+let ReportUiPageDict;
+
+/**
+ * @typedef {{
+ *   cbEl: !HTMLInputElement,
+ *   countEl: !HTMLElement,
+ *   reviewStatusEl: !HTMLElement,
+ *   checkedBrowserCbEls: !Array<!HTMLInputElement>,
+ *   uncheckedBrowserCbEls: !Array<!HTMLInputElement>,
+ *   reviewStatusCountDict: !ReportUiReviewStatusCountDict,
+ * }}
+ */
+let ReportUiPageState;
+
+/**
+ * @typedef {!Object<string, number>}
+ */
+let ReportUiReviewStatusCountDict;
+
+
+/*
  * Filesystem
  */
 

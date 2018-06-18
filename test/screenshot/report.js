@@ -213,7 +213,7 @@ window.mdc.reportUi = (() => {
     getApproveCommandArgs_(report) {
       const args = [];
 
-      for (const [changeGroupId, changelist] of Object.entries(report.changelists)) {
+      for (const [changeGroupId, changelist] of Object.entries(report.changelistDict)) {
         if (changelist.checkedBrowserCbEls.length === 0) {
           continue;
         }
@@ -225,7 +225,7 @@ window.mdc.reportUi = (() => {
 
         const targets = [];
 
-        for (const [htmlFilePath, page] of Object.entries(changelist.pageMap)) {
+        for (const [htmlFilePath, page] of Object.entries(changelist.pageDict)) {
           for (const browserCbEl of page.checkedBrowserCbEls) {
             targets.push(`${htmlFilePath}:${browserCbEl.dataset.userAgentAlias}`);
           }
@@ -234,7 +234,8 @@ window.mdc.reportUi = (() => {
         args.push(`--${changeGroupId}=${targets.join(',')}`);
       }
 
-      if (args.length === ['diffs', 'added', 'removed'].length && args.every((arg) => arg.startsWith('--all-'))) {
+      // Copy the array to avoid mutating it with `sort()`
+      if (args.concat().sort().join(',') === '--all-added,--all-diffs,--all-removed') {
         args.length = 0;
         args.push('--all');
       }
@@ -265,39 +266,18 @@ window.mdc.reportUi = (() => {
     }
 
     updateAll_() {
-      const report = this.updateCounts_();
-      this.updateToolbar_(report);
-      return report;
+      const reportUiState = this.updateCountsAndGetState_();
+      this.updateToolbar_(reportUiState);
+      return reportUiState;
     }
 
-    updateCounts_() {
-      // const report = {
-      //   checkedBrowserCbEls: [],
-      //   uncheckedBrowserCbEls: [],
-      //   changelists: {
-      //     diffs: {
-      //       cbEl: null,
-      //       countEl: null,
-      //       reviewStatusEl: null,
-      //       checkedBrowserCbEls: [],
-      //       uncheckedBrowserCbEls: [],
-      //       pageMap: {
-      //         'baseline.html': {
-      //           cbEl: null,
-      //           countEl: null,
-      //           reviewStatusEl: null,
-      //           checkedBrowserCbEls: [],
-      //           uncheckedBrowserCbEls: [],
-      //         },
-      //       },
-      //     },
-      //   },
-      // };
-      const report = {
+    updateCountsAndGetState_() {
+      /** @type {!ReportUiState} */
+      const reportUiState = {
         checkedBrowserCbEls: [],
         uncheckedBrowserCbEls: [],
-        changelists: {},
-        reviewStatuses: {},
+        changelistDict: {},
+        reviewStatusCountDict: {},
       };
 
       const browserCbEls = this.queryAll_('.report-browser__checkbox');
@@ -310,54 +290,54 @@ window.mdc.reportUi = (() => {
         const {changeGroupId, htmlFilePath} = browserCbEl.dataset;
         const changelistDataAttr = `[data-change-group-id="${changeGroupId}"]`;
         const pageDataAttr = `[data-change-group-id="${changeGroupId}"][data-html-file-path="${htmlFilePath}"]`;
-        const changelists = report.changelists;
+        const changelistDict = reportUiState.changelistDict;
 
-        changelists[changeGroupId] = changelists[changeGroupId] || {
+        changelistDict[changeGroupId] = changelistDict[changeGroupId] || {
           cbEl: this.queryOne_(`.report-changelist__checkbox${changelistDataAttr}`),
           countEl: this.queryOne_(`.report-changelist__checked-count${changelistDataAttr}`),
           reviewStatusEl: this.queryOne_(`.report-review-status--changelist${changelistDataAttr}`),
           checkedBrowserCbEls: [],
           uncheckedBrowserCbEls: [],
-          reviewStatuses: {},
-          pageMap: {},
+          reviewStatusCountDict: {},
+          pageDict: {},
         };
 
-        changelists[changeGroupId].pageMap[htmlFilePath] = changelists[changeGroupId].pageMap[htmlFilePath] || {
+        changelistDict[changeGroupId].pageDict[htmlFilePath] = changelistDict[changeGroupId].pageDict[htmlFilePath] || {
           cbEl: this.queryOne_(`.report-file__checkbox${pageDataAttr}`),
           countEl: this.queryOne_(`.report-file__checked-count${pageDataAttr}`),
           reviewStatusEl: this.queryOne_(`.report-review-status--file${pageDataAttr}`),
           checkedBrowserCbEls: [],
           uncheckedBrowserCbEls: [],
-          reviewStatuses: {},
+          reviewStatusCountDict: {},
         };
 
         if (browserCbEl.checked) {
-          report.checkedBrowserCbEls.push(browserCbEl);
-          changelists[changeGroupId].checkedBrowserCbEls.push(browserCbEl);
-          changelists[changeGroupId].pageMap[htmlFilePath].checkedBrowserCbEls.push(browserCbEl);
+          reportUiState.checkedBrowserCbEls.push(browserCbEl);
+          changelistDict[changeGroupId].checkedBrowserCbEls.push(browserCbEl);
+          changelistDict[changeGroupId].pageDict[htmlFilePath].checkedBrowserCbEls.push(browserCbEl);
         } else {
-          report.uncheckedBrowserCbEls.push(browserCbEl);
-          changelists[changeGroupId].uncheckedBrowserCbEls.push(browserCbEl);
-          changelists[changeGroupId].pageMap[htmlFilePath].uncheckedBrowserCbEls.push(browserCbEl);
+          reportUiState.uncheckedBrowserCbEls.push(browserCbEl);
+          changelistDict[changeGroupId].uncheckedBrowserCbEls.push(browserCbEl);
+          changelistDict[changeGroupId].pageDict[htmlFilePath].uncheckedBrowserCbEls.push(browserCbEl);
         }
 
         const reviewStatus = browserCbEl.dataset.reviewStatus;
-        report.reviewStatuses[reviewStatus] =
-          (report.reviewStatuses[reviewStatus] || 0) + 1;
-        changelists[changeGroupId].reviewStatuses[reviewStatus] =
-          (changelists[changeGroupId].reviewStatuses[reviewStatus] || 0) + 1;
-        changelists[changeGroupId].pageMap[htmlFilePath].reviewStatuses[reviewStatus] =
-          (changelists[changeGroupId].pageMap[htmlFilePath].reviewStatuses[reviewStatus] || 0) + 1;
+        reportUiState.reviewStatusCountDict[reviewStatus] =
+          (reportUiState.reviewStatusCountDict[reviewStatus] || 0) + 1;
+        changelistDict[changeGroupId].reviewStatusCountDict[reviewStatus] =
+          (changelistDict[changeGroupId].reviewStatusCountDict[reviewStatus] || 0) + 1;
+        changelistDict[changeGroupId].pageDict[htmlFilePath].reviewStatusCountDict[reviewStatus] =
+          (changelistDict[changeGroupId].pageDict[htmlFilePath].reviewStatusCountDict[reviewStatus] || 0) + 1;
       });
 
-      for (const [changeGroupId, changelist] of Object.entries(report.changelists)) {
+      for (const changelist of Object.values(reportUiState.changelistDict)) {
         const hasCheckedBrowsers = changelist.checkedBrowserCbEls.length > 0;
         const hasUncheckedBrowsers = changelist.uncheckedBrowserCbEls.length > 0;
 
         changelist.cbEl.checked = hasCheckedBrowsers;
         changelist.cbEl.indeterminate = hasCheckedBrowsers && hasUncheckedBrowsers;
 
-        const clStatuses = Object.keys(changelist.reviewStatuses);
+        const clStatuses = Object.keys(changelist.reviewStatusCountDict);
         changelist.reviewStatusEl.dataset.reviewStatus = clStatuses.length === 1 ? clStatuses[0] : 'mixed';
         changelist.reviewStatusEl.innerText =
           this.getStatusBadgeText_(clStatuses.length === 1 ? clStatuses[0] : 'mixed');
@@ -366,14 +346,14 @@ window.mdc.reportUi = (() => {
           changelist.countEl.innerText = String(changelist.checkedBrowserCbEls.length);
         }
 
-        for (const [htmlFilePath, page] of Object.entries(changelist.pageMap)) {
+        for (const page of Object.values(changelist.pageDict)) {
           const hasCheckedBrowsers = page.checkedBrowserCbEls.length > 0;
           const hasUncheckedBrowsers = page.uncheckedBrowserCbEls.length > 0;
 
           page.cbEl.checked = hasCheckedBrowsers;
           page.cbEl.indeterminate = hasCheckedBrowsers && hasUncheckedBrowsers;
 
-          const pageStatuses = Object.keys(page.reviewStatuses);
+          const pageStatuses = Object.keys(page.reviewStatusCountDict);
           page.reviewStatusEl.dataset.reviewStatus = pageStatuses.length === 1 ? pageStatuses[0] : 'mixed';
           page.reviewStatusEl.innerText =
             this.getStatusBadgeText_(pageStatuses.length === 1 ? pageStatuses[0] : 'mixed');
@@ -384,22 +364,16 @@ window.mdc.reportUi = (() => {
         }
       }
 
-      return report;
+      return reportUiState;
     }
 
-    getStatusBadgeText_(reviewStatus) {
-      const names = {
-        'approve': 'approve',
-        'retry': 'retry',
-        'mixed': 'mixed',
-        'unreviewed': 'unreviewed',
-      };
-      return names[reviewStatus] || reviewStatus;
-    }
-
-    updateToolbar_(report) {
-      const numChecked = report.checkedBrowserCbEls.length;
-      const numUnchecked = report.uncheckedBrowserCbEls.length;
+    /**
+     * @param {!ReportUiState} reportUiState
+     * @private
+     */
+    updateToolbar_(reportUiState) {
+      const numChecked = reportUiState.checkedBrowserCbEls.length;
+      const numUnchecked = reportUiState.uncheckedBrowserCbEls.length;
 
       const hasCheckedScreenshots = numChecked > 0;
       const hasUncheckedScreenshots = numUnchecked > 0;
@@ -424,6 +398,16 @@ window.mdc.reportUi = (() => {
       retrySelectedButton.disabled = !hasCheckedScreenshots;
 
       selectedCountEl.innerText = `${numChecked}`;
+    }
+
+    getStatusBadgeText_(reviewStatus) {
+      const names = {
+        'approve': 'approve',
+        'retry': 'retry',
+        'mixed': 'mixed',
+        'unreviewed': 'unreviewed',
+      };
+      return names[reviewStatus] || reviewStatus;
     }
 
     /**
