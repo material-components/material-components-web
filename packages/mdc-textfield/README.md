@@ -247,6 +247,7 @@ Mixin | Description
 `mdc-text-field-ink-color($color)` | Customizes the text entered into the text field.
 `mdc-text-field-label-color($color)` | Customizes the text color of the label.
 `mdc-text-field-line-ripple-color($color)` | Customizes the color of the default line ripple of the text field.
+`mdc-text-field-caret-color($color)` | Customizes the color of the cursor caret of the text field.
 
 ## `MDCTextField` Properties and Methods
 

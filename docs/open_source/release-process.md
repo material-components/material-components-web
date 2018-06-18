@@ -42,19 +42,27 @@ Run the following script to automatically cherry-pick new bugfixes on top of the
 node scripts/cherry-pick-patch-commits
 ```
 
+> Note: After running the script, you are in a detached HEAD state. You can create a temporary local branch if desired,
+> but all that needs to be pushed is the tag produced at the end of the release process.
+
 Read the output carefully:
 
 * You may need to cherry-pick commits that the script could not cherry-pick cleanly without conflict
 * The script may have cherry-picked fixes that rely on breaking changes or new features; these need to be removed.
   This is especially likely if the script reports that either the build or the unit tests failed.
 * Examine `git log` to ensure there are no unexpected commits beyond the previous tag (in case any breaking changes
-  weren't flagged properly)
+  weren't flagged properly, or features were mislabeled as fixes, etc.)
 
-After running the script, you are in a detached HEAD state. You can create a temporary local branch if desired, but all
-that should need to be pushed is the tag produced at the end of the release process.
+If you find you need to remove commits that should not have been cherry-picked, perform the following steps:
 
-> Note: In the rare event that zero commits were skipped, you can simply cut the release from master as you would
-> normally do for a minor release, and skip all of the cherry-picking back and forth.
+1. Find the base tag that the cherry-pick script identified and used (find the "Checking out v0.x.y" line in the output)
+1. Run `git rebase -i <base tag>` - this will open the sequence of cherry-picked commits in an editor (probably vim)
+1. Find and delete lines for commits that should not have been included (in vim, type `dd` on the line in question)
+1. Save and exit (`:x` in vim)
+1. Re-check `git log` to confirm that the commits are no longer present
+
+> Note: In the rare event that zero commits were skipped, you can simply checkout master and cut the release as you
+> would normally do for a minor release, and skip all of the cherry-picking back and forth.
 
 ## Preparation
 
