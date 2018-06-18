@@ -36,7 +36,7 @@ test('exports cssClasses', () => {
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCIconButtonToggleFoundation, [
     'addClass', 'removeClass', 'registerInteractionHandler', 'deregisterInteractionHandler',
-    'setText', 'getTabIndex', 'setTabIndex', 'getAttr', 'setAttr', 'removeAttr', 'notifyChange',
+    'setText', 'getAttr', 'setAttr', 'notifyChange',
   ]);
 });
 

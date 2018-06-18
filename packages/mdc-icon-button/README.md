@@ -103,8 +103,9 @@ Attribute | Description
 
 ### Icons
 
-The icon button can be used with a standard icon library or an `svg`. The icon button toggle should only be used with
-an standard icon library. We recommend you use [Material Icons](https://material.io/tools/icons) from Google Fonts.
+The icon button can be used with a standard icon library such as Material Icons or Font Awesome, or with an `svg`.
+The icon button toggle should only be used with an standard icon library. We recommend you use 
+[Material Icons](https://material.io/tools/icons) from Google Fonts.
 
 ### Disabled
 
