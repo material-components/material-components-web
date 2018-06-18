@@ -43,4 +43,6 @@ log "Tagging repo using semver tag $SEMVER_TAG"
 git tag $SEMVER_TAG -m "Material Components for the web release $SEMVER_TAG"
 echo ""
 
-log "Done! You should now git push to master and git push --tags"
+log "Post-release steps done! Next, continue with the Push step in the Release Process documentation:"
+echo "https://github.com/material-components/material-components-web/blob/master/docs/open_source/release-process.md#push"
+echo ""
