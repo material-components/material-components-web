@@ -43,9 +43,14 @@ export class MDCDrawer extends MDCComponent {
     }
   }
 
-  // Return the drawer element inside the component.
-  get drawer() {
-    return this.root_.querySelector(MDCPersistentDrawerFoundation.strings.DRAWER_SELECTOR);
+  destroy() {
+    document.removeEventListener('keydown', this.handleKeydown_);
+  }
+
+  initialSyncWithDOM() {
+    this.handleKeydown_ = this.foundation_.handleKeydown.bind(this.foundation_);
+    document.addEventListener('keydown', this.handleKeydown_);
+    this.layout();
   }
 
   getDefaultFoundation() {

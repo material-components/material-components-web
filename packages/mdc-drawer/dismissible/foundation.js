@@ -64,8 +64,20 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
     this.isOpen_ = false;
   }
 
+  /**
+   * Returns true if drawer is in open state.
+   * @return {boolean}
+   */
   isOpen() {
     return this.isOpen_;
+  }
+
+  /**
+   * Keydown handler to close drawer when key is escape.
+   * @param evt
+   */
+  handleKeydown(evt) {
+
   }
 
 }
