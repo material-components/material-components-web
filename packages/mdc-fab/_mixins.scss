@@ -144,6 +144,13 @@ $mdc-fab-extended-height_: 48px;
       $mdc-fab-extended-icon-padding - $mdc-fab-extended-label-padding,
       $mdc-fab-extended-icon-padding);
   }
+
+  .mdc-fab__label + .mdc-fab__icon {
+    @include mdc-rtl-reflexive-property(
+      margin,
+      $mdc-fab-extended-icon-padding,
+      $mdc-fab-extended-icon-padding - $mdc-fab-extended-label-padding);
+  }
 }
 
 @mixin mdc-fab__icon_ {
