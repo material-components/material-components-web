@@ -76,7 +76,7 @@ class CliArgParser {
     });
   }
 
-  addGcsBucketFlag_(parser) {
+  addGcsBucketArg_(parser) {
     this.addArg_(parser, {
       optionNames: ['--mdc-gcs-bucket'],
       defaultValue: 'mdc-web-screenshot-tests',
@@ -86,7 +86,7 @@ Name of the Google Cloud Storage bucket to use for public file uploads.
     });
   }
 
-  addGoldenPathFlag_(parser) {
+  addGoldenPathArg_(parser) {
     this.addArg_(parser, {
       optionNames: ['--mdc-golden-path'],
       defaultValue: 'test/screenshot/golden.json',
@@ -97,7 +97,7 @@ Relative to $PWD.
     });
   }
 
-  addSkipBuildFlag_(parser) {
+  addSkipBuildArg_(parser) {
     this.addArg_(parser, {
       optionNames: ['--mdc-skip-build'],
       type: 'boolean',
@@ -125,7 +125,7 @@ Relative to $PWD.
         'Updates your local `golden.json` file with the new screenshots.',
     });
 
-    this.addGoldenPathFlag_(subparser);
+    this.addGoldenPathArg_(subparser);
 
     this.addArg_(subparser, {
       optionNames: ['--report'],
@@ -203,8 +203,8 @@ Relative to $PWD.
       description: 'Uploads compiled screenshot test assets to a unique public URL.',
     });
 
-    this.addSkipBuildFlag_(subparser);
-    this.addGcsBucketFlag_(subparser);
+    this.addSkipBuildArg_(subparser);
+    this.addGcsBucketArg_(subparser);
   }
 
   initServeCommand_() {
@@ -225,9 +225,9 @@ Relative to $PWD.
       description: 'Captures screenshots of test pages and compares them to a set of "golden" images.',
     });
 
-    this.addSkipBuildFlag_(subparser);
-    this.addGcsBucketFlag_(subparser);
-    this.addGoldenPathFlag_(subparser);
+    this.addSkipBuildArg_(subparser);
+    this.addGcsBucketArg_(subparser);
+    this.addGoldenPathArg_(subparser);
 
     this.addArg_(subparser, {
       optionNames: ['--mdc-diff-base'],
