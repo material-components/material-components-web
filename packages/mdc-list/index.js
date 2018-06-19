@@ -95,7 +95,6 @@ export class MDCList extends MDCComponent {
 
   /** @param {boolean} value */
   set singleSelection(value) {
-
     if (value) {
       this.root_.addEventListener('click', this.handleClick_);
     } else {
@@ -104,7 +103,7 @@ export class MDCList extends MDCComponent {
 
     this.foundation_.setSingleSelection(value);
     const selectedElement = this.root_.querySelector('.mdc-list-item[aria-selected="true"]');
-    [].slice.call(this.root_.querySelector('.mdc-list-item:not([aria-selected="true"])'))
+    [].slice.call(this.root_.querySelectorAll('.mdc-list-item:not([aria-selected="true"])'))
       .forEach((ele) => ele.setAttribute(strings.ARIA_SELECTED, false));
 
     if (selectedElement) {

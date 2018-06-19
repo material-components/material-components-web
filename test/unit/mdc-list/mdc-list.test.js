@@ -21,6 +21,8 @@ import td from 'testdouble';
 import bel from 'bel';
 import {MDCList} from '../../../packages/mdc-list';
 import {MDCListFoundation} from '../../../packages/mdc-list/foundation';
+import domEvents from 'dom-events';
+import {strings} from '../../../packages/mdc-list/constants';
 
 function getFixture() {
   return bel`
@@ -72,6 +74,33 @@ test('#adapter.getListItemIndex returns the index of the element specified', () 
   document.body.removeChild(root);
 });
 
+test('#adapter.setAttributeForElementIndex sets the attribute for the list element at index specified', () => {
+  const {root, component} = setupTest();
+  document.body.appendChild(root);
+  const selectedNode = root.querySelectorAll('.mdc-list-item')[1];
+  component.getDefaultFoundation().adapter_.setAttributeForElementIndex(1, 'foo', 'bar');
+  assert.equal('bar', selectedNode.getAttribute('foo'));
+  document.body.removeChild(root);
+});
+
+test('#adapter.addClassForElementIndex adds the class to the list element at index specified', () => {
+  const {root, component} = setupTest();
+  document.body.appendChild(root);
+  const selectedNode = root.querySelectorAll('.mdc-list-item')[1];
+  component.getDefaultFoundation().adapter_.addClassForElementIndex(1, 'foo');
+  assert.isTrue(selectedNode.classList.contains('foo'));
+  document.body.removeChild(root);
+});
+
+test('#adapter.removeClassForElementIndex removes the class from the list element at index specified', () => {
+  const {root, component} = setupTest();
+  document.body.appendChild(root);
+  const selectedNode = root.querySelectorAll('.mdc-list-item')[1];
+  component.getDefaultFoundation().adapter_.removeClassForElementIndex(1, 'foo');
+  assert.isFalse(selectedNode.classList.contains('foo'));
+  document.body.removeChild(root);
+});
+
 test('#adapter.focusItemAtIndex focuses the list item at the index specified', () => {
   const {root, component} = setupTest();
   document.body.appendChild(root);
@@ -86,10 +115,11 @@ test('#adapter.setTabIndexForListItemChildren sets the child button/a elements o
   const {root, component} = setupTest();
   document.body.appendChild(root);
   const listItemIndex = 1;
-  const listItem = root.querySelectorAll('.mdclist-item')[listItemIndex];
+  const listItem = root.querySelectorAll('.mdc-list-item')[listItemIndex];
   component.getDefaultFoundation().adapter_.setTabIndexForListItemChildren(listItemIndex, 0);
-  assert.equal(1, root.querySelectorAll('button[tabIndex="0"]').length);
-  assert.equal(listItem, root.querySelectorAll('button[tabIndex="0"]').parentElement);
+
+  assert.equal(1, root.querySelectorAll('button[tabindex="0"]').length);
+  assert.equal(listItem, root.querySelectorAll('button[tabindex="0"]')[0].parentElement);
   document.body.removeChild(root);
 });
 
@@ -113,6 +143,49 @@ test('wrapFocus calls setWrapFocus on foundation', () => {
   const {component, mockFoundation} = setupTest();
   component.wrapFocus = true;
   td.verify(mockFoundation.setWrapFocus(true), {times: 1});
+});
+
+test('singleSelection true sets the click handler from the root element', () => {
+  const {root, component, mockFoundation} = setupTest();
+  component.singleSelection = true;
+  domEvents.emit(root, 'click');
+  td.verify(mockFoundation.handleClick(td.matchers.anything()), {times: 1});
+});
+
+test('singleSelection false removes the click handler from the root element', () => {
+  const {root, component, mockFoundation} = setupTest();
+  component.singleSelection = true;
+  component.singleSelection = false;
+  domEvents.emit(root, 'click');
+  td.verify(mockFoundation.handleClick(td.matchers.anything()), {times: 0});
+});
+
+test('singleSelection calls foundation setSingleSelection with the provided value', () => {
+  const {component, mockFoundation} = setupTest();
+  component.singleSelection = true;
+  td.verify(mockFoundation.setSingleSelection(true), {times: 1});
+});
+
+test('singleSelection sets aria-selected to false for all elements of the list if not element has aria-selected=true',
+  () => {
+    const {root, component} = setupTest();
+    const listItems = root.querySelectorAll('.mdc-list-item:not([aria-selected="true"])');
+    component.singleSelection = true;
+    assert.equal(listItems.length, root.querySelectorAll('.mdc-list-item[aria-selected="false"]').length);
+  });
+
+test('singleSelection sets aria-selected to false for all elements of the list without aria-selected=true', () => {
+  const {root, component} = setupTest();
+  const listItems = root.querySelectorAll('.mdc-list-item:not([aria-selected="true"])');
+  listItems[0].setAttribute(strings.ARIA_SELECTED, 'true');
+  component.singleSelection = true;
+  assert.equal(listItems.length - 1, root.querySelectorAll('.mdc-list-item[aria-selected="false"]').length);
+});
+
+test('selectedIndex calls setSelectedIndex on foundation', () => {
+  const {component, mockFoundation} = setupTest();
+  component.selectedIndex = 1;
+  td.verify(mockFoundation.setSelectedIndex(1), {times: 1});
 });
 
 test('keydown handler is added to root element', () => {
