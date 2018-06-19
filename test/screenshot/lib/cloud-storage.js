@@ -36,10 +36,6 @@ const USERNAME = process.env.USER || process.env.USERNAME;
  */
 class CloudStorage {
   constructor() {
-    const gcs = new GoogleCloudStorage({
-      credentials: require(GCLOUD_SERVICE_ACCOUNT_KEY_FILE_PATH),
-    });
-
     /**
      * @type {!CliArgParser}
      * @private
@@ -59,10 +55,27 @@ class CloudStorage {
     this.localStorage_ = new LocalStorage();
 
     /**
-     * @type {!Bucket}
+     * @type {!Object<string, !Bucket>}
      * @private
      */
-    this.gcsBucket_ = gcs.bucket(this.cliArgs_.gcsBucket);
+    this.gcsBucketCache_ = {};
+  }
+
+  /**
+   * @return {!Bucket}
+   * @private
+   */
+  getGcsBucket_() {
+    const name = this.cliArgs_.gcsBucket;
+
+    if (!this.gcsBucketCache_[name]) {
+      const gcs = new GoogleCloudStorage({
+        credentials: require(GCLOUD_SERVICE_ACCOUNT_KEY_FILE_PATH),
+      });
+      this.gcsBucketCache_[name] = gcs.bucket(this.cliArgs_.gcsBucket);
+    }
+
+    return this.gcsBucketCache_[name];
   }
 
   /**
@@ -156,7 +169,7 @@ class CloudStorage {
     };
 
 
-    const cloudFile = this.gcsBucket_.file(gcsAbsoluteFilePath);
+    const cloudFile = this.getGcsBucket_().file(gcsAbsoluteFilePath);
     const [cloudFileExists] = await cloudFile.exists();
 
     if (cloudFileExists) {

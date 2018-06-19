@@ -46,6 +46,13 @@ class SnapshotStore {
   }
 
   /**
+   * @return {!Promise<!SnapshotSuiteJson>}
+   */
+  async fromLocalFile() {
+    return JSON.parse(await fs.readFile(this.cliArgs_.goldenPath, {encoding: 'utf8'}));
+  }
+
+  /**
    * Parses the `golden.json` file specified by the `--mdc-diff-base` CLI arg.
    * @param {string=} diffBase
    * @return {!Promise<!SnapshotSuiteJson>}
@@ -126,7 +133,7 @@ class SnapshotStore {
     const approvedRunReport = this.filterReportForApproval_(fullRunReport);
 
     // Update the user's local `golden.json` file in-place.
-    const newGolden = this.deepCloneJson_(await this.fromDiffBase(this.cliArgs_.goldenPath));
+    const newGolden = this.deepCloneJson_(await this.fromLocalFile());
 
     approvedRunReport.runResult.diffs.forEach((diff) => {
       newGolden[diff.htmlFilePath] = newGolden[diff.htmlFilePath] || {

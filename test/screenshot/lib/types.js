@@ -24,7 +24,7 @@
 
 /**
  * @typedef {{
- *   runTarget: !RunTarget,
+ *   runTarget: ?RunTarget,
  *   runResult: ?RunResult,
  * }}
  */
@@ -249,6 +249,18 @@ let SnapshotResultJson;
  * CLI args
  */
 
+
+/**
+ * @typedef {{
+ *   optionNames: !Array<string>,
+ *   description: string,
+ *   isRequired: ?boolean,
+ *   type: ?string,
+ *   defaultValue: ?*,
+ *   valuePlaceholder: ?string,
+ * }}
+ */
+let CliOptionConfig;
 
 /**
  * @typedef {{

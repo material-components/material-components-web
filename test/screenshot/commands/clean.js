@@ -16,15 +16,21 @@
 
 'use strict';
 
-const Controller = require('../lib/controller');
-const controller = new Controller();
+const CliArgParser = require('../lib/cli-arg-parser');
+const del = require('del');
+const mkdirp = require('mkdirp');
+const path = require('path');
 
-controller.initForTest()
-  .then((runReport) => controller.uploadAllAssets(runReport), handleError)
-  .catch(handleError)
-;
+module.exports = {
+  async runAsync() {
+    const cliArgs = new CliArgParser();
 
-function handleError(err) {
-  console.error(err);
-  process.exit(1);
-}
+    await del([
+      'test/screenshot/out',
+      'test/screenshot/report.html',
+      'test/screenshot/report.json',
+    ]);
+
+    mkdirp.sync(path.join(cliArgs.testDir, 'out'));
+  },
+};
