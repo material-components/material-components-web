@@ -257,8 +257,8 @@ window.mdc.reportUi = (() => {
       }
 
       return [
-        ...Array.from(htmlFilePathSet.values()).map((htmlFilePath) => `--mdc-include=url=${htmlFilePath}`),
-        ...Array.from(userAgentAliasSet.values()).map((userAgentAlias) => `--mdc-include=browser=${userAgentAlias}`),
+        ...Array.from(htmlFilePathSet.values()).map((htmlFilePath) => `--mdc-include-url=${htmlFilePath}`),
+        ...Array.from(userAgentAliasSet.values()).map((userAgentAlias) => `--mdc-include-browser=${userAgentAlias}`),
       ];
     }
 
