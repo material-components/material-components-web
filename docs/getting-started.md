@@ -153,7 +153,7 @@ We also need to configure sass-loader to understand the `@material` imports used
 }
 ```
 
-In order to add vendor-specific styles to the Sass files, we need to configure `autoprefixer` through PostCSS. 
+In order to add vendor-specific styles to the Sass files, we need to configure `autoprefixer` through PostCSS.
 
 You'll need all of these Node dependencies:
 - [autoprefixer](https://www.npmjs.com/package/autoprefixer): Parses CSS and adds vendor prefixes to CSS rules
@@ -234,7 +234,7 @@ module.exports.push({
   output: {
     filename: 'bundle.js'
   },
-  module: {
+  rules: {
     loaders: [{
       test: /\.js$/,
       loader: 'babel-loader',
