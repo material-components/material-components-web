@@ -38,6 +38,7 @@ class MDCListFoundation extends MDCFoundation {
       addClassForElementIndex: () => {},
       removeClassForElementIndex: () => {},
       focusItemAtIndex: () => {},
+      isElementFocusable: () => {},
       setTabIndexForListItemChildren: () => {},
 
     });
@@ -50,7 +51,7 @@ class MDCListFoundation extends MDCFoundation {
     /** {boolean} */
     this.isVertical_ = true;
     /** {boolean} */
-    this.isSingleSelectionList_ = true;
+    this.isSingleSelectionList_ = false;
     /** {number} */
     this.selectedIndex_ = -1;
   }
@@ -188,7 +189,12 @@ class MDCListFoundation extends MDCFoundation {
     let currentIndex = this.adapter_.getFocusedElementIndex();
 
     if (currentIndex === -1) {
-      currentIndex = this.adapter_.getListItemIndex(this.getListItem_(evt.target));
+      const listItem = this.getListItem_(evt.target);
+      if (this.adapter_.isElementFocusable(evt.target)) {
+        return;
+      }
+
+      currentIndex = this.adapter_.getListItemIndex(listItem);
 
       if (currentIndex < 0) {
         // If this event doesn't have a mdc-list-item ancestor from the

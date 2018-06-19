@@ -37,7 +37,8 @@ test('exports cssClasses', () => {
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCListFoundation, [
     'getListItemCount', 'getFocusedElementIndex', 'getListItemIndex', 'setAttributeForElementIndex',
-    'addClassForElementIndex', 'removeClassForElementIndex', 'focusItemAtIndex', 'setTabIndexForListItemChildren',
+    'addClassForElementIndex', 'removeClassForElementIndex', 'focusItemAtIndex', 'isElementFocusable',
+    'setTabIndexForListItemChildren',
   ]);
 });
 
@@ -387,3 +388,203 @@ test('#handleKeydown does not find ancestor with mdc-list-item so returns early'
 
   td.verify(preventDefault(), {times: 0});
 });
+
+test('#handleKeydown space key causes preventDefault to be called on the event', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const preventDefault = td.func('preventDefault');
+  const target = {classList: ['mdc-list-item']};
+  const event = {key: 'Space', target, preventDefault};
+
+  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(0);
+  td.when(mockAdapter.getListItemCount()).thenReturn(3);
+  foundation.setSingleSelection(true);
+  foundation.handleKeydown(event);
+
+  td.verify(preventDefault(), {times: 1});
+});
+
+test('#handleKeydown enter key causes preventDefault to be called on the event', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const preventDefault = td.func('preventDefault');
+  const target = {classList: ['mdc-list-item']};
+  const event = {key: 'Enter', target, preventDefault};
+
+  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(0);
+  td.when(mockAdapter.getListItemCount()).thenReturn(3);
+  foundation.setSingleSelection(true);
+  foundation.handleKeydown(event);
+
+  td.verify(preventDefault(), {times: 1});
+});
+
+test('#handleKeydown space key does not causes preventDefault to be called if singleSelection=true', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const preventDefault = td.func('preventDefault');
+  const target = {classList: ['mdc-list-item']};
+  const event = {key: 'Space', target, preventDefault};
+
+  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(0);
+  td.when(mockAdapter.getListItemCount()).thenReturn(3);
+  foundation.handleKeydown(event);
+
+  td.verify(preventDefault(), {times: 0});
+});
+
+test('#handleKeydown enter key does not causes preventDefault to be called if singleSelection=true', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const preventDefault = td.func('preventDefault');
+  const target = {classList: ['mdc-list-item']};
+  const event = {key: 'Enter', target, preventDefault};
+
+  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(0);
+  td.when(mockAdapter.getListItemCount()).thenReturn(3);
+  foundation.handleKeydown(event);
+
+  td.verify(preventDefault(), {times: 0});
+});
+
+test('#handleKeydown space key is triggered when singleSelection is true selects the list item', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const preventDefault = td.func('preventDefault');
+  const target = {classList: ['mdc-list-item']};
+  const event = {key: 'Space', target, preventDefault};
+
+  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(0);
+  td.when(mockAdapter.getListItemCount()).thenReturn(3);
+  foundation.setSingleSelection(true);
+  foundation.handleKeydown(event);
+
+  td.verify(preventDefault(), {times: 1});
+  td.verify(mockAdapter.setAttributeForElementIndex(0, strings.ARIA_SELECTED, true));
+});
+
+test('#handleKeydown space key is triggered 2x when singleSelection is true un-selects the list item', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const preventDefault = td.func('preventDefault');
+  const target = {classList: ['mdc-list-item']};
+  const event = {key: 'Space', target, preventDefault};
+
+  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(0);
+  td.when(mockAdapter.getListItemCount()).thenReturn(3);
+  foundation.setSingleSelection(true);
+  foundation.handleKeydown(event);
+  foundation.handleKeydown(event);
+
+  td.verify(preventDefault(), {times: 2});
+  td.verify(mockAdapter.setAttributeForElementIndex(0, strings.ARIA_SELECTED, false));
+});
+
+test('#handleKeydown space key is triggered when singleSelection is true on second ' +
+  'element updates first element tabindex', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const preventDefault = td.func('preventDefault');
+  const target = {classList: ['mdc-list-item']};
+  const event = {key: 'Space', target, preventDefault};
+
+  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(1);
+  td.when(mockAdapter.getListItemCount()).thenReturn(3);
+  foundation.setSingleSelection(true);
+  foundation.handleKeydown(event);
+
+  td.verify(preventDefault(), {times: 1});
+  td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', 0));
+});
+
+test('#handleKeydown space key is triggered 2x when singleSelection is true on second ' +
+  'element updates first element tabindex', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const preventDefault = td.func('preventDefault');
+  const target = {classList: ['mdc-list-item']};
+  const event = {key: 'Space', target, preventDefault};
+
+  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(1);
+  td.when(mockAdapter.getListItemCount()).thenReturn(3);
+  foundation.setSingleSelection(true);
+  foundation.handleKeydown(event);
+  foundation.handleKeydown(event);
+
+  td.verify(preventDefault(), {times: 2});
+  td.verify(mockAdapter.setAttributeForElementIndex(0, 'tabindex', 0));
+  td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', -1));
+});
+
+test('#handleKeydown space key is triggered and focused is moved to a different element', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const preventDefault = td.func('preventDefault');
+  const target = {classList: ['mdc-list-item']};
+  const event = {key: 'Space', target, preventDefault};
+
+  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(1);
+  td.when(mockAdapter.getListItemCount()).thenReturn(3);
+  foundation.setSingleSelection(true);
+  foundation.handleKeydown(event);
+  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(2);
+  foundation.handleKeydown(event);
+
+  td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', -1));
+  td.verify(mockAdapter.setAttributeForElementIndex(2, 'tabindex', 0));
+});
+
+test('#handleClick when singleSelection=true on a list item should cause the list item to be selected', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const preventDefault = td.func('preventDefault');
+  const target = {classList: ['mdc-list-item']};
+  const event = {target, preventDefault};
+
+  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(1);
+  td.when(mockAdapter.getListItemCount()).thenReturn(3);
+  foundation.handleClick(event);
+
+  td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', 0));
+});
+
+test('#handleClick when singleSelection=true on a list item subelement should cause the list item to be selected',
+  () => {
+    const {foundation, mockAdapter} = setupTest();
+    const parentElement = {classList: ['mdc-list-item']};
+    const preventDefault = td.func('preventDefault');
+    const target = {classList: [], parentElement};
+    const event = {target, preventDefault};
+
+    td.when(mockAdapter.getFocusedElementIndex()).thenReturn(-1);
+    td.when(mockAdapter.getListItemIndex(td.matchers.anything())).thenReturn(1);
+    td.when(mockAdapter.getListItemCount()).thenReturn(3);
+    td.when(mockAdapter.isElementFocusable(td.matchers.anything())).thenReturn(false);
+    foundation.setSingleSelection(true);
+    foundation.handleClick(event);
+
+    td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', 0));
+  });
+
+test('#handleClick when singleSelection=true on a button subelement should not cause the list item to be selected',
+  () => {
+    const {foundation, mockAdapter} = setupTest();
+    const parentElement = {classList: ['mdc-list-item']};
+    const preventDefault = td.func('preventDefault');
+    const target = {classList: [], parentElement};
+    const event = {target, preventDefault};
+
+    td.when(mockAdapter.getFocusedElementIndex()).thenReturn(-1);
+    td.when(mockAdapter.isElementFocusable(td.matchers.anything())).thenReturn(true);
+    td.when(mockAdapter.getListItemIndex(td.matchers.anything())).thenReturn(1);
+    foundation.setSingleSelection(true);
+    foundation.handleClick(event);
+
+    td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', 0), {times: 0});
+  });
+
+test('#handleClick when singleSelection=true on an element not in a list item should be ignored',
+  () => {
+    const {foundation, mockAdapter} = setupTest();
+    const preventDefault = td.func('preventDefault');
+    const target = {classList: []};
+    const event = {target, preventDefault};
+
+    td.when(mockAdapter.getFocusedElementIndex()).thenReturn(-1);
+    td.when(mockAdapter.isElementFocusable(td.matchers.anything())).thenReturn(true);
+    td.when(mockAdapter.getListItemIndex(td.matchers.anything())).thenReturn(-1);
+    foundation.setSingleSelection(true);
+    foundation.handleClick(event);
+
+    td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', 0), {times: 0});
+  });

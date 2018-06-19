@@ -125,6 +125,7 @@ export class MDCList extends MDCComponent {
       addClassForElementIndex: (ndx, className) => this.listElements_[ndx].classList.add(className),
       removeClassForElementIndex: (ndx, className) => this.listElements_[ndx].classList.remove(className),
       focusItemAtIndex: (ndx) => this.listElements_[ndx].focus(),
+      isElementFocusable: (ele) => ele && ele.querySelector(strings.FOCUSABLE_CHILD_ELEMENTS),
       setTabIndexForListItemChildren: (listItemIndex, tabIndexValue) => {
         const listItemChildren = [].slice.call(this.listElements_[listItemIndex]
           .querySelectorAll(strings.FOCUSABLE_CHILD_ELEMENTS));

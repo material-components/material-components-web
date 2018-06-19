@@ -67,6 +67,12 @@ class MDCListAdapter {
   focusItemAtIndex(ndx) {}
 
   /**
+   * Checks if the provided element is a focusable sub-element.
+   * @param {Element} ele
+   */
+  isElementFocusable(ele) {}
+
+  /**
    * Sets the tabindex to the value specified for all button/a element children of
    * the list item at the index specified.
    * @param {Number} listItemIndex
