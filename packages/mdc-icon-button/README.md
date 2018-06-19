@@ -10,7 +10,7 @@ path: /catalog/buttons/icon-buttons/
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
-     href="https://material-components.github.io/material-components-web-catalog/#/component/icon-toggle">
+     href="https://material-components.github.io/material-components-web-catalog/#/component/icon-button">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/icon-toggles.png" width="20" alt="Icon buttons screenshot">
   </a>
 </div>-->
