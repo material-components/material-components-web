@@ -19,7 +19,7 @@
 const Controller = require('../lib/controller');
 const controller = new Controller();
 
-controller.initialize()
+controller.initForTest()
   .then((runReport) => controller.uploadAllAssets(runReport), handleError)
   .then((runReport) => controller.captureAllPages(runReport), handleError)
   .then((runReport) => controller.diffGoldenJson(runReport), handleError)

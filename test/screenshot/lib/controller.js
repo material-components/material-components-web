@@ -19,6 +19,7 @@
 const childProcess = require('child_process');
 const fs = require('mz/fs');
 const path = require('path');
+const request = require('request-promise-native');
 
 const CbtUserAgent = require('./cbt-user-agent');
 const CloudStorage = require('./cloud-storage');
@@ -101,7 +102,7 @@ class Controller {
   /**
    * @return {!Promise<!RunReport>}
    */
-  async initialize() {
+  async initForTest() {
     this.baseUploadDir_ = await this.cloudStorage_.generateUniqueUploadDir();
 
     await this.gitRepo_.fetch();
@@ -114,6 +115,19 @@ class Controller {
       runTarget: await this.getRunTarget_(),
       runResult: null,
     };
+  }
+
+  async initForApproval() {
+    /** @type {!RunReport} */
+    const runReport = await request({
+      method: 'GET',
+      uri: this.cliArgs_.runReportJsonUrl,
+      json: true, // Automatically stringify the request body and parse the response body as JSON
+    });
+
+    runReport.runResult.approvedGoldenJsonData = await this.snapshotStore_.fromApproval(runReport);
+
+    return runReport;
   }
 
   /**
@@ -146,11 +160,14 @@ class Controller {
       );
     }
 
+    const baseGoldenJsonData = await this.snapshotStore_.fromDiffBase();
+
     return {
       runnableUserAgents,
       skippedUserAgents,
       runnableTestCases,
       skippedTestCases,
+      baseGoldenJsonData,
     };
   }
 
@@ -359,59 +376,56 @@ class Controller {
    * @return {!Promise<!RunReport>}
    */
   async uploadDiffReport(runReport) {
-    const reportGenerator = new ReportGenerator(runReport);
-    const reportHtml = await reportGenerator.generateHtml();
-    const reportJson = JSON.stringify(runReport, null, 2);
-    const snapshotJsonStr = await this.snapshotStore_.getSnapshotJsonString(runReport);
+    let nextQueueIndex = 0;
 
-    const writeFile = async ({filename, content, queueIndex, queueLength}) => {
-      const filePath = path.join(this.cliArgs_.testDir, filename);
-      console.log(`Writing ${filePath} to disk...`);
-
-      await fs.writeFile(filePath, content, {encoding: 'utf8'});
-
-      return this.cloudStorage_.uploadFile(new UploadableFile({
+    /**
+     * @param {string} filename
+     * @param {number} queueLength
+     * @return {!UploadableFile}
+     */
+    const createFile = ({filename, queueLength}) => {
+      return new UploadableFile({
         destinationBaseUrl: this.cliArgs_.gcsBaseUrl,
         destinationParentDirectory: this.baseUploadDir_,
         destinationRelativeFilePath: filename,
-        fileContent: content,
-        queueIndex,
+        queueIndex: nextQueueIndex++,
         queueLength,
-      }));
+      });
     };
 
-    let nextQueueIndex = 0;
-
-    /** @type {!UploadableFile} */
-    const [reportPageFile, reportJsonFile, snapshotJsonFile] = await Promise.all([
-      writeFile({
-        filename: 'report.html',
-        content: reportHtml,
-        queueIndex: nextQueueIndex++,
-        queueLength: 3,
-      }),
-
-      writeFile({
-        filename: 'report.json',
-        content: reportJson,
-        queueIndex: nextQueueIndex++,
-        queueLength: 3,
-      }),
-
-      writeFile({
-        filename: 'snapshot.json',
-        content: snapshotJsonStr,
-        queueIndex: nextQueueIndex++,
-        queueLength: 3,
-      }),
-    ]);
-
-    console.log('\n\nDONE uploading diff report to GCS!\n\n');
-    console.log(reportPageFile.publicUrl);
+    const [reportPageFile, reportJsonFile] = [
+      'report.html', 'report.json',
+    ].map((filename, index, array) => {
+      return createFile({filename, queueLength: array.length});
+    });
 
     runReport.runResult.publicReportPageUrl = reportPageFile.publicUrl;
     runReport.runResult.publicReportJsonUrl = reportJsonFile.publicUrl;
-    runReport.runResult.publicSnapshotJsonUrl = snapshotJsonFile.publicUrl;
+
+    const reportGenerator = new ReportGenerator(runReport);
+    const reportHtml = await reportGenerator.generateHtml();
+    const reportJson = JSON.stringify(runReport, null, 2);
+
+    reportPageFile.fileContent = reportHtml;
+    reportJsonFile.fileContent = reportJson;
+
+    /**
+     * @param {!UploadableFile} file
+     * @return {!Promise<!UploadableFile>}
+     */
+    const writeFile = async (file) => {
+      const filePath = path.join(this.cliArgs_.testDir, file.destinationRelativeFilePath);
+      console.log(`Writing ${filePath} to disk...`);
+      await fs.writeFile(filePath, file.fileContent, {encoding: 'utf8'});
+      return this.cloudStorage_.uploadFile(file);
+    };
+
+    await Promise.all([reportPageFile, reportJsonFile].map((file) => {
+      return writeFile(file);
+    }));
+
+    console.log('\n\nDONE uploading diff report to GCS!\n\n');
+    console.log(reportPageFile.publicUrl);
 
     return runReport;
   }

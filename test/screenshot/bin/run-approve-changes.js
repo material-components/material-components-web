@@ -19,17 +19,8 @@
 const Controller = require('../lib/controller');
 const controller = new Controller();
 
-controller.initialize()
-  .then((runReport) => controller.uploadAllAssets(runReport), handleError)
-  .then((runReport) => controller.captureAllPages(runReport), handleError)
-  .then((runReport) => controller.diffGoldenJson(runReport), handleError)
-  .then(
-    async (runReport) => {
-      await controller.uploadDiffReport(runReport);
-      await controller.updateGoldenJson(runReport);
-    },
-    handleError
-  )
+controller.initForApproval()
+  .then((runReport) => controller.updateGoldenJson(runReport), handleError)
   .catch(handleError)
 ;
 

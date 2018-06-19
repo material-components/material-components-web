@@ -44,60 +44,18 @@ class CliArgParser {
       prog: process.argv[1] || '--interactive',
     });
 
-    this.parser_.addArgument(
-      ['--mdc-include-url'],
-      {
-        action: 'append', // Argument may be passed multiple times. Transformed into an array of strings.
-        help: `
-Regular expression pattern. Only HTML files that match the pattern will be tested.
-Multiple patterns can be 'OR'-ed together by passing more than one '--mdc-include-url'.
-Can be overridden by '--mdc-exclude-url'.
-`
-          .trim(),
-      }
-    );
+    const subparsers = this.parser_.addSubparsers({
+      title: 'Commands',
+    });
 
-    this.parser_.addArgument(
-      ['--mdc-exclude-url'],
-      {
-        action: 'append', // Argument may be passed multiple times. Transformed into an array of strings.
-        help: `
-Regular expression pattern. HTML files that match the pattern will be excluded from testing.
-Multiple patterns can be 'OR'-ed together by passing more than one '--mdc-exclude-url'.
-Takes precedence over '--mdc-include-url'.
-`
-          .trim(),
-      }
-    );
+    this.initCommonFlags_();
+    this.initTestCommand_(subparsers);
+    this.initApproveCommand_(subparsers);
 
-    this.parser_.addArgument(
-      ['--mdc-include-browser'],
-      {
-        action: 'append', // Argument may be passed multiple times. Transformed into an array of strings.
-        help: `
-Regular expression pattern. Only browser aliases that match the pattern will be tested.
-See 'test/screenshot/browser.json' for examples.
-Multiple patterns can be 'OR'-ed together by passing more than one '--mdc-include-browser'.
-Can be overridden by '--mdc-exclude-browser'.
-`
-          .trim(),
-      }
-    );
+    this.args_ = this.parser_.parseArgs();
+  }
 
-    this.parser_.addArgument(
-      ['--mdc-exclude-browser'],
-      {
-        action: 'append', // Argument may be passed multiple times. Transformed into an array of strings.
-        help: `
-Regular expression pattern. Browser aliases that match the pattern will be excluded from testing.
-See 'test/screenshot/browser.json' for examples.
-Multiple patterns can be 'OR'-ed together by passing more than one '--mdc-exclude-browser'.
-Takes precedence over '--mdc-include-browser'.
-`
-          .trim(),
-      }
-    );
-
+  initCommonFlags_() {
     this.parser_.addArgument(
       ['--mdc-test-dir'],
       {
@@ -105,45 +63,6 @@ Takes precedence over '--mdc-include-browser'.
         help: `
 Relative path to a local directory containing static test assets (HTML/CSS/JS files) to be captured and diffed.
 Relative to $PWD.
-`
-          .trim(),
-      }
-    );
-
-    this.parser_.addArgument(
-      ['--mdc-golden-path'],
-      {
-        defaultValue: 'test/screenshot/golden.json',
-        help: `
-Relative path to a local 'golden.json' file that will be written to when the golden screenshots are updated.
-Relative to $PWD.
-`
-          .trim(),
-      }
-    );
-
-    this.parser_.addArgument(
-      ['--mdc-diff-base'],
-      {
-        defaultValue: 'origin/master',
-        help: `
-File path, URL, or Git ref of a 'golden.json' file to diff against.
-Typically a branch name or commit hash, but may also be a local file path or public URL.
-Git refs may optionally be suffixed with ':path/to/golden.json' (the default is to use '--mdc-golden-path').
-E.g., 'origin/master' (default), 'HEAD', 'feat/foo/bar', 'fad7ed3:path/to/golden.json',
-'/tmp/golden.json', 'https://storage.googleapis.com/.../test/screenshot/golden.json'.
-`
-          .trim(),
-      }
-    );
-
-    this.parser_.addArgument(
-      ['--mdc-skip-build'],
-      {
-        action: 'storeTrue', // Boolean value. `true` if argument is present, or `false` if omitted.
-        help: `
-If this flag is present, JS and CSS files will not be compiled prior to running screenshot tests.
-The default behavior is to always build assets before running the tests.
 `
           .trim(),
       }
@@ -160,7 +79,170 @@ Name of the Google Cloud Storage bucket to use for public file uploads.
       }
     );
 
-    this.args_ = this.parser_.parseArgs();
+    this.parser_.addArgument(
+      ['--mdc-golden-path'],
+      {
+        defaultValue: 'test/screenshot/golden.json',
+        help: `
+Relative path to a local 'golden.json' file that will be written to when the golden screenshots are updated.
+Relative to $PWD.
+`
+          .trim(),
+      }
+    );
+  }
+
+  initTestCommand_(subparsers) {
+    const subparser = subparsers.addParser('test');
+
+    subparser.addArgument(
+      ['--mdc-include-url'],
+      {
+        action: 'append', // Argument may be passed multiple times. Transformed into an array of strings.
+        help: `
+Regular expression pattern. Only HTML files that match the pattern will be tested.
+Multiple patterns can be 'OR'-ed together by passing more than one '--mdc-include-url'.
+Can be overridden by '--mdc-exclude-url'.
+`
+          .trim(),
+      }
+    );
+
+    subparser.addArgument(
+      ['--mdc-exclude-url'],
+      {
+        action: 'append', // Argument may be passed multiple times. Transformed into an array of strings.
+        help: `
+Regular expression pattern. HTML files that match the pattern will be excluded from testing.
+Multiple patterns can be 'OR'-ed together by passing more than one '--mdc-exclude-url'.
+Takes precedence over '--mdc-include-url'.
+`
+          .trim(),
+      }
+    );
+
+    subparser.addArgument(
+      ['--mdc-include-browser'],
+      {
+        action: 'append', // Argument may be passed multiple times. Transformed into an array of strings.
+        help: `
+Regular expression pattern. Only browser aliases that match the pattern will be tested.
+See 'test/screenshot/browser.json' for examples.
+Multiple patterns can be 'OR'-ed together by passing more than one '--mdc-include-browser'.
+Can be overridden by '--mdc-exclude-browser'.
+`
+          .trim(),
+      }
+    );
+
+    subparser.addArgument(
+      ['--mdc-exclude-browser'],
+      {
+        action: 'append', // Argument may be passed multiple times. Transformed into an array of strings.
+        help: `
+Regular expression pattern. Browser aliases that match the pattern will be excluded from testing.
+See 'test/screenshot/browser.json' for examples.
+Multiple patterns can be 'OR'-ed together by passing more than one '--mdc-exclude-browser'.
+Takes precedence over '--mdc-include-browser'.
+`
+          .trim(),
+      }
+    );
+
+    subparser.addArgument(
+      ['--mdc-diff-base'],
+      {
+        defaultValue: 'origin/master',
+        help: `
+File path, URL, or Git ref of a 'golden.json' file to diff against.
+Typically a branch name or commit hash, but may also be a local file path or public URL.
+Git refs may optionally be suffixed with ':path/to/golden.json' (the default is to use '--mdc-golden-path').
+E.g., 'origin/master' (default), 'HEAD', 'feat/foo/bar', 'fad7ed3:path/to/golden.json',
+'/tmp/golden.json', 'https://storage.googleapis.com/.../test/screenshot/golden.json'.
+`
+          .trim(),
+      }
+    );
+
+    subparser.addArgument(
+      ['--mdc-skip-build'],
+      {
+        action: 'storeTrue', // Boolean value. `true` if argument is present, or `false` if omitted.
+        help: `
+If this flag is present, JS and CSS files will not be compiled prior to running screenshot tests.
+The default behavior is to always build assets before running the tests.
+`
+          .trim(),
+      }
+    );
+  }
+
+  initApproveCommand_(subparsers) {
+    const subparser = subparsers.addParser('approve');
+
+    subparser.addArgument(
+      ['--report'],
+      {
+        required: true,
+        help: 'Public URL of a `report.json` file generated by a previous `npm run screenshot:test` run.',
+      }
+    );
+
+    subparser.addArgument(
+      ['--diffs'],
+      {
+        action: 'append', // Argument may be passed multiple times. Transformed into an array of strings.
+        help: 'Comma-separated list of screenshot diffs to approve',
+      }
+    );
+
+    subparser.addArgument(
+      ['--added'],
+      {
+        action: 'append', // Argument may be passed multiple times. Transformed into an array of strings.
+        help: 'Comma-separated list of added screenshots to approve',
+      }
+    );
+
+    subparser.addArgument(
+      ['--removed'],
+      {
+        action: 'append', // Argument may be passed multiple times. Transformed into an array of strings.
+        help: 'Comma-separated list of removed screenshots to approve',
+      }
+    );
+
+    subparser.addArgument(
+      ['--all-diffs'],
+      {
+        action: 'storeTrue', // Boolean value. `true` if argument is present, or `false` if omitted.
+        help: 'Approve all screenshot diffs',
+      }
+    );
+
+    subparser.addArgument(
+      ['--all-added'],
+      {
+        action: 'storeTrue', // Boolean value. `true` if argument is present, or `false` if omitted.
+        help: 'Approve all added screenshots',
+      }
+    );
+
+    subparser.addArgument(
+      ['--all-removed'],
+      {
+        action: 'storeTrue', // Boolean value. `true` if argument is present, or `false` if omitted.
+        help: 'Approve all removed screenshots',
+      }
+    );
+
+    subparser.addArgument(
+      ['--all'],
+      {
+        action: 'storeTrue', // Boolean value. `true` if argument is present, or `false` if omitted.
+        help: 'Approve all diffs, additions, and removals',
+      }
+    );
   }
 
   /** @return {!Array<!RegExp>} */
@@ -214,16 +296,54 @@ Name of the Google Cloud Storage bucket to use for public file uploads.
     return `https://storage.googleapis.com/${this.gcsBucket}/`;
   }
 
+  /** @return {string} */
+  get runReportJsonUrl() {
+    return this.args_['report'];
+  }
+
+  /** @return {!Set<string>} */
+  get diffs() {
+    return this.parseApprovedChangeTargets_(this.args_['diffs']);
+  }
+
+  /** @return {!Set<string>} */
+  get added() {
+    return this.parseApprovedChangeTargets_(this.args_['added']);
+  }
+
+  /** @return {!Set<string>} */
+  get removed() {
+    return this.parseApprovedChangeTargets_(this.args_['removed']);
+  }
+
+  /** @return {boolean} */
+  get allDiffs() {
+    return this.args_['all_diffs'];
+  }
+
+  /** @return {boolean} */
+  get allAdded() {
+    return this.args_['all_added'];
+  }
+
+  /** @return {boolean} */
+  get allRemoved() {
+    return this.args_['all_removed'];
+  }
+
+  /** @return {boolean} */
+  get all() {
+    return this.args_['all'];
+  }
+
   /**
-   * @return {boolean}
+   * @param {!Array<string>} list
+   * @return {!Set<string>}
+   * @private
    */
-  hasAnyFilters() {
-    return (
-      this.includeUrlPatterns.length > 0 ||
-      this.excludeUrlPatterns.length > 0 ||
-      this.includeBrowserPatterns.length > 0 ||
-      this.excludeBrowserPatterns.length > 0
-    );
+  parseApprovedChangeTargets_(list) {
+    list = list || [];
+    return new Set([].concat(...list.map((value) => value.split(','))));
   }
 
   /**
