@@ -29,6 +29,8 @@ export class MDCList extends MDCComponent {
     /** @private {!Function} */
     this.handleKeydown_;
     /** @private {!Function} */
+    this.handleClick_;
+    /** @private {!Function} */
     this.focusInEventListener_;
     /** @private {!Function} */
     this.focusOutEventListener_;
@@ -44,12 +46,14 @@ export class MDCList extends MDCComponent {
 
   destroy() {
     this.root_.removeEventListener('keydown', this.handleKeydown_);
+    this.root_.removeEventListener('click', this.handleClick_);
     this.root_.removeEventListener('focusin', this.focusInEventListener_);
     this.root_.removeEventListener('focusout', this.focusOutEventListener_);
   }
 
   initialSyncWithDOM() {
     this.handleKeydown_ = this.foundation_.handleKeydown.bind(this.foundation_);
+    this.handleClick_ = this.foundation_.handleClick.bind(this.foundation_);
     this.focusInEventListener_ = this.foundation_.handleFocusIn.bind(this.foundation_);
     this.focusOutEventListener_ = this.foundation_.handleFocusOut.bind(this.foundation_);
     this.root_.addEventListener('keydown', this.handleKeydown_);
@@ -91,6 +95,13 @@ export class MDCList extends MDCComponent {
 
   /** @param {boolean} value */
   set singleSelection(value) {
+
+    if (value) {
+      this.root_.addEventListener('click', this.handleClick_);
+    } else {
+      this.root_.removeEventListener('click', this.handleClick_);
+    }
+
     this.foundation_.setSingleSelection(value);
     const selectedElement = this.root_.querySelector('.mdc-list-item[aria-selected="true"]');
     [].slice.call(this.root_.querySelector('.mdc-list-item:not([aria-selected="true"])'))
@@ -112,6 +123,8 @@ export class MDCList extends MDCComponent {
       getFocusedElementIndex: () => this.listElements_.indexOf(document.activeElement),
       getListItemIndex: (node) => this.listElements_.indexOf(node),
       setAttributeForElementIndex: (ndx, attr, value) => this.listElements_[ndx].setAttribute(attr, value),
+      addClassForElementIndex: (ndx, className) => this.listElements_[ndx].classList.add(className),
+      removeClassForElementIndex: (ndx, className) => this.listElements_[ndx].classList.remove(className),
       focusItemAtIndex: (ndx) => this.listElements_[ndx].focus(),
       setTabIndexForListItemChildren: (listItemIndex, tabIndexValue) => {
         const listItemChildren = [].slice.call(this.listElements_[listItemIndex]

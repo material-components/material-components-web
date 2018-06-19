@@ -18,6 +18,7 @@
 /** @enum {string} */
 const cssClasses = {
   LIST_ITEM_CLASS: 'mdc-list-item',
+  LIST_SELECTED_CLASS: 'mdc-list-item--selected',
 };
 
 /** @enum {string} */

@@ -49,6 +49,18 @@ class MDCListAdapter {
   setAttributeForElementIndex(index, attribute, value) {}
 
   /**
+   * @param {Number} index
+   * @param {String} className
+   */
+  addClassForElementIndex(index, className) {}
+
+  /**
+   * @param {Number} index
+   * @param {String} className
+   */
+  removeClassForElementIndex(index, className) {}
+
+  /**
    * Focuses list item at the index specified.
    * @param {Number} ndx
    */

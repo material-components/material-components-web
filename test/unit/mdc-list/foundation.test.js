@@ -37,7 +37,7 @@ test('exports cssClasses', () => {
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCListFoundation, [
     'getListItemCount', 'getFocusedElementIndex', 'getListItemIndex', 'setAttributeForElementIndex',
-    'focusItemAtIndex', 'setTabIndexForListItemChildren',
+    'addClassForElementIndex', 'removeClassForElementIndex', 'focusItemAtIndex', 'setTabIndexForListItemChildren',
   ]);
 });
 

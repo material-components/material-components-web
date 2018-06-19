@@ -35,6 +35,8 @@ class MDCListFoundation extends MDCFoundation {
       getFocusedElementIndex: () => {},
       getListItemIndex: () => {},
       setAttributeForElementIndex: () => {},
+      addClassForElementIndex: () => {},
+      removeClassForElementIndex: () => {},
       focusItemAtIndex: () => {},
       setTabIndexForListItemChildren: () => {},
 
@@ -84,6 +86,7 @@ class MDCListFoundation extends MDCFoundation {
   setSelectedIndex(value) {
     if (value === this.selectedIndex_) {
       this.adapter_.setAttributeForElementIndex(this.selectedIndex_, strings.ARIA_SELECTED, false);
+      this.adapter_.removeClassForElementIndex(this.selectedIndex_, cssClasses.LIST_SELECTED_CLASS);
       if (this.selectedIndex_ > 0) {
         this.adapter_.setAttributeForElementIndex(this.selectedIndex_, 'tabindex', -1);
         this.adapter_.setAttributeForElementIndex(0, 'tabindex', 0);
@@ -94,6 +97,7 @@ class MDCListFoundation extends MDCFoundation {
 
     if (this.selectedIndex_ >= 0) {
       this.adapter_.setAttributeForElementIndex(this.selectedIndex_, strings.ARIA_SELECTED, false);
+      this.adapter_.removeClassForElementIndex(this.selectedIndex_, cssClasses.LIST_SELECTED_CLASS);
       this.adapter_.setAttributeForElementIndex(this.selectedIndex_, 'tabindex', -1);
     }
 
@@ -101,6 +105,7 @@ class MDCListFoundation extends MDCFoundation {
       if (this.adapter_.getListItemCount() > value) {
         this.selectedIndex_ = value;
         this.adapter_.setAttributeForElementIndex(this.selectedIndex_, strings.ARIA_SELECTED, true);
+        this.adapter_.addClassForElementIndex(this.selectedIndex_, cssClasses.LIST_SELECTED_CLASS);
         this.adapter_.setAttributeForElementIndex(this.selectedIndex_, 'tabindex', 0);
       }
     }
@@ -173,6 +178,25 @@ class MDCListFoundation extends MDCFoundation {
         this.setSelectedIndex(currentIndex);
       }
     }
+  }
+
+  /**
+   * Click handler for the list.
+   * @param {Event} evt
+   */
+  handleClick(evt) {
+    let currentIndex = this.adapter_.getFocusedElementIndex();
+
+    if (currentIndex === -1) {
+      currentIndex = this.adapter_.getListItemIndex(this.getListItem_(evt.target));
+
+      if (currentIndex < 0) {
+        // If this event doesn't have a mdc-list-item ancestor from the
+        // current list (not from a sublist), return early.
+        return;
+      }
+    }
+    this.setSelectedIndex(currentIndex);
   }
 
   /**
