@@ -22,6 +22,22 @@ const CliArgParser = require('./cli-arg-parser');
 const cbtApi = new CbtApi();
 const cliArg = new CliArgParser();
 
+/* eslint-disable max-len */
+/**
+ * Map of `CbtBrowser#icon_class` values to public URLs for their browser icons.
+ * @type {!Object<string, string>}
+ */
+const BROWSER_ICONS = {
+  'chrome': 'https://cdnjs.cloudflare.com/ajax/libs/browser-logos/45.8.0/chrome/chrome.svg',
+  'firefox': 'https://cdnjs.cloudflare.com/ajax/libs/browser-logos/45.8.0/firefox/firefox.svg',
+  'edge': 'https://cdnjs.cloudflare.com/ajax/libs/browser-logos/45.8.0/edge/edge.svg',
+  'ie': 'https://cdnjs.cloudflare.com/ajax/libs/browser-logos/45.8.0/archive/internet-explorer_9-11/internet-explorer_9-11.svg',
+  'safari': 'https://cdnjs.cloudflare.com/ajax/libs/browser-logos/45.8.0/safari/safari.svg',
+  'safari-mobile': 'https://cdnjs.cloudflare.com/ajax/libs/browser-logos/45.8.0/safari-ios/safari-ios.svg',
+  'opera': 'https://cdnjs.cloudflare.com/ajax/libs/browser-logos/45.8.0/opera/opera.svg',
+};
+/* eslint-enable max-len */
+
 const CBT_FILTERS = {
   formFactor: {
     any:     () => (device) => true,
@@ -223,6 +239,7 @@ function filterBrowsersByName(devices, browserNameFilter) {
       .filter(browserNameFilter)
       .map((browser) => {
         browser.parsedVersionNumber = parseVersionNumber(browser.version).join('.');
+        browser.parsedIconUrl = BROWSER_ICONS[browser.icon_class];
         return browser;
       })
       .sort(compareDeviceOrBrowserDisplayOrder)

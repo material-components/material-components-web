@@ -39,45 +39,55 @@ class SnapshotStore {
     this.gitRepo_ = new GitRepo();
 
     /**
-     * @type {?SnapshotSuiteJson}
+     * @type {!Object<string, !SnapshotSuiteJson>}
      * @private
      */
-    this.cachedGoldenJsonFromDiffBase_ = null;
-  }
-
-  /**
-   * @param {!RunReport} runReport
-   * @return {!Promise<string>}
-   */
-  async getSnapshotJsonString(runReport) {
-    const jsonData = await this.getJsonData_(runReport);
-    return stringify(jsonData, {space: '  '}) + '\n';
-  }
-
-  /**
-   * @param {!RunReport} runReport
-   * @return {!Promise<void>}
-   */
-  async writeToDisk(runReport) {
-    const jsonFileContent = await this.getSnapshotJsonString(runReport);
-    const jsonFilePath = this.cliArgs_.goldenPath;
-
-    await fs.writeFile(jsonFilePath, jsonFileContent);
-
-    console.log(`\n\nDONE updating "${jsonFilePath}"!\n\n`);
+    this.cachedGoldenJsonMap_ = {};
   }
 
   /**
    * Parses the `golden.json` file specified by the `--mdc-diff-base` CLI arg.
+   * @param {string=} diffBase
    * @return {!Promise<!SnapshotSuiteJson>}
    */
-  async fromDiffBase() {
-    if (!this.cachedGoldenJsonFromDiffBase_) {
-      this.cachedGoldenJsonFromDiffBase_ = JSON.parse(await this.fetchGoldenJsonString_());
+  async fromDiffBase(diffBase = this.cliArgs_.diffBase) {
+    if (!this.cachedGoldenJsonMap_[diffBase]) {
+      this.cachedGoldenJsonMap_[diffBase] = JSON.parse(await this.fetchGoldenJsonString_(diffBase));
     }
 
     // Deep-clone the cached object to avoid accidental mutation of shared state
-    return this.deepCloneJson_(this.cachedGoldenJsonFromDiffBase_);
+    return this.deepCloneJson_(this.cachedGoldenJsonMap_[diffBase]);
+  }
+
+  /**
+   * @param {string} diffBase
+   * @return {!Promise<string>}
+   * @private
+   */
+  async fetchGoldenJsonString_(diffBase) {
+    /** @type {!DiffSource} */
+    const diffSource = await this.cliArgs_.parseDiffBase({rawDiffBase: diffBase});
+
+    const publicUrl = diffSource.publicUrl;
+    if (publicUrl) {
+      return request({
+        method: 'GET',
+        uri: publicUrl,
+      });
+    }
+
+    const localFilePath = diffSource.localFilePath;
+    if (localFilePath) {
+      return fs.readFile(localFilePath, {encoding: 'utf8'});
+    }
+
+    const rev = diffSource.gitRevision;
+    if (rev) {
+      return this.gitRepo_.getFileAtRevision(rev.snapshotFilePath, rev.commit);
+    }
+
+    const rawDiffBase = this.cliArgs_.diffBase;
+    throw new Error(`Unable to parse '--mdc-diff-base=${rawDiffBase}': Expected a URL, local file path, or git ref`);
   }
 
   /**
@@ -109,115 +119,112 @@ class SnapshotStore {
   }
 
   /**
-   * @return {!Promise<string>}
-   * @private
-   */
-  async fetchGoldenJsonString_() {
-    /** @type {!DiffSource} */
-    const diffSource = await this.cliArgs_.parseDiffBase();
-
-    const publicUrl = diffSource.publicUrl;
-    if (publicUrl) {
-      return request({
-        method: 'GET',
-        uri: publicUrl,
-      });
-    }
-
-    const localFilePath = diffSource.localFilePath;
-    if (localFilePath) {
-      return fs.readFile(localFilePath, {encoding: 'utf8'});
-    }
-
-    const rev = diffSource.gitRevision;
-    if (rev) {
-      return this.gitRepo_.getFileAtRevision(rev.snapshotFilePath, rev.commit);
-    }
-
-    const rawDiffBase = this.cliArgs_.diffBase;
-    throw new Error(`Unable to parse '--mdc-diff-base=${rawDiffBase}': Expected a URL, local file path, or git ref`);
-  }
-
-  /**
-   * @param {!RunReport} runReport
+   * @param {!RunReport} fullRunReport
    * @return {!Promise<!SnapshotSuiteJson>}
-   * @private
    */
-  async getJsonData_(runReport) {
-    return this.cliArgs_.hasAnyFilters()
-      ? await this.updateFilteredScreenshots_(runReport)
-      : await this.updateAllScreenshots_(runReport);
-  }
+  async fromApproval(fullRunReport) {
+    const approvedRunReport = this.filterReportForApproval_(fullRunReport);
 
-  /**
-   * @param {!RunReport} runReport
-   * @return {!Promise<!SnapshotSuiteJson>}
-   * @private
-   */
-  async updateFilteredScreenshots_(runReport) {
-    const {runnableTestCases} = runReport.runTarget;
-    const {diffs} = runReport.runResult;
-    const oldJsonData = await this.fromDiffBase();
-    const newJsonData = await this.fromTestCases(runnableTestCases);
-    const jsonData = this.deepCloneJson_(oldJsonData);
+    // Update the user's local `golden.json` file in-place.
+    const newGolden = this.deepCloneJson_(await this.fromDiffBase(this.cliArgs_.goldenPath));
 
-    diffs.forEach((diff) => {
-      const htmlFilePath = diff.htmlFilePath;
-      const browserKey = diff.browserKey;
-      const newPage = newJsonData[htmlFilePath];
-      if (jsonData[htmlFilePath]) {
-        jsonData[htmlFilePath].publicUrl = newPage.publicUrl;
-        jsonData[htmlFilePath].screenshots[browserKey] = newPage.screenshots[browserKey];
-      } else {
-        jsonData[htmlFilePath] = this.deepCloneJson_(newPage);
+    approvedRunReport.runResult.diffs.forEach((diff) => {
+      newGolden[diff.htmlFilePath] = newGolden[diff.htmlFilePath] || {
+        publicUrl: diff.snapshotPageUrl,
+        screenshots: {},
+      };
+      newGolden[diff.htmlFilePath].publicUrl = diff.snapshotPageUrl;
+      newGolden[diff.htmlFilePath].screenshots[diff.userAgentAlias] = diff.actualImageUrl;
+    });
+
+    approvedRunReport.runResult.added.forEach((diff) => {
+      newGolden[diff.htmlFilePath] = newGolden[diff.htmlFilePath] || {
+        publicUrl: diff.snapshotPageUrl,
+        screenshots: {},
+      };
+      newGolden[diff.htmlFilePath].publicUrl = diff.snapshotPageUrl;
+      newGolden[diff.htmlFilePath].screenshots[diff.userAgentAlias] = diff.actualImageUrl;
+    });
+
+    approvedRunReport.runResult.removed.forEach((diff) => {
+      if (!newGolden[diff.htmlFilePath]) {
+        return;
+      }
+      delete newGolden[diff.htmlFilePath].screenshots[diff.userAgentAlias];
+      if (Object.keys(newGolden[diff.htmlFilePath].screenshots).length === 0) {
+        delete newGolden[diff.htmlFilePath];
       }
     });
 
-    return jsonData;
+    return newGolden;
+  }
+
+  /**
+   * @param {!RunReport} fullRunReport
+   * @return {!RunReport}
+   */
+  filterReportForApproval_(fullRunReport) {
+    const approvedRunReport = this.deepCloneJson_(fullRunReport);
+
+    if (this.cliArgs_.all) {
+      return approvedRunReport;
+    }
+
+    if (!this.cliArgs_.allDiffs) {
+      approvedRunReport.runResult.diffs = approvedRunReport.runResult.diffs.filter((diff) => {
+        // TODO(acdvorak): Document the ':' separator format
+        const isApproved = this.cliArgs_.diffs.has(`${diff.htmlFilePath}:${diff.userAgentAlias}`);
+        if (!isApproved) {
+          approvedRunReport.runResult.skipped.push(diff);
+        }
+        return isApproved;
+      });
+    }
+
+    if (!this.cliArgs_.allAdded) {
+      approvedRunReport.runResult.added = approvedRunReport.runResult.added.filter((diff) => {
+        // TODO(acdvorak): Document the ':' separator format
+        const isApproved = this.cliArgs_.added.has(`${diff.htmlFilePath}:${diff.userAgentAlias}`);
+        if (!isApproved) {
+          approvedRunReport.runResult.skipped.push(diff);
+        }
+        return isApproved;
+      });
+    }
+
+    if (!this.cliArgs_.allRemoved) {
+      approvedRunReport.runResult.removed = approvedRunReport.runResult.removed.filter((diff) => {
+        // TODO(acdvorak): Document the ':' separator format
+        const isApproved = this.cliArgs_.removed.has(`${diff.htmlFilePath}:${diff.userAgentAlias}`);
+        if (!isApproved) {
+          approvedRunReport.runResult.skipped.push(diff);
+        }
+        return isApproved;
+      });
+    }
+
+    return approvedRunReport;
   }
 
   /**
    * @param {!RunReport} runReport
-   * @return {!Promise<!SnapshotSuiteJson>}
-   * @private
+   * @return {!Promise<void>}
    */
-  async updateAllScreenshots_(runReport) {
-    const {runnableTestCases} = runReport.runTarget;
-    const {diffs} = runReport.runResult;
-    const oldJsonData = await this.fromDiffBase();
-    const newJsonData = await this.fromTestCases(runnableTestCases);
+  async writeToDisk(runReport) {
+    const jsonFileContent = await this.toJson_(runReport.runResult.approvedGoldenJsonData);
+    const jsonFilePath = this.cliArgs_.goldenPath;
 
-    const existsInOldJsonData = ([htmlFilePath]) => htmlFilePath in oldJsonData;
+    await fs.writeFile(jsonFilePath, jsonFileContent);
 
-    /** @type {!Array<[string, !SnapshotPageJson]>} */
-    const newMatchingPageEntries = Object.entries(newJsonData).filter(existsInOldJsonData);
+    console.log(`DONE updating "${jsonFilePath}"!`);
+  }
 
-    // TODO(acdvorak): Refactor this method for clarity. See
-    // https://github.com/material-components/material-components-web/pull/2777#discussion_r190439992
-    for (const [htmlFilePath, newPage] of newMatchingPageEntries) {
-      let pageHasDiffs = false;
-
-      for (const browserKey of Object.keys(newPage.screenshots)) {
-        const oldUrl = oldJsonData[htmlFilePath].screenshots[browserKey];
-        const screenshotHasDiff = diffs.find((diff) => {
-          return diff.htmlFilePath === htmlFilePath && diff.browserKey === browserKey;
-        });
-
-        if (oldUrl && !screenshotHasDiff) {
-          newPage.screenshots[browserKey] = oldUrl;
-        }
-
-        if (screenshotHasDiff) {
-          pageHasDiffs = true;
-        }
-      }
-
-      if (!pageHasDiffs) {
-        newPage.publicUrl = oldJsonData[htmlFilePath].publicUrl;
-      }
-    }
-
-    return newJsonData;
+  /**
+   * @param {!Object|!Array} object
+   * @return {!Promise<string>}
+   */
+  async toJson_(object) {
+    return stringify(object, {space: '  '}) + '\n';
   }
 
   /**
@@ -227,8 +234,9 @@ class SnapshotStore {
    * In Java parlance:
    *   clone.equals(source) // true
    *   clone == source      // false
-   * @param {!Object} source JSON object to clone
-   * @return {!Object} Deep clone of `source` object
+   * @param {!T} source JSON object to clone
+   * @return {!T} Deep clone of `source` object
+   * @template T
    * @private
    */
   deepCloneJson_(source) {

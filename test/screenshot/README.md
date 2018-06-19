@@ -39,26 +39,39 @@ You should see something like this in the terminal:
 
 ```
 Found 65 screenshot diffs!
-https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/22/16_23_58_618/af3d7271f/report.html
+https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/06/18/22_57_35_482/report.html
 ```
 
 ## Basic usage
 
 ### Updating "golden" screenshots
 
+On the
+[report page](https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/06/18/22_57_35_482/report.html),
+select the checkboxes for all screenshots you want to approve, and click the "Approve" button at the bottom of the page.
+
+This will display a modal dialog containing a CLI command to copy/paste:
+
 ```bash
-npm run screenshot:update-goldens
+npm run screenshot:approve -- --all
 ```
 
-In addition to running the tests, this command will also update your local `test/screenshot/golden.json` file with the 
-newly captured screenshots.
+**IMPORTANT:** Note the `--` between the script name and its arguments. This is required by `npm`.
+
+This command will update your local `test/screenshot/golden.json` file with the newly captured screenshots.
 
 ### Rerunning a subset of tests
 
-You can rerun a subset of the tests without running the entire suite, filtering by browser and/or URL:
+You can rerun a subset of the tests without running the entire suite, filtering by browser and/or URL.
+
+On the
+[report page](https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/06/18/22_57_35_482/report.html),
+select the checkboxes for all screenshots you want to retry, and click the "Retry" button at the bottom of the page.
+
+This will display a modal dialog containing a CLI command to copy/paste:
 
 ```bash
-npm run screenshot:update-goldens -- \
+npm run screenshot:test -- \
   --mdc-include-url=mdc-button/classes/dense \
   --mdc-include-browser=ie@11
 ```
@@ -68,7 +81,7 @@ npm run screenshot:update-goldens -- \
 You can rerun multiple screenshots by passing an argument multiple times:
 
 ```bash
-npm run screenshot:update-goldens -- \
+npm run screenshot:test -- \
   --mdc-include-url=mdc-button/classes/dense \
   --mdc-include-url=mdc-fab/classes/mini \
   --mdc-include-browser=ie@11 \
@@ -78,7 +91,7 @@ npm run screenshot:update-goldens -- \
 You can also _exclude_ specific browsers and URLs:
 
 ```bash
-npm run screenshot:update-goldens -- \
+npm run screenshot:test -- \
   --mdc-exclude-url=mdc-button \
   --mdc-exclude-browser=edge
 ```
@@ -111,8 +124,6 @@ npm run screenshot:test -- --help
 ```
 
 **IMPORTANT:** Note the `--` between the script name and its arguments. This is required by `npm`.
-
-The same set of flags work in both `screenshot:test` and `screenshot:update-goldens`.
 
 ### Public demos
 
