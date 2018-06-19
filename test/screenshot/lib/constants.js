@@ -19,5 +19,6 @@ module.exports = {
     UNKNOWN_ERROR: 1,
     UNSUPPORTED_CLI_COMMAND: 2,
     HTTP_PORT_ALREADY_IN_USE: 3,
+    MISSING_ENV_VAR: 4,
   },
 };

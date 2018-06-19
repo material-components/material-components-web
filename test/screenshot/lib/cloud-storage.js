@@ -21,6 +21,7 @@ const GitRepo = require('./git-repo');
 const GoogleCloudStorage = require('@google-cloud/storage');
 const LocalStorage = require('./local-storage');
 const childProcess = require('child_process');
+const {ExitCode} = require('../lib/constants');
 
 /** Maximum number of times to retry a failed HTTP request. */
 const API_MAX_RETRIES = 5;
@@ -36,6 +37,11 @@ const USERNAME = process.env.USER || process.env.USERNAME;
  */
 class CloudStorage {
   constructor() {
+    if (!GCLOUD_SERVICE_ACCOUNT_KEY_FILE_PATH) {
+      console.error('Error: MDC_GCLOUD_SERVICE_ACCOUNT_KEY_FILE_PATH environment variable is not set');
+      process.exit(ExitCode.MISSING_ENV_VAR);
+    }
+
     /**
      * @type {!CliArgParser}
      * @private
