@@ -17,7 +17,7 @@ will no longer be accepted for the `mdc-icon-toggle` package. It is recommended 
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
-     href="https://material-components.github.io/material-components-web-catalog/#/component/icon-toggle">
+     href="https://material-components.github.io/material-components-web-catalog/#/component/icon-button">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/icon-toggles.png" width="20" alt="Icon toggles screenshot">
   </a>
 </div>-->
@@ -29,10 +29,10 @@ designed to work with any icon set.
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/go/design-buttons#buttons-toggle-buttons">Material Design guidelines: Toggle buttons</a>
+    <a href="https://material.io/go/design-buttons#toggle-button">Material Design guidelines: Toggle buttons</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components.github.io/material-components-web-catalog/#/component/icon-toggle">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/icon-button">Demo (for Icon Button)</a>
   </li>
 </ul>
 

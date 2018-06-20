@@ -41,6 +41,7 @@
   @include mdc-text-field-helper-text-color($mdc-text-field-helper-text-color);
   @include mdc-text-field-fullwidth-bottom-line-color($mdc-text-field-fullwidth-bottom-line-color);
   @include mdc-text-field-icon-color($mdc-text-field-icon-color);
+  @include mdc-text-field-caret-color(primary);
 
   display: inline-block;
   position: relative;

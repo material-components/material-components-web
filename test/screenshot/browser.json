@@ -3,7 +3,6 @@
     "desktop_windows_chrome@latest",
     "desktop_windows_firefox@latest",
     "desktop_windows_edge@latest",
-    "desktop_windows_ie@11",
-    "mobile_android_chrome@latest"
+    "desktop_windows_ie@11"
   ]
 }
