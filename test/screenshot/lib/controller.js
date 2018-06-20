@@ -16,7 +16,6 @@
 
 'use strict';
 
-const childProcess = require('child_process');
 const fs = require('mz/fs');
 const path = require('path');
 const request = require('request-promise-native');
@@ -102,21 +101,6 @@ class Controller {
   /**
    * @return {!Promise<!RunReport>}
    */
-  async initForTest() {
-    this.baseUploadDir_ = await this.cloudStorage_.generateUniqueUploadDir();
-
-    await this.gitRepo_.fetch();
-
-    if (await this.cliArgs_.shouldBuild()) {
-      childProcess.spawnSync('npm', ['run', 'screenshot:build'], {shell: true, stdio: 'inherit'});
-    }
-
-    return {
-      runTarget: await this.getRunTarget_(),
-      runResult: null,
-    };
-  }
-
   async initForApproval() {
     /** @type {!RunReport} */
     const runReport = await request({
@@ -128,6 +112,32 @@ class Controller {
     runReport.runResult.approvedGoldenJsonData = await this.snapshotStore_.fromApproval(runReport);
 
     return runReport;
+  }
+
+  /**
+   * @return {!Promise<!RunReport>}
+   */
+  async initForDemo() {
+    this.baseUploadDir_ = await this.cloudStorage_.generateUniqueUploadDir();
+
+    return {
+      runTarget: null,
+      runResult: null,
+    };
+  }
+
+  /**
+   * @return {!Promise<!RunReport>}
+   */
+  async initForTest() {
+    this.baseUploadDir_ = await this.cloudStorage_.generateUniqueUploadDir();
+
+    await this.gitRepo_.fetch();
+
+    return {
+      runTarget: await this.getRunTarget_(),
+      runResult: null,
+    };
   }
 
   /**
@@ -177,6 +187,10 @@ class Controller {
    */
   async uploadAllAssets(runReport) {
     await this.cloudStorage_.uploadAllAssets(this.baseUploadDir_);
+
+    const {runnableTestCases} = await this.localStorage_.fetchTestCases(this.baseUploadDir_);
+    this.logTargetTestCases_('UPLOADED', runnableTestCases);
+
     return runReport;
   }
 
