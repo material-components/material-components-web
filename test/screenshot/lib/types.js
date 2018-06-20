@@ -257,7 +257,7 @@ let SnapshotResultJson;
  *   isRequired: ?boolean,
  *   type: ?string,
  *   defaultValue: ?*,
- *   valuePlaceholder: ?string,
+ *   exampleValue: ?string,
  * }}
  */
 let CliOptionConfig;
@@ -381,6 +381,53 @@ let CbtBrowser;
  * }}
  */
 let CbtDeviceResolution;
+
+
+/*
+ * ps-node API externs
+ */
+
+
+/**
+ * @typedef {{
+ *   pid: number,
+ *   ppid: number,
+ *   command: string,
+ *   arguments: !Array<string>,
+ * }}
+ */
+let PsNodeProcess;
+
+
+/*
+ * Node.js API
+ */
+
+
+/**
+ * @typedef {{
+ *   cwd: ?string,
+ *   env: ?Object,
+ *   argv0: ?string,
+ *   stdio: ?Array<string>,
+ *   detached: ?boolean,
+ *   uid: ?number,
+ *   gid: ?number,
+ *   shell: ?boolean,
+ *   windowsVerbatimArguments: ?boolean,
+ *   windowsHide: ?boolean,
+ * }}
+ */
+let ChildProcessSpawnOptions;
+
+/**
+ * @typedef {{
+ *   status: number,
+ *   signal: ?string,
+ *   pid: number,
+ * }}
+ */
+let ChildProcessSpawnResult;
 
 
 /*

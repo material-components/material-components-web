@@ -18,8 +18,9 @@
 
 const CleanCommand = require('./clean');
 const CliArgParser = require('../lib/cli-arg-parser');
-const childProcess = require('child_process');
-const ps = require('ps-node');
+const ProcessManager = require('../lib/process-manager');
+
+const processManager = new ProcessManager();
 
 module.exports = {
   async runAsync() {
@@ -37,7 +38,7 @@ module.exports = {
 
     await CleanCommand.runAsync();
 
-    childProcess.spawnSync('npm', ['run', 'screenshot:webpack', '--', ...webpackArgs], {shell: true, stdio: 'inherit'});
+    processManager.spawnChildProcessSync('npm', ['run', 'screenshot:webpack', '--', ...webpackArgs]);
   },
 
   /**
@@ -74,38 +75,16 @@ module.exports = {
    * @private
    */
   async getExistingProcessId_() {
-    return new Promise((resolve, reject) => {
-      ps.lookup(
-        {
-          command: 'node',
-          arguments: 'build', // Regular expression
-        },
-        (err, resultList) => {
-          if (err) {
-            reject(err);
-            return;
-          }
-
-          resultList.forEach((proc) => {
-            proc.pid = Number(proc.pid);
-          });
-
-          const existingBuildProcesses = resultList.filter((proc) => {
-            const [script, command] = proc['arguments'];
-            return (
-              proc.pid !== process.pid &&
-              script.startsWith(process.env.PWD) &&
-              script.endsWith('/run.js') &&
-              command === 'build'
-            );
-          });
-
-          if (existingBuildProcesses.length > 0) {
-            resolve(existingBuildProcesses[0].pid);
-          } else {
-            resolve(null);
-          }
-        });
+    /** @type {!Array<!PsNodeProcess>} */
+    const allProcs = await processManager.getRunningProcessesInPwdAsync('node', 'build');
+    const buildProcs = allProcs.filter((proc) => {
+      const [script, command] = proc.arguments;
+      return (
+        script.endsWith('/run.js') &&
+        command === 'build'
+      );
     });
+
+    return buildProcs.length > 0 ? buildProcs[0].pid : null;
   },
 };
