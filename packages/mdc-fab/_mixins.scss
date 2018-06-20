@@ -56,6 +56,30 @@
   width: 100%;
 }
 
+@mixin mdc-fab-extended-padding($icon-padding, $label-padding) {
+  @include mdc-fab-extended-label-padding($label-padding);
+
+  // Offsets the outer label padding by deducting it from icon padding.
+  .mdc-fab__icon {
+    @include mdc-rtl-reflexive-property(
+      margin,
+      $mdc-fab-extended-icon-padding - $mdc-fab-extended-label-padding,
+      $mdc-fab-extended-icon-padding);
+  }
+
+  // For Extended FAB with text label followed by icon.
+  .mdc-fab__label + .mdc-fab__icon {
+    @include mdc-rtl-reflexive-property(
+      margin,
+      $mdc-fab-extended-icon-padding,
+      $mdc-fab-extended-icon-padding - $mdc-fab-extended-label-padding);
+  }
+}
+
+@mixin mdc-fab-extended-label-padding($label-padding) {
+  padding: 0 $mdc-fab-extended-label-padding;
+}
+
 $mdc-fab-icon-enter-delay_: 90ms;
 $mdc-fab-icon-enter-duration_: 180ms;
 $mdc-fab-extended-height_: 48px;
@@ -131,26 +155,14 @@ $mdc-fab-extended-height_: 48px;
 
 @mixin mdc-fab--extended_ {
   @include mdc-typography(button);
+  @include mdc-fab-extended-padding(
+    $mdc-fab-extended-icon-padding,
+    $mdc-fab-extended-label-padding);
 
   width: auto;
   max-width: 100%;
   height: $mdc-fab-extended-height_;
-  padding: 0 $mdc-fab-extended-label-padding;
   border-radius: $mdc-fab-extended-height_ / 2;
-
-  .mdc-fab__icon {
-    @include mdc-rtl-reflexive-property(
-      margin,
-      $mdc-fab-extended-icon-padding - $mdc-fab-extended-label-padding,
-      $mdc-fab-extended-icon-padding);
-  }
-
-  .mdc-fab__label + .mdc-fab__icon {
-    @include mdc-rtl-reflexive-property(
-      margin,
-      $mdc-fab-extended-icon-padding,
-      $mdc-fab-extended-icon-padding - $mdc-fab-extended-label-padding);
-  }
 }
 
 @mixin mdc-fab__icon_ {
