@@ -460,6 +460,7 @@ test('#handleKeydown space key is triggered when singleSelection is true selects
 
   td.when(mockAdapter.getFocusedElementIndex()).thenReturn(0);
   td.when(mockAdapter.getListItemCount()).thenReturn(3);
+  td.when(mockAdapter.isListItem(target)).thenReturn(true);
   foundation.setSingleSelection(true);
   foundation.handleKeydown(event);
 
@@ -475,6 +476,7 @@ test('#handleKeydown space key is triggered 2x when singleSelection is true un-s
 
   td.when(mockAdapter.getFocusedElementIndex()).thenReturn(0);
   td.when(mockAdapter.getListItemCount()).thenReturn(3);
+  td.when(mockAdapter.isListItem(target)).thenReturn(true);
   foundation.setSingleSelection(true);
   foundation.handleKeydown(event);
   foundation.handleKeydown(event);
@@ -492,6 +494,7 @@ test('#handleKeydown space key is triggered when singleSelection is true on seco
 
   td.when(mockAdapter.getFocusedElementIndex()).thenReturn(1);
   td.when(mockAdapter.getListItemCount()).thenReturn(3);
+  td.when(mockAdapter.isListItem(target)).thenReturn(true);
   foundation.setSingleSelection(true);
   foundation.handleKeydown(event);
 
@@ -508,6 +511,7 @@ test('#handleKeydown space key is triggered 2x when singleSelection is true on s
 
   td.when(mockAdapter.getFocusedElementIndex()).thenReturn(1);
   td.when(mockAdapter.getListItemCount()).thenReturn(3);
+  td.when(mockAdapter.isListItem(target)).thenReturn(true);
   foundation.setSingleSelection(true);
   foundation.handleKeydown(event);
   foundation.handleKeydown(event);
@@ -525,6 +529,7 @@ test('#handleKeydown space key is triggered and focused is moved to a different 
 
   td.when(mockAdapter.getFocusedElementIndex()).thenReturn(1);
   td.when(mockAdapter.getListItemCount()).thenReturn(3);
+  td.when(mockAdapter.isListItem(target)).thenReturn(true);
   foundation.setSingleSelection(true);
   foundation.handleKeydown(event);
   td.when(mockAdapter.getFocusedElementIndex()).thenReturn(2);

@@ -181,7 +181,7 @@ class MDCListFoundation extends MDCFoundation {
     } else if (this.isSingleSelectionList_ && (isEnter || isSpace)) {
       this.preventDefaultEvent_(evt);
       // Check if the space key was pressed on the list item or a child element.
-      if (evt.target.classList.contains(cssClasses.LIST_ITEM_CLASS)) {
+      if (this.adapter_.isListItem(evt.target)) {
         this.setSelectedIndex(currentIndex);
       }
     }
