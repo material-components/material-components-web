@@ -17,7 +17,7 @@
 
 import MDCFoundation from '@material/base/foundation';
 import MDCChipSetAdapter from './adapter';
-/* eslint-disable no-unused-vars */
+// eslint-disable-next-line no-unused-vars
 import {MDCChipFoundation, MDCChipInteractionEventType} from '../chip/foundation';
 import {strings, cssClasses} from './constants';
 

@@ -15,8 +15,10 @@
  * limitations under the License.
  */
 
-/* eslint-disable no-unused-vars */
+// eslint-disable-next-line no-unused-vars
 import {MDCChipInteractionEventType} from '../chip/foundation';
+
+/* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
  * Adapter for MDC Chip Set.
