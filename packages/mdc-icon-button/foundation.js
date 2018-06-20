@@ -48,8 +48,10 @@ class MDCIconButtonToggleFoundation extends MDCFoundation {
   constructor(adapter) {
     super(Object.assign(MDCIconButtonToggleFoundation.defaultAdapter, adapter));
 
+    const {ARIA_PRESSED} = MDCIconButtonToggleFoundation.strings;
+
     /** @private {boolean} */
-    this.on_ = false;
+    this.on_ = this.adapter_.getAttr(ARIA_PRESSED) === 'true';
 
     /** @private {boolean} */
     this.disabled_ = false;
