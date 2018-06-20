@@ -111,13 +111,13 @@ test('#adapter.focusItemAtIndex focuses the list item at the index specified', (
   document.body.removeChild(root);
 });
 
-test('adapter#isElementFocusable returns true if the element contains a focusable list item sub-element', () => {
+test('adapter#isElementFocusable returns true if the element is a focusable list item sub-element', () => {
   const {root, component} = setupTest(true);
-  const item1 = root.querySelectorAll('.mdc-list-item')[0];
+  const item1 = root.querySelectorAll('.mdc-list-item button')[0];
   assert.isTrue(component.getDefaultFoundation().adapter_.isElementFocusable(item1));
 });
 
-test('adapter#isElementFocusable returns false if the element does not contains a focusable list item sub-element',
+test('adapter#isElementFocusable returns false if the element is not a focusable list item sub-element',
   () => {
     const {root, component} = setupTest(true);
     const item1 = root.querySelectorAll('.mdc-list-item')[2];

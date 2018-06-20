@@ -16,21 +16,29 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
+import {MDCListAdapter} from './adapter';
 import {strings, cssClasses} from './constants';
 
 const ELEMENTS_KEY_ALLOWED_IN = ['input', 'button', 'textarea', 'select'];
 
 class MDCListFoundation extends MDCFoundation {
+  /** @return enum {string} */
   static get strings() {
     return strings;
   }
 
+  /** @return enum {string} */
   static get cssClasses() {
     return cssClasses;
   }
 
+  /**
+   * {@see MDCListAdapter} for typing information on parameters and return
+   * types.
+   * @return {!MDCListAdapter}
+   */
   static get defaultAdapter() {
-    return /** {MDCListAdapter */ ({
+    return /** {MDCListAdapter} */ ({
       getListItemCount: () => {},
       getFocusedElementIndex: () => {},
       getListItemIndex: () => {},
@@ -40,7 +48,6 @@ class MDCListFoundation extends MDCFoundation {
       focusItemAtIndex: () => {},
       isElementFocusable: () => {},
       setTabIndexForListItemChildren: () => {},
-
     });
   }
 
@@ -80,12 +87,9 @@ class MDCListFoundation extends MDCFoundation {
     this.isSingleSelectionList_ = value;
   }
 
-  /**
-   *
-   * @param value
-   */
-  setSelectedIndex(value) {
-    if (value === this.selectedIndex_) {
+  /** @param {number} ndx */
+  setSelectedIndex(ndx) {
+    if (ndx === this.selectedIndex_) {
       this.adapter_.setAttributeForElementIndex(this.selectedIndex_, strings.ARIA_SELECTED, false);
       this.adapter_.removeClassForElementIndex(this.selectedIndex_, cssClasses.LIST_SELECTED_CLASS);
       if (this.selectedIndex_ > 0) {
@@ -102,9 +106,9 @@ class MDCListFoundation extends MDCFoundation {
       this.adapter_.setAttributeForElementIndex(this.selectedIndex_, 'tabindex', -1);
     }
 
-    if (value >= 0) {
-      if (this.adapter_.getListItemCount() > value) {
-        this.selectedIndex_ = value;
+    if (ndx >= 0) {
+      if (this.adapter_.getListItemCount() > ndx) {
+        this.selectedIndex_ = ndx;
         this.adapter_.setAttributeForElementIndex(this.selectedIndex_, strings.ARIA_SELECTED, true);
         this.adapter_.addClassForElementIndex(this.selectedIndex_, cssClasses.LIST_SELECTED_CLASS);
         this.adapter_.setAttributeForElementIndex(this.selectedIndex_, 'tabindex', 0);
@@ -220,7 +224,7 @@ class MDCListFoundation extends MDCFoundation {
 
   /**
    * Focuses the next element on the list.
-   * @param {Number} index
+   * @param {number} index
    */
   focusNextElement(index) {
     const count = this.adapter_.getListItemCount();
@@ -238,7 +242,7 @@ class MDCListFoundation extends MDCFoundation {
 
   /**
    * Focuses the previous element on the list.
-   * @param {Number} index
+   * @param {number} index
    */
   focusPrevElement(index) {
     let prevIndex = index - 1;

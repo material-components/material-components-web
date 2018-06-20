@@ -17,6 +17,7 @@
 
 import MDCComponent from '@material/base/component';
 import {MDCListFoundation} from './foundation';
+import {MDCListAdapter} from './adapter';
 import {strings} from './constants';
 
 /**
@@ -111,8 +112,9 @@ export class MDCList extends MDCComponent {
     }
   }
 
-  set selectedIndex(value) {
-    this.foundation_.setSelectedIndex(value);
+  /** @param {number} ndx */
+  set selectedIndex(ndx) {
+    this.foundation_.setSelectedIndex(ndx);
   }
 
   /** @return {!MDCListFoundation} */
@@ -125,7 +127,14 @@ export class MDCList extends MDCComponent {
       addClassForElementIndex: (ndx, className) => this.listElements_[ndx].classList.add(className),
       removeClassForElementIndex: (ndx, className) => this.listElements_[ndx].classList.remove(className),
       focusItemAtIndex: (ndx) => this.listElements_[ndx].focus(),
-      isElementFocusable: (ele) => ele && ele.querySelector(strings.FOCUSABLE_CHILD_ELEMENTS) !== null,
+      isElementFocusable: (ele) => {
+        if (!ele) return false;
+        let matches = Element.prototype.matches;
+        if (!matches) { // IE uses a different name for the same functionality
+          matches = Element.prototype.msMatchesSelector;
+        }
+        return matches.call(ele, strings.FOCUSABLE_CHILD_ELEMENTS);
+      },
       setTabIndexForListItemChildren: (listItemIndex, tabIndexValue) => {
         const listItemChildren = [].slice.call(this.listElements_[listItemIndex]
           .querySelectorAll(strings.FOCUSABLE_CHILD_ELEMENTS));
