@@ -69,7 +69,5 @@
 }
 
 @mixin mdc-floating-label-max-width($max-width) {
-  .mdc-floating-label {
-    max-width: $max-width;
-  }
+  max-width: $max-width;
 }
