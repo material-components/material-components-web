@@ -326,18 +326,14 @@
       };
 
       ExtendedFab.prototype.handleMouseMove = function(event) {
-        // console.log('mousemove');
-
         var rect = this.root_.getBoundingClientRect();
         var cursorX = event.clientX;
         var cursorY = event.clientY;
         if ((cursorX >= rect.left && cursorX <= rect.right) &&
           (cursorY >= rect.top && cursorY <= rect.bottom)) {
           return;
-          // if (!this.isOpen_) this.open_();
         } else {
           this.close_();
-          // console.log('unset mousemove');
           document.removeEventListener('mousemove', this.handleMouseMove_);
         }
       };
