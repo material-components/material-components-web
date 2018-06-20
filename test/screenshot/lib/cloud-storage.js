@@ -17,17 +17,18 @@
 'use strict';
 
 const CliArgParser = require('./cli-arg-parser');
+const Duration = require('./duration');
 const GitRepo = require('./git-repo');
 const GoogleCloudStorage = require('@google-cloud/storage');
 const LocalStorage = require('./local-storage');
-const childProcess = require('child_process');
+const ProcessManager = require('../lib/process-manager');
 const {ExitCode} = require('../lib/constants');
 
 /** Maximum number of times to retry a failed HTTP request. */
 const API_MAX_RETRIES = 5;
 
 /** Maximum amount of time to wait for the GCS API to fire a "finish" event after it fires a "response" event. */
-const API_FINISH_EVENT_TIMEOUT_MS = 10 * 1000;
+const API_FINISH_EVENT_TIMEOUT_DURATION = Duration.minutes(10);
 
 const MDC_GCS_CREDENTIALS = process.env.MDC_GCS_CREDENTIALS;
 const USERNAME = process.env.USER || process.env.USERNAME;
@@ -80,6 +81,12 @@ https://console.cloud.google.com/iam-admin/serviceaccounts?project=material-comp
      * @private
      */
     this.gcsBucketCache_ = {};
+
+    /**
+     * @type {!ProcessManager}
+     * @private
+     */
+    this.processManager_ = new ProcessManager();
   }
 
   /**
@@ -114,21 +121,25 @@ https://console.cloud.google.com/iam-admin/serviceaccounts?project=material-comp
    */
   async uploadAllAssets(baseUploadDir) {
     return new Promise(async (resolve, reject) => {
+      /** @type {!ChildProcessSpawnResult} */
       const gsutilProcess = await this.spawnGsutilUploadProcess_(baseUploadDir);
-      gsutilProcess.on('close', (exitCode) => {
-        console.log('');
-        if (exitCode === 0) {
-          resolve();
-        } else {
-          reject(new Error(`gsutil processes exited with code ${exitCode}`));
-        }
-      });
+
+      /** @type {number} */
+      const exitCode = gsutilProcess.status;
+
+      console.log('');
+
+      if (exitCode === 0) {
+        resolve();
+      } else {
+        reject(new Error(`gsutil processes exited with code ${exitCode}`));
+      }
     });
   }
 
   /**
    * @param {string} baseUploadDir
-   * @return {!Promise<!ChildProcess>}
+   * @return {!Promise<!ChildProcessSpawnResult>}
    * @private
    */
   async spawnGsutilUploadProcess_(baseUploadDir) {
@@ -140,17 +151,7 @@ https://console.cloud.google.com/iam-admin/serviceaccounts?project=material-comp
 
     console.log(`${cmd} ${args.join(' ')}\n`);
 
-    return childProcess.spawn(
-      cmd,
-      args,
-      {
-        wd: process.env.PWD,
-        env: process.env,
-        stdio: 'inherit',
-        shell: true,
-        windowsHide: true,
-      }
-    );
+    return this.processManager_.spawnChildProcessSync(cmd, args);
   }
 
   /**
@@ -225,10 +226,11 @@ https://console.cloud.google.com/iam-admin/serviceaccounts?project=material-comp
           timer = setTimeout(() => {
             console.warn([
               `WARNING: The GCS API did not fire a "finish" event for file ${queuePosition} - ${gcsAbsoluteFilePath}`,
+              `after ${API_FINISH_EVENT_TIMEOUT_DURATION.toHuman()}.`,
               'This is a bug in GCS. The file has probably finished uploading.',
             ].join('\n'));
             resolve();
-          }, API_FINISH_EVENT_TIMEOUT_MS);
+          }, API_FINISH_EVENT_TIMEOUT_DURATION.toMillis());
         })
         .end(uploadableFile.fileContent);
     }));
