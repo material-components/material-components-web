@@ -16,7 +16,6 @@
 
 'use strict';
 
-const childProcess = require('child_process');
 const fs = require('mz/fs');
 const path = require('path');
 const request = require('request-promise-native');
