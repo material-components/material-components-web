@@ -17,14 +17,20 @@
 'use strict';
 
 const Controller = require('../lib/controller');
-const controller = new Controller();
+const {ExitCode} = require('../lib/constants');
 
-controller.initForApproval()
-  .then((runReport) => controller.updateGoldenJson(runReport), handleError)
-  .catch(handleError)
-;
+module.exports = {
+  async runAsync() {
+    const controller = new Controller();
 
-function handleError(err) {
-  console.error(err);
-  process.exit(1);
-}
+    controller.initForApproval()
+      .then((runReport) => controller.updateGoldenJson(runReport), handleError)
+      .catch(handleError)
+    ;
+
+    function handleError(err) {
+      console.error(err);
+      process.exit(ExitCode.UNKNOWN_ERROR);
+    }
+  },
+};

@@ -14,20 +14,11 @@
  * limitations under the License.
  */
 
-'use strict';
-
-const Controller = require('../lib/controller');
-const controller = new Controller();
-
-controller.initForTest()
-  .then((runReport) => controller.uploadAllAssets(runReport), handleError)
-  .then((runReport) => controller.captureAllPages(runReport), handleError)
-  .then((runReport) => controller.diffGoldenJson(runReport), handleError)
-  .then((runReport) => controller.uploadDiffReport(runReport), handleError)
-  .catch(handleError)
-;
-
-function handleError(err) {
-  console.error(err);
-  process.exit(1);
-}
+module.exports = {
+  ExitCode: {
+    UNKNOWN_ERROR: 1,
+    UNSUPPORTED_CLI_COMMAND: 2,
+    HTTP_PORT_ALREADY_IN_USE: 3,
+    MISSING_ENV_VAR: 4,
+  },
+};

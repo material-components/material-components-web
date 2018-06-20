@@ -15,63 +15,54 @@
  */
 
 const request = require('request-promise-native');
+const {ExitCode} = require('../lib/constants');
 
 const API_BASE_URL = 'https://crossbrowsertesting.com/api/v3';
 const API_USERNAME = process.env.CBT_USERNAME;
 const API_AUTHKEY = process.env.CBT_AUTHKEY;
 
 class CbtApi {
+  constructor() {
+    if (!API_USERNAME) {
+      console.error('Error: CBT_USERNAME environment variable is not set');
+      process.exit(ExitCode.MISSING_ENV_VAR);
+    }
+    if (!API_AUTHKEY) {
+      console.error('Error: CBT_AUTHKEY environment variable is not set');
+      process.exit(ExitCode.MISSING_ENV_VAR);
+    }
+  }
+
   async fetchAvailableDevices() {
     console.log('Fetching available devices...');
-    return request({
-      method: 'GET',
-      uri: CbtApi.getFullUrl_('/screenshots/browsers'),
-      auth: {
-        username: API_USERNAME,
-        password: API_AUTHKEY,
-      },
-      json: true, // Automatically stringify the request body and parse the response body as JSON
-    });
+    return this.sendRequest_('GET', '/screenshots/browsers');
   }
 
   async fetchScreenshotInfo(cbtScreenshotId) {
-    return request({
-      method: 'GET',
-      uri: CbtApi.getFullUrl_(`/screenshots/${cbtScreenshotId}`),
-      auth: {
-        username: API_USERNAME,
-        password: API_AUTHKEY,
-      },
-      json: true, // Automatically stringify the request body and parse the response body as JSON
-    });
+    return this.sendRequest_('GET', `/screenshots/${cbtScreenshotId}`);
   }
 
   async sendCaptureRequest(url, userAgents) {
     console.log(`Sending screenshot capture request for "${url}"...`);
     const browsers = userAgents.map((config) => config.fullCbtApiName).join(',');
+    return this.sendRequest_('POST', '/screenshots/', {
+      url,
+      browsers,
+      delay: 2, // in seconds. helps reduce flakes due to missing icon fonts
+    });
+  }
+
+  async sendRequest_(method, endpoint, body = undefined) {
     return request({
-      method: 'POST',
-      uri: CbtApi.getFullUrl_('/screenshots/'),
+      method,
+      uri: `${API_BASE_URL}${endpoint}`,
       auth: {
         username: API_USERNAME,
         password: API_AUTHKEY,
       },
-      body: {
-        url,
-        browsers,
-        delay: 2, // in seconds. helps reduce flakes due to missing icon fonts
-      },
+      body,
       json: true, // Automatically stringify the request body and parse the response body as JSON
     });
-  }
-
-  /**
-   * @param {string} apiEndpointPath
-   * @return {string}
-   * @private
-   */
-  static getFullUrl_(apiEndpointPath) {
-    return `${API_BASE_URL}${apiEndpointPath}`;
   }
 }
 

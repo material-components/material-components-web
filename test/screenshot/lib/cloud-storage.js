@@ -21,6 +21,7 @@ const GitRepo = require('./git-repo');
 const GoogleCloudStorage = require('@google-cloud/storage');
 const LocalStorage = require('./local-storage');
 const childProcess = require('child_process');
+const {ExitCode} = require('../lib/constants');
 
 /** Maximum number of times to retry a failed HTTP request. */
 const API_MAX_RETRIES = 5;
@@ -36,9 +37,10 @@ const USERNAME = process.env.USER || process.env.USERNAME;
  */
 class CloudStorage {
   constructor() {
-    const gcs = new GoogleCloudStorage({
-      credentials: require(GCLOUD_SERVICE_ACCOUNT_KEY_FILE_PATH),
-    });
+    if (!GCLOUD_SERVICE_ACCOUNT_KEY_FILE_PATH) {
+      console.error('Error: MDC_GCLOUD_SERVICE_ACCOUNT_KEY_FILE_PATH environment variable is not set');
+      process.exit(ExitCode.MISSING_ENV_VAR);
+    }
 
     /**
      * @type {!CliArgParser}
@@ -59,10 +61,27 @@ class CloudStorage {
     this.localStorage_ = new LocalStorage();
 
     /**
-     * @type {!Bucket}
+     * @type {!Object<string, !Bucket>}
      * @private
      */
-    this.gcsBucket_ = gcs.bucket(this.cliArgs_.gcsBucket);
+    this.gcsBucketCache_ = {};
+  }
+
+  /**
+   * @return {!Bucket}
+   * @private
+   */
+  getGcsBucket_() {
+    const name = this.cliArgs_.gcsBucket;
+
+    if (!this.gcsBucketCache_[name]) {
+      const gcs = new GoogleCloudStorage({
+        credentials: require(GCLOUD_SERVICE_ACCOUNT_KEY_FILE_PATH),
+      });
+      this.gcsBucketCache_[name] = gcs.bucket(this.cliArgs_.gcsBucket);
+    }
+
+    return this.gcsBucketCache_[name];
   }
 
   /**
@@ -156,7 +175,7 @@ class CloudStorage {
     };
 
 
-    const cloudFile = this.gcsBucket_.file(gcsAbsoluteFilePath);
+    const cloudFile = this.getGcsBucket_().file(gcsAbsoluteFilePath);
     const [cloudFileExists] = await cloudFile.exists();
 
     if (cloudFileExists) {

@@ -16,11 +16,10 @@
 
 'use strict';
 
-const ArgumentParser = require('argparse').ArgumentParser;
 const GitRepo = require('./git-repo');
+const argparse = require('argparse');
 const fs = require('mz/fs');
 const path = require('path');
-const ps = require('ps-node');
 
 const HTTP_URL_REGEX = new RegExp('^https?://');
 
@@ -36,259 +35,308 @@ class CliArgParser {
      * @type {!ArgumentParser}
      * @private
      */
-    this.parser_ = new ArgumentParser({
-      addHelp: true,
-      description: 'Run screenshot tests and display diffs.',
-
+    this.rootParser_ = new argparse.ArgumentParser({
       // argparse throws an error if `process.argv[1]` is undefined, which happens when you run `node --interactive`.
-      prog: process.argv[1] || '--interactive',
+      prog: process.argv[1] || 'node',
     });
 
-    const subparsers = this.parser_.addSubparsers({
+    /**
+     * @type {!ActionSubparsers}
+     * @private
+     */
+    this.commandParsers_ = this.rootParser_.addSubparsers({
       title: 'Commands',
     });
 
-    this.initCommonFlags_();
-    this.initTestCommand_(subparsers);
-    this.initApproveCommand_(subparsers);
+    this.initRootArgs_();
+    this.initApproveCommand_();
+    this.initBuildCommand_();
+    this.initCleanCommand_();
+    this.initDemoCommand_();
+    this.initServeCommand_();
+    this.initTestCommand_();
 
-    this.args_ = this.parser_.parseArgs();
+    this.args_ = this.rootParser_.parseArgs();
   }
 
-  initCommonFlags_() {
-    this.parser_.addArgument(
-      ['--mdc-test-dir'],
-      {
-        defaultValue: 'test/screenshot/',
-        help: `
-Relative path to a local directory containing static test assets (HTML/CSS/JS files) to be captured and diffed.
-Relative to $PWD.
-`
-          .trim(),
-      }
-    );
+  /**
+   * @param {!ArgumentParser|!ActionContainer} parser
+   * @param {!CliOptionConfig} config
+   * @private
+   */
+  addArg_(parser, config) {
+    parser.addArgument(config.optionNames, {
+      help: config.description.trim(),
+      dest: config.optionNames[config.optionNames.length - 1],
+      type: config.type === 'integer' ? 'int' : undefined,
+      action: config.type === 'array' ? 'append' : (config.type === 'boolean' ? 'storeTrue' : 'store'),
+      required: config.isRequired || false,
+      defaultValue: config.defaultValue,
+      metavar: config.valuePlaceholder || config.defaultValue,
+    });
+  }
 
-    this.parser_.addArgument(
-      ['--mdc-gcs-bucket'],
-      {
-        defaultValue: 'mdc-web-screenshot-tests',
-        help: `
+  addGcsBucketArg_(parser) {
+    this.addArg_(parser, {
+      optionNames: ['--mdc-gcs-bucket'],
+      defaultValue: 'mdc-web-screenshot-tests',
+      description: `
 Name of the Google Cloud Storage bucket to use for public file uploads.
-`
-          .trim(),
-      }
-    );
+`,
+    });
+  }
 
-    this.parser_.addArgument(
-      ['--mdc-golden-path'],
-      {
-        defaultValue: 'test/screenshot/golden.json',
-        help: `
+  addGoldenPathArg_(parser) {
+    this.addArg_(parser, {
+      optionNames: ['--mdc-golden-path'],
+      defaultValue: 'test/screenshot/golden.json',
+      description: `
 Relative path to a local 'golden.json' file that will be written to when the golden screenshots are updated.
 Relative to $PWD.
-`
-          .trim(),
-      }
-    );
+`,
+    });
   }
 
-  initTestCommand_(subparsers) {
-    const subparser = subparsers.addParser('test');
+  addSkipBuildArg_(parser) {
+    this.addArg_(parser, {
+      optionNames: ['--mdc-skip-build'],
+      type: 'boolean',
+      description: `
+If this flag is present, JS and CSS files will not be compiled prior to running screenshot tests.
+The default behavior is to always build assets before running the tests.
+`,
+    });
+  }
 
-    subparser.addArgument(
-      ['--mdc-include-url'],
-      {
-        action: 'append', // Argument may be passed multiple times. Transformed into an array of strings.
-        help: `
-Regular expression pattern. Only HTML files that match the pattern will be tested.
-Multiple patterns can be 'OR'-ed together by passing more than one '--mdc-include-url'.
-Can be overridden by '--mdc-exclude-url'.
-`
-          .trim(),
-      }
-    );
+  initRootArgs_() {
+    this.addArg_(this.rootParser_, {
+      optionNames: ['--mdc-test-dir'],
+      defaultValue: 'test/screenshot/',
+      description: `
+Relative path to a local directory containing static test assets (HTML/CSS/JS files) to be captured and diffed.
+Relative to $PWD.
+`,
+    });
+  }
 
-    subparser.addArgument(
-      ['--mdc-exclude-url'],
-      {
-        action: 'append', // Argument may be passed multiple times. Transformed into an array of strings.
-        help: `
-Regular expression pattern. HTML files that match the pattern will be excluded from testing.
-Multiple patterns can be 'OR'-ed together by passing more than one '--mdc-exclude-url'.
-Takes precedence over '--mdc-include-url'.
-`
-          .trim(),
-      }
-    );
+  initApproveCommand_() {
+    const subparser = this.commandParsers_.addParser('approve', {
+      description: 'Approves screenshots from a previous `npm run screenshot:test` report. ' +
+        'Updates your local `golden.json` file with the new screenshots.',
+    });
 
-    subparser.addArgument(
-      ['--mdc-include-browser'],
-      {
-        action: 'append', // Argument may be passed multiple times. Transformed into an array of strings.
-        help: `
-Regular expression pattern. Only browser aliases that match the pattern will be tested.
-See 'test/screenshot/browser.json' for examples.
-Multiple patterns can be 'OR'-ed together by passing more than one '--mdc-include-browser'.
-Can be overridden by '--mdc-exclude-browser'.
-`
-          .trim(),
-      }
-    );
+    this.addGoldenPathArg_(subparser);
 
-    subparser.addArgument(
-      ['--mdc-exclude-browser'],
-      {
-        action: 'append', // Argument may be passed multiple times. Transformed into an array of strings.
-        help: `
-Regular expression pattern. Browser aliases that match the pattern will be excluded from testing.
-See 'test/screenshot/browser.json' for examples.
-Multiple patterns can be 'OR'-ed together by passing more than one '--mdc-exclude-browser'.
-Takes precedence over '--mdc-include-browser'.
-`
-          .trim(),
-      }
-    );
+    this.addArg_(subparser, {
+      optionNames: ['--report'],
+      valuePlaceholder: 'URL',
+      isRequired: true,
+      description: 'Public URL of a `report.json` file generated by a previous `npm run screenshot:test` run.',
+    });
 
-    subparser.addArgument(
-      ['--mdc-diff-base'],
-      {
-        defaultValue: 'origin/master',
-        help: `
+    this.addArg_(subparser, {
+      optionNames: ['--diffs'],
+      valuePlaceholder: 'mdc-foo/baseline.html:desktop_windows_chrome@latest,...',
+      type: 'array',
+      description: 'Comma-separated list of screenshot diffs to approve.',
+    });
+
+    this.addArg_(subparser, {
+      optionNames: ['--added'],
+      valuePlaceholder: 'mdc-foo/baseline.html:desktop_windows_chrome@latest,...',
+      type: 'array',
+      description: 'Comma-separated list of added screenshots to approve.',
+    });
+
+    this.addArg_(subparser, {
+      optionNames: ['--removed'],
+      valuePlaceholder: 'mdc-foo/baseline.html:desktop_windows_chrome@latest,...',
+      type: 'array',
+      description: 'Comma-separated list of removed screenshots to approve.',
+    });
+
+    this.addArg_(subparser, {
+      optionNames: ['--all-diffs'],
+      type: 'boolean',
+      description: 'Approve all screenshot diffs.',
+    });
+
+    this.addArg_(subparser, {
+      optionNames: ['--all-added'],
+      type: 'boolean',
+      description: 'Approve all added screenshots.',
+    });
+
+    this.addArg_(subparser, {
+      optionNames: ['--all-removed'],
+      type: 'boolean',
+      description: 'Approve all removed screenshots.',
+    });
+
+    this.addArg_(subparser, {
+      optionNames: ['--all'],
+      type: 'boolean',
+      description: 'Approve all diffs, additions, and removals.',
+    });
+  }
+
+  initBuildCommand_() {
+    const subparser = this.commandParsers_.addParser('build', {
+      description: 'Compiles source files and writes output files to disk.',
+    });
+
+    this.addArg_(subparser, {
+      optionNames: ['--watch'],
+      type: 'boolean',
+      description: 'Recompile source files whenever they change.',
+    });
+  }
+
+  initCleanCommand_() {
+    this.commandParsers_.addParser('clean', {
+      description: 'Deletes all output files generated by the build.',
+    });
+  }
+
+  initDemoCommand_() {
+    const subparser = this.commandParsers_.addParser('demo', {
+      description: 'Uploads compiled screenshot test assets to a unique public URL.',
+    });
+
+    this.addSkipBuildArg_(subparser);
+    this.addGcsBucketArg_(subparser);
+  }
+
+  initServeCommand_() {
+    const subparser = this.commandParsers_.addParser('serve', {
+      description: 'Starts an HTTP server for local development.',
+    });
+
+    this.addArg_(subparser, {
+      optionNames: ['--port'],
+      type: 'integer',
+      defaultValue: '8080',
+      description: 'TCP port number for the HTTP server.',
+    });
+  }
+
+  initTestCommand_() {
+    const subparser = this.commandParsers_.addParser('test', {
+      description: 'Captures screenshots of test pages and compares them to a set of "golden" images.',
+    });
+
+    this.addSkipBuildArg_(subparser);
+    this.addGcsBucketArg_(subparser);
+    this.addGoldenPathArg_(subparser);
+
+    this.addArg_(subparser, {
+      optionNames: ['--mdc-diff-base'],
+      defaultValue: 'origin/master',
+      description: `
 File path, URL, or Git ref of a 'golden.json' file to diff against.
 Typically a branch name or commit hash, but may also be a local file path or public URL.
 Git refs may optionally be suffixed with ':path/to/golden.json' (the default is to use '--mdc-golden-path').
 E.g., 'origin/master' (default), 'HEAD', 'feat/foo/bar', 'fad7ed3:path/to/golden.json',
 '/tmp/golden.json', 'https://storage.googleapis.com/.../test/screenshot/golden.json'.
-`
-          .trim(),
-      }
-    );
+`,
+    });
 
-    subparser.addArgument(
-      ['--mdc-skip-build'],
-      {
-        action: 'storeTrue', // Boolean value. `true` if argument is present, or `false` if omitted.
-        help: `
-If this flag is present, JS and CSS files will not be compiled prior to running screenshot tests.
-The default behavior is to always build assets before running the tests.
-`
-          .trim(),
-      }
-    );
+    this.addArg_(subparser, {
+      optionNames: ['--mdc-include-url'],
+      valuePlaceholder: 'URL_REGEX',
+      type: 'array',
+      description: `
+Regular expression pattern. Only HTML files that match the pattern will be tested.
+Multiple patterns can be 'OR'-ed together by passing more than one '--mdc-include-url'.
+Can be overridden by '--mdc-exclude-url'.
+`,
+    });
+
+    this.addArg_(subparser, {
+      optionNames: ['--mdc-exclude-url'],
+      valuePlaceholder: 'URL_REGEX',
+      type: 'array',
+      description: `
+Regular expression pattern. HTML files that match the pattern will be excluded from testing.
+Multiple patterns can be 'OR'-ed together by passing more than one '--mdc-exclude-url'.
+Takes precedence over '--mdc-include-url'.
+`,
+    });
+
+    this.addArg_(subparser, {
+      optionNames: ['--mdc-include-browser'],
+      valuePlaceholder: 'BROWSER_ALIAS_REGEX',
+      type: 'array',
+      description: `
+Regular expression pattern. Only browser aliases that match the pattern will be tested.
+See 'test/screenshot/browser.json' for examples.
+Multiple patterns can be 'OR'-ed together by passing more than one '--mdc-include-browser'.
+Can be overridden by '--mdc-exclude-browser'.
+`,
+    });
+
+    this.addArg_(subparser, {
+      optionNames: ['--mdc-exclude-browser'],
+      valuePlaceholder: 'BROWSER_ALIAS_REGEX',
+      type: 'array',
+      description: `
+Regular expression pattern. Browser aliases that match the pattern will be excluded from testing.
+See 'test/screenshot/browser.json' for examples.
+Multiple patterns can be 'OR'-ed together by passing more than one '--mdc-exclude-browser'.
+Takes precedence over '--mdc-include-browser'.
+`,
+    });
   }
 
-  initApproveCommand_(subparsers) {
-    const subparser = subparsers.addParser('approve');
-
-    subparser.addArgument(
-      ['--report'],
-      {
-        required: true,
-        help: 'Public URL of a `report.json` file generated by a previous `npm run screenshot:test` run.',
-      }
-    );
-
-    subparser.addArgument(
-      ['--diffs'],
-      {
-        action: 'append', // Argument may be passed multiple times. Transformed into an array of strings.
-        help: 'Comma-separated list of screenshot diffs to approve',
-      }
-    );
-
-    subparser.addArgument(
-      ['--added'],
-      {
-        action: 'append', // Argument may be passed multiple times. Transformed into an array of strings.
-        help: 'Comma-separated list of added screenshots to approve',
-      }
-    );
-
-    subparser.addArgument(
-      ['--removed'],
-      {
-        action: 'append', // Argument may be passed multiple times. Transformed into an array of strings.
-        help: 'Comma-separated list of removed screenshots to approve',
-      }
-    );
-
-    subparser.addArgument(
-      ['--all-diffs'],
-      {
-        action: 'storeTrue', // Boolean value. `true` if argument is present, or `false` if omitted.
-        help: 'Approve all screenshot diffs',
-      }
-    );
-
-    subparser.addArgument(
-      ['--all-added'],
-      {
-        action: 'storeTrue', // Boolean value. `true` if argument is present, or `false` if omitted.
-        help: 'Approve all added screenshots',
-      }
-    );
-
-    subparser.addArgument(
-      ['--all-removed'],
-      {
-        action: 'storeTrue', // Boolean value. `true` if argument is present, or `false` if omitted.
-        help: 'Approve all removed screenshots',
-      }
-    );
-
-    subparser.addArgument(
-      ['--all'],
-      {
-        action: 'storeTrue', // Boolean value. `true` if argument is present, or `false` if omitted.
-        help: 'Approve all diffs, additions, and removals',
-      }
-    );
+  /** @return {string} */
+  get command() {
+    return process.argv[2];
   }
 
   /** @return {!Array<!RegExp>} */
   get includeUrlPatterns() {
-    return (this.args_['mdc_include_url'] || []).map((pattern) => new RegExp(pattern));
+    return (this.args_['--mdc-include-url'] || []).map((pattern) => new RegExp(pattern));
   }
 
   /** @return {!Array<!RegExp>} */
   get excludeUrlPatterns() {
-    return (this.args_['mdc_exclude_url'] || []).map((pattern) => new RegExp(pattern));
+    return (this.args_['--mdc-exclude-url'] || []).map((pattern) => new RegExp(pattern));
   }
 
   /** @return {!Array<!RegExp>} */
   get includeBrowserPatterns() {
-    return (this.args_['mdc_include_browser'] || []).map((pattern) => new RegExp(pattern));
+    return (this.args_['--mdc-include-browser'] || []).map((pattern) => new RegExp(pattern));
   }
 
   /** @return {!Array<!RegExp>} */
   get excludeBrowserPatterns() {
-    return (this.args_['mdc_exclude_browser'] || []).map((pattern) => new RegExp(pattern));
+    return (this.args_['--mdc-exclude-browser'] || []).map((pattern) => new RegExp(pattern));
   }
 
   /** @return {string} */
   get testDir() {
     // Ensure that the path has a trailing slash
-    return path.format(path.parse(this.args_['mdc_test_dir'])) + path.sep;
+    return path.format(path.parse(this.args_['--mdc-test-dir'])) + path.sep;
   }
 
   /** @return {string} */
   get goldenPath() {
-    return this.args_['mdc_golden_path'];
+    return this.args_['--mdc-golden-path'];
   }
 
   /** @return {string} */
   get diffBase() {
-    return this.args_['mdc_diff_base'];
+    return this.args_['--mdc-diff-base'];
   }
 
   /** @return {boolean} */
   get skipBuild() {
-    return this.args_['mdc_skip_build'];
+    return this.args_['--mdc-skip-build'];
   }
 
   /** @return {string} */
   get gcsBucket() {
-    return this.args_['mdc_gcs_bucket'];
+    return this.args_['--mdc-gcs-bucket'];
   }
 
   /** @return {string} */
@@ -298,42 +346,52 @@ The default behavior is to always build assets before running the tests.
 
   /** @return {string} */
   get runReportJsonUrl() {
-    return this.args_['report'];
+    return this.args_['--report'];
   }
 
   /** @return {!Set<string>} */
   get diffs() {
-    return this.parseApprovedChangeTargets_(this.args_['diffs']);
+    return this.parseApprovedChangeTargets_(this.args_['--diffs']);
   }
 
   /** @return {!Set<string>} */
   get added() {
-    return this.parseApprovedChangeTargets_(this.args_['added']);
+    return this.parseApprovedChangeTargets_(this.args_['--added']);
   }
 
   /** @return {!Set<string>} */
   get removed() {
-    return this.parseApprovedChangeTargets_(this.args_['removed']);
+    return this.parseApprovedChangeTargets_(this.args_['--removed']);
   }
 
   /** @return {boolean} */
   get allDiffs() {
-    return this.args_['all_diffs'];
+    return this.args_['--all-diffs'];
   }
 
   /** @return {boolean} */
   get allAdded() {
-    return this.args_['all_added'];
+    return this.args_['--all-added'];
   }
 
   /** @return {boolean} */
   get allRemoved() {
-    return this.args_['all_removed'];
+    return this.args_['--all-removed'];
   }
 
   /** @return {boolean} */
   get all() {
-    return this.args_['all'];
+    return this.args_['--all'];
+  }
+
+  /** @return {boolean} */
+  get watch() {
+    return this.args_['--watch'];
+  }
+
+  /** @return {number} */
+  get port() {
+    return this.args_['--port'];
   }
 
   /**
@@ -396,31 +454,6 @@ The default behavior is to always build assets before running the tests.
     // Diff against a local git branch.
     // E.g.: `--mdc-diff-base=master` or `--mdc-diff-base=HEAD`
     return this.createLocalBranchDiffSource_(localRef, goldenFilePath);
-  }
-
-  async shouldBuild() {
-    if (await this.isAlreadyBuilding_()) {
-      return false;
-    }
-    return !this.skipBuild;
-  }
-
-  async isAlreadyBuilding_() {
-    return new Promise((resolve, reject) => {
-      ps.lookup(
-        {
-          command: 'node',
-          arguments: 'screenshot:build|screenshot:watch', // Regular expression
-        },
-        (err, resultList) => {
-          if (err) {
-            reject(err);
-            return;
-          }
-          const buildProcsInPwd = resultList.filter((proc) => proc['arguments'][0].startsWith(process.env.PWD));
-          resolve(buildProcsInPwd.length > 0);
-        });
-    });
   }
 
   /**

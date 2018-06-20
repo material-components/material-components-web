@@ -53,7 +53,9 @@ select the checkboxes for all screenshots you want to approve, and click the "Ap
 This will display a modal dialog containing a CLI command to copy/paste:
 
 ```bash
-npm run screenshot:approve -- --all
+npm run screenshot:approve -- \
+  --all \
+  --report=https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/06/18/22_57_35_482/report.json
 ```
 
 **IMPORTANT:** Note the `--` between the script name and its arguments. This is required by `npm`.
@@ -117,9 +119,13 @@ Source files are automatically recompiled when they change.
 
 ## Advanced usage
 
-To see all available CLI flags, run:
+Use `--help` to see all available CLI flags:
 
 ```bash
+npm run screenshot:approve -- --help
+npm run screenshot:build -- --help
+npm run screenshot:demo -- --help
+npm run screenshot:serve -- --help
 npm run screenshot:test -- --help
 ```
 
@@ -128,7 +134,7 @@ npm run screenshot:test -- --help
 ### Public demos
 
 ```bash
-npm run screenshot:upload-assets
+npm run screenshot:demo
 ```
 
 This will upload all test assets (HTML/CSS/JS files) to a public URL and print the URL to the terminal.
