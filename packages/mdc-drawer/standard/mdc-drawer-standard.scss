@@ -40,6 +40,7 @@ $mdc-drawer-surface-padding: 16px;
   min-width: $mdc-drawer-width;
   border-right-width: 1px;
   border-right-style: solid;
+  overflow: hidden;
 
   @include mdc-rtl {
     border-right-width: 0;
@@ -66,11 +67,11 @@ $mdc-drawer-surface-padding: 16px;
   // stylelint-enable selector-no-qualifying-type
 
   .mdc-list-group__subheader {
-    @include mdc-typography(subtitle2);
+    @include mdc-typography(body2);
 
-    height: 28px;
     margin: 0;
     padding: 0 $mdc-drawer-surface-padding;
+    padding-top: 8px;
   }
 }
 
@@ -88,7 +89,7 @@ $mdc-drawer-surface-padding: 16px;
 }
 
 .mdc-drawer__subtitle {
-  @include mdc-typography(subtitle2);
+  @include mdc-typography(body2);
 
   margin: 0;
 }

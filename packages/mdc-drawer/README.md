@@ -2,7 +2,7 @@
 title: "Drawers"
 layout: detail
 section: components
-excerpt: "Permanent, persistent, and temporary drawers."
+excerpt: "Permanent drawers."
 iconId: side_navigation
 path: /catalog/drawers/
 -->
@@ -61,11 +61,13 @@ npm install @material/drawer
 
 ### Drawers with separate list groups
 
-If you need multiple list groups within the drawer please see the [list readme](https://github.com/material-components/material-components-web/tree/master/packages/mdc-list#list-groups) for detailed use and instruction.
+If you need multiple list groups within the drawer please see the [list readme](https://github.com/material-components/material-components-web/tree/master/packages/mdc-list#list-groups)
+for detailed use and instruction.
 
 ### Drawers with Header
 
-Drawers can contain a header element which will not scroll with the rest of the drawer content. Things like account switchers and titles should live in the header element.
+Drawers can contain a header element which will not scroll with the rest of the drawer content. Things like account
+switchers and titles should live in the header element.
 
 ```html
 <nav class="mdc-drawer">
@@ -99,15 +101,15 @@ Class | Description
 
 Mixin | Description
 --- | ---
+`mdc-drawer-active-overlay-color($color)` | Sets the active overlay color of a drawer list item.
 `mdc-drawer-border-color($color, $opacity)` | Sets border color of `mdc-drawer` surface.
-`mdc-drawer-surface-fill-color($color, $opacity)` | Sets the background color of `mdc-drawer`.
-`mdc-drawer-active-overlay-color($color)` | Sets the overlay color of the activated drawer list item.
-`mdc-drawer-title-ink-color($color, $opacity)` | Sets the ink color of `mdc-drawer__title`.
-`mdc-drawer-item-corner-radius($radius)` | Sets the corner border radius of the drawer list item.
-`mdc-drawer-item-text-color($color, $opacity)` | Sets drawer list item ink color.
-`mdc-drawer-item-activated-text-color($color, $opacity)` | Sets activated drawer list item ink color.
-`mdc-drawer-icon-fill-color($color, $opacity)` | Sets drawer list item graphic icon background color.
-`mdc-drawer-icon-ink-color($color, $opacity)` | Sets drawer list item graphic icon ink color.
-`mdc-drawer-meta-ink-color($color, $opacity)` | Sets drawer list item meta icon ink color.
 `mdc-drawer-divider-color($color, $opacity)` | Sets divider color found between list groups.
 `mdc-drawer-group-header-text-color` | Sets drawer list subheader and drawer subtitle ink color.
+`mdc-drawer-icon-fill-color($color, $opacity)` | Sets drawer list item graphic icon background color.
+`mdc-drawer-icon-ink-color($color, $opacity)` | Sets drawer list item graphic icon ink color.
+`mdc-drawer-item-activated-text-color($color, $opacity)` | Sets activated drawer list item ink color.
+`mdc-drawer-item-corner-radius($radius)` | Sets the corner border radius of the drawer list item.
+`mdc-drawer-item-text-color($color, $opacity)` | Sets drawer list item ink color.
+`mdc-drawer-meta-ink-color($color, $opacity)` | Sets drawer list item meta icon ink color.
+`mdc-drawer-surface-fill-color($color, $opacity)` | Sets the background color of `mdc-drawer`.
+`mdc-drawer-title-ink-color($color, $opacity)` | Sets the ink color of `mdc-drawer__title`.
