@@ -38,7 +38,7 @@ class MDCListFoundation extends MDCFoundation {
    * @return {!MDCListAdapter}
    */
   static get defaultAdapter() {
-    return /** {MDCListAdapter} */ ({
+    return /** @type {!MDCListAdapter} */ ({
       getListItemCount: () => {},
       getFocusedElementIndex: () => {},
       getListItemIndex: () => {},
