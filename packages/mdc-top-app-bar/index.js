@@ -107,7 +107,7 @@ class MDCTopAppBar extends MDCComponent {
       registerResizeHandler: (handler) => window.addEventListener('resize', handler),
       deregisterResizeHandler: (handler) => window.removeEventListener('resize', handler),
       getViewportScrollY: () =>
-      this.scrollTarget_[this.scrollTarget_ === window ? 'pageYOffset' : 'scrollTop'],
+        this.scrollTarget_[this.scrollTarget_ === window ? 'pageYOffset' : 'scrollTop'],
       getTotalActionItems: () =>
         this.root_.querySelectorAll(strings.ACTION_ITEM_SELECTOR).length,
     })
