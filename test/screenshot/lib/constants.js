@@ -17,8 +17,10 @@
 module.exports = {
   ExitCode: {
     UNKNOWN_ERROR: 1,
-    UNSUPPORTED_CLI_COMMAND: 2,
-    HTTP_PORT_ALREADY_IN_USE: 3,
-    MISSING_ENV_VAR: 4,
+    SIGINT: 2, // ctrl-c
+    SIGTERM: 3, // kill
+    UNSUPPORTED_CLI_COMMAND: 4,
+    HTTP_PORT_ALREADY_IN_USE: 5,
+    MISSING_ENV_VAR: 6,
   },
 };

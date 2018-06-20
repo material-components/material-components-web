@@ -29,7 +29,7 @@ const API_MAX_RETRIES = 5;
 /** Maximum amount of time to wait for the GCS API to fire a "finish" event after it fires a "response" event. */
 const API_FINISH_EVENT_TIMEOUT_MS = 10 * 1000;
 
-const GCLOUD_SERVICE_ACCOUNT_KEY_FILE_PATH = process.env.MDC_GCLOUD_SERVICE_ACCOUNT_KEY_FILE_PATH;
+const MDC_GCS_CREDENTIALS = process.env.MDC_GCS_CREDENTIALS;
 const USERNAME = process.env.USER || process.env.USERNAME;
 
 /**
@@ -37,10 +37,25 @@ const USERNAME = process.env.USER || process.env.USERNAME;
  */
 class CloudStorage {
   constructor() {
-    if (!GCLOUD_SERVICE_ACCOUNT_KEY_FILE_PATH) {
-      console.error('Error: MDC_GCLOUD_SERVICE_ACCOUNT_KEY_FILE_PATH environment variable is not set');
+    if (!MDC_GCS_CREDENTIALS) {
+      console.error(`
+ERROR: Required environment variable 'MDC_GCS_CREDENTIALS' is not set.
+
+Please add the following to your ~/.bash_profile or ~/.bashrc file:
+
+    export MDC_GCS_CREDENTIALS=$(< path/to/gcp-credentials.json)
+
+Credentials can be found on the GCP Service Accounts page:
+https://console.cloud.google.com/iam-admin/serviceaccounts?project=material-components-web
+`);
       process.exit(ExitCode.MISSING_ENV_VAR);
     }
+
+    /**
+     * @type {!Object}
+     * @private
+     */
+    this.gcsCredentials_ = JSON.parse(MDC_GCS_CREDENTIALS);
 
     /**
      * @type {!CliArgParser}
@@ -76,7 +91,7 @@ class CloudStorage {
 
     if (!this.gcsBucketCache_[name]) {
       const gcs = new GoogleCloudStorage({
-        credentials: require(GCLOUD_SERVICE_ACCOUNT_KEY_FILE_PATH),
+        credentials: this.gcsCredentials_,
       });
       this.gcsBucketCache_[name] = gcs.bucket(this.cliArgs_.gcsBucket);
     }

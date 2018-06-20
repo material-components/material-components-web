@@ -94,7 +94,7 @@ module.exports = {
 
 /**
  * Fetches the CBT API representations of all user agents listed in `browser.json`.
- * CLI filters (e.g., `--mdc-include-browser`) are ignored.
+ * CLI filters (e.g., `--browser`) are ignored.
  * @return {!Promise<{
  *   allUserAgents: !Array<!CbtUserAgent>,
  *   runnableUserAgents: !Array<!CbtUserAgent>,

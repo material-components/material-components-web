@@ -53,7 +53,7 @@ class SnapshotStore {
   }
 
   /**
-   * Parses the `golden.json` file specified by the `--mdc-diff-base` CLI arg.
+   * Parses the `golden.json` file specified by the `--diff-base` CLI arg.
    * @param {string=} diffBase
    * @return {!Promise<!SnapshotSuiteJson>}
    */
@@ -94,7 +94,7 @@ class SnapshotStore {
     }
 
     const rawDiffBase = this.cliArgs_.diffBase;
-    throw new Error(`Unable to parse '--mdc-diff-base=${rawDiffBase}': Expected a URL, local file path, or git ref`);
+    throw new Error(`Unable to parse '--diff-base=${rawDiffBase}': Expected a URL, local file path, or git ref`);
   }
 
   /**

@@ -9,9 +9,9 @@ Prevent visual regressions by running screenshot tests on every PR.
 Add the following to your `~/.bash_profile` or `~/.bashrc` file:
 
 ```bash
-export CBT_USERNAME='you@example.com'
-export CBT_AUTHKEY='example'
-export MDC_GCLOUD_SERVICE_ACCOUNT_KEY_FILE_PATH='path/to/gcp-credentials.json'
+export MDC_CBT_USERNAME='you@example.com'
+export MDC_CBT_AUTHKEY='example'
+export MDC_GCS_CREDENTIALS=$(< path/to/gcp-credentials.json)
 ```
 
 Credentials can be found here:
@@ -74,8 +74,8 @@ This will display a modal dialog containing a CLI command to copy/paste:
 
 ```bash
 npm run screenshot:test -- \
-  --mdc-include-url=mdc-button/classes/dense \
-  --mdc-include-browser=ie@11
+  --url=mdc-button/classes/dense \
+  --browser=ie@11
 ```
 
 **IMPORTANT:** Note the `--` between the script name and its arguments. This is required by `npm`.
@@ -84,21 +84,13 @@ You can rerun multiple screenshots by passing an argument multiple times:
 
 ```bash
 npm run screenshot:test -- \
-  --mdc-include-url=mdc-button/classes/dense \
-  --mdc-include-url=mdc-fab/classes/mini \
-  --mdc-include-browser=ie@11 \
-  --mdc-include-browser=chrome
+  --url=mdc-button/classes/dense \
+  --url=mdc-fab/classes/mini \
+  --browser=ie@11 \
+  --browser=chrome
 ```
 
-You can also _exclude_ specific browsers and URLs:
-
-```bash
-npm run screenshot:test -- \
-  --mdc-exclude-url=mdc-button \
-  --mdc-exclude-browser=edge
-```
-
-These flags are treated as regular expressions, so partial matches are possible. For example:
+These options are treated as regular expressions, so partial matches are possible. For example:
 
 * `ie@11` matches `desktop_windows_ie@11`
 * `chrome` matches `desktop_windows_chrome@latest` and `mobile_android_chrome@latest`
@@ -119,7 +111,7 @@ Source files are automatically recompiled when they change.
 
 ## Advanced usage
 
-Use `--help` to see all available CLI flags:
+Use `--help` to see all available CLI options:
 
 ```bash
 npm run screenshot:approve -- --help
@@ -141,6 +133,27 @@ This will upload all test assets (HTML/CSS/JS files) to a public URL and print t
 
 The URL can then be shared with designers or other developers.
 
+### Excluding a subset of tests
+
+You can exclude specific browsers and URLs by prefixing them with a `-`:
+
+```bash
+npm run screenshot:test -- \
+  --url=-button \
+  --browser=-edge
+```
+
+Positive and negative patterns can be mixed and matched:
+
+```bash
+npm run screenshot:test -- \
+  --url=button,-mixins \
+  --browser=desktop,-ie@11
+```
+
+**NOTE:** Negative patterns _always_ take precedence over positive patterns, regardless of the order they appear in the
+command line.
+
 ### Diffing against a local `golden.json` file
 
 By default, screenshots are diffed against `origin/master:test/screenshot/golden.json`.
@@ -148,13 +161,13 @@ By default, screenshots are diffed against `origin/master:test/screenshot/golden
 To diff against a local `golden.json` file, run:
 
 ```bash
-npm run screenshot:test -- --mdc-diff-base=test/screenshot/golden.json
+npm run screenshot:test -- --diff-base=test/screenshot/golden.json
 ```
 
 URLs are also supported:
 
 ```bash
-npm run screenshot:test -- --mdc-diff-base=https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/22/17_34_19_887/c8c29033e/golden.json
+npm run screenshot:test -- --diff-base=https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/22/17_34_19_887/c8c29033e/golden.json
 ```
 
 ### Diffing against another branch
@@ -164,7 +177,7 @@ By default, screenshots are diffed against `origin/master:test/screenshot/golden
 To diff against a different branch, run:
 
 ```bash
-npm run screenshot:test -- --mdc-diff-base=fix/fab/icon-alignment-ie11
+npm run screenshot:test -- --diff-base=fix/fab/icon-alignment-ie11
 ```
 
 ## Writing tests
