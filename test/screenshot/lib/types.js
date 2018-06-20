@@ -257,7 +257,7 @@ let SnapshotResultJson;
  *   isRequired: ?boolean,
  *   type: ?string,
  *   defaultValue: ?*,
- *   valuePlaceholder: ?string,
+ *   exampleValue: ?string,
  * }}
  */
 let CliOptionConfig;
