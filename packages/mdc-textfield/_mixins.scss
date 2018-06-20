@@ -221,6 +221,12 @@
 
     bottom: 20px;
   }
+
+  &:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) {
+    .mdc-floating-label{
+      @include mdc-floating-label-max-width(calc(100% - #{$mdc-text-field-icon-padding}));
+    }
+  }
 }
 
 // Outlined
@@ -283,10 +289,6 @@
     border: none !important;  // FF adds unwanted border in HC mode on windows.
     background-color: transparent;
     z-index: 1;
-  }
-
-  .mdc-floating-label {
-    @include mdc-floating-label-width(auto);
   }
 
   .mdc-text-field__icon {
@@ -442,7 +444,6 @@
   .mdc-floating-label {
     @include mdc-rtl-reflexive-position(left, 1px);
     @include mdc-floating-label-fill-color($mdc-textarea-background);
-    @include mdc-floating-label-width(auto);
 
     top: $label-offset-y;
     bottom: auto;
