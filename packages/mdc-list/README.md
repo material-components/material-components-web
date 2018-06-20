@@ -135,6 +135,45 @@ OR
 </ul>
 ```
 
+### Single Selection List
+
+MDC List can handle selecting/unselecting list element based on click or keyboard action. When enabled, the `space` and `enter` keys (or `click` events) will trigger an 
+individual list item to become selected or unselected. 
+
+```html
+<ul id="my-list" class="mdc-list" aria-orientation="vertical">
+  <li class="mdc-list-item">Single-line item</li>
+  <li class="mdc-list-item">Single-line item</li>
+  <li class="mdc-list-item">Single-line item</li>
+</ul>
+```
+
+```js
+var listEle = document.getElementById('my-list');
+var list = new mdc.list.MDCList(listEle);
+list.singleSelection = true;
+```
+
+#### Pre-selected list item
+
+When rendering the list with a pre-selected list item, the list item that needs to be selected should contain
+the `aria-selected=true` attribute before creating the list. To prevent the flash of un-styled content, you should 
+add the `mdc-list-item--selected` class to the list item that has `aria-selected=true`.
+
+```html
+<ul id="my-list" class="mdc-list" aria-orientation="vertical">
+  <li class="mdc-list-item">Single-line item</li>
+  <li class="mdc-list-item" aria-selected="true">Single-line item</li>
+  <li class="mdc-list-item">Single-line item</li>
+</ul>
+```
+
+```js
+var listEle = document.getElementById('my-list');
+var list = new mdc.list.MDCList(listEle);
+list.singleSelection = true;
+```
+
 ## Style Customization
 
 ### CSS Classes
@@ -190,7 +229,8 @@ As the user navigates through the list, any `button` or `a` elements within the 
 when the list item is not focused. When the list item receives focus, the child `button` and `a` elements will 
 receive `tabIndex="0"`. This allows for the user to tab through list items elements and then tab to the
 first element after the list. The `Arrow`, `Home`, and `End` keys should be used for navigating internal list elements.
-The MDCList will perform the following actions for each key press
+If `singleSelection=true`, the list will allow the user to use the `Space` or `Enter` keys to select or deselect
+a list item. The MDCList will perform the following actions for each key press
 
 Key | Action
 --- | ---
@@ -200,6 +240,8 @@ Key | Action
 `ArrowRight` | When the list is in a horizontal orientation (default), it will cause the next list item to receive focus.
 `Home` | Will cause the first list item in the list to receive focus.
 `End` | Will cause the last list item in the list to receive focus.
+`Space` | Will cause the currently focused list item to become selected if `singleSelection=true`.
+`Enter` | Will cause the currently focused list item to become selected if `singleSelection=true`.
 
 ## Usage within Web Frameworks
 
