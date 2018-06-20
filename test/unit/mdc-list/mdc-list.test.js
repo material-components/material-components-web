@@ -22,16 +22,22 @@ import bel from 'bel';
 import {MDCList} from '../../../packages/mdc-list';
 import {MDCListFoundation} from '../../../packages/mdc-list/foundation';
 import domEvents from 'dom-events';
-import {strings} from '../../../packages/mdc-list/constants';
+import {cssClasses} from '../../../packages/mdc-list/constants';
 
 function getFixture() {
   return bel`
   <ul class="mdc-list">
-    <li class="mdc-list-item" tabindex="0">Fruit
-    <button>one</button></li>
-    <li class="mdc-list-item">Pasta
-    <button>two</button></li>
-    <li class="mdc-list-item">Pizza</li>
+    <li class="mdc-list-item" tabindex="0">
+      Fruit
+      <button>one</button>
+    </li>
+    <li class="mdc-list-item">
+      Pasta
+      <button>two</button>
+    </li>
+    <li class="mdc-list-item">
+      Pizza
+    </li>
    </ul>
   `;
 }
@@ -111,6 +117,18 @@ test('#adapter.focusItemAtIndex focuses the list item at the index specified', (
   document.body.removeChild(root);
 });
 
+test('adapter#isListItem returns true if the element is a list item', () => {
+  const {root, component} = setupTest(true);
+  const item1 = root.querySelectorAll('.mdc-list-item')[0];
+  assert.isTrue(component.getDefaultFoundation().adapter_.isListItem(item1));
+});
+
+test('adapter#isListItem returns false if the element is a not a list item', () => {
+  const {root, component} = setupTest(true);
+  const item1 = root.querySelectorAll('.mdc-list-item button')[0];
+  assert.isFalse(component.getDefaultFoundation().adapter_.isListItem(item1));
+});
+
 test('adapter#isElementFocusable returns true if the element is a focusable list item sub-element', () => {
   const {root, component} = setupTest(true);
   const item1 = root.querySelectorAll('.mdc-list-item button')[0];
@@ -122,6 +140,12 @@ test('adapter#isElementFocusable returns false if the element is not a focusable
     const {root, component} = setupTest(true);
     const item1 = root.querySelectorAll('.mdc-list-item')[2];
     assert.isFalse(component.getDefaultFoundation().adapter_.isElementFocusable(item1));
+  });
+
+test('adapter#isElementFocusable returns false if the element is null/undefined',
+  () => {
+    const {component} = setupTest(true);
+    assert.isFalse(component.getDefaultFoundation().adapter_.isElementFocusable());
   });
 
 test('#adapter.setTabIndexForListItemChildren sets the child button/a elements of index', () => {
@@ -190,7 +214,7 @@ test('singleSelection sets aria-selected to false for all elements of the list i
 test('singleSelection sets aria-selected to false for all elements of the list without aria-selected=true', () => {
   const {root, component} = setupTest();
   const listItems = root.querySelectorAll('.mdc-list-item:not([aria-selected="true"])');
-  listItems[0].setAttribute(strings.ARIA_SELECTED, 'true');
+  listItems[0].classList.add(cssClasses.LIST_SELECTED_CLASS);
   component.singleSelection = true;
   assert.equal(listItems.length - 1, root.querySelectorAll('.mdc-list-item[aria-selected="false"]').length);
 });

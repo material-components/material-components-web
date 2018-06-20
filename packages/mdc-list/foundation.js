@@ -47,6 +47,7 @@ class MDCListFoundation extends MDCFoundation {
       removeClassForElementIndex: () => {},
       focusItemAtIndex: () => {},
       isElementFocusable: () => {},
+      isListItem: () => {},
       setTabIndexForListItemChildren: () => {},
     });
   }
@@ -87,11 +88,14 @@ class MDCListFoundation extends MDCFoundation {
     this.isSingleSelectionList_ = value;
   }
 
-  /** @param {number} ndx */
-  setSelectedIndex(ndx) {
-    if (ndx === this.selectedIndex_) {
+  /** @param {number} index */
+  setSelectedIndex(index) {
+    if (index === this.selectedIndex_) {
       this.adapter_.setAttributeForElementIndex(this.selectedIndex_, strings.ARIA_SELECTED, false);
       this.adapter_.removeClassForElementIndex(this.selectedIndex_, cssClasses.LIST_SELECTED_CLASS);
+
+      // Used to reset the first element to tabindex=0 when deselecting a list item.
+      // If already on the first list item, leave tabindex at 0.
       if (this.selectedIndex_ > 0) {
         this.adapter_.setAttributeForElementIndex(this.selectedIndex_, 'tabindex', -1);
         this.adapter_.setAttributeForElementIndex(0, 'tabindex', 0);
@@ -106,13 +110,11 @@ class MDCListFoundation extends MDCFoundation {
       this.adapter_.setAttributeForElementIndex(this.selectedIndex_, 'tabindex', -1);
     }
 
-    if (ndx >= 0) {
-      if (this.adapter_.getListItemCount() > ndx) {
-        this.selectedIndex_ = ndx;
-        this.adapter_.setAttributeForElementIndex(this.selectedIndex_, strings.ARIA_SELECTED, true);
-        this.adapter_.addClassForElementIndex(this.selectedIndex_, cssClasses.LIST_SELECTED_CLASS);
-        this.adapter_.setAttributeForElementIndex(this.selectedIndex_, 'tabindex', 0);
-      }
+    if (index >= 0 && this.adapter_.getListItemCount() > index) {
+      this.selectedIndex_ = index;
+      this.adapter_.setAttributeForElementIndex(this.selectedIndex_, strings.ARIA_SELECTED, true);
+      this.adapter_.addClassForElementIndex(this.selectedIndex_, cssClasses.LIST_SELECTED_CLASS);
+      this.adapter_.setAttributeForElementIndex(this.selectedIndex_, 'tabindex', 0);
     }
   }
 
@@ -187,25 +189,12 @@ class MDCListFoundation extends MDCFoundation {
 
   /**
    * Click handler for the list.
-   * @param {Event} evt
    */
-  handleClick(evt) {
-    let currentIndex = this.adapter_.getFocusedElementIndex();
+  handleClick() {
+    const currentIndex = this.adapter_.getFocusedElementIndex();
 
-    if (currentIndex === -1) {
-      const listItem = this.getListItem_(evt.target);
-      if (this.adapter_.isElementFocusable(evt.target)) {
-        return;
-      }
+    if (currentIndex === -1) return;
 
-      currentIndex = this.adapter_.getListItemIndex(listItem);
-
-      if (currentIndex < 0) {
-        // If this event doesn't have a mdc-list-item ancestor from the
-        // current list (not from a sublist), return early.
-        return;
-      }
-    }
     this.setSelectedIndex(currentIndex);
   }
 
@@ -277,7 +266,7 @@ class MDCListFoundation extends MDCFoundation {
    * @private
    */
   getListItem_(target) {
-    while (!target.classList.contains(cssClasses.LIST_ITEM_CLASS)) {
+    while (!this.adapter_.isListItem(target)) {
       if (!target.parentElement) return null;
       target = target.parentElement;
     }

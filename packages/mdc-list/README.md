@@ -157,13 +157,12 @@ list.singleSelection = true;
 #### Pre-selected list item
 
 When rendering the list with a pre-selected list item, the list item that needs to be selected should contain
-the `aria-selected=true` attribute before creating the list. To prevent the flash of un-styled content, you should 
-add the `mdc-list-item--selected` class to the list item that has `aria-selected=true`.
+the `mdc-list-item--selected` class before creating the list.
 
 ```html
 <ul id="my-list" class="mdc-list" aria-orientation="vertical">
   <li class="mdc-list-item">Single-line item</li>
-  <li class="mdc-list-item mdc-list-item--selected" aria-selected="true">Single-line item</li>
+  <li class="mdc-list-item mdc-list-item--selected">Single-line item</li>
   <li class="mdc-list-item">Single-line item</li>
 </ul>
 ```
@@ -254,12 +253,12 @@ Method Signature | Description
 `getListItemCount() => Number` | Returns the total number of list items (elements with `mdc-list-item` class) that are direct children of the `root_` element.
 `getFocusedElementIndex() => Number` | Returns the `index` value of the currently focused element.
 `getListItemIndex(ele: Element) => Number` | Returns the `index` value of the provided `ele` element.
-`setAttributeForElementIndex(ndx: Number, attr: String, value: String) => void` | Sets the `attr` attribute to the value of `value` for the list item at `ndx`.
-`addClassForElementIndex(ndx: Number, className: String) => void` | Adds the `className` class to the list item at `ndx`.
-`removeClassForElementIndex(ndx: Number, className: String) => void` | Removes the `className` class to the list item at `ndx`.
-`focusItemAtIndex(ndx: Number) => void` | Focuses the list item at the `ndx` value specified.
+`setAttributeForElementIndex(index: Number, attr: String, value: String) => void` | Sets the `attr` attribute to `value` for the list item at `index`.
+`addClassForElementIndex(index: Number, className: String) => void` | Adds the `className` class to the list item at `index`.
+`removeClassForElementIndex(index: Number, className: String) => void` | Removes the `className` class to the list item at `index`.
+`focusItemAtIndex(index: Number) => void` | Focuses the list item at the `index` value specified.
 `isElementFocusable(ele: Element) => boolean` | Returns true if `ele` contains a focusable child element.
-`setTabIndexForListItemChildren(ndx: Number, value: Number) => void` | Sets the `tabindex` attribute to `value` for each child `button` and `a` element in the list item at the `ndx` specified.
+`setTabIndexForListItemChildren(index: Number, value: Number) => void` | Sets the `tabindex` attribute to `value` for each child `button` and `a` element in the list item at the `index` specified.
 
 ### `MDCListFoundation`
 
@@ -268,7 +267,7 @@ Method Signature | Description
 `setWrapFocus(value: Boolean) => void` | Sets the list to allow the up arrow on the first element to focus the last element of the list and vice versa. 
 `setVerticalOrientation(value: Boolean) => void` | Sets the list to an orientation causing the keys used for navigation to change. `true` results in the Up/Down arrow keys being used. `false` results in the Left/Right arrow keys being used. 
 `setSingleSelection(value: Boolean) => void` | Sets the list to be a selection list. Enables the `enter` and `space` keys for selecting/deselecting a list item. 
-`setSelectedIndex(ndx: Number) => void` | Toggles the `selected` state of the list item at index `ndx`. 
+`setSelectedIndex(index: Number) => void` | Toggles the `selected` state of the list item at index `index`. 
 `handleFocusIn(evt: Event) => void` | Handles the changing of `tabindex` to `0` for all `button` and `a` elements when a list item receives focus. 
 `handleFocusOut(evt: Event) => void` | Handles the changing of `tabindex` to `-1` for all `button` and `a` elements when a list item loses focus.
 `handleKeydown(evt: Event) => void` | Handles determining if a focus action should occur when a key event is triggered. 

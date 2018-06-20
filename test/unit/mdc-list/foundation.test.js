@@ -38,7 +38,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCListFoundation, [
     'getListItemCount', 'getFocusedElementIndex', 'getListItemIndex', 'setAttributeForElementIndex',
     'addClassForElementIndex', 'removeClassForElementIndex', 'focusItemAtIndex', 'isElementFocusable',
-    'setTabIndexForListItemChildren',
+    'isListItem', 'setTabIndexForListItemChildren',
   ]);
 });
 
@@ -64,6 +64,7 @@ test('#handleFocusIn switches list item button/a elements to tabindex=0', () => 
   const event = {target};
 
   td.when(mockAdapter.getListItemIndex(td.matchers.anything())).thenReturn(1);
+  td.when(mockAdapter.isListItem(td.matchers.anything())).thenReturn(true);
   foundation.handleFocusIn(event);
 
   td.verify(mockAdapter.setTabIndexForListItemChildren(1, 0));
@@ -75,6 +76,7 @@ test('#handleFocusOut switches list item button/a elements to tabindex=-1', () =
   const event = {target};
 
   td.when(mockAdapter.getListItemIndex(td.matchers.anything())).thenReturn(1);
+  td.when(mockAdapter.isListItem(td.matchers.anything())).thenReturn(true);
   foundation.handleFocusOut(event);
 
   td.verify(mockAdapter.setTabIndexForListItemChildren(1, -1));
@@ -87,6 +89,7 @@ test('#handleFocusIn switches list item button/a elements to tabindex=0 when tar
   const event = {target};
 
   td.when(mockAdapter.getListItemIndex(td.matchers.anything())).thenReturn(1);
+  td.when(mockAdapter.isListItem(td.matchers.anything())).thenReturn(true);
   foundation.handleFocusIn(event);
 
   td.verify(mockAdapter.setTabIndexForListItemChildren(1, 0));
@@ -99,6 +102,7 @@ test('#handleFocusOut switches list item button/a elements to tabindex=-1 when t
   const event = {target};
 
   td.when(mockAdapter.getListItemIndex(td.matchers.anything())).thenReturn(1);
+  td.when(mockAdapter.isListItem(td.matchers.anything())).thenReturn(true);
   foundation.handleFocusOut(event);
 
   td.verify(mockAdapter.setTabIndexForListItemChildren(1, -1));
@@ -163,6 +167,7 @@ test('#handleKeydown navigation key on an empty list does nothing', () => {
   td.when(mockAdapter.getFocusedElementIndex()).thenReturn(-1);
   td.when(mockAdapter.getListItemCount()).thenReturn(0);
   td.when(mockAdapter.getListItemIndex(td.matchers.anything())).thenReturn(-1);
+  td.when(mockAdapter.isListItem(td.matchers.anything())).thenReturn(true);
   foundation.handleKeydown(event);
 
   td.verify(mockAdapter.focusItemAtIndex(td.matchers.anything()), {times: 0});
@@ -336,6 +341,7 @@ test('#handleKeydown End key on empty list does nothing', () => {
   td.when(mockAdapter.getFocusedElementIndex()).thenReturn(-1);
   td.when(mockAdapter.getListItemCount()).thenReturn(0);
   td.when(mockAdapter.getListItemIndex(td.matchers.anything())).thenReturn(-1);
+  td.when(mockAdapter.isListItem(td.matchers.anything())).thenReturn(true);
   foundation.handleKeydown(event);
 
   td.verify(mockAdapter.focusItemAtIndex(td.matchers.anything()), {times: 0});
@@ -368,6 +374,8 @@ test('#handleKeydown finds the first ancestor with mdc-list-item', () => {
   td.when(mockAdapter.getFocusedElementIndex()).thenReturn(-1);
   td.when(mockAdapter.getListItemIndex(td.matchers.anything())).thenReturn(1);
   td.when(mockAdapter.getListItemCount()).thenReturn(3);
+  td.when(mockAdapter.isListItem(td.matchers.anything())).thenReturn(false);
+  td.when(mockAdapter.isListItem(td.matchers.anything())).thenReturn(true);
   foundation.handleKeydown(event);
 
   td.verify(mockAdapter.focusItemAtIndex(0), {times: 1});
@@ -384,6 +392,7 @@ test('#handleKeydown does not find ancestor with mdc-list-item so returns early'
   td.when(mockAdapter.getFocusedElementIndex()).thenReturn(-1);
   td.when(mockAdapter.getListItemIndex(td.matchers.anything())).thenReturn(-1);
   td.when(mockAdapter.getListItemCount()).thenReturn(3);
+  td.when(mockAdapter.isListItem(td.matchers.anything())).thenReturn(false);
   foundation.handleKeydown(event);
 
   td.verify(preventDefault(), {times: 0});
@@ -533,28 +542,11 @@ test('#handleClick when singleSelection=true on a list item should cause the lis
 
   td.when(mockAdapter.getFocusedElementIndex()).thenReturn(1);
   td.when(mockAdapter.getListItemCount()).thenReturn(3);
+  td.when(mockAdapter.isListItem(td.matchers.anything())).thenReturn(true);
   foundation.handleClick(event);
 
   td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', 0));
 });
-
-test('#handleClick when singleSelection=true on a list item subelement should cause the list item to be selected',
-  () => {
-    const {foundation, mockAdapter} = setupTest();
-    const parentElement = {classList: ['mdc-list-item']};
-    const preventDefault = td.func('preventDefault');
-    const target = {classList: [], parentElement};
-    const event = {target, preventDefault};
-
-    td.when(mockAdapter.getFocusedElementIndex()).thenReturn(-1);
-    td.when(mockAdapter.getListItemIndex(td.matchers.anything())).thenReturn(1);
-    td.when(mockAdapter.getListItemCount()).thenReturn(3);
-    td.when(mockAdapter.isElementFocusable(td.matchers.anything())).thenReturn(false);
-    foundation.setSingleSelection(true);
-    foundation.handleClick(event);
-
-    td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', 0));
-  });
 
 test('#handleClick when singleSelection=true on a button subelement should not cause the list item to be selected',
   () => {
@@ -567,6 +559,7 @@ test('#handleClick when singleSelection=true on a button subelement should not c
     td.when(mockAdapter.getFocusedElementIndex()).thenReturn(-1);
     td.when(mockAdapter.isElementFocusable(td.matchers.anything())).thenReturn(true);
     td.when(mockAdapter.getListItemIndex(td.matchers.anything())).thenReturn(1);
+    td.when(mockAdapter.isListItem(td.matchers.anything())).thenReturn(false);
     foundation.setSingleSelection(true);
     foundation.handleClick(event);
 

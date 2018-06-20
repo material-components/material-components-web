@@ -18,7 +18,7 @@
 import MDCComponent from '@material/base/component';
 import {MDCListFoundation} from './foundation';
 import {MDCListAdapter} from './adapter';
-import {strings} from './constants';
+import {cssClasses, strings} from './constants';
 
 /**
  * @extends MDCComponent<!MDCListFoundation>
@@ -103,8 +103,8 @@ export class MDCList extends MDCComponent {
     }
 
     this.foundation_.setSingleSelection(value);
-    const selectedElement = this.root_.querySelector('.mdc-list-item[aria-selected="true"]');
-    [].slice.call(this.root_.querySelectorAll('.mdc-list-item:not([aria-selected="true"])'))
+    const selectedElement = this.root_.querySelector('.mdc-list-item--selected');
+    [].slice.call(this.root_.querySelectorAll('.mdc-list-item:not(.mdc-list-item--selected)'))
       .forEach((ele) => ele.setAttribute(strings.ARIA_SELECTED, false));
 
     if (selectedElement) {
@@ -112,9 +112,9 @@ export class MDCList extends MDCComponent {
     }
   }
 
-  /** @param {number} ndx */
-  set selectedIndex(ndx) {
-    this.foundation_.setSelectedIndex(ndx);
+  /** @param {number} index */
+  set selectedIndex(index) {
+    this.foundation_.setSelectedIndex(index);
   }
 
   /** @return {!MDCListFoundation} */
@@ -123,10 +123,11 @@ export class MDCList extends MDCComponent {
       getListItemCount: () => this.listElements_.length,
       getFocusedElementIndex: () => this.listElements_.indexOf(document.activeElement),
       getListItemIndex: (node) => this.listElements_.indexOf(node),
-      setAttributeForElementIndex: (ndx, attr, value) => this.listElements_[ndx].setAttribute(attr, value),
-      addClassForElementIndex: (ndx, className) => this.listElements_[ndx].classList.add(className),
-      removeClassForElementIndex: (ndx, className) => this.listElements_[ndx].classList.remove(className),
-      focusItemAtIndex: (ndx) => this.listElements_[ndx].focus(),
+      setAttributeForElementIndex: (index, attr, value) => this.listElements_[index].setAttribute(attr, value),
+      addClassForElementIndex: (index, className) => this.listElements_[index].classList.add(className),
+      removeClassForElementIndex: (index, className) => this.listElements_[index].classList.remove(className),
+      isListItem: (target) => target.classList.contains(cssClasses.LIST_ITEM_CLASS),
+      focusItemAtIndex: (index) => this.listElements_[index].focus(),
       isElementFocusable: (ele) => {
         if (!ele) return false;
         let matches = Element.prototype.matches;
