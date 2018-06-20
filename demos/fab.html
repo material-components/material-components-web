@@ -182,6 +182,39 @@
             </figcaption>
           </figure>
         </div>
+        <div class="demo-fabs">
+          <figure class="demo-figure-fab-extended">
+            <button class="mdc-fab mdc-fab--extended mdc-fab--collapsed demo-fab-extended-collapsed" aria-label="Create">
+              <span class="material-icons mdc-fab__icon">add</span>
+              <span class="mdc-fab__label">Create</span>
+            </button>
+            <figcaption>
+              <div>Extended FAB (Transform using CSS only)</div>
+            </figcaption>
+          </figure>
+        </div>
+        <div class="demo-fabs">
+          <figure class="demo-figure-fab-extended">
+            <button class="mdc-fab mdc-fab--extended mdc-fab--transformable demo-fab-extended-transformable" aria-label="Create">
+              <span class="material-icons mdc-fab__icon">add</span>
+              <span class="mdc-fab__label">Create</span>
+            </button>
+            <figcaption>
+                <div>Extended FAB (Transform using JavaScript) - Fixed position at bottom right corner with plus icon</div>
+              </figcaption>
+          </figure>
+        </div>
+        <div class="demo-fabs">
+          <figure class="demo-figure-fab-extended">
+            <button class="mdc-fab mdc-fab--extended mdc-fab--transformable demo-fab-extended-transformable-reverse-order" aria-label="Create">
+              <span class="mdc-fab__label">Create</span>
+              <span class="material-icons mdc-fab__icon">add</span>
+            </button>
+            <figcaption>
+                <div>Extended FAB (Transform using JavaScript) - Fixed position at bottom right corner with plus icon</div>
+              </figcaption>
+          </figure>
+        </div>  
       </section>
 
       <section>
@@ -228,11 +261,96 @@
 
     <script src="/assets/material-components-web.js" async></script>
     <script>
+      var ExtendedFab = function(root) {
+        this.root_ = root;
+        this.isTransformable_ = this.root_.classList.contains('mdc-fab--transformable');
+        this.textLabelWidth_;
+        this.handleMouseEnter_ = this.handleMouseEnter.bind(this);
+        this.handleMouseMove_ = this.handleMouseMove.bind(this);
+
+        if (this.isTransformable_) {
+          this.textLabelWidth_ = this.getTextLabel().getBoundingClientRect().width;
+          this.addClass('mdc-fab--transformable-collapsed');
+          this.isOpen_ = false;
+          this.registerEvents();
+        }
+      };
+
+      ExtendedFab.prototype.addClass = function(className) {
+        this.root_.classList.add(className);
+      };
+
+      ExtendedFab.prototype.removeClass = function(className) {
+        this.root_.classList.remove(className);
+      };
+
+      ExtendedFab.prototype.getTextLabel = function() {
+        return this.root_.querySelector('.mdc-fab__label');
+      };
+
+      ExtendedFab.prototype.registerEvents = function() {
+        this.root_.addEventListener('mouseenter', this.handleMouseEnter_);
+      };
+
+      ExtendedFab.prototype.handleMouseEnter = function(event) {
+        if (this.timer_) {
+          clearTimeout(this.timer_);
+        }
+
+        this.timer_ = setTimeout((function() {
+            // console.log('set mousemove');
+            document.addEventListener('mousemove', this.handleMouseMove_);
+          }).bind(this), 240);
+
+        this.open_();
+      };
+
+      ExtendedFab.prototype.open_ = function() {
+        // Animate the fab exterior and the icon.
+        this.removeClass('mdc-fab--transformable-collapsed');
+
+        // Animate the label.
+        this.getTextLabel().style.width = `${this.textLabelWidth_}px`;
+        this.getTextLabel().style.opacity = '1';
+        this.isOpen_ = true;
+      };
+
+      ExtendedFab.prototype.close_ = function() {
+        // Animate the label.
+        this.getTextLabel().style.width = null;
+        this.getTextLabel().style.opacity = null;
+
+        // Animate the fab exterior and the icon.
+        this.addClass('mdc-fab--transformable-collapsed');
+        this.isOpen_ = false;
+      };
+
+      ExtendedFab.prototype.handleMouseMove = function(event) {
+        // console.log('mousemove');
+
+        var rect = this.root_.getBoundingClientRect();
+        var cursorX = event.clientX;
+        var cursorY = event.clientY;
+        if ((cursorX >= rect.left && cursorX <= rect.right) &&
+          (cursorY >= rect.top && cursorY <= rect.bottom)) {
+          return;
+          // if (!this.isOpen_) this.open_();
+        } else {
+          this.close_();
+          // console.log('unset mousemove');
+          document.removeEventListener('mousemove', this.handleMouseMove_);
+        }
+      };
+
       demoReady(function() {
         var fabs = document.querySelectorAll('.mdc-fab:not([data-demo-no-js])');
         for (var i = 0, fab; fab = fabs[i]; i++) {
           mdc.ripple.MDCRipple.attachTo(fab);
         }
+
+        var transformableFab = document.querySelector('.demo-fab-extended-transformable');
+        new ExtendedFab(transformableFab);
+        new ExtendedFab(document.querySelector('.demo-fab-extended-transformable-reverse-order'));
 
         var addFab = document.getElementById('enter-exit-add');
         var VIEW_CLASS = 'fab-motion-container__view';
