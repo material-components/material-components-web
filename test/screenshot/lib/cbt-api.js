@@ -18,17 +18,38 @@ const request = require('request-promise-native');
 const {ExitCode} = require('../lib/constants');
 
 const API_BASE_URL = 'https://crossbrowsertesting.com/api/v3';
-const API_USERNAME = process.env.CBT_USERNAME;
-const API_AUTHKEY = process.env.CBT_AUTHKEY;
+const MDC_CBT_USERNAME = process.env.MDC_CBT_USERNAME;
+const MDC_CBT_AUTHKEY = process.env.MDC_CBT_AUTHKEY;
 
 class CbtApi {
   constructor() {
-    if (!API_USERNAME) {
-      console.error('Error: CBT_USERNAME environment variable is not set');
+    if (!MDC_CBT_USERNAME) {
+      console.error(`
+ERROR: Required environment variable 'MDC_CBT_USERNAME' is not set.
+
+Please add the following to your ~/.bash_profile or ~/.bashrc file:
+
+    export MDC_CBT_USERNAME='...'
+    export MDC_CBT_AUTHKEY='...'
+
+Credentials can be found on the CBT account page:
+https://crossbrowsertesting.com/account
+`);
       process.exit(ExitCode.MISSING_ENV_VAR);
     }
-    if (!API_AUTHKEY) {
-      console.error('Error: CBT_AUTHKEY environment variable is not set');
+
+    if (!MDC_CBT_AUTHKEY) {
+      console.error(`
+ERROR: Required environment variable 'MDC_CBT_AUTHKEY' is not set.
+
+Please add the following to your ~/.bash_profile or ~/.bashrc file:
+
+    export MDC_CBT_USERNAME='...'
+    export MDC_CBT_AUTHKEY='...'
+
+Credentials can be found on the CBT Account page:
+https://crossbrowsertesting.com/account
+`);
       process.exit(ExitCode.MISSING_ENV_VAR);
     }
   }
@@ -57,8 +78,8 @@ class CbtApi {
       method,
       uri: `${API_BASE_URL}${endpoint}`,
       auth: {
-        username: API_USERNAME,
-        password: API_AUTHKEY,
+        username: MDC_CBT_USERNAME,
+        password: MDC_CBT_AUTHKEY,
       },
       body,
       json: true, // Automatically stringify the request body and parse the response body as JSON

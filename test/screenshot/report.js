@@ -208,6 +208,12 @@ window.mdc.reportUi = (() => {
      * @private
      */
     getApproveCommandArgs_(reportUiState) {
+      const reportUrlArg = `--report=${this.runReport_.runResult.publicReportJsonUrl}`;
+
+      if (reportUiState.uncheckedBrowserCbEls.length === 0) {
+        return ['--all', reportUrlArg];
+      }
+
       const args = [];
 
       for (const [changeGroupId, changelist] of Object.entries(reportUiState.changelistDict)) {
@@ -231,13 +237,7 @@ window.mdc.reportUi = (() => {
         args.push(`--${changeGroupId}=${targets.join(',')}`);
       }
 
-      // Copy the array to avoid mutating it with `sort()`
-      if (args.concat().sort().join(',') === '--all-added,--all-diffs,--all-removed') {
-        args.length = 0;
-        args.push('--all');
-      }
-
-      args.push(`--report=${this.runReport_.runResult.publicReportJsonUrl}`);
+      args.push(reportUrlArg);
 
       return args;
     }
@@ -257,8 +257,8 @@ window.mdc.reportUi = (() => {
       }
 
       return [
-        ...Array.from(htmlFilePathSet.values()).map((htmlFilePath) => `--mdc-include-url=${htmlFilePath}`),
-        ...Array.from(userAgentAliasSet.values()).map((userAgentAlias) => `--mdc-include-browser=${userAgentAlias}`),
+        ...Array.from(htmlFilePathSet.values()).map((htmlFilePath) => `--url=${htmlFilePath}`),
+        ...Array.from(userAgentAliasSet.values()).map((userAgentAlias) => `--browser=${userAgentAlias}`),
       ];
     }
 

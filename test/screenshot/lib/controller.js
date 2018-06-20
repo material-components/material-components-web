@@ -159,14 +159,14 @@ class Controller {
     if (runnableTestCases.length === 0) {
       throw new Error(
         'No URLs matched your filters! ' +
-        'Try using less restrictive CLI flags (e.g., `--mdc-include-url=button/classes/baseline`).'
+        'Try using less restrictive CLI flags (e.g., `--url=button/classes/baseline`).'
       );
     }
 
     if (runnableUserAgents.length === 0) {
       throw new Error(
         'No browsers matched your filters! ' +
-        'Try using less restrictive CLI flags (e.g., `--mdc-include-browser=chrome`).'
+        'Try using less restrictive CLI flags (e.g., `--browser=chrome`).'
       );
     }
 

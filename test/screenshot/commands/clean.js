@@ -25,11 +25,15 @@ module.exports = {
   async runAsync() {
     const cliArgs = new CliArgParser();
 
-    await del([
-      'test/screenshot/out',
-      'test/screenshot/report.html',
-      'test/screenshot/report.json',
-    ]);
+    const relativePathPatterns = [
+      'out',
+      'report.html',
+      'report.json',
+    ].map((filename) => {
+      return path.join(cliArgs.testDir, filename);
+    });
+
+    await del(relativePathPatterns);
 
     mkdirp.sync(path.join(cliArgs.testDir, 'out'));
   },
