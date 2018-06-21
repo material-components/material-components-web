@@ -16,15 +16,23 @@
 
 'use strict';
 
+const BuildCommand = require('./build');
 const Controller = require('../lib/controller');
-const controller = new Controller();
+const {ExitCode} = require('../lib/constants');
 
-controller.initialize()
-  .then((runReport) => controller.uploadAllAssets(runReport), handleError)
-  .catch(handleError)
-;
+module.exports = {
+  async runAsync() {
+    await BuildCommand.runAsync();
+    const controller = new Controller();
 
-function handleError(err) {
-  console.error(err);
-  process.exit(1);
-}
+    controller.initForDemo()
+      .then((runReport) => controller.uploadAllAssets(runReport), handleError)
+      .catch(handleError)
+    ;
+
+    function handleError(err) {
+      console.error(err);
+      process.exit(ExitCode.UNKNOWN_ERROR);
+    }
+  },
+};

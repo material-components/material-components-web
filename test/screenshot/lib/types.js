@@ -24,7 +24,7 @@
 
 /**
  * @typedef {{
- *   runTarget: !RunTarget,
+ *   runTarget: ?RunTarget,
  *   runResult: ?RunResult,
  * }}
  */
@@ -36,6 +36,7 @@ let RunReport;
  *   skippedUserAgents: !Array<!CbtUserAgent>,
  *   runnableTestCases: !Array<!UploadableTestCase>,
  *   skippedTestCases: !Array<!UploadableTestCase>,
+ *   baseGoldenJsonData: !SnapshotSuiteJson,
  * }}
  */
 let RunTarget;
@@ -44,12 +45,12 @@ let RunTarget;
  * @typedef {{
  *   publicReportPageUrl: ?string,
  *   publicReportJsonUrl: ?string,
- *   publicSnapshotJsonUrl: ?string,
  *   diffs: !Array<!ImageDiffJson>,
  *   added: !Array<!ImageDiffJson>,
  *   removed: !Array<!ImageDiffJson>,
  *   unchanged: !Array<!ImageDiffJson>,
  *   skipped: !Array<!ImageDiffJson>,
+ *   approvedGoldenJsonData: ?SnapshotSuiteJson,
  * }}
  */
 let RunResult;
@@ -67,6 +68,66 @@ let RunResult;
  * }}
  */
 let ImageDiffJson;
+
+
+/*
+ * Report UI
+ */
+
+
+/**
+ * @typedef {{
+ *   checkedBrowserCbEls: !Array<!HTMLInputElement>,
+ *   uncheckedBrowserCbEls: !Array<!HTMLInputElement>,
+ *   changelistDict: !ReportUiChangelistDict,
+ *   reviewStatusCountDict: !ReportUiReviewStatusCountDict,
+ * }}
+ */
+let ReportUiState;
+
+/**
+ * @typedef {{
+ *   diffs: !ReportUiChangelistState,
+ *   added: !ReportUiChangelistState,
+ *   removed: !ReportUiChangelistState,
+ * }}
+ */
+let ReportUiChangelistDict;
+
+/**
+ * @typedef {{
+ *   cbEl: !HTMLInputElement,
+ *   countEl: !HTMLElement,
+ *   reviewStatusEl: !HTMLElement,
+ *   checkedBrowserCbEls: !Array<!HTMLInputElement>,
+ *   uncheckedBrowserCbEls: !Array<!HTMLInputElement>,
+ *   reviewStatusCountDict: !ReportUiReviewStatusCountDict,
+ *   pageDict: !ReportUiPageDict,
+ * }}
+ */
+let ReportUiChangelistState;
+
+/**
+ * @typedef {!Object<string, !ReportUiPageState>}
+ */
+let ReportUiPageDict;
+
+/**
+ * @typedef {{
+ *   cbEl: !HTMLInputElement,
+ *   countEl: !HTMLElement,
+ *   reviewStatusEl: !HTMLElement,
+ *   checkedBrowserCbEls: !Array<!HTMLInputElement>,
+ *   uncheckedBrowserCbEls: !Array<!HTMLInputElement>,
+ *   reviewStatusCountDict: !ReportUiReviewStatusCountDict,
+ * }}
+ */
+let ReportUiPageState;
+
+/**
+ * @typedef {!Object<string, number>}
+ */
+let ReportUiReviewStatusCountDict;
 
 
 /*
@@ -122,7 +183,7 @@ class UploadableFile {
     /** @type {string} */
     this.publicUrl = `${destinationBaseUrl}${this.destinationAbsoluteFilePath}`;
 
-    /** @type {?Buffer} */
+    /** @type {?Buffer|?string} */
     this.fileContent = fileContent;
 
     /** @type {?CbtUserAgent} */
@@ -188,6 +249,18 @@ let SnapshotResultJson;
  * CLI args
  */
 
+
+/**
+ * @typedef {{
+ *   optionNames: !Array<string>,
+ *   description: string,
+ *   isRequired: ?boolean,
+ *   type: ?string,
+ *   defaultValue: ?*,
+ *   exampleValue: ?string,
+ * }}
+ */
+let CliOptionConfig;
 
 /**
  * @typedef {{
@@ -285,10 +358,12 @@ let CbtDevice;
  *   version: string,
  *   type: string,
  *   device: string,
+ *   icon_class: string,
  *   selenium_version: string,
  *   webdriver_type: string,
  *   webdriver_version: string,
  *   parsedVersionNumber: ?string,
+ *   parsedIconUrl: ?string,
  * }}
  */
 let CbtBrowser;
@@ -306,6 +381,53 @@ let CbtBrowser;
  * }}
  */
 let CbtDeviceResolution;
+
+
+/*
+ * ps-node API externs
+ */
+
+
+/**
+ * @typedef {{
+ *   pid: number,
+ *   ppid: number,
+ *   command: string,
+ *   arguments: !Array<string>,
+ * }}
+ */
+let PsNodeProcess;
+
+
+/*
+ * Node.js API
+ */
+
+
+/**
+ * @typedef {{
+ *   cwd: ?string,
+ *   env: ?Object,
+ *   argv0: ?string,
+ *   stdio: ?Array<string>,
+ *   detached: ?boolean,
+ *   uid: ?number,
+ *   gid: ?number,
+ *   shell: ?boolean,
+ *   windowsVerbatimArguments: ?boolean,
+ *   windowsHide: ?boolean,
+ * }}
+ */
+let ChildProcessSpawnOptions;
+
+/**
+ * @typedef {{
+ *   status: number,
+ *   signal: ?string,
+ *   pid: number,
+ * }}
+ */
+let ChildProcessSpawnResult;
 
 
 /*

@@ -42,6 +42,7 @@ th {
  */
 
 .report-body {
+  padding-bottom: 100px; // add space for .report-toolbar
   font-family: "Roboto Mono", Consolas, monospace;
   font-size: smaller;
 }
@@ -72,6 +73,13 @@ th {
   font-size: x-large;
 }
 
+.report-changelist__checkbox--hidden,
+.report-file__checkbox--hidden,
+.report-browser__checkbox--hidden {
+  pointer-events: none;
+  visibility: hidden;
+}
+
 /*
  * Metadata
  */
@@ -86,14 +94,14 @@ th {
 
 .report-metadata__cell {
   padding: 2px 10px 2px 0;
-  text-align: left;
   font-weight: normal;
+  text-align: left;
   vertical-align: top;
 }
 
 .report-metadata__cell--key {
-  font-style: italic;
   width: 10em;
+  font-style: italic;
 }
 
 /*
@@ -131,6 +139,12 @@ th {
  * Browser
  */
 
+.report-browser__icon {
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+}
+
 .report-browser__content {
   display: flex;
   padding: 10px 24px;
@@ -150,10 +164,155 @@ th {
 
 .report-browser__image {
   max-width: 100%;
+  background-color: white;
   vertical-align: top;
 }
 
 .report-congrats {
   color: green;
   font-size: 3rem;
+}
+
+/*
+ * Toolbar
+ */
+
+.report-toolbar {
+  display: flex;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 24px;
+  background-color: #ffff8e;
+  box-shadow: 0 0 10px rgba(0, 0, 0, .3);
+}
+
+.report-toolbar--hidden {
+  display: none;
+}
+
+.report-toolbar__column {
+  flex-grow: 1;
+}
+
+.report-toolbar__column + .report-toolbar__column {
+  margin-left: 64px;
+}
+
+.report-toolbar__column:last-child {
+  text-align: right;
+}
+
+.report-toolbar__button--approve,
+.report-toolbar__button--retry {
+  font-weight: bold;
+}
+
+.report-toolbar__button--approve {
+  color: green;
+}
+.report-toolbar__button--approve:disabled {
+  color: rgba(green, .5);
+}
+
+.report-toolbar__button--retry {
+  color: red;
+}
+.report-toolbar__button--retry:disabled {
+  color: rgba(red, .5);
+}
+
+/*
+ * Review status bubble
+ */
+
+.report-review-status {
+  display: inline-block;
+  padding: 2px 6px;
+  border: 1px solid #aaa;
+  border-radius: 3px;
+  background: #ccc;
+  color: #000;
+  text-align: center;
+}
+
+.report-review-status--hidden {
+  visibility: hidden;
+}
+
+.report-review-status[data-review-status="approve"] {
+  border-color: green;
+  background-color: #cfefc5;
+  color: green;
+}
+
+.report-review-status[data-review-status="retry"] {
+  border-color: red;
+  background-color: #ffc6c3;
+  color: red;
+}
+
+.report-review-status[data-review-status="mixed"] {
+  border-color: purple;
+  background-color: #ebb7fb;
+  color: purple;
+}
+
+/*
+ * CLI command modal window
+ */
+
+.report-cli-modal {
+  display: flex;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, .25);
+}
+
+.report-cli-modal[data-state="closed"] {
+  display: none;
+}
+
+.report-cli-modal__window {
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+  height: 400px;
+  border-radius: 2px;
+  background-color: white;
+  box-shadow: 0 0 30px rgba(0, 0, 0, .5);
+}
+
+.report-cli-modal__title {
+  padding: 10px;
+  font-size: large;
+}
+
+.report-cli-modal__content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 0 10px;
+}
+
+.report-cli-modal__command {
+  flex-grow: 1;
+  width: 100%;
+  height: 100%;
+  padding: 10px 10px;
+}
+
+.report-cli-modal__footer {
+  padding: 10px;
+  text-align: right;
+}
+
+.report-cli-modal__button--copy {
+  font-weight: bold;
 }

@@ -16,21 +16,33 @@
 
 'use strict';
 
+const detectPort = require('detect-port');
 const express = require('express');
 const serveIndex = require('serve-index');
 
-const PathResolver = require('../../../scripts/build/path-resolver');
-const pathResolver = new PathResolver();
+const CliArgParser = require('../lib/cli-arg-parser');
+const {ExitCode} = require('../lib/constants');
 
-const absolutePath = pathResolver.getAbsolutePath('/test/screenshot');
-const app = express();
+module.exports = {
+  async runAsync() {
+    const cliArgs = new CliArgParser();
+    const {port, testDir} = cliArgs;
 
-app.use('/', express.static(absolutePath), serveIndex(absolutePath));
+    if (await detectPort(port) !== port) {
+      console.error(`Error: HTTP port ${port} is already in use!`);
+      process.exit(ExitCode.HTTP_PORT_ALREADY_IN_USE);
+    }
 
-app.listen(8080, () => {
-  console.log(`
+    const app = express();
+
+    app.use('/', express.static(testDir), serveIndex(testDir));
+
+    app.listen(port, () => {
+      console.log(`
 ==========================================================
-Local development server running on http://localhost:8080/
+Local development server running on http://localhost:${port}/
 ==========================================================
 `);
-});
+    });
+  },
+};

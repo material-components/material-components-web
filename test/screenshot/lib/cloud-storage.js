@@ -17,18 +17,20 @@
 'use strict';
 
 const CliArgParser = require('./cli-arg-parser');
+const Duration = require('./duration');
 const GitRepo = require('./git-repo');
 const GoogleCloudStorage = require('@google-cloud/storage');
 const LocalStorage = require('./local-storage');
-const childProcess = require('child_process');
+const ProcessManager = require('../lib/process-manager');
+const {ExitCode} = require('../lib/constants');
 
 /** Maximum number of times to retry a failed HTTP request. */
 const API_MAX_RETRIES = 5;
 
 /** Maximum amount of time to wait for the GCS API to fire a "finish" event after it fires a "response" event. */
-const API_FINISH_EVENT_TIMEOUT_MS = 10 * 1000;
+const API_FINISH_EVENT_TIMEOUT_DURATION = Duration.minutes(10);
 
-const GCLOUD_SERVICE_ACCOUNT_KEY_FILE_PATH = process.env.MDC_GCLOUD_SERVICE_ACCOUNT_KEY_FILE_PATH;
+const MDC_GCS_CREDENTIALS = process.env.MDC_GCS_CREDENTIALS;
 const USERNAME = process.env.USER || process.env.USERNAME;
 
 /**
@@ -36,9 +38,25 @@ const USERNAME = process.env.USER || process.env.USERNAME;
  */
 class CloudStorage {
   constructor() {
-    const gcs = new GoogleCloudStorage({
-      credentials: require(GCLOUD_SERVICE_ACCOUNT_KEY_FILE_PATH),
-    });
+    if (!MDC_GCS_CREDENTIALS) {
+      console.error(`
+ERROR: Required environment variable 'MDC_GCS_CREDENTIALS' is not set.
+
+Please add the following to your ~/.bash_profile or ~/.bashrc file:
+
+    export MDC_GCS_CREDENTIALS=$(< path/to/gcp-credentials.json)
+
+Credentials can be found on the GCP Service Accounts page:
+https://console.cloud.google.com/iam-admin/serviceaccounts?project=material-components-web
+`);
+      process.exit(ExitCode.MISSING_ENV_VAR);
+    }
+
+    /**
+     * @type {!Object}
+     * @private
+     */
+    this.gcsCredentials_ = JSON.parse(MDC_GCS_CREDENTIALS);
 
     /**
      * @type {!CliArgParser}
@@ -59,10 +77,33 @@ class CloudStorage {
     this.localStorage_ = new LocalStorage();
 
     /**
-     * @type {!Bucket}
+     * @type {!Object<string, !Bucket>}
      * @private
      */
-    this.gcsBucket_ = gcs.bucket(this.cliArgs_.gcsBucket);
+    this.gcsBucketCache_ = {};
+
+    /**
+     * @type {!ProcessManager}
+     * @private
+     */
+    this.processManager_ = new ProcessManager();
+  }
+
+  /**
+   * @return {!Bucket}
+   * @private
+   */
+  getGcsBucket_() {
+    const name = this.cliArgs_.gcsBucket;
+
+    if (!this.gcsBucketCache_[name]) {
+      const gcs = new GoogleCloudStorage({
+        credentials: this.gcsCredentials_,
+      });
+      this.gcsBucketCache_[name] = gcs.bucket(this.cliArgs_.gcsBucket);
+    }
+
+    return this.gcsBucketCache_[name];
   }
 
   /**
@@ -80,21 +121,25 @@ class CloudStorage {
    */
   async uploadAllAssets(baseUploadDir) {
     return new Promise(async (resolve, reject) => {
+      /** @type {!ChildProcessSpawnResult} */
       const gsutilProcess = await this.spawnGsutilUploadProcess_(baseUploadDir);
-      gsutilProcess.on('close', (exitCode) => {
-        console.log('');
-        if (exitCode === 0) {
-          resolve();
-        } else {
-          reject(new Error(`gsutil processes exited with code ${exitCode}`));
-        }
-      });
+
+      /** @type {number} */
+      const exitCode = gsutilProcess.status;
+
+      console.log('');
+
+      if (exitCode === 0) {
+        resolve();
+      } else {
+        reject(new Error(`gsutil processes exited with code ${exitCode}`));
+      }
     });
   }
 
   /**
    * @param {string} baseUploadDir
-   * @return {!Promise<!ChildProcess>}
+   * @return {!Promise<!ChildProcessSpawnResult>}
    * @private
    */
   async spawnGsutilUploadProcess_(baseUploadDir) {
@@ -106,17 +151,7 @@ class CloudStorage {
 
     console.log(`${cmd} ${args.join(' ')}\n`);
 
-    return childProcess.spawn(
-      cmd,
-      args,
-      {
-        wd: process.env.PWD,
-        env: process.env,
-        stdio: 'inherit',
-        shell: true,
-        windowsHide: true,
-      }
-    );
+    return this.processManager_.spawnChildProcessSync(cmd, args);
   }
 
   /**
@@ -156,7 +191,7 @@ class CloudStorage {
     };
 
 
-    const cloudFile = this.gcsBucket_.file(gcsAbsoluteFilePath);
+    const cloudFile = this.getGcsBucket_().file(gcsAbsoluteFilePath);
     const [cloudFileExists] = await cloudFile.exists();
 
     if (cloudFileExists) {
@@ -191,10 +226,11 @@ class CloudStorage {
           timer = setTimeout(() => {
             console.warn([
               `WARNING: The GCS API did not fire a "finish" event for file ${queuePosition} - ${gcsAbsoluteFilePath}`,
+              `after ${API_FINISH_EVENT_TIMEOUT_DURATION.toHuman()}.`,
               'This is a bug in GCS. The file has probably finished uploading.',
             ].join('\n'));
             resolve();
-          }, API_FINISH_EVENT_TIMEOUT_MS);
+          }, API_FINISH_EVENT_TIMEOUT_DURATION.toMillis());
         })
         .end(uploadableFile.fileContent);
     }));
