@@ -96,7 +96,7 @@ export class MDCList extends MDCComponent {
 
   /** @param {boolean} isSingleSelectionList */
   set singleSelection(isSingleSelectionList) {
-    if (value) {
+    if (isSingleSelectionList) {
       this.root_.addEventListener('click', this.handleClick_);
     } else {
       this.root_.removeEventListener('click', this.handleClick_);
