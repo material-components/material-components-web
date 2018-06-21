@@ -94,15 +94,15 @@ export class MDCList extends MDCComponent {
     this.foundation_.setWrapFocus(value);
   }
 
-  /** @param {boolean} value */
-  set singleSelection(value) {
+  /** @param {boolean} isSingleSelectionList */
+  set singleSelection(isSingleSelectionList) {
     if (value) {
       this.root_.addEventListener('click', this.handleClick_);
     } else {
       this.root_.removeEventListener('click', this.handleClick_);
     }
 
-    this.foundation_.setSingleSelection(value);
+    this.foundation_.setSingleSelection(isSingleSelectionList);
     const selectedElement = this.root_.querySelector('.mdc-list-item--selected');
     [].slice.call(this.root_.querySelectorAll('.mdc-list-item:not(.mdc-list-item--selected)'))
       .forEach((ele) => ele.setAttribute(strings.ARIA_SELECTED, false));
