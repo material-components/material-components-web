@@ -20,6 +20,7 @@ $mdc-switch-track-width: 32px;
 $mdc-switch-track-height: 14px;
 $mdc-switch-thumb-diameter: 20px;
 $mdc-switch-tap-target-size: 48px;
+$mdc-switch-native-control-width: $mdc-switch-track-width + ($mdc-switch-tap-target-size - $mdc-switch-thumb-diameter);
 $mdc-switch-thumb-active-margin: $mdc-switch-track-width - $mdc-switch-thumb-diameter;
 
 $mdc-switch-toggled-off-thumb-color: mdc-theme-prop-value(surface);

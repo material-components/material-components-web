@@ -36,8 +36,11 @@
 }
 
 .mdc-switch__native-control {
-  @include mdc-switch-tap-target_;
+  @include mdc-rtl-reflexive-position(left, -24px);
 
+  position: absolute;
+  width: $mdc-switch-native-control-width;
+  height: $mdc-switch-tap-target-size;
   opacity: 0;
   cursor: pointer;
 }
@@ -51,12 +54,11 @@
     mdc-switch-transition(background-color),
     mdc-switch-transition(border-color);
   border: 1px solid;
-  border-radius: 7px;
+  border-radius: $mdc-switch-track-height / 2;
   opacity: .38;
 }
 
 .mdc-switch__thumb-underlay {
-  @include mdc-switch-tap-target_;
   @include mdc-rtl-reflexive-position(left, -14px);
   @include mdc-ripple-surface();
   @include mdc-ripple-radius-unbounded;
@@ -65,9 +67,12 @@
     $has-nested-focusable-element: true);
 
   display: flex;
+  position: absolute;
   top: -14px;
   align-items: center;
   justify-content: center;
+  width: $mdc-switch-tap-target-size;
+  height: $mdc-switch-tap-target-size;
   margin-top: $mdc-switch-thumb-vertical-offset_;
   transform: translateX(0);
   transition:
@@ -82,7 +87,6 @@
   display: flex;
   position: absolute;
   align-items: center;
-  justify-content: center;
   box-sizing: border-box;
   width: $mdc-switch-thumb-diameter;
   height: $mdc-switch-thumb-diameter;
@@ -103,21 +107,23 @@
       transform: translateX(-($mdc-switch-thumb-active-margin));
     }
   }
-}
 
-.mdc-switch--disabled .mdc-switch__native-control {
-  cursor: initial;
+  // Translate the native control the opposite direction so that the tap target stays the same.
+  .mdc-switch__native-control {
+    transform: translateX(-($mdc-switch-thumb-active-margin));
+
+    @include mdc-rtl {
+      transform: translateX($mdc-switch-thumb-active-margin);
+    }
+  }
 }
 
 .mdc-switch--disabled {
   opacity: .38;
+  cursor: default;
+  pointer-events: none;
 
   .mdc-switch__thumb {
     border-width: 1px;  // In high contrast mode, only show outline of knob.
-  }
-
-  // Disable ripple.
-  .mdc-switch__thumb-underlay::before {
-    content: none;
   }
 }

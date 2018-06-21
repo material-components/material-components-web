@@ -58,9 +58,3 @@
     @include mdc-states($color);
   }
 }
-
-@mixin mdc-switch-tap-target_ {
-  position: absolute;
-  width: $mdc-switch-tap-target-size;
-  height: $mdc-switch-tap-target-size;
-}

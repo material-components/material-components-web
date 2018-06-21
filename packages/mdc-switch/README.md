@@ -15,7 +15,7 @@ path: /catalog/input-controls/switches/
   </a>
 </div>-->
 
-Switches toggle the state of a single settings option on or off, and are mobile preferred.
+Switches toggle the state of a single setting on or off. They are the preferred way to adjust settings on mobile.
 
 ## Design & API Documentation
 
@@ -60,7 +60,7 @@ Users can add the class 'mdc-switch--disabled' to the 'mdc-switch' element to di
   <div class="mdc-switch__track"></div>
   <div class="mdc-switch__thumb-underlay">
     <div class="mdc-switch__thumb">
-        <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" role="switch">
+        <input type="checkbox" id="another-basic-switch" class="mdc-switch__native-control" role="switch">
     </div>
   </div>
 </div>
