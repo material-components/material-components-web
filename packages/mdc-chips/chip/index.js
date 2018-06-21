@@ -19,7 +19,7 @@ import MDCComponent from '@material/base/component';
 import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
 
 import MDCChipAdapter from './adapter';
-import MDCChipFoundation from './foundation';
+import {MDCChipFoundation} from './foundation';
 import {strings} from './constants';
 
 /**
