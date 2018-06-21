@@ -18,10 +18,9 @@
 @import "@material/list/mixins";
 @import "@material/ripple/mixins";
 
-@mixin mdc-drawer-active-overlay-color($color) {
+@mixin mdc-drawer-activated-overlay-color($color) {
   :not(.mdc-list--non-interactive) > .mdc-list-item {
     @include mdc-states-activated($color);
-    @include mdc-states-selected($color);
   }
 }
 
@@ -62,9 +61,7 @@
 @mixin mdc-drawer-item-activated-text-color($color, $opacity) {
   $value: rgba(mdc-theme-prop-value($color), $opacity);
   // stylelint-disable selector-no-qualifying-type
-  .mdc-list-item--selected,
   .mdc-list-item--activated,
-  a.mdc-list-item--selected,
   a.mdc-list-item--activated, {
     @include mdc-list-item-primary-text-ink-color($value);
   }

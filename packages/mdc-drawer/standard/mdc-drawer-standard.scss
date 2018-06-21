@@ -22,10 +22,6 @@
 @import "../variables";
 @import "../mixins";
 
-$mdc-drawer-width: 256px;
-$mdc-drawer-list-item-spacing: 4px;
-$mdc-drawer-surface-padding: 16px;
-
 .mdc-drawer {
   @include mdc-drawer-border-color($mdc-drawer-divider-color, $mdc-drawer-divider-opacity);
   @include mdc-drawer-group-header-text-color($mdc-drawer-subtitle-ink-color, $mdc-drawer-subtitle-ink-opacity);

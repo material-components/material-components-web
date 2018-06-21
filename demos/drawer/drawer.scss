@@ -97,7 +97,7 @@
   @include mdc-drawer-surface-fill-color(pink, $mdc-drawer-surface-fill-opacity);
   @include mdc-drawer-icon-ink-color(darkolivegreen, $mdc-drawer-icon-ink-opacity);
   @include mdc-drawer-title-ink-color(darkolivegreen, 1);
-  @include mdc-drawer-active-overlay-color(darkcyan);
+  @include mdc-drawer-activated-overlay-color(darkcyan);
   @include mdc-drawer-item-text-color(darkolivegreen, $mdc-drawer-inactive-ink-opacity);
   @include mdc-drawer-item-activated-text-color(darkcyan, 1);
 
