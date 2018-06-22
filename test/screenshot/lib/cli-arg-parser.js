@@ -20,6 +20,11 @@ const GitRepo = require('./git-repo');
 const argparse = require('argparse');
 const fs = require('mz/fs');
 
+const {
+  GCS_BUCKET,
+  GOLDEN_JSON_RELATIVE_PATH,
+} = require('./constants');
+
 const HTTP_URL_REGEX = new RegExp('^https?://');
 
 class CliArgParser {
@@ -74,27 +79,6 @@ class CliArgParser {
     });
   }
 
-  addGcsBucketArg_(parser) {
-    this.addArg_(parser, {
-      optionNames: ['--gcs-bucket'],
-      defaultValue: 'mdc-web-screenshot-tests',
-      description: `
-Name of the Google Cloud Storage bucket to use for public file uploads.
-`,
-    });
-  }
-
-  addGoldenPathArg_(parser) {
-    this.addArg_(parser, {
-      optionNames: ['--golden-path'],
-      defaultValue: 'test/screenshot/golden.json',
-      description: `
-Relative path to a local 'golden.json' file that will be written to when the golden screenshots are updated.
-Relative to $PWD.
-`,
-    });
-  }
-
   addNoBuildArg_(parser) {
     this.addArg_(parser, {
       optionNames: ['--no-build'],
@@ -111,8 +95,6 @@ The default behavior is to always build assets before running the tests.
       description: 'Approves screenshots from a previous `npm run screenshot:test` report. ' +
         'Updates your local `golden.json` file with the new screenshots.',
     });
-
-    this.addGoldenPathArg_(subparser);
 
     this.addArg_(subparser, {
       optionNames: ['--report'],
@@ -193,7 +175,6 @@ The default behavior is to always build assets before running the tests.
     });
 
     this.addNoBuildArg_(subparser);
-    this.addGcsBucketArg_(subparser);
   }
 
   initServeCommand_() {
@@ -216,8 +197,6 @@ The default behavior is to always build assets before running the tests.
     });
 
     this.addNoBuildArg_(subparser);
-    this.addGcsBucketArg_(subparser);
-    this.addGoldenPathArg_(subparser);
 
     this.addArg_(subparser, {
       optionNames: ['--diff-base'],
@@ -225,7 +204,7 @@ The default behavior is to always build assets before running the tests.
       description: `
 File path, URL, or Git ref of a 'golden.json' file to diff against.
 Typically a branch name or commit hash, but may also be a local file path or public URL.
-Git refs may optionally be suffixed with ':path/to/golden.json' (the default is to use '--golden-path').
+Git refs may optionally be suffixed with ':path/to/golden.json' (the default is 'test/screenshot/golden.json').
 E.g., 'origin/master' (default), 'HEAD', 'feat/foo/bar', 'fad7ed3:path/to/golden.json',
 '/tmp/golden.json', 'https://storage.googleapis.com/.../test/screenshot/golden.json'.
 `,
@@ -286,11 +265,6 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
   }
 
   /** @return {string} */
-  get goldenPath() {
-    return this.args_['--golden-path'];
-  }
-
-  /** @return {string} */
   get diffBase() {
     return this.args_['--diff-base'];
   }
@@ -301,13 +275,8 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
   }
 
   /** @return {string} */
-  get gcsBucket() {
-    return this.args_['--gcs-bucket'];
-  }
-
-  /** @return {string} */
   get gcsBaseUrl() {
-    return `https://storage.googleapis.com/${this.gcsBucket}/`;
+    return `https://storage.googleapis.com/${GCS_BUCKET}/`;
   }
 
   /** @return {string} */
@@ -403,12 +372,10 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
 
   /**
    * @param {string} rawDiffBase
-   * @param {string} defaultGoldenPath
    * @return {!Promise<!DiffSource>}
    */
   async parseDiffBase({
     rawDiffBase = this.diffBase,
-    defaultGoldenPath = this.goldenPath,
   } = {}) {
     // Diff against a public `golden.json` URL.
     // E.g.: `--diff-base=https://storage.googleapis.com/.../golden.json`
@@ -425,7 +392,7 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
     }
 
     const [inputGoldenRef, inputGoldenPath] = rawDiffBase.split(':');
-    const goldenFilePath = inputGoldenPath || defaultGoldenPath;
+    const goldenFilePath = inputGoldenPath || GOLDEN_JSON_RELATIVE_PATH;
     const fullGoldenRef = await this.gitRepo_.getFullSymbolicName(inputGoldenRef);
 
     // Diff against a specific git commit.
