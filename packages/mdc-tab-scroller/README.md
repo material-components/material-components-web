@@ -16,7 +16,7 @@ path: /catalog/tab-scroller/
   </a>
 </div>-->
 
-Tab Scroller allows for smoothing animated scrolling of tab content
+Tab Scroller allows for smooth animated scrolling of tab content.
 
 ## Installation
 ```

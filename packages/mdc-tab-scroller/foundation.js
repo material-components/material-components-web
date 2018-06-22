@@ -175,7 +175,8 @@ class MDCTabScrollerFoundation extends MDCFoundation {
 
     // The transform value comes back as a matrix transformation in the form
     // of `matrix(a, b, c, d, tx, ty)`. We only care about tx (translateX) so
-    // we're going to grab all the parenthesizedvalues, strip out tx, and parse it.
+    // we're going to grab all the parenthesized values, strip out tx, and
+    // parse it.
     const results = /\((.+)\)/.exec(transformValue)[1];
     const parts = results.split(',');
     return parseFloat(parts[4]);
@@ -210,7 +211,7 @@ class MDCTabScrollerFoundation extends MDCFoundation {
     const rootWidth = this.adapter_.getOffsetWidth();
     return /** @type {!MDCTabScrollerEdges} */ ({
       left: 0,
-      right: Math.round(contentWidth - rootWidth),
+      right: contentWidth - rootWidth,
     });
   }
 

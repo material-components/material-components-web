@@ -61,7 +61,7 @@ class MDCTabScrollerAdapter {
   removeClass(className) {}
 
   /**
-   * Sets a style property of the content element to the passed value
+   * Sets a style property of the content element to the passed value.
    * @param {string} propName The style property name to set
    * @param {string} value The style property value
    */
@@ -76,35 +76,37 @@ class MDCTabScrollerAdapter {
   getContentStyleValue(propertyName) {}
 
   /**
-   * Sets the scrollLeft value of the root element to the passed value
+   * Sets the scrollLeft value of the root element to the passed value.
    * @param {number} scrollLeft The new scrollLeft value
    */
   setScrollLeft(scrollLeft) {}
 
   /**
-   * Returns the scrollLeft value of the root element
+   * Returns the scrollLeft value of the root element.
    * @return {number}
    */
   getScrollLeft() {}
 
   /**
-   * Returns the offsetWidth of the content element
+   * Returns the offsetWidth of the content element.
    * @return {number}
    */
   getContentOffsetWidth() {}
 
   /**
-   * Returns the offsetWitdth of the root element
+   * Returns the offsetWitdth of the root element.
    * @return {number}
    */
   getOffsetWidth() {}
 
   /**
+   * Returns the bounding client rect of the root element.
    * @return {!ClientRect}
    */
   computeClientRect() {}
 
   /**
+   * Returns the bounding client rect of the content element.
    * @return {!ClientRect}
    */
   computeContentClientRect() {}

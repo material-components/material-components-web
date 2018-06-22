@@ -68,9 +68,8 @@ class MDCTabScrollerRTLNegative extends MDCTabScrollerRTL {
   calculateScrollEdges_() {
     const contentWidth = this.adapter_.getContentOffsetWidth();
     const rootWidth = this.adapter_.getOffsetWidth();
-    // Scroll values on most browsers are ints instead of floats so we round
     return /** @type {!MDCTabScrollerEdges} */ ({
-      left: Math.round(rootWidth - contentWidth),
+      left: rootWidth - contentWidth,
       right: 0,
     });
   }

@@ -52,7 +52,7 @@ test('#adapter.addClass adds a class to the root element', () => {
   assert.isTrue(root.classList.contains('foo'));
 });
 
-test('#adapter.removeClass removes a class to the root element', () => {
+test('#adapter.removeClass removes a class from the root element', () => {
   const {root, component} = setupTest();
   root.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClass('foo');
@@ -147,7 +147,7 @@ test('#adapter.computeClientRect returns the root element bounding client rect',
   document.body.removeChild(root);
 });
 
-test('#adapter.computeContentClientRect returns the root element bounding client rect', () => {
+test('#adapter.computeContentClientRect returns the content element bounding client rect', () => {
   const {component, root, content} = setupTest();
   document.body.appendChild(root);
   assert.deepEqual(
