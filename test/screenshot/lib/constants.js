@@ -17,6 +17,7 @@
 module.exports = {
   /**
    * Path to the screenshot test directory in the git repo, relative to $PWD (the project root).
+   * MUST end with a trailing slash.
    * @type {string}
    */
   TEST_DIR_RELATIVE_PATH: 'test/screenshot/',
