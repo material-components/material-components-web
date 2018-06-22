@@ -157,12 +157,12 @@ list.singleSelection = true;
 #### Pre-selected list item
 
 When rendering the list with a pre-selected list item, the list item that needs to be selected should contain
-the `mdc-list-item--selected` class before creating the list.
+the `mdc-list-item--selected` class and `aria-selected="true"` attribute before creating the list.
 
 ```html
 <ul id="my-list" class="mdc-list" aria-orientation="vertical">
   <li class="mdc-list-item">Single-line item</li>
-  <li class="mdc-list-item mdc-list-item--selected">Single-line item</li>
+  <li class="mdc-list-item mdc-list-item--selected" aria-selected="true">Single-line item</li>
   <li class="mdc-list-item">Single-line item</li>
 </ul>
 ```
@@ -246,6 +246,43 @@ Key | Action
 
 If you are using a JavaScript framework, such as React or Angular, you can create a List for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
+### Considerations for Advanced Approach
+
+The `MDCListFoundation` expects the HTML to be setup a certain way before being used. This setup is a part of the `layout()` and `singleSelection()` functions within the `index.js`.
+
+#### Setup in `layout()`
+
+The default component requires that every list item receives a `tabindex` value so that it can receive focus
+(`li` elements cannot receive focus at all without a `tabindex` value). Any element not already containing a
+`tabindex` attribute will receive `tabindex=-1`. The first list item should have `tabindex="0"` so that it the
+user can find the first element using the `tab` key, but subsequent `tab` keys strokes will cause focus to
+skip over the entire list. If the list items contain sub-elements that are focusable (`button` or `a` elements), 
+these should also receive `tabIndex="-1"`
+
+```html
+<ul id="my-list" class="mdc-list" aria-orientation="vertical">
+  <li class="mdc-list-item" tabindex="0">Single-line item<button tabindex="-1"></button></li>
+  <li class="mdc-list-item" tabindex="-1">Single-line item</li>
+  <li class="mdc-list-item" tabindex="-1">Single-line item</li>
+</ul>
+```
+
+#### Setup in `singleSelection()`
+
+When implementing a component that will use the single selection variant, the HTML should be modified to include
+the `aria-selected` attribute, the `mdc-list-item--selected` class should be added, and the `tabindex` of the selected
+element should be `0`. The first list item should have the `tabindex` updated to `-1`. The foundation method 
+`setSelectedIndex()` should be called with the initially selected element immediately after the foundation is 
+instantiated.
+
+```html
+<ul id="my-list" class="mdc-list" aria-orientation="vertical">
+  <li class="mdc-list-item" tabindex="-1">Single-line item<button tabindex="-1"></button></li>
+  <li class="mdc-list-item mdc-list-item--selected" aria-selected="true" tabindex="0">Single-line item</li>
+  <li class="mdc-list-item" tabindex="-1">Single-line item</li>
+</ul>
+```
+ 
 ### `MDCListAdapter`
 
 Method Signature | Description

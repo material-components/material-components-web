@@ -124,6 +124,7 @@ export class MDCList extends MDCComponent {
       getFocusedElementIndex: () => this.listElements_.indexOf(document.activeElement),
       getListItemIndex: (node) => this.listElements_.indexOf(node),
       setAttributeForElementIndex: (index, attr, value) => this.listElements_[index].setAttribute(attr, value),
+      removeAttributeForElementIndex: (index, attr) => this.listElements_[index].removeAttribute(attr),
       addClassForElementIndex: (index, className) => this.listElements_[index].classList.add(className),
       removeClassForElementIndex: (index, className) => this.listElements_[index].classList.remove(className),
       isListItem: (target) => target.classList.contains(cssClasses.LIST_ITEM_CLASS),

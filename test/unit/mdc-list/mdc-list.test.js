@@ -22,7 +22,6 @@ import bel from 'bel';
 import {MDCList} from '../../../packages/mdc-list';
 import {MDCListFoundation} from '../../../packages/mdc-list/foundation';
 import domEvents from 'dom-events';
-import {cssClasses} from '../../../packages/mdc-list/constants';
 
 function getFixture() {
   return bel`
@@ -86,6 +85,16 @@ test('#adapter.setAttributeForElementIndex sets the attribute for the list eleme
   const selectedNode = root.querySelectorAll('.mdc-list-item')[1];
   component.getDefaultFoundation().adapter_.setAttributeForElementIndex(1, 'foo', 'bar');
   assert.equal('bar', selectedNode.getAttribute('foo'));
+  document.body.removeChild(root);
+});
+
+test('#adapter.removeAttributeForElementIndex sets the attribute for the list element at index specified', () => {
+  const {root, component} = setupTest();
+  document.body.appendChild(root);
+  const selectedNode = root.querySelectorAll('.mdc-list-item')[1];
+  component.getDefaultFoundation().adapter_.setAttributeForElementIndex(1, 'foo', 'bar');
+  component.getDefaultFoundation().adapter_.removeAttributeForElementIndex(1, 'foo');
+  assert.isFalse(selectedNode.hasAttribute('foo'));
   document.body.removeChild(root);
 });
 
@@ -201,22 +210,6 @@ test('singleSelection calls foundation setSingleSelection with the provided valu
   const {component, mockFoundation} = setupTest();
   component.singleSelection = true;
   td.verify(mockFoundation.setSingleSelection(true), {times: 1});
-});
-
-test('singleSelection sets aria-selected to false for all elements of the list if not element has aria-selected=true',
-  () => {
-    const {root, component} = setupTest();
-    const listItems = root.querySelectorAll('.mdc-list-item:not([aria-selected="true"])');
-    component.singleSelection = true;
-    assert.equal(listItems.length, root.querySelectorAll('.mdc-list-item[aria-selected="false"]').length);
-  });
-
-test('singleSelection sets aria-selected to false for all elements of the list without aria-selected=true', () => {
-  const {root, component} = setupTest();
-  const listItems = root.querySelectorAll('.mdc-list-item:not([aria-selected="true"])');
-  listItems[0].classList.add(cssClasses.LIST_SELECTED_CLASS);
-  component.singleSelection = true;
-  assert.equal(listItems.length - 1, root.querySelectorAll('.mdc-list-item[aria-selected="false"]').length);
 });
 
 test('selectedIndex calls setSelectedIndex on foundation', () => {

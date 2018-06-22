@@ -37,8 +37,8 @@ test('exports cssClasses', () => {
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCListFoundation, [
     'getListItemCount', 'getFocusedElementIndex', 'getListItemIndex', 'setAttributeForElementIndex',
-    'addClassForElementIndex', 'removeClassForElementIndex', 'focusItemAtIndex', 'isElementFocusable',
-    'isListItem', 'setTabIndexForListItemChildren',
+    'removeAttributeForElementIndex', 'addClassForElementIndex', 'removeClassForElementIndex',
+    'focusItemAtIndex', 'isElementFocusable', 'isListItem', 'setTabIndexForListItemChildren',
   ]);
 });
 
@@ -482,7 +482,7 @@ test('#handleKeydown space key is triggered 2x when singleSelection is true un-s
   foundation.handleKeydown(event);
 
   td.verify(preventDefault(), {times: 2});
-  td.verify(mockAdapter.setAttributeForElementIndex(0, strings.ARIA_SELECTED, false));
+  td.verify(mockAdapter.removeAttributeForElementIndex(0, strings.ARIA_SELECTED));
 });
 
 test('#handleKeydown space key is triggered when singleSelection is true on second ' +

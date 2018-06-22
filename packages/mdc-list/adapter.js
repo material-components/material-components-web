@@ -50,6 +50,12 @@ class MDCListAdapter {
 
   /**
    * @param {Number} index
+   * @param {String} attribute
+   */
+  removeAttributeForElementIndex(index, attribute) {}
+
+  /**
+   * @param {Number} index
    * @param {String} className
    */
   addClassForElementIndex(index, className) {}
