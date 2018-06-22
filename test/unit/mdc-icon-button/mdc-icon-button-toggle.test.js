@@ -158,17 +158,6 @@ test('#adapter.setText sets the text content of the inner icon element when used
   assert.equal(root.querySelector('#icon').textContent, 'foo');
 });
 
-test('#adapter.getTabIndex returns the tabIndex of the element', () => {
-  const {component} = setupTest({tabIndex: 4});
-  assert.equal(component.getDefaultFoundation().adapter_.getTabIndex(), 4);
-});
-
-test('#adapter.setTabIndex sets the tabIndex of the element', () => {
-  const {root, component} = setupTest({tabIndex: 4});
-  component.getDefaultFoundation().adapter_.setTabIndex(2);
-  assert.equal(root.tabIndex, 2);
-});
-
 test('#adapter.getAttr retrieves an attribute from the root element', () => {
   const {root, component} = setupTest();
   root.setAttribute('aria-label', 'hello');
@@ -179,13 +168,6 @@ test('#adapter.setAttr sets an attribute on the root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.setAttr('aria-label', 'hello');
   assert.equal(root.getAttribute('aria-label'), 'hello');
-});
-
-test('#adapter.removeAttr removes an attribute from the root element', () => {
-  const {root, component} = setupTest();
-  root.setAttribute('aria-label', 'hello');
-  component.getDefaultFoundation().adapter_.removeAttr('aria-label');
-  assert.isNotOk(root.hasAttribute('aria-label'));
 });
 
 test(`#adapter.notifyChange broadcasts a ${MDCIconButtonToggleFoundation.strings.CHANGE_EVENT} custom event`, () => {

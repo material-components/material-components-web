@@ -43,7 +43,7 @@ class GitRepo {
    */
   async fetch(args = []) {
     console.log('Fetching remote git commits...');
-    return this.repo_.fetch(args);
+    return this.repo_.fetch(['--tags', ...args]);
   }
 
   /**
