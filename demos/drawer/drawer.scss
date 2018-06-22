@@ -14,7 +14,6 @@
 // limitations under the License.
 //
 
-@import "../../packages/mdc-list/mixins";
 @import "../../packages/mdc-form-field/mdc-form-field";
 @import "../common";
 @import "../../packages/mdc-drawer/mixins";
@@ -101,7 +100,12 @@
   @include mdc-drawer-item-text-color(darkolivegreen, $mdc-drawer-inactive-ink-opacity);
   @include mdc-drawer-item-activated-text-color(darkcyan, 1);
 
-  .mdc-list-item--selected {
+  .mdc-list-item--activated {
     @include mdc-drawer-icon-ink-color(darkcyan, 1);
   }
+}
+
+.demo-drawer--accessible {
+  @include mdc-drawer-fill-color-accessible(darkcyan, 1);
+  @include mdc-drawer-activated-overlay-color(pink);
 }

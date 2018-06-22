@@ -15,7 +15,7 @@ The MDC Navigation Drawer is used to organize access to destinations and other f
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/design/components/navigation-drawer.html">Material Design guidelines: Navigation drawer</a>
+    <a href="https://material.io/go/design-navigation-drawer">Material Design guidelines: Navigation drawer</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
     <a href="https://material-components.github.io/material-components-web-catalog/#/component/drawer">Demo</a>
@@ -36,7 +36,7 @@ npm install @material/drawer
 <nav class="mdc-drawer">
   <div class="mdc-drawer__scrollable">
     <nav class="mdc-list">
-      <a class="mdc-list-item mdc-list-item--selected" href='#'>
+      <a class="mdc-list-item mdc-list-item--activated" href='#'>
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
       </a>
       <a class="mdc-list-item" href="#">
@@ -77,7 +77,7 @@ switchers and titles should live in the header element.
   </div>
   <div class="mdc-drawer__scrollable">
     <nav class="mdc-list">
-      <a class="mdc-list-item mdc-list-item--selected" href='#'>
+      <a class="mdc-list-item mdc-list-item--activated" href='#'>
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
       </a>
     </nav>
@@ -104,6 +104,7 @@ Mixin | Description
 `mdc-drawer-activated-overlay-color($color)` | Sets the active overlay color of a drawer list item.
 `mdc-drawer-border-color($color, $opacity)` | Sets border color of `mdc-drawer` surface.
 `mdc-drawer-divider-color($color, $opacity)` | Sets divider color found between list groups.
+`mdc-drawer-fill-color-accessible($color)` | Sets the fill color to `$color`, and list item text and icon ink colors to an accessible color relative to `$color`.
 `mdc-drawer-group-header-text-color` | Sets drawer list subheader and drawer subtitle ink color.
 `mdc-drawer-icon-fill-color($color, $opacity)` | Sets drawer list item graphic icon background color.
 `mdc-drawer-icon-ink-color($color, $opacity)` | Sets drawer list item graphic icon ink color.

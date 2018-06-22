@@ -52,6 +52,15 @@
   @include mdc-list-item-graphic-fill-color($value);
 }
 
+@mixin mdc-drawer-fill-color-accessible($color, $opacity) {
+  $accessibleColor: mdc-theme-accessible-ink-color($color);
+
+  @include mdc-drawer-item-text-color($accessibleColor, $opacity);
+  @include mdc-drawer-icon-ink-color($accessibleColor, $opacity);
+  @include mdc-drawer-meta-ink-color($accessibleColor, $opacity);
+  @include mdc-drawer-surface-fill-color($color, $opacity);
+}
+
 @mixin mdc-drawer-icon-ink-color($color, $opacity) {
   $value: rgba(mdc-theme-prop-value($color), $opacity);
 
