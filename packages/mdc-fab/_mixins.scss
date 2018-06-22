@@ -63,21 +63,21 @@
   .mdc-fab__icon {
     @include mdc-rtl-reflexive-property(
       margin,
-      $mdc-fab-extended-icon-padding - $mdc-fab-extended-label-padding,
-      $mdc-fab-extended-icon-padding);
+      $icon-padding - $label-padding,
+      $icon-padding);
   }
 
   // For Extended FAB with text label followed by icon.
   .mdc-fab__label + .mdc-fab__icon {
     @include mdc-rtl-reflexive-property(
       margin,
-      $mdc-fab-extended-icon-padding,
-      $mdc-fab-extended-icon-padding - $mdc-fab-extended-label-padding);
+      $icon-padding,
+      $icon-padding - $label-padding);
   }
 }
 
 @mixin mdc-fab-extended-label-padding($label-padding) {
-  padding: 0 $mdc-fab-extended-label-padding;
+  padding: 0 $label-padding;
 }
 
 $mdc-fab-icon-enter-delay_: 90ms;
