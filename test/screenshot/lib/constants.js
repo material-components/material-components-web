@@ -15,6 +15,12 @@
  */
 
 module.exports = {
+  /**
+   * Path to the screenshot test directory in the git repo, relative to $PWD (the project root).
+   * @type {string}
+   */
+  TEST_DIR_RELATIVE_PATH: 'test/screenshot/',
+
   ExitCode: {
     UNKNOWN_ERROR: 1,
     SIGINT: 2, // ctrl-c
