@@ -21,11 +21,7 @@ const GitRepo = require('./git-repo');
 const GoogleCloudStorage = require('@google-cloud/storage');
 const LocalStorage = require('./local-storage');
 const ProcessManager = require('../lib/process-manager');
-
-const {
-  ExitCode,
-  GCS_BUCKET,
-} = require('../lib/constants');
+const {ExitCode, GCS_BUCKET} = require('../lib/constants');
 
 /** Maximum number of times to retry a failed HTTP request. */
 const API_MAX_RETRIES = 5;

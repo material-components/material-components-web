@@ -19,11 +19,7 @@
 const GitRepo = require('./git-repo');
 const argparse = require('argparse');
 const fs = require('mz/fs');
-
-const {
-  GCS_BUCKET,
-  GOLDEN_JSON_RELATIVE_PATH,
-} = require('./constants');
+const {GCS_BUCKET, GOLDEN_JSON_RELATIVE_PATH} = require('./constants');
 
 const HTTP_URL_REGEX = new RegExp('^https?://');
 
