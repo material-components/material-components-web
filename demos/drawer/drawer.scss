@@ -99,13 +99,12 @@
   @include mdc-drawer-activated-overlay-color(darkcyan);
   @include mdc-drawer-item-text-color(darkolivegreen, $mdc-drawer-inactive-ink-opacity);
   @include mdc-drawer-item-activated-text-color(darkcyan, 1);
-
-  .mdc-list-item--activated {
-    @include mdc-drawer-icon-ink-color(darkcyan, 1);
-  }
+  @include mdc-drawer-icon-activated-ink-color(darkcyan, 1);
 }
 
 .demo-drawer--accessible {
   @include mdc-drawer-fill-color-accessible(darkcyan, 1);
   @include mdc-drawer-activated-overlay-color(pink);
+  @include mdc-drawer-item-activated-text-color(pink, 1);
+  @include mdc-drawer-icon-activated-ink-color(pink, 1);
 }

@@ -107,6 +107,7 @@ Mixin | Description
 `mdc-drawer-fill-color-accessible($color)` | Sets the fill color to `$color`, and list item text and icon ink colors to an accessible color relative to `$color`.
 `mdc-drawer-group-header-text-color` | Sets drawer list subheader and drawer subtitle ink color.
 `mdc-drawer-icon-fill-color($color, $opacity)` | Sets drawer list item graphic icon background color.
+`mdc-drawer-icon-activated-ink-color($color, $opacity)` | Sets activated drawer list item icon ink color.
 `mdc-drawer-icon-ink-color($color, $opacity)` | Sets drawer list item graphic icon ink color.
 `mdc-drawer-item-activated-text-color($color, $opacity)` | Sets activated drawer list item ink color.
 `mdc-drawer-item-text-color($color, $opacity)` | Sets drawer list item ink color.
