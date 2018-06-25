@@ -30,6 +30,10 @@
   @include mdc-theme-prop(border-color, $value);
 }
 
+@mixin mdc-drawer-item-corner-radius($radius) {
+  @include mdc-list-item-corner-radius($radius);
+}
+
 @mixin mdc-drawer-divider-color($color, $opacity) {
   $value: rgba(mdc-theme-prop-value($color), $opacity);
 
