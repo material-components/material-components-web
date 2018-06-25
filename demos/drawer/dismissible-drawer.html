@@ -130,6 +130,11 @@
 
     <script src="/assets/material-components-web.js" async></script>
     <script>
+      function setupDrawer() {
+        mdc.drawer.MDCDrawer.attachTo(document.getElementById('demo-drawer'));
+        
+      }
+
       demoReady(function() {
         var extraWide = document.querySelector('#extra-wide-content');
         extraWide.style.display = 'none';
@@ -173,6 +178,8 @@
         });
 
         mdc.topAppBar.MDCTopAppBar.attachTo(document.getElementById('app-bar'));
+
+        setupDrawer();
       });
     </script>
   </body>

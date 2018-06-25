@@ -50,7 +50,6 @@ export class MDCDrawer extends MDCComponent {
   initialSyncWithDOM() {
     this.handleKeydown_ = this.foundation_.handleKeydown.bind(this.foundation_);
     document.addEventListener('keydown', this.handleKeydown_);
-    this.layout();
   }
 
   getDefaultFoundation() {
@@ -58,7 +57,7 @@ export class MDCDrawer extends MDCComponent {
     const adapter = /** @type {!MDCDrawerAdapter} */ (Object.assign({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
-    });
+    }));
 
     if (this.root_.classList.contains(cssClasses.DISMISSIBLE_CLASS)) {
       return new MDCDismissibleDrawerFoundation(adapter);
