@@ -101,7 +101,7 @@ Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-drawer-activated-overlay-color($color)` | Sets the active overlay color of a drawer list item.
+`mdc-drawer-activated-overlay-color($color)` | Sets the overlay color of the activated drawer list item.
 `mdc-drawer-border-color($color, $opacity)` | Sets border color of `mdc-drawer` surface.
 `mdc-drawer-divider-color($color, $opacity)` | Sets divider color found between list groups.
 `mdc-drawer-fill-color-accessible($color)` | Sets the fill color to `$color`, and list item text and icon ink colors to an accessible color relative to `$color`.
