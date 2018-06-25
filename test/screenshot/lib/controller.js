@@ -16,20 +16,22 @@
 
 'use strict';
 
-const childProcess = require('child_process');
 const fs = require('mz/fs');
-const glob = require('glob');
+const path = require('path');
+const request = require('request-promise-native');
 
 const CbtUserAgent = require('./cbt-user-agent');
+const CloudStorage = require('./cloud-storage');
 const CliArgParser = require('./cli-arg-parser');
 const GitRepo = require('./git-repo');
 const ImageCache = require('./image-cache');
 const ImageCropper = require('./image-cropper');
 const ImageDiffer = require('./image-differ');
+const LocalStorage = require('./local-storage');
 const ReportGenerator = require('./report-generator');
 const Screenshot = require('./screenshot');
 const SnapshotStore = require('./snapshot-store');
-const {Storage, UploadableFile, UploadableTestCase} = require('./storage');
+const {UploadableFile} = require('./types');
 
 /**
  * High-level screenshot workflow controller that provides composable async methods to:
@@ -53,10 +55,16 @@ class Controller {
     this.gitRepo_ = new GitRepo();
 
     /**
-     * @type {!Storage}
+     * @type {!LocalStorage}
      * @private
      */
-    this.storage_ = new Storage();
+    this.localStorage_ = new LocalStorage();
+
+    /**
+     * @type {!CloudStorage}
+     * @private
+     */
+    this.cloudStorage_ = new CloudStorage();
 
     /**
      * @type {!ImageCache}
@@ -90,117 +98,116 @@ class Controller {
     this.baseUploadDir_ = null;
   }
 
-  async initialize() {
-    this.baseUploadDir_ = await this.storage_.generateUniqueUploadDir();
+  /**
+   * @return {!Promise<!RunReport>}
+   */
+  async initForApproval() {
+    /** @type {!RunReport} */
+    const runReport = await request({
+      method: 'GET',
+      uri: this.cliArgs_.runReportJsonUrl,
+      json: true, // Automatically stringify the request body and parse the response body as JSON
+    });
+
+    runReport.runResult.approvedGoldenJsonData = await this.snapshotStore_.fromApproval(runReport);
+
+    return runReport;
+  }
+
+  /**
+   * @return {!Promise<!RunReport>}
+   */
+  async initForDemo() {
+    this.baseUploadDir_ = await this.cloudStorage_.generateUniqueUploadDir();
+
+    return {
+      runTarget: null,
+      runResult: null,
+    };
+  }
+
+  /**
+   * @return {!Promise<!RunReport>}
+   */
+  async initForTest() {
+    this.baseUploadDir_ = await this.cloudStorage_.generateUniqueUploadDir();
 
     await this.gitRepo_.fetch();
 
-    if (await this.cliArgs_.shouldBuild()) {
-      childProcess.spawnSync('npm', ['run', 'screenshot:build'], {shell: true, stdio: 'inherit'});
-    }
+    return {
+      runTarget: await this.getRunTarget_(),
+      runResult: null,
+    };
   }
 
   /**
-   * @return {!Promise<!Array<!UploadableTestCase>>}
-   */
-  async uploadAllAssets() {
-    /** @type {!Array<!UploadableTestCase>} */
-    const testCases = [];
-
-    /**
-     * Relative paths of all asset files (HTML, CSS, JS) that will be uploaded.
-     * @type {!Array<string>}
-     */
-    const assetFileRelativePaths = glob.sync('**/*', {cwd: this.cliArgs_.testDir, nodir: true});
-
-    /** @type {!Array<!Promise<!UploadableFile>>} */
-    const uploadPromises = assetFileRelativePaths.map((assetFileRelativePath, assetFileIndex) => {
-      return this.uploadOneAsset_(assetFileRelativePath, testCases, assetFileIndex, assetFileRelativePaths.length);
-    });
-
-    return Promise.all(uploadPromises)
-      .then(
-        () => {
-          this.logUploadAllAssetsSuccess_(testCases);
-          return testCases;
-        },
-        (err) => Promise.reject(err)
-      );
-  }
-
-  /**
-   * @param {string} assetFileRelativePath
-   * @param {!Array<!UploadableTestCase>} testCases
-   * @param {number} queueIndex
-   * @param {number} queueLength
-   * @return {!Promise<!UploadableFile>}
+   * @return {!Promise<!RunTarget>}
    * @private
    */
-  async uploadOneAsset_(assetFileRelativePath, testCases, queueIndex, queueLength) {
-    const assetFile = new UploadableFile({
-      destinationParentDirectory: this.baseUploadDir_,
-      destinationRelativeFilePath: assetFileRelativePath,
-      fileContent: await fs.readFile(`${this.cliArgs_.testDir}/${assetFileRelativePath}`),
-      queueIndex,
-      queueLength,
-    });
+  async getRunTarget_() {
+    const {runnableUserAgents, skippedUserAgents} = await CbtUserAgent.fetchUserAgents();
+    const {runnableTestCases, skippedTestCases} = await this.localStorage_.fetchTestCases(this.baseUploadDir_);
 
-    return this.storage_.uploadFile(assetFile)
-      .then(
-        () => this.handleUploadOneAssetSuccess_(assetFile, testCases),
-        (err) => this.handleUploadOneAssetFailure_(err)
+    console.log('');
+
+    this.logTargetTestCases_('SKIPPING', skippedTestCases);
+    this.logTargetTestCases_('RUNNING', runnableTestCases);
+
+    this.logTargetUserAgents_('SKIPPING', skippedUserAgents);
+    this.logTargetUserAgents_('RUNNING', runnableUserAgents);
+
+    if (runnableTestCases.length === 0) {
+      throw new Error(
+        'No URLs matched your filters! ' +
+        'Try using less restrictive CLI flags (e.g., `--url=button/classes/baseline`).'
       );
-  }
-
-  /**
-   * @param {!UploadableFile} assetFile
-   * @param {!Array<!UploadableTestCase>} testCases
-   * @return {!Promise<!UploadableFile>}
-   * @private
-   */
-  async handleUploadOneAssetSuccess_(assetFile, testCases) {
-    const relativePath = assetFile.destinationRelativeFilePath;
-    const isHtmlFile = relativePath.endsWith('.html');
-    const isIncluded =
-      this.cliArgs_.includeUrlPatterns.length === 0 ||
-      this.cliArgs_.includeUrlPatterns.some((pattern) => pattern.test(relativePath));
-    const isExcluded = this.cliArgs_.excludeUrlPatterns.some((pattern) => pattern.test(relativePath));
-    const shouldInclude = isIncluded && !isExcluded;
-
-    if (isHtmlFile && shouldInclude) {
-      testCases.push(new UploadableTestCase({htmlFile: assetFile}));
     }
 
-    return assetFile;
-  }
-
-  /**
-   * @param {!T} err
-   * @return {!Promise<!T>}
-   * @template T
-   * @private
-   */
-  async handleUploadOneAssetFailure_(err) {
-    return Promise.reject(err);
-  }
-
-  /**
-   * @param {!Array<!UploadableTestCase>} testCases
-   * @return {!Promise<!Array<!UploadableTestCase>>}
-   */
-  async captureAllPages(testCases) {
-    const capturePromises = testCases.map((testCase, testCaseIndex) => {
-      return this.captureOnePage_(testCase, testCaseIndex, testCases.length);
-    });
-
-    return Promise.all(capturePromises)
-      .then(
-        () => {
-          this.logCaptureAllPagesSuccess_(testCases);
-          return testCases;
-        },
-        (err) => Promise.reject(err)
+    if (runnableUserAgents.length === 0) {
+      throw new Error(
+        'No browsers matched your filters! ' +
+        'Try using less restrictive CLI flags (e.g., `--browser=chrome`).'
       );
+    }
+
+    const baseGoldenJsonData = await this.snapshotStore_.fromDiffBase();
+
+    return {
+      runnableUserAgents,
+      skippedUserAgents,
+      runnableTestCases,
+      skippedTestCases,
+      baseGoldenJsonData,
+    };
+  }
+
+  /**
+   * @param {!RunReport} runReport
+   * @return {!Promise<!RunReport>}
+   */
+  async uploadAllAssets(runReport) {
+    await this.cloudStorage_.uploadAllAssets(this.baseUploadDir_);
+
+    const {runnableTestCases} = await this.localStorage_.fetchTestCases(this.baseUploadDir_);
+    this.logTargetTestCases_('UPLOADED', runnableTestCases);
+
+    return runReport;
+  }
+
+  /**
+   * @param {!RunReport} runReport
+   * @return {!Promise<!RunReport>}
+   */
+  async captureAllPages(runReport) {
+    const {runnableTestCases} = runReport.runTarget;
+
+    await Promise.all(runnableTestCases.map((testCase, testCaseIndex) => {
+      return this.captureOnePage_(testCase, testCaseIndex, runnableTestCases.length);
+    }));
+
+    this.logCaptureAllPagesSuccess_(runnableTestCases);
+
+    return runReport;
   }
 
   /**
@@ -253,7 +260,7 @@ class Controller {
   async handleCapturePageFailure_(testCase, err, testCaseQueueIndex, testCaseQueueLength) {
     console.error('\n\n\nERROR capturing screenshot with CrossBrowserTesting:\n\n');
     console.error(`  - ${testCase.htmlFile.publicUrl}`);
-    console.error(`  - Test case ${testCaseQueueIndex} of ${testCaseQueueLength}`);
+    console.error(`  - Test case ${testCaseQueueIndex + 1} of ${testCaseQueueLength}`);
     console.error(err);
     return Promise.reject(err);
   }
@@ -279,6 +286,7 @@ class Controller {
     const imageName = `${this.getBrowserFileName_(osApiName, browserApiName)}.png`;
     const imageData = await this.downloadAndCropImage_(cbtImageUrl);
     const imageFile = new UploadableFile({
+      destinationBaseUrl: this.cliArgs_.gcsBaseUrl,
       destinationParentDirectory: this.baseUploadDir_,
       destinationRelativeFilePath: `${testCase.htmlFile.destinationRelativeFilePath}.${imageName}`,
       fileContent: imageData,
@@ -289,7 +297,7 @@ class Controller {
 
     testCase.screenshotImageFiles.push(imageFile);
 
-    return this.storage_.uploadFile(imageFile);
+    return this.cloudStorage_.uploadFile(imageFile);
   }
 
   /**
@@ -315,43 +323,39 @@ class Controller {
   }
 
   /**
-   * Writes the given `testCases` to a `golden.json` file.
+   * Writes the given changes to a `golden.json` file.
    * If the file already exists, it will be overwritten.
-   * @param {!Array<!UploadableTestCase>} testCases
-   * @param {!Array<!ImageDiffJson>} diffs
-   * @return {!Promise<{diffs: !Array<!ImageDiffJson>, testCases: !Array<!UploadableTestCase>}>}
+   * @param {!RunReport} runReport
+   * @return {!Promise<!RunReport>}
    */
-  async updateGoldenJson({testCases, diffs}) {
-    await this.snapshotStore_.writeToDisk({testCases, diffs});
-    return {testCases, diffs};
+  async updateGoldenJson(runReport) {
+    await this.snapshotStore_.writeToDisk(runReport);
+    return runReport;
   }
 
   /**
-   * @param {!Array<!UploadableTestCase>} testCases
-   * @return {!Promise<{diffs: !Array<!ImageDiffJson>, testCases: !Array<!UploadableTestCase>}>}
+   * @param {!RunReport} runReport
+   * @return {!Promise<!RunReport>}
    */
-  async diffGoldenJson(testCases) {
+  async diffGoldenJson(runReport) {
+    const {runnableTestCases} = runReport.runTarget;
+
     /** @type {!Array<!ImageDiffJson>} */
-    const diffs = await this.imageDiffer_.compareAllPages({
-      actualSuite: await this.snapshotStore_.fromTestCases(testCases),
+    const {diffs, added, removed, unchanged, skipped} = await this.imageDiffer_.compareAllPages({
+      runReport,
+      actualSuite: await this.snapshotStore_.fromTestCases(runnableTestCases),
       expectedSuite: await this.snapshotStore_.fromDiffBase(),
     });
 
-    return Promise.all(diffs.map((diff, index) => this.uploadOneDiffImage_(diff, index, diffs.length)))
-      .then(
-        () => {
-          diffs.sort((a, b) => {
-            return a.htmlFilePath.localeCompare(b.htmlFilePath, 'en-US') ||
-              a.userAgentAlias.localeCompare(b.userAgentAlias, 'en-US');
-          });
-          console.log('\n\nDONE diffing screenshot images!\n\n');
-          console.log(diffs);
-          console.log(`\n\nFound ${diffs.length} screenshot diffs!\n\n`);
-          return {testCases, diffs};
-        },
-        (err) => Promise.reject(err)
-      )
-    ;
+    await Promise.all(diffs.map((diff, index) => {
+      return this.uploadOneDiffImage_(diff, index, diffs.length);
+    }));
+
+    console.log('\n\nDONE diffing screenshot images!\n\n');
+
+    runReport.runResult = {diffs, added, removed, unchanged, skipped};
+
+    return runReport;
   }
 
   /**
@@ -367,7 +371,8 @@ class Controller {
     const browserFileName = this.getBrowserFileName_(userAgent.device.api_name, userAgent.browser.api_name);
 
     /** @type {!UploadableFile} */
-    const diffImageFile = await this.storage_.uploadFile(new UploadableFile({
+    const diffImageFile = await this.cloudStorage_.uploadFile(new UploadableFile({
+      destinationBaseUrl: this.cliArgs_.gcsBaseUrl,
       destinationParentDirectory: this.baseUploadDir_,
       destinationRelativeFilePath: `${diff.htmlFilePath}.${browserFileName}.diff.png`,
       fileContent: diff.diffImageBuffer,
@@ -381,46 +386,112 @@ class Controller {
   }
 
   /**
-   * @param {!Array<!UploadableTestCase>} testCases
-   * @param {!Array<!ImageDiffJson>} diffs
-   * @return {!Promise<string>}
+   * @param {!RunReport} runReport
+   * @return {!Promise<!RunReport>}
    */
-  async uploadDiffReport({testCases, diffs}) {
-    const reportGenerator = new ReportGenerator({testCases, diffs});
+  async uploadDiffReport(runReport) {
+    let nextQueueIndex = 0;
 
-    /** @type {!UploadableFile} */
-    const reportFile = await this.storage_.uploadFile(new UploadableFile({
-      destinationParentDirectory: this.baseUploadDir_,
-      destinationRelativeFilePath: 'report.html',
-      fileContent: await reportGenerator.generateHtml(),
-      queueIndex: 0,
-      queueLength: 1,
+    /**
+     * @param {string} filename
+     * @param {number} queueLength
+     * @return {!UploadableFile}
+     */
+    const createFile = ({filename, queueLength}) => {
+      return new UploadableFile({
+        destinationBaseUrl: this.cliArgs_.gcsBaseUrl,
+        destinationParentDirectory: this.baseUploadDir_,
+        destinationRelativeFilePath: filename,
+        queueIndex: nextQueueIndex++,
+        queueLength,
+      });
+    };
+
+    const [reportPageFile, reportJsonFile] = [
+      'report.html', 'report.json',
+    ].map((filename, index, array) => {
+      return createFile({filename, queueLength: array.length});
+    });
+
+    runReport.runResult.publicReportPageUrl = reportPageFile.publicUrl;
+    runReport.runResult.publicReportJsonUrl = reportJsonFile.publicUrl;
+
+    const reportGenerator = new ReportGenerator(runReport);
+    const reportHtml = await reportGenerator.generateHtml();
+    const reportJson = JSON.stringify(runReport, null, 2);
+
+    reportPageFile.fileContent = reportHtml;
+    reportJsonFile.fileContent = reportJson;
+
+    /**
+     * @param {!UploadableFile} file
+     * @return {!Promise<!UploadableFile>}
+     */
+    const writeFile = async (file) => {
+      const filePath = path.join(this.cliArgs_.testDir, file.destinationRelativeFilePath);
+      console.log(`Writing ${filePath} to disk...`);
+      await fs.writeFile(filePath, file.fileContent, {encoding: 'utf8'});
+      return this.cloudStorage_.uploadFile(file);
+    };
+
+    await Promise.all([reportPageFile, reportJsonFile].map((file) => {
+      return writeFile(file);
     }));
 
     console.log('\n\nDONE uploading diff report to GCS!\n\n');
-    console.log(reportFile.publicUrl);
+    console.log(reportPageFile.publicUrl);
 
-    return reportFile.publicUrl;
+    return runReport;
   }
 
   /**
+   * @param {string} verb
    * @param {!Array<!UploadableTestCase>} testCases
    * @private
    */
-  logUploadAllAssetsSuccess_(testCases) {
-    const publicHtmlFileUrls = testCases.map((testCase) => testCase.htmlFile.publicUrl).sort();
-    console.log('\n\nDONE uploading asset files to GCS!\n\n');
-    console.log(publicHtmlFileUrls.join('\n'));
+  logTargetTestCases_(verb, testCases) {
+    if (testCases.length === 0) {
+      return;
+    }
+
+    const num = testCases.length;
+    const plural = num === 1 ? '' : 's';
+
+    console.log(`${verb} ${num} test case${plural}:`);
+    testCases.forEach((testCase) => {
+      console.log(`  - ${testCase.htmlFile.publicUrl}`);
+    });
+    console.log('');
   }
 
   /**
-   * @param {!Array<!UploadableTestCase>} testCases
+   * @param {string} verb
+   * @param {!Array<!CbtUserAgent>} userAgents
    * @private
    */
-  logCaptureAllPagesSuccess_(testCases) {
+  logTargetUserAgents_(verb, userAgents) {
+    if (userAgents.length === 0) {
+      return;
+    }
+
+    const num = userAgents.length;
+    const plural = num === 1 ? '' : 's';
+
+    console.log(`${verb} ${num} user agent${plural}:`);
+    userAgents.forEach((userAgent) => {
+      console.log(`  - ${userAgent.alias} -> ${userAgent.fullCbtApiName}`);
+    });
+    console.log('');
+  }
+
+  /**
+   * @param {!Array<!UploadableTestCase>} runnableTestCases
+   * @private
+   */
+  logCaptureAllPagesSuccess_(runnableTestCases) {
     console.log('\n\nDONE capturing screenshot images!\n\n');
 
-    testCases.forEach((testCase) => {
+    runnableTestCases.forEach((testCase) => {
       console.log(`${testCase.htmlFile.publicUrl}:`);
       testCase.screenshotImageFiles.forEach((screenshotImageFile) => {
         console.log(`  - ${screenshotImageFile.publicUrl}`);

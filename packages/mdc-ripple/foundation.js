@@ -132,14 +132,10 @@ class MDCRippleFoundation extends MDCFoundation {
     this.deactivateHandler_ = (e) => this.deactivate_(e);
 
     /** @private {function(?Event=)} */
-    this.focusHandler_ = () => requestAnimationFrame(
-      () => this.adapter_.addClass(MDCRippleFoundation.cssClasses.BG_FOCUSED)
-    );
+    this.focusHandler_ = () => this.handleFocus();
 
     /** @private {function(?Event=)} */
-    this.blurHandler_ = () => requestAnimationFrame(
-      () => this.adapter_.removeClass(MDCRippleFoundation.cssClasses.BG_FOCUSED)
-    );
+    this.blurHandler_ = () => this.handleBlur();
 
     /** @private {!Function} */
     this.resizeHandler_ = () => this.layout();
@@ -586,6 +582,16 @@ class MDCRippleFoundation extends MDCFoundation {
     } else {
       this.adapter_.removeClass(UNBOUNDED);
     }
+  }
+
+  handleFocus() {
+    requestAnimationFrame(() =>
+      this.adapter_.addClass(MDCRippleFoundation.cssClasses.BG_FOCUSED));
+  }
+
+  handleBlur() {
+    requestAnimationFrame(() =>
+      this.adapter_.removeClass(MDCRippleFoundation.cssClasses.BG_FOCUSED));
   }
 }
 
