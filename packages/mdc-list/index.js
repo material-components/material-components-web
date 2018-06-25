@@ -85,8 +85,7 @@ export class MDCList extends MDCComponent {
 
   /** @return Array<!Element>*/
   get listElements_() {
-    return [].slice.call(this.root_.querySelectorAll(strings.ITEMS_SELECTOR))
-      .filter((ele) => ele.parentElement === this.root_);
+    return [].slice.call(this.root_.querySelectorAll(strings.ITEMS_SELECTOR));
   }
 
   /** @param {boolean} value */
@@ -104,8 +103,6 @@ export class MDCList extends MDCComponent {
 
     this.foundation_.setSingleSelection(isSingleSelectionList);
     const selectedElement = this.root_.querySelector('.mdc-list-item--selected');
-    [].slice.call(this.root_.querySelectorAll('.mdc-list-item:not(.mdc-list-item--selected)'))
-      .forEach((ele) => ele.setAttribute(strings.ARIA_SELECTED, false));
 
     if (selectedElement) {
       this.selectedIndex = this.listElements_.indexOf(selectedElement);
