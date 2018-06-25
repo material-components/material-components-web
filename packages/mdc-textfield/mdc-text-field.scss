@@ -36,7 +36,7 @@
   @include mdc-floating-label-float-position($mdc-text-field-label-position-y);
   @include mdc-floating-label-shake-animation(text-field);
   @include mdc-ripple-surface;
-  // Text Field Box intentionally omits press ripple, so each state needs to be specified individually
+  // Text Field intentionally omits press ripple, so each state needs to be specified individually
   @include mdc-states-base-color($mdc-text-field-ink-color);
   @include mdc-states-hover-opacity(mdc-states-opacity($mdc-text-field-ink-color, hover));
   @include mdc-states-focus-opacity(

@@ -224,7 +224,8 @@
 
   &:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) {
     .mdc-floating-label{
-      @include mdc-floating-label-max-width(calc(100% - #{$mdc-text-field-icon-padding}));
+      // @include mdc-floating-label-max-width(calc(100% - #{$mdc-text-field-icon-padding}));
+      max-width: calc(100% - #{$mdc-text-field-icon-padding});
     }
   }
 }
@@ -434,7 +435,7 @@
   .mdc-text-field__input {
     align-self: auto;
     box-sizing: content-box;
-    height: 30px;
+    height: auto;
     margin: 0;
     padding: $padding-inset;
     padding-top: $padding-inset * 2;
@@ -442,18 +443,16 @@
   }
 
   .mdc-floating-label {
-    @include mdc-rtl-reflexive-position(left, 1px);
     @include mdc-floating-label-fill-color($mdc-textarea-background);
+    @include mdc-rtl-reflexive(left, 1px, right, 0);
+    @include mdc-rtl-reflexive-property(margin, 8px, 0);
 
     top: $label-offset-y;
     bottom: auto;
     margin-top: 2px;
-    margin-left: 8px;
-    padding: 8px;
+    padding: 12px 8px 8px 8px;
     line-height: 1.15;
-    text-overflow: clip;
-    white-space: normal;
-    overflow: visible;
+    pointer-events: none;
   }
 }
 
