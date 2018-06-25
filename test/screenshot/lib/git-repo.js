@@ -42,8 +42,8 @@ class GitRepo {
    * @return {!Promise<void>}
    */
   async fetch(args = []) {
-    console.log('\n\nFetching remote git commits...\n\n');
-    return this.repo_.fetch(args);
+    console.log('Fetching remote git commits...');
+    return this.repo_.fetch(['--tags', ...args]);
   }
 
   /**
@@ -108,6 +108,14 @@ class GitRepo {
   async getLog(args = []) {
     const logEntries = await this.repo_.log([...args]);
     return logEntries.all.concat(); // convert TypeScript ReadonlyArray to mutable Array
+  }
+
+  /**
+   * @param {!Array<string>} filePaths
+   * @return {!Promise<!Array<string>>}
+   */
+  async getIgnoredPaths(filePaths) {
+    return this.repo_.checkIgnore(filePaths);
   }
 
   /**

@@ -19,7 +19,6 @@ import * as base from '@material/base/index';
 import * as checkbox from '@material/checkbox/index';
 import * as chips from '@material/chips/index';
 import * as dialog from '@material/dialog/index';
-import * as drawer from '@material/drawer/index';
 import * as floatingLabel from '@material/floating-label/index';
 import * as formField from '@material/form-field/index';
 import * as gridList from '@material/grid-list/index';
@@ -75,7 +74,6 @@ export {
   checkbox,
   chips,
   dialog,
-  drawer,
   floatingLabel,
   formField,
   gridList,

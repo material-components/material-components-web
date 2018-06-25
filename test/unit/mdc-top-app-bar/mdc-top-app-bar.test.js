@@ -31,32 +31,33 @@ const MENU_ICONS_COUNT = 3;
 function getFixture(removeIcon) {
   const html = bel`
     <div>
-        <header class="mdc-top-app-bar">
-      <div class="mdc-top-app-bar__row">
-        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-          <a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
-          <span class="mdc-top-app-bar__title">Title</span>
-        </section>
-        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" 
-        role="top-app-bar">
-          <a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="Download" alt="Download">
-          file_download</a>
-          <a href="#" class="material-icons mdc-top-app-bar__action-item" 
-             aria-label="Print this page" alt="Print this page">
-          print</a>
-          <a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="Bookmark this page" 
-          alt="Bookmark this page">bookmark</a>
-          <div class="mdc-menu-anchor">
-            <div class="mdc-menu" tabindex="-1" id="demo-menu">
-              <ul class="mdc-menu__items mdc-list" role="menu" aria-hidden="true" style="transform: scale(1, 1);">
-              </ul>
+      <header class="mdc-top-app-bar">
+        <div class="mdc-top-app-bar__row">
+          <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+            <a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
+            <span class="mdc-top-app-bar__title">Title</span>
+          </section>
+          <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end"
+          role="top-app-bar">
+            <a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="Download" alt="Download">
+            file_download</a>
+            <a href="#" class="material-icons mdc-top-app-bar__action-item"
+               aria-label="Print this page" alt="Print this page">
+            print</a>
+            <a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="Bookmark this page"
+            alt="Bookmark this page">bookmark</a>
+            <div class="mdc-menu-anchor">
+              <div class="mdc-menu" tabindex="-1" id="demo-menu">
+                <ul class="mdc-menu__items mdc-list" role="menu" aria-hidden="true" style="transform: scale(1, 1);">
+                </ul>
+              </div>
             </div>
-          </div>
-        </section>
-      </div>
-    </header>
+          </section>
+        </div>
+      </header>
       <main class="mdc-top-app-bar-fixed-adjust">
       </main>
+      <div class="content">Content</div>
     </div>
   `;
 
@@ -82,7 +83,7 @@ function setupTest(removeIcon = false, rippleFactory = (el) => new FakeRipple(el
   const icon = root.querySelector(strings.NAVIGATION_ICON_SELECTOR);
   const component = new MDCTopAppBar(root, undefined, rippleFactory);
 
-  return {root, component, icon};
+  return {root, component, icon, fixture};
 }
 
 suite('MDCTopAppBar');
@@ -114,6 +115,17 @@ test('destroy destroys icon ripples', () => {
   component.iconRipples_.forEach((icon) => {
     td.verify(icon.destroy());
   });
+});
+
+test('#setScrollTarget deregisters and registers scroll handler on provided target', () => {
+  const {component} = setupTest();
+  const fakeTarget = {};
+  component.foundation_.destroyScrollHandler = td.func();
+  component.foundation_.initScrollHandler = td.func();
+  component.setScrollTarget(fakeTarget);
+  td.verify(component.foundation_.destroyScrollHandler(), {times: 1});
+  td.verify(component.foundation_.initScrollHandler(), {times: 1});
+  assert.equal(component.scrollTarget_, fakeTarget);
 });
 
 test('getDefaultFoundation returns the appropriate foundation for default', () => {
@@ -271,6 +283,13 @@ test('#adapter.deregisterResizeHandler removes a resize handler from the window'
 test('adapter#getViewportScrollY returns scroll distance', () => {
   const {component} = setupTest();
   assert.equal(component.getDefaultFoundation().adapter_.getViewportScrollY(), window.pageYOffset);
+});
+
+test('adapter#getViewportScrollY returns scroll distance when scrollTarget_ is not window', () => {
+  const {component, fixture} = setupTest();
+  const content = fixture.querySelector('.content');
+  component.scrollTarget_ = content;
+  assert.equal(component.getDefaultFoundation().adapter_.getViewportScrollY(), content.scrollTop);
 });
 
 test('adapter#getTotalActionItems returns the number of action items on the opposite side of the menu', () => {
