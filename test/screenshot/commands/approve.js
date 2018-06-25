@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,17 +16,21 @@
 
 'use strict';
 
-const Controller = require('./lib/controller');
-const controller = new Controller();
+const Controller = require('../lib/controller');
+const {ExitCode} = require('../lib/constants');
 
-controller.initialize()
-  .then(() => controller.uploadAllAssets(), handleError)
-  .then((testCases) => controller.captureAllPages(testCases), handleError)
-  .then((testCases) => controller.diffGoldenJson(testCases), handleError)
-  .then(({testCases, diffs}) => controller.uploadDiffReport({testCases, diffs}), handleError)
-;
+module.exports = {
+  async runAsync() {
+    const controller = new Controller();
 
-function handleError(err) {
-  console.error(err);
-  process.exit(1);
-}
+    controller.initForApproval()
+      .then((runReport) => controller.updateGoldenJson(runReport), handleError)
+      .catch(handleError)
+    ;
+
+    function handleError(err) {
+      console.error(err);
+      process.exit(ExitCode.UNKNOWN_ERROR);
+    }
+  },
+};
