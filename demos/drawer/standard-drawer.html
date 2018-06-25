@@ -76,7 +76,7 @@
         </div>
       </div>
     </nav>
-    <div class="demo-content">
+    <div class="demo-content" id="demo-content">
       <header class="mdc-top-app-bar" id="app-bar">
         <div class="mdc-top-app-bar__row">
           <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
@@ -183,8 +183,8 @@
         rtlToggleBtn.addEventListener('click', function(event) {
           document.body.setAttribute('dir', document.body.getAttribute('dir') === 'rtl' ? 'ltr' : 'rtl');
         });
-
-        mdc.topAppBar.MDCTopAppBar.attachTo(document.getElementById('app-bar'));
+        var topAppBar = new mdc.topAppBar.MDCTopAppBar(document.getElementById('app-bar'));
+        topAppBar.setScrollTarget(document.getElementById('demo-content'));
       });
     </script>
   </body>
