@@ -15,63 +15,75 @@
  */
 
 const request = require('request-promise-native');
+const {ExitCode} = require('../lib/constants');
 
 const API_BASE_URL = 'https://crossbrowsertesting.com/api/v3';
-const API_USERNAME = process.env.CBT_USERNAME;
-const API_AUTHKEY = process.env.CBT_AUTHKEY;
+const MDC_CBT_USERNAME = process.env.MDC_CBT_USERNAME;
+const MDC_CBT_AUTHKEY = process.env.MDC_CBT_AUTHKEY;
 
 class CbtApi {
+  constructor() {
+    if (!MDC_CBT_USERNAME) {
+      console.error(`
+ERROR: Required environment variable 'MDC_CBT_USERNAME' is not set.
+
+Please add the following to your ~/.bash_profile or ~/.bashrc file:
+
+    export MDC_CBT_USERNAME='...'
+    export MDC_CBT_AUTHKEY='...'
+
+Credentials can be found on the CBT account page:
+https://crossbrowsertesting.com/account
+`);
+      process.exit(ExitCode.MISSING_ENV_VAR);
+    }
+
+    if (!MDC_CBT_AUTHKEY) {
+      console.error(`
+ERROR: Required environment variable 'MDC_CBT_AUTHKEY' is not set.
+
+Please add the following to your ~/.bash_profile or ~/.bashrc file:
+
+    export MDC_CBT_USERNAME='...'
+    export MDC_CBT_AUTHKEY='...'
+
+Credentials can be found on the CBT Account page:
+https://crossbrowsertesting.com/account
+`);
+      process.exit(ExitCode.MISSING_ENV_VAR);
+    }
+  }
+
   async fetchAvailableDevices() {
-    console.log('\n\nFetching available devices...\n\n');
-    return request({
-      method: 'GET',
-      uri: CbtApi.getFullUrl_('/screenshots/browsers'),
-      auth: {
-        username: API_USERNAME,
-        password: API_AUTHKEY,
-      },
-      json: true, // Automatically stringify the request body and parse the response body as JSON
-    });
+    console.log('Fetching available devices...');
+    return this.sendRequest_('GET', '/screenshots/browsers');
   }
 
   async fetchScreenshotInfo(cbtScreenshotId) {
-    return request({
-      method: 'GET',
-      uri: CbtApi.getFullUrl_(`/screenshots/${cbtScreenshotId}`),
-      auth: {
-        username: API_USERNAME,
-        password: API_AUTHKEY,
-      },
-      json: true, // Automatically stringify the request body and parse the response body as JSON
-    });
+    return this.sendRequest_('GET', `/screenshots/${cbtScreenshotId}`);
   }
 
   async sendCaptureRequest(url, userAgents) {
     console.log(`Sending screenshot capture request for "${url}"...`);
     const browsers = userAgents.map((config) => config.fullCbtApiName).join(',');
-    return request({
-      method: 'POST',
-      uri: CbtApi.getFullUrl_('/screenshots/'),
-      auth: {
-        username: API_USERNAME,
-        password: API_AUTHKEY,
-      },
-      body: {
-        url,
-        browsers,
-        delay: 2, // in seconds. helps reduce flakes due to missing icon fonts
-      },
-      json: true, // Automatically stringify the request body and parse the response body as JSON
+    return this.sendRequest_('POST', '/screenshots/', {
+      url,
+      browsers,
+      delay: 2, // in seconds. helps reduce flakes due to missing icon fonts
     });
   }
 
-  /**
-   * @param {string} apiEndpointPath
-   * @return {string}
-   * @private
-   */
-  static getFullUrl_(apiEndpointPath) {
-    return `${API_BASE_URL}${apiEndpointPath}`;
+  async sendRequest_(method, endpoint, body = undefined) {
+    return request({
+      method,
+      uri: `${API_BASE_URL}${endpoint}`,
+      auth: {
+        username: MDC_CBT_USERNAME,
+        password: MDC_CBT_AUTHKEY,
+      },
+      body,
+      json: true, // Automatically stringify the request body and parse the response body as JSON
+    });
   }
 }
 

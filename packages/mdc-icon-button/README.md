@@ -10,7 +10,7 @@ path: /catalog/buttons/icon-buttons/
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
-     href="https://material-components.github.io/material-components-web-catalog/#/component/icon-toggle">
+     href="https://material-components.github.io/material-components-web-catalog/#/component/icon-button">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/icon-toggles.png" width="20" alt="Icon buttons screenshot">
   </a>
 </div>-->
@@ -21,10 +21,10 @@ Icon buttons allow users to take actions, and make choices, with a single tap.
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/design/components/buttons.html#toggle-button">Material Design guidelines: Toggle buttons</a>
+    <a href="https://material.io/go/design-buttons#toggle-button">Material Design guidelines: Toggle buttons</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components.github.io/material-components-web-catalog/#/component/icon-toggle">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/icon-button">Demo</a>
   </li>
 </ul>
 
@@ -51,9 +51,10 @@ npm install @material/icon-button
 ```scss
 @import "@material/icon-button/mdc-icon-button";
 ```
+
 ### JavaScript Instantiation
 
-The icon button will work without JavaScript, but you can enhance it to have a ripple effect by instantiating `MDCRipple` on the root element. 
+The icon button will work without JavaScript, but you can enhance it to have a ripple effect by instantiating `MDCRipple` on the root element.
 See [MDC Ripple](../mdc-ripple) for details.
 
 ```js
@@ -69,8 +70,8 @@ iconButtonRipple.unbounded = true;
 
 ### Icon Button Toggle
 
-The icon button can be used to toggle between an on and off icon. To style an icon button as an icon button toggle, add the 
-`data-toggle-on` and `data-toggle-off` attributes to the `mdc-icon-button` element. Then instantiate an `MDCIconButtonToggle` on the root element. 
+The icon button can be used to toggle between an on and off icon. To style an icon button as an icon button toggle, add the
+`data-toggle-on` and `data-toggle-off` attributes to the `mdc-icon-button` element. Then instantiate an `MDCIconButtonToggle` on the root element.
 
 ```html
 <button id="add-to-favorites"
@@ -81,7 +82,7 @@ The icon button can be used to toggle between an on and off icon. To style an ic
    data-toggle-on-content="favorite"
    data-toggle-on-label="Remove from favorites"
    data-toggle-off-content="favorite_border"
-   data-toggle-off-label="Add to favorites">favorites_border</button>
+   data-toggle-off-label="Add to favorites">favorite_border</button>
 ```
 
 ```js
@@ -93,7 +94,7 @@ var toggleButton = new mdc.iconButton.MDCIconButtonToggle(document.getElementByI
 Note the use of `data-toggle-*` properties in the above examples. When an MDCIconButtonToggle
 instance is toggled, it looks at these data attributes to determine how to update the element. This is what
 allows MDCIconButtonToggle to be so flexible. The `data-toggle-on-*` properties will be used when the is
-MDCIconButtonToggle is toggled on, and vice versa for `data-toggle-off-*`. 
+MDCIconButtonToggle is toggled on, and vice versa for `data-toggle-off-*`.
 
 Attribute | Description
 --- | ---
@@ -101,10 +102,27 @@ Attribute | Description
 `data-toggle-<TOGGLE STATE>-content` | The text content to set on the element. Note that if an inner icon is used, the text content will be set on that element instead.
 `data-toggle-<TOGGLE STATE>-class` | A CSS class to apply to the icon element. The same rules regarding inner icon elements described for `content` apply here as well.
 
-### Icons 
+#### Icon Button Toggle with Font Awesome
 
-The icon button can be used with a standard icon library or an `svg`. The icon button toggle should only be used with 
-an standard icon library. We recommend you use [Material Icons](https://material.io/tools/icons) from Google Fonts.
+The icon button toggle can be used with other font libraries such as Font Awesome that use an inner icon element.
+
+```html
+<button id="star-this-item"
+   class="mdc-icon-button"
+   aria-label="Unstar this item"
+   aria-hidden="true"
+   aria-pressed="true"
+   data-toggle-on-class="fa-star"
+   data-toggle-on-label="Unstar this item"
+   data-toggle-off-class="fa-star-o"
+   data-toggle-off-label="Star this item"><i class="fa fa-2x fa-star"></i></button>
+```
+
+### Icons
+
+The icon button can be used with a standard icon library such as Material Icons or Font Awesome, or with an `svg`.
+The icon button toggle should only be used with an standard icon library. We recommend you use 
+[Material Icons](https://material.io/tools/icons) from Google Fonts.
 
 ### Disabled
 
@@ -143,7 +161,7 @@ Property | Value Type | Description
 
 Event Name | Event Data Structure | Description
 --- | --- | ---
-`MDCIconButtonToggle` | `{"detail": {"isOn": boolean}}` | Emits when the icon is toggled.
+`MDCIconButtonToggle:change` | `{"detail": {"isOn": boolean}}` | Emits when the icon is toggled.
 
 ## Usage within Web Frameworks
 

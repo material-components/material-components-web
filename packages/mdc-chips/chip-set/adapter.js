@@ -15,6 +15,9 @@
  * limitations under the License.
  */
 
+// eslint-disable-next-line no-unused-vars
+import {MDCChipInteractionEventType} from '../chip/foundation';
+
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
@@ -38,14 +41,14 @@ class MDCChipSetAdapter {
   /**
    * Registers an event handler on the root element for a given event.
    * @param {string} evtType
-   * @param {function(!Event): undefined} handler
+   * @param {function(!MDCChipInteractionEventType): undefined} handler
    */
   registerInteractionHandler(evtType, handler) {}
 
   /**
    * Deregisters an event handler on the root element for a given event.
    * @param {string} evtType
-   * @param {function(!Event): undefined} handler
+   * @param {function(!MDCChipInteractionEventType): undefined} handler
    */
   deregisterInteractionHandler(evtType, handler) {}
 

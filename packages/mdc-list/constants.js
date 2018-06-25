@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2018 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,23 +15,17 @@
  * limitations under the License.
  */
 
-'use strict';
+/** @enum {string} */
+const cssClasses = {
+  LIST_ITEM_CLASS: 'mdc-list-item',
+};
 
-const express = require('express');
-const serveIndex = require('serve-index');
+/** @enum {string} */
+const strings = {
+  ARIA_ORIENTATION: 'aria-orientation',
+  ARIA_ORIENTATION_VERTICAL: 'vertical',
+  FOCUSABLE_CHILD_ELEMENTS: 'button:not(:disabled), a',
+  ITEMS_SELECTOR: '.mdc-list-item',
+};
 
-const PathResolver = require('../../scripts/build/path-resolver');
-const pathResolver = new PathResolver();
-
-const absolutePath = pathResolver.getAbsolutePath('/test/screenshot');
-const app = express();
-
-app.use('/', express.static(absolutePath), serveIndex(absolutePath));
-
-app.listen(8080, () => {
-  console.log(`
-==========================================================
-Local development server running on http://localhost:8080/
-==========================================================
-`);
-});
+export {strings, cssClasses};

@@ -27,6 +27,7 @@ import * as iconButton from '@material/icon-button/index';
 import * as iconToggle from '@material/icon-toggle/index';
 import * as linearProgress from '@material/linear-progress/index';
 import * as lineRipple from '@material/line-ripple/index';
+import * as list from '@material/list/index';
 import * as menu from '@material/menu/index';
 import * as menuSurface from '@material/menu-surface/index';
 import * as notchedOutline from '@material/notched-outline/index';
@@ -56,6 +57,7 @@ autoInit.register('MDCIconButtonToggle', iconButton.MDCIconButtonToggle);
 autoInit.register('MDCIconToggle', iconToggle.MDCIconToggle);
 autoInit.register('MDCLineRipple', lineRipple.MDCLineRipple);
 autoInit.register('MDCLinearProgress', linearProgress.MDCLinearProgress);
+autoInit.register('MDCList', list.MDCList);
 autoInit.register('MDCNotchedOutline', notchedOutline.MDCNotchedOutline);
 autoInit.register('MDCRadio', radio.MDCRadio);
 autoInit.register('MDCSnackbar', snackbar.MDCSnackbar);
@@ -84,6 +86,7 @@ export {
   iconToggle,
   lineRipple,
   linearProgress,
+  list,
   menu,
   menuSurface,
   notchedOutline,
