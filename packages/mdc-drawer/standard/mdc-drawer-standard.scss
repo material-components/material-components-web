@@ -22,10 +22,6 @@
 @import "../variables";
 @import "../mixins";
 
-$mdc-drawer-width: 256px;
-$mdc-drawer-list-item-spacing: 4px;
-$mdc-drawer-surface-padding: 16px;
-
 .mdc-drawer {
   @include mdc-drawer-border-color($mdc-drawer-divider-color, $mdc-drawer-divider-opacity);
   @include mdc-drawer-group-header-text-color($mdc-drawer-subtitle-ink-color, $mdc-drawer-subtitle-ink-opacity);
@@ -34,7 +30,6 @@ $mdc-drawer-surface-padding: 16px;
   @include mdc-drawer-meta-ink-color($mdc-drawer-icon-ink-color, $mdc-drawer-icon-ink-opacity);
   @include mdc-drawer-item-text-color($mdc-drawer-inactive-ink-color, $mdc-drawer-inactive-ink-opacity);
   @include mdc-drawer-item-activated-text-color($mdc-drawer-activated-ink-color, $mdc-drawer-activated-ink-opacity);
-  @include mdc-drawer-item-corner-radius(4px);
 
   width: $mdc-drawer-width;
   min-width: $mdc-drawer-width;

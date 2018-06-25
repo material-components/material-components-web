@@ -36,7 +36,7 @@ npm install @material/drawer
 <nav class="mdc-drawer">
   <div class="mdc-drawer__scrollable">
     <nav class="mdc-list">
-      <a class="mdc-list-item mdc-list-item--selected" href='#'>
+      <a class="mdc-list-item mdc-list-item--activated" href='#'>
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
       </a>
       <a class="mdc-list-item" href="#">
@@ -77,7 +77,7 @@ switchers and titles should live in the header element.
   </div>
   <div class="mdc-drawer__scrollable">
     <nav class="mdc-list">
-      <a class="mdc-list-item mdc-list-item--selected" href='#'>
+      <a class="mdc-list-item mdc-list-item--activated" href='#'>
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
       </a>
     </nav>
@@ -101,11 +101,13 @@ Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-drawer-active-overlay-color($color)` | Sets the active overlay color of a drawer list item.
+`mdc-drawer-activated-overlay-color($color)` | Sets the active overlay color of a drawer list item.
 `mdc-drawer-border-color($color, $opacity)` | Sets border color of `mdc-drawer` surface.
 `mdc-drawer-divider-color($color, $opacity)` | Sets divider color found between list groups.
+`mdc-drawer-fill-color-accessible($color)` | Sets the fill color to `$color`, and list item text and icon ink colors to an accessible color relative to `$color`.
 `mdc-drawer-group-header-text-color` | Sets drawer list subheader and drawer subtitle ink color.
 `mdc-drawer-icon-fill-color($color, $opacity)` | Sets drawer list item graphic icon background color.
+`mdc-drawer-icon-activated-ink-color($color, $opacity)` | Sets activated drawer list item icon ink color.
 `mdc-drawer-icon-ink-color($color, $opacity)` | Sets drawer list item graphic icon ink color.
 `mdc-drawer-item-activated-text-color($color, $opacity)` | Sets activated drawer list item ink color.
 `mdc-drawer-item-corner-radius($radius)` | Sets the corner border radius of the drawer list item.
