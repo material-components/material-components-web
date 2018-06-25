@@ -1,5 +1,5 @@
 //
-// Copyright 2017 Google Inc. All Rights Reserved.
+// Copyright 2018 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,98 +14,108 @@
 // limitations under the License.
 //
 
-@import "@material/animation/functions";
-@import "@material/animation/variables";
 @import "@material/theme/mixins";
-@import "@material/theme/variables";
-@import "@material/typography/mixins";
+@import "@material/list/mixins";
+@import "@material/ripple/mixins";
 
-@mixin mdc-drawer-toolbar-spacer_() {
-  .mdc-drawer__toolbar-spacer {
-    display: flex;
-    position: relative;
-    flex-direction: row;
-    flex-shrink: 0;
-    align-items: center;
-    box-sizing: border-box;
-    height: 56px;
-    padding: 16px;
-    border-bottom: 1px solid rgba(0, 0, 0, .12);
-
-    // TODO(sgomes): replace with global breakpoints when we have them
-    @media (min-width: 600px) {
-      height: 64px;
-    }
+@mixin mdc-drawer-activated-overlay-color($color) {
+  :not(.mdc-list--non-interactive) > .mdc-list-item {
+    @include mdc-states-activated($color);
   }
 }
 
-@mixin mdc-drawer-header_() {
-  // Use aspect ratio trick to maintain 16:9 aspect ratio on the header
-  // styline things header is a type
-  // stylelint-disable selector-max-type
-  .mdc-drawer__header {
-    position: relative;
-  }
+@mixin mdc-drawer-border-color($color, $opacity) {
+  $value: rgba(mdc-theme-prop-value($color), $opacity);
 
-  .mdc-drawer__header::before {
-    display: block;
-    padding-top: 9 / 16 * 100%;
-    content: "";
-  }
-
-  .mdc-drawer__header-content {
-    display: flex;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    align-items: flex-end;
-    box-sizing: border-box;
-    padding: 16px;
-  }
-  // stylelint-enable selector-max-type
+  @include mdc-theme-prop(border-color, $value);
 }
 
-@mixin mdc-drawer-list_() {
-  .mdc-list-item {
-    @include mdc-typography(subtitle2);
+@mixin mdc-drawer-divider-color($color, $opacity) {
+  $value: rgba(mdc-theme-prop-value($color), $opacity);
 
-    position: relative;
-    outline: none;
-    color: inherit;
-    text-decoration: none;
-  }
+  @include mdc-list-divider-color($value);
+}
 
-  .mdc-list-item__graphic {
-    color: rgba(0, 0, 0, .54);
+@mixin mdc-drawer-group-header-text-color($color, $opacity) {
+  $value: rgba(mdc-theme-prop-value($color), $opacity);
+
+  @include mdc-list-group-subheader-ink-color($value);
+
+  .mdc-drawer__subtitle {
+    @include mdc-theme-prop(color, $value);
   }
 }
 
-@mixin mdc-drawer-base_() {
-  @include mdc-drawer-toolbar-spacer_;
-  @include mdc-drawer-header_;
-  @include mdc-drawer-list_;
+@mixin mdc-drawer-icon-fill-color($color, $opacity) {
+  $value: rgba(mdc-theme-prop-value($color), $opacity);
+
+  @include mdc-list-item-graphic-fill-color($value);
 }
 
-@mixin mdc-drawer-fill-color($color) {
-  &.mdc-drawer--permanent,
-  .mdc-drawer__drawer {
-    @include mdc-theme-prop(background-color, $color);
+@mixin mdc-drawer-fill-color-accessible($color, $opacity) {
+  $accessibleColor: mdc-theme-accessible-ink-color($color);
+
+  @include mdc-drawer-item-text-color($accessibleColor, $opacity);
+  @include mdc-drawer-icon-ink-color($accessibleColor, $opacity);
+  @include mdc-drawer-meta-ink-color($accessibleColor, $opacity);
+  @include mdc-drawer-surface-fill-color($color, $opacity);
+}
+
+@mixin mdc-drawer-icon-ink-color($color, $opacity) {
+  $value: rgba(mdc-theme-prop-value($color), $opacity);
+
+  @include mdc-list-item-graphic-ink-color($value);
+}
+
+@mixin mdc-drawer-icon-activated-ink-color($color, $opacity) {
+  $value: rgba(mdc-theme-prop-value($color), $opacity);
+  // stylelint-disable selector-no-qualifying-type
+  .mdc-list-item--activated,
+  a.mdc-list-item--activated, {
+    @include mdc-list-item-graphic-ink-color($value);
   }
+  // stylelint-enable selector-no-qualifying-type
 }
 
-@mixin mdc-drawer-ink-color($color) {
-  @include mdc-theme-prop(color, $color);
-}
-
-@mixin mdc-drawer-scrim-color($color, $opacity) {
-  &::before {
-    background-color: rgba(mdc-theme-prop-value($color), $opacity);
+@mixin mdc-drawer-item-activated-text-color($color, $opacity) {
+  $value: rgba(mdc-theme-prop-value($color), $opacity);
+  // stylelint-disable selector-no-qualifying-type
+  .mdc-list-item--activated,
+  a.mdc-list-item--activated, {
+    @include mdc-list-item-primary-text-ink-color($value);
   }
+  // stylelint-enable selector-no-qualifying-type
 }
 
-@mixin mdc-drawer-fill-color-accessible($color) {
-  @include mdc-drawer-ink-color(mdc-theme-accessible-ink-color($color));
-  @include mdc-drawer-fill-color($color);
+@mixin mdc-drawer-item-text-color($color, $opacity) {
+  $value: rgba(mdc-theme-prop-value($color), $opacity);
+  // stylelint-disable selector-no-qualifying-type
+  .mdc-list-item,
+  a.mdc-list-item {
+    @include mdc-list-item-primary-text-ink-color($value);
+  }
+  // stylelint-enable selector-no-qualifying-type
+}
+
+// No meta-activated-ink-color mixins because the only meta element use case
+// is an arrow for cascading navigation. In that case, meta elements should
+// never be in the activated state.
+@mixin mdc-drawer-meta-ink-color($color, $opacity) {
+  $value: rgba(mdc-theme-prop-value($color), $opacity);
+
+  @include mdc-list-item-meta-ink-color($value);
+}
+
+@mixin mdc-drawer-surface-fill-color($color, $opacity) {
+  $value: rgba(mdc-theme-prop-value($color), $opacity);
+
+  @include mdc-theme-prop(background-color, $value);
+}
+
+@mixin mdc-drawer-title-ink-color($color, $opacity) {
+  $value: rgba(mdc-theme-prop-value($color), $opacity);
+
+  .mdc-drawer__title {
+    @include mdc-theme-prop(color, $value);
+  }
 }
