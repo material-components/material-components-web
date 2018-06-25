@@ -45,7 +45,7 @@ class MDCTabScrollerRTLReverse extends MDCTabScrollerRTL {
     const clampedScrollLeft = this.clampScrollValue_(-scrollX);
     return /** @type {!MDCTabScrollerAnimation} */ ({
       scrollX: clampedScrollLeft,
-      translateX: clampedScrollLeft - currentScrollLeft,
+      translateX: currentScrollLeft - clampedScrollLeft,
     });
   }
 
@@ -58,7 +58,7 @@ class MDCTabScrollerRTLReverse extends MDCTabScrollerRTL {
     const clampedScrollLeft = this.clampScrollValue_(currentScrollLeft - scrollX);
     return /** @type {!MDCTabScrollerAnimation} */ ({
       scrollX: clampedScrollLeft,
-      translateX: clampedScrollLeft - currentScrollLeft,
+      translateX: currentScrollLeft - clampedScrollLeft,
     });
   }
 

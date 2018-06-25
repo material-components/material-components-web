@@ -50,7 +50,7 @@ test('#scrollToRTL() returns a normalized scrollX property', () => {
 
 test('#scrollToRTL() returns a normalized translateX property', () => {
   const {scroller} = setupTest({rootWidth: 200, contentWidth: 1000, scrollLeft: 145});
-  assert.strictEqual(scroller.scrollToRTL(-111).translateX, -34);
+  assert.strictEqual(scroller.scrollToRTL(-111).translateX, 34);
 });
 
 test('#scrollToRTL() returns 0 for scrollX property when scrollLeft would be too far right', () => {
@@ -75,7 +75,7 @@ test('#incrementScrollRTL() returns a normalized scrollX property', () => {
 
 test('#incrementScrollRTL() returns a normalized translateX property', () => {
   const {scroller} = setupTest({rootWidth: 200, contentWidth: 1000, scrollLeft: 212});
-  assert.strictEqual(scroller.incrementScrollRTL(-50).translateX, 50);
+  assert.strictEqual(scroller.incrementScrollRTL(-50).translateX, -50);
 });
 
 test('#incrementScrollRTL() returns 0 for scrollX property when scrollLeft would be too far right', () => {
