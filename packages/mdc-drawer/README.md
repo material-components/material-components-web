@@ -15,7 +15,7 @@ The MDC Navigation Drawer is used to organize access to destinations and other f
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/design/components/navigation-drawer.html">Material Design guidelines: Navigation drawer</a>
+    <a href="https://material.io/go/design-navigation-drawer">Material Design guidelines: Navigation drawer</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
     <a href="https://material-components.github.io/material-components-web-catalog/#/component/drawer">Demo</a>
