@@ -208,4 +208,14 @@ class MDCChipFoundation extends MDCFoundation {
   }
 }
 
-export default MDCChipFoundation;
+/**
+ * @typedef {{
+ *   detail: {
+ *     chip: {foundation: !MDCChipFoundation},
+ *   },
+ *   bubbles: boolean,
+ * }}
+ */
+let MDCChipInteractionEventType;
+
+export {MDCChipFoundation, MDCChipInteractionEventType};
