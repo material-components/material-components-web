@@ -1,0 +1,95 @@
+//
+// Copyright 2018 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+@import "@material/rtl/mixins";
+@import "@material/typography/mixins";
+@import "@material/typography/variables";
+@import "@material/theme/variables";
+@import "@material/theme/mixins";
+@import "../variables";
+@import "../mixins";
+
+.mdc-drawer {
+  @include mdc-drawer-border-color($mdc-drawer-divider-color, $mdc-drawer-divider-opacity);
+  @include mdc-drawer-group-header-text-color($mdc-drawer-subtitle-ink-color, $mdc-drawer-subtitle-ink-opacity);
+  @include mdc-drawer-surface-fill-color($mdc-drawer-surface-fill-color, $mdc-drawer-surface-fill-opacity);
+  @include mdc-drawer-icon-ink-color($mdc-drawer-icon-ink-color, $mdc-drawer-icon-ink-opacity);
+  @include mdc-drawer-meta-ink-color($mdc-drawer-icon-ink-color, $mdc-drawer-icon-ink-opacity);
+  @include mdc-drawer-item-text-color($mdc-drawer-inactive-ink-color, $mdc-drawer-inactive-ink-opacity);
+  @include mdc-drawer-item-activated-text-color($mdc-drawer-activated-ink-color, $mdc-drawer-activated-ink-opacity);
+
+  width: $mdc-drawer-width;
+  min-width: $mdc-drawer-width;
+  border-right-width: 1px;
+  border-right-style: solid;
+  overflow: hidden;
+
+  @include mdc-rtl {
+    border-right-width: 0;
+    border-left-width: 1px;
+    border-right-style: none;
+    border-left-style: solid;
+  }
+
+  .mdc-list,
+  .mdc-list-group .mdc-list {
+    padding: $mdc-drawer-surface-padding/2;
+    padding-top: 0;
+  }
+
+  // stylelint-disable selector-no-qualifying-type
+  .mdc-list-item,
+  a.mdc-list-item {
+    @include mdc-typography(body2);
+
+    height: calc(48px - 2 * #{$mdc-drawer-list-item-spacing});
+    margin: $mdc-drawer-list-item-spacing 0;
+    padding: 0 $mdc-drawer-surface-padding/2;
+  }
+  // stylelint-enable selector-no-qualifying-type
+
+  .mdc-list-group__subheader {
+    @include mdc-typography(body2);
+
+    margin: 0;
+    padding: 0 $mdc-drawer-surface-padding;
+    padding-top: 8px;
+  }
+}
+
+.mdc-drawer__header {
+  box-sizing: border-box;
+  min-height: 64px; // same as $mdc-top-app-bar-row-height
+  padding: $mdc-drawer-surface-padding;
+  padding-bottom: 4px;
+}
+
+.mdc-drawer__title {
+  @include mdc-typography(headline6);
+
+  margin: 0;
+}
+
+.mdc-drawer__subtitle {
+  @include mdc-typography(body2);
+
+  margin: 0;
+}
+
+.mdc-drawer__scrollable {
+  height: 100%;
+  overflow-y: auto;
+}
