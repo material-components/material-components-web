@@ -36,7 +36,7 @@
       <div class="mdc-drawer__scrollable">
         <div class="mdc-list-group">
           <nav class="mdc-list">
-            <a class="mdc-list-item mdc-list-item--selected demo-drawer-list-item" href="#">
+            <a class="mdc-list-item mdc-list-item--activated demo-drawer-list-item" href="#">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
             </a>
             <a class="mdc-list-item demo-drawer-list-item" href="#">
@@ -76,7 +76,7 @@
         </div>
       </div>
     </nav>
-    <div class="demo-content" id="demo-content">
+    <div class="demo-content">
       <header class="mdc-top-app-bar" id="app-bar">
         <div class="mdc-top-app-bar__row">
           <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
@@ -111,6 +111,16 @@
             </div>
             <label for="theme-radio-custom">Custom Theme</label>
           </div>
+          <div class="mdc-form-field">
+            <div class="mdc-radio">
+              <input class="mdc-radio__native-control" type="radio" id="theme-radio-accessible" name="theme">
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
+            </div>
+            <label for="theme-radio-accessible">Accessible Theme</label>
+          </div>
         </div>
 
         <div class="extra-content-wrapper">
@@ -141,7 +151,7 @@
           extraTall.style.display = extraTall.style.display ? '' : 'none';
         });
 
-        var activatedClass = 'mdc-list-item--selected';
+        var activatedClass = 'mdc-list-item--activated';
         document.querySelector('.mdc-drawer').addEventListener('click', function(event) {
           var el = event.target;
           while (el && !el.classList.contains('mdc-list-item')) {
@@ -160,9 +170,12 @@
         var radioEl = document.querySelector('#demo-radio-buttons');
         radioEl.addEventListener('change', function(e) {
           drawerEl.classList.remove('demo-drawer--custom');
+          drawerEl.classList.remove('demo-drawer--accessible');
 
           if(e.target.id === 'theme-radio-custom') {
             drawerEl.classList.add('demo-drawer--custom');
+          } else if(e.target.id === 'theme-radio-accessible') {
+            drawerEl.classList.add('demo-drawer--accessible');
           }
         });
 
@@ -171,8 +184,7 @@
           document.body.setAttribute('dir', document.body.getAttribute('dir') === 'rtl' ? 'ltr' : 'rtl');
         });
 
-        var topAppBar = new mdc.topAppBar.MDCTopAppBar(document.getElementById('app-bar'));
-        topAppBar.setScrollTarget(document.getElementById('demo-content'));
+        mdc.topAppBar.MDCTopAppBar.attachTo(document.getElementById('app-bar'));
       });
     </script>
   </body>
