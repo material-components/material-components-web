@@ -150,6 +150,8 @@ Method Signature | Description
 `activate() => void` | Proxies to the foundation's `activate` method
 `deactivate() => void` | Proxies to the foundation's `deactivate` method
 `layout() => void` | Proxies to the foundation's `layout` method
+`handleFocus() => void` | Handles focus event on the ripple surface
+`handleBlur() => void` | Handles blur event on the ripple surface
 
 ### `MDCRippleAdapter`
 

@@ -124,6 +124,12 @@
   }
 }
 
+@mixin mdc-text-field-caret-color($color) {
+  .mdc-text-field__input {
+    @include mdc-theme-prop(caret-color, $color);
+  }
+}
+
 // Private mixins
 
 // Baseline
@@ -153,6 +159,7 @@
   @include mdc-text-field-line-ripple-color($mdc-text-field-error);
   @include mdc-text-field-label-color($mdc-text-field-error);
   @include mdc-text-field-helper-text-validation-color($mdc-text-field-error);
+  @include mdc-text-field-caret-color($mdc-text-field-error);
 
   &.mdc-text-field--with-trailing-icon {
     @include mdc-text-field-icon-color($mdc-text-field-error);
@@ -261,7 +268,7 @@
   .mdc-text-field__input {
     display: flex;
     padding: 12px;
-    border: none;
+    border: none !important;  // FF adds unwanted border in HC mode on windows.
     background-color: transparent;
     z-index: 1;
   }

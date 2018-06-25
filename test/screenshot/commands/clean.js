@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,14 +16,25 @@
 
 'use strict';
 
-const Controller = require('./lib/controller');
-const controller = new Controller();
+const CliArgParser = require('../lib/cli-arg-parser');
+const del = require('del');
+const mkdirp = require('mkdirp');
+const path = require('path');
 
-controller.initialize()
-  .then(() => controller.uploadAllAssets(), handleError)
-;
+module.exports = {
+  async runAsync() {
+    const cliArgs = new CliArgParser();
 
-function handleError(err) {
-  console.error(err);
-  process.exit(1);
-}
+    const relativePathPatterns = [
+      'out',
+      'report.html',
+      'report.json',
+    ].map((filename) => {
+      return path.join(cliArgs.testDir, filename);
+    });
+
+    await del(relativePathPatterns);
+
+    mkdirp.sync(path.join(cliArgs.testDir, 'out'));
+  },
+};

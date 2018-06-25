@@ -85,7 +85,9 @@ CSS Class | Description
 --- | ---
 `mdc-fab` | Mandatory, for the button element
 `mdc-fab__icon` | Mandatory, for the icon element
+`mdc-fab__label` | Optional, for the text label. Applicable only for Extended FAB.
 `mdc-fab--mini` | Optional, modifies the FAB to a smaller size
+`mdc-fab--extended` | Optional, modifies the FAB to wider size which includes a text label.
 `mdc-fab--exited` | Optional, animates the FAB out of view.<br>When this class is removed, the FAB will return to view.
 
 > **A note about `:disabled`**, No disabled styles are defined for FABs. The FAB promotes action, and should not be displayed in a disabled state. If you want to present a FAB that does *not* perform an action, you should also present an explanation to the user.
@@ -99,6 +101,7 @@ MDC FAB uses [MDC Theme](../mdc-theme)'s `secondary` color by default. Use the f
 Mixin | Description
 --- | ---
 `mdc-fab-accessible($container-color)` | Changes the FAB's container color to the given color, and updates the FAB's ink and ripple color to meet accessibility standards.
+`mdc-fab-extended-fluid` | Makes the Extended FAB fluid to container, such as screen width or the layout grid. Exposed as a mixin to support use within `@media` queries.
 
 #### Advanced Sass Mixins
 
@@ -109,6 +112,8 @@ Mixin | Description
 `mdc-fab-container-color($color)` | Sets the container color to the given color
 `mdc-fab-icon-size($width, $height)` | Sets the icon `width`, `height`, and `font-size` properties to the specified `width` and `height`. `$height` is optional and will default to `$width` if omitted. The `font-size` will be set to the provided `$width` value.
 `mdc-fab-ink-color($color)` | Sets the ink color to the given color
+`mdc-fab-extended-padding($icon-padding, $label-padding)` | Sets the padding on both sides of the icon, and between the label and the edge of the FAB. In cases where there is no icon, `$label-padding` will apply to both sides.
+`mdc-fab-extended-label-padding($label-padding)` | Sets the label side padding for Extended FAB. Useful when styling an Extended FAB with no icon.
 
 The ripple effect for the FAB component is styled using [MDC Ripple](../mdc-ripple) mixins.
 
