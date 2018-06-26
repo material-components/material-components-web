@@ -27,7 +27,7 @@ const cssClasses = {
 /** @enum {string} */
 const strings = {
   NATIVE_CONTROL_SELECTOR: `.${ROOT}__native-control`,
-  RIPLE_SURFACE_SELECTOR: `.${ROOT}__thumb-underlay`,
+  RIPPLE_SURFACE_SELECTOR: `.${ROOT}__thumb-underlay`,
 };
 
 

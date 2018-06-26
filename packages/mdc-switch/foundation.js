@@ -43,7 +43,10 @@ class MDCSwitchFoundation extends MDCFoundation {
       removeClass: (/* className: string */) => {},
       registerChangeHandler: (/* handler: EventListener */) => {},
       deregisterChangeHandler: (/* handler: EventListener */) => {},
-      getNativeControl: () => /* !MDCSelectionControlState */ {},
+      setChecked: (/* checked: boolean */) => {},
+      isChecked: () => /* boolean */ {},
+      setDisabled: (/* disabled: boolean */) => {},
+      isDisabled: () => /* boolean */ {},
     });
   }
 
@@ -64,28 +67,24 @@ class MDCSwitchFoundation extends MDCFoundation {
 
   /** @return {boolean} */
   isChecked() {
-    return this.getNativeControl_().checked;
+    return this.adapter_.isChecked();
   }
 
   /** @param {boolean} checked */
   setChecked(checked) {
-    this.getNativeControl_().checked = checked;
+    this.adapter_.setChecked(checked);
     this.updateCheckedStyling_();
   }
 
   /** @return {boolean} */
   isDisabled() {
-    return this.getNativeControl_().disabled;
+    return this.adapter_.isDisabled();
   }
 
   /** @param {boolean} disabled */
   setDisabled(disabled) {
-    this.getNativeControl_().disabled = disabled;
-    if (disabled) {
-      this.adapter_.addClass(cssClasses.DISABLED);
-    } else {
-      this.adapter_.removeClass(cssClasses.DISABLED);
-    }
+    this.adapter_.setDisabled(disabled);
+    disabled ? this.adapter_.addClass(cssClasses.DISABLED) : this.adapter_.removeClass(cssClasses.DISABLED);
   }
 
   /**
@@ -93,17 +92,6 @@ class MDCSwitchFoundation extends MDCFoundation {
    */
   handleChange() {
     this.updateCheckedStyling_();
-  }
-
-  /**
-   * @return {!MDCSelectionControlState}
-   * @private
-   */
-  getNativeControl_() {
-    return this.adapter_.getNativeControl() || {
-      checked: false,
-      disabled: false,
-    };
   }
 
   /**

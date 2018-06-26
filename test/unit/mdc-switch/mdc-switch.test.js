@@ -22,7 +22,7 @@ import {createMockRaf} from '../helpers/raf';
 import {MDCSwitchFoundation, MDCSwitch} from '../../../packages/mdc-switch';
 import {MDCRipple} from '../../../packages/mdc-ripple';
 
-const {NATIVE_CONTROL_SELECTOR, RIPLE_SURFACE_SELECTOR} = MDCSwitchFoundation.strings;
+const {NATIVE_CONTROL_SELECTOR, RIPPLE_SURFACE_SELECTOR} = MDCSwitchFoundation.strings;
 
 function getFixture() {
   return bel`
@@ -30,7 +30,8 @@ function getFixture() {
       <div class="mdc-switch__track"></div>
       <div class="mdc-switch__thumb-underlay">
         <div class="mdc-switch__thumb">
-        <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" role="switch">
+          <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" role="switch">
+        </div>
       </div>
     </div>
   `;
@@ -39,7 +40,7 @@ function getFixture() {
 function setupTest() {
   const root = getFixture();
   const component = new MDCSwitch(root);
-  const rippleSurface = root.querySelector(RIPLE_SURFACE_SELECTOR);
+  const rippleSurface = root.querySelector(RIPPLE_SURFACE_SELECTOR);
   return {root, component, rippleSurface};
 }
 
@@ -76,6 +77,14 @@ test('get/set checked updates the checked value of the native switch input eleme
   assert.equal(component.checked, inputEl.checked);
 });
 
+test('get/set checked updates the component styles', () => {
+  const {root, component} = setupTest();
+  component.checked = true;
+  assert.isOk(root.classList.contains(MDCSwitchFoundation.cssClasses.CHECKED));
+  component.checked = false;
+  assert.isNotOk(root.classList.contains(MDCSwitchFoundation.cssClasses.CHECKED));
+});
+
 test('get/set disabled updates the disabled value of the native switch input element', () => {
   const {root, component} = setupTest();
   const inputEl = root.querySelector(NATIVE_CONTROL_SELECTOR);
@@ -85,6 +94,14 @@ test('get/set disabled updates the disabled value of the native switch input ele
   component.disabled = false;
   assert.isNotOk(inputEl.disabled);
   assert.equal(component.disabled, inputEl.disabled);
+});
+
+test('get/set disabled updates the component styles', () => {
+  const {root, component} = setupTest();
+  component.disabled = true;
+  assert.isOk(root.classList.contains(MDCSwitchFoundation.cssClasses.DISABLED));
+  component.disabled = false;
+  assert.isNotOk(root.classList.contains(MDCSwitchFoundation.cssClasses.DISABLED));
 });
 
 test('get ripple returns a MDCRipple instance', () => {

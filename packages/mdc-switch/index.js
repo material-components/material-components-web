@@ -56,8 +56,8 @@ class MDCSwitch extends MDCComponent {
    * @private
    */
   initRipple_() {
-    const {RIPLE_SURFACE_SELECTOR} = MDCSwitchFoundation.strings;
-    const rippleSurface = /** @type {!Element} */ (this.root_.querySelector(RIPLE_SURFACE_SELECTOR));
+    const {RIPPLE_SURFACE_SELECTOR} = MDCSwitchFoundation.strings;
+    const rippleSurface = /** @type {!Element} */ (this.root_.querySelector(RIPPLE_SURFACE_SELECTOR));
 
     const MATCHES = getMatchesProperty(HTMLElement.prototype);
     const adapter = Object.assign(MDCRipple.createAdapter(this), {
@@ -81,7 +81,10 @@ class MDCSwitch extends MDCComponent {
       removeClass: (className) => this.root_.classList.remove(className),
       registerChangeHandler: (handler) => this.nativeControl_.addEventListener('change', handler),
       deregisterChangeHandler: (handler) => this.nativeControl_.removeEventListener('change', handler),
-      getNativeControl: () => this.nativeControl_,
+      setChecked: (checked) => this.nativeControl_.checked = checked,
+      isChecked: () => this.nativeControl_.checked,
+      setDisabled: (disabled) => this.nativeControl_.disabled = disabled,
+      isDisabled: () => this.nativeControl_.disabled,
     });
   }
 

@@ -19,6 +19,18 @@
 @import "@material/rtl/mixins";
 @import "./variables";
 
+@mixin mdc-switch-toggled-on-color($color) {
+  @include mdc-switch-toggled-on-track-color($color);
+  @include mdc-switch-toggled-on-thumb-color($color);
+  @include mdc-switch-toggled-on-ripple-color($color);
+}
+
+@mixin mdc-switch-toggled-off-color($color) {
+  @include mdc-switch-toggled-off-track-color($color);
+  @include mdc-switch-toggled-off-thumb-color($color);
+  @include mdc-switch-toggled-off-ripple-color($color);
+}
+
 @mixin mdc-switch-toggled-on-track-color($color) {
   &.mdc-switch--checked .mdc-switch__track {
     @include mdc-theme-prop(background-color, $color);
@@ -33,6 +45,12 @@
   }
 }
 
+@mixin mdc-switch-toggled-on-ripple-color($color) {
+  &.mdc-switch--checked .mdc-switch__thumb-underlay {
+    @include mdc-states($color);
+  }
+}
+
 @mixin mdc-switch-toggled-off-track-color($color) {
   &:not(.mdc-switch--checked) .mdc-switch__track {
     @include mdc-theme-prop(background-color, $color);
@@ -44,12 +62,6 @@
   &:not(.mdc-switch--checked) .mdc-switch__thumb {
     @include mdc-theme-prop(background-color, $color);
     @include mdc-theme-prop(border-color, $color);
-  }
-}
-
-@mixin mdc-switch-toggled-on-ripple-color($color) {
-  &.mdc-switch--checked .mdc-switch__thumb-underlay {
-    @include mdc-states($color);
   }
 }
 
