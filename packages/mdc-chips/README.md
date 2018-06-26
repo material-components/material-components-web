@@ -282,9 +282,9 @@ Method Signature | Description
 `getShouldRemoveOnTrailingIconClick() => boolean` | Returns whether a trailing icon click should trigger exit/removal of the chip
 `setShouldRemoveOnTrailingIconClick(shouldRemove: boolean) => void` | Sets whether a trailing icon click should trigger exit/removal of the chip
 `beginExit() => void` | Begins the exit animation which leads to removal of the chip
-`handleInteraction(evt: string) => void` | Handles an interaction event on the root element
-`handleTransitionEnd(evt: string) => void` | Handles a transition end event on the root element
-`handleTrailingIconInteraction(evt: string) => void` | Handles an interaction event on the trailing icon element
+`handleInteraction(evt: Event) => void` | Handles an interaction event on the root element
+`handleTransitionEnd(evt: Event) => void` | Handles a transition end event on the root element
+`handleTrailingIconInteraction(evt: Event) => void` | Handles an interaction event on the trailing icon element
 
 #### `MDCChipSetFoundation`
 
@@ -292,5 +292,5 @@ Method Signature | Description
 --- | ---
 `select(chipFoundation: MDCChipFoundation) => void` | Selects the given chip
 `deselect(chipFoundation: MDCChipFoundation) => void` | Deselects the given chip
-`handleChipInteraction(evt: string) => void` | Handles a chip interaction event
-`handleChipRemoval(evt: string) => void` | Handles the event when a chip is removed
+`handleChipInteraction(evt: Event) => void` | Handles a chip interaction event
+`handleChipRemoval(evt: Event) => void` | Handles the event when a chip is removed
