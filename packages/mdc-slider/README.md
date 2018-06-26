@@ -1,0 +1,146 @@
+<!--docs:
+title: "Sliders"
+layout: detail
+section: components
+excerpt: "A select over a range of values by moving the slider thumb."
+iconId: slider
+path: /catalog/input-controls/sliders/
+-->
+
+# Slider
+
+MDC Slider provides an implementation of the Material Design slider component. It is modeled after
+the browser's `<input type="range">` element.
+
+## Design and API Documentation
+
+<ul class="icon-list">
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/go/design-sliders">Material Design guidelines: Sliders</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/slider">Demo</a>
+  </li>
+</ul>
+
+## Installation
+
+<!-- This would be assuming it is published. -->
+```
+npm install @material/slider
+```
+
+## Basic Usage
+
+### Continuous Slider HTML Structure
+
+```html
+<div class="mdc-slider" tabindex="0" role="slider"
+     aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
+     aria-label="Select Value">
+  <div class="mdc-slider__track">
+    <div class="mdc-slider__track-fill"></div>
+  </div>
+  <div class="mdc-slider__thumb">
+    <svg class="mdc-slider__thumb-handle" width="24" height="24">
+      <circle cx="12" cy="12" r="6"></circle>
+    </svg>
+  </div>
+</div>
+```
+
+### JavaScript Instantiation
+
+```js
+import {MDCSlider} from '@material/slider';
+
+const slider = new MDCSlider(document.querySelector('.mdc-slider'));
+```
+
+### Initializing the slider with custom ranges/values
+
+When `MDCSlider` is initialized, it reads the element's `aria-valuemin`, `aria-valuemax`, and
+`aria-valuenow` values if present and uses them to set the component's `min`, `max`, and `value`
+properties. This means you can use these attributes to set these values for the slider within the
+DOM.
+
+```html
+<div class="mdc-slider" tabindex="0" role="slider"
+     aria-valuemin="-5" aria-valuemax="50" aria-valuenow="10"
+     aria-label="Select Value">
+  <!-- ... -->
+</div>
+```
+
+### MDC Slider Component API
+
+The `MDCSlider` API is modeled after the `<input type="range">` element and supports a subset of the
+properties that element supports. It also emits events equivalent to a range input's `input` and
+`change` events.
+
+#### Properties
+
+| Property Name | Type | Description |
+| --- | --- | --- |
+| `value` | `number` | The current value of the slider. Changing this will update the slider's value. |
+| `min` | `number` | The minimum value a slider can have. Values set programmatically will be clamped to this minimum value. Changing this property will update the slider's value if it is lower than the new minimum |
+| `max` | `number` | The maximum value a slider can have. Values set programmatically will be clamped to this maximum value. Changing this property will update the slider's value if it is greater than the new maximum |
+
+#### Methods
+
+| Method Signature | Description |
+| --- | --- |
+| `layout() => void` | Recomputes the dimensions and re-lays out the component. This should be called if the dimensions of the slider itself or any of its parent elements change programmatically (it is called automatically on resize). |
+
+#### Events
+
+`MDCSlider` emits a `MDCSlider:input` custom event from its root element whenever the slider value
+is changed by way of a user event, e.g. when a user is dragging the slider or changing the value
+using the arrow keys. The `detail` property of the event is set to the slider instance that was
+affected.
+
+`MDCSlider` emits a `MDCSlider:change` custom event from its root element whenever the slider value
+is changed _and committed_ by way of a user event, e.g. when a user stops dragging the slider or
+changes the value using the arrow keys. The `detail` property of the event is set to the slider
+instance that was affected.
+
+### Using the foundation class
+
+The `@material/slider` package ships with an `MDCSliderFoundation` class that framework authors can
+use to build a custom MDCSlider component for their framework.
+
+#### Adapter API
+
+| Method Signature | Description |
+| --- | --- |
+| `hasClass(className: string) => boolean` | Checks if `className` exists on the root element |
+| `addClass(className: string) => void` | Adds a class `className` to the root element |
+| `removeClass(className: string) => void` | Removes a class `className` from the root element |
+| `getAttribute(name: string) => string?` | Returns the value of the attribute `name` on the root element, or `null` if that attribute is not present on the root element. |
+| `setAttribute(name: string, value: string) => void` | Sets an attribute `name` to the value `value` on the root element. |
+| `removeAttribute(name: string) => void` | Removes an attribute `name` from the root element |
+| `computeBoundingRect() => ClientRect` | Computes and returns the bounding client rect for the root element. Our implementations calls `getBoundingClientRect()` for this. |
+| `registerEventHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` to the slider's root element |
+| `deregisterEventHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` from the slider's root element |
+| `registerThumbEventHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` to the slider's thumb container element |
+| `deregisterThumbEventHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` from the slider's thumb container element |
+| `registerBodyEventHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` to the `<body>` element of the slider's document |
+| `deregisterBodyEventHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` from the `<body>` element of the slider's document |
+| `registerResizeHandler(handler: EventListener) => void` | Adds an event listener `handler` that is called when the component's viewport resizes, e.g. `window.onresize`. |
+| `deregisterResizeHandler(handler: EventListener) => void` | Removes an event listener `handler` that was attached via `registerResizeHandler`. |
+| `notifyInput() => void` | Broadcasts an "input" event notifying clients that the slider's value is currently being changed. The implementation should choose to pass along any relevant information pertaining to this event. In our case we pass along the instance of the component for which the event is triggered for. |
+| `notifyChange() => void` | Broadcasts a "change" event notifying clients that a change to the slider's value has been committed by the user. Similar guidance applies here as for `notifyInput()`. |
+| `setThumbStyleProperty(propertyName: string, value: string) => void` | Sets a dash-cased style property `propertyName` to the given `value` on the thumb element. |
+| `setTrackFillStyleProperty(propertyName: string, value: string) => void` | Sets a dash-cased style property `propertyName` to the given `value` on the track-fill element. |
+
+#### MDCSliderFoundation API
+
+| Method Signature | Description |
+| --- | --- |
+| `layout() => void` | Same as layout() detailed within the component methods table. Does the majority of the work; the component's layout method simply proxies to this. |
+| `getValue() => number` | Returns the current value of the slider |
+| `setValue(value: number) => void` | Sets the current value of the slider |
+| `getMax() => number` | Returns the max value the slider can have |
+| `setMax(max: number) => void` | Sets the max value the slider can have |
+| `getMin() => number` | Returns the min value the slider can have |
+| `setMin(min: number) => number` | Sets the min value the slider can have |
