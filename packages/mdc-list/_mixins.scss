@@ -50,7 +50,7 @@
 
 @mixin mdc-list-divider-color($color) {
   .mdc-list-divider {
-    @include mdc-theme-prop(background-color, $color);
+    @include mdc-theme-prop(border-bottom-color, $color);
   }
 }
 

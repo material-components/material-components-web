@@ -192,8 +192,11 @@ a.mdc-list-item {
 // postcss-bem-linter: define list-divider
 
 .mdc-list-divider {
-  height: 1px;
+  height: 0;
+  margin: 0;
   border: none;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
 }
 
 @at-root {
