@@ -76,12 +76,15 @@
         </div>
       </div>
     </nav>
-    <div class="demo-content" id="demo-content">
+    <div class="demo-content mdc-drawer-app-content" id="demo-content">
       <header class="mdc-top-app-bar" id="app-bar">
         <div class="mdc-top-app-bar__row">
           <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
             <a href="#" class="demo-menu material-icons mdc-top-app-bar__navigation-icon">menu</a>
             <span class="mdc-top-app-bar__title">Dismissible Drawer</span>
+          </section>
+          <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
+            <a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="Download" alt="Download">file_download</a>
           </section>
         </div>
       </header>
@@ -177,15 +180,12 @@
         var topAppBar = new mdc.topAppBar.MDCTopAppBar(topAppBarEl);
         topAppBar.setScrollTarget(document.getElementById('demo-content'));
         topAppBar.listen('MDCTopAppBar:nav', function() {
-          console.log('meow')
           if (drawer.open) {
             drawer.open = false;
           } else {
             drawer.open = true;
           }
         });
-
-
       });
     </script>
   </body>

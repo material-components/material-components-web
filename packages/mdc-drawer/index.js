@@ -16,7 +16,6 @@
  */
 import {MDCComponent} from '@material/base/index';
 import MDCDismissibleDrawerFoundation from './dismissible/foundation';
-import {cssClasses} from './constants';
 
 /**
  * @extends {MDCComponent<!MDCDismissibleDrawerFoundation>}
@@ -24,11 +23,29 @@ import {cssClasses} from './constants';
  */
 export class MDCDrawer extends MDCComponent {
   /**
+   * @param {...?} args
+   */
+  constructor(...args) {
+    super(...args);
+
+    /** @private {?Element} */
+    this.appContent_;
+  }
+
+  /**
    * @param {!Element} root
    * @return {!MDCDrawer}
    */
   static attachTo(root) {
     return new MDCDrawer(root);
+  }
+
+  initialize() {
+    const appContent = this.root_.parentElement.querySelector(
+      MDCDismissibleDrawerFoundation.strings.APP_CONTENT_SELECTOR);
+    if (appContent) {
+      this.appContent_= appContent;
+    }
   }
 
   get open() {
@@ -49,7 +66,9 @@ export class MDCDrawer extends MDCComponent {
 
   initialSyncWithDOM() {
     this.handleKeydown_ = this.foundation_.handleKeydown.bind(this.foundation_);
+    this.handleTransitionEnd_ = this.foundation_.handleTransitionEnd.bind(this.foundation_);
     document.addEventListener('keydown', this.handleKeydown_);
+    document.addEventListener('transitionend', this.handleTransitionEnd_);
   }
 
   getDefaultFoundation() {
@@ -57,12 +76,27 @@ export class MDCDrawer extends MDCComponent {
     const adapter = /** @type {!MDCDrawerAdapter} */ (Object.assign({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
+      hasClass: (className) => this.root_.classList.contains(className),
       computeBoundingRect: () => this.root_.getBoundingClientRect(),
-
-      setStyle: (propertyName, value) => this.root_.style[propertyName] = value,
+      setStyleAppContent: (propertyName, value) => {
+        if (this.appContent_) {
+          return this.appContent_.style.setProperty(propertyName, value);
+        }
+      },
+      computeAppContentBoundingRect: () => this.appContent_ ? this.appContent_.getBoundingClientRect() : null,
+      addClassAppContent: (className) => {
+        if (this.appContent_) {
+          this.appContent_.classList.add(className);
+        }
+      },
+      removeClassAppContent: (className) => {
+        if (this.appContent_) {
+          this.appContent_.classList.remove(className);
+        }
+      },
     }));
 
-    if (this.root_.classList.contains(cssClasses.DISMISSIBLE_CLASS)) {
+    if (this.root_.classList.contains(MDCDismissibleDrawerFoundation.cssClasses.DISMISSIBLE)) {
       return new MDCDismissibleDrawerFoundation(adapter);
     }
   }

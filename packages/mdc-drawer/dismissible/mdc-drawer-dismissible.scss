@@ -19,11 +19,39 @@
 
 .mdc-drawer--dismissible {
   width: 0;
-  transition: mdc-animation-enter(scale, $mdc-drawer-animation-enter), mdc-animation-enter(transform, $mdc-drawer-animation-enter);
-  transform-origin: top left;
+  transform: translateX(-100%);
 }
 
 .mdc-drawer--open {
   width: $mdc-drawer-width;
-  transition: mdc-animation-exit-permanent(scale, $mdc-drawer-animation-exit), mdc-animation-exit-permanent(transform, $mdc-drawer-animation-exit);
+}
+
+.mdc-drawer--animating-close {
+  transition: mdc-animation-standard(transform, $mdc-drawer-animation-exit);
+  transform: translateX(-100%);
+  transform-origin: top left;
+  will-change: transform;
+}
+
+.mdc-drawer--open:not(.mdc-drawer--animating-close) {
+  transform: translateX(0);
+}
+
+.mdc-drawer--animating-open {
+  transition: mdc-animation-standard(transform, $mdc-drawer-animation-enter);
+  transform-origin: top left;
+  will-change: transform;
+}
+
+.mdc-drawer-app-content {
+  transform-origin: top left;
+  will-change: transform;
+}
+
+.mdc-drawer-app-content--animating-open {
+  transition: mdc-animation-standard(transform, $mdc-drawer-animation-enter);
+}
+
+.mdc-drawer-app-content--animating-close {
+  transition: mdc-animation-standard(transform, $mdc-drawer-animation-exit);
 }

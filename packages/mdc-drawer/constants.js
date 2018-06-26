@@ -16,7 +16,16 @@
  */
 /** @enum {string} */
 const cssClasses = {
-  DISMISSIBLE_CLASS: 'mdc-drawer--dismissible',
+  DISMISSIBLE: 'mdc-drawer--dismissible',
+  OPEN: 'mdc-drawer--open',
+  ANIMATING_CLOSE: 'mdc-drawer--animating-close',
+  ANIMATING_OPEN: 'mdc-drawer--animating-open',
+  APP_CONTENT_ANIMATE_CLOSE: 'mdc-drawer-app-content--animating-close',
+  APP_CONTENT_ANIMATE_OPEN: 'mdc-drawer-app-content--animating-open',
 };
 
-export {cssClasses};
+const strings = {
+  APP_CONTENT_SELECTOR: '.mdc-drawer-app-content',
+};
+
+export {cssClasses, strings};
