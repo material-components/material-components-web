@@ -53,7 +53,7 @@
         width: 360px;
       }
 
-      .mdc-menu-anchor {
+      .mdc-menu-surface--anchor {
         position: absolute;
         margin: 16px;
       }
@@ -109,8 +109,8 @@
     <main>
       <div class="mdc-toolbar-fixed-adjust"></div>
       <section class="hero">
-        <div class="mdc-menu mdc-menu--open">
-          <ul class="mdc-menu__items mdc-list">
+        <div class="mdc-menu-surface mdc-menu--open">
+          <ul class="mdc-list">
             <li class="mdc-list-item" role="menuitem">Back</li>
             <li class="mdc-list-item" role="menuitem">Forward</li>
             <li class="mdc-list-item" role="menuitem">Reload</li>
@@ -122,37 +122,64 @@
       </section>
       <div class="demo-content">
         <div id="demo-wrapper">
-          <div class="mdc-menu-anchor">
+          <div class="mdc-menu-surface--anchor">
             <button id="menu-button" class="mdc-button mdc-button--raised demo-button demo-button--normal">
               <span>
                 Show<span class="demo-button__normal-text"> Menu</span><span class="demo-button__long-text"> From Here Now!</span>
               </span>
             </button>
 
-            <div class="mdc-menu" style="position: absolute;" tabindex="-1" id="demo-menu">
-              <ul class="mdc-menu__items mdc-list" role="menu" aria-hidden="true">
-                <li class="mdc-list-item" role="menuitem" tabindex="0">Back</li>
-                <li class="mdc-list-item" role="menuitem" tabindex="0">Forward</li>
-                <li class="mdc-list-item" role="menuitem" tabindex="0">Reload</li>
+            <div class="mdc-menu-surface" style="position: absolute;" tabindex="-1" id="demo-menu">
+              <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
+                <li class="mdc-list-item" role="menuitem">Back</li>
+                <li class="mdc-list-item" role="menuitem">Forward</li>
+                <li class="mdc-list-item" role="menuitem">Reload</li>
+                <li class="mdc-list-divider" role="separator"></li>
+                <li>
+                  <ul class="mdc-menu--selection-group">
+                    <li class="mdc-list-item" role="menuitem">
+                      <span class="mdc-menu--selection-group_selected">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                          <path fill="none" d="M0 0h24v24H0z"/>
+                          <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
+                        </svg>
+                      </span>
+                      1 px</li>
+                    <li class="mdc-list-item" role="menuitem">
+                      <span class="mdc-menu--selection-group_selected">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                          <path fill="none" d="M0 0h24v24H0z"/>
+                          <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
+                        </svg>
+                      </span>2 px</li>
+                    <li class="mdc-list-item" role="menuitem">
+                      <span class="mdc-menu--selection-group_selected">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                          <path fill="none" d="M0 0h24v24H0z"/>
+                          <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
+                        </svg>
+                      </span>4 px</li>
+                  </ul>
+                </li>
                 <li class="mdc-list-divider" role="separator"></li>
 
-                <li class="mdc-list-item" role="menuitem" tabindex="0">Save As...</li>
-                <li class="mdc-list-item" role="menuitem" tabindex="0">Help</li>
+                <li class="mdc-list-item" role="menuitem">Save As...</li>
+                <li class="mdc-list-item" role="menuitem">Help</li>
                 <span class="demo-menu__long-items">
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Settings</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Feedback</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Options...</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 1</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 2</li>
+                  <li class="mdc-list-item" role="menuitem">Settings</li>
+                  <li class="mdc-list-item" role="menuitem">Feedback</li>
+                  <li class="mdc-list-item" role="menuitem">Options...</li>
+                  <li class="mdc-list-item" role="menuitem">Item 1</li>
+                  <li class="mdc-list-item" role="menuitem">Item 2</li>
                 </span>
                 <span class="demo-menu__extra-long-items">
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 3</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 4</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 5</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 6</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 7</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 8</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 9</li>
+                  <li class="mdc-list-item" role="menuitem">Item 3</li>
+                  <li class="mdc-list-item" role="menuitem">Item 4</li>
+                  <li class="mdc-list-item" role="menuitem">Item 5</li>
+                  <li class="mdc-list-item" role="menuitem">Item 6</li>
+                  <li class="mdc-list-item" role="menuitem">Item 7</li>
+                  <li class="mdc-list-item" role="menuitem">Item 8</li>
+                  <li class="mdc-list-item" role="menuitem">Item 9</li>
                 </span>
               </ul>
             </div>
@@ -270,11 +297,11 @@
 
         var animation = document.querySelector('input[name="animation"]');
         animation.addEventListener('change', function(evt) {
-          menu.quickOpen = evt.target.checked;
+           menu.quickOpen = evt.target.checked;
         });
 
         var radios = document.querySelectorAll('input[name="position"]');
-        var anchor = document.querySelector('.mdc-menu-anchor');
+        var anchor = document.querySelector('.mdc-menu-surface--anchor');
         // Initialize to top left.
         anchor.style.setProperty('top', '0');
         anchor.style.setProperty('left', '0');
@@ -306,16 +333,16 @@
             if (evt.target.checked) {
               switch (evt.target.value) {
                 case "top start":
-                  menu.setAnchorCorner(mdc.menu.MDCMenuFoundation.Corner.TOP_START);
+                  menu.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.TOP_START);
                   break;
                 case "bottom start":
-                  menu.setAnchorCorner(mdc.menu.MDCMenuFoundation.Corner.BOTTOM_START);
+                  menu.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.BOTTOM_START);
                   break;
                 case "top end":
-                  menu.setAnchorCorner(mdc.menu.MDCMenuFoundation.Corner.TOP_END);
+                  menu.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.TOP_END);
                   break;
                 case "bottom end":
-                  menu.setAnchorCorner(mdc.menu.MDCMenuFoundation.Corner.BOTTOM_END);
+                  menu.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.BOTTOM_END);
                   break;
               }
             }

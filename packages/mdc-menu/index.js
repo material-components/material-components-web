@@ -16,9 +16,10 @@
  */
 
 import MDCComponent from '@material/base/component';
-import {getTransformPropertyName} from './util';
 import {MDCMenuFoundation, AnchorMargin} from './foundation';
-import {Corner, CornerBit} from './constants';
+import {strings} from './constants';
+import {MDCMenuSurface} from '../mdc-menu-surface';
+import {MDCList} from '../mdc-list';
 
 /**
  * @extends MDCComponent<!MDCMenuFoundation>
@@ -27,8 +28,14 @@ class MDCMenu extends MDCComponent {
   /** @param {...?} args */
   constructor(...args) {
     super(...args);
-    /** @private {!Element} */
-    this.previousFocus_;
+    /** @private {!MDCMenuSurface} */
+    this.menuSurface_;
+    /** @private {!MDCList} */
+    this.list_;
+    /** @private {!Function} */
+    this.handleKeydown_ = this.foundation_.handleKeydown.bind(this.foundation_);
+    /** @private {!Function} */
+    this.handleClick_ = this.foundation_.handleClick.bind(this.foundation_);
   }
 
   /**
@@ -39,27 +46,51 @@ class MDCMenu extends MDCComponent {
     return new MDCMenu(root);
   }
 
+  initialize(
+    menuSurfaceFactory = (el) => new MDCMenuSurface(el),
+    listFactory = (el) => new MDCList(el)) {
+    this.menuSurface_ = menuSurfaceFactory(this.root_);
+
+    const list = this.root_.querySelector(strings.LIST_SELECTOR);
+    if (list) {
+      this.list_ = listFactory(list);
+      this.list_.wrapFocus = true;
+    }
+  }
+
+  destroy() {
+    if (this.list_) {
+      this.list_.destroy();
+    }
+
+    this.menuSurface_.destroy();
+    this.deregisterListeners_();
+    super.destroy();
+  }
+
   /** @return {boolean} */
   get open() {
-    return this.foundation_.isOpen();
+    return this.menuSurface_.open;
   }
 
   /** @param {boolean} value */
   set open(value) {
     if (value) {
-      this.foundation_.open();
+      this.show();
     } else {
-      this.foundation_.close();
+      this.hide();
     }
   }
 
-  /** @param {{focusIndex: ?number}=} options */
-  show({focusIndex = null} = {}) {
-    this.foundation_.open({focusIndex: focusIndex});
+  show() {
+    this.menuSurface_.show();
+    this.registerListeners_();
+    this.list_.listElements_[0].focus();
   }
 
   hide() {
-    this.foundation_.close();
+    this.deregisterListeners_();
+    this.menuSurface_.hide();
   }
 
   /**
@@ -67,14 +98,14 @@ class MDCMenu extends MDCComponent {
    *     menu corner.
    */
   setAnchorCorner(corner) {
-    this.foundation_.setAnchorCorner(corner);
+    this.menuSurface_.setAnchorCorner(corner);
   }
 
   /**
    * @param {AnchorMargin} margin
    */
   setAnchorMargin(margin) {
-    this.foundation_.setAnchorMargin(margin);
+    this.menuSurface_.setAnchorMargin(margin);
   }
 
   /**
@@ -82,7 +113,7 @@ class MDCMenu extends MDCComponent {
    * @return {?Element}
    */
   get itemsContainer_() {
-    return this.root_.querySelector(MDCMenuFoundation.strings.ITEMS_SELECTOR);
+    return this.list_.root_;
   }
 
   /**
@@ -92,12 +123,13 @@ class MDCMenu extends MDCComponent {
    * @return {!Array<!Element>}
    */
   get items() {
-    const {itemsContainer_: itemsContainer} = this;
-    return [].slice.call(itemsContainer.querySelectorAll('.mdc-list-item[role]'));
+    if (this.list_) {
+      return this.list_.listElements_;
+    }
   }
 
   /**
-   * Return the item within the menu that is selected.
+   * Return the item within the menu at the index specified.
    * @param {number} index
    * @return {?Element}
    */
@@ -111,85 +143,49 @@ class MDCMenu extends MDCComponent {
     }
   }
 
-  /** @param {number} index */
-  set selectedItemIndex(index) {
-    this.foundation_.setSelectedIndex(index);
-  }
-
-  /** @return {number} */
-  get selectedItemIndex() {
-    return this.foundation_.getSelectedIndex();
-  }
-
-  /** @param {!boolean} rememberSelection */
-  set rememberSelection(rememberSelection) {
-    this.foundation_.setRememberSelection(rememberSelection);
-  }
-
   /** @param {boolean} quickOpen */
   set quickOpen(quickOpen) {
-    this.foundation_.setQuickOpen(quickOpen);
+    this.menuSurface_.quickOpen = quickOpen;
+  }
+
+
+  registerListeners_() {
+    this.root_.addEventListener('keydown', this.handleKeydown_);
+    this.root_.addEventListener('click', this.handleClick_);
+  }
+
+  deregisterListeners_() {
+    this.root_.removeEventListener('keydown', this.handleKeydown_);
+    this.root_.removeEventListener('click', this.handleClick_);
   }
 
   /** @return {!MDCMenuFoundation} */
   getDefaultFoundation() {
     return new MDCMenuFoundation({
-      addClass: (className) => this.root_.classList.add(className),
-      removeClass: (className) => this.root_.classList.remove(className),
-      hasClass: (className) => this.root_.classList.contains(className),
-      hasNecessaryDom: () => Boolean(this.itemsContainer_),
-      getAttributeForEventTarget: (target, attributeName) => target.getAttribute(attributeName),
-      getInnerDimensions: () => {
-        const {itemsContainer_: itemsContainer} = this;
-        return {width: itemsContainer.offsetWidth, height: itemsContainer.offsetHeight};
+      selectElementAtIndex: (index) => {
+        const list = this.items;
+        if (list && list.length > index && list[index].parentElement.classList.contains('mdc-menu--selection-group')) {
+          list[index].classList.add('mdc-list-item--selected');
+          list[index].setAttribute('aria-selected', 'true');
+        }
       },
-      hasAnchor: () => this.root_.parentElement && this.root_.parentElement.classList.contains('mdc-menu-anchor'),
-      getAnchorDimensions: () => this.root_.parentElement.getBoundingClientRect(),
-      getWindowDimensions: () => {
-        return {width: window.innerWidth, height: window.innerHeight};
+      closeSurface: () => this.hide(),
+      getFocusedElementIndex: () => this.items.indexOf(document.activeElement),
+      removeClassFromSelectionGroup: (index) => {
+        const ele = this.items[index];
+        if (ele.parentElement && ele.parentElement.classList.contains('mdc-menu--selection-group')) {
+          [].slice.call(ele.parentElement.children).forEach((listItem) => {
+            listItem.classList.remove('mdc-list-item--selected');
+            listItem.removeAttribute('aria-selected');
+          });
+        }
       },
-      getNumberOfItems: () => this.items.length,
-      registerInteractionHandler: (type, handler) => this.root_.addEventListener(type, handler),
-      deregisterInteractionHandler: (type, handler) => this.root_.removeEventListener(type, handler),
-      registerBodyClickHandler: (handler) => document.body.addEventListener('click', handler),
-      deregisterBodyClickHandler: (handler) => document.body.removeEventListener('click', handler),
-      getIndexForEventTarget: (target) => this.items.indexOf(target),
       notifySelected: (evtData) => this.emit(MDCMenuFoundation.strings.SELECTED_EVENT, {
         index: evtData.index,
         item: this.items[evtData.index],
       }),
-      notifyCancel: () => this.emit(MDCMenuFoundation.strings.CANCEL_EVENT, {}),
-      saveFocus: () => {
-        this.previousFocus_ = document.activeElement;
-      },
-      restoreFocus: () => {
-        if (this.previousFocus_ && this.previousFocus_.focus) {
-          this.previousFocus_.focus();
-        }
-      },
-      isFocused: () => document.activeElement === this.root_,
-      focus: () => this.root_.focus(),
-      getFocusedItemIndex: () => this.items.indexOf(document.activeElement),
-      focusItemAtIndex: (index) => this.items[index].focus(),
-      isRtl: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
-      setTransformOrigin: (origin) => {
-        this.root_.style[`${getTransformPropertyName(window)}-origin`] = origin;
-      },
-      setPosition: (position) => {
-        this.root_.style.left = 'left' in position ? position.left : null;
-        this.root_.style.right = 'right' in position ? position.right : null;
-        this.root_.style.top = 'top' in position ? position.top : null;
-        this.root_.style.bottom = 'bottom' in position ? position.bottom : null;
-      },
-      setMaxHeight: (height) => {
-        this.root_.style.maxHeight = height;
-      },
-      setAttrForOptionAtIndex: (index, attr, value) => this.items[index].setAttribute(attr, value),
-      rmAttrForOptionAtIndex: (index, attr) => this.items[index].removeAttribute(attr),
-      addClassForOptionAtIndex: (index, className) => this.items[index].classList.add(className),
-      rmClassForOptionAtIndex: (index, className) => this.items[index].classList.remove(className),
     });
   }
 }
 
-export {MDCMenuFoundation, MDCMenu, AnchorMargin, Corner, CornerBit};
+export {MDCMenuFoundation, MDCMenu, AnchorMargin};

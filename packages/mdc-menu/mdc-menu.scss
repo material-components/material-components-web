@@ -16,133 +16,48 @@
 
 @import "@material/animation/variables";
 @import "@material/elevation/mixins";
+@import "@material/rtl/mixins";
 @import "@material/theme/mixins";
 @import "@material/theme/variables";
 @import "@material/typography/mixins";
 
-$mdc-menu-fade-in-duration: .03s;
-$mdc-menu-fade-out-duration: .075s;
-$mdc-menu-scale-duration: .12s;
+$mdc-menu-min-width: calc(2 * 56px);
+$mdc-menu-max-width: calc(5 * 56px);
 
-// postcss-bem-linter: define menu
-.mdc-menu {
-  @include mdc-elevation(2);
-  @include mdc-theme-prop(background-color, background);
-
-  display: none;
-  position: absolute;
-  box-sizing: border-box;
-  min-width: 170px;
-  max-width: calc(100vw - 32px);
-  max-height: calc(100vh - 32px);
-  margin: 0;
-  padding: 0;
-  transform: scale(1);
-  transform-origin: top left;
-  border-radius: 2px;
-  opacity: 0;
-  white-space: nowrap;
-  overflow-x: hidden;
-  overflow-y: auto;
-  will-change: transform, opacity;
-  z-index: 4;
-
-  &:focus {
-    outline: none;
-  }
-
-  &--animating-open {
-    display: inline-block;
-    transform: scale(.8);
-    transition:
-      opacity $mdc-menu-fade-in-duration linear,
-      transform $mdc-menu-scale-duration $mdc-animation-deceleration-curve-timing-function;
-    opacity: 0;
-    overflow-y: hidden;
-  }
-
-  &--open {
-    display: inline-block;
-    transform: scale(1);
-    opacity: 1;
-  }
-
-  &--animating-closed {
-    display: inline-block;
-    transition: opacity $mdc-menu-fade-out-duration linear;
-    opacity: 0;
-    overflow-y: hidden;
-  }
-
-  &__items {
-    box-sizing: border-box;
-    transform: scale(1);
-    overflow-x: hidden;
-    overflow-y: auto;
-    will-change: transform;
-
-    // stylelint-disable plugin/selector-bem-pattern
-    > .mdc-list-item {
-      cursor: pointer;
-    }
-    // stylelint-enable plugin/selector-bem-pattern
-
-    .mdc-menu--animating & {
-      overflow-y: hidden;
-    }
-  }
-
-  &--animating-open > .mdc-menu__items {
-    transform: scale(1.25);
-  }
-
-  &--open > .mdc-menu__items {
-    transform: scale(1);
-  }
-
-  // stylelint-disable plugin/selector-bem-pattern
-  [dir="rtl"] & {
-    transform-origin: top right;
-  }
-
-  .mdc-list-group,
+.mdc-menu-surface {
   .mdc-list {
-    padding: 8px 0;
+    min-width: $mdc-menu-min-width;
+    max-width: $mdc-menu-max-width;
+  }
+
+  .mdc-list-divider {
+    margin-top: 8px;
+    margin-bottom: 8px;
   }
 
   .mdc-list-item {
-    @include mdc-typography(subtitle1);
-
-    position: relative;
-    outline: none;
-    color: inherit;
-    text-decoration: none;
-    user-select: none;
+    padding: 0 24px;
   }
-
-  .mdc-list-item__graphic {
-    @include mdc-theme-prop(color, text-secondary-on-background);
-  }
-
-  .mdc-list-item[aria-disabled="true"] {
-    @include mdc-theme-prop(color, text-disabled-on-background);
-
-    cursor: default;
-    pointer-events: none;
-
-    // TODO(#1495): Disabled menu items shouldn't be focusable, so this style shouldn't be necessary.
-    &:focus::before {
-      opacity: 0;
-    }
-  }
-  // stylelint-enable plugin/selector-bem-pattern
 }
 
-// stylelint-disable plugin/selector-bem-pattern
-.mdc-menu-anchor {
-  position: relative;
-  overflow: visible;
+// postcss-bem-linter: define menu
+.mdc-menu--selection-group {
+  padding: 0;
+  fill: currentColor;
+
+  .mdc-list-item {
+    @include mdc-rtl-reflexive-box(padding, left, 56px);
+  }
 }
-// stylelint-enable plugin/selector-bem-pattern
+
+.mdc-menu--selection-group_selected {
+  display: none;
+  position: absolute;
+  left: 16px;
+}
+
+.mdc-list-item--selected .mdc-menu--selection-group_selected {
+  display: inline;
+}
 
 // postcss-bem-linter: end
