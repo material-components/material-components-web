@@ -63,9 +63,9 @@ class MDCChipSetFoundation extends MDCFoundation {
     this.selectedChips_ = [];
 
     /** @private {function(!MDCChipInteractionEventType): undefined} */
-    this.chipInteractionHandler_ = (evt) => this.handleChipInteraction_(evt);
+    this.chipInteractionHandler_ = (evt) => this.handleChipInteraction(evt);
     /** @private {function(!MDCChipInteractionEventType): undefined} */
-    this.chipRemovalHandler_ = (evt) => this.handleChipRemoval_(evt);
+    this.chipRemovalHandler_ = (evt) => this.handleChipRemoval(evt);
   }
 
   init() {
@@ -119,7 +119,7 @@ class MDCChipSetFoundation extends MDCFoundation {
    * @param {!MDCChipInteractionEventType} evt
    * @private
    */
-  handleChipInteraction_(evt) {
+  handleChipInteraction(evt) {
     const chipFoundation = evt.detail.chip.foundation;
     if (this.adapter_.hasClass(cssClasses.CHOICE) || this.adapter_.hasClass(cssClasses.FILTER)) {
       if (chipFoundation.isSelected()) {
@@ -135,7 +135,7 @@ class MDCChipSetFoundation extends MDCFoundation {
    * @param {!MDCChipInteractionEventType} evt
    * @private
    */
-  handleChipRemoval_(evt) {
+  handleChipRemoval(evt) {
     const {chip} = evt.detail;
     this.deselect(chip.foundation);
     this.adapter_.removeChip(chip);

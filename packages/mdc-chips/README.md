@@ -292,3 +292,5 @@ Method Signature | Description
 --- | ---
 `select(chipFoundation: MDCChipFoundation) => void` | Selects the given chip
 `deselect(chipFoundation: MDCChipFoundation) => void` | Deselects the given chip
+`handleChipInteraction(evt) => void` | Handles a chip interaction event
+`handleChipRemoval(evt) => void` | Handles the event when a chip is removed
