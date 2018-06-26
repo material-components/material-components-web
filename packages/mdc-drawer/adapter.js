@@ -46,6 +46,11 @@ class MDCDrawerAdapter {
      * @return {boolean}
      */
     hasClass(className) {}
+
+    /** @return {!ClientRect} */
+    computeBoundingRect() {}
+
+    setStyle() {}
   }
   
   export default MDCDrawerAdapter;

@@ -33,6 +33,7 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
     return /** @type {!MDCDrawerAdapter} */ ({
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
+      computeBoundingRect: () => {},
     });
   }
   /**
@@ -52,8 +53,19 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
    * Function to open the drawer from closed state.
    */
   open() {
+    const first = this.adapter_.computeBoundingRect();
     this.adapter_.addClass(cssClasses.OPEN);
     this.isOpen_ = true;
+
+    const last = this.adapter_.computeBoundingRect();
+    const deltaX = first.left - last.left;
+    const deltaW = first.width / last.width;
+    this.adapter_.setStyle('transform', `scaleX(${deltaW}) translate(${deltaX}px)`);
+    this.adapter_.computeBoundingRect();
+    
+    requestAnimationFrame(() => {
+      this.adapter_.setStyle('transform', '');
+    });
   }
 
   /**

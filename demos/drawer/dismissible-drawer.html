@@ -76,11 +76,11 @@
         </div>
       </div>
     </nav>
-    <div class="demo-content">
+    <div class="demo-content" id="demo-content">
       <header class="mdc-top-app-bar" id="app-bar">
         <div class="mdc-top-app-bar__row">
           <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-            <a href="#" class="demo-menu material-icons mdc-toolbar__menu-icon">menu</a>
+            <a href="#" class="demo-menu material-icons mdc-top-app-bar__navigation-icon">menu</a>
             <span class="mdc-top-app-bar__title">Dismissible Drawer</span>
           </section>
         </div>
@@ -130,11 +130,6 @@
 
     <script src="/assets/material-components-web.js" async></script>
     <script>
-      function setupDrawer() {
-        mdc.drawer.MDCDrawer.attachTo(document.getElementById('demo-drawer'));
-        
-      }
-
       demoReady(function() {
         var extraWide = document.querySelector('#extra-wide-content');
         extraWide.style.display = 'none';
@@ -163,6 +158,7 @@
         });
 
         var drawerEl = document.getElementById('demo-drawer');
+        var drawer = new mdc.drawer.MDCDrawer(drawerEl);
         var radioEl = document.querySelector('#demo-radio-buttons');
         radioEl.addEventListener('change', function(e) {
           drawerEl.classList.remove('demo-drawer--custom');
@@ -177,9 +173,19 @@
           document.body.setAttribute('dir', document.body.getAttribute('dir') === 'rtl' ? 'ltr' : 'rtl');
         });
 
-        mdc.topAppBar.MDCTopAppBar.attachTo(document.getElementById('app-bar'));
+        var topAppBarEl = document.getElementById('app-bar');
+        var topAppBar = new mdc.topAppBar.MDCTopAppBar(topAppBarEl);
+        topAppBar.setScrollTarget(document.getElementById('demo-content'));
+        topAppBar.listen('MDCTopAppBar:nav', function() {
+          console.log('meow')
+          if (drawer.open) {
+            drawer.open = false;
+          } else {
+            drawer.open = true;
+          }
+        });
 
-        setupDrawer();
+
       });
     </script>
   </body>

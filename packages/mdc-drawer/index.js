@@ -57,6 +57,9 @@ export class MDCDrawer extends MDCComponent {
     const adapter = /** @type {!MDCDrawerAdapter} */ (Object.assign({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
+      computeBoundingRect: () => this.root_.getBoundingClientRect(),
+
+      setStyle: (propertyName, value) => this.root_.style[propertyName] = value,
     }));
 
     if (this.root_.classList.contains(cssClasses.DISMISSIBLE_CLASS)) {
