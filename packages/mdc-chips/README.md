@@ -282,6 +282,9 @@ Method Signature | Description
 `getShouldRemoveOnTrailingIconClick() => boolean` | Returns whether a trailing icon click should trigger exit/removal of the chip
 `setShouldRemoveOnTrailingIconClick(shouldRemove: boolean) => void` | Sets whether a trailing icon click should trigger exit/removal of the chip
 `beginExit() => void` | Begins the exit animation which leads to removal of the chip
+`handleInteraction(evt: Event) => void` | Handles an interaction event on the root element
+`handleTransitionEnd(evt: Event) => void` | Handles a transition end event on the root element
+`handleTrailingIconInteraction(evt: Event) => void` | Handles an interaction event on the trailing icon element
 
 #### `MDCChipSetFoundation`
 
