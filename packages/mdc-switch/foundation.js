@@ -16,8 +16,6 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-/* eslint-disable no-unused-vars */
-import {MDCSelectionControlState} from '@material/selection-control/index';
 import MDCSwitchAdapter from './adapter';
 /* eslint-enable no-unused-vars */
 import {cssClasses, strings} from './constants';
@@ -73,7 +71,7 @@ class MDCSwitchFoundation extends MDCFoundation {
   /** @param {boolean} checked */
   setChecked(checked) {
     this.adapter_.setChecked(checked);
-    this.updateCheckedStyling_();
+    this.updateCheckedStyling_(checked);
   }
 
   /** @return {boolean} */
@@ -84,22 +82,31 @@ class MDCSwitchFoundation extends MDCFoundation {
   /** @param {boolean} disabled */
   setDisabled(disabled) {
     this.adapter_.setDisabled(disabled);
-    disabled ? this.adapter_.addClass(cssClasses.DISABLED) : this.adapter_.removeClass(cssClasses.DISABLED);
+    if (disabled) {
+      this.adapter_.addClass(cssClasses.DISABLED);
+    } else {
+      this.adapter_.removeClass(cssClasses.DISABLED);
+    }
   }
 
   /**
    * Handles the change event for the switch native control.
    */
   handleChange() {
-    this.updateCheckedStyling_();
+    this.updateCheckedStyling_(this.isChecked());
   }
 
   /**
    * Updates the styling of the switch based on its checked state.
+   * @param {boolean} checked
    * @private
    */
-  updateCheckedStyling_() {
-    this.isChecked() ? this.adapter_.addClass(cssClasses.CHECKED) : this.adapter_.removeClass(cssClasses.CHECKED);
+  updateCheckedStyling_(checked) {
+    if (checked) {
+      this.adapter_.addClass(cssClasses.CHECKED);
+    } else {
+      this.adapter_.removeClass(cssClasses.CHECKED);
+    }
   }
 }
 

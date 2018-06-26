@@ -1,5 +1,5 @@
 //
-// Copyright 2016 Google Inc. All Rights Reserved.
+// Copyright 2018 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -68,12 +68,12 @@
 
   display: flex;
   position: absolute;
-  top: -14px;
+  // Ensures the knob is centered on the track.
+  top: -17px;
   align-items: center;
   justify-content: center;
   width: $mdc-switch-tap-target-size;
   height: $mdc-switch-tap-target-size;
-  margin-top: $mdc-switch-thumb-vertical-offset_;
   transform: translateX(0);
   transition:
     mdc-switch-transition(transform),

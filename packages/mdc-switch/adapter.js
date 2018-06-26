@@ -16,7 +16,6 @@
  */
 
 /* eslint-disable no-unused-vars */
-import {MDCSelectionControlState} from '@material/selection-control/index';
 
 /**
  * Adapter for MDC Switch. Provides an interface for managing

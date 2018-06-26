@@ -15,9 +15,6 @@
  * limitations under the License.
  */
 
-/** @const {string} */
-const ROOT = 'mdc-switch';
-
 /** @enum {string} */
 const cssClasses = {
   CHECKED: 'mdc-switch--checked',
@@ -26,8 +23,8 @@ const cssClasses = {
 
 /** @enum {string} */
 const strings = {
-  NATIVE_CONTROL_SELECTOR: `.${ROOT}__native-control`,
-  RIPPLE_SURFACE_SELECTOR: `.${ROOT}__thumb-underlay`,
+  NATIVE_CONTROL_SELECTOR: '.mdc-switch__native-control',
+  RIPPLE_SURFACE_SELECTOR: '.mdc-switch__thumb-underlay',
 };
 
 
