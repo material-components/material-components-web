@@ -18,8 +18,8 @@
 import MDCComponent from '@material/base/component';
 import {MDCMenuFoundation, AnchorMargin} from './foundation';
 import {strings} from './constants';
-import {MDCMenuSurface} from '../mdc-menu-surface';
-import {MDCList} from '../mdc-list';
+import {MDCMenuSurface} from '@material/menu-surface';
+import {MDCList} from '@material/list';
 
 /**
  * @extends MDCComponent<!MDCMenuFoundation>

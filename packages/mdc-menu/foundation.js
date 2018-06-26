@@ -20,8 +20,8 @@
 import MDCFoundation from '@material/base/foundation';
 import {MDCMenuAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
-import {MDCMenuSurfaceFoundation} from '../mdc-menu-surface/foundation';
-import {numbers} from '../mdc-menu-surface/constants';
+import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation';
+import {numbers} from '@material/menu-surface/constants';
 
 /**
  * @extends {MDCFoundation<!MDCMenuAdapter>}
