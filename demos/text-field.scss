@@ -118,3 +118,11 @@
   @include mdc-text-field-helper-text-color(rgba(blue, .6));
 }
 // stylelint-enable selector-class-pattern
+
+
+.demo-text-field-notes {
+  margin-top: 48px;
+  font-size: 14px;
+  color: rgba(0, 0, 0, .7);
+  line-height: 1.5;
+}

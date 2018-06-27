@@ -54,7 +54,7 @@
       <section class="example" id="text-field-box-example">
         <h2>Text Field box</h2>
 
-        <h3>Current Implementation</h3>
+        <h3>Proposed Implementation</h3>
         <h4>Empty</h4>
         <div id="demo-tf-box-wrapper">
           <div id="tf-box-example" class="mdc-text-field mdc-text-field--box" data-demo-no-auto-js>
@@ -86,6 +86,12 @@
             style="display: none;">
             Helper Text (possibly validation message)
           </p>
+        </div>
+
+        <div class="demo-text-field-notes">
+          <div>- Blur on first text input after entering invalid email: Should show error state</div>
+          <div>- Refocus on first text input to enter valid email: Should fix the error state instantly</div>
+          <div>- Focus and blur on second text input: Should not show error state since the input is not changed by user</div>
         </div>
       </section>
     </main>

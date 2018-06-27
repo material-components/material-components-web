@@ -111,7 +111,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     /** @private {function(): undefined} */
     this.inputBlurHandler_ = () => this.deactivateFocus();
     /** @private {function(): undefined} */
-    this.inputInputHandler_ = () => this.autoCompleteFocus();
+    this.inputInputHandler_ = () => this.handleInputChange();
     /** @private {function(!Event): undefined} */
     this.setPointerXOffset_ = (evt) => this.setTransformOrigin(evt);
     /** @private {function(!Event): undefined} */
@@ -121,6 +121,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
 
     /** @private {!MutationObserver} */
     this.validationObserver_;
+
+    /** @private {boolean} */
+    this.isDirty_ = false;
   }
 
   init() {
@@ -160,6 +163,16 @@ class MDCTextFieldFoundation extends MDCFoundation {
       this.adapter_.deregisterTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
     });
     this.adapter_.deregisterValidationAttributeChangeHandler(this.validationObserver_);
+  }
+
+  handleInputChange() {
+    this.isDirty_ = true;
+    this.autoCompleteFocus();
+
+    const {INVALID} = MDCTextFieldFoundation.cssClasses;
+    if (this.adapter_.hasClass(INVALID) && this.isValid()) {
+      this.styleValidity_(/** isValid */ true);
+    }
   }
 
   /**
@@ -252,8 +265,11 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.adapter_.deactivateLineRipple();
     const input = this.getNativeInput_();
     const shouldRemoveLabelFloat = !input.value && !this.isBadInput_();
-    const isValid = this.isValid();
-    this.styleValidity_(isValid);
+    if (this.isDirty_) {
+      const isValid = this.isValid();
+      this.styleValidity_(isValid);
+      console.log('done');
+    }
     this.styleFocused_(this.isFocused_);
     if (this.adapter_.hasLabel()) {
       this.adapter_.shakeLabel(this.shouldShake);
