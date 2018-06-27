@@ -109,14 +109,13 @@
     <main>
       <div class="mdc-toolbar-fixed-adjust"></div>
       <section class="hero">
-        <div class="mdc-menu-surface mdc-menu--open">
+        <div class="mdc-menu-surface mdc-menu-surface--open">
           <ul class="mdc-list">
-            <li class="mdc-list-item" role="menuitem">Back</li>
-            <li class="mdc-list-item" role="menuitem">Forward</li>
-            <li class="mdc-list-item" role="menuitem">Reload</li>
-            <li class="mdc-list-divider" role="separator"></li>
-            <li class="mdc-list-item" role="menuitem">Help &amp; Feedback</li>
-            <li class="mdc-list-item" role="menuitem">Settings</li>
+            <li class="mdc-list-item" role="menuitem">Item 1</li>
+            <li class="mdc-list-item" role="menuitem">Item 2</li>
+            <li class="mdc-list-item mdc-list-item--disabled" role="menuitem">Item 3</li>
+            <li class="mdc-list-item" role="menuitem">Item 4</li>
+            <li class="mdc-list-item" role="menuitem">Item 5</li>
           </ul>
         </div>
       </section>
@@ -131,10 +130,6 @@
 
             <div class="mdc-menu-surface" style="position: absolute;" tabindex="-1" id="demo-menu">
               <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
-                <li class="mdc-list-item" role="menuitem">Back</li>
-                <li class="mdc-list-item" role="menuitem">Forward</li>
-                <li class="mdc-list-item" role="menuitem">Reload</li>
-                <li class="mdc-list-divider" role="separator"></li>
                 <li>
                   <ul class="mdc-menu--selection-group">
                     <li class="mdc-list-item" role="menuitem">
@@ -144,43 +139,42 @@
                           <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
                         </svg>
                       </span>
-                      1 px</li>
+                      Single
+                    </li>
+                    <li class="mdc-list-item mdc-list-item--disabled" role="menuitem">
+                      <span class="mdc-menu--selection-group_selected">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                          <path fill="none" d="M0 0h24v24H0z"/>
+                          <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
+                        </svg>
+                      </span>
+                      1.15
+                    </li>
                     <li class="mdc-list-item" role="menuitem">
                       <span class="mdc-menu--selection-group_selected">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                           <path fill="none" d="M0 0h24v24H0z"/>
                           <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
                         </svg>
-                      </span>2 px</li>
-                    <li class="mdc-list-item" role="menuitem">
+                      </span>
+                      Double
+                    </li>
+                    <li class="mdc-list-item mdc-menu-item--selected" role="menuitem">
                       <span class="mdc-menu--selection-group_selected">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                           <path fill="none" d="M0 0h24v24H0z"/>
                           <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
                         </svg>
-                      </span>4 px</li>
+                      </span>
+                      Custom: 1.2
+                    </li>
                   </ul>
                 </li>
                 <li class="mdc-list-divider" role="separator"></li>
-
-                <li class="mdc-list-item" role="menuitem">Save As...</li>
-                <li class="mdc-list-item" role="menuitem">Help</li>
-                <span class="demo-menu__long-items">
-                  <li class="mdc-list-item" role="menuitem">Settings</li>
-                  <li class="mdc-list-item" role="menuitem">Feedback</li>
-                  <li class="mdc-list-item" role="menuitem">Options...</li>
-                  <li class="mdc-list-item" role="menuitem">Item 1</li>
-                  <li class="mdc-list-item" role="menuitem">Item 2</li>
-                </span>
-                <span class="demo-menu__extra-long-items">
-                  <li class="mdc-list-item" role="menuitem">Item 3</li>
-                  <li class="mdc-list-item" role="menuitem">Item 4</li>
-                  <li class="mdc-list-item" role="menuitem">Item 5</li>
-                  <li class="mdc-list-item" role="menuitem">Item 6</li>
-                  <li class="mdc-list-item" role="menuitem">Item 7</li>
-                  <li class="mdc-list-item" role="menuitem">Item 8</li>
-                  <li class="mdc-list-item" role="menuitem">Item 9</li>
-                </span>
+                <li class="mdc-list-item" role="menuitem">Add space before paragraph</li>
+                <li class="mdc-list-item" role="menuitem">Add space after paragraph</li>
+                <li class="mdc-list-divider" role="separator"></li>
+                <li class="mdc-list-item" role="menuitem">Custom spacing...</li>
               </ul>
             </div>
           </div>
@@ -240,24 +234,9 @@
               <label><input type="checkbox" name="is-rtl"> RTL</label>
             </div>
             <div>
-              <label><input type="checkbox" name="remember"> Remember Selected Item</label>
-            </div>
-            <div>
               <label><input type="checkbox" name="animation"> Disable Open Animation</label>
             </div>
             <p>
-              <div class="left-column-controls">
-                Menu Sizes:
-                <div>
-                  <label><input type="radio" name="menu-length" value="small" checked> Regular menu</label>
-                </div>
-                <div>
-                  <label><input type="radio" name="menu-length" value="large"> Large menu</label>
-                </div>
-                <div>
-                  <label><input type="radio" name="menu-length" value="tall"> Extra tall menu</label>
-                </div>
-              </div>
               <div class="right-column-controls">
                 Anchor Widths
                 <div>
@@ -288,11 +267,6 @@
         var menuButtonEl = document.querySelector('#menu-button');
         menuButtonEl.addEventListener('click', function() {
           menu.open = !menu.open;
-        });
-
-        var remember = document.querySelector('input[name="remember"]');
-        remember.addEventListener('change', function(evt) {
-          menu.rememberSelection = evt.target.checked;
         });
 
         var animation = document.querySelector('input[name="animation"]');
@@ -374,28 +348,6 @@
             demoWrapper.removeAttribute('dir');
           }
         });
-
-        radios = document.querySelectorAll('input[name="menu-length"]');
-        for (var i = 0; i < radios.length; i++) {
-          radios[i].addEventListener('change', function(evt) {
-            if (evt.target.checked) {
-              switch (evt.target.value) {
-                case "small":
-                  menuEl.classList.remove('demo-menu--long');
-                  menuEl.classList.remove('demo-menu--extra-long');
-                  break;
-                case "large":
-                  menuEl.classList.add('demo-menu--long');
-                  menuEl.classList.remove('demo-menu--extra-long');
-                  break;
-                case "tall":
-                  menuEl.classList.remove('demo-menu--long');
-                  menuEl.classList.add('demo-menu--extra-long');
-                  break;
-              }
-            }
-          });
-        }
 
         radios = document.querySelectorAll('input[name="anchor-width"]');
         for (var i = 0; i < radios.length; i++) {

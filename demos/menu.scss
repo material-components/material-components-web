@@ -21,5 +21,9 @@
 @import "../packages/mdc-menu-surface/mdc-menu-surface";
 
 #demo-menu {
-  width: calc(4 * 56px);
+  width: calc(6 * 56px);
+}
+
+.hero .mdc-menu-surface {
+  z-index: 1;
 }

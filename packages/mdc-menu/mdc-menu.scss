@@ -13,16 +13,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-
+@import "@material/ripple/common";
+@import "@material/list/mixins";
 @import "@material/animation/variables";
 @import "@material/elevation/mixins";
 @import "@material/rtl/mixins";
+@import "@material/ripple/mixins";
 @import "@material/theme/mixins";
 @import "@material/theme/variables";
 @import "@material/typography/mixins";
 
 $mdc-menu-min-width: calc(2 * 56px);
-$mdc-menu-max-width: calc(5 * 56px);
+$mdc-menu-max-width: calc(6 * 56px);
 
 .mdc-menu-surface {
   .mdc-list {
@@ -55,7 +57,7 @@ $mdc-menu-max-width: calc(5 * 56px);
   left: 16px;
 }
 
-.mdc-list-item--selected .mdc-menu--selection-group_selected {
+.mdc-menu-item--selected .mdc-menu--selection-group_selected {
   display: inline;
 }
 

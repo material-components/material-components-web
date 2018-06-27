@@ -165,7 +165,7 @@ class MDCMenu extends MDCComponent {
       selectElementAtIndex: (index) => {
         const list = this.items;
         if (list && list.length > index && list[index].parentElement.classList.contains('mdc-menu--selection-group')) {
-          list[index].classList.add('mdc-list-item--selected');
+          list[index].classList.add('mdc-menu-item--selected');
           list[index].setAttribute('aria-selected', 'true');
         }
       },
@@ -175,7 +175,7 @@ class MDCMenu extends MDCComponent {
         const ele = this.items[index];
         if (ele.parentElement && ele.parentElement.classList.contains('mdc-menu--selection-group')) {
           [].slice.call(ele.parentElement.children).forEach((listItem) => {
-            listItem.classList.remove('mdc-list-item--selected');
+            listItem.classList.remove('mdc-menu-item--selected');
             listItem.removeAttribute('aria-selected');
           });
         }

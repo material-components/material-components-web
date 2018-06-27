@@ -84,9 +84,7 @@ class MDCMenuFoundation extends MDCFoundation {
 
   handleClick() {
     const listItemIndex = this.adapter_.getFocusedElementIndex();
-    if (listItemIndex < 0) {
-      this.adapter_.closeSurface();
-    } else {
+    if (listItemIndex >= 0) {
       this.handleSelection_(listItemIndex);
     }
   }
