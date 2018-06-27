@@ -28,30 +28,50 @@
  * @record
  */
 class MDCDrawerAdapter {
-    /**
-     * Adds a class to the root Element.
-     * @param {string} className
-     */
-    addClass(className) {}
-  
-    /**
-     * Removes a class from the root Element.
-     * @param {string} className
-     */
-    removeClass(className) {}
-  
-    /**
-     * Returns true if the root Element contains the given class.
-     * @param {string} className
-     * @return {boolean}
-     */
-    hasClass(className) {}
+  /**
+   * Adds a class to the root Element.
+   * @param {string} className
+   */
+  addClass(className) {}
 
-    /** @return {!ClientRect} */
-    computeBoundingRect() {}
+  /**
+   * Removes a class from the root Element.
+   * @param {string} className
+   */
+  removeClass(className) {}
 
-    setStyle() {}
-  }
-  
-  export default MDCDrawerAdapter;
+  /**
+   * Returns true if the root Element contains the given class.
+   * @param {string} className
+   * @return {boolean}
+   */
+  hasClass(className) {}
+
+  /**
+   * Returns ClientRect of this.appContent_ Element.
+   * @return {!ClientRect}
+   */
+  computeAppContentBoundingRect() {}
+
+  /**
+   * Adds a class to this.appContent_ Element.
+   * @param {string} className 
+   */
+  addClassAppContent(className) {}
+
+  /**
+   * Removes a class from this.appContent_ Element.
+   * @param {string} className 
+   */
+  removeClassAppContent(className) {}
+
+  /**
+   * Sets style property on this.appContent_ Element to value.
+   * @param {string} propertyName 
+   * @param {string} value 
+   */
+  setStyleAppContent(propertyName, value) {}
+}
+
+export default MDCDrawerAdapter;
   

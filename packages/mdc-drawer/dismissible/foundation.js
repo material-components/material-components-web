@@ -38,8 +38,10 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
     return /** @type {!MDCDrawerAdapter} */ ({
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
-      computeBoundingRect: () => {},
+      computeAppContentBoundingRect: () => {},
       setStyleAppContent: (/* propertyName: string, value: string */) => {},
+      addClassAppContent: (/* className: string */) => {},
+      removeClassAppContent: (/* className: string */) => {},
     });
   }
   /**
@@ -84,12 +86,12 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
       return;
     }
     const appContentRectFirst = this.adapter_.computeAppContentBoundingRect();
-    // setup drawer for last position for FLIP method
+    // remove drawer width for app content last position
     this.adapter_.removeClass(cssClasses.OPEN);
     this.adapter_.addClass(cssClasses.ANIMATING_CLOSE);
     const appContentRectLast = this.adapter_.computeAppContentBoundingRect();
 
-    // add back width for animation setup
+    // add back width to ensure full slide animation of drawer
     this.adapter_.addClass(cssClasses.OPEN);
     this.isOpen_ = false;
     this.animateAppContent(appContentRectFirst, appContentRectLast);
@@ -99,7 +101,6 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
     const invert = appContentRectFirst.left - appContentRectLast.left;
     const isOpening = invert < 0;
     const {APP_CONTENT_ANIMATE_OPEN, APP_CONTENT_ANIMATE_CLOSE} = cssClasses;
-    console.log(invert);
     if (isOpening) {
       this.adapter_.setStyleAppContent('transform', `translateX(${invert}px)`);
     }
@@ -109,7 +110,6 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
     requestAnimationFrame(() => {
       const animateClass = isOpening ? APP_CONTENT_ANIMATE_OPEN : APP_CONTENT_ANIMATE_CLOSE;
       this.adapter_.addClassAppContent(animateClass);
-      // this.adapter_.setStyleAppContent('transform', '');
       this.adapter_.setStyleAppContent('transform', isOpening ? '' : `translateX(${-invert}px)`);
     });
   }

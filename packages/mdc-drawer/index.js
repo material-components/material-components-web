@@ -30,6 +30,10 @@ export class MDCDrawer extends MDCComponent {
 
     /** @private {?Element} */
     this.appContent_;
+    /** @private {?Function} */
+    this.handleKeydown_;
+    /** @private {?Function} */
+    this.handleTransitionEnd_;
   }
 
   /**
@@ -62,13 +66,14 @@ export class MDCDrawer extends MDCComponent {
 
   destroy() {
     document.removeEventListener('keydown', this.handleKeydown_);
+    this.root_.removeEventListener('transitionend', this.handleTransitionEnd_);
   }
 
   initialSyncWithDOM() {
     this.handleKeydown_ = this.foundation_.handleKeydown.bind(this.foundation_);
     this.handleTransitionEnd_ = this.foundation_.handleTransitionEnd.bind(this.foundation_);
     document.addEventListener('keydown', this.handleKeydown_);
-    document.addEventListener('transitionend', this.handleTransitionEnd_);
+    this.root_.addEventListener('transitionend', this.handleTransitionEnd_);
   }
 
   getDefaultFoundation() {
@@ -77,7 +82,6 @@ export class MDCDrawer extends MDCComponent {
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       hasClass: (className) => this.root_.classList.contains(className),
-      computeBoundingRect: () => this.root_.getBoundingClientRect(),
       setStyleAppContent: (propertyName, value) => {
         if (this.appContent_) {
           return this.appContent_.style.setProperty(propertyName, value);
