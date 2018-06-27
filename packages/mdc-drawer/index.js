@@ -87,7 +87,7 @@ export class MDCDrawer extends MDCComponent {
           return this.appContent_.style.setProperty(propertyName, value);
         }
       },
-      computeAppContentBoundingRect: () => this.appContent_ ? this.appContent_.getBoundingClientRect() : null,
+      computeBoundingRect: () => this.root_.getBoundingClientRect(),
       addClassAppContent: (className) => {
         if (this.appContent_) {
           this.appContent_.classList.add(className);

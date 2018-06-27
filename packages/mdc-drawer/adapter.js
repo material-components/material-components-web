@@ -55,23 +55,22 @@ class MDCDrawerAdapter {
 
   /**
    * Adds a class to this.appContent_ Element.
-   * @param {string} className 
+   * @param {string} className
    */
   addClassAppContent(className) {}
 
   /**
    * Removes a class from this.appContent_ Element.
-   * @param {string} className 
+   * @param {string} className
    */
   removeClassAppContent(className) {}
 
   /**
    * Sets style property on this.appContent_ Element to value.
-   * @param {string} propertyName 
-   * @param {string} value 
+   * @param {string} propertyName
+   * @param {string} value
    */
   setStyleAppContent(propertyName, value) {}
 }
 
 export default MDCDrawerAdapter;
-  

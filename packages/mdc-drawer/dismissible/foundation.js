@@ -38,7 +38,7 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
     return /** @type {!MDCDrawerAdapter} */ ({
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
-      computeAppContentBoundingRect: () => {},
+      computeBoundingRect: () => {},
       setStyleAppContent: (/* propertyName: string, value: string */) => {},
       addClassAppContent: (/* className: string */) => {},
       removeClassAppContent: (/* className: string */) => {},
@@ -47,15 +47,15 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
   /**
    * @param {!MDCDrawerAdapter} adapter
    */
-  constructor(adapter) {
-    super(adapter);
+  // constructor(adapter) {
+  //   super(adapter);
 
-    /**
-     * isOpen_ is used to indicate if the drawer is open.
-     * @private {boolean}
-     */
-    this.isOpen_ = false;
-  }
+  //   /**
+  //    * isOpen_ is used to indicate if the drawer is open.
+  //    * @private {boolean}
+  //    */
+  //   this.isOpen_ = false;
+  // }
 
   /**
    * Function to open the drawer.
@@ -67,12 +67,9 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
     if (isOpen || isOpening || isClosing) {
       return;
     }
-    const appContentRectFirst = this.adapter_.computeAppContentBoundingRect();
     this.adapter_.addClass(cssClasses.OPEN);
     this.adapter_.addClass(cssClasses.ANIMATING_OPEN);
-    this.isOpen_ = true;
-    const appContentRectLast = this.adapter_.computeAppContentBoundingRect();
-    this.animateAppContent(appContentRectFirst, appContentRectLast);
+    this.animateAppContent(true);
   }
 
   /**
@@ -85,32 +82,23 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
     if (!isOpen || isOpening || isClosing) {
       return;
     }
-    const appContentRectFirst = this.adapter_.computeAppContentBoundingRect();
-    // remove drawer width for app content last position
-    this.adapter_.removeClass(cssClasses.OPEN);
     this.adapter_.addClass(cssClasses.ANIMATING_CLOSE);
-    const appContentRectLast = this.adapter_.computeAppContentBoundingRect();
-
-    // add back width to ensure full slide animation of drawer
-    this.adapter_.addClass(cssClasses.OPEN);
-    this.isOpen_ = false;
-    this.animateAppContent(appContentRectFirst, appContentRectLast);
+    this.animateAppContent(false);
   }
 
-  animateAppContent(appContentRectFirst, appContentRectLast) {
-    const invert = appContentRectFirst.left - appContentRectLast.left;
-    const isOpening = invert < 0;
+  animateAppContent(isOpening) {
     const {APP_CONTENT_ANIMATE_OPEN, APP_CONTENT_ANIMATE_CLOSE} = cssClasses;
-    if (isOpening) {
-      this.adapter_.setStyleAppContent('transform', `translateX(${invert}px)`);
-    }
-
-    this.adapter_.computeAppContentBoundingRect();
+    const drawerWidth = this.adapter_.computeBoundingRect().width;
+    const firstTransform = isOpening ? `translateX(${-drawerWidth}px)` : '';
+    const lastTransform = isOpening ? '' : `translateX(${-drawerWidth}px)`;
+    this.adapter_.setStyleAppContent('transform', firstTransform);
+    // force composite update
+    this.adapter_.computeBoundingRect();
 
     requestAnimationFrame(() => {
       const animateClass = isOpening ? APP_CONTENT_ANIMATE_OPEN : APP_CONTENT_ANIMATE_CLOSE;
       this.adapter_.addClassAppContent(animateClass);
-      this.adapter_.setStyleAppContent('transform', isOpening ? '' : `translateX(${-invert}px)`);
+      this.adapter_.setStyleAppContent('transform', lastTransform);
     });
   }
 
@@ -119,15 +107,20 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
    * @return {boolean}
    */
   isOpen() {
-    return this.isOpen_;
+    return this.adapter_.hasClass(cssClasses.OPEN);
   }
 
   /**
    * Keydown handler to close drawer when key is escape.
    * @param evt
    */
-  handleKeydown() {
-    this.close();
+  handleKeydown(evt) {
+    const {keyCode, key} = evt;
+
+    const isEscape = key === 'Escape' || keyCode === 27;
+    if (isEscape) {
+      this.close();
+    }
   }
 
   /**
