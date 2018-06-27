@@ -17,6 +17,7 @@
 
 import MDCComponent from '@material/base/component';
 
+import {MDCRipple} from '@material/ripple/index';
 import MDCSliderAdapter from './adapter';
 import MDCSliderFoundation from './foundation';
 
@@ -34,6 +35,8 @@ class MDCSlider extends MDCComponent {
     this.thumb_;
     /** @type {?Element} */
     this.trackFill_;
+    /** @private {!MDCRipple} */
+    this.ripple_ = this.initRipple_();
   }
 
   /** @return {number} */
@@ -64,6 +67,21 @@ class MDCSlider extends MDCComponent {
   /** @param {number} max */
   set max(max) {
     this.foundation_.setMax(max);
+  }
+
+  /**
+   * @return {!MDCRipple}
+   * @private
+   */
+  initRipple_() {
+    const ripple = new MDCRipple(this.root_.querySelector('.mdc-slider__thumb'));
+    ripple.unbounded = true;
+    return ripple;
+  }
+
+  destroy() {
+    this.ripple_.destroy();
+    super.destroy();
   }
 
   initialize() {

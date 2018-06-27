@@ -13,6 +13,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
+@import "@material/ripple/common";
+@import "@material/ripple/mixins";
 
 .mdc-slider {
   position: relative;
@@ -23,6 +25,10 @@
 
   &:focus {
     outline: none;
+  }
+
+  .mdc-slider__thumb.mdc-ripple-upgraded::before{
+    transform: scale(1.18058)
   }
 }
 
@@ -47,13 +53,20 @@
 }
 
 .mdc-slider__thumb {
-  width: 24px;
-  height: 24px;
-  padding: 12px 0;
+  @include mdc-ripple-surface;
+  @include mdc-ripple-radius-unbounded;
+  @include mdc-states(#5725e5);
+
+  width: 48px;
+  height: 48px;
   transform: translateX(-50%);
   will-change: transform;
 }
 
 .mdc-slider__thumb-handle {
   fill: #5725e5;
+}
+
+.mdc-slider--active .mdc-slider__thumb.mdc-ripple-upgraded::before{
+  transform: scale(1.66667)
 }

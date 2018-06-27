@@ -263,6 +263,20 @@ class MDCSliderFoundation extends MDCFoundation {
    */
   setActive_(active) {
     this.active_ = active;
+    this.toggleClass_('mdc-slider--active', this.active_);
+  }
+
+  /**
+   * Conditionally adds or removes a class based on shouldBePresent
+   * @param {string} className
+   * @param {boolean} shouldBePresent
+   */
+  toggleClass_(className, shouldBePresent) {
+    if (shouldBePresent) {
+      this.adapter_.addClass(className);
+    } else {
+      this.adapter_.removeClass(className);
+    }
   }
 }
 
