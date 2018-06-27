@@ -69,7 +69,7 @@
   display: flex;
   position: absolute;
   // Ensures the knob is centered on the track.
-  top: -17px;
+  top: -($mdc-switch-track-height / 2 + $mdc-switch-thumb-diameter / 2);
   align-items: center;
   justify-content: center;
   width: $mdc-switch-tap-target-size;

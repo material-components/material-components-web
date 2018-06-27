@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-/* eslint-disable no-unused-vars */
+/* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
  * Adapter for MDC Switch. Provides an interface for managing
@@ -46,16 +46,16 @@ class MDCSwitchAdapter {
   deregisterChangeHandler(handler) {}
 
   /** @param {boolean} checked */
-  setChecked(checked) {}
+  setNativeControlChecked(checked) {}
 
   /** @return {boolean} checked */
-  isChecked() {}
+  isNativeControlChecked() {}
 
   /** @param {boolean} disabled */
-  setDisabled(disabled) {}
+  setNativeControlDisabled(disabled) {}
 
   /** @return {boolean} disabled */
-  isDisabled() {}
+  isNativeControlDisabled() {}
 }
 
 export default MDCSwitchAdapter;

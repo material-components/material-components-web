@@ -81,10 +81,10 @@ class MDCSwitch extends MDCComponent {
       removeClass: (className) => this.root_.classList.remove(className),
       registerChangeHandler: (handler) => this.nativeControl_.addEventListener('change', handler),
       deregisterChangeHandler: (handler) => this.nativeControl_.removeEventListener('change', handler),
-      setChecked: (checked) => this.nativeControl_.checked = checked,
-      isChecked: () => this.nativeControl_.checked,
-      setDisabled: (disabled) => this.nativeControl_.disabled = disabled,
-      isDisabled: () => this.nativeControl_.disabled,
+      setNativeControlChecked: (checked) => this.nativeControl_.checked = checked,
+      isNativeControlChecked: () => this.nativeControl_.checked,
+      setNativeControlDisabled: (disabled) => this.nativeControl_.disabled = disabled,
+      isNativeControlDisabled: () => this.nativeControl_.disabled,
     });
   }
 

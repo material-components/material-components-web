@@ -194,7 +194,7 @@ function checkAutoInitAddedInMDCPackage(ast) {
   if (nameCamel === 'textfield') {
     nameCamel = 'textField';
   } else if (nameCamel === 'switch') {
-    nameCamel = 'switchComponent';
+    nameCamel = 'switchControl';
   }
   let autoInitedCount = 0;
   traverse(ast, {
@@ -219,7 +219,7 @@ function checkComponentExportedAddedInMDCPackage(ast) {
   if (nameCamel === 'textfield') {
     nameCamel = 'textField';
   } else if (nameCamel === 'switch') {
-    nameCamel = 'switchComponent';
+    nameCamel = 'switchControl';
   }
   let isExported = false;
   traverse(ast, {

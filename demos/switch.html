@@ -143,14 +143,14 @@
 
     <script src="/assets/material-components-web.js" async></script>
     <script>
-      const demoWrapper = document.querySelector('.demo-wrapper');
+      var demoWrapper = document.querySelector('.demo-wrapper');
       document.getElementById('toggle-rtl').addEventListener('change', function() {
         this.checked ? demoWrapper.setAttribute('dir', 'rtl') : demoWrapper.removeAttribute('dir');
       });
       demoReady(function() {
-        const switches = document.querySelectorAll('.mdc-switch');
-        for (let i = 0, switchEl; switchEl = switches[i]; i++) {
-          const switchInstance = new mdc.switchComponent.MDCSwitch(switchEl);
+        var switches = document.querySelectorAll('.mdc-switch');
+        for (var i = 0, switchEl; switchEl = switches[i]; i++) {
+          var switchInstance = new mdc.switchControl.MDCSwitch(switchEl);
         }
       });
     </script>
