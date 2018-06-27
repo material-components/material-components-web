@@ -131,7 +131,11 @@ class MDCListFoundation extends MDCFoundation {
     const listItem = this.getListItem_(evt.target);
     if (!listItem) return;
 
-    this.adapter_.setTabIndexForListItemChildren(this.adapter_.getListItemIndex(listItem), 0);
+    const listItemIndex = this.adapter_.getListItemIndex(listItem);
+
+    if (listItemIndex >= 0) {
+      this.adapter_.setTabIndexForListItemChildren(listItemIndex, 0);
+    }
   }
 
   /**
@@ -141,8 +145,11 @@ class MDCListFoundation extends MDCFoundation {
   handleFocusOut(evt) {
     const listItem = this.getListItem_(evt.target);
     if (!listItem) return;
+    const listItemIndex = this.adapter_.getListItemIndex(listItem);
 
-    this.adapter_.setTabIndexForListItemChildren(this.adapter_.getListItemIndex(listItem), -1);
+    if (listItemIndex >= 0) {
+      this.adapter_.setTabIndexForListItemChildren(listItemIndex, -1);
+    }
   }
 
   /**

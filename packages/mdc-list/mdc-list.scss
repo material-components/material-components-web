@@ -77,6 +77,10 @@
   @include mdc-list-item-graphic-ink-color(primary);
 }
 
+.mdc-list-item--disabled {
+  @include mdc-list-item-primary-text-ink-color(text-disabled-on-background);
+}
+
 .mdc-list-item__graphic {
   @include mdc-list-graphic-size_(24px);
 
@@ -129,7 +133,7 @@
 
 // List items should support states by default, but it should be possible to opt out.
 // Direct child combinator is necessary for non-interactive modifier on parent to not match this selector.
-:not(.mdc-list--non-interactive) > .mdc-list-item {
+:not(.mdc-list--non-interactive) > .mdc-list-item:not(.mdc-list-item--disabled) {
   @include mdc-ripple-surface;
   @include mdc-ripple-radius-bounded;
   @include mdc-states;
