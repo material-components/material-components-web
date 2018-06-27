@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2017 Google Inc. All Rights Reserved.
+ * Copyright 2018 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@
  */
 class MDCSliderAdapter {
   /**
-   * Returns true if className exists for the slider Element
+   * Returns if the slider Element has the given class
    * @param {string} className
    * @return {boolean}
    */
@@ -45,8 +45,7 @@ class MDCSliderAdapter {
   removeClass(className) {}
 
   /**
-   * Returns a string if attribute name exists on the slider Element,
-   * otherwise returns null
+   * Returns the value of the given attribute or null
    * @param {string} name
    * @return {?string}
    */

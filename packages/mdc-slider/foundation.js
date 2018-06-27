@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2017 Google Inc. All Rights Reserved.
+ * Copyright 2018 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  *you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
 
 import MDCSliderAdapter from './adapter';
 
-import {getCorrectPropertyName} from '@material/animation/index';
 import MDCFoundation from '@material/base/foundation';
 
 /** @enum {string} */
@@ -43,9 +42,7 @@ class MDCSliderFoundation extends MDCFoundation {
       getAttribute: (/* name: string */) => /* string|null */ null,
       setAttribute: (/* name: string, value: string */) => {},
       removeAttribute: (/* name: string */) => {},
-      computeBoundingRect: () => /* ClientRect */ ({
-        top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0,
-      }),
+      computeBoundingRect: () => /* ClientRect */ {},
       registerEventHandler: (/* type: string, handler: EventListener */) => {},
       deregisterEventHandler: (/* type: string, handler: EventListener */) => {},
       registerThumbEventHandler: (/* type: string, handler: EventListener */) => {},
@@ -69,21 +66,28 @@ class MDCSliderFoundation extends MDCFoundation {
     super(Object.assign(MDCSliderFoundation.defaultAdapter, adapter));
     /** @private {?ClientRect} */
     this.rect_ = null;
+    /** @private {boolean} */
     this.active_ = false;
+    /** @private {number} */
     this.min_ = 0;
+    /** @private {number} */
     this.max_ = 100;
+    /** @private {number} */
     this.value_ = 0;
-    this.updateUIFrame_ = 0;
+    /** @private {boolean} */
     this.handlingThumbTargetEvt_ = false;
+    /** @private {function(): undefined} */
     this.thumbPointerHandler_ = () => {
       this.handlingThumbTargetEvt_ = true;
     };
-    this.EventStartHandler_ = (evt) => this.handleDown_(evt);
+    /** @private {function(!Event): undefined} */
+    this.eventStartHandler_ = (evt) => this.handleDown_(evt);
+    /** @private {function(): undefined} */
     this.resizeHandler_ = () => this.layout();
   }
 
   init() {
-    DOWN_EVENTS.forEach((evtName) => this.adapter_.registerEventHandler(evtName, this.EventStartHandler_));
+    DOWN_EVENTS.forEach((evtName) => this.adapter_.registerEventHandler(evtName, this.eventStartHandler_));
     DOWN_EVENTS.forEach((evtName) => {
       this.adapter_.registerThumbEventHandler(evtName, this.thumbPointerHandler_);
     });
@@ -93,7 +97,7 @@ class MDCSliderFoundation extends MDCFoundation {
 
   destroy() {
     DOWN_EVENTS.forEach((evtName) => {
-      this.adapter_.deregisterEventHandler(evtName, this.EventStartHandler_);
+      this.adapter_.deregisterEventHandler(evtName, this.eventStartHandler_);
     });
     DOWN_EVENTS.forEach((evtName) => {
       this.adapter_.deregisterThumbEventHandler(evtName, this.thumbPointerHandler_);
@@ -218,13 +222,12 @@ class MDCSliderFoundation extends MDCFoundation {
    * @return {number}
    */
   computeValueFromPageX_(pageX) {
-    const {max_: max, min_: min} = this;
     const xPos = pageX - this.rect_.left;
     const pctComplete = xPos / this.rect_.width;
 
     // Fit the percentage complete between the range [min,max]
     // by remapping from [0, 1] to [min, min+(max-min)].
-    return min + pctComplete * (max - min);
+    return this.min_ + pctComplete * (this.max_ - this.min_);
   }
 
   /**
@@ -232,11 +235,10 @@ class MDCSliderFoundation extends MDCFoundation {
    * @param {number} value
    */
   setValue_(value) {
-    const {min_: min, max_: max} = this;
-    if (value < min) {
-      value = min;
-    } else if (value > max) {
-      value = max;
+    if (value < this.min_) {
+      value = this.min_;
+    } else if (value > this.max_) {
+      value = this.max_;
     }
     this.value_ = value;
     this.adapter_.setAttribute('aria-valuenow', String(this.value_));
@@ -245,15 +247,12 @@ class MDCSliderFoundation extends MDCFoundation {
   }
 
   updateUIForCurrentValue_() {
-    const {max_: max, min_: min, value_: value} = this;
-    const pctComplete = (value - min) / (max - min);
+    const pctComplete = (this.value_ - this.min_) / (this.max_ - this.min_);
     const translatePx = pctComplete * this.rect_.width;
 
-    const transformProp = getCorrectPropertyName(window, 'transform');
-
-    this.updateUIFrame_ = requestAnimationFrame(() => {
-      this.adapter_.setThumbStyleProperty(transformProp, `translateX(${translatePx}px) translateX(-50%)`);
-      this.adapter_.setTrackFillStyleProperty(transformProp, `scaleX(${translatePx})`);
+    requestAnimationFrame(() => {
+      this.adapter_.setThumbStyleProperty('transform', `translateX(${translatePx}px) translateX(-50%)`);
+      this.adapter_.setTrackFillStyleProperty('transform', `scaleX(${translatePx})`);
     });
   }
 
