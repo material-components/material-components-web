@@ -147,6 +147,21 @@ class MDCSliderAdapter {
    * @param {string} value
    */
   setTrackFillStyleProperty(propertyName, value) {}
+
+  /**
+   * Sets focus to thumb
+   */
+  focusThumb() {}
+
+  /**
+   * Activates the thumb ripple
+   */
+  activateRipple() {}
+
+  /**
+   * Deactivates the thumb ripple
+   */
+  deactivateRipple() {}
 }
 
 export default MDCSliderAdapter;

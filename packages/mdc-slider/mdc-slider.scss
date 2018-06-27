@@ -22,14 +22,6 @@
   height: 48px;
   cursor: pointer;
   touch-action: pan-x;
-
-  &:focus {
-    outline: none;
-  }
-
-  .mdc-slider__thumb.mdc-ripple-upgraded::before{
-    transform: scale(1.18058)
-  }
 }
 
 .mdc-slider__track {
@@ -61,12 +53,12 @@
   height: 48px;
   transform: translateX(-50%);
   will-change: transform;
+
+  &:focus {
+    outline: none;
+  }
 }
 
 .mdc-slider__thumb-handle {
   fill: #5725e5;
-}
-
-.mdc-slider--active .mdc-slider__thumb.mdc-ripple-upgraded::before{
-  transform: scale(1.66667)
 }

@@ -55,6 +55,9 @@ class MDCSliderFoundation extends MDCFoundation {
       notifyChange: () => {},
       setThumbStyleProperty: (/* propertyName: string, value: string */) => {},
       setTrackFillStyleProperty: (/* propertyName: string, value: string */) => {},
+      focusThumb: () => {},
+      activateRipple: () => {},
+      deactivateRipple: () => {},
     });
   }
 
@@ -157,6 +160,7 @@ class MDCSliderFoundation extends MDCFoundation {
    */
   handleDown_(evt) {
     this.setActive_(true);
+    this.adapter_.activateRipple();
 
     const moveHandler = (evt) => {
       this.handleMove_(evt);
@@ -190,6 +194,8 @@ class MDCSliderFoundation extends MDCFoundation {
   handleUp_() {
     this.setActive_(false);
     this.adapter_.notifyChange();
+    this.adapter_.deactivateRipple();
+    this.adapter_.focusThumb();
   }
 
   /**

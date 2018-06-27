@@ -98,9 +98,9 @@ class MDCSlider extends MDCComponent {
         hasClass: (className) => this.root_.classList.contains(className),
         addClass: (className) => this.root_.classList.add(className),
         removeClass: (className) => this.root_.classList.remove(className),
-        getAttribute: (name) => this.root_.getAttribute(name),
-        setAttribute: (name, value) => this.root_.setAttribute(name, value),
-        removeAttribute: (name) => this.root_.removeAttribute(name),
+        getAttribute: (name) => this.thumb_.getAttribute(name),
+        setAttribute: (name, value) => this.thumb_.setAttribute(name, value),
+        removeAttribute: (name) => this.thumb_.removeAttribute(name),
         computeBoundingRect: () => this.root_.getBoundingClientRect(),
         registerEventHandler: (type, handler) => {
           this.root_.addEventListener(type, handler);
@@ -138,14 +138,23 @@ class MDCSlider extends MDCComponent {
         setTrackFillStyleProperty: (propertyName, value) => {
           this.trackFill_.style.setProperty(propertyName, value);
         },
+        focusThumb: () => {
+          this.thumb_.focus();
+        },
+        activateRipple: () => {
+          this.ripple_.activate();
+        },
+        deactivateRipple: () => {
+          this.ripple_.deactivate();
+        },
       })
     );
   }
 
   initialSyncWithDOM() {
-    const origValueNow = parseFloat(this.root_.getAttribute('aria-valuenow'));
-    this.min = parseFloat(this.root_.getAttribute('aria-valuemin')) || this.min;
-    this.max = parseFloat(this.root_.getAttribute('aria-valuemax')) || this.max;
+    const origValueNow = parseFloat(this.thumb_.getAttribute('aria-valuenow'));
+    this.min = parseFloat(this.thumb_.getAttribute('aria-valuemin')) || this.min;
+    this.max = parseFloat(this.thumb_.getAttribute('aria-valuemax')) || this.max;
     this.value = origValueNow || this.value;
   }
 
