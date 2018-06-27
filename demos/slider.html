@@ -25,23 +25,6 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <style>
-      #hero-slider-wrapper {
-        margin: 0 auto;
-        width: 100%;
-        max-width: 600px;
-        /* Blended equivalent of rgba(0, 0, 0, .05); */
-        --mdc-slider-bg-color-behind-component: #f2f2f2;
-      }
-
-      .slider-example {
-        margin-bottom: 48px;
-      }
-
-      .example-slider-wrapper {
-        padding: 0 16px;
-      }
-    </style>
   </head>
   <body class="mdc-typography">
     <header class="mdc-toolbar mdc-toolbar--fixed">
@@ -71,10 +54,9 @@
         </div>
       </section>
 
-      <section id="slider-example" class="example">
+      <section id="demo-root" class="example">
         <h2>Continuous Slider</h2>
         <div class="slider-example">
-          <div class="example-slider-wrapper">
             <div id="continuous-mdc-slider" class="mdc-slider" tabindex="0" role="slider"
                  aria-valuemin="0" aria-valuemax="50" aria-valuenow="20"
                  aria-label="Select Value">
@@ -87,8 +69,6 @@
                 </svg>
               </div>
             </div>
-          </div>
-
           <p>
             Value from <code>MDCSlider:input</code> event: <span id="continuous-slider-value"></span>
             <br>
@@ -107,7 +87,7 @@
           return typeof value === 'number' && isFinite(value);
         };
 
-        var demoRoot = document.getElementById('slider-example')
+        var demoRoot = document.getElementById('demo-root')
 
         var continuousValue = demoRoot.querySelector('#continuous-slider-value');
         var continuousCommittedValue = demoRoot.querySelector('#continuous-slider-committed-value');
