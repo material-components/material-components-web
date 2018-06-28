@@ -1,5 +1,5 @@
 //
-// Copyright 2017 Google Inc. All Rights Reserved.
+// Copyright 2018 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,20 +14,5 @@
 // limitations under the License.
 //
 
-@import "./common";
-@import "../packages/mdc-button/mdc-button";
-@import "../packages/mdc-list/mdc-list";
-@import "../packages/mdc-menu/mdc-menu";
-@import "../packages/mdc-menu-surface/mdc-menu-surface";
-
-#demo-menu {
-  width: calc(6 * 56px);
-}
-
-#demo-menu-2 {
-  width: calc(5 * 56px);
-}
-
-.hero .mdc-menu-surface {
-  z-index: 1;
-}
+$mdc-menu-min-width: calc(2 * 56px);
+$mdc-menu-max-width: calc(6 * 56px);

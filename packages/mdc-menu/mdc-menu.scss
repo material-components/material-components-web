@@ -13,20 +13,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-@import "@material/ripple/common";
-@import "@material/list/mixins";
-@import "@material/animation/variables";
-@import "@material/elevation/mixins";
-@import "@material/rtl/mixins";
-@import "@material/ripple/mixins";
-@import "@material/theme/mixins";
-@import "@material/theme/variables";
-@import "@material/typography/mixins";
 
-$mdc-menu-min-width: calc(2 * 56px);
-$mdc-menu-max-width: calc(6 * 56px);
+@import "@material/rtl/mixins";
+@import "@material/list/mixins";
+@import "./variables";
+@import "./mixins";
 
 .mdc-menu-surface {
+  @include mdc-list-item-meta-ink-color(text-primary-on-background);
+  @include mdc-list-item-graphic-ink-color(text-primary-on-background);
+
   .mdc-list {
     min-width: $mdc-menu-min-width;
     max-width: $mdc-menu-max-width;
@@ -38,6 +34,12 @@ $mdc-menu-max-width: calc(6 * 56px);
 
   .mdc-list-item {
     padding: 0 24px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .mdc-list-item--disabled {
+    cursor: auto;
   }
 }
 
@@ -52,9 +54,10 @@ $mdc-menu-max-width: calc(6 * 56px);
 }
 
 .mdc-menu--selection-group_selected {
+  @include mdc-rtl-reflexive-position(left, 16px);
+
   display: none;
   position: absolute;
-  left: 16px;
 }
 
 .mdc-menu-item--selected .mdc-menu--selection-group_selected {

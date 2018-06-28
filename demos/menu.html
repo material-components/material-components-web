@@ -121,10 +121,10 @@
       </section>
       <div class="demo-content">
         <div id="demo-wrapper">
-          <div class="mdc-menu-surface--anchor">
+          <div class="mdc-menu-surface--anchor" style="top: 0; left: 0;">
             <button id="menu-button" class="mdc-button mdc-button--raised demo-button demo-button--normal">
               <span>
-                Show<span class="demo-button__normal-text"> Menu</span><span class="demo-button__long-text"> From Here Now!</span>
+                Show Selection Group Menu
               </span>
             </button>
 
@@ -178,31 +178,55 @@
               </ul>
             </div>
           </div>
+
+          <div class="mdc-menu-surface--anchor" style="top: 0; right: 0;">
+            <button id="menu-button-2" class="mdc-button mdc-button--raised demo-button demo-button--normal">
+              <span>
+                Show Hot Key Menu
+              </span>
+            </button>
+
+            <div class="mdc-menu-surface" style="position: absolute;" tabindex="-1" id="demo-menu-2">
+              <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
+                <li class="mdc-list-item" role="menuitem">
+                  <span class="mdc-list-item__graphic" aria-hidden="true">
+                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                      <path d="M19,3L13,9L15,11L22,4V3M12,12.5A0.5,0.5 0 0,1 11.5,12A0.5,0.5 0 0,1 12,11.5A0.5,0.5 0 0,1 12.5,12A0.5,0.5 0 0,1 12,12.5M6,20A2,2 0 0,1 4,18C4,16.89 4.9,16 6,16A2,2 0 0,1 8,18C8,19.11 7.1,20 6,20M6,8A2,2 0 0,1 4,6C4,4.89 4.9,4 6,4A2,2 0 0,1 8,6C8,7.11 7.1,8 6,8M9.64,7.64C9.87,7.14 10,6.59 10,6A4,4 0 0,0 6,2A4,4 0 0,0 2,6A4,4 0 0,0 6,10C6.59,10 7.14,9.87 7.64,9.64L10,12L7.64,14.36C7.14,14.13 6.59,14 6,14A4,4 0 0,0 2,18A4,4 0 0,0 6,22A4,4 0 0,0 10,18C10,17.41 9.87,16.86 9.64,16.36L12,14L19,21H22V20L9.64,7.64Z" />
+                    </svg>
+                  </span>
+                  Cut
+                  <span class="mdc-list-item__meta" aria-label="Shortcut: Command Key + X">⌘X</span>
+                </li>
+                <li class="mdc-list-item" role="menuitem">
+                  <span class="mdc-list-item__graphic" aria-hidden="true">
+                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                      <path d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z" />
+                    </svg>
+                  </span>
+                  Copy
+                  <span class="mdc-list-item__meta" aria-label="Shortcut: Command Key + C">⌘C</span>
+                </li>
+                <li class="mdc-list-item" role="menuitem">
+                  <span class="mdc-list-item__graphic" aria-hidden="true">
+                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                      <path d="M19,20H5V4H7V7H17V4H19M12,2A1,1 0 0,1 13,3A1,1 0 0,1 12,4A1,1 0 0,1 11,3A1,1 0 0,1 12,2M19,2H14.82C14.4,0.84 13.3,0 12,0C10.7,0 9.6,0.84 9.18,2H5A2,2 0 0,0 3,4V20A2,2 0 0,0 5,22H19A2,2 0 0,0 21,20V4A2,2 0 0,0 19,2Z" />
+                    </svg>
+                  </span>
+                  Paste
+                  <span class="mdc-list-item__meta" aria-label="Shortcut: Command Key + P">⌘P</span>
+                </li>
+                <li class="mdc-list-divider" role="separator"></li>
+                <li class="mdc-list-item" role="menuitem">
+                  <span class="mdc-list-item__graphic material-icons" aria-hidden="true">cloud</span>
+                  Web Clipboard
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
 
         <div class="demo-controls-container">
           <div class="demo-controls">
-            <div class="left-column-controls">
-              Button Position:
-              <div>
-                <label><input type="radio" name="position" value="top left" checked> Top left</label>
-              </div>
-              <div>
-                <label><input type="radio" name="position" value="top right"> Top right</label>
-              </div>
-              <div>
-                <label><input type="radio" name="position" value="middle left"> Middle left</label>
-              </div>
-              <div>
-                <label><input type="radio" name="position" value="middle right"> Middle right</label>
-              </div>
-              <div>
-                <label><input type="radio" name="position" value="bottom left"> Bottom left</label>
-              </div>
-              <div>
-                <label><input type="radio" name="position" value="bottom right"> Bottom right</label>
-              </div>
-            </div>
             <div class="right-column-controls">
               Default Menu Position:
               <div>
@@ -236,20 +260,6 @@
             <div>
               <label><input type="checkbox" name="animation"> Disable Open Animation</label>
             </div>
-            <p>
-              <div class="right-column-controls">
-                Anchor Widths
-                <div>
-                  <label><input type="radio" name="anchor-width" value="tiny"> Small button</label>
-                </div>
-                <div>
-                  <label><input type="radio" name="anchor-width" value="regular" checked> Comparable to menu</label>
-                </div>
-                <div>
-                  <label><input type="radio" name="anchor-width" value="wide"> Wider than menu</label>
-                </div>
-              </div>
-            </p>
             <hr>
             <div>
               <span>Last Selected item: <em id="last-selected">&lt;none selected&gt;</em></span>
@@ -269,54 +279,39 @@
           menu.open = !menu.open;
         });
 
+        var menuEl2 = document.querySelector('#demo-menu-2');
+        var menu2 = new mdc.menu.MDCMenu(menuEl2);
+        var menuButtonEl2 = document.querySelector('#menu-button-2');
+        menuButtonEl2.addEventListener('click', function() {
+          menu2.open = !menu2.open;
+        });
+
         var animation = document.querySelector('input[name="animation"]');
         animation.addEventListener('change', function(evt) {
            menu.quickOpen = evt.target.checked;
+           menu2.quickOpen = evt.target.checked;
         });
 
-        var radios = document.querySelectorAll('input[name="position"]');
-        var anchor = document.querySelector('.mdc-menu-surface--anchor');
-        // Initialize to top left.
-        anchor.style.setProperty('top', '0');
-        anchor.style.setProperty('left', '0');
-        for (var i = 0; i < radios.length; i++) {
-          radios[i].addEventListener('change', function(evt) {
-            if (evt.target.checked) {
-              if (evt.target.value) {
-                anchor.style.removeProperty('top');
-                anchor.style.removeProperty('right');
-                anchor.style.removeProperty('bottom');
-                anchor.style.removeProperty('left');
-
-                var vertical = evt.target.value.split(' ')[0];
-                var horizontal = evt.target.value.split(' ')[1];
-                if (vertical === 'middle') {
-                  anchor.style.setProperty('top', '35%');
-                } else {
-                  anchor.style.setProperty(vertical, '0');
-                }
-                anchor.style.setProperty(horizontal, '0');
-              }
-            }
-          });
-        }
-
-        radios = document.querySelectorAll('input[name="menu-position"]');
+        var radios = document.querySelectorAll('input[name="menu-position"]');
         for (var i = 0; i < radios.length; i++) {
           radios[i].addEventListener('change', function(evt) {
             if (evt.target.checked) {
               switch (evt.target.value) {
                 case "top start":
                   menu.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.TOP_START);
+                  menu2.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.TOP_START);
                   break;
                 case "bottom start":
                   menu.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.BOTTOM_START);
+                  menu2.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.BOTTOM_START);
                   break;
                 case "top end":
                   menu.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.TOP_END);
+                  menu2.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.TOP_END);
                   break;
                 case "bottom end":
                   menu.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.BOTTOM_END);
+                  menu2.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.BOTTOM_END);
                   break;
               }
             }
@@ -336,6 +331,7 @@
                           bottom: parseInt(bottomMarginInput.value, 10),
                           left: parseInt(leftMarginInput.value, 10)};
             menu.setAnchorMargin(margin);
+            menu2.setAnchorMargin(margin);
           });
         }
 
@@ -349,32 +345,16 @@
           }
         });
 
-        radios = document.querySelectorAll('input[name="anchor-width"]');
-        for (var i = 0; i < radios.length; i++) {
-          radios[i].addEventListener('change', function(evt) {
-            if (evt.target.checked) {
-              switch (evt.target.value) {
-                case "tiny":
-                  menuButtonEl.classList.remove('demo-button--normal');
-                  menuButtonEl.classList.remove('demo-button--long');
-                  break;
-                case "regular":
-                  menuButtonEl.classList.add('demo-button--normal');
-                  menuButtonEl.classList.remove('demo-button--long');
-                  break;
-                case "wide":
-                  menuButtonEl.classList.remove('demo-button--normal');
-                  menuButtonEl.classList.add('demo-button--long');
-                  break;
-              }
-            }
-          });
-        }
-
         var lastSelected = document.getElementById('last-selected');
         menuEl.addEventListener('MDCMenu:selected', function(evt) {
           var detail = evt.detail;
-          lastSelected.textContent = '"' + detail.item.textContent.trim() +
+          lastSelected.textContent = 'Selection Group Menu: "' + detail.item.textContent.trim() +
+            '" at index ' + detail.index;
+        });
+
+        menuEl2.addEventListener('MDCMenu:selected', function(evt) {
+          var detail = evt.detail;
+          lastSelected.textContent = 'Hot Key Menu: "' + detail.item.textContent.trim() +
             '" at index ' + detail.index;
         });
       });
