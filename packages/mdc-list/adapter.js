@@ -43,26 +43,26 @@ class MDCListAdapter {
 
   /**
    * @param {number} index
-   * @param {String} attribute
-   * @param {String} value
+   * @param {string} attribute
+   * @param {string} value
    */
   setAttributeForElementIndex(index, attribute, value) {}
 
   /**
    * @param {number} index
-   * @param {String} attribute
+   * @param {string} attribute
    */
   removeAttributeForElementIndex(index, attribute) {}
 
   /**
    * @param {number} index
-   * @param {String} className
+   * @param {string} className
    */
   addClassForElementIndex(index, className) {}
 
   /**
    * @param {number} index
-   * @param {String} className
+   * @param {string} className
    */
   removeClassForElementIndex(index, className) {}
 
