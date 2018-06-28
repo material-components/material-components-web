@@ -169,12 +169,10 @@ test('adapter#setStyleAppContent updates styles on the appContent', () => {
 });
 
 test('adapter#computeBoundingRect returns the client rect object on the root element', () => {
-  const {component} = setupTest();
-  const rect = component.getDefaultFoundation().adapter_.computeBoundingRect();
-  const rectObject = JSON.parse(JSON.stringify(rect));
-  assert.ownInclude(rectObject, {
-    bottom: 0, height: 0, width: 0, left: 0, right: 0, top: 0, x: 0, y: 0,
-  });
+  const {root, drawer, component} = setupTest();
+  document.body.appendChild(root);
+  assert.deepEqual(component.getDefaultFoundation().adapter_.computeBoundingRect(), drawer.getBoundingClientRect());
+  document.body.removeChild(root);
 });
 
 test('adapter#addClassAppContent adds class to appContent element', () => {
