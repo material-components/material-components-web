@@ -33,8 +33,8 @@ test('default adapter returns a complete adapter implementation', () => {
     'hasClass', 'addClass', 'removeClass', 'getAttribute', 'setAttribute', 'removeAttribute',
     'computeBoundingRect', 'registerEventHandler', 'deregisterEventHandler',
     'registerThumbEventHandler', 'deregisterThumbEventHandler',
-    'registerBodyEventHandler', 'deregisterBodyEventHandler', 'registerResizeHandler',
-    'deregisterResizeHandler', 'notifyInput', 'notifyChange', 'setThumbStyleProperty',
+    'registerBodyEventHandler', 'deregisterBodyEventHandler', 'registerWindowResizeHandler',
+    'deregisterWindowResizeHandler', 'notifyInput', 'notifyChange', 'setThumbStyleProperty',
     'setTrackFillStyleProperty',
   ]);
 });
@@ -70,7 +70,7 @@ test('#init registers all necessary event handlers for the component', () => {
   td.verify(mockAdapter.registerThumbEventHandler('mousedown', isA(Function)));
   td.verify(mockAdapter.registerThumbEventHandler('pointerdown', isA(Function)));
   td.verify(mockAdapter.registerThumbEventHandler('touchstart', isA(Function)));
-  td.verify(mockAdapter.registerResizeHandler(isA(Function)));
+  td.verify(mockAdapter.registerWindowResizeHandler(isA(Function)));
 
   raf.restore();
 });
@@ -103,7 +103,7 @@ test('#destroy deregisters all component event handlers registered during init()
   td.verify(mockAdapter.deregisterThumbEventHandler('mousedown', isA(Function)));
   td.verify(mockAdapter.deregisterThumbEventHandler('pointerdown', isA(Function)));
   td.verify(mockAdapter.deregisterThumbEventHandler('touchstart', isA(Function)));
-  td.verify(mockAdapter.deregisterResizeHandler(isA(Function)));
+  td.verify(mockAdapter.deregisterWindowResizeHandler(isA(Function)));
 });
 
 test('#layout re-computes the bounding rect for the component on each call', () => {

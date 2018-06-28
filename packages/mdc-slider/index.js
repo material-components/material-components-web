@@ -102,10 +102,10 @@ class MDCSlider extends MDCComponent {
         deregisterBodyEventHandler: (type, handler) => {
           document.body.removeEventListener(type, handler);
         },
-        registerResizeHandler: (handler) => {
+        registerWindowResizeHandler: (handler) => {
           window.addEventListener('resize', handler);
         },
-        deregisterResizeHandler: (handler) => {
+        deregisterWindowResizeHandler: (handler) => {
           window.removeEventListener('resize', handler);
         },
         notifyInput: () => {

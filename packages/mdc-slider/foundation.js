@@ -36,25 +36,25 @@ class MDCSliderFoundation extends MDCFoundation {
   /** @return {!MDCSliderAdapter} */
   static get defaultAdapter() {
     return /** @type {!MDCSliderAdapter} */ ({
-      hasClass: (/* className: string */) => /* boolean */ false,
-      addClass: (/* className: string */) => {},
-      removeClass: (/* className: string */) => {},
-      getAttribute: (/* name: string */) => /* string|null */ null,
-      setAttribute: (/* name: string, value: string */) => {},
-      removeAttribute: (/* name: string */) => {},
-      computeBoundingRect: () => /* ClientRect */ {},
-      registerEventHandler: (/* type: string, handler: EventListener */) => {},
-      deregisterEventHandler: (/* type: string, handler: EventListener */) => {},
-      registerThumbEventHandler: (/* type: string, handler: EventListener */) => {},
-      deregisterThumbEventHandler: (/* type: string, handler: EventListener */) => {},
-      registerBodyEventHandler: (/* type: string, handler: EventListener */) => {},
-      deregisterBodyEventHandler: (/* type: string, handler: EventListener */) => {},
-      registerResizeHandler: (/* handler: EventListener */) => {},
-      deregisterResizeHandler: (/* handler: EventListener */) => {},
+      hasClass: () => {},
+      addClass: () => {},
+      removeClass: () => {},
+      getAttribute: () => {},
+      setAttribute: () => {},
+      removeAttribute: () => {},
+      computeBoundingRect: () => {},
+      registerEventHandler: () => {},
+      deregisterEventHandler: () => {},
+      registerThumbEventHandler: () => {},
+      deregisterThumbEventHandler: () => {},
+      registerBodyEventHandler: () => {},
+      deregisterBodyEventHandler: () => {},
+      registerWindowResizeHandler: () => {},
+      deregisterWindowResizeHandler: () => {},
       notifyInput: () => {},
       notifyChange: () => {},
-      setThumbStyleProperty: (/* propertyName: string, value: string */) => {},
-      setTrackFillStyleProperty: (/* propertyName: string, value: string */) => {},
+      setThumbStyleProperty: () => {},
+      setTrackFillStyleProperty: () => {},
     });
   }
 
@@ -77,32 +77,34 @@ class MDCSliderFoundation extends MDCFoundation {
     /** @private {boolean} */
     this.handlingThumbTargetEvt_ = false;
     /** @private {function(): undefined} */
-    this.thumbPointerHandler_ = () => {
-      this.handlingThumbTargetEvt_ = true;
-    };
+    this.thumbPointerHandler_ = () => this.handleThumbPointer();
     /** @private {function(!Event): undefined} */
-    this.eventStartHandler_ = (evt) => this.handleDown_(evt);
+    this.interactionStartHandler_ = (evt) => this.handleInteractionStart(evt);
+    /** @private {function(!Event): undefined} */
+    this.interactionMoveHandler_ = (evt) => this.handleInteractionMove(evt);
     /** @private {function(): undefined} */
-    this.resizeHandler_ = () => this.layout();
+    this.interactionEndHandler_ = () => this.handleInteractionEnd();
+    /** @private {function(): undefined} */
+    this.windowResizeHandler_ = () => this.layout();
   }
 
   init() {
-    DOWN_EVENTS.forEach((evtName) => this.adapter_.registerEventHandler(evtName, this.eventStartHandler_));
+    DOWN_EVENTS.forEach((evtName) => this.adapter_.registerEventHandler(evtName, this.interactionStartHandler_));
     DOWN_EVENTS.forEach((evtName) => {
       this.adapter_.registerThumbEventHandler(evtName, this.thumbPointerHandler_);
     });
-    this.adapter_.registerResizeHandler(this.resizeHandler_);
+    this.adapter_.registerWindowResizeHandler(this.windowResizeHandler_);
     this.layout();
   }
 
   destroy() {
     DOWN_EVENTS.forEach((evtName) => {
-      this.adapter_.deregisterEventHandler(evtName, this.eventStartHandler_);
+      this.adapter_.deregisterEventHandler(evtName, this.interactionStartHandler_);
     });
     DOWN_EVENTS.forEach((evtName) => {
       this.adapter_.deregisterThumbEventHandler(evtName, this.thumbPointerHandler_);
     });
-    this.adapter_.deregisterResizeHandler(this.resizeHandler_);
+    this.adapter_.deregisterWindowResizeHandler(this.windowResizeHandler_);
   }
 
   layout() {
@@ -151,34 +153,39 @@ class MDCSliderFoundation extends MDCFoundation {
   }
 
   /**
+   * Called when the user starts interacting with the thumb
+   */
+  handleThumbPointer() {
+    this.handlingThumbTargetEvt_ = true;
+  }
+
+  /**
    * Called when the user starts interacting with the slider
    * @param {!Event} evt
-   * @private
    */
-  handleDown_(evt) {
+  handleInteractionStart(evt) {
     this.setActive_(true);
 
     const moveHandler = (evt) => {
-      this.handleMove_(evt);
+      this.interactionMoveHandler_(evt);
     };
 
-    const upHandler = () => {
-      this.handleUp_();
+    const endHandler = () => {
+      this.interactionEndHandler_();
       this.adapter_.deregisterBodyEventHandler(MOVE_EVENT_MAP[evt.type], moveHandler);
-      UP_EVENTS.forEach((evtName) => this.adapter_.deregisterBodyEventHandler(evtName, upHandler));
+      UP_EVENTS.forEach((evtName) => this.adapter_.deregisterBodyEventHandler(evtName, endHandler));
     };
 
     this.adapter_.registerBodyEventHandler(MOVE_EVENT_MAP[evt.type], moveHandler);
-    UP_EVENTS.forEach((evtName) => this.adapter_.registerBodyEventHandler(evtName, upHandler));
+    UP_EVENTS.forEach((evtName) => this.adapter_.registerBodyEventHandler(evtName, endHandler));
     this.setValueFromEvt_(evt);
   }
 
   /**
    * Called when the user moves the slider
    * @param {!Event} evt
-   * @private
    */
-  handleMove_(evt) {
+  handleInteractionMove(evt) {
     evt.preventDefault();
     this.setValueFromEvt_(evt);
   }
@@ -187,7 +194,7 @@ class MDCSliderFoundation extends MDCFoundation {
    * Called when the user's interaction with the slider ends
    * @private
    */
-  handleUp_() {
+  handleInteractionEnd() {
     this.setActive_(false);
     this.adapter_.notifyChange();
   }

@@ -268,7 +268,7 @@ test('adapter#registerResizeHandler adds an event listener for the window\'s "re
   const {component} = setupTest();
   const handler = td.func('resizeHandler');
 
-  component.getDefaultFoundation().adapter_.registerResizeHandler(handler);
+  component.getDefaultFoundation().adapter_.registerWindowResizeHandler(handler);
   domEvents.emit(window, 'resize');
   window.removeEventListener('resize', handler);
 
@@ -280,7 +280,7 @@ test('adapter#deregisterResizeHandler removes an event listener for the window\'
   const handler = td.func('resizeHandler');
 
   window.addEventListener('resize', handler);
-  component.getDefaultFoundation().adapter_.deregisterResizeHandler(handler);
+  component.getDefaultFoundation().adapter_.deregisterWindowResizeHandler(handler);
   domEvents.emit(window, 'resize');
   // Just in case deregisterResizeHandler doesn't work as expected
   window.removeEventListener('resize', handler);
