@@ -25,7 +25,7 @@ test('on window resize re-lays out the component', () => {
   const {isA} = td.matchers;
   let resizeHandler;
 
-  td.when(mockAdapter.registerResizeHandler(isA(Function))).thenDo((fn) => {
+  td.when(mockAdapter.registerWindowResizeHandler(isA(Function))).thenDo((fn) => {
     resizeHandler = fn;
   });
   td.when(mockAdapter.computeBoundingRect()).thenReturn(

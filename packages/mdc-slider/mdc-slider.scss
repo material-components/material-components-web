@@ -30,6 +30,8 @@
   height: 2px;
   margin: 23px 0;
   border-radius: 1px;
+
+  // Temporary color for slider. Will update with mixins in future PRs
   background-color: rgba(87, 37, 229, .24);
   overflow: hidden;
 }
@@ -40,6 +42,8 @@
   height: 100%;
   transform-origin: left top;
   border-radius: 1px;
+
+  // Temporary color for slider. Will update with mixins in future PRs
   background-color: #5725e5;
   will-change: transform;
 }
@@ -62,6 +66,7 @@
 }
 
 .mdc-slider__thumb-handle {
+  // Temporary color for slider. Will update with mixins in future PRs
   fill: #5725e5;
 }
 

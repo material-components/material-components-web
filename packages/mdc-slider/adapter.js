@@ -116,13 +116,13 @@ class MDCSliderAdapter {
    * Registers an event handler for the window resize event
    * @param {function(!Event): undefined} handler
    */
-  registerResizeHandler(handler) {}
+  registerWindowResizeHandler(handler) {}
 
   /**
    * Deregisters an event handler for the window resize event
    * @param {function(!Event): undefined} handler
    */
-  deregisterResizeHandler(handler) {}
+  deregisterWindowResizeHandler(handler) {}
 
   /**
    * Emits a custom event MDCSlider:input from the root
