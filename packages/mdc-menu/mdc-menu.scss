@@ -44,7 +44,7 @@
 }
 
 // postcss-bem-linter: define menu
-.mdc-menu--selection-group {
+.mdc-menu__selection-group {
   padding: 0;
   fill: currentColor;
 
@@ -53,14 +53,14 @@
   }
 }
 
-.mdc-menu--selection-group_selected {
+.mdc-menu__selection-group-icon {
   @include mdc-rtl-reflexive-position(left, 16px);
 
   display: none;
   position: absolute;
 }
 
-.mdc-menu-item--selected .mdc-menu--selection-group_selected {
+.mdc-menu-item--selected .mdc-menu__selection-group-icon {
   display: inline;
 }
 

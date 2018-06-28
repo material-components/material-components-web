@@ -164,7 +164,7 @@ class MDCMenu extends MDCComponent {
     return new MDCMenuFoundation({
       selectElementAtIndex: (index) => {
         const list = this.items;
-        if (list && list.length > index && list[index].parentElement.classList.contains('mdc-menu--selection-group')) {
+        if (list && list.length > index && list[index].parentElement.classList.contains('mdc-menu__selection-group')) {
           list[index].classList.add('mdc-menu-item--selected');
           list[index].setAttribute('aria-selected', 'true');
         }
@@ -173,7 +173,7 @@ class MDCMenu extends MDCComponent {
       getFocusedElementIndex: () => this.items.indexOf(document.activeElement),
       removeClassFromSelectionGroup: (index) => {
         const ele = this.items[index];
-        if (ele.parentElement && ele.parentElement.classList.contains('mdc-menu--selection-group')) {
+        if (ele.parentElement && ele.parentElement.classList.contains('mdc-menu__selection-group')) {
           [].slice.call(ele.parentElement.children).forEach((listItem) => {
             listItem.classList.remove('mdc-menu-item--selected');
             listItem.removeAttribute('aria-selected');
