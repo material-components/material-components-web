@@ -31,44 +31,44 @@
  * @record
  */
 class MDCListAdapter {
-  /** @return {Number} */
+  /** @return {number} */
   getListItemCount() {}
 
   /**
-   * @return {Number} */
+   * @return {number} */
   getFocusedElementIndex() {}
 
   /** @param {Element} node */
   getListItemIndex(node) {}
 
   /**
-   * @param {Number} index
+   * @param {number} index
    * @param {String} attribute
    * @param {String} value
    */
   setAttributeForElementIndex(index, attribute, value) {}
 
   /**
-   * @param {Number} index
+   * @param {number} index
    * @param {String} attribute
    */
   removeAttributeForElementIndex(index, attribute) {}
 
   /**
-   * @param {Number} index
+   * @param {number} index
    * @param {String} className
    */
   addClassForElementIndex(index, className) {}
 
   /**
-   * @param {Number} index
+   * @param {number} index
    * @param {String} className
    */
   removeClassForElementIndex(index, className) {}
 
   /**
    * Focuses list item at the index specified.
-   * @param {Number} index
+   * @param {number} index
    */
   focusItemAtIndex(index) {}
 
@@ -87,8 +87,8 @@ class MDCListAdapter {
   /**
    * Sets the tabindex to the value specified for all button/a element children of
    * the list item at the index specified.
-   * @param {Number} listItemIndex
-   * @param {Number} tabIndexValue
+   * @param {number} listItemIndex
+   * @param {number} tabIndexValue
    */
   setTabIndexForListItemChildren(listItemIndex, tabIndexValue) {}
 }
