@@ -1,5 +1,5 @@
 //
-// Copyright 2017 Google Inc. All Rights Reserved.
+// Copyright 2018 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -49,8 +49,10 @@
   @include mdc-ripple-radius-unbounded;
   @include mdc-states(#5725e5);
 
-  width: 48px;
-  height: 48px;
+  width: 34px;
+  height: 34px;
+  margin: 7px 0;
+  position: absolute;
   transform: translateX(-50%);
   will-change: transform;
 
@@ -61,4 +63,10 @@
 
 .mdc-slider__thumb-handle {
   fill: #5725e5;
+}
+
+.mdc-slider--active {
+  circle {
+    r: 10;
+  }
 }
