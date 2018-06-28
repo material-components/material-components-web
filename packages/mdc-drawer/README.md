@@ -56,7 +56,6 @@ npm install @material/drawer
 @import "@material/drawer/mdc-drawer";
 ```
 
-
 ## Variants
 
 ### Drawers with separate list groups
@@ -85,6 +84,30 @@ switchers and titles should live in the header element.
 </header>
 ```
 
+## Dismissible Drawer
+
+Dismissible drawers are by default hidden off screen, and can slide into view. Dismissible drawers should be used when navigation is not common, and the main app content is prioritized.
+
+```html
+<body>
+  <nav class="mdc-drawer mdc-drawer--dismissible">
+    <div class="mdc-drawer__scrollable">
+      <nav class="mdc-list">
+        <a class="mdc-list-item mdc-list-item--activated" href='#'>
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="mdc-drawer-app-content">
+    App Content
+  </div>
+</body>
+```
+
+> Use the `mdc-drawer-app-content` class to the element sibling to the drawer to get the open/close animations to work.
+
 ## Style Customization
 
 ### CSS Classes
@@ -92,10 +115,18 @@ switchers and titles should live in the header element.
 Class | Description
 --- | ---
 `mdc-drawer` |  Mandatory.
+`mdc-drawer--animating-close` | Applies the transition to the dismissible drawer while it is animating from the open to the closed position.
+`mdc-drawer--animating-open` | Applies the transition to the dismissible drawer while it is animating from the closed to the open position.
+`mdc-drawer-app-content` | Used for dismissible drawer variant sibling element that should animate open/closed with it.
+`mdc-drawer-app-content--animating-open` | Applies the transition to the app content element while it is animating to the open position.
+`mdc-drawer-app-content--animating-close` | Applies the transition to the app content element while it is animating to the closed position.
+`mdc-drawer--dismissible` | Dismissible drawer variant class.
 `mdc-drawer__header` | Non-scrollable element that exists on the top of the drawer.
-`mdc-drawer__title` | Title text element of the drawer.
-`mdc-drawer__subtitle` | Subtitle text element of the drawer.
+`mdc-drawer--open` | If present indicates that dismissible drawer is in the open position.
 `mdc-drawer__scrollable` | Scrollable content area of the drawer.
+`mdc-drawer__subtitle` | Subtitle text element of the drawer.
+`mdc-drawer__title` | Title text element of the drawer.
+
 
 ### Sass Mixins
 

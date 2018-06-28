@@ -14,9 +14,9 @@
 // limitations under the License.
 //
 
-@import '@material/animation/functions';
+@import "@material/animation/functions";
 @import "@material/rtl/mixins";
-@import '../variables';
+@import "../variables";
 
 .mdc-drawer--dismissible {
   width: 0;
@@ -31,39 +31,32 @@
   width: $mdc-drawer-width;
 }
 
-.mdc-drawer--animating-close {
-  transition: mdc-animation-standard(transform, $mdc-drawer-animation-exit);
-  transform: translateX(-100%);
-  transform-origin: top left;
-  will-change: transform;
-
-  @include mdc-rtl {
-    transform: translateX(100%);
-    transform-origin: top right;
-  }
-}
-
 .mdc-drawer--open:not(.mdc-drawer--animating-close) {
   transform: translateX(0);
 }
 
-.mdc-drawer--animating-open {
-  transition: mdc-animation-standard(transform, $mdc-drawer-animation-enter);
-  transform-origin: top left;
-  will-change: transform;
-
-  @include mdc-rtl {
-    transform-origin: top right;
-  }  
-}
-
+.mdc-drawer--animating-close,
+.mdc-drawer--animating-open,
 .mdc-drawer-app-content {
   transform-origin: top left;
   will-change: transform;
 
   @include mdc-rtl {
     transform-origin: top right;
-  } 
+  }
+}
+
+.mdc-drawer--animating-close {
+  transform: translateX(-100%);
+  transition: mdc-animation-standard(transform, $mdc-drawer-animation-exit);
+
+  @include mdc-rtl {
+    transform: translateX(100%);
+  }
+}
+
+.mdc-drawer--animating-open {
+  transition: mdc-animation-standard(transform, $mdc-drawer-animation-enter);
 }
 
 .mdc-drawer-app-content--animating-open {

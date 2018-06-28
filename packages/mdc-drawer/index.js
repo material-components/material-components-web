@@ -52,12 +52,20 @@ export class MDCDrawer extends MDCComponent {
     }
   }
 
+  /**
+   * Returns true if drawer is in the open position.
+   * @return {boolean}
+   */
   get open() {
     return this.foundation_.isOpen();
   }
 
-  set open(value) {
-    if (value) {
+  /**
+   * Toggles the drawer open and closed.
+   * @param {boolean} isOpen
+   */
+  set open(isOpen) {
+    if (isOpen) {
       this.foundation_.open();
     } else {
       this.foundation_.close();
@@ -98,6 +106,7 @@ export class MDCDrawer extends MDCComponent {
           this.appContent_.classList.remove(className);
         }
       },
+      isRtl: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
     }));
 
     if (this.root_.classList.contains(MDCDismissibleDrawerFoundation.cssClasses.DISMISSIBLE)) {

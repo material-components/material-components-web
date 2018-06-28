@@ -48,10 +48,10 @@ class MDCDrawerAdapter {
   hasClass(className) {}
 
   /**
-   * Returns ClientRect of this.appContent_ Element.
+   * Returns ClientRect of the root Element.
    * @return {!ClientRect}
    */
-  computeAppContentBoundingRect() {}
+  computeBoundingRect() {}
 
   /**
    * Adds a class to this.appContent_ Element.
@@ -71,6 +71,12 @@ class MDCDrawerAdapter {
    * @param {string} value
    */
   setStyleAppContent(propertyName, value) {}
+
+  /**
+   * Returns true if parent element is dir='rtl'.
+   * @return {boolean}
+   */
+  isRtl() {}
 }
 
 export default MDCDrawerAdapter;

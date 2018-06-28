@@ -23,7 +23,6 @@ import {cssClasses, strings} from '../constants';
  * @extends {MDCFoundation<!MDCDrawerAdapter>}
  */
 class MDCDismissibleDrawerFoundation extends MDCFoundation {
-
   /** @return enum {string} */
   static get strings() {
     return strings;
@@ -38,33 +37,20 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
     return /** @type {!MDCDrawerAdapter} */ ({
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
+      hasClass: (/* className: string */) => {},
       computeBoundingRect: () => {},
       setStyleAppContent: (/* propertyName: string, value: string */) => {},
       addClassAppContent: (/* className: string */) => {},
       removeClassAppContent: (/* className: string */) => {},
+      isRtl: () => {},
     });
   }
-  /**
-   * @param {!MDCDrawerAdapter} adapter
-   */
-  // constructor(adapter) {
-  //   super(adapter);
-
-  //   /**
-  //    * isOpen_ is used to indicate if the drawer is open.
-  //    * @private {boolean}
-  //    */
-  //   this.isOpen_ = false;
-  // }
 
   /**
    * Function to open the drawer.
    */
   open() {
-    const isOpen = this.adapter_.hasClass(cssClasses.OPEN);
-    const isOpening = this.adapter_.hasClass(cssClasses.ANIMATING_OPEN);
-    const isClosing = this.adapter_.hasClass(cssClasses.ANIMATING_CLOSE);
-    if (isOpen || isOpening || isClosing) {
+    if (this.isOpen() || this.isOpening() || this.isClosing()) {
       return;
     }
     this.adapter_.addClass(cssClasses.OPEN);
@@ -76,10 +62,7 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
    * Function to close the drawer.
    */
   close() {
-    const isOpen = this.adapter_.hasClass(cssClasses.OPEN);
-    const isOpening = this.adapter_.hasClass(cssClasses.ANIMATING_OPEN);
-    const isClosing = this.adapter_.hasClass(cssClasses.ANIMATING_CLOSE);
-    if (!isOpen || isOpening || isClosing) {
+    if (!this.isOpen() || this.isOpening() || this.isClosing()) {
       return;
     }
     this.adapter_.addClass(cssClasses.ANIMATING_CLOSE);
@@ -89,11 +72,10 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
   animateAppContent(isOpening) {
     const {APP_CONTENT_ANIMATE_OPEN, APP_CONTENT_ANIMATE_CLOSE} = cssClasses;
     const drawerWidth = this.adapter_.computeBoundingRect().width;
-    const firstTransform = isOpening ? `translateX(${-drawerWidth}px)` : '';
-    const lastTransform = isOpening ? '' : `translateX(${-drawerWidth}px)`;
+    const invert = this.adapter_.isRtl() ? drawerWidth : -drawerWidth;
+    const firstTransform = isOpening ? `translateX(${invert}px)` : '';
+    const lastTransform = isOpening ? '' : `translateX(${invert}px)`;
     this.adapter_.setStyleAppContent('transform', firstTransform);
-    // force composite update
-    this.adapter_.computeBoundingRect();
 
     requestAnimationFrame(() => {
       const animateClass = isOpening ? APP_CONTENT_ANIMATE_OPEN : APP_CONTENT_ANIMATE_CLOSE;
@@ -108,6 +90,22 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
    */
   isOpen() {
     return this.adapter_.hasClass(cssClasses.OPEN);
+  }
+
+  /**
+   * Returns true if drawer is animating open.
+   * @return {boolean}
+   */
+  isOpening() {
+    return this.adapter_.hasClass(cssClasses.ANIMATING_OPEN);
+  }
+
+  /**
+   * Returns true if drawer is animating closed.
+   * @return {boolean}
+   */
+  isClosing() {
+    return this.adapter_.hasClass(cssClasses.ANIMATING_CLOSE);
   }
 
   /**
@@ -129,14 +127,14 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
    */
   handleTransitionEnd() {
     const {APP_CONTENT_ANIMATE_OPEN, APP_CONTENT_ANIMATE_CLOSE, ANIMATING_OPEN, ANIMATING_CLOSE, OPEN} = cssClasses;
-    if (this.adapter_.hasClass(ANIMATING_CLOSE)) {
+    if (this.isClosing()) {
       this.adapter_.removeClass(OPEN);
+      this.adapter_.setStyleAppContent('transform', '');
     }
     this.adapter_.removeClassAppContent(APP_CONTENT_ANIMATE_OPEN);
     this.adapter_.removeClassAppContent(APP_CONTENT_ANIMATE_CLOSE);
     this.adapter_.removeClass(ANIMATING_OPEN);
     this.adapter_.removeClass(ANIMATING_CLOSE);
-    this.adapter_.setStyleAppContent('transform', '');
   }
 }
 
