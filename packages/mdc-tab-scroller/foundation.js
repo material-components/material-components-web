@@ -76,9 +76,6 @@ class MDCTabScrollerFoundation extends MDCFoundation {
     /** @private {boolean} */
     this.shouldHandleInteraction_ = false;
 
-    /** @private {boolean} */
-    this.isAnimating_ = false;
-
     /** @private {?MDCTabScrollerRTL} */
     this.rtlScrollerInstance_;
   }
@@ -109,7 +106,6 @@ class MDCTabScrollerFoundation extends MDCFoundation {
     }
 
     // Prevent other event listeners from handling this event
-    this.shouldHandleInteraction_ = false;
     this.stopScrollAnimation_();
     this.deregisterInteractionHandlers_();
   }
@@ -118,8 +114,6 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * Handles the transitionend event
    */
   handleTransitionEnd() {
-    this.isAnimating_ = false;
-    this.shouldHandleInteraction_ = false;
     this.deregisterInteractionHandlers_();
     this.adapter_.deregisterEventHandler('transitionend', this.handleTransitionEnd_);
     this.adapter_.removeClass(MDCTabScrollerFoundation.cssClasses.ANIMATING);
@@ -220,10 +214,10 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * @private
    */
   deregisterInteractionHandlers_() {
+    this.shouldHandleInteraction_ = false;
     INTERACTION_EVENTS.forEach((eventName) => {
       this.adapter_.deregisterEventHandler(eventName, this.handleInteraction_);
     });
-    this.shouldHandleInteraction_ = false;
   }
 
   /**
@@ -231,10 +225,10 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * @private
    */
   registerInteractionHandlers_() {
+    this.shouldHandleInteraction_ = true;
     INTERACTION_EVENTS.forEach((eventName) => {
       this.adapter_.registerEventHandler(eventName, this.handleInteraction_);
     });
-    this.shouldHandleInteraction_ = true;
   }
 
   /**
@@ -311,7 +305,6 @@ class MDCTabScrollerFoundation extends MDCFoundation {
     requestAnimationFrame(() => {
       this.adapter_.addClass(MDCTabScrollerFoundation.cssClasses.ANIMATING);
       this.adapter_.setContentStyleProperty('transform', 'none');
-      this.isAnimating_ = true;
     });
 
     this.registerInteractionHandlers_();
@@ -323,12 +316,6 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * @private
    */
   stopScrollAnimation_() {
-    // Early exit if not animating
-    if (!this.isAnimating_) {
-      return;
-    }
-
-    this.isAnimating_ = false;
     const currentScrollPosition = this.computeCurrentScrollPosition();
     this.adapter_.deregisterEventHandler('transitionend', this.handleTransitionEnd_);
     this.adapter_.removeClass(MDCTabScrollerFoundation.cssClasses.ANIMATING);

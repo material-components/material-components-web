@@ -497,7 +497,7 @@ test('#scrollTo() sets the scrollLeft property in RTL', () => {
 test('#scrollTo() sets the transform style property in RTL', () => {
   const {foundation, mockAdapter} = setupScrollToRTLTest();
   foundation.scrollTo(-10);
-  td.verify(mockAdapter.setContentStyleProperty('transform', td.matchers.isA(String)), {times: 1});
+  td.verify(mockAdapter.setContentStyleProperty('transform', 'translateX(690px)'), {times: 1});
 });
 
 test('#incrementScroll() sets the scrollLeft property in RTL', () => {
@@ -509,7 +509,7 @@ test('#incrementScroll() sets the scrollLeft property in RTL', () => {
 test('#incrementScroll() sets the transform style property in RTL', () => {
   const {foundation, mockAdapter} = setupScrollToRTLTest();
   foundation.incrementScroll(10);
-  td.verify(mockAdapter.setContentStyleProperty('transform', td.matchers.isA(String)), {times: 1});
+  td.verify(mockAdapter.setContentStyleProperty('transform', 'translateX(10px)'), {times: 1});
 });
 
 test('#computeCurrentScrollPosition() returns a numeric scroll position in RTL', () => {
