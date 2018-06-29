@@ -84,10 +84,15 @@
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
+
+  // most usages rely on pointer events being on the parent .mdc-list-item, so we disable on children
+  pointer-events: none;
 }
 
 .mdc-list-item__meta {
   @include mdc-rtl-reflexive-property(margin, auto, 0, ".mdc-list-item");
+
+  pointer-events: none;
 }
 
 .mdc-list-item__text,
@@ -95,6 +100,7 @@
   @include mdc-typography-overflow-ellipsis;
 
   display: block;
+  pointer-events: none;
 }
 
 .mdc-list-item__secondary-text {
