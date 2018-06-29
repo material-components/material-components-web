@@ -208,7 +208,7 @@ class UploadableFile {
  * E.g.:
  * ```json
  * {
- *   "mdc-button/classes/baseline.html": {
+ *   "mdc-button/classes/baseline-button-with-icons.html": {
  *     "publicUrl": "https://storage.googleapis.com/.../baseline.html",
  *     "screenshots": {...}
  *   },

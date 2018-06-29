@@ -20,7 +20,7 @@
 $custom-button-color: $material-color-red-300;
 $custom-button-custom-corner-radius: 8px;
 $custom-button-custom-outline-width: 4px;
-$custom-button-custom-horizontal-padding: 36px;
+$custom-button-custom-horizontal-padding: 24px;
 
 .custom-button--ink-color {
   @include mdc-button-ink-color($custom-button-color);

@@ -136,21 +136,21 @@ The default behavior is to always build assets before running the tests.
 
     this.addArg_(subparser, {
       optionNames: ['--diffs'],
-      exampleValue: 'mdc-foo/baseline.html:desktop_windows_chrome@latest,...',
+      exampleValue: 'mdc-foo/baseline-button-with-icons.html:desktop_windows_chrome@latest,...',
       type: 'array',
       description: 'Comma-separated list of screenshot diffs to approve.',
     });
 
     this.addArg_(subparser, {
       optionNames: ['--added'],
-      exampleValue: 'mdc-foo/baseline.html:desktop_windows_chrome@latest,...',
+      exampleValue: 'mdc-foo/baseline-button-with-icons.html:desktop_windows_chrome@latest,...',
       type: 'array',
       description: 'Comma-separated list of added screenshots to approve.',
     });
 
     this.addArg_(subparser, {
       optionNames: ['--removed'],
-      exampleValue: 'mdc-foo/baseline.html:desktop_windows_chrome@latest,...',
+      exampleValue: 'mdc-foo/baseline-button-with-icons.html:desktop_windows_chrome@latest,...',
       type: 'array',
       description: 'Comma-separated list of removed screenshots to approve.',
     });
