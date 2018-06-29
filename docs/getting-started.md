@@ -232,17 +232,28 @@ Then configure webpack to convert `app.js` into `bundle.js` by adding the follow
 module.exports.push({
   entry: './app.js',
   output: {
-    filename: 'bundle.js'
+    filename: 'javascript-bundle.js'
   },
-  rules: {
-    loaders: [{
+  module: {
+    rules: [{
       test: /\.js$/,
-      loader: 'babel-loader',
-      query: {
-        presets: ['es2015']
-      }
+      use: [
+        {
+          loader: 'file-loader',
+          options: 
+            {
+              name: 'bundle.js',
+            },
+        },
+        {
+          loader: 'babel-loader',
+          query: {
+            presets: ['es2015']
+          }
+        }
+      ]
     }]
-  },
+  }
 });
 ```
 
