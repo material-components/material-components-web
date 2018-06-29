@@ -1,5 +1,5 @@
 //
-// Copyright 2017 Google Inc. All Rights Reserved.
+// Copyright 2018 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,5 +14,28 @@
 // limitations under the License.
 //
 
-@import "./standard/mdc-drawer-standard";
-@import "./rail/mdc-drawer-rail";
+@import "@material/rtl/mixins";
+@import "@material/theme/variables";
+@import "@material/theme/mixins";
+@import "../variables";
+@import "../mixins";
+
+.mdc-drawer--rail {
+  width: $mdc-drawer-rail-width;
+}
+
+.mdc-drawer--rail {
+  .mdc-list,
+  .mdc-list-group .mdc-list {
+    padding: 12px;
+  }
+}
+
+.mdc-drawer--rail {
+  .mdc-drawer__title,
+  .mdc-drawer__subtitle,
+  .mdc-list-item__text,
+  .mdc-list-group__subheader {
+    opacity: 0;
+  }
+}

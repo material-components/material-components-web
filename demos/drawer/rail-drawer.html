@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2016 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Standard Drawer - Material Components Catalog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
+    <link rel="stylesheet" href="/assets/drawer/drawer.css">
+    <link rel="stylesheet" href="/assets/radio.css">
+    <script src="/ready.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  </head>
+  <body class="mdc-typography demo-body">
+    <nav id="demo-drawer" class="mdc-drawer mdc-drawer--rail demo-drawer">
+      <div class="mdc-drawer__header">
+        <h3 class="mdc-drawer__title">Mail</h3>
+        <h6 class="mdc-drawer__subtitle">email@material.io</h6>
+      </div>
+      <div class="mdc-drawer__scrollable">
+        <div class="mdc-list-group">
+          <nav class="mdc-list">
+            <a class="mdc-list-item mdc-list-item--activated demo-drawer-list-item" href="#">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
+              <span class="mdc-list-item__text">Inbox</span>
+            </a>
+            <a class="mdc-list-item demo-drawer-list-item" href="#">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>
+              <span class="mdc-list-item__text">Star</span>
+            </a>
+            <a class="mdc-list-item demo-drawer-list-item" href="#">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
+              <span class="mdc-list-item__text">Sent Mail</span>
+            </a>
+            <a class="mdc-list-item demo-drawer-list-item" href="#">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
+              <span class="mdc-list-item__text">Drafts</span>
+            </a>
+          </nav>
+
+          <hr class="mdc-list-divider">
+          <h6 class="mdc-list-group__subheader">Labels</h6>
+          <nav class="mdc-list">
+            <a class="mdc-list-item demo-drawer-list-item" href="#">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
+              <span class="mdc-list-item__text">Family</span>
+            </a>
+            <a class="mdc-list-item demo-drawer-list-item" href="#">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
+              <span class="mdc-list-item__text">Friends</span>
+            </a>
+            <a class="mdc-list-item demo-drawer-list-item" href="#">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
+              <span class="mdc-list-item__text">Work</span>
+            </a>
+          </nav>
+
+          <hr class="mdc-list-divider">
+          <nav class="mdc-list">
+            <a class="mdc-list-item demo-drawer-list-item" href="#">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings</i>
+              <span class="mdc-list-item__text">Settings</span>
+            </a>
+            <a class="mdc-list-item demo-drawer-list-item" href="#">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">announcement</i>
+              <span class="mdc-list-item__text">Help & feedback</span>
+            </a>
+          </nav>
+        </div>
+      </div>
+    </nav>
+    <div class="demo-content" id="demo-content">
+      <header class="mdc-top-app-bar" id="app-bar">
+        <div class="mdc-top-app-bar__row">
+          <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+            <span class="mdc-top-app-bar__title">Standard Drawer</span>
+          </section>
+        </div>
+      </header>
+
+      <main class="demo-main">
+        <div class="mdc-top-app-bar--fixed-adjust"></div>
+        <h1 class="mdc-typography--headline4">Permanent Drawer</h1>
+        <p class="mdc-typography--body1">It sits to the left of this content.</p>
+
+        <div id="demo-radio-buttons">
+          <div class="mdc-form-field">
+            <div class="mdc-radio">
+              <input class="mdc-radio__native-control" type="radio" id="theme-radio-default" name="theme" checked>
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
+            </div>
+            <label for="theme-radio-default">Default</label>
+          </div>
+          <div class="mdc-form-field">
+            <div class="mdc-radio">
+              <input class="mdc-radio__native-control" type="radio" id="theme-radio-custom" name="theme">
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
+            </div>
+            <label for="theme-radio-custom">Custom Theme</label>
+          </div>
+          <div class="mdc-form-field">	
+            <div class="mdc-radio">	
+              <input class="mdc-radio__native-control" type="radio" id="theme-radio-accessible" name="theme">	
+              <div class="mdc-radio__background">	
+                <div class="mdc-radio__outer-circle"></div>	
+                <div class="mdc-radio__inner-circle"></div>	
+              </div>	
+            </div>	
+            <label for="theme-radio-accessible">Accessible Theme</label>	
+          </div>
+        </div>
+
+        <div class="extra-content-wrapper">
+          <button type="button" class="mdc-button mdc-button--outlined mdc-button--dense demo-toolbar-example-heading__rtl-toggle-button">Toggle RTL</button>
+        </div>
+        <div class="extra-content-wrapper">
+          <button id="toggle-wide" class="mdc-button mdc-button--outlined mdc-button--dense">Toggle extra-wide content</button>
+          <div id="extra-wide-content" class="mdc-elevation--z2">&nbsp;</div>
+        </div>
+        <div class="extra-content-wrapper">
+          <button id="toggle-tall" class="mdc-button mdc-button--outlined mdc-button--dense">Toggle extra-tall content</button>
+          <div id="extra-tall-content" class="mdc-elevation--z2">&nbsp;</div>
+        </div>
+      </main>
+    </div>
+
+    <script src="/assets/material-components-web.js" async></script>
+    <script>
+      demoReady(function() {
+        var extraWide = document.querySelector('#extra-wide-content');
+        extraWide.style.display = 'none';
+        document.querySelector('#toggle-wide').addEventListener('click', function() {
+          extraWide.style.display = extraWide.style.display ? '' : 'none';
+        });
+        var extraTall = document.querySelector('#extra-tall-content');
+        extraTall.style.display = 'none';
+        document.querySelector('#toggle-tall').addEventListener('click', function() {
+          extraTall.style.display = extraTall.style.display ? '' : 'none';
+        });
+
+        var activatedClass = 'mdc-list-item--activated';
+        var listItemClass = 'mdc-list-item';
+        document.querySelector('.mdc-drawer').addEventListener('click', function(event) {
+          var el = event.target;
+          while (el && !el.classList.contains(listItemClass)) {
+            el = el.parentElement;
+          }
+          if (el) {
+            var activatedItem = document.querySelector('.' + activatedClass);
+            if (activatedItem) {
+              activatedItem.classList.remove(activatedClass);
+            }
+
+            let target = event.target;
+            while (!target.classList.contains(listItemClass) && !target.classList.contains('mdc-list')) {
+              target = target.parentElement;
+            }
+            if (target.classList.contains(listItemClass)) {
+              target.classList.add(activatedClass);
+            }
+          }
+        });
+
+        var drawerEl = document.getElementById('demo-drawer');
+        var radioEl = document.querySelector('#demo-radio-buttons');
+        radioEl.addEventListener('change', function(e) {
+          drawerEl.classList.remove('demo-drawer--custom');
+          drawerEl.classList.remove('demo-drawer--accessible');
+
+          if(e.target.id === 'theme-radio-custom') {
+            drawerEl.classList.add('demo-drawer--custom');
+          } else if(e.target.id === 'theme-radio-accessible') {
+            drawerEl.classList.add('demo-drawer--accessible');
+          }
+        });
+
+        var rtlToggleBtn = document.querySelector('.demo-toolbar-example-heading__rtl-toggle-button');
+        rtlToggleBtn.addEventListener('click', function(event) {
+          document.body.setAttribute('dir', document.body.getAttribute('dir') === 'rtl' ? 'ltr' : 'rtl');
+        });
+        var topAppBar = new mdc.topAppBar.MDCTopAppBar(document.getElementById('app-bar'));
+        topAppBar.setScrollTarget(document.getElementById('demo-content'));
+      });
+    </script>
+  </body>
+</html>
