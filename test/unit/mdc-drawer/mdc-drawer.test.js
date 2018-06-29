@@ -168,6 +168,11 @@ test('adapter#setStyleAppContent updates styles on the appContent', () => {
   assert.equal(appContent.style['display'], 'inline-block');
 });
 
+test('adapter#setStyleAppContent doesn\'t throw an error if appContent element does not exist', () => {
+  const {component} = setupTest();
+  assert.doesNotThrow(component.getDefaultFoundation().adapter_.setStyleAppContent);
+});
+
 test('adapter#computeBoundingRect returns the client rect object on the root element', () => {
   const {root, drawer, component} = setupTest();
   document.body.appendChild(root);
@@ -182,9 +187,8 @@ test('adapter#addClassAppContent adds class to appContent element', () => {
 });
 
 test('adapter#addClassAppContent doesn\'t add a class if there is no appContent element', () => {
-  const {component, appContent} = setupTest();
-  component.getDefaultFoundation().adapter_.addClass('test-class');
-  assert.notExists(appContent);
+  const {component} = setupTest();
+  assert.doesNotThrow(component.getDefaultFoundation().adapter_.addClassAppContent);
 });
 
 test('adapter#removeClassAppContent removes class from appContent element', () => {
@@ -196,9 +200,8 @@ test('adapter#removeClassAppContent removes class from appContent element', () =
 });
 
 test('adapter#removeClassAppContent doesn\'t remove class if there is no appContent element', () => {
-  const {component, appContent} = setupTest();
-  component.getDefaultFoundation().adapter_.removeClassAppContent('test-class');
-  assert.notExists(appContent);
+  const {component} = setupTest();
+  assert.doesNotThrow(component.getDefaultFoundation().adapter_.removeClassAppContent);
 });
 
 test('adapter#isRtl returns true if dir="rtl"', () => {

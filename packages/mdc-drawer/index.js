@@ -16,6 +16,7 @@
  */
 import {MDCComponent} from '@material/base/index';
 import MDCDismissibleDrawerFoundation from './dismissible/foundation';
+import {strings} from './constants';
 
 /**
  * @extends {MDCComponent<!MDCDismissibleDrawerFoundation>}
@@ -107,6 +108,8 @@ export class MDCDrawer extends MDCComponent {
         }
       },
       isRtl: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
+      notifyClose: () => this.emit(strings.CLOSE_EVENT, null, true /* shouldBubble */),
+      notifyOpen: () => this.emit(strings.OPEN_EVENT, null, true /* shouldBubble */),
     }));
 
     if (this.root_.classList.contains(MDCDismissibleDrawerFoundation.cssClasses.DISMISSIBLE)) {

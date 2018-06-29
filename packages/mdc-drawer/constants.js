@@ -24,8 +24,11 @@ const cssClasses = {
   APP_CONTENT_ANIMATE_OPEN: 'mdc-drawer-app-content--animating-open',
 };
 
+/** @enum {string} */
 const strings = {
   APP_CONTENT_SELECTOR: '.mdc-drawer-app-content',
+  CLOSE_EVENT: 'MDCDrawer:close',
+  OPEN_EVENT: 'MDCDrawer:open',
 };
 
 export {cssClasses, strings};

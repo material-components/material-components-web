@@ -43,6 +43,8 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
       addClassAppContent: (/* className: string */) => {},
       removeClassAppContent: (/* className: string */) => {},
       isRtl: () => {},
+      notifyClose: () => {},
+      notifyOpen: () => {},
     });
   }
 
@@ -55,7 +57,7 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
     }
     this.adapter_.addClass(cssClasses.OPEN);
     this.adapter_.addClass(cssClasses.ANIMATING_OPEN);
-    this.animateAppContent(true);
+    this.animateAppContent_(true);
   }
 
   /**
@@ -66,10 +68,14 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
       return;
     }
     this.adapter_.addClass(cssClasses.ANIMATING_CLOSE);
-    this.animateAppContent(false);
+    this.animateAppContent_(false);
   }
 
-  animateAppContent(isOpening) {
+  /**
+   * Animates the app content (sibling to the drawer) open/closed along with the drawer.
+   * @param {boolean} isOpening
+   */
+  animateAppContent_(isOpening) {
     const {APP_CONTENT_ANIMATE_OPEN, APP_CONTENT_ANIMATE_CLOSE} = cssClasses;
     const drawerWidth = this.adapter_.computeBoundingRect().width;
     const invert = this.adapter_.isRtl() ? drawerWidth : -drawerWidth;
@@ -130,6 +136,9 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
     if (this.isClosing()) {
       this.adapter_.removeClass(OPEN);
       this.adapter_.setStyleAppContent('transform', '');
+      this.adapter_.notifyClose();
+    } else {
+      this.adapter_.notifyOpen();
     }
     this.adapter_.removeClassAppContent(APP_CONTENT_ANIMATE_OPEN);
     this.adapter_.removeClassAppContent(APP_CONTENT_ANIMATE_CLOSE);

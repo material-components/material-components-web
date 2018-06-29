@@ -146,3 +146,47 @@ Mixin | Description
 `mdc-drawer-meta-ink-color($color, $opacity)` | Sets drawer list item meta icon ink color.
 `mdc-drawer-surface-fill-color($color, $opacity)` | Sets the background color of `mdc-drawer`.
 `mdc-drawer-title-ink-color($color, $opacity)` | Sets the ink color of `mdc-drawer__title`.
+
+## `MDCDrawer` Properties and Methods
+
+Property | Value Type | Description
+--- | --- | ---
+`open` | Boolean | Proxies to the foundation's `open`/`close` methods. Also returns true if drawer is in the open position.
+
+### Events
+
+Event Name | Event Data Structure | Description
+--- | --- | ---
+`MDCDrawer:open` | None | Emits when the navigation drawer has opened.
+`MDCDrawer:close` | None | Emits when the navigation drawer has closed.
+
+## Usage within Web Frameworks
+
+If you are using a JavaScript framework, such as React or Angular, you can create a Top App Bar for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
+
+### `MDCDrawerAdapter`
+
+Method Signature | Description
+--- | ---
+`addClass(className: string) => void` | Adds a class to the root element.
+`hasClass(className: string) => boolean` | Returns true if the root element contains the given `className`.
+`removeClass(className: string) => void` | Removes a class from the root element.
+`computeBoundingRect() => ClientRect` | Returns ClientRect of the drawer element.
+`addClassAppContent(className: string) => void` | Adds a class to the app content element.
+`removeClassAppContent(className: string) => void` | Removes a class to the app content element.
+`setStyleAppContent(propertyName, value) => void` | Sets style property on app content element to `value`.
+`isRtl() => boolean` | Returns true if a parent element is dir='rtl'.
+`notifyClosed() => void` | Emits the `MDCDrawer:close` event.
+`notifyOpen() => void` | Emits the `MDCDrawer:open` event.
+
+### Foundations: `MDCDismissibleDrawerFoundation`
+
+Method Signature | Description
+--- | ---
+`open() => void` | Opens the drawer from the closed state.
+`close() => void` | Closes the drawer from the open state.
+`isOpen() => boolean` | Returns true if the drawer is in the open position.
+`isOpening() => boolean` | Returns true if the drawer is animating open.
+`isClosing() => boolean` | Returns true if the drawer is animating closed.
+`handleKeyDown(evt => Event) => void` | Handles the keydown event.
+`handleTransitionEnd() => void` | Handles the transitionend event when the drawer finishes opening/closing.

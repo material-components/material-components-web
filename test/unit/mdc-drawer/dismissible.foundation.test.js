@@ -46,7 +46,7 @@ test('exports cssClasses', () => {
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCDismissibleDrawerFoundation, [
     'hasClass', 'addClass', 'removeClass', 'computeBoundingRect', 'setStyleAppContent',
-    'addClassAppContent', 'removeClassAppContent', 'isRtl',
+    'addClassAppContent', 'removeClassAppContent', 'isRtl', 'notifyClose', 'notifyOpen',
   ]);
 });
 
@@ -254,18 +254,20 @@ test('#handleTransitionEnd removes all animating classes', () => {
   td.verify(mockAdapter.removeClass(cssClasses.ANIMATING_CLOSE), {times: 1});
 });
 
-test('#handleTransitionEnd removes open class after closing', () => {
+test('#handleTransitionEnd removes open class after closing and calls notifyClose', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.hasClass(cssClasses.ANIMATING_CLOSE)).thenReturn(true);
   foundation.handleTransitionEnd();
   td.verify(mockAdapter.removeClass(cssClasses.OPEN), {times: 1});
   td.verify(mockAdapter.setStyleAppContent('transform', ''), {times: 1});
+  td.verify(mockAdapter.notifyClose(), {times: 1});
 });
 
-test('#handleTransitionEnd doesn\'t remove open class after closing', () => {
+test('#handleTransitionEnd doesn\'t remove open class after closing and calls notifyOpen', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.hasClass(cssClasses.ANIMATING_CLOSE)).thenReturn(false);
   foundation.handleTransitionEnd();
   td.verify(mockAdapter.removeClass(cssClasses.OPEN), {times: 0});
   td.verify(mockAdapter.setStyleAppContent('transform', ''), {times: 0});
+  td.verify(mockAdapter.notifyOpen(), {times: 1});
 });

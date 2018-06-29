@@ -33,6 +33,7 @@
   @include mdc-drawer-item-corner-radius(4px);
 
   width: $mdc-drawer-width;
+  min-width: $mdc-drawer-width;
   border-right-width: 1px;
   border-right-style: solid;
   overflow: hidden;
