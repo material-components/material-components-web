@@ -34,6 +34,8 @@ class MDCChipSet extends MDCComponent {
 
     /** @type {!Array<!MDCChip>} */
     this.chips;
+    /** @type {(function(!Element): !MDCChip)} */
+    this.chipFactory_;
   }
 
   /**
@@ -49,13 +51,30 @@ class MDCChipSet extends MDCComponent {
    * creates a new MDCChip.
    */
   initialize(chipFactory = (el) => new MDCChip(el)) {
-    this.chips = this.instantiateChips_(chipFactory);
+    this.chipFactory_ = chipFactory;
+    this.chips = this.instantiateChips_(this.chipFactory_);
   }
 
   destroy() {
     this.chips.forEach((chip) => {
       chip.destroy();
     });
+  }
+
+  initialSyncWithDOM() {
+    this.chips.forEach((chip) => {
+      if (chip.isSelected()) {
+        this.foundation_.select(chip.foundation);
+      }
+    });
+  }
+
+  /**
+   * Adds a new chip object to the chip set from the given chip element.
+   * @param {!Element} chipEl
+   */
+  addChip(chipEl) {
+    this.chips.push(this.chipFactory_(chipEl));
   }
 
   /**
@@ -66,6 +85,11 @@ class MDCChipSet extends MDCComponent {
       hasClass: (className) => this.root_.classList.contains(className),
       registerInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
+      removeChip: (chip) => {
+        const index = this.chips.indexOf(chip);
+        this.chips.splice(index, 1);
+        chip.destroy();
+      },
     })));
   }
 

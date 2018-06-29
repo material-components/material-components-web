@@ -39,6 +39,8 @@ const strings = {
   TRANSITION_STATE_CHECKED: 'checked',
   TRANSITION_STATE_UNCHECKED: 'unchecked',
   TRANSITION_STATE_INDETERMINATE: 'indeterminate',
+  ARIA_CHECKED_ATTR: 'aria-checked',
+  ARIA_CHECKED_INDETERMINATE_VALUE: 'mixed',
 };
 
 /** @enum {number} */

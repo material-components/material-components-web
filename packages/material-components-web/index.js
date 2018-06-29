@@ -23,10 +23,13 @@ import * as drawer from '@material/drawer/index';
 import * as floatingLabel from '@material/floating-label/index';
 import * as formField from '@material/form-field/index';
 import * as gridList from '@material/grid-list/index';
+import * as iconButton from '@material/icon-button/index';
 import * as iconToggle from '@material/icon-toggle/index';
 import * as linearProgress from '@material/linear-progress/index';
 import * as lineRipple from '@material/line-ripple/index';
+import * as list from '@material/list/index';
 import * as menu from '@material/menu/index';
+import * as notchedOutline from '@material/notched-outline/index';
 import * as radio from '@material/radio/index';
 import * as ripple from '@material/ripple/index';
 import * as select from '@material/select/index';
@@ -49,9 +52,12 @@ autoInit.register('MDCFloatingLabel', floatingLabel.MDCFloatingLabel);
 autoInit.register('MDCFormField', formField.MDCFormField);
 autoInit.register('MDCRipple', ripple.MDCRipple);
 autoInit.register('MDCGridList', gridList.MDCGridList);
+autoInit.register('MDCIconButtonToggle', iconButton.MDCIconButtonToggle);
 autoInit.register('MDCIconToggle', iconToggle.MDCIconToggle);
 autoInit.register('MDCLineRipple', lineRipple.MDCLineRipple);
 autoInit.register('MDCLinearProgress', linearProgress.MDCLinearProgress);
+autoInit.register('MDCList', list.MDCList);
+autoInit.register('MDCNotchedOutline', notchedOutline.MDCNotchedOutline);
 autoInit.register('MDCRadio', radio.MDCRadio);
 autoInit.register('MDCSnackbar', snackbar.MDCSnackbar);
 autoInit.register('MDCTab', tabs.MDCTab);
@@ -74,10 +80,13 @@ export {
   floatingLabel,
   formField,
   gridList,
+  iconButton,
   iconToggle,
   lineRipple,
   linearProgress,
+  list,
   menu,
+  notchedOutline,
   radio,
   ripple,
   select,

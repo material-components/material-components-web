@@ -23,7 +23,7 @@
 const fs = require('fs');
 const path = require('path');
 
-module.exports = class {
+class PathResolver {
   constructor({
     pathLib = path,
     fsLib = fs,
@@ -115,4 +115,6 @@ module.exports = class {
   removeFileExtension(filePath) {
     return filePath.replace(/\.\w+$/, '');
   }
-};
+}
+
+module.exports = PathResolver;

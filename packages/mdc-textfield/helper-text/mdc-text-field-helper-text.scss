@@ -16,14 +16,16 @@
 
 @import "../functions";
 @import "@material/theme/mixins";
+@import "@material/typography/mixins";
 
 // postcss-bem-linter: define text-field-helper-text
 
 .mdc-text-field-helper-text {
+  @include mdc-typography(caption);
+
   margin: 0;
   transition: mdc-text-field-transition(opacity);
   opacity: 0;
-  font-size: .75rem;
   will-change: opacity;
 
   // stylelint-disable plugin/selector-bem-pattern

@@ -32,7 +32,7 @@
     padding: 16px;
     border-bottom: 1px solid rgba(0, 0, 0, .12);
 
-    /* TODO(sgomes): replace with global breakpoints when we have them */
+    // TODO(sgomes): replace with global breakpoints when we have them
     @media (min-width: 600px) {
       height: 64px;
     }
@@ -40,7 +40,7 @@
 }
 
 @mixin mdc-drawer-header_() {
-  /* Use aspect ratio trick to maintain 16:9 aspect ratio on the header */
+  // Use aspect ratio trick to maintain 16:9 aspect ratio on the header
   // styline things header is a type
   // stylelint-disable selector-max-type
   .mdc-drawer__header {
@@ -69,7 +69,7 @@
 
 @mixin mdc-drawer-list_() {
   .mdc-list-item {
-    @include mdc-typography(body2);
+    @include mdc-typography(subtitle2);
 
     position: relative;
     outline: none;

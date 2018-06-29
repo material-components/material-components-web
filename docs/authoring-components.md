@@ -442,8 +442,9 @@ _Only reference global objects defined within the ECMAScript specification withi
 We make an exception for this rule for `requestAnimationFrame`, but in the future we may refactor
 that out as well. In addition, a workaround to working with host objects in a foundation is to ask
 for them via the adapter. However, you should design your adapter APIs such that they return a
-[structural type]() representing your host object, rather than a [nominal type]() of the host object
-itself. For example, instead of asking for an `HTMLInputElement` of type `"checkbox"`, ask for an
+[structural type](https://github.com/google/closure-compiler/wiki/Structural-Interfaces-in-Closure-Compiler)
+representing your host object, rather than a nominal type of the host object itself. For example,
+instead of asking for an `HTMLInputElement` of type `"checkbox"`, ask for an
 object that has `checked`, `indeterminate`, and `disabled` boolean properties.
 
 ### Clean up all references on destruction
@@ -752,14 +753,13 @@ Concretely:
 - Ensure that the correct **commit subject** for the package is added to the
   `config.validate-commit-msg.scope.allowed` array within the top-level `package.json` at the root
   of the repo. The commit subject is the _name the component, without the `mdc-`/`@material/`_.
-  E.g., for `mdc-icon-toggle`, the correct subject is `icon-toggle`.
+  E.g., for `mdc-icon-button`, the correct subject is `icon-button`.
 - Ensure that the package name is added to the `closureWhitelist` array within the top-level
   `package.json`.
 
 #### Closure Compatibility
 
-> NOTE: This section was introduced as part of our [closure compatibility milestone](https://github.com/material-components/material-components-web/milestone/4). Our
-currently existing components are in the process of being made compatible with closure.
+> NOTE: Our currently existing components are in the process of being made compatible with closure.
 
 All core MDC Web components must be fully compatible with the Google Closure Compiler using its
 advanced compilation mechanisms. We've provided a thorough explanation of this, as well as

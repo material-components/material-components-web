@@ -1,0 +1,58 @@
+//
+// Copyright 2018 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+// Sets 45-degree angle corners of a certain size (akin to border-radius but for flat corners).
+@mixin mdc-shape-angled-corner($background-color, $top-left-size, $top-right-size: $top-left-size, $bottom-right-size: $top-left-size, $bottom-left-size: $top-right-size) {
+  $corners: (top, left, $top-left-size),
+    (top, right, $top-right-size),
+    (bottom, right, $bottom-right-size),
+    (bottom, left, $bottom-left-size);
+
+  @each $y, $x, $size in $corners {
+    @if $size > 0 {
+      // Assume that the size passed represents the width/height rather than the diagonal.
+      // This makes it trivial e.g. to accomplish a horizontal arrow cap by specifying exactly half the shape's height.
+      // Unfortunately, Sass doesn't have built-in exponentiation, and node-sass custom functions seem to hang.
+      // (https://github.com/sass/node-sass/issues/857 may be related, but the workaround didn't seem to work.)
+      // Fortunately, if we assume 45 degree cutouts all the time, a^2 + b^2 = c^2 simplifies to a*sqrt(2).
+      $diagonal-length: $size * 1.4142135623730951;
+
+      .mdc-shape-container__corner--#{$y}-#{$x} {
+        #{$y}: -$diagonal-length / 2;
+        #{$x}: -$diagonal-length / 2;
+        width: $diagonal-length;
+        height: $diagonal-length;
+      }
+    }
+  }
+
+  @include mdc-shape-angled-corner-background($background-color);
+}
+
+// Sets the background color used for masking.
+// Exposed separately to allow overriding for some shapes within a page which happen to be over a different background.
+@mixin mdc-shape-angled-corner-background($background-color) {
+  .mdc-shape-container__corner::after {
+    background-color: $background-color;
+  }
+}
+
+@mixin mdc-shape-angled-corner-outline($outline-width, $outline-color, $outline-style: solid) {
+  .mdc-shape-container__corner::before {
+    top: $outline-width;
+    border-bottom: $outline-width $outline-style $outline-color;
+  }
+}

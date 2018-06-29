@@ -48,18 +48,38 @@ class MDCChipAdapter {
   hasClass(className) {}
 
   /**
+   * Adds a class to the leading icon element.
+   * @param {string} className
+   */
+  addClassToLeadingIcon(className) {}
+
+  /**
+   * Removes a class from the leading icon element.
+   * @param {string} className
+   */
+  removeClassFromLeadingIcon(className) {}
+
+  /**
+   * Returns true if target has className, false otherwise.
+   * @param {!EventTarget} target
+   * @param {string} className
+   * @return {boolean}
+   */
+  eventTargetHasClass(target, className) {}
+
+  /**
    * Registers an event listener on the root element for a given event.
    * @param {string} evtType
    * @param {function(!Event): undefined} handler
    */
-  registerInteractionHandler(evtType, handler) {}
+  registerEventHandler(evtType, handler) {}
 
   /**
    * Deregisters an event listener on the root element for a given event.
    * @param {string} evtType
    * @param {function(!Event): undefined} handler
    */
-  deregisterInteractionHandler(evtType, handler) {}
+  deregisterEventHandler(evtType, handler) {}
 
   /**
    * Registers an event listener on the trailing icon element for a given event.
@@ -86,6 +106,25 @@ class MDCChipAdapter {
    * interacted with (typically on click or keydown).
    */
   notifyTrailingIconInteraction() {}
+
+  /**
+   * Emits a custom event "MDCChip:removal" denoting the chip will be removed.
+   */
+  notifyRemoval() {}
+
+  /**
+   * Returns the computed property value of the given style property on the root element.
+   * @param {string} propertyName
+   * @return {string}
+   */
+  getComputedStyleValue(propertyName) {}
+
+  /**
+   * Sets the property value of the given style property on the root element.
+   * @param {string} propertyName
+   * @param {string} value
+   */
+  setStyleProperty(propertyName, value) {}
 }
 
 export default MDCChipAdapter;

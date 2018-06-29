@@ -1,0 +1,95 @@
+//
+// Copyright 2018 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+@import "@material/ripple/common";
+@import "@material/ripple/mixins";
+@import "@material/rtl/mixins";
+@import "@material/typography/mixins";
+@import "./mixins";
+@import "./variables";
+
+.mdc-tab {
+  @include mdc-ripple-surface;
+  @include mdc-ripple-radius-bounded;
+  @include mdc-states(primary);
+  @include mdc-tab-text-label-color($mdc-tab-baseline-color);
+  @include mdc-tab-icon-color($mdc-tab-baseline-color);
+
+  display: flex;
+  position: relative;
+  flex: 1 0 auto;
+  justify-content: center;
+  box-sizing: border-box;
+  height: 48px;
+  padding: 0 24px;
+  border: none;
+  outline: none;
+  background: none;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-appearance: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.mdc-tab__content {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  height: inherit;
+  z-index: 1;
+}
+
+.mdc-tab__text-label {
+  @include mdc-typography-base;
+
+  display: inline-block;
+  padding: 16px 0 20px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.mdc-tab__icon {
+  width: 24px;
+  height: 24px;
+  padding: 12px 0;
+}
+
+.mdc-tab__icon + .mdc-tab__text-label {
+  @include mdc-rtl-reflexive-box(padding, left, 8px);
+}
+
+// The [de]activation animation affects color for text label and icon
+.mdc-tab--animating-activate .mdc-tab__text-label,
+.mdc-tab--animating-activate .mdc-tab__icon,
+.mdc-tab--animating-deactivate .mdc-tab__text-label,
+.mdc-tab--animating-deactivate .mdc-tab__icon {
+  transition: 150ms color linear;
+}
+
+// The activation animation has a delay of 100ms
+.mdc-tab--animating-activate .mdc-tab__text-label,
+.mdc-tab--animating-activate .mdc-tab__icon {
+  transition-delay: 100ms;
+}
+
+.mdc-tab--active {
+  @include mdc-tab-text-label-color(primary);
+  @include mdc-tab-icon-color(primary);
+}

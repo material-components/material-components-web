@@ -45,12 +45,18 @@ class MDCChipFoundation extends MDCFoundation {
       addClass: () => {},
       removeClass: () => {},
       hasClass: () => {},
-      registerInteractionHandler: () => {},
-      deregisterInteractionHandler: () => {},
+      addClassToLeadingIcon: () => {},
+      removeClassFromLeadingIcon: () => {},
+      eventTargetHasClass: () => {},
+      registerEventHandler: () => {},
+      deregisterEventHandler: () => {},
       registerTrailingIconInteractionHandler: () => {},
       deregisterTrailingIconInteractionHandler: () => {},
       notifyInteraction: () => {},
       notifyTrailingIconInteraction: () => {},
+      notifyRemoval: () => {},
+      getComputedStyleValue: () => {},
+      setStyleProperty: () => {},
     });
   }
 
@@ -60,50 +66,129 @@ class MDCChipFoundation extends MDCFoundation {
   constructor(adapter) {
     super(Object.assign(MDCChipFoundation.defaultAdapter, adapter));
 
+    /**
+     * Whether a trailing icon click should immediately trigger exit/removal of the chip.
+     * @private {boolean}
+     * */
+    this.shouldRemoveOnTrailingIconClick_ = true;
     /** @private {function(!Event): undefined} */
-    this.interactionHandler_ = (evt) => this.handleInteraction_(evt);
+    this.interactionHandler_ = (evt) => this.handleInteraction(evt);
     /** @private {function(!Event): undefined} */
-    this.trailingIconInteractionHandler_ = (evt) => this.handleTrailingIconInteraction_(evt);
+    this.transitionEndHandler_ = (evt) => this.handleTransitionEnd(evt);
+    /** @private {function(!Event): undefined} */
+    this.trailingIconInteractionHandler_ = (evt) => this.handleTrailingIconInteraction(evt);
   }
 
   init() {
     ['click', 'keydown'].forEach((evtType) => {
-      this.adapter_.registerInteractionHandler(evtType, this.interactionHandler_);
-      this.adapter_.registerTrailingIconInteractionHandler(evtType, this.trailingIconInteractionHandler_);
+      this.adapter_.registerEventHandler(evtType, this.interactionHandler_);
     });
-    ['touchstart', 'pointerdown', 'mousedown'].forEach((evtType) => {
+    this.adapter_.registerEventHandler('transitionend', this.transitionEndHandler_);
+    ['click', 'keydown', 'touchstart', 'pointerdown', 'mousedown'].forEach((evtType) => {
       this.adapter_.registerTrailingIconInteractionHandler(evtType, this.trailingIconInteractionHandler_);
     });
   }
 
   destroy() {
     ['click', 'keydown'].forEach((evtType) => {
-      this.adapter_.deregisterInteractionHandler(evtType, this.interactionHandler_);
-      this.adapter_.deregisterTrailingIconInteractionHandler(evtType, this.trailingIconInteractionHandler_);
+      this.adapter_.deregisterEventHandler(evtType, this.interactionHandler_);
     });
-    ['touchstart', 'pointerdown', 'mousedown'].forEach((evtType) => {
+    this.adapter_.deregisterEventHandler('transitionend', this.transitionEndHandler_);
+    ['click', 'keydown', 'touchstart', 'pointerdown', 'mousedown'].forEach((evtType) => {
       this.adapter_.deregisterTrailingIconInteractionHandler(evtType, this.trailingIconInteractionHandler_);
     });
   }
 
   /**
-   * Toggles the selected class on the chip element.
+   * @return {boolean}
    */
-  toggleSelected() {
-    if (this.adapter_.hasClass(cssClasses.SELECTED)) {
-      this.adapter_.removeClass(cssClasses.SELECTED);
-    } else {
+  isSelected() {
+    return this.adapter_.hasClass(cssClasses.SELECTED);
+  }
+
+  /**
+   * @param {boolean} selected
+   */
+  setSelected(selected) {
+    if (selected) {
       this.adapter_.addClass(cssClasses.SELECTED);
+    } else {
+      this.adapter_.removeClass(cssClasses.SELECTED);
     }
+  }
+
+  /**
+   * @return {boolean}
+   */
+  getShouldRemoveOnTrailingIconClick() {
+    return this.shouldRemoveOnTrailingIconClick_;
+  }
+
+  /**
+   * @param {boolean} shouldRemove
+   */
+  setShouldRemoveOnTrailingIconClick(shouldRemove) {
+    this.shouldRemoveOnTrailingIconClick_ = shouldRemove;
+  }
+
+  /**
+   * Begins the exit animation which leads to removal of the chip.
+   */
+  beginExit() {
+    this.adapter_.addClass(cssClasses.CHIP_EXIT);
   }
 
   /**
    * Handles an interaction event on the root element.
    * @param {!Event} evt
    */
-  handleInteraction_(evt) {
+  handleInteraction(evt) {
     if (evt.type === 'click' || evt.key === 'Enter' || evt.keyCode === 13) {
       this.adapter_.notifyInteraction();
+    }
+  }
+
+  /**
+   * Handles a transition end event on the root element.
+   * @param {!Event} evt
+   */
+  handleTransitionEnd(evt) {
+    // Handle transition end event on the chip when it is about to be removed.
+    if (this.adapter_.eventTargetHasClass(/** @type {!EventTarget} */ (evt.target), cssClasses.CHIP_EXIT)) {
+      if (evt.propertyName === 'width') {
+        this.adapter_.notifyRemoval();
+      } else if (evt.propertyName === 'opacity') {
+        // See: https://css-tricks.com/using-css-transitions-auto-dimensions/#article-header-id-5
+        const chipWidth = this.adapter_.getComputedStyleValue('width');
+
+        // On the next frame (once we get the computed width), explicitly set the chip's width
+        // to its current pixel width, so we aren't transitioning out of 'auto'.
+        requestAnimationFrame(() => {
+          this.adapter_.setStyleProperty('width', chipWidth);
+
+          // To mitigate jitter, start transitioning padding and margin before width.
+          this.adapter_.setStyleProperty('padding', '0');
+          this.adapter_.setStyleProperty('margin', '0');
+
+          // On the next frame (once width is explicitly set), transition width to 0.
+          requestAnimationFrame(() => {
+            this.adapter_.setStyleProperty('width', '0');
+          });
+        });
+      }
+      return;
+    }
+
+    // Handle a transition end event on the leading icon or checkmark, since the transition end event bubbles.
+    if (evt.propertyName !== 'opacity') {
+      return;
+    }
+    if (this.adapter_.eventTargetHasClass(/** @type {!EventTarget} */ (evt.target), cssClasses.LEADING_ICON) &&
+        this.adapter_.hasClass(cssClasses.SELECTED)) {
+      this.adapter_.addClassToLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
+    } else if (this.adapter_.eventTargetHasClass(/** @type {!EventTarget} */ (evt.target), cssClasses.CHECKMARK) &&
+               !this.adapter_.hasClass(cssClasses.SELECTED)) {
+      this.adapter_.removeClassFromLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
     }
   }
 
@@ -112,12 +197,25 @@ class MDCChipFoundation extends MDCFoundation {
    * prevent the ripple from activating on interaction with the trailing icon.
    * @param {!Event} evt
    */
-  handleTrailingIconInteraction_(evt) {
+  handleTrailingIconInteraction(evt) {
     evt.stopPropagation();
     if (evt.type === 'click' || evt.key === 'Enter' || evt.keyCode === 13) {
       this.adapter_.notifyTrailingIconInteraction();
+      if (this.shouldRemoveOnTrailingIconClick_) {
+        this.beginExit();
+      }
     }
   }
 }
 
-export default MDCChipFoundation;
+/**
+ * @typedef {{
+ *   detail: {
+ *     chip: {foundation: !MDCChipFoundation},
+ *   },
+ *   bubbles: boolean,
+ * }}
+ */
+let MDCChipInteractionEventType;
+
+export {MDCChipFoundation, MDCChipInteractionEventType};

@@ -1,0 +1,54 @@
+// Copyright 2018 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+@import "./variables";
+
+@mixin mdc-image-list-aspect($width-height-ratio) {
+  .mdc-image-list__image-aspect-container {
+    padding-bottom: calc(100% / #{$width-height-ratio});
+  }
+}
+
+@mixin mdc-image-list-corner-radius($radius) {
+  .mdc-image-list__image {
+    border-radius: $radius;
+  }
+
+  .mdc-image-list__supporting {
+    border-radius: 0 0 $radius $radius;
+  }
+}
+
+// Standard Image List
+
+@mixin mdc-image-list-standard-columns($column-count, $gutter-size: $mdc-image-list-standard-gutter-size) {
+  // This uses margin rather than padding to facilitate properly positioning the supporting content element when
+  // --with-text-protection is used.
+  .mdc-image-list__item {
+    // Subtract extra fraction from each item's width to ensure correct wrapping in IE and Edge which round differently
+    width: calc(100% / #{$column-count} - #{$gutter-size + 1 / $column-count});
+    margin: $gutter-size / 2;
+  }
+}
+
+// Masonry Image List
+
+@mixin mdc-image-list-masonry-columns($column-count, $gutter-size: $mdc-image-list-masonry-gutter-size) {
+  column-count: $column-count;
+  column-gap: $gutter-size;
+
+  .mdc-image-list__item {
+    margin-bottom: $gutter-size;
+  }
+}

@@ -11,30 +11,30 @@ path: /catalog/menus/
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/menu.html">
+     href="https://material-components.github.io/material-components-web-catalog/#/component/menu">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/menus.png" width="178" alt="Menus screenshot">
   </a>
 </div>-->
 
 The MDC Menu component is a spec-aligned menu component adhering to the
-[Material Design menu specification](https://material.io/guidelines/components/menus.html).
+[Material Design menu specification](https://material.io/go/design-menus).
 Menus require JavaScript to properly position themselves when opening.
 
 ## Design & API Documentation
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/menus.html">Material Design guidelines: Menus</a>
+    <a href="https://material.io/go/design-menus">Material Design guidelines: Menus</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/menu.html">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/menu">Demo</a>
   </li>
 </ul>
 
 ## Installation
 
 ```
-npm install --save @material/menu
+npm install @material/menu
 ```
 
 ## Usage
@@ -188,7 +188,7 @@ Method Signature | Description
 
 Method Signature | Description
 --- | ---
-`setAnchorCorner(corder: Corner) => void` | Sets the corner that the menu will be anchored to. See [constants.js](https://github.com/material-components/material-components-web/blob/cc299230728ba5a994866ebd31aaaf1a0f4cc87f/packages/mdc-menu/constants.js#L73)
+`setAnchorCorner(corder: Corner) => void` | Sets the corner that the menu will be anchored to. See [constants.js](https://github.com/material-components/material-components-web/blob/v0.35.2/packages/mdc-menu/constants.js#L73)
 `setAnchorMargin(margin: AnchorMargin) => void` | Sets the distance from the anchor point that the menu should be shown.
 `open({focusIndex: ?number}) => void` | Opens the menu. Optionally accepts an object with a `focusIndex` parameter to indicate which list item should receive focus when the menu is opened.
 `close(evt: ?Event)` | Closes the menu. Optionally accepts the event to check if the target is disabled before closing the menu.

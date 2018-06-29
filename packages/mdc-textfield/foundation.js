@@ -16,22 +16,13 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-import {MDCTextFieldAdapter, NativeInputType, FoundationMapType} from './adapter';
 /* eslint-disable no-unused-vars */
-import MDCLineRippleFoundation from '@material/line-ripple/foundation';
 import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
 import MDCTextFieldIconFoundation from './icon/foundation';
-import MDCFloatingLabelFoundation from '@material/floating-label/foundation';
-import MDCTextFieldOutlineFoundation from './outline/foundation';
 /* eslint-enable no-unused-vars */
-import {cssClasses, strings, numbers} from './constants';
+import {MDCTextFieldAdapter, NativeInputType, FoundationMapType} from './adapter';
+import {cssClasses, strings, numbers, VALIDATION_ATTR_WHITELIST} from './constants';
 
-
-// whitelist based off of https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
-// under section: `Validation-related attributes`
-const VALIDATION_ATTR_WHITELIST = [
-  'pattern', 'min', 'max', 'required', 'step', 'minlength', 'maxlength',
-];
 
 /**
  * @extends {MDCFoundation<!MDCTextFieldAdapter>}
@@ -60,7 +51,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
 
   /** @return {boolean} */
   get shouldFloat() {
-    return !this.isBadInput_() && (!!this.getValue() || this.isFocused_);
+    return this.isFocused_ || !!this.getValue() || this.isBadInput_();
   }
 
   /**
@@ -89,6 +80,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
       floatLabel: () => {},
       hasLabel: () => {},
       getLabelWidth: () => {},
+      hasOutline: () => {},
+      notchOutline: () => {},
+      closeOutline: () => {},
     });
   }
 
@@ -103,8 +97,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.helperText_ = foundationMap.helperText;
     /** @type {!MDCTextFieldIconFoundation|undefined} */
     this.icon_ = foundationMap.icon;
-    /** @type {!MDCTextFieldOutlineFoundation|undefined} */
-    this.outline_ = foundationMap.outline;
 
     /** @private {boolean} */
     this.isFocused_ = false;
@@ -125,7 +117,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
     /** @private {function(!Event): undefined} */
     this.textFieldInteractionHandler_ = () => this.handleTextFieldInteraction();
     /** @private {function(!Array): undefined} */
-    this.validationAttributeChangeHandler_ = (mutations) => this.handleValidationAttributeMutation_(mutations);
+    this.validationAttributeChangeHandler_ = (attributesList) => this.handleValidationAttributeChange(attributesList);
+
     /** @private {!MutationObserver} */
     this.validationObserver_;
   }
@@ -133,8 +126,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
   init() {
     this.adapter_.addClass(MDCTextFieldFoundation.cssClasses.UPGRADED);
     // Ensure label does not collide with any pre-filled value.
-    if (this.adapter_.hasLabel() && this.getValue()) {
+    if (this.adapter_.hasLabel() && (this.getValue() || this.isBadInput_())) {
       this.adapter_.floatLabel(this.shouldFloat);
+      this.notchOutline(this.shouldFloat);
     }
 
     if (this.adapter_.isFocused()) {
@@ -150,8 +144,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.registerTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
     });
-    this.validationObserver_ = this.adapter_.registerValidationAttributeChangeHandler(
-      this.validationAttributeChangeHandler_);
+    this.validationObserver_ =
+        this.adapter_.registerValidationAttributeChangeHandler(this.validationAttributeChangeHandler_);
   }
 
   destroy() {
@@ -180,12 +174,11 @@ class MDCTextFieldFoundation extends MDCFoundation {
 
   /**
    * Handles validation attribute changes
-   * @param {Array<MutationRecord>} mutationsList
-   * @private
+   * @param {!Array<string>} attributesList
    */
-  handleValidationAttributeMutation_(mutationsList) {
-    mutationsList.some((mutation) => {
-      if (VALIDATION_ATTR_WHITELIST.indexOf(mutation.attributeName) > -1) {
+  handleValidationAttributeChange(attributesList) {
+    attributesList.some((attributeName) => {
+      if (VALIDATION_ATTR_WHITELIST.indexOf(attributeName) > -1) {
         this.styleValidity_(true);
         return true;
       }
@@ -193,18 +186,23 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * Updates the focus outline for outlined text fields.
+   * Opens/closes the notched outline.
+   * @param {boolean} openNotch
    */
-  updateOutline() {
-    if (!this.outline_ || !this.adapter_.hasLabel()) {
+  notchOutline(openNotch) {
+    if (!this.adapter_.hasOutline() || !this.adapter_.hasLabel()) {
       return;
     }
 
-    const isDense = this.adapter_.hasClass(cssClasses.DENSE);
-    const labelScale = isDense ? numbers.DENSE_LABEL_SCALE : numbers.LABEL_SCALE;
-    const labelWidth = this.adapter_.getLabelWidth() * labelScale;
-    const isRtl = this.adapter_.isRtl();
-    this.outline_.updateSvgPath(labelWidth, isRtl);
+    if (openNotch) {
+      const isDense = this.adapter_.hasClass(cssClasses.DENSE);
+      const labelScale = isDense ? numbers.DENSE_LABEL_SCALE : numbers.LABEL_SCALE;
+      const labelWidth = this.adapter_.getLabelWidth() * labelScale;
+      const isRtl = this.adapter_.isRtl();
+      this.adapter_.notchOutline(labelWidth, isRtl);
+    } else {
+      this.adapter_.closeOutline();
+    }
   }
 
   /**
@@ -214,9 +212,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.isFocused_ = true;
     this.styleFocused_(this.isFocused_);
     this.adapter_.activateLineRipple();
-    if (this.outline_) {
-      this.updateOutline();
-    }
+    this.notchOutline(this.shouldFloat);
     if (this.adapter_.hasLabel()) {
       this.adapter_.shakeLabel(this.shouldShake);
       this.adapter_.floatLabel(this.shouldFloat);
@@ -262,6 +258,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     if (this.adapter_.hasLabel()) {
       this.adapter_.shakeLabel(this.shouldShake);
       this.adapter_.floatLabel(this.shouldFloat);
+      this.notchOutline(this.shouldFloat);
     }
     if (shouldRemoveLabelFloat) {
       this.receivedUserInput_ = false;
@@ -285,6 +282,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     if (this.adapter_.hasLabel()) {
       this.adapter_.shakeLabel(this.shouldShake);
       this.adapter_.floatLabel(this.shouldFloat);
+      this.notchOutline(this.shouldFloat);
     }
   }
 
@@ -332,6 +330,26 @@ class MDCTextFieldFoundation extends MDCFoundation {
   setHelperTextContent(content) {
     if (this.helperText_) {
       this.helperText_.setContent(content);
+    }
+  }
+
+  /**
+   * Sets the aria label of the icon.
+   * @param {string} label
+   */
+  setIconAriaLabel(label) {
+    if (this.icon_) {
+      this.icon_.setAriaLabel(label);
+    }
+  }
+
+  /**
+   * Sets the text content of the icon.
+   * @param {string} content
+   */
+  setIconContent(content) {
+    if (this.icon_) {
+      this.icon_.setContent(content);
     }
   }
 

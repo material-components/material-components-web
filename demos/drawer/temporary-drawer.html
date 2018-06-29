@@ -45,7 +45,7 @@
     <div class="mdc-toolbar mdc-toolbar--fixed">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-          <button class="demo-menu material-icons mdc-toolbar__menu-icon">menu</button>
+          <a href="#" class="demo-menu material-icons mdc-toolbar__menu-icon">menu</a>
           <span class="mdc-toolbar__title catalog-title">Temporary Drawer</span>
         </section>
       </div>
@@ -54,7 +54,7 @@
     <aside class="mdc-drawer mdc-drawer--temporary demo-drawer">
       <nav class="mdc-drawer__drawer">
         <header class="mdc-drawer__header">
-          <div class="mdc-drawer__header-content mdc-theme--text-primary-on-primary mdc-theme--primary-bg">
+          <div class="mdc-drawer__header-content mdc-theme--on-primary mdc-theme--primary-bg">
             Header here
           </div>
         </header>
@@ -91,7 +91,7 @@
       </nav>
     </aside>
     <main class="demo-main mdc-toolbar-fixed-adjust">
-      <h1 class="mdc-typography--display1">Temporary Drawer</h1>
+      <h1 class="mdc-typography--headline4">Temporary Drawer</h1>
       <p class="mdc-typography--body1">Click the menu icon above to open.</p>
       <div id="demo-radio-buttons" class="theme-radio-buttons">
         <div class="mdc-form-field">
@@ -126,11 +126,12 @@
         </div>
       </div>
       <div class="extra-content-wrapper">
-        <button type="button" class="mdc-button mdc-button--stroked mdc-button--dense demo-toolbar-example-heading__rtl-toggle-button">Toggle RTL</button>
+        <button type="button" class="mdc-button mdc-button--outlined mdc-button--dense demo-toolbar-example-heading__rtl-toggle-button">Toggle RTL</button>
       </div>
     </main>
 
     <script src="/assets/material-components-web.js" async></script>
+    <script src="/assets/common.js" async></script>
     <script>
       demoReady(function() {
         var drawerEl = document.querySelector('.mdc-drawer');
