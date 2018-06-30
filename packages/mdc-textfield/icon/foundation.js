@@ -37,7 +37,10 @@ class MDCTextFieldIconFoundation extends MDCFoundation {
    */
   static get defaultAdapter() {
     return /** @type {!MDCTextFieldIconAdapter} */ ({
+      getAttr: () => {},
       setAttr: () => {},
+      removeAttr: () => {},
+      setContent: () => {},
       registerInteractionHandler: () => {},
       deregisterInteractionHandler: () => {},
       notifyIconAction: () => {},
@@ -45,16 +48,21 @@ class MDCTextFieldIconFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {!MDCTextFieldIconAdapter=} adapter
+   * @param {!MDCTextFieldIconAdapter} adapter
    */
-  constructor(adapter = /** @type {!MDCTextFieldIconAdapter} */ ({})) {
+  constructor(adapter) {
     super(Object.assign(MDCTextFieldIconFoundation.defaultAdapter, adapter));
+
+    /** @private {string?} */
+    this.savedTabIndex_ = null;
 
     /** @private {function(!Event): undefined} */
     this.interactionHandler_ = (evt) => this.handleInteraction(evt);
   }
 
   init() {
+    this.savedTabIndex_ = this.adapter_.getAttr('tabindex');
+
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.registerInteractionHandler(evtType, this.interactionHandler_);
     });
@@ -66,16 +74,29 @@ class MDCTextFieldIconFoundation extends MDCFoundation {
     });
   }
 
-  /**
-   * Sets the content of the helper text field.
-   * @param {boolean} disabled
-   */
+  /** @param {boolean} disabled */
   setDisabled(disabled) {
+    if (!this.savedTabIndex_) {
+      return;
+    }
+
     if (disabled) {
       this.adapter_.setAttr('tabindex', '-1');
+      this.adapter_.removeAttr('role');
     } else {
-      this.adapter_.setAttr('tabindex', '0');
+      this.adapter_.setAttr('tabindex', this.savedTabIndex_);
+      this.adapter_.setAttr('role', strings.ICON_ROLE);
     }
+  }
+
+  /** @param {string} label */
+  setAriaLabel(label) {
+    this.adapter_.setAttr('aria-label', label);
+  }
+
+  /** @param {string} content */
+  setContent(content) {
+    this.adapter_.setContent(content);
   }
 
   /**

@@ -17,7 +17,7 @@
 
 import MDCComponent from '@material/base/component';
 /* eslint-disable no-unused-vars */
-import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple';
+import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
 /* eslint-enable no-unused-vars */
 import {getMatchesProperty} from '@material/ripple/util';
 
@@ -26,11 +26,11 @@ import {cssClasses, strings} from './constants';
 import {MDCTextFieldAdapter, FoundationMapType} from './adapter';
 import MDCTextFieldFoundation from './foundation';
 /* eslint-disable no-unused-vars */
-import {MDCTextFieldBottomLine, MDCTextFieldBottomLineFoundation} from './bottom-line';
-import {MDCTextFieldHelperText, MDCTextFieldHelperTextFoundation} from './helper-text';
-import {MDCTextFieldIcon, MDCTextFieldIconFoundation} from './icon';
-import {MDCTextFieldLabel, MDCTextFieldLabelFoundation} from './label';
-import {MDCTextFieldOutline, MDCTextFieldOutlineFoundation} from './outline';
+import {MDCLineRipple, MDCLineRippleFoundation} from '@material/line-ripple/index';
+import {MDCTextFieldHelperText, MDCTextFieldHelperTextFoundation} from './helper-text/index';
+import {MDCTextFieldIcon, MDCTextFieldIconFoundation} from './icon/index';
+import {MDCFloatingLabel, MDCFloatingLabelFoundation} from '@material/floating-label/index';
+import {MDCNotchedOutline, MDCNotchedOutlineFoundation} from '@material/notched-outline/index';
 /* eslint-enable no-unused-vars */
 
 /**
@@ -47,15 +47,15 @@ class MDCTextField extends MDCComponent {
     this.input_;
     /** @type {?MDCRipple} */
     this.ripple;
-    /** @private {?MDCTextFieldBottomLine} */
-    this.bottomLine_;
+    /** @private {?MDCLineRipple} */
+    this.lineRipple_;
     /** @private {?MDCTextFieldHelperText} */
     this.helperText_;
     /** @private {?MDCTextFieldIcon} */
     this.icon_;
-    /** @private {?MDCTextFieldLabel} */
+    /** @private {?MDCFloatingLabel} */
     this.label_;
-    /** @private {?MDCTextFieldOutline} */
+    /** @private {?MDCNotchedOutline} */
     this.outline_;
   }
 
@@ -70,32 +70,32 @@ class MDCTextField extends MDCComponent {
   /**
    * @param {(function(!Element): !MDCRipple)=} rippleFactory A function which
    * creates a new MDCRipple.
-   * @param {(function(!Element): !MDCTextFieldBottomLine)=} bottomLineFactory A function which
-   * creates a new MDCTextFieldBottomLine.
+   * @param {(function(!Element): !MDCLineRipple)=} lineRippleFactory A function which
+   * creates a new MDCLineRipple.
    * @param {(function(!Element): !MDCTextFieldHelperText)=} helperTextFactory A function which
    * creates a new MDCTextFieldHelperText.
    * @param {(function(!Element): !MDCTextFieldIcon)=} iconFactory A function which
    * creates a new MDCTextFieldIcon.
-   * @param {(function(!Element): !MDCTextFieldLabel)=} labelFactory A function which
-   * creates a new MDCTextFieldLabel.
-   * @param {(function(!Element): !MDCTextFieldOutline)=} outlineFactory A function which
-   * creates a new MDCTextFieldOutline.
+   * @param {(function(!Element): !MDCFloatingLabel)=} labelFactory A function which
+   * creates a new MDCFloatingLabel.
+   * @param {(function(!Element): !MDCNotchedOutline)=} outlineFactory A function which
+   * creates a new MDCNotchedOutline.
    */
   initialize(
     rippleFactory = (el, foundation) => new MDCRipple(el, foundation),
-    bottomLineFactory = (el) => new MDCTextFieldBottomLine(el),
+    lineRippleFactory = (el) => new MDCLineRipple(el),
     helperTextFactory = (el) => new MDCTextFieldHelperText(el),
     iconFactory = (el) => new MDCTextFieldIcon(el),
-    labelFactory = (el) => new MDCTextFieldLabel(el),
-    outlineFactory = (el) => new MDCTextFieldOutline(el)) {
+    labelFactory = (el) => new MDCFloatingLabel(el),
+    outlineFactory = (el) => new MDCNotchedOutline(el)) {
     this.input_ = this.root_.querySelector(strings.INPUT_SELECTOR);
     const labelElement = this.root_.querySelector(strings.LABEL_SELECTOR);
     if (labelElement) {
       this.label_ = labelFactory(labelElement);
     }
-    const bottomLineElement = this.root_.querySelector(strings.BOTTOM_LINE_SELECTOR);
-    if (bottomLineElement) {
-      this.bottomLine_ = bottomLineFactory(bottomLineElement);
+    const lineRippleElement = this.root_.querySelector(strings.LINE_RIPPLE_SELECTOR);
+    if (lineRippleElement) {
+      this.lineRipple_ = lineRippleFactory(lineRippleElement);
     }
     const outlineElement = this.root_.querySelector(strings.OUTLINE_SELECTOR);
     if (outlineElement) {
@@ -113,20 +113,16 @@ class MDCTextField extends MDCComponent {
     }
 
     this.ripple = null;
-    if (this.root_.classList.contains(cssClasses.BOX) || this.root_.classList.contains(cssClasses.OUTLINED)) {
-      // For outlined text fields, the ripple is instantiated on the outline element instead of the root element
-      // to clip the ripple at the outline while still allowing the label to be visible beyond the outline.
-      const rippleCapableSurface = outlineElement ? this.outline_ : this;
-      const rippleRoot = outlineElement ? outlineElement : this.root_;
+    if (this.root_.classList.contains(cssClasses.BOX)) {
       const MATCHES = getMatchesProperty(HTMLElement.prototype);
       const adapter =
-        Object.assign(MDCRipple.createAdapter(/** @type {!RippleCapableSurface} */ (rippleCapableSurface)), {
+        Object.assign(MDCRipple.createAdapter(/** @type {!RippleCapableSurface} */ (this)), {
           isSurfaceActive: () => this.input_[MATCHES](':active'),
           registerInteractionHandler: (type, handler) => this.input_.addEventListener(type, handler),
           deregisterInteractionHandler: (type, handler) => this.input_.removeEventListener(type, handler),
         });
       const foundation = new MDCRippleFoundation(adapter);
-      this.ripple = rippleFactory(rippleRoot, foundation);
+      this.ripple = rippleFactory(this.root_, foundation);
     }
   }
 
@@ -134,8 +130,8 @@ class MDCTextField extends MDCComponent {
     if (this.ripple) {
       this.ripple.destroy();
     }
-    if (this.bottomLine_) {
-      this.bottomLine_.destroy();
+    if (this.lineRipple_) {
+      this.lineRipple_.destroy();
     }
     if (this.helperText_) {
       this.helperText_.destroy();
@@ -206,14 +202,103 @@ class MDCTextField extends MDCComponent {
    * @return {boolean} True if the Text Field is required.
    */
   get required() {
-    return this.foundation_.isRequired();
+    return this.input_.required;
   }
 
   /**
    * @param {boolean} required Sets the Text Field to required.
    */
   set required(required) {
-    this.foundation_.setRequired(required);
+    this.input_.required = required;
+  }
+
+  /**
+   * @return {string} The input element's validation pattern.
+   */
+  get pattern() {
+    return this.input_.pattern;
+  }
+
+  /**
+   * @param {string} pattern Sets the input element's validation pattern.
+   */
+  set pattern(pattern) {
+    this.input_.pattern = pattern;
+  }
+
+  /**
+   * @return {number} The input element's minLength.
+   */
+  get minLength() {
+    return this.input_.minLength;
+  }
+
+  /**
+   * @param {number} minLength Sets the input element's minLength.
+   */
+  set minLength(minLength) {
+    this.input_.minLength = minLength;
+  }
+
+  /**
+   * @return {number} The input element's maxLength.
+   */
+  get maxLength() {
+    return this.input_.maxLength;
+  }
+
+  /**
+   * @param {number} maxLength Sets the input element's maxLength.
+   */
+  set maxLength(maxLength) {
+    // Chrome throws exception if maxLength is set < 0
+    if (maxLength < 0) {
+      this.input_.removeAttribute('maxLength');
+    } else {
+      this.input_.maxLength = maxLength;
+    }
+  }
+
+  /**
+   * @return {string} The input element's min.
+   */
+  get min() {
+    return this.input_.min;
+  }
+
+  /**
+   * @param {string} min Sets the input element's min.
+   */
+  set min(min) {
+    this.input_.min = min;
+  }
+
+  /**
+   * @return {string} The input element's max.
+   */
+  get max() {
+    return this.input_.max;
+  }
+
+  /**
+   * @param {string} max Sets the input element's max.
+   */
+  set max(max) {
+    this.input_.max = max;
+  }
+
+  /**
+   * @return {string} The input element's step.
+   */
+  get step() {
+    return this.input_.step;
+  }
+
+  /**
+   * @param {string} step Sets the input element's step.
+   */
+  set step(step) {
+    this.input_.step = step;
   }
 
   /**
@@ -225,16 +310,27 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
-   * Recomputes the outline SVG path for the outline element, and recomputes
-   * all dimensions and positions for the ripple element.
+   * Sets the aria label of the icon.
+   * @param {string} label
+   */
+  set iconAriaLabel(label) {
+    this.foundation_.setIconAriaLabel(label);
+  }
+
+  /**
+   * Sets the text content of the icon.
+   * @param {string} content
+   */
+  set iconContent(content) {
+    this.foundation_.setIconContent(content);
+  }
+
+  /**
+   * Recomputes the outline SVG path for the outline element.
    */
   layout() {
-    if (this.outline_) {
-      this.foundation_.updateOutline();
-    }
-    if (this.ripple) {
-      this.ripple.layout();
-    }
+    const openNotch = this.foundation_.shouldFloat;
+    this.foundation_.notchOutline(openNotch);
   }
 
   /**
@@ -248,23 +344,83 @@ class MDCTextField extends MDCComponent {
         hasClass: (className) => this.root_.classList.contains(className),
         registerTextFieldInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
         deregisterTextFieldInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
-        registerBottomLineEventHandler: (evtType, handler) => {
-          if (this.bottomLine_) {
-            this.bottomLine_.listen(evtType, handler);
-          }
+        registerValidationAttributeChangeHandler: (handler) => {
+          const getAttributesList = (mutationsList) => mutationsList.map((mutation) => mutation.attributeName);
+          const observer = new MutationObserver((mutationsList) => handler(getAttributesList(mutationsList)));
+          const targetNode = this.root_.querySelector(strings.INPUT_SELECTOR);
+          const config = {attributes: true};
+          observer.observe(targetNode, config);
+          return observer;
         },
-        deregisterBottomLineEventHandler: (evtType, handler) => {
-          if (this.bottomLine_) {
-            this.bottomLine_.unlisten(evtType, handler);
-          }
-        },
+        deregisterValidationAttributeChangeHandler: (observer) => observer.disconnect(),
         isFocused: () => {
           return document.activeElement === this.root_.querySelector(strings.INPUT_SELECTOR);
         },
         isRtl: () => window.getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
       },
-      this.getInputAdapterMethods_())),
+      this.getInputAdapterMethods_(),
+      this.getLabelAdapterMethods_(),
+      this.getLineRippleAdapterMethods_(),
+      this.getOutlineAdapterMethods_())),
       this.getFoundationMap_());
+  }
+
+  /**
+   * @return {!{
+   *   shakeLabel: function(boolean): undefined,
+   *   floatLabel: function(boolean): undefined,
+   *   hasLabel: function(): boolean,
+   *   getLabelWidth: function(): number,
+   * }}
+   */
+  getLabelAdapterMethods_() {
+    return {
+      shakeLabel: (shouldShake) => this.label_.shake(shouldShake),
+      floatLabel: (shouldFloat) => this.label_.float(shouldFloat),
+      hasLabel: () => !!this.label_,
+      getLabelWidth: () => this.label_.getWidth(),
+    };
+  }
+
+  /**
+   * @return {!{
+   *   activateLineRipple: function(): undefined,
+   *   deactivateLineRipple: function(): undefined,
+   *   setLineRippleTransformOrigin: function(number): undefined,
+   * }}
+   */
+  getLineRippleAdapterMethods_() {
+    return {
+      activateLineRipple: () => {
+        if (this.lineRipple_) {
+          this.lineRipple_.activate();
+        }
+      },
+      deactivateLineRipple: () => {
+        if (this.lineRipple_) {
+          this.lineRipple_.deactivate();
+        }
+      },
+      setLineRippleTransformOrigin: (normalizedX) => {
+        if (this.lineRipple_) {
+          this.lineRipple_.setRippleCenter(normalizedX);
+        }
+      },
+    };
+  }
+
+  /**
+   * @return {!{
+   *   notchOutline: function(number, boolean): undefined,
+   *   hasOutline: function(): boolean,
+   * }}
+   */
+  getOutlineAdapterMethods_() {
+    return {
+      notchOutline: (labelWidth, isRtl) => this.outline_.notch(labelWidth, isRtl),
+      closeOutline: () => this.outline_.closeNotch(),
+      hasOutline: () => !!this.outline_,
+    };
   }
 
   /**
@@ -288,18 +444,12 @@ class MDCTextField extends MDCComponent {
    */
   getFoundationMap_() {
     return {
-      bottomLine: this.bottomLine_ ? this.bottomLine_.foundation : undefined,
       helperText: this.helperText_ ? this.helperText_.foundation : undefined,
       icon: this.icon_ ? this.icon_.foundation : undefined,
-      label: this.label_ ? this.label_.foundation : undefined,
-      outline: this.outline_ ? this.outline_.foundation : undefined,
     };
   }
 }
 
 export {MDCTextField, MDCTextFieldFoundation,
-  MDCTextFieldBottomLine, MDCTextFieldBottomLineFoundation,
   MDCTextFieldHelperText, MDCTextFieldHelperTextFoundation,
-  MDCTextFieldIcon, MDCTextFieldIconFoundation,
-  MDCTextFieldLabel, MDCTextFieldLabelFoundation,
-  MDCTextFieldOutline, MDCTextFieldOutlineFoundation};
+  MDCTextFieldIcon, MDCTextFieldIconFoundation};

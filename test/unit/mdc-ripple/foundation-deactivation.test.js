@@ -333,7 +333,7 @@ testFoundation('only re-activates when there are no additional pointer events to
 
     documentHandlers.mouseup();
     mockRaf.flush();
-    clock.tick(DEACTIVATION_TIMEOUT_MS);
+    clock.tick(numbers.TAP_DELAY_MS);
 
     // Finally, verify that since mouseup happened, we can re-activate the ripple.
     handlers.mousedown({pageX: 0, pageY: 0});

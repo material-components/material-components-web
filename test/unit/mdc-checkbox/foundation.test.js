@@ -110,9 +110,9 @@ test('exports numbers', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCCheckboxFoundation, [
-    'addClass', 'removeClass', 'registerAnimationEndHandler', 'deregisterAnimationEndHandler',
-    'registerChangeHandler', 'deregisterChangeHandler', 'getNativeControl', 'forceLayout',
-    'isAttachedToDOM',
+    'addClass', 'removeClass', 'setNativeControlAttr', 'removeNativeControlAttr', 'registerAnimationEndHandler',
+    'deregisterAnimationEndHandler', 'registerChangeHandler', 'deregisterChangeHandler', 'getNativeControl',
+    'forceLayout', 'isAttachedToDOM',
   ]);
 });
 
@@ -121,6 +121,14 @@ test('#init adds the upgraded class to the root element', () => {
 
   foundation.init();
   td.verify(mockAdapter.addClass(cssClasses.UPGRADED));
+});
+
+test('#init adds aria-checked="mixed" if checkbox is initially indeterminate', () => {
+  const {foundation, mockAdapter, nativeControl} = setupTest();
+  nativeControl.indeterminate = true;
+
+  foundation.init();
+  td.verify(mockAdapter.setNativeControlAttr('aria-checked', strings.ARIA_CHECKED_INDETERMINATE_VALUE));
 });
 
 test('#init calls adapter.registerChangeHandler() with a change handler function', () => {
@@ -214,6 +222,20 @@ test('#setIndeterminate updates the value of nativeControl.indeterminate', () =>
   foundation.setIndeterminate(false);
   assert.isNotOk(foundation.isIndeterminate());
   assert.isNotOk(nativeControl.indeterminate);
+});
+
+test('#setIndeterminate adds aria-checked="mixed" when indeterminate is true', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.init();
+  foundation.setIndeterminate(true);
+  td.verify(mockAdapter.setNativeControlAttr('aria-checked', strings.ARIA_CHECKED_INDETERMINATE_VALUE));
+});
+
+test('#setIndeterminate removes aria-checked when indeterminate is false', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.init();
+  foundation.setIndeterminate(false);
+  td.verify(mockAdapter.removeNativeControlAttr('aria-checked'));
 });
 
 test('#setIndeterminate works when no native control is returned', () => {
@@ -422,6 +444,16 @@ test('change handler triggers layout for changes within the same frame to correc
 
   change({checked: true, indeterminate: true});
   td.verify(mockAdapter.forceLayout());
+});
+
+test('change handler updates aria-checked attribute correctly.', () => {
+  const {mockAdapter, change} = setupChangeHandlerTest();
+
+  change({checked: true, indeterminate: true});
+  td.verify(mockAdapter.setNativeControlAttr('aria-checked', 'mixed'));
+
+  change({checked: true, indeterminate: false});
+  td.verify(mockAdapter.removeNativeControlAttr('aria-checked'));
 });
 
 test('change handler does not add animation classes when isAttachedToDOM() is falsy', () => {

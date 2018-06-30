@@ -14,6 +14,8 @@
 // limitations under the License.
 //
 
+@import "@material/animation/variables";
+
 @function mdc-text-field-transition($property) {
   @return #{$property} 180ms $mdc-animation-standard-curve-timing-function;
 }

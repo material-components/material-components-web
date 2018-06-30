@@ -47,6 +47,22 @@ test('#setContent sets the content of the helper text element', () => {
   td.verify(mockAdapter.setContent('foo'));
 });
 
+test('#setPersistent toggles the persistent class', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.setPersistent(true);
+  td.verify(mockAdapter.addClass(cssClasses.HELPER_TEXT_PERSISTENT));
+  foundation.setPersistent(false);
+  td.verify(mockAdapter.removeClass(cssClasses.HELPER_TEXT_PERSISTENT));
+});
+
+test('#setValidation toggles the validation class', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.setValidation(true);
+  td.verify(mockAdapter.addClass(cssClasses.HELPER_TEXT_VALIDATION_MSG));
+  foundation.setValidation(false);
+  td.verify(mockAdapter.removeClass(cssClasses.HELPER_TEXT_VALIDATION_MSG));
+});
+
 test('#showToScreenReader removes aria-hidden from helperText', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.showToScreenReader();

@@ -21,11 +21,11 @@
   transform: translateX(-107%);
   transform: translateX(calc(-100% - 20px));
   will-change: transform;
-}
 
-@mixin mdc-slideable-drawer-rtl {
-  transform: translateX(107%);
-  transform: translateX(calc(100% + 20px));
+  @include mdc-rtl {
+    transform: translateX(107%);
+    transform: translateX(calc(100% + 20px));
+  }
 }
 
 @mixin mdc-slideable-drawer-open {

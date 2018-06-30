@@ -17,7 +17,6 @@
 @import "@material/animation/functions";
 @import "@material/elevation/mixins";
 @import "@material/rtl/mixins";
-@import "@material/theme/mixins";
 @import "../mixins";
 @import "../variables";
 @import "../slidable/mixins";
@@ -40,7 +39,7 @@
   contain: strict;
   z-index: 5;
 
-  /* Shaded background */
+  // Shaded background
   &::before {
     display: block;
     position: absolute;
@@ -58,18 +57,7 @@
   .mdc-drawer__drawer {
     @include mdc-elevation(16);
     @include mdc-rtl-reflexive-position(left, 0);
-
-    @include mdc-theme-dark(".mdc-drawer--temporary") {
-      @include mdc-theme-prop(color, text-primary-on-dark);
-
-      background: #303030;
-    }
-
     @include mdc-slideable-drawer;
-
-    @include mdc-rtl(".mdc-drawer--temporary") {
-      @include mdc-slideable-drawer-rtl;
-    }
 
     display: flex;
     position: absolute;
@@ -80,7 +68,7 @@
     overflow: hidden;
     touch-action: none;
 
-    /* TODO(sgomes): replace with global breakpoints when we have them */
+    // TODO(sgomes): replace with global breakpoints when we have them
     @media (min-width: 600px) {
       width: calc(100% - 64px);
       max-width: 320px;
@@ -103,20 +91,6 @@
     flex-shrink: 0;
   }
 
-  &.mdc-drawer--animating {
-    &::before {
-      transition: mdc-animation-enter(opacity, .3s);
-    }
-
-    &.mdc-drawer--open .mdc-drawer__drawer {
-      transition: $mdc-slidable-drawer-transition-open;
-    }
-
-    .mdc-drawer__drawer {
-      transition: $mdc-slidable-drawer-transition-close;
-    }
-  }
-
   &.mdc-drawer--open {
     pointer-events: auto;
 
@@ -134,6 +108,20 @@
       .mdc-drawer__drawer {
         @include mdc-slideable-drawer-open;
       }
+    }
+  }
+
+  &.mdc-drawer--animating {
+    &::before {
+      transition: mdc-animation-enter(opacity, .3s);
+    }
+
+    .mdc-drawer__drawer {
+      transition: $mdc-slidable-drawer-transition-close;
+    }
+
+    &.mdc-drawer--open .mdc-drawer__drawer {
+      transition: $mdc-slidable-drawer-transition-open;
     }
   }
 }

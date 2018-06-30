@@ -20,4 +20,4 @@ The final commit message for a feature to the `mdc-foo` package should look like
 feat(foo): Short description of feature
 ```
 
-This commit message is pulled into our CHANGELOG when we [release](../open_source/README.md) and is based on [Angular's Git commit guidelines](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#commit).
+This commit message is pulled into our CHANGELOG when we [release](../open_source/README.md) and is based on [Angular's Git commit guidelines](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#commits).

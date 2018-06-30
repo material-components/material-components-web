@@ -2,7 +2,8 @@
 
 MDC Web team members write and review code in this repository.
 They work with other Material Design Engineers (Android and iOS)
-and Designers to [write design docs](http://go/mdc-web-design-docs).
+and Designers to write design docs.
+
 The APIs across Web, Android, and iOS are expected to match, and the final code
 is expected to match [spec](https://material.io/guidelines).
 

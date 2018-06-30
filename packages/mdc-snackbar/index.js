@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import {MDCComponent} from '@material/base';
+import {MDCComponent} from '@material/base/index';
 import MDCSnackbarFoundation from './foundation';
-import {getCorrectEventName} from '@material/animation';
+import {getCorrectEventName} from '@material/animation/index';
 
 export {MDCSnackbarFoundation};
 

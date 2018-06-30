@@ -1,0 +1,25 @@
+{
+  "name": "@material/notched-outline",
+  "description": "The Material Components for the web notched-outline component",
+  "version": "0.35.0",
+  "license": "Apache-2.0",
+  "keywords": [
+    "material components",
+    "material design",
+    "notchedoutline",
+    "notched outline"
+  ],
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/material-components/material-components-web.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@material/animation": "^0.34.0",
+    "@material/base": "^0.35.0",
+    "@material/theme": "^0.35.0"
+  }
+}

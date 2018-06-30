@@ -22,6 +22,7 @@ import td from 'testdouble';
 import {MDCRipple} from '../../../packages/mdc-ripple';
 import {cssClasses} from '../../../packages/mdc-ripple/constants';
 import * as util from '../../../packages/mdc-ripple/util';
+import {createMockRaf} from '../helpers/raf';
 
 suite('MDCRipple');
 
@@ -137,6 +138,15 @@ test('adapter#removeClass removes a class from the root', () => {
   assert.isNotOk(root.classList.contains('foo'));
 });
 
+test('adapter#containsEventTarget returns true if the passed element is a descendant of the root element', () => {
+  const {root, component} = setupTest();
+  const child = bel`<div></div>`;
+  const notChild = bel`<div></div>`;
+  root.appendChild(child);
+  assert.isTrue(component.getDefaultFoundation().adapter_.containsEventTarget(child));
+  assert.isFalse(component.getDefaultFoundation().adapter_.containsEventTarget(notChild));
+});
+
 test('adapter#registerInteractionHandler proxies to addEventListener on the root element', () => {
   const {root, component} = setupTest();
   const handler = td.func('interactionHandler');
@@ -180,7 +190,7 @@ test('adapter#registerResizeHandler uses the handler as a window resize listener
   window.removeEventListener('resize', handler);
 });
 
-test('adapter#registerResizeHandler unlistens the handler for window resize', () => {
+test('adapter#deregisterResizeHandler unlistens the handler for window resize', () => {
   const {component} = setupTest();
   const handler = td.func('resizeHandler');
   window.addEventListener('resize', handler);
@@ -212,4 +222,23 @@ test('adapter#getWindowPageOffset returns page{X,Y}Offset as {x,y} respectively'
     x: window.pageXOffset,
     y: window.pageYOffset,
   });
+});
+
+test(`handleFocus() adds class ${cssClasses.BG_FOCUSED}`, () => {
+  const raf = createMockRaf();
+  const {root, component} = setupTest();
+  component.foundation_.handleFocus();
+  raf.flush();
+  assert.isTrue(root.classList.contains(cssClasses.BG_FOCUSED));
+  raf.restore();
+});
+
+test(`handleBlur() removes class ${cssClasses.BG_FOCUSED}`, () => {
+  const raf = createMockRaf();
+  const {root, component} = setupTest();
+  root.classList.add(cssClasses.BG_FOCUSED);
+  component.foundation_.handleBlur();
+  raf.flush();
+  assert.isFalse(root.classList.contains(cssClasses.BG_FOCUSED));
+  raf.restore();
 });
