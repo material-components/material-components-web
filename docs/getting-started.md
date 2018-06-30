@@ -38,7 +38,7 @@ This section walks you through how to [install MDC Web Node modules](https://www
 
 ### Step 1: Webpack with Sass
 
-We’re going to use webpack-dev-server to demonstrate how webpack bundles our Sass and JavaScript. First create a package.json that looks like this:
+We’re going to use `webpack-dev-server` to demonstrate how webpack bundles our Sass and JavaScript. First, run `npm init` to create a `package.json` file. When complete, add the `start` property to the `scripts` section.
 
 ```json
 {
