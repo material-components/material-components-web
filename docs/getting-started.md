@@ -181,7 +181,12 @@ Then add `postcss-loader`, using `autoprefixer` as a plugin:
      plugins: () => [autoprefixer({ grid: false })]
   }
 },
-{ loader: 'sass-loader' },
+{
+  loader: 'sass-loader',
+  options: {
+    includePaths: ['./node_modules']
+  }
+},
 ```
 
 > Note: We disable autoprefixer for CSS Grid in order for MDC Web Layout Grid to work properly. Please also note that the order of loaders in webpack matters.
@@ -226,22 +231,69 @@ And create a simple ES2015 file called `app.js`:
 console.log('hello world');
 ```
 
-Then configure webpack to convert `app.js` into `bundle.js` by adding the following code to the `webpack.config.js` file:
+Then configure webpack to convert `app.js` into `bundle.js` by modifying the following properties in the `webpack.config.js` file:
+
+```js
+// Change entry to an array for both app.js and app.scss
+  entry: ['./app.scss', './app.js']
+  
+// Change output.filename to be bundle.js
+  output: {
+    filename: 'bundle.js',
+  }
+  
+// Add the babel-loader object to the rules array after the scss loader object
+...
+   {
+     test: /\.js$/,
+     loader: 'babel-loader',
+     query: {
+       presets: ['es2015'],
+     },
+   }]
+  
+```
+
+The final `webpack.config.js` file should look like: 
 
 ```js
 module.exports.push({
-  entry: './app.js',
+  entry: ['./app.scss', './app.js'],
   output: {
-    filename: 'bundle.js'
+    filename: 'bundle.js',
   },
-  rules: {
-    loaders: [{
-      test: /\.js$/,
-      loader: 'babel-loader',
-      query: {
-        presets: ['es2015']
-      }
-    }]
+  module: {
+    rules: [
+      {
+        test: /\.scss$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: 'bundle.css',
+            },
+          },
+          {loader: 'extract-loader'},
+          {loader: 'css-loader'},
+          {loader: 'postcss-loader',
+            options: {
+              plugins: () => [autoprefixer({grid: false})],
+            },
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              includePaths: ['./node_modules'],
+            },
+          }],
+      },
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        query: {
+          presets: ['es2015'],
+        },
+      }],
   },
 });
 ```
