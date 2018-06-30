@@ -128,7 +128,7 @@ And open http://localhost:8080 in a browser. You should see a blue “Hello Worl
 Now that you have webpack configured to compile Sass into CSS, let's include the Sass files for the Material Design button. First install the Node dependency:
 
 ```
-npm install @material/button
+npm install --save @material/button
 ```
 
 We need to tell our `app.scss` to import the Sass files for `@material/button`. We can also use Sass mixins to customize the button. Replace your “hello world” version of `app.scss` with this code:
