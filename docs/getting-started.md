@@ -259,7 +259,7 @@ The final `webpack.config.js` file should look like:
 ```js
 const autoprefixer = require('autoprefixer');
 
-module.exports.push({
+module.exports = {
   entry: ['./app.scss', './app.js'],
   output: {
     filename: 'bundle.js',
@@ -297,7 +297,7 @@ module.exports.push({
         },
       }],
   },
-});
+};
 ```
 
 Now run `npm start` again and open http://localhost:8080. You should see a “hello world” in the console.
