@@ -257,6 +257,8 @@ Then configure webpack to convert `app.js` into `bundle.js` by modifying the fol
 The final `webpack.config.js` file should look like: 
 
 ```js
+const autoprefixer = require('autoprefixer');
+
 module.exports.push({
   entry: ['./app.scss', './app.js'],
   output: {
