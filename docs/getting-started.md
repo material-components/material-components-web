@@ -178,7 +178,7 @@ Then add `postcss-loader`, using `autoprefixer` as a plugin:
 { loader: 'css-loader' },
 { loader: 'postcss-loader',
   options: {
-     plugins: () => [autoprefixer({ grid: false })]
+     plugins: () => [autoprefixer()]
   }
 },
 {
@@ -279,7 +279,7 @@ module.exports = {
           {loader: 'css-loader'},
           {loader: 'postcss-loader',
             options: {
-              plugins: () => [autoprefixer({grid: false})],
+              plugins: () => [autoprefixer()],
             },
           },
           {
