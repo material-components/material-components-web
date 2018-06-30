@@ -54,11 +54,13 @@
     text-align: center;
     pointer-events: none;
     z-index: -1;
-
+    /*
+    TODO: Either automatically change to white on darker backgrounds or use theme so the user changes the color via themes
     @include mdc-theme-dark(".mdc-tooltip") {
       background-color: $mdc-tooltip-background-dark;
       color: #000;
     }
+    */
   }
 
   &--open {

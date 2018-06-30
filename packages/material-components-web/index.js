@@ -39,7 +39,7 @@ import * as snackbar from '@material/snackbar/index';
 import * as tabs from '@material/tabs/index';
 import * as textField from '@material/textfield/index';
 import * as toolbar from '@material/toolbar/index';
-import * as tooltip from '@material/tooltip';
+import * as tooltip from '@material/tooltip/index';
 import * as topAppBar from '@material/top-app-bar/index';
 
 // Register all components

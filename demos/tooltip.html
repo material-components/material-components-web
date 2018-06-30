@@ -15,168 +15,113 @@
   limitations under the License
 -->
 <html>
+  <head>
+    <meta charset="utf-8">
+    <title>Tooltip - Material Components Catalog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
+    <link rel="stylesheet" href="/assets/tooltip.css">
+    <script src="/ready.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <style>
+      section.example {
+        height: auto;
+        padding-bottom: 40px;
+        background-color: white;
+      }
 
-<head>
-  <meta charset="utf-8">
-  <title>Tooltip - Material Components Catalog</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
-  <script src="/assets/tooltip.css.js"></script>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <style>
-    section.example {
-      height: auto;
-      padding-bottom: 40px;
-      background-color: white;
-    }
+      h2 {
+        margin: 0;
+        margin-bottom: 20px;
+      }
 
-    h2 {
-      margin: 0;
-      margin-bottom: 20px;
-    }
+      .mdc-fab {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+      }
 
-    .mdc-fab {
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-    }
+      .mdc-layout-grid {
+        width: 100%;
+      }
 
-    .mdc-layout-grid {
-      width: 100%;
-    }
+      #dialog-btn {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 100px;
+        margin-top: 66px;
+      }
+    </style>
+  </head>
+  <body class="mdc-typography">
+    <header class="mdc-toolbar mdc-toolbar--fixed">
+      <div class="mdc-toolbar__row">
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+          <a href="/" class="catalog-back mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
+          <span class="mdc-toolbar__title catalog-title">Tooltip</span>
+        </section>
+      </div>
+    </header>
 
-    #dialog-btn {
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-      margin-bottom: 100px;
-      margin-top: 66px;
-    }
-
-    section.example.mdc-theme--dark {
-      background-color: #333;
-    }
-
-    section.example.mdc-theme--dark h2 {
-      color: white;
-    }
-  </style>
-</head>
-
-<body class="mdc-typography">
-  <header class="mdc-toolbar mdc-toolbar--fixed">
-    <div class="mdc-toolbar__row">
-      <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-        <span class="catalog-back">
-          <a href="/" class="mdc-toolbar__menu-icon">
-            <i class="material-icons">&#xE5C4;</i>
-          </a>
-        </span>
-        <span class="mdc-toolbar__title catalog-title">Tooltip</span>
+    <main>
+      <div class="mdc-toolbar-fixed-adjust"></div>
+      <section class="hero">
+        <button class="mdc-fab" id="example_hero" aria-label="Favorite">
+          <span class="mdc-fab__icon material-icons">
+            favorite_border
+          </span>
+        </button>
+        <span class="mdc-tooltip" for="example_hero">Favorit Tooltip</span>
       </section>
-    </div>
-  </header>
-  <main>
-    <div class="mdc-toolbar-fixed-adjust"></div>
 
-    <section class="hero">
-      <button class="mdc-fab material-icons" id="example_hero" aria-label="Favorite">
-        <span class="mdc-fab__icon">
-          favorite_border
-        </span>
-      </button>
-      <span class="mdc-tooltip" for="example_hero">Favorit Tooltip</span>
-    </section>
-
-    <section class="example">
-      <div class="mdc-layout-grid">
-        <div class="mdc-layout-grid__inner">
-          <div class="mdc-layout-grid__cell--span-12">
-            <h2>Bright Theme</h2>
-          </div>
-          <div class="mdc-layout-grid__cell--span-3">
-            <button class="mdc-fab material-icons" aria-label="Favorite">
-              <span class="mdc-fab__icon">
-                arrow_downward
-              </span>
-              <span class="mdc-tooltip">Bottom Tooltip</span>
-            </button>
-          </div>
-          <div class="mdc-layout-grid__cell--span-3">
-            <button class="mdc-fab material-icons" aria-label="Favorite">
-              <span class="mdc-fab__icon">
-                arrow_upward
-              </span>
-              <span class="mdc-tooltip mdc-tooltip--top">Top Tooltip</span>
-            </button>
-          </div>
-          <div class="mdc-layout-grid__cell--span-3">
-            <button class="mdc-fab material-icons" aria-label="Favorite">
-              <span class="mdc-fab__icon">
-                arrow_back
-              </span>
-              <span class="mdc-tooltip mdc-tooltip--left">Left Tooltip</span>
-            </button>
-          </div>
-          <div class="mdc-layout-grid__cell--span-3">
-            <button class="mdc-fab material-icons" aria-label="Favorite">
-              <span class="mdc-fab__icon">
-                arrow_forward
-              </span>
-              <span class="mdc-tooltip mdc-tooltip--right">Right Tooltip</span>
-            </button>
+      <section class="example">
+        <div class="mdc-layout-grid">
+          <div class="mdc-layout-grid__inner">
+            <div class="mdc-layout-grid__cell--span-12">
+              <h2>Different Directions</h2>
+            </div>
+            <div class="mdc-layout-grid__cell--span-3">
+              <button class="mdc-fab material-icons" aria-label="Favorite">
+                <span class="mdc-fab__icon">
+                  arrow_downward
+                </span>
+                <span class="mdc-tooltip">Bottom Tooltip</span>
+              </button>
+            </div>
+            <div class="mdc-layout-grid__cell--span-3">
+              <button class="mdc-fab material-icons" aria-label="Favorite">
+                <span class="mdc-fab__icon">
+                  arrow_upward
+                </span>
+                <span class="mdc-tooltip mdc-tooltip--top">Top Tooltip</span>
+              </button>
+            </div>
+            <div class="mdc-layout-grid__cell--span-3">
+              <button class="mdc-fab material-icons" aria-label="Favorite">
+                <span class="mdc-fab__icon">
+                  arrow_back
+                </span>
+                <span class="mdc-tooltip mdc-tooltip--left">Left Tooltip</span>
+              </button>
+            </div>
+            <div class="mdc-layout-grid__cell--span-3">
+              <button class="mdc-fab material-icons" aria-label="Favorite">
+                <span class="mdc-fab__icon">
+                  arrow_forward
+                </span>
+                <span class="mdc-tooltip mdc-tooltip--right">Right Tooltip</span>
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
-
-    <section class="example mdc-theme--dark">
-      <div class="mdc-layout-grid">
-        <div class="mdc-layout-grid__inner">
-          <div class="mdc-layout-grid__cell--span-12">
-            <h2>Bright Theme</h2>
-          </div>
-          <div class="mdc-layout-grid__cell--span-3">
-            <button class="mdc-fab material-icons" aria-label="Favorite">
-              <span class="mdc-fab__icon">
-                arrow_downward
-              </span>
-              <span class="mdc-tooltip">Bottom Tooltip</span>
-            </button>
-          </div>
-          <div class="mdc-layout-grid__cell--span-3">
-            <button class="mdc-fab material-icons" aria-label="Favorite">
-              <span class="mdc-fab__icon">
-                arrow_upward
-              </span>
-              <span class="mdc-tooltip mdc-tooltip--top">Top Tooltip</span>
-            </button>
-          </div>
-          <div class="mdc-layout-grid__cell--span-3">
-            <button class="mdc-fab material-icons" aria-label="Favorite">
-              <span class="mdc-fab__icon">
-                arrow_back
-              </span>
-              <span class="mdc-tooltip mdc-tooltip--left">Left Tooltip</span>
-            </button>
-          </div>
-          <div class="mdc-layout-grid__cell--span-3">
-            <button class="mdc-fab material-icons" aria-label="Favorite">
-              <span class="mdc-fab__icon">
-                arrow_forward
-              </span>
-              <span class="mdc-tooltip mdc-tooltip--right">Right Tooltip</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
+      </section>
 
     <button class="mdc-button mdc-button--raised" id="dialog-btn">
-        <span class="mdc-tooltip">Show Tooltips inside Dialog</span>
-        Open Dialog
+      <span class="mdc-tooltip">Show Tooltips inside Dialog</span>
+      Open Dialog
     </button>
 
     <aside id="tooltip-dialog" class="mdc-dialog">
@@ -228,25 +173,22 @@
       </div>
       <div class="mdc-dialog__backdrop"></div>
     </aside>
+    </main>
 
-  </main>
-  <script src="/assets/material-components-web.js"></script>
-  <script>
-    (function (global) {
-      'use strict';
-      var MDCTooltip = global.mdc.tooltip.MDCTooltip;
+    <script src="/assets/material-components-web.js" async></script>
+    <script>
+      demoReady(function() {
+        var tooltips = document.querySelectorAll('.mdc-tooltip');
 
-      var tooltips = document.querySelectorAll('.mdc-tooltip');
-      for (var i = 0, tooltip; tooltip = tooltips[i]; i++) {
-        MDCTooltip.attachTo(tooltip);
-      }
+        for (var i = 0, tooltip; tooltip = tooltips[i]; i++) {
+          mdc.tooltip.MDCTooltip.attachTo(tooltip);
+        }
 
-      var dialog = global.mdc.dialog.MDCDialog.attachTo(document.getElementById("tooltip-dialog"));
-      document.getElementById("dialog-btn").addEventListener("click", function () {
-        dialog.show();
+        var dialog = mdc.dialog.MDCDialog.attachTo(document.getElementById("tooltip-dialog"));
+        document.getElementById("dialog-btn").addEventListener("click", function () {
+          dialog.show();
+        });
       });
-    })(this);
-  </script>
-</body>
-
+    </script>
+  </body>
 </html>

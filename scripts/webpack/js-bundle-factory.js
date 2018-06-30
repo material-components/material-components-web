@@ -149,6 +149,7 @@ class JsBundleFactory {
         tabs: getAbsolutePath('/packages/mdc-tabs/index.js'),
         textfield: getAbsolutePath('/packages/mdc-textfield/index.js'),
         toolbar: getAbsolutePath('/packages/mdc-toolbar/index.js'),
+        tooltip: getAbsolutePath('/packages/mdc-tooltip/index.js'),
         topAppBar: getAbsolutePath('/packages/mdc-top-app-bar/index.js'),
       },
       output: {

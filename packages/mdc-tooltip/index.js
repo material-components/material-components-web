@@ -17,7 +17,7 @@
 import MDCComponent from '@material/base/component';
 import MDCTooltipFoundation from './foundation';
 // import MDCRippleAdapter from './adapter';
-import {getCorrectEventName} from '@material/animation';
+import {getCorrectEventName} from '@material/animation/index';
 
 /**
  * @extends MDCComponent<!MDCTooltipFoundation>
