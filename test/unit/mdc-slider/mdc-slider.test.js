@@ -28,13 +28,13 @@ suite('MDCSlider');
 
 function getFixture() {
   return bel`
-    <div class="mdc-slider" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+    <div class="mdc-slider">
       <div class="mdc-slider__track">
         <div class="mdc-slider__track-fill"></div>
       </div>
-      <div class="mdc-slider__thumb">
-        <svg class="mdc-slider__thumb-handle" width="24" height="24">
-          <circle cx="12" cy="12" r="6"></circle>
+      <div class="mdc-slider__thumb" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <svg class="mdc-slider__thumb-handle" width="34" height="34">
+          <circle cx="17" cy="17" r="6"></circle>
         </svg>
       </div>
     </div>`;
@@ -99,7 +99,9 @@ test('#layout lays out the component', () => {
 
 test('#initialSyncWithDOM syncs the min property with aria-valuemin', () => {
   const root = getFixture();
-  root.setAttribute('aria-valuemin', '10');
+
+  const thumb = root.querySelector('.mdc-slider__thumb');
+  thumb.setAttribute('aria-valuemin', '10');
 
   const component = new MDCSlider(root);
   assert.equal(component.min, 10);
@@ -107,15 +109,19 @@ test('#initialSyncWithDOM syncs the min property with aria-valuemin', () => {
 
 test('#initialSyncWithDOM adds an aria-valuemin attribute if not present', () => {
   const root = getFixture();
-  root.removeAttribute('aria-valuemin');
+
+  const thumb = root.querySelector('.mdc-slider__thumb');
+  thumb.removeAttribute('aria-valuemin');
 
   const component = new MDCSlider(root);
-  assert.equal(root.getAttribute('aria-valuemin'), String(component.min));
+  assert.equal(thumb.getAttribute('aria-valuemin'), String(component.min));
 });
 
 test('#initialSyncWithDOM syncs the max property with aria-valuemax', () => {
   const root = getFixture();
-  root.setAttribute('aria-valuemax', '80');
+
+  const thumb = root.querySelector('.mdc-slider__thumb');
+  thumb.setAttribute('aria-valuemax', '80');
 
   const component = new MDCSlider(root);
   assert.equal(component.max, 80);
@@ -123,15 +129,19 @@ test('#initialSyncWithDOM syncs the max property with aria-valuemax', () => {
 
 test('#initialSyncWithDOM adds an aria-valuemax attribute if not present', () => {
   const root = getFixture();
-  root.removeAttribute('aria-valuemax');
+
+  const thumb = root.querySelector('.mdc-slider__thumb');
+  thumb.removeAttribute('aria-valuemax');
 
   const component = new MDCSlider(root);
-  assert.equal(root.getAttribute('aria-valuemax'), String(component.max));
+  assert.equal(thumb.getAttribute('aria-valuemax'), String(component.max));
 });
 
 test('#initialSyncWithDOM syncs the value property with aria-valuenow for continuous slider', () => {
   const root = getFixture();
-  root.setAttribute('aria-valuenow', '30');
+
+  const thumb = root.querySelector('.mdc-slider__thumb');
+  thumb.setAttribute('aria-valuenow', '30');
 
   const component = new MDCSlider(root);
   assert.equal(component.value, 30);
@@ -139,10 +149,12 @@ test('#initialSyncWithDOM syncs the value property with aria-valuenow for contin
 
 test('#initialSyncWithDOM adds an aria-valuenow attribute if not present', () => {
   const root = getFixture();
-  root.removeAttribute('aria-valuenow');
+
+  const thumb = root.querySelector('.mdc-slider__thumb');
+  thumb.removeAttribute('aria-valuenow');
 
   const component = new MDCSlider(root);
-  assert.equal(root.getAttribute('aria-valuenow'), String(component.value));
+  assert.equal(thumb.getAttribute('aria-valuenow'), String(component.value));
 });
 
 test('adapter#hasClass checks if a class exists on root element', () => {
@@ -167,26 +179,32 @@ test('adapter#removeClass removes a class from the root element', () => {
   assert.notInclude(root.className, 'foo');
 });
 
-test('adapter#getAttribute retrieves an attribute value from the root element', () => {
+test('adapter#getAttribute retrieves an attribute value from the thumb element', () => {
   const {root, component} = setupTest();
-  root.setAttribute('data-foo', 'bar');
+
+  const thumb = root.querySelector('.mdc-slider__thumb');
+  thumb.setAttribute('data-foo', 'bar');
 
   assert.equal(component.getDefaultFoundation().adapter_.getAttribute('data-foo'), 'bar');
 });
 
-test('adapter#setAttribute sets an attribute on the root element', () => {
+test('adapter#setAttribute sets an attribute on the thumb element', () => {
   const {root, component} = setupTest();
+  const thumb = root.querySelector('.mdc-slider__thumb');
+
   component.getDefaultFoundation().adapter_.setAttribute('data-foo', 'bar');
 
-  assert.equal(root.getAttribute('data-foo'), 'bar');
+  assert.equal(thumb.getAttribute('data-foo'), 'bar');
 });
 
-test('adapter#removeAttribute removes an attribute from the root element', () => {
+test('adapter#removeAttribute removes an attribute from the thumb element', () => {
   const {root, component} = setupTest();
-  root.setAttribute('data-foo', 'bar');
+  const thumb = root.querySelector('.mdc-slider__thumb');
+
+  thumb.setAttribute('data-foo', 'bar');
   component.getDefaultFoundation().adapter_.removeAttribute('data-foo');
 
-  assert.isFalse(root.hasAttribute('data-foo'));
+  assert.isFalse(thumb.hasAttribute('data-foo'));
 });
 
 test('adapter#computeBoundingRect computes the client rect on the root element', () => {
@@ -330,4 +348,36 @@ test('adapter#setTrackFillStyleProperty sets a style property on the track-fill 
   component.getDefaultFoundation().adapter_.setTrackFillStyleProperty('background-color', 'black');
 
   assert.equal(trackFill.style.backgroundColor, div.style.backgroundColor);
+});
+
+test('adapter#focusThumb sets the focus of the document to the thumb', () => {
+  const {root, component} = setupTest();
+  const thumb = root.querySelector('.mdc-slider__thumb');
+
+  setTimeout(function() {
+    component.getDefaultFoundation().adapter_.focusThumb();
+
+    assert.equal(thumb, document.activeElement);
+  }, 100);
+});
+
+test('adapter#activateThumb activates the thumb ripple', () => {
+  const {root, component} = setupTest();
+  const thumb = root.querySelector('.mdc-slider__thumb');
+
+  component.getDefaultFoundation().adapter_.activateRipple();
+
+  assert.isTrue(thumb.classList.contains('mdc-ripple-upgraded--foreground-activation'));
+});
+
+test('adapter#deactivateThumb deactivates the thumb ripple', () => {
+  const {root, component} = setupTest();
+  const thumb = root.querySelector('.mdc-slider__thumb');
+
+  component.getDefaultFoundation().adapter_.activateRipple();
+  setTimeout(function() {
+    component.getDefaultFoundation().adapter_.deactivateRipple();
+
+    assert.isFalse(thumb.classList.contains('mdc-ripple-upgraded--foreground-activation'));
+  }, 100);
 });

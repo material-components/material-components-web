@@ -35,7 +35,8 @@ test('default adapter returns a complete adapter implementation', () => {
     'registerThumbEventHandler', 'deregisterThumbEventHandler',
     'registerBodyEventHandler', 'deregisterBodyEventHandler', 'registerWindowResizeHandler',
     'deregisterWindowResizeHandler', 'notifyInput', 'notifyChange', 'setThumbStyleProperty',
-    'setTrackFillStyleProperty',
+    'setTrackFillStyleProperty', 'focusThumb', 'activateRipple',
+    'deactivateRipple',
   ]);
 });
 

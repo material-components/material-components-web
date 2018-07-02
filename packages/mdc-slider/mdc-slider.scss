@@ -53,10 +53,10 @@
   @include mdc-ripple-radius-unbounded;
   @include mdc-states(#5725e5);
 
+  position: absolute;
   width: 34px;
   height: 34px;
   margin: 7px 0;
-  position: absolute;
   transform: translateX(-50%);
   will-change: transform;
 
@@ -68,10 +68,15 @@
 .mdc-slider__thumb-handle {
   // Temporary color for slider. Will update with mixins in future PRs
   fill: #5725e5;
+
+  .mdc-slider__circle {
+    transition-duration: 75ms;
+    transition-property: r;
+  }
 }
 
 .mdc-slider--active {
-  circle {
+  .mdc-slider__circle {
     r: 10;
   }
 }
