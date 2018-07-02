@@ -68,15 +68,12 @@
 .mdc-slider__thumb-handle {
   // Temporary color for slider. Will update with mixins in future PRs
   fill: #5725e5;
-
-  .mdc-slider__circle {
-    transition-duration: 75ms;
-    transition-property: r;
-  }
+  transition-duration: 75ms;
+  transition-property: transform;
 }
 
 .mdc-slider--active {
-  .mdc-slider__circle {
-    r: 10;
+  .mdc-slider__thumb-handle {
+    transform: scale(1.66667);
   }
 }
