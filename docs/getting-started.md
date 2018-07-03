@@ -189,8 +189,6 @@ Then add `postcss-loader`, using `autoprefixer` as a plugin:
 },
 ```
 
-> Note: We disable autoprefixer for CSS Grid in order for MDC Web Layout Grid to work properly. Please also note that the order of loaders in webpack matters.
-
 `@material/button` has [documentation](../packages/mdc-button/README.md) about the required HTML for a button. Update your `index.html` to include the MDC Button markup, and add the `foo-button` class to the element:
 
 ```html
@@ -236,12 +234,12 @@ Then configure webpack to convert `app.js` into `bundle.js` by modifying the fol
 ```js
 // Change entry to an array for both app.js and app.scss
   entry: ['./app.scss', './app.js']
-  
+
 // Change output.filename to be bundle.js
   output: {
     filename: 'bundle.js',
   }
-  
+
 // Add the babel-loader object to the rules array after the scss loader object
 ...
    {
@@ -251,10 +249,10 @@ Then configure webpack to convert `app.js` into `bundle.js` by modifying the fol
        presets: ['es2015'],
      },
    }]
-  
+
 ```
 
-The final `webpack.config.js` file should look like: 
+The final `webpack.config.js` file should look like:
 
 ```js
 const autoprefixer = require('autoprefixer');
