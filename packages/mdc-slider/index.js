@@ -69,6 +69,16 @@ class MDCSlider extends MDCComponent {
     this.foundation_.setMax(max);
   }
 
+  /** @return {number} */
+  get step() {
+    return this.foundation_.getStep();
+  }
+
+  /** @param {number} step */
+  set step(step) {
+    this.foundation_.setStep(step);
+  }
+
   /**
    * @return {!MDCRipple}
    * @private
@@ -102,6 +112,7 @@ class MDCSlider extends MDCComponent {
         setAttribute: (name, value) => this.thumb_.setAttribute(name, value),
         removeAttribute: (name) => this.thumb_.removeAttribute(name),
         computeBoundingRect: () => this.root_.getBoundingClientRect(),
+        eventTargetHasClass: (target, className) => target.classList.contains(className),
         registerEventHandler: (type, handler) => {
           this.root_.addEventListener(type, handler);
         },
@@ -155,6 +166,7 @@ class MDCSlider extends MDCComponent {
     const origValueNow = parseFloat(this.thumb_.getAttribute('aria-valuenow'));
     this.min = parseFloat(this.thumb_.getAttribute('aria-valuemin')) || this.min;
     this.max = parseFloat(this.thumb_.getAttribute('aria-valuemax')) || this.max;
+    this.step = parseFloat(this.thumb_.getAttribute('data-step')) || this.step;
     this.value = origValueNow || this.value;
   }
 

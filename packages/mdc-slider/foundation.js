@@ -20,6 +20,18 @@ import MDCSliderAdapter from './adapter';
 import MDCFoundation from '@material/base/foundation';
 
 /** @enum {string} */
+const KEY_IDS = {
+  ARROW_LEFT: 'ArrowLeft',
+  ARROW_RIGHT: 'ArrowRight',
+  ARROW_UP: 'ArrowUp',
+  ARROW_DOWN: 'ArrowDown',
+  HOME: 'Home',
+  END: 'End',
+  PAGE_UP: 'PageUp',
+  PAGE_DOWN: 'PageDown',
+};
+
+/** @enum {string} */
 const MOVE_EVENT_MAP = {
   'mousedown': 'mousemove',
   'touchstart': 'touchmove',
@@ -43,6 +55,7 @@ class MDCSliderFoundation extends MDCFoundation {
       setAttribute: () => {},
       removeAttribute: () => {},
       computeBoundingRect: () => {},
+      eventTargetHasClass: () => {},
       registerEventHandler: () => {},
       deregisterEventHandler: () => {},
       registerThumbEventHandler: () => {},
@@ -71,12 +84,16 @@ class MDCSliderFoundation extends MDCFoundation {
     this.rect_ = null;
     /** @private {boolean} */
     this.active_ = false;
+    /** @private {boolean} */
+    this.inTransit_ = false;
     /** @private {number} */
     this.min_ = 0;
     /** @private {number} */
     this.max_ = 100;
     /** @private {number} */
     this.value_ = 0;
+    /** @private {number} */
+    this.step_ = 0;
     /** @private {boolean} */
     this.handlingThumbTargetEvt_ = false;
     /** @private {function(): undefined} */
@@ -87,6 +104,8 @@ class MDCSliderFoundation extends MDCFoundation {
     this.interactionMoveHandler_ = (evt) => this.handleInteractionMove(evt);
     /** @private {function(): undefined} */
     this.interactionEndHandler_ = () => this.handleInteractionEnd();
+    /** @private {function(!Event): undefined} */
+    this.keydownHandler_ = (evt) => this.handleKeydown(evt);
     /** @private {function(): undefined} */
     this.windowResizeHandler_ = () => this.layout();
   }
@@ -96,6 +115,8 @@ class MDCSliderFoundation extends MDCFoundation {
     DOWN_EVENTS.forEach((evtName) => {
       this.adapter_.registerThumbEventHandler(evtName, this.thumbPointerHandler_);
     });
+    this.adapter_.registerEventHandler('keydown', this.keydownHandler_);
+    this.adapter_.registerEventHandler('keyup', this.interactionEndHandler_);
     this.adapter_.registerWindowResizeHandler(this.windowResizeHandler_);
     this.layout();
   }
@@ -107,6 +128,8 @@ class MDCSliderFoundation extends MDCFoundation {
     DOWN_EVENTS.forEach((evtName) => {
       this.adapter_.deregisterThumbEventHandler(evtName, this.thumbPointerHandler_);
     });
+    this.adapter_.deregisterEventHandler('keydown', this.keydownHandler_);
+    this.adapter_.deregisterEventHandler('keyup', this.interactionEndHandler_);
     this.adapter_.deregisterWindowResizeHandler(this.windowResizeHandler_);
   }
 
@@ -155,6 +178,21 @@ class MDCSliderFoundation extends MDCFoundation {
     this.adapter_.setAttribute('aria-valuemin', String(this.min_));
   }
 
+  /** @return {number} */
+  getStep() {
+    return this.step_;
+  }
+
+  /** @param {number} step */
+  setStep(step) {
+    if (step < 0) {
+      throw new Error('Step cannot be set to a negative number');
+    }
+    this.step_ = step;
+    this.setValue_(this.value_);
+    this.adapter_.setAttribute('data-step', String(this.step_));
+  }
+
   /**
    * Called when the user starts interacting with the thumb
    */
@@ -169,6 +207,9 @@ class MDCSliderFoundation extends MDCFoundation {
   handleInteractionStart(evt) {
     this.setActive_(true);
     this.adapter_.activateRipple();
+
+    this.setInTransit_(!this.handlingThumbTargetEvt_);
+    this.handlingThumbTargetEvt_ = false;
 
     const moveHandler = (evt) => {
       this.interactionMoveHandler_(evt);
@@ -203,6 +244,59 @@ class MDCSliderFoundation extends MDCFoundation {
     this.adapter_.notifyChange();
     this.adapter_.deactivateRipple();
     this.adapter_.focusThumb();
+  }
+
+  /**
+   * Handles keydown events
+   * @param {!Event} evt
+   */
+  handleKeydown(evt) {
+    const value = this.getKeyIdValue_(evt);
+    if (isNaN(value)) {
+      return;
+    }
+
+    this.setActive_(true);
+    this.setInTransit_(!this.handlingThumbTargetEvt_);
+    this.handlingThumbTargetEvt_ = false;
+
+    // Prevent page from scrolling due to key presses that would normally scroll the page
+    evt.preventDefault();
+    this.setValue_(value);
+    this.adapter_.notifyChange();
+  }
+
+  /**
+   * Returns the computed name of the event
+   * @param {!Event} kbdEvt
+   * @return {number}
+   * @private
+   */
+  getKeyIdValue_(kbdEvt) {
+    const delta = this.step_ || (this.max_ - this.min_) / 100;
+
+    if (kbdEvt.key === KEY_IDS.ARROW_LEFT || kbdEvt.keyCode === 37
+      || kbdEvt.key === KEY_IDS.ARROW_DOWN || kbdEvt.keyCode === 40) {
+      return this.value_ - delta;
+    }
+    if (kbdEvt.key === KEY_IDS.ARROW_RIGHT || kbdEvt.keyCode === 39
+      || kbdEvt.key === KEY_IDS.ARROW_UP || kbdEvt.keyCode === 38) {
+      return this.value_ + delta;
+    }
+    if (kbdEvt.key === KEY_IDS.HOME || kbdEvt.keyCode === 36) {
+      return this.min_;
+    }
+    if (kbdEvt.key === KEY_IDS.END || kbdEvt.keyCode === 35) {
+      return this.max_;
+    }
+    if (kbdEvt.key === KEY_IDS.PAGE_UP || kbdEvt.keyCode === 33) {
+      return this.value_ + delta * 5;
+    }
+    if (kbdEvt.key === KEY_IDS.PAGE_DOWN || kbdEvt.keyCode === 34) {
+      return this.value_ - delta * 5;
+    }
+
+    return NaN;
   }
 
   /**
@@ -263,6 +357,16 @@ class MDCSliderFoundation extends MDCFoundation {
     const pctComplete = (this.value_ - this.min_) / (this.max_ - this.min_);
     const translatePx = pctComplete * this.rect_.width;
 
+    if (this.inTransit_) {
+      const onTransitionEnd = (evt) => {
+        if (this.adapter_.eventTargetHasClass(evt.target, 'mdc-slider__track-fill')) {
+          this.setInTransit_(false);
+          this.adapter_.deregisterEventHandler('transitionend', onTransitionEnd);
+        }
+      };
+      this.adapter_.registerEventHandler('transitionend', onTransitionEnd);
+    }
+
     requestAnimationFrame(() => {
       this.adapter_.setThumbStyleProperty('transform', `translateX(${translatePx}px) translateX(-50%)`);
       this.adapter_.setTrackFillStyleProperty('transform', `scaleX(${translatePx})`);
@@ -276,6 +380,15 @@ class MDCSliderFoundation extends MDCFoundation {
   setActive_(active) {
     this.active_ = active;
     this.toggleClass_('mdc-slider--active', this.active_);
+  }
+
+  /**
+   * Toggles the inTransit state of the slider
+   * @param {boolean} inTransit
+   */
+  setInTransit_(inTransit) {
+    this.inTransit_ = inTransit;
+    this.toggleClass_('mdc-slider--in-transit', this.inTransit_);
   }
 
   /**

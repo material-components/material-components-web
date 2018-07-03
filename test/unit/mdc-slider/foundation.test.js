@@ -31,7 +31,7 @@ const TRANSFORM_PROP = getCorrectPropertyName(window, 'transform');
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSliderFoundation, [
     'hasClass', 'addClass', 'removeClass', 'getAttribute', 'setAttribute', 'removeAttribute',
-    'computeBoundingRect', 'registerEventHandler', 'deregisterEventHandler',
+    'computeBoundingRect', 'eventTargetHasClass', 'registerEventHandler', 'deregisterEventHandler',
     'registerThumbEventHandler', 'deregisterThumbEventHandler',
     'registerBodyEventHandler', 'deregisterBodyEventHandler', 'registerWindowResizeHandler',
     'deregisterWindowResizeHandler', 'notifyInput', 'notifyChange', 'setThumbStyleProperty',
@@ -68,6 +68,8 @@ test('#init registers all necessary event handlers for the component', () => {
   td.verify(mockAdapter.registerEventHandler('mousedown', isA(Function)));
   td.verify(mockAdapter.registerEventHandler('pointerdown', isA(Function)));
   td.verify(mockAdapter.registerEventHandler('touchstart', isA(Function)));
+  td.verify(mockAdapter.registerEventHandler('keydown', isA(Function)));
+  td.verify(mockAdapter.registerEventHandler('keyup', isA(Function)));
   td.verify(mockAdapter.registerThumbEventHandler('mousedown', isA(Function)));
   td.verify(mockAdapter.registerThumbEventHandler('pointerdown', isA(Function)));
   td.verify(mockAdapter.registerThumbEventHandler('touchstart', isA(Function)));
@@ -101,6 +103,8 @@ test('#destroy deregisters all component event handlers registered during init()
   td.verify(mockAdapter.deregisterEventHandler('mousedown', isA(Function)));
   td.verify(mockAdapter.deregisterEventHandler('pointerdown', isA(Function)));
   td.verify(mockAdapter.deregisterEventHandler('touchstart', isA(Function)));
+  td.verify(mockAdapter.deregisterEventHandler('keydown', isA(Function)));
+  td.verify(mockAdapter.deregisterEventHandler('keyup', isA(Function)));
   td.verify(mockAdapter.deregisterThumbEventHandler('mousedown', isA(Function)));
   td.verify(mockAdapter.deregisterThumbEventHandler('pointerdown', isA(Function)));
   td.verify(mockAdapter.deregisterThumbEventHandler('touchstart', isA(Function)));
@@ -423,6 +427,33 @@ test('#setMin updates "aria-valuemin" to the new minimum', () => {
   foundation.setMin(10);
 
   td.verify(mockAdapter.setAttribute('aria-valuemin', '10'));
+
+  raf.restore();
+});
+
+test('#getStep/#setStep retrieves / sets the step value, respectively', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const raf = createMockRaf();
+
+  td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
+  foundation.init();
+  raf.flush();
+
+  foundation.setStep(2);
+  assert.equal(foundation.getStep(), 2);
+
+  raf.restore();
+});
+
+test('#setStep throws if the step value given is less than 0', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const raf = createMockRaf();
+
+  td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
+  foundation.init();
+  raf.flush();
+
+  assert.throws(() => foundation.setStep(-1));
 
   raf.restore();
 });
