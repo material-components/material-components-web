@@ -104,3 +104,5 @@ export class MDCList extends MDCComponent {
     });
   }
 }
+
+export {MDCListFoundation};
