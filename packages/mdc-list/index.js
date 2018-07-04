@@ -22,7 +22,7 @@ import {strings} from './constants';
 /**
  * @extends MDCComponent<!MDCListFoundation>
  */
-export class MDCList extends MDCComponent {
+class MDCList extends MDCComponent {
   /** @param {...?} args */
   constructor(...args) {
     super(...args);
@@ -105,4 +105,4 @@ export class MDCList extends MDCComponent {
   }
 }
 
-export {MDCListFoundation};
+export {MDCList, MDCListFoundation};
