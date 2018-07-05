@@ -40,11 +40,23 @@ class MDCTooltipAdapter {
   /** @param {string} className */
   removeClass(className) { }
 
-  /** @return {!ClientRect} */
-  computeBoundingRect() { }
+  /** @return {number} */
+  getRootWidth() { }
 
-  /** @return {!Object} */
-  computeControllerBoundingRect() { }
+  /** @return {number} */
+  getRootHeight() { }
+
+  /** @return {number} */
+  getControllerWidth() { }
+
+  /** @return {number} */
+  getControllerHeight() { }
+
+  /** @return {number} */
+  getControllerOffsetTop() { }
+
+  /** @return {number} */
+  getControllerOffsetLeft() { }
 
   /** @return {Array<string>} */
   getClassList() { }
@@ -53,7 +65,7 @@ class MDCTooltipAdapter {
    * @param {string} propertyName
    * @param {string} value
    */
-  setStyle(propertyName, value) {}
+  setStyle(propertyName, value) { }
 
   /**
    * @param {string} evtType
@@ -66,28 +78,6 @@ class MDCTooltipAdapter {
    * @param {!Function} handler
    */
   deregisterListener(evtType, handler) { }
-
-  /**
-   * @param {!Function} handler
-   */
-  registerTransitionEndHandler(handler) { }
-
-  /**
-   * @param {!Function} handler
-   */
-  deregisterTransitionEndHandler(handler) { }
-
-  /**
-   * @param {string} evtType
-   * @param {!Function} handler
-   */
-  registerWindowListener(evtType, handler) { }
-
-  /**
-   * @param {string} evtType
-   * @param {!Function} handler
-   */
-  deregisterWindowListener(evtType, handler) { }
 }
 
 export default MDCTooltipAdapter;

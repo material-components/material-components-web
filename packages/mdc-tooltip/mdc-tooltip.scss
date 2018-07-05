@@ -14,23 +14,41 @@
 // limitations under the License.
 //
 
-@import "@material/animation/functions";
 @import "@material/typography/mixins";
+@import "@material/animation/variables";
+@import "@material/animation/functions";
 @import "@material/theme/mixins";
 @import "./variables";
 
-@mixin mdc-tooltip-show-transition() {
-  -webkit-transition: opacity $mdc-tooltip-transition-length-show deacceleartion;
-  -moz-transition: opacity $mdc-tooltip-transition-length-show cubic-bezier(0.000, 0.200, 0.500, 1.000);
-  -o-transition: opacity $mdc-tooltip-transition-length-show cubic-bezier(0.000, 0.200, 0.500, 1.000);
-  transition: opacity $mdc-tooltip-transition-length-show cubic-bezier(0.000, 0.200, 0.500, 1.000);
+$mdc-z-index-shown: 100;
+$mdc-z-index-hidden: -1;
+$mdc-opacity-hidden: 0;
+$mdc-opacity-shown: .9;
+
+@keyframes show-tooltip {
+  from {
+    transform: scale(0);
+    opacity: $mdc-opacity-hidden;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: $mdc-opacity-shown;
+  }
 }
 
-@mixin mdc-tooltip-hide-transition() {
-  -webkit-transition: opacity $mdc-tooltip-transition-length-hide cubic-bezier(0.000, 0.200, 0.500, 1.000);
-  -moz-transition: opacity $mdc-tooltip-transition-length-hide cubic-bezier(0.000, 0.200, 0.500, 1.000);
-  -o-transition: opacity $mdc-tooltip-transition-length-hide cubic-bezier(0.000, 0.200, 0.500, 1.000);
-  transition: opacity $mdc-tooltip-transition-length-hide cubic-bezier(0.000, 0.200, 0.500, 1.000);
+@keyframes hide-tooltip {
+  from {
+    transform: scale(1);
+    opacity: $mdc-opacity-shown;
+    z-index: $mdc-z-index-shown;
+  }
+
+  to {
+    transform: scale(0);
+    opacity: $mdc-opacity-hidden;
+    z-index: $mdc-z-index-hidden;
+  }
 }
 
 .mdc-tooltip {
@@ -40,34 +58,44 @@
   &--top,
   &--right {
     @include mdc-typography-overflow-ellipsis;
-    @include mdc-tooltip-show-transition;
-    @include mdc-typography(body1);
 
     position: absolute;
-    padding: 12px;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    border-radius: 3px;
+    height: 24px;
+    padding: 0;
+    padding-right: 8px;
+    padding-left: 8px;
+    transform: scale(0);
+    border-radius: 4px;
     background-color: $mdc-tooltip-background;
-    opacity: 0;
+    opacity: $mdc-opacity-hidden;
     color: #fff;
+    font-size: 10px;
+    line-height: 24px;
     text-align: center;
     pointer-events: none;
-    z-index: -1;
+    z-index: $mdc-z-index-hidden;
 
-    /*
-    TODO: Either automatically change to white on darker backgrounds or use theme so the user changes the color via themes
-    @include mdc-theme-dark(".mdc-tooltip") {
-      background-color: $mdc-tooltip-background-dark;
-      color: #000;
+    @media screen and (max-width: $mdc-tooltip-mobil) {
+      height: 32px;
+      padding-right: 16px;
+      padding-left: 16px;
+      font-size: 14px;
+      line-height: 32px;
     }
-    */
   }
 
-  &--open {
-    @include mdc-tooltip-hide-transition;
+  &--show {
+    animation: mdc-animation-enter(show-tooltip, $mdc-tooltip-transition-length-show);
+    animation-timing-function: $mdc-animation-deceleration-curve-timing-function;
+    transform: scale(1);
+    opacity: $mdc-opacity-shown;
+    z-index: $mdc-z-index-shown;
+  }
 
-    opacity: .9;
-    z-index: 100;
+  &--hide {
+    animation: mdc-animation-enter(hide-tooltip, $mdc-tooltip-transition-length-hide);
+    animation-timing-function: $mdc-animation-deceleration-curve-timing-function;
+    opacity: $mdc-opacity-hidden;
+    z-index: $mdc-z-index-hidden;
   }
 }

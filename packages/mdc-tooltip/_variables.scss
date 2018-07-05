@@ -17,6 +17,6 @@
 @import "@material/theme/color-palette";
 
 $mdc-tooltip-background: $material-color-grey-700 !default;
-$mdc-tooltip-background-dark: $material-color-grey-200 !default;
 $mdc-tooltip-transition-length-show: 150ms !default;
 $mdc-tooltip-transition-length-hide: 75ms !default;
+$mdc-tooltip-mobil: 750px !default;

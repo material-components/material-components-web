@@ -44,6 +44,36 @@ class MDCTooltip extends MDCComponent {
     return this.foundation_.displayed_;
   }
 
+  /** @type {number} */
+  get hideDelay() {
+    return this.foundation_.hideDelay;
+  }
+
+  /** @param {number} delay */
+  set hideDelay(delay) {
+    this.foundation_.hideDelay = delay;
+  }
+
+  /** @type {number} */
+  get showDelay() {
+    return this.foundation_.showDelay;
+  }
+
+  /** @param {number} delay */
+  set showDelay(delay) {
+    this.foundation_.showDelay = delay;
+  }
+
+  /** @type {number} */
+  get gap() {
+    return this.foundation_.gap;
+  }
+
+  /** @param {number} gap */
+  set gap(gap) {
+    this.foundation_.gap = gap;
+  }
+
   show() {
     this.foundation_.show_();
   }
@@ -52,13 +82,7 @@ class MDCTooltip extends MDCComponent {
     this.foundation_.hide_();
   }
 
-  reset() {
-    this.foundation_.hide_();
-    this.foundation_.resetTooltip_();
-  }
-
   initialize() {
-    // Need this to make tests work...
     if (!this.root_.classList.contains('mdc-tooltip')) {
       this.root_ = this.root_.querySelector('.mdc-tooltip');
     }
@@ -86,22 +110,15 @@ class MDCTooltip extends MDCComponent {
       addClass: (className) => instance.root_.classList.add(className),
       removeClass: (className) => instance.root_.classList.remove(className),
       getClassList: () => instance.root_.classList,
-      computeBoundingRect: () => instance.root_.getBoundingClientRect(),
-      computeControllerBoundingRect: () => {
-        const pos = instance.controller_.getBoundingClientRect();
-        pos.offsetTop = instance.controller_.offsetTop;
-        pos.offsetLeft = instance.controller_.offsetLeft;
-        return pos;
-      },
+      getRootWidth: () => instance.root_.offsetWidth,
+      getRootHeight: () => instance.root_.offsetHeight,
+      getControllerWidth: () => instance.controller_.offsetWidth,
+      getControllerHeight: () => instance.controller_.offsetHeight,
+      getControllerOffsetTop: () => instance.controller_.offsetTop,
+      getControllerOffsetLeft: () => instance.controller_.offsetLeft,
       setStyle: (propertyName, value) => instance.root_.style.setProperty(propertyName, value),
       registerListener: (type, handler) => instance.controller_.addEventListener(type, handler),
       deregisterListener: (type, handler) => instance.controller_.removeEventListener(type, handler),
-      registerTransitionEndHandler:
-        (handler) => instance.root_.addEventListener(getCorrectEventName(window, 'transitionend'), handler),
-      deregisterTransitionEndHandler:
-        (handler) => instance.root_.removeEventListener(getCorrectEventName(window, 'transitionend'), handler),
-      registerWindowListener: (type, handler) => window.addEventListener(type, handler),
-      deregisterWindowListener: (type, handler) => window.removeEventListener(type, handler),
     };
   }
 

@@ -94,8 +94,8 @@ These are the default scss values, that can be overriden:
 
 ```scss
 $mdc-tooltip-background: $material-color-grey-700 !default;
-$mdc-tooltip-background-dark: $material-color-grey-200 !default;
-$mdc-tooltip-transition-length: 150ms !default;
+$mdc-tooltip-transition-length-show: 150ms !default;
+$mdc-tooltip-transition-length-hide: 75ms !default;
 ```
 
 ## `MDCTooltip` Properties and Methods
@@ -103,12 +103,14 @@ $mdc-tooltip-transition-length: 150ms !default;
 | Property Name | Value Type | Description |
 | --- | --- | --- |
 | `visible` | `boolean` | `true` if the tooltip is currently displayed, `false` otherwise |
+| `gap` | `number` | Gap between Tooltip and Controlling element when Tooltip is shown |
+| `showDelay` | `number` | Define the delay until the Tooltip shows up in ms, default is 0ms |
+| `hideDelay` | `number` | Define the delay until the Tooltip is hidden in ms, default is 1500ms |
 
 | Method Signature | Description |
 | --- | --- |
 | `show()` | Displays the Tooltip |
 | `hide()` | Hide the Tooltip |
-| `reset()` | Hide and recenter the tooltip. This should be called if after initialization the position of the tooltip is updated
 
 Example:
 ```js
@@ -131,12 +133,12 @@ The `root` element is the tooltip element e.g. `<span class='mdc-tooltip'>toolti
 | `addClass(className: string) => void` | Adds a class to the root element. |
 | `removeClass(className: string) => void` | Removes a class from the root element. |
 | `getClassList() => [className: string]` | Returns a list of all classes asigned to the root element|
-| `computeBoundingRect() => {height: number, width: number}` | Returns the height and with of the root element |
-| `computeControllerBoundingRect() => {offsetTop: number, offsetLeft: number, width: number, height: number}` | Returns the height and with of the controller element as well as the offsetTop and offsetLeft property: https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop |
-| `setStyle(propertyName: string, value: string) => void` | Sets a dasherized css property propertyName to the value value on the surface element. We achieve this via root.style.setProperty(propertyName, value) |
+| `getRootWidth() => number` | Returns the width of the root element ignoring any applied css transformation. |
+| `getRootHeight() => number` | Returns the height of the root element ignoring any applied css transformation. |
+| `getControllerWidth() => number` | Returns the width of the controlling element ignoring any applied css transformation. |
+| `getControllerHeight() => number` | Returns the height of the controlling element ignoring any applied css transformation. |
+| `getControllerOffsetTop() => number` | Returns the offsetTop property of the controlling element as in: https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop |
+| `getControllerOffsetLeft() => number` | Returns the offsetLeft property of the controlling element as in: https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetLeft |
+| `setStyle(propertyName: string, value: string) => void` | Sets the style property with propertyName to value on the root element. |
 | `registerListener(type: string, handler: function) => void` | Registers an eventlistener of any type to the controller element |
-| `deregisterListener(type: string, handler: function) => void` | Deregisters an eventlistener of any type to the controller element |
-| `registerWindowListener(type: string, handler: function) => void` | Registers an eventlistener of any type to the window element |
-| `deregisterWindowListener(type: string, handler: function) => void` | Deregisters an eventlistener of any type to the window element |
-| `registerTransitionEndHandler(handler: EventListener) => void` | Registers an event handler to be called when a `transitionend` event is triggered on the root element |
-| `deregisterTransitionEndHandler(handler: EventListener) => void` | Deregisters an event handler from a `transitionend` event listener on the root element. |
+| `deregisterListener(type: string, handler: function) => void` | Deregisters an eventlistener of any type to the controller element

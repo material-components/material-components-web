@@ -17,7 +17,8 @@
 /** @enum {string} */
 const cssClasses = {
   ROOT: 'mdc-tooltip',
-  OPEN: 'mdc-tooltip--open',
+  SHOW: 'mdc-tooltip--show',
+  HIDE: 'mdc-tooltip--hide',
   DIRECTION_BOTTOM: 'mdc-tooltip--bottom',
   DIRECTION_RIGHT: 'mdc-tooltip--right',
   DIRECTION_LEFT: 'mdc-tooltip--left',

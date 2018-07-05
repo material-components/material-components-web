@@ -33,16 +33,15 @@ class MDCTooltipFoundation extends MDCFoundation {
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
       getClassList: () => /* [classNames: string] */ [],
-      computeBoundingRect: () => /* {width: number, height: number} */({width: 0, height: 0}),
-      computeControllerBoundingRect: () => /* {width: number, height: number} */
-        ({width: 0, height: 0, offsetTop: 0, offsetBottom: 0}),
+      getRootWidth: () => /* type: number */ 0,
+      getRootHeight: () => /* type: number */ 0,
+      getControllerWidth: () => /* type: number */ 0,
+      getControllerHeight: () => /* type: number */ 0,
+      getControllerOffsetTop: () => /* type: number */ 0,
+      getControllerOffsetLeft: () => /* type: number */ 0,
       setStyle: (/* propertyName: string, value: string */) => {},
       registerListener: (/* type: string, handler: EventListener */) => {},
-      deregisterListener: (/* type: string, handler: EventListener */) => {},
-      registerTransitionEndHandler: (/* handler: EventListener */) => {},
-      deregisterTransitionEndHandler: (/* handler: EventListener */) => {},
-      registerWindowListener: (/* type: string, handler: EventListener */) => {},
-      deregisterWindowListener: (/* type: string, handler: EventListener */) => {},
+      deregisterListener: (/* type: string, handler: EventListener */) => {}
     });
   }
 
@@ -55,8 +54,20 @@ class MDCTooltipFoundation extends MDCFoundation {
     /** @private {?string} */
     this.direction_ = null;
 
+    /** @private {?number} */
+    this.showTimeout_ = null;
+
+    /** @private {?number} */
+    this.hideTimeout_ = null;
+
     /** @public {number} */
     this.gap = 12;
+
+    /** @public {number} */
+    this.showDelay = 0;
+
+    /** @public {number} */
+    this.hideDelay = 1500;
   }
 
   init() {
@@ -79,22 +90,24 @@ class MDCTooltipFoundation extends MDCFoundation {
       }
     }
 
-    const tooltipPos = this.adapter_.computeBoundingRect();
-    const controllerPos = this.adapter_.computeControllerBoundingRect();
+    const tooltipHeight = this.adapter_.getRootHeight();
+    const tooltipWidth = this.adapter_.getRootWidth();
+    const ctrlOffsetTop = this.adapter_.getControllerOffsetTop();
+    const ctrlOffsetLeft = this.adapter_.getControllerOffsetLeft();
+    const ctrlHeight = this.adapter_.getControllerHeight();
+    const ctrlWidth = this.adapter_.getControllerWidth();
 
-    let top = controllerPos.offsetTop + controllerPos.height / 2 - tooltipPos.height / 2;
-    let left = controllerPos.offsetLeft + controllerPos.width / 2 - tooltipPos.width / 2;
+    let top = ctrlOffsetTop + ctrlHeight / 2 - tooltipHeight / 2;
+    let left = ctrlOffsetLeft + ctrlWidth / 2 - tooltipWidth / 2;
 
-    if (this.direction_ === 'bottom') {
-      top = controllerPos.offsetTop + controllerPos.height + this.gap;
-    } else if (this.direction_ === 'top') {
-      top = controllerPos.offsetTop - tooltipPos.height - this.gap;
+    if (this.direction_ === 'top') {
+      top = ctrlOffsetTop - tooltipHeight - this.gap;
     } else if (this.direction_ === 'right') {
-      left = controllerPos.offsetLeft + controllerPos.width + this.gap;
+      left = ctrlOffsetLeft + ctrlWidth + this.gap;
     } else if (this.direction_ === 'left') {
-      left = controllerPos.offsetLeft - tooltipPos.width - this.gap;
+      left = ctrlOffsetLeft - tooltipWidth - this.gap;
     } else {
-      throw new RangeError('MDCTooltip: direction = ' + this.direction_ + 'is unkown!');
+      top = ctrlOffsetTop + ctrlHeight + this.gap;
     }
 
     this.adapter_.setStyle('top', top.toString() + 'px');
@@ -102,38 +115,45 @@ class MDCTooltipFoundation extends MDCFoundation {
   }
 
   addEventListeners_() {
-    this.adapter_.registerListener('mouseenter', this.show_.bind(this));
-    this.adapter_.registerListener('focus', this.show_.bind(this));
-    this.adapter_.registerListener('touchstart', this.show_.bind(this));
+    this.adapter_.registerListener('mouseenter', this.showDelayed_.bind(this));
+    this.adapter_.registerListener('focus', this.showDelayed_.bind(this));
+    this.adapter_.registerListener('touchstart', this.showDelayed_.bind(this));
     this.adapter_.registerListener('mouseleave', this.hide_.bind(this));
     this.adapter_.registerListener('blur', this.hide_.bind(this));
     this.adapter_.registerListener('touchend', this.hide_.bind(this));
-
-    this.adapter_.registerWindowListener('load', this.resetTooltip_.bind(this));
-    this.adapter_.registerTransitionEndHandler(this.resetTooltip_.bind(this));
-    this.adapter_.registerWindowListener('resize', this.resetTooltip_.bind(this));
   }
 
-  resetTooltip_() {
-    if (!this.displayed_) {
-      const controllerPos = this.adapter_.computeControllerBoundingRect();
-      const tooltipPos = this.adapter_.computeBoundingRect();
-      const top = controllerPos.offsetTop + controllerPos.height / 2 - tooltipPos.height / 2;
-      const left = controllerPos.offsetLeft + controllerPos.width / 2 - tooltipPos.width / 2;
-      this.adapter_.setStyle('left', left.toString() + 'px');
-      this.adapter_.setStyle('top', top.toString() + 'px');
-    }
+  showDelayed_() {
+    this.showTimeout_ = setTimeout(() => {
+      this.show_();
+    }, this.showDelay)
   }
 
-  show_() {
+  show_() {;
     this.setDirection_();
     this.displayed_ = true;
-    this.adapter_.addClass(cssClasses.OPEN);
+    this.adapter_.removeClass(cssClasses.HIDE);
+    this.adapter_.addClass(cssClasses.SHOW);
+    this.hideTimeout_ = setTimeout(() => {
+      this.hide_();
+    }, this.hideDelay);
   }
 
   hide_() {
+    if(this.displayed_) {
+      this.adapter_.removeClass(cssClasses.SHOW);
+      this.adapter_.addClass(cssClasses.HIDE);
+    }
     this.displayed_ = false;
-    this.adapter_.removeClass(cssClasses.OPEN);
+
+    if(this.showTimeout_ != null){
+      clearTimeout(this.showTimeout_);
+      this.showTimeout_ = null;
+    }
+    if(this.hideTimeout_ != null){
+      clearTimeout(this.hideTimeout_);
+      this.hideTimeout_ = null;
+    }
   }
 
   destroy() {
@@ -141,10 +161,6 @@ class MDCTooltipFoundation extends MDCFoundation {
   }
 
   removeEventListeners_() {
-    this.adapter_.deregisterWindowListener('resize', this.resetTooltip_);
-    this.adapter_.deregisterTransitionEndHandler(this.resetTooltip_);
-    this.adapter_.deregisterWindowListener('load', this.resetTooltip_);
-
     this.adapter_.deregisterListener('touchend', this.hide_);
     this.adapter_.deregisterListener('blur', this.hide_);
     this.adapter_.deregisterListener('mouseleave', this.hide_);

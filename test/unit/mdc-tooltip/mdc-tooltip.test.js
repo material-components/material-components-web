@@ -101,18 +101,6 @@ test('show() delegates to the foundation', () => {
   td.verify(component.foundation_.show_());
 });
 
-test('reset() hides, and recenter to controller', () => {
-  const {component} = setupTest();
-
-  component.foundation_.hide_ = td.function();
-  component.foundation_.resetTooltip_ = td.function();
-
-  component.reset();
-
-  td.verify(component.foundation_.hide_());
-  td.verify(component.foundation_.resetTooltip_());
-});
-
 test('adapter#addClass adds a class to the root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
@@ -137,42 +125,6 @@ test('adapter#setStyle sets the correct style on root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.setStyle('transform', 'translateY(-56px)');
   assert.equal(root.style.getPropertyValue('transform'), 'translateY(-56px)');
-});
-
-test('adapter#registerWindowListener registers the handler for window - resize & load', () => {
-  const {component} = setupTest();
-  const handler = td.func('handler');
-  component.getDefaultFoundation().adapter_.registerWindowListener('resize', handler);
-  component.getDefaultFoundation().adapter_.registerWindowListener('load', handler);
-
-  domEvents.emit(window, 'resize');
-  domEvents.emit(window, 'load');
-
-  try {
-    td.verify(handler(td.matchers.anything()), {times: 2});
-  } finally {
-    window.removeEventListener('resize', handler);
-    window.removeEventListener('load', handler);
-  }
-});
-
-test('adapter#deregisterWindowListener unlistens the handler for window', () => {
-  const {component} = setupTest();
-  const handler = td.func('handler');
-  window.addEventListener('resize', handler);
-  window.addEventListener('load', handler);
-  component.getDefaultFoundation().adapter_.deregisterWindowListener('resize', handler);
-  component.getDefaultFoundation().adapter_.deregisterWindowListener('load', handler);
-
-  domEvents.emit(window, 'load');
-  domEvents.emit(window, 'resize');
-  try {
-    td.verify(handler(td.matchers.anything()), {times: 0});
-  } finally {
-    // Just to be safe
-    window.removeEventListener('resize', handler);
-    window.removeEventListener('load', handler);
-  }
 });
 
 test('adapter#registerListener registers the handler for controller - focus', () => {
@@ -213,26 +165,6 @@ test('adapter#deregisterListener unlistens the handler for controller', () => {
   }
 });
 
-test('adapter#registerTransitionEndHandler adds a transition end event listener on the root element', () => {
-  const {root, component} = setupTest();
-  const handler = td.func('transitionEndHandler');
-  component.getDefaultFoundation().adapter_.registerTransitionEndHandler(handler);
-  domEvents.emit(root, 'transitionend');
-
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('adapter#deregisterTransitionEndHandler removes a transition end event listener on the root element', () => {
-  const {root, component} = setupTest();
-  const handler = td.func('transitionEndHandler');
-  root.addEventListener('transitionend', handler);
-
-  component.getDefaultFoundation().adapter_.deregisterTransitionEndHandler(handler);
-  domEvents.emit(root, 'transitionend');
-
-  td.verify(handler(td.matchers.anything()), {times: 0});
-});
-
 test('Return Visible == True if the tooltip is displayed', () => {
   const {component} = setupTest();
   component.show();
@@ -245,5 +177,24 @@ test('Return Visible == False if the tooltip is hidden', () => {
   component.hide();
   assert.isOk(component.visible === false);
 });
+
+test('hideDelay() getter/setter', () => {
+  const {component} = setupTest();
+  component.hideDelay = 100;
+  assert.isOk(component.hideDelay === 100);
+});
+
+test('showDelay() getter/setter', () => {
+  const {component} = setupTest();
+  component.showDelay = 100;
+  assert.isOk(component.showDelay === 100);
+});
+
+test('gap() getter/setter', () => {
+  const {component} = setupTest();
+  component.gap = 100;
+  assert.isOk(component.gap === 100);
+});
+
 
 
