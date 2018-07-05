@@ -20,17 +20,17 @@
 @import "./variables";
 
 @mixin mdc-tooltip-show-transition() {
-  -webkit-transition: all $mdc-tooltip-transition-length cubic-bezier(0, 0, .2, 1);
-  -moz-transition: all $mdc-tooltip-transition-length cubic-bezier(0, 0, .2, 1);
-  -o-transition: all $mdc-tooltip-transition-length cubic-bezier(0, 0, .2, 1);
-  transition: all $mdc-tooltip-transition-length cubic-bezier(0, 0, .2, 1);
+  -webkit-transition: opacity $mdc-tooltip-transition-length-show deacceleartion;
+  -moz-transition: opacity $mdc-tooltip-transition-length-show cubic-bezier(0.000, 0.200, 0.500, 1.000);
+  -o-transition: opacity $mdc-tooltip-transition-length-show cubic-bezier(0.000, 0.200, 0.500, 1.000);
+  transition: opacity $mdc-tooltip-transition-length-show cubic-bezier(0.000, 0.200, 0.500, 1.000);
 }
 
 @mixin mdc-tooltip-hide-transition() {
-  -webkit-transition: all $mdc-tooltip-transition-length cubic-bezier(.4, 0, 1, 1);
-  -moz-transition: all $mdc-tooltip-transition-length cubic-bezier(.4, 0, 1, 1);
-  -o-transition: all $mdc-tooltip-transition-length cubic-bezier(.4, 0, 1, 1);
-  transition: all $mdc-tooltip-transition-length cubic-bezier(.4, 0, 1, 1);
+  -webkit-transition: opacity $mdc-tooltip-transition-length-hide cubic-bezier(0.000, 0.200, 0.500, 1.000);
+  -moz-transition: opacity $mdc-tooltip-transition-length-hide cubic-bezier(0.000, 0.200, 0.500, 1.000);
+  -o-transition: opacity $mdc-tooltip-transition-length-hide cubic-bezier(0.000, 0.200, 0.500, 1.000);
+  transition: opacity $mdc-tooltip-transition-length-hide cubic-bezier(0.000, 0.200, 0.500, 1.000);
 }
 
 .mdc-tooltip {
@@ -65,7 +65,7 @@
   }
 
   &--open {
-    @include mdc-tooltip-hide-transition();
+    @include mdc-tooltip-hide-transition;
 
     opacity: .9;
     z-index: 100;

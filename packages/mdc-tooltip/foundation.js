@@ -55,7 +55,7 @@ class MDCTooltipFoundation extends MDCFoundation {
     /** @private {?string} */
     this.direction_ = null;
 
-    /** @private {number} */
+    /** @public {number} */
     this.gap = 12;
   }
 
@@ -78,6 +78,27 @@ class MDCTooltipFoundation extends MDCFoundation {
         this.direction_ = possibleDirections[classNames[i]];
       }
     }
+
+    const tooltipPos = this.adapter_.computeBoundingRect();
+    const controllerPos = this.adapter_.computeControllerBoundingRect();
+
+    let top = controllerPos.offsetTop + controllerPos.height / 2 - tooltipPos.height / 2;
+    let left = controllerPos.offsetLeft + controllerPos.width / 2 - tooltipPos.width / 2;
+
+    if (this.direction_ === 'bottom') {
+      top = controllerPos.offsetTop + controllerPos.height + this.gap;
+    } else if (this.direction_ === 'top') {
+      top = controllerPos.offsetTop - tooltipPos.height - this.gap;
+    } else if (this.direction_ === 'right') {
+      left = controllerPos.offsetLeft + controllerPos.width + this.gap;
+    } else if (this.direction_ === 'left') {
+      left = controllerPos.offsetLeft - tooltipPos.width - this.gap;
+    } else {
+      throw new RangeError('MDCTooltip: direction = ' + this.direction_ + 'is unkown!');
+    }
+
+    this.adapter_.setStyle('top', top.toString() + 'px');
+    this.adapter_.setStyle('left', left.toString() + 'px');
   }
 
   addEventListeners_() {
@@ -105,28 +126,9 @@ class MDCTooltipFoundation extends MDCFoundation {
   }
 
   show_() {
-    this.displayed_ = true;
     this.setDirection_();
+    this.displayed_ = true;
     this.adapter_.addClass(cssClasses.OPEN);
-
-    const tooltipPos = this.adapter_.computeBoundingRect();
-    const controllerPos = this.adapter_.computeControllerBoundingRect();
-
-    if (this.direction_ === 'bottom') {
-      const top = controllerPos.offsetTop + controllerPos.height + this.gap;
-      this.adapter_.setStyle('top', top.toString() + 'px');
-    } else if (this.direction_ === 'top') {
-      const top = controllerPos.offsetTop - tooltipPos.height - this.gap;
-      this.adapter_.setStyle('top', top.toString() + 'px');
-    } else if (this.direction_ === 'right') {
-      const left = controllerPos.offsetLeft + controllerPos.width + this.gap;
-      this.adapter_.setStyle('left', left.toString() + 'px');
-    } else if (this.direction_ === 'left') {
-      const left = controllerPos.offsetLeft - tooltipPos.width - this.gap;
-      this.adapter_.setStyle('left', left.toString() + 'px');
-    } else {
-      throw new RangeError('MDCTooltip: direction = ' + this.direction_ + 'is unkown!');
-    }
   }
 
   hide_() {
