@@ -196,7 +196,7 @@ class CssBundleFactory {
           loader: 'postcss-loader',
           options: {
             sourceMap: true,
-            plugins: () => [this.autoprefixerLib_({grid: false})],
+            plugins: () => [this.autoprefixerLib_()],
           },
         },
         {
