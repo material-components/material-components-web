@@ -25,12 +25,24 @@ npm install @material/tab-scroller
 
 ## Usage
 
+### RTL Support
+
+While the `scrollLeft` value for a scroll area behaves the same in LTR mode, ranging from 0 at the start to N at the end, the value for `scrollLeft` in RTL mode differs by browser. There are three different value ranges:
+
+- "RTL Default", where the start (right-most point) is N and the end (left-most point) is 0
+- "RTL Negative", where the start (right-most point) is 0 and the end (left-most point) is -N
+- "RTL Reverse", where the start (right-most point) is 0 and the end (left-most point) is N
+
+The Tab Scroller makes all browsers use the RTL `scrollLeft` value in the "RTL Negative" format, where 0 is the start (right-most) value and -N is the end (left-most) value.
+
 ### HTML Structure
 
 ```html
-<span class="mdc-tab-scroller">
-  <span class="mdc-tab-scroller__content"></span>
-</span>
+<div class="mdc-tab-scroller">
+  <div class="mdc-tab-scroller__scroll-area">
+    <div class="mdc-tab-scroller__scroll-content"></div>
+  </div>
+</div>
 ```
 
 ### CSS Classes
@@ -38,7 +50,8 @@ npm install @material/tab-scroller
 CSS Class | Description
 --- | ---
 `mdc-tab-scroller` | Mandatory. Contains the tab scroller content.
-`mdc-tab-scroller__content` | Mandatory. Denotes the tab scroller content.
+`mdc-tab-scroller__scroll-area` | Mandatory. Denotes the scrolling area.
+`mdc-tab-scroller__scroll-content` | Mandatory. Denotes the scrolling content.
 
 ### `MDCTabScroller`
 
@@ -52,16 +65,16 @@ Method Signature | Description
 
 Method Signature | Description
 --- | ---
-`addClass(className: string) => void` | Adds a class to the root element
-`removeClass(className: string) => void` | Removes a class from the root element
-`registerEventHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the root element
-`deregisterEventHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the root element
-`setContentStyleProperty(property: string, value: string) => void` | Sets the style property of the content element
-`getContentStyleValue(property: string) => string` | Returns the style property value of the content element
-`setScrollLeft(scrollLeft: number) => void` | Sets the root element scrollLeft
-`getScrollLeft() => number` | Returns the root element scroll left
-`getContentOffsetWidth() => number` | Returns the content element's offsetWidth
-`getOffsetWidth() => number` | Returns the root element's offsetWidth
+`addScrollAreaClass(className: string) => void` | Adds a class to the scroll area element
+`removeScrollAreaClass(className: string) => void` | Removes a class from the scroll area element
+`registerScrollAreaEventHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the scroll area element
+`deregisterScrollAreaEventHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the scroll area element
+`setScrollContentStyleProperty(property: string, value: string) => void` | Sets the style property of the scroll content element
+`getScrollContentStyleValue(property: string) => string` | Returns the style property value of the scroll content element
+`setScrollAreaScrollLeft(scrollLeft: number) => void` | Sets the scroll area element scrollLeft
+`getScrollAreaScrollLeft() => number` | Returns the scroll area element scroll left
+`getScrollContentOffsetWidth() => number` | Returns the scroll content element's offsetWidth
+`getScrollAreaOffsetWidth() => number` | Returns the scroll area element's offsetWidth
 
 ### `MDCTabScrollerFoundation`
 

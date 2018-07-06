@@ -17,13 +17,13 @@
 
 /** @enum {string} */
 const cssClasses = {
-  ANIMATING: 'mdc-tab-scroller--animating',
-  PAGING: 'mdc-tab-scroller--paging',
+  ANIMATING: 'mdc-tab-scroller__scroll-area--animating',
 };
 
 /** @enum {string} */
 const strings = {
-  CONTENT_SELECTOR: '.mdc-tab-scroller__content',
+  AREA_SELECTOR: '.mdc-tab-scroller__scroll-area',
+  CONTENT_SELECTOR: '.mdc-tab-scroller__scroll-content',
 };
 
 export {

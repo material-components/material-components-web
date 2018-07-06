@@ -39,33 +39,33 @@ class MDCTabScrollerAdapter {
    * @param {string} evtType
    * @param {function(!Event): undefined} handler
    */
-  registerEventHandler(evtType, handler) {}
+  registerScrollAreaEventHandler(evtType, handler) {}
 
   /**
    * Deregisters an event listener on the root element for a given event.
    * @param {string} evtType
    * @param {function(!Event): undefined} handler
    */
-  deregisterEventHandler(evtType, handler) {}
+  deregisterScrollAreaEventHandler(evtType, handler) {}
 
   /**
    * Adds the given className to the root element.
    * @param {string} className The className to add
    */
-  addClass(className) {}
+  addScrollAreaClass(className) {}
 
   /**
    * Removes the given className from the root element.
    * @param {string} className The className to remove
    */
-  removeClass(className) {}
+  removeScrollAreaClass(className) {}
 
   /**
    * Sets a style property of the content element to the passed value.
    * @param {string} propName The style property name to set
    * @param {string} value The style property value
    */
-  setContentStyleProperty(propName, value) {}
+  setScrollContentStyleProperty(propName, value) {}
 
   /**
    * Returns the content element's computed style value of the given css property `propertyName`.
@@ -73,43 +73,43 @@ class MDCTabScrollerAdapter {
    * @param {string} propertyName
    * @return {string}
    */
-  getContentStyleValue(propertyName) {}
+  getScrollContentStyleValue(propertyName) {}
 
   /**
    * Sets the scrollLeft value of the root element to the passed value.
    * @param {number} scrollLeft The new scrollLeft value
    */
-  setScrollLeft(scrollLeft) {}
+  setScrollAreaScrollLeft(scrollLeft) {}
 
   /**
    * Returns the scrollLeft value of the root element.
    * @return {number}
    */
-  getScrollLeft() {}
+  getScrollAreaScrollLeft() {}
 
   /**
    * Returns the offsetWidth of the content element.
    * @return {number}
    */
-  getContentOffsetWidth() {}
+  getScrollContentOffsetWidth() {}
 
   /**
    * Returns the offsetWitdth of the root element.
    * @return {number}
    */
-  getOffsetWidth() {}
+  getScrollAreaOffsetWidth() {}
 
   /**
    * Returns the bounding client rect of the root element.
    * @return {!ClientRect}
    */
-  computeClientRect() {}
+  computeScrollAreaClientRect() {}
 
   /**
    * Returns the bounding client rect of the content element.
    * @return {!ClientRect}
    */
-  computeContentClientRect() {}
+  computeScrollContentClientRect() {}
 }
 
 export {MDCTabScrollerAnimation, MDCTabScrollerEdges, MDCTabScrollerAdapter};

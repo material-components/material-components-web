@@ -38,9 +38,13 @@ class MDCTabScroller extends MDCComponent {
 
     /** @type {?Element} */
     this.content_;
+
+    /** @type {?Element} */
+    this.area_;
   }
 
   initialize() {
+    this.area_ = this.root_.querySelector(MDCTabScrollerFoundation.strings.AREA_SELECTOR);
     this.content_ = this.root_.querySelector(MDCTabScrollerFoundation.strings.CONTENT_SELECTOR);
   }
 
@@ -49,18 +53,18 @@ class MDCTabScroller extends MDCComponent {
    */
   getDefaultFoundation() {
     const adapter = /** @type {!MDCTabScrollerAdapter} */ ({
-      registerEventHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
-      deregisterEventHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
-      addClass: (className) => this.root_.classList.add(className),
-      removeClass: (className) => this.root_.classList.remove(className),
-      setContentStyleProperty: (prop, value) => this.content_.style.setProperty(prop, value),
-      getContentStyleValue: (propName) => window.getComputedStyle(this.content_).getPropertyValue(propName),
-      setScrollLeft: (scrollX) => this.root_.scrollLeft = scrollX,
-      getScrollLeft: () => this.root_.scrollLeft,
-      getContentOffsetWidth: () => this.content_.offsetWidth,
-      getOffsetWidth: () => this.root_.offsetWidth,
-      computeClientRect: () => this.root_.getBoundingClientRect(),
-      computeContentClientRect: () => this.content_.getBoundingClientRect(),
+      registerScrollAreaEventHandler: (evtType, handler) => this.area_.addEventListener(evtType, handler),
+      deregisterScrollAreaEventHandler: (evtType, handler) => this.area_.removeEventListener(evtType, handler),
+      addScrollAreaClass: (className) => this.area_.classList.add(className),
+      removeScrollAreaClass: (className) => this.area_.classList.remove(className),
+      setScrollContentStyleProperty: (prop, value) => this.content_.style.setProperty(prop, value),
+      getScrollContentStyleValue: (propName) => window.getComputedStyle(this.content_).getPropertyValue(propName),
+      setScrollAreaScrollLeft: (scrollX) => this.area_.scrollLeft = scrollX,
+      getScrollAreaScrollLeft: () => this.area_.scrollLeft,
+      getScrollContentOffsetWidth: () => this.content_.offsetWidth,
+      getScrollAreaOffsetWidth: () => this.area_.offsetWidth,
+      computeScrollAreaClientRect: () => this.area_.getBoundingClientRect(),
+      computeScrollContentClientRect: () => this.content_.getBoundingClientRect(),
     });
 
     return new MDCTabScrollerFoundation(adapter);

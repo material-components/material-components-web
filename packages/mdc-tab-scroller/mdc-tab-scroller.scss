@@ -18,8 +18,13 @@
 @import "@material/animation/variables";
 
 .mdc-tab-scroller {
+  overflow-y: hidden;
+}
+
+.mdc-tab-scroller__scroll-area {
   -webkit-overflow-scrolling: touch;
   display: flex;
+  margin-bottom: -18px;
   overflow-x: scroll;
 
   &::-webkit-scrollbar {
@@ -27,18 +32,19 @@
   }
 }
 
-.mdc-tab-scroller--animating {
+.mdc-tab-scroller__scroll-area--animating {
   -webkit-overflow-scrolling: auto;
 }
 
-.mdc-tab-scroller__content {
+.mdc-tab-scroller__scroll-content {
   display: flex;
   flex: 1 0 auto;
+  padding-bottom: 18px;
   transform: none;
   transform-origin: left;
   will-change: transform;
 }
 
-.mdc-tab-scroller--animating .mdc-tab-scroller__content {
+.mdc-tab-scroller__scroll-area--animating .mdc-tab-scroller__scroll-content {
   transition: 250ms transform $mdc-animation-standard-curve-timing-function;
 }

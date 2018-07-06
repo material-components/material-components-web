@@ -29,7 +29,9 @@ import MDCTabScrollerRTL from '../../../packages/mdc-tab-scroller/rtl-scroller';
 
 const getFixture = () => bel`
   <div class="mdc-tab-scroller">
-    <div class="mdc-tab-scroller__content"></div>
+    <div class="mdc-tab-scroller__scroll-area">
+      <div class="mdc-tab-scroller__scroll-content"></div>
+    </div>
   </div>
 `;
 
@@ -42,116 +44,117 @@ test('attachTo returns an MDCTabScroller instance', () => {
 function setupTest() {
   const root = getFixture();
   const component = new MDCTabScroller(root);
+  const area = root.querySelector(MDCTabScrollerFoundation.strings.AREA_SELECTOR);
   const content = root.querySelector(MDCTabScrollerFoundation.strings.CONTENT_SELECTOR);
-  return {root, component, content};
+  return {root, component, content, area};
 }
 
-test('#adapter.addClass adds a class to the root element', () => {
-  const {root, component} = setupTest();
-  component.getDefaultFoundation().adapter_.addClass('foo');
-  assert.isTrue(root.classList.contains('foo'));
+test('#adapter.addScrollAreaClass adds a class to the area element', () => {
+  const {area, component} = setupTest();
+  component.getDefaultFoundation().adapter_.addScrollAreaClass('foo');
+  assert.isTrue(area.classList.contains('foo'));
 });
 
-test('#adapter.removeClass removes a class from the root element', () => {
-  const {root, component} = setupTest();
-  root.classList.add('foo');
-  component.getDefaultFoundation().adapter_.removeClass('foo');
-  assert.isFalse(root.classList.contains('foo'));
+test('#adapter.removeScrollAreaClass removes a class from the area element', () => {
+  const {area, component} = setupTest();
+  area.classList.add('foo');
+  component.getDefaultFoundation().adapter_.removeScrollAreaClass('foo');
+  assert.isFalse(area.classList.contains('foo'));
 });
 
-test('#adapter.registerEventHandler adds an event listener on the root element', () => {
-  const {root, component} = setupTest();
+test('#adapter.registerScrollAreaEventHandler adds an event listener on the area element', () => {
+  const {area, component} = setupTest();
   const handler = td.func('transitionend handler');
-  component.getDefaultFoundation().adapter_.registerEventHandler('transitionend', handler);
-  domEvents.emit(root, 'transitionend');
+  component.getDefaultFoundation().adapter_.registerScrollAreaEventHandler('transitionend', handler);
+  domEvents.emit(area, 'transitionend');
   td.verify(handler(td.matchers.anything()));
 });
 
-test('#adapter.deregisterEventHandler remoes an event listener from the root element', () => {
-  const {root, component} = setupTest();
+test('#adapter.deregisterScrollAreaEventHandler remoes an event listener from the root element', () => {
+  const {area, component} = setupTest();
   const handler = td.func('transitionend handler');
-  root.addEventListener('transitionend', handler);
-  component.getDefaultFoundation().adapter_.deregisterEventHandler('transitionend', handler);
-  domEvents.emit(root, 'transitionend');
+  area.addEventListener('transitionend', handler);
+  component.getDefaultFoundation().adapter_.deregisterScrollAreaEventHandler('transitionend', handler);
+  domEvents.emit(area, 'transitionend');
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test('#adapter.setContentStyleProperty sets a style property on the content element', () => {
+test('#adapter.setScrollContentStyleProperty sets a style property on the content element', () => {
   const {component, content} = setupTest();
-  component.getDefaultFoundation().adapter_.setContentStyleProperty('background-color', 'red');
+  component.getDefaultFoundation().adapter_.setScrollContentStyleProperty('background-color', 'red');
   assert.strictEqual(content.style.backgroundColor, 'red');
 });
 
-test('#adapter.getContentStyleValue returns the style property value on the content element', () => {
+test('#adapter.getScrollContentStyleValue returns the style property value on the content element', () => {
   const {component, content} = setupTest();
   content.style.setProperty('color', 'chartreuse');
   assert.strictEqual(
-    component.getDefaultFoundation().adapter_.getContentStyleValue('color'),
+    component.getDefaultFoundation().adapter_.getScrollContentStyleValue('color'),
     window.getComputedStyle(content).getPropertyValue('color')
   );
 });
 
 function setupScrollLeftTests() {
-  const {component, root, content} = setupTest();
-  root.style.setProperty('width', '100px');
-  root.style.setProperty('height', '10px');
-  root.style.setProperty('overflow-x', 'scroll');
+  const {component, area, content, root} = setupTest();
+  area.style.setProperty('width', '100px');
+  area.style.setProperty('height', '10px');
+  area.style.setProperty('overflow-x', 'scroll');
   content.style.setProperty('width', '10000px');
   content.style.setProperty('height', '10px');
-  return {component, root};
+  return {component, area, root};
 }
 
-test('#adapter.setScrollLeft sets the scrollLeft value of the root element', () => {
-  const {component, root} = setupScrollLeftTests();
+test('#adapter.setScrollAreaScrollLeft sets the scrollLeft value of the area element', () => {
+  const {component, root, area} = setupScrollLeftTests();
   document.body.appendChild(root);
-  component.getDefaultFoundation().adapter_.setScrollLeft(101);
-  assert.strictEqual(root.scrollLeft, 101);
+  component.getDefaultFoundation().adapter_.setScrollAreaScrollLeft(101);
+  assert.strictEqual(area.scrollLeft, 101);
   document.body.removeChild(root);
 });
 
-test('#adapter.getScrollLeft returns the scrollLeft value of the root element', () => {
-  const {component, root} = setupScrollLeftTests();
+test('#adapter.getScrollAreaScrollLeft returns the scrollLeft value of the root element', () => {
+  const {component, root, area} = setupScrollLeftTests();
   document.body.appendChild(root);
-  root.scrollLeft = 416;
-  assert.strictEqual(component.getDefaultFoundation().adapter_.getScrollLeft(), 416);
+  area.scrollLeft = 416;
+  assert.strictEqual(component.getDefaultFoundation().adapter_.getScrollAreaScrollLeft(), 416);
   document.body.removeChild(root);
 });
 
-test('#adapter.getContentOffsetWidth returns the content element offsetWidth', () => {
+test('#adapter.getScrollContentOffsetWidth returns the content element offsetWidth', () => {
   const {component, root, content} = setupTest();
   document.body.appendChild(root);
   assert.deepEqual(
-    component.getDefaultFoundation().adapter_.getContentOffsetWidth(),
+    component.getDefaultFoundation().adapter_.getScrollContentOffsetWidth(),
     content.offsetWidth
   );
   document.body.removeChild(root);
 });
 
-test('#adapter.getOffsetWidth returns the root element offsetWidth', () => {
+test('#adapter.getScrollAreaOffsetWidth returns the root element offsetWidth', () => {
   const {component, root} = setupTest();
   document.body.appendChild(root);
   assert.deepEqual(
-    component.getDefaultFoundation().adapter_.getOffsetWidth(),
+    component.getDefaultFoundation().adapter_.getScrollAreaOffsetWidth(),
     root.offsetWidth
   );
   document.body.removeChild(root);
 });
 
-test('#adapter.computeClientRect returns the root element bounding client rect', () => {
+test('#adapter.computeScrollAreaClientRect returns the root element bounding client rect', () => {
   const {component, root} = setupTest();
   document.body.appendChild(root);
   assert.deepEqual(
-    component.getDefaultFoundation().adapter_.computeClientRect(),
+    component.getDefaultFoundation().adapter_.computeScrollAreaClientRect(),
     root.getBoundingClientRect()
   );
   document.body.removeChild(root);
 });
 
-test('#adapter.computeContentClientRect returns the content element bounding client rect', () => {
+test('#adapter.computeScrollContentClientRect returns the content element bounding client rect', () => {
   const {component, root, content} = setupTest();
   document.body.appendChild(root);
   assert.deepEqual(
-    component.getDefaultFoundation().adapter_.computeContentClientRect(),
+    component.getDefaultFoundation().adapter_.computeScrollContentClientRect(),
     content.getBoundingClientRect()
   );
   document.body.removeChild(root);

@@ -27,9 +27,9 @@ suite('MDCTabScrollerRTLDefault');
 const setupTest = ({rootWidth, contentWidth, scrollLeft}) => {
   const {mockAdapter} = setupFoundationTest(MDCTabScrollerFoundation);
   const scroller = new MDCTabScrollerRTLDefault(mockAdapter);
-  td.when(mockAdapter.getOffsetWidth()).thenReturn(rootWidth);
-  td.when(mockAdapter.getContentOffsetWidth()).thenReturn(contentWidth);
-  td.when(mockAdapter.getScrollLeft()).thenReturn(scrollLeft);
+  td.when(mockAdapter.getScrollAreaOffsetWidth()).thenReturn(rootWidth);
+  td.when(mockAdapter.getScrollContentOffsetWidth()).thenReturn(contentWidth);
+  td.when(mockAdapter.getScrollAreaScrollLeft()).thenReturn(scrollLeft);
   return {scroller, mockAdapter};
 };
 

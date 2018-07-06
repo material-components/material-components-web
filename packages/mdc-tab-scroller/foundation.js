@@ -48,18 +48,18 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    */
   static get defaultAdapter() {
     return /** @type {!MDCTabScrollerAdapter} */ ({
-      registerEventHandler: () => {},
-      deregisterEventHandler: () => {},
-      addClass: () => {},
-      removeClass: () => {},
-      setContentStyleProperty: () => {},
-      getContentStyleValue: () => {},
-      setScrollLeft: () => {},
-      getScrollLeft: () => {},
-      getContentOffsetWidth: () => {},
-      getOffsetWidth: () => {},
-      computeClientRect: () => {},
-      computeContentClientRect: () => {},
+      registerScrollAreaEventHandler: () => {},
+      deregisterScrollAreaEventHandler: () => {},
+      addScrollAreaClass: () => {},
+      removeScrollAreaClass: () => {},
+      setScrollContentStyleProperty: () => {},
+      getScrollContentStyleValue: () => {},
+      setScrollAreaScrollLeft: () => {},
+      getScrollAreaScrollLeft: () => {},
+      getScrollContentOffsetWidth: () => {},
+      getScrollAreaOffsetWidth: () => {},
+      computeScrollAreaClientRect: () => {},
+      computeScrollContentClientRect: () => {},
     });
   }
 
@@ -90,7 +90,7 @@ class MDCTabScrollerFoundation extends MDCFoundation {
     }
 
     const currentTranslateX = this.calculateCurrentTranslateX_();
-    const scrollLeft = this.adapter_.getScrollLeft();
+    const scrollLeft = this.adapter_.getScrollAreaScrollLeft();
     return scrollLeft - currentTranslateX;
   }
 
@@ -115,8 +115,8 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    */
   handleTransitionEnd() {
     this.deregisterInteractionHandlers_();
-    this.adapter_.deregisterEventHandler('transitionend', this.handleTransitionEnd_);
-    this.adapter_.removeClass(MDCTabScrollerFoundation.cssClasses.ANIMATING);
+    this.adapter_.deregisterScrollAreaEventHandler('transitionend', this.handleTransitionEnd_);
+    this.adapter_.removeScrollAreaClass(MDCTabScrollerFoundation.cssClasses.ANIMATING);
   }
 
   /**
@@ -161,7 +161,7 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * @private
    */
   calculateCurrentTranslateX_() {
-    const transformValue = this.adapter_.getContentStyleValue('transform');
+    const transformValue = this.adapter_.getScrollContentStyleValue('transform');
     // Early exit if no transform is present
     if (transformValue === 'none') {
       return 0;
@@ -201,8 +201,8 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * @private
    */
   calculateScrollEdges_() {
-    const contentWidth = this.adapter_.getContentOffsetWidth();
-    const rootWidth = this.adapter_.getOffsetWidth();
+    const contentWidth = this.adapter_.getScrollContentOffsetWidth();
+    const rootWidth = this.adapter_.getScrollAreaOffsetWidth();
     return /** @type {!MDCTabScrollerEdges} */ ({
       left: 0,
       right: contentWidth - rootWidth,
@@ -216,7 +216,7 @@ class MDCTabScrollerFoundation extends MDCFoundation {
   deregisterInteractionHandlers_() {
     this.shouldHandleInteraction_ = false;
     INTERACTION_EVENTS.forEach((eventName) => {
-      this.adapter_.deregisterEventHandler(eventName, this.handleInteraction_);
+      this.adapter_.deregisterScrollAreaEventHandler(eventName, this.handleInteraction_);
     });
   }
 
@@ -227,7 +227,7 @@ class MDCTabScrollerFoundation extends MDCFoundation {
   registerInteractionHandlers_() {
     this.shouldHandleInteraction_ = true;
     INTERACTION_EVENTS.forEach((eventName) => {
-      this.adapter_.registerEventHandler(eventName, this.handleInteraction_);
+      this.adapter_.registerScrollAreaEventHandler(eventName, this.handleInteraction_);
     });
   }
 
@@ -297,18 +297,18 @@ class MDCTabScrollerFoundation extends MDCFoundation {
     this.stopScrollAnimation_();
     // This animation uses the FLIP approach.
     // Read more here: https://aerotwist.com/blog/flip-your-animations/
-    this.adapter_.setScrollLeft(animation.scrollX);
-    this.adapter_.setContentStyleProperty('transform', `translateX(${animation.translateX}px)`);
+    this.adapter_.setScrollAreaScrollLeft(animation.scrollX);
+    this.adapter_.setScrollContentStyleProperty('transform', `translateX(${animation.translateX}px)`);
     // Force repaint
-    this.adapter_.computeClientRect();
+    this.adapter_.computeScrollAreaClientRect();
 
     requestAnimationFrame(() => {
-      this.adapter_.addClass(MDCTabScrollerFoundation.cssClasses.ANIMATING);
-      this.adapter_.setContentStyleProperty('transform', 'none');
+      this.adapter_.addScrollAreaClass(MDCTabScrollerFoundation.cssClasses.ANIMATING);
+      this.adapter_.setScrollContentStyleProperty('transform', 'none');
     });
 
     this.registerInteractionHandlers_();
-    this.adapter_.registerEventHandler('transitionend', this.handleTransitionEnd_);
+    this.adapter_.registerScrollAreaEventHandler('transitionend', this.handleTransitionEnd_);
   }
 
   /**
@@ -317,10 +317,10 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    */
   stopScrollAnimation_() {
     const currentScrollPosition = this.computeCurrentScrollPosition();
-    this.adapter_.deregisterEventHandler('transitionend', this.handleTransitionEnd_);
-    this.adapter_.removeClass(MDCTabScrollerFoundation.cssClasses.ANIMATING);
-    this.adapter_.setContentStyleProperty('transform', 'translateX(0px)');
-    this.adapter_.setScrollLeft(currentScrollPosition);
+    this.adapter_.deregisterScrollAreaEventHandler('transitionend', this.handleTransitionEnd_);
+    this.adapter_.removeScrollAreaClass(MDCTabScrollerFoundation.cssClasses.ANIMATING);
+    this.adapter_.setScrollContentStyleProperty('transform', 'translateX(0px)');
+    this.adapter_.setScrollAreaScrollLeft(currentScrollPosition);
   }
 
   /**
@@ -347,24 +347,24 @@ class MDCTabScrollerFoundation extends MDCFoundation {
     //
     // We use those principles below to determine which RTL scrollLeft
     // behavior is implemented in the current browser.
-    const initialScrollLeft = this.adapter_.getScrollLeft();
-    this.adapter_.setScrollLeft(initialScrollLeft - 1);
-    const newScrollLeft = this.adapter_.getScrollLeft();
+    const initialScrollLeft = this.adapter_.getScrollAreaScrollLeft();
+    this.adapter_.setScrollAreaScrollLeft(initialScrollLeft - 1);
+    const newScrollLeft = this.adapter_.getScrollAreaScrollLeft();
 
     // If the newScrollLeft value is negative,then we know that the browser has
     // implemented negative RTL scrolling, since all other implementations have
     // only positive values.
     if (newScrollLeft < 0) {
       // Undo the scrollLeft test check
-      this.adapter_.setScrollLeft(initialScrollLeft);
+      this.adapter_.setScrollAreaScrollLeft(initialScrollLeft);
       return new MDCTabScrollerRTLNegative(this.adapter_);
     }
 
-    const rootClientRect = this.adapter_.computeClientRect();
-    const contentClientRect = this.adapter_.computeContentClientRect();
+    const rootClientRect = this.adapter_.computeScrollAreaClientRect();
+    const contentClientRect = this.adapter_.computeScrollContentClientRect();
     const rightEdgeDelta = Math.round(contentClientRect.right - rootClientRect.right);
     // Undo the scrollLeft test check
-    this.adapter_.setScrollLeft(initialScrollLeft);
+    this.adapter_.setScrollAreaScrollLeft(initialScrollLeft);
 
     // By calculating the clientRect of the root element and the clientRect of
     // the content element, we can determine how much the scroll value changed
@@ -381,7 +381,7 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * @private
    */
   isRTL_() {
-    return this.adapter_.getContentStyleValue('direction') === 'rtl';
+    return this.adapter_.getScrollContentStyleValue('direction') === 'rtl';
   }
 }
 
