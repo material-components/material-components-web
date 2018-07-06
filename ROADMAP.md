@@ -10,6 +10,7 @@ We release a new version of MDC Web every 2 weeks. We also limit our breaking ch
 ## Upcoming Releases
 ### 0.38.0 - July 2018
 - New tabs
+- New switch
 
 ### 0.39.0 - August 2018
 - [Shape Theme](https://material.io/go/design-shape) released 
