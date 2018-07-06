@@ -93,4 +93,4 @@ class MDCListAdapter {
   setTabIndexForListItemChildren(listItemIndex, tabIndexValue) {}
 }
 
-export {MDCListAdapter};
+export default MDCListAdapter;

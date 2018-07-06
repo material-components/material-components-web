@@ -16,7 +16,7 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-import {MDCListAdapter} from './adapter';
+import MDCListAdapter from './adapter';
 import {strings, cssClasses} from './constants';
 
 const ELEMENTS_KEY_ALLOWED_IN = ['input', 'button', 'textarea', 'select'];
@@ -286,4 +286,4 @@ class MDCListFoundation extends MDCFoundation {
   }
 }
 
-export {MDCListFoundation};
+export default MDCListFoundation;

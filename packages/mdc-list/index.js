@@ -16,14 +16,14 @@
  */
 
 import MDCComponent from '@material/base/component';
-import {MDCListFoundation} from './foundation';
-import {MDCListAdapter} from './adapter';
+import MDCListFoundation from './foundation';
+import MDCListAdapter from './adapter';
 import {cssClasses, strings} from './constants';
 
 /**
  * @extends MDCComponent<!MDCListFoundation>
  */
-export class MDCList extends MDCComponent {
+class MDCList extends MDCComponent {
   /** @param {...?} args */
   constructor(...args) {
     super(...args);
@@ -116,7 +116,7 @@ export class MDCList extends MDCComponent {
 
   /** @return {!MDCListFoundation} */
   getDefaultFoundation() {
-    return new MDCListFoundation(/** @type {!MDCListAdapter} */{
+    return new MDCListFoundation(/** @type {!MDCListAdapter} */ (Object.assign({
       getListItemCount: () => this.listElements_.length,
       getFocusedElementIndex: () => this.listElements_.indexOf(document.activeElement),
       getListItemIndex: (node) => this.listElements_.indexOf(node),
@@ -139,6 +139,8 @@ export class MDCList extends MDCComponent {
           .querySelectorAll(strings.FOCUSABLE_CHILD_ELEMENTS));
         listItemChildren.forEach((ele) => ele.setAttribute('tabindex', tabIndexValue));
       },
-    });
+    })));
   }
 }
+
+export {MDCList, MDCListFoundation};

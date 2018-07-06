@@ -19,8 +19,7 @@
 import {assert} from 'chai';
 import td from 'testdouble';
 import bel from 'bel';
-import {MDCList} from '../../../packages/mdc-list';
-import {MDCListFoundation} from '../../../packages/mdc-list/foundation';
+import {MDCList, MDCListFoundation} from '../../../packages/mdc-list';
 import domEvents from 'dom-events';
 
 function getFixture() {
