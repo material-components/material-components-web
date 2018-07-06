@@ -17,6 +17,7 @@
 
 import MDCComponent from '@material/base/component';
 
+import {selectors, attributes, events} from './constants';
 import MDCSliderAdapter from './adapter';
 import MDCSliderFoundation from './foundation';
 
@@ -67,8 +68,8 @@ class MDCSlider extends MDCComponent {
   }
 
   initialize() {
-    this.thumb_ = this.root_.querySelector('.mdc-slider__thumb');
-    this.trackFill_ = this.root_.querySelector('.mdc-slider__track-fill');
+    this.thumb_ = this.root_.querySelector(selectors.THUMB_SELECTOR);
+    this.trackFill_ = this.root_.querySelector(selectors.TRACK_FILL_SELECTOR);
   }
 
   /**
@@ -82,19 +83,12 @@ class MDCSlider extends MDCComponent {
         removeClass: (className) => this.root_.classList.remove(className),
         getAttribute: (name) => this.root_.getAttribute(name),
         setAttribute: (name, value) => this.root_.setAttribute(name, value),
-        removeAttribute: (name) => this.root_.removeAttribute(name),
         computeBoundingRect: () => this.root_.getBoundingClientRect(),
         registerEventHandler: (type, handler) => {
           this.root_.addEventListener(type, handler);
         },
         deregisterEventHandler: (type, handler) => {
           this.root_.removeEventListener(type, handler);
-        },
-        registerThumbEventHandler: (type, handler) => {
-          this.thumb_.addEventListener(type, handler);
-        },
-        deregisterThumbEventHandler: (type, handler) => {
-          this.thumb_.removeEventListener(type, handler);
         },
         registerBodyEventHandler: (type, handler) => {
           document.body.addEventListener(type, handler);
@@ -109,10 +103,10 @@ class MDCSlider extends MDCComponent {
           window.removeEventListener('resize', handler);
         },
         notifyInput: () => {
-          this.emit('MDCSlider:input', this);
+          this.emit(events.INPUT_EVENT, this);
         },
         notifyChange: () => {
-          this.emit('MDCSlider:change', this);
+          this.emit(events.CHANGE_EVENT, this);
         },
         setThumbStyleProperty: (propertyName, value) => {
           this.thumb_.style.setProperty(propertyName, value);
@@ -125,9 +119,9 @@ class MDCSlider extends MDCComponent {
   }
 
   initialSyncWithDOM() {
-    const origValueNow = parseFloat(this.root_.getAttribute('aria-valuenow'));
-    this.min = parseFloat(this.root_.getAttribute('aria-valuemin')) || this.min;
-    this.max = parseFloat(this.root_.getAttribute('aria-valuemax')) || this.max;
+    const origValueNow = parseFloat(this.root_.getAttribute(attributes.ARIA_VALUENOW));
+    this.min = parseFloat(this.root_.getAttribute(attributes.ARIA_VALUEMIN)) || this.min;
+    this.max = parseFloat(this.root_.getAttribute(attributes.ARIA_VALUEMAX)) || this.max;
     this.value = origValueNow || this.value;
   }
 

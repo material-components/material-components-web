@@ -32,7 +32,6 @@ export function setupEventTest() {
     mockAdapter,
     raf,
     rootHandlers: captureHandlers(mockAdapter, 'registerEventHandler'),
-    thumbContainerHandlers: captureHandlers(mockAdapter, 'registerThumbEventHandler'),
     bodyHandlers: captureHandlers(mockAdapter, 'registerBodyEventHandler'),
   };
 }

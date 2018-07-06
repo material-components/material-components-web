@@ -82,11 +82,7 @@
     <script>
       demoReady(function() {
         mdc.slider.MDCSlider.attachTo(document.getElementById('hero-slider'));
-
-        var numberIsFinite = Number.isFinite || function(value) {
-          return typeof value === 'number' && isFinite(value);
-        };
-
+        
         var demoRoot = document.getElementById('demo-root')
 
         var continuousValue = demoRoot.querySelector('#continuous-slider-value');

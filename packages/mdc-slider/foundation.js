@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 
+import {attributes} from './constants';
 import MDCSliderAdapter from './adapter';
 
 import MDCFoundation from '@material/base/foundation';
@@ -41,12 +42,9 @@ class MDCSliderFoundation extends MDCFoundation {
       removeClass: () => {},
       getAttribute: () => {},
       setAttribute: () => {},
-      removeAttribute: () => {},
       computeBoundingRect: () => {},
       registerEventHandler: () => {},
       deregisterEventHandler: () => {},
-      registerThumbEventHandler: () => {},
-      deregisterThumbEventHandler: () => {},
       registerBodyEventHandler: () => {},
       deregisterBodyEventHandler: () => {},
       registerWindowResizeHandler: () => {},
@@ -66,18 +64,12 @@ class MDCSliderFoundation extends MDCFoundation {
     super(Object.assign(MDCSliderFoundation.defaultAdapter, adapter));
     /** @private {?ClientRect} */
     this.rect_ = null;
-    /** @private {boolean} */
-    this.active_ = false;
     /** @private {number} */
     this.min_ = 0;
     /** @private {number} */
     this.max_ = 100;
     /** @private {number} */
     this.value_ = 0;
-    /** @private {boolean} */
-    this.handlingThumbTargetEvt_ = false;
-    /** @private {function(): undefined} */
-    this.thumbPointerHandler_ = () => this.handleThumbPointer();
     /** @private {function(!Event): undefined} */
     this.interactionStartHandler_ = (evt) => this.handleInteractionStart(evt);
     /** @private {function(!Event): undefined} */
@@ -90,9 +82,6 @@ class MDCSliderFoundation extends MDCFoundation {
 
   init() {
     DOWN_EVENTS.forEach((evtName) => this.adapter_.registerEventHandler(evtName, this.interactionStartHandler_));
-    DOWN_EVENTS.forEach((evtName) => {
-      this.adapter_.registerThumbEventHandler(evtName, this.thumbPointerHandler_);
-    });
     this.adapter_.registerWindowResizeHandler(this.windowResizeHandler_);
     this.layout();
   }
@@ -100,9 +89,6 @@ class MDCSliderFoundation extends MDCFoundation {
   destroy() {
     DOWN_EVENTS.forEach((evtName) => {
       this.adapter_.deregisterEventHandler(evtName, this.interactionStartHandler_);
-    });
-    DOWN_EVENTS.forEach((evtName) => {
-      this.adapter_.deregisterThumbEventHandler(evtName, this.thumbPointerHandler_);
     });
     this.adapter_.deregisterWindowResizeHandler(this.windowResizeHandler_);
   }
@@ -130,11 +116,11 @@ class MDCSliderFoundation extends MDCFoundation {
   /** @param {number} max */
   setMax(max) {
     if (max < this.min_) {
-      throw new Error('Cannot set max to be less than the slider\'s minimum value');
+      return;
     }
     this.max_ = max;
     this.setValue_(this.value_);
-    this.adapter_.setAttribute('aria-valuemax', String(this.max_));
+    this.adapter_.setAttribute(attributes.ARIA_VALUEMAX, String(this.max_));
   }
 
   /** @return {number} */
@@ -145,18 +131,11 @@ class MDCSliderFoundation extends MDCFoundation {
   /** @param {number} min */
   setMin(min) {
     if (min > this.max_) {
-      throw new Error('Cannot set min to be greater than the slider\'s maximum value');
+      return;
     }
     this.min_ = min;
     this.setValue_(this.value_);
-    this.adapter_.setAttribute('aria-valuemin', String(this.min_));
-  }
-
-  /**
-   * Called when the user starts interacting with the thumb
-   */
-  handleThumbPointer() {
-    this.handlingThumbTargetEvt_ = true;
+    this.adapter_.setAttribute(attributes.ARIA_VALUEMIN, String(this.min_));
   }
 
   /**
@@ -164,12 +143,13 @@ class MDCSliderFoundation extends MDCFoundation {
    * @param {!Event} evt
    */
   handleInteractionStart(evt) {
-    this.setActive_(true);
-
     const moveHandler = (evt) => {
       this.interactionMoveHandler_(evt);
     };
 
+    // Note: endHandler is [de]registered on ALL potential pointer-related release event types, since some browsers
+    // do not always fire these consistently in pairs.
+    // (See https://github.com/material-components/material-components-web/issues/1192)
     const endHandler = () => {
       this.interactionEndHandler_();
       this.adapter_.deregisterBodyEventHandler(MOVE_EVENT_MAP[evt.type], moveHandler);
@@ -192,10 +172,8 @@ class MDCSliderFoundation extends MDCFoundation {
 
   /**
    * Called when the user's interaction with the slider ends
-   * @private
    */
   handleInteractionEnd() {
-    this.setActive_(false);
     this.adapter_.notifyChange();
   }
 
@@ -248,11 +226,14 @@ class MDCSliderFoundation extends MDCFoundation {
       value = this.max_;
     }
     this.value_ = value;
-    this.adapter_.setAttribute('aria-valuenow', String(this.value_));
+    this.adapter_.setAttribute(attributes.ARIA_VALUENOW, String(this.value_));
     this.updateUIForCurrentValue_();
     this.adapter_.notifyInput();
   }
 
+  /**
+   * Updates the track-fill and thumb style properties to reflect current value
+   */
   updateUIForCurrentValue_() {
     const pctComplete = (this.value_ - this.min_) / (this.max_ - this.min_);
     const translatePx = pctComplete * this.rect_.width;
@@ -261,14 +242,6 @@ class MDCSliderFoundation extends MDCFoundation {
       this.adapter_.setThumbStyleProperty('transform', `translateX(${translatePx}px) translateX(-50%)`);
       this.adapter_.setTrackFillStyleProperty('transform', `scaleX(${translatePx})`);
     });
-  }
-
-  /**
-   * Toggles the active state of the slider
-   * @param {boolean} active
-   */
-  setActive_(active) {
-    this.active_ = active;
   }
 }
 
