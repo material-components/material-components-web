@@ -1,5 +1,5 @@
 # MDC Web Roadmap
-We release a new version of MDC Web every 2 weeks. We also limit our breaking changes to one release at the end of the month. This roadmap is based of the more general [material components roadmap](https://github.com/material-components/material-components/blob/develop/ROADMAP.md), but specific to MDC Web.
+We release a new version of MDC Web every 2 weeks. We also limit our breaking changes to one release at the end of the month. This roadmap is based on the more general [material components roadmap](https://github.com/material-components/material-components/blob/develop/ROADMAP.md), but specific to MDC Web.
 
 ## Current Release
 ### 0.37.0 - June 2018
