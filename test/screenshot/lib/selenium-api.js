@@ -119,6 +119,10 @@ class SeleniumApi {
     // TODO(acdvorak): Use uploaded GCS URL instead of localhost, but make it configurable for local testing too
     await driver.get(`http://localhost:8080/${htmlFilePath}`);
 
+    // TODO(acdvorak): Set this value dynamically
+    // NOTE(acdvorak): Setting smaller window dimensions appears to speed up the tests significantly.
+    await driver.manage().window().setRect({width: 400, height: 800});
+
     // TODO(acdvorak): Implement "fullpage" screenshots?
     // We can find the device's pixel ratio by capturing a screenshot and comparing the image dimensions with the
     // viewport dimensions reported by the JS running on the page.
