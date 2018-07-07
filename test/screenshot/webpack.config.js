@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2018 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,30 +39,6 @@ const OUTPUT = {
 module.exports = [
   mainCssALaCarte(),
   testCss(),
-  // {
-  //   name: 'protobufs',
-  //   entry: globber.getChunks({
-  //     filePathPattern: '**/*.proto',
-  //     inputDirectory: 'test/screenshot/',
-  //   }),
-  //   output: {
-  //     path: pathResolver.getAbsolutePath('test/screenshot/'),
-  //     publicPath: '/',
-  //     filename: `[name].pb.js`,
-  //   },
-  //   module: {
-  //     rules: [{
-  //       test: /\.proto/,
-  //       // use: this.createCssLoader_(cssExtractorPlugin),
-  //     }],
-  //   },
-  //   plugins: [
-  //     new ProtobufPlugin({
-  //       input: '**/*.proto',
-  //       // output: path.join('dist', 'proto'),
-  //     }),
-  //   ],
-  // },
 ];
 
 function mainCssALaCarte() {
