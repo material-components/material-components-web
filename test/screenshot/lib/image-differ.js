@@ -19,6 +19,7 @@
 const Jimp = require('jimp');
 const compareImages = require('resemblejs/compareImages');
 const fs = require('mz/fs');
+const path = require('path');
 
 const pb = require('./types.pb');
 const {ImageDiffResult, Screenshot, TestFile} = pb.mdc.test.screenshot;
@@ -36,8 +37,8 @@ class ImageDiffer {
     for (const screenshot of reportData.screenshots.comparable_screenshot_list) {
       screenshot.image_diff_result = await this.compareOneImage({
         reportData,
-        actualImageFile: screenshot.actual_image_file.absolute_path,
-        expectedImageFile: screenshot.expected_image_file.absolute_path,
+        actualImageFile: screenshot.actual_image_file,
+        expectedImageFile: screenshot.expected_image_file,
       });
       screenshot.capture_state = CaptureState.DIFFED;
     }
