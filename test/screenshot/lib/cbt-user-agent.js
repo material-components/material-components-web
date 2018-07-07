@@ -17,14 +17,17 @@
 /* eslint-disable key-spacing, no-unused-vars */
 
 const CbtApi = require('./cbt-api');
-const CliArgParser = require('./cli-arg-parser');
+const Cli = require('./cli');
+const os = require('os');
+const {Browser: SeleniumBrowser, Builder: SeleniumBuilder} = require('selenium-webdriver');
 
 const cbtApi = new CbtApi();
-const cliArg = new CliArgParser();
+const cli = new Cli();
 
 /* eslint-disable max-len */
 /**
  * Map of `CbtBrowser#icon_class` values to public URLs for their browser icons.
+ * TODO(acdvorak): Download these files to the git repo so they work offline.
  * @type {!Object<string, string>}
  */
 const BROWSER_ICONS = {
@@ -86,8 +89,14 @@ const CBT_FILTERS = {
 let allUserAgentsPromise;
 let runnableAliasesCache;
 
+/**
+ * Map of Selenium browser name (see Selenium's `Browser` enum) to a boolean indicating whether the driver is available.
+ * @type {!Map<string, boolean>}
+ */
+let isLocalBrowserAvailableCache = new Map();
+
 module.exports = {
-  fetchUserAgents,
+  fetchUserAgentSet,
   fetchBrowserByApiName,
   fetchBrowserByAlias,
 };
@@ -95,28 +104,246 @@ module.exports = {
 /**
  * Fetches the CBT API representations of all user agents listed in `browser.json`.
  * CLI filters (e.g., `--browser`) are ignored.
- * @return {!Promise<{
- *   allUserAgents: !Array<!CbtUserAgent>,
- *   runnableUserAgents: !Array<!CbtUserAgent>,
- *   skippedUserAgents: !Array<!CbtUserAgent>,
- * }>}
+ * @return {!Promise<!CbtUserAgentSet>}
  */
-async function fetchUserAgents() {
-  return allUserAgentsPromise || (allUserAgentsPromise = new Promise((resolve, reject) => {
-    cbtApi.fetchAvailableDevices()
+async function fetchUserAgentSet() {
+  if (!allUserAgentsPromise) {
+    if (await cli.isOnline()) {
+      allUserAgentsPromise = fetchOnlineUserAgents();
+    } else {
+      allUserAgentsPromise = fetchOfflineUserAgents();
+    }
+  }
+
+  return allUserAgentsPromise;
+}
+
+/**
+ * @return {!Promise<!CbtUserAgentSet>}
+ */
+async function fetchOnlineUserAgents() {
+  const cbtDevices = await cbtApi.fetchAvailableDevices();
+  const allAliases = getAllAliases();
+  const allUserAgents = findAllMatchingUAs(allAliases, cbtDevices);
+  return {
+    allUserAgents,
+    runnableUserAgents: allUserAgents.filter((userAgent) => userAgent.isRunnable),
+    skippedUserAgents: allUserAgents.filter((userAgent) => !userAgent.isRunnable),
+  };
+}
+
+/**
+ * @return {!Promise<!CbtUserAgentSet>}
+ */
+async function fetchOfflineUserAgents() {
+  /** @type {!Array<!CbtUserAgent>} */ const allUserAgents = [];
+  /** @type {!Array<!CbtUserAgent>} */ const runnableUserAgents = [];
+  /** @type {!Array<!CbtUserAgent>} */ const skippedUserAgents = [];
+
+  /** @type {!Array<!UserAgentAlias>} */
+  const allAliases = getAllAliases().map((alias) => UserAgentAlias.parse(alias));
+
+  for (const userAgentAlias of allAliases) {
+    /** @type {!CbtUserAgent} */
+    const userAgent = await createLocalUserAgent(userAgentAlias);
+
+    allUserAgents.push(userAgent);
+    if (userAgent.isRunnable) {
+      runnableUserAgents.push(userAgent);
+    } else {
+      skippedUserAgents.push(userAgent);
+    }
+  }
+
+  return {
+    allUserAgents,
+    runnableUserAgents,
+    skippedUserAgents,
+  };
+}
+
+/**
+ * @param {!UserAgentAlias} userAgentAlias
+ * @return {!CbtUserAgent}
+ */
+async function createLocalUserAgent(userAgentAlias) {
+  /** @type {!CbtDevice} */ const device = createLocalDevice();
+  /** @type {!CbtBrowser} */ const browser = createLocalBrowser(userAgentAlias);
+
+  const alias = userAgentAlias.toString();
+
+  // TODO(acdvorak): Document the '|' separator format (CBT's API)
+  // TODO(acdvorak): Centralize the formatting/parsing CBT, Selenium, and Alias strings
+  const fullCbtApiName = `${device.api_name}|${browser.api_name}`;
+
+  // TODO(acdvorak): Rename *some* usages of the words "runnable/skipped" with "included/excluded".
+  // TODO(acdvorak): Differentiate between "runnable" (CLI args + is available locally) and "included" (CLI args only).
+  const isIncluded = userAgentAlias.isDesktop() && getRunnableAliases().includes(alias);
+  const isRunnable = isIncluded && await isLocalBrowserAvailableCached(userAgentAlias);
+
+  return {
+    fullCbtApiName,
+    alias,
+    device,
+    browser,
+    isRunnable,
+  };
+}
+
+/**
+ * @param {!UserAgentAlias} userAgentAlias
+ * @return {!Promise<boolean>}
+ */
+async function isLocalBrowserAvailableCached(userAgentAlias) {
+  const seleniumBrowserName = getSeleniumBrowserName(userAgentAlias);
+  if (!isLocalBrowserAvailableCache.has(seleniumBrowserName)) {
+    const isAvailable = await isLocalBrowserAvailableUncached(userAgentAlias);
+    isLocalBrowserAvailableCache.set(seleniumBrowserName, isAvailable);
+  }
+  return isLocalBrowserAvailableCache.get(seleniumBrowserName);
+}
+
+/**
+ * @param {!UserAgentAlias} userAgentAlias
+ * @return {!Promise<boolean>}
+ */
+async function isLocalBrowserAvailableUncached(userAgentAlias) {
+  const seleniumBrowserName = getSeleniumBrowserName(userAgentAlias);
+  try {
+    return new SeleniumBuilder()
+      .forBrowser(seleniumBrowserName)
+      .build()
       .then(
-        (cbtDevices) => {
-          const allAliases = getAllAliases();
-          const allUserAgents = findAllMatchingUAs(allAliases, cbtDevices);
-          resolve({
-            allUserAgents,
-            runnableUserAgents: allUserAgents.filter((userAgent) => userAgent.isRunnable),
-            skippedUserAgents: allUserAgents.filter((userAgent) => !userAgent.isRunnable),
-          });
+        async (driver) => {
+          await driver.quit();
+          return true;
         },
-        (err) => reject(err)
+        () => false
       );
-  }));
+  } catch (err) {
+    return false;
+  }
+}
+
+/**
+ * @return {!CbtDevice}
+ */
+function createLocalDevice() {
+  const localOsType = os.type().toLowerCase().replace(/\W+/g, '');
+  if (/^darwin/.test(localOsType)) {
+    return {
+      api_name: 'Mac10.13',
+      name: 'Mac OSX 10.13',
+      version: 'Mac OSX 10.13',
+      type: 'Mac',
+      device: 'desktop',
+      device_type: null,
+      browsers: [],
+      resolutions: [],
+      parsedVersionNumber: '10.13',
+    };
+  }
+  return {
+    api_name: 'Win10',
+    name: 'Windows 10',
+    version: 'Windows 10',
+    type: 'Windows',
+    device: 'desktop',
+    device_type: null,
+    browsers: [],
+    resolutions: [],
+    parsedVersionNumber: '10',
+  };
+}
+
+/**
+ * @param {!UserAgentAlias} userAgentAlias
+ * @return {!CbtBrowser}
+ */
+function createLocalBrowser(userAgentAlias) {
+  const seleniumBrowserName = getSeleniumBrowserName(userAgentAlias);
+  if (seleniumBrowserName === SeleniumBrowser.FIREFOX) {
+    // TODO(acdvorak): Figure out version numbers
+    return {
+      api_name: 'FF59',
+      name: 'Firefox 59',
+      version: '59',
+      type: 'Firefox',
+      device: 'desktop',
+      icon_class: 'firefox',
+      selenium_version: '3.8.1',
+      webdriver_type: 'geckodriver',
+      webdriver_version: '0.19.0',
+      parsedVersionNumber: '59',
+      parsedIconUrl: null,
+    };
+  }
+  if (seleniumBrowserName === SeleniumBrowser.SAFARI) {
+    return {
+      api_name: 'Safari11',
+      name: 'Safari 11',
+      version: '11',
+      type: 'Safari',
+      device: 'desktop',
+      icon_class: 'safari',
+      selenium_version: '3.11.0',
+      webdriver_type: 'safaridriver',
+      webdriver_version: null,
+      parsedVersionNumber: '11',
+      parsedIconUrl: null,
+    };
+  }
+  if (seleniumBrowserName === SeleniumBrowser.EDGE) {
+    return {
+      api_name: 'Edge17',
+      name: 'Microsoft Edge 17',
+      version: '17',
+      type: 'Microsoft Edge',
+      device: 'desktop',
+      icon_class: 'edge',
+      selenium_version: '3.4.0',
+      webdriver_type: 'microsoftwebdriver',
+      webdriver_version: '17',
+      parsedVersionNumber: '17',
+      parsedIconUrl: null,
+    };
+  }
+  if (seleniumBrowserName === SeleniumBrowser.IE) {
+    return {
+      api_name: 'IE11',
+      name: 'Internet Explorer 11',
+      version: '11',
+      type: 'Internet Explorer',
+      device: 'desktop',
+      icon_class: 'ie',
+      selenium_version: '2.46.0',
+      webdriver_type: 'iedriver',
+      webdriver_version: '2.46.0',
+      parsedVersionNumber: '11',
+      parsedIconUrl: null,
+    };
+  }
+  return {
+    api_name: 'Chrome66x64',
+    name: 'Google Chrome 66 (64-bit)',
+    version: '66',
+    type: 'Chrome',
+    device: 'desktop',
+    icon_class: 'chrome',
+    selenium_version: '3.4.0',
+    webdriver_type: 'chromedriver',
+    webdriver_version: '2.37',
+    parsedVersionNumber: '66',
+    parsedIconUrl: null,
+  };
+}
+
+/**
+ * @param {!UserAgentAlias} userAgentAlias
+ * @return {string}
+ */
+function getSeleniumBrowserName(userAgentAlias) {
+  return SeleniumBrowser[userAgentAlias.browserName.toUpperCase()];
 }
 
 /**
@@ -129,7 +356,7 @@ async function fetchBrowserByApiName(cbtDeviceApiName, cbtBrowserApiName) {
   // TODO(acdvorak): Why does the CBT browser API return "Win10" but the screenshot info API returns "Win10-E17"?
   cbtDeviceApiName = cbtDeviceApiName.replace(/-E\d+$/, '');
 
-  const {allUserAgents} = await fetchUserAgents();
+  const {allUserAgents} = await fetchUserAgentSet();
   return allUserAgents.find((userAgent) => {
     return userAgent.device.api_name === cbtDeviceApiName
       && userAgent.browser.api_name === cbtBrowserApiName;
@@ -141,7 +368,7 @@ async function fetchBrowserByApiName(cbtDeviceApiName, cbtBrowserApiName) {
  * @return {!Promise<?CbtUserAgent>}
  */
 async function fetchBrowserByAlias(userAgentAlias) {
-  const {allUserAgents} = await fetchUserAgents();
+  const {allUserAgents} = await fetchUserAgentSet();
   return allUserAgents.find((userAgent) => {
     return userAgent.alias === userAgentAlias;
   });
@@ -158,14 +385,16 @@ function getAllAliases() {
  * @return {!Array<string>}
  */
 function getRunnableAliases() {
-  return runnableAliasesCache || (runnableAliasesCache = getAllAliases().filter((alias) => {
-    const isIncluded =
-      cliArg.includeBrowserPatterns.length === 0 ||
-      cliArg.includeBrowserPatterns.some((pattern) => pattern.test(alias));
-    const isExcluded =
-      cliArg.excludeBrowserPatterns.some((pattern) => pattern.test(alias));
-    return isIncluded && !isExcluded;
-  }));
+  return runnableAliasesCache || (runnableAliasesCache = getAllAliases().filter(isAliasRunnable));
+}
+
+function isAliasRunnable(alias) {
+  const isIncluded =
+    cli.includeBrowserPatterns.length === 0 ||
+    cli.includeBrowserPatterns.some((pattern) => pattern.test(alias));
+  const isExcluded =
+    cli.excludeBrowserPatterns.some((pattern) => pattern.test(alias));
+  return isIncluded && !isExcluded;
 }
 
 /**
@@ -186,8 +415,7 @@ function findOneMatchingUA(userAgentAlias, cbtDevices) {
   // Avoid mutating the object passed by the caller
   cbtDevices = deepCopyJson(cbtDevices);
 
-  const [_, formFactor, operatingSystemName, browserName, browserVersion] =
-    /^([a-z]+)_([a-z]+)_([a-z]+)@([a-z0-9.]+)$/.exec(userAgentAlias);
+  const {formFactor, operatingSystemName, browserName, browserVersion} = UserAgentAlias.parse(userAgentAlias);
 
   const devices = cbtDevices
     .filter(CBT_FILTERS.formFactor[formFactor]())
@@ -217,7 +445,7 @@ function findOneMatchingUA(userAgentAlias, cbtDevices) {
   return {
     /**
      * API documentation for the name format can be found at:
-     * https://crossbrowsertesting.com/apidocs/v3/screenshots.html#!/default/post_screenshots
+     * https://crossbrowsertesting.com/apidocs/v3/screenshots.html#!/default/post_screenshot_list
      */
     fullCbtApiName: `${firstDevice.api_name}|${firstBrowser.api_name}`,
     alias: userAgentAlias,

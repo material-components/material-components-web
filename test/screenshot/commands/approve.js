@@ -16,21 +16,12 @@
 
 'use strict';
 
-const Controller = require('../lib/controller');
-const {ExitCode} = require('../lib/constants');
+const SeleniumController = require('../lib/selenium-controller');
 
 module.exports = {
   async runAsync() {
-    const controller = new Controller();
-
-    controller.initForApproval()
-      .then((runReport) => controller.updateGoldenJson(runReport), handleError)
-      .catch(handleError)
-    ;
-
-    function handleError(err) {
-      console.error(err);
-      process.exit(ExitCode.UNKNOWN_ERROR);
-    }
+    const controller = new SeleniumController();
+    const reportData = await controller.initForApproval();
+    await controller.updateGoldenJson(reportData);
   },
 };

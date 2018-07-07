@@ -17,25 +17,16 @@
 'use strict';
 
 const BuildCommand = require('./build');
-const Controller = require('../lib/controller');
-const {ExitCode} = require('../lib/constants');
+const SeleniumController = require('../lib/selenium-controller');
 
 module.exports = {
   async runAsync() {
     await BuildCommand.runAsync();
-    const controller = new Controller();
-
-    return controller.initForTest()
-      .then((runReport) => controller.uploadAllAssets(runReport), handleError)
-      .then((runReport) => controller.captureAllPages(runReport), handleError)
-      .then((runReport) => controller.diffGoldenJson(runReport), handleError)
-      .then((runReport) => controller.uploadDiffReport(runReport), handleError)
-      .catch(handleError)
-    ;
-
-    function handleError(err) {
-      console.error(err);
-      process.exit(ExitCode.UNKNOWN_ERROR);
-    }
+    const controller = new SeleniumController();
+    const reportData = await controller.initForCapture();
+    await controller.uploadAllAssets(reportData);
+    await controller.captureAllPages(reportData);
+    await controller.compareAllScreenshots(reportData);
+    await controller.generateDiffReport(reportData);
   },
 };

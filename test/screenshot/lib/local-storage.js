@@ -18,19 +18,19 @@
 
 const fs = require('mz/fs');
 const glob = require('glob');
+const mkdirp = require('mkdirp');
 const path = require('path');
 
-const CliArgParser = require('./cli-arg-parser');
+const Cli = require('./cli');
 const GitRepo = require('./git-repo');
-const {UploadableTestCase, UploadableFile} = require('./types');
 
 class LocalStorage {
   constructor() {
     /**
-     * @type {!CliArgParser}
+     * @type {!Cli}
      * @private
      */
-    this.cliArgs_ = new CliArgParser();
+    this.cli_ = new Cli();
 
     /**
      * @type {!GitRepo}
@@ -40,58 +40,42 @@ class LocalStorage {
   }
 
   /**
-   * @return {!Promise<!Array<string>>} File/dir paths relative to the git repo. E.g.: "test/screenshot/browser.json".
+   * @param {!mdc.test.screenshot.ReportMeta} reportMeta
+   * @return {!Promise<void>}
    */
-  async fetchAllTopLevelAssetFileAndDirPaths() {
-    return (await this.filterIgnoredFiles_(await fs.readdir(this.cliArgs_.testDir))).sort();
+  async copyAssetsToTempDir(reportMeta) {
+    /** @type {!Array<string>} */
+    const allAssetFileRelativePaths = await this.getAssetFileSourcePaths();
+
+    const fileCopyPromises = [];
+
+    for (const assetFileRelativePath of allAssetFileRelativePaths) {
+      const assetFileshortPath = assetFileRelativePath.replace(this.cli_.testDir, '');
+      const sourceFilePathAbsolute = path.resolve(assetFileRelativePath);
+      const destionationFilePathAbsolute = path.resolve(reportMeta.local_asset_base_dir, assetFileshortPath);
+
+      mkdirp.sync(path.dirname(destionationFilePathAbsolute));
+      fileCopyPromises.push(fs.copyFile(sourceFilePathAbsolute, destionationFilePathAbsolute));
+    }
+
+    await Promise.all(fileCopyPromises);
   }
 
   /**
    * @return {!Promise<!Array<string>>} File paths relative to the git repo. E.g.: "test/screenshot/browser.json".
    */
-  async fetchAllAssetFilePaths() {
-    return (await this.filterIgnoredFiles_(glob.sync('**/*', {cwd: this.cliArgs_.testDir, nodir: true}))).sort();
+  async getAssetFileSourcePaths() {
+    const cwd = this.cli_.testDir;
+    return (await this.filterIgnoredFiles_(glob.sync('**/*', {cwd, nodir: true}))).sort();
   }
 
   /**
-   * @return {!Promise<{
-   *   allTestCases: !Array<!UploadableTestCase>,
-   *   runnableTestCases: !Array<!UploadableTestCase>,
-   *   skippedTestCases: !Array<!UploadableTestCase>,
-   * }>}
+   * @param {!mdc.test.screenshot.ReportMeta} reportMeta
+   * @return {!Promise<!Array<string>>} File paths relative to the git repo. E.g.: "test/screenshot/browser.json".
    */
-  async fetchTestCases(baseUploadDir) {
-    /** @type {!Array<!UploadableTestCase>} */
-    const allTestCases = (await this.fetchAllAssetFilePaths())
-      .filter((relativeFilePath) => {
-        return relativeFilePath.endsWith('.html') && relativeFilePath.includes('/mdc-');
-      })
-      .map((relativeFilePath) => {
-        const isRunnable = this.isRunnableTestCase_(relativeFilePath);
-        return new UploadableTestCase({
-          htmlFile: new UploadableFile({
-            destinationBaseUrl: this.cliArgs_.gcsBaseUrl,
-            destinationParentDirectory: baseUploadDir,
-            destinationRelativeFilePath: relativeFilePath.replace(this.cliArgs_.testDir, ''),
-          }),
-          isRunnable,
-        });
-      })
-    ;
-
-    const runnableTestCases = allTestCases.filter((testCase) => testCase.isRunnable);
-    const skippedTestCases = allTestCases.filter((testCase) => !testCase.isRunnable);
-
-    runnableTestCases.forEach((testCase, index) => {
-      testCase.htmlFile.queueIndex = index;
-      testCase.htmlFile.queueLength = runnableTestCases.length;
-    });
-
-    return {
-      allTestCases,
-      runnableTestCases,
-      skippedTestCases,
-    };
+  async getTestPageDestinationPaths(reportMeta) {
+    const cwd = reportMeta.local_asset_base_dir;
+    return glob.sync('**/mdc-*/**/*.html', {cwd, nodir: true});
   }
 
   /**
@@ -100,7 +84,7 @@ class LocalStorage {
    * @private
    */
   async filterIgnoredFiles_(shortPaths) {
-    const relativePaths = shortPaths.map((name) => path.join(this.cliArgs_.testDir, name));
+    const relativePaths = shortPaths.map((name) => path.join(this.cli_.testDir, name));
 
     /** @type {!Array<string>} */
     const ignoredTopLevelFilesAndDirs = await this.gitRepo_.getIgnoredPaths(relativePaths);
@@ -110,20 +94,6 @@ class LocalStorage {
       const isIgnoredFile = ignoredTopLevelFilesAndDirs.includes(relativePath);
       return isBuildOutputDir || !isIgnoredFile;
     });
-  }
-
-  /**
-   * @param {string} relativeHtmlFilePath
-   * @return {boolean}
-   * @private
-   */
-  isRunnableTestCase_(relativeHtmlFilePath) {
-    const relativePath = relativeHtmlFilePath;
-    const isIncluded =
-      this.cliArgs_.includeUrlPatterns.length === 0 ||
-      this.cliArgs_.includeUrlPatterns.some((pattern) => pattern.test(relativePath));
-    const isExcluded = this.cliArgs_.excludeUrlPatterns.some((pattern) => pattern.test(relativePath));
-    return isIncluded && !isExcluded;
   }
 }
 

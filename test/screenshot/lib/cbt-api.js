@@ -17,9 +17,11 @@
 const request = require('request-promise-native');
 const {ExitCode} = require('../lib/constants');
 
-const API_BASE_URL = 'https://crossbrowsertesting.com/api/v3';
 const MDC_CBT_USERNAME = process.env.MDC_CBT_USERNAME;
 const MDC_CBT_AUTHKEY = process.env.MDC_CBT_AUTHKEY;
+
+const REST_API_BASE_URL = 'https://crossbrowsertesting.com/api/v3';
+const SELENIUM_SERVER_URL = `http://${MDC_CBT_USERNAME}:${MDC_CBT_AUTHKEY}@hub.crossbrowsertesting.com:80/wd/hub`;
 
 class CbtApi {
   constructor() {
@@ -54,29 +56,20 @@ https://crossbrowsertesting.com/account
     }
   }
 
+  /** @return {string} */
+  get proxyServerUrl() {
+    return SELENIUM_SERVER_URL;
+  }
+
   async fetchAvailableDevices() {
     console.log('Fetching available devices...');
     return this.sendRequest_('GET', '/screenshots/browsers');
   }
 
-  async fetchScreenshotInfo(cbtScreenshotId) {
-    return this.sendRequest_('GET', `/screenshots/${cbtScreenshotId}`);
-  }
-
-  async sendCaptureRequest(url, userAgents) {
-    console.log(`Sending screenshot capture request for "${url}"...`);
-    const browsers = userAgents.map((config) => config.fullCbtApiName).join(',');
-    return this.sendRequest_('POST', '/screenshots/', {
-      url,
-      browsers,
-      delay: 2, // in seconds. helps reduce flakes due to missing icon fonts
-    });
-  }
-
   async sendRequest_(method, endpoint, body = undefined) {
     return request({
       method,
-      uri: `${API_BASE_URL}${endpoint}`,
+      uri: `${REST_API_BASE_URL}${endpoint}`,
       auth: {
         username: MDC_CBT_USERNAME,
         password: MDC_CBT_AUTHKEY,

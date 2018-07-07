@@ -16,20 +16,32 @@
 
 'use strict';
 
-const GitRepo = require('./git-repo');
+const pb = require('./types.pb');
+const {ApprovalId, DiffBase, GitRevision} = pb.mdc.test.screenshot;
+
 const argparse = require('argparse');
+const checkIsOnline = require('is-online');
 const fs = require('mz/fs');
 const path = require('path');
 
+const Duration = require('./duration');
+const GitRepo = require('./git-repo');
+
 const HTTP_URL_REGEX = new RegExp('^https?://');
 
-class CliArgParser {
+class Cli {
   constructor() {
     /**
      * @type {!GitRepo}
      * @private
      */
     this.gitRepo_ = new GitRepo();
+
+    /**
+     * @type {?boolean}
+     * @private
+     */
+    this.isOnlineCached_ = null;
 
     /**
      * @type {!ArgumentParser}
@@ -118,6 +130,65 @@ The default behavior is to always build assets before running the tests.
     });
   }
 
+  addOfflineArg_(parser) {
+    this.addArg_(parser, {
+      optionNames: ['--offline'],
+      type: 'boolean',
+      description: `
+If this flag is present, all external API requests will be disabled, including git fetch, GCS file upload, and CBT.
+If a local dev server is not already running, one will be started for the duration of the test.
+`,
+    });
+  }
+
+  addTestCommandArgs_(subparser) {
+    this.addTestDirArg_(subparser);
+    this.addNoBuildArg_(subparser);
+    this.addOfflineArg_(subparser);
+    this.addGcsBucketArg_(subparser);
+    this.addGoldenPathArg_(subparser);
+
+    this.addArg_(subparser, {
+      optionNames: ['--diff-base'],
+      defaultValue: 'origin/master',
+      description: `
+File path, URL, or Git ref of a 'golden.json' file to diff against.
+Typically a branch name or commit hash, but may also be a local file path or public URL.
+Git refs may optionally be suffixed with ':path/to/golden.json' (the default is to use '--golden-path').
+E.g., 'origin/master' (default), 'HEAD', 'feat/foo/bar', 'fad7ed3:path/to/golden.json',
+'/tmp/golden.json', 'https://storage.googleapis.com/.../test/screenshot/golden.json'.
+`,
+    });
+
+    this.addArg_(subparser, {
+      optionNames: ['--url'],
+      exampleValue: 'REGEX[,-REGEX,...]',
+      type: 'array',
+      description: `
+Comma-separated list of regular expression patterns.
+Only HTML files that match at least one pattern will be tested.
+To negate a pattern, prefix it with a '-' character.
+E.g.: '--url=button,-mixins' will test all 'mdc-button' pages _except_ mixins.
+Passing this option more than once is equivalent to passing a single comma-separated value.
+E.g.: '--url=button,-mixins' is the same as '--url=button --url=-mixins'.
+`,
+    });
+
+    this.addArg_(subparser, {
+      optionNames: ['--browser'],
+      exampleValue: 'REGEX[,-REGEX,...]',
+      type: 'array',
+      description: `
+Comma-separated list of regular expression patterns.
+Only browser aliases that match at least one pattern will be tested. (See 'test/screenshot/browser.json'.)
+To negate a pattern, prefix it with a '-' character.
+E.g.: '--browser=chrome,-mobile' will test Chrome on desktop, but not on mobile.
+Passing this option more than once is equivalent to passing a single comma-separated value.
+E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mobile'.
+`,
+    });
+  }
+
   initApproveCommand_() {
     const subparser = this.commandParsers_.addParser('approve', {
       description: 'Approves screenshots from a previous `npm run screenshot:test` report. ' +
@@ -135,7 +206,7 @@ The default behavior is to always build assets before running the tests.
     });
 
     this.addArg_(subparser, {
-      optionNames: ['--diffs'],
+      optionNames: ['--changed'],
       exampleValue: 'mdc-foo/baseline-button-with-icons.html:desktop_windows_chrome@latest,...',
       type: 'array',
       description: 'Comma-separated list of screenshot diffs to approve.',
@@ -156,7 +227,7 @@ The default behavior is to always build assets before running the tests.
     });
 
     this.addArg_(subparser, {
-      optionNames: ['--all-diffs'],
+      optionNames: ['--all-changed'],
       type: 'boolean',
       description: 'Approve all screenshot diffs.',
     });
@@ -234,6 +305,7 @@ The default behavior is to always build assets before running the tests.
 
     this.addTestDirArg_(subparser);
     this.addNoBuildArg_(subparser);
+    this.addOfflineArg_(subparser);
     this.addGcsBucketArg_(subparser);
     this.addGoldenPathArg_(subparser);
 
@@ -339,24 +411,24 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
     return this.args_['--report'];
   }
 
-  /** @return {!Set<string>} */
-  get diffs() {
-    return this.parseApprovedChangeTargets_(this.args_['--diffs']);
+  /** @return {!Array<mdc.test.screenshot.ApprovalId>} */
+  get changed() {
+    return this.parseApprovalIds_(this.args_['--changed']);
   }
 
-  /** @return {!Set<string>} */
+  /** @return {!Array<mdc.test.screenshot.ApprovalId>} */
   get added() {
-    return this.parseApprovedChangeTargets_(this.args_['--added']);
+    return this.parseApprovalIds_(this.args_['--added']);
   }
 
-  /** @return {!Set<string>} */
+  /** @return {!Array<mdc.test.screenshot.ApprovalId>} */
   get removed() {
-    return this.parseApprovedChangeTargets_(this.args_['--removed']);
+    return this.parseApprovalIds_(this.args_['--removed']);
   }
 
   /** @return {boolean} */
-  get allDiffs() {
-    return this.args_['--all-diffs'];
+  get allChanged() {
+    return this.args_['--all-changed'];
   }
 
   /** @return {boolean} */
@@ -382,6 +454,11 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
   /** @return {number} */
   get port() {
     return this.args_['--port'];
+  }
+
+  /** @return {boolean} */
+  get offline() {
+    return this.args_['--offline'];
   }
 
   /**
@@ -416,19 +493,42 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
   }
 
   /**
-   * @param {!Array<string>} list
-   * @return {!Set<string>}
+   * @param {?Array<string>} ids
+   * @return {!Array<!mdc.test.screenshot.ApprovalId>}
    * @private
    */
-  parseApprovedChangeTargets_(list) {
-    list = list || [];
-    return new Set([].concat(...list.map((value) => value.split(','))));
+  parseApprovalIds_(ids) {
+    ids = ids || []; // avoid NPE (the underlying CLI parser returns `null` instead of an empty array)
+    ids = [].concat(...ids.map((value) => value.split(','))); // flatten array of arrays
+    ids = Array.from(new Set(ids)); // de-duplicate
+    return ids.map((id) => {
+      const [htmlFilePath, userAgentAlias] = id.split(':'); // TODO(acdvorak): Document this
+      return ApprovalId.create({
+        html_file_path: htmlFilePath,
+        user_agent_alias: userAgentAlias,
+      });
+    });
+  }
+
+  /**
+   * @return {!Promise<boolean>}
+   */
+  async isOnline() {
+    if (this.offline) {
+      return false;
+    }
+
+    if (typeof this.isOnlineCached_ !== 'boolean') {
+      this.isOnlineCached_ = await checkIsOnline({timeout: Duration.seconds(5).toMillis()});
+    }
+
+    return this.isOnlineCached_;
   }
 
   /**
    * @param {string} rawDiffBase
    * @param {string} defaultGoldenPath
-   * @return {!Promise<!DiffSource>}
+   * @return {!Promise<!mdc.test.screenshot.DiffBase>}
    */
   async parseDiffBase({
     rawDiffBase = this.diffBase,
@@ -438,14 +538,14 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
     // E.g.: `--diff-base=https://storage.googleapis.com/.../golden.json`
     const isUrl = HTTP_URL_REGEX.test(rawDiffBase);
     if (isUrl) {
-      return this.createPublicUrlDiffSource_(rawDiffBase);
+      return this.createPublicUrlDiffBase_(rawDiffBase);
     }
 
     // Diff against a local `golden.json` file.
     // E.g.: `--diff-base=/tmp/golden.json`
     const isLocalFile = await fs.exists(rawDiffBase);
     if (isLocalFile) {
-      return this.createLocalFileDiffSource_(rawDiffBase);
+      return this.createLocalFileDiffBase_(rawDiffBase);
     }
 
     const [inputGoldenRef, inputGoldenPath] = rawDiffBase.split(':');
@@ -455,7 +555,7 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
     // Diff against a specific git commit.
     // E.g.: `--diff-base=abcd1234`
     if (!fullGoldenRef) {
-      return this.createCommitDiffSource_(inputGoldenRef, goldenFilePath);
+      return this.createCommitDiffBase_(inputGoldenRef, goldenFilePath);
     }
 
     const {remoteRef, localRef, tagRef} = this.getRefType_(fullGoldenRef);
@@ -463,131 +563,119 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
     // Diff against a remote git branch.
     // E.g.: `--diff-base=origin/master` or `--diff-base=origin/feat/button/my-fancy-feature`
     if (remoteRef) {
-      return this.createRemoteBranchDiffSource_(remoteRef, goldenFilePath);
+      return this.createRemoteBranchDiffBase_(remoteRef, goldenFilePath);
     }
 
     // Diff against a remote git tag.
     // E.g.: `--diff-base=v0.34.1`
     if (tagRef) {
-      return this.createRemoteTagDiffSource_(tagRef, goldenFilePath);
+      return this.createRemoteTagDiffBase_(tagRef, goldenFilePath);
     }
 
     // Diff against a local git branch.
     // E.g.: `--diff-base=master` or `--diff-base=HEAD`
-    return this.createLocalBranchDiffSource_(localRef, goldenFilePath);
+    return this.createLocalBranchDiffBase_(localRef, goldenFilePath);
   }
 
   /**
    * @param {string} publicUrl
-   * @return {!DiffSource}
+   * @return {!mdc.test.screenshot.DiffBase}
    * @private
    */
-  createPublicUrlDiffSource_(publicUrl) {
-    return {
-      publicUrl,
-      localFilePath: null,
-      gitRevision: null,
-    };
+  createPublicUrlDiffBase_(publicUrl) {
+    return DiffBase.create({
+      type: DiffBase.Type.PUBLIC_URL,
+      public_url: publicUrl,
+    });
   }
 
   /**
    * @param {string} localFilePath
-   * @return {!DiffSource}
+   * @return {!mdc.test.screenshot.DiffBase}
    * @private
    */
-  createLocalFileDiffSource_(localFilePath) {
-    return {
-      publicUrl: null,
-      localFilePath,
-      gitRevision: null,
-    };
+  createLocalFileDiffBase_(localFilePath) {
+    return DiffBase.create({
+      type: DiffBase.Type.FILE_PATH,
+      file_path: localFilePath,
+    });
   }
 
   /**
    * @param {string} commit
    * @param {string} snapshotFilePath
-   * @return {!DiffSource}
+   * @return {!mdc.test.screenshot.DiffBase}
    * @private
    */
-  createCommitDiffSource_(commit, snapshotFilePath) {
-    return {
-      publicUrl: null,
-      localFilePath: null,
-      gitRevision: {
-        commit,
-        snapshotFilePath,
-        remote: null,
-        branch: null,
-        tag: null,
-      },
-    };
+  createCommitDiffBase_(commit, snapshotFilePath) {
+    return DiffBase.create({
+      type: DiffBase.Type.GIT_REVISION,
+      git_revision: GitRevision.create({
+        snapshot_file_path: snapshotFilePath,
+        commit: commit,
+      }),
+    });
   }
 
   /**
    * @param {string} remoteRef
    * @param {string} snapshotFilePath
-   * @return {!DiffSource}
+   * @return {!mdc.test.screenshot.DiffBase}
    * @private
    */
-  async createRemoteBranchDiffSource_(remoteRef, snapshotFilePath) {
+  async createRemoteBranchDiffBase_(remoteRef, snapshotFilePath) {
     const allRemoteNames = await this.gitRepo_.getRemoteNames();
     const remote = allRemoteNames.find((curRemoteName) => remoteRef.startsWith(curRemoteName + '/'));
     const branch = remoteRef.substr(remote.length + 1); // add 1 for forward-slash separator
     const commit = await this.gitRepo_.getShortCommitHash(remoteRef);
 
-    return {
-      publicUrl: null,
-      localFilePath: null,
-      gitRevision: {
-        snapshotFilePath,
+    return DiffBase.create({
+      type: DiffBase.Type.GIT_REVISION,
+      git_revision: GitRevision.create({
+        snapshot_file_path: snapshotFilePath,
         commit,
         remote,
         branch,
-        tag: null,
-      },
-    };
+      }),
+    });
   }
 
   /**
    * @param {string} tagRef
    * @param {string} snapshotFilePath
-   * @return {!DiffSource}
+   * @return {!mdc.test.screenshot.DiffBase}
    * @private
    */
-  async createRemoteTagDiffSource_(tagRef, snapshotFilePath) {
+  async createRemoteTagDiffBase_(tagRef, snapshotFilePath) {
     const commit = await this.gitRepo_.getShortCommitHash(tagRef);
-    return {
-      publicUrl: null,
-      localFilePath: null,
-      gitRevision: {
-        snapshotFilePath,
+
+    return DiffBase.create({
+      type: DiffBase.Type.GIT_REVISION,
+      git_revision: GitRevision.create({
+        snapshot_file_path: snapshotFilePath,
         commit,
         remote: 'origin',
-        branch: null,
         tag: tagRef,
-      },
-    };
+      }),
+    });
   }
 
   /**
    * @param {string} branch
    * @param {string} snapshotFilePath
-   * @return {!DiffSource}
+   * @return {!mdc.test.screenshot.DiffBase}
    * @private
    */
-  async createLocalBranchDiffSource_(branch, snapshotFilePath) {
+  async createLocalBranchDiffBase_(branch, snapshotFilePath) {
     const commit = await this.gitRepo_.getShortCommitHash(branch);
-    return {
-      publicUrl: null,
-      localFilePath: null,
-      gitRevision: {
-        snapshotFilePath,
+    return DiffBase.create({
+      type: DiffBase.Type.GIT_REVISION,
+      git_revision: GitRevision.create({
+        snapshot_file_path: snapshotFilePath,
         commit,
-        remote: null,
         branch,
-        tag: null,
-      },
-    };
+      }),
+    });
   }
 
   /**
@@ -610,4 +698,4 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
   }
 }
 
-module.exports = CliArgParser;
+module.exports = Cli;

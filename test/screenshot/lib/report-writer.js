@@ -16,12 +16,12 @@
 
 const CbtUserAgent = require('./cbt-user-agent');
 const GitRepo = require('./git-repo');
-const CliArgParser = require('./cli-arg-parser');
+const Cli = require('./cli');
 const childProcess = require('mz/child_process');
 
 const GITHUB_REPO_URL = 'https://github.com/material-components/material-components-web';
 
-class ReportGenerator {
+class ReportWriter {
   /**
    * @param {!RunReport} runReport
    */
@@ -34,11 +34,11 @@ class ReportGenerator {
 
     /**
      * @type {{
-     *   diffs: !Map<string, !Array<!ImageDiffJson>>,
-     *   added: !Map<string, !Array<!ImageDiffJson>>,
-     *   removed: !Map<string, !Array<!ImageDiffJson>>,
-     *   unchanged: !Map<string, !Array<!ImageDiffJson>>,
-     *   skipped: !Map<string, !Array<!ImageDiffJson>>,
+     *   changed: !Map<string, !Array<!ImageComparison>>,
+     *   added: !Map<string, !Array<!ImageComparison>>,
+     *   removed: !Map<string, !Array<!ImageComparison>>,
+     *   unchanged: !Map<string, !Array<!ImageComparison>>,
+     *   skipped: !Map<string, !Array<!ImageComparison>>,
      * }}
      * @private
      */
@@ -57,10 +57,10 @@ class ReportGenerator {
     this.gitRepo_ = new GitRepo();
 
     /**
-     * @type {!CliArgParser}
+     * @type {!Cli}
      * @private
      */
-    this.cliArgs_ = new CliArgParser();
+    this.cli_ = new Cli();
 
     this.groupAllChangelistsByFile_();
   }
@@ -79,8 +79,8 @@ class ReportGenerator {
   }
 
   /**
-   * @param {!Array<!ImageDiffJson>} changelist
-   * @param {!Map<string, !Array<!ImageDiffJson>>} map
+   * @param {!Array<!ImageComparison>} changelist
+   * @param {!Map<string, !Array<!ImageComparison>>} map
    * @private
    */
   groupOneChangelistByFile_(changelist, map) {
@@ -105,7 +105,7 @@ class ReportGenerator {
     const numSkipped = runResult.skipped.length;
 
     this.iconUrlMap_ = {};
-    const allUserAgents = (await CbtUserAgent.fetchUserAgents()).allUserAgents;
+    const allUserAgents = (await CbtUserAgent.fetchUserAgentSet()).allUserAgents;
     for (const userAgent of allUserAgents) {
       this.iconUrlMap_[userAgent.alias] = userAgent.browser.parsedIconUrl;
     }
@@ -148,7 +148,7 @@ class ReportGenerator {
       map: this.reportMaps_.diffs,
       isOpen: true,
       isCheckable: true,
-      changeGroupId: 'diffs',
+      changeGroupId: 'changed',
       heading: 'Diff',
       pluralize: true,
     })}
@@ -201,21 +201,21 @@ class ReportGenerator {
   async getMetadataMarkup_() {
     const timestamp = (new Date()).toISOString();
 
-    const {runnableTestCases, skippedTestCases, runnableUserAgents, skippedUserAgents} = this.runReport_.runTarget;
+    const {runnableTestPages, skippedTestPages, runnableUserAgents, skippedUserAgents} = this.runReport_.runTarget;
 
-    const numRunnableTestCases = runnableTestCases.length;
-    const numSkippedTestCases = skippedTestCases.length;
-    const numTotalTestCases = numRunnableTestCases + numSkippedTestCases;
+    const numRunnableTestPages = runnableTestPages.length;
+    const numSkippedTestPages = skippedTestPages.length;
+    const numTotalTestPages = numRunnableTestPages + numSkippedTestPages;
 
     const numRunnableUserAgents = runnableUserAgents.length;
     const numSkippedUserAgents = skippedUserAgents.length;
     const numTotalUserAgents = numRunnableUserAgents + numSkippedUserAgents;
 
-    const numTotalScreenshots = numTotalTestCases * numTotalUserAgents;
-    const numRunnableScreenshots = numRunnableTestCases * numRunnableUserAgents;
+    const numTotalScreenshots = numTotalTestPages * numTotalUserAgents;
+    const numRunnableScreenshots = numRunnableTestPages * numRunnableUserAgents;
     const numSkippedScreenshots = numTotalScreenshots - numRunnableScreenshots;
 
-    const testCaseCountMarkup = this.getMetadataFilterCountMarkup_(numRunnableTestCases, numSkippedTestCases);
+    const testPageCountMarkup = this.getMetadataFilterCountMarkup_(numRunnableTestPages, numSkippedTestPages);
     const browserCountMarkup = this.getMetadataFilterCountMarkup_(numRunnableUserAgents, numSkippedUserAgents);
     const screenshotCountMarkup = this.getMetadataFilterCountMarkup_(numRunnableScreenshots, numSkippedScreenshots);
 
@@ -236,8 +236,8 @@ class ReportGenerator {
       .join(' ')
     ;
 
-    const goldenDiffSource = await this.cliArgs_.parseDiffBase();
-    const snapshotDiffSource = await this.cliArgs_.parseDiffBase({
+    const goldenDiffBase = await this.cli_.parseDiffBase();
+    const snapshotDiffBase = await this.cli_.parseDiffBase({
       rawDiffBase: 'HEAD',
     });
 
@@ -268,7 +268,7 @@ class ReportGenerator {
         </tr>
         <tr>
           <th class="report-metadata__cell report-metadata__cell--key">Test Cases:</th>
-          <td class="report-metadata__cell report-metadata__cell--val">${testCaseCountMarkup}</td>
+          <td class="report-metadata__cell report-metadata__cell--val">${testPageCountMarkup}</td>
         </tr>
         <tr>
           <th class="report-metadata__cell report-metadata__cell--key">Browsers:</th>
@@ -281,14 +281,14 @@ class ReportGenerator {
         <tr>
           <th class="report-metadata__cell report-metadata__cell--key">Golden:</th>
           <td class="report-metadata__cell report-metadata__cell--val">
-            ${await this.getMetadataCommitLinkMarkup_(goldenDiffSource)}
+            ${await this.getMetadataCommitLinkMarkup_(goldenDiffBase)}
           </td>
         </tr>
         <tr>
           <th class="report-metadata__cell report-metadata__cell--key">Snapshot Base:</th>
           <td class="report-metadata__cell report-metadata__cell--val">
-            ${await this.getMetadataCommitLinkMarkup_(snapshotDiffSource)}
-            ${await this.getMetadataLocalChangesMarkup_(snapshotDiffSource)}
+            ${await this.getMetadataCommitLinkMarkup_(snapshotDiffBase)}
+            ${await this.getMetadataLocalChangesMarkup_(snapshotDiffBase)}
           </td>
         </tr>
         <tr>
@@ -327,21 +327,21 @@ class ReportGenerator {
   }
 
   /**
-   * @param {!DiffSource} diffSource
+   * @param {!DiffBase} DiffBase
    * @return {!Promise<string>}
    * @private
    */
-  async getMetadataCommitLinkMarkup_(diffSource) {
-    if (diffSource.publicUrl) {
-      return `<a href="${diffSource.publicUrl}">${diffSource.publicUrl}</a>`;
+  async getMetadataCommitLinkMarkup_(DiffBase) {
+    if (DiffBase.publicUrl) {
+      return `<a href="${DiffBase.publicUrl}">${DiffBase.publicUrl}</a>`;
     }
 
-    if (diffSource.localFilePath) {
-      return `${diffSource.localFilePath} (local file)`;
+    if (DiffBase.localFilePath) {
+      return `${DiffBase.localFilePath} (local file)`;
     }
 
-    if (diffSource.gitRevision) {
-      const rev = diffSource.gitRevision;
+    if (DiffBase.gitRevision) {
+      const rev = DiffBase.gitRevision;
 
       if (rev.branch) {
         const branchDisplayName = rev.remote ? `${rev.remote}/${rev.branch}` : rev.branch;
@@ -391,8 +391,8 @@ on tag
   }
 
   /**
-   * @param {!Array<!ImageDiffJson>} changelist
-   * @param {!Map<string, !Array<!ImageDiffJson>>} map
+   * @param {!Array<!ImageComparison>} changelist
+   * @param {!Map<string, !Array<!ImageComparison>>} map
    * @param {boolean} isOpen
    * @param {boolean} isCheckable
    * @param {string} changeGroupId
@@ -422,8 +422,8 @@ on tag
   }
 
   /**
-   * @param {!Array<!ImageDiffJson>} changelist
-   * @param {!Map<string, !Array<!ImageDiffJson>>} map
+   * @param {!Array<!ImageComparison>} changelist
+   * @param {!Map<string, !Array<!ImageComparison>>} map
    * @param {boolean} isCheckable
    * @param {string} changeGroupId
    * @param {string} headingPluralized
@@ -438,23 +438,23 @@ on tag
 
     const htmlFilePaths = Array.from(map.keys());
     return htmlFilePaths.map((htmlFilePath) => {
-      return this.getTestCaseMarkup_({htmlFilePath, map, isCheckable, changeGroupId, headingPluralized});
+      return this.getTestPageMarkup_({htmlFilePath, map, isCheckable, changeGroupId, headingPluralized});
     }).join('\n');
   }
 
   /**
    * @param {string} htmlFilePath
-   * @param {!Map<string, !Array<!ImageDiffJson>>} map
+   * @param {!Map<string, !Array<!ImageComparison>>} map
    * @param {boolean} isCheckable
    * @param {string} changeGroupId
    * @param {string} headingPluralized
    * @return {string}
    * @private
    */
-  getTestCaseMarkup_({htmlFilePath, map, isCheckable, changeGroupId, headingPluralized}) {
+  getTestPageMarkup_({htmlFilePath, map, isCheckable, changeGroupId, headingPluralized}) {
     const diffs = map.get(htmlFilePath);
-    const goldenPageUrl = diffs[0].goldenPageUrl;
-    const snapshotPageUrl = diffs[0].snapshotPageUrl;
+    const expectedTestPageUrl = diffs[0].expectedTestPageUrl;
+    const actualTestPageUrl = diffs[0].actualTestPageUrl;
 
     return `
 <details class="report-file" open
@@ -464,7 +464,7 @@ on tag
   <summary class="report-file__heading">
     ${this.getCheckboxMarkup_({changeGroupId, htmlFilePath, isCheckable, numScreenshots: diffs.length})}
     ${diffs.length} ${headingPluralized} in ${htmlFilePath}
-    ${this.getGoldenAndSnapshotLinkMarkup_({goldenPageUrl, snapshotPageUrl})}
+    ${this.getGoldenAndSnapshotLinkMarkup_({expectedTestPageUrl, actualTestPageUrl})}
     ${this.getReviewStatusMarkup_({changeGroupId, htmlFilePath, isCheckable, numScreenshots: diffs.length})}
   </summary>
   <div class="report-file__content">
@@ -475,18 +475,18 @@ on tag
   }
 
   /**
-   * @param {string} goldenPageUrl
-   * @param {string} snapshotPageUrl
+   * @param {string} expectedTestPageUrl
+   * @param {string} actualTestPageUrl
    * @return {string}
    * @private
    */
-  getGoldenAndSnapshotLinkMarkup_({goldenPageUrl, snapshotPageUrl}) {
+  getGoldenAndSnapshotLinkMarkup_({expectedTestPageUrl, actualTestPageUrl}) {
     const fragments = [];
-    if (goldenPageUrl) {
-      fragments.push(`<a href="${goldenPageUrl}">golden</a>`);
+    if (expectedTestPageUrl) {
+      fragments.push(`<a href="${expectedTestPageUrl}">golden</a>`);
     }
-    if (snapshotPageUrl) {
-      fragments.push(`<a href="${snapshotPageUrl}">snapshot</a>`);
+    if (actualTestPageUrl) {
+      fragments.push(`<a href="${actualTestPageUrl}">snapshot</a>`);
     }
     if (fragments.length === 0) {
       return '';
@@ -495,7 +495,7 @@ on tag
   }
 
   /**
-   * @param {!ImageDiffJson} diff
+   * @param {!ImageComparison} diff
    * @param {string} changeGroupId
    * @param {string} htmlFilePath
    * @param {boolean} isCheckable
@@ -518,9 +518,9 @@ on tag
     ${this.getReviewStatusMarkup_({changeGroupId, htmlFilePath, userAgentAlias, isCheckable, numScreenshots: 1})}
   </summary>
   <div class="report-browser__content">
-    ${this.getDiffCellMarkup_('Golden', diff.expectedImageUrl)}
+    ${this.getDiffCellMarkup_('Golden', diff.expectedScreenshotImageUrl)}
     ${this.getDiffCellMarkup_('Diff', diff.diffImageUrl)}
-    ${this.getDiffCellMarkup_('Snapshot', diff.actualImageUrl)}
+    ${this.getDiffCellMarkup_('Snapshot', diff.actualScreenshotImageUrl)}
   </div>
 </details>
 `;
@@ -673,4 +673,4 @@ on tag
   }
 }
 
-module.exports = ReportGenerator;
+module.exports = ReportWriter;

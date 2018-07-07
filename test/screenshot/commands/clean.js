@@ -16,25 +16,18 @@
 
 'use strict';
 
-const CliArgParser = require('../lib/cli-arg-parser');
+const Cli = require('../lib/cli');
 const del = require('del');
 const mkdirp = require('mkdirp');
 const path = require('path');
 
 module.exports = {
   async runAsync() {
-    const cliArgs = new CliArgParser();
-
-    const relativePathPatterns = [
-      'out',
-      'report.html',
-      'report.json',
-    ].map((filename) => {
-      return path.join(cliArgs.testDir, filename);
+    const cli = new Cli();
+    const relativePathPatterns = ['out'].map((filename) => {
+      return path.join(cli.testDir, filename);
     });
-
     await del(relativePathPatterns);
-
-    mkdirp.sync(path.join(cliArgs.testDir, 'out'));
+    mkdirp.sync(path.join(cli.testDir, 'out'));
   },
 };

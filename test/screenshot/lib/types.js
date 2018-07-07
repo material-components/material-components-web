@@ -18,59 +18,6 @@
 
 
 /*
- * Run Report
- */
-
-
-/**
- * @typedef {{
- *   runTarget: ?RunTarget,
- *   runResult: ?RunResult,
- * }}
- */
-let RunReport;
-
-/**
- * @typedef {{
- *   runnableUserAgents: !Array<!CbtUserAgent>,
- *   skippedUserAgents: !Array<!CbtUserAgent>,
- *   runnableTestCases: !Array<!UploadableTestCase>,
- *   skippedTestCases: !Array<!UploadableTestCase>,
- *   baseGoldenJsonData: !SnapshotSuiteJson,
- * }}
- */
-let RunTarget;
-
-/**
- * @typedef {{
- *   publicReportPageUrl: ?string,
- *   publicReportJsonUrl: ?string,
- *   diffs: !Array<!ImageDiffJson>,
- *   added: !Array<!ImageDiffJson>,
- *   removed: !Array<!ImageDiffJson>,
- *   unchanged: !Array<!ImageDiffJson>,
- *   skipped: !Array<!ImageDiffJson>,
- *   approvedGoldenJsonData: ?SnapshotSuiteJson,
- * }}
- */
-let RunResult;
-
-/**
- * @typedef {{
- *   htmlFilePath: string,
- *   userAgentAlias: string,
- *   goldenPageUrl: ?string,
- *   snapshotPageUrl: ?string,
- *   actualImageUrl: ?string,
- *   expectedImageUrl: ?string,
- *   diffImageBuffer ?Buffer,
- *   diffImageUrl: ?string,
- * }}
- */
-let ImageDiffJson;
-
-
-/*
  * Report UI
  */
 
@@ -87,7 +34,7 @@ let ReportUiState;
 
 /**
  * @typedef {{
- *   diffs: !ReportUiChangelistState,
+ *   changed: !ReportUiChangelistState,
  *   added: !ReportUiChangelistState,
  *   removed: !ReportUiChangelistState,
  * }}
@@ -131,121 +78,6 @@ let ReportUiReviewStatusCountDict;
 
 
 /*
- * Filesystem
- */
-
-
-/**
- * An HTML file with screenshots.
- */
-class UploadableTestCase {
-  /**
-   * @param {!UploadableFile} htmlFile
-   * @param {boolean} isRunnable
-   */
-  constructor({
-    htmlFile,
-    isRunnable,
-  }) {
-    /** @type {!UploadableFile} */
-    this.htmlFile = htmlFile;
-
-    /** @type {boolean} */
-    this.isRunnable = isRunnable;
-
-    /** @type {!Array<!UploadableFile>} */
-    this.screenshotImageFiles = [];
-  }
-}
-
-/**
- * A file to be uploaded to Cloud Storage.
- */
-class UploadableFile {
-  constructor({
-    destinationBaseUrl,
-    destinationParentDirectory,
-    destinationRelativeFilePath,
-    queueIndex = null,
-    queueLength = null,
-    fileContent = null,
-    userAgent = null,
-  }) {
-    /** @type {string} */
-    this.destinationParentDirectory = destinationParentDirectory;
-
-    /** @type {string} */
-    this.destinationRelativeFilePath = destinationRelativeFilePath;
-
-    /** @type {string} */
-    this.destinationAbsoluteFilePath = `${this.destinationParentDirectory}/${this.destinationRelativeFilePath}`;
-
-    /** @type {string} */
-    this.publicUrl = `${destinationBaseUrl}${this.destinationAbsoluteFilePath}`;
-
-    /** @type {?Buffer|?string} */
-    this.fileContent = fileContent;
-
-    /** @type {?CbtUserAgent} */
-    this.userAgent = userAgent;
-
-    /** @type {number} */
-    this.queueIndex = queueIndex;
-
-    /** @type {number} */
-    this.queueLength = queueLength;
-  }
-}
-
-
-/*
- * golden.json type definitions
- */
-
-
-/**
- * Dictionary of HTML file paths (relative to `test/screenshot/`) that map to the screenshot capture data for that file.
- * E.g.:
- * ```json
- * {
- *   "mdc-button/classes/baseline-button-with-icons.html": {
- *     "publicUrl": "https://storage.googleapis.com/.../baseline.html",
- *     "screenshots": {...}
- *   },
- *   "mdc-button/classes/dense.html": {
- *     "publicUrl": "https://storage.googleapis.com/.../dense.html",
- *     "screenshots": {...}
- *   },
- *   ...
- * }
- * ```
- * @typedef {!Object<string, !SnapshotPageJson>}
- */
-let SnapshotSuiteJson;
-
-/**
- * @typedef {{
- *   publicUrl: string,
- *   screenshots: !SnapshotResultJson,
- * }}
- */
-let SnapshotPageJson;
-
-/**
- * Dictionary of browser API names to public screenshot image URLs.
- * E.g.:
- * ```json
- * {
- *   "win10e15_chrome63x64_ltr": "https://storage.googleapis.com/.../baseline.html/win10e15_chrome63x64_ltr.png",
- *   "win10e16_edge16_ltr": "https://storage.googleapis.com/.../baseline.html/win10e16_edge16_ltr.png",
- * }
- * ```
- * @typedef {!Object<string, string>}
- */
-let SnapshotResultJson;
-
-
-/*
  * CLI args
  */
 
@@ -261,26 +93,6 @@ let SnapshotResultJson;
  * }}
  */
 let CliOptionConfig;
-
-/**
- * @typedef {{
- *   publicUrl: ?string,
- *   localFilePath: ?string,
- *   gitRevision: ?GitRevision,
- * }}
- */
-let DiffSource;
-
-/**
- * @typedef {{
- *   snapshotFilePath: string,
- *   commit: string,
- *   remote: ?string,
- *   branch: ?string,
- *   tag: ?string,
- * }}
- */
-let GitRevision;
 
 
 /*
@@ -320,12 +132,15 @@ let ResembleApiBoundingBox;
  * Represents a single browser/device combination.
  * E.g., "Chrome 62" on "Nexus 6P with Android 7.0".
  * This is a custom, MDC-specific data type; it does not come from the CBT API.
+ * TODO(acdvorak): Implement "selenium" properties
  * @typedef {{
  *   fullCbtApiName: string,
  *   alias: string,
  *   device: !CbtDevice,
  *   browser: !CbtBrowser,
  *   isRunnable: boolean,
+ *   seleniumBrowserName: string,
+ *   seleniumBrowserCapabilities: ?Object,
  * }}
  */
 let CbtUserAgent;
@@ -340,7 +155,7 @@ let CbtUserAgent;
  *   version: string,
  *   type: string,
  *   device: string,
- *   device_type: string,
+ *   device_type: ?string,
  *   browsers: !Array<!CbtBrowser>,
  *   resolutions: !Array<!CbtDeviceResolution>,
  *   parsedVersionNumber: ?string,
@@ -361,7 +176,7 @@ let CbtDevice;
  *   icon_class: string,
  *   selenium_version: string,
  *   webdriver_type: string,
- *   webdriver_version: string,
+ *   webdriver_version: ?string,
  *   parsedVersionNumber: ?string,
  *   parsedIconUrl: ?string,
  * }}
@@ -439,14 +254,3 @@ let ChildProcessSpawnResult;
  * @typedef {{r: number, g: number, b: number, a: number}}
  */
 let RGBA;
-
-
-/*
- * Module exports
- */
-
-
-module.exports = {
-  UploadableTestCase,
-  UploadableFile,
-};
