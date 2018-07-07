@@ -18,7 +18,6 @@
 import bel from 'bel';
 import {assert} from 'chai';
 import td from 'testdouble';
-import domEvents from 'dom-events';
 
 import {
   MDCTabScroller,
@@ -49,34 +48,31 @@ function setupTest() {
   return {root, component, content, area};
 }
 
-test('#adapter.addScrollAreaClass adds a class to the area element', () => {
-  const {area, component} = setupTest();
-  component.getDefaultFoundation().adapter_.addScrollAreaClass('foo');
-  assert.isTrue(area.classList.contains('foo'));
+test('#destroy() calls super.destroy()', () => {
+  const {component} = setupTest();
+  const foundation = td.object(component.foundation_);
+  component.foundation_ = foundation;
+  component.destroy();
+  td.verify(foundation.destroy(), {times: 1});
 });
 
-test('#adapter.removeScrollAreaClass removes a class from the area element', () => {
-  const {area, component} = setupTest();
-  area.classList.add('foo');
-  component.getDefaultFoundation().adapter_.removeScrollAreaClass('foo');
-  assert.isFalse(area.classList.contains('foo'));
+test('#adapter.addClass adds a class to the root element', () => {
+  const {root, component} = setupTest();
+  component.getDefaultFoundation().adapter_.addClass('foo');
+  assert.isTrue(root.classList.contains('foo'));
 });
 
-test('#adapter.registerScrollAreaEventHandler adds an event listener on the area element', () => {
-  const {area, component} = setupTest();
-  const handler = td.func('transitionend handler');
-  component.getDefaultFoundation().adapter_.registerScrollAreaEventHandler('transitionend', handler);
-  domEvents.emit(area, 'transitionend');
-  td.verify(handler(td.matchers.anything()));
+test('#adapter.removeClass removes a class from the root element', () => {
+  const {root, component} = setupTest();
+  root.classList.add('foo');
+  component.getDefaultFoundation().adapter_.removeClass('foo');
+  assert.isFalse(root.classList.contains('foo'));
 });
 
-test('#adapter.deregisterScrollAreaEventHandler remoes an event listener from the root element', () => {
+test('#adapter.eventTargetMatchesSelector returns true if the event target matches the selector', () => {
   const {area, component} = setupTest();
-  const handler = td.func('transitionend handler');
-  area.addEventListener('transitionend', handler);
-  component.getDefaultFoundation().adapter_.deregisterScrollAreaEventHandler('transitionend', handler);
-  domEvents.emit(area, 'transitionend');
-  td.verify(handler(td.matchers.anything()), {times: 0});
+  assert.isTrue(component.getDefaultFoundation().adapter_.eventTargetMatchesSelector(
+    area, MDCTabScrollerFoundation.strings.AREA_SELECTOR));
 });
 
 test('#adapter.setScrollContentStyleProperty sets a style property on the content element', () => {
@@ -179,10 +175,10 @@ test('#incrementScroll calls incrementScroll', () => {
   td.verify(mockFoundation.incrementScroll(10), {times: 1});
 });
 
-test('#computeCurrentScrollPosition() calls computeCurrentScrollPosition', () => {
+test('#getScrollPosition() calls getScrollPosition', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
-  component.computeCurrentScrollPosition();
-  td.verify(mockFoundation.computeCurrentScrollPosition(), {times: 1});
+  component.getScrollPosition();
+  td.verify(mockFoundation.getScrollPosition(), {times: 1});
 });
 
 function setupTestRTL() {

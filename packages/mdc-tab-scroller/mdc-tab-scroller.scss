@@ -32,10 +32,6 @@
   }
 }
 
-.mdc-tab-scroller__scroll-area--animating {
-  -webkit-overflow-scrolling: auto;
-}
-
 .mdc-tab-scroller__scroll-content {
   display: flex;
   flex: 1 0 auto;
@@ -45,6 +41,10 @@
   will-change: transform;
 }
 
-.mdc-tab-scroller__scroll-area--animating .mdc-tab-scroller__scroll-content {
+.mdc-tab-scroller--animating .mdc-tab-scroller__scroll-area {
+  -webkit-overflow-scrolling: auto;
+}
+
+.mdc-tab-scroller--animating .mdc-tab-scroller__scroll-content {
   transition: 250ms transform $mdc-animation-standard-curve-timing-function;
 }

@@ -35,30 +35,24 @@ let MDCTabScrollerEdges;
  */
 class MDCTabScrollerAdapter {
   /**
-   * Registers an event listener on the root element for a given event.
-   * @param {string} evtType
-   * @param {function(!Event): undefined} handler
-   */
-  registerScrollAreaEventHandler(evtType, handler) {}
-
-  /**
-   * Deregisters an event listener on the root element for a given event.
-   * @param {string} evtType
-   * @param {function(!Event): undefined} handler
-   */
-  deregisterScrollAreaEventHandler(evtType, handler) {}
-
-  /**
    * Adds the given className to the root element.
    * @param {string} className The className to add
    */
-  addScrollAreaClass(className) {}
+  addClass(className) {}
 
   /**
    * Removes the given className from the root element.
    * @param {string} className The className to remove
    */
-  removeScrollAreaClass(className) {}
+  removeClass(className) {}
+
+  /**
+   * Returns whether the event target matches given className.
+   * @param {EventTarget} evtTarget The event target
+   * @param {string} selector The selector to check
+   * @return {boolean}
+   */
+  eventTargetMatchesSelector(evtTarget, selector) {}
 
   /**
    * Sets a style property of the content element to the passed value.
@@ -68,7 +62,7 @@ class MDCTabScrollerAdapter {
   setScrollContentStyleProperty(propName, value) {}
 
   /**
-   * Returns the content element's computed style value of the given css property `propertyName`.
+   * Returns the scroll content element's computed style value of the given css property `propertyName`.
    * We achieve this via `getComputedStyle(...).getPropertyValue(propertyName)`.
    * @param {string} propertyName
    * @return {string}
@@ -76,37 +70,37 @@ class MDCTabScrollerAdapter {
   getScrollContentStyleValue(propertyName) {}
 
   /**
-   * Sets the scrollLeft value of the root element to the passed value.
+   * Sets the scrollLeft value of the scroll area element to the passed value.
    * @param {number} scrollLeft The new scrollLeft value
    */
   setScrollAreaScrollLeft(scrollLeft) {}
 
   /**
-   * Returns the scrollLeft value of the root element.
+   * Returns the scrollLeft value of the scroll area element.
    * @return {number}
    */
   getScrollAreaScrollLeft() {}
 
   /**
-   * Returns the offsetWidth of the content element.
+   * Returns the offsetWidth of the scroll content element.
    * @return {number}
    */
   getScrollContentOffsetWidth() {}
 
   /**
-   * Returns the offsetWitdth of the root element.
+   * Returns the offsetWitdth of the scroll area element.
    * @return {number}
    */
   getScrollAreaOffsetWidth() {}
 
   /**
-   * Returns the bounding client rect of the root element.
+   * Returns the bounding client rect of the scroll area element.
    * @return {!ClientRect}
    */
   computeScrollAreaClientRect() {}
 
   /**
-   * Returns the bounding client rect of the content element.
+   * Returns the bounding client rect of the scroll content element.
    * @return {!ClientRect}
    */
   computeScrollContentClientRect() {}

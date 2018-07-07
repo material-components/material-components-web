@@ -25,16 +25,6 @@ npm install @material/tab-scroller
 
 ## Usage
 
-### RTL Support
-
-While the `scrollLeft` value for a scroll area behaves the same in LTR mode, ranging from 0 at the start to N at the end, the value for `scrollLeft` in RTL mode differs by browser. There are three different value ranges:
-
-- "RTL Default", where the start (right-most point) is N and the end (left-most point) is 0
-- "RTL Negative", where the start (right-most point) is 0 and the end (left-most point) is -N
-- "RTL Reverse", where the start (right-most point) is 0 and the end (left-most point) is N
-
-The Tab Scroller makes all browsers use the RTL `scrollLeft` value in the "RTL Negative" format, where 0 is the start (right-most) value and -N is the end (left-most) value.
-
 ### HTML Structure
 
 ```html
@@ -59,16 +49,14 @@ Method Signature | Description
 --- | ---
 `scrollTo(scrollX: number) => void` | Scrolls to the scrollX value
 `incrementScroll(scrollX: number) => void` | Increments the current scroll value by the scrollX value
-`computeCurrentScrollPosition() => number` | Returns the current visual scroll position
+`getScrollPosition() => number` | Returns the current visual scroll position
 
 ### `MDCTabScrollerAdapter`
 
 Method Signature | Description
 --- | ---
-`addScrollAreaClass(className: string) => void` | Adds a class to the scroll area element
-`removeScrollAreaClass(className: string) => void` | Removes a class from the scroll area element
-`registerScrollAreaEventHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the scroll area element
-`deregisterScrollAreaEventHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the scroll area element
+`addClass(className: string) => void` | Adds a class to the root element
+`removeClass(className: string) => void` | Removes a class from the root element
 `setScrollContentStyleProperty(property: string, value: string) => void` | Sets the style property of the scroll content element
 `getScrollContentStyleValue(property: string) => string` | Returns the style property value of the scroll content element
 `setScrollAreaScrollLeft(scrollLeft: number) => void` | Sets the scroll area element scrollLeft
@@ -82,4 +70,4 @@ Method Signature | Description
 --- | ---
 `scrollTo(scrollX: number) => void` | Scrolls to the scrollX value
 `incrementScroll(scrollX: number) => void` | Increments the current scroll value by the scrollX value
-`computeCurrentScrollPosition() => number` | Returns the current visual scroll position
+`getScrollPosition() => number` | Returns the current visual scroll position

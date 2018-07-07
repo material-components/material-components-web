@@ -29,9 +29,9 @@ const setup = () => {
   return {scroller};
 };
 
-test('#computeCurrentScrollPositionRTL() is abstract and does nothing', () => {
+test('#getScrollPositionRTL() is abstract and does nothing', () => {
   const {scroller} = setup();
-  assert.isUndefined(scroller.computeCurrentScrollPositionRTL());
+  assert.isUndefined(scroller.getScrollPositionRTL());
 });
 
 test('#scrollToRTL() is abstract and does nothing', () => {

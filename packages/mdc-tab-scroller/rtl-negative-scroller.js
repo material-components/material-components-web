@@ -30,7 +30,7 @@ class MDCTabScrollerRTLNegative extends MDCTabScrollerRTL {
    * @param {number} translateX The current translateX position
    * @return {number}
    */
-  computeCurrentScrollPositionRTL(translateX) {
+  getScrollPositionRTL(translateX) {
     const currentScrollLeft = this.adapter_.getScrollAreaScrollLeft();
     return Math.round(currentScrollLeft - translateX);
   }

@@ -33,14 +33,14 @@ const setupTest = ({rootWidth, contentWidth, scrollLeft}) => {
   return {scroller, mockAdapter};
 };
 
-test('#computeCurrentScrollPositionRTL() returns the negated scrollLeft value', () => {
+test('#getScrollPositionRTL() returns the negated scrollLeft value', () => {
   const {scroller} = setupTest({rootWidth: 200, contentWidth: 1000, scrollLeft: 677});
-  assert.strictEqual(scroller.computeCurrentScrollPositionRTL(0), -677);
+  assert.strictEqual(scroller.getScrollPositionRTL(0), -677);
 });
 
-test('#computeCurrentScrollPositionRTL() returns the negated current scroll distance minus translateX', () => {
+test('#getScrollPositionRTL() returns the negated current scroll distance minus translateX', () => {
   const {scroller} = setupTest({rootWidth: 200, contentWidth: 1000, scrollLeft: 677});
-  assert.strictEqual(scroller.computeCurrentScrollPositionRTL(11), -666);
+  assert.strictEqual(scroller.getScrollPositionRTL(11), -666);
 });
 
 test('#scrollToRTL() returns a normalized scrollX property', () => {

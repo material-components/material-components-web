@@ -30,7 +30,7 @@ class MDCTabScrollerRTLReverse extends MDCTabScrollerRTL {
    * @param {number} translateX
    * @return {number}
    */
-  computeCurrentScrollPositionRTL(translateX) {
+  getScrollPositionRTL(translateX) {
     const currentScrollLeft = this.adapter_.getScrollAreaScrollLeft();
     // Scroll values on most browsers are ints instead of floats so we round
     return Math.round(-currentScrollLeft + translateX);

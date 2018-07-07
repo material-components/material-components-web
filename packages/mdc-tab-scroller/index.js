@@ -36,11 +36,17 @@ class MDCTabScroller extends MDCComponent {
   constructor(...args) {
     super(...args);
 
-    /** @type {?Element} */
+    /** @private {?Element} */
     this.content_;
 
-    /** @type {?Element} */
+    /** @private {?Element} */
     this.area_;
+
+    /** @private {?function(?Event): undefined} */
+    this.handleInteraction_;
+
+    /** @private {?function(!Event): undefined} */
+    this.handleTransitionEnd_;
   }
 
   initialize() {
@@ -48,15 +54,43 @@ class MDCTabScroller extends MDCComponent {
     this.content_ = this.root_.querySelector(MDCTabScrollerFoundation.strings.CONTENT_SELECTOR);
   }
 
+  initialSyncWithDOM() {
+    this.handleInteraction_ = () => this.foundation_.handleInteraction();
+    this.handleTransitionEnd_ = (evt) => this.foundation_.handleTransitionEnd(evt);
+
+    this.area_.addEventListener('wheel', this.handleInteraction_);
+    this.area_.addEventListener('touchstart', this.handleInteraction_);
+    this.area_.addEventListener('pointerdown', this.handleInteraction_);
+    this.area_.addEventListener('mousedown', this.handleInteraction_);
+    this.area_.addEventListener('keydown', this.handleInteraction_);
+    this.content_.addEventListener('transitionend', this.handleTransitionEnd_);
+  }
+
+  destroy() {
+    super.destroy();
+
+    this.area_.removeEventListener('wheel', this.handleInteraction_);
+    this.area_.removeEventListener('touchstart', this.handleInteraction_);
+    this.area_.removeEventListener('pointerdown', this.handleInteraction_);
+    this.area_.removeEventListener('mousedown', this.handleInteraction_);
+    this.area_.removeEventListener('keydown', this.handleInteraction_);
+    this.content_.removeEventListener('transitionend', this.handleTransitionEnd_);
+  }
+
   /**
    * @return {!MDCTabScrollerFoundation}
    */
   getDefaultFoundation() {
     const adapter = /** @type {!MDCTabScrollerAdapter} */ ({
-      registerScrollAreaEventHandler: (evtType, handler) => this.area_.addEventListener(evtType, handler),
-      deregisterScrollAreaEventHandler: (evtType, handler) => this.area_.removeEventListener(evtType, handler),
-      addScrollAreaClass: (className) => this.area_.classList.add(className),
-      removeScrollAreaClass: (className) => this.area_.classList.remove(className),
+      addClass: (className) => this.root_.classList.add(className),
+      removeClass: (className) => this.root_.classList.remove(className),
+      eventTargetMatchesSelector: (evtTarget, className) => {
+        let matches = Element.prototype.matches;
+        if (matches === undefined) {
+          matches = Element.prototype.msMatchesSelector;
+        }
+        return matches.call(evtTarget, className);
+      },
       setScrollContentStyleProperty: (prop, value) => this.content_.style.setProperty(prop, value),
       getScrollContentStyleValue: (propName) => window.getComputedStyle(this.content_).getPropertyValue(propName),
       setScrollAreaScrollLeft: (scrollX) => this.area_.scrollLeft = scrollX,
@@ -74,8 +108,8 @@ class MDCTabScroller extends MDCComponent {
    * Returns the current visual scroll position
    * @return {number}
    */
-  computeCurrentScrollPosition() {
-    return this.foundation_.computeCurrentScrollPosition();
+  getScrollPosition() {
+    return this.foundation_.getScrollPosition();
   }
 
   /**

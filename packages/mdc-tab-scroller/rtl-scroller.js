@@ -36,7 +36,7 @@ class MDCTabScrollerRTL {
    * @return {number}
    * @abstract
    */
-  computeCurrentScrollPositionRTL(translateX) {}
+  getScrollPositionRTL(translateX) {}
 
   /**
    * @param {number} scrollX

@@ -29,7 +29,7 @@ class MDCTabScrollerRTLDefault extends MDCTabScrollerRTL {
   /**
    * @return {number}
    */
-  computeCurrentScrollPositionRTL() {
+  getScrollPositionRTL() {
     const currentScrollLeft = this.adapter_.getScrollAreaScrollLeft();
     const {right} = this.calculateScrollEdges_();
     // Scroll values on most browsers are ints instead of floats so we round

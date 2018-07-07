@@ -17,7 +17,7 @@
 
 /** @enum {string} */
 const cssClasses = {
-  ANIMATING: 'mdc-tab-scroller__scroll-area--animating',
+  ANIMATING: 'mdc-tab-scroller--animating',
 };
 
 /** @enum {string} */

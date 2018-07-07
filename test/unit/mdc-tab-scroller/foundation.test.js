@@ -17,7 +17,7 @@
 import {assert} from 'chai';
 import td from 'testdouble';
 
-import {captureHandlers, verifyDefaultAdapter} from '../helpers/foundation';
+import {verifyDefaultAdapter} from '../helpers/foundation';
 import {createMockRaf} from '../helpers/raf';
 import {setupFoundationTest} from '../helpers/setup';
 import MDCTabScrollerFoundation from '../../../packages/mdc-tab-scroller/foundation';
@@ -37,8 +37,8 @@ test('exports strings', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTabScrollerFoundation, [
-    'registerScrollAreaEventHandler', 'deregisterScrollAreaEventHandler',
-    'addScrollAreaClass', 'removeScrollAreaClass',
+    'addClass', 'removeClass',
+    'eventTargetMatchesSelector',
     'setScrollContentStyleProperty', 'getScrollContentStyleValue',
     'setScrollAreaScrollLeft', 'getScrollAreaScrollLeft',
     'getScrollContentOffsetWidth', 'getScrollAreaOffsetWidth',
@@ -48,26 +48,24 @@ test('defaultAdapter returns a complete adapter implementation', () => {
 
 const setupTest = () => setupFoundationTest(MDCTabScrollerFoundation);
 
-test('#computeCurrentScrollPosition() returns scroll value when transform is none', () => {
+test('#getScrollPosition() returns scroll value when transform is none', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getScrollContentStyleValue('transform')).thenReturn('none');
   td.when(mockAdapter.getScrollAreaScrollLeft()).thenReturn(0);
-  assert.strictEqual(foundation.computeCurrentScrollPosition(), 0);
+  assert.strictEqual(foundation.getScrollPosition(), 0);
 });
 
-test('#computeCurrentScrollPosition() returns difference between scrollLeft and translateX', () => {
+test('#getScrollPosition() returns difference between scrollLeft and translateX', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getScrollContentStyleValue('transform')).thenReturn('matrix(1, 0, 0, 0, 101, 0)');
   td.when(mockAdapter.getScrollAreaScrollLeft()).thenReturn(212);
-  assert.strictEqual(foundation.computeCurrentScrollPosition(), 111);
+  assert.strictEqual(foundation.getScrollPosition(), 111);
 });
 
 test('#handleInteraction() does nothing if should not handle interaction', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.handleInteraction();
-  td.verify(mockAdapter.deregisterScrollAreaEventHandler(
-    td.matchers.isA(String), td.matchers.isA(Function)), {times: 0});
-  td.verify(mockAdapter.removeScrollAreaClass(td.matchers.isA(String)), {times: 0});
+  td.verify(mockAdapter.removeClass(td.matchers.isA(String)), {times: 0});
   td.verify(mockAdapter.setScrollContentStyleProperty(td.matchers.isA(String), td.matchers.isA(String)), {times: 0});
 });
 
@@ -76,30 +74,13 @@ function setupHandleInteractionTest({scrollLeft=0, translateX=99}={}) {
   td.when(mockAdapter.getScrollContentStyleValue('transform')).thenReturn(`matrix(1, 0, 0, 1, ${translateX}, 0)`);
   td.when(mockAdapter.getScrollAreaScrollLeft()).thenReturn(scrollLeft);
   foundation.shouldHandleInteraction_ = true;
-  foundation.isAnimating_ = true;
   return {foundation, mockAdapter};
 }
-
-test('#handleInteraction() deregisters the transitionend handler', () => {
-  const {foundation, mockAdapter} = setupHandleInteractionTest();
-  foundation.handleInteraction();
-  td.verify(mockAdapter.deregisterScrollAreaEventHandler('transitionend', td.matchers.isA(Function)), {times: 1});
-});
-
-test('#handleInteraction() deregisters the interaction handlers', () => {
-  const {foundation, mockAdapter} = setupHandleInteractionTest();
-  foundation.handleInteraction();
-  td.verify(mockAdapter.deregisterScrollAreaEventHandler('wheel', td.matchers.isA(Function)), {times: 1});
-  td.verify(mockAdapter.deregisterScrollAreaEventHandler('touchstart', td.matchers.isA(Function)), {times: 1});
-  td.verify(mockAdapter.deregisterScrollAreaEventHandler('pointerdown', td.matchers.isA(Function)), {times: 1});
-  td.verify(mockAdapter.deregisterScrollAreaEventHandler('mousedown', td.matchers.isA(Function)), {times: 1});
-  td.verify(mockAdapter.deregisterScrollAreaEventHandler('keydown', td.matchers.isA(Function)), {times: 1});
-});
 
 test(`#handleInteraction() removes the ${MDCTabScrollerFoundation.cssClasses.ANIMATING} class`, () => {
   const {foundation, mockAdapter} = setupHandleInteractionTest();
   foundation.handleInteraction();
-  td.verify(mockAdapter.removeScrollAreaClass(MDCTabScrollerFoundation.cssClasses.ANIMATING), {times: 1});
+  td.verify(mockAdapter.removeClass(MDCTabScrollerFoundation.cssClasses.ANIMATING), {times: 1});
 });
 
 test('#handleInteraction() sets the transform property to translateX(0px)', () => {
@@ -114,46 +95,21 @@ test('#handleInteraction() sets scrollLeft to the difference between scrollLeft 
   td.verify(mockAdapter.setScrollAreaScrollLeft(22), {times: 1});
 });
 
-test('#handleTransitionEnd() deregisters the transitionend handler', () => {
+test('#handleTransitionEnd() does nothing if should not handle transition', () => {
   const {foundation, mockAdapter} = setupTest();
-  foundation.handleTransitionEnd();
-  td.verify(mockAdapter.deregisterScrollAreaEventHandler('transitionend', td.matchers.isA(Function)));
-});
-
-test('#handleTransitionEnd() deregisters the scroll handler', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.handleTransitionEnd();
-  td.verify(mockAdapter.deregisterScrollAreaEventHandler('wheel', td.matchers.isA(Function)));
-});
-
-test('#handleTransitionEnd() deregisters the touchstart handler', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.handleTransitionEnd();
-  td.verify(mockAdapter.deregisterScrollAreaEventHandler('touchstart', td.matchers.isA(Function)));
-});
-
-test('#handleTransitionEnd() deregisters the pointerdown handler', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.handleTransitionEnd();
-  td.verify(mockAdapter.deregisterScrollAreaEventHandler('pointerdown', td.matchers.isA(Function)));
-});
-
-test('#handleTransitionEnd() deregisters the mousedown handler', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.handleTransitionEnd();
-  td.verify(mockAdapter.deregisterScrollAreaEventHandler('mousedown', td.matchers.isA(Function)));
-});
-
-test('#handleTransitionEnd() deregisters the keydown handler', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.handleTransitionEnd();
-  td.verify(mockAdapter.deregisterScrollAreaEventHandler('keydown', td.matchers.isA(Function)));
+  foundation.handleTransitionEnd({
+    target: {},
+  });
+  td.verify(mockAdapter.removeClass(td.matchers.isA(String)), {times: 0});
 });
 
 test(`#handleTransitionEnd() removes the ${MDCTabScrollerFoundation.cssClasses.ANIMATING} class`, () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.handleTransitionEnd();
-  td.verify(mockAdapter.removeScrollAreaClass(MDCTabScrollerFoundation.cssClasses.ANIMATING));
+  const {foundation, mockAdapter} = setupHandleInteractionTest({scrollLeft: 123, translateX: 101});
+  td.when(mockAdapter.eventTargetMatchesSelector(td.matchers.isA(Object), td.matchers.isA(String))).thenReturn(true);
+  foundation.handleTransitionEnd({
+    target: {},
+  });
+  td.verify(mockAdapter.removeClass(MDCTabScrollerFoundation.cssClasses.ANIMATING));
 });
 
 function setupScrollToTest({rootWidth=300, contentWidth=1000, scrollLeft=0, translateX=0, isAnimating=false}={}) {
@@ -210,55 +166,7 @@ test(`#scrollTo() adds the ${MDCTabScrollerFoundation.cssClasses.ANIMATING} clas
   foundation.scrollTo(100);
   raf.flush();
   raf.restore();
-  td.verify(mockAdapter.addScrollAreaClass(MDCTabScrollerFoundation.cssClasses.ANIMATING), {times: 1});
-});
-
-test('#scrollTo() registers a transitionend handler', () => {
-  const {foundation, mockAdapter} = setupScrollToTest();
-  foundation.scrollTo(100);
-  td.verify(mockAdapter.registerScrollAreaEventHandler('transitionend', td.matchers.isA(Function)), {times: 1});
-});
-
-test('#scrollTo() deregisters the wheel handler', () => {
-  const {foundation, mockAdapter} = setupScrollToTest();
-  foundation.scrollTo(100);
-  td.verify(mockAdapter.deregisterScrollAreaEventHandler('wheel', td.matchers.isA(Function)), {times: 1});
-});
-
-test('#scrollTo() deregisters the touchstart handler', () => {
-  const {foundation, mockAdapter} = setupScrollToTest();
-  foundation.scrollTo(100);
-  td.verify(mockAdapter.deregisterScrollAreaEventHandler('touchstart', td.matchers.isA(Function)), {times: 1});
-});
-
-test('#scrollTo() deregisters the pointerdown handler', () => {
-  const {foundation, mockAdapter} = setupScrollToTest();
-  foundation.scrollTo(100);
-  td.verify(mockAdapter.deregisterScrollAreaEventHandler('pointerdown', td.matchers.isA(Function)), {times: 1});
-});
-
-test('#scrollTo() deregisters the mousedown handler', () => {
-  const {foundation, mockAdapter} = setupScrollToTest();
-  foundation.scrollTo(100);
-  td.verify(mockAdapter.deregisterScrollAreaEventHandler('mousedown', td.matchers.isA(Function)), {times: 1});
-});
-
-test('#scrollTo() deregisters the keydown handler', () => {
-  const {foundation, mockAdapter} = setupScrollToTest();
-  foundation.scrollTo(100);
-  td.verify(mockAdapter.deregisterScrollAreaEventHandler('keydown', td.matchers.isA(Function)), {times: 1});
-});
-
-test('#scrollTo() deregisters handlers before registering them', () => {
-  const {foundation, mockAdapter} = setupScrollToTest();
-  const callQueue = [];
-  td.when(mockAdapter.deregisterScrollAreaEventHandler(
-    td.matchers.isA(String), td.matchers.isA(Function))).thenDo(() => callQueue.push('deregister'));
-  td.when(mockAdapter.registerScrollAreaEventHandler(td.matchers.isA(String), td.matchers.isA(Function))).thenDo(() => {
-    callQueue.push('register');
-  });
-  foundation.scrollTo(100);
-  assert.isAbove(callQueue.indexOf('register'), callQueue.indexOf('deregister'));
+  td.verify(mockAdapter.addClass(MDCTabScrollerFoundation.cssClasses.ANIMATING), {times: 1});
 });
 
 test('#scrollTo() sets scrollLeft to the visual scroll position if called during an animation', () => {
@@ -273,18 +181,6 @@ test('#scrollTo() sets scrollLeft to the visual scroll position if called during
   td.verify(mockAdapter.setScrollAreaScrollLeft(31), {times: 1});
 });
 
-test('#scrollTo() deregisters the transitionend handler if called during an animation', () => {
-  const {foundation, mockAdapter} = setupScrollToTest({
-    scrollLeft: 50,
-    rootWidth: 100,
-    contentWidth: 200,
-    translateX: 19,
-    isAnimating: true,
-  });
-  foundation.scrollTo(75);
-  td.verify(mockAdapter.removeScrollAreaClass(MDCTabScrollerFoundation.cssClasses.ANIMATING));
-});
-
 test(`#scrollTo() removes the ${MDCTabScrollerFoundation.cssClasses.ANIMATING} if called during an animation`,
   () => {
     const {foundation, mockAdapter} = setupScrollToTest({
@@ -295,7 +191,7 @@ test(`#scrollTo() removes the ${MDCTabScrollerFoundation.cssClasses.ANIMATING} i
       isAnimating: true,
     });
     foundation.scrollTo(60);
-    td.verify(mockAdapter.removeScrollAreaClass(MDCTabScrollerFoundation.cssClasses.ANIMATING));
+    td.verify(mockAdapter.removeClass(MDCTabScrollerFoundation.cssClasses.ANIMATING));
   }
 );
 
@@ -306,57 +202,6 @@ test('#scrollTo() unsets the transform property in a rAF', () => {
   raf.flush();
   raf.restore();
   td.verify(mockAdapter.setScrollContentStyleProperty('transform', 'none'), {times: 1});
-});
-
-function setupScrollToInteractionTest(...args) {
-  const {foundation, mockAdapter} = setupScrollToTest(...args);
-  const raf = createMockRaf();
-  return {foundation, mockAdapter, raf};
-}
-
-test('#scrollTo() registers a scroll handler in a double rAF', () => {
-  const {foundation, mockAdapter, raf} = setupScrollToInteractionTest();
-  foundation.scrollTo(313);
-  raf.flush();
-  raf.flush();
-  raf.restore();
-  td.verify(mockAdapter.registerScrollAreaEventHandler('wheel', td.matchers.isA(Function)), {times: 1});
-});
-
-test('#scrollTo() registers a touchstart handler in a double rAF', () => {
-  const {foundation, mockAdapter, raf} = setupScrollToInteractionTest();
-  foundation.scrollTo(313);
-  raf.flush();
-  raf.flush();
-  raf.restore();
-  td.verify(mockAdapter.registerScrollAreaEventHandler('touchstart', td.matchers.isA(Function)), {times: 1});
-});
-
-test('#scrollTo() registers a pointerdown handler in a double rAF', () => {
-  const {foundation, mockAdapter, raf} = setupScrollToInteractionTest();
-  foundation.scrollTo(313);
-  raf.flush();
-  raf.flush();
-  raf.restore();
-  td.verify(mockAdapter.registerScrollAreaEventHandler('pointerdown', td.matchers.isA(Function)), {times: 1});
-});
-
-test('#scrollTo() registers a mousedown handler in a double rAF', () => {
-  const {foundation, mockAdapter, raf} = setupScrollToInteractionTest();
-  foundation.scrollTo(313);
-  raf.flush();
-  raf.flush();
-  raf.restore();
-  td.verify(mockAdapter.registerScrollAreaEventHandler('mousedown', td.matchers.isA(Function)), {times: 1});
-});
-
-test('#scrollTo() registers a keydown handler in a double rAF', () => {
-  const {foundation, mockAdapter, raf} = setupScrollToInteractionTest();
-  foundation.scrollTo(313);
-  raf.flush();
-  raf.flush();
-  raf.restore();
-  td.verify(mockAdapter.registerScrollAreaEventHandler('keydown', td.matchers.isA(Function)), {times: 1});
 });
 
 test('#incrementScroll() exits early if increment puts the scrollLeft over the max value', () => {
@@ -409,18 +254,6 @@ test('#incrementScroll() sets scrollLeft to the visual scroll position if called
   td.verify(mockAdapter.setScrollAreaScrollLeft(28), {times: 1});
 });
 
-test('#incrementScroll() deregisters the transitionend handler if called during an animation', () => {
-  const {foundation, mockAdapter} = setupScrollToTest({
-    scrollLeft: 50,
-    rootWidth: 100,
-    contentWidth: 200,
-    translateX: 19,
-    isAnimating: true,
-  });
-  foundation.incrementScroll(5);
-  td.verify(mockAdapter.removeScrollAreaClass(MDCTabScrollerFoundation.cssClasses.ANIMATING));
-});
-
 test(`#incrementScroll() removes the ${MDCTabScrollerFoundation.cssClasses.ANIMATING} if called during an animation`,
   () => {
     const {foundation, mockAdapter} = setupScrollToTest({
@@ -431,52 +264,9 @@ test(`#incrementScroll() removes the ${MDCTabScrollerFoundation.cssClasses.ANIMA
       isAnimating: true,
     });
     foundation.incrementScroll(5);
-    td.verify(mockAdapter.removeScrollAreaClass(MDCTabScrollerFoundation.cssClasses.ANIMATING));
+    td.verify(mockAdapter.removeClass(MDCTabScrollerFoundation.cssClasses.ANIMATING));
   }
 );
-
-test('#incrementScroll() registers interaction handlers in a double rAF', () => {
-  const {foundation, mockAdapter, raf} = setupScrollToInteractionTest();
-  foundation.incrementScroll(20);
-  raf.flush();
-  raf.flush();
-  raf.restore();
-  td.verify(mockAdapter.registerScrollAreaEventHandler('wheel', td.matchers.isA(Function)), {times: 1});
-  td.verify(mockAdapter.registerScrollAreaEventHandler('touchstart', td.matchers.isA(Function)), {times: 1});
-  td.verify(mockAdapter.registerScrollAreaEventHandler('pointerdown', td.matchers.isA(Function)), {times: 1});
-  td.verify(mockAdapter.registerScrollAreaEventHandler('mousedown', td.matchers.isA(Function)), {times: 1});
-  td.verify(mockAdapter.registerScrollAreaEventHandler('keydown', td.matchers.isA(Function)), {times: 1});
-});
-
-test('on transitionend after scrollTo call, deregister the transitionend handler', () => {
-  const {foundation, mockAdapter} = setupScrollToTest();
-  const handlers = captureHandlers(mockAdapter, 'registerScrollAreaEventHandler');
-  foundation.scrollTo(213);
-  handlers.transitionend();
-  td.verify(mockAdapter.deregisterScrollAreaEventHandler('transitionend', td.matchers.isA(Function)));
-});
-
-function setupInteractionDuringScrollTest({translateX=66.123}={}) {
-  const {foundation, mockAdapter} = setupScrollToTest();
-  const raf = createMockRaf();
-  const handlers = captureHandlers(mockAdapter, 'registerScrollAreaEventHandler');
-  td.when(mockAdapter.getScrollContentStyleValue('transform')).thenReturn(`matrix(1, 0, 0, 1, ${translateX}, 0)`);
-  return {foundation, mockAdapter, raf, handlers};
-}
-
-test('on interaction after scrollTo call, deregister the interaction handlers', () => {
-  const {foundation, mockAdapter, raf, handlers} = setupInteractionDuringScrollTest();
-  foundation.scrollTo(101);
-  raf.flush();
-  raf.flush();
-  raf.restore();
-  handlers.wheel();
-  td.verify(mockAdapter.deregisterScrollAreaEventHandler('wheel', td.matchers.isA(Function)));
-  td.verify(mockAdapter.deregisterScrollAreaEventHandler('touchstart', td.matchers.isA(Function)));
-  td.verify(mockAdapter.deregisterScrollAreaEventHandler('pointerdown', td.matchers.isA(Function)));
-  td.verify(mockAdapter.deregisterScrollAreaEventHandler('mousedown', td.matchers.isA(Function)));
-  td.verify(mockAdapter.deregisterScrollAreaEventHandler('keydown', td.matchers.isA(Function)));
-});
 
 // RTL Mode
 
@@ -512,9 +302,9 @@ test('#incrementScroll() sets the transform style property in RTL', () => {
   td.verify(mockAdapter.setScrollContentStyleProperty('transform', 'translateX(10px)'), {times: 1});
 });
 
-test('#computeCurrentScrollPosition() returns a numeric scroll position in RTL', () => {
+test('#getScrollPosition() returns a numeric scroll position in RTL', () => {
   const {foundation} = setupScrollToRTLTest();
-  assert.typeOf(foundation.computeCurrentScrollPosition(), 'number');
+  assert.typeOf(foundation.getScrollPosition(), 'number');
 });
 
 // RTLScroller
