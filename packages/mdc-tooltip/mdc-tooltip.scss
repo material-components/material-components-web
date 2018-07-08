@@ -18,7 +18,9 @@
 @import "@material/animation/variables";
 @import "@material/animation/functions";
 @import "@material/theme/mixins";
+@import "@material/theme/color-palette";
 @import "./variables";
+@import "./mixins";
 
 
 @keyframes show-tooltip {
@@ -63,9 +65,8 @@
     padding-left: 8px;
     transform: scale(0);
     border-radius: 4px;
-    background-color: $mdc-tooltip-background;
+    @include mdc-tooltip-fill-color-accessible($material-color-grey-700);
     opacity: 0;
-    color: #fff;
     font-size: 10px;
     line-height: 24px;
     text-align: center;

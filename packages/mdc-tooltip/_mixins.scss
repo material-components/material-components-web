@@ -14,7 +14,21 @@
 // limitations under the License.
 //
 
-$mdc-tooltip-transition-length-show: 150ms !default;
-$mdc-tooltip-transition-length-hide: 75ms !default;
-$mdc-tooltip-mobil: 750px !default;
-$mdc-tooltip-opacity: .9;
+@import "@material/theme/mixins";
+
+//
+// Public
+//
+
+@mixin mdc-tooltip-ink-color($color) {
+  @include mdc-theme-prop(color, $color);
+}
+
+@mixin mdc-tooltip-fill-color($color) {
+  @include mdc-theme-prop(background-color, $color);
+}
+
+@mixin mdc-tooltip-fill-color-accessible($color) {
+  @include mdc-tooltip-fill-color($color);
+  @include mdc-tooltip-ink-color(mdc-theme-accessible-ink-color($color));
+}

@@ -88,7 +88,8 @@ The default behavior is to move the tooltip to the bottom. By using the CSS clas
 | Class                          | Description                                     |
 | ------------------------------ | ----------------------------------------------- |
 | `mdc-tooltip`                  | A pure css `span` element                       |
-| `mdc-tooltip--<DIRECTION>`     | A pure css `span` element width an direction attribute, can be: "bottom", "top", "left" or "right"                     |
+| `mdc-tooltip--<DIRECTION>`     | A pure css `span` element width an direction attribute, can be: "bottom", "top", "left" or "right"     |
+| `mdc-tooltip--show`            | Class to make the tooltip transition from a hidden to a visible state |
 
 These are the default scss values, that can be overriden:
 
@@ -115,7 +116,7 @@ $mdc-tooltip-transition-length-hide: 75ms !default;
 Example:
 ```js
 import {MDCTooltip} from '@material/tooltip';
-let element = document.querySelector('.mdc-tooltip');
+const element = document.querySelector('.mdc-tooltip');
 const tooltip = new MDCTooltip(element);
 tooltip.show();
 ```
@@ -124,9 +125,9 @@ tooltip.show();
 
 If you are using a JavaScript framework, such as React or Angular, you can create a Tooltip for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
-### `MDCTolltipAdapter`
+### `MDCTooltipAdapter`
 
-The `root` element is the tooltip element e.g. `<span class='mdc-tooltip'>tooltip</span>`. The `controller` is the element the tooltip is for. Therefore it "controls" the tooltip when and where the tooltips should display and hide.
+The `root` element is the tooltip element e.g. `<span class='mdc-tooltip'>tooltip</span>`. The `controller` is the element the tooltip is for. The `controller` is the element the tooltip anchors to. It "controls" the tooltips positioning and display.
 
 | Method Signature | Description |
 | --- | --- |
