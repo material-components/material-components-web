@@ -1,5 +1,5 @@
 //
-// Copyright 2017 Google Inc. All Rights Reserved.
+// Copyright 2018 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,34 +20,30 @@
 @import "@material/theme/mixins";
 @import "./variables";
 
-$mdc-z-index-shown: 100;
-$mdc-z-index-hidden: -1;
-$mdc-opacity-hidden: 0;
-$mdc-opacity-shown: .9;
 
 @keyframes show-tooltip {
   from {
     transform: scale(0);
-    opacity: $mdc-opacity-hidden;
+    opacity: 0;
   }
 
   to {
     transform: scale(1);
-    opacity: $mdc-opacity-shown;
+    opacity: $mdc-tooltip-opacity;
   }
 }
 
 @keyframes hide-tooltip {
   from {
     transform: scale(1);
-    opacity: $mdc-opacity-shown;
-    z-index: $mdc-z-index-shown;
+    opacity: $mdc-tooltip-opacity;
+    z-index: 100;
   }
 
   to {
     transform: scale(0);
-    opacity: $mdc-opacity-hidden;
-    z-index: $mdc-z-index-hidden;
+    opacity: 0;
+    z-index: -1;
   }
 }
 
@@ -58,7 +54,8 @@ $mdc-opacity-shown: .9;
   &--top,
   &--right {
     @include mdc-typography-overflow-ellipsis;
-
+    //animation: mdc-animation-enter(hide-tooltip, $mdc-tooltip-transition-length-hide);
+    animation-timing-function: $mdc-animation-deceleration-curve-timing-function;
     position: absolute;
     height: 24px;
     padding: 0;
@@ -67,13 +64,13 @@ $mdc-opacity-shown: .9;
     transform: scale(0);
     border-radius: 4px;
     background-color: $mdc-tooltip-background;
-    opacity: $mdc-opacity-hidden;
+    opacity: 0;
     color: #fff;
     font-size: 10px;
     line-height: 24px;
     text-align: center;
     pointer-events: none;
-    z-index: $mdc-z-index-hidden;
+    z-index: -1;
 
     @media screen and (max-width: $mdc-tooltip-mobil) {
       height: 32px;
@@ -84,18 +81,15 @@ $mdc-opacity-shown: .9;
     }
   }
 
+  &--animation {
+    animation: mdc-animation-enter(hide-tooltip, $mdc-tooltip-transition-length-hide);
+  }
+
   &--show {
     animation: mdc-animation-enter(show-tooltip, $mdc-tooltip-transition-length-show);
     animation-timing-function: $mdc-animation-deceleration-curve-timing-function;
     transform: scale(1);
-    opacity: $mdc-opacity-shown;
-    z-index: $mdc-z-index-shown;
-  }
-
-  &--hide {
-    animation: mdc-animation-enter(hide-tooltip, $mdc-tooltip-transition-length-hide);
-    animation-timing-function: $mdc-animation-deceleration-curve-timing-function;
-    opacity: $mdc-opacity-hidden;
-    z-index: $mdc-z-index-hidden;
+    opacity: $mdc-tooltip-opacity;
+    z-index: 100;
   }
 }

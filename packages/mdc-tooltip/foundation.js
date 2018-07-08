@@ -1,5 +1,5 @@
 /**
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2018 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -132,7 +132,6 @@ class MDCTooltipFoundation extends MDCFoundation {
   show_() {;
     this.setDirection_();
     this.displayed_ = true;
-    this.adapter_.removeClass(cssClasses.HIDE);
     this.adapter_.addClass(cssClasses.SHOW);
     this.hideTimeout_ = setTimeout(() => {
       this.hide_();
@@ -140,16 +139,15 @@ class MDCTooltipFoundation extends MDCFoundation {
   }
 
   hide_() {
-    if(this.displayed_) {
-      this.adapter_.removeClass(cssClasses.SHOW);
-      this.adapter_.addClass(cssClasses.HIDE);
-    }
+    this.adapter_.addClass(cssClasses.ANIMATION);
+    this.adapter_.removeClass(cssClasses.SHOW);
     this.displayed_ = false;
 
     if(this.showTimeout_ != null){
       clearTimeout(this.showTimeout_);
       this.showTimeout_ = null;
     }
+    
     if(this.hideTimeout_ != null){
       clearTimeout(this.hideTimeout_);
       this.hideTimeout_ = null;
