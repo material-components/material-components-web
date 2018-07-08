@@ -1,5 +1,5 @@
 //
-// Copyright 2017 Google Inc. All Rights Reserved.
+// Copyright 2018 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,8 +17,34 @@
 @import "./common";
 @import "../packages/mdc-button/mdc-button";
 @import "../packages/mdc-fab/mdc-fab";
-@import "../packages/mdc-checkbox/mdc-checkbox";
-@import "../packages/mdc-form-field/mdc-form-field";
 @import "../packages/mdc-layout-grid/mdc-layout-grid";
 @import "../packages/mdc-dialog/mdc-dialog";
 @import "../packages/mdc-tooltip/mdc-tooltip";
+@import "../packages/mdc-top-app-bar/mdc-top-app-bar";
+
+
+section.example {
+  height: auto;
+  padding-bottom: 40px;
+  background-color: white;
+}
+
+h2 {
+  margin: 0;
+  margin-bottom: 20px;
+}
+
+.mdc-fab {
+  margin: 0 auto;
+}
+
+.mdc-layout-grid {
+  width: 100%;
+}
+
+#dialog-btn {
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 100px;
+  margin-top: 66px;
+}

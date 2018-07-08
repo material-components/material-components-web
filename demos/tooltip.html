@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  Copyright 2016 Google Inc. All rights reserved.
+  Copyright 2018 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -25,49 +25,19 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <style>
-      section.example {
-        height: auto;
-        padding-bottom: 40px;
-        background-color: white;
-      }
-
-      h2 {
-        margin: 0;
-        margin-bottom: 20px;
-      }
-
-      .mdc-fab {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      .mdc-layout-grid {
-        width: 100%;
-      }
-
-      #dialog-btn {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        margin-bottom: 100px;
-        margin-top: 66px;
-      }
-    </style>
   </head>
   <body class="mdc-typography">
-    <header class="mdc-toolbar mdc-toolbar--fixed">
-      <div class="mdc-toolbar__row">
-        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-          <a href="/" class="catalog-back mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
-          <span class="mdc-toolbar__title catalog-title">Tooltip</span>
+    <header class="mdc-top-app-bar mdc-top-app-bar--fixed">
+      <div class="mdc-top-app-bar__row">
+        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+          <a href="/" class="catalog-back mdc-top-app-bar__navigation-icon"><i class="material-icons">&#xE5C4;</i></a>
+          <span class="mdc-top-app-bar__title catalog-title">Tooltip</span>
         </section>
       </div>
     </header>
 
     <main>
-      <div class="mdc-toolbar-fixed-adjust"></div>
+      <div class="mdc-top-app-bar-fixed-adjust"></div>
       <section class="hero">
         <button class="mdc-fab" id="example_hero" aria-label="Favorite">
           <span class="mdc-fab__icon material-icons">
