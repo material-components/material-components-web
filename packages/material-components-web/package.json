@@ -35,6 +35,7 @@
     "@material/linear-progress": "^0.35.0",
     "@material/list": "^0.37.1",
     "@material/menu": "^0.37.1",
+    "@material/menu-surface": "^0.0.0",
     "@material/notched-outline": "^0.37.1",
     "@material/radio": "^0.37.1",
     "@material/ripple": "^0.37.1",
