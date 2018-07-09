@@ -157,7 +157,7 @@ let CbtUserAgent;
  *   device: string,
  *   device_type: ?string,
  *   browsers: !Array<!CbtBrowser>,
- *   resolutions: !Array<!CbtDeviceResolution>,
+ *   resolutions: !Array<!CbtResolution>,
  *   parsedVersionNumber: ?string,
  * }}
  */
@@ -195,7 +195,7 @@ let CbtBrowser;
  *   default: boolean,
  * }}
  */
-let CbtDeviceResolution;
+let CbtResolution;
 
 
 /*

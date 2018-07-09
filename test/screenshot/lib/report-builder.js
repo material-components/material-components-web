@@ -21,9 +21,9 @@ const mkdirp = require('mkdirp');
 const os = require('os');
 const path = require('path');
 
-const pb = require('./types.pb');
-const {LibraryVersion, ReportData, ReportMeta} = pb.mdc.test.screenshot;
-const {Screenshot, Screenshots, ScreenshotList, TestFile, User, UserAgents} = pb.mdc.test.screenshot;
+const pb = require('../proto/types.pb');
+const {LibraryVersion, ReportData, ReportMeta} = pb.mdc.proto;
+const {Screenshot, Screenshots, ScreenshotList, TestFile, User, UserAgents} = pb.mdc.proto;
 const {InclusionType, CaptureState} = Screenshot;
 
 const Cli = require('./cli');
@@ -77,10 +77,10 @@ class ReportBuilder {
 
   /**
    * @param {string} runReportJsonUrl
-   * @return {!Promise<!mdc.test.screenshot.ReportData>}
+   * @return {!Promise<!mdc.proto.ReportData>}
    */
   async initForApproval({runReportJsonUrl}) {
-    /** @type {!mdc.test.screenshot.TestFile} */
+    /** @type {!mdc.proto.TestFile} */
     const runReportJsonFile = await this.fileCache_.downloadUrlToDisk(runReportJsonUrl, 'utf8');
     const reportData = ReportData.create(require(runReportJsonFile.absolute_path));
     this.populateApprovals_(reportData);
@@ -89,7 +89,7 @@ class ReportBuilder {
 
   /**
    * @param {boolean} isOnline
-   * @return {!Promise<!mdc.test.screenshot.ReportData>}
+   * @return {!Promise<!mdc.proto.ReportData>}
    */
   async initForCapture({isOnline}) {
     const reportMeta = await this.createReportMetaProto_({isOnline});
@@ -113,7 +113,7 @@ class ReportBuilder {
   }
 
   /**
-   * @param {!mdc.test.screenshot.ReportData} reportData
+   * @param {!mdc.proto.ReportData} reportData
    * @return {!Promise<void>}
    * @private
    */
@@ -127,7 +127,7 @@ class ReportBuilder {
   }
 
   /**
-   * @param {!mdc.test.screenshot.Screenshot} screenshot
+   * @param {!mdc.proto.Screenshot} screenshot
    * @private
    */
   async prefetchScreenshotImages_(screenshot) {
@@ -156,7 +156,7 @@ class ReportBuilder {
 
   /**
    * @param {boolean} isOnline
-   * @return {!Promise<!mdc.test.screenshot.ReportData>}
+   * @return {!Promise<!mdc.proto.ReportData>}
    */
   async initForDemo({isOnline}) {
     return ReportData.create({
@@ -165,11 +165,11 @@ class ReportBuilder {
   }
 
   /**
-   * @param {!mdc.test.screenshot.ReportData} reportData
+   * @param {!mdc.proto.ReportData} reportData
    * @private
    */
   populateApprovals_(reportData) {
-    /** @type {!Array<!mdc.test.screenshot.Screenshot>} */
+    /** @type {!Array<!mdc.proto.Screenshot>} */
     const screenshots = reportData.screenshots.runnable_screenshot_list;
 
     // Changed
@@ -208,12 +208,16 @@ class ReportBuilder {
 
   /**
    * @param {boolean} isOnline
-   * @return {!Promise<!mdc.test.screenshot.ReportMeta>}
+   * @return {!Promise<!mdc.proto.ReportMeta>}
    * @private
    */
   async createReportMetaProto_({isOnline}) {
-    const remoteUploadBaseUrl = this.cli_.gcsBaseUrl;
-    const remoteUploadBaseDir = await this.generateUniqueUploadDir_();
+    // TODO(acvdorak): Store PID and PORT in local files
+    // TODO(acdvorak): In offline mode, start up a local server with a random port number.
+    const remoteUploadBaseUrl = isOnline ? this.cli_.gcsBaseUrl : `http://localhost:8080`;
+    const remoteUploadBaseDir = isOnline ? await this.generateUniqueUploadDir_() : '';
+
+    console.log('remoteUploadBaseUrl:', remoteUploadBaseUrl);
 
     const mdcVersionString = require('../../../lerna.json').version;
     const mdcVersionOffset = await this.getCommitDistance_(mdcVersionString);
@@ -305,11 +309,11 @@ class ReportBuilder {
 
   /**
    * @param {boolean} isOnline
-   * @return {!Promise<!mdc.test.screenshot.UserAgents>}
+   * @return {!Promise<!mdc.proto.UserAgents>}
    * @private
    */
   async createUserAgentsProto_({isOnline}) {
-    /** @type {!Array<!mdc.test.screenshot.UserAgent>} */
+    /** @type {!Array<!mdc.proto.UserAgent>} */
     const allUserAgents = await this.userAgentStore_.getAllUserAgents({isOnline});
     return UserAgents.create({
       all_user_agents: allUserAgents,
@@ -319,19 +323,19 @@ class ReportBuilder {
   }
 
   /**
-   * @param {!mdc.test.screenshot.ReportMeta} reportMeta
-   * @param {!Array<!mdc.test.screenshot.UserAgent>} allUserAgents
-   * @return {!Promise<!mdc.test.screenshot.Screenshots>}
+   * @param {!mdc.proto.ReportMeta} reportMeta
+   * @param {!Array<!mdc.proto.UserAgent>} allUserAgents
+   * @return {!Promise<!mdc.proto.Screenshots>}
    * @private
    */
   async createScreenshotsProto_({reportMeta, allUserAgents}) {
     /** @type {!GoldenFile} */
     const goldenFile = await this.goldenIo_.readFromDiffBase();
 
-    /** @type {!Array<!mdc.test.screenshot.Screenshot>} */
+    /** @type {!Array<!mdc.proto.Screenshot>} */
     const expectedScreenshots = await this.getExpectedScreenshots_(goldenFile);
 
-    /** @type {!Array<!mdc.test.screenshot.Screenshot>} */
+    /** @type {!Array<!mdc.proto.Screenshot>} */
     const actualScreenshots = await this.getActualScreenshots_({goldenFile, reportMeta, allUserAgents});
 
     // TODO(acdvorak): Rename `Screenshots`
@@ -347,8 +351,8 @@ class ReportBuilder {
   }
 
   /**
-   * @param {!mdc.test.screenshot.Screenshots} screenshots
-   * @return {!mdc.test.screenshot.Screenshots}
+   * @param {!mdc.proto.Screenshots} screenshots
+   * @return {!mdc.proto.Screenshots}
    * @private
    */
   sortAndGroupScreenshots_(screenshots) {
@@ -387,8 +391,8 @@ class ReportBuilder {
   }
 
   /**
-   * @param {!Array<!mdc.test.screenshot.Screenshot>} screenshotArray
-   * @return {!Object<string, !mdc.test.screenshot.ScreenshotList>}
+   * @param {!Array<!mdc.proto.Screenshot>} screenshotArray
+   * @return {!Object<string, !mdc.proto.ScreenshotList>}
    * @private
    */
   groupByBrowser_(screenshotArray) {
@@ -402,8 +406,8 @@ class ReportBuilder {
   }
 
   /**
-   * @param {!Array<!mdc.test.screenshot.Screenshot>} screenshotArray
-   * @return {!Object<string, !mdc.test.screenshot.ScreenshotList>}
+   * @param {!Array<!mdc.proto.Screenshot>} screenshotArray
+   * @return {!Object<string, !mdc.proto.ScreenshotList>}
    * @private
    */
   groupByPage_(screenshotArray) {
@@ -418,7 +422,7 @@ class ReportBuilder {
 
   /**
    * @param {!GoldenFile} goldenFile
-   * @return {!Promise<!Array<!mdc.test.screenshot.Screenshot>>}
+   * @return {!Promise<!Array<!mdc.proto.Screenshot>>}
    * @private
    */
   async getExpectedScreenshots_(goldenFile) {
@@ -426,7 +430,7 @@ class ReportBuilder {
       return (await this.fileCache_.downloadUrlToDisk(url)).absolute_path;
     };
 
-    /** @type {!Array<!mdc.test.screenshot.Screenshot>} */
+    /** @type {!Array<!mdc.proto.Screenshot>} */
     const expectedScreenshots = [];
     const goldenScreenshots = goldenFile.getGoldenScreenshots();
 
@@ -452,13 +456,13 @@ class ReportBuilder {
 
   /**
    * @param {!GoldenFile} goldenFile
-   * @param {!mdc.test.screenshot.ReportMeta} reportMeta
-   * @param {!Array<!mdc.test.screenshot.UserAgent>} allUserAgents
-   * @return {!Promise<!Array<!mdc.test.screenshot.Screenshot>>}
+   * @param {!mdc.proto.ReportMeta} reportMeta
+   * @param {!Array<!mdc.proto.UserAgent>} allUserAgents
+   * @return {!Promise<!Array<!mdc.proto.Screenshot>>}
    * @private
    */
   async getActualScreenshots_({goldenFile, reportMeta, allUserAgents}) {
-    /** @type {!Array<!mdc.test.screenshot.Screenshot>} */
+    /** @type {!Array<!mdc.proto.Screenshot>} */
     const allScreenshots = [];
 
     /** @type {!Array<string>} */
@@ -470,7 +474,7 @@ class ReportBuilder {
       const testPageFile = TestFile.create({
         relative_path: htmlFilePath,
         absolute_path: path.resolve(reportMeta.local_asset_base_dir, htmlFilePath),
-        public_url: path.join(reportMeta.remote_upload_base_url, reportMeta.remote_upload_base_dir, htmlFilePath),
+        public_url: reportMeta.remote_upload_base_url + reportMeta.remote_upload_base_dir + htmlFilePath,
       });
 
       for (const userAgent of allUserAgents) {
@@ -478,7 +482,7 @@ class ReportBuilder {
         const isScreenshotRunnable = isHtmlFileRunnable && userAgent.is_runnable;
         const expectedScreenshotImageUrl = goldenFile.getScreenshotImageUrl({htmlFilePath, userAgentAlias});
 
-        /** @type {?mdc.test.screenshot.TestFile} */
+        /** @type {?mdc.proto.TestFile} */
         const expectedImageFile =
           expectedScreenshotImageUrl
             ? await this.fileCache_.downloadUrlToDisk(expectedScreenshotImageUrl)
@@ -510,9 +514,9 @@ class ReportBuilder {
   }
 
   /**
-   * @param {!Array<!mdc.test.screenshot.Screenshot>} expectedScreenshots
-   * @param {!Array<!mdc.test.screenshot.Screenshot>} actualScreenshots
-   * @return {!Array<!mdc.test.screenshot.Screenshot>}
+   * @param {!Array<!mdc.proto.Screenshot>} expectedScreenshots
+   * @param {!Array<!mdc.proto.Screenshot>} actualScreenshots
+   * @return {!Array<!mdc.proto.Screenshot>}
    * @private
    */
   getComparableScreenshots_({expectedScreenshots, actualScreenshots}) {
@@ -525,9 +529,9 @@ class ReportBuilder {
   }
 
   /**
-   * @param {!Array<!mdc.test.screenshot.Screenshot>} expectedScreenshots
-   * @param {!Array<!mdc.test.screenshot.Screenshot>} actualScreenshots
-   * @return {!Array<!mdc.test.screenshot.Screenshot>}
+   * @param {!Array<!mdc.proto.Screenshot>} expectedScreenshots
+   * @param {!Array<!mdc.proto.Screenshot>} actualScreenshots
+   * @return {!Array<!mdc.proto.Screenshot>}
    * @private
    */
   getAddedScreenshots_({expectedScreenshots, actualScreenshots}) {
@@ -540,13 +544,13 @@ class ReportBuilder {
   }
 
   /**
-   * @param {!Array<!mdc.test.screenshot.Screenshot>} expectedScreenshots
-   * @param {!Array<!mdc.test.screenshot.Screenshot>} actualScreenshots
-   * @return {!Array<!mdc.test.screenshot.Screenshot>}
+   * @param {!Array<!mdc.proto.Screenshot>} expectedScreenshots
+   * @param {!Array<!mdc.proto.Screenshot>} actualScreenshots
+   * @return {!Array<!mdc.proto.Screenshot>}
    * @private
    */
   getRemovedScreenshots_({expectedScreenshots, actualScreenshots}) {
-    /** @type {!Array<!mdc.test.screenshot.Screenshot>} */
+    /** @type {!Array<!mdc.proto.Screenshot>} */
     const removedScreenshots = [];
 
     for (const expectedScreenshot of expectedScreenshots) {
@@ -564,9 +568,9 @@ class ReportBuilder {
   }
 
   /**
-   * @param {!Array<!mdc.test.screenshot.Screenshot>} screenshots
-   * @param {!mdc.test.screenshot.Screenshot} screenshot
-   * @return {?mdc.test.screenshot.Screenshot}
+   * @param {!Array<!mdc.proto.Screenshot>} screenshots
+   * @param {!mdc.proto.Screenshot} screenshot
+   * @return {?mdc.proto.Screenshot}
    * @private
    */
   findScreenshotForComparison_({screenshots, screenshot}) {
@@ -579,9 +583,9 @@ class ReportBuilder {
   }
 
   /**
-   * @param {!Array<!mdc.test.screenshot.Screenshot>} screenshots
-   * @param {!mdc.test.screenshot.ApprovalId} approvalId
-   * @return {?mdc.test.screenshot.Screenshot}
+   * @param {!Array<!mdc.proto.Screenshot>} screenshots
+   * @param {!mdc.proto.ApprovalId} approvalId
+   * @return {?mdc.proto.Screenshot}
    * @private
    */
   findScreenshotForApproval_({screenshots, approvalId}) {
@@ -599,7 +603,7 @@ class ReportBuilder {
    */
   async generateUniqueUploadDir_() {
     const {year, month, day, hour, minute, second, ms} = this.getUtcDateTime_();
-    return `${USERNAME}/${year}/${month}/${day}/${hour}_${minute}_${second}_${ms}`;
+    return `${USERNAME}/${year}/${month}/${day}/${hour}_${minute}_${second}_${ms}/`;
   }
 
   /**
@@ -630,8 +634,8 @@ class ReportBuilder {
   }
 
   /**
-   * @param {!mdc.test.screenshot.Screenshot} a
-   * @param {!mdc.test.screenshot.Screenshot} b
+   * @param {!mdc.proto.Screenshot} a
+   * @param {!mdc.proto.Screenshot} b
    * @return {number}
    * @private
    */
@@ -644,7 +648,7 @@ class ReportBuilder {
   }
 
   /**
-   * @param {!mdc.test.screenshot.ReportData} reportData
+   * @param {!mdc.proto.ReportData} reportData
    * @private
    */
   validateRunParameters_(reportData) {
@@ -671,7 +675,7 @@ class ReportBuilder {
 
   /**
    * @param {string} verb
-   * @param {!Array<!mdc.test.screenshot.Screenshot>} screenshots
+   * @param {!Array<!mdc.proto.Screenshot>} screenshots
    * @private
    */
   logRunParameters_(verb, screenshots) {

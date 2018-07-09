@@ -18,8 +18,8 @@ const fs = require('mz/fs');
 const request = require('request-promise-native');
 const stringify = require('json-stable-stringify');
 
-const pb = require('./types.pb');
-const {GoldenScreenshot} = pb.mdc.test.screenshot;
+const pb = require('../proto/types.pb');
+const {GoldenScreenshot} = pb.mdc.proto;
 
 const Cli = require('./cli');
 const GitRepo = require('./git-repo');
@@ -77,7 +77,7 @@ class GoldenIo {
    * @private
    */
   async readFromDiffBase_(rawDiffBase) {
-    /** @type {!mdc.test.screenshot.DiffBase} */
+    /** @type {!mdc.proto.DiffBase} */
     const parsedDiffBase = await this.cli_.parseDiffBase({rawDiffBase});
 
     const publicUrl = parsedDiffBase.public_url;
@@ -102,7 +102,7 @@ class GoldenIo {
   }
 
   /**
-   * @param {!mdc.test.screenshot.ReportData} reportData
+   * @param {!mdc.proto.ReportData} reportData
    * @return {!Promise<!GoldenFile>}
    */
   async approveSelectedGoldens(reportData) {

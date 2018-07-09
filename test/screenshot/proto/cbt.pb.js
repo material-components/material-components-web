@@ -1,0 +1,1679 @@
+/*eslint-disable block-scoped-var, no-redeclare, no-control-regex, no-prototype-builtins*/
+"use strict";
+
+var $protobuf = require("protobufjs/minimal");
+
+// Common aliases
+var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
+
+// Exported root namespace
+var $root = $protobuf.roots["default"] || ($protobuf.roots["default"] = {});
+
+$root.mdc = (function() {
+
+    /**
+     * Namespace mdc.
+     * @exports mdc
+     * @namespace
+     */
+    var mdc = {};
+
+    mdc.proto = (function() {
+
+        /**
+         * Namespace proto.
+         * @memberof mdc
+         * @namespace
+         */
+        var proto = {};
+
+        proto.cbt = (function() {
+
+            /**
+             * Namespace cbt.
+             * @memberof mdc.proto
+             * @namespace
+             */
+            var cbt = {};
+
+            cbt.CbtDevice = (function() {
+
+                /**
+                 * Properties of a CbtDevice.
+                 * @memberof mdc.proto.cbt
+                 * @interface ICbtDevice
+                 * @property {string|null} [api_name] CbtDevice api_name
+                 * @property {string|null} [device] CbtDevice device
+                 * @property {string|null} [device_type] CbtDevice device_type
+                 * @property {string|null} [name] CbtDevice name
+                 * @property {string|null} [version] CbtDevice version
+                 * @property {string|null} [type] CbtDevice type
+                 * @property {string|null} [icon_class] CbtDevice icon_class
+                 * @property {boolean|null} [upload_file_enabled] CbtDevice upload_file_enabled
+                 * @property {number|null} [sort_order] CbtDevice sort_order
+                 * @property {boolean|null} [is_webrtc_enabled] CbtDevice is_webrtc_enabled
+                 * @property {Array.<mdc.proto.cbt.ICbtCapabilities>|null} [caps] CbtDevice caps
+                 * @property {Array.<mdc.proto.cbt.ICbtBrowser>|null} [browsers] CbtDevice browsers
+                 * @property {Array.<mdc.proto.cbt.ICbtResolution>|null} [resolutions] CbtDevice resolutions
+                 */
+
+                /**
+                 * Constructs a new CbtDevice.
+                 * @memberof mdc.proto.cbt
+                 * @classdesc Represents a CbtDevice.
+                 * @implements ICbtDevice
+                 * @constructor
+                 * @param {mdc.proto.cbt.ICbtDevice=} [properties] Properties to set
+                 */
+                function CbtDevice(properties) {
+                    this.caps = [];
+                    this.browsers = [];
+                    this.resolutions = [];
+                    if (properties)
+                        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                            if (properties[keys[i]] != null)
+                                this[keys[i]] = properties[keys[i]];
+                }
+
+                /**
+                 * CbtDevice api_name.
+                 * @member {string} api_name
+                 * @memberof mdc.proto.cbt.CbtDevice
+                 * @instance
+                 */
+                CbtDevice.prototype.api_name = "";
+
+                /**
+                 * CbtDevice device.
+                 * @member {string} device
+                 * @memberof mdc.proto.cbt.CbtDevice
+                 * @instance
+                 */
+                CbtDevice.prototype.device = "";
+
+                /**
+                 * CbtDevice device_type.
+                 * @member {string} device_type
+                 * @memberof mdc.proto.cbt.CbtDevice
+                 * @instance
+                 */
+                CbtDevice.prototype.device_type = "";
+
+                /**
+                 * CbtDevice name.
+                 * @member {string} name
+                 * @memberof mdc.proto.cbt.CbtDevice
+                 * @instance
+                 */
+                CbtDevice.prototype.name = "";
+
+                /**
+                 * CbtDevice version.
+                 * @member {string} version
+                 * @memberof mdc.proto.cbt.CbtDevice
+                 * @instance
+                 */
+                CbtDevice.prototype.version = "";
+
+                /**
+                 * CbtDevice type.
+                 * @member {string} type
+                 * @memberof mdc.proto.cbt.CbtDevice
+                 * @instance
+                 */
+                CbtDevice.prototype.type = "";
+
+                /**
+                 * CbtDevice icon_class.
+                 * @member {string} icon_class
+                 * @memberof mdc.proto.cbt.CbtDevice
+                 * @instance
+                 */
+                CbtDevice.prototype.icon_class = "";
+
+                /**
+                 * CbtDevice upload_file_enabled.
+                 * @member {boolean} upload_file_enabled
+                 * @memberof mdc.proto.cbt.CbtDevice
+                 * @instance
+                 */
+                CbtDevice.prototype.upload_file_enabled = false;
+
+                /**
+                 * CbtDevice sort_order.
+                 * @member {number} sort_order
+                 * @memberof mdc.proto.cbt.CbtDevice
+                 * @instance
+                 */
+                CbtDevice.prototype.sort_order = 0;
+
+                /**
+                 * CbtDevice is_webrtc_enabled.
+                 * @member {boolean} is_webrtc_enabled
+                 * @memberof mdc.proto.cbt.CbtDevice
+                 * @instance
+                 */
+                CbtDevice.prototype.is_webrtc_enabled = false;
+
+                /**
+                 * CbtDevice caps.
+                 * @member {Array.<mdc.proto.cbt.ICbtCapabilities>} caps
+                 * @memberof mdc.proto.cbt.CbtDevice
+                 * @instance
+                 */
+                CbtDevice.prototype.caps = $util.emptyArray;
+
+                /**
+                 * CbtDevice browsers.
+                 * @member {Array.<mdc.proto.cbt.ICbtBrowser>} browsers
+                 * @memberof mdc.proto.cbt.CbtDevice
+                 * @instance
+                 */
+                CbtDevice.prototype.browsers = $util.emptyArray;
+
+                /**
+                 * CbtDevice resolutions.
+                 * @member {Array.<mdc.proto.cbt.ICbtResolution>} resolutions
+                 * @memberof mdc.proto.cbt.CbtDevice
+                 * @instance
+                 */
+                CbtDevice.prototype.resolutions = $util.emptyArray;
+
+                /**
+                 * Creates a new CbtDevice instance using the specified properties.
+                 * @function create
+                 * @memberof mdc.proto.cbt.CbtDevice
+                 * @static
+                 * @param {mdc.proto.cbt.ICbtDevice=} [properties] Properties to set
+                 * @returns {mdc.proto.cbt.CbtDevice} CbtDevice instance
+                 */
+                CbtDevice.create = function create(properties) {
+                    return new CbtDevice(properties);
+                };
+
+                /**
+                 * Encodes the specified CbtDevice message. Does not implicitly {@link mdc.proto.cbt.CbtDevice.verify|verify} messages.
+                 * @function encode
+                 * @memberof mdc.proto.cbt.CbtDevice
+                 * @static
+                 * @param {mdc.proto.cbt.ICbtDevice} message CbtDevice message or plain object to encode
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
+                 */
+                CbtDevice.encode = function encode(message, writer) {
+                    if (!writer)
+                        writer = $Writer.create();
+                    if (message.api_name != null && message.hasOwnProperty("api_name"))
+                        writer.uint32(/* id 1, wireType 2 =*/10).string(message.api_name);
+                    if (message.device != null && message.hasOwnProperty("device"))
+                        writer.uint32(/* id 2, wireType 2 =*/18).string(message.device);
+                    if (message.device_type != null && message.hasOwnProperty("device_type"))
+                        writer.uint32(/* id 3, wireType 2 =*/26).string(message.device_type);
+                    if (message.name != null && message.hasOwnProperty("name"))
+                        writer.uint32(/* id 4, wireType 2 =*/34).string(message.name);
+                    if (message.version != null && message.hasOwnProperty("version"))
+                        writer.uint32(/* id 5, wireType 2 =*/42).string(message.version);
+                    if (message.type != null && message.hasOwnProperty("type"))
+                        writer.uint32(/* id 6, wireType 2 =*/50).string(message.type);
+                    if (message.icon_class != null && message.hasOwnProperty("icon_class"))
+                        writer.uint32(/* id 7, wireType 2 =*/58).string(message.icon_class);
+                    if (message.upload_file_enabled != null && message.hasOwnProperty("upload_file_enabled"))
+                        writer.uint32(/* id 8, wireType 0 =*/64).bool(message.upload_file_enabled);
+                    if (message.sort_order != null && message.hasOwnProperty("sort_order"))
+                        writer.uint32(/* id 9, wireType 1 =*/73).double(message.sort_order);
+                    if (message.is_webrtc_enabled != null && message.hasOwnProperty("is_webrtc_enabled"))
+                        writer.uint32(/* id 10, wireType 0 =*/80).bool(message.is_webrtc_enabled);
+                    if (message.caps != null && message.caps.length)
+                        for (var i = 0; i < message.caps.length; ++i)
+                            $root.mdc.proto.cbt.CbtCapabilities.encode(message.caps[i], writer.uint32(/* id 11, wireType 2 =*/90).fork()).ldelim();
+                    if (message.browsers != null && message.browsers.length)
+                        for (var i = 0; i < message.browsers.length; ++i)
+                            $root.mdc.proto.cbt.CbtBrowser.encode(message.browsers[i], writer.uint32(/* id 12, wireType 2 =*/98).fork()).ldelim();
+                    if (message.resolutions != null && message.resolutions.length)
+                        for (var i = 0; i < message.resolutions.length; ++i)
+                            $root.mdc.proto.cbt.CbtResolution.encode(message.resolutions[i], writer.uint32(/* id 13, wireType 2 =*/106).fork()).ldelim();
+                    return writer;
+                };
+
+                /**
+                 * Encodes the specified CbtDevice message, length delimited. Does not implicitly {@link mdc.proto.cbt.CbtDevice.verify|verify} messages.
+                 * @function encodeDelimited
+                 * @memberof mdc.proto.cbt.CbtDevice
+                 * @static
+                 * @param {mdc.proto.cbt.ICbtDevice} message CbtDevice message or plain object to encode
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
+                 */
+                CbtDevice.encodeDelimited = function encodeDelimited(message, writer) {
+                    return this.encode(message, writer).ldelim();
+                };
+
+                /**
+                 * Decodes a CbtDevice message from the specified reader or buffer.
+                 * @function decode
+                 * @memberof mdc.proto.cbt.CbtDevice
+                 * @static
+                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                 * @param {number} [length] Message length if known beforehand
+                 * @returns {mdc.proto.cbt.CbtDevice} CbtDevice
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                CbtDevice.decode = function decode(reader, length) {
+                    if (!(reader instanceof $Reader))
+                        reader = $Reader.create(reader);
+                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.mdc.proto.cbt.CbtDevice();
+                    while (reader.pos < end) {
+                        var tag = reader.uint32();
+                        switch (tag >>> 3) {
+                        case 1:
+                            message.api_name = reader.string();
+                            break;
+                        case 2:
+                            message.device = reader.string();
+                            break;
+                        case 3:
+                            message.device_type = reader.string();
+                            break;
+                        case 4:
+                            message.name = reader.string();
+                            break;
+                        case 5:
+                            message.version = reader.string();
+                            break;
+                        case 6:
+                            message.type = reader.string();
+                            break;
+                        case 7:
+                            message.icon_class = reader.string();
+                            break;
+                        case 8:
+                            message.upload_file_enabled = reader.bool();
+                            break;
+                        case 9:
+                            message.sort_order = reader.double();
+                            break;
+                        case 10:
+                            message.is_webrtc_enabled = reader.bool();
+                            break;
+                        case 11:
+                            if (!(message.caps && message.caps.length))
+                                message.caps = [];
+                            message.caps.push($root.mdc.proto.cbt.CbtCapabilities.decode(reader, reader.uint32()));
+                            break;
+                        case 12:
+                            if (!(message.browsers && message.browsers.length))
+                                message.browsers = [];
+                            message.browsers.push($root.mdc.proto.cbt.CbtBrowser.decode(reader, reader.uint32()));
+                            break;
+                        case 13:
+                            if (!(message.resolutions && message.resolutions.length))
+                                message.resolutions = [];
+                            message.resolutions.push($root.mdc.proto.cbt.CbtResolution.decode(reader, reader.uint32()));
+                            break;
+                        default:
+                            reader.skipType(tag & 7);
+                            break;
+                        }
+                    }
+                    return message;
+                };
+
+                /**
+                 * Decodes a CbtDevice message from the specified reader or buffer, length delimited.
+                 * @function decodeDelimited
+                 * @memberof mdc.proto.cbt.CbtDevice
+                 * @static
+                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                 * @returns {mdc.proto.cbt.CbtDevice} CbtDevice
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                CbtDevice.decodeDelimited = function decodeDelimited(reader) {
+                    if (!(reader instanceof $Reader))
+                        reader = new $Reader(reader);
+                    return this.decode(reader, reader.uint32());
+                };
+
+                /**
+                 * Verifies a CbtDevice message.
+                 * @function verify
+                 * @memberof mdc.proto.cbt.CbtDevice
+                 * @static
+                 * @param {Object.<string,*>} message Plain object to verify
+                 * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                 */
+                CbtDevice.verify = function verify(message) {
+                    if (typeof message !== "object" || message === null)
+                        return "object expected";
+                    if (message.api_name != null && message.hasOwnProperty("api_name"))
+                        if (!$util.isString(message.api_name))
+                            return "api_name: string expected";
+                    if (message.device != null && message.hasOwnProperty("device"))
+                        if (!$util.isString(message.device))
+                            return "device: string expected";
+                    if (message.device_type != null && message.hasOwnProperty("device_type"))
+                        if (!$util.isString(message.device_type))
+                            return "device_type: string expected";
+                    if (message.name != null && message.hasOwnProperty("name"))
+                        if (!$util.isString(message.name))
+                            return "name: string expected";
+                    if (message.version != null && message.hasOwnProperty("version"))
+                        if (!$util.isString(message.version))
+                            return "version: string expected";
+                    if (message.type != null && message.hasOwnProperty("type"))
+                        if (!$util.isString(message.type))
+                            return "type: string expected";
+                    if (message.icon_class != null && message.hasOwnProperty("icon_class"))
+                        if (!$util.isString(message.icon_class))
+                            return "icon_class: string expected";
+                    if (message.upload_file_enabled != null && message.hasOwnProperty("upload_file_enabled"))
+                        if (typeof message.upload_file_enabled !== "boolean")
+                            return "upload_file_enabled: boolean expected";
+                    if (message.sort_order != null && message.hasOwnProperty("sort_order"))
+                        if (typeof message.sort_order !== "number")
+                            return "sort_order: number expected";
+                    if (message.is_webrtc_enabled != null && message.hasOwnProperty("is_webrtc_enabled"))
+                        if (typeof message.is_webrtc_enabled !== "boolean")
+                            return "is_webrtc_enabled: boolean expected";
+                    if (message.caps != null && message.hasOwnProperty("caps")) {
+                        if (!Array.isArray(message.caps))
+                            return "caps: array expected";
+                        for (var i = 0; i < message.caps.length; ++i) {
+                            var error = $root.mdc.proto.cbt.CbtCapabilities.verify(message.caps[i]);
+                            if (error)
+                                return "caps." + error;
+                        }
+                    }
+                    if (message.browsers != null && message.hasOwnProperty("browsers")) {
+                        if (!Array.isArray(message.browsers))
+                            return "browsers: array expected";
+                        for (var i = 0; i < message.browsers.length; ++i) {
+                            var error = $root.mdc.proto.cbt.CbtBrowser.verify(message.browsers[i]);
+                            if (error)
+                                return "browsers." + error;
+                        }
+                    }
+                    if (message.resolutions != null && message.hasOwnProperty("resolutions")) {
+                        if (!Array.isArray(message.resolutions))
+                            return "resolutions: array expected";
+                        for (var i = 0; i < message.resolutions.length; ++i) {
+                            var error = $root.mdc.proto.cbt.CbtResolution.verify(message.resolutions[i]);
+                            if (error)
+                                return "resolutions." + error;
+                        }
+                    }
+                    return null;
+                };
+
+                /**
+                 * Creates a CbtDevice message from a plain object. Also converts values to their respective internal types.
+                 * @function fromObject
+                 * @memberof mdc.proto.cbt.CbtDevice
+                 * @static
+                 * @param {Object.<string,*>} object Plain object
+                 * @returns {mdc.proto.cbt.CbtDevice} CbtDevice
+                 */
+                CbtDevice.fromObject = function fromObject(object) {
+                    if (object instanceof $root.mdc.proto.cbt.CbtDevice)
+                        return object;
+                    var message = new $root.mdc.proto.cbt.CbtDevice();
+                    if (object.api_name != null)
+                        message.api_name = String(object.api_name);
+                    if (object.device != null)
+                        message.device = String(object.device);
+                    if (object.device_type != null)
+                        message.device_type = String(object.device_type);
+                    if (object.name != null)
+                        message.name = String(object.name);
+                    if (object.version != null)
+                        message.version = String(object.version);
+                    if (object.type != null)
+                        message.type = String(object.type);
+                    if (object.icon_class != null)
+                        message.icon_class = String(object.icon_class);
+                    if (object.upload_file_enabled != null)
+                        message.upload_file_enabled = Boolean(object.upload_file_enabled);
+                    if (object.sort_order != null)
+                        message.sort_order = Number(object.sort_order);
+                    if (object.is_webrtc_enabled != null)
+                        message.is_webrtc_enabled = Boolean(object.is_webrtc_enabled);
+                    if (object.caps) {
+                        if (!Array.isArray(object.caps))
+                            throw TypeError(".mdc.proto.cbt.CbtDevice.caps: array expected");
+                        message.caps = [];
+                        for (var i = 0; i < object.caps.length; ++i) {
+                            if (typeof object.caps[i] !== "object")
+                                throw TypeError(".mdc.proto.cbt.CbtDevice.caps: object expected");
+                            message.caps[i] = $root.mdc.proto.cbt.CbtCapabilities.fromObject(object.caps[i]);
+                        }
+                    }
+                    if (object.browsers) {
+                        if (!Array.isArray(object.browsers))
+                            throw TypeError(".mdc.proto.cbt.CbtDevice.browsers: array expected");
+                        message.browsers = [];
+                        for (var i = 0; i < object.browsers.length; ++i) {
+                            if (typeof object.browsers[i] !== "object")
+                                throw TypeError(".mdc.proto.cbt.CbtDevice.browsers: object expected");
+                            message.browsers[i] = $root.mdc.proto.cbt.CbtBrowser.fromObject(object.browsers[i]);
+                        }
+                    }
+                    if (object.resolutions) {
+                        if (!Array.isArray(object.resolutions))
+                            throw TypeError(".mdc.proto.cbt.CbtDevice.resolutions: array expected");
+                        message.resolutions = [];
+                        for (var i = 0; i < object.resolutions.length; ++i) {
+                            if (typeof object.resolutions[i] !== "object")
+                                throw TypeError(".mdc.proto.cbt.CbtDevice.resolutions: object expected");
+                            message.resolutions[i] = $root.mdc.proto.cbt.CbtResolution.fromObject(object.resolutions[i]);
+                        }
+                    }
+                    return message;
+                };
+
+                /**
+                 * Creates a plain object from a CbtDevice message. Also converts values to other types if specified.
+                 * @function toObject
+                 * @memberof mdc.proto.cbt.CbtDevice
+                 * @static
+                 * @param {mdc.proto.cbt.CbtDevice} message CbtDevice
+                 * @param {$protobuf.IConversionOptions} [options] Conversion options
+                 * @returns {Object.<string,*>} Plain object
+                 */
+                CbtDevice.toObject = function toObject(message, options) {
+                    if (!options)
+                        options = {};
+                    var object = {};
+                    if (options.arrays || options.defaults) {
+                        object.caps = [];
+                        object.browsers = [];
+                        object.resolutions = [];
+                    }
+                    if (options.defaults) {
+                        object.api_name = "";
+                        object.device = "";
+                        object.device_type = "";
+                        object.name = "";
+                        object.version = "";
+                        object.type = "";
+                        object.icon_class = "";
+                        object.upload_file_enabled = false;
+                        object.sort_order = 0;
+                        object.is_webrtc_enabled = false;
+                    }
+                    if (message.api_name != null && message.hasOwnProperty("api_name"))
+                        object.api_name = message.api_name;
+                    if (message.device != null && message.hasOwnProperty("device"))
+                        object.device = message.device;
+                    if (message.device_type != null && message.hasOwnProperty("device_type"))
+                        object.device_type = message.device_type;
+                    if (message.name != null && message.hasOwnProperty("name"))
+                        object.name = message.name;
+                    if (message.version != null && message.hasOwnProperty("version"))
+                        object.version = message.version;
+                    if (message.type != null && message.hasOwnProperty("type"))
+                        object.type = message.type;
+                    if (message.icon_class != null && message.hasOwnProperty("icon_class"))
+                        object.icon_class = message.icon_class;
+                    if (message.upload_file_enabled != null && message.hasOwnProperty("upload_file_enabled"))
+                        object.upload_file_enabled = message.upload_file_enabled;
+                    if (message.sort_order != null && message.hasOwnProperty("sort_order"))
+                        object.sort_order = options.json && !isFinite(message.sort_order) ? String(message.sort_order) : message.sort_order;
+                    if (message.is_webrtc_enabled != null && message.hasOwnProperty("is_webrtc_enabled"))
+                        object.is_webrtc_enabled = message.is_webrtc_enabled;
+                    if (message.caps && message.caps.length) {
+                        object.caps = [];
+                        for (var j = 0; j < message.caps.length; ++j)
+                            object.caps[j] = $root.mdc.proto.cbt.CbtCapabilities.toObject(message.caps[j], options);
+                    }
+                    if (message.browsers && message.browsers.length) {
+                        object.browsers = [];
+                        for (var j = 0; j < message.browsers.length; ++j)
+                            object.browsers[j] = $root.mdc.proto.cbt.CbtBrowser.toObject(message.browsers[j], options);
+                    }
+                    if (message.resolutions && message.resolutions.length) {
+                        object.resolutions = [];
+                        for (var j = 0; j < message.resolutions.length; ++j)
+                            object.resolutions[j] = $root.mdc.proto.cbt.CbtResolution.toObject(message.resolutions[j], options);
+                    }
+                    return object;
+                };
+
+                /**
+                 * Converts this CbtDevice to JSON.
+                 * @function toJSON
+                 * @memberof mdc.proto.cbt.CbtDevice
+                 * @instance
+                 * @returns {Object.<string,*>} JSON object
+                 */
+                CbtDevice.prototype.toJSON = function toJSON() {
+                    return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                };
+
+                return CbtDevice;
+            })();
+
+            cbt.CbtBrowser = (function() {
+
+                /**
+                 * Properties of a CbtBrowser.
+                 * @memberof mdc.proto.cbt
+                 * @interface ICbtBrowser
+                 * @property {string|null} [name] CbtBrowser name
+                 * @property {string|null} [type] CbtBrowser type
+                 * @property {string|null} [version] CbtBrowser version
+                 * @property {string|null} [api_name] CbtBrowser api_name
+                 * @property {boolean|null} [default_live_test_browser] CbtBrowser default_live_test_browser
+                 * @property {string|null} [icon_class] CbtBrowser icon_class
+                 * @property {boolean|null} [major_browser] CbtBrowser major_browser
+                 * @property {string|null} [device] CbtBrowser device
+                 * @property {string|null} [selenium_version] CbtBrowser selenium_version
+                 * @property {string|null} [webdriver_type] CbtBrowser webdriver_type
+                 * @property {string|null} [webdriver_version] CbtBrowser webdriver_version
+                 * @property {boolean|null} [can_mobile_debug] CbtBrowser can_mobile_debug
+                 * @property {Array.<mdc.proto.cbt.ICbtCapabilities>|null} [caps] CbtBrowser caps
+                 * @property {string|null} [default_config] CbtBrowser default_config
+                 */
+
+                /**
+                 * Constructs a new CbtBrowser.
+                 * @memberof mdc.proto.cbt
+                 * @classdesc Represents a CbtBrowser.
+                 * @implements ICbtBrowser
+                 * @constructor
+                 * @param {mdc.proto.cbt.ICbtBrowser=} [properties] Properties to set
+                 */
+                function CbtBrowser(properties) {
+                    this.caps = [];
+                    if (properties)
+                        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                            if (properties[keys[i]] != null)
+                                this[keys[i]] = properties[keys[i]];
+                }
+
+                /**
+                 * CbtBrowser name.
+                 * @member {string} name
+                 * @memberof mdc.proto.cbt.CbtBrowser
+                 * @instance
+                 */
+                CbtBrowser.prototype.name = "";
+
+                /**
+                 * CbtBrowser type.
+                 * @member {string} type
+                 * @memberof mdc.proto.cbt.CbtBrowser
+                 * @instance
+                 */
+                CbtBrowser.prototype.type = "";
+
+                /**
+                 * CbtBrowser version.
+                 * @member {string} version
+                 * @memberof mdc.proto.cbt.CbtBrowser
+                 * @instance
+                 */
+                CbtBrowser.prototype.version = "";
+
+                /**
+                 * CbtBrowser api_name.
+                 * @member {string} api_name
+                 * @memberof mdc.proto.cbt.CbtBrowser
+                 * @instance
+                 */
+                CbtBrowser.prototype.api_name = "";
+
+                /**
+                 * CbtBrowser default_live_test_browser.
+                 * @member {boolean} default_live_test_browser
+                 * @memberof mdc.proto.cbt.CbtBrowser
+                 * @instance
+                 */
+                CbtBrowser.prototype.default_live_test_browser = false;
+
+                /**
+                 * CbtBrowser icon_class.
+                 * @member {string} icon_class
+                 * @memberof mdc.proto.cbt.CbtBrowser
+                 * @instance
+                 */
+                CbtBrowser.prototype.icon_class = "";
+
+                /**
+                 * CbtBrowser major_browser.
+                 * @member {boolean} major_browser
+                 * @memberof mdc.proto.cbt.CbtBrowser
+                 * @instance
+                 */
+                CbtBrowser.prototype.major_browser = false;
+
+                /**
+                 * CbtBrowser device.
+                 * @member {string} device
+                 * @memberof mdc.proto.cbt.CbtBrowser
+                 * @instance
+                 */
+                CbtBrowser.prototype.device = "";
+
+                /**
+                 * CbtBrowser selenium_version.
+                 * @member {string} selenium_version
+                 * @memberof mdc.proto.cbt.CbtBrowser
+                 * @instance
+                 */
+                CbtBrowser.prototype.selenium_version = "";
+
+                /**
+                 * CbtBrowser webdriver_type.
+                 * @member {string} webdriver_type
+                 * @memberof mdc.proto.cbt.CbtBrowser
+                 * @instance
+                 */
+                CbtBrowser.prototype.webdriver_type = "";
+
+                /**
+                 * CbtBrowser webdriver_version.
+                 * @member {string} webdriver_version
+                 * @memberof mdc.proto.cbt.CbtBrowser
+                 * @instance
+                 */
+                CbtBrowser.prototype.webdriver_version = "";
+
+                /**
+                 * CbtBrowser can_mobile_debug.
+                 * @member {boolean} can_mobile_debug
+                 * @memberof mdc.proto.cbt.CbtBrowser
+                 * @instance
+                 */
+                CbtBrowser.prototype.can_mobile_debug = false;
+
+                /**
+                 * CbtBrowser caps.
+                 * @member {Array.<mdc.proto.cbt.ICbtCapabilities>} caps
+                 * @memberof mdc.proto.cbt.CbtBrowser
+                 * @instance
+                 */
+                CbtBrowser.prototype.caps = $util.emptyArray;
+
+                /**
+                 * CbtBrowser default_config.
+                 * @member {string} default_config
+                 * @memberof mdc.proto.cbt.CbtBrowser
+                 * @instance
+                 */
+                CbtBrowser.prototype.default_config = "";
+
+                /**
+                 * Creates a new CbtBrowser instance using the specified properties.
+                 * @function create
+                 * @memberof mdc.proto.cbt.CbtBrowser
+                 * @static
+                 * @param {mdc.proto.cbt.ICbtBrowser=} [properties] Properties to set
+                 * @returns {mdc.proto.cbt.CbtBrowser} CbtBrowser instance
+                 */
+                CbtBrowser.create = function create(properties) {
+                    return new CbtBrowser(properties);
+                };
+
+                /**
+                 * Encodes the specified CbtBrowser message. Does not implicitly {@link mdc.proto.cbt.CbtBrowser.verify|verify} messages.
+                 * @function encode
+                 * @memberof mdc.proto.cbt.CbtBrowser
+                 * @static
+                 * @param {mdc.proto.cbt.ICbtBrowser} message CbtBrowser message or plain object to encode
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
+                 */
+                CbtBrowser.encode = function encode(message, writer) {
+                    if (!writer)
+                        writer = $Writer.create();
+                    if (message.name != null && message.hasOwnProperty("name"))
+                        writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
+                    if (message.type != null && message.hasOwnProperty("type"))
+                        writer.uint32(/* id 2, wireType 2 =*/18).string(message.type);
+                    if (message.version != null && message.hasOwnProperty("version"))
+                        writer.uint32(/* id 3, wireType 2 =*/26).string(message.version);
+                    if (message.api_name != null && message.hasOwnProperty("api_name"))
+                        writer.uint32(/* id 4, wireType 2 =*/34).string(message.api_name);
+                    if (message.default_live_test_browser != null && message.hasOwnProperty("default_live_test_browser"))
+                        writer.uint32(/* id 5, wireType 0 =*/40).bool(message.default_live_test_browser);
+                    if (message.icon_class != null && message.hasOwnProperty("icon_class"))
+                        writer.uint32(/* id 6, wireType 2 =*/50).string(message.icon_class);
+                    if (message.major_browser != null && message.hasOwnProperty("major_browser"))
+                        writer.uint32(/* id 7, wireType 0 =*/56).bool(message.major_browser);
+                    if (message.device != null && message.hasOwnProperty("device"))
+                        writer.uint32(/* id 8, wireType 2 =*/66).string(message.device);
+                    if (message.selenium_version != null && message.hasOwnProperty("selenium_version"))
+                        writer.uint32(/* id 9, wireType 2 =*/74).string(message.selenium_version);
+                    if (message.webdriver_type != null && message.hasOwnProperty("webdriver_type"))
+                        writer.uint32(/* id 10, wireType 2 =*/82).string(message.webdriver_type);
+                    if (message.webdriver_version != null && message.hasOwnProperty("webdriver_version"))
+                        writer.uint32(/* id 11, wireType 2 =*/90).string(message.webdriver_version);
+                    if (message.can_mobile_debug != null && message.hasOwnProperty("can_mobile_debug"))
+                        writer.uint32(/* id 12, wireType 0 =*/96).bool(message.can_mobile_debug);
+                    if (message.caps != null && message.caps.length)
+                        for (var i = 0; i < message.caps.length; ++i)
+                            $root.mdc.proto.cbt.CbtCapabilities.encode(message.caps[i], writer.uint32(/* id 13, wireType 2 =*/106).fork()).ldelim();
+                    if (message.default_config != null && message.hasOwnProperty("default_config"))
+                        writer.uint32(/* id 14, wireType 2 =*/114).string(message.default_config);
+                    return writer;
+                };
+
+                /**
+                 * Encodes the specified CbtBrowser message, length delimited. Does not implicitly {@link mdc.proto.cbt.CbtBrowser.verify|verify} messages.
+                 * @function encodeDelimited
+                 * @memberof mdc.proto.cbt.CbtBrowser
+                 * @static
+                 * @param {mdc.proto.cbt.ICbtBrowser} message CbtBrowser message or plain object to encode
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
+                 */
+                CbtBrowser.encodeDelimited = function encodeDelimited(message, writer) {
+                    return this.encode(message, writer).ldelim();
+                };
+
+                /**
+                 * Decodes a CbtBrowser message from the specified reader or buffer.
+                 * @function decode
+                 * @memberof mdc.proto.cbt.CbtBrowser
+                 * @static
+                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                 * @param {number} [length] Message length if known beforehand
+                 * @returns {mdc.proto.cbt.CbtBrowser} CbtBrowser
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                CbtBrowser.decode = function decode(reader, length) {
+                    if (!(reader instanceof $Reader))
+                        reader = $Reader.create(reader);
+                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.mdc.proto.cbt.CbtBrowser();
+                    while (reader.pos < end) {
+                        var tag = reader.uint32();
+                        switch (tag >>> 3) {
+                        case 1:
+                            message.name = reader.string();
+                            break;
+                        case 2:
+                            message.type = reader.string();
+                            break;
+                        case 3:
+                            message.version = reader.string();
+                            break;
+                        case 4:
+                            message.api_name = reader.string();
+                            break;
+                        case 5:
+                            message.default_live_test_browser = reader.bool();
+                            break;
+                        case 6:
+                            message.icon_class = reader.string();
+                            break;
+                        case 7:
+                            message.major_browser = reader.bool();
+                            break;
+                        case 8:
+                            message.device = reader.string();
+                            break;
+                        case 9:
+                            message.selenium_version = reader.string();
+                            break;
+                        case 10:
+                            message.webdriver_type = reader.string();
+                            break;
+                        case 11:
+                            message.webdriver_version = reader.string();
+                            break;
+                        case 12:
+                            message.can_mobile_debug = reader.bool();
+                            break;
+                        case 13:
+                            if (!(message.caps && message.caps.length))
+                                message.caps = [];
+                            message.caps.push($root.mdc.proto.cbt.CbtCapabilities.decode(reader, reader.uint32()));
+                            break;
+                        case 14:
+                            message.default_config = reader.string();
+                            break;
+                        default:
+                            reader.skipType(tag & 7);
+                            break;
+                        }
+                    }
+                    return message;
+                };
+
+                /**
+                 * Decodes a CbtBrowser message from the specified reader or buffer, length delimited.
+                 * @function decodeDelimited
+                 * @memberof mdc.proto.cbt.CbtBrowser
+                 * @static
+                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                 * @returns {mdc.proto.cbt.CbtBrowser} CbtBrowser
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                CbtBrowser.decodeDelimited = function decodeDelimited(reader) {
+                    if (!(reader instanceof $Reader))
+                        reader = new $Reader(reader);
+                    return this.decode(reader, reader.uint32());
+                };
+
+                /**
+                 * Verifies a CbtBrowser message.
+                 * @function verify
+                 * @memberof mdc.proto.cbt.CbtBrowser
+                 * @static
+                 * @param {Object.<string,*>} message Plain object to verify
+                 * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                 */
+                CbtBrowser.verify = function verify(message) {
+                    if (typeof message !== "object" || message === null)
+                        return "object expected";
+                    if (message.name != null && message.hasOwnProperty("name"))
+                        if (!$util.isString(message.name))
+                            return "name: string expected";
+                    if (message.type != null && message.hasOwnProperty("type"))
+                        if (!$util.isString(message.type))
+                            return "type: string expected";
+                    if (message.version != null && message.hasOwnProperty("version"))
+                        if (!$util.isString(message.version))
+                            return "version: string expected";
+                    if (message.api_name != null && message.hasOwnProperty("api_name"))
+                        if (!$util.isString(message.api_name))
+                            return "api_name: string expected";
+                    if (message.default_live_test_browser != null && message.hasOwnProperty("default_live_test_browser"))
+                        if (typeof message.default_live_test_browser !== "boolean")
+                            return "default_live_test_browser: boolean expected";
+                    if (message.icon_class != null && message.hasOwnProperty("icon_class"))
+                        if (!$util.isString(message.icon_class))
+                            return "icon_class: string expected";
+                    if (message.major_browser != null && message.hasOwnProperty("major_browser"))
+                        if (typeof message.major_browser !== "boolean")
+                            return "major_browser: boolean expected";
+                    if (message.device != null && message.hasOwnProperty("device"))
+                        if (!$util.isString(message.device))
+                            return "device: string expected";
+                    if (message.selenium_version != null && message.hasOwnProperty("selenium_version"))
+                        if (!$util.isString(message.selenium_version))
+                            return "selenium_version: string expected";
+                    if (message.webdriver_type != null && message.hasOwnProperty("webdriver_type"))
+                        if (!$util.isString(message.webdriver_type))
+                            return "webdriver_type: string expected";
+                    if (message.webdriver_version != null && message.hasOwnProperty("webdriver_version"))
+                        if (!$util.isString(message.webdriver_version))
+                            return "webdriver_version: string expected";
+                    if (message.can_mobile_debug != null && message.hasOwnProperty("can_mobile_debug"))
+                        if (typeof message.can_mobile_debug !== "boolean")
+                            return "can_mobile_debug: boolean expected";
+                    if (message.caps != null && message.hasOwnProperty("caps")) {
+                        if (!Array.isArray(message.caps))
+                            return "caps: array expected";
+                        for (var i = 0; i < message.caps.length; ++i) {
+                            var error = $root.mdc.proto.cbt.CbtCapabilities.verify(message.caps[i]);
+                            if (error)
+                                return "caps." + error;
+                        }
+                    }
+                    if (message.default_config != null && message.hasOwnProperty("default_config"))
+                        if (!$util.isString(message.default_config))
+                            return "default_config: string expected";
+                    return null;
+                };
+
+                /**
+                 * Creates a CbtBrowser message from a plain object. Also converts values to their respective internal types.
+                 * @function fromObject
+                 * @memberof mdc.proto.cbt.CbtBrowser
+                 * @static
+                 * @param {Object.<string,*>} object Plain object
+                 * @returns {mdc.proto.cbt.CbtBrowser} CbtBrowser
+                 */
+                CbtBrowser.fromObject = function fromObject(object) {
+                    if (object instanceof $root.mdc.proto.cbt.CbtBrowser)
+                        return object;
+                    var message = new $root.mdc.proto.cbt.CbtBrowser();
+                    if (object.name != null)
+                        message.name = String(object.name);
+                    if (object.type != null)
+                        message.type = String(object.type);
+                    if (object.version != null)
+                        message.version = String(object.version);
+                    if (object.api_name != null)
+                        message.api_name = String(object.api_name);
+                    if (object.default_live_test_browser != null)
+                        message.default_live_test_browser = Boolean(object.default_live_test_browser);
+                    if (object.icon_class != null)
+                        message.icon_class = String(object.icon_class);
+                    if (object.major_browser != null)
+                        message.major_browser = Boolean(object.major_browser);
+                    if (object.device != null)
+                        message.device = String(object.device);
+                    if (object.selenium_version != null)
+                        message.selenium_version = String(object.selenium_version);
+                    if (object.webdriver_type != null)
+                        message.webdriver_type = String(object.webdriver_type);
+                    if (object.webdriver_version != null)
+                        message.webdriver_version = String(object.webdriver_version);
+                    if (object.can_mobile_debug != null)
+                        message.can_mobile_debug = Boolean(object.can_mobile_debug);
+                    if (object.caps) {
+                        if (!Array.isArray(object.caps))
+                            throw TypeError(".mdc.proto.cbt.CbtBrowser.caps: array expected");
+                        message.caps = [];
+                        for (var i = 0; i < object.caps.length; ++i) {
+                            if (typeof object.caps[i] !== "object")
+                                throw TypeError(".mdc.proto.cbt.CbtBrowser.caps: object expected");
+                            message.caps[i] = $root.mdc.proto.cbt.CbtCapabilities.fromObject(object.caps[i]);
+                        }
+                    }
+                    if (object.default_config != null)
+                        message.default_config = String(object.default_config);
+                    return message;
+                };
+
+                /**
+                 * Creates a plain object from a CbtBrowser message. Also converts values to other types if specified.
+                 * @function toObject
+                 * @memberof mdc.proto.cbt.CbtBrowser
+                 * @static
+                 * @param {mdc.proto.cbt.CbtBrowser} message CbtBrowser
+                 * @param {$protobuf.IConversionOptions} [options] Conversion options
+                 * @returns {Object.<string,*>} Plain object
+                 */
+                CbtBrowser.toObject = function toObject(message, options) {
+                    if (!options)
+                        options = {};
+                    var object = {};
+                    if (options.arrays || options.defaults)
+                        object.caps = [];
+                    if (options.defaults) {
+                        object.name = "";
+                        object.type = "";
+                        object.version = "";
+                        object.api_name = "";
+                        object.default_live_test_browser = false;
+                        object.icon_class = "";
+                        object.major_browser = false;
+                        object.device = "";
+                        object.selenium_version = "";
+                        object.webdriver_type = "";
+                        object.webdriver_version = "";
+                        object.can_mobile_debug = false;
+                        object.default_config = "";
+                    }
+                    if (message.name != null && message.hasOwnProperty("name"))
+                        object.name = message.name;
+                    if (message.type != null && message.hasOwnProperty("type"))
+                        object.type = message.type;
+                    if (message.version != null && message.hasOwnProperty("version"))
+                        object.version = message.version;
+                    if (message.api_name != null && message.hasOwnProperty("api_name"))
+                        object.api_name = message.api_name;
+                    if (message.default_live_test_browser != null && message.hasOwnProperty("default_live_test_browser"))
+                        object.default_live_test_browser = message.default_live_test_browser;
+                    if (message.icon_class != null && message.hasOwnProperty("icon_class"))
+                        object.icon_class = message.icon_class;
+                    if (message.major_browser != null && message.hasOwnProperty("major_browser"))
+                        object.major_browser = message.major_browser;
+                    if (message.device != null && message.hasOwnProperty("device"))
+                        object.device = message.device;
+                    if (message.selenium_version != null && message.hasOwnProperty("selenium_version"))
+                        object.selenium_version = message.selenium_version;
+                    if (message.webdriver_type != null && message.hasOwnProperty("webdriver_type"))
+                        object.webdriver_type = message.webdriver_type;
+                    if (message.webdriver_version != null && message.hasOwnProperty("webdriver_version"))
+                        object.webdriver_version = message.webdriver_version;
+                    if (message.can_mobile_debug != null && message.hasOwnProperty("can_mobile_debug"))
+                        object.can_mobile_debug = message.can_mobile_debug;
+                    if (message.caps && message.caps.length) {
+                        object.caps = [];
+                        for (var j = 0; j < message.caps.length; ++j)
+                            object.caps[j] = $root.mdc.proto.cbt.CbtCapabilities.toObject(message.caps[j], options);
+                    }
+                    if (message.default_config != null && message.hasOwnProperty("default_config"))
+                        object.default_config = message.default_config;
+                    return object;
+                };
+
+                /**
+                 * Converts this CbtBrowser to JSON.
+                 * @function toJSON
+                 * @memberof mdc.proto.cbt.CbtBrowser
+                 * @instance
+                 * @returns {Object.<string,*>} JSON object
+                 */
+                CbtBrowser.prototype.toJSON = function toJSON() {
+                    return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                };
+
+                return CbtBrowser;
+            })();
+
+            cbt.CbtResolution = (function() {
+
+                /**
+                 * Properties of a CbtResolution.
+                 * @memberof mdc.proto.cbt
+                 * @interface ICbtResolution
+                 * @property {number|null} [width] CbtResolution width
+                 * @property {number|null} [height] CbtResolution height
+                 * @property {string|null} [name] CbtResolution name
+                 * @property {number|null} [desktop_width] CbtResolution desktop_width
+                 * @property {number|null} [desktop_height] CbtResolution desktop_height
+                 * @property {string|null} ["default"] CbtResolution default
+                 * @property {string|null} [orientation] CbtResolution orientation
+                 */
+
+                /**
+                 * Constructs a new CbtResolution.
+                 * @memberof mdc.proto.cbt
+                 * @classdesc Represents a CbtResolution.
+                 * @implements ICbtResolution
+                 * @constructor
+                 * @param {mdc.proto.cbt.ICbtResolution=} [properties] Properties to set
+                 */
+                function CbtResolution(properties) {
+                    if (properties)
+                        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                            if (properties[keys[i]] != null)
+                                this[keys[i]] = properties[keys[i]];
+                }
+
+                /**
+                 * CbtResolution width.
+                 * @member {number} width
+                 * @memberof mdc.proto.cbt.CbtResolution
+                 * @instance
+                 */
+                CbtResolution.prototype.width = 0;
+
+                /**
+                 * CbtResolution height.
+                 * @member {number} height
+                 * @memberof mdc.proto.cbt.CbtResolution
+                 * @instance
+                 */
+                CbtResolution.prototype.height = 0;
+
+                /**
+                 * CbtResolution name.
+                 * @member {string} name
+                 * @memberof mdc.proto.cbt.CbtResolution
+                 * @instance
+                 */
+                CbtResolution.prototype.name = "";
+
+                /**
+                 * CbtResolution desktop_width.
+                 * @member {number} desktop_width
+                 * @memberof mdc.proto.cbt.CbtResolution
+                 * @instance
+                 */
+                CbtResolution.prototype.desktop_width = 0;
+
+                /**
+                 * CbtResolution desktop_height.
+                 * @member {number} desktop_height
+                 * @memberof mdc.proto.cbt.CbtResolution
+                 * @instance
+                 */
+                CbtResolution.prototype.desktop_height = 0;
+
+                /**
+                 * CbtResolution default.
+                 * @member {string} default
+                 * @memberof mdc.proto.cbt.CbtResolution
+                 * @instance
+                 */
+                CbtResolution.prototype["default"] = "";
+
+                /**
+                 * CbtResolution orientation.
+                 * @member {string} orientation
+                 * @memberof mdc.proto.cbt.CbtResolution
+                 * @instance
+                 */
+                CbtResolution.prototype.orientation = "";
+
+                /**
+                 * Creates a new CbtResolution instance using the specified properties.
+                 * @function create
+                 * @memberof mdc.proto.cbt.CbtResolution
+                 * @static
+                 * @param {mdc.proto.cbt.ICbtResolution=} [properties] Properties to set
+                 * @returns {mdc.proto.cbt.CbtResolution} CbtResolution instance
+                 */
+                CbtResolution.create = function create(properties) {
+                    return new CbtResolution(properties);
+                };
+
+                /**
+                 * Encodes the specified CbtResolution message. Does not implicitly {@link mdc.proto.cbt.CbtResolution.verify|verify} messages.
+                 * @function encode
+                 * @memberof mdc.proto.cbt.CbtResolution
+                 * @static
+                 * @param {mdc.proto.cbt.ICbtResolution} message CbtResolution message or plain object to encode
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
+                 */
+                CbtResolution.encode = function encode(message, writer) {
+                    if (!writer)
+                        writer = $Writer.create();
+                    if (message.width != null && message.hasOwnProperty("width"))
+                        writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.width);
+                    if (message.height != null && message.hasOwnProperty("height"))
+                        writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.height);
+                    if (message.name != null && message.hasOwnProperty("name"))
+                        writer.uint32(/* id 3, wireType 2 =*/26).string(message.name);
+                    if (message.desktop_width != null && message.hasOwnProperty("desktop_width"))
+                        writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.desktop_width);
+                    if (message.desktop_height != null && message.hasOwnProperty("desktop_height"))
+                        writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.desktop_height);
+                    if (message["default"] != null && message.hasOwnProperty("default"))
+                        writer.uint32(/* id 6, wireType 2 =*/50).string(message["default"]);
+                    if (message.orientation != null && message.hasOwnProperty("orientation"))
+                        writer.uint32(/* id 7, wireType 2 =*/58).string(message.orientation);
+                    return writer;
+                };
+
+                /**
+                 * Encodes the specified CbtResolution message, length delimited. Does not implicitly {@link mdc.proto.cbt.CbtResolution.verify|verify} messages.
+                 * @function encodeDelimited
+                 * @memberof mdc.proto.cbt.CbtResolution
+                 * @static
+                 * @param {mdc.proto.cbt.ICbtResolution} message CbtResolution message or plain object to encode
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
+                 */
+                CbtResolution.encodeDelimited = function encodeDelimited(message, writer) {
+                    return this.encode(message, writer).ldelim();
+                };
+
+                /**
+                 * Decodes a CbtResolution message from the specified reader or buffer.
+                 * @function decode
+                 * @memberof mdc.proto.cbt.CbtResolution
+                 * @static
+                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                 * @param {number} [length] Message length if known beforehand
+                 * @returns {mdc.proto.cbt.CbtResolution} CbtResolution
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                CbtResolution.decode = function decode(reader, length) {
+                    if (!(reader instanceof $Reader))
+                        reader = $Reader.create(reader);
+                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.mdc.proto.cbt.CbtResolution();
+                    while (reader.pos < end) {
+                        var tag = reader.uint32();
+                        switch (tag >>> 3) {
+                        case 1:
+                            message.width = reader.uint32();
+                            break;
+                        case 2:
+                            message.height = reader.uint32();
+                            break;
+                        case 3:
+                            message.name = reader.string();
+                            break;
+                        case 4:
+                            message.desktop_width = reader.uint32();
+                            break;
+                        case 5:
+                            message.desktop_height = reader.uint32();
+                            break;
+                        case 6:
+                            message["default"] = reader.string();
+                            break;
+                        case 7:
+                            message.orientation = reader.string();
+                            break;
+                        default:
+                            reader.skipType(tag & 7);
+                            break;
+                        }
+                    }
+                    return message;
+                };
+
+                /**
+                 * Decodes a CbtResolution message from the specified reader or buffer, length delimited.
+                 * @function decodeDelimited
+                 * @memberof mdc.proto.cbt.CbtResolution
+                 * @static
+                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                 * @returns {mdc.proto.cbt.CbtResolution} CbtResolution
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                CbtResolution.decodeDelimited = function decodeDelimited(reader) {
+                    if (!(reader instanceof $Reader))
+                        reader = new $Reader(reader);
+                    return this.decode(reader, reader.uint32());
+                };
+
+                /**
+                 * Verifies a CbtResolution message.
+                 * @function verify
+                 * @memberof mdc.proto.cbt.CbtResolution
+                 * @static
+                 * @param {Object.<string,*>} message Plain object to verify
+                 * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                 */
+                CbtResolution.verify = function verify(message) {
+                    if (typeof message !== "object" || message === null)
+                        return "object expected";
+                    if (message.width != null && message.hasOwnProperty("width"))
+                        if (!$util.isInteger(message.width))
+                            return "width: integer expected";
+                    if (message.height != null && message.hasOwnProperty("height"))
+                        if (!$util.isInteger(message.height))
+                            return "height: integer expected";
+                    if (message.name != null && message.hasOwnProperty("name"))
+                        if (!$util.isString(message.name))
+                            return "name: string expected";
+                    if (message.desktop_width != null && message.hasOwnProperty("desktop_width"))
+                        if (!$util.isInteger(message.desktop_width))
+                            return "desktop_width: integer expected";
+                    if (message.desktop_height != null && message.hasOwnProperty("desktop_height"))
+                        if (!$util.isInteger(message.desktop_height))
+                            return "desktop_height: integer expected";
+                    if (message["default"] != null && message.hasOwnProperty("default"))
+                        if (!$util.isString(message["default"]))
+                            return "default: string expected";
+                    if (message.orientation != null && message.hasOwnProperty("orientation"))
+                        if (!$util.isString(message.orientation))
+                            return "orientation: string expected";
+                    return null;
+                };
+
+                /**
+                 * Creates a CbtResolution message from a plain object. Also converts values to their respective internal types.
+                 * @function fromObject
+                 * @memberof mdc.proto.cbt.CbtResolution
+                 * @static
+                 * @param {Object.<string,*>} object Plain object
+                 * @returns {mdc.proto.cbt.CbtResolution} CbtResolution
+                 */
+                CbtResolution.fromObject = function fromObject(object) {
+                    if (object instanceof $root.mdc.proto.cbt.CbtResolution)
+                        return object;
+                    var message = new $root.mdc.proto.cbt.CbtResolution();
+                    if (object.width != null)
+                        message.width = object.width >>> 0;
+                    if (object.height != null)
+                        message.height = object.height >>> 0;
+                    if (object.name != null)
+                        message.name = String(object.name);
+                    if (object.desktop_width != null)
+                        message.desktop_width = object.desktop_width >>> 0;
+                    if (object.desktop_height != null)
+                        message.desktop_height = object.desktop_height >>> 0;
+                    if (object["default"] != null)
+                        message["default"] = String(object["default"]);
+                    if (object.orientation != null)
+                        message.orientation = String(object.orientation);
+                    return message;
+                };
+
+                /**
+                 * Creates a plain object from a CbtResolution message. Also converts values to other types if specified.
+                 * @function toObject
+                 * @memberof mdc.proto.cbt.CbtResolution
+                 * @static
+                 * @param {mdc.proto.cbt.CbtResolution} message CbtResolution
+                 * @param {$protobuf.IConversionOptions} [options] Conversion options
+                 * @returns {Object.<string,*>} Plain object
+                 */
+                CbtResolution.toObject = function toObject(message, options) {
+                    if (!options)
+                        options = {};
+                    var object = {};
+                    if (options.defaults) {
+                        object.width = 0;
+                        object.height = 0;
+                        object.name = "";
+                        object.desktop_width = 0;
+                        object.desktop_height = 0;
+                        object["default"] = "";
+                        object.orientation = "";
+                    }
+                    if (message.width != null && message.hasOwnProperty("width"))
+                        object.width = message.width;
+                    if (message.height != null && message.hasOwnProperty("height"))
+                        object.height = message.height;
+                    if (message.name != null && message.hasOwnProperty("name"))
+                        object.name = message.name;
+                    if (message.desktop_width != null && message.hasOwnProperty("desktop_width"))
+                        object.desktop_width = message.desktop_width;
+                    if (message.desktop_height != null && message.hasOwnProperty("desktop_height"))
+                        object.desktop_height = message.desktop_height;
+                    if (message["default"] != null && message.hasOwnProperty("default"))
+                        object["default"] = message["default"];
+                    if (message.orientation != null && message.hasOwnProperty("orientation"))
+                        object.orientation = message.orientation;
+                    return object;
+                };
+
+                /**
+                 * Converts this CbtResolution to JSON.
+                 * @function toJSON
+                 * @memberof mdc.proto.cbt.CbtResolution
+                 * @instance
+                 * @returns {Object.<string,*>} JSON object
+                 */
+                CbtResolution.prototype.toJSON = function toJSON() {
+                    return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                };
+
+                return CbtResolution;
+            })();
+
+            cbt.CbtCapabilities = (function() {
+
+                /**
+                 * Properties of a CbtCapabilities.
+                 * @memberof mdc.proto.cbt
+                 * @interface ICbtCapabilities
+                 * @property {string|null} [browserName] CbtCapabilities browserName
+                 * @property {string|null} [browserVersion] CbtCapabilities browserVersion
+                 * @property {string|null} [platformName] CbtCapabilities platformName
+                 * @property {string|null} [platformVersion] CbtCapabilities platformVersion
+                 * @property {string|null} [deviceName] CbtCapabilities deviceName
+                 * @property {string|null} [deviceOrientation] CbtCapabilities deviceOrientation
+                 */
+
+                /**
+                 * Constructs a new CbtCapabilities.
+                 * @memberof mdc.proto.cbt
+                 * @classdesc Represents a CbtCapabilities.
+                 * @implements ICbtCapabilities
+                 * @constructor
+                 * @param {mdc.proto.cbt.ICbtCapabilities=} [properties] Properties to set
+                 */
+                function CbtCapabilities(properties) {
+                    if (properties)
+                        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                            if (properties[keys[i]] != null)
+                                this[keys[i]] = properties[keys[i]];
+                }
+
+                /**
+                 * CbtCapabilities browserName.
+                 * @member {string} browserName
+                 * @memberof mdc.proto.cbt.CbtCapabilities
+                 * @instance
+                 */
+                CbtCapabilities.prototype.browserName = "";
+
+                /**
+                 * CbtCapabilities browserVersion.
+                 * @member {string} browserVersion
+                 * @memberof mdc.proto.cbt.CbtCapabilities
+                 * @instance
+                 */
+                CbtCapabilities.prototype.browserVersion = "";
+
+                /**
+                 * CbtCapabilities platformName.
+                 * @member {string} platformName
+                 * @memberof mdc.proto.cbt.CbtCapabilities
+                 * @instance
+                 */
+                CbtCapabilities.prototype.platformName = "";
+
+                /**
+                 * CbtCapabilities platformVersion.
+                 * @member {string} platformVersion
+                 * @memberof mdc.proto.cbt.CbtCapabilities
+                 * @instance
+                 */
+                CbtCapabilities.prototype.platformVersion = "";
+
+                /**
+                 * CbtCapabilities deviceName.
+                 * @member {string} deviceName
+                 * @memberof mdc.proto.cbt.CbtCapabilities
+                 * @instance
+                 */
+                CbtCapabilities.prototype.deviceName = "";
+
+                /**
+                 * CbtCapabilities deviceOrientation.
+                 * @member {string} deviceOrientation
+                 * @memberof mdc.proto.cbt.CbtCapabilities
+                 * @instance
+                 */
+                CbtCapabilities.prototype.deviceOrientation = "";
+
+                /**
+                 * Creates a new CbtCapabilities instance using the specified properties.
+                 * @function create
+                 * @memberof mdc.proto.cbt.CbtCapabilities
+                 * @static
+                 * @param {mdc.proto.cbt.ICbtCapabilities=} [properties] Properties to set
+                 * @returns {mdc.proto.cbt.CbtCapabilities} CbtCapabilities instance
+                 */
+                CbtCapabilities.create = function create(properties) {
+                    return new CbtCapabilities(properties);
+                };
+
+                /**
+                 * Encodes the specified CbtCapabilities message. Does not implicitly {@link mdc.proto.cbt.CbtCapabilities.verify|verify} messages.
+                 * @function encode
+                 * @memberof mdc.proto.cbt.CbtCapabilities
+                 * @static
+                 * @param {mdc.proto.cbt.ICbtCapabilities} message CbtCapabilities message or plain object to encode
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
+                 */
+                CbtCapabilities.encode = function encode(message, writer) {
+                    if (!writer)
+                        writer = $Writer.create();
+                    if (message.browserName != null && message.hasOwnProperty("browserName"))
+                        writer.uint32(/* id 1, wireType 2 =*/10).string(message.browserName);
+                    if (message.browserVersion != null && message.hasOwnProperty("browserVersion"))
+                        writer.uint32(/* id 2, wireType 2 =*/18).string(message.browserVersion);
+                    if (message.platformName != null && message.hasOwnProperty("platformName"))
+                        writer.uint32(/* id 3, wireType 2 =*/26).string(message.platformName);
+                    if (message.platformVersion != null && message.hasOwnProperty("platformVersion"))
+                        writer.uint32(/* id 4, wireType 2 =*/34).string(message.platformVersion);
+                    if (message.deviceName != null && message.hasOwnProperty("deviceName"))
+                        writer.uint32(/* id 5, wireType 2 =*/42).string(message.deviceName);
+                    if (message.deviceOrientation != null && message.hasOwnProperty("deviceOrientation"))
+                        writer.uint32(/* id 6, wireType 2 =*/50).string(message.deviceOrientation);
+                    return writer;
+                };
+
+                /**
+                 * Encodes the specified CbtCapabilities message, length delimited. Does not implicitly {@link mdc.proto.cbt.CbtCapabilities.verify|verify} messages.
+                 * @function encodeDelimited
+                 * @memberof mdc.proto.cbt.CbtCapabilities
+                 * @static
+                 * @param {mdc.proto.cbt.ICbtCapabilities} message CbtCapabilities message or plain object to encode
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
+                 */
+                CbtCapabilities.encodeDelimited = function encodeDelimited(message, writer) {
+                    return this.encode(message, writer).ldelim();
+                };
+
+                /**
+                 * Decodes a CbtCapabilities message from the specified reader or buffer.
+                 * @function decode
+                 * @memberof mdc.proto.cbt.CbtCapabilities
+                 * @static
+                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                 * @param {number} [length] Message length if known beforehand
+                 * @returns {mdc.proto.cbt.CbtCapabilities} CbtCapabilities
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                CbtCapabilities.decode = function decode(reader, length) {
+                    if (!(reader instanceof $Reader))
+                        reader = $Reader.create(reader);
+                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.mdc.proto.cbt.CbtCapabilities();
+                    while (reader.pos < end) {
+                        var tag = reader.uint32();
+                        switch (tag >>> 3) {
+                        case 1:
+                            message.browserName = reader.string();
+                            break;
+                        case 2:
+                            message.browserVersion = reader.string();
+                            break;
+                        case 3:
+                            message.platformName = reader.string();
+                            break;
+                        case 4:
+                            message.platformVersion = reader.string();
+                            break;
+                        case 5:
+                            message.deviceName = reader.string();
+                            break;
+                        case 6:
+                            message.deviceOrientation = reader.string();
+                            break;
+                        default:
+                            reader.skipType(tag & 7);
+                            break;
+                        }
+                    }
+                    return message;
+                };
+
+                /**
+                 * Decodes a CbtCapabilities message from the specified reader or buffer, length delimited.
+                 * @function decodeDelimited
+                 * @memberof mdc.proto.cbt.CbtCapabilities
+                 * @static
+                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                 * @returns {mdc.proto.cbt.CbtCapabilities} CbtCapabilities
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                CbtCapabilities.decodeDelimited = function decodeDelimited(reader) {
+                    if (!(reader instanceof $Reader))
+                        reader = new $Reader(reader);
+                    return this.decode(reader, reader.uint32());
+                };
+
+                /**
+                 * Verifies a CbtCapabilities message.
+                 * @function verify
+                 * @memberof mdc.proto.cbt.CbtCapabilities
+                 * @static
+                 * @param {Object.<string,*>} message Plain object to verify
+                 * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                 */
+                CbtCapabilities.verify = function verify(message) {
+                    if (typeof message !== "object" || message === null)
+                        return "object expected";
+                    if (message.browserName != null && message.hasOwnProperty("browserName"))
+                        if (!$util.isString(message.browserName))
+                            return "browserName: string expected";
+                    if (message.browserVersion != null && message.hasOwnProperty("browserVersion"))
+                        if (!$util.isString(message.browserVersion))
+                            return "browserVersion: string expected";
+                    if (message.platformName != null && message.hasOwnProperty("platformName"))
+                        if (!$util.isString(message.platformName))
+                            return "platformName: string expected";
+                    if (message.platformVersion != null && message.hasOwnProperty("platformVersion"))
+                        if (!$util.isString(message.platformVersion))
+                            return "platformVersion: string expected";
+                    if (message.deviceName != null && message.hasOwnProperty("deviceName"))
+                        if (!$util.isString(message.deviceName))
+                            return "deviceName: string expected";
+                    if (message.deviceOrientation != null && message.hasOwnProperty("deviceOrientation"))
+                        if (!$util.isString(message.deviceOrientation))
+                            return "deviceOrientation: string expected";
+                    return null;
+                };
+
+                /**
+                 * Creates a CbtCapabilities message from a plain object. Also converts values to their respective internal types.
+                 * @function fromObject
+                 * @memberof mdc.proto.cbt.CbtCapabilities
+                 * @static
+                 * @param {Object.<string,*>} object Plain object
+                 * @returns {mdc.proto.cbt.CbtCapabilities} CbtCapabilities
+                 */
+                CbtCapabilities.fromObject = function fromObject(object) {
+                    if (object instanceof $root.mdc.proto.cbt.CbtCapabilities)
+                        return object;
+                    var message = new $root.mdc.proto.cbt.CbtCapabilities();
+                    if (object.browserName != null)
+                        message.browserName = String(object.browserName);
+                    if (object.browserVersion != null)
+                        message.browserVersion = String(object.browserVersion);
+                    if (object.platformName != null)
+                        message.platformName = String(object.platformName);
+                    if (object.platformVersion != null)
+                        message.platformVersion = String(object.platformVersion);
+                    if (object.deviceName != null)
+                        message.deviceName = String(object.deviceName);
+                    if (object.deviceOrientation != null)
+                        message.deviceOrientation = String(object.deviceOrientation);
+                    return message;
+                };
+
+                /**
+                 * Creates a plain object from a CbtCapabilities message. Also converts values to other types if specified.
+                 * @function toObject
+                 * @memberof mdc.proto.cbt.CbtCapabilities
+                 * @static
+                 * @param {mdc.proto.cbt.CbtCapabilities} message CbtCapabilities
+                 * @param {$protobuf.IConversionOptions} [options] Conversion options
+                 * @returns {Object.<string,*>} Plain object
+                 */
+                CbtCapabilities.toObject = function toObject(message, options) {
+                    if (!options)
+                        options = {};
+                    var object = {};
+                    if (options.defaults) {
+                        object.browserName = "";
+                        object.browserVersion = "";
+                        object.platformName = "";
+                        object.platformVersion = "";
+                        object.deviceName = "";
+                        object.deviceOrientation = "";
+                    }
+                    if (message.browserName != null && message.hasOwnProperty("browserName"))
+                        object.browserName = message.browserName;
+                    if (message.browserVersion != null && message.hasOwnProperty("browserVersion"))
+                        object.browserVersion = message.browserVersion;
+                    if (message.platformName != null && message.hasOwnProperty("platformName"))
+                        object.platformName = message.platformName;
+                    if (message.platformVersion != null && message.hasOwnProperty("platformVersion"))
+                        object.platformVersion = message.platformVersion;
+                    if (message.deviceName != null && message.hasOwnProperty("deviceName"))
+                        object.deviceName = message.deviceName;
+                    if (message.deviceOrientation != null && message.hasOwnProperty("deviceOrientation"))
+                        object.deviceOrientation = message.deviceOrientation;
+                    return object;
+                };
+
+                /**
+                 * Converts this CbtCapabilities to JSON.
+                 * @function toJSON
+                 * @memberof mdc.proto.cbt.CbtCapabilities
+                 * @instance
+                 * @returns {Object.<string,*>} JSON object
+                 */
+                CbtCapabilities.prototype.toJSON = function toJSON() {
+                    return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                };
+
+                return CbtCapabilities;
+            })();
+
+            return cbt;
+        })();
+
+        return proto;
+    })();
+
+    return mdc;
+})();
+
+module.exports = $root;

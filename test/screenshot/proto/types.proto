@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package mdc.test.screenshot;
+package mdc.proto;
 
 message ReportData {
   ReportMeta meta = 1;
@@ -125,24 +125,28 @@ message UserAgent {
   }
 
   string alias = 1;
+
   FormFactorType form_factor_type = 2;
   OsVendorType os_vendor_type = 3;
   BrowserVendorType browser_vendor_type = 4;
   BrowserVersionType browser_version_type = 5;
-  string browser_version_value = 6;
-  string selenium_id = 7;
-  WebDriverCapabilities webdriver_capabilities = 8;
 
-  bool is_enabled_by_cli = 9;
-  bool is_available_locally = 10;
-  bool is_runnable = 11;
+  string os_version_value = 6;
+  string browser_version_value = 7;
+
+  string selenium_id = 8;
+  WebDriverCapabilities webdriver_capabilities = 9;
+
+  bool is_enabled_by_cli = 10;
+  bool is_available_locally = 11;
+  bool is_runnable = 12;
 }
 
 message WebDriverCapabilities {
-  string browserName = 1;
-  string browserVersion = 2;
-  string platformName = 3;
-  string platformVersion = 4;
+  string browser_name = 1;
+  string browser_version = 2;
+  string platform_name = 3;
+  string platform_version = 4;
 
   bool is_headless = 5;
   bool is_rotatable = 6;

@@ -20,8 +20,8 @@ const os = require('os');
 const path = require('path');
 const request = require('request-promise-native');
 
-const pb = require('./types.pb');
-const {TestFile} = pb.mdc.test.screenshot;
+const pb = require('../proto/types.pb');
+const {TestFile} = pb.mdc.proto;
 
 /**
  * Downloads binary files from public URLs and saves them to a stable path in the TEMP directory for later retrieval.
@@ -38,7 +38,7 @@ class FileCache {
   /**
    * @param {string} uri Public URI or local file path.
    * @param {?string=} encoding 'utf8' for text, or `null` for binary data.
-   * @return {!Promise<!mdc.test.screenshot.TestFile>} Local copy of the file pointed to by `uri`.
+   * @return {!Promise<!mdc.proto.TestFile>} Local copy of the file pointed to by `uri`.
    */
   async downloadUrlToDisk(uri, encoding = null) {
     mkdirp.sync(this.tempDirPath_);

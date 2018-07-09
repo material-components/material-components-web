@@ -27,7 +27,7 @@
     "screenshot:build": "node \"$PWD/test/screenshot/run.js\" build",
     "screenshot:clean": "node \"$PWD/test/screenshot/run.js\" clean",
     "screenshot:demo": "node \"$PWD/test/screenshot/run.js\" demo",
-    "screenshot:proto": "pbjs --target=static-module --wrap=commonjs --keep-case --out=test/screenshot/lib/types.pb.js test/screenshot/lib/types.proto",
+    "screenshot:proto": "node \"$PWD/test/screenshot/run.js\" proto",
     "screenshot:serve": "node \"$PWD/test/screenshot/run.js\" serve",
     "screenshot:test": "node \"$PWD/test/screenshot/run.js\" test",
     "screenshot:watch": "node \"$PWD/test/screenshot/run.js\" build --watch",

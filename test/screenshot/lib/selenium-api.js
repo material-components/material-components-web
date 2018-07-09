@@ -16,23 +16,34 @@
 
 'use strict';
 
-// const webdriver = require('selenium-webdriver');
-
 const fs = require('mz/fs');
 const mkdirp = require('mkdirp');
 const path = require('path');
 
-const pb = require('./types.pb');
-const {TestFile, WebDriverCapabilities} = pb.mdc.test.screenshot;
+const pb = require('../proto/types.pb').mdc.proto;
+const {TestFile, UserAgent, WebDriverCapabilities} = pb;
+const {FormFactorType} = UserAgent;
 
 const Base64 = require('base64-js');
+const CbtApi = require('./cbt-api');
+const Cli = require('./cli');
 const ImageCropper = require('./image-cropper');
-const {Builder, Capabilities} = require('selenium-webdriver');
-
-// const {By, until} = require('selenium-webdriver');
+const {Builder} = require('selenium-webdriver');
 
 class SeleniumApi {
   constructor() {
+    /**
+     * @type {!CbtApi}
+     * @private
+     */
+    this.cbtApi_ = new CbtApi();
+
+    /**
+     * @type {!Cli}
+     * @private
+     */
+    this.cli_ = new Cli();
+
     /**
      * @type {!ImageCropper}
      * @private
@@ -41,8 +52,8 @@ class SeleniumApi {
   }
 
   /**
-   * @param {!mdc.test.screenshot.ReportData} reportData
-   * @return {!Promise<!mdc.test.screenshot.ReportData>}
+   * @param {!mdc.proto.ReportData} reportData
+   * @return {!Promise<!mdc.proto.ReportData>}
    */
   async captureAllPages(reportData) {
     for (const userAgent of reportData.user_agents.runnable_user_agents) {
@@ -52,8 +63,8 @@ class SeleniumApi {
   }
 
   /**
-   * @param {!mdc.test.screenshot.ReportData} reportData
-   * @param {!mdc.test.screenshot.UserAgent} userAgent
+   * @param {!mdc.proto.ReportData} reportData
+   * @param {!mdc.proto.UserAgent} userAgent
    * @return {!Promise<void>}
    * @private
    */
@@ -69,8 +80,8 @@ class SeleniumApi {
   }
 
   /**
-   * @param {!mdc.test.screenshot.ReportData} reportData
-   * @param {!mdc.test.screenshot.UserAgent} userAgent
+   * @param {!mdc.proto.ReportData} reportData
+   * @param {!mdc.proto.UserAgent} userAgent
    * @param {!IWebDriver} driver
    * @return {!Promise<void>}
    * @private
@@ -84,15 +95,17 @@ class SeleniumApi {
 
     const meta = reportData.meta;
 
-    /** @type {!Array<!mdc.test.screenshot.Screenshot>} */
+    /** @type {!Array<!mdc.proto.Screenshot>} */
     const screenshotQueue = reportData.screenshots.runnable_screenshot_browser_map[userAgent.alias].screenshots;
 
-    /** @type {!mdc.test.screenshot.WebDriverCapabilities} */
+    /** @type {!mdc.proto.WebDriverCapabilities} */
     const caps = await this.getWebDriverCapabilities_(driver);
 
     for (const screenshot of screenshotQueue) {
       const htmlFilePath = screenshot.test_page_file.relative_path;
-      const imageBuffer = await this.capturePageAsPng_({driver, htmlFilePath});
+      const htmlFileUrl = screenshot.test_page_file.public_url;
+
+      const imageBuffer = await this.capturePageAsPng_({driver, userAgent, url: htmlFileUrl});
 
       const imageFilePathRelative = `${htmlFilePath}.${caps.image_filename_suffix}.png`;
       const imageFilePathAbsolute = path.resolve(meta.local_screenshot_image_base_dir, imageFilePathRelative);
@@ -104,62 +117,59 @@ class SeleniumApi {
       screenshot.actual_image_file = TestFile.create({
         relative_path: imageFilePathRelative,
         absolute_path: imageFilePathAbsolute,
-        public_url: path.join(meta.remote_upload_base_url, meta.remote_upload_base_dir, imageFilePathRelative),
+        public_url: meta.remote_upload_base_url + meta.remote_upload_base_dir + imageFilePathRelative,
       });
     }
   }
 
   /**
    * @param {!IWebDriver} driver
-   * @param {string} htmlFilePath
+   * @param {!mdc.proto.UserAgent} userAgent
+   * @param {string} url
    * @return {!Promise<!Buffer>} Buffer containing PNG image data for the cropped screenshot image
    * @private
    */
-  async capturePageAsPng_({driver, htmlFilePath}) {
-    // TODO(acdvorak): Use uploaded GCS URL instead of localhost, but make it configurable for local testing too
-    await driver.get(`http://localhost:8080/${htmlFilePath}`);
+  async capturePageAsPng_({driver, userAgent, url}) {
+    console.log(`GET "${url}"...`);
+    await driver.get(url);
 
     // TODO(acdvorak): Set this value dynamically
+    // TODO(acdvorak): This blows up on mobile browsers
     // NOTE(acdvorak): Setting smaller window dimensions appears to speed up the tests significantly.
-    await driver.manage().window().setRect({width: 400, height: 800});
+    if (userAgent.form_factor_type === FormFactorType.DESKTOP) {
+      // TODO(acdvorak): Better `catch()` handler
+      await driver.manage().window().setRect({width: 400, height: 800}).catch(() => undefined);
+    }
 
     // TODO(acdvorak): Implement "fullpage" screenshots?
     // We can find the device's pixel ratio by capturing a screenshot and comparing the image dimensions with the
     // viewport dimensions reported by the JS running on the page.
 
     const uncroppedScreenshotPngBase64 = await driver.takeScreenshot();
+    const preview = uncroppedScreenshotPngBase64.substr(0, 30) + '...' + uncroppedScreenshotPngBase64.substr(-30);
+    console.log('uncroppedScreenshotPngBase64:', preview);
     const uncroppedScreenshotPngBuffer = Buffer.from(Base64.toByteArray(uncroppedScreenshotPngBase64));
 
     return this.imageCropper_.autoCropImage(uncroppedScreenshotPngBuffer);
   }
   /**
-   * @param {!mdc.test.screenshot.UserAgent} userAgent}
+   * @param {!mdc.proto.UserAgent} userAgent}
    * @return {!Promise<!IWebDriver>}
    */
   async createWebDriver_(userAgent) {
-    const builder = new Builder()
-      // .usingServer(this.cbtApi_.proxyServerUrl)
-      .withCapabilities(
-        new Capabilities()
-          .setBrowserName(userAgent.selenium_id)
-          .set('name', 'Prototype by advorak@google.com')
-          .set('build', 'prototype-test')
+    // TODO(acdvorak): Centralize where `selenium_id` comes from; rename `selenium_id`?
+    const driverBuilder = new Builder().forBrowser(userAgent.selenium_id);
 
-          // These don't seem to do anything, but they're in CBT's examples:
-          // https://help.crossbrowsertesting.com/selenium-testing/getting-started/javascript/
-          // https://github.com/crossbrowsertesting/selenium-webdriverjs/blob/master/parallel/google-search.js
-          // .set('browser_api_name', 'FF59x64')
-          // .set('os_api_name', 'Win10')
-          // .set('username', MDC_CBT_USERNAME)
-          // .set('password', MDC_CBT_AUTHKEY)
-      )
-    ;
-    return await builder.build();
+    if (await this.cli_.isOnline()) {
+      await this.cbtApi_.configureWebDriver({driverBuilder, userAgent});
+    }
+
+    return await driverBuilder.build();
   }
 
   /**
    * @param {!IWebDriver} driver
-   * @return {!Promise<!mdc.test.screenshot.WebDriverCapabilities>}
+   * @return {!Promise<!mdc.proto.WebDriverCapabilities>}
    * @private
    */
   async getWebDriverCapabilities_(driver) {
@@ -175,10 +185,10 @@ class SeleniumApi {
     console.log('');
 
     const proto = WebDriverCapabilities.create({
-      browserName: caps['browserName'],
-      browserVersion: caps['browserVersion'] || caps['version'],
-      platformName: caps['platformName'] || caps['platform'],
-      platformVersion: caps['platformVersion'],
+      browser_name: caps['browserName'],
+      browser_version: caps['browserVersion'] || caps['version'],
+      platform_name: caps['platformName'] || caps['platform'],
+      platform_version: caps['platformVersion'],
 
       is_headless: caps['moz:headless'] || false,
       is_rotatable: caps['rotatable'] || false,
@@ -187,10 +197,10 @@ class SeleniumApi {
     });
 
     proto.image_filename_suffix = [
-      proto.platformName,
-      proto.platformVersion,
-      proto.browserName,
-      proto.browserVersion,
+      proto.platform_name,
+      proto.platform_version,
+      proto.browser_name,
+      proto.browser_version,
     ].join('_');
 
     return proto;

@@ -40,7 +40,7 @@ class LocalStorage {
   }
 
   /**
-   * @param {!mdc.test.screenshot.ReportMeta} reportMeta
+   * @param {!mdc.proto.ReportMeta} reportMeta
    * @return {!Promise<void>}
    */
   async copyAssetsToTempDir(reportMeta) {
@@ -70,7 +70,7 @@ class LocalStorage {
   }
 
   /**
-   * @param {!mdc.test.screenshot.ReportMeta} reportMeta
+   * @param {!mdc.proto.ReportMeta} reportMeta
    * @return {!Promise<!Array<string>>} File paths relative to the git repo. E.g.: "test/screenshot/browser.json".
    */
   async getTestPageDestinationPaths(reportMeta) {

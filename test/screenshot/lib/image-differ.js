@@ -21,8 +21,8 @@ const compareImages = require('resemblejs/compareImages');
 const fs = require('mz/fs');
 const path = require('path');
 
-const pb = require('./types.pb');
-const {ImageDiffResult, Screenshot, TestFile} = pb.mdc.test.screenshot;
+const pb = require('../proto/types.pb');
+const {ImageDiffResult, Screenshot, TestFile} = pb.mdc.proto;
 const {CaptureState} = Screenshot;
 
 /**
@@ -30,7 +30,7 @@ const {CaptureState} = Screenshot;
  */
 class ImageDiffer {
   /**
-   * @param {!mdc.test.screenshot.ReportData} reportData
+   * @param {!mdc.proto.ReportData} reportData
    * @return {!Promise<void>}
    */
   async compareAllScreenshots(reportData) {
@@ -45,10 +45,10 @@ class ImageDiffer {
   }
 
   /**
-   * @param {!mdc.test.screenshot.ReportData} reportData
-   * @param {!mdc.test.screenshot.TestFile} actualImageFile
-   * @param {!mdc.test.screenshot.TestFile} expectedImageFile
-   * @return {!Promise<!mdc.test.screenshot.ImageDiffResult>}
+   * @param {!mdc.proto.ReportData} reportData
+   * @param {!mdc.proto.TestFile} actualImageFile
+   * @param {!mdc.proto.TestFile} expectedImageFile
+   * @return {!Promise<!mdc.proto.ImageDiffResult>}
    */
   async compareOneImage({reportData, actualImageFile, expectedImageFile}) {
     const reportMeta = reportData.meta;
@@ -93,9 +93,9 @@ class ImageDiffer {
   }
 
   /**
-   * @param {!mdc.test.screenshot.ReportMeta} reportMeta
-   * @param {!mdc.test.screenshot.TestFile} actualImageFile
-   * @return {!mdc.test.screenshot.TestFile}
+   * @param {!mdc.proto.ReportMeta} reportMeta
+   * @param {!mdc.proto.TestFile} actualImageFile
+   * @return {!mdc.proto.TestFile}
    * @private
    */
   createDiffImageFile_({reportMeta, actualImageFile}) {
@@ -104,11 +104,10 @@ class ImageDiffer {
       reportMeta.local_diff_image_base_dir,
       diffImageRelativePath
     );
-    const diffImagePublicUrl = path.join(
-      reportMeta.remote_upload_base_url,
-      reportMeta.remote_upload_base_dir,
-      diffImageRelativePath
-    );
+    const diffImagePublicUrl =
+      reportMeta.remote_upload_base_url +
+      reportMeta.remote_upload_base_dir +
+      diffImageRelativePath;
 
     return TestFile.create({
       public_url: diffImagePublicUrl,

@@ -36,6 +36,10 @@ const COMMAND_MAP = {
     return require('./commands/demo').runAsync();
   },
 
+  async proto() {
+    return require('./commands/proto').runAsync();
+  },
+
   async serve() {
     return require('./commands/serve').runAsync();
   },

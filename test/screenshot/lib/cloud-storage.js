@@ -39,7 +39,7 @@ class CloudStorage {
   }
 
   /**
-   * @param {!mdc.test.screenshot.ReportData} reportData
+   * @param {!mdc.proto.ReportData} reportData
    * @return {!Promise<void>}
    */
   async uploadAllAssets(reportData) {
@@ -47,7 +47,7 @@ class CloudStorage {
   }
 
   /**
-   * @param {!mdc.test.screenshot.ReportData} reportData
+   * @param {!mdc.proto.ReportData} reportData
    * @return {!Promise<void>}
    */
   async uploadAllScreenshots(reportData) {
@@ -55,7 +55,7 @@ class CloudStorage {
   }
 
   /**
-   * @param {!mdc.test.screenshot.ReportData} reportData
+   * @param {!mdc.proto.ReportData} reportData
    * @return {!Promise<void>}
    */
   async uploadAllDiffs(reportData) {
@@ -63,7 +63,7 @@ class CloudStorage {
   }
 
   /**
-   * @param {!mdc.test.screenshot.ReportData} reportData
+   * @param {!mdc.proto.ReportData} reportData
    * @param {string} localSourceDir
    * @return {!Promise<void>}
    * @private
@@ -89,22 +89,22 @@ class CloudStorage {
   }
 
   /**
-   * @param {!mdc.test.screenshot.ReportData} reportData
+   * @param {!mdc.proto.ReportData} reportData
    * @param {string} localSourceDir
    * @return {!Promise<!ChildProcessSpawnResult>}
    * @private
    */
   async spawnGsutilUploadProcess_(reportData, localSourceDir) {
+    // TODO(acdvorak): Explain why we need to remove trailing slash
+    const remoteTargetDir = reportData.meta.remote_upload_base_dir.replace(new RegExp('/+$'), '');
     const cmd = 'gsutil';
     const args = [
-      '-m', // multi-thread (upload files in parallel)
+      '-m', // multi-thread (upload files in parallel)w
       'cp', // copy
       '-r', // recursive
       localSourceDir,
-      `gs://${this.cli_.gcsBucket}/${reportData.meta.remote_upload_base_dir}`,
+      `gs://${this.cli_.gcsBucket}/${remoteTargetDir}`,
     ];
-
-    console.log(`${cmd} ${args.join(' ')}\n`);
 
     return this.processManager_.spawnChildProcessSync(cmd, args);
   }

@@ -16,8 +16,8 @@
 
 'use strict';
 
-const pb = require('./types.pb');
-const {ApprovalId, DiffBase, GitRevision} = pb.mdc.test.screenshot;
+const pb = require('../proto/types.pb');
+const {ApprovalId, DiffBase, GitRevision} = pb.mdc.proto;
 
 const argparse = require('argparse');
 const checkIsOnline = require('is-online');
@@ -64,6 +64,7 @@ class Cli {
     this.initBuildCommand_();
     this.initCleanCommand_();
     this.initDemoCommand_();
+    this.initProtoCommand_();
     this.initServeCommand_();
     this.initTestCommand_();
 
@@ -137,54 +138,6 @@ The default behavior is to always build assets before running the tests.
       description: `
 If this flag is present, all external API requests will be disabled, including git fetch, GCS file upload, and CBT.
 If a local dev server is not already running, one will be started for the duration of the test.
-`,
-    });
-  }
-
-  addTestCommandArgs_(subparser) {
-    this.addTestDirArg_(subparser);
-    this.addNoBuildArg_(subparser);
-    this.addOfflineArg_(subparser);
-    this.addGcsBucketArg_(subparser);
-    this.addGoldenPathArg_(subparser);
-
-    this.addArg_(subparser, {
-      optionNames: ['--diff-base'],
-      defaultValue: 'origin/master',
-      description: `
-File path, URL, or Git ref of a 'golden.json' file to diff against.
-Typically a branch name or commit hash, but may also be a local file path or public URL.
-Git refs may optionally be suffixed with ':path/to/golden.json' (the default is to use '--golden-path').
-E.g., 'origin/master' (default), 'HEAD', 'feat/foo/bar', 'fad7ed3:path/to/golden.json',
-'/tmp/golden.json', 'https://storage.googleapis.com/.../test/screenshot/golden.json'.
-`,
-    });
-
-    this.addArg_(subparser, {
-      optionNames: ['--url'],
-      exampleValue: 'REGEX[,-REGEX,...]',
-      type: 'array',
-      description: `
-Comma-separated list of regular expression patterns.
-Only HTML files that match at least one pattern will be tested.
-To negate a pattern, prefix it with a '-' character.
-E.g.: '--url=button,-mixins' will test all 'mdc-button' pages _except_ mixins.
-Passing this option more than once is equivalent to passing a single comma-separated value.
-E.g.: '--url=button,-mixins' is the same as '--url=button --url=-mixins'.
-`,
-    });
-
-    this.addArg_(subparser, {
-      optionNames: ['--browser'],
-      exampleValue: 'REGEX[,-REGEX,...]',
-      type: 'array',
-      description: `
-Comma-separated list of regular expression patterns.
-Only browser aliases that match at least one pattern will be tested. (See 'test/screenshot/browser.json'.)
-To negate a pattern, prefix it with a '-' character.
-E.g.: '--browser=chrome,-mobile' will test Chrome on desktop, but not on mobile.
-Passing this option more than once is equivalent to passing a single comma-separated value.
-E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mobile'.
 `,
     });
   }
@@ -281,6 +234,14 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
     this.addTestDirArg_(subparser);
     this.addNoBuildArg_(subparser);
     this.addGcsBucketArg_(subparser);
+  }
+
+  initProtoCommand_() {
+    const subparser = this.commandParsers_.addParser('proto', {
+      description: 'Compiles Protocol Buffer source files (*.proto) to JavaScript (*.pb.js).',
+    });
+
+    this.addTestDirArg_(subparser);
   }
 
   initServeCommand_() {
@@ -411,17 +372,17 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
     return this.args_['--report'];
   }
 
-  /** @return {!Array<mdc.test.screenshot.ApprovalId>} */
+  /** @return {!Array<mdc.proto.ApprovalId>} */
   get changed() {
     return this.parseApprovalIds_(this.args_['--changed']);
   }
 
-  /** @return {!Array<mdc.test.screenshot.ApprovalId>} */
+  /** @return {!Array<mdc.proto.ApprovalId>} */
   get added() {
     return this.parseApprovalIds_(this.args_['--added']);
   }
 
-  /** @return {!Array<mdc.test.screenshot.ApprovalId>} */
+  /** @return {!Array<mdc.proto.ApprovalId>} */
   get removed() {
     return this.parseApprovalIds_(this.args_['--removed']);
   }
@@ -494,7 +455,7 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
 
   /**
    * @param {?Array<string>} ids
-   * @return {!Array<!mdc.test.screenshot.ApprovalId>}
+   * @return {!Array<!mdc.proto.ApprovalId>}
    * @private
    */
   parseApprovalIds_(ids) {
@@ -528,7 +489,7 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
   /**
    * @param {string} rawDiffBase
    * @param {string} defaultGoldenPath
-   * @return {!Promise<!mdc.test.screenshot.DiffBase>}
+   * @return {!Promise<!mdc.proto.DiffBase>}
    */
   async parseDiffBase({
     rawDiffBase = this.diffBase,
@@ -579,7 +540,7 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
 
   /**
    * @param {string} publicUrl
-   * @return {!mdc.test.screenshot.DiffBase}
+   * @return {!mdc.proto.DiffBase}
    * @private
    */
   createPublicUrlDiffBase_(publicUrl) {
@@ -591,7 +552,7 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
 
   /**
    * @param {string} localFilePath
-   * @return {!mdc.test.screenshot.DiffBase}
+   * @return {!mdc.proto.DiffBase}
    * @private
    */
   createLocalFileDiffBase_(localFilePath) {
@@ -604,7 +565,7 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
   /**
    * @param {string} commit
    * @param {string} snapshotFilePath
-   * @return {!mdc.test.screenshot.DiffBase}
+   * @return {!mdc.proto.DiffBase}
    * @private
    */
   createCommitDiffBase_(commit, snapshotFilePath) {
@@ -620,7 +581,7 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
   /**
    * @param {string} remoteRef
    * @param {string} snapshotFilePath
-   * @return {!mdc.test.screenshot.DiffBase}
+   * @return {!mdc.proto.DiffBase}
    * @private
    */
   async createRemoteBranchDiffBase_(remoteRef, snapshotFilePath) {
@@ -643,7 +604,7 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
   /**
    * @param {string} tagRef
    * @param {string} snapshotFilePath
-   * @return {!mdc.test.screenshot.DiffBase}
+   * @return {!mdc.proto.DiffBase}
    * @private
    */
   async createRemoteTagDiffBase_(tagRef, snapshotFilePath) {
@@ -663,7 +624,7 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
   /**
    * @param {string} branch
    * @param {string} snapshotFilePath
-   * @return {!mdc.test.screenshot.DiffBase}
+   * @return {!mdc.proto.DiffBase}
    * @private
    */
   async createLocalBranchDiffBase_(branch, snapshotFilePath) {

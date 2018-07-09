@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-const CbtUserAgent = require('./cbt-user-agent');
 const GitRepo = require('./git-repo');
 const Cli = require('./cli');
 const childProcess = require('mz/child_process');

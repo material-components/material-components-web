@@ -16,8 +16,8 @@
 
 'use strict';
 
-const pb = require('./types.pb');
-const {UserAgent} = pb.mdc.test.screenshot;
+const pb = require('../proto/types.pb');
+const {UserAgent} = pb.mdc.proto;
 const {FormFactorType, OsVendorType, BrowserVendorType, BrowserVersionType} = UserAgent;
 
 const Cli = require('./cli');
@@ -46,10 +46,10 @@ class UserAgentStore {
 
   /**
    * @param {string} alias
-   * @return {!Promise<?mdc.test.screenshot.UserAgent>}
+   * @return {!Promise<?mdc.proto.UserAgent>}
    */
   async findUserAgentByAlias(alias) {
-    /** @type {!Array<!mdc.test.screenshot.UserAgent>} */
+    /** @type {!Array<!mdc.proto.UserAgent>} */
     const allUserAgents = await this.getAllUserAgents({isOnline: /* skip local browser check */ true});
     return allUserAgents.find((userAgent) => userAgent.alias === alias);
   }
@@ -57,7 +57,7 @@ class UserAgentStore {
   /**
    * @param {string} alias
    * @param {boolean} isOnline
-   * @return {!mdc.test.screenshot.UserAgent}
+   * @return {!mdc.proto.UserAgent}
    * @private
    */
   async parseAlias_({alias, isOnline}) {
@@ -154,6 +154,8 @@ Expected browser vendor to be one of [${validBrowserVendors}], but got '${browse
       await driver.quit();
       return true;
     } catch (err) {
+      console.error(`ERROR in isAvailableLocally_(${seleniumId}):`);
+      console.error(err);
       return false;
     }
   }

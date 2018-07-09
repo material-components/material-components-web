@@ -70,7 +70,7 @@ class SeleniumController {
   }
 
   /**
-   * @return {!Promise<!mdc.test.screenshot.ReportData>}
+   * @return {!Promise<!mdc.proto.ReportData>}
    */
   async initForApproval() {
     const runReportJsonUrl = this.cli_.runReportJsonUrl;
@@ -78,7 +78,7 @@ class SeleniumController {
   }
 
   /**
-   * @return {!Promise<!mdc.test.screenshot.ReportData>}
+   * @return {!Promise<!mdc.proto.ReportData>}
    */
   async initForCapture() {
     const isOnline = await this.cli_.isOnline();
@@ -89,7 +89,7 @@ class SeleniumController {
   }
 
   /**
-   * @return {!Promise<!mdc.test.screenshot.ReportData>}
+   * @return {!Promise<!mdc.proto.ReportData>}
    */
   async initForDemo() {
     const isOnline = await this.cli_.isOnline();
@@ -100,8 +100,8 @@ class SeleniumController {
   }
 
   /**
-   * @param {!mdc.test.screenshot.ReportData} reportData
-   * @return {!Promise<!mdc.test.screenshot.ReportData>}
+   * @param {!mdc.proto.ReportData} reportData
+   * @return {!Promise<!mdc.proto.ReportData>}
    */
   async uploadAllAssets(reportData) {
     await this.cloudStorage_.uploadAllAssets(reportData);
@@ -109,8 +109,8 @@ class SeleniumController {
   }
 
   /**
-   * @param {!mdc.test.screenshot.ReportData} reportData
-   * @return {!Promise<!mdc.test.screenshot.ReportData>}
+   * @param {!mdc.proto.ReportData} reportData
+   * @return {!Promise<!mdc.proto.ReportData>}
    */
   async captureAllPages(reportData) {
     await this.seleniumApi_.captureAllPages(reportData);
@@ -119,8 +119,8 @@ class SeleniumController {
   }
 
   /**
-   * @param {!mdc.test.screenshot.ReportData} reportData
-   * @return {!Promise<!mdc.test.screenshot.ReportData>}
+   * @param {!mdc.proto.ReportData} reportData
+   * @return {!Promise<!mdc.proto.ReportData>}
    */
   async compareAllScreenshots(reportData) {
     await this.imageDiffer_.compareAllScreenshots(reportData);
@@ -129,8 +129,8 @@ class SeleniumController {
   }
 
   /**
-   * @param {!mdc.test.screenshot.ReportData} reportData
-   * @return {!Promise<!mdc.test.screenshot.ReportData>}
+   * @param {!mdc.proto.ReportData} reportData
+   * @return {!Promise<!mdc.proto.ReportData>}
    */
   async generateDiffReport(reportData) {
     await this.report.compareAllScreenshots(reportData); // TODO(acdvorak): Finish
@@ -143,8 +143,8 @@ class SeleniumController {
   }
 
   /**
-   * @param {!mdc.test.screenshot.ReportData} reportData
-   * @return {!Promise<!mdc.test.screenshot.ReportData>}
+   * @param {!mdc.proto.ReportData} reportData
+   * @return {!Promise<!mdc.proto.ReportData>}
    */
   async updateGoldenJson(reportData) {
     /** @type {!GoldenFile} */

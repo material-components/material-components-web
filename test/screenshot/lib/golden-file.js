@@ -16,16 +16,16 @@
 
 'use strict';
 
-const pb = require('./types.pb');
-const {GoldenScreenshot, GoldenSuite} = pb.mdc.test.screenshot;
+const pb = require('../proto/types.pb');
+const {GoldenScreenshot, GoldenSuite} = pb.mdc.proto;
 
 class GoldenFile {
   /**
-   * @param {!mdc.test.screenshot.GoldenSuite=} suiteJson
+   * @param {!mdc.proto.GoldenSuite=} suiteJson
    */
   constructor(suiteJson = GoldenSuite.create()) {
     /**
-     * @type {!mdc.test.screenshot.GoldenSuite}
+     * @type {!mdc.proto.GoldenSuite}
      * @private
      */
     this.suiteJson_ = JSON.parse(JSON.stringify(suiteJson)); // deep copy to avoid mutating shared state
@@ -55,7 +55,7 @@ class GoldenFile {
   }
 
   /**
-   * @param {!mdc.test.screenshot.GoldenScreenshot} goldenScreenshot
+   * @param {!mdc.proto.GoldenScreenshot} goldenScreenshot
    */
   setScreenshotImageUrl(goldenScreenshot) {
     const htmlFilePath = goldenScreenshot.html_file_path;
@@ -90,17 +90,17 @@ class GoldenFile {
   }
 
   /**
-   * @return {!Array<!mdc.test.screenshot.GoldenScreenshot>}
+   * @return {!Array<!mdc.proto.GoldenScreenshot>}
    */
   getGoldenScreenshots() {
-    /** @type {!Array<!mdc.test.screenshot.GoldenScreenshot>} */
+    /** @type {!Array<!mdc.proto.GoldenScreenshot>} */
     const goldenScreenshots = [];
 
     /** @type {!Array<string>} */
     const htmlFilePaths = Object.keys(this.suiteJson_);
 
     for (const htmlFilePath of htmlFilePaths) {
-      /** @type {!mdc.test.screenshot.GoldenPage} */
+      /** @type {!mdc.proto.GoldenPage} */
       const testPage = this.suiteJson_[htmlFilePath];
       const htmlFileUrl = testPage.public_url;
 

@@ -1,0 +1,108 @@
+syntax = "proto3";
+
+package mdc.proto.cbt;
+
+message CbtDevice {
+  // E.g., "Nexus9-And60"
+  string api_name = 1;
+
+  // E.g., "mobile"
+  string device = 2;
+
+  // E.g., "tablet"
+  string device_type = 3;
+
+  // E.g., "Android Nexus 9 / 6.0"
+  string name = 4;
+
+  // E.g., "6.0"
+  string version = 5;
+
+  // E.g., "Android"
+  string type = 6;
+
+  // E.g., "android"
+  string icon_class = 7;
+
+  bool upload_file_enabled = 8;
+  double sort_order = 9;
+  bool is_webrtc_enabled = 10;
+
+  repeated CbtCapabilities caps = 11;
+  repeated CbtBrowser browsers = 12;
+  repeated CbtResolution resolutions = 13;
+}
+
+message CbtBrowser {
+  // E.g., "Chrome Mobile 63"
+  string name = 1;
+
+  // E.g., "Chrome Mobile"
+  string type = 2;
+
+  // E.g., "63"
+  string version = 3;
+
+  // E.g., "MblChrome63"
+  string api_name = 4;
+
+  bool default_live_test_browser = 5;
+
+  // E.g., "chrome"
+  string icon_class = 6;
+
+  bool major_browser = 7;
+
+  // E.g., "mobile"
+  string device = 8;
+
+  // E.g., "3.4.0"
+  string selenium_version = 9;
+
+  // E.g., "chromedriver"
+  string webdriver_type = 10;
+
+  // E.g., "2.34"
+  string webdriver_version = 11;
+
+  bool can_mobile_debug = 12;
+
+  repeated CbtCapabilities caps = 13;
+
+  // E.g., "Nexus9-And60"
+  string default_config = 14;
+}
+
+message CbtResolution {
+  // E.g., 1536
+  uint32 width = 1;
+
+  // E.g., 2048
+  uint32 height = 2;
+
+  // E.g., "1536x2048"
+  string name = 3;
+
+  // E.g., 2048
+  uint32 desktop_width = 4;
+
+  // E.g., 2096
+  uint32 desktop_height = 5;
+
+  // E.g., true
+  string default = 6;
+
+  // E.g., "portrait"
+  string orientation = 7;
+}
+
+// NOTE: The property names below are intentionally camelCase instead of snake_case.
+// This is required by the CBT and Selenium APIs.
+message CbtCapabilities {
+  string browserName = 1;
+  string browserVersion = 2;
+  string platformName = 3;
+  string platformVersion = 4;
+  string deviceName = 5;
+  string deviceOrientation = 6;
+}

@@ -37,6 +37,8 @@ class ProcessManager {
     /** @type {!ChildProcessSpawnOptions} */
     const mergedOpts = Object.assign({}, defaultOpts, opts);
 
+    console.log(`${cmd} ${args.join(' ')}`);
+
     return childProcess.spawnSync(cmd, args, mergedOpts);
   }
 
