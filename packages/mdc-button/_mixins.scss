@@ -20,6 +20,7 @@
 @import "@material/theme/functions";
 @import "@material/theme/mixins";
 @import "@material/typography/mixins";
+@import "@material/shape/mixins";
 @import "./variables";
 
 @mixin mdc-button-filled-accessible($container-fill-color) {
@@ -62,8 +63,12 @@
   }
 }
 
-@mixin mdc-button-corner-radius($corner-radius) {
-  border-radius: $corner-radius;
+@mixin mdc-button-shape-radius($radius) {
+  @include mdc-shape-radius($radius);
+}
+
+@mixin mdc-button-shape-radius-custom($top-left, $top-right, $bottom-right, $bottom-left) {
+  @include mdc-shape-radius-custom($top-left, $top-right, $bottom-right, $bottom-left);
 }
 
 @mixin mdc-button-horizontal-padding($padding) {
@@ -91,6 +96,7 @@
 
 @mixin mdc-button-base_() {
   @include mdc-typography(button);
+  @include mdc-shape(button);
   @include mdc-ripple-surface;
   @include mdc-ripple-radius-bounded;
   @include mdc-button-horizontal-padding($mdc-button-horizontal-padding);
