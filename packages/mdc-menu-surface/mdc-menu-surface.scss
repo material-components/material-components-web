@@ -1,0 +1,82 @@
+//
+// Copyright 2018 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+@import "@material/animation/variables";
+@import "@material/elevation/mixins";
+@import "@material/theme/mixins";
+@import "@material/rtl/mixins";
+@import "./mixins";
+
+$mdc-menu-surface-fade-in-duration: .03s;
+$mdc-menu-surface-fade-out-duration: .075s;
+$mdc-menu-surface-scale-duration: .12s;
+
+// postcss-bem-linter: define menu-surface
+.mdc-menu-surface {
+  @include mdc-elevation(2);
+  @include mdc-menu-surface-fill-color(surface);
+  @include mdc-menu-surface-ink-color(on-surface);
+  @include mdc-rtl-reflexive-property(transform-origin, top left, top right);
+
+  display: none;
+  position: absolute;
+  box-sizing: border-box;
+  max-width: calc(100vw - 32px);
+  max-height: calc(100vh - 32px);
+  margin: 0;
+  padding: 0;
+  transform: scale(1);
+  transform-origin: top left;
+  border-radius: 2px;
+  opacity: 0;
+  white-space: nowrap;
+  overflow: auto;
+  will-change: transform, opacity;
+  z-index: 4;
+
+  &:focus {
+    outline: none;
+  }
+
+  &--animating-open {
+    display: inline-block;
+    transform: scale(.8);
+    transition:
+      opacity $mdc-menu-surface-fade-in-duration linear,
+      transform $mdc-menu-surface-scale-duration $mdc-animation-deceleration-curve-timing-function;
+    opacity: 0;
+    overflow-y: hidden;
+  }
+
+  &--open {
+    display: inline-block;
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  &--animating-closed {
+    display: inline-block;
+    transition: opacity $mdc-menu-surface-fade-out-duration linear;
+    opacity: 0;
+    overflow-y: hidden;
+  }
+}
+
+.mdc-menu-surface--anchor {
+  position: relative;
+  overflow: visible;
+}
+// postcss-bem-linter: end
