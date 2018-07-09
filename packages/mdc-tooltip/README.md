@@ -77,7 +77,7 @@ The default behavior is to move the tooltip to the bottom. By using the CSS clas
   <span class="mdc-fab__icon">
     arrow_upward
   </span>
-  <span class="mdc-tooltip--top">My Tooltip</span>
+  <span class="mdc-tooltip mdc-tooltip--top">My Tooltip</span>
 </button>
 ```
 
@@ -87,9 +87,10 @@ The default behavior is to move the tooltip to the bottom. By using the CSS clas
 
 | Class                          | Description                                     |
 | ------------------------------ | ----------------------------------------------- |
-| `mdc-tooltip`                  | A pure css `span` element                       |
+| `mdc-tooltip`                  | Mandatory, a pure `span` element                       |
 | `mdc-tooltip--<DIRECTION>`     | A pure css `span` element width an direction attribute, can be: "bottom", "top", "left" or "right"     |
-| `mdc-tooltip--show`            | Class to make the tooltip transition from a hidden to a visible state |
+| `mdc-tooltip--show`            | Class for transition from a hidden to a visible state |
+| `mdc-tooltip--animate`            | Class to enable animation for the tooltip hide event. Will be added automatically after first show event. |
 
 These are the default scss values, that can be overriden:
 
