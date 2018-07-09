@@ -39,9 +39,7 @@ class MDCTooltipFoundation extends MDCFoundation {
       getControllerHeight: () => /* type: number */ 0,
       getControllerOffsetTop: () => /* type: number */ 0,
       getControllerOffsetLeft: () => /* type: number */ 0,
-      setStyle: (/* propertyName: string, value: string */) => {},
-      registerListener: (/* type: string, handler: EventListener */) => {},
-      deregisterListener: (/* type: string, handler: EventListener */) => {}
+      setStyle: (/* propertyName: string, value: string */) => {}
     });
   }
 
@@ -70,8 +68,52 @@ class MDCTooltipFoundation extends MDCFoundation {
     this.hideDelay = 1500;
   }
 
-  init() {
-    this.addEventListeners_();
+  /**
+   * Touch End handler to hide the tooltip.
+   * @param {Event} evt
+   */
+  handleTouchEnd(evt) {
+    this.hide();
+  }
+
+  /**
+   * Blur handler to hide the tooltip.
+   * @param {Event} evt
+   */
+  handleBlur(evt) {
+    this.hide();
+  }
+
+  /**
+   * Mouse Leave handler to hide the tooltip.
+   * @param {Event} evt
+   */
+  handleMouseLeave(evt) {
+    this.hide();
+  }
+
+  /**
+   * Touch Start handler to show the tooltip delayed.
+   * @param {Event} evt
+   */
+  handleTouchStart(evt) {
+    this.showDelayed();
+  }
+
+  /**
+   * Focus handler to show the tooltip delayed.
+   * @param {Event} evt
+   */
+  handleFocus(evt) {
+    this.showDelayed();
+  }
+
+  /**
+   * Mouse Enter handler to show the tooltip delayed.
+   * @param {Event} evt
+   */
+  handleMouseEnter(evt) {
+    this.showDelayed();
   }
 
   setDirection_() {
@@ -114,31 +156,22 @@ class MDCTooltipFoundation extends MDCFoundation {
     this.adapter_.setStyle('left', left.toString() + 'px');
   }
 
-  addEventListeners_() {
-    this.adapter_.registerListener('mouseenter', this.showDelayed_.bind(this));
-    this.adapter_.registerListener('focus', this.showDelayed_.bind(this));
-    this.adapter_.registerListener('touchstart', this.showDelayed_.bind(this));
-    this.adapter_.registerListener('mouseleave', this.hide_.bind(this));
-    this.adapter_.registerListener('blur', this.hide_.bind(this));
-    this.adapter_.registerListener('touchend', this.hide_.bind(this));
-  }
-
-  showDelayed_() {
+  showDelayed() {
     this.showTimeout_ = setTimeout(() => {
-      this.show_();
+      this.show();
     }, this.showDelay)
   }
 
-  show_() {;
+  show() {;
     this.setDirection_();
     this.displayed_ = true;
     this.adapter_.addClass(cssClasses.SHOW);
     this.hideTimeout_ = setTimeout(() => {
-      this.hide_();
+      this.hide();
     }, this.hideDelay);
   }
 
-  hide_() {
+  hide() {
     this.adapter_.addClass(cssClasses.ANIMATION);
     this.adapter_.removeClass(cssClasses.SHOW);
     this.displayed_ = false;
@@ -151,15 +184,6 @@ class MDCTooltipFoundation extends MDCFoundation {
     this.removeEventListeners_();
     clearTimeout(this.showTimeout_);
     clearTimeout(this.hideTimeout_);
-  }
-
-  removeEventListeners_() {
-    this.adapter_.deregisterListener('touchend', this.hide_);
-    this.adapter_.deregisterListener('blur', this.hide_);
-    this.adapter_.deregisterListener('mouseleave', this.hide_);
-    this.adapter_.deregisterListener('touchstart', this.show_);
-    this.adapter_.deregisterListener('focus', this.show_);
-    this.adapter_.deregisterListener('mouseenter', this.show_);
   }
 }
 

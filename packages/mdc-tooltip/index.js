@@ -22,6 +22,27 @@ import {getCorrectEventName} from '@material/animation/index';
  * @extends MDCComponent<!MDCTooltipFoundation>
  */
 class MDCTooltip extends MDCComponent {
+  /** @param {...?} args */
+  constructor(...args) {
+    super(...args);
+
+    /** {Element} */
+    this.controller_;
+
+    /** @private {!Function} */
+    this.handleTouchEnd_;
+    /** @private {!Function} */
+    this.handleBlur_;
+    /** @private {!Function} */
+    this.handleMouseLeave_;
+    /** @private {!Function} */
+    this.handleTouchStart_;
+    /** @private {!Function} */
+    this.handleFocus_;
+    /** @private {!Function} */
+    this.handleMouseEnter_;
+  }
+
   /**
    * @param {!Element} root
    * @return {!MDCTooltip}
@@ -30,12 +51,29 @@ class MDCTooltip extends MDCComponent {
     return new MDCTooltip(root);
   }
 
-  /** @param {...?} args */
-  constructor(...args) {
-    super(...args);
+  destroy() {
+    this.controller_.removeEventListener('touchend', this.handleTouchEnd_);
+    this.controller_.removeEventListener('blur', this.handleBlur_);
+    this.controller_.removeEventListener('mouseleave', this.handleMouseLeave_);
+    this.controller_.removeEventListener('touchstart', this.handleTouchStart_);
+    this.controller_.removeEventListener('focus', this.handleFocus_);
+    this.controller_.removeEventListener('mouseenter', this.handleMouseEnter_);
+  }
 
-    /** {Element} */
-    this.controller_;
+  initialSyncWithDOM() {
+    this.handleTouchEnd_ = this.foundation_.handleTouchEnd.bind(this.foundation_);
+    this.handleBlur_ = this.foundation_.handleBlur.bind(this.foundation_);
+    this.handleMouseLeave_ = this.foundation_.handleMouseLeave.bind(this.foundation_);
+    this.handleTouchStart_ = this.foundation_.handleTouchStart.bind(this.foundation_);
+    this.handleFocus_ = this.foundation_.handleFocus.bind(this.foundation_);
+    this.handleMouseEnter_ = this.foundation_.handleMouseEnter.bind(this.foundation_);
+
+    this.controller_.addEventListener('touchend', this.handleTouchEnd_);
+    this.controller_.addEventListener('blur', this.handleBlur_);
+    this.controller_.addEventListener('mouseleave', this.handleMouseLeave_);
+    this.controller_.addEventListener('touchstart', this.handleTouchStart_);
+    this.controller_.addEventListener('focus', this.handleFocus_);
+    this.controller_.addEventListener('mouseenter', this.handleMouseEnter_);
   }
 
   /** @type {boolean} */
@@ -115,9 +153,7 @@ class MDCTooltip extends MDCComponent {
       getControllerHeight: () => instance.controller_.offsetHeight,
       getControllerOffsetTop: () => instance.controller_.offsetTop,
       getControllerOffsetLeft: () => instance.controller_.offsetLeft,
-      setStyle: (propertyName, value) => instance.root_.style.setProperty(propertyName, value),
-      registerListener: (type, handler) => instance.controller_.addEventListener(type, handler),
-      deregisterListener: (type, handler) => instance.controller_.removeEventListener(type, handler),
+      setStyle: (propertyName, value) => instance.root_.style.setProperty(propertyName, value)
     };
   }
 

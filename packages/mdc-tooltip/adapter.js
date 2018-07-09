@@ -66,18 +66,6 @@ class MDCTooltipAdapter {
    * @param {string} value
    */
   setStyle(propertyName, value) { }
-
-  /**
-   * @param {string} evtType
-   * @param {!Function} handler
-   */
-  registerListener(evtType, handler) { }
-
-  /**
-   * @param {string} evtType
-   * @param {!Function} handler
-   */
-  deregisterListener(evtType, handler) { }
 }
 
 export default MDCTooltipAdapter;
