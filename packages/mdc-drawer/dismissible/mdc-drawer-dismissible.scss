@@ -21,9 +21,11 @@
 .mdc-drawer--dismissible {
   width: 0;
   min-width: initial;
+  border-right-width: 0;
   transform: translateX(-100%);
 
   @include mdc-rtl {
+    border-left-width: 0;
     transform: translateX(100%);
   }
 }
@@ -31,6 +33,11 @@
 .mdc-drawer--open {
   width: $mdc-drawer-width;
   min-width: $mdc-drawer-width;
+  border-right-width: 1px;
+
+  @include mdc-rtl {
+    border-left-width: 1px;
+  }
 }
 
 .mdc-drawer--open:not(.mdc-drawer--animating-close) {
