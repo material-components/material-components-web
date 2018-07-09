@@ -1,0 +1,90 @@
+//
+// Copyright 2018 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+@import "./common";
+@import "../packages/mdc-button/mdc-button";
+@import "../packages/mdc-list/mdc-list";
+@import "../packages/mdc-menu-surface/mdc-menu-surface";
+@import "../packages/mdc-image-list/mdc-image-list";
+
+html,
+body,
+main {
+  position: relative;
+  flex-direction: column;
+}
+
+.hero .mdc-menu-surface {
+  z-index: initial;
+}
+
+.demo-content {
+  position: relative;
+  top: 64px;
+}
+
+.demo-controls-container {
+  width: 100%;
+  height: calc(100vh - 80px);
+}
+
+.demo-controls {
+  width: 420px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.mdc-menu-surface--anchor {
+  position: absolute;
+  margin: 16px;
+}
+
+.margin-inputs input {
+  width: 2em;
+}
+
+.left-column-controls {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.right-column-controls {
+  display: inline-block;
+  margin-left: 2em;
+  vertical-align: top;
+}
+
+.demo-button__normal-text,
+.demo-button__long-text {
+  display: none;
+}
+
+.demo-button--normal .demo-button__normal-text,
+.demo-button--long .demo-button__normal-text,
+.demo-button--long .demo-button__long-text {
+  display: inline;
+}
+
+.standard-image-list {
+  @include mdc-image-list-aspect(1.5); // Images are 3:2
+  @include mdc-image-list-standard-columns(1);
+
+  //TODO(williamernest): The menu surface will flow to the size of it's contained elements, but
+  //the menu surface is also constrained by the size of the element that it is in until
+  //we hoist it to the body. Setting min-width on the contained element will fix this for now
+  min-width: 200px;
+}
+
