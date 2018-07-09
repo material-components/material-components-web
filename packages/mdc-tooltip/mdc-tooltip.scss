@@ -56,7 +56,6 @@
   &--top,
   &--right {
     @include mdc-typography-overflow-ellipsis;
-    //animation: mdc-animation-enter(hide-tooltip, $mdc-tooltip-transition-length-hide);
     animation-timing-function: $mdc-animation-deceleration-curve-timing-function;
     position: absolute;
     height: 24px;

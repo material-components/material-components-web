@@ -21,12 +21,20 @@
 @import "../packages/mdc-dialog/mdc-dialog";
 @import "../packages/mdc-tooltip/mdc-tooltip";
 @import "../packages/mdc-top-app-bar/mdc-top-app-bar";
-
+@import "../packages/mdc-theme/color-palette";
 
 section.example {
   height: auto;
   padding-bottom: 40px;
   background-color: white;
+}
+
+section.example.custom-color-example {
+  color: white;
+  background-color: $material-color-grey-800;
+  .mdc-tooltip{
+    @include mdc-tooltip-fill-color-accessible($material-color-grey-100);
+  }
 }
 
 h2 {
