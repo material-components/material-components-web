@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2018 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Menu Surface - Material Components Catalog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
+    <script src="/ready.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="/assets/menu-surface.css">
+  </head>
+  <body class="mdc-typography">
+    <header class="mdc-toolbar mdc-toolbar--fixed demo-header-toolbar">
+      <div class="mdc-toolbar__row">
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+          <a href="/" class="catalog-back mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
+          <span class="mdc-toolbar__title catalog-title">Menu Surface</span>
+        </section>
+      </div>
+    </header>
+
+    <main>
+      <div class="mdc-toolbar-fixed-adjust"></div>
+      <section class="hero">
+        <div class="mdc-menu-surface mdc-menu-surface--open">
+          <ul class="mdc-list" role="menu">
+            <li class="mdc-list-item" role="menuitem">Back</li>
+            <li class="mdc-list-item" role="menuitem">Forward</li>
+            <li class="mdc-list-item" role="menuitem">Reload</li>
+            <li class="mdc-list-divider" role="separator"></li>
+            <li class="mdc-list-item" role="menuitem">Help &amp; Feedback</li>
+            <li class="mdc-list-item" role="menuitem">Settings</li>
+          </ul>
+        </div>
+      </section>
+      <div class="demo-content">
+        <div id="demo-wrapper">
+          <div class="mdc-menu-surface--anchor">
+            <button id="menu-button" class="mdc-button mdc-button--raised demo-button demo-button--normal">
+              <span>
+                Show<span class="demo-button__normal-text"> Menu Surface</span><span class="demo-button__long-text"> From Here Now!</span>
+              </span>
+            </button>
+
+            <div class="mdc-menu-surface" tabindex="-1" id="demo-menu">
+              <ul class="mdc-image-list standard-image-list demo-menu-surface" role="menu">
+                <li role="menuitem" class="mdc-image-list__item" tabindex="0">
+                  <div class="mdc-image-list__image-aspect-container">
+                    <img class="mdc-image-list__image" src="images/photos/3x2/1.jpg">
+                  </div>
+                  <div class="mdc-image-list__supporting">
+                    <span class="mdc-image-list__label">Text label</span>
+                  </div>
+                </li>
+                <li role="menuitem" class="mdc-image-list__item" tabindex="0">
+                  <div class="mdc-image-list__image-aspect-container">
+                    <img class="mdc-image-list__image" src="images/photos/3x2/2.jpg">
+                  </div>
+                  <div class="mdc-image-list__supporting">
+                    <span class="mdc-image-list__label">Text label</span>
+                  </div>
+                </li>
+                <li role="menuitem" class="mdc-image-list__item" tabindex="0">
+                  <div class="mdc-image-list__image-aspect-container">
+                    <img class="mdc-image-list__image" src="images/photos/3x2/3.jpg">
+                  </div>
+                  <div class="mdc-image-list__supporting">
+                    <span class="mdc-image-list__label">Text label</span>
+                  </div>
+                </li>
+                <li role="menuitem" class="mdc-image-list__item" tabindex="0">
+                  <div class="mdc-image-list__image-aspect-container">
+                    <img class="mdc-image-list__image" src="images/photos/3x2/4.jpg">
+                  </div>
+                  <div class="mdc-image-list__supporting">
+                    <span class="mdc-image-list__label">Text label</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="demo-controls-container">
+          <div class="demo-controls">
+            <div class="left-column-controls">
+              Button Position:
+              <div>
+                <label><input type="radio" name="position" value="top left" checked> Top left</label>
+              </div>
+              <div>
+                <label><input type="radio" name="position" value="top right"> Top right</label>
+              </div>
+              <div>
+                <label><input type="radio" name="position" value="middle left"> Middle left</label>
+              </div>
+              <div>
+                <label><input type="radio" name="position" value="middle right"> Middle right</label>
+              </div>
+              <div>
+                <label><input type="radio" name="position" value="bottom left"> Bottom left</label>
+              </div>
+              <div>
+                <label><input type="radio" name="position" value="bottom right"> Bottom right</label>
+              </div>
+            </div>
+            <div class="right-column-controls">
+              Default Menu Surface Position:
+              <div>
+                <label><input type="radio" name="menu-position" value="top start" checked> Top start</label>
+              </div>
+
+              <div>
+                <label><input type="radio" name="menu-position" value="top end"> Top end</label>
+              </div>
+
+              <div>
+                <label><input type="radio" name="menu-position" value="bottom start"> Bottom start</label>
+              </div>
+
+              <div>
+                <label><input type="radio" name="menu-position" value="bottom end"> Bottom end</label>
+              </div>
+            </div>
+            <p>
+              Anchor Margins:
+              <div id="margin-inputs" class="margin-inputs">
+                <label>T: <input type="text" id="top-margin" value="0" size="3"></label>
+                <label>B: <input type="text" id="bottom-margin" value="0" size="3"></label>
+                <label>L: <input type="text" id="left-margin" value="0" size="3"></label>
+                <label>R: <input type="text" id="right-margin" value="0" size="3"></label>
+              </div>
+            </p>
+            <div>
+              <label><input type="checkbox" name="is-rtl"> RTL</label>
+            </div>
+            <div>
+              <label><input type="checkbox" name="animation"> Disable Open Animation</label>
+            </div>
+            <hr>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="/assets/material-components-web.js" async></script>
+    <script>
+      demoReady(function() {
+        var menuEl = document.querySelector('#demo-menu');
+        var menu = mdc.menuSurface.MDCMenuSurface.attachTo(menuEl);
+        var menuButtonEl = document.querySelector('#menu-button');
+
+        menuButtonEl.addEventListener('click', function() {
+          menu.open = !menu.open;
+        });
+
+        var animation = document.querySelector('input[name="animation"]');
+        animation.addEventListener('change', function(evt) {
+          menu.quickOpen = evt.target.checked;
+        });
+
+        var radios = document.querySelectorAll('input[name="position"]');
+        var anchor = document.querySelector('.mdc-menu-surface--anchor');
+        // Initialize to top left.
+        anchor.style.setProperty('top', '0');
+        anchor.style.setProperty('left', '0');
+        for (var i = 0; i < radios.length; i++) {
+          radios[i].addEventListener('change', function(evt) {
+            if (evt.target.checked) {
+              if (evt.target.value) {
+                anchor.style.removeProperty('top');
+                anchor.style.removeProperty('right');
+                anchor.style.removeProperty('bottom');
+                anchor.style.removeProperty('left');
+
+                var vertical = evt.target.value.split(' ')[0];
+                var horizontal = evt.target.value.split(' ')[1];
+                if (vertical === 'middle') {
+                  anchor.style.setProperty('top', '35%');
+                } else {
+                  anchor.style.setProperty(vertical, '0');
+                }
+                anchor.style.setProperty(horizontal, '0');
+              }
+            }
+          });
+        }
+
+        radios = document.querySelectorAll('input[name="menu-position"]');
+        for (var i = 0; i < radios.length; i++) {
+          radios[i].addEventListener('change', function(evt) {
+            if (evt.target.checked) {
+              switch (evt.target.value) {
+                case "top start":
+                  menu.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.TOP_START);
+                  break;
+                case "bottom start":
+                  menu.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.BOTTOM_START);
+                  break;
+                case "top end":
+                  menu.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.TOP_END);
+                  break;
+                case "bottom end":
+                  menu.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.BOTTOM_END);
+                  break;
+              }
+            }
+          });
+        }
+
+        var marginInputsEl = document.querySelector('#margin-inputs');
+        var inputs = marginInputsEl.querySelectorAll('input[type="text"]');
+        for (var i = 0; i < inputs.length; i++) {
+          inputs[i].addEventListener('change', function(evt) {
+            var topMarginInput = document.getElementById('top-margin');
+            var bottomMarginInput = document.getElementById('bottom-margin');
+            var rightMarginInput = document.getElementById('right-margin');
+            var leftMarginInput = document.getElementById('left-margin');
+            var margin = {top: parseInt(topMarginInput.value, 10),
+                          right: parseInt(rightMarginInput.value, 10),
+                          bottom: parseInt(bottomMarginInput.value, 10),
+                          left: parseInt(leftMarginInput.value, 10)};
+            menu.setAnchorMargin(margin);
+          });
+        }
+
+        var rtl = document.querySelector('input[name="is-rtl"]');
+        rtl.addEventListener('change', function() {
+          var demoWrapper = document.getElementById('demo-wrapper');
+          if (rtl.checked) {
+            demoWrapper.setAttribute('dir', 'rtl');
+          } else {
+            demoWrapper.removeAttribute('dir');
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
