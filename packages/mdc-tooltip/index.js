@@ -16,7 +16,6 @@
 
 import MDCComponent from '@material/base/component';
 import MDCTooltipFoundation from './foundation';
-import {getCorrectEventName} from '@material/animation/index';
 
 /**
  * @extends MDCComponent<!MDCTooltipFoundation>
@@ -153,7 +152,7 @@ class MDCTooltip extends MDCComponent {
       getControllerHeight: () => instance.controller_.offsetHeight,
       getControllerOffsetTop: () => instance.controller_.offsetTop,
       getControllerOffsetLeft: () => instance.controller_.offsetLeft,
-      setStyle: (propertyName, value) => instance.root_.style.setProperty(propertyName, value)
+      setStyle: (propertyName, value) => instance.root_.style.setProperty(propertyName, value),
     };
   }
 

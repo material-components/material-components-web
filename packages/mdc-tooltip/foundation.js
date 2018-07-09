@@ -39,7 +39,7 @@ class MDCTooltipFoundation extends MDCFoundation {
       getControllerHeight: () => /* type: number */ 0,
       getControllerOffsetTop: () => /* type: number */ 0,
       getControllerOffsetLeft: () => /* type: number */ 0,
-      setStyle: (/* propertyName: string, value: string */) => {}
+      setStyle: (/* propertyName: string, value: string */) => {},
     });
   }
 
@@ -70,49 +70,43 @@ class MDCTooltipFoundation extends MDCFoundation {
 
   /**
    * Touch End handler to hide the tooltip.
-   * @param {Event} evt
    */
-  handleTouchEnd(evt) {
+  handleTouchEnd() {
     this.hide();
   }
 
   /**
    * Blur handler to hide the tooltip.
-   * @param {Event} evt
    */
-  handleBlur(evt) {
+  handleBlur() {
     this.hide();
   }
 
   /**
    * Mouse Leave handler to hide the tooltip.
-   * @param {Event} evt
    */
-  handleMouseLeave(evt) {
+  handleMouseLeave() {
     this.hide();
   }
 
   /**
    * Touch Start handler to show the tooltip delayed.
-   * @param {Event} evt
    */
-  handleTouchStart(evt) {
+  handleTouchStart() {
     this.showDelayed();
   }
 
   /**
    * Focus handler to show the tooltip delayed.
-   * @param {Event} evt
    */
-  handleFocus(evt) {
+  handleFocus() {
     this.showDelayed();
   }
 
   /**
    * Mouse Enter handler to show the tooltip delayed.
-   * @param {Event} evt
    */
-  handleMouseEnter(evt) {
+  handleMouseEnter() {
     this.showDelayed();
   }
 
@@ -159,10 +153,10 @@ class MDCTooltipFoundation extends MDCFoundation {
   showDelayed() {
     this.showTimeout_ = setTimeout(() => {
       this.show();
-    }, this.showDelay)
+    }, this.showDelay);
   }
 
-  show() {;
+  show() {
     this.setDirection_();
     this.displayed_ = true;
     this.adapter_.addClass(cssClasses.SHOW);

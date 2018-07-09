@@ -22,7 +22,6 @@
 @import "./variables";
 @import "./mixins";
 
-
 @keyframes show-tooltip {
   from {
     transform: scale(0);
@@ -56,15 +55,16 @@
   &--top,
   &--right {
     @include mdc-typography-overflow-ellipsis;
-    animation-timing-function: $mdc-animation-deceleration-curve-timing-function;
+    @include mdc-tooltip-fill-color-accessible($material-color-grey-700);
+
     position: absolute;
     height: 24px;
     padding: 0;
     padding-right: 8px;
     padding-left: 8px;
+    animation-timing-function: $mdc-animation-deceleration-curve-timing-function;
     transform: scale(0);
     border-radius: 4px;
-    @include mdc-tooltip-fill-color-accessible($material-color-grey-700);
     opacity: 0;
     font-size: 10px;
     line-height: 24px;
