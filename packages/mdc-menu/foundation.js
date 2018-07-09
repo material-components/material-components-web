@@ -432,8 +432,8 @@ class MDCMenuFoundation extends MDCFoundation {
     const rightOverflow = menuWidth - availableRight;
 
     if ((leftOverflow < 0 && isAlignedRight && isRtl) ||
-        (avoidHorizontalOverlap && !isAlignedRight && leftOverflow < 0) ||
-        (rightOverflow > 0 && leftOverflow < rightOverflow)) {
+      (avoidHorizontalOverlap && !isAlignedRight && leftOverflow < 0) ||
+      (rightOverflow > 0 && leftOverflow < rightOverflow)) {
       corner |= CornerBit.RIGHT;
     }
 
@@ -541,7 +541,7 @@ class MDCMenuFoundation extends MDCFoundation {
     // Adjust vertical origin when menu is positioned with significant offset from anchor. This is done so that
     // scale animation is "anchored" on the anchor.
     if (!(this.anchorCorner_ & CornerBit.BOTTOM) &&
-        Math.abs(verticalOffset / menuHeight) > numbers.OFFSET_TO_MENU_HEIGHT_RATIO) {
+      Math.abs(verticalOffset / menuHeight) > numbers.OFFSET_TO_MENU_HEIGHT_RATIO) {
       const verticalOffsetPercent = Math.abs(verticalOffset / menuHeight) * 100;
       const originPercent = (corner & CornerBit.BOTTOM) ? 100 - verticalOffsetPercent : verticalOffsetPercent;
       verticalAlignment = Math.round(originPercent * 100) / 100 + '%';

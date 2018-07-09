@@ -1,0 +1,26 @@
+{
+  "name": "@material/menu-surface",
+  "version": "0.0.0",
+  "description": "The Material Components for the web menu surface component",
+  "license": "Apache-2.0",
+  "keywords": [
+    "material components",
+    "material design",
+    "menu surface"
+  ],
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/material-components/material-components-web.git"
+  },
+  "dependencies": {
+    "@material/animation": "^0.34.0",
+    "@material/base": "^0.35.0",
+    "@material/elevation": "^0.35.0",
+    "@material/rtl": "^0.36.0",
+    "@material/theme": "^0.35.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
