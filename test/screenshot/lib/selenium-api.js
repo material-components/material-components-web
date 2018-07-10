@@ -255,7 +255,9 @@ class SeleniumApi {
     // NOTE(acdvorak): Setting smaller window dimensions appears to speed up the tests significantly.
     if (userAgent.form_factor_type === FormFactorType.DESKTOP) {
       // TODO(acdvorak): Better `catch()` handler
-      await driver.manage().window().setRect({width: 400, height: 800}).catch(() => undefined);
+      /** @type {!Window} */
+      const window = driver.manage().window();
+      await window.setRect({x: 0, y: 0, width: 400, height: 800}).catch(() => undefined);
     }
 
     // TODO(acdvorak): Implement "fullpage" screenshots?
