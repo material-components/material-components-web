@@ -17,7 +17,7 @@
 
 import MDCComponent from '@material/base/component';
 
-import {selectors, attributes, events} from './constants';
+import {strings} from './constants';
 import MDCSliderAdapter from './adapter';
 import MDCSliderFoundation from './foundation';
 
@@ -68,8 +68,8 @@ class MDCSlider extends MDCComponent {
   }
 
   initialize() {
-    this.thumb_ = this.root_.querySelector(selectors.THUMB_SELECTOR);
-    this.trackFill_ = this.root_.querySelector(selectors.TRACK_FILL_SELECTOR);
+    this.thumb_ = this.root_.querySelector(strings.THUMB_SELECTOR);
+    this.trackFill_ = this.root_.querySelector(strings.TRACK_FILL_SELECTOR);
   }
 
   /**
@@ -103,10 +103,10 @@ class MDCSlider extends MDCComponent {
           window.removeEventListener('resize', handler);
         },
         notifyInput: () => {
-          this.emit(events.INPUT_EVENT, this);
+          this.emit(strings.INPUT_EVENT, this);
         },
         notifyChange: () => {
-          this.emit(events.CHANGE_EVENT, this);
+          this.emit(strings.CHANGE_EVENT, this);
         },
         setThumbStyleProperty: (propertyName, value) => {
           this.thumb_.style.setProperty(propertyName, value);
@@ -119,9 +119,9 @@ class MDCSlider extends MDCComponent {
   }
 
   initialSyncWithDOM() {
-    const origValueNow = parseFloat(this.root_.getAttribute(attributes.ARIA_VALUENOW));
-    this.min = parseFloat(this.root_.getAttribute(attributes.ARIA_VALUEMIN)) || this.min;
-    this.max = parseFloat(this.root_.getAttribute(attributes.ARIA_VALUEMAX)) || this.max;
+    const origValueNow = parseFloat(this.root_.getAttribute(strings.ARIA_VALUENOW));
+    this.min = parseFloat(this.root_.getAttribute(strings.ARIA_VALUEMIN)) || this.min;
+    this.max = parseFloat(this.root_.getAttribute(strings.ARIA_VALUEMAX)) || this.max;
     this.value = origValueNow || this.value;
   }
 

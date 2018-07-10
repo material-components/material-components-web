@@ -115,8 +115,6 @@ CSS Class | Description
 
 ### Additional Information
 
-#### Events
-
 `MDCSlider` emits a `MDCSlider:input` custom event from its root element whenever the slider value
 is changed by way of a user event, e.g. when a user is dragging the slider or changing the value
 using the arrow keys. The `detail` property of the event is set to the slider instance that was
@@ -129,7 +127,7 @@ instance that was affected.
 
 ## Usage within Web Frameworks
 
-#### `MDCSliderAdapter`
+### `MDCSliderAdapter`
 
 | Method Signature | Description |
 | --- | --- |
@@ -148,12 +146,12 @@ instance that was affected.
 | `deregisterBodyEventHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` from the `<body>` element of the slider's document |
 | `registerResizeHandler(handler: EventListener) => void` | Adds an event listener `handler` that is called when the component's viewport resizes, e.g. `window.onresize`. |
 | `deregisterResizeHandler(handler: EventListener) => void` | Removes an event listener `handler` that was attached via `registerResizeHandler`. |
-| `notifyInput() => void` | Broadcasts an "input" event notifying clients that the slider's value is currently being changed. The implementation should choose to pass along any relevant information pertaining to this event. In our case we pass along the instance of the component for which the event is triggered for. |
-| `notifyChange() => void` | Broadcasts a "change" event notifying clients that a change to the slider's value has been committed by the user. Similar guidance applies here as for `notifyInput()`. |
+| `notifyInput() => void` | Broadcasts an "MDCSlider:input" event notifying clients that the slider's value is currently being changed. The implementation should choose to pass along any relevant information pertaining to this event. In our case we pass along the instance of the component for which the event is triggered for. |
+| `notifyChange() => void` | Broadcasts a "MDCSlider:change" event notifying clients that a change to the slider's value has been committed by the user. Similar guidance applies here as for `notifyInput()`. |
 | `setThumbStyleProperty(propertyName: string, value: string) => void` | Sets a dash-cased style property `propertyName` to the given `value` on the thumb element. |
 | `setTrackFillStyleProperty(propertyName: string, value: string) => void` | Sets a dash-cased style property `propertyName` to the given `value` on the track-fill element. |
 
-#### `MDCSliderFoundation`
+### `MDCSliderFoundation`
 
 | Method Signature | Description |
 | --- | --- |

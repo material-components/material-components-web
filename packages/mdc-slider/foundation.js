@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import {attributes} from './constants';
+import {strings} from './constants';
 import MDCSliderAdapter from './adapter';
 
 import MDCFoundation from '@material/base/foundation';
@@ -34,6 +34,11 @@ const UP_EVENTS = ['mouseup', 'pointerup', 'touchend'];
  * @extends {MDCFoundation<!MDCSliderAdapter>}
  */
 class MDCSliderFoundation extends MDCFoundation {
+  /** @return enum {string} */
+  static get strings() {
+    return strings;
+  }
+
   /** @return {!MDCSliderAdapter} */
   static get defaultAdapter() {
     return /** @type {!MDCSliderAdapter} */ ({
@@ -120,7 +125,7 @@ class MDCSliderFoundation extends MDCFoundation {
     }
     this.max_ = max;
     this.setValue_(this.value_);
-    this.adapter_.setAttribute(attributes.ARIA_VALUEMAX, String(this.max_));
+    this.adapter_.setAttribute(strings.ARIA_VALUEMAX, String(this.max_));
   }
 
   /** @return {number} */
@@ -135,7 +140,7 @@ class MDCSliderFoundation extends MDCFoundation {
     }
     this.min_ = min;
     this.setValue_(this.value_);
-    this.adapter_.setAttribute(attributes.ARIA_VALUEMIN, String(this.min_));
+    this.adapter_.setAttribute(strings.ARIA_VALUEMIN, String(this.min_));
   }
 
   /**
@@ -226,7 +231,7 @@ class MDCSliderFoundation extends MDCFoundation {
       value = this.max_;
     }
     this.value_ = value;
-    this.adapter_.setAttribute(attributes.ARIA_VALUENOW, String(this.value_));
+    this.adapter_.setAttribute(strings.ARIA_VALUENOW, String(this.value_));
     this.updateUIForCurrentValue_();
     this.adapter_.notifyInput();
   }

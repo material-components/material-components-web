@@ -16,25 +16,17 @@
  */
 
 /** @enum {string} */
-const selectors = {
+const strings = {
   TRACK_SELECTOR: '.mdc-slider__track',
   TRACK_FILL_SELECTOR: '.mdc-slider__track-fill',
   THUMB_SELECTOR: '.mdc-slider__thumb',
-};
-
-/** @enum {string} */
-const attributes = {
   ARIA_VALUEMIN: 'aria-valuemin',
   ARIA_VALUEMAX: 'aria-valuemax',
   ARIA_VALUENOW: 'aria-valuenow',
   ARIA_DISABLED: 'aria-disabled',
   STEP_DATA_ATTR: 'data-step',
-};
-
-/** @enum {string} */
-const events = {
   CHANGE_EVENT: 'MDCSlider:change',
   INPUT_EVENT: 'MDCSlider:input',
 };
 
-export {selectors, attributes, events};
+export {strings};

@@ -28,6 +28,10 @@ suite('MDCSliderFoundation');
 
 const TRANSFORM_PROP = getCorrectPropertyName(window, 'transform');
 
+test('exports strings', () => {
+  assert.property(MDCSliderFoundation, 'strings');
+});
+
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSliderFoundation, [
     'hasClass', 'addClass', 'removeClass', 'getAttribute', 'setAttribute',
@@ -177,7 +181,7 @@ test('#setValue clamps the value to the minimum value if given value is less tha
   raf.restore();
 });
 
-test('#setValue clamps the value to the maximum value if given value is less than the maximum', () => {
+test('#setValue clamps the value to the maximum value if given value is more than the maximum', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
 
