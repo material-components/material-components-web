@@ -126,15 +126,14 @@ class MDCTooltip extends MDCComponent {
     const controllerID = this.root_.getAttribute('for');
     if (controllerID === null) {
       this.controller_ = this.root_.parentElement;
-      // move this.root_ outside of the parentElement;
-      const parent = this.controller_.parentElement;
-      parent.appendChild(this.root_);
     } else {
       this.controller_ = document.getElementById(controllerID);
       if (this.controller_ === null) {
         throw new ReferenceError('MDCTooltip: Control Element not found. Make sure "for" points to a valid ID');
       }
     }
+
+    document.body.appendChild(this.root_)
   }
 
   /**
@@ -150,8 +149,7 @@ class MDCTooltip extends MDCComponent {
       getRootHeight: () => instance.root_.offsetHeight,
       getControllerWidth: () => instance.controller_.offsetWidth,
       getControllerHeight: () => instance.controller_.offsetHeight,
-      getControllerOffsetTop: () => instance.controller_.offsetTop,
-      getControllerOffsetLeft: () => instance.controller_.offsetLeft,
+      getControllerBoundingRect: () => instance.controller_.getBoundingClientRect(),
       setStyle: (propertyName, value) => instance.root_.style.setProperty(propertyName, value),
     };
   }

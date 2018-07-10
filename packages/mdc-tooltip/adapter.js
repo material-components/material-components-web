@@ -52,11 +52,8 @@ class MDCTooltipAdapter {
   /** @return {number} */
   getControllerHeight() { }
 
-  /** @return {number} */
-  getControllerOffsetTop() { }
-
-  /** @return {number} */
-  getControllerOffsetLeft() { }
+  /** @return {!Object} */
+  getControllerBoundingRect() { }
 
   /** @return {Array<string>} */
   getClassList() { }

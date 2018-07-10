@@ -37,8 +37,8 @@ class MDCTooltipFoundation extends MDCFoundation {
       getRootHeight: () => /* type: number */ 0,
       getControllerWidth: () => /* type: number */ 0,
       getControllerHeight: () => /* type: number */ 0,
-      getControllerOffsetTop: () => /* type: number */ 0,
-      getControllerOffsetLeft: () => /* type: number */ 0,
+      getControllerBoundingRect: () => /* {width: number, height: number} */
+      ({width: 0, height: 0, offsetTop: 0, offsetBottom: 0}),
       setStyle: (/* propertyName: string, value: string */) => {},
     });
   }
@@ -110,26 +110,17 @@ class MDCTooltipFoundation extends MDCFoundation {
     this.showDelayed();
   }
 
-  setDirection_() {
-    this.direction_ = 'bottom';
-    const possibleDirections = {};
-    possibleDirections[cssClasses.DIRECTION_BOTTOM] = 'bottom';
-    possibleDirections[cssClasses.DIRECTION_TOP] = 'top';
-    possibleDirections[cssClasses.DIRECTION_LEFT] = 'left';
-    possibleDirections[cssClasses.DIRECTION_RIGHT] = 'right';
+  verifyPosition_(top, left) {
+    return true;
+  }
 
-    const classNames = this.adapter_.getClassList();
-
-    for (let i = 0; i < classNames.length; i++) {
-      if (possibleDirections[classNames[i]] !== undefined) {
-        this.direction_ = possibleDirections[classNames[i]];
-      }
-    }
+  calcDirection_() {
+    const ctrlRect = this.adapter_.getControllerBoundingRect();
 
     const tooltipHeight = this.adapter_.getRootHeight();
     const tooltipWidth = this.adapter_.getRootWidth();
-    const ctrlOffsetTop = this.adapter_.getControllerOffsetTop();
-    const ctrlOffsetLeft = this.adapter_.getControllerOffsetLeft();
+    const ctrlOffsetTop = ctrlRect.top;
+    const ctrlOffsetLeft = ctrlRect.left;
     const ctrlHeight = this.adapter_.getControllerHeight();
     const ctrlWidth = this.adapter_.getControllerWidth();
 
@@ -146,8 +137,45 @@ class MDCTooltipFoundation extends MDCFoundation {
       top = ctrlOffsetTop + ctrlHeight + this.gap;
     }
 
-    this.adapter_.setStyle('top', top.toString() + 'px');
-    this.adapter_.setStyle('left', left.toString() + 'px');
+    return {
+      top,
+      left
+    };
+  }
+
+  setDirection_() {
+    this.direction_ = 'bottom';
+    const possibleDirections = {};
+    possibleDirections[cssClasses.DIRECTION_BOTTOM] = 'bottom';
+    possibleDirections[cssClasses.DIRECTION_TOP] = 'top';
+    possibleDirections[cssClasses.DIRECTION_LEFT] = 'left';
+    possibleDirections[cssClasses.DIRECTION_RIGHT] = 'right';
+
+    const classNames = this.adapter_.getClassList();
+
+    for (let i = 0; i < classNames.length; i++) {
+      if (possibleDirections[classNames[i]] !== undefined) {
+        this.direction_ = possibleDirections[classNames[i]];
+      }
+    }
+
+    let calculatedPos = this.calcDirection_();
+
+    if(!this.verifyPosition_(calculatedPos.top, calculatedPos.left)) {
+      if (this.direction_ === 'bottom') {
+        this.direction_ = 'top';
+      } else if (this.direction_ === 'right') {
+        this.direction_ = 'left';
+      } else if (this.direction_ === 'left') {
+        this.direction_ = 'right';
+      } else {
+        this.direction_ = 'bottom';
+      }
+      calculatedPos = this.calcDirection_();
+    }
+
+    this.adapter_.setStyle('top', calculatedPos.top.toString() + 'px');
+    this.adapter_.setStyle('left', calculatedPos.left.toString() + 'px');
   }
 
   showDelayed() {

@@ -30,10 +30,18 @@ section.example {
 }
 
 section.example.custom-color-example {
+  max-width: 100%;
+  max-height: 250px;
   color: white;
   background-color: $material-color-grey-800;
+  overflow: auto;
+  display: block;
   .mdc-tooltip{
     @include mdc-tooltip-fill-color-accessible($material-color-grey-100);
+  }
+  .mdc-layout-grid {
+    width: 130%;
+    height: 400px;
   }
 }
 
