@@ -146,8 +146,6 @@ class SeleniumApi {
     // viewport dimensions reported by the JS running on the page.
 
     const uncroppedScreenshotPngBase64 = await driver.takeScreenshot();
-    const preview = uncroppedScreenshotPngBase64.substr(0, 30) + '...' + uncroppedScreenshotPngBase64.substr(-30);
-    console.log('uncroppedScreenshotPngBase64:', preview);
     const uncroppedScreenshotPngBuffer = Buffer.from(Base64.toByteArray(uncroppedScreenshotPngBase64));
 
     return this.imageCropper_.autoCropImage(uncroppedScreenshotPngBuffer);

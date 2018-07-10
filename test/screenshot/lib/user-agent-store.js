@@ -16,12 +16,17 @@
 
 'use strict';
 
-const pb = require('../proto/types.pb');
-const {UserAgent} = pb.mdc.proto;
+const pb = require('../proto/types.pb').mdc.proto;
+const {UserAgent} = pb;
 const {FormFactorType, OsVendorType, BrowserVendorType, BrowserVersionType} = UserAgent;
 
 const Cli = require('./cli');
-const {Browser: SeleniumBrowser, Builder: SeleniumBuilder} = require('selenium-webdriver');
+const ChromeDriver = require('selenium-webdriver/chrome');
+const EdgeDriver = require('selenium-webdriver/edge');
+const FirefoxDriver = require('selenium-webdriver/firefox');
+const IeDriver = require('selenium-webdriver/ie');
+const SafariDriver = require('selenium-webdriver/safari');
+const {Browser} = require('selenium-webdriver');
 
 class UserAgentStore {
   constructor() {
@@ -48,10 +53,8 @@ class UserAgentStore {
    * @param {string} alias
    * @return {!Promise<?mdc.proto.UserAgent>}
    */
-  async findUserAgentByAlias(alias) {
-    /** @type {!Array<!mdc.proto.UserAgent>} */
-    const allUserAgents = await this.getAllUserAgents({isOnline: /* skip local browser check */ true});
-    return allUserAgents.find((userAgent) => userAgent.alias === alias);
+  async getUserAgent(alias) {
+    return this.parseAlias_({alias, isOnline: true}); // TODO(acdvorak): Document this hack
   }
 
   /**
@@ -124,9 +127,9 @@ Expected browser vendor to be one of [${validBrowserVendors}], but got '${browse
       );
     }
 
-    const seleniumId = SeleniumBrowser[browserVendorName.toUpperCase()];
+    const seleniumId = Browser[browserVendorName.toUpperCase()];
     const isEnabledByCli = this.isAliasEnabled_(alias);
-    const isAvailableLocally = !isOnline && await this.isAvailableLocally_(seleniumId);
+    const isAvailableLocally = await this.isAvailableLocally_(seleniumId);
     const isRunnable = isEnabledByCli && (isOnline || isAvailableLocally);
 
     return UserAgent.create({
@@ -149,15 +152,23 @@ Expected browser vendor to be one of [${validBrowserVendors}], but got '${browse
    * @private
    */
   async isAvailableLocally_(seleniumId) {
-    try {
-      const driver = await new SeleniumBuilder().forBrowser(seleniumId).build();
-      await driver.quit();
-      return true;
-    } catch (err) {
-      console.error(`ERROR in isAvailableLocally_(${seleniumId}):`);
-      console.error(err);
-      return false;
+    if (seleniumId === Browser.CHROME) {
+      return Boolean(ChromeDriver.locateSynchronously());
     }
+    if (seleniumId === Browser.EDGE) {
+      return Boolean(EdgeDriver.locateSynchronously());
+    }
+    if (seleniumId === Browser.FIREFOX) {
+      return Boolean(FirefoxDriver.locateSynchronously());
+    }
+    if (seleniumId === Browser.IE) {
+      return Boolean(IeDriver.locateSynchronously());
+    }
+    if (seleniumId === Browser.SAFARI) {
+      return Boolean(SafariDriver.locateSynchronously());
+    }
+    const expected = JSON.stringify([Browser.CHROME, Browser.EDGE, Browser.FIREFOX, Browser.IE, Browser.SAFARI]);
+    throw new Error(`Unknown Selenium browser ID: '${seleniumId}'. Expected one of: ${expected}`);
   }
 
   /**

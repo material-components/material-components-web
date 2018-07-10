@@ -33,13 +33,16 @@ message ReportMeta {
   // Absolute path to a local directory containing all generated report files (HTML/JSON).
   string local_report_base_dir = 10;
 
-  string cli_invocation = 11;
-  DiffBase diff_base = 12;
-  User user = 13;
+  string local_temporary_http_dir = 11;
+  uint32 local_temporary_http_port = 12;
 
-  LibraryVersion node_version = 14;
-  LibraryVersion npm_version = 15;
-  LibraryVersion mdc_version = 16;
+  string cli_invocation = 13;
+  DiffBase diff_base = 14;
+  User user = 15;
+
+  LibraryVersion node_version = 16;
+  LibraryVersion npm_version = 17;
+  LibraryVersion mdc_version = 18;
 }
 
 message DiffBase {

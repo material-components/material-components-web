@@ -17,9 +17,12 @@
 'use strict';
 
 const childProcess = require('mz/child_process');
+const detectPort = require('detect-port');
+const express = require('express');
 const mkdirp = require('mkdirp');
 const os = require('os');
 const path = require('path');
+const serveIndex = require('serve-index');
 
 const pb = require('../proto/types.pb');
 const {LibraryVersion, ReportData, ReportMeta} = pb.mdc.proto;
@@ -96,6 +99,7 @@ class ReportBuilder {
     const userAgents = await this.createUserAgentsProto_({isOnline});
 
     await this.localStorage_.copyAssetsToTempDir(reportMeta);
+    await this.startTemporaryHttpServer_(reportMeta);
 
     const allUserAgents = (userAgents).all_user_agents;
     const screenshots = await this.createScreenshotsProto_({reportMeta, allUserAgents});
@@ -212,12 +216,12 @@ class ReportBuilder {
    * @private
    */
   async createReportMetaProto_({isOnline}) {
+    const localTemporaryHttpPort = await detectPort(9000);
+
     // TODO(acvdorak): Store PID and PORT in local files
     // TODO(acdvorak): In offline mode, start up a local server with a random port number.
-    const remoteUploadBaseUrl = isOnline ? this.cli_.gcsBaseUrl : `http://localhost:8080`;
-    const remoteUploadBaseDir = isOnline ? await this.generateUniqueUploadDir_() : '';
-
-    console.log('remoteUploadBaseUrl:', remoteUploadBaseUrl);
+    const remoteUploadBaseUrl = isOnline ? this.cli_.gcsBaseUrl : `http://localhost:${localTemporaryHttpPort}/`;
+    const remoteUploadBaseDir = await this.generateUniqueUploadDir_();
 
     const mdcVersionString = require('../../../lerna.json').version;
     const mdcVersionOffset = await this.getCommitDistance_(mdcVersionString);
@@ -225,7 +229,8 @@ class ReportBuilder {
     const npmVersionString = await this.getExecutableVersion_('npm');
 
     // TODO(acdvorak): Centralize/standardize this?
-    const localAssetBaseDir = path.join(TEMP_DIR, 'mdc-web/assets', remoteUploadBaseDir);
+    const localTemporaryHttpDir = path.join(TEMP_DIR, 'mdc-web/assets');
+    const localAssetBaseDir = path.join(localTemporaryHttpDir, remoteUploadBaseDir);
     const localScreenshotImageBaseDir = path.join(TEMP_DIR, 'mdc-web/screenshots', remoteUploadBaseDir);
     const localDiffImageBaseDir = path.join(TEMP_DIR, 'mdc-web/diffs', remoteUploadBaseDir);
     const localReportBaseDir = path.join(TEMP_DIR, 'mdc-web/report', remoteUploadBaseDir);
@@ -247,6 +252,8 @@ class ReportBuilder {
       local_screenshot_image_base_dir: localScreenshotImageBaseDir,
       local_diff_image_base_dir: localDiffImageBaseDir,
       local_report_base_dir: localReportBaseDir,
+      local_temporary_http_dir: localTemporaryHttpDir,
+      local_temporary_http_port: localTemporaryHttpPort,
 
       cli_invocation: this.getCliInvocation_(),
       diff_base: await this.cli_.parseDiffBase(),
@@ -446,7 +453,7 @@ class ReportBuilder {
           relative_path: goldenScreenshot.screenshot_image_path,
           absolute_path: await downloadFileAndGetPath(goldenScreenshot.screenshot_image_url),
         }),
-        user_agent: await this.userAgentStore_.findUserAgentByAlias(goldenScreenshot.user_agent_alias),
+        user_agent: await this.userAgentStore_.getUserAgent(goldenScreenshot.user_agent_alias),
       });
       expectedScreenshots.push(goldenScreenshotProto);
     }
@@ -671,6 +678,24 @@ class ReportBuilder {
     this.logRunParameters_('Removing', reportData.screenshots.removed_screenshot_list);
     this.logRunParameters_('Adding', reportData.screenshots.added_screenshot_list);
     this.logRunParameters_('Comparing', reportData.screenshots.comparable_screenshot_list);
+  }
+
+  /**
+   * @param {!mdc.proto.ReportMeta} reportMeta
+   * @return {!Promise<number>}
+   * @private
+   */
+  async startTemporaryHttpServer_(reportMeta) {
+    const dir = reportMeta.local_temporary_http_dir;
+    const port = reportMeta.local_temporary_http_port;
+    const app = express();
+    app.use('/', express.static(dir), serveIndex(dir));
+    return new Promise((resolve) => {
+      console.log(`Temporary HTTP server running on http://localhost:${port}/`);
+      app.listen(port, () => {
+        resolve(port);
+      });
+    });
   }
 
   /**
