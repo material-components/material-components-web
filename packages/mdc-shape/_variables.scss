@@ -32,7 +32,23 @@ $mdc-shape-sheet-expanded-top-right-radius: 0 !default;
 $mdc-shape-sheet-expanded-bottom-right-radius: 0 !default;
 $mdc-shape-sheet-expanded-bottom-left-radius: 0 !default;
 
-$mdc-shape-categories: button, fab;
-
-$mdc-shape-categories: button, fab, sheet-expanded;
-
+$mdc-shape-category: (
+  button: (
+    top-left: $mdc-shape-button-top-left-radius,
+    top-right: $mdc-shape-button-top-right-radius,
+    bottom-right: $mdc-shape-button-bottom-right-radius,
+    bottom-left: $mdc-shape-button-bottom-left-radius
+  ),
+  fab: (
+    top-left: $mdc-shape-fab-top-left-radius,
+    top-right: $mdc-shape-fab-top-right-radius,
+    bottom-right: $mdc-shape-fab-bottom-right-radius,
+    bottom-left: $mdc-shape-fab-bottom-left-radius
+  ),
+  sheet-expanded: (
+    top-left: $mdc-shape-sheet-expanded-top-left-radius,
+    top-right: $mdc-shape-sheet-expanded-top-right-radius,
+    bottom-right: $mdc-shape-sheet-expanded-bottom-right-radius,
+    bottom-left: $mdc-shape-sheet-expanded-bottom-left-radius
+  )
+)
