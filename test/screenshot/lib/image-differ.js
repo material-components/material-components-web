@@ -23,7 +23,7 @@ const mkdirp = require('mkdirp');
 const path = require('path');
 
 const proto = require('../proto/types.pb').mdc.proto;
-const {ImageDiffResult, Screenshot, TestFile} = proto;
+const {ImageDiffResult, Screenshot, ScreenshotList, TestFile} = proto;
 const {CaptureState} = Screenshot;
 
 /**
@@ -36,13 +36,91 @@ class ImageDiffer {
    */
   async compareAllScreenshots(reportData) {
     for (const screenshot of reportData.screenshots.comparable_screenshot_list) {
-      screenshot.image_diff_result = await this.compareOneImage({
+      /** @type {!mdc.proto.ImageDiffResult} */
+      const imageDiffResult = await this.compareOneImage({
         reportData,
         actualImageFile: screenshot.actual_image_file,
         expectedImageFile: screenshot.expected_image_file,
       });
+
+      screenshot.image_diff_result = imageDiffResult;
       screenshot.capture_state = CaptureState.DIFFED;
+
+      if (imageDiffResult.has_changed) {
+        reportData.screenshots.changed_screenshot_list.push(screenshot);
+      } else {
+        reportData.screenshots.unchanged_screenshot_list.push(screenshot);
+      }
     }
+
+    reportData.screenshots.changed_screenshot_browser_map =
+      this.groupByBrowser_(reportData.screenshots.changed_screenshot_list);
+    reportData.screenshots.changed_screenshot_page_map =
+      this.groupByPage_(reportData.screenshots.changed_screenshot_list);
+
+    reportData.screenshots.unchanged_screenshot_browser_map =
+      this.groupByBrowser_(reportData.screenshots.unchanged_screenshot_list);
+    reportData.screenshots.unchanged_screenshot_page_map =
+      this.groupByPage_(reportData.screenshots.unchanged_screenshot_list);
+
+    this.logComparisonResults_(reportData);
+  }
+
+  /**
+   * TODO(acdvorak): De-dupe this method with ReportBuilder
+   * @param {!Array<!mdc.proto.Screenshot>} screenshotArray
+   * @return {!Object<string, !mdc.proto.ScreenshotList>}
+   * @private
+   */
+  groupByBrowser_(screenshotArray) {
+    const browserMap = {};
+    screenshotArray.forEach((screenshot) => {
+      const userAgentAlias = screenshot.user_agent.alias;
+      browserMap[userAgentAlias] = browserMap[userAgentAlias] || ScreenshotList.create({screenshots: []});
+      browserMap[userAgentAlias].screenshots.push(screenshot);
+    });
+    return browserMap;
+  }
+
+  /**
+   * TODO(acdvorak): De-dupe this method with ReportBuilder
+   * @param {!Array<!mdc.proto.Screenshot>} screenshotArray
+   * @return {!Object<string, !mdc.proto.ScreenshotList>}
+   * @private
+   */
+  groupByPage_(screenshotArray) {
+    const pageMap = {};
+    screenshotArray.forEach((screenshot) => {
+      const htmlFilePath = screenshot.test_page_file.relative_path;
+      pageMap[htmlFilePath] = pageMap[htmlFilePath] || ScreenshotList.create({screenshots: []});
+      pageMap[htmlFilePath].screenshots.push(screenshot);
+    });
+    return pageMap;
+  }
+
+  /**
+   * @param {!mdc.proto.ReportData} reportData
+   * @private
+   */
+  logComparisonResults_(reportData) {
+    console.log('');
+    this.logComparisonResultSet_('Skipped', reportData.screenshots.skipped_screenshot_list);
+    this.logComparisonResultSet_('Unchanged', reportData.screenshots.unchanged_screenshot_list);
+    this.logComparisonResultSet_('Removed', reportData.screenshots.removed_screenshot_list);
+    this.logComparisonResultSet_('Added', reportData.screenshots.added_screenshot_list);
+    this.logComparisonResultSet_('Changed', reportData.screenshots.changed_screenshot_list);
+  }
+
+  /**
+   * @param {!Array<!mdc.proto.Screenshot>} screenshots
+   * @private
+   */
+  logComparisonResultSet_(title, screenshots) {
+    console.log(`${title} ${screenshots.length} screenshot${screenshots.length === 1 ? '' : 's'}:`);
+    for (const screenshot of screenshots) {
+      console.log(`  - ${screenshot.test_page_file.relative_path} > ${screenshot.user_agent.alias}`);
+    }
+    console.log('');
   }
 
   /**
