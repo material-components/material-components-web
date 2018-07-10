@@ -64,11 +64,7 @@
 }
 
 @mixin mdc-button-shape-radius($radius) {
-  @include mdc-shape-radius($radius);
-}
-
-@mixin mdc-button-shape-radius-custom($top-left, $top-right, $bottom-right, $bottom-left) {
-  @include mdc-shape-radius-custom($top-left, $top-right, $bottom-right, $bottom-left);
+  @include mdc-shape(button, $radius: $radius);
 }
 
 @mixin mdc-button-horizontal-padding($padding) {

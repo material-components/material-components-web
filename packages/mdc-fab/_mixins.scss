@@ -20,6 +20,7 @@
 @import "@material/theme/functions";
 @import "@material/theme/mixins";
 @import "@material/rtl/mixins";
+@import "@material/shape/mixins";
 @import "./variables";
 
 @mixin mdc-fab-accessible($container-color) {
@@ -88,6 +89,7 @@ $mdc-fab-extended-height_: 48px;
   @include mdc-ripple-surface;
   @include mdc-ripple-radius-bounded;
   @include mdc-elevation(6);
+  @include mdc-shape(fab);
 
   display: inline-flex;
   position: relative;
@@ -195,4 +197,8 @@ $mdc-fab-extended-height_: 48px;
     transform: scale(0);
     transition: mdc-animation-exit-permanent(transform, 135ms);
   }
+}
+
+@mixin mdc-fab-shape-radius($top-left, $top-right, $bottom-right, $bottom-left) {
+  @include mdc-shape(fab, $top-left: $top-left, $top-right: $top-right, $bottom-right: $bottom-right, $bottom-left: $bottom-left);
 }

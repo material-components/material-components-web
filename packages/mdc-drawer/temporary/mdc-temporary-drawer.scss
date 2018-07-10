@@ -17,6 +17,7 @@
 @import "@material/animation/functions";
 @import "@material/elevation/mixins";
 @import "@material/rtl/mixins";
+@import "@material/shape/mixins";
 @import "../mixins";
 @import "../variables";
 @import "../slidable/mixins";
@@ -58,6 +59,7 @@
     @include mdc-elevation(16);
     @include mdc-rtl-reflexive-position(left, 0);
     @include mdc-slideable-drawer;
+    @include mdc-shape(sheet-expanded, $top-left: 0, $bottom-left: 0);
 
     display: flex;
     position: absolute;

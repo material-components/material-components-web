@@ -16,13 +16,23 @@
 
 $mdc-shape-button-radius: 4px !default;
 $mdc-shape-button-top-left-radius: $mdc-shape-button-radius !default;
-$mdc-shape-button-top-left-radius: $mdc-shape-button-radius !default;
-$mdc-shape-button-top-left-radius: $mdc-shape-button-radius !default;
-$mdc-shape-button-top-left-radius: $mdc-shape-button-radius !default;
+$mdc-shape-button-top-right-radius: $mdc-shape-button-radius !default;
+$mdc-shape-button-bottom-right-radius: $mdc-shape-button-radius !default;
+$mdc-shape-button-bottom-left-radius: $mdc-shape-button-radius !default;
 
-$mdc-shape-styles:
-  (
-    button: (
-      border-radius: $mdc-shape-button-top-left-radius $mdc-shape-button-top-left-radius $mdc-shape-button-top-left-radius $mdc-shape-button-top-left-radius,
-    )
-)
+$mdc-shape-fab-radius: 50% !default;
+$mdc-shape-fab-top-left-radius: $mdc-shape-fab-radius !default;
+$mdc-shape-fab-top-right-radius: $mdc-shape-fab-radius !default;
+$mdc-shape-fab-bottom-right-radius: $mdc-shape-fab-radius !default;
+$mdc-shape-fab-bottom-left-radius: $mdc-shape-fab-radius !default;
+
+$mdc-shape-sheet-expanded-radius: 0 !default;
+$mdc-shape-sheet-expanded-top-left-radius: 0 !default;
+$mdc-shape-sheet-expanded-top-right-radius: 0 !default;
+$mdc-shape-sheet-expanded-bottom-right-radius: 0 !default;
+$mdc-shape-sheet-expanded-bottom-left-radius: 0 !default;
+
+$mdc-shape-categories: button, fab;
+
+$mdc-shape-categories: button, fab, sheet-expanded;
+

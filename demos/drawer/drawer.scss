@@ -92,3 +92,7 @@
 .demo-form-field {
   margin: 16px 0;
 }
+
+.demo-drawer-shaped {
+  @include mdc-drawer-shape-radius(12px);
+}

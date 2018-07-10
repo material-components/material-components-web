@@ -15,6 +15,7 @@
 //
 
 @import "./variables";
+@import "./functions";
 
 // Sets 45-degree angle corners of a certain size (akin to border-radius but for flat corners).
 @mixin mdc-shape-angled-corner($background-color, $top-left-size, $top-right-size: $top-left-size, $bottom-right-size: $top-left-size, $bottom-left-size: $top-right-size) {
@@ -59,22 +60,6 @@
   }
 }
 
-@mixin mdc-shape($style) {
-  $style-props: map-get($mdc-shape-styles, $style);
-
-  @if not map-has-key($mdc-shape-styles, $style) {
-    @error "Invalid style specified! #{$style} doesn't exist. Choose one of #{map-keys($mdc-typography-styles)}";
-  }
-
-  @each $key, $value in $style-props {
-    #{$key}: $value;
-  }
-}
-
-@mixin mdc-shape-radius($radius) {
-  border-radius: $radius;
-}
-
-@mixin mdc-shape-radius-custom($top-left, $top-right, $bottom-right, $bottom-left) {
-  border-radius: $top-left, $top-right, $bottom-right, $bottom-left;
+@mixin mdc-shape($category, $radius: null, $top-left: null, $top-right: null, $bottom-right: null, $bottom-left: null) {
+  border-radius: mdc-shape-get-radius($category, $radius, $top-left, $top-right, $bottom-right, $bottom-left);
 }

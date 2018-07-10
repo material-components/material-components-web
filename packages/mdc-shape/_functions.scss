@@ -1,0 +1,46 @@
+@function mdc-shape-get-radius($category, $radius: null, $top-left: null, $top-right: null, $bottom-right: null, $bottom-left: null) {
+  @if $category == "button" {
+    @if $radius != null {
+      @return $radius;
+    }
+
+    @if $top-left == null { $top-left: $mdc-shape-button-top-left-radius; }
+    @if $top-right == null { $top-right: $mdc-shape-button-top-right-radius; }
+    @if $bottom-right == null { $bottom-right: $mdc-shape-button-bottom-right-radius; }
+    @if $bottom-left == null { $bottom-left: $mdc-shape-button-bottom-left-radius; }
+
+    @return $top-left $top-right $bottom-right $bottom-left;
+  } @else if $category == "fab" {
+    @if $radius != null {
+      @return $radius;
+    }
+
+    @if $top-left == null { $top-left: $mdc-shape-button-top-left-radius; }
+    @if $top-right == null { $top-left: $mdc-shape-button-top-right-radius; }
+    @if $bottom-right == null { $top-left: $mdc-shape-button-bottom-right-radius; }
+    @if $bottom-left == null { $top-left: $mdc-shape-button-bottom-left-radius; }
+
+    @return $top-left $top-right $bottom-right $bottom-left;
+  } @else if $category == "extended-fab" {
+    @if $radius != null {
+      @return $radius;
+    }
+
+    @if $top-left == null { $top-left: $mdc-shape-button-top-left-radius; }
+    @if $top-right == null { $top-left: $mdc-shape-button-top-right-radius; }
+    @if $bottom-right == null { $top-left: $mdc-shape-button-bottom-right-radius; }
+    @if $bottom-left == null { $top-left: $mdc-shape-button-bottom-left-radius; }
+
+    @return $top-left $top-right $bottom-right $bottom-left;
+  } @else if $category == "sheet-expanded" {
+    // TODO: Throw error if only $radius is passed.
+    @if $top-left == null { $top-left: $mdc-shape-button-top-left-radius; }
+    @if $top-right == null { $top-left: $mdc-shape-button-top-right-radius; }
+    @if $bottom-right == null { $top-left: $mdc-shape-button-bottom-right-radius; }
+    @if $bottom-left == null { $top-left: $mdc-shape-button-bottom-left-radius; }
+
+    @return $top-left $top-right $bottom-right $bottom-left;
+  } @else {
+    @return ();
+  }
+}

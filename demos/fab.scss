@@ -110,3 +110,7 @@ figcaption > div {
     margin: 16px 0;
   }
 }
+
+.demo-fab-custom-shape {
+  @include mdc-fab-shape-radius(50%, 0, 0, 0);
+}
