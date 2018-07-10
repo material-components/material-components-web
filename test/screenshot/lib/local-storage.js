@@ -39,7 +39,7 @@ class LocalStorage {
    */
   async copyAssetsToTempDir(reportMeta) {
     /** @type {!Array<string>} */
-    const allAssetFileRelativePaths = await this.getAssetFileSourcePaths();
+    const allAssetFileRelativePaths = await this.getAssetFileSourcePaths_();
 
     const fileCopyPromises = [];
 
@@ -56,20 +56,57 @@ class LocalStorage {
   }
 
   /**
-   * @return {!Promise<!Array<string>>} File paths relative to the git repo. E.g.: "test/screenshot/browser.json".
-   */
-  async getAssetFileSourcePaths() {
-    const cwd = TEST_DIR_RELATIVE_PATH;
-    return (await this.filterIgnoredFiles_(glob.sync('**/*', {cwd, nodir: true}))).sort();
-  }
-
-  /**
    * @param {!mdc.proto.ReportMeta} reportMeta
    * @return {!Promise<!Array<string>>} File paths relative to the git repo. E.g.: "test/screenshot/browser.json".
    */
   async getTestPageDestinationPaths(reportMeta) {
     const cwd = reportMeta.local_asset_base_dir;
     return glob.sync('**/mdc-*/**/*.html', {cwd, nodir: true});
+  }
+
+  /**
+   * @param {string} filePath
+   * @param {string|!Buffer} fileContent
+   * @return {!Promise<void>}
+   */
+  async writeTextFile(filePath, fileContent) {
+    mkdirp.sync(path.dirname(filePath));
+    await fs.writeFile(filePath, fileContent, {encoding: 'utf8'});
+  }
+
+  /**
+   * @param {string} filePath
+   * @param {!Buffer} fileContent
+   * @return {!Promise<void>}
+   */
+  async writeBinaryFile(filePath, fileContent) {
+    mkdirp.sync(path.dirname(filePath));
+    await fs.writeFile(filePath, fileContent, {encoding: null});
+  }
+
+  /**
+   * @param {string} filePath
+   * @return {!Promise<string>}
+   */
+  async readTextFile(filePath) {
+    return fs.readFile(filePath, {encoding: 'utf8'});
+  }
+
+  /**
+   * @param {string} filePath
+   * @return {!Promise<string>}
+   */
+  async readBinaryFile(filePath) {
+    return fs.readFile(filePath, {encoding: null});
+  }
+
+  /**
+   * @return {!Promise<!Array<string>>} File paths relative to the git repo. E.g.: "test/screenshot/browser.json".
+   * @private
+   */
+  async getAssetFileSourcePaths_() {
+    const cwd = TEST_DIR_RELATIVE_PATH;
+    return (await this.filterIgnoredFiles_(glob.sync('**/*', {cwd, nodir: true}))).sort();
   }
 
   /**

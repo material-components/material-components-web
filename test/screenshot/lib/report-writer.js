@@ -14,17 +14,132 @@
  * limitations under the License.
  */
 
+const Handlebars = require('handlebars');
+const path = require('path');
+const stringify = require('json-stable-stringify');
+
+const proto = require('../proto/types.pb').mdc.proto;
+const {TestFile} = proto;
+
+const LocalStorage = require('./local-storage');
+
 const GITHUB_REPO_URL = 'https://github.com/material-components/material-components-web';
 
 class ReportWriter {
+  constructor() {
+    /**
+     * @type {!LocalStorage}
+     * @private
+     */
+    this.localStorage_ = new LocalStorage();
+    this.registerHelpers_();
+  }
+
+  /** @private */
+  registerHelpers_() {
+    // Handlebars sets `this` to the current context, so we need to use functions instead of lambdas.
+    const self = this;
+
+    const helpers = {
+      getPageTitle: function() {
+        return self.getPageTitle_(this);
+      },
+    };
+
+    for (const [name, helper] of Object.entries(helpers)) {
+      Handlebars.registerHelper(name, helper);
+    }
+  }
+
+  /**
+   * @param {!mdc.proto.ReportData} reportData
+   * @private
+   */
+  getPageTitle_(reportData) {
+    const numChanged = reportData.screenshots.changed_screenshot_list.length;
+    const numAdded = reportData.screenshots.added_screenshot_list.length;
+    const numRemoved = reportData.screenshots.removed_screenshot_list.length;
+    const numUnchanged = reportData.screenshots.unchanged_screenshot_list.length;
+    const numSkipped = reportData.screenshots.skipped_screenshot_list.length;
+
+    return [
+      `${numChanged} Diff${numChanged !== 1 ? 's' : ''}`,
+      `${numAdded} Added`,
+      `${numRemoved} Removed`,
+      `${numUnchanged} Unchanged`,
+      `${numSkipped} Skipped`,
+    ].join(', ');
+  }
+
   /**
    * @param {!mdc.proto.ReportData} reportData
    * @return {!Promise<void>}
    */
   async generateReportPage(reportData) {
-    // TODO(acdvorak): Implement
-    // reportData.meta.report_html_file = TestFile.create({});
-    // reportData.meta.report_json_file = TestFile.create({});
+    const meta = reportData.meta;
+
+    const templateFileRelativePath = 'report/report.hbs';
+    const htmlFileRelativePath = 'report/report.html';
+    const jsonFileRelativePath = 'report/report.json';
+
+    const templateFileAbsolutePath = path.join(meta.local_asset_base_dir, templateFileRelativePath);
+    const htmlFileAbsolutePath = path.join(meta.local_report_base_dir, htmlFileRelativePath);
+    const jsonFileAbsolutePath = path.join(meta.local_report_base_dir, jsonFileRelativePath);
+
+    const htmlFileUrl = this.getPublicUrl_(htmlFileRelativePath, meta);
+    const jsonFileUrl = this.getPublicUrl_(jsonFileRelativePath, meta);
+
+    const reportHtmlFile = TestFile.create({
+      relative_path: htmlFileRelativePath,
+      absolute_path: htmlFileAbsolutePath,
+      public_url: htmlFileUrl,
+    });
+
+    const reportJsonFile = TestFile.create({
+      relative_path: jsonFileRelativePath,
+      absolute_path: jsonFileAbsolutePath,
+      public_url: jsonFileUrl,
+    });
+
+    meta.report_html_file = reportHtmlFile;
+    meta.report_json_file = reportJsonFile;
+
+    const jsonFileContent = this.stringify_(reportData);
+    const htmlFileContent = await this.generateHtml_(reportData, templateFileAbsolutePath);
+
+    await this.localStorage_.writeTextFile(jsonFileAbsolutePath, jsonFileContent);
+    await this.localStorage_.writeTextFile(htmlFileAbsolutePath, htmlFileContent);
+  }
+
+  /**
+   * @param {!mdc.proto.ReportData} reportData
+   * @param {string} templateFileAbsolutePath
+   * @return {!Promise<string>}
+   */
+  async generateHtml_(reportData, templateFileAbsolutePath) {
+    const templateContent = await this.localStorage_.readTextFile(templateFileAbsolutePath);
+    const templateFunction = Handlebars.compile(templateContent);
+    return templateFunction(reportData);
+  }
+
+  /**
+   * @param {string} relativePath
+   * @param {!mdc.proto.ReportMeta} meta
+   * @return {string}
+   * @private
+   */
+  getPublicUrl_(relativePath, meta) {
+    // TODO(acdvorak): Centralize this
+    return `${meta.remote_upload_base_url}${meta.remote_upload_base_dir}${relativePath}`;
+  }
+
+  /**
+   * @param {!Array<*>|!Object<string, *>} object
+   * @return {string}
+   * @private
+   */
+  stringify_(object) {
+    return stringify(object, {space: '  '}) + '\n';
   }
 
   /**

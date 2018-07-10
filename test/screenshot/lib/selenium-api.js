@@ -57,6 +57,7 @@ class SeleniumApi {
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async captureAllPages(reportData) {
+    // TODO(acdvorak): Add `--parallel=5` CLI option and detect CBT concurrency limit
     for (const userAgent of reportData.user_agents.runnable_user_agents) {
       await this.captureAllPagesInBrowser_({reportData, userAgent});
     }
