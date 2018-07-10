@@ -129,6 +129,13 @@ message UserAgent {
     PREVIOUS = 3;
   }
 
+  message Navigator {
+    string browser_name = 1;
+    string browser_version = 2;
+    string os_name = 3;
+    string os_version = 4;
+  }
+
   string alias = 1;
 
   // Parsed from `alias`
@@ -146,7 +153,7 @@ message UserAgent {
 
   RawCapabilities desired_capabilities = 11;
   RawCapabilities actual_capabilities = 12;
-  NormalizedCapabilities normalized_capabilities = 13;
+  Navigator navigator = 13;
 
   bool is_enabled_by_cli = 14;
   bool is_available_locally = 15;

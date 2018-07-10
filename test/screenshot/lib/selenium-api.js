@@ -19,11 +19,12 @@
 const fs = require('mz/fs');
 const mkdirp = require('mkdirp');
 const path = require('path');
+const UserAgentParser = require('useragent');
 
 const proto = require('../proto/types.pb').mdc.proto;
 const {TestFile, UserAgent} = proto;
-const {BrowserVendorType, FormFactorType} = UserAgent;
-const {NormalizedCapabilities, RawCapabilities} = proto.selenium;
+const {BrowserVendorType, FormFactorType, Navigator} = UserAgent;
+const {RawCapabilities} = proto.selenium;
 
 const Base64 = require('base64-js');
 const CbtApi = require('./cbt-api');
@@ -99,7 +100,7 @@ class SeleniumApi {
     }
 
     console.log('');
-    console.log(`Starting ${desiredCapabilities.browserName} ${userAgent.browser_version_name}...`);
+    console.log(`Starting ${userAgent.alias}...`);
 
     /** @type {!IWebDriver} */
     const driver = await driverBuilder.build();
@@ -107,21 +108,20 @@ class SeleniumApi {
     /** @type {!mdc.proto.selenium.RawCapabilities} */
     const actualCapabilities = await this.getActualCapabilities_(driver);
 
-    console.log('actualCapabilities:', actualCapabilities);
+    /** @type {!mdc.proto.UserAgent.Navigator} */
+    const navigator = await this.getUserAgentNavigator_(driver);
 
-    /** @type {!mdc.proto.selenium.NormalizedCapabilities} */
-    const normalizedCapabilities = this.normalizeRawCapabilities_(actualCapabilities);
-
-    const browserName = normalizedCapabilities.browser_name;
-    const browserVersion = normalizedCapabilities.browser_version;
+    /* eslint-disable camelcase */
+    const {os_name, os_version, browser_name, browser_version} = navigator;
 
     userAgent.actual_capabilities = actualCapabilities;
-    userAgent.normalized_capabilities = normalizedCapabilities;
-    userAgent.browser_version_value = browserVersion;
+    userAgent.navigator = navigator;
+    userAgent.browser_version_value = browser_version;
     userAgent.image_filename_suffix = this.getImageFileNameSuffix_(userAgent);
 
-    console.log(`${browserName} ${browserVersion} is running!`);
+    console.log(`Started ${browser_name} ${browser_version} on ${os_name} ${os_version}!`);
     console.log('');
+    /* eslint-enable camelcase */
 
     return driver;
   }
@@ -169,32 +169,20 @@ class SeleniumApi {
   }
 
   /**
-   * @param {!mdc.proto.selenium.RawCapabilities} rawCapabilities
-   * @return {mdc.proto.selenium.NormalizedCapabilities}
+   * @param {!IWebDriver} driver
+   * @return {mdc.proto.UserAgent.Navigator}
    * @private
    */
-  normalizeRawCapabilities_(rawCapabilities) {
-    const rawOsName = (rawCapabilities.platformName || rawCapabilities.platform || '').toLowerCase();
-    const rawOsVersion = rawCapabilities.platformVersion || '';
-    const rawBrowserName = rawCapabilities.browserName;
-    const rawBrowserVersion = rawCapabilities.browserVersion || rawCapabilities.version || '';
+  async getUserAgentNavigator_(driver) {
+    const uaString = await driver.executeScript('return window.navigator.userAgent;');
+    const uaParsed = UserAgentParser.parse(uaString);
 
-    const isMac = rawOsName.startsWith('mac') || rawOsName.startsWith('darwin');
-    const isIos = rawOsName.startsWith('ipad') || rawOsName.startsWith('iphone');
-    const isAndroid = rawOsName.startsWith('android');
-    const isEdge = rawBrowserName === Browser.EDGE;
-    const isIE = rawBrowserName === Browser.IE;
-
-    const normalizedOsName = isMac ? 'mac' : isIos ? 'ios' : isAndroid ? 'android' : 'windows';
-    const normalizedOsVersion = rawOsVersion.replace(/(?:\.0)+$/, ''); // "10.0.0" -> "10"
-    const normalizedBrowserName = isEdge ? 'edge' : isIE ? 'ie' : rawBrowserName.toLowerCase();
-    const [normalizedBrowserVersion] = rawBrowserVersion.split('.');
-
-    return NormalizedCapabilities.create({
-      os_name: normalizedOsName,
-      os_version: normalizedOsVersion,
-      browser_name: normalizedBrowserName,
-      browser_version: normalizedBrowserVersion,
+    // TODO(acdvorak): Clean this up
+    return Navigator.create({
+      os_name: uaParsed.os.family.toLowerCase().startsWith('mac') ? 'Mac' : uaParsed.os.family,
+      os_version: uaParsed.os.toVersion().replace(/(?:\.0)+$/, ''),
+      browser_name: uaParsed.family.replace(/\s*Mobile\s*/, ''),
+      browser_version: uaParsed.toVersion().replace(/(?:\.0)+$/, ''),
     });
   }
 
@@ -205,8 +193,11 @@ class SeleniumApi {
    */
   getImageFileNameSuffix_(userAgent) {
     /* eslint-disable camelcase */
-    const {os_name, browser_name, browser_version} = userAgent.normalized_capabilities;
-    return [os_name, browser_name, browser_version].filter((value) => !!value).join('_');
+    const {os_name, browser_name, browser_version} = userAgent.navigator;
+    return [os_name, browser_name, browser_version].map((value) => {
+      // TODO(acdvorak): Clean this up
+      return value.toLowerCase().replace(/\..+$/, '').replace(/[^a-z0-9]+/ig, '');
+    }).join('_');
     /* eslint-enable camelcase */
   }
   /**

@@ -2340,7 +2340,7 @@ $root.mdc = (function() {
              * @property {mdc.proto.UserAgent.BrowserVersionType|null} [browser_version_type] UserAgent browser_version_type
              * @property {mdc.proto.selenium.IRawCapabilities|null} [desired_capabilities] UserAgent desired_capabilities
              * @property {mdc.proto.selenium.IRawCapabilities|null} [actual_capabilities] UserAgent actual_capabilities
-             * @property {mdc.proto.selenium.INormalizedCapabilities|null} [normalized_capabilities] UserAgent normalized_capabilities
+             * @property {mdc.proto.UserAgent.INavigator|null} [navigator] UserAgent navigator
              * @property {boolean|null} [is_enabled_by_cli] UserAgent is_enabled_by_cli
              * @property {boolean|null} [is_available_locally] UserAgent is_available_locally
              * @property {boolean|null} [is_runnable] UserAgent is_runnable
@@ -2459,12 +2459,12 @@ $root.mdc = (function() {
             UserAgent.prototype.actual_capabilities = null;
 
             /**
-             * UserAgent normalized_capabilities.
-             * @member {mdc.proto.selenium.INormalizedCapabilities|null|undefined} normalized_capabilities
+             * UserAgent navigator.
+             * @member {mdc.proto.UserAgent.INavigator|null|undefined} navigator
              * @memberof mdc.proto.UserAgent
              * @instance
              */
-            UserAgent.prototype.normalized_capabilities = null;
+            UserAgent.prototype.navigator = null;
 
             /**
              * UserAgent is_enabled_by_cli.
@@ -2546,8 +2546,8 @@ $root.mdc = (function() {
                     $root.mdc.proto.selenium.RawCapabilities.encode(message.desired_capabilities, writer.uint32(/* id 11, wireType 2 =*/90).fork()).ldelim();
                 if (message.actual_capabilities != null && message.hasOwnProperty("actual_capabilities"))
                     $root.mdc.proto.selenium.RawCapabilities.encode(message.actual_capabilities, writer.uint32(/* id 12, wireType 2 =*/98).fork()).ldelim();
-                if (message.normalized_capabilities != null && message.hasOwnProperty("normalized_capabilities"))
-                    $root.mdc.proto.selenium.NormalizedCapabilities.encode(message.normalized_capabilities, writer.uint32(/* id 13, wireType 2 =*/106).fork()).ldelim();
+                if (message.navigator != null && message.hasOwnProperty("navigator"))
+                    $root.mdc.proto.UserAgent.Navigator.encode(message.navigator, writer.uint32(/* id 13, wireType 2 =*/106).fork()).ldelim();
                 if (message.is_enabled_by_cli != null && message.hasOwnProperty("is_enabled_by_cli"))
                     writer.uint32(/* id 14, wireType 0 =*/112).bool(message.is_enabled_by_cli);
                 if (message.is_available_locally != null && message.hasOwnProperty("is_available_locally"))
@@ -2627,7 +2627,7 @@ $root.mdc = (function() {
                         message.actual_capabilities = $root.mdc.proto.selenium.RawCapabilities.decode(reader, reader.uint32());
                         break;
                     case 13:
-                        message.normalized_capabilities = $root.mdc.proto.selenium.NormalizedCapabilities.decode(reader, reader.uint32());
+                        message.navigator = $root.mdc.proto.UserAgent.Navigator.decode(reader, reader.uint32());
                         break;
                     case 14:
                         message.is_enabled_by_cli = reader.bool();
@@ -2746,10 +2746,10 @@ $root.mdc = (function() {
                     if (error)
                         return "actual_capabilities." + error;
                 }
-                if (message.normalized_capabilities != null && message.hasOwnProperty("normalized_capabilities")) {
-                    var error = $root.mdc.proto.selenium.NormalizedCapabilities.verify(message.normalized_capabilities);
+                if (message.navigator != null && message.hasOwnProperty("navigator")) {
+                    var error = $root.mdc.proto.UserAgent.Navigator.verify(message.navigator);
                     if (error)
-                        return "normalized_capabilities." + error;
+                        return "navigator." + error;
                 }
                 if (message.is_enabled_by_cli != null && message.hasOwnProperty("is_enabled_by_cli"))
                     if (typeof message.is_enabled_by_cli !== "boolean")
@@ -2880,10 +2880,10 @@ $root.mdc = (function() {
                         throw TypeError(".mdc.proto.UserAgent.actual_capabilities: object expected");
                     message.actual_capabilities = $root.mdc.proto.selenium.RawCapabilities.fromObject(object.actual_capabilities);
                 }
-                if (object.normalized_capabilities != null) {
-                    if (typeof object.normalized_capabilities !== "object")
-                        throw TypeError(".mdc.proto.UserAgent.normalized_capabilities: object expected");
-                    message.normalized_capabilities = $root.mdc.proto.selenium.NormalizedCapabilities.fromObject(object.normalized_capabilities);
+                if (object.navigator != null) {
+                    if (typeof object.navigator !== "object")
+                        throw TypeError(".mdc.proto.UserAgent.navigator: object expected");
+                    message.navigator = $root.mdc.proto.UserAgent.Navigator.fromObject(object.navigator);
                 }
                 if (object.is_enabled_by_cli != null)
                     message.is_enabled_by_cli = Boolean(object.is_enabled_by_cli);
@@ -2922,7 +2922,7 @@ $root.mdc = (function() {
                     object.browser_version_type = options.enums === String ? "UNKNOWN" : 0;
                     object.desired_capabilities = null;
                     object.actual_capabilities = null;
-                    object.normalized_capabilities = null;
+                    object.navigator = null;
                     object.is_enabled_by_cli = false;
                     object.is_available_locally = false;
                     object.is_runnable = false;
@@ -2952,8 +2952,8 @@ $root.mdc = (function() {
                     object.desired_capabilities = $root.mdc.proto.selenium.RawCapabilities.toObject(message.desired_capabilities, options);
                 if (message.actual_capabilities != null && message.hasOwnProperty("actual_capabilities"))
                     object.actual_capabilities = $root.mdc.proto.selenium.RawCapabilities.toObject(message.actual_capabilities, options);
-                if (message.normalized_capabilities != null && message.hasOwnProperty("normalized_capabilities"))
-                    object.normalized_capabilities = $root.mdc.proto.selenium.NormalizedCapabilities.toObject(message.normalized_capabilities, options);
+                if (message.navigator != null && message.hasOwnProperty("navigator"))
+                    object.navigator = $root.mdc.proto.UserAgent.Navigator.toObject(message.navigator, options);
                 if (message.is_enabled_by_cli != null && message.hasOwnProperty("is_enabled_by_cli"))
                     object.is_enabled_by_cli = message.is_enabled_by_cli;
                 if (message.is_available_locally != null && message.hasOwnProperty("is_available_locally"))
@@ -3050,6 +3050,260 @@ $root.mdc = (function() {
                 values[valuesById[2] = "LATEST"] = 2;
                 values[valuesById[3] = "PREVIOUS"] = 3;
                 return values;
+            })();
+
+            UserAgent.Navigator = (function() {
+
+                /**
+                 * Properties of a Navigator.
+                 * @memberof mdc.proto.UserAgent
+                 * @interface INavigator
+                 * @property {string|null} [browser_name] Navigator browser_name
+                 * @property {string|null} [browser_version] Navigator browser_version
+                 * @property {string|null} [os_name] Navigator os_name
+                 * @property {string|null} [os_version] Navigator os_version
+                 */
+
+                /**
+                 * Constructs a new Navigator.
+                 * @memberof mdc.proto.UserAgent
+                 * @classdesc Represents a Navigator.
+                 * @implements INavigator
+                 * @constructor
+                 * @param {mdc.proto.UserAgent.INavigator=} [properties] Properties to set
+                 */
+                function Navigator(properties) {
+                    if (properties)
+                        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                            if (properties[keys[i]] != null)
+                                this[keys[i]] = properties[keys[i]];
+                }
+
+                /**
+                 * Navigator browser_name.
+                 * @member {string} browser_name
+                 * @memberof mdc.proto.UserAgent.Navigator
+                 * @instance
+                 */
+                Navigator.prototype.browser_name = "";
+
+                /**
+                 * Navigator browser_version.
+                 * @member {string} browser_version
+                 * @memberof mdc.proto.UserAgent.Navigator
+                 * @instance
+                 */
+                Navigator.prototype.browser_version = "";
+
+                /**
+                 * Navigator os_name.
+                 * @member {string} os_name
+                 * @memberof mdc.proto.UserAgent.Navigator
+                 * @instance
+                 */
+                Navigator.prototype.os_name = "";
+
+                /**
+                 * Navigator os_version.
+                 * @member {string} os_version
+                 * @memberof mdc.proto.UserAgent.Navigator
+                 * @instance
+                 */
+                Navigator.prototype.os_version = "";
+
+                /**
+                 * Creates a new Navigator instance using the specified properties.
+                 * @function create
+                 * @memberof mdc.proto.UserAgent.Navigator
+                 * @static
+                 * @param {mdc.proto.UserAgent.INavigator=} [properties] Properties to set
+                 * @returns {mdc.proto.UserAgent.Navigator} Navigator instance
+                 */
+                Navigator.create = function create(properties) {
+                    return new Navigator(properties);
+                };
+
+                /**
+                 * Encodes the specified Navigator message. Does not implicitly {@link mdc.proto.UserAgent.Navigator.verify|verify} messages.
+                 * @function encode
+                 * @memberof mdc.proto.UserAgent.Navigator
+                 * @static
+                 * @param {mdc.proto.UserAgent.INavigator} message Navigator message or plain object to encode
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
+                 */
+                Navigator.encode = function encode(message, writer) {
+                    if (!writer)
+                        writer = $Writer.create();
+                    if (message.browser_name != null && message.hasOwnProperty("browser_name"))
+                        writer.uint32(/* id 1, wireType 2 =*/10).string(message.browser_name);
+                    if (message.browser_version != null && message.hasOwnProperty("browser_version"))
+                        writer.uint32(/* id 2, wireType 2 =*/18).string(message.browser_version);
+                    if (message.os_name != null && message.hasOwnProperty("os_name"))
+                        writer.uint32(/* id 3, wireType 2 =*/26).string(message.os_name);
+                    if (message.os_version != null && message.hasOwnProperty("os_version"))
+                        writer.uint32(/* id 4, wireType 2 =*/34).string(message.os_version);
+                    return writer;
+                };
+
+                /**
+                 * Encodes the specified Navigator message, length delimited. Does not implicitly {@link mdc.proto.UserAgent.Navigator.verify|verify} messages.
+                 * @function encodeDelimited
+                 * @memberof mdc.proto.UserAgent.Navigator
+                 * @static
+                 * @param {mdc.proto.UserAgent.INavigator} message Navigator message or plain object to encode
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
+                 */
+                Navigator.encodeDelimited = function encodeDelimited(message, writer) {
+                    return this.encode(message, writer).ldelim();
+                };
+
+                /**
+                 * Decodes a Navigator message from the specified reader or buffer.
+                 * @function decode
+                 * @memberof mdc.proto.UserAgent.Navigator
+                 * @static
+                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                 * @param {number} [length] Message length if known beforehand
+                 * @returns {mdc.proto.UserAgent.Navigator} Navigator
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                Navigator.decode = function decode(reader, length) {
+                    if (!(reader instanceof $Reader))
+                        reader = $Reader.create(reader);
+                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.mdc.proto.UserAgent.Navigator();
+                    while (reader.pos < end) {
+                        var tag = reader.uint32();
+                        switch (tag >>> 3) {
+                        case 1:
+                            message.browser_name = reader.string();
+                            break;
+                        case 2:
+                            message.browser_version = reader.string();
+                            break;
+                        case 3:
+                            message.os_name = reader.string();
+                            break;
+                        case 4:
+                            message.os_version = reader.string();
+                            break;
+                        default:
+                            reader.skipType(tag & 7);
+                            break;
+                        }
+                    }
+                    return message;
+                };
+
+                /**
+                 * Decodes a Navigator message from the specified reader or buffer, length delimited.
+                 * @function decodeDelimited
+                 * @memberof mdc.proto.UserAgent.Navigator
+                 * @static
+                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                 * @returns {mdc.proto.UserAgent.Navigator} Navigator
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                Navigator.decodeDelimited = function decodeDelimited(reader) {
+                    if (!(reader instanceof $Reader))
+                        reader = new $Reader(reader);
+                    return this.decode(reader, reader.uint32());
+                };
+
+                /**
+                 * Verifies a Navigator message.
+                 * @function verify
+                 * @memberof mdc.proto.UserAgent.Navigator
+                 * @static
+                 * @param {Object.<string,*>} message Plain object to verify
+                 * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                 */
+                Navigator.verify = function verify(message) {
+                    if (typeof message !== "object" || message === null)
+                        return "object expected";
+                    if (message.browser_name != null && message.hasOwnProperty("browser_name"))
+                        if (!$util.isString(message.browser_name))
+                            return "browser_name: string expected";
+                    if (message.browser_version != null && message.hasOwnProperty("browser_version"))
+                        if (!$util.isString(message.browser_version))
+                            return "browser_version: string expected";
+                    if (message.os_name != null && message.hasOwnProperty("os_name"))
+                        if (!$util.isString(message.os_name))
+                            return "os_name: string expected";
+                    if (message.os_version != null && message.hasOwnProperty("os_version"))
+                        if (!$util.isString(message.os_version))
+                            return "os_version: string expected";
+                    return null;
+                };
+
+                /**
+                 * Creates a Navigator message from a plain object. Also converts values to their respective internal types.
+                 * @function fromObject
+                 * @memberof mdc.proto.UserAgent.Navigator
+                 * @static
+                 * @param {Object.<string,*>} object Plain object
+                 * @returns {mdc.proto.UserAgent.Navigator} Navigator
+                 */
+                Navigator.fromObject = function fromObject(object) {
+                    if (object instanceof $root.mdc.proto.UserAgent.Navigator)
+                        return object;
+                    var message = new $root.mdc.proto.UserAgent.Navigator();
+                    if (object.browser_name != null)
+                        message.browser_name = String(object.browser_name);
+                    if (object.browser_version != null)
+                        message.browser_version = String(object.browser_version);
+                    if (object.os_name != null)
+                        message.os_name = String(object.os_name);
+                    if (object.os_version != null)
+                        message.os_version = String(object.os_version);
+                    return message;
+                };
+
+                /**
+                 * Creates a plain object from a Navigator message. Also converts values to other types if specified.
+                 * @function toObject
+                 * @memberof mdc.proto.UserAgent.Navigator
+                 * @static
+                 * @param {mdc.proto.UserAgent.Navigator} message Navigator
+                 * @param {$protobuf.IConversionOptions} [options] Conversion options
+                 * @returns {Object.<string,*>} Plain object
+                 */
+                Navigator.toObject = function toObject(message, options) {
+                    if (!options)
+                        options = {};
+                    var object = {};
+                    if (options.defaults) {
+                        object.browser_name = "";
+                        object.browser_version = "";
+                        object.os_name = "";
+                        object.os_version = "";
+                    }
+                    if (message.browser_name != null && message.hasOwnProperty("browser_name"))
+                        object.browser_name = message.browser_name;
+                    if (message.browser_version != null && message.hasOwnProperty("browser_version"))
+                        object.browser_version = message.browser_version;
+                    if (message.os_name != null && message.hasOwnProperty("os_name"))
+                        object.os_name = message.os_name;
+                    if (message.os_version != null && message.hasOwnProperty("os_version"))
+                        object.os_version = message.os_version;
+                    return object;
+                };
+
+                /**
+                 * Converts this Navigator to JSON.
+                 * @function toJSON
+                 * @memberof mdc.proto.UserAgent.Navigator
+                 * @instance
+                 * @returns {Object.<string,*>} JSON object
+                 */
+                Navigator.prototype.toJSON = function toJSON() {
+                    return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                };
+
+                return Navigator;
             })();
 
             return UserAgent;
@@ -7491,260 +7745,6 @@ $root.mdc = (function() {
                 };
 
                 return RawCapabilities;
-            })();
-
-            selenium.NormalizedCapabilities = (function() {
-
-                /**
-                 * Properties of a NormalizedCapabilities.
-                 * @memberof mdc.proto.selenium
-                 * @interface INormalizedCapabilities
-                 * @property {string|null} [browser_name] NormalizedCapabilities browser_name
-                 * @property {string|null} [browser_version] NormalizedCapabilities browser_version
-                 * @property {string|null} [os_name] NormalizedCapabilities os_name
-                 * @property {string|null} [os_version] NormalizedCapabilities os_version
-                 */
-
-                /**
-                 * Constructs a new NormalizedCapabilities.
-                 * @memberof mdc.proto.selenium
-                 * @classdesc Represents a NormalizedCapabilities.
-                 * @implements INormalizedCapabilities
-                 * @constructor
-                 * @param {mdc.proto.selenium.INormalizedCapabilities=} [properties] Properties to set
-                 */
-                function NormalizedCapabilities(properties) {
-                    if (properties)
-                        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                            if (properties[keys[i]] != null)
-                                this[keys[i]] = properties[keys[i]];
-                }
-
-                /**
-                 * NormalizedCapabilities browser_name.
-                 * @member {string} browser_name
-                 * @memberof mdc.proto.selenium.NormalizedCapabilities
-                 * @instance
-                 */
-                NormalizedCapabilities.prototype.browser_name = "";
-
-                /**
-                 * NormalizedCapabilities browser_version.
-                 * @member {string} browser_version
-                 * @memberof mdc.proto.selenium.NormalizedCapabilities
-                 * @instance
-                 */
-                NormalizedCapabilities.prototype.browser_version = "";
-
-                /**
-                 * NormalizedCapabilities os_name.
-                 * @member {string} os_name
-                 * @memberof mdc.proto.selenium.NormalizedCapabilities
-                 * @instance
-                 */
-                NormalizedCapabilities.prototype.os_name = "";
-
-                /**
-                 * NormalizedCapabilities os_version.
-                 * @member {string} os_version
-                 * @memberof mdc.proto.selenium.NormalizedCapabilities
-                 * @instance
-                 */
-                NormalizedCapabilities.prototype.os_version = "";
-
-                /**
-                 * Creates a new NormalizedCapabilities instance using the specified properties.
-                 * @function create
-                 * @memberof mdc.proto.selenium.NormalizedCapabilities
-                 * @static
-                 * @param {mdc.proto.selenium.INormalizedCapabilities=} [properties] Properties to set
-                 * @returns {mdc.proto.selenium.NormalizedCapabilities} NormalizedCapabilities instance
-                 */
-                NormalizedCapabilities.create = function create(properties) {
-                    return new NormalizedCapabilities(properties);
-                };
-
-                /**
-                 * Encodes the specified NormalizedCapabilities message. Does not implicitly {@link mdc.proto.selenium.NormalizedCapabilities.verify|verify} messages.
-                 * @function encode
-                 * @memberof mdc.proto.selenium.NormalizedCapabilities
-                 * @static
-                 * @param {mdc.proto.selenium.INormalizedCapabilities} message NormalizedCapabilities message or plain object to encode
-                 * @param {$protobuf.Writer} [writer] Writer to encode to
-                 * @returns {$protobuf.Writer} Writer
-                 */
-                NormalizedCapabilities.encode = function encode(message, writer) {
-                    if (!writer)
-                        writer = $Writer.create();
-                    if (message.browser_name != null && message.hasOwnProperty("browser_name"))
-                        writer.uint32(/* id 1, wireType 2 =*/10).string(message.browser_name);
-                    if (message.browser_version != null && message.hasOwnProperty("browser_version"))
-                        writer.uint32(/* id 2, wireType 2 =*/18).string(message.browser_version);
-                    if (message.os_name != null && message.hasOwnProperty("os_name"))
-                        writer.uint32(/* id 3, wireType 2 =*/26).string(message.os_name);
-                    if (message.os_version != null && message.hasOwnProperty("os_version"))
-                        writer.uint32(/* id 4, wireType 2 =*/34).string(message.os_version);
-                    return writer;
-                };
-
-                /**
-                 * Encodes the specified NormalizedCapabilities message, length delimited. Does not implicitly {@link mdc.proto.selenium.NormalizedCapabilities.verify|verify} messages.
-                 * @function encodeDelimited
-                 * @memberof mdc.proto.selenium.NormalizedCapabilities
-                 * @static
-                 * @param {mdc.proto.selenium.INormalizedCapabilities} message NormalizedCapabilities message or plain object to encode
-                 * @param {$protobuf.Writer} [writer] Writer to encode to
-                 * @returns {$protobuf.Writer} Writer
-                 */
-                NormalizedCapabilities.encodeDelimited = function encodeDelimited(message, writer) {
-                    return this.encode(message, writer).ldelim();
-                };
-
-                /**
-                 * Decodes a NormalizedCapabilities message from the specified reader or buffer.
-                 * @function decode
-                 * @memberof mdc.proto.selenium.NormalizedCapabilities
-                 * @static
-                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-                 * @param {number} [length] Message length if known beforehand
-                 * @returns {mdc.proto.selenium.NormalizedCapabilities} NormalizedCapabilities
-                 * @throws {Error} If the payload is not a reader or valid buffer
-                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                 */
-                NormalizedCapabilities.decode = function decode(reader, length) {
-                    if (!(reader instanceof $Reader))
-                        reader = $Reader.create(reader);
-                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.mdc.proto.selenium.NormalizedCapabilities();
-                    while (reader.pos < end) {
-                        var tag = reader.uint32();
-                        switch (tag >>> 3) {
-                        case 1:
-                            message.browser_name = reader.string();
-                            break;
-                        case 2:
-                            message.browser_version = reader.string();
-                            break;
-                        case 3:
-                            message.os_name = reader.string();
-                            break;
-                        case 4:
-                            message.os_version = reader.string();
-                            break;
-                        default:
-                            reader.skipType(tag & 7);
-                            break;
-                        }
-                    }
-                    return message;
-                };
-
-                /**
-                 * Decodes a NormalizedCapabilities message from the specified reader or buffer, length delimited.
-                 * @function decodeDelimited
-                 * @memberof mdc.proto.selenium.NormalizedCapabilities
-                 * @static
-                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-                 * @returns {mdc.proto.selenium.NormalizedCapabilities} NormalizedCapabilities
-                 * @throws {Error} If the payload is not a reader or valid buffer
-                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                 */
-                NormalizedCapabilities.decodeDelimited = function decodeDelimited(reader) {
-                    if (!(reader instanceof $Reader))
-                        reader = new $Reader(reader);
-                    return this.decode(reader, reader.uint32());
-                };
-
-                /**
-                 * Verifies a NormalizedCapabilities message.
-                 * @function verify
-                 * @memberof mdc.proto.selenium.NormalizedCapabilities
-                 * @static
-                 * @param {Object.<string,*>} message Plain object to verify
-                 * @returns {string|null} `null` if valid, otherwise the reason why it is not
-                 */
-                NormalizedCapabilities.verify = function verify(message) {
-                    if (typeof message !== "object" || message === null)
-                        return "object expected";
-                    if (message.browser_name != null && message.hasOwnProperty("browser_name"))
-                        if (!$util.isString(message.browser_name))
-                            return "browser_name: string expected";
-                    if (message.browser_version != null && message.hasOwnProperty("browser_version"))
-                        if (!$util.isString(message.browser_version))
-                            return "browser_version: string expected";
-                    if (message.os_name != null && message.hasOwnProperty("os_name"))
-                        if (!$util.isString(message.os_name))
-                            return "os_name: string expected";
-                    if (message.os_version != null && message.hasOwnProperty("os_version"))
-                        if (!$util.isString(message.os_version))
-                            return "os_version: string expected";
-                    return null;
-                };
-
-                /**
-                 * Creates a NormalizedCapabilities message from a plain object. Also converts values to their respective internal types.
-                 * @function fromObject
-                 * @memberof mdc.proto.selenium.NormalizedCapabilities
-                 * @static
-                 * @param {Object.<string,*>} object Plain object
-                 * @returns {mdc.proto.selenium.NormalizedCapabilities} NormalizedCapabilities
-                 */
-                NormalizedCapabilities.fromObject = function fromObject(object) {
-                    if (object instanceof $root.mdc.proto.selenium.NormalizedCapabilities)
-                        return object;
-                    var message = new $root.mdc.proto.selenium.NormalizedCapabilities();
-                    if (object.browser_name != null)
-                        message.browser_name = String(object.browser_name);
-                    if (object.browser_version != null)
-                        message.browser_version = String(object.browser_version);
-                    if (object.os_name != null)
-                        message.os_name = String(object.os_name);
-                    if (object.os_version != null)
-                        message.os_version = String(object.os_version);
-                    return message;
-                };
-
-                /**
-                 * Creates a plain object from a NormalizedCapabilities message. Also converts values to other types if specified.
-                 * @function toObject
-                 * @memberof mdc.proto.selenium.NormalizedCapabilities
-                 * @static
-                 * @param {mdc.proto.selenium.NormalizedCapabilities} message NormalizedCapabilities
-                 * @param {$protobuf.IConversionOptions} [options] Conversion options
-                 * @returns {Object.<string,*>} Plain object
-                 */
-                NormalizedCapabilities.toObject = function toObject(message, options) {
-                    if (!options)
-                        options = {};
-                    var object = {};
-                    if (options.defaults) {
-                        object.browser_name = "";
-                        object.browser_version = "";
-                        object.os_name = "";
-                        object.os_version = "";
-                    }
-                    if (message.browser_name != null && message.hasOwnProperty("browser_name"))
-                        object.browser_name = message.browser_name;
-                    if (message.browser_version != null && message.hasOwnProperty("browser_version"))
-                        object.browser_version = message.browser_version;
-                    if (message.os_name != null && message.hasOwnProperty("os_name"))
-                        object.os_name = message.os_name;
-                    if (message.os_version != null && message.hasOwnProperty("os_version"))
-                        object.os_version = message.os_version;
-                    return object;
-                };
-
-                /**
-                 * Converts this NormalizedCapabilities to JSON.
-                 * @function toJSON
-                 * @memberof mdc.proto.selenium.NormalizedCapabilities
-                 * @instance
-                 * @returns {Object.<string,*>} JSON object
-                 */
-                NormalizedCapabilities.prototype.toJSON = function toJSON() {
-                    return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-                };
-
-                return NormalizedCapabilities;
             })();
 
             return selenium;

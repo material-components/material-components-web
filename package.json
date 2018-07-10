@@ -122,6 +122,7 @@
     "stylelint-selector-bem-pattern": "^1.0.0",
     "testdouble": "^3.2.4",
     "to-slug-case": "^1.0.0",
+    "useragent": "^2.3.0",
     "validate-commit-msg": "^2.6.1",
     "webpack": "^3.0.0",
     "webpack-dev-server": "^2.4.3"

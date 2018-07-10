@@ -67,10 +67,3 @@ message RawCapabilities {
   // Desktop-only. E.g.: "1366x768".
   string screenResolution = 13;
 }
-
-message NormalizedCapabilities {
-  string browser_name = 1;
-  string browser_version = 2;
-  string os_name = 3;
-  string os_version = 4;
-}
