@@ -19,15 +19,14 @@
 const glob = require('glob');
 const path = require('path');
 
-const Cli = require('../lib/cli');
 const ProcessManager = require('../lib/process-manager');
+const {TEST_DIR_RELATIVE_PATH} = require('../lib/constants');
 
-const cli = new Cli();
 const processManager = new ProcessManager();
 
 module.exports = {
   async runAsync() {
-    const protoFilePaths = glob.sync(path.join(cli.testDir, '**/*.proto'));
+    const protoFilePaths = glob.sync(path.join(TEST_DIR_RELATIVE_PATH, '**/*.proto'));
 
     const cmd = 'pbjs';
     const args = ['--target=static-module', '--wrap=commonjs', '--keep-case'];

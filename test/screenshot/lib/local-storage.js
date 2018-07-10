@@ -23,6 +23,8 @@ const path = require('path');
 
 const Cli = require('./cli');
 const GitRepo = require('./git-repo');
+const {TEST_DIR_RELATIVE_PATH} = require('../lib/constants');
+const {UploadableTestCase, UploadableFile} = require('./types');
 
 class LocalStorage {
   constructor() {
@@ -50,7 +52,7 @@ class LocalStorage {
     const fileCopyPromises = [];
 
     for (const assetFileRelativePath of allAssetFileRelativePaths) {
-      const assetFileshortPath = assetFileRelativePath.replace(this.cli_.testDir, '');
+      const assetFileshortPath = assetFileRelativePath.replace(TEST_DIR_RELATIVE_PATH, '');
       const sourceFilePathAbsolute = path.resolve(assetFileRelativePath);
       const destionationFilePathAbsolute = path.resolve(reportMeta.local_asset_base_dir, assetFileshortPath);
 
@@ -65,7 +67,7 @@ class LocalStorage {
    * @return {!Promise<!Array<string>>} File paths relative to the git repo. E.g.: "test/screenshot/browser.json".
    */
   async getAssetFileSourcePaths() {
-    const cwd = this.cli_.testDir;
+    const cwd = TEST_DIR_RELATIVE_PATH;
     return (await this.filterIgnoredFiles_(glob.sync('**/*', {cwd, nodir: true}))).sort();
   }
 
@@ -84,7 +86,7 @@ class LocalStorage {
    * @private
    */
   async filterIgnoredFiles_(shortPaths) {
-    const relativePaths = shortPaths.map((name) => path.join(this.cli_.testDir, name));
+    const relativePaths = shortPaths.map((name) => path.join(TEST_DIR_RELATIVE_PATH, name));
 
     /** @type {!Array<string>} */
     const ignoredTopLevelFilesAndDirs = await this.gitRepo_.getIgnoredPaths(relativePaths);

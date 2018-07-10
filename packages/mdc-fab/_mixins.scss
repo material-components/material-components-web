@@ -19,6 +19,8 @@
 @import "@material/ripple/variables";
 @import "@material/theme/functions";
 @import "@material/theme/mixins";
+@import "@material/rtl/mixins";
+@import "./variables";
 
 @mixin mdc-fab-accessible($container-color) {
   $fill-tone: mdc-theme-tone($container-color);
@@ -52,6 +54,30 @@
 
 @mixin mdc-fab-extended-fluid {
   width: 100%;
+}
+
+@mixin mdc-fab-extended-padding($icon-padding, $label-padding) {
+  @include mdc-fab-extended-label-padding($label-padding);
+
+  // Offsets the outer label padding by deducting it from icon padding.
+  .mdc-fab__icon {
+    @include mdc-rtl-reflexive-property(
+      margin,
+      $icon-padding - $label-padding,
+      $icon-padding);
+  }
+
+  // For Extended FAB with text label followed by icon.
+  .mdc-fab__label + .mdc-fab__icon {
+    @include mdc-rtl-reflexive-property(
+      margin,
+      $icon-padding,
+      $icon-padding - $label-padding);
+  }
+}
+
+@mixin mdc-fab-extended-label-padding($label-padding) {
+  padding: 0 $label-padding;
 }
 
 $mdc-fab-icon-enter-delay_: 90ms;
@@ -129,11 +155,13 @@ $mdc-fab-extended-height_: 48px;
 
 @mixin mdc-fab--extended_ {
   @include mdc-typography(button);
+  @include mdc-fab-extended-padding(
+    $mdc-fab-extended-icon-padding,
+    $mdc-fab-extended-label-padding);
 
   width: auto;
   max-width: 100%;
   height: $mdc-fab-extended-height_;
-  padding: 0 20px 0 16px;
   border-radius: $mdc-fab-extended-height_ / 2;
 }
 
@@ -145,7 +173,6 @@ $mdc-fab-extended-height_: 48px;
 
 @mixin mdc-fab__label_ {
   justify-content: flex-start;
-  padding-left: 8px;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;

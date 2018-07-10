@@ -22,11 +22,12 @@ const serveIndex = require('serve-index');
 
 const Cli = require('../lib/cli');
 const {ExitCode} = require('../lib/constants');
+const {TEST_DIR_RELATIVE_PATH} = require('../lib/constants');
 
 module.exports = {
   async runAsync() {
     const cli = new Cli();
-    const {port, testDir} = cli;
+    const {port} = cli;
 
     if (await detectPort(port) !== port) {
       console.error(`Error: HTTP port ${port} is already in use!`);
@@ -35,7 +36,7 @@ module.exports = {
 
     const app = express();
 
-    app.use('/', express.static(testDir), serveIndex(testDir));
+    app.use('/', express.static(TEST_DIR_RELATIVE_PATH), serveIndex(TEST_DIR_RELATIVE_PATH));
 
     app.listen(port, () => {
       console.log(`

@@ -19,6 +19,7 @@
 const Cli = require('./cli');
 const ProcessManager = require('../lib/process-manager');
 const glob = require('glob');
+const {GCS_BUCKET} = require('./constants');
 
 /**
  * A wrapper around the Google Cloud Storage API.
@@ -103,7 +104,7 @@ class CloudStorage {
       'cp', // copy
       '-r', // recursive
       localSourceDir,
-      `gs://${this.cli_.gcsBucket}/${remoteTargetDir}`,
+      `gs://${GCS_BUCKET}/${remoteTargetDir}`,
     ];
 
     return this.processManager_.spawnChildProcessSync(cmd, args);

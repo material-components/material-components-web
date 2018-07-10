@@ -16,18 +16,17 @@
 
 'use strict';
 
-const Cli = require('../lib/cli');
 const del = require('del');
 const mkdirp = require('mkdirp');
 const path = require('path');
+const {TEST_DIR_RELATIVE_PATH} = require('../lib/constants');
 
 module.exports = {
   async runAsync() {
-    const cli = new Cli();
     const relativePathPatterns = ['out'].map((filename) => {
-      return path.join(cli.testDir, filename);
+      return path.join(TEST_DIR_RELATIVE_PATH, filename);
     });
     await del(relativePathPatterns);
-    mkdirp.sync(path.join(cli.testDir, 'out'));
+    mkdirp.sync(path.join(TEST_DIR_RELATIVE_PATH, 'out'));
   },
 };
