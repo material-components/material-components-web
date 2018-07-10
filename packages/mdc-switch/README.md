@@ -131,7 +131,7 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `setDisabled(disabled: boolean) => void` | Sets the disabled value of the native control and updates styling to reflect the disabled state. |
 | `handleChange() => void` | Handles a change event from the native control. |
 
-### `MDCSwitchFoundation Event Handlers`
+### `MDCSwitchFoundation` Event Handlers
 If wrapping the switch component it is necessary to add an event handler for native control change events that calls the `handleChange` foundation method. For an example of this, see the [MDCSwitch](index.js) component `initialSyncWithDOM` method.
 | Event | Element Selector | Foundation Handler |
 | --- | --- | --- |
