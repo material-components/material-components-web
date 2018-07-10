@@ -18,7 +18,7 @@
 import MDCTabScrollerRTL from './rtl-scroller';
 
 /* eslint-disable no-unused-vars */
-import {MDCTabScrollerAnimation, MDCTabScrollerEdges} from './adapter';
+import {MDCTabScrollerAnimation, MDCTabScrollerHorizontalEdges} from './adapter';
 /* eslint-enable no-unused-vars */
 
 /**
@@ -62,13 +62,13 @@ class MDCTabScrollerRTLNegative extends MDCTabScrollerRTL {
   }
 
   /**
-   * @return {!MDCTabScrollerEdges}
+   * @return {!MDCTabScrollerHorizontalEdges}
    * @private
    */
   calculateScrollEdges_() {
     const contentWidth = this.adapter_.getScrollContentOffsetWidth();
     const rootWidth = this.adapter_.getScrollAreaOffsetWidth();
-    return /** @type {!MDCTabScrollerEdges} */ ({
+    return /** @type {!MDCTabScrollerHorizontalEdges} */ ({
       left: rootWidth - contentWidth,
       right: 0,
     });

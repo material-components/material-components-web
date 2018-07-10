@@ -18,7 +18,7 @@
 import MDCFoundation from '@material/base/foundation';
 import {cssClasses, strings} from './constants';
 /* eslint-disable no-unused-vars */
-import {MDCTabScrollerAnimation, MDCTabScrollerEdges, MDCTabScrollerAdapter} from './adapter';
+import {MDCTabScrollerAnimation, MDCTabScrollerHorizontalEdges, MDCTabScrollerAdapter} from './adapter';
 import MDCTabScrollerRTL from './rtl-scroller';
 /* eslint-enable no-unused-vars */
 import MDCTabScrollerRTLDefault from './rtl-default-scroller';
@@ -117,7 +117,7 @@ class MDCTabScrollerFoundation extends MDCFoundation {
   }
 
   /**
-   * Increment the scroll value by the given amount
+   * Increment the scroll value by the scrollXIncrement
    * @param {number} scrollXIncrement The value by which to increment the scroll position
    */
   incrementScroll(scrollXIncrement) {
@@ -194,13 +194,13 @@ class MDCTabScrollerFoundation extends MDCFoundation {
   }
 
   /**
-   * @return {!MDCTabScrollerEdges}
+   * @return {!MDCTabScrollerHorizontalEdges}
    * @private
    */
   calculateScrollEdges_() {
     const contentWidth = this.adapter_.getScrollContentOffsetWidth();
     const rootWidth = this.adapter_.getScrollAreaOffsetWidth();
-    return /** @type {!MDCTabScrollerEdges} */ ({
+    return /** @type {!MDCTabScrollerHorizontalEdges} */ ({
       left: 0,
       right: contentWidth - rootWidth,
     });
