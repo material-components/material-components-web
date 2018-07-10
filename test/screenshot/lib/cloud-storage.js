@@ -108,15 +108,19 @@ class CloudStorage {
    * @private
    */
   async spawnGsutilUploadProcess_(reportData, localSourceDir) {
-    // TODO(acdvorak): Explain why we need to remove trailing slash
-    const remoteTargetDir = reportData.meta.remote_upload_base_dir.replace(new RegExp('/+$'), '');
+    const removeTrailingSlash = (filePath) => filePath.replace(new RegExp('/+$'), '');
+
+    // Normalize directory paths by removing trailing slashes
+    const remoteTargetDir = removeTrailingSlash(reportData.meta.remote_upload_base_dir);
+    localSourceDir = removeTrailingSlash(localSourceDir);
+
     const cmd = 'gsutil';
     const args = [
       '-m', // multi-thread (upload files in parallel)w
       'cp', // copy
       '-r', // recursive
-      localSourceDir,
-      `gs://${GCS_BUCKET}/${remoteTargetDir}`,
+      `${localSourceDir}/*`,
+      `gs://${GCS_BUCKET}/${remoteTargetDir}/`,
     ];
 
     return this.processManager_.spawnChildProcessSync(cmd, args);
