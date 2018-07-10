@@ -27,6 +27,6 @@ module.exports = {
     await controller.uploadAllAssets(reportData);
     await controller.captureAllPages(reportData);
     await controller.compareAllScreenshots(reportData);
-    await controller.generateDiffReport(reportData);
+    await controller.uploadDiffReport(reportData);
   },
 };

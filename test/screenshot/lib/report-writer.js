@@ -14,100 +14,27 @@
  * limitations under the License.
  */
 
-const GitRepo = require('./git-repo');
-const Cli = require('./cli');
-const childProcess = require('mz/child_process');
-
 const GITHUB_REPO_URL = 'https://github.com/material-components/material-components-web';
 
 class ReportWriter {
   /**
-   * @param {!RunReport} runReport
-   */
-  constructor(runReport) {
-    /**
-     * @type {!RunReport}
-     * @private
-     */
-    this.runReport_ = runReport;
-
-    /**
-     * @type {{
-     *   changed: !Map<string, !Array<!ImageComparison>>,
-     *   added: !Map<string, !Array<!ImageComparison>>,
-     *   removed: !Map<string, !Array<!ImageComparison>>,
-     *   unchanged: !Map<string, !Array<!ImageComparison>>,
-     *   skipped: !Map<string, !Array<!ImageComparison>>,
-     * }}
-     * @private
-     */
-    this.reportMaps_ = {
-      diffs: new Map(),
-      added: new Map(),
-      removed: new Map(),
-      unchanged: new Map(),
-      skipped: new Map(),
-    };
-
-    /**
-     * @type {!GitRepo}
-     * @private
-     */
-    this.gitRepo_ = new GitRepo();
-
-    /**
-     * @type {!Cli}
-     * @private
-     */
-    this.cli_ = new Cli();
-
-    this.groupAllChangelistsByFile_();
-  }
-
-  /**
-   * @private
-   */
-  groupAllChangelistsByFile_() {
-    // TODO(acdvorak): Move most of the logic out of this file so that we can serialize all the data displayed on
-    // the page to `report.json`.
-    this.groupOneChangelistByFile_(this.runReport_.runResult.diffs, this.reportMaps_.diffs);
-    this.groupOneChangelistByFile_(this.runReport_.runResult.added, this.reportMaps_.added);
-    this.groupOneChangelistByFile_(this.runReport_.runResult.removed, this.reportMaps_.removed);
-    this.groupOneChangelistByFile_(this.runReport_.runResult.unchanged, this.reportMaps_.unchanged);
-    this.groupOneChangelistByFile_(this.runReport_.runResult.skipped, this.reportMaps_.skipped);
-  }
-
-  /**
-   * @param {!Array<!ImageComparison>} changelist
-   * @param {!Map<string, !Array<!ImageComparison>>} map
-   * @private
-   */
-  groupOneChangelistByFile_(changelist, map) {
-    changelist.forEach((diff) => {
-      if (!map.has(diff.htmlFilePath)) {
-        map.set(diff.htmlFilePath, []);
-      }
-      map.get(diff.htmlFilePath).push(diff);
-    });
-  }
-
-  /**
+   * @param {!mdc.proto.ReportData} reportData
    * @return {!Promise<string>}
    */
-  async generateHtml() {
-    const runResult = this.runReport_.runResult;
+  async generateHtml(reportData) {
+    return 'TODO(acdvorak): Implement!';
+  }
 
+  /**
+   * @param {!mdc.proto.ReportData} reportData
+   * @return {!Promise<string>}
+   */
+  async generateHtml2(reportData) {
     const numDiffs = runResult.diffs.length;
     const numAdded = runResult.added.length;
     const numRemoved = runResult.removed.length;
     const numUnchanged = runResult.unchanged.length;
     const numSkipped = runResult.skipped.length;
-
-    this.iconUrlMap_ = {};
-    const allUserAgents = (await CbtUserAgent.fetchUserAgentSet()).allUserAgents;
-    for (const userAgent of allUserAgents) {
-      this.iconUrlMap_[userAgent.alias] = userAgent.browser.parsedIconUrl;
-    }
 
     const title = [
       `${numDiffs} Diff${numDiffs !== 1 ? 's' : ''}`,

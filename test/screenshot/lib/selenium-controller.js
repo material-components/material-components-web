@@ -22,6 +22,7 @@ const GitRepo = require('./git-repo');
 const GoldenIo = require('./golden-io');
 const ImageDiffer = require('./image-differ');
 const ReportBuilder = require('./report-builder');
+const ReportWriter = require('./report-writer');
 const SeleniumApi = require('./selenium-api');
 
 class SeleniumController {
@@ -61,6 +62,12 @@ class SeleniumController {
      * @private
      */
     this.reportBuilder_ = new ReportBuilder();
+
+    /**
+     * @type {!ReportWriter}
+     * @private
+     */
+    this.reportWriter_ = new ReportWriter();
 
     /**
      * @type {!SeleniumApi}
@@ -132,12 +139,17 @@ class SeleniumController {
    * @param {!mdc.proto.ReportData} reportData
    * @return {!Promise<!mdc.proto.ReportData>}
    */
-  async generateDiffReport(reportData) {
-    await this.report.compareAllScreenshots(reportData); // TODO(acdvorak): Finish
-    await this.cloudStorage_.uploadAllDiffs(reportData);
+  async uploadDiffReport(reportData) {
+    // TODO(acdvorak): Implement
+    await this.reportWriter_.generateHtml(reportData);
+    await this.cloudStorage_.uploadDiffReport(reportData);
+
+    // TODO(acdvorak): Fill out
+    // reportData.meta.report_page_url = 'FOO';
+    // reportData.meta.report_json_url = 'FOO';
 
     console.log('\n\nDONE uploading diff report to GCS!\n\n');
-    console.log(reportPageFile.publicUrl);
+    console.log(reportData.meta.report_page_url);
 
     return reportData;
   }

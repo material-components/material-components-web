@@ -324,6 +324,8 @@ $root.mdc = (function() {
              * @property {mdc.proto.ILibraryVersion|null} [node_version] ReportMeta node_version
              * @property {mdc.proto.ILibraryVersion|null} [npm_version] ReportMeta npm_version
              * @property {mdc.proto.ILibraryVersion|null} [mdc_version] ReportMeta mdc_version
+             * @property {string|null} [report_page_url] ReportMeta report_page_url
+             * @property {string|null} [report_json_url] ReportMeta report_json_url
              */
 
             /**
@@ -478,6 +480,22 @@ $root.mdc = (function() {
             ReportMeta.prototype.mdc_version = null;
 
             /**
+             * ReportMeta report_page_url.
+             * @member {string} report_page_url
+             * @memberof mdc.proto.ReportMeta
+             * @instance
+             */
+            ReportMeta.prototype.report_page_url = "";
+
+            /**
+             * ReportMeta report_json_url.
+             * @member {string} report_json_url
+             * @memberof mdc.proto.ReportMeta
+             * @instance
+             */
+            ReportMeta.prototype.report_json_url = "";
+
+            /**
              * Creates a new ReportMeta instance using the specified properties.
              * @function create
              * @memberof mdc.proto.ReportMeta
@@ -535,6 +553,10 @@ $root.mdc = (function() {
                     $root.mdc.proto.LibraryVersion.encode(message.npm_version, writer.uint32(/* id 16, wireType 2 =*/130).fork()).ldelim();
                 if (message.mdc_version != null && message.hasOwnProperty("mdc_version"))
                     $root.mdc.proto.LibraryVersion.encode(message.mdc_version, writer.uint32(/* id 17, wireType 2 =*/138).fork()).ldelim();
+                if (message.report_page_url != null && message.hasOwnProperty("report_page_url"))
+                    writer.uint32(/* id 18, wireType 2 =*/146).string(message.report_page_url);
+                if (message.report_json_url != null && message.hasOwnProperty("report_json_url"))
+                    writer.uint32(/* id 19, wireType 2 =*/154).string(message.report_json_url);
                 return writer;
             };
 
@@ -619,6 +641,12 @@ $root.mdc = (function() {
                         break;
                     case 17:
                         message.mdc_version = $root.mdc.proto.LibraryVersion.decode(reader, reader.uint32());
+                        break;
+                    case 18:
+                        message.report_page_url = reader.string();
+                        break;
+                    case 19:
+                        message.report_json_url = reader.string();
                         break;
                     default:
                         reader.skipType(tag & 7);
@@ -716,6 +744,12 @@ $root.mdc = (function() {
                     if (error)
                         return "mdc_version." + error;
                 }
+                if (message.report_page_url != null && message.hasOwnProperty("report_page_url"))
+                    if (!$util.isString(message.report_page_url))
+                        return "report_page_url: string expected";
+                if (message.report_json_url != null && message.hasOwnProperty("report_json_url"))
+                    if (!$util.isString(message.report_json_url))
+                        return "report_json_url: string expected";
                 return null;
             };
 
@@ -801,6 +835,10 @@ $root.mdc = (function() {
                         throw TypeError(".mdc.proto.ReportMeta.mdc_version: object expected");
                     message.mdc_version = $root.mdc.proto.LibraryVersion.fromObject(object.mdc_version);
                 }
+                if (object.report_page_url != null)
+                    message.report_page_url = String(object.report_page_url);
+                if (object.report_json_url != null)
+                    message.report_json_url = String(object.report_json_url);
                 return message;
             };
 
@@ -847,6 +885,8 @@ $root.mdc = (function() {
                     object.node_version = null;
                     object.npm_version = null;
                     object.mdc_version = null;
+                    object.report_page_url = "";
+                    object.report_json_url = "";
                 }
                 if (message.start_time != null && message.hasOwnProperty("start_time"))
                     if (typeof message.start_time === "number")
@@ -891,6 +931,10 @@ $root.mdc = (function() {
                     object.npm_version = $root.mdc.proto.LibraryVersion.toObject(message.npm_version, options);
                 if (message.mdc_version != null && message.hasOwnProperty("mdc_version"))
                     object.mdc_version = $root.mdc.proto.LibraryVersion.toObject(message.mdc_version, options);
+                if (message.report_page_url != null && message.hasOwnProperty("report_page_url"))
+                    object.report_page_url = message.report_page_url;
+                if (message.report_json_url != null && message.hasOwnProperty("report_json_url"))
+                    object.report_json_url = message.report_json_url;
                 return object;
             };
 

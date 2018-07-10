@@ -65,6 +65,14 @@ class CloudStorage {
 
   /**
    * @param {!mdc.proto.ReportData} reportData
+   * @return {!Promise<void>}
+   */
+  async uploadDiffReport(reportData) {
+    // TODO(acdvorak): Implement
+  }
+
+  /**
+   * @param {!mdc.proto.ReportData} reportData
    * @param {string} localSourceDir
    * @return {!Promise<void>}
    * @private
