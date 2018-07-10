@@ -22,6 +22,7 @@ const path = require('path');
 
 const CliArgParser = require('./cli-arg-parser');
 const GitRepo = require('./git-repo');
+const {TEST_DIR_RELATIVE_PATH} = require('../lib/constants');
 const {UploadableTestCase, UploadableFile} = require('./types');
 
 class LocalStorage {
@@ -43,14 +44,14 @@ class LocalStorage {
    * @return {!Promise<!Array<string>>} File/dir paths relative to the git repo. E.g.: "test/screenshot/browser.json".
    */
   async fetchAllTopLevelAssetFileAndDirPaths() {
-    return (await this.filterIgnoredFiles_(await fs.readdir(this.cliArgs_.testDir))).sort();
+    return (await this.filterIgnoredFiles_(await fs.readdir(TEST_DIR_RELATIVE_PATH))).sort();
   }
 
   /**
    * @return {!Promise<!Array<string>>} File paths relative to the git repo. E.g.: "test/screenshot/browser.json".
    */
   async fetchAllAssetFilePaths() {
-    return (await this.filterIgnoredFiles_(glob.sync('**/*', {cwd: this.cliArgs_.testDir, nodir: true}))).sort();
+    return (await this.filterIgnoredFiles_(glob.sync('**/*', {cwd: TEST_DIR_RELATIVE_PATH, nodir: true}))).sort();
   }
 
   /**
@@ -72,7 +73,7 @@ class LocalStorage {
           htmlFile: new UploadableFile({
             destinationBaseUrl: this.cliArgs_.gcsBaseUrl,
             destinationParentDirectory: baseUploadDir,
-            destinationRelativeFilePath: relativeFilePath.replace(this.cliArgs_.testDir, ''),
+            destinationRelativeFilePath: relativeFilePath.replace(TEST_DIR_RELATIVE_PATH, ''),
           }),
           isRunnable,
         });
@@ -100,7 +101,7 @@ class LocalStorage {
    * @private
    */
   async filterIgnoredFiles_(shortPaths) {
-    const relativePaths = shortPaths.map((name) => path.join(this.cliArgs_.testDir, name));
+    const relativePaths = shortPaths.map((name) => path.join(TEST_DIR_RELATIVE_PATH, name));
 
     /** @type {!Array<string>} */
     const ignoredTopLevelFilesAndDirs = await this.gitRepo_.getIgnoredPaths(relativePaths);
