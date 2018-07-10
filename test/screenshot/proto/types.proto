@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package mdc.proto;
 
+import "./selenium.proto";
+
 message ReportData {
   ReportMeta meta = 1;
   UserAgents user_agents = 2;
@@ -10,39 +12,39 @@ message ReportData {
 }
 
 message ReportMeta {
-  bool is_online = 1;
-  uint64 start_time = 2;
-  uint64 end_time = 3;
-  uint64 duration = 4;
+  uint64 start_time = 1;
+  uint64 end_time = 2;
+  uint64 duration = 3;
 
   // Unique timestamped directory path to prevent collisions between developers.
-  string remote_upload_base_dir = 5;
+  string remote_upload_base_dir = 4;
 
   // GCS bucket URL.
-  string remote_upload_base_url = 6;
+  string remote_upload_base_url = 5;
 
   // Absolute path to a local directory containing all static asset files to be uploaded to GCS.
-  string local_asset_base_dir = 7;
+  string local_asset_base_dir = 6;
 
   // Absolute path to a local directory containing all captured screenshot image files to be uploaded to GCS.
-  string local_screenshot_image_base_dir = 8;
+  string local_screenshot_image_base_dir = 7;
 
   // Absolute path to a local directory containing all diff image files to be uploaded to GCS.
-  string local_diff_image_base_dir = 9;
+  string local_diff_image_base_dir = 8;
 
   // Absolute path to a local directory containing all generated report files (HTML/JSON).
-  string local_report_base_dir = 10;
+  string local_report_base_dir = 9;
 
-  string local_temporary_http_dir = 11;
-  uint32 local_temporary_http_port = 12;
+  // TODO(acdvorak): Better names
+  string local_temporary_http_dir = 10;
+  uint32 local_temporary_http_port = 11;
 
-  string cli_invocation = 13;
-  DiffBase diff_base = 14;
-  User user = 15;
+  string cli_invocation = 12;
+  DiffBase diff_base = 13;
+  User user = 14;
 
-  LibraryVersion node_version = 16;
-  LibraryVersion npm_version = 17;
-  LibraryVersion mdc_version = 18;
+  LibraryVersion node_version = 15;
+  LibraryVersion npm_version = 16;
+  LibraryVersion mdc_version = 17;
 }
 
 message DiffBase {
@@ -129,34 +131,29 @@ message UserAgent {
 
   string alias = 1;
 
-  FormFactorType form_factor_type = 2;
-  OsVendorType os_vendor_type = 3;
-  BrowserVendorType browser_vendor_type = 4;
-  BrowserVersionType browser_version_type = 5;
+  // Parsed from `alias`
+  string form_factor_name = 2;
+  string os_vendor_name = 3;
+  string browser_vendor_name = 4;
+  string browser_version_name = 5;
+  string browser_version_value = 6;
 
-  string os_version_value = 6;
-  string browser_version_value = 7;
+  // Parsed from `alias`
+  FormFactorType form_factor_type = 7;
+  OsVendorType os_vendor_type = 8;
+  BrowserVendorType browser_vendor_type = 9;
+  BrowserVersionType browser_version_type = 10;
 
-  string selenium_id = 8;
-  WebDriverCapabilities webdriver_capabilities = 9;
+  RawCapabilities desired_capabilities = 11;
+  RawCapabilities actual_capabilities = 12;
+  NormalizedCapabilities normalized_capabilities = 13;
 
-  bool is_enabled_by_cli = 10;
-  bool is_available_locally = 11;
-  bool is_runnable = 12;
-}
+  bool is_enabled_by_cli = 14;
+  bool is_available_locally = 15;
+  bool is_runnable = 16;
 
-message WebDriverCapabilities {
-  string browser_name = 1;
-  string browser_version = 2;
-  string platform_name = 3;
-  string platform_version = 4;
-
-  bool is_headless = 5;
-  bool is_rotatable = 6;
-  bool has_touch_screen = 7;
-  bool supports_native_events = 8;
-
-  string image_filename_suffix = 9;
+  // Generated from `actual_capabilities`
+  string image_filename_suffix = 17;
 }
 
 message Screenshots {

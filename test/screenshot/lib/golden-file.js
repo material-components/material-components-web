@@ -16,8 +16,8 @@
 
 'use strict';
 
-const pb = require('../proto/types.pb');
-const {GoldenScreenshot, GoldenSuite} = pb.mdc.proto;
+const proto = require('../proto/types.pb').mdc.proto;
+const {GoldenScreenshot, GoldenSuite} = proto;
 
 class GoldenFile {
   /**

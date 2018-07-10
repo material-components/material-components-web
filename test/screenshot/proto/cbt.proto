@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package mdc.proto.cbt;
 
+import "./selenium.proto";
+
 message CbtDevice {
   // E.g., "Nexus9-And60"
   string api_name = 1;
@@ -28,7 +30,7 @@ message CbtDevice {
   double sort_order = 9;
   bool is_webrtc_enabled = 10;
 
-  repeated CbtCapabilities caps = 11;
+  repeated RawCapabilities caps = 11;
   repeated CbtBrowser browsers = 12;
   repeated CbtResolution resolutions = 13;
 }
@@ -67,7 +69,7 @@ message CbtBrowser {
 
   bool can_mobile_debug = 12;
 
-  repeated CbtCapabilities caps = 13;
+  repeated RawCapabilities caps = 13;
 
   // E.g., "Nexus9-And60"
   string default_config = 14;
@@ -94,15 +96,4 @@ message CbtResolution {
 
   // E.g., "portrait"
   string orientation = 7;
-}
-
-// NOTE: The property names below are intentionally camelCase instead of snake_case.
-// This is required by the CBT and Selenium APIs.
-message CbtCapabilities {
-  string browserName = 1;
-  string browserVersion = 2;
-  string platformName = 3;
-  string platformVersion = 4;
-  string deviceName = 5;
-  string deviceOrientation = 6;
 }

@@ -17,9 +17,10 @@
 const request = require('request-promise-native');
 const {ExitCode} = require('./constants');
 
-const pb = require('../proto/types.pb').mdc.proto;
-const {UserAgent} = pb;
+const proto = require('../proto/types.pb').mdc.proto;
+const {UserAgent} = proto;
 const {FormFactorType, OsVendorType, BrowserVendorType, BrowserVersionType} = UserAgent;
+const {RawCapabilities} = proto.selenium;
 
 const MDC_CBT_USERNAME = process.env.MDC_CBT_USERNAME;
 const MDC_CBT_AUTHKEY = process.env.MDC_CBT_AUTHKEY;
@@ -33,6 +34,10 @@ let allBrowsersPromise;
 class CbtApi {
   constructor() {
     this.validateEnvVars_();
+  }
+
+  getSeleniumServerUrl() {
+    return SELENIUM_SERVER_URL;
   }
 
   /** @private */
@@ -81,33 +86,32 @@ https://crossbrowsertesting.com/account
   }
 
   /**
-   * @param {!Builder} driverBuilder
    * @param {!mdc.proto.UserAgent} userAgent
+   * @return {!Promise<!mdc.proto.selenium.RawCapabilities>}
    */
-  async configureWebDriver({driverBuilder, userAgent}) {
-    driverBuilder.usingServer(SELENIUM_SERVER_URL);
-
-    const caps = driverBuilder.getCapabilities();
-
-    // CBT-specific
-    // TODO(acdvorak): Expose these as CLI flags
-    caps.set('record_video', true);
-    caps.set('record_network', true);
-
-    // TODO(acdvorak): Implement?
-    // caps.set('name', 'Foo');
-    // caps.set('build', '1.0');
-
+  async getDesiredCapabilities(userAgent) {
+    // TODO(acdvorak): Create a type for this
     /** @type {{device: !mdc.proto.cbt.CbtDevice, browser: !mdc.proto.cbt.CbtBrowser}} */
     const matchingCbtUserAgent = await this.getMatchingCbtUserAgent_(userAgent);
 
-    const cbtCaps = Object.assign({}, matchingCbtUserAgent.device.caps, matchingCbtUserAgent.browser.caps);
+    /** @type {!mdc.proto.selenium.RawCapabilities} */
+    const defaultCaps = {
+      // TODO(acdvorak): Implement?
+      // name: 'Foo',
+      // build: '0.1',
 
-    for (const [key, value] of Object.entries(cbtCaps)) {
-      caps.set(key, value);
-    }
+      // TODO(acdvorak): Expose these as CLI flags
+      record_video: true,
+      record_network: true,
+    };
 
-    console.log(caps);
+    /** @type {!mdc.proto.selenium.RawCapabilities} */
+    const deviceCaps = matchingCbtUserAgent.device.caps;
+
+    /** @type {!mdc.proto.selenium.RawCapabilities} */
+    const browserCaps = matchingCbtUserAgent.browser.caps;
+
+    return RawCapabilities.create(Object.assign({}, defaultCaps, deviceCaps, browserCaps));
   }
 
   /**

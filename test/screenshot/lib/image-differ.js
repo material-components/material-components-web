@@ -19,10 +19,11 @@
 const Jimp = require('jimp');
 const compareImages = require('resemblejs/compareImages');
 const fs = require('mz/fs');
+const mkdirp = require('mkdirp');
 const path = require('path');
 
-const pb = require('../proto/types.pb');
-const {ImageDiffResult, Screenshot, TestFile} = pb.mdc.proto;
+const proto = require('../proto/types.pb').mdc.proto;
+const {ImageDiffResult, Screenshot, TestFile} = proto;
 const {CaptureState} = Screenshot;
 
 /**
@@ -54,6 +55,7 @@ class ImageDiffer {
     const reportMeta = reportData.meta;
 
     // TODO(acdvorak): Fix bug here
+    // TODO(acdvorak): Which bug? Offline comparison? What else? Maybe the paths don't always get set correctly?
     const actualImageBuffer = await fs.readFile(actualImageFile.absolute_path);
     const expectedImageBuffer = await fs.readFile(expectedImageFile.absolute_path);
 
@@ -63,6 +65,8 @@ class ImageDiffer {
     const diffImageFile = this.createDiffImageFile_({reportMeta, actualImageFile});
     const {diffImageBuffer, diffPixelFraction, diffPixelCount} =
       await this.analyzeComparisonResult_(resembleComparisonResult);
+
+    mkdirp.sync(path.dirname(diffImageFile.absolute_path));
     await fs.writeFile(diffImageFile.absolute_path, diffImageBuffer, {encoding: null});
 
     return ImageDiffResult.create({

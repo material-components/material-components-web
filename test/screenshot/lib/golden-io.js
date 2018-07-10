@@ -18,8 +18,8 @@ const fs = require('mz/fs');
 const request = require('request-promise-native');
 const stringify = require('json-stable-stringify');
 
-const pb = require('../proto/types.pb');
-const {GoldenScreenshot} = pb.mdc.proto;
+const proto = require('../proto/types.pb').mdc.proto;
+const {GoldenScreenshot} = proto;
 
 const Cli = require('./cli');
 const GitRepo = require('./git-repo');

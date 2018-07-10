@@ -16,13 +16,13 @@
 
 'use strict';
 
-const pb = require('../proto/types.pb');
-const {ApprovalId, DiffBase, GitRevision} = pb.mdc.proto;
+const proto = require('../proto/types.pb').mdc.proto;
+const {ApprovalId, DiffBase, GitRevision} = proto;
 
 const argparse = require('argparse');
 const checkIsOnline = require('is-online');
 const fs = require('mz/fs');
-const {GCS_BUCKET, GOLDEN_JSON_RELATIVE_PATH} = require('./constants');
+const {GOLDEN_JSON_RELATIVE_PATH} = require('./constants');
 
 const Duration = require('./duration');
 const GitRepo = require('./git-repo');
@@ -296,11 +296,6 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
   /** @return {boolean} */
   get skipBuild() {
     return this.args_['--no-build'];
-  }
-
-  /** @return {string} */
-  get gcsBaseUrl() {
-    return `https://storage.googleapis.com/${GCS_BUCKET}/`;
   }
 
   /** @return {string} */

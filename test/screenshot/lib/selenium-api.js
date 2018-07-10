@@ -20,15 +20,16 @@ const fs = require('mz/fs');
 const mkdirp = require('mkdirp');
 const path = require('path');
 
-const pb = require('../proto/types.pb').mdc.proto;
-const {TestFile, UserAgent, WebDriverCapabilities} = pb;
-const {FormFactorType} = UserAgent;
+const proto = require('../proto/types.pb').mdc.proto;
+const {TestFile, UserAgent} = proto;
+const {BrowserVendorType, FormFactorType} = UserAgent;
+const {NormalizedCapabilities, RawCapabilities} = proto.selenium;
 
 const Base64 = require('base64-js');
 const CbtApi = require('./cbt-api');
 const Cli = require('./cli');
 const ImageCropper = require('./image-cropper');
-const {Builder} = require('selenium-webdriver');
+const {Browser, Builder} = require('selenium-webdriver');
 
 class SeleniumApi {
   constructor() {
@@ -80,6 +81,135 @@ class SeleniumApi {
   }
 
   /**
+   * @param {!mdc.proto.UserAgent} userAgent}
+   * @return {!Promise<!IWebDriver>}
+   */
+  async createWebDriver_(userAgent) {
+    const driverBuilder = new Builder();
+
+    /** @type {!mdc.proto.selenium.RawCapabilities} */
+    const desiredCapabilities = await this.getDesiredCapabilities_(userAgent);
+
+    userAgent.desired_capabilities = desiredCapabilities;
+    driverBuilder.withCapabilities(userAgent.desired_capabilities);
+
+    const isOnline = await this.cli_.isOnline();
+    if (isOnline) {
+      driverBuilder.usingServer(this.cbtApi_.getSeleniumServerUrl());
+    }
+
+    console.log('');
+    console.log(`Starting ${desiredCapabilities.browserName} ${userAgent.browser_version_name}...`);
+
+    /** @type {!IWebDriver} */
+    const driver = await driverBuilder.build();
+
+    /** @type {!mdc.proto.selenium.RawCapabilities} */
+    const actualCapabilities = await this.getActualCapabilities_(driver);
+
+    console.log('actualCapabilities:', actualCapabilities);
+
+    /** @type {!mdc.proto.selenium.NormalizedCapabilities} */
+    const normalizedCapabilities = this.normalizeRawCapabilities_(actualCapabilities);
+
+    const browserName = normalizedCapabilities.browser_name;
+    const browserVersion = normalizedCapabilities.browser_version;
+
+    userAgent.actual_capabilities = actualCapabilities;
+    userAgent.normalized_capabilities = normalizedCapabilities;
+    userAgent.browser_version_value = browserVersion;
+    userAgent.image_filename_suffix = this.getImageFileNameSuffix_(userAgent);
+
+    console.log(`${browserName} ${browserVersion} is running!`);
+    console.log('');
+
+    return driver;
+  }
+
+  /**
+   * @param {!mdc.proto.UserAgent} userAgent
+   * @return {!mdc.proto.selenium.RawCapabilities}
+   * @private
+   */
+  async getDesiredCapabilities_(userAgent) {
+    const isOnline = await this.cli_.isOnline();
+    if (isOnline) {
+      return await this.cbtApi_.getDesiredCapabilities(userAgent);
+    }
+
+    const browserVendorMap = {
+      [BrowserVendorType.CHROME]: Browser.CHROME,
+      [BrowserVendorType.EDGE]: Browser.EDGE,
+      [BrowserVendorType.FIREFOX]: Browser.FIREFOX,
+      [BrowserVendorType.IE]: Browser.IE,
+      [BrowserVendorType.SAFARI]: Browser.SAFARI,
+    };
+    return RawCapabilities.create({
+      browserName: browserVendorMap[userAgent.browser_vendor_type],
+    });
+  }
+
+  /**
+   * @param {!IWebDriver} driver
+   * @return {!Promise<!mdc.proto.selenium.RawCapabilities>}
+   * @private
+   */
+  async getActualCapabilities_(driver) {
+    /** @type {!Capabilities} */
+    const driverCaps = await driver.getCapabilities();
+
+    /** @type {!mdc.proto.selenium.RawCapabilities} */
+    const actualCaps = RawCapabilities.create();
+
+    for (const key of driverCaps.keys()) {
+      actualCaps[key] = driverCaps.get(key);
+    }
+
+    return actualCaps;
+  }
+
+  /**
+   * @param {!mdc.proto.selenium.RawCapabilities} rawCapabilities
+   * @return {mdc.proto.selenium.NormalizedCapabilities}
+   * @private
+   */
+  normalizeRawCapabilities_(rawCapabilities) {
+    const rawOsName = (rawCapabilities.platformName || rawCapabilities.platform || '').toLowerCase();
+    const rawOsVersion = rawCapabilities.platformVersion || '';
+    const rawBrowserName = rawCapabilities.browserName;
+    const rawBrowserVersion = rawCapabilities.browserVersion || rawCapabilities.version || '';
+
+    const isMac = rawOsName.startsWith('mac') || rawOsName.startsWith('darwin');
+    const isIos = rawOsName.startsWith('ipad') || rawOsName.startsWith('iphone');
+    const isAndroid = rawOsName.startsWith('android');
+    const isEdge = rawBrowserName === Browser.EDGE;
+    const isIE = rawBrowserName === Browser.IE;
+
+    const normalizedOsName = isMac ? 'mac' : isIos ? 'ios' : isAndroid ? 'android' : 'windows';
+    const normalizedOsVersion = rawOsVersion.replace(/(?:\.0)+$/, ''); // "10.0.0" -> "10"
+    const normalizedBrowserName = isEdge ? 'edge' : isIE ? 'ie' : rawBrowserName.toLowerCase();
+    const [normalizedBrowserVersion] = rawBrowserVersion.split('.');
+
+    return NormalizedCapabilities.create({
+      os_name: normalizedOsName,
+      os_version: normalizedOsVersion,
+      browser_name: normalizedBrowserName,
+      browser_version: normalizedBrowserVersion,
+    });
+  }
+
+  /**
+   * @param {!mdc.proto.UserAgent} userAgent
+   * @return {string}
+   * @private
+   */
+  getImageFileNameSuffix_(userAgent) {
+    /* eslint-disable camelcase */
+    const {os_name, browser_name, browser_version} = userAgent.normalized_capabilities;
+    return [os_name, browser_name, browser_version].filter((value) => !!value).join('_');
+    /* eslint-enable camelcase */
+  }
+  /**
    * @param {!mdc.proto.ReportData} reportData
    * @param {!mdc.proto.UserAgent} userAgent
    * @param {!IWebDriver} driver
@@ -98,22 +228,19 @@ class SeleniumApi {
     /** @type {!Array<!mdc.proto.Screenshot>} */
     const screenshotQueue = reportData.screenshots.runnable_screenshot_browser_map[userAgent.alias].screenshots;
 
-    /** @type {!mdc.proto.WebDriverCapabilities} */
-    const caps = await this.getWebDriverCapabilities_(driver);
-
     for (const screenshot of screenshotQueue) {
       const htmlFilePath = screenshot.test_page_file.relative_path;
       const htmlFileUrl = screenshot.test_page_file.public_url;
 
       const imageBuffer = await this.capturePageAsPng_({driver, userAgent, url: htmlFileUrl});
 
-      const imageFilePathRelative = `${htmlFilePath}.${caps.image_filename_suffix}.png`;
+      const imageFileNameSuffix = userAgent.image_filename_suffix;
+      const imageFilePathRelative = `${htmlFilePath}.${imageFileNameSuffix}.png`;
       const imageFilePathAbsolute = path.resolve(meta.local_screenshot_image_base_dir, imageFilePathRelative);
 
       mkdirp.sync(path.dirname(imageFilePathAbsolute));
       await fs.writeFile(imageFilePathAbsolute, imageBuffer, {encoding: null});
 
-      screenshot.user_agent.webdriver_capabilities = caps;
       screenshot.actual_image_file = TestFile.create({
         relative_path: imageFilePathRelative,
         absolute_path: imageFilePathAbsolute,
@@ -149,59 +276,6 @@ class SeleniumApi {
     const uncroppedScreenshotPngBuffer = Buffer.from(Base64.toByteArray(uncroppedScreenshotPngBase64));
 
     return this.imageCropper_.autoCropImage(uncroppedScreenshotPngBuffer);
-  }
-  /**
-   * @param {!mdc.proto.UserAgent} userAgent}
-   * @return {!Promise<!IWebDriver>}
-   */
-  async createWebDriver_(userAgent) {
-    // TODO(acdvorak): Centralize where `selenium_id` comes from; rename `selenium_id`?
-    const driverBuilder = new Builder().forBrowser(userAgent.selenium_id);
-
-    if (await this.cli_.isOnline()) {
-      await this.cbtApi_.configureWebDriver({driverBuilder, userAgent});
-    }
-
-    return await driverBuilder.build();
-  }
-
-  /**
-   * @param {!IWebDriver} driver
-   * @return {!Promise<!mdc.proto.WebDriverCapabilities>}
-   * @private
-   */
-  async getWebDriverCapabilities_(driver) {
-    // TODO(acdvorak): Why is this returning an empty object?
-    /** @type {!Object<string, *>} */
-    const caps = await driver.getCapabilities();
-
-    // TODO(acdvorak): Fix
-    console.log('');
-    console.log('WEBDRIVER CAPABILITIES:');
-    console.log('');
-    console.log(JSON.stringify(caps, null, 2));
-    console.log('');
-
-    const proto = WebDriverCapabilities.create({
-      browser_name: caps['browserName'],
-      browser_version: caps['browserVersion'] || caps['version'],
-      platform_name: caps['platformName'] || caps['platform'],
-      platform_version: caps['platformVersion'],
-
-      is_headless: caps['moz:headless'] || false,
-      is_rotatable: caps['rotatable'] || false,
-      has_touch_screen: caps['hasTouchScreen'] || false,
-      supports_native_events: caps['nativeEvents'] || false,
-    });
-
-    proto.image_filename_suffix = [
-      proto.platform_name,
-      proto.platform_version,
-      proto.browser_name,
-      proto.browser_version,
-    ].join('_');
-
-    return proto;
   }
 }
 

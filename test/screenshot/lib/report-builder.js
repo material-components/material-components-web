@@ -24,9 +24,9 @@ const os = require('os');
 const path = require('path');
 const serveIndex = require('serve-index');
 
-const pb = require('../proto/types.pb');
-const {LibraryVersion, ReportData, ReportMeta} = pb.mdc.proto;
-const {Screenshot, Screenshots, ScreenshotList, TestFile, User, UserAgents} = pb.mdc.proto;
+const proto = require('../proto/types.pb').mdc.proto;
+const {LibraryVersion, ReportData, ReportMeta} = proto;
+const {Screenshot, Screenshots, ScreenshotList, TestFile, User, UserAgents} = proto;
 const {InclusionType, CaptureState} = Screenshot;
 
 const Cli = require('./cli');
@@ -35,6 +35,7 @@ const GitRepo = require('./git-repo');
 const LocalStorage = require('./local-storage');
 const GoldenIo = require('./golden-io');
 const UserAgentStore = require('./user-agent-store');
+const {GCS_BUCKET} = require('./constants');
 
 const USERNAME = os.userInfo().username;
 const TEMP_DIR = os.tmpdir();
@@ -91,17 +92,21 @@ class ReportBuilder {
   }
 
   /**
-   * @param {boolean} isOnline
    * @return {!Promise<!mdc.proto.ReportData>}
    */
-  async initForCapture({isOnline}) {
-    const reportMeta = await this.createReportMetaProto_({isOnline});
-    const userAgents = await this.createUserAgentsProto_({isOnline});
+  async initForCapture() {
+    const isOnline = await this.cli_.isOnline();
+    const reportMeta = await this.createReportMetaProto_();
+    const userAgents = await this.createUserAgentsProto_();
 
     await this.localStorage_.copyAssetsToTempDir(reportMeta);
-    await this.startTemporaryHttpServer_(reportMeta);
 
-    const allUserAgents = (userAgents).all_user_agents;
+    // In offline mode, we start a local web server to test on instead of using GCS.
+    if (!isOnline) {
+      await this.startTemporaryHttpServer_(reportMeta);
+    }
+
+    const allUserAgents = userAgents.all_user_agents;
     const screenshots = await this.createScreenshotsProto_({reportMeta, allUserAgents});
 
     const reportData = ReportData.create({
@@ -122,6 +127,7 @@ class ReportBuilder {
    * @private
    */
   async prefetchGoldenImages_(reportData) {
+    // TODO(acdvorak): Figure out how to handle offline mode for prefetching and diffing
     console.log('Prefetching golden images...');
     await Promise.all(
       reportData.screenshots.expected_screenshot_list.map((expectedScreenshot) => {
@@ -150,21 +156,16 @@ class ReportBuilder {
     await Promise.all(
       urls
         .filter((url) => Boolean(url))
-        .map((url) => {
-          const promise = this.fileCache_.downloadUrlToDisk(url);
-          // TODO(acdvorak): More needed here?
-          return promise;
-        })
+        .map((url) => this.fileCache_.downloadUrlToDisk(url))
     );
   }
 
   /**
-   * @param {boolean} isOnline
    * @return {!Promise<!mdc.proto.ReportData>}
    */
-  async initForDemo({isOnline}) {
+  async initForDemo() {
     return ReportData.create({
-      meta: await this.createReportMetaProto_({isOnline}),
+      meta: await this.createReportMetaProto_(),
     });
   }
 
@@ -211,22 +212,20 @@ class ReportBuilder {
   }
 
   /**
-   * @param {boolean} isOnline
    * @return {!Promise<!mdc.proto.ReportMeta>}
    * @private
    */
-  async createReportMetaProto_({isOnline}) {
-    const localTemporaryHttpPort = await detectPort(9000);
+  async createReportMetaProto_() {
+    const isOnline = await this.cli_.isOnline();
 
-    // TODO(acvdorak): Store PID and PORT in local files
-    // TODO(acdvorak): In offline mode, start up a local server with a random port number.
-    const remoteUploadBaseUrl = isOnline ? this.cli_.gcsBaseUrl : `http://localhost:${localTemporaryHttpPort}/`;
+    // We only need to start up a local web server if the user is running in offline mode.
+    // Otherwise, HTML files are uploaded to (and served) by GCS.
+    const localTemporaryHttpPort = isOnline ? null : await detectPort(9000);
+
     const remoteUploadBaseDir = await this.generateUniqueUploadDir_();
-
-    const mdcVersionString = require('../../../lerna.json').version;
-    const mdcVersionOffset = await this.getCommitDistance_(mdcVersionString);
-    const nodeVersionString = await this.getExecutableVersion_('node');
-    const npmVersionString = await this.getExecutableVersion_('npm');
+    const remoteUploadBaseUrl = isOnline
+      ? `https://storage.googleapis.com/${GCS_BUCKET}/`
+      : `http://localhost:${localTemporaryHttpPort}/`;
 
     // TODO(acdvorak): Centralize/standardize this?
     const localTemporaryHttpDir = path.join(TEMP_DIR, 'mdc-web/assets');
@@ -235,15 +234,16 @@ class ReportBuilder {
     const localDiffImageBaseDir = path.join(TEMP_DIR, 'mdc-web/diffs', remoteUploadBaseDir);
     const localReportBaseDir = path.join(TEMP_DIR, 'mdc-web/report', remoteUploadBaseDir);
 
-    // TODO(acdvorak): Is mkdirp necessary?
+    // TODO(acdvorak): Centralize file writing and automatically call mkdirp
     mkdirp.sync(path.dirname(localAssetBaseDir));
     mkdirp.sync(path.dirname(localScreenshotImageBaseDir));
     mkdirp.sync(path.dirname(localDiffImageBaseDir));
     mkdirp.sync(path.dirname(localReportBaseDir));
 
+    const mdcVersionString = require('../../../lerna.json').version;
+
     return ReportMeta.create({
       start_time: Date.now(),
-      is_online: isOnline,
 
       remote_upload_base_url: remoteUploadBaseUrl,
       remote_upload_base_dir: remoteUploadBaseDir,
@@ -252,6 +252,7 @@ class ReportBuilder {
       local_screenshot_image_base_dir: localScreenshotImageBaseDir,
       local_diff_image_base_dir: localDiffImageBaseDir,
       local_report_base_dir: localReportBaseDir,
+
       local_temporary_http_dir: localTemporaryHttpDir,
       local_temporary_http_port: localTemporaryHttpPort,
 
@@ -263,11 +264,15 @@ class ReportBuilder {
         username: USERNAME,
       }),
 
-      node_version: LibraryVersion.create({version_string: nodeVersionString}),
-      npm_version: LibraryVersion.create({version_string: npmVersionString}),
+      node_version: LibraryVersion.create({
+        version_string: await this.getExecutableVersion_('node'),
+      }),
+      npm_version: LibraryVersion.create({
+        version_string: await this.getExecutableVersion_('npm'),
+      }),
       mdc_version: LibraryVersion.create({
         version_string: mdcVersionString,
-        commit_offset: mdcVersionOffset,
+        commit_offset: await this.getCommitDistance_(mdcVersionString),
       }),
     });
   }
@@ -315,13 +320,12 @@ class ReportBuilder {
   }
 
   /**
-   * @param {boolean} isOnline
    * @return {!Promise<!mdc.proto.UserAgents>}
    * @private
    */
-  async createUserAgentsProto_({isOnline}) {
+  async createUserAgentsProto_() {
     /** @type {!Array<!mdc.proto.UserAgent>} */
-    const allUserAgents = await this.userAgentStore_.getAllUserAgents({isOnline});
+    const allUserAgents = await this.userAgentStore_.getAllUserAgents();
     return UserAgents.create({
       all_user_agents: allUserAgents,
       runnable_user_agents: allUserAgents.filter((ua) => ua.is_runnable),

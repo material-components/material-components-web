@@ -54,7 +54,7 @@ async function run() {
   const cmd = COMMAND_MAP[cli.command];
 
   if (cmd) {
-    const isOnline = cli.isOnline();
+    const isOnline = await cli.isOnline();
     if (!isOnline) {
       console.log('Offline mode!');
     }

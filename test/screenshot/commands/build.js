@@ -72,6 +72,7 @@ module.exports = {
   },
 
   /**
+   * TODO(acvdorak): Store PID in local text file instead of scanning through running processes
    * @return {!Promise<?number>}
    * @private
    */

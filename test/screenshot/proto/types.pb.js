@@ -307,7 +307,6 @@ $root.mdc = (function() {
              * Properties of a ReportMeta.
              * @memberof mdc.proto
              * @interface IReportMeta
-             * @property {boolean|null} [is_online] ReportMeta is_online
              * @property {number|Long|null} [start_time] ReportMeta start_time
              * @property {number|Long|null} [end_time] ReportMeta end_time
              * @property {number|Long|null} [duration] ReportMeta duration
@@ -341,14 +340,6 @@ $root.mdc = (function() {
                         if (properties[keys[i]] != null)
                             this[keys[i]] = properties[keys[i]];
             }
-
-            /**
-             * ReportMeta is_online.
-             * @member {boolean} is_online
-             * @memberof mdc.proto.ReportMeta
-             * @instance
-             */
-            ReportMeta.prototype.is_online = false;
 
             /**
              * ReportMeta start_time.
@@ -510,42 +501,40 @@ $root.mdc = (function() {
             ReportMeta.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.is_online != null && message.hasOwnProperty("is_online"))
-                    writer.uint32(/* id 1, wireType 0 =*/8).bool(message.is_online);
                 if (message.start_time != null && message.hasOwnProperty("start_time"))
-                    writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.start_time);
+                    writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.start_time);
                 if (message.end_time != null && message.hasOwnProperty("end_time"))
-                    writer.uint32(/* id 3, wireType 0 =*/24).uint64(message.end_time);
+                    writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.end_time);
                 if (message.duration != null && message.hasOwnProperty("duration"))
-                    writer.uint32(/* id 4, wireType 0 =*/32).uint64(message.duration);
+                    writer.uint32(/* id 3, wireType 0 =*/24).uint64(message.duration);
                 if (message.remote_upload_base_dir != null && message.hasOwnProperty("remote_upload_base_dir"))
-                    writer.uint32(/* id 5, wireType 2 =*/42).string(message.remote_upload_base_dir);
+                    writer.uint32(/* id 4, wireType 2 =*/34).string(message.remote_upload_base_dir);
                 if (message.remote_upload_base_url != null && message.hasOwnProperty("remote_upload_base_url"))
-                    writer.uint32(/* id 6, wireType 2 =*/50).string(message.remote_upload_base_url);
+                    writer.uint32(/* id 5, wireType 2 =*/42).string(message.remote_upload_base_url);
                 if (message.local_asset_base_dir != null && message.hasOwnProperty("local_asset_base_dir"))
-                    writer.uint32(/* id 7, wireType 2 =*/58).string(message.local_asset_base_dir);
+                    writer.uint32(/* id 6, wireType 2 =*/50).string(message.local_asset_base_dir);
                 if (message.local_screenshot_image_base_dir != null && message.hasOwnProperty("local_screenshot_image_base_dir"))
-                    writer.uint32(/* id 8, wireType 2 =*/66).string(message.local_screenshot_image_base_dir);
+                    writer.uint32(/* id 7, wireType 2 =*/58).string(message.local_screenshot_image_base_dir);
                 if (message.local_diff_image_base_dir != null && message.hasOwnProperty("local_diff_image_base_dir"))
-                    writer.uint32(/* id 9, wireType 2 =*/74).string(message.local_diff_image_base_dir);
+                    writer.uint32(/* id 8, wireType 2 =*/66).string(message.local_diff_image_base_dir);
                 if (message.local_report_base_dir != null && message.hasOwnProperty("local_report_base_dir"))
-                    writer.uint32(/* id 10, wireType 2 =*/82).string(message.local_report_base_dir);
+                    writer.uint32(/* id 9, wireType 2 =*/74).string(message.local_report_base_dir);
                 if (message.local_temporary_http_dir != null && message.hasOwnProperty("local_temporary_http_dir"))
-                    writer.uint32(/* id 11, wireType 2 =*/90).string(message.local_temporary_http_dir);
+                    writer.uint32(/* id 10, wireType 2 =*/82).string(message.local_temporary_http_dir);
                 if (message.local_temporary_http_port != null && message.hasOwnProperty("local_temporary_http_port"))
-                    writer.uint32(/* id 12, wireType 0 =*/96).uint32(message.local_temporary_http_port);
+                    writer.uint32(/* id 11, wireType 0 =*/88).uint32(message.local_temporary_http_port);
                 if (message.cli_invocation != null && message.hasOwnProperty("cli_invocation"))
-                    writer.uint32(/* id 13, wireType 2 =*/106).string(message.cli_invocation);
+                    writer.uint32(/* id 12, wireType 2 =*/98).string(message.cli_invocation);
                 if (message.diff_base != null && message.hasOwnProperty("diff_base"))
-                    $root.mdc.proto.DiffBase.encode(message.diff_base, writer.uint32(/* id 14, wireType 2 =*/114).fork()).ldelim();
+                    $root.mdc.proto.DiffBase.encode(message.diff_base, writer.uint32(/* id 13, wireType 2 =*/106).fork()).ldelim();
                 if (message.user != null && message.hasOwnProperty("user"))
-                    $root.mdc.proto.User.encode(message.user, writer.uint32(/* id 15, wireType 2 =*/122).fork()).ldelim();
+                    $root.mdc.proto.User.encode(message.user, writer.uint32(/* id 14, wireType 2 =*/114).fork()).ldelim();
                 if (message.node_version != null && message.hasOwnProperty("node_version"))
-                    $root.mdc.proto.LibraryVersion.encode(message.node_version, writer.uint32(/* id 16, wireType 2 =*/130).fork()).ldelim();
+                    $root.mdc.proto.LibraryVersion.encode(message.node_version, writer.uint32(/* id 15, wireType 2 =*/122).fork()).ldelim();
                 if (message.npm_version != null && message.hasOwnProperty("npm_version"))
-                    $root.mdc.proto.LibraryVersion.encode(message.npm_version, writer.uint32(/* id 17, wireType 2 =*/138).fork()).ldelim();
+                    $root.mdc.proto.LibraryVersion.encode(message.npm_version, writer.uint32(/* id 16, wireType 2 =*/130).fork()).ldelim();
                 if (message.mdc_version != null && message.hasOwnProperty("mdc_version"))
-                    $root.mdc.proto.LibraryVersion.encode(message.mdc_version, writer.uint32(/* id 18, wireType 2 =*/146).fork()).ldelim();
+                    $root.mdc.proto.LibraryVersion.encode(message.mdc_version, writer.uint32(/* id 17, wireType 2 =*/138).fork()).ldelim();
                 return writer;
             };
 
@@ -581,57 +570,54 @@ $root.mdc = (function() {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
                     case 1:
-                        message.is_online = reader.bool();
-                        break;
-                    case 2:
                         message.start_time = reader.uint64();
                         break;
-                    case 3:
+                    case 2:
                         message.end_time = reader.uint64();
                         break;
-                    case 4:
+                    case 3:
                         message.duration = reader.uint64();
                         break;
-                    case 5:
+                    case 4:
                         message.remote_upload_base_dir = reader.string();
                         break;
-                    case 6:
+                    case 5:
                         message.remote_upload_base_url = reader.string();
                         break;
-                    case 7:
+                    case 6:
                         message.local_asset_base_dir = reader.string();
                         break;
-                    case 8:
+                    case 7:
                         message.local_screenshot_image_base_dir = reader.string();
                         break;
-                    case 9:
+                    case 8:
                         message.local_diff_image_base_dir = reader.string();
                         break;
-                    case 10:
+                    case 9:
                         message.local_report_base_dir = reader.string();
                         break;
-                    case 11:
+                    case 10:
                         message.local_temporary_http_dir = reader.string();
                         break;
-                    case 12:
+                    case 11:
                         message.local_temporary_http_port = reader.uint32();
                         break;
-                    case 13:
+                    case 12:
                         message.cli_invocation = reader.string();
                         break;
-                    case 14:
+                    case 13:
                         message.diff_base = $root.mdc.proto.DiffBase.decode(reader, reader.uint32());
                         break;
-                    case 15:
+                    case 14:
                         message.user = $root.mdc.proto.User.decode(reader, reader.uint32());
                         break;
-                    case 16:
+                    case 15:
                         message.node_version = $root.mdc.proto.LibraryVersion.decode(reader, reader.uint32());
                         break;
-                    case 17:
+                    case 16:
                         message.npm_version = $root.mdc.proto.LibraryVersion.decode(reader, reader.uint32());
                         break;
-                    case 18:
+                    case 17:
                         message.mdc_version = $root.mdc.proto.LibraryVersion.decode(reader, reader.uint32());
                         break;
                     default:
@@ -669,9 +655,6 @@ $root.mdc = (function() {
             ReportMeta.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.is_online != null && message.hasOwnProperty("is_online"))
-                    if (typeof message.is_online !== "boolean")
-                        return "is_online: boolean expected";
                 if (message.start_time != null && message.hasOwnProperty("start_time"))
                     if (!$util.isInteger(message.start_time) && !(message.start_time && $util.isInteger(message.start_time.low) && $util.isInteger(message.start_time.high)))
                         return "start_time: integer|Long expected";
@@ -748,8 +731,6 @@ $root.mdc = (function() {
                 if (object instanceof $root.mdc.proto.ReportMeta)
                     return object;
                 var message = new $root.mdc.proto.ReportMeta();
-                if (object.is_online != null)
-                    message.is_online = Boolean(object.is_online);
                 if (object.start_time != null)
                     if ($util.Long)
                         (message.start_time = $util.Long.fromValue(object.start_time)).unsigned = true;
@@ -837,7 +818,6 @@ $root.mdc = (function() {
                     options = {};
                 var object = {};
                 if (options.defaults) {
-                    object.is_online = false;
                     if ($util.Long) {
                         var long = new $util.Long(0, 0, true);
                         object.start_time = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
@@ -868,8 +848,6 @@ $root.mdc = (function() {
                     object.npm_version = null;
                     object.mdc_version = null;
                 }
-                if (message.is_online != null && message.hasOwnProperty("is_online"))
-                    object.is_online = message.is_online;
                 if (message.start_time != null && message.hasOwnProperty("start_time"))
                     if (typeof message.start_time === "number")
                         object.start_time = options.longs === String ? String(message.start_time) : message.start_time;
@@ -2351,17 +2329,22 @@ $root.mdc = (function() {
              * @memberof mdc.proto
              * @interface IUserAgent
              * @property {string|null} [alias] UserAgent alias
+             * @property {string|null} [form_factor_name] UserAgent form_factor_name
+             * @property {string|null} [os_vendor_name] UserAgent os_vendor_name
+             * @property {string|null} [browser_vendor_name] UserAgent browser_vendor_name
+             * @property {string|null} [browser_version_name] UserAgent browser_version_name
+             * @property {string|null} [browser_version_value] UserAgent browser_version_value
              * @property {mdc.proto.UserAgent.FormFactorType|null} [form_factor_type] UserAgent form_factor_type
              * @property {mdc.proto.UserAgent.OsVendorType|null} [os_vendor_type] UserAgent os_vendor_type
              * @property {mdc.proto.UserAgent.BrowserVendorType|null} [browser_vendor_type] UserAgent browser_vendor_type
              * @property {mdc.proto.UserAgent.BrowserVersionType|null} [browser_version_type] UserAgent browser_version_type
-             * @property {string|null} [os_version_value] UserAgent os_version_value
-             * @property {string|null} [browser_version_value] UserAgent browser_version_value
-             * @property {string|null} [selenium_id] UserAgent selenium_id
-             * @property {mdc.proto.IWebDriverCapabilities|null} [webdriver_capabilities] UserAgent webdriver_capabilities
+             * @property {mdc.proto.selenium.IRawCapabilities|null} [desired_capabilities] UserAgent desired_capabilities
+             * @property {mdc.proto.selenium.IRawCapabilities|null} [actual_capabilities] UserAgent actual_capabilities
+             * @property {mdc.proto.selenium.INormalizedCapabilities|null} [normalized_capabilities] UserAgent normalized_capabilities
              * @property {boolean|null} [is_enabled_by_cli] UserAgent is_enabled_by_cli
              * @property {boolean|null} [is_available_locally] UserAgent is_available_locally
              * @property {boolean|null} [is_runnable] UserAgent is_runnable
+             * @property {string|null} [image_filename_suffix] UserAgent image_filename_suffix
              */
 
             /**
@@ -2386,6 +2369,46 @@ $root.mdc = (function() {
              * @instance
              */
             UserAgent.prototype.alias = "";
+
+            /**
+             * UserAgent form_factor_name.
+             * @member {string} form_factor_name
+             * @memberof mdc.proto.UserAgent
+             * @instance
+             */
+            UserAgent.prototype.form_factor_name = "";
+
+            /**
+             * UserAgent os_vendor_name.
+             * @member {string} os_vendor_name
+             * @memberof mdc.proto.UserAgent
+             * @instance
+             */
+            UserAgent.prototype.os_vendor_name = "";
+
+            /**
+             * UserAgent browser_vendor_name.
+             * @member {string} browser_vendor_name
+             * @memberof mdc.proto.UserAgent
+             * @instance
+             */
+            UserAgent.prototype.browser_vendor_name = "";
+
+            /**
+             * UserAgent browser_version_name.
+             * @member {string} browser_version_name
+             * @memberof mdc.proto.UserAgent
+             * @instance
+             */
+            UserAgent.prototype.browser_version_name = "";
+
+            /**
+             * UserAgent browser_version_value.
+             * @member {string} browser_version_value
+             * @memberof mdc.proto.UserAgent
+             * @instance
+             */
+            UserAgent.prototype.browser_version_value = "";
 
             /**
              * UserAgent form_factor_type.
@@ -2420,36 +2443,28 @@ $root.mdc = (function() {
             UserAgent.prototype.browser_version_type = 0;
 
             /**
-             * UserAgent os_version_value.
-             * @member {string} os_version_value
+             * UserAgent desired_capabilities.
+             * @member {mdc.proto.selenium.IRawCapabilities|null|undefined} desired_capabilities
              * @memberof mdc.proto.UserAgent
              * @instance
              */
-            UserAgent.prototype.os_version_value = "";
+            UserAgent.prototype.desired_capabilities = null;
 
             /**
-             * UserAgent browser_version_value.
-             * @member {string} browser_version_value
+             * UserAgent actual_capabilities.
+             * @member {mdc.proto.selenium.IRawCapabilities|null|undefined} actual_capabilities
              * @memberof mdc.proto.UserAgent
              * @instance
              */
-            UserAgent.prototype.browser_version_value = "";
+            UserAgent.prototype.actual_capabilities = null;
 
             /**
-             * UserAgent selenium_id.
-             * @member {string} selenium_id
+             * UserAgent normalized_capabilities.
+             * @member {mdc.proto.selenium.INormalizedCapabilities|null|undefined} normalized_capabilities
              * @memberof mdc.proto.UserAgent
              * @instance
              */
-            UserAgent.prototype.selenium_id = "";
-
-            /**
-             * UserAgent webdriver_capabilities.
-             * @member {mdc.proto.IWebDriverCapabilities|null|undefined} webdriver_capabilities
-             * @memberof mdc.proto.UserAgent
-             * @instance
-             */
-            UserAgent.prototype.webdriver_capabilities = null;
+            UserAgent.prototype.normalized_capabilities = null;
 
             /**
              * UserAgent is_enabled_by_cli.
@@ -2474,6 +2489,14 @@ $root.mdc = (function() {
              * @instance
              */
             UserAgent.prototype.is_runnable = false;
+
+            /**
+             * UserAgent image_filename_suffix.
+             * @member {string} image_filename_suffix
+             * @memberof mdc.proto.UserAgent
+             * @instance
+             */
+            UserAgent.prototype.image_filename_suffix = "";
 
             /**
              * Creates a new UserAgent instance using the specified properties.
@@ -2501,28 +2524,38 @@ $root.mdc = (function() {
                     writer = $Writer.create();
                 if (message.alias != null && message.hasOwnProperty("alias"))
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.alias);
-                if (message.form_factor_type != null && message.hasOwnProperty("form_factor_type"))
-                    writer.uint32(/* id 2, wireType 0 =*/16).int32(message.form_factor_type);
-                if (message.os_vendor_type != null && message.hasOwnProperty("os_vendor_type"))
-                    writer.uint32(/* id 3, wireType 0 =*/24).int32(message.os_vendor_type);
-                if (message.browser_vendor_type != null && message.hasOwnProperty("browser_vendor_type"))
-                    writer.uint32(/* id 4, wireType 0 =*/32).int32(message.browser_vendor_type);
-                if (message.browser_version_type != null && message.hasOwnProperty("browser_version_type"))
-                    writer.uint32(/* id 5, wireType 0 =*/40).int32(message.browser_version_type);
-                if (message.os_version_value != null && message.hasOwnProperty("os_version_value"))
-                    writer.uint32(/* id 6, wireType 2 =*/50).string(message.os_version_value);
+                if (message.form_factor_name != null && message.hasOwnProperty("form_factor_name"))
+                    writer.uint32(/* id 2, wireType 2 =*/18).string(message.form_factor_name);
+                if (message.os_vendor_name != null && message.hasOwnProperty("os_vendor_name"))
+                    writer.uint32(/* id 3, wireType 2 =*/26).string(message.os_vendor_name);
+                if (message.browser_vendor_name != null && message.hasOwnProperty("browser_vendor_name"))
+                    writer.uint32(/* id 4, wireType 2 =*/34).string(message.browser_vendor_name);
+                if (message.browser_version_name != null && message.hasOwnProperty("browser_version_name"))
+                    writer.uint32(/* id 5, wireType 2 =*/42).string(message.browser_version_name);
                 if (message.browser_version_value != null && message.hasOwnProperty("browser_version_value"))
-                    writer.uint32(/* id 7, wireType 2 =*/58).string(message.browser_version_value);
-                if (message.selenium_id != null && message.hasOwnProperty("selenium_id"))
-                    writer.uint32(/* id 8, wireType 2 =*/66).string(message.selenium_id);
-                if (message.webdriver_capabilities != null && message.hasOwnProperty("webdriver_capabilities"))
-                    $root.mdc.proto.WebDriverCapabilities.encode(message.webdriver_capabilities, writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
+                    writer.uint32(/* id 6, wireType 2 =*/50).string(message.browser_version_value);
+                if (message.form_factor_type != null && message.hasOwnProperty("form_factor_type"))
+                    writer.uint32(/* id 7, wireType 0 =*/56).int32(message.form_factor_type);
+                if (message.os_vendor_type != null && message.hasOwnProperty("os_vendor_type"))
+                    writer.uint32(/* id 8, wireType 0 =*/64).int32(message.os_vendor_type);
+                if (message.browser_vendor_type != null && message.hasOwnProperty("browser_vendor_type"))
+                    writer.uint32(/* id 9, wireType 0 =*/72).int32(message.browser_vendor_type);
+                if (message.browser_version_type != null && message.hasOwnProperty("browser_version_type"))
+                    writer.uint32(/* id 10, wireType 0 =*/80).int32(message.browser_version_type);
+                if (message.desired_capabilities != null && message.hasOwnProperty("desired_capabilities"))
+                    $root.mdc.proto.selenium.RawCapabilities.encode(message.desired_capabilities, writer.uint32(/* id 11, wireType 2 =*/90).fork()).ldelim();
+                if (message.actual_capabilities != null && message.hasOwnProperty("actual_capabilities"))
+                    $root.mdc.proto.selenium.RawCapabilities.encode(message.actual_capabilities, writer.uint32(/* id 12, wireType 2 =*/98).fork()).ldelim();
+                if (message.normalized_capabilities != null && message.hasOwnProperty("normalized_capabilities"))
+                    $root.mdc.proto.selenium.NormalizedCapabilities.encode(message.normalized_capabilities, writer.uint32(/* id 13, wireType 2 =*/106).fork()).ldelim();
                 if (message.is_enabled_by_cli != null && message.hasOwnProperty("is_enabled_by_cli"))
-                    writer.uint32(/* id 10, wireType 0 =*/80).bool(message.is_enabled_by_cli);
+                    writer.uint32(/* id 14, wireType 0 =*/112).bool(message.is_enabled_by_cli);
                 if (message.is_available_locally != null && message.hasOwnProperty("is_available_locally"))
-                    writer.uint32(/* id 11, wireType 0 =*/88).bool(message.is_available_locally);
+                    writer.uint32(/* id 15, wireType 0 =*/120).bool(message.is_available_locally);
                 if (message.is_runnable != null && message.hasOwnProperty("is_runnable"))
-                    writer.uint32(/* id 12, wireType 0 =*/96).bool(message.is_runnable);
+                    writer.uint32(/* id 16, wireType 0 =*/128).bool(message.is_runnable);
+                if (message.image_filename_suffix != null && message.hasOwnProperty("image_filename_suffix"))
+                    writer.uint32(/* id 17, wireType 2 =*/138).string(message.image_filename_suffix);
                 return writer;
             };
 
@@ -2561,37 +2594,52 @@ $root.mdc = (function() {
                         message.alias = reader.string();
                         break;
                     case 2:
-                        message.form_factor_type = reader.int32();
+                        message.form_factor_name = reader.string();
                         break;
                     case 3:
-                        message.os_vendor_type = reader.int32();
+                        message.os_vendor_name = reader.string();
                         break;
                     case 4:
-                        message.browser_vendor_type = reader.int32();
+                        message.browser_vendor_name = reader.string();
                         break;
                     case 5:
-                        message.browser_version_type = reader.int32();
+                        message.browser_version_name = reader.string();
                         break;
                     case 6:
-                        message.os_version_value = reader.string();
-                        break;
-                    case 7:
                         message.browser_version_value = reader.string();
                         break;
+                    case 7:
+                        message.form_factor_type = reader.int32();
+                        break;
                     case 8:
-                        message.selenium_id = reader.string();
+                        message.os_vendor_type = reader.int32();
                         break;
                     case 9:
-                        message.webdriver_capabilities = $root.mdc.proto.WebDriverCapabilities.decode(reader, reader.uint32());
+                        message.browser_vendor_type = reader.int32();
                         break;
                     case 10:
-                        message.is_enabled_by_cli = reader.bool();
+                        message.browser_version_type = reader.int32();
                         break;
                     case 11:
-                        message.is_available_locally = reader.bool();
+                        message.desired_capabilities = $root.mdc.proto.selenium.RawCapabilities.decode(reader, reader.uint32());
                         break;
                     case 12:
+                        message.actual_capabilities = $root.mdc.proto.selenium.RawCapabilities.decode(reader, reader.uint32());
+                        break;
+                    case 13:
+                        message.normalized_capabilities = $root.mdc.proto.selenium.NormalizedCapabilities.decode(reader, reader.uint32());
+                        break;
+                    case 14:
+                        message.is_enabled_by_cli = reader.bool();
+                        break;
+                    case 15:
+                        message.is_available_locally = reader.bool();
+                        break;
+                    case 16:
                         message.is_runnable = reader.bool();
+                        break;
+                    case 17:
+                        message.image_filename_suffix = reader.string();
                         break;
                     default:
                         reader.skipType(tag & 7);
@@ -2631,6 +2679,21 @@ $root.mdc = (function() {
                 if (message.alias != null && message.hasOwnProperty("alias"))
                     if (!$util.isString(message.alias))
                         return "alias: string expected";
+                if (message.form_factor_name != null && message.hasOwnProperty("form_factor_name"))
+                    if (!$util.isString(message.form_factor_name))
+                        return "form_factor_name: string expected";
+                if (message.os_vendor_name != null && message.hasOwnProperty("os_vendor_name"))
+                    if (!$util.isString(message.os_vendor_name))
+                        return "os_vendor_name: string expected";
+                if (message.browser_vendor_name != null && message.hasOwnProperty("browser_vendor_name"))
+                    if (!$util.isString(message.browser_vendor_name))
+                        return "browser_vendor_name: string expected";
+                if (message.browser_version_name != null && message.hasOwnProperty("browser_version_name"))
+                    if (!$util.isString(message.browser_version_name))
+                        return "browser_version_name: string expected";
+                if (message.browser_version_value != null && message.hasOwnProperty("browser_version_value"))
+                    if (!$util.isString(message.browser_version_value))
+                        return "browser_version_value: string expected";
                 if (message.form_factor_type != null && message.hasOwnProperty("form_factor_type"))
                     switch (message.form_factor_type) {
                     default:
@@ -2673,19 +2736,20 @@ $root.mdc = (function() {
                     case 3:
                         break;
                     }
-                if (message.os_version_value != null && message.hasOwnProperty("os_version_value"))
-                    if (!$util.isString(message.os_version_value))
-                        return "os_version_value: string expected";
-                if (message.browser_version_value != null && message.hasOwnProperty("browser_version_value"))
-                    if (!$util.isString(message.browser_version_value))
-                        return "browser_version_value: string expected";
-                if (message.selenium_id != null && message.hasOwnProperty("selenium_id"))
-                    if (!$util.isString(message.selenium_id))
-                        return "selenium_id: string expected";
-                if (message.webdriver_capabilities != null && message.hasOwnProperty("webdriver_capabilities")) {
-                    var error = $root.mdc.proto.WebDriverCapabilities.verify(message.webdriver_capabilities);
+                if (message.desired_capabilities != null && message.hasOwnProperty("desired_capabilities")) {
+                    var error = $root.mdc.proto.selenium.RawCapabilities.verify(message.desired_capabilities);
                     if (error)
-                        return "webdriver_capabilities." + error;
+                        return "desired_capabilities." + error;
+                }
+                if (message.actual_capabilities != null && message.hasOwnProperty("actual_capabilities")) {
+                    var error = $root.mdc.proto.selenium.RawCapabilities.verify(message.actual_capabilities);
+                    if (error)
+                        return "actual_capabilities." + error;
+                }
+                if (message.normalized_capabilities != null && message.hasOwnProperty("normalized_capabilities")) {
+                    var error = $root.mdc.proto.selenium.NormalizedCapabilities.verify(message.normalized_capabilities);
+                    if (error)
+                        return "normalized_capabilities." + error;
                 }
                 if (message.is_enabled_by_cli != null && message.hasOwnProperty("is_enabled_by_cli"))
                     if (typeof message.is_enabled_by_cli !== "boolean")
@@ -2696,6 +2760,9 @@ $root.mdc = (function() {
                 if (message.is_runnable != null && message.hasOwnProperty("is_runnable"))
                     if (typeof message.is_runnable !== "boolean")
                         return "is_runnable: boolean expected";
+                if (message.image_filename_suffix != null && message.hasOwnProperty("image_filename_suffix"))
+                    if (!$util.isString(message.image_filename_suffix))
+                        return "image_filename_suffix: string expected";
                 return null;
             };
 
@@ -2713,6 +2780,16 @@ $root.mdc = (function() {
                 var message = new $root.mdc.proto.UserAgent();
                 if (object.alias != null)
                     message.alias = String(object.alias);
+                if (object.form_factor_name != null)
+                    message.form_factor_name = String(object.form_factor_name);
+                if (object.os_vendor_name != null)
+                    message.os_vendor_name = String(object.os_vendor_name);
+                if (object.browser_vendor_name != null)
+                    message.browser_vendor_name = String(object.browser_vendor_name);
+                if (object.browser_version_name != null)
+                    message.browser_version_name = String(object.browser_version_name);
+                if (object.browser_version_value != null)
+                    message.browser_version_value = String(object.browser_version_value);
                 switch (object.form_factor_type) {
                 case "UNKNOWN":
                 case 0:
@@ -2793,16 +2870,20 @@ $root.mdc = (function() {
                     message.browser_version_type = 3;
                     break;
                 }
-                if (object.os_version_value != null)
-                    message.os_version_value = String(object.os_version_value);
-                if (object.browser_version_value != null)
-                    message.browser_version_value = String(object.browser_version_value);
-                if (object.selenium_id != null)
-                    message.selenium_id = String(object.selenium_id);
-                if (object.webdriver_capabilities != null) {
-                    if (typeof object.webdriver_capabilities !== "object")
-                        throw TypeError(".mdc.proto.UserAgent.webdriver_capabilities: object expected");
-                    message.webdriver_capabilities = $root.mdc.proto.WebDriverCapabilities.fromObject(object.webdriver_capabilities);
+                if (object.desired_capabilities != null) {
+                    if (typeof object.desired_capabilities !== "object")
+                        throw TypeError(".mdc.proto.UserAgent.desired_capabilities: object expected");
+                    message.desired_capabilities = $root.mdc.proto.selenium.RawCapabilities.fromObject(object.desired_capabilities);
+                }
+                if (object.actual_capabilities != null) {
+                    if (typeof object.actual_capabilities !== "object")
+                        throw TypeError(".mdc.proto.UserAgent.actual_capabilities: object expected");
+                    message.actual_capabilities = $root.mdc.proto.selenium.RawCapabilities.fromObject(object.actual_capabilities);
+                }
+                if (object.normalized_capabilities != null) {
+                    if (typeof object.normalized_capabilities !== "object")
+                        throw TypeError(".mdc.proto.UserAgent.normalized_capabilities: object expected");
+                    message.normalized_capabilities = $root.mdc.proto.selenium.NormalizedCapabilities.fromObject(object.normalized_capabilities);
                 }
                 if (object.is_enabled_by_cli != null)
                     message.is_enabled_by_cli = Boolean(object.is_enabled_by_cli);
@@ -2810,6 +2891,8 @@ $root.mdc = (function() {
                     message.is_available_locally = Boolean(object.is_available_locally);
                 if (object.is_runnable != null)
                     message.is_runnable = Boolean(object.is_runnable);
+                if (object.image_filename_suffix != null)
+                    message.image_filename_suffix = String(object.image_filename_suffix);
                 return message;
             };
 
@@ -2828,20 +2911,35 @@ $root.mdc = (function() {
                 var object = {};
                 if (options.defaults) {
                     object.alias = "";
+                    object.form_factor_name = "";
+                    object.os_vendor_name = "";
+                    object.browser_vendor_name = "";
+                    object.browser_version_name = "";
+                    object.browser_version_value = "";
                     object.form_factor_type = options.enums === String ? "UNKNOWN" : 0;
                     object.os_vendor_type = options.enums === String ? "UNKNOWN" : 0;
                     object.browser_vendor_type = options.enums === String ? "UNKNOWN" : 0;
                     object.browser_version_type = options.enums === String ? "UNKNOWN" : 0;
-                    object.os_version_value = "";
-                    object.browser_version_value = "";
-                    object.selenium_id = "";
-                    object.webdriver_capabilities = null;
+                    object.desired_capabilities = null;
+                    object.actual_capabilities = null;
+                    object.normalized_capabilities = null;
                     object.is_enabled_by_cli = false;
                     object.is_available_locally = false;
                     object.is_runnable = false;
+                    object.image_filename_suffix = "";
                 }
                 if (message.alias != null && message.hasOwnProperty("alias"))
                     object.alias = message.alias;
+                if (message.form_factor_name != null && message.hasOwnProperty("form_factor_name"))
+                    object.form_factor_name = message.form_factor_name;
+                if (message.os_vendor_name != null && message.hasOwnProperty("os_vendor_name"))
+                    object.os_vendor_name = message.os_vendor_name;
+                if (message.browser_vendor_name != null && message.hasOwnProperty("browser_vendor_name"))
+                    object.browser_vendor_name = message.browser_vendor_name;
+                if (message.browser_version_name != null && message.hasOwnProperty("browser_version_name"))
+                    object.browser_version_name = message.browser_version_name;
+                if (message.browser_version_value != null && message.hasOwnProperty("browser_version_value"))
+                    object.browser_version_value = message.browser_version_value;
                 if (message.form_factor_type != null && message.hasOwnProperty("form_factor_type"))
                     object.form_factor_type = options.enums === String ? $root.mdc.proto.UserAgent.FormFactorType[message.form_factor_type] : message.form_factor_type;
                 if (message.os_vendor_type != null && message.hasOwnProperty("os_vendor_type"))
@@ -2850,20 +2948,20 @@ $root.mdc = (function() {
                     object.browser_vendor_type = options.enums === String ? $root.mdc.proto.UserAgent.BrowserVendorType[message.browser_vendor_type] : message.browser_vendor_type;
                 if (message.browser_version_type != null && message.hasOwnProperty("browser_version_type"))
                     object.browser_version_type = options.enums === String ? $root.mdc.proto.UserAgent.BrowserVersionType[message.browser_version_type] : message.browser_version_type;
-                if (message.os_version_value != null && message.hasOwnProperty("os_version_value"))
-                    object.os_version_value = message.os_version_value;
-                if (message.browser_version_value != null && message.hasOwnProperty("browser_version_value"))
-                    object.browser_version_value = message.browser_version_value;
-                if (message.selenium_id != null && message.hasOwnProperty("selenium_id"))
-                    object.selenium_id = message.selenium_id;
-                if (message.webdriver_capabilities != null && message.hasOwnProperty("webdriver_capabilities"))
-                    object.webdriver_capabilities = $root.mdc.proto.WebDriverCapabilities.toObject(message.webdriver_capabilities, options);
+                if (message.desired_capabilities != null && message.hasOwnProperty("desired_capabilities"))
+                    object.desired_capabilities = $root.mdc.proto.selenium.RawCapabilities.toObject(message.desired_capabilities, options);
+                if (message.actual_capabilities != null && message.hasOwnProperty("actual_capabilities"))
+                    object.actual_capabilities = $root.mdc.proto.selenium.RawCapabilities.toObject(message.actual_capabilities, options);
+                if (message.normalized_capabilities != null && message.hasOwnProperty("normalized_capabilities"))
+                    object.normalized_capabilities = $root.mdc.proto.selenium.NormalizedCapabilities.toObject(message.normalized_capabilities, options);
                 if (message.is_enabled_by_cli != null && message.hasOwnProperty("is_enabled_by_cli"))
                     object.is_enabled_by_cli = message.is_enabled_by_cli;
                 if (message.is_available_locally != null && message.hasOwnProperty("is_available_locally"))
                     object.is_available_locally = message.is_available_locally;
                 if (message.is_runnable != null && message.hasOwnProperty("is_runnable"))
                     object.is_runnable = message.is_runnable;
+                if (message.image_filename_suffix != null && message.hasOwnProperty("image_filename_suffix"))
+                    object.image_filename_suffix = message.image_filename_suffix;
                 return object;
             };
 
@@ -2955,370 +3053,6 @@ $root.mdc = (function() {
             })();
 
             return UserAgent;
-        })();
-
-        proto.WebDriverCapabilities = (function() {
-
-            /**
-             * Properties of a WebDriverCapabilities.
-             * @memberof mdc.proto
-             * @interface IWebDriverCapabilities
-             * @property {string|null} [browser_name] WebDriverCapabilities browser_name
-             * @property {string|null} [browser_version] WebDriverCapabilities browser_version
-             * @property {string|null} [platform_name] WebDriverCapabilities platform_name
-             * @property {string|null} [platform_version] WebDriverCapabilities platform_version
-             * @property {boolean|null} [is_headless] WebDriverCapabilities is_headless
-             * @property {boolean|null} [is_rotatable] WebDriverCapabilities is_rotatable
-             * @property {boolean|null} [has_touch_screen] WebDriverCapabilities has_touch_screen
-             * @property {boolean|null} [supports_native_events] WebDriverCapabilities supports_native_events
-             * @property {string|null} [image_filename_suffix] WebDriverCapabilities image_filename_suffix
-             */
-
-            /**
-             * Constructs a new WebDriverCapabilities.
-             * @memberof mdc.proto
-             * @classdesc Represents a WebDriverCapabilities.
-             * @implements IWebDriverCapabilities
-             * @constructor
-             * @param {mdc.proto.IWebDriverCapabilities=} [properties] Properties to set
-             */
-            function WebDriverCapabilities(properties) {
-                if (properties)
-                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        if (properties[keys[i]] != null)
-                            this[keys[i]] = properties[keys[i]];
-            }
-
-            /**
-             * WebDriverCapabilities browser_name.
-             * @member {string} browser_name
-             * @memberof mdc.proto.WebDriverCapabilities
-             * @instance
-             */
-            WebDriverCapabilities.prototype.browser_name = "";
-
-            /**
-             * WebDriverCapabilities browser_version.
-             * @member {string} browser_version
-             * @memberof mdc.proto.WebDriverCapabilities
-             * @instance
-             */
-            WebDriverCapabilities.prototype.browser_version = "";
-
-            /**
-             * WebDriverCapabilities platform_name.
-             * @member {string} platform_name
-             * @memberof mdc.proto.WebDriverCapabilities
-             * @instance
-             */
-            WebDriverCapabilities.prototype.platform_name = "";
-
-            /**
-             * WebDriverCapabilities platform_version.
-             * @member {string} platform_version
-             * @memberof mdc.proto.WebDriverCapabilities
-             * @instance
-             */
-            WebDriverCapabilities.prototype.platform_version = "";
-
-            /**
-             * WebDriverCapabilities is_headless.
-             * @member {boolean} is_headless
-             * @memberof mdc.proto.WebDriverCapabilities
-             * @instance
-             */
-            WebDriverCapabilities.prototype.is_headless = false;
-
-            /**
-             * WebDriverCapabilities is_rotatable.
-             * @member {boolean} is_rotatable
-             * @memberof mdc.proto.WebDriverCapabilities
-             * @instance
-             */
-            WebDriverCapabilities.prototype.is_rotatable = false;
-
-            /**
-             * WebDriverCapabilities has_touch_screen.
-             * @member {boolean} has_touch_screen
-             * @memberof mdc.proto.WebDriverCapabilities
-             * @instance
-             */
-            WebDriverCapabilities.prototype.has_touch_screen = false;
-
-            /**
-             * WebDriverCapabilities supports_native_events.
-             * @member {boolean} supports_native_events
-             * @memberof mdc.proto.WebDriverCapabilities
-             * @instance
-             */
-            WebDriverCapabilities.prototype.supports_native_events = false;
-
-            /**
-             * WebDriverCapabilities image_filename_suffix.
-             * @member {string} image_filename_suffix
-             * @memberof mdc.proto.WebDriverCapabilities
-             * @instance
-             */
-            WebDriverCapabilities.prototype.image_filename_suffix = "";
-
-            /**
-             * Creates a new WebDriverCapabilities instance using the specified properties.
-             * @function create
-             * @memberof mdc.proto.WebDriverCapabilities
-             * @static
-             * @param {mdc.proto.IWebDriverCapabilities=} [properties] Properties to set
-             * @returns {mdc.proto.WebDriverCapabilities} WebDriverCapabilities instance
-             */
-            WebDriverCapabilities.create = function create(properties) {
-                return new WebDriverCapabilities(properties);
-            };
-
-            /**
-             * Encodes the specified WebDriverCapabilities message. Does not implicitly {@link mdc.proto.WebDriverCapabilities.verify|verify} messages.
-             * @function encode
-             * @memberof mdc.proto.WebDriverCapabilities
-             * @static
-             * @param {mdc.proto.IWebDriverCapabilities} message WebDriverCapabilities message or plain object to encode
-             * @param {$protobuf.Writer} [writer] Writer to encode to
-             * @returns {$protobuf.Writer} Writer
-             */
-            WebDriverCapabilities.encode = function encode(message, writer) {
-                if (!writer)
-                    writer = $Writer.create();
-                if (message.browser_name != null && message.hasOwnProperty("browser_name"))
-                    writer.uint32(/* id 1, wireType 2 =*/10).string(message.browser_name);
-                if (message.browser_version != null && message.hasOwnProperty("browser_version"))
-                    writer.uint32(/* id 2, wireType 2 =*/18).string(message.browser_version);
-                if (message.platform_name != null && message.hasOwnProperty("platform_name"))
-                    writer.uint32(/* id 3, wireType 2 =*/26).string(message.platform_name);
-                if (message.platform_version != null && message.hasOwnProperty("platform_version"))
-                    writer.uint32(/* id 4, wireType 2 =*/34).string(message.platform_version);
-                if (message.is_headless != null && message.hasOwnProperty("is_headless"))
-                    writer.uint32(/* id 5, wireType 0 =*/40).bool(message.is_headless);
-                if (message.is_rotatable != null && message.hasOwnProperty("is_rotatable"))
-                    writer.uint32(/* id 6, wireType 0 =*/48).bool(message.is_rotatable);
-                if (message.has_touch_screen != null && message.hasOwnProperty("has_touch_screen"))
-                    writer.uint32(/* id 7, wireType 0 =*/56).bool(message.has_touch_screen);
-                if (message.supports_native_events != null && message.hasOwnProperty("supports_native_events"))
-                    writer.uint32(/* id 8, wireType 0 =*/64).bool(message.supports_native_events);
-                if (message.image_filename_suffix != null && message.hasOwnProperty("image_filename_suffix"))
-                    writer.uint32(/* id 9, wireType 2 =*/74).string(message.image_filename_suffix);
-                return writer;
-            };
-
-            /**
-             * Encodes the specified WebDriverCapabilities message, length delimited. Does not implicitly {@link mdc.proto.WebDriverCapabilities.verify|verify} messages.
-             * @function encodeDelimited
-             * @memberof mdc.proto.WebDriverCapabilities
-             * @static
-             * @param {mdc.proto.IWebDriverCapabilities} message WebDriverCapabilities message or plain object to encode
-             * @param {$protobuf.Writer} [writer] Writer to encode to
-             * @returns {$protobuf.Writer} Writer
-             */
-            WebDriverCapabilities.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
-            };
-
-            /**
-             * Decodes a WebDriverCapabilities message from the specified reader or buffer.
-             * @function decode
-             * @memberof mdc.proto.WebDriverCapabilities
-             * @static
-             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-             * @param {number} [length] Message length if known beforehand
-             * @returns {mdc.proto.WebDriverCapabilities} WebDriverCapabilities
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            WebDriverCapabilities.decode = function decode(reader, length) {
-                if (!(reader instanceof $Reader))
-                    reader = $Reader.create(reader);
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.mdc.proto.WebDriverCapabilities();
-                while (reader.pos < end) {
-                    var tag = reader.uint32();
-                    switch (tag >>> 3) {
-                    case 1:
-                        message.browser_name = reader.string();
-                        break;
-                    case 2:
-                        message.browser_version = reader.string();
-                        break;
-                    case 3:
-                        message.platform_name = reader.string();
-                        break;
-                    case 4:
-                        message.platform_version = reader.string();
-                        break;
-                    case 5:
-                        message.is_headless = reader.bool();
-                        break;
-                    case 6:
-                        message.is_rotatable = reader.bool();
-                        break;
-                    case 7:
-                        message.has_touch_screen = reader.bool();
-                        break;
-                    case 8:
-                        message.supports_native_events = reader.bool();
-                        break;
-                    case 9:
-                        message.image_filename_suffix = reader.string();
-                        break;
-                    default:
-                        reader.skipType(tag & 7);
-                        break;
-                    }
-                }
-                return message;
-            };
-
-            /**
-             * Decodes a WebDriverCapabilities message from the specified reader or buffer, length delimited.
-             * @function decodeDelimited
-             * @memberof mdc.proto.WebDriverCapabilities
-             * @static
-             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-             * @returns {mdc.proto.WebDriverCapabilities} WebDriverCapabilities
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            WebDriverCapabilities.decodeDelimited = function decodeDelimited(reader) {
-                if (!(reader instanceof $Reader))
-                    reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
-            };
-
-            /**
-             * Verifies a WebDriverCapabilities message.
-             * @function verify
-             * @memberof mdc.proto.WebDriverCapabilities
-             * @static
-             * @param {Object.<string,*>} message Plain object to verify
-             * @returns {string|null} `null` if valid, otherwise the reason why it is not
-             */
-            WebDriverCapabilities.verify = function verify(message) {
-                if (typeof message !== "object" || message === null)
-                    return "object expected";
-                if (message.browser_name != null && message.hasOwnProperty("browser_name"))
-                    if (!$util.isString(message.browser_name))
-                        return "browser_name: string expected";
-                if (message.browser_version != null && message.hasOwnProperty("browser_version"))
-                    if (!$util.isString(message.browser_version))
-                        return "browser_version: string expected";
-                if (message.platform_name != null && message.hasOwnProperty("platform_name"))
-                    if (!$util.isString(message.platform_name))
-                        return "platform_name: string expected";
-                if (message.platform_version != null && message.hasOwnProperty("platform_version"))
-                    if (!$util.isString(message.platform_version))
-                        return "platform_version: string expected";
-                if (message.is_headless != null && message.hasOwnProperty("is_headless"))
-                    if (typeof message.is_headless !== "boolean")
-                        return "is_headless: boolean expected";
-                if (message.is_rotatable != null && message.hasOwnProperty("is_rotatable"))
-                    if (typeof message.is_rotatable !== "boolean")
-                        return "is_rotatable: boolean expected";
-                if (message.has_touch_screen != null && message.hasOwnProperty("has_touch_screen"))
-                    if (typeof message.has_touch_screen !== "boolean")
-                        return "has_touch_screen: boolean expected";
-                if (message.supports_native_events != null && message.hasOwnProperty("supports_native_events"))
-                    if (typeof message.supports_native_events !== "boolean")
-                        return "supports_native_events: boolean expected";
-                if (message.image_filename_suffix != null && message.hasOwnProperty("image_filename_suffix"))
-                    if (!$util.isString(message.image_filename_suffix))
-                        return "image_filename_suffix: string expected";
-                return null;
-            };
-
-            /**
-             * Creates a WebDriverCapabilities message from a plain object. Also converts values to their respective internal types.
-             * @function fromObject
-             * @memberof mdc.proto.WebDriverCapabilities
-             * @static
-             * @param {Object.<string,*>} object Plain object
-             * @returns {mdc.proto.WebDriverCapabilities} WebDriverCapabilities
-             */
-            WebDriverCapabilities.fromObject = function fromObject(object) {
-                if (object instanceof $root.mdc.proto.WebDriverCapabilities)
-                    return object;
-                var message = new $root.mdc.proto.WebDriverCapabilities();
-                if (object.browser_name != null)
-                    message.browser_name = String(object.browser_name);
-                if (object.browser_version != null)
-                    message.browser_version = String(object.browser_version);
-                if (object.platform_name != null)
-                    message.platform_name = String(object.platform_name);
-                if (object.platform_version != null)
-                    message.platform_version = String(object.platform_version);
-                if (object.is_headless != null)
-                    message.is_headless = Boolean(object.is_headless);
-                if (object.is_rotatable != null)
-                    message.is_rotatable = Boolean(object.is_rotatable);
-                if (object.has_touch_screen != null)
-                    message.has_touch_screen = Boolean(object.has_touch_screen);
-                if (object.supports_native_events != null)
-                    message.supports_native_events = Boolean(object.supports_native_events);
-                if (object.image_filename_suffix != null)
-                    message.image_filename_suffix = String(object.image_filename_suffix);
-                return message;
-            };
-
-            /**
-             * Creates a plain object from a WebDriverCapabilities message. Also converts values to other types if specified.
-             * @function toObject
-             * @memberof mdc.proto.WebDriverCapabilities
-             * @static
-             * @param {mdc.proto.WebDriverCapabilities} message WebDriverCapabilities
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            WebDriverCapabilities.toObject = function toObject(message, options) {
-                if (!options)
-                    options = {};
-                var object = {};
-                if (options.defaults) {
-                    object.browser_name = "";
-                    object.browser_version = "";
-                    object.platform_name = "";
-                    object.platform_version = "";
-                    object.is_headless = false;
-                    object.is_rotatable = false;
-                    object.has_touch_screen = false;
-                    object.supports_native_events = false;
-                    object.image_filename_suffix = "";
-                }
-                if (message.browser_name != null && message.hasOwnProperty("browser_name"))
-                    object.browser_name = message.browser_name;
-                if (message.browser_version != null && message.hasOwnProperty("browser_version"))
-                    object.browser_version = message.browser_version;
-                if (message.platform_name != null && message.hasOwnProperty("platform_name"))
-                    object.platform_name = message.platform_name;
-                if (message.platform_version != null && message.hasOwnProperty("platform_version"))
-                    object.platform_version = message.platform_version;
-                if (message.is_headless != null && message.hasOwnProperty("is_headless"))
-                    object.is_headless = message.is_headless;
-                if (message.is_rotatable != null && message.hasOwnProperty("is_rotatable"))
-                    object.is_rotatable = message.is_rotatable;
-                if (message.has_touch_screen != null && message.hasOwnProperty("has_touch_screen"))
-                    object.has_touch_screen = message.has_touch_screen;
-                if (message.supports_native_events != null && message.hasOwnProperty("supports_native_events"))
-                    object.supports_native_events = message.supports_native_events;
-                if (message.image_filename_suffix != null && message.hasOwnProperty("image_filename_suffix"))
-                    object.image_filename_suffix = message.image_filename_suffix;
-                return object;
-            };
-
-            /**
-             * Converts this WebDriverCapabilities to JSON.
-             * @function toJSON
-             * @memberof mdc.proto.WebDriverCapabilities
-             * @instance
-             * @returns {Object.<string,*>} JSON object
-             */
-            WebDriverCapabilities.prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-            };
-
-            return WebDriverCapabilities;
         })();
 
         proto.Screenshots = (function() {
@@ -7296,6 +7030,724 @@ $root.mdc = (function() {
             };
 
             return GoldenScreenshot;
+        })();
+
+        proto.selenium = (function() {
+
+            /**
+             * Namespace selenium.
+             * @memberof mdc.proto
+             * @namespace
+             */
+            var selenium = {};
+
+            selenium.RawCapabilities = (function() {
+
+                /**
+                 * Properties of a RawCapabilities.
+                 * @memberof mdc.proto.selenium
+                 * @interface IRawCapabilities
+                 * @property {string|null} [browserName] RawCapabilities browserName
+                 * @property {string|null} [browserVersion] RawCapabilities browserVersion
+                 * @property {string|null} [version] RawCapabilities version
+                 * @property {string|null} [platform] RawCapabilities platform
+                 * @property {string|null} [platformName] RawCapabilities platformName
+                 * @property {string|null} [platformVersion] RawCapabilities platformVersion
+                 * @property {string|null} [name] RawCapabilities name
+                 * @property {string|null} [build] RawCapabilities build
+                 * @property {boolean|null} [record_video] RawCapabilities record_video
+                 * @property {boolean|null} [record_network] RawCapabilities record_network
+                 * @property {string|null} [deviceName] RawCapabilities deviceName
+                 * @property {string|null} [deviceOrientation] RawCapabilities deviceOrientation
+                 * @property {string|null} [screenResolution] RawCapabilities screenResolution
+                 */
+
+                /**
+                 * Constructs a new RawCapabilities.
+                 * @memberof mdc.proto.selenium
+                 * @classdesc Represents a RawCapabilities.
+                 * @implements IRawCapabilities
+                 * @constructor
+                 * @param {mdc.proto.selenium.IRawCapabilities=} [properties] Properties to set
+                 */
+                function RawCapabilities(properties) {
+                    if (properties)
+                        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                            if (properties[keys[i]] != null)
+                                this[keys[i]] = properties[keys[i]];
+                }
+
+                /**
+                 * RawCapabilities browserName.
+                 * @member {string} browserName
+                 * @memberof mdc.proto.selenium.RawCapabilities
+                 * @instance
+                 */
+                RawCapabilities.prototype.browserName = "";
+
+                /**
+                 * RawCapabilities browserVersion.
+                 * @member {string} browserVersion
+                 * @memberof mdc.proto.selenium.RawCapabilities
+                 * @instance
+                 */
+                RawCapabilities.prototype.browserVersion = "";
+
+                /**
+                 * RawCapabilities version.
+                 * @member {string} version
+                 * @memberof mdc.proto.selenium.RawCapabilities
+                 * @instance
+                 */
+                RawCapabilities.prototype.version = "";
+
+                /**
+                 * RawCapabilities platform.
+                 * @member {string} platform
+                 * @memberof mdc.proto.selenium.RawCapabilities
+                 * @instance
+                 */
+                RawCapabilities.prototype.platform = "";
+
+                /**
+                 * RawCapabilities platformName.
+                 * @member {string} platformName
+                 * @memberof mdc.proto.selenium.RawCapabilities
+                 * @instance
+                 */
+                RawCapabilities.prototype.platformName = "";
+
+                /**
+                 * RawCapabilities platformVersion.
+                 * @member {string} platformVersion
+                 * @memberof mdc.proto.selenium.RawCapabilities
+                 * @instance
+                 */
+                RawCapabilities.prototype.platformVersion = "";
+
+                /**
+                 * RawCapabilities name.
+                 * @member {string} name
+                 * @memberof mdc.proto.selenium.RawCapabilities
+                 * @instance
+                 */
+                RawCapabilities.prototype.name = "";
+
+                /**
+                 * RawCapabilities build.
+                 * @member {string} build
+                 * @memberof mdc.proto.selenium.RawCapabilities
+                 * @instance
+                 */
+                RawCapabilities.prototype.build = "";
+
+                /**
+                 * RawCapabilities record_video.
+                 * @member {boolean} record_video
+                 * @memberof mdc.proto.selenium.RawCapabilities
+                 * @instance
+                 */
+                RawCapabilities.prototype.record_video = false;
+
+                /**
+                 * RawCapabilities record_network.
+                 * @member {boolean} record_network
+                 * @memberof mdc.proto.selenium.RawCapabilities
+                 * @instance
+                 */
+                RawCapabilities.prototype.record_network = false;
+
+                /**
+                 * RawCapabilities deviceName.
+                 * @member {string} deviceName
+                 * @memberof mdc.proto.selenium.RawCapabilities
+                 * @instance
+                 */
+                RawCapabilities.prototype.deviceName = "";
+
+                /**
+                 * RawCapabilities deviceOrientation.
+                 * @member {string} deviceOrientation
+                 * @memberof mdc.proto.selenium.RawCapabilities
+                 * @instance
+                 */
+                RawCapabilities.prototype.deviceOrientation = "";
+
+                /**
+                 * RawCapabilities screenResolution.
+                 * @member {string} screenResolution
+                 * @memberof mdc.proto.selenium.RawCapabilities
+                 * @instance
+                 */
+                RawCapabilities.prototype.screenResolution = "";
+
+                /**
+                 * Creates a new RawCapabilities instance using the specified properties.
+                 * @function create
+                 * @memberof mdc.proto.selenium.RawCapabilities
+                 * @static
+                 * @param {mdc.proto.selenium.IRawCapabilities=} [properties] Properties to set
+                 * @returns {mdc.proto.selenium.RawCapabilities} RawCapabilities instance
+                 */
+                RawCapabilities.create = function create(properties) {
+                    return new RawCapabilities(properties);
+                };
+
+                /**
+                 * Encodes the specified RawCapabilities message. Does not implicitly {@link mdc.proto.selenium.RawCapabilities.verify|verify} messages.
+                 * @function encode
+                 * @memberof mdc.proto.selenium.RawCapabilities
+                 * @static
+                 * @param {mdc.proto.selenium.IRawCapabilities} message RawCapabilities message or plain object to encode
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
+                 */
+                RawCapabilities.encode = function encode(message, writer) {
+                    if (!writer)
+                        writer = $Writer.create();
+                    if (message.browserName != null && message.hasOwnProperty("browserName"))
+                        writer.uint32(/* id 1, wireType 2 =*/10).string(message.browserName);
+                    if (message.browserVersion != null && message.hasOwnProperty("browserVersion"))
+                        writer.uint32(/* id 2, wireType 2 =*/18).string(message.browserVersion);
+                    if (message.version != null && message.hasOwnProperty("version"))
+                        writer.uint32(/* id 3, wireType 2 =*/26).string(message.version);
+                    if (message.platform != null && message.hasOwnProperty("platform"))
+                        writer.uint32(/* id 4, wireType 2 =*/34).string(message.platform);
+                    if (message.platformName != null && message.hasOwnProperty("platformName"))
+                        writer.uint32(/* id 5, wireType 2 =*/42).string(message.platformName);
+                    if (message.platformVersion != null && message.hasOwnProperty("platformVersion"))
+                        writer.uint32(/* id 6, wireType 2 =*/50).string(message.platformVersion);
+                    if (message.name != null && message.hasOwnProperty("name"))
+                        writer.uint32(/* id 7, wireType 2 =*/58).string(message.name);
+                    if (message.build != null && message.hasOwnProperty("build"))
+                        writer.uint32(/* id 8, wireType 2 =*/66).string(message.build);
+                    if (message.record_video != null && message.hasOwnProperty("record_video"))
+                        writer.uint32(/* id 9, wireType 0 =*/72).bool(message.record_video);
+                    if (message.record_network != null && message.hasOwnProperty("record_network"))
+                        writer.uint32(/* id 10, wireType 0 =*/80).bool(message.record_network);
+                    if (message.deviceName != null && message.hasOwnProperty("deviceName"))
+                        writer.uint32(/* id 11, wireType 2 =*/90).string(message.deviceName);
+                    if (message.deviceOrientation != null && message.hasOwnProperty("deviceOrientation"))
+                        writer.uint32(/* id 12, wireType 2 =*/98).string(message.deviceOrientation);
+                    if (message.screenResolution != null && message.hasOwnProperty("screenResolution"))
+                        writer.uint32(/* id 13, wireType 2 =*/106).string(message.screenResolution);
+                    return writer;
+                };
+
+                /**
+                 * Encodes the specified RawCapabilities message, length delimited. Does not implicitly {@link mdc.proto.selenium.RawCapabilities.verify|verify} messages.
+                 * @function encodeDelimited
+                 * @memberof mdc.proto.selenium.RawCapabilities
+                 * @static
+                 * @param {mdc.proto.selenium.IRawCapabilities} message RawCapabilities message or plain object to encode
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
+                 */
+                RawCapabilities.encodeDelimited = function encodeDelimited(message, writer) {
+                    return this.encode(message, writer).ldelim();
+                };
+
+                /**
+                 * Decodes a RawCapabilities message from the specified reader or buffer.
+                 * @function decode
+                 * @memberof mdc.proto.selenium.RawCapabilities
+                 * @static
+                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                 * @param {number} [length] Message length if known beforehand
+                 * @returns {mdc.proto.selenium.RawCapabilities} RawCapabilities
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                RawCapabilities.decode = function decode(reader, length) {
+                    if (!(reader instanceof $Reader))
+                        reader = $Reader.create(reader);
+                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.mdc.proto.selenium.RawCapabilities();
+                    while (reader.pos < end) {
+                        var tag = reader.uint32();
+                        switch (tag >>> 3) {
+                        case 1:
+                            message.browserName = reader.string();
+                            break;
+                        case 2:
+                            message.browserVersion = reader.string();
+                            break;
+                        case 3:
+                            message.version = reader.string();
+                            break;
+                        case 4:
+                            message.platform = reader.string();
+                            break;
+                        case 5:
+                            message.platformName = reader.string();
+                            break;
+                        case 6:
+                            message.platformVersion = reader.string();
+                            break;
+                        case 7:
+                            message.name = reader.string();
+                            break;
+                        case 8:
+                            message.build = reader.string();
+                            break;
+                        case 9:
+                            message.record_video = reader.bool();
+                            break;
+                        case 10:
+                            message.record_network = reader.bool();
+                            break;
+                        case 11:
+                            message.deviceName = reader.string();
+                            break;
+                        case 12:
+                            message.deviceOrientation = reader.string();
+                            break;
+                        case 13:
+                            message.screenResolution = reader.string();
+                            break;
+                        default:
+                            reader.skipType(tag & 7);
+                            break;
+                        }
+                    }
+                    return message;
+                };
+
+                /**
+                 * Decodes a RawCapabilities message from the specified reader or buffer, length delimited.
+                 * @function decodeDelimited
+                 * @memberof mdc.proto.selenium.RawCapabilities
+                 * @static
+                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                 * @returns {mdc.proto.selenium.RawCapabilities} RawCapabilities
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                RawCapabilities.decodeDelimited = function decodeDelimited(reader) {
+                    if (!(reader instanceof $Reader))
+                        reader = new $Reader(reader);
+                    return this.decode(reader, reader.uint32());
+                };
+
+                /**
+                 * Verifies a RawCapabilities message.
+                 * @function verify
+                 * @memberof mdc.proto.selenium.RawCapabilities
+                 * @static
+                 * @param {Object.<string,*>} message Plain object to verify
+                 * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                 */
+                RawCapabilities.verify = function verify(message) {
+                    if (typeof message !== "object" || message === null)
+                        return "object expected";
+                    if (message.browserName != null && message.hasOwnProperty("browserName"))
+                        if (!$util.isString(message.browserName))
+                            return "browserName: string expected";
+                    if (message.browserVersion != null && message.hasOwnProperty("browserVersion"))
+                        if (!$util.isString(message.browserVersion))
+                            return "browserVersion: string expected";
+                    if (message.version != null && message.hasOwnProperty("version"))
+                        if (!$util.isString(message.version))
+                            return "version: string expected";
+                    if (message.platform != null && message.hasOwnProperty("platform"))
+                        if (!$util.isString(message.platform))
+                            return "platform: string expected";
+                    if (message.platformName != null && message.hasOwnProperty("platformName"))
+                        if (!$util.isString(message.platformName))
+                            return "platformName: string expected";
+                    if (message.platformVersion != null && message.hasOwnProperty("platformVersion"))
+                        if (!$util.isString(message.platformVersion))
+                            return "platformVersion: string expected";
+                    if (message.name != null && message.hasOwnProperty("name"))
+                        if (!$util.isString(message.name))
+                            return "name: string expected";
+                    if (message.build != null && message.hasOwnProperty("build"))
+                        if (!$util.isString(message.build))
+                            return "build: string expected";
+                    if (message.record_video != null && message.hasOwnProperty("record_video"))
+                        if (typeof message.record_video !== "boolean")
+                            return "record_video: boolean expected";
+                    if (message.record_network != null && message.hasOwnProperty("record_network"))
+                        if (typeof message.record_network !== "boolean")
+                            return "record_network: boolean expected";
+                    if (message.deviceName != null && message.hasOwnProperty("deviceName"))
+                        if (!$util.isString(message.deviceName))
+                            return "deviceName: string expected";
+                    if (message.deviceOrientation != null && message.hasOwnProperty("deviceOrientation"))
+                        if (!$util.isString(message.deviceOrientation))
+                            return "deviceOrientation: string expected";
+                    if (message.screenResolution != null && message.hasOwnProperty("screenResolution"))
+                        if (!$util.isString(message.screenResolution))
+                            return "screenResolution: string expected";
+                    return null;
+                };
+
+                /**
+                 * Creates a RawCapabilities message from a plain object. Also converts values to their respective internal types.
+                 * @function fromObject
+                 * @memberof mdc.proto.selenium.RawCapabilities
+                 * @static
+                 * @param {Object.<string,*>} object Plain object
+                 * @returns {mdc.proto.selenium.RawCapabilities} RawCapabilities
+                 */
+                RawCapabilities.fromObject = function fromObject(object) {
+                    if (object instanceof $root.mdc.proto.selenium.RawCapabilities)
+                        return object;
+                    var message = new $root.mdc.proto.selenium.RawCapabilities();
+                    if (object.browserName != null)
+                        message.browserName = String(object.browserName);
+                    if (object.browserVersion != null)
+                        message.browserVersion = String(object.browserVersion);
+                    if (object.version != null)
+                        message.version = String(object.version);
+                    if (object.platform != null)
+                        message.platform = String(object.platform);
+                    if (object.platformName != null)
+                        message.platformName = String(object.platformName);
+                    if (object.platformVersion != null)
+                        message.platformVersion = String(object.platformVersion);
+                    if (object.name != null)
+                        message.name = String(object.name);
+                    if (object.build != null)
+                        message.build = String(object.build);
+                    if (object.record_video != null)
+                        message.record_video = Boolean(object.record_video);
+                    if (object.record_network != null)
+                        message.record_network = Boolean(object.record_network);
+                    if (object.deviceName != null)
+                        message.deviceName = String(object.deviceName);
+                    if (object.deviceOrientation != null)
+                        message.deviceOrientation = String(object.deviceOrientation);
+                    if (object.screenResolution != null)
+                        message.screenResolution = String(object.screenResolution);
+                    return message;
+                };
+
+                /**
+                 * Creates a plain object from a RawCapabilities message. Also converts values to other types if specified.
+                 * @function toObject
+                 * @memberof mdc.proto.selenium.RawCapabilities
+                 * @static
+                 * @param {mdc.proto.selenium.RawCapabilities} message RawCapabilities
+                 * @param {$protobuf.IConversionOptions} [options] Conversion options
+                 * @returns {Object.<string,*>} Plain object
+                 */
+                RawCapabilities.toObject = function toObject(message, options) {
+                    if (!options)
+                        options = {};
+                    var object = {};
+                    if (options.defaults) {
+                        object.browserName = "";
+                        object.browserVersion = "";
+                        object.version = "";
+                        object.platform = "";
+                        object.platformName = "";
+                        object.platformVersion = "";
+                        object.name = "";
+                        object.build = "";
+                        object.record_video = false;
+                        object.record_network = false;
+                        object.deviceName = "";
+                        object.deviceOrientation = "";
+                        object.screenResolution = "";
+                    }
+                    if (message.browserName != null && message.hasOwnProperty("browserName"))
+                        object.browserName = message.browserName;
+                    if (message.browserVersion != null && message.hasOwnProperty("browserVersion"))
+                        object.browserVersion = message.browserVersion;
+                    if (message.version != null && message.hasOwnProperty("version"))
+                        object.version = message.version;
+                    if (message.platform != null && message.hasOwnProperty("platform"))
+                        object.platform = message.platform;
+                    if (message.platformName != null && message.hasOwnProperty("platformName"))
+                        object.platformName = message.platformName;
+                    if (message.platformVersion != null && message.hasOwnProperty("platformVersion"))
+                        object.platformVersion = message.platformVersion;
+                    if (message.name != null && message.hasOwnProperty("name"))
+                        object.name = message.name;
+                    if (message.build != null && message.hasOwnProperty("build"))
+                        object.build = message.build;
+                    if (message.record_video != null && message.hasOwnProperty("record_video"))
+                        object.record_video = message.record_video;
+                    if (message.record_network != null && message.hasOwnProperty("record_network"))
+                        object.record_network = message.record_network;
+                    if (message.deviceName != null && message.hasOwnProperty("deviceName"))
+                        object.deviceName = message.deviceName;
+                    if (message.deviceOrientation != null && message.hasOwnProperty("deviceOrientation"))
+                        object.deviceOrientation = message.deviceOrientation;
+                    if (message.screenResolution != null && message.hasOwnProperty("screenResolution"))
+                        object.screenResolution = message.screenResolution;
+                    return object;
+                };
+
+                /**
+                 * Converts this RawCapabilities to JSON.
+                 * @function toJSON
+                 * @memberof mdc.proto.selenium.RawCapabilities
+                 * @instance
+                 * @returns {Object.<string,*>} JSON object
+                 */
+                RawCapabilities.prototype.toJSON = function toJSON() {
+                    return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                };
+
+                return RawCapabilities;
+            })();
+
+            selenium.NormalizedCapabilities = (function() {
+
+                /**
+                 * Properties of a NormalizedCapabilities.
+                 * @memberof mdc.proto.selenium
+                 * @interface INormalizedCapabilities
+                 * @property {string|null} [browser_name] NormalizedCapabilities browser_name
+                 * @property {string|null} [browser_version] NormalizedCapabilities browser_version
+                 * @property {string|null} [os_name] NormalizedCapabilities os_name
+                 * @property {string|null} [os_version] NormalizedCapabilities os_version
+                 */
+
+                /**
+                 * Constructs a new NormalizedCapabilities.
+                 * @memberof mdc.proto.selenium
+                 * @classdesc Represents a NormalizedCapabilities.
+                 * @implements INormalizedCapabilities
+                 * @constructor
+                 * @param {mdc.proto.selenium.INormalizedCapabilities=} [properties] Properties to set
+                 */
+                function NormalizedCapabilities(properties) {
+                    if (properties)
+                        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                            if (properties[keys[i]] != null)
+                                this[keys[i]] = properties[keys[i]];
+                }
+
+                /**
+                 * NormalizedCapabilities browser_name.
+                 * @member {string} browser_name
+                 * @memberof mdc.proto.selenium.NormalizedCapabilities
+                 * @instance
+                 */
+                NormalizedCapabilities.prototype.browser_name = "";
+
+                /**
+                 * NormalizedCapabilities browser_version.
+                 * @member {string} browser_version
+                 * @memberof mdc.proto.selenium.NormalizedCapabilities
+                 * @instance
+                 */
+                NormalizedCapabilities.prototype.browser_version = "";
+
+                /**
+                 * NormalizedCapabilities os_name.
+                 * @member {string} os_name
+                 * @memberof mdc.proto.selenium.NormalizedCapabilities
+                 * @instance
+                 */
+                NormalizedCapabilities.prototype.os_name = "";
+
+                /**
+                 * NormalizedCapabilities os_version.
+                 * @member {string} os_version
+                 * @memberof mdc.proto.selenium.NormalizedCapabilities
+                 * @instance
+                 */
+                NormalizedCapabilities.prototype.os_version = "";
+
+                /**
+                 * Creates a new NormalizedCapabilities instance using the specified properties.
+                 * @function create
+                 * @memberof mdc.proto.selenium.NormalizedCapabilities
+                 * @static
+                 * @param {mdc.proto.selenium.INormalizedCapabilities=} [properties] Properties to set
+                 * @returns {mdc.proto.selenium.NormalizedCapabilities} NormalizedCapabilities instance
+                 */
+                NormalizedCapabilities.create = function create(properties) {
+                    return new NormalizedCapabilities(properties);
+                };
+
+                /**
+                 * Encodes the specified NormalizedCapabilities message. Does not implicitly {@link mdc.proto.selenium.NormalizedCapabilities.verify|verify} messages.
+                 * @function encode
+                 * @memberof mdc.proto.selenium.NormalizedCapabilities
+                 * @static
+                 * @param {mdc.proto.selenium.INormalizedCapabilities} message NormalizedCapabilities message or plain object to encode
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
+                 */
+                NormalizedCapabilities.encode = function encode(message, writer) {
+                    if (!writer)
+                        writer = $Writer.create();
+                    if (message.browser_name != null && message.hasOwnProperty("browser_name"))
+                        writer.uint32(/* id 1, wireType 2 =*/10).string(message.browser_name);
+                    if (message.browser_version != null && message.hasOwnProperty("browser_version"))
+                        writer.uint32(/* id 2, wireType 2 =*/18).string(message.browser_version);
+                    if (message.os_name != null && message.hasOwnProperty("os_name"))
+                        writer.uint32(/* id 3, wireType 2 =*/26).string(message.os_name);
+                    if (message.os_version != null && message.hasOwnProperty("os_version"))
+                        writer.uint32(/* id 4, wireType 2 =*/34).string(message.os_version);
+                    return writer;
+                };
+
+                /**
+                 * Encodes the specified NormalizedCapabilities message, length delimited. Does not implicitly {@link mdc.proto.selenium.NormalizedCapabilities.verify|verify} messages.
+                 * @function encodeDelimited
+                 * @memberof mdc.proto.selenium.NormalizedCapabilities
+                 * @static
+                 * @param {mdc.proto.selenium.INormalizedCapabilities} message NormalizedCapabilities message or plain object to encode
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
+                 */
+                NormalizedCapabilities.encodeDelimited = function encodeDelimited(message, writer) {
+                    return this.encode(message, writer).ldelim();
+                };
+
+                /**
+                 * Decodes a NormalizedCapabilities message from the specified reader or buffer.
+                 * @function decode
+                 * @memberof mdc.proto.selenium.NormalizedCapabilities
+                 * @static
+                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                 * @param {number} [length] Message length if known beforehand
+                 * @returns {mdc.proto.selenium.NormalizedCapabilities} NormalizedCapabilities
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                NormalizedCapabilities.decode = function decode(reader, length) {
+                    if (!(reader instanceof $Reader))
+                        reader = $Reader.create(reader);
+                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.mdc.proto.selenium.NormalizedCapabilities();
+                    while (reader.pos < end) {
+                        var tag = reader.uint32();
+                        switch (tag >>> 3) {
+                        case 1:
+                            message.browser_name = reader.string();
+                            break;
+                        case 2:
+                            message.browser_version = reader.string();
+                            break;
+                        case 3:
+                            message.os_name = reader.string();
+                            break;
+                        case 4:
+                            message.os_version = reader.string();
+                            break;
+                        default:
+                            reader.skipType(tag & 7);
+                            break;
+                        }
+                    }
+                    return message;
+                };
+
+                /**
+                 * Decodes a NormalizedCapabilities message from the specified reader or buffer, length delimited.
+                 * @function decodeDelimited
+                 * @memberof mdc.proto.selenium.NormalizedCapabilities
+                 * @static
+                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                 * @returns {mdc.proto.selenium.NormalizedCapabilities} NormalizedCapabilities
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                NormalizedCapabilities.decodeDelimited = function decodeDelimited(reader) {
+                    if (!(reader instanceof $Reader))
+                        reader = new $Reader(reader);
+                    return this.decode(reader, reader.uint32());
+                };
+
+                /**
+                 * Verifies a NormalizedCapabilities message.
+                 * @function verify
+                 * @memberof mdc.proto.selenium.NormalizedCapabilities
+                 * @static
+                 * @param {Object.<string,*>} message Plain object to verify
+                 * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                 */
+                NormalizedCapabilities.verify = function verify(message) {
+                    if (typeof message !== "object" || message === null)
+                        return "object expected";
+                    if (message.browser_name != null && message.hasOwnProperty("browser_name"))
+                        if (!$util.isString(message.browser_name))
+                            return "browser_name: string expected";
+                    if (message.browser_version != null && message.hasOwnProperty("browser_version"))
+                        if (!$util.isString(message.browser_version))
+                            return "browser_version: string expected";
+                    if (message.os_name != null && message.hasOwnProperty("os_name"))
+                        if (!$util.isString(message.os_name))
+                            return "os_name: string expected";
+                    if (message.os_version != null && message.hasOwnProperty("os_version"))
+                        if (!$util.isString(message.os_version))
+                            return "os_version: string expected";
+                    return null;
+                };
+
+                /**
+                 * Creates a NormalizedCapabilities message from a plain object. Also converts values to their respective internal types.
+                 * @function fromObject
+                 * @memberof mdc.proto.selenium.NormalizedCapabilities
+                 * @static
+                 * @param {Object.<string,*>} object Plain object
+                 * @returns {mdc.proto.selenium.NormalizedCapabilities} NormalizedCapabilities
+                 */
+                NormalizedCapabilities.fromObject = function fromObject(object) {
+                    if (object instanceof $root.mdc.proto.selenium.NormalizedCapabilities)
+                        return object;
+                    var message = new $root.mdc.proto.selenium.NormalizedCapabilities();
+                    if (object.browser_name != null)
+                        message.browser_name = String(object.browser_name);
+                    if (object.browser_version != null)
+                        message.browser_version = String(object.browser_version);
+                    if (object.os_name != null)
+                        message.os_name = String(object.os_name);
+                    if (object.os_version != null)
+                        message.os_version = String(object.os_version);
+                    return message;
+                };
+
+                /**
+                 * Creates a plain object from a NormalizedCapabilities message. Also converts values to other types if specified.
+                 * @function toObject
+                 * @memberof mdc.proto.selenium.NormalizedCapabilities
+                 * @static
+                 * @param {mdc.proto.selenium.NormalizedCapabilities} message NormalizedCapabilities
+                 * @param {$protobuf.IConversionOptions} [options] Conversion options
+                 * @returns {Object.<string,*>} Plain object
+                 */
+                NormalizedCapabilities.toObject = function toObject(message, options) {
+                    if (!options)
+                        options = {};
+                    var object = {};
+                    if (options.defaults) {
+                        object.browser_name = "";
+                        object.browser_version = "";
+                        object.os_name = "";
+                        object.os_version = "";
+                    }
+                    if (message.browser_name != null && message.hasOwnProperty("browser_name"))
+                        object.browser_name = message.browser_name;
+                    if (message.browser_version != null && message.hasOwnProperty("browser_version"))
+                        object.browser_version = message.browser_version;
+                    if (message.os_name != null && message.hasOwnProperty("os_name"))
+                        object.os_name = message.os_name;
+                    if (message.os_version != null && message.hasOwnProperty("os_version"))
+                        object.os_version = message.os_version;
+                    return object;
+                };
+
+                /**
+                 * Converts this NormalizedCapabilities to JSON.
+                 * @function toJSON
+                 * @memberof mdc.proto.selenium.NormalizedCapabilities
+                 * @instance
+                 * @returns {Object.<string,*>} JSON object
+                 */
+                NormalizedCapabilities.prototype.toJSON = function toJSON() {
+                    return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                };
+
+                return NormalizedCapabilities;
+            })();
+
+            return selenium;
         })();
 
         return proto;

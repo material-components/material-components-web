@@ -85,7 +85,7 @@ class SeleniumController {
     if (isOnline) {
       await this.gitRepo_.fetch();
     }
-    return this.reportBuilder_.initForCapture({isOnline});
+    return this.reportBuilder_.initForCapture();
   }
 
   /**
@@ -96,7 +96,7 @@ class SeleniumController {
     if (isOnline) {
       await this.gitRepo_.fetch();
     }
-    return this.reportBuilder_.initForDemo({isOnline});
+    return this.reportBuilder_.initForDemo();
   }
 
   /**

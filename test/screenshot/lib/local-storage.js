@@ -21,19 +21,11 @@ const glob = require('glob');
 const mkdirp = require('mkdirp');
 const path = require('path');
 
-const Cli = require('./cli');
 const GitRepo = require('./git-repo');
 const {TEST_DIR_RELATIVE_PATH} = require('../lib/constants');
-const {UploadableTestCase, UploadableFile} = require('./types');
 
 class LocalStorage {
   constructor() {
-    /**
-     * @type {!Cli}
-     * @private
-     */
-    this.cli_ = new Cli();
-
     /**
      * @type {!GitRepo}
      * @private
