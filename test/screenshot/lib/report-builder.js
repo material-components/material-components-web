@@ -551,6 +551,9 @@ class ReportBuilder {
    */
   getAddedScreenshots_({expectedScreenshots, actualScreenshots}) {
     return actualScreenshots.filter((actualScreenshot) => {
+      if (!actualScreenshot.is_runnable) {
+        return false;
+      }
       const expectedScreenshot = this.findScreenshotForComparison_({
         screenshots: expectedScreenshots,
         screenshot: actualScreenshot,
