@@ -150,6 +150,8 @@ class MDCTooltip extends MDCComponent {
       getControllerWidth: () => instance.controller_.offsetWidth,
       getControllerHeight: () => instance.controller_.offsetHeight,
       getControllerBoundingRect: () => instance.controller_.getBoundingClientRect(),
+      getWindowWidth: () => window.innerWidth,
+      getWindowHeight: () => window.innerHeight,
       setStyle: (propertyName, value) => instance.root_.style.setProperty(propertyName, value),
     };
   }

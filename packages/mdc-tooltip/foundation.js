@@ -111,7 +111,15 @@ class MDCTooltipFoundation extends MDCFoundation {
   }
 
   verifyPosition_(top, left) {
-    return true;
+    const ctrlRect = this.adapter_.getControllerBoundingRect();
+
+    const rightEdge = ctrlRect.right + this.gap + this.adapter_.getRootWidth();
+    const bottomEdge = ctrlRect.bottom + this.gap + this.adapter_.getRootHeight();
+
+    return  top > 0 && 
+            left > 0 && 
+            rightEdge < this.adapter_.getWindowWidth() && 
+            bottomEdge < this.adapter_.getWindowHeight();
   }
 
   calcDirection_() {

@@ -36,13 +36,14 @@ section.example.custom-color-example {
   background-color: $material-color-grey-800;
   overflow: auto;
   display: block;
-  .mdc-tooltip{
-    @include mdc-tooltip-fill-color-accessible($material-color-grey-100);
-  }
   .mdc-layout-grid {
     width: 130%;
     height: 400px;
   }
+}
+
+.mdc-tooltip.on-dark-tooltip{
+  @include mdc-tooltip-fill-color-accessible($material-color-grey-100);
 }
 
 h2 {
