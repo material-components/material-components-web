@@ -214,6 +214,16 @@ class SeleniumApi {
     // await driver.wait(until.titleIs('webdriver - Google Search'), 1000);
     // await driver.sleep(1000 * 10);
 
+    // TODO(acdvorak): Set this value dynamically
+    // TODO(acdvorak): This blows up on mobile browsers
+    // NOTE(acdvorak): Setting smaller window dimensions appears to speed up the tests significantly.
+    if (userAgent.form_factor_type === FormFactorType.DESKTOP) {
+      // TODO(acdvorak): Better `catch()` handler
+      /** @type {!Window} */
+      const window = driver.manage().window();
+      await window.setRect({x: 0, y: 0, width: 400, height: 800}).catch(() => undefined);
+    }
+
     const meta = reportData.meta;
 
     /** @type {!Array<!mdc.proto.Screenshot>} */
@@ -250,16 +260,6 @@ class SeleniumApi {
   async capturePageAsPng_({driver, userAgent, url}) {
     console.log(`GET "${url}"...`);
     await driver.get(url);
-
-    // TODO(acdvorak): Set this value dynamically
-    // TODO(acdvorak): This blows up on mobile browsers
-    // NOTE(acdvorak): Setting smaller window dimensions appears to speed up the tests significantly.
-    if (userAgent.form_factor_type === FormFactorType.DESKTOP) {
-      // TODO(acdvorak): Better `catch()` handler
-      /** @type {!Window} */
-      const window = driver.manage().window();
-      await window.setRect({x: 0, y: 0, width: 400, height: 800}).catch(() => undefined);
-    }
 
     // TODO(acdvorak): Implement "fullpage" screenshots?
     // We can find the device's pixel ratio by capturing a screenshot and comparing the image dimensions with the
