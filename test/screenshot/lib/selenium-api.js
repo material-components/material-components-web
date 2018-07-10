@@ -26,7 +26,6 @@ const {TestFile, UserAgent} = proto;
 const {BrowserVendorType, FormFactorType, Navigator} = UserAgent;
 const {RawCapabilities} = proto.selenium;
 
-const Base64 = require('base64-js');
 const CbtApi = require('./cbt-api');
 const Cli = require('./cli');
 const ImageCropper = require('./image-cropper');
@@ -263,14 +262,14 @@ class SeleniumApi {
     // We can find the device's pixel ratio by capturing a screenshot and comparing the image dimensions with the
     // viewport dimensions reported by the JS running on the page.
 
-    const uncroppedScreenshotPngBase64 = await driver.takeScreenshot();
-    const uncroppedScreenshotPngBuffer = Buffer.from(Base64.toByteArray(uncroppedScreenshotPngBase64));
+    const uncroppedBase64Str = await driver.takeScreenshot();
+    const uncroppedPngBuffer = Buffer.from(uncroppedBase64Str, 'base64');
 
-    return this.imageCropper_.autoCropImage(uncroppedScreenshotPngBuffer);
+    return this.imageCropper_.autoCropImage(uncroppedPngBuffer);
   }
 }
 
-// TODO(acdvorak): Implement this check
+// TODO(acdvorak): Implement this check?
 function reachedParallelExecutionLimit(requestError) {
   try {
     // The try/catch is necessary because some of these properties might not exist.
@@ -280,7 +279,7 @@ function reachedParallelExecutionLimit(requestError) {
   }
 }
 
-// TODO(acdvorak): Implement this check
+// TODO(acdvorak): Implement this check?
 function isBadUrl(requestError) {
   try {
     // The try/catch is necessary because some of these properties might not exist.
@@ -290,7 +289,7 @@ function isBadUrl(requestError) {
   }
 }
 
-// TODO(acdvorak): Implement this check
+// TODO(acdvorak): Implement this check?
 function isServerError(requestError) {
   return requestError.statusCode >= 500 && requestError.statusCode < 600;
 }
