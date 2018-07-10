@@ -55,7 +55,7 @@ module.exports = {
 
     const pid = await this.getExistingProcessId_();
     if (pid) {
-      console.error(`Build is already running (pid ${pid})`);
+      console.log(`Build is already running (pid ${pid})`);
       return false;
     }
 
