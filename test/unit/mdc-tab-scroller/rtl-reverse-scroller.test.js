@@ -22,7 +22,7 @@ import {setupFoundationTest} from '../helpers/setup';
 import MDCTabScrollerFoundation from '../../../packages/mdc-tab-scroller/foundation';
 import MDCTabScrollerRTLReverse from '../../../packages/mdc-tab-scroller/rtl-reverse-scroller';
 
-suite('MDCTabScrollerRTLReverse');
+suite.only('MDCTabScrollerRTLReverse');
 
 const setupTest = ({rootWidth, contentWidth, scrollLeft}) => {
   const {mockAdapter} = setupFoundationTest(MDCTabScrollerFoundation);
@@ -35,62 +35,62 @@ const setupTest = ({rootWidth, contentWidth, scrollLeft}) => {
 
 test('#getScrollPositionRTL() returns the negated scrollLeft value', () => {
   const {scroller} = setupTest({rootWidth: 200, contentWidth: 1000, scrollLeft: 677});
-  assert.strictEqual(scroller.getScrollPositionRTL(0), -677);
+  assert.strictEqual(scroller.getScrollPositionRTL(0), 677);
 });
 
 test('#getScrollPositionRTL() returns the negated current scroll distance minus translateX', () => {
   const {scroller} = setupTest({rootWidth: 200, contentWidth: 1000, scrollLeft: 677});
-  assert.strictEqual(scroller.getScrollPositionRTL(11), -666);
+  assert.strictEqual(scroller.getScrollPositionRTL(11), 666);
 });
 
 test('#scrollToRTL() returns a normalized scrollX property', () => {
   const {scroller} = setupTest({rootWidth: 200, contentWidth: 1000, scrollLeft: 677});
-  assert.strictEqual(scroller.scrollToRTL(-111).scrollX, 111);
+  assert.strictEqual(scroller.scrollToRTL(111).scrollX, 111);
 });
 
 test('#scrollToRTL() returns a normalized translateX property', () => {
   const {scroller} = setupTest({rootWidth: 200, contentWidth: 1000, scrollLeft: 145});
-  assert.strictEqual(scroller.scrollToRTL(-111).translateX, 34);
+  assert.strictEqual(scroller.scrollToRTL(111).translateX, 34);
 });
 
 test('#scrollToRTL() returns 0 for scrollX property when scrollLeft would be too far right', () => {
   const {scroller} = setupTest({rootWidth: 200, contentWidth: 1000, scrollLeft: 677});
-  assert.strictEqual(scroller.scrollToRTL(10).scrollX, 0);
+  assert.strictEqual(scroller.scrollToRTL(-10).scrollX, 0);
 });
 
 test('#scrollToRTL() returns 0 for translateX property when scrollLeft would be the same', () => {
   const {scroller} = setupTest({rootWidth: 200, contentWidth: 1000, scrollLeft: 677});
-  assert.strictEqual(scroller.scrollToRTL(-677).translateX, 0);
+  assert.strictEqual(scroller.scrollToRTL(677).translateX, 0);
 });
 
 test('#scrollToRTL() returns max scroll value for scrollX property when scrollLeft would be too far left', () => {
   const {scroller} = setupTest({rootWidth: 200, contentWidth: 1000, scrollLeft: 677});
-  assert.strictEqual(scroller.scrollToRTL(-801).scrollX, 800);
+  assert.strictEqual(scroller.scrollToRTL(801).scrollX, 800);
 });
 
 test('#incrementScrollRTL() returns a normalized scrollX property', () => {
   const {scroller} = setupTest({rootWidth: 200, contentWidth: 1000, scrollLeft: 202});
-  assert.strictEqual(scroller.incrementScrollRTL(-50).scrollX, 252);
+  assert.strictEqual(scroller.incrementScrollRTL(50).scrollX, 252);
 });
 
 test('#incrementScrollRTL() returns a normalized translateX property', () => {
   const {scroller} = setupTest({rootWidth: 200, contentWidth: 1000, scrollLeft: 212});
-  assert.strictEqual(scroller.incrementScrollRTL(-50).translateX, -50);
+  assert.strictEqual(scroller.incrementScrollRTL(50).translateX, -50);
 });
 
 test('#incrementScrollRTL() returns 0 for scrollX property when scrollLeft would be too far right', () => {
   const {scroller} = setupTest({rootWidth: 200, contentWidth: 1000, scrollLeft: 45});
-  assert.strictEqual(scroller.incrementScrollRTL(50).scrollX, 0);
+  assert.strictEqual(scroller.incrementScrollRTL(-50).scrollX, 0);
 });
 
 test('#incrementScrollRTL() returns 0 for translateX property when scrollLeft would be the same', () => {
   const {scroller} = setupTest({rootWidth: 200, contentWidth: 1000, scrollLeft: 0});
-  assert.strictEqual(scroller.incrementScrollRTL(50).translateX, 0);
+  assert.strictEqual(scroller.incrementScrollRTL(-50).translateX, 0);
 });
 
 test('#incrementScrollRTL() returns max scroll value for scrollX property when scrollLeft would be too far left',
   () => {
     const {scroller} = setupTest({rootWidth: 200, contentWidth: 1000, scrollLeft: 677});
-    assert.strictEqual(scroller.incrementScrollRTL(-124).scrollX, 800);
+    assert.strictEqual(scroller.incrementScrollRTL(124).scrollX, 800);
   }
 );

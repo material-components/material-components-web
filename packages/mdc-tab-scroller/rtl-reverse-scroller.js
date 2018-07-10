@@ -33,7 +33,7 @@ class MDCTabScrollerRTLReverse extends MDCTabScrollerRTL {
   getScrollPositionRTL(translateX) {
     const currentScrollLeft = this.adapter_.getScrollAreaScrollLeft();
     // Scroll values on most browsers are ints instead of floats so we round
-    return Math.round(-currentScrollLeft + translateX);
+    return Math.round(currentScrollLeft - translateX);
   }
 
   /**
@@ -42,7 +42,7 @@ class MDCTabScrollerRTLReverse extends MDCTabScrollerRTL {
    */
   scrollToRTL(scrollX) {
     const currentScrollLeft = this.adapter_.getScrollAreaScrollLeft();
-    const clampedScrollLeft = this.clampScrollValue_(-scrollX);
+    const clampedScrollLeft = this.clampScrollValue_(scrollX);
     return /** @type {!MDCTabScrollerAnimation} */ ({
       scrollX: clampedScrollLeft,
       translateX: currentScrollLeft - clampedScrollLeft,
@@ -55,7 +55,7 @@ class MDCTabScrollerRTLReverse extends MDCTabScrollerRTL {
    */
   incrementScrollRTL(scrollX) {
     const currentScrollLeft = this.adapter_.getScrollAreaScrollLeft();
-    const clampedScrollLeft = this.clampScrollValue_(currentScrollLeft - scrollX);
+    const clampedScrollLeft = this.clampScrollValue_(currentScrollLeft + scrollX);
     return /** @type {!MDCTabScrollerAnimation} */ ({
       scrollX: clampedScrollLeft,
       translateX: currentScrollLeft - clampedScrollLeft,
