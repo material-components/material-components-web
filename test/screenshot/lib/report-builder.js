@@ -532,11 +532,14 @@ class ReportBuilder {
    */
   getComparableScreenshots_({expectedScreenshots, actualScreenshots}) {
     return actualScreenshots.filter((actualScreenshot) => {
-      const screenshot = this.findScreenshotForComparison_({
+      if (!actualScreenshot.is_runnable) {
+        return false;
+      }
+      const expectedScreenshot = this.findScreenshotForComparison_({
         screenshots: expectedScreenshots,
         screenshot: actualScreenshot,
       });
-      return screenshot ? screenshot.is_runnable : false;
+      return expectedScreenshot;
     });
   }
 
@@ -548,10 +551,11 @@ class ReportBuilder {
    */
   getAddedScreenshots_({expectedScreenshots, actualScreenshots}) {
     return actualScreenshots.filter((actualScreenshot) => {
-      return !this.findScreenshotForComparison_({
+      const expectedScreenshot = this.findScreenshotForComparison_({
         screenshots: expectedScreenshots,
         screenshot: actualScreenshot,
       });
+      return !expectedScreenshot;
     });
   }
 
