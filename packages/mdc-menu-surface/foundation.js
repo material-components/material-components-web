@@ -326,13 +326,16 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
 
   /**
    * @param {MenuSurfaceCorner} corner Origin corner of the menu surface.
+   * @param {number} maxMenuSurfaceHeight Maximum size of the menu-surface.
    * @return {number} Vertical offset of menu surface origin corner from corresponding anchor corner.
    * @private
    */
-  getVerticalOriginOffset_(corner) {
+  getVerticalOriginOffset_(corner, maxMenuSurfaceHeight) {
     const {viewport, viewportDistance, anchorHeight, surfaceHeight} = this.measures_;
+    const actualSurfaceHeight = Math.min(maxMenuSurfaceHeight, surfaceHeight);
     const isBottomAligned = Boolean(corner & MenuSurfaceCornerBit.BOTTOM);
     const {MARGIN_TO_EDGE} = MDCMenuSurfaceFoundation.numbers;
+    const maxViewHeight = viewport.height - MARGIN_TO_EDGE;
     const avoidVerticalOverlap = Boolean(this.anchorCorner_ & MenuSurfaceCornerBit.BOTTOM);
     const canOverlapVertically = !avoidVerticalOverlap;
     let y = 0;
@@ -341,15 +344,15 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
       y = avoidVerticalOverlap ? anchorHeight - this.anchorMargin_.top : -this.anchorMargin_.bottom;
       // adjust for when menu surface can overlap anchor, but too tall to be aligned to bottom
       // anchor corner. Bottom margin is ignored in such cases.
-      if (canOverlapVertically && surfaceHeight > viewportDistance.top + anchorHeight) {
-        y = -(Math.min(surfaceHeight, viewport.height - MARGIN_TO_EDGE) - (viewportDistance.top + anchorHeight));
+      if (canOverlapVertically && actualSurfaceHeight > viewportDistance.top + anchorHeight) {
+        y = -(Math.min(actualSurfaceHeight, maxViewHeight) - (viewportDistance.top + anchorHeight));
       }
     } else {
       y = avoidVerticalOverlap ? (anchorHeight + this.anchorMargin_.bottom) : this.anchorMargin_.top;
       // adjust for when menu surface can overlap anchor, but too tall to be aligned to top
       // anchor corners. Top margin is ignored in that case.
-      if (canOverlapVertically && surfaceHeight > viewportDistance.bottom + anchorHeight) {
-        y = -(Math.min(surfaceHeight, viewport.height - MARGIN_TO_EDGE) - (viewportDistance.bottom + anchorHeight));
+      if (canOverlapVertically && actualSurfaceHeight > viewportDistance.bottom + anchorHeight) {
+        y = -(Math.min(actualSurfaceHeight, maxViewHeight) - (viewportDistance.bottom + anchorHeight));
       }
     }
     return y;
@@ -364,15 +367,16 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     let maxHeight = 0;
     const {viewportDistance} = this.measures_;
     const isBottomAligned = Boolean(corner & MenuSurfaceCornerBit.BOTTOM);
+    const {MARGIN_TO_EDGE} = cssClasses;
 
     // When maximum height is not specified, it is handled from css.
     if (isBottomAligned) {
-      maxHeight = viewportDistance.top + this.anchorMargin_.top - 32;
+      maxHeight = viewportDistance.top + this.anchorMargin_.top - MARGIN_TO_EDGE;
       if (this.anchorCorner_ & MenuSurfaceCornerBit.BOTTOM) {
         maxHeight -= this.measures_.anchorHeight;
       }
     } else {
-      maxHeight = viewportDistance.bottom - this.anchorMargin_.bottom + this.measures_.anchorHeight - 32;
+      maxHeight = viewportDistance.bottom - this.anchorMargin_.bottom + this.measures_.anchorHeight - MARGIN_TO_EDGE;
       if (this.anchorCorner_ & MenuSurfaceCornerBit.BOTTOM) {
         maxHeight -= this.measures_.anchorHeight;
       }
@@ -395,7 +399,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     let verticalAlignment = (corner & MenuSurfaceCornerBit.BOTTOM) ? 'bottom' : 'top';
     let horizontalAlignment = (corner & MenuSurfaceCornerBit.RIGHT) ? 'right' : 'left';
     const horizontalOffset = this.getHorizontalOriginOffset_(corner);
-    const verticalOffset = this.getVerticalOriginOffset_(corner);
+    const verticalOffset = this.getVerticalOriginOffset_(corner, maxMenuSurfaceHeight);
     let position = {
       [horizontalAlignment]: horizontalOffset ? horizontalOffset : '0',
       [verticalAlignment]: verticalOffset ? verticalOffset : '0',

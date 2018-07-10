@@ -173,8 +173,6 @@
         var menu = mdc.menuSurface.MDCMenuSurface.attachTo(menuEl);
         var menuButtonEl = document.querySelector('#menu-button');
 
-        menu.hoistMenuToBody();
-
         menuButtonEl.addEventListener('click', function() {
           menu.open = !menu.open;
         });
