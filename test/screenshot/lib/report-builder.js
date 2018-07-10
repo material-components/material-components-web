@@ -532,10 +532,11 @@ class ReportBuilder {
    */
   getComparableScreenshots_({expectedScreenshots, actualScreenshots}) {
     return actualScreenshots.filter((actualScreenshot) => {
-      return this.findScreenshotForComparison_({
+      const screenshot = this.findScreenshotForComparison_({
         screenshots: expectedScreenshots,
         screenshot: actualScreenshot,
       });
+      return screenshot ? screenshot.is_runnable : false;
     });
   }
 
