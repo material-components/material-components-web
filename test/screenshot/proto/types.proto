@@ -46,8 +46,8 @@ message ReportMeta {
   LibraryVersion npm_version = 16;
   LibraryVersion mdc_version = 17;
 
-  string report_page_url = 18;
-  string report_json_url = 19;
+  TestFile report_html_file = 18;
+  TestFile report_json_file = 19;
 }
 
 message DiffBase {

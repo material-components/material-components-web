@@ -19,10 +19,12 @@ const GITHUB_REPO_URL = 'https://github.com/material-components/material-compone
 class ReportWriter {
   /**
    * @param {!mdc.proto.ReportData} reportData
-   * @return {!Promise<string>}
+   * @return {!Promise<void>}
    */
-  async generateHtml(reportData) {
-    return 'TODO(acdvorak): Implement!';
+  async generateReportPage(reportData) {
+    // TODO(acdvorak): Implement
+    // reportData.meta.report_html_file = TestFile.create({});
+    // reportData.meta.report_json_file = TestFile.create({});
   }
 
   /**

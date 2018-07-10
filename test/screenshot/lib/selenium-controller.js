@@ -139,17 +139,12 @@ class SeleniumController {
    * @param {!mdc.proto.ReportData} reportData
    * @return {!Promise<!mdc.proto.ReportData>}
    */
-  async uploadDiffReport(reportData) {
-    // TODO(acdvorak): Implement
-    await this.reportWriter_.generateHtml(reportData);
+  async generateReportPage(reportData) {
+    await this.reportWriter_.generateReportPage(reportData);
     await this.cloudStorage_.uploadDiffReport(reportData);
 
-    // TODO(acdvorak): Fill out
-    // reportData.meta.report_page_url = 'FOO';
-    // reportData.meta.report_json_url = 'FOO';
-
-    console.log('\n\nDONE uploading diff report to GCS!\n\n');
-    console.log(reportData.meta.report_page_url);
+    console.log('\nDONE uploading diff report to GCS!\n');
+    console.log(reportData.meta.report_html_file.public_url);
 
     return reportData;
   }
