@@ -16,6 +16,7 @@
 
 import {assert} from 'chai';
 import bel from 'bel';
+import td from 'testdouble';
 
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 import {createMockRaf} from '../helpers/raf';
@@ -107,4 +108,36 @@ test('get/set disabled updates the component styles', () => {
 test('get ripple returns a MDCRipple instance', () => {
   const {component} = setupTest();
   assert.isOk(component.ripple instanceof MDCRipple);
+});
+
+function setupMockFoundationTest(root = getFixture()) {
+  const MockFoundationCtor = td.constructor(MDCSwitchFoundation);
+  const mockFoundation = new MockFoundationCtor();
+  const component = new MDCSwitch(root, mockFoundation);
+  return {root, component, mockFoundation};
+}
+
+test('change handler is added to the native control element', () => {
+  const {root, mockFoundation} = setupMockFoundationTest();
+
+  const event = document.createEvent('Event');
+  event.initEvent('change');
+
+  const inputEl = root.querySelector(NATIVE_CONTROL_SELECTOR);
+  inputEl.dispatchEvent(event);
+
+  td.verify(mockFoundation.handleChange(event), {times: 1});
+});
+
+test('change handler is removed from the native control element on destroy', () => {
+  const {root, component, mockFoundation} = setupMockFoundationTest();
+  component.destroy();
+
+  const event = document.createEvent('Event');
+  event.initEvent('change');
+
+  const inputEl = root.querySelector(NATIVE_CONTROL_SELECTOR);
+  inputEl.dispatchEvent(event);
+
+  td.verify(mockFoundation.handleChange(event), {times: 0});
 });

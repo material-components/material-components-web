@@ -39,8 +39,6 @@ class MDCSwitchFoundation extends MDCFoundation {
     return /** @type {!MDCSwitchAdapter} */ ({
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
-      registerChangeHandler: (/* handler: EventListener */) => {},
-      deregisterChangeHandler: (/* handler: EventListener */) => {},
       setNativeControlChecked: (/* checked: boolean */) => {},
       isNativeControlChecked: () => /* boolean */ {},
       setNativeControlDisabled: (/* disabled: boolean */) => {},
@@ -50,17 +48,6 @@ class MDCSwitchFoundation extends MDCFoundation {
 
   constructor(adapter) {
     super(Object.assign(MDCSwitchFoundation.defaultAdapter, adapter));
-
-    this.changeHandler_ = /** @private {!EventListener} */ (
-      () => this.handleChange());
-  }
-
-  init() {
-    this.adapter_.registerChangeHandler(this.changeHandler_);
-  }
-
-  destroy() {
-    this.adapter_.deregisterChangeHandler(this.changeHandler_);
   }
 
   /** @return {boolean} */

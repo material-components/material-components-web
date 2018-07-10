@@ -39,12 +39,6 @@ class MDCSwitchAdapter {
   /** @param {string} className */
   removeClass(className) {}
 
-  /** @param {!EventListener} handler */
-  registerChangeHandler(handler) {}
-
-  /** @param {!EventListener} handler */
-  deregisterChangeHandler(handler) {}
-
   /** @param {boolean} checked */
   setNativeControlChecked(checked) {}
 

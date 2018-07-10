@@ -110,18 +110,19 @@ Property | Value Type | Description
 
 If you are using a JavaScript framework, such as React or Angular, you can create a switch for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
+## Event Handlers
+If wrapping the switch component it is necessary to add an event handler for native control change events that calls the `handleChange` foundation method. For an example of this, see the [MDCSwitch](index.js) component `initialSyncWithDOM` method.
+
 ### `MDCSwitchAdapter`
 
 | Method Signature | Description |
 | --- | --- |
 | `addClass(className: string) => void` | Adds a class to the root element. |
 | `removeClass(className: string) => void` | Removes a class from the root element. |
-| `registerChangeHandler(handler: EventListener) => void` | Registers an event handler to be called when a `change` event is triggered on the native control. |
-| `deregisterChangeHandler(handler: EventListener) => void` | Deregisters an event handler that was previously passed to `registerChangeHandler`. |
-| `setChecked(checked: boolean)` | Sets the checked state of the native control. |
-| `isChecked() => boolean` | Returns the checked state of the native control. | 
-| `setDisabled(disabled: boolean)` | Sets the disabled state of the native control. |
-| `isDisabled() => boolean` | Returns the disabled state of the native control. | 
+| `setNativeControlChecked(checked: boolean)` | Sets the checked state of the native control. |
+| `isNativeControlChecked() => boolean` | Returns the checked state of the native control. | 
+| `setNativeControlDisabled(disabled: boolean)` | Sets the disabled state of the native control. |
+| `isNativeControlDisabled() => boolean` | Returns the disabled state of the native control. | 
 
 ### `MDCSwitchFoundation`
 

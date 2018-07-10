@@ -37,6 +37,20 @@ class MDCSwitch extends MDCComponent {
 
     /** @private {!MDCRipple} */
     this.ripple_ = this.initRipple_();
+
+    /** @private {!Function} */
+    this.changeHandler_;
+  }
+
+  destroy() {
+    super.destroy();
+    this.ripple_.destroy();
+    this.nativeControl_.removeEventListener('change', this.changeHandler_);
+  }
+
+  initialSyncWithDOM() {
+    this.changeHandler_ = this.foundation_.handleChange.bind(this.foundation_);
+    this.nativeControl_.addEventListener('change', this.changeHandler_);
   }
 
   /**
@@ -79,8 +93,6 @@ class MDCSwitch extends MDCComponent {
     return new MDCSwitchFoundation({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
-      registerChangeHandler: (handler) => this.nativeControl_.addEventListener('change', handler),
-      deregisterChangeHandler: (handler) => this.nativeControl_.removeEventListener('change', handler),
       setNativeControlChecked: (checked) => this.nativeControl_.checked = checked,
       isNativeControlChecked: () => this.nativeControl_.checked,
       setNativeControlDisabled: (disabled) => this.nativeControl_.disabled = disabled,
@@ -111,11 +123,6 @@ class MDCSwitch extends MDCComponent {
   /** @param {boolean} disabled */
   set disabled(disabled) {
     this.foundation_.setDisabled(disabled);
-  }
-
-  destroy() {
-    this.ripple_.destroy();
-    super.destroy();
   }
 }
 

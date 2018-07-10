@@ -34,8 +34,8 @@ test('defaultAdapter returns a complete adapter implementation', () => {
   const methods = Object.keys(defaultAdapter).filter((k) => typeof defaultAdapter[k] === 'function');
 
   assert.equal(methods.length, Object.keys(defaultAdapter).length, 'Every adapter key must be a function');
-  assert.deepEqual(methods, ['addClass', 'removeClass', 'registerChangeHandler', 'deregisterChangeHandler',
-    'setNativeControlChecked', 'isNativeControlChecked', 'setNativeControlDisabled', 'isNativeControlDisabled']);
+  assert.deepEqual(methods, ['addClass', 'removeClass', 'setNativeControlChecked', 'isNativeControlChecked',
+    'setNativeControlDisabled', 'isNativeControlDisabled']);
   methods.forEach((m) => assert.doesNotThrow(defaultAdapter[m]));
 });
 
@@ -44,28 +44,6 @@ function setupTest() {
   const foundation = new MDCSwitchFoundation(mockAdapter);
   return {foundation, mockAdapter};
 }
-
-test('#init calls adapter.registerChangeHandler() with a change handler function', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const {isA} = td.matchers;
-
-  foundation.init();
-  td.verify(mockAdapter.registerChangeHandler(isA(Function)));
-});
-
-test('#destroy calls adapter.deregisterChangeHandler() with a registerChangeHandler function', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const {isA} = td.matchers;
-
-  let changeHandler;
-  td.when(mockAdapter.registerChangeHandler(isA(Function))).thenDo(function(handler) {
-    changeHandler = handler;
-  });
-  foundation.init();
-
-  foundation.destroy();
-  td.verify(mockAdapter.deregisterChangeHandler(changeHandler));
-});
 
 test('#isChecked returns true when the value of adapter.isChecked() is true', () => {
   const {foundation, mockAdapter} = setupTest();
@@ -135,34 +113,20 @@ test('#setDisabled removes mdc-switch--disabled from the switch element when set
   td.verify(mockAdapter.removeClass(MDCSwitchFoundation.cssClasses.DISABLED));
 });
 
-test('a native control change event fired when the switch changes to a checked state results in adding ' +
-      'mdc-switch--checked to the switch ', () => {
+test('#handleChange adds mdc-switch--checked to the switch when it is a checked state', () => {
   const {foundation, mockAdapter} = setupTest();
-
-  let changeHandler;
-  td.when(mockAdapter.registerChangeHandler(td.matchers.isA(Function))).thenDo((handler) => {
-    changeHandler = handler;
-  });
-  foundation.init();
 
   td.when(mockAdapter.isNativeControlChecked()).thenReturn(true);
 
-  changeHandler();
+  foundation.handleChange();
   td.verify(mockAdapter.addClass(MDCSwitchFoundation.cssClasses.CHECKED));
 });
 
-test('a native control change event fired when the switch changes to an unchecked state results in removing ' +
-      'mdc-switch--checked from the switch ', () => {
+test('#handleChange removes mdc-switch--checked from the switch when it is an unchecked state', () => {
   const {foundation, mockAdapter} = setupTest();
-
-  let changeHandler;
-  td.when(mockAdapter.registerChangeHandler(td.matchers.isA(Function))).thenDo((handler) => {
-    changeHandler = handler;
-  });
-  foundation.init();
 
   td.when(mockAdapter.isNativeControlChecked()).thenReturn(false);
 
-  changeHandler();
+  foundation.handleChange();
   td.verify(mockAdapter.removeClass(MDCSwitchFoundation.cssClasses.CHECKED));
 });
