@@ -133,6 +133,7 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 
 ### `MDCSwitchFoundation` Event Handlers
 If wrapping the switch component it is necessary to add an event handler for native control change events that calls the `handleChange` foundation method. For an example of this, see the [MDCSwitch](index.js) component `initialSyncWithDOM` method.
+
 | Event | Element Selector | Foundation Handler |
 | --- | --- | --- |
 | `change` | `.mdc-switch__native-control` | `handleChange()` |
