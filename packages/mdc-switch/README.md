@@ -110,9 +110,6 @@ Property | Value Type | Description
 
 If you are using a JavaScript framework, such as React or Angular, you can create a switch for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
-## Event Handlers
-If wrapping the switch component it is necessary to add an event handler for native control change events that calls the `handleChange` foundation method. For an example of this, see the [MDCSwitch](index.js) component `initialSyncWithDOM` method.
-
 ### `MDCSwitchAdapter`
 
 | Method Signature | Description |
@@ -133,3 +130,9 @@ If wrapping the switch component it is necessary to add an event handler for nat
 | `isDisabled() => boolean` | Returns whether the native control is disabled. |
 | `setDisabled(disabled: boolean) => void` | Sets the disabled value of the native control and updates styling to reflect the disabled state. |
 | `handleChange() => void` | Handles a change event from the native control. |
+
+### `MDCSwitchFoundation Event Handlers`
+If wrapping the switch component it is necessary to add an event handler for native control change events that calls the `handleChange` foundation method. For an example of this, see the [MDCSwitch](index.js) component `initialSyncWithDOM` method.
+| Event | Element Selector | Foundation Handler|
+| --- | --- | --- |
+| `change` | `.mdc-switch__native-control` | `handleChange()` |
