@@ -117,6 +117,10 @@ class MDCMenuSurfaceAdapter {
 
   /** @return {{ width: number, height: number }} */
   getWindowDimensions() {}
+
+  /** @return {{ width: number, height: number }} */
+  getBodyDimensions() {}
+
   /** @param {{
   *   top: (string|undefined),
   *   right: (string|undefined),

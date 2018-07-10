@@ -68,14 +68,41 @@ class MDCMenuSurface extends MDCComponent {
   }
 
   show() {
-    const fosuableElements = this.root_.querySelectorAll(strings.FOCUSABLE_ELEMENTS);
-    this.firstFocusableElement_ = fosuableElements.length > 0 ? fosuableElements[0] : null;
-    this.lastFocusableElement_ = fosuableElements.length > 0 ? fosuableElements[fosuableElements.length - 1] : null;
+    const focusableElements = this.root_.querySelectorAll(strings.FOCUSABLE_ELEMENTS);
+    this.firstFocusableElement_ = focusableElements.length > 0 ? focusableElements[0] : null;
+    this.lastFocusableElement_ = focusableElements.length > 0 ? focusableElements[focusableElements.length - 1] : null;
     this.foundation_.open();
   }
 
   hide() {
     this.foundation_.close();
+  }
+
+  /**
+   * Removes the menu-surface from it's current location and appends it to the
+   * body to overcome any overflow:hidden issues.
+   */
+  hoistMenuToBody() {
+    document.body.appendChild(this.root_.parentElement.removeChild(this.root_));
+    this.foundation_.setIsHoisted(true);
+  }
+
+  /**
+   * Sets the element that the menu-surface is anchored to.
+   * @param {HTMLElement} element
+   */
+  setMenuSurfaceAnchorElement(element) {
+    this.anchorElement_ = element;
+  }
+
+  /**
+   * Sets the menu-surface to position: fixed.
+   * @param {boolean} isFixed
+   */
+  setFixedPosition(isFixed) {
+    this.root_.classList[isFixed ? 'add' : 'remove'](cssClasses.FIXED);
+    this.foundation_.setIsHoisted(isFixed ? true : this.root_.parentElement === document.body);
+    this.foundation_.setFixedPosition(isFixed);
   }
 
   /**
@@ -175,6 +202,12 @@ class MDCMenuSurface extends MDCComponent {
       getAnchorDimensions: () => this.anchorElement && this.anchorElement.getBoundingClientRect(),
       getWindowDimensions: () => {
         return {width: window.innerWidth, height: window.innerHeight};
+      },
+      getBodyDimensions: () => {
+        return {width: document.body.clientWidth, height: document.body.clientHeight};
+      },
+      getWindowScroll: () => {
+        return {x: window.scrollX, y: window.scrollY};
       },
       setPosition: (position) => {
         this.root_.style.left = 'left' in position ? position.left : null;

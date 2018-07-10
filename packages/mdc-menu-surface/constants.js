@@ -22,6 +22,7 @@ const cssClasses = {
   ANIMATING_OPEN: 'mdc-menu-surface--animating-open',
   ANIMATING_CLOSED: 'mdc-menu-surface--animating-closed',
   ANCHOR: 'mdc-menu-surface--anchor',
+  FIXED: 'mdc-menu-surface--fixed',
 };
 
 /** @enum {string} */

@@ -42,7 +42,7 @@ main {
 }
 
 .demo-controls {
-  width: 420px;
+  width: 500px;
   margin-right: auto;
   margin-left: auto;
 }
@@ -85,6 +85,6 @@ main {
   //TODO(williamernest): The menu surface will flow to the size of it's contained elements, but
   //the menu surface is also constrained by the size of the element that it is in until
   //we hoist it to the body. Setting min-width on the contained element will fix this for now
-  min-width: 200px;
+  width: 200px;
 }
 
