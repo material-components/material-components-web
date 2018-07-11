@@ -18,6 +18,7 @@
 
 const Cli = require('./cli');
 const CloudStorage = require('./cloud-storage');
+const Duration = require('./duration');
 const GitRepo = require('./git-repo');
 const GoldenIo = require('./golden-io');
 const ImageDiffer = require('./image-differ');
@@ -132,6 +133,10 @@ class SeleniumController {
   async compareAllScreenshots(reportData) {
     await this.imageDiffer_.compareAllScreenshots(reportData);
     await this.cloudStorage_.uploadAllDiffs(reportData);
+
+    // TODO(acdvorak): Where should this go?
+    reportData.meta.end_time_iso_utc = new Date().toISOString();
+
     return reportData;
   }
 
@@ -145,6 +150,7 @@ class SeleniumController {
 
     console.log('\nDONE uploading diff report to GCS!\n');
     console.log(reportData.meta.report_html_file.public_url);
+    console.log(`\nRun time: ${Duration.millis(reportData.meta.duration_ms).toHuman()}`);
 
     return reportData;
   }

@@ -173,7 +173,6 @@ class ReportWriter {
   async generateReportPage(fullReportData) {
     const meta = fullReportData.meta;
 
-    meta.end_time_iso_utc = new Date().toISOString();
     meta.duration_ms = new Date(meta.end_time_iso_utc) - new Date(meta.start_time_iso_utc);
 
     // Remove derived data to save bytes (~3 MiB)
