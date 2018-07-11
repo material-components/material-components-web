@@ -224,13 +224,14 @@ message Screenshot {
   InclusionType inclusion_type = 2;
   CaptureState capture_state = 3;
   UserAgent user_agent = 4;
+  string html_file_path = 5;
 
-  TestFile expected_html_file = 5;
-  TestFile actual_html_file = 6;
-  TestFile expected_image_file = 7;
-  TestFile actual_image_file = 8;
-  TestFile diff_image_file = 9;
-  DiffImageResult diff_image_result = 10;
+  TestFile expected_html_file = 6;
+  TestFile actual_html_file = 7;
+  TestFile expected_image_file = 8;
+  TestFile actual_image_file = 9;
+  TestFile diff_image_file = 10;
+  DiffImageResult diff_image_result = 11;
 }
 
 message DiffImageResult {

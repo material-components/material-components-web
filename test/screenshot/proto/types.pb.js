@@ -4991,6 +4991,7 @@ $root.mdc = (function() {
              * @property {mdc.proto.Screenshot.InclusionType|null} [inclusion_type] Screenshot inclusion_type
              * @property {mdc.proto.Screenshot.CaptureState|null} [capture_state] Screenshot capture_state
              * @property {mdc.proto.IUserAgent|null} [user_agent] Screenshot user_agent
+             * @property {string|null} [html_file_path] Screenshot html_file_path
              * @property {mdc.proto.ITestFile|null} [expected_html_file] Screenshot expected_html_file
              * @property {mdc.proto.ITestFile|null} [actual_html_file] Screenshot actual_html_file
              * @property {mdc.proto.ITestFile|null} [expected_image_file] Screenshot expected_image_file
@@ -5045,6 +5046,14 @@ $root.mdc = (function() {
              * @instance
              */
             Screenshot.prototype.user_agent = null;
+
+            /**
+             * Screenshot html_file_path.
+             * @member {string} html_file_path
+             * @memberof mdc.proto.Screenshot
+             * @instance
+             */
+            Screenshot.prototype.html_file_path = "";
 
             /**
              * Screenshot expected_html_file.
@@ -5126,18 +5135,20 @@ $root.mdc = (function() {
                     writer.uint32(/* id 3, wireType 0 =*/24).int32(message.capture_state);
                 if (message.user_agent != null && message.hasOwnProperty("user_agent"))
                     $root.mdc.proto.UserAgent.encode(message.user_agent, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+                if (message.html_file_path != null && message.hasOwnProperty("html_file_path"))
+                    writer.uint32(/* id 5, wireType 2 =*/42).string(message.html_file_path);
                 if (message.expected_html_file != null && message.hasOwnProperty("expected_html_file"))
-                    $root.mdc.proto.TestFile.encode(message.expected_html_file, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
+                    $root.mdc.proto.TestFile.encode(message.expected_html_file, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
                 if (message.actual_html_file != null && message.hasOwnProperty("actual_html_file"))
-                    $root.mdc.proto.TestFile.encode(message.actual_html_file, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
+                    $root.mdc.proto.TestFile.encode(message.actual_html_file, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
                 if (message.expected_image_file != null && message.hasOwnProperty("expected_image_file"))
-                    $root.mdc.proto.TestFile.encode(message.expected_image_file, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
+                    $root.mdc.proto.TestFile.encode(message.expected_image_file, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
                 if (message.actual_image_file != null && message.hasOwnProperty("actual_image_file"))
-                    $root.mdc.proto.TestFile.encode(message.actual_image_file, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
+                    $root.mdc.proto.TestFile.encode(message.actual_image_file, writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
                 if (message.diff_image_file != null && message.hasOwnProperty("diff_image_file"))
-                    $root.mdc.proto.TestFile.encode(message.diff_image_file, writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
+                    $root.mdc.proto.TestFile.encode(message.diff_image_file, writer.uint32(/* id 10, wireType 2 =*/82).fork()).ldelim();
                 if (message.diff_image_result != null && message.hasOwnProperty("diff_image_result"))
-                    $root.mdc.proto.DiffImageResult.encode(message.diff_image_result, writer.uint32(/* id 10, wireType 2 =*/82).fork()).ldelim();
+                    $root.mdc.proto.DiffImageResult.encode(message.diff_image_result, writer.uint32(/* id 11, wireType 2 =*/90).fork()).ldelim();
                 return writer;
             };
 
@@ -5185,21 +5196,24 @@ $root.mdc = (function() {
                         message.user_agent = $root.mdc.proto.UserAgent.decode(reader, reader.uint32());
                         break;
                     case 5:
-                        message.expected_html_file = $root.mdc.proto.TestFile.decode(reader, reader.uint32());
+                        message.html_file_path = reader.string();
                         break;
                     case 6:
-                        message.actual_html_file = $root.mdc.proto.TestFile.decode(reader, reader.uint32());
+                        message.expected_html_file = $root.mdc.proto.TestFile.decode(reader, reader.uint32());
                         break;
                     case 7:
-                        message.expected_image_file = $root.mdc.proto.TestFile.decode(reader, reader.uint32());
+                        message.actual_html_file = $root.mdc.proto.TestFile.decode(reader, reader.uint32());
                         break;
                     case 8:
-                        message.actual_image_file = $root.mdc.proto.TestFile.decode(reader, reader.uint32());
+                        message.expected_image_file = $root.mdc.proto.TestFile.decode(reader, reader.uint32());
                         break;
                     case 9:
-                        message.diff_image_file = $root.mdc.proto.TestFile.decode(reader, reader.uint32());
+                        message.actual_image_file = $root.mdc.proto.TestFile.decode(reader, reader.uint32());
                         break;
                     case 10:
+                        message.diff_image_file = $root.mdc.proto.TestFile.decode(reader, reader.uint32());
+                        break;
+                    case 11:
                         message.diff_image_result = $root.mdc.proto.DiffImageResult.decode(reader, reader.uint32());
                         break;
                     default:
@@ -5268,6 +5282,9 @@ $root.mdc = (function() {
                     if (error)
                         return "user_agent." + error;
                 }
+                if (message.html_file_path != null && message.hasOwnProperty("html_file_path"))
+                    if (!$util.isString(message.html_file_path))
+                        return "html_file_path: string expected";
                 if (message.expected_html_file != null && message.hasOwnProperty("expected_html_file")) {
                     var error = $root.mdc.proto.TestFile.verify(message.expected_html_file);
                     if (error)
@@ -5368,6 +5385,8 @@ $root.mdc = (function() {
                         throw TypeError(".mdc.proto.Screenshot.user_agent: object expected");
                     message.user_agent = $root.mdc.proto.UserAgent.fromObject(object.user_agent);
                 }
+                if (object.html_file_path != null)
+                    message.html_file_path = String(object.html_file_path);
                 if (object.expected_html_file != null) {
                     if (typeof object.expected_html_file !== "object")
                         throw TypeError(".mdc.proto.Screenshot.expected_html_file: object expected");
@@ -5419,6 +5438,7 @@ $root.mdc = (function() {
                     object.inclusion_type = options.enums === String ? "UNKNOWN" : 0;
                     object.capture_state = options.enums === String ? "UNKNOWN" : 0;
                     object.user_agent = null;
+                    object.html_file_path = "";
                     object.expected_html_file = null;
                     object.actual_html_file = null;
                     object.expected_image_file = null;
@@ -5434,6 +5454,8 @@ $root.mdc = (function() {
                     object.capture_state = options.enums === String ? $root.mdc.proto.Screenshot.CaptureState[message.capture_state] : message.capture_state;
                 if (message.user_agent != null && message.hasOwnProperty("user_agent"))
                     object.user_agent = $root.mdc.proto.UserAgent.toObject(message.user_agent, options);
+                if (message.html_file_path != null && message.hasOwnProperty("html_file_path"))
+                    object.html_file_path = message.html_file_path;
                 if (message.expected_html_file != null && message.hasOwnProperty("expected_html_file"))
                     object.expected_html_file = $root.mdc.proto.TestFile.toObject(message.expected_html_file, options);
                 if (message.actual_html_file != null && message.hasOwnProperty("actual_html_file"))

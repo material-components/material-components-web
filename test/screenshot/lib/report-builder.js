@@ -426,7 +426,7 @@ class ReportBuilder {
   groupByPage_(screenshotArray) {
     const pageMap = {};
     screenshotArray.forEach((screenshot) => {
-      const htmlFilePath = (screenshot.actual_html_file || screenshot.expected_html_file).relative_path;
+      const htmlFilePath = screenshot.html_file_path;
       pageMap[htmlFilePath] = pageMap[htmlFilePath] || ScreenshotList.create({screenshots: []});
       pageMap[htmlFilePath].screenshots.push(screenshot);
     });
@@ -449,6 +449,7 @@ class ReportBuilder {
 
     for (const goldenScreenshot of goldenScreenshots) {
       const goldenScreenshotProto = Screenshot.create({
+        html_file_path: goldenScreenshot.html_file_path,
         expected_html_file: TestFile.create({
           public_url: goldenScreenshot.html_file_url,
           relative_path: goldenScreenshot.html_file_path,
@@ -505,6 +506,7 @@ class ReportBuilder {
         allScreenshots.push(Screenshot.create({
           is_runnable: isScreenshotRunnable,
           user_agent: userAgent,
+          html_file_path: htmlFilePath,
           expected_html_file: expectedHtmlFile,
           actual_html_file: actualHtmlFile,
           expected_image_file: expectedImageFile,
@@ -599,7 +601,7 @@ class ReportBuilder {
   findScreenshotForComparison_({screenshots, screenshot}) {
     return screenshots.find((otherScreenshot) => {
       return (
-        otherScreenshot.actual_html_file.relative_path === screenshot.actual_html_file.relative_path &&
+        otherScreenshot.html_file_path === screenshot.html_file_path &&
         otherScreenshot.user_agent.alias === screenshot.user_agent.alias
       );
     });
@@ -614,7 +616,7 @@ class ReportBuilder {
   findScreenshotForApproval_({screenshots, approvalId}) {
     return screenshots.find((otherScreenshot) => {
       return (
-        otherScreenshot.actual_html_file.relative_path === approvalId.html_file_path &&
+        otherScreenshot.html_file_path === approvalId.html_file_path &&
         otherScreenshot.user_agent.alias === approvalId.user_agent_alias
       );
     });
@@ -663,7 +665,7 @@ class ReportBuilder {
    * @private
    */
   compareScreenshotsForSorting_(a, b) {
-    const getHtmlFilePath = (screenshot) => screenshot.actual_html_file.relative_path || '';
+    const getHtmlFilePath = (screenshot) => screenshot.html_file_path || '';
     const getUserAgentAlias = (screenshot) => screenshot.user_agent.alias || '';
 
     return getHtmlFilePath(a).localeCompare(getHtmlFilePath(b), 'en-US') ||
@@ -726,7 +728,9 @@ class ReportBuilder {
     console.log(`${verb} ${count} screenshot${plural}`);
     if (count > 0) {
       for (const screenshot of screenshots) {
-        console.log(`  - ${screenshot.actual_html_file.public_url} > ${screenshot.user_agent.alias}`);
+        const htmlFile = screenshot.actual_html_file || screenshot.expected_html_file;
+        const publicUrl = htmlFile.public_url;
+        console.log(`  - ${publicUrl} > ${screenshot.user_agent.alias}`);
       }
     }
     console.log();

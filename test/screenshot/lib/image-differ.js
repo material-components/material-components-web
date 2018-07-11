@@ -92,7 +92,7 @@ class ImageDiffer {
   groupByPage_(screenshotArray) {
     const pageMap = {};
     screenshotArray.forEach((screenshot) => {
-      const htmlFilePath = (screenshot.actual_html_file || screenshot.expected_html_file).relative_path;
+      const htmlFilePath = screenshot.html_file_path;
       pageMap[htmlFilePath] = pageMap[htmlFilePath] || ScreenshotList.create({screenshots: []});
       pageMap[htmlFilePath].screenshots.push(screenshot);
     });
@@ -119,7 +119,7 @@ class ImageDiffer {
   logComparisonResultSet_(title, screenshots) {
     console.log(`${title} ${screenshots.length} screenshot${screenshots.length === 1 ? '' : 's'}:`);
     for (const screenshot of screenshots) {
-      console.log(`  - ${screenshot.actual_html_file.relative_path} > ${screenshot.user_agent.alias}`);
+      console.log(`  - ${screenshot.html_file_path} > ${screenshot.user_agent.alias}`);
     }
     console.log('');
   }

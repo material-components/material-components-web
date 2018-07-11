@@ -174,7 +174,7 @@ class ReportWriter {
     const meta = fullReportData.meta;
 
     meta.end_time_iso_utc = new Date().toISOString();
-    meta.duration_ms = meta.end_time_iso_utc - meta.start_time_iso_utc;
+    meta.duration_ms = new Date(meta.end_time_iso_utc) - new Date(meta.start_time_iso_utc);
 
     // Remove derived data to save bytes (~3 MiB)
     // TODO(acdvorak): Make sure the report page and `screenshot:approve` don't need this data.
