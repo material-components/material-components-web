@@ -22,6 +22,7 @@ const proto = require('../proto/types.pb').mdc.proto;
 const {TestFile} = proto;
 
 const LocalStorage = require('./local-storage');
+const {TEST_DIR_RELATIVE_PATH} = require('../lib/constants');
 
 const GITHUB_REPO_URL = 'https://github.com/material-components/material-components-web';
 
@@ -32,7 +33,9 @@ class ReportWriter {
      * @private
      */
     this.localStorage_ = new LocalStorage();
+
     this.registerHelpers_();
+    this.registerPartials_();
   }
 
   /** @private */
@@ -44,10 +47,30 @@ class ReportWriter {
       getPageTitle: function() {
         return self.getPageTitle_(this);
       },
+      stringify: function() {
+        return self.stringify_(this);
+      },
     };
 
     for (const [name, helper] of Object.entries(helpers)) {
       Handlebars.registerHelper(name, helper);
+    }
+  }
+
+  /** @private */
+  registerPartials_() {
+    const partialFilePaths = this.localStorage_.glob(path.join(TEST_DIR_RELATIVE_PATH, 'report/_*.hbs'));
+    for (const partialFilePath of partialFilePaths) {
+      // TODO(acdvorak): What about hyphen/dash characters?
+      const name = path.basename(partialFilePath)
+        .replace(/^_/, '') // Remove leading underscore
+        .replace(/\.\w+$/, '') // Remove file extension
+      ;
+      const content = this.localStorage_.readTextFileSync(partialFilePath);
+
+      console.log(`Registering Handlebars partial "${name}"`);
+
+      Handlebars.registerPartial(name, content);
     }
   }
 

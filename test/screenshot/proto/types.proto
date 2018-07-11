@@ -233,6 +233,7 @@ message Screenshot {
 }
 
 message ImageDiffResult {
+  // TODO(acdvorak): Move the `file` field to `Screenshot`?
   TestFile diff_image_file = 1;
   uint64 diff_pixel_count = 2;
   double diff_pixel_fraction = 3;

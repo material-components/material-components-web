@@ -96,8 +96,25 @@ class LocalStorage {
    * @param {string} filePath
    * @return {!Promise<string>}
    */
+  readTextFileSync(filePath) {
+    return fs.readFileSync(filePath, {encoding: 'utf8'});
+  }
+
+  /**
+   * @param {string} filePath
+   * @return {!Promise<string>}
+   */
   async readBinaryFile(filePath) {
     return fs.readFile(filePath, {encoding: null});
+  }
+
+  /**
+   * @param {string} pattern
+   * @param {string=} cwd
+   * @return {!Array<string>}
+   */
+  glob(pattern, cwd = process.cwd()) {
+    return glob.sync(pattern, {cwd, nodir: true});
   }
 
   /**

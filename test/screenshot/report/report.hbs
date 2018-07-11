@@ -12,6 +12,21 @@
       <a href="https://github.com/material-components/material-components-web" target="_blank">MDC Web</a>
     </h1>
 
+    <div>
+      {{> collection heading="Changed" screenshots=screenshots.changed_screenshot_list}}
+      {{> collection heading="Added" screenshots=screenshots.added_screenshot_list}}
+      {{> collection heading="Removed" screenshots=screenshots.removed_screenshot_list}}
+      {{> collection heading="Skipped" screenshots=screenshots.skipped_screenshot_list}}
+      {{> collection heading="Unchanged" screenshots=screenshots.unchanged_screenshot_list}}
+    </div>
+
+    <details>
+      <summary>Raw JSON data</summary>
+      <div>
+        <pre>{{stringify}}</pre>
+      </div>
+    </details>
+
     <!-- TODO(acdvorak): Download clipboard.min.js to the repo instead of using a CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
     <script src="./report.js"></script>
