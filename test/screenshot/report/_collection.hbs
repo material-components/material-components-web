@@ -1,9 +1,22 @@
-<details class="report-collection" open>
-  <summary class="report-collection__heading">{{screenshotArray.length}} {{heading}}</summary>
+<details class="report-collection"{{#if isOpenByDefault}} open{{/if}}>
+  <summary class="report-collection__heading">
+    {{#if showApprovalCheckboxes}}
+      <input type="checkbox" class="report-collection__checkbox" checked>
+    {{else}}
+      <input type="checkbox" class="report-collection__checkbox report-collection__checkbox--hidden">
+    {{/if}}
+    {{screenshotArray.length}} {{heading}}
+  </summary>
   <div class="report-collection__content">
     {{#forEachTestPage screenshotPageMap}}
       <details class="report-test-page" open>
         <summary class="report-test-page__heading">
+          {{#if ../showApprovalCheckboxes}}
+            <input type="checkbox" class="report-test-page__checkbox" checked>
+          {{else}}
+            <input type="checkbox" class="report-test-page__checkbox report-collection__checkbox--hidden">
+          {{/if}}
+          {{screenshot_array.length}} in
           {{html_file_path}}
           {{getHtmlFileLinks}}
         </summary>
@@ -11,6 +24,11 @@
           {{#each screenshot_array}}
             <details class="report-user-agent" open>
               <summary class="report-user-agent__heading">
+                {{#if ../../showApprovalCheckboxes}}
+                  <input type="checkbox" class="report-user-agent__checkbox" checked>
+                {{else}}
+                  <input type="checkbox" class="report-user-agent__checkbox report-collection__checkbox--hidden">
+                {{/if}}
                 {{user_agent.alias}}
               </summary>
               <div class="report-user-agent__content">
