@@ -51,6 +51,15 @@ class Duration {
   }
 
   /**
+   * @param {!Date|number|string} startDateTime
+   * @param {!Date|number|string} endDateTime
+   * @return {!Duration}
+   */
+  static elapsed(startDateTime, endDateTime) {
+    return Duration.millis(new Date(endDateTime) - new Date(startDateTime));
+  }
+
+  /**
    * @param {number} durationMs
    * @param {number} startTimeMs
    * @return {boolean}
