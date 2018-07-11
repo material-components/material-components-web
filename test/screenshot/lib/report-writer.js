@@ -57,11 +57,45 @@ class ReportWriter {
       getHtmlFileLinks: function() {
         return self.getHtmlFileLinks_(this);
       },
+      getCheckbox: function(...args) {
+        return self.getCheckbox_(...args.slice(0, -1)); // remove hbsOptions arg
+      },
     };
 
     for (const [name, helper] of Object.entries(helpers)) {
       Handlebars.registerHelper(name, helper);
     }
+  }
+
+  /**
+   * @param {string} baseClassName
+   * @param {string} hiddenClassName
+   * @param {boolean} isVisible
+   * @param {string} collectionType
+   * @param {string} htmlFilePath
+   * @param {string} userAgentAlias
+   * @return {!SafeString}
+   * @private
+   */
+  getCheckbox_(baseClassName, hiddenClassName, isVisible, collectionType, htmlFilePath, userAgentAlias) {
+    const classNames = [baseClassName];
+    const attributes = [];
+
+    if (isVisible) {
+      attributes.push('checked');
+    } else {
+      classNames.push(hiddenClassName);
+    }
+
+    attributes.push(`data-collection-type="${collectionType}"`);
+    if (htmlFilePath) {
+      attributes.push(`data-html-file-path="${htmlFilePath}"`);
+    }
+    if (userAgentAlias) {
+      attributes.push(`data-user-agent-alias="${userAgentAlias}"`);
+    }
+
+    return new Handlebars.SafeString(`<input type="checkbox" class="${classNames.join(' ')}" ${attributes.join(' ')}>`);
   }
 
   /**

@@ -1,21 +1,24 @@
 <details class="report-collection"{{#if isOpenByDefault}} open{{/if}}>
   <summary class="report-collection__heading">
-    {{#if showApprovalCheckboxes}}
-      <input type="checkbox" class="report-collection__checkbox" checked>
-    {{else}}
-      <input type="checkbox" class="report-collection__checkbox report-collection__checkbox--hidden">
-    {{/if}}
+    {{getCheckbox
+        "report-collection__checkbox"
+        "report-collection__checkbox--hidden"
+        showApprovalCheckboxes
+        collectionType
+    }}
     {{screenshotArray.length}} {{heading}}
   </summary>
   <div class="report-collection__content">
     {{#forEachTestPage screenshotPageMap}}
       <details class="report-test-page" open>
         <summary class="report-test-page__heading">
-          {{#if ../showApprovalCheckboxes}}
-            <input type="checkbox" class="report-test-page__checkbox" checked>
-          {{else}}
-            <input type="checkbox" class="report-test-page__checkbox report-collection__checkbox--hidden">
-          {{/if}}
+          {{getCheckbox
+              "report-collection__checkbox"
+              "report-collection__checkbox--hidden"
+              ../showApprovalCheckboxes
+              ../collectionType
+              html_file_path
+          }}
           {{screenshot_array.length}} in
           {{html_file_path}}
           {{getHtmlFileLinks}}
@@ -24,11 +27,14 @@
           {{#each screenshot_array}}
             <details class="report-user-agent" open>
               <summary class="report-user-agent__heading">
-                {{#if ../../showApprovalCheckboxes}}
-                  <input type="checkbox" class="report-user-agent__checkbox" checked>
-                {{else}}
-                  <input type="checkbox" class="report-user-agent__checkbox report-collection__checkbox--hidden">
-                {{/if}}
+                {{getCheckbox
+                    "report-collection__checkbox"
+                    "report-collection__checkbox--hidden"
+                    ../../showApprovalCheckboxes
+                    ../../collectionType
+                    ../html_file_path
+                    user_agent.alias
+                }}
                 <img src="{{user_agent.icon_url}}" class="report-user-agent__icon">
                 {{user_agent.alias}}
               </summary>
