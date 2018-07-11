@@ -17,6 +17,7 @@
 'use strict';
 
 const fs = require('mz/fs');
+const fsx = require('fs-extra');
 const glob = require('glob');
 const mkdirp = require('mkdirp');
 const path = require('path');
@@ -115,6 +116,15 @@ class LocalStorage {
    */
   glob(pattern, cwd = process.cwd()) {
     return glob.sync(pattern, {cwd, nodir: true});
+  }
+
+  /**
+   * @param {string} src
+   * @param {string} dest
+   * @return {!Promise<void>}
+   */
+  async copyDir(src, dest) {
+    return fsx.copy(src, dest);
   }
 
   /**

@@ -17,7 +17,7 @@
 'use strict';
 
 const proto = require('../proto/types.pb').mdc.proto;
-const {GoldenScreenshot, GoldenSuite} = proto;
+const {GoldenScreenshot, GoldenSuite, TestFile} = proto;
 
 class GoldenFile {
   /**
@@ -42,6 +42,23 @@ class GoldenFile {
       this.suiteJson_[htmlFilePath].public_url = this.suiteJson_[htmlFilePath]['publicUrl'];
       delete this.suiteJson_[htmlFilePath]['publicUrl'];
     }
+  }
+
+  /**
+   * @param {string} htmlFilePath
+   * @return {?mdc.proto.TestFile}
+   */
+  findHtmlFile(htmlFilePath) {
+    /** @type {?GoldenPage} */
+    const goldenPage = this.suiteJson_[htmlFilePath];
+    if (!goldenPage) {
+      return null;
+    }
+
+    return TestFile.create({
+      relative_path: htmlFilePath,
+      public_url: goldenPage.public_url,
+    });
   }
 
   /**

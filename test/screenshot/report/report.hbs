@@ -12,22 +12,30 @@
       <a href="https://github.com/material-components/material-components-web" target="_blank">MDC Web</a>
     </h1>
 
-    <div>
-      {{> collection heading="Changed" screenshots=screenshots.changed_screenshot_list}}
-      {{> collection heading="Added" screenshots=screenshots.added_screenshot_list}}
-      {{> collection heading="Removed" screenshots=screenshots.removed_screenshot_list}}
-      {{> collection heading="Skipped" screenshots=screenshots.skipped_screenshot_list}}
-      {{> collection heading="Unchanged" screenshots=screenshots.unchanged_screenshot_list}}
-    </div>
+    {{> metadata}}
 
-    <details>
-      <summary>Raw JSON data</summary>
-      <div>
-        <pre>{{stringify}}</pre>
-      </div>
-    </details>
+    {{> collection
+        heading="Changed"
+        screenshotPageMap=screenshots.changed_screenshot_page_map
+        screenshotArray=screenshots.changed_screenshot_list}}
+    {{> collection
+        heading="Added"
+        screenshotPageMap=screenshots.added_screenshot_page_map
+        screenshotArray=screenshots.added_screenshot_list}}
+    {{> collection
+        heading="Removed"
+        screenshotPageMap=screenshots.removed_screenshot_page_map
+        screenshotArray=screenshots.removed_screenshot_list}}
+    {{> collection
+        heading="Skipped"
+        screenshotPageMap=screenshots.skipped_screenshot_page_map
+        screenshotArray=screenshots.skipped_screenshot_list}}
+    {{> collection
+        heading="Unchanged"
+        screenshotPageMap=screenshots.unchanged_screenshot_page_map
+        screenshotArray=screenshots.unchanged_screenshot_list}}
 
-    <!-- TODO(acdvorak): Download clipboard.min.js to the repo instead of using a CDN -->
+    <!-- TODO(acdvorak): Download clipboard.js and browser icons to the repo instead of using a CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
     <script src="./report.js"></script>
   </body>

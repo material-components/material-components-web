@@ -12,9 +12,9 @@ message ReportData {
 }
 
 message ReportMeta {
-  uint64 start_time = 1;
-  uint64 end_time = 2;
-  uint64 duration = 3;
+  string start_time_iso_utc = 1;
+  string end_time_iso_utc = 2;
+  uint64 duration_ms = 3;
 
   // Unique timestamped directory path to prevent collisions between developers.
   string remote_upload_base_dir = 4;
@@ -220,20 +220,20 @@ message Screenshot {
     DIFFED = 5;
   }
 
-  InclusionType inclusion_type = 1;
-  bool is_runnable = 2;
-
+  bool is_runnable = 1;
+  InclusionType inclusion_type = 2;
   CaptureState capture_state = 3;
-  ImageDiffResult image_diff_result = 4;
+  UserAgent user_agent = 4;
 
-  UserAgent user_agent = 5;
-  TestFile test_page_file = 6;
+  TestFile expected_html_file = 5;
+  TestFile actual_html_file = 6;
   TestFile expected_image_file = 7;
   TestFile actual_image_file = 8;
+  TestFile diff_image_file = 9;
+  DiffImageResult diff_image_result = 10;
 }
 
-message ImageDiffResult {
-  // TODO(acdvorak): Move the `file` field to `Screenshot`?
+message DiffImageResult {
   TestFile diff_image_file = 1;
   uint64 diff_pixel_count = 2;
   double diff_pixel_fraction = 3;
@@ -276,4 +276,11 @@ message GoldenScreenshot {
   string user_agent_alias = 3;
   string screenshot_image_path = 4;
   string screenshot_image_url = 5;
+}
+
+message HbsTestPageData {
+  string html_file_path = 1;
+  string expected_html_file_url = 2;
+  string actual_html_file_url = 3;
+  repeated Screenshot screenshot_array = 4;
 }

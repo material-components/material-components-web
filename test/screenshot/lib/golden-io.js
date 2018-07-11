@@ -111,8 +111,8 @@ class GoldenIo {
 
     for (const screenshot of reportData.approvals.changed_screenshot_list) {
       newGoldenFile.setScreenshotImageUrl(GoldenScreenshot.create({
-        html_file_path: screenshot.test_page_file.relative_path,
-        html_file_url: screenshot.test_page_file.public_url,
+        html_file_path: screenshot.actual_html_file.relative_path,
+        html_file_url: screenshot.actual_html_file.public_url,
         user_agent_alias: screenshot.user_agent.alias,
         screenshot_image_path: screenshot.actual_image_file.relative_path,
         screenshot_image_url: screenshot.actual_image_file.public_url,
@@ -121,8 +121,8 @@ class GoldenIo {
 
     for (const screenshot of reportData.approvals.added_screenshot_list) {
       newGoldenFile.setScreenshotImageUrl(GoldenScreenshot.create({
-        html_file_path: screenshot.test_page_file.relative_path,
-        html_file_url: screenshot.test_page_file.public_url,
+        html_file_path: screenshot.actual_html_file.relative_path,
+        html_file_url: screenshot.actual_html_file.public_url,
         user_agent_alias: screenshot.user_agent.alias,
         screenshot_image_path: screenshot.actual_image_file.relative_path,
         screenshot_image_url: screenshot.actual_image_file.public_url,
@@ -131,7 +131,7 @@ class GoldenIo {
 
     for (const screenshot of reportData.approvals.removed_screenshot_list) {
       newGoldenFile.removeScreenshotImageUrl({
-        html_file_path: screenshot.test_page_file.relative_path,
+        html_file_path: screenshot.actual_html_file.relative_path,
         user_agent_alias: screenshot.user_agent.alias,
       });
     }

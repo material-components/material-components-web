@@ -230,8 +230,8 @@ class SeleniumApi {
     const screenshotQueue = reportData.screenshots.runnable_screenshot_browser_map[userAgent.alias].screenshots;
 
     for (const screenshot of screenshotQueue) {
-      const htmlFilePath = screenshot.test_page_file.relative_path;
-      const htmlFileUrl = screenshot.test_page_file.public_url;
+      const htmlFilePath = screenshot.actual_html_file.relative_path;
+      const htmlFileUrl = screenshot.actual_html_file.public_url;
 
       const imageBuffer = await this.capturePageAsPng_({driver, userAgent, url: htmlFileUrl});
 

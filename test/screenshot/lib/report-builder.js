@@ -86,7 +86,7 @@ class ReportBuilder {
   async initForApproval({runReportJsonUrl}) {
     /** @type {!mdc.proto.TestFile} */
     const runReportJsonFile = await this.fileCache_.downloadUrlToDisk(runReportJsonUrl, 'utf8');
-    const reportData = ReportData.create(require(runReportJsonFile.absolute_path));
+    const reportData = ReportData.fromObject(require(runReportJsonFile.absolute_path));
     this.populateApprovals_(reportData);
     return reportData;
   }
@@ -143,8 +143,8 @@ class ReportBuilder {
   async prefetchScreenshotImages_(screenshot) {
     const actualImageFile = screenshot.actual_image_file;
     const expectedImageFile = screenshot.expected_image_file;
-    const testPageFile = screenshot.test_page_file;
-    const diffImageFile = screenshot.image_diff_result ? screenshot.image_diff_result.diff_image_file : null;
+    const testPageFile = screenshot.actual_html_file;
+    const diffImageFile = screenshot.diff_image_result ? screenshot.diff_image_result.diff_image_file : null;
 
     const urls = [
       actualImageFile ? actualImageFile.public_url : null,
@@ -243,7 +243,7 @@ class ReportBuilder {
     const mdcVersionString = require('../../../lerna.json').version;
 
     return ReportMeta.create({
-      start_time: Date.now(),
+      start_time_iso_utc: new Date().toISOString(),
 
       remote_upload_base_url: remoteUploadBaseUrl,
       remote_upload_base_dir: remoteUploadBaseDir,
@@ -402,6 +402,7 @@ class ReportBuilder {
   }
 
   /**
+   * TODO(acdvorak): De-dupe this method with other JS files
    * @param {!Array<!mdc.proto.Screenshot>} screenshotArray
    * @return {!Object<string, !mdc.proto.ScreenshotList>}
    * @private
@@ -417,6 +418,7 @@ class ReportBuilder {
   }
 
   /**
+   * TODO(acdvorak): De-dupe this method with other JS files
    * @param {!Array<!mdc.proto.Screenshot>} screenshotArray
    * @return {!Object<string, !mdc.proto.ScreenshotList>}
    * @private
@@ -424,7 +426,7 @@ class ReportBuilder {
   groupByPage_(screenshotArray) {
     const pageMap = {};
     screenshotArray.forEach((screenshot) => {
-      const htmlFilePath = screenshot.test_page_file.relative_path;
+      const htmlFilePath = (screenshot.actual_html_file || screenshot.expected_html_file).relative_path;
       pageMap[htmlFilePath] = pageMap[htmlFilePath] || ScreenshotList.create({screenshots: []});
       pageMap[htmlFilePath].screenshots.push(screenshot);
     });
@@ -447,7 +449,7 @@ class ReportBuilder {
 
     for (const goldenScreenshot of goldenScreenshots) {
       const goldenScreenshotProto = Screenshot.create({
-        test_page_file: TestFile.create({
+        expected_html_file: TestFile.create({
           public_url: goldenScreenshot.html_file_url,
           relative_path: goldenScreenshot.html_file_path,
           absolute_path: await downloadFileAndGetPath(goldenScreenshot.html_file_url),
@@ -482,7 +484,8 @@ class ReportBuilder {
     for (const htmlFilePath of htmlFilePaths) {
       const isHtmlFileRunnable = this.isRunnableTestPage_(htmlFilePath);
 
-      const testPageFile = TestFile.create({
+      const expectedHtmlFile = goldenFile.findHtmlFile(htmlFilePath);
+      const actualHtmlFile = TestFile.create({
         relative_path: htmlFilePath,
         absolute_path: path.resolve(reportMeta.local_asset_base_dir, htmlFilePath),
         public_url: reportMeta.remote_upload_base_url + reportMeta.remote_upload_base_dir + htmlFilePath,
@@ -500,9 +503,10 @@ class ReportBuilder {
             : null;
 
         allScreenshots.push(Screenshot.create({
-          user_agent: userAgent,
-          test_page_file: testPageFile,
           is_runnable: isScreenshotRunnable,
+          user_agent: userAgent,
+          expected_html_file: expectedHtmlFile,
+          actual_html_file: actualHtmlFile,
           expected_image_file: expectedImageFile,
         }));
       }
@@ -595,7 +599,7 @@ class ReportBuilder {
   findScreenshotForComparison_({screenshots, screenshot}) {
     return screenshots.find((otherScreenshot) => {
       return (
-        otherScreenshot.test_page_file.relative_path === screenshot.test_page_file.relative_path &&
+        otherScreenshot.actual_html_file.relative_path === screenshot.actual_html_file.relative_path &&
         otherScreenshot.user_agent.alias === screenshot.user_agent.alias
       );
     });
@@ -610,7 +614,7 @@ class ReportBuilder {
   findScreenshotForApproval_({screenshots, approvalId}) {
     return screenshots.find((otherScreenshot) => {
       return (
-        otherScreenshot.test_page_file.relative_path === approvalId.html_file_path &&
+        otherScreenshot.actual_html_file.relative_path === approvalId.html_file_path &&
         otherScreenshot.user_agent.alias === approvalId.user_agent_alias
       );
     });
@@ -659,7 +663,7 @@ class ReportBuilder {
    * @private
    */
   compareScreenshotsForSorting_(a, b) {
-    const getHtmlFilePath = (screenshot) => screenshot.test_page_file.relative_path || '';
+    const getHtmlFilePath = (screenshot) => screenshot.actual_html_file.relative_path || '';
     const getUserAgentAlias = (screenshot) => screenshot.user_agent.alias || '';
 
     return getHtmlFilePath(a).localeCompare(getHtmlFilePath(b), 'en-US') ||
@@ -722,7 +726,7 @@ class ReportBuilder {
     console.log(`${verb} ${count} screenshot${plural}`);
     if (count > 0) {
       for (const screenshot of screenshots) {
-        console.log(`  - ${screenshot.test_page_file.public_url} > ${screenshot.user_agent.alias}`);
+        console.log(`  - ${screenshot.actual_html_file.public_url} > ${screenshot.user_agent.alias}`);
       }
     }
     console.log();

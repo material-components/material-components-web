@@ -1,5 +1,27 @@
-<h3>{{heading}}</h3>
-
-{{#each screenshots}}
-  {{> screenshot}}
-{{/each}}
+<details class="report-collection" open>
+  <summary class="report-collection__heading">{{screenshotArray.length}} {{heading}}</summary>
+  <div class="report-collection__content">
+    {{#forEachTestPage screenshotPageMap}}
+      <details class="report-test-page" open>
+        <summary class="report-test-page__heading">
+          {{html_file_path}}
+          {{getHtmlFileLinks}}
+        </summary>
+        <div class="report-test-page__content">
+          {{#each screenshot_array}}
+            <details class="report-user-agent" open>
+              <summary class="report-user-agent__heading">
+                {{user_agent.alias}}
+              </summary>
+              <div class="report-user-agent__content">
+                {{> image expected_image_file}}
+                {{> image diff_image_file}}
+                {{> image actual_image_file}}
+              </div>
+            </details>
+          {{/each}}
+        </div>
+      </details>
+    {{/forEachTestPage}}
+  </div>
+</details>

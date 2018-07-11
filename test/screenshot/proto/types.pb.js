@@ -307,9 +307,9 @@ $root.mdc = (function() {
              * Properties of a ReportMeta.
              * @memberof mdc.proto
              * @interface IReportMeta
-             * @property {number|Long|null} [start_time] ReportMeta start_time
-             * @property {number|Long|null} [end_time] ReportMeta end_time
-             * @property {number|Long|null} [duration] ReportMeta duration
+             * @property {string|null} [start_time_iso_utc] ReportMeta start_time_iso_utc
+             * @property {string|null} [end_time_iso_utc] ReportMeta end_time_iso_utc
+             * @property {number|Long|null} [duration_ms] ReportMeta duration_ms
              * @property {string|null} [remote_upload_base_dir] ReportMeta remote_upload_base_dir
              * @property {string|null} [remote_upload_base_url] ReportMeta remote_upload_base_url
              * @property {string|null} [local_asset_base_dir] ReportMeta local_asset_base_dir
@@ -344,28 +344,28 @@ $root.mdc = (function() {
             }
 
             /**
-             * ReportMeta start_time.
-             * @member {number|Long} start_time
+             * ReportMeta start_time_iso_utc.
+             * @member {string} start_time_iso_utc
              * @memberof mdc.proto.ReportMeta
              * @instance
              */
-            ReportMeta.prototype.start_time = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+            ReportMeta.prototype.start_time_iso_utc = "";
 
             /**
-             * ReportMeta end_time.
-             * @member {number|Long} end_time
+             * ReportMeta end_time_iso_utc.
+             * @member {string} end_time_iso_utc
              * @memberof mdc.proto.ReportMeta
              * @instance
              */
-            ReportMeta.prototype.end_time = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+            ReportMeta.prototype.end_time_iso_utc = "";
 
             /**
-             * ReportMeta duration.
-             * @member {number|Long} duration
+             * ReportMeta duration_ms.
+             * @member {number|Long} duration_ms
              * @memberof mdc.proto.ReportMeta
              * @instance
              */
-            ReportMeta.prototype.duration = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+            ReportMeta.prototype.duration_ms = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
 
             /**
              * ReportMeta remote_upload_base_dir.
@@ -519,12 +519,12 @@ $root.mdc = (function() {
             ReportMeta.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.start_time != null && message.hasOwnProperty("start_time"))
-                    writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.start_time);
-                if (message.end_time != null && message.hasOwnProperty("end_time"))
-                    writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.end_time);
-                if (message.duration != null && message.hasOwnProperty("duration"))
-                    writer.uint32(/* id 3, wireType 0 =*/24).uint64(message.duration);
+                if (message.start_time_iso_utc != null && message.hasOwnProperty("start_time_iso_utc"))
+                    writer.uint32(/* id 1, wireType 2 =*/10).string(message.start_time_iso_utc);
+                if (message.end_time_iso_utc != null && message.hasOwnProperty("end_time_iso_utc"))
+                    writer.uint32(/* id 2, wireType 2 =*/18).string(message.end_time_iso_utc);
+                if (message.duration_ms != null && message.hasOwnProperty("duration_ms"))
+                    writer.uint32(/* id 3, wireType 0 =*/24).uint64(message.duration_ms);
                 if (message.remote_upload_base_dir != null && message.hasOwnProperty("remote_upload_base_dir"))
                     writer.uint32(/* id 4, wireType 2 =*/34).string(message.remote_upload_base_dir);
                 if (message.remote_upload_base_url != null && message.hasOwnProperty("remote_upload_base_url"))
@@ -592,13 +592,13 @@ $root.mdc = (function() {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
                     case 1:
-                        message.start_time = reader.uint64();
+                        message.start_time_iso_utc = reader.string();
                         break;
                     case 2:
-                        message.end_time = reader.uint64();
+                        message.end_time_iso_utc = reader.string();
                         break;
                     case 3:
-                        message.duration = reader.uint64();
+                        message.duration_ms = reader.uint64();
                         break;
                     case 4:
                         message.remote_upload_base_dir = reader.string();
@@ -683,15 +683,15 @@ $root.mdc = (function() {
             ReportMeta.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
-                if (message.start_time != null && message.hasOwnProperty("start_time"))
-                    if (!$util.isInteger(message.start_time) && !(message.start_time && $util.isInteger(message.start_time.low) && $util.isInteger(message.start_time.high)))
-                        return "start_time: integer|Long expected";
-                if (message.end_time != null && message.hasOwnProperty("end_time"))
-                    if (!$util.isInteger(message.end_time) && !(message.end_time && $util.isInteger(message.end_time.low) && $util.isInteger(message.end_time.high)))
-                        return "end_time: integer|Long expected";
-                if (message.duration != null && message.hasOwnProperty("duration"))
-                    if (!$util.isInteger(message.duration) && !(message.duration && $util.isInteger(message.duration.low) && $util.isInteger(message.duration.high)))
-                        return "duration: integer|Long expected";
+                if (message.start_time_iso_utc != null && message.hasOwnProperty("start_time_iso_utc"))
+                    if (!$util.isString(message.start_time_iso_utc))
+                        return "start_time_iso_utc: string expected";
+                if (message.end_time_iso_utc != null && message.hasOwnProperty("end_time_iso_utc"))
+                    if (!$util.isString(message.end_time_iso_utc))
+                        return "end_time_iso_utc: string expected";
+                if (message.duration_ms != null && message.hasOwnProperty("duration_ms"))
+                    if (!$util.isInteger(message.duration_ms) && !(message.duration_ms && $util.isInteger(message.duration_ms.low) && $util.isInteger(message.duration_ms.high)))
+                        return "duration_ms: integer|Long expected";
                 if (message.remote_upload_base_dir != null && message.hasOwnProperty("remote_upload_base_dir"))
                     if (!$util.isString(message.remote_upload_base_dir))
                         return "remote_upload_base_dir: string expected";
@@ -769,33 +769,19 @@ $root.mdc = (function() {
                 if (object instanceof $root.mdc.proto.ReportMeta)
                     return object;
                 var message = new $root.mdc.proto.ReportMeta();
-                if (object.start_time != null)
+                if (object.start_time_iso_utc != null)
+                    message.start_time_iso_utc = String(object.start_time_iso_utc);
+                if (object.end_time_iso_utc != null)
+                    message.end_time_iso_utc = String(object.end_time_iso_utc);
+                if (object.duration_ms != null)
                     if ($util.Long)
-                        (message.start_time = $util.Long.fromValue(object.start_time)).unsigned = true;
-                    else if (typeof object.start_time === "string")
-                        message.start_time = parseInt(object.start_time, 10);
-                    else if (typeof object.start_time === "number")
-                        message.start_time = object.start_time;
-                    else if (typeof object.start_time === "object")
-                        message.start_time = new $util.LongBits(object.start_time.low >>> 0, object.start_time.high >>> 0).toNumber(true);
-                if (object.end_time != null)
-                    if ($util.Long)
-                        (message.end_time = $util.Long.fromValue(object.end_time)).unsigned = true;
-                    else if (typeof object.end_time === "string")
-                        message.end_time = parseInt(object.end_time, 10);
-                    else if (typeof object.end_time === "number")
-                        message.end_time = object.end_time;
-                    else if (typeof object.end_time === "object")
-                        message.end_time = new $util.LongBits(object.end_time.low >>> 0, object.end_time.high >>> 0).toNumber(true);
-                if (object.duration != null)
-                    if ($util.Long)
-                        (message.duration = $util.Long.fromValue(object.duration)).unsigned = true;
-                    else if (typeof object.duration === "string")
-                        message.duration = parseInt(object.duration, 10);
-                    else if (typeof object.duration === "number")
-                        message.duration = object.duration;
-                    else if (typeof object.duration === "object")
-                        message.duration = new $util.LongBits(object.duration.low >>> 0, object.duration.high >>> 0).toNumber(true);
+                        (message.duration_ms = $util.Long.fromValue(object.duration_ms)).unsigned = true;
+                    else if (typeof object.duration_ms === "string")
+                        message.duration_ms = parseInt(object.duration_ms, 10);
+                    else if (typeof object.duration_ms === "number")
+                        message.duration_ms = object.duration_ms;
+                    else if (typeof object.duration_ms === "object")
+                        message.duration_ms = new $util.LongBits(object.duration_ms.low >>> 0, object.duration_ms.high >>> 0).toNumber(true);
                 if (object.remote_upload_base_dir != null)
                     message.remote_upload_base_dir = String(object.remote_upload_base_dir);
                 if (object.remote_upload_base_url != null)
@@ -866,21 +852,13 @@ $root.mdc = (function() {
                     options = {};
                 var object = {};
                 if (options.defaults) {
+                    object.start_time_iso_utc = "";
+                    object.end_time_iso_utc = "";
                     if ($util.Long) {
                         var long = new $util.Long(0, 0, true);
-                        object.start_time = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                        object.duration_ms = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
                     } else
-                        object.start_time = options.longs === String ? "0" : 0;
-                    if ($util.Long) {
-                        var long = new $util.Long(0, 0, true);
-                        object.end_time = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                    } else
-                        object.end_time = options.longs === String ? "0" : 0;
-                    if ($util.Long) {
-                        var long = new $util.Long(0, 0, true);
-                        object.duration = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                    } else
-                        object.duration = options.longs === String ? "0" : 0;
+                        object.duration_ms = options.longs === String ? "0" : 0;
                     object.remote_upload_base_dir = "";
                     object.remote_upload_base_url = "";
                     object.local_asset_base_dir = "";
@@ -898,21 +876,15 @@ $root.mdc = (function() {
                     object.report_html_file = null;
                     object.report_json_file = null;
                 }
-                if (message.start_time != null && message.hasOwnProperty("start_time"))
-                    if (typeof message.start_time === "number")
-                        object.start_time = options.longs === String ? String(message.start_time) : message.start_time;
+                if (message.start_time_iso_utc != null && message.hasOwnProperty("start_time_iso_utc"))
+                    object.start_time_iso_utc = message.start_time_iso_utc;
+                if (message.end_time_iso_utc != null && message.hasOwnProperty("end_time_iso_utc"))
+                    object.end_time_iso_utc = message.end_time_iso_utc;
+                if (message.duration_ms != null && message.hasOwnProperty("duration_ms"))
+                    if (typeof message.duration_ms === "number")
+                        object.duration_ms = options.longs === String ? String(message.duration_ms) : message.duration_ms;
                     else
-                        object.start_time = options.longs === String ? $util.Long.prototype.toString.call(message.start_time) : options.longs === Number ? new $util.LongBits(message.start_time.low >>> 0, message.start_time.high >>> 0).toNumber(true) : message.start_time;
-                if (message.end_time != null && message.hasOwnProperty("end_time"))
-                    if (typeof message.end_time === "number")
-                        object.end_time = options.longs === String ? String(message.end_time) : message.end_time;
-                    else
-                        object.end_time = options.longs === String ? $util.Long.prototype.toString.call(message.end_time) : options.longs === Number ? new $util.LongBits(message.end_time.low >>> 0, message.end_time.high >>> 0).toNumber(true) : message.end_time;
-                if (message.duration != null && message.hasOwnProperty("duration"))
-                    if (typeof message.duration === "number")
-                        object.duration = options.longs === String ? String(message.duration) : message.duration;
-                    else
-                        object.duration = options.longs === String ? $util.Long.prototype.toString.call(message.duration) : options.longs === Number ? new $util.LongBits(message.duration.low >>> 0, message.duration.high >>> 0).toNumber(true) : message.duration;
+                        object.duration_ms = options.longs === String ? $util.Long.prototype.toString.call(message.duration_ms) : options.longs === Number ? new $util.LongBits(message.duration_ms.low >>> 0, message.duration_ms.high >>> 0).toNumber(true) : message.duration_ms;
                 if (message.remote_upload_base_dir != null && message.hasOwnProperty("remote_upload_base_dir"))
                     object.remote_upload_base_dir = message.remote_upload_base_dir;
                 if (message.remote_upload_base_url != null && message.hasOwnProperty("remote_upload_base_url"))
@@ -5015,14 +4987,16 @@ $root.mdc = (function() {
              * Properties of a Screenshot.
              * @memberof mdc.proto
              * @interface IScreenshot
-             * @property {mdc.proto.Screenshot.InclusionType|null} [inclusion_type] Screenshot inclusion_type
              * @property {boolean|null} [is_runnable] Screenshot is_runnable
+             * @property {mdc.proto.Screenshot.InclusionType|null} [inclusion_type] Screenshot inclusion_type
              * @property {mdc.proto.Screenshot.CaptureState|null} [capture_state] Screenshot capture_state
-             * @property {mdc.proto.IImageDiffResult|null} [image_diff_result] Screenshot image_diff_result
              * @property {mdc.proto.IUserAgent|null} [user_agent] Screenshot user_agent
-             * @property {mdc.proto.ITestFile|null} [test_page_file] Screenshot test_page_file
+             * @property {mdc.proto.ITestFile|null} [expected_html_file] Screenshot expected_html_file
+             * @property {mdc.proto.ITestFile|null} [actual_html_file] Screenshot actual_html_file
              * @property {mdc.proto.ITestFile|null} [expected_image_file] Screenshot expected_image_file
              * @property {mdc.proto.ITestFile|null} [actual_image_file] Screenshot actual_image_file
+             * @property {mdc.proto.ITestFile|null} [diff_image_file] Screenshot diff_image_file
+             * @property {mdc.proto.IDiffImageResult|null} [diff_image_result] Screenshot diff_image_result
              */
 
             /**
@@ -5041,20 +5015,20 @@ $root.mdc = (function() {
             }
 
             /**
-             * Screenshot inclusion_type.
-             * @member {mdc.proto.Screenshot.InclusionType} inclusion_type
-             * @memberof mdc.proto.Screenshot
-             * @instance
-             */
-            Screenshot.prototype.inclusion_type = 0;
-
-            /**
              * Screenshot is_runnable.
              * @member {boolean} is_runnable
              * @memberof mdc.proto.Screenshot
              * @instance
              */
             Screenshot.prototype.is_runnable = false;
+
+            /**
+             * Screenshot inclusion_type.
+             * @member {mdc.proto.Screenshot.InclusionType} inclusion_type
+             * @memberof mdc.proto.Screenshot
+             * @instance
+             */
+            Screenshot.prototype.inclusion_type = 0;
 
             /**
              * Screenshot capture_state.
@@ -5065,14 +5039,6 @@ $root.mdc = (function() {
             Screenshot.prototype.capture_state = 0;
 
             /**
-             * Screenshot image_diff_result.
-             * @member {mdc.proto.IImageDiffResult|null|undefined} image_diff_result
-             * @memberof mdc.proto.Screenshot
-             * @instance
-             */
-            Screenshot.prototype.image_diff_result = null;
-
-            /**
              * Screenshot user_agent.
              * @member {mdc.proto.IUserAgent|null|undefined} user_agent
              * @memberof mdc.proto.Screenshot
@@ -5081,12 +5047,20 @@ $root.mdc = (function() {
             Screenshot.prototype.user_agent = null;
 
             /**
-             * Screenshot test_page_file.
-             * @member {mdc.proto.ITestFile|null|undefined} test_page_file
+             * Screenshot expected_html_file.
+             * @member {mdc.proto.ITestFile|null|undefined} expected_html_file
              * @memberof mdc.proto.Screenshot
              * @instance
              */
-            Screenshot.prototype.test_page_file = null;
+            Screenshot.prototype.expected_html_file = null;
+
+            /**
+             * Screenshot actual_html_file.
+             * @member {mdc.proto.ITestFile|null|undefined} actual_html_file
+             * @memberof mdc.proto.Screenshot
+             * @instance
+             */
+            Screenshot.prototype.actual_html_file = null;
 
             /**
              * Screenshot expected_image_file.
@@ -5103,6 +5077,22 @@ $root.mdc = (function() {
              * @instance
              */
             Screenshot.prototype.actual_image_file = null;
+
+            /**
+             * Screenshot diff_image_file.
+             * @member {mdc.proto.ITestFile|null|undefined} diff_image_file
+             * @memberof mdc.proto.Screenshot
+             * @instance
+             */
+            Screenshot.prototype.diff_image_file = null;
+
+            /**
+             * Screenshot diff_image_result.
+             * @member {mdc.proto.IDiffImageResult|null|undefined} diff_image_result
+             * @memberof mdc.proto.Screenshot
+             * @instance
+             */
+            Screenshot.prototype.diff_image_result = null;
 
             /**
              * Creates a new Screenshot instance using the specified properties.
@@ -5128,22 +5118,26 @@ $root.mdc = (function() {
             Screenshot.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
-                if (message.inclusion_type != null && message.hasOwnProperty("inclusion_type"))
-                    writer.uint32(/* id 1, wireType 0 =*/8).int32(message.inclusion_type);
                 if (message.is_runnable != null && message.hasOwnProperty("is_runnable"))
-                    writer.uint32(/* id 2, wireType 0 =*/16).bool(message.is_runnable);
+                    writer.uint32(/* id 1, wireType 0 =*/8).bool(message.is_runnable);
+                if (message.inclusion_type != null && message.hasOwnProperty("inclusion_type"))
+                    writer.uint32(/* id 2, wireType 0 =*/16).int32(message.inclusion_type);
                 if (message.capture_state != null && message.hasOwnProperty("capture_state"))
                     writer.uint32(/* id 3, wireType 0 =*/24).int32(message.capture_state);
-                if (message.image_diff_result != null && message.hasOwnProperty("image_diff_result"))
-                    $root.mdc.proto.ImageDiffResult.encode(message.image_diff_result, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
                 if (message.user_agent != null && message.hasOwnProperty("user_agent"))
-                    $root.mdc.proto.UserAgent.encode(message.user_agent, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
-                if (message.test_page_file != null && message.hasOwnProperty("test_page_file"))
-                    $root.mdc.proto.TestFile.encode(message.test_page_file, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
+                    $root.mdc.proto.UserAgent.encode(message.user_agent, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+                if (message.expected_html_file != null && message.hasOwnProperty("expected_html_file"))
+                    $root.mdc.proto.TestFile.encode(message.expected_html_file, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
+                if (message.actual_html_file != null && message.hasOwnProperty("actual_html_file"))
+                    $root.mdc.proto.TestFile.encode(message.actual_html_file, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
                 if (message.expected_image_file != null && message.hasOwnProperty("expected_image_file"))
                     $root.mdc.proto.TestFile.encode(message.expected_image_file, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
                 if (message.actual_image_file != null && message.hasOwnProperty("actual_image_file"))
                     $root.mdc.proto.TestFile.encode(message.actual_image_file, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
+                if (message.diff_image_file != null && message.hasOwnProperty("diff_image_file"))
+                    $root.mdc.proto.TestFile.encode(message.diff_image_file, writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
+                if (message.diff_image_result != null && message.hasOwnProperty("diff_image_result"))
+                    $root.mdc.proto.DiffImageResult.encode(message.diff_image_result, writer.uint32(/* id 10, wireType 2 =*/82).fork()).ldelim();
                 return writer;
             };
 
@@ -5179,28 +5173,34 @@ $root.mdc = (function() {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
                     case 1:
-                        message.inclusion_type = reader.int32();
+                        message.is_runnable = reader.bool();
                         break;
                     case 2:
-                        message.is_runnable = reader.bool();
+                        message.inclusion_type = reader.int32();
                         break;
                     case 3:
                         message.capture_state = reader.int32();
                         break;
                     case 4:
-                        message.image_diff_result = $root.mdc.proto.ImageDiffResult.decode(reader, reader.uint32());
-                        break;
-                    case 5:
                         message.user_agent = $root.mdc.proto.UserAgent.decode(reader, reader.uint32());
                         break;
+                    case 5:
+                        message.expected_html_file = $root.mdc.proto.TestFile.decode(reader, reader.uint32());
+                        break;
                     case 6:
-                        message.test_page_file = $root.mdc.proto.TestFile.decode(reader, reader.uint32());
+                        message.actual_html_file = $root.mdc.proto.TestFile.decode(reader, reader.uint32());
                         break;
                     case 7:
                         message.expected_image_file = $root.mdc.proto.TestFile.decode(reader, reader.uint32());
                         break;
                     case 8:
                         message.actual_image_file = $root.mdc.proto.TestFile.decode(reader, reader.uint32());
+                        break;
+                    case 9:
+                        message.diff_image_file = $root.mdc.proto.TestFile.decode(reader, reader.uint32());
+                        break;
+                    case 10:
+                        message.diff_image_result = $root.mdc.proto.DiffImageResult.decode(reader, reader.uint32());
                         break;
                     default:
                         reader.skipType(tag & 7);
@@ -5237,6 +5237,9 @@ $root.mdc = (function() {
             Screenshot.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
+                if (message.is_runnable != null && message.hasOwnProperty("is_runnable"))
+                    if (typeof message.is_runnable !== "boolean")
+                        return "is_runnable: boolean expected";
                 if (message.inclusion_type != null && message.hasOwnProperty("inclusion_type"))
                     switch (message.inclusion_type) {
                     default:
@@ -5248,9 +5251,6 @@ $root.mdc = (function() {
                     case 4:
                         break;
                     }
-                if (message.is_runnable != null && message.hasOwnProperty("is_runnable"))
-                    if (typeof message.is_runnable !== "boolean")
-                        return "is_runnable: boolean expected";
                 if (message.capture_state != null && message.hasOwnProperty("capture_state"))
                     switch (message.capture_state) {
                     default:
@@ -5263,20 +5263,20 @@ $root.mdc = (function() {
                     case 5:
                         break;
                     }
-                if (message.image_diff_result != null && message.hasOwnProperty("image_diff_result")) {
-                    var error = $root.mdc.proto.ImageDiffResult.verify(message.image_diff_result);
-                    if (error)
-                        return "image_diff_result." + error;
-                }
                 if (message.user_agent != null && message.hasOwnProperty("user_agent")) {
                     var error = $root.mdc.proto.UserAgent.verify(message.user_agent);
                     if (error)
                         return "user_agent." + error;
                 }
-                if (message.test_page_file != null && message.hasOwnProperty("test_page_file")) {
-                    var error = $root.mdc.proto.TestFile.verify(message.test_page_file);
+                if (message.expected_html_file != null && message.hasOwnProperty("expected_html_file")) {
+                    var error = $root.mdc.proto.TestFile.verify(message.expected_html_file);
                     if (error)
-                        return "test_page_file." + error;
+                        return "expected_html_file." + error;
+                }
+                if (message.actual_html_file != null && message.hasOwnProperty("actual_html_file")) {
+                    var error = $root.mdc.proto.TestFile.verify(message.actual_html_file);
+                    if (error)
+                        return "actual_html_file." + error;
                 }
                 if (message.expected_image_file != null && message.hasOwnProperty("expected_image_file")) {
                     var error = $root.mdc.proto.TestFile.verify(message.expected_image_file);
@@ -5287,6 +5287,16 @@ $root.mdc = (function() {
                     var error = $root.mdc.proto.TestFile.verify(message.actual_image_file);
                     if (error)
                         return "actual_image_file." + error;
+                }
+                if (message.diff_image_file != null && message.hasOwnProperty("diff_image_file")) {
+                    var error = $root.mdc.proto.TestFile.verify(message.diff_image_file);
+                    if (error)
+                        return "diff_image_file." + error;
+                }
+                if (message.diff_image_result != null && message.hasOwnProperty("diff_image_result")) {
+                    var error = $root.mdc.proto.DiffImageResult.verify(message.diff_image_result);
+                    if (error)
+                        return "diff_image_result." + error;
                 }
                 return null;
             };
@@ -5303,6 +5313,8 @@ $root.mdc = (function() {
                 if (object instanceof $root.mdc.proto.Screenshot)
                     return object;
                 var message = new $root.mdc.proto.Screenshot();
+                if (object.is_runnable != null)
+                    message.is_runnable = Boolean(object.is_runnable);
                 switch (object.inclusion_type) {
                 case "UNKNOWN":
                 case 0:
@@ -5325,8 +5337,6 @@ $root.mdc = (function() {
                     message.inclusion_type = 4;
                     break;
                 }
-                if (object.is_runnable != null)
-                    message.is_runnable = Boolean(object.is_runnable);
                 switch (object.capture_state) {
                 case "UNKNOWN":
                 case 0:
@@ -5353,20 +5363,20 @@ $root.mdc = (function() {
                     message.capture_state = 5;
                     break;
                 }
-                if (object.image_diff_result != null) {
-                    if (typeof object.image_diff_result !== "object")
-                        throw TypeError(".mdc.proto.Screenshot.image_diff_result: object expected");
-                    message.image_diff_result = $root.mdc.proto.ImageDiffResult.fromObject(object.image_diff_result);
-                }
                 if (object.user_agent != null) {
                     if (typeof object.user_agent !== "object")
                         throw TypeError(".mdc.proto.Screenshot.user_agent: object expected");
                     message.user_agent = $root.mdc.proto.UserAgent.fromObject(object.user_agent);
                 }
-                if (object.test_page_file != null) {
-                    if (typeof object.test_page_file !== "object")
-                        throw TypeError(".mdc.proto.Screenshot.test_page_file: object expected");
-                    message.test_page_file = $root.mdc.proto.TestFile.fromObject(object.test_page_file);
+                if (object.expected_html_file != null) {
+                    if (typeof object.expected_html_file !== "object")
+                        throw TypeError(".mdc.proto.Screenshot.expected_html_file: object expected");
+                    message.expected_html_file = $root.mdc.proto.TestFile.fromObject(object.expected_html_file);
+                }
+                if (object.actual_html_file != null) {
+                    if (typeof object.actual_html_file !== "object")
+                        throw TypeError(".mdc.proto.Screenshot.actual_html_file: object expected");
+                    message.actual_html_file = $root.mdc.proto.TestFile.fromObject(object.actual_html_file);
                 }
                 if (object.expected_image_file != null) {
                     if (typeof object.expected_image_file !== "object")
@@ -5377,6 +5387,16 @@ $root.mdc = (function() {
                     if (typeof object.actual_image_file !== "object")
                         throw TypeError(".mdc.proto.Screenshot.actual_image_file: object expected");
                     message.actual_image_file = $root.mdc.proto.TestFile.fromObject(object.actual_image_file);
+                }
+                if (object.diff_image_file != null) {
+                    if (typeof object.diff_image_file !== "object")
+                        throw TypeError(".mdc.proto.Screenshot.diff_image_file: object expected");
+                    message.diff_image_file = $root.mdc.proto.TestFile.fromObject(object.diff_image_file);
+                }
+                if (object.diff_image_result != null) {
+                    if (typeof object.diff_image_result !== "object")
+                        throw TypeError(".mdc.proto.Screenshot.diff_image_result: object expected");
+                    message.diff_image_result = $root.mdc.proto.DiffImageResult.fromObject(object.diff_image_result);
                 }
                 return message;
             };
@@ -5395,31 +5415,37 @@ $root.mdc = (function() {
                     options = {};
                 var object = {};
                 if (options.defaults) {
-                    object.inclusion_type = options.enums === String ? "UNKNOWN" : 0;
                     object.is_runnable = false;
+                    object.inclusion_type = options.enums === String ? "UNKNOWN" : 0;
                     object.capture_state = options.enums === String ? "UNKNOWN" : 0;
-                    object.image_diff_result = null;
                     object.user_agent = null;
-                    object.test_page_file = null;
+                    object.expected_html_file = null;
+                    object.actual_html_file = null;
                     object.expected_image_file = null;
                     object.actual_image_file = null;
+                    object.diff_image_file = null;
+                    object.diff_image_result = null;
                 }
-                if (message.inclusion_type != null && message.hasOwnProperty("inclusion_type"))
-                    object.inclusion_type = options.enums === String ? $root.mdc.proto.Screenshot.InclusionType[message.inclusion_type] : message.inclusion_type;
                 if (message.is_runnable != null && message.hasOwnProperty("is_runnable"))
                     object.is_runnable = message.is_runnable;
+                if (message.inclusion_type != null && message.hasOwnProperty("inclusion_type"))
+                    object.inclusion_type = options.enums === String ? $root.mdc.proto.Screenshot.InclusionType[message.inclusion_type] : message.inclusion_type;
                 if (message.capture_state != null && message.hasOwnProperty("capture_state"))
                     object.capture_state = options.enums === String ? $root.mdc.proto.Screenshot.CaptureState[message.capture_state] : message.capture_state;
-                if (message.image_diff_result != null && message.hasOwnProperty("image_diff_result"))
-                    object.image_diff_result = $root.mdc.proto.ImageDiffResult.toObject(message.image_diff_result, options);
                 if (message.user_agent != null && message.hasOwnProperty("user_agent"))
                     object.user_agent = $root.mdc.proto.UserAgent.toObject(message.user_agent, options);
-                if (message.test_page_file != null && message.hasOwnProperty("test_page_file"))
-                    object.test_page_file = $root.mdc.proto.TestFile.toObject(message.test_page_file, options);
+                if (message.expected_html_file != null && message.hasOwnProperty("expected_html_file"))
+                    object.expected_html_file = $root.mdc.proto.TestFile.toObject(message.expected_html_file, options);
+                if (message.actual_html_file != null && message.hasOwnProperty("actual_html_file"))
+                    object.actual_html_file = $root.mdc.proto.TestFile.toObject(message.actual_html_file, options);
                 if (message.expected_image_file != null && message.hasOwnProperty("expected_image_file"))
                     object.expected_image_file = $root.mdc.proto.TestFile.toObject(message.expected_image_file, options);
                 if (message.actual_image_file != null && message.hasOwnProperty("actual_image_file"))
                     object.actual_image_file = $root.mdc.proto.TestFile.toObject(message.actual_image_file, options);
+                if (message.diff_image_file != null && message.hasOwnProperty("diff_image_file"))
+                    object.diff_image_file = $root.mdc.proto.TestFile.toObject(message.diff_image_file, options);
+                if (message.diff_image_result != null && message.hasOwnProperty("diff_image_result"))
+                    object.diff_image_result = $root.mdc.proto.DiffImageResult.toObject(message.diff_image_result, options);
                 return object;
             };
 
@@ -5479,27 +5505,27 @@ $root.mdc = (function() {
             return Screenshot;
         })();
 
-        proto.ImageDiffResult = (function() {
+        proto.DiffImageResult = (function() {
 
             /**
-             * Properties of an ImageDiffResult.
+             * Properties of a DiffImageResult.
              * @memberof mdc.proto
-             * @interface IImageDiffResult
-             * @property {mdc.proto.ITestFile|null} [diff_image_file] ImageDiffResult diff_image_file
-             * @property {number|Long|null} [diff_pixel_count] ImageDiffResult diff_pixel_count
-             * @property {number|null} [diff_pixel_fraction] ImageDiffResult diff_pixel_fraction
-             * @property {boolean|null} [has_changed] ImageDiffResult has_changed
+             * @interface IDiffImageResult
+             * @property {mdc.proto.ITestFile|null} [diff_image_file] DiffImageResult diff_image_file
+             * @property {number|Long|null} [diff_pixel_count] DiffImageResult diff_pixel_count
+             * @property {number|null} [diff_pixel_fraction] DiffImageResult diff_pixel_fraction
+             * @property {boolean|null} [has_changed] DiffImageResult has_changed
              */
 
             /**
-             * Constructs a new ImageDiffResult.
+             * Constructs a new DiffImageResult.
              * @memberof mdc.proto
-             * @classdesc Represents an ImageDiffResult.
-             * @implements IImageDiffResult
+             * @classdesc Represents a DiffImageResult.
+             * @implements IDiffImageResult
              * @constructor
-             * @param {mdc.proto.IImageDiffResult=} [properties] Properties to set
+             * @param {mdc.proto.IDiffImageResult=} [properties] Properties to set
              */
-            function ImageDiffResult(properties) {
+            function DiffImageResult(properties) {
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         if (properties[keys[i]] != null)
@@ -5507,59 +5533,59 @@ $root.mdc = (function() {
             }
 
             /**
-             * ImageDiffResult diff_image_file.
+             * DiffImageResult diff_image_file.
              * @member {mdc.proto.ITestFile|null|undefined} diff_image_file
-             * @memberof mdc.proto.ImageDiffResult
+             * @memberof mdc.proto.DiffImageResult
              * @instance
              */
-            ImageDiffResult.prototype.diff_image_file = null;
+            DiffImageResult.prototype.diff_image_file = null;
 
             /**
-             * ImageDiffResult diff_pixel_count.
+             * DiffImageResult diff_pixel_count.
              * @member {number|Long} diff_pixel_count
-             * @memberof mdc.proto.ImageDiffResult
+             * @memberof mdc.proto.DiffImageResult
              * @instance
              */
-            ImageDiffResult.prototype.diff_pixel_count = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+            DiffImageResult.prototype.diff_pixel_count = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
 
             /**
-             * ImageDiffResult diff_pixel_fraction.
+             * DiffImageResult diff_pixel_fraction.
              * @member {number} diff_pixel_fraction
-             * @memberof mdc.proto.ImageDiffResult
+             * @memberof mdc.proto.DiffImageResult
              * @instance
              */
-            ImageDiffResult.prototype.diff_pixel_fraction = 0;
+            DiffImageResult.prototype.diff_pixel_fraction = 0;
 
             /**
-             * ImageDiffResult has_changed.
+             * DiffImageResult has_changed.
              * @member {boolean} has_changed
-             * @memberof mdc.proto.ImageDiffResult
+             * @memberof mdc.proto.DiffImageResult
              * @instance
              */
-            ImageDiffResult.prototype.has_changed = false;
+            DiffImageResult.prototype.has_changed = false;
 
             /**
-             * Creates a new ImageDiffResult instance using the specified properties.
+             * Creates a new DiffImageResult instance using the specified properties.
              * @function create
-             * @memberof mdc.proto.ImageDiffResult
+             * @memberof mdc.proto.DiffImageResult
              * @static
-             * @param {mdc.proto.IImageDiffResult=} [properties] Properties to set
-             * @returns {mdc.proto.ImageDiffResult} ImageDiffResult instance
+             * @param {mdc.proto.IDiffImageResult=} [properties] Properties to set
+             * @returns {mdc.proto.DiffImageResult} DiffImageResult instance
              */
-            ImageDiffResult.create = function create(properties) {
-                return new ImageDiffResult(properties);
+            DiffImageResult.create = function create(properties) {
+                return new DiffImageResult(properties);
             };
 
             /**
-             * Encodes the specified ImageDiffResult message. Does not implicitly {@link mdc.proto.ImageDiffResult.verify|verify} messages.
+             * Encodes the specified DiffImageResult message. Does not implicitly {@link mdc.proto.DiffImageResult.verify|verify} messages.
              * @function encode
-             * @memberof mdc.proto.ImageDiffResult
+             * @memberof mdc.proto.DiffImageResult
              * @static
-             * @param {mdc.proto.IImageDiffResult} message ImageDiffResult message or plain object to encode
+             * @param {mdc.proto.IDiffImageResult} message DiffImageResult message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            ImageDiffResult.encode = function encode(message, writer) {
+            DiffImageResult.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
                 if (message.diff_image_file != null && message.hasOwnProperty("diff_image_file"))
@@ -5574,33 +5600,33 @@ $root.mdc = (function() {
             };
 
             /**
-             * Encodes the specified ImageDiffResult message, length delimited. Does not implicitly {@link mdc.proto.ImageDiffResult.verify|verify} messages.
+             * Encodes the specified DiffImageResult message, length delimited. Does not implicitly {@link mdc.proto.DiffImageResult.verify|verify} messages.
              * @function encodeDelimited
-             * @memberof mdc.proto.ImageDiffResult
+             * @memberof mdc.proto.DiffImageResult
              * @static
-             * @param {mdc.proto.IImageDiffResult} message ImageDiffResult message or plain object to encode
+             * @param {mdc.proto.IDiffImageResult} message DiffImageResult message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            ImageDiffResult.encodeDelimited = function encodeDelimited(message, writer) {
+            DiffImageResult.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
             };
 
             /**
-             * Decodes an ImageDiffResult message from the specified reader or buffer.
+             * Decodes a DiffImageResult message from the specified reader or buffer.
              * @function decode
-             * @memberof mdc.proto.ImageDiffResult
+             * @memberof mdc.proto.DiffImageResult
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
-             * @returns {mdc.proto.ImageDiffResult} ImageDiffResult
+             * @returns {mdc.proto.DiffImageResult} DiffImageResult
              * @throws {Error} If the payload is not a reader or valid buffer
              * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
-            ImageDiffResult.decode = function decode(reader, length) {
+            DiffImageResult.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
                     reader = $Reader.create(reader);
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.mdc.proto.ImageDiffResult();
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.mdc.proto.DiffImageResult();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
@@ -5625,30 +5651,30 @@ $root.mdc = (function() {
             };
 
             /**
-             * Decodes an ImageDiffResult message from the specified reader or buffer, length delimited.
+             * Decodes a DiffImageResult message from the specified reader or buffer, length delimited.
              * @function decodeDelimited
-             * @memberof mdc.proto.ImageDiffResult
+             * @memberof mdc.proto.DiffImageResult
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-             * @returns {mdc.proto.ImageDiffResult} ImageDiffResult
+             * @returns {mdc.proto.DiffImageResult} DiffImageResult
              * @throws {Error} If the payload is not a reader or valid buffer
              * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
-            ImageDiffResult.decodeDelimited = function decodeDelimited(reader) {
+            DiffImageResult.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
                 return this.decode(reader, reader.uint32());
             };
 
             /**
-             * Verifies an ImageDiffResult message.
+             * Verifies a DiffImageResult message.
              * @function verify
-             * @memberof mdc.proto.ImageDiffResult
+             * @memberof mdc.proto.DiffImageResult
              * @static
              * @param {Object.<string,*>} message Plain object to verify
              * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
-            ImageDiffResult.verify = function verify(message) {
+            DiffImageResult.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
                 if (message.diff_image_file != null && message.hasOwnProperty("diff_image_file")) {
@@ -5669,20 +5695,20 @@ $root.mdc = (function() {
             };
 
             /**
-             * Creates an ImageDiffResult message from a plain object. Also converts values to their respective internal types.
+             * Creates a DiffImageResult message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
-             * @memberof mdc.proto.ImageDiffResult
+             * @memberof mdc.proto.DiffImageResult
              * @static
              * @param {Object.<string,*>} object Plain object
-             * @returns {mdc.proto.ImageDiffResult} ImageDiffResult
+             * @returns {mdc.proto.DiffImageResult} DiffImageResult
              */
-            ImageDiffResult.fromObject = function fromObject(object) {
-                if (object instanceof $root.mdc.proto.ImageDiffResult)
+            DiffImageResult.fromObject = function fromObject(object) {
+                if (object instanceof $root.mdc.proto.DiffImageResult)
                     return object;
-                var message = new $root.mdc.proto.ImageDiffResult();
+                var message = new $root.mdc.proto.DiffImageResult();
                 if (object.diff_image_file != null) {
                     if (typeof object.diff_image_file !== "object")
-                        throw TypeError(".mdc.proto.ImageDiffResult.diff_image_file: object expected");
+                        throw TypeError(".mdc.proto.DiffImageResult.diff_image_file: object expected");
                     message.diff_image_file = $root.mdc.proto.TestFile.fromObject(object.diff_image_file);
                 }
                 if (object.diff_pixel_count != null)
@@ -5702,15 +5728,15 @@ $root.mdc = (function() {
             };
 
             /**
-             * Creates a plain object from an ImageDiffResult message. Also converts values to other types if specified.
+             * Creates a plain object from a DiffImageResult message. Also converts values to other types if specified.
              * @function toObject
-             * @memberof mdc.proto.ImageDiffResult
+             * @memberof mdc.proto.DiffImageResult
              * @static
-             * @param {mdc.proto.ImageDiffResult} message ImageDiffResult
+             * @param {mdc.proto.DiffImageResult} message DiffImageResult
              * @param {$protobuf.IConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            ImageDiffResult.toObject = function toObject(message, options) {
+            DiffImageResult.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
                 var object = {};
@@ -5739,17 +5765,17 @@ $root.mdc = (function() {
             };
 
             /**
-             * Converts this ImageDiffResult to JSON.
+             * Converts this DiffImageResult to JSON.
              * @function toJSON
-             * @memberof mdc.proto.ImageDiffResult
+             * @memberof mdc.proto.DiffImageResult
              * @instance
              * @returns {Object.<string,*>} JSON object
              */
-            ImageDiffResult.prototype.toJSON = function toJSON() {
+            DiffImageResult.prototype.toJSON = function toJSON() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
-            return ImageDiffResult;
+            return DiffImageResult;
         })();
 
         proto.TestFile = (function() {
@@ -7338,6 +7364,282 @@ $root.mdc = (function() {
             };
 
             return GoldenScreenshot;
+        })();
+
+        proto.HbsTestPageData = (function() {
+
+            /**
+             * Properties of a HbsTestPageData.
+             * @memberof mdc.proto
+             * @interface IHbsTestPageData
+             * @property {string|null} [html_file_path] HbsTestPageData html_file_path
+             * @property {string|null} [expected_html_file_url] HbsTestPageData expected_html_file_url
+             * @property {string|null} [actual_html_file_url] HbsTestPageData actual_html_file_url
+             * @property {Array.<mdc.proto.IScreenshot>|null} [screenshot_array] HbsTestPageData screenshot_array
+             */
+
+            /**
+             * Constructs a new HbsTestPageData.
+             * @memberof mdc.proto
+             * @classdesc Represents a HbsTestPageData.
+             * @implements IHbsTestPageData
+             * @constructor
+             * @param {mdc.proto.IHbsTestPageData=} [properties] Properties to set
+             */
+            function HbsTestPageData(properties) {
+                this.screenshot_array = [];
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
+            }
+
+            /**
+             * HbsTestPageData html_file_path.
+             * @member {string} html_file_path
+             * @memberof mdc.proto.HbsTestPageData
+             * @instance
+             */
+            HbsTestPageData.prototype.html_file_path = "";
+
+            /**
+             * HbsTestPageData expected_html_file_url.
+             * @member {string} expected_html_file_url
+             * @memberof mdc.proto.HbsTestPageData
+             * @instance
+             */
+            HbsTestPageData.prototype.expected_html_file_url = "";
+
+            /**
+             * HbsTestPageData actual_html_file_url.
+             * @member {string} actual_html_file_url
+             * @memberof mdc.proto.HbsTestPageData
+             * @instance
+             */
+            HbsTestPageData.prototype.actual_html_file_url = "";
+
+            /**
+             * HbsTestPageData screenshot_array.
+             * @member {Array.<mdc.proto.IScreenshot>} screenshot_array
+             * @memberof mdc.proto.HbsTestPageData
+             * @instance
+             */
+            HbsTestPageData.prototype.screenshot_array = $util.emptyArray;
+
+            /**
+             * Creates a new HbsTestPageData instance using the specified properties.
+             * @function create
+             * @memberof mdc.proto.HbsTestPageData
+             * @static
+             * @param {mdc.proto.IHbsTestPageData=} [properties] Properties to set
+             * @returns {mdc.proto.HbsTestPageData} HbsTestPageData instance
+             */
+            HbsTestPageData.create = function create(properties) {
+                return new HbsTestPageData(properties);
+            };
+
+            /**
+             * Encodes the specified HbsTestPageData message. Does not implicitly {@link mdc.proto.HbsTestPageData.verify|verify} messages.
+             * @function encode
+             * @memberof mdc.proto.HbsTestPageData
+             * @static
+             * @param {mdc.proto.IHbsTestPageData} message HbsTestPageData message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            HbsTestPageData.encode = function encode(message, writer) {
+                if (!writer)
+                    writer = $Writer.create();
+                if (message.html_file_path != null && message.hasOwnProperty("html_file_path"))
+                    writer.uint32(/* id 1, wireType 2 =*/10).string(message.html_file_path);
+                if (message.expected_html_file_url != null && message.hasOwnProperty("expected_html_file_url"))
+                    writer.uint32(/* id 2, wireType 2 =*/18).string(message.expected_html_file_url);
+                if (message.actual_html_file_url != null && message.hasOwnProperty("actual_html_file_url"))
+                    writer.uint32(/* id 3, wireType 2 =*/26).string(message.actual_html_file_url);
+                if (message.screenshot_array != null && message.screenshot_array.length)
+                    for (var i = 0; i < message.screenshot_array.length; ++i)
+                        $root.mdc.proto.Screenshot.encode(message.screenshot_array[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+                return writer;
+            };
+
+            /**
+             * Encodes the specified HbsTestPageData message, length delimited. Does not implicitly {@link mdc.proto.HbsTestPageData.verify|verify} messages.
+             * @function encodeDelimited
+             * @memberof mdc.proto.HbsTestPageData
+             * @static
+             * @param {mdc.proto.IHbsTestPageData} message HbsTestPageData message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            HbsTestPageData.encodeDelimited = function encodeDelimited(message, writer) {
+                return this.encode(message, writer).ldelim();
+            };
+
+            /**
+             * Decodes a HbsTestPageData message from the specified reader or buffer.
+             * @function decode
+             * @memberof mdc.proto.HbsTestPageData
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @param {number} [length] Message length if known beforehand
+             * @returns {mdc.proto.HbsTestPageData} HbsTestPageData
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            HbsTestPageData.decode = function decode(reader, length) {
+                if (!(reader instanceof $Reader))
+                    reader = $Reader.create(reader);
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.mdc.proto.HbsTestPageData();
+                while (reader.pos < end) {
+                    var tag = reader.uint32();
+                    switch (tag >>> 3) {
+                    case 1:
+                        message.html_file_path = reader.string();
+                        break;
+                    case 2:
+                        message.expected_html_file_url = reader.string();
+                        break;
+                    case 3:
+                        message.actual_html_file_url = reader.string();
+                        break;
+                    case 4:
+                        if (!(message.screenshot_array && message.screenshot_array.length))
+                            message.screenshot_array = [];
+                        message.screenshot_array.push($root.mdc.proto.Screenshot.decode(reader, reader.uint32()));
+                        break;
+                    default:
+                        reader.skipType(tag & 7);
+                        break;
+                    }
+                }
+                return message;
+            };
+
+            /**
+             * Decodes a HbsTestPageData message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
+             * @memberof mdc.proto.HbsTestPageData
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @returns {mdc.proto.HbsTestPageData} HbsTestPageData
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            HbsTestPageData.decodeDelimited = function decodeDelimited(reader) {
+                if (!(reader instanceof $Reader))
+                    reader = new $Reader(reader);
+                return this.decode(reader, reader.uint32());
+            };
+
+            /**
+             * Verifies a HbsTestPageData message.
+             * @function verify
+             * @memberof mdc.proto.HbsTestPageData
+             * @static
+             * @param {Object.<string,*>} message Plain object to verify
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+             */
+            HbsTestPageData.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
+                if (message.html_file_path != null && message.hasOwnProperty("html_file_path"))
+                    if (!$util.isString(message.html_file_path))
+                        return "html_file_path: string expected";
+                if (message.expected_html_file_url != null && message.hasOwnProperty("expected_html_file_url"))
+                    if (!$util.isString(message.expected_html_file_url))
+                        return "expected_html_file_url: string expected";
+                if (message.actual_html_file_url != null && message.hasOwnProperty("actual_html_file_url"))
+                    if (!$util.isString(message.actual_html_file_url))
+                        return "actual_html_file_url: string expected";
+                if (message.screenshot_array != null && message.hasOwnProperty("screenshot_array")) {
+                    if (!Array.isArray(message.screenshot_array))
+                        return "screenshot_array: array expected";
+                    for (var i = 0; i < message.screenshot_array.length; ++i) {
+                        var error = $root.mdc.proto.Screenshot.verify(message.screenshot_array[i]);
+                        if (error)
+                            return "screenshot_array." + error;
+                    }
+                }
+                return null;
+            };
+
+            /**
+             * Creates a HbsTestPageData message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
+             * @memberof mdc.proto.HbsTestPageData
+             * @static
+             * @param {Object.<string,*>} object Plain object
+             * @returns {mdc.proto.HbsTestPageData} HbsTestPageData
+             */
+            HbsTestPageData.fromObject = function fromObject(object) {
+                if (object instanceof $root.mdc.proto.HbsTestPageData)
+                    return object;
+                var message = new $root.mdc.proto.HbsTestPageData();
+                if (object.html_file_path != null)
+                    message.html_file_path = String(object.html_file_path);
+                if (object.expected_html_file_url != null)
+                    message.expected_html_file_url = String(object.expected_html_file_url);
+                if (object.actual_html_file_url != null)
+                    message.actual_html_file_url = String(object.actual_html_file_url);
+                if (object.screenshot_array) {
+                    if (!Array.isArray(object.screenshot_array))
+                        throw TypeError(".mdc.proto.HbsTestPageData.screenshot_array: array expected");
+                    message.screenshot_array = [];
+                    for (var i = 0; i < object.screenshot_array.length; ++i) {
+                        if (typeof object.screenshot_array[i] !== "object")
+                            throw TypeError(".mdc.proto.HbsTestPageData.screenshot_array: object expected");
+                        message.screenshot_array[i] = $root.mdc.proto.Screenshot.fromObject(object.screenshot_array[i]);
+                    }
+                }
+                return message;
+            };
+
+            /**
+             * Creates a plain object from a HbsTestPageData message. Also converts values to other types if specified.
+             * @function toObject
+             * @memberof mdc.proto.HbsTestPageData
+             * @static
+             * @param {mdc.proto.HbsTestPageData} message HbsTestPageData
+             * @param {$protobuf.IConversionOptions} [options] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            HbsTestPageData.toObject = function toObject(message, options) {
+                if (!options)
+                    options = {};
+                var object = {};
+                if (options.arrays || options.defaults)
+                    object.screenshot_array = [];
+                if (options.defaults) {
+                    object.html_file_path = "";
+                    object.expected_html_file_url = "";
+                    object.actual_html_file_url = "";
+                }
+                if (message.html_file_path != null && message.hasOwnProperty("html_file_path"))
+                    object.html_file_path = message.html_file_path;
+                if (message.expected_html_file_url != null && message.hasOwnProperty("expected_html_file_url"))
+                    object.expected_html_file_url = message.expected_html_file_url;
+                if (message.actual_html_file_url != null && message.hasOwnProperty("actual_html_file_url"))
+                    object.actual_html_file_url = message.actual_html_file_url;
+                if (message.screenshot_array && message.screenshot_array.length) {
+                    object.screenshot_array = [];
+                    for (var j = 0; j < message.screenshot_array.length; ++j)
+                        object.screenshot_array[j] = $root.mdc.proto.Screenshot.toObject(message.screenshot_array[j], options);
+                }
+                return object;
+            };
+
+            /**
+             * Converts this HbsTestPageData to JSON.
+             * @function toJSON
+             * @memberof mdc.proto.HbsTestPageData
+             * @instance
+             * @returns {Object.<string,*>} JSON object
+             */
+            HbsTestPageData.prototype.toJSON = function toJSON() {
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            return HbsTestPageData;
         })();
 
         proto.selenium = (function() {

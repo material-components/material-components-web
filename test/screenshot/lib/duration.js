@@ -27,6 +27,14 @@ class Duration {
   }
 
   /**
+   * @param {number} ms
+   * @return {!Duration}
+   */
+  static millis(ms) {
+    return new Duration(ms);
+  }
+
+  /**
    * @param {number} sec
    * @return {!Duration}
    */

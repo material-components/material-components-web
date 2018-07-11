@@ -23,7 +23,7 @@ const mkdirp = require('mkdirp');
 const path = require('path');
 
 const proto = require('../proto/types.pb').mdc.proto;
-const {ImageDiffResult, Screenshot, ScreenshotList, TestFile} = proto;
+const {DiffImageResult, Screenshot, ScreenshotList, TestFile} = proto;
 const {CaptureState} = Screenshot;
 
 /**
@@ -36,17 +36,18 @@ class ImageDiffer {
    */
   async compareAllScreenshots(reportData) {
     for (const screenshot of reportData.screenshots.comparable_screenshot_list) {
-      /** @type {!mdc.proto.ImageDiffResult} */
-      const imageDiffResult = await this.compareOneImage({
+      /** @type {!mdc.proto.DiffImageResult} */
+      const diffImageResult = await this.compareOneImage({
         reportData,
         actualImageFile: screenshot.actual_image_file,
         expectedImageFile: screenshot.expected_image_file,
       });
 
-      screenshot.image_diff_result = imageDiffResult;
+      screenshot.diff_image_result = diffImageResult;
+      screenshot.diff_image_file = diffImageResult.diff_image_file;
       screenshot.capture_state = CaptureState.DIFFED;
 
-      if (imageDiffResult.has_changed) {
+      if (diffImageResult.has_changed) {
         reportData.screenshots.changed_screenshot_list.push(screenshot);
       } else {
         reportData.screenshots.unchanged_screenshot_list.push(screenshot);
@@ -91,7 +92,7 @@ class ImageDiffer {
   groupByPage_(screenshotArray) {
     const pageMap = {};
     screenshotArray.forEach((screenshot) => {
-      const htmlFilePath = screenshot.test_page_file.relative_path;
+      const htmlFilePath = (screenshot.actual_html_file || screenshot.expected_html_file).relative_path;
       pageMap[htmlFilePath] = pageMap[htmlFilePath] || ScreenshotList.create({screenshots: []});
       pageMap[htmlFilePath].screenshots.push(screenshot);
     });
@@ -118,7 +119,7 @@ class ImageDiffer {
   logComparisonResultSet_(title, screenshots) {
     console.log(`${title} ${screenshots.length} screenshot${screenshots.length === 1 ? '' : 's'}:`);
     for (const screenshot of screenshots) {
-      console.log(`  - ${screenshot.test_page_file.relative_path} > ${screenshot.user_agent.alias}`);
+      console.log(`  - ${screenshot.actual_html_file.relative_path} > ${screenshot.user_agent.alias}`);
     }
     console.log('');
   }
@@ -127,7 +128,7 @@ class ImageDiffer {
    * @param {!mdc.proto.ReportData} reportData
    * @param {!mdc.proto.TestFile} actualImageFile
    * @param {!mdc.proto.TestFile} expectedImageFile
-   * @return {!Promise<!mdc.proto.ImageDiffResult>}
+   * @return {!Promise<!mdc.proto.DiffImageResult>}
    */
   async compareOneImage({reportData, actualImageFile, expectedImageFile}) {
     const reportMeta = reportData.meta;
@@ -147,7 +148,7 @@ class ImageDiffer {
     mkdirp.sync(path.dirname(diffImageFile.absolute_path));
     await fs.writeFile(diffImageFile.absolute_path, diffImageBuffer, {encoding: null});
 
-    return ImageDiffResult.create({
+    return DiffImageResult.create({
       diff_image_file: diffImageFile,
       diff_pixel_count: diffPixelCount,
       diff_pixel_fraction: diffPixelFraction,

@@ -19,8 +19,9 @@ const path = require('path');
 const stringify = require('json-stable-stringify');
 
 const proto = require('../proto/types.pb').mdc.proto;
-const {TestFile} = proto;
+const {HbsTestPageData, ReportData, Screenshots, TestFile} = proto;
 
+const Duration = require('./duration');
 const LocalStorage = require('./local-storage');
 const {TEST_DIR_RELATIVE_PATH} = require('../lib/constants');
 
@@ -47,14 +48,88 @@ class ReportWriter {
       getPageTitle: function() {
         return self.getPageTitle_(this);
       },
-      stringify: function() {
-        return self.stringify_(this);
+      msToHuman: function(ms) {
+        return self.msToHuman_(ms);
+      },
+      forEachTestPage: function(screenshotPageMap, hbsOptions) {
+        return self.forEachTestPage_(screenshotPageMap, hbsOptions.fn);
+      },
+      getHtmlFileLinks: function() {
+        return self.getHtmlFileLinks_(this);
       },
     };
 
     for (const [name, helper] of Object.entries(helpers)) {
       Handlebars.registerHelper(name, helper);
     }
+  }
+
+  /**
+   * @param {!mdc.proto.HbsTestPageData} hbsTestPageData
+   * @return {!SafeString}
+   * @private
+   */
+  getHtmlFileLinks_(hbsTestPageData) {
+    const expectedHtmlFileUrl = hbsTestPageData.expected_html_file_url;
+    const actualHtmlFileUrl = hbsTestPageData.actual_html_file_url;
+    const fragments = [];
+    if (expectedHtmlFileUrl) {
+      fragments.push(`<a href=${expectedHtmlFileUrl}>golden</a>`);
+    }
+    if (actualHtmlFileUrl) {
+      fragments.push(`<a href=${actualHtmlFileUrl}>snapshot</a>`);
+    }
+    return new Handlebars.SafeString(`(${fragments.join(' | ')})`);
+  }
+
+  /* eslint-disable max-len */
+  /**
+   * @param {!Object<string, !mdc.proto.ScreenshotList>} screenshotPageMap
+   * @param {function(context: !mdc.proto.HbsTestPageData): !SafeString} childTemplateFn
+   * @return {!SafeString}
+   * @private
+   */
+  forEachTestPage_(screenshotPageMap, childTemplateFn) {
+    /* eslint-enable max-len */
+    /**
+     * @param {!Array<!mdc.proto.Screenshot>} screenshotArray
+     * @param {string} htmlFilePropertyKey
+     * @return {?string}
+     */
+    const getHtmlFileUrl = (screenshotArray, htmlFilePropertyKey) => {
+      const [firstScreenshot] = screenshotArray;
+      if (!firstScreenshot) {
+        return null;
+      }
+      const htmlFile = firstScreenshot[htmlFilePropertyKey];
+      if (!htmlFile) {
+        return null;
+      }
+      return htmlFile.public_url;
+    };
+
+    let html = '';
+    for (const [htmlFilePath, screenshotList] of Object.entries(screenshotPageMap)) {
+      const expectedHtmlFileUrl = getHtmlFileUrl(screenshotList.screenshots, 'expected_html_file');
+      const actualHtmlFileUrl = getHtmlFileUrl(screenshotList.screenshots, 'actual_html_file');
+
+      html += childTemplateFn(HbsTestPageData.create({
+        html_file_path: htmlFilePath,
+        expected_html_file_url: expectedHtmlFileUrl,
+        actual_html_file_url: actualHtmlFileUrl,
+        screenshot_array: screenshotList.screenshots,
+      }));
+    }
+    return new Handlebars.SafeString(html);
+  }
+
+  /**
+   * @param {number} ms
+   * @return {string}
+   * @private
+   */
+  msToHuman_(ms) {
+    return Duration.millis(ms).toHuman();
   }
 
   /** @private */
@@ -67,9 +142,6 @@ class ReportWriter {
         .replace(/\.\w+$/, '') // Remove file extension
       ;
       const content = this.localStorage_.readTextFileSync(partialFilePath);
-
-      console.log(`Registering Handlebars partial "${name}"`);
-
       Handlebars.registerPartial(name, content);
     }
   }
@@ -95,11 +167,25 @@ class ReportWriter {
   }
 
   /**
-   * @param {!mdc.proto.ReportData} reportData
+   * @param {!mdc.proto.ReportData} fullReportData
    * @return {!Promise<void>}
    */
-  async generateReportPage(reportData) {
-    const meta = reportData.meta;
+  async generateReportPage(fullReportData) {
+    const meta = fullReportData.meta;
+
+    meta.end_time_iso_utc = new Date().toISOString();
+    meta.duration_ms = meta.end_time_iso_utc - meta.start_time_iso_utc;
+
+    // Remove derived data to save bytes (~3 MiB)
+    // TODO(acdvorak): Make sure the report page and `screenshot:approve` don't need this data.
+    const slimReportData = ReportData.create(fullReportData);
+    slimReportData.screenshots = Screenshots.create({
+      changed_screenshot_list: slimReportData.screenshots.changed_screenshot_list,
+      unchanged_screenshot_list: slimReportData.screenshots.unchanged_screenshot_list,
+      skipped_screenshot_list: slimReportData.screenshots.skipped_screenshot_list,
+      added_screenshot_list: slimReportData.screenshots.added_screenshot_list,
+      removed_screenshot_list: slimReportData.screenshots.removed_screenshot_list,
+    });
 
     const templateFileRelativePath = 'report/report.hbs';
     const htmlFileRelativePath = 'report/report.html';
@@ -127,8 +213,8 @@ class ReportWriter {
     meta.report_html_file = reportHtmlFile;
     meta.report_json_file = reportJsonFile;
 
-    const jsonFileContent = this.stringify_(reportData);
-    const htmlFileContent = await this.generateHtml_(reportData, templateFileAbsolutePath);
+    const jsonFileContent = this.stringify_(slimReportData);
+    const htmlFileContent = await this.generateHtml_(fullReportData, templateFileAbsolutePath);
 
     await this.localStorage_.writeTextFile(jsonFileAbsolutePath, jsonFileContent);
     await this.localStorage_.writeTextFile(htmlFileAbsolutePath, htmlFileContent);
