@@ -1,5 +1,5 @@
 //
-// Copyright 2016 Google Inc. All Rights Reserved.
+// Copyright 2018 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,3 +13,117 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
+
+@import "@material/elevation/mixins";
+@import "@material/rtl/mixins";
+@import "@material/ripple/common";
+@import "@material/ripple/mixins";
+@import "./functions";
+@import "./mixins";
+@import "./variables";
+
+.mdc-switch {
+  @include mdc-switch-toggled-on-track-color($mdc-switch-baseline-theme-color);
+  @include mdc-switch-toggled-on-thumb-color($mdc-switch-baseline-theme-color);
+  @include mdc-switch-toggled-off-track-color($mdc-switch-toggled-off-track-color);
+  @include mdc-switch-toggled-off-thumb-color($mdc-switch-toggled-off-thumb-color);
+  @include mdc-switch-toggled-off-ripple-color($mdc-switch-toggled-off-ripple-color);
+
+  display: inline-block;
+  position: relative;
+  outline: none;
+  user-select: none;
+}
+
+.mdc-switch__native-control {
+  @include mdc-rtl-reflexive-position(left, -24px);
+
+  position: absolute;
+  width: $mdc-switch-native-control-width;
+  height: $mdc-switch-tap-target-size;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.mdc-switch__track {
+  box-sizing: border-box;
+  width: $mdc-switch-track-width;
+  height: $mdc-switch-track-height;
+  transition:
+    mdc-switch-transition(opacity),
+    mdc-switch-transition(background-color),
+    mdc-switch-transition(border-color);
+  border: 1px solid;
+  border-radius: $mdc-switch-track-height / 2;
+  opacity: .38;
+}
+
+.mdc-switch__thumb-underlay {
+  @include mdc-rtl-reflexive-position(left, -14px);
+  @include mdc-ripple-surface();
+  @include mdc-ripple-radius-unbounded;
+  @include mdc-states(
+    $mdc-switch-baseline-theme-color,
+    $has-nested-focusable-element: true);
+
+  display: flex;
+  position: absolute;
+  // Ensures the knob is centered on the track.
+  top: -($mdc-switch-track-height / 2 + $mdc-switch-thumb-diameter / 2);
+  align-items: center;
+  justify-content: center;
+  width: $mdc-switch-tap-target-size;
+  height: $mdc-switch-tap-target-size;
+  transform: translateX(0);
+  transition:
+    mdc-switch-transition(transform),
+    mdc-switch-transition(background-color),
+    mdc-switch-transition(border-color);
+}
+
+.mdc-switch__thumb {
+  @include mdc-elevation(2);
+
+  display: flex;
+  position: absolute;
+  align-items: center;
+  box-sizing: border-box;
+  width: $mdc-switch-thumb-diameter;
+  height: $mdc-switch-thumb-diameter;
+  border: $mdc-switch-thumb-diameter / 2 solid;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.mdc-switch--checked {
+  .mdc-switch__track {
+    opacity: .54;
+  }
+
+  .mdc-switch__thumb-underlay {
+    transform: translateX($mdc-switch-thumb-active-margin);
+
+    @include mdc-rtl {
+      transform: translateX(-($mdc-switch-thumb-active-margin));
+    }
+  }
+
+  // Translate the native control the opposite direction so that the tap target stays the same.
+  .mdc-switch__native-control {
+    transform: translateX(-($mdc-switch-thumb-active-margin));
+
+    @include mdc-rtl {
+      transform: translateX($mdc-switch-thumb-active-margin);
+    }
+  }
+}
+
+.mdc-switch--disabled {
+  opacity: .38;
+  cursor: default;
+  pointer-events: none;
+
+  .mdc-switch__thumb {
+    border-width: 1px;  // In high contrast mode, only show outline of knob.
+  }
+}

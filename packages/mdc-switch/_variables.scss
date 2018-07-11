@@ -1,5 +1,5 @@
 //
-// Copyright 2016 Google Inc. All Rights Reserved.
+// Copyright 2018 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,3 +13,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
+
+@import "@material/theme/variables";
+
+$mdc-switch-track-width: 32px;
+$mdc-switch-track-height: 14px;
+$mdc-switch-thumb-diameter: 20px;
+$mdc-switch-tap-target-size: 48px;
+$mdc-switch-native-control-width: $mdc-switch-track-width + ($mdc-switch-tap-target-size - $mdc-switch-thumb-diameter);
+$mdc-switch-thumb-active-margin: $mdc-switch-track-width - $mdc-switch-thumb-diameter;
+
+$mdc-switch-toggled-off-thumb-color: mdc-theme-prop-value(surface);
+$mdc-switch-toggled-off-track-color: mdc-theme-prop-value(on-surface);
+$mdc-switch-toggled-off-ripple-color: #9e9e9e;
+$mdc-switch-disabled-thumb-color: mdc-theme-prop-value(surface);
+$mdc-switch-disabled-track-color: mdc-theme-prop-value(on-surface);
+
+$mdc-switch-baseline-theme-color: secondary;
