@@ -121,7 +121,7 @@ test('change handler is added to the native control element', () => {
   const {root, mockFoundation} = setupMockFoundationTest();
 
   const event = document.createEvent('Event');
-  event.initEvent('change');
+  event.initEvent('change', true, false);
 
   const inputEl = root.querySelector(NATIVE_CONTROL_SELECTOR);
   inputEl.dispatchEvent(event);
@@ -134,7 +134,7 @@ test('change handler is removed from the native control element on destroy', () 
   component.destroy();
 
   const event = document.createEvent('Event');
-  event.initEvent('change');
+  event.initEvent('change', true, false);
 
   const inputEl = root.querySelector(NATIVE_CONTROL_SELECTOR);
   inputEl.dispatchEvent(event);
