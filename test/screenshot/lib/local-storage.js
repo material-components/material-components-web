@@ -123,7 +123,7 @@ class LocalStorage {
    * @param {string} dest
    * @return {!Promise<void>}
    */
-  async copyDir(src, dest) {
+  async copy(src, dest) {
     return fsx.copy(src, dest);
   }
 
