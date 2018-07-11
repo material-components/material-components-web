@@ -29,12 +29,22 @@
                 {{else}}
                   <input type="checkbox" class="report-user-agent__checkbox report-collection__checkbox--hidden">
                 {{/if}}
+                <img src="{{user_agent.icon_url}}" class="report-user-agent__icon">
                 {{user_agent.alias}}
               </summary>
               <div class="report-user-agent__content">
-                {{> image expected_image_file}}
-                {{> image diff_image_file}}
-                {{> image actual_image_file}}
+                <div class="report-user-agent__image-cell">
+                  Golden:
+                  {{> image expected_image_file}}
+                </div>
+                <div class="report-user-agent__image-cell">
+                  Diff:
+                  {{> image diff_image_file}}
+                </div>
+                <div class="report-user-agent__image-cell">
+                  Snapshot:
+                  {{> image actual_image_file}}
+                </div>
               </div>
             </details>
           {{/each}}

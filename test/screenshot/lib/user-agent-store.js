@@ -136,6 +136,7 @@ Expected browser vendor to be one of [${validBrowserVendors}], but got '${browse
     const isEnabledByCli = this.isAliasEnabled_(alias);
     const isAvailableLocally = await this.isAvailableLocally_(browserVendorType);
     const isRunnable = isEnabledByCli && (isOnline || isAvailableLocally);
+    const iconUrl = this.getIconUrl_(browserVendorType);
 
     return UserAgent.create({
       alias,
@@ -154,31 +155,9 @@ Expected browser vendor to be one of [${validBrowserVendors}], but got '${browse
       is_enabled_by_cli: isEnabledByCli,
       is_available_locally: isAvailableLocally,
       is_runnable: isRunnable,
-    });
-  }
 
-  /**
-   * @param {!mdc.proto.UserAgent.BrowserVendorType} browserVendorType
-   * @return {!Promise<boolean>}
-   * @private
-   */
-  async isAvailableLocally_(browserVendorType) {
-    if (browserVendorType === BrowserVendorType.CHROME) {
-      return Boolean(ChromeDriver.locateSynchronously());
-    }
-    if (browserVendorType === BrowserVendorType.EDGE) {
-      return Boolean(EdgeDriver.locateSynchronously());
-    }
-    if (browserVendorType === BrowserVendorType.FIREFOX) {
-      return Boolean(FirefoxDriver.locateSynchronously());
-    }
-    if (browserVendorType === BrowserVendorType.IE) {
-      return Boolean(IeDriver.locateSynchronously());
-    }
-    if (browserVendorType === BrowserVendorType.SAFARI) {
-      return Boolean(SafariDriver.locateSynchronously());
-    }
-    throw new Error(`Unknown browser vendor: '${browserVendorType}'.`);
+      icon_url: iconUrl,
+    });
   }
 
   /**
@@ -193,6 +172,40 @@ Expected browser vendor to be one of [${validBrowserVendors}], but got '${browse
     const isExcluded =
       this.cli_.excludeBrowserPatterns.some((pattern) => pattern.test(alias));
     return isIncluded && !isExcluded;
+  }
+
+  /**
+   * @param {!mdc.proto.UserAgent.BrowserVendorType} browserVendorType
+   * @return {!Promise<boolean>}
+   * @private
+   */
+  async isAvailableLocally_(browserVendorType) {
+    const map = {
+      [BrowserVendorType.CHROME]: Boolean(ChromeDriver.locateSynchronously()),
+      [BrowserVendorType.EDGE]: Boolean(EdgeDriver.locateSynchronously()),
+      [BrowserVendorType.FIREFOX]: Boolean(FirefoxDriver.locateSynchronously()),
+      [BrowserVendorType.IE]: Boolean(IeDriver.locateSynchronously()),
+      [BrowserVendorType.SAFARI]: Boolean(SafariDriver.locateSynchronously()),
+    };
+    return map[browserVendorType];
+  }
+
+  /**
+   * @param {mdc.proto.UserAgent.BrowserVendorType} browserVendorType
+   * @return {string}
+   * @private
+   */
+  getIconUrl_(browserVendorType) {
+    /* eslint-disable max-len */
+    const map = {
+      [BrowserVendorType.CHROME]: 'https://cdnjs.cloudflare.com/ajax/libs/browser-logos/45.8.0/chrome/chrome.svg',
+      [BrowserVendorType.EDGE]: 'https://cdnjs.cloudflare.com/ajax/libs/browser-logos/45.8.0/edge/edge.svg',
+      [BrowserVendorType.FIREFOX]: 'https://cdnjs.cloudflare.com/ajax/libs/browser-logos/45.8.0/firefox/firefox.svg',
+      [BrowserVendorType.IE]: 'https://cdnjs.cloudflare.com/ajax/libs/browser-logos/45.8.0/archive/internet-explorer_9-11/internet-explorer_9-11.svg',
+      [BrowserVendorType.SAFARI]: 'https://cdnjs.cloudflare.com/ajax/libs/browser-logos/45.8.0/edge/edge.svg',
+    };
+    /* eslint-enable max-len */
+    return map[browserVendorType];
   }
 }
 

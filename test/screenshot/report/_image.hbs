@@ -1,3 +1,7 @@
-<div class="report-user-agent__image-cell">
-  <a href="{{public_url}}" class="report-user-agent__image-link"><img src="{{public_url}}" class="report-user-agent__image"></a>
+<div>
+  {{#if public_url}}
+    <a href="{{public_url}}" class="report-user-agent__image-link"><img src="{{public_url}}" class="report-user-agent__image"></a>
+  {{else}}
+    (none)
+  {{/if}}
 </div>

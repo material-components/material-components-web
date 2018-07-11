@@ -164,6 +164,8 @@ message UserAgent {
 
   // Generated from `actual_capabilities`
   string image_filename_suffix = 17;
+
+  string icon_url = 18;
 }
 
 message Screenshots {
