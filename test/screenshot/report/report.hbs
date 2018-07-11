@@ -13,92 +13,9 @@
     </h1>
 
     {{> metadata}}
-
-    {{> collection
-      heading="Changed"
-      collectionType="changed"
-      screenshotPageMap=screenshots.changed_screenshot_page_map
-      screenshotArray=screenshots.changed_screenshot_list
-      isOpenByDefault=true
-      showApprovalCheckboxes=true
-    }}
-    {{> collection
-      heading="Added"
-      collectionType="added"
-      screenshotPageMap=screenshots.added_screenshot_page_map
-      screenshotArray=screenshots.added_screenshot_list
-      isOpenByDefault=true
-      showApprovalCheckboxes=true
-    }}
-    {{> collection
-      heading="Removed"
-      collectionType="removed"
-      screenshotPageMap=screenshots.removed_screenshot_page_map
-      screenshotArray=screenshots.removed_screenshot_list
-      isOpenByDefault=true
-      showApprovalCheckboxes=true
-    }}
-    {{> collection
-      heading="Skipped"
-      collectionType="skipped"
-      screenshotPageMap=screenshots.skipped_screenshot_page_map
-      screenshotArray=screenshots.skipped_screenshot_list
-      isOpenByDefault=false
-      showApprovalCheckboxes=false
-    }}
-    {{> collection
-      heading="Unchanged"
-      collectionType="unchanged"
-      screenshotPageMap=screenshots.unchanged_screenshot_page_map
-      screenshotArray=screenshots.unchanged_screenshot_list
-      isOpenByDefault=false
-      showApprovalCheckboxes=false
-    }}
-
-    <footer class="report-toolbar">
-      <div class="report-toolbar__column">
-        <button class="report-toolbar__button report-toolbar__button--approve"
-                id="report-toolbar__approve-selected-button"
-                onclick="mdc.reportUi.approveSelected()">
-          Approve
-        </button>
-        <button class="report-toolbar__button report-toolbar__button--retry"
-                id="report-toolbar__retry-selected-button"
-                onclick="mdc.reportUi.retrySelected()">
-          Retry
-        </button>
-        <span id="report-toolbar__selected-count"></span> selected screenshots
-      </div>
-      <div class="report-toolbar__column">
-        Select:
-        <button class="report-toolbar__button" id="report-toolbar__select-all-button" onclick="mdc.reportUi.selectAll()">All</button>
-        <button class="report-toolbar__button" id="report-toolbar__select-none-button" onclick="mdc.reportUi.selectNone()">None</button>
-        <button class="report-toolbar__button" id="report-toolbar__select-inverse-button" onclick="mdc.reportUi.selectInverse()">Inverse</button>
-      </div>
-      <div class="report-toolbar__column">
-        Collapse:
-        <button class="report-toolbar__button" onclick="mdc.reportUi.collapseAll()">All</button>
-        <button class="report-toolbar__button" onclick="mdc.reportUi.collapseNone()">None</button>
-        <button class="report-toolbar__button" onclick="mdc.reportUi.collapseImages()">Images</button>
-      </div>
-    </footer>
-
-    <aside class="report-cli-modal" id="report-cli-modal" data-state="closed">
-      <div class="report-cli-modal__window">
-        <div class="report-cli-modal__title">
-          CLI Command
-        </div>
-        <div class="report-cli-modal__content">
-          <textarea class="report-cli-modal__command" id="report-cli-modal__command" readonly></textarea>
-        </div>
-        <div class="report-cli-modal__footer">
-          <button class="report-cli-modal__button report-cli-modal__button--copy"
-                  id="report-cli-modal__button--copy">Copy</button>
-          <button class="report-cli-modal__button report-cli-modal__button--close"
-                  id="report-cli-modal__button--close">Close</button>
-        </div>
-      </div>
-    </aside>
+    {{> collections}}
+    {{> footer}}
+    {{> modal}}
 
     <!-- TODO(acdvorak): Download clipboard.js and browser icons to the repo instead of using a CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>

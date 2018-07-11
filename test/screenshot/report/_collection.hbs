@@ -9,53 +9,57 @@
     {{screenshotArray.length}} {{heading}}
   </summary>
   <div class="report-collection__content">
-    {{#forEachTestPage screenshotPageMap}}
-      <details class="report-test-page" open>
-        <summary class="report-test-page__heading">
-          {{getCheckbox
-              "report-collection__checkbox"
-              "report-collection__checkbox--hidden"
-              ../showApprovalCheckboxes
-              ../collectionType
-              html_file_path
-          }}
-          {{screenshot_array.length}} in
-          {{html_file_path}}
-          {{getHtmlFileLinks}}
-        </summary>
-        <div class="report-test-page__content">
-          {{#each screenshot_array}}
-            <details class="report-user-agent" open>
-              <summary class="report-user-agent__heading">
-                {{getCheckbox
-                    "report-collection__checkbox"
-                    "report-collection__checkbox--hidden"
-                    ../../showApprovalCheckboxes
-                    ../../collectionType
-                    ../html_file_path
-                    user_agent.alias
-                }}
-                <img src="{{user_agent.icon_url}}" class="report-user-agent__icon">
-                {{user_agent.alias}}
-              </summary>
-              <div class="report-user-agent__content">
-                <div class="report-user-agent__image-cell">
-                  Golden:
-                  {{> image expected_image_file}}
+    {{#if screenshotArray.length}}
+      {{#forEachTestPage screenshotPageMap}}
+        <details class="report-test-page" open>
+          <summary class="report-test-page__heading">
+            {{getCheckbox
+                "report-collection__checkbox"
+                "report-collection__checkbox--hidden"
+                ../showApprovalCheckboxes
+                ../collectionType
+                html_file_path
+            }}
+            {{screenshot_array.length}} in
+            {{html_file_path}}
+            {{getHtmlFileLinks}}
+          </summary>
+          <div class="report-test-page__content">
+            {{#each screenshot_array}}
+              <details class="report-user-agent" open>
+                <summary class="report-user-agent__heading">
+                  {{getCheckbox
+                      "report-collection__checkbox"
+                      "report-collection__checkbox--hidden"
+                      ../../showApprovalCheckboxes
+                      ../../collectionType
+                      ../html_file_path
+                      user_agent.alias
+                  }}
+                  <img src="{{user_agent.icon_url}}" class="report-user-agent__icon">
+                  {{user_agent.alias}}
+                </summary>
+                <div class="report-user-agent__content">
+                  <div class="report-user-agent__image-cell">
+                    Golden:
+                    {{> image expected_image_file}}
+                  </div>
+                  <div class="report-user-agent__image-cell">
+                    Diff:
+                    {{> image diff_image_file}}
+                  </div>
+                  <div class="report-user-agent__image-cell">
+                    Snapshot:
+                    {{> image actual_image_file}}
+                  </div>
                 </div>
-                <div class="report-user-agent__image-cell">
-                  Diff:
-                  {{> image diff_image_file}}
-                </div>
-                <div class="report-user-agent__image-cell">
-                  Snapshot:
-                  {{> image actual_image_file}}
-                </div>
-              </div>
-            </details>
-          {{/each}}
-        </div>
-      </details>
-    {{/forEachTestPage}}
+              </details>
+            {{/each}}
+          </div>
+        </details>
+      {{/forEachTestPage}}
+    {{else}}
+      <div class="report-congrats">Woohoo! 🎉</div>
+    {{/if}}
   </div>
 </details>

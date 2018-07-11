@@ -1,0 +1,27 @@
+<footer class="report-toolbar">
+  <div class="report-toolbar__column">
+    <button class="report-toolbar__button report-toolbar__button--approve"
+            id="report-toolbar__approve-selected-button"
+            onclick="mdc.reportUi.approveSelected()">
+      Approve
+    </button>
+    <button class="report-toolbar__button report-toolbar__button--retry"
+            id="report-toolbar__retry-selected-button"
+            onclick="mdc.reportUi.retrySelected()">
+      Retry
+    </button>
+    <span id="report-toolbar__selected-count"></span> selected screenshots
+  </div>
+  <div class="report-toolbar__column">
+    Select:
+    <button class="report-toolbar__button" id="report-toolbar__select-all-button" onclick="mdc.reportUi.selectAll()">All</button>
+    <button class="report-toolbar__button" id="report-toolbar__select-none-button" onclick="mdc.reportUi.selectNone()">None</button>
+    <button class="report-toolbar__button" id="report-toolbar__select-inverse-button" onclick="mdc.reportUi.selectInverse()">Inverse</button>
+  </div>
+  <div class="report-toolbar__column">
+    Collapse:
+    <button class="report-toolbar__button" onclick="mdc.reportUi.collapseAll()">All</button>
+    <button class="report-toolbar__button" onclick="mdc.reportUi.collapseNone()">None</button>
+    <button class="report-toolbar__button" onclick="mdc.reportUi.collapseImages()">Images</button>
+  </div>
+</footer>
