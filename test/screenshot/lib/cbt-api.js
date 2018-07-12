@@ -107,7 +107,7 @@ https://crossbrowsertesting.com/account
       return allBrowsersPromise;
     }
 
-    console.log('Fetching available devices...');
+    console.log('Fetching browsers from CBT...');
 
     allBrowsersPromise = this.sendRequest_('GET', '/selenium/browsers');
 

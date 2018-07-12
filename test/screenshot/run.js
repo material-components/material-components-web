@@ -17,6 +17,7 @@
 'use strict';
 
 const Cli = require('./lib/cli');
+const Duration = require('./lib/duration');
 const {ExitCode} = require('./lib/constants');
 
 const COMMAND_MAP = {
@@ -68,6 +69,13 @@ async function run() {
     process.exit(ExitCode.UNSUPPORTED_CLI_COMMAND);
   }
 }
+
+const startTimeMs = new Date();
+
+process.on('exit', () => {
+  const elapsedTimeHuman = Duration.elapsed(startTimeMs, new Date()).toHuman();
+  console.log(`\nRun time: ${elapsedTimeHuman}\n`);
+});
 
 process.on('unhandledRejection', (error) => {
   const message = [

@@ -150,7 +150,6 @@ class SeleniumController {
 
     console.log('\nDONE uploading diff report to GCS!\n');
     console.log(reportData.meta.report_html_file.public_url);
-    console.log(`\nRun time: ${Duration.millis(reportData.meta.duration_ms).toHuman()}`);
 
     return reportData;
   }
