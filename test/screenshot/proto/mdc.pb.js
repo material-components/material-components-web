@@ -320,7 +320,8 @@ $root.mdc = (function() {
              * @property {number|null} [local_temporary_http_port] ReportMeta local_temporary_http_port
              * @property {string|null} [host_os_name] ReportMeta host_os_name
              * @property {string|null} [cli_invocation] ReportMeta cli_invocation
-             * @property {mdc.proto.IDiffBase|null} [diff_base] ReportMeta diff_base
+             * @property {mdc.proto.IDiffBase|null} [expected_diff_base] ReportMeta expected_diff_base
+             * @property {mdc.proto.IDiffBase|null} [actual_diff_base] ReportMeta actual_diff_base
              * @property {mdc.proto.IUser|null} [user] ReportMeta user
              * @property {mdc.proto.ILibraryVersion|null} [node_version] ReportMeta node_version
              * @property {mdc.proto.ILibraryVersion|null} [npm_version] ReportMeta npm_version
@@ -449,12 +450,20 @@ $root.mdc = (function() {
             ReportMeta.prototype.cli_invocation = "";
 
             /**
-             * ReportMeta diff_base.
-             * @member {mdc.proto.IDiffBase|null|undefined} diff_base
+             * ReportMeta expected_diff_base.
+             * @member {mdc.proto.IDiffBase|null|undefined} expected_diff_base
              * @memberof mdc.proto.ReportMeta
              * @instance
              */
-            ReportMeta.prototype.diff_base = null;
+            ReportMeta.prototype.expected_diff_base = null;
+
+            /**
+             * ReportMeta actual_diff_base.
+             * @member {mdc.proto.IDiffBase|null|undefined} actual_diff_base
+             * @memberof mdc.proto.ReportMeta
+             * @instance
+             */
+            ReportMeta.prototype.actual_diff_base = null;
 
             /**
              * ReportMeta user.
@@ -554,20 +563,22 @@ $root.mdc = (function() {
                     writer.uint32(/* id 12, wireType 2 =*/98).string(message.host_os_name);
                 if (message.cli_invocation != null && message.hasOwnProperty("cli_invocation"))
                     writer.uint32(/* id 13, wireType 2 =*/106).string(message.cli_invocation);
-                if (message.diff_base != null && message.hasOwnProperty("diff_base"))
-                    $root.mdc.proto.DiffBase.encode(message.diff_base, writer.uint32(/* id 14, wireType 2 =*/114).fork()).ldelim();
+                if (message.expected_diff_base != null && message.hasOwnProperty("expected_diff_base"))
+                    $root.mdc.proto.DiffBase.encode(message.expected_diff_base, writer.uint32(/* id 14, wireType 2 =*/114).fork()).ldelim();
+                if (message.actual_diff_base != null && message.hasOwnProperty("actual_diff_base"))
+                    $root.mdc.proto.DiffBase.encode(message.actual_diff_base, writer.uint32(/* id 15, wireType 2 =*/122).fork()).ldelim();
                 if (message.user != null && message.hasOwnProperty("user"))
-                    $root.mdc.proto.User.encode(message.user, writer.uint32(/* id 15, wireType 2 =*/122).fork()).ldelim();
+                    $root.mdc.proto.User.encode(message.user, writer.uint32(/* id 16, wireType 2 =*/130).fork()).ldelim();
                 if (message.node_version != null && message.hasOwnProperty("node_version"))
-                    $root.mdc.proto.LibraryVersion.encode(message.node_version, writer.uint32(/* id 16, wireType 2 =*/130).fork()).ldelim();
+                    $root.mdc.proto.LibraryVersion.encode(message.node_version, writer.uint32(/* id 17, wireType 2 =*/138).fork()).ldelim();
                 if (message.npm_version != null && message.hasOwnProperty("npm_version"))
-                    $root.mdc.proto.LibraryVersion.encode(message.npm_version, writer.uint32(/* id 17, wireType 2 =*/138).fork()).ldelim();
+                    $root.mdc.proto.LibraryVersion.encode(message.npm_version, writer.uint32(/* id 18, wireType 2 =*/146).fork()).ldelim();
                 if (message.mdc_version != null && message.hasOwnProperty("mdc_version"))
-                    $root.mdc.proto.LibraryVersion.encode(message.mdc_version, writer.uint32(/* id 18, wireType 2 =*/146).fork()).ldelim();
+                    $root.mdc.proto.LibraryVersion.encode(message.mdc_version, writer.uint32(/* id 19, wireType 2 =*/154).fork()).ldelim();
                 if (message.report_html_file != null && message.hasOwnProperty("report_html_file"))
-                    $root.mdc.proto.TestFile.encode(message.report_html_file, writer.uint32(/* id 19, wireType 2 =*/154).fork()).ldelim();
+                    $root.mdc.proto.TestFile.encode(message.report_html_file, writer.uint32(/* id 20, wireType 2 =*/162).fork()).ldelim();
                 if (message.report_json_file != null && message.hasOwnProperty("report_json_file"))
-                    $root.mdc.proto.TestFile.encode(message.report_json_file, writer.uint32(/* id 20, wireType 2 =*/162).fork()).ldelim();
+                    $root.mdc.proto.TestFile.encode(message.report_json_file, writer.uint32(/* id 21, wireType 2 =*/170).fork()).ldelim();
                 return writer;
             };
 
@@ -642,24 +653,27 @@ $root.mdc = (function() {
                         message.cli_invocation = reader.string();
                         break;
                     case 14:
-                        message.diff_base = $root.mdc.proto.DiffBase.decode(reader, reader.uint32());
+                        message.expected_diff_base = $root.mdc.proto.DiffBase.decode(reader, reader.uint32());
                         break;
                     case 15:
-                        message.user = $root.mdc.proto.User.decode(reader, reader.uint32());
+                        message.actual_diff_base = $root.mdc.proto.DiffBase.decode(reader, reader.uint32());
                         break;
                     case 16:
-                        message.node_version = $root.mdc.proto.LibraryVersion.decode(reader, reader.uint32());
+                        message.user = $root.mdc.proto.User.decode(reader, reader.uint32());
                         break;
                     case 17:
-                        message.npm_version = $root.mdc.proto.LibraryVersion.decode(reader, reader.uint32());
+                        message.node_version = $root.mdc.proto.LibraryVersion.decode(reader, reader.uint32());
                         break;
                     case 18:
-                        message.mdc_version = $root.mdc.proto.LibraryVersion.decode(reader, reader.uint32());
+                        message.npm_version = $root.mdc.proto.LibraryVersion.decode(reader, reader.uint32());
                         break;
                     case 19:
-                        message.report_html_file = $root.mdc.proto.TestFile.decode(reader, reader.uint32());
+                        message.mdc_version = $root.mdc.proto.LibraryVersion.decode(reader, reader.uint32());
                         break;
                     case 20:
+                        message.report_html_file = $root.mdc.proto.TestFile.decode(reader, reader.uint32());
+                        break;
+                    case 21:
                         message.report_json_file = $root.mdc.proto.TestFile.decode(reader, reader.uint32());
                         break;
                     default:
@@ -736,10 +750,15 @@ $root.mdc = (function() {
                 if (message.cli_invocation != null && message.hasOwnProperty("cli_invocation"))
                     if (!$util.isString(message.cli_invocation))
                         return "cli_invocation: string expected";
-                if (message.diff_base != null && message.hasOwnProperty("diff_base")) {
-                    var error = $root.mdc.proto.DiffBase.verify(message.diff_base);
+                if (message.expected_diff_base != null && message.hasOwnProperty("expected_diff_base")) {
+                    var error = $root.mdc.proto.DiffBase.verify(message.expected_diff_base);
                     if (error)
-                        return "diff_base." + error;
+                        return "expected_diff_base." + error;
+                }
+                if (message.actual_diff_base != null && message.hasOwnProperty("actual_diff_base")) {
+                    var error = $root.mdc.proto.DiffBase.verify(message.actual_diff_base);
+                    if (error)
+                        return "actual_diff_base." + error;
                 }
                 if (message.user != null && message.hasOwnProperty("user")) {
                     var error = $root.mdc.proto.User.verify(message.user);
@@ -819,10 +838,15 @@ $root.mdc = (function() {
                     message.host_os_name = String(object.host_os_name);
                 if (object.cli_invocation != null)
                     message.cli_invocation = String(object.cli_invocation);
-                if (object.diff_base != null) {
-                    if (typeof object.diff_base !== "object")
-                        throw TypeError(".mdc.proto.ReportMeta.diff_base: object expected");
-                    message.diff_base = $root.mdc.proto.DiffBase.fromObject(object.diff_base);
+                if (object.expected_diff_base != null) {
+                    if (typeof object.expected_diff_base !== "object")
+                        throw TypeError(".mdc.proto.ReportMeta.expected_diff_base: object expected");
+                    message.expected_diff_base = $root.mdc.proto.DiffBase.fromObject(object.expected_diff_base);
+                }
+                if (object.actual_diff_base != null) {
+                    if (typeof object.actual_diff_base !== "object")
+                        throw TypeError(".mdc.proto.ReportMeta.actual_diff_base: object expected");
+                    message.actual_diff_base = $root.mdc.proto.DiffBase.fromObject(object.actual_diff_base);
                 }
                 if (object.user != null) {
                     if (typeof object.user !== "object")
@@ -888,7 +912,8 @@ $root.mdc = (function() {
                     object.local_temporary_http_port = 0;
                     object.host_os_name = "";
                     object.cli_invocation = "";
-                    object.diff_base = null;
+                    object.expected_diff_base = null;
+                    object.actual_diff_base = null;
                     object.user = null;
                     object.node_version = null;
                     object.npm_version = null;
@@ -925,8 +950,10 @@ $root.mdc = (function() {
                     object.host_os_name = message.host_os_name;
                 if (message.cli_invocation != null && message.hasOwnProperty("cli_invocation"))
                     object.cli_invocation = message.cli_invocation;
-                if (message.diff_base != null && message.hasOwnProperty("diff_base"))
-                    object.diff_base = $root.mdc.proto.DiffBase.toObject(message.diff_base, options);
+                if (message.expected_diff_base != null && message.hasOwnProperty("expected_diff_base"))
+                    object.expected_diff_base = $root.mdc.proto.DiffBase.toObject(message.expected_diff_base, options);
+                if (message.actual_diff_base != null && message.hasOwnProperty("actual_diff_base"))
+                    object.actual_diff_base = $root.mdc.proto.DiffBase.toObject(message.actual_diff_base, options);
                 if (message.user != null && message.hasOwnProperty("user"))
                     object.user = $root.mdc.proto.User.toObject(message.user, options);
                 if (message.node_version != null && message.hasOwnProperty("node_version"))
@@ -964,7 +991,7 @@ $root.mdc = (function() {
              * @interface IDiffBase
              * @property {mdc.proto.DiffBase.Type|null} [type] DiffBase type
              * @property {string|null} [input_string] DiffBase input_string
-             * @property {string|null} [file_path] DiffBase file_path
+             * @property {string|null} [local_file_path] DiffBase local_file_path
              * @property {string|null} [public_url] DiffBase public_url
              * @property {mdc.proto.IGitRevision|null} [git_revision] DiffBase git_revision
              */
@@ -1001,12 +1028,12 @@ $root.mdc = (function() {
             DiffBase.prototype.input_string = "";
 
             /**
-             * DiffBase file_path.
-             * @member {string} file_path
+             * DiffBase local_file_path.
+             * @member {string} local_file_path
              * @memberof mdc.proto.DiffBase
              * @instance
              */
-            DiffBase.prototype.file_path = "";
+            DiffBase.prototype.local_file_path = "";
 
             /**
              * DiffBase public_url.
@@ -1029,12 +1056,12 @@ $root.mdc = (function() {
 
             /**
              * DiffBase value_oneof.
-             * @member {"file_path"|"public_url"|"git_revision"|undefined} value_oneof
+             * @member {"local_file_path"|"public_url"|"git_revision"|undefined} value_oneof
              * @memberof mdc.proto.DiffBase
              * @instance
              */
             Object.defineProperty(DiffBase.prototype, "value_oneof", {
-                get: $util.oneOfGetter($oneOfFields = ["file_path", "public_url", "git_revision"]),
+                get: $util.oneOfGetter($oneOfFields = ["local_file_path", "public_url", "git_revision"]),
                 set: $util.oneOfSetter($oneOfFields)
             });
 
@@ -1066,8 +1093,8 @@ $root.mdc = (function() {
                     writer.uint32(/* id 1, wireType 0 =*/8).int32(message.type);
                 if (message.input_string != null && message.hasOwnProperty("input_string"))
                     writer.uint32(/* id 2, wireType 2 =*/18).string(message.input_string);
-                if (message.file_path != null && message.hasOwnProperty("file_path"))
-                    writer.uint32(/* id 3, wireType 2 =*/26).string(message.file_path);
+                if (message.local_file_path != null && message.hasOwnProperty("local_file_path"))
+                    writer.uint32(/* id 3, wireType 2 =*/26).string(message.local_file_path);
                 if (message.public_url != null && message.hasOwnProperty("public_url"))
                     writer.uint32(/* id 4, wireType 2 =*/34).string(message.public_url);
                 if (message.git_revision != null && message.hasOwnProperty("git_revision"))
@@ -1113,7 +1140,7 @@ $root.mdc = (function() {
                         message.input_string = reader.string();
                         break;
                     case 3:
-                        message.file_path = reader.string();
+                        message.local_file_path = reader.string();
                         break;
                     case 4:
                         message.public_url = reader.string();
@@ -1170,10 +1197,10 @@ $root.mdc = (function() {
                 if (message.input_string != null && message.hasOwnProperty("input_string"))
                     if (!$util.isString(message.input_string))
                         return "input_string: string expected";
-                if (message.file_path != null && message.hasOwnProperty("file_path")) {
+                if (message.local_file_path != null && message.hasOwnProperty("local_file_path")) {
                     properties.value_oneof = 1;
-                    if (!$util.isString(message.file_path))
-                        return "file_path: string expected";
+                    if (!$util.isString(message.local_file_path))
+                        return "local_file_path: string expected";
                 }
                 if (message.public_url != null && message.hasOwnProperty("public_url")) {
                     if (properties.value_oneof === 1)
@@ -1227,8 +1254,8 @@ $root.mdc = (function() {
                 }
                 if (object.input_string != null)
                     message.input_string = String(object.input_string);
-                if (object.file_path != null)
-                    message.file_path = String(object.file_path);
+                if (object.local_file_path != null)
+                    message.local_file_path = String(object.local_file_path);
                 if (object.public_url != null)
                     message.public_url = String(object.public_url);
                 if (object.git_revision != null) {
@@ -1260,10 +1287,10 @@ $root.mdc = (function() {
                     object.type = options.enums === String ? $root.mdc.proto.DiffBase.Type[message.type] : message.type;
                 if (message.input_string != null && message.hasOwnProperty("input_string"))
                     object.input_string = message.input_string;
-                if (message.file_path != null && message.hasOwnProperty("file_path")) {
-                    object.file_path = message.file_path;
+                if (message.local_file_path != null && message.hasOwnProperty("local_file_path")) {
+                    object.local_file_path = message.local_file_path;
                     if (options.oneofs)
-                        object.value_oneof = "file_path";
+                        object.value_oneof = "local_file_path";
                 }
                 if (message.public_url != null && message.hasOwnProperty("public_url")) {
                     object.public_url = message.public_url;
@@ -1317,7 +1344,7 @@ $root.mdc = (function() {
              * @memberof mdc.proto
              * @interface IGitRevision
              * @property {mdc.proto.GitRevision.Type|null} [type] GitRevision type
-             * @property {string|null} [snapshot_file_path] GitRevision snapshot_file_path
+             * @property {string|null} [golden_json_file_path] GitRevision golden_json_file_path
              * @property {string|null} [commit] GitRevision commit
              * @property {string|null} [remote] GitRevision remote
              * @property {string|null} [branch] GitRevision branch
@@ -1348,12 +1375,12 @@ $root.mdc = (function() {
             GitRevision.prototype.type = 0;
 
             /**
-             * GitRevision snapshot_file_path.
-             * @member {string} snapshot_file_path
+             * GitRevision golden_json_file_path.
+             * @member {string} golden_json_file_path
              * @memberof mdc.proto.GitRevision
              * @instance
              */
-            GitRevision.prototype.snapshot_file_path = "";
+            GitRevision.prototype.golden_json_file_path = "";
 
             /**
              * GitRevision commit.
@@ -1413,8 +1440,8 @@ $root.mdc = (function() {
                     writer = $Writer.create();
                 if (message.type != null && message.hasOwnProperty("type"))
                     writer.uint32(/* id 1, wireType 0 =*/8).int32(message.type);
-                if (message.snapshot_file_path != null && message.hasOwnProperty("snapshot_file_path"))
-                    writer.uint32(/* id 2, wireType 2 =*/18).string(message.snapshot_file_path);
+                if (message.golden_json_file_path != null && message.hasOwnProperty("golden_json_file_path"))
+                    writer.uint32(/* id 2, wireType 2 =*/18).string(message.golden_json_file_path);
                 if (message.commit != null && message.hasOwnProperty("commit"))
                     writer.uint32(/* id 3, wireType 2 =*/26).string(message.commit);
                 if (message.remote != null && message.hasOwnProperty("remote"))
@@ -1461,7 +1488,7 @@ $root.mdc = (function() {
                         message.type = reader.int32();
                         break;
                     case 2:
-                        message.snapshot_file_path = reader.string();
+                        message.golden_json_file_path = reader.string();
                         break;
                     case 3:
                         message.commit = reader.string();
@@ -1521,9 +1548,9 @@ $root.mdc = (function() {
                     case 4:
                         break;
                     }
-                if (message.snapshot_file_path != null && message.hasOwnProperty("snapshot_file_path"))
-                    if (!$util.isString(message.snapshot_file_path))
-                        return "snapshot_file_path: string expected";
+                if (message.golden_json_file_path != null && message.hasOwnProperty("golden_json_file_path"))
+                    if (!$util.isString(message.golden_json_file_path))
+                        return "golden_json_file_path: string expected";
                 if (message.commit != null && message.hasOwnProperty("commit"))
                     if (!$util.isString(message.commit))
                         return "commit: string expected";
@@ -1573,8 +1600,8 @@ $root.mdc = (function() {
                     message.type = 4;
                     break;
                 }
-                if (object.snapshot_file_path != null)
-                    message.snapshot_file_path = String(object.snapshot_file_path);
+                if (object.golden_json_file_path != null)
+                    message.golden_json_file_path = String(object.golden_json_file_path);
                 if (object.commit != null)
                     message.commit = String(object.commit);
                 if (object.remote != null)
@@ -1601,7 +1628,7 @@ $root.mdc = (function() {
                 var object = {};
                 if (options.defaults) {
                     object.type = options.enums === String ? "UNKNOWN" : 0;
-                    object.snapshot_file_path = "";
+                    object.golden_json_file_path = "";
                     object.commit = "";
                     object.remote = "";
                     object.branch = "";
@@ -1609,8 +1636,8 @@ $root.mdc = (function() {
                 }
                 if (message.type != null && message.hasOwnProperty("type"))
                     object.type = options.enums === String ? $root.mdc.proto.GitRevision.Type[message.type] : message.type;
-                if (message.snapshot_file_path != null && message.hasOwnProperty("snapshot_file_path"))
-                    object.snapshot_file_path = message.snapshot_file_path;
+                if (message.golden_json_file_path != null && message.hasOwnProperty("golden_json_file_path"))
+                    object.golden_json_file_path = message.golden_json_file_path;
                 if (message.commit != null && message.hasOwnProperty("commit"))
                     object.commit = message.commit;
                 if (message.remote != null && message.hasOwnProperty("remote"))

@@ -39,6 +39,57 @@ class ReportWriter {
     this.registerPartials_();
   }
 
+  /**
+   * @param {!mdc.proto.ReportData} fullReportData
+   * @return {!Promise<void>}
+   */
+  async generateReportPage(fullReportData) {
+    const meta = fullReportData.meta;
+
+    // We can save ~5 MiB by stripping out data that can be recomputed.
+    // TODO(acdvorak): Make sure the report page and `screenshot:approve` don't need this data.
+    const slimReportData = ReportData.create(fullReportData);
+    slimReportData.screenshots = Screenshots.create({
+      changed_screenshot_list: slimReportData.screenshots.changed_screenshot_list,
+      unchanged_screenshot_list: slimReportData.screenshots.unchanged_screenshot_list,
+      skipped_screenshot_list: slimReportData.screenshots.skipped_screenshot_list,
+      added_screenshot_list: slimReportData.screenshots.added_screenshot_list,
+      removed_screenshot_list: slimReportData.screenshots.removed_screenshot_list,
+    });
+
+    const templateFileRelativePath = 'report/report.hbs';
+    const htmlFileRelativePath = 'report/report.html';
+    const jsonFileRelativePath = 'report/report.json';
+
+    const templateFileAbsolutePath = path.join(meta.local_asset_base_dir, templateFileRelativePath);
+    const htmlFileAbsolutePath = path.join(meta.local_report_base_dir, htmlFileRelativePath);
+    const jsonFileAbsolutePath = path.join(meta.local_report_base_dir, jsonFileRelativePath);
+
+    const htmlFileUrl = this.getPublicUrl_(htmlFileRelativePath, meta);
+    const jsonFileUrl = this.getPublicUrl_(jsonFileRelativePath, meta);
+
+    const reportHtmlFile = TestFile.create({
+      relative_path: htmlFileRelativePath,
+      absolute_path: htmlFileAbsolutePath,
+      public_url: htmlFileUrl,
+    });
+
+    const reportJsonFile = TestFile.create({
+      relative_path: jsonFileRelativePath,
+      absolute_path: jsonFileAbsolutePath,
+      public_url: jsonFileUrl,
+    });
+
+    meta.report_html_file = reportHtmlFile;
+    meta.report_json_file = reportJsonFile;
+
+    const jsonFileContent = this.stringify_(slimReportData);
+    const htmlFileContent = await this.generateHtml_(fullReportData, templateFileAbsolutePath);
+
+    await this.localStorage_.writeTextFile(jsonFileAbsolutePath, jsonFileContent);
+    await this.localStorage_.writeTextFile(htmlFileAbsolutePath, htmlFileContent);
+  }
+
   /** @private */
   registerHelpers_() {
     // Handlebars sets `this` to the current context, so we need to use functions instead of lambdas.
@@ -61,6 +112,9 @@ class ReportWriter {
       },
       getHtmlFileLinks: function() {
         return self.getHtmlFileLinks_(this);
+      },
+      getDiffBaseMarkup: function(diffBase) {
+        return self.getDiffBaseMarkup_(diffBase);
       },
       createDetailsElement: function(...allArgs) {
         const hbContext = this;
@@ -138,6 +192,7 @@ class ReportWriter {
       }
     }
 
+    attributes.push(`data-num-screenshots="${numScreenshots}"`);
     attributes.push(`data-collection-type="${collectionType}"`);
     if (htmlFilePath) {
       attributes.push(`data-html-file-path="${htmlFilePath}"`);
@@ -248,57 +303,6 @@ class ReportWriter {
   }
 
   /**
-   * @param {!mdc.proto.ReportData} fullReportData
-   * @return {!Promise<void>}
-   */
-  async generateReportPage(fullReportData) {
-    const meta = fullReportData.meta;
-
-    // We can save ~5 MiB by stripping out data that can be recomputed.
-    // TODO(acdvorak): Make sure the report page and `screenshot:approve` don't need this data.
-    const slimReportData = ReportData.create(fullReportData);
-    slimReportData.screenshots = Screenshots.create({
-      changed_screenshot_list: slimReportData.screenshots.changed_screenshot_list,
-      unchanged_screenshot_list: slimReportData.screenshots.unchanged_screenshot_list,
-      skipped_screenshot_list: slimReportData.screenshots.skipped_screenshot_list,
-      added_screenshot_list: slimReportData.screenshots.added_screenshot_list,
-      removed_screenshot_list: slimReportData.screenshots.removed_screenshot_list,
-    });
-
-    const templateFileRelativePath = 'report/report.hbs';
-    const htmlFileRelativePath = 'report/report.html';
-    const jsonFileRelativePath = 'report/report.json';
-
-    const templateFileAbsolutePath = path.join(meta.local_asset_base_dir, templateFileRelativePath);
-    const htmlFileAbsolutePath = path.join(meta.local_report_base_dir, htmlFileRelativePath);
-    const jsonFileAbsolutePath = path.join(meta.local_report_base_dir, jsonFileRelativePath);
-
-    const htmlFileUrl = this.getPublicUrl_(htmlFileRelativePath, meta);
-    const jsonFileUrl = this.getPublicUrl_(jsonFileRelativePath, meta);
-
-    const reportHtmlFile = TestFile.create({
-      relative_path: htmlFileRelativePath,
-      absolute_path: htmlFileAbsolutePath,
-      public_url: htmlFileUrl,
-    });
-
-    const reportJsonFile = TestFile.create({
-      relative_path: jsonFileRelativePath,
-      absolute_path: jsonFileAbsolutePath,
-      public_url: jsonFileUrl,
-    });
-
-    meta.report_html_file = reportHtmlFile;
-    meta.report_json_file = reportJsonFile;
-
-    const jsonFileContent = this.stringify_(slimReportData);
-    const htmlFileContent = await this.generateHtml_(fullReportData, templateFileAbsolutePath);
-
-    await this.localStorage_.writeTextFile(jsonFileAbsolutePath, jsonFileContent);
-    await this.localStorage_.writeTextFile(htmlFileAbsolutePath, htmlFileContent);
-  }
-
-  /**
    * @param {!mdc.proto.ReportData} reportData
    * @param {string} templateFileAbsolutePath
    * @return {!Promise<string>}
@@ -368,9 +372,7 @@ class ReportWriter {
     ;
 
     const goldenDiffBase = await this.cli_.parseDiffBase();
-    const snapshotDiffBase = await this.cli_.parseDiffBase({
-      rawDiffBase: 'HEAD',
-    });
+    const snapshotDiffBase = await this.cli_.parseDiffBase('HEAD');
 
     const gitUserName = await this.gitRepo_.getUserName();
     const gitUserEmail = await this.gitRepo_.getUserEmail();
@@ -412,14 +414,14 @@ class ReportWriter {
         <tr>
           <th class="report-metadata__cell report-metadata__cell--key">Golden:</th>
           <td class="report-metadata__cell report-metadata__cell--val">
-            ${await this.getMetadataCommitLinkMarkup_(goldenDiffBase)}
+            ${await this.getDiffBaseMarkup_(goldenDiffBase)}
           </td>
         </tr>
         <tr>
           <th class="report-metadata__cell report-metadata__cell--key">Snapshot Base:</th>
           <td class="report-metadata__cell report-metadata__cell--val">
-            ${await this.getMetadataCommitLinkMarkup_(snapshotDiffBase)}
-            ${await this.getMetadataLocalChangesMarkup_(snapshotDiffBase)}
+            ${await this.getDiffBaseMarkup_(snapshotDiffBase)}
+            ${await this.getLocalChangesMarkup_(snapshotDiffBase)}
           </td>
         </tr>
         <tr>
@@ -458,44 +460,44 @@ class ReportWriter {
   }
 
   /**
-   * @param {!DiffBase} DiffBase
-   * @return {!Promise<string>}
+   * @param {!mdc.proto.DiffBase} diffBase
+   * @return {!SafeString}
    * @private
    */
-  async getMetadataCommitLinkMarkup_(DiffBase) {
-    if (DiffBase.publicUrl) {
-      return `<a href="${DiffBase.publicUrl}">${DiffBase.publicUrl}</a>`;
+  getDiffBaseMarkup_(diffBase) {
+    if (diffBase.public_url) {
+      return new Handlebars.SafeString(`<a href="${diffBase.public_url}">${diffBase.public_url}</a>`);
     }
 
-    if (DiffBase.localFilePath) {
-      return `${DiffBase.localFilePath} (local file)`;
+    if (diffBase.local_file_path) {
+      return new Handlebars.SafeString(`${diffBase.local_file_path} (local file)`);
     }
 
-    if (DiffBase.gitRevision) {
-      const rev = DiffBase.gitRevision;
+    if (diffBase.git_revision) {
+      const rev = diffBase.git_revision;
 
       if (rev.branch) {
         const branchDisplayName = rev.remote ? `${rev.remote}/${rev.branch}` : rev.branch;
-        return `
+        return new Handlebars.SafeString(`
 <a href="${GITHUB_REPO_URL}/commit/${rev.commit}">${rev.commit}</a>
 on branch
 <a href="${GITHUB_REPO_URL}/tree/${rev.branch}">${branchDisplayName}</a>
-`;
+`);
       }
 
       if (rev.tag) {
-        return `
+        return new Handlebars.SafeString(`
 <a href="${GITHUB_REPO_URL}/commit/${rev.commit}">${rev.commit}</a>
 on tag
 <a href="${GITHUB_REPO_URL}/tree/${rev.tag}">${rev.tag}</a>
-`;
+`);
       }
     }
 
     throw new Error('Unable to generate markup for invalid diff source');
   }
 
-  async getMetadataLocalChangesMarkup_() {
+  async getLocalChangesMarkup_(diffBase) {
     const fragments = [];
     const gitStatus = await this.gitRepo_.getStatus();
     const numUntracked = gitStatus.not_added.length;

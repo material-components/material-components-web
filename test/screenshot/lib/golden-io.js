@@ -76,7 +76,7 @@ class GoldenIo {
    */
   async readFromDiffBase_(rawDiffBase) {
     /** @type {!mdc.proto.DiffBase} */
-    const parsedDiffBase = await this.cli_.parseDiffBase({rawDiffBase});
+    const parsedDiffBase = await this.cli_.parseDiffBase(rawDiffBase);
 
     const publicUrl = parsedDiffBase.public_url;
     if (publicUrl) {
@@ -86,14 +86,14 @@ class GoldenIo {
       });
     }
 
-    const localFilePath = parsedDiffBase.file_path;
+    const localFilePath = parsedDiffBase.local_file_path;
     if (localFilePath) {
       return fs.readFile(localFilePath, {encoding: 'utf8'});
     }
 
     const rev = parsedDiffBase.git_revision;
     if (rev) {
-      return this.gitRepo_.getFileAtRevision(rev.snapshot_file_path, rev.commit);
+      return this.gitRepo_.getFileAtRevision(rev.golden_json_file_path, rev.commit);
     }
 
     throw new Error(`Unable to parse '--diff-base=${rawDiffBase}': Expected a URL, local file path, or git ref`);

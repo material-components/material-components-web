@@ -361,7 +361,8 @@ class ReportBuilder {
 
       host_os_name: this.getHostOsName_(),
       cli_invocation: this.getCliInvocation_(),
-      diff_base: await this.cli_.parseDiffBase(),
+      expected_diff_base: await this.cli_.parseDiffBase(),
+      actual_diff_base: await this.cli_.parseDiffBase('HEAD'),
       user: User.create({
         name: await this.gitRepo_.getUserName(),
         email: await this.gitRepo_.getUserEmail(),

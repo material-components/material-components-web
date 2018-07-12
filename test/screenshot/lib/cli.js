@@ -437,12 +437,9 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
 
   /**
    * @param {string} rawDiffBase
-   * @param {string} defaultGoldenPath
    * @return {!Promise<!mdc.proto.DiffBase>}
    */
-  async parseDiffBase({
-    rawDiffBase = this.diffBase,
-  } = {}) {
+  async parseDiffBase(rawDiffBase = this.diffBase) {
     // Diff against a public `golden.json` URL.
     // E.g.: `--diff-base=https://storage.googleapis.com/.../golden.json`
     const isUrl = HTTP_URL_REGEX.test(rawDiffBase);
@@ -454,7 +451,8 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
     // E.g.: `--diff-base=/tmp/golden.json`
     const isLocalFile = await fs.exists(rawDiffBase);
     if (isLocalFile) {
-      return this.createLocalFileDiffBase_(rawDiffBase);
+      const fileDB = this.createLocalFileDiffBase_(rawDiffBase);
+      return this.createLocalBranchDiffBase_('HEAD', fileDB.local_file_path);
     }
 
     const [inputGoldenRef, inputGoldenPath] = rawDiffBase.split(':');
@@ -508,22 +506,22 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
     return DiffBase.create({
       input_string: localFilePath,
       type: DiffBase.Type.FILE_PATH,
-      file_path: localFilePath,
+      local_file_path: localFilePath,
     });
   }
 
   /**
    * @param {string} commit
-   * @param {string} snapshotFilePath
+   * @param {string} goldenJsonFilePath
    * @return {!mdc.proto.DiffBase}
    * @private
    */
-  createCommitDiffBase_(commit, snapshotFilePath) {
+  createCommitDiffBase_(commit, goldenJsonFilePath) {
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
       git_revision: GitRevision.create({
-        input_string: `${commit}:${snapshotFilePath}`, // TODO(acdvorak): Document the ':' separator format
-        snapshot_file_path: snapshotFilePath,
+        input_string: `${commit}:${goldenJsonFilePath}`, // TODO(acdvorak): Document the ':' separator format
+        golden_json_file_path: goldenJsonFilePath,
         commit: commit,
       }),
     });
@@ -531,11 +529,11 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
 
   /**
    * @param {string} remoteRef
-   * @param {string} snapshotFilePath
+   * @param {string} goldenJsonFilePath
    * @return {!mdc.proto.DiffBase}
    * @private
    */
-  async createRemoteBranchDiffBase_(remoteRef, snapshotFilePath) {
+  async createRemoteBranchDiffBase_(remoteRef, goldenJsonFilePath) {
     const allRemoteNames = await this.gitRepo_.getRemoteNames();
     const remote = allRemoteNames.find((curRemoteName) => remoteRef.startsWith(curRemoteName + '/'));
     const branch = remoteRef.substr(remote.length + 1); // add 1 for forward-slash separator
@@ -544,8 +542,8 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
       git_revision: GitRevision.create({
-        input_string: `${remoteRef}:${snapshotFilePath}`, // TODO(acdvorak): Document the ':' separator format
-        snapshot_file_path: snapshotFilePath,
+        input_string: `${remoteRef}:${goldenJsonFilePath}`, // TODO(acdvorak): Document the ':' separator format
+        golden_json_file_path: goldenJsonFilePath,
         commit,
         remote,
         branch,
@@ -555,18 +553,18 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
 
   /**
    * @param {string} tagRef
-   * @param {string} snapshotFilePath
+   * @param {string} goldenJsonFilePath
    * @return {!mdc.proto.DiffBase}
    * @private
    */
-  async createRemoteTagDiffBase_(tagRef, snapshotFilePath) {
+  async createRemoteTagDiffBase_(tagRef, goldenJsonFilePath) {
     const commit = await this.gitRepo_.getShortCommitHash(tagRef);
 
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
       git_revision: GitRevision.create({
-        input_string: `${tagRef}:${snapshotFilePath}`, // TODO(acdvorak): Document the ':' separator format
-        snapshot_file_path: snapshotFilePath,
+        input_string: `${tagRef}:${goldenJsonFilePath}`, // TODO(acdvorak): Document the ':' separator format
+        golden_json_file_path: goldenJsonFilePath,
         commit,
         remote: 'origin',
         tag: tagRef,
@@ -576,17 +574,17 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
 
   /**
    * @param {string} branch
-   * @param {string} snapshotFilePath
+   * @param {string} goldenJsonFilePath
    * @return {!mdc.proto.DiffBase}
    * @private
    */
-  async createLocalBranchDiffBase_(branch, snapshotFilePath) {
+  async createLocalBranchDiffBase_(branch, goldenJsonFilePath) {
     const commit = await this.gitRepo_.getShortCommitHash(branch);
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
       git_revision: GitRevision.create({
-        input_string: `${branch}:${snapshotFilePath}`, // TODO(acdvorak): Document the ':' separator format
-        snapshot_file_path: snapshotFilePath,
+        input_string: `${branch}:${goldenJsonFilePath}`, // TODO(acdvorak): Document the ':' separator format
+        golden_json_file_path: goldenJsonFilePath,
         commit,
         branch,
       }),

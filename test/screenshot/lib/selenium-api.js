@@ -108,7 +108,7 @@ class SeleniumApi {
    */
   async captureAllPagesInBrowser_({reportData, userAgent}) {
     /** @type {!IWebDriver} */
-    const driver = await this.createWebDriver_(userAgent);
+    const driver = await this.createWebDriver_({reportData, userAgent});
 
     const logResult = (verb) => {
       /* eslint-disable camelcase */
@@ -166,13 +166,15 @@ class SeleniumApi {
   }
 
   /**
-   * @param {!mdc.proto.UserAgent} userAgent}
+   * @param {!mdc.proto.ReportData} reportData
+   * @param {!mdc.proto.UserAgent} userAgent
    * @return {!Promise<!IWebDriver>}
    */
-  async createWebDriver_(userAgent) {
+  async createWebDriver_({reportData, userAgent}) {
     const driverBuilder = new Builder();
 
-    userAgent.desired_capabilities = await this.getDesiredCapabilities_(userAgent);
+    userAgent.desired_capabilities = await this.getDesiredCapabilities_({reportData, userAgent});
+    console.log('userAgent.desired_capabilities:', userAgent.desired_capabilities);
     driverBuilder.withCapabilities(userAgent.desired_capabilities);
 
     const isOnline = await this.cli_.isOnline();
@@ -206,11 +208,12 @@ class SeleniumApi {
   }
 
   /**
+   * @param {!mdc.proto.ReportData} reportData
    * @param {!mdc.proto.UserAgent} userAgent
    * @return {!selenium.proto.RawCapabilities}
    * @private
    */
-  async getDesiredCapabilities_(userAgent) {
+  async getDesiredCapabilities_({reportData, userAgent}) {
     const isOnline = await this.cli_.isOnline();
     if (isOnline) {
       return await this.cbtApi_.getDesiredCapabilities(userAgent);
@@ -223,8 +226,11 @@ class SeleniumApi {
       [BrowserVendorType.IE]: Browser.IE,
       [BrowserVendorType.SAFARI]: Browser.SAFARI,
     };
+
     return RawCapabilities.create({
       browserName: browserVendorMap[userAgent.browser_vendor_type],
+      name: undefined,
+      build: reportData.meta.diff_base.string,
     });
   }
 

@@ -14,7 +14,9 @@
         </tr>
         <tr>
           <th class="report-metadata__cell report-metadata__cell--key">Test Duration:</th>
-          <td class="report-metadata__cell report-metadata__cell--val">{{msToHuman meta.duration_ms}}</td>
+          <td class="report-metadata__cell report-metadata__cell--val">
+            <span title="{{msToHumanShort meta.duration_ms 4}}">{{msToHumanShort meta.duration_ms 2}}</span>
+          </td>
         </tr>
         <!--
         <tr>
@@ -29,20 +31,19 @@
           <th class="report-metadata__cell report-metadata__cell--key">Screenshots:</th>
           <td class="report-metadata__cell report-metadata__cell--val">${screenshotCountMarkup}</td>
         </tr>
+        -->
         <tr>
           <th class="report-metadata__cell report-metadata__cell--key">Golden:</th>
           <td class="report-metadata__cell report-metadata__cell--val">
-            ${await this.getMetadataCommitLinkMarkup_(goldenDiffBase)}
+            {{getDiffBaseMarkup meta.expected_diff_base}}
           </td>
         </tr>
         <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">Snapshot Base:</th>
+          <th class="report-metadata__cell report-metadata__cell--key">Snapshot:</th>
           <td class="report-metadata__cell report-metadata__cell--val">
-            ${await this.getMetadataCommitLinkMarkup_(snapshotDiffBase)}
-            ${await this.getMetadataLocalChangesMarkup_(snapshotDiffBase)}
+            {{getDiffBaseMarkup meta.actual_diff_base}}
           </td>
         </tr>
-        -->
         <tr>
           <th class="report-metadata__cell report-metadata__cell--key">MDC Version:</th>
           <td class="report-metadata__cell report-metadata__cell--val">

@@ -40,15 +40,16 @@ message ReportMeta {
 
   string host_os_name = 12;
   string cli_invocation = 13;
-  DiffBase diff_base = 14;
-  User user = 15;
+  DiffBase expected_diff_base = 14;
+  DiffBase actual_diff_base = 15;
+  User user = 16;
 
-  LibraryVersion node_version = 16;
-  LibraryVersion npm_version = 17;
-  LibraryVersion mdc_version = 18;
+  LibraryVersion node_version = 17;
+  LibraryVersion npm_version = 18;
+  LibraryVersion mdc_version = 19;
 
-  TestFile report_html_file = 19;
-  TestFile report_json_file = 20;
+  TestFile report_html_file = 20;
+  TestFile report_json_file = 21;
 }
 
 message DiffBase {
@@ -63,7 +64,7 @@ message DiffBase {
   string input_string = 2;
 
   oneof value_oneof {
-    string file_path = 3;
+    string local_file_path = 3;
     string public_url = 4;
     GitRevision git_revision = 5;
   }
@@ -79,7 +80,7 @@ message GitRevision {
   }
 
   Type type = 1;
-  string snapshot_file_path = 2;
+  string golden_json_file_path = 2;
   string commit = 3;
   string remote = 4;
   string branch = 5;

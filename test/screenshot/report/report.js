@@ -43,8 +43,10 @@ window.mdc.reportUi = (() => {
     calculateTimeOffset_() {
       const startTimeEl = this.queryOne_('#report-metadata__start-time');
       const timeSinceStartEl = this.queryOne_('#report-metadata__time-since-start');
-      const elapsed = Duration.elapsed(startTimeEl.dateTime).toHuman(0);
-      timeSinceStartEl.innerText = `(${elapsed} ago)`;
+      const elapsedShort = Duration.elapsed(startTimeEl.dateTime).toHumanShort(0);
+      const elapsedLong = Duration.elapsed(startTimeEl.dateTime).toHumanShort(2);
+      timeSinceStartEl.innerText = `(about ${elapsedShort} ago)`;
+      timeSinceStartEl.title = `${elapsedLong} ago`;
     }
 
     bindEventListeners_() {
@@ -115,25 +117,34 @@ window.mdc.reportUi = (() => {
     }
 
     collapseAll() {
-      const detailsElems = Array.from(document.querySelectorAll('details'));
-      detailsElems.forEach((detailsElem) => detailsElem.open = false);
+      const allDetailsElems = Array.from(document.querySelectorAll('details'));
+      allDetailsElems.forEach((detailsElem) => detailsElem.open = false);
     }
 
     collapseNone() {
-      const detailsElems = Array.from(document.querySelectorAll('details'));
-      detailsElems.forEach((detailsElem) => detailsElem.open = true);
+      const allDetailsElems = Array.from(document.querySelectorAll('details'));
+      allDetailsElems.forEach((detailsElem) => detailsElem.open = true);
     }
 
     collapseImages() {
       this.collapseNone();
-      const detailsElems = Array.from(document.querySelectorAll('.report-user-agent'));
-      detailsElems.forEach((detailsElem) => detailsElem.open = false);
+
+      const collectionDetailsElems = Array.from(document.querySelectorAll('.report-collection'));
+      collectionDetailsElems.forEach((detailsElem) => {
+        const hasScreenshots = Number(detailsElem.getAttribute('data-num-screenshots')) > 0;
+        const isComparable = !['skipped', 'unchanged'].includes(detailsElem.getAttribute('data-collection-type'));
+        detailsElem.open = hasScreenshots && isComparable;
+      });
+
+      const userAgentDetailsElems = Array.from(document.querySelectorAll('.report-user-agent'));
+      userAgentDetailsElems.forEach((detailsElem) => detailsElem.open = false);
     }
 
     /**
      * @param {!HTMLInputElement} cbEl
      */
     collectionCheckboxChanged(cbEl) {
+      // TODO(acdvorak): Replace dataset with getAttribute/setAttribute (it makes search/replace easier)
       const {collectionType} = cbEl.dataset;
       const childCbEls = this.queryAll_(`[data-collection-type="${collectionType}"]`);
       childCbEls.forEach((childCbEl) => {
