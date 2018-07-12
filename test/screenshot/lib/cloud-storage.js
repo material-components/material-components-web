@@ -16,13 +16,12 @@
 
 'use strict';
 
-const CliArgParser = require('./cli-arg-parser');
 const Duration = require('./duration');
 const GitRepo = require('./git-repo');
 const GoogleCloudStorage = require('@google-cloud/storage');
 const LocalStorage = require('./local-storage');
 const ProcessManager = require('../lib/process-manager');
-const {ExitCode} = require('../lib/constants');
+const {ExitCode, GCS_BUCKET} = require('../lib/constants');
 
 /** Maximum number of times to retry a failed HTTP request. */
 const API_MAX_RETRIES = 5;
@@ -59,12 +58,6 @@ https://console.cloud.google.com/iam-admin/serviceaccounts?project=material-comp
     this.gcsCredentials_ = JSON.parse(MDC_GCS_CREDENTIALS);
 
     /**
-     * @type {!CliArgParser}
-     * @private
-     */
-    this.cliArgs_ = new CliArgParser();
-
-    /**
      * @type {!GitRepo}
      * @private
      */
@@ -94,13 +87,13 @@ https://console.cloud.google.com/iam-admin/serviceaccounts?project=material-comp
    * @private
    */
   getGcsBucket_() {
-    const name = this.cliArgs_.gcsBucket;
+    const name = GCS_BUCKET;
 
     if (!this.gcsBucketCache_[name]) {
       const gcs = new GoogleCloudStorage({
         credentials: this.gcsCredentials_,
       });
-      this.gcsBucketCache_[name] = gcs.bucket(this.cliArgs_.gcsBucket);
+      this.gcsBucketCache_[name] = gcs.bucket(name);
     }
 
     return this.gcsBucketCache_[name];
@@ -146,7 +139,7 @@ https://console.cloud.google.com/iam-admin/serviceaccounts?project=material-comp
     const topLevelAssetFilesAndDirs = await this.localStorage_.fetchAllTopLevelAssetFileAndDirPaths();
     const cmd = 'gsutil';
     const args = [
-      '-m', 'cp', '-r', ...topLevelAssetFilesAndDirs, `gs://${this.cliArgs_.gcsBucket}/${baseUploadDir}/`,
+      '-m', 'cp', '-r', ...topLevelAssetFilesAndDirs, `gs://${GCS_BUCKET}/${baseUploadDir}/`,
     ];
 
     console.log(`${cmd} ${args.join(' ')}\n`);

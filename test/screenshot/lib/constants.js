@@ -15,6 +15,26 @@
  */
 
 module.exports = {
+  /**
+   * Path to the screenshot test directory in the git repo, relative to $PWD (the project root).
+   * MUST end with a trailing slash.
+   * @type {string}
+   */
+  TEST_DIR_RELATIVE_PATH: 'test/screenshot/',
+
+  /**
+   * Path to the JSON file that stores the URLs of approved ("golden") screenshot images.
+   * Assumed to be relative to $PWD (the root directory of the git repo).
+   * @type {string}
+   */
+  GOLDEN_JSON_RELATIVE_PATH: 'test/screenshot/golden.json',
+
+  /**
+   * Name of the Google Cloud Storage bucket to use for public file uploads.
+   * @type {string}
+   */
+  GCS_BUCKET: 'mdc-web-screenshot-tests',
+
   ExitCode: {
     UNKNOWN_ERROR: 1,
     SIGINT: 2, // ctrl-c
