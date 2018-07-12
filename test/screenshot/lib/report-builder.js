@@ -89,6 +89,7 @@ class ReportBuilder {
     /** @type {!mdc.proto.ReportData} */
     const reportData = ReportData.fromObject(require(runReportJsonFile.absolute_path));
     reportData.approvals = Approvals.create();
+    this.populateScreenshotMaps(reportData.screenshots);
     this.populateApprovals_(reportData);
     return reportData;
   }
@@ -147,19 +148,38 @@ class ReportBuilder {
     screenshots.actual_screenshot_list.sort(sort);
     screenshots.runnable_screenshot_list.sort(sort);
     screenshots.skipped_screenshot_list.sort(sort);
+    screenshots.comparable_screenshot_list.sort(sort);
     screenshots.added_screenshot_list.sort(sort);
     screenshots.removed_screenshot_list.sort(sort);
-    screenshots.comparable_screenshot_list.sort(sort);
     screenshots.changed_screenshot_list.sort(sort);
     screenshots.unchanged_screenshot_list.sort(sort);
+
+    // This field gets stripped out when the report is serialized to JSON, so we need to recalculate it.
+    if (screenshots.comparable_screenshot_list.length === 0) {
+      screenshots.comparable_screenshot_list.push(
+        ...(screenshots.changed_screenshot_list),
+        ...(screenshots.unchanged_screenshot_list)
+      );
+      screenshots.comparable_screenshot_list.sort(sort);
+    }
+
+    // This field gets stripped out when the report is serialized to JSON, so we need to recalculate it.
+    if (screenshots.runnable_screenshot_list.length === 0) {
+      screenshots.runnable_screenshot_list.push(
+        ...(screenshots.added_screenshot_list),
+        ...(screenshots.changed_screenshot_list),
+        ...(screenshots.unchanged_screenshot_list)
+      );
+      screenshots.runnable_screenshot_list.sort(sort);
+    }
 
     screenshots.expected_screenshot_browser_map = this.groupByBrowser_(screenshots.expected_screenshot_list);
     screenshots.actual_screenshot_browser_map = this.groupByBrowser_(screenshots.actual_screenshot_list);
     screenshots.runnable_screenshot_browser_map = this.groupByBrowser_(screenshots.runnable_screenshot_list);
     screenshots.skipped_screenshot_browser_map = this.groupByBrowser_(screenshots.skipped_screenshot_list);
+    screenshots.comparable_screenshot_browser_map = this.groupByBrowser_(screenshots.comparable_screenshot_list);
     screenshots.added_screenshot_browser_map = this.groupByBrowser_(screenshots.added_screenshot_list);
     screenshots.removed_screenshot_browser_map = this.groupByBrowser_(screenshots.removed_screenshot_list);
-    screenshots.comparable_screenshot_browser_map = this.groupByBrowser_(screenshots.comparable_screenshot_list);
     screenshots.changed_screenshot_browser_map = this.groupByBrowser_(screenshots.changed_screenshot_list);
     screenshots.unchanged_screenshot_browser_map = this.groupByBrowser_(screenshots.unchanged_screenshot_list);
 
@@ -167,9 +187,9 @@ class ReportBuilder {
     screenshots.actual_screenshot_page_map = this.groupByPage_(screenshots.actual_screenshot_list);
     screenshots.runnable_screenshot_page_map = this.groupByPage_(screenshots.runnable_screenshot_list);
     screenshots.skipped_screenshot_page_map = this.groupByPage_(screenshots.skipped_screenshot_list);
+    screenshots.comparable_screenshot_page_map = this.groupByPage_(screenshots.comparable_screenshot_list);
     screenshots.added_screenshot_page_map = this.groupByPage_(screenshots.added_screenshot_list);
     screenshots.removed_screenshot_page_map = this.groupByPage_(screenshots.removed_screenshot_list);
-    screenshots.comparable_screenshot_page_map = this.groupByPage_(screenshots.comparable_screenshot_list);
     screenshots.changed_screenshot_page_map = this.groupByPage_(screenshots.changed_screenshot_list);
     screenshots.unchanged_screenshot_page_map = this.groupByPage_(screenshots.unchanged_screenshot_list);
   }
