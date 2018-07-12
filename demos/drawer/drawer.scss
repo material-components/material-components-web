@@ -72,14 +72,14 @@
 }
 
 .demo-content {
-  height: 100%;
-  overflow: auto;
   flex: auto;
 }
 
 .demo-main {
   padding-left: 16px;
   padding-right: 16px;
+  overflow: auto;
+  height: 100%;
 }
 
 #extra-wide-content {

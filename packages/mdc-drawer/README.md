@@ -90,7 +90,7 @@ Dismissible drawers are by default hidden off screen, and can slide into view. D
 
 ```html
 <body>
-  <nav class="mdc-drawer mdc-drawer--dismissible">
+  <header class="mdc-drawer mdc-drawer--dismissible">
     <div class="mdc-drawer__scrollable">
       <nav class="mdc-list">
         <a class="mdc-list-item mdc-list-item--activated" href='#'>
@@ -107,6 +107,62 @@ Dismissible drawers are by default hidden off screen, and can slide into view. D
 ```
 
 > Use the `mdc-drawer-app-content` class to the element sibling to the drawer to get the open/close animations to work.
+
+### Usage with Top App Bar
+
+There are some styles that need to be applied to get the top app bar and the dismissible drawer to independently scroll and work on all browsers. `.mdc-drawer__scrollable` and `#main-content` elements should independently scroll each other. The `mdc-drawer--dismissible` and `mdc-drawer-app-content` should then sit side-by-side. The markup looks something like this:
+
+```html
+<body>
+  <nav class="mdc-drawer mdc-drawer--dismissible">
+    <div class="mdc-drawer__scrollable">
+      <div class="mdc-list">
+        <a class="mdc-list-item mdc-list-item--activated" href='#'>
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="mdc-drawer-app-content">
+    <header class="mdc-top-app-bar" id="app-bar">
+      <div class="mdc-top-app-bar__row">
+        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+          <a href="#" class="demo-menu material-icons mdc-top-app-bar__navigation-icon">menu</a>
+          <span class="mdc-top-app-bar__title">Dismissible Drawer</span>
+        </section>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <div class="mdc-top-app-bar--fixed-adjust"></div>
+        App Content
+      </div>
+    </main>
+  </div>
+</body>
+```
+
+The CSS to match it looks like:
+
+```css
+// these style do not account for any paddings/margins that you may need
+
+body {
+  display: flex;
+  height: 100vh;
+}
+
+.mdc-drawer-app-content {
+  flex: auto;
+}
+
+#main-content {
+  overflow: auto;
+  height: 100%;
+}
+
+```
 
 ## Style Customization
 

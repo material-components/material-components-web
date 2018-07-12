@@ -89,7 +89,7 @@
         </div>
       </header>
 
-      <main class="demo-main">
+      <main class="demo-main" id="demo-main">
         <div class="mdc-top-app-bar--fixed-adjust"></div>
         <h1 class="mdc-typography--headline4">Dismissible Drawer</h1>
         <p class="mdc-typography--body1">It sits to the left of this content.</p>
@@ -191,7 +191,7 @@
 
         var topAppBarEl = document.getElementById('app-bar');
         var topAppBar = new mdc.topAppBar.MDCTopAppBar(topAppBarEl);
-        topAppBar.setScrollTarget(document.getElementById('demo-content'));
+        topAppBar.setScrollTarget(document.getElementById('demo-main'));
         topAppBar.listen('MDCTopAppBar:nav', function() {
           if (drawer.open) {
             drawer.open = false;
