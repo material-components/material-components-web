@@ -155,6 +155,7 @@ body {
 
 .mdc-drawer-app-content {
   flex: auto;
+  overflow: auto;
 }
 
 #main-content {
