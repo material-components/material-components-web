@@ -44,7 +44,7 @@ class CloudStorage {
    * @return {!Promise<void>}
    */
   async uploadAllAssets(reportData) {
-    console.log('Uploading asset files to GCS...');
+    console.log('\nUploading asset files to GCS...');
     await this.uploadDirectory_(reportData, reportData.meta.local_asset_base_dir);
   }
 
@@ -53,7 +53,7 @@ class CloudStorage {
    * @return {!Promise<void>}
    */
   async uploadAllScreenshots(reportData) {
-    console.log('Uploading screenshot images to GCS...');
+    console.log('\nUploading screenshot images to GCS...');
     await this.uploadDirectory_(reportData, reportData.meta.local_screenshot_image_base_dir);
   }
 
@@ -62,7 +62,7 @@ class CloudStorage {
    * @return {!Promise<void>}
    */
   async uploadAllDiffs(reportData) {
-    console.log('Uploading image diffs to GCS...');
+    console.log('\nUploading image diffs to GCS...');
     await this.uploadDirectory_(reportData, reportData.meta.local_diff_image_base_dir);
   }
 
@@ -71,7 +71,7 @@ class CloudStorage {
    * @return {!Promise<void>}
    */
   async uploadDiffReport(reportData) {
-    console.log('Uploading diff report to GCS...');
+    console.log('\nUploading diff report to GCS...');
     await this.uploadDirectory_(reportData, reportData.meta.local_report_base_dir);
   }
 

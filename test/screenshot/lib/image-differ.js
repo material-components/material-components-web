@@ -35,24 +35,13 @@ class ImageDiffer {
    * @return {!Promise<void>}
    */
   async compareAllScreenshots(reportData) {
-    for (const screenshot of reportData.screenshots.comparable_screenshot_list) {
-      /** @type {!mdc.proto.DiffImageResult} */
-      const diffImageResult = await this.compareOneImage({
-        reportData,
-        actualImageFile: screenshot.actual_image_file,
-        expectedImageFile: screenshot.expected_image_file,
-      });
+    const screenshots = reportData.screenshots.comparable_screenshot_list;
 
-      screenshot.diff_image_result = diffImageResult;
-      screenshot.diff_image_file = diffImageResult.diff_image_file;
-      screenshot.capture_state = CaptureState.DIFFED;
+    console.log(`Diffing ${screenshots.length} screenshots...`);
 
-      if (diffImageResult.has_changed) {
-        reportData.screenshots.changed_screenshot_list.push(screenshot);
-      } else {
-        reportData.screenshots.unchanged_screenshot_list.push(screenshot);
-      }
-    }
+    await Promise.all(screenshots.map((screenshot) => {
+      return this.compareOneScreenshot_({reportData, screenshot});
+    }));
 
     reportData.screenshots.changed_screenshot_browser_map =
       this.groupByBrowser_(reportData.screenshots.changed_screenshot_list);
@@ -65,6 +54,31 @@ class ImageDiffer {
       this.groupByPage_(reportData.screenshots.unchanged_screenshot_list);
 
     this.logComparisonResults_(reportData);
+  }
+
+  /**
+   * @param {!mdc.proto.ReportData} reportData
+   * @param {!mdc.proto.Screenshot} screenshot
+   * @return {!Promise<void>}
+   * @private
+   */
+  async compareOneScreenshot_({reportData, screenshot}) {
+    /** @type {!mdc.proto.DiffImageResult} */
+    const diffImageResult = await this.compareOneImage({
+      reportData,
+      actualImageFile: screenshot.actual_image_file,
+      expectedImageFile: screenshot.expected_image_file,
+    });
+
+    screenshot.diff_image_result = diffImageResult;
+    screenshot.diff_image_file = diffImageResult.diff_image_file;
+    screenshot.capture_state = CaptureState.DIFFED;
+
+    if (diffImageResult.has_changed) {
+      reportData.screenshots.changed_screenshot_list.push(screenshot);
+    } else {
+      reportData.screenshots.unchanged_screenshot_list.push(screenshot);
+    }
   }
 
   /**

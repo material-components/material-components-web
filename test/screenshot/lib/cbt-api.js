@@ -77,7 +77,7 @@ https://crossbrowsertesting.com/account
   }
 
   /**
-   * @return {!Promise<cbt.proto.CbtConcurrencyStats>}
+   * @return {!Promise<!cbt.proto.CbtConcurrencyStats>}
    */
   async fetchConcurrencyStats() {
     const [accountJson, activesJson] = await Promise.all([

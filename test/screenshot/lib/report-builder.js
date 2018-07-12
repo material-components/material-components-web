@@ -372,6 +372,10 @@ class ReportBuilder {
     this.setAllStates_(screenshots.removed_screenshot_list, InclusionType.REMOVE, CaptureState.SKIPPED);
     this.setAllStates_(screenshots.comparable_screenshot_list, InclusionType.COMPARE, CaptureState.QUEUED);
 
+    // TODO(acdvorak): Figure out why the report page is randomly sorted. E.g.:
+    // https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/04_49_09_427/report/report.html
+    // https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/04_48_52_974/report/report.html
+    // https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/04_49_40_160/report/report.html
     const sort = (a, b) => this.compareScreenshotsForSorting_(a, b);
 
     screenshots.expected_screenshot_list.sort(sort);

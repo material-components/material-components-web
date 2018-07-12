@@ -30,8 +30,10 @@ const {RawCapabilities} = seleniumProto;
 
 const CbtApi = require('./cbt-api');
 const Cli = require('./cli');
+const Duration = require('./duration');
 const ImageCropper = require('./image-cropper');
 const {Browser, Builder} = require('selenium-webdriver');
+const {CBT_CONCURRENCY_POLL_INTERVAL_MS, CBT_CONCURRENCY_MAX_WAIT_MS} = require('./constants');
 
 class SeleniumApi {
   constructor() {
@@ -59,11 +61,35 @@ class SeleniumApi {
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async captureAllPages(reportData) {
-    // TODO(acdvorak): Add `--parallel=5` CLI option and detect CBT concurrency limit
-    for (const userAgent of reportData.user_agents.runnable_user_agents) {
-      await this.captureAllPagesInBrowser_({reportData, userAgent});
+    const maxParallelTests = await this.getMaxParallelTests_();
+    const runnableUserAgents = reportData.user_agents.runnable_user_agents;
+
+    let activeUserAgents;
+    let queuedUserAgents = runnableUserAgents.slice();
+
+    while (queuedUserAgents.length > 0) {
+      activeUserAgents = queuedUserAgents.slice(0, maxParallelTests);
+      queuedUserAgents = queuedUserAgents.slice(maxParallelTests);
+      console.log('activeUserAgents:', JSON.stringify(activeUserAgents.map((ua) => ua.alias)));
+      console.log('queuedUserAgents:', JSON.stringify(queuedUserAgents.map((ua) => ua.alias)));
+      await this.captureAllPagesInBrowsers_({reportData, userAgents: activeUserAgents});
     }
+
     return reportData;
+  }
+
+  /**
+   * @param {!mdc.proto.ReportData} reportData
+   * @param {!Array<!mdc.proto.UserAgent>} userAgents
+   * @return {!Promise<void>}
+   * @private
+   */
+  async captureAllPagesInBrowsers_({reportData, userAgents}) {
+    const promises = [];
+    for (const userAgent of userAgents) {
+      promises.push(this.captureAllPagesInBrowser_({reportData, userAgent}));
+    }
+    await Promise.all(promises);
   }
 
   /**
@@ -84,16 +110,49 @@ class SeleniumApi {
   }
 
   /**
+   * @return {!Promise<number>}
+   * @private
+   */
+  async getMaxParallelTests_() {
+    const startTimeMs = Date.now();
+
+    while (true) {
+      /** @type {!mdc.proto.cbt.CbtConcurrencyStats} */
+      const stats = await this.cbtApi_.fetchConcurrencyStats();
+      const active = stats.active_concurrent_selenium_tests;
+      const max = stats.max_concurrent_selenium_tests;
+
+      if (active === max) {
+        const elapsedTimeMs = Date.now() - startTimeMs;
+        const elapsedTimeHuman = Duration.millis(elapsedTimeMs).toHuman();
+        if (elapsedTimeMs > CBT_CONCURRENCY_MAX_WAIT_MS) {
+          throw new Error(`Timed out waiting for CBT resources to become available after ${elapsedTimeHuman}`);
+        }
+
+        const waitTimeMs = CBT_CONCURRENCY_POLL_INTERVAL_MS;
+        const waitTimeHuman = Duration.millis(waitTimeMs).toHuman();
+        console.warn(
+          `Parallel execution limit reached. ${max} tests are already running on CBT. Will retry in ${waitTimeHuman}...`
+        );
+        await this.sleep_(waitTimeMs);
+        continue;
+      }
+
+      // If nobody else is running any tests, run half the number of concurrent tests allowed by our CBT account.
+      // This gives us _some_ parallelism while still allowing other users to run their tests.
+      // If someone else is already running tests, only run one test at a time.
+      return active === 0 ? Math.ceil(max / 2) : 1;
+    }
+  }
+
+  /**
    * @param {!mdc.proto.UserAgent} userAgent}
    * @return {!Promise<!IWebDriver>}
    */
   async createWebDriver_(userAgent) {
     const driverBuilder = new Builder();
 
-    /** @type {!selenium.proto.RawCapabilities} */
-    const desiredCapabilities = await this.getDesiredCapabilities_(userAgent);
-
-    userAgent.desired_capabilities = desiredCapabilities;
+    userAgent.desired_capabilities = await this.getDesiredCapabilities_(userAgent);
     driverBuilder.withCapabilities(userAgent.desired_capabilities);
 
     const isOnline = await this.cli_.isOnline();
@@ -101,7 +160,6 @@ class SeleniumApi {
       driverBuilder.usingServer(this.cbtApi_.getSeleniumServerUrl());
     }
 
-    console.log('');
     console.log(`Starting ${userAgent.alias}...`);
 
     /** @type {!IWebDriver} */
@@ -122,7 +180,6 @@ class SeleniumApi {
     userAgent.image_filename_suffix = this.getImageFileNameSuffix_(userAgent);
 
     console.log(`Started ${browser_name} ${browser_version} on ${os_name} ${os_version}!`);
-    console.log('');
     /* eslint-enable camelcase */
 
     return driver;
@@ -235,7 +292,7 @@ class SeleniumApi {
       const htmlFilePath = screenshot.html_file_path;
       const htmlFileUrl = screenshot.actual_html_file.public_url;
 
-      const imageBuffer = await this.capturePageAsPng_({driver, url: htmlFileUrl});
+      const imageBuffer = await this.capturePageAsPng_({driver, userAgent, url: htmlFileUrl});
 
       const imageFileNameSuffix = userAgent.image_filename_suffix;
       const imageFilePathRelative = `${htmlFilePath}.${imageFileNameSuffix}.png`;
@@ -254,12 +311,13 @@ class SeleniumApi {
 
   /**
    * @param {!IWebDriver} driver
+   * @param {!mdc.proto.UserAgent} userAgent
    * @param {string} url
    * @return {!Promise<!Buffer>} Buffer containing PNG image data for the cropped screenshot image
    * @private
    */
-  async capturePageAsPng_({driver, url}) {
-    console.log(`GET "${url}"...`);
+  async capturePageAsPng_({driver, userAgent, url}) {
+    console.log(`GET "${url}" > ${userAgent.alias}...`);
     await driver.get(url);
 
     // TODO(acdvorak): Implement "fullpage" screenshots?
@@ -270,6 +328,15 @@ class SeleniumApi {
     const uncroppedPngBuffer = Buffer.from(uncroppedBase64Str, 'base64');
 
     return this.imageCropper_.autoCropImage(uncroppedPngBuffer);
+  }
+
+  /**
+   * @param {number} ms
+   * @return {!Promise<void>}
+   * @private
+   */
+  async sleep_(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 }
 

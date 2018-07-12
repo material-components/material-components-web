@@ -35,6 +35,18 @@ module.exports = {
    */
   GCS_BUCKET: 'mdc-web-screenshot-tests',
 
+  /**
+   * Number of milliseconds to wait before retrying a concurrent CBT Selenium request.
+   * @type {number}
+   */
+  CBT_CONCURRENCY_POLL_INTERVAL_MS: 30 * 1000, // 30 seconds
+
+  /**
+   * Maximum number of milliseconds to wait before aborting a concurrent CBT Selenium request.
+   * @type {number}
+   */
+  CBT_CONCURRENCY_MAX_WAIT_MS: 10 * 60 * 1000, // 10 minutes
+
   ExitCode: {
     UNKNOWN_ERROR: 1,
     SIGINT: 2, // ctrl-c
