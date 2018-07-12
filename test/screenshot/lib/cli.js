@@ -105,7 +105,8 @@ The default behavior is to always build assets before running the tests.
       type: 'boolean',
       description: `
 If this flag is present, remote commits will not be fetched from GitHub.
-The default behavior is to always run 'git fetch' before comparing screenshots.
+The default behavior is to always run 'git fetch' before comparing screenshots to ensure that CLI options like
+'--diff-base=origin/master' work as expected.
 `,
     });
   }

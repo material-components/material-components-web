@@ -32,7 +32,7 @@ const CbtApi = require('./cbt-api');
 const Cli = require('./cli');
 const Duration = require('./duration');
 const ImageCropper = require('./image-cropper');
-const {Browser, Builder} = require('selenium-webdriver');
+const {Browser, Builder, By, until} = require('selenium-webdriver');
 const {CBT_CONCURRENCY_POLL_INTERVAL_MS, CBT_CONCURRENCY_MAX_WAIT_MS} = require('./constants');
 
 class SeleniumApi {
@@ -110,9 +110,21 @@ class SeleniumApi {
     /** @type {!IWebDriver} */
     const driver = await this.createWebDriver_(userAgent);
 
+    const logResult = (verb) => {
+      /* eslint-disable camelcase */
+      const {os_name, os_version, browser_name, browser_version} = userAgent.navigator;
+      console.log(`${verb} ${browser_name} ${browser_version} on ${os_name} ${os_version}!`);
+      /* eslint-enable camelcase */
+    };
+
     try {
       await this.driveBrowser_({reportData, userAgent, driver});
+      logResult('Finished');
+    } catch (err) {
+      logResult('Failed');
+      throw err;
     } finally {
+      logResult('Quitting');
       await driver.quit();
     }
   }
@@ -326,11 +338,29 @@ class SeleniumApi {
    */
   async capturePageAsPng_({driver, userAgent, url}) {
     console.log(`GET "${url}" > ${userAgent.alias}...`);
-    await driver.get(url);
 
-    // TODO(acdvorak): Implement "fullpage" screenshots?
-    // We can find the device's pixel ratio by capturing a screenshot and comparing the image dimensions with the
-    // viewport dimensions reported by the JS running on the page.
+    await driver.get(url);
+    await driver.executeScript(`
+var timeout;
+var interval;
+var callback = arguments[arguments.length - 1];
+
+interval = setInterval(function() {
+  if (window.mdc) {
+    window.mdc.testFixture.waitForFontsToLoad(function() { /*callback();*/ });
+    clearInterval(interval);
+    clearTimeout(timeout);
+  }
+}, 100);
+
+timeout = setTimeout(function() {
+  /*callback();*/
+  clearInterval(interval);
+  clearTimeout(timeout);
+}, 1000);
+`);
+    // TODO(acdvorak): Create a constant for font loading timeout values
+    await driver.wait(until.elementLocated(By.css('[data-fonts-loaded]')), 3000);
 
     const uncroppedBase64Str = await driver.takeScreenshot();
     const uncroppedPngBuffer = Buffer.from(uncroppedBase64Str, 'base64');

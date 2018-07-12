@@ -29,9 +29,15 @@ window.mdc.reportUi = (() => {
          */
         this.reportData_ = reportData;
 
-        this.calculateTimeOffset_();
+        this.startTimeOffsetPolling_();
         this.updateAllAndGetState_();
       });
+    }
+
+    startTimeOffsetPolling_() {
+      const updateTimeOffset = () => this.calculateTimeOffset_();
+      updateTimeOffset();
+      setInterval(updateTimeOffset, Duration.minutes(1).toMillis());
     }
 
     calculateTimeOffset_() {
