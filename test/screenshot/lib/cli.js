@@ -412,7 +412,7 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
     ids = [].concat(...ids.map((value) => value.split(','))); // flatten array of arrays
     ids = Array.from(new Set(ids)); // de-duplicate
     return ids.map((id) => {
-      const [htmlFilePath, userAgentAlias] = id.split(':'); // TODO(acdvorak): Document this
+      const [htmlFilePath, userAgentAlias] = id.split(':'); // TODO(acdvorak): Document the ':' separator format
       return ApprovalId.create({
         html_file_path: htmlFilePath,
         user_agent_alias: userAgentAlias,
@@ -493,6 +493,7 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
    */
   createPublicUrlDiffBase_(publicUrl) {
     return DiffBase.create({
+      input_string: publicUrl,
       type: DiffBase.Type.PUBLIC_URL,
       public_url: publicUrl,
     });
@@ -505,6 +506,7 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
    */
   createLocalFileDiffBase_(localFilePath) {
     return DiffBase.create({
+      input_string: localFilePath,
       type: DiffBase.Type.FILE_PATH,
       file_path: localFilePath,
     });
@@ -520,6 +522,7 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
       git_revision: GitRevision.create({
+        input_string: `${commit}:${snapshotFilePath}`, // TODO(acdvorak): Document the ':' separator format
         snapshot_file_path: snapshotFilePath,
         commit: commit,
       }),
@@ -541,6 +544,7 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
       git_revision: GitRevision.create({
+        input_string: `${remoteRef}:${snapshotFilePath}`, // TODO(acdvorak): Document the ':' separator format
         snapshot_file_path: snapshotFilePath,
         commit,
         remote,
@@ -561,6 +565,7 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
       git_revision: GitRevision.create({
+        input_string: `${tagRef}:${snapshotFilePath}`, // TODO(acdvorak): Document the ':' separator format
         snapshot_file_path: snapshotFilePath,
         commit,
         remote: 'origin',
@@ -580,6 +585,7 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
       git_revision: GitRevision.create({
+        input_string: `${branch}:${snapshotFilePath}`, // TODO(acdvorak): Document the ':' separator format
         snapshot_file_path: snapshotFilePath,
         commit,
         branch,

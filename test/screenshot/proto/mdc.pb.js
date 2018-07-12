@@ -963,6 +963,7 @@ $root.mdc = (function() {
              * @memberof mdc.proto
              * @interface IDiffBase
              * @property {mdc.proto.DiffBase.Type|null} [type] DiffBase type
+             * @property {string|null} [string] DiffBase string
              * @property {string|null} [file_path] DiffBase file_path
              * @property {string|null} [public_url] DiffBase public_url
              * @property {mdc.proto.IGitRevision|null} [git_revision] DiffBase git_revision
@@ -990,6 +991,14 @@ $root.mdc = (function() {
              * @instance
              */
             DiffBase.prototype.type = 0;
+
+            /**
+             * DiffBase string.
+             * @member {string} string
+             * @memberof mdc.proto.DiffBase
+             * @instance
+             */
+            DiffBase.prototype.string = "";
 
             /**
              * DiffBase file_path.
@@ -1055,12 +1064,14 @@ $root.mdc = (function() {
                     writer = $Writer.create();
                 if (message.type != null && message.hasOwnProperty("type"))
                     writer.uint32(/* id 1, wireType 0 =*/8).int32(message.type);
+                if (message.string != null && message.hasOwnProperty("string"))
+                    writer.uint32(/* id 2, wireType 2 =*/18).string(message.string);
                 if (message.file_path != null && message.hasOwnProperty("file_path"))
-                    writer.uint32(/* id 2, wireType 2 =*/18).string(message.file_path);
+                    writer.uint32(/* id 3, wireType 2 =*/26).string(message.file_path);
                 if (message.public_url != null && message.hasOwnProperty("public_url"))
-                    writer.uint32(/* id 3, wireType 2 =*/26).string(message.public_url);
+                    writer.uint32(/* id 4, wireType 2 =*/34).string(message.public_url);
                 if (message.git_revision != null && message.hasOwnProperty("git_revision"))
-                    $root.mdc.proto.GitRevision.encode(message.git_revision, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+                    $root.mdc.proto.GitRevision.encode(message.git_revision, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
                 return writer;
             };
 
@@ -1099,12 +1110,15 @@ $root.mdc = (function() {
                         message.type = reader.int32();
                         break;
                     case 2:
-                        message.file_path = reader.string();
+                        message.string = reader.string();
                         break;
                     case 3:
-                        message.public_url = reader.string();
+                        message.file_path = reader.string();
                         break;
                     case 4:
+                        message.public_url = reader.string();
+                        break;
+                    case 5:
                         message.git_revision = $root.mdc.proto.GitRevision.decode(reader, reader.uint32());
                         break;
                     default:
@@ -1153,6 +1167,9 @@ $root.mdc = (function() {
                     case 3:
                         break;
                     }
+                if (message.string != null && message.hasOwnProperty("string"))
+                    if (!$util.isString(message.string))
+                        return "string: string expected";
                 if (message.file_path != null && message.hasOwnProperty("file_path")) {
                     properties.value_oneof = 1;
                     if (!$util.isString(message.file_path))
@@ -1208,6 +1225,8 @@ $root.mdc = (function() {
                     message.type = 3;
                     break;
                 }
+                if (object.string != null)
+                    message.string = String(object.string);
                 if (object.file_path != null)
                     message.file_path = String(object.file_path);
                 if (object.public_url != null)
@@ -1233,10 +1252,14 @@ $root.mdc = (function() {
                 if (!options)
                     options = {};
                 var object = {};
-                if (options.defaults)
+                if (options.defaults) {
                     object.type = options.enums === String ? "UNKNOWN" : 0;
+                    object.string = "";
+                }
                 if (message.type != null && message.hasOwnProperty("type"))
                     object.type = options.enums === String ? $root.mdc.proto.DiffBase.Type[message.type] : message.type;
+                if (message.string != null && message.hasOwnProperty("string"))
+                    object.string = message.string;
                 if (message.file_path != null && message.hasOwnProperty("file_path")) {
                     object.file_path = message.file_path;
                     if (options.oneofs)

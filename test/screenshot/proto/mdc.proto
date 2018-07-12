@@ -60,11 +60,12 @@ message DiffBase {
   }
 
   Type type = 1;
+  string input_string = 2;
 
   oneof value_oneof {
-    string file_path = 2;
-    string public_url = 3;
-    GitRevision git_revision = 4;
+    string file_path = 3;
+    string public_url = 4;
+    GitRevision git_revision = 5;
   }
 }
 
