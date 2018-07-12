@@ -22,6 +22,6 @@ module.exports = {
   async runAsync() {
     const controller = new SeleniumController();
     const reportData = await controller.initForApproval();
-    await controller.updateGoldenJson(reportData);
+    await controller.approveChanges(reportData);
   },
 };

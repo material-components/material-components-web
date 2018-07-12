@@ -256,8 +256,6 @@ class ReportWriter {
   async generateReportPage(fullReportData) {
     const meta = fullReportData.meta;
 
-    meta.duration_ms = Duration.elapsed(meta.start_time_iso_utc, meta.end_time_iso_utc).toMillis();
-
     // We can save ~5 MiB by stripping out data that can be recomputed.
     // TODO(acdvorak): Make sure the report page and `screenshot:approve` don't need this data.
     const slimReportData = ReportData.create(fullReportData);

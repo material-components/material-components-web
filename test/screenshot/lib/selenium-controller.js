@@ -135,7 +135,9 @@ class SeleniumController {
     await this.cloudStorage_.uploadAllDiffs(reportData);
 
     // TODO(acdvorak): Where should this go?
-    reportData.meta.end_time_iso_utc = new Date().toISOString();
+    const meta = reportData.meta;
+    meta.end_time_iso_utc = new Date().toISOString();
+    meta.duration_ms = Duration.elapsed(meta.start_time_iso_utc, meta.end_time_iso_utc).toMillis();
 
     return reportData;
   }
@@ -158,10 +160,10 @@ class SeleniumController {
    * @param {!mdc.proto.ReportData} reportData
    * @return {!Promise<!mdc.proto.ReportData>}
    */
-  async updateGoldenJson(reportData) {
+  async approveChanges(reportData) {
     /** @type {!GoldenFile} */
-    const newGoldenFile = await this.goldenIo_.approveSelectedGoldens(reportData);
-    await this.goldenIo_.writeToDisk(newGoldenFile);
+    const newGoldenFile = await this.reportBuilder_.approveChanges(reportData);
+    await this.goldenIo_.writeToLocalFile(newGoldenFile);
     return reportData;
   }
 }

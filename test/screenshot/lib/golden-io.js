@@ -18,12 +18,10 @@ const fs = require('mz/fs');
 const request = require('request-promise-native');
 const stringify = require('json-stable-stringify');
 
-const mdcProto = require('../proto/types.pb').mdc.proto;
-const {GoldenScreenshot} = mdcProto;
-
 const Cli = require('./cli');
 const GitRepo = require('./git-repo');
 const GoldenFile = require('./golden-file');
+const {GOLDEN_JSON_RELATIVE_PATH} = require('./constants');
 
 /**
  * Reads and writes a `golden.json` or `snapshot.json` file.
@@ -53,7 +51,7 @@ class GoldenIo {
    * @return {!Promise<!GoldenFile>}
    */
   async readFromLocalFile() {
-    return new GoldenFile(JSON.parse(await fs.readFile(this.cli_.goldenPath, {encoding: 'utf8'})));
+    return new GoldenFile(JSON.parse(await fs.readFile(GOLDEN_JSON_RELATIVE_PATH, {encoding: 'utf8'})));
   }
 
   /**
@@ -102,49 +100,11 @@ class GoldenIo {
   }
 
   /**
-   * @param {!mdc.proto.ReportData} reportData
-   * @return {!Promise<!GoldenFile>}
-   */
-  async approveSelectedGoldens(reportData) {
-    /** @type {!GoldenFile} */
-    const newGoldenFile = await this.readFromLocalFile();
-
-    for (const screenshot of reportData.approvals.changed_screenshot_list) {
-      newGoldenFile.setScreenshotImageUrl(GoldenScreenshot.create({
-        html_file_path: screenshot.html_file_path,
-        html_file_url: screenshot.actual_html_file.public_url,
-        user_agent_alias: screenshot.user_agent.alias,
-        screenshot_image_path: screenshot.actual_image_file.relative_path,
-        screenshot_image_url: screenshot.actual_image_file.public_url,
-      }));
-    }
-
-    for (const screenshot of reportData.approvals.added_screenshot_list) {
-      newGoldenFile.setScreenshotImageUrl(GoldenScreenshot.create({
-        html_file_path: screenshot.html_file_path,
-        html_file_url: screenshot.actual_html_file.public_url,
-        user_agent_alias: screenshot.user_agent.alias,
-        screenshot_image_path: screenshot.actual_image_file.relative_path,
-        screenshot_image_url: screenshot.actual_image_file.public_url,
-      }));
-    }
-
-    for (const screenshot of reportData.approvals.removed_screenshot_list) {
-      newGoldenFile.removeScreenshotImageUrl({
-        html_file_path: screenshot.html_file_path,
-        user_agent_alias: screenshot.user_agent.alias,
-      });
-    }
-
-    return newGoldenFile;
-  }
-
-  /**
    * @param {!GoldenFile} newGoldenFile
    * @return {!Promise<void>}
    */
-  async writeToDisk(newGoldenFile) {
-    const goldenJsonFilePath = this.cli_.goldenPath;
+  async writeToLocalFile(newGoldenFile) {
+    const goldenJsonFilePath = GOLDEN_JSON_RELATIVE_PATH;
     const goldenJsonFileContent = await this.stringify_(newGoldenFile);
 
     await fs.writeFile(goldenJsonFilePath, goldenJsonFileContent);

@@ -25,7 +25,7 @@ const path = require('path');
 const serveIndex = require('serve-index');
 
 const mdcProto = require('../proto/types.pb').mdc.proto;
-const {LibraryVersion, ReportData, ReportMeta} = mdcProto;
+const {Approvals, GoldenScreenshot, LibraryVersion, ReportData, ReportMeta} = mdcProto;
 const {Screenshot, Screenshots, ScreenshotList, TestFile, User, UserAgents} = mdcProto;
 const {InclusionType, CaptureState} = Screenshot;
 
@@ -86,7 +86,9 @@ class ReportBuilder {
   async initForApproval({runReportJsonUrl}) {
     /** @type {!mdc.proto.TestFile} */
     const runReportJsonFile = await this.fileCache_.downloadUrlToDisk(runReportJsonUrl, 'utf8');
+    /** @type {!mdc.proto.ReportData} */
     const reportData = ReportData.fromObject(require(runReportJsonFile.absolute_path));
+    reportData.approvals = Approvals.create();
     this.populateApprovals_(reportData);
     return reportData;
   }
@@ -113,12 +115,101 @@ class ReportBuilder {
       meta: reportMeta,
       user_agents: userAgents,
       screenshots: screenshots,
+      approvals: Approvals.create(),
     });
 
     await this.prefetchGoldenImages_(reportData);
     await this.validateRunParameters_(reportData);
 
     return reportData;
+  }
+
+  /**
+   * @return {!Promise<!mdc.proto.ReportData>}
+   */
+  async initForDemo() {
+    return ReportData.create({
+      meta: await this.createReportMetaProto_(),
+    });
+  }
+
+  /**
+   * @param {!mdc.proto.Screenshots} screenshots
+   */
+  populateScreenshotMaps(screenshots) {
+    // TODO(acdvorak): Figure out why the report page is randomly sorted. E.g.:
+    // https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/04_49_09_427/report/report.html
+    // https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/04_48_52_974/report/report.html
+    // https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/04_49_40_160/report/report.html
+    const sort = (a, b) => this.compareScreenshotsForSorting_(a, b);
+
+    screenshots.expected_screenshot_list.sort(sort);
+    screenshots.actual_screenshot_list.sort(sort);
+    screenshots.runnable_screenshot_list.sort(sort);
+    screenshots.skipped_screenshot_list.sort(sort);
+    screenshots.added_screenshot_list.sort(sort);
+    screenshots.removed_screenshot_list.sort(sort);
+    screenshots.comparable_screenshot_list.sort(sort);
+    screenshots.changed_screenshot_list.sort(sort);
+    screenshots.unchanged_screenshot_list.sort(sort);
+
+    screenshots.expected_screenshot_browser_map = this.groupByBrowser_(screenshots.expected_screenshot_list);
+    screenshots.actual_screenshot_browser_map = this.groupByBrowser_(screenshots.actual_screenshot_list);
+    screenshots.runnable_screenshot_browser_map = this.groupByBrowser_(screenshots.runnable_screenshot_list);
+    screenshots.skipped_screenshot_browser_map = this.groupByBrowser_(screenshots.skipped_screenshot_list);
+    screenshots.added_screenshot_browser_map = this.groupByBrowser_(screenshots.added_screenshot_list);
+    screenshots.removed_screenshot_browser_map = this.groupByBrowser_(screenshots.removed_screenshot_list);
+    screenshots.comparable_screenshot_browser_map = this.groupByBrowser_(screenshots.comparable_screenshot_list);
+    screenshots.changed_screenshot_browser_map = this.groupByBrowser_(screenshots.changed_screenshot_list);
+    screenshots.unchanged_screenshot_browser_map = this.groupByBrowser_(screenshots.unchanged_screenshot_list);
+
+    screenshots.expected_screenshot_page_map = this.groupByPage_(screenshots.expected_screenshot_list);
+    screenshots.actual_screenshot_page_map = this.groupByPage_(screenshots.actual_screenshot_list);
+    screenshots.runnable_screenshot_page_map = this.groupByPage_(screenshots.runnable_screenshot_list);
+    screenshots.skipped_screenshot_page_map = this.groupByPage_(screenshots.skipped_screenshot_list);
+    screenshots.added_screenshot_page_map = this.groupByPage_(screenshots.added_screenshot_list);
+    screenshots.removed_screenshot_page_map = this.groupByPage_(screenshots.removed_screenshot_list);
+    screenshots.comparable_screenshot_page_map = this.groupByPage_(screenshots.comparable_screenshot_list);
+    screenshots.changed_screenshot_page_map = this.groupByPage_(screenshots.changed_screenshot_list);
+    screenshots.unchanged_screenshot_page_map = this.groupByPage_(screenshots.unchanged_screenshot_list);
+  }
+
+  /**
+   * @param {!mdc.proto.ReportData} reportData
+   * @return {!Promise<!GoldenFile>}
+   */
+  async approveChanges(reportData) {
+    /** @type {!GoldenFile} */
+    const newGoldenFile = await this.goldenIo_.readFromLocalFile();
+
+    for (const screenshot of reportData.approvals.changed_screenshot_list) {
+      newGoldenFile.setScreenshotImageUrl(GoldenScreenshot.create({
+        html_file_path: screenshot.html_file_path,
+        html_file_url: screenshot.actual_html_file.public_url,
+        user_agent_alias: screenshot.user_agent.alias,
+        screenshot_image_path: screenshot.actual_image_file.relative_path,
+        screenshot_image_url: screenshot.actual_image_file.public_url,
+      }));
+    }
+
+    for (const screenshot of reportData.approvals.added_screenshot_list) {
+      newGoldenFile.setScreenshotImageUrl(GoldenScreenshot.create({
+        html_file_path: screenshot.html_file_path,
+        html_file_url: screenshot.actual_html_file.public_url,
+        user_agent_alias: screenshot.user_agent.alias,
+        screenshot_image_path: screenshot.actual_image_file.relative_path,
+        screenshot_image_url: screenshot.actual_image_file.public_url,
+      }));
+    }
+
+    for (const screenshot of reportData.approvals.removed_screenshot_list) {
+      newGoldenFile.removeScreenshotImageUrl({
+        html_file_path: screenshot.html_file_path,
+        user_agent_alias: screenshot.user_agent.alias,
+      });
+    }
+
+    return newGoldenFile;
   }
 
   /**
@@ -158,15 +249,6 @@ class ReportBuilder {
         .filter((url) => Boolean(url))
         .map((url) => this.fileCache_.downloadUrlToDisk(url))
     );
-  }
-
-  /**
-   * @return {!Promise<!mdc.proto.ReportData>}
-   */
-  async initForDemo() {
-    return ReportData.create({
-      meta: await this.createReportMetaProto_(),
-    });
   }
 
   /**
@@ -372,35 +454,7 @@ class ReportBuilder {
     this.setAllStates_(screenshots.removed_screenshot_list, InclusionType.REMOVE, CaptureState.SKIPPED);
     this.setAllStates_(screenshots.comparable_screenshot_list, InclusionType.COMPARE, CaptureState.QUEUED);
 
-    // TODO(acdvorak): Figure out why the report page is randomly sorted. E.g.:
-    // https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/04_49_09_427/report/report.html
-    // https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/04_48_52_974/report/report.html
-    // https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/04_49_40_160/report/report.html
-    const sort = (a, b) => this.compareScreenshotsForSorting_(a, b);
-
-    screenshots.expected_screenshot_list.sort(sort);
-    screenshots.actual_screenshot_list.sort(sort);
-    screenshots.runnable_screenshot_list.sort(sort);
-    screenshots.skipped_screenshot_list.sort(sort);
-    screenshots.added_screenshot_list.sort(sort);
-    screenshots.removed_screenshot_list.sort(sort);
-    screenshots.comparable_screenshot_list.sort(sort);
-
-    screenshots.expected_screenshot_browser_map = this.groupByBrowser_(screenshots.expected_screenshot_list);
-    screenshots.actual_screenshot_browser_map = this.groupByBrowser_(screenshots.actual_screenshot_list);
-    screenshots.runnable_screenshot_browser_map = this.groupByBrowser_(screenshots.runnable_screenshot_list);
-    screenshots.skipped_screenshot_browser_map = this.groupByBrowser_(screenshots.skipped_screenshot_list);
-    screenshots.added_screenshot_browser_map = this.groupByBrowser_(screenshots.added_screenshot_list);
-    screenshots.removed_screenshot_browser_map = this.groupByBrowser_(screenshots.removed_screenshot_list);
-    screenshots.comparable_screenshot_browser_map = this.groupByBrowser_(screenshots.comparable_screenshot_list);
-
-    screenshots.expected_screenshot_page_map = this.groupByPage_(screenshots.expected_screenshot_list);
-    screenshots.actual_screenshot_page_map = this.groupByPage_(screenshots.actual_screenshot_list);
-    screenshots.runnable_screenshot_page_map = this.groupByPage_(screenshots.runnable_screenshot_list);
-    screenshots.skipped_screenshot_page_map = this.groupByPage_(screenshots.skipped_screenshot_list);
-    screenshots.added_screenshot_page_map = this.groupByPage_(screenshots.added_screenshot_list);
-    screenshots.removed_screenshot_page_map = this.groupByPage_(screenshots.removed_screenshot_list);
-    screenshots.comparable_screenshot_page_map = this.groupByPage_(screenshots.comparable_screenshot_list);
+    this.populateScreenshotMaps(screenshots);
 
     return screenshots;
   }
