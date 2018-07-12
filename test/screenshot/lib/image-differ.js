@@ -22,7 +22,7 @@ const fs = require('mz/fs');
 const mkdirp = require('mkdirp');
 const path = require('path');
 
-const mdcProto = require('../proto/types.pb').mdc.proto;
+const mdcProto = require('../proto/mdc.pb').mdc.proto;
 const {DiffImageResult, Screenshot, ScreenshotList, TestFile} = mdcProto;
 const {CaptureState} = Screenshot;
 

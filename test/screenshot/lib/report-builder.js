@@ -24,7 +24,7 @@ const os = require('os');
 const path = require('path');
 const serveIndex = require('serve-index');
 
-const mdcProto = require('../proto/types.pb').mdc.proto;
+const mdcProto = require('../proto/mdc.pb').mdc.proto;
 const {Approvals, GoldenScreenshot, LibraryVersion, ReportData, ReportMeta} = mdcProto;
 const {Screenshot, Screenshots, ScreenshotList, TestFile, User, UserAgents} = mdcProto;
 const {InclusionType, CaptureState} = Screenshot;

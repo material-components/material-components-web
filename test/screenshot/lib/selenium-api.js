@@ -21,7 +21,7 @@ const mkdirp = require('mkdirp');
 const path = require('path');
 const UserAgentParser = require('useragent');
 
-const mdcProto = require('../proto/types.pb').mdc.proto;
+const mdcProto = require('../proto/mdc.pb').mdc.proto;
 const seleniumProto = require('../proto/selenium.pb').selenium.proto;
 
 const {TestFile, UserAgent} = mdcProto;

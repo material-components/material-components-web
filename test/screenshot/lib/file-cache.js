@@ -20,7 +20,7 @@ const os = require('os');
 const path = require('path');
 const request = require('request-promise-native');
 
-const mdcProto = require('../proto/types.pb').mdc.proto;
+const mdcProto = require('../proto/mdc.pb').mdc.proto;
 const {TestFile} = mdcProto;
 
 /**

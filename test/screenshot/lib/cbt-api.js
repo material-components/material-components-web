@@ -16,7 +16,7 @@
 
 const request = require('request-promise-native');
 
-const mdcProto = require('../proto/types.pb').mdc.proto;
+const mdcProto = require('../proto/mdc.pb').mdc.proto;
 const cbtProto = require('../proto/cbt.pb').cbt.proto;
 const seleniumProto = require('../proto/selenium.pb').selenium.proto;
 
