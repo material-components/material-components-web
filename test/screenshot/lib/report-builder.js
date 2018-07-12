@@ -21,6 +21,7 @@ const detectPort = require('detect-port');
 const express = require('express');
 const mkdirp = require('mkdirp');
 const os = require('os');
+const osName = require('os-name');
 const path = require('path');
 const serveIndex = require('serve-index');
 
@@ -358,6 +359,7 @@ class ReportBuilder {
       local_temporary_http_dir: localTemporaryHttpDir,
       local_temporary_http_port: localTemporaryHttpPort,
 
+      host_os_name: this.getHostOsName_(),
       cli_invocation: this.getCliInvocation_(),
       diff_base: await this.cli_.parseDiffBase(),
       user: User.create({
@@ -377,6 +379,14 @@ class ReportBuilder {
         commit_offset: await this.getCommitDistance_(mdcVersionString),
       }),
     });
+  }
+
+  /**
+   * @return {string}
+   * @private
+   */
+  getHostOsName_() {
+    return osName(os.platform(), os.release());
   }
 
   /**

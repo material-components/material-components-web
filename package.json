@@ -99,6 +99,7 @@
     "mz": "^2.7.0",
     "node-sass": "^4.9.0",
     "npm-run-all": "^4.1.1",
+    "os-name": "^2.0.1",
     "postcss-loader": "^2.0.3",
     "protobufjs": "~6.8.6",
     "ps-node": "^0.1.6",

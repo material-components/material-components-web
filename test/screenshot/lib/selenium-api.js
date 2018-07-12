@@ -64,19 +64,23 @@ class SeleniumApi {
     const maxParallelTests = await this.getMaxParallelTests_();
     const runnableUserAgents = reportData.user_agents.runnable_user_agents;
 
-    let activeUserAgents;
+    let runningUserAgents;
     let queuedUserAgents = runnableUserAgents.slice();
 
+    function getLoggableAliases(userAgentAliases) {
+      return userAgentAliases.length > 0 ? userAgentAliases.join(', ') : '(none)';
+    }
+
     while (queuedUserAgents.length > 0) {
-      activeUserAgents = queuedUserAgents.slice(0, maxParallelTests);
+      runningUserAgents = queuedUserAgents.slice(0, maxParallelTests);
       queuedUserAgents = queuedUserAgents.slice(maxParallelTests);
-      const activeUserAgentAliases = activeUserAgents.map((ua) => ua.alias);
+      const runningUserAgentAliases = runningUserAgents.map((ua) => ua.alias);
       const queuedUserAgentAliases = queuedUserAgents.map((ua) => ua.alias);
-      const activeUserAgentLoggable = activeUserAgentAliases.length > 0 ? activeUserAgentAliases.join(', ') : '(none)';
-      const queuedUserAgentLoggable = queuedUserAgentAliases.length > 0 ? queuedUserAgentAliases.join(', ') : '(none)';
-      console.log('activeUserAgents:', activeUserAgentLoggable);
-      console.log('queuedUserAgents:', queuedUserAgentLoggable);
-      await this.captureAllPagesInBrowsers_({reportData, userAgents: activeUserAgents});
+      const runningUserAgentLoggable = getLoggableAliases(runningUserAgentAliases);
+      const queuedUserAgentLoggable = getLoggableAliases(queuedUserAgentAliases);
+      console.log('Running user agents:', runningUserAgentLoggable);
+      console.log('Queued user agents:', queuedUserAgentLoggable);
+      await this.captureAllPagesInBrowsers_({reportData, userAgents: runningUserAgents});
     }
 
     return reportData;

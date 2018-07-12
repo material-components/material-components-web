@@ -52,10 +52,10 @@ class Duration {
 
   /**
    * @param {!Date|number|string} startDateTime
-   * @param {!Date|number|string} endDateTime
+   * @param {!Date|number|string=} endDateTime
    * @return {!Duration}
    */
-  static elapsed(startDateTime, endDateTime) {
+  static elapsed(startDateTime, endDateTime = new Date()) {
     return Duration.millis(new Date(endDateTime) - new Date(startDateTime));
   }
 
@@ -92,6 +92,9 @@ class Duration {
     const oneMinute = 1000 * 60;
     const oneHour = 1000 * 60 * 60;
     const oneDay = 1000 * 60 * 60 * 24;
+    const oneWeek = 1000 * 60 * 60 * 24 * 7;
+    const oneMonth = 1000 * 60 * 60 * 24 * 30;
+    const oneYear = 1000 * 60 * 60 * 24 * 365;
 
     const magnitudes = [
       {
@@ -111,8 +114,20 @@ class Duration {
         format: (ms) => format(ms, oneHour, 'hour'),
       },
       {
-        matches: () => true, // fallback that always matches
+        matches: (ms) => ms < oneWeek,
         format: (ms) => format(ms, oneDay, 'day'),
+      },
+      {
+        matches: (ms) => ms < oneMonth,
+        format: (ms) => format(ms, oneWeek, 'day'),
+      },
+      {
+        matches: (ms) => ms < oneYear,
+        format: (ms) => format(ms, oneMonth, 'day'),
+      },
+      {
+        matches: () => true, // fallback that always matches
+        format: (ms) => format(ms, oneYear, 'year'),
       },
     ];
 
@@ -128,4 +143,7 @@ class Duration {
   }
 }
 
-module.exports = Duration;
+// This JS file is used on the report page as well as the screenshot testing infra.
+if (typeof module !== 'undefined') {
+  module.exports = Duration;
+}

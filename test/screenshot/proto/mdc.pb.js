@@ -318,6 +318,7 @@ $root.mdc = (function() {
              * @property {string|null} [local_report_base_dir] ReportMeta local_report_base_dir
              * @property {string|null} [local_temporary_http_dir] ReportMeta local_temporary_http_dir
              * @property {number|null} [local_temporary_http_port] ReportMeta local_temporary_http_port
+             * @property {string|null} [host_os_name] ReportMeta host_os_name
              * @property {string|null} [cli_invocation] ReportMeta cli_invocation
              * @property {mdc.proto.IDiffBase|null} [diff_base] ReportMeta diff_base
              * @property {mdc.proto.IUser|null} [user] ReportMeta user
@@ -432,6 +433,14 @@ $root.mdc = (function() {
             ReportMeta.prototype.local_temporary_http_port = 0;
 
             /**
+             * ReportMeta host_os_name.
+             * @member {string} host_os_name
+             * @memberof mdc.proto.ReportMeta
+             * @instance
+             */
+            ReportMeta.prototype.host_os_name = "";
+
+            /**
              * ReportMeta cli_invocation.
              * @member {string} cli_invocation
              * @memberof mdc.proto.ReportMeta
@@ -541,22 +550,24 @@ $root.mdc = (function() {
                     writer.uint32(/* id 10, wireType 2 =*/82).string(message.local_temporary_http_dir);
                 if (message.local_temporary_http_port != null && message.hasOwnProperty("local_temporary_http_port"))
                     writer.uint32(/* id 11, wireType 0 =*/88).uint32(message.local_temporary_http_port);
+                if (message.host_os_name != null && message.hasOwnProperty("host_os_name"))
+                    writer.uint32(/* id 12, wireType 2 =*/98).string(message.host_os_name);
                 if (message.cli_invocation != null && message.hasOwnProperty("cli_invocation"))
-                    writer.uint32(/* id 12, wireType 2 =*/98).string(message.cli_invocation);
+                    writer.uint32(/* id 13, wireType 2 =*/106).string(message.cli_invocation);
                 if (message.diff_base != null && message.hasOwnProperty("diff_base"))
-                    $root.mdc.proto.DiffBase.encode(message.diff_base, writer.uint32(/* id 13, wireType 2 =*/106).fork()).ldelim();
+                    $root.mdc.proto.DiffBase.encode(message.diff_base, writer.uint32(/* id 14, wireType 2 =*/114).fork()).ldelim();
                 if (message.user != null && message.hasOwnProperty("user"))
-                    $root.mdc.proto.User.encode(message.user, writer.uint32(/* id 14, wireType 2 =*/114).fork()).ldelim();
+                    $root.mdc.proto.User.encode(message.user, writer.uint32(/* id 15, wireType 2 =*/122).fork()).ldelim();
                 if (message.node_version != null && message.hasOwnProperty("node_version"))
-                    $root.mdc.proto.LibraryVersion.encode(message.node_version, writer.uint32(/* id 15, wireType 2 =*/122).fork()).ldelim();
+                    $root.mdc.proto.LibraryVersion.encode(message.node_version, writer.uint32(/* id 16, wireType 2 =*/130).fork()).ldelim();
                 if (message.npm_version != null && message.hasOwnProperty("npm_version"))
-                    $root.mdc.proto.LibraryVersion.encode(message.npm_version, writer.uint32(/* id 16, wireType 2 =*/130).fork()).ldelim();
+                    $root.mdc.proto.LibraryVersion.encode(message.npm_version, writer.uint32(/* id 17, wireType 2 =*/138).fork()).ldelim();
                 if (message.mdc_version != null && message.hasOwnProperty("mdc_version"))
-                    $root.mdc.proto.LibraryVersion.encode(message.mdc_version, writer.uint32(/* id 17, wireType 2 =*/138).fork()).ldelim();
+                    $root.mdc.proto.LibraryVersion.encode(message.mdc_version, writer.uint32(/* id 18, wireType 2 =*/146).fork()).ldelim();
                 if (message.report_html_file != null && message.hasOwnProperty("report_html_file"))
-                    $root.mdc.proto.TestFile.encode(message.report_html_file, writer.uint32(/* id 18, wireType 2 =*/146).fork()).ldelim();
+                    $root.mdc.proto.TestFile.encode(message.report_html_file, writer.uint32(/* id 19, wireType 2 =*/154).fork()).ldelim();
                 if (message.report_json_file != null && message.hasOwnProperty("report_json_file"))
-                    $root.mdc.proto.TestFile.encode(message.report_json_file, writer.uint32(/* id 19, wireType 2 =*/154).fork()).ldelim();
+                    $root.mdc.proto.TestFile.encode(message.report_json_file, writer.uint32(/* id 20, wireType 2 =*/162).fork()).ldelim();
                 return writer;
             };
 
@@ -625,27 +636,30 @@ $root.mdc = (function() {
                         message.local_temporary_http_port = reader.uint32();
                         break;
                     case 12:
-                        message.cli_invocation = reader.string();
+                        message.host_os_name = reader.string();
                         break;
                     case 13:
-                        message.diff_base = $root.mdc.proto.DiffBase.decode(reader, reader.uint32());
+                        message.cli_invocation = reader.string();
                         break;
                     case 14:
-                        message.user = $root.mdc.proto.User.decode(reader, reader.uint32());
+                        message.diff_base = $root.mdc.proto.DiffBase.decode(reader, reader.uint32());
                         break;
                     case 15:
-                        message.node_version = $root.mdc.proto.LibraryVersion.decode(reader, reader.uint32());
+                        message.user = $root.mdc.proto.User.decode(reader, reader.uint32());
                         break;
                     case 16:
-                        message.npm_version = $root.mdc.proto.LibraryVersion.decode(reader, reader.uint32());
+                        message.node_version = $root.mdc.proto.LibraryVersion.decode(reader, reader.uint32());
                         break;
                     case 17:
-                        message.mdc_version = $root.mdc.proto.LibraryVersion.decode(reader, reader.uint32());
+                        message.npm_version = $root.mdc.proto.LibraryVersion.decode(reader, reader.uint32());
                         break;
                     case 18:
-                        message.report_html_file = $root.mdc.proto.TestFile.decode(reader, reader.uint32());
+                        message.mdc_version = $root.mdc.proto.LibraryVersion.decode(reader, reader.uint32());
                         break;
                     case 19:
+                        message.report_html_file = $root.mdc.proto.TestFile.decode(reader, reader.uint32());
+                        break;
+                    case 20:
                         message.report_json_file = $root.mdc.proto.TestFile.decode(reader, reader.uint32());
                         break;
                     default:
@@ -716,6 +730,9 @@ $root.mdc = (function() {
                 if (message.local_temporary_http_port != null && message.hasOwnProperty("local_temporary_http_port"))
                     if (!$util.isInteger(message.local_temporary_http_port))
                         return "local_temporary_http_port: integer expected";
+                if (message.host_os_name != null && message.hasOwnProperty("host_os_name"))
+                    if (!$util.isString(message.host_os_name))
+                        return "host_os_name: string expected";
                 if (message.cli_invocation != null && message.hasOwnProperty("cli_invocation"))
                     if (!$util.isString(message.cli_invocation))
                         return "cli_invocation: string expected";
@@ -798,6 +815,8 @@ $root.mdc = (function() {
                     message.local_temporary_http_dir = String(object.local_temporary_http_dir);
                 if (object.local_temporary_http_port != null)
                     message.local_temporary_http_port = object.local_temporary_http_port >>> 0;
+                if (object.host_os_name != null)
+                    message.host_os_name = String(object.host_os_name);
                 if (object.cli_invocation != null)
                     message.cli_invocation = String(object.cli_invocation);
                 if (object.diff_base != null) {
@@ -867,6 +886,7 @@ $root.mdc = (function() {
                     object.local_report_base_dir = "";
                     object.local_temporary_http_dir = "";
                     object.local_temporary_http_port = 0;
+                    object.host_os_name = "";
                     object.cli_invocation = "";
                     object.diff_base = null;
                     object.user = null;
@@ -901,6 +921,8 @@ $root.mdc = (function() {
                     object.local_temporary_http_dir = message.local_temporary_http_dir;
                 if (message.local_temporary_http_port != null && message.hasOwnProperty("local_temporary_http_port"))
                     object.local_temporary_http_port = message.local_temporary_http_port;
+                if (message.host_os_name != null && message.hasOwnProperty("host_os_name"))
+                    object.host_os_name = message.host_os_name;
                 if (message.cli_invocation != null && message.hasOwnProperty("cli_invocation"))
                     object.cli_invocation = message.cli_invocation;
                 if (message.diff_base != null && message.hasOwnProperty("diff_base"))

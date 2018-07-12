@@ -13,7 +13,7 @@
         screenshotArray.length
         collectionType
     }}{{/createCheckboxElement}}
-    {{screenshotArray.length}}
+    {{formatNumber screenshotArray.length}}
     <strong>{{heading}}</strong>
     {{#createApprovalStatusElement
         'report-review-status report-review-status--collection'
@@ -43,7 +43,7 @@
                 ../collectionType
                 html_file_path
             }}{{/createCheckboxElement}}
-            <strong>{{screenshot_array.length}}</strong>
+            <strong>{{formatNumber screenshot_array.length}}</strong>
             in
             <strong>{{html_file_path}}</strong>
             {{getHtmlFileLinks}}

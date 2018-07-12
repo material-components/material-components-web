@@ -5,7 +5,12 @@
       <tbody>
         <tr>
           <th class="report-metadata__cell report-metadata__cell--key">Start Time:</th>
-          <td class="report-metadata__cell report-metadata__cell--val">{{meta.start_time_iso_utc}}</td>
+          <td class="report-metadata__cell report-metadata__cell--val">
+            <time id="report-metadata__start-time" datetime="{{meta.start_time_iso_utc}}">
+              {{meta.start_time_iso_utc}}
+            </time>
+            <span id="report-metadata__time-since-start"></span>
+          </td>
         </tr>
         <tr>
           <th class="report-metadata__cell report-metadata__cell--key">Test Duration:</th>
@@ -39,17 +44,11 @@
         </tr>
         -->
         <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">User:</th>
-          <td class="report-metadata__cell report-metadata__cell--val">
-            {{meta.user.name}} &lt;{{meta.user.email}}&gt;
-          </td>
-        </tr>
-        <tr>
           <th class="report-metadata__cell report-metadata__cell--key">MDC Version:</th>
           <td class="report-metadata__cell report-metadata__cell--val">
             {{meta.mdc_version.version_string}}
             {{#if meta.mdc_version.commit_offset}}
-              + {{meta.mdc_version.commit_offset}} commits
+              <small>+ {{meta.mdc_version.commit_offset}} commits</small>
             {{/if}}
           </td>
         </tr>
@@ -60,6 +59,16 @@
         <tr>
           <th class="report-metadata__cell report-metadata__cell--key">NPM Version:</th>
           <td class="report-metadata__cell report-metadata__cell--val">{{meta.npm_version.version_string}}</td>
+        </tr>
+        <tr>
+          <th class="report-metadata__cell report-metadata__cell--key">User:</th>
+          <td class="report-metadata__cell report-metadata__cell--val">
+            {{meta.user.name}} &lt;{{meta.user.email}}&gt;
+          </td>
+        </tr>
+        <tr>
+          <th class="report-metadata__cell report-metadata__cell--key">Host OS:</th>
+          <td class="report-metadata__cell report-metadata__cell--val">{{meta.host_os_name}}</td>
         </tr>
         <tr>
           <th class="report-metadata__cell report-metadata__cell--key">CLI Invocation:</th>

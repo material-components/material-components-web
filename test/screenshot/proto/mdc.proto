@@ -38,16 +38,17 @@ message ReportMeta {
   string local_temporary_http_dir = 10;
   uint32 local_temporary_http_port = 11;
 
-  string cli_invocation = 12;
-  DiffBase diff_base = 13;
-  User user = 14;
+  string host_os_name = 12;
+  string cli_invocation = 13;
+  DiffBase diff_base = 14;
+  User user = 15;
 
-  LibraryVersion node_version = 15;
-  LibraryVersion npm_version = 16;
-  LibraryVersion mdc_version = 17;
+  LibraryVersion node_version = 16;
+  LibraryVersion npm_version = 17;
+  LibraryVersion mdc_version = 18;
 
-  TestFile report_html_file = 18;
-  TestFile report_json_file = 19;
+  TestFile report_html_file = 19;
+  TestFile report_json_file = 20;
 }
 
 message DiffBase {

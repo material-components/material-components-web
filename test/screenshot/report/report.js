@@ -29,8 +29,16 @@ window.mdc.reportUi = (() => {
          */
         this.reportData_ = reportData;
 
+        this.calculateTimeOffset_();
         this.updateAllAndGetState_();
       });
+    }
+
+    calculateTimeOffset_() {
+      const startTimeEl = this.queryOne_('#report-metadata__start-time');
+      const timeSinceStartEl = this.queryOne_('#report-metadata__time-since-start');
+      const elapsed = Duration.elapsed(startTimeEl.dateTime).toHuman();
+      timeSinceStartEl.innerText = `(${elapsed} ago)`;
     }
 
     bindEventListeners_() {
