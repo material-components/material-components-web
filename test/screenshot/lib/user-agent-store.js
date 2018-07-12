@@ -16,8 +16,8 @@
 
 'use strict';
 
-const proto = require('../proto/types.pb').mdc.proto;
-const {UserAgent} = proto;
+const mdcProto = require('../proto/types.pb').mdc.proto;
+const {UserAgent} = mdcProto;
 const {FormFactorType, OsVendorType, BrowserVendorType, BrowserVersionType} = UserAgent;
 
 const Cli = require('./cli');

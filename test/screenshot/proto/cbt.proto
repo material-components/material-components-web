@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package mdc.proto.cbt;
+package cbt.proto;
 
 import "./selenium.proto";
 

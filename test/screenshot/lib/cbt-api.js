@@ -15,23 +15,23 @@
  */
 
 const request = require('request-promise-native');
-const {ExitCode} = require('./constants');
 
 const mdcProto = require('../proto/types.pb').mdc.proto;
+const cbtProto = require('../proto/cbt.pb').cbt.proto;
+const seleniumProto = require('../proto/selenium.pb').selenium.proto;
+
 const {UserAgent} = mdcProto;
 const {FormFactorType, OsVendorType, BrowserVendorType, BrowserVersionType} = UserAgent;
-const {RawCapabilities} = mdcProto.selenium;
-
-const cbtProto = require('../proto/cbt.pb').mdc.proto.cbt;
 const {CbtAccount, CbtActiveTestCounts, CbtConcurrencyStats} = cbtProto;
+const {RawCapabilities} = seleniumProto;
 
 const MDC_CBT_USERNAME = process.env.MDC_CBT_USERNAME;
 const MDC_CBT_AUTHKEY = process.env.MDC_CBT_AUTHKEY;
-
 const REST_API_BASE_URL = 'https://crossbrowsertesting.com/api/v3';
 const SELENIUM_SERVER_URL = `http://${MDC_CBT_USERNAME}:${MDC_CBT_AUTHKEY}@hub.crossbrowsertesting.com:80/wd/hub`;
+const {ExitCode} = require('./constants');
 
-/** @type {?Promise<!Array<!mdc.proto.cbt.CbtDevice>>} */
+/** @type {?Promise<!Array<!cbt.proto.CbtDevice>>} */
 let allBrowsersPromise;
 
 class CbtApi {
@@ -77,7 +77,7 @@ https://crossbrowsertesting.com/account
   }
 
   /**
-   * @return {!Promise<mdc.proto.cbt.CbtConcurrencyStats>}
+   * @return {!Promise<cbt.proto.CbtConcurrencyStats>}
    */
   async fetchConcurrencyStats() {
     const [accountJson, activesJson] = await Promise.all([
@@ -100,7 +100,7 @@ https://crossbrowsertesting.com/account
   }
 
   /**
-   * @return {!Promise<!Array<!mdc.proto.cbt.CbtDevice>>}
+   * @return {!Promise<!Array<!cbt.proto.CbtDevice>>}
    */
   async fetchAvailableDevices() {
     if (allBrowsersPromise) {
@@ -116,14 +116,14 @@ https://crossbrowsertesting.com/account
 
   /**
    * @param {!mdc.proto.UserAgent} userAgent
-   * @return {!Promise<!mdc.proto.selenium.RawCapabilities>}
+   * @return {!Promise<!selenium.proto.RawCapabilities>}
    */
   async getDesiredCapabilities(userAgent) {
     // TODO(acdvorak): Create a type for this
-    /** @type {{device: !mdc.proto.cbt.CbtDevice, browser: !mdc.proto.cbt.CbtBrowser}} */
+    /** @type {{device: !cbt.proto.CbtDevice, browser: !cbt.proto.CbtBrowser}} */
     const matchingCbtUserAgent = await this.getMatchingCbtUserAgent_(userAgent);
 
-    /** @type {!mdc.proto.selenium.RawCapabilities} */
+    /** @type {!selenium.proto.RawCapabilities} */
     const defaultCaps = {
       // TODO(acdvorak): Implement?
       // name: 'Foo',
@@ -134,10 +134,10 @@ https://crossbrowsertesting.com/account
       record_network: true,
     };
 
-    /** @type {!mdc.proto.selenium.RawCapabilities} */
+    /** @type {!selenium.proto.RawCapabilities} */
     const deviceCaps = matchingCbtUserAgent.device.caps;
 
-    /** @type {!mdc.proto.selenium.RawCapabilities} */
+    /** @type {!selenium.proto.RawCapabilities} */
     const browserCaps = matchingCbtUserAgent.browser.caps;
 
     return RawCapabilities.create(Object.assign({}, defaultCaps, deviceCaps, browserCaps));
@@ -145,11 +145,11 @@ https://crossbrowsertesting.com/account
 
   /**
    * @param {!mdc.proto.UserAgent} userAgent
-   * @return {!Promise<{device: !mdc.proto.cbt.CbtDevice, browser: !mdc.proto.cbt.CbtBrowser}>}
+   * @return {!Promise<{device: !cbt.proto.CbtDevice, browser: !cbt.proto.CbtBrowser}>}
    * @private
    */
   async getMatchingCbtUserAgent_(userAgent) {
-    /** @type {!Array<!mdc.proto.cbt.CbtDevice>} */
+    /** @type {!Array<!cbt.proto.CbtDevice>} */
     const allCbtDevices = await this.fetchAvailableDevices();
 
     const formFactorMap = {
@@ -184,7 +184,7 @@ https://crossbrowsertesting.com/account
       }
     }
 
-    /** @type {!Array<{device: !mdc.proto.cbt.CbtDevice, browser: !mdc.proto.cbt.CbtBrowser}>} */
+    /** @type {!Array<{device: !cbt.proto.CbtDevice, browser: !cbt.proto.CbtBrowser}>} */
     const matchingCbtUserAgents = [];
 
     for (const cbtDevice of allCbtDevices) {

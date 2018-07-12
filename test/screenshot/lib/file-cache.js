@@ -20,8 +20,8 @@ const os = require('os');
 const path = require('path');
 const request = require('request-promise-native');
 
-const proto = require('../proto/types.pb').mdc.proto;
-const {TestFile} = proto;
+const mdcProto = require('../proto/types.pb').mdc.proto;
+const {TestFile} = mdcProto;
 
 /**
  * Downloads binary files from public URLs and saves them to a stable path in the TEMP directory for later retrieval.

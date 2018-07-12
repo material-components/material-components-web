@@ -24,9 +24,9 @@ const os = require('os');
 const path = require('path');
 const serveIndex = require('serve-index');
 
-const proto = require('../proto/types.pb').mdc.proto;
-const {LibraryVersion, ReportData, ReportMeta} = proto;
-const {Screenshot, Screenshots, ScreenshotList, TestFile, User, UserAgents} = proto;
+const mdcProto = require('../proto/types.pb').mdc.proto;
+const {LibraryVersion, ReportData, ReportMeta} = mdcProto;
+const {Screenshot, Screenshots, ScreenshotList, TestFile, User, UserAgents} = mdcProto;
 const {InclusionType, CaptureState} = Screenshot;
 
 const Cli = require('./cli');

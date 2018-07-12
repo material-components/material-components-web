@@ -16,8 +16,8 @@
 
 'use strict';
 
-const proto = require('../proto/types.pb').mdc.proto;
-const {ApprovalId, DiffBase, GitRevision} = proto;
+const mdcProto = require('../proto/types.pb').mdc.proto;
+const {ApprovalId, DiffBase, GitRevision} = mdcProto;
 
 const argparse = require('argparse');
 const checkIsOnline = require('is-online');

@@ -21,10 +21,12 @@ const mkdirp = require('mkdirp');
 const path = require('path');
 const UserAgentParser = require('useragent');
 
-const proto = require('../proto/types.pb').mdc.proto;
-const {TestFile, UserAgent} = proto;
+const mdcProto = require('../proto/types.pb').mdc.proto;
+const seleniumProto = require('../proto/selenium.pb').selenium.proto;
+
+const {TestFile, UserAgent} = mdcProto;
 const {BrowserVendorType, FormFactorType, Navigator} = UserAgent;
-const {RawCapabilities} = proto.selenium;
+const {RawCapabilities} = seleniumProto;
 
 const CbtApi = require('./cbt-api');
 const Cli = require('./cli');
@@ -88,7 +90,7 @@ class SeleniumApi {
   async createWebDriver_(userAgent) {
     const driverBuilder = new Builder();
 
-    /** @type {!mdc.proto.selenium.RawCapabilities} */
+    /** @type {!selenium.proto.RawCapabilities} */
     const desiredCapabilities = await this.getDesiredCapabilities_(userAgent);
 
     userAgent.desired_capabilities = desiredCapabilities;
@@ -105,7 +107,7 @@ class SeleniumApi {
     /** @type {!IWebDriver} */
     const driver = await driverBuilder.build();
 
-    /** @type {!mdc.proto.selenium.RawCapabilities} */
+    /** @type {!selenium.proto.RawCapabilities} */
     const actualCapabilities = await this.getActualCapabilities_(driver);
 
     /** @type {!mdc.proto.UserAgent.Navigator} */
@@ -128,7 +130,7 @@ class SeleniumApi {
 
   /**
    * @param {!mdc.proto.UserAgent} userAgent
-   * @return {!mdc.proto.selenium.RawCapabilities}
+   * @return {!selenium.proto.RawCapabilities}
    * @private
    */
   async getDesiredCapabilities_(userAgent) {
@@ -151,14 +153,14 @@ class SeleniumApi {
 
   /**
    * @param {!IWebDriver} driver
-   * @return {!Promise<!mdc.proto.selenium.RawCapabilities>}
+   * @return {!Promise<!selenium.proto.RawCapabilities>}
    * @private
    */
   async getActualCapabilities_(driver) {
     /** @type {!Capabilities} */
     const driverCaps = await driver.getCapabilities();
 
-    /** @type {!mdc.proto.selenium.RawCapabilities} */
+    /** @type {!selenium.proto.RawCapabilities} */
     const actualCaps = RawCapabilities.create();
 
     for (const key of driverCaps.keys()) {

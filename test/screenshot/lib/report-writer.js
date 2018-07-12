@@ -18,8 +18,8 @@ const Handlebars = require('handlebars');
 const path = require('path');
 const stringify = require('json-stable-stringify');
 
-const proto = require('../proto/types.pb').mdc.proto;
-const {HbsTestPageData, ReportData, Screenshots, TestFile} = proto;
+const mdcProto = require('../proto/types.pb').mdc.proto;
+const {HbsTestPageData, ReportData, Screenshots, TestFile} = mdcProto;
 
 const Duration = require('./duration');
 const LocalStorage = require('./local-storage');

@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package mdc.proto.selenium;
+package selenium.proto;
 
 // Capabilities returned by WebDriver for a currently-running browser instance.
 // NOTE: Different versions of Selenium - and different browser drivers - use slightly different property names.
