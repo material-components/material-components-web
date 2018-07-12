@@ -153,6 +153,11 @@ We also need to configure sass-loader to understand the `@material` imports used
 }
 ```
 
+> Note: Configuring `includePaths` should suffice for most cases where all MDC Web packages are kept up-to-date
+> together. If you encounter problems compiling Sass due to nested `node_modules` directories, see the
+> [Appendix](#appendix-configuring-a-sass-importer-for-nested-node_modules) below on how to configure a custom importer
+> instead.
+
 In order to add vendor-specific styles to the Sass files, we need to configure `autoprefixer` through PostCSS.
 
 You'll need all of these Node dependencies:
@@ -236,12 +241,12 @@ Then configure webpack to convert `app.js` into `bundle.js` by modifying the fol
 ```js
 // Change entry to an array for both app.js and app.scss
   entry: ['./app.scss', './app.js']
-  
+
 // Change output.filename to be bundle.js
   output: {
     filename: 'bundle.js',
   }
-  
+
 // Add the babel-loader object to the rules array after the scss loader object
 ...
    {
@@ -251,10 +256,10 @@ Then configure webpack to convert `app.js` into `bundle.js` by modifying the fol
        presets: ['es2015'],
      },
    }]
-  
+
 ```
 
-The final `webpack.config.js` file should look like: 
+The final `webpack.config.js` file should look like:
 
 ```js
 const autoprefixer = require('autoprefixer');
@@ -320,3 +325,54 @@ const ripple = new MDCRipple(document.querySelector('.foo-button'));
 Now run `npm start` again and open http://localhost:8080. You should see a Material Design ripple on the button!
 
 <img src="button_with_ripple.png" alt="Button with Ripple" width="90" height="36">
+
+## Appendix: Configuring a Sass Importer for Nested node_modules
+
+It is possible to end up with nested `node_modules` folders if you have dependencies on conflicting versions of
+individual MDC Web packages. This may lead to errors when attempting to compile Sass with the `includePaths`
+configuration shown above, since Sass is only scanning for `@material` packages under the top-level `node_modules`
+directory.
+
+Alternatively, you can implement an importer as follows, which makes use of node's module resolution algorithm to find
+the dependency nearest to the file that imported it:
+
+```js
+const path = require('path');
+
+function tryResolve_(url, sourceFilename) {
+  // Put require.resolve in a try/catch to avoid node-sass failing with cryptic libsass errors
+  // when the importer throws
+  try {
+    return require.resolve(url, {paths: [path.dirname(sourceFilename)]});
+  } catch (e) {
+    return '';
+  }
+}
+
+function tryResolveScss(url, sourceFilename) {
+  // Support omission of .scss and leading _
+  const normalizedUrl = url.endsWith('.scss') ? url : `${url}.scss`;
+  return tryResolve_(normalizedUrl, sourceFilename) ||
+    tryResolve_(path.join(path.dirname(normalizedUrl), `_${path.basename(normalizedUrl)}`),
+      sourceFilename);
+}
+
+function materialImporter(url, prev) {
+  if (url.startsWith('@material')) {
+    const resolved = tryResolveScss(url, prev);
+    return {file: resolved || url};
+  }
+  return {file: url};
+}
+```
+
+Then, in your `sass-loader` config:
+
+```js
+{
+  loader: 'sass-loader',
+  options: {
+    importer: materialImporter
+  },
+}
+```
