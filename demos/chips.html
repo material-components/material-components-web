@@ -78,6 +78,19 @@
             <i class="material-icons mdc-chip__icon mdc-chip__icon--trailing" tabindex="0" role="button">cancel</i>
           </div>
         </div>
+
+        <div class="mdc-form-field">
+          <div class="mdc-checkbox">
+            <input type="checkbox" class="mdc-checkbox__native-control" id="toggle-trailing-icon" aria-labelledby="toggle-disabled-label">
+            <div class="mdc-checkbox__background">
+              <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                <path class="mdc-checkbox__checkmark-path" fill="none" stroke="white" d="M1.73,12.91 8.1,19.28 22.79,4.59">
+              </svg>
+              <div class="mdc-checkbox__mixedmark"></div>
+            </div>
+          </div>
+          <label for="toggle-trailing-icon" id="toggle-trailing-icon-label">Require confirmation before removing chip</label>
+        </div>
       </section>
 
       <section class="example">
@@ -243,11 +256,33 @@
         var input = document.getElementById('input-chip-set-input');
         var inputButton = document.getElementById('input-chip-set-button');
         var deleteButton = document.getElementById('input-chip-set-delete-button');
+        var trailingIconToggle = document.getElementById('toggle-trailing-icon');
 
         [].forEach.call(chipSets, function(chipSet) {
           mdc.chips.MDCChipSet.attachTo(chipSet);
         });
         var inputChipSetComponent = mdc.chips.MDCChipSet.attachTo(inputChipSetEl);
+
+        inputButton.addEventListener('click', addInputChip);
+        input.addEventListener('keydown', addInputChip);
+        deleteButton.addEventListener('click', deleteLastChip);
+        inputChipSetEl.addEventListener('MDCChip:removal', removeChip);
+        trailingIconToggle.addEventListener('change', resetInputChipSet);
+
+        function resetInputChipSet() {
+          inputChipSetComponent.destroy();
+          if (this.checked) {
+            inputChipSetComponent = new mdc.chips.MDCChipSet(inputChipSetEl, undefined, function(chipEl) {
+              const chip = new mdc.chips.MDCChip(chipEl);
+              chip.shouldRemoveOnTrailingIconClick = false;
+              return chip;
+            });
+            inputChipSetEl.addEventListener('MDCChip:trailingIconInteraction', confirmChipRemoval);
+          } else {
+            inputChipSetComponent = mdc.chips.MDCChipSet.attachTo(inputChipSetEl);
+            inputChipSetEl.removeEventListener('MDCChip:trailingIconInteraction', confirmChipRemoval);
+          }
+        }
 
         function createChipEl(text, leadingIcon, trailingIcon) {
           const chipTextEl = document.createElement('div');
@@ -267,7 +302,7 @@
         }
 
         function addInputChip(evt) {
-          if ((evt.type === 'click' || evt.key === 'Enter' || evt.keyCode === 13) && 
+          if ((evt.type === 'click' || evt.key === 'Enter' || evt.keyCode === 13) &&
               input.value !== '') {
             var leadingIcon = document.querySelector('.input-leading-icon').cloneNode(true);
             var trailingIcon = document.querySelector('.input-trailing-icon').cloneNode(true);
@@ -280,6 +315,12 @@
           }
         };
 
+        function confirmChipRemoval(evt) {
+          if (confirm('Are you sure you want to remove this chip?')) {
+            evt.detail.chip.beginExit();
+          }
+        }
+
         function removeChip(evt) {
           const root = evt.detail.root;
           root && inputChipSetEl.removeChild(root);
@@ -290,11 +331,6 @@
           const lastChip = inputChipSetComponent.chips[lastChipIndex];
           lastChip.beginExit();
         };
-
-        inputButton.addEventListener('click', addInputChip);
-        input.addEventListener('keydown', addInputChip);
-        deleteButton.addEventListener('click', deleteLastChip);
-        inputChipSetEl.addEventListener('MDCChip:removal', removeChip);
       });
     </script>
   </body>
