@@ -34,6 +34,8 @@ let AnchorMargin;
  *   anchorWidth: number,
  *   surfaceHeight: number,
  *   surfaceWidth: number,
+ *   bodyDimensions,
+ *   windowScroll,
  * }}
  */
 let AutoLayoutMeasurements;
@@ -233,13 +235,13 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
   getAutoLayoutMeasurements_() {
     const anchorRect = this.adapter_.getAnchorDimensions();
     const viewport = this.adapter_.getWindowDimensions();
-    const body = this.adapter_.getBodyDimensions();
-    const scroll = this.adapter_.getWindowScroll();
+    const bodyDimensions = this.adapter_.getBodyDimensions();
+    const windowScroll = this.adapter_.getWindowScroll();
 
     return {
       viewport,
-      body,
-      scroll,
+      bodyDimensions,
+      windowScroll,
       viewportDistance: {
         top: anchorRect.top,
         right: viewport.width - anchorRect.right,
@@ -314,7 +316,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
       // Hoisted elements positioning doesn't account for the scrollbar, so the right property needs to be reduced by
       // the difference between the window and body width.
       if (this.hoistedElement_) {
-        rightOffset = rightOffset - (this.measures_.viewport.width - this.measures_.body.width);
+        rightOffset = rightOffset - (this.measures_.viewport.width - this.measures_.bodyDimensions.width);
       }
 
       return rightOffset;
@@ -326,34 +328,19 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
 
   /**
    * @param {MenuSurfaceCorner} corner Origin corner of the menu surface.
-   * @param {number} maxMenuSurfaceHeight Maximum size of the menu-surface.
    * @return {number} Vertical offset of menu surface origin corner from corresponding anchor corner.
    * @private
    */
-  getVerticalOriginOffset_(corner, maxMenuSurfaceHeight) {
-    const {viewport, viewportDistance, anchorHeight, surfaceHeight} = this.measures_;
-    const actualSurfaceHeight = Math.min(maxMenuSurfaceHeight, surfaceHeight);
+  getVerticalOriginOffset_(corner) {
+    const {anchorHeight} = this.measures_;
     const isBottomAligned = Boolean(corner & MenuSurfaceCornerBit.BOTTOM);
-    const {MARGIN_TO_EDGE} = MDCMenuSurfaceFoundation.numbers;
-    const maxViewHeight = viewport.height - MARGIN_TO_EDGE;
     const avoidVerticalOverlap = Boolean(this.anchorCorner_ & MenuSurfaceCornerBit.BOTTOM);
-    const canOverlapVertically = !avoidVerticalOverlap;
     let y = 0;
 
     if (isBottomAligned) {
       y = avoidVerticalOverlap ? anchorHeight - this.anchorMargin_.top : -this.anchorMargin_.bottom;
-      // adjust for when menu surface can overlap anchor, but too tall to be aligned to bottom
-      // anchor corner. Bottom margin is ignored in such cases.
-      if (canOverlapVertically && actualSurfaceHeight > viewportDistance.top + anchorHeight) {
-        y = -(Math.min(actualSurfaceHeight, maxViewHeight) - (viewportDistance.top + anchorHeight));
-      }
     } else {
       y = avoidVerticalOverlap ? (anchorHeight + this.anchorMargin_.bottom) : this.anchorMargin_.top;
-      // adjust for when menu surface can overlap anchor, but too tall to be aligned to top
-      // anchor corners. Top margin is ignored in that case.
-      if (canOverlapVertically && actualSurfaceHeight > viewportDistance.bottom + anchorHeight) {
-        y = -(Math.min(actualSurfaceHeight, maxViewHeight) - (viewportDistance.bottom + anchorHeight));
-      }
     }
     return y;
   }
@@ -367,13 +354,13 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     let maxHeight = 0;
     const {viewportDistance} = this.measures_;
     const isBottomAligned = Boolean(corner & MenuSurfaceCornerBit.BOTTOM);
-    const {MARGIN_TO_EDGE} = cssClasses;
+    const {MARGIN_TO_EDGE} = MDCMenuSurfaceFoundation.numbers;
 
     // When maximum height is not specified, it is handled from css.
     if (isBottomAligned) {
       maxHeight = viewportDistance.top + this.anchorMargin_.top - MARGIN_TO_EDGE;
-      if (this.anchorCorner_ & MenuSurfaceCornerBit.BOTTOM) {
-        maxHeight -= this.measures_.anchorHeight;
+      if (!(this.anchorCorner_ & MenuSurfaceCornerBit.BOTTOM)) {
+        maxHeight += this.measures_.anchorHeight;
       }
     } else {
       maxHeight = viewportDistance.bottom - this.anchorMargin_.bottom + this.measures_.anchorHeight - MARGIN_TO_EDGE;
@@ -396,28 +383,18 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
 
     const corner = this.getOriginCorner_();
     const maxMenuSurfaceHeight = this.getMenuSurfaceMaxHeight_(corner);
-    let verticalAlignment = (corner & MenuSurfaceCornerBit.BOTTOM) ? 'bottom' : 'top';
+    const verticalAlignment = (corner & MenuSurfaceCornerBit.BOTTOM) ? 'bottom' : 'top';
     let horizontalAlignment = (corner & MenuSurfaceCornerBit.RIGHT) ? 'right' : 'left';
     const horizontalOffset = this.getHorizontalOriginOffset_(corner);
-    const verticalOffset = this.getVerticalOriginOffset_(corner, maxMenuSurfaceHeight);
+    const verticalOffset = this.getVerticalOriginOffset_(corner);
     let position = {
       [horizontalAlignment]: horizontalOffset ? horizontalOffset : '0',
       [verticalAlignment]: verticalOffset ? verticalOffset : '0',
     };
-    const {anchorWidth, surfaceHeight, surfaceWidth} = this.measures_;
+    const {anchorWidth, surfaceWidth} = this.measures_;
     // Center align when anchor width is comparable or greater than menu surface, otherwise keep corner.
     if (anchorWidth / surfaceWidth > numbers.ANCHOR_TO_MENU_SURFACE_WIDTH_RATIO) {
       horizontalAlignment = 'center';
-    }
-
-    // Adjust vertical origin when menu surface is positioned with significant offset from anchor. This is done so that
-    // scale animation is "anchored" on the anchor.
-    if (!(this.anchorCorner_ & MenuSurfaceCornerBit.BOTTOM) &&
-        Math.abs(verticalOffset / surfaceHeight) > numbers.OFFSET_TO_MENU_SURFACE_HEIGHT_RATIO) {
-      const verticalOffsetPercent = Math.abs(verticalOffset / surfaceHeight) * 100;
-      const originPercent = (corner & MenuSurfaceCornerBit.BOTTOM)
-        ? 100 - verticalOffsetPercent : verticalOffsetPercent;
-      verticalAlignment = Math.round(originPercent * 100) / 100 + '%';
     }
 
     // If the menu-surface has been hoisted to the body, it's no longer relative to the anchor element
@@ -427,7 +404,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
 
     for (const prop in position) {
       if (position.hasOwnProperty(prop) && position[prop] !== '0') {
-        position[prop] = `${parseInt(position[prop])}px`;
+        position[prop] = `${parseInt(position[prop], 0)}px`;
       }
     }
 
@@ -457,21 +434,21 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
    * @private
    */
   adjustPositionForHoistedElement_(position) {
-    const {body, scroll, viewport, viewportDistance} = this.measures_;
+    const {bodyDimensions, windowScroll, viewport, viewportDistance} = this.measures_;
 
     for (const prop in position) {
       // Hoisted surfaces need to have the anchor elements location on the page added to the
       // position properties for proper alignment on the body.
       if (position.hasOwnProperty(prop) && viewportDistance.hasOwnProperty(prop)) {
-        position[prop] = parseInt(position[prop]) + viewportDistance[prop];
+        position[prop] = parseInt(position[prop], 0) + viewportDistance[prop];
       }
 
       // Surfaces that are absolutely positioned need to have additional calculations for scroll
       // and bottom positioning.
       if (!this.isFixedPosition_ && prop === 'top') {
-        position[prop] = parseInt(position[prop]) + scroll.y;
+        position[prop] = parseInt(position[prop], 0) + windowScroll.y;
       } else if (!this.isFixedPosition_ && prop === 'bottom') {
-        position[prop] = body.height - (viewport.height + scroll.y) + parseInt(position[prop]);
+        position[prop] = bodyDimensions.height - (viewport.height + windowScroll.y) + parseInt(position[prop], 0);
       }
     }
 

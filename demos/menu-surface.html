@@ -185,6 +185,15 @@
             var temp = menuEl.parentElement.removeChild(menuEl);
             menuButtonEl.parentElement.appendChild(temp);
             menu = mdc.menuSurface.MDCMenuSurface.attachTo(menuEl);
+            // Trigger events to ensure the new menu is setup to reflect the configurations selected.
+            var event = new Event('change');
+            document.querySelector('input[name="anchor-position"]:checked').dispatchEvent(event);
+            document.querySelector('input[name="animation"]').dispatchEvent(event);
+            document.getElementById('top-margin').dispatchEvent(event);
+            document.getElementById('bottom-margin').dispatchEvent(event);
+            document.getElementById('right-margin').dispatchEvent(event);
+            document.getElementById('left-margin').dispatchEvent(event);
+            document.querySelector('input[name="fixed-position"]').dispatchEvent(event);
           }
         });
 

@@ -89,10 +89,10 @@ class MDCMenuSurface extends MDCComponent {
 
   /**
    * Sets the element that the menu-surface is anchored to.
-   * @param {HTMLElement} element
+   * @param {Element} element
    */
   setMenuSurfaceAnchorElement(element) {
-    this.anchorElement_ = element;
+    this.anchorElement = element;
   }
 
   /**
@@ -100,7 +100,12 @@ class MDCMenuSurface extends MDCComponent {
    * @param {boolean} isFixed
    */
   setFixedPosition(isFixed) {
-    this.root_.classList[isFixed ? 'add' : 'remove'](cssClasses.FIXED);
+    if (isFixed) {
+      this.root_.classList.add(cssClasses.FIXED);
+    } else {
+      this.root_.classList.remove(cssClasses.FIXED);
+    }
+
     this.foundation_.setIsHoisted(isFixed ? true : this.root_.parentElement === document.body);
     this.foundation_.setFixedPosition(isFixed);
   }

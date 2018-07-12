@@ -94,7 +94,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'registerBodyClickHandler', 'deregisterBodyClickHandler', 'notifyClose', 'isElementInContainer', 'isRtl',
     'setTransformOrigin', 'isFocused', 'saveFocus', 'restoreFocus', 'isFirstElementFocused', 'isLastElementFocused',
     'focusFirstElement', 'focusLastElement', 'getInnerDimensions', 'getAnchorDimensions', 'getWindowDimensions',
-    'setPosition', 'setMaxHeight',
+    'getBodyDimensions', 'getWindowScroll', 'setPosition', 'setMaxHeight',
   ]);
 });
 
@@ -304,17 +304,7 @@ testFoundation('#open tall surface from small anchor in left above middle of vie
     mockRaf.flush();
     td.verify(mockAdapter.setTransformOrigin('left top'));
     td.verify(mockAdapter.setPosition({left: '0', top: '20px'}));
-    td.verify(mockAdapter.setMaxHeight('580px'));
-  });
-
-testFoundation('#open tall surface from small anchor in left above middle of viewport, TOP_START anchor corner, LTR',
-  ({foundation, mockAdapter, mockRaf}) => {
-    initAnchorLayout(mockAdapter, smallAboveMiddleLeft, false, 700);
-    foundation.setAnchorCorner(MenuSurfaceCorner.TOP_START);
-    foundation.open();
-    mockRaf.flush();
-    td.verify(mockAdapter.setTransformOrigin('left 14.29%'));
-    td.verify(mockAdapter.setPosition({left: '0', top: '-100px'}));
+    td.verify(mockAdapter.setMaxHeight('548px'));
   });
 
 testFoundation('#open tall surface from small anchor in left below middle of viewport, BOTTOM_START anchor corner, LTR',
@@ -325,17 +315,7 @@ testFoundation('#open tall surface from small anchor in left below middle of vie
     mockRaf.flush();
     td.verify(mockAdapter.setTransformOrigin('left bottom'));
     td.verify(mockAdapter.setPosition({left: '0', bottom: '20px'}));
-    td.verify(mockAdapter.setMaxHeight('600px'));
-  });
-
-testFoundation('#open tall surface from small anchor in left above middle of viewport, TOP_START anchor corner, LTR',
-  ({foundation, mockAdapter, mockRaf}) => {
-    initAnchorLayout(mockAdapter, smallBelowMiddleLeft, false, 700);
-    foundation.setAnchorCorner(MenuSurfaceCorner.TOP_START);
-    foundation.open();
-    mockRaf.flush();
-    td.verify(mockAdapter.setTransformOrigin('left 88.57%'));
-    td.verify(mockAdapter.setPosition({left: '0', bottom: '-80px'}));
+    td.verify(mockAdapter.setMaxHeight('568px'));
   });
 
 testFoundation('#open from wide anchor center of viewport, TOP_START anchor corner, LTR',

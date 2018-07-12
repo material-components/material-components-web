@@ -121,6 +121,9 @@ class MDCMenuSurfaceAdapter {
   /** @return {{ width: number, height: number }} */
   getBodyDimensions() {}
 
+  /** @return {{ width: number, height: number }} */
+  getWindowScroll() {}
+
   /** @param {{
   *   top: (string|undefined),
   *   right: (string|undefined),
