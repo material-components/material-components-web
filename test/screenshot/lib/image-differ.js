@@ -157,9 +157,17 @@ class ImageDiffer {
     /** @type {!Jimp.Jimp} */ const actualJimpImage = await Jimp.read(actualImageBuffer);
     /** @type {!Jimp.Jimp} */ const diffJimpImage = await Jimp.read(diffImageBuffer);
 
+    function roundPercentage(rawPercentage) {
+      let roundPower = Math.pow(10, 1);
+      if (rawPercentage < 1) {
+        const leadingFractionalZeroDigits = String(rawPercentage).replace(/^0\.(0*).*$/g, '$1').length + 1;
+        roundPower = Math.pow(10, leadingFractionalZeroDigits);
+      }
+      return Math.ceil(rawPercentage * roundPower) / roundPower;
+    }
+
     const diffPixelRawPercentage = resembleComparisonResult.rawMisMatchPercentage;
-    const diffPixelRoundPercentage =
-      diffPixelRawPercentage > 1 ? Math.ceil(diffPixelRawPercentage * 10) / 10 : diffPixelRawPercentage;
+    const diffPixelRoundPercentage = roundPercentage(diffPixelRawPercentage);
     const diffPixelFraction = diffPixelRawPercentage / 100;
     const diffPixelCount = Math.ceil(diffPixelFraction * diffJimpImage.bitmap.width * diffJimpImage.bitmap.height);
     const diffImageResult = DiffImageResult.create({
