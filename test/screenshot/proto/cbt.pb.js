@@ -1369,6 +1369,2094 @@ $root.mdc = (function() {
                 return CbtResolution;
             })();
 
+            cbt.CbtAccount = (function() {
+
+                /**
+                 * Properties of a CbtAccount.
+                 * @memberof mdc.proto.cbt
+                 * @interface ICbtAccount
+                 * @property {mdc.proto.cbt.CbtAccount.ISubscription|null} [subscription] CbtAccount subscription
+                 */
+
+                /**
+                 * Constructs a new CbtAccount.
+                 * @memberof mdc.proto.cbt
+                 * @classdesc Represents a CbtAccount.
+                 * @implements ICbtAccount
+                 * @constructor
+                 * @param {mdc.proto.cbt.ICbtAccount=} [properties] Properties to set
+                 */
+                function CbtAccount(properties) {
+                    if (properties)
+                        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                            if (properties[keys[i]] != null)
+                                this[keys[i]] = properties[keys[i]];
+                }
+
+                /**
+                 * CbtAccount subscription.
+                 * @member {mdc.proto.cbt.CbtAccount.ISubscription|null|undefined} subscription
+                 * @memberof mdc.proto.cbt.CbtAccount
+                 * @instance
+                 */
+                CbtAccount.prototype.subscription = null;
+
+                /**
+                 * Creates a new CbtAccount instance using the specified properties.
+                 * @function create
+                 * @memberof mdc.proto.cbt.CbtAccount
+                 * @static
+                 * @param {mdc.proto.cbt.ICbtAccount=} [properties] Properties to set
+                 * @returns {mdc.proto.cbt.CbtAccount} CbtAccount instance
+                 */
+                CbtAccount.create = function create(properties) {
+                    return new CbtAccount(properties);
+                };
+
+                /**
+                 * Encodes the specified CbtAccount message. Does not implicitly {@link mdc.proto.cbt.CbtAccount.verify|verify} messages.
+                 * @function encode
+                 * @memberof mdc.proto.cbt.CbtAccount
+                 * @static
+                 * @param {mdc.proto.cbt.ICbtAccount} message CbtAccount message or plain object to encode
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
+                 */
+                CbtAccount.encode = function encode(message, writer) {
+                    if (!writer)
+                        writer = $Writer.create();
+                    if (message.subscription != null && message.hasOwnProperty("subscription"))
+                        $root.mdc.proto.cbt.CbtAccount.Subscription.encode(message.subscription, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+                    return writer;
+                };
+
+                /**
+                 * Encodes the specified CbtAccount message, length delimited. Does not implicitly {@link mdc.proto.cbt.CbtAccount.verify|verify} messages.
+                 * @function encodeDelimited
+                 * @memberof mdc.proto.cbt.CbtAccount
+                 * @static
+                 * @param {mdc.proto.cbt.ICbtAccount} message CbtAccount message or plain object to encode
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
+                 */
+                CbtAccount.encodeDelimited = function encodeDelimited(message, writer) {
+                    return this.encode(message, writer).ldelim();
+                };
+
+                /**
+                 * Decodes a CbtAccount message from the specified reader or buffer.
+                 * @function decode
+                 * @memberof mdc.proto.cbt.CbtAccount
+                 * @static
+                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                 * @param {number} [length] Message length if known beforehand
+                 * @returns {mdc.proto.cbt.CbtAccount} CbtAccount
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                CbtAccount.decode = function decode(reader, length) {
+                    if (!(reader instanceof $Reader))
+                        reader = $Reader.create(reader);
+                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.mdc.proto.cbt.CbtAccount();
+                    while (reader.pos < end) {
+                        var tag = reader.uint32();
+                        switch (tag >>> 3) {
+                        case 1:
+                            message.subscription = $root.mdc.proto.cbt.CbtAccount.Subscription.decode(reader, reader.uint32());
+                            break;
+                        default:
+                            reader.skipType(tag & 7);
+                            break;
+                        }
+                    }
+                    return message;
+                };
+
+                /**
+                 * Decodes a CbtAccount message from the specified reader or buffer, length delimited.
+                 * @function decodeDelimited
+                 * @memberof mdc.proto.cbt.CbtAccount
+                 * @static
+                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                 * @returns {mdc.proto.cbt.CbtAccount} CbtAccount
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                CbtAccount.decodeDelimited = function decodeDelimited(reader) {
+                    if (!(reader instanceof $Reader))
+                        reader = new $Reader(reader);
+                    return this.decode(reader, reader.uint32());
+                };
+
+                /**
+                 * Verifies a CbtAccount message.
+                 * @function verify
+                 * @memberof mdc.proto.cbt.CbtAccount
+                 * @static
+                 * @param {Object.<string,*>} message Plain object to verify
+                 * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                 */
+                CbtAccount.verify = function verify(message) {
+                    if (typeof message !== "object" || message === null)
+                        return "object expected";
+                    if (message.subscription != null && message.hasOwnProperty("subscription")) {
+                        var error = $root.mdc.proto.cbt.CbtAccount.Subscription.verify(message.subscription);
+                        if (error)
+                            return "subscription." + error;
+                    }
+                    return null;
+                };
+
+                /**
+                 * Creates a CbtAccount message from a plain object. Also converts values to their respective internal types.
+                 * @function fromObject
+                 * @memberof mdc.proto.cbt.CbtAccount
+                 * @static
+                 * @param {Object.<string,*>} object Plain object
+                 * @returns {mdc.proto.cbt.CbtAccount} CbtAccount
+                 */
+                CbtAccount.fromObject = function fromObject(object) {
+                    if (object instanceof $root.mdc.proto.cbt.CbtAccount)
+                        return object;
+                    var message = new $root.mdc.proto.cbt.CbtAccount();
+                    if (object.subscription != null) {
+                        if (typeof object.subscription !== "object")
+                            throw TypeError(".mdc.proto.cbt.CbtAccount.subscription: object expected");
+                        message.subscription = $root.mdc.proto.cbt.CbtAccount.Subscription.fromObject(object.subscription);
+                    }
+                    return message;
+                };
+
+                /**
+                 * Creates a plain object from a CbtAccount message. Also converts values to other types if specified.
+                 * @function toObject
+                 * @memberof mdc.proto.cbt.CbtAccount
+                 * @static
+                 * @param {mdc.proto.cbt.CbtAccount} message CbtAccount
+                 * @param {$protobuf.IConversionOptions} [options] Conversion options
+                 * @returns {Object.<string,*>} Plain object
+                 */
+                CbtAccount.toObject = function toObject(message, options) {
+                    if (!options)
+                        options = {};
+                    var object = {};
+                    if (options.defaults)
+                        object.subscription = null;
+                    if (message.subscription != null && message.hasOwnProperty("subscription"))
+                        object.subscription = $root.mdc.proto.cbt.CbtAccount.Subscription.toObject(message.subscription, options);
+                    return object;
+                };
+
+                /**
+                 * Converts this CbtAccount to JSON.
+                 * @function toJSON
+                 * @memberof mdc.proto.cbt.CbtAccount
+                 * @instance
+                 * @returns {Object.<string,*>} JSON object
+                 */
+                CbtAccount.prototype.toJSON = function toJSON() {
+                    return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                };
+
+                CbtAccount.Subscription = (function() {
+
+                    /**
+                     * Properties of a Subscription.
+                     * @memberof mdc.proto.cbt.CbtAccount
+                     * @interface ISubscription
+                     * @property {mdc.proto.cbt.CbtAccount.Subscription.IPackage|null} ["package"] Subscription package
+                     * @property {mdc.proto.cbt.CbtAccount.Subscription.IUsage|null} [usage] Subscription usage
+                     */
+
+                    /**
+                     * Constructs a new Subscription.
+                     * @memberof mdc.proto.cbt.CbtAccount
+                     * @classdesc Represents a Subscription.
+                     * @implements ISubscription
+                     * @constructor
+                     * @param {mdc.proto.cbt.CbtAccount.ISubscription=} [properties] Properties to set
+                     */
+                    function Subscription(properties) {
+                        if (properties)
+                            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null)
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * Subscription package.
+                     * @member {mdc.proto.cbt.CbtAccount.Subscription.IPackage|null|undefined} package
+                     * @memberof mdc.proto.cbt.CbtAccount.Subscription
+                     * @instance
+                     */
+                    Subscription.prototype["package"] = null;
+
+                    /**
+                     * Subscription usage.
+                     * @member {mdc.proto.cbt.CbtAccount.Subscription.IUsage|null|undefined} usage
+                     * @memberof mdc.proto.cbt.CbtAccount.Subscription
+                     * @instance
+                     */
+                    Subscription.prototype.usage = null;
+
+                    /**
+                     * Creates a new Subscription instance using the specified properties.
+                     * @function create
+                     * @memberof mdc.proto.cbt.CbtAccount.Subscription
+                     * @static
+                     * @param {mdc.proto.cbt.CbtAccount.ISubscription=} [properties] Properties to set
+                     * @returns {mdc.proto.cbt.CbtAccount.Subscription} Subscription instance
+                     */
+                    Subscription.create = function create(properties) {
+                        return new Subscription(properties);
+                    };
+
+                    /**
+                     * Encodes the specified Subscription message. Does not implicitly {@link mdc.proto.cbt.CbtAccount.Subscription.verify|verify} messages.
+                     * @function encode
+                     * @memberof mdc.proto.cbt.CbtAccount.Subscription
+                     * @static
+                     * @param {mdc.proto.cbt.CbtAccount.ISubscription} message Subscription message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    Subscription.encode = function encode(message, writer) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (message["package"] != null && message.hasOwnProperty("package"))
+                            $root.mdc.proto.cbt.CbtAccount.Subscription.Package.encode(message["package"], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+                        if (message.usage != null && message.hasOwnProperty("usage"))
+                            $root.mdc.proto.cbt.CbtAccount.Subscription.Usage.encode(message.usage, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified Subscription message, length delimited. Does not implicitly {@link mdc.proto.cbt.CbtAccount.Subscription.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof mdc.proto.cbt.CbtAccount.Subscription
+                     * @static
+                     * @param {mdc.proto.cbt.CbtAccount.ISubscription} message Subscription message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    Subscription.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a Subscription message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof mdc.proto.cbt.CbtAccount.Subscription
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {mdc.proto.cbt.CbtAccount.Subscription} Subscription
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    Subscription.decode = function decode(reader, length) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.mdc.proto.cbt.CbtAccount.Subscription();
+                        while (reader.pos < end) {
+                            var tag = reader.uint32();
+                            switch (tag >>> 3) {
+                            case 1:
+                                message["package"] = $root.mdc.proto.cbt.CbtAccount.Subscription.Package.decode(reader, reader.uint32());
+                                break;
+                            case 2:
+                                message.usage = $root.mdc.proto.cbt.CbtAccount.Subscription.Usage.decode(reader, reader.uint32());
+                                break;
+                            default:
+                                reader.skipType(tag & 7);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a Subscription message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof mdc.proto.cbt.CbtAccount.Subscription
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {mdc.proto.cbt.CbtAccount.Subscription} Subscription
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    Subscription.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a Subscription message.
+                     * @function verify
+                     * @memberof mdc.proto.cbt.CbtAccount.Subscription
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    Subscription.verify = function verify(message) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (message["package"] != null && message.hasOwnProperty("package")) {
+                            var error = $root.mdc.proto.cbt.CbtAccount.Subscription.Package.verify(message["package"]);
+                            if (error)
+                                return "package." + error;
+                        }
+                        if (message.usage != null && message.hasOwnProperty("usage")) {
+                            var error = $root.mdc.proto.cbt.CbtAccount.Subscription.Usage.verify(message.usage);
+                            if (error)
+                                return "usage." + error;
+                        }
+                        return null;
+                    };
+
+                    /**
+                     * Creates a Subscription message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof mdc.proto.cbt.CbtAccount.Subscription
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {mdc.proto.cbt.CbtAccount.Subscription} Subscription
+                     */
+                    Subscription.fromObject = function fromObject(object) {
+                        if (object instanceof $root.mdc.proto.cbt.CbtAccount.Subscription)
+                            return object;
+                        var message = new $root.mdc.proto.cbt.CbtAccount.Subscription();
+                        if (object["package"] != null) {
+                            if (typeof object["package"] !== "object")
+                                throw TypeError(".mdc.proto.cbt.CbtAccount.Subscription.package: object expected");
+                            message["package"] = $root.mdc.proto.cbt.CbtAccount.Subscription.Package.fromObject(object["package"]);
+                        }
+                        if (object.usage != null) {
+                            if (typeof object.usage !== "object")
+                                throw TypeError(".mdc.proto.cbt.CbtAccount.Subscription.usage: object expected");
+                            message.usage = $root.mdc.proto.cbt.CbtAccount.Subscription.Usage.fromObject(object.usage);
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a Subscription message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof mdc.proto.cbt.CbtAccount.Subscription
+                     * @static
+                     * @param {mdc.proto.cbt.CbtAccount.Subscription} message Subscription
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    Subscription.toObject = function toObject(message, options) {
+                        if (!options)
+                            options = {};
+                        var object = {};
+                        if (options.defaults) {
+                            object["package"] = null;
+                            object.usage = null;
+                        }
+                        if (message["package"] != null && message.hasOwnProperty("package"))
+                            object["package"] = $root.mdc.proto.cbt.CbtAccount.Subscription.Package.toObject(message["package"], options);
+                        if (message.usage != null && message.hasOwnProperty("usage"))
+                            object.usage = $root.mdc.proto.cbt.CbtAccount.Subscription.Usage.toObject(message.usage, options);
+                        return object;
+                    };
+
+                    /**
+                     * Converts this Subscription to JSON.
+                     * @function toJSON
+                     * @memberof mdc.proto.cbt.CbtAccount.Subscription
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    Subscription.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    Subscription.Package = (function() {
+
+                        /**
+                         * Properties of a Package.
+                         * @memberof mdc.proto.cbt.CbtAccount.Subscription
+                         * @interface IPackage
+                         * @property {number|null} [package_minutes] Package package_minutes
+                         * @property {number|null} [max_concurrent_selenium] Package max_concurrent_selenium
+                         * @property {number|null} [max_screenshot_count_per_test] Package max_screenshot_count_per_test
+                         */
+
+                        /**
+                         * Constructs a new Package.
+                         * @memberof mdc.proto.cbt.CbtAccount.Subscription
+                         * @classdesc Represents a Package.
+                         * @implements IPackage
+                         * @constructor
+                         * @param {mdc.proto.cbt.CbtAccount.Subscription.IPackage=} [properties] Properties to set
+                         */
+                        function Package(properties) {
+                            if (properties)
+                                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                    if (properties[keys[i]] != null)
+                                        this[keys[i]] = properties[keys[i]];
+                        }
+
+                        /**
+                         * Package package_minutes.
+                         * @member {number} package_minutes
+                         * @memberof mdc.proto.cbt.CbtAccount.Subscription.Package
+                         * @instance
+                         */
+                        Package.prototype.package_minutes = 0;
+
+                        /**
+                         * Package max_concurrent_selenium.
+                         * @member {number} max_concurrent_selenium
+                         * @memberof mdc.proto.cbt.CbtAccount.Subscription.Package
+                         * @instance
+                         */
+                        Package.prototype.max_concurrent_selenium = 0;
+
+                        /**
+                         * Package max_screenshot_count_per_test.
+                         * @member {number} max_screenshot_count_per_test
+                         * @memberof mdc.proto.cbt.CbtAccount.Subscription.Package
+                         * @instance
+                         */
+                        Package.prototype.max_screenshot_count_per_test = 0;
+
+                        /**
+                         * Creates a new Package instance using the specified properties.
+                         * @function create
+                         * @memberof mdc.proto.cbt.CbtAccount.Subscription.Package
+                         * @static
+                         * @param {mdc.proto.cbt.CbtAccount.Subscription.IPackage=} [properties] Properties to set
+                         * @returns {mdc.proto.cbt.CbtAccount.Subscription.Package} Package instance
+                         */
+                        Package.create = function create(properties) {
+                            return new Package(properties);
+                        };
+
+                        /**
+                         * Encodes the specified Package message. Does not implicitly {@link mdc.proto.cbt.CbtAccount.Subscription.Package.verify|verify} messages.
+                         * @function encode
+                         * @memberof mdc.proto.cbt.CbtAccount.Subscription.Package
+                         * @static
+                         * @param {mdc.proto.cbt.CbtAccount.Subscription.IPackage} message Package message or plain object to encode
+                         * @param {$protobuf.Writer} [writer] Writer to encode to
+                         * @returns {$protobuf.Writer} Writer
+                         */
+                        Package.encode = function encode(message, writer) {
+                            if (!writer)
+                                writer = $Writer.create();
+                            if (message.package_minutes != null && message.hasOwnProperty("package_minutes"))
+                                writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.package_minutes);
+                            if (message.max_concurrent_selenium != null && message.hasOwnProperty("max_concurrent_selenium"))
+                                writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.max_concurrent_selenium);
+                            if (message.max_screenshot_count_per_test != null && message.hasOwnProperty("max_screenshot_count_per_test"))
+                                writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.max_screenshot_count_per_test);
+                            return writer;
+                        };
+
+                        /**
+                         * Encodes the specified Package message, length delimited. Does not implicitly {@link mdc.proto.cbt.CbtAccount.Subscription.Package.verify|verify} messages.
+                         * @function encodeDelimited
+                         * @memberof mdc.proto.cbt.CbtAccount.Subscription.Package
+                         * @static
+                         * @param {mdc.proto.cbt.CbtAccount.Subscription.IPackage} message Package message or plain object to encode
+                         * @param {$protobuf.Writer} [writer] Writer to encode to
+                         * @returns {$protobuf.Writer} Writer
+                         */
+                        Package.encodeDelimited = function encodeDelimited(message, writer) {
+                            return this.encode(message, writer).ldelim();
+                        };
+
+                        /**
+                         * Decodes a Package message from the specified reader or buffer.
+                         * @function decode
+                         * @memberof mdc.proto.cbt.CbtAccount.Subscription.Package
+                         * @static
+                         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                         * @param {number} [length] Message length if known beforehand
+                         * @returns {mdc.proto.cbt.CbtAccount.Subscription.Package} Package
+                         * @throws {Error} If the payload is not a reader or valid buffer
+                         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                         */
+                        Package.decode = function decode(reader, length) {
+                            if (!(reader instanceof $Reader))
+                                reader = $Reader.create(reader);
+                            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.mdc.proto.cbt.CbtAccount.Subscription.Package();
+                            while (reader.pos < end) {
+                                var tag = reader.uint32();
+                                switch (tag >>> 3) {
+                                case 1:
+                                    message.package_minutes = reader.uint32();
+                                    break;
+                                case 2:
+                                    message.max_concurrent_selenium = reader.uint32();
+                                    break;
+                                case 3:
+                                    message.max_screenshot_count_per_test = reader.uint32();
+                                    break;
+                                default:
+                                    reader.skipType(tag & 7);
+                                    break;
+                                }
+                            }
+                            return message;
+                        };
+
+                        /**
+                         * Decodes a Package message from the specified reader or buffer, length delimited.
+                         * @function decodeDelimited
+                         * @memberof mdc.proto.cbt.CbtAccount.Subscription.Package
+                         * @static
+                         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                         * @returns {mdc.proto.cbt.CbtAccount.Subscription.Package} Package
+                         * @throws {Error} If the payload is not a reader or valid buffer
+                         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                         */
+                        Package.decodeDelimited = function decodeDelimited(reader) {
+                            if (!(reader instanceof $Reader))
+                                reader = new $Reader(reader);
+                            return this.decode(reader, reader.uint32());
+                        };
+
+                        /**
+                         * Verifies a Package message.
+                         * @function verify
+                         * @memberof mdc.proto.cbt.CbtAccount.Subscription.Package
+                         * @static
+                         * @param {Object.<string,*>} message Plain object to verify
+                         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                         */
+                        Package.verify = function verify(message) {
+                            if (typeof message !== "object" || message === null)
+                                return "object expected";
+                            if (message.package_minutes != null && message.hasOwnProperty("package_minutes"))
+                                if (!$util.isInteger(message.package_minutes))
+                                    return "package_minutes: integer expected";
+                            if (message.max_concurrent_selenium != null && message.hasOwnProperty("max_concurrent_selenium"))
+                                if (!$util.isInteger(message.max_concurrent_selenium))
+                                    return "max_concurrent_selenium: integer expected";
+                            if (message.max_screenshot_count_per_test != null && message.hasOwnProperty("max_screenshot_count_per_test"))
+                                if (!$util.isInteger(message.max_screenshot_count_per_test))
+                                    return "max_screenshot_count_per_test: integer expected";
+                            return null;
+                        };
+
+                        /**
+                         * Creates a Package message from a plain object. Also converts values to their respective internal types.
+                         * @function fromObject
+                         * @memberof mdc.proto.cbt.CbtAccount.Subscription.Package
+                         * @static
+                         * @param {Object.<string,*>} object Plain object
+                         * @returns {mdc.proto.cbt.CbtAccount.Subscription.Package} Package
+                         */
+                        Package.fromObject = function fromObject(object) {
+                            if (object instanceof $root.mdc.proto.cbt.CbtAccount.Subscription.Package)
+                                return object;
+                            var message = new $root.mdc.proto.cbt.CbtAccount.Subscription.Package();
+                            if (object.package_minutes != null)
+                                message.package_minutes = object.package_minutes >>> 0;
+                            if (object.max_concurrent_selenium != null)
+                                message.max_concurrent_selenium = object.max_concurrent_selenium >>> 0;
+                            if (object.max_screenshot_count_per_test != null)
+                                message.max_screenshot_count_per_test = object.max_screenshot_count_per_test >>> 0;
+                            return message;
+                        };
+
+                        /**
+                         * Creates a plain object from a Package message. Also converts values to other types if specified.
+                         * @function toObject
+                         * @memberof mdc.proto.cbt.CbtAccount.Subscription.Package
+                         * @static
+                         * @param {mdc.proto.cbt.CbtAccount.Subscription.Package} message Package
+                         * @param {$protobuf.IConversionOptions} [options] Conversion options
+                         * @returns {Object.<string,*>} Plain object
+                         */
+                        Package.toObject = function toObject(message, options) {
+                            if (!options)
+                                options = {};
+                            var object = {};
+                            if (options.defaults) {
+                                object.package_minutes = 0;
+                                object.max_concurrent_selenium = 0;
+                                object.max_screenshot_count_per_test = 0;
+                            }
+                            if (message.package_minutes != null && message.hasOwnProperty("package_minutes"))
+                                object.package_minutes = message.package_minutes;
+                            if (message.max_concurrent_selenium != null && message.hasOwnProperty("max_concurrent_selenium"))
+                                object.max_concurrent_selenium = message.max_concurrent_selenium;
+                            if (message.max_screenshot_count_per_test != null && message.hasOwnProperty("max_screenshot_count_per_test"))
+                                object.max_screenshot_count_per_test = message.max_screenshot_count_per_test;
+                            return object;
+                        };
+
+                        /**
+                         * Converts this Package to JSON.
+                         * @function toJSON
+                         * @memberof mdc.proto.cbt.CbtAccount.Subscription.Package
+                         * @instance
+                         * @returns {Object.<string,*>} JSON object
+                         */
+                        Package.prototype.toJSON = function toJSON() {
+                            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                        };
+
+                        return Package;
+                    })();
+
+                    Subscription.Usage = (function() {
+
+                        /**
+                         * Properties of a Usage.
+                         * @memberof mdc.proto.cbt.CbtAccount.Subscription
+                         * @interface IUsage
+                         * @property {mdc.proto.cbt.CbtAccount.Subscription.Usage.IEntity|null} [team] Usage team
+                         * @property {mdc.proto.cbt.CbtAccount.Subscription.Usage.IEntity|null} [member] Usage member
+                         */
+
+                        /**
+                         * Constructs a new Usage.
+                         * @memberof mdc.proto.cbt.CbtAccount.Subscription
+                         * @classdesc Represents a Usage.
+                         * @implements IUsage
+                         * @constructor
+                         * @param {mdc.proto.cbt.CbtAccount.Subscription.IUsage=} [properties] Properties to set
+                         */
+                        function Usage(properties) {
+                            if (properties)
+                                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                    if (properties[keys[i]] != null)
+                                        this[keys[i]] = properties[keys[i]];
+                        }
+
+                        /**
+                         * Usage team.
+                         * @member {mdc.proto.cbt.CbtAccount.Subscription.Usage.IEntity|null|undefined} team
+                         * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage
+                         * @instance
+                         */
+                        Usage.prototype.team = null;
+
+                        /**
+                         * Usage member.
+                         * @member {mdc.proto.cbt.CbtAccount.Subscription.Usage.IEntity|null|undefined} member
+                         * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage
+                         * @instance
+                         */
+                        Usage.prototype.member = null;
+
+                        /**
+                         * Creates a new Usage instance using the specified properties.
+                         * @function create
+                         * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage
+                         * @static
+                         * @param {mdc.proto.cbt.CbtAccount.Subscription.IUsage=} [properties] Properties to set
+                         * @returns {mdc.proto.cbt.CbtAccount.Subscription.Usage} Usage instance
+                         */
+                        Usage.create = function create(properties) {
+                            return new Usage(properties);
+                        };
+
+                        /**
+                         * Encodes the specified Usage message. Does not implicitly {@link mdc.proto.cbt.CbtAccount.Subscription.Usage.verify|verify} messages.
+                         * @function encode
+                         * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage
+                         * @static
+                         * @param {mdc.proto.cbt.CbtAccount.Subscription.IUsage} message Usage message or plain object to encode
+                         * @param {$protobuf.Writer} [writer] Writer to encode to
+                         * @returns {$protobuf.Writer} Writer
+                         */
+                        Usage.encode = function encode(message, writer) {
+                            if (!writer)
+                                writer = $Writer.create();
+                            if (message.team != null && message.hasOwnProperty("team"))
+                                $root.mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.encode(message.team, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+                            if (message.member != null && message.hasOwnProperty("member"))
+                                $root.mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.encode(message.member, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+                            return writer;
+                        };
+
+                        /**
+                         * Encodes the specified Usage message, length delimited. Does not implicitly {@link mdc.proto.cbt.CbtAccount.Subscription.Usage.verify|verify} messages.
+                         * @function encodeDelimited
+                         * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage
+                         * @static
+                         * @param {mdc.proto.cbt.CbtAccount.Subscription.IUsage} message Usage message or plain object to encode
+                         * @param {$protobuf.Writer} [writer] Writer to encode to
+                         * @returns {$protobuf.Writer} Writer
+                         */
+                        Usage.encodeDelimited = function encodeDelimited(message, writer) {
+                            return this.encode(message, writer).ldelim();
+                        };
+
+                        /**
+                         * Decodes a Usage message from the specified reader or buffer.
+                         * @function decode
+                         * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage
+                         * @static
+                         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                         * @param {number} [length] Message length if known beforehand
+                         * @returns {mdc.proto.cbt.CbtAccount.Subscription.Usage} Usage
+                         * @throws {Error} If the payload is not a reader or valid buffer
+                         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                         */
+                        Usage.decode = function decode(reader, length) {
+                            if (!(reader instanceof $Reader))
+                                reader = $Reader.create(reader);
+                            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.mdc.proto.cbt.CbtAccount.Subscription.Usage();
+                            while (reader.pos < end) {
+                                var tag = reader.uint32();
+                                switch (tag >>> 3) {
+                                case 1:
+                                    message.team = $root.mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.decode(reader, reader.uint32());
+                                    break;
+                                case 2:
+                                    message.member = $root.mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.decode(reader, reader.uint32());
+                                    break;
+                                default:
+                                    reader.skipType(tag & 7);
+                                    break;
+                                }
+                            }
+                            return message;
+                        };
+
+                        /**
+                         * Decodes a Usage message from the specified reader or buffer, length delimited.
+                         * @function decodeDelimited
+                         * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage
+                         * @static
+                         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                         * @returns {mdc.proto.cbt.CbtAccount.Subscription.Usage} Usage
+                         * @throws {Error} If the payload is not a reader or valid buffer
+                         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                         */
+                        Usage.decodeDelimited = function decodeDelimited(reader) {
+                            if (!(reader instanceof $Reader))
+                                reader = new $Reader(reader);
+                            return this.decode(reader, reader.uint32());
+                        };
+
+                        /**
+                         * Verifies a Usage message.
+                         * @function verify
+                         * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage
+                         * @static
+                         * @param {Object.<string,*>} message Plain object to verify
+                         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                         */
+                        Usage.verify = function verify(message) {
+                            if (typeof message !== "object" || message === null)
+                                return "object expected";
+                            if (message.team != null && message.hasOwnProperty("team")) {
+                                var error = $root.mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.verify(message.team);
+                                if (error)
+                                    return "team." + error;
+                            }
+                            if (message.member != null && message.hasOwnProperty("member")) {
+                                var error = $root.mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.verify(message.member);
+                                if (error)
+                                    return "member." + error;
+                            }
+                            return null;
+                        };
+
+                        /**
+                         * Creates a Usage message from a plain object. Also converts values to their respective internal types.
+                         * @function fromObject
+                         * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage
+                         * @static
+                         * @param {Object.<string,*>} object Plain object
+                         * @returns {mdc.proto.cbt.CbtAccount.Subscription.Usage} Usage
+                         */
+                        Usage.fromObject = function fromObject(object) {
+                            if (object instanceof $root.mdc.proto.cbt.CbtAccount.Subscription.Usage)
+                                return object;
+                            var message = new $root.mdc.proto.cbt.CbtAccount.Subscription.Usage();
+                            if (object.team != null) {
+                                if (typeof object.team !== "object")
+                                    throw TypeError(".mdc.proto.cbt.CbtAccount.Subscription.Usage.team: object expected");
+                                message.team = $root.mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.fromObject(object.team);
+                            }
+                            if (object.member != null) {
+                                if (typeof object.member !== "object")
+                                    throw TypeError(".mdc.proto.cbt.CbtAccount.Subscription.Usage.member: object expected");
+                                message.member = $root.mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.fromObject(object.member);
+                            }
+                            return message;
+                        };
+
+                        /**
+                         * Creates a plain object from a Usage message. Also converts values to other types if specified.
+                         * @function toObject
+                         * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage
+                         * @static
+                         * @param {mdc.proto.cbt.CbtAccount.Subscription.Usage} message Usage
+                         * @param {$protobuf.IConversionOptions} [options] Conversion options
+                         * @returns {Object.<string,*>} Plain object
+                         */
+                        Usage.toObject = function toObject(message, options) {
+                            if (!options)
+                                options = {};
+                            var object = {};
+                            if (options.defaults) {
+                                object.team = null;
+                                object.member = null;
+                            }
+                            if (message.team != null && message.hasOwnProperty("team"))
+                                object.team = $root.mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.toObject(message.team, options);
+                            if (message.member != null && message.hasOwnProperty("member"))
+                                object.member = $root.mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.toObject(message.member, options);
+                            return object;
+                        };
+
+                        /**
+                         * Converts this Usage to JSON.
+                         * @function toJSON
+                         * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage
+                         * @instance
+                         * @returns {Object.<string,*>} JSON object
+                         */
+                        Usage.prototype.toJSON = function toJSON() {
+                            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                        };
+
+                        Usage.Entity = (function() {
+
+                            /**
+                             * Properties of an Entity.
+                             * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage
+                             * @interface IEntity
+                             * @property {string|null} [measure] Entity measure
+                             * @property {mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.ICounts|null} [manual] Entity manual
+                             * @property {mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.ICounts|null} [automated] Entity automated
+                             */
+
+                            /**
+                             * Constructs a new Entity.
+                             * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage
+                             * @classdesc Represents an Entity.
+                             * @implements IEntity
+                             * @constructor
+                             * @param {mdc.proto.cbt.CbtAccount.Subscription.Usage.IEntity=} [properties] Properties to set
+                             */
+                            function Entity(properties) {
+                                if (properties)
+                                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                        if (properties[keys[i]] != null)
+                                            this[keys[i]] = properties[keys[i]];
+                            }
+
+                            /**
+                             * Entity measure.
+                             * @member {string} measure
+                             * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity
+                             * @instance
+                             */
+                            Entity.prototype.measure = "";
+
+                            /**
+                             * Entity manual.
+                             * @member {mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.ICounts|null|undefined} manual
+                             * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity
+                             * @instance
+                             */
+                            Entity.prototype.manual = null;
+
+                            /**
+                             * Entity automated.
+                             * @member {mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.ICounts|null|undefined} automated
+                             * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity
+                             * @instance
+                             */
+                            Entity.prototype.automated = null;
+
+                            /**
+                             * Creates a new Entity instance using the specified properties.
+                             * @function create
+                             * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity
+                             * @static
+                             * @param {mdc.proto.cbt.CbtAccount.Subscription.Usage.IEntity=} [properties] Properties to set
+                             * @returns {mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity} Entity instance
+                             */
+                            Entity.create = function create(properties) {
+                                return new Entity(properties);
+                            };
+
+                            /**
+                             * Encodes the specified Entity message. Does not implicitly {@link mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.verify|verify} messages.
+                             * @function encode
+                             * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity
+                             * @static
+                             * @param {mdc.proto.cbt.CbtAccount.Subscription.Usage.IEntity} message Entity message or plain object to encode
+                             * @param {$protobuf.Writer} [writer] Writer to encode to
+                             * @returns {$protobuf.Writer} Writer
+                             */
+                            Entity.encode = function encode(message, writer) {
+                                if (!writer)
+                                    writer = $Writer.create();
+                                if (message.measure != null && message.hasOwnProperty("measure"))
+                                    writer.uint32(/* id 1, wireType 2 =*/10).string(message.measure);
+                                if (message.manual != null && message.hasOwnProperty("manual"))
+                                    $root.mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.Counts.encode(message.manual, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+                                if (message.automated != null && message.hasOwnProperty("automated"))
+                                    $root.mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.Counts.encode(message.automated, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+                                return writer;
+                            };
+
+                            /**
+                             * Encodes the specified Entity message, length delimited. Does not implicitly {@link mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.verify|verify} messages.
+                             * @function encodeDelimited
+                             * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity
+                             * @static
+                             * @param {mdc.proto.cbt.CbtAccount.Subscription.Usage.IEntity} message Entity message or plain object to encode
+                             * @param {$protobuf.Writer} [writer] Writer to encode to
+                             * @returns {$protobuf.Writer} Writer
+                             */
+                            Entity.encodeDelimited = function encodeDelimited(message, writer) {
+                                return this.encode(message, writer).ldelim();
+                            };
+
+                            /**
+                             * Decodes an Entity message from the specified reader or buffer.
+                             * @function decode
+                             * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity
+                             * @static
+                             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                             * @param {number} [length] Message length if known beforehand
+                             * @returns {mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity} Entity
+                             * @throws {Error} If the payload is not a reader or valid buffer
+                             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                             */
+                            Entity.decode = function decode(reader, length) {
+                                if (!(reader instanceof $Reader))
+                                    reader = $Reader.create(reader);
+                                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity();
+                                while (reader.pos < end) {
+                                    var tag = reader.uint32();
+                                    switch (tag >>> 3) {
+                                    case 1:
+                                        message.measure = reader.string();
+                                        break;
+                                    case 2:
+                                        message.manual = $root.mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.Counts.decode(reader, reader.uint32());
+                                        break;
+                                    case 3:
+                                        message.automated = $root.mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.Counts.decode(reader, reader.uint32());
+                                        break;
+                                    default:
+                                        reader.skipType(tag & 7);
+                                        break;
+                                    }
+                                }
+                                return message;
+                            };
+
+                            /**
+                             * Decodes an Entity message from the specified reader or buffer, length delimited.
+                             * @function decodeDelimited
+                             * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity
+                             * @static
+                             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                             * @returns {mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity} Entity
+                             * @throws {Error} If the payload is not a reader or valid buffer
+                             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                             */
+                            Entity.decodeDelimited = function decodeDelimited(reader) {
+                                if (!(reader instanceof $Reader))
+                                    reader = new $Reader(reader);
+                                return this.decode(reader, reader.uint32());
+                            };
+
+                            /**
+                             * Verifies an Entity message.
+                             * @function verify
+                             * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity
+                             * @static
+                             * @param {Object.<string,*>} message Plain object to verify
+                             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                             */
+                            Entity.verify = function verify(message) {
+                                if (typeof message !== "object" || message === null)
+                                    return "object expected";
+                                if (message.measure != null && message.hasOwnProperty("measure"))
+                                    if (!$util.isString(message.measure))
+                                        return "measure: string expected";
+                                if (message.manual != null && message.hasOwnProperty("manual")) {
+                                    var error = $root.mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.Counts.verify(message.manual);
+                                    if (error)
+                                        return "manual." + error;
+                                }
+                                if (message.automated != null && message.hasOwnProperty("automated")) {
+                                    var error = $root.mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.Counts.verify(message.automated);
+                                    if (error)
+                                        return "automated." + error;
+                                }
+                                return null;
+                            };
+
+                            /**
+                             * Creates an Entity message from a plain object. Also converts values to their respective internal types.
+                             * @function fromObject
+                             * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity
+                             * @static
+                             * @param {Object.<string,*>} object Plain object
+                             * @returns {mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity} Entity
+                             */
+                            Entity.fromObject = function fromObject(object) {
+                                if (object instanceof $root.mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity)
+                                    return object;
+                                var message = new $root.mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity();
+                                if (object.measure != null)
+                                    message.measure = String(object.measure);
+                                if (object.manual != null) {
+                                    if (typeof object.manual !== "object")
+                                        throw TypeError(".mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.manual: object expected");
+                                    message.manual = $root.mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.Counts.fromObject(object.manual);
+                                }
+                                if (object.automated != null) {
+                                    if (typeof object.automated !== "object")
+                                        throw TypeError(".mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.automated: object expected");
+                                    message.automated = $root.mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.Counts.fromObject(object.automated);
+                                }
+                                return message;
+                            };
+
+                            /**
+                             * Creates a plain object from an Entity message. Also converts values to other types if specified.
+                             * @function toObject
+                             * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity
+                             * @static
+                             * @param {mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity} message Entity
+                             * @param {$protobuf.IConversionOptions} [options] Conversion options
+                             * @returns {Object.<string,*>} Plain object
+                             */
+                            Entity.toObject = function toObject(message, options) {
+                                if (!options)
+                                    options = {};
+                                var object = {};
+                                if (options.defaults) {
+                                    object.measure = "";
+                                    object.manual = null;
+                                    object.automated = null;
+                                }
+                                if (message.measure != null && message.hasOwnProperty("measure"))
+                                    object.measure = message.measure;
+                                if (message.manual != null && message.hasOwnProperty("manual"))
+                                    object.manual = $root.mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.Counts.toObject(message.manual, options);
+                                if (message.automated != null && message.hasOwnProperty("automated"))
+                                    object.automated = $root.mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.Counts.toObject(message.automated, options);
+                                return object;
+                            };
+
+                            /**
+                             * Converts this Entity to JSON.
+                             * @function toJSON
+                             * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity
+                             * @instance
+                             * @returns {Object.<string,*>} JSON object
+                             */
+                            Entity.prototype.toJSON = function toJSON() {
+                                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                            };
+
+                            Entity.Counts = (function() {
+
+                                /**
+                                 * Properties of a Counts.
+                                 * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity
+                                 * @interface ICounts
+                                 * @property {number|null} [livetests] Counts livetests
+                                 * @property {number|null} [screenshots] Counts screenshots
+                                 * @property {number|null} [selenium] Counts selenium
+                                 * @property {number|null} [testexecute] Counts testexecute
+                                 * @property {number|null} [total] Counts total
+                                 */
+
+                                /**
+                                 * Constructs a new Counts.
+                                 * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity
+                                 * @classdesc Represents a Counts.
+                                 * @implements ICounts
+                                 * @constructor
+                                 * @param {mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.ICounts=} [properties] Properties to set
+                                 */
+                                function Counts(properties) {
+                                    if (properties)
+                                        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                            if (properties[keys[i]] != null)
+                                                this[keys[i]] = properties[keys[i]];
+                                }
+
+                                /**
+                                 * Counts livetests.
+                                 * @member {number} livetests
+                                 * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.Counts
+                                 * @instance
+                                 */
+                                Counts.prototype.livetests = 0;
+
+                                /**
+                                 * Counts screenshots.
+                                 * @member {number} screenshots
+                                 * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.Counts
+                                 * @instance
+                                 */
+                                Counts.prototype.screenshots = 0;
+
+                                /**
+                                 * Counts selenium.
+                                 * @member {number} selenium
+                                 * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.Counts
+                                 * @instance
+                                 */
+                                Counts.prototype.selenium = 0;
+
+                                /**
+                                 * Counts testexecute.
+                                 * @member {number} testexecute
+                                 * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.Counts
+                                 * @instance
+                                 */
+                                Counts.prototype.testexecute = 0;
+
+                                /**
+                                 * Counts total.
+                                 * @member {number} total
+                                 * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.Counts
+                                 * @instance
+                                 */
+                                Counts.prototype.total = 0;
+
+                                /**
+                                 * Creates a new Counts instance using the specified properties.
+                                 * @function create
+                                 * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.Counts
+                                 * @static
+                                 * @param {mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.ICounts=} [properties] Properties to set
+                                 * @returns {mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.Counts} Counts instance
+                                 */
+                                Counts.create = function create(properties) {
+                                    return new Counts(properties);
+                                };
+
+                                /**
+                                 * Encodes the specified Counts message. Does not implicitly {@link mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.Counts.verify|verify} messages.
+                                 * @function encode
+                                 * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.Counts
+                                 * @static
+                                 * @param {mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.ICounts} message Counts message or plain object to encode
+                                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                                 * @returns {$protobuf.Writer} Writer
+                                 */
+                                Counts.encode = function encode(message, writer) {
+                                    if (!writer)
+                                        writer = $Writer.create();
+                                    if (message.livetests != null && message.hasOwnProperty("livetests"))
+                                        writer.uint32(/* id 1, wireType 1 =*/9).double(message.livetests);
+                                    if (message.screenshots != null && message.hasOwnProperty("screenshots"))
+                                        writer.uint32(/* id 2, wireType 1 =*/17).double(message.screenshots);
+                                    if (message.selenium != null && message.hasOwnProperty("selenium"))
+                                        writer.uint32(/* id 3, wireType 1 =*/25).double(message.selenium);
+                                    if (message.testexecute != null && message.hasOwnProperty("testexecute"))
+                                        writer.uint32(/* id 4, wireType 1 =*/33).double(message.testexecute);
+                                    if (message.total != null && message.hasOwnProperty("total"))
+                                        writer.uint32(/* id 5, wireType 1 =*/41).double(message.total);
+                                    return writer;
+                                };
+
+                                /**
+                                 * Encodes the specified Counts message, length delimited. Does not implicitly {@link mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.Counts.verify|verify} messages.
+                                 * @function encodeDelimited
+                                 * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.Counts
+                                 * @static
+                                 * @param {mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.ICounts} message Counts message or plain object to encode
+                                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                                 * @returns {$protobuf.Writer} Writer
+                                 */
+                                Counts.encodeDelimited = function encodeDelimited(message, writer) {
+                                    return this.encode(message, writer).ldelim();
+                                };
+
+                                /**
+                                 * Decodes a Counts message from the specified reader or buffer.
+                                 * @function decode
+                                 * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.Counts
+                                 * @static
+                                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                                 * @param {number} [length] Message length if known beforehand
+                                 * @returns {mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.Counts} Counts
+                                 * @throws {Error} If the payload is not a reader or valid buffer
+                                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                                 */
+                                Counts.decode = function decode(reader, length) {
+                                    if (!(reader instanceof $Reader))
+                                        reader = $Reader.create(reader);
+                                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.Counts();
+                                    while (reader.pos < end) {
+                                        var tag = reader.uint32();
+                                        switch (tag >>> 3) {
+                                        case 1:
+                                            message.livetests = reader.double();
+                                            break;
+                                        case 2:
+                                            message.screenshots = reader.double();
+                                            break;
+                                        case 3:
+                                            message.selenium = reader.double();
+                                            break;
+                                        case 4:
+                                            message.testexecute = reader.double();
+                                            break;
+                                        case 5:
+                                            message.total = reader.double();
+                                            break;
+                                        default:
+                                            reader.skipType(tag & 7);
+                                            break;
+                                        }
+                                    }
+                                    return message;
+                                };
+
+                                /**
+                                 * Decodes a Counts message from the specified reader or buffer, length delimited.
+                                 * @function decodeDelimited
+                                 * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.Counts
+                                 * @static
+                                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                                 * @returns {mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.Counts} Counts
+                                 * @throws {Error} If the payload is not a reader or valid buffer
+                                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                                 */
+                                Counts.decodeDelimited = function decodeDelimited(reader) {
+                                    if (!(reader instanceof $Reader))
+                                        reader = new $Reader(reader);
+                                    return this.decode(reader, reader.uint32());
+                                };
+
+                                /**
+                                 * Verifies a Counts message.
+                                 * @function verify
+                                 * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.Counts
+                                 * @static
+                                 * @param {Object.<string,*>} message Plain object to verify
+                                 * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                                 */
+                                Counts.verify = function verify(message) {
+                                    if (typeof message !== "object" || message === null)
+                                        return "object expected";
+                                    if (message.livetests != null && message.hasOwnProperty("livetests"))
+                                        if (typeof message.livetests !== "number")
+                                            return "livetests: number expected";
+                                    if (message.screenshots != null && message.hasOwnProperty("screenshots"))
+                                        if (typeof message.screenshots !== "number")
+                                            return "screenshots: number expected";
+                                    if (message.selenium != null && message.hasOwnProperty("selenium"))
+                                        if (typeof message.selenium !== "number")
+                                            return "selenium: number expected";
+                                    if (message.testexecute != null && message.hasOwnProperty("testexecute"))
+                                        if (typeof message.testexecute !== "number")
+                                            return "testexecute: number expected";
+                                    if (message.total != null && message.hasOwnProperty("total"))
+                                        if (typeof message.total !== "number")
+                                            return "total: number expected";
+                                    return null;
+                                };
+
+                                /**
+                                 * Creates a Counts message from a plain object. Also converts values to their respective internal types.
+                                 * @function fromObject
+                                 * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.Counts
+                                 * @static
+                                 * @param {Object.<string,*>} object Plain object
+                                 * @returns {mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.Counts} Counts
+                                 */
+                                Counts.fromObject = function fromObject(object) {
+                                    if (object instanceof $root.mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.Counts)
+                                        return object;
+                                    var message = new $root.mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.Counts();
+                                    if (object.livetests != null)
+                                        message.livetests = Number(object.livetests);
+                                    if (object.screenshots != null)
+                                        message.screenshots = Number(object.screenshots);
+                                    if (object.selenium != null)
+                                        message.selenium = Number(object.selenium);
+                                    if (object.testexecute != null)
+                                        message.testexecute = Number(object.testexecute);
+                                    if (object.total != null)
+                                        message.total = Number(object.total);
+                                    return message;
+                                };
+
+                                /**
+                                 * Creates a plain object from a Counts message. Also converts values to other types if specified.
+                                 * @function toObject
+                                 * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.Counts
+                                 * @static
+                                 * @param {mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.Counts} message Counts
+                                 * @param {$protobuf.IConversionOptions} [options] Conversion options
+                                 * @returns {Object.<string,*>} Plain object
+                                 */
+                                Counts.toObject = function toObject(message, options) {
+                                    if (!options)
+                                        options = {};
+                                    var object = {};
+                                    if (options.defaults) {
+                                        object.livetests = 0;
+                                        object.screenshots = 0;
+                                        object.selenium = 0;
+                                        object.testexecute = 0;
+                                        object.total = 0;
+                                    }
+                                    if (message.livetests != null && message.hasOwnProperty("livetests"))
+                                        object.livetests = options.json && !isFinite(message.livetests) ? String(message.livetests) : message.livetests;
+                                    if (message.screenshots != null && message.hasOwnProperty("screenshots"))
+                                        object.screenshots = options.json && !isFinite(message.screenshots) ? String(message.screenshots) : message.screenshots;
+                                    if (message.selenium != null && message.hasOwnProperty("selenium"))
+                                        object.selenium = options.json && !isFinite(message.selenium) ? String(message.selenium) : message.selenium;
+                                    if (message.testexecute != null && message.hasOwnProperty("testexecute"))
+                                        object.testexecute = options.json && !isFinite(message.testexecute) ? String(message.testexecute) : message.testexecute;
+                                    if (message.total != null && message.hasOwnProperty("total"))
+                                        object.total = options.json && !isFinite(message.total) ? String(message.total) : message.total;
+                                    return object;
+                                };
+
+                                /**
+                                 * Converts this Counts to JSON.
+                                 * @function toJSON
+                                 * @memberof mdc.proto.cbt.CbtAccount.Subscription.Usage.Entity.Counts
+                                 * @instance
+                                 * @returns {Object.<string,*>} JSON object
+                                 */
+                                Counts.prototype.toJSON = function toJSON() {
+                                    return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                                };
+
+                                return Counts;
+                            })();
+
+                            return Entity;
+                        })();
+
+                        return Usage;
+                    })();
+
+                    return Subscription;
+                })();
+
+                return CbtAccount;
+            })();
+
+            cbt.CbtActiveTestCounts = (function() {
+
+                /**
+                 * Properties of a CbtActiveTestCounts.
+                 * @memberof mdc.proto.cbt
+                 * @interface ICbtActiveTestCounts
+                 * @property {mdc.proto.cbt.CbtActiveTestCounts.ICounts|null} [team] CbtActiveTestCounts team
+                 * @property {mdc.proto.cbt.CbtActiveTestCounts.ICounts|null} [member] CbtActiveTestCounts member
+                 */
+
+                /**
+                 * Constructs a new CbtActiveTestCounts.
+                 * @memberof mdc.proto.cbt
+                 * @classdesc Represents a CbtActiveTestCounts.
+                 * @implements ICbtActiveTestCounts
+                 * @constructor
+                 * @param {mdc.proto.cbt.ICbtActiveTestCounts=} [properties] Properties to set
+                 */
+                function CbtActiveTestCounts(properties) {
+                    if (properties)
+                        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                            if (properties[keys[i]] != null)
+                                this[keys[i]] = properties[keys[i]];
+                }
+
+                /**
+                 * CbtActiveTestCounts team.
+                 * @member {mdc.proto.cbt.CbtActiveTestCounts.ICounts|null|undefined} team
+                 * @memberof mdc.proto.cbt.CbtActiveTestCounts
+                 * @instance
+                 */
+                CbtActiveTestCounts.prototype.team = null;
+
+                /**
+                 * CbtActiveTestCounts member.
+                 * @member {mdc.proto.cbt.CbtActiveTestCounts.ICounts|null|undefined} member
+                 * @memberof mdc.proto.cbt.CbtActiveTestCounts
+                 * @instance
+                 */
+                CbtActiveTestCounts.prototype.member = null;
+
+                /**
+                 * Creates a new CbtActiveTestCounts instance using the specified properties.
+                 * @function create
+                 * @memberof mdc.proto.cbt.CbtActiveTestCounts
+                 * @static
+                 * @param {mdc.proto.cbt.ICbtActiveTestCounts=} [properties] Properties to set
+                 * @returns {mdc.proto.cbt.CbtActiveTestCounts} CbtActiveTestCounts instance
+                 */
+                CbtActiveTestCounts.create = function create(properties) {
+                    return new CbtActiveTestCounts(properties);
+                };
+
+                /**
+                 * Encodes the specified CbtActiveTestCounts message. Does not implicitly {@link mdc.proto.cbt.CbtActiveTestCounts.verify|verify} messages.
+                 * @function encode
+                 * @memberof mdc.proto.cbt.CbtActiveTestCounts
+                 * @static
+                 * @param {mdc.proto.cbt.ICbtActiveTestCounts} message CbtActiveTestCounts message or plain object to encode
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
+                 */
+                CbtActiveTestCounts.encode = function encode(message, writer) {
+                    if (!writer)
+                        writer = $Writer.create();
+                    if (message.team != null && message.hasOwnProperty("team"))
+                        $root.mdc.proto.cbt.CbtActiveTestCounts.Counts.encode(message.team, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+                    if (message.member != null && message.hasOwnProperty("member"))
+                        $root.mdc.proto.cbt.CbtActiveTestCounts.Counts.encode(message.member, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+                    return writer;
+                };
+
+                /**
+                 * Encodes the specified CbtActiveTestCounts message, length delimited. Does not implicitly {@link mdc.proto.cbt.CbtActiveTestCounts.verify|verify} messages.
+                 * @function encodeDelimited
+                 * @memberof mdc.proto.cbt.CbtActiveTestCounts
+                 * @static
+                 * @param {mdc.proto.cbt.ICbtActiveTestCounts} message CbtActiveTestCounts message or plain object to encode
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
+                 */
+                CbtActiveTestCounts.encodeDelimited = function encodeDelimited(message, writer) {
+                    return this.encode(message, writer).ldelim();
+                };
+
+                /**
+                 * Decodes a CbtActiveTestCounts message from the specified reader or buffer.
+                 * @function decode
+                 * @memberof mdc.proto.cbt.CbtActiveTestCounts
+                 * @static
+                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                 * @param {number} [length] Message length if known beforehand
+                 * @returns {mdc.proto.cbt.CbtActiveTestCounts} CbtActiveTestCounts
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                CbtActiveTestCounts.decode = function decode(reader, length) {
+                    if (!(reader instanceof $Reader))
+                        reader = $Reader.create(reader);
+                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.mdc.proto.cbt.CbtActiveTestCounts();
+                    while (reader.pos < end) {
+                        var tag = reader.uint32();
+                        switch (tag >>> 3) {
+                        case 1:
+                            message.team = $root.mdc.proto.cbt.CbtActiveTestCounts.Counts.decode(reader, reader.uint32());
+                            break;
+                        case 2:
+                            message.member = $root.mdc.proto.cbt.CbtActiveTestCounts.Counts.decode(reader, reader.uint32());
+                            break;
+                        default:
+                            reader.skipType(tag & 7);
+                            break;
+                        }
+                    }
+                    return message;
+                };
+
+                /**
+                 * Decodes a CbtActiveTestCounts message from the specified reader or buffer, length delimited.
+                 * @function decodeDelimited
+                 * @memberof mdc.proto.cbt.CbtActiveTestCounts
+                 * @static
+                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                 * @returns {mdc.proto.cbt.CbtActiveTestCounts} CbtActiveTestCounts
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                CbtActiveTestCounts.decodeDelimited = function decodeDelimited(reader) {
+                    if (!(reader instanceof $Reader))
+                        reader = new $Reader(reader);
+                    return this.decode(reader, reader.uint32());
+                };
+
+                /**
+                 * Verifies a CbtActiveTestCounts message.
+                 * @function verify
+                 * @memberof mdc.proto.cbt.CbtActiveTestCounts
+                 * @static
+                 * @param {Object.<string,*>} message Plain object to verify
+                 * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                 */
+                CbtActiveTestCounts.verify = function verify(message) {
+                    if (typeof message !== "object" || message === null)
+                        return "object expected";
+                    if (message.team != null && message.hasOwnProperty("team")) {
+                        var error = $root.mdc.proto.cbt.CbtActiveTestCounts.Counts.verify(message.team);
+                        if (error)
+                            return "team." + error;
+                    }
+                    if (message.member != null && message.hasOwnProperty("member")) {
+                        var error = $root.mdc.proto.cbt.CbtActiveTestCounts.Counts.verify(message.member);
+                        if (error)
+                            return "member." + error;
+                    }
+                    return null;
+                };
+
+                /**
+                 * Creates a CbtActiveTestCounts message from a plain object. Also converts values to their respective internal types.
+                 * @function fromObject
+                 * @memberof mdc.proto.cbt.CbtActiveTestCounts
+                 * @static
+                 * @param {Object.<string,*>} object Plain object
+                 * @returns {mdc.proto.cbt.CbtActiveTestCounts} CbtActiveTestCounts
+                 */
+                CbtActiveTestCounts.fromObject = function fromObject(object) {
+                    if (object instanceof $root.mdc.proto.cbt.CbtActiveTestCounts)
+                        return object;
+                    var message = new $root.mdc.proto.cbt.CbtActiveTestCounts();
+                    if (object.team != null) {
+                        if (typeof object.team !== "object")
+                            throw TypeError(".mdc.proto.cbt.CbtActiveTestCounts.team: object expected");
+                        message.team = $root.mdc.proto.cbt.CbtActiveTestCounts.Counts.fromObject(object.team);
+                    }
+                    if (object.member != null) {
+                        if (typeof object.member !== "object")
+                            throw TypeError(".mdc.proto.cbt.CbtActiveTestCounts.member: object expected");
+                        message.member = $root.mdc.proto.cbt.CbtActiveTestCounts.Counts.fromObject(object.member);
+                    }
+                    return message;
+                };
+
+                /**
+                 * Creates a plain object from a CbtActiveTestCounts message. Also converts values to other types if specified.
+                 * @function toObject
+                 * @memberof mdc.proto.cbt.CbtActiveTestCounts
+                 * @static
+                 * @param {mdc.proto.cbt.CbtActiveTestCounts} message CbtActiveTestCounts
+                 * @param {$protobuf.IConversionOptions} [options] Conversion options
+                 * @returns {Object.<string,*>} Plain object
+                 */
+                CbtActiveTestCounts.toObject = function toObject(message, options) {
+                    if (!options)
+                        options = {};
+                    var object = {};
+                    if (options.defaults) {
+                        object.team = null;
+                        object.member = null;
+                    }
+                    if (message.team != null && message.hasOwnProperty("team"))
+                        object.team = $root.mdc.proto.cbt.CbtActiveTestCounts.Counts.toObject(message.team, options);
+                    if (message.member != null && message.hasOwnProperty("member"))
+                        object.member = $root.mdc.proto.cbt.CbtActiveTestCounts.Counts.toObject(message.member, options);
+                    return object;
+                };
+
+                /**
+                 * Converts this CbtActiveTestCounts to JSON.
+                 * @function toJSON
+                 * @memberof mdc.proto.cbt.CbtActiveTestCounts
+                 * @instance
+                 * @returns {Object.<string,*>} JSON object
+                 */
+                CbtActiveTestCounts.prototype.toJSON = function toJSON() {
+                    return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                };
+
+                CbtActiveTestCounts.Counts = (function() {
+
+                    /**
+                     * Properties of a Counts.
+                     * @memberof mdc.proto.cbt.CbtActiveTestCounts
+                     * @interface ICounts
+                     * @property {number|null} [automated] Counts automated
+                     * @property {number|null} [manual] Counts manual
+                     */
+
+                    /**
+                     * Constructs a new Counts.
+                     * @memberof mdc.proto.cbt.CbtActiveTestCounts
+                     * @classdesc Represents a Counts.
+                     * @implements ICounts
+                     * @constructor
+                     * @param {mdc.proto.cbt.CbtActiveTestCounts.ICounts=} [properties] Properties to set
+                     */
+                    function Counts(properties) {
+                        if (properties)
+                            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null)
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * Counts automated.
+                     * @member {number} automated
+                     * @memberof mdc.proto.cbt.CbtActiveTestCounts.Counts
+                     * @instance
+                     */
+                    Counts.prototype.automated = 0;
+
+                    /**
+                     * Counts manual.
+                     * @member {number} manual
+                     * @memberof mdc.proto.cbt.CbtActiveTestCounts.Counts
+                     * @instance
+                     */
+                    Counts.prototype.manual = 0;
+
+                    /**
+                     * Creates a new Counts instance using the specified properties.
+                     * @function create
+                     * @memberof mdc.proto.cbt.CbtActiveTestCounts.Counts
+                     * @static
+                     * @param {mdc.proto.cbt.CbtActiveTestCounts.ICounts=} [properties] Properties to set
+                     * @returns {mdc.proto.cbt.CbtActiveTestCounts.Counts} Counts instance
+                     */
+                    Counts.create = function create(properties) {
+                        return new Counts(properties);
+                    };
+
+                    /**
+                     * Encodes the specified Counts message. Does not implicitly {@link mdc.proto.cbt.CbtActiveTestCounts.Counts.verify|verify} messages.
+                     * @function encode
+                     * @memberof mdc.proto.cbt.CbtActiveTestCounts.Counts
+                     * @static
+                     * @param {mdc.proto.cbt.CbtActiveTestCounts.ICounts} message Counts message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    Counts.encode = function encode(message, writer) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (message.automated != null && message.hasOwnProperty("automated"))
+                            writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.automated);
+                        if (message.manual != null && message.hasOwnProperty("manual"))
+                            writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.manual);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified Counts message, length delimited. Does not implicitly {@link mdc.proto.cbt.CbtActiveTestCounts.Counts.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof mdc.proto.cbt.CbtActiveTestCounts.Counts
+                     * @static
+                     * @param {mdc.proto.cbt.CbtActiveTestCounts.ICounts} message Counts message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    Counts.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a Counts message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof mdc.proto.cbt.CbtActiveTestCounts.Counts
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {mdc.proto.cbt.CbtActiveTestCounts.Counts} Counts
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    Counts.decode = function decode(reader, length) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.mdc.proto.cbt.CbtActiveTestCounts.Counts();
+                        while (reader.pos < end) {
+                            var tag = reader.uint32();
+                            switch (tag >>> 3) {
+                            case 1:
+                                message.automated = reader.uint32();
+                                break;
+                            case 2:
+                                message.manual = reader.uint32();
+                                break;
+                            default:
+                                reader.skipType(tag & 7);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a Counts message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof mdc.proto.cbt.CbtActiveTestCounts.Counts
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {mdc.proto.cbt.CbtActiveTestCounts.Counts} Counts
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    Counts.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a Counts message.
+                     * @function verify
+                     * @memberof mdc.proto.cbt.CbtActiveTestCounts.Counts
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    Counts.verify = function verify(message) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (message.automated != null && message.hasOwnProperty("automated"))
+                            if (!$util.isInteger(message.automated))
+                                return "automated: integer expected";
+                        if (message.manual != null && message.hasOwnProperty("manual"))
+                            if (!$util.isInteger(message.manual))
+                                return "manual: integer expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a Counts message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof mdc.proto.cbt.CbtActiveTestCounts.Counts
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {mdc.proto.cbt.CbtActiveTestCounts.Counts} Counts
+                     */
+                    Counts.fromObject = function fromObject(object) {
+                        if (object instanceof $root.mdc.proto.cbt.CbtActiveTestCounts.Counts)
+                            return object;
+                        var message = new $root.mdc.proto.cbt.CbtActiveTestCounts.Counts();
+                        if (object.automated != null)
+                            message.automated = object.automated >>> 0;
+                        if (object.manual != null)
+                            message.manual = object.manual >>> 0;
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a Counts message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof mdc.proto.cbt.CbtActiveTestCounts.Counts
+                     * @static
+                     * @param {mdc.proto.cbt.CbtActiveTestCounts.Counts} message Counts
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    Counts.toObject = function toObject(message, options) {
+                        if (!options)
+                            options = {};
+                        var object = {};
+                        if (options.defaults) {
+                            object.automated = 0;
+                            object.manual = 0;
+                        }
+                        if (message.automated != null && message.hasOwnProperty("automated"))
+                            object.automated = message.automated;
+                        if (message.manual != null && message.hasOwnProperty("manual"))
+                            object.manual = message.manual;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this Counts to JSON.
+                     * @function toJSON
+                     * @memberof mdc.proto.cbt.CbtActiveTestCounts.Counts
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    Counts.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    return Counts;
+                })();
+
+                return CbtActiveTestCounts;
+            })();
+
+            cbt.CbtConcurrencyStats = (function() {
+
+                /**
+                 * Properties of a CbtConcurrencyStats.
+                 * @memberof mdc.proto.cbt
+                 * @interface ICbtConcurrencyStats
+                 * @property {number|null} [max_minutes] CbtConcurrencyStats max_minutes
+                 * @property {number|null} [used_minutes] CbtConcurrencyStats used_minutes
+                 * @property {number|null} [max_concurrent_selenium_tests] CbtConcurrencyStats max_concurrent_selenium_tests
+                 * @property {number|null} [active_concurrent_selenium_tests] CbtConcurrencyStats active_concurrent_selenium_tests
+                 * @property {number|null} [max_screenshot_count_per_test] CbtConcurrencyStats max_screenshot_count_per_test
+                 */
+
+                /**
+                 * Constructs a new CbtConcurrencyStats.
+                 * @memberof mdc.proto.cbt
+                 * @classdesc Represents a CbtConcurrencyStats.
+                 * @implements ICbtConcurrencyStats
+                 * @constructor
+                 * @param {mdc.proto.cbt.ICbtConcurrencyStats=} [properties] Properties to set
+                 */
+                function CbtConcurrencyStats(properties) {
+                    if (properties)
+                        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                            if (properties[keys[i]] != null)
+                                this[keys[i]] = properties[keys[i]];
+                }
+
+                /**
+                 * CbtConcurrencyStats max_minutes.
+                 * @member {number} max_minutes
+                 * @memberof mdc.proto.cbt.CbtConcurrencyStats
+                 * @instance
+                 */
+                CbtConcurrencyStats.prototype.max_minutes = 0;
+
+                /**
+                 * CbtConcurrencyStats used_minutes.
+                 * @member {number} used_minutes
+                 * @memberof mdc.proto.cbt.CbtConcurrencyStats
+                 * @instance
+                 */
+                CbtConcurrencyStats.prototype.used_minutes = 0;
+
+                /**
+                 * CbtConcurrencyStats max_concurrent_selenium_tests.
+                 * @member {number} max_concurrent_selenium_tests
+                 * @memberof mdc.proto.cbt.CbtConcurrencyStats
+                 * @instance
+                 */
+                CbtConcurrencyStats.prototype.max_concurrent_selenium_tests = 0;
+
+                /**
+                 * CbtConcurrencyStats active_concurrent_selenium_tests.
+                 * @member {number} active_concurrent_selenium_tests
+                 * @memberof mdc.proto.cbt.CbtConcurrencyStats
+                 * @instance
+                 */
+                CbtConcurrencyStats.prototype.active_concurrent_selenium_tests = 0;
+
+                /**
+                 * CbtConcurrencyStats max_screenshot_count_per_test.
+                 * @member {number} max_screenshot_count_per_test
+                 * @memberof mdc.proto.cbt.CbtConcurrencyStats
+                 * @instance
+                 */
+                CbtConcurrencyStats.prototype.max_screenshot_count_per_test = 0;
+
+                /**
+                 * Creates a new CbtConcurrencyStats instance using the specified properties.
+                 * @function create
+                 * @memberof mdc.proto.cbt.CbtConcurrencyStats
+                 * @static
+                 * @param {mdc.proto.cbt.ICbtConcurrencyStats=} [properties] Properties to set
+                 * @returns {mdc.proto.cbt.CbtConcurrencyStats} CbtConcurrencyStats instance
+                 */
+                CbtConcurrencyStats.create = function create(properties) {
+                    return new CbtConcurrencyStats(properties);
+                };
+
+                /**
+                 * Encodes the specified CbtConcurrencyStats message. Does not implicitly {@link mdc.proto.cbt.CbtConcurrencyStats.verify|verify} messages.
+                 * @function encode
+                 * @memberof mdc.proto.cbt.CbtConcurrencyStats
+                 * @static
+                 * @param {mdc.proto.cbt.ICbtConcurrencyStats} message CbtConcurrencyStats message or plain object to encode
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
+                 */
+                CbtConcurrencyStats.encode = function encode(message, writer) {
+                    if (!writer)
+                        writer = $Writer.create();
+                    if (message.max_minutes != null && message.hasOwnProperty("max_minutes"))
+                        writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.max_minutes);
+                    if (message.used_minutes != null && message.hasOwnProperty("used_minutes"))
+                        writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.used_minutes);
+                    if (message.max_concurrent_selenium_tests != null && message.hasOwnProperty("max_concurrent_selenium_tests"))
+                        writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.max_concurrent_selenium_tests);
+                    if (message.active_concurrent_selenium_tests != null && message.hasOwnProperty("active_concurrent_selenium_tests"))
+                        writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.active_concurrent_selenium_tests);
+                    if (message.max_screenshot_count_per_test != null && message.hasOwnProperty("max_screenshot_count_per_test"))
+                        writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.max_screenshot_count_per_test);
+                    return writer;
+                };
+
+                /**
+                 * Encodes the specified CbtConcurrencyStats message, length delimited. Does not implicitly {@link mdc.proto.cbt.CbtConcurrencyStats.verify|verify} messages.
+                 * @function encodeDelimited
+                 * @memberof mdc.proto.cbt.CbtConcurrencyStats
+                 * @static
+                 * @param {mdc.proto.cbt.ICbtConcurrencyStats} message CbtConcurrencyStats message or plain object to encode
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
+                 */
+                CbtConcurrencyStats.encodeDelimited = function encodeDelimited(message, writer) {
+                    return this.encode(message, writer).ldelim();
+                };
+
+                /**
+                 * Decodes a CbtConcurrencyStats message from the specified reader or buffer.
+                 * @function decode
+                 * @memberof mdc.proto.cbt.CbtConcurrencyStats
+                 * @static
+                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                 * @param {number} [length] Message length if known beforehand
+                 * @returns {mdc.proto.cbt.CbtConcurrencyStats} CbtConcurrencyStats
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                CbtConcurrencyStats.decode = function decode(reader, length) {
+                    if (!(reader instanceof $Reader))
+                        reader = $Reader.create(reader);
+                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.mdc.proto.cbt.CbtConcurrencyStats();
+                    while (reader.pos < end) {
+                        var tag = reader.uint32();
+                        switch (tag >>> 3) {
+                        case 1:
+                            message.max_minutes = reader.uint32();
+                            break;
+                        case 2:
+                            message.used_minutes = reader.uint32();
+                            break;
+                        case 3:
+                            message.max_concurrent_selenium_tests = reader.uint32();
+                            break;
+                        case 4:
+                            message.active_concurrent_selenium_tests = reader.uint32();
+                            break;
+                        case 5:
+                            message.max_screenshot_count_per_test = reader.uint32();
+                            break;
+                        default:
+                            reader.skipType(tag & 7);
+                            break;
+                        }
+                    }
+                    return message;
+                };
+
+                /**
+                 * Decodes a CbtConcurrencyStats message from the specified reader or buffer, length delimited.
+                 * @function decodeDelimited
+                 * @memberof mdc.proto.cbt.CbtConcurrencyStats
+                 * @static
+                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                 * @returns {mdc.proto.cbt.CbtConcurrencyStats} CbtConcurrencyStats
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                CbtConcurrencyStats.decodeDelimited = function decodeDelimited(reader) {
+                    if (!(reader instanceof $Reader))
+                        reader = new $Reader(reader);
+                    return this.decode(reader, reader.uint32());
+                };
+
+                /**
+                 * Verifies a CbtConcurrencyStats message.
+                 * @function verify
+                 * @memberof mdc.proto.cbt.CbtConcurrencyStats
+                 * @static
+                 * @param {Object.<string,*>} message Plain object to verify
+                 * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                 */
+                CbtConcurrencyStats.verify = function verify(message) {
+                    if (typeof message !== "object" || message === null)
+                        return "object expected";
+                    if (message.max_minutes != null && message.hasOwnProperty("max_minutes"))
+                        if (!$util.isInteger(message.max_minutes))
+                            return "max_minutes: integer expected";
+                    if (message.used_minutes != null && message.hasOwnProperty("used_minutes"))
+                        if (!$util.isInteger(message.used_minutes))
+                            return "used_minutes: integer expected";
+                    if (message.max_concurrent_selenium_tests != null && message.hasOwnProperty("max_concurrent_selenium_tests"))
+                        if (!$util.isInteger(message.max_concurrent_selenium_tests))
+                            return "max_concurrent_selenium_tests: integer expected";
+                    if (message.active_concurrent_selenium_tests != null && message.hasOwnProperty("active_concurrent_selenium_tests"))
+                        if (!$util.isInteger(message.active_concurrent_selenium_tests))
+                            return "active_concurrent_selenium_tests: integer expected";
+                    if (message.max_screenshot_count_per_test != null && message.hasOwnProperty("max_screenshot_count_per_test"))
+                        if (!$util.isInteger(message.max_screenshot_count_per_test))
+                            return "max_screenshot_count_per_test: integer expected";
+                    return null;
+                };
+
+                /**
+                 * Creates a CbtConcurrencyStats message from a plain object. Also converts values to their respective internal types.
+                 * @function fromObject
+                 * @memberof mdc.proto.cbt.CbtConcurrencyStats
+                 * @static
+                 * @param {Object.<string,*>} object Plain object
+                 * @returns {mdc.proto.cbt.CbtConcurrencyStats} CbtConcurrencyStats
+                 */
+                CbtConcurrencyStats.fromObject = function fromObject(object) {
+                    if (object instanceof $root.mdc.proto.cbt.CbtConcurrencyStats)
+                        return object;
+                    var message = new $root.mdc.proto.cbt.CbtConcurrencyStats();
+                    if (object.max_minutes != null)
+                        message.max_minutes = object.max_minutes >>> 0;
+                    if (object.used_minutes != null)
+                        message.used_minutes = object.used_minutes >>> 0;
+                    if (object.max_concurrent_selenium_tests != null)
+                        message.max_concurrent_selenium_tests = object.max_concurrent_selenium_tests >>> 0;
+                    if (object.active_concurrent_selenium_tests != null)
+                        message.active_concurrent_selenium_tests = object.active_concurrent_selenium_tests >>> 0;
+                    if (object.max_screenshot_count_per_test != null)
+                        message.max_screenshot_count_per_test = object.max_screenshot_count_per_test >>> 0;
+                    return message;
+                };
+
+                /**
+                 * Creates a plain object from a CbtConcurrencyStats message. Also converts values to other types if specified.
+                 * @function toObject
+                 * @memberof mdc.proto.cbt.CbtConcurrencyStats
+                 * @static
+                 * @param {mdc.proto.cbt.CbtConcurrencyStats} message CbtConcurrencyStats
+                 * @param {$protobuf.IConversionOptions} [options] Conversion options
+                 * @returns {Object.<string,*>} Plain object
+                 */
+                CbtConcurrencyStats.toObject = function toObject(message, options) {
+                    if (!options)
+                        options = {};
+                    var object = {};
+                    if (options.defaults) {
+                        object.max_minutes = 0;
+                        object.used_minutes = 0;
+                        object.max_concurrent_selenium_tests = 0;
+                        object.active_concurrent_selenium_tests = 0;
+                        object.max_screenshot_count_per_test = 0;
+                    }
+                    if (message.max_minutes != null && message.hasOwnProperty("max_minutes"))
+                        object.max_minutes = message.max_minutes;
+                    if (message.used_minutes != null && message.hasOwnProperty("used_minutes"))
+                        object.used_minutes = message.used_minutes;
+                    if (message.max_concurrent_selenium_tests != null && message.hasOwnProperty("max_concurrent_selenium_tests"))
+                        object.max_concurrent_selenium_tests = message.max_concurrent_selenium_tests;
+                    if (message.active_concurrent_selenium_tests != null && message.hasOwnProperty("active_concurrent_selenium_tests"))
+                        object.active_concurrent_selenium_tests = message.active_concurrent_selenium_tests;
+                    if (message.max_screenshot_count_per_test != null && message.hasOwnProperty("max_screenshot_count_per_test"))
+                        object.max_screenshot_count_per_test = message.max_screenshot_count_per_test;
+                    return object;
+                };
+
+                /**
+                 * Converts this CbtConcurrencyStats to JSON.
+                 * @function toJSON
+                 * @memberof mdc.proto.cbt.CbtConcurrencyStats
+                 * @instance
+                 * @returns {Object.<string,*>} JSON object
+                 */
+                CbtConcurrencyStats.prototype.toJSON = function toJSON() {
+                    return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                };
+
+                return CbtConcurrencyStats;
+            })();
+
             return cbt;
         })();
 

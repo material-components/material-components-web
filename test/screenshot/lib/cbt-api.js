@@ -17,10 +17,13 @@
 const request = require('request-promise-native');
 const {ExitCode} = require('./constants');
 
-const proto = require('../proto/types.pb').mdc.proto;
-const {UserAgent} = proto;
+const mdcProto = require('../proto/types.pb').mdc.proto;
+const {UserAgent} = mdcProto;
 const {FormFactorType, OsVendorType, BrowserVendorType, BrowserVersionType} = UserAgent;
-const {RawCapabilities} = proto.selenium;
+const {RawCapabilities} = mdcProto.selenium;
+
+const cbtProto = require('../proto/cbt.pb').mdc.proto.cbt;
+const {CbtAccount, CbtActiveTestCounts, CbtConcurrencyStats} = cbtProto;
 
 const MDC_CBT_USERNAME = process.env.MDC_CBT_USERNAME;
 const MDC_CBT_AUTHKEY = process.env.MDC_CBT_AUTHKEY;
@@ -73,6 +76,32 @@ https://crossbrowsertesting.com/account
     }
   }
 
+  /**
+   * @return {!Promise<mdc.proto.cbt.CbtConcurrencyStats>}
+   */
+  async fetchConcurrencyStats() {
+    const [accountJson, activesJson] = await Promise.all([
+      this.sendRequest_('GET', '/account'),
+      this.sendRequest_('GET', '/account/activeTestCounts'),
+    ]);
+
+    const account = CbtAccount.fromObject(accountJson);
+    const actives = CbtActiveTestCounts.fromObject(activesJson);
+
+    return CbtConcurrencyStats.create({
+      max_minutes: account.subscription.package.package_minutes,
+      used_minutes: Math.ceil(account.subscription.usage.team.automated.total),
+
+      max_concurrent_selenium_tests: account.subscription.package.max_concurrent_selenium,
+      active_concurrent_selenium_tests: actives.team.automated,
+
+      max_screenshot_count_per_test: account.subscription.package.max_screenshot_count_per_test,
+    });
+  }
+
+  /**
+   * @return {!Promise<!Array<!mdc.proto.cbt.CbtDevice>>}
+   */
   async fetchAvailableDevices() {
     if (allBrowsersPromise) {
       return allBrowsersPromise;

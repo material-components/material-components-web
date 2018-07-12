@@ -233,7 +233,7 @@ class SeleniumApi {
       const htmlFilePath = screenshot.html_file_path;
       const htmlFileUrl = screenshot.actual_html_file.public_url;
 
-      const imageBuffer = await this.capturePageAsPng_({driver, userAgent, url: htmlFileUrl});
+      const imageBuffer = await this.capturePageAsPng_({driver, url: htmlFileUrl});
 
       const imageFileNameSuffix = userAgent.image_filename_suffix;
       const imageFilePathRelative = `${htmlFilePath}.${imageFileNameSuffix}.png`;
@@ -252,12 +252,11 @@ class SeleniumApi {
 
   /**
    * @param {!IWebDriver} driver
-   * @param {!mdc.proto.UserAgent} userAgent
    * @param {string} url
    * @return {!Promise<!Buffer>} Buffer containing PNG image data for the cropped screenshot image
    * @private
    */
-  async capturePageAsPng_({driver, userAgent, url}) {
+  async capturePageAsPng_({driver, url}) {
     console.log(`GET "${url}"...`);
     await driver.get(url);
 
@@ -270,31 +269,6 @@ class SeleniumApi {
 
     return this.imageCropper_.autoCropImage(uncroppedPngBuffer);
   }
-}
-
-// TODO(acdvorak): Implement this check?
-function reachedParallelExecutionLimit(requestError) {
-  try {
-    // The try/catch is necessary because some of these properties might not exist.
-    return requestError.response.body.message.includes('maximum number of parallel');
-  } catch (e) {
-    return false;
-  }
-}
-
-// TODO(acdvorak): Implement this check?
-function isBadUrl(requestError) {
-  try {
-    // The try/catch is necessary because some of these properties might not exist.
-    return requestError.response.body.message.includes('URL check failed');
-  } catch (e) {
-    return false;
-  }
-}
-
-// TODO(acdvorak): Implement this check?
-function isServerError(requestError) {
-  return requestError.statusCode >= 500 && requestError.statusCode < 600;
 }
 
 module.exports = SeleniumApi;
