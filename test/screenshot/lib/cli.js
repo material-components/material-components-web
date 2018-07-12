@@ -316,9 +316,10 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
     return !this.args_['--no-fetch'];
   }
 
-  /** @return {string} */
+  /** @return {?string} */
   get runReportJsonUrl() {
-    return this.args_['--report'];
+    // Users often copy/paste the report page URL, but we actually need the JSON file URL instead, so let's FTFY :-)
+    return (this.args_['--report'] || '').replace(/\.html$/, '.json') || null;
   }
 
   /** @return {!Array<mdc.proto.ApprovalId>} */
