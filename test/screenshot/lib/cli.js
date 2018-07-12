@@ -452,7 +452,7 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
     const isLocalFile = await fs.exists(rawDiffBase);
     if (isLocalFile) {
       const fileDB = this.createLocalFileDiffBase_(rawDiffBase);
-      return this.createLocalBranchDiffBase_('HEAD', fileDB.local_file_path);
+      return this.createLocalBranchDiffBase_(await this.gitRepo_.getBranchName(), fileDB.local_file_path);
     }
 
     const [inputGoldenRef, inputGoldenPath] = rawDiffBase.split(':');
