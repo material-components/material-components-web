@@ -39,7 +39,6 @@
   flex: 1 0 auto;
   padding-bottom: $mdc-tab-scroller-scrollbar-spacing;
   transform: none;
-  transform-origin: left;
   will-change: transform;
 }
 
@@ -50,3 +49,4 @@
 .mdc-tab-scroller--animating .mdc-tab-scroller__scroll-content {
   transition: 250ms transform $mdc-animation-standard-curve-timing-function;
 }
+// postcss-bem-linter: end
