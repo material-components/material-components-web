@@ -92,6 +92,10 @@
                   </div>
                   <div class="report-user-agent__image-cell">
                     Diff:
+                    {{#if diff_image_result.diff_pixel_count}}
+                      {{diff_image_result.diff_pixel_count}} pixels
+                      ({{diff_image_result.diff_pixel_percentage}}%)
+                    {{/if}}
                     {{> image diff_image_file}}
                   </div>
                   <div class="report-user-agent__image-cell">

@@ -238,9 +238,18 @@ message Screenshot {
 
 message DiffImageResult {
   TestFile diff_image_file = 1;
+
+  // Actual number of individual pixels that are different
   uint64 diff_pixel_count = 2;
+
+  // 0.0 to 1.0
   double diff_pixel_fraction = 3;
-  bool has_changed = 4;
+
+  // 0.0 to 100.0
+  double diff_pixel_percentage = 4;
+
+  // Determines whether the diff pixel count is above the minimum threshold to be considered a probable "real" diff
+  bool has_changed = 5;
 }
 
 message TestFile {

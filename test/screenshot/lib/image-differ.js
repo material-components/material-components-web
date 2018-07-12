@@ -156,23 +156,18 @@ class ImageDiffer {
     const resembleComparisonResult = await this.computeDiff_({actualImageBuffer, expectedImageBuffer});
 
     const diffImageFile = this.createDiffImageFile_({reportMeta, actualImageFile});
-    const {diffImageBuffer, diffPixelFraction, diffPixelCount} =
-      await this.analyzeComparisonResult_(resembleComparisonResult);
+    const {diffImageBuffer, diffImageResult} = await this.analyzeComparisonResult_(resembleComparisonResult);
+    diffImageResult.diff_image_file = diffImageFile;
 
     mkdirp.sync(path.dirname(diffImageFile.absolute_path));
     await fs.writeFile(diffImageFile.absolute_path, diffImageBuffer, {encoding: null});
 
-    return DiffImageResult.create({
-      diff_image_file: diffImageFile,
-      diff_pixel_count: diffPixelCount,
-      diff_pixel_fraction: diffPixelFraction,
-      has_changed: diffPixelCount >= require('../resemble.json').mdc_screenshot_test.min_diff_pixel_count,
-    });
+    return diffImageResult;
   }
 
   /**
    * @param {!ResembleApiComparisonResult} resembleComparisonResult
-   * @return {!Promise<{diffImageBuffer: !Buffer, diffPixelFraction: number, diffPixelCount: number}>}
+   * @return {!Promise<{diffImageBuffer: !Buffer, diffImageResult: !mdc.proto.DiffImageResult}>}
    * @private
    */
   async analyzeComparisonResult_(resembleComparisonResult) {
@@ -183,10 +178,18 @@ class ImageDiffer {
     const jimpImage = await Jimp.read(diffImageBuffer);
 
     const {width, height} = jimpImage.bitmap;
-    const diffPixelFraction = resembleComparisonResult.rawMisMatchPercentage;
-    const diffPixelCount = diffPixelFraction * width * height;
+    const diffPixelRawPercentage = resembleComparisonResult.rawMisMatchPercentage;
+    const diffPixelRoundPercentage = Math.round(diffPixelRawPercentage * 10) / 10;
+    const diffPixelFraction = diffPixelRawPercentage / 100;
+    const diffPixelCount = Math.ceil(diffPixelFraction * width * height);
+    const diffImageResult = DiffImageResult.create({
+      diff_pixel_count: diffPixelCount,
+      diff_pixel_fraction: diffPixelFraction,
+      diff_pixel_percentage: diffPixelRoundPercentage,
+      has_changed: diffPixelCount >= require('../resemble.json').mdc_screenshot_test.min_diff_pixel_count,
+    });
 
-    return {diffImageBuffer, diffPixelFraction, diffPixelCount};
+    return {diffImageBuffer, diffImageResult};
   }
 
   /**

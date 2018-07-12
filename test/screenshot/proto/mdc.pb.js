@@ -5558,6 +5558,7 @@ $root.mdc = (function() {
              * @property {mdc.proto.ITestFile|null} [diff_image_file] DiffImageResult diff_image_file
              * @property {number|Long|null} [diff_pixel_count] DiffImageResult diff_pixel_count
              * @property {number|null} [diff_pixel_fraction] DiffImageResult diff_pixel_fraction
+             * @property {number|null} [diff_pixel_percentage] DiffImageResult diff_pixel_percentage
              * @property {boolean|null} [has_changed] DiffImageResult has_changed
              */
 
@@ -5601,6 +5602,14 @@ $root.mdc = (function() {
             DiffImageResult.prototype.diff_pixel_fraction = 0;
 
             /**
+             * DiffImageResult diff_pixel_percentage.
+             * @member {number} diff_pixel_percentage
+             * @memberof mdc.proto.DiffImageResult
+             * @instance
+             */
+            DiffImageResult.prototype.diff_pixel_percentage = 0;
+
+            /**
              * DiffImageResult has_changed.
              * @member {boolean} has_changed
              * @memberof mdc.proto.DiffImageResult
@@ -5638,8 +5647,10 @@ $root.mdc = (function() {
                     writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.diff_pixel_count);
                 if (message.diff_pixel_fraction != null && message.hasOwnProperty("diff_pixel_fraction"))
                     writer.uint32(/* id 3, wireType 1 =*/25).double(message.diff_pixel_fraction);
+                if (message.diff_pixel_percentage != null && message.hasOwnProperty("diff_pixel_percentage"))
+                    writer.uint32(/* id 4, wireType 1 =*/33).double(message.diff_pixel_percentage);
                 if (message.has_changed != null && message.hasOwnProperty("has_changed"))
-                    writer.uint32(/* id 4, wireType 0 =*/32).bool(message.has_changed);
+                    writer.uint32(/* id 5, wireType 0 =*/40).bool(message.has_changed);
                 return writer;
             };
 
@@ -5684,6 +5695,9 @@ $root.mdc = (function() {
                         message.diff_pixel_fraction = reader.double();
                         break;
                     case 4:
+                        message.diff_pixel_percentage = reader.double();
+                        break;
+                    case 5:
                         message.has_changed = reader.bool();
                         break;
                     default:
@@ -5732,6 +5746,9 @@ $root.mdc = (function() {
                 if (message.diff_pixel_fraction != null && message.hasOwnProperty("diff_pixel_fraction"))
                     if (typeof message.diff_pixel_fraction !== "number")
                         return "diff_pixel_fraction: number expected";
+                if (message.diff_pixel_percentage != null && message.hasOwnProperty("diff_pixel_percentage"))
+                    if (typeof message.diff_pixel_percentage !== "number")
+                        return "diff_pixel_percentage: number expected";
                 if (message.has_changed != null && message.hasOwnProperty("has_changed"))
                     if (typeof message.has_changed !== "boolean")
                         return "has_changed: boolean expected";
@@ -5766,6 +5783,8 @@ $root.mdc = (function() {
                         message.diff_pixel_count = new $util.LongBits(object.diff_pixel_count.low >>> 0, object.diff_pixel_count.high >>> 0).toNumber(true);
                 if (object.diff_pixel_fraction != null)
                     message.diff_pixel_fraction = Number(object.diff_pixel_fraction);
+                if (object.diff_pixel_percentage != null)
+                    message.diff_pixel_percentage = Number(object.diff_pixel_percentage);
                 if (object.has_changed != null)
                     message.has_changed = Boolean(object.has_changed);
                 return message;
@@ -5792,6 +5811,7 @@ $root.mdc = (function() {
                     } else
                         object.diff_pixel_count = options.longs === String ? "0" : 0;
                     object.diff_pixel_fraction = 0;
+                    object.diff_pixel_percentage = 0;
                     object.has_changed = false;
                 }
                 if (message.diff_image_file != null && message.hasOwnProperty("diff_image_file"))
@@ -5803,6 +5823,8 @@ $root.mdc = (function() {
                         object.diff_pixel_count = options.longs === String ? $util.Long.prototype.toString.call(message.diff_pixel_count) : options.longs === Number ? new $util.LongBits(message.diff_pixel_count.low >>> 0, message.diff_pixel_count.high >>> 0).toNumber(true) : message.diff_pixel_count;
                 if (message.diff_pixel_fraction != null && message.hasOwnProperty("diff_pixel_fraction"))
                     object.diff_pixel_fraction = options.json && !isFinite(message.diff_pixel_fraction) ? String(message.diff_pixel_fraction) : message.diff_pixel_fraction;
+                if (message.diff_pixel_percentage != null && message.hasOwnProperty("diff_pixel_percentage"))
+                    object.diff_pixel_percentage = options.json && !isFinite(message.diff_pixel_percentage) ? String(message.diff_pixel_percentage) : message.diff_pixel_percentage;
                 if (message.has_changed != null && message.hasOwnProperty("has_changed"))
                     object.has_changed = message.has_changed;
                 return object;
