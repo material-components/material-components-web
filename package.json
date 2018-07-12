@@ -92,6 +92,7 @@
     "to-slug-case": "^1.0.0",
     "validate-commit-msg": "^2.6.1",
     "webpack": "^4.0.0",
+    "webpack-cli": "^2.0.9",
     "webpack-dev-server": "^2.4.3"
   },
   "babel": {
