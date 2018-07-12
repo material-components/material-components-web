@@ -204,8 +204,8 @@ class ReportBuilder {
 
     for (const screenshot of reportData.approvals.removed_screenshot_list) {
       newGoldenFile.removeScreenshotImageUrl({
-        html_file_path: screenshot.html_file_path,
-        user_agent_alias: screenshot.user_agent.alias,
+        htmlFilePath: screenshot.html_file_path,
+        userAgentAlias: screenshot.user_agent.alias,
       });
     }
 
