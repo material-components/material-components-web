@@ -97,7 +97,8 @@
                 <div class="report-user-agent__content">
                   <div class="report-user-agent__image-cell">
                     <div class="report-user-agent__image-heading">
-                      Golden:
+                      <span class="report-user-agent__image-type"
+                            title="Previously-approved screenshot image">Golden</span>:
                       <div class="report-user-agent__image-dimensions">
                         {{~diff_image_result.expected_image_dimensions.width~}}
                         x
@@ -108,9 +109,11 @@
                   </div>
                   <div class="report-user-agent__image-cell">
                     <div class="report-user-agent__image-heading">
-                      Diff:
+                      <span class="report-user-agent__image-type"
+                            title="Pixels that have changed are shown in pink">Diff</span>:
                       {{#if diff_image_result.changed_pixel_count}}
-                        {{formatNumber diff_image_result.changed_pixel_count}} pixels changed
+                        <strong>{{formatNumber diff_image_result.changed_pixel_count}}</strong>
+                        pixels changed
                         ({{diff_image_result.changed_pixel_percentage}}%)
                       {{/if}}
                       <div class="report-user-agent__image-dimensions">
@@ -123,7 +126,8 @@
                   </div>
                   <div class="report-user-agent__image-cell">
                     <div class="report-user-agent__image-heading">
-                      Snapshot:
+                      <span class="report-user-agent__image-type"
+                            title="Newly-captured screenshot image">Snapshot</span>:
                       <div class="report-user-agent__image-dimensions">
                         {{~diff_image_result.actual_image_dimensions.width~}}
                         x

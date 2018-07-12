@@ -158,7 +158,12 @@ th {
   min-height: 3.5em;
 }
 
+.report-user-agent__image-type {
+  border-bottom: 1px dotted #000;
+}
+
 .report-user-agent__image-dimensions {
+  margin-top: 8px;
   color: #777;
   font-size: smaller;
 }
