@@ -63,7 +63,6 @@ class ReportWriter {
         const templateArgs = allArgs.slice(0, -1);
         return self.createTreeNode_({
           tagName: 'details',
-          extraAttrs: ['data-fuck="yes"'],
           hbContext,
           hbOptions,
           templateArgs,
@@ -111,7 +110,7 @@ class ReportWriter {
    */
   createTreeNode_({tagName, extraAttrs = [], hbContext, hbOptions, templateArgs}) {
     const [
-      baseClassName, hiddenClassName, isVisible,
+      baseClassName, hiddenClassName, isVisible, numScreenshots,
       collectionType, htmlFilePath, userAgentAlias,
     ] = templateArgs;
 
@@ -119,15 +118,18 @@ class ReportWriter {
     const attributes = [...extraAttrs];
 
     if (tagName === 'input') {
-      if (isVisible) {
+      if (isVisible && numScreenshots > 0) {
         attributes.push('checked');
       } else {
         classNames.push(hiddenClassName);
       }
-    }
-    if (tagName === 'details') {
+    } else if (tagName === 'details') {
       if (isVisible) {
         attributes.push('open');
+      }
+    } else {
+      if (!isVisible || numScreenshots === 0) {
+        classNames.push(hiddenClassName);
       }
     }
 

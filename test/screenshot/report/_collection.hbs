@@ -2,6 +2,7 @@
     'report-collection'
     ''
     isOpenByDefault
+    screenshotArray.length
     collectionType
 }}
   <summary class="report-collection__heading">
@@ -9,6 +10,7 @@
         'report-collection__checkbox'
         'report-collection__checkbox--hidden'
         showApprovalControls
+        screenshotArray.length
         collectionType
     }}{{/createCheckboxElement}}
     {{screenshotArray.length}} {{heading}}
@@ -16,6 +18,7 @@
         'report-review-status report-review-status--collection'
         'report-review-status--hidden'
         showApprovalControls
+        screenshotArray.length
         collectionType
     }}{{/createApprovalStatusElement}}
   </summary>
@@ -33,6 +36,7 @@
             {{#createCheckboxElement
                 'report-html-file__checkbox'
                 'report-html-file__checkbox--hidden'
+                screenshot_array.length
                 ../showApprovalControls
                 ../collectionType
                 html_file_path
@@ -43,6 +47,7 @@
             {{#createApprovalStatusElement
                 'report-review-status report-review-status--html-file'
                 'report-review-status--hidden'
+                screenshot_array.length
                 ../showApprovalControls
                 ../collectionType
                 html_file_path
@@ -62,6 +67,7 @@
                   {{#createCheckboxElement
                       'report-user-agent__checkbox'
                       'report-user-agent__checkbox--hidden'
+                      1
                       ../../showApprovalControls
                       ../../collectionType
                       ../html_file_path
@@ -72,6 +78,7 @@
                   {{#createApprovalStatusElement
                       'report-review-status report-review-status--user-agent'
                       'report-review-status--hidden'
+                      1
                       ../../showApprovalControls
                       ../../collectionType
                       ../html_file_path
