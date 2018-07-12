@@ -48,8 +48,10 @@ class ReportWriter {
       getPageTitle: function() {
         return self.getPageTitle_(this);
       },
-      msToHuman: function(ms) {
-        return Duration.millis(ms).toHuman();
+      msToHumanShort: function(...args) {
+        const [ms] = args;
+        const [numDecimalDigits] = args.slice(1, args.length - 1);
+        return Duration.millis(ms).toHumanShort(numDecimalDigits);
       },
       formatNumber: function(int) {
         return Number(int).toLocaleString();

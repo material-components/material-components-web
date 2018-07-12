@@ -73,7 +73,7 @@ async function run() {
 const startTimeMs = new Date();
 
 process.on('exit', () => {
-  const elapsedTimeHuman = Duration.elapsed(startTimeMs, new Date()).toHuman();
+  const elapsedTimeHuman = Duration.elapsed(startTimeMs, new Date()).toHumanShort();
   console.log(`\nRun time: ${elapsedTimeHuman}\n`);
 });
 

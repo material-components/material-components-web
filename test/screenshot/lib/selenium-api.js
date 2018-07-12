@@ -144,13 +144,13 @@ class SeleniumApi {
 
       if (active === max) {
         const elapsedTimeMs = Date.now() - startTimeMs;
-        const elapsedTimeHuman = Duration.millis(elapsedTimeMs).toHuman();
+        const elapsedTimeHuman = Duration.millis(elapsedTimeMs).toHumanShort();
         if (elapsedTimeMs > CBT_CONCURRENCY_MAX_WAIT_MS) {
           throw new Error(`Timed out waiting for CBT resources to become available after ${elapsedTimeHuman}`);
         }
 
         const waitTimeMs = CBT_CONCURRENCY_POLL_INTERVAL_MS;
-        const waitTimeHuman = Duration.millis(waitTimeMs).toHuman();
+        const waitTimeHuman = Duration.millis(waitTimeMs).toHumanShort();
         console.warn(
           `Parallel execution limit reached. ${max} tests are already running on CBT. Will retry in ${waitTimeHuman}...`
         );

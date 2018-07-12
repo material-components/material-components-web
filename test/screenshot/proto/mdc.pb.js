@@ -963,7 +963,7 @@ $root.mdc = (function() {
              * @memberof mdc.proto
              * @interface IDiffBase
              * @property {mdc.proto.DiffBase.Type|null} [type] DiffBase type
-             * @property {string|null} [string] DiffBase string
+             * @property {string|null} [input_string] DiffBase input_string
              * @property {string|null} [file_path] DiffBase file_path
              * @property {string|null} [public_url] DiffBase public_url
              * @property {mdc.proto.IGitRevision|null} [git_revision] DiffBase git_revision
@@ -993,12 +993,12 @@ $root.mdc = (function() {
             DiffBase.prototype.type = 0;
 
             /**
-             * DiffBase string.
-             * @member {string} string
+             * DiffBase input_string.
+             * @member {string} input_string
              * @memberof mdc.proto.DiffBase
              * @instance
              */
-            DiffBase.prototype.string = "";
+            DiffBase.prototype.input_string = "";
 
             /**
              * DiffBase file_path.
@@ -1064,8 +1064,8 @@ $root.mdc = (function() {
                     writer = $Writer.create();
                 if (message.type != null && message.hasOwnProperty("type"))
                     writer.uint32(/* id 1, wireType 0 =*/8).int32(message.type);
-                if (message.string != null && message.hasOwnProperty("string"))
-                    writer.uint32(/* id 2, wireType 2 =*/18).string(message.string);
+                if (message.input_string != null && message.hasOwnProperty("input_string"))
+                    writer.uint32(/* id 2, wireType 2 =*/18).string(message.input_string);
                 if (message.file_path != null && message.hasOwnProperty("file_path"))
                     writer.uint32(/* id 3, wireType 2 =*/26).string(message.file_path);
                 if (message.public_url != null && message.hasOwnProperty("public_url"))
@@ -1110,7 +1110,7 @@ $root.mdc = (function() {
                         message.type = reader.int32();
                         break;
                     case 2:
-                        message.string = reader.string();
+                        message.input_string = reader.string();
                         break;
                     case 3:
                         message.file_path = reader.string();
@@ -1167,9 +1167,9 @@ $root.mdc = (function() {
                     case 3:
                         break;
                     }
-                if (message.string != null && message.hasOwnProperty("string"))
-                    if (!$util.isString(message.string))
-                        return "string: string expected";
+                if (message.input_string != null && message.hasOwnProperty("input_string"))
+                    if (!$util.isString(message.input_string))
+                        return "input_string: string expected";
                 if (message.file_path != null && message.hasOwnProperty("file_path")) {
                     properties.value_oneof = 1;
                     if (!$util.isString(message.file_path))
@@ -1225,8 +1225,8 @@ $root.mdc = (function() {
                     message.type = 3;
                     break;
                 }
-                if (object.string != null)
-                    message.string = String(object.string);
+                if (object.input_string != null)
+                    message.input_string = String(object.input_string);
                 if (object.file_path != null)
                     message.file_path = String(object.file_path);
                 if (object.public_url != null)
@@ -1254,12 +1254,12 @@ $root.mdc = (function() {
                 var object = {};
                 if (options.defaults) {
                     object.type = options.enums === String ? "UNKNOWN" : 0;
-                    object.string = "";
+                    object.input_string = "";
                 }
                 if (message.type != null && message.hasOwnProperty("type"))
                     object.type = options.enums === String ? $root.mdc.proto.DiffBase.Type[message.type] : message.type;
-                if (message.string != null && message.hasOwnProperty("string"))
-                    object.string = message.string;
+                if (message.input_string != null && message.hasOwnProperty("input_string"))
+                    object.input_string = message.input_string;
                 if (message.file_path != null && message.hasOwnProperty("file_path")) {
                     object.file_path = message.file_path;
                     if (options.oneofs)

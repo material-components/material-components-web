@@ -84,10 +84,11 @@ class Duration {
   }
 
   /**
+   * TODO(acdvorak): Create `toHumanLong` method that outputs "4d 23h 5m 11s" (or w/e)
    * @param {number=} numDecimalDigits
    * @return {string}
    */
-  toHuman(numDecimalDigits = 1) {
+  toHumanShort(numDecimalDigits = 1) {
     const oneMillisecond = 1;
     const oneSecond = 1000;
     const oneMinute = 1000 * 60;
