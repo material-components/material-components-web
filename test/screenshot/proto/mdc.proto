@@ -250,7 +250,7 @@ message DiffImageResult {
   Dimensions diff_image_dimensions = 4;
 
   // Actual number of individual pixels that are different
-  uint64 changed_pixel_count = 5;
+  double changed_pixel_count = 5;
 
   // 0.0 to 1.0
   double changed_pixel_fraction = 6;

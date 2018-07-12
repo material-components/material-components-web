@@ -66,6 +66,15 @@ th {
   background-color: #ddd;
 }
 
+.report-metadata__heading-content,
+.report-collection__heading-content,
+.report-html-file__heading-content,
+.report-user-agent__heading-content{
+  display: inline-block;
+  width: calc(100% - 7em);
+  vertical-align: top;
+}
+
 .report-metadata__heading,
 .report-collection__heading {
   margin: 20px 0;
@@ -147,7 +156,13 @@ th {
 
 .report-user-agent__content {
   display: flex;
-  padding: 10px 24px;
+  padding: 10px 58px;
+}
+
+.report-user-agent__image-cell {
+  // TODO(acdvorak): Find a better way to ensure that missing golden/snapshot/diff images don't collapse column
+  // widths/heights.
+  width: 400px;
 }
 
 .report-user-agent__image-cell + .report-user-agent__image-cell {
@@ -318,7 +333,7 @@ th {
   flex-grow: 1;
   width: 100%;
   height: 100%;
-  padding: 10px 10px;
+  padding: 10px;
 }
 
 .report-cli-modal__footer {

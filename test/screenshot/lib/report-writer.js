@@ -113,7 +113,7 @@ class ReportWriter {
    */
   createTreeNode_({tagName, extraAttrs = [], hbContext, hbOptions, templateArgs}) {
     const [
-      baseClassName, hiddenClassName, isVisible, numScreenshots,
+      baseClassName, hiddenClassName, numScreenshots, isVisible,
       collectionType, htmlFilePath, userAgentAlias,
     ] = templateArgs;
 

@@ -9,19 +9,21 @@
     {{#createCheckboxElement
         'report-collection__checkbox'
         'report-collection__checkbox--hidden'
-        showApprovalControls
         screenshotArray.length
+        showApprovalControls
         collectionType
     }}{{/createCheckboxElement}}
-    {{formatNumber screenshotArray.length}}
-    <strong>{{heading}}</strong>
-    {{#createApprovalStatusElement
-        'report-review-status report-review-status--collection'
-        'report-review-status--hidden'
-        showApprovalControls
-        screenshotArray.length
-        collectionType
-    }}{{/createApprovalStatusElement}}
+    <span class="report-collection__heading-content">
+      {{formatNumber screenshotArray.length}}
+      <strong>{{heading}}</strong>
+      {{#createApprovalStatusElement
+          'report-review-status report-review-status--collection'
+          'report-review-status--hidden'
+          screenshotArray.length
+          showApprovalControls
+          collectionType
+      }}{{/createApprovalStatusElement}}
+    </span>
   </summary>
   <div class="report-collection__content">
     {{#if screenshotArray.length}}
@@ -45,24 +47,26 @@
             }}{{/createCheckboxElement}}
             <strong>{{formatNumber screenshot_array.length}}</strong>
             in
-            <strong>{{html_file_path}}</strong>
-            {{getHtmlFileLinks}}
-            {{#createApprovalStatusElement
-                'report-review-status report-review-status--html-file'
-                'report-review-status--hidden'
-                screenshot_array.length
-                ../showApprovalControls
-                ../collectionType
-                html_file_path
-            }}{{/createApprovalStatusElement}}
+            <span class="report-html-file__heading-content">
+              <strong>{{html_file_path}}</strong>
+              {{getHtmlFileLinks}}
+              {{#createApprovalStatusElement
+                  'report-review-status report-review-status--html-file'
+                  'report-review-status--hidden'
+                  screenshot_array.length
+                  ../showApprovalControls
+                  ../collectionType
+                  html_file_path
+              }}{{/createApprovalStatusElement}}
+            </span>
           </summary>
           <div class="report-html-file__content">
             {{#each screenshot_array}}
               {{#createDetailsElement
                   'report-user-agent'
                   ''
-                  true
                   ../screenshot_array.length
+                  true
                   ../../collectionType
                   ../html_file_path
                   user_agent.alias
@@ -80,21 +84,23 @@
                   <img src="{{user_agent.icon_url}}"
                        class="report-user-agent__icon"
                        title="{{user_agent.navigator.browser_name}}">
-                  <strong>{{user_agent.alias}}</strong>
-                  (
-                    {{~user_agent.navigator.browser_name}} {{user_agent.navigator.browser_version}}
-                    on
-                    {{user_agent.navigator.os_name}} {{user_agent.navigator.os_version~}}
-                  )
-                  {{#createApprovalStatusElement
-                      'report-review-status report-review-status--user-agent'
-                      'report-review-status--hidden'
-                      1
-                      ../../showApprovalControls
-                      ../../collectionType
-                      ../html_file_path
-                      user_agent.alias
-                  }}{{/createApprovalStatusElement}}
+                  <span class="report-user-agent__heading-content">
+                    <strong>{{user_agent.alias}}</strong>
+                    (
+                      {{~user_agent.navigator.browser_name}} {{user_agent.navigator.browser_version}}
+                      on
+                      {{user_agent.navigator.os_name}} {{user_agent.navigator.os_version~}}
+                    )
+                    {{#createApprovalStatusElement
+                        'report-review-status report-review-status--user-agent'
+                        'report-review-status--hidden'
+                        1
+                        ../../showApprovalControls
+                        ../../collectionType
+                        ../html_file_path
+                        user_agent.alias
+                    }}{{/createApprovalStatusElement}}
+                  </span>
                 </summary>
                 <div class="report-user-agent__content">
                   <div class="report-user-agent__image-cell">
@@ -107,7 +113,9 @@
                         {{~diff_image_result.expected_image_dimensions.height~}}
                       </div>
                     </div>
-                    {{> image expected_image_file}}
+                    <div class="report-user-agent__image-content">
+                      {{> image expected_image_file}}
+                    </div>
                   </div>
                   <div class="report-user-agent__image-cell">
                     <div class="report-user-agent__image-heading">
@@ -124,7 +132,13 @@
                         {{~diff_image_result.diff_image_dimensions.height~}}
                       </div>
                     </div>
-                    {{> image diff_image_file}}
+                    <div class="report-user-agent__image-content">
+                      {{#if diff_image_result.changed_pixel_count}}
+                        {{> image diff_image_file}}
+                      {{else}}
+                        (none)
+                      {{/if}}
+                    </div>
                   </div>
                   <div class="report-user-agent__image-cell">
                     <div class="report-user-agent__image-heading">
@@ -136,7 +150,13 @@
                         {{~diff_image_result.actual_image_dimensions.height~}}
                       </div>
                     </div>
-                    {{> image actual_image_file}}
+                    <div class="report-user-agent__image-content">
+                      {{#if diff_image_result.changed_pixel_count}}
+                        {{> image actual_image_file}}
+                      {{else}}
+                        (none)
+                      {{/if}}
+                    </div>
                   </div>
                 </div>
               {{/createDetailsElement}}

@@ -5819,7 +5819,7 @@ $root.mdc = (function() {
              * @property {mdc.proto.IDimensions|null} [expected_image_dimensions] DiffImageResult expected_image_dimensions
              * @property {mdc.proto.IDimensions|null} [actual_image_dimensions] DiffImageResult actual_image_dimensions
              * @property {mdc.proto.IDimensions|null} [diff_image_dimensions] DiffImageResult diff_image_dimensions
-             * @property {number|Long|null} [changed_pixel_count] DiffImageResult changed_pixel_count
+             * @property {number|null} [changed_pixel_count] DiffImageResult changed_pixel_count
              * @property {number|null} [changed_pixel_fraction] DiffImageResult changed_pixel_fraction
              * @property {number|null} [changed_pixel_percentage] DiffImageResult changed_pixel_percentage
              * @property {boolean|null} [has_changed] DiffImageResult has_changed
@@ -5874,11 +5874,11 @@ $root.mdc = (function() {
 
             /**
              * DiffImageResult changed_pixel_count.
-             * @member {number|Long} changed_pixel_count
+             * @member {number} changed_pixel_count
              * @memberof mdc.proto.DiffImageResult
              * @instance
              */
-            DiffImageResult.prototype.changed_pixel_count = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+            DiffImageResult.prototype.changed_pixel_count = 0;
 
             /**
              * DiffImageResult changed_pixel_fraction.
@@ -5937,7 +5937,7 @@ $root.mdc = (function() {
                 if (message.diff_image_dimensions != null && message.hasOwnProperty("diff_image_dimensions"))
                     $root.mdc.proto.Dimensions.encode(message.diff_image_dimensions, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
                 if (message.changed_pixel_count != null && message.hasOwnProperty("changed_pixel_count"))
-                    writer.uint32(/* id 5, wireType 0 =*/40).uint64(message.changed_pixel_count);
+                    writer.uint32(/* id 5, wireType 1 =*/41).double(message.changed_pixel_count);
                 if (message.changed_pixel_fraction != null && message.hasOwnProperty("changed_pixel_fraction"))
                     writer.uint32(/* id 6, wireType 1 =*/49).double(message.changed_pixel_fraction);
                 if (message.changed_pixel_percentage != null && message.hasOwnProperty("changed_pixel_percentage"))
@@ -5991,7 +5991,7 @@ $root.mdc = (function() {
                         message.diff_image_dimensions = $root.mdc.proto.Dimensions.decode(reader, reader.uint32());
                         break;
                     case 5:
-                        message.changed_pixel_count = reader.uint64();
+                        message.changed_pixel_count = reader.double();
                         break;
                     case 6:
                         message.changed_pixel_fraction = reader.double();
@@ -6058,8 +6058,8 @@ $root.mdc = (function() {
                         return "diff_image_dimensions." + error;
                 }
                 if (message.changed_pixel_count != null && message.hasOwnProperty("changed_pixel_count"))
-                    if (!$util.isInteger(message.changed_pixel_count) && !(message.changed_pixel_count && $util.isInteger(message.changed_pixel_count.low) && $util.isInteger(message.changed_pixel_count.high)))
-                        return "changed_pixel_count: integer|Long expected";
+                    if (typeof message.changed_pixel_count !== "number")
+                        return "changed_pixel_count: number expected";
                 if (message.changed_pixel_fraction != null && message.hasOwnProperty("changed_pixel_fraction"))
                     if (typeof message.changed_pixel_fraction !== "number")
                         return "changed_pixel_fraction: number expected";
@@ -6105,14 +6105,7 @@ $root.mdc = (function() {
                     message.diff_image_dimensions = $root.mdc.proto.Dimensions.fromObject(object.diff_image_dimensions);
                 }
                 if (object.changed_pixel_count != null)
-                    if ($util.Long)
-                        (message.changed_pixel_count = $util.Long.fromValue(object.changed_pixel_count)).unsigned = true;
-                    else if (typeof object.changed_pixel_count === "string")
-                        message.changed_pixel_count = parseInt(object.changed_pixel_count, 10);
-                    else if (typeof object.changed_pixel_count === "number")
-                        message.changed_pixel_count = object.changed_pixel_count;
-                    else if (typeof object.changed_pixel_count === "object")
-                        message.changed_pixel_count = new $util.LongBits(object.changed_pixel_count.low >>> 0, object.changed_pixel_count.high >>> 0).toNumber(true);
+                    message.changed_pixel_count = Number(object.changed_pixel_count);
                 if (object.changed_pixel_fraction != null)
                     message.changed_pixel_fraction = Number(object.changed_pixel_fraction);
                 if (object.changed_pixel_percentage != null)
@@ -6140,11 +6133,7 @@ $root.mdc = (function() {
                     object.expected_image_dimensions = null;
                     object.actual_image_dimensions = null;
                     object.diff_image_dimensions = null;
-                    if ($util.Long) {
-                        var long = new $util.Long(0, 0, true);
-                        object.changed_pixel_count = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                    } else
-                        object.changed_pixel_count = options.longs === String ? "0" : 0;
+                    object.changed_pixel_count = 0;
                     object.changed_pixel_fraction = 0;
                     object.changed_pixel_percentage = 0;
                     object.has_changed = false;
@@ -6158,10 +6147,7 @@ $root.mdc = (function() {
                 if (message.diff_image_dimensions != null && message.hasOwnProperty("diff_image_dimensions"))
                     object.diff_image_dimensions = $root.mdc.proto.Dimensions.toObject(message.diff_image_dimensions, options);
                 if (message.changed_pixel_count != null && message.hasOwnProperty("changed_pixel_count"))
-                    if (typeof message.changed_pixel_count === "number")
-                        object.changed_pixel_count = options.longs === String ? String(message.changed_pixel_count) : message.changed_pixel_count;
-                    else
-                        object.changed_pixel_count = options.longs === String ? $util.Long.prototype.toString.call(message.changed_pixel_count) : options.longs === Number ? new $util.LongBits(message.changed_pixel_count.low >>> 0, message.changed_pixel_count.high >>> 0).toNumber(true) : message.changed_pixel_count;
+                    object.changed_pixel_count = options.json && !isFinite(message.changed_pixel_count) ? String(message.changed_pixel_count) : message.changed_pixel_count;
                 if (message.changed_pixel_fraction != null && message.hasOwnProperty("changed_pixel_fraction"))
                     object.changed_pixel_fraction = options.json && !isFinite(message.changed_pixel_fraction) ? String(message.changed_pixel_fraction) : message.changed_pixel_fraction;
                 if (message.changed_pixel_percentage != null && message.hasOwnProperty("changed_pixel_percentage"))
