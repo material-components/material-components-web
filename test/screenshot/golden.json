@@ -1,15 +1,15 @@
 {
   "mdc-button/classes/baseline-button-with-icons.html": {
-    "publicUrl": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/baseline-button-with-icons.html",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/baseline-button-with-icons.html",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/baseline-button-with-icons.html.windows_chrome_67.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/baseline-button-with-icons.html.windows_edge_17.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/06_16_21_090/mdc-button/classes/baseline-button-with-icons.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/baseline-button-with-icons.html.windows_firefox_61.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/baseline-button-with-icons.html.windows_ie_11.png"
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/06_12_41_520/mdc-button/classes/baseline-button-with-icons.html.windows_ie_11.png"
     }
   },
   "mdc-button/classes/baseline-button-without-icons.html": {
-    "publicUrl": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/baseline-button-without-icons.html",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/baseline-button-without-icons.html",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/baseline-button-without-icons.html.windows_chrome_67.png",
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/baseline-button-without-icons.html.windows_edge_17.png",
@@ -18,19 +18,19 @@
     }
   },
   "mdc-button/classes/baseline-link-with-icons.html": {
-    "publicUrl": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/baseline-link-with-icons.html",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/baseline-link-with-icons.html",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/baseline-link-with-icons.html.windows_chrome_67.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/baseline-link-with-icons.html.windows_edge_17.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/06_12_41_520/mdc-button/classes/baseline-link-with-icons.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/baseline-link-with-icons.html.windows_firefox_61.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/baseline-link-with-icons.html.windows_ie_11.png"
     }
   },
   "mdc-button/classes/baseline-link-without-icons.html": {
-    "publicUrl": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/baseline-link-without-icons.html",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/baseline-link-without-icons.html",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/baseline-link-without-icons.html.windows_chrome_67.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/baseline-link-without-icons.html.windows_edge_17.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/06_16_21_090/mdc-button/classes/baseline-link-without-icons.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/baseline-link-without-icons.html.windows_firefox_61.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/baseline-link-without-icons.html.windows_ie_11.png"
     }
@@ -45,25 +45,25 @@
     }
   },
   "mdc-button/classes/dense-button-with-icons.html": {
-    "publicUrl": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/dense-button-with-icons.html",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/dense-button-with-icons.html",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/dense-button-with-icons.html.windows_chrome_67.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/dense-button-with-icons.html.windows_edge_17.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/06_16_21_090/mdc-button/classes/dense-button-with-icons.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/dense-button-with-icons.html.windows_firefox_61.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/dense-button-with-icons.html.windows_ie_11.png"
     }
   },
   "mdc-button/classes/dense-button-without-icons.html": {
-    "publicUrl": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/dense-button-without-icons.html",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/dense-button-without-icons.html",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/dense-button-without-icons.html.windows_chrome_67.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/dense-button-without-icons.html.windows_edge_17.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/06_16_21_090/mdc-button/classes/dense-button-without-icons.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/dense-button-without-icons.html.windows_firefox_61.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/dense-button-without-icons.html.windows_ie_11.png"
     }
   },
   "mdc-button/classes/dense-link-with-icons.html": {
-    "publicUrl": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/dense-link-with-icons.html",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/dense-link-with-icons.html",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/dense-link-with-icons.html.windows_chrome_67.png",
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/dense-link-with-icons.html.windows_edge_17.png",
@@ -72,10 +72,10 @@
     }
   },
   "mdc-button/classes/dense-link-without-icons.html": {
-    "publicUrl": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/dense-link-without-icons.html",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/dense-link-without-icons.html",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/dense-link-without-icons.html.windows_chrome_67.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/dense-link-without-icons.html.windows_edge_17.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/06_16_21_090/mdc-button/classes/dense-link-without-icons.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/dense-link-without-icons.html.windows_firefox_61.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/dense-link-without-icons.html.windows_ie_11.png"
     }
@@ -93,7 +93,7 @@
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/22/16_23_58_618/af3d7271f/mdc-button/mixins/container-fill-color.html",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/mixins/container-fill-color.html.windows_chrome_67.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/mixins/container-fill-color.html.windows_edge_17.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/06_16_21_090/mdc-button/mixins/container-fill-color.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/mixins/container-fill-color.html.windows_firefox_61.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/mixins/container-fill-color.html.windows_ie_11.png"
     }
@@ -102,7 +102,7 @@
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/22/16_23_58_618/af3d7271f/mdc-button/mixins/corner-radius.html",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/mixins/corner-radius.html.windows_chrome_67.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/mixins/corner-radius.html.windows_edge_17.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/06_16_21_090/mdc-button/mixins/corner-radius.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/mixins/corner-radius.html.windows_firefox_61.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/mixins/corner-radius.html.windows_ie_11.png"
     }
@@ -111,7 +111,7 @@
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/22/16_23_58_618/af3d7271f/mdc-button/mixins/filled-accessible.html",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/mixins/filled-accessible.html.windows_chrome_67.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/mixins/filled-accessible.html.windows_edge_17.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/06_16_21_090/mdc-button/mixins/filled-accessible.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/mixins/filled-accessible.html.windows_firefox_61.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/mixins/filled-accessible.html.windows_ie_11.png"
     }
@@ -120,7 +120,7 @@
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/22/16_23_58_618/af3d7271f/mdc-button/mixins/horizontal-padding-baseline.html",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/mixins/horizontal-padding-baseline.html.windows_chrome_67.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/mixins/horizontal-padding-baseline.html.windows_edge_17.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/06_16_21_090/mdc-button/mixins/horizontal-padding-baseline.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/mixins/horizontal-padding-baseline.html.windows_firefox_61.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/mixins/horizontal-padding-baseline.html.windows_ie_11.png"
     }
@@ -129,7 +129,7 @@
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/22/16_23_58_618/af3d7271f/mdc-button/mixins/horizontal-padding-dense.html",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/mixins/horizontal-padding-dense.html.windows_chrome_67.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/mixins/horizontal-padding-dense.html.windows_edge_17.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/06_16_21_090/mdc-button/mixins/horizontal-padding-dense.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/mixins/horizontal-padding-dense.html.windows_firefox_61.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/mixins/horizontal-padding-dense.html.windows_ie_11.png"
     }
@@ -138,7 +138,7 @@
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/22/16_23_58_618/af3d7271f/mdc-button/mixins/icon-color.html",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/mixins/icon-color.html.windows_chrome_67.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/mixins/icon-color.html.windows_edge_17.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/06_16_21_090/mdc-button/mixins/icon-color.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/mixins/icon-color.html.windows_firefox_61.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/mixins/icon-color.html.windows_ie_11.png"
     }
@@ -174,7 +174,7 @@
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/kfranqueiro/2018/05/25/21_14_58_299/6b0f3e00/mdc-fab/classes/baseline.html",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-fab/classes/baseline.html.windows_chrome_67.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-fab/classes/baseline.html.windows_edge_17.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/06_16_21_090/mdc-fab/classes/baseline.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-fab/classes/baseline.html.windows_firefox_61.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-fab/classes/baseline.html.windows_ie_11.png"
     }
@@ -183,7 +183,7 @@
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2018/06/19/19_52_01_078/mdc-fab/classes/extended.html",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-fab/classes/extended.html.windows_chrome_67.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-fab/classes/extended.html.windows_edge_17.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/06_12_41_520/mdc-fab/classes/extended.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-fab/classes/extended.html.windows_firefox_61.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-fab/classes/extended.html.windows_ie_11.png"
     }
@@ -200,7 +200,7 @@
   "mdc-fab/mixins/mdc-fab-extended-label-padding.html": {
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2018/06/22/19_14_56_425/mdc-fab/mixins/mdc-fab-extended-label-padding.html",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-fab/mixins/mdc-fab-extended-label-padding.html.windows_chrome_67.png",
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/06_12_41_520/mdc-fab/mixins/mdc-fab-extended-label-padding.html.windows_chrome_67.png",
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-fab/mixins/mdc-fab-extended-label-padding.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-fab/mixins/mdc-fab-extended-label-padding.html.windows_firefox_61.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-fab/mixins/mdc-fab-extended-label-padding.html.windows_ie_11.png"
