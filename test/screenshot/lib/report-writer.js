@@ -75,7 +75,7 @@ class ReportWriter {
         const templateArgs = allArgs.slice(0, -1);
         return self.createTreeNode_({
           tagName: 'input',
-          extraAttrs: ['type="checkbox"'],
+          extraAttrs: ['type="checkbox"', 'data-review-status="unreviewed"'],
           hbContext,
           hbOptions,
           templateArgs,
