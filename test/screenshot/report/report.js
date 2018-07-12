@@ -432,7 +432,7 @@ window.mdc.reportUi = (() => {
       selectAllButton.disabled = !hasUncheckedScreenshots;
       selectNoneButton.disabled = !hasCheckedScreenshots;
       selectInverseButton.disabled = !(hasCheckedScreenshots || hasUncheckedScreenshots);
-      selectUnreviewedButton.disabled = !hasUnreviewedScreenshots;
+      selectUnreviewedButton.disabled = !(hasUnreviewedScreenshots && hasUncheckedScreenshots);
 
       approveSelectedButton.disabled = !hasCheckedScreenshots;
       retrySelectedButton.disabled = !hasCheckedScreenshots;
