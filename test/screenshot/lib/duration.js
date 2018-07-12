@@ -84,9 +84,10 @@ class Duration {
   }
 
   /**
+   * @param {number=} numDecimalDigits
    * @return {string}
    */
-  toHuman() {
+  toHuman(numDecimalDigits = 1) {
     const oneMillisecond = 1;
     const oneSecond = 1000;
     const oneMinute = 1000 * 60;
@@ -95,6 +96,14 @@ class Duration {
     const oneWeek = 1000 * 60 * 60 * 24 * 7;
     const oneMonth = 1000 * 60 * 60 * 24 * 30;
     const oneYear = 1000 * 60 * 60 * 24 * 365;
+
+    function format(ms, divisor, unit) {
+      const multiplier = Math.pow(10, numDecimalDigits);
+      const rawValue = ms / divisor;
+      const roundedValue = Math.round(multiplier * rawValue) / multiplier;
+      const plural = roundedValue === 1 ? '' : 's';
+      return `${roundedValue} ${unit}${plural}`;
+    }
 
     const magnitudes = [
       {
@@ -130,14 +139,6 @@ class Duration {
         format: (ms) => format(ms, oneYear, 'year'),
       },
     ];
-
-    function format(ms, divisor, unit, digits = 1) {
-      const multiplier = Math.pow(10, digits);
-      const rawValue = ms / divisor;
-      const roundedValue = Math.round(multiplier * rawValue) / multiplier;
-      const plural = roundedValue === 1 ? '' : 's';
-      return `${roundedValue} ${unit}${plural}`;
-    }
 
     return magnitudes.find((magnitude) => magnitude.matches(this.ms_)).format(this.ms_);
   }

@@ -24,8 +24,9 @@
 
 /**
  * @typedef {{
- *   checkedBrowserCbEls: !Array<!HTMLInputElement>,
- *   uncheckedBrowserCbEls: !Array<!HTMLInputElement>,
+ *   checkedUserAgentCbEls: !Array<!HTMLInputElement>,
+ *   uncheckedUserAgentCbEls: !Array<!HTMLInputElement>,
+ *   unreviewedUserAgentCbEls: !Array<!HTMLInputElement>,
  *   changelistDict: !ReportUiChangelistDict,
  *   reviewStatusCountDict: !ReportUiReviewStatusCountDict,
  * }}
@@ -46,8 +47,8 @@ let ReportUiChangelistDict;
  *   cbEl: !HTMLInputElement,
  *   countEl: !HTMLElement,
  *   reviewStatusEl: !HTMLElement,
- *   checkedBrowserCbEls: !Array<!HTMLInputElement>,
- *   uncheckedBrowserCbEls: !Array<!HTMLInputElement>,
+ *   checkedUserAgentCbEls: !Array<!HTMLInputElement>,
+ *   uncheckedUserAgentCbEls: !Array<!HTMLInputElement>,
  *   reviewStatusCountDict: !ReportUiReviewStatusCountDict,
  *   pageDict: !ReportUiPageDict,
  * }}
@@ -64,8 +65,8 @@ let ReportUiPageDict;
  *   cbEl: !HTMLInputElement,
  *   countEl: !HTMLElement,
  *   reviewStatusEl: !HTMLElement,
- *   checkedBrowserCbEls: !Array<!HTMLInputElement>,
- *   uncheckedBrowserCbEls: !Array<!HTMLInputElement>,
+ *   checkedUserAgentCbEls: !Array<!HTMLInputElement>,
+ *   uncheckedUserAgentCbEls: !Array<!HTMLInputElement>,
  *   reviewStatusCountDict: !ReportUiReviewStatusCountDict,
  * }}
  */

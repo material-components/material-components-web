@@ -37,7 +37,7 @@ window.mdc.reportUi = (() => {
     calculateTimeOffset_() {
       const startTimeEl = this.queryOne_('#report-metadata__start-time');
       const timeSinceStartEl = this.queryOne_('#report-metadata__time-since-start');
-      const elapsed = Duration.elapsed(startTimeEl.dateTime).toHuman();
+      const elapsed = Duration.elapsed(startTimeEl.dateTime).toHuman(0);
       timeSinceStartEl.innerText = `(${elapsed} ago)`;
     }
 
@@ -160,7 +160,7 @@ window.mdc.reportUi = (() => {
     }
 
     selectAll() {
-      this.queryAll_('.report-user-agent__checkbox').forEach((cbEl) => {
+      this.queryAll_('.report-user-agent__checkbox:not(.report-user-agent__checkbox--hidden)').forEach((cbEl) => {
         cbEl.checked = true;
         cbEl.indeterminate = false;
       });
@@ -168,15 +168,23 @@ window.mdc.reportUi = (() => {
     }
 
     selectNone() {
-      this.queryAll_('.report-user-agent__checkbox').forEach((cbEl) => {
+      this.queryAll_('.report-user-agent__checkbox:not(.report-user-agent__checkbox--hidden)').forEach((cbEl) => {
         cbEl.checked = false;
         cbEl.indeterminate = false;
       });
       this.updateAllAndGetState_();
     }
 
+    selectUnreviewed() {
+      this.queryAll_('.report-user-agent__checkbox:not(.report-user-agent__checkbox--hidden)').forEach((cbEl) => {
+        cbEl.checked = cbEl.matches('[data-review-status="unreviewed"]');
+        cbEl.indeterminate = false;
+      });
+      this.updateAllAndGetState_();
+    }
+
     selectInverse() {
-      this.queryAll_('.report-user-agent__checkbox').forEach((cbEl) => {
+      this.queryAll_('.report-user-agent__checkbox:not(.report-user-agent__checkbox--hidden)').forEach((cbEl) => {
         cbEl.checked = !cbEl.checked;
         cbEl.indeterminate = false;
       });
@@ -184,14 +192,14 @@ window.mdc.reportUi = (() => {
     }
 
     approveSelected() {
-      const cbEls = this.queryAll_('.report-user-agent__checkbox:checked');
+      const cbEls = this.queryAll_('.report-user-agent__checkbox:not(.report-user-agent__checkbox--hidden):checked');
       this.setReviewStatus_(cbEls, 'approve');
       const report = this.updateAllAndGetState_();
       this.showCliCommand_('screenshot:approve', this.getApproveCommandArgs_(report));
     }
 
     retrySelected() {
-      const cbEls = this.queryAll_('.report-user-agent__checkbox:checked');
+      const cbEls = this.queryAll_('.report-user-agent__checkbox:not(.report-user-agent__checkbox--hidden):checked');
       this.setReviewStatus_(cbEls, 'retry');
       const reportUiState = this.updateAllAndGetState_();
       this.showCliCommand_('screenshot:test', this.getRetryCommandArgs_(reportUiState));
@@ -234,18 +242,18 @@ window.mdc.reportUi = (() => {
     getApproveCommandArgs_(reportUiState) {
       const reportUrlArg = `--report=${this.reportData_.meta.report_json_file.public_url}`;
 
-      if (reportUiState.uncheckedBrowserCbEls.length === 0) {
+      if (reportUiState.uncheckedUserAgentCbEls.length === 0) {
         return ['--all', reportUrlArg];
       }
 
       const args = [];
 
       for (const [collectionType, collection] of Object.entries(reportUiState.collectionDict)) {
-        if (collection.checkedBrowserCbEls.length === 0) {
+        if (collection.checkedUserAgentCbEls.length === 0) {
           continue;
         }
 
-        if (collection.uncheckedBrowserCbEls.length === 0) {
+        if (collection.uncheckedUserAgentCbEls.length === 0) {
           args.push(`--all-${collectionType}`);
           continue;
         }
@@ -253,8 +261,8 @@ window.mdc.reportUi = (() => {
         const targets = [];
 
         for (const [htmlFilePath, page] of Object.entries(collection.pageDict)) {
-          for (const browserCbEl of page.checkedBrowserCbEls) {
-            targets.push(`${htmlFilePath}:${browserCbEl.dataset.userAgentAlias}`);
+          for (const userAgentCbEl of page.checkedUserAgentCbEls) {
+            targets.push(`${htmlFilePath}:${userAgentCbEl.dataset.userAgentAlias}`);
           }
         }
 
@@ -275,9 +283,9 @@ window.mdc.reportUi = (() => {
       const htmlFilePathSet = new Set();
       const userAgentAliasSet = new Set();
 
-      for (const browserCbEl of report.checkedBrowserCbEls) {
-        htmlFilePathSet.add(browserCbEl.dataset.htmlFilePath);
-        userAgentAliasSet.add(browserCbEl.dataset.userAgentAlias);
+      for (const userAgentCbEl of report.checkedUserAgentCbEls) {
+        htmlFilePathSet.add(userAgentCbEl.dataset.htmlFilePath);
+        userAgentAliasSet.add(userAgentCbEl.dataset.userAgentAlias);
       }
 
       return [
@@ -299,13 +307,14 @@ window.mdc.reportUi = (() => {
     updateCountsAndGetState_() {
       /** @type {!ReportUiState} */
       const reportUiState = {
-        checkedBrowserCbEls: [],
-        uncheckedBrowserCbEls: [],
+        checkedUserAgentCbEls: [],
+        uncheckedUserAgentCbEls: [],
+        unreviewedUserAgentCbEls: [],
         collectionDict: {},
         reviewStatusCountDict: {},
       };
 
-      const userAgentCbEls = this.queryAll_('.report-user-agent__checkbox');
+      const userAgentCbEls = this.queryAll_('.report-user-agent__checkbox:not(.report-user-agent__checkbox--hidden)');
 
       userAgentCbEls.forEach((userAgentCbEl) => {
         if (userAgentCbEl.disabled) {
@@ -321,8 +330,8 @@ window.mdc.reportUi = (() => {
           collectionDict[collectionType] || {
             cbEl: this.queryOne_(`.report-collection__checkbox${collectionDataAttr}`),
             reviewStatusEl: this.queryOne_(`.report-review-status--collection${collectionDataAttr}`),
-            checkedBrowserCbEls: [],
-            uncheckedBrowserCbEls: [],
+            checkedUserAgentCbEls: [],
+            uncheckedUserAgentCbEls: [],
             reviewStatusCountDict: {},
             pageDict: {},
           };
@@ -331,19 +340,19 @@ window.mdc.reportUi = (() => {
           collectionDict[collectionType].pageDict[htmlFilePath] || {
             cbEl: this.queryOne_(`.report-html-file__checkbox${htmlFileDataAttr}`),
             reviewStatusEl: this.queryOne_(`.report-review-status--html-file${htmlFileDataAttr}`),
-            checkedBrowserCbEls: [],
-            uncheckedBrowserCbEls: [],
+            checkedUserAgentCbEls: [],
+            uncheckedUserAgentCbEls: [],
             reviewStatusCountDict: {},
           };
 
         if (userAgentCbEl.checked) {
-          reportUiState.checkedBrowserCbEls.push(userAgentCbEl);
-          collectionDict[collectionType].checkedBrowserCbEls.push(userAgentCbEl);
-          collectionDict[collectionType].pageDict[htmlFilePath].checkedBrowserCbEls.push(userAgentCbEl);
+          reportUiState.checkedUserAgentCbEls.push(userAgentCbEl);
+          collectionDict[collectionType].checkedUserAgentCbEls.push(userAgentCbEl);
+          collectionDict[collectionType].pageDict[htmlFilePath].checkedUserAgentCbEls.push(userAgentCbEl);
         } else {
-          reportUiState.uncheckedBrowserCbEls.push(userAgentCbEl);
-          collectionDict[collectionType].uncheckedBrowserCbEls.push(userAgentCbEl);
-          collectionDict[collectionType].pageDict[htmlFilePath].uncheckedBrowserCbEls.push(userAgentCbEl);
+          reportUiState.uncheckedUserAgentCbEls.push(userAgentCbEl);
+          collectionDict[collectionType].uncheckedUserAgentCbEls.push(userAgentCbEl);
+          collectionDict[collectionType].pageDict[htmlFilePath].uncheckedUserAgentCbEls.push(userAgentCbEl);
         }
 
         const reviewStatus = userAgentCbEl.dataset.reviewStatus;
@@ -353,11 +362,15 @@ window.mdc.reportUi = (() => {
           (collectionDict[collectionType].reviewStatusCountDict[reviewStatus] || 0) + 1;
         collectionDict[collectionType].pageDict[htmlFilePath].reviewStatusCountDict[reviewStatus] =
           (collectionDict[collectionType].pageDict[htmlFilePath].reviewStatusCountDict[reviewStatus] || 0) + 1;
+
+        if (reviewStatus === 'unreviewed') {
+          reportUiState.unreviewedUserAgentCbEls.push(userAgentCbEl);
+        }
       });
 
       for (const collection of Object.values(reportUiState.collectionDict)) {
-        const hasCheckedBrowsers = collection.checkedBrowserCbEls.length > 0;
-        const hasUncheckedBrowsers = collection.uncheckedBrowserCbEls.length > 0;
+        const hasCheckedBrowsers = collection.checkedUserAgentCbEls.length > 0;
+        const hasUncheckedBrowsers = collection.uncheckedUserAgentCbEls.length > 0;
 
         collection.cbEl.checked = hasCheckedBrowsers;
         collection.cbEl.indeterminate = hasCheckedBrowsers && hasUncheckedBrowsers;
@@ -368,8 +381,8 @@ window.mdc.reportUi = (() => {
           this.getStatusBadgeText_(clStatuses.length === 1 ? clStatuses[0] : 'mixed');
 
         for (const page of Object.values(collection.pageDict)) {
-          const hasCheckedBrowsers = page.checkedBrowserCbEls.length > 0;
-          const hasUncheckedBrowsers = page.uncheckedBrowserCbEls.length > 0;
+          const hasCheckedBrowsers = page.checkedUserAgentCbEls.length > 0;
+          const hasUncheckedBrowsers = page.uncheckedUserAgentCbEls.length > 0;
 
           page.cbEl.checked = hasCheckedBrowsers;
           page.cbEl.indeterminate = hasCheckedBrowsers && hasUncheckedBrowsers;
@@ -389,11 +402,13 @@ window.mdc.reportUi = (() => {
      * @private
      */
     updateToolbar_(reportUiState) {
-      const numChecked = reportUiState.checkedBrowserCbEls.length;
-      const numUnchecked = reportUiState.uncheckedBrowserCbEls.length;
+      const numChecked = reportUiState.checkedUserAgentCbEls.length;
+      const numUnchecked = reportUiState.uncheckedUserAgentCbEls.length;
+      const numUnreviewed = reportUiState.unreviewedUserAgentCbEls.length;
 
       const hasCheckedScreenshots = numChecked > 0;
       const hasUncheckedScreenshots = numUnchecked > 0;
+      const hasUnreviewedScreenshots = numUnreviewed > 0;
 
       if (!hasUncheckedScreenshots && !hasCheckedScreenshots) {
         this.queryOne_('.report-toolbar').classList.add('report-toolbar--hidden');
@@ -403,6 +418,7 @@ window.mdc.reportUi = (() => {
       const selectAllButton = this.queryOne_('#report-toolbar__select-all-button');
       const selectNoneButton = this.queryOne_('#report-toolbar__select-none-button');
       const selectInverseButton = this.queryOne_('#report-toolbar__select-inverse-button');
+      const selectUnreviewedButton = this.queryOne_('#report-toolbar__select-unreviewed-button');
       const approveSelectedButton = this.queryOne_('#report-toolbar__approve-selected-button');
       const retrySelectedButton = this.queryOne_('#report-toolbar__retry-selected-button');
       const selectedCountEl = this.queryOne_('#report-toolbar__selected-count');
@@ -410,6 +426,7 @@ window.mdc.reportUi = (() => {
       selectAllButton.disabled = !hasUncheckedScreenshots;
       selectNoneButton.disabled = !hasCheckedScreenshots;
       selectInverseButton.disabled = !(hasCheckedScreenshots || hasUncheckedScreenshots);
+      selectUnreviewedButton.disabled = !hasUnreviewedScreenshots;
 
       approveSelectedButton.disabled = !hasCheckedScreenshots;
       retrySelectedButton.disabled = !hasCheckedScreenshots;
