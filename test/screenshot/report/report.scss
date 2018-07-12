@@ -231,10 +231,6 @@ th {
   }
 }
 
-.report-toolbar--hidden {
-  display: none;
-}
-
 .report-toolbar__column {
   display: flex;
   flex-grow: 1;
@@ -262,6 +258,10 @@ th {
     justify-content: center;
     text-align: center;
   }
+}
+
+.report-toolbar__column--hidden {
+  visibility: hidden;
 }
 
 .report-toolbar__column-label {

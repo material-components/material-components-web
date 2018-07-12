@@ -431,7 +431,8 @@ window.mdc.reportUi = (() => {
         return;
       }
 
-      this.queryOne_('.report-toolbar').classList.remove('report-toolbar--hidden');
+      this.queryOne_('#report-toolbar__approval-column').classList.remove('report-toolbar__column--hidden');
+      this.queryOne_('#report-toolbar__selection-column').classList.remove('report-toolbar__column--hidden');
 
       const selectAllButton = this.queryOne_('#report-toolbar__select-all-button');
       const selectNoneButton = this.queryOne_('#report-toolbar__select-none-button');
