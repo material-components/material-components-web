@@ -33,6 +33,9 @@
           <a href="/" class="catalog-back mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
           <span class="mdc-toolbar__title catalog-title">Menu Surface</span>
         </section>
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-end mdc-toolbar__section--shrink-to-fit">
+          <button id="overflow-icon" class="material-icons mdc-icon-button">more_vert</button>
+        </section>
       </div>
     </header>
 
@@ -152,6 +155,9 @@
               <label><input type="checkbox" name="is-rtl"> RTL</label>
             </div>
             <div>
+              <label><input type="checkbox" name="anchor-element"> Change anchor element</label>
+            </div>
+            <div>
               <label><input type="checkbox" name="hoist-menu"> Hoist Menu Surface to body</label>
             </div>
             <div>
@@ -177,7 +183,24 @@
           menu.open = !menu.open;
         });
 
+        var changeAnchorElement = document.querySelector('input[name="anchor-element"]');
         var hoistMenu = document.querySelector('input[name="hoist-menu"]');
+        var fixedPosition = document.querySelector('input[name="fixed-position"]');
+
+        changeAnchorElement.addEventListener('click', function() {
+          if (changeAnchorElement.checked) {
+            menu.setMenuSurfaceAnchorElement(document.getElementById('overflow-icon'));
+            menu.hoistMenuToBody();
+            hoistMenu.checked = true;
+            hoistMenu.disabled = true;
+            fixedPosition.disabled = true;
+          } else {
+            menu.setMenuSurfaceAnchorElement(menuButtonEl.parentElement);
+            hoistMenu.disabled = false;
+            fixedPosition.disabled = false;
+          }
+        });
+
         hoistMenu.addEventListener('change', function(evt) {
           if (hoistMenu.checked) {
             menu.hoistMenuToBody();
@@ -277,7 +300,6 @@
           }
         });
 
-        var fixedPosition = document.querySelector('input[name="fixed-position"]');
         fixedPosition.addEventListener('change', function() {
           if (fixedPosition.checked) {
             menu.setFixedPosition(true);
