@@ -96,7 +96,7 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * Handles interaction events that occur during transition
    */
   handleInteraction() {
-    // Early exit if we're animating
+    // Early exit if we aren't animating
     if (!this.isAnimating_) {
       return;
     }
