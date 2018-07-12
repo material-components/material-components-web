@@ -318,11 +318,12 @@ $root.mdc = (function() {
              * @property {string|null} [local_report_base_dir] ReportMeta local_report_base_dir
              * @property {string|null} [local_temporary_http_dir] ReportMeta local_temporary_http_dir
              * @property {number|null} [local_temporary_http_port] ReportMeta local_temporary_http_port
+             * @property {mdc.proto.IUser|null} [user] ReportMeta user
              * @property {string|null} [host_os_name] ReportMeta host_os_name
              * @property {string|null} [cli_invocation] ReportMeta cli_invocation
              * @property {mdc.proto.IDiffBase|null} [expected_diff_base] ReportMeta expected_diff_base
              * @property {mdc.proto.IDiffBase|null} [actual_diff_base] ReportMeta actual_diff_base
-             * @property {mdc.proto.IUser|null} [user] ReportMeta user
+             * @property {mdc.proto.IGitStatus|null} [git_status] ReportMeta git_status
              * @property {mdc.proto.ILibraryVersion|null} [node_version] ReportMeta node_version
              * @property {mdc.proto.ILibraryVersion|null} [npm_version] ReportMeta npm_version
              * @property {mdc.proto.ILibraryVersion|null} [mdc_version] ReportMeta mdc_version
@@ -434,6 +435,14 @@ $root.mdc = (function() {
             ReportMeta.prototype.local_temporary_http_port = 0;
 
             /**
+             * ReportMeta user.
+             * @member {mdc.proto.IUser|null|undefined} user
+             * @memberof mdc.proto.ReportMeta
+             * @instance
+             */
+            ReportMeta.prototype.user = null;
+
+            /**
              * ReportMeta host_os_name.
              * @member {string} host_os_name
              * @memberof mdc.proto.ReportMeta
@@ -466,12 +475,12 @@ $root.mdc = (function() {
             ReportMeta.prototype.actual_diff_base = null;
 
             /**
-             * ReportMeta user.
-             * @member {mdc.proto.IUser|null|undefined} user
+             * ReportMeta git_status.
+             * @member {mdc.proto.IGitStatus|null|undefined} git_status
              * @memberof mdc.proto.ReportMeta
              * @instance
              */
-            ReportMeta.prototype.user = null;
+            ReportMeta.prototype.git_status = null;
 
             /**
              * ReportMeta node_version.
@@ -559,26 +568,28 @@ $root.mdc = (function() {
                     writer.uint32(/* id 10, wireType 2 =*/82).string(message.local_temporary_http_dir);
                 if (message.local_temporary_http_port != null && message.hasOwnProperty("local_temporary_http_port"))
                     writer.uint32(/* id 11, wireType 0 =*/88).uint32(message.local_temporary_http_port);
-                if (message.host_os_name != null && message.hasOwnProperty("host_os_name"))
-                    writer.uint32(/* id 12, wireType 2 =*/98).string(message.host_os_name);
-                if (message.cli_invocation != null && message.hasOwnProperty("cli_invocation"))
-                    writer.uint32(/* id 13, wireType 2 =*/106).string(message.cli_invocation);
-                if (message.expected_diff_base != null && message.hasOwnProperty("expected_diff_base"))
-                    $root.mdc.proto.DiffBase.encode(message.expected_diff_base, writer.uint32(/* id 14, wireType 2 =*/114).fork()).ldelim();
-                if (message.actual_diff_base != null && message.hasOwnProperty("actual_diff_base"))
-                    $root.mdc.proto.DiffBase.encode(message.actual_diff_base, writer.uint32(/* id 15, wireType 2 =*/122).fork()).ldelim();
                 if (message.user != null && message.hasOwnProperty("user"))
-                    $root.mdc.proto.User.encode(message.user, writer.uint32(/* id 16, wireType 2 =*/130).fork()).ldelim();
+                    $root.mdc.proto.User.encode(message.user, writer.uint32(/* id 12, wireType 2 =*/98).fork()).ldelim();
+                if (message.host_os_name != null && message.hasOwnProperty("host_os_name"))
+                    writer.uint32(/* id 13, wireType 2 =*/106).string(message.host_os_name);
+                if (message.cli_invocation != null && message.hasOwnProperty("cli_invocation"))
+                    writer.uint32(/* id 14, wireType 2 =*/114).string(message.cli_invocation);
+                if (message.expected_diff_base != null && message.hasOwnProperty("expected_diff_base"))
+                    $root.mdc.proto.DiffBase.encode(message.expected_diff_base, writer.uint32(/* id 15, wireType 2 =*/122).fork()).ldelim();
+                if (message.actual_diff_base != null && message.hasOwnProperty("actual_diff_base"))
+                    $root.mdc.proto.DiffBase.encode(message.actual_diff_base, writer.uint32(/* id 16, wireType 2 =*/130).fork()).ldelim();
+                if (message.git_status != null && message.hasOwnProperty("git_status"))
+                    $root.mdc.proto.GitStatus.encode(message.git_status, writer.uint32(/* id 17, wireType 2 =*/138).fork()).ldelim();
                 if (message.node_version != null && message.hasOwnProperty("node_version"))
-                    $root.mdc.proto.LibraryVersion.encode(message.node_version, writer.uint32(/* id 17, wireType 2 =*/138).fork()).ldelim();
+                    $root.mdc.proto.LibraryVersion.encode(message.node_version, writer.uint32(/* id 18, wireType 2 =*/146).fork()).ldelim();
                 if (message.npm_version != null && message.hasOwnProperty("npm_version"))
-                    $root.mdc.proto.LibraryVersion.encode(message.npm_version, writer.uint32(/* id 18, wireType 2 =*/146).fork()).ldelim();
+                    $root.mdc.proto.LibraryVersion.encode(message.npm_version, writer.uint32(/* id 19, wireType 2 =*/154).fork()).ldelim();
                 if (message.mdc_version != null && message.hasOwnProperty("mdc_version"))
-                    $root.mdc.proto.LibraryVersion.encode(message.mdc_version, writer.uint32(/* id 19, wireType 2 =*/154).fork()).ldelim();
+                    $root.mdc.proto.LibraryVersion.encode(message.mdc_version, writer.uint32(/* id 20, wireType 2 =*/162).fork()).ldelim();
                 if (message.report_html_file != null && message.hasOwnProperty("report_html_file"))
-                    $root.mdc.proto.TestFile.encode(message.report_html_file, writer.uint32(/* id 20, wireType 2 =*/162).fork()).ldelim();
+                    $root.mdc.proto.TestFile.encode(message.report_html_file, writer.uint32(/* id 21, wireType 2 =*/170).fork()).ldelim();
                 if (message.report_json_file != null && message.hasOwnProperty("report_json_file"))
-                    $root.mdc.proto.TestFile.encode(message.report_json_file, writer.uint32(/* id 21, wireType 2 =*/170).fork()).ldelim();
+                    $root.mdc.proto.TestFile.encode(message.report_json_file, writer.uint32(/* id 22, wireType 2 =*/178).fork()).ldelim();
                 return writer;
             };
 
@@ -647,33 +658,36 @@ $root.mdc = (function() {
                         message.local_temporary_http_port = reader.uint32();
                         break;
                     case 12:
-                        message.host_os_name = reader.string();
-                        break;
-                    case 13:
-                        message.cli_invocation = reader.string();
-                        break;
-                    case 14:
-                        message.expected_diff_base = $root.mdc.proto.DiffBase.decode(reader, reader.uint32());
-                        break;
-                    case 15:
-                        message.actual_diff_base = $root.mdc.proto.DiffBase.decode(reader, reader.uint32());
-                        break;
-                    case 16:
                         message.user = $root.mdc.proto.User.decode(reader, reader.uint32());
                         break;
+                    case 13:
+                        message.host_os_name = reader.string();
+                        break;
+                    case 14:
+                        message.cli_invocation = reader.string();
+                        break;
+                    case 15:
+                        message.expected_diff_base = $root.mdc.proto.DiffBase.decode(reader, reader.uint32());
+                        break;
+                    case 16:
+                        message.actual_diff_base = $root.mdc.proto.DiffBase.decode(reader, reader.uint32());
+                        break;
                     case 17:
-                        message.node_version = $root.mdc.proto.LibraryVersion.decode(reader, reader.uint32());
+                        message.git_status = $root.mdc.proto.GitStatus.decode(reader, reader.uint32());
                         break;
                     case 18:
-                        message.npm_version = $root.mdc.proto.LibraryVersion.decode(reader, reader.uint32());
+                        message.node_version = $root.mdc.proto.LibraryVersion.decode(reader, reader.uint32());
                         break;
                     case 19:
-                        message.mdc_version = $root.mdc.proto.LibraryVersion.decode(reader, reader.uint32());
+                        message.npm_version = $root.mdc.proto.LibraryVersion.decode(reader, reader.uint32());
                         break;
                     case 20:
-                        message.report_html_file = $root.mdc.proto.TestFile.decode(reader, reader.uint32());
+                        message.mdc_version = $root.mdc.proto.LibraryVersion.decode(reader, reader.uint32());
                         break;
                     case 21:
+                        message.report_html_file = $root.mdc.proto.TestFile.decode(reader, reader.uint32());
+                        break;
+                    case 22:
                         message.report_json_file = $root.mdc.proto.TestFile.decode(reader, reader.uint32());
                         break;
                     default:
@@ -744,6 +758,11 @@ $root.mdc = (function() {
                 if (message.local_temporary_http_port != null && message.hasOwnProperty("local_temporary_http_port"))
                     if (!$util.isInteger(message.local_temporary_http_port))
                         return "local_temporary_http_port: integer expected";
+                if (message.user != null && message.hasOwnProperty("user")) {
+                    var error = $root.mdc.proto.User.verify(message.user);
+                    if (error)
+                        return "user." + error;
+                }
                 if (message.host_os_name != null && message.hasOwnProperty("host_os_name"))
                     if (!$util.isString(message.host_os_name))
                         return "host_os_name: string expected";
@@ -760,10 +779,10 @@ $root.mdc = (function() {
                     if (error)
                         return "actual_diff_base." + error;
                 }
-                if (message.user != null && message.hasOwnProperty("user")) {
-                    var error = $root.mdc.proto.User.verify(message.user);
+                if (message.git_status != null && message.hasOwnProperty("git_status")) {
+                    var error = $root.mdc.proto.GitStatus.verify(message.git_status);
                     if (error)
-                        return "user." + error;
+                        return "git_status." + error;
                 }
                 if (message.node_version != null && message.hasOwnProperty("node_version")) {
                     var error = $root.mdc.proto.LibraryVersion.verify(message.node_version);
@@ -834,6 +853,11 @@ $root.mdc = (function() {
                     message.local_temporary_http_dir = String(object.local_temporary_http_dir);
                 if (object.local_temporary_http_port != null)
                     message.local_temporary_http_port = object.local_temporary_http_port >>> 0;
+                if (object.user != null) {
+                    if (typeof object.user !== "object")
+                        throw TypeError(".mdc.proto.ReportMeta.user: object expected");
+                    message.user = $root.mdc.proto.User.fromObject(object.user);
+                }
                 if (object.host_os_name != null)
                     message.host_os_name = String(object.host_os_name);
                 if (object.cli_invocation != null)
@@ -848,10 +872,10 @@ $root.mdc = (function() {
                         throw TypeError(".mdc.proto.ReportMeta.actual_diff_base: object expected");
                     message.actual_diff_base = $root.mdc.proto.DiffBase.fromObject(object.actual_diff_base);
                 }
-                if (object.user != null) {
-                    if (typeof object.user !== "object")
-                        throw TypeError(".mdc.proto.ReportMeta.user: object expected");
-                    message.user = $root.mdc.proto.User.fromObject(object.user);
+                if (object.git_status != null) {
+                    if (typeof object.git_status !== "object")
+                        throw TypeError(".mdc.proto.ReportMeta.git_status: object expected");
+                    message.git_status = $root.mdc.proto.GitStatus.fromObject(object.git_status);
                 }
                 if (object.node_version != null) {
                     if (typeof object.node_version !== "object")
@@ -910,11 +934,12 @@ $root.mdc = (function() {
                     object.local_report_base_dir = "";
                     object.local_temporary_http_dir = "";
                     object.local_temporary_http_port = 0;
+                    object.user = null;
                     object.host_os_name = "";
                     object.cli_invocation = "";
                     object.expected_diff_base = null;
                     object.actual_diff_base = null;
-                    object.user = null;
+                    object.git_status = null;
                     object.node_version = null;
                     object.npm_version = null;
                     object.mdc_version = null;
@@ -946,6 +971,8 @@ $root.mdc = (function() {
                     object.local_temporary_http_dir = message.local_temporary_http_dir;
                 if (message.local_temporary_http_port != null && message.hasOwnProperty("local_temporary_http_port"))
                     object.local_temporary_http_port = message.local_temporary_http_port;
+                if (message.user != null && message.hasOwnProperty("user"))
+                    object.user = $root.mdc.proto.User.toObject(message.user, options);
                 if (message.host_os_name != null && message.hasOwnProperty("host_os_name"))
                     object.host_os_name = message.host_os_name;
                 if (message.cli_invocation != null && message.hasOwnProperty("cli_invocation"))
@@ -954,8 +981,8 @@ $root.mdc = (function() {
                     object.expected_diff_base = $root.mdc.proto.DiffBase.toObject(message.expected_diff_base, options);
                 if (message.actual_diff_base != null && message.hasOwnProperty("actual_diff_base"))
                     object.actual_diff_base = $root.mdc.proto.DiffBase.toObject(message.actual_diff_base, options);
-                if (message.user != null && message.hasOwnProperty("user"))
-                    object.user = $root.mdc.proto.User.toObject(message.user, options);
+                if (message.git_status != null && message.hasOwnProperty("git_status"))
+                    object.git_status = $root.mdc.proto.GitStatus.toObject(message.git_status, options);
                 if (message.node_version != null && message.hasOwnProperty("node_version"))
                     object.node_version = $root.mdc.proto.LibraryVersion.toObject(message.node_version, options);
                 if (message.npm_version != null && message.hasOwnProperty("npm_version"))
@@ -3182,6 +3209,7 @@ $root.mdc = (function() {
                  * @property {string|null} [os_version] Navigator os_version
                  * @property {string|null} [browser_name] Navigator browser_name
                  * @property {string|null} [browser_version] Navigator browser_version
+                 * @property {string|null} [full_name] Navigator full_name
                  */
 
                 /**
@@ -3232,6 +3260,14 @@ $root.mdc = (function() {
                 Navigator.prototype.browser_version = "";
 
                 /**
+                 * Navigator full_name.
+                 * @member {string} full_name
+                 * @memberof mdc.proto.UserAgent.Navigator
+                 * @instance
+                 */
+                Navigator.prototype.full_name = "";
+
+                /**
                  * Creates a new Navigator instance using the specified properties.
                  * @function create
                  * @memberof mdc.proto.UserAgent.Navigator
@@ -3263,6 +3299,8 @@ $root.mdc = (function() {
                         writer.uint32(/* id 3, wireType 2 =*/26).string(message.browser_name);
                     if (message.browser_version != null && message.hasOwnProperty("browser_version"))
                         writer.uint32(/* id 4, wireType 2 =*/34).string(message.browser_version);
+                    if (message.full_name != null && message.hasOwnProperty("full_name"))
+                        writer.uint32(/* id 5, wireType 2 =*/42).string(message.full_name);
                     return writer;
                 };
 
@@ -3308,6 +3346,9 @@ $root.mdc = (function() {
                             break;
                         case 4:
                             message.browser_version = reader.string();
+                            break;
+                        case 5:
+                            message.full_name = reader.string();
                             break;
                         default:
                             reader.skipType(tag & 7);
@@ -3356,6 +3397,9 @@ $root.mdc = (function() {
                     if (message.browser_version != null && message.hasOwnProperty("browser_version"))
                         if (!$util.isString(message.browser_version))
                             return "browser_version: string expected";
+                    if (message.full_name != null && message.hasOwnProperty("full_name"))
+                        if (!$util.isString(message.full_name))
+                            return "full_name: string expected";
                     return null;
                 };
 
@@ -3379,6 +3423,8 @@ $root.mdc = (function() {
                         message.browser_name = String(object.browser_name);
                     if (object.browser_version != null)
                         message.browser_version = String(object.browser_version);
+                    if (object.full_name != null)
+                        message.full_name = String(object.full_name);
                     return message;
                 };
 
@@ -3400,6 +3446,7 @@ $root.mdc = (function() {
                         object.os_version = "";
                         object.browser_name = "";
                         object.browser_version = "";
+                        object.full_name = "";
                     }
                     if (message.os_name != null && message.hasOwnProperty("os_name"))
                         object.os_name = message.os_name;
@@ -3409,6 +3456,8 @@ $root.mdc = (function() {
                         object.browser_name = message.browser_name;
                     if (message.browser_version != null && message.hasOwnProperty("browser_version"))
                         object.browser_version = message.browser_version;
+                    if (message.full_name != null && message.hasOwnProperty("full_name"))
+                        object.full_name = message.full_name;
                     return object;
                 };
 
@@ -3462,6 +3511,12 @@ $root.mdc = (function() {
              * @property {Object.<string,mdc.proto.IScreenshotList>|null} [comparable_screenshot_page_map] Screenshots comparable_screenshot_page_map
              * @property {Object.<string,mdc.proto.IScreenshotList>|null} [changed_screenshot_page_map] Screenshots changed_screenshot_page_map
              * @property {Object.<string,mdc.proto.IScreenshotList>|null} [unchanged_screenshot_page_map] Screenshots unchanged_screenshot_page_map
+             * @property {Array.<string>|null} [runnable_test_page_urls] Screenshots runnable_test_page_urls
+             * @property {Array.<string>|null} [skipped_test_page_urls] Screenshots skipped_test_page_urls
+             * @property {Array.<string>|null} [runnable_browser_icon_urls] Screenshots runnable_browser_icon_urls
+             * @property {Array.<string>|null} [skipped_browser_icon_urls] Screenshots skipped_browser_icon_urls
+             * @property {Array.<string>|null} [runnable_screenshot_keys] Screenshots runnable_screenshot_keys
+             * @property {Array.<string>|null} [skipped_screenshot_keys] Screenshots skipped_screenshot_keys
              */
 
             /**
@@ -3500,6 +3555,12 @@ $root.mdc = (function() {
                 this.comparable_screenshot_page_map = {};
                 this.changed_screenshot_page_map = {};
                 this.unchanged_screenshot_page_map = {};
+                this.runnable_test_page_urls = [];
+                this.skipped_test_page_urls = [];
+                this.runnable_browser_icon_urls = [];
+                this.skipped_browser_icon_urls = [];
+                this.runnable_screenshot_keys = [];
+                this.skipped_screenshot_keys = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         if (properties[keys[i]] != null)
@@ -3723,6 +3784,54 @@ $root.mdc = (function() {
             Screenshots.prototype.unchanged_screenshot_page_map = $util.emptyObject;
 
             /**
+             * Screenshots runnable_test_page_urls.
+             * @member {Array.<string>} runnable_test_page_urls
+             * @memberof mdc.proto.Screenshots
+             * @instance
+             */
+            Screenshots.prototype.runnable_test_page_urls = $util.emptyArray;
+
+            /**
+             * Screenshots skipped_test_page_urls.
+             * @member {Array.<string>} skipped_test_page_urls
+             * @memberof mdc.proto.Screenshots
+             * @instance
+             */
+            Screenshots.prototype.skipped_test_page_urls = $util.emptyArray;
+
+            /**
+             * Screenshots runnable_browser_icon_urls.
+             * @member {Array.<string>} runnable_browser_icon_urls
+             * @memberof mdc.proto.Screenshots
+             * @instance
+             */
+            Screenshots.prototype.runnable_browser_icon_urls = $util.emptyArray;
+
+            /**
+             * Screenshots skipped_browser_icon_urls.
+             * @member {Array.<string>} skipped_browser_icon_urls
+             * @memberof mdc.proto.Screenshots
+             * @instance
+             */
+            Screenshots.prototype.skipped_browser_icon_urls = $util.emptyArray;
+
+            /**
+             * Screenshots runnable_screenshot_keys.
+             * @member {Array.<string>} runnable_screenshot_keys
+             * @memberof mdc.proto.Screenshots
+             * @instance
+             */
+            Screenshots.prototype.runnable_screenshot_keys = $util.emptyArray;
+
+            /**
+             * Screenshots skipped_screenshot_keys.
+             * @member {Array.<string>} skipped_screenshot_keys
+             * @memberof mdc.proto.Screenshots
+             * @instance
+             */
+            Screenshots.prototype.skipped_screenshot_keys = $util.emptyArray;
+
+            /**
              * Creates a new Screenshots instance using the specified properties.
              * @function create
              * @memberof mdc.proto.Screenshots
@@ -3863,6 +3972,24 @@ $root.mdc = (function() {
                         writer.uint32(/* id 27, wireType 2 =*/218).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]);
                         $root.mdc.proto.ScreenshotList.encode(message.unchanged_screenshot_page_map[keys[i]], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim().ldelim();
                     }
+                if (message.runnable_test_page_urls != null && message.runnable_test_page_urls.length)
+                    for (var i = 0; i < message.runnable_test_page_urls.length; ++i)
+                        writer.uint32(/* id 28, wireType 2 =*/226).string(message.runnable_test_page_urls[i]);
+                if (message.skipped_test_page_urls != null && message.skipped_test_page_urls.length)
+                    for (var i = 0; i < message.skipped_test_page_urls.length; ++i)
+                        writer.uint32(/* id 29, wireType 2 =*/234).string(message.skipped_test_page_urls[i]);
+                if (message.runnable_browser_icon_urls != null && message.runnable_browser_icon_urls.length)
+                    for (var i = 0; i < message.runnable_browser_icon_urls.length; ++i)
+                        writer.uint32(/* id 30, wireType 2 =*/242).string(message.runnable_browser_icon_urls[i]);
+                if (message.skipped_browser_icon_urls != null && message.skipped_browser_icon_urls.length)
+                    for (var i = 0; i < message.skipped_browser_icon_urls.length; ++i)
+                        writer.uint32(/* id 31, wireType 2 =*/250).string(message.skipped_browser_icon_urls[i]);
+                if (message.runnable_screenshot_keys != null && message.runnable_screenshot_keys.length)
+                    for (var i = 0; i < message.runnable_screenshot_keys.length; ++i)
+                        writer.uint32(/* id 32, wireType 2 =*/258).string(message.runnable_screenshot_keys[i]);
+                if (message.skipped_screenshot_keys != null && message.skipped_screenshot_keys.length)
+                    for (var i = 0; i < message.skipped_screenshot_keys.length; ++i)
+                        writer.uint32(/* id 33, wireType 2 =*/266).string(message.skipped_screenshot_keys[i]);
                 return writer;
             };
 
@@ -4085,6 +4212,36 @@ $root.mdc = (function() {
                         key = reader.string();
                         reader.pos++;
                         message.unchanged_screenshot_page_map[key] = $root.mdc.proto.ScreenshotList.decode(reader, reader.uint32());
+                        break;
+                    case 28:
+                        if (!(message.runnable_test_page_urls && message.runnable_test_page_urls.length))
+                            message.runnable_test_page_urls = [];
+                        message.runnable_test_page_urls.push(reader.string());
+                        break;
+                    case 29:
+                        if (!(message.skipped_test_page_urls && message.skipped_test_page_urls.length))
+                            message.skipped_test_page_urls = [];
+                        message.skipped_test_page_urls.push(reader.string());
+                        break;
+                    case 30:
+                        if (!(message.runnable_browser_icon_urls && message.runnable_browser_icon_urls.length))
+                            message.runnable_browser_icon_urls = [];
+                        message.runnable_browser_icon_urls.push(reader.string());
+                        break;
+                    case 31:
+                        if (!(message.skipped_browser_icon_urls && message.skipped_browser_icon_urls.length))
+                            message.skipped_browser_icon_urls = [];
+                        message.skipped_browser_icon_urls.push(reader.string());
+                        break;
+                    case 32:
+                        if (!(message.runnable_screenshot_keys && message.runnable_screenshot_keys.length))
+                            message.runnable_screenshot_keys = [];
+                        message.runnable_screenshot_keys.push(reader.string());
+                        break;
+                    case 33:
+                        if (!(message.skipped_screenshot_keys && message.skipped_screenshot_keys.length))
+                            message.skipped_screenshot_keys = [];
+                        message.skipped_screenshot_keys.push(reader.string());
                         break;
                     default:
                         reader.skipType(tag & 7);
@@ -4382,6 +4539,48 @@ $root.mdc = (function() {
                             return "unchanged_screenshot_page_map." + error;
                     }
                 }
+                if (message.runnable_test_page_urls != null && message.hasOwnProperty("runnable_test_page_urls")) {
+                    if (!Array.isArray(message.runnable_test_page_urls))
+                        return "runnable_test_page_urls: array expected";
+                    for (var i = 0; i < message.runnable_test_page_urls.length; ++i)
+                        if (!$util.isString(message.runnable_test_page_urls[i]))
+                            return "runnable_test_page_urls: string[] expected";
+                }
+                if (message.skipped_test_page_urls != null && message.hasOwnProperty("skipped_test_page_urls")) {
+                    if (!Array.isArray(message.skipped_test_page_urls))
+                        return "skipped_test_page_urls: array expected";
+                    for (var i = 0; i < message.skipped_test_page_urls.length; ++i)
+                        if (!$util.isString(message.skipped_test_page_urls[i]))
+                            return "skipped_test_page_urls: string[] expected";
+                }
+                if (message.runnable_browser_icon_urls != null && message.hasOwnProperty("runnable_browser_icon_urls")) {
+                    if (!Array.isArray(message.runnable_browser_icon_urls))
+                        return "runnable_browser_icon_urls: array expected";
+                    for (var i = 0; i < message.runnable_browser_icon_urls.length; ++i)
+                        if (!$util.isString(message.runnable_browser_icon_urls[i]))
+                            return "runnable_browser_icon_urls: string[] expected";
+                }
+                if (message.skipped_browser_icon_urls != null && message.hasOwnProperty("skipped_browser_icon_urls")) {
+                    if (!Array.isArray(message.skipped_browser_icon_urls))
+                        return "skipped_browser_icon_urls: array expected";
+                    for (var i = 0; i < message.skipped_browser_icon_urls.length; ++i)
+                        if (!$util.isString(message.skipped_browser_icon_urls[i]))
+                            return "skipped_browser_icon_urls: string[] expected";
+                }
+                if (message.runnable_screenshot_keys != null && message.hasOwnProperty("runnable_screenshot_keys")) {
+                    if (!Array.isArray(message.runnable_screenshot_keys))
+                        return "runnable_screenshot_keys: array expected";
+                    for (var i = 0; i < message.runnable_screenshot_keys.length; ++i)
+                        if (!$util.isString(message.runnable_screenshot_keys[i]))
+                            return "runnable_screenshot_keys: string[] expected";
+                }
+                if (message.skipped_screenshot_keys != null && message.hasOwnProperty("skipped_screenshot_keys")) {
+                    if (!Array.isArray(message.skipped_screenshot_keys))
+                        return "skipped_screenshot_keys: array expected";
+                    for (var i = 0; i < message.skipped_screenshot_keys.length; ++i)
+                        if (!$util.isString(message.skipped_screenshot_keys[i]))
+                            return "skipped_screenshot_keys: string[] expected";
+                }
                 return null;
             };
 
@@ -4667,6 +4866,48 @@ $root.mdc = (function() {
                         message.unchanged_screenshot_page_map[keys[i]] = $root.mdc.proto.ScreenshotList.fromObject(object.unchanged_screenshot_page_map[keys[i]]);
                     }
                 }
+                if (object.runnable_test_page_urls) {
+                    if (!Array.isArray(object.runnable_test_page_urls))
+                        throw TypeError(".mdc.proto.Screenshots.runnable_test_page_urls: array expected");
+                    message.runnable_test_page_urls = [];
+                    for (var i = 0; i < object.runnable_test_page_urls.length; ++i)
+                        message.runnable_test_page_urls[i] = String(object.runnable_test_page_urls[i]);
+                }
+                if (object.skipped_test_page_urls) {
+                    if (!Array.isArray(object.skipped_test_page_urls))
+                        throw TypeError(".mdc.proto.Screenshots.skipped_test_page_urls: array expected");
+                    message.skipped_test_page_urls = [];
+                    for (var i = 0; i < object.skipped_test_page_urls.length; ++i)
+                        message.skipped_test_page_urls[i] = String(object.skipped_test_page_urls[i]);
+                }
+                if (object.runnable_browser_icon_urls) {
+                    if (!Array.isArray(object.runnable_browser_icon_urls))
+                        throw TypeError(".mdc.proto.Screenshots.runnable_browser_icon_urls: array expected");
+                    message.runnable_browser_icon_urls = [];
+                    for (var i = 0; i < object.runnable_browser_icon_urls.length; ++i)
+                        message.runnable_browser_icon_urls[i] = String(object.runnable_browser_icon_urls[i]);
+                }
+                if (object.skipped_browser_icon_urls) {
+                    if (!Array.isArray(object.skipped_browser_icon_urls))
+                        throw TypeError(".mdc.proto.Screenshots.skipped_browser_icon_urls: array expected");
+                    message.skipped_browser_icon_urls = [];
+                    for (var i = 0; i < object.skipped_browser_icon_urls.length; ++i)
+                        message.skipped_browser_icon_urls[i] = String(object.skipped_browser_icon_urls[i]);
+                }
+                if (object.runnable_screenshot_keys) {
+                    if (!Array.isArray(object.runnable_screenshot_keys))
+                        throw TypeError(".mdc.proto.Screenshots.runnable_screenshot_keys: array expected");
+                    message.runnable_screenshot_keys = [];
+                    for (var i = 0; i < object.runnable_screenshot_keys.length; ++i)
+                        message.runnable_screenshot_keys[i] = String(object.runnable_screenshot_keys[i]);
+                }
+                if (object.skipped_screenshot_keys) {
+                    if (!Array.isArray(object.skipped_screenshot_keys))
+                        throw TypeError(".mdc.proto.Screenshots.skipped_screenshot_keys: array expected");
+                    message.skipped_screenshot_keys = [];
+                    for (var i = 0; i < object.skipped_screenshot_keys.length; ++i)
+                        message.skipped_screenshot_keys[i] = String(object.skipped_screenshot_keys[i]);
+                }
                 return message;
             };
 
@@ -4693,6 +4934,12 @@ $root.mdc = (function() {
                     object.comparable_screenshot_list = [];
                     object.changed_screenshot_list = [];
                     object.unchanged_screenshot_list = [];
+                    object.runnable_test_page_urls = [];
+                    object.skipped_test_page_urls = [];
+                    object.runnable_browser_icon_urls = [];
+                    object.skipped_browser_icon_urls = [];
+                    object.runnable_screenshot_keys = [];
+                    object.skipped_screenshot_keys = [];
                 }
                 if (options.objects || options.defaults) {
                     object.expected_screenshot_browser_map = {};
@@ -4849,6 +5096,36 @@ $root.mdc = (function() {
                     object.unchanged_screenshot_page_map = {};
                     for (var j = 0; j < keys2.length; ++j)
                         object.unchanged_screenshot_page_map[keys2[j]] = $root.mdc.proto.ScreenshotList.toObject(message.unchanged_screenshot_page_map[keys2[j]], options);
+                }
+                if (message.runnable_test_page_urls && message.runnable_test_page_urls.length) {
+                    object.runnable_test_page_urls = [];
+                    for (var j = 0; j < message.runnable_test_page_urls.length; ++j)
+                        object.runnable_test_page_urls[j] = message.runnable_test_page_urls[j];
+                }
+                if (message.skipped_test_page_urls && message.skipped_test_page_urls.length) {
+                    object.skipped_test_page_urls = [];
+                    for (var j = 0; j < message.skipped_test_page_urls.length; ++j)
+                        object.skipped_test_page_urls[j] = message.skipped_test_page_urls[j];
+                }
+                if (message.runnable_browser_icon_urls && message.runnable_browser_icon_urls.length) {
+                    object.runnable_browser_icon_urls = [];
+                    for (var j = 0; j < message.runnable_browser_icon_urls.length; ++j)
+                        object.runnable_browser_icon_urls[j] = message.runnable_browser_icon_urls[j];
+                }
+                if (message.skipped_browser_icon_urls && message.skipped_browser_icon_urls.length) {
+                    object.skipped_browser_icon_urls = [];
+                    for (var j = 0; j < message.skipped_browser_icon_urls.length; ++j)
+                        object.skipped_browser_icon_urls[j] = message.skipped_browser_icon_urls[j];
+                }
+                if (message.runnable_screenshot_keys && message.runnable_screenshot_keys.length) {
+                    object.runnable_screenshot_keys = [];
+                    for (var j = 0; j < message.runnable_screenshot_keys.length; ++j)
+                        object.runnable_screenshot_keys[j] = message.runnable_screenshot_keys[j];
+                }
+                if (message.skipped_screenshot_keys && message.skipped_screenshot_keys.length) {
+                    object.skipped_screenshot_keys = [];
+                    for (var j = 0; j < message.skipped_screenshot_keys.length; ++j)
+                        object.skipped_screenshot_keys[j] = message.skipped_screenshot_keys[j];
                 }
                 return object;
             };
@@ -8083,6 +8360,438 @@ $root.mdc = (function() {
             };
 
             return HbsTestPageData;
+        })();
+
+        proto.GitStatus = (function() {
+
+            /**
+             * Properties of a GitStatus.
+             * @memberof mdc.proto
+             * @interface IGitStatus
+             * @property {Array.<string>|null} [not_added] GitStatus not_added
+             * @property {Array.<string>|null} [conflicted] GitStatus conflicted
+             * @property {Array.<string>|null} [created] GitStatus created
+             * @property {Array.<string>|null} [deleted] GitStatus deleted
+             * @property {Array.<string>|null} [modified] GitStatus modified
+             * @property {Array.<string>|null} [renamed] GitStatus renamed
+             * @property {Array.<string>|null} [files] GitStatus files
+             */
+
+            /**
+             * Constructs a new GitStatus.
+             * @memberof mdc.proto
+             * @classdesc Represents a GitStatus.
+             * @implements IGitStatus
+             * @constructor
+             * @param {mdc.proto.IGitStatus=} [properties] Properties to set
+             */
+            function GitStatus(properties) {
+                this.not_added = [];
+                this.conflicted = [];
+                this.created = [];
+                this.deleted = [];
+                this.modified = [];
+                this.renamed = [];
+                this.files = [];
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
+            }
+
+            /**
+             * GitStatus not_added.
+             * @member {Array.<string>} not_added
+             * @memberof mdc.proto.GitStatus
+             * @instance
+             */
+            GitStatus.prototype.not_added = $util.emptyArray;
+
+            /**
+             * GitStatus conflicted.
+             * @member {Array.<string>} conflicted
+             * @memberof mdc.proto.GitStatus
+             * @instance
+             */
+            GitStatus.prototype.conflicted = $util.emptyArray;
+
+            /**
+             * GitStatus created.
+             * @member {Array.<string>} created
+             * @memberof mdc.proto.GitStatus
+             * @instance
+             */
+            GitStatus.prototype.created = $util.emptyArray;
+
+            /**
+             * GitStatus deleted.
+             * @member {Array.<string>} deleted
+             * @memberof mdc.proto.GitStatus
+             * @instance
+             */
+            GitStatus.prototype.deleted = $util.emptyArray;
+
+            /**
+             * GitStatus modified.
+             * @member {Array.<string>} modified
+             * @memberof mdc.proto.GitStatus
+             * @instance
+             */
+            GitStatus.prototype.modified = $util.emptyArray;
+
+            /**
+             * GitStatus renamed.
+             * @member {Array.<string>} renamed
+             * @memberof mdc.proto.GitStatus
+             * @instance
+             */
+            GitStatus.prototype.renamed = $util.emptyArray;
+
+            /**
+             * GitStatus files.
+             * @member {Array.<string>} files
+             * @memberof mdc.proto.GitStatus
+             * @instance
+             */
+            GitStatus.prototype.files = $util.emptyArray;
+
+            /**
+             * Creates a new GitStatus instance using the specified properties.
+             * @function create
+             * @memberof mdc.proto.GitStatus
+             * @static
+             * @param {mdc.proto.IGitStatus=} [properties] Properties to set
+             * @returns {mdc.proto.GitStatus} GitStatus instance
+             */
+            GitStatus.create = function create(properties) {
+                return new GitStatus(properties);
+            };
+
+            /**
+             * Encodes the specified GitStatus message. Does not implicitly {@link mdc.proto.GitStatus.verify|verify} messages.
+             * @function encode
+             * @memberof mdc.proto.GitStatus
+             * @static
+             * @param {mdc.proto.IGitStatus} message GitStatus message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            GitStatus.encode = function encode(message, writer) {
+                if (!writer)
+                    writer = $Writer.create();
+                if (message.not_added != null && message.not_added.length)
+                    for (var i = 0; i < message.not_added.length; ++i)
+                        writer.uint32(/* id 1, wireType 2 =*/10).string(message.not_added[i]);
+                if (message.conflicted != null && message.conflicted.length)
+                    for (var i = 0; i < message.conflicted.length; ++i)
+                        writer.uint32(/* id 2, wireType 2 =*/18).string(message.conflicted[i]);
+                if (message.created != null && message.created.length)
+                    for (var i = 0; i < message.created.length; ++i)
+                        writer.uint32(/* id 3, wireType 2 =*/26).string(message.created[i]);
+                if (message.deleted != null && message.deleted.length)
+                    for (var i = 0; i < message.deleted.length; ++i)
+                        writer.uint32(/* id 4, wireType 2 =*/34).string(message.deleted[i]);
+                if (message.modified != null && message.modified.length)
+                    for (var i = 0; i < message.modified.length; ++i)
+                        writer.uint32(/* id 5, wireType 2 =*/42).string(message.modified[i]);
+                if (message.renamed != null && message.renamed.length)
+                    for (var i = 0; i < message.renamed.length; ++i)
+                        writer.uint32(/* id 6, wireType 2 =*/50).string(message.renamed[i]);
+                if (message.files != null && message.files.length)
+                    for (var i = 0; i < message.files.length; ++i)
+                        writer.uint32(/* id 7, wireType 2 =*/58).string(message.files[i]);
+                return writer;
+            };
+
+            /**
+             * Encodes the specified GitStatus message, length delimited. Does not implicitly {@link mdc.proto.GitStatus.verify|verify} messages.
+             * @function encodeDelimited
+             * @memberof mdc.proto.GitStatus
+             * @static
+             * @param {mdc.proto.IGitStatus} message GitStatus message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            GitStatus.encodeDelimited = function encodeDelimited(message, writer) {
+                return this.encode(message, writer).ldelim();
+            };
+
+            /**
+             * Decodes a GitStatus message from the specified reader or buffer.
+             * @function decode
+             * @memberof mdc.proto.GitStatus
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @param {number} [length] Message length if known beforehand
+             * @returns {mdc.proto.GitStatus} GitStatus
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            GitStatus.decode = function decode(reader, length) {
+                if (!(reader instanceof $Reader))
+                    reader = $Reader.create(reader);
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.mdc.proto.GitStatus();
+                while (reader.pos < end) {
+                    var tag = reader.uint32();
+                    switch (tag >>> 3) {
+                    case 1:
+                        if (!(message.not_added && message.not_added.length))
+                            message.not_added = [];
+                        message.not_added.push(reader.string());
+                        break;
+                    case 2:
+                        if (!(message.conflicted && message.conflicted.length))
+                            message.conflicted = [];
+                        message.conflicted.push(reader.string());
+                        break;
+                    case 3:
+                        if (!(message.created && message.created.length))
+                            message.created = [];
+                        message.created.push(reader.string());
+                        break;
+                    case 4:
+                        if (!(message.deleted && message.deleted.length))
+                            message.deleted = [];
+                        message.deleted.push(reader.string());
+                        break;
+                    case 5:
+                        if (!(message.modified && message.modified.length))
+                            message.modified = [];
+                        message.modified.push(reader.string());
+                        break;
+                    case 6:
+                        if (!(message.renamed && message.renamed.length))
+                            message.renamed = [];
+                        message.renamed.push(reader.string());
+                        break;
+                    case 7:
+                        if (!(message.files && message.files.length))
+                            message.files = [];
+                        message.files.push(reader.string());
+                        break;
+                    default:
+                        reader.skipType(tag & 7);
+                        break;
+                    }
+                }
+                return message;
+            };
+
+            /**
+             * Decodes a GitStatus message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
+             * @memberof mdc.proto.GitStatus
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @returns {mdc.proto.GitStatus} GitStatus
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            GitStatus.decodeDelimited = function decodeDelimited(reader) {
+                if (!(reader instanceof $Reader))
+                    reader = new $Reader(reader);
+                return this.decode(reader, reader.uint32());
+            };
+
+            /**
+             * Verifies a GitStatus message.
+             * @function verify
+             * @memberof mdc.proto.GitStatus
+             * @static
+             * @param {Object.<string,*>} message Plain object to verify
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+             */
+            GitStatus.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
+                if (message.not_added != null && message.hasOwnProperty("not_added")) {
+                    if (!Array.isArray(message.not_added))
+                        return "not_added: array expected";
+                    for (var i = 0; i < message.not_added.length; ++i)
+                        if (!$util.isString(message.not_added[i]))
+                            return "not_added: string[] expected";
+                }
+                if (message.conflicted != null && message.hasOwnProperty("conflicted")) {
+                    if (!Array.isArray(message.conflicted))
+                        return "conflicted: array expected";
+                    for (var i = 0; i < message.conflicted.length; ++i)
+                        if (!$util.isString(message.conflicted[i]))
+                            return "conflicted: string[] expected";
+                }
+                if (message.created != null && message.hasOwnProperty("created")) {
+                    if (!Array.isArray(message.created))
+                        return "created: array expected";
+                    for (var i = 0; i < message.created.length; ++i)
+                        if (!$util.isString(message.created[i]))
+                            return "created: string[] expected";
+                }
+                if (message.deleted != null && message.hasOwnProperty("deleted")) {
+                    if (!Array.isArray(message.deleted))
+                        return "deleted: array expected";
+                    for (var i = 0; i < message.deleted.length; ++i)
+                        if (!$util.isString(message.deleted[i]))
+                            return "deleted: string[] expected";
+                }
+                if (message.modified != null && message.hasOwnProperty("modified")) {
+                    if (!Array.isArray(message.modified))
+                        return "modified: array expected";
+                    for (var i = 0; i < message.modified.length; ++i)
+                        if (!$util.isString(message.modified[i]))
+                            return "modified: string[] expected";
+                }
+                if (message.renamed != null && message.hasOwnProperty("renamed")) {
+                    if (!Array.isArray(message.renamed))
+                        return "renamed: array expected";
+                    for (var i = 0; i < message.renamed.length; ++i)
+                        if (!$util.isString(message.renamed[i]))
+                            return "renamed: string[] expected";
+                }
+                if (message.files != null && message.hasOwnProperty("files")) {
+                    if (!Array.isArray(message.files))
+                        return "files: array expected";
+                    for (var i = 0; i < message.files.length; ++i)
+                        if (!$util.isString(message.files[i]))
+                            return "files: string[] expected";
+                }
+                return null;
+            };
+
+            /**
+             * Creates a GitStatus message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
+             * @memberof mdc.proto.GitStatus
+             * @static
+             * @param {Object.<string,*>} object Plain object
+             * @returns {mdc.proto.GitStatus} GitStatus
+             */
+            GitStatus.fromObject = function fromObject(object) {
+                if (object instanceof $root.mdc.proto.GitStatus)
+                    return object;
+                var message = new $root.mdc.proto.GitStatus();
+                if (object.not_added) {
+                    if (!Array.isArray(object.not_added))
+                        throw TypeError(".mdc.proto.GitStatus.not_added: array expected");
+                    message.not_added = [];
+                    for (var i = 0; i < object.not_added.length; ++i)
+                        message.not_added[i] = String(object.not_added[i]);
+                }
+                if (object.conflicted) {
+                    if (!Array.isArray(object.conflicted))
+                        throw TypeError(".mdc.proto.GitStatus.conflicted: array expected");
+                    message.conflicted = [];
+                    for (var i = 0; i < object.conflicted.length; ++i)
+                        message.conflicted[i] = String(object.conflicted[i]);
+                }
+                if (object.created) {
+                    if (!Array.isArray(object.created))
+                        throw TypeError(".mdc.proto.GitStatus.created: array expected");
+                    message.created = [];
+                    for (var i = 0; i < object.created.length; ++i)
+                        message.created[i] = String(object.created[i]);
+                }
+                if (object.deleted) {
+                    if (!Array.isArray(object.deleted))
+                        throw TypeError(".mdc.proto.GitStatus.deleted: array expected");
+                    message.deleted = [];
+                    for (var i = 0; i < object.deleted.length; ++i)
+                        message.deleted[i] = String(object.deleted[i]);
+                }
+                if (object.modified) {
+                    if (!Array.isArray(object.modified))
+                        throw TypeError(".mdc.proto.GitStatus.modified: array expected");
+                    message.modified = [];
+                    for (var i = 0; i < object.modified.length; ++i)
+                        message.modified[i] = String(object.modified[i]);
+                }
+                if (object.renamed) {
+                    if (!Array.isArray(object.renamed))
+                        throw TypeError(".mdc.proto.GitStatus.renamed: array expected");
+                    message.renamed = [];
+                    for (var i = 0; i < object.renamed.length; ++i)
+                        message.renamed[i] = String(object.renamed[i]);
+                }
+                if (object.files) {
+                    if (!Array.isArray(object.files))
+                        throw TypeError(".mdc.proto.GitStatus.files: array expected");
+                    message.files = [];
+                    for (var i = 0; i < object.files.length; ++i)
+                        message.files[i] = String(object.files[i]);
+                }
+                return message;
+            };
+
+            /**
+             * Creates a plain object from a GitStatus message. Also converts values to other types if specified.
+             * @function toObject
+             * @memberof mdc.proto.GitStatus
+             * @static
+             * @param {mdc.proto.GitStatus} message GitStatus
+             * @param {$protobuf.IConversionOptions} [options] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            GitStatus.toObject = function toObject(message, options) {
+                if (!options)
+                    options = {};
+                var object = {};
+                if (options.arrays || options.defaults) {
+                    object.not_added = [];
+                    object.conflicted = [];
+                    object.created = [];
+                    object.deleted = [];
+                    object.modified = [];
+                    object.renamed = [];
+                    object.files = [];
+                }
+                if (message.not_added && message.not_added.length) {
+                    object.not_added = [];
+                    for (var j = 0; j < message.not_added.length; ++j)
+                        object.not_added[j] = message.not_added[j];
+                }
+                if (message.conflicted && message.conflicted.length) {
+                    object.conflicted = [];
+                    for (var j = 0; j < message.conflicted.length; ++j)
+                        object.conflicted[j] = message.conflicted[j];
+                }
+                if (message.created && message.created.length) {
+                    object.created = [];
+                    for (var j = 0; j < message.created.length; ++j)
+                        object.created[j] = message.created[j];
+                }
+                if (message.deleted && message.deleted.length) {
+                    object.deleted = [];
+                    for (var j = 0; j < message.deleted.length; ++j)
+                        object.deleted[j] = message.deleted[j];
+                }
+                if (message.modified && message.modified.length) {
+                    object.modified = [];
+                    for (var j = 0; j < message.modified.length; ++j)
+                        object.modified[j] = message.modified[j];
+                }
+                if (message.renamed && message.renamed.length) {
+                    object.renamed = [];
+                    for (var j = 0; j < message.renamed.length; ++j)
+                        object.renamed[j] = message.renamed[j];
+                }
+                if (message.files && message.files.length) {
+                    object.files = [];
+                    for (var j = 0; j < message.files.length; ++j)
+                        object.files[j] = message.files[j];
+                }
+                return object;
+            };
+
+            /**
+             * Converts this GitStatus to JSON.
+             * @function toJSON
+             * @memberof mdc.proto.GitStatus
+             * @instance
+             * @returns {Object.<string,*>} JSON object
+             */
+            GitStatus.prototype.toJSON = function toJSON() {
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            return GitStatus;
         })();
 
         return proto;

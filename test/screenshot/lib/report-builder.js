@@ -26,7 +26,7 @@ const path = require('path');
 const serveIndex = require('serve-index');
 
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
-const {Approvals, GoldenScreenshot, LibraryVersion, ReportData, ReportMeta} = mdcProto;
+const {Approvals, GitStatus, GoldenScreenshot, LibraryVersion, ReportData, ReportMeta} = mdcProto;
 const {Screenshot, Screenshots, ScreenshotList, TestFile, User, UserAgents} = mdcProto;
 const {InclusionType, CaptureState} = Screenshot;
 
@@ -90,7 +90,7 @@ class ReportBuilder {
     /** @type {!mdc.proto.ReportData} */
     const reportData = ReportData.fromObject(require(runReportJsonFile.absolute_path));
     reportData.approvals = Approvals.create();
-    this.populateScreenshotMaps(reportData.screenshots);
+    this.populateScreenshotMaps(reportData.user_agents, reportData.screenshots);
     this.populateApprovals_(reportData);
     return reportData;
   }
@@ -110,8 +110,7 @@ class ReportBuilder {
       await this.startTemporaryHttpServer_(reportMeta);
     }
 
-    const allUserAgents = userAgents.all_user_agents;
-    const screenshots = await this.createScreenshotsProto_({reportMeta, allUserAgents});
+    const screenshots = await this.createScreenshotsProto_({reportMeta, userAgents});
 
     const reportData = ReportData.create({
       meta: reportMeta,
@@ -136,9 +135,10 @@ class ReportBuilder {
   }
 
   /**
+   * @param {!mdc.proto.UserAgents} userAgents
    * @param {!mdc.proto.Screenshots} screenshots
    */
-  populateScreenshotMaps(screenshots) {
+  populateScreenshotMaps(userAgents, screenshots) {
     // TODO(acdvorak): Figure out why the report page is randomly sorted. E.g.:
     // https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/04_49_09_427/report/report.html
     // https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/04_48_52_974/report/report.html
@@ -193,6 +193,25 @@ class ReportBuilder {
     screenshots.removed_screenshot_page_map = this.groupByPage_(screenshots.removed_screenshot_list);
     screenshots.changed_screenshot_page_map = this.groupByPage_(screenshots.changed_screenshot_list);
     screenshots.unchanged_screenshot_page_map = this.groupByPage_(screenshots.unchanged_screenshot_list);
+
+    screenshots.runnable_test_page_urls = Object.keys(screenshots.runnable_screenshot_page_map);
+    screenshots.skipped_test_page_urls = Object.keys(screenshots.skipped_screenshot_page_map);
+    screenshots.runnable_browser_icon_urls = userAgents.runnable_user_agents.map((userAgent) => userAgent.icon_url);
+    screenshots.skipped_browser_icon_urls = userAgents.skipped_user_agents.map((userAgent) => userAgent.icon_url);
+    screenshots.runnable_screenshots_keys = this.getScreenshotsKeys_(screenshots.runnable_screenshot_list);
+    screenshots.skipped_screenshots_keys = this.getScreenshotsKeys_(screenshots.skipped_screenshot_list);
+  }
+
+  /**
+   * @param {!Array<!mdc.proto.Screenshot>} screenshots
+   * @return {!Array<string>}
+   * @private
+   */
+  getScreenshotsKeys_(screenshots) {
+    return screenshots.map((screenshot) => {
+      // TODO(acdvorak): Document the ':' separator format
+      return `${screenshot.html_file_path}:${screenshot.user_agent.alias}`;
+    });
   }
 
   /**
@@ -359,15 +378,17 @@ class ReportBuilder {
       local_temporary_http_dir: localTemporaryHttpDir,
       local_temporary_http_port: localTemporaryHttpPort,
 
-      host_os_name: this.getHostOsName_(),
-      cli_invocation: this.getCliInvocation_(),
-      expected_diff_base: await this.cli_.parseDiffBase(),
-      actual_diff_base: await this.cli_.parseDiffBase('HEAD'),
       user: User.create({
         name: await this.gitRepo_.getUserName(),
         email: await this.gitRepo_.getUserEmail(),
         username: USERNAME,
       }),
+      host_os_name: osName(os.platform(), os.release()),
+      cli_invocation: this.getCliInvocation_(),
+
+      expected_diff_base: await this.cli_.parseDiffBase(),
+      actual_diff_base: await this.cli_.parseDiffBase('HEAD'),
+      git_status: GitStatus.fromObject(await this.gitRepo_.getStatus()),
 
       node_version: LibraryVersion.create({
         version_string: await this.getExecutableVersion_('node'),
@@ -448,11 +469,11 @@ class ReportBuilder {
 
   /**
    * @param {!mdc.proto.ReportMeta} reportMeta
-   * @param {!Array<!mdc.proto.UserAgent>} allUserAgents
+   * @param {!mdc.proto.UserAgents} allUserAgents
    * @return {!Promise<!mdc.proto.Screenshots>}
    * @private
    */
-  async createScreenshotsProto_({reportMeta, allUserAgents}) {
+  async createScreenshotsProto_({reportMeta, userAgents}) {
     /** @type {!GoldenFile} */
     const goldenFile = await this.goldenIo_.readFromDiffBase();
 
@@ -460,10 +481,10 @@ class ReportBuilder {
     const expectedScreenshots = await this.getExpectedScreenshots_(goldenFile);
 
     /** @type {!Array<!mdc.proto.Screenshot>} */
-    const actualScreenshots = await this.getActualScreenshots_({goldenFile, reportMeta, allUserAgents});
+    const actualScreenshots = await this.getActualScreenshots_({goldenFile, reportMeta, userAgents});
 
     // TODO(acdvorak): Rename `Screenshots`
-    return this.sortAndGroupScreenshots_(Screenshots.create({
+    return this.sortAndGroupScreenshots_(userAgents, Screenshots.create({
       expected_screenshot_list: expectedScreenshots,
       actual_screenshot_list: actualScreenshots,
       runnable_screenshot_list: actualScreenshots.filter((screenshot) => screenshot.is_runnable),
@@ -475,17 +496,18 @@ class ReportBuilder {
   }
 
   /**
+   * @param {!mdc.proto.UserAgents} userAgents
    * @param {!mdc.proto.Screenshots} screenshots
    * @return {!mdc.proto.Screenshots}
    * @private
    */
-  sortAndGroupScreenshots_(screenshots) {
+  sortAndGroupScreenshots_(userAgents, screenshots) {
     this.setAllStates_(screenshots.skipped_screenshot_list, InclusionType.SKIP, CaptureState.SKIPPED);
     this.setAllStates_(screenshots.added_screenshot_list, InclusionType.ADD, CaptureState.QUEUED);
     this.setAllStates_(screenshots.removed_screenshot_list, InclusionType.REMOVE, CaptureState.SKIPPED);
     this.setAllStates_(screenshots.comparable_screenshot_list, InclusionType.COMPARE, CaptureState.QUEUED);
 
-    this.populateScreenshotMaps(screenshots);
+    this.populateScreenshotMaps(userAgents, screenshots);
 
     return screenshots;
   }
@@ -560,11 +582,13 @@ class ReportBuilder {
   /**
    * @param {!GoldenFile} goldenFile
    * @param {!mdc.proto.ReportMeta} reportMeta
-   * @param {!Array<!mdc.proto.UserAgent>} allUserAgents
+   * @param {!mdc.proto.UserAgents} userAgents
    * @return {!Promise<!Array<!mdc.proto.Screenshot>>}
    * @private
    */
-  async getActualScreenshots_({goldenFile, reportMeta, allUserAgents}) {
+  async getActualScreenshots_({goldenFile, reportMeta, userAgents}) {
+    const allUserAgents = userAgents.all_user_agents;
+
     /** @type {!Array<!mdc.proto.Screenshot>} */
     const allScreenshots = [];
 

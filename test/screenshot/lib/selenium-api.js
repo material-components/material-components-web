@@ -171,11 +171,13 @@ class SeleniumApi {
    * @return {!Promise<!IWebDriver>}
    */
   async createWebDriver_({reportData, userAgent}) {
+    const meta = reportData.meta;
     const driverBuilder = new Builder();
 
-    userAgent.desired_capabilities = await this.getDesiredCapabilities_({reportData, userAgent});
-    console.log('userAgent.desired_capabilities:', userAgent.desired_capabilities);
-    driverBuilder.withCapabilities(userAgent.desired_capabilities);
+    /** @type {!selenium.proto.RawCapabilities} */
+    const desiredCapabilities = await this.getDesiredCapabilities_({meta, userAgent});
+    userAgent.desired_capabilities = desiredCapabilities;
+    driverBuilder.withCapabilities(desiredCapabilities);
 
     const isOnline = await this.cli_.isOnline();
     if (isOnline) {
@@ -196,8 +198,8 @@ class SeleniumApi {
     /* eslint-disable camelcase */
     const {os_name, os_version, browser_name, browser_version} = navigator;
 
-    userAgent.actual_capabilities = actualCapabilities;
     userAgent.navigator = navigator;
+    userAgent.actual_capabilities = actualCapabilities;
     userAgent.browser_version_value = browser_version;
     userAgent.image_filename_suffix = this.getImageFileNameSuffix_(userAgent);
 
@@ -208,15 +210,15 @@ class SeleniumApi {
   }
 
   /**
-   * @param {!mdc.proto.ReportData} reportData
+   * @param {!mdc.proto.ReportMeta} meta
    * @param {!mdc.proto.UserAgent} userAgent
    * @return {!selenium.proto.RawCapabilities}
    * @private
    */
-  async getDesiredCapabilities_({reportData, userAgent}) {
+  async getDesiredCapabilities_({meta, userAgent}) {
     const isOnline = await this.cli_.isOnline();
     if (isOnline) {
-      return await this.cbtApi_.getDesiredCapabilities(userAgent);
+      return await this.cbtApi_.getDesiredCapabilities_({meta, userAgent});
     }
 
     const browserVendorMap = {
@@ -229,8 +231,6 @@ class SeleniumApi {
 
     return RawCapabilities.create({
       browserName: browserVendorMap[userAgent.browser_vendor_type],
-      name: undefined,
-      build: reportData.meta.diff_base.string,
     });
   }
 
@@ -263,12 +263,20 @@ class SeleniumApi {
     const uaParsed = UserAgentParser.parse(uaString);
 
     // TODO(acdvorak): Clean this up
-    return Navigator.create({
+    const navigator = Navigator.create({
       os_name: uaParsed.os.family.toLowerCase().startsWith('mac') ? 'Mac' : uaParsed.os.family,
       os_version: uaParsed.os.toVersion().replace(/(?:\.0)+$/, ''),
       browser_name: uaParsed.family.replace(/\s*Mobile\s*/, ''),
       browser_version: uaParsed.toVersion().replace(/(?:\.0)+$/, ''),
     });
+
+    // TODO(acdvorak): De-dupe
+    /* eslint-disable camelcase */
+    const {browser_name, browser_version, os_name, os_version} = navigator;
+    navigator.full_name = [browser_name, browser_version, 'on', os_name, os_version].join(' ');
+    /* eslint-enable camelcase */
+
+    return navigator;
   }
 
   /**

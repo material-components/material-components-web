@@ -428,9 +428,10 @@ window.mdc.reportUi = (() => {
       const hasUnreviewedScreenshots = numUnreviewed > 0;
 
       if (!hasUncheckedScreenshots && !hasCheckedScreenshots) {
-        this.queryOne_('.report-toolbar').classList.add('report-toolbar--hidden');
         return;
       }
+
+      this.queryOne_('.report-toolbar').classList.remove('report-toolbar--hidden');
 
       const selectAllButton = this.queryOne_('#report-toolbar__select-all-button');
       const selectNoneButton = this.queryOne_('#report-toolbar__select-none-button');

@@ -84,9 +84,9 @@ class ReportWriter {
     meta.report_json_file = reportJsonFile;
 
     const jsonFileContent = this.stringify_(slimReportData);
-    const htmlFileContent = await this.generateHtml_(fullReportData, templateFileAbsolutePath);
-
     await this.localStorage_.writeTextFile(jsonFileAbsolutePath, jsonFileContent);
+
+    const htmlFileContent = await this.generateHtml_(fullReportData, templateFileAbsolutePath);
     await this.localStorage_.writeTextFile(htmlFileAbsolutePath, htmlFileContent);
   }
 
@@ -115,6 +115,27 @@ class ReportWriter {
       },
       getDiffBaseMarkup: function(diffBase) {
         return self.getDiffBaseMarkup_(diffBase);
+      },
+      getLocalChangesMarkup: function(gitStatus) {
+        return self.getLocalChangesMarkup_(gitStatus);
+      },
+      getFilteredUrlCountMarkup: function(screenshots) {
+        return self.getFilteredCountMarkup_(
+          screenshots.runnable_test_page_urls.length,
+          screenshots.skipped_test_page_urls.length
+        );
+      },
+      getFilteredBrowserIconsMarkup: function(userAgents) {
+        return self.getFilteredBrowserIconsMarkup_(
+          userAgents.runnable_user_agents,
+          userAgents.skipped_user_agents
+        );
+      },
+      getFilteredScreenshotCountMarkup: function(screenshots) {
+        return self.getFilteredCountMarkup_(
+          screenshots.runnable_screenshot_keys.length,
+          screenshots.skipped_screenshot_keys.length
+        );
       },
       createDetailsElement: function(...allArgs) {
         const hbContext = this;
@@ -333,130 +354,45 @@ class ReportWriter {
     return stringify(object, {space: '  '}) + '\n';
   }
 
-  async getMetadataMarkup_() {
-    const timestamp = (new Date()).toISOString();
-
-    const {runnableTestPages, skippedTestPages, runnableUserAgents, skippedUserAgents} = this.runReport_.runTarget;
-
-    const numRunnableTestPages = runnableTestPages.length;
-    const numSkippedTestPages = skippedTestPages.length;
-    const numTotalTestPages = numRunnableTestPages + numSkippedTestPages;
-
-    const numRunnableUserAgents = runnableUserAgents.length;
-    const numSkippedUserAgents = skippedUserAgents.length;
-    const numTotalUserAgents = numRunnableUserAgents + numSkippedUserAgents;
-
-    const numTotalScreenshots = numTotalTestPages * numTotalUserAgents;
-    const numRunnableScreenshots = numRunnableTestPages * numRunnableUserAgents;
-    const numSkippedScreenshots = numTotalScreenshots - numRunnableScreenshots;
-
-    const testPageCountMarkup = this.getMetadataFilterCountMarkup_(numRunnableTestPages, numSkippedTestPages);
-    const browserCountMarkup = this.getMetadataFilterCountMarkup_(numRunnableUserAgents, numSkippedUserAgents);
-    const screenshotCountMarkup = this.getMetadataFilterCountMarkup_(numRunnableScreenshots, numSkippedScreenshots);
-
-    const [nodeBinPath, scriptPath, ...scriptArgs] = process.argv;
-    const nodeBinPathRedacted = nodeBinPath.replace(process.env.HOME, '~');
-    const scriptPathRedacted = scriptPath.replace(process.env.PWD, '.');
-    const nodeArgs = process.execArgv;
-    const cliInvocation = [nodeBinPathRedacted, ...nodeArgs, scriptPathRedacted, ...scriptArgs]
-      .map((arg) => {
-        // Heuristic for "safe" characters that don't need to be escaped or wrapped in single quotes to be copy/pasted
-        // and run in a shell. This includes the letters a-z and A-Z, the numbers 0-9,
-        // See https://ascii.cl/
-        if (/^[,-9@-Z_a-z=~]+$/.test(arg)) {
-          return arg;
-        }
-        return `'${arg.replace(/'/g, "\\'")}'`;
-      })
-      .join(' ')
-    ;
-
-    const goldenDiffBase = await this.cli_.parseDiffBase();
-    const snapshotDiffBase = await this.cli_.parseDiffBase('HEAD');
-
-    const gitUserName = await this.gitRepo_.getUserName();
-    const gitUserEmail = await this.gitRepo_.getUserEmail();
-    const gitUser = `${gitUserName} &lt;${gitUserEmail}&gt;`;
-
-    const getExecutableVersion = async (cmd) => {
-      const options = {cwd: process.env.PWD, env: process.env};
-      const stdOut = await childProcess.exec(`${cmd} --version`, options);
-      return stdOut[0].trim();
-    };
-
-    const mdcVersion = require('../../../lerna.json').version;
-    const mdcVersionDistance = await this.getMetadataCommitDistanceMarkup_(mdcVersion);
-    const nodeVersion = await getExecutableVersion('node');
-    const npmVersion = await getExecutableVersion('npm');
-
-    return `
-<details class="report-metadata" open>
-  <summary class="report-metadata__heading">Metadata</summary>
-  <div class="report-metadata__content">
-    <table class="report-metadata__table">
-      <tbody>
-        <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">Timestamp:</th>
-          <td class="report-metadata__cell report-metadata__cell--val">${timestamp}</td>
-        </tr>
-        <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">Test Cases:</th>
-          <td class="report-metadata__cell report-metadata__cell--val">${testPageCountMarkup}</td>
-        </tr>
-        <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">Browsers:</th>
-          <td class="report-metadata__cell report-metadata__cell--val">${browserCountMarkup}</td>
-        </tr>
-        <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">Screenshots:</th>
-          <td class="report-metadata__cell report-metadata__cell--val">${screenshotCountMarkup}</td>
-        </tr>
-        <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">Golden:</th>
-          <td class="report-metadata__cell report-metadata__cell--val">
-            ${await this.getDiffBaseMarkup_(goldenDiffBase)}
-          </td>
-        </tr>
-        <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">Snapshot Base:</th>
-          <td class="report-metadata__cell report-metadata__cell--val">
-            ${await this.getDiffBaseMarkup_(snapshotDiffBase)}
-            ${await this.getLocalChangesMarkup_(snapshotDiffBase)}
-          </td>
-        </tr>
-        <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">User:</th>
-          <td class="report-metadata__cell report-metadata__cell--val">${gitUser}</td>
-        </tr>
-        <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">MDC Version:</th>
-          <td class="report-metadata__cell report-metadata__cell--val">${mdcVersion} ${mdcVersionDistance}</td>
-        </tr>
-        <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">Node Version:</th>
-          <td class="report-metadata__cell report-metadata__cell--val">${nodeVersion}</td>
-        </tr>
-        <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">NPM Version:</th>
-          <td class="report-metadata__cell report-metadata__cell--val">${npmVersion}</td>
-        </tr>
-        <tr>
-          <th class="report-metadata__cell report-metadata__cell--key">CLI Invocation:</th>
-          <td class="report-metadata__cell report-metadata__cell--val">${cliInvocation}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</details>
-`;
-  }
-
-  getMetadataFilterCountMarkup_(numRunnable, numSkipped) {
+  /**
+   * @param {number} numRunnable
+   * @param {number} numSkipped
+   * @return {!SafeString}
+   * @private
+   */
+  getFilteredCountMarkup_(numRunnable, numSkipped) {
     const numTotal = numRunnable + numSkipped;
     if (numSkipped > 0) {
-      return `${numRunnable} of ${numTotal} (skipped ${numSkipped})`;
+      return new Handlebars.SafeString(`${numRunnable} of ${numTotal} (skipped ${numSkipped})`);
     }
-    return String(numRunnable);
+    return new Handlebars.SafeString(numRunnable);
+  }
+
+  /**
+   * @param {!Array<!mdc.proto.UserAgent>} runnableUserAgents
+   * @param {!Array<!mdc.proto.UserAgent>} skippedUserAgents
+   * @return {!SafeString}
+   * @private
+   */
+  getFilteredBrowserIconsMarkup_(runnableUserAgents, skippedUserAgents) {
+    /**
+     * @param {!mdc.proto.UserAgent} userAgent
+     * @return {string}
+     */
+    function getIconHtml(userAgent) {
+      const title = userAgent.navigator ? userAgent.navigator.full_name : userAgent.alias;
+      return `
+<img src="${userAgent.icon_url}" class="report-user-agent__icon" title="${title}">
+`.trim();
+    }
+
+    const runnableHtml = runnableUserAgents.map(getIconHtml).join(' ');
+    const numSkipped = skippedUserAgents.length;
+    if (numSkipped > 0) {
+      const skippedHtml = skippedUserAgents.map(getIconHtml).join(' ');
+      return new Handlebars.SafeString(`${runnableHtml} (skipped ${skippedHtml})`);
+    }
+    return new Handlebars.SafeString(runnableHtml);
   }
 
   /**
@@ -497,9 +433,13 @@ on tag
     throw new Error('Unable to generate markup for invalid diff source');
   }
 
-  async getLocalChangesMarkup_(diffBase) {
+  /**
+   * @param {!mdc.proto.GitStatus} gitStatus
+   * @return {!SafeString}
+   * @private
+   */
+  getLocalChangesMarkup_(gitStatus) {
     const fragments = [];
-    const gitStatus = await this.gitRepo_.getStatus();
     const numUntracked = gitStatus.not_added.length;
     const numModified = gitStatus.files.length - numUntracked;
 
@@ -511,7 +451,7 @@ on tag
       fragments.push(`${numUntracked} untracked file${numUntracked === 1 ? '' : 's'}`);
     }
 
-    return fragments.length > 0 ? `(${fragments.join(', ')})` : '';
+    return new Handlebars.SafeString(fragments.length > 0 ? `(${fragments.join(', ')})` : '');
   }
 }
 

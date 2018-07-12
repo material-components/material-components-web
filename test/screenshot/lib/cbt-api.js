@@ -115,19 +115,22 @@ https://crossbrowsertesting.com/account
   }
 
   /**
+   * @param {!mdc.proto.ReportMeta} meta
    * @param {!mdc.proto.UserAgent} userAgent
    * @return {!Promise<!selenium.proto.RawCapabilities>}
+   * @private
    */
-  async getDesiredCapabilities(userAgent) {
+  async getDesiredCapabilities_({meta, userAgent}) {
     // TODO(acdvorak): Create a type for this
     /** @type {{device: !cbt.proto.CbtDevice, browser: !cbt.proto.CbtBrowser}} */
     const matchingCbtUserAgent = await this.getMatchingCbtUserAgent_(userAgent);
 
     /** @type {!selenium.proto.RawCapabilities} */
     const defaultCaps = {
-      // TODO(acdvorak): Implement?
-      // name: 'Foo',
-      // build: '0.1',
+      // TODO(acdvorak): Implement
+      name: undefined,
+      // TODO(acdvorak): Figure out why this value is an empty string
+      build: meta.actual_diff_base.input_string,
 
       // TODO(acdvorak): Expose these as CLI flags
       record_video: true,
