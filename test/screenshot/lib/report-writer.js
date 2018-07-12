@@ -127,7 +127,7 @@ class ReportWriter {
         classNames.push(hiddenClassName);
       }
     } else if (tagName === 'details') {
-      if (isVisible) {
+      if (isVisible && numScreenshots > 0) {
         attributes.push('open');
       }
     } else {
