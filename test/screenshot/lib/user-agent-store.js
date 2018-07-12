@@ -136,7 +136,8 @@ Expected browser vendor to be one of [${validBrowserVendors}], but got '${browse
     const isEnabledByCli = this.isAliasEnabled_(alias);
     const isAvailableLocally = await this.isAvailableLocally_(browserVendorType);
     const isRunnable = isEnabledByCli && (isOnline || isAvailableLocally);
-    const iconUrl = this.getIconUrl_(browserVendorType);
+    const browserIconUrl = this.getBrowserIconUrl_(browserVendorType);
+    const osIconUrl = this.getOsIconUrl_(browserVendorType);
 
     return UserAgent.create({
       alias,
@@ -156,7 +157,8 @@ Expected browser vendor to be one of [${validBrowserVendors}], but got '${browse
       is_available_locally: isAvailableLocally,
       is_runnable: isRunnable,
 
-      icon_url: iconUrl,
+      browser_icon_url: browserIconUrl,
+      os_icon_url: osIconUrl,
     });
   }
 
@@ -195,7 +197,7 @@ Expected browser vendor to be one of [${validBrowserVendors}], but got '${browse
    * @return {string}
    * @private
    */
-  getIconUrl_(browserVendorType) {
+  getBrowserIconUrl_(browserVendorType) {
     /* eslint-disable max-len */
     const map = {
       [BrowserVendorType.CHROME]: 'https://cdnjs.cloudflare.com/ajax/libs/browser-logos/45.8.0/chrome/chrome.svg',
@@ -206,6 +208,22 @@ Expected browser vendor to be one of [${validBrowserVendors}], but got '${browse
     };
     /* eslint-enable max-len */
     return map[browserVendorType];
+  }
+
+  /**
+   * @param {mdc.proto.UserAgent.OsVendorType} osVendorType
+   * @return {string}
+   * @private
+   */
+  getOsIconUrl_(osVendorType) {
+    // TODO(acdvorak): De-dupe and centralize icon URLs
+    const map = {
+      [OsVendorType.ANDROID]: 'https://png.icons8.com/color/48/000000/android-os.png',
+      [OsVendorType.IOS]: 'https://png.icons8.com/color/50/000000/ios-logo.png',
+      [OsVendorType.MAC]: 'https://png.icons8.com/ios/48/000000/mac-os-filled.png',
+      [OsVendorType.WINDOWS]: 'https://png.icons8.com/color/48/000000/windows8.png',
+    };
+    return map[osVendorType];
   }
 }
 

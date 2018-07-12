@@ -196,10 +196,19 @@ class ReportBuilder {
 
     screenshots.runnable_test_page_urls = Object.keys(screenshots.runnable_screenshot_page_map);
     screenshots.skipped_test_page_urls = Object.keys(screenshots.skipped_screenshot_page_map);
-    screenshots.runnable_browser_icon_urls = userAgents.runnable_user_agents.map((userAgent) => userAgent.icon_url);
-    screenshots.skipped_browser_icon_urls = userAgents.skipped_user_agents.map((userAgent) => userAgent.icon_url);
-    screenshots.runnable_screenshots_keys = this.getScreenshotsKeys_(screenshots.runnable_screenshot_list);
-    screenshots.skipped_screenshots_keys = this.getScreenshotsKeys_(screenshots.skipped_screenshot_list);
+    screenshots.runnable_browser_icon_urls = this.getBrowserIconUrls_(userAgents.runnable_user_agents);
+    screenshots.skipped_browser_icon_urls = this.getBrowserIconUrls_(userAgents.skipped_user_agents);
+    screenshots.runnable_screenshot_keys = this.getScreenshotsKeys_(screenshots.runnable_screenshot_list);
+    screenshots.skipped_screenshot_keys = this.getScreenshotsKeys_(screenshots.skipped_screenshot_list);
+  }
+
+  /**
+   * @param {!Array<!mdc.proto.UserAgent>} userAgents
+   * @return {!Array<string>}
+   * @private
+   */
+  getBrowserIconUrls_(userAgents) {
+    return userAgents.map((userAgent) => userAgent.browser_icon_url);
   }
 
   /**
@@ -363,6 +372,7 @@ class ReportBuilder {
     mkdirp.sync(path.dirname(localReportBaseDir));
 
     const mdcVersionString = require('../../../lerna.json').version;
+    const hostOsName = osName(os.platform(), os.release());
 
     return ReportMeta.create({
       start_time_iso_utc: new Date().toISOString(),
@@ -383,7 +393,8 @@ class ReportBuilder {
         email: await this.gitRepo_.getUserEmail(),
         username: USERNAME,
       }),
-      host_os_name: osName(os.platform(), os.release()),
+      host_os_name: hostOsName,
+      host_os_icon_url: this.getHostOsIconUrl_(hostOsName),
       cli_invocation: this.getCliInvocation_(),
 
       expected_diff_base: await this.cli_.parseDiffBase(),
@@ -404,11 +415,23 @@ class ReportBuilder {
   }
 
   /**
-   * @return {string}
+   * @param {string} hostOsName
+   * @return {?string}
    * @private
    */
-  getHostOsName_() {
-    return osName(os.platform(), os.release());
+  getHostOsIconUrl_(hostOsName) {
+    // TODO(acdvorak): De-dupe and centralize icon URLs
+    const map = {
+      'mac': 'https://png.icons8.com/ios/48/000000/mac-os-filled.png',
+      'windows': 'https://png.icons8.com/color/48/000000/windows8.png',
+      'linux': 'https://png.icons8.com/color/50/000000/linux.png',
+    };
+    for (const [key, url] of Object.entries(map)) {
+      if (hostOsName.toLowerCase().startsWith(key)) {
+        return url;
+      }
+    }
+    return null;
   }
 
   /**

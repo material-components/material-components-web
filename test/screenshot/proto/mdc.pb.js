@@ -2470,7 +2470,8 @@ $root.mdc = (function() {
              * @property {boolean|null} [is_available_locally] UserAgent is_available_locally
              * @property {boolean|null} [is_runnable] UserAgent is_runnable
              * @property {string|null} [image_filename_suffix] UserAgent image_filename_suffix
-             * @property {string|null} [icon_url] UserAgent icon_url
+             * @property {string|null} [browser_icon_url] UserAgent browser_icon_url
+             * @property {string|null} [os_icon_url] UserAgent os_icon_url
              */
 
             /**
@@ -2625,12 +2626,20 @@ $root.mdc = (function() {
             UserAgent.prototype.image_filename_suffix = "";
 
             /**
-             * UserAgent icon_url.
-             * @member {string} icon_url
+             * UserAgent browser_icon_url.
+             * @member {string} browser_icon_url
              * @memberof mdc.proto.UserAgent
              * @instance
              */
-            UserAgent.prototype.icon_url = "";
+            UserAgent.prototype.browser_icon_url = "";
+
+            /**
+             * UserAgent os_icon_url.
+             * @member {string} os_icon_url
+             * @memberof mdc.proto.UserAgent
+             * @instance
+             */
+            UserAgent.prototype.os_icon_url = "";
 
             /**
              * Creates a new UserAgent instance using the specified properties.
@@ -2690,8 +2699,10 @@ $root.mdc = (function() {
                     writer.uint32(/* id 16, wireType 0 =*/128).bool(message.is_runnable);
                 if (message.image_filename_suffix != null && message.hasOwnProperty("image_filename_suffix"))
                     writer.uint32(/* id 17, wireType 2 =*/138).string(message.image_filename_suffix);
-                if (message.icon_url != null && message.hasOwnProperty("icon_url"))
-                    writer.uint32(/* id 18, wireType 2 =*/146).string(message.icon_url);
+                if (message.browser_icon_url != null && message.hasOwnProperty("browser_icon_url"))
+                    writer.uint32(/* id 18, wireType 2 =*/146).string(message.browser_icon_url);
+                if (message.os_icon_url != null && message.hasOwnProperty("os_icon_url"))
+                    writer.uint32(/* id 19, wireType 2 =*/154).string(message.os_icon_url);
                 return writer;
             };
 
@@ -2778,7 +2789,10 @@ $root.mdc = (function() {
                         message.image_filename_suffix = reader.string();
                         break;
                     case 18:
-                        message.icon_url = reader.string();
+                        message.browser_icon_url = reader.string();
+                        break;
+                    case 19:
+                        message.os_icon_url = reader.string();
                         break;
                     default:
                         reader.skipType(tag & 7);
@@ -2902,9 +2916,12 @@ $root.mdc = (function() {
                 if (message.image_filename_suffix != null && message.hasOwnProperty("image_filename_suffix"))
                     if (!$util.isString(message.image_filename_suffix))
                         return "image_filename_suffix: string expected";
-                if (message.icon_url != null && message.hasOwnProperty("icon_url"))
-                    if (!$util.isString(message.icon_url))
-                        return "icon_url: string expected";
+                if (message.browser_icon_url != null && message.hasOwnProperty("browser_icon_url"))
+                    if (!$util.isString(message.browser_icon_url))
+                        return "browser_icon_url: string expected";
+                if (message.os_icon_url != null && message.hasOwnProperty("os_icon_url"))
+                    if (!$util.isString(message.os_icon_url))
+                        return "os_icon_url: string expected";
                 return null;
             };
 
@@ -3035,8 +3052,10 @@ $root.mdc = (function() {
                     message.is_runnable = Boolean(object.is_runnable);
                 if (object.image_filename_suffix != null)
                     message.image_filename_suffix = String(object.image_filename_suffix);
-                if (object.icon_url != null)
-                    message.icon_url = String(object.icon_url);
+                if (object.browser_icon_url != null)
+                    message.browser_icon_url = String(object.browser_icon_url);
+                if (object.os_icon_url != null)
+                    message.os_icon_url = String(object.os_icon_url);
                 return message;
             };
 
@@ -3071,7 +3090,8 @@ $root.mdc = (function() {
                     object.is_available_locally = false;
                     object.is_runnable = false;
                     object.image_filename_suffix = "";
-                    object.icon_url = "";
+                    object.browser_icon_url = "";
+                    object.os_icon_url = "";
                 }
                 if (message.alias != null && message.hasOwnProperty("alias"))
                     object.alias = message.alias;
@@ -3107,8 +3127,10 @@ $root.mdc = (function() {
                     object.is_runnable = message.is_runnable;
                 if (message.image_filename_suffix != null && message.hasOwnProperty("image_filename_suffix"))
                     object.image_filename_suffix = message.image_filename_suffix;
-                if (message.icon_url != null && message.hasOwnProperty("icon_url"))
-                    object.icon_url = message.icon_url;
+                if (message.browser_icon_url != null && message.hasOwnProperty("browser_icon_url"))
+                    object.browser_icon_url = message.browser_icon_url;
+                if (message.os_icon_url != null && message.hasOwnProperty("os_icon_url"))
+                    object.os_icon_url = message.os_icon_url;
                 return object;
             };
 
