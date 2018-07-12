@@ -27,10 +27,17 @@ $mdc-shape-fab-bottom-right-radius: $mdc-shape-fab-radius !default;
 $mdc-shape-fab-bottom-left-radius: $mdc-shape-fab-radius !default;
 
 $mdc-shape-sheet-expanded-radius: 0 !default;
-$mdc-shape-sheet-expanded-top-left-radius: 0 !default;
-$mdc-shape-sheet-expanded-top-right-radius: 0 !default;
-$mdc-shape-sheet-expanded-bottom-right-radius: 0 !default;
-$mdc-shape-sheet-expanded-bottom-left-radius: 0 !default;
+$mdc-shape-sheet-expanded-top-left-radius: $mdc-shape-sheet-expanded-radius !default;
+$mdc-shape-sheet-expanded-top-right-radius: $mdc-shape-sheet-expanded-radius !default;
+$mdc-shape-sheet-expanded-bottom-right-radius: $mdc-shape-sheet-expanded-radius !default;
+$mdc-shape-sheet-expanded-bottom-left-radius: $mdc-shape-sheet-expanded-radius !default;
+
+$mdc-shape-extended-fab-height: 48px;
+$mdc-shape-extended-fab-radius: $mdc-shape-extended-fab-height / 2 !default;
+$mdc-shape-extended-fab-top-left-radius: $mdc-shape-extended-fab-radius !default;
+$mdc-shape-extended-fab-top-right-radius: $mdc-shape-extended-fab-radius !default;
+$mdc-shape-extended-fab-bottom-right-radius: $mdc-shape-extended-fab-radius !default;
+$mdc-shape-extended-fab-bottom-left-radius: $mdc-shape-extended-fab-radius !default;
 
 $mdc-shape-category: (
   button: (
@@ -50,5 +57,11 @@ $mdc-shape-category: (
     top-right: $mdc-shape-sheet-expanded-top-right-radius,
     bottom-right: $mdc-shape-sheet-expanded-bottom-right-radius,
     bottom-left: $mdc-shape-sheet-expanded-bottom-left-radius
+  ),
+  extended-fab: (
+    top-left: $mdc-shape-extended-fab-top-left-radius,
+    top-right: $mdc-shape-extended-fab-top-right-radius,
+    bottom-right: $mdc-shape-extended-fab-bottom-right-radius,
+    bottom-left: $mdc-shape-extended-fab-bottom-left-radius
   )
 )

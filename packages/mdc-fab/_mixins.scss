@@ -21,6 +21,7 @@
 @import "@material/theme/mixins";
 @import "@material/rtl/mixins";
 @import "@material/shape/mixins";
+@import "@material/shape/variables";
 @import "./variables";
 
 @mixin mdc-fab-accessible($container-color) {
@@ -83,7 +84,6 @@
 
 $mdc-fab-icon-enter-delay_: 90ms;
 $mdc-fab-icon-enter-duration_: 180ms;
-$mdc-fab-extended-height_: 48px;
 
 @mixin mdc-fab-base_ {
   @include mdc-ripple-surface;
@@ -104,7 +104,6 @@ $mdc-fab-extended-height_: 48px;
     opacity 15ms linear 30ms,
     mdc-animation-enter(transform, $mdc-fab-icon-enter-duration_ + $mdc-fab-icon-enter-delay_);
   border: none;
-  border-radius: 50%;
   fill: currentColor;
   cursor: pointer;
   user-select: none;
@@ -157,14 +156,14 @@ $mdc-fab-extended-height_: 48px;
 
 @mixin mdc-fab--extended_ {
   @include mdc-typography(button);
+  @include mdc-shape(extended-fab);
   @include mdc-fab-extended-padding(
     $mdc-fab-extended-icon-padding,
     $mdc-fab-extended-label-padding);
 
   width: auto;
   max-width: 100%;
-  height: $mdc-fab-extended-height_;
-  border-radius: $mdc-fab-extended-height_ / 2;
+  height: $mdc-shape-extended-fab-height;
 }
 
 @mixin mdc-fab__icon_ {

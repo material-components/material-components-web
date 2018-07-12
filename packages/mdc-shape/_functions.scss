@@ -6,16 +6,9 @@
   }
 
   $mdc-shape-baseline_: map-get($mdc-shape-category, $category);
-  $mdc-shape-overrides_: (
-    top-left: $top-left,
-    top-right: $top-right,
-    bottom-right: $bottom-right,
-    bottom-left: $bottom-left
-  );
 
-  $mdc-shape-radius_: map-merge($mdc-shape-baseline_, $mdc-shape-overrides_);
-  @return map-get($mdc-shape-radius_, 'top-left')
-      map-get($mdc-shape-radius_, 'top-right')
-      map-get($mdc-shape-radius_, 'bottom-right')
-      map-get($mdc-shape-radius_, 'bottom-left');
+  @return $top-left or map-get($mdc-shape-baseline_, 'top-left')
+      $top-right or map-get($mdc-shape-baseline_, 'top-right')
+      $bottom-right or map-get($mdc-shape-baseline_, 'bottom-right')
+      $bottom-left or map-get($mdc-shape-baseline_, 'bottom-left');
 }

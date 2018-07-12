@@ -114,3 +114,5 @@ figcaption > div {
 .demo-fab-custom-shape {
   @include mdc-fab-shape-radius(50%, 0, 0, 0);
 }
+
+$mdc-shape-fab-radius: 10%;
