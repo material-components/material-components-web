@@ -31,6 +31,7 @@ const LocalStorage = require('./local-storage');
 const ReportGenerator = require('./report-generator');
 const Screenshot = require('./screenshot');
 const SnapshotStore = require('./snapshot-store');
+const {TEST_DIR_RELATIVE_PATH} = require('../lib/constants');
 const {UploadableFile} = require('./types');
 
 /**
@@ -428,7 +429,7 @@ class Controller {
      * @return {!Promise<!UploadableFile>}
      */
     const writeFile = async (file) => {
-      const filePath = path.join(this.cliArgs_.testDir, file.destinationRelativeFilePath);
+      const filePath = path.join(TEST_DIR_RELATIVE_PATH, file.destinationRelativeFilePath);
       console.log(`Writing ${filePath} to disk...`);
       await fs.writeFile(filePath, file.fileContent, {encoding: 'utf8'});
       return this.cloudStorage_.uploadFile(file);

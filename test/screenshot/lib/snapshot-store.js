@@ -21,6 +21,8 @@ const stringify = require('json-stable-stringify');
 const CliArgParser = require('./cli-arg-parser');
 const GitRepo = require('./git-repo');
 
+const {GOLDEN_JSON_RELATIVE_PATH} = require('./constants');
+
 /**
  * Reads and writes a `golden.json` or `snapshot.json` file.
  */
@@ -49,7 +51,7 @@ class SnapshotStore {
    * @return {!Promise<!SnapshotSuiteJson>}
    */
   async fromLocalFile() {
-    return JSON.parse(await fs.readFile(this.cliArgs_.goldenPath, {encoding: 'utf8'}));
+    return JSON.parse(await fs.readFile(GOLDEN_JSON_RELATIVE_PATH, {encoding: 'utf8'}));
   }
 
   /**
@@ -219,11 +221,9 @@ class SnapshotStore {
    */
   async writeToDisk(runReport) {
     const jsonFileContent = await this.toJson_(runReport.runResult.approvedGoldenJsonData);
-    const jsonFilePath = this.cliArgs_.goldenPath;
+    await fs.writeFile(GOLDEN_JSON_RELATIVE_PATH, jsonFileContent);
 
-    await fs.writeFile(jsonFilePath, jsonFileContent);
-
-    console.log(`DONE updating "${jsonFilePath}"!`);
+    console.log(`DONE updating "${GOLDEN_JSON_RELATIVE_PATH}"!`);
   }
 
   /**
