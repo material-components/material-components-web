@@ -194,8 +194,6 @@ Then add `postcss-loader`, using `autoprefixer` as a plugin:
 },
 ```
 
-> Note: We disable autoprefixer for CSS Grid in order for MDC Web Layout Grid to work properly. Please also note that the order of loaders in webpack matters.
-
 `@material/button` has [documentation](../packages/mdc-button/README.md) about the required HTML for a button. Update your `index.html` to include the MDC Button markup, and add the `foo-button` class to the element:
 
 ```html
