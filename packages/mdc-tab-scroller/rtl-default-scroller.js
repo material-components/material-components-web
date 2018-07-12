@@ -45,8 +45,8 @@ class MDCTabScrollerRTLDefault extends MDCTabScrollerRTL {
     const currentScrollLeft = this.adapter_.getScrollAreaScrollLeft();
     const clampedScrollLeft = this.clampScrollValue_(edges.right - scrollX);
     return /** @type {!MDCTabScrollerAnimation} */ ({
-      scrollX: clampedScrollLeft,
-      translateX: clampedScrollLeft - currentScrollLeft,
+      finalScrollPosition: clampedScrollLeft,
+      scrollDelta: clampedScrollLeft - currentScrollLeft,
     });
   }
 
@@ -58,8 +58,8 @@ class MDCTabScrollerRTLDefault extends MDCTabScrollerRTL {
     const currentScrollLeft = this.adapter_.getScrollAreaScrollLeft();
     const clampedScrollLeft = this.clampScrollValue_(currentScrollLeft - scrollX);
     return /** @type {!MDCTabScrollerAnimation} */ ({
-      scrollX: clampedScrollLeft,
-      translateX: clampedScrollLeft - currentScrollLeft,
+      finalScrollPosition: clampedScrollLeft,
+      scrollDelta: clampedScrollLeft - currentScrollLeft,
     });
   }
 

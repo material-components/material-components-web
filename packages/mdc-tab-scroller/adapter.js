@@ -19,15 +19,15 @@
 
 /**
  * MDCTabScrollerAnimation contains the values required for animating from the
- * current scroll position to the new scroll position. The "scrollX" value
- * represents the new scroll position while the "translateX" value is the
+ * current scroll position to the new scroll position. The "finalScrollPosition"
+ * value represents the new scroll position while the "scrollDelta" value is the
  * corresponding transformation that is applied to the scroll content. Together,
  * they create the animation by first updating the scroll value then applying
  * the transformation and animating the transition. Both pieces are necessary
  * for the scroll animation to work. The values are used as-is by the tab
  * scroller animation method, ensuring that all logic for determining scroll
  * position or transformation is abstracted away from the animation method.
- * @typedef {{scrollX: number, translateX: number}}
+ * @typedef {{finalScrollPosition: number, scrollDelta: number}}
  */
 let MDCTabScrollerAnimation;
 

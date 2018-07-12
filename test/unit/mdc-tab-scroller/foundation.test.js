@@ -73,7 +73,7 @@ function setupHandleInteractionTest({scrollLeft=0, translateX=99}={}) {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getScrollContentStyleValue('transform')).thenReturn(`matrix(1, 0, 0, 1, ${translateX}, 0)`);
   td.when(mockAdapter.getScrollAreaScrollLeft()).thenReturn(scrollLeft);
-  foundation.shouldHandleInteraction_ = true;
+  foundation.isAnimating_ = true;
   return {foundation, mockAdapter};
 }
 
@@ -117,19 +117,19 @@ function setupScrollToTest({
   contentWidth=1000,
   scrollLeft=0,
   translateX=0,
-  shouldHandleInteraction=false}={}) {
+  isAnimating=false}={}) {
   const opts = {
     rootWidth,
     contentWidth,
     scrollLeft,
     translateX,
-    shouldHandleInteraction,
+    isAnimating,
   };
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getScrollAreaOffsetWidth()).thenReturn(rootWidth);
   td.when(mockAdapter.getScrollContentOffsetWidth()).thenReturn(contentWidth);
   td.when(mockAdapter.getScrollAreaScrollLeft()).thenReturn(scrollLeft);
-  foundation.shouldHandleInteraction_ = shouldHandleInteraction;
+  foundation.isAnimating_ = isAnimating;
   td.when(mockAdapter.getScrollContentStyleValue('transform')).thenReturn(`matrix(1, 0, 0, 1, ${translateX}, 0)`);
   return {foundation, mockAdapter, opts};
 }
@@ -180,7 +180,7 @@ test('#scrollTo() sets scrollLeft to the visual scroll position if called during
     rootWidth: 100,
     contentWidth: 200,
     translateX: 19,
-    shouldHandleInteraction: true,
+    isAnimating: true,
   });
   foundation.scrollTo(33);
   td.verify(mockAdapter.setScrollAreaScrollLeft(31), {times: 1});
@@ -193,7 +193,7 @@ test(`#scrollTo() removes the ${MDCTabScrollerFoundation.cssClasses.ANIMATING} i
       rootWidth: 100,
       contentWidth: 200,
       translateX: 19,
-      shouldHandleInteraction: true,
+      isAnimating: true,
     });
     foundation.scrollTo(60);
     td.verify(mockAdapter.removeClass(MDCTabScrollerFoundation.cssClasses.ANIMATING));
@@ -253,7 +253,7 @@ test('#incrementScroll() sets scrollLeft to the visual scroll position if called
     rootWidth: 100,
     contentWidth: 200,
     translateX: 22,
-    shouldHandleInteraction: true,
+    isAnimating: true,
   });
   foundation.incrementScroll(10);
   td.verify(mockAdapter.setScrollAreaScrollLeft(28), {times: 1});
@@ -266,7 +266,7 @@ test(`#incrementScroll() removes the ${MDCTabScrollerFoundation.cssClasses.ANIMA
       rootWidth: 100,
       contentWidth: 200,
       translateX: 19,
-      shouldHandleInteraction: true,
+      isAnimating: true,
     });
     foundation.incrementScroll(5);
     td.verify(mockAdapter.removeClass(MDCTabScrollerFoundation.cssClasses.ANIMATING));
