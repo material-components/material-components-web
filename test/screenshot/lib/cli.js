@@ -99,6 +99,17 @@ The default behavior is to always build assets before running the tests.
     });
   }
 
+  addNoFetchArg_(parser) {
+    this.addArg_(parser, {
+      optionNames: ['--no-fetch'],
+      type: 'boolean',
+      description: `
+If this flag is present, remote commits will not be fetched from GitHub.
+The default behavior is to always run 'git fetch' before comparing screenshots.
+`,
+    });
+  }
+
   addOfflineArg_(parser) {
     this.addArg_(parser, {
       optionNames: ['--offline'],
@@ -220,6 +231,7 @@ If a local dev server is not already running, one will be started for the durati
     });
 
     this.addNoBuildArg_(subparser);
+    this.addNoFetchArg_(subparser);
     this.addOfflineArg_(subparser);
 
     this.addArg_(subparser, {
@@ -296,6 +308,11 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
   /** @return {boolean} */
   get skipBuild() {
     return this.args_['--no-build'];
+  }
+
+  /** @return {boolean} */
+  get shouldFetch() {
+    return !this.args_['--no-fetch'];
   }
 
   /** @return {string} */

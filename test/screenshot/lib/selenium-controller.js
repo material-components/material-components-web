@@ -90,7 +90,8 @@ class SeleniumController {
    */
   async initForCapture() {
     const isOnline = await this.cli_.isOnline();
-    if (isOnline) {
+    const shouldFetch = this.cli_.shouldFetch;
+    if (isOnline && shouldFetch) {
       await this.gitRepo_.fetch();
     }
     return this.reportBuilder_.initForCapture();
@@ -101,7 +102,8 @@ class SeleniumController {
    */
   async initForDemo() {
     const isOnline = await this.cli_.isOnline();
-    if (isOnline) {
+    const shouldFetch = this.cli_.shouldFetch;
+    if (isOnline && shouldFetch) {
       await this.gitRepo_.fetch();
     }
     return this.reportBuilder_.initForDemo();
