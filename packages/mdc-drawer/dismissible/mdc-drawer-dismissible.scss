@@ -21,12 +21,12 @@
 .mdc-drawer--dismissible {
   width: 0;
   min-width: 0;
-  border-right-width: 0;
   transform: translateX(-100%);
+  border-right-width: 0;
 
   @include mdc-rtl {
-    border-left-width: 0;
     transform: translateX(100%);
+    border-left-width: 0;
   }
 }
 
