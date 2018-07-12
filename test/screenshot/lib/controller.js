@@ -136,6 +136,8 @@ class Controller {
     await this.imageDiffer_.compareAllScreenshots(reportData);
     await this.cloudStorage_.uploadAllDiffs(reportData);
 
+    this.logComparisonResults_(reportData);
+
     // TODO(acdvorak): Where should this go?
     const meta = reportData.meta;
     meta.end_time_iso_utc = new Date().toISOString();
@@ -167,6 +169,31 @@ class Controller {
     const newGoldenFile = await this.reportBuilder_.approveChanges(reportData);
     await this.goldenIo_.writeToLocalFile(newGoldenFile);
     return reportData;
+  }
+
+  /**
+   * @param {!mdc.proto.ReportData} reportData
+   * @private
+   */
+  logComparisonResults_(reportData) {
+    console.log('');
+    this.logComparisonResultSet_('Skipped', reportData.screenshots.skipped_screenshot_list);
+    this.logComparisonResultSet_('Unchanged', reportData.screenshots.unchanged_screenshot_list);
+    this.logComparisonResultSet_('Removed', reportData.screenshots.removed_screenshot_list);
+    this.logComparisonResultSet_('Added', reportData.screenshots.added_screenshot_list);
+    this.logComparisonResultSet_('Changed', reportData.screenshots.changed_screenshot_list);
+  }
+
+  /**
+   * @param {!Array<!mdc.proto.Screenshot>} screenshots
+   * @private
+   */
+  logComparisonResultSet_(title, screenshots) {
+    console.log(`${title} ${screenshots.length} screenshot${screenshots.length === 1 ? '' : 's'}:`);
+    for (const screenshot of screenshots) {
+      console.log(`  - ${screenshot.html_file_path} > ${screenshot.user_agent.alias}`);
+    }
+    console.log('');
   }
 }
 
