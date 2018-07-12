@@ -98,10 +98,15 @@ th {
 
 .report-metadata__table {
   border-collapse: collapse;
+  border: 1px solid #eee;
+}
+
+.report-metadata__row--top-divider {
+  border-top: 1px solid #eee;
 }
 
 .report-metadata__cell {
-  padding: 2px 10px 2px 0;
+  padding: 2px 10px 2px 4px;
   font-weight: normal;
   text-align: left;
   vertical-align: top;
@@ -110,6 +115,11 @@ th {
 .report-metadata__cell--key {
   width: 10em;
   font-style: italic;
+}
+
+.report-metadata__commit-offset {
+  color: #777;
+  font-size: smaller;
 }
 
 /*
