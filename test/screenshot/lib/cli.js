@@ -224,12 +224,12 @@ If a local dev server is not already running, one will be started for the durati
 
     this.addArg_(subparser, {
       optionNames: ['--diff-base'],
-      defaultValue: 'origin/master',
+      defaultValue: GOLDEN_JSON_RELATIVE_PATH,
       description: `
 File path, URL, or Git ref of a 'golden.json' file to diff against.
 Typically a branch name or commit hash, but may also be a local file path or public URL.
-Git refs may optionally be suffixed with ':path/to/golden.json' (the default is 'test/screenshot/golden.json').
-E.g., 'origin/master' (default), 'HEAD', 'feat/foo/bar', 'fad7ed3:path/to/golden.json',
+Git refs may optionally be suffixed with ':path/to/golden.json' (the default is '${GOLDEN_JSON_RELATIVE_PATH}').
+E.g., '${GOLDEN_JSON_RELATIVE_PATH}' (default), 'HEAD', 'master', 'origin/master', 'feat/foo/bar', '01abc11e0',
 '/tmp/golden.json', 'https://storage.googleapis.com/.../test/screenshot/golden.json'.
 `,
     });
