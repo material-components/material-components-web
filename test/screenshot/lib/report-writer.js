@@ -49,7 +49,10 @@ class ReportWriter {
         return self.getPageTitle_(this);
       },
       msToHuman: function(ms) {
-        return self.msToHuman_(ms);
+        return Duration.millis(ms).toHuman();
+      },
+      formatNumber: function(int) {
+        return Number(int).toLocaleString();
       },
       forEachTestPage: function(screenshotPageMap, hbsOptions) {
         return self.forEachTestPage_(screenshotPageMap, hbsOptions.fn);
@@ -206,15 +209,6 @@ class ReportWriter {
       }));
     }
     return new Handlebars.SafeString(html);
-  }
-
-  /**
-   * @param {number} ms
-   * @return {string}
-   * @private
-   */
-  msToHuman_(ms) {
-    return Duration.millis(ms).toHuman();
   }
 
   /** @private */

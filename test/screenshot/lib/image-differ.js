@@ -23,7 +23,7 @@ const mkdirp = require('mkdirp');
 const path = require('path');
 
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
-const {DiffImageResult, Screenshot, ScreenshotList, TestFile} = mdcProto;
+const {DiffImageResult, Dimensions, Screenshot, ScreenshotList, TestFile} = mdcProto;
 const {CaptureState} = Screenshot;
 
 /**
@@ -156,7 +156,11 @@ class ImageDiffer {
     const resembleComparisonResult = await this.computeDiff_({actualImageBuffer, expectedImageBuffer});
 
     const diffImageFile = this.createDiffImageFile_({reportMeta, actualImageFile});
-    const {diffImageBuffer, diffImageResult} = await this.analyzeComparisonResult_(resembleComparisonResult);
+    const {diffImageBuffer, diffImageResult} = await this.analyzeComparisonResult_({
+      expectedImageBuffer,
+      actualImageBuffer,
+      resembleComparisonResult,
+    });
     diffImageResult.diff_image_file = diffImageFile;
 
     mkdirp.sync(path.dirname(diffImageFile.absolute_path));
@@ -166,27 +170,41 @@ class ImageDiffer {
   }
 
   /**
+   * @param {!Buffer} expectedImageBuffer
+   * @param {!Buffer} actualImageBuffer
    * @param {!ResembleApiComparisonResult} resembleComparisonResult
    * @return {!Promise<{diffImageBuffer: !Buffer, diffImageResult: !mdc.proto.DiffImageResult}>}
    * @private
    */
-  async analyzeComparisonResult_(resembleComparisonResult) {
+  async analyzeComparisonResult_({expectedImageBuffer, actualImageBuffer, resembleComparisonResult}) {
     /** @type {!Buffer} */
     const diffImageBuffer = resembleComparisonResult.getBuffer();
 
-    /** @type {!Jimp.Jimp} */
-    const jimpImage = await Jimp.read(diffImageBuffer);
+    /** @type {!Jimp.Jimp} */ const expectedJimpImage = await Jimp.read(expectedImageBuffer);
+    /** @type {!Jimp.Jimp} */ const actualJimpImage = await Jimp.read(actualImageBuffer);
+    /** @type {!Jimp.Jimp} */ const diffJimpImage = await Jimp.read(diffImageBuffer);
 
-    const {width, height} = jimpImage.bitmap;
     const diffPixelRawPercentage = resembleComparisonResult.rawMisMatchPercentage;
     const diffPixelRoundPercentage = Math.round(diffPixelRawPercentage * 10) / 10;
     const diffPixelFraction = diffPixelRawPercentage / 100;
-    const diffPixelCount = Math.ceil(diffPixelFraction * width * height);
+    const diffPixelCount = Math.ceil(diffPixelFraction * diffJimpImage.bitmap.width * diffJimpImage.bitmap.height);
     const diffImageResult = DiffImageResult.create({
-      diff_pixel_count: diffPixelCount,
-      diff_pixel_fraction: diffPixelFraction,
-      diff_pixel_percentage: diffPixelRoundPercentage,
-      has_changed: diffPixelCount >= require('../resemble.json').mdc_screenshot_test.min_diff_pixel_count,
+      expected_image_dimensions: Dimensions.create({
+        width: expectedJimpImage.bitmap.width,
+        height: expectedJimpImage.bitmap.height,
+      }),
+      actual_image_dimensions: Dimensions.create({
+        width: actualJimpImage.bitmap.width,
+        height: actualJimpImage.bitmap.height,
+      }),
+      diff_image_dimensions: Dimensions.create({
+        width: diffJimpImage.bitmap.width,
+        height: diffJimpImage.bitmap.height,
+      }),
+      changed_pixel_count: diffPixelCount,
+      changed_pixel_fraction: diffPixelFraction,
+      changed_pixel_percentage: diffPixelRoundPercentage,
+      has_changed: diffPixelCount >= require('../resemble.json').mdc_screenshot_test.min_changed_pixel_count,
     });
 
     return {diffImageBuffer, diffImageResult};

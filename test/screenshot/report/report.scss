@@ -56,7 +56,6 @@ th {
 .report-html-file__heading,
 .report-user-agent__heading {
   padding: 8px 10px;
-  font-weight: bold;
   cursor: pointer;
 }
 
@@ -151,12 +150,17 @@ th {
   padding: 10px 24px;
 }
 
-.report-user-agent__image-cell {
-  width: calc(33% - 5px);
+.report-user-agent__image-cell + .report-user-agent__image-cell {
+  margin-left: 24px;
 }
 
-.report-user-agent__image-cell + .report-user-agent__image-cell {
-  margin-left: 5px;
+.report-user-agent__image-heading {
+  min-height: 3.5em;
+}
+
+.report-user-agent__image-dimensions {
+  color: #777;
+  font-size: smaller;
 }
 
 .report-user-agent__image-link {
@@ -165,6 +169,7 @@ th {
 
 .report-user-agent__image {
   max-width: 100%;
+  border-bottom: 1px solid;
   background-color: white;
   vertical-align: top;
 }

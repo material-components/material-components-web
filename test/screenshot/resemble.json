@@ -3,6 +3,6 @@
     "transparency": 0
   },
   "mdc_screenshot_test": {
-    "min_diff_pixel_count": 10
+    "min_changed_pixel_count": 10
   }
 }

@@ -3106,10 +3106,10 @@ $root.mdc = (function() {
                  * Properties of a Navigator.
                  * @memberof mdc.proto.UserAgent
                  * @interface INavigator
-                 * @property {string|null} [browser_name] Navigator browser_name
-                 * @property {string|null} [browser_version] Navigator browser_version
                  * @property {string|null} [os_name] Navigator os_name
                  * @property {string|null} [os_version] Navigator os_version
+                 * @property {string|null} [browser_name] Navigator browser_name
+                 * @property {string|null} [browser_version] Navigator browser_version
                  */
 
                 /**
@@ -3128,22 +3128,6 @@ $root.mdc = (function() {
                 }
 
                 /**
-                 * Navigator browser_name.
-                 * @member {string} browser_name
-                 * @memberof mdc.proto.UserAgent.Navigator
-                 * @instance
-                 */
-                Navigator.prototype.browser_name = "";
-
-                /**
-                 * Navigator browser_version.
-                 * @member {string} browser_version
-                 * @memberof mdc.proto.UserAgent.Navigator
-                 * @instance
-                 */
-                Navigator.prototype.browser_version = "";
-
-                /**
                  * Navigator os_name.
                  * @member {string} os_name
                  * @memberof mdc.proto.UserAgent.Navigator
@@ -3158,6 +3142,22 @@ $root.mdc = (function() {
                  * @instance
                  */
                 Navigator.prototype.os_version = "";
+
+                /**
+                 * Navigator browser_name.
+                 * @member {string} browser_name
+                 * @memberof mdc.proto.UserAgent.Navigator
+                 * @instance
+                 */
+                Navigator.prototype.browser_name = "";
+
+                /**
+                 * Navigator browser_version.
+                 * @member {string} browser_version
+                 * @memberof mdc.proto.UserAgent.Navigator
+                 * @instance
+                 */
+                Navigator.prototype.browser_version = "";
 
                 /**
                  * Creates a new Navigator instance using the specified properties.
@@ -3183,14 +3183,14 @@ $root.mdc = (function() {
                 Navigator.encode = function encode(message, writer) {
                     if (!writer)
                         writer = $Writer.create();
-                    if (message.browser_name != null && message.hasOwnProperty("browser_name"))
-                        writer.uint32(/* id 1, wireType 2 =*/10).string(message.browser_name);
-                    if (message.browser_version != null && message.hasOwnProperty("browser_version"))
-                        writer.uint32(/* id 2, wireType 2 =*/18).string(message.browser_version);
                     if (message.os_name != null && message.hasOwnProperty("os_name"))
-                        writer.uint32(/* id 3, wireType 2 =*/26).string(message.os_name);
+                        writer.uint32(/* id 1, wireType 2 =*/10).string(message.os_name);
                     if (message.os_version != null && message.hasOwnProperty("os_version"))
-                        writer.uint32(/* id 4, wireType 2 =*/34).string(message.os_version);
+                        writer.uint32(/* id 2, wireType 2 =*/18).string(message.os_version);
+                    if (message.browser_name != null && message.hasOwnProperty("browser_name"))
+                        writer.uint32(/* id 3, wireType 2 =*/26).string(message.browser_name);
+                    if (message.browser_version != null && message.hasOwnProperty("browser_version"))
+                        writer.uint32(/* id 4, wireType 2 =*/34).string(message.browser_version);
                     return writer;
                 };
 
@@ -3226,16 +3226,16 @@ $root.mdc = (function() {
                         var tag = reader.uint32();
                         switch (tag >>> 3) {
                         case 1:
-                            message.browser_name = reader.string();
-                            break;
-                        case 2:
-                            message.browser_version = reader.string();
-                            break;
-                        case 3:
                             message.os_name = reader.string();
                             break;
-                        case 4:
+                        case 2:
                             message.os_version = reader.string();
+                            break;
+                        case 3:
+                            message.browser_name = reader.string();
+                            break;
+                        case 4:
+                            message.browser_version = reader.string();
                             break;
                         default:
                             reader.skipType(tag & 7);
@@ -3272,18 +3272,18 @@ $root.mdc = (function() {
                 Navigator.verify = function verify(message) {
                     if (typeof message !== "object" || message === null)
                         return "object expected";
-                    if (message.browser_name != null && message.hasOwnProperty("browser_name"))
-                        if (!$util.isString(message.browser_name))
-                            return "browser_name: string expected";
-                    if (message.browser_version != null && message.hasOwnProperty("browser_version"))
-                        if (!$util.isString(message.browser_version))
-                            return "browser_version: string expected";
                     if (message.os_name != null && message.hasOwnProperty("os_name"))
                         if (!$util.isString(message.os_name))
                             return "os_name: string expected";
                     if (message.os_version != null && message.hasOwnProperty("os_version"))
                         if (!$util.isString(message.os_version))
                             return "os_version: string expected";
+                    if (message.browser_name != null && message.hasOwnProperty("browser_name"))
+                        if (!$util.isString(message.browser_name))
+                            return "browser_name: string expected";
+                    if (message.browser_version != null && message.hasOwnProperty("browser_version"))
+                        if (!$util.isString(message.browser_version))
+                            return "browser_version: string expected";
                     return null;
                 };
 
@@ -3299,14 +3299,14 @@ $root.mdc = (function() {
                     if (object instanceof $root.mdc.proto.UserAgent.Navigator)
                         return object;
                     var message = new $root.mdc.proto.UserAgent.Navigator();
-                    if (object.browser_name != null)
-                        message.browser_name = String(object.browser_name);
-                    if (object.browser_version != null)
-                        message.browser_version = String(object.browser_version);
                     if (object.os_name != null)
                         message.os_name = String(object.os_name);
                     if (object.os_version != null)
                         message.os_version = String(object.os_version);
+                    if (object.browser_name != null)
+                        message.browser_name = String(object.browser_name);
+                    if (object.browser_version != null)
+                        message.browser_version = String(object.browser_version);
                     return message;
                 };
 
@@ -3324,19 +3324,19 @@ $root.mdc = (function() {
                         options = {};
                     var object = {};
                     if (options.defaults) {
-                        object.browser_name = "";
-                        object.browser_version = "";
                         object.os_name = "";
                         object.os_version = "";
+                        object.browser_name = "";
+                        object.browser_version = "";
                     }
-                    if (message.browser_name != null && message.hasOwnProperty("browser_name"))
-                        object.browser_name = message.browser_name;
-                    if (message.browser_version != null && message.hasOwnProperty("browser_version"))
-                        object.browser_version = message.browser_version;
                     if (message.os_name != null && message.hasOwnProperty("os_name"))
                         object.os_name = message.os_name;
                     if (message.os_version != null && message.hasOwnProperty("os_version"))
                         object.os_version = message.os_version;
+                    if (message.browser_name != null && message.hasOwnProperty("browser_name"))
+                        object.browser_name = message.browser_name;
+                    if (message.browser_version != null && message.hasOwnProperty("browser_version"))
+                        object.browser_version = message.browser_version;
                     return object;
                 };
 
@@ -5549,6 +5549,244 @@ $root.mdc = (function() {
             return Screenshot;
         })();
 
+        proto.Dimensions = (function() {
+
+            /**
+             * Properties of a Dimensions.
+             * @memberof mdc.proto
+             * @interface IDimensions
+             * @property {number|Long|null} [width] Dimensions width
+             * @property {number|Long|null} [height] Dimensions height
+             */
+
+            /**
+             * Constructs a new Dimensions.
+             * @memberof mdc.proto
+             * @classdesc Represents a Dimensions.
+             * @implements IDimensions
+             * @constructor
+             * @param {mdc.proto.IDimensions=} [properties] Properties to set
+             */
+            function Dimensions(properties) {
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
+            }
+
+            /**
+             * Dimensions width.
+             * @member {number|Long} width
+             * @memberof mdc.proto.Dimensions
+             * @instance
+             */
+            Dimensions.prototype.width = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+            /**
+             * Dimensions height.
+             * @member {number|Long} height
+             * @memberof mdc.proto.Dimensions
+             * @instance
+             */
+            Dimensions.prototype.height = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+            /**
+             * Creates a new Dimensions instance using the specified properties.
+             * @function create
+             * @memberof mdc.proto.Dimensions
+             * @static
+             * @param {mdc.proto.IDimensions=} [properties] Properties to set
+             * @returns {mdc.proto.Dimensions} Dimensions instance
+             */
+            Dimensions.create = function create(properties) {
+                return new Dimensions(properties);
+            };
+
+            /**
+             * Encodes the specified Dimensions message. Does not implicitly {@link mdc.proto.Dimensions.verify|verify} messages.
+             * @function encode
+             * @memberof mdc.proto.Dimensions
+             * @static
+             * @param {mdc.proto.IDimensions} message Dimensions message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            Dimensions.encode = function encode(message, writer) {
+                if (!writer)
+                    writer = $Writer.create();
+                if (message.width != null && message.hasOwnProperty("width"))
+                    writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.width);
+                if (message.height != null && message.hasOwnProperty("height"))
+                    writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.height);
+                return writer;
+            };
+
+            /**
+             * Encodes the specified Dimensions message, length delimited. Does not implicitly {@link mdc.proto.Dimensions.verify|verify} messages.
+             * @function encodeDelimited
+             * @memberof mdc.proto.Dimensions
+             * @static
+             * @param {mdc.proto.IDimensions} message Dimensions message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            Dimensions.encodeDelimited = function encodeDelimited(message, writer) {
+                return this.encode(message, writer).ldelim();
+            };
+
+            /**
+             * Decodes a Dimensions message from the specified reader or buffer.
+             * @function decode
+             * @memberof mdc.proto.Dimensions
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @param {number} [length] Message length if known beforehand
+             * @returns {mdc.proto.Dimensions} Dimensions
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            Dimensions.decode = function decode(reader, length) {
+                if (!(reader instanceof $Reader))
+                    reader = $Reader.create(reader);
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.mdc.proto.Dimensions();
+                while (reader.pos < end) {
+                    var tag = reader.uint32();
+                    switch (tag >>> 3) {
+                    case 1:
+                        message.width = reader.uint64();
+                        break;
+                    case 2:
+                        message.height = reader.uint64();
+                        break;
+                    default:
+                        reader.skipType(tag & 7);
+                        break;
+                    }
+                }
+                return message;
+            };
+
+            /**
+             * Decodes a Dimensions message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
+             * @memberof mdc.proto.Dimensions
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @returns {mdc.proto.Dimensions} Dimensions
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            Dimensions.decodeDelimited = function decodeDelimited(reader) {
+                if (!(reader instanceof $Reader))
+                    reader = new $Reader(reader);
+                return this.decode(reader, reader.uint32());
+            };
+
+            /**
+             * Verifies a Dimensions message.
+             * @function verify
+             * @memberof mdc.proto.Dimensions
+             * @static
+             * @param {Object.<string,*>} message Plain object to verify
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+             */
+            Dimensions.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
+                if (message.width != null && message.hasOwnProperty("width"))
+                    if (!$util.isInteger(message.width) && !(message.width && $util.isInteger(message.width.low) && $util.isInteger(message.width.high)))
+                        return "width: integer|Long expected";
+                if (message.height != null && message.hasOwnProperty("height"))
+                    if (!$util.isInteger(message.height) && !(message.height && $util.isInteger(message.height.low) && $util.isInteger(message.height.high)))
+                        return "height: integer|Long expected";
+                return null;
+            };
+
+            /**
+             * Creates a Dimensions message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
+             * @memberof mdc.proto.Dimensions
+             * @static
+             * @param {Object.<string,*>} object Plain object
+             * @returns {mdc.proto.Dimensions} Dimensions
+             */
+            Dimensions.fromObject = function fromObject(object) {
+                if (object instanceof $root.mdc.proto.Dimensions)
+                    return object;
+                var message = new $root.mdc.proto.Dimensions();
+                if (object.width != null)
+                    if ($util.Long)
+                        (message.width = $util.Long.fromValue(object.width)).unsigned = true;
+                    else if (typeof object.width === "string")
+                        message.width = parseInt(object.width, 10);
+                    else if (typeof object.width === "number")
+                        message.width = object.width;
+                    else if (typeof object.width === "object")
+                        message.width = new $util.LongBits(object.width.low >>> 0, object.width.high >>> 0).toNumber(true);
+                if (object.height != null)
+                    if ($util.Long)
+                        (message.height = $util.Long.fromValue(object.height)).unsigned = true;
+                    else if (typeof object.height === "string")
+                        message.height = parseInt(object.height, 10);
+                    else if (typeof object.height === "number")
+                        message.height = object.height;
+                    else if (typeof object.height === "object")
+                        message.height = new $util.LongBits(object.height.low >>> 0, object.height.high >>> 0).toNumber(true);
+                return message;
+            };
+
+            /**
+             * Creates a plain object from a Dimensions message. Also converts values to other types if specified.
+             * @function toObject
+             * @memberof mdc.proto.Dimensions
+             * @static
+             * @param {mdc.proto.Dimensions} message Dimensions
+             * @param {$protobuf.IConversionOptions} [options] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            Dimensions.toObject = function toObject(message, options) {
+                if (!options)
+                    options = {};
+                var object = {};
+                if (options.defaults) {
+                    if ($util.Long) {
+                        var long = new $util.Long(0, 0, true);
+                        object.width = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                    } else
+                        object.width = options.longs === String ? "0" : 0;
+                    if ($util.Long) {
+                        var long = new $util.Long(0, 0, true);
+                        object.height = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                    } else
+                        object.height = options.longs === String ? "0" : 0;
+                }
+                if (message.width != null && message.hasOwnProperty("width"))
+                    if (typeof message.width === "number")
+                        object.width = options.longs === String ? String(message.width) : message.width;
+                    else
+                        object.width = options.longs === String ? $util.Long.prototype.toString.call(message.width) : options.longs === Number ? new $util.LongBits(message.width.low >>> 0, message.width.high >>> 0).toNumber(true) : message.width;
+                if (message.height != null && message.hasOwnProperty("height"))
+                    if (typeof message.height === "number")
+                        object.height = options.longs === String ? String(message.height) : message.height;
+                    else
+                        object.height = options.longs === String ? $util.Long.prototype.toString.call(message.height) : options.longs === Number ? new $util.LongBits(message.height.low >>> 0, message.height.high >>> 0).toNumber(true) : message.height;
+                return object;
+            };
+
+            /**
+             * Converts this Dimensions to JSON.
+             * @function toJSON
+             * @memberof mdc.proto.Dimensions
+             * @instance
+             * @returns {Object.<string,*>} JSON object
+             */
+            Dimensions.prototype.toJSON = function toJSON() {
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            return Dimensions;
+        })();
+
         proto.DiffImageResult = (function() {
 
             /**
@@ -5556,9 +5794,12 @@ $root.mdc = (function() {
              * @memberof mdc.proto
              * @interface IDiffImageResult
              * @property {mdc.proto.ITestFile|null} [diff_image_file] DiffImageResult diff_image_file
-             * @property {number|Long|null} [diff_pixel_count] DiffImageResult diff_pixel_count
-             * @property {number|null} [diff_pixel_fraction] DiffImageResult diff_pixel_fraction
-             * @property {number|null} [diff_pixel_percentage] DiffImageResult diff_pixel_percentage
+             * @property {mdc.proto.IDimensions|null} [expected_image_dimensions] DiffImageResult expected_image_dimensions
+             * @property {mdc.proto.IDimensions|null} [actual_image_dimensions] DiffImageResult actual_image_dimensions
+             * @property {mdc.proto.IDimensions|null} [diff_image_dimensions] DiffImageResult diff_image_dimensions
+             * @property {number|Long|null} [changed_pixel_count] DiffImageResult changed_pixel_count
+             * @property {number|null} [changed_pixel_fraction] DiffImageResult changed_pixel_fraction
+             * @property {number|null} [changed_pixel_percentage] DiffImageResult changed_pixel_percentage
              * @property {boolean|null} [has_changed] DiffImageResult has_changed
              */
 
@@ -5586,28 +5827,52 @@ $root.mdc = (function() {
             DiffImageResult.prototype.diff_image_file = null;
 
             /**
-             * DiffImageResult diff_pixel_count.
-             * @member {number|Long} diff_pixel_count
+             * DiffImageResult expected_image_dimensions.
+             * @member {mdc.proto.IDimensions|null|undefined} expected_image_dimensions
              * @memberof mdc.proto.DiffImageResult
              * @instance
              */
-            DiffImageResult.prototype.diff_pixel_count = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+            DiffImageResult.prototype.expected_image_dimensions = null;
 
             /**
-             * DiffImageResult diff_pixel_fraction.
-             * @member {number} diff_pixel_fraction
+             * DiffImageResult actual_image_dimensions.
+             * @member {mdc.proto.IDimensions|null|undefined} actual_image_dimensions
              * @memberof mdc.proto.DiffImageResult
              * @instance
              */
-            DiffImageResult.prototype.diff_pixel_fraction = 0;
+            DiffImageResult.prototype.actual_image_dimensions = null;
 
             /**
-             * DiffImageResult diff_pixel_percentage.
-             * @member {number} diff_pixel_percentage
+             * DiffImageResult diff_image_dimensions.
+             * @member {mdc.proto.IDimensions|null|undefined} diff_image_dimensions
              * @memberof mdc.proto.DiffImageResult
              * @instance
              */
-            DiffImageResult.prototype.diff_pixel_percentage = 0;
+            DiffImageResult.prototype.diff_image_dimensions = null;
+
+            /**
+             * DiffImageResult changed_pixel_count.
+             * @member {number|Long} changed_pixel_count
+             * @memberof mdc.proto.DiffImageResult
+             * @instance
+             */
+            DiffImageResult.prototype.changed_pixel_count = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+            /**
+             * DiffImageResult changed_pixel_fraction.
+             * @member {number} changed_pixel_fraction
+             * @memberof mdc.proto.DiffImageResult
+             * @instance
+             */
+            DiffImageResult.prototype.changed_pixel_fraction = 0;
+
+            /**
+             * DiffImageResult changed_pixel_percentage.
+             * @member {number} changed_pixel_percentage
+             * @memberof mdc.proto.DiffImageResult
+             * @instance
+             */
+            DiffImageResult.prototype.changed_pixel_percentage = 0;
 
             /**
              * DiffImageResult has_changed.
@@ -5643,14 +5908,20 @@ $root.mdc = (function() {
                     writer = $Writer.create();
                 if (message.diff_image_file != null && message.hasOwnProperty("diff_image_file"))
                     $root.mdc.proto.TestFile.encode(message.diff_image_file, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-                if (message.diff_pixel_count != null && message.hasOwnProperty("diff_pixel_count"))
-                    writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.diff_pixel_count);
-                if (message.diff_pixel_fraction != null && message.hasOwnProperty("diff_pixel_fraction"))
-                    writer.uint32(/* id 3, wireType 1 =*/25).double(message.diff_pixel_fraction);
-                if (message.diff_pixel_percentage != null && message.hasOwnProperty("diff_pixel_percentage"))
-                    writer.uint32(/* id 4, wireType 1 =*/33).double(message.diff_pixel_percentage);
+                if (message.expected_image_dimensions != null && message.hasOwnProperty("expected_image_dimensions"))
+                    $root.mdc.proto.Dimensions.encode(message.expected_image_dimensions, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+                if (message.actual_image_dimensions != null && message.hasOwnProperty("actual_image_dimensions"))
+                    $root.mdc.proto.Dimensions.encode(message.actual_image_dimensions, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+                if (message.diff_image_dimensions != null && message.hasOwnProperty("diff_image_dimensions"))
+                    $root.mdc.proto.Dimensions.encode(message.diff_image_dimensions, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+                if (message.changed_pixel_count != null && message.hasOwnProperty("changed_pixel_count"))
+                    writer.uint32(/* id 5, wireType 0 =*/40).uint64(message.changed_pixel_count);
+                if (message.changed_pixel_fraction != null && message.hasOwnProperty("changed_pixel_fraction"))
+                    writer.uint32(/* id 6, wireType 1 =*/49).double(message.changed_pixel_fraction);
+                if (message.changed_pixel_percentage != null && message.hasOwnProperty("changed_pixel_percentage"))
+                    writer.uint32(/* id 7, wireType 1 =*/57).double(message.changed_pixel_percentage);
                 if (message.has_changed != null && message.hasOwnProperty("has_changed"))
-                    writer.uint32(/* id 5, wireType 0 =*/40).bool(message.has_changed);
+                    writer.uint32(/* id 8, wireType 0 =*/64).bool(message.has_changed);
                 return writer;
             };
 
@@ -5689,15 +5960,24 @@ $root.mdc = (function() {
                         message.diff_image_file = $root.mdc.proto.TestFile.decode(reader, reader.uint32());
                         break;
                     case 2:
-                        message.diff_pixel_count = reader.uint64();
+                        message.expected_image_dimensions = $root.mdc.proto.Dimensions.decode(reader, reader.uint32());
                         break;
                     case 3:
-                        message.diff_pixel_fraction = reader.double();
+                        message.actual_image_dimensions = $root.mdc.proto.Dimensions.decode(reader, reader.uint32());
                         break;
                     case 4:
-                        message.diff_pixel_percentage = reader.double();
+                        message.diff_image_dimensions = $root.mdc.proto.Dimensions.decode(reader, reader.uint32());
                         break;
                     case 5:
+                        message.changed_pixel_count = reader.uint64();
+                        break;
+                    case 6:
+                        message.changed_pixel_fraction = reader.double();
+                        break;
+                    case 7:
+                        message.changed_pixel_percentage = reader.double();
+                        break;
+                    case 8:
                         message.has_changed = reader.bool();
                         break;
                     default:
@@ -5740,15 +6020,30 @@ $root.mdc = (function() {
                     if (error)
                         return "diff_image_file." + error;
                 }
-                if (message.diff_pixel_count != null && message.hasOwnProperty("diff_pixel_count"))
-                    if (!$util.isInteger(message.diff_pixel_count) && !(message.diff_pixel_count && $util.isInteger(message.diff_pixel_count.low) && $util.isInteger(message.diff_pixel_count.high)))
-                        return "diff_pixel_count: integer|Long expected";
-                if (message.diff_pixel_fraction != null && message.hasOwnProperty("diff_pixel_fraction"))
-                    if (typeof message.diff_pixel_fraction !== "number")
-                        return "diff_pixel_fraction: number expected";
-                if (message.diff_pixel_percentage != null && message.hasOwnProperty("diff_pixel_percentage"))
-                    if (typeof message.diff_pixel_percentage !== "number")
-                        return "diff_pixel_percentage: number expected";
+                if (message.expected_image_dimensions != null && message.hasOwnProperty("expected_image_dimensions")) {
+                    var error = $root.mdc.proto.Dimensions.verify(message.expected_image_dimensions);
+                    if (error)
+                        return "expected_image_dimensions." + error;
+                }
+                if (message.actual_image_dimensions != null && message.hasOwnProperty("actual_image_dimensions")) {
+                    var error = $root.mdc.proto.Dimensions.verify(message.actual_image_dimensions);
+                    if (error)
+                        return "actual_image_dimensions." + error;
+                }
+                if (message.diff_image_dimensions != null && message.hasOwnProperty("diff_image_dimensions")) {
+                    var error = $root.mdc.proto.Dimensions.verify(message.diff_image_dimensions);
+                    if (error)
+                        return "diff_image_dimensions." + error;
+                }
+                if (message.changed_pixel_count != null && message.hasOwnProperty("changed_pixel_count"))
+                    if (!$util.isInteger(message.changed_pixel_count) && !(message.changed_pixel_count && $util.isInteger(message.changed_pixel_count.low) && $util.isInteger(message.changed_pixel_count.high)))
+                        return "changed_pixel_count: integer|Long expected";
+                if (message.changed_pixel_fraction != null && message.hasOwnProperty("changed_pixel_fraction"))
+                    if (typeof message.changed_pixel_fraction !== "number")
+                        return "changed_pixel_fraction: number expected";
+                if (message.changed_pixel_percentage != null && message.hasOwnProperty("changed_pixel_percentage"))
+                    if (typeof message.changed_pixel_percentage !== "number")
+                        return "changed_pixel_percentage: number expected";
                 if (message.has_changed != null && message.hasOwnProperty("has_changed"))
                     if (typeof message.has_changed !== "boolean")
                         return "has_changed: boolean expected";
@@ -5772,19 +6067,34 @@ $root.mdc = (function() {
                         throw TypeError(".mdc.proto.DiffImageResult.diff_image_file: object expected");
                     message.diff_image_file = $root.mdc.proto.TestFile.fromObject(object.diff_image_file);
                 }
-                if (object.diff_pixel_count != null)
+                if (object.expected_image_dimensions != null) {
+                    if (typeof object.expected_image_dimensions !== "object")
+                        throw TypeError(".mdc.proto.DiffImageResult.expected_image_dimensions: object expected");
+                    message.expected_image_dimensions = $root.mdc.proto.Dimensions.fromObject(object.expected_image_dimensions);
+                }
+                if (object.actual_image_dimensions != null) {
+                    if (typeof object.actual_image_dimensions !== "object")
+                        throw TypeError(".mdc.proto.DiffImageResult.actual_image_dimensions: object expected");
+                    message.actual_image_dimensions = $root.mdc.proto.Dimensions.fromObject(object.actual_image_dimensions);
+                }
+                if (object.diff_image_dimensions != null) {
+                    if (typeof object.diff_image_dimensions !== "object")
+                        throw TypeError(".mdc.proto.DiffImageResult.diff_image_dimensions: object expected");
+                    message.diff_image_dimensions = $root.mdc.proto.Dimensions.fromObject(object.diff_image_dimensions);
+                }
+                if (object.changed_pixel_count != null)
                     if ($util.Long)
-                        (message.diff_pixel_count = $util.Long.fromValue(object.diff_pixel_count)).unsigned = true;
-                    else if (typeof object.diff_pixel_count === "string")
-                        message.diff_pixel_count = parseInt(object.diff_pixel_count, 10);
-                    else if (typeof object.diff_pixel_count === "number")
-                        message.diff_pixel_count = object.diff_pixel_count;
-                    else if (typeof object.diff_pixel_count === "object")
-                        message.diff_pixel_count = new $util.LongBits(object.diff_pixel_count.low >>> 0, object.diff_pixel_count.high >>> 0).toNumber(true);
-                if (object.diff_pixel_fraction != null)
-                    message.diff_pixel_fraction = Number(object.diff_pixel_fraction);
-                if (object.diff_pixel_percentage != null)
-                    message.diff_pixel_percentage = Number(object.diff_pixel_percentage);
+                        (message.changed_pixel_count = $util.Long.fromValue(object.changed_pixel_count)).unsigned = true;
+                    else if (typeof object.changed_pixel_count === "string")
+                        message.changed_pixel_count = parseInt(object.changed_pixel_count, 10);
+                    else if (typeof object.changed_pixel_count === "number")
+                        message.changed_pixel_count = object.changed_pixel_count;
+                    else if (typeof object.changed_pixel_count === "object")
+                        message.changed_pixel_count = new $util.LongBits(object.changed_pixel_count.low >>> 0, object.changed_pixel_count.high >>> 0).toNumber(true);
+                if (object.changed_pixel_fraction != null)
+                    message.changed_pixel_fraction = Number(object.changed_pixel_fraction);
+                if (object.changed_pixel_percentage != null)
+                    message.changed_pixel_percentage = Number(object.changed_pixel_percentage);
                 if (object.has_changed != null)
                     message.has_changed = Boolean(object.has_changed);
                 return message;
@@ -5805,26 +6115,35 @@ $root.mdc = (function() {
                 var object = {};
                 if (options.defaults) {
                     object.diff_image_file = null;
+                    object.expected_image_dimensions = null;
+                    object.actual_image_dimensions = null;
+                    object.diff_image_dimensions = null;
                     if ($util.Long) {
                         var long = new $util.Long(0, 0, true);
-                        object.diff_pixel_count = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                        object.changed_pixel_count = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
                     } else
-                        object.diff_pixel_count = options.longs === String ? "0" : 0;
-                    object.diff_pixel_fraction = 0;
-                    object.diff_pixel_percentage = 0;
+                        object.changed_pixel_count = options.longs === String ? "0" : 0;
+                    object.changed_pixel_fraction = 0;
+                    object.changed_pixel_percentage = 0;
                     object.has_changed = false;
                 }
                 if (message.diff_image_file != null && message.hasOwnProperty("diff_image_file"))
                     object.diff_image_file = $root.mdc.proto.TestFile.toObject(message.diff_image_file, options);
-                if (message.diff_pixel_count != null && message.hasOwnProperty("diff_pixel_count"))
-                    if (typeof message.diff_pixel_count === "number")
-                        object.diff_pixel_count = options.longs === String ? String(message.diff_pixel_count) : message.diff_pixel_count;
+                if (message.expected_image_dimensions != null && message.hasOwnProperty("expected_image_dimensions"))
+                    object.expected_image_dimensions = $root.mdc.proto.Dimensions.toObject(message.expected_image_dimensions, options);
+                if (message.actual_image_dimensions != null && message.hasOwnProperty("actual_image_dimensions"))
+                    object.actual_image_dimensions = $root.mdc.proto.Dimensions.toObject(message.actual_image_dimensions, options);
+                if (message.diff_image_dimensions != null && message.hasOwnProperty("diff_image_dimensions"))
+                    object.diff_image_dimensions = $root.mdc.proto.Dimensions.toObject(message.diff_image_dimensions, options);
+                if (message.changed_pixel_count != null && message.hasOwnProperty("changed_pixel_count"))
+                    if (typeof message.changed_pixel_count === "number")
+                        object.changed_pixel_count = options.longs === String ? String(message.changed_pixel_count) : message.changed_pixel_count;
                     else
-                        object.diff_pixel_count = options.longs === String ? $util.Long.prototype.toString.call(message.diff_pixel_count) : options.longs === Number ? new $util.LongBits(message.diff_pixel_count.low >>> 0, message.diff_pixel_count.high >>> 0).toNumber(true) : message.diff_pixel_count;
-                if (message.diff_pixel_fraction != null && message.hasOwnProperty("diff_pixel_fraction"))
-                    object.diff_pixel_fraction = options.json && !isFinite(message.diff_pixel_fraction) ? String(message.diff_pixel_fraction) : message.diff_pixel_fraction;
-                if (message.diff_pixel_percentage != null && message.hasOwnProperty("diff_pixel_percentage"))
-                    object.diff_pixel_percentage = options.json && !isFinite(message.diff_pixel_percentage) ? String(message.diff_pixel_percentage) : message.diff_pixel_percentage;
+                        object.changed_pixel_count = options.longs === String ? $util.Long.prototype.toString.call(message.changed_pixel_count) : options.longs === Number ? new $util.LongBits(message.changed_pixel_count.low >>> 0, message.changed_pixel_count.high >>> 0).toNumber(true) : message.changed_pixel_count;
+                if (message.changed_pixel_fraction != null && message.hasOwnProperty("changed_pixel_fraction"))
+                    object.changed_pixel_fraction = options.json && !isFinite(message.changed_pixel_fraction) ? String(message.changed_pixel_fraction) : message.changed_pixel_fraction;
+                if (message.changed_pixel_percentage != null && message.hasOwnProperty("changed_pixel_percentage"))
+                    object.changed_pixel_percentage = options.json && !isFinite(message.changed_pixel_percentage) ? String(message.changed_pixel_percentage) : message.changed_pixel_percentage;
                 if (message.has_changed != null && message.hasOwnProperty("has_changed"))
                     object.has_changed = message.has_changed;
                 return object;

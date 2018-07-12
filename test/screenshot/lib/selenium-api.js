@@ -70,8 +70,12 @@ class SeleniumApi {
     while (queuedUserAgents.length > 0) {
       activeUserAgents = queuedUserAgents.slice(0, maxParallelTests);
       queuedUserAgents = queuedUserAgents.slice(maxParallelTests);
-      console.log('activeUserAgents:', JSON.stringify(activeUserAgents.map((ua) => ua.alias)));
-      console.log('queuedUserAgents:', JSON.stringify(queuedUserAgents.map((ua) => ua.alias)));
+      const activeUserAgentAliases = activeUserAgents.map((ua) => ua.alias);
+      const queuedUserAgentAliases = queuedUserAgents.map((ua) => ua.alias);
+      const activeUserAgentLoggable = activeUserAgentAliases.length > 0 ? activeUserAgentAliases.join(', ') : '(none)';
+      const queuedUserAgentLoggable = queuedUserAgentAliases.length > 0 ? queuedUserAgentAliases.join(', ') : '(none)';
+      console.log('activeUserAgents:', activeUserAgentLoggable);
+      console.log('queuedUserAgents:', queuedUserAgentLoggable);
       await this.captureAllPagesInBrowsers_({reportData, userAgents: activeUserAgents});
     }
 

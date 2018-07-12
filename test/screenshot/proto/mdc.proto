@@ -133,10 +133,10 @@ message UserAgent {
   }
 
   message Navigator {
-    string browser_name = 1;
-    string browser_version = 2;
-    string os_name = 3;
-    string os_version = 4;
+    string os_name = 1;
+    string os_version = 2;
+    string browser_name = 3;
+    string browser_version = 4;
   }
 
   string alias = 1;
@@ -236,20 +236,29 @@ message Screenshot {
   DiffImageResult diff_image_result = 11;
 }
 
+message Dimensions {
+  uint64 width = 1;
+  uint64 height = 2;
+}
+
 message DiffImageResult {
   TestFile diff_image_file = 1;
 
+  Dimensions expected_image_dimensions = 2;
+  Dimensions actual_image_dimensions = 3;
+  Dimensions diff_image_dimensions = 4;
+
   // Actual number of individual pixels that are different
-  uint64 diff_pixel_count = 2;
+  uint64 changed_pixel_count = 5;
 
   // 0.0 to 1.0
-  double diff_pixel_fraction = 3;
+  double changed_pixel_fraction = 6;
 
   // 0.0 to 100.0
-  double diff_pixel_percentage = 4;
+  double changed_pixel_percentage = 7;
 
   // Determines whether the diff pixel count is above the minimum threshold to be considered a probable "real" diff
-  bool has_changed = 5;
+  bool has_changed = 8;
 }
 
 message TestFile {
