@@ -53,7 +53,7 @@ th {
 
 .report-metadata__heading,
 .report-collection__heading,
-.report-test-page__heading,
+.report-html-file__heading,
 .report-user-agent__heading {
   padding: 8px 10px;
   font-weight: bold;
@@ -62,7 +62,7 @@ th {
 
 .report-metadata__heading:hover,
 .report-collection__heading:hover,
-.report-test-page__heading:hover,
+.report-html-file__heading:hover,
 .report-user-agent__heading:hover {
   background-color: #ddd;
 }
@@ -74,7 +74,7 @@ th {
 }
 
 .report-collection__checkbox--hidden,
-.report-test-page__checkbox--hidden,
+.report-html-file__checkbox--hidden,
 .report-user-agent__checkbox--hidden {
   pointer-events: none;
   visibility: hidden;
@@ -121,18 +121,18 @@ th {
  * Test page
  */
 
-.report-test-page {
+.report-html-file {
   margin-bottom: 20px;
   border: 1px solid #aaa;
   border-radius: 3px;
   background-color: #eee;
 }
 
-.report-test-page__heading {
+.report-html-file__heading {
   font-size: larger;
 }
 
-.report-test-page__content {
+.report-html-file__content {
   padding: 0 24px;
 }
 

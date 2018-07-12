@@ -57,8 +57,40 @@ class ReportWriter {
       getHtmlFileLinks: function() {
         return self.getHtmlFileLinks_(this);
       },
-      getCheckbox: function(...args) {
-        return self.getCheckbox_(...args.slice(0, -1)); // remove hbsOptions arg
+      createDetailsElement: function(...allArgs) {
+        const hbContext = this;
+        const hbOptions = allArgs[allArgs.length - 1];
+        const templateArgs = allArgs.slice(0, -1);
+        return self.createTreeNode_({
+          tagName: 'details',
+          extraAttrs: ['data-fuck="yes"'],
+          hbContext,
+          hbOptions,
+          templateArgs,
+        });
+      },
+      createCheckboxElement: function(...allArgs) {
+        const hbContext = this;
+        const hbOptions = allArgs[allArgs.length - 1];
+        const templateArgs = allArgs.slice(0, -1);
+        return self.createTreeNode_({
+          tagName: 'input',
+          extraAttrs: ['type="checkbox"'],
+          hbContext,
+          hbOptions,
+          templateArgs,
+        });
+      },
+      createApprovalStatusElement: function(...allArgs) {
+        const hbContext = this;
+        const templateArgs = allArgs.slice(0, -1);
+        return self.createTreeNode_({
+          tagName: 'span',
+          extraAttrs: ['data-review-status="unreviewed"'],
+          hbContext,
+          hbOptions: {fn: () => new Handlebars.SafeString('unreviewed')},
+          templateArgs,
+        });
       },
     };
 
@@ -68,23 +100,35 @@ class ReportWriter {
   }
 
   /**
-   * @param {string} baseClassName
-   * @param {string} hiddenClassName
-   * @param {boolean} isVisible
-   * @param {string} collectionType
-   * @param {string} htmlFilePath
-   * @param {string} userAgentAlias
+   * @param {string} tagName
+   * @param {!Array<string>=} extraAttrs
+   * @param extraArgs
+   * @param {!Object} hbContext
+   * @param {{fn: function(context: !Object): !SafeString}} hbOptions
+   * @param {!Array<string>} templateArgs
    * @return {!SafeString}
    * @private
    */
-  getCheckbox_(baseClassName, hiddenClassName, isVisible, collectionType, htmlFilePath, userAgentAlias) {
-    const classNames = [baseClassName];
-    const attributes = [];
+  createTreeNode_({tagName, extraAttrs = [], hbContext, hbOptions, templateArgs}) {
+    const [
+      baseClassName, hiddenClassName, isVisible,
+      collectionType, htmlFilePath, userAgentAlias,
+    ] = templateArgs;
 
-    if (isVisible) {
-      attributes.push('checked');
-    } else {
-      classNames.push(hiddenClassName);
+    const classNames = [baseClassName];
+    const attributes = [...extraAttrs];
+
+    if (tagName === 'input') {
+      if (isVisible) {
+        attributes.push('checked');
+      } else {
+        classNames.push(hiddenClassName);
+      }
+    }
+    if (tagName === 'details') {
+      if (isVisible) {
+        attributes.push('open');
+      }
     }
 
     attributes.push(`data-collection-type="${collectionType}"`);
@@ -95,7 +139,12 @@ class ReportWriter {
       attributes.push(`data-user-agent-alias="${userAgentAlias}"`);
     }
 
-    return new Handlebars.SafeString(`<input type="checkbox" class="${classNames.join(' ')}" ${attributes.join(' ')}>`);
+    let markup = `<${tagName} class="${classNames.join(' ')}" ${attributes.join(' ')}>${hbOptions.fn(hbContext)}`;
+    if (!['input'].includes(tagName)) {
+      markup += `</${tagName}>`;
+    }
+
+    return new Handlebars.SafeString(markup);
   }
 
   /**

@@ -1,43 +1,82 @@
-<details class="report-collection"{{#if isOpenByDefault}} open{{/if}}>
+{{#createDetailsElement
+    'report-collection'
+    ''
+    isOpenByDefault
+    collectionType
+}}
   <summary class="report-collection__heading">
-    {{getCheckbox
-        "report-collection__checkbox"
-        "report-collection__checkbox--hidden"
-        showApprovalCheckboxes
+    {{#createCheckboxElement
+        'report-collection__checkbox'
+        'report-collection__checkbox--hidden'
+        showApprovalControls
         collectionType
-    }}
+    }}{{/createCheckboxElement}}
     {{screenshotArray.length}} {{heading}}
+    {{#createApprovalStatusElement
+        'report-review-status report-review-status--collection'
+        'report-review-status--hidden'
+        showApprovalControls
+        collectionType
+    }}{{/createApprovalStatusElement}}
   </summary>
   <div class="report-collection__content">
     {{#if screenshotArray.length}}
       {{#forEachTestPage screenshotPageMap}}
-        <details class="report-test-page" open>
-          <summary class="report-test-page__heading">
-            {{getCheckbox
-                "report-collection__checkbox"
-                "report-collection__checkbox--hidden"
-                ../showApprovalCheckboxes
+        {{#createDetailsElement
+            'report-html-file'
+            ''
+            true
+            ../collectionType
+            html_file_path
+        }}
+          <summary class="report-html-file__heading">
+            {{#createCheckboxElement
+                'report-html-file__checkbox'
+                'report-html-file__checkbox--hidden'
+                ../showApprovalControls
                 ../collectionType
                 html_file_path
-            }}
+            }}{{/createCheckboxElement}}
             {{screenshot_array.length}} in
             {{html_file_path}}
             {{getHtmlFileLinks}}
+            {{#createApprovalStatusElement
+                'report-review-status report-review-status--html-file'
+                'report-review-status--hidden'
+                ../showApprovalControls
+                ../collectionType
+                html_file_path
+            }}{{/createApprovalStatusElement}}
           </summary>
-          <div class="report-test-page__content">
+          <div class="report-html-file__content">
             {{#each screenshot_array}}
-              <details class="report-user-agent" open>
+              {{#createDetailsElement
+                  'report-user-agent'
+                  ''
+                  true
+                  ../../collectionType
+                  ../html_file_path
+                  user_agent.alias
+              }}
                 <summary class="report-user-agent__heading">
-                  {{getCheckbox
-                      "report-collection__checkbox"
-                      "report-collection__checkbox--hidden"
-                      ../../showApprovalCheckboxes
+                  {{#createCheckboxElement
+                      'report-user-agent__checkbox'
+                      'report-user-agent__checkbox--hidden'
+                      ../../showApprovalControls
                       ../../collectionType
                       ../html_file_path
                       user_agent.alias
-                  }}
+                  }}{{/createCheckboxElement}}
                   <img src="{{user_agent.icon_url}}" class="report-user-agent__icon">
                   {{user_agent.alias}}
+                  {{#createApprovalStatusElement
+                      'report-review-status report-review-status--user-agent'
+                      'report-review-status--hidden'
+                      ../../showApprovalControls
+                      ../../collectionType
+                      ../html_file_path
+                      user_agent.alias
+                  }}{{/createApprovalStatusElement}}
                 </summary>
                 <div class="report-user-agent__content">
                   <div class="report-user-agent__image-cell">
@@ -53,13 +92,13 @@
                     {{> image actual_image_file}}
                   </div>
                 </div>
-              </details>
+              {{/createDetailsElement}}
             {{/each}}
           </div>
-        </details>
+        {{/createDetailsElement}}
       {{/forEachTestPage}}
     {{else}}
       <div class="report-congrats">Woohoo! 🎉</div>
     {{/if}}
   </div>
-</details>
+{{/createDetailsElement}}
