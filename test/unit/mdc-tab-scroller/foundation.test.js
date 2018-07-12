@@ -112,19 +112,24 @@ test(`#handleTransitionEnd() removes the ${MDCTabScrollerFoundation.cssClasses.A
   td.verify(mockAdapter.removeClass(MDCTabScrollerFoundation.cssClasses.ANIMATING));
 });
 
-function setupScrollToTest({rootWidth=300, contentWidth=1000, scrollLeft=0, translateX=0, isAnimating=false}={}) {
+function setupScrollToTest({
+  rootWidth=300,
+  contentWidth=1000,
+  scrollLeft=0,
+  translateX=0,
+  shouldHandleInteraction=false}={}) {
   const opts = {
     rootWidth,
     contentWidth,
     scrollLeft,
     translateX,
-    isAnimating,
+    shouldHandleInteraction,
   };
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getScrollAreaOffsetWidth()).thenReturn(rootWidth);
   td.when(mockAdapter.getScrollContentOffsetWidth()).thenReturn(contentWidth);
   td.when(mockAdapter.getScrollAreaScrollLeft()).thenReturn(scrollLeft);
-  foundation.isAnimating_ = isAnimating;
+  foundation.shouldHandleInteraction_ = shouldHandleInteraction;
   td.when(mockAdapter.getScrollContentStyleValue('transform')).thenReturn(`matrix(1, 0, 0, 1, ${translateX}, 0)`);
   return {foundation, mockAdapter, opts};
 }
@@ -175,7 +180,7 @@ test('#scrollTo() sets scrollLeft to the visual scroll position if called during
     rootWidth: 100,
     contentWidth: 200,
     translateX: 19,
-    isAnimating: true,
+    shouldHandleInteraction: true,
   });
   foundation.scrollTo(33);
   td.verify(mockAdapter.setScrollAreaScrollLeft(31), {times: 1});
@@ -188,7 +193,7 @@ test(`#scrollTo() removes the ${MDCTabScrollerFoundation.cssClasses.ANIMATING} i
       rootWidth: 100,
       contentWidth: 200,
       translateX: 19,
-      isAnimating: true,
+      shouldHandleInteraction: true,
     });
     foundation.scrollTo(60);
     td.verify(mockAdapter.removeClass(MDCTabScrollerFoundation.cssClasses.ANIMATING));
@@ -248,7 +253,7 @@ test('#incrementScroll() sets scrollLeft to the visual scroll position if called
     rootWidth: 100,
     contentWidth: 200,
     translateX: 22,
-    isAnimating: true,
+    shouldHandleInteraction: true,
   });
   foundation.incrementScroll(10);
   td.verify(mockAdapter.setScrollAreaScrollLeft(28), {times: 1});
@@ -261,7 +266,7 @@ test(`#incrementScroll() removes the ${MDCTabScrollerFoundation.cssClasses.ANIMA
       rootWidth: 100,
       contentWidth: 200,
       translateX: 19,
-      isAnimating: true,
+      shouldHandleInteraction: true,
     });
     foundation.incrementScroll(5);
     td.verify(mockAdapter.removeClass(MDCTabScrollerFoundation.cssClasses.ANIMATING));
@@ -280,13 +285,13 @@ function setupScrollToRTLTest() {
 
 test('#scrollTo() sets the scrollLeft property in RTL', () => {
   const {foundation, mockAdapter} = setupScrollToRTLTest();
-  foundation.scrollTo(-10);
+  foundation.scrollTo(10);
   td.verify(mockAdapter.setScrollAreaScrollLeft(td.matchers.isA(Number)));
 });
 
 test('#scrollTo() sets the transform style property in RTL', () => {
   const {foundation, mockAdapter} = setupScrollToRTLTest();
-  foundation.scrollTo(-10);
+  foundation.scrollTo(10);
   td.verify(mockAdapter.setScrollContentStyleProperty('transform', 'translateX(690px)'), {times: 1});
 });
 
@@ -298,7 +303,7 @@ test('#incrementScroll() sets the scrollLeft property in RTL', () => {
 
 test('#incrementScroll() sets the transform style property in RTL', () => {
   const {foundation, mockAdapter} = setupScrollToRTLTest();
-  foundation.incrementScroll(10);
+  foundation.incrementScroll(-10);
   td.verify(mockAdapter.setScrollContentStyleProperty('transform', 'translateX(10px)'), {times: 1});
 });
 

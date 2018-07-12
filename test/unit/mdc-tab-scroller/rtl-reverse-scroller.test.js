@@ -22,7 +22,7 @@ import {setupFoundationTest} from '../helpers/setup';
 import MDCTabScrollerFoundation from '../../../packages/mdc-tab-scroller/foundation';
 import MDCTabScrollerRTLReverse from '../../../packages/mdc-tab-scroller/rtl-reverse-scroller';
 
-suite.only('MDCTabScrollerRTLReverse');
+suite('MDCTabScrollerRTLReverse');
 
 const setupTest = ({rootWidth, contentWidth, scrollLeft}) => {
   const {mockAdapter} = setupFoundationTest(MDCTabScrollerFoundation);
