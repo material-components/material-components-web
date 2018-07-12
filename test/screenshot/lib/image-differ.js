@@ -62,7 +62,7 @@ class ImageDiffer {
    */
   async compareOneScreenshot_({reportData, screenshot}) {
     /** @type {!mdc.proto.DiffImageResult} */
-    const diffImageResult = await this.compareOneImage({
+    const diffImageResult = await this.compareOneImage_({
       reportData,
       actualImageFile: screenshot.actual_image_file,
       expectedImageFile: screenshot.expected_image_file,
@@ -116,8 +116,9 @@ class ImageDiffer {
    * @param {!mdc.proto.TestFile} actualImageFile
    * @param {!mdc.proto.TestFile} expectedImageFile
    * @return {!Promise<!mdc.proto.DiffImageResult>}
+   * @private
    */
-  async compareOneImage({reportData, actualImageFile, expectedImageFile}) {
+  async compareOneImage_({reportData, actualImageFile, expectedImageFile}) {
     const reportMeta = reportData.meta;
 
     // TODO(acdvorak): Fix bug here
