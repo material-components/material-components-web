@@ -26,7 +26,7 @@ const ReportBuilder = require('./report-builder');
 const ReportWriter = require('./report-writer');
 const SeleniumApi = require('./selenium-api');
 
-class SeleniumController {
+class Controller {
   constructor() {
     /**
      * @type {!Cli}
@@ -170,4 +170,4 @@ class SeleniumController {
   }
 }
 
-module.exports = SeleniumController;
+module.exports = Controller;

@@ -17,12 +17,12 @@
 'use strict';
 
 const BuildCommand = require('./build');
-const SeleniumController = require('../lib/selenium-controller');
+const Controller = require('../lib/controller');
 
 module.exports = {
   async runAsync() {
     await BuildCommand.runAsync();
-    const controller = new SeleniumController();
+    const controller = new Controller();
     const reportData = await controller.initForCapture();
     await controller.uploadAllAssets(reportData);
     await controller.captureAllPages(reportData);
