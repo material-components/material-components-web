@@ -254,10 +254,10 @@ The `MDCListFoundation` expects the HTML to be setup a certain way before being 
 
 The default component requires that every list item receives a `tabindex` value so that it can receive focus
 (`li` elements cannot receive focus at all without a `tabindex` value). Any element not already containing a
-`tabindex` attribute will receive `tabindex=-1`. The first list item should have `tabindex="0"` so that it the
+`tabindex` attribute will receive `tabindex=-1`. The first list item should have `tabindex="0"` so that the
 user can find the first element using the `tab` key, but subsequent `tab` keys strokes will cause focus to
 skip over the entire list. If the list items contain sub-elements that are focusable (`button` or `a` elements), 
-these should also receive `tabIndex="-1"`
+these should also receive `tabIndex="-1"`.
 
 ```html
 <ul id="my-list" class="mdc-list" aria-orientation="vertical">
