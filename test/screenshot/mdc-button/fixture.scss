@@ -19,15 +19,15 @@
   height: 71px;
 }
 
-.mdc-button:disabled,
-.mdc-button:not(:disabled) {
+.test-button--outlined:disabled,
+.test-button--outlined:not(:disabled) {
   outline: 1px solid green !important;
 }
 
-.mdc-button__icon {
+.test-button__icon--outlined {
   outline: 1px solid black !important;
 }
 
-.test-button__label {
+.test-button__label--outlined {
   outline: 1px solid red !important;
 }
