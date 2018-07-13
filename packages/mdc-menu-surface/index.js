@@ -212,7 +212,7 @@ class MDCMenuSurface extends MDCComponent {
         return {width: document.body.clientWidth, height: document.body.clientHeight};
       },
       getWindowScroll: () => {
-        return {x: window.scrollX, y: window.scrollY};
+        return {x: window.pageXOffset, y: window.pageYOffset};
       },
       setPosition: (position) => {
         this.root_.style.left = 'left' in position ? position.left : null;

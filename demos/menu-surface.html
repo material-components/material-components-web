@@ -197,7 +197,9 @@
           } else {
             menu.setMenuSurfaceAnchorElement(menuButtonEl.parentElement);
             hoistMenu.checked = false;
-            hoistMenu.dispatchEvent(new Event('change'));
+            var event = document.createEvent("Event");
+            event.initEvent("change", false, true);
+            hoistMenu.dispatchEvent(event);
             hoistMenu.disabled = false;
             fixedPosition.disabled = false;
           }
@@ -211,7 +213,8 @@
             menuButtonEl.parentElement.appendChild(temp);
             menu = mdc.menuSurface.MDCMenuSurface.attachTo(menuEl);
             // Trigger events to ensure the new menu is setup to reflect the configurations selected.
-            var event = new Event('change');
+            var event = document.createEvent("Event");
+            event.initEvent("change", false, true);
             document.querySelector('input[name="anchor-position"]:checked').dispatchEvent(event);
             document.querySelector('input[name="animation"]').dispatchEvent(event);
             document.getElementById('top-margin').dispatchEvent(event);
