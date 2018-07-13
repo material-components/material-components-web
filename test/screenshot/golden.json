@@ -3,9 +3,9 @@
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/baseline-button-with-icons.html",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/13/17_06_12_929/mdc-button/classes/baseline-button-with-icons.html.windows_chrome_67.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/13/17_06_12_929/mdc-button/classes/baseline-button-with-icons.html.windows_edge_17.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/13/19_07_07_189/mdc-button/classes/baseline-button-with-icons.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/13/17_06_12_929/mdc-button/classes/baseline-button-with-icons.html.windows_firefox_61.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/13/17_06_12_929/mdc-button/classes/baseline-button-with-icons.html.windows_ie_11.png"
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/13/19_07_07_189/mdc-button/classes/baseline-button-with-icons.html.windows_ie_11.png"
     }
   },
   "mdc-button/classes/baseline-button-without-icons.html": {
@@ -21,9 +21,9 @@
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/baseline-link-with-icons.html",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/13/17_06_12_929/mdc-button/classes/baseline-link-with-icons.html.windows_chrome_67.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/13/17_06_12_929/mdc-button/classes/baseline-link-with-icons.html.windows_edge_17.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/13/19_07_07_189/mdc-button/classes/baseline-link-with-icons.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/13/17_06_12_929/mdc-button/classes/baseline-link-with-icons.html.windows_firefox_61.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/13/17_06_12_929/mdc-button/classes/baseline-link-with-icons.html.windows_ie_11.png"
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/13/19_07_07_189/mdc-button/classes/baseline-link-with-icons.html.windows_ie_11.png"
     }
   },
   "mdc-button/classes/baseline-link-without-icons.html": {
@@ -39,9 +39,9 @@
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/dense-button-with-icons.html",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/13/17_06_12_929/mdc-button/classes/dense-button-with-icons.html.windows_chrome_67.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/13/17_06_12_929/mdc-button/classes/dense-button-with-icons.html.windows_edge_17.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/13/19_07_07_189/mdc-button/classes/dense-button-with-icons.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/13/17_06_12_929/mdc-button/classes/dense-button-with-icons.html.windows_firefox_61.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/13/17_06_12_929/mdc-button/classes/dense-button-with-icons.html.windows_ie_11.png"
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/13/19_07_07_189/mdc-button/classes/dense-button-with-icons.html.windows_ie_11.png"
     }
   },
   "mdc-button/classes/dense-button-without-icons.html": {
@@ -57,9 +57,9 @@
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-button/classes/dense-link-with-icons.html",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/13/17_06_12_929/mdc-button/classes/dense-link-with-icons.html.windows_chrome_67.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/13/17_06_12_929/mdc-button/classes/dense-link-with-icons.html.windows_edge_17.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/13/19_07_07_189/mdc-button/classes/dense-link-with-icons.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/13/17_06_12_929/mdc-button/classes/dense-link-with-icons.html.windows_firefox_61.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/13/17_06_12_929/mdc-button/classes/dense-link-with-icons.html.windows_ie_11.png"
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/13/19_07_07_189/mdc-button/classes/dense-link-with-icons.html.windows_ie_11.png"
     }
   },
   "mdc-button/classes/dense-link-without-icons.html": {
