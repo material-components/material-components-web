@@ -18,3 +18,16 @@
   width: 171px;
   height: 71px;
 }
+
+.mdc-button:disabled,
+.mdc-button:not(:disabled) {
+  outline: 1px solid green !important;
+}
+
+.mdc-button__icon {
+  outline: 1px solid black !important;
+}
+
+.test-button__label {
+  outline: 1px solid red !important;
+}
