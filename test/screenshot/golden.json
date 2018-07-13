@@ -179,13 +179,13 @@
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-fab/classes/mini.html.windows_ie_11.png"
     }
   },
-  "mdc-fab/mixins/mdc-fab-extended-label-padding.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2018/06/22/19_14_56_425/mdc-fab/mixins/mdc-fab-extended-label-padding.html",
+  "mdc-fab/mixins/extended-padding.html": {
+    "publicUrl": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/13/22_35_48_118/mdc-fab/mixins/extended-padding.html",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/06_12_41_520/mdc-fab/mixins/mdc-fab-extended-label-padding.html.windows_chrome_67.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-fab/mixins/mdc-fab-extended-label-padding.html.windows_edge_17.png",
-      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-fab/mixins/mdc-fab-extended-label-padding.html.windows_firefox_61.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_44_01_282/mdc-fab/mixins/mdc-fab-extended-label-padding.html.windows_ie_11.png"
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/13/22_35_48_118/mdc-fab/mixins/extended-padding.html.windows_chrome_67.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/13/22_35_48_118/mdc-fab/mixins/extended-padding.html.windows_edge_17.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/13/22_35_48_118/mdc-fab/mixins/extended-padding.html.windows_firefox_61.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/13/22_35_48_118/mdc-fab/mixins/extended-padding.html.windows_ie_11.png"
     }
   },
   "mdc-icon-button/classes/baseline.html": {
