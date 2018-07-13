@@ -52,13 +52,17 @@ const wideTopLeft = {height: 20, width: 150, top: 20, bottom: 40, left: 20, righ
  *   Approximate viewport corner where anchor is located.
  * @param {boolean=} isRtl Indicates whether layout is RTL.
  * @param {number=} menuSurfaceHeight Optional height of the menu surface.
+ * @param {{x: number, y: number}} scrollValue Optional scroll values of the page.
  */
-function initAnchorLayout(mockAdapter, anchorDimensions, isRtl = false, menuSurfaceHeight = 200) {
+function initAnchorLayout(mockAdapter, anchorDimensions, isRtl = false,
+  menuSurfaceHeight = 200, scrollValue = {x: 0, y: 0}) {
   td.when(mockAdapter.hasAnchor()).thenReturn(true);
   td.when(mockAdapter.getWindowDimensions()).thenReturn({height: 1000, width: 1000});
   td.when(mockAdapter.getAnchorDimensions()).thenReturn(anchorDimensions);
   td.when(mockAdapter.isRtl()).thenReturn(isRtl);
   td.when(mockAdapter.getInnerDimensions()).thenReturn({height: menuSurfaceHeight, width: 100});
+  td.when(mockAdapter.getBodyDimensions()).thenReturn({height: 1000, width: 1000});
+  td.when(mockAdapter.getWindowScroll()).thenReturn(scrollValue);
 }
 
 function testFoundation(desc, runTests) {
@@ -255,6 +259,65 @@ testFoundation('#open from small anchor in right bottom of viewport, BOTTOM_END 
     mockRaf.flush();
     td.verify(mockAdapter.setTransformOrigin('right bottom'));
     td.verify(mockAdapter.setPosition({right: '40px', bottom: '20px'}));
+  });
+
+testFoundation('#open from small anchor in top right of viewport, fixed position, no scroll',
+  ({foundation, mockAdapter, mockRaf}) => {
+    initAnchorLayout(mockAdapter, smallTopLeft, true);
+    foundation.setFixedPosition(true);
+    foundation.open();
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('left top'));
+    td.verify(mockAdapter.setPosition({left: '20px', top: '20px'}));
+  });
+
+testFoundation('#open from small anchor in top right of viewport, absolute position, no scroll',
+  ({foundation, mockAdapter, mockRaf}) => {
+    initAnchorLayout(mockAdapter, smallTopLeft, true);
+    foundation.open();
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('left top'));
+    td.verify(mockAdapter.setPosition({left: '0', top: '0'}));
+  });
+
+testFoundation('#open from anchor in top right of viewport, absolute position, hoisted menu surface, no scroll',
+  ({foundation, mockAdapter, mockRaf}) => {
+    initAnchorLayout(mockAdapter, smallTopLeft, true);
+    foundation.setIsHoisted(true);
+    foundation.open();
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('left top'));
+    td.verify(mockAdapter.setPosition({left: '20px', top: '20px'}));
+  });
+
+
+testFoundation('#open from small anchor in top right of viewport, fixed position, scrollY 10 px',
+  ({foundation, mockAdapter, mockRaf}) => {
+    initAnchorLayout(mockAdapter, smallTopLeft, true, 200, {x: 0, y: 10});
+    foundation.setFixedPosition(true);
+    foundation.open();
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('left top'));
+    td.verify(mockAdapter.setPosition({left: '20px', top: '20px'}));
+  });
+
+testFoundation('#open from small anchor in top right of viewport, absolute position, scrollY 10 px',
+  ({foundation, mockAdapter, mockRaf}) => {
+    initAnchorLayout(mockAdapter, smallTopLeft, true, 200, {x: 0, y: 10});
+    foundation.open();
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('left top'));
+    td.verify(mockAdapter.setPosition({left: '0', top: '0'}));
+  });
+
+testFoundation('#open from anchor in top right of viewport, absolute position, hoisted menu surface, scrollY 10 px',
+  ({foundation, mockAdapter, mockRaf}) => {
+    initAnchorLayout(mockAdapter, smallTopLeft, true, 200, {x: 0, y: 10});
+    foundation.setIsHoisted(true);
+    foundation.open();
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('left top'));
+    td.verify(mockAdapter.setPosition({left: '20px', top: '30px'}));
   });
 
 testFoundation('#open from small anchor in left bottom of viewport, default (TOP_START) anchor corner, RTL',

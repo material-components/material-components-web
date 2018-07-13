@@ -84,7 +84,16 @@ class MDCMenuSurface extends MDCComponent {
    */
   hoistMenuToBody() {
     document.body.appendChild(this.root_.parentElement.removeChild(this.root_));
-    this.foundation_.setIsHoisted(true);
+    this.setIsHoisted(true);
+  }
+
+  /**
+   * Sets the foundation to use page offsets for an positioning when the menu
+   * is hoisted to the body.
+   * @param {boolean} isHoisted
+   */
+  setIsHoisted(isHoisted) {
+    this.foundation_.setIsHoisted(isHoisted);
   }
 
   /**
@@ -106,7 +115,6 @@ class MDCMenuSurface extends MDCComponent {
       this.root_.classList.remove(cssClasses.FIXED);
     }
 
-    this.foundation_.setIsHoisted(isFixed ? true : this.root_.parentElement === document.body);
     this.foundation_.setFixedPosition(isFixed);
   }
 

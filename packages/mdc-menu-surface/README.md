@@ -99,6 +99,7 @@ Method Signature | Description
 `setFixedPosition(isFixed: boolean) => void` | Adds the `mdc-menu-surface--fixed` class to the `mdc-menu-surface` element. Proxies to the foundation's `setIsHoisted()` and `setFixedPosition()` methods.
 `setMenuSurfaceAnchorElement(element: Element) => void` | Changes the element used as an anchor for `menu-surface` positioning logic. Should be used with conjunction with `hoistMenuToBody()`.
 `hoistMenuToBody() => void` | Removes the `menu-surface` element from the DOM and appends it to the `body` element. Should be used to overcome `overflow: hidden` issues.
+`setIsHoisted() => void` | Proxies tot he foundation's `setIsHoisted` method.
 `getDefaultFoundation() => MDCMenuSurfaceFoundation` | Returns the foundation.
 
 ## Usage Within Frameworks
@@ -143,7 +144,7 @@ Method Signature | Description
 --- | ---
 `setAnchorCorner(corder: Corner) => void` | Sets the corner that the menu surface will be anchored to. See [constants.js](./constants.js)
 `setAnchorMargin(margin: AnchorMargin) => void` | Sets the distance from the anchor point that the menu surface should be shown.
-`setIsHoisted(isHoisted: boolean) => void` | Sets whether the menu surface has been hoisted to the body.
+`setIsHoisted(isHoisted: boolean) => void` | Sets whether the menu surface has been hoisted to the body so that the offsets are calculated relative to the page and not the anchor.
 `setFixedPosition(isFixed: boolean) => void` | Sets whether the menu surface is using fixed positioning.
 `handleDocumentClick(event: Event) => void` | Method used as the callback function for the `click` event.
 `handleKeyboardDown(event: Event) => void` | Method used as the callback function for the `keydown` events.

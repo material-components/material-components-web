@@ -178,10 +178,12 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
   }
 
   setIsHoisted(isHoisted) {
+    this.close();
     this.hoistedElement_ = isHoisted;
   }
 
   setFixedPosition(isFixedPosition) {
+    this.close();
     this.isFixedPosition_ = isFixedPosition;
   }
 
@@ -311,19 +313,18 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     const avoidHorizontalOverlap = Boolean(this.anchorCorner_ & MenuSurfaceCornerBit.RIGHT);
 
     if (isRightAligned) {
-      let rightOffset = avoidHorizontalOverlap ? anchorWidth - this.anchorMargin_.left : this.anchorMargin_.right;
+      const rightOffset = avoidHorizontalOverlap ? anchorWidth - this.anchorMargin_.left : this.anchorMargin_.right;
 
       // Hoisted elements positioning doesn't account for the scrollbar, so the right property needs to be reduced by
       // the difference between the window and body width.
-      if (this.hoistedElement_) {
-        rightOffset = rightOffset - (this.measures_.viewport.width - this.measures_.bodyDimensions.width);
+      if (this.hoistedElement_ || this.isFixedPosition_) {
+        return rightOffset - (this.measures_.viewport.width - this.measures_.bodyDimensions.width);
       }
 
       return rightOffset;
     }
 
-    const leftOffset = avoidHorizontalOverlap ? anchorWidth - this.anchorMargin_.right : this.anchorMargin_.left;
-    return leftOffset;
+    return avoidHorizontalOverlap ? anchorWidth - this.anchorMargin_.right : this.anchorMargin_.left;
   }
 
   /**
@@ -398,13 +399,13 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     }
 
     // If the menu-surface has been hoisted to the body, it's no longer relative to the anchor element
-    if (this.hoistedElement_) {
+    if (this.hoistedElement_ || this.isFixedPosition_) {
       position = this.adjustPositionForHoistedElement_(position);
     }
 
     for (const prop in position) {
       if (position.hasOwnProperty(prop) && position[prop] !== '0') {
-        position[prop] = `${parseInt(position[prop], 0)}px`;
+        position[prop] = `${parseInt(position[prop], 10)}px`;
       }
     }
 
@@ -441,15 +442,15 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
         // Hoisted surfaces need to have the anchor elements location on the page added to the
         // position properties for proper alignment on the body.
         if (viewportDistance.hasOwnProperty(prop)) {
-          position[prop] = parseInt(position[prop], 0) + viewportDistance[prop];
+          position[prop] = parseInt(position[prop], 10) + viewportDistance[prop];
         }
 
         // Surfaces that are absolutely positioned need to have additional calculations for scroll
         // and bottom positioning.
         if (!this.isFixedPosition_ && prop === 'top') {
-          position[prop] = parseInt(position[prop], 0) + windowScroll.y;
+          position[prop] = parseInt(position[prop], 10) + windowScroll.y;
         } else if (!this.isFixedPosition_ && prop === 'bottom') {
-          position[prop] = bodyDimensions.height - (viewport.height + windowScroll.y) + parseInt(position[prop], 0);
+          position[prop] = bodyDimensions.height - (viewport.height + windowScroll.y) + parseInt(position[prop], 10);
         }
       }
     }
