@@ -35,12 +35,25 @@ module.exports = {
    */
   GCS_BUCKET: 'mdc-web-screenshot-tests',
 
+  /**
+   * Number of milliseconds to wait before retrying a concurrent CBT Selenium request.
+   * @type {number}
+   */
+  CBT_CONCURRENCY_POLL_INTERVAL_MS: 30 * 1000, // 30 seconds
+
+  /**
+   * Maximum number of milliseconds to wait before aborting a concurrent CBT Selenium request.
+   * @type {number}
+   */
+  CBT_CONCURRENCY_MAX_WAIT_MS: 10 * 60 * 1000, // 10 minutes
+
   ExitCode: {
-    UNKNOWN_ERROR: 1,
-    SIGINT: 2, // ctrl-c
-    SIGTERM: 3, // kill
-    UNSUPPORTED_CLI_COMMAND: 4,
-    HTTP_PORT_ALREADY_IN_USE: 5,
-    MISSING_ENV_VAR: 6,
+    UNKNOWN_ERROR: 11,
+    SIGINT: 12, // ctrl-c
+    SIGTERM: 13, // kill
+    UNSUPPORTED_CLI_COMMAND: 14,
+    HTTP_PORT_ALREADY_IN_USE: 15,
+    MISSING_ENV_VAR: 16,
+    UNHANDLED_PROMISE_REJECTION: 17,
   },
 };

@@ -17,22 +17,16 @@
 'use strict';
 
 const fs = require('mz/fs');
+const fsx = require('fs-extra');
 const glob = require('glob');
+const mkdirp = require('mkdirp');
 const path = require('path');
 
-const CliArgParser = require('./cli-arg-parser');
 const GitRepo = require('./git-repo');
 const {TEST_DIR_RELATIVE_PATH} = require('../lib/constants');
-const {UploadableTestCase, UploadableFile} = require('./types');
 
 class LocalStorage {
   constructor() {
-    /**
-     * @type {!CliArgParser}
-     * @private
-     */
-    this.cliArgs_ = new CliArgParser();
-
     /**
      * @type {!GitRepo}
      * @private
@@ -41,58 +35,105 @@ class LocalStorage {
   }
 
   /**
-   * @return {!Promise<!Array<string>>} File/dir paths relative to the git repo. E.g.: "test/screenshot/browser.json".
+   * @param {!mdc.proto.ReportMeta} reportMeta
+   * @return {!Promise<void>}
    */
-  async fetchAllTopLevelAssetFileAndDirPaths() {
-    return (await this.filterIgnoredFiles_(await fs.readdir(TEST_DIR_RELATIVE_PATH))).sort();
+  async copyAssetsToTempDir(reportMeta) {
+    /** @type {!Array<string>} */
+    const allAssetFileRelativePaths = await this.getAssetFileSourcePaths_();
+
+    const fileCopyPromises = [];
+
+    for (const assetFileRelativePath of allAssetFileRelativePaths) {
+      const assetFileshortPath = assetFileRelativePath.replace(TEST_DIR_RELATIVE_PATH, '');
+      const sourceFilePathAbsolute = path.resolve(assetFileRelativePath);
+      const destionationFilePathAbsolute = path.resolve(reportMeta.local_asset_base_dir, assetFileshortPath);
+
+      mkdirp.sync(path.dirname(destionationFilePathAbsolute));
+      fileCopyPromises.push(fs.copyFile(sourceFilePathAbsolute, destionationFilePathAbsolute));
+    }
+
+    await Promise.all(fileCopyPromises);
+  }
+
+  /**
+   * @param {!mdc.proto.ReportMeta} reportMeta
+   * @return {!Promise<!Array<string>>} File paths relative to the git repo. E.g.: "test/screenshot/browser.json".
+   */
+  async getTestPageDestinationPaths(reportMeta) {
+    const cwd = reportMeta.local_asset_base_dir;
+    return glob.sync('**/mdc-*/**/*.html', {cwd, nodir: true});
+  }
+
+  /**
+   * @param {string} filePath
+   * @param {string|!Buffer} fileContent
+   * @return {!Promise<void>}
+   */
+  async writeTextFile(filePath, fileContent) {
+    mkdirp.sync(path.dirname(filePath));
+    await fs.writeFile(filePath, fileContent, {encoding: 'utf8'});
+  }
+
+  /**
+   * @param {string} filePath
+   * @param {!Buffer} fileContent
+   * @return {!Promise<void>}
+   */
+  async writeBinaryFile(filePath, fileContent) {
+    mkdirp.sync(path.dirname(filePath));
+    await fs.writeFile(filePath, fileContent, {encoding: null});
+  }
+
+  /**
+   * @param {string} filePath
+   * @return {!Promise<string>}
+   */
+  async readTextFile(filePath) {
+    return fs.readFile(filePath, {encoding: 'utf8'});
+  }
+
+  /**
+   * @param {string} filePath
+   * @return {!Promise<string>}
+   */
+  readTextFileSync(filePath) {
+    return fs.readFileSync(filePath, {encoding: 'utf8'});
+  }
+
+  /**
+   * @param {string} filePath
+   * @return {!Promise<string>}
+   */
+  async readBinaryFile(filePath) {
+    return fs.readFile(filePath, {encoding: null});
+  }
+
+  /**
+   * @param {string} pattern
+   * @param {string=} cwd
+   * @return {!Array<string>}
+   */
+  glob(pattern, cwd = process.cwd()) {
+    return glob.sync(pattern, {cwd, nodir: true});
+  }
+
+  /**
+   * @param {string} src
+   * @param {string} dest
+   * @return {!Promise<void>}
+   */
+  async copy(src, dest) {
+    return fsx.copy(src, dest);
   }
 
   /**
    * @return {!Promise<!Array<string>>} File paths relative to the git repo. E.g.: "test/screenshot/browser.json".
+   * @private
    */
-  async fetchAllAssetFilePaths() {
-    return (await this.filterIgnoredFiles_(glob.sync('**/*', {cwd: TEST_DIR_RELATIVE_PATH, nodir: true}))).sort();
-  }
-
-  /**
-   * @return {!Promise<{
-   *   allTestCases: !Array<!UploadableTestCase>,
-   *   runnableTestCases: !Array<!UploadableTestCase>,
-   *   skippedTestCases: !Array<!UploadableTestCase>,
-   * }>}
-   */
-  async fetchTestCases(baseUploadDir) {
-    /** @type {!Array<!UploadableTestCase>} */
-    const allTestCases = (await this.fetchAllAssetFilePaths())
-      .filter((relativeFilePath) => {
-        return relativeFilePath.endsWith('.html') && relativeFilePath.includes('/mdc-');
-      })
-      .map((relativeFilePath) => {
-        const isRunnable = this.isRunnableTestCase_(relativeFilePath);
-        return new UploadableTestCase({
-          htmlFile: new UploadableFile({
-            destinationBaseUrl: this.cliArgs_.gcsBaseUrl,
-            destinationParentDirectory: baseUploadDir,
-            destinationRelativeFilePath: relativeFilePath.replace(TEST_DIR_RELATIVE_PATH, ''),
-          }),
-          isRunnable,
-        });
-      })
-    ;
-
-    const runnableTestCases = allTestCases.filter((testCase) => testCase.isRunnable);
-    const skippedTestCases = allTestCases.filter((testCase) => !testCase.isRunnable);
-
-    runnableTestCases.forEach((testCase, index) => {
-      testCase.htmlFile.queueIndex = index;
-      testCase.htmlFile.queueLength = runnableTestCases.length;
-    });
-
-    return {
-      allTestCases,
-      runnableTestCases,
-      skippedTestCases,
-    };
+  async getAssetFileSourcePaths_() {
+    const cwd = TEST_DIR_RELATIVE_PATH;
+    return (await this.filterIgnoredFiles_(glob.sync('**/*', {cwd, nodir: true}))).sort();
   }
 
   /**
@@ -111,20 +152,6 @@ class LocalStorage {
       const isIgnoredFile = ignoredTopLevelFilesAndDirs.includes(relativePath);
       return isBuildOutputDir || !isIgnoredFile;
     });
-  }
-
-  /**
-   * @param {string} relativeHtmlFilePath
-   * @return {boolean}
-   * @private
-   */
-  isRunnableTestCase_(relativeHtmlFilePath) {
-    const relativePath = relativeHtmlFilePath;
-    const isIncluded =
-      this.cliArgs_.includeUrlPatterns.length === 0 ||
-      this.cliArgs_.includeUrlPatterns.some((pattern) => pattern.test(relativePath));
-    const isExcluded = this.cliArgs_.excludeUrlPatterns.some((pattern) => pattern.test(relativePath));
-    return isIncluded && !isExcluded;
   }
 }
 

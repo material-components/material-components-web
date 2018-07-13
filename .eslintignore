@@ -1,3 +1,5 @@
 **/node_modules
 packages/*/dist
 **/out
+*.pb.js
+**/fixture.js

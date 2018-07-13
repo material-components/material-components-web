@@ -19,21 +19,14 @@
 const del = require('del');
 const mkdirp = require('mkdirp');
 const path = require('path');
-
 const {TEST_DIR_RELATIVE_PATH} = require('../lib/constants');
 
 module.exports = {
   async runAsync() {
-    const relativePathPatterns = [
-      'out',
-      'report.html',
-      'report.json',
-    ].map((filename) => {
+    const relativePathPatterns = ['out'].map((filename) => {
       return path.join(TEST_DIR_RELATIVE_PATH, filename);
     });
-
     await del(relativePathPatterns);
-
     mkdirp.sync(path.join(TEST_DIR_RELATIVE_PATH, 'out'));
   },
 };

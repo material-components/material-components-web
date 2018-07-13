@@ -156,28 +156,22 @@ command line.
 
 ### Diffing against a local `golden.json` file
 
-By default, screenshots are diffed against `origin/master:test/screenshot/golden.json`.
+By default, screenshots are diffed against your local `test/screenshot/golden.json` file.
 
-To diff against a local `golden.json` file, run:
-
-```bash
-npm run screenshot:test -- --diff-base=test/screenshot/golden.json
-```
-
-URLs are also supported:
+You can diff against a local/remote git branch, tag, or commit with the `--diff-base` flag:
 
 ```bash
-npm run screenshot:test -- --diff-base=https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/22/17_34_19_887/c8c29033e/golden.json
-```
-
-### Diffing against another branch
-
-By default, screenshots are diffed against `origin/master:test/screenshot/golden.json`.
-
-To diff against a different branch, run:
-
-```bash
+npm run screenshot:test -- --diff-base=origin/master
 npm run screenshot:test -- --diff-base=fix/fab/icon-alignment-ie11
+npm run screenshot:test -- --diff-base=v0.37.0
+npm run screenshot:test -- --diff-base=01abc11e0
+```
+
+URLs and file paths are also supported:
+
+```bash
+npm run screenshot:test -- --diff-base=/tmp/golden.json
+npm run screenshot:test -- --diff-base=https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_07_59_278/golden.json
 ```
 
 ## Writing tests
