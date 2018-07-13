@@ -19,15 +19,19 @@
   height: 71px;
 }
 
-.test-button--outlined:disabled,
-.test-button--outlined:not(:disabled) {
-  outline: 1px solid green !important;
-}
-
-.test-button__icon--outlined {
-  outline: 1px solid black !important;
-}
-
 .test-button__label--outlined {
-  outline: 1px solid red !important;
+  outline: 1px solid transparent;
 }
+
+//.test-button--outlined:disabled,
+//.test-button--outlined:not(:disabled) {
+//  outline: 1px solid green !important;
+//}
+//
+//.test-button__icon--outlined {
+//  outline: 1px solid black !important;
+//}
+//
+//.test-button__label--outlined {
+//  outline: 1px solid red !important;
+//}
