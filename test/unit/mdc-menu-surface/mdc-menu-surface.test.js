@@ -346,17 +346,6 @@ test('adapter#getWindowScroll returns the scroll position of the window when not
   document.body.removeChild(root);
 });
 
-test('adapter#getWindowScroll returns the scroll position of the window when scrolled 10px', () => {
-  const {root, component} = setupTest(true);
-  document.body.appendChild(root);
-  document.body.style.height = '200vh';
-  window.scrollTo(0, 10);
-  assert.equal(component.getDefaultFoundation().adapter_.getWindowScroll().x, 0);
-  assert.equal(component.getDefaultFoundation().adapter_.getWindowScroll().y, 10);
-  document.body.style.height = '';
-  document.body.removeChild(root);
-});
-
 test('adapter#isRtl returns true for RTL documents', () => {
   const anchor = bel`<div dir="rtl" class="mdc-menu-surface--anchor"></div>`;
   const {root, component} = setupTest(true);
