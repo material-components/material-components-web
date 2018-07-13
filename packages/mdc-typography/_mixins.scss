@@ -40,3 +40,13 @@
   white-space: nowrap;
   overflow: hidden;
 }
+
+@mixin mdc-typography-text-baseline($size) {
+  &::before {
+    display: inline-block;
+    width: 0;
+    height: $size;
+    content: "";
+    vertical-align: 0;
+  }
+}
