@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-const jimp = require('jimp');
+const Jimp = require('jimp');
+const fs = require('mz/fs');
 
 const TRIM_COLOR_CSS_VALUE = '#abc123'; // Value must match `$test-trim-color` in `fixture.scss`
 
@@ -53,14 +54,15 @@ class ImageCropper {
    * @return {!Promise<!Buffer>} Cropped image buffer
    */
   async autoCropImage(imageData) {
-    return jimp.read(imageData)
+    await fs.writeFile('/tmp/image.png', imageData, {encoding: null});
+    return Jimp.read(imageData)
       .then(
         (jimpImage) => {
           return new Promise((resolve, reject) => {
             const {x, y, w, h} = this.getCropRect_(jimpImage);
             jimpImage
               .crop(x, y, w, h)
-              .getBuffer(jimp.MIME_PNG, (err, buffer) => {
+              .getBuffer(Jimp.MIME_PNG, (err, buffer) => {
                 return err ? reject(err) : resolve(buffer);
               })
             ;
@@ -115,7 +117,7 @@ class ImageCropper {
       if (!cols[x]) {
         cols[x] = [];
       }
-      const pixelColorRGB = jimp.intToRGBA(jimpImage.getPixelColor(x, y));
+      const pixelColorRGB = Jimp.intToRGBA(jimpImage.getPixelColor(x, y));
       const isTrimColor = this.isTrimColor_(pixelColorRGB);
       rows[y][x] = isTrimColor;
       cols[x][y] = isTrimColor;

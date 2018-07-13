@@ -1,5 +1,8 @@
 {
   "output": {
     "transparency": 0
+  },
+  "mdc_screenshot_test": {
+    "min_changed_pixel_count": 10
   }
 }

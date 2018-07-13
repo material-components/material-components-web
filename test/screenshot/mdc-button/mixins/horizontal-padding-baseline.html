@@ -26,56 +26,34 @@
   </head>
 
   <body class="test-body mdc-typography">
-    <main class="test-main test-main--button">
+    <main class="test-main test-main--mobile">
       <div class="test-grid">
         <div class="test-cell test-cell--button">
           <button class="custom-button--horizontal-padding mdc-button">Button</button>
         </div>
         <div class="test-cell test-cell--button">
-          <a class="custom-button--horizontal-padding mdc-button" href="#">Link</a>
-        </div>
-        <div class="test-cell test-cell--button">
-          <button class="custom-button--horizontal-padding mdc-button"><i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i> Icon</button>
-        </div>
-        <div class="test-cell test-cell--button">
-          <button class="custom-button--horizontal-padding mdc-button" disabled><i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i> Disabled</button>
-        </div>
-        <div class="test-cell test-cell--button">
           <button class="custom-button--horizontal-padding mdc-button mdc-button--raised">Button</button>
-        </div>
-        <div class="test-cell test-cell--button">
-          <a class="custom-button--horizontal-padding mdc-button mdc-button--raised" href="#">Link</a>
-        </div>
-        <div class="test-cell test-cell--button">
-          <button class="custom-button--horizontal-padding mdc-button mdc-button--raised"><i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i> Icon</button>
-        </div>
-        <div class="test-cell test-cell--button">
-          <button class="custom-button--horizontal-padding mdc-button mdc-button--raised" disabled><i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i> Disabled</button>
         </div>
         <div class="test-cell test-cell--button">
           <button class="custom-button--horizontal-padding mdc-button mdc-button--unelevated">Button</button>
         </div>
         <div class="test-cell test-cell--button">
-          <a class="custom-button--horizontal-padding mdc-button mdc-button--unelevated" href="#">Link</a>
+          <button class="custom-button--horizontal-padding mdc-button mdc-button--outlined">Button</button>
+        </div>
+
+        <div class="test-cell test-cell--button">
+          <button class="custom-button--horizontal-padding mdc-button"><i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i> Icon</button>
+        </div>
+        <div class="test-cell test-cell--button">
+          <button class="custom-button--horizontal-padding mdc-button mdc-button--raised"><i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i> Icon</button>
         </div>
         <div class="test-cell test-cell--button">
           <button class="custom-button--horizontal-padding mdc-button mdc-button--unelevated"><i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i> Icon</button>
         </div>
         <div class="test-cell test-cell--button">
-          <button class="custom-button--horizontal-padding mdc-button mdc-button--unelevated" disabled><i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i> Disabled</button>
-        </div>
-        <div class="test-cell test-cell--button">
-          <button class="custom-button--horizontal-padding mdc-button mdc-button--outlined">Button</button>
-        </div>
-        <div class="test-cell test-cell--button">
-          <a class="custom-button--horizontal-padding mdc-button mdc-button--outlined" href="#">Link</a>
-        </div>
-        <div class="test-cell test-cell--button">
           <button class="custom-button--horizontal-padding mdc-button mdc-button--outlined"><i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i> Icon</button>
         </div>
-        <div class="test-cell test-cell--button">
-          <button class="custom-button--horizontal-padding mdc-button mdc-button--outlined" disabled><i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i> Disabled</button>
-        </div>
+
         <div class="test-cell test-cell--button">
           <button class="custom-button--horizontal-padding mdc-button">是</button> <!-- Short label text to test min-width -->
         </div>
@@ -88,7 +66,26 @@
         <div class="test-cell test-cell--button">
           <button class="custom-button--horizontal-padding mdc-button mdc-button--outlined">是</button> <!-- Short label text to test min-width -->
         </div>
+
+        <div class="test-cell test-cell--button">
+          <button class="custom-button--horizontal-padding mdc-button" disabled><i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i> Disabled</button>
+        </div>
+        <div class="test-cell test-cell--button">
+          <button class="custom-button--horizontal-padding mdc-button mdc-button--raised" disabled><i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i> Disabled</button>
+        </div>
+        <div class="test-cell test-cell--button">
+          <button class="custom-button--horizontal-padding mdc-button mdc-button--unelevated" disabled><i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i> Disabled</button>
+        </div>
+        <div class="test-cell test-cell--button">
+          <button class="custom-button--horizontal-padding mdc-button mdc-button--outlined" disabled><i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i> Disabled</button>
+        </div>
       </div>
     </main>
+
+    <!-- Automatically provides/replaces `Promise` if missing or broken. -->
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fontfaceobserver/2.0.13/fontfaceobserver.standalone.js"></script>
+    <script src="../../fixture.js"></script>
   </body>
 </html>

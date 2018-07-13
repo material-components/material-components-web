@@ -20,14 +20,14 @@ const detectPort = require('detect-port');
 const express = require('express');
 const serveIndex = require('serve-index');
 
-const CliArgParser = require('../lib/cli-arg-parser');
+const Cli = require('../lib/cli');
 const {ExitCode} = require('../lib/constants');
 const {TEST_DIR_RELATIVE_PATH} = require('../lib/constants');
 
 module.exports = {
   async runAsync() {
-    const cliArgs = new CliArgParser();
-    const {port} = cliArgs;
+    const cli = new Cli();
+    const {port} = cli;
 
     if (await detectPort(port) !== port) {
       console.error(`Error: HTTP port ${port} is already in use!`);

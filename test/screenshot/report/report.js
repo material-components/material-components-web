@@ -21,19 +21,38 @@ window.mdc.reportUi = (() => {
   class ReportUi {
     constructor() {
       this.bindEventListeners_();
-      this.fetchRunReportData_().then((runReport) => {
+
+      this.fetchReportData_().then((reportData) => {
         /**
-         * @type {!RunReport}
+         * @type {!mdc.proto.ReportData}
          * @private
          */
-        this.runReport_ = runReport;
+        this.reportData_ = reportData;
+
+        this.startTimeOffsetPolling_();
         this.updateAllAndGetState_();
       });
+    }
+
+    startTimeOffsetPolling_() {
+      const updateTimeOffset = () => this.calculateTimeOffset_();
+      updateTimeOffset();
+      setInterval(updateTimeOffset, Duration.minutes(1).toMillis());
+    }
+
+    calculateTimeOffset_() {
+      const startTimeEl = this.queryOne_('#report-metadata__start-time');
+      const timeSinceStartEl = this.queryOne_('#report-metadata__time-since-start');
+      const elapsedShort = Duration.elapsed(startTimeEl.dateTime).toHumanShort(0);
+      const elapsedLong = Duration.elapsed(startTimeEl.dateTime).toHumanShort(2);
+      timeSinceStartEl.innerText = `(about ${elapsedShort} ago)`;
+      timeSinceStartEl.title = `${elapsedLong} ago`;
     }
 
     bindEventListeners_() {
       this.bindCopyCliCommandEventListener_();
       this.bindCloseCliCommandEventListener_();
+      this.bindCheckboxChangeEventListener_();
     }
 
     bindCopyCliCommandEventListener_() {
@@ -68,12 +87,25 @@ window.mdc.reportUi = (() => {
       });
     }
 
+    bindCheckboxChangeEventListener_() {
+      document.addEventListener('change', (evt) => {
+        const targetEl = evt.target;
+        if (targetEl.matches('.report-collection__checkbox')) {
+          this.collectionCheckboxChanged(targetEl);
+        } else if (targetEl.matches('.report-html-file__checkbox')) {
+          this.htmlFileCheckboxChanged(targetEl);
+        } else if (targetEl.matches('.report-user-agent__checkbox')) {
+          this.userAgentCheckboxChanged(targetEl);
+        }
+      });
+    }
+
     closeCliCommandModal_() {
       this.queryOne_('#report-cli-modal').dataset.state = 'closed';
       this.selectNone();
     }
 
-    fetchRunReportData_() {
+    fetchReportData_() {
       return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
         xhr.addEventListener('load', () => resolve(JSON.parse(xhr.responseText)));
@@ -85,27 +117,36 @@ window.mdc.reportUi = (() => {
     }
 
     collapseAll() {
-      const detailsElems = Array.from(document.querySelectorAll('details'));
-      detailsElems.forEach((detailsElem) => detailsElem.open = false);
+      const allDetailsElems = Array.from(document.querySelectorAll('details'));
+      allDetailsElems.forEach((detailsElem) => detailsElem.open = false);
     }
 
     collapseNone() {
-      const detailsElems = Array.from(document.querySelectorAll('details'));
-      detailsElems.forEach((detailsElem) => detailsElem.open = true);
+      const allDetailsElems = Array.from(document.querySelectorAll('details'));
+      allDetailsElems.forEach((detailsElem) => detailsElem.open = true);
     }
 
     collapseImages() {
       this.collapseNone();
-      const detailsElems = Array.from(document.querySelectorAll('.report-browser'));
-      detailsElems.forEach((detailsElem) => detailsElem.open = false);
+
+      const collectionDetailsElems = Array.from(document.querySelectorAll('.report-collection'));
+      collectionDetailsElems.forEach((detailsElem) => {
+        const hasScreenshots = Number(detailsElem.getAttribute('data-num-screenshots')) > 0;
+        const isComparable = !['skipped', 'unchanged'].includes(detailsElem.getAttribute('data-collection-type'));
+        detailsElem.open = hasScreenshots && isComparable;
+      });
+
+      const userAgentDetailsElems = Array.from(document.querySelectorAll('.report-user-agent'));
+      userAgentDetailsElems.forEach((detailsElem) => detailsElem.open = false);
     }
 
     /**
      * @param {!HTMLInputElement} cbEl
      */
-    changelistCheckboxChanged(cbEl) {
-      const {changeGroupId} = cbEl.dataset;
-      const childCbEls = this.queryAll_(`[data-change-group-id="${changeGroupId}"]`);
+    collectionCheckboxChanged(cbEl) {
+      // TODO(acdvorak): Replace dataset with getAttribute/setAttribute (it makes search/replace easier)
+      const {collectionType} = cbEl.dataset;
+      const childCbEls = this.queryAll_(`[data-collection-type="${collectionType}"]`);
       childCbEls.forEach((childCbEl) => {
         childCbEl.checked = cbEl.checked;
         childCbEl.indeterminate = false;
@@ -117,10 +158,10 @@ window.mdc.reportUi = (() => {
     /**
      * @param {!HTMLInputElement} cbEl
      */
-    fileCheckboxChanged(cbEl) {
-      const {changeGroupId, htmlFilePath} = cbEl.dataset;
+    htmlFileCheckboxChanged(cbEl) {
+      const {collectionType, htmlFilePath} = cbEl.dataset;
       const childCbEls = this.queryAll_([
-        `[data-change-group-id="${changeGroupId}"]`,
+        `[data-collection-type="${collectionType}"]`,
         `[data-html-file-path="${htmlFilePath}"]`,
       ].join(''));
       childCbEls.forEach((childCbEl) => {
@@ -131,12 +172,12 @@ window.mdc.reportUi = (() => {
       this.updateAllAndGetState_();
     }
 
-    browserCheckboxChanged() {
+    userAgentCheckboxChanged() {
       this.updateAllAndGetState_();
     }
 
     selectAll() {
-      this.queryAll_('.report-browser__checkbox').forEach((cbEl) => {
+      this.queryAll_('.report-user-agent__checkbox:not(.report-user-agent__checkbox--hidden)').forEach((cbEl) => {
         cbEl.checked = true;
         cbEl.indeterminate = false;
       });
@@ -144,15 +185,23 @@ window.mdc.reportUi = (() => {
     }
 
     selectNone() {
-      this.queryAll_('.report-browser__checkbox').forEach((cbEl) => {
+      this.queryAll_('.report-user-agent__checkbox:not(.report-user-agent__checkbox--hidden)').forEach((cbEl) => {
         cbEl.checked = false;
         cbEl.indeterminate = false;
       });
       this.updateAllAndGetState_();
     }
 
+    selectUnreviewed() {
+      this.queryAll_('.report-user-agent__checkbox:not(.report-user-agent__checkbox--hidden)').forEach((cbEl) => {
+        cbEl.checked = cbEl.matches('[data-review-status="unreviewed"]');
+        cbEl.indeterminate = false;
+      });
+      this.updateAllAndGetState_();
+    }
+
     selectInverse() {
-      this.queryAll_('.report-browser__checkbox').forEach((cbEl) => {
+      this.queryAll_('.report-user-agent__checkbox:not(.report-user-agent__checkbox--hidden)').forEach((cbEl) => {
         cbEl.checked = !cbEl.checked;
         cbEl.indeterminate = false;
       });
@@ -160,14 +209,14 @@ window.mdc.reportUi = (() => {
     }
 
     approveSelected() {
-      const cbEls = this.queryAll_('.report-browser__checkbox:checked');
+      const cbEls = this.queryAll_('.report-user-agent__checkbox:not(.report-user-agent__checkbox--hidden):checked');
       this.setReviewStatus_(cbEls, 'approve');
       const report = this.updateAllAndGetState_();
       this.showCliCommand_('screenshot:approve', this.getApproveCommandArgs_(report));
     }
 
     retrySelected() {
-      const cbEls = this.queryAll_('.report-browser__checkbox:checked');
+      const cbEls = this.queryAll_('.report-user-agent__checkbox:not(.report-user-agent__checkbox--hidden):checked');
       this.setReviewStatus_(cbEls, 'retry');
       const reportUiState = this.updateAllAndGetState_();
       this.showCliCommand_('screenshot:test', this.getRetryCommandArgs_(reportUiState));
@@ -181,7 +230,7 @@ window.mdc.reportUi = (() => {
     setReviewStatus_(cbEls, reviewStatus) {
       cbEls.forEach((cbEl) => {
         cbEl.dataset.reviewStatus = reviewStatus;
-        cbEl.closest('.report-browser').dataset.reviewStatus = reviewStatus;
+        cbEl.closest('.report-user-agent').dataset.reviewStatus = reviewStatus;
         cbEl.parentElement.querySelector('.report-review-status').dataset.reviewStatus = reviewStatus;
         cbEl.parentElement.querySelector('.report-review-status').innerText = this.getStatusBadgeText_(reviewStatus);
       });
@@ -208,33 +257,33 @@ window.mdc.reportUi = (() => {
      * @private
      */
     getApproveCommandArgs_(reportUiState) {
-      const reportUrlArg = `--report=${this.runReport_.runResult.publicReportJsonUrl}`;
+      const reportUrlArg = `--report=${this.reportData_.meta.report_json_file.public_url}`;
 
-      if (reportUiState.uncheckedBrowserCbEls.length === 0) {
+      if (reportUiState.uncheckedUserAgentCbEls.length === 0) {
         return ['--all', reportUrlArg];
       }
 
       const args = [];
 
-      for (const [changeGroupId, changelist] of Object.entries(reportUiState.changelistDict)) {
-        if (changelist.checkedBrowserCbEls.length === 0) {
+      for (const [collectionType, collection] of Object.entries(reportUiState.collectionDict)) {
+        if (collection.checkedUserAgentCbEls.length === 0) {
           continue;
         }
 
-        if (changelist.uncheckedBrowserCbEls.length === 0) {
-          args.push(`--all-${changeGroupId}`);
+        if (collection.uncheckedUserAgentCbEls.length === 0) {
+          args.push(`--all-${collectionType}`);
           continue;
         }
 
         const targets = [];
 
-        for (const [htmlFilePath, page] of Object.entries(changelist.pageDict)) {
-          for (const browserCbEl of page.checkedBrowserCbEls) {
-            targets.push(`${htmlFilePath}:${browserCbEl.dataset.userAgentAlias}`);
+        for (const [htmlFilePath, page] of Object.entries(collection.pageDict)) {
+          for (const userAgentCbEl of page.checkedUserAgentCbEls) {
+            targets.push(`${htmlFilePath}:${userAgentCbEl.dataset.userAgentAlias}`);
           }
         }
 
-        args.push(`--${changeGroupId}=${targets.join(',')}`);
+        args.push(`--${collectionType}=${targets.join(',')}`);
       }
 
       args.push(reportUrlArg);
@@ -251,9 +300,9 @@ window.mdc.reportUi = (() => {
       const htmlFilePathSet = new Set();
       const userAgentAliasSet = new Set();
 
-      for (const browserCbEl of report.checkedBrowserCbEls) {
-        htmlFilePathSet.add(browserCbEl.dataset.htmlFilePath);
-        userAgentAliasSet.add(browserCbEl.dataset.userAgentAlias);
+      for (const userAgentCbEl of report.checkedUserAgentCbEls) {
+        htmlFilePathSet.add(userAgentCbEl.dataset.htmlFilePath);
+        userAgentAliasSet.add(userAgentCbEl.dataset.userAgentAlias);
       }
 
       return [
@@ -275,81 +324,82 @@ window.mdc.reportUi = (() => {
     updateCountsAndGetState_() {
       /** @type {!ReportUiState} */
       const reportUiState = {
-        checkedBrowserCbEls: [],
-        uncheckedBrowserCbEls: [],
-        changelistDict: {},
+        checkedUserAgentCbEls: [],
+        uncheckedUserAgentCbEls: [],
+        unreviewedUserAgentCbEls: [],
+        collectionDict: {},
         reviewStatusCountDict: {},
       };
 
-      const browserCbEls = this.queryAll_('.report-browser__checkbox');
+      const userAgentCbEls = this.queryAll_('.report-user-agent__checkbox:not(.report-user-agent__checkbox--hidden)');
 
-      browserCbEls.forEach((browserCbEl) => {
-        if (browserCbEl.disabled) {
+      userAgentCbEls.forEach((userAgentCbEl) => {
+        if (userAgentCbEl.disabled) {
           return;
         }
 
-        const {changeGroupId, htmlFilePath} = browserCbEl.dataset;
-        const changelistDataAttr = `[data-change-group-id="${changeGroupId}"]`;
-        const pageDataAttr = `[data-change-group-id="${changeGroupId}"][data-html-file-path="${htmlFilePath}"]`;
-        const changelistDict = reportUiState.changelistDict;
+        const {collectionType, htmlFilePath} = userAgentCbEl.dataset;
+        const collectionDataAttr = `[data-collection-type="${collectionType}"]`;
+        const htmlFileDataAttr = `[data-collection-type="${collectionType}"][data-html-file-path="${htmlFilePath}"]`;
+        const {collectionDict} = reportUiState;
 
-        changelistDict[changeGroupId] = changelistDict[changeGroupId] || {
-          cbEl: this.queryOne_(`.report-changelist__checkbox${changelistDataAttr}`),
-          countEl: this.queryOne_(`.report-changelist__checked-count${changelistDataAttr}`),
-          reviewStatusEl: this.queryOne_(`.report-review-status--changelist${changelistDataAttr}`),
-          checkedBrowserCbEls: [],
-          uncheckedBrowserCbEls: [],
-          reviewStatusCountDict: {},
-          pageDict: {},
-        };
+        collectionDict[collectionType] =
+          collectionDict[collectionType] || {
+            cbEl: this.queryOne_(`.report-collection__checkbox${collectionDataAttr}`),
+            reviewStatusEl: this.queryOne_(`.report-review-status--collection${collectionDataAttr}`),
+            checkedUserAgentCbEls: [],
+            uncheckedUserAgentCbEls: [],
+            reviewStatusCountDict: {},
+            pageDict: {},
+          };
 
-        changelistDict[changeGroupId].pageDict[htmlFilePath] = changelistDict[changeGroupId].pageDict[htmlFilePath] || {
-          cbEl: this.queryOne_(`.report-file__checkbox${pageDataAttr}`),
-          countEl: this.queryOne_(`.report-file__checked-count${pageDataAttr}`),
-          reviewStatusEl: this.queryOne_(`.report-review-status--file${pageDataAttr}`),
-          checkedBrowserCbEls: [],
-          uncheckedBrowserCbEls: [],
-          reviewStatusCountDict: {},
-        };
+        collectionDict[collectionType].pageDict[htmlFilePath] =
+          collectionDict[collectionType].pageDict[htmlFilePath] || {
+            cbEl: this.queryOne_(`.report-html-file__checkbox${htmlFileDataAttr}`),
+            reviewStatusEl: this.queryOne_(`.report-review-status--html-file${htmlFileDataAttr}`),
+            checkedUserAgentCbEls: [],
+            uncheckedUserAgentCbEls: [],
+            reviewStatusCountDict: {},
+          };
 
-        if (browserCbEl.checked) {
-          reportUiState.checkedBrowserCbEls.push(browserCbEl);
-          changelistDict[changeGroupId].checkedBrowserCbEls.push(browserCbEl);
-          changelistDict[changeGroupId].pageDict[htmlFilePath].checkedBrowserCbEls.push(browserCbEl);
+        if (userAgentCbEl.checked) {
+          reportUiState.checkedUserAgentCbEls.push(userAgentCbEl);
+          collectionDict[collectionType].checkedUserAgentCbEls.push(userAgentCbEl);
+          collectionDict[collectionType].pageDict[htmlFilePath].checkedUserAgentCbEls.push(userAgentCbEl);
         } else {
-          reportUiState.uncheckedBrowserCbEls.push(browserCbEl);
-          changelistDict[changeGroupId].uncheckedBrowserCbEls.push(browserCbEl);
-          changelistDict[changeGroupId].pageDict[htmlFilePath].uncheckedBrowserCbEls.push(browserCbEl);
+          reportUiState.uncheckedUserAgentCbEls.push(userAgentCbEl);
+          collectionDict[collectionType].uncheckedUserAgentCbEls.push(userAgentCbEl);
+          collectionDict[collectionType].pageDict[htmlFilePath].uncheckedUserAgentCbEls.push(userAgentCbEl);
         }
 
-        const reviewStatus = browserCbEl.dataset.reviewStatus;
+        const reviewStatus = userAgentCbEl.dataset.reviewStatus;
         reportUiState.reviewStatusCountDict[reviewStatus] =
           (reportUiState.reviewStatusCountDict[reviewStatus] || 0) + 1;
-        changelistDict[changeGroupId].reviewStatusCountDict[reviewStatus] =
-          (changelistDict[changeGroupId].reviewStatusCountDict[reviewStatus] || 0) + 1;
-        changelistDict[changeGroupId].pageDict[htmlFilePath].reviewStatusCountDict[reviewStatus] =
-          (changelistDict[changeGroupId].pageDict[htmlFilePath].reviewStatusCountDict[reviewStatus] || 0) + 1;
+        collectionDict[collectionType].reviewStatusCountDict[reviewStatus] =
+          (collectionDict[collectionType].reviewStatusCountDict[reviewStatus] || 0) + 1;
+        collectionDict[collectionType].pageDict[htmlFilePath].reviewStatusCountDict[reviewStatus] =
+          (collectionDict[collectionType].pageDict[htmlFilePath].reviewStatusCountDict[reviewStatus] || 0) + 1;
+
+        if (reviewStatus === 'unreviewed') {
+          reportUiState.unreviewedUserAgentCbEls.push(userAgentCbEl);
+        }
       });
 
-      for (const changelist of Object.values(reportUiState.changelistDict)) {
-        const hasCheckedBrowsers = changelist.checkedBrowserCbEls.length > 0;
-        const hasUncheckedBrowsers = changelist.uncheckedBrowserCbEls.length > 0;
+      for (const collection of Object.values(reportUiState.collectionDict)) {
+        const hasCheckedBrowsers = collection.checkedUserAgentCbEls.length > 0;
+        const hasUncheckedBrowsers = collection.uncheckedUserAgentCbEls.length > 0;
 
-        changelist.cbEl.checked = hasCheckedBrowsers;
-        changelist.cbEl.indeterminate = hasCheckedBrowsers && hasUncheckedBrowsers;
+        collection.cbEl.checked = hasCheckedBrowsers;
+        collection.cbEl.indeterminate = hasCheckedBrowsers && hasUncheckedBrowsers;
 
-        const clStatuses = Object.keys(changelist.reviewStatusCountDict);
-        changelist.reviewStatusEl.dataset.reviewStatus = clStatuses.length === 1 ? clStatuses[0] : 'mixed';
-        changelist.reviewStatusEl.innerText =
+        const clStatuses = Object.keys(collection.reviewStatusCountDict);
+        collection.reviewStatusEl.dataset.reviewStatus = clStatuses.length === 1 ? clStatuses[0] : 'mixed';
+        collection.reviewStatusEl.innerText =
           this.getStatusBadgeText_(clStatuses.length === 1 ? clStatuses[0] : 'mixed');
 
-        if (changelist.countEl) {
-          changelist.countEl.innerText = String(changelist.checkedBrowserCbEls.length);
-        }
-
-        for (const page of Object.values(changelist.pageDict)) {
-          const hasCheckedBrowsers = page.checkedBrowserCbEls.length > 0;
-          const hasUncheckedBrowsers = page.uncheckedBrowserCbEls.length > 0;
+        for (const page of Object.values(collection.pageDict)) {
+          const hasCheckedBrowsers = page.checkedUserAgentCbEls.length > 0;
+          const hasUncheckedBrowsers = page.uncheckedUserAgentCbEls.length > 0;
 
           page.cbEl.checked = hasCheckedBrowsers;
           page.cbEl.indeterminate = hasCheckedBrowsers && hasUncheckedBrowsers;
@@ -358,10 +408,6 @@ window.mdc.reportUi = (() => {
           page.reviewStatusEl.dataset.reviewStatus = pageStatuses.length === 1 ? pageStatuses[0] : 'mixed';
           page.reviewStatusEl.innerText =
             this.getStatusBadgeText_(pageStatuses.length === 1 ? pageStatuses[0] : 'mixed');
-
-          if (page.countEl) {
-            page.countEl.innerText = String(page.checkedBrowserCbEls.length);
-          }
         }
       }
 
@@ -373,20 +419,25 @@ window.mdc.reportUi = (() => {
      * @private
      */
     updateToolbar_(reportUiState) {
-      const numChecked = reportUiState.checkedBrowserCbEls.length;
-      const numUnchecked = reportUiState.uncheckedBrowserCbEls.length;
+      const numChecked = reportUiState.checkedUserAgentCbEls.length;
+      const numUnchecked = reportUiState.uncheckedUserAgentCbEls.length;
+      const numUnreviewed = reportUiState.unreviewedUserAgentCbEls.length;
 
       const hasCheckedScreenshots = numChecked > 0;
       const hasUncheckedScreenshots = numUnchecked > 0;
+      const hasUnreviewedScreenshots = numUnreviewed > 0;
 
       if (!hasUncheckedScreenshots && !hasCheckedScreenshots) {
-        this.queryOne_('.report-toolbar').classList.add('report-toolbar--hidden');
         return;
       }
+
+      this.queryOne_('#report-toolbar__approval-column').classList.remove('report-toolbar__column--hidden');
+      this.queryOne_('#report-toolbar__selection-column').classList.remove('report-toolbar__column--hidden');
 
       const selectAllButton = this.queryOne_('#report-toolbar__select-all-button');
       const selectNoneButton = this.queryOne_('#report-toolbar__select-none-button');
       const selectInverseButton = this.queryOne_('#report-toolbar__select-inverse-button');
+      const selectUnreviewedButton = this.queryOne_('#report-toolbar__select-unreviewed-button');
       const approveSelectedButton = this.queryOne_('#report-toolbar__approve-selected-button');
       const retrySelectedButton = this.queryOne_('#report-toolbar__retry-selected-button');
       const selectedCountEl = this.queryOne_('#report-toolbar__selected-count');
@@ -394,6 +445,7 @@ window.mdc.reportUi = (() => {
       selectAllButton.disabled = !hasUncheckedScreenshots;
       selectNoneButton.disabled = !hasCheckedScreenshots;
       selectInverseButton.disabled = !(hasCheckedScreenshots || hasUncheckedScreenshots);
+      selectUnreviewedButton.disabled = !(hasUnreviewedScreenshots && hasUncheckedScreenshots);
 
       approveSelectedButton.disabled = !hasCheckedScreenshots;
       retrySelectedButton.disabled = !hasCheckedScreenshots;

@@ -27,6 +27,14 @@ class Duration {
   }
 
   /**
+   * @param {number} ms
+   * @return {!Duration}
+   */
+  static millis(ms) {
+    return new Duration(ms);
+  }
+
+  /**
    * @param {number} sec
    * @return {!Duration}
    */
@@ -40,6 +48,15 @@ class Duration {
    */
   static minutes(min) {
     return new Duration(min * 1000 * 60);
+  }
+
+  /**
+   * @param {!Date|number|string} startDateTime
+   * @param {!Date|number|string=} endDateTime
+   * @return {!Duration}
+   */
+  static elapsed(startDateTime, endDateTime = new Date()) {
+    return Duration.millis(new Date(endDateTime) - new Date(startDateTime));
   }
 
   /**
@@ -67,14 +84,27 @@ class Duration {
   }
 
   /**
+   * TODO(acdvorak): Create `toHumanLong` method that outputs "4d 23h 5m 11s" (or w/e)
+   * @param {number=} numDecimalDigits
    * @return {string}
    */
-  toHuman() {
+  toHumanShort(numDecimalDigits = 1) {
     const oneMillisecond = 1;
     const oneSecond = 1000;
     const oneMinute = 1000 * 60;
     const oneHour = 1000 * 60 * 60;
     const oneDay = 1000 * 60 * 60 * 24;
+    const oneWeek = 1000 * 60 * 60 * 24 * 7;
+    const oneMonth = 1000 * 60 * 60 * 24 * 30;
+    const oneYear = 1000 * 60 * 60 * 24 * 365;
+
+    function format(ms, divisor, unit) {
+      const multiplier = Math.pow(10, numDecimalDigits);
+      const rawValue = ms / divisor;
+      const roundedValue = Math.round(multiplier * rawValue) / multiplier;
+      const plural = roundedValue === 1 ? '' : 's';
+      return `${roundedValue} ${unit}${plural}`;
+    }
 
     const magnitudes = [
       {
@@ -94,21 +124,28 @@ class Duration {
         format: (ms) => format(ms, oneHour, 'hour'),
       },
       {
-        matches: () => true, // fallback that always matches
+        matches: (ms) => ms < oneWeek,
         format: (ms) => format(ms, oneDay, 'day'),
       },
+      {
+        matches: (ms) => ms < oneMonth,
+        format: (ms) => format(ms, oneWeek, 'day'),
+      },
+      {
+        matches: (ms) => ms < oneYear,
+        format: (ms) => format(ms, oneMonth, 'day'),
+      },
+      {
+        matches: () => true, // fallback that always matches
+        format: (ms) => format(ms, oneYear, 'year'),
+      },
     ];
-
-    function format(ms, divisor, unit, digits = 1) {
-      const multiplier = Math.pow(10, digits);
-      const rawValue = ms / divisor;
-      const roundedValue = Math.round(multiplier * rawValue) / multiplier;
-      const plural = roundedValue === 1 ? '' : 's';
-      return `${roundedValue} ${unit}${plural}`;
-    }
 
     return magnitudes.find((magnitude) => magnitude.matches(this.ms_)).format(this.ms_);
   }
 }
 
-module.exports = Duration;
+// This JS file is used on the report page as well as the screenshot testing infra.
+if (typeof module !== 'undefined') {
+  module.exports = Duration;
+}
