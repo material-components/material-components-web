@@ -196,6 +196,8 @@
             fixedPosition.disabled = true;
           } else {
             menu.setMenuSurfaceAnchorElement(menuButtonEl.parentElement);
+            hoistMenu.checked = false;
+            hoistMenu.dispatchEvent(new Event('change'));
             hoistMenu.disabled = false;
             fixedPosition.disabled = false;
           }
@@ -213,9 +215,6 @@
             document.querySelector('input[name="anchor-position"]:checked').dispatchEvent(event);
             document.querySelector('input[name="animation"]').dispatchEvent(event);
             document.getElementById('top-margin').dispatchEvent(event);
-            document.getElementById('bottom-margin').dispatchEvent(event);
-            document.getElementById('right-margin').dispatchEvent(event);
-            document.getElementById('left-margin').dispatchEvent(event);
             document.querySelector('input[name="fixed-position"]').dispatchEvent(event);
           }
         });
@@ -301,11 +300,7 @@
         });
 
         fixedPosition.addEventListener('change', function() {
-          if (fixedPosition.checked) {
-            menu.setFixedPosition(true);
-          } else {
-            menu.setFixedPosition(false);
-          }
+          menu.setFixedPosition(fixedPosition.checked);
         });
       });
     </script>
