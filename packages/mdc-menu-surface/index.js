@@ -89,7 +89,7 @@ class MDCMenuSurface extends MDCComponent {
 
   /**
    * Sets the element that the menu-surface is anchored to.
-   * @param {Element} element
+   * @param {!Element} element
    */
   setMenuSurfaceAnchorElement(element) {
     this.anchorElement = element;

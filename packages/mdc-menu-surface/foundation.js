@@ -437,18 +437,20 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     const {bodyDimensions, windowScroll, viewport, viewportDistance} = this.measures_;
 
     for (const prop in position) {
-      // Hoisted surfaces need to have the anchor elements location on the page added to the
-      // position properties for proper alignment on the body.
-      if (position.hasOwnProperty(prop) && viewportDistance.hasOwnProperty(prop)) {
-        position[prop] = parseInt(position[prop], 0) + viewportDistance[prop];
-      }
+      if (position.hasOwnProperty(prop)) {
+        // Hoisted surfaces need to have the anchor elements location on the page added to the
+        // position properties for proper alignment on the body.
+        if (viewportDistance.hasOwnProperty(prop)) {
+          position[prop] = parseInt(position[prop], 0) + viewportDistance[prop];
+        }
 
-      // Surfaces that are absolutely positioned need to have additional calculations for scroll
-      // and bottom positioning.
-      if (!this.isFixedPosition_ && prop === 'top') {
-        position[prop] = parseInt(position[prop], 0) + windowScroll.y;
-      } else if (!this.isFixedPosition_ && prop === 'bottom') {
-        position[prop] = bodyDimensions.height - (viewport.height + windowScroll.y) + parseInt(position[prop], 0);
+        // Surfaces that are absolutely positioned need to have additional calculations for scroll
+        // and bottom positioning.
+        if (!this.isFixedPosition_ && prop === 'top') {
+          position[prop] = parseInt(position[prop], 0) + windowScroll.y;
+        } else if (!this.isFixedPosition_ && prop === 'bottom') {
+          position[prop] = bodyDimensions.height - (viewport.height + windowScroll.y) + parseInt(position[prop], 0);
+        }
       }
     }
 
