@@ -89,7 +89,7 @@
   box-sizing: border-box;
   width: $mdc-switch-thumb-diameter;
   height: $mdc-switch-thumb-diameter;
-  border: $mdc-switch-thumb-diameter / 2 solid;
+  border: $mdc-switch-thumb-border solid;
   border-radius: 50%;
   z-index: 1;
 }
