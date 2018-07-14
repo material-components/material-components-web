@@ -441,7 +441,8 @@ on tag
       }
     }
 
-    throw new Error('Unable to generate markup for invalid diff source');
+    const serialized = JSON.stringify({diffBase, meta}, null, 2);
+    throw new Error(`Unable to generate markup for invalid diff source: ${serialized}`);
   }
 
   /**
