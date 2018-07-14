@@ -33,7 +33,7 @@ module.exports = {
     /** @type {!mdc.proto.IGitRevision} */
     const goldenGitRevision = reportData.meta.golden_diff_base.git_revision;
     if (goldenGitRevision &&
-      goldenGitRevision.type === GitRevision.TRAVIS_PR &&
+      goldenGitRevision.type === GitRevision.Type.TRAVIS_PR &&
       goldenGitRevision.pr_file_paths.length === 0) {
       console.log(`
 PR #${goldenGitRevision.pr_number} does not contain any testable source file changes.
