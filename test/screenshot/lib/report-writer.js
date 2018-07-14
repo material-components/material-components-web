@@ -412,6 +412,8 @@ class ReportWriter {
       return new Handlebars.SafeString(`<a href="${diffBase.public_url}">${diffBase.public_url}</a>`);
     }
 
+    const rev = diffBase.git_revision;
+
     if (diffBase.local_file_path) {
       const localFilePathMarkup = diffBase.is_default_local_file
         ? `<a href="${meta.golden_json_file.public_url}">${diffBase.local_file_path}</a>`
@@ -420,17 +422,8 @@ class ReportWriter {
       return new Handlebars.SafeString(`${localFilePathMarkup} (local file)`);
     }
 
-    if (diffBase.git_revision) {
-      const rev = diffBase.git_revision;
-
-      if (rev.pr) {
-        return new Handlebars.SafeString(`
-<a href="${GITHUB_REPO_URL}/commit/${rev.commit}">${rev.commit}</a>
-on branch
-<a href="${GITHUB_REPO_URL}/tree/${rev.branch}">${rev.branch}</a>
-(PR <a href="${GITHUB_REPO_URL}/pull/${rev.pr}">#${rev.pr}</a>)
-`);
-      }
+    if (rev) {
+      const prMarkup = rev.pr ? `(PR <a href="${GITHUB_REPO_URL}/pull/${rev.pr}">#${rev.pr}</a>)` : '';
 
       if (rev.branch) {
         const branchDisplayName = rev.remote ? `${rev.remote}/${rev.branch}` : rev.branch;
@@ -438,6 +431,7 @@ on branch
 <a href="${GITHUB_REPO_URL}/commit/${rev.commit}">${rev.commit}</a>
 on branch
 <a href="${GITHUB_REPO_URL}/tree/${rev.branch}">${branchDisplayName}</a>
+${prMarkup}
 `);
       }
 
@@ -446,12 +440,14 @@ on branch
 <a href="${GITHUB_REPO_URL}/commit/${rev.commit}">${rev.commit}</a>
 on tag
 <a href="${GITHUB_REPO_URL}/tree/${rev.tag}">${rev.tag}</a>
+${prMarkup}
 `);
       }
 
       if (rev.commit) {
         return new Handlebars.SafeString(`
 <a href="${GITHUB_REPO_URL}/commit/${rev.commit}">${rev.commit}</a>
+${prMarkup}
 `);
       }
     }

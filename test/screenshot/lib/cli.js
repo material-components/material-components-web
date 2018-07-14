@@ -476,7 +476,7 @@ that you know are going to have diffs.
    */
   async parseGoldenDiffBase() {
     /** @type {?mdc.proto.GitRevision} */
-    const travisGitRevision = await this.getTravisGitRevisition_();
+    const travisGitRevision = await this.getTravisGitRevision_();
     if (travisGitRevision) {
       return DiffBase.create({
         type: DiffBase.Type.GIT_REVISION,
@@ -487,53 +487,32 @@ that you know are going to have diffs.
   }
 
   /**
-   * @return {?Promise<!mdc.proto.GitRevision>}
-   * @private
+   * TODO(acdvorak): Move this method out of Cli class - it doesn't belong here.
+   * @param {string} rawDiffBase
+   * @return {!Promise<!mdc.proto.DiffBase>}
    */
-  async getTravisGitRevisition_() {
-    const travisBranch = process.env.TRAVIS_BRANCH;
-    const travisTag = process.env.TRAVIS_TAG;
-    const travisPrNumber = Number(process.env.TRAVIS_PULL_REQUEST);
-    const travisPrBranch = process.env.TRAVIS_PULL_REQUEST_BRANCH;
-    const travisPrSha = process.env.TRAVIS_PULL_REQUEST_SHA;
+  async parseDiffBase(rawDiffBase = this.diffBase) {
+    const isRealBranch = (branch) => Boolean(branch) && !['master', 'origin/master', 'HEAD'].includes(branch);
 
-    if (travisPrNumber) {
-      return GitRevision.create({
-        type: GitRevision.Type.PR,
-        golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
-        commit: await this.gitRepo_.getShortCommitHash(travisPrSha),
-        branch: travisPrBranch,
-        pr: travisPrNumber,
-      });
+    /** @type {!mdc.proto.DiffBase} */
+    const parsedDiffBase = await this.parseDiffBase_(rawDiffBase);
+    const parsedBranch = parsedDiffBase.git_revision ? parsedDiffBase.git_revision.branch : null;
+    if (isRealBranch(parsedBranch)) {
+      const prNumber = await this.gitRepo_.getPullRequestNumber(parsedBranch);
+      if (prNumber) {
+        parsedDiffBase.git_revision.pr = prNumber;
+      }
     }
-
-    if (travisTag) {
-      return GitRevision.create({
-        type: GitRevision.Type.REMOTE_TAG,
-        golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
-        commit: await this.gitRepo_.getShortCommitHash(travisTag),
-        tag: travisTag,
-      });
-    }
-
-    if (travisBranch) {
-      return GitRevision.create({
-        type: GitRevision.Type.LOCAL_BRANCH,
-        golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
-        commit: await this.gitRepo_.getShortCommitHash(travisBranch),
-        branch: travisBranch,
-      });
-    }
-
-    return null;
+    return parsedDiffBase;
   }
 
   /**
    * TODO(acdvorak): Move this method out of Cli class - it doesn't belong here.
    * @param {string} rawDiffBase
    * @return {!Promise<!mdc.proto.DiffBase>}
+   * @private
    */
-  async parseDiffBase(rawDiffBase = this.diffBase) {
+  async parseDiffBase_(rawDiffBase = this.diffBase) {
     // Diff against a public `golden.json` URL.
     // E.g.: `--diff-base=https://storage.googleapis.com/.../golden.json`
     const isUrl = HTTP_URL_REGEX.test(rawDiffBase);
@@ -578,14 +557,56 @@ that you know are going to have diffs.
   }
 
   /**
+   * @return {?Promise<!mdc.proto.GitRevision>}
+   * @private
+   */
+  async getTravisGitRevision_() {
+    const travisBranch = process.env.TRAVIS_BRANCH;
+    const travisTag = process.env.TRAVIS_TAG;
+    const travisPrNumber = Number(process.env.TRAVIS_PULL_REQUEST);
+    const travisPrBranch = process.env.TRAVIS_PULL_REQUEST_BRANCH;
+    const travisPrSha = process.env.TRAVIS_PULL_REQUEST_SHA;
+
+    if (travisPrNumber) {
+      return GitRevision.create({
+        type: GitRevision.Type.PR,
+        golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
+        commit: await this.gitRepo_.getShortCommitHash(travisPrSha),
+        branch: travisPrBranch,
+        pr: travisPrNumber,
+      });
+    }
+
+    if (travisTag) {
+      return GitRevision.create({
+        type: GitRevision.Type.REMOTE_TAG,
+        golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
+        commit: await this.gitRepo_.getShortCommitHash(travisTag),
+        tag: travisTag,
+      });
+    }
+
+    if (travisBranch) {
+      return GitRevision.create({
+        type: GitRevision.Type.LOCAL_BRANCH,
+        golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
+        commit: await this.gitRepo_.getShortCommitHash(travisBranch),
+        branch: travisBranch,
+      });
+    }
+
+    return null;
+  }
+
+  /**
    * @param {string} publicUrl
    * @return {!mdc.proto.DiffBase}
    * @private
    */
   createPublicUrlDiffBase_(publicUrl) {
     return DiffBase.create({
-      input_string: publicUrl,
       type: DiffBase.Type.PUBLIC_URL,
+      input_string: publicUrl,
       public_url: publicUrl,
     });
   }
@@ -597,8 +618,8 @@ that you know are going to have diffs.
    */
   createLocalFileDiffBase_(localFilePath) {
     return DiffBase.create({
-      input_string: localFilePath,
       type: DiffBase.Type.FILE_PATH,
+      input_string: localFilePath,
       local_file_path: localFilePath,
       is_default_local_file: localFilePath === GOLDEN_JSON_RELATIVE_PATH,
     });
@@ -614,6 +635,7 @@ that you know are going to have diffs.
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
       git_revision: GitRevision.create({
+        type: GitRevision.Type.COMMIT,
         input_string: `${commit}:${goldenJsonFilePath}`, // TODO(acdvorak): Document the ':' separator format
         golden_json_file_path: goldenJsonFilePath,
         commit: commit,
@@ -636,6 +658,7 @@ that you know are going to have diffs.
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
       git_revision: GitRevision.create({
+        type: GitRevision.Type.REMOTE_BRANCH,
         input_string: `${remoteRef}:${goldenJsonFilePath}`, // TODO(acdvorak): Document the ':' separator format
         golden_json_file_path: goldenJsonFilePath,
         commit,
@@ -657,6 +680,7 @@ that you know are going to have diffs.
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
       git_revision: GitRevision.create({
+        type: GitRevision.Type.REMOTE_TAG,
         input_string: `${tagRef}:${goldenJsonFilePath}`, // TODO(acdvorak): Document the ':' separator format
         golden_json_file_path: goldenJsonFilePath,
         commit,
@@ -677,6 +701,7 @@ that you know are going to have diffs.
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
       git_revision: GitRevision.create({
+        type: GitRevision.Type.LOCAL_BRANCH,
         input_string: `${branch}:${goldenJsonFilePath}`, // TODO(acdvorak): Document the ':' separator format
         golden_json_file_path: goldenJsonFilePath,
         commit,
