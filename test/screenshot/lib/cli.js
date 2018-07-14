@@ -572,7 +572,7 @@ that you know are going to have diffs.
         type: GitRevision.Type.TRAVIS_PR,
         golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
         commit: await this.gitRepo_.getShortCommitHash(travisPrSha),
-        branch: travisPrBranch,
+        branch: travisPrBranch || travisBranch,
         pr: travisPrNumber,
       });
     }
