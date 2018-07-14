@@ -487,82 +487,21 @@ that you know are going to have diffs.
   }
 
   /**
-   * @return {!Promise<?mdc.proto.GitRevision>}
-   * @private
-   */
-  async getPullRequestGitRevision_() {
-    const prNumber = await this.gitRepo_.getPullRequestNumber();
-    console.log('prNumber:', prNumber);
-    if (!prNumber) {
-      return null;
-    }
-    return DiffBase.create({
-      type: DiffBase.Type.GIT_REVISION,
-      git_revision: GitRevision.create({
-        type: GitRevision.Type.PR,
-        golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
-        branch: await this.gitRepo_.getBranchName(),
-        commit: await this.gitRepo_.getShortCommitHash(),
-        pr: prNumber,
-      }),
-    });
-  }
-
-  /**
-   * @return {?Promise<!mdc.proto.GitRevision>}
-   * @private
-   */
-  async getTravisGitRevision_() {
-    const travisBranch = process.env.TRAVIS_BRANCH;
-    const travisTag = process.env.TRAVIS_TAG;
-    const travisPrNumber = Number(process.env.TRAVIS_PULL_REQUEST);
-    const travisPrBranch = process.env.TRAVIS_PULL_REQUEST_BRANCH;
-    const travisPrSha = process.env.TRAVIS_PULL_REQUEST_SHA;
-
-    if (travisPrNumber) {
-      return GitRevision.create({
-        type: GitRevision.Type.PR,
-        golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
-        commit: await this.gitRepo_.getShortCommitHash(travisPrSha),
-        branch: travisPrBranch,
-        pr: travisPrNumber,
-      });
-    }
-
-    if (travisTag) {
-      return GitRevision.create({
-        type: GitRevision.Type.REMOTE_TAG,
-        golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
-        commit: await this.gitRepo_.getShortCommitHash(travisTag),
-        tag: travisTag,
-      });
-    }
-
-    if (travisBranch) {
-      return GitRevision.create({
-        type: GitRevision.Type.LOCAL_BRANCH,
-        golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
-        commit: await this.gitRepo_.getShortCommitHash(travisBranch),
-        branch: travisBranch,
-      });
-    }
-
-    return null;
-  }
-
-  /**
    * TODO(acdvorak): Move this method out of Cli class - it doesn't belong here.
    * @param {string} rawDiffBase
    * @return {!Promise<!mdc.proto.DiffBase>}
    */
   async parseDiffBase(rawDiffBase = this.diffBase) {
+    const isRealBranch = (branch) => Boolean(branch) && !['master', 'origin/master', 'HEAD'].includes(branch);
+
     /** @type {!mdc.proto.DiffBase} */
     const parsedDiffBase = await this.parseDiffBase_(rawDiffBase);
-    if (parsedDiffBase.git_revision && parsedDiffBase.git_revision.branch) {
-      /** @type {?mdc.proto.DiffBase} */
-      const prDiffBase = await this.getPullRequestGitRevision_();
-      if (prDiffBase.git_revision && prDiffBase.git_revision.pr) {
-        parsedDiffBase.git_revision.pr = prDiffBase.git_revision.pr;
+    const parsedBranch = parsedDiffBase.git_revision ? parsedDiffBase.git_revision.branch : null;
+    if (isRealBranch(parsedBranch)) {
+      const prNumber = await this.gitRepo_.getPullRequestNumber(parsedBranch);
+      if (prNumber) {
+        console.log(`parsedBranch="${parsedBranch}" -> prNumber="${prNumber}"`);
+        parsedDiffBase.git_revision.pr = prNumber;
       }
     }
     return parsedDiffBase;
@@ -616,6 +555,48 @@ that you know are going to have diffs.
     // Diff against a local git branch.
     // E.g.: `--diff-base=master` or `--diff-base=HEAD`
     return this.createLocalBranchDiffBase_(localRef, goldenFilePath);
+  }
+
+  /**
+   * @return {?Promise<!mdc.proto.GitRevision>}
+   * @private
+   */
+  async getTravisGitRevision_() {
+    const travisBranch = process.env.TRAVIS_BRANCH;
+    const travisTag = process.env.TRAVIS_TAG;
+    const travisPrNumber = Number(process.env.TRAVIS_PULL_REQUEST);
+    const travisPrBranch = process.env.TRAVIS_PULL_REQUEST_BRANCH;
+    const travisPrSha = process.env.TRAVIS_PULL_REQUEST_SHA;
+
+    if (travisPrNumber) {
+      return GitRevision.create({
+        type: GitRevision.Type.PR,
+        golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
+        commit: await this.gitRepo_.getShortCommitHash(travisPrSha),
+        branch: travisPrBranch,
+        pr: travisPrNumber,
+      });
+    }
+
+    if (travisTag) {
+      return GitRevision.create({
+        type: GitRevision.Type.REMOTE_TAG,
+        golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
+        commit: await this.gitRepo_.getShortCommitHash(travisTag),
+        tag: travisTag,
+      });
+    }
+
+    if (travisBranch) {
+      return GitRevision.create({
+        type: GitRevision.Type.LOCAL_BRANCH,
+        golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
+        commit: await this.gitRepo_.getShortCommitHash(travisBranch),
+        branch: travisBranch,
+      });
+    }
+
+    return null;
   }
 
   /**
