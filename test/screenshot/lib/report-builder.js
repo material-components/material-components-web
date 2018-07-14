@@ -398,7 +398,9 @@ class ReportBuilder {
           const isDemosFile = () => prFile.filename.startsWith('demos/');
           const isDocsFile = () => prFile.filename.startsWith('docs/');
           const isUnitTestFile = () => prFile.filename.startsWith('test/unit/');
-          const isIgnoredFile = isMarkdownFile() || isDemosFile() || isDocsFile() || isUnitTestFile();
+          const isTemporarilyIgnored = () => prFile.filename.endsWith('.js') || prFile.filename.endsWith('.proto');
+          const isIgnoredFile = isMarkdownFile() || isDemosFile() || isDocsFile() || isUnitTestFile() ||
+            isTemporarilyIgnored();
           return !isIgnoredFile;
         })
         .map((prFile) => prFile.filename)
