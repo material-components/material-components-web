@@ -28,7 +28,7 @@ matrix:
   - node_js: 8
     env:
     - TEST_SUITE=screenshot
-    script: npm run screenshot:test
+    script: npm run screenshot:test -- --no-fetch
 before_install:
   # Source the script to run it in the same shell process. This ensures that any environment variables set by the
   # script are visible to subsequent Travis CLI commands.
