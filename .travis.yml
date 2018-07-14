@@ -44,6 +44,6 @@ before_install:
        gcloud -q config set project material-components-web;
        gcloud -q components install gsutil;
        curl -o /tmp/gsutil.tar.gz https://storage.googleapis.com/pub/gsutil.tar.gz;
-       tar xfz /tmp/gsutil.tar.gz -C $HOME
-       export PATH=${PATH}:$HOME/gsutil
+       tar -xfz /tmp/gsutil.tar.gz -C $HOME;
+       export PATH=${PATH}:$HOME/gsutil;
     fi
