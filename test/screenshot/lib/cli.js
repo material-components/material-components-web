@@ -500,7 +500,6 @@ that you know are going to have diffs.
     if (isRealBranch(parsedBranch)) {
       const prNumber = await this.gitRepo_.getPullRequestNumber(parsedBranch);
       if (prNumber) {
-        console.log(`parsedBranch="${parsedBranch}" -> prNumber="${prNumber}"`);
         parsedDiffBase.git_revision.pr = prNumber;
       }
     }

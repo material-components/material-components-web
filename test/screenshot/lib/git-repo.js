@@ -152,12 +152,6 @@ class GitRepo {
 
     const filteredPRs = allPRs.data.filter((pr) => pr.head.ref === branch);
 
-    console.log('');
-    console.log(`filteredPRs for ${branch}:`);
-    console.log('');
-    console.log(JSON.stringify(filteredPRs, null, 2));
-    console.log('');
-
     const pr = filteredPRs[0];
     return pr ? pr.number : null;
   }
