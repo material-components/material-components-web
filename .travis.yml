@@ -37,14 +37,14 @@ before_install:
   - openssl aes-256-cbc -K $encrypted_2fd1810d2cb7_key -iv $encrypted_2fd1810d2cb7_iv -in travis-gcs.tar.gz.enc -out travis-gcs.tar.gz -d
   # If the SDK is not already cached, download it and unpack it
   - if [ ! -d ${HOME}/google-cloud-sdk ]; then
-       curl https://sdk.cloud.google.com | bash;
+       curl https://sdk.cloud.google.com | bash -- --disable-prompts;
     fi
   - tar -xzf travis-gcs.tar.gz
   # Here we use the decrypted service account credentials to authenticate the command line tool
-  - gcloud auth activate-service-account --key-file travis-gcs.json
+  - gcloud -q auth activate-service-account --key-file travis-gcs.json
 install:
   # Set the correct project to deploy to and install CLI utilities
-  - gcloud config set project material-components-web
-  - gcloud components install gsutil
-  - gcloud components update gsutil
+  - gcloud -q config set project material-components-web
+  - gcloud -q components install gsutil
+  - gcloud -q components update gsutil
   # gcloud -q components ...
