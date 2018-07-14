@@ -439,6 +439,12 @@ on tag
 <a href="${GITHUB_REPO_URL}/tree/${rev.tag}">${rev.tag}</a>
 `);
       }
+
+      if (rev.commit) {
+        return new Handlebars.SafeString(`
+<a href="${GITHUB_REPO_URL}/commit/${rev.commit}">${rev.commit}</a>
+`);
+      }
     }
 
     const serialized = JSON.stringify({diffBase, meta}, null, 2);
