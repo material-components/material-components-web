@@ -16,6 +16,7 @@
 
 'use strict';
 
+const Jimp = require('jimp');
 const childProcess = require('mz/child_process');
 const detectPort = require('detect-port');
 const express = require('express');
@@ -26,8 +27,8 @@ const path = require('path');
 const serveIndex = require('serve-index');
 
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
-const {Approvals, GitStatus, GoldenScreenshot, LibraryVersion, ReportData, ReportMeta} = mdcProto;
-const {Screenshot, Screenshots, ScreenshotList, TestFile, User, UserAgents} = mdcProto;
+const {Approvals, DiffImageResult, Dimensions, GitStatus, GoldenScreenshot, LibraryVersion} = mdcProto;
+const {ReportData, ReportMeta, Screenshot, Screenshots, ScreenshotList, TestFile, User, UserAgents} = mdcProto;
 const {InclusionType, CaptureState} = Screenshot;
 
 const Cli = require('./cli');
@@ -513,7 +514,7 @@ class ReportBuilder {
       runnable_screenshot_list: actualScreenshots.filter((screenshot) => screenshot.is_runnable),
       skipped_screenshot_list: actualScreenshots.filter((screenshot) => !screenshot.is_runnable),
       added_screenshot_list: this.getAddedScreenshots_({expectedScreenshots, actualScreenshots}),
-      removed_screenshot_list: this.getRemovedScreenshots_({expectedScreenshots, actualScreenshots}),
+      removed_screenshot_list: await this.getRemovedScreenshots_({expectedScreenshots, actualScreenshots}),
       comparable_screenshot_list: this.getComparableScreenshots_({expectedScreenshots, actualScreenshots}),
     }));
   }
@@ -709,10 +710,10 @@ class ReportBuilder {
   /**
    * @param {!Array<!mdc.proto.Screenshot>} expectedScreenshots
    * @param {!Array<!mdc.proto.Screenshot>} actualScreenshots
-   * @return {!Array<!mdc.proto.Screenshot>}
+   * @return {!Promise<!Array<!mdc.proto.Screenshot>>}
    * @private
    */
-  getRemovedScreenshots_({expectedScreenshots, actualScreenshots}) {
+  async getRemovedScreenshots_({expectedScreenshots, actualScreenshots}) {
     /** @type {!Array<!mdc.proto.Screenshot>} */
     const removedScreenshots = [];
 
@@ -723,7 +724,12 @@ class ReportBuilder {
       });
 
       if (!actualScreenshot) {
-        // TODO(acdvorak): Add image dimensions here so they can be displayed on the report page
+        const expectedImageUrl = expectedScreenshot.expected_image_file.public_url;
+        const expectedJimpImage = await Jimp.read(await this.fileCache_.downloadFileToBuffer(expectedImageUrl));
+        const {width, height} = expectedJimpImage.bitmap;
+        expectedScreenshot.diff_image_result = DiffImageResult.create({
+          expected_image_dimensions: Dimensions.create({width, height}),
+        });
         removedScreenshots.push(expectedScreenshot);
       }
     }

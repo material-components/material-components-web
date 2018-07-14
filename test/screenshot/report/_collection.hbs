@@ -159,6 +159,12 @@
                           {{~diff_image_result.actual_image_dimensions.width~}}
                           x
                           {{~diff_image_result.actual_image_dimensions.height~}}
+                        {{else}}
+                          {{#if diff_image_result.actual_image_dimensions.width}}
+                            {{~diff_image_result.actual_image_dimensions.width~}}
+                            x
+                            {{~diff_image_result.actual_image_dimensions.height~}}
+                          {{/if}}
                         {{/if}}
                       </div>
                     </div>
