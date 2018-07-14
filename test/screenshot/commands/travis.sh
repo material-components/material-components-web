@@ -13,8 +13,10 @@ if [ "$TEST_SUITE" == 'screenshot' ]; then
   openssl aes-256-cbc -K $encrypted_2fd1810d2cb7_key -iv $encrypted_2fd1810d2cb7_iv \
     -in travis-gcs.tar.gz.enc -out travis-gcs.tar.gz -d
   tar -xzf travis-gcs.tar.gz
+  mv travis-gcs.json /tmp/mdc-travis-gcs.json
+  rm travis-gcs.tar.gz
 
-  gcloud auth activate-service-account --key-file travis-gcs.json
+  gcloud auth activate-service-account --key-file /tmp/mdc-travis-gcs.json
   gcloud config set project material-components-web
   gcloud components install gsutil
 fi
