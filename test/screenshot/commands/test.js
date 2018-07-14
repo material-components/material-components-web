@@ -19,6 +19,7 @@
 const BuildCommand = require('./build');
 const Controller = require('../lib/controller');
 const {ExitCode} = require('../lib/constants');
+const {GitRevision} = require('../proto/mdc.pb');
 
 module.exports = {
   async runAsync() {
@@ -26,6 +27,19 @@ module.exports = {
     const controller = new Controller();
     /** @type {!mdc.proto.ReportData} */
     const reportData = await controller.initForCapture();
+
+    /** @type {!mdc.proto.GitRevision} */
+    const goldenGitRevision = reportData.meta.golden_diff_base.git_revision;
+    if (goldenGitRevision &&
+      goldenGitRevision.type === GitRevision.TRAVIS_PR &&
+      goldenGitRevision.pr_file_paths.length === 0) {
+      console.log(`
+PR #${goldenGitRevision.pr_number} does not contain any testable source file changes.
+Skipping screenshot tests.
+`);
+      return;
+    }
+
     await controller.uploadAllAssets(reportData);
     await controller.captureAllPages(reportData);
     await controller.compareAllScreenshots(reportData);
@@ -35,7 +49,10 @@ module.exports = {
       reportData.screenshots.changed_screenshot_list.length +
       reportData.screenshots.added_screenshot_list.length +
       reportData.screenshots.removed_screenshot_list.length;
-    if (numChanges > 0) {
+
+    if (numChanges === 0) {
+      console.log('\n0 screenshots changed!');
+    } else {
       console.error(`\n${numChanges} screenshots changed!`);
       return ExitCode.CHANGES_FOUND;
     }

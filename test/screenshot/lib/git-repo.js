@@ -157,6 +157,17 @@ class GitRepo {
   }
 
   /**
+   * @param prNumber
+   * @return {!Promise<!Array<!github.proto.PullRequestFile>>}
+   */
+  async getPullRequestFiles(prNumber) {
+    return this.gitHub_.pullRequests.getFiles({
+      number: prNumber,
+      per_page: 300,
+    });
+  }
+
+  /**
    * @param {string} cmd
    * @param {!Array<string>=} argList
    * @return {!Promise<string>}
