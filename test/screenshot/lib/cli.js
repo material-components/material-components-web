@@ -501,8 +501,8 @@ that you know are going to have diffs.
       return GitRevision.create({
         type: GitRevision.Type.PR,
         golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
-        commit: travisPrSha,
-        branch: await this.gitRepo_.getShortCommitHash(travisPrSha),
+        commit: await this.gitRepo_.getShortCommitHash(travisPrSha),
+        branch: travisPrBranch,
         pr: travisPrNumber,
       });
     }
