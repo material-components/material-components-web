@@ -1425,7 +1425,8 @@ $root.mdc = (function() {
              * @property {string|null} [remote] GitRevision remote
              * @property {string|null} [branch] GitRevision branch
              * @property {string|null} [tag] GitRevision tag
-             * @property {number|null} [pr] GitRevision pr
+             * @property {number|null} [pr_number] GitRevision pr_number
+             * @property {Array.<string>|null} [pr_file_paths] GitRevision pr_file_paths
              */
 
             /**
@@ -1437,6 +1438,7 @@ $root.mdc = (function() {
              * @param {mdc.proto.IGitRevision=} [properties] Properties to set
              */
             function GitRevision(properties) {
+                this.pr_file_paths = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         if (properties[keys[i]] != null)
@@ -1492,12 +1494,20 @@ $root.mdc = (function() {
             GitRevision.prototype.tag = "";
 
             /**
-             * GitRevision pr.
-             * @member {number} pr
+             * GitRevision pr_number.
+             * @member {number} pr_number
              * @memberof mdc.proto.GitRevision
              * @instance
              */
-            GitRevision.prototype.pr = 0;
+            GitRevision.prototype.pr_number = 0;
+
+            /**
+             * GitRevision pr_file_paths.
+             * @member {Array.<string>} pr_file_paths
+             * @memberof mdc.proto.GitRevision
+             * @instance
+             */
+            GitRevision.prototype.pr_file_paths = $util.emptyArray;
 
             /**
              * Creates a new GitRevision instance using the specified properties.
@@ -1535,8 +1545,11 @@ $root.mdc = (function() {
                     writer.uint32(/* id 5, wireType 2 =*/42).string(message.branch);
                 if (message.tag != null && message.hasOwnProperty("tag"))
                     writer.uint32(/* id 6, wireType 2 =*/50).string(message.tag);
-                if (message.pr != null && message.hasOwnProperty("pr"))
-                    writer.uint32(/* id 7, wireType 0 =*/56).uint32(message.pr);
+                if (message.pr_number != null && message.hasOwnProperty("pr_number"))
+                    writer.uint32(/* id 7, wireType 0 =*/56).uint32(message.pr_number);
+                if (message.pr_file_paths != null && message.pr_file_paths.length)
+                    for (var i = 0; i < message.pr_file_paths.length; ++i)
+                        writer.uint32(/* id 8, wireType 2 =*/66).string(message.pr_file_paths[i]);
                 return writer;
             };
 
@@ -1590,7 +1603,12 @@ $root.mdc = (function() {
                         message.tag = reader.string();
                         break;
                     case 7:
-                        message.pr = reader.uint32();
+                        message.pr_number = reader.uint32();
+                        break;
+                    case 8:
+                        if (!(message.pr_file_paths && message.pr_file_paths.length))
+                            message.pr_file_paths = [];
+                        message.pr_file_paths.push(reader.string());
                         break;
                     default:
                         reader.skipType(tag & 7);
@@ -1654,9 +1672,16 @@ $root.mdc = (function() {
                 if (message.tag != null && message.hasOwnProperty("tag"))
                     if (!$util.isString(message.tag))
                         return "tag: string expected";
-                if (message.pr != null && message.hasOwnProperty("pr"))
-                    if (!$util.isInteger(message.pr))
-                        return "pr: integer expected";
+                if (message.pr_number != null && message.hasOwnProperty("pr_number"))
+                    if (!$util.isInteger(message.pr_number))
+                        return "pr_number: integer expected";
+                if (message.pr_file_paths != null && message.hasOwnProperty("pr_file_paths")) {
+                    if (!Array.isArray(message.pr_file_paths))
+                        return "pr_file_paths: array expected";
+                    for (var i = 0; i < message.pr_file_paths.length; ++i)
+                        if (!$util.isString(message.pr_file_paths[i]))
+                            return "pr_file_paths: string[] expected";
+                }
                 return null;
             };
 
@@ -1693,7 +1718,7 @@ $root.mdc = (function() {
                 case 4:
                     message.type = 4;
                     break;
-                case "PR":
+                case "TRAVIS_PR":
                 case 5:
                     message.type = 5;
                     break;
@@ -1708,8 +1733,15 @@ $root.mdc = (function() {
                     message.branch = String(object.branch);
                 if (object.tag != null)
                     message.tag = String(object.tag);
-                if (object.pr != null)
-                    message.pr = object.pr >>> 0;
+                if (object.pr_number != null)
+                    message.pr_number = object.pr_number >>> 0;
+                if (object.pr_file_paths) {
+                    if (!Array.isArray(object.pr_file_paths))
+                        throw TypeError(".mdc.proto.GitRevision.pr_file_paths: array expected");
+                    message.pr_file_paths = [];
+                    for (var i = 0; i < object.pr_file_paths.length; ++i)
+                        message.pr_file_paths[i] = String(object.pr_file_paths[i]);
+                }
                 return message;
             };
 
@@ -1726,6 +1758,8 @@ $root.mdc = (function() {
                 if (!options)
                     options = {};
                 var object = {};
+                if (options.arrays || options.defaults)
+                    object.pr_file_paths = [];
                 if (options.defaults) {
                     object.type = options.enums === String ? "UNKNOWN" : 0;
                     object.golden_json_file_path = "";
@@ -1733,7 +1767,7 @@ $root.mdc = (function() {
                     object.remote = "";
                     object.branch = "";
                     object.tag = "";
-                    object.pr = 0;
+                    object.pr_number = 0;
                 }
                 if (message.type != null && message.hasOwnProperty("type"))
                     object.type = options.enums === String ? $root.mdc.proto.GitRevision.Type[message.type] : message.type;
@@ -1747,8 +1781,13 @@ $root.mdc = (function() {
                     object.branch = message.branch;
                 if (message.tag != null && message.hasOwnProperty("tag"))
                     object.tag = message.tag;
-                if (message.pr != null && message.hasOwnProperty("pr"))
-                    object.pr = message.pr;
+                if (message.pr_number != null && message.hasOwnProperty("pr_number"))
+                    object.pr_number = message.pr_number;
+                if (message.pr_file_paths && message.pr_file_paths.length) {
+                    object.pr_file_paths = [];
+                    for (var j = 0; j < message.pr_file_paths.length; ++j)
+                        object.pr_file_paths[j] = message.pr_file_paths[j];
+                }
                 return object;
             };
 
@@ -1772,7 +1811,7 @@ $root.mdc = (function() {
              * @property {number} LOCAL_BRANCH=2 LOCAL_BRANCH value
              * @property {number} REMOTE_BRANCH=3 REMOTE_BRANCH value
              * @property {number} REMOTE_TAG=4 REMOTE_TAG value
-             * @property {number} PR=5 PR value
+             * @property {number} TRAVIS_PR=5 TRAVIS_PR value
              */
             GitRevision.Type = (function() {
                 var valuesById = {}, values = Object.create(valuesById);
@@ -1781,7 +1820,7 @@ $root.mdc = (function() {
                 values[valuesById[2] = "LOCAL_BRANCH"] = 2;
                 values[valuesById[3] = "REMOTE_BRANCH"] = 3;
                 values[valuesById[4] = "REMOTE_TAG"] = 4;
-                values[valuesById[5] = "PR"] = 5;
+                values[valuesById[5] = "TRAVIS_PR"] = 5;
                 return values;
             })();
 

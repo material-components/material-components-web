@@ -27,7 +27,7 @@ const path = require('path');
 const serveIndex = require('serve-index');
 
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
-const {Approvals, DiffImageResult, Dimensions, GitStatus, GoldenScreenshot, LibraryVersion} = mdcProto;
+const {Approvals, DiffImageResult, Dimensions, GitRevision, GitStatus, GoldenScreenshot, LibraryVersion} = mdcProto;
 const {ReportData, ReportMeta, Screenshot, Screenshots, ScreenshotList, TestFile, User, UserAgents} = mdcProto;
 const {InclusionType, CaptureState} = Screenshot;
 
@@ -100,8 +100,11 @@ class ReportBuilder {
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async initForCapture() {
+    /** @type {boolean} */
     const isOnline = await this.cli_.isOnline();
+    /** @type {!mdc.proto.ReportMeta} */
     const reportMeta = await this.createReportMetaProto_();
+    /** @type {!mdc.proto.UserAgents} */
     const userAgents = await this.createUserAgentsProto_();
 
     await this.localStorage_.copyAssetsToTempDir(reportMeta);
@@ -375,6 +378,41 @@ class ReportBuilder {
     const mdcVersionString = require('../../../lerna.json').version;
     const hostOsName = osName(os.platform(), os.release());
 
+    const gitStatus = GitStatus.fromObject(await this.gitRepo_.getStatus());
+
+    /** @type {!mdc.proto.DiffBase} */
+    const goldenDiffBase = await this.cli_.parseGoldenDiffBase();
+
+    /** @type {!mdc.proto.DiffBase} */
+    const snapshotDiffBase = await this.cli_.parseDiffBase('HEAD');
+
+    /** @type {!mdc.proto.GitRevision} */
+    const goldenGitRevision = goldenDiffBase.git_revision;
+
+    if (goldenGitRevision && goldenGitRevision.type === GitRevision.Type.TRAVIS_PR) {
+      /** @type {!Array<!github.proto.PullRequestFile>} */
+      const allPrFiles = await this.gitRepo_.getPullRequestFiles(goldenGitRevision.pr_number);
+
+      console.log('');
+      console.log('allPrFiles:', allPrFiles);
+      console.log('');
+
+      goldenGitRevision.pr_file_paths = allPrFiles
+        .filter((prFile) => {
+          const isMarkdownFile = () => prFile.filename.endsWith('.md');
+          const isDemosFile = () => prFile.filename.startsWith('demos/');
+          const isDocsFile = () => prFile.filename.startsWith('docs/');
+          const isUnitTestFile = () => prFile.filename.startsWith('test/unit/');
+          const isIgnoredFile = isMarkdownFile() || isDemosFile() || isDocsFile() || isUnitTestFile();
+          return !isIgnoredFile;
+        })
+        .map((prFile) => prFile.filename)
+      ;
+
+      console.log('goldenGitRevision.pr_file_paths:', goldenGitRevision.pr_file_paths);
+      console.log('');
+    }
+
     return ReportMeta.create({
       start_time_iso_utc: new Date().toISOString(),
 
@@ -398,9 +436,9 @@ class ReportBuilder {
       host_os_icon_url: this.getHostOsIconUrl_(hostOsName),
       cli_invocation: this.getCliInvocation_(),
 
-      git_status: GitStatus.fromObject(await this.gitRepo_.getStatus()),
-      golden_diff_base: await this.cli_.parseGoldenDiffBase(),
-      snapshot_diff_base: await this.cli_.parseDiffBase('HEAD'),
+      git_status: gitStatus,
+      golden_diff_base: goldenDiffBase,
+      snapshot_diff_base: snapshotDiffBase,
 
       node_version: LibraryVersion.create({
         version_string: await this.getExecutableVersion_('node'),

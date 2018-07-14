@@ -423,7 +423,9 @@ class ReportWriter {
     }
 
     if (rev) {
-      const prMarkup = rev.pr ? `(PR <a href="${GITHUB_REPO_URL}/pull/${rev.pr}">#${rev.pr}</a>)` : '';
+      const prMarkup = rev.pr_number
+        ? `(PR <a href="${GITHUB_REPO_URL}/pull/${rev.pr_number}">#${rev.pr_number}</a>)`
+        : '';
 
       if (rev.branch) {
         const branchDisplayName = rev.remote ? `${rev.remote}/${rev.branch}` : rev.branch;
