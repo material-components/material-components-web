@@ -145,9 +145,9 @@ class GitRepo {
     branch = branch || await this.getBranchName();
 
     const allPRs = await this.gitHub_.pullRequests.getAll({
-      per_page: 100,
       owner: 'material-components',
       repo: 'material-components-web',
+      per_page: 100,
     });
 
     const filteredPRs = allPRs.data.filter((pr) => pr.head.ref === branch);
@@ -161,10 +161,14 @@ class GitRepo {
    * @return {!Promise<!Array<!github.proto.PullRequestFile>>}
    */
   async getPullRequestFiles(prNumber) {
-    return this.gitHub_.pullRequests.getFiles({
+    /** @type {!github.proto.PullRequestFileResponse} */
+    const fileResponse = await this.gitHub_.pullRequests.getFiles({
+      owner: 'material-components',
+      repo: 'material-components-web',
       number: prNumber,
       per_page: 300,
     });
+    return fileResponse.data;
   }
 
   /**

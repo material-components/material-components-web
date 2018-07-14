@@ -27,6 +27,214 @@ $root.github = (function() {
          */
         var proto = {};
 
+        proto.PullRequestFileResponse = (function() {
+
+            /**
+             * Properties of a PullRequestFileResponse.
+             * @memberof github.proto
+             * @interface IPullRequestFileResponse
+             * @property {Array.<github.proto.IPullRequestFile>|null} [data] PullRequestFileResponse data
+             */
+
+            /**
+             * Constructs a new PullRequestFileResponse.
+             * @memberof github.proto
+             * @classdesc Represents a PullRequestFileResponse.
+             * @implements IPullRequestFileResponse
+             * @constructor
+             * @param {github.proto.IPullRequestFileResponse=} [properties] Properties to set
+             */
+            function PullRequestFileResponse(properties) {
+                this.data = [];
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
+            }
+
+            /**
+             * PullRequestFileResponse data.
+             * @member {Array.<github.proto.IPullRequestFile>} data
+             * @memberof github.proto.PullRequestFileResponse
+             * @instance
+             */
+            PullRequestFileResponse.prototype.data = $util.emptyArray;
+
+            /**
+             * Creates a new PullRequestFileResponse instance using the specified properties.
+             * @function create
+             * @memberof github.proto.PullRequestFileResponse
+             * @static
+             * @param {github.proto.IPullRequestFileResponse=} [properties] Properties to set
+             * @returns {github.proto.PullRequestFileResponse} PullRequestFileResponse instance
+             */
+            PullRequestFileResponse.create = function create(properties) {
+                return new PullRequestFileResponse(properties);
+            };
+
+            /**
+             * Encodes the specified PullRequestFileResponse message. Does not implicitly {@link github.proto.PullRequestFileResponse.verify|verify} messages.
+             * @function encode
+             * @memberof github.proto.PullRequestFileResponse
+             * @static
+             * @param {github.proto.IPullRequestFileResponse} message PullRequestFileResponse message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            PullRequestFileResponse.encode = function encode(message, writer) {
+                if (!writer)
+                    writer = $Writer.create();
+                if (message.data != null && message.data.length)
+                    for (var i = 0; i < message.data.length; ++i)
+                        $root.github.proto.PullRequestFile.encode(message.data[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+                return writer;
+            };
+
+            /**
+             * Encodes the specified PullRequestFileResponse message, length delimited. Does not implicitly {@link github.proto.PullRequestFileResponse.verify|verify} messages.
+             * @function encodeDelimited
+             * @memberof github.proto.PullRequestFileResponse
+             * @static
+             * @param {github.proto.IPullRequestFileResponse} message PullRequestFileResponse message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            PullRequestFileResponse.encodeDelimited = function encodeDelimited(message, writer) {
+                return this.encode(message, writer).ldelim();
+            };
+
+            /**
+             * Decodes a PullRequestFileResponse message from the specified reader or buffer.
+             * @function decode
+             * @memberof github.proto.PullRequestFileResponse
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @param {number} [length] Message length if known beforehand
+             * @returns {github.proto.PullRequestFileResponse} PullRequestFileResponse
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            PullRequestFileResponse.decode = function decode(reader, length) {
+                if (!(reader instanceof $Reader))
+                    reader = $Reader.create(reader);
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.github.proto.PullRequestFileResponse();
+                while (reader.pos < end) {
+                    var tag = reader.uint32();
+                    switch (tag >>> 3) {
+                    case 1:
+                        if (!(message.data && message.data.length))
+                            message.data = [];
+                        message.data.push($root.github.proto.PullRequestFile.decode(reader, reader.uint32()));
+                        break;
+                    default:
+                        reader.skipType(tag & 7);
+                        break;
+                    }
+                }
+                return message;
+            };
+
+            /**
+             * Decodes a PullRequestFileResponse message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
+             * @memberof github.proto.PullRequestFileResponse
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @returns {github.proto.PullRequestFileResponse} PullRequestFileResponse
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            PullRequestFileResponse.decodeDelimited = function decodeDelimited(reader) {
+                if (!(reader instanceof $Reader))
+                    reader = new $Reader(reader);
+                return this.decode(reader, reader.uint32());
+            };
+
+            /**
+             * Verifies a PullRequestFileResponse message.
+             * @function verify
+             * @memberof github.proto.PullRequestFileResponse
+             * @static
+             * @param {Object.<string,*>} message Plain object to verify
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+             */
+            PullRequestFileResponse.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
+                if (message.data != null && message.hasOwnProperty("data")) {
+                    if (!Array.isArray(message.data))
+                        return "data: array expected";
+                    for (var i = 0; i < message.data.length; ++i) {
+                        var error = $root.github.proto.PullRequestFile.verify(message.data[i]);
+                        if (error)
+                            return "data." + error;
+                    }
+                }
+                return null;
+            };
+
+            /**
+             * Creates a PullRequestFileResponse message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
+             * @memberof github.proto.PullRequestFileResponse
+             * @static
+             * @param {Object.<string,*>} object Plain object
+             * @returns {github.proto.PullRequestFileResponse} PullRequestFileResponse
+             */
+            PullRequestFileResponse.fromObject = function fromObject(object) {
+                if (object instanceof $root.github.proto.PullRequestFileResponse)
+                    return object;
+                var message = new $root.github.proto.PullRequestFileResponse();
+                if (object.data) {
+                    if (!Array.isArray(object.data))
+                        throw TypeError(".github.proto.PullRequestFileResponse.data: array expected");
+                    message.data = [];
+                    for (var i = 0; i < object.data.length; ++i) {
+                        if (typeof object.data[i] !== "object")
+                            throw TypeError(".github.proto.PullRequestFileResponse.data: object expected");
+                        message.data[i] = $root.github.proto.PullRequestFile.fromObject(object.data[i]);
+                    }
+                }
+                return message;
+            };
+
+            /**
+             * Creates a plain object from a PullRequestFileResponse message. Also converts values to other types if specified.
+             * @function toObject
+             * @memberof github.proto.PullRequestFileResponse
+             * @static
+             * @param {github.proto.PullRequestFileResponse} message PullRequestFileResponse
+             * @param {$protobuf.IConversionOptions} [options] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            PullRequestFileResponse.toObject = function toObject(message, options) {
+                if (!options)
+                    options = {};
+                var object = {};
+                if (options.arrays || options.defaults)
+                    object.data = [];
+                if (message.data && message.data.length) {
+                    object.data = [];
+                    for (var j = 0; j < message.data.length; ++j)
+                        object.data[j] = $root.github.proto.PullRequestFile.toObject(message.data[j], options);
+                }
+                return object;
+            };
+
+            /**
+             * Converts this PullRequestFileResponse to JSON.
+             * @function toJSON
+             * @memberof github.proto.PullRequestFileResponse
+             * @instance
+             * @returns {Object.<string,*>} JSON object
+             */
+            PullRequestFileResponse.prototype.toJSON = function toJSON() {
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            return PullRequestFileResponse;
+        })();
+
         proto.PullRequestFile = (function() {
 
             /**
