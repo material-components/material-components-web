@@ -47,6 +47,12 @@ module.exports = {
    */
   CBT_CONCURRENCY_MAX_WAIT_MS: 10 * 60 * 1000, // 10 minutes
 
+  /**
+   * Number of milliseconds to wait for fonts to load on a test page in Selenium before giving up.
+   * @type {number}
+   */
+  SELENIUM_FONT_LOAD_WAIT_MS: 3000,
+
   ExitCode: {
     UNKNOWN_ERROR: 11,
     SIGINT: 12, // ctrl-c
@@ -55,5 +61,6 @@ module.exports = {
     HTTP_PORT_ALREADY_IN_USE: 15,
     MISSING_ENV_VAR: 16,
     UNHANDLED_PROMISE_REJECTION: 17,
+    CHANGES_FOUND: 18,
   },
 };

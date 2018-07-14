@@ -130,7 +130,7 @@ https://crossbrowsertesting.com/account
       // TODO(acdvorak): Implement
       name: undefined,
       // TODO(acdvorak): Figure out why this value is an empty string
-      build: meta.actual_diff_base.input_string,
+      build: meta.snapshot_diff_base.input_string,
 
       // TODO(acdvorak): Expose these as CLI flags
       record_video: true,

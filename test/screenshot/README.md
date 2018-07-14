@@ -38,8 +38,10 @@ npm run screenshot:test
 You should see something like this in the terminal:
 
 ```
-Found 65 screenshot diffs!
-https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/06/18/22_57_35_482/report.html
+Changed 1 screenshot:
+  - mdc-fab/classes/baseline.html > desktop_windows_edge@latest
+
+https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/14/03_37_19_142/report/report.html
 ```
 
 ## Basic usage
@@ -47,7 +49,7 @@ https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/06/18/22_57
 ### Updating "golden" screenshots
 
 On the
-[report page](https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/06/18/22_57_35_482/report.html),
+[report page](https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/14/03_37_19_142/report/report.html),
 select the checkboxes for all screenshots you want to approve, and click the "Approve" button at the bottom of the page.
 
 This will display a modal dialog containing a CLI command to copy/paste:
@@ -55,7 +57,7 @@ This will display a modal dialog containing a CLI command to copy/paste:
 ```bash
 npm run screenshot:approve -- \
   --all \
-  --report=https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/06/18/22_57_35_482/report.json
+  --report=https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/14/03_37_19_142/report/report.json
 ```
 
 **IMPORTANT:** Note the `--` between the script name and its arguments. This is required by `npm`.
@@ -67,7 +69,7 @@ This command will update your local `test/screenshot/golden.json` file with the 
 You can rerun a subset of the tests without running the entire suite, filtering by browser and/or URL.
 
 On the
-[report page](https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/06/18/22_57_35_482/report.html),
+[report page](https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/14/03_37_19_142/report/report.html),
 select the checkboxes for all screenshots you want to retry, and click the "Retry" button at the bottom of the page.
 
 This will display a modal dialog containing a CLI command to copy/paste:
@@ -154,9 +156,10 @@ npm run screenshot:test -- \
 **NOTE:** Negative patterns _always_ take precedence over positive patterns, regardless of the order they appear in the
 command line.
 
-### Diffing against a local `golden.json` file
+### Diffing against other git branches and tags
 
 By default, screenshots are diffed against your local `test/screenshot/golden.json` file.
+This enables incremental diff reports, which are typically smaller and easier to review.
 
 You can diff against a local/remote git branch, tag, or commit with the `--diff-base` flag:
 

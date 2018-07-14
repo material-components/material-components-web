@@ -397,8 +397,8 @@ class ReportBuilder {
       host_os_icon_url: this.getHostOsIconUrl_(hostOsName),
       cli_invocation: this.getCliInvocation_(),
 
-      expected_diff_base: await this.cli_.parseDiffBase(),
-      actual_diff_base: await this.cli_.parseDiffBase('HEAD'),
+      golden_diff_base: await this.cli_.parseDiffBase(),
+      snapshot_diff_base: await this.cli_.parseDiffBase('HEAD'),
       git_status: GitStatus.fromObject(await this.gitRepo_.getStatus()),
 
       node_version: LibraryVersion.create({
@@ -646,6 +646,8 @@ class ReportBuilder {
           expected_html_file: expectedHtmlFile,
           actual_html_file: actualHtmlFile,
           expected_image_file: expectedImageFile,
+          retry_count: 0,
+          max_retries: this.cli_.maxRetries,
         }));
       }
     }
@@ -870,6 +872,14 @@ class ReportBuilder {
       }
     }
     console.log();
+  }
+
+  /**
+   * @return {number}
+   * @private
+   */
+  getMaxRetries_() {
+    return this.cli_.maxRetries;
   }
 }
 

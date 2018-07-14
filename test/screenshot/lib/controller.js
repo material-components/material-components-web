@@ -133,7 +133,7 @@ class Controller {
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async compareAllScreenshots(reportData) {
-    await this.imageDiffer_.compareAllScreenshots(reportData);
+    await this.reportBuilder_.populateScreenshotMaps(reportData.user_agents, reportData.screenshots);
     await this.cloudStorage_.uploadAllDiffs(reportData);
 
     this.logComparisonResults_(reportData);

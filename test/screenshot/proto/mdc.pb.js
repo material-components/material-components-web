@@ -321,8 +321,8 @@ $root.mdc = (function() {
              * @property {mdc.proto.IUser|null} [user] ReportMeta user
              * @property {string|null} [host_os_name] ReportMeta host_os_name
              * @property {string|null} [cli_invocation] ReportMeta cli_invocation
-             * @property {mdc.proto.IDiffBase|null} [expected_diff_base] ReportMeta expected_diff_base
-             * @property {mdc.proto.IDiffBase|null} [actual_diff_base] ReportMeta actual_diff_base
+             * @property {mdc.proto.IDiffBase|null} [golden_diff_base] ReportMeta golden_diff_base
+             * @property {mdc.proto.IDiffBase|null} [snapshot_diff_base] ReportMeta snapshot_diff_base
              * @property {mdc.proto.IGitStatus|null} [git_status] ReportMeta git_status
              * @property {mdc.proto.ILibraryVersion|null} [node_version] ReportMeta node_version
              * @property {mdc.proto.ILibraryVersion|null} [npm_version] ReportMeta npm_version
@@ -459,20 +459,20 @@ $root.mdc = (function() {
             ReportMeta.prototype.cli_invocation = "";
 
             /**
-             * ReportMeta expected_diff_base.
-             * @member {mdc.proto.IDiffBase|null|undefined} expected_diff_base
+             * ReportMeta golden_diff_base.
+             * @member {mdc.proto.IDiffBase|null|undefined} golden_diff_base
              * @memberof mdc.proto.ReportMeta
              * @instance
              */
-            ReportMeta.prototype.expected_diff_base = null;
+            ReportMeta.prototype.golden_diff_base = null;
 
             /**
-             * ReportMeta actual_diff_base.
-             * @member {mdc.proto.IDiffBase|null|undefined} actual_diff_base
+             * ReportMeta snapshot_diff_base.
+             * @member {mdc.proto.IDiffBase|null|undefined} snapshot_diff_base
              * @memberof mdc.proto.ReportMeta
              * @instance
              */
-            ReportMeta.prototype.actual_diff_base = null;
+            ReportMeta.prototype.snapshot_diff_base = null;
 
             /**
              * ReportMeta git_status.
@@ -574,10 +574,10 @@ $root.mdc = (function() {
                     writer.uint32(/* id 13, wireType 2 =*/106).string(message.host_os_name);
                 if (message.cli_invocation != null && message.hasOwnProperty("cli_invocation"))
                     writer.uint32(/* id 14, wireType 2 =*/114).string(message.cli_invocation);
-                if (message.expected_diff_base != null && message.hasOwnProperty("expected_diff_base"))
-                    $root.mdc.proto.DiffBase.encode(message.expected_diff_base, writer.uint32(/* id 15, wireType 2 =*/122).fork()).ldelim();
-                if (message.actual_diff_base != null && message.hasOwnProperty("actual_diff_base"))
-                    $root.mdc.proto.DiffBase.encode(message.actual_diff_base, writer.uint32(/* id 16, wireType 2 =*/130).fork()).ldelim();
+                if (message.golden_diff_base != null && message.hasOwnProperty("golden_diff_base"))
+                    $root.mdc.proto.DiffBase.encode(message.golden_diff_base, writer.uint32(/* id 15, wireType 2 =*/122).fork()).ldelim();
+                if (message.snapshot_diff_base != null && message.hasOwnProperty("snapshot_diff_base"))
+                    $root.mdc.proto.DiffBase.encode(message.snapshot_diff_base, writer.uint32(/* id 16, wireType 2 =*/130).fork()).ldelim();
                 if (message.git_status != null && message.hasOwnProperty("git_status"))
                     $root.mdc.proto.GitStatus.encode(message.git_status, writer.uint32(/* id 17, wireType 2 =*/138).fork()).ldelim();
                 if (message.node_version != null && message.hasOwnProperty("node_version"))
@@ -667,10 +667,10 @@ $root.mdc = (function() {
                         message.cli_invocation = reader.string();
                         break;
                     case 15:
-                        message.expected_diff_base = $root.mdc.proto.DiffBase.decode(reader, reader.uint32());
+                        message.golden_diff_base = $root.mdc.proto.DiffBase.decode(reader, reader.uint32());
                         break;
                     case 16:
-                        message.actual_diff_base = $root.mdc.proto.DiffBase.decode(reader, reader.uint32());
+                        message.snapshot_diff_base = $root.mdc.proto.DiffBase.decode(reader, reader.uint32());
                         break;
                     case 17:
                         message.git_status = $root.mdc.proto.GitStatus.decode(reader, reader.uint32());
@@ -769,15 +769,15 @@ $root.mdc = (function() {
                 if (message.cli_invocation != null && message.hasOwnProperty("cli_invocation"))
                     if (!$util.isString(message.cli_invocation))
                         return "cli_invocation: string expected";
-                if (message.expected_diff_base != null && message.hasOwnProperty("expected_diff_base")) {
-                    var error = $root.mdc.proto.DiffBase.verify(message.expected_diff_base);
+                if (message.golden_diff_base != null && message.hasOwnProperty("golden_diff_base")) {
+                    var error = $root.mdc.proto.DiffBase.verify(message.golden_diff_base);
                     if (error)
-                        return "expected_diff_base." + error;
+                        return "golden_diff_base." + error;
                 }
-                if (message.actual_diff_base != null && message.hasOwnProperty("actual_diff_base")) {
-                    var error = $root.mdc.proto.DiffBase.verify(message.actual_diff_base);
+                if (message.snapshot_diff_base != null && message.hasOwnProperty("snapshot_diff_base")) {
+                    var error = $root.mdc.proto.DiffBase.verify(message.snapshot_diff_base);
                     if (error)
-                        return "actual_diff_base." + error;
+                        return "snapshot_diff_base." + error;
                 }
                 if (message.git_status != null && message.hasOwnProperty("git_status")) {
                     var error = $root.mdc.proto.GitStatus.verify(message.git_status);
@@ -862,15 +862,15 @@ $root.mdc = (function() {
                     message.host_os_name = String(object.host_os_name);
                 if (object.cli_invocation != null)
                     message.cli_invocation = String(object.cli_invocation);
-                if (object.expected_diff_base != null) {
-                    if (typeof object.expected_diff_base !== "object")
-                        throw TypeError(".mdc.proto.ReportMeta.expected_diff_base: object expected");
-                    message.expected_diff_base = $root.mdc.proto.DiffBase.fromObject(object.expected_diff_base);
+                if (object.golden_diff_base != null) {
+                    if (typeof object.golden_diff_base !== "object")
+                        throw TypeError(".mdc.proto.ReportMeta.golden_diff_base: object expected");
+                    message.golden_diff_base = $root.mdc.proto.DiffBase.fromObject(object.golden_diff_base);
                 }
-                if (object.actual_diff_base != null) {
-                    if (typeof object.actual_diff_base !== "object")
-                        throw TypeError(".mdc.proto.ReportMeta.actual_diff_base: object expected");
-                    message.actual_diff_base = $root.mdc.proto.DiffBase.fromObject(object.actual_diff_base);
+                if (object.snapshot_diff_base != null) {
+                    if (typeof object.snapshot_diff_base !== "object")
+                        throw TypeError(".mdc.proto.ReportMeta.snapshot_diff_base: object expected");
+                    message.snapshot_diff_base = $root.mdc.proto.DiffBase.fromObject(object.snapshot_diff_base);
                 }
                 if (object.git_status != null) {
                     if (typeof object.git_status !== "object")
@@ -937,8 +937,8 @@ $root.mdc = (function() {
                     object.user = null;
                     object.host_os_name = "";
                     object.cli_invocation = "";
-                    object.expected_diff_base = null;
-                    object.actual_diff_base = null;
+                    object.golden_diff_base = null;
+                    object.snapshot_diff_base = null;
                     object.git_status = null;
                     object.node_version = null;
                     object.npm_version = null;
@@ -977,10 +977,10 @@ $root.mdc = (function() {
                     object.host_os_name = message.host_os_name;
                 if (message.cli_invocation != null && message.hasOwnProperty("cli_invocation"))
                     object.cli_invocation = message.cli_invocation;
-                if (message.expected_diff_base != null && message.hasOwnProperty("expected_diff_base"))
-                    object.expected_diff_base = $root.mdc.proto.DiffBase.toObject(message.expected_diff_base, options);
-                if (message.actual_diff_base != null && message.hasOwnProperty("actual_diff_base"))
-                    object.actual_diff_base = $root.mdc.proto.DiffBase.toObject(message.actual_diff_base, options);
+                if (message.golden_diff_base != null && message.hasOwnProperty("golden_diff_base"))
+                    object.golden_diff_base = $root.mdc.proto.DiffBase.toObject(message.golden_diff_base, options);
+                if (message.snapshot_diff_base != null && message.hasOwnProperty("snapshot_diff_base"))
+                    object.snapshot_diff_base = $root.mdc.proto.DiffBase.toObject(message.snapshot_diff_base, options);
                 if (message.git_status != null && message.hasOwnProperty("git_status"))
                     object.git_status = $root.mdc.proto.GitStatus.toObject(message.git_status, options);
                 if (message.node_version != null && message.hasOwnProperty("node_version"))
@@ -5391,6 +5391,8 @@ $root.mdc = (function() {
              * @property {mdc.proto.ITestFile|null} [actual_image_file] Screenshot actual_image_file
              * @property {mdc.proto.ITestFile|null} [diff_image_file] Screenshot diff_image_file
              * @property {mdc.proto.IDiffImageResult|null} [diff_image_result] Screenshot diff_image_result
+             * @property {number|null} [retry_count] Screenshot retry_count
+             * @property {number|null} [max_retries] Screenshot max_retries
              */
 
             /**
@@ -5497,6 +5499,22 @@ $root.mdc = (function() {
             Screenshot.prototype.diff_image_result = null;
 
             /**
+             * Screenshot retry_count.
+             * @member {number} retry_count
+             * @memberof mdc.proto.Screenshot
+             * @instance
+             */
+            Screenshot.prototype.retry_count = 0;
+
+            /**
+             * Screenshot max_retries.
+             * @member {number} max_retries
+             * @memberof mdc.proto.Screenshot
+             * @instance
+             */
+            Screenshot.prototype.max_retries = 0;
+
+            /**
              * Creates a new Screenshot instance using the specified properties.
              * @function create
              * @memberof mdc.proto.Screenshot
@@ -5542,6 +5560,10 @@ $root.mdc = (function() {
                     $root.mdc.proto.TestFile.encode(message.diff_image_file, writer.uint32(/* id 10, wireType 2 =*/82).fork()).ldelim();
                 if (message.diff_image_result != null && message.hasOwnProperty("diff_image_result"))
                     $root.mdc.proto.DiffImageResult.encode(message.diff_image_result, writer.uint32(/* id 11, wireType 2 =*/90).fork()).ldelim();
+                if (message.retry_count != null && message.hasOwnProperty("retry_count"))
+                    writer.uint32(/* id 12, wireType 0 =*/96).uint32(message.retry_count);
+                if (message.max_retries != null && message.hasOwnProperty("max_retries"))
+                    writer.uint32(/* id 13, wireType 0 =*/104).uint32(message.max_retries);
                 return writer;
             };
 
@@ -5609,6 +5631,12 @@ $root.mdc = (function() {
                     case 11:
                         message.diff_image_result = $root.mdc.proto.DiffImageResult.decode(reader, reader.uint32());
                         break;
+                    case 12:
+                        message.retry_count = reader.uint32();
+                        break;
+                    case 13:
+                        message.max_retries = reader.uint32();
+                        break;
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -5667,7 +5695,6 @@ $root.mdc = (function() {
                     case 2:
                     case 3:
                     case 4:
-                    case 5:
                         break;
                     }
                 if (message.user_agent != null && message.hasOwnProperty("user_agent")) {
@@ -5708,6 +5735,12 @@ $root.mdc = (function() {
                     if (error)
                         return "diff_image_result." + error;
                 }
+                if (message.retry_count != null && message.hasOwnProperty("retry_count"))
+                    if (!$util.isInteger(message.retry_count))
+                        return "retry_count: integer expected";
+                if (message.max_retries != null && message.hasOwnProperty("max_retries"))
+                    if (!$util.isInteger(message.max_retries))
+                        return "max_retries: integer expected";
                 return null;
             };
 
@@ -5764,13 +5797,9 @@ $root.mdc = (function() {
                 case 3:
                     message.capture_state = 3;
                     break;
-                case "CAPTURED":
+                case "DIFFED":
                 case 4:
                     message.capture_state = 4;
-                    break;
-                case "DIFFED":
-                case 5:
-                    message.capture_state = 5;
                     break;
                 }
                 if (object.user_agent != null) {
@@ -5810,6 +5839,10 @@ $root.mdc = (function() {
                         throw TypeError(".mdc.proto.Screenshot.diff_image_result: object expected");
                     message.diff_image_result = $root.mdc.proto.DiffImageResult.fromObject(object.diff_image_result);
                 }
+                if (object.retry_count != null)
+                    message.retry_count = object.retry_count >>> 0;
+                if (object.max_retries != null)
+                    message.max_retries = object.max_retries >>> 0;
                 return message;
             };
 
@@ -5838,6 +5871,8 @@ $root.mdc = (function() {
                     object.actual_image_file = null;
                     object.diff_image_file = null;
                     object.diff_image_result = null;
+                    object.retry_count = 0;
+                    object.max_retries = 0;
                 }
                 if (message.is_runnable != null && message.hasOwnProperty("is_runnable"))
                     object.is_runnable = message.is_runnable;
@@ -5861,6 +5896,10 @@ $root.mdc = (function() {
                     object.diff_image_file = $root.mdc.proto.TestFile.toObject(message.diff_image_file, options);
                 if (message.diff_image_result != null && message.hasOwnProperty("diff_image_result"))
                     object.diff_image_result = $root.mdc.proto.DiffImageResult.toObject(message.diff_image_result, options);
+                if (message.retry_count != null && message.hasOwnProperty("retry_count"))
+                    object.retry_count = message.retry_count;
+                if (message.max_retries != null && message.hasOwnProperty("max_retries"))
+                    object.max_retries = message.max_retries;
                 return object;
             };
 
@@ -5903,8 +5942,7 @@ $root.mdc = (function() {
              * @property {number} QUEUED=1 QUEUED value
              * @property {number} SKIPPED=2 SKIPPED value
              * @property {number} RUNNING=3 RUNNING value
-             * @property {number} CAPTURED=4 CAPTURED value
-             * @property {number} DIFFED=5 DIFFED value
+             * @property {number} DIFFED=4 DIFFED value
              */
             Screenshot.CaptureState = (function() {
                 var valuesById = {}, values = Object.create(valuesById);
@@ -5912,8 +5950,7 @@ $root.mdc = (function() {
                 values[valuesById[1] = "QUEUED"] = 1;
                 values[valuesById[2] = "SKIPPED"] = 2;
                 values[valuesById[3] = "RUNNING"] = 3;
-                values[valuesById[4] = "CAPTURED"] = 4;
-                values[valuesById[5] = "DIFFED"] = 5;
+                values[valuesById[4] = "DIFFED"] = 4;
                 return values;
             })();
 

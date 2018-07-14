@@ -14,23 +14,28 @@
  * limitations under the License.
  */
 
+/* eslint-disable no-var */
+
 window.mdc = window.mdc || {};
 
 window.mdc.testFixture = {
-  waitForFontsToLoad: function(callback) {
+  attachFontObserver: function() {
     var fontsLoadedPromise = new Promise(function(resolve) {
       var robotoFont = new FontFaceObserver('Roboto');
       var materialIconsFont = new FontFaceObserver('Material Icons');
-      Promise.all([robotoFont.load(), materialIconsFont.load('add')]).then(function() {
+
+      // The `load()` method accepts an optional string of text to ensure that those specific glyphs are available.
+      // For the Material Icons font, we need to pass it one of the icon names.
+      Promise.all([robotoFont.load(), materialIconsFont.load('star_border')]).then(function() {
         resolve();
       });
+
       setTimeout(function() {
         resolve();
       }, 3000); // TODO(acdvorak): Create a constant for font loading timeout values
     });
     fontsLoadedPromise.then(function() {
       document.body.setAttribute('data-fonts-loaded', '');
-      callback();
     });
   },
 };
