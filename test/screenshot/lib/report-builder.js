@@ -723,6 +723,7 @@ class ReportBuilder {
       });
 
       if (!actualScreenshot) {
+        // TODO(acdvorak): Add image dimensions here so they can be displayed on the report page
         removedScreenshots.push(expectedScreenshot);
       }
     }
