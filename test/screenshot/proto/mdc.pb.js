@@ -1425,6 +1425,7 @@ $root.mdc = (function() {
              * @property {string|null} [remote] GitRevision remote
              * @property {string|null} [branch] GitRevision branch
              * @property {string|null} [tag] GitRevision tag
+             * @property {number|null} [pr] GitRevision pr
              */
 
             /**
@@ -1491,6 +1492,14 @@ $root.mdc = (function() {
             GitRevision.prototype.tag = "";
 
             /**
+             * GitRevision pr.
+             * @member {number} pr
+             * @memberof mdc.proto.GitRevision
+             * @instance
+             */
+            GitRevision.prototype.pr = 0;
+
+            /**
              * Creates a new GitRevision instance using the specified properties.
              * @function create
              * @memberof mdc.proto.GitRevision
@@ -1526,6 +1535,8 @@ $root.mdc = (function() {
                     writer.uint32(/* id 5, wireType 2 =*/42).string(message.branch);
                 if (message.tag != null && message.hasOwnProperty("tag"))
                     writer.uint32(/* id 6, wireType 2 =*/50).string(message.tag);
+                if (message.pr != null && message.hasOwnProperty("pr"))
+                    writer.uint32(/* id 7, wireType 0 =*/56).uint32(message.pr);
                 return writer;
             };
 
@@ -1578,6 +1589,9 @@ $root.mdc = (function() {
                     case 6:
                         message.tag = reader.string();
                         break;
+                    case 7:
+                        message.pr = reader.uint32();
+                        break;
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -1622,6 +1636,7 @@ $root.mdc = (function() {
                     case 2:
                     case 3:
                     case 4:
+                    case 5:
                         break;
                     }
                 if (message.golden_json_file_path != null && message.hasOwnProperty("golden_json_file_path"))
@@ -1639,6 +1654,9 @@ $root.mdc = (function() {
                 if (message.tag != null && message.hasOwnProperty("tag"))
                     if (!$util.isString(message.tag))
                         return "tag: string expected";
+                if (message.pr != null && message.hasOwnProperty("pr"))
+                    if (!$util.isInteger(message.pr))
+                        return "pr: integer expected";
                 return null;
             };
 
@@ -1675,6 +1693,10 @@ $root.mdc = (function() {
                 case 4:
                     message.type = 4;
                     break;
+                case "PR":
+                case 5:
+                    message.type = 5;
+                    break;
                 }
                 if (object.golden_json_file_path != null)
                     message.golden_json_file_path = String(object.golden_json_file_path);
@@ -1686,6 +1708,8 @@ $root.mdc = (function() {
                     message.branch = String(object.branch);
                 if (object.tag != null)
                     message.tag = String(object.tag);
+                if (object.pr != null)
+                    message.pr = object.pr >>> 0;
                 return message;
             };
 
@@ -1709,6 +1733,7 @@ $root.mdc = (function() {
                     object.remote = "";
                     object.branch = "";
                     object.tag = "";
+                    object.pr = 0;
                 }
                 if (message.type != null && message.hasOwnProperty("type"))
                     object.type = options.enums === String ? $root.mdc.proto.GitRevision.Type[message.type] : message.type;
@@ -1722,6 +1747,8 @@ $root.mdc = (function() {
                     object.branch = message.branch;
                 if (message.tag != null && message.hasOwnProperty("tag"))
                     object.tag = message.tag;
+                if (message.pr != null && message.hasOwnProperty("pr"))
+                    object.pr = message.pr;
                 return object;
             };
 
@@ -1745,6 +1772,7 @@ $root.mdc = (function() {
              * @property {number} LOCAL_BRANCH=2 LOCAL_BRANCH value
              * @property {number} REMOTE_BRANCH=3 REMOTE_BRANCH value
              * @property {number} REMOTE_TAG=4 REMOTE_TAG value
+             * @property {number} PR=5 PR value
              */
             GitRevision.Type = (function() {
                 var valuesById = {}, values = Object.create(valuesById);
@@ -1753,6 +1781,7 @@ $root.mdc = (function() {
                 values[valuesById[2] = "LOCAL_BRANCH"] = 2;
                 values[valuesById[3] = "REMOTE_BRANCH"] = 3;
                 values[valuesById[4] = "REMOTE_TAG"] = 4;
+                values[valuesById[5] = "PR"] = 5;
                 return values;
             })();
 

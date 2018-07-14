@@ -82,6 +82,7 @@ message GitRevision {
     LOCAL_BRANCH = 2;
     REMOTE_BRANCH = 3;
     REMOTE_TAG = 4;
+    PR = 5;
   }
 
   Type type = 1;
@@ -90,6 +91,7 @@ message GitRevision {
   string remote = 4;
   string branch = 5;
   string tag = 6;
+  uint32 pr = 7;
 }
 
 message User {

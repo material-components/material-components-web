@@ -423,6 +423,12 @@ class ReportWriter {
     if (diffBase.git_revision) {
       const rev = diffBase.git_revision;
 
+      if (rev.pr) {
+        return new Handlebars.SafeString(`
+PR <a href="${GITHUB_REPO_URL}/pull/${rev.pr}">#${rev.pr}</a>
+`);
+      }
+
       if (rev.branch) {
         const branchDisplayName = rev.remote ? `${rev.remote}/${rev.branch}` : rev.branch;
         return new Handlebars.SafeString(`
