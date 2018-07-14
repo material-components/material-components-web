@@ -16,351 +16,69 @@
 
 'use strict';
 
+const Jimp = require('jimp');
 const compareImages = require('resemblejs/compareImages');
+const fs = require('mz/fs');
+const mkdirp = require('mkdirp');
+const path = require('path');
+
+const mdcProto = require('../proto/mdc.pb').mdc.proto;
+const {DiffImageResult, Dimensions, TestFile} = mdcProto;
 
 /**
  * Computes the difference between two screenshot images and generates an image that highlights the pixels that changed.
  */
 class ImageDiffer {
-  constructor({imageCache}) {
-    /**
-     * @type {!ImageCache}
-     * @private
-     */
-    this.imageCache_ = imageCache;
-  }
-
   /**
-   * @param {!RunReport} runReport
-   * @param {!SnapshotSuiteJson} actualSuite
-   * @param {!SnapshotSuiteJson} expectedSuite
-   * @return {!Promise<!RunReport>}
+   * @param {!mdc.proto.ReportMeta} meta
+   * @param {!mdc.proto.Screenshot} screenshot
+   * @return {!Promise<!mdc.proto.DiffImageResult>}
    */
-  async compareAllPages({
-    runReport,
-    actualSuite,
-    expectedSuite,
-  }) {
-    const added = this.getAddedToSuite_({expectedSuite, actualSuite});
-    const removed = this.getRemovedFromSuite_({expectedSuite, actualSuite, runReport});
-    const skipped = this.getSkipped_({expectedSuite, actualSuite, runReport});
-    const {diffs, unchanged} = await this.getChangedFromSuite_({expectedSuite, actualSuite});
-
-    [added, removed, diffs, unchanged, skipped].forEach((array) => {
-      array.sort(this.sortDiffs_);
+  async compareOneScreenshot({meta, screenshot}) {
+    return await this.compareOneImage_({
+      meta,
+      actualImageFile: screenshot.actual_image_file,
+      expectedImageFile: screenshot.expected_image_file,
     });
-
-    return {
-      diffs,
-      added,
-      removed,
-      unchanged,
-      skipped,
-    };
   }
 
   /**
-   * @param {!SnapshotSuiteJson} expectedSuite
-   * @param {!SnapshotSuiteJson} actualSuite
-   * @return {!Array<!ImageDiffJson>}
+   * @param {!mdc.proto.ReportMeta} meta
+   * @param {!mdc.proto.TestFile} actualImageFile
+   * @param {?mdc.proto.TestFile} expectedImageFile
+   * @return {!Promise<!mdc.proto.DiffImageResult>}
    * @private
    */
-  getAddedToSuite_({expectedSuite, actualSuite}) {
-    const added = [];
+  async compareOneImage_({meta, actualImageFile, expectedImageFile}) {
+    const actualImageBuffer = await fs.readFile(actualImageFile.absolute_path);
 
-    for (const [htmlFilePath, actualPage] of Object.entries(actualSuite)) {
-      const expectedPage = expectedSuite[htmlFilePath];
-      added.push(...this.getAddedToPage_({expectedPage, actualPage, htmlFilePath}));
-    }
-
-    return added;
-  }
-
-  /**
-   * @param {?SnapshotPageJson} expectedPage
-   * @param {!SnapshotPageJson} actualPage
-   * @param {string} htmlFilePath
-   * @return {!Array<!ImageDiffJson>}
-   * @private
-   */
-  getAddedToPage_({expectedPage, actualPage, htmlFilePath}) {
-    const added = [];
-
-    for (const [userAgentAlias, actualImageUrl] of Object.entries(actualPage.screenshots)) {
-      if (expectedPage && expectedPage.screenshots[userAgentAlias]) {
-        continue;
-      }
-
-      added.push({
-        htmlFilePath,
-        userAgentAlias,
-        goldenPageUrl: null,
-        snapshotPageUrl: actualPage.publicUrl,
-        actualImageUrl,
-        expectedImageUrl: null,
-        diffImageBuffer: null,
-        diffImageUrl: null,
+    if (!expectedImageFile) {
+      const actualJimpImage = await Jimp.read(actualImageBuffer);
+      return DiffImageResult.create({
+        actual_image_dimensions: Dimensions.create({
+          width: actualJimpImage.bitmap.width,
+          height: actualJimpImage.bitmap.height,
+        }),
       });
     }
 
-    return added;
-  }
+    const expectedImageBuffer = await fs.readFile(expectedImageFile.absolute_path);
 
-  /**
-   * @param {!SnapshotSuiteJson} expectedSuite
-   * @param {!SnapshotSuiteJson} actualSuite
-   * @param {!RunReport} runReport
-   * @return {!Array<!ImageDiffJson>}
-   * @private
-   */
-  getRemovedFromSuite_({expectedSuite, actualSuite, runReport}) {
-    const removed = [];
+    /** @type {!ResembleApiComparisonResult} */
+    const resembleComparisonResult = await this.computeDiff_({actualImageBuffer, expectedImageBuffer});
 
-    for (const [htmlFilePath, expectedPage] of Object.entries(expectedSuite)) {
-      const actualPage = actualSuite[htmlFilePath];
-      removed.push(...this.getRemovedFromPage_({expectedPage, actualPage, runReport, htmlFilePath}));
-    }
-
-    return removed;
-  }
-
-  /**
-   * @param {!SnapshotPageJson} expectedPage
-   * @param {?SnapshotPageJson} actualPage
-   * @param {!RunReport} runReport
-   * @param {string} htmlFilePath
-   * @return {!Array<!ImageDiffJson>}
-   * @private
-   */
-  getRemovedFromPage_({expectedPage, actualPage, runReport, htmlFilePath}) {
-    const removed = [];
-
-    for (const [userAgentAlias, expectedImageUrl] of Object.entries(expectedPage.screenshots)) {
-      if (this.isRemovedFromPage_({runReport, actualPage, userAgentAlias, htmlFilePath})) {
-        removed.push({
-          htmlFilePath,
-          userAgentAlias,
-          goldenPageUrl: expectedPage.publicUrl,
-          snapshotPageUrl: null,
-          actualImageUrl: null,
-          expectedImageUrl,
-          diffImageBuffer: null,
-          diffImageUrl: null,
-        });
-      }
-    }
-
-    return removed;
-  }
-
-  /**
-   * @param {!RunReport} runReport
-   * @param {?SnapshotPageJson} actualPage
-   * @param {string} userAgentAlias
-   * @param {string} htmlFilePath
-   * @return {boolean}
-   * @private
-   */
-  isRemovedFromPage_({
-    runReport,
-    actualPage,
-    userAgentAlias,
-    htmlFilePath,
-  }) {
-    if (actualPage && actualPage.screenshots[userAgentAlias]) {
-      return false;
-    }
-
-    const isSkippedTestCase = runReport.runTarget.skippedTestCases.some((skippedTestCase) => {
-      return skippedTestCase.htmlFile.destinationRelativeFilePath === htmlFilePath;
-    });
-
-    const isSkippedUserAgent = runReport.runTarget.skippedUserAgents.some((skippedUserAgent) => {
-      return skippedUserAgent.alias === userAgentAlias;
-    });
-
-    if (isSkippedTestCase || isSkippedUserAgent) {
-      return false;
-    }
-
-    return true;
-  }
-
-  /**
-   * @param {!SnapshotSuiteJson} expectedSuite
-   * @param {!SnapshotSuiteJson} actualSuite
-   * @param {!RunReport} runReport
-   * @return {!Array<!ImageDiffJson>}
-   * @private
-   */
-  getSkipped_({expectedSuite, actualSuite, runReport}) {
-    /** @type {!Array<!ImageDiffJson>} */
-    const skipped = [];
-
-    const runTarget = runReport.runTarget;
-
-    /** @type {!Array<!UploadableTestCase>} */
-    const allTestCases = [].concat(runTarget.runnableTestCases, runTarget.skippedTestCases);
-
-    /** @type {!Array<!CbtUserAgent>} */
-    const allUserAgents = [].concat(runTarget.runnableUserAgents, runTarget.skippedUserAgents);
-
-    allTestCases.forEach((testCase) => {
-      allUserAgents.forEach((userAgent) => {
-        const htmlFilePath = testCase.htmlFile.destinationRelativeFilePath;
-        const userAgentAlias = userAgent.alias;
-
-        if (actualSuite[htmlFilePath] && actualSuite[htmlFilePath].screenshots[userAgentAlias]) {
-          return;
-        }
-
-        const expectedPage = expectedSuite[htmlFilePath];
-        const goldenPageUrl = expectedPage ? expectedPage.publicUrl : null;
-        const expectedImageUrl = expectedPage ? expectedPage.screenshots[userAgentAlias] : null;
-
-        skipped.push({
-          htmlFilePath,
-          userAgentAlias,
-          goldenPageUrl,
-          snapshotPageUrl: null,
-          actualImageUrl: null,
-          expectedImageUrl,
-          diffImageBuffer: null,
-          diffImageUrl: null,
-        });
-      });
-    });
-
-    return skipped;
-  }
-
-  /**
-   * @param {!SnapshotSuiteJson} expectedSuite
-   * @param {!SnapshotSuiteJson} actualSuite
-   * @return {!Promise<{diffs: !Array<!ImageDiffJson>, unchanged: !Array<!ImageDiffJson>}>}
-   * @private
-   */
-  async getChangedFromSuite_({expectedSuite, actualSuite}) {
-    /** @type {!Array<!ImageDiffJson>} */
-    const diffs = [];
-
-    /** @type {!Array<!ImageDiffJson>} */
-    const unchanged = [];
-
-    /** @type {!Array<!Promise<!Array<!ImageDiffJson>>>} */
-    const pageComparisonPromises = [];
-
-    for (const [htmlFilePath, actualPage] of Object.entries(actualSuite)) {
-      // HTML file is not present in `golden.json` on `master`
-      const expectedPage = expectedSuite[htmlFilePath];
-      if (!expectedPage) {
-        continue;
-      }
-
-      pageComparisonPromises.push(
-        this.compareOnePage_({
-          htmlFilePath,
-          goldenPageUrl: expectedPage.publicUrl,
-          snapshotPageUrl: actualPage.publicUrl,
-          actualPage,
-          expectedPage,
-        })
-      );
-    }
-
-    // Flatten the array of arrays
-    const pageComparisonResults = [].concat(...(await Promise.all(pageComparisonPromises)));
-
-    pageComparisonResults.forEach((diffResult) => {
-      if (diffResult.diffImageBuffer) {
-        diffs.push(diffResult);
-      } else {
-        unchanged.push(diffResult);
-      }
-    });
-
-    return {diffs, unchanged};
-  }
-
-  /**
-   * @param {string} htmlFilePath
-   * @param {string} goldenPageUrl
-   * @param {string} snapshotPageUrl
-   * @param {!SnapshotPageJson} expectedPage
-   * @param {!SnapshotPageJson} actualPage
-   * @return {!Promise<!Array<!ImageDiffJson>>}
-   * @private
-   */
-  async compareOnePage_({
-    htmlFilePath,
-    goldenPageUrl,
-    snapshotPageUrl,
-    actualPage,
-    expectedPage,
-  }) {
-    /** @type {!Array<!Promise<!ImageDiffJson>>} */
-    const imagePromises = [];
-
-    const actualScreenshots = actualPage.screenshots;
-    const expectedScreenshots = expectedPage.screenshots;
-
-    for (const [userAgentAlias, actualImageUrl] of Object.entries(actualScreenshots)) {
-      // Screenshot image for this browser is not present in `golden.json` on `master`
-      const expectedImageUrl = expectedScreenshots[userAgentAlias];
-      if (!expectedImageUrl) {
-        continue;
-      }
-
-      imagePromises.push(
-        this.compareOneImage_({actualImageUrl, expectedImageUrl})
-          .then(
-            (diffImageBuffer) => ({
-              htmlFilePath,
-              userAgentAlias,
-              goldenPageUrl,
-              snapshotPageUrl,
-              expectedImageUrl,
-              actualImageUrl,
-              diffImageUrl: null, // populated by `Controller`
-              diffImageBuffer,
-            }),
-            (err) => Promise.reject(err)
-          )
-      );
-    }
-
-    return Promise.all(imagePromises);
-  }
-
-  /**
-   * @param {string} actualImageUrl
-   * @param {string} expectedImageUrl
-   * @return {!Promise<?Buffer>}
-   * @private
-   */
-  async compareOneImage_({
-    actualImageUrl,
-    expectedImageUrl,
-  }) {
-    console.log(`➡ Comparing snapshot to golden: "${actualImageUrl}" vs. "${expectedImageUrl}"...`);
-
-    const [actualImageBuffer, expectedImageBuffer] = await Promise.all([
-      this.imageCache_.getImageBuffer(actualImageUrl),
-      this.imageCache_.getImageBuffer(expectedImageUrl),
-    ]);
-
-    const diffResult = await this.computeDiff_({
-      actualImageBuffer,
+    const diffImageFile = this.createDiffImageFile_({meta, actualImageFile});
+    const {diffImageBuffer, diffImageResult} = await this.analyzeComparisonResult_({
       expectedImageBuffer,
+      actualImageBuffer,
+      resembleComparisonResult,
     });
+    diffImageResult.diff_image_file = diffImageFile;
 
-    if (diffResult.rawMisMatchPercentage < 0.01) {
-      console.log(`✔ No diffs found for "${actualImageUrl}"!`);
-      return null;
-    }
+    mkdirp.sync(path.dirname(diffImageFile.absolute_path));
+    await fs.writeFile(diffImageFile.absolute_path, diffImageBuffer, {encoding: null});
 
-    console.log(`✗︎ Image "${actualImageUrl}" has changed!`);
-    return diffResult.getBuffer();
+    return diffImageResult;
   }
 
   /**
@@ -369,11 +87,8 @@ class ImageDiffer {
    * @return {!Promise<!ResembleApiComparisonResult>}
    * @private
    */
-  async computeDiff_({
-    actualImageBuffer,
-    expectedImageBuffer,
-  }) {
-    const options = require('../resemble.json');
+  async computeDiff_({actualImageBuffer, expectedImageBuffer}) {
+    const options = require('../diffing.json').resemble_config;
     return await compareImages(
       actualImageBuffer,
       expectedImageBuffer,
@@ -382,13 +97,73 @@ class ImageDiffer {
   }
 
   /**
-   * @param {!ImageDiffJson} a
-   * @param {!ImageDiffJson} b
-   * @return {number}
+   * @param {!Buffer} expectedImageBuffer
+   * @param {!Buffer} actualImageBuffer
+   * @param {!ResembleApiComparisonResult} resembleComparisonResult
+   * @return {!Promise<{diffImageBuffer: !Buffer, diffImageResult: !mdc.proto.DiffImageResult}>}
+   * @private
    */
-  sortDiffs_(a, b) {
-    return a.htmlFilePath.localeCompare(b.htmlFilePath, 'en-US') ||
-      a.userAgentAlias.localeCompare(b.userAgentAlias, 'en-US');
+  async analyzeComparisonResult_({expectedImageBuffer, actualImageBuffer, resembleComparisonResult}) {
+    /** @type {!Buffer} */
+    const diffImageBuffer = resembleComparisonResult.getBuffer();
+
+    /** @type {!Jimp.Jimp} */ const expectedJimpImage = await Jimp.read(expectedImageBuffer);
+    /** @type {!Jimp.Jimp} */ const actualJimpImage = await Jimp.read(actualImageBuffer);
+    /** @type {!Jimp.Jimp} */ const diffJimpImage = await Jimp.read(diffImageBuffer);
+
+    function roundPercentage(rawPercentage) {
+      let roundPower = Math.pow(10, 1);
+      if (rawPercentage < 1) {
+        const leadingFractionalZeroDigits = String(rawPercentage).replace(/^0\.(0*).*$/g, '$1').length + 1;
+        roundPower = Math.pow(10, leadingFractionalZeroDigits);
+      }
+      return Math.ceil(rawPercentage * roundPower) / roundPower;
+    }
+
+    const diffPixelRawPercentage = resembleComparisonResult.rawMisMatchPercentage;
+    const diffPixelRoundPercentage = roundPercentage(diffPixelRawPercentage);
+    const diffPixelFraction = diffPixelRawPercentage / 100;
+    const diffPixelCount = Math.ceil(diffPixelFraction * diffJimpImage.bitmap.width * diffJimpImage.bitmap.height);
+    const minChangedPixelCount = require('../diffing.json').flaky_tests.min_changed_pixel_count;
+    const hasChanged = diffPixelCount >= minChangedPixelCount;
+    const diffImageResult = DiffImageResult.create({
+      expected_image_dimensions: Dimensions.create({
+        width: expectedJimpImage.bitmap.width,
+        height: expectedJimpImage.bitmap.height,
+      }),
+      actual_image_dimensions: Dimensions.create({
+        width: actualJimpImage.bitmap.width,
+        height: actualJimpImage.bitmap.height,
+      }),
+      diff_image_dimensions: Dimensions.create({
+        width: diffJimpImage.bitmap.width,
+        height: diffJimpImage.bitmap.height,
+      }),
+      changed_pixel_count: diffPixelCount,
+      changed_pixel_fraction: diffPixelFraction,
+      changed_pixel_percentage: diffPixelRoundPercentage,
+      has_changed: hasChanged,
+    });
+
+    return {diffImageBuffer, diffImageResult};
+  }
+
+  /**
+   * @param {!mdc.proto.ReportMeta} meta
+   * @param {!mdc.proto.TestFile} actualImageFile
+   * @return {!mdc.proto.TestFile}
+   * @private
+   */
+  createDiffImageFile_({meta, actualImageFile}) {
+    const diffImageRelativePath = actualImageFile.relative_path.replace(/\.png$/, '.diff.png');
+    const diffImageAbsolutePath = path.join(meta.local_diff_image_base_dir, diffImageRelativePath);
+    const diffImagePublicUrl = meta.remote_upload_base_url + meta.remote_upload_base_dir + diffImageRelativePath;
+
+    return TestFile.create({
+      public_url: diffImagePublicUrl,
+      relative_path: diffImageRelativePath,
+      absolute_path: diffImageAbsolutePath,
+    });
   }
 }
 

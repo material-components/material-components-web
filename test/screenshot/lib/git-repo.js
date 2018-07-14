@@ -16,13 +16,22 @@
 
 'use strict';
 
-const createGitHub = require('@octokit/rest');
+const gitHubApi = require('@octokit/rest');
 const simpleGit = require('simple-git/promise');
 
 class GitRepo {
   constructor(workingDirPath = undefined) {
+    /**
+     * @type {!SimpleGit}
+     * @private
+     */
     this.repo_ = simpleGit(workingDirPath);
-    this.gitHub_ = createGitHub();
+
+    /**
+     * @type {!GitHubApi}
+     * @private
+     */
+    this.gitHub_ = gitHubApi();
   }
 
   /**
@@ -53,7 +62,7 @@ class GitRepo {
       await this.exec_('raw', ['config', '--add', 'remote.origin.fetch', prFetchRef]).split('\n');
     }
 
-    return this.repo_.fetch(args);
+    return this.repo_.fetch(['--tags', ...args]);
   }
 
   /**
@@ -132,17 +141,23 @@ class GitRepo {
    * @param {string=} branch
    * @return {!Promise<?number>}
    */
-  async getPullRequestNumber(branch) {
+  async getPullRequestNumber(branch = undefined) {
+    branch = branch || await this.getBranchName();
+
     const allPRs = await this.gitHub_.pullRequests.getAll({
+      per_page: 100,
       owner: 'material-components',
       repo: 'material-components-web',
     });
+
     const filteredPRs = allPRs.data.filter((pr) => pr.head.ref === branch);
+
     console.log('');
     console.log(`filteredPRs for ${branch}:`);
     console.log('');
     console.log(JSON.stringify(filteredPRs, null, 2));
     console.log('');
+
     const pr = filteredPRs[0];
     return pr ? pr.number : null;
   }

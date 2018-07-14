@@ -20,7 +20,7 @@ import td from 'testdouble';
 import {verifyDefaultAdapter, captureHandlers} from '../helpers/foundation';
 import {createMockRaf} from '../helpers/raf';
 import {setupFoundationTest} from '../helpers/setup';
-import MDCChipFoundation from '../../../packages/mdc-chips/chip/foundation';
+import {MDCChipFoundation} from '../../../packages/mdc-chips/chip/foundation';
 
 const {cssClasses} = MDCChipFoundation;
 
@@ -97,6 +97,12 @@ test('#setSelected removes mdc-chip--selected class if false', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setSelected(false);
   td.verify(mockAdapter.removeClass(cssClasses.SELECTED));
+});
+
+test(`#beginExit adds ${cssClasses.CHIP_EXIT} class`, () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.beginExit();
+  td.verify(mockAdapter.addClass(cssClasses.CHIP_EXIT));
 });
 
 test('on click, emit custom event', () => {
@@ -234,6 +240,40 @@ test('on click in trailing icon, emit custom event', () => {
   handlers.click(mockEvt);
 
   td.verify(mockAdapter.notifyTrailingIconInteraction());
+  td.verify(mockEvt.stopPropagation());
+});
+
+test(`on click in trailing icon, add ${cssClasses.CHIP_EXIT} class by default`, () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerTrailingIconInteractionHandler');
+  const mockEvt = {
+    type: 'click',
+    stopPropagation: td.func('stopPropagation'),
+  };
+
+  foundation.init();
+  handlers.click(mockEvt);
+
+  assert.isTrue(foundation.getShouldRemoveOnTrailingIconClick());
   td.verify(mockAdapter.addClass(cssClasses.CHIP_EXIT));
   td.verify(mockEvt.stopPropagation());
 });
+
+test(`on click in trailing icon, do not add ${cssClasses.CHIP_EXIT} class if shouldRemoveOnTrailingIconClick_ is false`,
+  () => {
+    const {foundation, mockAdapter} = setupTest();
+    const handlers = captureHandlers(mockAdapter, 'registerTrailingIconInteractionHandler');
+    const mockEvt = {
+      type: 'click',
+      stopPropagation: td.func('stopPropagation'),
+    };
+
+    foundation.init();
+    foundation.setShouldRemoveOnTrailingIconClick(false);
+    handlers.click(mockEvt);
+
+    assert.isFalse(foundation.getShouldRemoveOnTrailingIconClick());
+    td.verify(mockAdapter.addClass(cssClasses.CHIP_EXIT), {times: 0});
+    td.verify(mockEvt.stopPropagation());
+  }
+);
