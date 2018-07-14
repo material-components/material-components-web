@@ -389,14 +389,11 @@ class ReportBuilder {
     /** @type {!mdc.proto.GitRevision} */
     const goldenGitRevision = goldenDiffBase.git_revision;
 
-    console.log('');
-    console.log('goldenGitRevision:', goldenGitRevision);
-    console.log('');
-
     if (goldenGitRevision && goldenGitRevision.type === GitRevision.Type.TRAVIS_PR) {
       /** @type {!Array<!github.proto.PullRequestFile>} */
       const allPrFiles = await this.gitRepo_.getPullRequestFiles(goldenGitRevision.pr_number);
 
+      console.log('');
       console.log('allPrFiles:', allPrFiles);
       console.log('');
 
@@ -406,9 +403,7 @@ class ReportBuilder {
           const isDemosFile = () => prFile.filename.startsWith('demos/');
           const isDocsFile = () => prFile.filename.startsWith('docs/');
           const isUnitTestFile = () => prFile.filename.startsWith('test/unit/');
-          const isTemporarilyIgnored = () => prFile.filename.endsWith('.js') || prFile.filename.endsWith('.proto');
-          const isIgnoredFile = isMarkdownFile() || isDemosFile() || isDocsFile() || isUnitTestFile() ||
-            isTemporarilyIgnored();
+          const isIgnoredFile = isMarkdownFile() || isDemosFile() || isDocsFile() || isUnitTestFile();
           return !isIgnoredFile;
         })
         .map((prFile) => prFile.filename)
