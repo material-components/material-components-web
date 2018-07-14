@@ -29,9 +29,6 @@ matrix:
     env:
     - TEST_SUITE=screenshot
     script: npm run screenshot:test
-env:
-  # Make sure gcloud command is on our PATH
-  - PATH=$PATH:${HOME}/google-cloud-sdk/bin CLOUDSDK_CORE_DISABLE_PROMPTS=1
 before_install:
   - if [ "$TEST_SUITE" == 'screenshot' ]; then
        if [ ! -d ${HOME}/google-cloud-sdk ]; then
@@ -39,10 +36,14 @@ before_install:
          chmod +x /tmp/gcp-sdk.bash;
          /tmp/gcp-sdk.bash --disable-prompts;
        fi;
+       export PATH=$PATH:${HOME}/google-cloud-sdk/bin;
+       export CLOUDSDK_CORE_DISABLE_PROMPTS=1;
        openssl aes-256-cbc -K $encrypted_2fd1810d2cb7_key -iv $encrypted_2fd1810d2cb7_iv -in travis-gcs.tar.gz.enc -out travis-gcs.tar.gz -d;
        tar -xzf travis-gcs.tar.gz;
-       ${HOME}/google-cloud-sdk/bin/gcloud -q auth activate-service-account --key-file travis-gcs.json;
-       ${HOME}/google-cloud-sdk/bin/gcloud -q config set project material-components-web;
-       ${HOME}/google-cloud-sdk/bin/gcloud -q components install gsutil;
-       ${HOME}/google-cloud-sdk/bin/gcloud -q components update gsutil;
+       gcloud -q auth activate-service-account --key-file travis-gcs.json;
+       gcloud -q config set project material-components-web;
+       gcloud -q components install gsutil;
+       curl -o /tmp/gsutil.tar.gz https://storage.googleapis.com/pub/gsutil.tar.gz;
+       tar xfz /tmp/gsutil.tar.gz -C $HOME
+       export PATH=${PATH}:$HOME/gsutil
     fi
