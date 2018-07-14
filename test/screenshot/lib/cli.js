@@ -288,7 +288,7 @@ This option is capped by A) our CBT account allowance, and B) the number of avai
     });
 
     this.addArg_(subparser, {
-      optionNames: ['--max-retries'],
+      optionNames: ['--retries'],
       type: 'integer',
       defaultValue: 3,
       description: `
@@ -336,8 +336,8 @@ that you know are going to have diffs.
   }
 
   /** @return {number} */
-  get maxRetries() {
-    return this.args_['--max-retries'];
+  get retries() {
+    return this.args_['--retries'];
   }
 
   /** @return {boolean} */

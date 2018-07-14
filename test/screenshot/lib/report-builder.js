@@ -647,7 +647,7 @@ class ReportBuilder {
           actual_html_file: actualHtmlFile,
           expected_image_file: expectedImageFile,
           retry_count: 0,
-          max_retries: this.cli_.maxRetries,
+          max_retries: this.cli_.retries,
         }));
       }
     }
