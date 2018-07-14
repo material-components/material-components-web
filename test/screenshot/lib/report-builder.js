@@ -389,9 +389,17 @@ class ReportBuilder {
     /** @type {!mdc.proto.GitRevision} */
     const goldenGitRevision = goldenDiffBase.git_revision;
 
+    console.log('');
+    console.log('goldenGitRevision:', goldenGitRevision);
+    console.log('');
+
     if (goldenGitRevision && goldenGitRevision.type === GitRevision.TRAVIS_PR) {
       /** @type {!Array<!github.proto.PullRequestFile>} */
       const allPrFiles = await this.gitRepo_.getPullRequestFiles(goldenGitRevision.pr_number);
+
+      console.log('allPrFiles:', allPrFiles);
+      console.log('');
+
       goldenGitRevision.pr_file_paths = allPrFiles
         .filter((prFile) => {
           const isMarkdownFile = () => prFile.filename.endsWith('.md');
@@ -405,6 +413,9 @@ class ReportBuilder {
         })
         .map((prFile) => prFile.filename)
       ;
+
+      console.log('goldenGitRevision.pr_file_paths:', goldenGitRevision.pr_file_paths);
+      console.log('');
     }
 
     return ReportMeta.create({
