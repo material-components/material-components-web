@@ -18,5 +18,9 @@ if [ "$TEST_SUITE" == 'screenshot' ]; then
   gcloud config set project material-components-web
   gcloud components install gsutil
 
-  pip install gsutil
+  which gsutil 2>&1 > /dev/null
+  if [ $? != 0 ]; then
+    pip install --upgrade pip
+    pip install gsutil
+  fi
 fi
