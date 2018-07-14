@@ -30,4 +30,6 @@ matrix:
     - TEST_SUITE=screenshot
     script: npm run screenshot:test
 before_install:
-  - test/screenshot/commands/travis.sh
+  # Source the script to run it in the same shell process (avoid creating a child subshell process)
+  # https://superuser.com/a/176788/62792
+  - source test/screenshot/commands/travis.sh
