@@ -429,7 +429,7 @@ class SeleniumApi {
    * @private
    */
   async capturePageAsPng_({driver, userAgent, url, delayMs = 0}) {
-    console.log(`GET "${url}" > ${userAgent.alias}...`);
+    console.log(`GET ${url} > ${userAgent.alias}...`);
 
     await driver.get(url);
     await driver.executeScript('window.mdc.testFixture.attachFontObserver();');
