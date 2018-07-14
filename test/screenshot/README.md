@@ -11,7 +11,6 @@ Add the following to your `~/.bash_profile` or `~/.bashrc` file:
 ```bash
 export MDC_CBT_USERNAME='you@example.com'
 export MDC_CBT_AUTHKEY='example'
-export MDC_GCS_CREDENTIALS=$(< path/to/gcp-credentials.json)
 ```
 
 Credentials can be found here:

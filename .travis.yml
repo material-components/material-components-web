@@ -1,31 +1,54 @@
 language: node_js
 branches:
   only:
-    - master
+  - master
 matrix:
   include:
-    - node_js: 8
-      env:
-        - TEST_SUITE=build
-      script: npm run build
-    - node_js: 8
-      env:
-        - TEST_SUITE=lint
-      script: npm run lint
-    - node_js: 8
-      env:
-        - TEST_SUITE=unit
-      addons:
-        sauce_connect: true
-      script: npm run test:unit && npm run posttest
-      after_success:
-        - codecov
-    - node_js: 8
-      env:
-        - TEST_SUITE=closure
-        - CLOSURE=1
-      script: npm run test:closure
-    - node_js: 8
-      env:
-        - TEST_SUITE=site-generator
-      script: npm run test:site
+  - node_js: 8
+    env:
+    - TEST_SUITE=build
+    script: npm run build
+  - node_js: 8
+    env:
+    - TEST_SUITE=lint
+    script: npm run lint
+  - node_js: 8
+    env:
+    - TEST_SUITE=unit
+    addons:
+      sauce_connect: true
+    script: npm run test:unit && npm run posttest
+    after_success:
+    - codecov
+  - node_js: 8
+    env:
+    - TEST_SUITE=closure
+    - CLOSURE=1
+    script: npm run test:closure
+  - node_js: 8
+    env:
+    - TEST_SUITE=site-generator
+    script: npm run test:site
+  - node_js: 8
+    env:
+    - TEST_SUITE=screenshot-test
+    script: npm run screenshot:test
+env:
+  # Make sure gcloud command is on our PATH
+  - PATH=$PATH:${HOME}/google-cloud-sdk/bin CLOUDSDK_CORE_DISABLE_PROMPTS=1
+before_install:
+  # Decrypt the credentials we added to the repo using the key we added with the Travis command line tool
+  - openssl aes-256-cbc -K $encrypted_2fd1810d2cb7_key -iv $encrypted_2fd1810d2cb7_iv -in travis-gcs.tar.gz.enc -out travis-gcs.tar.gz -d
+  # If the SDK is not already cached, download it and unpack it
+  - if [ ! -d ${HOME}/google-cloud-sdk ]; then
+       curl https://sdk.cloud.google.com | bash;
+    fi
+  - tar -xzf travis-gcs.tar.gz
+  # Here we use the decrypted service account credentials to authenticate the command line tool
+  - gcloud auth activate-service-account --key-file travis-gcs.json
+install:
+  # Set the correct project to deploy to and install CLI utilities
+  - gcloud config set project material-components-web
+  - gcloud components install gsutil
+  - gcloud components update gsutil
+  # gcloud -q components ...
