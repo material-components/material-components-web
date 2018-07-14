@@ -45,12 +45,23 @@ class ImageDiffer {
   /**
    * @param {!mdc.proto.ReportMeta} meta
    * @param {!mdc.proto.TestFile} actualImageFile
-   * @param {!mdc.proto.TestFile} expectedImageFile
+   * @param {?mdc.proto.TestFile} expectedImageFile
    * @return {!Promise<!mdc.proto.DiffImageResult>}
    * @private
    */
   async compareOneImage_({meta, actualImageFile, expectedImageFile}) {
     const actualImageBuffer = await fs.readFile(actualImageFile.absolute_path);
+
+    if (!expectedImageFile) {
+      const actualJimpImage = await Jimp.read(actualImageBuffer);
+      return DiffImageResult.create({
+        actual_image_dimensions: Dimensions.create({
+          width: actualJimpImage.bitmap.width,
+          height: actualJimpImage.bitmap.height,
+        }),
+      });
+    }
+
     const expectedImageBuffer = await fs.readFile(expectedImageFile.absolute_path);
 
     /** @type {!ResembleApiComparisonResult} */
