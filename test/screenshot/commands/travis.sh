@@ -17,4 +17,6 @@ if [ "$TEST_SUITE" == 'screenshot' ]; then
   gcloud auth activate-service-account --key-file /tmp/travis-gcs.json
   gcloud config set project material-components-web
   gcloud components install gsutil
+
+  pip install gsutil
 fi
