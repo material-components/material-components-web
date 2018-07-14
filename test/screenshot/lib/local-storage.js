@@ -103,10 +103,11 @@ class LocalStorage {
 
   /**
    * @param {string} filePath
-   * @return {!Promise<string>}
+   * @param {string=} encoding
+   * @return {!Promise<!Buffer>}
    */
-  async readBinaryFile(filePath) {
-    return fs.readFile(filePath, {encoding: null});
+  async readBinaryFile(filePath, encoding = null) {
+    return fs.readFile(filePath, {encoding});
   }
 
   /**

@@ -23,6 +23,8 @@ const request = require('request-promise-native');
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
 const {TestFile} = mdcProto;
 
+const LocalStorage = require('./local-storage');
+
 /**
  * Downloads binary files from public URLs and saves them to a stable path in the TEMP directory for later retrieval.
  */
@@ -33,6 +35,12 @@ class FileCache {
      * @private
      */
     this.tempDirPath_ = path.join(os.tmpdir(), 'mdc-web/url-cache');
+
+    /**
+     * @type {@LocalStorage}
+     * @private
+     */
+    this.localStorage_ = new LocalStorage();
   }
 
   /**
@@ -78,6 +86,17 @@ class FileCache {
       relative_path: fakeRelativePath,
       public_url: uri,
     });
+  }
+
+  /**
+   * @param {string} uri Public URI or local file path.
+   * @param {?string=} encoding 'utf8' for text, or `null` for binary data.
+   * @return {!Promise<!Buffer>} Buffer containing the contents of the file pointed to by `uri`.
+   */
+  async downloadFileToBuffer(uri, encoding = null) {
+    /** @type {!mdc.proto.TestFile} */
+    const file = await this.downloadUrlToDisk(uri, encoding);
+    return this.localStorage_.readBinaryFile(file.absolute_path, encoding);
   }
 
   /**
