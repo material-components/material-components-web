@@ -14,9 +14,11 @@ if [ "$TEST_SUITE" == 'screenshot' ]; then
     -in travis-gcs.tar.gz.enc -out travis-gcs.tar.gz -d
   tar -xzf travis-gcs.tar.gz
 
-  gcloud -q auth activate-service-account --key-file travis-gcs.json
-  gcloud -q config set project material-components-web
-  gcloud -q components install gsutil
+  gcloud auth activate-service-account --key-file travis-gcs.json
+  gcloud config set project material-components-web
+
+  # TODO(acdvorak): Figure out why this doesn't work
+  #gcloud components install gsutil
 
   curl -o /tmp/gsutil.tar.gz https://storage.googleapis.com/pub/gsutil.tar.gz
   tar -xfz /tmp/gsutil.tar.gz -C $HOME
