@@ -18,15 +18,26 @@
 
 const BuildCommand = require('./build');
 const Controller = require('../lib/controller');
+const {ExitCode} = require('../lib/constants');
 
 module.exports = {
   async runAsync() {
     await BuildCommand.runAsync();
     const controller = new Controller();
+    /** @type {!mdc.proto.ReportData} */
     const reportData = await controller.initForCapture();
     await controller.uploadAllAssets(reportData);
     await controller.captureAllPages(reportData);
     await controller.compareAllScreenshots(reportData);
     await controller.generateReportPage(reportData);
+
+    const numChanges =
+      reportData.screenshots.changed_screenshot_list.length +
+      reportData.screenshots.added_screenshot_list.length +
+      reportData.screenshots.removed_screenshot_list.length;
+    if (numChanges > 0) {
+      console.error(`\n${numChanges} screenshots changed!`);
+      return ExitCode.CHANGES_FOUND;
+    }
   },
 };

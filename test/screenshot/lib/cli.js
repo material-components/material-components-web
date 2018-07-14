@@ -274,6 +274,30 @@ Passing this option more than once is equivalent to passing a single comma-separ
 E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mobile'.
 `,
     });
+
+    this.addArg_(subparser, {
+      optionNames: ['--max-parallels'],
+      type: 'boolean',
+      description: `
+If this option is present, CBT tests will run the maximum number of parallel browser VMs allowed by our plan.
+The default behavior is to start 3 browsers if nobody else is running tests, or 1 browser if other tests are running.
+IMPORTANT: To ensure that other developers can run their tests too, only use this option during off-peak hours when you
+know nobody else is going to be running tests.
+This option is capped by A) our CBT account allowance, and B) the number of available VMs.
+`,
+    });
+
+    this.addArg_(subparser, {
+      optionNames: ['--retries'],
+      type: 'integer',
+      defaultValue: 3,
+      description: `
+Number of times to retry a screenshot that comes back with diffs. If you're not expecting any diffs, automatically
+retrying screenshots can help decrease noise from flaky browser rendering. However, if you're making a change that
+intentionally affects the rendered output, there's no point slowing down the test by retrying a bunch of screenshots
+that you know are going to have diffs.
+`,
+    });
   }
 
   /** @return {string} */
@@ -304,6 +328,16 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
   /** @return {string} */
   get diffBase() {
     return this.args_['--diff-base'];
+  }
+
+  /** @return {boolean} */
+  get maxParallels() {
+    return this.args_['--max-parallels'];
+  }
+
+  /** @return {number} */
+  get retries() {
+    return this.args_['--retries'];
   }
 
   /** @return {boolean} */
@@ -437,6 +471,7 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
   }
 
   /**
+   * TODO(acdvorak): Move this method out of Cli class - it doesn't belong here.
    * @param {string} rawDiffBase
    * @return {!Promise<!mdc.proto.DiffBase>}
    */
@@ -452,8 +487,7 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
     // E.g.: `--diff-base=/tmp/golden.json`
     const isLocalFile = await fs.exists(rawDiffBase);
     if (isLocalFile) {
-      const fileDB = this.createLocalFileDiffBase_(rawDiffBase);
-      return this.createLocalBranchDiffBase_(await this.gitRepo_.getBranchName(), fileDB.local_file_path);
+      return this.createLocalFileDiffBase_(rawDiffBase);
     }
 
     const [inputGoldenRef, inputGoldenPath] = rawDiffBase.split(':');
@@ -508,6 +542,7 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
       input_string: localFilePath,
       type: DiffBase.Type.FILE_PATH,
       local_file_path: localFilePath,
+      is_default_local_file: localFilePath === GOLDEN_JSON_RELATIVE_PATH,
     });
   }
 

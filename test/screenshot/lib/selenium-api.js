@@ -16,24 +16,29 @@
 
 'use strict';
 
+const Jimp = require('jimp');
+const UserAgentParser = require('useragent');
 const fs = require('mz/fs');
 const mkdirp = require('mkdirp');
 const path = require('path');
-const UserAgentParser = require('useragent');
 
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
 const seleniumProto = require('../proto/selenium.pb').selenium.proto;
 
-const {TestFile, UserAgent} = mdcProto;
+const {Screenshot, TestFile, UserAgent} = mdcProto;
+const {CaptureState} = Screenshot;
 const {BrowserVendorType, FormFactorType, Navigator} = UserAgent;
 const {RawCapabilities} = seleniumProto;
 
 const CbtApi = require('./cbt-api');
 const Cli = require('./cli');
+const Constants = require('./constants');
 const Duration = require('./duration');
 const ImageCropper = require('./image-cropper');
+const ImageDiffer = require('./image-differ');
 const {Browser, Builder, By, until} = require('selenium-webdriver');
-const {CBT_CONCURRENCY_POLL_INTERVAL_MS, CBT_CONCURRENCY_MAX_WAIT_MS} = require('./constants');
+const {CBT_CONCURRENCY_POLL_INTERVAL_MS, CBT_CONCURRENCY_MAX_WAIT_MS} = Constants;
+const {SELENIUM_FONT_LOAD_WAIT_MS} = Constants;
 
 class SeleniumApi {
   constructor() {
@@ -54,6 +59,12 @@ class SeleniumApi {
      * @private
      */
     this.imageCropper_ = new ImageCropper();
+
+    /**
+     * @type {!ImageDiffer}
+     * @private
+     */
+    this.imageDiffer_ = new ImageDiffer();
   }
 
   /**
@@ -80,7 +91,7 @@ class SeleniumApi {
       const queuedUserAgentLoggable = getLoggableAliases(queuedUserAgentAliases);
       console.log('Running user agents:', runningUserAgentLoggable);
       console.log('Queued user agents:', queuedUserAgentLoggable);
-      await this.captureAllPagesInBrowsers_({reportData, userAgents: runningUserAgents});
+      await this.captureAllPagesInAllBrowsers_({reportData, userAgents: runningUserAgents});
     }
 
     return reportData;
@@ -92,10 +103,10 @@ class SeleniumApi {
    * @return {!Promise<void>}
    * @private
    */
-  async captureAllPagesInBrowsers_({reportData, userAgents}) {
+  async captureAllPagesInAllBrowsers_({reportData, userAgents}) {
     const promises = [];
     for (const userAgent of userAgents) {
-      promises.push(this.captureAllPagesInBrowser_({reportData, userAgent}));
+      promises.push(this.captureAllPagesInOneBrowser_({reportData, userAgent}));
     }
     await Promise.all(promises);
   }
@@ -106,7 +117,7 @@ class SeleniumApi {
    * @return {!Promise<void>}
    * @private
    */
-  async captureAllPagesInBrowser_({reportData, userAgent}) {
+  async captureAllPagesInOneBrowser_({reportData, userAgent}) {
     /** @type {!IWebDriver} */
     const driver = await this.createWebDriver_({reportData, userAgent});
 
@@ -156,6 +167,10 @@ class SeleniumApi {
         );
         await this.sleep_(waitTimeMs);
         continue;
+      }
+
+      if (this.cli_.maxParallels) {
+        return max - active;
       }
 
       // If nobody else is running any tests, run half the number of concurrent tests allowed by our CBT account.
@@ -301,19 +316,13 @@ class SeleniumApi {
    * @private
    */
   async driveBrowser_({reportData, userAgent, driver}) {
-    // await driver.get('http://www.google.com/ncr');
-    // await driver.findElement(By.name('q')).sendKeys('webdriver');
-    // await driver.findElement(By.name('btnK')).click();
-    // await driver.wait(until.titleIs('webdriver - Google Search'), 1000);
-    // await driver.sleep(1000 * 10);
-
-    // TODO(acdvorak): Set this value dynamically
-    // TODO(acdvorak): This blows up on mobile browsers
-    // NOTE(acdvorak): Setting smaller window dimensions appears to speed up the tests significantly.
     if (userAgent.form_factor_type === FormFactorType.DESKTOP) {
-      // TODO(acdvorak): Better `catch()` handler
       /** @type {!Window} */
       const window = driver.manage().window();
+
+      // Resize the browser window to roughly match a mobile browser.
+      // This reduces the byte size of the screenshot image, which speeds up the test significantly.
+      // TODO(acdvorak): Set this value dynamically
       await window.setRect({x: 0, y: 0, width: 400, height: 800}).catch(() => undefined);
     }
 
@@ -323,63 +332,127 @@ class SeleniumApi {
     const screenshotQueue = reportData.screenshots.runnable_screenshot_browser_map[userAgent.alias].screenshots;
 
     for (const screenshot of screenshotQueue) {
-      const htmlFilePath = screenshot.html_file_path;
-      const htmlFileUrl = screenshot.actual_html_file.public_url;
+      screenshot.capture_state = CaptureState.RUNNING;
 
-      const imageBuffer = await this.capturePageAsPng_({driver, userAgent, url: htmlFileUrl});
+      const diffImageResult = await this.takeScreenshotWithRetries_({driver, userAgent, screenshot, meta});
 
-      const imageFileNameSuffix = userAgent.image_filename_suffix;
-      const imageFilePathRelative = `${htmlFilePath}.${imageFileNameSuffix}.png`;
-      const imageFilePathAbsolute = path.resolve(meta.local_screenshot_image_base_dir, imageFilePathRelative);
+      screenshot.capture_state = CaptureState.DIFFED;
+      screenshot.diff_image_result = diffImageResult;
+      screenshot.diff_image_file = diffImageResult.diff_image_file;
 
-      mkdirp.sync(path.dirname(imageFilePathAbsolute));
-      await fs.writeFile(imageFilePathAbsolute, imageBuffer, {encoding: null});
-
-      screenshot.actual_image_file = TestFile.create({
-        relative_path: imageFilePathRelative,
-        absolute_path: imageFilePathAbsolute,
-        public_url: meta.remote_upload_base_url + meta.remote_upload_base_dir + imageFilePathRelative,
-      });
+      if (diffImageResult.has_changed) {
+        reportData.screenshots.changed_screenshot_list.push(screenshot);
+      } else {
+        reportData.screenshots.unchanged_screenshot_list.push(screenshot);
+      }
     }
   }
 
   /**
    * @param {!IWebDriver} driver
    * @param {!mdc.proto.UserAgent} userAgent
+   * @param {!mdc.proto.Screenshot} screenshot
+   * @param {!mdc.proto.ReportMeta} meta
+   * @return {!Promise<!mdc.proto.DiffImageResult>}
+   * @private
+   */
+  async takeScreenshotWithRetries_({driver, userAgent, screenshot, meta}) {
+    const htmlFilePath = screenshot.html_file_path;
+    let delayMs = 0;
+
+    /** @type {?mdc.proto.DiffImageResult} */
+    let diffImageResult = null;
+
+    /** @type {?number} */
+    let changedPixelCount = null;
+
+    while (screenshot.retry_count <= screenshot.max_retries) {
+      if (screenshot.retry_count > 0) {
+        const {width, height} = diffImageResult.diff_image_dimensions;
+        const retryMsg = `Retrying ${htmlFilePath} > ${userAgent.alias}`;
+        const countMsg = `attempt ${screenshot.retry_count} of ${screenshot.max_retries}`;
+        const pixelMsg = `${changedPixelCount.toLocaleString()} pixels differed`;
+        const deltaMsg = `${diffImageResult.changed_pixel_percentage}% of ${width}x${height}`;
+        console.warn(`${retryMsg} (${countMsg}). ${pixelMsg} (${deltaMsg})`);
+        delayMs = 1000;
+      }
+
+      screenshot.actual_image_file = await this.takeScreenshotWithoutRetries_({
+        meta, screenshot, userAgent, driver, delayMs,
+      });
+      diffImageResult = await this.imageDiffer_.compareOneScreenshot({meta, screenshot});
+
+      if (!diffImageResult.has_changed) {
+        break;
+      }
+
+      changedPixelCount = diffImageResult.changed_pixel_count;
+      screenshot.retry_count++;
+    }
+
+    return diffImageResult;
+  }
+
+  /**
+   * @param {!mdc.proto.ReportMeta} meta
+   * @param {!mdc.proto.Screenshot} screenshot
+   * @param {!mdc.proto.UserAgent} userAgent
+   * @param {!IWebDriver} driver
+   * @param {number=} delayMs
+   * @return {!Promise<!mdc.proto.TestFile>}
+   * @private
+   */
+  async takeScreenshotWithoutRetries_({meta, screenshot, userAgent, driver, delayMs = 0}) {
+    const htmlFilePath = screenshot.html_file_path;
+    const htmlFileUrl = screenshot.actual_html_file.public_url;
+    const imageBuffer = await this.capturePageAsPng_({driver, userAgent, url: htmlFileUrl, delayMs});
+    const imageFileNameSuffix = userAgent.image_filename_suffix;
+    const imageFilePathRelative = `${htmlFilePath}.${imageFileNameSuffix}.png`;
+    const imageFilePathAbsolute = path.resolve(meta.local_screenshot_image_base_dir, imageFilePathRelative);
+
+    mkdirp.sync(path.dirname(imageFilePathAbsolute));
+    await fs.writeFile(imageFilePathAbsolute, imageBuffer, {encoding: null});
+
+    return TestFile.create({
+      relative_path: imageFilePathRelative,
+      absolute_path: imageFilePathAbsolute,
+      public_url: meta.remote_upload_base_url + meta.remote_upload_base_dir + imageFilePathRelative,
+    });
+  }
+
+  /**
+   * @param {!IWebDriver} driver
+   * @param {!mdc.proto.UserAgent} userAgent
    * @param {string} url
+   * @param {number=} delayMs
    * @return {!Promise<!Buffer>} Buffer containing PNG image data for the cropped screenshot image
    * @private
    */
-  async capturePageAsPng_({driver, userAgent, url}) {
-    console.log(`GET "${url}" > ${userAgent.alias}...`);
+  async capturePageAsPng_({driver, userAgent, url, delayMs = 0}) {
+    console.log(`GET ${url} > ${userAgent.alias}...`);
 
     await driver.get(url);
-    await driver.executeScript(`
-var timeout;
-var interval;
-var callback = arguments[arguments.length - 1];
+    await driver.executeScript('window.mdc.testFixture.attachFontObserver();');
+    await driver.wait(until.elementLocated(By.css('[data-fonts-loaded]')), SELENIUM_FONT_LOAD_WAIT_MS);
 
-interval = setInterval(function() {
-  if (window.mdc) {
-    window.mdc.testFixture.waitForFontsToLoad(function() { /*callback();*/ });
-    clearInterval(interval);
-    clearTimeout(timeout);
-  }
-}, 100);
+    if (delayMs > 0) {
+      await driver.sleep(delayMs);
+    }
 
-timeout = setTimeout(function() {
-  /*callback();*/
-  clearInterval(interval);
-  clearTimeout(timeout);
-}, 1000);
-`);
-    // TODO(acdvorak): Create a constant for font loading timeout values
-    await driver.wait(until.elementLocated(By.css('[data-fonts-loaded]')), 3000);
+    const uncroppedImageBuffer = Buffer.from(await driver.takeScreenshot(), 'base64');
+    const croppedImageBuffer = await this.imageCropper_.autoCropImage(uncroppedImageBuffer);
 
-    const uncroppedBase64Str = await driver.takeScreenshot();
-    const uncroppedPngBuffer = Buffer.from(uncroppedBase64Str, 'base64');
+    const uncroppedJimpImage = await Jimp.read(uncroppedImageBuffer);
+    const croppedJimpImage = await Jimp.read(croppedImageBuffer);
 
-    return this.imageCropper_.autoCropImage(uncroppedPngBuffer);
+    const {width: uncroppedWidth, height: uncroppedHeight} = uncroppedJimpImage.bitmap;
+    const {width: croppedWidth, height: croppedHeight} = croppedJimpImage.bitmap;
+
+    console.info(`
+Cropped ${url} > ${userAgent.alias} image from ${uncroppedWidth}x${uncroppedHeight} to ${croppedWidth}x${croppedHeight}
+`.trim());
+
+    return croppedImageBuffer;
   }
 
   /**

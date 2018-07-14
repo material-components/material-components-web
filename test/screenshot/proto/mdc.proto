@@ -42,8 +42,8 @@ message ReportMeta {
   string host_os_name = 13;
   string cli_invocation = 14;
 
-  DiffBase expected_diff_base = 15;
-  DiffBase actual_diff_base = 16;
+  DiffBase golden_diff_base = 15;
+  DiffBase snapshot_diff_base = 16;
   GitStatus git_status = 17;
 
   LibraryVersion node_version = 18;
@@ -52,6 +52,7 @@ message ReportMeta {
 
   TestFile report_html_file = 21;
   TestFile report_json_file = 22;
+  TestFile golden_json_file = 23;
 }
 
 message DiffBase {
@@ -70,6 +71,8 @@ message DiffBase {
     string public_url = 4;
     GitRevision git_revision = 5;
   }
+
+  bool is_default_local_file = 6;
 }
 
 message GitRevision {
@@ -232,8 +235,7 @@ message Screenshot {
     QUEUED = 1;
     SKIPPED = 2;
     RUNNING = 3;
-    CAPTURED = 4;
-    DIFFED = 5;
+    DIFFED = 4;
   }
 
   bool is_runnable = 1;
@@ -248,6 +250,9 @@ message Screenshot {
   TestFile actual_image_file = 9;
   TestFile diff_image_file = 10;
   DiffImageResult diff_image_result = 11;
+
+  uint32 retry_count = 12;
+  uint32 max_retries = 13;
 }
 
 message Dimensions {

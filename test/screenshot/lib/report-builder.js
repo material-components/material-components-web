@@ -397,9 +397,9 @@ class ReportBuilder {
       host_os_icon_url: this.getHostOsIconUrl_(hostOsName),
       cli_invocation: this.getCliInvocation_(),
 
-      expected_diff_base: await this.cli_.parseDiffBase(),
-      actual_diff_base: await this.cli_.parseDiffBase('HEAD'),
       git_status: GitStatus.fromObject(await this.gitRepo_.getStatus()),
+      golden_diff_base: await this.cli_.parseDiffBase(),
+      snapshot_diff_base: await this.cli_.parseDiffBase('HEAD'),
 
       node_version: LibraryVersion.create({
         version_string: await this.getExecutableVersion_('node'),
@@ -646,6 +646,8 @@ class ReportBuilder {
           expected_html_file: expectedHtmlFile,
           actual_html_file: actualHtmlFile,
           expected_image_file: expectedImageFile,
+          retry_count: 0,
+          max_retries: this.cli_.retries,
         }));
       }
     }
@@ -721,6 +723,7 @@ class ReportBuilder {
       });
 
       if (!actualScreenshot) {
+        // TODO(acdvorak): Add image dimensions here so they can be displayed on the report page
         removedScreenshots.push(expectedScreenshot);
       }
     }
