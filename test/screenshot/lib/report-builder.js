@@ -399,7 +399,7 @@ class ReportBuilder {
       cli_invocation: this.getCliInvocation_(),
 
       git_status: GitStatus.fromObject(await this.gitRepo_.getStatus()),
-      golden_diff_base: await this.cli_.parseDiffBase(),
+      golden_diff_base: await this.cli_.parseGoldenDiffBase(),
       snapshot_diff_base: await this.cli_.parseDiffBase('HEAD'),
 
       node_version: LibraryVersion.create({

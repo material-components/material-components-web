@@ -423,6 +423,15 @@ class ReportWriter {
     if (diffBase.git_revision) {
       const rev = diffBase.git_revision;
 
+      if (rev.pr) {
+        return new Handlebars.SafeString(`
+<a href="${GITHUB_REPO_URL}/commit/${rev.commit}">${rev.commit}</a>
+on branch
+<a href="${GITHUB_REPO_URL}/tree/${rev.branch}">${rev.branch}</a>
+(PR <a href="${GITHUB_REPO_URL}/pull/${rev.pr}">#${rev.pr}</a>)
+`);
+      }
+
       if (rev.branch) {
         const branchDisplayName = rev.remote ? `${rev.remote}/${rev.branch}` : rev.branch;
         return new Handlebars.SafeString(`
@@ -439,9 +448,16 @@ on tag
 <a href="${GITHUB_REPO_URL}/tree/${rev.tag}">${rev.tag}</a>
 `);
       }
+
+      if (rev.commit) {
+        return new Handlebars.SafeString(`
+<a href="${GITHUB_REPO_URL}/commit/${rev.commit}">${rev.commit}</a>
+`);
+      }
     }
 
-    throw new Error('Unable to generate markup for invalid diff source');
+    const serialized = JSON.stringify({diffBase, meta}, null, 2);
+    throw new Error(`Unable to generate markup for invalid diff source: ${serialized}`);
   }
 
   /**

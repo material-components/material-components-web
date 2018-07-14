@@ -472,6 +472,64 @@ that you know are going to have diffs.
 
   /**
    * TODO(acdvorak): Move this method out of Cli class - it doesn't belong here.
+   * @return {!Promise<!mdc.proto.DiffBase>}
+   */
+  async parseGoldenDiffBase() {
+    /** @type {?mdc.proto.GitRevision} */
+    const travisGitRevision = await this.getTravisGitRevisition_();
+    if (travisGitRevision) {
+      return DiffBase.create({
+        type: DiffBase.Type.GIT_REVISION,
+        git_revision: travisGitRevision,
+      });
+    }
+    return this.parseDiffBase();
+  }
+
+  /**
+   * @return {?Promise<!mdc.proto.GitRevision>}
+   * @private
+   */
+  async getTravisGitRevisition_() {
+    const travisBranch = process.env.TRAVIS_BRANCH;
+    const travisTag = process.env.TRAVIS_TAG;
+    const travisPrNumber = Number(process.env.TRAVIS_PULL_REQUEST);
+    const travisPrBranch = process.env.TRAVIS_PULL_REQUEST_BRANCH;
+    const travisPrSha = process.env.TRAVIS_PULL_REQUEST_SHA;
+
+    if (travisPrNumber) {
+      return GitRevision.create({
+        type: GitRevision.Type.PR,
+        golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
+        commit: await this.gitRepo_.getShortCommitHash(travisPrSha),
+        branch: travisPrBranch,
+        pr: travisPrNumber,
+      });
+    }
+
+    if (travisTag) {
+      return GitRevision.create({
+        type: GitRevision.Type.REMOTE_TAG,
+        golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
+        commit: await this.gitRepo_.getShortCommitHash(travisTag),
+        tag: travisTag,
+      });
+    }
+
+    if (travisBranch) {
+      return GitRevision.create({
+        type: GitRevision.Type.LOCAL_BRANCH,
+        golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
+        commit: await this.gitRepo_.getShortCommitHash(travisBranch),
+        branch: travisBranch,
+      });
+    }
+
+    return null;
+  }
+
+  /**
+   * TODO(acdvorak): Move this method out of Cli class - it doesn't belong here.
    * @param {string} rawDiffBase
    * @return {!Promise<!mdc.proto.DiffBase>}
    */
