@@ -393,7 +393,7 @@ class ReportBuilder {
     console.log('goldenGitRevision:', goldenGitRevision);
     console.log('');
 
-    if (goldenGitRevision && goldenGitRevision.type === GitRevision.TRAVIS_PR) {
+    if (goldenGitRevision && goldenGitRevision.type === GitRevision.Type.TRAVIS_PR) {
       /** @type {!Array<!github.proto.PullRequestFile>} */
       const allPrFiles = await this.gitRepo_.getPullRequestFiles(goldenGitRevision.pr_number);
 
