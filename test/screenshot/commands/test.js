@@ -16,10 +16,12 @@
 
 'use strict';
 
+const mdcProto = require('../proto/mdc.pb').mdc.proto;
+const {GitRevision} = mdcProto;
+
 const BuildCommand = require('./build');
 const Controller = require('../lib/controller');
 const {ExitCode} = require('../lib/constants');
-const {GitRevision} = require('../proto/mdc.pb');
 
 module.exports = {
   async runAsync() {
@@ -28,7 +30,7 @@ module.exports = {
     /** @type {!mdc.proto.ReportData} */
     const reportData = await controller.initForCapture();
 
-    /** @type {!mdc.proto.GitRevision} */
+    /** @type {!mdc.proto.IGitRevision} */
     const goldenGitRevision = reportData.meta.golden_diff_base.git_revision;
     if (goldenGitRevision &&
       goldenGitRevision.type === GitRevision.TRAVIS_PR &&
