@@ -21,7 +21,6 @@ const CloudStorage = require('./cloud-storage');
 const Duration = require('./duration');
 const GitRepo = require('./git-repo');
 const GoldenIo = require('./golden-io');
-const ImageDiffer = require('./image-differ');
 const ReportBuilder = require('./report-builder');
 const ReportWriter = require('./report-writer');
 const SeleniumApi = require('./selenium-api');
@@ -51,12 +50,6 @@ class Controller {
      * @private
      */
     this.goldenIo_ = new GoldenIo();
-
-    /**
-     * @type {!ImageDiffer}
-     * @private
-     */
-    this.imageDiffer_ = new ImageDiffer();
 
     /**
      * @type {!ReportBuilder}
