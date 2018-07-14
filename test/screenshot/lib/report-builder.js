@@ -873,14 +873,6 @@ class ReportBuilder {
     }
     console.log();
   }
-
-  /**
-   * @return {number}
-   * @private
-   */
-  getMaxRetries_() {
-    return this.cli_.maxRetries;
-  }
 }
 
 module.exports = ReportBuilder;
