@@ -478,13 +478,15 @@ that you know are going to have diffs.
     const travisBranch = process.env.TRAVIS_BRANCH;
     const travisTag = process.env.TRAVIS_TAG;
     const travisPrNumber = Number(process.env.TRAVIS_PULL_REQUEST);
+    const travisPrBranch = process.env.TRAVIS_PULL_REQUEST_BRANCH;
     const travisPrSha = process.env.TRAVIS_PULL_REQUEST_SHA;
     if (travisPrNumber) {
       return GitRevision.create({
         type: GitRevision.Type.PR,
         golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
         commit: travisPrSha,
-        branch: travisBranch,
+        branch: travisPrBranch,
+        pr: travisPrNumber,
       });
     }
     if (travisTag) {
