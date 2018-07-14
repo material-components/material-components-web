@@ -37,9 +37,9 @@ before_install:
   - openssl aes-256-cbc -K $encrypted_2fd1810d2cb7_key -iv $encrypted_2fd1810d2cb7_iv -in travis-gcs.tar.gz.enc -out travis-gcs.tar.gz -d
   # If the SDK is not already cached, download it and unpack it
   - if [ ! -d ${HOME}/google-cloud-sdk ]; then
-       curl -o /tmp/gcp-sdk.bash https://sdk.cloud.google.com
-       chmod +x /tmp/gcp-sdk.bash
-       /tmp/gcp-sdk.bash --disable-prompts
+       curl -o /tmp/gcp-sdk.bash https://sdk.cloud.google.com;
+       chmod +x /tmp/gcp-sdk.bash;
+       /tmp/gcp-sdk.bash --disable-prompts;
     fi
   - tar -xzf travis-gcs.tar.gz
   # Here we use the decrypted service account credentials to authenticate the command line tool
