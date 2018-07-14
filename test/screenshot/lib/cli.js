@@ -475,11 +475,28 @@ that you know are going to have diffs.
    * @return {!Promise<!mdc.proto.DiffBase>}
    */
   async parseGoldenDiffBase() {
+    /** @type {?mdc.proto.GitRevision} */
+    const travisGitRevision = await this.getTravisGitRevisition_();
+    if (travisGitRevision) {
+      return DiffBase.create({
+        type: DiffBase.Type.GIT_REVISION,
+        git_revision: travisGitRevision,
+      });
+    }
+    return this.parseDiffBase();
+  }
+
+  /**
+   * @return {?Promise<!mdc.proto.GitRevision>}
+   * @private
+   */
+  async getTravisGitRevisition_() {
     const travisBranch = process.env.TRAVIS_BRANCH;
     const travisTag = process.env.TRAVIS_TAG;
     const travisPrNumber = Number(process.env.TRAVIS_PULL_REQUEST);
     const travisPrBranch = process.env.TRAVIS_PULL_REQUEST_BRANCH;
     const travisPrSha = process.env.TRAVIS_PULL_REQUEST_SHA;
+
     if (travisPrNumber) {
       return GitRevision.create({
         type: GitRevision.Type.PR,
@@ -489,6 +506,7 @@ that you know are going to have diffs.
         pr: travisPrNumber,
       });
     }
+
     if (travisTag) {
       return GitRevision.create({
         type: GitRevision.Type.REMOTE_TAG,
@@ -497,6 +515,7 @@ that you know are going to have diffs.
         tag: travisTag,
       });
     }
+
     if (travisBranch) {
       return GitRevision.create({
         type: GitRevision.Type.LOCAL_BRANCH,
@@ -505,7 +524,8 @@ that you know are going to have diffs.
         branch: travisBranch,
       });
     }
-    return this.parseDiffBase();
+
+    return null;
   }
 
   /**
