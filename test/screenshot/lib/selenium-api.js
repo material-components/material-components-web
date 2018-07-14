@@ -72,17 +72,16 @@ class SeleniumApi {
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async captureAllPages(reportData) {
-    const maxParallelTests = await this.getMaxParallelTests_();
     const runnableUserAgents = reportData.user_agents.runnable_user_agents;
-
-    let runningUserAgents;
     let queuedUserAgents = runnableUserAgents.slice();
+    let runningUserAgents;
 
     function getLoggableAliases(userAgentAliases) {
       return userAgentAliases.length > 0 ? userAgentAliases.join(', ') : '(none)';
     }
 
     while (queuedUserAgents.length > 0) {
+      const maxParallelTests = await this.getMaxParallelTests_();
       runningUserAgents = queuedUserAgents.slice(0, maxParallelTests);
       queuedUserAgents = queuedUserAgents.slice(maxParallelTests);
       const runningUserAgentAliases = runningUserAgents.map((ua) => ua.alias);
