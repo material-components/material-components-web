@@ -16,11 +16,5 @@ if [ "$TEST_SUITE" == 'screenshot' ]; then
 
   gcloud auth activate-service-account --key-file travis-gcs.json
   gcloud config set project material-components-web
-
-  # TODO(acdvorak): Figure out why this doesn't work
-  #gcloud components install gsutil
-
-  curl -o /tmp/gsutil.tar.gz https://storage.googleapis.com/pub/gsutil.tar.gz
-  tar -xfz /tmp/gsutil.tar.gz -C $HOME
-  export PATH=${PATH}:$HOME/gsutil
+  gcloud components install gsutil
 fi
