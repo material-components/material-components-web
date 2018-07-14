@@ -487,8 +487,7 @@ that you know are going to have diffs.
     // E.g.: `--diff-base=/tmp/golden.json`
     const isLocalFile = await fs.exists(rawDiffBase);
     if (isLocalFile) {
-      const fileDB = this.createLocalFileDiffBase_(rawDiffBase);
-      return this.createLocalBranchDiffBase_(await this.gitRepo_.getBranchName(), fileDB.local_file_path);
+      return this.createLocalFileDiffBase_(rawDiffBase);
     }
 
     const [inputGoldenRef, inputGoldenPath] = rawDiffBase.split(':');
@@ -543,6 +542,7 @@ that you know are going to have diffs.
       input_string: localFilePath,
       type: DiffBase.Type.FILE_PATH,
       local_file_path: localFilePath,
+      is_default_local_file: localFilePath === GOLDEN_JSON_RELATIVE_PATH,
     });
   }
 

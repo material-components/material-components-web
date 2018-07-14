@@ -329,6 +329,7 @@ $root.mdc = (function() {
              * @property {mdc.proto.ILibraryVersion|null} [mdc_version] ReportMeta mdc_version
              * @property {mdc.proto.ITestFile|null} [report_html_file] ReportMeta report_html_file
              * @property {mdc.proto.ITestFile|null} [report_json_file] ReportMeta report_json_file
+             * @property {mdc.proto.ITestFile|null} [golden_json_file] ReportMeta golden_json_file
              */
 
             /**
@@ -523,6 +524,14 @@ $root.mdc = (function() {
             ReportMeta.prototype.report_json_file = null;
 
             /**
+             * ReportMeta golden_json_file.
+             * @member {mdc.proto.ITestFile|null|undefined} golden_json_file
+             * @memberof mdc.proto.ReportMeta
+             * @instance
+             */
+            ReportMeta.prototype.golden_json_file = null;
+
+            /**
              * Creates a new ReportMeta instance using the specified properties.
              * @function create
              * @memberof mdc.proto.ReportMeta
@@ -590,6 +599,8 @@ $root.mdc = (function() {
                     $root.mdc.proto.TestFile.encode(message.report_html_file, writer.uint32(/* id 21, wireType 2 =*/170).fork()).ldelim();
                 if (message.report_json_file != null && message.hasOwnProperty("report_json_file"))
                     $root.mdc.proto.TestFile.encode(message.report_json_file, writer.uint32(/* id 22, wireType 2 =*/178).fork()).ldelim();
+                if (message.golden_json_file != null && message.hasOwnProperty("golden_json_file"))
+                    $root.mdc.proto.TestFile.encode(message.golden_json_file, writer.uint32(/* id 23, wireType 2 =*/186).fork()).ldelim();
                 return writer;
             };
 
@@ -689,6 +700,9 @@ $root.mdc = (function() {
                         break;
                     case 22:
                         message.report_json_file = $root.mdc.proto.TestFile.decode(reader, reader.uint32());
+                        break;
+                    case 23:
+                        message.golden_json_file = $root.mdc.proto.TestFile.decode(reader, reader.uint32());
                         break;
                     default:
                         reader.skipType(tag & 7);
@@ -809,6 +823,11 @@ $root.mdc = (function() {
                     if (error)
                         return "report_json_file." + error;
                 }
+                if (message.golden_json_file != null && message.hasOwnProperty("golden_json_file")) {
+                    var error = $root.mdc.proto.TestFile.verify(message.golden_json_file);
+                    if (error)
+                        return "golden_json_file." + error;
+                }
                 return null;
             };
 
@@ -902,6 +921,11 @@ $root.mdc = (function() {
                         throw TypeError(".mdc.proto.ReportMeta.report_json_file: object expected");
                     message.report_json_file = $root.mdc.proto.TestFile.fromObject(object.report_json_file);
                 }
+                if (object.golden_json_file != null) {
+                    if (typeof object.golden_json_file !== "object")
+                        throw TypeError(".mdc.proto.ReportMeta.golden_json_file: object expected");
+                    message.golden_json_file = $root.mdc.proto.TestFile.fromObject(object.golden_json_file);
+                }
                 return message;
             };
 
@@ -945,6 +969,7 @@ $root.mdc = (function() {
                     object.mdc_version = null;
                     object.report_html_file = null;
                     object.report_json_file = null;
+                    object.golden_json_file = null;
                 }
                 if (message.start_time_iso_utc != null && message.hasOwnProperty("start_time_iso_utc"))
                     object.start_time_iso_utc = message.start_time_iso_utc;
@@ -993,6 +1018,8 @@ $root.mdc = (function() {
                     object.report_html_file = $root.mdc.proto.TestFile.toObject(message.report_html_file, options);
                 if (message.report_json_file != null && message.hasOwnProperty("report_json_file"))
                     object.report_json_file = $root.mdc.proto.TestFile.toObject(message.report_json_file, options);
+                if (message.golden_json_file != null && message.hasOwnProperty("golden_json_file"))
+                    object.golden_json_file = $root.mdc.proto.TestFile.toObject(message.golden_json_file, options);
                 return object;
             };
 
@@ -1021,6 +1048,7 @@ $root.mdc = (function() {
              * @property {string|null} [local_file_path] DiffBase local_file_path
              * @property {string|null} [public_url] DiffBase public_url
              * @property {mdc.proto.IGitRevision|null} [git_revision] DiffBase git_revision
+             * @property {boolean|null} [is_default_local_file] DiffBase is_default_local_file
              */
 
             /**
@@ -1078,6 +1106,14 @@ $root.mdc = (function() {
              */
             DiffBase.prototype.git_revision = null;
 
+            /**
+             * DiffBase is_default_local_file.
+             * @member {boolean} is_default_local_file
+             * @memberof mdc.proto.DiffBase
+             * @instance
+             */
+            DiffBase.prototype.is_default_local_file = false;
+
             // OneOf field names bound to virtual getters and setters
             var $oneOfFields;
 
@@ -1126,6 +1162,8 @@ $root.mdc = (function() {
                     writer.uint32(/* id 4, wireType 2 =*/34).string(message.public_url);
                 if (message.git_revision != null && message.hasOwnProperty("git_revision"))
                     $root.mdc.proto.GitRevision.encode(message.git_revision, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
+                if (message.is_default_local_file != null && message.hasOwnProperty("is_default_local_file"))
+                    writer.uint32(/* id 6, wireType 0 =*/48).bool(message.is_default_local_file);
                 return writer;
             };
 
@@ -1174,6 +1212,9 @@ $root.mdc = (function() {
                         break;
                     case 5:
                         message.git_revision = $root.mdc.proto.GitRevision.decode(reader, reader.uint32());
+                        break;
+                    case 6:
+                        message.is_default_local_file = reader.bool();
                         break;
                     default:
                         reader.skipType(tag & 7);
@@ -1246,6 +1287,9 @@ $root.mdc = (function() {
                             return "git_revision." + error;
                     }
                 }
+                if (message.is_default_local_file != null && message.hasOwnProperty("is_default_local_file"))
+                    if (typeof message.is_default_local_file !== "boolean")
+                        return "is_default_local_file: boolean expected";
                 return null;
             };
 
@@ -1290,6 +1334,8 @@ $root.mdc = (function() {
                         throw TypeError(".mdc.proto.DiffBase.git_revision: object expected");
                     message.git_revision = $root.mdc.proto.GitRevision.fromObject(object.git_revision);
                 }
+                if (object.is_default_local_file != null)
+                    message.is_default_local_file = Boolean(object.is_default_local_file);
                 return message;
             };
 
@@ -1309,6 +1355,7 @@ $root.mdc = (function() {
                 if (options.defaults) {
                     object.type = options.enums === String ? "UNKNOWN" : 0;
                     object.input_string = "";
+                    object.is_default_local_file = false;
                 }
                 if (message.type != null && message.hasOwnProperty("type"))
                     object.type = options.enums === String ? $root.mdc.proto.DiffBase.Type[message.type] : message.type;
@@ -1329,6 +1376,8 @@ $root.mdc = (function() {
                     if (options.oneofs)
                         object.value_oneof = "git_revision";
                 }
+                if (message.is_default_local_file != null && message.hasOwnProperty("is_default_local_file"))
+                    object.is_default_local_file = message.is_default_local_file;
                 return object;
             };
 

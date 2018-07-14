@@ -397,9 +397,9 @@ class ReportBuilder {
       host_os_icon_url: this.getHostOsIconUrl_(hostOsName),
       cli_invocation: this.getCliInvocation_(),
 
+      git_status: GitStatus.fromObject(await this.gitRepo_.getStatus()),
       golden_diff_base: await this.cli_.parseDiffBase(),
       snapshot_diff_base: await this.cli_.parseDiffBase('HEAD'),
-      git_status: GitStatus.fromObject(await this.gitRepo_.getStatus()),
 
       node_version: LibraryVersion.create({
         version_string: await this.getExecutableVersion_('node'),

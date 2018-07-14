@@ -52,6 +52,7 @@ message ReportMeta {
 
   TestFile report_html_file = 21;
   TestFile report_json_file = 22;
+  TestFile golden_json_file = 23;
 }
 
 message DiffBase {
@@ -70,6 +71,8 @@ message DiffBase {
     string public_url = 4;
     GitRevision git_revision = 5;
   }
+
+  bool is_default_local_file = 6;
 }
 
 message GitRevision {

@@ -60,28 +60,34 @@ class ReportWriter {
     const templateFileRelativePath = 'report/report.hbs';
     const htmlFileRelativePath = 'report/report.html';
     const jsonFileRelativePath = 'report/report.json';
+    const goldenFileRelativePath = 'golden.json';
 
     const templateFileAbsolutePath = path.join(meta.local_asset_base_dir, templateFileRelativePath);
     const htmlFileAbsolutePath = path.join(meta.local_report_base_dir, htmlFileRelativePath);
     const jsonFileAbsolutePath = path.join(meta.local_report_base_dir, jsonFileRelativePath);
-
-    const htmlFileUrl = this.getPublicUrl_(htmlFileRelativePath, meta);
-    const jsonFileUrl = this.getPublicUrl_(jsonFileRelativePath, meta);
+    const goldenFileAbsolutePath = path.join(meta.local_asset_base_dir, goldenFileRelativePath);
 
     const reportHtmlFile = TestFile.create({
       relative_path: htmlFileRelativePath,
       absolute_path: htmlFileAbsolutePath,
-      public_url: htmlFileUrl,
+      public_url: this.getPublicUrl_(htmlFileRelativePath, meta),
     });
 
     const reportJsonFile = TestFile.create({
       relative_path: jsonFileRelativePath,
       absolute_path: jsonFileAbsolutePath,
-      public_url: jsonFileUrl,
+      public_url: this.getPublicUrl_(jsonFileRelativePath, meta),
+    });
+
+    const goldenJsonFile = TestFile.create({
+      relative_path: goldenFileRelativePath,
+      absolute_path: goldenFileAbsolutePath,
+      public_url: this.getPublicUrl_(goldenFileRelativePath, meta),
     });
 
     meta.report_html_file = reportHtmlFile;
     meta.report_json_file = reportJsonFile;
+    meta.golden_json_file = goldenJsonFile;
 
     const jsonFileContent = this.stringify_(slimReportData);
     await this.localStorage_.writeTextFile(jsonFileAbsolutePath, jsonFileContent);
@@ -113,8 +119,8 @@ class ReportWriter {
       getHtmlFileLinks: function() {
         return self.getHtmlFileLinks_(this);
       },
-      getDiffBaseMarkup: function(diffBase) {
-        return self.getDiffBaseMarkup_(diffBase);
+      getDiffBaseMarkup: function(diffBase, meta) {
+        return self.getDiffBaseMarkup_(diffBase, meta);
       },
       getLocalChangesMarkup: function(gitStatus) {
         return self.getLocalChangesMarkup_(gitStatus);
@@ -397,16 +403,21 @@ class ReportWriter {
 
   /**
    * @param {!mdc.proto.DiffBase} diffBase
+   * @param {!mdc.proto.ReportMeta} meta
    * @return {!SafeString}
    * @private
    */
-  getDiffBaseMarkup_(diffBase) {
+  getDiffBaseMarkup_(diffBase, meta) {
     if (diffBase.public_url) {
       return new Handlebars.SafeString(`<a href="${diffBase.public_url}">${diffBase.public_url}</a>`);
     }
 
     if (diffBase.local_file_path) {
-      return new Handlebars.SafeString(`${diffBase.local_file_path} (local file)`);
+      const localFilePathMarkup = diffBase.is_default_local_file
+        ? `<a href="${meta.golden_json_file.public_url}">${diffBase.local_file_path}</a>`
+        : diffBase.local_file_path
+      ;
+      return new Handlebars.SafeString(`${localFilePathMarkup} (local file)`);
     }
 
     if (diffBase.git_revision) {

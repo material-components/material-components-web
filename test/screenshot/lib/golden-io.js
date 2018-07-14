@@ -96,7 +96,10 @@ class GoldenIo {
       return this.gitRepo_.getFileAtRevision(rev.golden_json_file_path, rev.commit);
     }
 
-    throw new Error(`Unable to parse '--diff-base=${rawDiffBase}': Expected a URL, local file path, or git ref`);
+    const serialized = JSON.stringify(parsedDiffBase);
+    throw new Error(
+      `Unable to parse '--diff-base=${rawDiffBase}': Expected a URL, local file path, or git ref. ${serialized}`
+    );
   }
 
   /**
