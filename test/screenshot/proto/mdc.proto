@@ -82,7 +82,7 @@ message GitRevision {
     LOCAL_BRANCH = 2;
     REMOTE_BRANCH = 3;
     REMOTE_TAG = 4;
-    PR = 5;
+    TRAVIS_PR = 5;
   }
 
   Type type = 1;

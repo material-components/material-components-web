@@ -1693,7 +1693,7 @@ $root.mdc = (function() {
                 case 4:
                     message.type = 4;
                     break;
-                case "PR":
+                case "TRAVIS_PR":
                 case 5:
                     message.type = 5;
                     break;
@@ -1772,7 +1772,7 @@ $root.mdc = (function() {
              * @property {number} LOCAL_BRANCH=2 LOCAL_BRANCH value
              * @property {number} REMOTE_BRANCH=3 REMOTE_BRANCH value
              * @property {number} REMOTE_TAG=4 REMOTE_TAG value
-             * @property {number} PR=5 PR value
+             * @property {number} TRAVIS_PR=5 TRAVIS_PR value
              */
             GitRevision.Type = (function() {
                 var valuesById = {}, values = Object.create(valuesById);
@@ -1781,7 +1781,7 @@ $root.mdc = (function() {
                 values[valuesById[2] = "LOCAL_BRANCH"] = 2;
                 values[valuesById[3] = "REMOTE_BRANCH"] = 3;
                 values[valuesById[4] = "REMOTE_TAG"] = 4;
-                values[valuesById[5] = "PR"] = 5;
+                values[valuesById[5] = "TRAVIS_PR"] = 5;
                 return values;
             })();
 
