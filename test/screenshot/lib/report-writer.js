@@ -425,7 +425,10 @@ class ReportWriter {
 
       if (rev.pr) {
         return new Handlebars.SafeString(`
-PR <a href="${GITHUB_REPO_URL}/pull/${rev.pr}">#${rev.pr}</a>
+<a href="${GITHUB_REPO_URL}/commit/${rev.commit}">${rev.commit}</a>
+on branch
+<a href="${GITHUB_REPO_URL}/tree/${rev.branch}">${rev.branch}</a>
+(PR <a href="${GITHUB_REPO_URL}/pull/${rev.pr}">#${rev.pr}</a>)
 `);
       }
 
