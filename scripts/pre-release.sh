@@ -58,6 +58,6 @@ log "Moving built assets to package directories..."
 node scripts/cp-pkgs.js
 echo ""
 
-log "Pre-release steps done! Next, you should run:" \
-    "\$(npm bin)/lerna publish --skip-git"
+log "Pre-release steps done! Next, continue with the Release step in the Release Process documentation:"
+echo "https://github.com/material-components/material-components-web/blob/master/docs/open_source/release-process.md#release"
 echo ""

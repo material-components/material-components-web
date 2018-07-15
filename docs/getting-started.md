@@ -38,7 +38,7 @@ This section walks you through how to [install MDC Web Node modules](https://www
 
 ### Step 1: Webpack with Sass
 
-We’re going to use webpack-dev-server to demonstrate how webpack bundles our Sass and JavaScript. First create a package.json that looks like this:
+We’re going to use `webpack-dev-server` to demonstrate how webpack bundles our Sass and JavaScript. First, run `npm init` to create a `package.json` file. When complete, add the `start` property to the `scripts` section.
 
 ```json
 {
@@ -128,7 +128,7 @@ And open http://localhost:8080 in a browser. You should see a blue “Hello Worl
 Now that you have webpack configured to compile Sass into CSS, let's include the Sass files for the Material Design button. First install the Node dependency:
 
 ```
-npm install @material/button
+npm install --save-dev @material/button
 ```
 
 We need to tell our `app.scss` to import the Sass files for `@material/button`. We can also use Sass mixins to customize the button. Replace your “hello world” version of `app.scss` with this code:
@@ -153,7 +153,12 @@ We also need to configure sass-loader to understand the `@material` imports used
 }
 ```
 
-In order to add vendor-specific styles to the Sass files, we need to configure `autoprefixer` through PostCSS. 
+> Note: Configuring `includePaths` should suffice for most cases where all MDC Web packages are kept up-to-date
+> together. If you encounter problems compiling Sass due to nested `node_modules` directories, see the
+> [Appendix](#appendix-configuring-a-sass-importer-for-nested-node_modules) below on how to configure a custom importer
+> instead.
+
+In order to add vendor-specific styles to the Sass files, we need to configure `autoprefixer` through PostCSS.
 
 You'll need all of these Node dependencies:
 - [autoprefixer](https://www.npmjs.com/package/autoprefixer): Parses CSS and adds vendor prefixes to CSS rules
@@ -178,13 +183,16 @@ Then add `postcss-loader`, using `autoprefixer` as a plugin:
 { loader: 'css-loader' },
 { loader: 'postcss-loader',
   options: {
-     plugins: () => [autoprefixer({ grid: false })]
+     plugins: () => [autoprefixer()]
   }
 },
-{ loader: 'sass-loader' },
+{
+  loader: 'sass-loader',
+  options: {
+    includePaths: ['./node_modules']
+  }
+},
 ```
-
-> Note: We disable autoprefixer for CSS Grid in order for MDC Web Layout Grid to work properly. Please also note that the order of loaders in webpack matters.
 
 `@material/button` has [documentation](../packages/mdc-button/README.md) about the required HTML for a button. Update your `index.html` to include the MDC Button markup, and add the `foo-button` class to the element:
 
@@ -226,24 +234,73 @@ And create a simple ES2015 file called `app.js`:
 console.log('hello world');
 ```
 
-Then configure webpack to convert `app.js` into `bundle.js` by adding the following code to the `webpack.config.js` file:
+Then configure webpack to convert `app.js` into `bundle.js` by modifying the following properties in the `webpack.config.js` file:
 
 ```js
-module.exports.push({
-  entry: './app.js',
+// Change entry to an array for both app.js and app.scss
+  entry: ['./app.scss', './app.js']
+
+// Change output.filename to be bundle.js
   output: {
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+  }
+
+// Add the babel-loader object to the rules array after the scss loader object
+...
+   {
+     test: /\.js$/,
+     loader: 'babel-loader',
+     query: {
+       presets: ['es2015'],
+     },
+   }]
+
+```
+
+The final `webpack.config.js` file should look like:
+
+```js
+const autoprefixer = require('autoprefixer');
+
+module.exports = {
+  entry: ['./app.scss', './app.js'],
+  output: {
+    filename: 'bundle.js',
   },
   module: {
-    loaders: [{
-      test: /\.js$/,
-      loader: 'babel-loader',
-      query: {
-        presets: ['es2015']
-      }
-    }]
+    rules: [
+      {
+        test: /\.scss$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: 'bundle.css',
+            },
+          },
+          {loader: 'extract-loader'},
+          {loader: 'css-loader'},
+          {loader: 'postcss-loader',
+            options: {
+              plugins: () => [autoprefixer()],
+            },
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              includePaths: ['./node_modules'],
+            },
+          }],
+      },
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        query: {
+          presets: ['es2015'],
+        },
+      }],
   },
-});
+};
 ```
 
 Now run `npm start` again and open http://localhost:8080. You should see a “hello world” in the console.
@@ -253,7 +310,7 @@ Now run `npm start` again and open http://localhost:8080. You should see a “he
 Now that you have webpack configured to compile ES2015 into JavaScript, let's include the ES2015 files from the Material Design ripple. First install the Node dependency:
 
 ```
-npm install @material/ripple
+npm install --save-dev @material/ripple
 ```
 
 We need to tell our `app.js` to import the ES2015 file for `@material/ripple`. We also need to initialize an `MDCRipple` with a DOM element. Replace your “hello world” version of `app.js` with this code:
@@ -266,3 +323,54 @@ const ripple = new MDCRipple(document.querySelector('.foo-button'));
 Now run `npm start` again and open http://localhost:8080. You should see a Material Design ripple on the button!
 
 <img src="button_with_ripple.png" alt="Button with Ripple" width="90" height="36">
+
+## Appendix: Configuring a Sass Importer for Nested node_modules
+
+It is possible to end up with nested `node_modules` folders if you have dependencies on conflicting versions of
+individual MDC Web packages. This may lead to errors when attempting to compile Sass with the `includePaths`
+configuration shown above, since Sass is only scanning for `@material` packages under the top-level `node_modules`
+directory.
+
+Alternatively, you can implement an importer as follows, which makes use of node's module resolution algorithm to find
+the dependency nearest to the file that imported it:
+
+```js
+const path = require('path');
+
+function tryResolve_(url, sourceFilename) {
+  // Put require.resolve in a try/catch to avoid node-sass failing with cryptic libsass errors
+  // when the importer throws
+  try {
+    return require.resolve(url, {paths: [path.dirname(sourceFilename)]});
+  } catch (e) {
+    return '';
+  }
+}
+
+function tryResolveScss(url, sourceFilename) {
+  // Support omission of .scss and leading _
+  const normalizedUrl = url.endsWith('.scss') ? url : `${url}.scss`;
+  return tryResolve_(normalizedUrl, sourceFilename) ||
+    tryResolve_(path.join(path.dirname(normalizedUrl), `_${path.basename(normalizedUrl)}`),
+      sourceFilename);
+}
+
+function materialImporter(url, prev) {
+  if (url.startsWith('@material')) {
+    const resolved = tryResolveScss(url, prev);
+    return {file: resolved || url};
+  }
+  return {file: url};
+}
+```
+
+Then, in your `sass-loader` config:
+
+```js
+{
+  loader: 'sass-loader',
+  options: {
+    importer: materialImporter
+  },
+}
+```

@@ -24,12 +24,19 @@ $test-grid-color: #dddddd;
   display: flex;
   box-sizing: border-box;
   margin: 0;
-  padding: 5px 0 100px 5px; // Extra padding ensures that CBT's "chromeless" screenshots don't get cut off
+  padding: 0;
 }
 
 .test-main {
   box-sizing: border-box;
+}
+
+.test-main--mobile {
+  width: 350px; // fits 2 columns of buttons within a Galaxy S7 viewport
+  height: 630px; // fits 8 rows of buttons within a Galaxy S7 viewport
+  margin: 5px 0 5px 5px; // Extra padding ensures that CBT's "chromeless" screenshots don't get cut off
   border: 1px solid $test-trim-color;
+  overflow: hidden;
 }
 
 .test-grid {
