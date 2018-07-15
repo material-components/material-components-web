@@ -33,6 +33,7 @@ const {InclusionType, CaptureState} = Screenshot;
 
 const Cli = require('./cli');
 const FileCache = require('./file-cache');
+const GitHubApi = require('./github-api');
 const GitRepo = require('./git-repo');
 const LocalStorage = require('./local-storage');
 const GoldenIo = require('./golden-io');
@@ -61,6 +62,12 @@ class ReportBuilder {
      * @private
      */
     this.gitRepo_ = new GitRepo();
+
+    /**
+     * @type {!GitHubApi}
+     * @private
+     */
+    this.gitHubApi_ = new GitHubApi();
 
     /**
      * @type {!GoldenIo}
@@ -391,7 +398,7 @@ class ReportBuilder {
 
     if (goldenGitRevision && goldenGitRevision.type === GitRevision.Type.TRAVIS_PR) {
       /** @type {!Array<!github.proto.PullRequestFile>} */
-      const allPrFiles = await this.gitRepo_.getPullRequestFiles(goldenGitRevision.pr_number);
+      const allPrFiles = await this.gitHubApi_.getPullRequestFiles(goldenGitRevision.pr_number);
 
       goldenGitRevision.pr_file_paths = allPrFiles
         .filter((prFile) => {

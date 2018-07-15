@@ -24,6 +24,7 @@ const CloudStorage = require('./cloud-storage');
 const Duration = require('./duration');
 const GitRepo = require('./git-repo');
 const GoldenIo = require('./golden-io');
+const Logger = require('./logger');
 const ReportBuilder = require('./report-builder');
 const ReportWriter = require('./report-writer');
 const SeleniumApi = require('./selenium-api');
@@ -56,6 +57,12 @@ class Controller {
     this.goldenIo_ = new GoldenIo();
 
     /**
+     * @type {!Logger}
+     * @private
+     */
+    this.logger_ = new Logger(__filename);
+
+    /**
      * @type {!ReportBuilder}
      * @private
      */
@@ -78,32 +85,41 @@ class Controller {
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async initForApproval() {
+    this.logger_.foldStart('screenshot.init.approval', 'Controller#initForApproval()');
     const runReportJsonUrl = this.cli_.runReportJsonUrl;
-    return this.reportBuilder_.initForApproval({runReportJsonUrl});
+    const reportData = await this.reportBuilder_.initForApproval({runReportJsonUrl});
+    this.logger_.foldEnd('screenshot.init.approval');
+    return reportData;
   }
 
   /**
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async initForCapture() {
+    this.logger_.foldStart('screenshot.init.capture', 'Controller#initForCapture()');
     const isOnline = await this.cli_.isOnline();
     const shouldFetch = this.cli_.shouldFetch;
     if (isOnline && shouldFetch) {
       await this.gitRepo_.fetch();
     }
-    return this.reportBuilder_.initForCapture();
+    const reportData = await this.reportBuilder_.initForCapture();
+    this.logger_.foldEnd('screenshot.init.capture');
+    return reportData;
   }
 
   /**
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async initForDemo() {
+    this.logger_.foldStart('screenshot.init.demo', 'Controller#initForDemo()');
     const isOnline = await this.cli_.isOnline();
     const shouldFetch = this.cli_.shouldFetch;
     if (isOnline && shouldFetch) {
       await this.gitRepo_.fetch();
     }
-    return this.reportBuilder_.initForDemo();
+    const reportData = await this.reportBuilder_.initForDemo();
+    this.logger_.foldEnd('screenshot.init.demo');
+    return reportData;
   }
 
   /**
@@ -128,7 +144,9 @@ class Controller {
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async uploadAllAssets(reportData) {
+    this.logger_.foldStart('screenshot.upload', 'Controller#uploadAllAssets()');
     await this.cloudStorage_.uploadAllAssets(reportData);
+    this.logger_.foldEnd('screenshot.upload');
     return reportData;
   }
 
@@ -137,8 +155,10 @@ class Controller {
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async captureAllPages(reportData) {
+    this.logger_.foldStart('screenshot.capture', 'Controller#captureAllPages()');
     await this.seleniumApi_.captureAllPages(reportData);
     await this.cloudStorage_.uploadAllScreenshots(reportData);
+    this.logger_.foldEnd('screenshot.capture');
     return reportData;
   }
 
@@ -147,6 +167,7 @@ class Controller {
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async compareAllScreenshots(reportData) {
+    this.logger_.foldStart('screenshot.compare', 'Controller#compareAllScreenshots()');
     await this.reportBuilder_.populateScreenshotMaps(reportData.user_agents, reportData.screenshots);
     await this.cloudStorage_.uploadAllDiffs(reportData);
 
@@ -157,6 +178,7 @@ class Controller {
     meta.end_time_iso_utc = new Date().toISOString();
     meta.duration_ms = Duration.elapsed(meta.start_time_iso_utc, meta.end_time_iso_utc).toMillis();
 
+    this.logger_.foldEnd('screenshot.compare');
     return reportData;
   }
 
@@ -165,11 +187,13 @@ class Controller {
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async generateReportPage(reportData) {
+    this.logger_.foldStart('screenshot.report', 'Controller#generateReportPage()');
     await this.reportWriter_.generateReportPage(reportData);
     await this.cloudStorage_.uploadDiffReport(reportData);
 
     console.log('Diff report:', reportData.meta.report_html_file.public_url);
 
+    this.logger_.foldEnd('screenshot.report');
     return reportData;
   }
 

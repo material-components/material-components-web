@@ -25,6 +25,7 @@ const fs = require('mz/fs');
 const {GOLDEN_JSON_RELATIVE_PATH} = require('./constants');
 
 const Duration = require('./duration');
+const GitHubApi = require('./github-api');
 const GitRepo = require('./git-repo');
 
 const HTTP_URL_REGEX = new RegExp('^https?://');
@@ -36,6 +37,12 @@ class Cli {
      * @private
      */
     this.gitRepo_ = new GitRepo();
+
+    /**
+     * @type {!GitHubApi}
+     * @private
+     */
+    this.gitHubApi_ = new GitHubApi();
 
     /**
      * @type {?boolean}
@@ -500,7 +507,7 @@ that you know are going to have diffs.
     const parsedBranch = parsedDiffBase.git_revision ? parsedDiffBase.git_revision.branch : null;
 
     if (isOnline && isRealBranch(parsedBranch)) {
-      const prNumber = await this.gitRepo_.getPullRequestNumber(parsedBranch);
+      const prNumber = await this.gitHubApi_.getPullRequestNumber(parsedBranch);
       if (prNumber) {
         parsedDiffBase.git_revision.pr_number = prNumber;
       }

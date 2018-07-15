@@ -10,11 +10,11 @@ if [ "$TEST_SUITE" == 'screenshot' ]; then
   export PATH=$PATH:$HOME/google-cloud-sdk/bin
   export CLOUDSDK_CORE_DISABLE_PROMPTS=1
 
-  openssl aes-256-cbc -K $encrypted_2fd1810d2cb7_key -iv $encrypted_2fd1810d2cb7_iv \
-    -in test/screenshot/auth/travis-gcs.tar.gz.enc -out /tmp/travis-gcs.tar.gz -d
-  tar -xzf /tmp/travis-gcs.tar.gz -C /tmp/
+  openssl aes-256-cbc -K $encrypted_eead2343bb54_key -iv $encrypted_eead2343bb54_iv \
+    -in test/screenshot/auth/travis.tar.enc -out test/screenshot/auth/travis.tar -d
+  tar -xzf test/screenshot/auth/travis.tar -C test/screenshot/auth/
 
-  gcloud auth activate-service-account --key-file /tmp/travis-gcs.json
+  gcloud auth activate-service-account --key-file test/screenshot/auth/gcs.json
   gcloud config set project material-components-web
   gcloud components install gsutil
 
