@@ -179,7 +179,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
   handleValidationAttributeChange(attributesList) {
     attributesList.some((attributeName) => {
       if (VALIDATION_ATTR_WHITELIST.indexOf(attributeName) > -1) {
-        this.styleValidity_(true);
+        this.styleValidity(true);
         return true;
       }
     });
@@ -253,7 +253,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     const input = this.getNativeInput_();
     const shouldRemoveLabelFloat = !input.value && !this.isBadInput_();
     const isValid = this.isValid();
-    this.styleValidity_(isValid);
+    this.styleValidity(isValid);
     this.styleFocused_(this.isFocused_);
     if (this.adapter_.hasLabel()) {
       this.adapter_.shakeLabel(this.shouldShake);
@@ -278,7 +278,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
   setValue(value) {
     this.getNativeInput_().value = value;
     const isValid = this.isValid();
-    this.styleValidity_(isValid);
+    this.styleValidity(isValid);
     if (this.adapter_.hasLabel()) {
       this.adapter_.shakeLabel(this.shouldShake);
       this.adapter_.floatLabel(this.shouldFloat);
@@ -303,7 +303,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.isValid_ = isValid;
     // Retrieve from the getter to ensure correct logic is applied.
     isValid = this.isValid();
-    this.styleValidity_(isValid);
+    this.styleValidity(isValid);
     if (this.adapter_.hasLabel()) {
       this.adapter_.shakeLabel(this.shouldShake);
     }
@@ -373,9 +373,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
   /**
    * Styles the component based on the validity state.
    * @param {boolean} isValid
-   * @private
    */
-  styleValidity_(isValid) {
+  styleValidity(isValid) {
     const {INVALID} = MDCTextFieldFoundation.cssClasses;
     if (isValid) {
       this.adapter_.removeClass(INVALID);

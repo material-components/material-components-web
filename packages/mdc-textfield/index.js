@@ -334,6 +334,14 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
+   * Enables or disables error state of text field and helper text.
+   * @param {boolean} enable Set to true to enable error state.
+   */
+  setError(enable) {
+    this.foundation_.styleValidity_(!enable);
+  }
+
+  /**
    * @return {!MDCTextFieldFoundation}
    */
   getDefaultFoundation() {

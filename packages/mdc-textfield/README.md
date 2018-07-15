@@ -317,5 +317,6 @@ Method Signature | Description
 `setIconAriaLabel(label: string) => void` | Sets the aria label of the icon.
 `setIconContent(content: string) => void` | Sets the text content of the icon.
 `notchOutline(openNotch: boolean) => void` | Opens/closes the notched outline.
+`styleValidity(isValid: boolean) => void` | Styles the text field and helper text based on the validity.
 
 `MDCTextFieldFoundation` supports multiple optional sub-elements: helper text and icon. The foundations of these sub-elements must be passed in as constructor arguments to `MDCTextFieldFoundation`.
