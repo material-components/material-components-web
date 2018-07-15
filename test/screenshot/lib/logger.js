@@ -16,6 +16,7 @@
 
 'use strict';
 
+const colors = require('colors/safe');
 const path = require('path');
 
 class Logger {
@@ -67,12 +68,13 @@ class Logger {
    * @param {string} shortMessage
    */
   foldStart(foldId, shortMessage) {
-    if (!this.isTravisJob_()) {
-      return;
+    const colorMessage = colors.yellow(shortMessage);
+    if (this.isTravisJob_()) {
+      // See https://github.com/travis-ci/docs-travis-ci-com/issues/949#issuecomment-276755003
+      console.log(`\ntravis_fold:start:${foldId}\n${colorMessage}`);
+    } else {
+      console.log(colorMessage);
     }
-
-    // See https://github.com/travis-ci/docs-travis-ci-com/issues/949#issuecomment-276755003
-    process.stdout.write(`travis_fold:start:${foldId}\\033[33;1m${shortMessage}\\033[0m`);
   }
 
   /**
@@ -84,7 +86,7 @@ class Logger {
     }
 
     // See https://github.com/travis-ci/docs-travis-ci-com/issues/949#issuecomment-276755003
-    process.stdout.write(`\ntravis_fold:end:${foldId}\r`);
+    console.log(`\ntravis_fold:end:${foldId}`);
   }
 
   log() {}
