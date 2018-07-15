@@ -338,7 +338,7 @@ class MDCTextField extends MDCComponent {
    * @param {boolean} enable Set to true to enable error state.
    */
   setError(enable) {
-    this.foundation_.styleValidity_(!enable);
+    this.foundation_.styleValidity(!enable);
   }
 
   /**

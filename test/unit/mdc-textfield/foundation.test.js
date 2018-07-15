@@ -752,7 +752,7 @@ test('touchstart on the input sets the line ripple origin', () => {
   td.verify(mockAdapter.setLineRippleTransformOrigin(td.matchers.anything()));
 });
 
-test('on validation attribute change calls styleValidity_', () => {
+test('on validation attribute change calls styleValidity', () => {
   const {foundation, mockAdapter, helperText} = setupTest();
   let attributeChange;
   td.when(mockAdapter.registerValidationAttributeChangeHandler(td.matchers.isA(Function)))
@@ -769,7 +769,7 @@ test('on validation attribute change calls styleValidity_', () => {
   td.verify(mockAdapter.removeClass(cssClasses.DISABLED), {times: 0});
 });
 
-test('should not call styleValidity_ on non-whitelisted attribute change', () => {
+test('should not call styleValidity on non-whitelisted attribute change', () => {
   const {foundation, mockAdapter, helperText} = setupTest();
   let attributeChange;
   td.when(mockAdapter.registerValidationAttributeChangeHandler(td.matchers.isA(Function)))
@@ -789,4 +789,20 @@ test('should not call styleValidity_ on non-whitelisted attribute change', () =>
 test('label floats on invalid input even if value is empty', () => {
   const {mockAdapter} = setupValueTest('', false, true, true);
   td.verify(mockAdapter.floatLabel(true));
+});
+
+test('styleValidity removes invalid class and sets validity on helper text when true', () => {
+  const {foundation, mockAdapter, helperText} = setupTest();
+
+  foundation.styleValidity(true);
+  td.verify(mockAdapter.removeClass(cssClasses.INVALID));
+  td.verify(helperText.setValidity(true));
+});
+
+test('styleValidity adds invalid class and sets validity on helper text when false', () => {
+  const {foundation, mockAdapter, helperText} = setupTest();
+
+  foundation.styleValidity(false);
+  td.verify(mockAdapter.addClass(cssClasses.INVALID));
+  td.verify(helperText.setValidity(false));
 });
