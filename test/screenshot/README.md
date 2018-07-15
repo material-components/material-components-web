@@ -233,11 +233,11 @@ For example:
 7. Run the tests remotely and create a PR:
 
     ```bash
-    npm run screenshot:test -- --url=mdc-button --retries=0
-    npm run screenshot:approve -- --all --report=https://.../report.json
-    git add test/screenshot/golden.json
-    git commit -m 'feat(button): Fancy'
-    git push -u origin
+    $ npm run screenshot:test -- --url=mdc-button --retries=0
+    $ npm run screenshot:approve -- --all --report=https://.../report.json
+    $ git add test/screenshot/golden.json
+    $ git commit -m 'feat(button): Fancy'
+    $ git push -u origin
     ```
 
 ## Writing tests
