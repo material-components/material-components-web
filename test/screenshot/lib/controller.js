@@ -85,41 +85,32 @@ class Controller {
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async initForApproval() {
-    this.logger_.foldStart('screenshot.init.approval', 'Controller#initForApproval()');
     const runReportJsonUrl = this.cli_.runReportJsonUrl;
-    const reportData = await this.reportBuilder_.initForApproval({runReportJsonUrl});
-    this.logger_.foldEnd('screenshot.init.approval');
-    return reportData;
+    return this.reportBuilder_.initForApproval({runReportJsonUrl});
   }
 
   /**
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async initForCapture() {
-    this.logger_.foldStart('screenshot.init.capture', 'Controller#initForCapture()');
     const isOnline = await this.cli_.isOnline();
     const shouldFetch = this.cli_.shouldFetch;
     if (isOnline && shouldFetch) {
       await this.gitRepo_.fetch();
     }
-    const reportData = await this.reportBuilder_.initForCapture();
-    this.logger_.foldEnd('screenshot.init.capture');
-    return reportData;
+    return this.reportBuilder_.initForCapture();
   }
 
   /**
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async initForDemo() {
-    this.logger_.foldStart('screenshot.init.demo', 'Controller#initForDemo()');
     const isOnline = await this.cli_.isOnline();
     const shouldFetch = this.cli_.shouldFetch;
     if (isOnline && shouldFetch) {
       await this.gitRepo_.fetch();
     }
-    const reportData = await this.reportBuilder_.initForDemo();
-    this.logger_.foldEnd('screenshot.init.demo');
-    return reportData;
+    return this.reportBuilder_.initForDemo();
   }
 
   /**
