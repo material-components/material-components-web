@@ -12,8 +12,15 @@ if [ "$TEST_SUITE" == 'screenshot' ]; then
 
   openssl aes-256-cbc -K $encrypted_eead2343bb54_key -iv $encrypted_eead2343bb54_iv \
     -in test/screenshot/auth/travis.tar.enc -out test/screenshot/auth/travis.tar -d
-  tar -xzf test/screenshot/auth/travis.tar -C test/screenshot/auth/
 
+  echo 'git status:'
+  echo
+  git status
+  echo
+
+  tar -xvf test/screenshot/auth/travis.tar -C test/screenshot/auth/
+
+  echo
   echo 'git status:'
   echo
   git status
