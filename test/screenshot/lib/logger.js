@@ -17,6 +17,7 @@
 'use strict';
 
 const colors = require('colors/safe');
+const crypto = require('crypto');
 const path = require('path');
 
 class Logger {
@@ -41,6 +42,12 @@ class Logger {
      * @private
      */
     this.children_ = [];
+
+    /**
+     * @type {!Map<string, number>}
+     * @private
+     */
+    this.foldStartTimes_ = new Map();
   }
 
   /**
@@ -68,10 +75,15 @@ class Logger {
    * @param {string} shortMessage
    */
   foldStart(foldId, shortMessage) {
+    const hash = this.getFoldHash_(foldId);
     const colorMessage = colors.yellow(shortMessage);
+
+    this.foldStartTimes_.set(foldId, Date.now());
+
     if (this.isTravisJob_()) {
       // See https://github.com/travis-ci/docs-travis-ci-com/issues/949#issuecomment-276755003
       console.log(`travis_fold:start:${foldId}\n${colorMessage}`);
+      console.log(`travis_time:start:${hash}`);
     } else {
       console.log(colorMessage);
     }
@@ -85,8 +97,20 @@ class Logger {
       return;
     }
 
+    const hash = this.getFoldHash_(foldId);
+    const startNanos = this.foldStartTimes_.get(foldId) * 1000;
+    const finishNanos = Date.now() * 1000;
+    const durationNanos = finishNanos - startNanos;
+
     // See https://github.com/travis-ci/docs-travis-ci-com/issues/949#issuecomment-276755003
     console.log(`travis_fold:end:${foldId}`);
+    console.log(`travis_time:end:${hash}:start=${startNanos},finish=${finishNanos},duration=${durationNanos}`);
+  }
+
+  getFoldHash_(foldId) {
+    const sha1Sum = crypto.createHash('sha1');
+    sha1Sum.update(foldId);
+    return sha1Sum.digest('hex');
   }
 
   log(...args) {
