@@ -40,10 +40,10 @@ module.exports = {
 
     await CleanCommand.runAsync();
 
-    logger.foldStart('screenshot:build', 'Compiling source files');
+    logger.foldStart('screenshot.build', 'Compiling source files');
     processManager.spawnChildProcessSync('npm', ['run', 'screenshot:proto']);
     processManager.spawnChildProcessSync('npm', ['run', 'screenshot:webpack', '--', ...webpackArgs]);
-    logger.foldEnd('screenshot:build');
+    logger.foldEnd('screenshot.build');
   },
 
   /**

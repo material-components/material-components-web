@@ -14,6 +14,8 @@ if [ "$TEST_SUITE" == 'screenshot' ]; then
     -in test/screenshot/auth/travis.tar.enc -out test/screenshot/auth/travis.tar -d
   tar -xzf test/screenshot/auth/travis.tar -C test/screenshot/auth/
 
+  git status
+
   gcloud auth activate-service-account --key-file test/screenshot/auth/gcs.json
   gcloud config set project material-components-web
   gcloud components install gsutil
