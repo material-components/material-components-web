@@ -59,10 +59,10 @@ class GitRepo {
     const existingFetchRefs = (await this.exec_('raw', ['config', '--get-all', 'remote.origin.fetch'])).split('\n');
 
     if (!existingFetchRefs.includes(prFetchRef)) {
-      await this.exec_('raw', ['config', '--add', 'remote.origin.fetch', prFetchRef]).split('\n');
+      await this.exec_('raw', ['config', '--add', 'remote.origin.fetch', prFetchRef]);
     }
 
-    return this.repo_.fetch(['--tags', ...args]);
+    await this.repo_.fetch(['--tags', ...args]);
   }
 
   /**
