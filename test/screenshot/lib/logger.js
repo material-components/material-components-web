@@ -90,7 +90,7 @@ class Logger {
   }
 
   log(...args) {
-    console.log(args);
+    console.log(...args);
   }
 
   info() {}

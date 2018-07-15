@@ -159,6 +159,7 @@ class Controller {
    */
   async compareAllScreenshots(reportData) {
     this.logger_.foldStart('screenshot.compare', 'Controller#compareAllScreenshots()');
+
     await this.reportBuilder_.populateScreenshotMaps(reportData.user_agents, reportData.screenshots);
     await this.cloudStorage_.uploadAllDiffs(reportData);
 
@@ -170,6 +171,7 @@ class Controller {
     meta.duration_ms = Duration.elapsed(meta.start_time_iso_utc, meta.end_time_iso_utc).toMillis();
 
     this.logger_.foldEnd('screenshot.compare');
+
     return reportData;
   }
 
@@ -179,11 +181,12 @@ class Controller {
    */
   async generateReportPage(reportData) {
     this.logger_.foldStart('screenshot.report', 'Controller#generateReportPage()');
+
     await this.reportWriter_.generateReportPage(reportData);
     await this.cloudStorage_.uploadDiffReport(reportData);
 
     this.logger_.foldEnd('screenshot.report');
-    this.logger_.log('Diff report:', reportData.meta.report_html_file.public_url);
+    this.logger_.log('\nDiff report:', reportData.meta.report_html_file.public_url);
 
     return reportData;
   }
