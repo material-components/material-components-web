@@ -94,6 +94,11 @@ class ReportWriter {
 
     const htmlFileContent = await this.generateHtml_(fullReportData, templateFileAbsolutePath);
     await this.localStorage_.writeTextFile(htmlFileAbsolutePath, htmlFileContent);
+
+    // Copy all image and report files to the assets dir for offline mode.
+    await this.localStorage_.copy(meta.local_report_base_dir, meta.local_asset_base_dir);
+    await this.localStorage_.copy(meta.local_screenshot_image_base_dir, meta.local_asset_base_dir);
+    await this.localStorage_.copy(meta.local_diff_image_base_dir, meta.local_asset_base_dir);
   }
 
   /** @private */

@@ -144,6 +144,11 @@ class SeleniumApi {
    * @private
    */
   async getMaxParallelTests_() {
+    const isOnline = await this.cli_.isOnline();
+    if (!isOnline) {
+      return 1;
+    }
+
     const startTimeMs = Date.now();
 
     while (true) {
@@ -430,9 +435,12 @@ class SeleniumApi {
   async capturePageAsPng_({driver, userAgent, url, delayMs = 0}) {
     console.log(`GET ${url} > ${userAgent.alias}...`);
 
+    const isOnline = await this.cli_.isOnline();
+    const fontTimeoutMs = isOnline ? SELENIUM_FONT_LOAD_WAIT_MS : 1;
+
     await driver.get(url);
     await driver.executeScript('window.mdc.testFixture.attachFontObserver();');
-    await driver.wait(until.elementLocated(By.css('[data-fonts-loaded]')), SELENIUM_FONT_LOAD_WAIT_MS);
+    await driver.wait(until.elementLocated(By.css('[data-fonts-loaded]')), fontTimeoutMs).catch(() => 0);
 
     if (delayMs > 0) {
       await driver.sleep(delayMs);
