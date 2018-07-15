@@ -44,8 +44,7 @@ class CloudStorage {
    * @return {!Promise<void>}
    */
   async uploadAllAssets(reportData) {
-    console.log('\nUploading asset files to GCS...');
-    await this.uploadDirectory_(reportData, reportData.meta.local_asset_base_dir);
+    await this.uploadDirectory_('asset files', reportData, reportData.meta.local_asset_base_dir);
   }
 
   /**
@@ -53,8 +52,7 @@ class CloudStorage {
    * @return {!Promise<void>}
    */
   async uploadAllScreenshots(reportData) {
-    console.log('\nUploading screenshot images to GCS...');
-    await this.uploadDirectory_(reportData, reportData.meta.local_screenshot_image_base_dir);
+    await this.uploadDirectory_('screenshot images', reportData, reportData.meta.local_screenshot_image_base_dir);
   }
 
   /**
@@ -62,8 +60,7 @@ class CloudStorage {
    * @return {!Promise<void>}
    */
   async uploadAllDiffs(reportData) {
-    console.log('\nUploading image diffs to GCS...');
-    await this.uploadDirectory_(reportData, reportData.meta.local_diff_image_base_dir);
+    await this.uploadDirectory_('image diffs', reportData, reportData.meta.local_diff_image_base_dir);
   }
 
   /**
@@ -71,22 +68,24 @@ class CloudStorage {
    * @return {!Promise<void>}
    */
   async uploadDiffReport(reportData) {
-    console.log('\nUploading diff report to GCS...');
-    await this.uploadDirectory_(reportData, reportData.meta.local_report_base_dir);
+    await this.uploadDirectory_('diff report', reportData, reportData.meta.local_report_base_dir);
   }
 
   /**
+   * @param {string} noun
    * @param {!mdc.proto.ReportData} reportData
    * @param {string} localSourceDir
    * @return {!Promise<void>}
    * @private
    */
-  async uploadDirectory_(reportData, localSourceDir) {
+  async uploadDirectory_(noun, reportData, localSourceDir) {
     const isSourceDirEmpty = glob.sync('**/*', {cwd: localSourceDir, nodir: true}).length === 0;
     const isOnline = await this.cli_.isOnline();
     if (isSourceDirEmpty || !isOnline) {
       return;
     }
+
+    console.log(`\nUploading ${noun} to GCS...\n`);
 
     /** @type {!ChildProcessSpawnResult} */
     const gsutilProcess = await this.spawnGsutilUploadProcess_(reportData, localSourceDir);

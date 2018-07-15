@@ -16,6 +16,9 @@
 
 'use strict';
 
+const mdcProto = require('../proto/mdc.pb').mdc.proto;
+const {GitRevision} = mdcProto;
+
 const Cli = require('./cli');
 const CloudStorage = require('./cloud-storage');
 const Duration = require('./duration');
@@ -24,6 +27,7 @@ const GoldenIo = require('./golden-io');
 const ReportBuilder = require('./report-builder');
 const ReportWriter = require('./report-writer');
 const SeleniumApi = require('./selenium-api');
+const {ExitCode} = require('./constants');
 
 class Controller {
   constructor() {
@@ -104,6 +108,23 @@ class Controller {
 
   /**
    * @param {!mdc.proto.ReportData} reportData
+   * @return {{isTestable: boolean, prNumber: ?number}}
+   */
+  checkIsTestable(reportData) {
+    const goldenGitRevision = reportData.meta.golden_diff_base.git_revision;
+    const shouldSkipScreenshotTests =
+      goldenGitRevision &&
+      goldenGitRevision.type === GitRevision.Type.TRAVIS_PR &&
+      goldenGitRevision.pr_file_paths.length === 0;
+
+    return {
+      isTestable: !shouldSkipScreenshotTests,
+      prNumber: goldenGitRevision ? goldenGitRevision.pr_number : null,
+    };
+  }
+
+  /**
+   * @param {!mdc.proto.ReportData} reportData
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async uploadAllAssets(reportData) {
@@ -147,10 +168,36 @@ class Controller {
     await this.reportWriter_.generateReportPage(reportData);
     await this.cloudStorage_.uploadDiffReport(reportData);
 
-    console.log('\nDONE uploading diff report to GCS!\n');
-    console.log(reportData.meta.report_html_file.public_url);
+    console.log('Diff report:', reportData.meta.report_html_file.public_url);
 
     return reportData;
+  }
+
+  /**
+   * @param {!mdc.proto.ReportData} reportData
+   * @return {!Promise<number>}
+   */
+  async getTestExitCode(reportData) {
+    const isOnline = await this.cli_.isOnline();
+    const numChanges =
+      reportData.screenshots.changed_screenshot_list.length +
+      reportData.screenshots.added_screenshot_list.length +
+      reportData.screenshots.removed_screenshot_list.length;
+
+    if (numChanges === 0) {
+      console.log('\n0 screenshots changed!');
+      return ExitCode.OK;
+    }
+
+    console.error(`\n${numChanges} screenshot${numChanges === 1 ? '' : 's'} changed!`);
+
+    if (isOnline) {
+      return ExitCode.CHANGES_FOUND;
+    }
+
+    // Allow the report HTTP server to keep running by waiting for a promise that never resolves.
+    console.log('\nPress Ctrl-C to kill the report server');
+    await new Promise(() => {});
   }
 
   /**

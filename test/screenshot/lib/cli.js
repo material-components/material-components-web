@@ -492,17 +492,20 @@ that you know are going to have diffs.
    * @return {!Promise<!mdc.proto.DiffBase>}
    */
   async parseDiffBase(rawDiffBase = this.diffBase) {
+    const isOnline = await this.isOnline();
     const isRealBranch = (branch) => Boolean(branch) && !['master', 'origin/master', 'HEAD'].includes(branch);
 
     /** @type {!mdc.proto.DiffBase} */
     const parsedDiffBase = await this.parseDiffBase_(rawDiffBase);
     const parsedBranch = parsedDiffBase.git_revision ? parsedDiffBase.git_revision.branch : null;
-    if (isRealBranch(parsedBranch)) {
+
+    if (isOnline && isRealBranch(parsedBranch)) {
       const prNumber = await this.gitRepo_.getPullRequestNumber(parsedBranch);
       if (prNumber) {
         parsedDiffBase.git_revision.pr_number = prNumber;
       }
     }
+
     return parsedDiffBase;
   }
 

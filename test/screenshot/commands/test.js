@@ -16,29 +16,20 @@
 
 'use strict';
 
-const mdcProto = require('../proto/mdc.pb').mdc.proto;
-const {GitRevision} = mdcProto;
-
 const BuildCommand = require('./build');
 const Controller = require('../lib/controller');
-const {ExitCode} = require('../lib/constants');
 
 module.exports = {
   async runAsync() {
     await BuildCommand.runAsync();
     const controller = new Controller();
+
     /** @type {!mdc.proto.ReportData} */
     const reportData = await controller.initForCapture();
 
-    /** @type {!mdc.proto.IGitRevision} */
-    const goldenGitRevision = reportData.meta.golden_diff_base.git_revision;
-    if (goldenGitRevision &&
-      goldenGitRevision.type === GitRevision.Type.TRAVIS_PR &&
-      goldenGitRevision.pr_file_paths.length === 0) {
-      console.log(`
-PR #${goldenGitRevision.pr_number} does not contain any testable source file changes.
-Skipping screenshot tests.
-`);
+    const {isTestable, prNumber} = controller.checkIsTestable(reportData);
+    if (!isTestable) {
+      console.log(`PR #${prNumber} does not contain any testable source file changes.\nSkipping screenshot tests.`);
       return;
     }
 
@@ -47,16 +38,6 @@ Skipping screenshot tests.
     await controller.compareAllScreenshots(reportData);
     await controller.generateReportPage(reportData);
 
-    const numChanges =
-      reportData.screenshots.changed_screenshot_list.length +
-      reportData.screenshots.added_screenshot_list.length +
-      reportData.screenshots.removed_screenshot_list.length;
-
-    if (numChanges === 0) {
-      console.log('\n0 screenshots changed!');
-    } else {
-      console.error(`\n${numChanges} screenshots changed!`);
-      return ExitCode.CHANGES_FOUND;
-    }
+    return await controller.getTestExitCode(reportData);
   },
 };

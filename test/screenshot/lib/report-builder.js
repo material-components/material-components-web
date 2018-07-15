@@ -393,10 +393,6 @@ class ReportBuilder {
       /** @type {!Array<!github.proto.PullRequestFile>} */
       const allPrFiles = await this.gitRepo_.getPullRequestFiles(goldenGitRevision.pr_number);
 
-      console.log('');
-      console.log('allPrFiles:', allPrFiles);
-      console.log('');
-
       goldenGitRevision.pr_file_paths = allPrFiles
         .filter((prFile) => {
           const isMarkdownFile = () => prFile.filename.endsWith('.md');
@@ -408,9 +404,6 @@ class ReportBuilder {
         })
         .map((prFile) => prFile.filename)
       ;
-
-      console.log('goldenGitRevision.pr_file_paths:', goldenGitRevision.pr_file_paths);
-      console.log('');
     }
 
     return ReportMeta.create({

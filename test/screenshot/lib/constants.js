@@ -54,6 +54,7 @@ module.exports = {
   SELENIUM_FONT_LOAD_WAIT_MS: 3000,
 
   ExitCode: {
+    OK: 0,
     UNKNOWN_ERROR: 11,
     SIGINT: 12, // ctrl-c
     SIGTERM: 13, // kill
