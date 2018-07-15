@@ -182,9 +182,9 @@ class Controller {
     await this.reportWriter_.generateReportPage(reportData);
     await this.cloudStorage_.uploadDiffReport(reportData);
 
-    console.log('Diff report:', reportData.meta.report_html_file.public_url);
-
     this.logger_.foldEnd('screenshot.report');
+    this.logger_.log('Diff report:', reportData.meta.report_html_file.public_url);
+
     return reportData;
   }
 

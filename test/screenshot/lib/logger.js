@@ -71,7 +71,7 @@ class Logger {
     const colorMessage = colors.yellow(shortMessage);
     if (this.isTravisJob_()) {
       // See https://github.com/travis-ci/docs-travis-ci-com/issues/949#issuecomment-276755003
-      console.log(`\ntravis_fold:start:${foldId}\n${colorMessage}`);
+      console.log(`travis_fold:start:${foldId}\n${colorMessage}`);
     } else {
       console.log(colorMessage);
     }
@@ -86,10 +86,13 @@ class Logger {
     }
 
     // See https://github.com/travis-ci/docs-travis-ci-com/issues/949#issuecomment-276755003
-    console.log(`\ntravis_fold:end:${foldId}`);
+    console.log(`travis_fold:end:${foldId}`);
   }
 
-  log() {}
+  log(...args) {
+    console.log(args);
+  }
+
   info() {}
   warn() {}
   error() {}
