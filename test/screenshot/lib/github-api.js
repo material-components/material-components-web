@@ -54,7 +54,7 @@ class GitHubApi {
   }
 
   async setPullRequestStatus({state, targetUrl = undefined, description = undefined}) {
-    const result = await this.octocat_.repos.createStatus({
+    /* const result = */await this.octocat_.repos.createStatus({
       owner: 'material-components',
       repo: 'material-components-web',
       sha: await this.gitRepo_.getFullCommitHash(),
