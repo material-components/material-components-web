@@ -161,20 +161,32 @@ class Logger {
     return sha1Sum.digest('hex').substr(0, 8);
   }
 
+  /**
+   * @param {!Array<*>} args
+   */
   log(...args) {
-    console.log('[log]', ...args);
+    console.log(`[log][${this.id_}]`, ...args);
   }
 
-  info() {
-    console.info('[' + colors.blue('info') + ']', ...args);
+  /**
+   * @param {!Array<*>} args
+   */
+  info(...args) {
+    console.info(`[${colors.blue('info')}][${this.id_}]`, ...args);
   }
 
-  warn() {
-    console.warn('[' + colors.yellow('warn') + ']', ...args);
+  /**
+   * @param {!Array<*>} args
+   */
+  warn(...args) {
+    console.warn(`[${colors.yellow('warn')}][${this.id_}]`, ...args);
   }
 
-  error() {
-    console.error('[' + colors.bold.red('error') + ']', ...args);
+  /**
+   * @param {!Array<*>} args
+   */
+  error(...args) {
+    console.error(`[${colors.bold.red('error')}][${this.id_}]`, ...args);
   }
 
   /**

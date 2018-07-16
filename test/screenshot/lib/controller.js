@@ -198,7 +198,6 @@ class Controller {
 
     this.logger_.foldEnd('screenshot.report');
 
-
     // TODO(acdvorak): Store this directly in the proto so we don't have to recalculate it all over the place
     const numChanges =
       reportData.screenshots.changed_screenshot_list.length +
@@ -206,9 +205,9 @@ class Controller {
       reportData.screenshots.removed_screenshot_list.length;
 
     if (numChanges > 0) {
-      this.logger_.error(`\n\n\n${numChanges} screenshot${numChanges === 1 ? '' : 's'} changed!\n`);
+      this.logger_.error(`\n\n${numChanges} screenshot${numChanges === 1 ? '' : 's'} changed!\n`);
     } else {
-      this.logger_.log(`\n\n\n${numChanges} screenshot${numChanges === 1 ? '' : 's'} changed!\n`);
+      this.logger_.log(`\n\n${numChanges} screenshot${numChanges === 1 ? '' : 's'} changed!\n`);
     }
     this.logger_.log('Diff report:', Logger.colors.bold.red(reportData.meta.report_html_file.public_url));
 
