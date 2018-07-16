@@ -483,7 +483,7 @@ that you know are going to have diffs.
    */
   async parseGoldenDiffBase() {
     /** @type {?mdc.proto.GitRevision} */
-    const travisGitRevision = await this.getTravisGitRevision_();
+    const travisGitRevision = await this.getTravisGitRevision();
     if (travisGitRevision) {
       return DiffBase.create({
         type: DiffBase.Type.GIT_REVISION,
@@ -568,9 +568,8 @@ that you know are going to have diffs.
 
   /**
    * @return {?Promise<!mdc.proto.GitRevision>}
-   * @private
    */
-  async getTravisGitRevision_() {
+  async getTravisGitRevision() {
     const travisBranch = process.env.TRAVIS_BRANCH;
     const travisTag = process.env.TRAVIS_TAG;
     const travisPrNumber = Number(process.env.TRAVIS_PULL_REQUEST);
