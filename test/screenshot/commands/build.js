@@ -17,9 +17,11 @@
 'use strict';
 
 const CleanCommand = require('./clean');
-const CliArgParser = require('../lib/cli-arg-parser');
+const Cli = require('../lib/cli');
+const Logger = require('../lib/logger');
 const ProcessManager = require('../lib/process-manager');
 
+const logger = new Logger(__filename);
 const processManager = new ProcessManager();
 
 module.exports = {
@@ -38,7 +40,10 @@ module.exports = {
 
     await CleanCommand.runAsync();
 
+    logger.foldStart('screenshot.build', 'Compiling source files');
+    processManager.spawnChildProcessSync('npm', ['run', 'screenshot:proto']);
     processManager.spawnChildProcessSync('npm', ['run', 'screenshot:webpack', '--', ...webpackArgs]);
+    logger.foldEnd('screenshot.build');
   },
 
   /**
@@ -46,15 +51,15 @@ module.exports = {
    * @private
    */
   async shouldBuild_() {
-    const cliArgs = new CliArgParser();
-    if (cliArgs.skipBuild) {
+    const cli = new Cli();
+    if (cli.skipBuild) {
       console.error('Skipping build step');
       return false;
     }
 
     const pid = await this.getExistingProcessId_();
     if (pid) {
-      console.error(`Build is already running (pid ${pid})`);
+      console.log(`Build is already running (pid ${pid})`);
       return false;
     }
 
@@ -66,11 +71,12 @@ module.exports = {
    * @private
    */
   async shouldWatch_() {
-    const cliArgs = new CliArgParser();
-    return cliArgs.watch;
+    const cli = new Cli();
+    return cli.watch;
   },
 
   /**
+   * TODO(acvdorak): Store PID in local text file instead of scanning through running processes
    * @return {!Promise<?number>}
    * @private
    */

@@ -16,15 +16,15 @@
 
 @import "../../../packages/mdc-fab/mixins";
 
-.custom-fab-extended-padding-and-icon-size {
+.custom-fab--extended-padding-and-icon-size {
   @include mdc-fab-extended-padding(12px, 24px);
   @include mdc-fab-icon-size(32px);
 }
 
-.custom-fab-extended-padding {
+.custom-fab--extended-padding {
   @include mdc-fab-extended-padding(16px, 24px);
 }
 
-.custom-fab-extended-label-padding {
+.custom-fab--extended-label-padding {
   @include mdc-fab-extended-label-padding(24px);
 }

@@ -15,12 +15,53 @@
  */
 
 module.exports = {
+  /**
+   * Path to the screenshot test directory in the git repo, relative to $PWD (the project root).
+   * MUST end with a trailing slash.
+   * @type {string}
+   */
+  TEST_DIR_RELATIVE_PATH: 'test/screenshot/',
+
+  /**
+   * Path to the JSON file that stores the URLs of approved ("golden") screenshot images.
+   * Assumed to be relative to $PWD (the root directory of the git repo).
+   * @type {string}
+   */
+  GOLDEN_JSON_RELATIVE_PATH: 'test/screenshot/golden.json',
+
+  /**
+   * Name of the Google Cloud Storage bucket to use for public file uploads.
+   * @type {string}
+   */
+  GCS_BUCKET: 'mdc-web-screenshot-tests',
+
+  /**
+   * Number of milliseconds to wait before retrying a concurrent CBT Selenium request.
+   * @type {number}
+   */
+  CBT_CONCURRENCY_POLL_INTERVAL_MS: 30 * 1000, // 30 seconds
+
+  /**
+   * Maximum number of milliseconds to wait before aborting a concurrent CBT Selenium request.
+   * @type {number}
+   */
+  CBT_CONCURRENCY_MAX_WAIT_MS: 10 * 60 * 1000, // 10 minutes
+
+  /**
+   * Number of milliseconds to wait for fonts to load on a test page in Selenium before giving up.
+   * @type {number}
+   */
+  SELENIUM_FONT_LOAD_WAIT_MS: 3000,
+
   ExitCode: {
-    UNKNOWN_ERROR: 1,
-    SIGINT: 2, // ctrl-c
-    SIGTERM: 3, // kill
-    UNSUPPORTED_CLI_COMMAND: 4,
-    HTTP_PORT_ALREADY_IN_USE: 5,
-    MISSING_ENV_VAR: 6,
+    OK: 0,
+    UNKNOWN_ERROR: 11,
+    SIGINT: 12, // ctrl-c
+    SIGTERM: 13, // kill
+    UNSUPPORTED_CLI_COMMAND: 14,
+    HTTP_PORT_ALREADY_IN_USE: 15,
+    MISSING_ENV_VAR: 16,
+    UNHANDLED_PROMISE_REJECTION: 17,
+    CHANGES_FOUND: 18,
   },
 };

@@ -11,7 +11,6 @@ Add the following to your `~/.bash_profile` or `~/.bashrc` file:
 ```bash
 export MDC_CBT_USERNAME='you@example.com'
 export MDC_CBT_AUTHKEY='example'
-export MDC_GCS_CREDENTIALS=$(< path/to/gcp-credentials.json)
 ```
 
 Credentials can be found here:
@@ -38,8 +37,10 @@ npm run screenshot:test
 You should see something like this in the terminal:
 
 ```
-Found 65 screenshot diffs!
-https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/06/18/22_57_35_482/report.html
+Changed 1 screenshot:
+  - mdc-fab/classes/baseline.html > desktop_windows_edge@latest
+
+https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/14/03_37_19_142/report/report.html
 ```
 
 ## Basic usage
@@ -47,7 +48,7 @@ https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/06/18/22_57
 ### Updating "golden" screenshots
 
 On the
-[report page](https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/06/18/22_57_35_482/report.html),
+[report page](https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/14/03_37_19_142/report/report.html),
 select the checkboxes for all screenshots you want to approve, and click the "Approve" button at the bottom of the page.
 
 This will display a modal dialog containing a CLI command to copy/paste:
@@ -55,7 +56,7 @@ This will display a modal dialog containing a CLI command to copy/paste:
 ```bash
 npm run screenshot:approve -- \
   --all \
-  --report=https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/06/18/22_57_35_482/report.json
+  --report=https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/14/03_37_19_142/report/report.json
 ```
 
 **IMPORTANT:** Note the `--` between the script name and its arguments. This is required by `npm`.
@@ -67,7 +68,7 @@ This command will update your local `test/screenshot/golden.json` file with the 
 You can rerun a subset of the tests without running the entire suite, filtering by browser and/or URL.
 
 On the
-[report page](https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/06/18/22_57_35_482/report.html),
+[report page](https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/14/03_37_19_142/report/report.html),
 select the checkboxes for all screenshots you want to retry, and click the "Retry" button at the bottom of the page.
 
 This will display a modal dialog containing a CLI command to copy/paste:
@@ -154,31 +155,90 @@ npm run screenshot:test -- \
 **NOTE:** Negative patterns _always_ take precedence over positive patterns, regardless of the order they appear in the
 command line.
 
-### Diffing against a local `golden.json` file
+### Diffing against other git branches and tags
 
-By default, screenshots are diffed against `origin/master:test/screenshot/golden.json`.
+By default, screenshots are diffed against your local `test/screenshot/golden.json` file.
+This enables incremental diff reports, which are typically smaller and easier to review.
 
-To diff against a local `golden.json` file, run:
-
-```bash
-npm run screenshot:test -- --diff-base=test/screenshot/golden.json
-```
-
-URLs are also supported:
+You can diff against a local/remote git branch, tag, or commit with the `--diff-base` flag:
 
 ```bash
-npm run screenshot:test -- --diff-base=https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/05/22/17_34_19_887/c8c29033e/golden.json
-```
-
-### Diffing against another branch
-
-By default, screenshots are diffed against `origin/master:test/screenshot/golden.json`.
-
-To diff against a different branch, run:
-
-```bash
+npm run screenshot:test -- --diff-base=origin/master
 npm run screenshot:test -- --diff-base=fix/fab/icon-alignment-ie11
+npm run screenshot:test -- --diff-base=v0.37.0
+npm run screenshot:test -- --diff-base=01abc11e0
 ```
+
+URLs and file paths are also supported:
+
+```bash
+npm run screenshot:test -- --diff-base=/tmp/golden.json
+npm run screenshot:test -- --diff-base=https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/05_07_59_278/golden.json
+```
+
+### Local Selenium browsers
+
+By default, screenshot tests run remotely on CrossBrowserTesting.com's Selenium VMs.
+
+However, it's also possible to run the tests on your own machine using the `--offline` CLI flag, which disables all
+external network requests. Local tests typically take about 1/4 as long to run as remote tests, which makes them useful 
+for rapid iterative development.
+
+You should expect to see a large number of rendering differences between your machine and CBT's VMs. The idea is to run
+the offline tests first with no local changes, approve the rendering diffs, and then begin making changes to the CSS.
+
+When you're ready to create a PR, you would then run the tests remotely on CBT.
+
+For example:
+
+1. Create a new feature branch:
+
+    ```bash
+    $ git checkout -b feat/button/fancy
+    ```
+
+2. Capture baseline screenshots in all browsers installed on the user's machine:
+
+    ```bash
+    $ npm run screenshot:test -- --url=mdc-button --retries=0 --offline
+    34 screenshots changed!
+    ```
+
+3. Approve rendering differences:
+
+    ```bash
+    $ npm run screenshot:approve -- --all --report=http://localhost:9000/advorak/2018/07/15/04_11_46_560/report/report.json
+    ```
+
+4. Rerun the tests locally - there should be zero diffs:
+
+    ```bash
+    $ npm run screenshot:test -- --url=mdc-button --retries=0 --offline
+    0 screenshots changed!
+    ```
+
+5. Make changes to a component's CSS:
+
+    ```bash
+    $ echo '.mdc-button:not(:disabled){color:red}' >> packages/mdc-button/mdc-button.scss
+    ```
+
+6. Rerun the tests locally:
+
+    ```bash
+    $ npm run screenshot:test -- --url=mdc-button --retries=0 --offline
+    30 screenshots changed!
+    ```
+
+7. Run the tests remotely and create a PR:
+
+    ```bash
+    $ npm run screenshot:test -- --url=mdc-button --retries=0
+    $ npm run screenshot:approve -- --all --report=https://.../report.json
+    $ git add test/screenshot/golden.json
+    $ git commit -m 'feat(button): Fancy'
+    $ git push -u origin
+    ```
 
 ## Writing tests
 
