@@ -197,16 +197,6 @@ test('adapter#setAttribute sets an attribute on the thumb element', () => {
   assert.equal(thumb.getAttribute('data-foo'), 'bar');
 });
 
-test('adapter#removeAttribute removes an attribute from the thumb element', () => {
-  const {root, component} = setupTest();
-  const thumb = root.querySelector('.mdc-slider__thumb');
-
-  thumb.setAttribute('data-foo', 'bar');
-  component.getDefaultFoundation().adapter_.removeAttribute('data-foo');
-
-  assert.isFalse(thumb.hasAttribute('data-foo'));
-});
-
 test('adapter#computeBoundingRect computes the client rect on the root element', () => {
   const {root, component} = setupTest();
   assert.deepEqual(
@@ -232,30 +222,6 @@ test('adapter#deregisterEventHandler removes an event listener from the root ele
   root.addEventListener('click', handler);
   component.getDefaultFoundation().adapter_.deregisterEventHandler('click', handler);
   domEvents.emit(root, 'click');
-
-  td.verify(handler(td.matchers.anything()), {times: 0});
-});
-
-test('adapter#registerThumbEventHandler adds an event listener to the thumb element', () => {
-  const {root, component} = setupTest();
-  const thumb = root.querySelector('.mdc-slider__thumb');
-  const handler = td.func('interactionHandler');
-
-  component.getDefaultFoundation().adapter_.registerThumbEventHandler('click', handler);
-  domEvents.emit(thumb, 'click');
-
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('adapter#deregisterThumbEventHandler removes an event listener from ' +
-     'the thumb element', () => {
-  const {root, component} = setupTest();
-  const thumb = root.querySelector('.mdc-slider__thumb');
-  const handler = td.func('interactionHandler');
-
-  thumb.addEventListener('click', handler);
-  component.getDefaultFoundation().adapter_.deregisterThumbEventHandler('click', handler);
-  domEvents.emit(thumb, 'click');
 
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
