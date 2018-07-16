@@ -85,7 +85,7 @@ class MDCList extends MDCComponent {
 
   /** @return Array<!Element>*/
   get listElements_() {
-    return [].slice.call(this.root_.querySelectorAll(strings.ITEMS_SELECTOR));
+    return [].slice.call(this.root_.querySelectorAll(strings.ENABLED_ITEMS_SELECTOR));
   }
 
   /** @param {boolean} value */
@@ -120,12 +120,37 @@ class MDCList extends MDCComponent {
       getListItemCount: () => this.listElements_.length,
       getFocusedElementIndex: () => this.listElements_.indexOf(document.activeElement),
       getListItemIndex: (node) => this.listElements_.indexOf(node),
-      setAttributeForElementIndex: (index, attr, value) => this.listElements_[index].setAttribute(attr, value),
-      removeAttributeForElementIndex: (index, attr) => this.listElements_[index].removeAttribute(attr),
-      addClassForElementIndex: (index, className) => this.listElements_[index].classList.add(className),
-      removeClassForElementIndex: (index, className) => this.listElements_[index].classList.remove(className),
+      setAttributeForElementIndex: (index, attr, value) => {
+        const element = this.listElements_[index];
+        if (element) {
+          element.setAttribute(attr, value);
+        }
+      },
+      removeAttributeForElementIndex: (index, attr) => {
+        const element = this.listElements_[index];
+        if (element) {
+          element.removeAttribute(attr);
+        }
+      },
+      addClassForElementIndex: (index, className) => {
+        const element = this.listElements_[index];
+        if (element) {
+          element.classList.add(className);
+        }
+      },
+      removeClassForElementIndex: (index, className) => {
+        const element = this.listElements_[index];
+        if (element) {
+          element.classList.remove(className);
+        }
+      },
       isListItem: (target) => target.classList.contains(cssClasses.LIST_ITEM_CLASS),
-      focusItemAtIndex: (index) => this.listElements_[index].focus(),
+      focusItemAtIndex: (index) => {
+        const element = this.listElements_[index];
+        if (element) {
+          element.focus();
+        }
+      },
       isElementFocusable: (ele) => {
         if (!ele) return false;
         let matches = Element.prototype.matches;
@@ -135,8 +160,8 @@ class MDCList extends MDCComponent {
         return matches.call(ele, strings.FOCUSABLE_CHILD_ELEMENTS);
       },
       setTabIndexForListItemChildren: (listItemIndex, tabIndexValue) => {
-        const listItemChildren = [].slice.call(this.listElements_[listItemIndex]
-          .querySelectorAll(strings.FOCUSABLE_CHILD_ELEMENTS));
+        const element = this.listElements_[listItemIndex];
+        const listItemChildren = [].slice.call(element.querySelectorAll(strings.FOCUSABLE_CHILD_ELEMENTS));
         listItemChildren.forEach((ele) => ele.setAttribute('tabindex', tabIndexValue));
       },
     })));

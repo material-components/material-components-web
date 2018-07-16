@@ -1141,6 +1141,10 @@
         [].slice.call(document.querySelectorAll('.mdc-list')).forEach(function(ele) {
           var list = mdc.list.MDCList.attachTo(ele);
           list.wrapFocus = true;
+
+          if (ele.parentElement.classList.contains('hero')) {
+            list.singleSelection = true;
+          }
         });
 
         addRippleToListItems(document.getElementById('leading-checkbox-list'));

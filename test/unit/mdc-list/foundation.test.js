@@ -130,6 +130,33 @@ test('#handleFocusOut does nothing if mdc-list-item is not on element or ancesto
   td.verify(mockAdapter.setTabIndexForListItemChildren(td.matchers.anything(), td.matchers.anything()), {times: 0});
 });
 
+test('#handleFocusIn does nothing if list item is from nested list', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const parentElement = {classList: ['mdc-list-item']};
+  const target = {classList: [], parentElement};
+  const event = {target};
+
+  td.when(mockAdapter.getListItemIndex(td.matchers.anything())).thenReturn(-1);
+  td.when(mockAdapter.isListItem(td.matchers.anything())).thenReturn(false, true);
+  foundation.handleFocusIn(event);
+
+  td.verify(mockAdapter.setTabIndexForListItemChildren(td.matchers.anything(), td.matchers.anything()), {times: 0});
+});
+
+
+test('#handleFocusOut does nothing if list item is from nested list', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const parentElement = {classList: ['mdc-list-item']};
+  const target = {classList: [], parentElement};
+  const event = {target};
+
+  td.when(mockAdapter.getListItemIndex(td.matchers.anything())).thenReturn(-1);
+  td.when(mockAdapter.isListItem(td.matchers.anything())).thenReturn(false, true);
+  foundation.handleFocusOut(event);
+
+  td.verify(mockAdapter.setTabIndexForListItemChildren(td.matchers.anything(), td.matchers.anything()), {times: 0});
+});
+
 test('#handleKeydown does nothing if the key is not used for navigation', () => {
   const {foundation, mockAdapter} = setupTest();
   const preventDefault = td.func('preventDefault');
@@ -465,7 +492,7 @@ test('#handleKeydown space key is triggered when singleSelection is true selects
   foundation.handleKeydown(event);
 
   td.verify(preventDefault(), {times: 1});
-  td.verify(mockAdapter.setAttributeForElementIndex(0, strings.ARIA_SELECTED, true));
+  td.verify(mockAdapter.setAttributeForElementIndex(0, strings.ARIA_SELECTED, true), {times: 1});
 });
 
 test('#handleKeydown space key is triggered 2x when singleSelection is true un-selects the list item', () => {
@@ -482,7 +509,7 @@ test('#handleKeydown space key is triggered 2x when singleSelection is true un-s
   foundation.handleKeydown(event);
 
   td.verify(preventDefault(), {times: 2});
-  td.verify(mockAdapter.removeAttributeForElementIndex(0, strings.ARIA_SELECTED));
+  td.verify(mockAdapter.removeAttributeForElementIndex(0, strings.ARIA_SELECTED), {times: 1});
 });
 
 test('#handleKeydown space key is triggered when singleSelection is true on second ' +
@@ -499,7 +526,7 @@ test('#handleKeydown space key is triggered when singleSelection is true on seco
   foundation.handleKeydown(event);
 
   td.verify(preventDefault(), {times: 1});
-  td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', 0));
+  td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', 0), {times: 1});
 });
 
 test('#handleKeydown space key is triggered 2x when singleSelection is true on second ' +
@@ -517,8 +544,8 @@ test('#handleKeydown space key is triggered 2x when singleSelection is true on s
   foundation.handleKeydown(event);
 
   td.verify(preventDefault(), {times: 2});
-  td.verify(mockAdapter.setAttributeForElementIndex(0, 'tabindex', 0));
-  td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', -1));
+  td.verify(mockAdapter.setAttributeForElementIndex(0, 'tabindex', 0), {times: 1});
+  td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', -1), {times: 1});
 });
 
 test('#handleKeydown space key is triggered and focused is moved to a different element', () => {
@@ -535,8 +562,8 @@ test('#handleKeydown space key is triggered and focused is moved to a different 
   td.when(mockAdapter.getFocusedElementIndex()).thenReturn(2);
   foundation.handleKeydown(event);
 
-  td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', -1));
-  td.verify(mockAdapter.setAttributeForElementIndex(2, 'tabindex', 0));
+  td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', -1), {times: 1});
+  td.verify(mockAdapter.setAttributeForElementIndex(2, 'tabindex', 0), {times: 1});
 });
 
 test('#handleClick when singleSelection=true on a list item should cause the list item to be selected', () => {
@@ -550,7 +577,7 @@ test('#handleClick when singleSelection=true on a list item should cause the lis
   td.when(mockAdapter.isListItem(td.matchers.anything())).thenReturn(true);
   foundation.handleClick(event);
 
-  td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', 0));
+  td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', 0), {times: 1});
 });
 
 test('#handleClick when singleSelection=true on a button subelement should not cause the list item to be selected',
@@ -586,3 +613,36 @@ test('#handleClick when singleSelection=true on an element not in a list item sh
 
     td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', 0), {times: 0});
   });
+
+test('#handleClick when singleSelection=true on the first element when already selected',
+  () => {
+    const {foundation, mockAdapter} = setupTest();
+    const preventDefault = td.func('preventDefault');
+    const target = {classList: []};
+    const event = {target, preventDefault};
+
+    td.when(mockAdapter.getFocusedElementIndex()).thenReturn(0);
+    td.when(mockAdapter.isElementFocusable(td.matchers.anything())).thenReturn(true);
+    td.when(mockAdapter.getListItemIndex(td.matchers.anything())).thenReturn(0);
+    foundation.setSingleSelection(true);
+    foundation.handleClick(event);
+    foundation.handleClick(event);
+
+    td.verify(mockAdapter.setAttributeForElementIndex(0, 'tabindex', 0), {times: 0});
+  });
+
+test('#focusFirstElement is called when the list is empty does not focus an element', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getListItemCount()).thenReturn(-1);
+  foundation.focusFirstElement();
+
+  td.verify(mockAdapter.focusItemAtIndex(td.matchers.anything()), {times: 0});
+});
+
+test('#focusLastElement is called when the list is empty does not focus an element', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getListItemCount()).thenReturn(-1);
+  foundation.focusLastElement();
+
+  td.verify(mockAdapter.focusItemAtIndex(td.matchers.anything()), {times: 0});
+});
