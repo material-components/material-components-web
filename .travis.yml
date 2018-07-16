@@ -1,5 +1,9 @@
 language: node_js
 branches:
+  # Only run Travis on:
+  #   A) Commits made directly to the `master` branch (i.e., merged PRs); and
+  #   B) PRs that will eventually be merged into `master`.
+  # This prevents excessive resource usage and CI slowness.
   only:
   - master
 matrix:
