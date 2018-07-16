@@ -32,10 +32,8 @@ class GitHubApi {
 
     try {
       token = require('../auth/github.json').api_key.personal_access_token;
-      console.log('GitHub credentials found!');
     } catch (err) {
       // Not running on Travis
-      console.log('GitHub credentials not found - skipping GitHub authentication');
       return;
     }
 
