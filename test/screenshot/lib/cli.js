@@ -25,12 +25,19 @@ const fs = require('mz/fs');
 const {GOLDEN_JSON_RELATIVE_PATH} = require('./constants');
 
 const Duration = require('./duration');
+const GitHubApi = require('./github-api');
 const GitRepo = require('./git-repo');
 
 const HTTP_URL_REGEX = new RegExp('^https?://');
 
 class Cli {
   constructor() {
+    /**
+     * @type {!GitHubApi}
+     * @private
+     */
+    this.gitHubApi_ = new GitHubApi();
+
     /**
      * @type {!GitRepo}
      * @private
@@ -274,6 +281,30 @@ Passing this option more than once is equivalent to passing a single comma-separ
 E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mobile'.
 `,
     });
+
+    this.addArg_(subparser, {
+      optionNames: ['--max-parallels'],
+      type: 'boolean',
+      description: `
+If this option is present, CBT tests will run the maximum number of parallel browser VMs allowed by our plan.
+The default behavior is to start 3 browsers if nobody else is running tests, or 1 browser if other tests are running.
+IMPORTANT: To ensure that other developers can run their tests too, only use this option during off-peak hours when you
+know nobody else is going to be running tests.
+This option is capped by A) our CBT account allowance, and B) the number of available VMs.
+`,
+    });
+
+    this.addArg_(subparser, {
+      optionNames: ['--retries'],
+      type: 'integer',
+      defaultValue: 3,
+      description: `
+Number of times to retry a screenshot that comes back with diffs. If you're not expecting any diffs, automatically
+retrying screenshots can help decrease noise from flaky browser rendering. However, if you're making a change that
+intentionally affects the rendered output, there's no point slowing down the test by retrying a bunch of screenshots
+that you know are going to have diffs.
+`,
+    });
   }
 
   /** @return {string} */
@@ -304,6 +335,16 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
   /** @return {string} */
   get diffBase() {
     return this.args_['--diff-base'];
+  }
+
+  /** @return {boolean} */
+  get maxParallels() {
+    return this.args_['--max-parallels'];
+  }
+
+  /** @return {number} */
+  get retries() {
+    return this.args_['--retries'];
   }
 
   /** @return {boolean} */
@@ -437,10 +478,51 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
   }
 
   /**
+   * TODO(acdvorak): Move this method out of Cli class - it doesn't belong here.
+   * @return {!Promise<!mdc.proto.DiffBase>}
+   */
+  async parseGoldenDiffBase() {
+    /** @type {?mdc.proto.GitRevision} */
+    const travisGitRevision = await this.getTravisGitRevision_();
+    if (travisGitRevision) {
+      return DiffBase.create({
+        type: DiffBase.Type.GIT_REVISION,
+        git_revision: travisGitRevision,
+      });
+    }
+    return this.parseDiffBase();
+  }
+
+  /**
+   * TODO(acdvorak): Move this method out of Cli class - it doesn't belong here.
    * @param {string} rawDiffBase
    * @return {!Promise<!mdc.proto.DiffBase>}
    */
   async parseDiffBase(rawDiffBase = this.diffBase) {
+    const isOnline = await this.isOnline();
+    const isRealBranch = (branch) => Boolean(branch) && !['master', 'origin/master', 'HEAD'].includes(branch);
+
+    /** @type {!mdc.proto.DiffBase} */
+    const parsedDiffBase = await this.parseDiffBase_(rawDiffBase);
+    const parsedBranch = parsedDiffBase.git_revision ? parsedDiffBase.git_revision.branch : null;
+
+    if (isOnline && isRealBranch(parsedBranch)) {
+      const prNumber = await this.gitHubApi_.getPullRequestNumber(parsedBranch);
+      if (prNumber) {
+        parsedDiffBase.git_revision.pr_number = prNumber;
+      }
+    }
+
+    return parsedDiffBase;
+  }
+
+  /**
+   * TODO(acdvorak): Move this method out of Cli class - it doesn't belong here.
+   * @param {string} rawDiffBase
+   * @return {!Promise<!mdc.proto.DiffBase>}
+   * @private
+   */
+  async parseDiffBase_(rawDiffBase = this.diffBase) {
     // Diff against a public `golden.json` URL.
     // E.g.: `--diff-base=https://storage.googleapis.com/.../golden.json`
     const isUrl = HTTP_URL_REGEX.test(rawDiffBase);
@@ -452,8 +534,7 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
     // E.g.: `--diff-base=/tmp/golden.json`
     const isLocalFile = await fs.exists(rawDiffBase);
     if (isLocalFile) {
-      const fileDB = this.createLocalFileDiffBase_(rawDiffBase);
-      return this.createLocalBranchDiffBase_(await this.gitRepo_.getBranchName(), fileDB.local_file_path);
+      return this.createLocalFileDiffBase_(rawDiffBase);
     }
 
     const [inputGoldenRef, inputGoldenPath] = rawDiffBase.split(':');
@@ -486,14 +567,56 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
   }
 
   /**
+   * @return {?Promise<!mdc.proto.GitRevision>}
+   * @private
+   */
+  async getTravisGitRevision_() {
+    const travisBranch = process.env.TRAVIS_BRANCH;
+    const travisTag = process.env.TRAVIS_TAG;
+    const travisPrNumber = Number(process.env.TRAVIS_PULL_REQUEST);
+    const travisPrBranch = process.env.TRAVIS_PULL_REQUEST_BRANCH;
+    const travisPrSha = process.env.TRAVIS_PULL_REQUEST_SHA;
+
+    if (travisPrNumber) {
+      return GitRevision.create({
+        type: GitRevision.Type.TRAVIS_PR,
+        golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
+        commit: await this.gitRepo_.getFullCommitHash(travisPrSha),
+        branch: travisPrBranch || travisBranch,
+        pr_number: travisPrNumber,
+      });
+    }
+
+    if (travisTag) {
+      return GitRevision.create({
+        type: GitRevision.Type.REMOTE_TAG,
+        golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
+        commit: await this.gitRepo_.getFullCommitHash(travisTag),
+        tag: travisTag,
+      });
+    }
+
+    if (travisBranch) {
+      return GitRevision.create({
+        type: GitRevision.Type.LOCAL_BRANCH,
+        golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
+        commit: await this.gitRepo_.getFullCommitHash(travisBranch),
+        branch: travisBranch,
+      });
+    }
+
+    return null;
+  }
+
+  /**
    * @param {string} publicUrl
    * @return {!mdc.proto.DiffBase}
    * @private
    */
   createPublicUrlDiffBase_(publicUrl) {
     return DiffBase.create({
-      input_string: publicUrl,
       type: DiffBase.Type.PUBLIC_URL,
+      input_string: publicUrl,
       public_url: publicUrl,
     });
   }
@@ -505,9 +628,10 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
    */
   createLocalFileDiffBase_(localFilePath) {
     return DiffBase.create({
-      input_string: localFilePath,
       type: DiffBase.Type.FILE_PATH,
+      input_string: localFilePath,
       local_file_path: localFilePath,
+      is_default_local_file: localFilePath === GOLDEN_JSON_RELATIVE_PATH,
     });
   }
 
@@ -521,6 +645,7 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
       git_revision: GitRevision.create({
+        type: GitRevision.Type.COMMIT,
         input_string: `${commit}:${goldenJsonFilePath}`, // TODO(acdvorak): Document the ':' separator format
         golden_json_file_path: goldenJsonFilePath,
         commit: commit,
@@ -538,11 +663,12 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
     const allRemoteNames = await this.gitRepo_.getRemoteNames();
     const remote = allRemoteNames.find((curRemoteName) => remoteRef.startsWith(curRemoteName + '/'));
     const branch = remoteRef.substr(remote.length + 1); // add 1 for forward-slash separator
-    const commit = await this.gitRepo_.getShortCommitHash(remoteRef);
+    const commit = await this.gitRepo_.getFullCommitHash(remoteRef);
 
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
       git_revision: GitRevision.create({
+        type: GitRevision.Type.REMOTE_BRANCH,
         input_string: `${remoteRef}:${goldenJsonFilePath}`, // TODO(acdvorak): Document the ':' separator format
         golden_json_file_path: goldenJsonFilePath,
         commit,
@@ -559,11 +685,12 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
    * @private
    */
   async createRemoteTagDiffBase_(tagRef, goldenJsonFilePath) {
-    const commit = await this.gitRepo_.getShortCommitHash(tagRef);
+    const commit = await this.gitRepo_.getFullCommitHash(tagRef);
 
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
       git_revision: GitRevision.create({
+        type: GitRevision.Type.REMOTE_TAG,
         input_string: `${tagRef}:${goldenJsonFilePath}`, // TODO(acdvorak): Document the ':' separator format
         golden_json_file_path: goldenJsonFilePath,
         commit,
@@ -580,10 +707,11 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
    * @private
    */
   async createLocalBranchDiffBase_(branch, goldenJsonFilePath) {
-    const commit = await this.gitRepo_.getShortCommitHash(branch);
+    const commit = await this.gitRepo_.getFullCommitHash(branch);
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
       git_revision: GitRevision.create({
+        type: GitRevision.Type.LOCAL_BRANCH,
         input_string: `${branch}:${goldenJsonFilePath}`, // TODO(acdvorak): Document the ':' separator format
         golden_json_file_path: goldenJsonFilePath,
         commit,

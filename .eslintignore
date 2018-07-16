@@ -2,4 +2,3 @@
 packages/*/dist
 **/out
 *.pb.js
-**/fixture.js
