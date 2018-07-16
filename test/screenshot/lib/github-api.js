@@ -121,7 +121,8 @@ class GitHubApi {
    * @private
    */
   async createStatus_({state, targetUrl, description = undefined}) {
-    return await this.octocat_.repos.createStatus({
+    console.log('createStatus_():', {state, targetUrl, description});
+    const response = await this.octocat_.repos.createStatus({
       owner: 'material-components',
       repo: 'material-components-web',
       sha: await this.gitRepo_.getFullCommitHash(),
@@ -130,6 +131,7 @@ class GitHubApi {
       description,
       context: 'screenshot-test/butter-bot',
     });
+    console.log('response:', response);
   }
 
   /**
