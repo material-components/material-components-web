@@ -18,6 +18,7 @@
 import MDCComponent from '@material/base/component';
 
 import {MDCRipple} from '@material/ripple/index';
+import {strings} from './constants';
 import MDCSliderAdapter from './adapter';
 import MDCSliderFoundation from './foundation';
 
@@ -84,7 +85,7 @@ class MDCSlider extends MDCComponent {
    * @private
    */
   initRipple_() {
-    const ripple = new MDCRipple(this.root_.querySelector('.mdc-slider__thumb'));
+    const ripple = new MDCRipple(this.root_.querySelector(strings.THUMB_SELECTOR));
     ripple.unbounded = true;
     return ripple;
   }
@@ -95,8 +96,8 @@ class MDCSlider extends MDCComponent {
   }
 
   initialize() {
-    this.thumb_ = this.root_.querySelector('.mdc-slider__thumb');
-    this.trackFill_ = this.root_.querySelector('.mdc-slider__track-fill');
+    this.thumb_ = this.root_.querySelector(strings.THUMB_SELECTOR);
+    this.trackFill_ = this.root_.querySelector(strings.TRACK_FILL_SELECTOR);
   }
 
   /**
@@ -110,7 +111,6 @@ class MDCSlider extends MDCComponent {
         removeClass: (className) => this.root_.classList.remove(className),
         getAttribute: (name) => this.thumb_.getAttribute(name),
         setAttribute: (name, value) => this.thumb_.setAttribute(name, value),
-        removeAttribute: (name) => this.thumb_.removeAttribute(name),
         computeBoundingRect: () => this.root_.getBoundingClientRect(),
         eventTargetHasClass: (target, className) => target.classList.contains(className),
         registerEventHandler: (type, handler) => {
@@ -138,10 +138,10 @@ class MDCSlider extends MDCComponent {
           window.removeEventListener('resize', handler);
         },
         notifyInput: () => {
-          this.emit('MDCSlider:input', this);
+          this.emit(strings.INPUT_EVENT, this);
         },
         notifyChange: () => {
-          this.emit('MDCSlider:change', this);
+          this.emit(strings.CHANGE_EVENT, this);
         },
         setThumbStyleProperty: (propertyName, value) => {
           this.thumb_.style.setProperty(propertyName, value);
@@ -163,10 +163,10 @@ class MDCSlider extends MDCComponent {
   }
 
   initialSyncWithDOM() {
-    const origValueNow = parseFloat(this.thumb_.getAttribute('aria-valuenow'));
-    this.min = parseFloat(this.thumb_.getAttribute('aria-valuemin')) || this.min;
-    this.max = parseFloat(this.thumb_.getAttribute('aria-valuemax')) || this.max;
-    this.step = parseFloat(this.thumb_.getAttribute('data-step')) || this.step;
+    const origValueNow = parseFloat(this.thumb_.getAttribute(strings.ARIA_VALUENOW));
+    this.min = parseFloat(this.thumb_.getAttribute(strings.ARIA_VALUEMIN)) || this.min;
+    this.max = parseFloat(this.thumb_.getAttribute(strings.ARIA_VALUEMAX)) || this.max;
+    this.step = parseFloat(this.thumb_.getAttribute(strings.DATA_STEP)) || this.step;
     this.value = origValueNow || this.value;
   }
 

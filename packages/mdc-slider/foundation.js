@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 
+import {strings, cssClasses} from './constants';
 import MDCSliderAdapter from './adapter';
 
 import MDCFoundation from '@material/base/foundation';
@@ -45,6 +46,11 @@ const UP_EVENTS = ['mouseup', 'pointerup', 'touchend'];
  * @extends {MDCFoundation<!MDCSliderAdapter>}
  */
 class MDCSliderFoundation extends MDCFoundation {
+  /** @return enum {string} */
+  static get strings() {
+    return strings;
+  }
+
   /** @return {!MDCSliderAdapter} */
   static get defaultAdapter() {
     return /** @type {!MDCSliderAdapter} */ ({
@@ -53,7 +59,6 @@ class MDCSliderFoundation extends MDCFoundation {
       removeClass: () => {},
       getAttribute: () => {},
       setAttribute: () => {},
-      removeAttribute: () => {},
       computeBoundingRect: () => {},
       eventTargetHasClass: () => {},
       registerEventHandler: () => {},
@@ -156,11 +161,11 @@ class MDCSliderFoundation extends MDCFoundation {
   /** @param {number} max */
   setMax(max) {
     if (max < this.min_) {
-      throw new Error('Cannot set max to be less than the slider\'s minimum value');
+      return;
     }
     this.max_ = max;
     this.setValue_(this.value_);
-    this.adapter_.setAttribute('aria-valuemax', String(this.max_));
+    this.adapter_.setAttribute(strings.ARIA_VALUEMAX, String(this.max_));
   }
 
   /** @return {number} */
@@ -171,11 +176,11 @@ class MDCSliderFoundation extends MDCFoundation {
   /** @param {number} min */
   setMin(min) {
     if (min > this.max_) {
-      throw new Error('Cannot set min to be greater than the slider\'s maximum value');
+      return;
     }
     this.min_ = min;
     this.setValue_(this.value_);
-    this.adapter_.setAttribute('aria-valuemin', String(this.min_));
+    this.adapter_.setAttribute(strings.ARIA_VALUEMIN, String(this.min_));
   }
 
   /** @return {number} */
@@ -186,11 +191,11 @@ class MDCSliderFoundation extends MDCFoundation {
   /** @param {number} step */
   setStep(step) {
     if (step < 0) {
-      throw new Error('Step cannot be set to a negative number');
+      return;
     }
     this.step_ = step;
     this.setValue_(this.value_);
-    this.adapter_.setAttribute('data-step', String(this.step_));
+    this.adapter_.setAttribute(strings.DATA_STEP, String(this.step_));
   }
 
   /**
@@ -215,6 +220,9 @@ class MDCSliderFoundation extends MDCFoundation {
       this.interactionMoveHandler_(evt);
     };
 
+    // Note: endHandler is [de]registered on ALL potential pointer-related release event types, since some browsers
+    // do not always fire these consistently in pairs.
+    // (See https://github.com/material-components/material-components-web/issues/1192)
     const endHandler = () => {
       this.interactionEndHandler_();
       this.adapter_.deregisterBodyEventHandler(MOVE_EVENT_MAP[evt.type], moveHandler);
@@ -237,7 +245,6 @@ class MDCSliderFoundation extends MDCFoundation {
 
   /**
    * Called when the user's interaction with the slider ends
-   * @private
    */
   handleInteractionEnd() {
     this.setActive_(false);
@@ -348,11 +355,14 @@ class MDCSliderFoundation extends MDCFoundation {
       value = this.max_;
     }
     this.value_ = value;
-    this.adapter_.setAttribute('aria-valuenow', String(this.value_));
+    this.adapter_.setAttribute(strings.ARIA_VALUENOW, String(this.value_));
     this.updateUIForCurrentValue_();
     this.adapter_.notifyInput();
   }
 
+  /**
+   * Updates the track-fill and thumb style properties to reflect current value
+   */
   updateUIForCurrentValue_() {
     const pctComplete = (this.value_ - this.min_) / (this.max_ - this.min_);
     const translatePx = pctComplete * this.rect_.width;
@@ -379,7 +389,7 @@ class MDCSliderFoundation extends MDCFoundation {
    */
   setActive_(active) {
     this.active_ = active;
-    this.toggleClass_('mdc-slider--active', this.active_);
+    this.toggleClass_(cssClasses.ACTIVE, this.active_);
   }
 
   /**
@@ -388,7 +398,7 @@ class MDCSliderFoundation extends MDCFoundation {
    */
   setInTransit_(inTransit) {
     this.inTransit_ = inTransit;
-    this.toggleClass_('mdc-slider--in-transit', this.inTransit_);
+    this.toggleClass_(cssClasses.IN_TRANSIT, this.inTransit_);
   }
 
   /**

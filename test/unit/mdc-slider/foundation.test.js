@@ -28,9 +28,13 @@ suite('MDCSliderFoundation');
 
 const TRANSFORM_PROP = getCorrectPropertyName(window, 'transform');
 
+test('exports strings', () => {
+  assert.property(MDCSliderFoundation, 'strings');
+});
+
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSliderFoundation, [
-    'hasClass', 'addClass', 'removeClass', 'getAttribute', 'setAttribute', 'removeAttribute',
+    'hasClass', 'addClass', 'removeClass', 'getAttribute', 'setAttribute',
     'computeBoundingRect', 'eventTargetHasClass', 'registerEventHandler', 'deregisterEventHandler',
     'registerThumbEventHandler', 'deregisterThumbEventHandler',
     'registerBodyEventHandler', 'deregisterBodyEventHandler', 'registerWindowResizeHandler',
@@ -189,7 +193,7 @@ test('#setValue clamps the value to the minimum value if given value is less tha
   raf.restore();
 });
 
-test('#setValue clamps the value to the maximum value if given value is less than the maximum', () => {
+test('#setValue clamps the value to the maximum value if given value is more than the maximum', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
 
@@ -281,7 +285,7 @@ test('#getMax/#setMax retrieves / sets the maximum value, respectively', () => {
   raf.restore();
 });
 
-test('#setMax throws if the maximum value given is less than the minimum value', () => {
+test('#setMax no-op if the maximum value given is less than the minimum value', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
 
@@ -289,9 +293,10 @@ test('#setMax throws if the maximum value given is less than the minimum value',
   foundation.init();
   raf.flush();
 
+  foundation.setMax(100);
   foundation.setMin(50);
-  assert.throws(() => foundation.setMax(49));
-
+  foundation.setMax(49);
+  assert.equal(foundation.getMax(), 100);
   raf.restore();
 });
 
@@ -363,7 +368,7 @@ test('#getMin/#setMin retrieves / sets the minimum value, respectively', () => {
   raf.restore();
 });
 
-test('#setMin throws if the minimum value given is greater than the maximum value', () => {
+test('#setMin no-op if the minimum value given is greater than the maximum value', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
 
@@ -371,9 +376,11 @@ test('#setMin throws if the minimum value given is greater than the maximum valu
   foundation.init();
   raf.flush();
 
+  foundation.setMin(0);
   foundation.setMax(10);
-  assert.throws(() => foundation.setMin(11));
+  foundation.setMin(11);
 
+  assert.equal(foundation.getMin(), 0);
   raf.restore();
 });
 
@@ -445,7 +452,7 @@ test('#getStep/#setStep retrieves / sets the step value, respectively', () => {
   raf.restore();
 });
 
-test('#setStep throws if the step value given is less than 0', () => {
+test('#setStep no-op if the step value given is less than 0', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
 
@@ -453,7 +460,10 @@ test('#setStep throws if the step value given is less than 0', () => {
   foundation.init();
   raf.flush();
 
-  assert.throws(() => foundation.setStep(-1));
+  foundation.setStep(5);
+  foundation.setStep(-1);
+
+  assert.equal(foundation.getStep(), 5);
 
   raf.restore();
 });

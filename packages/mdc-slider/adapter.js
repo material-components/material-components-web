@@ -59,12 +59,6 @@ class MDCSliderAdapter {
   setAttribute(name, value) {}
 
   /**
-   * Removes attribute name from slider Element
-   * @param {string} name
-   */
-  removeAttribute(name) {}
-
-  /**
    * Returns the bounding client rect for the slider Element
    * @return {?ClientRect}
    */
