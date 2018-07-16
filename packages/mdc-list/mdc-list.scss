@@ -90,6 +90,11 @@
   @include mdc-rtl-reflexive-property(margin, auto, 0, ".mdc-list-item");
 }
 
+.mdc-list-item__text {
+  line-height: normal;
+  align-self: flex-start;
+}
+
 .mdc-list-item__text,
 .mdc-list-item__secondary-text {
   @include mdc-typography-overflow-ellipsis;
@@ -99,6 +104,14 @@
 
 .mdc-list-item__secondary-text {
   @include mdc-typography(body2);
+}
+
+.mdc-list-item__primary-text {
+  @include mdc-typography-text-baseline(32px);
+}
+
+.mdc-list-item__secondary-text {
+  @include mdc-typography-text-baseline(20px, $trailing: false);
 }
 
 // Match the font size to the primary text when dense

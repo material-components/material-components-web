@@ -40,3 +40,29 @@
   white-space: nowrap;
   overflow: hidden;
 }
+
+@mixin mdc-typography-text-baseline($size, $trailing: true) {
+  $offset: ($size * 25) / 100;
+
+  &::before {
+    display: inline-block;
+    width: 0;
+    height: $size;
+    content: "";
+    vertical-align: 0;
+  }
+
+  @if $trailing {
+    &::after {
+      display: inline-block;
+      width: 0;
+      height: $offset;
+      content: "";
+      vertical-align: -1 * $offset;
+    }
+
+    & + * {
+      margin-top: -1 * $offset;
+    }
+  }
+}

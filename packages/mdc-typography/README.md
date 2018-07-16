@@ -97,6 +97,7 @@ Mixin | Description
 `mdc-typography-base` | Sets the font to Roboto
 `mdc-typography($style)` | Applies one of the typography styles, including setting the font to Roboto
 `mdc-typography-overflow-ellipsis` | Truncates overflow text to one line with an ellipsis
+`mdc-typography-text-baseline` | Sets the baseline height of a text element from top.
 
 > **A note about `mdc-typography-overflow-ellipsis`**, `mdc-typography-overflow-ellipsis` should only be used if the element is `display: block` or `display: inline-block`.
 
