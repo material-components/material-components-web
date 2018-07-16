@@ -55,17 +55,11 @@ class MDCTooltipFoundation extends MDCFoundation {
     /** @private {?number} */
     this.showTimeout_ = null;
 
-    /** @private {?number} */
-    this.hideTimeout_ = null;
-
     /** @public {number} */
     this.gap = 12;
 
     /** @public {number} */
-    this.showDelay = 0;
-
-    /** @public {number} */
-    this.hideDelay = 1500;
+    this.showDelay = 1500;
   }
 
   /**
@@ -110,19 +104,7 @@ class MDCTooltipFoundation extends MDCFoundation {
     this.showDelayed();
   }
 
-  verifyPosition_(top, left) {
-    const ctrlRect = this.adapter_.getControllerBoundingRect();
-
-    const rightEdge = ctrlRect.right + this.gap + this.adapter_.getRootWidth();
-    const bottomEdge = ctrlRect.bottom + this.gap + this.adapter_.getRootHeight();
-
-    return  top > 0 && 
-            left > 0 && 
-            rightEdge < this.adapter_.getWindowWidth() && 
-            bottomEdge < this.adapter_.getWindowHeight();
-  }
-
-  calcDirection_() {
+  calcPosition_() {
     const ctrlRect = this.adapter_.getControllerBoundingRect();
 
     const tooltipHeight = this.adapter_.getRootHeight();
@@ -167,20 +149,7 @@ class MDCTooltipFoundation extends MDCFoundation {
       }
     }
 
-    let calculatedPos = this.calcDirection_();
-
-    if(!this.verifyPosition_(calculatedPos.top, calculatedPos.left)) {
-      if (this.direction_ === 'bottom') {
-        this.direction_ = 'top';
-      } else if (this.direction_ === 'right') {
-        this.direction_ = 'left';
-      } else if (this.direction_ === 'left') {
-        this.direction_ = 'right';
-      } else {
-        this.direction_ = 'bottom';
-      }
-      calculatedPos = this.calcDirection_();
-    }
+    const calculatedPos = this.calcPosition_();
 
     this.adapter_.setStyle('top', calculatedPos.top.toString() + 'px');
     this.adapter_.setStyle('left', calculatedPos.left.toString() + 'px');
@@ -196,9 +165,6 @@ class MDCTooltipFoundation extends MDCFoundation {
     this.setDirection_();
     this.displayed_ = true;
     this.adapter_.addClass(cssClasses.SHOW);
-    this.hideTimeout_ = setTimeout(() => {
-      this.hide();
-    }, this.hideDelay);
   }
 
   hide() {
@@ -207,13 +173,11 @@ class MDCTooltipFoundation extends MDCFoundation {
     this.displayed_ = false;
 
     clearTimeout(this.showTimeout_);
-    clearTimeout(this.hideTimeout_);
   }
 
   destroy() {
     this.removeEventListeners_();
     clearTimeout(this.showTimeout_);
-    clearTimeout(this.hideTimeout_);
   }
 }
 
