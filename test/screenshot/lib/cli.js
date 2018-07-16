@@ -663,7 +663,7 @@ that you know are going to have diffs.
     const allRemoteNames = await this.gitRepo_.getRemoteNames();
     const remote = allRemoteNames.find((curRemoteName) => remoteRef.startsWith(curRemoteName + '/'));
     const branch = remoteRef.substr(remote.length + 1); // add 1 for forward-slash separator
-    const commit = await this.gitRepo_.getShortCommitHash(remoteRef);
+    const commit = await this.gitRepo_.getFullCommitHash(remoteRef);
 
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
@@ -685,7 +685,7 @@ that you know are going to have diffs.
    * @private
    */
   async createRemoteTagDiffBase_(tagRef, goldenJsonFilePath) {
-    const commit = await this.gitRepo_.getShortCommitHash(tagRef);
+    const commit = await this.gitRepo_.getFullCommitHash(tagRef);
 
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
@@ -707,7 +707,7 @@ that you know are going to have diffs.
    * @private
    */
   async createLocalBranchDiffBase_(branch, goldenJsonFilePath) {
-    const commit = await this.gitRepo_.getShortCommitHash(branch);
+    const commit = await this.gitRepo_.getFullCommitHash(branch);
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
       git_revision: GitRevision.create({

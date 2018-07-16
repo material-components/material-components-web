@@ -70,14 +70,6 @@ class GitRepo {
    * @param {string=} ref
    * @return {!Promise<string>}
    */
-  async getShortCommitHash(ref = 'HEAD') {
-    return this.exec_('revparse', ['--short', ref]);
-  }
-
-  /**
-   * @param {string=} ref
-   * @return {!Promise<string>}
-   */
   async getBranchName(ref = 'HEAD') {
     return this.exec_('revparse', ['--abbrev-ref', ref]);
   }
