@@ -61,6 +61,7 @@ class GitHubApi {
    * @return {Promise<void>}
    */
   async setPullRequestStatus(reportData) {
+    const meta = reportData.meta;
     const prNumber = Number(process.env.TRAVIS_PULL_REQUEST);
     if (!prNumber) {
       return;

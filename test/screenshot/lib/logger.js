@@ -80,6 +80,7 @@ class Logger {
 
     this.foldStartTimes_.set(foldId, Date.now());
 
+    console.log('');
     if (this.isTravisJob_()) {
       // See https://github.com/travis-ci/docs-travis-ci-com/issues/949#issuecomment-276755003
       console.log(`travis_fold:start:${foldId}\n${colorMessage}`);
@@ -87,6 +88,7 @@ class Logger {
     } else {
       console.log(colorMessage);
     }
+    console.log('');
   }
 
   /**
