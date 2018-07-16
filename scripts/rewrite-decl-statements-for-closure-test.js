@@ -211,7 +211,12 @@ function transform(srcFile, rootDir) {
   }
 
   // Specify goog.module after the @license comment and append newline at the end of the file.
-  const pos = outputCode.indexOf(' */') + 3;
+  // First, get the first occurence of a multiline comment terminator with 0 or more preceding whitespace characters.
+  const result = /\s*\*\//.exec(outputCode);
+  // Then, get the index of that first matching character set plus the length of the matching characters, plus one
+  // extra character for more space. We now have the position at which we need to inject the "goog.module(...)"
+  // declaration and can assemble the module-declared code. Yay!
+  const pos = result.index + result[0].length + 1;
   outputCode = outputCode.substr(0, pos) + '\ngoog.module(\'' + packageStr + '\');\n' + outputCode.substr(pos);
   fs.writeFileSync(srcFile, outputCode, 'utf8');
   logProgress(`[rewrite] ${srcFile}`);
