@@ -161,7 +161,7 @@ test('#adapter.focusItemAtIndex does not throw an error if element at index is u
   document.body.appendChild(root);
   const func = () => {
     component.getDefaultFoundation().adapter_.focusItemAtIndex(5);
-  }
+  };
   assert.doesNotThrow(func);
   document.body.removeChild(root);
 });
