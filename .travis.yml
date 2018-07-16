@@ -2,6 +2,7 @@ language: node_js
 branches:
   only:
     - master
+    - feat/slider
 matrix:
   include:
     - node_js: 8

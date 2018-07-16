@@ -28,11 +28,14 @@ suite('MDCSliderFoundation');
 
 const TRANSFORM_PROP = getCorrectPropertyName(window, 'transform');
 
+test('exports strings', () => {
+  assert.property(MDCSliderFoundation, 'strings');
+});
+
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSliderFoundation, [
-    'hasClass', 'addClass', 'removeClass', 'getAttribute', 'setAttribute', 'removeAttribute',
+    'hasClass', 'addClass', 'removeClass', 'getAttribute', 'setAttribute',
     'computeBoundingRect', 'registerEventHandler', 'deregisterEventHandler',
-    'registerThumbEventHandler', 'deregisterThumbEventHandler',
     'registerBodyEventHandler', 'deregisterBodyEventHandler', 'registerWindowResizeHandler',
     'deregisterWindowResizeHandler', 'notifyInput', 'notifyChange', 'setThumbStyleProperty',
     'setTrackFillStyleProperty', 'focusThumb', 'activateRipple',
@@ -68,9 +71,6 @@ test('#init registers all necessary event handlers for the component', () => {
   td.verify(mockAdapter.registerEventHandler('mousedown', isA(Function)));
   td.verify(mockAdapter.registerEventHandler('pointerdown', isA(Function)));
   td.verify(mockAdapter.registerEventHandler('touchstart', isA(Function)));
-  td.verify(mockAdapter.registerThumbEventHandler('mousedown', isA(Function)));
-  td.verify(mockAdapter.registerThumbEventHandler('pointerdown', isA(Function)));
-  td.verify(mockAdapter.registerThumbEventHandler('touchstart', isA(Function)));
   td.verify(mockAdapter.registerWindowResizeHandler(isA(Function)));
 
   raf.restore();
@@ -101,9 +101,6 @@ test('#destroy deregisters all component event handlers registered during init()
   td.verify(mockAdapter.deregisterEventHandler('mousedown', isA(Function)));
   td.verify(mockAdapter.deregisterEventHandler('pointerdown', isA(Function)));
   td.verify(mockAdapter.deregisterEventHandler('touchstart', isA(Function)));
-  td.verify(mockAdapter.deregisterThumbEventHandler('mousedown', isA(Function)));
-  td.verify(mockAdapter.deregisterThumbEventHandler('pointerdown', isA(Function)));
-  td.verify(mockAdapter.deregisterThumbEventHandler('touchstart', isA(Function)));
   td.verify(mockAdapter.deregisterWindowResizeHandler(isA(Function)));
 });
 
@@ -185,7 +182,7 @@ test('#setValue clamps the value to the minimum value if given value is less tha
   raf.restore();
 });
 
-test('#setValue clamps the value to the maximum value if given value is less than the maximum', () => {
+test('#setValue clamps the value to the maximum value if given value is more than the maximum', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
 
@@ -277,7 +274,7 @@ test('#getMax/#setMax retrieves / sets the maximum value, respectively', () => {
   raf.restore();
 });
 
-test('#setMax throws if the maximum value given is less than the minimum value', () => {
+test('#setMax no-op if the maximum value given is less than the minimum value', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
 
@@ -285,9 +282,10 @@ test('#setMax throws if the maximum value given is less than the minimum value',
   foundation.init();
   raf.flush();
 
+  foundation.setMax(100);
   foundation.setMin(50);
-  assert.throws(() => foundation.setMax(49));
-
+  foundation.setMax(49);
+  assert.equal(foundation.getMax(), 100);
   raf.restore();
 });
 
@@ -359,7 +357,7 @@ test('#getMin/#setMin retrieves / sets the minimum value, respectively', () => {
   raf.restore();
 });
 
-test('#setMin throws if the minimum value given is greater than the maximum value', () => {
+test('#setMin no-op if the minimum value given is greater than the maximum value', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
 
@@ -367,9 +365,11 @@ test('#setMin throws if the minimum value given is greater than the maximum valu
   foundation.init();
   raf.flush();
 
+  foundation.setMin(0);
   foundation.setMax(10);
-  assert.throws(() => foundation.setMin(11));
+  foundation.setMin(11);
 
+  assert.equal(foundation.getMin(), 0);
   raf.restore();
 });
 

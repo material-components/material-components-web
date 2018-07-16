@@ -22,10 +22,9 @@ suite('MDCSliderFoundation - General Events');
 
 test('on window resize re-lays out the component', () => {
   const {foundation, mockAdapter, raf} = setupTest();
-  const {isA} = td.matchers;
   let resizeHandler;
 
-  td.when(mockAdapter.registerWindowResizeHandler(isA(Function))).thenDo((fn) => {
+  td.when(mockAdapter.registerWindowResizeHandler(td.matchers.isA(Function))).thenDo((fn) => {
     resizeHandler = fn;
   });
   td.when(mockAdapter.computeBoundingRect()).thenReturn(
