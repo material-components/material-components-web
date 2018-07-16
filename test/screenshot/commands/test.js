@@ -18,24 +18,36 @@
 
 const BuildCommand = require('./build');
 const Controller = require('../lib/controller');
-const {ExitCode} = require('../lib/constants');
+const GitHubApi = require('../lib/github-api');
 
 module.exports = {
   async runAsync() {
     await BuildCommand.runAsync();
     const controller = new Controller();
+    const gitHubApi = new GitHubApi();
 
-    return controller.initForTest()
-      .then((runReport) => controller.uploadAllAssets(runReport), handleError)
-      .then((runReport) => controller.captureAllPages(runReport), handleError)
-      .then((runReport) => controller.diffGoldenJson(runReport), handleError)
-      .then((runReport) => controller.uploadDiffReport(runReport), handleError)
-      .catch(handleError)
-    ;
+    /** @type {!mdc.proto.ReportData} */
+    const reportData = await controller.initForCapture();
 
-    function handleError(err) {
-      console.error(err);
-      process.exit(ExitCode.UNKNOWN_ERROR);
+    const {isTestable, prNumber} = controller.checkIsTestable(reportData);
+    if (!isTestable) {
+      console.log(`PR #${prNumber} does not contain any testable source file changes.\nSkipping screenshot tests.`);
+      return;
     }
+
+    await gitHubApi.setPullRequestStatus(reportData);
+
+    try {
+      await controller.uploadAllAssets(reportData);
+      await controller.captureAllPages(reportData);
+      await controller.compareAllScreenshots(reportData);
+      await controller.generateReportPage(reportData);
+      await gitHubApi.setPullRequestStatus(reportData);
+    } catch (err) {
+      await gitHubApi.setPullRequestError();
+      throw err;
+    }
+
+    return await controller.getTestExitCode(reportData);
   },
 };

@@ -26,7 +26,7 @@
   </head>
 
   <body class="test-body mdc-typography">
-    <main class="test-main test-main--button">
+    <main class="test-main test-main--mobile">
       <div class="test-grid">
         <div class="test-cell test-cell--button">
           <button class="custom-button custom-button--outline-color mdc-button mdc-button--outlined">Button</button>
@@ -39,5 +39,11 @@
         </div>
       </div>
     </main>
+
+    <!-- Automatically provides/replaces `Promise` if missing or broken. -->
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fontfaceobserver/2.0.13/fontfaceobserver.standalone.js"></script>
+    <script src="../../fixture.js"></script>
   </body>
 </html>
