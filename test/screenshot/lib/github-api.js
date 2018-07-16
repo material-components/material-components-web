@@ -85,7 +85,7 @@ class GitHubApi {
         description = `${numChanges} screenshots changed`;
       } else {
         state = GitHubApi.PullRequestState.SUCCESS;
-        description = 'All tests passed';
+        description = 'All screenshots match golden.json';
       }
 
       targetUrl = meta.report_html_file.public_url;
