@@ -81,10 +81,10 @@ class GitHubApi {
     if (reportFileUrl) {
       if (numChanges > 0) {
         state = GitHubApi.PullRequestState.FAILURE;
-        description = `${numChanges} screenshots changed`;
+        description = `${numChanges} screenshots differ from #${prNumber}'s golden.json`;
       } else {
         state = GitHubApi.PullRequestState.SUCCESS;
-        description = 'All screenshots match golden.json';
+        description = `All screenshots match #${prNumber}'s golden.json`;
       }
 
       targetUrl = meta.report_html_file.public_url;
