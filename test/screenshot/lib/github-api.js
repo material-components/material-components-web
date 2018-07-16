@@ -126,7 +126,7 @@ class GitHubApi {
     const request = {
       owner: 'material-components',
       repo: 'material-components-web',
-      sha: await this.gitRepo_.getFullCommitHash(),
+      sha: await this.gitRepo_.getFullCommitHash(process.env.TRAVIS_PULL_REQUEST_SHA),
       state,
       target_url: targetUrl,
       description,
