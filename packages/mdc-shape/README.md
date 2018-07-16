@@ -61,6 +61,7 @@ unelevated component.
 ### Styles
 
 ```scss
+@import "@material/shape/mdc-shape"; // The base shape styles need to be imported once in the page or application
 @import "@material/shape/mixins";
 
 .my-shape-container {
@@ -72,11 +73,10 @@ unelevated component.
 
 ### Outlined Angled Corners
 
-Outlined angled corners involve the same markup and styles as above, with the addition of including a mixin for outline:
+Outlined angled corners involve the same markup and styles/imports as above, with the addition of including a mixin for
+outline:
 
 ```scss
-@import "@material/shape/mixins";
-
 .my-shape-container {
   @include mdc-shape-angled-corner(#fff, 10px);
   @include mdc-shape-angled-corner-outline(2px, blue);
