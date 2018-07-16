@@ -16,6 +16,5 @@
 
 /** @fileoverview Bootstraps the test bundle for karma-webpack. */
 
-//const testsContext = require.context('.', true, /\.test\.js$/);
-const testsContext = require.context('./mdc-tooltip', true, /\.test\.js$/);
+const testsContext = require.context('.', true, /\.test\.js$/);
 testsContext.keys().forEach(testsContext);
