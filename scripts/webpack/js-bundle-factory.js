@@ -148,6 +148,7 @@ class JsBundleFactory {
         snackbar: getAbsolutePath('/packages/mdc-snackbar/index.js'),
         tab: getAbsolutePath('/packages/mdc-tab/index.js'),
         tabIndicator: getAbsolutePath('/packages/mdc-tab-indicator/index.js'),
+        tabScroller: getAbsolutePath('/packages/mdc-tab-scroller/index.js'),
         tabs: getAbsolutePath('/packages/mdc-tabs/index.js'),
         textfield: getAbsolutePath('/packages/mdc-textfield/index.js'),
         toolbar: getAbsolutePath('/packages/mdc-toolbar/index.js'),
