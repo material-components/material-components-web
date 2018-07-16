@@ -23,7 +23,7 @@
 @import "../../packages/mdc-elevation/mdc-elevation";
 @import "../../packages/mdc-fab/mdc-fab";
 @import "../../packages/mdc-form-field/mdc-form-field";
-@import "../../packages/mdc-icon-toggle/mdc-icon-toggle";
+@import "../../packages/mdc-icon-button/mdc-icon-button";
 @import "../../packages/mdc-linear-progress/mdc-linear-progress";
 @import "../../packages/mdc-list/mdc-list";
 @import "../../packages/mdc-menu/mdc-menu";
@@ -294,6 +294,8 @@ figure {
 //
 
 .demo-drawer-toggle {
+  @include mdc-states(on-primary);
+
   vertical-align: middle;
   cursor: pointer;
 }
@@ -327,8 +329,8 @@ figure {
 // Icon Toggle demo
 //
 
-.mdc-icon-toggle {
-  // .material-icons and .mdc-icon-toggle each set different `display` values. Whichever CSS file is imported last
+.mdc-icon-button {
+  // .material-icons and .mdc-icon-button each set different `display` values. Whichever CSS file is imported last
   // will win, so prevent them from fighting by specifying the value we want here.
   display: inline-flex;
 }

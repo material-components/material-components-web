@@ -40,7 +40,6 @@ test('default adapter returns a complete adapter implementation', () => {
     'registerDocumentKeydownHandler', 'deregisterDocumentKeydownHandler',
     'registerTransitionEndHandler', 'deregisterTransitionEndHandler',
     'notifyAccept', 'notifyCancel', 'trapFocusOnSurface', 'untrapFocusOnSurface', 'isDialog',
-    'layoutFooterRipples',
   ]);
 });
 
@@ -156,16 +155,6 @@ test('#close deactivates focus trapping on the dialog surface', () => {
   foundation.close();
 
   td.verify(mockAdapter.untrapFocusOnSurface());
-});
-
-test('#open calls adapter method to re-layout footer ripples', () => {
-  const {foundation, mockAdapter} = setupTest();
-
-  td.when(mockAdapter.registerTransitionEndHandler(td.callback)).thenCallback({target: {}});
-  td.when(mockAdapter.isDialog(td.matchers.isA(Object))).thenReturn(true);
-  foundation.open();
-
-  td.verify(mockAdapter.layoutFooterRipples());
 });
 
 test('#accept closes the dialog', () => {

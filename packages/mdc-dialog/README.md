@@ -11,13 +11,13 @@ path: /catalog/dialogs/
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/dialog.html">
+     href="https://material-components.github.io/material-components-web-catalog/#/component/dialog">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/dialogs.png" width="714" alt="Dialogs screenshot">
   </a>
 </div>-->
 
 The MDC Dialog component is a spec-aligned dialog component adhering to the
-[Material Design dialog pattern](https://material.io/guidelines/components/dialogs.html).
+[Material Design dialog pattern](https://material.io/go/design-dialogs).
 It implements a modal dialog window. You may notice that full screen components outlined in the dialog spec
 do not appear in MDC Dialog. This is because they have been deemed to be outside of the scope of what
 a dialog should be.
@@ -26,10 +26,10 @@ a dialog should be.
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/dialogs.html">Material Design guidelines: Dialogs</a>
+    <a href="https://material.io/go/design-dialogs">Material Design guidelines: Dialogs</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/dialog.html">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/dialog">Demo</a>
   </li>
 </ul>
 
@@ -72,7 +72,7 @@ the dialog. There are two types: dialog & dialogs with scrollable content. These
 
 In most cases, dialog content should be able to fit without scrolling. However, certain special cases call for the
 ability to scroll the dialog's contents (see "Scrollable content exception" under
-[Behavior](https://material.io/guidelines/components/dialogs.html#dialogs-behavior)). For these special cases, there is
+[Behavior](https://material.io/go/design-dialogs#dialogs-behavior)). For these special cases, there is
 a `mdc-dialog__body--scrollable` modifier to allow scrolling in the dialog.
 
 > **Note**: The body of a scrollable dialog is styled with a default max-height; this can be overridden as necessary via
@@ -265,7 +265,6 @@ do so. We provide instructions on how to add ripples to buttons within the [mdc-
 | `isDialog(el: Element) => boolean` | Returns boolean indicating whether the provided element is the dialog surface element. |
 | `trapFocusOnSurface() => {}` | Sets up the DOM which the dialog is contained in such that focusability is restricted to the elements on the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details). |
 | `untrapFocusOnSurface() => {}` | Removes any affects of focus trapping on the dialog surface from the DOM (see [Handling Focus Trapping](#handling-focus-trapping) below for more details). |
-| `layoutFooterRipples() => void` | Calls `layout` on the ripple components instantiated on buttons in the footer. |
 
 #### Handling Focus Trapping
 

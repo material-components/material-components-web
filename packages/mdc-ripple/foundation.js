@@ -21,7 +21,7 @@ import {cssClasses, strings, numbers} from './constants';
 import {getNormalizedEventCoords} from './util';
 
 /**
- * @typedef {!{
+ * @typedef {{
  *   isActivated: (boolean|undefined),
  *   hasDeactivationUXRun: (boolean|undefined),
  *   wasActivatedByPointer: (boolean|undefined),
@@ -33,7 +33,7 @@ import {getNormalizedEventCoords} from './util';
 let ActivationStateType;
 
 /**
- * @typedef {!{
+ * @typedef {{
  *   activate: (string|undefined),
  *   deactivate: (string|undefined),
  *   focus: (string|undefined),
@@ -43,7 +43,7 @@ let ActivationStateType;
 let ListenerInfoType;
 
 /**
- * @typedef {!{
+ * @typedef {{
  *   activate: function(!Event),
  *   deactivate: function(!Event),
  *   focus: function(),
@@ -53,7 +53,7 @@ let ListenerInfoType;
 let ListenersType;
 
 /**
- * @typedef {!{
+ * @typedef {{
  *   x: number,
  *   y: number
  * }}
@@ -132,19 +132,15 @@ class MDCRippleFoundation extends MDCFoundation {
     this.deactivateHandler_ = (e) => this.deactivate_(e);
 
     /** @private {function(?Event=)} */
-    this.focusHandler_ = () => requestAnimationFrame(
-      () => this.adapter_.addClass(MDCRippleFoundation.cssClasses.BG_FOCUSED)
-    );
+    this.focusHandler_ = () => this.handleFocus();
 
     /** @private {function(?Event=)} */
-    this.blurHandler_ = () => requestAnimationFrame(
-      () => this.adapter_.removeClass(MDCRippleFoundation.cssClasses.BG_FOCUSED)
-    );
+    this.blurHandler_ = () => this.handleBlur();
 
     /** @private {!Function} */
     this.resizeHandler_ = () => this.layout();
 
-    /** @private {!{left: number, top:number}} */
+    /** @private {{left: number, top:number}} */
     this.unboundedCoords_ = {
       left: 0,
       top: 0,
@@ -198,6 +194,7 @@ class MDCRippleFoundation extends MDCFoundation {
     };
   }
 
+  /** @override */
   init() {
     if (!this.isSupported_()) {
       return;
@@ -209,11 +206,13 @@ class MDCRippleFoundation extends MDCFoundation {
       this.adapter_.addClass(ROOT);
       if (this.adapter_.isUnbounded()) {
         this.adapter_.addClass(UNBOUNDED);
+        // Unbounded ripples need layout logic applied immediately to set coordinates for both shade and ripple
+        this.layoutInternal_();
       }
-      this.layoutInternal_();
     });
   }
 
+  /** @override */
   destroy() {
     if (!this.isSupported_()) {
       return;
@@ -244,7 +243,10 @@ class MDCRippleFoundation extends MDCFoundation {
     });
     this.adapter_.registerInteractionHandler('focus', this.focusHandler_);
     this.adapter_.registerInteractionHandler('blur', this.blurHandler_);
-    this.adapter_.registerResizeHandler(this.resizeHandler_);
+
+    if (this.adapter_.isUnbounded()) {
+      this.adapter_.registerResizeHandler(this.resizeHandler_);
+    }
   }
 
   /**
@@ -268,7 +270,10 @@ class MDCRippleFoundation extends MDCFoundation {
     });
     this.adapter_.deregisterInteractionHandler('focus', this.focusHandler_);
     this.adapter_.deregisterInteractionHandler('blur', this.blurHandler_);
-    this.adapter_.deregisterResizeHandler(this.resizeHandler_);
+
+    if (this.adapter_.isUnbounded()) {
+      this.adapter_.deregisterResizeHandler(this.resizeHandler_);
+    }
   }
 
   /** @private */
@@ -379,6 +384,8 @@ class MDCRippleFoundation extends MDCFoundation {
     const {VAR_FG_TRANSLATE_START, VAR_FG_TRANSLATE_END} = MDCRippleFoundation.strings;
     const {FG_DEACTIVATION, FG_ACTIVATION} = MDCRippleFoundation.cssClasses;
     const {DEACTIVATION_TIMEOUT_MS} = MDCRippleFoundation.numbers;
+
+    this.layoutInternal_();
 
     let translateStart = '';
     let translateEnd = '';
@@ -577,6 +584,16 @@ class MDCRippleFoundation extends MDCFoundation {
     } else {
       this.adapter_.removeClass(UNBOUNDED);
     }
+  }
+
+  handleFocus() {
+    requestAnimationFrame(() =>
+      this.adapter_.addClass(MDCRippleFoundation.cssClasses.BG_FOCUSED));
+  }
+
+  handleBlur() {
+    requestAnimationFrame(() =>
+      this.adapter_.removeClass(MDCRippleFoundation.cssClasses.BG_FOCUSED));
   }
 }
 

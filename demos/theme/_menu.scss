@@ -57,10 +57,6 @@
   border-color: $material-color-amber-300 $material-color-pink-400 $material-color-pink-400 $material-color-amber-300;
 }
 
-[data-theme="white"] .demo-theme-color-radio__inner {
-  border-color: #fff $material-color-orange-500 $material-color-orange-500 #fff;
-}
-
-[data-theme="yellow"] .demo-theme-color-radio__inner {
-  border-color: $material-color-yellow-500 $material-color-blue-500 $material-color-blue-500 $material-color-yellow-500;
+[data-theme="shrine"] .demo-theme-color-radio__inner {
+  border-color: #442B2D #FCB8AB #FCB8AB #442B2D;
 }

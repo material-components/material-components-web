@@ -34,7 +34,7 @@ test('exports cssClasses', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCChipSetFoundation, [
-    'hasClass', 'registerInteractionHandler', 'deregisterInteractionHandler',
+    'hasClass', 'registerInteractionHandler', 'deregisterInteractionHandler', 'removeChip',
   ]);
 });
 
@@ -183,4 +183,21 @@ test('in filter chips, on custom MDCChip:interaction event deselects selected ch
   });
   td.verify(chipA.foundation.setSelected(false));
   assert.equal(foundation.selectedChips_.length, 0);
+});
+
+test('on custom MDCChip:removal event removes chip', () => {
+  const {foundation, mockAdapter, chipA} = setupTest();
+  let chipRemovalHandler;
+  td.when(mockAdapter.registerInteractionHandler('MDCChip:removal', td.matchers.isA(Function)))
+    .thenDo((evtType, handler) => {
+      chipRemovalHandler = handler;
+    });
+
+  foundation.init();
+  chipRemovalHandler({
+    detail: {
+      chip: chipA,
+    },
+  });
+  td.verify(mockAdapter.removeChip(chipA));
 });

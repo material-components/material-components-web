@@ -69,14 +69,12 @@
 }
 
 @mixin mdc-checkbox-ink-color($color) {
-  .mdc-checkbox__checkmark-path {
-    // !important is needed here because a stroke must be set as an attribute on the SVG in order
-    // for line animation to work properly.
-    @include mdc-theme-prop(stroke, $color, $important: true);
+  .mdc-checkbox__checkmark {
+    @include mdc-theme-prop(color, $color);
   }
 
   .mdc-checkbox__mixedmark {
-    @include mdc-theme-prop(background-color, $color);
+    @include mdc-theme-prop(border-color, $color);
   }
 }
 
@@ -352,6 +350,7 @@
       0ms,
       $mdc-checkbox-transition-duration * 2
     );
+  stroke: currentColor;
   stroke-width: $mdc-checkbox-mark-stroke-size * 1.3;
   stroke-dashoffset: $mdc-checkbox-mark-path-length_;
   stroke-dasharray: $mdc-checkbox-mark-path-length_;
@@ -365,9 +364,11 @@
 
 @mixin mdc-checkbox__mixedmark_ {
   width: 100%;
-  height: floor($mdc-checkbox-mark-stroke-size);
+  height: 0;
   transform: scaleX(0) rotate(0deg);
   transition: mdc-checkbox-transition-exit(opacity), mdc-checkbox-transition-exit(transform);
+  border-width: floor($mdc-checkbox-mark-stroke-size) / 2;
+  border-style: solid;
   opacity: 0;
 }
 
