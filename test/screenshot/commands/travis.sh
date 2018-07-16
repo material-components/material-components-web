@@ -16,6 +16,10 @@ if [ "$TEST_SUITE" == 'screenshot' ] || [ "$TEST_SUITE" == 'github' ]; then
   echo
   git status
   echo
+  ls
+  echo
+  ls test/screenshot/auth/
+  echo
 
 #  if [ ! -d $HOME/google-cloud-sdk ]; then
 #    curl -o /tmp/gcp-sdk.bash https://sdk.cloud.google.com
