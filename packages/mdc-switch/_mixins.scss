@@ -24,6 +24,7 @@
 @mixin mdc-switch-track-color($color) {
   .mdc-switch__native-control:enabled:checked ~ .mdc-switch__background::before {
     @include mdc-theme-prop(background-color, $color);
+    @include mdc-theme-prop(border-color, $color);
   }
 }
 
@@ -31,6 +32,7 @@
   // stylelint-disable-next-line selector-max-specificity
   .mdc-switch__native-control:enabled:checked ~ .mdc-switch__background .mdc-switch__knob {
     @include mdc-theme-prop(background-color, $color);
+    @include mdc-theme-prop(border-color, $color);
   }
 }
 
@@ -48,6 +50,7 @@
 @mixin mdc-switch-unchecked-track-color_($color) {
   .mdc-switch__native-control:enabled:not(:checked) ~ .mdc-switch__background::before {
     @include mdc-theme-prop(background-color, $color);
+    @include mdc-theme-prop(border-color, $color);
   }
 }
 
@@ -55,6 +58,7 @@
   // stylelint-disable-next-line selector-max-specificity
   .mdc-switch__native-control:enabled:not(:checked) ~ .mdc-switch__background .mdc-switch__knob {
     @include mdc-theme-prop(background-color, $color);
+    @include mdc-theme-prop(border-color, $color);
   }
 }
 
@@ -65,10 +69,18 @@
   }
 }
 
-@mixin mdc-switch-tap-target_ {
+@mixin mdc-switch-native-control_ {
   position: absolute;
   top: -14px;
   left: -14px;
+  width: $mdc-switch-focus-ring-diameter;
+  height: $mdc-switch-focus-ring-diameter;
+}
+
+@mixin mdc-switch-tap-target_ {
+  position: absolute;
+  top: -24px;
+  left: -24px;
   width: $mdc-switch-focus-ring-diameter;
   height: $mdc-switch-focus-ring-diameter;
 }

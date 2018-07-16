@@ -14,18 +14,12 @@
 // limitations under the License.
 //
 
+@import "@material/base/mixins";
 @import "./keyframes";
 
 // Ensure that styles needed by any component using MDC Ripple are emitted, but only once.
 // (Every component using MDC Ripple imports these mixins, but doesn't necessarily import mdc-ripple.scss.)
-
-// This variable is not intended to be overridden externally; it uses !default to avoid being reset
-// every time this file is imported.
-$mdc-ripple-common-styles-emitted_: false !default;
-
-@if not $mdc-ripple-common-styles-emitted_ {
-  $mdc-ripple-common-styles-emitted_: true;
-
+@include mdc-base-emit-once("mdc-ripple/common") {
   @include mdc-ripple-keyframes_;
 
   // Styles used to detect buggy behavior of CSS custom properties in Edge.

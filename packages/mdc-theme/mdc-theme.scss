@@ -22,15 +22,14 @@
   }
 }
 
-// Special case, so that .mdc-theme--background changes background color, not text color.
-.mdc-theme--background {
-  @include mdc-theme-prop(background-color, background);
-}
-
 @each $style in map-keys($mdc-theme-property-values) {
-  @if $style != "background" {
+  @if $style != "background" and $style != "surface" {
     .mdc-theme--#{$style} {
       @include mdc-theme-prop(color, $style, true);
+    }
+  } @else {
+    .mdc-theme--#{$style} {
+      @include mdc-theme-prop(background-color, $style);
     }
   }
 }

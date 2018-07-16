@@ -20,7 +20,7 @@
 @import "@material/typography/mixins";
 @import "./variables";
 
-/* postcss-bem-linter: define snackbar */
+// postcss-bem-linter: define snackbar
 .mdc-snackbar {
   display: flex;
   position: fixed;
@@ -157,10 +157,10 @@
   opacity: 1;
 }
 
-/* stylelint-disable plugin/selector-bem-pattern */
+// stylelint-disable plugin/selector-bem-pattern
 .mdc-snackbar--multiline.mdc-snackbar--action-on-bottom .mdc-snackbar__text {
   margin: 0;
 }
-/* stylelint-enable plugin/selector-bem-pattern */
+// stylelint-enable plugin/selector-bem-pattern
 
-/* postcss-bem-linter: end */
+// postcss-bem-linter: end
