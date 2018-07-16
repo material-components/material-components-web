@@ -62,6 +62,7 @@ class GitHubApi {
    */
   async setPullRequestStatus(reportData) {
     const meta = reportData.meta;
+    console.log('process.env.TRAVIS_PULL_REQUEST:', process.env.TRAVIS_PULL_REQUEST);
     const prNumber = Number(process.env.TRAVIS_PULL_REQUEST);
     if (!prNumber) {
       return;
@@ -99,12 +100,13 @@ class GitHubApi {
   }
 
   async setPullRequestError() {
+    console.log('process.env.TRAVIS_PULL_REQUEST:', process.env.TRAVIS_PULL_REQUEST);
     const prNumber = Number(process.env.TRAVIS_PULL_REQUEST);
     if (!prNumber) {
       return;
     }
 
-    this.createStatus_({
+    await this.createStatus_({
       state: GitHubApi.PullRequestState.ERROR,
       target_url: `https://travis-ci.org/material-components/material-components-web/jobs/${process.env.TRAVIS_JOB_ID}`,
       // description: 'Error',
@@ -126,7 +128,7 @@ class GitHubApi {
       state,
       target_url: targetUrl,
       description,
-      context: 'screenshot_test',
+      context: 'screenshot-test/butter-bot',
     });
   }
 
