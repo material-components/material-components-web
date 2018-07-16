@@ -18,16 +18,10 @@
 
 $mdc-switch-track-width: 32px;
 $mdc-switch-track-height: 14px;
-
-$mdc-switch-tap-target-size: 48px;
-
 $mdc-switch-thumb-diameter: 20px;
-$mdc-switch-thumb-active-margin: $mdc-switch-track-width - $mdc-switch-thumb-diameter;
-$mdc-switch-thumb-border: $mdc-switch-thumb-diameter / 2;
-$mdc-switch-thumb-offset: ($mdc-switch-tap-target-size - $mdc-switch-thumb-diameter) / 2;
-
-$mdc-switch-native-control-offset: -($mdc-switch-thumb-offset + $mdc-switch-thumb-border);
+$mdc-switch-tap-target-size: 48px;
 $mdc-switch-native-control-width: $mdc-switch-track-width + ($mdc-switch-tap-target-size - $mdc-switch-thumb-diameter);
+$mdc-switch-thumb-active-margin: $mdc-switch-track-width - $mdc-switch-thumb-diameter;
 
 $mdc-switch-toggled-off-thumb-color: mdc-theme-prop-value(surface);
 $mdc-switch-toggled-off-track-color: mdc-theme-prop-value(on-surface);

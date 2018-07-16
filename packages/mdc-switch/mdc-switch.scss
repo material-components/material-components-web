@@ -36,10 +36,11 @@
 }
 
 .mdc-switch__native-control {
-  @include mdc-rtl-reflexive-position(left, $mdc-switch-native-control-offset);
-
   position: absolute;
-  top: $mdc-switch-native-control-offset;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   width: $mdc-switch-native-control-width;
   height: $mdc-switch-tap-target-size;
   margin: 0;
@@ -68,9 +69,12 @@
     $mdc-switch-baseline-theme-color,
     $has-nested-focusable-element: true);
 
+  display: flex;
   position: absolute;
   // Ensures the knob is centered on the track.
   top: -($mdc-switch-track-height / 2 + $mdc-switch-thumb-diameter / 2);
+  align-items: center;
+  justify-content: center;
   width: $mdc-switch-tap-target-size;
   height: $mdc-switch-tap-target-size;
   transform: translateX(0);
@@ -83,13 +87,10 @@
 .mdc-switch__thumb {
   @include mdc-elevation(2);
 
-  position: absolute;
-  top: $mdc-switch-thumb-offset;
-  left: $mdc-switch-thumb-offset;
   box-sizing: border-box;
   width: $mdc-switch-thumb-diameter;
   height: $mdc-switch-thumb-diameter;
-  border: $mdc-switch-thumb-border solid;
+  border: $mdc-switch-thumb-diameter / 2 solid;
   border-radius: 50%;
   z-index: 1;
 }
