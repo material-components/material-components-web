@@ -54,7 +54,9 @@ class MDCChipFoundation extends MDCFoundation {
       deregisterTrailingIconInteractionHandler: () => {},
       notifyInteraction: () => {},
       notifyTrailingIconInteraction: () => {},
-      layout: () => {},
+      notifyRemoval: () => {},
+      getComputedStyleValue: () => {},
+      setStyleProperty: () => {},
     });
   }
 
@@ -64,14 +66,17 @@ class MDCChipFoundation extends MDCFoundation {
   constructor(adapter) {
     super(Object.assign(MDCChipFoundation.defaultAdapter, adapter));
 
+    /**
+     * Whether a trailing icon click should immediately trigger exit/removal of the chip.
+     * @private {boolean}
+     * */
+    this.shouldRemoveOnTrailingIconClick_ = true;
     /** @private {function(!Event): undefined} */
-    this.interactionHandler_ = (evt) => this.handleInteraction_(evt);
+    this.interactionHandler_ = (evt) => this.handleInteraction(evt);
     /** @private {function(!Event): undefined} */
-    this.transitionEndHandler_ = (evt) => this.handleTransitionEnd_(evt);
+    this.transitionEndHandler_ = (evt) => this.handleTransitionEnd(evt);
     /** @private {function(!Event): undefined} */
-    this.animationEndHandler_ = (evt) => this.handleAnimationEnd_(evt);
-    /** @private {function(!Event): undefined} */
-    this.trailingIconInteractionHandler_ = (evt) => this.handleTrailingIconInteraction_(evt);
+    this.trailingIconInteractionHandler_ = (evt) => this.handleTrailingIconInteraction(evt);
   }
 
   init() {
@@ -79,7 +84,6 @@ class MDCChipFoundation extends MDCFoundation {
       this.adapter_.registerEventHandler(evtType, this.interactionHandler_);
     });
     this.adapter_.registerEventHandler('transitionend', this.transitionEndHandler_);
-    this.adapter_.registerEventHandler('animationend', this.animationEndHandler_);
     ['click', 'keydown', 'touchstart', 'pointerdown', 'mousedown'].forEach((evtType) => {
       this.adapter_.registerTrailingIconInteractionHandler(evtType, this.trailingIconInteractionHandler_);
     });
@@ -90,7 +94,6 @@ class MDCChipFoundation extends MDCFoundation {
       this.adapter_.deregisterEventHandler(evtType, this.interactionHandler_);
     });
     this.adapter_.deregisterEventHandler('transitionend', this.transitionEndHandler_);
-    this.adapter_.deregisterEventHandler('animationend', this.animationEndHandler_);
     ['click', 'keydown', 'touchstart', 'pointerdown', 'mousedown'].forEach((evtType) => {
       this.adapter_.deregisterTrailingIconInteractionHandler(evtType, this.trailingIconInteractionHandler_);
     });
@@ -115,10 +118,31 @@ class MDCChipFoundation extends MDCFoundation {
   }
 
   /**
+   * @return {boolean}
+   */
+  getShouldRemoveOnTrailingIconClick() {
+    return this.shouldRemoveOnTrailingIconClick_;
+  }
+
+  /**
+   * @param {boolean} shouldRemove
+   */
+  setShouldRemoveOnTrailingIconClick(shouldRemove) {
+    this.shouldRemoveOnTrailingIconClick_ = shouldRemove;
+  }
+
+  /**
+   * Begins the exit animation which leads to removal of the chip.
+   */
+  beginExit() {
+    this.adapter_.addClass(cssClasses.CHIP_EXIT);
+  }
+
+  /**
    * Handles an interaction event on the root element.
    * @param {!Event} evt
    */
-  handleInteraction_(evt) {
+  handleInteraction(evt) {
     if (evt.type === 'click' || evt.key === 'Enter' || evt.keyCode === 13) {
       this.adapter_.notifyInteraction();
     }
@@ -126,11 +150,36 @@ class MDCChipFoundation extends MDCFoundation {
 
   /**
    * Handles a transition end event on the root element.
-   * This is a proxy for handling a transition end event on the leading icon or checkmark,
-   * since the transition end event bubbles.
    * @param {!Event} evt
    */
-  handleTransitionEnd_(evt) {
+  handleTransitionEnd(evt) {
+    // Handle transition end event on the chip when it is about to be removed.
+    if (this.adapter_.eventTargetHasClass(/** @type {!EventTarget} */ (evt.target), cssClasses.CHIP_EXIT)) {
+      if (evt.propertyName === 'width') {
+        this.adapter_.notifyRemoval();
+      } else if (evt.propertyName === 'opacity') {
+        // See: https://css-tricks.com/using-css-transitions-auto-dimensions/#article-header-id-5
+        const chipWidth = this.adapter_.getComputedStyleValue('width');
+
+        // On the next frame (once we get the computed width), explicitly set the chip's width
+        // to its current pixel width, so we aren't transitioning out of 'auto'.
+        requestAnimationFrame(() => {
+          this.adapter_.setStyleProperty('width', chipWidth);
+
+          // To mitigate jitter, start transitioning padding and margin before width.
+          this.adapter_.setStyleProperty('padding', '0');
+          this.adapter_.setStyleProperty('margin', '0');
+
+          // On the next frame (once width is explicitly set), transition width to 0.
+          requestAnimationFrame(() => {
+            this.adapter_.setStyleProperty('width', '0');
+          });
+        });
+      }
+      return;
+    }
+
+    // Handle a transition end event on the leading icon or checkmark, since the transition end event bubbles.
     if (evt.propertyName !== 'opacity') {
       return;
     }
@@ -144,27 +193,29 @@ class MDCChipFoundation extends MDCFoundation {
   }
 
   /**
-   * Handles an animation end event on the root element.
-   * @param {!Event} evt
-   */
-  handleAnimationEnd_(evt) {
-    // The chip's ripple size must be recalculated after the entry animation.
-    if (evt.animationName === strings.ENTRY_ANIMATION_NAME) {
-      this.adapter_.layout();
-    }
-  }
-
-  /**
    * Handles an interaction event on the trailing icon element. This is used to
    * prevent the ripple from activating on interaction with the trailing icon.
    * @param {!Event} evt
    */
-  handleTrailingIconInteraction_(evt) {
+  handleTrailingIconInteraction(evt) {
     evt.stopPropagation();
     if (evt.type === 'click' || evt.key === 'Enter' || evt.keyCode === 13) {
       this.adapter_.notifyTrailingIconInteraction();
+      if (this.shouldRemoveOnTrailingIconClick_) {
+        this.beginExit();
+      }
     }
   }
 }
 
-export default MDCChipFoundation;
+/**
+ * @typedef {{
+ *   detail: {
+ *     chip: {foundation: !MDCChipFoundation},
+ *   },
+ *   bubbles: boolean,
+ * }}
+ */
+let MDCChipInteractionEventType;
+
+export {MDCChipFoundation, MDCChipInteractionEventType};

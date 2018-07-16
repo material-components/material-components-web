@@ -179,6 +179,17 @@ test('#adapter.notifyTrailingIconInteraction emits ' +
   td.verify(handler(td.matchers.anything()));
 });
 
+test('#adapter.notifyRemoval emits ' + MDCChipFoundation.strings.REMOVAL_EVENT, () => {
+  const {component} = setupTest();
+  const handler = td.func('interaction handler');
+
+  component.listen(
+    MDCChipFoundation.strings.REMOVAL_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyRemoval();
+
+  td.verify(handler(td.matchers.anything()));
+});
+
 function setupMockFoundationTest(root = getFixture()) {
   const MockFoundationConstructor = td.constructor(MDCChipFoundation);
   const mockFoundation = new MockFoundationConstructor();
@@ -190,4 +201,21 @@ test('#isSelected proxies to foundation', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
   component.isSelected();
   td.verify(mockFoundation.isSelected());
+});
+
+test('#get shouldRemoveOnTrailingIconClick proxies to foundation', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  assert.equal(component.shouldRemoveOnTrailingIconClick, mockFoundation.getShouldRemoveOnTrailingIconClick());
+});
+
+test('#set shouldRemoveOnTrailingIconClick proxies to foundation', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.shouldRemoveOnTrailingIconClick = false;
+  td.verify(mockFoundation.setShouldRemoveOnTrailingIconClick(false));
+});
+
+test('#beginExit proxies to foundation', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.beginExit();
+  td.verify(mockFoundation.beginExit());
 });

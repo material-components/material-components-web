@@ -19,7 +19,7 @@ import MDCComponent from '@material/base/component';
 
 import MDCChipSetAdapter from './adapter';
 import MDCChipSetFoundation from './foundation';
-import {MDCChip, MDCChipFoundation} from '../chip/index';
+import {MDCChip} from '../chip/index';
 
 /**
  * @extends {MDCComponent<!MDCChipSetFoundation>}
@@ -70,13 +70,10 @@ class MDCChipSet extends MDCComponent {
   }
 
   /**
-   * Creates a new chip in the chip set with the given text, leading icon, and trailing icon.
-   * @param {string} text
-   * @param {?Element} leadingIcon
-   * @param {?Element} trailingIcon
+   * Adds a new chip object to the chip set from the given chip element.
+   * @param {!Element} chipEl
    */
-  addChip(text, leadingIcon, trailingIcon) {
-    const chipEl = this.foundation_.addChip(text, leadingIcon, trailingIcon);
+  addChip(chipEl) {
     this.chips.push(this.chipFactory_(chipEl));
   }
 
@@ -88,23 +85,11 @@ class MDCChipSet extends MDCComponent {
       hasClass: (className) => this.root_.classList.contains(className),
       registerInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
-      createChipElement: (text, leadingIcon, trailingIcon) => {
-        const chipTextEl = document.createElement('div');
-        chipTextEl.classList.add(MDCChipFoundation.cssClasses.TEXT);
-        chipTextEl.appendChild(document.createTextNode(text));
-
-        const chipEl = document.createElement('div');
-        chipEl.classList.add(MDCChipFoundation.cssClasses.CHIP);
-        if (leadingIcon) {
-          chipEl.appendChild(leadingIcon);
-        }
-        chipEl.appendChild(chipTextEl);
-        if (trailingIcon) {
-          chipEl.appendChild(trailingIcon);
-        }
-        return chipEl;
+      removeChip: (chip) => {
+        const index = this.chips.indexOf(chip);
+        this.chips.splice(index, 1);
+        chip.destroy();
       },
-      appendChild: (el) => this.root_.appendChild(el),
     })));
   }
 

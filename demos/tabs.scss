@@ -66,12 +66,12 @@
 .custom-indicator-tab-bar-in-toolbar,
 .custom-tab-bar-in-toolbar {
   .mdc-tab:not(.mdc-tab--active) {
-    @include mdc-tab-ink-color(rgba(mdc-theme-prop-value(text-primary-on-primary), 0.54));
+    @include mdc-tab-ink-color(rgba(mdc-theme-prop-value(on-primary), 0.54));
   }
 
   .mdc-tab--active,
   .mdc-tab:hover {
-    @include mdc-tab-ink-color(text-primary-on-primary);
+    @include mdc-tab-ink-color(on-primary);
   }
 }
 
@@ -80,5 +80,5 @@
 }
 
 .custom-tab-bar-in-toolbar {
-  @include mdc-tab-bar-indicator-ink-color(text-primary-on-primary);
+  @include mdc-tab-bar-indicator-ink-color(on-primary);
 }

@@ -310,15 +310,27 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
-   * Recomputes the outline SVG path for the outline element, and recomputes
-   * all dimensions and positions for the ripple element.
+   * Sets the aria label of the icon.
+   * @param {string} label
+   */
+  set iconAriaLabel(label) {
+    this.foundation_.setIconAriaLabel(label);
+  }
+
+  /**
+   * Sets the text content of the icon.
+   * @param {string} content
+   */
+  set iconContent(content) {
+    this.foundation_.setIconContent(content);
+  }
+
+  /**
+   * Recomputes the outline SVG path for the outline element.
    */
   layout() {
     const openNotch = this.foundation_.shouldFloat;
     this.foundation_.notchOutline(openNotch);
-    if (this.ripple) {
-      this.ripple.layout();
-    }
   }
 
   /**
@@ -333,7 +345,8 @@ class MDCTextField extends MDCComponent {
         registerTextFieldInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
         deregisterTextFieldInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
         registerValidationAttributeChangeHandler: (handler) => {
-          const observer = new MutationObserver(handler);
+          const getAttributesList = (mutationsList) => mutationsList.map((mutation) => mutation.attributeName);
+          const observer = new MutationObserver((mutationsList) => handler(getAttributesList(mutationsList)));
           const targetNode = this.root_.querySelector(strings.INPUT_SELECTOR);
           const config = {attributes: true};
           observer.observe(targetNode, config);
@@ -373,7 +386,7 @@ class MDCTextField extends MDCComponent {
    * @return {!{
    *   activateLineRipple: function(): undefined,
    *   deactivateLineRipple: function(): undefined,
-   *   setLineRippleTransformOrigin: function(!number): undefined,
+   *   setLineRippleTransformOrigin: function(number): undefined,
    * }}
    */
   getLineRippleAdapterMethods_() {

@@ -182,6 +182,14 @@ function transform(srcFile, rootDir) {
       }
       path.replaceWith(variableDeclaration);
     },
+
+    ClassMethod(path) {
+      // Remove any statements from abstract function bodies.
+      // Closure doesn't like seeing this, but we like to include a throw statement for non-closure clients.
+      if (path.node.comments && path.node.comments.some((comment) => comment.value.includes('@abstract'))) {
+        path.node.body.body = [];
+      }
+    },
   });
 
   let {code: outputCode} = recast.print(ast, {
@@ -202,8 +210,14 @@ function transform(srcFile, rootDir) {
     packageStr = pathbasedPackageName;
   }
 
-  // Specify goog.module and append newline at the end of the file.
-  outputCode = 'goog.module(\'' + packageStr + '\');\n' + outputCode + '\n';
+  // Specify goog.module after the @license comment and append newline at the end of the file.
+  // First, get the first occurence of a multiline comment terminator with 0 or more preceding whitespace characters.
+  const result = /\s*\*\//.exec(outputCode);
+  // Then, get the index of that first matching character set plus the length of the matching characters, plus one
+  // extra character for more space. We now have the position at which we need to inject the "goog.module(...)"
+  // declaration and can assemble the module-declared code. Yay!
+  const pos = result.index + result[0].length + 1;
+  outputCode = outputCode.substr(0, pos) + '\ngoog.module(\'' + packageStr + '\');\n' + outputCode.substr(pos);
   fs.writeFileSync(srcFile, outputCode, 'utf8');
   logProgress(`[rewrite] ${srcFile}`);
 }
