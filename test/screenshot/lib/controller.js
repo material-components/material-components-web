@@ -208,7 +208,10 @@ class Controller {
    * @return {!Promise<number>}
    */
   async getTestExitCode(reportData) {
-    const isOnline = await this.cli_.isOnline();
+    // Don't fail Travis builds when screenshots change. The diffs are reported in GitHub instead.
+    if (process.env.TRAVIS === 'true') {
+      return ExitCode.OK;
+    }
 
     // TODO(acdvorak): Store this directly in the proto so we don't have to recalculate it all over the place
     const numChanges =
@@ -216,20 +219,7 @@ class Controller {
       reportData.screenshots.added_screenshot_list.length +
       reportData.screenshots.removed_screenshot_list.length;
 
-    if (numChanges === 0) {
-      return ExitCode.OK;
-    }
-
-    if (isOnline) {
-      if (process.env.TRAVIS === 'true') {
-        return ExitCode.OK;
-      }
-      return ExitCode.CHANGES_FOUND;
-    }
-
-    // Allow the report HTTP server to keep running by waiting for a promise that never resolves.
-    console.log('\nPress Ctrl-C to kill the report server');
-    await new Promise(() => {});
+    return numChanges > 0 ? ExitCode.CHANGES_FOUND : ExitCode.OK;
   }
 
   /**
