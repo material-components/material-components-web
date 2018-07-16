@@ -27,6 +27,15 @@ const strings = {
   STEP_DATA_ATTR: 'data-step',
   CHANGE_EVENT: 'MDCSlider:change',
   INPUT_EVENT: 'MDCSlider:input',
+  MOUSE_DOWN: 'mousedown',
+  MOUSE_MOVE: 'mousemove',
+  MOUSE_UP: 'mouseup',
+  POINTER_DOWN: 'pointerdown',
+  POINTER_MOVE: 'pointermove',
+  POINTER_UP: 'pointerup',
+  TOUCH_START: 'touchstart',
+  TOUCH_MOVE: 'touchmove',
+  TOUCH_END: 'touchend',
 };
 
 export {strings};

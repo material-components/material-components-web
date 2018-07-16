@@ -16,7 +16,6 @@
 
 import {assert} from 'chai';
 import bel from 'bel';
-import domEvents from 'dom-events';
 import td from 'testdouble';
 
 import {createMockRaf} from '../helpers/raf';
@@ -103,6 +102,7 @@ test('#initialSyncWithDOM syncs the min property with aria-valuemin', () => {
 
   const component = new MDCSlider(root);
   assert.equal(component.min, 10);
+  component.destroy();
 });
 
 test('#initialSyncWithDOM adds an aria-valuemin attribute if not present', () => {
@@ -111,6 +111,7 @@ test('#initialSyncWithDOM adds an aria-valuemin attribute if not present', () =>
 
   const component = new MDCSlider(root);
   assert.equal(root.getAttribute('aria-valuemin'), String(component.min));
+  component.destroy();
 });
 
 test('#initialSyncWithDOM syncs the max property with aria-valuemax', () => {
@@ -119,6 +120,7 @@ test('#initialSyncWithDOM syncs the max property with aria-valuemax', () => {
 
   const component = new MDCSlider(root);
   assert.equal(component.max, 80);
+  component.destroy();
 });
 
 test('#initialSyncWithDOM adds an aria-valuemax attribute if not present', () => {
@@ -127,6 +129,7 @@ test('#initialSyncWithDOM adds an aria-valuemax attribute if not present', () =>
 
   const component = new MDCSlider(root);
   assert.equal(root.getAttribute('aria-valuemax'), String(component.max));
+  component.destroy();
 });
 
 test('#initialSyncWithDOM syncs the value property with aria-valuenow for continuous slider', () => {
@@ -135,6 +138,7 @@ test('#initialSyncWithDOM syncs the value property with aria-valuenow for contin
 
   const component = new MDCSlider(root);
   assert.equal(component.value, 30);
+  component.destroy();
 });
 
 test('#initialSyncWithDOM adds an aria-valuenow attribute if not present', () => {
@@ -143,6 +147,7 @@ test('#initialSyncWithDOM adds an aria-valuenow attribute if not present', () =>
 
   const component = new MDCSlider(root);
   assert.equal(root.getAttribute('aria-valuenow'), String(component.value));
+  component.destroy();
 });
 
 test('adapter#hasClass checks if a class exists on root element', () => {
@@ -187,73 +192,6 @@ test('adapter#computeBoundingRect computes the client rect on the root element',
     component.getDefaultFoundation().adapter_.computeBoundingRect(),
     root.getBoundingClientRect()
   );
-});
-
-test('adapter#registerEventHandler adds an event listener to the root element', () => {
-  const {root, component} = setupTest();
-  const handler = td.func('interactionHandler');
-
-  component.getDefaultFoundation().adapter_.registerEventHandler('click', handler);
-  domEvents.emit(root, 'click');
-
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('adapter#deregisterEventHandler removes an event listener from the root element', () => {
-  const {root, component} = setupTest();
-  const handler = td.func('interactionHandler');
-
-  root.addEventListener('click', handler);
-  component.getDefaultFoundation().adapter_.deregisterEventHandler('click', handler);
-  domEvents.emit(root, 'click');
-
-  td.verify(handler(td.matchers.anything()), {times: 0});
-});
-
-test('adapter#registerBodyEventHandler adds an event listener to the body element', () => {
-  const {component} = setupTest();
-  const handler = td.func('interactionHandler');
-
-  component.getDefaultFoundation().adapter_.registerBodyEventHandler('click', handler);
-  domEvents.emit(document.body, 'click');
-  document.body.removeEventListener('click', handler);
-
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('adapter#deregisterBodyEventHandler removes an event listener from the body element', () => {
-  const {component} = setupTest();
-  const handler = td.func('interactionHandler');
-
-  document.body.addEventListener('click', handler);
-  component.getDefaultFoundation().adapter_.deregisterBodyEventHandler('click', handler);
-  domEvents.emit(document.body, 'click');
-
-  td.verify(handler(td.matchers.anything()), {times: 0});
-});
-
-test('adapter#registerResizeHandler adds an event listener for the window\'s "resize" event', () => {
-  const {component} = setupTest();
-  const handler = td.func('resizeHandler');
-
-  component.getDefaultFoundation().adapter_.registerWindowResizeHandler(handler);
-  domEvents.emit(window, 'resize');
-  window.removeEventListener('resize', handler);
-
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('adapter#deregisterResizeHandler removes an event listener for the window\'s "resize" event', () => {
-  const {component} = setupTest();
-  const handler = td.func('resizeHandler');
-
-  window.addEventListener('resize', handler);
-  component.getDefaultFoundation().adapter_.deregisterWindowResizeHandler(handler);
-  domEvents.emit(window, 'resize');
-  // Just in case deregisterResizeHandler doesn't work as expected
-  window.removeEventListener('resize', handler);
-
-  td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
 test('adapter#notifyInput emits a MDCSlider:input event with the slider instance as its detail', () => {

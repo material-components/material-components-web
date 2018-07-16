@@ -65,46 +65,6 @@ class MDCSliderAdapter {
   computeBoundingRect() {}
 
   /**
-   * Registers an event handler on the root element for a given event.
-   * @param {string} type
-   * @param {function(!Event): undefined} handler
-   */
-  registerEventHandler(type, handler) {}
-
-  /**
-   * Deregisters an event handler on the root element for a given event.
-   * @param {string} type
-   * @param {function(!Event): undefined} handler
-   */
-  deregisterEventHandler(type, handler) {}
-
-  /**
-   * Registers an event handler on the body for a given event.
-   * @param {string} type
-   * @param {function(!Event): undefined} handler
-   */
-  registerBodyEventHandler(type, handler) {}
-
-  /**
-   * Deregisters an event handler on the body for a given event.
-   * @param {string} type
-   * @param {function(!Event): undefined} handler
-   */
-  deregisterBodyEventHandler(type, handler) {}
-
-  /**
-   * Registers an event handler for the window resize event
-   * @param {function(!Event): undefined} handler
-   */
-  registerWindowResizeHandler(handler) {}
-
-  /**
-   * Deregisters an event handler for the window resize event
-   * @param {function(!Event): undefined} handler
-   */
-  deregisterWindowResizeHandler(handler) {}
-
-  /**
    * Emits a custom event MDCSlider:input from the root
    */
   notifyInput() {}

@@ -20,16 +20,6 @@ import MDCSliderAdapter from './adapter';
 
 import MDCFoundation from '@material/base/foundation';
 
-/** @enum {string} */
-const MOVE_EVENT_MAP = {
-  'mousedown': 'mousemove',
-  'touchstart': 'touchmove',
-  'pointerdown': 'pointermove',
-};
-
-const DOWN_EVENTS = ['mousedown', 'pointerdown', 'touchstart'];
-const UP_EVENTS = ['mouseup', 'pointerup', 'touchend'];
-
 /**
  * @extends {MDCFoundation<!MDCSliderAdapter>}
  */
@@ -48,12 +38,6 @@ class MDCSliderFoundation extends MDCFoundation {
       getAttribute: () => {},
       setAttribute: () => {},
       computeBoundingRect: () => {},
-      registerEventHandler: () => {},
-      deregisterEventHandler: () => {},
-      registerBodyEventHandler: () => {},
-      deregisterBodyEventHandler: () => {},
-      registerWindowResizeHandler: () => {},
-      deregisterWindowResizeHandler: () => {},
       notifyInput: () => {},
       notifyChange: () => {},
       setThumbStyleProperty: () => {},
@@ -75,27 +59,14 @@ class MDCSliderFoundation extends MDCFoundation {
     this.max_ = 100;
     /** @private {number} */
     this.value_ = 0;
-    /** @private {function(!Event): undefined} */
-    this.interactionStartHandler_ = (evt) => this.handleInteractionStart(evt);
-    /** @private {function(!Event): undefined} */
-    this.interactionMoveHandler_ = (evt) => this.handleInteractionMove(evt);
-    /** @private {function(): undefined} */
-    this.interactionEndHandler_ = () => this.handleInteractionEnd();
-    /** @private {function(): undefined} */
-    this.windowResizeHandler_ = () => this.layout();
+    /** @private {string} */
+    this.acceptableMoveEvent_ = '';
+    /** @private {string} */
+    this.acceptableEndEvent_ = '';
   }
 
   init() {
-    DOWN_EVENTS.forEach((evtName) => this.adapter_.registerEventHandler(evtName, this.interactionStartHandler_));
-    this.adapter_.registerWindowResizeHandler(this.windowResizeHandler_);
     this.layout();
-  }
-
-  destroy() {
-    DOWN_EVENTS.forEach((evtName) => {
-      this.adapter_.deregisterEventHandler(evtName, this.interactionStartHandler_);
-    });
-    this.adapter_.deregisterWindowResizeHandler(this.windowResizeHandler_);
   }
 
   layout() {
@@ -148,21 +119,9 @@ class MDCSliderFoundation extends MDCFoundation {
    * @param {!Event} evt
    */
   handleInteractionStart(evt) {
-    const moveHandler = (evt) => {
-      this.interactionMoveHandler_(evt);
-    };
-
-    // Note: endHandler is [de]registered on ALL potential pointer-related release event types, since some browsers
-    // do not always fire these consistently in pairs.
-    // (See https://github.com/material-components/material-components-web/issues/1192)
-    const endHandler = () => {
-      this.interactionEndHandler_();
-      this.adapter_.deregisterBodyEventHandler(MOVE_EVENT_MAP[evt.type], moveHandler);
-      UP_EVENTS.forEach((evtName) => this.adapter_.deregisterBodyEventHandler(evtName, endHandler));
-    };
-
-    this.adapter_.registerBodyEventHandler(MOVE_EVENT_MAP[evt.type], moveHandler);
-    UP_EVENTS.forEach((evtName) => this.adapter_.registerBodyEventHandler(evtName, endHandler));
+    if (!this.acceptableMoveEvent_) {
+      this.assignMoveEndEvents_(evt.type);
+    }
     this.setValueFromEvt_(evt);
   }
 
@@ -171,15 +130,48 @@ class MDCSliderFoundation extends MDCFoundation {
    * @param {!Event} evt
    */
   handleInteractionMove(evt) {
-    evt.preventDefault();
-    this.setValueFromEvt_(evt);
+    if (evt.type == this.acceptableMoveEvent_) {
+      evt.preventDefault();
+      this.setValueFromEvt_(evt);
+    }
   }
 
   /**
    * Called when the user's interaction with the slider ends
+   * @param {!Event} evt
    */
-  handleInteractionEnd() {
-    this.adapter_.notifyChange();
+  handleInteractionEnd(evt) {
+    if (evt.type == this.acceptableEndEvent_) {
+      this.assignMoveEndEvents_('reset');
+      this.adapter_.notifyChange();
+    }
+  }
+
+  /**
+   * Assigns acceptable move and end events
+   * @param {string} evtName
+   */
+  assignMoveEndEvents_(evtName) {
+    switch (evtName) {
+    case strings.MOUSE_DOWN:
+      this.acceptableMoveEvent_ = strings.MOUSE_MOVE;
+      this.acceptableEndEvent_ = strings.MOUSE_UP;
+      return;
+    case strings.POINTER_DOWN:
+      this.acceptableMoveEvent_ = strings.POINTER_MOVE;
+      this.acceptableEndEvent_ = strings.POINTER_UP;
+      return;
+    case strings.TOUCH_START:
+      this.acceptableMoveEvent_ = strings.TOUCH_MOVE;
+      this.acceptableEndEvent_ = strings.TOUCH_END;
+      return;
+    case 'reset':
+      this.acceptableMoveEvent_ = '';
+      this.acceptableEndEvent_ = '';
+      return;
+    default:
+      return;
+    }
   }
 
   /**

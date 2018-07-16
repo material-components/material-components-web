@@ -22,11 +22,7 @@ suite('MDCSliderFoundation - General Events');
 
 test('on window resize re-lays out the component', () => {
   const {foundation, mockAdapter, raf} = setupTest();
-  let resizeHandler;
 
-  td.when(mockAdapter.registerWindowResizeHandler(td.matchers.isA(Function))).thenDo((fn) => {
-    resizeHandler = fn;
-  });
   td.when(mockAdapter.computeBoundingRect()).thenReturn(
     {left: 0, width: 100},
     {left: 0, width: 50}
@@ -39,7 +35,7 @@ test('on window resize re-lays out the component', () => {
   // Sanity check
   td.verify(mockAdapter.setThumbStyleProperty(TRANSFORM_PROP, 'translateX(50px) translateX(-50%)'));
 
-  resizeHandler();
+  foundation.layout();
   raf.flush();
 
   td.verify(mockAdapter.setThumbStyleProperty(TRANSFORM_PROP, 'translateX(25px) translateX(-50%)'));

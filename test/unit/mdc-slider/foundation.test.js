@@ -35,9 +35,7 @@ test('exports strings', () => {
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSliderFoundation, [
     'hasClass', 'addClass', 'removeClass', 'getAttribute', 'setAttribute',
-    'computeBoundingRect', 'registerEventHandler', 'deregisterEventHandler',
-    'registerBodyEventHandler', 'deregisterBodyEventHandler', 'registerWindowResizeHandler',
-    'deregisterWindowResizeHandler', 'notifyInput', 'notifyChange', 'setThumbStyleProperty',
+    'computeBoundingRect', 'notifyInput', 'notifyChange', 'setThumbStyleProperty',
     'setTrackFillStyleProperty',
   ]);
 });
@@ -59,20 +57,14 @@ test('#constructor sets the default slider min to 0', () => {
   assert.equal(foundation.getMin(), 0);
 });
 
-test('#init registers all necessary event handlers for the component', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const {isA} = td.matchers;
-  const raf = createMockRaf();
+test('#constructor sets the default acceptable move event to empty string', () => {
+  const {foundation} = setupTest();
+  assert.equal(foundation.acceptableMoveEvent_, '');
+});
 
-  td.when(mockAdapter.computeBoundingRect()).thenReturn({width: 0, left: 0});
-  foundation.init();
-
-  td.verify(mockAdapter.registerEventHandler('mousedown', isA(Function)));
-  td.verify(mockAdapter.registerEventHandler('pointerdown', isA(Function)));
-  td.verify(mockAdapter.registerEventHandler('touchstart', isA(Function)));
-  td.verify(mockAdapter.registerWindowResizeHandler(isA(Function)));
-
-  raf.restore();
+test('#constructor sets the default acceptable end event to empty string', () => {
+  const {foundation} = setupTest();
+  assert.equal(foundation.acceptableEndEvent_, '');
 });
 
 test('#init performs an initial layout of the component', () => {
@@ -89,18 +81,6 @@ test('#init performs an initial layout of the component', () => {
   td.verify(mockAdapter.setTrackFillStyleProperty(anything(), anything()));
 
   raf.restore();
-});
-
-test('#destroy deregisters all component event handlers registered during init()', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const {isA} = td.matchers;
-
-  foundation.destroy();
-
-  td.verify(mockAdapter.deregisterEventHandler('mousedown', isA(Function)));
-  td.verify(mockAdapter.deregisterEventHandler('pointerdown', isA(Function)));
-  td.verify(mockAdapter.deregisterEventHandler('touchstart', isA(Function)));
-  td.verify(mockAdapter.deregisterWindowResizeHandler(isA(Function)));
 });
 
 test('#layout re-computes the bounding rect for the component on each call', () => {

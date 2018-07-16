@@ -15,7 +15,6 @@
  */
 
 import {getCorrectPropertyName} from '../../../packages/mdc-animation';
-import {captureHandlers} from '../helpers/foundation';
 import {createMockRaf} from '../helpers/raf';
 import {setupFoundationTest} from '../helpers/setup';
 
@@ -31,7 +30,5 @@ export function setupEventTest() {
     foundation,
     mockAdapter,
     raf,
-    rootHandlers: captureHandlers(mockAdapter, 'registerEventHandler'),
-    bodyHandlers: captureHandlers(mockAdapter, 'registerBodyEventHandler'),
   };
 }

@@ -21,6 +21,10 @@ import {strings} from './constants';
 import MDCSliderAdapter from './adapter';
 import MDCSliderFoundation from './foundation';
 
+const DOWN_EVENTS = [strings.MOUSE_DOWN, strings.POINTER_DOWN, strings.TOUCH_START];
+const MOVE_EVENTS = [strings.MOUSE_MOVE, strings.POINTER_MOVE, strings.TOUCH_MOVE];
+const END_EVENTS = [strings.MOUSE_UP, strings.POINTER_UP, strings.TOUCH_END];
+
 /**
  * @extends MDCComponent<!MDCSliderFoundation>
  */
@@ -35,6 +39,14 @@ class MDCSlider extends MDCComponent {
     this.thumb_;
     /** @type {?Element} */
     this.trackFill_;
+    /** @private {!Function} */
+    this.startHandler_;
+    /** @private {!Function} */
+    this.moveHandler_;
+    /** @private {!Function} */
+    this.endHandler_;
+    /** @private {!Function} */
+    this.layoutHandler_;
   }
 
   /** @return {number} */
@@ -84,24 +96,6 @@ class MDCSlider extends MDCComponent {
         getAttribute: (name) => this.root_.getAttribute(name),
         setAttribute: (name, value) => this.root_.setAttribute(name, value),
         computeBoundingRect: () => this.root_.getBoundingClientRect(),
-        registerEventHandler: (type, handler) => {
-          this.root_.addEventListener(type, handler);
-        },
-        deregisterEventHandler: (type, handler) => {
-          this.root_.removeEventListener(type, handler);
-        },
-        registerBodyEventHandler: (type, handler) => {
-          document.body.addEventListener(type, handler);
-        },
-        deregisterBodyEventHandler: (type, handler) => {
-          document.body.removeEventListener(type, handler);
-        },
-        registerWindowResizeHandler: (handler) => {
-          window.addEventListener('resize', handler);
-        },
-        deregisterWindowResizeHandler: (handler) => {
-          window.removeEventListener('resize', handler);
-        },
         notifyInput: () => {
           this.emit(strings.INPUT_EVENT, this);
         },
@@ -123,6 +117,22 @@ class MDCSlider extends MDCComponent {
     this.min = parseFloat(this.root_.getAttribute(strings.ARIA_VALUEMIN)) || this.min;
     this.max = parseFloat(this.root_.getAttribute(strings.ARIA_VALUEMAX)) || this.max;
     this.value = origValueNow || this.value;
+
+    this.startHandler_ = this.foundation_.handleInteractionStart.bind(this.foundation_);
+    this.moveHandler_ = this.foundation_.handleInteractionMove.bind(this.foundation_);
+    this.endHandler_ = this.foundation_.handleInteractionEnd.bind(this.foundation_);
+    this.layoutHandler_ = this.foundation_.layout.bind(this.foundation_);
+    DOWN_EVENTS.forEach((evtName) => this.root_.addEventListener(evtName, this.startHandler_));
+    MOVE_EVENTS.forEach((evtName) => document.body.addEventListener(evtName, this.moveHandler_));
+    END_EVENTS.forEach((evtName) => document.body.addEventListener(evtName, this.endHandler_));
+    window.addEventListener('resize', this.layoutHandler_);
+  }
+
+  destroy() {
+    DOWN_EVENTS.forEach((evtName) => this.root_.removeEventListener(evtName, this.startHandler_));
+    MOVE_EVENTS.forEach((evtName) => document.body.removeEventListener(evtName, this.moveHandler_));
+    END_EVENTS.forEach((evtName) => document.body.removeEventListener(evtName, this.endHandler_));
+    window.addEventListener('resize', this.layoutHandler_);
   }
 
   layout() {

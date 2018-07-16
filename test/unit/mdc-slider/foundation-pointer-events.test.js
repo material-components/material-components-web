@@ -27,13 +27,17 @@ createTestSuiteForPointerEvents('touchstart', 'touchmove', 'touchend', (pageX) =
 
 function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pageX) => ({pageX})) {
   test(`on ${downEvt} sets the value of the slider using the X coordinate of the event`, () => {
-    const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+    const {foundation, mockAdapter, raf} = setupTest();
 
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
     foundation.init();
     raf.flush();
 
-    rootHandlers[downEvt](pageXObj(50));
+    const mockEvent = {
+      type: downEvt,
+      pageX: 50,
+    };
+    foundation.handleInteractionStart(mockEvent);
     raf.flush();
 
     assert.equal(foundation.getValue(), 50);
@@ -44,13 +48,17 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
   });
 
   test(`on ${downEvt} offsets the value by the X position of the slider element`, () => {
-    const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+    const {foundation, mockAdapter, raf} = setupTest();
 
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 10, width: 100});
     foundation.init();
     raf.flush();
 
-    rootHandlers[downEvt](pageXObj(50));
+    const mockEvent = {
+      type: downEvt,
+      pageX: 50,
+    };
+    foundation.handleInteractionStart(mockEvent);
     raf.flush();
 
     assert.equal(foundation.getValue(), 40);
@@ -61,13 +69,17 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
   });
 
   test(`on ${downEvt} notifies the client of an input event`, () => {
-    const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+    const {foundation, mockAdapter, raf} = setupTest();
 
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
     foundation.init();
     raf.flush();
 
-    rootHandlers[downEvt](pageXObj(50));
+    const mockEvent = {
+      type: downEvt,
+      pageX: 50,
+    };
+    foundation.handleInteractionStart(mockEvent);
     raf.flush();
 
     td.verify(mockAdapter.notifyInput());
@@ -75,36 +87,46 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     raf.restore();
   });
 
-  test(`on ${downEvt} attaches event handlers for ${moveEvt} and all *up/end events to the document body`, () => {
-    const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
-    const {isA} = td.matchers;
+  test(`on ${downEvt} assigns ${moveEvt} and ${upEvt} as acceptable variables`, () => {
+    const {foundation, mockAdapter, raf} = setupTest();
 
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
     foundation.init();
     raf.flush();
 
-    rootHandlers[downEvt](pageXObj(50));
+    const mockEvent = {
+      type: downEvt,
+      pageX: 50,
+    };
+    foundation.handleInteractionStart(mockEvent);
     raf.flush();
 
-    td.verify(mockAdapter.registerBodyEventHandler(moveEvt, isA(Function)));
-    td.verify(mockAdapter.registerBodyEventHandler('mouseup', isA(Function)));
-    td.verify(mockAdapter.registerBodyEventHandler('pointerup', isA(Function)));
-    td.verify(mockAdapter.registerBodyEventHandler('touchend', isA(Function)));
+    assert.equal(foundation.acceptableMoveEvent_, moveEvt);
+    assert.equal(foundation.acceptableEndEvent_, upEvt);
     raf.restore();
   });
 
   test(`on body ${moveEvt} prevents default behavior`, () => {
-    const {foundation, mockAdapter, raf, rootHandlers, bodyHandlers} = setupTest();
+    const {foundation, mockAdapter, raf} = setupTest();
     const preventDefault = td.func('evt.preventDefault');
 
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
     foundation.init();
     raf.flush();
 
-    rootHandlers[downEvt](pageXObj(49));
-    bodyHandlers[moveEvt](
-      Object.assign({preventDefault}, pageXObj(50))
-    );
+    const mockEvent = {
+      type: downEvt,
+      pageX: 49,
+
+    };
+    foundation.handleInteractionStart(mockEvent);
+    let mockMoveEvent = {
+      type: moveEvt,
+      pageX: 50,
+    };
+
+    mockMoveEvent = Object.assign({preventDefault}, mockMoveEvent, pageXObj(50));
+    foundation.handleInteractionMove(mockMoveEvent);
     raf.flush();
 
     td.verify(preventDefault());
@@ -113,16 +135,26 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
   });
 
   test(`on body ${moveEvt} updates the slider\'s value based on the X coordinate of the event`, () => {
-    const {foundation, mockAdapter, raf, rootHandlers, bodyHandlers} = setupTest();
+    const {foundation, mockAdapter, raf} = setupTest();
 
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
     foundation.init();
     raf.flush();
 
-    rootHandlers[downEvt](pageXObj(49));
-    bodyHandlers[moveEvt](Object.assign({
+    const mockEvent = {
+      type: downEvt,
+      pageX: 49,
+    };
+    foundation.handleInteractionStart(mockEvent);
+    let mockMoveEvent = {
+      type: moveEvt,
+      pageX: 50,
+    };
+
+    mockMoveEvent = Object.assign({
       preventDefault: () => {},
-    }, pageXObj(50)));
+    }, mockMoveEvent);
+    foundation.handleInteractionMove(mockMoveEvent);
     raf.flush();
 
     assert.equal(foundation.getValue(), 50);
@@ -133,16 +165,26 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
   });
 
   test(`on body ${moveEvt} notifies the client of an input event`, () => {
-    const {foundation, mockAdapter, raf, rootHandlers, bodyHandlers} = setupTest();
+    const {foundation, mockAdapter, raf} = setupTest();
 
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
     foundation.init();
     raf.flush();
 
-    rootHandlers[downEvt](pageXObj(49));
-    bodyHandlers[moveEvt](Object.assign({
+    const mockEvent = {
+      type: downEvt,
+      pageX: 49,
+    };
+    foundation.handleInteractionStart(mockEvent);
+    let mockMoveEvent = {
+      type: moveEvt,
+      pageX: 50,
+    };
+
+    mockMoveEvent = Object.assign({
       preventDefault: () => {},
-    }, pageXObj(50)));
+    }, mockMoveEvent);
+    foundation.handleInteractionMove(mockMoveEvent);
     raf.flush();
 
     // Once on mousedown, once on mousemove
@@ -151,39 +193,75 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     raf.restore();
   });
 
-  test(`on body ${upEvt} removes the ${moveEvt} and all *up/end event handlers from the document body`, () => {
-    const {foundation, mockAdapter, raf, rootHandlers, bodyHandlers} = setupTest();
-    const {isA} = td.matchers;
+  test(`on body ${upEvt} removes the ${moveEvt} and the ${upEvt} as acceptable events`, () => {
+    const {foundation, mockAdapter, raf} = setupTest();
 
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
     foundation.init();
     raf.flush();
 
-    rootHandlers[downEvt](pageXObj(50));
+    const mockEvent = {
+      type: downEvt,
+      pageX: 50,
+    };
+    foundation.handleInteractionStart(mockEvent);
     raf.flush();
-    bodyHandlers[upEvt]();
 
-    td.verify(mockAdapter.deregisterBodyEventHandler(moveEvt, isA(Function)));
-    td.verify(mockAdapter.deregisterBodyEventHandler('mouseup', isA(Function)));
-    td.verify(mockAdapter.deregisterBodyEventHandler('pointerup', isA(Function)));
-    td.verify(mockAdapter.deregisterBodyEventHandler('touchend', isA(Function)));
+    assert.equal(foundation.acceptableMoveEvent_, moveEvt);
+    assert.equal(foundation.acceptableEndEvent_, upEvt);
+
+    const mockUpEvent = {
+      type: upEvt,
+    };
+    foundation.handleInteractionEnd(mockUpEvent);
+
+    assert.equal(foundation.acceptableMoveEvent_, '');
+    assert.equal(foundation.acceptableEndEvent_, '');
 
     raf.restore();
   });
 
   test(`on body ${upEvt} notifies the client of a change event`, () => {
-    const {foundation, mockAdapter, raf, rootHandlers, bodyHandlers} = setupTest();
+    const {foundation, mockAdapter, raf} = setupTest();
 
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
     foundation.init();
     raf.flush();
 
-    rootHandlers[downEvt](pageXObj(50));
+    const mockEvent = {
+      type: downEvt,
+      pageX: 50,
+    };
+    foundation.handleInteractionStart(mockEvent);
     raf.flush();
-    bodyHandlers[upEvt]();
+
+    const mockUpEvent = {
+      type: upEvt,
+    };
+    foundation.handleInteractionEnd(mockUpEvent);
 
     td.verify(mockAdapter.notifyChange());
 
     raf.restore();
   });
 }
+
+test('on any other events assignMoveEndEvents does nothing', () => {
+  const {foundation, mockAdapter, raf} = setupTest();
+
+  td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+  foundation.init();
+  raf.flush();
+
+  const mockEvent = {
+    type: 'foo',
+    pageX: 50,
+  };
+  foundation.handleInteractionStart(mockEvent);
+  raf.flush();
+
+  assert.equal(foundation.acceptableMoveEvent_, '');
+  assert.equal(foundation.acceptableEndEvent_, '');
+
+  raf.restore();
+});
