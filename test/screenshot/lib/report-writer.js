@@ -435,7 +435,7 @@ class ReportWriter {
       if (rev.branch) {
         const branchDisplayName = rev.remote ? `${rev.remote}/${rev.branch}` : rev.branch;
         return new Handlebars.SafeString(`
-<a href="${GITHUB_REPO_URL}/commit/${rev.commit}">${rev.commit}</a>
+<a href="${GITHUB_REPO_URL}/commit/${rev.commit}">${rev.commit.substr(0, 7)}</a>
 on branch
 <a href="${GITHUB_REPO_URL}/tree/${rev.branch}">${branchDisplayName}</a>
 ${prMarkup}
@@ -444,7 +444,7 @@ ${prMarkup}
 
       if (rev.tag) {
         return new Handlebars.SafeString(`
-<a href="${GITHUB_REPO_URL}/commit/${rev.commit}">${rev.commit}</a>
+<a href="${GITHUB_REPO_URL}/commit/${rev.commit}">${rev.commit.substr(0, 7)}</a>
 on tag
 <a href="${GITHUB_REPO_URL}/tree/${rev.tag}">${rev.tag}</a>
 ${prMarkup}
@@ -453,7 +453,7 @@ ${prMarkup}
 
       if (rev.commit) {
         return new Handlebars.SafeString(`
-<a href="${GITHUB_REPO_URL}/commit/${rev.commit}">${rev.commit}</a>
+<a href="${GITHUB_REPO_URL}/commit/${rev.commit}">${rev.commit.substr(0, 7)}</a>
 ${prMarkup}
 `);
       }
