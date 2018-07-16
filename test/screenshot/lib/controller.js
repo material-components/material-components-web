@@ -208,8 +208,9 @@ class Controller {
    * @return {!Promise<number>}
    */
   async getTestExitCode(reportData) {
-    // Don't fail Travis builds when screenshots change. The diffs are reported in GitHub instead.
-    if (process.env.TRAVIS === 'true') {
+    // Pull requests display screenshot diffs as a separate "status check" in the GitHub UI, so we don't want to mark
+    // the Travis run as "failed".
+    if (Number(process.env.TRAVIS_PULL_REQUEST)) {
       return ExitCode.OK;
     }
 
@@ -247,6 +248,7 @@ class Controller {
   }
 
   /**
+   * @param {string} title
    * @param {!Array<!mdc.proto.Screenshot>} screenshots
    * @private
    */
