@@ -324,9 +324,9 @@ https://crossbrowsertesting.com/account
    */
   getCbtTestNameAndBuildNameForGitRev_(gitRev) {
     const nameParts = [
-      gitRev.commit ? `commit ${gitRev.commit.substr(0, 7)}` : null,
-      gitRev.branch ? `${gitRev.branch}` : null,
-      gitRev.tag ? `${gitRev.tag}` : null,
+      gitRev.commit ? gitRev.commit.substr(0, 7) : null,
+      gitRev.branch ? gitRev.branch : null,
+      gitRev.tag ? gitRev.tag : null,
       gitRev.pr_number ? `PR #${gitRev.pr_number}` : null,
     ].filter((part) => part);
     return {
