@@ -20,6 +20,45 @@ const colors = require('colors/safe');
 const crypto = require('crypto');
 const path = require('path');
 
+/**
+ * @typedef {(function(string):string|{
+ *   enable: !CliColor,
+ *   disable: !CliColor,
+ *   strip: !CliColor,
+ *   strip: !CliColor,
+ *   black: !CliColor,
+ *   red: !CliColor,
+ *   green: !CliColor,
+ *   yellow: !CliColor,
+ *   blue: !CliColor,
+ *   magenta: !CliColor,
+ *   cyan: !CliColor,
+ *   white: !CliColor,
+ *   gray: !CliColor,
+ *   grey: !CliColor,
+ *   bgBlack: !CliColor,
+ *   bgRed: !CliColor,
+ *   bgGreen: !CliColor,
+ *   bgYellow: !CliColor,
+ *   bgBlue: !CliColor,
+ *   bgMagenta: !CliColor,
+ *   bgCyan: !CliColor,
+ *   bgWhite: !CliColor,
+ *   reset: !CliColor,
+ *   bold: !CliColor,
+ *   dim: !CliColor,
+ *   italic: !CliColor,
+ *   underline: !CliColor,
+ *   inverse: !CliColor,
+ *   hidden: !CliColor,
+ *   strikethrough: !CliColor,
+ *   rainbow: !CliColor,
+ *   zebra: !CliColor,
+ *   america: !CliColor,
+ *   random: !CliColor,
+ * })} CliColor
+ */
+
 class Logger {
   /**
    * @param {string} callerFilePath
@@ -48,6 +87,13 @@ class Logger {
      * @private
      */
     this.foldStartTimes_ = new Map();
+  }
+
+  /**
+   * @return {!CliColor}
+   */
+  static get colors() {
+    return colors;
   }
 
   /**
@@ -116,12 +162,20 @@ class Logger {
   }
 
   log(...args) {
-    console.log(...args);
+    console.log('[log]', ...args);
   }
 
-  info() {}
-  warn() {}
-  error() {}
+  info() {
+    console.info('[' + colors.blue('info') + ']', ...args);
+  }
+
+  warn() {
+    console.warn('[' + colors.yellow('warn') + ']', ...args);
+  }
+
+  error() {
+    console.error('[' + colors.bold.red('error') + ']', ...args);
+  }
 
   /**
    * @return {boolean}

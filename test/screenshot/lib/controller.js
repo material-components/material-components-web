@@ -197,7 +197,20 @@ class Controller {
     await this.cloudStorage_.uploadDiffReport(reportData);
 
     this.logger_.foldEnd('screenshot.report');
-    this.logger_.log('\nDiff report:', reportData.meta.report_html_file.public_url);
+
+
+    // TODO(acdvorak): Store this directly in the proto so we don't have to recalculate it all over the place
+    const numChanges =
+      reportData.screenshots.changed_screenshot_list.length +
+      reportData.screenshots.added_screenshot_list.length +
+      reportData.screenshots.removed_screenshot_list.length;
+
+    if (numChanges > 0) {
+      this.logger_.error(`\n\n\n${numChanges} screenshot${numChanges === 1 ? '' : 's'} changed!\n`);
+    } else {
+      this.logger_.log(`\n\n\n${numChanges} screenshot${numChanges === 1 ? '' : 's'} changed!\n`);
+    }
+    this.logger_.log('Diff report:', Logger.colors.bold.red(reportData.meta.report_html_file.public_url));
 
     return reportData;
   }
@@ -208,17 +221,16 @@ class Controller {
    */
   async getTestExitCode(reportData) {
     const isOnline = await this.cli_.isOnline();
+
+    // TODO(acdvorak): Store this directly in the proto so we don't have to recalculate it all over the place
     const numChanges =
       reportData.screenshots.changed_screenshot_list.length +
       reportData.screenshots.added_screenshot_list.length +
       reportData.screenshots.removed_screenshot_list.length;
 
     if (numChanges === 0) {
-      console.log('\n0 screenshots changed!');
       return ExitCode.OK;
     }
-
-    console.error(`\n${numChanges} screenshot${numChanges === 1 ? '' : 's'} changed!`);
 
     if (isOnline) {
       return ExitCode.CHANGES_FOUND;
