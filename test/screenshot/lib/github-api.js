@@ -98,7 +98,7 @@ class GitHubApi {
       description = `Running ${numScreenshotsFormatted} screenshot tests`;
     }
 
-    await this.createStatus_({state, targetUrl, description});
+    return await this.createStatus_({state, targetUrl, description});
   }
 
   async setPullRequestError() {
@@ -108,7 +108,7 @@ class GitHubApi {
       return;
     }
 
-    await this.createStatus_({
+    return await this.createStatus_({
       state: GitHubApi.PullRequestState.ERROR,
       target_url: `https://travis-ci.org/material-components/material-components-web/jobs/${process.env.TRAVIS_JOB_ID}`,
       // description: 'Error',
@@ -135,6 +135,7 @@ class GitHubApi {
     console.log('createStatus_():', request);
     const response = await this.octocat_.repos.createStatus(request);
     console.log('response:', response);
+    return response;
   }
 
   /**
