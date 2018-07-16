@@ -425,7 +425,7 @@ test('#handleKeydown does not find ancestor with mdc-list-item so returns early'
   td.verify(preventDefault(), {times: 0});
 });
 
-test('#handleKeydown space key causes preventDefault to be called on the event', () => {
+test('#handleKeydown space key causes preventDefault to be called on the event when singleSelection=true', () => {
   const {foundation, mockAdapter} = setupTest();
   const preventDefault = td.func('preventDefault');
   const target = {classList: ['mdc-list-item']};
@@ -439,7 +439,7 @@ test('#handleKeydown space key causes preventDefault to be called on the event',
   td.verify(preventDefault(), {times: 1});
 });
 
-test('#handleKeydown enter key causes preventDefault to be called on the event', () => {
+test('#handleKeydown enter key causes preventDefault to be called on the event when singleSelection=true', () => {
   const {foundation, mockAdapter} = setupTest();
   const preventDefault = td.func('preventDefault');
   const target = {classList: ['mdc-list-item']};
@@ -453,7 +453,7 @@ test('#handleKeydown enter key causes preventDefault to be called on the event',
   td.verify(preventDefault(), {times: 1});
 });
 
-test('#handleKeydown space key does not causes preventDefault to be called if singleSelection=true', () => {
+test('#handleKeydown space key does not cause preventDefault to be called if singleSelection=false', () => {
   const {foundation, mockAdapter} = setupTest();
   const preventDefault = td.func('preventDefault');
   const target = {classList: ['mdc-list-item']};
@@ -466,7 +466,7 @@ test('#handleKeydown space key does not causes preventDefault to be called if si
   td.verify(preventDefault(), {times: 0});
 });
 
-test('#handleKeydown enter key does not causes preventDefault to be called if singleSelection=true', () => {
+test('#handleKeydown enter key does not cause preventDefault to be called if singleSelection=false', () => {
   const {foundation, mockAdapter} = setupTest();
   const preventDefault = td.func('preventDefault');
   const target = {classList: ['mdc-list-item']};
