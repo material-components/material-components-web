@@ -575,12 +575,13 @@ that you know are going to have diffs.
     const travisTag = process.env.TRAVIS_TAG;
     const travisPrNumber = Number(process.env.TRAVIS_PULL_REQUEST);
     const travisPrBranch = process.env.TRAVIS_PULL_REQUEST_BRANCH;
+    const travisPrSha = process.env.TRAVIS_PULL_REQUEST_SHA;
 
     if (travisPrNumber) {
       return GitRevision.create({
         type: GitRevision.Type.TRAVIS_PR,
         golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
-        commit: await this.gitRepo_.getShortCommitHash(),
+        commit: await this.gitRepo_.getFullCommitHash(travisPrSha),
         branch: travisPrBranch || travisBranch,
         pr_number: travisPrNumber,
       });
@@ -590,7 +591,7 @@ that you know are going to have diffs.
       return GitRevision.create({
         type: GitRevision.Type.REMOTE_TAG,
         golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
-        commit: await this.gitRepo_.getShortCommitHash(travisTag),
+        commit: await this.gitRepo_.getFullCommitHash(travisTag),
         tag: travisTag,
       });
     }
@@ -599,7 +600,7 @@ that you know are going to have diffs.
       return GitRevision.create({
         type: GitRevision.Type.LOCAL_BRANCH,
         golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
-        commit: await this.gitRepo_.getShortCommitHash(travisBranch),
+        commit: await this.gitRepo_.getFullCommitHash(travisBranch),
         branch: travisBranch,
       });
     }
