@@ -50,9 +50,9 @@
   }
 }
 
-@mixin mdc-shape-angled-corner-stroke($stroke-width, $stroke-color, $stroke-style: solid) {
+@mixin mdc-shape-angled-corner-outline($outline-width, $outline-color, $outline-style: solid) {
   .mdc-shape-container__corner::before {
-    top: $stroke-width;
-    border-bottom: $stroke-width $stroke-style $stroke-color;
+    top: $outline-width;
+    border-bottom: $outline-width $outline-style $outline-color;
   }
 }

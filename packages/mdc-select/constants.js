@@ -13,20 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export const cssClasses = {
+const cssClasses = {
   BOX: 'mdc-select--box',
   DISABLED: 'mdc-select--disabled',
   ROOT: 'mdc-select',
-  IS_CHANGING: 'mdc-select--is-changing',
+  OUTLINED: 'mdc-select--outlined',
 };
 
-export const numbers = {
-  FLOAT_NATIVE_CONTROL_TRANSITION_TIME_MS: 125,
-};
-
-export const strings = {
+const strings = {
   CHANGE_EVENT: 'MDCSelect:change',
   LINE_RIPPLE_SELECTOR: '.mdc-line-ripple',
   LABEL_SELECTOR: '.mdc-floating-label',
   NATIVE_CONTROL_SELECTOR: '.mdc-select__native-control',
+  OUTLINE_SELECTOR: '.mdc-notched-outline',
 };
+
+/** @enum {number} */
+const numbers = {
+  LABEL_SCALE: 0.75,
+};
+
+export {cssClasses, strings, numbers};

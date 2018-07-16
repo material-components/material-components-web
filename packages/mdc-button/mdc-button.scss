@@ -43,7 +43,7 @@
 
 .mdc-button--raised,
 .mdc-button--unelevated,
-.mdc-button--stroked {
+.mdc-button--outlined {
   .mdc-button__icon {
     // Icons inside contained buttons have different styles due to increased button padding
     @include mdc-button__icon-contained_;
@@ -54,18 +54,18 @@
 .mdc-button--unelevated {
   @include mdc-button--filled_;
   @include mdc-button-container-fill-color(primary);
-  @include mdc-button-ink-color(text-primary-on-primary);
-  @include mdc-states(text-primary-on-primary);
+  @include mdc-button-ink-color(on-primary);
+  @include mdc-states(on-primary);
 }
 
 .mdc-button--raised {
   @include mdc-button--raised_;
 }
 
-.mdc-button--stroked {
-  @include mdc-button--stroked_;
-  @include mdc-button-stroke-width(2px);
-  @include mdc-button-stroke-color(primary);
+.mdc-button--outlined {
+  @include mdc-button--outlined_;
+  @include mdc-button-outline-width(2px);
+  @include mdc-button-outline-color(primary);
 }
 
 .mdc-button--dense {
