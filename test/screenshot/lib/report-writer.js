@@ -460,7 +460,7 @@ ${prMarkup}
     }
 
     const serialized = JSON.stringify({diffBase, meta}, null, 2);
-    throw new Error(`Unable to generate markup for invalid diff source: ${serialized}`);
+    throw new Error(`Unable to generate markup for invalid diff source:\n${serialized}`);
   }
 
   /**

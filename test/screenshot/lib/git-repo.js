@@ -18,6 +18,9 @@
 
 const simpleGit = require('simple-git/promise');
 
+const mdcProto = require('../proto/mdc.pb').mdc.proto;
+const {User} = mdcProto;
+
 class GitRepo {
   constructor(workingDirPath = undefined) {
     /**
@@ -128,6 +131,20 @@ class GitRepo {
    */
   async getIgnoredPaths(filePaths) {
     return this.repo_.checkIgnore(filePaths);
+  }
+
+  /**
+   * @param {string=} commit
+   * @return {!Promise<!mdc.proto.User>}
+   */
+  async getCommitAuthor(commit = undefined) {
+    /** @type {!Array<!DefaultLogFields>} */
+    const logEntries = await this.getLog([commit]);
+    const logEntry = logEntries[0];
+    return User.create({
+      name: logEntry.author_name,
+      email: logEntry.author_email,
+    });
   }
 
   /**
