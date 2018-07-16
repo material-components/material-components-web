@@ -21,6 +21,15 @@ if [ "$TEST_SUITE" == 'screenshot' ] || [ "$TEST_SUITE" == 'github' ]; then
   ls test/screenshot/auth/
   echo
 
+  echo git rev-parse HEAD
+  echo
+  git rev-parse HEAD
+  echo
+
+  echo
+  env | grep TRAVIS
+  echo
+
 #  if [ ! -d $HOME/google-cloud-sdk ]; then
 #    curl -o /tmp/gcp-sdk.bash https://sdk.cloud.google.com
 #    chmod +x /tmp/gcp-sdk.bash

@@ -575,13 +575,12 @@ that you know are going to have diffs.
     const travisTag = process.env.TRAVIS_TAG;
     const travisPrNumber = Number(process.env.TRAVIS_PULL_REQUEST);
     const travisPrBranch = process.env.TRAVIS_PULL_REQUEST_BRANCH;
-    const travisPrSha = process.env.TRAVIS_PULL_REQUEST_SHA;
 
     if (travisPrNumber) {
       return GitRevision.create({
         type: GitRevision.Type.TRAVIS_PR,
         golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
-        commit: await this.gitRepo_.getShortCommitHash(travisPrSha),
+        commit: await this.gitRepo_.getShortCommitHash(),
         branch: travisPrBranch || travisBranch,
         pr_number: travisPrNumber,
       });
