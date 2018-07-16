@@ -108,9 +108,23 @@ class MDCChipAdapter {
   notifyTrailingIconInteraction() {}
 
   /**
-   * Recomputes all dimensions and positions for the ripple element.
+   * Emits a custom event "MDCChip:removal" denoting the chip will be removed.
    */
-  layout() {}
+  notifyRemoval() {}
+
+  /**
+   * Returns the computed property value of the given style property on the root element.
+   * @param {string} propertyName
+   * @return {string}
+   */
+  getComputedStyleValue(propertyName) {}
+
+  /**
+   * Sets the property value of the given style property on the root element.
+   * @param {string} propertyName
+   * @param {string} value
+   */
+  setStyleProperty(propertyName, value) {}
 }
 
 export default MDCChipAdapter;

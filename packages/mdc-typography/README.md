@@ -31,10 +31,10 @@ MDC Typography is a foundational module that applies these styles to MDC Web com
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/style/typography.html">Material Design guidelines: Typography</a>
+    <a href="https://material.io/go/design-typography">Material Design guidelines: Typography</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/typography.html">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/typography">Demo</a>
   </li>
 </ul>
 
@@ -44,9 +44,11 @@ MDC Typography is a foundational module that applies these styles to MDC Web com
 npm install @material/typography
 ```
 
-## Usage
+## Basic Usage
 
-We recommend you load Roboto from Google Fonts
+### HTML Structure
+
+We recommend you load Roboto from Google Fonts:
 
 ```html
 <head>
@@ -56,6 +58,14 @@ We recommend you load Roboto from Google Fonts
   <h1 class="mdc-typography--headline1">Big header</h1>
 </body>
 ```
+
+### Styles
+
+```css
+@import "@material/typography/mdc-typography";
+```
+
+## Style Customization
 
 ### CSS Classes
 
