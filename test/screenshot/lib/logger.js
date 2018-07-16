@@ -76,7 +76,7 @@ class Logger {
    */
   foldStart(foldId, shortMessage) {
     const hash = this.getFoldHash_(foldId);
-    const colorMessage = colors.yellow(shortMessage);
+    const colorMessage = colors.bold.yellow(shortMessage);
 
     this.foldStartTimes_.set(foldId, Date.now());
 
@@ -110,7 +110,7 @@ class Logger {
   getFoldHash_(foldId) {
     const sha1Sum = crypto.createHash('sha1');
     sha1Sum.update(foldId);
-    return sha1Sum.digest('hex');
+    return sha1Sum.digest('hex').substr(0, 8);
   }
 
   log(...args) {
