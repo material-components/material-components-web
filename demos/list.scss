@@ -68,7 +68,7 @@ a.material-icons {
 }
 
 #demo-wrapper .mdc-list, #demo-wrapper .mdc-list-group {
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, .1);
 }
 
 #demo-wrapper .mdc-list-group .mdc-list {
@@ -76,18 +76,18 @@ a.material-icons {
 }
 
 #demo-wrapper h2 {
-  font-size: 1.5em;
-  margin-bottom: 0.8em;
+  margin-bottom: .8em;
   margin-left: 24px;
+  font-size: 1.5em;
 }
 
 #demo-wrapper h3 {
-  margin-bottom: 0.8em;
+  margin-bottom: .8em;
 }
 
 .hero .mdc-list {
   @include mdc-elevation(4);
 
-  background-color: white;
   min-width: 320px;
+  background-color: white;
 }
