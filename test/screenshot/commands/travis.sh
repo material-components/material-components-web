@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [ "$TEST_SUITE" == 'screenshot' ]; then
+if [ "$TEST_SUITE" == 'screenshot' ] || [ "$TEST_SUITE" == 'github' ]; then
   openssl aes-256-cbc -K $encrypted_eead2343bb54_key -iv $encrypted_eead2343bb54_iv \
     -in test/screenshot/auth/travis.tar.enc -out test/screenshot/auth/travis.tar -d
 
