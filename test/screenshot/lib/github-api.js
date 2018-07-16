@@ -24,6 +24,9 @@ class GitHubApi {
     this.authenticate_();
   }
 
+  /**
+   * @private
+   */
   authenticate_() {
     let token;
 
@@ -53,14 +56,76 @@ class GitHubApi {
     };
   }
 
-  async setPullRequestStatus({state, targetUrl = undefined, description = undefined}) {
-    /* const result = */await this.octocat_.repos.createStatus({
+  /**
+   * @param {!mdc.proto.ReportData} reportData
+   * @return {Promise<void>}
+   */
+  async setPullRequestStatus(reportData) {
+    const prNumber = Number(process.env.TRAVIS_PULL_REQUEST);
+    if (!prNumber) {
+      return;
+    }
+
+    const screenshots = reportData.screenshots;
+    const numChanges =
+      screenshots.changed_screenshot_list.length +
+      screenshots.added_screenshot_list.length +
+      screenshots.removed_screenshot_list.length;
+    const reportFileUrl = meta.report_html_file ? meta.report_html_file.public_url : null;
+
+    let state;
+    let targetUrl;
+    let description;
+
+    if (reportFileUrl) {
+      if (numChanges > 0) {
+        state = GitHubApi.PullRequestState.FAILURE;
+        description = `${numChanges} screenshots changed`;
+      } else {
+        state = GitHubApi.PullRequestState.SUCCESS;
+        description = 'All tests passed';
+      }
+
+      targetUrl = meta.report_html_file.public_url;
+    } else {
+      const numScreenshotsFormatted = screenshots.runnable_screenshot_list.length.toLocaleString();
+      state = GitHubApi.PullRequestState.PENDING;
+      targetUrl = `https://travis-ci.org/material-components/material-components-web/jobs/${process.env.TRAVIS_JOB_ID}`;
+      description = `Running ${numScreenshotsFormatted} screenshot tests`;
+    }
+
+    await this.createStatus_({state, targetUrl, description});
+  }
+
+  async setPullRequestError() {
+    const prNumber = Number(process.env.TRAVIS_PULL_REQUEST);
+    if (!prNumber) {
+      return;
+    }
+
+    this.createStatus_({
+      state: GitHubApi.PullRequestState.ERROR,
+      target_url: `https://travis-ci.org/material-components/material-components-web/jobs/${process.env.TRAVIS_JOB_ID}`,
+      // description: 'Error',
+    });
+  }
+
+  /**
+   * @param {string} state
+   * @param {string} targetUrl
+   * @param {string=} description
+   * @return {!Promise<*>}
+   * @private
+   */
+  async createStatus_({state, targetUrl, description = undefined}) {
+    return await this.octocat_.repos.createStatus({
       owner: 'material-components',
       repo: 'material-components-web',
       sha: await this.gitRepo_.getFullCommitHash(),
       state,
       target_url: targetUrl,
       description,
+      context: 'screenshot_test',
     });
   }
 

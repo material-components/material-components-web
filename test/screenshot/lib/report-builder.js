@@ -59,16 +59,16 @@ class ReportBuilder {
     this.fileCache_ = new FileCache();
 
     /**
-     * @type {!GitRepo}
-     * @private
-     */
-    this.gitRepo_ = new GitRepo();
-
-    /**
      * @type {!GitHubApi}
      * @private
      */
     this.gitHubApi_ = new GitHubApi();
+
+    /**
+     * @type {!GitRepo}
+     * @private
+     */
+    this.gitRepo_ = new GitRepo();
 
     /**
      * @type {!GoldenIo}

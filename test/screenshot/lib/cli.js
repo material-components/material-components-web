@@ -33,16 +33,16 @@ const HTTP_URL_REGEX = new RegExp('^https?://');
 class Cli {
   constructor() {
     /**
-     * @type {!GitRepo}
-     * @private
-     */
-    this.gitRepo_ = new GitRepo();
-
-    /**
      * @type {!GitHubApi}
      * @private
      */
     this.gitHubApi_ = new GitHubApi();
+
+    /**
+     * @type {!GitRepo}
+     * @private
+     */
+    this.gitRepo_ = new GitRepo();
 
     /**
      * @type {?boolean}
