@@ -35,6 +35,8 @@ module.exports = {
       return;
     }
 
+    await gitHubApi.setPullRequestStatus(reportData);
+
     try {
       await controller.uploadAllAssets(reportData);
       await controller.captureAllPages(reportData);

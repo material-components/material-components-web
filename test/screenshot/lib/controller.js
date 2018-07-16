@@ -22,7 +22,6 @@ const {GitRevision} = mdcProto;
 const Cli = require('./cli');
 const CloudStorage = require('./cloud-storage');
 const Duration = require('./duration');
-const GitHubApi = require('./github-api');
 const GitRepo = require('./git-repo');
 const GoldenIo = require('./golden-io');
 const Logger = require('./logger');
@@ -44,12 +43,6 @@ class Controller {
      * @private
      */
     this.cloudStorage_ = new CloudStorage();
-
-    /**
-     * @type {!GitHubApi}
-     * @private
-     */
-    this.gitHubApi_ = new GitHubApi();
 
     /**
      * @type {!GitRepo}
@@ -105,11 +98,7 @@ class Controller {
     if (isOnline && shouldFetch) {
       await this.gitRepo_.fetch();
     }
-
-    /** @type {!mdc.proto.ReportData} */
-    const reportData = await this.reportBuilder_.initForCapture();
-    await this.gitHubApi_.setPullRequestStatus(reportData);
-    return reportData;
+    return this.reportBuilder_.initForCapture();
   }
 
   /**
