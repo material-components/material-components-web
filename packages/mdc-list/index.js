@@ -16,18 +16,21 @@
  */
 
 import MDCComponent from '@material/base/component';
-import {MDCListFoundation} from './foundation';
-import {strings} from './constants';
+import MDCListFoundation from './foundation';
+import MDCListAdapter from './adapter';
+import {cssClasses, strings} from './constants';
 
 /**
  * @extends MDCComponent<!MDCListFoundation>
  */
-export class MDCList extends MDCComponent {
+class MDCList extends MDCComponent {
   /** @param {...?} args */
   constructor(...args) {
     super(...args);
     /** @private {!Function} */
     this.handleKeydown_;
+    /** @private {!Function} */
+    this.handleClick_;
     /** @private {!Function} */
     this.focusInEventListener_;
     /** @private {!Function} */
@@ -44,12 +47,14 @@ export class MDCList extends MDCComponent {
 
   destroy() {
     this.root_.removeEventListener('keydown', this.handleKeydown_);
+    this.root_.removeEventListener('click', this.handleClick_);
     this.root_.removeEventListener('focusin', this.focusInEventListener_);
     this.root_.removeEventListener('focusout', this.focusOutEventListener_);
   }
 
   initialSyncWithDOM() {
     this.handleKeydown_ = this.foundation_.handleKeydown.bind(this.foundation_);
+    this.handleClick_ = this.foundation_.handleClick.bind(this.foundation_);
     this.focusInEventListener_ = this.foundation_.handleFocusIn.bind(this.foundation_);
     this.focusOutEventListener_ = this.foundation_.handleFocusOut.bind(this.foundation_);
     this.root_.addEventListener('keydown', this.handleKeydown_);
@@ -80,8 +85,7 @@ export class MDCList extends MDCComponent {
 
   /** @return Array<!Element>*/
   get listElements_() {
-    return [].slice.call(this.root_.querySelectorAll(strings.ITEMS_SELECTOR))
-      .filter((ele) => ele.parentElement === this.root_);
+    return [].slice.call(this.root_.querySelectorAll(strings.ENABLED_ITEMS_SELECTOR));
   }
 
   /** @param {boolean} value */
@@ -89,18 +93,79 @@ export class MDCList extends MDCComponent {
     this.foundation_.setWrapFocus(value);
   }
 
+  /** @param {boolean} isSingleSelectionList */
+  set singleSelection(isSingleSelectionList) {
+    if (isSingleSelectionList) {
+      this.root_.addEventListener('click', this.handleClick_);
+    } else {
+      this.root_.removeEventListener('click', this.handleClick_);
+    }
+
+    this.foundation_.setSingleSelection(isSingleSelectionList);
+    const selectedElement = this.root_.querySelector('.mdc-list-item--selected');
+
+    if (selectedElement) {
+      this.selectedIndex = this.listElements_.indexOf(selectedElement);
+    }
+  }
+
+  /** @param {number} index */
+  set selectedIndex(index) {
+    this.foundation_.setSelectedIndex(index);
+  }
+
   /** @return {!MDCListFoundation} */
   getDefaultFoundation() {
-    return new MDCListFoundation(/** @type {!MDCListAdapter} */{
+    return new MDCListFoundation(/** @type {!MDCListAdapter} */ (Object.assign({
       getListItemCount: () => this.listElements_.length,
       getFocusedElementIndex: () => this.listElements_.indexOf(document.activeElement),
       getListItemIndex: (node) => this.listElements_.indexOf(node),
-      focusItemAtIndex: (ndx) => this.listElements_[ndx].focus(),
+      setAttributeForElementIndex: (index, attr, value) => {
+        const element = this.listElements_[index];
+        if (element) {
+          element.setAttribute(attr, value);
+        }
+      },
+      removeAttributeForElementIndex: (index, attr) => {
+        const element = this.listElements_[index];
+        if (element) {
+          element.removeAttribute(attr);
+        }
+      },
+      addClassForElementIndex: (index, className) => {
+        const element = this.listElements_[index];
+        if (element) {
+          element.classList.add(className);
+        }
+      },
+      removeClassForElementIndex: (index, className) => {
+        const element = this.listElements_[index];
+        if (element) {
+          element.classList.remove(className);
+        }
+      },
+      isListItem: (target) => target.classList.contains(cssClasses.LIST_ITEM_CLASS),
+      focusItemAtIndex: (index) => {
+        const element = this.listElements_[index];
+        if (element) {
+          element.focus();
+        }
+      },
+      isElementFocusable: (ele) => {
+        if (!ele) return false;
+        let matches = Element.prototype.matches;
+        if (!matches) { // IE uses a different name for the same functionality
+          matches = Element.prototype.msMatchesSelector;
+        }
+        return matches.call(ele, strings.FOCUSABLE_CHILD_ELEMENTS);
+      },
       setTabIndexForListItemChildren: (listItemIndex, tabIndexValue) => {
-        const listItemChildren = [].slice.call(this.listElements_[listItemIndex]
-          .querySelectorAll(strings.FOCUSABLE_CHILD_ELEMENTS));
+        const element = this.listElements_[listItemIndex];
+        const listItemChildren = [].slice.call(element.querySelectorAll(strings.FOCUSABLE_CHILD_ELEMENTS));
         listItemChildren.forEach((ele) => ele.setAttribute('tabindex', tabIndexValue));
       },
-    });
+    })));
   }
 }
+
+export {MDCList, MDCListFoundation};

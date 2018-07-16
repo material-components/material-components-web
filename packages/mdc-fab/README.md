@@ -112,6 +112,8 @@ Mixin | Description
 `mdc-fab-container-color($color)` | Sets the container color to the given color
 `mdc-fab-icon-size($width, $height)` | Sets the icon `width`, `height`, and `font-size` properties to the specified `width` and `height`. `$height` is optional and will default to `$width` if omitted. The `font-size` will be set to the provided `$width` value.
 `mdc-fab-ink-color($color)` | Sets the ink color to the given color
+`mdc-fab-extended-padding($icon-padding, $label-padding)` | Sets the padding on both sides of the icon, and between the label and the edge of the FAB. In cases where there is no icon, `$label-padding` will apply to both sides.
+`mdc-fab-extended-label-padding($label-padding)` | Sets the label side padding for Extended FAB. Useful when styling an Extended FAB with no icon.
 
 The ripple effect for the FAB component is styled using [MDC Ripple](../mdc-ripple) mixins.
 

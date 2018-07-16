@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,49 +16,27 @@
 
 'use strict';
 
-const childProcess = require('child_process');
-const fs = require('mz/fs');
-const path = require('path');
+const mdcProto = require('../proto/mdc.pb').mdc.proto;
+const {GitRevision} = mdcProto;
 
-const CbtUserAgent = require('./cbt-user-agent');
+const Cli = require('./cli');
 const CloudStorage = require('./cloud-storage');
-const CliArgParser = require('./cli-arg-parser');
+const Duration = require('./duration');
 const GitRepo = require('./git-repo');
-const ImageCache = require('./image-cache');
-const ImageCropper = require('./image-cropper');
-const ImageDiffer = require('./image-differ');
-const LocalStorage = require('./local-storage');
-const ReportGenerator = require('./report-generator');
-const Screenshot = require('./screenshot');
-const SnapshotStore = require('./snapshot-store');
-const {UploadableFile} = require('./types');
+const GoldenIo = require('./golden-io');
+const Logger = require('./logger');
+const ReportBuilder = require('./report-builder');
+const ReportWriter = require('./report-writer');
+const SeleniumApi = require('./selenium-api');
+const {ExitCode} = require('./constants');
 
-/**
- * High-level screenshot workflow controller that provides composable async methods to:
- * 1. Upload files to GCS
- * 2. Capture screenshots with CBT
- * 3. Update local golden.json with new screenshot URLs
- * 4. Diff captured screenshots against existing golden.json
- */
 class Controller {
   constructor() {
     /**
-     * @type {!CliArgParser}
+     * @type {!Cli}
      * @private
      */
-    this.cliArgs_ = new CliArgParser();
-
-    /**
-     * @type {!GitRepo}
-     * @private
-     */
-    this.gitRepo_ = new GitRepo();
-
-    /**
-     * @type {!LocalStorage}
-     * @private
-     */
-    this.localStorage_ = new LocalStorage();
+    this.cli_ = new Cli();
 
     /**
      * @type {!CloudStorage}
@@ -67,409 +45,219 @@ class Controller {
     this.cloudStorage_ = new CloudStorage();
 
     /**
-     * @type {!ImageCache}
+     * @type {!GitRepo}
      * @private
      */
-    this.imageCache_ = new ImageCache();
+    this.gitRepo_ = new GitRepo();
 
     /**
-     * @type {!ImageCropper}
+     * @type {!GoldenIo}
      * @private
      */
-    this.imageCropper_ = new ImageCropper();
+    this.goldenIo_ = new GoldenIo();
 
     /**
-     * @type {!ImageDiffer}
+     * @type {!Logger}
      * @private
      */
-    this.imageDiffer_ = new ImageDiffer({imageCache: this.imageCache_});
+    this.logger_ = new Logger(__filename);
 
     /**
-     * @type {!SnapshotStore}
+     * @type {!ReportBuilder}
      * @private
      */
-    this.snapshotStore_ = new SnapshotStore();
+    this.reportBuilder_ = new ReportBuilder();
 
     /**
-     * Unique timestamped directory path to prevent collisions between developers.
-     * @type {?string}
+     * @type {!ReportWriter}
      * @private
      */
-    this.baseUploadDir_ = null;
+    this.reportWriter_ = new ReportWriter();
+
+    /**
+     * @type {!SeleniumApi}
+     * @private
+     */
+    this.seleniumApi_ = new SeleniumApi();
   }
 
   /**
-   * @return {!Promise<!RunReport>}
+   * @return {!Promise<!mdc.proto.ReportData>}
    */
-  async initialize() {
-    this.baseUploadDir_ = await this.cloudStorage_.generateUniqueUploadDir();
+  async initForApproval() {
+    const runReportJsonUrl = this.cli_.runReportJsonUrl;
+    return this.reportBuilder_.initForApproval({runReportJsonUrl});
+  }
 
-    await this.gitRepo_.fetch();
-
-    if (await this.cliArgs_.shouldBuild()) {
-      childProcess.spawnSync('npm', ['run', 'screenshot:build'], {shell: true, stdio: 'inherit'});
+  /**
+   * @return {!Promise<!mdc.proto.ReportData>}
+   */
+  async initForCapture() {
+    const isOnline = await this.cli_.isOnline();
+    const shouldFetch = this.cli_.shouldFetch;
+    if (isOnline && shouldFetch) {
+      await this.gitRepo_.fetch();
     }
+    return this.reportBuilder_.initForCapture();
+  }
+
+  /**
+   * @return {!Promise<!mdc.proto.ReportData>}
+   */
+  async initForDemo() {
+    const isOnline = await this.cli_.isOnline();
+    const shouldFetch = this.cli_.shouldFetch;
+    if (isOnline && shouldFetch) {
+      await this.gitRepo_.fetch();
+    }
+    return this.reportBuilder_.initForDemo();
+  }
+
+  /**
+   * @param {!mdc.proto.ReportData} reportData
+   * @return {{isTestable: boolean, prNumber: ?number}}
+   */
+  checkIsTestable(reportData) {
+    const goldenGitRevision = reportData.meta.golden_diff_base.git_revision;
+    const shouldSkipScreenshotTests =
+      goldenGitRevision &&
+      goldenGitRevision.type === GitRevision.Type.TRAVIS_PR &&
+      goldenGitRevision.pr_file_paths.length === 0;
 
     return {
-      runTarget: await this.getRunTarget_(),
-      runResult: null,
+      isTestable: !shouldSkipScreenshotTests,
+      prNumber: goldenGitRevision ? goldenGitRevision.pr_number : null,
     };
   }
 
   /**
-   * @return {!Promise<!RunTarget>}
+   * @param {!mdc.proto.ReportData} reportData
+   * @return {!Promise<!mdc.proto.ReportData>}
+   */
+  async uploadAllAssets(reportData) {
+    this.logger_.foldStart('screenshot.upload', 'Controller#uploadAllAssets()');
+    await this.cloudStorage_.uploadAllAssets(reportData);
+    this.logger_.foldEnd('screenshot.upload');
+    return reportData;
+  }
+
+  /**
+   * @param {!mdc.proto.ReportData} reportData
+   * @return {!Promise<!mdc.proto.ReportData>}
+   */
+  async captureAllPages(reportData) {
+    this.logger_.foldStart('screenshot.capture', 'Controller#captureAllPages()');
+    await this.seleniumApi_.captureAllPages(reportData);
+    await this.cloudStorage_.uploadAllScreenshots(reportData);
+    this.logger_.foldEnd('screenshot.capture');
+    return reportData;
+  }
+
+  /**
+   * @param {!mdc.proto.ReportData} reportData
+   * @return {!Promise<!mdc.proto.ReportData>}
+   */
+  async compareAllScreenshots(reportData) {
+    this.logger_.foldStart('screenshot.compare', 'Controller#compareAllScreenshots()');
+
+    await this.reportBuilder_.populateScreenshotMaps(reportData.user_agents, reportData.screenshots);
+    await this.cloudStorage_.uploadAllDiffs(reportData);
+
+    this.logComparisonResults_(reportData);
+
+    // TODO(acdvorak): Where should this go?
+    const meta = reportData.meta;
+    meta.end_time_iso_utc = new Date().toISOString();
+    meta.duration_ms = Duration.elapsed(meta.start_time_iso_utc, meta.end_time_iso_utc).toMillis();
+
+    this.logger_.foldEnd('screenshot.compare');
+
+    return reportData;
+  }
+
+  /**
+   * @param {!mdc.proto.ReportData} reportData
+   * @return {!Promise<!mdc.proto.ReportData>}
+   */
+  async generateReportPage(reportData) {
+    this.logger_.foldStart('screenshot.report', 'Controller#generateReportPage()');
+
+    await this.reportWriter_.generateReportPage(reportData);
+    await this.cloudStorage_.uploadDiffReport(reportData);
+
+    this.logger_.foldEnd('screenshot.report');
+
+    // TODO(acdvorak): Store this directly in the proto so we don't have to recalculate it all over the place
+    const numChanges =
+      reportData.screenshots.changed_screenshot_list.length +
+      reportData.screenshots.added_screenshot_list.length +
+      reportData.screenshots.removed_screenshot_list.length;
+
+    if (numChanges > 0) {
+      this.logger_.error(`\n\n${numChanges} screenshot${numChanges === 1 ? '' : 's'} changed!\n`);
+    } else {
+      this.logger_.log(`\n\n${numChanges} screenshot${numChanges === 1 ? '' : 's'} changed!\n`);
+    }
+    this.logger_.log('Diff report:', Logger.colors.bold.red(reportData.meta.report_html_file.public_url));
+
+    return reportData;
+  }
+
+  /**
+   * @param {!mdc.proto.ReportData} reportData
+   * @return {!Promise<number>}
+   */
+  async getTestExitCode(reportData) {
+    // Pull requests display screenshot diffs as a separate "status check" in the GitHub UI, so we don't want to mark
+    // the Travis run as "failed".
+    if (Number(process.env.TRAVIS_PULL_REQUEST)) {
+      return ExitCode.OK;
+    }
+
+    // TODO(acdvorak): Store this directly in the proto so we don't have to recalculate it all over the place
+    const numChanges =
+      reportData.screenshots.changed_screenshot_list.length +
+      reportData.screenshots.added_screenshot_list.length +
+      reportData.screenshots.removed_screenshot_list.length;
+
+    return numChanges > 0 ? ExitCode.CHANGES_FOUND : ExitCode.OK;
+  }
+
+  /**
+   * @param {!mdc.proto.ReportData} reportData
+   * @return {!Promise<!mdc.proto.ReportData>}
+   */
+  async approveChanges(reportData) {
+    /** @type {!GoldenFile} */
+    const newGoldenFile = await this.reportBuilder_.approveChanges(reportData);
+    await this.goldenIo_.writeToLocalFile(newGoldenFile);
+    return reportData;
+  }
+
+  /**
+   * @param {!mdc.proto.ReportData} reportData
    * @private
    */
-  async getRunTarget_() {
-    const {runnableUserAgents, skippedUserAgents} = await CbtUserAgent.fetchUserAgents();
-    const {runnableTestCases, skippedTestCases} = await this.localStorage_.fetchTestCases(this.baseUploadDir_);
-
+  logComparisonResults_(reportData) {
     console.log('');
+    this.logComparisonResultSet_('Skipped', reportData.screenshots.skipped_screenshot_list);
+    this.logComparisonResultSet_('Unchanged', reportData.screenshots.unchanged_screenshot_list);
+    this.logComparisonResultSet_('Removed', reportData.screenshots.removed_screenshot_list);
+    this.logComparisonResultSet_('Added', reportData.screenshots.added_screenshot_list);
+    this.logComparisonResultSet_('Changed', reportData.screenshots.changed_screenshot_list);
+  }
 
-    this.logTargetTestCases_('SKIPPING', skippedTestCases);
-    this.logTargetTestCases_('RUNNING', runnableTestCases);
-
-    this.logTargetUserAgents_('SKIPPING', skippedUserAgents);
-    this.logTargetUserAgents_('RUNNING', runnableUserAgents);
-
-    if (runnableTestCases.length === 0) {
-      throw new Error(
-        'No URLs matched your filters! ' +
-        'Try using less restrictive CLI flags (e.g., `--mdc-include-url=button/classes/baseline`).'
-      );
+  /**
+   * @param {string} title
+   * @param {!Array<!mdc.proto.Screenshot>} screenshots
+   * @private
+   */
+  logComparisonResultSet_(title, screenshots) {
+    console.log(`${title} ${screenshots.length} screenshot${screenshots.length === 1 ? '' : 's'}:`);
+    for (const screenshot of screenshots) {
+      console.log(`  - ${screenshot.html_file_path} > ${screenshot.user_agent.alias}`);
     }
-
-    if (runnableUserAgents.length === 0) {
-      throw new Error(
-        'No browsers matched your filters! ' +
-        'Try using less restrictive CLI flags (e.g., `--mdc-include-browser=chrome`).'
-      );
-    }
-
-    return {
-      runnableUserAgents,
-      skippedUserAgents,
-      runnableTestCases,
-      skippedTestCases,
-    };
-  }
-
-  /**
-   * @param {!RunReport} runReport
-   * @return {!Promise<!RunReport>}
-   */
-  async uploadAllAssets(runReport) {
-    await this.cloudStorage_.uploadAllAssets(this.baseUploadDir_);
-    return runReport;
-  }
-
-  /**
-   * @param {!RunReport} runReport
-   * @return {!Promise<!RunReport>}
-   */
-  async captureAllPages(runReport) {
-    const {runnableTestCases} = runReport.runTarget;
-
-    await Promise.all(runnableTestCases.map((testCase, testCaseIndex) => {
-      return this.captureOnePage_(testCase, testCaseIndex, runnableTestCases.length);
-    }));
-
-    this.logCaptureAllPagesSuccess_(runnableTestCases);
-
-    return runReport;
-  }
-
-  /**
-   * @param {!UploadableTestCase} testCase
-   * @param {number} testCaseQueueIndex
-   * @param {number} testCaseQueueLength
-   * @return {!Promise<!Array<!UploadableFile>>}
-   * @private
-   */
-  async captureOnePage_(testCase, testCaseQueueIndex, testCaseQueueLength) {
-    return Screenshot
-      .captureOneUrl(testCase.htmlFile.publicUrl)
-      .then(
-        (cbtInfo) => this.handleCapturePageSuccess_(testCase, cbtInfo, testCaseQueueIndex, testCaseQueueLength),
-        (err) => this.handleCapturePageFailure_(testCase, err, testCaseQueueIndex, testCaseQueueLength)
-      );
-  }
-
-  /**
-   * @param {!UploadableTestCase} testCase
-   * @param {number} testCaseQueueIndex
-   * @param {number} testCaseQueueLength
-   * @param {!Object} cbtScreenshotInfo
-   * @return {!Promise<!Array<!UploadableFile>>}
-   * @private
-   */
-  async handleCapturePageSuccess_(testCase, cbtScreenshotInfo, testCaseQueueIndex, testCaseQueueLength) {
-    // We don't use CBT's screenshot versioning features, so there should only ever be one version.
-    // Each "result" is an individual browser screenshot for a single URL.
-    const results = cbtScreenshotInfo.versions[0].results;
-    return Promise.all(results.map((cbtResult, cbtResultIndex) => {
-      return this.uploadScreenshotImage_(
-        testCase,
-        cbtResult,
-        testCaseQueueIndex * results.length + cbtResultIndex,
-        testCaseQueueLength * results.length
-      );
-    }));
-  }
-
-  /**
-   * @param {!UploadableTestCase} testCase
-   * @param {!T} err
-   * @param {number} testCaseQueueIndex
-   * @param {number} testCaseQueueLength
-   * @return {!Promise<!T>}
-   * @template T
-   * @private
-   */
-  async handleCapturePageFailure_(testCase, err, testCaseQueueIndex, testCaseQueueLength) {
-    console.error('\n\n\nERROR capturing screenshot with CrossBrowserTesting:\n\n');
-    console.error(`  - ${testCase.htmlFile.publicUrl}`);
-    console.error(`  - Test case ${testCaseQueueIndex + 1} of ${testCaseQueueLength}`);
-    console.error(err);
-    return Promise.reject(err);
-  }
-
-  /**
-   * @param {!UploadableTestCase} testCase
-   * @param {!Object} cbtResult
-   * @param {number} uploadQueueIndex
-   * @param {number} uploadQueueLength
-   * @return {!Promise<!UploadableFile>}
-   * @private
-   */
-  async uploadScreenshotImage_(testCase, cbtResult, uploadQueueIndex, uploadQueueLength) {
-    const cbtImageUrl = cbtResult.images.chromeless;
-    if (!cbtImageUrl) {
-      console.error('cbtResult:\n', cbtResult);
-      throw new Error('cbtResult.images.chromeless is null');
-    }
-
-    const osApiName = cbtResult.os.api_name;
-    const browserApiName = cbtResult.browser.api_name;
-
-    const imageName = `${this.getBrowserFileName_(osApiName, browserApiName)}.png`;
-    const imageData = await this.downloadAndCropImage_(cbtImageUrl);
-    const imageFile = new UploadableFile({
-      destinationBaseUrl: this.cliArgs_.gcsBaseUrl,
-      destinationParentDirectory: this.baseUploadDir_,
-      destinationRelativeFilePath: `${testCase.htmlFile.destinationRelativeFilePath}.${imageName}`,
-      fileContent: imageData,
-      userAgent: await CbtUserAgent.fetchBrowserByApiName(osApiName, browserApiName),
-      queueIndex: uploadQueueIndex,
-      queueLength: uploadQueueLength,
-    });
-
-    testCase.screenshotImageFiles.push(imageFile);
-
-    return this.cloudStorage_.uploadFile(imageFile);
-  }
-
-  /**
-   * @param {string} osApiName
-   * @param {string} browserApiName
-   * @return {string}
-   * @private
-   */
-  getBrowserFileName_(osApiName, browserApiName) {
-    // Remove MS Edge version number from Windows OS API name. E.g.: "Win10-E17" -> "Win10".
-    // TODO(acdvorak): Why does the CBT browser API return "Win10" but the screenshot info API returns "Win10-E17"?
-    osApiName = osApiName.replace(/-E\d+$/, '');
-    return `${osApiName}_${browserApiName}`.toLowerCase().replace(/[^\w.]+/g, '');
-  }
-
-  /**
-   * @param {string} uri
-   * @return {!Promise<!Buffer>}
-   * @private
-   */
-  async downloadAndCropImage_(uri) {
-    return this.imageCropper_.autoCropImage(await this.imageCache_.getImageBuffer(uri));
-  }
-
-  /**
-   * Writes the given changes to a `golden.json` file.
-   * If the file already exists, it will be overwritten.
-   * @param {!RunReport} runReport
-   * @return {!Promise<!RunReport>}
-   */
-  async updateGoldenJson(runReport) {
-    await this.snapshotStore_.writeToDisk(runReport);
-    return runReport;
-  }
-
-  /**
-   * @param {!RunReport} runReport
-   * @return {!Promise<!RunReport>}
-   */
-  async diffGoldenJson(runReport) {
-    const {runnableTestCases} = runReport.runTarget;
-
-    /** @type {!Array<!ImageDiffJson>} */
-    const {diffs, added, removed, unchanged, skipped} = await this.imageDiffer_.compareAllPages({
-      runReport,
-      actualSuite: await this.snapshotStore_.fromTestCases(runnableTestCases),
-      expectedSuite: await this.snapshotStore_.fromDiffBase(),
-    });
-
-    await Promise.all(diffs.map((diff, index) => {
-      return this.uploadOneDiffImage_(diff, index, diffs.length);
-    }));
-
-    console.log('\n\nDONE diffing screenshot images!\n\n');
-
-    runReport.runResult = {diffs, added, removed, unchanged, skipped};
-
-    return runReport;
-  }
-
-  /**
-   * @param {!ImageDiffJson} diff
-   * @param {number} queueIndex
-   * @param {number} queueLength
-   * @return {!Promise<void>}
-   * @private
-   */
-  async uploadOneDiffImage_(diff, queueIndex, queueLength) {
-    /** @type {?CbtUserAgent} */
-    const userAgent = await CbtUserAgent.fetchBrowserByAlias(diff.userAgentAlias);
-    const browserFileName = this.getBrowserFileName_(userAgent.device.api_name, userAgent.browser.api_name);
-
-    /** @type {!UploadableFile} */
-    const diffImageFile = await this.cloudStorage_.uploadFile(new UploadableFile({
-      destinationBaseUrl: this.cliArgs_.gcsBaseUrl,
-      destinationParentDirectory: this.baseUploadDir_,
-      destinationRelativeFilePath: `${diff.htmlFilePath}.${browserFileName}.diff.png`,
-      fileContent: diff.diffImageBuffer,
-      queueIndex,
-      queueLength,
-      userAgent,
-    }));
-
-    diff.diffImageUrl = diffImageFile.publicUrl;
-    diff.diffImageBuffer = null; // free up memory
-  }
-
-  /**
-   * @param {!RunReport} runReport
-   * @return {!Promise<!RunReport>}
-   */
-  async uploadDiffReport(runReport) {
-    const reportGenerator = new ReportGenerator(runReport);
-    const reportHtml = await reportGenerator.generateHtml();
-    const reportJson = JSON.stringify(runReport, null, 2);
-    const snapshotJsonStr = await this.snapshotStore_.getSnapshotJsonString(runReport);
-
-    const writeFile = async ({filename, content, queueIndex, queueLength}) => {
-      const filePath = path.join(this.cliArgs_.testDir, filename);
-      console.log(`Writing ${filePath} to disk...`);
-
-      await fs.writeFile(filePath, content, {encoding: 'utf8'});
-
-      return this.cloudStorage_.uploadFile(new UploadableFile({
-        destinationBaseUrl: this.cliArgs_.gcsBaseUrl,
-        destinationParentDirectory: this.baseUploadDir_,
-        destinationRelativeFilePath: filename,
-        fileContent: content,
-        queueIndex,
-        queueLength,
-      }));
-    };
-
-    let nextQueueIndex = 0;
-
-    /** @type {!UploadableFile} */
-    const [reportPageFile, reportJsonFile, snapshotJsonFile] = await Promise.all([
-      writeFile({
-        filename: 'report.html',
-        content: reportHtml,
-        queueIndex: nextQueueIndex++,
-        queueLength: 3,
-      }),
-
-      writeFile({
-        filename: 'report.json',
-        content: reportJson,
-        queueIndex: nextQueueIndex++,
-        queueLength: 3,
-      }),
-
-      writeFile({
-        filename: 'snapshot.json',
-        content: snapshotJsonStr,
-        queueIndex: nextQueueIndex++,
-        queueLength: 3,
-      }),
-    ]);
-
-    console.log('\n\nDONE uploading diff report to GCS!\n\n');
-    console.log(reportPageFile.publicUrl);
-
-    runReport.runResult.publicReportPageUrl = reportPageFile.publicUrl;
-    runReport.runResult.publicReportJsonUrl = reportJsonFile.publicUrl;
-    runReport.runResult.publicSnapshotJsonUrl = snapshotJsonFile.publicUrl;
-
-    return runReport;
-  }
-
-  /**
-   * @param {string} verb
-   * @param {!Array<!UploadableTestCase>} testCases
-   * @private
-   */
-  logTargetTestCases_(verb, testCases) {
-    if (testCases.length === 0) {
-      return;
-    }
-
-    const num = testCases.length;
-    const plural = num === 1 ? '' : 's';
-
-    console.log(`${verb} ${num} test case${plural}:`);
-    testCases.forEach((testCase) => {
-      console.log(`  - ${testCase.htmlFile.publicUrl}`);
-    });
     console.log('');
-  }
-
-  /**
-   * @param {string} verb
-   * @param {!Array<!CbtUserAgent>} userAgents
-   * @private
-   */
-  logTargetUserAgents_(verb, userAgents) {
-    if (userAgents.length === 0) {
-      return;
-    }
-
-    const num = userAgents.length;
-    const plural = num === 1 ? '' : 's';
-
-    console.log(`${verb} ${num} user agent${plural}:`);
-    userAgents.forEach((userAgent) => {
-      console.log(`  - ${userAgent.alias} -> ${userAgent.fullCbtApiName}`);
-    });
-    console.log('');
-  }
-
-  /**
-   * @param {!Array<!UploadableTestCase>} runnableTestCases
-   * @private
-   */
-  logCaptureAllPagesSuccess_(runnableTestCases) {
-    console.log('\n\nDONE capturing screenshot images!\n\n');
-
-    runnableTestCases.forEach((testCase) => {
-      console.log(`${testCase.htmlFile.publicUrl}:`);
-      testCase.screenshotImageFiles.forEach((screenshotImageFile) => {
-        console.log(`  - ${screenshotImageFile.publicUrl}`);
-      });
-      console.log('');
-    });
   }
 }
 

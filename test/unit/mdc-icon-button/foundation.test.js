@@ -36,15 +36,24 @@ test('exports cssClasses', () => {
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCIconButtonToggleFoundation, [
     'addClass', 'removeClass', 'registerInteractionHandler', 'deregisterInteractionHandler',
-    'setText', 'getTabIndex', 'setTabIndex', 'getAttr', 'setAttr', 'removeAttr', 'notifyChange',
+    'setText', 'getAttr', 'setAttr', 'notifyChange',
   ]);
 });
 
 const setupTest = () => setupFoundationTest(MDCIconButtonToggleFoundation);
 
 test('#constructor sets on to false', () => {
-  const {foundation} = setupTest();
-  assert.isNotOk(foundation.isOn());
+  const {mockAdapter} = setupTest();
+  td.when(mockAdapter.getAttr(strings.ARIA_PRESSED)).thenReturn('false');
+  const foundation = new MDCIconButtonToggleFoundation(mockAdapter);
+  assert.isFalse(foundation.isOn());
+});
+
+test('#constructor sets on to true if the toggle is pressed', () => {
+  const {mockAdapter} = setupTest();
+  td.when(mockAdapter.getAttr(strings.ARIA_PRESSED)).thenReturn('true');
+  const foundation = new MDCIconButtonToggleFoundation(mockAdapter);
+  assert.isTrue(foundation.isOn());
 });
 
 test('#toggle flips on', () => {
