@@ -25,12 +25,19 @@ const fs = require('mz/fs');
 const {GOLDEN_JSON_RELATIVE_PATH} = require('./constants');
 
 const Duration = require('./duration');
+const GitHubApi = require('./github-api');
 const GitRepo = require('./git-repo');
 
 const HTTP_URL_REGEX = new RegExp('^https?://');
 
 class Cli {
   constructor() {
+    /**
+     * @type {!GitHubApi}
+     * @private
+     */
+    this.gitHubApi_ = new GitHubApi();
+
     /**
      * @type {!GitRepo}
      * @private
@@ -500,7 +507,7 @@ that you know are going to have diffs.
     const parsedBranch = parsedDiffBase.git_revision ? parsedDiffBase.git_revision.branch : null;
 
     if (isOnline && isRealBranch(parsedBranch)) {
-      const prNumber = await this.gitRepo_.getPullRequestNumber(parsedBranch);
+      const prNumber = await this.gitHubApi_.getPullRequestNumber(parsedBranch);
       if (prNumber) {
         parsedDiffBase.git_revision.pr_number = prNumber;
       }
@@ -574,7 +581,7 @@ that you know are going to have diffs.
       return GitRevision.create({
         type: GitRevision.Type.TRAVIS_PR,
         golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
-        commit: await this.gitRepo_.getShortCommitHash(travisPrSha),
+        commit: await this.gitRepo_.getFullCommitHash(travisPrSha),
         branch: travisPrBranch || travisBranch,
         pr_number: travisPrNumber,
       });
@@ -584,7 +591,7 @@ that you know are going to have diffs.
       return GitRevision.create({
         type: GitRevision.Type.REMOTE_TAG,
         golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
-        commit: await this.gitRepo_.getShortCommitHash(travisTag),
+        commit: await this.gitRepo_.getFullCommitHash(travisTag),
         tag: travisTag,
       });
     }
@@ -593,7 +600,7 @@ that you know are going to have diffs.
       return GitRevision.create({
         type: GitRevision.Type.LOCAL_BRANCH,
         golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
-        commit: await this.gitRepo_.getShortCommitHash(travisBranch),
+        commit: await this.gitRepo_.getFullCommitHash(travisBranch),
         branch: travisBranch,
       });
     }
@@ -656,7 +663,7 @@ that you know are going to have diffs.
     const allRemoteNames = await this.gitRepo_.getRemoteNames();
     const remote = allRemoteNames.find((curRemoteName) => remoteRef.startsWith(curRemoteName + '/'));
     const branch = remoteRef.substr(remote.length + 1); // add 1 for forward-slash separator
-    const commit = await this.gitRepo_.getShortCommitHash(remoteRef);
+    const commit = await this.gitRepo_.getFullCommitHash(remoteRef);
 
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
@@ -678,7 +685,7 @@ that you know are going to have diffs.
    * @private
    */
   async createRemoteTagDiffBase_(tagRef, goldenJsonFilePath) {
-    const commit = await this.gitRepo_.getShortCommitHash(tagRef);
+    const commit = await this.gitRepo_.getFullCommitHash(tagRef);
 
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
@@ -700,7 +707,7 @@ that you know are going to have diffs.
    * @private
    */
   async createLocalBranchDiffBase_(branch, goldenJsonFilePath) {
-    const commit = await this.gitRepo_.getShortCommitHash(branch);
+    const commit = await this.gitRepo_.getFullCommitHash(branch);
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
       git_revision: GitRevision.create({

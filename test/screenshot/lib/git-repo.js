@@ -16,7 +16,6 @@
 
 'use strict';
 
-const gitHubApi = require('@octokit/rest');
 const simpleGit = require('simple-git/promise');
 
 class GitRepo {
@@ -26,12 +25,6 @@ class GitRepo {
      * @private
      */
     this.repo_ = simpleGit(workingDirPath);
-
-    /**
-     * @type {!GitHubApi}
-     * @private
-     */
-    this.gitHub_ = gitHubApi();
   }
 
   /**
@@ -69,8 +62,8 @@ class GitRepo {
    * @param {string=} ref
    * @return {!Promise<string>}
    */
-  async getShortCommitHash(ref = 'HEAD') {
-    return this.exec_('revparse', ['--short', ref]);
+  async getFullCommitHash(ref = 'HEAD') {
+    return this.exec_('revparse', [ref]);
   }
 
   /**
@@ -135,40 +128,6 @@ class GitRepo {
    */
   async getIgnoredPaths(filePaths) {
     return this.repo_.checkIgnore(filePaths);
-  }
-
-  /**
-   * @param {string=} branch
-   * @return {!Promise<?number>}
-   */
-  async getPullRequestNumber(branch = undefined) {
-    branch = branch || await this.getBranchName();
-
-    const allPRs = await this.gitHub_.pullRequests.getAll({
-      owner: 'material-components',
-      repo: 'material-components-web',
-      per_page: 100,
-    });
-
-    const filteredPRs = allPRs.data.filter((pr) => pr.head.ref === branch);
-
-    const pr = filteredPRs[0];
-    return pr ? pr.number : null;
-  }
-
-  /**
-   * @param prNumber
-   * @return {!Promise<!Array<!github.proto.PullRequestFile>>}
-   */
-  async getPullRequestFiles(prNumber) {
-    /** @type {!github.proto.PullRequestFileResponse} */
-    const fileResponse = await this.gitHub_.pullRequests.getFiles({
-      owner: 'material-components',
-      repo: 'material-components-web',
-      number: prNumber,
-      per_page: 300,
-    });
-    return fileResponse.data;
   }
 
   /**

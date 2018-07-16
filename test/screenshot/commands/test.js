@@ -18,11 +18,13 @@
 
 const BuildCommand = require('./build');
 const Controller = require('../lib/controller');
+const GitHubApi = require('../lib/github-api');
 
 module.exports = {
   async runAsync() {
     await BuildCommand.runAsync();
     const controller = new Controller();
+    const gitHubApi = new GitHubApi();
 
     /** @type {!mdc.proto.ReportData} */
     const reportData = await controller.initForCapture();
@@ -33,10 +35,18 @@ module.exports = {
       return;
     }
 
-    await controller.uploadAllAssets(reportData);
-    await controller.captureAllPages(reportData);
-    await controller.compareAllScreenshots(reportData);
-    await controller.generateReportPage(reportData);
+    await gitHubApi.setPullRequestStatus(reportData);
+
+    try {
+      await controller.uploadAllAssets(reportData);
+      await controller.captureAllPages(reportData);
+      await controller.compareAllScreenshots(reportData);
+      await controller.generateReportPage(reportData);
+      await gitHubApi.setPullRequestStatus(reportData);
+    } catch (err) {
+      await gitHubApi.setPullRequestError();
+      throw err;
+    }
 
     return await controller.getTestExitCode(reportData);
   },

@@ -33,8 +33,10 @@ const {InclusionType, CaptureState} = Screenshot;
 
 const Cli = require('./cli');
 const FileCache = require('./file-cache');
+const GitHubApi = require('./github-api');
 const GitRepo = require('./git-repo');
 const LocalStorage = require('./local-storage');
+const Logger = require('./logger');
 const GoldenIo = require('./golden-io');
 const UserAgentStore = require('./user-agent-store');
 const {GCS_BUCKET} = require('./constants');
@@ -57,6 +59,12 @@ class ReportBuilder {
     this.fileCache_ = new FileCache();
 
     /**
+     * @type {!GitHubApi}
+     * @private
+     */
+    this.gitHubApi_ = new GitHubApi();
+
+    /**
      * @type {!GitRepo}
      * @private
      */
@@ -73,6 +81,12 @@ class ReportBuilder {
      * @private
      */
     this.localStorage_ = new LocalStorage();
+
+    /**
+     * @type {!Logger}
+     * @private
+     */
+    this.logger_ = new Logger(__filename);
 
     /**
      * @type {!UserAgentStore}
@@ -100,6 +114,8 @@ class ReportBuilder {
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async initForCapture() {
+    this.logger_.foldStart('screenshot.init', 'ReportBuilder#initForCapture()');
+
     /** @type {boolean} */
     const isOnline = await this.cli_.isOnline();
     /** @type {!mdc.proto.ReportMeta} */
@@ -125,6 +141,8 @@ class ReportBuilder {
 
     await this.prefetchGoldenImages_(reportData);
     await this.validateRunParameters_(reportData);
+
+    this.logger_.foldEnd('screenshot.init');
 
     return reportData;
   }
@@ -391,7 +409,7 @@ class ReportBuilder {
 
     if (goldenGitRevision && goldenGitRevision.type === GitRevision.Type.TRAVIS_PR) {
       /** @type {!Array<!github.proto.PullRequestFile>} */
-      const allPrFiles = await this.gitRepo_.getPullRequestFiles(goldenGitRevision.pr_number);
+      const allPrFiles = await this.gitHubApi_.getPullRequestFiles(goldenGitRevision.pr_number);
 
       goldenGitRevision.pr_file_paths = allPrFiles
         .filter((prFile) => {
