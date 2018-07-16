@@ -44,9 +44,7 @@
 @mixin mdc-typography-text-baseline($size, $trailing: false) {
   $offset: ($size * 25) / 100;
 
-  & {
-    line-height: normal;
-  }
+  line-height: normal;
 
   &::before {
     display: inline-block;
@@ -57,6 +55,8 @@
   }
 
   @if $trailing {
+    margin-bottom: 0 !important;
+
     &::after {
       display: inline-block;
       width: 0;
@@ -65,12 +65,10 @@
       vertical-align: -1 * $offset;
     }
 
-    & {
-      margin-bottom: 0 !important;
-    }
-
-    & + * {
+    // stylelint-disable selector-max-universal
+    + * {
       margin-top: -1 * $offset !important;
     }
+    // stylelint-enable selector-max-universal
   }
 }
