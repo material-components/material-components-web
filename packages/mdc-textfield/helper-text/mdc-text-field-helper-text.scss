@@ -22,7 +22,7 @@
 
 .mdc-text-field-helper-text {
   @include mdc-typography(caption);
-  @include mdc-typography-text-baseline(16px);
+  @include mdc-typography-text-baseline(16px, $trailing: false);
 
   margin: 0;
   transition: mdc-text-field-transition(opacity);

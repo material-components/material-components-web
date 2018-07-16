@@ -41,13 +41,32 @@
   overflow: hidden;
 }
 
-@mixin mdc-typography-text-baseline($size) {
+@mixin mdc-typography-text-baseline($size, $trailing: false) {
+  $offset: ($size * 25) / 100;
+
+  & {
+    line-height: normal;
+  }
+
   &::before {
     display: inline-block;
     width: 0;
     height: $size;
-    line-height: normal;
     content: "";
     vertical-align: 0;
+  }
+
+  @if $trailing {
+    &::after {
+      display: inline-block;
+      width: 0;
+      height: $offset;
+      content: "";
+      vertical-align: -1 * $offset;
+    }
+
+    & + * {
+      margin-top: -1 * $offset;
+    }
   }
 }
