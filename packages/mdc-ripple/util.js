@@ -120,9 +120,9 @@ function getMatchesProperty(HTMLElementPrototype) {
 
 /**
  * @param {!Event} ev
- * @param {!{x: number, y: number}} pageOffset
+ * @param {{x: number, y: number}} pageOffset
  * @param {!ClientRect} clientRect
- * @return {!{x: number, y: number}}
+ * @return {{x: number, y: number}}
  */
 function getNormalizedEventCoords(ev, pageOffset, clientRect) {
   const {x, y} = pageOffset;

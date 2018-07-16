@@ -57,6 +57,8 @@ const setupTest = () => {
   });
   const icon = td.object({
     setDisabled: () => {},
+    setAriaLabel: () => {},
+    setContent: () => {},
     registerInteractionHandler: () => {},
     deregisterInteractionHandler: () => {},
     handleInteraction: () => {},
@@ -371,6 +373,18 @@ test('#setHelperTextContent sets the content of the helper text element', () => 
   const {foundation, helperText} = setupTest();
   foundation.setHelperTextContent('foo');
   td.verify(helperText.setContent('foo'));
+});
+
+test('#setIconAriaLabel sets the aria-label of the icon element', () => {
+  const {foundation, icon} = setupTest();
+  foundation.setIconAriaLabel('foo');
+  td.verify(icon.setAriaLabel('foo'));
+});
+
+test('#setIconContent sets the content of the icon element', () => {
+  const {foundation, icon} = setupTest();
+  foundation.setIconContent('foo');
+  td.verify(icon.setContent('foo'));
 });
 
 test('#notchOutline updates the SVG path of the outline element', () => {
@@ -745,7 +759,7 @@ test('on validation attribute change calls styleValidity_', () => {
     .thenDo((handler) => attributeChange = handler);
   foundation.init();
 
-  attributeChange([{attributeName: 'required'}]);
+  attributeChange(['required']);
   td.verify(mockAdapter.removeClass(cssClasses.INVALID));
   td.verify(helperText.setValidity(true));
 
@@ -770,4 +784,9 @@ test('should not call styleValidity_ on non-whitelisted attribute change', () =>
   td.verify(mockAdapter.removeClass(cssClasses.FOCUSED), {times: 0});
   td.verify(mockAdapter.addClass(cssClasses.DISABLED), {times: 0});
   td.verify(mockAdapter.removeClass(cssClasses.DISABLED), {times: 0});
+});
+
+test('label floats on invalid input even if value is empty', () => {
+  const {mockAdapter} = setupValueTest('', false, true, true);
+  td.verify(mockAdapter.floatLabel(true));
 });

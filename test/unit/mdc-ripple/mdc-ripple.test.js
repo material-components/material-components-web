@@ -22,6 +22,7 @@ import td from 'testdouble';
 import {MDCRipple} from '../../../packages/mdc-ripple';
 import {cssClasses} from '../../../packages/mdc-ripple/constants';
 import * as util from '../../../packages/mdc-ripple/util';
+import {createMockRaf} from '../helpers/raf';
 
 suite('MDCRipple');
 
@@ -221,4 +222,23 @@ test('adapter#getWindowPageOffset returns page{X,Y}Offset as {x,y} respectively'
     x: window.pageXOffset,
     y: window.pageYOffset,
   });
+});
+
+test(`handleFocus() adds class ${cssClasses.BG_FOCUSED}`, () => {
+  const raf = createMockRaf();
+  const {root, component} = setupTest();
+  component.foundation_.handleFocus();
+  raf.flush();
+  assert.isTrue(root.classList.contains(cssClasses.BG_FOCUSED));
+  raf.restore();
+});
+
+test(`handleBlur() removes class ${cssClasses.BG_FOCUSED}`, () => {
+  const raf = createMockRaf();
+  const {root, component} = setupTest();
+  root.classList.add(cssClasses.BG_FOCUSED);
+  component.foundation_.handleBlur();
+  raf.flush();
+  assert.isFalse(root.classList.contains(cssClasses.BG_FOCUSED));
+  raf.restore();
 });

@@ -21,6 +21,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Rubik:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script src="/ready.js"></script>
@@ -34,12 +35,12 @@
     <header class="mdc-toolbar mdc-toolbar--fixed demo-toolbar">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-          <button class="material-icons mdc-toolbar__menu-icon demo-drawer-toggle">menu</button>
+          <button class="material-icons mdc-toolbar__menu-icon demo-drawer-toggle mdc-icon-button" data-mdc-ripple-is-unbounded>menu</button>
           <span class="mdc-toolbar__title catalog-title">Color Theming</span>
         </section>
         <section class="mdc-toolbar__section mdc-toolbar__section--align-end mdc-toolbar__section--shrink-to-fit" role="toolbar">
           <div class="mdc-menu-anchor">
-            <button id="theme-color-action" class="mdc-toolbar__icon" title="Change theme colors" data-theme="baseline">
+            <button id="theme-color-action" class="mdc-toolbar__icon mdc-icon-button" title="Change theme colors" data-theme="baseline" data-mdc-ripple-is-unbounded>
               <i class="demo-theme-color-radio">
                 <span class="demo-theme-color-radio__inner"></span>
               </i>
@@ -73,21 +74,13 @@
                   </div>
                   Black primary (custom)
                 </li>
-                <li class="mdc-list-item" role="menuitem" tabindex="0" data-theme="white">
+                <li class="mdc-list-item" role="menuitem" tabindex="0" data-theme="shrine">
                   <div class="mdc-list-item__graphic">
                     <i class="demo-theme-color-radio">
                       <span class="demo-theme-color-radio__inner"></span>
                     </i>
                   </div>
-                  White primary (custom)
-                </li>
-                <li class="mdc-list-item" role="menuitem" tabindex="0" data-theme="yellow">
-                  <div class="mdc-list-item__graphic">
-                    <i class="demo-theme-color-radio">
-                      <span class="demo-theme-color-radio__inner"></span>
-                    </i>
-                  </div>
-                  Yellow primary (custom)
+                  Shrine (custom)
                 </li>
               </ul>
             </div>
@@ -113,7 +106,7 @@
     <aside class="mdc-drawer--temporary">
       <nav class="mdc-drawer__drawer">
         <header class="mdc-drawer__header">
-          <div class="mdc-drawer__header-content mdc-theme--primary-bg mdc-theme--text-primary-on-primary">
+          <div class="mdc-drawer__header-content mdc-theme--primary-bg mdc-theme--on-primary">
             Header here
           </div>
         </header>
@@ -182,10 +175,10 @@
 
               <div class="demo-theme-color-group">
                 <div class="demo-theme-color-swatches">
-                  <div class="demo-theme-color-swatch mdc-theme--primary-bg mdc-theme--text-primary-on-primary">Primary</div>
+                  <div class="demo-theme-color-swatch mdc-theme--primary-bg mdc-theme--on-primary">Primary</div>
                 </div>
                 <div class="demo-theme-color-swatches">
-                  <div class="demo-theme-color-swatch mdc-theme--secondary-bg mdc-theme--text-primary-on-secondary">Secondary</div>
+                  <div class="demo-theme-color-swatch mdc-theme--secondary-bg mdc-theme--on-secondary">Secondary</div>
                 </div>
                 <div class="demo-theme-color-swatches">
                   <div class="demo-theme-color-swatch demo-theme-color-swatch--elevated mdc-theme--background mdc-theme--text-primary-on-background">Background</div>
@@ -218,11 +211,8 @@
 
               <div class="demo-theme-color-group">
                 <div class="demo-theme-text-row mdc-theme--primary-bg mdc-typography--body2">
-                  <span class="demo-theme-text-style mdc-theme--text-primary-on-primary">Primary</span>
-                  <span class="demo-theme-text-style mdc-theme--text-secondary-on-primary">Secondary</span>
-                  <span class="demo-theme-text-style mdc-theme--text-hint-on-primary">Hint</span>
-                  <span class="demo-theme-text-style mdc-theme--text-disabled-on-primary">Disabled</span>
-                  <span class="demo-theme-text-style mdc-theme--text-icon-on-primary material-icons">favorite</span>
+                  <span class="demo-theme-text-style mdc-theme--on-primary">Text</span>
+                  <span class="demo-theme-text-style mdc-theme--on-primary material-icons">favorite</span>
                 </div>
               </div>
             </fieldset>
@@ -232,11 +222,8 @@
 
               <div class="demo-theme-color-group">
                 <div class="demo-theme-text-row mdc-theme--secondary-bg mdc-typography--body2">
-                  <span class="demo-theme-text-style mdc-theme--text-primary-on-secondary">Primary</span>
-                  <span class="demo-theme-text-style mdc-theme--text-secondary-on-secondary">Secondary</span>
-                  <span class="demo-theme-text-style mdc-theme--text-hint-on-secondary">Hint</span>
-                  <span class="demo-theme-text-style mdc-theme--text-disabled-on-secondary">Disabled</span>
-                  <span class="demo-theme-text-style mdc-theme--text-icon-on-secondary material-icons">favorite</span>
+                  <span class="demo-theme-text-style mdc-theme--on-secondary">Text</span>
+                  <span class="demo-theme-text-style mdc-theme--on-secondary material-icons">favorite</span>
                 </div>
               </div>
             </fieldset>
@@ -298,8 +285,8 @@
             <button class="mdc-button mdc-button--unelevated">
               Unelevated
             </button>
-            <button class="mdc-button mdc-button--stroked">
-              Stroked
+            <button class="mdc-button mdc-button--outlined">
+              Outlined
             </button>
           </div>
         </fieldset>
@@ -317,8 +304,8 @@
             <button class="mdc-button mdc-button--unelevated">
               Unelevated
             </button>
-            <button class="mdc-button mdc-button--stroked">
-              Stroked
+            <button class="mdc-button mdc-button--outlined">
+              Outlined
             </button>
           </div>
         </fieldset>
@@ -340,26 +327,20 @@
                 <button class="mdc-button mdc-card__action mdc-card__action--button">Bookmark</button>
               </div>
               <div class="mdc-card__action-icons">
-                <i class="mdc-icon-toggle material-icons mdc-card__action mdc-card__action--icon"
-                   tabindex="0"
-                   role="button"
+                <button class="mdc-icon-button material-icons mdc-card__action mdc-card__action--icon"
                    aria-pressed="false"
                    aria-label="Add to favorites"
                    title="Add to favorites"
-                   data-toggle-on='{"content": "favorite", "label": "Remove from favorites"}'
-                   data-toggle-off='{"content": "favorite_border", "label": "Add to favorites"}'>
-                  favorite_border
-                </i>
-                <i class="material-icons mdc-card__action mdc-card__action--icon mdc-ripple-surface"
-                   tabindex="0"
-                   role="button"
+                   data-toggle-on-content="favorite"
+                   data-toggle-on-label="Remove from favorites"
+                   data-toggle-off-content="favorite_border"
+                   data-toggle-off-label="Add to favorites">favorite_border</button>
+                <button class="mdc-icon-button material-icons mdc-card__action mdc-card__action--icon"
                    data-mdc-ripple-is-unbounded
-                   title="Share">share</i>
-                <i class="material-icons mdc-card__action mdc-card__action--icon mdc-ripple-surface"
-                   tabindex="0"
-                   role="button"
+                   title="Share">share</button>
+                <button class="mdc-icon-button material-icons mdc-card__action mdc-card__action--icon"
                    data-mdc-ripple-is-unbounded
-                   title="More options">more_vert</i>
+                   title="More options">more_vert</button>
               </div>
             </div>
           </div>
@@ -384,7 +365,6 @@
                      viewBox="0 0 24 24">
                   <path class="mdc-checkbox__checkmark-path"
                         fill="none"
-                        stroke="white"
                         d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
                 </svg>
                 <div class="mdc-checkbox__mixedmark"></div>
@@ -403,7 +383,6 @@
                      viewBox="0 0 24 24">
                   <path class="mdc-checkbox__checkmark-path"
                         fill="none"
-                        stroke="white"
                         d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
                 </svg>
                 <div class="mdc-checkbox__mixedmark"></div>
@@ -423,7 +402,6 @@
                      viewBox="0 0 24 24">
                   <path class="mdc-checkbox__checkmark-path"
                         fill="none"
-                        stroke="white"
                         d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
                 </svg>
                 <div class="mdc-checkbox__mixedmark"></div>
@@ -432,10 +410,10 @@
             <label for="disabled-checkbox" id="disabled-checkbox-label">Disabled</label>
           </div>
 
-          <button type="button" class="mdc-button mdc-button--stroked demo-checkbox-toggle-button" id="checkbox-toggle--indeterminate">
+          <button type="button" class="mdc-button mdc-button--outlined demo-checkbox-toggle-button" id="checkbox-toggle--indeterminate">
             <span>Toggle <code class="demo-button__code">indeterminate</code></span>
           </button>
-          <button type="button" class="mdc-button mdc-button--stroked demo-checkbox-toggle-button" id="checkbox-toggle--align-end">
+          <button type="button" class="mdc-button mdc-button--outlined demo-checkbox-toggle-button" id="checkbox-toggle--align-end">
             <span>Toggle <code class="demo-button__code">--align-end</code></span>
           </button>
         </div>
@@ -490,10 +468,8 @@
                 <div class="demo-fab-tile__title">Default</div>
                 <div class="demo-fab-tile__snippet mdc-typography--body1">Secondary theme color</div>
               </figcaption>
-              <button class="mdc-fab material-icons demo-fab" aria-label="Favorite">
-                <span class="mdc-fab__icon">
-                  favorite_border
-                </span>
+              <button class="mdc-fab demo-fab" aria-label="Favorite">
+                <span class="mdc-fab__icon material-icons">favorite_border</span>
               </button>
             </figure>
             <figure class="demo-fab-tile">
@@ -501,10 +477,8 @@
                 <div class="demo-fab-tile__title">Mini</div>
                 <div class="demo-fab-tile__snippet mdc-typography--body1"><code>mdc-fab--mini</code></div>
               </figcaption>
-              <button class="mdc-fab mdc-fab--mini material-icons demo-fab" aria-label="Favorite">
-                <span class="mdc-fab__icon">
-                  favorite_border
-                </span>
+              <button class="mdc-fab mdc-fab--mini demo-fab" aria-label="Favorite">
+                <span class="mdc-fab__icon material-icons">favorite_border</span>
               </button>
             </figure>
           </div>
@@ -522,30 +496,26 @@
           <div class="mdc-elevation--z2 demo-icon-toggle-tile">
             <h4 class="mdc-typography--subtitle1">Enabled</h4>
 
-            <i class="mdc-icon-toggle mdc-icon-toggle--primary material-icons"
-               role="button"
+            <button class="mdc-icon-button material-icons"
                aria-label="Add to favorites"
                aria-pressed="false"
-               tabindex="0"
-               data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
-               data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
-              favorite_border
-            </i>
+               data-toggle-on-content="favorite"
+               data-toggle-on-label="Remove from favorites"
+               data-toggle-off-content="favorite_border"
+               data-toggle-off-label="Add to favorites">favorite_border</button>
           </div>
 
           <div class="mdc-elevation--z2 demo-icon-toggle-tile">
             <h4 class="mdc-typography--subtitle1">Disabled</h4>
 
-            <i class="mdc-icon-toggle mdc-icon-toggle--disabled material-icons"
-               role="button"
+            <button class="mdc-icon-button  material-icons"
                aria-label="Add to favorites"
                aria-pressed="false"
-               aria-disabled="true"
-               tabindex="-1"
-               data-toggle-on='{"content": "favorite", "label": "Remove From Favorites"}'
-               data-toggle-off='{"content": "favorite_border", "label": "Add to Favorites"}'>
-              favorite_border
-            </i>
+               disabled
+               data-toggle-on-content="favorite"
+               data-toggle-on-label="Remove from favorites"
+               data-toggle-off-content="favorite_border"
+               data-toggle-off-label="Add to favorites">favorite_border</button>
           </div>
         </div>
       </section>
@@ -708,7 +678,7 @@
 
         <fieldset class="demo-switch-wrapper">
           <div class="mdc-switch">
-            <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" checked />
+            <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" role="switch" checked>
             <div class="mdc-switch__background">
               <div class="mdc-switch__knob"></div>
             </div>
@@ -717,7 +687,7 @@
         </fieldset>
         <fieldset class="demo-switch-wrapper" disabled>
           <div class="mdc-switch">
-            <input type="checkbox" id="disabled-switch" class="mdc-switch__native-control" checked />
+            <input type="checkbox" id="disabled-switch" class="mdc-switch__native-control" role="switch" checked>
             <div class="mdc-switch__background">
               <div class="mdc-switch__knob"></div>
             </div>
@@ -804,6 +774,7 @@
             <input type="text" class="mdc-text-field__input"
                    id="demo-text-field-default"
                    aria-controls="demo-text-field-default-helper-text"
+                   aria-describedby="demo-text-field-default-helper-text"
                    autocomplete="email">
             <label for="demo-text-field-default" class="mdc-floating-label">Name (optional)</label>
             <div class="mdc-line-ripple"></div>
@@ -818,6 +789,7 @@
             <input type="email" class="mdc-text-field__input"
                    id="demo-text-field-required"
                    aria-controls="demo-text-field-required-helper-text"
+                   aria-describedby="demo-text-field-required-helper-text"
                    autocomplete="email"
                    required>
             <label for="demo-text-field-required" class="mdc-floating-label">Email (required)</label>
@@ -831,7 +803,8 @@
           <div class="mdc-text-field mdc-text-field--box demo-text-field">
             <input type="text" class="mdc-text-field__input"
                    id="demo-text-field-box"
-                   aria-controls="name-validation-message">
+                   aria-controls="demo-text-field-box-helper-text"
+                   aria-describedby="demo-text-field-box-helper-text">
             <label for="demo-text-field-box" class="mdc-floating-label">With <code>--box</code> modifier</label>
             <div class="mdc-line-ripple"></div>
           </div>
@@ -905,11 +878,19 @@
         });
 
         /*
+         * Icon Button
+         */
+
+        [].forEach.call(document.querySelectorAll('[data-mdc-ripple-is-unbounded]'), function(iconButtonEl) {
+          mdc.ripple.MDCRipple.attachTo(iconButtonEl);
+        });
+
+        /*
          * Icon Toggle
          */
 
-        [].forEach.call(document.querySelectorAll('.mdc-icon-toggle'), function(iconToggleEl) {
-          mdc.iconToggle.MDCIconToggle.attachTo(iconToggleEl);
+        [].forEach.call(document.querySelectorAll('.mdc-icon-button[data-toggle-on-content]'), function(iconButtonToggleEl) {
+          mdc.iconButton.MDCIconButtonToggle.attachTo(iconButtonToggleEl);
         });
 
         /*
