@@ -16,6 +16,7 @@
 
 'use strict';
 
+const Jimp = require('jimp');
 const childProcess = require('mz/child_process');
 const detectPort = require('detect-port');
 const express = require('express');
@@ -26,14 +27,16 @@ const path = require('path');
 const serveIndex = require('serve-index');
 
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
-const {Approvals, GitStatus, GoldenScreenshot, LibraryVersion, ReportData, ReportMeta} = mdcProto;
-const {Screenshot, Screenshots, ScreenshotList, TestFile, User, UserAgents} = mdcProto;
+const {Approvals, DiffImageResult, Dimensions, GitRevision, GitStatus, GoldenScreenshot, LibraryVersion} = mdcProto;
+const {ReportData, ReportMeta, Screenshot, Screenshots, ScreenshotList, TestFile, User, UserAgents} = mdcProto;
 const {InclusionType, CaptureState} = Screenshot;
 
 const Cli = require('./cli');
 const FileCache = require('./file-cache');
+const GitHubApi = require('./github-api');
 const GitRepo = require('./git-repo');
 const LocalStorage = require('./local-storage');
+const Logger = require('./logger');
 const GoldenIo = require('./golden-io');
 const UserAgentStore = require('./user-agent-store');
 const {GCS_BUCKET} = require('./constants');
@@ -56,6 +59,12 @@ class ReportBuilder {
     this.fileCache_ = new FileCache();
 
     /**
+     * @type {!GitHubApi}
+     * @private
+     */
+    this.gitHubApi_ = new GitHubApi();
+
+    /**
      * @type {!GitRepo}
      * @private
      */
@@ -72,6 +81,12 @@ class ReportBuilder {
      * @private
      */
     this.localStorage_ = new LocalStorage();
+
+    /**
+     * @type {!Logger}
+     * @private
+     */
+    this.logger_ = new Logger(__filename);
 
     /**
      * @type {!UserAgentStore}
@@ -99,8 +114,13 @@ class ReportBuilder {
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async initForCapture() {
+    this.logger_.foldStart('screenshot.init', 'ReportBuilder#initForCapture()');
+
+    /** @type {boolean} */
     const isOnline = await this.cli_.isOnline();
+    /** @type {!mdc.proto.ReportMeta} */
     const reportMeta = await this.createReportMetaProto_();
+    /** @type {!mdc.proto.UserAgents} */
     const userAgents = await this.createUserAgentsProto_();
 
     await this.localStorage_.copyAssetsToTempDir(reportMeta);
@@ -121,6 +141,8 @@ class ReportBuilder {
 
     await this.prefetchGoldenImages_(reportData);
     await this.validateRunParameters_(reportData);
+
+    this.logger_.foldEnd('screenshot.init');
 
     return reportData;
   }
@@ -374,6 +396,34 @@ class ReportBuilder {
     const mdcVersionString = require('../../../lerna.json').version;
     const hostOsName = osName(os.platform(), os.release());
 
+    const gitStatus = GitStatus.fromObject(await this.gitRepo_.getStatus());
+
+    /** @type {!mdc.proto.DiffBase} */
+    const goldenDiffBase = await this.cli_.parseGoldenDiffBase();
+
+    /** @type {!mdc.proto.DiffBase} */
+    const snapshotDiffBase = await this.cli_.parseDiffBase('HEAD');
+
+    /** @type {!mdc.proto.GitRevision} */
+    const goldenGitRevision = goldenDiffBase.git_revision;
+
+    if (goldenGitRevision && goldenGitRevision.type === GitRevision.Type.TRAVIS_PR) {
+      /** @type {!Array<!github.proto.PullRequestFile>} */
+      const allPrFiles = await this.gitHubApi_.getPullRequestFiles(goldenGitRevision.pr_number);
+
+      goldenGitRevision.pr_file_paths = allPrFiles
+        .filter((prFile) => {
+          const isMarkdownFile = () => prFile.filename.endsWith('.md');
+          const isDemosFile = () => prFile.filename.startsWith('demos/');
+          const isDocsFile = () => prFile.filename.startsWith('docs/');
+          const isUnitTestFile = () => prFile.filename.startsWith('test/unit/');
+          const isIgnoredFile = isMarkdownFile() || isDemosFile() || isDocsFile() || isUnitTestFile();
+          return !isIgnoredFile;
+        })
+        .map((prFile) => prFile.filename)
+      ;
+    }
+
     return ReportMeta.create({
       start_time_iso_utc: new Date().toISOString(),
 
@@ -397,9 +447,9 @@ class ReportBuilder {
       host_os_icon_url: this.getHostOsIconUrl_(hostOsName),
       cli_invocation: this.getCliInvocation_(),
 
-      expected_diff_base: await this.cli_.parseDiffBase(),
-      actual_diff_base: await this.cli_.parseDiffBase('HEAD'),
-      git_status: GitStatus.fromObject(await this.gitRepo_.getStatus()),
+      git_status: gitStatus,
+      golden_diff_base: goldenDiffBase,
+      snapshot_diff_base: snapshotDiffBase,
 
       node_version: LibraryVersion.create({
         version_string: await this.getExecutableVersion_('node'),
@@ -513,7 +563,7 @@ class ReportBuilder {
       runnable_screenshot_list: actualScreenshots.filter((screenshot) => screenshot.is_runnable),
       skipped_screenshot_list: actualScreenshots.filter((screenshot) => !screenshot.is_runnable),
       added_screenshot_list: this.getAddedScreenshots_({expectedScreenshots, actualScreenshots}),
-      removed_screenshot_list: this.getRemovedScreenshots_({expectedScreenshots, actualScreenshots}),
+      removed_screenshot_list: await this.getRemovedScreenshots_({expectedScreenshots, actualScreenshots}),
       comparable_screenshot_list: this.getComparableScreenshots_({expectedScreenshots, actualScreenshots}),
     }));
   }
@@ -646,6 +696,8 @@ class ReportBuilder {
           expected_html_file: expectedHtmlFile,
           actual_html_file: actualHtmlFile,
           expected_image_file: expectedImageFile,
+          retry_count: 0,
+          max_retries: this.cli_.retries,
         }));
       }
     }
@@ -707,10 +759,10 @@ class ReportBuilder {
   /**
    * @param {!Array<!mdc.proto.Screenshot>} expectedScreenshots
    * @param {!Array<!mdc.proto.Screenshot>} actualScreenshots
-   * @return {!Array<!mdc.proto.Screenshot>}
+   * @return {!Promise<!Array<!mdc.proto.Screenshot>>}
    * @private
    */
-  getRemovedScreenshots_({expectedScreenshots, actualScreenshots}) {
+  async getRemovedScreenshots_({expectedScreenshots, actualScreenshots}) {
     /** @type {!Array<!mdc.proto.Screenshot>} */
     const removedScreenshots = [];
 
@@ -721,6 +773,12 @@ class ReportBuilder {
       });
 
       if (!actualScreenshot) {
+        const expectedImageUrl = expectedScreenshot.expected_image_file.public_url;
+        const expectedJimpImage = await Jimp.read(await this.fileCache_.downloadFileToBuffer(expectedImageUrl));
+        const {width, height} = expectedJimpImage.bitmap;
+        expectedScreenshot.diff_image_result = DiffImageResult.create({
+          expected_image_dimensions: Dimensions.create({width, height}),
+        });
         removedScreenshots.push(expectedScreenshot);
       }
     }

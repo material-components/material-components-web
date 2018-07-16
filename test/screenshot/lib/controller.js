@@ -16,15 +16,19 @@
 
 'use strict';
 
+const mdcProto = require('../proto/mdc.pb').mdc.proto;
+const {GitRevision} = mdcProto;
+
 const Cli = require('./cli');
 const CloudStorage = require('./cloud-storage');
 const Duration = require('./duration');
 const GitRepo = require('./git-repo');
 const GoldenIo = require('./golden-io');
-const ImageDiffer = require('./image-differ');
+const Logger = require('./logger');
 const ReportBuilder = require('./report-builder');
 const ReportWriter = require('./report-writer');
 const SeleniumApi = require('./selenium-api');
+const {ExitCode} = require('./constants');
 
 class Controller {
   constructor() {
@@ -53,10 +57,10 @@ class Controller {
     this.goldenIo_ = new GoldenIo();
 
     /**
-     * @type {!ImageDiffer}
+     * @type {!Logger}
      * @private
      */
-    this.imageDiffer_ = new ImageDiffer();
+    this.logger_ = new Logger(__filename);
 
     /**
      * @type {!ReportBuilder}
@@ -111,10 +115,29 @@ class Controller {
 
   /**
    * @param {!mdc.proto.ReportData} reportData
+   * @return {{isTestable: boolean, prNumber: ?number}}
+   */
+  checkIsTestable(reportData) {
+    const goldenGitRevision = reportData.meta.golden_diff_base.git_revision;
+    const shouldSkipScreenshotTests =
+      goldenGitRevision &&
+      goldenGitRevision.type === GitRevision.Type.TRAVIS_PR &&
+      goldenGitRevision.pr_file_paths.length === 0;
+
+    return {
+      isTestable: !shouldSkipScreenshotTests,
+      prNumber: goldenGitRevision ? goldenGitRevision.pr_number : null,
+    };
+  }
+
+  /**
+   * @param {!mdc.proto.ReportData} reportData
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async uploadAllAssets(reportData) {
+    this.logger_.foldStart('screenshot.upload', 'Controller#uploadAllAssets()');
     await this.cloudStorage_.uploadAllAssets(reportData);
+    this.logger_.foldEnd('screenshot.upload');
     return reportData;
   }
 
@@ -123,8 +146,10 @@ class Controller {
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async captureAllPages(reportData) {
+    this.logger_.foldStart('screenshot.capture', 'Controller#captureAllPages()');
     await this.seleniumApi_.captureAllPages(reportData);
     await this.cloudStorage_.uploadAllScreenshots(reportData);
+    this.logger_.foldEnd('screenshot.capture');
     return reportData;
   }
 
@@ -133,7 +158,9 @@ class Controller {
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async compareAllScreenshots(reportData) {
-    await this.imageDiffer_.compareAllScreenshots(reportData);
+    this.logger_.foldStart('screenshot.compare', 'Controller#compareAllScreenshots()');
+
+    await this.reportBuilder_.populateScreenshotMaps(reportData.user_agents, reportData.screenshots);
     await this.cloudStorage_.uploadAllDiffs(reportData);
 
     this.logComparisonResults_(reportData);
@@ -143,6 +170,8 @@ class Controller {
     meta.end_time_iso_utc = new Date().toISOString();
     meta.duration_ms = Duration.elapsed(meta.start_time_iso_utc, meta.end_time_iso_utc).toMillis();
 
+    this.logger_.foldEnd('screenshot.compare');
+
     return reportData;
   }
 
@@ -151,13 +180,46 @@ class Controller {
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async generateReportPage(reportData) {
+    this.logger_.foldStart('screenshot.report', 'Controller#generateReportPage()');
+
     await this.reportWriter_.generateReportPage(reportData);
     await this.cloudStorage_.uploadDiffReport(reportData);
 
-    console.log('\nDONE uploading diff report to GCS!\n');
-    console.log(reportData.meta.report_html_file.public_url);
+    this.logger_.foldEnd('screenshot.report');
+
+    // TODO(acdvorak): Store this directly in the proto so we don't have to recalculate it all over the place
+    const numChanges =
+      reportData.screenshots.changed_screenshot_list.length +
+      reportData.screenshots.added_screenshot_list.length +
+      reportData.screenshots.removed_screenshot_list.length;
+
+    if (numChanges > 0) {
+      this.logger_.error(`\n\n${numChanges} screenshot${numChanges === 1 ? '' : 's'} changed!\n`);
+    } else {
+      this.logger_.log(`\n\n${numChanges} screenshot${numChanges === 1 ? '' : 's'} changed!\n`);
+    }
+    this.logger_.log('Diff report:', Logger.colors.bold.red(reportData.meta.report_html_file.public_url));
 
     return reportData;
+  }
+
+  /**
+   * @param {!mdc.proto.ReportData} reportData
+   * @return {!Promise<number>}
+   */
+  async getTestExitCode(reportData) {
+    // Don't fail Travis builds when screenshots change. The diffs are reported in GitHub instead.
+    if (process.env.TRAVIS === 'true') {
+      return ExitCode.OK;
+    }
+
+    // TODO(acdvorak): Store this directly in the proto so we don't have to recalculate it all over the place
+    const numChanges =
+      reportData.screenshots.changed_screenshot_list.length +
+      reportData.screenshots.added_screenshot_list.length +
+      reportData.screenshots.removed_screenshot_list.length;
+
+    return numChanges > 0 ? ExitCode.CHANGES_FOUND : ExitCode.OK;
   }
 
   /**

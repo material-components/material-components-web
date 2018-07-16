@@ -18,8 +18,10 @@
 
 const CleanCommand = require('./clean');
 const Cli = require('../lib/cli');
+const Logger = require('../lib/logger');
 const ProcessManager = require('../lib/process-manager');
 
+const logger = new Logger(__filename);
 const processManager = new ProcessManager();
 
 module.exports = {
@@ -38,8 +40,10 @@ module.exports = {
 
     await CleanCommand.runAsync();
 
+    logger.foldStart('screenshot.build', 'Compiling source files');
     processManager.spawnChildProcessSync('npm', ['run', 'screenshot:proto']);
     processManager.spawnChildProcessSync('npm', ['run', 'screenshot:webpack', '--', ...webpackArgs]);
+    logger.foldEnd('screenshot.build');
   },
 
   /**

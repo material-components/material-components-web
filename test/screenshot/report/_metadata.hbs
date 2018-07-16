@@ -39,13 +39,13 @@
         <tr class="report-metadata__row--top-divider">
           <th class="report-metadata__cell report-metadata__cell--key">Golden:</th>
           <td class="report-metadata__cell report-metadata__cell--val">
-            {{getDiffBaseMarkup meta.expected_diff_base}}
+            {{getDiffBaseMarkup meta.golden_diff_base meta}}
           </td>
         </tr>
         <tr>
           <th class="report-metadata__cell report-metadata__cell--key">Snapshot:</th>
           <td class="report-metadata__cell report-metadata__cell--val">
-            {{getDiffBaseMarkup meta.actual_diff_base}}
+            {{getDiffBaseMarkup meta.snapshot_diff_base meta}}
             {{getLocalChangesMarkup meta.git_status}}
           </td>
         </tr>
