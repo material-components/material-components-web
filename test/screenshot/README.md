@@ -223,20 +223,32 @@ For example:
     $ echo '.mdc-button:not(:disabled){color:red}' >> packages/mdc-button/mdc-button.scss
     ```
 
-6. Rerun the tests locally:
+6. Rerun the tests locally until you're satisfied with how they look:
 
     ```bash
     $ npm run screenshot:test -- --url=mdc-button --retries=0 --offline
     30 screenshots changed!
+    Diff report: http://localhost:9000/advorak/2018/07/15/04_11_46_560/report/report.html
+    $ git add test/screenshot/golden.json
+    $ git commit -m 'Update golden.json with offline screenshots'
     ```
 
-7. Run the tests remotely and create a PR:
+7. Once you're happy with your changes, revert the offline-generated golden images (because they won't match CBT):
 
     ```bash
-    $ npm run screenshot:test -- --url=mdc-button --retries=0
+    $ git fetch
+    $ git checkout origin/master -- test/screenshot/golden.json
+    $ git add test/screenshot/golden.json
+    $ git commit -m 'Revert offline changes to golden.json'
+    ```
+
+8. Run the tests remotely on CBT and create a PR:
+
+    ```bash
+    $ npm run screenshot:test -- --url=mdc-button
     $ npm run screenshot:approve -- --all --report=https://.../report.json
     $ git add test/screenshot/golden.json
-    $ git commit -m 'feat(button): Fancy'
+    $ git commit -m 'feat(button): Fancy variant'
     $ git push -u origin
     ```
 
