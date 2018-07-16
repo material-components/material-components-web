@@ -100,7 +100,6 @@ class GitHubApi {
   }
 
   async setPullRequestError() {
-    console.log('process.env.TRAVIS_PULL_REQUEST:', process.env.TRAVIS_PULL_REQUEST);
     const prNumber = Number(process.env.TRAVIS_PULL_REQUEST);
     if (!prNumber) {
       return;
@@ -109,7 +108,7 @@ class GitHubApi {
     return await this.createStatus_({
       state: GitHubApi.PullRequestState.ERROR,
       target_url: `https://travis-ci.org/material-components/material-components-web/jobs/${process.env.TRAVIS_JOB_ID}`,
-      // description: 'Error',
+      description: 'Error running screenshot tests',
     });
   }
 
@@ -121,7 +120,7 @@ class GitHubApi {
    * @private
    */
   async createStatus_({state, targetUrl, description = undefined}) {
-    const request = {
+    return await this.octocat_.repos.createStatus({
       owner: 'material-components',
       repo: 'material-components-web',
       sha: await this.gitRepo_.getFullCommitHash(process.env.TRAVIS_PULL_REQUEST_SHA),
@@ -129,11 +128,7 @@ class GitHubApi {
       target_url: targetUrl,
       description,
       context: 'screenshot-test/butter-bot',
-    };
-    console.log('createStatus_():', request);
-    const response = await this.octocat_.repos.createStatus(request);
-    console.log('response:', response);
-    return response;
+    });
   }
 
   /**
