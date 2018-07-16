@@ -55,6 +55,9 @@ class MDCTooltipFoundation extends MDCFoundation {
     /** @private {?number} */
     this.showTimeout_ = null;
 
+    /** @private {?number} */
+    this.checkHideFlag_ = false;
+
     /** @public {number} */
     this.gap = 12;
 
@@ -102,6 +105,13 @@ class MDCTooltipFoundation extends MDCFoundation {
    */
   handleMouseEnter() {
     this.showDelayed();
+  }
+
+  /**
+   * Click handler to hide tooltip on user action.
+   */
+  handleClick() {
+      this.hide();
   }
 
   calcPosition_() {
@@ -156,8 +166,11 @@ class MDCTooltipFoundation extends MDCFoundation {
   }
 
   showDelayed() {
+    this.checkHideFlag_ = false;
     this.showTimeout_ = setTimeout(() => {
-      this.show();
+      if(!this.checkHideFlag_) {
+        this.show();
+      }
     }, this.showDelay);
   }
 
@@ -168,11 +181,12 @@ class MDCTooltipFoundation extends MDCFoundation {
   }
 
   hide() {
+    this.checkHideFlag_ = true;
+    clearTimeout(this.showTimeout_);
+
     this.adapter_.addClass(cssClasses.ANIMATION);
     this.adapter_.removeClass(cssClasses.SHOW);
     this.displayed_ = false;
-
-    clearTimeout(this.showTimeout_);
   }
 
   destroy() {

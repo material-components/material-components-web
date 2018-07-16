@@ -66,6 +66,7 @@ class MDCTooltip extends MDCComponent {
     this.handleTouchStart_ = this.foundation_.handleTouchStart.bind(this.foundation_);
     this.handleFocus_ = this.foundation_.handleFocus.bind(this.foundation_);
     this.handleMouseEnter_ = this.foundation_.handleMouseEnter.bind(this.foundation_);
+    this.handleClick_ = this.foundation_.handleClick.bind(this.foundation_);
 
     this.controller_.addEventListener('touchend', this.handleTouchEnd_);
     this.controller_.addEventListener('blur', this.handleBlur_);
@@ -73,6 +74,7 @@ class MDCTooltip extends MDCComponent {
     this.controller_.addEventListener('touchstart', this.handleTouchStart_);
     this.controller_.addEventListener('focus', this.handleFocus_);
     this.controller_.addEventListener('mouseenter', this.handleMouseEnter_);
+    this.controller_.addEventListener('click', this.handleClick_);
   }
 
   /** @type {boolean} */
