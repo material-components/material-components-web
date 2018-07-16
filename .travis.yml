@@ -4,27 +4,27 @@ branches:
   - master
 matrix:
   include:
-  - node_js: 8
-    env:
-    - TEST_SUITE=lint
-    script: npm run lint
-  - node_js: 8
-    env:
-    - TEST_SUITE=unit
-    addons:
-      sauce_connect: true
-    script: npm run test:unit && npm run posttest
-    after_success:
-    - codecov
-  - node_js: 8
-    env:
-    - TEST_SUITE=closure
-    - CLOSURE=1
-    script: npm run test:closure
-  - node_js: 8
-    env:
-    - TEST_SUITE=site-generator
-    script: npm run test:site
+#  - node_js: 8
+#    env:
+#    - TEST_SUITE=lint
+#    script: npm run lint
+#  - node_js: 8
+#    env:
+#    - TEST_SUITE=unit
+#    addons:
+#      sauce_connect: true
+#    script: npm run test:unit && npm run posttest
+#    after_success:
+#    - codecov
+#  - node_js: 8
+#    env:
+#    - TEST_SUITE=closure
+#    - CLOSURE=1
+#    script: npm run test:closure
+#  - node_js: 8
+#    env:
+#    - TEST_SUITE=site-generator
+#    script: npm run test:site
   - node_js: 8
     env:
     - TEST_SUITE=screenshot
