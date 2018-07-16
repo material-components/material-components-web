@@ -6,11 +6,18 @@ iconId: button
 path: /catalog/buttons/icon-toggle-buttons/
 -->
 
+## Important - Deprecation Notice
+
+The existing `MDCIconToggle` component and styles will be removed in a future release. Some of its functionality
+will be available in the [MDC Icon Button](../mdc-icon-button) package instead. Bugs and feature requests
+will no longer be accepted for the `mdc-icon-toggle` package. It is recommended that you migrate to the
+`mdc-icon-button` package to continue to receive new features and updates.
+
 # Icon Toggle Buttons
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/icon-toggle.html">
+     href="https://material-components.github.io/material-components-web-catalog/#/component/icon-button">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/icon-toggles.png" width="20" alt="Icon toggles screenshot">
   </a>
 </div>-->
@@ -22,10 +29,10 @@ designed to work with any icon set.
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/buttons.html#buttons-toggle-buttons">Material Design guidelines: Toggle buttons</a>
+    <a href="https://material.io/go/design-buttons#toggle-button">Material Design guidelines: Toggle buttons</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/icon-toggle.html">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/icon-button">Demo (for Icon Button)</a>
   </li>
 </ul>
 
