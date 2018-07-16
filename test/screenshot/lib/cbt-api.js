@@ -137,7 +137,7 @@ https://crossbrowsertesting.com/account
 
     /** @type {!selenium.proto.RawCapabilities} */
     const defaultCaps = {
-      name: `${meta.user.username} - ${cbtTestName} - `,
+      name: `${cbtTestName} - `,
       build: cbtBuildName,
 
       // TODO(acdvorak): Expose these as CLI flags
@@ -324,6 +324,7 @@ https://crossbrowsertesting.com/account
    */
   getCbtTestNameAndBuildNameForGitRev_(gitRev) {
     const nameParts = [
+      gitRev.author.email,
       gitRev.commit ? gitRev.commit.substr(0, 7) : null,
       gitRev.branch ? gitRev.branch : null,
       gitRev.tag ? gitRev.tag : null,
