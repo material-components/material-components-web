@@ -60,15 +60,17 @@ async function run() {
       console.log('Offline mode!');
     }
 
-    cmd()
-      .then(
-        (exitCode = 0) => {
+    cmd().then(
+      (exitCode = 0) => {
+        if (exitCode !== 0) {
           process.exit(exitCode);
-        },
-        (err) => {
-          console.error(err);
-          process.exit(ExitCode.UNKNOWN_ERROR);
-        });
+        }
+      },
+      (err) => {
+        console.error(err);
+        process.exit(ExitCode.UNKNOWN_ERROR);
+      }
+    );
   } else {
     console.error(`Error: Unknown command: '${cli.command}'`);
     process.exit(ExitCode.UNSUPPORTED_CLI_COMMAND);
