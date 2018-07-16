@@ -1427,6 +1427,8 @@ $root.mdc = (function() {
              * @property {string|null} [tag] GitRevision tag
              * @property {number|null} [pr_number] GitRevision pr_number
              * @property {Array.<string>|null} [pr_file_paths] GitRevision pr_file_paths
+             * @property {mdc.proto.IUser|null} [author] GitRevision author
+             * @property {mdc.proto.IUser|null} [committer] GitRevision committer
              */
 
             /**
@@ -1510,6 +1512,22 @@ $root.mdc = (function() {
             GitRevision.prototype.pr_file_paths = $util.emptyArray;
 
             /**
+             * GitRevision author.
+             * @member {mdc.proto.IUser|null|undefined} author
+             * @memberof mdc.proto.GitRevision
+             * @instance
+             */
+            GitRevision.prototype.author = null;
+
+            /**
+             * GitRevision committer.
+             * @member {mdc.proto.IUser|null|undefined} committer
+             * @memberof mdc.proto.GitRevision
+             * @instance
+             */
+            GitRevision.prototype.committer = null;
+
+            /**
              * Creates a new GitRevision instance using the specified properties.
              * @function create
              * @memberof mdc.proto.GitRevision
@@ -1550,6 +1568,10 @@ $root.mdc = (function() {
                 if (message.pr_file_paths != null && message.pr_file_paths.length)
                     for (var i = 0; i < message.pr_file_paths.length; ++i)
                         writer.uint32(/* id 8, wireType 2 =*/66).string(message.pr_file_paths[i]);
+                if (message.author != null && message.hasOwnProperty("author"))
+                    $root.mdc.proto.User.encode(message.author, writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
+                if (message.committer != null && message.hasOwnProperty("committer"))
+                    $root.mdc.proto.User.encode(message.committer, writer.uint32(/* id 10, wireType 2 =*/82).fork()).ldelim();
                 return writer;
             };
 
@@ -1609,6 +1631,12 @@ $root.mdc = (function() {
                         if (!(message.pr_file_paths && message.pr_file_paths.length))
                             message.pr_file_paths = [];
                         message.pr_file_paths.push(reader.string());
+                        break;
+                    case 9:
+                        message.author = $root.mdc.proto.User.decode(reader, reader.uint32());
+                        break;
+                    case 10:
+                        message.committer = $root.mdc.proto.User.decode(reader, reader.uint32());
                         break;
                     default:
                         reader.skipType(tag & 7);
@@ -1682,6 +1710,16 @@ $root.mdc = (function() {
                         if (!$util.isString(message.pr_file_paths[i]))
                             return "pr_file_paths: string[] expected";
                 }
+                if (message.author != null && message.hasOwnProperty("author")) {
+                    var error = $root.mdc.proto.User.verify(message.author);
+                    if (error)
+                        return "author." + error;
+                }
+                if (message.committer != null && message.hasOwnProperty("committer")) {
+                    var error = $root.mdc.proto.User.verify(message.committer);
+                    if (error)
+                        return "committer." + error;
+                }
                 return null;
             };
 
@@ -1742,6 +1780,16 @@ $root.mdc = (function() {
                     for (var i = 0; i < object.pr_file_paths.length; ++i)
                         message.pr_file_paths[i] = String(object.pr_file_paths[i]);
                 }
+                if (object.author != null) {
+                    if (typeof object.author !== "object")
+                        throw TypeError(".mdc.proto.GitRevision.author: object expected");
+                    message.author = $root.mdc.proto.User.fromObject(object.author);
+                }
+                if (object.committer != null) {
+                    if (typeof object.committer !== "object")
+                        throw TypeError(".mdc.proto.GitRevision.committer: object expected");
+                    message.committer = $root.mdc.proto.User.fromObject(object.committer);
+                }
                 return message;
             };
 
@@ -1768,6 +1816,8 @@ $root.mdc = (function() {
                     object.branch = "";
                     object.tag = "";
                     object.pr_number = 0;
+                    object.author = null;
+                    object.committer = null;
                 }
                 if (message.type != null && message.hasOwnProperty("type"))
                     object.type = options.enums === String ? $root.mdc.proto.GitRevision.Type[message.type] : message.type;
@@ -1788,6 +1838,10 @@ $root.mdc = (function() {
                     for (var j = 0; j < message.pr_file_paths.length; ++j)
                         object.pr_file_paths[j] = message.pr_file_paths[j];
                 }
+                if (message.author != null && message.hasOwnProperty("author"))
+                    object.author = $root.mdc.proto.User.toObject(message.author, options);
+                if (message.committer != null && message.hasOwnProperty("committer"))
+                    object.committer = $root.mdc.proto.User.toObject(message.committer, options);
                 return object;
             };
 
