@@ -29,7 +29,8 @@ main {
 }
 
 .hero .mdc-menu-surface {
-  z-index: initial;
+  position: static; // Required for proper IE11 alignment.
+  z-index: auto;
 }
 
 .demo-content {
