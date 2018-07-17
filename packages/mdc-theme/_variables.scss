@@ -122,6 +122,10 @@ $mdc-theme-property-values: (
   @return map-get($mdc-theme-property-values, $style);
 }
 
+@function mdc-theme-spec($style, $alpha: 1) {
+  @return (style: $style, alpha: $alpha);
+}
+
 // NOTE: This function must be defined in _variables.scss instead of _functions.scss to avoid circular imports.
 @function mdc-theme-accessible-ink-color($fill-color, $text-style: primary) {
   $fill-color-value: mdc-theme-prop-value($fill-color);

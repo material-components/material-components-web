@@ -21,8 +21,12 @@
 // $style should be one of the map keys in $mdc-theme-property-values (_variables.scss), or a color value.
 // $edgeOptOut controls whether to feature-detect around Edge to avoid emitting CSS variables for it,
 // intended for use in cases where interactions with pseudo-element styles cause problems due to Edge bugs.
-@mixin mdc-theme-prop($property, $style, $important: false, $edgeOptOut: false) {
+@mixin mdc-theme-prop($property, $style, $alpha: null, $important: false, $edgeOptOut: false) {
   @if mdc-theme-is-valid-theme-prop-value_($style) {
+    @if ($alpha != null) {
+      $style: rgba($style, $alpha);
+    }
+
     @if $important {
       #{$property}: $style !important;
     } @else {
@@ -34,9 +38,14 @@
     }
 
     $value: map-get($mdc-theme-property-values, $style);
+    @if ($alpha != null) {
+      $value: rgba($value, $alpha);
+    } @else {
+      $alpha: 1;
+    }
 
     @if $important {
-      #{$property}: $value !important;
+      #{$property}: $style !important;
 
       @if $edgeOptOut {
         // stylelint-disable max-nesting-depth
@@ -45,7 +54,7 @@
             // stylelint-disable scss/selector-no-redundant-nesting-selector
             & {
               /* @alternate */
-              #{$property}: var(--mdc-theme-#{$style}, $value) !important;
+              #{$property}: rgba(var(--mdc-theme-#{$style}, $value), $alpha) !important;
             }
             // stylelint-enable scss/selector-no-redundant-nesting-selector
           }
@@ -53,7 +62,7 @@
         // stylelint-enable max-nesting-depth
       } @else {
         /* @alternate */
-        #{$property}: var(--mdc-theme-#{$style}, $value) !important;
+        #{$property}: rgba(var(--mdc-theme-#{$style}, $value), $alpha) !important;
       }
     } @else {
       #{$property}: $value;
@@ -65,7 +74,7 @@
             // stylelint-disable scss/selector-no-redundant-nesting-selector
             & {
               /* @alternate */
-              #{$property}: var(--mdc-theme-#{$style}, $value);
+              #{$property}: rgba(var(--mdc-theme-#{$style}, $value), $alpha);
             }
             // stylelint-enable scss/selector-no-redundant-nesting-selector
           }
@@ -73,8 +82,19 @@
         // stylelint-enable max-nesting-depth
       } @else {
         /* @alternate */
-        #{$property}: var(--mdc-theme-#{$style}, $value);
+        #{$property}: rgba(var(--mdc-theme-#{$style}, $value), $alpha);
       }
     }
+  }
+}
+
+@mixin mdc-theme-prop-spec($property, $color-spec, $alpha: null, $important: false, $edgeOptOut: false) {
+  @if type-of($color-spec) == "map" {
+    $style: map-get($color-spec, "style");
+    $alpha: map-get($color-spec, "alpha");
+    @include mdc-theme-prop($property, $style, $alpha: $alpha, $important: $important, $edgeOptOut: $edgeOptOut);
+  } @else {
+    $style: $color-spec;
+    @include mdc-theme-prop($property, $style, $alpha: $alpha, $important: $important, $edgeOptOut: $edgeOptOut);
   }
 }

@@ -16,9 +16,9 @@
 
 @import "@material/theme/variables";
 
-$mdc-checkbox-mark-color: mdc-theme-prop-value(on-primary);
-$mdc-checkbox-border-color: rgba(mdc-theme-prop-value(on-surface), .54);
-$mdc-checkbox-disabled-color: rgba(mdc-theme-prop-value(on-surface), .26);
+$mdc-checkbox-mark-color: mdc-theme-spec(on-primary);
+$mdc-checkbox-border-color: mdc-theme-spec(on-surface, 0.54);
+$mdc-checkbox-disabled-color: mdc-theme-spec(on-surface, 0.26);
 $mdc-checkbox-baseline-theme-color: secondary;
 
 $mdc-checkbox-touch-area: 40px;

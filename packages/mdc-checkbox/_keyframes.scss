@@ -26,26 +26,26 @@
   $uid) {
   @keyframes mdc-checkbox-fade-in-background-#{$uid} {
     0% {
-      @include mdc-theme-prop(border-color, $from-stroke-color);
-      @include mdc-theme-prop(background-color, $from-fill-color);
+      @include mdc-theme-prop-spec(border-color, $from-stroke-color);
+      @include mdc-theme-prop-spec(background-color, $from-fill-color);
     }
 
     50% {
-      @include mdc-theme-prop(border-color, $to-stroke-color);
-      @include mdc-theme-prop(background-color, $to-fill-color);
+      @include mdc-theme-prop-spec(border-color, $to-stroke-color);
+      @include mdc-theme-prop-spec(background-color, $to-fill-color);
     }
   }
 
   @keyframes mdc-checkbox-fade-out-background-#{$uid} {
     0%,
     80% {
-      @include mdc-theme-prop(border-color, $to-stroke-color);
-      @include mdc-theme-prop(background-color, $to-fill-color);
+      @include mdc-theme-prop-spec(border-color, $to-stroke-color);
+      @include mdc-theme-prop-spec(background-color, $to-fill-color);
     }
 
     100% {
-      @include mdc-theme-prop(border-color, $from-stroke-color);
-      @include mdc-theme-prop(background-color, $from-fill-color);
+      @include mdc-theme-prop-spec(border-color, $from-stroke-color);
+      @include mdc-theme-prop-spec(background-color, $from-fill-color);
     }
   }
 }

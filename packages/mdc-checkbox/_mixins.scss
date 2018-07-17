@@ -30,13 +30,13 @@
   $marked-fill-color: $mdc-checkbox-baseline-theme-color,
   $generate-keyframes: true) {
   @include mdc-checkbox-unmarked-background-selector-enabled_ {
-    @include mdc-theme-prop(border-color, $unmarked-stroke-color);
-    @include mdc-theme-prop(background-color, $unmarked-fill-color);
+    @include mdc-theme-prop-spec(border-color, $unmarked-stroke-color);
+    @include mdc-theme-prop-spec(background-color, $unmarked-fill-color);
   }
 
   @include mdc-checkbox-marked-background-selector-enabled_ {
-    @include mdc-theme-prop(border-color, $marked-fill-color);
-    @include mdc-theme-prop(background-color, $marked-fill-color);
+    @include mdc-theme-prop-spec(border-color, $marked-fill-color);
+    @include mdc-theme-prop-spec(background-color, $marked-fill-color);
   }
 
   @if $generate-keyframes {
@@ -70,18 +70,18 @@
 
 @mixin mdc-checkbox-ink-color($color) {
   .mdc-checkbox__checkmark {
-    @include mdc-theme-prop(color, $color);
+    @include mdc-theme-prop-spec(color, $color);
   }
 
   .mdc-checkbox__mixedmark {
-    @include mdc-theme-prop(border-color, $color);
+    @include mdc-theme-prop-spec(border-color, $color);
   }
 }
 
 @mixin mdc-checkbox-focus-indicator-color($color) {
   // The ::before element is used as a focus indicator for the checkbox
   .mdc-checkbox__background::before {
-    @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
+    @include mdc-theme-prop-spec(background-color, $color, $edgeOptOut: true);
   }
 }
 
@@ -105,12 +105,12 @@
 
 @mixin mdc-checkbox-disabled-container-color_ {
   @include mdc-checkbox-unmarked-background-selector-disabled_ {
-    @include mdc-theme-prop(border-color, $mdc-checkbox-disabled-color);
+    @include mdc-theme-prop-spec(border-color, $mdc-checkbox-disabled-color);
   }
 
   @include mdc-checkbox-marked-background-selector-disabled_ {
-    @include mdc-theme-prop(border-color, transparent);
-    @include mdc-theme-prop(background-color, $mdc-checkbox-disabled-color);
+    @include mdc-theme-prop-spec(border-color, transparent);
+    @include mdc-theme-prop-spec(background-color, $mdc-checkbox-disabled-color);
   }
 }
 
