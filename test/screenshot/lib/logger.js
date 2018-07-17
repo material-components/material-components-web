@@ -86,7 +86,7 @@ class Logger {
      * @type {!Map<string, number>}
      * @private
      */
-    this.foldStartTimes_ = new Map();
+    this.foldStartTimesMs_ = new Map();
   }
 
   /**
@@ -124,12 +124,12 @@ class Logger {
     const timerId = this.getFoldTimerId_(foldId);
     const colorMessage = colors.bold.yellow(shortMessage);
 
-    this.foldStartTimes_.set(foldId, Date.now());
+    this.foldStartTimesMs_.set(foldId, Date.now());
 
     if (!this.isTravisJob_()) {
       console.log('');
       console.log(colorMessage);
-      console.log('');
+      console.log(colors.reset(''));
       return;
     }
 
@@ -140,7 +140,7 @@ class Logger {
     console.log(`travis_fold:start:${foldId}`);
     console.log(`travis_time:start:${timerId}`);
     console.log(colorMessage);
-    console.log('');
+    console.log(colors.reset(''));
   }
 
   /**
@@ -152,8 +152,8 @@ class Logger {
     }
 
     const timerId = this.getFoldTimerId_(foldId);
-    const startNanos = this.foldStartTimes_.get(foldId) * 1000;
-    const finishNanos = Date.now() * 1000;
+    const startNanos = this.foldStartTimesMs_.get(foldId) * 1000 * 10;
+    const finishNanos = Date.now() * 1000 * 10;
     const durationNanos = finishNanos - startNanos;
 
     // Undocumented Travis CI job logging features. See:
