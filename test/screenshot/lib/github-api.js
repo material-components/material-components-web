@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-const octocat = require('@octokit/rest');
+const octokit = require('@octokit/rest');
 const GitRepo = require('./git-repo');
 
 class GitHubApi {
   constructor() {
     this.gitRepo_ = new GitRepo();
-    this.octocat_ = octocat();
+    this.octokit_ = octokit();
     this.authenticate_();
   }
 
@@ -37,7 +37,7 @@ class GitHubApi {
       return;
     }
 
-    this.octocat_.authenticate({
+    this.octokit_.authenticate({
       type: 'oauth',
       token: token,
     });
@@ -58,7 +58,7 @@ class GitHubApi {
 
   /**
    * @param {!mdc.proto.ReportData} reportData
-   * @return {Promise<void>}
+   * @return {!Promise<*>}
    */
   async setPullRequestStatus(reportData) {
     const meta = reportData.meta;
@@ -119,7 +119,7 @@ class GitHubApi {
    * @private
    */
   async createStatus_({state, targetUrl, description = undefined}) {
-    return await this.octocat_.repos.createStatus({
+    return await this.octokit_.repos.createStatus({
       owner: 'material-components',
       repo: 'material-components-web',
       sha: await this.gitRepo_.getFullCommitHash(process.env.TRAVIS_PULL_REQUEST_SHA),
@@ -137,7 +137,7 @@ class GitHubApi {
   async getPullRequestNumber(branch = undefined) {
     branch = branch || await this.gitRepo_.getBranchName();
 
-    const allPRs = await this.octocat_.pullRequests.getAll({
+    const allPRs = await this.octokit_.pullRequests.getAll({
       owner: 'material-components',
       repo: 'material-components-web',
       per_page: 100,
@@ -155,7 +155,7 @@ class GitHubApi {
    */
   async getPullRequestFiles(prNumber) {
     /** @type {!github.proto.PullRequestFileResponse} */
-    const fileResponse = await this.octocat_.pullRequests.getFiles({
+    const fileResponse = await this.octokit_.pullRequests.getFiles({
       owner: 'material-components',
       repo: 'material-components-web',
       number: prNumber,
