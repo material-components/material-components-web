@@ -1,0 +1,78 @@
+//
+// Copyright 2018 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+@import "@material/animation/functions";
+@import "@material/rtl/mixins";
+@import "../variables";
+
+.mdc-drawer--dismissible {
+  width: 0;
+  min-width: 0;
+  transform: translateX(-100%);
+  border-right-width: 0;
+
+  @include mdc-rtl {
+    transform: translateX(100%);
+    border-left-width: 0;
+  }
+}
+
+.mdc-drawer--open {
+  width: $mdc-drawer-width;
+  min-width: $mdc-drawer-width;
+  border-right-width: 1px;
+
+  @include mdc-rtl {
+    border-left-width: 1px;
+  }
+}
+
+.mdc-drawer--open:not(.mdc-drawer--animating-close) {
+  transform: translateX(0);
+}
+
+.mdc-drawer--dismissible,
+.mdc-drawer-app-content {
+  transform-origin: top left;
+  will-change: transform;
+
+  @include mdc-rtl {
+    transform-origin: top right;
+  }
+}
+
+.mdc-drawer--animating-close {
+  transform: translateX(-100%);
+  transition: mdc-animation-standard(transform, $mdc-drawer-animation-exit);
+
+  @include mdc-rtl {
+    transform: translateX(100%);
+  }
+}
+
+.mdc-drawer--animating-open {
+  // the `all` transition should be transform, but IE11 and Edge
+  // do not apply the animation in the opening.
+  transition: mdc-animation-standard(all, $mdc-drawer-animation-enter);
+}
+
+.mdc-drawer-app-content--animating-open {
+  transition: mdc-animation-standard(transform, $mdc-drawer-animation-enter);
+}
+
+.mdc-drawer-app-content--animating-close {
+  transition: mdc-animation-standard(transform, $mdc-drawer-animation-exit);
+}

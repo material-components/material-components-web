@@ -19,6 +19,7 @@ import * as base from '@material/base/index';
 import * as checkbox from '@material/checkbox/index';
 import * as chips from '@material/chips/index';
 import * as dialog from '@material/dialog/index';
+import * as drawer from '@material/drawer/index';
 import * as floatingLabel from '@material/floating-label/index';
 import * as formField from '@material/form-field/index';
 import * as gridList from '@material/grid-list/index';
@@ -45,6 +46,7 @@ autoInit.register('MDCCheckbox', checkbox.MDCCheckbox);
 autoInit.register('MDCChip', chips.MDCChip);
 autoInit.register('MDCChipSet', chips.MDCChipSet);
 autoInit.register('MDCDialog', dialog.MDCDialog);
+autoInit.register('MDCDrawer', drawer.MDCDrawer);
 autoInit.register('MDCFloatingLabel', floatingLabel.MDCFloatingLabel);
 autoInit.register('MDCFormField', formField.MDCFormField);
 autoInit.register('MDCRipple', ripple.MDCRipple);
@@ -73,6 +75,7 @@ export {
   checkbox,
   chips,
   dialog,
+  drawer,
   floatingLabel,
   formField,
   gridList,

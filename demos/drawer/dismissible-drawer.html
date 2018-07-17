@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  Copyright 2016 Google Inc. All rights reserved.
+  Copyright 2018 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Standard Drawer - Material Components Catalog</title>
+    <title>Dismissible Drawer - Material Components Catalog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <link rel="stylesheet" href="/assets/drawer/drawer.css">
@@ -28,7 +28,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   </head>
   <body class="mdc-typography demo-body">
-    <aside id="demo-drawer" class="mdc-drawer demo-drawer">
+    <aside id="demo-drawer" class="mdc-drawer mdc-drawer--dismissible demo-drawer">
       <div class="mdc-drawer__header">
         <h3 class="mdc-drawer__title">Mail</h3>
         <h6 class="mdc-drawer__subtitle">email@material.io</h6>
@@ -76,18 +76,22 @@
         </div>
       </div>
     </aside>
-    <div class="demo-content" id="demo-content">
+    <div class="demo-content mdc-drawer-app-content" id="demo-content">
       <header class="mdc-top-app-bar" id="app-bar">
         <div class="mdc-top-app-bar__row">
           <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-            <span class="mdc-top-app-bar__title">Standard Drawer</span>
+            <a href="#" class="demo-menu material-icons mdc-top-app-bar__navigation-icon">menu</a>
+            <span class="mdc-top-app-bar__title">Dismissible Drawer</span>
+          </section>
+          <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
+            <a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="Download" alt="Download">file_download</a>
           </section>
         </div>
       </header>
 
-      <main class="demo-main">
+      <main class="demo-main" id="demo-main">
         <div class="mdc-top-app-bar--fixed-adjust"></div>
-        <h1 class="mdc-typography--headline4">Standard Drawer</h1>
+        <h1 class="mdc-typography--headline4">Dismissible Drawer</h1>
         <p class="mdc-typography--body1">It sits to the left of this content.</p>
 
         <div id="demo-radio-buttons">
@@ -167,6 +171,7 @@
         });
 
         var drawerEl = document.getElementById('demo-drawer');
+        var drawer = new mdc.drawer.MDCDrawer(drawerEl);
         var radioEl = document.querySelector('#demo-radio-buttons');
         radioEl.addEventListener('change', function(e) {
           drawerEl.classList.remove('demo-drawer--custom');
@@ -183,8 +188,17 @@
         rtlToggleBtn.addEventListener('click', function(event) {
           document.body.setAttribute('dir', document.body.getAttribute('dir') === 'rtl' ? 'ltr' : 'rtl');
         });
-        var topAppBar = new mdc.topAppBar.MDCTopAppBar(document.getElementById('app-bar'));
-        topAppBar.setScrollTarget(document.getElementById('demo-content'));
+
+        var topAppBarEl = document.getElementById('app-bar');
+        var topAppBar = new mdc.topAppBar.MDCTopAppBar(topAppBarEl);
+        topAppBar.setScrollTarget(document.getElementById('demo-main'));
+        topAppBar.listen('MDCTopAppBar:nav', function() {
+          if (drawer.open) {
+            drawer.open = false;
+          } else {
+            drawer.open = true;
+          }
+        });
       });
     </script>
   </body>

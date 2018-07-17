@@ -56,7 +56,6 @@ npm install @material/drawer
 @import "@material/drawer/mdc-drawer";
 ```
 
-
 ## Variants
 
 ### Drawers with separate list groups
@@ -85,6 +84,87 @@ switchers and titles should live in the header element.
 </header>
 ```
 
+## Dismissible Drawer
+
+Dismissible drawers are by default hidden off screen, and can slide into view. Dismissible drawers should be used when navigation is not common, and the main app content is prioritized.
+
+```html
+<body>
+  <header class="mdc-drawer mdc-drawer--dismissible">
+    <div class="mdc-drawer__scrollable">
+      <nav class="mdc-list">
+        <a class="mdc-list-item mdc-list-item--activated" href='#'>
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="mdc-drawer-app-content">
+    App Content
+  </div>
+</body>
+```
+
+> Use the `mdc-drawer-app-content` class to the element sibling to the drawer to get the open/close animations to work.
+
+### Usage with Top App Bar
+
+There are some styles that need to be applied to get the top app bar and the dismissible drawer to independently scroll and work on all browsers. `.mdc-drawer__scrollable` and `#main-content` elements should independently scroll each other. The `mdc-drawer--dismissible` and `mdc-drawer-app-content` should then sit side-by-side. The markup looks something like this:
+
+```html
+<body>
+  <nav class="mdc-drawer mdc-drawer--dismissible">
+    <div class="mdc-drawer__scrollable">
+      <div class="mdc-list">
+        <a class="mdc-list-item mdc-list-item--activated" href='#'>
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="mdc-drawer-app-content">
+    <header class="mdc-top-app-bar" id="app-bar">
+      <div class="mdc-top-app-bar__row">
+        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+          <a href="#" class="demo-menu material-icons mdc-top-app-bar__navigation-icon">menu</a>
+          <span class="mdc-top-app-bar__title">Dismissible Drawer</span>
+        </section>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <div class="mdc-top-app-bar--fixed-adjust"></div>
+        App Content
+      </div>
+    </main>
+  </div>
+</body>
+```
+
+The CSS to match it looks like:
+
+```css
+// these style do not account for any paddings/margins that you may need
+
+body {
+  display: flex;
+  height: 100vh;
+}
+
+.mdc-drawer-app-content {
+  flex: auto;
+  overflow: auto;
+}
+
+#main-content {
+  overflow: auto;
+  height: 100%;
+}
+
+```
+
 ## Style Customization
 
 ### CSS Classes
@@ -92,10 +172,18 @@ switchers and titles should live in the header element.
 Class | Description
 --- | ---
 `mdc-drawer` |  Mandatory.
+`mdc-drawer--animating-close` | Applies the transition to the dismissible drawer while it is animating from the open to the closed position.
+`mdc-drawer--animating-open` | Applies the transition to the dismissible drawer while it is animating from the closed to the open position.
+`mdc-drawer-app-content` | Used for dismissible drawer variant sibling element that should animate open/closed with it.
+`mdc-drawer-app-content--animating-open` | Applies the transition to the app content element while it is animating to the open position.
+`mdc-drawer-app-content--animating-close` | Applies the transition to the app content element while it is animating to the closed position.
+`mdc-drawer--dismissible` | Dismissible drawer variant class.
 `mdc-drawer__header` | Non-scrollable element that exists on the top of the drawer.
-`mdc-drawer__title` | Title text element of the drawer.
-`mdc-drawer__subtitle` | Subtitle text element of the drawer.
+`mdc-drawer--open` | If present indicates that dismissible drawer is in the open position.
 `mdc-drawer__scrollable` | Scrollable content area of the drawer.
+`mdc-drawer__subtitle` | Subtitle text element of the drawer.
+`mdc-drawer__title` | Title text element of the drawer.
+
 
 ### Sass Mixins
 
@@ -115,3 +203,47 @@ Mixin | Description
 `mdc-drawer-meta-ink-color($color, $opacity)` | Sets drawer list item meta icon ink color.
 `mdc-drawer-surface-fill-color($color, $opacity)` | Sets the background color of `mdc-drawer`.
 `mdc-drawer-title-ink-color($color, $opacity)` | Sets the ink color of `mdc-drawer__title`.
+
+## `MDCDrawer` Properties and Methods
+
+Property | Value Type | Description
+--- | --- | ---
+`open` | Boolean | Proxies to the foundation's `open`/`close` methods. Also returns true if drawer is in the open position.
+
+### Events
+
+Event Name | Event Data Structure | Description
+--- | --- | ---
+`MDCDrawer:open` | None | Emits when the navigation drawer has opened.
+`MDCDrawer:close` | None | Emits when the navigation drawer has closed.
+
+## Usage within Web Frameworks
+
+If you are using a JavaScript framework, such as React or Angular, you can create a Navigation Drawer for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
+
+### `MDCDrawerAdapter`
+
+Method Signature | Description
+--- | ---
+`addClass(className: string) => void` | Adds a class to the root element.
+`hasClass(className: string) => boolean` | Returns true if the root element contains the given `className`.
+`removeClass(className: string) => void` | Removes a class from the root element.
+`computeBoundingRect() => ClientRect` | Returns ClientRect of the drawer element.
+`addClassAppContent(className: string) => void` | Adds a class to the app content element.
+`removeClassAppContent(className: string) => void` | Removes a class to the app content element.
+`setStyleAppContent(propertyName, value) => void` | Sets style property on app content element to `value`.
+`isRtl() => boolean` | Returns true if a parent element is dir='rtl'.
+`notifyClosed() => void` | Emits the `MDCDrawer:close` event.
+`notifyOpen() => void` | Emits the `MDCDrawer:open` event.
+
+### Foundations: `MDCDismissibleDrawerFoundation`
+
+Method Signature | Description
+--- | ---
+`open() => void` | Opens the drawer from the closed state.
+`close() => void` | Closes the drawer from the open state.
+`isOpen() => boolean` | Returns true if the drawer is in the open position.
+`isOpening() => boolean` | Returns true if the drawer is animating open.
+`isClosing() => boolean` | Returns true if the drawer is animating closed.
+`handleKeyDown(evt => Event) => void` | Handles the keydown event.
+`handleTransitionEnd() => void` | Handles the transitionend event when the drawer finishes opening/closing.
