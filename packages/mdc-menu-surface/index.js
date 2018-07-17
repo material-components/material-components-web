@@ -68,14 +68,54 @@ class MDCMenuSurface extends MDCComponent {
   }
 
   show() {
-    const fosuableElements = this.root_.querySelectorAll(strings.FOCUSABLE_ELEMENTS);
-    this.firstFocusableElement_ = fosuableElements.length > 0 ? fosuableElements[0] : null;
-    this.lastFocusableElement_ = fosuableElements.length > 0 ? fosuableElements[fosuableElements.length - 1] : null;
+    const focusableElements = this.root_.querySelectorAll(strings.FOCUSABLE_ELEMENTS);
+    this.firstFocusableElement_ = focusableElements.length > 0 ? focusableElements[0] : null;
+    this.lastFocusableElement_ = focusableElements.length > 0 ? focusableElements[focusableElements.length - 1] : null;
     this.foundation_.open();
   }
 
   hide() {
     this.foundation_.close();
+  }
+
+  /**
+   * Removes the menu-surface from it's current location and appends it to the
+   * body to overcome any overflow:hidden issues.
+   */
+  hoistMenuToBody() {
+    document.body.appendChild(this.root_.parentElement.removeChild(this.root_));
+    this.setIsHoisted(true);
+  }
+
+  /**
+   * Sets the foundation to use page offsets for an positioning when the menu
+   * is hoisted to the body.
+   * @param {boolean} isHoisted
+   */
+  setIsHoisted(isHoisted) {
+    this.foundation_.setIsHoisted(isHoisted);
+  }
+
+  /**
+   * Sets the element that the menu-surface is anchored to.
+   * @param {!Element} element
+   */
+  setMenuSurfaceAnchorElement(element) {
+    this.anchorElement = element;
+  }
+
+  /**
+   * Sets the menu-surface to position: fixed.
+   * @param {boolean} isFixed
+   */
+  setFixedPosition(isFixed) {
+    if (isFixed) {
+      this.root_.classList.add(cssClasses.FIXED);
+    } else {
+      this.root_.classList.remove(cssClasses.FIXED);
+    }
+
+    this.foundation_.setFixedPosition(isFixed);
   }
 
   /**
@@ -175,6 +215,12 @@ class MDCMenuSurface extends MDCComponent {
       getAnchorDimensions: () => this.anchorElement && this.anchorElement.getBoundingClientRect(),
       getWindowDimensions: () => {
         return {width: window.innerWidth, height: window.innerHeight};
+      },
+      getBodyDimensions: () => {
+        return {width: document.body.clientWidth, height: document.body.clientHeight};
+      },
+      getWindowScroll: () => {
+        return {x: window.pageXOffset, y: window.pageYOffset};
       },
       setPosition: (position) => {
         this.root_.style.left = 'left' in position ? position.left : null;

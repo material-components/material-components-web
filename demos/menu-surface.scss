@@ -16,6 +16,7 @@
 
 @import "./common";
 @import "../packages/mdc-button/mdc-button";
+@import "../packages/mdc-icon-button/mdc-icon-button";
 @import "../packages/mdc-list/mdc-list";
 @import "../packages/mdc-menu-surface/mdc-menu-surface";
 @import "../packages/mdc-image-list/mdc-image-list";
@@ -28,7 +29,8 @@ main {
 }
 
 .hero .mdc-menu-surface {
-  z-index: initial;
+  position: static; // Required for proper IE11 alignment.
+  z-index: auto;
 }
 
 .demo-content {
@@ -42,7 +44,7 @@ main {
 }
 
 .demo-controls {
-  width: 420px;
+  width: 500px;
   margin-right: auto;
   margin-left: auto;
 }
@@ -82,9 +84,6 @@ main {
   @include mdc-image-list-aspect(1.5); // Images are 3:2
   @include mdc-image-list-standard-columns(1);
 
-  //TODO(williamernest): The menu surface will flow to the size of it's contained elements, but
-  //the menu surface is also constrained by the size of the element that it is in until
-  //we hoist it to the body. Setting min-width on the contained element will fix this for now
-  min-width: 200px;
+  width: 200px;
 }
 

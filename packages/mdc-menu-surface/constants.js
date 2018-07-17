@@ -17,11 +17,12 @@
 
 /** @enum {string} */
 const cssClasses = {
-  ROOT: 'mdc-menu-surface',
-  OPEN: 'mdc-menu-surface--open',
-  ANIMATING_OPEN: 'mdc-menu-surface--animating-open',
-  ANIMATING_CLOSED: 'mdc-menu-surface--animating-closed',
   ANCHOR: 'mdc-menu-surface--anchor',
+  ANIMATING_CLOSED: 'mdc-menu-surface--animating-closed',
+  ANIMATING_OPEN: 'mdc-menu-surface--animating-open',
+  FIXED: 'mdc-menu-surface--fixed',
+  OPEN: 'mdc-menu-surface--open',
+  ROOT: 'mdc-menu-surface',
 };
 
 /** @enum {string} */
