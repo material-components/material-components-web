@@ -1,10 +1,15 @@
 #!/usr/bin/env bash
 
+function print_error() {
+  echo -e "\033[31m\033[1m$@\033[0m"
+}
+
 function exit_if_external_pr() {
   if [[ -n "$TRAVIS_PULL_REQUEST_SLUG" ]] && [[ ! "$TRAVIS_PULL_REQUEST_SLUG" =~ ^material-components/ ]]; then
-    echo 'Screenshot tests are not supported on external PRs.'
-    echo 'Skipping screenshot tests.'
-    exit
+    echo
+    print_error 'Screenshot tests are not supported on external PRs.'
+    print_error 'Skipping screenshot tests.'
+    exit 19
   fi
 }
 
@@ -44,8 +49,11 @@ function install_google_cloud_sdk() {
   fi
 }
 
-if [ "$TEST_SUITE" == 'screenshot' ]; then
+if [[ "$TEST_SUITE" == 'screenshot' ]] || [[ "$TEST_SUITE" == 'unit' ]]; then
   exit_if_external_pr
+fi
+
+if [[ "$TEST_SUITE" == 'screenshot' ]]; then
   extract_api_credentials
   install_google_cloud_sdk
 fi
