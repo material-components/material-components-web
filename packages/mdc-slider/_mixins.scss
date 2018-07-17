@@ -36,10 +36,6 @@
   .mdc-slider__tick-mark-set::after {
     @include mdc-theme-prop(background-color, $color);
   }
-
-  .mdc-slider__tick-mark.mdc-slider__tick-mark--inverted::after {
-    @include mdc-theme-prop(background-color, rgba(mdc-theme-prop-value($color), $mdc-slider-track-opacity));
-  }
 }
 
 @mixin mdc-slider-thumb-color($color) {
