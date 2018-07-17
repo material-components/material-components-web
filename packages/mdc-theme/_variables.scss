@@ -98,15 +98,15 @@ $mdc-theme-property-values: (
   text-icon-on-dark: mdc-theme-ink-color-for-fill_(icon, dark)
 );
 
-// If `$style` is a literal color value (e.g., `blue`, `#fff`), it is returned verbatim. Otherwise, the value of the
-// corresponding theme property (from `$mdc-theme-property-values`) is returned. If `$style` is not a color and no
-// such theme property exists, an error is thrown.
+// If `$style` is a color (a literal color value, `currentColor`, or a CSS custom property), it is returned verbatim.
+// Otherwise, `$style` is treated as a theme property name, and the corresponding value from
+// `$mdc-theme-property-values` is returned. If this also fails, an error is thrown.
 //
 // This is mainly useful in situations where `mdc-theme-prop` cannot be used directly (e.g., `box-shadow`).
 //
 // Examples:
 //
-// 1. mdc-theme-prop-value(primary) => "#3f51b5"
+// 1. mdc-theme-prop-value(primary) => "#6200ee"
 // 2. mdc-theme-prop-value(blue)    => "blue"
 //
 // NOTE: This function must be defined in _variables.scss instead of _functions.scss to avoid circular imports.
