@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-const fs = require('mz/fs');
 const mkdirp = require('mkdirp');
 const os = require('os');
 const path = require('path');
@@ -37,7 +36,7 @@ class FileCache {
     this.tempDirPath_ = path.join(os.tmpdir(), 'mdc-web/url-cache');
 
     /**
-     * @type {@LocalStorage}
+     * @type {!LocalStorage}
      * @private
      */
     this.localStorage_ = new LocalStorage();
@@ -51,9 +50,10 @@ class FileCache {
   async downloadUrlToDisk(uri, encoding = null) {
     mkdirp.sync(this.tempDirPath_);
 
-    const fakeRelativePath = uri.replace(/.*\/mdc-/, 'mdc-'); // TODO(acdvorak): Document this hack
+    // TODO(acdvorak): Document this hack
+    const fakeRelativePath = uri.replace(/.*\/spec\/mdc-/, 'spec/mdc-');
 
-    if (await fs.exists(uri)) {
+    if (await this.localStorage_.exists(uri)) {
       return TestFile.create({
         absolute_path: path.resolve(uri),
         relative_path: fakeRelativePath,
@@ -63,7 +63,7 @@ class FileCache {
 
     const fileName = this.getFilename_(uri);
     const filePath = path.resolve(this.tempDirPath_, fileName);
-    if (await fs.exists(filePath)) {
+    if (await this.localStorage_.exists(filePath)) {
       return TestFile.create({
         absolute_path: filePath,
         relative_path: fakeRelativePath,
@@ -72,12 +72,12 @@ class FileCache {
     }
 
     const buffer = await request({uri, encoding});
-    await fs.writeFile(filePath, buffer, {encoding})
+    await this.localStorage_.writeBinaryFile(filePath, buffer, encoding)
       .catch(async (err) => {
         console.error(`downloadUrlToDisk("${uri}"):`);
         console.error(err);
-        if (await fs.exists(filePath)) {
-          await fs.unlink(filePath);
+        if (await this.localStorage_.exists(filePath)) {
+          await this.localStorage_.delete(filePath);
         }
       });
 

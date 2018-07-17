@@ -18,8 +18,6 @@
 
 const Jimp = require('jimp');
 const UserAgentParser = require('useragent');
-const fs = require('mz/fs');
-const mkdirp = require('mkdirp');
 const path = require('path');
 
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
@@ -36,6 +34,7 @@ const Constants = require('./constants');
 const Duration = require('./duration');
 const ImageCropper = require('./image-cropper');
 const ImageDiffer = require('./image-differ');
+const LocalStorage = require('./local-storage');
 const {Browser, Builder, By, until} = require('selenium-webdriver');
 const {CBT_CONCURRENCY_POLL_INTERVAL_MS, CBT_CONCURRENCY_MAX_WAIT_MS} = Constants;
 const {SELENIUM_FONT_LOAD_WAIT_MS} = Constants;
@@ -65,6 +64,12 @@ class SeleniumApi {
      * @private
      */
     this.imageDiffer_ = new ImageDiffer();
+
+    /**
+     * @type {!LocalStorage}
+     * @private
+     */
+    this.localStorage_ = new LocalStorage();
   }
 
   /**
@@ -435,8 +440,7 @@ class SeleniumApi {
     const imageFilePathRelative = `${htmlFilePath}.${imageFileNameSuffix}.png`;
     const imageFilePathAbsolute = path.resolve(meta.local_screenshot_image_base_dir, imageFilePathRelative);
 
-    mkdirp.sync(path.dirname(imageFilePathAbsolute));
-    await fs.writeFile(imageFilePathAbsolute, imageBuffer, {encoding: null});
+    await this.localStorage_.writeBinaryFile(imageFilePathAbsolute, imageBuffer);
 
     return TestFile.create({
       relative_path: imageFilePathRelative,

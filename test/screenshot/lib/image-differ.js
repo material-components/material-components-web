@@ -18,17 +18,25 @@
 
 const Jimp = require('jimp');
 const compareImages = require('resemblejs/compareImages');
-const fs = require('mz/fs');
-const mkdirp = require('mkdirp');
 const path = require('path');
 
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
 const {DiffImageResult, Dimensions, TestFile} = mdcProto;
 
+const LocalStorage = require('./local-storage');
+
 /**
  * Computes the difference between two screenshot images and generates an image that highlights the pixels that changed.
  */
 class ImageDiffer {
+  constructor() {
+    /**
+     * @type {!LocalStorage}
+     * @private
+     */
+    this.localStorage_ = new LocalStorage();
+  }
+
   /**
    * @param {!mdc.proto.ReportMeta} meta
    * @param {!mdc.proto.Screenshot} screenshot
@@ -50,7 +58,7 @@ class ImageDiffer {
    * @private
    */
   async compareOneImage_({meta, actualImageFile, expectedImageFile}) {
-    const actualImageBuffer = await fs.readFile(actualImageFile.absolute_path);
+    const actualImageBuffer = await this.localStorage_.readBinaryFile(actualImageFile.absolute_path);
 
     if (!expectedImageFile) {
       const actualJimpImage = await Jimp.read(actualImageBuffer);
@@ -62,7 +70,7 @@ class ImageDiffer {
       });
     }
 
-    const expectedImageBuffer = await fs.readFile(expectedImageFile.absolute_path);
+    const expectedImageBuffer = await this.localStorage_.readBinaryFile(expectedImageFile.absolute_path);
 
     /** @type {!ResembleApiComparisonResult} */
     const resembleComparisonResult = await this.computeDiff_({actualImageBuffer, expectedImageBuffer});
@@ -75,8 +83,7 @@ class ImageDiffer {
     });
     diffImageResult.diff_image_file = diffImageFile;
 
-    mkdirp.sync(path.dirname(diffImageFile.absolute_path));
-    await fs.writeFile(diffImageFile.absolute_path, diffImageBuffer, {encoding: null});
+    await this.localStorage_.writeBinaryFile(diffImageFile.absolute_path, diffImageBuffer);
 
     return diffImageResult;
   }

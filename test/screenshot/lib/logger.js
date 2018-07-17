@@ -171,28 +171,28 @@ class Logger {
   }
 
   /**
-   * @param {!Array<*>} args
+   * @param {*} args
    */
   log(...args) {
     console.log(...args);
   }
 
   /**
-   * @param {!Array<*>} args
+   * @param {*} args
    */
   info(...args) {
     console.info(`[${colors.blue('info')}][${this.id_}]`, ...args);
   }
 
   /**
-   * @param {!Array<*>} args
+   * @param {*} args
    */
   warn(...args) {
     console.warn(`[${colors.yellow('warn')}][${this.id_}]`, ...args);
   }
 
   /**
-   * @param {!Array<*>} args
+   * @param {*} args
    */
   error(...args) {
     console.error(`[${colors.bold.red('error')}][${this.id_}]`, ...args);
