@@ -36,6 +36,8 @@ class MDCSlider extends MDCComponent {
     this.thumb_;
     /** @type {?Element} */
     this.trackFill_;
+    /** @type {?Element} */
+    this.tickMarkSet_;
     /** @private {!MDCRipple} */
     this.ripple_ = this.initRipple_();
   }
@@ -98,6 +100,7 @@ class MDCSlider extends MDCComponent {
   initialize() {
     this.thumb_ = this.root_.querySelector(strings.THUMB_SELECTOR);
     this.trackFill_ = this.root_.querySelector(strings.TRACK_FILL_SELECTOR);
+    this.tickMarkSet_ = this.root_.querySelector(strings.TICK_MARK_SET_SELECTOR);
   }
 
   /**
@@ -109,6 +112,20 @@ class MDCSlider extends MDCComponent {
         hasClass: (className) => this.root_.classList.contains(className),
         addClass: (className) => this.root_.classList.add(className),
         removeClass: (className) => this.root_.classList.remove(className),
+        addTickMarkClass: (numTickMarks, className) => {
+          if (this.tickMarkSet_.children.length) {
+            for (let i = 0; i < numTickMarks; i++) {
+              this.tickMarkSet_.children[i].classList.add(className);
+            }
+          }
+        },
+        removeTickMarkClass: (className) => {
+          if (this.tickMarkSet_.children.length) {
+            for (let i = 0; i < this.tickMarkSet_.children.length; i++) {
+              this.tickMarkSet_.children[i].classList.remove(className);
+            }
+          }
+        },
         getAttribute: (name) => this.thumb_.getAttribute(name),
         setAttribute: (name, value) => this.thumb_.setAttribute(name, value),
         computeBoundingRect: () => this.root_.getBoundingClientRect(),
@@ -168,6 +185,44 @@ class MDCSlider extends MDCComponent {
     this.max = parseFloat(this.thumb_.getAttribute(strings.ARIA_VALUEMAX)) || this.max;
     this.step = parseFloat(this.thumb_.getAttribute(strings.DATA_STEP)) || this.step;
     this.value = origValueNow || this.value;
+    if (this.tickMarkSet_) {
+      this.setUpTickMarks_();
+    }
+  }
+
+  setUpTickMarks_() {
+    if (this.step < 1) {
+      this.step = 1;
+    }
+    let numMarks = (this.max - this.min) / this.step;
+
+    // In case distance between max & min is indivisible to step,
+    // we place the secondary to last mark proportionally at where thumb
+    // could reach and place the last mark at max value
+    const indivisible = Math.ceil(numMarks) !== numMarks;
+    if (indivisible) {
+      numMarks = Math.ceil(numMarks);
+    }
+
+    // Remove tick marks if there are any
+    while (this.tickMarkSet_.firstChild) {
+      this.tickMarkSet_.removeChild(this.tickMarkSet_.firstChild);
+    }
+
+    // Create the tick marks and append to the tick mark set
+    const frag = document.createDocumentFragment();
+    for (let i = 0; i < numMarks; i++) {
+      const mark = document.createElement('div');
+      mark.classList.add('mdc-slider__tick-mark');
+      frag.appendChild(mark);
+    }
+    this.tickMarkSet_.appendChild(frag);
+
+    if (indivisible) {
+      const lastStepRatio = (this.max - numMarks * this.step) / this.step + 1;
+      const lastTickMark = this.root_.querySelector(strings.LAST_TICK_MARK_SELECTOR);
+      lastTickMark.style.setProperty('flex', String(lastStepRatio));
+    }
   }
 
   layout() {

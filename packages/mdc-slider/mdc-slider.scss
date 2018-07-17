@@ -22,6 +22,7 @@
 .mdc-slider {
   @include mdc-slider-track-color(primary);
   @include mdc-slider-track-fill-color(primary);
+  @include mdc-slider-tick-mark-color(primary);
   @include mdc-slider-thumb-color(primary);
 
   position: relative;
@@ -47,6 +48,38 @@
   transform-origin: left top;
   border-radius: 1px;
   will-change: transform;
+}
+
+.mdc-slider__tick-mark-set {
+  position: relative;
+  display: flex;
+  margin-right: 0;
+  margin-left: -1;
+
+  // Last marker at the very end of the slider (right-most in LTR, left-most in RTL)
+  &::after {
+    display: block;
+    border-radius: 50%;
+    width: 2px;
+    height: 2px;
+    content: "";
+  }
+}
+
+.mdc-slider__tick-mark {
+  flex: 1;
+
+  &::after {
+    display: block;
+    border-radius: 50%;
+    width: 2px;
+    height: 2px;
+    content: "";
+  }
+
+  &:first-child::after {
+    width: 2px;
+  }
 }
 
 .mdc-slider__thumb {

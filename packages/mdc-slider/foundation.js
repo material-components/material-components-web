@@ -57,6 +57,8 @@ class MDCSliderFoundation extends MDCFoundation {
       hasClass: () => {},
       addClass: () => {},
       removeClass: () => {},
+      addTickMarkClass: () => {},
+      removeTickMarkClass: () => {},
       getAttribute: () => {},
       setAttribute: () => {},
       computeBoundingRect: () => {},
@@ -91,6 +93,8 @@ class MDCSliderFoundation extends MDCFoundation {
     this.active_ = false;
     /** @private {boolean} */
     this.inTransit_ = false;
+    /** @private {boolean} */
+    this.isDiscrete = false;
     /** @private {number} */
     this.min_ = 0;
     /** @private {number} */
@@ -116,6 +120,7 @@ class MDCSliderFoundation extends MDCFoundation {
   }
 
   init() {
+    this.isDiscrete_ = this.adapter_.hasClass(cssClasses.IS_DISCRETE);
     DOWN_EVENTS.forEach((evtName) => this.adapter_.registerEventHandler(evtName, this.interactionStartHandler_));
     DOWN_EVENTS.forEach((evtName) => {
       this.adapter_.registerThumbEventHandler(evtName, this.thumbPointerHandler_);
@@ -124,6 +129,10 @@ class MDCSliderFoundation extends MDCFoundation {
     this.adapter_.registerEventHandler('keyup', this.interactionEndHandler_);
     this.adapter_.registerWindowResizeHandler(this.windowResizeHandler_);
     this.layout();
+    // At last step, provide a reasonable default value to discrete slider
+    if (this.isDiscrete_ && this.getStep() == 0) {
+      this.step_ = 1;
+    }
   }
 
   destroy() {
@@ -349,6 +358,10 @@ class MDCSliderFoundation extends MDCFoundation {
    * @param {number} value
    */
   setValue_(value) {
+    const valueSetToBoundary = value === this.min_ || value === this.max_;
+    if (this.isDiscrete_ && !valueSetToBoundary) {
+      value = this.setDiscreteValue_(value);
+    }
     if (value < this.min_) {
       value = this.min_;
     } else if (value > this.max_) {
@@ -358,6 +371,17 @@ class MDCSliderFoundation extends MDCFoundation {
     this.adapter_.setAttribute(strings.ARIA_VALUENOW, String(this.value_));
     this.updateUIForCurrentValue_();
     this.adapter_.notifyInput();
+  }
+
+  /**
+   * Calculates the discrete value
+   * @param {number} value
+   * @return {number}
+   */
+  setDiscreteValue_(value) {
+    const numSteps = Math.round(value / this.step_);
+    const discreteValue = numSteps * this.step_;
+    return discreteValue;
   }
 
   /**
@@ -377,6 +401,11 @@ class MDCSliderFoundation extends MDCFoundation {
       this.adapter_.registerEventHandler('transitionend', onTransitionEnd);
     }
 
+    if (this.isDiscrete_ && this.step_ >= 1) {
+      this.adapter_.removeTickMarkClass('mdc-slider__tick-mark--inverted');
+      const numTickMarks = Math.round(this.value_ / this.step_);
+      this.adapter_.addTickMarkClass(numTickMarks, 'mdc-slider__tick-mark--inverted');
+    }
     requestAnimationFrame(() => {
       this.adapter_.setThumbStyleProperty('transform', `translateX(${translatePx}px) translateX(-50%)`);
       this.adapter_.setTrackFillStyleProperty('transform', `scaleX(${translatePx})`);

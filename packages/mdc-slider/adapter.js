@@ -45,6 +45,19 @@ class MDCSliderAdapter {
   removeClass(className) {}
 
   /**
+   * Adds a class to specified number of tick mark Elements
+   * @param {number} numTickMarks
+   * @param {string} className
+   */
+  addTickMarkClass(numTickMarks, className) {}
+
+  /**
+   * Removes a class from all the tick mark Elements
+   * @param {string} className
+   */
+  removeTickMarkClass(className) {}
+
+  /**
    * Returns the value of the given attribute or null
    * @param {string} name
    * @return {?string}
