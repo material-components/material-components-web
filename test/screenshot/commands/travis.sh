@@ -6,9 +6,8 @@ function print_error() {
 
 function exit_if_external_pr() {
   if [[ -n "$TRAVIS_PULL_REQUEST_SLUG" ]] && [[ ! "$TRAVIS_PULL_REQUEST_SLUG" =~ ^material-components/ ]]; then
-    echo
-    print_error 'Screenshot tests are not supported on external PRs.'
-    print_error 'Skipping screenshot tests.'
+    print_error "Error: $TEST_SUITE tests are not supported on external PRs."
+    print_error "Skipping $TEST_SUITE tests."
     exit 19
   fi
 }
@@ -48,6 +47,10 @@ function install_google_cloud_sdk() {
     pip install gsutil
   fi
 }
+
+echo
+echo "TEST_SUITE='$TEST_SUITE'"
+echo
 
 if [[ "$TEST_SUITE" == 'screenshot' ]] || [[ "$TEST_SUITE" == 'unit' ]]; then
   exit_if_external_pr
