@@ -23,15 +23,16 @@
 @import "./variables";
 
 .mdc-tab {
-  @include mdc-tab-text-label-color($mdc-tab-baseline-color);
-  @include mdc-tab-icon-color($mdc-tab-baseline-color);
+  @include mdc-tab-text-label-color(on-surface);
+  @include mdc-tab-icon-color(on-surface);
   @include mdc-tab-indicator-surface;
+  @include mdc-typography(button);
 
   display: flex;
   flex: 1 0 auto;
   justify-content: center;
   box-sizing: border-box;
-  height: 48px;
+  height: $mdc-tab-height;
   padding: 0 24px;
   border: none;
   outline: none;
@@ -69,22 +70,21 @@
 }
 
 .mdc-tab__text-label {
-  @include mdc-typography-base;
-
   display: inline-block;
   padding: 16px 0 20px;
-  font-size: 14px;
-  font-weight: 500;
+  line-height: 1;
+  opacity: 0.6;
 }
 
 .mdc-tab__icon {
-  width: 24px;
-  height: 24px;
+  width: $mdc-tab-icon-size;
+  height: $mdc-tab-icon-size;
   padding: 12px 0;
+  opacity: 0.54;
 }
 
 .mdc-tab--stacked {
-  height: 72px;
+  height: $mdc-tab-stacked-height;
 }
 
 .mdc-tab--stacked .mdc-tab__content {
@@ -98,7 +98,6 @@
 
 .mdc-tab--stacked .mdc-tab__text-label {
   padding: 0 0 16px;
-  line-height: 12px;
 }
 
 // The [de]activation animation affects color for text label and icon
@@ -106,7 +105,7 @@
 .mdc-tab--animating-activate .mdc-tab__icon,
 .mdc-tab--animating-deactivate .mdc-tab__text-label,
 .mdc-tab--animating-deactivate .mdc-tab__icon {
-  transition: 150ms color linear;
+  transition: 150ms color linear, 150ms opacity linear;
 }
 
 // The activation animation has a delay of 100ms
@@ -118,6 +117,11 @@
 .mdc-tab--active {
   @include mdc-tab-text-label-color(primary);
   @include mdc-tab-icon-color(primary);
+
+  .mdc-tab__text-label,
+  .mdc-tab__icon {
+    opacity: 1;
+  }
 }
 
 .mdc-tab .mdc-tab__icon + .mdc-tab__text-label {
