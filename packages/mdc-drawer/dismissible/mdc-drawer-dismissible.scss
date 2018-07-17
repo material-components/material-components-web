@@ -32,7 +32,7 @@
 
 .mdc-drawer--open {
   width: $mdc-drawer-width;
-  min-width: $mdc-drawer-width; 
+  min-width: $mdc-drawer-width;
   border-right-width: 1px;
 
   @include mdc-rtl {
