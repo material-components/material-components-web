@@ -193,12 +193,16 @@ class Controller {
       reportData.screenshots.added_screenshot_list.length +
       reportData.screenshots.removed_screenshot_list.length;
 
+    const boldRed = Logger.colors.bold.red;
+    const boldGreen = Logger.colors.bold.green;
+
     if (numChanges > 0) {
-      this.logger_.error(`\n\n${numChanges} screenshot${numChanges === 1 ? '' : 's'} changed!\n`);
+      this.logger_.error(boldRed(`\n\n${numChanges} screenshot${numChanges === 1 ? '' : 's'} changed!\n`));
+      this.logger_.log('Diff report:', boldRed(reportData.meta.report_html_file.public_url));
     } else {
-      this.logger_.log(`\n\n${numChanges} screenshot${numChanges === 1 ? '' : 's'} changed!\n`);
+      this.logger_.log(boldGreen(`\n\n${numChanges} screenshot${numChanges === 1 ? '' : 's'} changed!\n`));
+      this.logger_.log('Diff report:', boldGreen(reportData.meta.report_html_file.public_url));
     }
-    this.logger_.log('Diff report:', Logger.colors.bold.red(reportData.meta.report_html_file.public_url));
 
     return reportData;
   }
