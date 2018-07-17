@@ -137,8 +137,8 @@ class Logger {
     // https://github.com/travis-ci/docs-travis-ci-com/issues/949#issuecomment-276755003
     // https://github.com/rspec/rspec-support/blob/5a1c6756a9d8322fc18639b982e00196f452974d/script/travis_functions.sh
     console.log('');
-    console.log(`travis_fold:start:${foldId}\r\e[0m ${colorMessage}`);
-    console.log(`travis_time:start:${timerId}\r\e[0m`);
+    process.stdout.write(`travis_fold:start:${foldId}\r\e[0m ${colorMessage}\n`);
+    process.stdout.write(`travis_time:start:${timerId}\r\e[0m\n`);
     console.log('');
   }
 
@@ -158,12 +158,12 @@ class Logger {
     // Undocumented Travis CI job logging features. See:
     // https://github.com/travis-ci/docs-travis-ci-com/issues/949#issuecomment-276755003
     // https://github.com/rspec/rspec-support/blob/5a1c6756a9d8322fc18639b982e00196f452974d/script/travis_functions.sh
-    console.log(`travis_fold:end:${foldId}\r\e[0m`);
+    process.stdout.write(`travis_fold:end:${foldId}\r\e[0m\n`);
 
     if (durationNanos) {
       // TODO(acdvorak): Figure out why Travis doesn't display this in the job log UI
-      console.log(
-        `travis_time:end:${timerId}:start=${startNanos},finish=${finishNanos},duration=${durationNanos}\r\e[0m`
+      process.stdout.write(
+        `travis_time:end:${timerId}:start=${startNanos},finish=${finishNanos},duration=${durationNanos}\r\e[0m\n`
       );
     }
   }
