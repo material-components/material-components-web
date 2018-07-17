@@ -26,6 +26,9 @@ const processManager = new ProcessManager();
 
 module.exports = {
   async runAsync() {
+    // Travis sometimes forgets to emit this
+    logger.foldEnd('install.npm');
+
     const webpackArgs = [];
     const shouldBuild = await this.shouldBuild_();
     const shouldWatch = await this.shouldWatch_();
