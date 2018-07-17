@@ -17,12 +17,14 @@
 import {assert} from 'chai';
 import td from 'testdouble';
 
-import {testFoundation, captureHandlers} from './helpers';
+import {captureHandlers} from '../helpers/foundation';
+import {testFoundation} from './helpers';
 import {cssClasses, strings} from '../../../packages/mdc-ripple/constants';
 
 suite('MDCRippleFoundation - General Events');
 
-testFoundation('re-lays out the component on resize event', ({foundation, adapter, mockRaf}) => {
+testFoundation('re-lays out the component on resize event for unbounded ripple', ({foundation, adapter, mockRaf}) => {
+  td.when(adapter.isUnbounded()).thenReturn(true);
   td.when(adapter.computeBoundingRect()).thenReturn({
     width: 100,
     height: 200,
@@ -53,6 +55,7 @@ testFoundation('re-lays out the component on resize event', ({foundation, adapte
 });
 
 testFoundation('debounces layout within the same frame on resize', ({foundation, adapter, mockRaf}) => {
+  td.when(adapter.isUnbounded()).thenReturn(true);
   td.when(adapter.computeBoundingRect()).thenReturn({
     width: 100,
     height: 200,
@@ -86,7 +89,7 @@ testFoundation('debounces layout within the same frame on resize', ({foundation,
 });
 
 testFoundation('activates the background on focus', ({foundation, adapter, mockRaf}) => {
-  const handlers = captureHandlers(adapter);
+  const handlers = captureHandlers(adapter, 'registerInteractionHandler');
   foundation.init();
   mockRaf.flush();
 
@@ -96,7 +99,7 @@ testFoundation('activates the background on focus', ({foundation, adapter, mockR
 });
 
 testFoundation('deactivates the background on blur', ({foundation, adapter, mockRaf}) => {
-  const handlers = captureHandlers(adapter);
+  const handlers = captureHandlers(adapter, 'registerInteractionHandler');
   foundation.init();
   mockRaf.flush();
 

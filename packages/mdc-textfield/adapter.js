@@ -16,9 +16,8 @@
  */
 
 /* eslint-disable no-unused-vars */
-import MDCTextFieldBottomLineFoundation from './bottom-line/foundation';
 import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
-import MDCTextFieldLabelFoundation from './label/foundation';
+import MDCTextFieldIconFoundation from './icon/foundation';
 
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
@@ -27,16 +26,18 @@ import MDCTextFieldLabelFoundation from './label/foundation';
  *   value: string,
  *   disabled: boolean,
  *   badInput: boolean,
- *   checkValidity: (function(): boolean)
+ *   validity: {
+ *     badInput: boolean,
+ *     valid: boolean,
+ *   },
  * }}
  */
 let NativeInputType;
 
 /**
  * @typedef {{
- *   bottomLine: (!MDCTextFieldBottomLineFoundation|undefined),
  *   helperText: (!MDCTextFieldHelperTextFoundation|undefined),
- *   label: (!MDCTextFieldLabelFoundation|undefined)
+ *   icon: (!MDCTextFieldIconFoundation|undefined),
  * }}
  */
 let FoundationMapType;
@@ -65,19 +66,11 @@ class MDCTextFieldAdapter {
   removeClass(className) {}
 
   /**
-   * Sets an attribute on the icon Element.
-   * @param {string} name
-   * @param {string} value
-   */
-  setIconAttr(name, value) {}
-
-  /**
-   * Returns true if classname exists for a given target element.
-   * @param {?EventTarget} target
+   * Returns true if the root element contains the given class name.
    * @param {string} className
    * @return {boolean}
    */
-  eventTargetHasClass(target, className) {}
+  hasClass(className) {}
 
   /**
    * Registers an event handler on the root element for a given event.
@@ -94,11 +87,6 @@ class MDCTextFieldAdapter {
   deregisterTextFieldInteractionHandler(type, handler) {}
 
   /**
-   * Emits a custom event "MDCTextField:icon" denoting a user has clicked the icon.
-   */
-  notifyIconAction() {}
-
-  /**
    * Registers an event listener on the native input element for a given event.
    * @param {string} evtType
    * @param {function(!Event): undefined} handler
@@ -113,18 +101,18 @@ class MDCTextFieldAdapter {
   deregisterInputInteractionHandler(evtType, handler) {}
 
   /**
-   * Registers an event listener on the bottom line element for a given event.
-   * @param {string} evtType
-   * @param {function(!Event): undefined} handler
+   * Registers a validation attribute change listener on the input element.
+   * Handler accepts list of attribute names.
+   * @param {function(!Array<string>): undefined} handler
+   * @return {!MutationObserver}
    */
-  registerBottomLineEventHandler(evtType, handler) {}
+  registerValidationAttributeChangeHandler(handler) {}
 
   /**
-   * Deregisters an event listener on the bottom line element for a given event.
-   * @param {string} evtType
-   * @param {function(!Event): undefined} handler
+   * Disconnects a validation attribute observer on the input element.
+   * @param {!MutationObserver} observer
    */
-  deregisterBottomLineEventHandler(evtType, handler) {}
+  deregisterValidationAttributeChangeHandler(observer) {}
 
   /**
    * Returns an object representing the native text input element, with a
@@ -137,6 +125,83 @@ class MDCTextFieldAdapter {
    * @return {?Element|?NativeInputType}
    */
   getNativeInput() {}
+
+  /**
+   * Returns true if the textfield is focused.
+   * We achieve this via `document.activeElement === this.root_`.
+   * @return {boolean}
+   */
+  isFocused() {}
+
+  /**
+   * Returns true if the direction of the root element is set to RTL.
+   * @return {boolean}
+   */
+  isRtl() {}
+
+  /**
+   * Activates the line ripple.
+   */
+  activateLineRipple() {}
+
+  /**
+   * Deactivates the line ripple.
+   */
+  deactivateLineRipple() {}
+
+  /**
+   * Sets the transform origin of the line ripple.
+   * @param {number} normalizedX
+   */
+  setLineRippleTransformOrigin(normalizedX) {}
+
+  /**
+   * Only implement if label exists.
+   * Shakes label if shouldShake is true.
+   * @param {boolean} shouldShake
+   */
+  shakeLabel(shouldShake) {}
+
+  /**
+   * Only implement if label exists.
+   * Floats the label above the input element if shouldFloat is true.
+   * @param {boolean} shouldFloat
+   */
+  floatLabel(shouldFloat) {}
+
+  /**
+   * Returns true if label element exists, false if it doesn't.
+   * @return {boolean}
+   */
+  hasLabel() {}
+
+  /**
+   * Only implement if label exists.
+   * Returns width of label in pixels.
+   * @return {number}
+   */
+  getLabelWidth() {}
+
+  /**
+   * Returns true if outline element exists, false if it doesn't.
+   * @return {boolean}
+   */
+  hasOutline() {}
+
+  /**
+   * Only implement if outline element exists.
+   * Updates SVG Path and outline element based on the
+   * label element width and RTL context.
+   * @param {number} labelWidth
+   * @param {boolean=} isRtl
+   */
+  notchOutline(labelWidth, isRtl) {}
+
+  /**
+   * Only implement if outline element exists.
+   * Closes notch in outline element.
+   */
+  closeOutline() {}
 }
 
 export {MDCTextFieldAdapter, NativeInputType, FoundationMapType};

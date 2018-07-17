@@ -16,13 +16,12 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-import {MDCTextFieldAdapter, NativeInputType, FoundationMapType} from './adapter';
-import MDCTextFieldBottomLineFoundation from './bottom-line/foundation';
 /* eslint-disable no-unused-vars */
 import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
-import MDCTextFieldLabelFoundation from './label/foundation';
+import MDCTextFieldIconFoundation from './icon/foundation';
 /* eslint-enable no-unused-vars */
-import {cssClasses, strings} from './constants';
+import {MDCTextFieldAdapter, NativeInputType, FoundationMapType} from './adapter';
+import {cssClasses, strings, numbers, VALIDATION_ATTR_WHITELIST} from './constants';
 
 
 /**
@@ -40,6 +39,21 @@ class MDCTextFieldFoundation extends MDCFoundation {
     return strings;
   }
 
+  /** @return enum {string} */
+  static get numbers() {
+    return numbers;
+  }
+
+  /** @return {boolean} */
+  get shouldShake() {
+    return !this.isValid() && !this.isFocused_;
+  }
+
+  /** @return {boolean} */
+  get shouldFloat() {
+    return this.isFocused_ || !!this.getValue() || this.isBadInput_();
+  }
+
   /**
    * {@see MDCTextFieldAdapter} for typing information on parameters and return
    * types.
@@ -49,33 +63,40 @@ class MDCTextFieldFoundation extends MDCFoundation {
     return /** @type {!MDCTextFieldAdapter} */ ({
       addClass: () => {},
       removeClass: () => {},
-      setIconAttr: () => {},
-      eventTargetHasClass: () => {},
+      hasClass: () => {},
       registerTextFieldInteractionHandler: () => {},
       deregisterTextFieldInteractionHandler: () => {},
-      notifyIconAction: () => {},
       registerInputInteractionHandler: () => {},
       deregisterInputInteractionHandler: () => {},
-      registerBottomLineEventHandler: () => {},
-      deregisterBottomLineEventHandler: () => {},
+      registerValidationAttributeChangeHandler: () => {},
+      deregisterValidationAttributeChangeHandler: () => {},
       getNativeInput: () => {},
+      isFocused: () => {},
+      isRtl: () => {},
+      activateLineRipple: () => {},
+      deactivateLineRipple: () => {},
+      setLineRippleTransformOrigin: () => {},
+      shakeLabel: () => {},
+      floatLabel: () => {},
+      hasLabel: () => {},
+      getLabelWidth: () => {},
+      hasOutline: () => {},
+      notchOutline: () => {},
+      closeOutline: () => {},
     });
   }
 
   /**
-   * @param {!MDCTextFieldAdapter=} adapter
+   * @param {!MDCTextFieldAdapter} adapter
    * @param {!FoundationMapType=} foundationMap Map from subcomponent names to their subfoundations.
    */
-  constructor(adapter = /** @type {!MDCTextFieldAdapter} */ ({}),
-    foundationMap = /** @type {!FoundationMapType} */ ({})) {
+  constructor(adapter, foundationMap = /** @type {!FoundationMapType} */ ({})) {
     super(Object.assign(MDCTextFieldFoundation.defaultAdapter, adapter));
 
-    /** @type {!MDCTextFieldBottomLineFoundation|undefined} */
-    this.bottomLine_ = foundationMap.bottomLine;
     /** @type {!MDCTextFieldHelperTextFoundation|undefined} */
     this.helperText_ = foundationMap.helperText;
-    /** @type {!MDCTextFieldLabelFoundation|undefined} */
-    this.label_ = foundationMap.label;
+    /** @type {!MDCTextFieldIconFoundation|undefined} */
+    this.icon_ = foundationMap.icon;
 
     /** @private {boolean} */
     this.isFocused_ = false;
@@ -83,6 +104,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.receivedUserInput_ = false;
     /** @private {boolean} */
     this.useCustomValidityChecking_ = false;
+    /** @private {boolean} */
+    this.isValid_ = true;
     /** @private {function(): undefined} */
     this.inputFocusHandler_ = () => this.activateFocus();
     /** @private {function(): undefined} */
@@ -90,18 +113,26 @@ class MDCTextFieldFoundation extends MDCFoundation {
     /** @private {function(): undefined} */
     this.inputInputHandler_ = () => this.autoCompleteFocus();
     /** @private {function(!Event): undefined} */
-    this.setPointerXOffset_ = (evt) => this.setBottomLineTransformOrigin(evt);
+    this.setPointerXOffset_ = (evt) => this.setTransformOrigin(evt);
     /** @private {function(!Event): undefined} */
-    this.textFieldInteractionHandler_ = (evt) => this.handleTextFieldInteraction(evt);
-    /** @private {function(!Event): undefined} */
-    this.bottomLineAnimationEndHandler_ = () => this.handleBottomLineAnimationEnd();
+    this.textFieldInteractionHandler_ = () => this.handleTextFieldInteraction();
+    /** @private {function(!Array): undefined} */
+    this.validationAttributeChangeHandler_ = (attributesList) => this.handleValidationAttributeChange(attributesList);
+
+    /** @private {!MutationObserver} */
+    this.validationObserver_;
   }
 
   init() {
     this.adapter_.addClass(MDCTextFieldFoundation.cssClasses.UPGRADED);
     // Ensure label does not collide with any pre-filled value.
-    if (this.getNativeInput_().value && this.label_) {
-      this.label_.floatAbove();
+    if (this.adapter_.hasLabel() && (this.getValue() || this.isBadInput_())) {
+      this.adapter_.floatLabel(this.shouldFloat);
+      this.notchOutline(this.shouldFloat);
+    }
+
+    if (this.adapter_.isFocused()) {
+      this.inputFocusHandler_();
     }
 
     this.adapter_.registerInputInteractionHandler('focus', this.inputFocusHandler_);
@@ -113,8 +144,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.registerTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
     });
-    this.adapter_.registerBottomLineEventHandler(
-      MDCTextFieldBottomLineFoundation.strings.ANIMATION_END_EVENT, this.bottomLineAnimationEndHandler_);
+    this.validationObserver_ =
+        this.adapter_.registerValidationAttributeChangeHandler(this.validationAttributeChangeHandler_);
   }
 
   destroy() {
@@ -128,28 +159,49 @@ class MDCTextFieldFoundation extends MDCFoundation {
     ['click', 'keydown'].forEach((evtType) => {
       this.adapter_.deregisterTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
     });
-    this.adapter_.deregisterBottomLineEventHandler(
-      MDCTextFieldBottomLineFoundation.strings.ANIMATION_END_EVENT, this.bottomLineAnimationEndHandler_);
+    this.adapter_.deregisterValidationAttributeChangeHandler(this.validationObserver_);
   }
 
   /**
-   * Handles all user interactions with the Text Field.
-   * @param {!Event} evt
+   * Handles user interactions with the Text Field.
    */
-  handleTextFieldInteraction(evt) {
+  handleTextFieldInteraction() {
     if (this.adapter_.getNativeInput().disabled) {
       return;
     }
-
     this.receivedUserInput_ = true;
+  }
 
-    const {target, type} = evt;
-    const {TEXT_FIELD_ICON} = MDCTextFieldFoundation.cssClasses;
-    const targetIsIcon = this.adapter_.eventTargetHasClass(target, TEXT_FIELD_ICON);
-    const eventTriggersNotification = type === 'click' || evt.key === 'Enter' || evt.keyCode === 13;
+  /**
+   * Handles validation attribute changes
+   * @param {!Array<string>} attributesList
+   */
+  handleValidationAttributeChange(attributesList) {
+    attributesList.some((attributeName) => {
+      if (VALIDATION_ATTR_WHITELIST.indexOf(attributeName) > -1) {
+        this.styleValidity_(true);
+        return true;
+      }
+    });
+  }
 
-    if (targetIsIcon && eventTriggersNotification) {
-      this.adapter_.notifyIconAction();
+  /**
+   * Opens/closes the notched outline.
+   * @param {boolean} openNotch
+   */
+  notchOutline(openNotch) {
+    if (!this.adapter_.hasOutline() || !this.adapter_.hasLabel()) {
+      return;
+    }
+
+    if (openNotch) {
+      const isDense = this.adapter_.hasClass(cssClasses.DENSE);
+      const labelScale = isDense ? numbers.DENSE_LABEL_SCALE : numbers.LABEL_SCALE;
+      const labelWidth = this.adapter_.getLabelWidth() * labelScale;
+      const isRtl = this.adapter_.isRtl();
+      this.adapter_.notchOutline(labelWidth, isRtl);
+    } else {
+      this.adapter_.closeOutline();
     }
   }
 
@@ -157,29 +209,29 @@ class MDCTextFieldFoundation extends MDCFoundation {
    * Activates the text field focus state.
    */
   activateFocus() {
-    const {FOCUSED} = MDCTextFieldFoundation.cssClasses;
-    this.adapter_.addClass(FOCUSED);
-    if (this.bottomLine_) {
-      this.bottomLine_.activate();
-    }
-    if (this.label_) {
-      this.label_.floatAbove();
+    this.isFocused_ = true;
+    this.styleFocused_(this.isFocused_);
+    this.adapter_.activateLineRipple();
+    this.notchOutline(this.shouldFloat);
+    if (this.adapter_.hasLabel()) {
+      this.adapter_.shakeLabel(this.shouldShake);
+      this.adapter_.floatLabel(this.shouldFloat);
     }
     if (this.helperText_) {
       this.helperText_.showToScreenReader();
     }
-    this.isFocused_ = true;
   }
 
   /**
-   * Sets the bottom line's transform origin, so that the bottom line activate
+   * Sets the line ripple's transform origin, so that the line ripple activate
    * animation will animate out from the user's click location.
    * @param {!Event} evt
    */
-  setBottomLineTransformOrigin(evt) {
-    if (this.bottomLine_) {
-      this.bottomLine_.setTransformOrigin(evt);
-    }
+  setTransformOrigin(evt) {
+    const targetClientRect = evt.target.getBoundingClientRect();
+    const evtCoords = {x: evt.clientX, y: evt.clientY};
+    const normalizedX = evtCoords.x - targetClientRect.left;
+    this.adapter_.setLineRippleTransformOrigin(normalizedX);
   }
 
   /**
@@ -193,67 +245,68 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * Handles when bottom line animation ends, performing actions that must wait
-   * for animations to finish.
-   */
-  handleBottomLineAnimationEnd() {
-    // We need to wait for the bottom line to be entirely transparent
-    // before removing the class. If we do not, we see the line start to
-    // scale down before disappearing
-    if (!this.isFocused_ && this.bottomLine_) {
-      this.bottomLine_.deactivate();
-    }
-  }
-
-  /**
-   * Deactives the Text Field's focus state.
+   * Deactivates the Text Field's focus state.
    */
   deactivateFocus() {
-    const {FOCUSED} = MDCTextFieldFoundation.cssClasses;
+    this.isFocused_ = false;
+    this.adapter_.deactivateLineRipple();
     const input = this.getNativeInput_();
     const shouldRemoveLabelFloat = !input.value && !this.isBadInput_();
-
-    this.isFocused_ = false;
-    this.adapter_.removeClass(FOCUSED);
-    if (this.label_) {
-      this.label_.deactivateFocus(shouldRemoveLabelFloat);
+    const isValid = this.isValid();
+    this.styleValidity_(isValid);
+    this.styleFocused_(this.isFocused_);
+    if (this.adapter_.hasLabel()) {
+      this.adapter_.shakeLabel(this.shouldShake);
+      this.adapter_.floatLabel(this.shouldFloat);
+      this.notchOutline(this.shouldFloat);
     }
     if (shouldRemoveLabelFloat) {
       this.receivedUserInput_ = false;
     }
+  }
 
-    if (!this.useCustomValidityChecking_) {
-      this.changeValidity_(input.checkValidity());
+  /**
+   * @return {string} The value of the input Element.
+   */
+  getValue() {
+    return this.getNativeInput_().value;
+  }
+
+  /**
+   * @param {string} value The value to set on the input Element.
+   */
+  setValue(value) {
+    this.getNativeInput_().value = value;
+    const isValid = this.isValid();
+    this.styleValidity_(isValid);
+    if (this.adapter_.hasLabel()) {
+      this.adapter_.shakeLabel(this.shouldShake);
+      this.adapter_.floatLabel(this.shouldFloat);
+      this.notchOutline(this.shouldFloat);
     }
   }
 
   /**
-   * Updates the Text Field's valid state based on the supplied validity.
-   * @param {boolean} isValid
-   * @private
+   * @return {boolean} If a custom validity is set, returns that value.
+   *     Otherwise, returns the result of native validity checks.
    */
-  changeValidity_(isValid) {
-    const {INVALID} = MDCTextFieldFoundation.cssClasses;
-    if (isValid) {
-      this.adapter_.removeClass(INVALID);
-    } else {
-      this.adapter_.addClass(INVALID);
-    }
-    if (this.helperText_) {
-      this.helperText_.setValidity(isValid);
-    }
-    if (this.label_) {
-      this.label_.setValidity(isValid);
-    }
+  isValid() {
+    return this.useCustomValidityChecking_
+      ? this.isValid_ : this.isNativeInputValid_();
   }
 
   /**
-   * @return {boolean} True if the Text Field input fails validity checks.
-   * @private
+   * @param {boolean} isValid Sets the validity state of the Text Field.
    */
-  isBadInput_() {
-    const input = this.getNativeInput_();
-    return input.validity ? input.validity.badInput : input.badInput;
+  setValid(isValid) {
+    this.useCustomValidityChecking_ = true;
+    this.isValid_ = isValid;
+    // Retrieve from the getter to ensure correct logic is applied.
+    isValid = this.isValid();
+    this.styleValidity_(isValid);
+    if (this.adapter_.hasLabel()) {
+      this.adapter_.shakeLabel(this.shouldShake);
+    }
   }
 
   /**
@@ -267,16 +320,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
    * @param {boolean} disabled Sets the text-field disabled or enabled.
    */
   setDisabled(disabled) {
-    const {DISABLED, INVALID} = MDCTextFieldFoundation.cssClasses;
     this.getNativeInput_().disabled = disabled;
-    if (disabled) {
-      this.adapter_.addClass(DISABLED);
-      this.adapter_.removeClass(INVALID);
-      this.adapter_.setIconAttr('tabindex', '-1');
-    } else {
-      this.adapter_.removeClass(DISABLED);
-      this.adapter_.setIconAttr('tabindex', '0');
-    }
+    this.styleDisabled_(disabled);
   }
 
   /**
@@ -289,6 +334,92 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
+   * Sets the aria label of the icon.
+   * @param {string} label
+   */
+  setIconAriaLabel(label) {
+    if (this.icon_) {
+      this.icon_.setAriaLabel(label);
+    }
+  }
+
+  /**
+   * Sets the text content of the icon.
+   * @param {string} content
+   */
+  setIconContent(content) {
+    if (this.icon_) {
+      this.icon_.setContent(content);
+    }
+  }
+
+  /**
+   * @return {boolean} True if the Text Field input fails in converting the
+   *     user-supplied value.
+   * @private
+   */
+  isBadInput_() {
+    return this.getNativeInput_().validity.badInput;
+  }
+
+  /**
+   * @return {boolean} The result of native validity checking
+   *     (ValidityState.valid).
+   */
+  isNativeInputValid_() {
+    return this.getNativeInput_().validity.valid;
+  }
+
+  /**
+   * Styles the component based on the validity state.
+   * @param {boolean} isValid
+   * @private
+   */
+  styleValidity_(isValid) {
+    const {INVALID} = MDCTextFieldFoundation.cssClasses;
+    if (isValid) {
+      this.adapter_.removeClass(INVALID);
+    } else {
+      this.adapter_.addClass(INVALID);
+    }
+    if (this.helperText_) {
+      this.helperText_.setValidity(isValid);
+    }
+  }
+
+  /**
+   * Styles the component based on the focused state.
+   * @param {boolean} isFocused
+   * @private
+   */
+  styleFocused_(isFocused) {
+    const {FOCUSED} = MDCTextFieldFoundation.cssClasses;
+    if (isFocused) {
+      this.adapter_.addClass(FOCUSED);
+    } else {
+      this.adapter_.removeClass(FOCUSED);
+    }
+  }
+
+  /**
+   * Styles the component based on the disabled state.
+   * @param {boolean} isDisabled
+   * @private
+   */
+  styleDisabled_(isDisabled) {
+    const {DISABLED, INVALID} = MDCTextFieldFoundation.cssClasses;
+    if (isDisabled) {
+      this.adapter_.addClass(DISABLED);
+      this.adapter_.removeClass(INVALID);
+    } else {
+      this.adapter_.removeClass(DISABLED);
+    }
+    if (this.icon_) {
+      this.icon_.setDisabled(isDisabled);
+    }
+  }
+
+  /**
    * @return {!Element|!NativeInputType} The native text input from the
    * host environment, or a dummy if none exists.
    * @private
@@ -296,19 +427,13 @@ class MDCTextFieldFoundation extends MDCFoundation {
   getNativeInput_() {
     return this.adapter_.getNativeInput() ||
     /** @type {!NativeInputType} */ ({
-      checkValidity: () => true,
       value: '',
       disabled: false,
-      badInput: false,
+      validity: {
+        badInput: false,
+        valid: true,
+      },
     });
-  }
-
-  /**
-   * @param {boolean} isValid Sets the validity state of the Text Field.
-   */
-  setValid(isValid) {
-    this.useCustomValidityChecking_ = true;
-    this.changeValidity_(isValid);
   }
 }
 

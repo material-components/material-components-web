@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2018 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Shape - Material Components Catalog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
+    <link rel="stylesheet" href="/assets/shape.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="/ready.js"></script>
+  </head>
+  <body class="mdc-typography">
+    <header class="mdc-toolbar mdc-toolbar--fixed">
+      <div class="mdc-toolbar__row">
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+          <a href="/" class="catalog-back mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
+          <span class="mdc-toolbar__title catalog-title">Shape</span>
+        </section>
+      </div>
+    </header>
+
+    <main class="mdc-toolbar-fixed-adjust">
+      <section class="hero">
+        <div class="mdc-shape-container four-corner-container">
+          <button class="mdc-button mdc-button--unelevated">Filled Button</button>
+          <div class="mdc-shape-container__corner mdc-shape-container__corner--top-left"></div>
+          <div class="mdc-shape-container__corner mdc-shape-container__corner--top-right"></div>
+          <div class="mdc-shape-container__corner mdc-shape-container__corner--bottom-right"></div>
+          <div class="mdc-shape-container__corner mdc-shape-container__corner--bottom-left"></div>
+        </div>
+        <div class="mdc-shape-container four-corner-container four-corner-container--outlined">
+          <button class="mdc-button mdc-button--outlined">Outlined Button</button>
+          <div class="mdc-shape-container__corner mdc-shape-container__corner--top-left"></div>
+          <div class="mdc-shape-container__corner mdc-shape-container__corner--top-right"></div>
+          <div class="mdc-shape-container__corner mdc-shape-container__corner--bottom-right"></div>
+          <div class="mdc-shape-container__corner mdc-shape-container__corner--bottom-left"></div>
+        </div>
+      </section>
+
+      <section class="demo-wrapper">
+        <h1 class="mdc-typography--headline3">Button</h1>
+
+        <h2 class="mdc-typography--headline4">Filled</h2>
+        <div class="mdc-shape-container two-corner-container">
+          <button class="mdc-button mdc-button--unelevated">Skip</button>
+          <div class="mdc-shape-container__corner mdc-shape-container__corner--top-left"></div>
+          <div class="mdc-shape-container__corner mdc-shape-container__corner--bottom-right"></div>
+        </div>
+        <div class="mdc-shape-container four-corner-container">
+          <button class="mdc-button mdc-button--unelevated">Finish</button>
+          <div class="mdc-shape-container__corner mdc-shape-container__corner--top-left"></div>
+          <div class="mdc-shape-container__corner mdc-shape-container__corner--top-right"></div>
+          <div class="mdc-shape-container__corner mdc-shape-container__corner--bottom-right"></div>
+          <div class="mdc-shape-container__corner mdc-shape-container__corner--bottom-left"></div>
+        </div>
+
+        <h2 class="mdc-typography--headline4">Outlined</h2>
+        <div class="mdc-shape-container two-corner-container two-corner-container--outlined">
+          <button class="mdc-button mdc-button--outlined">Skip</button>
+          <div class="mdc-shape-container__corner mdc-shape-container__corner--top-left"></div>
+          <div class="mdc-shape-container__corner mdc-shape-container__corner--bottom-right"></div>
+        </div>
+        <div class="mdc-shape-container four-corner-container four-corner-container--outlined">
+          <button class="mdc-button mdc-button--outlined">Finish</button>
+          <div class="mdc-shape-container__corner mdc-shape-container__corner--top-left"></div>
+          <div class="mdc-shape-container__corner mdc-shape-container__corner--top-right"></div>
+          <div class="mdc-shape-container__corner mdc-shape-container__corner--bottom-right"></div>
+          <div class="mdc-shape-container__corner mdc-shape-container__corner--bottom-left"></div>
+        </div>
+
+        <h1 class="mdc-typography--headline3">Card</h1>
+
+        <div class="mdc-shape-container card-container">
+          <div class="mdc-card mdc-card--outlined demo-card">
+            <a class="mdc-card__primary-action demo-card__primary-action" href="#">
+              <div class="demo-card__row">
+                <div class="mdc-card__media mdc-card__media--square demo-card__media"></div>
+                <div class="demo-card__info">
+                  <div class="mdc-typography--headline5">Title</div>
+                  <div class="mdc-typography--body2">Body text</div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="mdc-shape-container__corner mdc-shape-container__corner--top-left"></div>
+          <div class="mdc-shape-container__corner mdc-shape-container__corner--top-right"></div>
+          <div class="mdc-shape-container__corner mdc-shape-container__corner--bottom-right"></div>
+          <div class="mdc-shape-container__corner mdc-shape-container__corner--bottom-left"></div>
+        </div>
+      </section>
+    </main>
+
+    <script src="/assets/material-components-web.js" async></script>
+    <script src="/assets/common.js" async></script>
+    <script>
+      demoReady(function() {
+        // Attach ripples to demonstrate corner masking
+        [].forEach.call(document.querySelectorAll('.mdc-button, .mdc-card__primary-action'), function(surface) {
+          mdc.ripple.MDCRipple.attachTo(surface);
+        });
+      });
+    </script>
+  </body>
+</html>

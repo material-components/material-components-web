@@ -6,7 +6,7 @@ env:
 plugins:
   - mocha
 parserOptions:
-  ecmaVersion: 2015
+  ecmaVersion: 2017 # Enable async/await support in Node scripts
   sourceType: module
 rules:
   indent: [error, 2]
@@ -39,4 +39,4 @@ rules:
   mocha/no-nested-tests: error
   mocha/no-pending-tests: error
   mocha/no-skipped-tests: error
-  mocha/valid-suite-description: [error, ^MDC.+]
+  mocha/valid-suite-description: [error, ^MDC.+|^webpack]

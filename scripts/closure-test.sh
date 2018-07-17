@@ -31,17 +31,7 @@ if [ -z "$CLOSURIZED_PKGS" ]; then
   exit 0
 fi
 
-log "Prepping whitelisted packages for JS compilation"
-
-rm -fr $CLOSURE_TMP/**
-mkdir -p $CLOSURE_PKGDIR
-for pkg in $CLOSURIZED_PKGS; do
-  cp -r "packages/$pkg" $CLOSURE_PKGDIR
-done
-rm -fr $CLOSURE_PKGDIR/**/{node_modules,dist}
-
-log "Rewriting all import statements to be closure compatible"
-node scripts/rewrite-decl-statements-for-closure-test.js $CLOSURE_PKGDIR
+./scripts/closure-rewrite.sh
 
 log "Testing packages"
 echo ''
@@ -49,6 +39,7 @@ echo ''
 set +e
 for pkg in $CLOSURIZED_PKGS; do
   entry_point="goog:mdc.${pkg/mdc-/}"
+  entry_point=${entry_point//-/}
   # Note that the jscomp_error flags turn all default warnings into errors, so that
   # closure exits with a non-zero status if any of them are caught.
   # Also note that we disable accessControls checks due to
@@ -59,7 +50,6 @@ for pkg in $CLOSURIZED_PKGS; do
   --js $(find $CLOSURE_PKGDIR -type f -name "*.js") \
   --language_out ECMASCRIPT5_STRICT \
   --dependency_mode STRICT \
-  --module_resolution LEGACY \
   --js_module_root $CLOSURE_PKGDIR \
   --entry_point $entry_point \
   --checks_only \

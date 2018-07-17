@@ -17,7 +17,7 @@
 
 import MDCFoundation from '@material/base/foundation';
 /* eslint-disable no-unused-vars */
-import {MDCSelectionControlState} from '@material/selection-control';
+import {MDCSelectionControlState} from '@material/selection-control/index';
 import MDCCheckboxAdapter from './adapter';
 /* eslint-enable no-unused-vars */
 import {cssClasses, strings, numbers} from './constants';
@@ -49,6 +49,8 @@ class MDCCheckboxFoundation extends MDCFoundation {
     return /** @type {!MDCCheckboxAdapter} */ ({
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
+      setNativeControlAttr: (/* attr: string, value: string */) => {},
+      removeNativeControlAttr: (/* attr: string */) => {},
       registerAnimationEndHandler: (/* handler: EventListener */) => {},
       deregisterAnimationEndHandler: (/* handler: EventListener */) => {},
       registerChangeHandler: (/* handler: EventListener */) => {},
@@ -71,25 +73,23 @@ class MDCCheckboxFoundation extends MDCFoundation {
     /** @private {number} */
     this.animEndLatchTimer_ = 0;
 
-    this.animEndHandler_ = /** @private {!EventListener} */ (() => {
-      clearTimeout(this.animEndLatchTimer_);
-      this.animEndLatchTimer_ = setTimeout(() => {
-        this.adapter_.removeClass(this.currentAnimationClass_);
-        this.adapter_.deregisterAnimationEndHandler(this.animEndHandler_);
-      }, numbers.ANIM_END_LATCH_MS);
-    });
+    this.animEndHandler_ = /** @private {!EventListener} */ (
+      () => this.handleAnimationEnd());
 
     this.changeHandler_ = /** @private {!EventListener} */ (
-      () => this.transitionCheckState_());
+      () => this.handleChange());
   }
 
+  /** @override */
   init() {
     this.currentCheckState_ = this.determineCheckState_(this.getNativeControl_());
+    this.updateAriaChecked_();
     this.adapter_.addClass(cssClasses.UPGRADED);
     this.adapter_.registerChangeHandler(this.changeHandler_);
     this.installPropertyChangeHooks_();
   }
 
+  /** @override */
   destroy() {
     this.adapter_.deregisterChangeHandler(this.changeHandler_);
     this.uninstallPropertyChangeHooks_();
@@ -138,6 +138,24 @@ class MDCCheckboxFoundation extends MDCFoundation {
   /** @param {?string} value */
   setValue(value) {
     this.getNativeControl_().value = value;
+  }
+
+  /**
+   * Handles the animationend event for the checkbox
+   */
+  handleAnimationEnd() {
+    clearTimeout(this.animEndLatchTimer_);
+    this.animEndLatchTimer_ = setTimeout(() => {
+      this.adapter_.removeClass(this.currentAnimationClass_);
+      this.adapter_.deregisterAnimationEndHandler(this.animEndHandler_);
+    }, numbers.ANIM_END_LATCH_MS);
+  }
+
+  /**
+   * Handles the change event for the checkbox
+   */
+  handleChange() {
+    this.transitionCheckState_();
   }
 
   /** @private */
@@ -189,6 +207,8 @@ class MDCCheckboxFoundation extends MDCFoundation {
     if (oldState === newState) {
       return;
     }
+
+    this.updateAriaChecked_();
 
     // Check to ensure that there isn't a previously existing animation class, in case for example
     // the user interacted with the checkbox before the animation was finished.
@@ -262,6 +282,16 @@ class MDCCheckboxFoundation extends MDCFoundation {
     default:
       return newState === TRANSITION_STATE_CHECKED ?
         ANIM_INDETERMINATE_CHECKED : ANIM_INDETERMINATE_UNCHECKED;
+    }
+  }
+
+  updateAriaChecked_() {
+    // Ensure aria-checked is set to mixed if checkbox is in indeterminate state.
+    if (this.isIndeterminate()) {
+      this.adapter_.setNativeControlAttr(
+        strings.ARIA_CHECKED_ATTR, strings.ARIA_CHECKED_INDETERMINATE_VALUE);
+    } else {
+      this.adapter_.removeNativeControlAttr(strings.ARIA_CHECKED_ATTR);
     }
   }
 

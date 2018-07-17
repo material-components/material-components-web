@@ -16,7 +16,7 @@
  */
 
 /* eslint-disable no-unused-vars */
-import {MDCSelectionControlState} from '@material/selection-control';
+import {MDCSelectionControlState} from '@material/selection-control/index';
 
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
@@ -31,7 +31,7 @@ import {MDCSelectionControlState} from '@material/selection-control';
  * Implement this adapter for your framework of choice to delegate updates to
  * the component in your framework of choice. See architecture documentation
  * for more details.
- * https://github.com/material-components/material-components-web/blob/master/docs/architecture.md
+ * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  *
  * @record
  */

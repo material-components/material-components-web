@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2017 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,10 +16,12 @@
  */
 
 import {cssClasses, strings, numbers} from './constants';
+import MDCSliderAdapter from './adapter';
 
-import {getCorrectEventName, getCorrectPropertyName} from '@material/animation';
+import {getCorrectEventName, getCorrectPropertyName} from '@material/animation/index';
 import MDCFoundation from '@material/base/foundation';
 
+/** @enum {string} */
 const KEY_IDS = {
   ARROW_LEFT: 'ArrowLeft',
   ARROW_RIGHT: 'ArrowRight',
@@ -30,24 +33,38 @@ const KEY_IDS = {
   PAGE_DOWN: 'PageDown',
 };
 
-// Events that can constitute the user releasing drag on a slider
+/** @enum {string} */
+const MOVE_EVENT_MAP = {
+  'mousedown': 'mousemove',
+  'touchstart': 'touchmove',
+  'pointerdown': 'pointermove',
+};
+
+const DOWN_EVENTS = ['mousedown', 'pointerdown', 'touchstart'];
 const UP_EVENTS = ['mouseup', 'pointerup', 'touchend'];
 
-export default class MDCSliderFoundation extends MDCFoundation {
+/**
+ * @extends {MDCFoundation<!MDCSliderAdapter>}
+ */
+class MDCSliderFoundation extends MDCFoundation {
+  /** @return enum {cssClasses} */
   static get cssClasses() {
     return cssClasses;
   }
 
+  /** @return enum {strings} */
   static get strings() {
     return strings;
   }
 
+  /** @return enum {numbers} */
   static get numbers() {
     return numbers;
   }
 
+  /** @return {!MDCSliderAdapter} */
   static get defaultAdapter() {
-    return {
+    return /** @type {!MDCSliderAdapter} */ ({
       hasClass: (/* className: string */) => /* boolean */ false,
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
@@ -75,11 +92,16 @@ export default class MDCSliderFoundation extends MDCFoundation {
       removeTrackMarkers: () => {},
       setLastTrackMarkersStyleProperty: (/* propertyName: string, value: string */) => {},
       isRTL: () => /* boolean */ false,
-    };
+    });
   }
 
-  constructor(adapter = {}) {
+  /**
+   * Creates a new instance of MDCSliderFoundation
+   * @param {?MDCSliderAdapter} adapter
+   */
+  constructor(adapter) {
     super(Object.assign(MDCSliderFoundation.defaultAdapter, adapter));
+    /** @private {?ClientRect} */
     this.rect_ = null;
     // We set this to NaN since we want it to be a number, but we can't use '0' or '-1'
     // because those could be valid tabindices set by the client code.
@@ -99,10 +121,7 @@ export default class MDCSliderFoundation extends MDCFoundation {
     this.thumbContainerPointerHandler_ = () => {
       this.handlingThumbTargetEvt_ = true;
     };
-    this.mousedownHandler_ = this.createDownHandler_('mousemove');
-    this.pointerdownHandler_ = this.createDownHandler_('pointermove');
-    this.touchstartHandler_ = this.createDownHandler_(
-      'touchmove', ({targetTouches}) => targetTouches[0].pageX);
+    this.interactionStartHandler_ = (evt) => this.handleDown_(evt);
     this.keydownHandler_ = (evt) => this.handleKeydown_(evt);
     this.focusHandler_ = () => this.handleFocus_();
     this.blurHandler_ = () => this.handleBlur_();
@@ -112,13 +131,11 @@ export default class MDCSliderFoundation extends MDCFoundation {
   init() {
     this.isDiscrete_ = this.adapter_.hasClass(cssClasses.IS_DISCRETE);
     this.hasTrackMarker_ = this.adapter_.hasClass(cssClasses.HAS_TRACK_MARKER);
-    this.adapter_.registerInteractionHandler('mousedown', this.mousedownHandler_);
-    this.adapter_.registerInteractionHandler('pointerdown', this.pointerdownHandler_);
-    this.adapter_.registerInteractionHandler('touchstart', this.touchstartHandler_);
+    DOWN_EVENTS.forEach((evtName) => this.adapter_.registerInteractionHandler(evtName, this.interactionStartHandler_));
     this.adapter_.registerInteractionHandler('keydown', this.keydownHandler_);
     this.adapter_.registerInteractionHandler('focus', this.focusHandler_);
     this.adapter_.registerInteractionHandler('blur', this.blurHandler_);
-    ['mousedown', 'pointerdown', 'touchstart'].forEach((evtName) => {
+    DOWN_EVENTS.forEach((evtName) => {
       this.adapter_.registerThumbContainerInteractionHandler(evtName, this.thumbContainerPointerHandler_);
     });
     this.adapter_.registerResizeHandler(this.resizeHandler_);
@@ -130,13 +147,13 @@ export default class MDCSliderFoundation extends MDCFoundation {
   }
 
   destroy() {
-    this.adapter_.deregisterInteractionHandler('mousedown', this.mousedownHandler_);
-    this.adapter_.deregisterInteractionHandler('pointerdown', this.pointerdownHandler_);
-    this.adapter_.deregisterInteractionHandler('touchstart', this.touchstartHandler_);
+    DOWN_EVENTS.forEach((evtName) => {
+      this.adapter_.deregisterInteractionHandler(evtName, this.interactionStartHandler_);
+    });
     this.adapter_.deregisterInteractionHandler('keydown', this.keydownHandler_);
     this.adapter_.deregisterInteractionHandler('focus', this.focusHandler_);
     this.adapter_.deregisterInteractionHandler('blur', this.blurHandler_);
-    ['mousedown', 'pointerdown', 'touchstart'].forEach((evtName) => {
+    DOWN_EVENTS.forEach((evtName) => {
       this.adapter_.deregisterThumbContainerInteractionHandler(evtName, this.thumbContainerPointerHandler_);
     });
     this.adapter_.deregisterResizeHandler(this.resizeHandler_);
@@ -163,7 +180,7 @@ export default class MDCSliderFoundation extends MDCFoundation {
       if (indivisible) {
         const lastStepRatio = (max - numMarkers * step) / step + 1;
         const flex = getCorrectPropertyName(window, 'flex');
-        this.adapter_.setLastTrackMarkersStyleProperty(flex, lastStepRatio);
+        this.adapter_.setLastTrackMarkersStyleProperty(flex, String(lastStepRatio));
       }
     }
   }
@@ -173,18 +190,22 @@ export default class MDCSliderFoundation extends MDCFoundation {
     this.updateUIForCurrentValue_();
   }
 
+  /** @return {number} */
   getValue() {
     return this.value_;
   }
 
+  /** @param {number} value */
   setValue(value) {
     this.setValue_(value, false);
   }
 
+  /** @return {number} */
   getMax() {
     return this.max_;
   }
 
+  /** @param {number} max */
   setMax(max) {
     if (max < this.min_) {
       throw new Error('Cannot set max to be less than the slider\'s minimum value');
@@ -195,10 +216,12 @@ export default class MDCSliderFoundation extends MDCFoundation {
     this.setupTrackMarker();
   }
 
+  /** @return {number} */
   getMin() {
     return this.min_;
   }
 
+  /** @param {number} min */
   setMin(min) {
     if (min > this.max_) {
       throw new Error('Cannot set min to be greater than the slider\'s maximum value');
@@ -209,10 +232,12 @@ export default class MDCSliderFoundation extends MDCFoundation {
     this.setupTrackMarker();
   }
 
+  /** @return {number} */
   getStep() {
     return this.step_;
   }
 
+  /** @param {number} step */
   setStep(step) {
     if (step < 0) {
       throw new Error('Step cannot be set to a negative number');
@@ -225,10 +250,12 @@ export default class MDCSliderFoundation extends MDCFoundation {
     this.setupTrackMarker();
   }
 
+  /** @return {boolean} */
   isDisabled() {
     return this.disabled_;
   }
 
+  /** @param {boolean} disabled */
   setDisabled(disabled) {
     this.disabled_ = disabled;
     this.toggleClass_(cssClasses.DISABLED, this.disabled_);
@@ -244,47 +271,87 @@ export default class MDCSliderFoundation extends MDCFoundation {
     }
   }
 
-  createDownHandler_(moveEvt, getPageX = ({pageX}) => pageX) {
+  /**
+   * Called when the user starts interacting with the slider
+   * @param {!Event} evt
+   * @private
+   */
+  handleDown_(evt) {
+    if (this.disabled_) {
+      return;
+    }
+
+    this.preventFocusState_ = true;
+    this.setInTransit_(!this.handlingThumbTargetEvt_);
+    this.handlingThumbTargetEvt_ = false;
+    this.setActive_(true);
+
     const moveHandler = (evt) => {
-      evt.preventDefault();
-      this.setValueFromEvt_(evt, getPageX);
+      this.handleMove_(evt);
     };
 
     // Note: upHandler is [de]registered on ALL potential pointer-related release event types, since some browsers
     // do not always fire these consistently in pairs.
     // (See https://github.com/material-components/material-components-web/issues/1192)
     const upHandler = () => {
-      this.setActive_(false);
-      this.adapter_.deregisterBodyInteractionHandler(moveEvt, moveHandler);
-      UP_EVENTS.forEach((type) => this.adapter_.deregisterBodyInteractionHandler(type, upHandler));
-      this.adapter_.notifyChange();
+      this.handleUp_();
+      this.adapter_.deregisterBodyInteractionHandler(MOVE_EVENT_MAP[evt.type], moveHandler);
+      UP_EVENTS.forEach((evtName) => this.adapter_.deregisterBodyInteractionHandler(evtName, upHandler));
     };
 
-    const downHandler = (evt) => {
-      if (this.disabled_) {
-        return;
-      }
-
-      this.preventFocusState_ = true;
-      this.setInTransit_(!this.handlingThumbTargetEvt_);
-      this.handlingThumbTargetEvt_ = false;
-
-      this.setActive_(true);
-
-      this.adapter_.registerBodyInteractionHandler(moveEvt, moveHandler);
-      UP_EVENTS.forEach((type) => this.adapter_.registerBodyInteractionHandler(type, upHandler));
-      this.setValueFromEvt_(evt, getPageX);
-    };
-
-    return downHandler;
+    this.adapter_.registerBodyInteractionHandler(MOVE_EVENT_MAP[evt.type], moveHandler);
+    UP_EVENTS.forEach((evtName) => this.adapter_.registerBodyInteractionHandler(evtName, upHandler));
+    this.setValueFromEvt_(evt);
   }
 
-  setValueFromEvt_(evt, getPageX) {
-    const pageX = getPageX(evt);
+  /**
+   * Called when the user moves the slider
+   * @param {!Event} evt
+   * @private
+   */
+  handleMove_(evt) {
+    evt.preventDefault();
+    this.setValueFromEvt_(evt);
+  }
+
+  /**
+   * Called when the user's interaction with the slider ends
+   * @private
+   */
+  handleUp_() {
+    this.setActive_(false);
+    this.adapter_.notifyChange();
+  }
+
+  /**
+   * Returns the pageX of the event
+   * @param {!Event} evt
+   * @return {number}
+   * @private
+   */
+  getPageX_(evt) {
+    if (evt.targetTouches && evt.targetTouches.length > 0) {
+      return evt.targetTouches[0].pageX;
+    }
+    return evt.pageX;
+  }
+
+  /**
+   * Sets the slider value from an event
+   * @param {!Event} evt
+   * @private
+   */
+  setValueFromEvt_(evt) {
+    const pageX = this.getPageX_(evt);
     const value = this.computeValueFromPageX_(pageX);
     this.setValue_(value, true);
   }
 
+  /**
+   * Computes the new value from the pageX position
+   * @param {number} pageX
+   * @return {number}
+   */
   computeValueFromPageX_(pageX) {
     const {max_: max, min_: min} = this;
     const xPos = pageX - this.rect_.left;
@@ -297,6 +364,10 @@ export default class MDCSliderFoundation extends MDCFoundation {
     return min + pctComplete * (max - min);
   }
 
+  /**
+   * Handles keydown events
+   * @param {!Event} evt
+   */
   handleKeydown_(evt) {
     const keyId = this.getKeyId_(evt);
     const value = this.getValueForKeyId_(keyId);
@@ -311,6 +382,11 @@ export default class MDCSliderFoundation extends MDCFoundation {
     this.adapter_.notifyChange();
   }
 
+  /**
+   * Returns the computed name of the event
+   * @param {!Event} kbdEvt
+   * @return {string}
+   */
   getKeyId_(kbdEvt) {
     if (kbdEvt.key === KEY_IDS.ARROW_LEFT || kbdEvt.keyCode === 37) {
       return KEY_IDS.ARROW_LEFT;
@@ -340,6 +416,11 @@ export default class MDCSliderFoundation extends MDCFoundation {
     return '';
   }
 
+  /**
+   * Computes the value given a keyboard key ID
+   * @param {string} keyId
+   * @return {number}
+   */
   getValueForKeyId_(keyId) {
     const {max_: max, min_: min, step_: step} = this;
     let delta = step || (max - min) / 100;
@@ -382,6 +463,12 @@ export default class MDCSliderFoundation extends MDCFoundation {
     this.adapter_.removeClass(cssClasses.FOCUS);
   }
 
+  /**
+   * Sets the value of the slider
+   * @param {number} value
+   * @param {boolean} shouldFireInput
+   * @param {boolean=} force
+   */
   setValue_(value, shouldFireInput, force = false) {
     if (value === this.value_ && !force) {
       return;
@@ -409,6 +496,11 @@ export default class MDCSliderFoundation extends MDCFoundation {
     }
   }
 
+  /**
+   * Calculates the quantized value
+   * @param {number} value
+   * @return {number}
+   */
   quantize_(value) {
     const numSteps = Math.round(value / this.step_);
     const quantizedVal = numSteps * this.step_;
@@ -444,16 +536,29 @@ export default class MDCSliderFoundation extends MDCFoundation {
     });
   }
 
+  /**
+   * Toggles the active state of the slider
+   * @param {boolean} active
+   */
   setActive_(active) {
     this.active_ = active;
     this.toggleClass_(cssClasses.ACTIVE, this.active_);
   }
 
+  /**
+   * Toggles the inTransit state of the slider
+   * @param {boolean} inTransit
+   */
   setInTransit_(inTransit) {
     this.inTransit_ = inTransit;
     this.toggleClass_(cssClasses.IN_TRANSIT, this.inTransit_);
   }
 
+  /**
+   * Conditionally adds or removes a class based on shouldBePresent
+   * @param {string} className
+   * @param {boolean} shouldBePresent
+   */
   toggleClass_(className, shouldBePresent) {
     if (shouldBePresent) {
       this.adapter_.addClass(className);
@@ -462,3 +567,5 @@ export default class MDCSliderFoundation extends MDCFoundation {
     }
   }
 }
+
+export default MDCSliderFoundation;

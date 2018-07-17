@@ -15,6 +15,7 @@
 //
 
 @import "@material/elevation/mixins";
+@import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
 @import "@material/theme/mixins";
 @import "@material/typography/mixins";
@@ -23,8 +24,7 @@
 
 // postcss-bem-linter: define toolbar
 .mdc-toolbar {
-  @include mdc-theme-prop(background-color, primary);
-  @include mdc-theme-prop(color, text-primary-on-primary);
+  @include mdc-toolbar-fill-color-accessible(primary);
 
   display: flex;
   position: relative;
@@ -57,54 +57,70 @@
   &__section {
     display: inline-flex;
     flex: 1;
-    align-items: flex-start;
+    align-items: start;
     justify-content: center;
+    box-sizing: border-box;
     min-width: 0;
     height: 100%;
+    padding: $mdc-toolbar-element-section-padding;
     z-index: 1;
 
+    @media (max-width: $mdc-toolbar-mobile-landscape-width-breakpoint)
+      and (orientation: landscape) {
+      padding: 0;
+    }
+
+    @media (max-width: $mdc-toolbar-mobile-breakpoint) {
+      padding: $mdc-toolbar-element-mobile-section-padding 0;
+    }
+
     &--align-start {
+      @include mdc-rtl-reflexive-box(padding, "left", $mdc-toolbar-section-horizontal-padding);
+
       justify-content: flex-start;
       order: -1;
+
+      @media (max-width: $mdc-toolbar-mobile-landscape-width-breakpoint)
+        and (orientation: landscape) {
+        @include mdc-rtl-reflexive-box(padding, "left", $mdc-toolbar-mobile-section-horizontal-padding);
+      }
+
+      @media (max-width: $mdc-toolbar-mobile-breakpoint) {
+        @include mdc-rtl-reflexive-box(padding, "left", $mdc-toolbar-mobile-section-horizontal-padding);
+      }
     }
 
     &--align-end {
+      @include mdc-rtl-reflexive-box(padding, "right", $mdc-toolbar-section-horizontal-padding);
+
       justify-content: flex-end;
       order: 1;
+
+      @media (max-width: $mdc-toolbar-mobile-landscape-width-breakpoint)
+        and (orientation: landscape) {
+        @include mdc-rtl-reflexive-box(padding, "right", $mdc-toolbar-mobile-section-horizontal-padding);
+      }
+
+      @media (max-width: $mdc-toolbar-mobile-breakpoint) {
+        @include mdc-rtl-reflexive-box(padding, "right", $mdc-toolbar-mobile-section-horizontal-padding);
+      }
     }
   }
 
   &__title {
-    @include mdc-typography(title);
+    @include mdc-typography(headline6);
     @include mdc-typography-overflow-ellipsis;
     @include mdc-rtl-reflexive-box(margin, left, $mdc-toolbar-element-horizontal-padding-desktop);
 
     align-self: center;
-    padding: $mdc-toolbar-element-vertical-padding 0;
+    padding: 12px 0;
     line-height: 1.5rem;
     z-index: 1;
   }
 
-  &__icon {
-    @include mdc-shared-icon-style;
-    @include mdc-theme-prop(color, text-primary-on-primary);
-
-    padding-right: $mdc-toolbar-element-horizontal-padding-desktop / 2;
-    padding-left: $mdc-toolbar-element-horizontal-padding-desktop / 2;
-    cursor: pointer;
-  }
-
-  &__icon:last-of-type {
-    @include mdc-rtl-reflexive-property(padding, $mdc-toolbar-element-horizontal-padding-desktop / 2, $mdc-toolbar-element-horizontal-padding-desktop);
-  }
-
+  &__icon,
   &__menu-icon {
-    @include mdc-shared-icon-style;
-    @include mdc-theme-prop(color, text-primary-on-primary);
-
-    padding-right: $mdc-toolbar-element-horizontal-padding-desktop;
-    padding-left: $mdc-toolbar-element-horizontal-padding-desktop;
-    cursor: pointer;
+    @include mdc-toolbar-icon_;
   }
 }
 
@@ -115,24 +131,6 @@
 @media (max-width: $mdc-toolbar-mobile-breakpoint) {
   .mdc-toolbar__title {
     @include mdc-rtl-reflexive-box(margin, left, $mdc-toolbar-element-horizontal-padding-mobile);
-  }
-
-  .mdc-toolbar__icon {
-    padding-right: $mdc-toolbar-element-horizontal-padding-mobile / 2;
-    padding-left: $mdc-toolbar-element-horizontal-padding-mobile / 2;
-  }
-
-  .mdc-toolbar__icon:last-of-type {
-    @include mdc-rtl-reflexive-property(padding, $mdc-toolbar-element-horizontal-padding-mobile / 2, $mdc-toolbar-element-horizontal-padding-mobile);
-  }
-
-  .mdc-toolbar__menu-icon {
-    padding-right: $mdc-toolbar-element-horizontal-padding-mobile;
-    padding-left: $mdc-toolbar-element-horizontal-padding-mobile;
-  }
-
-  .mdc-toolbar__menu-icon + .mdc-toolbar__title {
-    @include mdc-rtl-reflexive-box(margin, left, $mdc-toolbar-title-margin-to-menu-icon-mobile);
   }
 }
 
@@ -146,10 +144,9 @@
 }
 
 .mdc-toolbar--flexible {
-  // stylelint-disable plugin/selector-bem-pattern
   // bem linter is disabled because it cannot correctly reconcile mdc prefix for css variables.
+  // stylelint-disable-next-line plugin/selector-bem-pattern
   --mdc-toolbar-ratio-to-extend-flexible: #{$mdc-toolbar-ratio-to-extend-flexible};
-  // stylelint-enable plugin/selector-bem-pattern
 
   .mdc-toolbar__row:first-child {
     height: $mdc-toolbar-row-height * $mdc-toolbar-ratio-to-extend-flexible;
@@ -171,10 +168,9 @@
   // bem linter is disabled because it cannot handle multiple top level selector
   &-default-behavior {
     .mdc-toolbar__title {
-      @include mdc-typography(display1);
+      @include mdc-typography(headline6);
 
       align-self: flex-end;
-      font-weight: #{map-get($mdc-typography-font-weight-values, normal)};
       line-height: 1.5rem;
     }
 
@@ -197,13 +193,14 @@
       }
     }
   }
-  // stylelint-enable plugin/selector-bem-pattern
 }
 
 .mdc-toolbar--waterfall {
   &.mdc-toolbar--fixed {
     @include mdc-elevation(0);
-    @include mdc-elevation-transition;
+
+    transition: mdc-elevation-transition-value();
+    will-change: $mdc-elevation-property;
 
     &.mdc-toolbar--flexible-space-minimized {
       @include mdc-elevation(4);
@@ -221,6 +218,7 @@
   }
 }
 // postcss-bem-linter: end
+// stylelint-enable plugin/selector-bem-pattern
 
 .mdc-toolbar-fixed-adjust {
   margin-top: $mdc-toolbar-row-height;

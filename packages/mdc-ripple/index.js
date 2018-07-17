@@ -63,10 +63,15 @@ class MDCRipple extends MDCComponent {
       isSurfaceDisabled: () => instance.disabled,
       addClass: (className) => instance.root_.classList.add(className),
       removeClass: (className) => instance.root_.classList.remove(className),
+      containsEventTarget: (target) => instance.root_.contains(target),
       registerInteractionHandler: (evtType, handler) =>
         instance.root_.addEventListener(evtType, handler, util.applyPassive()),
       deregisterInteractionHandler: (evtType, handler) =>
         instance.root_.removeEventListener(evtType, handler, util.applyPassive()),
+      registerDocumentInteractionHandler: (evtType, handler) =>
+        document.documentElement.addEventListener(evtType, handler, util.applyPassive()),
+      deregisterDocumentInteractionHandler: (evtType, handler) =>
+        document.documentElement.removeEventListener(evtType, handler, util.applyPassive()),
       registerResizeHandler: (handler) => window.addEventListener('resize', handler),
       deregisterResizeHandler: (handler) => window.removeEventListener('resize', handler),
       updateCssVariable: (varName, value) => instance.root_.style.setProperty(varName, value),
@@ -82,13 +87,19 @@ class MDCRipple extends MDCComponent {
 
   /** @param {boolean} unbounded */
   set unbounded(unbounded) {
-    const {UNBOUNDED} = MDCRippleFoundation.cssClasses;
     this.unbounded_ = Boolean(unbounded);
-    if (this.unbounded_) {
-      this.root_.classList.add(UNBOUNDED);
-    } else {
-      this.root_.classList.remove(UNBOUNDED);
-    }
+    this.setUnbounded_();
+  }
+
+  /**
+   * Closure Compiler throws an access control error when directly accessing a
+   * protected or private property inside a getter/setter, like unbounded above.
+   * By accessing the protected property inside a method, we solve that problem.
+   * That's why this function exists.
+   * @private
+   */
+  setUnbounded_() {
+    this.foundation_.setUnbounded(this.unbounded_);
   }
 
   activate() {
@@ -103,11 +114,15 @@ class MDCRipple extends MDCComponent {
     this.foundation_.layout();
   }
 
-  /** @return {!MDCRippleFoundation} */
+  /**
+   * @return {!MDCRippleFoundation}
+   * @override
+   */
   getDefaultFoundation() {
     return new MDCRippleFoundation(MDCRipple.createAdapter(this));
   }
 
+  /** @override */
   initialSyncWithDOM() {
     this.unbounded = 'mdcRippleIsUnbounded' in this.root_.dataset;
   }
@@ -135,4 +150,4 @@ RippleCapableSurface.prototype.unbounded;
  */
 RippleCapableSurface.prototype.disabled;
 
-export {MDCRipple, MDCRippleFoundation, util};
+export {MDCRipple, MDCRippleFoundation, RippleCapableSurface, util};

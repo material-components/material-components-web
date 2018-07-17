@@ -54,6 +54,22 @@ test('show() delegates to the foundation', () => {
   td.verify(component.foundation_.show('data'));
 });
 
+test(`adapter#notifyShow fires an ${strings.SHOW_EVENT} custom event`, () => {
+  const {root, component} = setupTest();
+  const handler = td.func('notifyShow handler');
+  root.addEventListener(strings.SHOW_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyShow();
+  td.verify(handler(td.matchers.anything()));
+});
+
+test(`adapter#notifyHide fires an ${strings.HIDE_EVENT} custom event`, () => {
+  const {root, component} = setupTest();
+  const handler = td.func('notifyHide handler');
+  root.addEventListener(strings.HIDE_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyHide();
+  td.verify(handler(td.matchers.anything()));
+});
+
 test('show() and click', () => {
   const {root, component} = setupTest();
   const data = {

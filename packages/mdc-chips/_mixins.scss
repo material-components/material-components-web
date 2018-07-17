@@ -1,0 +1,154 @@
+//
+// Copyright 2017 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+@import "@material/ripple/mixins";
+@import "@material/theme/functions";
+@import "@material/theme/mixins";
+
+@mixin mdc-chip-corner-radius($radius) {
+  border-radius: $radius;
+}
+
+@mixin mdc-chip-fill-color-accessible($color) {
+  $fill-tone: mdc-theme-tone($color);
+
+  @include mdc-chip-fill-color($color);
+
+  @if ($fill-tone == "dark") {
+    @include mdc-chip-ink-color(text-primary-on-dark);
+    @include mdc-chip-selected-ink-color(text-primary-on-dark);
+    @include mdc-chip-leading-icon-color(text-primary-on-dark);
+    @include mdc-chip-trailing-icon-color(text-primary-on-dark);
+  } @else {
+    @include mdc-chip-ink-color(text-primary-on-light);
+    @include mdc-chip-selected-ink-color(text-primary-on-light);
+    @include mdc-chip-leading-icon-color(text-primary-on-light);
+    @include mdc-chip-trailing-icon-color(text-primary-on-light);
+  }
+}
+
+@mixin mdc-chip-fill-color($color) {
+  @include mdc-theme-prop(background-color, $color);
+}
+
+@mixin mdc-chip-ink-color($color) {
+  @include mdc-states($color);
+  @include mdc-theme-prop(color, $color);
+
+  &:hover {
+    @include mdc-theme-prop(color, $color);
+  }
+}
+
+@mixin mdc-chip-selected-ink-color($color) {
+  &.mdc-chip {
+    @include mdc-states-selected($color);
+  }
+
+  &.mdc-chip--selected {
+    @include mdc-theme-prop(color, $color);
+    @include mdc-chip-leading-icon-color($color);
+
+    &:hover {
+      @include mdc-theme-prop(color, $color);
+    }
+  }
+
+  .mdc-chip__checkmark-path {
+    @include mdc-theme-prop(stroke, $color);
+  }
+}
+
+@mixin mdc-chip-outline($width: 1, $style: solid, $color: mdc-theme-prop-value(on-surface)) {
+  @include mdc-chip-outline-width($width);
+  @include mdc-chip-outline-style($style);
+  @include mdc-chip-outline-color($color);
+}
+
+@mixin mdc-chip-outline-color($color) {
+  @include mdc-theme-prop(border-color, $color);
+}
+
+@mixin mdc-chip-outline-style($style) {
+  border-style: $style;
+}
+
+@mixin mdc-chip-outline-width($width) {
+  // Note: Adjust padding to maintain consistent width with non-outlined chips
+  $horizontal-padding-value: max($mdc-chip-horizontal-padding - $width, 0);
+  $vertical-padding-value: max($mdc-chip-vertical-padding - $width, 0);
+
+  padding: $vertical-padding-value $horizontal-padding-value;
+  border-width: $width;
+}
+
+@mixin mdc-chip-height($height) {
+  height: $height;
+}
+
+@mixin mdc-chip-set-spacing($gap-size) {
+  padding: $gap-size / 2;
+
+  .mdc-chip {
+    margin: $gap-size / 2;
+  }
+}
+
+// For customizing icon styles, we need to increase specifity to ensure
+// overrides apply. Styles defined in the .material-icons CSS class are
+// loaded separately, so the order of CSS definitions is not guaranteed.
+
+@mixin mdc-chip-leading-icon-color($color, $opacity: $mdc-chip-icon-opacity) {
+  .mdc-chip__icon.mdc-chip__icon--leading {
+    color: rgba(mdc-theme-prop-value($color), $opacity);
+  }
+}
+
+@mixin mdc-chip-trailing-icon-color(
+  $color,
+  $opacity: $mdc-chip-icon-opacity,
+  $hover-opacity: $mdc-chip-trailing-icon-hover-opacity,
+  $focus-opacity: $mdc-chip-trailing-icon-focus-opacity) {
+  .mdc-chip__icon.mdc-chip__icon--trailing {
+    color: rgba(mdc-theme-prop-value($color), $opacity);
+
+    &:hover {
+      color: rgba(mdc-theme-prop-value($color), $hover-opacity);
+    }
+
+    &:focus {
+      color: rgba(mdc-theme-prop-value($color), $focus-opacity);
+    }
+  }
+}
+
+@mixin mdc-chip-leading-icon-size($size) {
+  .mdc-chip__icon.mdc-chip__icon--leading:not(.mdc-chip__icon--leading-hidden) {
+    @include mdc-chip-icon-size_($size);
+  }
+}
+
+@mixin mdc-chip-trailing-icon-size($size) {
+  .mdc-chip__icon.mdc-chip__icon--trailing {
+    @include mdc-chip-icon-size_($size);
+  }
+}
+
+@mixin mdc-chip-icon-size_($size) {
+  width: $size;
+  height: $size;
+  font-size: $size;
+}

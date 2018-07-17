@@ -27,6 +27,8 @@ export const strings = {
   TEXT_SELECTOR: '.mdc-snackbar__text',
   ACTION_WRAPPER_SELECTOR: '.mdc-snackbar__action-wrapper',
   ACTION_BUTTON_SELECTOR: '.mdc-snackbar__action-button',
+  SHOW_EVENT: 'MDCSnackbar:show',
+  HIDE_EVENT: 'MDCSnackbar:hide',
 };
 
 export const numbers = {

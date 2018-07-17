@@ -19,10 +19,10 @@
 const strings = {
   ARIA_CONTROLS: 'aria-controls',
   INPUT_SELECTOR: '.mdc-text-field__input',
-  LABEL_SELECTOR: '.mdc-text-field__label',
+  LABEL_SELECTOR: '.mdc-floating-label',
   ICON_SELECTOR: '.mdc-text-field__icon',
-  ICON_EVENT: 'MDCTextField:icon',
-  BOTTOM_LINE_SELECTOR: '.mdc-text-field__bottom-line',
+  OUTLINE_SELECTOR: '.mdc-notched-outline',
+  LINE_RIPPLE_SELECTOR: '.mdc-line-ripple',
 };
 
 /** @enum {string} */
@@ -30,11 +30,23 @@ const cssClasses = {
   ROOT: 'mdc-text-field',
   UPGRADED: 'mdc-text-field--upgraded',
   DISABLED: 'mdc-text-field--disabled',
+  DENSE: 'mdc-text-field--dense',
   FOCUSED: 'mdc-text-field--focused',
   INVALID: 'mdc-text-field--invalid',
   BOX: 'mdc-text-field--box',
-  TEXT_FIELD_ICON: 'mdc-text-field__icon',
-  TEXTAREA: 'mdc-text-field--textarea',
+  OUTLINED: 'mdc-text-field--outlined',
 };
 
-export {cssClasses, strings};
+/** @enum {number} */
+const numbers = {
+  LABEL_SCALE: 0.75,
+  DENSE_LABEL_SCALE: 0.923,
+};
+
+// whitelist based off of https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
+// under section: `Validation-related attributes`
+const VALIDATION_ATTR_WHITELIST = [
+  'pattern', 'min', 'max', 'required', 'step', 'minlength', 'maxlength',
+];
+
+export {cssClasses, strings, numbers, VALIDATION_ATTR_WHITELIST};

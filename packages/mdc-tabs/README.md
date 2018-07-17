@@ -10,7 +10,7 @@ path: /catalog/tabs/
 # MDC Tabs
 
 The MDC Tabs component contains components which are used to create spec-aligned tabbed navigation components adhering to the
-[Material Design tabs guidelines](https://material.io/guidelines/components/tabs.html). These components are:
+[Material Design tabs guidelines](https://material.io/go/design-tabs). These components are:
 
 - **mdc-tab**: The individual tab elements
 - **mdc-tab-bar**: The main component which is composed of `mdc-tab` elements
@@ -20,17 +20,17 @@ The MDC Tabs component contains components which are used to create spec-aligned
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/tabs.html">Material Design guidelines: Tabs</a>
+    <a href="https://material.io/go/design-tabs">Material Design guidelines: Tabs</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="http://material-components-web.appspot.com/tabs.html">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/tabs">Demo</a>
   </li>
 </ul>
 
 ## Installation
 
 ```
-npm install --save @material/tabs
+npm install @material/tabs
 ```
 
 ## Tabs usage
@@ -86,6 +86,27 @@ icon-only, and text with icon. An example of each is available on the demo site.
 </nav>
 ```
 
+#### CSS Only Support
+
+In order for the indicator to appear, you will need to change your mark up if you are using CSS Only. Each `.mdc-tab` will have a child element with the class `.mdc-tab__indicator` as shown below:
+
+```html
+<nav id="basic-tab-bar" class="mdc-tab-bar">
+  <a class="mdc-tab mdc-tab--active" href="#one">
+    Home
+    <span class="mdc-tab__indicator"></span>
+  </a>
+  <a class="mdc-tab" href="#two">
+    Merchandise
+    <span class="mdc-tab__indicator"></span>
+  </a>
+  <a class="mdc-tab" href="#three">
+    About Us
+    <span class="mdc-tab__indicator"></span>
+  </a>
+</nav>
+```
+
 #### RTL Support
 
 Tab Bars will reverse the order of their tabs if they are placed within an
@@ -94,24 +115,6 @@ ancestor element with attribute `dir="rtl"`.
 ```html
 <html dir="rtl">
   <!--...-->
-  <nav id="basic-tab-bar" class="mdc-tab-bar">
-    <a class="mdc-tab mdc-tab--active" href="#one">Home</a>
-    <a class="mdc-tab" href="#two">Merchandise</a>
-    <a class="mdc-tab" href="#three">About Us</a>
-    <span class="mdc-tab-bar__indicator"></span>
-  </nav>
-</html>
-```
-
-#### Dark Mode Support
-
-Like other MDC-Web components, tabs support dark mode either when an
-`mdc-tab-bar--theme-dark` class is attached to the root element, or the element has
-an ancestor with class `mdc-theme--dark`.
-
-```html
-<html class="mdc-theme--dark">
-  <!-- ... -->
   <nav id="basic-tab-bar" class="mdc-tab-bar">
     <a class="mdc-tab mdc-tab--active" href="#one">Home</a>
     <a class="mdc-tab" href="#two">Merchandise</a>
@@ -130,7 +133,7 @@ provides a minimal example of how to do so using JavaScript, also shown below.
 #### Markup:
 ```html
 <section id="dynamic-demo-toolbar">
-  <nav id="dynamic-tab-bar" class="mdc-tab-bar mdc-tab-bar--indicator-accent" role="tablist">
+  <nav id="dynamic-tab-bar" class="mdc-tab-bar" role="tablist">
     <a role="tab" aria-controls="panel-1"
        class="mdc-tab mdc-tab--active" href="#panel-1">Item One</a>
     <a role="tab" aria-controls="panel-2"
@@ -210,6 +213,22 @@ dots.addEventListener('click', function (evt) {
   updateDot(dotIndex);
 })
 ```
+
+### Sass Mixins
+
+To customize the ink color of any part of the tab, use the following mixins. We recommend you apply these mixins within CSS selectors like `.foo-tab:not(.mdc-tab--active)` to select your inactive tabs, `foo-tab:hover` to select the hover state of your tabs, and `.foo-tab.mdc-tab--active` to select your active tabs.
+
+#### `mdc-tab-ink-color`
+Use this mixin to set the color of all ink on the tab.
+
+#### `mdc-tab-icon-ink-color`
+This mixin customizes the icon ink color.
+
+#### `mdc-tab-label-ink-color`
+This mixin customizes the label ink color.
+
+#### `mdc-tab-bar-indicator-ink-color`
+This mixin customizes the indicator ink color.
 
 ### Using the CSS-Only Component
 
@@ -385,7 +404,7 @@ from the `mdc-tab-bar` Element inside of the `mdc-tab-bar-scroller` node during 
 of `MDCTabBarScroller`, e.g.:
 
 ```html
-<div id="my-tab-bar-scroller" class="mdc-tab-bar-scroller">
+<div id="my-mdc-tab-bar-scroller" class="mdc-tab-bar-scroller">
   <div class="mdc-tab-bar-scroller__indicator mdc-tab-bar-scroller__indicator--back">
     <a class="mdc-tab-bar-scroller__indicator__inner material-icons" href="#" aria-label="scroll back button">
       navigate_before
@@ -513,6 +532,10 @@ Sets `computedWidth_` and `computedLeft_` for a tab.
 | `tabs` | `MDCTab[]` | _(read-only)_ An array of the tab bar's instances of MDC Tab. |
 | `activeTab` | `MDCTab` | The currently active tab. Setting this makes the tab active. |
 | `activeTabIndex` | `number` | The index of the currently active tab. Setting this makes the tab at the given index active. |
+
+#### MDCTabBar.layout() => void
+
+Proxies to the foundation's `layout()` method.
 
 ### Tab Bar Events
 

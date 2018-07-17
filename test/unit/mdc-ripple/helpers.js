@@ -18,7 +18,6 @@ import td from 'testdouble';
 
 import {setupFoundationTest} from '../helpers/setup';
 import {createMockRaf} from '../helpers/raf';
-import {captureHandlers as baseCaptureHandlers} from '../helpers/foundation';
 import MDCRippleFoundation from '../../../packages/mdc-ripple/foundation';
 
 export function setupTest(isCssVarsSupported = true) {
@@ -41,11 +40,6 @@ export function testFoundation(desc, isCssVarsSupported, runTests) {
     runTests({adapter, foundation, mockRaf});
     mockRaf.restore();
   });
-}
-
-export function captureHandlers(adapter) {
-  const handlers = baseCaptureHandlers(adapter, 'registerInteractionHandler');
-  return handlers;
 }
 
 // Creates a mock window object with all members necessary to test util.supportsCssVariables

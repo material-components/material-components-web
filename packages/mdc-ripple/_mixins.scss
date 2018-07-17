@@ -15,37 +15,9 @@
 //
 
 @import "@material/animation/variables";
-@import "@material/theme/functions";
 @import "@material/theme/mixins";
-@import "./keyframes";
+@import "./functions";
 @import "./variables";
-
-// Ensure that styles needed by any component using MDC Ripple are emitted, but only once.
-// (Every component using MDC Ripple imports these mixins, but doesn't necessarily import mdc-ripple.scss.)
-
-// This variable is not intended to be overridden externally; it uses !default to avoid being reset
-// every time this file is imported.
-$mdc-ripple-common-styles-emitted_: false !default;
-
-@if not $mdc-ripple-common-styles-emitted_ {
-  $mdc-ripple-common-styles-emitted_: true;
-
-  @include mdc-ripple-keyframes_;
-
-  // Styles used to detect buggy behavior of CSS custom properties in Edge.
-  // See: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11495448/
-  // This is included in _mixins.scss rather than mdc-ripple.scss so that it will be
-  // present for other components which rely on ripple as well as mdc-ripple itself.
-  .mdc-ripple-surface--test-edge-var-bug {
-    --mdc-ripple-surface-test-edge-var: 1px solid #000;
-
-    visibility: hidden;
-
-    &::before {
-      border: var(--mdc-ripple-surface-test-edge-var);
-    }
-  }
-}
 
 @mixin mdc-ripple-surface() {
   --mdc-ripple-fg-size: 0;
@@ -56,6 +28,7 @@ $mdc-ripple-common-styles-emitted_: false !default;
   --mdc-ripple-fg-translate-start: 0;
 
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  will-change: transform, opacity;
 
   &::before,
   &::after {
@@ -64,17 +37,23 @@ $mdc-ripple-common-styles-emitted_: false !default;
     opacity: 0;
     pointer-events: none;
     content: "";
-    will-change: transform, opacity;
   }
 
   &::before {
     transition: opacity $mdc-states-wash-duration linear;
+    z-index: 1; // Ensure that the ripple wash for hover/focus states is displayed on top of positioned child elements
   }
 
   // Common styles for upgraded surfaces (some of these depend on custom properties set via JS or other mixins)
 
+  &.mdc-ripple-upgraded::before {
+    transform: scale(var(--mdc-ripple-fg-scale, 1));
+  }
+
   &.mdc-ripple-upgraded::after {
     top: 0;
+
+    /* @noflip */
     left: 0;
     transform: scale(0);
     transform-origin: center center;
@@ -82,6 +61,8 @@ $mdc-ripple-common-styles-emitted_: false !default;
 
   &.mdc-ripple-upgraded--unbounded::after {
     top: var(--mdc-ripple-top, 0);
+
+    /* @noflip */
     left: var(--mdc-ripple-left, 0);
   }
 
@@ -151,7 +132,7 @@ $mdc-ripple-common-styles-emitted_: false !default;
   }
 
   &.mdc-ripple-upgraded {
-    --mdc-ripple-fg-opacity: $opacity;
+    --mdc-ripple-fg-opacity: #{$opacity};
   }
 }
 
@@ -164,8 +145,7 @@ $mdc-ripple-common-styles-emitted_: false !default;
 // Simple mixin for activated states which automatically selects opacity values based on whether the ink color is
 // light or dark.
 @mixin mdc-states-activated($color, $has-nested-focusable-element: false) {
-  $opacity-map: mdc-states-opacities_($color);
-  $activated-opacity: map-get($opacity-map, "activated");
+  $activated-opacity: mdc-states-opacity($color, activated);
 
   &--activated {
     // Stylelint seems to think that '&' qualifies as a type selector here?
@@ -181,8 +161,7 @@ $mdc-ripple-common-styles-emitted_: false !default;
 // Simple mixin for selected states which automatically selects opacity values based on whether the ink color is
 // light or dark.
 @mixin mdc-states-selected($color, $has-nested-focusable-element: false) {
-  $opacity-map: mdc-states-opacities_($color);
-  $selected-opacity: map-get($opacity-map, "selected");
+  $selected-opacity: mdc-states-opacity($color, selected);
 
   &--selected {
     // stylelint-disable-next-line selector-max-type
@@ -194,34 +173,43 @@ $mdc-ripple-common-styles-emitted_: false !default;
   }
 }
 
-@mixin mdc-ripple-radius($radius: 100%) {
+@mixin mdc-ripple-radius-bounded($radius: 100%) {
   &::before,
   &::after {
     top: calc(50% - #{$radius});
+
+    /* @noflip */
     left: calc(50% - #{$radius});
     width: $radius * 2;
     height: $radius * 2;
   }
 
-  // Background ripple styles
+  &.mdc-ripple-upgraded::after {
+    width: var(--mdc-ripple-fg-size, $radius);
+    height: var(--mdc-ripple-fg-size, $radius);
+  }
+}
 
-  &.mdc-ripple-upgraded::before {
-    top: calc(50% - #{$radius});
-    left: calc(50% - #{$radius});
-    width: $radius * 2;
-    height: $radius * 2;
-    transform: scale(var(--mdc-ripple-fg-scale, 0));
+@mixin mdc-ripple-radius-unbounded($radius: 100%) {
+  &::before,
+  &::after {
+    top: calc(50% - #{$radius / 2});
+
+    /* @noflip */
+    left: calc(50% - #{$radius / 2});
+    width: $radius;
+    height: $radius;
   }
 
-  &.mdc-ripple-upgraded--unbounded::before {
+  &.mdc-ripple-upgraded::before,
+  &.mdc-ripple-upgraded::after {
     top: var(--mdc-ripple-top, calc(50% - #{$radius / 2}));
+
+    /* @noflip */
     left: var(--mdc-ripple-left, calc(50% - #{$radius / 2}));
     width: var(--mdc-ripple-fg-size, $radius);
     height: var(--mdc-ripple-fg-size, $radius);
-    transform: scale(var(--mdc-ripple-fg-scale, 0));
   }
-
-  // Foreground ripple styles
 
   &.mdc-ripple-upgraded::after {
     width: var(--mdc-ripple-fg-size, $radius);
@@ -229,88 +217,12 @@ $mdc-ripple-common-styles-emitted_: false !default;
   }
 }
 
-//
-// Legacy
-//
-
-@mixin mdc-ripple-color($color: black, $opacity: .06) {
-  // Opacity styles are here (rather than in mdc-ripple-surface) to ensure that opacity is re-initialized for
-  // cases where this mixin is used to override another inherited use of itself,
-  // without needing to re-include mdc-ripple-surface.
-  &::before,
-  &::after {
-    @include mdc-ripple-color_($color, $opacity);
-
-    opacity: 0;
-  }
-
-  // Note: when :active is applied, :focus is already applied, which will effectively double the effect.
-  &:not(.mdc-ripple-upgraded) {
-    &:hover::before,
-    &:focus::before,
-    &:active::after {
-      transition-duration: 85ms;
-      opacity: .6;
-    }
-  }
-
-  &.mdc-ripple-upgraded--background-focused::before {
-    opacity: .99999;
-  }
-
-  &.mdc-ripple-upgraded--background-active-fill::before {
-    transition-duration: 120ms;
-    opacity: 1;
-  }
-
-  &.mdc-ripple-upgraded::after {
-    // Set this to 1 for backwards compatibility with how the keyframes were originally coded for use with this mixin
-    --mdc-ripple-fg-opacity: 1;
-  }
-}
-
-//
-// Private
-//
-
-@function mdc-states-opacities_($color) {
-  $color-value: mdc-theme-prop-value($color);
-  $opacity-map: if(
-    mdc-theme-tone($color-value) == "light",
-    $mdc-ripple-light-ink-opacities,
-    $mdc-ripple-dark-ink-opacities
-  );
-
-  @return $opacity-map;
-}
-
 @mixin mdc-states-interactions_($color, $has-nested-focusable-element, $opacity-modifier: 0) {
-  $opacity-map: mdc-states-opacities_($color);
-
   @include mdc-states-base-color($color);
-  @include mdc-states-hover-opacity(map-get($opacity-map, "hover") + $opacity-modifier);
-  @include mdc-states-focus-opacity(map-get($opacity-map, "focus") + $opacity-modifier, $has-nested-focusable-element);
-  @include mdc-states-press-opacity(map-get($opacity-map, "press") + $opacity-modifier);
-}
-
-// Note: This can be removed when we remove the legacy mdc-ripple-color mixin.
-@mixin mdc-ripple-color_($color, $opacity) {
-  // stylelint-disable at-rule-empty-line-before, block-closing-brace-newline-after
-  @if type-of($color) == "color" {
-    background-color: rgba($color, $opacity);
-  } @else {
-    // Assume $color is a theme property name
-    $theme-value: map-get($mdc-theme-property-values, $color);
-    $css-var: var(--mdc-theme-#{$color}, $theme-value);
-
-    background-color: rgba($theme-value, $opacity);
-
-    // See: https://drafts.csswg.org/css-color/#modifying-colors
-    // While this is currently unsupported as of now, it will begin to work by default as browsers
-    // begin to implement the CSS 4 color spec.
-    @supports (background-color: color(green a(10%))) {
-      background-color: color(#{$css-var} a(#{percentage($opacity)}));
-    }
-  }
-  // stylelint-enable at-rule-empty-line-before, block-closing-brace-newline-after
+  @include mdc-states-hover-opacity(mdc-states-opacity($color, hover) + $opacity-modifier);
+  @include mdc-states-focus-opacity(
+    mdc-states-opacity($color, focus) + $opacity-modifier,
+    $has-nested-focusable-element
+  );
+  @include mdc-states-press-opacity(mdc-states-opacity($color, press) + $opacity-modifier);
 }

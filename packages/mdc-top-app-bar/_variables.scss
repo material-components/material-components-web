@@ -1,0 +1,50 @@
+//
+// Copyright 2018 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+// Default styles
+$mdc-top-app-bar-row-height: 64px;
+$mdc-top-app-bar-title-left-padding: 20px;
+$mdc-top-app-bar-section-vertical-padding: 8px;
+$mdc-top-app-bar-section-horizontal-padding: 12px;
+
+$mdc-top-app-bar-icon-padding: 12px;
+$mdc-top-app-bar-icon-size: 24px;
+
+$mdc-top-app-bar-mobile-breakpoint: 599px !default;
+
+// Default mobile styles
+$mdc-top-app-bar-mobile-row-height: 56px;
+$mdc-top-app-bar-mobile-section-padding: 4px;
+
+// Short top app bar
+$mdc-top-app-bar-short-collapsed-border-radius: 4px;
+$mdc-top-app-bar-short-collapsed-width: 56px;
+$mdc-top-app-bar-short-collapsed-right-icon-padding: 12px;
+
+// Prominent styles
+$mdc-top-app-bar-prominent-row-height: 128px;
+$mdc-top-app-bar-prominent-title-bottom-padding: 2px;
+
+// Prominent mobile styles
+$mdc-top-app-bar-prominent-mobile-title-bottom-padding: 6px;
+
+// Dense styles
+$mdc-top-app-bar-dense-row-height: 48px;
+$mdc-top-app-bar-dense-section-horizontal-padding: 4px;
+$mdc-top-app-bar-dense-title-left-padding: 12px;
+
+// Dense & Prominent styles
+$mdc-top-app-bar-prominent-dense-title-bottom-padding: 9px;

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2016 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>MDC Top App Bar Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
+    <link rel="stylesheet" href="/assets/top-app-bar.css">
+    <script src="/ready.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  </head>
+  <body class="mdc-typography demo-body">
+    <header id="demo-top-app-bar" class="mdc-top-app-bar">
+      <div class="mdc-top-app-bar__row">
+        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+          <a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
+          <span class="mdc-top-app-bar__title">San Francisco, CA</span>
+        </section>
+        <section id="iconSection" class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
+          <a href="#" id="right-item" class="material-icons mdc-top-app-bar__action-item" aria-label="Download" alt="Download">file_download</a>
+        </section>
+      </div>
+    </header>
+
+    <aside class="mdc-drawer mdc-drawer--temporary">
+      <nav class="mdc-drawer__drawer">
+        <header class="mdc-drawer__header">
+          <div class="mdc-drawer__header-content mdc-theme--on-primary mdc-theme--primary-bg">
+            Header here
+          </div>
+        </header>
+        <nav class="mdc-drawer__content mdc-list-group">
+          <div class="mdc-list">
+            <a href="/" class="mdc-list-item ">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">&#xE5C4;</i>Back
+            </a>
+            <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
+            </a>
+            <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>Sent Mail
+            </a>
+            <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>Drafts
+            </a>
+          </div>
+
+          <hr class="mdc-list-divider">
+
+          <div class="mdc-list">
+            <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">email</i>All Mail
+            </a>
+            <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">delete</i>Trash
+            </a>
+            <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">report</i>Spam
+            </a>
+          </div>
+        </nav>
+      </nav>
+    </aside>
+
+    <main class="demo-main">
+      <div id="content-main" class="mdc-top-app-bar--fixed-adjust">
+        <p class="demo-paragraph">
+          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+        </p>
+        <p class="demo-paragraph">
+          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+        </p>
+        <p class="demo-paragraph">
+          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+        </p>
+        <p class="demo-paragraph">
+          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+        </p>
+        <p class="demo-paragraph">
+          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+        </p>
+        <p class="demo-paragraph">
+          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+        </p>
+        <p class="demo-paragraph">
+          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+        </p>
+        <p class="demo-paragraph">
+          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+        </p>
+        <p class="demo-paragraph">
+          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+        </p>
+        <p class="demo-paragraph">
+          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+        </p>
+        <p class="demo-paragraph">
+          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+        </p>
+        <p class="demo-paragraph">
+          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+        </p>
+        <p class="demo-paragraph">
+          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+        </p>
+        <p class="demo-paragraph">
+          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+        </p>
+        <p class="demo-paragraph">
+          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+        </p>
+        <p class="demo-paragraph">
+          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+        </p>
+        <p class="demo-paragraph">
+          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+        </p>
+        <p class="demo-paragraph">
+          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+        </p>
+        <p class="demo-paragraph">
+          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+        </p>
+        <p class="demo-paragraph">
+          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+        </p>
+        <p class="demo-paragraph">
+          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+        </p>
+        <p class="demo-paragraph">
+          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+        </p>
+        <p class="demo-paragraph">
+          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+        </p>
+        <p class="demo-paragraph">
+          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
+        </p>
+
+      </div>
+    </main>
+
+    <div class="demo-controls-container" dir="ltr">
+      <h3 class="mdc-typography--headline6">Demo Controls</h3>
+      <div class="demo-row">
+        <div class="demo-col">
+          <span class="mdc-typography--subtitle1 demo-options-heading">Common Options</span>
+          <div>
+            <input type="checkbox" id="rtl-checkbox"/>
+            <label for="rtl-checkbox">RTL</label>
+          </div>
+          <div>
+            <input type="checkbox" id="no-action-item-checkbox"/>
+            <label for="no-action-item-checkbox">No Action Item</label>
+          </div>
+        </div>
+        <div class="demo-col">
+          <span class="mdc-typography--subtitle1 demo-options-heading">Top App Bar Specific Options</span>
+          <div>
+            <input type="checkbox" id="dense-checkbox"/>
+            <label for="dense-checkbox">Dense</label>
+          </div>
+          <div>
+            <input type="checkbox" id="fixed-checkbox"/>
+            <label for="fixed-checkbox">Fixed</label>
+          </div>
+          <div>
+            <input type="checkbox" id="prominent-checkbox"/>
+            <label for="prominent-checkbox">Prominent</label>
+          </div>
+        </div>
+        <div class="demo-col">
+          <span class="mdc-typography--subtitle1 demo-options-heading">Short Top App Bar Specific Options</span>
+          <div>
+            <input type="checkbox" id="short-checkbox"/>
+            <label for="short-checkbox">Short</label>
+          </div>
+          <div>
+            <input type="checkbox" id="always-collapsed-checkbox" disabled/>
+            <label for="always-collapsed-checkbox">Always Collapsed (Short Only)&#x200E;</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/assets/material-components-web.js" async></script>
+    <script src="/assets/common.js" async></script>
+    <script type="text/javascript">
+      demoReady(function() {
+        var appBarEl = document.getElementById('demo-top-app-bar');
+        var rightItemEl = document.getElementById('right-item');
+        var rightSection = document.getElementById('iconSection');
+        var drawerEl = document.querySelector('.mdc-drawer');
+        var contentMainEl = document.getElementById('content-main');
+
+        var drawer = new mdc.drawer.MDCTemporaryDrawer(drawerEl);
+        var appBar = mdc.topAppBar.MDCTopAppBar.attachTo(appBarEl);
+
+        var rtlCheckbox = document.getElementById('rtl-checkbox');
+        var noActionItemCheckbox = document.getElementById('no-action-item-checkbox');
+        var fixedCheckbox = document.getElementById('fixed-checkbox');
+        var denseCheckbox = document.getElementById('dense-checkbox');
+        var prominentCheckbox = document.getElementById('prominent-checkbox');
+        var shortCheckbox = document.getElementById('short-checkbox');
+        var alwaysCollapsedCheckbox = document.getElementById('always-collapsed-checkbox');
+
+
+        appBarEl.addEventListener('MDCTopAppBar:nav', function() {
+          drawer.open = true;
+        });
+
+        // Generic Options
+        noActionItemCheckbox.addEventListener('change', function()  {
+          if (this.checked) {
+            rightSection.removeChild(rightItemEl);
+            appBarEl.classList.remove('mdc-top-app-bar--short-has-action-item');
+          } else {
+            rightSection.appendChild(rightItemEl);
+            appBarEl.classList.add('mdc-top-app-bar--short-has-action-item');
+          }
+        });
+
+        rtlCheckbox.addEventListener('change', function()  {
+          document.body.setAttribute('dir', this.checked ? 'rtl': 'ltr');
+          appBarEl.classList.remove('mdc-top-app-bar--short-has-action-item');
+
+          appBar.destroy();
+          appBar = mdc.topAppBar.MDCTopAppBar.attachTo(appBarEl);
+        });
+
+        // Top App Bar Specific Options
+        denseCheckbox.addEventListener('change', function()  {
+          appBarEl.classList[this.checked ? 'add' : 'remove']('mdc-top-app-bar--dense');
+          contentMainEl.classList[this.checked ? 'add' : 'remove']('mdc-top-app-bar--dense-fixed-adjust');
+          if (prominentCheckbox.checked) {
+            contentMainEl.classList[this.checked ? 'add' : 'remove']('mdc-top-app-bar--dense-prominent-fixed-adjust');
+          }
+
+
+          appBar.destroy();
+          appBar = mdc.topAppBar.MDCTopAppBar.attachTo(appBarEl);
+
+          shortCheckbox.disabled = this.checked || prominentCheckbox.checked || fixedCheckbox.checked;
+        });
+
+        fixedCheckbox.addEventListener('change', function()  {
+          var addScrolledClass = this.checked ? window.pageYOffset > 0 : false;
+          appBarEl.classList[this.checked ? 'add' : 'remove']('mdc-top-app-bar--fixed');
+          appBarEl.classList[addScrolledClass ? 'add' : 'remove']('mdc-top-app-bar--fixed-scrolled');
+
+          appBar.destroy();
+          appBar = mdc.topAppBar.MDCTopAppBar.attachTo(appBarEl);
+
+          shortCheckbox.disabled = this.checked || prominentCheckbox.checked || denseCheckbox.checked;
+        });
+
+        prominentCheckbox.addEventListener('change', function()  {
+          appBarEl.classList[this.checked ? 'add' : 'remove']('mdc-top-app-bar--prominent');
+          contentMainEl.classList[this.checked ? 'add' : 'remove']('mdc-top-app-bar--prominent-fixed-adjust');
+
+          if (denseCheckbox.checked) {
+            contentMainEl.classList[this.checked ? 'add' : 'remove']('mdc-top-app-bar--dense-prominent-fixed-adjust');
+          }
+
+          appBar.destroy();
+          appBar = mdc.topAppBar.MDCTopAppBar.attachTo(appBarEl);
+
+          shortCheckbox.disabled = this.checked || denseCheckbox.checked || fixedCheckbox.checked;
+        });
+
+        // Short Top App Bar Specific Options
+        shortCheckbox.addEventListener('change', function() {
+          appBarEl.classList[this.checked ? 'add' : 'remove']('mdc-top-app-bar--short');
+          appBarEl.classList.remove('mdc-top-app-bar--short-has-action-item');
+          contentMainEl.classList[this.checked ? 'add' : 'remove']('mdc-top-app-bar--short-fixed-adjust');
+
+          appBar.destroy();
+          appBar = mdc.topAppBar.MDCTopAppBar.attachTo(appBarEl);
+
+          if (!this.checked) {
+            appBarEl.classList.remove('mdc-top-app-bar--short-collapsed');
+            appBarEl.classList.remove('mdc-top-app-bar--short-has-action-item');
+            alwaysCollapsedCheckbox.checked = false;
+          }
+
+          alwaysCollapsedCheckbox.disabled = !this.checked;
+          prominentCheckbox.disabled = this.checked;
+          denseCheckbox.disabled = this.checked;
+          fixedCheckbox.disabled = this.checked;
+        });
+
+        alwaysCollapsedCheckbox.addEventListener('change', function() {
+          appBarEl.classList[this.checked ? 'add' : 'remove']('mdc-top-app-bar--short-collapsed');
+
+          appBar.destroy();
+          appBar = mdc.topAppBar.MDCTopAppBar.attachTo(appBarEl);
+        });
+      });
+  </script>
+  </body>
+</html>

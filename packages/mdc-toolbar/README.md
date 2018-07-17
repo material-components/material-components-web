@@ -7,14 +7,14 @@ iconId: toolbar
 path: /catalog/toolbar/
 -->
 
-# Toolbars
+## Important - Deprecation Notice
 
-<!--<div class="article__asset">
-  <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/toolbar/index.html">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/toolbars.png" width="494" alt="Toolbars screenshot">
-  </a>
-</div>-->
+The existing `MDCToolbar` component and styles will be removed in a future release. Some of its functionality
+will be available in the [MDC Top App Bar](../mdc-top-app-bar) package instead. Bugs and feature requests
+will no longer be accepted for the `mdc-toolbar` package. It is recommended that you migrate to the
+`mdc-top-app-bar` package to continue to receive new features and updates.
+
+# Toolbars
 
 MDC Toolbar acts as a container for multiple rows containing items such as
 application title, navigation menu, and tabs, among other things. Toolbars
@@ -32,21 +32,10 @@ changes as the user scrolls. Flexible is defined as a modifier class of toolbar
 but not a standalone component. Toolbars using this modifier will have additional
 height added to their first rows.
 
-## Design & API Documentation
-
-<ul class="icon-list">
-  <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/toolbars.html">Material Design guidelines: Toolbars</a>
-  </li>
-  <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/toolbar/index.html">Demo</a>
-  </li>
-</ul>
-
 ## Installation
 
 ```
-npm install --save @material/toolbar
+npm install @material/toolbar
 ```
 
 ## Usage
@@ -140,6 +129,14 @@ a page's title, or an application name.
 Icons can be added as anchor tags, `span`s, or `button`s to `mdc-toolbar`. There are two types of icons,
 `mdc-toolbar__menu-icon` represents the left most icon in `mdc-toolbar` usually to the left of `mdc-toolbar__title`.
 `mdc-toolbar__icon` represents any icons placed on the right side of an `mdc-toolbar`.
+
+When using `svg` icons, ensure you wrap the `svg` element in an `a` and include the `mdc-toolbar__icon` class.
+
+```html
+<a href="#" class="mdc-toolbar__icon">
+  <svg></svg>
+</a>
+```
 
 ### Fixed toolbars
 
@@ -329,7 +326,7 @@ further details.
 
 The provided modifiers are:
 
-Class | Description                            
+Class | Description
 --- | ---
 `mdc-toolbar--fixed` | Makes toolbar fixed on top and have persistent elevation
 `mdc-toolbar--waterfall` | Removes fixed toolbar persistent elevation and makes it gain elevation when a user begins to scroll down the page
@@ -338,6 +335,15 @@ Class | Description
 `mdc-toolbar__section--align-start` | Makes section align to the start
 `mdc-toolbar__section--align-end` | Makes section align to the end
 `mdc-toolbar__section--shrink-to-fit`| Makes section take the width of its content
+
+## Sass Mixins
+
+Mixin | Description
+--- | ---
+`mdc-toolbar-ink-color($color)` | Sets the ink color of the toolbar
+`mdc-toolbar-fill-color($color)` | Sets the fill color of the toolbar
+`mdc-toolbar-fill-color-accessible($color)` | Sets the fill color of the toolbar and automatically sets a high-contrast ink color
+`mdc-toolbar-icon-ink-color($color)` | Sets the ink color of a toolbar icon
 
 ## JS Usage
 

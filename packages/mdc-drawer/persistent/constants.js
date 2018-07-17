@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-import {FOCUSABLE_ELEMENTS} from '../slidable';
+import {FOCUSABLE_ELEMENTS} from '../slidable/index';
 
 export const cssClasses = {
-  ROOT: 'mdc-persistent-drawer',
-  OPEN: 'mdc-persistent-drawer--open',
-  ANIMATING: 'mdc-persistent-drawer--animating',
+  ROOT: 'mdc-drawer--persistent',
+  OPEN: 'mdc-drawer--open',
+  ANIMATING: 'mdc-drawer--animating',
 };
 
 export const strings = {
-  DRAWER_SELECTOR: '.mdc-persistent-drawer__drawer',
+  DRAWER_SELECTOR: '.mdc-drawer--persistent .mdc-drawer__drawer',
   FOCUSABLE_ELEMENTS,
   OPEN_EVENT: 'MDCPersistentDrawer:open',
   CLOSE_EVENT: 'MDCPersistentDrawer:close',

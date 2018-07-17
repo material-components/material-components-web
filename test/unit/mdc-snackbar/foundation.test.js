@@ -50,6 +50,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'deregisterCapturedInteractionHandler', 'registerActionClickHandler',
     'deregisterActionClickHandler', 'registerTransitionEndHandler',
     'deregisterTransitionEndHandler',
+    'notifyShow', 'notifyHide',
   ]);
   // Test default methods
   methods.forEach((m) => assert.doesNotThrow(defaultAdapter[m]));

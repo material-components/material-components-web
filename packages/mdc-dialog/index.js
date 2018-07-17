@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import {MDCComponent} from '@material/base';
-import {MDCRipple} from '@material/ripple';
+import {MDCComponent} from '@material/base/index';
+import {MDCRipple} from '@material/ripple/index';
 
 import MDCDialogFoundation from './foundation';
 import * as util from './util';
@@ -83,7 +83,6 @@ export class MDCDialog extends MDCComponent {
       trapFocusOnSurface: () => this.focusTrap_.activate(),
       untrapFocusOnSurface: () => this.focusTrap_.deactivate(),
       isDialog: (el) => el === this.dialogSurface_,
-      layoutFooterRipples: () => this.footerBtnRipples_.forEach((ripple) => ripple.layout()),
     });
   }
 }
