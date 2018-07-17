@@ -393,7 +393,7 @@ class ReportWriter {
     function getIconHtml(userAgent) {
       const title = userAgent.navigator ? userAgent.navigator.full_name : userAgent.alias;
       return `
-<img src="${userAgent.browser_icon_url}" class="report-user-agent__icon" title="${title}">
+<img src="${userAgent.browser_icon_url}" width="16" height="16" class="report-user-agent__icon" title="${title}">
 `.trim();
     }
 
