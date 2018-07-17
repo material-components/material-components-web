@@ -188,6 +188,7 @@
           "switch",
           "tabs",
           "tab",
+          "tab-bar",
           "tab-indicator",
           "tab-scroller",
           "text-field",
