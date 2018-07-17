@@ -2,21 +2,14 @@
 title: "Tab Indicator"
 layout: detail
 section: components
-excerpt: "Tab Indicator is a visual guide that shows which Tab is active"
-iconId: tab
-path: /catalog/tab/
+excerpt: "A visual guide that shows which Tab is active."
+iconId: tabs
+path: /catalog/tabs/indicator/
 -->
 
 # Tab Indicator
 
-<!--<div class="article__asset">
-  <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/tab-indicator.html">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/tab-indicator.png" width="363" alt="Tab indicator screenshot">
-  </a>
-</div>-->
-
-Tab Indicator is a visual guide that shows which Tab is active
+A Tab Indicator is a visual guide that shows which Tab is active.
 
 ## Design & API Documentation
 
