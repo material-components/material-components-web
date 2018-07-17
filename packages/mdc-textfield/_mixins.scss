@@ -223,7 +223,7 @@
   }
 
   &:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) {
-    .mdc-floating-label{
+    .mdc-floating-label {
       // @include mdc-floating-label-max-width(calc(100% - #{$mdc-text-field-icon-padding}));
       max-width: calc(100% - #{$mdc-text-field-icon-padding});
     }
