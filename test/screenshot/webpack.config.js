@@ -19,6 +19,7 @@
 const CssBundleFactory = require('../../scripts/webpack/css-bundle-factory');
 const Environment = require('../../scripts/build/environment');
 const Globber = require('../../scripts/webpack/globber');
+const JsBundleFactory = require('../../scripts/webpack/js-bundle-factory');
 const PathResolver = require('../../scripts/build/path-resolver');
 const PluginFactory = require('../../scripts/webpack/plugin-factory');
 
@@ -30,28 +31,93 @@ const globber = new Globber({pathResolver});
 const pluginFactory = new PluginFactory({globber});
 const copyrightBannerPlugin = pluginFactory.createCopyrightBannerPlugin();
 const cssBundleFactory = new CssBundleFactory({env, pathResolver, globber, pluginFactory});
-
-const OUTPUT = {
-  fsDirAbsolutePath: pathResolver.getAbsolutePath('/test/screenshot/out'),
-  httpDirAbsolutePath: '/out/',
-};
+const jsBundleFactory = new JsBundleFactory({env, pathResolver, globber, pluginFactory});
 
 module.exports = [
   mainCssALaCarte(),
+  mainJsCombined(),
   testCss(),
+  testJs(),
+  reportCss(),
+  reportJs(),
 ];
 
 function mainCssALaCarte() {
-  return cssBundleFactory.createMainCssALaCarte({output: OUTPUT});
+  return cssBundleFactory.createMainCssALaCarte({
+    output: {
+      fsDirAbsolutePath: pathResolver.getAbsolutePath('/test/screenshot/out'),
+      httpDirAbsolutePath: '/out/',
+    },
+  });
+}
+
+function mainJsCombined() {
+  return jsBundleFactory.createMainJsCombined({
+    output: {
+      fsDirAbsolutePath: pathResolver.getAbsolutePath('/test/screenshot/out'),
+      httpDirAbsolutePath: '/out/',
+    },
+  });
 }
 
 function testCss() {
   return cssBundleFactory.createCustomCss({
     bundleName: 'screenshot-test-css',
     chunkGlobConfig: {
-      inputDirectory: '/test/screenshot',
+      inputDirectory: '/test/screenshot/spec',
     },
-    output: OUTPUT,
+    output: {
+      fsDirAbsolutePath: pathResolver.getAbsolutePath('/test/screenshot/out/spec'),
+      httpDirAbsolutePath: '/out/spec/',
+    },
+    plugins: [
+      copyrightBannerPlugin,
+    ],
+  });
+}
+
+function testJs() {
+  return jsBundleFactory.createCustomJs({
+    bundleName: 'screenshot-test-js',
+    chunkGlobConfig: {
+      inputDirectory: '/test/screenshot/spec',
+    },
+    output: {
+      fsDirAbsolutePath: pathResolver.getAbsolutePath('/test/screenshot/out/spec'),
+      httpDirAbsolutePath: '/out/spec/',
+    },
+    plugins: [
+      copyrightBannerPlugin,
+    ],
+  });
+}
+
+function reportCss() {
+  return cssBundleFactory.createCustomCss({
+    bundleName: 'screenshot-report-css',
+    chunkGlobConfig: {
+      inputDirectory: '/test/screenshot/report',
+    },
+    output: {
+      fsDirAbsolutePath: pathResolver.getAbsolutePath('/test/screenshot/out/report'),
+      httpDirAbsolutePath: '/out/report/',
+    },
+    plugins: [
+      copyrightBannerPlugin,
+    ],
+  });
+}
+
+function reportJs() {
+  return jsBundleFactory.createCustomJs({
+    bundleName: 'screenshot-report-js',
+    chunkGlobConfig: {
+      inputDirectory: '/test/screenshot/report',
+    },
+    output: {
+      fsDirAbsolutePath: pathResolver.getAbsolutePath('/test/screenshot/out/report'),
+      httpDirAbsolutePath: '/out/report/',
+    },
     plugins: [
       copyrightBannerPlugin,
     ],
