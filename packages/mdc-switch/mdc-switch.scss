@@ -36,11 +36,13 @@
 }
 
 .mdc-switch__native-control {
-  @include mdc-rtl-reflexive-position(left, -24px);
+  @include mdc-rtl-reflexive-position(left, 0);
 
   position: absolute;
+  top: 0;
   width: $mdc-switch-native-control-width;
   height: $mdc-switch-tap-target-size;
+  margin: 0;
   opacity: 0;
   cursor: pointer;
 }
@@ -84,9 +86,6 @@
 .mdc-switch__thumb {
   @include mdc-elevation(2);
 
-  display: flex;
-  position: absolute;
-  align-items: center;
   box-sizing: border-box;
   width: $mdc-switch-thumb-diameter;
   height: $mdc-switch-thumb-diameter;
