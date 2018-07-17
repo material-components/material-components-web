@@ -123,7 +123,9 @@ class GoldenFile {
 
       for (const userAgentAlias of Object.keys(testPage.screenshots)) {
         const screenshotImageUrl = testPage.screenshots[userAgentAlias];
-        const screenshotImagePath = screenshotImageUrl.replace(/.*\/mdc-/, 'mdc-'); // TODO(acdvorak): Document the hack
+
+        // TODO(acdvorak): Document this hack
+        const screenshotImagePath = screenshotImageUrl.replace(/.*\/spec\/mdc-/, 'spec/mdc-');
 
         goldenScreenshots.push(GoldenScreenshot.create({
           html_file_path: htmlFilePath,
