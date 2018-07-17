@@ -38,6 +38,8 @@ module.exports = [
   mainJsCombined(),
   testCss(),
   testJs(),
+  reportCss(),
+  reportJs(),
 ];
 
 function mainCssALaCarte() {
@@ -83,6 +85,38 @@ function testJs() {
     output: {
       fsDirAbsolutePath: pathResolver.getAbsolutePath('/test/screenshot/out/spec'),
       httpDirAbsolutePath: '/out/spec/',
+    },
+    plugins: [
+      copyrightBannerPlugin,
+    ],
+  });
+}
+
+function reportCss() {
+  return cssBundleFactory.createCustomCss({
+    bundleName: 'screenshot-report-css',
+    chunkGlobConfig: {
+      inputDirectory: '/test/screenshot/report',
+    },
+    output: {
+      fsDirAbsolutePath: pathResolver.getAbsolutePath('/test/screenshot/out/report'),
+      httpDirAbsolutePath: '/out/report/',
+    },
+    plugins: [
+      copyrightBannerPlugin,
+    ],
+  });
+}
+
+function reportJs() {
+  return jsBundleFactory.createCustomJs({
+    bundleName: 'screenshot-report-js',
+    chunkGlobConfig: {
+      inputDirectory: '/test/screenshot/report',
+    },
+    output: {
+      fsDirAbsolutePath: pathResolver.getAbsolutePath('/test/screenshot/out/report'),
+      httpDirAbsolutePath: '/out/report/',
     },
     plugins: [
       copyrightBannerPlugin,
