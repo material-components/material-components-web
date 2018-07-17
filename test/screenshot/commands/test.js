@@ -19,29 +19,24 @@
 const BuildCommand = require('./build');
 const Controller = require('../lib/controller');
 const GitHubApi = require('../lib/github-api');
+const Logger = require('../lib/logger');
 const {ExitCode} = require('../lib/constants');
 
 module.exports = {
   async runAsync() {
-    const travisPrSlug = process.env.TRAVIS_PULL_REQUEST_SLUG;
-    if (travisPrSlug && !travisPrSlug.startsWith('material-components/')) {
-      console.log('Screenshot tests are not supported on external PRs.');
-      console.log('Skipping screenshot tests.');
-      return ExitCode.OK;
-    }
-
     await BuildCommand.runAsync();
     const controller = new Controller();
     const gitHubApi = new GitHubApi();
+    const logger = new Logger(__filename);
 
     /** @type {!mdc.proto.ReportData} */
     const reportData = await controller.initForCapture();
 
     const {isTestable, prNumber} = controller.checkIsTestable(reportData);
     if (!isTestable) {
-      console.log(`PR #${prNumber} does not contain any testable source file changes.`);
-      console.log('Skipping screenshot tests.');
-      return;
+      logger.warn(`PR #${prNumber} does not contain any testable source file changes.`);
+      logger.warn('Skipping screenshot tests.');
+      return ExitCode.OK;
     }
 
     await gitHubApi.setPullRequestStatus(reportData);

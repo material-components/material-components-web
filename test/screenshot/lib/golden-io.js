@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-const fs = require('mz/fs');
 const request = require('request-promise-native');
 const stringify = require('json-stable-stringify');
 
 const Cli = require('./cli');
 const GitRepo = require('./git-repo');
 const GoldenFile = require('./golden-file');
+const LocalStorage = require('./local-storage');
 const {GOLDEN_JSON_RELATIVE_PATH} = require('./constants');
 
 /**
@@ -41,6 +41,12 @@ class GoldenIo {
     this.gitRepo_ = new GitRepo();
 
     /**
+     * @type {!LocalStorage}
+     * @private
+     */
+    this.localStorage_ = new LocalStorage();
+
+    /**
      * @type {!Object<string, !GoldenFile>}
      * @private
      */
@@ -51,7 +57,7 @@ class GoldenIo {
    * @return {!Promise<!GoldenFile>}
    */
   async readFromLocalFile() {
-    return new GoldenFile(JSON.parse(await fs.readFile(GOLDEN_JSON_RELATIVE_PATH, {encoding: 'utf8'})));
+    return new GoldenFile(JSON.parse(await this.localStorage_.readTextFile(GOLDEN_JSON_RELATIVE_PATH)));
   }
 
   /**
@@ -88,7 +94,7 @@ class GoldenIo {
 
     const localFilePath = parsedDiffBase.local_file_path;
     if (localFilePath) {
-      return fs.readFile(localFilePath, {encoding: 'utf8'});
+      return this.localStorage_.readTextFile(localFilePath);
     }
 
     const rev = parsedDiffBase.git_revision;
@@ -110,7 +116,7 @@ class GoldenIo {
     const goldenJsonFilePath = GOLDEN_JSON_RELATIVE_PATH;
     const goldenJsonFileContent = await this.stringify_(newGoldenFile);
 
-    await fs.writeFile(goldenJsonFilePath, goldenJsonFileContent);
+    await this.localStorage_.writeTextFile(goldenJsonFilePath, goldenJsonFileContent);
 
     console.log(`DONE updating "${goldenJsonFilePath}"!`);
   }

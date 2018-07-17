@@ -123,6 +123,18 @@ https://crossbrowsertesting.com/account
   }
 
   /**
+   * @param {string} seleniumSessionId
+   * @param {!Array<!mdc.proto.Screenshot>} changedScreenshots
+   * @return {!Promise<void>}
+   */
+  async setTestScore({seleniumSessionId, changedScreenshots}) {
+    await this.sendRequest_('PUT', `/selenium/${seleniumSessionId}`, {
+      action: 'set_score',
+      score: changedScreenshots.length === 0 ? 'pass' : 'fail',
+    });
+  }
+
+  /**
    * @param {!mdc.proto.ReportMeta} meta
    * @param {!mdc.proto.UserAgent} userAgent
    * @return {!Promise<!selenium.proto.RawCapabilities>}
