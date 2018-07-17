@@ -152,7 +152,10 @@ class Logger {
 
     // See https://github.com/travis-ci/docs-travis-ci-com/issues/949#issuecomment-276755003
     console.log(`\e[0Ktravis_fold:end:${foldId}`);
-    console.log(`travis_time:end:${hash}:start=${startNanos},finish=${finishNanos},duration=${durationNanos}`);
+
+    if (durationNanos) {
+      console.log(`travis_time:end:${hash}:start=${startNanos},finish=${finishNanos},duration=${durationNanos}`);
+    }
   }
 
   getFoldHash_(foldId) {
