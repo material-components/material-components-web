@@ -79,4 +79,8 @@ $mdc-menu-surface-scale-duration: .12s;
   position: relative;
   overflow: visible;
 }
+
+.mdc-menu-surface--fixed {
+  position: fixed;
+}
 // postcss-bem-linter: end

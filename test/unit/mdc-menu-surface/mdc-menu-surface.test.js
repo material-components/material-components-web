@@ -20,8 +20,8 @@ import bel from 'bel';
 import domEvents from 'dom-events';
 import td from 'testdouble';
 
-import {MDCMenuSurface} from '../../../packages/mdc-menu-surface/index';
-import {strings, MenuSurfaceCorner} from '../../../packages/mdc-menu-surface/constants';
+import {MDCMenuSurface, MDCMenuSurfaceFoundation} from '../../../packages/mdc-menu-surface/index';
+import {strings, cssClasses, MenuSurfaceCorner} from '../../../packages/mdc-menu-surface/constants';
 import {getTransformPropertyName} from '../../../packages/mdc-menu-surface/util';
 
 function getFixture(open) {
@@ -38,85 +38,124 @@ function getFixture(open) {
 
 function setupTest(open = false) {
   const root = getFixture(open);
-  const component = new MDCMenuSurface(root);
+  const MockFoundationConstructor = td.constructor(MDCMenuSurfaceFoundation);
+  const mockFoundation = new MockFoundationConstructor();
+  const component = new MDCMenuSurface(root, mockFoundation);
   component.initialSyncWithDOM();
-  return {root, component};
+  return {root, component, mockFoundation};
 }
 
 suite('MDCMenuSurface');
 
 test('attachTo initializes and returns a MDCMenuSurface instance', () => {
-  assert.isOk(MDCMenuSurface.attachTo(getFixture()) instanceof MDCMenuSurface);
+  assert.isTrue(MDCMenuSurface.attachTo(getFixture()) instanceof MDCMenuSurface);
 });
 
 test('get/set open', () => {
-  const {component} = setupTest();
+  const {component, mockFoundation} = setupTest();
+  td.when(mockFoundation.isOpen()).thenReturn(true);
   component.open = true;
-  assert.isOk(component.open);
+  assert.isTrue(component.open);
 
+  td.when(mockFoundation.isOpen()).thenReturn(false);
   component.open = false;
-  assert.isNotOk(component.open);
+  assert.isFalse(component.open);
 });
 
 test('show opens the menu surface', () => {
-  const {component} = setupTest();
+  const {component, mockFoundation} = setupTest();
   component.show();
-  assert.isOk(component.open);
-});
-
-test('show with a focus index opens the menu surface', () => {
-  const {component} = setupTest();
-  component.show({focusIndex: 1});
-  assert.isOk(component.open);
+  td.verify(mockFoundation.open());
 });
 
 test('hide closes the menu surface', () => {
-  const {component} = setupTest();
+  const {component, mockFoundation} = setupTest();
   component.open = true;
   component.hide();
-  assert.isNotOk(component.open);
+  td.verify(mockFoundation.close());
+});
+
+test('setMenuSurfaceAnchorElement', () => {
+  const {component} = setupTest();
+  const myElement = {};
+  component.setMenuSurfaceAnchorElement(myElement);
+  assert.equal(component.anchorElement, myElement);
+});
+
+test('hoistMenuToBody', () => {
+  const {root, component, mockFoundation} = setupTest();
+  const div = document.createElement('div');
+  div.appendChild(root);
+  document.body.appendChild(div);
+  component.hoistMenuToBody();
+
+  td.verify(mockFoundation.setIsHoisted(true));
+  assert.equal(root.parentElement, document.body);
+
+  document.body.removeChild(root);
+  document.body.removeChild(div);
+});
+
+test('setIsHoisted', () => {
+  const {component, mockFoundation} = setupTest();
+  component.setIsHoisted(true);
+  td.verify(mockFoundation.setIsHoisted(true));
+});
+
+test('setFixedPosition is true', () => {
+  const {root, component, mockFoundation} = setupTest();
+  component.setFixedPosition(true);
+  assert.isTrue(root.classList.contains(cssClasses.FIXED));
+  td.verify(mockFoundation.setFixedPosition(true));
+});
+
+test('setFixedPosition is false', () => {
+  const {root, component, mockFoundation} = setupTest();
+  component.setFixedPosition(false);
+  assert.isFalse(root.classList.contains(cssClasses.FIXED));
+  td.verify(mockFoundation.setFixedPosition(false));
 });
 
 test('setAnchorCorner', () => {
-  const {component} = setupTest();
+  const {component, mockFoundation} = setupTest();
   component.setAnchorCorner(MenuSurfaceCorner.TOP_START);
-  // The method sets private variable on the foundation, nothing to verify.
+  td.verify(mockFoundation.setAnchorCorner(MenuSurfaceCorner.TOP_START));
 });
 
 test('setAnchorMargin', () => {
-  const {component} = setupTest();
+  const {component, mockFoundation} = setupTest();
   component.setAnchorMargin({top: 0, right: 0, bottom: 0, left: 0});
-  // The method sets private variable on the foundation, nothing to verify.
+  td.verify(mockFoundation.setAnchorMargin({top: 0, right: 0, bottom: 0, left: 0}));
 });
 
 test('setQuickOpen', () => {
-  const {component} = setupTest();
+  const {component, mockFoundation} = setupTest();
   component.quickOpen = false;
-  // The method sets private variable on the foundation, nothing to verify.
+  td.verify(mockFoundation.setQuickOpen(false));
 });
 
 test('foundationAdapter#addClass adds a class to the root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
-  assert.isOk(root.classList.contains('foo'));
+  assert.isTrue(root.classList.contains('foo'));
 });
 
 test('adapter#removeClass removes a class from the root element', () => {
   const {root, component} = setupTest();
   root.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClass('foo');
-  assert.isNotOk(root.classList.contains('foo'));
+  assert.isFalse(root.classList.contains('foo'));
 });
 
 test('adapter#hasClass returns true if the root element has specified class', () => {
   const {root, component} = setupTest();
   root.classList.add('foo');
-  assert.isOk(component.getDefaultFoundation().adapter_.hasClass('foo'));
+  assert.isTrue(component.getDefaultFoundation().adapter_.hasClass('foo'));
 });
 
 test('adapter#hasClass returns false if the root element does not have specified class', () => {
   const {component} = setupTest();
-  assert.isNotOk(component.getDefaultFoundation().adapter_.hasClass('foo'));
+  assert.isFalse(component.getDefaultFoundation().adapter_.hasClass('foo'));
 });
 
 test('adapter#getInnerDimensions returns the dimensions of the container', () => {
@@ -200,7 +239,7 @@ test('adapter#isFocused returns whether the menu surface is focused', () => {
   const {root, component} = setupTest(true);
   document.body.appendChild(root);
   root.focus();
-  assert.isOk(component.getDefaultFoundation().adapter_.isFocused());
+  assert.isTrue(component.getDefaultFoundation().adapter_.isFocused());
   document.body.removeChild(root);
 });
 
@@ -261,7 +300,7 @@ test('adapter#hasAnchor returns true if the menu surface has an anchor', () => {
   const {root, component} = setupTest(true);
   anchor.appendChild(root);
   component.initialSyncWithDOM();
-  assert.isOk(component.getDefaultFoundation().adapter_.hasAnchor());
+  assert.isTrue(component.getDefaultFoundation().adapter_.hasAnchor());
 });
 
 test('adapter#hasAnchor returns false if it does not have an anchor', () => {
@@ -269,7 +308,7 @@ test('adapter#hasAnchor returns false if it does not have an anchor', () => {
   const {root, component} = setupTest(true);
   notAnAnchor.appendChild(root);
   component.initialSyncWithDOM();
-  assert.isNotOk(component.getDefaultFoundation().adapter_.hasAnchor());
+  assert.isFalse(component.getDefaultFoundation().adapter_.hasAnchor());
 });
 
 test('adapter#getAnchorDimensions returns the dimensions of the anchor element', () => {
@@ -291,12 +330,28 @@ test('adapter#getWindowDimensions returns the dimensions of the window', () => {
   document.body.removeChild(root);
 });
 
+test('adapter#getBodyDimensions returns the scroll position of the window when not scrolled', () => {
+  const {root, component} = setupTest(true);
+  document.body.appendChild(root);
+  assert.equal(component.getDefaultFoundation().adapter_.getBodyDimensions().height, document.body.clientHeight);
+  assert.equal(component.getDefaultFoundation().adapter_.getBodyDimensions().width, document.body.clientWidth);
+  document.body.removeChild(root);
+});
+
+test('adapter#getWindowScroll returns the scroll position of the window when not scrolled', () => {
+  const {root, component} = setupTest(true);
+  document.body.appendChild(root);
+  assert.equal(component.getDefaultFoundation().adapter_.getWindowDimensions().height, window.innerHeight);
+  assert.equal(component.getDefaultFoundation().adapter_.getWindowDimensions().width, window.innerWidth);
+  document.body.removeChild(root);
+});
+
 test('adapter#isRtl returns true for RTL documents', () => {
   const anchor = bel`<div dir="rtl" class="mdc-menu-surface--anchor"></div>`;
   const {root, component} = setupTest(true);
   anchor.appendChild(root);
   document.body.appendChild(anchor);
-  assert.isOk(component.getDefaultFoundation().adapter_.isRtl());
+  assert.isTrue(component.getDefaultFoundation().adapter_.isRtl());
   document.body.removeChild(anchor);
 });
 
@@ -305,7 +360,7 @@ test('adapter#isRtl returns false for explicit LTR documents', () => {
   const {root, component} = setupTest(true);
   anchor.appendChild(root);
   document.body.appendChild(anchor);
-  assert.isNotOk(component.getDefaultFoundation().adapter_.isRtl());
+  assert.isFalse(component.getDefaultFoundation().adapter_.isRtl());
   document.body.removeChild(anchor);
 });
 
@@ -314,8 +369,43 @@ test('adapter#isRtl returns false for implicit LTR documents', () => {
   const {root, component} = setupTest(true);
   anchor.appendChild(root);
   document.body.appendChild(anchor);
-  assert.isNotOk(component.getDefaultFoundation().adapter_.isRtl());
+  assert.isFalse(component.getDefaultFoundation().adapter_.isRtl());
   document.body.removeChild(anchor);
+});
+
+test('adapter#isElementInContainer returns true if element is in the menu surface', () => {
+  const anchor = bel`<div class="mdc-menu-surface--anchor"></div>`;
+  const {root, component} = setupTest(true);
+  const button = document.createElement('button');
+  root.appendChild(button);
+  anchor.appendChild(root);
+  document.body.appendChild(anchor);
+
+  assert.isTrue(component.getDefaultFoundation().adapter_.isElementInContainer(button));
+  document.body.removeChild(anchor);
+});
+
+test('adapter#isElementInContainer returns true if element is the menu surface', () => {
+  const anchor = bel`<div class="mdc-menu-surface--anchor"></div>`;
+  const {root, component} = setupTest(true);
+  anchor.appendChild(root);
+  document.body.appendChild(anchor);
+
+  assert.isTrue(component.getDefaultFoundation().adapter_.isElementInContainer(root));
+  document.body.removeChild(anchor);
+});
+
+test('adapter#isElementInContainer returns false if element is not in the menu surface', () => {
+  const anchor = bel`<div class="mdc-menu-surface--anchor"></div>`;
+  const {root, component} = setupTest(true);
+  const button = document.createElement('button');
+  anchor.appendChild(root);
+  document.body.appendChild(anchor);
+  document.body.appendChild(button);
+
+  assert.isFalse(component.getDefaultFoundation().adapter_.isElementInContainer(button));
+  document.body.removeChild(anchor);
+  document.body.removeChild(button);
 });
 
 test('adapter#setTransformOrigin sets the correct transform origin on the menu surface element', () => {
