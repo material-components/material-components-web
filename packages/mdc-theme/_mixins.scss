@@ -18,11 +18,11 @@
 
 // Applies the correct theme color style to the specified property.
 // $property is typically color or background-color, but can be any CSS property that accepts color values.
-// $style should be one of the map keys in $mdc-theme-property-values (_variables.scss), or a literal color value.
+// $style should be one of the map keys in $mdc-theme-property-values (_variables.scss), or a color value.
 // $edgeOptOut controls whether to feature-detect around Edge to avoid emitting CSS variables for it,
 // intended for use in cases where interactions with pseudo-element styles cause problems due to Edge bugs.
 @mixin mdc-theme-prop($property, $style, $important: false, $edgeOptOut: false) {
-  @if type-of($style) == "color" or $style == "currentColor" {
+  @if mdc-theme-is-valid-theme-prop-value_($style) {
     @if $important {
       #{$property}: $style !important;
     } @else {
