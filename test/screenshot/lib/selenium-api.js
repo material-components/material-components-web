@@ -26,7 +26,7 @@ const seleniumProto = require('../proto/selenium.pb').selenium.proto;
 
 const {Screenshot, TestFile, UserAgent} = mdcProto;
 const {CaptureState} = Screenshot;
-const {BrowserVendorType, FormFactorType, Navigator} = UserAgent;
+const {BrowserVendorType, Navigator} = UserAgent;
 const {RawCapabilities} = seleniumProto;
 
 const CbtApi = require('./cbt-api');
