@@ -68,7 +68,8 @@ class GitHubApi {
     }
 
     const screenshots = reportData.screenshots;
-    const numChanges =
+    const numUnchanged = screenshots.unchanged_screenshot_list.length;
+    const numChanged =
       screenshots.changed_screenshot_list.length +
       screenshots.added_screenshot_list.length +
       screenshots.removed_screenshot_list.length;
@@ -79,12 +80,12 @@ class GitHubApi {
     let description;
 
     if (reportFileUrl) {
-      if (numChanges > 0) {
+      if (numChanged > 0) {
         state = GitHubApi.PullRequestState.FAILURE;
-        description = `${numChanges} screenshots differ from PR's golden.json`;
+        description = `${numChanged.toLocaleString()} screenshots differ from PR's golden.json`;
       } else {
         state = GitHubApi.PullRequestState.SUCCESS;
-        description = "All screenshots match PR's golden.json";
+        description = `All ${numUnchanged.toLocaleString()} screenshots match PR's golden.json`;
       }
 
       targetUrl = meta.report_html_file.public_url;
