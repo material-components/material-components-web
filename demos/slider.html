@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2017 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Slider - Material Components Catalog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
+    <link rel="stylesheet" href="/assets/slider.css">
+    <script src="/ready.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  </head>
+  <body class="mdc-typography">
+    <header class="mdc-toolbar mdc-toolbar--fixed">
+      <div class="mdc-toolbar__row">
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+          <a href="/" class="catalog-back mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
+          <span class="mdc-toolbar__title catalog-title">Slider</span>
+        </section>
+      </div>
+    </header>
+    <main>
+      <div class="mdc-toolbar-fixed-adjust"></div>
+      <section class="hero">
+        <div id="hero-slider-wrapper">
+          <div id="hero-slider" class="mdc-slider" tabindex="0"
+               role="slider" aria-valuemin="0" aria-valuemax="50" aria-valuenow="20"
+               aria-label="Select Value">
+               <div class="mdc-slider__track">
+                <div class="mdc-slider__track-fill"></div>
+              </div>
+              <div class="mdc-slider__thumb">
+                <svg class="mdc-slider__thumb-handle" width="24" height="24">
+                  <circle cx="12" cy="12" r="6"></circle>
+                </svg>
+              </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="demo-root" class="example">
+        <h2>Continuous Slider</h2>
+        <div class="slider-example">
+            <div id="continuous-mdc-slider" class="mdc-slider" tabindex="0" role="slider"
+                 aria-valuemin="0" aria-valuemax="50" aria-valuenow="20"
+                 aria-label="Select Value">
+              <div class="mdc-slider__track">
+                <div class="mdc-slider__track-fill"></div>
+              </div>
+              <div class="mdc-slider__thumb">
+                <svg class="mdc-slider__thumb-handle" width="24" height="24">
+                  <circle cx="12" cy="12" r="6"></circle>
+                </svg>
+              </div>
+            </div>
+          <p>
+            Value from <code>MDCSlider:input</code> event: <span id="continuous-slider-value"></span>
+            <br>
+            Value from <code>MDCSlider:change</code> event: <span id="continuous-slider-committed-value"></span>
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <script src="/assets/material-components-web.js" async></script>
+    <script>
+      demoReady(function() {
+        mdc.slider.MDCSlider.attachTo(document.getElementById('hero-slider'));
+        
+        var demoRoot = document.getElementById('demo-root')
+
+        var continuousValue = demoRoot.querySelector('#continuous-slider-value');
+        var continuousCommittedValue = demoRoot.querySelector('#continuous-slider-committed-value');
+        var continuousSliderEl = demoRoot.querySelector('#continuous-mdc-slider');
+        var continuousSlider = new mdc.slider.MDCSlider(continuousSliderEl);
+        continuousSlider.listen('MDCSlider:input', function() {
+          continuousValue.textContent = continuousSlider.value;
+        });
+        continuousSlider.listen('MDCSlider:change', function() {
+          continuousCommittedValue.textContent = continuousSlider.value;
+        });
+      });
+    </script>
+  </body>
+</html>
