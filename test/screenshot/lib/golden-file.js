@@ -82,7 +82,7 @@ class GoldenFile {
 
     if (!this.suiteJson_[htmlFilePath]) {
       this.suiteJson_[htmlFilePath] = {
-        publicUrl: htmlFileUrl,
+        public_url: htmlFileUrl,
         screenshots: {},
       };
     }
