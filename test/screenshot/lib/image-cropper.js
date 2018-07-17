@@ -23,7 +23,7 @@ const TRIM_COLOR_CSS_VALUE = '#abc123'; // Value must match `$test-trim-color` i
  * match the trim color in order for that row or column to be cropped out.
  * @type {number}
  */
-const TRIM_COLOR_PIXEL_MATCH_PCT = 0.05;
+const TRIM_COLOR_PIXEL_MATCH_FRACTION = 0.05;
 
 /**
  * Maximum distance (0 to 255 inclusive) that a pixel's R, G, and B color channels can be from the corresponding
@@ -147,7 +147,7 @@ class ImageCropper {
     let foundTrimColor = false;
 
     for (const [rowIndex, row] of rows.entries()) {
-      const isTrimColor = this.getMatchPercentage_(row) >= TRIM_COLOR_PIXEL_MATCH_PCT;
+      const isTrimColor = this.getMatchPercentage_(row) >= TRIM_COLOR_PIXEL_MATCH_FRACTION;
 
       if (isTrimColor) {
         foundTrimColor = true;

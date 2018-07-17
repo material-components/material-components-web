@@ -18,6 +18,7 @@
 
 const Jimp = require('jimp');
 const UserAgentParser = require('useragent');
+const colors = require('colors/safe');
 const path = require('path');
 
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
@@ -38,6 +39,25 @@ const LocalStorage = require('./local-storage');
 const {Browser, Builder, By, until} = require('selenium-webdriver');
 const {CBT_CONCURRENCY_POLL_INTERVAL_MS, CBT_CONCURRENCY_MAX_WAIT_MS} = Constants;
 const {SELENIUM_FONT_LOAD_WAIT_MS} = Constants;
+
+/**
+ * @typedef {{
+ *   name: string,
+ *   color: !CliColor,
+ * }} CliStatus
+ */
+const CliStatuses = {
+  RUNNING: {name: 'Running', color: colors.cyan},
+  QUEUED: {name: 'Queued', color: colors.dim.cyan},
+  STARTING: {name: 'Starting', color: colors.dim.green},
+  STARTED: {name: 'Started', color: colors.green},
+  GET: {name: 'Get', color: colors.bold.white},
+  CROP: {name: 'Crop', color: colors.dim.white},
+  RETRY: {name: 'Retry', color: colors.red},
+  FINISHED: {name: 'Finished', color: colors.green},
+  FAILED: {name: 'Failed', color: colors.red},
+  QUITTING: {name: 'Quitting', color: colors.gray},
+};
 
 class SeleniumApi {
   constructor() {
@@ -93,8 +113,8 @@ class SeleniumApi {
       const queuedUserAgentAliases = queuedUserAgents.map((ua) => ua.alias);
       const runningUserAgentLoggable = getLoggableAliases(runningUserAgentAliases);
       const queuedUserAgentLoggable = getLoggableAliases(queuedUserAgentAliases);
-      console.log('Running user agents:', runningUserAgentLoggable);
-      console.log('Queued user agents:', queuedUserAgentLoggable);
+      this.logStatus_(CliStatuses.RUNNING, runningUserAgentLoggable);
+      this.logStatus_(CliStatuses.QUEUED, queuedUserAgentLoggable);
       await this.captureAllPagesInAllBrowsers_({reportData, userAgents: runningUserAgents});
     }
 
@@ -130,21 +150,21 @@ class SeleniumApi {
     const seleniumSessionId = session.getId();
     let changedScreenshots;
 
-    const logResult = (verb) => {
+    const logResult = (status) => {
       /* eslint-disable camelcase */
       const {os_name, os_version, browser_name, browser_version} = userAgent.navigator;
-      console.log(`${verb} ${browser_name} ${browser_version} on ${os_name} ${os_version}!`);
+      this.logStatus_(status, `${browser_name} ${browser_version} on ${os_name} ${os_version}!`);
       /* eslint-enable camelcase */
     };
 
     try {
       changedScreenshots = (await this.driveBrowser_({reportData, userAgent, driver})).changedScreenshots;
-      logResult('Finished');
+      logResult(CliStatuses.FINISHED);
     } catch (err) {
-      logResult('Failed');
+      logResult(CliStatuses.FAILED);
       throw err;
     } finally {
-      logResult('Quitting');
+      logResult(CliStatuses.QUITTING);
       await driver.quit();
     }
 
@@ -218,7 +238,7 @@ class SeleniumApi {
       driverBuilder.usingServer(this.cbtApi_.getSeleniumServerUrl());
     }
 
-    console.log(`Starting ${userAgent.alias}...`);
+    this.logStatus_(CliStatuses.STARTING, `${userAgent.alias}...`);
 
     /** @type {!IWebDriver} */
     const driver = await driverBuilder.build();
@@ -237,7 +257,7 @@ class SeleniumApi {
     userAgent.browser_version_value = browser_version;
     userAgent.image_filename_suffix = this.getImageFileNameSuffix_(userAgent);
 
-    console.log(`Started ${browser_name} ${browser_version} on ${os_name} ${os_version}!`);
+    this.logStatus_(CliStatuses.STARTED, `${browser_name} ${browser_version} on ${os_name} ${os_version}!`);
     /* eslint-enable camelcase */
 
     return driver;
@@ -339,13 +359,15 @@ class SeleniumApi {
    */
   async driveBrowser_({reportData, userAgent, driver}) {
     if (userAgent.form_factor_type === FormFactorType.DESKTOP) {
-      /** @type {!Window} */
-      const window = driver.manage().window();
+      // /** @type {!Window} */
+      // const window = driver.manage().window();
+
+      // driver.findElement(By.className('test-main--mobile-viewport'))
 
       // Resize the browser window to roughly match a mobile browser.
       // This reduces the byte size of the screenshot image, which speeds up the test significantly.
       // TODO(acdvorak): Set this value dynamically
-      await window.setRect({x: 0, y: 0, width: 400, height: 800}).catch(() => undefined);
+      // await window.setRect({x: 0, y: 0, width: 400, height: 800}).catch(() => undefined);
     }
 
     const meta = reportData.meta;
@@ -387,7 +409,6 @@ class SeleniumApi {
    * @private
    */
   async takeScreenshotWithRetries_({driver, userAgent, screenshot, meta}) {
-    const htmlFilePath = screenshot.html_file_path;
     let delayMs = 0;
 
     /** @type {?mdc.proto.DiffImageResult} */
@@ -399,12 +420,12 @@ class SeleniumApi {
     while (screenshot.retry_count <= screenshot.max_retries) {
       if (screenshot.retry_count > 0) {
         const {width, height} = diffImageResult.diff_image_dimensions;
-        const retryMsg = `Retrying ${htmlFilePath} > ${userAgent.alias}`;
+        const whichMsg = `${screenshot.actual_html_file.public_url} > ${userAgent.alias}`;
         const countMsg = `attempt ${screenshot.retry_count} of ${screenshot.max_retries}`;
         const pixelMsg = `${changedPixelCount.toLocaleString()} pixels differed`;
         const deltaMsg = `${diffImageResult.changed_pixel_percentage}% of ${width}x${height}`;
-        console.warn(`${retryMsg} (${countMsg}). ${pixelMsg} (${deltaMsg})`);
-        delayMs = 1000;
+        this.logStatus_(CliStatuses.RETRY, `${whichMsg} (${countMsg}). ${pixelMsg} (${deltaMsg})`);
+        delayMs = 500;
       }
 
       screenshot.actual_image_file = await this.takeScreenshotWithoutRetries_({
@@ -458,12 +479,29 @@ class SeleniumApi {
    * @private
    */
   async capturePageAsPng_({driver, userAgent, url, delayMs = 0}) {
-    console.log(`GET ${url} > ${userAgent.alias}...`);
+    this.logStatus_(CliStatuses.GET, `${url} > ${userAgent.alias}...`);
 
     const isOnline = await this.cli_.isOnline();
-    const fontTimeoutMs = isOnline ? SELENIUM_FONT_LOAD_WAIT_MS : 1;
+    const fontTimeoutMs = isOnline ? SELENIUM_FONT_LOAD_WAIT_MS : 500;
 
-    await driver.get(url);
+    /** @type {!Window} */
+    const window = driver.manage().window();
+
+    // TODO(acdvorak): Find a better way to do this
+    const fullPageComponentNames = [
+      'backdrop', 'banner', 'bottom-app-bar', 'bottom-navigation-sheet', 'data-table', 'dialog', 'drawer', 'grid-list',
+      'image-list', 'layout-grid', 'linear-progress', 'side-sheet', 'snackbar', 'tabs', 'top-app-bar',
+    ];
+    const isFullPage = new RegExp(`/mdc-(${fullPageComponentNames.join('|')})/`).test(url);
+    const rect = isFullPage
+      ? {x: 0, y: 0, width: 1366, height: 768}
+      : {x: 0, y: 0, width: 400, height: 768};
+
+    await Promise.all([
+      driver.get(url),
+      window.setRect(rect).catch(() => undefined),
+    ]);
+
     await driver.wait(until.elementLocated(By.css('[data-fonts-loaded]')), fontTimeoutMs).catch(() => 0);
 
     if (delayMs > 0) {
@@ -479,9 +517,9 @@ class SeleniumApi {
     const {width: uncroppedWidth, height: uncroppedHeight} = uncroppedJimpImage.bitmap;
     const {width: croppedWidth, height: croppedHeight} = croppedJimpImage.bitmap;
 
-    console.info(`
-Cropped ${url} > ${userAgent.alias} image from ${uncroppedWidth}x${uncroppedHeight} to ${croppedWidth}x${croppedHeight}
-`.trim());
+    const message = `${url} > ${userAgent.alias} screenshot from ` +
+      `${uncroppedWidth}x${uncroppedHeight} to ${croppedWidth}x${croppedHeight}`;
+    this.logStatus_(CliStatuses.CROP, message);
 
     return croppedImageBuffer;
   }
@@ -493,6 +531,16 @@ Cropped ${url} > ${userAgent.alias} image from ${uncroppedWidth}x${uncroppedHeig
    */
   async sleep_(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  /**
+   * @param {!CliStatus} status
+   * @param {*} args
+   * @private
+   */
+  logStatus_(status, ...args) {
+    const maxWidth = Object.values(CliStatuses).map((status) => status.name.length).sort().reverse()[0];
+    console.log(status.color(status.name.padEnd(maxWidth, ' ')), ...args);
   }
 }
 

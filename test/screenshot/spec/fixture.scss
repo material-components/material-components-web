@@ -34,7 +34,7 @@ $test-grid-color: #dddddd;
 
 .test-main--mobile-viewport {
   width: 350px; // fits 2 columns of buttons within a Galaxy S7 viewport
-  height: 630px; // fits 8 rows of buttons within a Galaxy S7 viewport
+  height: 590px; // fits 8 rows of buttons within a Galaxy S7 viewport
   margin: 5px 0 5px 5px; // Extra padding ensures that CBT's "chromeless" screenshots don't get cut off
   border: 1px solid $test-trim-color;
   overflow: hidden;
