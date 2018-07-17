@@ -2,21 +2,14 @@
 title: "Tab Scroller"
 layout: detail
 section: components
-excerpt: "Tab Scroller allows for smoothing animated scrolling of tab content"
-iconId: tab
-path: /catalog/tab-scroller/
+excerpt: "Allows for smooth native and animated scrolling of tabs."
+iconId: tabs
+path: /catalog/tabs/scroller/
 -->
 
 # Tab Scroller
 
-<!--<div class="article__asset">
-  <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/tab-scroller.html">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/tab-scroller.png" width="363" alt="Tab scroller screenshot">
-  </a>
-</div>-->
-
-Tab Scroller allows for smooth animated scrolling of tab content.
+A Tab Scroller allows for smooth native and animated scrolling of tabs.
 
 ## Installation
 ```
