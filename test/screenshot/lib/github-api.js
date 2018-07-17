@@ -107,7 +107,7 @@ class GitHubApi {
 
     return await this.createStatus_({
       state: GitHubApi.PullRequestState.ERROR,
-      target_url: `https://travis-ci.org/material-components/material-components-web/jobs/${process.env.TRAVIS_JOB_ID}`,
+      targetUrl: `https://travis-ci.org/material-components/material-components-web/jobs/${process.env.TRAVIS_JOB_ID}`,
       description: 'Error running screenshot tests',
     });
   }
