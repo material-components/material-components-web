@@ -129,8 +129,8 @@ class Logger {
     console.log('');
     if (this.isTravisJob_()) {
       // See https://github.com/travis-ci/docs-travis-ci-com/issues/949#issuecomment-276755003
-      console.log(`travis_fold:start:${foldId}\n${colorMessage}`);
-      console.log(`travis_time:start:${hash}`);
+      console.log(`\e[0Ktravis_fold:start:${foldId}\n${colorMessage}`);
+      console.log(`\e[0Ktravis_time:start:${hash}`);
     } else {
       console.log(colorMessage);
     }
@@ -151,7 +151,7 @@ class Logger {
     const durationNanos = finishNanos - startNanos;
 
     // See https://github.com/travis-ci/docs-travis-ci-com/issues/949#issuecomment-276755003
-    console.log(`travis_fold:end:${foldId}`);
+    console.log(`\e[0Ktravis_fold:end:${foldId}`);
     console.log(`travis_time:end:${hash}:start=${startNanos},finish=${finishNanos},duration=${durationNanos}`);
   }
 
