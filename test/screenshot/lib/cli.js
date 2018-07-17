@@ -483,7 +483,7 @@ that you know are going to have diffs.
    */
   async parseGoldenDiffBase() {
     /** @type {?mdc.proto.GitRevision} */
-    const travisGitRevision = await this.getTravisGitRevision_();
+    const travisGitRevision = await this.getTravisGitRevision();
     if (travisGitRevision) {
       return DiffBase.create({
         type: DiffBase.Type.GIT_REVISION,
@@ -568,9 +568,8 @@ that you know are going to have diffs.
 
   /**
    * @return {?Promise<!mdc.proto.GitRevision>}
-   * @private
    */
-  async getTravisGitRevision_() {
+  async getTravisGitRevision() {
     const travisBranch = process.env.TRAVIS_BRANCH;
     const travisTag = process.env.TRAVIS_TAG;
     const travisPrNumber = Number(process.env.TRAVIS_PULL_REQUEST);
@@ -578,29 +577,38 @@ that you know are going to have diffs.
     const travisPrSha = process.env.TRAVIS_PULL_REQUEST_SHA;
 
     if (travisPrNumber) {
+      const commit = await this.gitRepo_.getFullCommitHash(travisPrSha);
+      const author = await this.gitRepo_.getCommitAuthor(commit);
       return GitRevision.create({
         type: GitRevision.Type.TRAVIS_PR,
         golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
-        commit: await this.gitRepo_.getFullCommitHash(travisPrSha),
+        commit,
+        author,
         branch: travisPrBranch || travisBranch,
         pr_number: travisPrNumber,
       });
     }
 
     if (travisTag) {
+      const commit = await this.gitRepo_.getFullCommitHash(travisTag);
+      const author = await this.gitRepo_.getCommitAuthor(commit);
       return GitRevision.create({
         type: GitRevision.Type.REMOTE_TAG,
         golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
-        commit: await this.gitRepo_.getFullCommitHash(travisTag),
+        commit,
+        author,
         tag: travisTag,
       });
     }
 
     if (travisBranch) {
+      const commit = await this.gitRepo_.getFullCommitHash(travisBranch);
+      const author = await this.gitRepo_.getCommitAuthor(commit);
       return GitRevision.create({
         type: GitRevision.Type.LOCAL_BRANCH,
         golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
-        commit: await this.gitRepo_.getFullCommitHash(travisBranch),
+        commit,
+        author,
         branch: travisBranch,
       });
     }
@@ -641,14 +649,17 @@ that you know are going to have diffs.
    * @return {!mdc.proto.DiffBase}
    * @private
    */
-  createCommitDiffBase_(commit, goldenJsonFilePath) {
+  async createCommitDiffBase_(commit, goldenJsonFilePath) {
+    const author = await this.gitRepo_.getCommitAuthor(commit);
+
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
       git_revision: GitRevision.create({
         type: GitRevision.Type.COMMIT,
         input_string: `${commit}:${goldenJsonFilePath}`, // TODO(acdvorak): Document the ':' separator format
         golden_json_file_path: goldenJsonFilePath,
-        commit: commit,
+        commit,
+        author,
       }),
     });
   }
@@ -664,6 +675,7 @@ that you know are going to have diffs.
     const remote = allRemoteNames.find((curRemoteName) => remoteRef.startsWith(curRemoteName + '/'));
     const branch = remoteRef.substr(remote.length + 1); // add 1 for forward-slash separator
     const commit = await this.gitRepo_.getFullCommitHash(remoteRef);
+    const author = await this.gitRepo_.getCommitAuthor(commit);
 
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
@@ -672,6 +684,7 @@ that you know are going to have diffs.
         input_string: `${remoteRef}:${goldenJsonFilePath}`, // TODO(acdvorak): Document the ':' separator format
         golden_json_file_path: goldenJsonFilePath,
         commit,
+        author,
         remote,
         branch,
       }),
@@ -686,6 +699,7 @@ that you know are going to have diffs.
    */
   async createRemoteTagDiffBase_(tagRef, goldenJsonFilePath) {
     const commit = await this.gitRepo_.getFullCommitHash(tagRef);
+    const author = await this.gitRepo_.getCommitAuthor(commit);
 
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
@@ -694,6 +708,7 @@ that you know are going to have diffs.
         input_string: `${tagRef}:${goldenJsonFilePath}`, // TODO(acdvorak): Document the ':' separator format
         golden_json_file_path: goldenJsonFilePath,
         commit,
+        author,
         remote: 'origin',
         tag: tagRef,
       }),
@@ -708,6 +723,8 @@ that you know are going to have diffs.
    */
   async createLocalBranchDiffBase_(branch, goldenJsonFilePath) {
     const commit = await this.gitRepo_.getFullCommitHash(branch);
+    const author = await this.gitRepo_.getCommitAuthor(commit);
+
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
       git_revision: GitRevision.create({
@@ -715,6 +732,7 @@ that you know are going to have diffs.
         input_string: `${branch}:${goldenJsonFilePath}`, // TODO(acdvorak): Document the ':' separator format
         golden_json_file_path: goldenJsonFilePath,
         commit,
+        author,
         branch,
       }),
     });

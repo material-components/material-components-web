@@ -25,6 +25,8 @@ const {FormFactorType, OsVendorType, BrowserVendorType, BrowserVersionType} = Us
 const {CbtAccount, CbtActiveTestCounts, CbtConcurrencyStats} = cbtProto;
 const {RawCapabilities} = seleniumProto;
 
+const Cli = require('./cli');
+
 const MDC_CBT_USERNAME = process.env.MDC_CBT_USERNAME;
 const MDC_CBT_AUTHKEY = process.env.MDC_CBT_AUTHKEY;
 const REST_API_BASE_URL = 'https://crossbrowsertesting.com/api/v3';
@@ -36,6 +38,12 @@ let allBrowsersPromise;
 
 class CbtApi {
   constructor() {
+    /**
+     * @type {!Cli}
+     * @private
+     */
+    this.cli_ = new Cli();
+
     this.validateEnvVars_();
   }
 
@@ -125,12 +133,12 @@ https://crossbrowsertesting.com/account
     /** @type {{device: !cbt.proto.CbtDevice, browser: !cbt.proto.CbtBrowser}} */
     const matchingCbtUserAgent = await this.getMatchingCbtUserAgent_(userAgent);
 
+    const {cbtBuildName, cbtTestName} = await this.getCbtTestNameAndBuildNameForReport_(meta);
+
     /** @type {!selenium.proto.RawCapabilities} */
     const defaultCaps = {
-      // TODO(acdvorak): Implement
-      name: undefined,
-      // TODO(acdvorak): Figure out why this value is an empty string
-      build: meta.snapshot_diff_base.input_string,
+      name: `${cbtTestName} - `,
+      build: cbtBuildName,
 
       // TODO(acdvorak): Expose these as CLI flags
       record_video: true,
@@ -285,6 +293,47 @@ https://crossbrowsertesting.com/account
 
     // Latest
     return matchingCbtUserAgents[0];
+  }
+
+  /**
+   * @param {!mdc.proto.ReportMeta} meta
+   * @return {{cbtBuildName: string, cbtTestName: string}}
+   * @private
+   */
+  async getCbtTestNameAndBuildNameForReport_(meta) {
+    /** @type {?mdc.proto.GitRevision} */
+    const travisGitRev = await this.cli_.getTravisGitRevision();
+    if (travisGitRev) {
+      return this.getCbtTestNameAndBuildNameForGitRev_(travisGitRev);
+    }
+
+    const snapshotDiffBase = meta.snapshot_diff_base;
+    const snapshotGitRev = snapshotDiffBase.git_revision;
+    if (snapshotGitRev) {
+      return this.getCbtTestNameAndBuildNameForGitRev_(snapshotGitRev);
+    }
+
+    const serialized = JSON.stringify(meta, null, 2);
+    throw new Error(`Unable to generate CBT test/build name for metadata:\n${serialized}`);
+  }
+
+  /**
+   * @param {!mdc.proto.GitRevision} gitRev
+   * @return {{cbtBuildName: string, cbtTestName: string}}
+   * @private
+   */
+  getCbtTestNameAndBuildNameForGitRev_(gitRev) {
+    const nameParts = [
+      gitRev.author.email,
+      gitRev.commit ? gitRev.commit.substr(0, 7) : null,
+      gitRev.branch ? gitRev.branch : null,
+      gitRev.tag ? gitRev.tag : null,
+      gitRev.pr_number ? `PR #${gitRev.pr_number}` : null,
+    ].filter((part) => part);
+    return {
+      cbtTestName: nameParts.slice(0, -1).join(' - '),
+      cbtBuildName: nameParts.slice(-1)[0],
+    };
   }
 
   /**
