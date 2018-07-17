@@ -198,8 +198,9 @@ Since MDC Select uses native `<select>` and `<option>` elements, simply add the 
 | Class | Description |
 | --- | --- |
 | `mdc-select` | Mandatory. |
-| `mdc-select--box` | Styles the select as a box select. |
-| `mdc-select--disabled` | Styles the select as disabled. This class should be applied to the root element when the `disabled` attribute is applied to the `<select>` element. |
+| `mdc-select--box` | Optional. Styles the select as a box select. |
+| `mdc-select--disabled` | Optional. Styles the select as disabled. This class should be applied to the root element when the `disabled` attribute is applied to the `<select>` element. |
+| `mdc-select--outlined` | Optional. Styles the select as outlined select. |
 | `mdc-select__native-control` | Mandatory. The native `<select>` element. |
 
 ### Sass Mixins
