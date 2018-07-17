@@ -20,7 +20,6 @@ const Jimp = require('jimp');
 const childProcess = require('mz/child_process');
 const detectPort = require('detect-port');
 const express = require('express');
-const mkdirp = require('mkdirp');
 const os = require('os');
 const osName = require('os-name');
 const path = require('path');
@@ -387,11 +386,12 @@ class ReportBuilder {
     const localDiffImageBaseDir = path.join(TEMP_DIR, 'mdc-web/diffs', remoteUploadBaseDir);
     const localReportBaseDir = path.join(TEMP_DIR, 'mdc-web/report', remoteUploadBaseDir);
 
-    // TODO(acdvorak): Centralize file writing and automatically call mkdirp
-    mkdirp.sync(path.dirname(localAssetBaseDir));
-    mkdirp.sync(path.dirname(localScreenshotImageBaseDir));
-    mkdirp.sync(path.dirname(localDiffImageBaseDir));
-    mkdirp.sync(path.dirname(localReportBaseDir));
+    this.localStorage_.mkdirpForDirsSync(
+      localAssetBaseDir,
+      localScreenshotImageBaseDir,
+      localDiffImageBaseDir,
+      localReportBaseDir,
+    );
 
     const mdcVersionString = require('../../../lerna.json').version;
     const hostOsName = osName(os.platform(), os.release());

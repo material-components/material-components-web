@@ -16,6 +16,7 @@
 
 'use strict';
 
+const del = require('del');
 const fs = require('mz/fs');
 const fsx = require('fs-extra');
 const glob = require('glob');
@@ -62,7 +63,7 @@ class LocalStorage {
    */
   async getTestPageDestinationPaths(reportMeta) {
     const cwd = reportMeta.local_asset_base_dir;
-    return glob.sync('**/mdc-*/**/*.html', {cwd, nodir: true});
+    return glob.sync('**/spec/mdc-*/**/*.html', {cwd, nodir: true});
   }
 
   /**
@@ -78,11 +79,12 @@ class LocalStorage {
   /**
    * @param {string} filePath
    * @param {!Buffer} fileContent
+   * @param {?string=} encoding
    * @return {!Promise<void>}
    */
-  async writeBinaryFile(filePath, fileContent) {
+  async writeBinaryFile(filePath, fileContent, encoding = null) {
     mkdirp.sync(path.dirname(filePath));
-    await fs.writeFile(filePath, fileContent, {encoding: null});
+    await fs.writeFile(filePath, fileContent, {encoding});
   }
 
   /**
@@ -126,6 +128,36 @@ class LocalStorage {
    */
   async copy(src, dest) {
     return fsx.copy(src, dest);
+  }
+
+  /**
+   * @param {string|!Array<string>} pathPatterns
+   * @return {!Promise<*>}
+   */
+  async delete(pathPatterns) {
+    return del(pathPatterns);
+  }
+
+  /**
+   * @param {string} filePath
+   * @return {!Promise<boolean>}
+   */
+  async exists(filePath) {
+    return fs.exists(filePath);
+  }
+
+  /**
+   * @param {string} filePaths
+   */
+  mkdirpForFilesSync(...filePaths) {
+    filePaths.forEach((filePath) => mkdirp.sync(path.dirname(filePath)));
+  }
+
+  /**
+   * @param {string} dirPaths
+   */
+  mkdirpForDirsSync(...dirPaths) {
+    dirPaths.forEach((dirPath) => mkdirp.sync(dirPath));
   }
 
   /**
