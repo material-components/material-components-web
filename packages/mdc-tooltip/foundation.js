@@ -38,7 +38,7 @@ class MDCTooltipFoundation extends MDCFoundation {
       getControllerWidth: () => /* type: number */ 0,
       getControllerHeight: () => /* type: number */ 0,
       getControllerBoundingRect: () => /* {width: number, height: number} */
-      ({width: 0, height: 0, offsetTop: 0, offsetBottom: 0}),
+        ({width: 0, height: 0, offsetTop: 0, offsetBottom: 0}),
       setStyle: (/* propertyName: string, value: string */) => {},
     });
   }
@@ -111,7 +111,7 @@ class MDCTooltipFoundation extends MDCFoundation {
    * Click handler to hide tooltip on user action.
    */
   handleClick() {
-      this.hide();
+    this.hide();
   }
 
   calcPosition_() {
@@ -139,7 +139,7 @@ class MDCTooltipFoundation extends MDCFoundation {
 
     return {
       top,
-      left
+      left,
     };
   }
 
@@ -168,7 +168,7 @@ class MDCTooltipFoundation extends MDCFoundation {
   showDelayed() {
     this.checkHideFlag_ = false;
     this.showTimeout_ = setTimeout(() => {
-      if(!this.checkHideFlag_) {
+      if (!this.checkHideFlag_) {
         this.show();
       }
     }, this.showDelay);

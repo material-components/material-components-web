@@ -138,7 +138,7 @@ class MDCTooltip extends MDCComponent {
       }
     }
 
-    document.body.appendChild(this.root_)
+    document.body.appendChild(this.root_);
   }
 
   /**

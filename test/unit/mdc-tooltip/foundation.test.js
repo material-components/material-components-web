@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {assert, expect} from 'chai';
+import {assert} from 'chai';
 import td from 'testdouble';
 
 import MDCTooltipFoundation from '../../../packages/mdc-tooltip/foundation';
