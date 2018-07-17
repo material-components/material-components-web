@@ -44,8 +44,7 @@
   transform: translateX(0);
 }
 
-.mdc-drawer--animating-close,
-.mdc-drawer--animating-open,
+.mdc-drawer--dismissible,
 .mdc-drawer-app-content {
   transform-origin: top left;
   will-change: transform;
@@ -65,7 +64,7 @@
 }
 
 .mdc-drawer--animating-open {
-  transition: mdc-animation-standard(transform, $mdc-drawer-animation-enter);
+  transition: mdc-animation-standard(all, $mdc-drawer-animation-enter);
 }
 
 .mdc-drawer-app-content--animating-open {
