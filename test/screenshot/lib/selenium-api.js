@@ -47,7 +47,7 @@ const {SELENIUM_FONT_LOAD_WAIT_MS} = Constants;
  * }} CliStatus
  */
 const CliStatuses = {
-  ACTIVE: {name: 'Running', color: colors.bold.cyan},
+  ACTIVE: {name: 'Active', color: colors.bold.cyan},
   QUEUED: {name: 'Queued', color: colors.cyan},
   STARTING: {name: 'Starting', color: colors.green},
   STARTED: {name: 'Started', color: colors.bold.green},
