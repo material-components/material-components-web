@@ -20,6 +20,8 @@ const colors = require('colors/safe');
 const crypto = require('crypto');
 const path = require('path');
 
+const Duration = require('./duration');
+
 /**
  * @typedef {(function(string):string|{
  *   enable: !CliColor,
@@ -151,18 +153,19 @@ class Logger {
       return;
     }
 
-    const timerId = this.getFoldTimerId_(foldId);
-    const startNanos = this.foldStartTimesMs_.get(foldId) * 1000 * 1000;
-    const finishNanos = Date.now() * 1000 * 1000;
-    const durationNanos = finishNanos - startNanos;
-
-    // Undocumented Travis CI job logging features. See:
+    // Undocumented Travis CI job logging feature. See:
     // https://github.com/travis-ci/docs-travis-ci-com/issues/949#issuecomment-276755003
-    // https://github.com/rspec/rspec-support/blob/5a1c6756a9d8322fc18639b982e00196f452974d/script/travis_functions.sh
     console.log(`travis_fold:end:${foldId}`);
 
-    if (durationNanos) {
-      // TODO(acdvorak): Figure out why Travis doesn't display this in the job log UI
+    const startMs = this.foldStartTimesMs_.get(foldId);
+    if (startMs) {
+      const timerId = this.getFoldTimerId_(foldId);
+      const startNanos = Duration.millis(startMs).toNanos();
+      const finishNanos = Duration.millis(Date.now()).toNanos();
+      const durationNanos = finishNanos - startNanos;
+
+      // Undocumented Travis CI job logging feature. See:
+      // https://github.com/rspec/rspec-support/blob/5a1c6756a9d8322fc18639b982e00196f452974d/script/travis_functions.sh
       console.log(`travis_time:end:${timerId}:start=${startNanos},finish=${finishNanos},duration=${durationNanos}`);
     }
   }
