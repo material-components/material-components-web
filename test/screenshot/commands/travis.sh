@@ -4,7 +4,7 @@ function exit_if_external_pr() {
   if [[ -n "$TRAVIS_PULL_REQUEST_SLUG" ]] && [[ ! "$TRAVIS_PULL_REQUEST_SLUG" =~ ^material-components/ ]]; then
     echo 'Screenshot tests are not supported on external PRs.'
     echo 'Skipping screenshot tests.'
-    exit
+    exit 19
   fi
 }
 

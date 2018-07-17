@@ -27,7 +27,7 @@ module.exports = {
     if (travisPrSlug && !travisPrSlug.startsWith('material-components/')) {
       console.log('Screenshot tests are not supported on external PRs.');
       console.log('Skipping screenshot tests.');
-      return ExitCode.OK;
+      return ExitCode.UNSUPPORTED_EXTERNAL_PR;
     }
 
     await BuildCommand.runAsync();
@@ -41,7 +41,7 @@ module.exports = {
     if (!isTestable) {
       console.log(`PR #${prNumber} does not contain any testable source file changes.`);
       console.log('Skipping screenshot tests.');
-      return;
+      return ExitCode.OK;
     }
 
     await gitHubApi.setPullRequestStatus(reportData);
