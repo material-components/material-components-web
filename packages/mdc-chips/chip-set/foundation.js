@@ -18,7 +18,7 @@
 import MDCFoundation from '@material/base/foundation';
 import MDCChipSetAdapter from './adapter';
 // eslint-disable-next-line no-unused-vars
-import {MDCChip, MDCChipFoundation} from '../chip/index';
+import {MDCChipFoundation, MDCChipInteractionEventType} from '../chip/foundation';
 import {strings, cssClasses} from './constants';
 
 /**
@@ -46,6 +46,7 @@ class MDCChipSetFoundation extends MDCFoundation {
       hasClass: () => {},
       registerInteractionHandler: () => {},
       deregisterInteractionHandler: () => {},
+      removeChip: () => {},
     });
   }
 
@@ -56,44 +57,88 @@ class MDCChipSetFoundation extends MDCFoundation {
     super(Object.assign(MDCChipSetFoundation.defaultAdapter, adapter));
 
     /**
-     * The active chips in the set. Only used for choice chip set or filter chip set.
-     * @private {!Array<!MDCChip>}
+     * The selected chips in the set. Only used for choice chip set or filter chip set.
+     * @private {!Array<!MDCChipFoundation>}
      */
-    this.activeChips_ = [];
+    this.selectedChips_ = [];
 
-    /** @private {function(!Event): undefined} */
+    /** @private {function(!MDCChipInteractionEventType): undefined} */
     this.chipInteractionHandler_ = (evt) => this.handleChipInteraction_(evt);
+    /** @private {function(!MDCChipInteractionEventType): undefined} */
+    this.chipRemovalHandler_ = (evt) => this.handleChipRemoval_(evt);
   }
 
   init() {
     this.adapter_.registerInteractionHandler(
       MDCChipFoundation.strings.INTERACTION_EVENT, this.chipInteractionHandler_);
+    this.adapter_.registerInteractionHandler(
+      MDCChipFoundation.strings.REMOVAL_EVENT, this.chipRemovalHandler_);
   }
 
   destroy() {
     this.adapter_.deregisterInteractionHandler(
       MDCChipFoundation.strings.INTERACTION_EVENT, this.chipInteractionHandler_);
+    this.adapter_.deregisterInteractionHandler(
+      MDCChipFoundation.strings.REMOVAL_EVENT, this.chipRemovalHandler_);
+  }
+
+  /**
+   * Selects the given chip. Deselects all other chips if the chip set is of the choice variant.
+   * @param {!MDCChipFoundation} chipFoundation
+   */
+  select(chipFoundation) {
+    if (this.adapter_.hasClass(cssClasses.CHOICE)) {
+      this.deselectAll_();
+    }
+    chipFoundation.setSelected(true);
+    this.selectedChips_.push(chipFoundation);
+  }
+
+  /**
+   * Deselects the given chip.
+   * @param {!MDCChipFoundation} chipFoundation
+   */
+  deselect(chipFoundation) {
+    const index = this.selectedChips_.indexOf(chipFoundation);
+    if (index >= 0) {
+      this.selectedChips_.splice(index, 1);
+    }
+    chipFoundation.setSelected(false);
+  }
+
+  /** Deselects all selected chips. */
+  deselectAll_() {
+    this.selectedChips_.forEach((chipFoundation) => {
+      chipFoundation.setSelected(false);
+    });
+    this.selectedChips_.length = 0;
   }
 
   /**
    * Handles a chip interaction event
-   * @param {!Object} evt
+   * @param {!MDCChipInteractionEventType} evt
    * @private
    */
   handleChipInteraction_(evt) {
-    if (!this.adapter_.hasClass(cssClasses.CHOICE)) {
-      return;
+    const chipFoundation = evt.detail.chip.foundation;
+    if (this.adapter_.hasClass(cssClasses.CHOICE) || this.adapter_.hasClass(cssClasses.FILTER)) {
+      if (chipFoundation.isSelected()) {
+        this.deselect(chipFoundation);
+      } else {
+        this.select(chipFoundation);
+      }
     }
+  }
+
+  /**
+   * Handles the event when a chip is removed.
+   * @param {!MDCChipInteractionEventType} evt
+   * @private
+   */
+  handleChipRemoval_(evt) {
     const {chip} = evt.detail;
-    if (this.activeChips_.length === 0) {
-      this.activeChips_[0] = chip;
-    } else if (this.activeChips_[0] !== chip) {
-      this.activeChips_[0].toggleActive();
-      this.activeChips_[0] = chip;
-    } else {
-      this.activeChips_ = [];
-    }
-    chip.toggleActive();
+    this.deselect(chip.foundation);
+    this.adapter_.removeChip(chip);
   }
 }
 

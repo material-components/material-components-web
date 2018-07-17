@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2017 Google Inc. All Rights Reserved.
+ * Copyright 2018 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ class MDCLineRippleFoundation extends MDCFoundation {
       addClass: () => {},
       removeClass: () => {},
       hasClass: () => {},
-      setAttr: () => {},
+      setStyle: () => {},
       registerEventHandler: () => {},
       deregisterEventHandler: () => {},
     });
@@ -74,13 +74,10 @@ class MDCLineRippleFoundation extends MDCFoundation {
 
   /**
    * Sets the center of the ripple animation to the given X coordinate.
-   * @param {!number} xCoordinate
+   * @param {number} xCoordinate
    */
   setRippleCenter(xCoordinate) {
-    const attributeString =
-        `transform-origin: ${xCoordinate}px center`;
-
-    this.adapter_.setAttr('style', attributeString);
+    this.adapter_.setStyle('transform-origin', `${xCoordinate}px center`);
   }
 
   /**

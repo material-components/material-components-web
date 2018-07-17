@@ -17,17 +17,17 @@ MDC Ripple also works without JavaScript, where it gracefully degrades to a simp
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/motion/choreography.html#choreography-radial-reaction">Material Design guidelines: Choreography</a>
+    <a href="https://material.io/go/design-states">Material Design guidelines: States</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/ripple.html">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/ripple">Demo</a>
   </li>
 </ul>
 
 ## Installation
 
 ```
-npm install --save @material/ripple
+npm install @material/ripple
 ```
 
 ## Usage
@@ -44,7 +44,7 @@ CSS Class | Description
 `mdc-ripple-surface--primary` | Sets the ripple color to the theme primary color
 `mdc-ripple-surface--accent` | Sets the ripple color to the theme secondary color
 
-### Sass Mixins
+### Sass APIs
 
 In order to fully style the ripple effect for different states (hover/focus/pressed), the following mixins must be included:
 
@@ -115,6 +115,12 @@ Mixin | Description
 
 > _NOTE_: `$has-nested-focusable-element` defaults to `false` but should be set to `true` if the component contains a focusable element (e.g. an input) inside the root element.
 
+#### Sass Functions
+
+Function | Description
+--- | ---
+`mdc-states-opacity($color, $state)` | Returns the appropriate default opacity to apply to the given color in the given state (hover, focus, press, selected, or activated)
+
 ### `MDCRipple`
 
 The `MDCRipple` JavaScript component allows for programmatic activation / deactivation of the ripple, for interdependent interaction between
@@ -144,6 +150,8 @@ Method Signature | Description
 `activate() => void` | Proxies to the foundation's `activate` method
 `deactivate() => void` | Proxies to the foundation's `deactivate` method
 `layout() => void` | Proxies to the foundation's `layout` method
+`handleFocus() => void` | Handles focus event on the ripple surface
+`handleBlur() => void` | Handles blur event on the ripple surface
 
 ### `MDCRippleAdapter`
 

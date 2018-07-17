@@ -34,7 +34,7 @@ test('exports cssClasses', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCChipSetFoundation, [
-    'hasClass', 'registerInteractionHandler', 'deregisterInteractionHandler',
+    'hasClass', 'registerInteractionHandler', 'deregisterInteractionHandler', 'removeChip',
   ]);
 });
 
@@ -42,10 +42,16 @@ const setupTest = () => {
   const mockAdapter = td.object(MDCChipSetFoundation.defaultAdapter);
   const foundation = new MDCChipSetFoundation(mockAdapter);
   const chipA = td.object({
-    toggleActive: () => {},
+    foundation: {
+      isSelected: () => {},
+      setSelected: () => {},
+    },
   });
   const chipB = td.object({
-    toggleActive: () => {},
+    foundation: {
+      isSelected: () => {},
+      setSelected: () => {},
+    },
   });
   return {foundation, mockAdapter, chipA, chipB};
 };
@@ -64,7 +70,30 @@ test('#destroy removes event listeners', () => {
   td.verify(mockAdapter.deregisterInteractionHandler('MDCChip:interaction', td.matchers.isA(Function)));
 });
 
-test('on custom MDCChip:interaction event toggles active state on choice chips', () => {
+test('in choice chips, on custom MDCChip:interaction event selects chip if no chips are selected', () => {
+  const {foundation, mockAdapter, chipA} = setupTest();
+  let chipInteractionHandler;
+  td.when(mockAdapter.registerInteractionHandler('MDCChip:interaction', td.matchers.isA(Function)))
+    .thenDo((evtType, handler) => {
+      chipInteractionHandler = handler;
+    });
+  td.when(mockAdapter.hasClass(cssClasses.CHOICE)).thenReturn(true);
+
+  td.when(chipA.foundation.isSelected()).thenReturn(false);
+  assert.equal(foundation.selectedChips_.length, 0);
+
+  foundation.init();
+
+  chipInteractionHandler({
+    detail: {
+      chip: chipA,
+    },
+  });
+  td.verify(chipA.foundation.setSelected(true));
+  assert.equal(foundation.selectedChips_.length, 1);
+});
+
+test('in choice chips, on custom MDCChip:interaction event deselects chip if another chip is selected', () => {
   const {foundation, mockAdapter, chipA, chipB} = setupTest();
   let chipInteractionHandler;
   td.when(mockAdapter.registerInteractionHandler('MDCChip:interaction', td.matchers.isA(Function)))
@@ -73,7 +102,11 @@ test('on custom MDCChip:interaction event toggles active state on choice chips',
     });
   td.when(mockAdapter.hasClass(cssClasses.CHOICE)).thenReturn(true);
 
-  assert.equal(foundation.activeChips_.length, 0);
+  foundation.select(chipB.foundation);
+  td.when(chipA.foundation.isSelected()).thenReturn(false);
+  td.when(chipB.foundation.isSelected()).thenReturn(true);
+  assert.equal(foundation.selectedChips_.length, 1);
+
   foundation.init();
 
   chipInteractionHandler({
@@ -81,23 +114,90 @@ test('on custom MDCChip:interaction event toggles active state on choice chips',
       chip: chipA,
     },
   });
-  td.verify(chipA.toggleActive());
-  assert.equal(foundation.activeChips_.length, 1);
+  td.verify(chipA.foundation.setSelected(true));
+  td.verify(chipB.foundation.setSelected(false));
+  assert.equal(foundation.selectedChips_.length, 1);
+});
+
+test('in filter chips, on custom MDCChip:interaction event selects multiple chips', () => {
+  const {foundation, mockAdapter, chipA, chipB} = setupTest();
+  let chipInteractionHandler;
+  td.when(mockAdapter.registerInteractionHandler('MDCChip:interaction', td.matchers.isA(Function)))
+    .thenDo((evtType, handler) => {
+      chipInteractionHandler = handler;
+    });
+  td.when(mockAdapter.hasClass(cssClasses.FILTER)).thenReturn(true);
+
+  td.when(chipA.foundation.isSelected()).thenReturn(false);
+  td.when(chipB.foundation.isSelected()).thenReturn(false);
+  assert.equal(foundation.selectedChips_.length, 0);
+
+  foundation.init();
+
+  chipInteractionHandler({
+    detail: {
+      chip: chipA,
+    },
+  });
+  td.verify(chipA.foundation.setSelected(true));
+  assert.equal(foundation.selectedChips_.length, 1);
 
   chipInteractionHandler({
     detail: {
       chip: chipB,
     },
   });
-  td.verify(chipA.toggleActive());
-  td.verify(chipB.toggleActive());
-  assert.equal(foundation.activeChips_.length, 1);
+  td.verify(chipB.foundation.setSelected(true));
+  assert.equal(foundation.selectedChips_.length, 2);
+});
+
+test('in filter chips, on custom MDCChip:interaction event deselects selected chips', () => {
+  const {foundation, mockAdapter, chipA, chipB} = setupTest();
+  let chipInteractionHandler;
+  td.when(mockAdapter.registerInteractionHandler('MDCChip:interaction', td.matchers.isA(Function)))
+    .thenDo((evtType, handler) => {
+      chipInteractionHandler = handler;
+    });
+  td.when(mockAdapter.hasClass(cssClasses.FILTER)).thenReturn(true);
+
+  foundation.select(chipA.foundation);
+  foundation.select(chipB.foundation);
+  td.when(chipA.foundation.isSelected()).thenReturn(true);
+  td.when(chipB.foundation.isSelected()).thenReturn(true);
+  assert.equal(foundation.selectedChips_.length, 2);
+
+  foundation.init();
 
   chipInteractionHandler({
     detail: {
       chip: chipB,
     },
   });
-  td.verify(chipB.toggleActive());
-  assert.equal(foundation.activeChips_.length, 0);
+  td.verify(chipB.foundation.setSelected(false));
+  assert.equal(foundation.selectedChips_.length, 1);
+
+  chipInteractionHandler({
+    detail: {
+      chip: chipA,
+    },
+  });
+  td.verify(chipA.foundation.setSelected(false));
+  assert.equal(foundation.selectedChips_.length, 0);
+});
+
+test('on custom MDCChip:removal event removes chip', () => {
+  const {foundation, mockAdapter, chipA} = setupTest();
+  let chipRemovalHandler;
+  td.when(mockAdapter.registerInteractionHandler('MDCChip:removal', td.matchers.isA(Function)))
+    .thenDo((evtType, handler) => {
+      chipRemovalHandler = handler;
+    });
+
+  foundation.init();
+  chipRemovalHandler({
+    detail: {
+      chip: chipA,
+    },
+  });
+  td.verify(mockAdapter.removeChip(chipA));
 });

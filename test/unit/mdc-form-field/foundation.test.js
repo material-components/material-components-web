@@ -21,6 +21,8 @@ import MDCFormFieldFoundation from '../../../packages/mdc-form-field/foundation'
 import {cssClasses, strings} from '../../../packages/mdc-form-field/constants';
 import {verifyDefaultAdapter} from '../helpers/foundation';
 
+suite('MDCFormFieldFoundation');
+
 test('exports cssClasses', () => {
   assert.isOk('cssClasses' in MDCFormFieldFoundation);
   assert.deepEqual(MDCFormFieldFoundation.cssClasses, cssClasses);

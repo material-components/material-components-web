@@ -1,0 +1,64 @@
+//
+// Copyright 2017 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+@import "@material/animation/variables";
+@import "@material/base/mixins";
+@import "@material/rtl/mixins";
+@import "@material/theme/variables";
+@import "@material/theme/mixins";
+@import "@material/typography/mixins";
+@import "./mixins";
+@import "./variables";
+
+// Floating Label is intended for use by multiple components, but its styles should only be emitted once when bundled
+@include mdc-base-emit-once("mdc-floating-label") {
+  // postcss-bem-linter: define floating-label
+  .mdc-floating-label {
+    @include mdc-typography(subtitle1);
+
+    position: absolute;
+    bottom: 8px;
+    left: 0;
+    transform-origin: left top;
+    transition:
+      transform $mdc-floating-label-transition-duration $mdc-animation-standard-curve-timing-function,
+      color $mdc-floating-label-transition-duration $mdc-animation-standard-curve-timing-function;
+    line-height: 1.15rem;
+    cursor: text;
+
+    @include mdc-rtl {
+      /* @noflip */
+      right: 0;
+
+      /* @noflip */
+      left: auto;
+
+      /* @noflip */
+      transform-origin: right top;
+    }
+  }
+
+  .mdc-floating-label--float-above {
+    cursor: auto;
+  }
+
+  @at-root {
+    @include mdc-floating-label-float-position($mdc-floating-label-position-y);
+    @include mdc-floating-label-shake-animation(standard);
+  }
+
+  @include mdc-floating-label-shake-keyframes(standard, $mdc-floating-label-position-y);
+}

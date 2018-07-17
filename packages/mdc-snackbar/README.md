@@ -2,7 +2,7 @@
 title: "Snackbars"
 layout: detail
 section: components
-excerpt: "Brief feedback for an action through a message at the bottom of the screen."
+excerpt: "Snackbars provide brief messages about app processes at the bottom of the screen."
 iconId: toast
 path: /catalog/snackbars/
 -->
@@ -11,30 +11,28 @@ path: /catalog/snackbars/
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/snackbar.html">
+     href="https://material-components.github.io/material-components-web-catalog/#/component/snackbar">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/snackbars.png" width="336" alt="Snackbars screenshot">
   </a>
 </div>-->
 
-The MDC Snackbar component is a spec-aligned snackbar/toast component adhering to the
-[Material Design snackbars & toasts requirements](https://material.io/guidelines/components/snackbars-toasts.html#snackbars-toasts-specs).
-It requires JavaScript to show and hide itself.
+Snackbars provide brief messages about app processes at the bottom of the screen.
 
 ## Design & API Documentation
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/snackbars-toasts.html">Material Design guidelines: Snackbars & toasts</a>
+    <a href="https://material.io/go/design-snackbar">Material Design guidelines: Snackbars & toasts</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/snackbar.html">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/snackbar">Demo</a>
   </li>
 </ul>
 
 ## Installation
 
 ```
-npm install --save @material/snackbar
+npm install @material/snackbar
 ```
 
 ## Usage
@@ -128,7 +126,7 @@ const snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
 
 #### Handling events
 
-When snackbar is shown or dismissed, the component will emit a `MDCSnackbar:show` or 
+When snackbar is shown or dismissed, the component will emit a `MDCSnackbar:show` or
 `MDCSnackbar:hide` custom event with no data attached.
 
 ### Showing a message and action

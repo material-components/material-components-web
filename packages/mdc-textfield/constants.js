@@ -19,10 +19,10 @@
 const strings = {
   ARIA_CONTROLS: 'aria-controls',
   INPUT_SELECTOR: '.mdc-text-field__input',
-  LABEL_SELECTOR: '.mdc-text-field__label',
+  LABEL_SELECTOR: '.mdc-floating-label',
   ICON_SELECTOR: '.mdc-text-field__icon',
-  OUTLINE_SELECTOR: '.mdc-text-field__outline',
-  BOTTOM_LINE_SELECTOR: '.mdc-line-ripple',
+  OUTLINE_SELECTOR: '.mdc-notched-outline',
+  LINE_RIPPLE_SELECTOR: '.mdc-line-ripple',
 };
 
 /** @enum {string} */
@@ -43,4 +43,10 @@ const numbers = {
   DENSE_LABEL_SCALE: 0.923,
 };
 
-export {cssClasses, strings, numbers};
+// whitelist based off of https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
+// under section: `Validation-related attributes`
+const VALIDATION_ATTR_WHITELIST = [
+  'pattern', 'min', 'max', 'required', 'step', 'minlength', 'maxlength',
+];
+
+export {cssClasses, strings, numbers, VALIDATION_ATTR_WHITELIST};

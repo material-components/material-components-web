@@ -16,6 +16,7 @@
 
 @import "@material/elevation/mixins";
 @import "@material/ripple/mixins";
+@import "@material/rtl/mixins";
 @import "@material/theme/functions";
 @import "@material/theme/mixins";
 @import "@material/typography/mixins";
@@ -43,9 +44,15 @@
   }
 }
 
-@mixin mdc-button-stroke-color($color) {
+@mixin mdc-button-outline-color($color) {
   &:not(:disabled) {
     @include mdc-theme-prop(border-color, $color);
+  }
+}
+
+@mixin mdc-button-icon-color($color) {
+  &:not(:disabled) .mdc-button__icon {
+    @include mdc-theme-prop(color, $color);
   }
 }
 
@@ -59,45 +66,38 @@
   border-radius: $corner-radius;
 }
 
-@mixin mdc-button-stroke-width($stroke-width) {
-  // Note: Adjust padding to maintain consistent width with non-stroked buttons
-  $padding-value: max($mdc-button-horizontal-padding - $stroke-width, 0);
+@mixin mdc-button-horizontal-padding($padding) {
+  // $padding should be a single value; enforce it by specifying all 4 sides in the output
+  padding: 0 $padding 0 $padding;
+}
 
-  padding-right: $padding-value;
-  padding-left: $padding-value;
-  border-width: $stroke-width;
-  // Note: line height is adjusted for stroke button because borders are not
-  // considered as space available to text on the Web
-  line-height: $mdc-button-height - $stroke-width * 2;
+@mixin mdc-button-outline-width($outline-width, $padding: $mdc-button-contained-horizontal-padding) {
+  // Note: Adjust padding to maintain consistent width with non-outlined buttons
+  $padding-value: max($padding - $outline-width, 0);
 
-  // postcss-bem-linter: ignore
-  &.mdc-button--dense {
-    // Minus extra 1 to accommodate odd font size of dense button
-    line-height: $mdc-dense-button-height - $stroke-width * 2 - 1;
-  }
+  @include mdc-button-horizontal-padding($padding-value);
 
-  &.mdc-button--compact {
-    $padding-compact-value: max($mdc-compact-button-horizontal-padding - $stroke-width, 0);
-
-    padding-right: $padding-compact-value;
-    padding-left: $padding-compact-value;
-  }
+  border-width: $outline-width;
 }
 
 @mixin mdc-button-base_() {
   @include mdc-typography(button);
   @include mdc-ripple-surface;
   @include mdc-ripple-radius-bounded;
+  @include mdc-button-horizontal-padding($mdc-button-horizontal-padding);
 
-  display: inline-block;
+  display: inline-flex;
   position: relative;
+  align-items: center;
+  justify-content: center;
   box-sizing: border-box;
   min-width: 64px;
   height: $mdc-button-height;
-  padding: 0 $mdc-button-horizontal-padding;
   border: none;
   outline: none;
-  text-align: center;
+
+  /* @alternate */
+  line-height: inherit;
   user-select: none;
   -webkit-appearance: none;
   overflow: hidden;
@@ -119,35 +119,45 @@
 
   &:disabled {
     @include mdc-theme-prop(background-color, transparent);
-    @include mdc-theme-prop(color, text-disabled-on-light);
 
+    color: $mdc-button-disabled-ink-color;
     cursor: default;
     pointer-events: none;
   }
 }
 
 @mixin mdc-button__icon_ {
+  @include mdc-rtl-reflexive-box(margin, right, 8px);
+
   display: inline-block;
   width: 18px;
   height: 18px;
-  margin-right: 8px;
   font-size: 18px;
-  line-height: inherit;
   vertical-align: top;
 }
 
-@mixin mdc-button--stroked_() {
+@mixin mdc-button__icon-svg_ {
+  fill: currentColor;
+}
+
+@mixin mdc-button__icon-contained_ {
+  @include mdc-rtl-reflexive-property(margin, -4px, 8px);
+}
+
+@mixin mdc-button--outlined_() {
   border-style: solid;
 
   &:disabled {
-    @include mdc-theme-prop(border-color, text-disabled-on-light);
+    border-color: $mdc-button-disabled-ink-color;
   }
 }
 
 @mixin mdc-button--filled_() {
+  @include mdc-button-horizontal-padding($mdc-button-contained-horizontal-padding);
+
   &:disabled {
-    @include mdc-theme-prop(background-color, rgba(black, .12));
-    @include mdc-theme-prop(color, text-disabled-on-light);
+    background-color: rgba(mdc-theme-prop-value(on-surface), .12);
+    color: $mdc-button-disabled-ink-color;
   }
 }
 
@@ -170,12 +180,7 @@
   }
 }
 
-@mixin mdc-button--compact_() {
-  padding: 0 $mdc-compact-button-horizontal-padding;
-}
-
 @mixin mdc-button--dense_() {
   height: $mdc-dense-button-height;
   font-size: .8125rem; // 13sp
-  line-height: $mdc-dense-button-height;
 }

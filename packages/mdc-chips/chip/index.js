@@ -16,10 +16,10 @@
  */
 
 import MDCComponent from '@material/base/component';
-import {MDCRipple} from '@material/ripple/index';
+import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
 
 import MDCChipAdapter from './adapter';
-import MDCChipFoundation from './foundation';
+import {MDCChipFoundation} from './foundation';
 import {strings} from './constants';
 
 /**
@@ -33,8 +33,10 @@ class MDCChip extends MDCComponent {
   constructor(...args) {
     super(...args);
 
+    /** @private {?Element} */
+    this.leadingIcon_;
     /** @private {!MDCRipple} */
-    this.ripple_ = new MDCRipple(this.root_);
+    this.ripple_;
   }
 
   /**
@@ -45,16 +47,69 @@ class MDCChip extends MDCComponent {
     return new MDCChip(root);
   }
 
+  initialize() {
+    this.leadingIcon_ = this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
+
+    // Adjust ripple size for chips with animated growing width. This applies when filter chips without
+    // a leading icon are selected, and a leading checkmark will cause the chip width to expand.
+    const checkmarkEl = this.root_.querySelector(strings.CHECKMARK_SELECTOR);
+    if (checkmarkEl && !this.leadingIcon_) {
+      const adapter = Object.assign(MDCRipple.createAdapter(this), {
+        computeBoundingRect: () => {
+          const height = this.root_.getBoundingClientRect().height;
+          // The checkmark's width is initially set to 0, so use the checkmark's height as a proxy since the
+          // checkmark should always be square.
+          const width = this.root_.getBoundingClientRect().width + checkmarkEl.getBoundingClientRect().height;
+          return {height, width};
+        },
+      });
+      this.ripple_ = new MDCRipple(this.root_, new MDCRippleFoundation(adapter));
+    } else {
+      this.ripple_ = new MDCRipple(this.root_);
+    }
+  }
+
   destroy() {
     this.ripple_.destroy();
     super.destroy();
   }
 
   /**
-   * Toggles active state of the chip.
+   * Returns true if the chip is selected.
+   * @return {boolean}
    */
-  toggleActive() {
-    this.foundation_.toggleActive();
+  isSelected() {
+    return this.foundation_.isSelected();
+  }
+
+  /**
+   * Begins the exit animation which leads to removal of the chip.
+   */
+  beginExit() {
+    this.foundation_.beginExit();
+  }
+
+  /**
+   * @return {!MDCChipFoundation}
+   */
+  get foundation() {
+    return this.foundation_;
+  }
+
+  /**
+   * Returns whether a trailing icon click should trigger exit/removal of the chip.
+   * @return {boolean}
+   */
+  get shouldRemoveOnTrailingIconClick() {
+    return this.foundation_.getShouldRemoveOnTrailingIconClick();
+  }
+
+  /**
+   * Sets whether a trailing icon click should trigger exit/removal of the chip.
+   * @param {boolean} shouldRemove
+   */
+  set shouldRemoveOnTrailingIconClick(shouldRemove) {
+    return this.foundation_.setShouldRemoveOnTrailingIconClick(shouldRemove);
   }
 
   /**
@@ -65,9 +120,37 @@ class MDCChip extends MDCComponent {
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       hasClass: (className) => this.root_.classList.contains(className),
-      registerInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
-      deregisterInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
+      addClassToLeadingIcon: (className) => {
+        if (this.leadingIcon_) {
+          this.leadingIcon_.classList.add(className);
+        }
+      },
+      removeClassFromLeadingIcon: (className) => {
+        if (this.leadingIcon_) {
+          this.leadingIcon_.classList.remove(className);
+        }
+      },
+      eventTargetHasClass: (target, className) => target.classList.contains(className),
+      registerEventHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
+      deregisterEventHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
+      registerTrailingIconInteractionHandler: (evtType, handler) => {
+        const trailingIconEl = this.root_.querySelector(strings.TRAILING_ICON_SELECTOR);
+        if (trailingIconEl) {
+          trailingIconEl.addEventListener(evtType, handler);
+        }
+      },
+      deregisterTrailingIconInteractionHandler: (evtType, handler) => {
+        const trailingIconEl = this.root_.querySelector(strings.TRAILING_ICON_SELECTOR);
+        if (trailingIconEl) {
+          trailingIconEl.removeEventListener(evtType, handler);
+        }
+      },
       notifyInteraction: () => this.emit(strings.INTERACTION_EVENT, {chip: this}, true /* shouldBubble */),
+      notifyTrailingIconInteraction: () => this.emit(
+        strings.TRAILING_ICON_INTERACTION_EVENT, {chip: this}, true /* shouldBubble */),
+      notifyRemoval: () => this.emit(strings.REMOVAL_EVENT, {chip: this, root: this.root_}, true /* shouldBubble */),
+      getComputedStyleValue: (propertyName) => window.getComputedStyle(this.root_).getPropertyValue(propertyName),
+      setStyleProperty: (propertyName, value) => this.root_.style.setProperty(propertyName, value),
     })));
   }
 

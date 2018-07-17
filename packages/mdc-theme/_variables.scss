@@ -23,17 +23,17 @@
 //
 
 $mdc-theme-primary: #6200ee !default; // baseline purple, 500 tone
-$mdc-theme-primary-light: mdc-theme-light-variant($mdc-theme-primary) !default;
-$mdc-theme-primary-dark: mdc-theme-dark-variant($mdc-theme-primary) !default;
+$mdc-theme-on-primary: if(mdc-theme-contrast-tone($mdc-theme-primary) == "dark", #000, #fff) !default;
 
 // The $mdc-theme-accent variable is DEPRECATED - it exists purely for backward compatibility.
 // The $mdc-theme-secondary* variables should be used for all new projects.
 $mdc-theme-accent: #018786 !default; // baseline teal, 600 tone
 $mdc-theme-secondary: $mdc-theme-accent !default;
-$mdc-theme-secondary-light: mdc-theme-light-variant($mdc-theme-secondary) !default;
-$mdc-theme-secondary-dark: mdc-theme-dark-variant($mdc-theme-secondary) !default;
-
+$mdc-theme-on-secondary: if(mdc-theme-contrast-tone($mdc-theme-secondary) == "dark", #000, #fff) !default;
 $mdc-theme-background: #fff !default; // White
+
+$mdc-theme-surface: #fff !default;
+$mdc-theme-on-surface: if(mdc-theme-contrast-tone($mdc-theme-surface) == "dark", #000, #fff) !default;
 
 //
 // Text colors according to light vs dark and text type.
@@ -67,52 +67,17 @@ $mdc-theme-text-colors: (
 //
 
 $mdc-theme-property-values: (
-  /* Primary */
+  // Primary
   primary: $mdc-theme-primary,
-  primary-light: $mdc-theme-primary-light,
-  primary-dark: $mdc-theme-primary-dark,
-  /* Secondary */
+  // Secondary
   secondary: $mdc-theme-secondary,
-  secondary-light: $mdc-theme-secondary-light,
-  secondary-dark: $mdc-theme-secondary-dark,
-  /* Background */
+  // Background
   background: $mdc-theme-background,
-  // Text-primary on "primary" background
-  text-primary-on-primary: mdc-theme-ink-color-for-fill_(primary, $mdc-theme-primary),
-  text-secondary-on-primary: mdc-theme-ink-color-for-fill_(secondary, $mdc-theme-primary),
-  text-hint-on-primary: mdc-theme-ink-color-for-fill_(hint, $mdc-theme-primary),
-  text-disabled-on-primary: mdc-theme-ink-color-for-fill_(disabled, $mdc-theme-primary),
-  text-icon-on-primary: mdc-theme-ink-color-for-fill_(icon, $mdc-theme-primary),
-  // Text-primary on "primary-light" background
-  text-primary-on-primary-light: mdc-theme-ink-color-for-fill_(primary, $mdc-theme-primary-light),
-  text-secondary-on-primary-light: mdc-theme-ink-color-for-fill_(secondary, $mdc-theme-primary-light),
-  text-hint-on-primary-light: mdc-theme-ink-color-for-fill_(hint, $mdc-theme-primary-light),
-  text-disabled-on-primary-light: mdc-theme-ink-color-for-fill_(disabled, $mdc-theme-primary-light),
-  text-icon-on-primary-light: mdc-theme-ink-color-for-fill_(icon, $mdc-theme-primary-light),
-  // Text-primary on "primary-dark" background
-  text-primary-on-primary-dark: mdc-theme-ink-color-for-fill_(primary, $mdc-theme-primary-dark),
-  text-secondary-on-primary-dark: mdc-theme-ink-color-for-fill_(secondary, $mdc-theme-primary-dark),
-  text-hint-on-primary-dark: mdc-theme-ink-color-for-fill_(hint, $mdc-theme-primary-dark),
-  text-disabled-on-primary-dark: mdc-theme-ink-color-for-fill_(disabled, $mdc-theme-primary-dark),
-  text-icon-on-primary-dark: mdc-theme-ink-color-for-fill_(icon, $mdc-theme-primary-dark),
-  // Text-primary on "secondary" background
-  text-primary-on-secondary: mdc-theme-ink-color-for-fill_(primary, $mdc-theme-secondary),
-  text-secondary-on-secondary: mdc-theme-ink-color-for-fill_(secondary, $mdc-theme-secondary),
-  text-hint-on-secondary: mdc-theme-ink-color-for-fill_(hint, $mdc-theme-secondary),
-  text-disabled-on-secondary: mdc-theme-ink-color-for-fill_(disabled, $mdc-theme-secondary),
-  text-icon-on-secondary: mdc-theme-ink-color-for-fill_(icon, $mdc-theme-secondary),
-  // Text-primary on "secondary-light" background
-  text-primary-on-secondary-light: mdc-theme-ink-color-for-fill_(primary, $mdc-theme-secondary-light),
-  text-secondary-on-secondary-light: mdc-theme-ink-color-for-fill_(secondary, $mdc-theme-secondary-light),
-  text-hint-on-secondary-light: mdc-theme-ink-color-for-fill_(hint, $mdc-theme-secondary-light),
-  text-disabled-on-secondary-light: mdc-theme-ink-color-for-fill_(disabled, $mdc-theme-secondary-light),
-  text-icon-on-secondary-light: mdc-theme-ink-color-for-fill_(icon, $mdc-theme-secondary-light),
-  // Text-primary on "secondary-dark" background
-  text-primary-on-secondary-dark: mdc-theme-ink-color-for-fill_(primary, $mdc-theme-secondary-dark),
-  text-secondary-on-secondary-dark: mdc-theme-ink-color-for-fill_(secondary, $mdc-theme-secondary-dark),
-  text-hint-on-secondary-dark: mdc-theme-ink-color-for-fill_(hint, $mdc-theme-secondary-dark),
-  text-disabled-on-secondary-dark: mdc-theme-ink-color-for-fill_(disabled, $mdc-theme-secondary-dark),
-  text-icon-on-secondary-dark: mdc-theme-ink-color-for-fill_(icon, $mdc-theme-secondary-dark),
+  // Surface
+  surface: $mdc-theme-surface,
+  on-primary: $mdc-theme-on-primary,
+  on-secondary: $mdc-theme-on-secondary,
+  on-surface: $mdc-theme-on-surface,
   // Text-primary on "background" background
   text-primary-on-background: mdc-theme-ink-color-for-fill_(primary, $mdc-theme-background),
   text-secondary-on-background: mdc-theme-ink-color-for-fill_(secondary, $mdc-theme-background),
@@ -133,28 +98,28 @@ $mdc-theme-property-values: (
   text-icon-on-dark: mdc-theme-ink-color-for-fill_(icon, dark)
 );
 
-// If `$property` is a literal color value (e.g., `blue`, `#fff`), it is returned verbatim. Otherwise, the value of the
-// corresponding theme property (from `$mdc-theme-property-values`) is returned. If `$property` is not a color and no
-// such theme property exists, an error is thrown.
+// If `$style` is a color (a literal color value, `currentColor`, or a CSS custom property), it is returned verbatim.
+// Otherwise, `$style` is treated as a theme property name, and the corresponding value from
+// `$mdc-theme-property-values` is returned. If this also fails, an error is thrown.
 //
 // This is mainly useful in situations where `mdc-theme-prop` cannot be used directly (e.g., `box-shadow`).
 //
 // Examples:
 //
-// 1. mdc-theme-prop-value(primary) => "#3f51b5"
+// 1. mdc-theme-prop-value(primary) => "#6200ee"
 // 2. mdc-theme-prop-value(blue)    => "blue"
 //
 // NOTE: This function must be defined in _variables.scss instead of _functions.scss to avoid circular imports.
-@function mdc-theme-prop-value($property) {
-  @if type-of($property) == "color" or $property == "currentColor" {
-    @return $property;
+@function mdc-theme-prop-value($style) {
+  @if mdc-theme-is-valid-theme-prop-value_($style) {
+    @return $style;
   }
 
-  @if not map-has-key($mdc-theme-property-values, $property) {
-    @error "Invalid theme property: '#{$property}'. Choose one of: #{map-keys($mdc-theme-property-values)}";
+  @if not map-has-key($mdc-theme-property-values, $style) {
+    @error "Invalid theme property: '#{$style}'. Choose one of: #{map-keys($mdc-theme-property-values)}";
   }
 
-  @return map-get($mdc-theme-property-values, $property);
+  @return map-get($mdc-theme-property-values, $style);
 }
 
 // NOTE: This function must be defined in _variables.scss instead of _functions.scss to avoid circular imports.
@@ -167,4 +132,9 @@ $mdc-theme-property-values: (
   }
 
   @return map-get($color-map-for-tone, $text-style);
+}
+
+// NOTE: This function is depended upon by mdc-theme-prop-value (above) and thus must be defined in this file.
+@function mdc-theme-is-valid-theme-prop-value_($style) {
+  @return type-of($style) == "color" or $style == "currentColor" or str_slice($style, 1, 4) == "var(";
 }

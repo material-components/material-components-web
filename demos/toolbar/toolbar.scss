@@ -18,10 +18,11 @@
 @import "../../packages/mdc-button/mdc-button";
 @import "../../packages/mdc-list/mdc-list";
 @import "../../packages/mdc-menu/mdc-menu";
+@import "../../packages/mdc-ripple/mdc-ripple";
 @import "../../packages/mdc-theme/color-palette";
 
 .demo-toolbar-example-heading {
-  @include mdc-typography(display2);
+  @include mdc-typography(headline6);
 
   display: flex;
   flex-direction: row;
@@ -53,14 +54,14 @@
 
 .demo-toolbar--custom {
   @include mdc-toolbar-fill-color-accessible($material-color-red-900);
-}
 
-.demo-toolbar__menu-icon--custom,
-.demo-toolbar__icon--custom {
-  @include mdc-toolbar-icon-ink-color($material-color-red-100);
+  .demo-toolbar__menu-icon--custom,
+  .demo-toolbar__icon--custom {
+    @include mdc-toolbar-icon-ink-color($material-color-red-100);
 
-  &:hover {
-    @include mdc-toolbar-icon-ink-color(white);
+    &:hover {
+      @include mdc-toolbar-icon-ink-color(white);
+    }
   }
 }
 
