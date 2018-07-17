@@ -16,15 +16,11 @@
 
 import {assert, expect} from 'chai';
 import td from 'testdouble';
-import {captureHandlers} from '../helpers/foundation';
+
 import MDCTooltipFoundation from '../../../packages/mdc-tooltip/foundation';
 import cssClasses from '../../../packages/mdc-tooltip/constants';
 
-const tooltipShowEvents = ['focus', 'mouseenter', 'touchstart'];
-const tooltipHideEvents = ['blur', 'mouseleave', 'touchend'];
-const controllerListenerTypes = tooltipShowEvents.concat(tooltipHideEvents);
-
-const controllerPos = {width: 200, height: 100, offsetTop: 50, offsetLeft: 130};
+const controllerPos = {width: 200, height: 100, top: 50, left: 130};
 const tooltipPos = {width: 100, height: 25};
 
 function setupTest() {
@@ -34,8 +30,7 @@ function setupTest() {
   td.when(mockAdapter.getRootHeight()).thenReturn(tooltipPos.height);
   td.when(mockAdapter.getControllerHeight()).thenReturn(controllerPos.height);
   td.when(mockAdapter.getControllerWidth()).thenReturn(controllerPos.width);
-  td.when(mockAdapter.getControllerOffsetTop()).thenReturn(controllerPos.offsetTop);
-  td.when(mockAdapter.getControllerOffsetLeft()).thenReturn(controllerPos.offsetLeft);
+  td.when(mockAdapter.getControllerBoundingRect()).thenReturn(controllerPos);
 
   const foundation = new MDCTooltipFoundation(mockAdapter);
   return {foundation, mockAdapter};
@@ -54,76 +49,37 @@ test('defaultAdapter returns a complete adapter implementation', () => {
   assert.equal(methods.length, Object.keys(defaultAdapter).length, 'Every adapter key must be a function');
   assert.deepEqual(methods, [
     'addClass', 'removeClass', 'getClassList', 'getRootWidth', 'getRootHeight', 'getControllerWidth',
-    'getControllerHeight', 'getControllerOffsetTop', 'getControllerOffsetLeft', 'setStyle',
-    'registerListener', 'deregisterListener',
+    'getControllerHeight', 'getControllerBoundingRect', 'setStyle',
   ]);
   // Test default methods
   methods.forEach((m) => assert.doesNotThrow(defaultAdapter[m]));
 });
 
-test('#init registers all event listeners', () => {
-  const {foundation, mockAdapter} = setupTest();
-
-  foundation.init();
-  for (let i = 0; i < controllerListenerTypes.length; i++) {
-    td.verify(mockAdapter.registerListener(controllerListenerTypes[i], td.matchers.isA(Function)));
-  }
-});
-
-test('#destroy calls adapter.deregisterListener() with an event type and function 6 times', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const {isA} = td.matchers;
-
-  foundation.destroy();
-  td.verify(mockAdapter.deregisterListener(isA(String), isA(Function)), {times: 6});
-});
-
 test('#hide sets display flag to false', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.hide_();
+  const {foundation} = setupTest();
+  foundation.hide();
   assert.isOk(foundation.displayed_ === false);
 });
 
-for (let i=0; i < tooltipShowEvents.length; i++) {
-  test('Event ' + tooltipShowEvents[i] +' should show tooltip', () => {
-    const {foundation, mockAdapter} = setupTest();
-    const handlers = captureHandlers(mockAdapter, 'registerListener');
-    foundation.init();
-    handlers[tooltipShowEvents[i]]();
-    // Not sure why this is not working
-    //td.verify(foundation.showDelayed_());
-  });
-}
-
-for (let i=0; i < tooltipHideEvents.length; i++) {
-  test('Event ' + tooltipHideEvents[i] +' should hide tooltip', () => {
-    const {foundation, mockAdapter} = setupTest();
-    const handlers = captureHandlers(mockAdapter, 'registerListener');
-    foundation.init();
-    handlers[tooltipHideEvents[i]]();
-    // Not sure why this is not working
-    //td.verify(foundation.hide_());
-  });
-}
-
 test('after a certain timeout show_() should be called', () => {
-  const {foundation, mockAdapter} = setupTest();
+  const {foundation} = setupTest();
   // reducing delay to make sure the show_() branch is called
-  foundation.showDelay = 5;
-  foundation.showDelayed_();
+  foundation.showDelay = 2;
+  foundation.showDelayed();
   setTimeout(() => {
     assert.isOk(foundation.displayed_);
   }, foundation.showDelay + 5);
 });
 
-test('after a certain timeout following show_() -> hide_() should be called', () => {
-  const {foundation, mockAdapter} = setupTest();
-  // reducing delay to make sure the hide_() branch is called
-  foundation.hideDelay = 5;
-  foundation.show_();
+test('in case the hide flag is true the show delay is canceled', () => {
+  const {foundation} = setupTest();
+  // reducing delay to make sure the show_() branch is called
+  foundation.showDelay = 2;
+  foundation.showDelayed();
+  foundation.checkHideFlag_ = true;
   setTimeout(() => {
     assert.isOk(!foundation.displayed_);
-  }, foundation.hideDelay + 5);
+  }, foundation.showDelay + 5);
 });
 
 test('#setDirection_ correct direction for bottom (default)', () => {
@@ -163,7 +119,7 @@ test('#setDirection_ correct direction for right (class)', () => {
 
 test('#show_ correct position on direction = bottom', () => {
   const {foundation, mockAdapter} = setupTest();
-  foundation.show_();
+  foundation.show();
   const expect = 150 + foundation.gap;
   td.verify(mockAdapter.setStyle('top', expect.toString() + 'px'));
 });
@@ -171,7 +127,7 @@ test('#show_ correct position on direction = bottom', () => {
 test('#show_ correct position on direction = top', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getClassList()).thenReturn([cssClasses.DIRECTION_TOP]);
-  foundation.show_();
+  foundation.show();
   const expect = 25 - foundation.gap;
   td.verify(mockAdapter.setStyle('top', expect.toString() + 'px'));
 });
@@ -179,7 +135,7 @@ test('#show_ correct position on direction = top', () => {
 test('#show_ correct position on direction = right', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getClassList()).thenReturn([cssClasses.DIRECTION_RIGHT]);
-  foundation.show_();
+  foundation.show();
   const expect = 330 + foundation.gap;
   td.verify(mockAdapter.setStyle('left', expect.toString() + 'px'));
 });
@@ -187,7 +143,7 @@ test('#show_ correct position on direction = right', () => {
 test('#show_ correct position on direction = left', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getClassList()).thenReturn([cssClasses.DIRECTION_LEFT]);
-  foundation.show_();
+  foundation.show();
   const expect = 30 - foundation.gap;
   td.verify(mockAdapter.setStyle('left', expect.toString() + 'px'));
 });
@@ -195,7 +151,72 @@ test('#show_ correct position on direction = left', () => {
 test('#show_ correct position on direction = undefined', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getClassList()).thenReturn([cssClasses.DIRECTION_LEFT]);
-  foundation.show_();
+  foundation.show();
   const expect = 30 - foundation.gap;
   td.verify(mockAdapter.setStyle('left', expect.toString() + 'px'));
+});
+
+test('#handleTouchStart shows tooltip delayed', () => {
+  const {foundation} = setupTest();
+  foundation.handleTouchStart();
+  // reducing delay to make sure the show_() branch is called
+  foundation.showDelay = 0;
+  foundation.showDelayed();
+  setTimeout(() => {
+    assert.isOk(foundation.displayed_);
+  }, foundation.showDelay + 2);
+});
+
+test('#handleFocus shows tooltip delayed', () => {
+  const {foundation} = setupTest();
+  foundation.handleFocus();
+  // reducing delay to make sure the show_() branch is called
+  foundation.showDelay = 0;
+  foundation.showDelayed();
+  setTimeout(() => {
+    assert.isOk(foundation.displayed_);
+  }, foundation.showDelay + 2);
+});
+
+test('#handleMouseEnter shows tooltip delayed', () => {
+  const {foundation} = setupTest();
+  foundation.handleMouseEnter();
+  // reducing delay to make sure the show_() branch is called
+  foundation.showDelay = 0;
+  foundation.showDelayed();
+  setTimeout(() => {
+    assert.isOk(foundation.displayed_);
+  }, foundation.showDelay + 2);
+});
+
+test('#handleTouchEnd hides tooltip', () => {
+  const {foundation} = setupTest();
+  foundation.handleTouchEnd();
+  assert.isOk(!foundation.displayed_);
+});
+
+test('#handleBlur hides tooltip', () => {
+  const {foundation} = setupTest();
+  foundation.handleBlur();
+  assert.isOk(!foundation.displayed_);
+});
+
+test('#handleMouseLeave hides tooltip', () => {
+  const {foundation} = setupTest();
+  foundation.handleMouseLeave();
+  assert.isOk(!foundation.displayed_);
+});
+
+test('#handleClick hides tooltip', () => {
+  const {foundation} = setupTest();
+  foundation.handleClick();
+  assert.isOk(!foundation.displayed_);
+});
+
+test('#destroy clears timeout', () => {
+  const {foundation} = setupTest();
+  foundation.showDelay = 1000;
+  foundation.showDelayed();
+  foundation.destroy();
+  assert.isOk(foundation.showTimeout_ === null);
 });

@@ -190,8 +190,8 @@ class MDCTooltipFoundation extends MDCFoundation {
   }
 
   destroy() {
-    this.removeEventListeners_();
     clearTimeout(this.showTimeout_);
+    this.showTimeout_ = null;
   }
 }
 

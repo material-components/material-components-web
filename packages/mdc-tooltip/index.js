@@ -40,6 +40,8 @@ class MDCTooltip extends MDCComponent {
     this.handleFocus_;
     /** @private {!Function} */
     this.handleMouseEnter_;
+    /** @private {!Function} */
+    this.handleClick_;
   }
 
   /**
@@ -51,12 +53,13 @@ class MDCTooltip extends MDCComponent {
   }
 
   destroy() {
+    this.controller_.removeEventListener('click', this.handleClick_);
+    this.controller_.removeEventListener('mouseenter', this.handleMouseEnter_);
+    this.controller_.removeEventListener('focus', this.handleFocus_);
+    this.controller_.removeEventListener('touchstart', this.handleTouchStart_);
+    this.controller_.removeEventListener('mouseleave', this.handleMouseLeave_);
     this.controller_.removeEventListener('touchend', this.handleTouchEnd_);
     this.controller_.removeEventListener('blur', this.handleBlur_);
-    this.controller_.removeEventListener('mouseleave', this.handleMouseLeave_);
-    this.controller_.removeEventListener('touchstart', this.handleTouchStart_);
-    this.controller_.removeEventListener('focus', this.handleFocus_);
-    this.controller_.removeEventListener('mouseenter', this.handleMouseEnter_);
   }
 
   initialSyncWithDOM() {
@@ -113,11 +116,11 @@ class MDCTooltip extends MDCComponent {
   }
 
   show() {
-    this.foundation_.show_();
+    this.foundation_.show();
   }
 
   hide() {
-    this.foundation_.hide_();
+    this.foundation_.hide();
   }
 
   initialize() {
@@ -152,8 +155,6 @@ class MDCTooltip extends MDCComponent {
       getControllerWidth: () => instance.controller_.offsetWidth,
       getControllerHeight: () => instance.controller_.offsetHeight,
       getControllerBoundingRect: () => instance.controller_.getBoundingClientRect(),
-      getWindowWidth: () => window.innerWidth,
-      getWindowHeight: () => window.innerHeight,
       setStyle: (propertyName, value) => instance.root_.style.setProperty(propertyName, value),
     };
   }

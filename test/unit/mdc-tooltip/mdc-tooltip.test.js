@@ -20,10 +20,17 @@ import td from 'testdouble';
 import domEvents from 'dom-events';
 
 import {MDCTooltip} from '../../../packages/mdc-tooltip';
+import MDCTooltipFoundation from '../../../packages/mdc-tooltip/foundation';
 
-const tooltipShowEvents = ['focus', 'mouseenter', 'touchstart'];
-const tooltipHideEvents = ['blur', 'mouseleave', 'touchend'];
-const controllerListenerTypes = tooltipShowEvents.concat(tooltipHideEvents);
+const eventInfo = {
+  "click": "handleClick",
+  "mouseenter": "handleMouseEnter",
+  "focus": "handleFocus",
+  "touchstart": "handleTouchStart",
+  "mouseleave": "handleMouseLeave",
+  "touchend": "handleTouchEnd",
+  "blur": "handleBlur",
+}
 
 function getFixture() {
   return bel`
@@ -52,12 +59,22 @@ function getFixtureUsingFor() {
   `;
 }
 
-function setupTest() {
+function setupTest(mockFoundationFlag) {
   const wrapper = getFixture();
   const root = wrapper.querySelector('#tooltip');
   const controller = wrapper.querySelector('#example');
-  const component = new MDCTooltip(wrapper);
-  return {root, component, controller, wrapper};
+
+  if(mockFoundationFlag){
+    const MockFoundationCtor = td.constructor(MDCTooltipFoundation);
+    const mockFoundation = new MockFoundationCtor();
+    const component = new MDCTooltip(wrapper, mockFoundation);
+    return {root, component, controller, wrapper, mockFoundation};
+  }
+  else {
+    const component = new MDCTooltip(wrapper);
+    return {root, component, controller, wrapper};
+  }
+  
 }
 
 suite('MDCTooltip');
@@ -88,113 +105,112 @@ test('initializes throws Ref error cause ID is not found', () => {
 
 
 test('hide() delegates to the foundation', () => {
-  const {component} = setupTest();
-  component.foundation_.hide_ = td.function();
+  const {component} = setupTest(false);
+  component.foundation_.hide = td.function();
   component.hide();
-  td.verify(component.foundation_.hide_());
+  td.verify(component.foundation_.hide());
 });
 
 test('show() delegates to the foundation', () => {
-  const {component} = setupTest();
-  component.foundation_.show_ = td.function();
+  const {component} = setupTest(false);
+  component.foundation_.show = td.function();
   component.show();
-  td.verify(component.foundation_.show_());
+  td.verify(component.foundation_.show());
 });
 
 test('adapter#addClass adds a class to the root element', () => {
-  const {root, component} = setupTest();
+  const {root, component} = setupTest(false);
   component.getDefaultFoundation().adapter_.addClass('foo');
   assert.isOk(root.classList.contains('foo'));
 });
 
 test('adapter#removeClass removes a class from the root element', () => {
-  const {root, component} = setupTest();
+  const {root, component} = setupTest(false);
   root.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClass('foo');
   assert.isNotOk(root.classList.contains('foo'));
 });
 
 test('adapter#getClassList adds a class to the root element', () => {
-  const {root, component} = setupTest();
+  const {root, component} = setupTest(false);
   root.classList.add('foo');
   component.getDefaultFoundation().adapter_.getClassList();
   assert.isOk(root.classList.contains('foo'));
 });
 
 test('adapter#setStyle sets the correct style on root element', () => {
-  const {root, component} = setupTest();
+  const {root, component} = setupTest(false);
   component.getDefaultFoundation().adapter_.setStyle('transform', 'translateY(-56px)');
   assert.equal(root.style.getPropertyValue('transform'), 'translateY(-56px)');
 });
 
-test('adapter#registerListener registers the handler for controller - focus', () => {
-  const {component, controller} = setupTest();
-  const handler = td.func('handler');
-
-  for (let i = 0; i < controllerListenerTypes.length; i++) {
-    component.getDefaultFoundation().adapter_.registerListener(controllerListenerTypes[i], handler);
-    domEvents.emit(controller, controllerListenerTypes[i]);
-  }
-
-  try {
-    td.verify(handler(td.matchers.anything()), {times: 6});
-  } finally {
-    for (let i = 0; i < controllerListenerTypes.length; i++) {
-      controller.removeEventListener(controllerListenerTypes[i], handler);
-    }
-  }
-});
-
-test('adapter#deregisterListener unlistens the handler for controller', () => {
-  const {component, controller} = setupTest();
-  const handler = td.func('handler');
-
-  for (let i = 0; i < controllerListenerTypes.length; i++) {
-    controller.addEventListener(controllerListenerTypes[i], handler);
-    component.getDefaultFoundation().adapter_.deregisterListener(controllerListenerTypes[i], handler);
-    domEvents.emit(controller, controllerListenerTypes[i]);
-  }
-
-  try {
-    td.verify(handler(td.matchers.anything()), {times: 0});
-  } finally {
-    // Just to be safe
-    for (let i = 0; i < controllerListenerTypes.length; i++) {
-      controller.removeEventListener(controllerListenerTypes[i], handler);
-    }
-  }
-});
-
 test('Return Visible == True if the tooltip is displayed', () => {
-  const {component} = setupTest();
+  const {component} = setupTest(false);
   component.show();
   assert.isOk(component.visible === true);
 });
 
 test('Return Visible == False if the tooltip is hidden', () => {
-  const {component} = setupTest();
+  const {component} = setupTest(false);
   component.show();
   component.hide();
   assert.isOk(component.visible === false);
 });
 
 test('hideDelay() getter/setter', () => {
-  const {component} = setupTest();
+  const {component} = setupTest(false);
   component.hideDelay = 100;
   assert.isOk(component.hideDelay === 100);
 });
 
 test('showDelay() getter/setter', () => {
-  const {component} = setupTest();
+  const {component} = setupTest(false);
   component.showDelay = 100;
   assert.isOk(component.showDelay === 100);
 });
 
 test('gap() getter/setter', () => {
-  const {component} = setupTest();
+  const {component} = setupTest(false);
   component.gap = 100;
   assert.isOk(component.gap === 100);
 });
+
+test('click handler is added to controlling element', () => {
+  const {component, controller, mockFoundation} = setupTest(true);
+  const event = document.createEvent('Event');
+  event.initEvent('click', false, true);
+  controller.dispatchEvent(event);
+  td.verify(mockFoundation.handleClick(event), {times: 1});
+});
+
+test('click handler is removed from the controlling element on destroy', () => {
+  const {component, controller, mockFoundation} = setupTest(true);
+  component.destroy();
+  const event = document.createEvent('Event');
+  event.initEvent('click', false, true);
+  controller.dispatchEvent(event);
+  td.verify(mockFoundation.handleClick(event), {times: 0});
+});
+
+Object.keys(eventInfo).forEach( (key) => {
+  test(key + ' handler is added to controlling element', () => {
+    const {component, controller, mockFoundation} = setupTest(true);
+    const event = document.createEvent('Event');
+    event.initEvent(key, false, true);
+    controller.dispatchEvent(event);
+    td.verify(mockFoundation[eventInfo[key]](event), {times: 1});
+  });
+  
+  test(key + ' handler is removed from the controlling element on destroy', () => {
+    const {component, controller, mockFoundation} = setupTest(true);
+    component.destroy();
+    const event = document.createEvent('Event');
+    event.initEvent(key, false, true);
+    controller.dispatchEvent(event);
+    td.verify(mockFoundation[eventInfo[key]](event), {times: 0});
+  });
+});
+
 
 
 
