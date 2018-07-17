@@ -24,18 +24,10 @@ const {ExitCode} = require('../lib/constants');
 
 module.exports = {
   async runAsync() {
-    const logger = new Logger(__filename);
-
-    const travisPrSlug = process.env.TRAVIS_PULL_REQUEST_SLUG;
-    if (travisPrSlug && !travisPrSlug.startsWith('material-components/')) {
-      logger.error('Screenshot tests are not supported on external PRs.');
-      logger.error('Skipping screenshot tests.');
-      return ExitCode.UNSUPPORTED_EXTERNAL_PR;
-    }
-
     await BuildCommand.runAsync();
     const controller = new Controller();
     const gitHubApi = new GitHubApi();
+    const logger = new Logger(__filename);
 
     /** @type {!mdc.proto.ReportData} */
     const reportData = await controller.initForCapture();
