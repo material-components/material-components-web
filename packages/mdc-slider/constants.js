@@ -21,6 +21,7 @@ const strings = {
   TRACK_FILL_SELECTOR: '.mdc-slider__track-fill',
   TICK_MARK_SET_SELECTOR: '.mdc-slider__tick-mark-set',
   LAST_TICK_MARK_SELECTOR: '.mdc-slider__tick-mark:last-child',
+  TICK_MARK: 'mdc-slider__tick-mark',
   THUMB_SELECTOR: '.mdc-slider__thumb',
   ARIA_VALUEMIN: 'aria-valuemin',
   ARIA_VALUEMAX: 'aria-valuemax',

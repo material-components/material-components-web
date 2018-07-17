@@ -199,7 +199,7 @@ class MDCSlider extends MDCComponent {
     const frag = document.createDocumentFragment();
     for (let i = 0; i < numMarks; i++) {
       const mark = document.createElement('div');
-      mark.classList.add('mdc-slider__tick-mark');
+      mark.classList.add(strings.TICK_MARK);
       frag.appendChild(mark);
     }
     this.tickMarkSet_.appendChild(frag);
