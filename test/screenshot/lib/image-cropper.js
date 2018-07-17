@@ -15,7 +15,6 @@
  */
 
 const Jimp = require('jimp');
-const fs = require('mz/fs');
 
 const TRIM_COLOR_CSS_VALUE = '#abc123'; // Value must match `$test-trim-color` in `fixture.scss`
 
@@ -54,7 +53,6 @@ class ImageCropper {
    * @return {!Promise<!Buffer>} Cropped image buffer
    */
   async autoCropImage(imageData) {
-    await fs.writeFile('/tmp/image.png', imageData, {encoding: null});
     return Jimp.read(imageData)
       .then(
         (jimpImage) => {

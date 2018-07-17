@@ -18,8 +18,6 @@
 
 const Jimp = require('jimp');
 const UserAgentParser = require('useragent');
-const fs = require('mz/fs');
-const mkdirp = require('mkdirp');
 const path = require('path');
 
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
@@ -36,6 +34,7 @@ const Constants = require('./constants');
 const Duration = require('./duration');
 const ImageCropper = require('./image-cropper');
 const ImageDiffer = require('./image-differ');
+const LocalStorage = require('./local-storage');
 const {Browser, Builder, By, until} = require('selenium-webdriver');
 const {CBT_CONCURRENCY_POLL_INTERVAL_MS, CBT_CONCURRENCY_MAX_WAIT_MS} = Constants;
 const {SELENIUM_FONT_LOAD_WAIT_MS} = Constants;
@@ -65,6 +64,12 @@ class SeleniumApi {
      * @private
      */
     this.imageDiffer_ = new ImageDiffer();
+
+    /**
+     * @type {!LocalStorage}
+     * @private
+     */
+    this.localStorage_ = new LocalStorage();
   }
 
   /**
@@ -120,6 +125,11 @@ class SeleniumApi {
     /** @type {!IWebDriver} */
     const driver = await this.createWebDriver_({reportData, userAgent});
 
+    /** @type {!Session} */
+    const session = await driver.getSession();
+    const seleniumSessionId = session.getId();
+    let changedScreenshots;
+
     const logResult = (verb) => {
       /* eslint-disable camelcase */
       const {os_name, os_version, browser_name, browser_version} = userAgent.navigator;
@@ -128,7 +138,7 @@ class SeleniumApi {
     };
 
     try {
-      await this.driveBrowser_({reportData, userAgent, driver});
+      changedScreenshots = (await this.driveBrowser_({reportData, userAgent, driver})).changedScreenshots;
       logResult('Finished');
     } catch (err) {
       logResult('Failed');
@@ -137,6 +147,11 @@ class SeleniumApi {
       logResult('Quitting');
       await driver.quit();
     }
+
+    await this.cbtApi_.setTestScore({
+      seleniumSessionId,
+      changedScreenshots,
+    });
   }
 
   /**
@@ -316,7 +331,10 @@ class SeleniumApi {
    * @param {!mdc.proto.ReportData} reportData
    * @param {!mdc.proto.UserAgent} userAgent
    * @param {!IWebDriver} driver
-   * @return {!Promise<void>}
+   * @return {Promise<{
+   *   changedScreenshots: !Array<!mdc.proto.Screenshot>,
+   *   unchangedScreenshots: !Array<!mdc.proto.Screenshot>,
+   * }>}
    * @private
    */
   async driveBrowser_({reportData, userAgent, driver}) {
@@ -332,6 +350,9 @@ class SeleniumApi {
 
     const meta = reportData.meta;
 
+    /** @type {!Array<!mdc.proto.Screenshot>} */ const changedScreenshots = [];
+    /** @type {!Array<!mdc.proto.Screenshot>} */ const unchangedScreenshots = [];
+
     /** @type {!Array<!mdc.proto.Screenshot>} */
     const screenshotQueue = reportData.screenshots.runnable_screenshot_browser_map[userAgent.alias].screenshots;
 
@@ -345,11 +366,16 @@ class SeleniumApi {
       screenshot.diff_image_file = diffImageResult.diff_image_file;
 
       if (diffImageResult.has_changed) {
-        reportData.screenshots.changed_screenshot_list.push(screenshot);
+        changedScreenshots.push(screenshot);
       } else {
-        reportData.screenshots.unchanged_screenshot_list.push(screenshot);
+        unchangedScreenshots.push(screenshot);
       }
     }
+
+    reportData.screenshots.changed_screenshot_list.push(...changedScreenshots);
+    reportData.screenshots.unchanged_screenshot_list.push(...unchangedScreenshots);
+
+    return {changedScreenshots, unchangedScreenshots};
   }
 
   /**
@@ -414,8 +440,7 @@ class SeleniumApi {
     const imageFilePathRelative = `${htmlFilePath}.${imageFileNameSuffix}.png`;
     const imageFilePathAbsolute = path.resolve(meta.local_screenshot_image_base_dir, imageFilePathRelative);
 
-    mkdirp.sync(path.dirname(imageFilePathAbsolute));
-    await fs.writeFile(imageFilePathAbsolute, imageBuffer, {encoding: null});
+    await this.localStorage_.writeBinaryFile(imageFilePathAbsolute, imageBuffer);
 
     return TestFile.create({
       relative_path: imageFilePathRelative,

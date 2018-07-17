@@ -84,6 +84,13 @@ class Duration {
   }
 
   /**
+   * @return {number}
+   */
+  toNanos() {
+    return this.ms_ * 1000 * 1000;
+  }
+
+  /**
    * TODO(acdvorak): Create `toHumanLong` method that outputs "4d 23h 5m 11s" (or w/e)
    * @param {number=} numDecimalDigits
    * @return {string}
