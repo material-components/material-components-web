@@ -112,20 +112,6 @@ class MDCSlider extends MDCComponent {
         hasClass: (className) => this.root_.classList.contains(className),
         addClass: (className) => this.root_.classList.add(className),
         removeClass: (className) => this.root_.classList.remove(className),
-        addTickMarkClass: (numTickMarks, className) => {
-          if (this.tickMarkSet_.children.length) {
-            for (let i = 0; i < numTickMarks; i++) {
-              this.tickMarkSet_.children[i].classList.add(className);
-            }
-          }
-        },
-        removeTickMarkClass: (className) => {
-          if (this.tickMarkSet_.children.length) {
-            for (let i = 0; i < this.tickMarkSet_.children.length; i++) {
-              this.tickMarkSet_.children[i].classList.remove(className);
-            }
-          }
-        },
         getAttribute: (name) => this.thumb_.getAttribute(name),
         setAttribute: (name, value) => this.thumb_.setAttribute(name, value),
         computeBoundingRect: () => this.root_.getBoundingClientRect(),

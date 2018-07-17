@@ -401,11 +401,6 @@ class MDCSliderFoundation extends MDCFoundation {
       this.adapter_.registerEventHandler('transitionend', onTransitionEnd);
     }
 
-    if (this.isDiscrete_ && this.step_ >= 1) {
-      this.adapter_.removeTickMarkClass('mdc-slider__tick-mark--inverted');
-      const numTickMarks = Math.round(this.value_ / this.step_);
-      this.adapter_.addTickMarkClass(numTickMarks, 'mdc-slider__tick-mark--inverted');
-    }
     requestAnimationFrame(() => {
       this.adapter_.setThumbStyleProperty('transform', `translateX(${translatePx}px) translateX(-50%)`);
       this.adapter_.setTrackFillStyleProperty('transform', `scaleX(${translatePx})`);
