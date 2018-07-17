@@ -170,7 +170,7 @@ class Logger {
    * @param {!Array<*>} args
    */
   log(...args) {
-    console.log(`[log][${this.id_}]`, ...args);
+    console.log(...args);
   }
 
   /**
