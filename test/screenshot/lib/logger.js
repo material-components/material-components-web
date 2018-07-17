@@ -152,8 +152,8 @@ class Logger {
     }
 
     const timerId = this.getFoldTimerId_(foldId);
-    const startNanos = this.foldStartTimesMs_.get(foldId) * 1000 * 10;
-    const finishNanos = Date.now() * 1000 * 10;
+    const startNanos = this.foldStartTimesMs_.get(foldId) * 1000 * 1000;
+    const finishNanos = Date.now() * 1000 * 1000;
     const durationNanos = finishNanos - startNanos;
 
     // Undocumented Travis CI job logging features. See:
