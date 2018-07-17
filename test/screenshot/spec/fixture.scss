@@ -28,15 +28,32 @@ $test-grid-color: #dddddd;
 }
 
 .test-main {
+  position: relative;
   box-sizing: border-box;
 }
 
-.test-main--mobile {
+.test-main--mobile-viewport {
   width: 350px; // fits 2 columns of buttons within a Galaxy S7 viewport
   height: 630px; // fits 8 rows of buttons within a Galaxy S7 viewport
   margin: 5px 0 5px 5px; // Extra padding ensures that CBT's "chromeless" screenshots don't get cut off
   border: 1px solid $test-trim-color;
   overflow: hidden;
+}
+
+.test-main--overflowing::after {
+  display: block;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 10px 20px;
+  background-color: rgba(255, 0, 0, .5);
+  color: white;
+  font-family: Roboto, sans-serif;
+  font-size: .9rem;
+  font-weight: bold;
+  text-shadow: 0 0 3px rgba(0, 0, 0, .5);
+  content: "ERROR: Content overflows mobile viewport!";
 }
 
 .test-grid {

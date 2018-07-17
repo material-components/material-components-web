@@ -19,7 +19,13 @@
 window.mdc = window.mdc || {};
 
 window.mdc.testFixture = {
-  attachFontObserver: function() {
+  onPageLoad: function() {
+    this.attachFontObserver_();
+    this.measureMobileViewport_();
+  },
+
+  /** @private */
+  attachFontObserver_: function() {
     var fontsLoadedPromise = new Promise(function(resolve) {
       var robotoFont = new FontFaceObserver('Roboto');
       var materialIconsFont = new FontFaceObserver('Material Icons');
@@ -38,4 +44,31 @@ window.mdc.testFixture = {
       document.body.setAttribute('data-fonts-loaded', '');
     });
   },
+
+  measureMobileViewport_() {
+    var mainEl = document.querySelector('.test-main--mobile-viewport');
+    if (!mainEl) {
+      return;
+    }
+
+    window.requestAnimationFrame(function() {
+      var setHeight = mainEl.offsetHeight;
+      mainEl.style.height = 'auto';
+      var autoHeight = mainEl.offsetHeight;
+      mainEl.style.height = '';
+      if (autoHeight > setHeight) {
+        mainEl.classList.add('test-main--overflowing');
+        console.error(`
+Page content overflows a mobile viewport!
+Consider splitting this page into two separate pages.
+If you are trying to create a test page for a fullscreen component like drawer or top-app-bar,
+remove the 'test-main--mobile-viewport' class from the '<main class="test-main">' element.
+          `.trim());
+      }
+    });
+  },
 };
+
+window.addEventListener('load', function() {
+  window.mdc.testFixture.onPageLoad();
+});
