@@ -138,3 +138,11 @@ test('#dispatches a MDCAutoInit:End event when all components are initialized - 
   assert.isOk(evt !== null);
   assert.equal(evt.type, type);
 });
+
+test('#returns the initialized components', () => {
+  const root = setupTest();
+  const components = mdcAutoInit(root);
+
+  assert.equal(components.length, 1);
+  assert.isOk(components[0] instanceof FakeComponent);
+});
