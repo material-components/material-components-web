@@ -47,16 +47,16 @@ const {SELENIUM_FONT_LOAD_WAIT_MS} = Constants;
  * }} CliStatus
  */
 const CliStatuses = {
-  RUNNING: {name: 'Running', color: colors.cyan},
-  QUEUED: {name: 'Queued', color: colors.dim.cyan},
-  STARTING: {name: 'Starting', color: colors.dim.green},
-  STARTED: {name: 'Started', color: colors.green},
+  ACTIVE: {name: 'Running', color: colors.bold.cyan},
+  QUEUED: {name: 'Queued', color: colors.cyan},
+  STARTING: {name: 'Starting', color: colors.green},
+  STARTED: {name: 'Started', color: colors.bold.green},
   GET: {name: 'Get', color: colors.bold.white},
-  CROP: {name: 'Crop', color: colors.dim.white},
+  CROP: {name: 'Crop', color: colors.white},
   RETRY: {name: 'Retry', color: colors.red},
-  FINISHED: {name: 'Finished', color: colors.green},
-  FAILED: {name: 'Failed', color: colors.red},
-  QUITTING: {name: 'Quitting', color: colors.gray},
+  FINISHED: {name: 'Finished', color: colors.bold.green},
+  FAILED: {name: 'Failed', color: colors.bold.red},
+  QUITTING: {name: 'Quitting', color: colors.white},
 };
 
 class SeleniumApi {
@@ -113,7 +113,7 @@ class SeleniumApi {
       const queuedUserAgentAliases = queuedUserAgents.map((ua) => ua.alias);
       const runningUserAgentLoggable = getLoggableAliases(runningUserAgentAliases);
       const queuedUserAgentLoggable = getLoggableAliases(queuedUserAgentAliases);
-      this.logStatus_(CliStatuses.RUNNING, runningUserAgentLoggable);
+      this.logStatus_(CliStatuses.ACTIVE, runningUserAgentLoggable);
       this.logStatus_(CliStatuses.QUEUED, queuedUserAgentLoggable);
       await this.captureAllPagesInAllBrowsers_({reportData, userAgents: runningUserAgents});
     }
@@ -358,39 +358,36 @@ class SeleniumApi {
    * @private
    */
   async driveBrowser_({reportData, userAgent, driver}) {
-    if (userAgent.form_factor_type === FormFactorType.DESKTOP) {
-      // /** @type {!Window} */
-      // const window = driver.manage().window();
-
-      // driver.findElement(By.className('test-main--mobile-viewport'))
-
-      // Resize the browser window to roughly match a mobile browser.
-      // This reduces the byte size of the screenshot image, which speeds up the test significantly.
-      // TODO(acdvorak): Set this value dynamically
-      // await window.setRect({x: 0, y: 0, width: 400, height: 800}).catch(() => undefined);
-    }
-
     const meta = reportData.meta;
 
     /** @type {!Array<!mdc.proto.Screenshot>} */ const changedScreenshots = [];
     /** @type {!Array<!mdc.proto.Screenshot>} */ const unchangedScreenshots = [];
 
     /** @type {!Array<!mdc.proto.Screenshot>} */
-    const screenshotQueue = reportData.screenshots.runnable_screenshot_browser_map[userAgent.alias].screenshots;
+    const screenshotQueueAll = reportData.screenshots.runnable_screenshot_browser_map[userAgent.alias].screenshots;
 
-    for (const screenshot of screenshotQueue) {
-      screenshot.capture_state = CaptureState.RUNNING;
+    const screenshotQueues = [
+      [true, screenshotQueueAll.filter((screenshot) => this.isSmallComponent_(screenshot.html_file_path))],
+      [false, screenshotQueueAll.filter((screenshot) => !this.isSmallComponent_(screenshot.html_file_path))],
+    ];
 
-      const diffImageResult = await this.takeScreenshotWithRetries_({driver, userAgent, screenshot, meta});
+    for (const [isSmallComponent, screenshotQueue] of screenshotQueues) {
+      await this.resizeWindow_({driver, isSmallComponent});
 
-      screenshot.capture_state = CaptureState.DIFFED;
-      screenshot.diff_image_result = diffImageResult;
-      screenshot.diff_image_file = diffImageResult.diff_image_file;
+      for (const screenshot of screenshotQueue) {
+        screenshot.capture_state = CaptureState.RUNNING;
 
-      if (diffImageResult.has_changed) {
-        changedScreenshots.push(screenshot);
-      } else {
-        unchangedScreenshots.push(screenshot);
+        const diffImageResult = await this.takeScreenshotWithRetries_({driver, userAgent, screenshot, meta});
+
+        screenshot.capture_state = CaptureState.DIFFED;
+        screenshot.diff_image_result = diffImageResult;
+        screenshot.diff_image_file = diffImageResult.diff_image_file;
+
+        if (diffImageResult.has_changed) {
+          changedScreenshots.push(screenshot);
+        } else {
+          unchangedScreenshots.push(screenshot);
+        }
       }
     }
 
@@ -398,6 +395,37 @@ class SeleniumApi {
     reportData.screenshots.unchanged_screenshot_list.push(...unchangedScreenshots);
 
     return {changedScreenshots, unchangedScreenshots};
+  }
+
+  /**
+   * @param {string} url
+   * @return {boolean}
+   * @private
+   */
+  isSmallComponent_(url) {
+    // TODO(acdvorak): Find a better way to do this
+    const smallComponentNames = [
+      'animation', 'button', 'card', 'checkbox', 'chips', 'elevation', 'fab', 'icon-button', 'icon-toggle',
+      'list', 'menu', 'radio', 'ripple', 'select', 'switch', 'textfield', 'theme', 'tooltip', 'typography',
+    ];
+    return new RegExp(`/mdc-(${smallComponentNames.join('|')})/`).test(url);
+  }
+
+  /**
+   * @param {!IWebDriver} driver
+   * @param {boolean} isSmallComponent
+   * @return {!Promise<{x: number, y: number, width: number, height: number}>}
+   * @private
+   */
+  async resizeWindow_({driver, isSmallComponent}) {
+    /** @type {!Window} */
+    const window = driver.manage().window();
+    const rect = isSmallComponent
+      ? {x: 0, y: 0, width: 400, height: 768}
+      : {x: 0, y: 0, width: 1366, height: 768}
+    ;
+    await window.setRect(rect).catch(() => undefined);
+    return rect;
   }
 
   /**
@@ -484,24 +512,7 @@ class SeleniumApi {
     const isOnline = await this.cli_.isOnline();
     const fontTimeoutMs = isOnline ? SELENIUM_FONT_LOAD_WAIT_MS : 500;
 
-    /** @type {!Window} */
-    const window = driver.manage().window();
-
-    // TODO(acdvorak): Find a better way to do this
-    const fullPageComponentNames = [
-      'backdrop', 'banner', 'bottom-app-bar', 'bottom-navigation-sheet', 'data-table', 'dialog', 'drawer', 'grid-list',
-      'image-list', 'layout-grid', 'linear-progress', 'side-sheet', 'snackbar', 'tabs', 'top-app-bar',
-    ];
-    const isFullPage = new RegExp(`/mdc-(${fullPageComponentNames.join('|')})/`).test(url);
-    const rect = isFullPage
-      ? {x: 0, y: 0, width: 1366, height: 768}
-      : {x: 0, y: 0, width: 400, height: 768};
-
-    await Promise.all([
-      driver.get(url),
-      window.setRect(rect).catch(() => undefined),
-    ]);
-
+    await driver.get(url);
     await driver.wait(until.elementLocated(By.css('[data-fonts-loaded]')), fontTimeoutMs).catch(() => 0);
 
     if (delayMs > 0) {
