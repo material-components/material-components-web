@@ -551,7 +551,7 @@ class SeleniumApi {
    */
   logStatus_(status, ...args) {
     const maxWidth = Object.values(CliStatuses).map((status) => status.name.length).sort().reverse()[0];
-    console.log(status.color(status.name.padEnd(maxWidth, ' ')), ...args);
+    console.log(status.color(status.name.toUpperCase().padStart(maxWidth, ' ')) + ':', ...args);
   }
 }
 
