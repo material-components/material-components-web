@@ -73,14 +73,14 @@
   display: inline-block;
   padding: 16px 0 20px;
   line-height: 1;
-  opacity: 0.6;
+  opacity: $mdc-tab-text-label-opacity;
 }
 
 .mdc-tab__icon {
   width: $mdc-tab-icon-size;
   height: $mdc-tab-icon-size;
   padding: 12px 0;
-  opacity: 0.54;
+  opacity: $mdc-tab-icon-opacity;
 }
 
 .mdc-tab--stacked {
