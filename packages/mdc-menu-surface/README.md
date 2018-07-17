@@ -74,6 +74,7 @@ CSS Class | Description
 `mdc-menu-surface--open` | Indicates the menu surface is currently open, or is currently animating open.
 `mdc-menu-surface--animating-closed` | Indicates the menu surface is currently animating closed. This class is removed once the animation completes.
 `mdc-menu-surface--anchor` | Used to indicate which element the menu should be anchored to.
+`mdc-menu-surface--fixed` | Used to indicate that the menu is using fixed positioning.
 
 ### Sass Mixins
 
@@ -95,6 +96,10 @@ Method Signature | Description
 `hide() => void` | Proxies to the foundation's `close()` method.
 `setAnchorCorner(Corner) => void` | Proxies to the foundation's `setAnchorCorner(Corner)` method.
 `setAnchorMargin(AnchorMargin) => void` | Proxies to the foundation's `setAnchorMargin(AnchorMargin)` method.
+`setFixedPosition(isFixed: boolean) => void` | Adds the `mdc-menu-surface--fixed` class to the `mdc-menu-surface` element. Proxies to the foundation's `setIsHoisted()` and `setFixedPosition()` methods.
+`setMenuSurfaceAnchorElement(element: Element) => void` | Changes the element used as an anchor for `menu-surface` positioning logic. Should be used with conjunction with `hoistMenuToBody()`.
+`hoistMenuToBody() => void` | Removes the `menu-surface` element from the DOM and appends it to the `body` element. Should be used to overcome `overflow: hidden` issues.
+`setIsHoisted() => void` | Proxies tot he foundation's `setIsHoisted` method.
 `getDefaultFoundation() => MDCMenuSurfaceFoundation` | Returns the foundation.
 
 ## Usage Within Frameworks
@@ -127,7 +132,9 @@ Method Signature | Description
 `focusLastElement() => void` | Focuses the last focusable element of the menu-surface.
 `getInnerDimensions() => {width: number, height: number}` | Returns an object with the items container width and height.
 `getAnchorDimensions() => {width: number, height: number, top: number, right: number, bottom: number, left: number}` | Returns an object with the dimensions and position of the anchor (same semantics as `DOMRect`).
-`getWindowDimensions() => {width: number, height: number}` | Returns an object with width and height of the page, in pixels.
+`getBodyDimensions() => {width: number, height: number}` | Returns an object with width and height of the body, in pixels.
+`getWindowDimensions() => {width: number, height: number}` | Returns an object with width and height of the viewport, in pixels.
+`getWindowScroll() => {x: number, y: number}` | Returns an object with the amount the body has been scrolled on the `x` and `y` axis.
 `setPosition(position: {top: string, right: string, bottom: string, left: string}) => void` | Sets the position of the menu surface element.
 `setMaxHeight(value: string) => void` | Sets `max-height` style for the menu surface element.
 
@@ -137,6 +144,10 @@ Method Signature | Description
 --- | ---
 `setAnchorCorner(corder: Corner) => void` | Sets the corner that the menu surface will be anchored to. See [constants.js](./constants.js)
 `setAnchorMargin(margin: AnchorMargin) => void` | Sets the distance from the anchor point that the menu surface should be shown.
+`setIsHoisted(isHoisted: boolean) => void` | Sets whether the menu surface has been hoisted to the body so that the offsets are calculated relative to the page and not the anchor.
+`setFixedPosition(isFixed: boolean) => void` | Sets whether the menu surface is using fixed positioning.
+`handleDocumentClick(event: Event) => void` | Method used as the callback function for the `click` event.
+`handleKeyboardDown(event: Event) => void` | Method used as the callback function for the `keydown` events.
 `open() => void` | Opens the menu surface. Optionally accepts an object with a `focusIndex` parameter to indicate which element should receive focus when the menu surface is opened.
 `close()` | Closes the menu.
 `isOpen() => boolean` | Returns a boolean indicating whether the menu surface is open.
