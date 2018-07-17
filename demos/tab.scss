@@ -44,6 +44,11 @@
 .custom-tab {
   @include mdc-tab-text-label-color($material-color-blue-300);
   @include mdc-tab-icon-color($material-color-orange-300);
+  @include mdc-tab-text-label-opacity(.8);
+  @include mdc-tab-icon-opacity(.6);
+  @include mdc-tab-height(96px);
+  @include mdc-tab-icon-size(32px);
+  @include mdc-typography(body1);
 
   .custom-tab-indicator {
     @include mdc-tab-indicator-underline-color($material-color-pink-a700);

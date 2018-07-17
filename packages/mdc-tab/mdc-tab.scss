@@ -23,16 +23,23 @@
 @import "./variables";
 
 .mdc-tab {
-  @include mdc-tab-text-label-color($mdc-tab-baseline-color);
-  @include mdc-tab-icon-color($mdc-tab-baseline-color);
+  @include mdc-tab-text-label-color(on-surface);
+  @include mdc-tab-text-label-opacity($mdc-tab-baseline-text-label-opacity);
+  @include mdc-tab-icon-color(on-surface);
+  @include mdc-tab-icon-size($mdc-tab-baseline-icon-size);
+  @include mdc-tab-icon-opacity($mdc-tab-baseline-icon-opacity);
+  @include mdc-tab-height($mdc-tab-baseline-height);
+  @include mdc-tab-horizontal-padding($mdc-tab-baseline-horizontal-padding);
+  @include mdc-tab-content-spacing(8px);
   @include mdc-tab-indicator-surface;
+  @include mdc-typography(button);
 
   display: flex;
   flex: 1 0 auto;
   justify-content: center;
   box-sizing: border-box;
-  height: 48px;
-  padding: 0 24px;
+  padding-top: 0;
+  padding-bottom: 0;
   border: none;
   outline: none;
   background: none;
@@ -69,22 +76,16 @@
 }
 
 .mdc-tab__text-label {
-  @include mdc-typography-base;
-
   display: inline-block;
-  padding: 16px 0 20px;
-  font-size: 14px;
-  font-weight: 500;
+  align-self: center;
 }
 
 .mdc-tab__icon {
-  width: 24px;
-  height: 24px;
-  padding: 12px 0;
+  align-self: center;
 }
 
 .mdc-tab--stacked {
-  height: 72px;
+  @include mdc-tab-height($mdc-tab-baseline-stacked-height);
 }
 
 .mdc-tab--stacked .mdc-tab__content {
@@ -92,13 +93,8 @@
   align-items: center;
 }
 
-.mdc-tab--stacked .mdc-tab__icon {
-  padding: 12px 0 8px;
-}
-
 .mdc-tab--stacked .mdc-tab__text-label {
-  padding: 0 0 16px;
-  line-height: 12px;
+  line-height: 1;
 }
 
 // The [de]activation animation affects color for text label and icon
@@ -106,7 +102,7 @@
 .mdc-tab--animating-activate .mdc-tab__icon,
 .mdc-tab--animating-deactivate .mdc-tab__text-label,
 .mdc-tab--animating-deactivate .mdc-tab__icon {
-  transition: 150ms color linear;
+  transition: 150ms color linear, 150ms opacity linear;
 }
 
 // The activation animation has a delay of 100ms
@@ -117,14 +113,7 @@
 
 .mdc-tab--active {
   @include mdc-tab-text-label-color(primary);
+  @include mdc-tab-text-label-opacity(1);
   @include mdc-tab-icon-color(primary);
-}
-
-.mdc-tab .mdc-tab__icon + .mdc-tab__text-label {
-  @include mdc-rtl-reflexive-box(padding, left, 8px);
-}
-
-.mdc-tab--stacked .mdc-tab__icon + .mdc-tab__text-label {
-  padding-right: 0;
-  padding-left: 0;
+  @include mdc-tab-icon-opacity(1);
 }
