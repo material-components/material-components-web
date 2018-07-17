@@ -22,6 +22,7 @@ import {verifyDefaultAdapter} from '../helpers/foundation';
 import {createMockRaf} from '../helpers/raf';
 import {setupFoundationTest} from '../helpers/setup';
 
+import {cssClasses} from '../../../packages/mdc-slider/constants';
 import MDCSliderFoundation from '../../../packages/mdc-slider/foundation';
 
 suite('MDCSliderFoundation');
@@ -78,6 +79,35 @@ test('#init registers all necessary event handlers for the component', () => {
   td.verify(mockAdapter.registerThumbEventHandler('pointerdown', isA(Function)));
   td.verify(mockAdapter.registerThumbEventHandler('touchstart', isA(Function)));
   td.verify(mockAdapter.registerWindowResizeHandler(isA(Function)));
+
+  raf.restore();
+});
+
+test('#init checks if slider is discrete', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const raf = createMockRaf();
+
+  td.when(mockAdapter.computeBoundingRect()).thenReturn({width: 100, left: 200});
+  foundation.init();
+
+  raf.flush();
+
+  td.verify(mockAdapter.hasClass(cssClasses.IS_DISCRETE));
+
+  raf.restore();
+});
+
+test('#init sets step to one if slider is discrete but step is zero', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const raf = createMockRaf();
+
+  td.when(mockAdapter.computeBoundingRect()).thenReturn({width: 100, left: 200});
+  td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
+  foundation.init();
+
+  raf.flush();
+
+  assert.equal(foundation.getStep(), 1);
 
   raf.restore();
 });
@@ -267,6 +297,24 @@ test('#setValue respects the width of the slider when setting the thumb transfor
   raf.flush();
 
   td.verify(mockAdapter.setThumbStyleProperty(TRANSFORM_PROP, 'translateX(150px) translateX(-50%)'));
+
+  raf.restore();
+});
+
+test('#setValue assigns the discrete value when slider is discrete', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const raf = createMockRaf();
+
+  td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 200});
+  foundation.init();
+  raf.flush();
+
+  foundation.isDiscrete_ = true;
+  foundation.setStep(1);
+  foundation.setValue(75.5);
+  raf.flush();
+
+  assert.equal(foundation.getValue(), 76);
 
   raf.restore();
 });

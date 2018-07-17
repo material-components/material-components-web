@@ -57,8 +57,6 @@ class MDCSliderFoundation extends MDCFoundation {
       hasClass: () => {},
       addClass: () => {},
       removeClass: () => {},
-      addTickMarkClass: () => {},
-      removeTickMarkClass: () => {},
       getAttribute: () => {},
       setAttribute: () => {},
       computeBoundingRect: () => {},

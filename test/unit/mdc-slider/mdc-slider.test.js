@@ -31,6 +31,7 @@ function getFixture() {
     <div class="mdc-slider">
       <div class="mdc-slider__track">
         <div class="mdc-slider__track-fill"></div>
+        <div class="mdc-slider__tick-mark-set"></div>
       </div>
       <div class="mdc-slider__thumb" tabindex="0" role="slider"
       data-step="2" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
@@ -183,6 +184,46 @@ test('#initialSyncWithDOM adds an data-step attribute if not present', () => {
 
   const component = new MDCSlider(root);
   assert.equal(thumb.getAttribute('data-step'), String(component.step));
+});
+
+test('#initialSyncWithDOM calls setUpTickMarks if tick-mark-set is present', () => {
+  const root = getFixture();
+  const component = new MDCSlider(root);
+
+  assert.isTrue(component.tickMarkSet_.hasChildNodes());
+});
+
+test('#initialSyncWithDOM setUpTickMarks works with indivisble numbers', () => {
+  const root = getFixture();
+
+  const thumb = root.querySelector('.mdc-slider__thumb');
+  thumb.setAttribute('data-step', 3);
+
+  const component = new MDCSlider(root);
+
+  assert.isTrue(component.tickMarkSet_.hasChildNodes());
+});
+
+test('#initialSyncWithDOM setUpTickMarks removes old tick marks and updates', () => {
+  const root = getFixture();
+  const component = new MDCSlider(root);
+
+  assert.equal(component.tickMarkSet_.children.length, 50);
+
+  component.max = 50;
+  component.setUpTickMarks();
+
+  assert.equal(component.tickMarkSet_.children.length, 25);
+});
+
+test('#setUpTickMarks does execute if it is continuous slider', () => {
+  const root = getFixture();
+  const tickMarkSet = root.querySelector('.mdc-slider__tick-mark-set');
+  tickMarkSet.remove();
+
+  const component = new MDCSlider(root);
+
+  assert.equal(component.tickMarkSet_, undefined);
 });
 
 test('adapter#hasClass checks if a class exists on root element', () => {

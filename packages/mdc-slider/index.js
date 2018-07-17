@@ -172,11 +172,11 @@ class MDCSlider extends MDCComponent {
     this.step = parseFloat(this.thumb_.getAttribute(strings.DATA_STEP)) || this.step;
     this.value = origValueNow || this.value;
     if (this.tickMarkSet_) {
-      this.setUpTickMarks_();
+      this.setUpTickMarks();
     }
   }
 
-  setUpTickMarks_() {
+  setUpTickMarks() {
     if (this.step < 1) {
       this.step = 1;
     }
