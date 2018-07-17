@@ -44,7 +44,7 @@
     "@octokit/rest": "^15.9.4",
     "argparse": "^1.0.10",
     "ascii-table": "0.0.9",
-    "autoprefixer": "^8.0.0",
+    "autoprefixer": "^9.0.0",
     "babel-core": "^6.22.1",
     "babel-loader": "^7.0.0",
     "babel-plugin-transform-object-assign": "^6.8.0",
