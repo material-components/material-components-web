@@ -20,6 +20,8 @@ const colors = require('colors/safe');
 const crypto = require('crypto');
 const path = require('path');
 
+const Duration = require('./duration');
+
 /**
  * @typedef {(function(string):string|{
  *   enable: !CliColor,
@@ -86,7 +88,7 @@ class Logger {
      * @type {!Map<string, number>}
      * @private
      */
-    this.foldStartTimes_ = new Map();
+    this.foldStartTimesMs_ = new Map();
   }
 
   /**
@@ -121,20 +123,26 @@ class Logger {
    * @param {string} shortMessage
    */
   foldStart(foldId, shortMessage) {
-    const hash = this.getFoldHash_(foldId);
+    const timerId = this.getFoldTimerId_(foldId);
     const colorMessage = colors.bold.yellow(shortMessage);
 
-    this.foldStartTimes_.set(foldId, Date.now());
+    this.foldStartTimesMs_.set(foldId, Date.now());
 
-    console.log('');
-    if (this.isTravisJob_()) {
-      // See https://github.com/travis-ci/docs-travis-ci-com/issues/949#issuecomment-276755003
-      process.stdout.write(`\e[0Ktravis_fold:start:${foldId}\n${colorMessage}\n`);
-      process.stdout.write(`\e[0Ktravis_time:start:${hash}\n`);
-    } else {
+    if (!this.isTravisJob_()) {
+      console.log('');
       console.log(colorMessage);
+      console.log(colors.reset(''));
+      return;
     }
+
+    // Undocumented Travis CI job logging features. See:
+    // https://github.com/travis-ci/docs-travis-ci-com/issues/949#issuecomment-276755003
+    // https://github.com/rspec/rspec-support/blob/5a1c6756a9d8322fc18639b982e00196f452974d/script/travis_functions.sh
     console.log('');
+    console.log(`travis_fold:start:${foldId}`);
+    console.log(`travis_time:start:${timerId}`);
+    console.log(colorMessage);
+    console.log(colors.reset(''));
   }
 
   /**
@@ -145,25 +153,21 @@ class Logger {
       return;
     }
 
-    const hash = this.getFoldHash_(foldId);
-    const startNanos = this.foldStartTimes_.get(foldId) * 1000;
-    const finishNanos = Date.now() * 1000;
-    const durationNanos = finishNanos - startNanos;
+    // Undocumented Travis CI job logging feature. See:
+    // https://github.com/travis-ci/docs-travis-ci-com/issues/949#issuecomment-276755003
+    console.log(`travis_fold:end:${foldId}`);
 
-    // See https://github.com/travis-ci/docs-travis-ci-com/issues/949#issuecomment-276755003
-    process.stdout.write(`\e[0Ktravis_fold:end:${foldId}\n`);
+    const startMs = this.foldStartTimesMs_.get(foldId);
+    if (startMs) {
+      const timerId = this.getFoldTimerId_(foldId);
+      const startNanos = Duration.millis(startMs).toNanos();
+      const finishNanos = Duration.millis(Date.now()).toNanos();
+      const durationNanos = finishNanos - startNanos;
 
-    if (durationNanos) {
-      process.stdout.write(
-        `travis_time:end:${hash}:start=${startNanos},finish=${finishNanos},duration=${durationNanos}\n`
-      );
+      // Undocumented Travis CI job logging feature. See:
+      // https://github.com/rspec/rspec-support/blob/5a1c6756a9d8322fc18639b982e00196f452974d/script/travis_functions.sh
+      console.log(`travis_time:end:${timerId}:start=${startNanos},finish=${finishNanos},duration=${durationNanos}`);
     }
-  }
-
-  getFoldHash_(foldId) {
-    const sha1Sum = crypto.createHash('sha1');
-    sha1Sum.update(foldId);
-    return sha1Sum.digest('hex').substr(0, 8);
   }
 
   /**
@@ -200,6 +204,17 @@ class Logger {
    */
   isTravisJob_() {
     return process.env.TRAVIS === 'true';
+  }
+
+  /**
+   * @param {string} foldId
+   * @return {string}
+   * @private
+   */
+  getFoldTimerId_(foldId) {
+    const sha1Sum = crypto.createHash('sha1');
+    sha1Sum.update(foldId);
+    return sha1Sum.digest('hex').substr(0, 8);
   }
 }
 
