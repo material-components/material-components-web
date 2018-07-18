@@ -142,12 +142,12 @@ test('#adapter.getContentOffsetLeft() returns the offsetLeft of the content elem
   assert.strictEqual(component.getDefaultFoundation().adapter_.getContentOffsetLeft(), content.offsetLeft);
 });
 
-test(`#adapter.notifySelected() emits the ${MDCTabFoundation.strings.SELECTED_EVENT} event`, () => {
+test(`#adapter.notifyInteracted() emits the ${MDCTabFoundation.strings.INTERACTED_EVENT} event`, () => {
   const {component} = setupTest();
   const handler = td.func('interaction handler');
 
-  component.listen(MDCTabFoundation.strings.SELECTED_EVENT, handler);
-  component.getDefaultFoundation().adapter_.notifySelected();
+  component.listen(MDCTabFoundation.strings.INTERACTED_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyInteracted();
   td.verify(handler(td.matchers.anything()));
 });
 

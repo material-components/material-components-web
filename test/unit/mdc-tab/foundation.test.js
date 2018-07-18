@@ -38,7 +38,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'setAttr',
     'activateIndicator', 'deactivateIndicator', 'computeIndicatorClientRect',
     'getOffsetLeft', 'getOffsetWidth', 'getContentOffsetLeft', 'getContentOffsetWidth',
-    'notifySelected', 'notifyActivated',
+    'notifyInteracted', 'notifyActivated',
   ]);
 });
 
@@ -169,37 +169,36 @@ test('#handleTransitionEnd does nothing when triggered by a pseudo element', () 
   td.verify(mockAdapter.deregisterEventHandler('transitionend', td.matchers.isA(Function)), {times: 0});
 });
 
-test('on transitionend, do nothing when triggered by a pseudeo element', () => {
+test('on transitionend, call #handleTransitionEnd', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerEventHandler');
+  foundation.handleTransitionEnd = td.function('handles transitionend');
   foundation.activate();
-  handlers.transitionend({pseudoElement: '::after'});
-  td.verify(mockAdapter.removeClass(MDCTabFoundation.cssClasses.ANIMATING_ACTIVATE), {times: 0});
-  td.verify(mockAdapter.removeClass(MDCTabFoundation.cssClasses.ANIMATING_DEACTIVATE), {times: 0});
-  td.verify(mockAdapter.deregisterEventHandler('transitionend', td.matchers.isA(Function)), {times: 0});
+  handlers.transitionend();
+  td.verify(foundation.handleTransitionEnd(td.matchers.anything()), {times: 1});
 });
 
 test('#handleClick does nothing if the tab is already active', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.hasClass(MDCTabFoundation.cssClasses.ACTIVE)).thenReturn(true);
   foundation.handleClick();
-  td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0});
+  td.verify(mockAdapter.notifyInteracted(td.matchers.anything()), {times: 0});
 });
 
 test('#handleClick emits the selected event if it is not active', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.hasClass(MDCTabFoundation.cssClasses.ACTIVE)).thenReturn(false);
   foundation.handleClick();
-  td.verify(mockAdapter.notifySelected(), {times: 1});
+  td.verify(mockAdapter.notifyInteracted(), {times: 1});
 });
 
-test('on click, do nothing if the Tab is already active', () => {
+test('on click, call #handleClick', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerEventHandler');
+  foundation.handleClick = td.function('handles click');
   foundation.init();
-  td.when(mockAdapter.hasClass(MDCTabFoundation.cssClasses.ACTIVE)).thenReturn(true);
   handlers.click();
-  td.verify(mockAdapter.notifySelected(), {times: 0});
+  td.verify(foundation.handleClick(), {times: 1});
 });
 
 test('#computeDimensions() returns the dimensions of the tab', () => {

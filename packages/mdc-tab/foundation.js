@@ -56,7 +56,7 @@ class MDCTabFoundation extends MDCFoundation {
       activateIndicator: () => {},
       deactivateIndicator: () => {},
       computeIndicatorClientRect: () => {},
-      notifySelected: () => {},
+      notifyInteracted: () => {},
       notifyActivated: () => {},
       getOffsetLeft: () => {},
       getOffsetWidth: () => {},
@@ -98,13 +98,13 @@ class MDCTabFoundation extends MDCFoundation {
    * Handles the "click" event
    */
   handleClick() {
-    // Early exit if the tab is already active. We don't want to emit a selected
-    // event that tries to select a tab that's already active.
+    // Early exit if the tab is already active. We don't want to emit an
+    // interacted event that tries to interact with a tab that's already active.
     if (this.isActive()) {
       return;
     }
 
-    this.adapter_.notifySelected();
+    this.adapter_.notifyInteracted();
   }
 
   /**
