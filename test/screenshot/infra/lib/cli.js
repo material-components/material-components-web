@@ -85,6 +85,8 @@ class Cli {
    * @private
    */
   addArg_(parser, config) {
+    const metaval = config.exampleValue || config.defaultValue;
+    const metavar = metaval === 0 ? '0' : (metaval || (config.type || '').toUpperCase() || 'VALUE');
     parser.addArgument(config.optionNames, {
       help: config.description.trim(),
       dest: config.optionNames[config.optionNames.length - 1],
@@ -92,7 +94,7 @@ class Cli {
       action: config.type === 'array' ? 'append' : (config.type === 'boolean' ? 'storeTrue' : 'store'),
       required: config.isRequired || false,
       defaultValue: config.defaultValue,
-      metavar: config.exampleValue || config.defaultValue,
+      metavar,
     });
   }
 
@@ -250,6 +252,30 @@ If a local dev server is not already running, one will be started for the durati
     this.addOfflineArg_(subparser);
 
     this.addArg_(subparser, {
+      optionNames: ['--parallels'],
+      type: 'integer',
+      defaultValue: 0,
+      description: `
+Maximum number of browser VMs to run in parallel (subject to our CBT plan limit and VM availability).
+A value of '0' will start 3 browsers if nobody else is running tests, or 1 browser if other tests are already running.
+IMPORTANT: To ensure that multiple developers can run their tests simultaneously, do not set this value higher than 1
+during normal business hours when other people are likely to be running tests.
+`,
+    });
+
+    this.addArg_(subparser, {
+      optionNames: ['--retries'],
+      type: 'integer',
+      defaultValue: 3,
+      description: `
+Number of times to retry a screenshot that comes back with diffs. If you're not expecting any diffs, automatically
+retrying screenshots can help decrease noise from flaky browser rendering. However, if you're making a change that
+intentionally affects the rendered output, there's no point slowing down the test by retrying a bunch of screenshots
+that you know are going to have diffs.
+`,
+    });
+
+    this.addArg_(subparser, {
       optionNames: ['--diff-base'],
       defaultValue: GOLDEN_JSON_RELATIVE_PATH,
       description: `
@@ -257,7 +283,7 @@ File path, URL, or Git ref of a 'golden.json' file to diff against.
 Typically a branch name or commit hash, but may also be a local file path or public URL.
 Git refs may optionally be suffixed with ':path/to/golden.json' (the default is '${GOLDEN_JSON_RELATIVE_PATH}').
 E.g., '${GOLDEN_JSON_RELATIVE_PATH}' (default), 'HEAD', 'master', 'origin/master', 'feat/foo/bar', '01abc11e0',
-'/tmp/golden.json', 'https://storage.googleapis.com/.../test/screenshot/golden.json'.
+'/tmp/golden.json', 'https://storage.googleapis.com/.../golden.json'.
 `,
     });
 
@@ -286,30 +312,6 @@ To negate a pattern, prefix it with a '-' character.
 E.g.: '--browser=chrome,-mobile' will test Chrome on desktop, but not on mobile.
 Passing this option more than once is equivalent to passing a single comma-separated value.
 E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mobile'.
-`,
-    });
-
-    this.addArg_(subparser, {
-      optionNames: ['--parallels'],
-      type: 'integer',
-      defaultValue: 0,
-      description: `
-Maximum number of browser VMs to run in parallel (subject to our CBT plan limit and VM availability).
-A value of '0' will start 3 browsers if nobody else is running tests, or 1 browser if other tests are already running.
-IMPORTANT: To ensure that multiple developers can run their tests simultaneously, do not set this value higher than 1
-during normal business hours when other people are likely to be running tests.
-`,
-    });
-
-    this.addArg_(subparser, {
-      optionNames: ['--retries'],
-      type: 'integer',
-      defaultValue: 3,
-      description: `
-Number of times to retry a screenshot that comes back with diffs. If you're not expecting any diffs, automatically
-retrying screenshots can help decrease noise from flaky browser rendering. However, if you're making a change that
-intentionally affects the rendered output, there's no point slowing down the test by retrying a bunch of screenshots
-that you know are going to have diffs.
 `,
     });
   }

@@ -29,18 +29,16 @@
  *   unreviewedUserAgentCbEls: !Array<!HTMLInputElement>,
  *   changelistDict: !ReportUiChangelistDict,
  *   reviewStatusCountDict: !ReportUiReviewStatusCountDict,
- * }}
+ * }} ReportUiState
  */
-let ReportUiState;
 
 /**
  * @typedef {{
  *   changed: !ReportUiChangelistState,
  *   added: !ReportUiChangelistState,
  *   removed: !ReportUiChangelistState,
- * }}
+ * }} ReportUiChangelistDict
  */
-let ReportUiChangelistDict;
 
 /**
  * @typedef {{
@@ -51,14 +49,12 @@ let ReportUiChangelistDict;
  *   uncheckedUserAgentCbEls: !Array<!HTMLInputElement>,
  *   reviewStatusCountDict: !ReportUiReviewStatusCountDict,
  *   pageDict: !ReportUiPageDict,
- * }}
+ * }} ReportUiChangelistState
  */
-let ReportUiChangelistState;
 
 /**
- * @typedef {!Object<string, !ReportUiPageState>}
+ * @typedef {!Object<string, !ReportUiPageState>} ReportUiPageDict
  */
-let ReportUiPageDict;
 
 /**
  * @typedef {{
@@ -68,14 +64,12 @@ let ReportUiPageDict;
  *   checkedUserAgentCbEls: !Array<!HTMLInputElement>,
  *   uncheckedUserAgentCbEls: !Array<!HTMLInputElement>,
  *   reviewStatusCountDict: !ReportUiReviewStatusCountDict,
- * }}
+ * }} ReportUiPageState
  */
-let ReportUiPageState;
 
 /**
- * @typedef {!Object<string, number>}
+ * @typedef {!Object<string, number>} ReportUiReviewStatusCountDict
  */
-let ReportUiReviewStatusCountDict;
 
 
 /*
@@ -91,9 +85,8 @@ let ReportUiReviewStatusCountDict;
  *   type: ?string,
  *   defaultValue: ?*,
  *   exampleValue: ?string,
- * }}
+ * }} CliOptionConfig
  */
-let CliOptionConfig;
 
 
 /*
@@ -109,9 +102,8 @@ let CliOptionConfig;
  *   analysisTime: number,
  *   getImageDataUrl: function(text: string): string,
  *   getBuffer: function(includeOriginal: boolean): !Buffer,
- * }}
+ * }} ResembleApiComparisonResult
  */
-let ResembleApiComparisonResult;
 
 /**
  * @typedef {{
@@ -119,9 +111,8 @@ let ResembleApiComparisonResult;
  *   left: number,
  *   bottom: number,
  *   right: number,
- * }}
+ * }} ResembleApiBoundingBox
  */
-let ResembleApiBoundingBox;
 
 
 /*
@@ -135,9 +126,8 @@ let ResembleApiBoundingBox;
  *   ppid: number,
  *   command: string,
  *   arguments: !Array<string>,
- * }}
+ * }} PsNodeProcess
  */
-let PsNodeProcess;
 
 
 /*
@@ -157,18 +147,16 @@ let PsNodeProcess;
  *   shell: ?boolean,
  *   windowsVerbatimArguments: ?boolean,
  *   windowsHide: ?boolean,
- * }}
+ * }} ChildProcessSpawnOptions
  */
-let ChildProcessSpawnOptions;
 
 /**
  * @typedef {{
  *   status: number,
  *   signal: ?string,
  *   pid: number,
- * }}
+ * }} ChildProcessSpawnResult
  */
-let ChildProcessSpawnResult;
 
 
 /*
@@ -177,6 +165,5 @@ let ChildProcessSpawnResult;
 
 
 /**
- * @typedef {{r: number, g: number, b: number, a: number}}
+ * @typedef {{r: number, g: number, b: number, a: number}} RGBA
  */
-let RGBA;
