@@ -19,6 +19,10 @@ function print_travis_env_vars() {
   echo
 }
 
+function install_latest_npm() {
+  npm i -g npm@latest
+}
+
 function extract_api_credentials() {
   openssl aes-256-cbc -K $encrypted_eead2343bb54_key -iv $encrypted_eead2343bb54_iv \
     -in test/screenshot/infra/auth/travis.tar.enc -out test/screenshot/infra/auth/travis.tar -d
@@ -54,12 +58,15 @@ function install_google_cloud_sdk() {
   gcloud components update gsutil
 }
 
-if [[ "$TEST_SUITE" == 'screenshot' ]] || [[ "$TEST_SUITE" == 'unit' ]]; then
+if [[ "$TEST_SUITE" == 'unit' ]]; then
   exit_if_external_pr
-fi
-
-if [[ "$TEST_SUITE" == 'screenshot' ]]; then
+  install_latest_npm
+elif [[ "$TEST_SUITE" == 'screenshot' ]]; then
+  exit_if_external_pr
+  install_latest_npm
   print_travis_env_vars
   extract_api_credentials
   install_google_cloud_sdk
+else
+  install_latest_npm
 fi
