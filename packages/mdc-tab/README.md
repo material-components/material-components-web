@@ -57,7 +57,7 @@ npm install @material/tab
 ```js
 import {MDCTab} from '@material/tab';
 
-const button = new MDCTab(document.querySelector('.mdc-tab'));
+const tab = new MDCTab(document.querySelector('.mdc-tab'));
 ```
 
 > See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.

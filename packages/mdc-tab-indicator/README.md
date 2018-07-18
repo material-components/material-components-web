@@ -13,16 +13,14 @@ A Tab Indicator is a visual guide that shows which Tab is active.
 
 ## Design & API Documentation
 
-<!--
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/tabs.html">Material Design guidelines: Tab Indicator</a>
+    <a href="https://material.io/go/design-tabs#anatomy">Material Design guidelines: Anatomy of Tabs</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/tab-indicator.html">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/tabs">Demo</a>
   </li>
 </ul>
--->
 
 ## Installation
 
@@ -51,7 +49,7 @@ npm install @material/tab-indicator
 ```js
 import {MDCTabIndicator} from '@material/tab-indicator';
 
-const button = new MDCTabIndicator(document.querySelector('.mdc-tab-indicator'));
+const tabIndicator = new MDCTabIndicator(document.querySelector('.mdc-tab-indicator'));
 ```
 
 > See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
@@ -69,7 +67,7 @@ The Tab Indicator may be represented in one of two ways:
 * Underline, indicated by the `mdc-tab-indicator__content--underline` class
 * Icon, indicated by the `mdc-tab-indicator__content--icon` class
 
-One of these classes _must_ be applied to the Tab Indicator's content element.
+> *NOTE*: One of these classes _must_ be applied to the Tab Indicator's content element.
 
 The Tab Indicator may transition in one of two ways:
 
@@ -115,7 +113,7 @@ CSS Class | Description
 `mdc-tab-indicator__content--underline` | Optional. Denotes an underline tab indicator.
 `mdc-tab-indicator__content--icon` | Optional. Denotes an icon tab indicator.
 
-> *NOTE*: Indicators *must* apply either the `--underline` or `--icon` modifier.
+> *NOTE*: Exactly one of the `--underline` or `--icon` content modifier classes should be present.
 
 ### Sass Mixins
 

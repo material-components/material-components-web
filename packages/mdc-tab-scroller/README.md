@@ -11,6 +11,17 @@ path: /catalog/tabs/scroller/
 
 A Tab Scroller allows for smooth native and animated scrolling of tabs.
 
+## Design & API Documentation
+
+<ul class="icon-list">
+  <li class="icon-list-item icon-list-item--spec">
+    <a href="https://material.io/go/design-tabs#scrollable-tabs">Material Design guidelines: Scrollable Tabs</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/tabs">Demo</a>
+  </li>
+</ul>
+
 ## Installation
 
 ```
@@ -40,7 +51,7 @@ npm install @material/tab-scroller
 ```js
 import {MDCTabScroller} from '@material/tab-scroller';
 
-const button = new MDCTabScroller(document.querySelector('.mdc-tab-scroller'));
+const tabScroller = new MDCTabScroller(document.querySelector('.mdc-tab-scroller'));
 ```
 
 > See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
