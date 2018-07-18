@@ -70,11 +70,3 @@
     @include mdc-states($color);
   }
 }
-
-@mixin mdc-switch-tap-target_ {
-  position: absolute;
-  top: -24px;
-  left: -24px;
-  width: $mdc-switch-focus-ring-diameter;
-  height: $mdc-switch-focus-ring-diameter;
-}
