@@ -191,6 +191,7 @@ Mixin | Description
 `mdc-chip-outline-width($width)` | Customizes the outline width for a chip
 `mdc-chip-outline-style($style)` | Customizes the outline style for a chip
 `mdc-chip-outline-color($color)` | Customizes the outline color for a chip
+`mdc-chip-height($height)` | Customizes the height for a chip
 `mdc-chip-leading-icon-color($color, $opacity)` | Customizes the color of a leading icon in a chip, optionally customizes opacity
 `mdc-chip-trailing-icon-color($color, $opacity, $hover-opacity, $focus-opacity)` | Customizes the color of a trailing icon in a chip, optionally customizes regular/hover/focus opacities
 `mdc-chip-leading-icon-size($size)` | Customizes the size of a leading icon in a chip
@@ -210,19 +211,22 @@ To use the `MDCChip` and `MDCChipSet` classes, [import](../../docs/importing-js.
 
 Method Signature | Description
 --- | ---
-`get foundation() => MDCChipFoundation` | Returns the foundation
 `isSelected() => boolean` | Proxies to the foundation's `isSelected` method
-`remove() => void` | Destroys the chip and removes the root element from the DOM
+`beginExit() => void` | Proxies to the foundation's `beginExit` method
 
 Property | Value Type | Description
 --- | --- | ---
+`foundation` | MDCChipFoundation | The foundation
+`shouldRemoveOnTrailingIconClick` | Boolean | Proxies to the foundation's `getShouldRemoveOnTrailingIconClick`/`setShouldRemoveOnTrailingIconClick` methods
 `ripple` | `MDCRipple` | The `MDCRipple` instance for the root element that `MDCChip` initializes
+
+>_NOTE_: If `shouldRemoveOnTrailingIconClick` is set to false, you must manually call `beginExit()` on the chip to remove it.
 
 #### `MDCChipSet`
 
 Method Signature | Description
 --- | ---
-`addChip(text: string, leadingIcon: Element, trailingIcon: Element) => void` | Creates a new chip in the chip set with the given text, leading icon, and trailing icon
+`addChip(chipEl: Element) => void` | Adds a new `MDCChip` instance to the chip set based on the given `mdc-chip` element
 
 Property | Value Type | Description
 --- | --- | ---
@@ -256,6 +260,8 @@ Method Signature | Description
 
 > _NOTE_: The custom events emitted by `notifyInteraction` and `notifyTrailingIconInteraction` must pass along the target chip in its event `detail`, as well as bubble to the parent `mdc-chip-set` element.
 
+> _NOTE_: The custom event emitted by `notifyRemoval` must pass along the target chip and its root element in the event `detail`, as well as bubble to the parent `mdc-chip-set` element.
+
 #### `MDCChipSetAdapter`
 
 Method Signature | Description
@@ -263,7 +269,6 @@ Method Signature | Description
 `hasClass(className: string) => boolean` | Returns whether the chip set element has the given class
 `registerInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event handler on the root element for a given event
 `deregisterInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event handler on the root element for a given event
-`appendChip(text: string, leadingIcon: Element, trailingIcon: Element) => Element` | Appends and returns a chip element with the given text, leading icon, and trailing icon
 `removeChip(chip: MDCChip) => void` | Removes the chip object from the chip set
 
 ### Foundations: `MDCChipFoundation` and `MDCChipSetFoundation`
@@ -274,11 +279,16 @@ Method Signature | Description
 --- | ---
 `isSelected() => boolean` | Returns true if the chip is selected
 `setSelected(selected: boolean) => void` | Sets the chip's selected state
+`getShouldRemoveOnTrailingIconClick() => boolean` | Returns whether a trailing icon click should trigger exit/removal of the chip
+`setShouldRemoveOnTrailingIconClick(shouldRemove: boolean) => void` | Sets whether a trailing icon click should trigger exit/removal of the chip
+`beginExit() => void` | Begins the exit animation which leads to removal of the chip
+`handleInteraction(evt: Event) => void` | Handles an interaction event on the root element
+`handleTransitionEnd(evt: Event) => void` | Handles a transition end event on the root element
+`handleTrailingIconInteraction(evt: Event) => void` | Handles an interaction event on the trailing icon element
 
 #### `MDCChipSetFoundation`
 
 Method Signature | Description
 --- | ---
-`addChip(text: string, leadingIcon: Element, trailingIcon: Element) => Element` | Returns a new chip element with the given text, leading icon, and trailing icon, added to the root chip set element
 `select(chipFoundation: MDCChipFoundation) => void` | Selects the given chip
 `deselect(chipFoundation: MDCChipFoundation) => void` | Deselects the given chip

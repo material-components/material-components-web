@@ -45,7 +45,6 @@ class FakeChip {
   constructor() {
     this.destroy = td.func('.destroy');
     this.isSelected = td.func('.isSelected');
-    this.remove = td.func('.remove');
   }
 }
 
@@ -67,12 +66,18 @@ test('#destroy cleans up child chip components', () => {
   td.verify(component.chips[2].destroy());
 });
 
-test('#addChip creates and adds a new chip to the DOM', () => {
+test('#addChip adds a new chip to the chip set', () => {
   const root = getFixture();
   const component = new MDCChipSet(root, undefined, (el) => new FakeChip(el));
   component.initialSyncWithDOM();
-  component.addChip('hello world');
-  td.verify(component.foundation_.addChip('hello world'));
+
+  const chipEl = bel`
+    <div class="mdc-chip">
+      <div class="mdc-chip__text">Hello world</div>
+    </div>
+  `;
+  component.addChip(chipEl);
+
   assert.equal(component.chips.length, 4);
   assert.instanceOf(component.chips[3], FakeChip);
 });
@@ -126,20 +131,11 @@ test('#adapter.deregisterInteractionHandler removes a handler from the root elem
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test('#adapter.appendChip adds a new chip to the chip set element', () => {
-  const {root, component} = setupTest();
-  const chipEl = component.getDefaultFoundation().adapter_.appendChip('hello world');
-  assert.isTrue(chipEl.classList.contains('mdc-chip'));
-  assert.isTrue(chipEl.childNodes[0].classList.contains('mdc-chip__text'));
-  assert.equal(chipEl.childNodes[0].textContent, 'hello world');
-  assert.equal(root.childNodes[3], chipEl);
-});
-
 test('#adapter.removeChip removes the chip object from the chip set', () => {
   const root = getFixture();
   const component = new MDCChipSet(root, undefined, (el) => new FakeChip(el));
   const chip = component.chips[0];
   component.getDefaultFoundation().adapter_.removeChip(chip);
   assert.equal(component.chips.length, 2);
-  td.verify(chip.remove());
+  td.verify(chip.destroy());
 });

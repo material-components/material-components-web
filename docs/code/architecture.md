@@ -44,6 +44,6 @@ the Adapter!
 ### Vanilla Component
 
 Instantiated with a root [element](https://developer.mozilla.org/en-US/docs/Web/API/Element),
-it creates a Foundation with a Vanilla Adapter. Vanilla Adapter implements
-Adapter and directly references the root element. It also has proxy methods for
-any Foundation method a developer needs to access.
+the Vanilla Component creates a Foundation with a Vanilla Adapter. The Vanilla Adapter implements
+the Adapter and directly references the root element. The Vanilla Component also exposes proxy methods
+for any Foundation methods a developer needs to access.

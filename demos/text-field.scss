@@ -35,6 +35,7 @@
   @include mdc-text-field-helper-text-color($idle-border);
   @include mdc-text-field-textarea-stroke-color($idle-border);
   @include mdc-text-field-icon-color($hover-border);
+  @include mdc-text-field-caret-color($focused-border);
 
   &.mdc-text-field--focused {
     @include mdc-text-field-label-color(rgba(blue, .87));
@@ -50,6 +51,7 @@
   @include mdc-text-field-ink-color(black);
   @include mdc-text-field-label-color(rgba(blue, .5));
   @include mdc-text-field-textarea-stroke-color($idle-border);
+  @include mdc-text-field-caret-color($focused-border);
 
   &.mdc-text-field--focused {
     @include mdc-text-field-label-color(rgba(blue, .87));
@@ -61,6 +63,7 @@
   @include mdc-text-field-ink-color(orange);
   @include mdc-text-field-label-color(rgba(orange, .5));
   @include mdc-text-field-textarea-stroke-color(rgba(orange, .38));
+  @include mdc-text-field-caret-color(orange);
 
   &.mdc-text-field--focused {
     @include mdc-text-field-label-color(rgba(orange, .87));
@@ -73,6 +76,7 @@
   @include mdc-text-field-ink-color(black);
   @include mdc-text-field-label-color(rgba(blue, .5));
   @include mdc-text-field-line-ripple-color(blue);
+  @include mdc-text-field-caret-color(blue);
 
   &.mdc-text-field--focused {
     @include mdc-text-field-label-color(rgba(blue, .87));
@@ -84,6 +88,7 @@
   @include mdc-text-field-ink-color(orange);
   @include mdc-text-field-label-color(rgba(orange, .5));
   @include mdc-text-field-line-ripple-color(orange);
+  @include mdc-text-field-caret-color(orange);
 
   &.mdc-text-field--focused {
     @include mdc-text-field-label-color(rgba(orange, .87));
@@ -106,7 +111,7 @@
   @include mdc-text-field-focused-outline-color($focused-border);
   @include mdc-text-field-helper-text-validation-color($hover-border);
   @include mdc-text-field-textarea-stroke-color($idle-border);
-
+  @include mdc-text-field-caret-color($focused-border);
   @include mdc-text-field-icon-color($focused-border);
 
   // Example for --invalid textfield when helper text is not a validation message.

@@ -1,3 +1,102 @@
+<a name="0.37.1"></a>
+## [0.37.1](https://github.com/material-components/material-components-web/compare/v0.37.0...v0.37.1) (2018-07-16)
+
+
+### Bug Fixes
+
+* hot-patching closure annotations. ([#3024](https://github.com/material-components/material-components-web/issues/3024)) ([d5b95ab](https://github.com/material-components/material-components-web/commit/d5b95ab))
+* **button:** Remove dense/stroked line-height tweaks to improve alignment ([#3028](https://github.com/material-components/material-components-web/issues/3028)) ([8b5f595](https://github.com/material-components/material-components-web/commit/8b5f595))
+* **notched-outline:** Remove unused dependency from scss ([#3044](https://github.com/material-components/material-components-web/issues/3044)) ([85ecf11](https://github.com/material-components/material-components-web/commit/85ecf11))
+* **typography:**  Update variable reference to work for newer versions of ruby-sass ([#3047](https://github.com/material-components/material-components-web/issues/3047)) ([0dfad9a](https://github.com/material-components/material-components-web/commit/0dfad9a))
+
+
+
+<a name="0.37.0"></a>
+# [0.37.0](https://github.com/material-components/material-components-web/compare/v0.36.0...v0.37.0) (2018-07-02)
+
+
+### Bug Fixes
+
+* **chips:** Add an event typedef for chip interaction events ([#2965](https://github.com/material-components/material-components-web/issues/2965)) ([153e737](https://github.com/material-components/material-components-web/commit/153e737))
+* **icon-button:** Remove unused styles, update docs, code cleanup ([#2957](https://github.com/material-components/material-components-web/issues/2957)) ([32b5b9d](https://github.com/material-components/material-components-web/commit/32b5b9d))
+* **text-field:** Update caret color to match spec ([#2894](https://github.com/material-components/material-components-web/issues/2894)) ([88fd0bf](https://github.com/material-components/material-components-web/commit/88fd0bf))
+
+
+### Features
+
+* **chips:** Expose method to begin chip exit animation ([#2845](https://github.com/material-components/material-components-web/issues/2845)) ([eb00fd3](https://github.com/material-components/material-components-web/commit/eb00fd3))
+* **chips:** Make chip exit on trailing icon click optional ([#2893](https://github.com/material-components/material-components-web/issues/2893)) ([9178d46](https://github.com/material-components/material-components-web/commit/9178d46))
+* **chips:** Make event handlers on Chip public ([#2997](https://github.com/material-components/material-components-web/issues/2997)) ([963e0c1](https://github.com/material-components/material-components-web/commit/963e0c1))
+* **fab:** Add Extended FAB ([14cb0bf](https://github.com/material-components/material-components-web/commit/14cb0bf))
+* **fab:** Enable padding customization ([#2959](https://github.com/material-components/material-components-web/issues/2959)) ([1f5fd1f](https://github.com/material-components/material-components-web/commit/1f5fd1f))
+* **list:** Add arrow key a11y support.  ([#2871](https://github.com/material-components/material-components-web/issues/2871)) ([7c06e9f](https://github.com/material-components/material-components-web/commit/7c06e9f))
+* **ripple:** Expose focus/blur handlers  ([#2905](https://github.com/material-components/material-components-web/issues/2905)) ([31d81ad](https://github.com/material-components/material-components-web/commit/31d81ad))
+* **select:** Add outlined variant ([#2674](https://github.com/material-components/material-components-web/issues/2674)) ([4863125](https://github.com/material-components/material-components-web/commit/4863125))
+
+
+
+<a name="0.36.1"></a>
+## [0.36.1](https://github.com/material-components/material-components-web/compare/v0.36.0...v0.36.1) (2018-06-18)
+
+
+### Bug Fixes
+
+* **checkbox:** support high contrast mode in Firefox on Windows ([#2927](https://github.com/material-components/material-components-web/issues/2927)) ([8b7d77e](https://github.com/material-components/material-components-web/commit/8b7d77e))
+* **menu:** Update adapter to check for focus before calling ([#2880](https://github.com/material-components/material-components-web/issues/2880)) ([84fcc08](https://github.com/material-components/material-components-web/commit/84fcc08))
+* **text-field:** Hide extraneous border in FF in HC mode. ([#2931](https://github.com/material-components/material-components-web/issues/2931)) ([bd4c563](https://github.com/material-components/material-components-web/commit/bd4c563))
+
+
+
+<a name="0.36.0"></a>
+# [0.36.0](https://github.com/material-components/material-components-web/compare/v0.36.0-0...v0.36.0) (2018-06-04)
+
+
+### Bug Fixes
+
+* **card:** Import variables in mixins ([#2799](https://github.com/material-components/material-components-web/issues/2799)) ([e6b787c](https://github.com/material-components/material-components-web/commit/e6b787c))
+* **dialog:** Apply mdc-dialog__action color to buttons ([#2776](https://github.com/material-components/material-components-web/issues/2776)) ([6066795](https://github.com/material-components/material-components-web/commit/6066795))
+* **dialog:** Fix Typography version ([#2821](https://github.com/material-components/material-components-web/issues/2821)) ([e793a56](https://github.com/material-components/material-components-web/commit/e793a56))
+* **fab:** Restore horizontal alignment in IE11 ([#2715](https://github.com/material-components/material-components-web/issues/2715)) ([fded349](https://github.com/material-components/material-components-web/commit/fded349))
+* **ripple:** Fix missing dependency ([#2795](https://github.com/material-components/material-components-web/issues/2795)) ([16a6890](https://github.com/material-components/material-components-web/commit/16a6890))
+* **text-field:** Made handleValidationAttributeMutation to accept attribute list ([#2794](https://github.com/material-components/material-components-web/issues/2794)) ([14ee518](https://github.com/material-components/material-components-web/commit/14ee518))
+* **text-field:** Moved VALIDATION_ATTR_WHITELIST to constants. ([#2808](https://github.com/material-components/material-components-web/issues/2808)) ([2180f95](https://github.com/material-components/material-components-web/commit/2180f95))
+* **text-field:** Update floating-label to work properly for number fields ([#2781](https://github.com/material-components/material-components-web/issues/2781)) ([d0bff1f](https://github.com/material-components/material-components-web/commit/d0bff1f))
+* **top-app-bar:** Add z-index. Cleanup redundant properties. ([#2828](https://github.com/material-components/material-components-web/issues/2828)) ([3f6bbc1](https://github.com/material-components/material-components-web/commit/3f6bbc1))
+* **top-app-bar:** Fix testdouble warning about using both stub & verify. ([#2793](https://github.com/material-components/material-components-web/issues/2793)) ([d79af08](https://github.com/material-components/material-components-web/commit/d79af08))
+* **checkbox:** Fix visibility in Windows high-contrast mode ([#2672](https://github.com/material-components/material-components-web/issues/2672)) ([eadec3c](https://github.com/material-components/material-components-web/commit/eadec3c))
+* **checkbox:** make checkmark in high contrast mode on IE visible. ([#2848](https://github.com/material-components/material-components-web/issues/2848)) ([9b2c6a1](https://github.com/material-components/material-components-web/commit/9b2c6a1))
+* **chips:** Add delay to filter chip checkmark ([#2804](https://github.com/material-components/material-components-web/issues/2804)) ([9e35b1e](https://github.com/material-components/material-components-web/commit/9e35b1e))
+* **chips:** Fix choice-chips leading icon being hidden ([#2796](https://github.com/material-components/material-components-web/issues/2796)) ([7d406fa](https://github.com/material-components/material-components-web/commit/7d406fa)), closes [#2728](https://github.com/material-components/material-components-web/issues/2728)
+* **switch:** Refactor switch styles to show up in HC windows mode. ([#2853](https://github.com/material-components/material-components-web/issues/2853)) ([ef159c8](https://github.com/material-components/material-components-web/commit/ef159c8))
+* **text-field:** Changes to text area label positioning to cover text content ([#2816](https://github.com/material-components/material-components-web/issues/2816)) ([d6f4dc1](https://github.com/material-components/material-components-web/commit/d6f4dc1))
+
+
+### Code Refactoring
+
+* **chips:** Stop handling DOM manipulation in input chips ([#2791](https://github.com/material-components/material-components-web/issues/2791)) ([5a8ada5](https://github.com/material-components/material-components-web/commit/5a8ada5))
+
+
+### Documentation
+
+* **icon-toggle:** Add deprecation notice to README ([#2766](https://github.com/material-components/material-components-web/issues/2766)) ([119645e](https://github.com/material-components/material-components-web/commit/119645e))
+
+
+### Features
+
+* **icon-button:** Add new package ([#2748](https://github.com/material-components/material-components-web/issues/2748)) ([39a4815](https://github.com/material-components/material-components-web/commit/39a4815))
+* **text-field:** Add methods to set text field icon aria-label and content ([#2771](https://github.com/material-components/material-components-web/issues/2771)) ([02d7dca](https://github.com/material-components/material-components-web/commit/02d7dca))
+* **rtl:** Make mdc-rtl-reflexive sass mixin public ([#2823](https://github.com/material-components/material-components-web/issues/2823)) ([ca018a7](https://github.com/material-components/material-components-web/commit/ca018a7))
+
+
+### BREAKING CHANGES
+
+* **text-field:** Adds setContent adapter API to text field icon
+* **icon-toggle:** The icon-toggle package has been deprecated. The functionality was moved to the icon-button package. Please refer to the icon-button readme for changes and how to update.
+* **text-field:** registerValidationAttributeChangeHandler adapter API now expects the handler to accept an array of strings, not mutation objects
+* **chips:** MDCChipSet/MDCChip no longer manipulates DOM directly. Removed MDCChipSetAdapter.appendChip, MDCChipSetFoundation.addChip, and MDCChip.remove. Modified signature of MDCChipSet.addChip
+
+
+
 <a name="0.35.2"></a>
 ## [0.35.2](https://github.com/material-components/material-components-web/compare/v0.35.1...v0.35.2) (2018-05-21)
 
