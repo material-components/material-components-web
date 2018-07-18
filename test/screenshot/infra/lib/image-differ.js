@@ -95,7 +95,7 @@ class ImageDiffer {
    * @private
    */
   async computeDiff_({actualImageBuffer, expectedImageBuffer}) {
-    const options = require('../diffing.json').resemble_config;
+    const options = require('../../diffing.json').resemble_config;
     return await compareImages(
       actualImageBuffer,
       expectedImageBuffer,
@@ -131,7 +131,7 @@ class ImageDiffer {
     const diffPixelRoundPercentage = roundPercentage(diffPixelRawPercentage);
     const diffPixelFraction = diffPixelRawPercentage / 100;
     const diffPixelCount = Math.ceil(diffPixelFraction * diffJimpImage.bitmap.width * diffJimpImage.bitmap.height);
-    const minChangedPixelCount = require('../diffing.json').flaky_tests.min_changed_pixel_count;
+    const minChangedPixelCount = require('../../diffing.json').flaky_tests.min_changed_pixel_count;
     const hasChanged = diffPixelCount >= minChangedPixelCount;
     const diffImageResult = DiffImageResult.create({
       expected_image_dimensions: Dimensions.create({
