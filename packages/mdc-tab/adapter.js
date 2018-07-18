@@ -18,6 +18,14 @@
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
+ * MDCTabDimensions provides details about the left and right edges of the Tab
+ * root element and the Tab content element. These values are used to determine
+ * the visual position of the Tab with respect it's parent container.
+ * @typedef {{rootLeft: number, rootRight: number, contentLeft: number, contentRight: number}}
+ */
+let MDCTabDimensions;
+
+/**
  * Adapter for MDC Tab.
  *
  * Defines the shape of the adapter expected by the foundation. Implement this
@@ -74,11 +82,11 @@ class MDCTabAdapter {
    */
   activateIndicator(previousIndicatorClientRect) {}
 
-  /** Deactivates the indicator */
+  /** Deactivates the indicator. */
   deactivateIndicator() {}
 
   /**
-   * Returns the client rect of the indicator
+   * Returns the client rect of the indicator.
    * @return {!ClientRect}
    */
   computeIndicatorClientRect() {}
@@ -92,6 +100,30 @@ class MDCTabAdapter {
    * Emits the MDCTab:activated event for use by parent components
    */
   notifyActivated() {}
+
+  /**
+   * Returns the offsetLeft value of the root element.
+   * @return {number}
+   */
+  getOffsetLeft() {}
+
+  /**
+   * Returns the offsetWidth value of the root element.
+   * @return {number}
+   */
+  getOffsetWidth() {}
+
+  /**
+   * Returns the offsetLeft of the content element.
+   * @return {number}
+   */
+  getContentOffsetLeft() {}
+
+  /**
+   * Returns the offsetWidth of the content element.
+   * @return {number}
+   */
+  getContentOffsetWidth() {}
 }
 
-export default MDCTabAdapter;
+export {MDCTabDimensions, MDCTabAdapter};

@@ -16,7 +16,11 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-import MDCTabAdapter from './adapter';
+
+/* eslint-disable no-unused-vars */
+import {MDCTabAdapter, MDCTabDimensions} from './adapter';
+/* eslint-enable no-unused-vars */
+
 import {
   cssClasses,
   strings,
@@ -54,6 +58,10 @@ class MDCTabFoundation extends MDCFoundation {
       computeIndicatorClientRect: () => {},
       notifySelected: () => {},
       notifyActivated: () => {},
+      getOffsetLeft: () => {},
+      getOffsetWidth: () => {},
+      getContentOffsetLeft: () => {},
+      getContentOffsetWidth: () => {},
     });
   }
 
@@ -149,6 +157,24 @@ class MDCTabFoundation extends MDCFoundation {
    */
   computeIndicatorClientRect() {
     return this.adapter_.computeIndicatorClientRect();
+  }
+
+  /**
+   * Returns the dimensions of the Tab
+   * @return {!MDCTabDimensions}
+   */
+  computeDimensions() {
+    const rootWidth = this.adapter_.getOffsetWidth();
+    const rootLeft = this.adapter_.getOffsetLeft();
+    const contentWidth = this.adapter_.getContentOffsetWidth();
+    const contentLeft = this.adapter_.getContentOffsetLeft();
+
+    return {
+      rootLeft,
+      rootRight: rootLeft + rootWidth,
+      contentLeft: rootLeft + contentLeft,
+      contentRight: rootLeft + contentLeft + contentWidth,
+    };
   }
 }
 
