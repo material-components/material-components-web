@@ -17,5 +17,5 @@
 @import "@material/theme/mixins";
 
 @mixin mdc-icon-toggle-ink-color($color) {
-  @include mdc-theme-prop(color, $color);
+  @include mdc-theme-prop-spec(color, $color);
 }

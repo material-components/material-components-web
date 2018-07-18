@@ -122,8 +122,8 @@ $mdc-theme-property-values: (
   @return map-get($mdc-theme-property-values, $style);
 }
 
-@function mdc-theme-spec($style, $alpha: 1) {
-  @return (style: $style, alpha: $alpha);
+@function mdc-theme-spec($style, $alpha: 1, $culprit: "c0") {
+  @return (style: $style, alpha: $alpha, culprit: $culprit);
 }
 
 // NOTE: This function must be defined in _variables.scss instead of _functions.scss to avoid circular imports.
@@ -140,5 +140,8 @@ $mdc-theme-property-values: (
 
 // NOTE: This function is depended upon by mdc-theme-prop-value (above) and thus must be defined in this file.
 @function mdc-theme-is-valid-theme-prop-value_($style) {
+  @if (type-of($style) != "color" and type-of($style) != "string") {
+    @debug $style;
+  }
   @return type-of($style) == "color" or $style == "currentColor" or str_slice($style, 1, 4) == "var(";
 }

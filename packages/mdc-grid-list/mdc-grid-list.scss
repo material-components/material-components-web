@@ -95,8 +95,8 @@ $mdc-grid-list-tile-secondary-icon-size: 24px;
 }
 
 .mdc-grid-tile__primary {
-  @include mdc-theme-prop(background-color, background);
-  @include mdc-theme-prop(color, text-primary-on-background);
+  @include mdc-theme-prop-spec(background-color, background);
+  @include mdc-theme-prop-spec(color, text-primary-on-background);
 
   position: relative;
   height: 0;
@@ -116,8 +116,8 @@ $mdc-grid-list-tile-secondary-icon-size: 24px;
 }
 
 .mdc-grid-tile__secondary {
-  @include mdc-theme-prop(background-color, primary);
-  @include mdc-theme-prop(color, on-primary);
+  @include mdc-theme-prop-spec(background-color, primary);
+  @include mdc-theme-prop-spec(color, on-primary);
 
   position: absolute;
   bottom: 0;

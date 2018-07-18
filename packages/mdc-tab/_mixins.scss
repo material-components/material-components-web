@@ -20,12 +20,12 @@
 
 @mixin mdc-tab-text-label-color($color) {
   .mdc-tab__text-label {
-    @include mdc-theme-prop(color, $color);
+    @include mdc-theme-prop-spec(color, $color);
   }
 }
 
 @mixin mdc-tab-icon-color($color) {
   .mdc-tab__icon {
-    @include mdc-theme-prop(color, $color);
+    @include mdc-theme-prop-spec(color, $color);
   }
 }

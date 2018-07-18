@@ -91,12 +91,12 @@
 @mixin mdc-drawer-fill-color($color) {
   &.mdc-drawer--permanent,
   .mdc-drawer__drawer {
-    @include mdc-theme-prop(background-color, $color);
+    @include mdc-theme-prop-spec(background-color, $color);
   }
 }
 
 @mixin mdc-drawer-ink-color($color) {
-  @include mdc-theme-prop(color, $color);
+  @include mdc-theme-prop-spec(color, $color);
 }
 
 @mixin mdc-drawer-scrim-color($color, $opacity) {

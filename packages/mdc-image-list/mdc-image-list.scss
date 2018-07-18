@@ -59,7 +59,7 @@
 }
 
 .mdc-image-list__supporting {
-  @include mdc-theme-prop(color, text-primary-on-background);
+  @include mdc-theme-prop-spec(color, text-primary-on-background);
 
   display: flex;
   align-items: center;

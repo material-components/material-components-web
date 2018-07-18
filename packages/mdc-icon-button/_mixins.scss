@@ -34,7 +34,7 @@
 }
 
 @mixin mdc-icon-button-ink-color($color) {
-  @include mdc-theme-prop(color, $color);
+  @include mdc-theme-prop-spec(color, $color);
   @include mdc-states($color);
 }
 
@@ -56,7 +56,7 @@
   user-select: none;
 
   &:disabled {
-    @include mdc-theme-prop(color, text-disabled-on-light);
+    @include mdc-theme-prop-spec(color, text-disabled-on-light);
 
     cursor: default;
     pointer-events: none;

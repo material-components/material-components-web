@@ -22,7 +22,7 @@
 //
 
 @mixin mdc-card-fill-color($color) {
-  @include mdc-theme-prop(background-color, $color);
+  @include mdc-theme-prop-spec(background-color, $color);
 }
 
 @mixin mdc-card-outline($color, $thickness: $mdc-card-outline-width) {

@@ -44,7 +44,7 @@ $mdc-theme-background: $material-color-grey-900;
 
 .demo-checkbox-wrapper,
 .demo-radio-form-field {
-  @include mdc-theme-prop(color, text-primary-on-dark);
+  @include mdc-theme-prop-spec(color, text-primary-on-dark);
 }
 
 .demo-tab {

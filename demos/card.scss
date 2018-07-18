@@ -92,13 +92,13 @@
 }
 
 .demo-card__subtitle {
-  @include mdc-theme-prop(color, text-secondary-on-background);
+  @include mdc-theme-prop-spec(color, text-secondary-on-background);
 
   margin: 0;
 }
 
 .demo-card__secondary {
-  @include mdc-theme-prop(color, text-secondary-on-background);
+  @include mdc-theme-prop-spec(color, text-secondary-on-background);
 
   padding: 0 1rem 8px 1rem;
 }
@@ -108,7 +108,7 @@
 //
 
 .demo-card-article-group-heading {
-  @include mdc-theme-prop(color, text-secondary-on-light);
+  @include mdc-theme-prop-spec(color, text-secondary-on-light);
 
   padding: 8px 16px;
 }
@@ -124,7 +124,7 @@
 }
 
 .demo-card-article__snippet {
-  @include mdc-theme-prop(color, text-secondary-on-light);
+  @include mdc-theme-prop-spec(color, text-secondary-on-light);
 
   margin: 0;
 }

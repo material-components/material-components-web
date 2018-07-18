@@ -18,12 +18,12 @@
 @import "./variables";
 
 @mixin mdc-floating-label-ink-color($color) {
-  @include mdc-theme-prop(color, $color);
+  @include mdc-theme-prop-spec(color, $color);
 }
 
 // Used for textarea in case of scrolling
 @mixin mdc-floating-label-fill-color($color) {
-  @include mdc-theme-prop(background-color, $color);
+  @include mdc-theme-prop-spec(background-color, $color);
 }
 
 @mixin mdc-floating-label-shake-keyframes($modifier, $positionY, $positionX: 0%, $scale: .75) {

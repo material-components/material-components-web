@@ -32,12 +32,12 @@
 
 @mixin mdc-text-field-helper-text-color_($color) {
   + .mdc-text-field-helper-text {
-    @include mdc-theme-prop(color, $color);
+    @include mdc-theme-prop-spec(color, $color);
   }
 }
 
 @mixin mdc-text-field-helper-text-validation-color_($color) {
   &.mdc-text-field--invalid + .mdc-text-field-helper-text--validation-msg {
-    @include mdc-theme-prop(color, $color);
+    @include mdc-theme-prop-spec(color, $color);
   }
 }

@@ -26,11 +26,11 @@
 @each $style in map-keys($mdc-theme-property-values) {
   @if $style != "background" and $style != "surface" {
     .mdc-theme--#{$style} {
-      @include mdc-theme-prop(color, $style, $important: true);
+      @include mdc-theme-prop-spec(color, $style, $important: true);
     }
   } @else {
     .mdc-theme--#{$style} {
-      @include mdc-theme-prop(background-color, $style);
+      @include mdc-theme-prop-spec(background-color, $style);
     }
   }
 }
@@ -38,6 +38,6 @@
 // CSS rules for using primary and secondary (plus light/dark variants) as background colors.
 @each $style in ("primary", "secondary") {
   .mdc-theme--#{$style}-bg {
-    @include mdc-theme-prop(background-color, $style, $important: true);
+    @include mdc-theme-prop-spec(background-color, $style, $important: true);
   }
 }

@@ -37,7 +37,7 @@
 }
 
 .mdc-dialog__backdrop {
-  @include mdc-theme-prop(background-color, text-primary-on-light);
+  @include mdc-theme-prop-spec(background-color, text-primary-on-light);
 
   position: fixed;
   top: 0;
@@ -52,7 +52,7 @@
 
 .mdc-dialog__surface {
   @include mdc-elevation(24);
-  @include mdc-theme-prop(background-color, background);
+  @include mdc-theme-prop-spec(background-color, background);
 
   display: inline-flex;
   flex-direction: column;
@@ -90,7 +90,7 @@
 }
 
 .mdc-dialog__body {
-  @include mdc-theme-prop(color, text-secondary-on-light);
+  @include mdc-theme-prop-spec(color, text-secondary-on-light);
   @include mdc-typography(body1);
 
   margin-top: 20px;
@@ -123,7 +123,7 @@
 }
 
 .mdc-dialog__action:not(:disabled) {
-  @include mdc-theme-prop(color, secondary);
+  @include mdc-theme-prop-spec(color, secondary);
 }
 
 // TODO: Replace with breakpoint variable

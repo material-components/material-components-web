@@ -48,7 +48,7 @@
   overflow: hidden;
 
   &:hover {
-    @include mdc-theme-prop(color, on-surface);
+    @include mdc-theme-prop-spec(color, on-surface);
   }
 }
 
@@ -62,7 +62,7 @@
 }
 
 .mdc-chip--selected {
-  @include mdc-theme-prop(background-color, surface);
+  @include mdc-theme-prop-spec(background-color, surface);
 }
 
 .mdc-chip__text {

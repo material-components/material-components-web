@@ -21,42 +21,42 @@
 //
 
 @mixin mdc-list-item-primary-text-ink-color($color) {
-  @include mdc-theme-prop(color, $color);
+  @include mdc-theme-prop-spec(color, $color);
 }
 
 @mixin mdc-list-item-secondary-text-ink-color($color) {
   .mdc-list-item__secondary-text {
-    @include mdc-theme-prop(color, $color);
+    @include mdc-theme-prop-spec(color, $color);
   }
 }
 
 @mixin mdc-list-item-graphic-fill-color($color) {
   .mdc-list-item__graphic {
-    @include mdc-theme-prop(background-color, $color);
+    @include mdc-theme-prop-spec(background-color, $color);
   }
 }
 
 @mixin mdc-list-item-graphic-ink-color($color) {
   .mdc-list-item__graphic {
-    @include mdc-theme-prop(color, $color);
+    @include mdc-theme-prop-spec(color, $color);
   }
 }
 
 @mixin mdc-list-item-meta-ink-color($color) {
   .mdc-list-item__meta {
-    @include mdc-theme-prop(color, $color);
+    @include mdc-theme-prop-spec(color, $color);
   }
 }
 
 @mixin mdc-list-divider-color($color) {
   .mdc-list-divider {
-    @include mdc-theme-prop(border-bottom-color, $color);
+    @include mdc-theme-prop-spec(border-bottom-color, $color);
   }
 }
 
 @mixin mdc-list-group-subheader-ink-color($color) {
   .mdc-list-group__subheader {
-    @include mdc-theme-prop(color, $color);
+    @include mdc-theme-prop-spec(color, $color);
   }
 }
 

@@ -126,7 +126,7 @@
 
 .mdc-snackbar__action-button {
   @include mdc-typography(button);
-  @include mdc-theme-prop(color, secondary);
+  @include mdc-theme-prop-spec(color, secondary);
 
   padding: 0;
   transition: mdc-animation-exit-permanent(opacity, .3s);

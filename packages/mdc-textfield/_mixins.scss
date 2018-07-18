@@ -126,7 +126,7 @@
 
 @mixin mdc-text-field-caret-color($color) {
   .mdc-text-field__input {
-    @include mdc-theme-prop(caret-color, $color);
+    @include mdc-theme-prop-spec(caret-color, $color);
   }
 }
 
@@ -518,41 +518,41 @@
 
 @mixin mdc-text-field-ink-color_($color) {
   .mdc-text-field__input {
-    @include mdc-theme-prop(color, $color);
+    @include mdc-theme-prop-spec(color, $color);
   }
 }
 
 @mixin mdc-text-field-box-fill-color_($color) {
-  @include mdc-theme-prop(background-color, $color);
+  @include mdc-theme-prop-spec(background-color, $color);
 }
 
 @mixin mdc-text-field-textarea-stroke-color_($color) {
-  @include mdc-theme-prop(border-color, $color);
+  @include mdc-theme-prop-spec(border-color, $color);
 
   .mdc-text-field__input:focus {
-    @include mdc-theme-prop(border-color, $color);
+    @include mdc-theme-prop-spec(border-color, $color);
   }
 }
 
 @mixin mdc-text-field-textarea-fill-color_($color) {
-  @include mdc-theme-prop(background-color, $color);
+  @include mdc-theme-prop-spec(background-color, $color);
 }
 
 @mixin mdc-text-field-fullwidth-bottom-line-color_($color) {
   &:not(.mdc-text-field--textarea) {
-    @include mdc-theme-prop(border-bottom-color, $color);
+    @include mdc-theme-prop-spec(border-bottom-color, $color);
   }
 }
 
 @mixin mdc-text-field-bottom-line-color_($color) {
   .mdc-text-field__input {
-    @include mdc-theme-prop(border-bottom-color, $color);
+    @include mdc-theme-prop-spec(border-bottom-color, $color);
   }
 }
 
 @mixin mdc-text-field-hover-bottom-line-color_($color) {
   .mdc-text-field__input:hover {
-    @include mdc-theme-prop(border-bottom-color, $color);
+    @include mdc-theme-prop-spec(border-bottom-color, $color);
   }
 }
 
@@ -569,6 +569,6 @@
 
   // CSS-only version
   .mdc-text-field__input::placeholder {
-    @include mdc-theme-prop(color, $color);
+    @include mdc-theme-prop-spec(color, $color);
   }
 }

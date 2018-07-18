@@ -99,12 +99,12 @@
 
 @mixin mdc-select-ink-color_($color) {
   .mdc-select__native-control {
-    @include mdc-theme-prop(color, $color);
+    @include mdc-theme-prop-spec(color, $color);
   }
 }
 
 @mixin mdc-select-container-fill-color_($color) {
-  @include mdc-theme-prop(background-color, $color);
+  @include mdc-theme-prop-spec(background-color, $color);
 }
 
 @mixin mdc-select-bottom-line-color_($color) {

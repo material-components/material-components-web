@@ -25,11 +25,11 @@
 //
 
 @mixin mdc-top-app-bar-ink-color($color) {
-  @include mdc-theme-prop(color, $color);
+  @include mdc-theme-prop-spec(color, $color);
 }
 
 @mixin mdc-top-app-bar-fill-color($color) {
-  @include mdc-theme-prop(background-color, $color);
+  @include mdc-theme-prop-spec(background-color, $color);
 }
 
 @mixin mdc-top-app-bar-fill-color-accessible($color) {
@@ -40,7 +40,7 @@
 @mixin mdc-top-app-bar-icon-ink-color($color) {
   .mdc-top-app-bar__action-item,
   .mdc-top-app-bar__navigation-icon {
-    @include mdc-theme-prop(color, $color);
+    @include mdc-theme-prop-spec(color, $color);
     @include mdc-states($color);
   }
 }

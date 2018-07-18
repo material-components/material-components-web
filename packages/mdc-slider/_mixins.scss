@@ -50,7 +50,7 @@
 @mixin mdc-slider-focus-halo-color($color) {
   &:not(.mdc-slider--disabled) {
     .mdc-slider__focus-ring {
-      @include mdc-theme-prop(background-color, $color);
+      @include mdc-theme-prop-spec(background-color, $color);
     }
   }
 }
@@ -58,7 +58,7 @@
 @mixin mdc-slider-value-pin-ink-color($color) {
   &:not(.mdc-slider--disabled) {
     .mdc-slider__pin {
-      @include mdc-theme-prop(color, $color);
+      @include mdc-theme-prop-spec(color, $color);
     }
   }
 }
@@ -66,7 +66,7 @@
 @mixin mdc-slider-value-pin-fill-color($color) {
   &:not(.mdc-slider--disabled) {
     .mdc-slider__pin {
-      @include mdc-theme-prop(background-color, $color);
+      @include mdc-theme-prop-spec(background-color, $color);
     }
   }
 }
@@ -96,27 +96,27 @@
 
 @mixin mdc-slider-highlight-color_($color) {
   .mdc-slider__track {
-    @include mdc-theme-prop(background-color, $color);
+    @include mdc-theme-prop-spec(background-color, $color);
   }
 }
 
 @mixin mdc-slider-rail-color_($color, $opacity: $mdc-slider-baseline-rail-opacity) {
   .mdc-slider__track-container {
-    @include mdc-theme-prop(background-color, rgba(mdc-theme-prop-value($color), $opacity));
+    @include mdc-theme-prop-spec(background-color, rgba(mdc-theme-prop-value($color), $opacity));
   }
 }
 
 @mixin mdc-slider-rail-tick-mark-color_($color) {
   .mdc-slider__track-marker::after,
   .mdc-slider__track-marker-container::after {
-    @include mdc-theme-prop(background-color, $color);
+    @include mdc-theme-prop-spec(background-color, $color);
   }
 }
 
 @mixin mdc-slider-thumb-color_($color) {
   .mdc-slider__thumb {
-    @include mdc-theme-prop(fill, $color);
-    @include mdc-theme-prop(stroke, $color);
+    @include mdc-theme-prop-spec(fill, $color);
+    @include mdc-theme-prop-spec(stroke, $color);
   }
 }
 

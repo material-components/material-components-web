@@ -23,23 +23,23 @@
 
 @mixin mdc-switch-track-color($color) {
   .mdc-switch__native-control:enabled:checked ~ .mdc-switch__background::before {
-    @include mdc-theme-prop(background-color, $color);
-    @include mdc-theme-prop(border-color, $color);
+    @include mdc-theme-prop-spec(background-color, $color);
+    @include mdc-theme-prop-spec(border-color, $color);
   }
 }
 
 @mixin mdc-switch-knob-color($color) {
   // stylelint-disable-next-line selector-max-specificity
   .mdc-switch__native-control:enabled:checked ~ .mdc-switch__background .mdc-switch__knob {
-    @include mdc-theme-prop(background-color, $color);
-    @include mdc-theme-prop(border-color, $color);
+    @include mdc-theme-prop-spec(background-color, $color);
+    @include mdc-theme-prop-spec(border-color, $color);
   }
 }
 
 @mixin mdc-switch-focus-indicator-color($color) {
   // stylelint-disable-next-line selector-max-specificity
   .mdc-switch__native-control:enabled:checked ~ .mdc-switch__background .mdc-switch__knob::before {
-    @include mdc-theme-prop(background-color, $color);
+    @include mdc-theme-prop-spec(background-color, $color);
   }
 }
 
@@ -49,23 +49,23 @@
 
 @mixin mdc-switch-unchecked-track-color_($color) {
   .mdc-switch__native-control:enabled:not(:checked) ~ .mdc-switch__background::before {
-    @include mdc-theme-prop(background-color, $color);
-    @include mdc-theme-prop(border-color, $color);
+    @include mdc-theme-prop-spec(background-color, $color);
+    @include mdc-theme-prop-spec(border-color, $color);
   }
 }
 
 @mixin mdc-switch-unchecked-knob-color_($color) {
   // stylelint-disable-next-line selector-max-specificity
   .mdc-switch__native-control:enabled:not(:checked) ~ .mdc-switch__background .mdc-switch__knob {
-    @include mdc-theme-prop(background-color, $color);
-    @include mdc-theme-prop(border-color, $color);
+    @include mdc-theme-prop-spec(background-color, $color);
+    @include mdc-theme-prop-spec(border-color, $color);
   }
 }
 
 @mixin mdc-switch-unchecked-focus-indicator-color_($color) {
   // stylelint-disable-next-line selector-max-specificity
   .mdc-switch__native-control:enabled:not(:checked) ~ .mdc-switch__background .mdc-switch__knob::before {
-    @include mdc-theme-prop(background-color, $color);
+    @include mdc-theme-prop-spec(background-color, $color);
   }
 }
 

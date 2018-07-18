@@ -40,25 +40,25 @@
   // :not(:disabled) is used to support link styled as button
   // as link does not support :enabled style
   &:not(:disabled) {
-    @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
+    @include mdc-theme-prop-spec(background-color, $color, $edgeOptOut: true);
   }
 }
 
 @mixin mdc-button-outline-color($color) {
   &:not(:disabled) {
-    @include mdc-theme-prop(border-color, $color);
+    @include mdc-theme-prop-spec(border-color, $color);
   }
 }
 
 @mixin mdc-button-icon-color($color) {
   &:not(:disabled) .mdc-button__icon {
-    @include mdc-theme-prop(color, $color);
+    @include mdc-theme-prop-spec(color, $color);
   }
 }
 
 @mixin mdc-button-ink-color($color) {
   &:not(:disabled) {
-    @include mdc-theme-prop(color, $color);
+    @include mdc-theme-prop-spec(color, $color);
   }
 }
 
@@ -118,7 +118,7 @@
   }
 
   &:disabled {
-    @include mdc-theme-prop(background-color, transparent);
+    @include mdc-theme-prop-spec(background-color, transparent);
 
     color: $mdc-button-disabled-ink-color;
     cursor: default;

@@ -6,11 +6,11 @@
 }
 
 @mixin mdc-tab-label-ink-color($color) {
-  @include mdc-theme-prop(color, $color);
+  @include mdc-theme-prop-spec(color, $color);
 }
 
 @mixin mdc-tab-icon-ink-color($color) {
   .mdc-tab__icon {
-    @include mdc-theme-prop(color, $color);
+    @include mdc-theme-prop-spec(color, $color);
   }
 }

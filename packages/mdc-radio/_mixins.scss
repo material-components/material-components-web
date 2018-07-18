@@ -20,26 +20,26 @@
 @mixin mdc-radio-unchecked-stroke-color($color) {
   // stylelint-disable-next-line selector-max-specificity
   .mdc-radio__native-control:enabled:not(:checked) + .mdc-radio__background .mdc-radio__outer-circle {
-    @include mdc-theme-prop(border-color, $color);
+    @include mdc-theme-prop-spec(border-color, $color);
   }
 }
 
 @mixin mdc-radio-checked-stroke-color($color) {
   // stylelint-disable-next-line selector-max-specificity
   .mdc-radio__native-control:enabled:checked + .mdc-radio__background .mdc-radio__outer-circle {
-    @include mdc-theme-prop(border-color, $color);
+    @include mdc-theme-prop-spec(border-color, $color);
   }
 }
 
 @mixin mdc-radio-ink-color($color) {
   // stylelint-disable-next-line selector-max-specificity
   .mdc-radio__native-control:enabled + .mdc-radio__background .mdc-radio__inner-circle {
-    @include mdc-theme-prop(border-color, $color);
+    @include mdc-theme-prop-spec(border-color, $color);
   }
 }
 
 @mixin mdc-radio-focus-indicator-color($color) {
   .mdc-radio__background::before {
-    @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
+    @include mdc-theme-prop-spec(background-color, $color, $edgeOptOut: true);
   }
 }

@@ -125,7 +125,7 @@
 }
 
 .mdc-card__action-icons {
-  @include mdc-theme-prop(color, text-icon-on-background);
+  @include mdc-theme-prop-spec(color, text-icon-on-background);
 
   flex-grow: 1;
   justify-content: flex-end;
@@ -192,7 +192,7 @@
 }
 
 .mdc-card__action--icon:not(:disabled) {
-  @include mdc-theme-prop(color, text-icon-on-background);
+  @include mdc-theme-prop-spec(color, text-icon-on-background);
 }
 
 // postcss-bem-linter: end

@@ -41,15 +41,15 @@
 }
 
 @mixin mdc-chip-fill-color($color) {
-  @include mdc-theme-prop(background-color, $color);
+  @include mdc-theme-prop-spec(background-color, $color);
 }
 
 @mixin mdc-chip-ink-color($color) {
   @include mdc-states($color);
-  @include mdc-theme-prop(color, $color);
+  @include mdc-theme-prop-spec(color, $color);
 
   &:hover {
-    @include mdc-theme-prop(color, $color);
+    @include mdc-theme-prop-spec(color, $color);
   }
 }
 
@@ -59,16 +59,16 @@
   }
 
   &.mdc-chip--selected {
-    @include mdc-theme-prop(color, $color);
+    @include mdc-theme-prop-spec(color, $color);
     @include mdc-chip-leading-icon-color($color);
 
     &:hover {
-      @include mdc-theme-prop(color, $color);
+      @include mdc-theme-prop-spec(color, $color);
     }
   }
 
   .mdc-chip__checkmark-path {
-    @include mdc-theme-prop(stroke, $color);
+    @include mdc-theme-prop-spec(stroke, $color);
   }
 }
 
@@ -79,7 +79,7 @@
 }
 
 @mixin mdc-chip-outline-color($color) {
-  @include mdc-theme-prop(border-color, $color);
+  @include mdc-theme-prop-spec(border-color, $color);
 }
 
 @mixin mdc-chip-outline-style($style) {

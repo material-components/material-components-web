@@ -17,7 +17,7 @@
 
 @mixin mdc-linear-progress-bar-color($color) {
   .mdc-linear-progress__bar-inner {
-    @include mdc-theme-prop(background-color, $color);
+    @include mdc-theme-prop-spec(background-color, $color);
   }
 }
 
