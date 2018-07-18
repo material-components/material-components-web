@@ -92,6 +92,10 @@ module.exports = {
         margin: 0;
       }
       
+      .index-main {
+        display: inline-block;
+      }
+      
       .index-file-list {
         margin-top: 0;
       }
@@ -113,7 +117,9 @@ module.exports = {
     </style>
   </head>
   <body>
-    ${linkMarkup}
+    <main class="index-main">
+      ${linkMarkup}
+    </main>
   </body>
 </html>
       `;

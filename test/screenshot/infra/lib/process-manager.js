@@ -24,6 +24,28 @@ class ProcessManager {
    * @param {string} cmd
    * @param {!Array<string>} args
    * @param {!ChildProcessSpawnOptions=} opts
+   * @return {!ChildProcess}
+   */
+  spawnChildProcess(cmd, args, opts = {}) {
+    /** @type {!ChildProcessSpawnOptions} */
+    const defaultOpts = {
+      stdio: 'inherit',
+      shell: true,
+      windowsHide: true,
+    };
+
+    /** @type {!ChildProcessSpawnOptions} */
+    const mergedOpts = Object.assign({}, defaultOpts, opts);
+
+    console.log(`${cmd} ${args.join(' ')}`);
+
+    return childProcess.spawn(cmd, args, mergedOpts);
+  }
+
+  /**
+   * @param {string} cmd
+   * @param {!Array<string>} args
+   * @param {!ChildProcessSpawnOptions=} opts
    * @return {!ChildProcessSpawnResult}
    */
   spawnChildProcessSync(cmd, args, opts = {}) {

@@ -16,10 +16,16 @@
 
 'use strict';
 
+const chokidar = require('chokidar');
+const debounce = require('debounce');
+
 const CleanCommand = require('./clean');
 const Cli = require('../lib/cli');
+const Index = require('./index');
 const Logger = require('../lib/logger');
 const ProcessManager = require('../lib/process-manager');
+const Proto = require('./proto');
+const {TEST_DIR_RELATIVE_PATH} = require('../lib/constants');
 
 const logger = new Logger(__filename);
 const processManager = new ProcessManager();
@@ -40,18 +46,65 @@ module.exports = {
 
     logger.foldStart('screenshot.build', 'Compiling source files');
 
-    // TODO(acdvorak): Watch *.proto and *.html files and recompile them when they change
-    processManager.spawnChildProcessSync('npm', ['run', 'screenshot:proto']);
-    processManager.spawnChildProcessSync('npm', ['run', 'screenshot:webpack']);
-    processManager.spawnChildProcessSync('npm', ['run', 'screenshot:index']);
+    this.buildProtoFiles_(shouldWatch);
+    this.buildHtmlFiles_(shouldWatch);
 
-    // TODO(acdvorak): Find a better way of generating static directory listing index.html files that doesn't require
-    // building source files twice.
     if (shouldWatch) {
-      processManager.spawnChildProcessSync('npm', ['run', 'screenshot:webpack', '--', '--watch']);
+      processManager.spawnChildProcess('npm', ['run', 'screenshot:webpack', '--', '--watch']);
+    } else {
+      processManager.spawnChildProcessSync('npm', ['run', 'screenshot:webpack']);
     }
 
     logger.foldEnd('screenshot.build');
+  },
+
+  /**
+   * @param {boolean} shouldWatch
+   * @private
+   */
+  buildProtoFiles_(shouldWatch) {
+    const compile = debounce(() => Proto.runAsync(), 1000);
+    if (!shouldWatch) {
+      compile();
+      return;
+    }
+    const watcher = chokidar.watch('**/*.proto', {
+      cwd: TEST_DIR_RELATIVE_PATH,
+      awaitWriteFinish: true,
+    });
+    watcher.on('add', (filePath) => {
+      console.log('file added:', filePath);
+      compile();
+    });
+    watcher.on('change', (filePath) => {
+      console.log('file changed:', filePath);
+      compile();
+    });
+  },
+
+  /**
+   * @param {boolean} shouldWatch
+   * @private
+   */
+  buildHtmlFiles_(shouldWatch) {
+    const compile = debounce(() => Index.runAsync(), 1000);
+    if (!shouldWatch) {
+      compile();
+      return;
+    }
+    const watcher = chokidar.watch('**/*.html', {
+      cwd: TEST_DIR_RELATIVE_PATH,
+      awaitWriteFinish: true,
+      ignored: ['**/report/report.html', '**/index.html'],
+    });
+    watcher.on('add', (filePath) => {
+      console.log('file added:', filePath);
+      compile();
+    });
+    watcher.on('unlink', (filePath) => {
+      console.log('file deleted:', filePath);
+      compile();
+    });
   },
 
   /**
