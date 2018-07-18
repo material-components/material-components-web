@@ -51,7 +51,13 @@ module.exports = {
    * Number of milliseconds to wait for fonts to load on a test page in Selenium before giving up.
    * @type {number}
    */
-  SELENIUM_FONT_LOAD_WAIT_MS: 3000,
+  SELENIUM_FONT_LOAD_WAIT_MS: 3 * 1000, // 3 seconds
+
+  /**
+   * Number of milliseconds a Selenium test should wait to receive commands before being considered "stalled".
+   * @type {number}
+   */
+  SELENIUM_STALLED_TIME_MS: 2 * 60 * 1000, // 2 minutes
 
   ExitCode: {
     OK: 0,
