@@ -26,6 +26,7 @@ const cssClasses = {
 const strings = {
   ARIA_SELECTED: 'aria-selected',
   RIPPLE_SELECTOR: '.mdc-tab__ripple',
+  CONTENT_SELECTOR: '.mdc-tab__content',
   TAB_INDICATOR_SELECTOR: '.mdc-tab-indicator',
   TABINDEX: 'tabIndex',
 };

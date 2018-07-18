@@ -20,9 +20,9 @@ import MDCComponent from '@material/base/component';
 /* eslint-disable no-unused-vars */
 import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
 import {MDCTabIndicator, MDCTabIndicatorFoundation} from '@material/tab-indicator/index';
+import {MDCTabAdapter, MDCTabDimensions} from './adapter';
 /* eslint-enable no-unused-vars */
 
-import MDCTabAdapter from './adapter';
 import MDCTabFoundation from './foundation';
 
 /**
@@ -39,6 +39,8 @@ class MDCTab extends MDCComponent {
     this.ripple_;
     /** @private {?MDCTabIndicator} */
     this.tabIndicator_;
+    /** @private {?Element} */
+    this.content_;
   }
 
   /**
@@ -63,6 +65,8 @@ class MDCTab extends MDCComponent {
 
     const tabIndicatorElement = this.root_.querySelector(MDCTabFoundation.strings.TAB_INDICATOR_SELECTOR);
     this.tabIndicator_ = tabIndicatorFactory(tabIndicatorElement);
+
+    this.content_ = this.root_.querySelector(MDCTabFoundation.strings.CONTENT_SELECTOR);
   }
 
   destroy() {
@@ -85,6 +89,10 @@ class MDCTab extends MDCComponent {
         activateIndicator: (previousIndicatorClientRect) => this.tabIndicator_.activate(previousIndicatorClientRect),
         deactivateIndicator: () => this.tabIndicator_.deactivate(),
         computeIndicatorClientRect: () => this.tabIndicator_.computeContentClientRect(),
+        getOffsetLeft: () => this.root_.offsetLeft,
+        getOffsetWidth: () => this.root_.offsetWidth,
+        getContentOffsetLeft: () => this.content_.offsetLeft,
+        getContentOffsetWidth: () => this.content_.offsetWidth,
       }));
   }
 
@@ -117,6 +125,13 @@ class MDCTab extends MDCComponent {
    */
   computeIndicatorClientRect() {
     return this.foundation_.computeIndicatorClientRect();
+  }
+
+  /**
+   * @return {!MDCTabDimensions}
+   */
+  computeDimensions() {
+    return this.foundation_.computeDimensions();
   }
 }
 
