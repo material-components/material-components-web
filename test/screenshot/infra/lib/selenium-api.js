@@ -442,11 +442,11 @@ class SeleniumApi {
 
     /** @type {?mdc.proto.DiffImageResult} */
     let diffImageResult = null;
+    let changedPixelCount = 0;
+    let changedPixelFraction = 0;
+    const maxPixelFraction = require('../../diffing.json').flaky_tests.max_auto_retry_changed_pixel_fraction;
 
-    /** @type {number} */ let changedPixelCount = 0;
-    /** @type {number} */ let changedPixelFraction = 0;
-
-    while (screenshot.retry_count <= screenshot.max_retries && changedPixelFraction < 0.10) {
+    while (screenshot.retry_count <= screenshot.max_retries && changedPixelFraction <= maxPixelFraction) {
       if (screenshot.retry_count > 0) {
         const {width, height} = diffImageResult.diff_image_dimensions;
         const whichMsg = `${screenshot.actual_html_file.public_url} > ${userAgent.alias}`;
