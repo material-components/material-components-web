@@ -60,13 +60,9 @@ function install_google_cloud_sdk() {
 
 if [[ "$TEST_SUITE" == 'unit' ]]; then
   exit_if_external_pr
-  install_latest_npm
 elif [[ "$TEST_SUITE" == 'screenshot' ]]; then
   exit_if_external_pr
-  install_latest_npm
   print_travis_env_vars
   extract_api_credentials
   install_google_cloud_sdk
-else
-  install_latest_npm
 fi
