@@ -63,9 +63,11 @@ module.exports = {
    * @private
    */
   buildProtoFiles_(shouldWatch) {
-    const compile = debounce(() => ProtoCommand.runAsync(), 1000);
+    const buildRightNow = () => ProtoCommand.runAsync();
+    const buildDelayed = debounce(buildRightNow, 1000);
+
     if (!shouldWatch) {
-      compile();
+      buildRightNow();
       return;
     }
 
@@ -74,10 +76,8 @@ module.exports = {
       awaitWriteFinish: true,
     });
 
-    /* eslint-disable no-unused-vars */
-    watcher.on('add', (filePath) => compile());
-    watcher.on('change', (filePath) => compile());
-    /* eslint-enable no-unused-vars */
+    watcher.on('add', buildDelayed);
+    watcher.on('change', buildDelayed);
   },
 
   /**
@@ -85,9 +85,11 @@ module.exports = {
    * @private
    */
   buildHtmlFiles_(shouldWatch) {
-    const compile = debounce(() => IndexCommand.runAsync(), 1000);
+    const buildRightNow = () => IndexCommand.runAsync();
+    const buildDelayed = debounce(buildRightNow, 1000);
+
     if (!shouldWatch) {
-      compile();
+      buildRightNow();
       return;
     }
 
@@ -97,10 +99,8 @@ module.exports = {
       ignored: ['**/report/report.html', '**/index.html'],
     });
 
-    /* eslint-disable no-unused-vars */
-    watcher.on('add', (filePath) => compile());
-    watcher.on('unlink', (filePath) => compile());
-    /* eslint-enable no-unused-vars */
+    watcher.on('add', buildDelayed);
+    watcher.on('unlink', buildDelayed);
   },
 
   /**

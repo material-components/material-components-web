@@ -49,6 +49,7 @@ const {SELENIUM_FONT_LOAD_WAIT_MS} = Constants;
 const CliStatuses = {
   ACTIVE: {name: 'Active', color: colors.bold.cyan},
   QUEUED: {name: 'Queued', color: colors.cyan},
+  WAITING: {name: 'Waiting', color: colors.magenta},
   STARTING: {name: 'Starting', color: colors.green},
   STARTED: {name: 'Started', color: colors.bold.green},
   GET: {name: 'Get', color: colors.bold.white},
@@ -202,7 +203,8 @@ class SeleniumApi {
 
         const waitTimeMs = CBT_CONCURRENCY_POLL_INTERVAL_MS;
         const waitTimeHuman = Duration.millis(waitTimeMs).toHumanShort();
-        console.warn(
+        this.logStatus_(
+          CliStatuses.WAITING,
           `Parallel execution limit reached. ${max} tests are already running on CBT. Will retry in ${waitTimeHuman}...`
         );
         await this.sleep_(waitTimeMs);

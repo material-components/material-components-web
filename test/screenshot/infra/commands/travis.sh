@@ -13,47 +13,52 @@ function exit_if_external_pr() {
   fi
 }
 
-function extract_api_credentials() {
-  openssl aes-256-cbc -K $encrypted_eead2343bb54_key -iv $encrypted_eead2343bb54_iv \
-    -in test/screenshot/infra/auth/travis.tar.enc -out test/screenshot/infra/auth/travis.tar -d
-
-  tar -xf test/screenshot/infra/auth/travis.tar -C test/screenshot/infra/auth/
-
-  echo
-  echo 'git status:'
-  echo
-  git status
+function print_travis_env_vars() {
   echo
   env | grep TRAVIS
   echo
 }
 
-function install_google_cloud_sdk() {
-  if [[ ! -d $HOME/google-cloud-sdk ]]; then
-    curl -o /tmp/gcp-sdk.bash https://sdk.cloud.google.com
-    chmod +x /tmp/gcp-sdk.bash
-    /tmp/gcp-sdk.bash --disable-prompts
-  fi
+function extract_api_credentials() {
+  openssl aes-256-cbc -K $encrypted_eead2343bb54_key -iv $encrypted_eead2343bb54_iv \
+    -in test/screenshot/infra/auth/travis.tar.enc -out test/screenshot/infra/auth/travis.tar -d
 
+  tar -xf test/screenshot/infra/auth/travis.tar -C test/screenshot/infra/auth/
+}
+
+function install_google_cloud_sdk() {
   export PATH=$PATH:$HOME/google-cloud-sdk/bin
   export CLOUDSDK_CORE_DISABLE_PROMPTS=1
+
+  which gcloud 2>&1 > /dev/null
+
+  if [[ $? == 0 ]]; then
+    echo 'gcloud already installed'
+    echo
+  else
+    echo 'gcloud not installed'
+    echo
+
+    rm -rf $HOME/google-cloud-sdk
+    curl -o /tmp/gcp-sdk.bash https://sdk.cloud.google.com
+    chmod +x /tmp/gcp-sdk.bash
+
+    # The gcloud installer runs `tar -C "$install_dir" -zxvf "$download_dst"`, which generates a lot of noisy output.
+    # Filter out all lines from `tar`.
+    /tmp/gcp-sdk.bash | grep -v -E '^google-cloud-sdk/'
+  fi
 
   gcloud auth activate-service-account --key-file test/screenshot/infra/auth/gcs.json
   gcloud config set project material-components-web
   gcloud components install gsutil
-
-  which gsutil 2>&1 > /dev/null
-  if [[ $? != 0 ]]; then
-    pip install --upgrade pip
-    pip install gsutil
-  fi
+  gcloud components update gsutil
 }
 
-if [[ "$TEST_SUITE" == 'screenshot' ]] || [[ "$TEST_SUITE" == 'unit' ]]; then
+if [[ "$TEST_SUITE" == 'unit' ]]; then
   exit_if_external_pr
-fi
-
-if [[ "$TEST_SUITE" == 'screenshot' ]]; then
+elif [[ "$TEST_SUITE" == 'screenshot' ]]; then
+  exit_if_external_pr
+  print_travis_env_vars
   extract_api_credentials
   install_google_cloud_sdk
 fi

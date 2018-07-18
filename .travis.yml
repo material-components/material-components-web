@@ -38,3 +38,7 @@ before_install:
   # script are visible to subsequent Travis CLI commands.
   # https://superuser.com/a/176788/62792
   - source test/screenshot/infra/commands/travis.sh
+install:
+  - rm -rf node_modules
+  - npm install
+  #- npm ls # Noisy output, but useful for debugging npm package dependency version issues
