@@ -32,7 +32,7 @@ function install_google_cloud_sdk() {
   if [[ ! -d $HOME/google-cloud-sdk ]]; then
     curl -o /tmp/gcp-sdk.bash https://sdk.cloud.google.com
     chmod +x /tmp/gcp-sdk.bash
-    /tmp/gcp-sdk.bash --disable-prompts
+    /tmp/gcp-sdk.bash --disable-prompts | grep -v -E '^google-cloud-sdk/'
   fi
 
   export PATH=$PATH:$HOME/google-cloud-sdk/bin
@@ -41,12 +41,7 @@ function install_google_cloud_sdk() {
   gcloud auth activate-service-account --key-file test/screenshot/infra/auth/gcs.json
   gcloud config set project material-components-web
   gcloud components install gsutil
-
-  which gsutil 2>&1 > /dev/null
-  if [[ $? != 0 ]]; then
-    pip install --upgrade pip
-    pip install gsutil
-  fi
+  gcloud components update gsutil
 }
 
 if [[ "$TEST_SUITE" == 'screenshot' ]] || [[ "$TEST_SUITE" == 'unit' ]]; then
@@ -57,3 +52,8 @@ if [[ "$TEST_SUITE" == 'screenshot' ]]; then
   extract_api_credentials
   install_google_cloud_sdk
 fi
+
+echo
+echo 'advorak - exiting early'
+echo
+exit 1
