@@ -58,12 +58,6 @@ class MDCIconButtonToggleAdapter {
   /** @param {string} text */
   setText(text) {}
 
-  /** @return {number} */
-  getTabIndex() {}
-
-  /** @param {number} tabIndex */
-  setTabIndex(tabIndex) {}
-
   /**
    * @param {string} name
    * @return {string}
@@ -75,9 +69,6 @@ class MDCIconButtonToggleAdapter {
    * @param {string} value
    */
   setAttr(name, value) {}
-
-  /** @param {string} name */
-  removeAttr(name) {}
 
   /** @param {!IconButtonToggleEvent} evtData */
   notifyChange(evtData) {}

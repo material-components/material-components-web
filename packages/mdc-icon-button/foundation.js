@@ -39,11 +39,8 @@ class MDCIconButtonToggleFoundation extends MDCFoundation {
       registerInteractionHandler: (/* type: string, handler: EventListener */) => {},
       deregisterInteractionHandler: (/* type: string, handler: EventListener */) => {},
       setText: (/* text: string */) => {},
-      getTabIndex: () => /* number */ 0,
-      setTabIndex: (/* tabIndex: number */) => {},
       getAttr: (/* name: string */) => /* string */ '',
       setAttr: (/* name: string, value: string */) => {},
-      removeAttr: (/* name: string */) => {},
       notifyChange: (/* evtData: IconButtonToggleEvent */) => {},
     };
   }
@@ -51,14 +48,13 @@ class MDCIconButtonToggleFoundation extends MDCFoundation {
   constructor(adapter) {
     super(Object.assign(MDCIconButtonToggleFoundation.defaultAdapter, adapter));
 
+    const {ARIA_PRESSED} = MDCIconButtonToggleFoundation.strings;
+
     /** @private {boolean} */
-    this.on_ = false;
+    this.on_ = this.adapter_.getAttr(ARIA_PRESSED) === 'true';
 
     /** @private {boolean} */
     this.disabled_ = false;
-
-    /** @private {number} */
-    this.savedTabIndex_ = -1;
 
     /** @private {?IconButtonToggleState} */
     this.toggleOnData_ = null;
@@ -72,7 +68,6 @@ class MDCIconButtonToggleFoundation extends MDCFoundation {
 
   init() {
     this.refreshToggleData();
-    this.savedTabIndex_ = this.adapter_.getTabIndex();
     this.adapter_.registerInteractionHandler('click', this.clickHandler_);
   }
 

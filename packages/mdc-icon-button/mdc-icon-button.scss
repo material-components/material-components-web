@@ -23,10 +23,4 @@
   @include mdc-states;
 }
 
-.mdc-icon-button--disabled {
-  @include mdc-theme-prop(color, text-disabled-on-light);
-
-  pointer-events: none;
-}
-
 // postcss-bem-linter: end
