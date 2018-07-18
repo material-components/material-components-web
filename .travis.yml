@@ -43,6 +43,5 @@ before_install:
   # https://superuser.com/a/176788/62792
   - source test/screenshot/infra/commands/travis.sh
 install:
-  - npm install # Slower than `npm ci`, but it actually works
-  #- npm ci # Deletes `node_modules` before installing packages. Requires npm@latest (v6.x?)
+  - npm install
   #- npm ls # Noisy output, but useful for debugging npm package dependency version issues
