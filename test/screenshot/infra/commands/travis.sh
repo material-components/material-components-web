@@ -29,7 +29,15 @@ function extract_api_credentials() {
 }
 
 function install_google_cloud_sdk() {
-  if [[ ! -d $HOME/google-cloud-sdk ]]; then
+  echo ls $HOME/google-cloud-sdk
+  ls $HOME/google-cloud-sdk
+
+  which gcloud 2>&1 > /dev/null
+
+  if [[ $? == 0 ]]; then
+    echo 'gcloud already installed'
+  else
+    echo 'gcloud not installed'
     curl -o /tmp/gcp-sdk.bash https://sdk.cloud.google.com
     chmod +x /tmp/gcp-sdk.bash
     /tmp/gcp-sdk.bash --disable-prompts | grep -v -E '^google-cloud-sdk/'
