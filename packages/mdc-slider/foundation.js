@@ -45,8 +45,7 @@ class MDCSliderFoundation extends MDCFoundation {
       hasClass: () => {},
       addClass: () => {},
       removeClass: () => {},
-      getAttribute: () => {},
-      setAttribute: () => {},
+      setThumbAttribute: () => {},
       computeBoundingRect: () => {},
       registerEventHandler: () => {},
       deregisterEventHandler: () => {},
@@ -58,6 +57,9 @@ class MDCSliderFoundation extends MDCFoundation {
       notifyChange: () => {},
       setThumbStyleProperty: () => {},
       setTrackFillStyleProperty: () => {},
+      focusThumb: () => {},
+      activateRipple: () => {},
+      deactivateRipple: () => {},
     });
   }
 
@@ -75,6 +77,8 @@ class MDCSliderFoundation extends MDCFoundation {
     this.max_ = 100;
     /** @private {number} */
     this.value_ = 0;
+    /** @private  {boolean} */
+    this.active_ = false;
     /** @private {function(!Event): undefined} */
     this.interactionStartHandler_ = (evt) => this.handleInteractionStart(evt);
     /** @private {function(!Event): undefined} */
@@ -125,7 +129,7 @@ class MDCSliderFoundation extends MDCFoundation {
     }
     this.max_ = max;
     this.setValue_(this.value_);
-    this.adapter_.setAttribute(strings.ARIA_VALUEMAX, String(this.max_));
+    this.adapter_.setThumbAttribute(strings.ARIA_VALUEMAX, String(this.max_));
   }
 
   /** @return {number} */
@@ -140,7 +144,7 @@ class MDCSliderFoundation extends MDCFoundation {
     }
     this.min_ = min;
     this.setValue_(this.value_);
-    this.adapter_.setAttribute(strings.ARIA_VALUEMIN, String(this.min_));
+    this.adapter_.setThumbAttribute(strings.ARIA_VALUEMIN, String(this.min_));
   }
 
   /**
@@ -148,6 +152,9 @@ class MDCSliderFoundation extends MDCFoundation {
    * @param {!Event} evt
    */
   handleInteractionStart(evt) {
+    this.setActive_(true);
+    this.adapter_.activateRipple();
+
     const moveHandler = (evt) => {
       this.interactionMoveHandler_(evt);
     };
@@ -179,7 +186,10 @@ class MDCSliderFoundation extends MDCFoundation {
    * Called when the user's interaction with the slider ends
    */
   handleInteractionEnd() {
+    this.setActive_(false);
     this.adapter_.notifyChange();
+    this.adapter_.deactivateRipple();
+    this.adapter_.focusThumb();
   }
 
   /**
@@ -231,7 +241,7 @@ class MDCSliderFoundation extends MDCFoundation {
       value = this.max_;
     }
     this.value_ = value;
-    this.adapter_.setAttribute(strings.ARIA_VALUENOW, String(this.value_));
+    this.adapter_.setThumbAttribute(strings.ARIA_VALUENOW, String(this.value_));
     this.updateUIForCurrentValue_();
     this.adapter_.notifyInput();
   }
@@ -247,6 +257,28 @@ class MDCSliderFoundation extends MDCFoundation {
       this.adapter_.setThumbStyleProperty('transform', `translateX(${translatePx}px) translateX(-50%)`);
       this.adapter_.setTrackFillStyleProperty('transform', `scaleX(${translatePx})`);
     });
+  }
+
+  /**
+   * Toggles the active state of the slider
+   * @param {boolean} active
+   */
+  setActive_(active) {
+    this.active_ = active;
+    this.toggleClass_('mdc-slider--active', this.active_);
+  }
+
+  /**
+   * Conditionally adds or removes a class based on shouldBePresent
+   * @param {string} className
+   * @param {boolean} shouldBePresent
+   */
+  toggleClass_(className, shouldBePresent) {
+    if (shouldBePresent) {
+      this.adapter_.addClass(className);
+    } else {
+      this.adapter_.removeClass(className);
+    }
   }
 }
 

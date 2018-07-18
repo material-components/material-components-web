@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2017 Google Inc. All Rights Reserved.
+ * Copyright 2018 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 
 import MDCComponent from '@material/base/component';
 
+import {MDCRipple} from '@material/ripple/index';
 import {strings} from './constants';
 import MDCSliderAdapter from './adapter';
 import MDCSliderFoundation from './foundation';
@@ -35,6 +36,8 @@ class MDCSlider extends MDCComponent {
     this.thumb_;
     /** @type {?Element} */
     this.trackFill_;
+    /** @private {!MDCRipple} */
+    this.ripple_ = this.initRipple_();
   }
 
   /** @return {number} */
@@ -67,6 +70,21 @@ class MDCSlider extends MDCComponent {
     this.foundation_.setMax(max);
   }
 
+  /**
+   * @return {!MDCRipple}
+   * @private
+   */
+  initRipple_() {
+    const ripple = new MDCRipple(this.root_.querySelector(strings.THUMB_SELECTOR));
+    ripple.unbounded = true;
+    return ripple;
+  }
+
+  destroy() {
+    this.ripple_.destroy();
+    super.destroy();
+  }
+
   initialize() {
     this.thumb_ = this.root_.querySelector(strings.THUMB_SELECTOR);
     this.trackFill_ = this.root_.querySelector(strings.TRACK_FILL_SELECTOR);
@@ -81,8 +99,7 @@ class MDCSlider extends MDCComponent {
         hasClass: (className) => this.root_.classList.contains(className),
         addClass: (className) => this.root_.classList.add(className),
         removeClass: (className) => this.root_.classList.remove(className),
-        getAttribute: (name) => this.root_.getAttribute(name),
-        setAttribute: (name, value) => this.root_.setAttribute(name, value),
+        setThumbAttribute: (name, value) => this.thumb_.setAttribute(name, value),
         computeBoundingRect: () => this.root_.getBoundingClientRect(),
         registerEventHandler: (type, handler) => {
           this.root_.addEventListener(type, handler);
@@ -114,14 +131,23 @@ class MDCSlider extends MDCComponent {
         setTrackFillStyleProperty: (propertyName, value) => {
           this.trackFill_.style.setProperty(propertyName, value);
         },
+        focusThumb: () => {
+          this.thumb_.focus();
+        },
+        activateRipple: () => {
+          this.ripple_.activate();
+        },
+        deactivateRipple: () => {
+          this.ripple_.deactivate();
+        },
       })
     );
   }
 
   initialSyncWithDOM() {
-    const origValueNow = parseFloat(this.root_.getAttribute(strings.ARIA_VALUENOW));
-    this.min = parseFloat(this.root_.getAttribute(strings.ARIA_VALUEMIN)) || this.min;
-    this.max = parseFloat(this.root_.getAttribute(strings.ARIA_VALUEMAX)) || this.max;
+    const origValueNow = parseFloat(this.thumb_.getAttribute(strings.ARIA_VALUENOW));
+    this.min = parseFloat(this.thumb_.getAttribute(strings.ARIA_VALUEMIN)) || this.min;
+    this.max = parseFloat(this.thumb_.getAttribute(strings.ARIA_VALUEMAX)) || this.max;
     this.value = origValueNow || this.value;
   }
 
