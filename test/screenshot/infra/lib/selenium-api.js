@@ -187,12 +187,13 @@ class SeleniumApi {
     const startTimeMs = Date.now();
 
     while (true) {
-      /** @type {!mdc.proto.cbt.CbtConcurrencyStats} */
+      /** @type {!cbt.proto.CbtConcurrencyStats} */
       const stats = await this.cbtApi_.fetchConcurrencyStats();
       const active = stats.active_concurrent_selenium_tests;
       const max = stats.max_concurrent_selenium_tests;
+      const available = max - active;
 
-      if (active === max) {
+      if (!available) {
         const elapsedTimeMs = Date.now() - startTimeMs;
         const elapsedTimeHuman = Duration.millis(elapsedTimeMs).toHumanShort();
         if (elapsedTimeMs > CBT_CONCURRENCY_MAX_WAIT_MS) {
@@ -208,14 +209,14 @@ class SeleniumApi {
         continue;
       }
 
-      if (this.cli_.maxParallels) {
-        return max - active;
-      }
+      const requested = Math.min(this.cli_.parallels, available);
 
       // If nobody else is running any tests, run half the number of concurrent tests allowed by our CBT account.
       // This gives us _some_ parallelism while still allowing other users to run their tests.
       // If someone else is already running tests, only run one test at a time.
-      return active === 0 ? Math.ceil(max / 2) : 1;
+      const half = active === 0 ? Math.ceil(max / 2) : 1;
+
+      return requested === 0 ? half : requested;
     }
   }
 
@@ -442,10 +443,10 @@ class SeleniumApi {
     /** @type {?mdc.proto.DiffImageResult} */
     let diffImageResult = null;
 
-    /** @type {?number} */
-    let changedPixelCount = null;
+    /** @type {number} */ let changedPixelCount = 0;
+    /** @type {number} */ let changedPixelFraction = 0;
 
-    while (screenshot.retry_count <= screenshot.max_retries) {
+    while (screenshot.retry_count <= screenshot.max_retries && changedPixelFraction < 0.10) {
       if (screenshot.retry_count > 0) {
         const {width, height} = diffImageResult.diff_image_dimensions;
         const whichMsg = `${screenshot.actual_html_file.public_url} > ${userAgent.alias}`;
@@ -466,6 +467,7 @@ class SeleniumApi {
       }
 
       changedPixelCount = diffImageResult.changed_pixel_count;
+      changedPixelFraction = diffImageResult.changed_pixel_fraction;
       screenshot.retry_count++;
     }
 

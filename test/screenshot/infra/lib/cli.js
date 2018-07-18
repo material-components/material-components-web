@@ -290,14 +290,14 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
     });
 
     this.addArg_(subparser, {
-      optionNames: ['--max-parallels'],
-      type: 'boolean',
+      optionNames: ['--parallels'],
+      type: 'integer',
+      defaultValue: 0,
       description: `
-If this option is present, CBT tests will run the maximum number of parallel browser VMs allowed by our plan.
-The default behavior is to start 3 browsers if nobody else is running tests, or 1 browser if other tests are running.
-IMPORTANT: To ensure that other developers can run their tests too, only use this option during off-peak hours when you
-know nobody else is going to be running tests.
-This option is capped by A) our CBT account allowance, and B) the number of available VMs.
+Maximum number of browser VMs to run in parallel (subject to our CBT plan limit and VM availability).
+A value of '0' will start 3 browsers if nobody else is running tests, or 1 browser if other tests are already running.
+IMPORTANT: To ensure that multiple developers can run their tests simultaneously, do not set this value higher than 1
+during normal business hours when other people are likely to be running tests.
 `,
     });
 
@@ -344,9 +344,9 @@ that you know are going to have diffs.
     return this.args_['--diff-base'];
   }
 
-  /** @return {boolean} */
-  get maxParallels() {
-    return this.args_['--max-parallels'];
+  /** @return {number} */
+  get parallels() {
+    return this.args_['--parallels'];
   }
 
   /** @return {number} */
