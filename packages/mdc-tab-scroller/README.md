@@ -12,11 +12,12 @@ path: /catalog/tabs/scroller/
 A Tab Scroller allows for smooth native and animated scrolling of tabs.
 
 ## Installation
+
 ```
 npm install @material/tab-scroller
 ```
 
-## Usage
+## Basic Usage
 
 ### HTML Structure
 
@@ -28,6 +29,24 @@ npm install @material/tab-scroller
 </div>
 ```
 
+### Styles
+
+```scss
+@import "@material/tab/mdc-tab-scroller";
+```
+
+### JavaScript Instantiation
+
+```js
+import {MDCTabScroller} from '@material/tab-scroller';
+
+const button = new MDCTabScroller(document.querySelector('.mdc-tab-scroller'));
+```
+
+> See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
+
+## Style Customization
+
 ### CSS Classes
 
 CSS Class | Description
@@ -36,13 +55,17 @@ CSS Class | Description
 `mdc-tab-scroller__scroll-area` | Mandatory. Denotes the scrolling area.
 `mdc-tab-scroller__scroll-content` | Mandatory. Denotes the scrolling content.
 
-### `MDCTabScroller`
+## `MDCTabScroller` Methods
 
 Method Signature | Description
 --- | ---
 `scrollTo(scrollX: number) => void` | Scrolls to the scrollX value
 `incrementScroll(scrollX: number) => void` | Increments the current scroll value by the scrollX value
 `getScrollPosition() => number` | Returns the current visual scroll position
+
+## Usage within Web Frameworks
+
+If you are using a JavaScript framework, such as React or Angular, you can create a Tab Scroller for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
 ### `MDCTabScrollerAdapter`
 

@@ -24,11 +24,12 @@ Each Tab governs the visibility of one group of content.
 </ul>
 
 ## Installation
+
 ```
-npm install --save @material/tab
+npm install @material/tab
 ```
 
-## Usage
+## Basic Usage
 
 ### HTML Structure
 
@@ -45,9 +46,27 @@ npm install --save @material/tab
 </button>
 ```
 
-#### Active Tab
+### Styles
 
->*NOTE*: Don't forget to add the `mdc-tab-indicator--active` class to the `mdc-tab-indicator` subcomponent.
+```scss
+@import "@material/tab/mdc-tab";
+```
+
+### JavaScript Instantiation
+
+```js
+import {MDCTab} from '@material/tab';
+
+const button = new MDCTab(document.querySelector('.mdc-tab'));
+```
+
+> See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
+
+## Variants
+
+### Active Tab
+
+> *NOTE*: Don't forget to add the `mdc-tab-indicator--active` class to the `mdc-tab-indicator` subcomponent.
 
 ```html
 <button class="mdc-tab mdc-tab--active" role="tab" aria-selected="true">
@@ -62,17 +81,19 @@ npm install --save @material/tab
 </button>
 ```
 
+## Style Customization
+
 ### CSS Classes
 
 CSS Class | Description
 --- | ---
 `mdc-tab` | Mandatory.
-`mdc-tab__content` | Mandatory. Indicates the text label of the tab
-`mdc-tab__ripple` | Mandatory. Denotes the ripple surface for the tab
-`mdc-tab--active` | Optional. Indicates that the tab is active
-`mdc-tab--stacked` | Optional. Indicates that the tab content should be displayed vertically instead of horizontally
-`mdc-tab__text-label` | Optional. Indicates an icon in the tab
-`mdc-tab__icon` | Optional. Indicates a leading icon in the tab
+`mdc-tab__content` | Mandatory. Indicates the text label of the tab.
+`mdc-tab__ripple` | Mandatory. Denotes the ripple surface for the tab.
+`mdc-tab--active` | Optional. Indicates that the tab is active.
+`mdc-tab--stacked` | Optional. Indicates that the tab icon and label should flow vertically instead of horizontally.
+`mdc-tab__text-label` | Optional. Indicates an icon in the tab.
+`mdc-tab__icon` | Optional. Indicates a leading icon in the tab.
 
 ### Sass Mixins
 
@@ -83,7 +104,7 @@ Mixin | Description
 `mdc-tab-text-label-color($color)` | Customizes the color of the tab text label
 `mdc-tab-icon-color($color)` | Customizes the color of the tab icon
 
-### `MDCTab`
+## `MDCTab` Properties and Methods
 
 Property | Value Type | Description
 --- | --- | ---
@@ -94,6 +115,9 @@ Method Signature | Description
 `activate(previousIndicatorClientRect: ClientRect=) => void` | Activates the indicator.  `previousIndicatorClientRect` is an optional argument
 `deactivate() => void` | Deactivates the indicator
 
+## Usage within Web Frameworks
+
+If you are using a JavaScript framework, such as React or Angular, you can create a Tab for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
 ### `MDCTabAdapter`
 
