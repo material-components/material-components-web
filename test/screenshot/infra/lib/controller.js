@@ -186,6 +186,7 @@ class Controller {
     await this.cloudStorage_.uploadDiffReport(reportData);
 
     this.logger_.foldEnd('screenshot.report');
+    this.logger_.log('');
 
     // TODO(acdvorak): Store this directly in the proto so we don't have to recalculate it all over the place
     const numChanges =

@@ -14,7 +14,21 @@
 // limitations under the License.
 //
 
+@import "../../../../packages/mdc-icon-button/mixins";
+@import "../../../../packages/mdc-theme/color-palette";
+
+$custom-icon-button-icon-ink-color: $material-color-red-500;
+$custom-icon-button-size: 36px;
+
 .test-cell--icon-button {
   width: 91px;
   height: 91px;
+}
+
+.custom-icon-button--ink-color {
+  @include mdc-icon-button-ink-color($custom-icon-button-icon-ink-color);
+}
+
+.custom-icon-button--icon-size {
+  @include mdc-icon-button-size($custom-icon-button-size);
 }
