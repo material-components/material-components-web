@@ -101,6 +101,14 @@ CSS Class | Description
 `mdc-slider__thumb` | Mandatory. Element containing the thumb-handle.
 `mdc-slider__thumb-handle` | Mandatory. The handle element to display where the value is.
 
+### Sass Mixins
+
+Mixin | Description
+--- | ---
+`mdc-slider-track-color($color)` | Customizes the color of the track for the slider
+`mdc-slider-track-fill-color($color)` | Customizes the color of the track-fill for the slider
+`mdc-slider-thumb-color($color)` | Customizes the color of the thumb for the slider
+
 ## `MDCSlider` Properties and Methods
 
 | Property | Value Type | Description |

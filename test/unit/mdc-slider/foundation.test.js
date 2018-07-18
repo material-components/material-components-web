@@ -34,7 +34,7 @@ test('exports strings', () => {
 
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSliderFoundation, [
-    'hasClass', 'addClass', 'removeClass', 'getAttribute', 'setAttribute',
+    'hasClass', 'addClass', 'removeClass', 'setThumbAttribute',
     'computeBoundingRect', 'eventTargetHasClass', 'registerEventHandler', 'deregisterEventHandler',
     'registerThumbEventHandler', 'deregisterThumbEventHandler',
     'registerBodyEventHandler', 'deregisterBodyEventHandler', 'registerWindowResizeHandler',
@@ -218,7 +218,7 @@ test('#setValue updates "aria-valuenow" with the current value', () => {
 
   foundation.setValue(10);
 
-  td.verify(mockAdapter.setAttribute('aria-valuenow', '10'));
+  td.verify(mockAdapter.setThumbAttribute('aria-valuenow', '10'));
 
   raf.restore();
 });
@@ -312,7 +312,7 @@ test('#setMax clamps the value to the new maximum if above the new maximum', () 
   foundation.setMax(50);
 
   assert.equal(foundation.getValue(), 50);
-  td.verify(mockAdapter.setAttribute('aria-valuenow', '50'));
+  td.verify(mockAdapter.setThumbAttribute('aria-valuenow', '50'));
 
   raf.restore();
 });
@@ -349,7 +349,7 @@ test('#setMax updates "aria-valuemax" to the new maximum', () => {
 
   foundation.setMax(50);
 
-  td.verify(mockAdapter.setAttribute('aria-valuemax', '50'));
+  td.verify(mockAdapter.setThumbAttribute('aria-valuemax', '50'));
 
   raf.restore();
 });
@@ -396,7 +396,7 @@ test('#setMin clamps the value to the new minimum if above the new minimum', () 
   foundation.setMin(10);
 
   assert.equal(foundation.getValue(), 10);
-  td.verify(mockAdapter.setAttribute('aria-valuenow', '10'));
+  td.verify(mockAdapter.setThumbAttribute('aria-valuenow', '10'));
 
   raf.restore();
 });
@@ -433,7 +433,7 @@ test('#setMin updates "aria-valuemin" to the new minimum', () => {
 
   foundation.setMin(10);
 
-  td.verify(mockAdapter.setAttribute('aria-valuemin', '10'));
+  td.verify(mockAdapter.setThumbAttribute('aria-valuemin', '10'));
 
   raf.restore();
 });
