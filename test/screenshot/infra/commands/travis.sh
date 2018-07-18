@@ -29,6 +29,9 @@ function extract_api_credentials() {
 }
 
 function install_google_cloud_sdk() {
+  export PATH=$PATH:$HOME/google-cloud-sdk/bin
+  export CLOUDSDK_CORE_DISABLE_PROMPTS=1
+
   echo ls $HOME/google-cloud-sdk
   ls $HOME/google-cloud-sdk
 
@@ -42,9 +45,6 @@ function install_google_cloud_sdk() {
     chmod +x /tmp/gcp-sdk.bash
     /tmp/gcp-sdk.bash --disable-prompts | grep -v -E '^google-cloud-sdk/'
   fi
-
-  export PATH=$PATH:$HOME/google-cloud-sdk/bin
-  export CLOUDSDK_CORE_DISABLE_PROMPTS=1
 
   gcloud auth activate-service-account --key-file test/screenshot/infra/auth/gcs.json
   gcloud config set project material-components-web
