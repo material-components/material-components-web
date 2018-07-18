@@ -47,8 +47,6 @@ class MDCTabFoundation extends MDCFoundation {
    */
   static get defaultAdapter() {
     return /** @type {!MDCTabAdapter} */ ({
-      registerEventHandler: () => {},
-      deregisterEventHandler: () => {},
       addClass: () => {},
       removeClass: () => {},
       hasClass: () => {},
@@ -60,6 +58,7 @@ class MDCTabFoundation extends MDCFoundation {
       getOffsetWidth: () => {},
       getContentOffsetLeft: () => {},
       getContentOffsetWidth: () => {},
+      elementMatchesSelector: () => {},
     });
   }
 
@@ -67,8 +66,8 @@ class MDCTabFoundation extends MDCFoundation {
   constructor(adapter) {
     super(Object.assign(MDCTabFoundation.defaultAdapter, adapter));
 
-    /** @private {function(!Event): undefined} */
-    this.handleTransitionEnd_ = (evt) => this.handleTransitionEnd(evt);
+    /** @private */
+    this.shouldHandleTransitionEnd_ = false;
   }
 
   /**
@@ -76,11 +75,13 @@ class MDCTabFoundation extends MDCFoundation {
    * @param {!Event} evt A browser event
    */
   handleTransitionEnd(evt) {
-    // Early exit for ripple
-    if (evt.pseudoElement) {
+    // Early exit if we shouldn't handle the transition or the event was
+    // triggered by a different subelement
+    if (!this.shouldHandleTransitionEnd_ || !this.eventTargetIsSubelement_(evt)) {
       return;
     }
-    this.adapter_.deregisterEventHandler('transitionend', this.handleTransitionEnd_);
+
+    this.shouldHandleTransitionEnd_ = false;
     this.adapter_.removeClass(cssClasses.ANIMATING_ACTIVATE);
     this.adapter_.removeClass(cssClasses.ANIMATING_DEACTIVATE);
   }
@@ -103,7 +104,7 @@ class MDCTabFoundation extends MDCFoundation {
       return;
     }
 
-    this.adapter_.registerEventHandler('transitionend', this.handleTransitionEnd_);
+    this.shouldHandleTransitionEnd_ = true;
     this.adapter_.addClass(cssClasses.ANIMATING_ACTIVATE);
     this.adapter_.addClass(cssClasses.ACTIVE);
     this.adapter_.setAttr(strings.ARIA_SELECTED, 'true');
@@ -120,7 +121,7 @@ class MDCTabFoundation extends MDCFoundation {
       return;
     }
 
-    this.adapter_.registerEventHandler('transitionend', this.handleTransitionEnd_);
+    this.shouldHandleTransitionEnd_ = true;
     this.adapter_.addClass(cssClasses.ANIMATING_DEACTIVATE);
     this.adapter_.removeClass(cssClasses.ACTIVE);
     this.adapter_.setAttr(strings.ARIA_SELECTED, 'false');
@@ -152,6 +153,17 @@ class MDCTabFoundation extends MDCFoundation {
       contentLeft: rootLeft + contentLeft,
       contentRight: rootLeft + contentLeft + contentWidth,
     };
+  }
+
+  /**
+   * Returns whether the event target was a subelement of the tab
+   * @param {!Event} evt An event object
+   * @return {boolean}
+   * @private
+   */
+  eventTargetIsSubelement_(evt) {
+    return this.adapter_.elementMatchesSelector(evt.target, strings.TEXT_LABEL_SELECTOR)
+      || this.adapter_.elementMatchesSelector(evt.target, strings.ICON_SELECTOR);
   }
 }
 

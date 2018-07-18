@@ -17,11 +17,11 @@
 import {assert} from 'chai';
 import td from 'testdouble';
 
-import {captureHandlers, verifyDefaultAdapter} from '../helpers/foundation';
+import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
 import MDCTabFoundation from '../../../packages/mdc-tab/foundation';
 
-suite('MDCTabFoundation');
+suite.only('MDCTabFoundation');
 
 test('exports cssClasses', () => {
   assert.isOk('cssClasses' in MDCTabFoundation);
@@ -33,11 +33,11 @@ test('exports strings', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTabFoundation, [
-    'registerEventHandler', 'deregisterEventHandler',
     'addClass', 'removeClass', 'hasClass',
     'setAttr',
     'activateIndicator', 'deactivateIndicator', 'computeIndicatorClientRect',
     'getOffsetLeft', 'getOffsetWidth', 'getContentOffsetLeft', 'getContentOffsetWidth',
+    'elementMatchesSelector',
   ]);
 });
 
@@ -48,13 +48,6 @@ test('#activate does nothing if already active', () => {
   td.when(mockAdapter.hasClass(MDCTabFoundation.cssClasses.ACTIVE)).thenReturn(true);
   foundation.activate();
   td.verify(mockAdapter.addClass(MDCTabFoundation.cssClasses.ACTIVE), {times: 0});
-  td.verify(mockAdapter.registerEventHandler('transitionend', td.matchers.isA(Function)), {times: 0});
-});
-
-test('#activate registers a transitionend listener on the root element', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.activate();
-  td.verify(mockAdapter.registerEventHandler('transitionend', td.matchers.isA(Function)));
 });
 
 test('#activate adds mdc-tab--active class to the root element', () => {
@@ -97,14 +90,6 @@ test('#deactivate does nothing if not active', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.deactivate();
   td.verify(mockAdapter.addClass, {times: 0});
-  td.verify(mockAdapter.registerEventHandler('transitionend', td.matchers.isA(Function)), {times: 0});
-});
-
-test('#deactivate registers a transitionend listener on the root element', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(MDCTabFoundation.cssClasses.ACTIVE)).thenReturn(true);
-  foundation.deactivate();
-  td.verify(mockAdapter.registerEventHandler('transitionend', td.matchers.isA(Function)));
 });
 
 test('#deactivate removes mdc-tab--active class to the root element', () => {
@@ -144,20 +129,28 @@ test('#deactivate sets the root element tabindex to -1', () => {
 
 test('#handleTransitionEnd removes mdc-tab--animating-activate class', () => {
   const {foundation, mockAdapter} = setupTest();
-  foundation.handleTransitionEnd({pseudoElement: ''});
-  td.verify(mockAdapter.removeClass(MDCTabFoundation.cssClasses.ANIMATING_ACTIVATE));
+  td.when(mockAdapter.elementMatchesSelector(td.matchers.anything(), td.matchers.anything())).thenReturn(true);
+  foundation.activate();
+  foundation.handleTransitionEnd({pseudoElement: '', target: {}});
+  td.verify(mockAdapter.removeClass(MDCTabFoundation.cssClasses.ANIMATING_ACTIVATE), {times: 1});
 });
 
 test('#handleTransitionEnd removes mdc-tab--animating-deactivate class', () => {
   const {foundation, mockAdapter} = setupTest();
-  foundation.handleTransitionEnd({pseudoElement: ''});
-  td.verify(mockAdapter.removeClass(MDCTabFoundation.cssClasses.ANIMATING_DEACTIVATE));
+  td.when(mockAdapter.elementMatchesSelector(td.matchers.anything(), td.matchers.anything())).thenReturn(true);
+  foundation.activate();
+  foundation.handleTransitionEnd({pseudoElement: '', target: {}});
+  td.verify(mockAdapter.removeClass(MDCTabFoundation.cssClasses.ANIMATING_DEACTIVATE), {times: 1});
 });
 
-test('#handleTransitionEnd deregisters the transitionend event listener', () => {
+test('sequential calls to #handleTransitionEnd() only operate once', () => {
   const {foundation, mockAdapter} = setupTest();
-  foundation.handleTransitionEnd({pseudoElement: ''});
-  td.verify(mockAdapter.deregisterEventHandler('transitionend', td.matchers.isA(Function)));
+  td.when(mockAdapter.elementMatchesSelector(td.matchers.anything(), td.matchers.anything())).thenReturn(true);
+  foundation.activate();
+  foundation.handleTransitionEnd({pseudoElement: '', target: {}});
+  foundation.handleTransitionEnd({pseudoElement: '', target: {}});
+  td.verify(mockAdapter.removeClass(MDCTabFoundation.cssClasses.ANIMATING_ACTIVATE), {times: 1});
+  td.verify(mockAdapter.removeClass(MDCTabFoundation.cssClasses.ANIMATING_DEACTIVATE), {times: 1});
 });
 
 test('#handleTransitionEnd does nothing when triggered by a pseudo element', () => {
@@ -165,17 +158,41 @@ test('#handleTransitionEnd does nothing when triggered by a pseudo element', () 
   foundation.handleTransitionEnd({pseudoElement: '::before'});
   td.verify(mockAdapter.removeClass(MDCTabFoundation.cssClasses.ANIMATING_ACTIVATE), {times: 0});
   td.verify(mockAdapter.removeClass(MDCTabFoundation.cssClasses.ANIMATING_DEACTIVATE), {times: 0});
-  td.verify(mockAdapter.deregisterEventHandler('transitionend', td.matchers.isA(Function)), {times: 0});
 });
 
-test('on transitionend, do nothing when triggered by a pseudeo element', () => {
+test('#handleTransitionEnd does nothing when triggered by an unsupported subelement', () => {
   const {foundation, mockAdapter} = setupTest();
-  const handlers = captureHandlers(mockAdapter, 'registerEventHandler');
-  foundation.activate();
-  handlers.transitionend({pseudoElement: '::after'});
+  td.when(mockAdapter.elementMatchesSelector(td.matchers.anything(), td.matchers.anything())).thenReturn(false);
+  foundation.handleTransitionEnd({pseudoElement: '', target: {}});
   td.verify(mockAdapter.removeClass(MDCTabFoundation.cssClasses.ANIMATING_ACTIVATE), {times: 0});
   td.verify(mockAdapter.removeClass(MDCTabFoundation.cssClasses.ANIMATING_DEACTIVATE), {times: 0});
-  td.verify(mockAdapter.deregisterEventHandler('transitionend', td.matchers.isA(Function)), {times: 0});
+});
+
+test('#handleTransitionEnd does nothing when triggered before a call to #activate', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.handleTransitionEnd({pseudoElement: '', target: {}});
+  td.verify(mockAdapter.removeClass(MDCTabFoundation.cssClasses.ANIMATING_ACTIVATE), {times: 0});
+  td.verify(mockAdapter.removeClass(MDCTabFoundation.cssClasses.ANIMATING_DEACTIVATE), {times: 0});
+});
+
+test('#handleTransitionEnd operates when triggered by the icon subelement', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.elementMatchesSelector(
+    td.matchers.anything(), MDCTabFoundation.strings.ICON_SELECTOR)).thenReturn(true);
+  foundation.activate();
+  foundation.handleTransitionEnd({pseudoElement: '', target: {}});
+  td.verify(mockAdapter.removeClass(MDCTabFoundation.cssClasses.ANIMATING_ACTIVATE), {times: 1});
+  td.verify(mockAdapter.removeClass(MDCTabFoundation.cssClasses.ANIMATING_DEACTIVATE), {times: 1});
+});
+
+test('#handleTransitionEnd operates when triggered by the text label subelement', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.elementMatchesSelector(
+    td.matchers.anything(), MDCTabFoundation.strings.TEXT_LABEL_SELECTOR)).thenReturn(true);
+  foundation.activate();
+  foundation.handleTransitionEnd({pseudoElement: '', target: {}});
+  td.verify(mockAdapter.removeClass(MDCTabFoundation.cssClasses.ANIMATING_ACTIVATE), {times: 1});
+  td.verify(mockAdapter.removeClass(MDCTabFoundation.cssClasses.ANIMATING_DEACTIVATE), {times: 1});
 });
 
 test('#computeDimensions() returns the dimensions of the tab', () => {

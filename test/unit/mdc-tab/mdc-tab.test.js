@@ -35,7 +35,7 @@ const getFixture = () => bel`
   </button>
 `;
 
-suite('MDCTab');
+suite.only('MDCTab');
 
 test('attachTo returns an MDCTab instance', () => {
   assert.isTrue(MDCTab.attachTo(getFixture()) instanceof MDCTab);
@@ -84,23 +84,6 @@ test('#adapter.setAttr adds a given attribute to the root element', () => {
   assert.equal(root.getAttribute('foo'), 'bar');
 });
 
-test('#adapter.registerEventHandler adds an event listener to the root element for a given event', () => {
-  const {root, component} = setupTest();
-  const handler = td.func('transitionend handler');
-  component.getDefaultFoundation().adapter_.registerEventHandler('transitionend', handler);
-  domEvents.emit(root, 'transitionend');
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('#adapter.deregisterEventHandler removes an event listener from the root element for a given event', () => {
-  const {root, component} = setupTest();
-  const handler = td.func('transitionend handler');
-  root.addEventListener('transitionend', handler);
-  component.getDefaultFoundation().adapter_.deregisterEventHandler('transitionend', handler);
-  domEvents.emit(root, 'transitionend');
-  td.verify(handler(td.matchers.anything()), {times: 0});
-});
-
 test('#adapter.activateIndicator activates the indicator subcomponent', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.activateIndicator();
@@ -140,6 +123,13 @@ test('#adapter.getContentOffsetWidth() returns the offsetLeft of the content ele
 test('#adapter.getContentOffsetLeft() returns the offsetLeft of the content element', () => {
   const {content, component} = setupTest();
   assert.strictEqual(component.getDefaultFoundation().adapter_.getContentOffsetLeft(), content.offsetLeft);
+});
+
+test('#adapter.elementMatchesSelector() returns whether the element matches the selector', () => {
+  const {root, component} = setupTest();
+  const textLabel = root.querySelector(MDCTabFoundation.strings.TEXT_LABEL_SELECTOR);
+  assert.isTrue(component.getDefaultFoundation().adapter_.elementMatchesSelector(
+    textLabel, MDCTabFoundation.strings.TEXT_LABEL_SELECTOR));
 });
 
 function setupMockFoundationTest(root = getFixture()) {
@@ -183,4 +173,18 @@ test('#computeDimensions() calls computeDimensions', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
   component.computeDimensions();
   td.verify(mockFoundation.computeDimensions(), {times: 1});
+});
+
+test('transitionend emitted by text label calls handleTransitionEnd', () => {
+  const {root, mockFoundation} = setupMockFoundationTest();
+  const textLabelElement = root.querySelector(MDCTabFoundation.strings.TEXT_LABEL_SELECTOR);
+  domEvents.emit(textLabelElement, 'transitionend', {bubbles: true});
+  td.verify(mockFoundation.handleTransitionEnd(td.matchers.anything()), {times: 1});
+});
+
+test('transitionend emitted by icon calls handleTransitionEnd', () => {
+  const {root, mockFoundation} = setupMockFoundationTest();
+  const textLabelElement = root.querySelector(MDCTabFoundation.strings.ICON_SELECTOR);
+  domEvents.emit(textLabelElement, 'transitionend', {bubbles: true});
+  td.verify(mockFoundation.handleTransitionEnd(td.matchers.anything()), {times: 1});
 });

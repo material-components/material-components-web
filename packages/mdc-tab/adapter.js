@@ -37,20 +37,6 @@ let MDCTabDimensions;
  */
 class MDCTabAdapter {
   /**
-   * Registers an event listener on the root element for a given event.
-   * @param {string} evtType
-   * @param {function(!Event): undefined} handler
-   */
-  registerEventHandler(evtType, handler) {}
-
-  /**
-   * Deregisters an event listener on the root element for a given event.
-   * @param {string} evtType
-   * @param {function(!Event): undefined} handler
-   */
-  deregisterEventHandler(evtType, handler) {}
-
-  /**
    * Adds the given className to the root element.
    * @param {string} className The className to add
    */
@@ -114,6 +100,14 @@ class MDCTabAdapter {
    * @return {number}
    */
   getContentOffsetWidth() {}
+
+  /**
+   * Returns whether the given element matches the given selector
+   * @param {!Element} element The element to check for matching
+   * @param {string} selector The selector to compare against
+   * @return {boolean}
+   */
+  elementMatchesSelector(element, selector) {}
 }
 
 export {MDCTabDimensions, MDCTabAdapter};

@@ -51,6 +51,12 @@ class MDCTab extends MDCComponent {
     return new MDCTab(root);
   }
 
+  initialSyncWithDOM() {
+    this.handleTransitionEnd_ = (evt) => this.foundation_.handleTransitionEnd(evt);
+
+    this.root_.addEventListener('transitionend', this.handleTransitionEnd_);
+  }
+
   initialize(
     rippleFactory = (el, foundation) => new MDCRipple(el, foundation),
     tabIndicatorFactory = (el) => new MDCTabIndicator(el)) {
@@ -70,6 +76,7 @@ class MDCTab extends MDCComponent {
   }
 
   destroy() {
+    this.root_.removeEventListener('transitionend', this.handleTransitionEnd_);
     this.ripple_.destroy();
     super.destroy();
   }
@@ -81,8 +88,6 @@ class MDCTab extends MDCComponent {
     return new MDCTabFoundation(
       /** @type {!MDCTabAdapter} */ ({
         setAttr: (attr, value) => this.root_.setAttribute(attr, value),
-        registerEventHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
-        deregisterEventHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
         addClass: (className) => this.root_.classList.add(className),
         removeClass: (className) => this.root_.classList.remove(className),
         hasClass: (className) => this.root_.classList.contains(className),
@@ -93,6 +98,12 @@ class MDCTab extends MDCComponent {
         getOffsetWidth: () => this.root_.offsetWidth,
         getContentOffsetLeft: () => this.content_.offsetLeft,
         getContentOffsetWidth: () => this.content_.offsetWidth,
+        elementMatchesSelector: (element, selector) => {
+          if (!Element.prototype.matches) {
+            Element.prototype.matches = Element.prototype.msMatchesSelector;
+          }
+          return element.matches(selector);
+        },
       }));
   }
 

@@ -28,6 +28,8 @@ const strings = {
   RIPPLE_SELECTOR: '.mdc-tab__ripple',
   CONTENT_SELECTOR: '.mdc-tab__content',
   TAB_INDICATOR_SELECTOR: '.mdc-tab-indicator',
+  TEXT_LABEL_SELECTOR: '.mdc-tab__text-label',
+  ICON_SELECTOR: '.mdc-tab__icon',
   TABINDEX: 'tabIndex',
 };
 
