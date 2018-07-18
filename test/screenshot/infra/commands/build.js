@@ -52,7 +52,7 @@ module.exports = {
     if (shouldWatch) {
       processManager.spawnChildProcess('npm', ['run', 'screenshot:webpack', '--', '--watch']);
     } else {
-      processManager.spawnChildProcess('npm', ['run', 'screenshot:webpack']);
+      processManager.spawnChildProcessSync('npm', ['run', 'screenshot:webpack']);
     }
 
     logger.foldEnd('screenshot.build');
