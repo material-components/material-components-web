@@ -18,6 +18,7 @@ import {MDCComponent} from '@material/base/index';
 import {MDCFloatingLabel} from '@material/floating-label/index';
 import {MDCLineRipple} from '@material/line-ripple/index';
 import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
+import {MDCNotchedOutline} from '@material/notched-outline/index';
 
 import MDCSelectFoundation from './foundation';
 import {cssClasses, strings} from './constants';
@@ -53,9 +54,18 @@ export class MDCSelect extends MDCComponent {
     this.foundation_.setDisabled(disabled);
   }
 
+  /**
+   * Recomputes the outline SVG path for the outline element.
+   */
+  layout() {
+    const openNotch = this.nativeControl_.value.length > 0;
+    this.foundation_.notchOutline(openNotch);
+  }
+
   initialize(
     labelFactory = (el) => new MDCFloatingLabel(el),
-    lineRippleFactory = (el) => new MDCLineRipple(el)) {
+    lineRippleFactory = (el) => new MDCLineRipple(el),
+    outlineFactory = (el) => new MDCNotchedOutline(el)) {
     this.nativeControl_ = this.root_.querySelector(strings.NATIVE_CONTROL_SELECTOR);
     const labelElement = this.root_.querySelector(strings.LABEL_SELECTOR);
     if (labelElement) {
@@ -64,6 +74,10 @@ export class MDCSelect extends MDCComponent {
     const lineRippleElement = this.root_.querySelector(strings.LINE_RIPPLE_SELECTOR);
     if (lineRippleElement) {
       this.lineRipple_ = lineRippleFactory(lineRippleElement);
+    }
+    const outlineElement = this.root_.querySelector(strings.OUTLINE_SELECTOR);
+    if (outlineElement) {
+      this.outline_ = outlineFactory(outlineElement);
     }
 
     if (this.root_.classList.contains(cssClasses.BOX)) {
@@ -81,14 +95,10 @@ export class MDCSelect extends MDCComponent {
   }
 
   getDefaultFoundation() {
-    return new MDCSelectFoundation({
+    return new MDCSelectFoundation((Object.assign({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
-      floatLabel: (value) => {
-        if (this.label_) {
-          this.label_.float(value);
-        }
-      },
+      hasClass: (className) => this.root_.classList.contains(className),
       activateBottomLine: () => {
         if (this.lineRipple_) {
           this.lineRipple_.activate();
@@ -106,7 +116,11 @@ export class MDCSelect extends MDCComponent {
       setSelectedIndex: (index) => this.nativeControl_.selectedIndex = index,
       getValue: () => this.nativeControl_.value,
       setValue: (value) => this.nativeControl_.value = value,
-    });
+      isRtl: () => window.getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
+    },
+    this.getOutlineAdapterMethods_(),
+    this.getLabelAdapterMethods_()))
+    );
   }
 
   initialSyncWithDOM() {
@@ -122,6 +136,54 @@ export class MDCSelect extends MDCComponent {
     if (this.ripple) {
       this.ripple.destroy();
     }
+    if (this.outline_) {
+      this.outline_.destroy();
+    }
     super.destroy();
+  }
+
+  /**
+   * @return {!{
+   *   notchOutline: function(number, boolean): undefined,
+   *   hasOutline: function(): boolean,
+   * }}
+   */
+  getOutlineAdapterMethods_() {
+    return {
+      notchOutline: (labelWidth, isRtl) => {
+        if (this.outline_) {
+          this.outline_.notch(labelWidth, isRtl);
+        }
+      },
+      closeOutline: () => {
+        if (this.outline_) {
+          this.outline_.closeNotch();
+        }
+      },
+      hasOutline: () => !!this.outline_,
+    };
+  }
+
+  /**
+   * @return {!{
+   *   floatLabel: function(boolean): undefined,
+   *   hasLabel: function(): boolean,
+   *   getLabelWidth: function(): number,
+   * }}
+   */
+  getLabelAdapterMethods_() {
+    return {
+      floatLabel: (shouldFloat) => {
+        if (this.label_) {
+          this.label_.float(shouldFloat);
+        }
+      },
+      hasLabel: () => !!this.label_,
+      getLabelWidth: () => {
+        if (this.label_) {
+          return this.label_.getWidth();
+        }
+      },
+    };
   }
 }

@@ -203,13 +203,19 @@ test('#isSelected proxies to foundation', () => {
   td.verify(mockFoundation.isSelected());
 });
 
-test('#remove removes the root element from the DOM', () => {
-  const wrapper = bel`<div></div>`;
-  const {root, component, mockFoundation} = setupMockFoundationTest();
-  wrapper.appendChild(root);
-  assert.equal(wrapper.childNodes.length, 1);
+test('#get shouldRemoveOnTrailingIconClick proxies to foundation', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  assert.equal(component.shouldRemoveOnTrailingIconClick, mockFoundation.getShouldRemoveOnTrailingIconClick());
+});
 
-  component.remove();
-  td.verify(mockFoundation.destroy());
-  assert.equal(wrapper.childNodes.length, 0);
+test('#set shouldRemoveOnTrailingIconClick proxies to foundation', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.shouldRemoveOnTrailingIconClick = false;
+  td.verify(mockFoundation.setShouldRemoveOnTrailingIconClick(false));
+});
+
+test('#beginExit proxies to foundation', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.beginExit();
+  td.verify(mockFoundation.beginExit());
 });
