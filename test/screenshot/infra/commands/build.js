@@ -52,7 +52,7 @@ module.exports = {
     if (shouldWatch) {
       processManager.spawnChildProcess('npm', ['run', 'screenshot:webpack', '--', '--watch']);
     } else {
-      processManager.spawnChildProcessSync('npm', ['run', 'screenshot:webpack']);
+      processManager.spawnChildProcess('npm', ['run', 'screenshot:webpack']);
     }
 
     logger.foldEnd('screenshot.build');
@@ -68,18 +68,16 @@ module.exports = {
       compile();
       return;
     }
+
     const watcher = chokidar.watch('**/*.proto', {
       cwd: TEST_DIR_RELATIVE_PATH,
       awaitWriteFinish: true,
     });
-    watcher.on('add', (filePath) => {
-      console.log('file added:', filePath);
-      compile();
-    });
-    watcher.on('change', (filePath) => {
-      console.log('file changed:', filePath);
-      compile();
-    });
+
+    /* eslint-disable no-unused-vars */
+    watcher.on('add', (filePath) => compile());
+    watcher.on('change', (filePath) => compile());
+    /* eslint-enable no-unused-vars */
   },
 
   /**
@@ -92,19 +90,17 @@ module.exports = {
       compile();
       return;
     }
+
     const watcher = chokidar.watch('**/*.html', {
       cwd: TEST_DIR_RELATIVE_PATH,
       awaitWriteFinish: true,
       ignored: ['**/report/report.html', '**/index.html'],
     });
-    watcher.on('add', (filePath) => {
-      console.log('file added:', filePath);
-      compile();
-    });
-    watcher.on('unlink', (filePath) => {
-      console.log('file deleted:', filePath);
-      compile();
-    });
+
+    /* eslint-disable no-unused-vars */
+    watcher.on('add', (filePath) => compile());
+    watcher.on('unlink', (filePath) => compile());
+    /* eslint-enable no-unused-vars */
   },
 
   /**
