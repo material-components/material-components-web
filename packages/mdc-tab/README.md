@@ -1,13 +1,16 @@
+<!--docs:
+title: "Tab"
+layout: detail
+section: components
+excerpt: "Governs the visibility of one of several groups of content."
+iconId: tabs
+path: /catalog/tabs/tab/
+-->
+
 # Tab
 
-<!--<div class="article__asset">
-  <a class="article__asset-link"
-     href="https://material-components.github.io/material-components-web-catalog/#/component/tabs">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/tab.png" width="363" alt="Tab screenshot">
-  </a>
-</div>-->
-
-Tab is a selectable element with an active state
+Tabs organize and allow navigation between groups of content that are related and at the same level of hierarchy.
+Each Tab governs the visibility of one group of content.
 
 ## Design & API Documentation
 
