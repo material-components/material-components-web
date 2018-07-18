@@ -32,19 +32,22 @@ function install_google_cloud_sdk() {
   export PATH=$PATH:$HOME/google-cloud-sdk/bin
   export CLOUDSDK_CORE_DISABLE_PROMPTS=1
 
-  echo ls $HOME/google-cloud-sdk
-  ls $HOME/google-cloud-sdk
-
   which gcloud 2>&1 > /dev/null
 
   if [[ $? == 0 ]]; then
     echo 'gcloud already installed'
+    echo
   else
     echo 'gcloud not installed'
+    echo
+
     rm -rf $HOME/google-cloud-sdk
     curl -o /tmp/gcp-sdk.bash https://sdk.cloud.google.com
     chmod +x /tmp/gcp-sdk.bash
-    /tmp/gcp-sdk.bash --disable-prompts | grep -v -E '^google-cloud-sdk/'
+
+    # The gcloud installer runs `tar -C "$install_dir" -zxvf "$download_dst"`, which generates a lot of noisy output.
+    # Filter out all lines from `tar`.
+    /tmp/gcp-sdk.bash | grep -v -E '^google-cloud-sdk/'
   fi
 
   gcloud auth activate-service-account --key-file test/screenshot/infra/auth/gcs.json
@@ -66,8 +69,3 @@ if [[ "$TEST_SUITE" == 'screenshot' ]]; then
   install_google_cloud_sdk
   set_npm_loglevel
 fi
-
-echo
-echo 'advorak - exiting early'
-echo
-exit 1
