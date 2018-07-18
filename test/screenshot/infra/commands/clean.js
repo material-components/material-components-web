@@ -23,7 +23,7 @@ const {TEST_DIR_RELATIVE_PATH} = require('../lib/constants');
 
 module.exports = {
   async runAsync() {
-    const relativePathPatterns = ['out'].map((filename) => {
+    const relativePathPatterns = ['out', '**/index.html'].map((filename) => {
       return path.join(TEST_DIR_RELATIVE_PATH, filename);
     });
     await del(relativePathPatterns);

@@ -37,6 +37,10 @@ const COMMAND_MAP = {
     return require('./infra/commands/demo').runAsync();
   },
 
+  async index() {
+    return require('./infra/commands/index').runAsync();
+  },
+
   async proto() {
     return require('./infra/commands/proto').runAsync();
   },

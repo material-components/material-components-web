@@ -29,7 +29,6 @@ module.exports = {
     // Travis sometimes forgets to emit this
     logger.foldEnd('install.npm');
 
-    const webpackArgs = [];
     const shouldBuild = await this.shouldBuild_();
     const shouldWatch = await this.shouldWatch_();
 
@@ -37,15 +36,21 @@ module.exports = {
       return;
     }
 
-    if (shouldWatch) {
-      webpackArgs.push('--watch');
-    }
-
     await CleanCommand.runAsync();
 
     logger.foldStart('screenshot.build', 'Compiling source files');
+
+    // TODO(acdvorak): Watch *.proto and *.html files and recompile them when they change
     processManager.spawnChildProcessSync('npm', ['run', 'screenshot:proto']);
-    processManager.spawnChildProcessSync('npm', ['run', 'screenshot:webpack', '--', ...webpackArgs]);
+    processManager.spawnChildProcessSync('npm', ['run', 'screenshot:webpack']);
+    processManager.spawnChildProcessSync('npm', ['run', 'screenshot:index']);
+
+    // TODO(acdvorak): Find a better way of generating static directory listing index.html files that doesn't require
+    // building source files twice.
+    if (shouldWatch) {
+      processManager.spawnChildProcessSync('npm', ['run', 'screenshot:webpack', '--', '--watch']);
+    }
+
     logger.foldEnd('screenshot.build');
   },
 

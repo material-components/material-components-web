@@ -27,6 +27,7 @@
     "screenshot:build": "node \"$PWD/test/screenshot/run.js\" build",
     "screenshot:clean": "node \"$PWD/test/screenshot/run.js\" clean",
     "screenshot:demo": "node \"$PWD/test/screenshot/run.js\" demo",
+    "screenshot:index": "node \"$PWD/test/screenshot/run.js\" index",
     "screenshot:proto": "node \"$PWD/test/screenshot/run.js\" proto",
     "screenshot:serve": "node \"$PWD/test/screenshot/run.js\" serve",
     "screenshot:test": "node \"$PWD/test/screenshot/run.js\" test",

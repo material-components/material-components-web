@@ -302,7 +302,7 @@ class ReportWriter {
 
   /** @private */
   registerPartials_() {
-    const partialFilePaths = this.localStorage_.glob(path.join(TEST_DIR_RELATIVE_PATH, 'report/_*.hbs'));
+    const partialFilePaths = this.localStorage_.globFiles(path.join(TEST_DIR_RELATIVE_PATH, 'report/_*.hbs'));
     for (const partialFilePath of partialFilePaths) {
       // TODO(acdvorak): What about hyphen/dash characters?
       const name = path.basename(partialFilePath)

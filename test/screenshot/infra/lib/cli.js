@@ -71,6 +71,7 @@ class Cli {
     this.initBuildCommand_();
     this.initCleanCommand_();
     this.initDemoCommand_();
+    this.initIndexCommand_();
     this.initProtoCommand_();
     this.initServeCommand_();
     this.initTestCommand_();
@@ -212,6 +213,12 @@ If a local dev server is not already running, one will be started for the durati
     });
 
     this.addNoBuildArg_(subparser);
+  }
+
+  initIndexCommand_() {
+    this.commandParsers_.addParser('index', {
+      description: 'Generates static index.html directory listing files.',
+    });
   }
 
   initProtoCommand_() {
