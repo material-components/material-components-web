@@ -122,6 +122,7 @@ Method Signature | Description
 Method Signature | Description
 --- | ---
 `handleTransitionEnd(evt: Event) => void` | Handles the logic for the `"transitionend"` event.
+`handleClick() => void` | Handles the logic for the `"click"` event.
 `isActive() => boolean` | Returns whether the tab is active.
 `activate(previousIndicatorClientRect: ClientRect=) => void` | Activates the tab. `previousIndicatorClientRect` is an optional argument.
 `deactivate() => void` | Deactivates the tab.
