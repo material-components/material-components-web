@@ -45,6 +45,7 @@
   margin: 0;
   opacity: 0;
   cursor: pointer;
+  pointer-events: auto;
 }
 
 .mdc-switch__track {
@@ -91,6 +92,8 @@
   height: $mdc-switch-thumb-diameter;
   border: $mdc-switch-thumb-diameter / 2 solid;
   border-radius: 50%;
+  // Allow events to go through to the native control, necessary for IE and Edge.
+  pointer-events: none;
   z-index: 1;
 }
 
@@ -119,10 +122,14 @@
 
 .mdc-switch--disabled {
   opacity: .38;
-  cursor: default;
   pointer-events: none;
 
   .mdc-switch__thumb {
     border-width: 1px;  // In high contrast mode, only show outline of knob.
+  }
+
+  .mdc-switch__native-control {
+    cursor: default;
+    pointer-events: none;
   }
 }
