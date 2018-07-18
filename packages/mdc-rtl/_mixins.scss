@@ -168,7 +168,7 @@
   $prop-left: #{$base-property}-left;
   $prop-right: #{$base-property}-right;
 
-  @include mdc-rtl-reflexive_($prop-left, $left-value, $prop-right, $right-value, $root-selector);
+  @include mdc-rtl-reflexive($prop-left, $left-value, $prop-right, $right-value, $root-selector);
 }
 
 // Takes an argument specifying a horizontal position property (either "left" or "right") as well
@@ -209,10 +209,34 @@
     $left-value: initial;
   }
 
-  @include mdc-rtl-reflexive_(left, $left-value, right, $right-value, $root-selector);
+  @include mdc-rtl-reflexive(left, $left-value, right, $right-value, $root-selector);
 }
 
-@mixin mdc-rtl-reflexive_(
+// Takes pair of properties with values as arguments and flips it in RTL context.
+// For example:
+//
+// ```scss
+// .mdc-foo {
+//   @include mdc-rtl-reflexive(left, 2px, right, 5px);
+//   position: absolute;
+//  }
+//  ```
+//  is equivalent to:
+//
+//  ```scss
+//  .mdc-foo {
+//    position: absolute;
+//    left: 2px;
+//    right: 5px;
+//
+//    @include mdc-rtl {
+//      right: 2px;
+//      left: 5px;
+//    }
+//  }
+//  ```
+// An optional fifth $root-selector argument may also be given, which is passed to `mdc-rtl`.
+@mixin mdc-rtl-reflexive(
   $left-property,
   $left-value,
   $right-property,

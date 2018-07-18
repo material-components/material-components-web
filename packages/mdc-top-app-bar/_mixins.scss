@@ -46,7 +46,7 @@
 }
 
 @mixin mdc-top-app-bar-short-border-radius($border-radius: $mdc-top-app-bar-short-collapsed-border-radius) {
-  @include mdc-rtl-reflexive_(border-bottom-left-radius, 0, border-bottom-right-radius, $border-radius);
+  @include mdc-rtl-reflexive(border-bottom-left-radius, 0, border-bottom-right-radius, $border-radius);
 }
 
 @mixin mdc-top-app-bar-mobile-breakpoint_($mobile-breakpoint: $mdc-top-app-bar-mobile-breakpoint) {
