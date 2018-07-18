@@ -56,10 +56,6 @@ function install_google_cloud_sdk() {
   gcloud components update gsutil
 }
 
-function set_npm_loglevel() {
-  npm config set --global loglevel warn
-}
-
 if [[ "$TEST_SUITE" == 'screenshot' ]] || [[ "$TEST_SUITE" == 'unit' ]]; then
   exit_if_external_pr
 fi
@@ -67,5 +63,4 @@ fi
 if [[ "$TEST_SUITE" == 'screenshot' ]]; then
   extract_api_credentials
   install_google_cloud_sdk
-  set_npm_loglevel
 fi
