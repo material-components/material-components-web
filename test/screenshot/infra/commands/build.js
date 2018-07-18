@@ -16,10 +16,16 @@
 
 'use strict';
 
+const chokidar = require('chokidar');
+const debounce = require('debounce');
+
 const CleanCommand = require('./clean');
 const Cli = require('../lib/cli');
+const Index = require('./index');
 const Logger = require('../lib/logger');
 const ProcessManager = require('../lib/process-manager');
+const Proto = require('./proto');
+const {TEST_DIR_RELATIVE_PATH} = require('../lib/constants');
 
 const logger = new Logger(__filename);
 const processManager = new ProcessManager();
@@ -29,7 +35,6 @@ module.exports = {
     // Travis sometimes forgets to emit this
     logger.foldEnd('install.npm');
 
-    const webpackArgs = [];
     const shouldBuild = await this.shouldBuild_();
     const shouldWatch = await this.shouldWatch_();
 
@@ -37,16 +42,65 @@ module.exports = {
       return;
     }
 
-    if (shouldWatch) {
-      webpackArgs.push('--watch');
-    }
-
     await CleanCommand.runAsync();
 
     logger.foldStart('screenshot.build', 'Compiling source files');
-    processManager.spawnChildProcessSync('npm', ['run', 'screenshot:proto']);
-    processManager.spawnChildProcessSync('npm', ['run', 'screenshot:webpack', '--', ...webpackArgs]);
+
+    this.buildProtoFiles_(shouldWatch);
+    this.buildHtmlFiles_(shouldWatch);
+
+    if (shouldWatch) {
+      processManager.spawnChildProcess('npm', ['run', 'screenshot:webpack', '--', '--watch']);
+    } else {
+      processManager.spawnChildProcessSync('npm', ['run', 'screenshot:webpack']);
+    }
+
     logger.foldEnd('screenshot.build');
+  },
+
+  /**
+   * @param {boolean} shouldWatch
+   * @private
+   */
+  buildProtoFiles_(shouldWatch) {
+    const compile = debounce(() => Proto.runAsync(), 1000);
+    if (!shouldWatch) {
+      compile();
+      return;
+    }
+
+    const watcher = chokidar.watch('**/*.proto', {
+      cwd: TEST_DIR_RELATIVE_PATH,
+      awaitWriteFinish: true,
+    });
+
+    /* eslint-disable no-unused-vars */
+    watcher.on('add', (filePath) => compile());
+    watcher.on('change', (filePath) => compile());
+    /* eslint-enable no-unused-vars */
+  },
+
+  /**
+   * @param {boolean} shouldWatch
+   * @private
+   */
+  buildHtmlFiles_(shouldWatch) {
+    const compile = debounce(() => Index.runAsync(), 1000);
+    if (!shouldWatch) {
+      compile();
+      return;
+    }
+
+    const watcher = chokidar.watch('**/*.html', {
+      cwd: TEST_DIR_RELATIVE_PATH,
+      awaitWriteFinish: true,
+      ignored: ['**/report/report.html', '**/index.html'],
+    });
+
+    /* eslint-disable no-unused-vars */
+    watcher.on('add', (filePath) => compile());
+    watcher.on('unlink', (filePath) => compile());
+    /* eslint-enable no-unused-vars */
   },
 
   /**

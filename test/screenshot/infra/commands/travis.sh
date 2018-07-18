@@ -15,9 +15,9 @@ function exit_if_external_pr() {
 
 function extract_api_credentials() {
   openssl aes-256-cbc -K $encrypted_eead2343bb54_key -iv $encrypted_eead2343bb54_iv \
-    -in test/screenshot/auth/travis.tar.enc -out test/screenshot/auth/travis.tar -d
+    -in test/screenshot/infra/auth/travis.tar.enc -out test/screenshot/infra/auth/travis.tar -d
 
-  tar -xf test/screenshot/auth/travis.tar -C test/screenshot/auth/
+  tar -xf test/screenshot/infra/auth/travis.tar -C test/screenshot/infra/auth/
 
   echo
   echo 'git status:'
@@ -38,7 +38,7 @@ function install_google_cloud_sdk() {
   export PATH=$PATH:$HOME/google-cloud-sdk/bin
   export CLOUDSDK_CORE_DISABLE_PROMPTS=1
 
-  gcloud auth activate-service-account --key-file test/screenshot/auth/gcs.json
+  gcloud auth activate-service-account --key-file test/screenshot/infra/auth/gcs.json
   gcloud config set project material-components-web
   gcloud components install gsutil
 

@@ -37,4 +37,4 @@ before_install:
   # Source the script to run it in the same shell process. This ensures that any environment variables set by the
   # script are visible to subsequent Travis CLI commands.
   # https://superuser.com/a/176788/62792
-  - source test/screenshot/commands/travis.sh
+  - source test/screenshot/infra/commands/travis.sh

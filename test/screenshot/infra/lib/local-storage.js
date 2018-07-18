@@ -59,11 +59,11 @@ class LocalStorage {
 
   /**
    * @param {!mdc.proto.ReportMeta} reportMeta
-   * @return {!Promise<!Array<string>>} File paths relative to the git repo. E.g.: "test/screenshot/browser.json".
+   * @return {!Promise<!Array<string>>}
    */
   async getTestPageDestinationPaths(reportMeta) {
     const cwd = reportMeta.local_asset_base_dir;
-    return glob.sync('**/spec/mdc-*/**/*.html', {cwd, nodir: true});
+    return glob.sync('**/spec/mdc-*/**/*.html', {cwd, nodir: true, ignore: ['**/index.html']});
   }
 
   /**
@@ -117,8 +117,23 @@ class LocalStorage {
    * @param {string=} cwd
    * @return {!Array<string>}
    */
-  glob(pattern, cwd = process.cwd()) {
+  globFiles(pattern, cwd = process.cwd()) {
+    if (pattern.endsWith('/')) {
+      pattern = pattern.replace(new RegExp('/+$'), '');
+    }
     return glob.sync(pattern, {cwd, nodir: true});
+  }
+
+  /**
+   * @param {string} pattern
+   * @param {string=} cwd
+   * @return {!Array<string>}
+   */
+  globDirs(pattern, cwd = process.cwd()) {
+    if (!pattern.endsWith('/')) {
+      pattern += '/';
+    }
+    return glob.sync(pattern, {cwd, nodir: false});
   }
 
   /**
@@ -181,9 +196,11 @@ class LocalStorage {
     const ignoredTopLevelFilesAndDirs = await this.gitRepo_.getIgnoredPaths(relativePaths);
 
     return relativePaths.filter((relativePath) => {
-      const isBuildOutputDir = relativePath.split(path.sep).includes('out');
+      const pathParts = relativePath.split(path.sep);
+      const isBuildOutputDir = pathParts.includes('out');
+      const isIndexHtmlFile = pathParts[pathParts.length - 1] === 'index.html';
       const isIgnoredFile = ignoredTopLevelFilesAndDirs.includes(relativePath);
-      return isBuildOutputDir || !isIgnoredFile;
+      return isBuildOutputDir || isIndexHtmlFile || !isIgnoredFile;
     });
   }
 }

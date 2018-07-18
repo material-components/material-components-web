@@ -16,37 +16,41 @@
 
 'use strict';
 
-const Cli = require('./lib/cli');
-const Duration = require('./lib/duration');
-const {ExitCode} = require('./lib/constants');
+const Cli = require('./infra/lib/cli');
+const Duration = require('./infra/lib/duration');
+const {ExitCode} = require('./infra/lib/constants');
 
 const COMMAND_MAP = {
   async approve() {
-    return require('./commands/approve').runAsync();
+    return require('./infra/commands/approve').runAsync();
   },
 
   async build() {
-    return require('./commands/build').runAsync();
+    return require('./infra/commands/build').runAsync();
   },
 
   async clean() {
-    return require('./commands/clean').runAsync();
+    return require('./infra/commands/clean').runAsync();
   },
 
   async demo() {
-    return require('./commands/demo').runAsync();
+    return require('./infra/commands/demo').runAsync();
+  },
+
+  async index() {
+    return require('./infra/commands/index').runAsync();
   },
 
   async proto() {
-    return require('./commands/proto').runAsync();
+    return require('./infra/commands/proto').runAsync();
   },
 
   async serve() {
-    return require('./commands/serve').runAsync();
+    return require('./infra/commands/serve').runAsync();
   },
 
   async test() {
-    return require('./commands/test').runAsync();
+    return require('./infra/commands/test').runAsync();
   },
 };
 

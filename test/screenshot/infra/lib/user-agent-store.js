@@ -60,7 +60,7 @@ class UserAgentStore {
    * @private
    */
   getAllAliases_() {
-    return require('../browser.json').user_agent_aliases;
+    return require('../../browser.json').user_agent_aliases;
   }
 
   /**

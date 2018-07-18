@@ -36,8 +36,8 @@ const jsBundleFactory = new JsBundleFactory({env, pathResolver, globber, pluginF
 module.exports = [
   mainCssALaCarte(),
   mainJsCombined(),
-  testCss(),
-  testJs(),
+  specCss(),
+  specJs(),
   reportCss(),
   reportJs(),
 ];
@@ -60,7 +60,7 @@ function mainJsCombined() {
   });
 }
 
-function testCss() {
+function specCss() {
   return cssBundleFactory.createCustomCss({
     bundleName: 'screenshot-test-css',
     chunkGlobConfig: {
@@ -76,7 +76,7 @@ function testCss() {
   });
 }
 
-function testJs() {
+function specJs() {
   return jsBundleFactory.createCustomJs({
     bundleName: 'screenshot-test-js',
     chunkGlobConfig: {

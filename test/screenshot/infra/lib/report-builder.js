@@ -393,7 +393,7 @@ class ReportBuilder {
       localReportBaseDir,
     );
 
-    const mdcVersionString = require('../../../lerna.json').version;
+    const mdcVersionString = require('../../../../lerna.json').version;
     const hostOsName = osName(os.platform(), os.release());
 
     const gitStatus = GitStatus.fromObject(await this.gitRepo_.getStatus());
