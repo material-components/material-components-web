@@ -359,27 +359,40 @@ https://crossbrowsertesting.com/account
     /** @type {!CbtSeleniumListResponse} */
     const listResponse = await this.sendRequest_('GET', '/selenium?active=true&num=100');
 
+    const activeSeleniumTestIds = listResponse.selenium.map((test) => test.selenium_test_id);
+
     /** @type {!Array<!CbtSeleniumInfoResponse>} */
-    const infoResponses = await Promise.all(listResponse.selenium.map((test) => {
-      return this.sendRequest_('GET', `/selenium/${test.selenium_test_id}`);
+    const infoResponses = await Promise.all(activeSeleniumTestIds.map((seleniumTestId) => {
+      return this.sendRequest_('GET', `/selenium/${seleniumTestId}`);
     }));
 
-    await Promise.all(infoResponses.map((infoResponse) => {
+    const stalledSeleniumTestIds = [];
+
+    for (const infoResponse of infoResponses) {
       const lastCommand = infoResponse.commands[infoResponse.commands.length - 1];
       if (!lastCommand) {
-        return;
+        continue;
       }
 
       const commandTimestampMs = new Date(lastCommand.date_issued).getTime();
       if (!Duration.hasElapsed(SELENIUM_STALLED_TIME_MS, commandTimestampMs)) {
-        return;
+        continue;
       }
 
-      const message = `${colors.red('Killing')} stalled Selenium test ${colors.bold(infoResponse.selenium_test_id)}`;
-      const runtime = `(running for ${colors.cyan(Duration.elapsed(commandTimestampMs).toHumanShort())})`;
-      console.log(`${message} ${runtime}...`);
+      stalledSeleniumTestIds.push(infoResponse.selenium_test_id);
+    }
 
-      return this.sendRequest_('DELETE', `/selenium/${infoResponse.selenium_test_id}`);
+    await this.killSeleniumTests(stalledSeleniumTestIds);
+  }
+
+  /**
+   * @param {!Array<string>} seleniumTestIds
+   * @return {!Promise<void>}
+   */
+  async killSeleniumTests(seleniumTestIds) {
+    await Promise.all(seleniumTestIds.map((seleniumTestId) => {
+      console.log(`${colors.red('Killing')} zombie Selenium test ${colors.bold(seleniumTestId)}`);
+      return this.sendRequest_('DELETE', `/selenium/${seleniumTestId}`);
     }));
   }
 
