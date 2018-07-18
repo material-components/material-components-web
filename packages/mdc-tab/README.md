@@ -96,6 +96,11 @@ Method Signature | Description
 `computeIndicatorClientRect() => ClientRect` | Returns the bounding client rect of the indicator.
 `computeDimensions() => MDCTabDimensions` | Returns the dimensions of the Tab.
 
+Event Name | Event Data Structure | Description
+--- | --- | ---
+`MDCTab:interacted` | `{"detail": {"tab": MDCTab}}` | Emitted when the Tab is interacted with, regardless of its active state. Used by parent components to know which Tab to activate.
+`MDCTab:activated` | `{"detail": {"tab": MDCTab}}` | Emitted when the Tab is activated. Listen for this to update content when a Tab becomes active.
+
 
 ### `MDCTabAdapter`
 
@@ -114,12 +119,15 @@ Method Signature | Description
 `getOffsetWidth() => number` | Returns the `offsetWidth` value of the root element
 `getContentOffsetLeft() => number` | Returns the `offsetLeft` value of the content element
 `getContentOffsetWidth() => number` | Returns the `offsetWidth` value of the content element
+`notifyInteracted() => void` | Emits the `MDCTab:interacted` event
+`notifyActivated() => void` | Emits the `MDCTab:activated` event
 
 ### `MDCTabFoundation`
 
 Method Signature | Description
 --- | ---
 `handleTransitionEnd(evt: Event) => void` | Handles the logic for the `"transitionend"` event.
+`handleClick() => void` | Handles the logic for the `"click"` event.
 `isActive() => boolean` | Returns whether the tab is active.
 `activate(previousIndicatorClientRect: ClientRect=) => void` | Activates the tab. `previousIndicatorClientRect` is an optional argument.
 `deactivate() => void` | Deactivates the tab.

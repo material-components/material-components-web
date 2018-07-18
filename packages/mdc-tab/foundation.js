@@ -56,6 +56,8 @@ class MDCTabFoundation extends MDCFoundation {
       activateIndicator: () => {},
       deactivateIndicator: () => {},
       computeIndicatorClientRect: () => {},
+      notifyInteracted: () => {},
+      notifyActivated: () => {},
       getOffsetLeft: () => {},
       getOffsetWidth: () => {},
       getContentOffsetLeft: () => {},
@@ -69,6 +71,13 @@ class MDCTabFoundation extends MDCFoundation {
 
     /** @private {function(!Event): undefined} */
     this.handleTransitionEnd_ = (evt) => this.handleTransitionEnd(evt);
+
+    /** @private {function(?Event): undefined} */
+    this.handleClick_ = () => this.handleClick();
+  }
+
+  init() {
+    this.adapter_.registerEventHandler('click', this.handleClick_);
   }
 
   /**
@@ -83,6 +92,15 @@ class MDCTabFoundation extends MDCFoundation {
     this.adapter_.deregisterEventHandler('transitionend', this.handleTransitionEnd_);
     this.adapter_.removeClass(cssClasses.ANIMATING_ACTIVATE);
     this.adapter_.removeClass(cssClasses.ANIMATING_DEACTIVATE);
+  }
+
+  /**
+   * Handles the "click" event
+   */
+  handleClick() {
+    // It's up to the parent component to keep track of the active Tab and
+    // ensure we don't activate a Tab that's already active.
+    this.adapter_.notifyInteracted();
   }
 
   /**
@@ -109,6 +127,7 @@ class MDCTabFoundation extends MDCFoundation {
     this.adapter_.setAttr(strings.ARIA_SELECTED, 'true');
     this.adapter_.setAttr(strings.TABINDEX, '0');
     this.adapter_.activateIndicator(previousIndicatorClientRect);
+    this.adapter_.notifyActivated();
   }
 
   /**

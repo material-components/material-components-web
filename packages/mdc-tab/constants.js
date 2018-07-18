@@ -29,6 +29,8 @@ const strings = {
   CONTENT_SELECTOR: '.mdc-tab__content',
   TAB_INDICATOR_SELECTOR: '.mdc-tab-indicator',
   TABINDEX: 'tabIndex',
+  INTERACTED_EVENT: 'MDCTab:interacted',
+  ACTIVATED_EVENT: 'MDCTab:activated',
 };
 
 export {
