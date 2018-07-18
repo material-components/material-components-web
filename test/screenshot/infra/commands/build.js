@@ -21,10 +21,10 @@ const debounce = require('debounce');
 
 const CleanCommand = require('./clean');
 const Cli = require('../lib/cli');
-const Index = require('./index');
+const IndexCommand = require('./index');
 const Logger = require('../lib/logger');
 const ProcessManager = require('../lib/process-manager');
-const Proto = require('./proto');
+const ProtoCommand = require('./proto');
 const {TEST_DIR_RELATIVE_PATH} = require('../lib/constants');
 
 const logger = new Logger(__filename);
@@ -63,7 +63,7 @@ module.exports = {
    * @private
    */
   buildProtoFiles_(shouldWatch) {
-    const compile = debounce(() => Proto.runAsync(), 1000);
+    const compile = debounce(() => ProtoCommand.runAsync(), 1000);
     if (!shouldWatch) {
       compile();
       return;
@@ -85,7 +85,7 @@ module.exports = {
    * @private
    */
   buildHtmlFiles_(shouldWatch) {
-    const compile = debounce(() => Index.runAsync(), 1000);
+    const compile = debounce(() => IndexCommand.runAsync(), 1000);
     if (!shouldWatch) {
       compile();
       return;
