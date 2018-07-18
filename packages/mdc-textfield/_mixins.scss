@@ -18,6 +18,7 @@
 @import "@material/line-ripple/mixins";
 @import "@material/notched-outline/mixins";
 @import "@material/theme/mixins";
+@import "@material/theme/variables";
 @import "helper-text/mixins";
 @import "icon/mixins";
 @import "icon/variables";
@@ -325,9 +326,9 @@
   @include mdc-ripple-surface;
   // Text Field Box intentionally omits press ripple, so each state needs to be specified individually
   @include mdc-states-base-color($mdc-text-field-ink-color);
-  @include mdc-states-hover-opacity(mdc-states-opacity($mdc-text-field-ink-color, hover));
+  @include mdc-states-hover-opacity(mdc-states-opacity(mdc-theme-spec-rgba($mdc-text-field-ink-color), hover));
   @include mdc-states-focus-opacity(
-    mdc-states-opacity($mdc-text-field-ink-color, focus),
+    mdc-states-opacity(mdc-theme-spec-rgba($mdc-text-field-ink-color), focus),
     $has-nested-focusable-element: true
   );
   @include mdc-ripple-radius-bounded;
