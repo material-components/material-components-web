@@ -28,6 +28,8 @@ const strings = {
   RIPPLE_SELECTOR: '.mdc-tab__ripple',
   TAB_INDICATOR_SELECTOR: '.mdc-tab-indicator',
   TABINDEX: 'tabIndex',
+  SELECTED_EVENT: 'MDCTab:selected',
+  ACTIVATED_EVENT: 'MDCTab:activated',
 };
 
 export {

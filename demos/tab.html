@@ -332,10 +332,10 @@
               activeTab = tab;
             }
 
-            tabEl.addEventListener('click', function() {
+            tabEl.addEventListener('MDCTab:selected', function(evt) {
               activeTab.deactivate();
-              tab.activate(activeTab.computeIndicatorClientRect());
-              activeTab = tab;
+              evt.detail.tab.activate(activeTab.computeIndicatorClientRect());
+              activeTab = evt.detail.tab;
             });
           });
         }

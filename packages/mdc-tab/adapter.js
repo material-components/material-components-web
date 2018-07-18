@@ -82,6 +82,16 @@ class MDCTabAdapter {
    * @return {!ClientRect}
    */
   computeIndicatorClientRect() {}
+
+  /**
+   * Emits the MDCTab:selected event for use by parent components
+   */
+  notifySelected() {}
+
+  /**
+   * Emits the MDCTab:activated event for use by parent components
+   */
+  notifyActivated() {}
 }
 
 export default MDCTabAdapter;

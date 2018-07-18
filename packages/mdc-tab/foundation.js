@@ -52,6 +52,8 @@ class MDCTabFoundation extends MDCFoundation {
       activateIndicator: () => {},
       deactivateIndicator: () => {},
       computeIndicatorClientRect: () => {},
+      notifySelected: () => {},
+      notifyActivated: () => {},
     });
   }
 
@@ -61,6 +63,13 @@ class MDCTabFoundation extends MDCFoundation {
 
     /** @private {function(!Event): undefined} */
     this.handleTransitionEnd_ = (evt) => this.handleTransitionEnd(evt);
+
+    /** @private {function(?Event): undefined} */
+    this.handleClick_ = () => this.handleClick();
+  }
+
+  init() {
+    this.adapter_.registerEventHandler('click', this.handleClick_);
   }
 
   /**
@@ -75,6 +84,19 @@ class MDCTabFoundation extends MDCFoundation {
     this.adapter_.deregisterEventHandler('transitionend', this.handleTransitionEnd_);
     this.adapter_.removeClass(cssClasses.ANIMATING_ACTIVATE);
     this.adapter_.removeClass(cssClasses.ANIMATING_DEACTIVATE);
+  }
+
+  /**
+   * Handles the "click" event
+   */
+  handleClick() {
+    // Early exit if the tab is already active. We don't want to emit a selected
+    // event that tries to select a tab that's already active.
+    if (this.isActive()) {
+      return;
+    }
+
+    this.adapter_.notifySelected();
   }
 
   /**
@@ -101,6 +123,7 @@ class MDCTabFoundation extends MDCFoundation {
     this.adapter_.setAttr(strings.ARIA_SELECTED, 'true');
     this.adapter_.setAttr(strings.TABINDEX, '0');
     this.adapter_.activateIndicator(previousIndicatorClientRect);
+    this.adapter_.notifyActivated();
   }
 
   /**

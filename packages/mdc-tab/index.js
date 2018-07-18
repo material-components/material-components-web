@@ -85,6 +85,8 @@ class MDCTab extends MDCComponent {
         activateIndicator: (previousIndicatorClientRect) => this.tabIndicator_.activate(previousIndicatorClientRect),
         deactivateIndicator: () => this.tabIndicator_.deactivate(),
         computeIndicatorClientRect: () => this.tabIndicator_.computeContentClientRect(),
+        notifySelected: () => this.emit(MDCTabFoundation.strings.SELECTED_EVENT, {tab: this}, true /* should bubble */),
+        notifyActivated: () => this.emit(MDCTabFoundation.strings.ACTIVATED_EVENT, {tab: this}, true /* should bubble */),
       }));
   }
 
