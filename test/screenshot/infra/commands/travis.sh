@@ -19,10 +19,6 @@ function print_travis_env_vars() {
   echo
 }
 
-function install_latest_npm() {
-  npm i -g npm@latest
-}
-
 function extract_api_credentials() {
   openssl aes-256-cbc -K $encrypted_eead2343bb54_key -iv $encrypted_eead2343bb54_iv \
     -in test/screenshot/infra/auth/travis.tar.enc -out test/screenshot/infra/auth/travis.tar -d
