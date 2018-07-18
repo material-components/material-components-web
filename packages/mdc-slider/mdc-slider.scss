@@ -69,15 +69,12 @@
 }
 
 .mdc-slider__thumb-handle {
-  transition-duration: 75ms;
+  transition-duration: 150ms;
   transition-property: transform;
-
-  // Temporary color for slider. Will update with mixins in future PRs
-  fill: #5725e5;
 }
 
 .mdc-slider--active {
   .mdc-slider__thumb-handle {
-    transform: scale(1.66667);
+    transform: scale($mdc-slider-thumb-handle-active-size);
   }
 }
