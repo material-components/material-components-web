@@ -41,6 +41,7 @@ function install_google_cloud_sdk() {
     echo 'gcloud already installed'
   else
     echo 'gcloud not installed'
+    rm -rf $HOME/google-cloud-sdk
     curl -o /tmp/gcp-sdk.bash https://sdk.cloud.google.com
     chmod +x /tmp/gcp-sdk.bash
     /tmp/gcp-sdk.bash --disable-prompts | grep -v -E '^google-cloud-sdk/'
