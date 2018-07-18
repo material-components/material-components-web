@@ -179,20 +179,11 @@ test('adapter#removeClass removes a class from the root element', () => {
   assert.notInclude(root.className, 'foo');
 });
 
-test('adapter#getAttribute retrieves an attribute value from the thumb element', () => {
-  const {root, component} = setupTest();
-
-  const thumb = root.querySelector('.mdc-slider__thumb');
-  thumb.setAttribute('data-foo', 'bar');
-
-  assert.equal(component.getDefaultFoundation().adapter_.getAttribute('data-foo'), 'bar');
-});
-
-test('adapter#setAttribute sets an attribute on the thumb element', () => {
+test('adapter#setThumbAttribute sets an attribute on the thumb element', () => {
   const {root, component} = setupTest();
   const thumb = root.querySelector('.mdc-slider__thumb');
 
-  component.getDefaultFoundation().adapter_.setAttribute('data-foo', 'bar');
+  component.getDefaultFoundation().adapter_.setThumbAttribute('data-foo', 'bar');
 
   assert.equal(thumb.getAttribute('data-foo'), 'bar');
 });

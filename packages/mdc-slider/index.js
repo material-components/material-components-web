@@ -75,7 +75,7 @@ class MDCSlider extends MDCComponent {
    * @private
    */
   initRipple_() {
-    const ripple = new MDCRipple(this.root_.querySelector('.mdc-slider__thumb'));
+    const ripple = new MDCRipple(this.root_.querySelector(strings.THUMB_SELECTOR));
     ripple.unbounded = true;
     return ripple;
   }
@@ -99,8 +99,7 @@ class MDCSlider extends MDCComponent {
         hasClass: (className) => this.root_.classList.contains(className),
         addClass: (className) => this.root_.classList.add(className),
         removeClass: (className) => this.root_.classList.remove(className),
-        getAttribute: (name) => this.thumb_.getAttribute(name),
-        setAttribute: (name, value) => this.thumb_.setAttribute(name, value),
+        setThumbAttribute: (name, value) => this.thumb_.setAttribute(name, value),
         computeBoundingRect: () => this.root_.getBoundingClientRect(),
         registerEventHandler: (type, handler) => {
           this.root_.addEventListener(type, handler);
