@@ -332,7 +332,12 @@
               activeTab = tab;
             }
 
-            tabEl.addEventListener('MDCTab:selected', function(evt) {
+            tabEl.addEventListener('MDCTab:interacted', function(evt) {
+              // Early exit if the interacted tab is the currently active tab
+              if (activeTab === evt.detail.tab) {
+                return;
+              }
+
               activeTab.deactivate();
               evt.detail.tab.activate(activeTab.computeIndicatorClientRect());
               activeTab = evt.detail.tab;

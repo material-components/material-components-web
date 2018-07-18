@@ -88,6 +88,12 @@ test('#activate activates the indicator', () => {
   td.verify(mockAdapter.activateIndicator({width: 100, left: 200}));
 });
 
+test(`#activate emits the ${MDCTabFoundation.strings.ACTIVATED_EVENT} event`, () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.activate();
+  td.verify(mockAdapter.notifyActivated());
+});
+
 test('#computeIndicatorClientRect calls computeIndicatorClientRect on the adapter', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.computeIndicatorClientRect();
@@ -178,16 +184,8 @@ test('on transitionend, call #handleTransitionEnd', () => {
   td.verify(foundation.handleTransitionEnd(td.matchers.anything()), {times: 1});
 });
 
-test('#handleClick does nothing if the tab is already active', () => {
+test(`#handleClick emits the ${MDCTabFoundation.strings.INTERACTED_EVENT} event`, () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(MDCTabFoundation.cssClasses.ACTIVE)).thenReturn(true);
-  foundation.handleClick();
-  td.verify(mockAdapter.notifyInteracted(td.matchers.anything()), {times: 0});
-});
-
-test('#handleClick emits the selected event if it is not active', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(MDCTabFoundation.cssClasses.ACTIVE)).thenReturn(false);
   foundation.handleClick();
   td.verify(mockAdapter.notifyInteracted(), {times: 1});
 });

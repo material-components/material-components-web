@@ -98,7 +98,7 @@ Method Signature | Description
 
 Event Name | Event Data Structure | Description
 --- | --- | ---
-`MDCTab:interacted` | `{"detail": {"tab": MDCTab}}` | Emitted when the Tab is interacted with but not active. Used by parent components.
+`MDCTab:interacted` | `{"detail": {"tab": MDCTab}}` | Emitted when the Tab is interacted with, regardless of it's active state. Used by parent components to know which Tab to activate.
 `MDCTab:activated` | `{"detail": {"tab": MDCTab}}` | Emitted when the Tab is activated. Listen for this to update content when a Tab becomes active.
 
 

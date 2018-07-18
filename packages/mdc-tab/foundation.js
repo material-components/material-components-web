@@ -98,12 +98,8 @@ class MDCTabFoundation extends MDCFoundation {
    * Handles the "click" event
    */
   handleClick() {
-    // Early exit if the tab is already active. We don't want to emit an
-    // interacted event that tries to interact with a tab that's already active.
-    if (this.isActive()) {
-      return;
-    }
-
+    // It's up to the parent component to keep track of the active Tab and
+    // ensure we don't activate a Tab that's already active.
     this.adapter_.notifyInteracted();
   }
 
