@@ -16,7 +16,7 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-import MDCTabAdapter from './adapter';
+import {MDCTabAdapter, MDCTabDimensions} from './adapter';
 import {
   cssClasses,
   strings,
@@ -52,6 +52,10 @@ class MDCTabFoundation extends MDCFoundation {
       activateIndicator: () => {},
       deactivateIndicator: () => {},
       computeIndicatorClientRect: () => {},
+      getOffsetLeft: () => {},
+      getOffsetWidth: () => {},
+      getContentOffsetLeft: () => {},
+      getContentOffsetWidth: () => {},
     });
   }
 
@@ -126,6 +130,24 @@ class MDCTabFoundation extends MDCFoundation {
    */
   computeIndicatorClientRect() {
     return this.adapter_.computeIndicatorClientRect();
+  }
+
+  /**
+   * Returns the dimensions of the Tab
+   * @return {!MDCTabDimensions}
+   */
+  computeDimensions() {
+    const rootWidth = this.adapter_.getOffsetWidth();
+    const rootLeft = this.adapter_.getOffsetLeft();
+    const contentWidth = this.adapter_.getContentOffsetWidth();
+    const contentLeft = this.adapter_.getContentOffsetLeft();
+
+    return {
+      rootLeft,
+      rootRight: rootLeft + rootWidth,
+      contentLeft: rootLeft + contentLeft,
+      contentRight: rootLeft + contentLeft + contentWidth,
+    };
   }
 }
 

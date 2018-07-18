@@ -21,7 +21,7 @@ import {captureHandlers, verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
 import MDCTabFoundation from '../../../packages/mdc-tab/foundation';
 
-suite('MDCTabFoundation');
+suite.only('MDCTabFoundation');
 
 test('exports cssClasses', () => {
   assert.isOk('cssClasses' in MDCTabFoundation);
@@ -37,6 +37,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'addClass', 'removeClass', 'hasClass',
     'setAttr',
     'activateIndicator', 'deactivateIndicator', 'computeIndicatorClientRect',
+    'getOffsetLeft', 'getOffsetWidth', 'getContentOffsetLeft', 'getContentOffsetWidth',
   ]);
 });
 
@@ -175,4 +176,18 @@ test('on transitionend, do nothing when triggered by a pseudeo element', () => {
   td.verify(mockAdapter.removeClass(MDCTabFoundation.cssClasses.ANIMATING_ACTIVATE), {times: 0});
   td.verify(mockAdapter.removeClass(MDCTabFoundation.cssClasses.ANIMATING_DEACTIVATE), {times: 0});
   td.verify(mockAdapter.deregisterEventHandler('transitionend', td.matchers.isA(Function)), {times: 0});
+});
+
+test('#computeDimensions() returns the dimensions of the tab', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getOffsetLeft()).thenReturn(10);
+  td.when(mockAdapter.getOffsetWidth()).thenReturn(100);
+  td.when(mockAdapter.getContentOffsetLeft()).thenReturn(11);
+  td.when(mockAdapter.getContentOffsetWidth()).thenReturn(30);
+  assert.deepEqual(foundation.computeDimensions(), {
+    rootLeft: 10,
+    rootRight: 110,
+    contentLeft: 21,
+    contentRight: 51,
+  });
 });

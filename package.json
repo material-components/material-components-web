@@ -227,6 +227,7 @@
     "mdc-tab",
     "mdc-tab-indicator",
     "mdc-tab-scroller",
+    "mdc-tab-bar",
     "mdc-textfield",
     "mdc-top-app-bar"
   ]

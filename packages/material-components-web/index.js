@@ -37,6 +37,7 @@ import * as selectionControl from '@material/selection-control/index';
 import * as slider from '@material/slider/index';
 import * as snackbar from '@material/snackbar/index';
 import * as tab from '@material/tab/index';
+import * as tabBar from '@material/tab-bar/index';
 import * as tabIndicator from '@material/tab-indicator/index';
 import * as tabScroller from '@material/tab-scroller/index';
 import * as tabs from '@material/tabs/index';
@@ -64,6 +65,7 @@ autoInit.register('MDCNotchedOutline', notchedOutline.MDCNotchedOutline);
 autoInit.register('MDCRadio', radio.MDCRadio);
 autoInit.register('MDCSnackbar', snackbar.MDCSnackbar);
 autoInit.register('MDCTab_', tab.MDCTab);
+autoInit.register('MDCTabBar', tabBar.MDCTabBar);
 autoInit.register('MDCTabIndicator', tabIndicator.MDCTabIndicator);
 autoInit.register('MDCTabScroller', tabScroller.MDCTabScroller);
 autoInit.register('MDCTab', tabs.MDCTab);
@@ -100,6 +102,7 @@ export {
   slider,
   snackbar,
   tab,
+  tabBar,
   tabIndicator,
   tabScroller,
   tabs,
