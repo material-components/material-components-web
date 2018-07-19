@@ -48,8 +48,11 @@ class MDCSwitchFoundation extends MDCFoundation {
 
   constructor(adapter) {
     super(Object.assign(MDCSwitchFoundation.defaultAdapter, adapter));
+  }
 
-    // Do an initial update based on the state of the native control.
+  /** @override */
+  init() {
+    // Do an initial state update based on the state of the native control.
     this.handleChange();
   }
 
