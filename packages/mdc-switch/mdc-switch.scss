@@ -65,9 +65,7 @@
   @include mdc-rtl-reflexive-position(left, -14px);
   @include mdc-ripple-surface();
   @include mdc-ripple-radius-unbounded;
-  @include mdc-states(
-    $mdc-switch-baseline-theme-color,
-    $has-nested-focusable-element: true);
+  @include mdc-states($mdc-switch-baseline-theme-color);
 
   display: flex;
   position: absolute;
