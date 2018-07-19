@@ -70,9 +70,9 @@ CSS Class | Description
 
 Method Signature | Description
 --- | ---
-`scrollTo(scrollX: number) => void` | Scrolls to the scrollX value
-`incrementScroll(scrollX: number) => void` | Increments the current scroll value by the scrollX value
-`getScrollPosition() => number` | Returns the current visual scroll position
+`scrollTo(scrollX: number) => void` | Scrolls to the scrollX value.
+`incrementScroll(scrollX: number) => void` | Increments the current scroll value by the scrollX value.
+`getScrollPosition() => number` | Returns the current visual scroll position.
 
 ## Usage within Web Frameworks
 
@@ -82,19 +82,19 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 
 Method Signature | Description
 --- | ---
-`addClass(className: string) => void` | Adds a class to the root element
-`removeClass(className: string) => void` | Removes a class from the root element
-`setScrollContentStyleProperty(property: string, value: string) => void` | Sets the style property of the scroll content element
-`getScrollContentStyleValue(property: string) => string` | Returns the style property value of the scroll content element
-`setScrollAreaScrollLeft(scrollLeft: number) => void` | Sets the scroll area element scrollLeft
-`getScrollAreaScrollLeft() => number` | Returns the scroll area element scroll left
-`getScrollContentOffsetWidth() => number` | Returns the scroll content element's offsetWidth
-`getScrollAreaOffsetWidth() => number` | Returns the scroll area element's offsetWidth
+`addClass(className: string) => void` | Adds a class to the root element.
+`removeClass(className: string) => void` | Removes a class from the root element.
+`setScrollContentStyleProperty(property: string, value: string) => void` | Sets the style property of the scroll content element.
+`getScrollContentStyleValue(property: string) => string` | Returns the style property value of the scroll content element.
+`setScrollAreaScrollLeft(scrollLeft: number) => void` | Sets the scroll area element's `scrollLeft`.
+`getScrollAreaScrollLeft() => number` | Returns the scroll area element's `scrollLeft`.
+`getScrollContentOffsetWidth() => number` | Returns the scroll content element's `offsetWidth`.
+`getScrollAreaOffsetWidth() => number` | Returns the scroll area element's `offsetWidth`.
 
 ### `MDCTabScrollerFoundation`
 
 Method Signature | Description
 --- | ---
-`scrollTo(scrollX: number) => void` | Scrolls to the scrollX value
-`incrementScroll(scrollX: number) => void` | Increments the current scroll value by the scrollX value
-`getScrollPosition() => number` | Returns the current visual scroll position
+`scrollTo(scrollX: number) => void` | Scrolls to the `scrollX` value.
+`incrementScroll(scrollX: number) => void` | Increments the current scroll value by the `scrollX` value.
+`getScrollPosition() => number` | Returns the current visual scroll position.

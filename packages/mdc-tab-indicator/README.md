@@ -122,19 +122,19 @@ To customize the tab indicator, use the following mixins.
 Mixin | Description
 --- | ---
 `mdc-tab-indicator-surface` | Mandatory. Must be applied to the parent element of the `mdc-tab-indicator`.
-`mdc-tab-indicator-underline-color($color)` | Customizes the color of the underline
-`mdc-tab-indicator-icon-color($color)` | Customizes the color of the icon subelement
-`mdc-tab-indicator-underline-height($height)` | Customizes the height of the underline
-`mdc-tab-indicator-icon-height($height)` | Customizes the height of the icon subelement
-`mdc-tab-indicator-underline-top-corner-radius($radius)` | Customizes the top left and top right border radius of the underline subelement
+`mdc-tab-indicator-underline-color($color)` | Customizes the color of the underline.
+`mdc-tab-indicator-icon-color($color)` | Customizes the color of the icon subelement.
+`mdc-tab-indicator-underline-height($height)` | Customizes the height of the underline.
+`mdc-tab-indicator-icon-height($height)` | Customizes the height of the icon subelement.
+`mdc-tab-indicator-underline-top-corner-radius($radius)` | Customizes the top left and top right border radius of the underline child element.
 
 ## `MDCTabIndicator` Methods
 
 Method Signature | Description
 --- | ---
-`activate(previousIndicatorClientRect: ClientRect) => void` | Activates the tab indicator
-`deactivate() => void` | Deactivates the tab indicator
-`computeContentClientRect() => ClientRect` | Returns the content element bounding client rect
+`activate(previousIndicatorClientRect: ClientRect) => void` | Activates the tab indicator.
+`deactivate() => void` | Deactivates the tab indicator.
+`computeContentClientRect() => ClientRect` | Returns the content element bounding client rect.
 
 ## Usage within Web Frameworks
 
@@ -144,18 +144,18 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 
 Method Signature | Description
 --- | ---
-`addClass(className: string) => void` | Adds a class to the root element
-`removeClass(className: string) => void` | Removes a class from the root element
-`registerEventHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the root element
-`deregisterEventHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the root element
-`setContentStyleProp(property: string, value: string) => void` | Sets the style property of the content element
-`computeContentClientRect() => ClientRect` | Returns the content element's bounding client rect
+`addClass(className: string) => void` | Adds a class to the root element.
+`removeClass(className: string) => void` | Removes a class from the root element.
+`registerEventHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the root element.
+`deregisterEventHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the root element.
+`setContentStyleProp(property: string, value: string) => void` | Sets the style property of the content element.
+`computeContentClientRect() => ClientRect` | Returns the content element's bounding client rect.
 
 ### `MDCTabIndicatorFoundation`
 
 Method Signature | Description
 --- | ---
-`handleTransitionEnd(evt: Event) => void` | Handles the logic for the `"transitionend"` event on the root element
-`activate(previousIndicatorClientRect: ClientRect) => void` | Activates the tab indicator
-`deactivate() => void` | Deactivates the tab indicator
-`computeContentClientRect() => ClientRect` | Returns the content element's bounding client rect
+`handleTransitionEnd(evt: Event) => void` | Handles the logic for the `"transitionend"` event on the root element.
+`activate(previousIndicatorClientRect: ClientRect) => void` | Activates the tab indicator.
+`deactivate() => void` | Deactivates the tab indicator.
+`computeContentClientRect() => ClientRect` | Returns the content element's bounding client rect.

@@ -101,19 +101,19 @@ To customize the colors of any part of the tab, use the following mixins.
 
 Mixin | Description
 --- | ---
-`mdc-tab-text-label-color($color)` | Customizes the color of the tab text label
-`mdc-tab-icon-color($color)` | Customizes the color of the tab icon
+`mdc-tab-text-label-color($color)` | Customizes the color of the tab text label.
+`mdc-tab-icon-color($color)` | Customizes the color of the tab icon.
 
 ## `MDCTab` Properties and Methods
 
 Property | Value Type | Description
 --- | --- | ---
-`active` | `boolean` | Allows getting the active state of the tab
+`active` | `boolean` | Allows getting the active state of the tab.
 
 Method Signature | Description
 --- | ---
-`activate(previousIndicatorClientRect: ClientRect=) => void` | Activates the indicator.  `previousIndicatorClientRect` is an optional argument
-`deactivate() => void` | Deactivates the indicator
+`activate(previousIndicatorClientRect: ClientRect=) => void` | Activates the indicator.  `previousIndicatorClientRect` is an optional argument.
+`deactivate() => void` | Deactivates the indicator.
 
 ## Usage within Web Frameworks
 
@@ -123,22 +123,22 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 
 Method Signature | Description
 --- | ---
-`addClass(className: string) => void` | Adds a class to the root element
-`removeClass(className: string) => void` | Removes a class from the root element
-`hasClass(className: string) => boolean` | Returns true if the root element contains the given class
-`registerEventHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the root element
-`deregisterEventHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the root element
-`setAttr(attr: string, value: string) => void` | Sets the given attribute on the root element to the given value
-`activateIndicator(previousIndicatorClientRect: ClientRect=) => void` | Activates the tab indicator subcomponent. `previousIndicatorClientRect` is an optional argument
-`deactivateIndicator() => void` | Deactivates the tab indicator subcomponent
-`computeIndicatorClientRect() => ClientRect` | Returns the tab indicator subcomponent's content bounding client rect
+`addClass(className: string) => void` | Adds a class to the root element.
+`removeClass(className: string) => void` | Removes a class from the root element.
+`hasClass(className: string) => boolean` | Returns true if the root element contains the given class.
+`registerEventHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the root element.
+`deregisterEventHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the root element.
+`setAttr(attr: string, value: string) => void` | Sets the given attribute on the root element to the given value.
+`activateIndicator(previousIndicatorClientRect: ClientRect=) => void` | Activates the tab indicator subcomponent. `previousIndicatorClientRect` is an optional argument.
+`deactivateIndicator() => void` | Deactivates the tab indicator subcomponent.
+`computeIndicatorClientRect() => ClientRect` | Returns the tab indicator subcomponent's content bounding client rect.
 
 ### `MDCTabFoundation`
 
 Method Signature | Description
 --- | ---
-`handleTransitionEnd(evt: Event) => void` | Handles the logic for the `"transitionend"` event
-`isActive() => boolean` | Returns whether the tab is active
-`activate(previousIndicatorClientRect: ClientRect=) => void` | Activates the tab. `previousIndicatorClientRect` is an optional argument
-`deactivate() => void` | Deactivates the tab
-`computeIndicatorClientRect() => ClientRect` | Returns the tab indicator subcomponent's content bounding client rect
+`handleTransitionEnd(evt: Event) => void` | Handles the logic for the `"transitionend"` event.
+`isActive() => boolean` | Returns whether the tab is active.
+`activate(previousIndicatorClientRect: ClientRect=) => void` | Activates the tab. `previousIndicatorClientRect` is an optional argument.
+`deactivate() => void` | Deactivates the tab.
+`computeIndicatorClientRect() => ClientRect` | Returns the tab indicator subcomponent's content bounding client rect.
