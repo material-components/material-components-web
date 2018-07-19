@@ -19,6 +19,7 @@
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
 const {GitRevision} = mdcProto;
 
+const CbtApi = require('./cbt-api');
 const Cli = require('./cli');
 const CloudStorage = require('./cloud-storage');
 const Duration = require('./duration');
@@ -32,6 +33,12 @@ const {ExitCode} = require('./constants');
 
 class Controller {
   constructor() {
+    /**
+     * @type {!CbtApi}
+     * @private
+     */
+    this.cbtApi_ = new CbtApi();
+
     /**
      * @type {!Cli}
      * @private
@@ -97,6 +104,9 @@ class Controller {
     const shouldFetch = this.cli_.shouldFetch;
     if (isOnline && shouldFetch) {
       await this.gitRepo_.fetch();
+    }
+    if (isOnline) {
+      await this.cbtApi_.killStalledSeleniumTests();
     }
     return this.reportBuilder_.initForCapture();
   }

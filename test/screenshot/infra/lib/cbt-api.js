@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+const colors = require('colors');
 const request = require('request-promise-native');
 
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
@@ -26,12 +27,13 @@ const {CbtAccount, CbtActiveTestCounts, CbtConcurrencyStats} = cbtProto;
 const {RawCapabilities} = seleniumProto;
 
 const Cli = require('./cli');
+const Duration = require('./duration');
 
 const MDC_CBT_USERNAME = process.env.MDC_CBT_USERNAME;
 const MDC_CBT_AUTHKEY = process.env.MDC_CBT_AUTHKEY;
 const REST_API_BASE_URL = 'https://crossbrowsertesting.com/api/v3';
 const SELENIUM_SERVER_URL = `http://${MDC_CBT_USERNAME}:${MDC_CBT_AUTHKEY}@hub.crossbrowsertesting.com:80/wd/hub`;
-const {ExitCode} = require('./constants');
+const {ExitCode, SELENIUM_STALLED_TIME_MS} = require('./constants');
 
 /** @type {?Promise<!Array<!cbt.proto.CbtDevice>>} */
 let allBrowsersPromise;
@@ -346,6 +348,52 @@ https://crossbrowsertesting.com/account
       cbtTestName: nameParts.slice(0, -1).join(' - '),
       cbtBuildName: nameParts.slice(-1)[0],
     };
+  }
+
+  /**
+   * @return {!Promise<void>}
+   */
+  async killStalledSeleniumTests() {
+    // NOTE: This only returns Selenium tests running on the authenticated CBT user's account.
+    // It does NOT return Selenium tests running under other users.
+    /** @type {!CbtSeleniumListResponse} */
+    const listResponse = await this.sendRequest_('GET', '/selenium?active=true&num=100');
+
+    const activeSeleniumTestIds = listResponse.selenium.map((test) => test.selenium_test_id);
+
+    /** @type {!Array<!CbtSeleniumInfoResponse>} */
+    const infoResponses = await Promise.all(activeSeleniumTestIds.map((seleniumTestId) => {
+      return this.sendRequest_('GET', `/selenium/${seleniumTestId}`);
+    }));
+
+    const stalledSeleniumTestIds = [];
+
+    for (const infoResponse of infoResponses) {
+      const lastCommand = infoResponse.commands[infoResponse.commands.length - 1];
+      if (!lastCommand) {
+        continue;
+      }
+
+      const commandTimestampMs = new Date(lastCommand.date_issued).getTime();
+      if (!Duration.hasElapsed(SELENIUM_STALLED_TIME_MS, commandTimestampMs)) {
+        continue;
+      }
+
+      stalledSeleniumTestIds.push(infoResponse.selenium_test_id);
+    }
+
+    await this.killSeleniumTests(stalledSeleniumTestIds);
+  }
+
+  /**
+   * @param {!Array<string>} seleniumTestIds
+   * @return {!Promise<void>}
+   */
+  async killSeleniumTests(seleniumTestIds) {
+    await Promise.all(seleniumTestIds.map((seleniumTestId) => {
+      console.log(`${colors.red('Killing')} zombie Selenium test ${colors.bold(seleniumTestId)}`);
+      return this.sendRequest_('DELETE', `/selenium/${seleniumTestId}`);
+    }));
   }
 
   /**
