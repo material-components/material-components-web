@@ -17,14 +17,14 @@
 import {assert} from 'chai';
 import td from 'testdouble';
 
-import {verifyDefaultAdapter, captureHandlers} from '../helpers/foundation';
+import {verifyDefaultAdapter} from '../helpers/foundation';
 import {createMockRaf} from '../helpers/raf';
 import {setupFoundationTest} from '../helpers/setup';
 import {MDCChipFoundation} from '../../../packages/mdc-chips/chip/foundation';
 
 const {cssClasses} = MDCChipFoundation;
 
-suite.only('MDCChipFoundation');
+suite('MDCChipFoundation');
 
 test('exports strings', () => {
   assert.isOk('strings' in MDCChipFoundation);
