@@ -37,7 +37,7 @@ const ImageCropper = require('./image-cropper');
 const ImageDiffer = require('./image-differ');
 const LocalStorage = require('./local-storage');
 const {Browser, Builder, By, until} = require('selenium-webdriver');
-const {CBT_CONCURRENCY_POLL_INTERVAL_MS, CBT_CONCURRENCY_MAX_WAIT_MS} = Constants;
+const {CBT_CONCURRENCY_POLL_INTERVAL_MS, CBT_CONCURRENCY_MAX_WAIT_MS, ExitCode} = Constants;
 const {SELENIUM_FONT_LOAD_WAIT_MS} = Constants;
 
 /**
@@ -91,6 +91,14 @@ class SeleniumApi {
      * @private
      */
     this.localStorage_ = new LocalStorage();
+
+    /**
+     * @type {!Set<string>}
+     * @private
+     */
+    this.seleniumSessionIds_ = new Set();
+
+    this.killBrowsersOnExit_();
   }
 
   /**
@@ -151,6 +159,8 @@ class SeleniumApi {
     const seleniumSessionId = session.getId();
     let changedScreenshots;
 
+    this.seleniumSessionIds_.add(seleniumSessionId);
+
     const logResult = (status) => {
       /* eslint-disable camelcase */
       const {os_name, os_version, browser_name, browser_version} = userAgent.navigator;
@@ -167,6 +177,7 @@ class SeleniumApi {
     } finally {
       logResult(CliStatuses.QUITTING);
       await driver.quit();
+      this.seleniumSessionIds_.delete(seleniumSessionId);
     }
 
     await this.cbtApi_.setTestScore({
@@ -537,6 +548,41 @@ class SeleniumApi {
     this.logStatus_(CliStatuses.CROP, message);
 
     return croppedImageBuffer;
+  }
+
+  /** @private */
+  killBrowsersOnExit_() {
+    const killThemAll = async () => {
+      console.log('Killing Selenium tests:', this.seleniumSessionIds_);
+      await this.cbtApi_.killSeleniumTests(Array.from(this.seleniumSessionIds_));
+      console.log('Killed Selenium tests!');
+      // Give the HTTP requests a chance to complete before exiting
+      await this.sleep_(Duration.seconds(1).toMillis());
+    };
+
+    // catches ctrl+c event
+    process.on('SIGINT', () => {
+      const exit = () => process.exit(ExitCode.SIGINT);
+      killThemAll().then(exit, exit);
+    });
+
+    // catches "kill pid"
+    process.on('SIGTERM', () => {
+      const exit = () => process.exit(ExitCode.SIGTERM);
+      killThemAll().then(exit, exit);
+    });
+
+    process.on('uncaughtException', (err) => {
+      console.error(err);
+      const exit = () => process.exit(ExitCode.UNCAUGHT_EXCEPTION);
+      killThemAll().then(exit, exit);
+    });
+
+    process.on('unhandledRejection', (err) => {
+      console.error(err);
+      const exit = () => process.exit(ExitCode.UNHANDLED_PROMISE_REJECTION);
+      killThemAll().then(exit, exit);
+    });
   }
 
   /**
