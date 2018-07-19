@@ -26,7 +26,10 @@
   -webkit-overflow-scrolling: touch;
   display: flex;
   overflow-x: hidden;
+}
 
+.mdc-tab-scroller__scroll-area,
+.mdc-tab-scroller__test {
   &::-webkit-scrollbar {
     display: none;
   }
@@ -51,4 +54,18 @@
 .mdc-tab-scroller--animating .mdc-tab-scroller__scroll-content {
   transition: 250ms transform $mdc-animation-standard-curve-timing-function;
 }
+
+// Selector for test element used to feature-detect horizontal scrollbar height
+.mdc-tab-scroller__test {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  top: -9999px;
+  overflow-x: scroll;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 // postcss-bem-linter: end

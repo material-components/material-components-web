@@ -15,6 +15,8 @@
  * limitations under the License.
  */
 
+ import {cssClasses} from './constants';
+
 /**
  * Stores result from computeHorizontalScrollbarHeight to avoid redundant processing.
  * @private {number|undefined}
@@ -30,12 +32,7 @@ let horizontalScrollbarHeight;
 function computeHorizontalScrollbarHeight() {
   if (typeof horizontalScrollbarHeight === 'undefined') {
     const el = document.createElement('div');
-    const size = '100px';
-    el.style.position = 'absolute';
-    el.style.top = '-9999px';
-    el.style.overflow = 'scroll';
-    el.style.width = size;
-    el.style.height = size;
+    el.className = cssClasses.SCROLL_TEST;
     document.body.appendChild(el);
 
     horizontalScrollbarHeight = el.offsetHeight - el.clientHeight;
