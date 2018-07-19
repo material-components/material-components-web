@@ -46,6 +46,7 @@ const {SELENIUM_FONT_LOAD_WAIT_MS} = Constants;
  *   color: !CliColor,
  * }} CliStatus
  */
+
 const CliStatuses = {
   ACTIVE: {name: 'Active', color: colors.bold.cyan},
   QUEUED: {name: 'Queued', color: colors.cyan},
@@ -54,7 +55,10 @@ const CliStatuses = {
   STARTED: {name: 'Started', color: colors.bold.green},
   GET: {name: 'Get', color: colors.bold.white},
   CROP: {name: 'Crop', color: colors.white},
-  RETRY: {name: 'Retry', color: colors.red},
+  PASS: {name: 'Pass', color: colors.green},
+  FAIL: {name: 'Fail', color: colors.red},
+  RETRY: {name: 'Retry', color: colors.magenta},
+  CAPTURED: {name: 'Captured', color: colors.bold.grey},
   FINISHED: {name: 'Finished', color: colors.bold.green},
   FAILED: {name: 'Failed', color: colors.bold.red},
   QUITTING: {name: 'Quitting', color: colors.white},
@@ -98,7 +102,27 @@ class SeleniumApi {
      */
     this.seleniumSessionIds_ = new Set();
 
-    this.killBrowsersOnExit_();
+    /**
+     * @type {number}
+     * @private
+     */
+    this.numPending_ = 0;
+
+    /**
+     * @type {number}
+     * @private
+     */
+    this.numCompleted_ = 0;
+
+    /**
+     * @type {boolean}
+     * @private
+     */
+    this.isKilled_ = false;
+
+    if (this.cli_.isOnline()) {
+      this.killBrowsersOnExit_();
+    }
   }
 
   /**
@@ -109,6 +133,9 @@ class SeleniumApi {
     const runnableUserAgents = reportData.user_agents.runnable_user_agents;
     let queuedUserAgents = runnableUserAgents.slice();
     let runningUserAgents;
+
+    this.numPending_ = reportData.screenshots.runnable_screenshot_list.length;
+    this.numCompleted_ = 0;
 
     function getLoggableAliases(userAgentAliases) {
       return userAgentAliases.length > 0 ? userAgentAliases.join(', ') : '(none)';
@@ -126,6 +153,8 @@ class SeleniumApi {
       this.logStatus_(CliStatuses.QUEUED, queuedUserAgentLoggable);
       await this.captureAllPagesInAllBrowsers_({reportData, userAgents: runningUserAgents});
     }
+
+    console.log('');
 
     return reportData;
   }
@@ -161,10 +190,10 @@ class SeleniumApi {
 
     this.seleniumSessionIds_.add(seleniumSessionId);
 
-    const logResult = (status) => {
+    const logResult = (status, ...args) => {
       /* eslint-disable camelcase */
       const {os_name, os_version, browser_name, browser_version} = userAgent.navigator;
-      this.logStatus_(status, `${browser_name} ${browser_version} on ${os_name} ${os_version}!`);
+      this.logStatus_(status, `${browser_name} ${browser_version} on ${os_name} ${os_version}!`, ...args);
       /* eslint-enable camelcase */
     };
 
@@ -172,7 +201,8 @@ class SeleniumApi {
       changedScreenshots = (await this.driveBrowser_({reportData, userAgent, driver})).changedScreenshots;
       logResult(CliStatuses.FINISHED);
     } catch (err) {
-      logResult(CliStatuses.FAILED);
+      logResult(CliStatuses.FAILED, err);
+      await this.killBrowsers_();
       throw err;
     } finally {
       logResult(CliStatuses.QUITTING);
@@ -180,10 +210,12 @@ class SeleniumApi {
       this.seleniumSessionIds_.delete(seleniumSessionId);
     }
 
-    await this.cbtApi_.setTestScore({
-      seleniumSessionId,
-      changedScreenshots,
-    });
+    if (this.cli_.isOnline()) {
+      await this.cbtApi_.setTestScore({
+        seleniumSessionId,
+        changedScreenshots,
+      });
+    }
   }
 
   /**
@@ -191,8 +223,7 @@ class SeleniumApi {
    * @private
    */
   async getMaxParallelTests_() {
-    const isOnline = await this.cli_.isOnline();
-    if (!isOnline) {
+    if (this.cli_.isOffline()) {
       return 1;
     }
 
@@ -247,7 +278,7 @@ class SeleniumApi {
     userAgent.desired_capabilities = desiredCapabilities;
     driverBuilder.withCapabilities(desiredCapabilities);
 
-    const isOnline = await this.cli_.isOnline();
+    const isOnline = this.cli_.isOnline();
     if (isOnline) {
       driverBuilder.usingServer(this.cbtApi_.getSeleniumServerUrl());
     }
@@ -284,9 +315,8 @@ class SeleniumApi {
    * @private
    */
   async getDesiredCapabilities_({meta, userAgent}) {
-    const isOnline = await this.cli_.isOnline();
-    if (isOnline) {
-      return await this.cbtApi_.getDesiredCapabilities_({meta, userAgent});
+    if (this.cli_.isOnline()) {
+      return await this.cbtApi_.getDesiredCapabilities({meta, userAgent});
     }
 
     const browserVendorMap = {
@@ -380,6 +410,7 @@ class SeleniumApi {
     /** @type {!Array<!mdc.proto.Screenshot>} */
     const screenshotQueueAll = reportData.screenshots.runnable_screenshot_browser_map[userAgent.alias].screenshots;
 
+    // TODO(acdvorak): Find a better way to do this
     const screenshotQueues = [
       [true, screenshotQueueAll.filter((screenshot) => this.isSmallComponent_(screenshot.html_file_path))],
       [false, screenshotQueueAll.filter((screenshot) => !this.isSmallComponent_(screenshot.html_file_path))],
@@ -397,10 +428,17 @@ class SeleniumApi {
         screenshot.diff_image_result = diffImageResult;
         screenshot.diff_image_file = diffImageResult.diff_image_file;
 
+        this.numPending_--;
+        this.numCompleted_++;
+
+        const message = `${screenshot.actual_html_file.public_url} > ${screenshot.user_agent.alias}`;
+
         if (diffImageResult.has_changed) {
           changedScreenshots.push(screenshot);
+          this.logStatus_(CliStatuses.FAIL, message);
         } else {
           unchangedScreenshots.push(screenshot);
+          this.logStatus_(CliStatuses.PASS, message);
         }
       }
     }
@@ -524,7 +562,7 @@ class SeleniumApi {
   async capturePageAsPng_({driver, userAgent, url, delayMs = 0}) {
     this.logStatus_(CliStatuses.GET, `${url} > ${userAgent.alias}...`);
 
-    const isOnline = await this.cli_.isOnline();
+    const isOnline = this.cli_.isOnline();
     const fontTimeoutMs = isOnline ? SELENIUM_FONT_LOAD_WAIT_MS : 500;
 
     await driver.get(url);
@@ -552,37 +590,49 @@ class SeleniumApi {
 
   /** @private */
   killBrowsersOnExit_() {
-    const killThemAll = async () => {
-      console.log('Killing Selenium tests:', this.seleniumSessionIds_);
-      await this.cbtApi_.killSeleniumTests(Array.from(this.seleniumSessionIds_));
-      console.log('Killed Selenium tests!');
-      // Give the HTTP requests a chance to complete before exiting
-      await this.sleep_(Duration.seconds(1).toMillis());
-    };
-
     // catches ctrl+c event
     process.on('SIGINT', () => {
       const exit = () => process.exit(ExitCode.SIGINT);
-      killThemAll().then(exit, exit);
+      this.killBrowsers_().then(exit, exit);
     });
 
     // catches "kill pid"
     process.on('SIGTERM', () => {
       const exit = () => process.exit(ExitCode.SIGTERM);
-      killThemAll().then(exit, exit);
+      this.killBrowsers_().then(exit, exit);
     });
 
     process.on('uncaughtException', (err) => {
       console.error(err);
       const exit = () => process.exit(ExitCode.UNCAUGHT_EXCEPTION);
-      killThemAll().then(exit, exit);
+      this.killBrowsers_().then(exit, exit);
     });
 
     process.on('unhandledRejection', (err) => {
       console.error(err);
       const exit = () => process.exit(ExitCode.UNHANDLED_PROMISE_REJECTION);
-      killThemAll().then(exit, exit);
+      this.killBrowsers_().then(exit, exit);
     });
+  }
+
+  /** @private */
+  async killBrowsers_() {
+    if (this.isKilled_) {
+      return;
+    }
+    this.isKilled_ = true;
+
+    const ids = Array.from(this.seleniumSessionIds_);
+    this.seleniumSessionIds_.clear();
+
+    console.log('\n');
+
+    await this.cbtApi_.killSeleniumTests(ids);
+
+    console.log(`Killed ${ids.length} Selenium tests!`);
+
+    // Give the HTTP requests a chance to complete before exiting
+    await this.sleep_(Duration.seconds(4).toMillis());
   }
 
   /**
@@ -600,8 +650,33 @@ class SeleniumApi {
    * @private
    */
   logStatus_(status, ...args) {
-    const maxWidth = Object.values(CliStatuses).map((status) => status.name.length).sort().reverse()[0];
-    console.log(status.color(status.name.toUpperCase().padStart(maxWidth, ' ')) + ':', ...args);
+    // Don't output misleading errors
+    if (this.isKilled_) {
+      return;
+    }
+
+    // https://stackoverflow.com/a/6774395/467582
+    const eraseCurrentLine = '\r' + String.fromCodePoint(27) + '[K';
+    const maxStatusWidth = Object.values(CliStatuses).map((status) => status.name.length).sort().reverse()[0];
+    const colorStatus = status.color(status.name.toUpperCase().padStart(maxStatusWidth, ' '));
+
+    console.log(eraseCurrentLine + colorStatus + ':', ...args);
+
+    if (process.env.TRAVIS === 'true') {
+      return;
+    }
+
+    const pending = this.numPending_;
+    const completed = this.numCompleted_;
+    const total = pending + completed;
+    const percent = (total === 0 ? 0 : (100 * completed / total).toFixed(1));
+
+    const colorCaptured = CliStatuses.CAPTURED.color(CliStatuses.CAPTURED.name.toUpperCase());
+    const colorCompleted = colors.bold.white(completed.toLocaleString());
+    const colorTotal = colors.bold.white(total.toLocaleString());
+    const colorPercent = colors.bold.white(`${percent}%`);
+
+    process.stdout.write(`${colorCaptured}: ${colorCompleted} of ${colorTotal} screenshots (${colorPercent} complete)`);
   }
 }
 

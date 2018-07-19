@@ -26,7 +26,7 @@ const {FormFactorType, OsVendorType, BrowserVendorType, BrowserVersionType} = Us
 const {CbtAccount, CbtActiveTestCounts, CbtConcurrencyStats} = cbtProto;
 const {RawCapabilities} = seleniumProto;
 
-const Cli = require('./cli');
+const DiffBaseParser = require('./diff-base-parser');
 const Duration = require('./duration');
 
 const MDC_CBT_USERNAME = process.env.MDC_CBT_USERNAME;
@@ -41,10 +41,10 @@ let allBrowsersPromise;
 class CbtApi {
   constructor() {
     /**
-     * @type {!Cli}
+     * @type {!DiffBaseParser}
      * @private
      */
-    this.cli_ = new Cli();
+    this.diffBaseParser_ = new DiffBaseParser();
 
     this.validateEnvVars_();
   }
@@ -140,9 +140,8 @@ https://crossbrowsertesting.com/account
    * @param {!mdc.proto.ReportMeta} meta
    * @param {!mdc.proto.UserAgent} userAgent
    * @return {!Promise<!selenium.proto.RawCapabilities>}
-   * @private
    */
-  async getDesiredCapabilities_({meta, userAgent}) {
+  async getDesiredCapabilities({meta, userAgent}) {
     // TODO(acdvorak): Create a type for this
     /** @type {{device: !cbt.proto.CbtDevice, browser: !cbt.proto.CbtBrowser}} */
     const matchingCbtUserAgent = await this.getMatchingCbtUserAgent_(userAgent);
@@ -316,7 +315,7 @@ https://crossbrowsertesting.com/account
    */
   async getCbtTestNameAndBuildNameForReport_(meta) {
     /** @type {?mdc.proto.GitRevision} */
-    const travisGitRev = await this.cli_.getTravisGitRevision();
+    const travisGitRev = await this.diffBaseParser_.getTravisGitRevision();
     if (travisGitRev) {
       return this.getCbtTestNameAndBuildNameForGitRev_(travisGitRev);
     }

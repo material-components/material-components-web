@@ -1,15 +1,22 @@
 #!/usr/bin/env bash
 
-function print_error() {
-  echo -e "\033[31m\033[1m$@\033[0m"
+function print_stderr() {
+  echo "$@" >&2
+}
+
+function log_error() {
+  print_stderr -e "\033[31m\033[1m$@\033[0m"
 }
 
 function exit_if_external_pr() {
   if [[ -n "$TRAVIS_PULL_REQUEST_SLUG" ]] && [[ ! "$TRAVIS_PULL_REQUEST_SLUG" =~ ^material-components/ ]]; then
     echo
-    print_error "Error: $TEST_SUITE tests are not supported on external PRs."
-    print_error "Skipping $TEST_SUITE tests."
-    exit 19
+    log_error "ERROR: $TEST_SUITE tests are not supported on external PRs for security reasons."
+    print_stderr
+    print_stderr "See https://docs.travis-ci.com/user/pull-requests/#Pull-Requests-and-Security-Restrictions"
+    print_stderr
+    log_error "Skipping $TEST_SUITE tests."
+    exit 10
   fi
 }
 

@@ -80,8 +80,8 @@ class CloudStorage {
    */
   async uploadDirectory_(noun, reportData, localSourceDir) {
     const isSourceDirEmpty = glob.sync('**/*', {cwd: localSourceDir, nodir: true}).length === 0;
-    const isOnline = await this.cli_.isOnline();
-    if (isSourceDirEmpty || !isOnline) {
+    const isOffline = this.cli_.isOffline();
+    if (isSourceDirEmpty || isOffline) {
       return;
     }
 
