@@ -213,17 +213,16 @@ test(`#handleTrailingIconInteraction adds ${cssClasses.CHIP_EXIT} class by defau
 
 test(`#handleTrailingIconInteraction does not add ${cssClasses.CHIP_EXIT} class on click in trailing icon ` +
   'if shouldRemoveOnTrailingIconClick_ is false', () => {
-    const {foundation, mockAdapter} = setupTest();
-    const mockEvt = {
-      type: 'click',
-      stopPropagation: td.func('stopPropagation'),
-    };
-  
-    foundation.setShouldRemoveOnTrailingIconClick(false);
-    foundation.handleTrailingIconInteraction(mockEvt);
+  const {foundation, mockAdapter} = setupTest();
+  const mockEvt = {
+    type: 'click',
+    stopPropagation: td.func('stopPropagation'),
+  };
 
-    assert.isFalse(foundation.getShouldRemoveOnTrailingIconClick());
-    td.verify(mockAdapter.addClass(cssClasses.CHIP_EXIT), {times: 0});
-    td.verify(mockEvt.stopPropagation());
-  }
-);
+  foundation.setShouldRemoveOnTrailingIconClick(false);
+  foundation.handleTrailingIconInteraction(mockEvt);
+
+  assert.isFalse(foundation.getShouldRemoveOnTrailingIconClick());
+  td.verify(mockAdapter.addClass(cssClasses.CHIP_EXIT), {times: 0});
+  td.verify(mockEvt.stopPropagation());
+});
