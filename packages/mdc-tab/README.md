@@ -1,13 +1,16 @@
+<!--docs:
+title: "Tab"
+layout: detail
+section: components
+excerpt: "Governs the visibility of one of several groups of content."
+iconId: tabs
+path: /catalog/tabs/tab/
+-->
+
 # Tab
 
-<!--<div class="article__asset">
-  <a class="article__asset-link"
-     href="https://material-components.github.io/material-components-web-catalog/#/component/tabs">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/tab.png" width="363" alt="Tab screenshot">
-  </a>
-</div>-->
-
-Tab is a selectable element with an active state
+Tabs organize and allow navigation between groups of content that are related and at the same level of hierarchy.
+Each Tab governs the visibility of one group of content.
 
 ## Design & API Documentation
 
@@ -88,8 +91,15 @@ Property | Value Type | Description
 
 Method Signature | Description
 --- | ---
-`activate(previousIndicatorClientRect: ClientRect=) => void` | Activates the indicator.  `previousIndicatorClientRect` is an optional argument
-`deactivate() => void` | Deactivates the indicator
+`activate(previousIndicatorClientRect: ClientRect=) => void` | Activates the indicator.  `previousIndicatorClientRect` is an optional argument.
+`deactivate() => void` | Deactivates the indicator.
+`computeIndicatorClientRect() => ClientRect` | Returns the bounding client rect of the indicator.
+`computeDimensions() => MDCTabDimensions` | Returns the dimensions of the Tab.
+
+Event Name | Event Data Structure | Description
+--- | --- | ---
+`MDCTab:interacted` | `{"detail": {"tab": MDCTab}}` | Emitted when the Tab is interacted with, regardless of its active state. Used by parent components to know which Tab to activate.
+`MDCTab:activated` | `{"detail": {"tab": MDCTab}}` | Emitted when the Tab is activated. Listen for this to update content when a Tab becomes active.
 
 
 ### `MDCTabAdapter`
@@ -105,13 +115,21 @@ Method Signature | Description
 `activateIndicator(previousIndicatorClientRect: ClientRect=) => void` | Activates the tab indicator subcomponent. `previousIndicatorClientRect` is an optional argument
 `deactivateIndicator() => void` | Deactivates the tab indicator subcomponent
 `computeIndicatorClientRect() => ClientRect` | Returns the tab indicator subcomponent's content bounding client rect
+`getOffsetLeft() => number` | Returns the `offsetLeft` value of the root element
+`getOffsetWidth() => number` | Returns the `offsetWidth` value of the root element
+`getContentOffsetLeft() => number` | Returns the `offsetLeft` value of the content element
+`getContentOffsetWidth() => number` | Returns the `offsetWidth` value of the content element
+`notifyInteracted() => void` | Emits the `MDCTab:interacted` event
+`notifyActivated() => void` | Emits the `MDCTab:activated` event
 
 ### `MDCTabFoundation`
 
 Method Signature | Description
 --- | ---
-`handleTransitionEnd(evt: Event) => void` | Handles the logic for the `"transitionend"` event
-`isActive() => boolean` | Returns whether the tab is active
-`activate(previousIndicatorClientRect: ClientRect=) => void` | Activates the tab. `previousIndicatorClientRect` is an optional argument
-`deactivate() => void` | Deactivates the tab
-`computeIndicatorClientRect() => ClientRect` | Returns the tab indicator subcomponent's content bounding client rect
+`handleTransitionEnd(evt: Event) => void` | Handles the logic for the `"transitionend"` event.
+`handleClick() => void` | Handles the logic for the `"click"` event.
+`isActive() => boolean` | Returns whether the tab is active.
+`activate(previousIndicatorClientRect: ClientRect=) => void` | Activates the tab. `previousIndicatorClientRect` is an optional argument.
+`deactivate() => void` | Deactivates the tab.
+`computeIndicatorClientRect() => ClientRect` | Returns the tab indicator subcomponent's content bounding client rect.
+`computeDimensions() => MDCTabDimensions` | Returns the dimensions of the tab.

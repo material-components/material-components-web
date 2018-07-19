@@ -89,6 +89,8 @@ class MDCTab extends MDCComponent {
         activateIndicator: (previousIndicatorClientRect) => this.tabIndicator_.activate(previousIndicatorClientRect),
         deactivateIndicator: () => this.tabIndicator_.deactivate(),
         computeIndicatorClientRect: () => this.tabIndicator_.computeContentClientRect(),
+        notifyInteracted: () => this.emit(MDCTabFoundation.strings.INTERACTED_EVENT, {tab: this}, true /* bubble */),
+        notifyActivated: () => this.emit(MDCTabFoundation.strings.ACTIVATED_EVENT, {tab: this}, true /* bubble */),
         getOffsetLeft: () => this.root_.offsetLeft,
         getOffsetWidth: () => this.root_.offsetWidth,
         getContentOffsetLeft: () => this.content_.offsetLeft,

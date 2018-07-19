@@ -29,20 +29,6 @@
  */
 class MDCTabBarAdapter {
   /**
-   * Registers an event listener on the root element for a given event.
-   * @param {string} evtType
-   * @param {function(!Event): undefined} handler
-   */
-  registerEventHandler(evtType, handler) {}
-
-  /**
-   * Deregisters an event listener on the root element for a given event.
-   * @param {string} evtType
-   * @param {function(!Event): undefined} handler
-   */
-  deregisterEventHandler(evtType, handler) {}
-
-  /**
    * Scrolls to the given position
    * @param {number} scrollX The position to scroll to
    */
@@ -61,10 +47,10 @@ class MDCTabBarAdapter {
   computeScrollPosition() {}
 
   /**
-   * Returns the scroller's width
+   * Returns the root element's offsetWidth
    * @return {number}
    */
-  computeScrollerWidth() {}
+  getOffsetWidth() {}
 }
 
 export default MDCTabBarAdapter;

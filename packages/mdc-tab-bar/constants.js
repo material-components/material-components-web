@@ -21,6 +21,12 @@ const strings = {
   TAB_SELECTOR: '.mdc-tab',
 };
 
+/** @enum {number} */
+const numbers = {
+  EXTRA_SCROLL_AMOUNT: 20,
+};
+
 export {
+  numbers,
   strings,
 };

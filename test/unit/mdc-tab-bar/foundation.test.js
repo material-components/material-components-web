@@ -18,8 +18,8 @@
 import {assert} from 'chai';
 import td from 'testdouble';
 
-import {captureHandlers, verifyDefaultAdapter} from '../helpers/foundation';
-import {setupFoundationTest} from '../helpers/setup';
+import {verifyDefaultAdapter} from '../helpers/foundation';
+// import {setupFoundationTest} from '../helpers/setup';
 import MDCTabBarFoundation from '../../../packages/mdc-tab-bar/foundation';
 import MDCTabFoundation from '../../../packages/mdc-tab/foundation';
 

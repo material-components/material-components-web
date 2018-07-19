@@ -17,7 +17,7 @@
 
 import MDCComponent from '@material/base/component';
 
-import {MDCTab} from '@material/tab/index';
+import {MDCTab, MDCTabFoundation} from '@material/tab/index';
 import {MDCTabScroller} from '@material/tab-scroller/index';
 
 import MDCTabBarAdapter from './adapter';
@@ -39,6 +39,8 @@ class MDCTabBar extends MDCComponent {
 
     /** @private {?MDCTabScroller} */
     this.tabScroller_;
+
+    this.handleTabInteraction_;
   }
 
   /**
@@ -60,19 +62,27 @@ class MDCTabBar extends MDCComponent {
     this.tabScroller_ = tabScrollerFactory(tabScrollerElement);
   }
 
+  initialSyncWithDOM() {
+    this.handleTabInteraction_ = (evt) => this.foundation_.handleTabInteraction(evt);
+
+    this.root_.addEventListener(MDCTabFoundation.strings.INTERACTED_EVENT, this.handleTabInteraction_);
+  }
+
+  destroy() {
+    super.destroy();
+    this.root_.removeEventListener(MDCTabFoundation.strings.INTERACTED_EVENT, this.handleTabInteraction_);
+  }
+
   /**
    * @return {!MDCTabBarAdapter}
    */
   getDefaultFoundation() {
     return new MDCTabBarFoundation(
       /** @type {!MDCTabBarAdapter} */ ({
-        registerEventHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
-        deregisterEventHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
         scrollTo: (scrollX) => this.tabScroller_.scrollTo(scrollX),
         incrementScroll: (scrollXIncrement) => this.tabScroller_.incrementScroll(scrollXIncrement),
         computeScrollPosition: () => this.tabScroller_.getScrollPosition(),
-        // TODO(prodee): Update computeScrollerWidth method
-        computeScrollerWidth: () => 0,
+        getOffsetWidth: () => this.root_.offsetWidth,
       }),
       this.tabList_,
     );

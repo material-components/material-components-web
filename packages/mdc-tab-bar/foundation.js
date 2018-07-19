@@ -18,10 +18,12 @@
 import MDCFoundation from '@material/base/foundation';
 import MDCTabBarAdapter from './adapter';
 
-import {strings} from './constants';
+import {strings, numbers} from './constants';
 
+/* eslint-disable no-unused-vars */
 import MDCTabFoundation from '@material/tab/foundation';
 import {MDCTabDimensions} from '@material/tab/adapter';
+/* eslint-enable no-unused-vars */
 
 /**
  * @extends {MDCFoundation<!MDCTabBarAdapter>}
@@ -33,18 +35,21 @@ class MDCTabBarFoundation extends MDCFoundation {
     return strings;
   }
 
+  /** @return enum {number} */
+  static get numbers() {
+    return numbers;
+  }
+
   /**
    * @see MDCTabBarAdapter for typing information
    * @return {!MDCTabBarAdapter}
    */
   static get defaultAdapter() {
     return /** @type {!MDCTabBarAdapter} */ ({
-      registerEventHandler: () => {},
-      deregisterEventHandler: () => {},
       scrollTo: () => {},
       incrementScroll: () => {},
       computeScrollPosition: () => {},
-      computeScrollerWidth: () => {},
+      getOffsetWidth: () => {},
     });
   }
 
@@ -64,14 +69,12 @@ class MDCTabBarFoundation extends MDCFoundation {
     this.initActiveTab_();
   }
 
-  /** @private */
-  initActiveTab_() {
-    for (let i = 0; i < this.tabs_.length; i++) {
-      if (this.tabs_[i].active) {
-        this.activeIndex_ = i;
-        break;
-      }
-    }
+  /**
+   * Handles the MDCTab:interacted event
+   * @param {!Event} evt
+   */
+  handleTabInteraction(evt) {
+    this.activateTab(this.getIndexOfTab_(evt.detail.tab));
   }
 
   /**
@@ -103,17 +106,33 @@ class MDCTabBarFoundation extends MDCFoundation {
     const tab = this.tabs_[index];
     const tabDimensions = tab.computeDimensions();
     const scrollPosition = this.adapter_.computeScrollPosition();
-    const scrollWidth = this.adapter_.computeScrollerWidth();
+    const scrollWidth = this.adapter_.getOffsetWidth();
     const nextTab = this.computeNextAdjacentTab_(index, tabDimensions, scrollPosition, scrollWidth);
+    console.log({
+      index,
+      nextTab,
+    })
     let scrollIncrement = this.computeAdjacentTabContentDistance_(nextTab);
 
+    // TODO(prodee): Determine why LTR scroll decrementing is too large
+
     if (nextTab.isLeft) {
-      scrollIncrement += tabDimensions.left - scrollPosition;
+      scrollIncrement += tabDimensions.rootLeft - numbers.EXTRA_SCROLL_AMOUNT;
     } else {
-      scrollIncrement += tabDimensions.right - scrollPosition - scrollWidth;
+      scrollIncrement += tabDimensions.rootRight - scrollPosition - scrollWidth + numbers.EXTRA_SCROLL_AMOUNT;
     }
 
     this.adapter_.incrementScroll(scrollIncrement);
+  }
+
+  /**
+   * Returns the index of the given Tab
+   * @param {!MDCTab} tabToFind
+   * @return {number}
+   * @private
+   */
+  getIndexOfTab_(tabToFind) {
+    return this.tabs_.findIndex((tab) => tab === tabToFind);
   }
 
   /**
@@ -274,12 +293,23 @@ class MDCTabBarFoundation extends MDCFoundation {
     return adjacentTabDimensions.contentLeft - adjacentTabDimensions.rootLeft;
   }
 
+  /** @private */
+  initActiveTab_() {
+    for (let i = 0; i < this.tabs_.length; i++) {
+      if (this.tabs_[i].active) {
+        this.activeIndex_ = i;
+        break;
+      }
+    }
+  }
+
   /**
    * Returns the view's RTL property
    * @return {boolean}
    * @private
    */
   isRTL_() {
+    // TODO(prodee): Make this return the correct RTL state
     return false;
   }
 }

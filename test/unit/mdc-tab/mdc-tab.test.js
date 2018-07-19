@@ -35,7 +35,7 @@ const getFixture = () => bel`
   </button>
 `;
 
-suite.only('MDCTab');
+suite('MDCTab');
 
 test('attachTo returns an MDCTab instance', () => {
   assert.isTrue(MDCTab.attachTo(getFixture()) instanceof MDCTab);
@@ -140,6 +140,24 @@ test('#adapter.getContentOffsetWidth() returns the offsetLeft of the content ele
 test('#adapter.getContentOffsetLeft() returns the offsetLeft of the content element', () => {
   const {content, component} = setupTest();
   assert.strictEqual(component.getDefaultFoundation().adapter_.getContentOffsetLeft(), content.offsetLeft);
+});
+
+test(`#adapter.notifyInteracted() emits the ${MDCTabFoundation.strings.INTERACTED_EVENT} event`, () => {
+  const {component} = setupTest();
+  const handler = td.func('interaction handler');
+
+  component.listen(MDCTabFoundation.strings.INTERACTED_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyInteracted();
+  td.verify(handler(td.matchers.anything()));
+});
+
+test(`#adapter.notifyActivated() emits the ${MDCTabFoundation.strings.ACTIVATED_EVENT} event`, () => {
+  const {component} = setupTest();
+  const handler = td.func('interaction handler');
+
+  component.listen(MDCTabFoundation.strings.ACTIVATED_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyActivated();
+  td.verify(handler(td.matchers.anything()));
 });
 
 function setupMockFoundationTest(root = getFixture()) {
