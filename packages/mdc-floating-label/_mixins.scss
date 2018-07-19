@@ -17,8 +17,9 @@
 @import "@material/rtl/mixins";
 @import "./variables";
 
-@mixin mdc-floating-label-ink-color($color) {
+@mixin mdc-floating-label-ink-color($color, $opacity: 1) {
   @include mdc-theme-prop(color, $color);
+  opacity: $opacity;
 }
 
 // Used for textarea in case of scrolling

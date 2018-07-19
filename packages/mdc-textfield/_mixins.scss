@@ -564,7 +564,7 @@
 
 @mixin mdc-text-field-label-ink-color_($color) {
   .mdc-floating-label {
-    @include mdc-floating-label-ink-color($color);
+    @include mdc-floating-label-ink-color($color, 0.87);
   }
 
   // CSS-only version

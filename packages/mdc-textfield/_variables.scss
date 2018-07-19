@@ -25,7 +25,7 @@ $mdc-text-field-placeholder: rgba(mdc-theme-prop-value(on-surface), .6);
 $mdc-text-field-ink-color: rgba(mdc-theme-prop-value(on-surface), .87);
 $mdc-text-field-helper-text-color: rgba(mdc-theme-prop-value(on-surface), .6);
 $mdc-text-field-icon-color: rgba(mdc-theme-prop-value(on-surface), .54);
-$mdc-text-field-focused-label-color: rgba(mdc-theme-prop-value(primary), .87);
+$mdc-text-field-focused-label-color: var(--mdc-theme-primary, mdc-theme-prop-value(primary));
 
 $mdc-text-field-disabled-label-color: rgba(mdc-theme-prop-value(on-surface), .37);
 $mdc-text-field-disabled-ink-color: rgba(mdc-theme-prop-value(on-surface), .37);
