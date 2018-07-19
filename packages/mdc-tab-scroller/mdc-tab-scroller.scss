@@ -16,7 +16,6 @@
 */
 
 @import "@material/animation/variables";
-@import "./variables";
 
 // postcss-bem-linter: define tab-scroller
 .mdc-tab-scroller {
@@ -26,7 +25,6 @@
 .mdc-tab-scroller__scroll-area {
   -webkit-overflow-scrolling: touch;
   display: flex;
-  margin-bottom: -$mdc-tab-scroller-scrollbar-spacing;
   overflow-x: scroll;
 
   &::-webkit-scrollbar {
@@ -37,7 +35,6 @@
 .mdc-tab-scroller__scroll-content {
   display: flex;
   flex: 1 0 auto;
-  padding-bottom: $mdc-tab-scroller-scrollbar-spacing;
   transform: none;
   will-change: transform;
 }

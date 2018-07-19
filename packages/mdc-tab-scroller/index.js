@@ -19,6 +19,7 @@ import MDCComponent from '@material/base/component';
 
 import {MDCTabScrollerAdapter} from './adapter';
 import MDCTabScrollerFoundation from './foundation';
+import {hideHorizontalScrollbar} from './util';
 
 /**
  * @extends {MDCComponent<!MDCTabScrollerFoundation>}
@@ -55,6 +56,8 @@ class MDCTabScroller extends MDCComponent {
   }
 
   initialSyncWithDOM() {
+    hideHorizontalScrollbar(this.area_);
+
     this.handleInteraction_ = () => this.foundation_.handleInteraction();
     this.handleTransitionEnd_ = (evt) => this.foundation_.handleTransitionEnd(evt);
 
