@@ -38,6 +38,10 @@ class MDCSlider extends MDCComponent {
     this.trackFill_;
     /** @type {?Element} */
     this.tickMarkSet_;
+    /** @type {?Element} */
+    this.valueLabel_;
+    /** @type {?Element} */
+    this.valueLabelText_;
     /** @private {!MDCRipple} */
     this.ripple_ = this.initRipple_();
   }
@@ -101,6 +105,8 @@ class MDCSlider extends MDCComponent {
     this.thumb_ = this.root_.querySelector(strings.THUMB_SELECTOR);
     this.trackFill_ = this.root_.querySelector(strings.TRACK_FILL_SELECTOR);
     this.tickMarkSet_ = this.root_.querySelector(strings.TICK_MARK_SET_SELECTOR);
+    this.valueLabel_ = this.root_.querySelector(strings.VALUE_LABEL_SELECTOR);
+    this.valueLabelText_ = this.root_.querySelector(strings.VALUE_LABEL_TEXT_SELECTOR);
   }
 
   /**
@@ -114,6 +120,11 @@ class MDCSlider extends MDCComponent {
         removeClass: (className) => this.root_.classList.remove(className),
         getAttribute: (name) => this.thumb_.getAttribute(name),
         setAttribute: (name, value) => this.thumb_.setAttribute(name, value),
+        setValueLabelPath: (value) => this.valueLabel_.setAttribute('d', value),
+        setValueLabelText: (xValue, text) => {
+          this.valueLabelText_.setAttribute('x', xValue);
+          this.valueLabelText_.textContent = text;
+        },
         computeBoundingRect: () => this.root_.getBoundingClientRect(),
         eventTargetHasClass: (target, className) => target.classList.contains(className),
         registerEventHandler: (type, handler) => {

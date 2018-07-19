@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 
+@import "@material/animation/functions";
 @import "@material/ripple/common";
 @import "@material/ripple/mixins";
 @import "./mixins";
@@ -99,11 +100,36 @@
 }
 
 .mdc-slider__thumb-handle {
+  position: absolute;
+  overflow: visible;
   transition-duration: 150ms;
   transition-property: transform;
 }
 
+.mdc-slider__value-label {
+  stroke: #6200ee;
+  fill: #6200ee;
+}
+
+.mdc-slider__value-label-text {
+  stroke: none;
+}
+
+.mdc-slider__value-label,
+.mdc-slider__value-label-text {
+  transform: scale(0.1) translate(155px, 170px);
+  will-change: transform;
+  transition: transform 100ms $mdc-animation-standard-curve-timing-function,
+}
+
 .mdc-slider--active {
+  .mdc-slider__value-label,
+  .mdc-slider__value-label-text {
+    transform: scale(1);
+  }
+}
+
+.mdc-slider--active:not(.mdc-slider--discrete) {
   .mdc-slider__thumb-handle {
     transform: scale($mdc-slider-thumb-handle-active-size);
   }
@@ -112,6 +138,13 @@
 .mdc-slider--in-transit {
   .mdc-slider__thumb,
   .mdc-slider__track-fill {
-    transition: transform 150ms ease;
+    transition: transform 150ms $mdc-animation-standard-curve-timing-function;
+  }
+}
+
+.mdc-slider--discrete:not(.mdc-slider--in-transit) {
+  .mdc-slider__thumb,
+  .mdc-slider__track-fill {
+    transition: transform 75ms $mdc-animation-standard-curve-timing-function;
   }
 }

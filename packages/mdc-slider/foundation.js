@@ -59,6 +59,8 @@ class MDCSliderFoundation extends MDCFoundation {
       removeClass: () => {},
       getAttribute: () => {},
       setAttribute: () => {},
+      setValueLabelPath: () => {},
+      setValueLabelText: () => {},
       computeBoundingRect: () => {},
       eventTargetHasClass: () => {},
       registerEventHandler: () => {},
@@ -383,6 +385,112 @@ class MDCSliderFoundation extends MDCFoundation {
   }
 
   /**
+   * Calculates the value label path
+   * @return {number}
+   */
+  calcPath_() {
+    const topLobeRadius = 16;
+    const topNeckRadius = 14;
+    if (this.value_.toString().length <= 2) {
+      var topLobeHorizontal = 0;
+    } else {
+      var topLobeHorizontal = (this.value_.toString().length - 2) * 8.98;
+    }
+    const extra = topLobeHorizontal - 30;
+    if (extra > 0) {
+      topLobeHorizontal = 30;
+    }
+    const topNeckTheta = Math.asin((15 - topLobeHorizontal)/(topLobeRadius+topNeckRadius));
+    const topNeckCornerTheta = Math.acos((15 - topLobeHorizontal/2)/(topLobeRadius+topNeckRadius));
+    const topNeckCornerCenterX = 31;
+    const topNeckCornerCenterY = Math.sqrt(Math.pow(topLobeRadius+topNeckRadius, 2) - Math.pow(15 - topLobeHorizontal/2, 2));
+
+    const centersDifference = 40;
+    const bottomLobeRadius = 6;
+    const bottomNeckRadius = 4.5;
+    const bottomNeckTheta = 5 * Math.PI / 18;
+    const bottomNeckHeight = Math.sin(bottomNeckTheta) * (bottomLobeRadius+bottomNeckRadius);
+    const offsetY = -39;
+    const offsetX = 1;
+
+    let pointA = {
+      x: 17 + (topNeckRadius - (Math.cos(topNeckCornerTheta) * topNeckRadius)) + offsetX,
+        y: 16 + (topNeckCornerCenterY - (Math.sin(topNeckCornerTheta) * topNeckRadius)) + offsetY
+        };
+    const pointB = {
+      x: 17 + offsetX,
+        y: 16 + topNeckCornerCenterY + offsetY
+        };
+    const pointC = {
+      x: 17 + offsetX,
+        y: 16 + centersDifference - bottomNeckHeight + offsetY
+        };
+    const pointD = {
+      x: 17 + bottomNeckRadius - (Math.cos(bottomNeckTheta) * bottomNeckRadius) + 1 + offsetX,
+        y: (16 + centersDifference - bottomNeckHeight) + (Math.sin(bottomNeckTheta) * bottomNeckRadius) + offsetY
+        };
+    const pointE = {
+      x: 16 + offsetX,
+        y: 62 + offsetY
+        };
+    const pointF = {
+      x: 15 - bottomNeckRadius + (Math.cos(bottomNeckTheta) * bottomNeckRadius) - 1 + offsetX,
+        y: (16 + centersDifference - bottomNeckHeight) + (Math.sin(bottomNeckTheta) * bottomNeckRadius) + offsetY
+        };
+    const pointG = {
+      x: 15 + offsetX,
+        y: 16 + centersDifference - bottomNeckHeight + offsetY
+        };
+    const pointH = {
+      x: 15 + offsetX,
+        y: 16 + topNeckCornerCenterY + offsetY
+        };
+    let pointI = {
+      x: 15 - topNeckRadius + (Math.cos(topNeckCornerTheta) * topNeckRadius) + offsetX,
+        y: 16 + (topNeckCornerCenterY - (Math.sin(topNeckCornerTheta) * topNeckRadius)) + offsetY
+        };
+      
+      let start = {
+        x: 16 + (topLobeHorizontal/2) + offsetX,
+          y: 0 + offsetY
+          };
+      let end = {
+        x: 16 - (topLobeHorizontal/2) + offsetX,
+          y: 0 + offsetY
+          };
+    if (extra > 0) {
+      start = {
+      x: 16 + (topLobeHorizontal/2) + extra/4 + offsetX,
+        y: 0 + offsetY
+        };
+      end = {
+      x: 16 - (topLobeHorizontal/2) - (extra*3/4) + offsetX,
+        y: 0 + offsetY
+        };
+      pointA.x = pointA.x + extra/4;
+    } 
+      
+    let path = "M " + start.x + " " + start.y
+          + " A " + topLobeRadius + " " + topLobeRadius + " 0 0 1 " + pointA.x + " " + pointA.y;
+    if (extra > 0) {
+      path = path + " L " + (pointA.x - extra/4) + " " + pointA.y;
+    }
+    path = path + " A " + topNeckRadius + " " + topNeckRadius + " 0 0 0 " + pointB.x + " " + pointB.y
+                + " L " + pointC.x + " " + pointC.y
+                + " A " + bottomNeckRadius + " " + bottomNeckRadius + " 0 0 0 " + pointD.x + " " + pointD.y
+                + " A " + bottomLobeRadius + " " + bottomLobeRadius + " 0 0 1 " + pointE.x + " " + pointE.y
+                + " A " + bottomLobeRadius + " " + bottomLobeRadius + " 0 0 1 " + pointF.x + " " + pointF.y
+                + " A " + bottomNeckRadius + " " + bottomNeckRadius + " 0 0 0 " + pointG.x + " " + pointG.y
+                + " L " + pointH.x + " " + pointH.y
+                + " A " + topNeckRadius + " " + topNeckRadius + " 0 0 0 " + pointI.x + " " + pointI.y;
+    if (extra > 0) {
+      path = path + " L " + (pointI.x - (3 * extra/4)) + " " + pointI.y;
+    }
+    path = path + " A " + topLobeRadius + " " + topLobeRadius + " 0 0 1 " + end.x + " " + end.y + " Z";       
+    return path;
+  }
+
+  /**
    * Updates the track-fill and thumb style properties to reflect current value
    */
   updateUIForCurrentValue_() {
@@ -397,6 +505,13 @@ class MDCSliderFoundation extends MDCFoundation {
         }
       };
       this.adapter_.registerEventHandler('transitionend', onTransitionEnd);
+    }
+
+    if (this.isDiscrete_) {
+      const xValue = (34 - (this.value_.toString().length * 8.98)) / 2;
+      const path = this.calcPath_();
+      this.adapter_.setValueLabelPath(path);
+      this.adapter_.setValueLabelText(xValue, String(this.value_));
     }
 
     requestAnimationFrame(() => {

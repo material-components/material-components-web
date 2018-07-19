@@ -62,7 +62,7 @@
                 <div class="mdc-slider__track-fill"></div>
               </div>
               <div class="mdc-slider__thumb" tabindex="0" role="slider"
-              aria-valuemin="0" aria-valuemax="50" aria-valuenow="20"
+              aria-valuemin="10" aria-valuemax="50" aria-valuenow="20"
               aria-label="Select Value">
                 <svg class="mdc-slider__thumb-handle" width="34" height="34">
                   <circle cx="17" cy="17" r="6"></circle>
@@ -83,10 +83,12 @@
                 <div class="mdc-slider__track-fill"></div>
                 <div class="mdc-slider__tick-mark-set"></div>
               </div>
-              <div class="mdc-slider__thumb" tabindex="0" role="slider"
+              <div class="mdc-slider__thumb" tabindex="0" role="slider" data-step="1" 
               aria-valuemin="0" aria-valuemax="50" aria-valuenow="20"
               aria-label="Select Value">
-                <svg class="mdc-slider__thumb-handle" width="34" height="34">
+                <svg class="mdc-slider__thumb-handle" width="34" height="34" style="overflow: visible;">
+                  <path class="mdc-slider__value-label"/> 
+                  <text class="mdc-slider__value-label-text" x="8" y="-18" stroke="white" fill="white">20</text>
                   <circle cx="17" cy="17" r="6"></circle>
                 </svg>
               </div>
