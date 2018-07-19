@@ -59,7 +59,7 @@ class MDCSliderAdapter {
 
   /**
    * Returns true if target has className, false otherwise.
-   * @param {!EventTarget} target
+   * @param {EventTarget} target
    * @param {string} className
    * @return {boolean}
    */
@@ -78,20 +78,6 @@ class MDCSliderAdapter {
    * @param {function(!Event): undefined} handler
    */
   deregisterEventHandler(type, handler) {}
-
-  /**
-   * Registers an event handler on the thumb container element for a given event.
-   * @param {string} type
-   * @param {function(!Event): undefined} handler
-   */
-  registerThumbEventHandler(type, handler) {}
-
-  /**
-   * Deregisters an event handler on the thumb container element for a given event.
-   * @param {string} type
-   * @param {function(!Event): undefined} handler
-   */
-  deregisterThumbEventHandler(type, handler) {}
 
   /**
    * Registers an event handler on the body for a given event.

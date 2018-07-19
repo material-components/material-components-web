@@ -62,8 +62,6 @@ class MDCSliderFoundation extends MDCFoundation {
       eventTargetHasClass: () => {},
       registerEventHandler: () => {},
       deregisterEventHandler: () => {},
-      registerThumbEventHandler: () => {},
-      deregisterThumbEventHandler: () => {},
       registerBodyEventHandler: () => {},
       deregisterBodyEventHandler: () => {},
       registerWindowResizeHandler: () => {},
@@ -98,10 +96,8 @@ class MDCSliderFoundation extends MDCFoundation {
     this.value_ = 0;
     /** @private {number} */
     this.step_ = 0;
-    /** @private {boolean} */
-    this.handlingThumbTargetEvt_ = false;
-    /** @private {function(): undefined} */
-    this.thumbPointerHandler_ = () => this.handleThumbPointer();
+    /** @private {function(!Event): undefined} */
+    this.transitionEndHandler_ = (evt) => this.handleTransitionEnd(evt);
     /** @private {function(!Event): undefined} */
     this.interactionStartHandler_ = (evt) => this.handleInteractionStart(evt);
     /** @private {function(!Event): undefined} */
@@ -116,11 +112,9 @@ class MDCSliderFoundation extends MDCFoundation {
 
   init() {
     DOWN_EVENTS.forEach((evtName) => this.adapter_.registerEventHandler(evtName, this.interactionStartHandler_));
-    DOWN_EVENTS.forEach((evtName) => {
-      this.adapter_.registerThumbEventHandler(evtName, this.thumbPointerHandler_);
-    });
     this.adapter_.registerEventHandler('keydown', this.keydownHandler_);
     this.adapter_.registerEventHandler('keyup', this.interactionEndHandler_);
+    this.adapter_.registerEventHandler('transitionend', this.transitionEndHandler_);
     this.adapter_.registerWindowResizeHandler(this.windowResizeHandler_);
     this.layout();
   }
@@ -129,11 +123,9 @@ class MDCSliderFoundation extends MDCFoundation {
     DOWN_EVENTS.forEach((evtName) => {
       this.adapter_.deregisterEventHandler(evtName, this.interactionStartHandler_);
     });
-    DOWN_EVENTS.forEach((evtName) => {
-      this.adapter_.deregisterThumbEventHandler(evtName, this.thumbPointerHandler_);
-    });
     this.adapter_.deregisterEventHandler('keydown', this.keydownHandler_);
     this.adapter_.deregisterEventHandler('keyup', this.interactionEndHandler_);
+    this.adapter_.deregisterEventHandler('transitionend', this.transitionEndHandler_);
     this.adapter_.deregisterWindowResizeHandler(this.windowResizeHandler_);
   }
 
@@ -198,10 +190,13 @@ class MDCSliderFoundation extends MDCFoundation {
   }
 
   /**
-   * Called when the user starts interacting with the thumb
+   * Called when the inTransit transition ends
+   * @param {!Event} evt
    */
-  handleThumbPointer() {
-    this.handlingThumbTargetEvt_ = true;
+  handleTransitionEnd(evt) {
+    if (this.inTransit_ && this.adapter_.eventTargetHasClass(evt.target, 'mdc-slider__track-fill')) {
+      this.setInTransit_(false);
+    }
   }
 
   /**
@@ -212,8 +207,11 @@ class MDCSliderFoundation extends MDCFoundation {
     this.setActive_(true);
     this.adapter_.activateRipple();
 
-    this.setInTransit_(!this.handlingThumbTargetEvt_);
-    this.handlingThumbTargetEvt_ = false;
+    const shouldTransition =
+      this.adapter_.eventTargetHasClass(evt.target, 'mdc-slider') ||
+      this.adapter_.eventTargetHasClass(evt.target, 'mdc-slider__track') ||
+      this.adapter_.eventTargetHasClass(evt.target, 'mdc-slider__track-fill');
+    this.setInTransit_(shouldTransition);
 
     const moveHandler = (evt) => {
       this.interactionMoveHandler_(evt);
@@ -263,8 +261,7 @@ class MDCSliderFoundation extends MDCFoundation {
     }
 
     this.setActive_(true);
-    this.setInTransit_(!this.handlingThumbTargetEvt_);
-    this.handlingThumbTargetEvt_ = false;
+    this.setInTransit_(true);
 
     // Prevent page from scrolling due to key presses that would normally scroll the page
     evt.preventDefault();
@@ -274,31 +271,31 @@ class MDCSliderFoundation extends MDCFoundation {
 
   /**
    * Returns the computed name of the event
-   * @param {!Event} kbdEvt
+   * @param {!Event} keyboardEvt
    * @return {number}
    * @private
    */
-  getKeyIdValue_(kbdEvt) {
+  getKeyIdValue_(keyboardEvt) {
     const delta = this.step_ || (this.max_ - this.min_) / 100;
 
-    if (kbdEvt.key === KEY_IDS.ARROW_LEFT || kbdEvt.keyCode === 37
-      || kbdEvt.key === KEY_IDS.ARROW_DOWN || kbdEvt.keyCode === 40) {
+    if (keyboardEvt.key === KEY_IDS.ARROW_LEFT || keyboardEvt.keyCode === 37
+      || keyboardEvt.key === KEY_IDS.ARROW_DOWN || keyboardEvt.keyCode === 40) {
       return this.value_ - delta;
     }
-    if (kbdEvt.key === KEY_IDS.ARROW_RIGHT || kbdEvt.keyCode === 39
-      || kbdEvt.key === KEY_IDS.ARROW_UP || kbdEvt.keyCode === 38) {
+    if (keyboardEvt.key === KEY_IDS.ARROW_RIGHT || keyboardEvt.keyCode === 39
+      || keyboardEvt.key === KEY_IDS.ARROW_UP || keyboardEvt.keyCode === 38) {
       return this.value_ + delta;
     }
-    if (kbdEvt.key === KEY_IDS.HOME || kbdEvt.keyCode === 36) {
+    if (keyboardEvt.key === KEY_IDS.HOME || keyboardEvt.keyCode === 36) {
       return this.min_;
     }
-    if (kbdEvt.key === KEY_IDS.END || kbdEvt.keyCode === 35) {
+    if (keyboardEvt.key === KEY_IDS.END || keyboardEvt.keyCode === 35) {
       return this.max_;
     }
-    if (kbdEvt.key === KEY_IDS.PAGE_UP || kbdEvt.keyCode === 33) {
+    if (keyboardEvt.key === KEY_IDS.PAGE_UP || keyboardEvt.keyCode === 33) {
       return this.value_ + delta * 5;
     }
-    if (kbdEvt.key === KEY_IDS.PAGE_DOWN || kbdEvt.keyCode === 34) {
+    if (keyboardEvt.key === KEY_IDS.PAGE_DOWN || keyboardEvt.keyCode === 34) {
       return this.value_ - delta * 5;
     }
 
@@ -365,16 +362,6 @@ class MDCSliderFoundation extends MDCFoundation {
   updateUIForCurrentValue_() {
     const pctComplete = (this.value_ - this.min_) / (this.max_ - this.min_);
     const translatePx = pctComplete * this.rect_.width;
-
-    if (this.inTransit_) {
-      const onTransitionEnd = (evt) => {
-        if (this.adapter_.eventTargetHasClass(evt.target, 'mdc-slider__track-fill')) {
-          this.setInTransit_(false);
-          this.adapter_.deregisterEventHandler('transitionend', onTransitionEnd);
-        }
-      };
-      this.adapter_.registerEventHandler('transitionend', onTransitionEnd);
-    }
 
     requestAnimationFrame(() => {
       this.adapter_.setThumbStyleProperty('transform', `translateX(${translatePx}px) translateX(-50%)`);

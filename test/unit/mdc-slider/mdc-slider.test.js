@@ -252,30 +252,6 @@ test('adapter#deregisterEventHandler removes an event listener from the root ele
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test('adapter#registerThumbEventHandler adds an event listener to the thumb element', () => {
-  const {root, component} = setupTest();
-  const thumb = root.querySelector('.mdc-slider__thumb');
-  const handler = td.func('interactionHandler');
-
-  component.getDefaultFoundation().adapter_.registerThumbEventHandler('click', handler);
-  domEvents.emit(thumb, 'click');
-
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('adapter#deregisterThumbEventHandler removes an event listener from ' +
-     'the thumb element', () => {
-  const {root, component} = setupTest();
-  const thumb = root.querySelector('.mdc-slider__thumb');
-  const handler = td.func('interactionHandler');
-
-  thumb.addEventListener('click', handler);
-  component.getDefaultFoundation().adapter_.deregisterThumbEventHandler('click', handler);
-  domEvents.emit(thumb, 'click');
-
-  td.verify(handler(td.matchers.anything()), {times: 0});
-});
-
 test('adapter#registerBodyEventHandler adds an event listener to the body element', () => {
   const {component} = setupTest();
   const handler = td.func('interactionHandler');

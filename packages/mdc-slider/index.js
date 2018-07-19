@@ -118,12 +118,6 @@ class MDCSlider extends MDCComponent {
         deregisterEventHandler: (type, handler) => {
           this.root_.removeEventListener(type, handler);
         },
-        registerThumbEventHandler: (type, handler) => {
-          this.thumb_.addEventListener(type, handler);
-        },
-        deregisterThumbEventHandler: (type, handler) => {
-          this.thumb_.removeEventListener(type, handler);
-        },
         registerBodyEventHandler: (type, handler) => {
           document.body.addEventListener(type, handler);
         },
