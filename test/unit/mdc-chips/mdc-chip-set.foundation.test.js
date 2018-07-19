@@ -22,7 +22,7 @@ import MDCChipSetFoundation from '../../../packages/mdc-chips/chip-set/foundatio
 
 const {cssClasses} = MDCChipSetFoundation;
 
-suite.only('MDCChipSetFoundation');
+suite('MDCChipSetFoundation');
 
 test('exports strings', () => {
   assert.isOk('strings' in MDCChipSetFoundation);

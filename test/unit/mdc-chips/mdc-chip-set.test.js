@@ -15,7 +15,6 @@
  */
 
 import bel from 'bel';
-import domEvents from 'dom-events';
 import {assert} from 'chai';
 import td from 'testdouble';
 
@@ -110,25 +109,6 @@ test('#adapter.hasClass returns true if class is set on chip set element', () =>
   const {root, component} = setupTest();
   root.classList.add('foo');
   assert.isTrue(component.getDefaultFoundation().adapter_.hasClass('foo'));
-});
-
-test('#adapter.registerInteractionHandler adds a handler to the root element for a given event', () => {
-  const {root, component} = setupTest();
-  const handler = td.func('eventHandler');
-
-  component.getDefaultFoundation().adapter_.registerInteractionHandler('click', handler);
-  domEvents.emit(root, 'click');
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('#adapter.deregisterInteractionHandler removes a handler from the root element for a given event', () => {
-  const {root, component} = setupTest();
-  const handler = td.func('eventHandler');
-
-  root.addEventListener('click', handler);
-  component.getDefaultFoundation().adapter_.deregisterInteractionHandler('click', handler);
-  domEvents.emit(root, 'click');
-  td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
 test('#adapter.removeChip removes the chip object from the chip set', () => {

@@ -17,7 +17,6 @@
 import bel from 'bel';
 import {assert} from 'chai';
 import td from 'testdouble';
-import domEvents from 'dom-events';
 
 import {MDCRipple} from '../../../packages/mdc-ripple';
 import {MDCChip, MDCChipFoundation} from '../../../packages/mdc-chips/chip';
