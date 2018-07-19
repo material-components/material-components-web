@@ -114,6 +114,12 @@ class SeleniumApi {
      */
     this.numCompleted_ = 0;
 
+    /**
+     * @type {boolean}
+     * @private
+     */
+    this.isKilled_ = false;
+
     if (this.cli_.isOnline()) {
       this.killBrowsersOnExit_();
     }
@@ -184,10 +190,10 @@ class SeleniumApi {
 
     this.seleniumSessionIds_.add(seleniumSessionId);
 
-    const logResult = (status) => {
+    const logResult = (status, ...args) => {
       /* eslint-disable camelcase */
       const {os_name, os_version, browser_name, browser_version} = userAgent.navigator;
-      this.logStatus_(status, `${browser_name} ${browser_version} on ${os_name} ${os_version}!`);
+      this.logStatus_(status, `${browser_name} ${browser_version} on ${os_name} ${os_version}!`, ...args);
       /* eslint-enable camelcase */
     };
 
@@ -195,7 +201,8 @@ class SeleniumApi {
       changedScreenshots = (await this.driveBrowser_({reportData, userAgent, driver})).changedScreenshots;
       logResult(CliStatuses.FINISHED);
     } catch (err) {
-      logResult(CliStatuses.FAILED);
+      logResult(CliStatuses.FAILED, err);
+      await this.killBrowsers_();
       throw err;
     } finally {
       logResult(CliStatuses.QUITTING);
@@ -583,38 +590,49 @@ class SeleniumApi {
 
   /** @private */
   killBrowsersOnExit_() {
-    const killThemAll = async () => {
-      console.log('');
-      console.log('Killing Selenium tests:', this.seleniumSessionIds_);
-      await this.cbtApi_.killSeleniumTests(Array.from(this.seleniumSessionIds_));
-      console.log('Killed Selenium tests!');
-      // Give the HTTP requests a chance to complete before exiting
-      await this.sleep_(Duration.seconds(1).toMillis());
-    };
-
     // catches ctrl+c event
     process.on('SIGINT', () => {
       const exit = () => process.exit(ExitCode.SIGINT);
-      killThemAll().then(exit, exit);
+      this.killBrowsers_().then(exit, exit);
     });
 
     // catches "kill pid"
     process.on('SIGTERM', () => {
       const exit = () => process.exit(ExitCode.SIGTERM);
-      killThemAll().then(exit, exit);
+      this.killBrowsers_().then(exit, exit);
     });
 
     process.on('uncaughtException', (err) => {
       console.error(err);
       const exit = () => process.exit(ExitCode.UNCAUGHT_EXCEPTION);
-      killThemAll().then(exit, exit);
+      this.killBrowsers_().then(exit, exit);
     });
 
     process.on('unhandledRejection', (err) => {
       console.error(err);
       const exit = () => process.exit(ExitCode.UNHANDLED_PROMISE_REJECTION);
-      killThemAll().then(exit, exit);
+      this.killBrowsers_().then(exit, exit);
     });
+  }
+
+  /** @private */
+  async killBrowsers_() {
+    if (this.isKilled_) {
+      return;
+    }
+    this.isKilled_ = true;
+
+    const ids = Array.from(this.seleniumSessionIds_);
+    this.seleniumSessionIds_.clear();
+
+    console.log('\n');
+
+    await this.cbtApi_.killSeleniumTests(ids);
+
+    console.log(`Killed ${ids.length} Selenium tests!`);
+
+    // Give the HTTP requests a chance to complete before exiting
+    await this.sleep_(Duration.seconds(4).toMillis());
   }
 
   /**
@@ -632,6 +650,11 @@ class SeleniumApi {
    * @private
    */
   logStatus_(status, ...args) {
+    // Don't output misleading errors
+    if (this.isKilled_) {
+      return;
+    }
+
     // https://stackoverflow.com/a/6774395/467582
     const eraseCurrentLine = '\r' + String.fromCodePoint(27) + '[K';
     const maxStatusWidth = Object.values(CliStatuses).map((status) => status.name.length).sort().reverse()[0];
