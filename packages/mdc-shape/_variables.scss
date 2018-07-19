@@ -39,6 +39,11 @@ $mdc-shape-extended-fab-top-right-radius: $mdc-shape-extended-fab-radius !defaul
 $mdc-shape-extended-fab-bottom-right-radius: $mdc-shape-extended-fab-radius !default;
 $mdc-shape-extended-fab-bottom-left-radius: $mdc-shape-extended-fab-radius !default;
 
+$mdc-shape-height: (
+  extended-fab: 48px,
+  button: 36px
+);
+
 $mdc-shape-category: (
   button: (
     top-left: $mdc-shape-button-top-left-radius,
