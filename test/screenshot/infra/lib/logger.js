@@ -181,21 +181,21 @@ class Logger {
    * @param {*} args
    */
   info(...args) {
-    console.info(`[${colors.blue('info')}][${this.id_}]`, ...args);
+    console.info(...args);
   }
 
   /**
    * @param {*} args
    */
   warn(...args) {
-    console.warn(`[${colors.yellow('warn')}][${this.id_}]`, ...args);
+    console.warn(...args);
   }
 
   /**
    * @param {*} args
    */
   error(...args) {
-    console.error(`[${colors.bold.red('error')}][${this.id_}]`, ...args);
+    console.error(...args);
   }
 
   /**
