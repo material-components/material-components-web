@@ -50,6 +50,12 @@ class MDCSwitchFoundation extends MDCFoundation {
     super(Object.assign(MDCSwitchFoundation.defaultAdapter, adapter));
   }
 
+  /** @override */
+  init() {
+    // Do an initial state update based on the state of the native control.
+    this.handleChange();
+  }
+
   /** @return {boolean} */
   isChecked() {
     return this.adapter_.isNativeControlChecked();
