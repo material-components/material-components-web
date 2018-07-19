@@ -58,6 +58,7 @@ const CliStatuses = {
   PASS: {name: 'Pass', color: colors.green},
   FAIL: {name: 'Fail', color: colors.red},
   RETRY: {name: 'Retry', color: colors.magenta},
+  CAPTURED: {name: 'Captured', color: colors.bold.grey},
   FINISHED: {name: 'Finished', color: colors.bold.green},
   FAILED: {name: 'Failed', color: colors.bold.red},
   QUITTING: {name: 'Quitting', color: colors.white},
@@ -646,7 +647,13 @@ class SeleniumApi {
     const completed = this.numCompleted_;
     const total = pending + completed;
     const percent = (total === 0 ? 0 : (100 * completed / total).toFixed(1));
-    process.stdout.write(`${completed} of ${total} screenshots (${percent}% complete)`);
+
+    const colorCaptured = CliStatuses.CAPTURED.color(CliStatuses.CAPTURED.name.toUpperCase());
+    const colorCompleted = colors.bold.white(completed.toLocaleString());
+    const colorTotal = colors.bold.white(total.toLocaleString());
+    const colorPercent = colors.bold.white(`${percent}%`);
+
+    process.stdout.write(`${colorCaptured}: ${colorCompleted} of ${colorTotal} screenshots (${colorPercent} complete)`);
   }
 }
 
