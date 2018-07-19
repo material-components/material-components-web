@@ -286,3 +286,5 @@ Method Signature | Description
 --- | ---
 `select(chipFoundation: MDCChipFoundation) => void` | Selects the given chip
 `deselect(chipFoundation: MDCChipFoundation) => void` | Deselects the given chip
+`handleChipInteraction(evt: Event) => void` | Handles a custom `MDCChip:interaction` event on the root element
+`handleChipRemoval(evt: Event) => void` | Handles a custom `MDCChip:removal` event on the root element
