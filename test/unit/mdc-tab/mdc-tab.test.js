@@ -43,8 +43,9 @@ test('attachTo returns an MDCTab instance', () => {
 
 function setupTest() {
   const root = getFixture();
+  const content = root.querySelector(MDCTabFoundation.strings.CONTENT_SELECTOR);
   const component = new MDCTab(root);
-  return {root, component};
+  return {root, content, component};
 }
 
 test('#destroy removes the ripple', () => {
@@ -121,6 +122,44 @@ test('#adapter.computeIndicatorClientRect returns the indicator element\'s bound
   );
 });
 
+test('#adapter.getOffsetWidth() returns the offsetWidth of the root element', () => {
+  const {root, component} = setupTest();
+  assert.strictEqual(component.getDefaultFoundation().adapter_.getOffsetWidth(), root.offsetWidth);
+});
+
+test('#adapter.getOffsetLeft() returns the offsetLeft of the root element', () => {
+  const {root, component} = setupTest();
+  assert.strictEqual(component.getDefaultFoundation().adapter_.getOffsetLeft(), root.offsetLeft);
+});
+
+test('#adapter.getContentOffsetWidth() returns the offsetLeft of the content element', () => {
+  const {content, component} = setupTest();
+  assert.strictEqual(component.getDefaultFoundation().adapter_.getContentOffsetWidth(), content.offsetWidth);
+});
+
+test('#adapter.getContentOffsetLeft() returns the offsetLeft of the content element', () => {
+  const {content, component} = setupTest();
+  assert.strictEqual(component.getDefaultFoundation().adapter_.getContentOffsetLeft(), content.offsetLeft);
+});
+
+test(`#adapter.notifyInteracted() emits the ${MDCTabFoundation.strings.INTERACTED_EVENT} event`, () => {
+  const {component} = setupTest();
+  const handler = td.func('interaction handler');
+
+  component.listen(MDCTabFoundation.strings.INTERACTED_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyInteracted();
+  td.verify(handler(td.matchers.anything()));
+});
+
+test(`#adapter.notifyActivated() emits the ${MDCTabFoundation.strings.ACTIVATED_EVENT} event`, () => {
+  const {component} = setupTest();
+  const handler = td.func('interaction handler');
+
+  component.listen(MDCTabFoundation.strings.ACTIVATED_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyActivated();
+  td.verify(handler(td.matchers.anything()));
+});
+
 function setupMockFoundationTest(root = getFixture()) {
   const MockFoundationConstructor = td.constructor(MDCTabFoundation);
   const mockFoundation = new MockFoundationConstructor();
@@ -156,4 +195,10 @@ test('#computeIndicatorClientRect() calls computeIndicatorClientRect', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
   component.computeIndicatorClientRect();
   td.verify(mockFoundation.computeIndicatorClientRect(), {times: 1});
+});
+
+test('#computeDimensions() calls computeDimensions', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.computeDimensions();
+  td.verify(mockFoundation.computeDimensions(), {times: 1});
 });
