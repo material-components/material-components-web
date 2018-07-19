@@ -25,11 +25,16 @@
 .mdc-tab-scroller__scroll-area {
   -webkit-overflow-scrolling: touch;
   display: flex;
-  overflow-x: scroll;
+  overflow-x: hidden;
 
   &::-webkit-scrollbar {
     display: none;
   }
+}
+
+// This modifier class will be added in JS after computing the OS scrollbar size in order to hide the scrollbar.
+.mdc-tab-scroller__scroll-area--scroll {
+  overflow-x: scroll;
 }
 
 .mdc-tab-scroller__scroll-content {

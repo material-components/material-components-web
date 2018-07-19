@@ -78,6 +78,14 @@ class MDCTabScrollerFoundation extends MDCFoundation {
     this.rtlScrollerInstance_;
   }
 
+  init() {
+    // Compute horizontal scrollbar height on scroller with overflow initially hidden, then update overflow to scroll
+    // and immediately adjust bottom margin to avoid the scrollbar initially appearing before JS runs.
+    const horizontalScrollbarHeight = this.adapter_.computeHorizontalScrollbarHeight();
+    this.adapter_.setScrollAreaStyleProperty('margin-bottom', -horizontalScrollbarHeight + 'px');
+    this.adapter_.addScrollAreaClass(MDCTabScrollerFoundation.cssClasses.SCROLL_AREA_SCROLL);
+  }
+
   /**
    * Computes the current visual scroll position
    * @return {number}
