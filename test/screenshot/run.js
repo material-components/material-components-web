@@ -54,40 +54,43 @@ const COMMAND_MAP = {
   },
 };
 
-async function run() {
+async function runAsync() {
   const cli = new Cli();
   const cmd = COMMAND_MAP[cli.command];
 
-  if (cmd) {
-    const isOnline = await cli.isOnline();
-    if (!isOnline) {
-      console.log('Offline mode!');
-    }
-
-    cmd().then(
-      (exitCode = 0) => {
-        if (exitCode !== 0) {
-          process.exit(exitCode);
-        }
-      },
-      (err) => {
-        console.error(err);
-        process.exit(ExitCode.UNKNOWN_ERROR);
-      }
-    );
-  } else {
+  if (!cmd) {
     console.error(`Error: Unknown command: '${cli.command}'`);
     process.exit(ExitCode.UNSUPPORTED_CLI_COMMAND);
+    return;
   }
+
+  const isOnline = await cli.checkIsOnline();
+  if (!isOnline) {
+    console.log('Offline mode!');
+  }
+
+  cmd().then(
+    (exitCode = ExitCode.OK) => {
+      if (exitCode !== ExitCode.OK) {
+        process.exit(exitCode);
+      }
+    },
+    (err) => {
+      console.error(err);
+      process.exit(ExitCode.UNKNOWN_ERROR);
+    }
+  );
 }
 
 const startTimeMs = new Date();
 
+// TODO(acdvorak): Create a centralized class to manage global exit handlers
 process.on('exit', () => {
   const elapsedTimeHuman = Duration.elapsed(startTimeMs, new Date()).toHumanShort();
   console.log(`\nRun time: ${elapsedTimeHuman}\n`);
 });
 
+// TODO(acdvorak): Create a centralized class to manage global exit handlers
 process.on('unhandledRejection', (error) => {
   const message = [
     'UnhandledPromiseRejectionWarning: Unhandled promise rejection.',
@@ -99,4 +102,4 @@ process.on('unhandledRejection', (error) => {
   process.exit(ExitCode.UNHANDLED_PROMISE_REJECTION);
 });
 
-run();
+runAsync();

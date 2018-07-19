@@ -132,7 +132,7 @@ Expected browser vendor to be one of [${validBrowserVendors}], but got '${browse
       );
     }
 
-    const isOnline = await this.cli_.isOnline();
+    const isOnline = this.cli_.isOnline();
     const isEnabledByCli = this.isAliasEnabled_(alias);
     const isAvailableLocally = await this.isAvailableLocally_(browserVendorType);
     const isRunnable = isEnabledByCli && (isOnline || isAvailableLocally);

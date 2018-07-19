@@ -17,39 +17,19 @@
 'use strict';
 
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
-const {ApprovalId, DiffBase, GitRevision} = mdcProto;
+const {ApprovalId} = mdcProto;
 
 const argparse = require('argparse');
 const checkIsOnline = require('is-online');
-const fs = require('mz/fs');
-const {GOLDEN_JSON_RELATIVE_PATH} = require('./constants');
 
 const Duration = require('./duration');
-const GitHubApi = require('./github-api');
-const GitRepo = require('./git-repo');
+const {GOLDEN_JSON_RELATIVE_PATH} = require('./constants');
 
-const HTTP_URL_REGEX = new RegExp('^https?://');
+/** @type {?boolean} */
+let isOnlineCached;
 
 class Cli {
   constructor() {
-    /**
-     * @type {!GitHubApi}
-     * @private
-     */
-    this.gitHubApi_ = new GitHubApi();
-
-    /**
-     * @type {!GitRepo}
-     * @private
-     */
-    this.gitRepo_ = new GitRepo();
-
-    /**
-     * @type {?boolean}
-     * @private
-     */
-    this.isOnlineCached_ = null;
-
     /**
      * @type {!ArgumentParser}
      * @private
@@ -77,6 +57,20 @@ class Cli {
     this.initTestCommand_();
 
     this.args_ = this.rootParser_.parseArgs();
+  }
+
+  /**
+   * @return {!Promise<boolean>}
+   */
+  async checkIsOnline() {
+    if (typeof isOnlineCached !== 'boolean') {
+      if (this.offline) {
+        isOnlineCached = false;
+      } else {
+        isOnlineCached = await checkIsOnline({timeout: Duration.seconds(5).toMillis()});
+      }
+    }
+    return isOnlineCached;
   }
 
   /**
@@ -472,298 +466,17 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
   }
 
   /**
-   * @return {!Promise<boolean>}
+   * @return {boolean}
    */
-  async isOnline() {
-    if (this.offline) {
-      return false;
-    }
-
-    if (typeof this.isOnlineCached_ !== 'boolean') {
-      this.isOnlineCached_ = await checkIsOnline({timeout: Duration.seconds(5).toMillis()});
-    }
-
-    return this.isOnlineCached_;
+  isOnline() {
+    return isOnlineCached === true;
   }
 
   /**
-   * TODO(acdvorak): Move this method out of Cli class - it doesn't belong here.
-   * @return {!Promise<!mdc.proto.DiffBase>}
+   * @return {boolean}
    */
-  async parseGoldenDiffBase() {
-    /** @type {?mdc.proto.GitRevision} */
-    const travisGitRevision = await this.getTravisGitRevision();
-    if (travisGitRevision) {
-      return DiffBase.create({
-        type: DiffBase.Type.GIT_REVISION,
-        git_revision: travisGitRevision,
-      });
-    }
-    return this.parseDiffBase();
-  }
-
-  /**
-   * TODO(acdvorak): Move this method out of Cli class - it doesn't belong here.
-   * @param {string} rawDiffBase
-   * @return {!Promise<!mdc.proto.DiffBase>}
-   */
-  async parseDiffBase(rawDiffBase = this.diffBase) {
-    const isOnline = await this.isOnline();
-    const isRealBranch = (branch) => Boolean(branch) && !['master', 'origin/master', 'HEAD'].includes(branch);
-
-    /** @type {!mdc.proto.DiffBase} */
-    const parsedDiffBase = await this.parseDiffBase_(rawDiffBase);
-    const parsedBranch = parsedDiffBase.git_revision ? parsedDiffBase.git_revision.branch : null;
-
-    if (isOnline && isRealBranch(parsedBranch)) {
-      const prNumber = await this.gitHubApi_.getPullRequestNumber(parsedBranch);
-      if (prNumber) {
-        parsedDiffBase.git_revision.pr_number = prNumber;
-      }
-    }
-
-    return parsedDiffBase;
-  }
-
-  /**
-   * TODO(acdvorak): Move this method out of Cli class - it doesn't belong here.
-   * @param {string} rawDiffBase
-   * @return {!Promise<!mdc.proto.DiffBase>}
-   * @private
-   */
-  async parseDiffBase_(rawDiffBase = this.diffBase) {
-    // Diff against a public `golden.json` URL.
-    // E.g.: `--diff-base=https://storage.googleapis.com/.../golden.json`
-    const isUrl = HTTP_URL_REGEX.test(rawDiffBase);
-    if (isUrl) {
-      return this.createPublicUrlDiffBase_(rawDiffBase);
-    }
-
-    // Diff against a local `golden.json` file.
-    // E.g.: `--diff-base=/tmp/golden.json`
-    const isLocalFile = await fs.exists(rawDiffBase);
-    if (isLocalFile) {
-      return this.createLocalFileDiffBase_(rawDiffBase);
-    }
-
-    const [inputGoldenRef, inputGoldenPath] = rawDiffBase.split(':');
-    const goldenFilePath = inputGoldenPath || GOLDEN_JSON_RELATIVE_PATH;
-    const fullGoldenRef = await this.gitRepo_.getFullSymbolicName(inputGoldenRef);
-
-    // Diff against a specific git commit.
-    // E.g.: `--diff-base=abcd1234`
-    if (!fullGoldenRef) {
-      return this.createCommitDiffBase_(inputGoldenRef, goldenFilePath);
-    }
-
-    const {remoteRef, localRef, tagRef} = this.getRefType_(fullGoldenRef);
-
-    // Diff against a remote git branch.
-    // E.g.: `--diff-base=origin/master` or `--diff-base=origin/feat/button/my-fancy-feature`
-    if (remoteRef) {
-      return this.createRemoteBranchDiffBase_(remoteRef, goldenFilePath);
-    }
-
-    // Diff against a remote git tag.
-    // E.g.: `--diff-base=v0.34.1`
-    if (tagRef) {
-      return this.createRemoteTagDiffBase_(tagRef, goldenFilePath);
-    }
-
-    // Diff against a local git branch.
-    // E.g.: `--diff-base=master` or `--diff-base=HEAD`
-    return this.createLocalBranchDiffBase_(localRef, goldenFilePath);
-  }
-
-  /**
-   * @return {?Promise<!mdc.proto.GitRevision>}
-   */
-  async getTravisGitRevision() {
-    const travisBranch = process.env.TRAVIS_BRANCH;
-    const travisTag = process.env.TRAVIS_TAG;
-    const travisPrNumber = Number(process.env.TRAVIS_PULL_REQUEST);
-    const travisPrBranch = process.env.TRAVIS_PULL_REQUEST_BRANCH;
-    const travisPrSha = process.env.TRAVIS_PULL_REQUEST_SHA;
-
-    if (travisPrNumber) {
-      const commit = await this.gitRepo_.getFullCommitHash(travisPrSha);
-      const author = await this.gitRepo_.getCommitAuthor(commit);
-      return GitRevision.create({
-        type: GitRevision.Type.TRAVIS_PR,
-        golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
-        commit,
-        author,
-        branch: travisPrBranch || travisBranch,
-        pr_number: travisPrNumber,
-      });
-    }
-
-    if (travisTag) {
-      const commit = await this.gitRepo_.getFullCommitHash(travisTag);
-      const author = await this.gitRepo_.getCommitAuthor(commit);
-      return GitRevision.create({
-        type: GitRevision.Type.REMOTE_TAG,
-        golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
-        commit,
-        author,
-        tag: travisTag,
-      });
-    }
-
-    if (travisBranch) {
-      const commit = await this.gitRepo_.getFullCommitHash(travisBranch);
-      const author = await this.gitRepo_.getCommitAuthor(commit);
-      return GitRevision.create({
-        type: GitRevision.Type.LOCAL_BRANCH,
-        golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
-        commit,
-        author,
-        branch: travisBranch,
-      });
-    }
-
-    return null;
-  }
-
-  /**
-   * @param {string} publicUrl
-   * @return {!mdc.proto.DiffBase}
-   * @private
-   */
-  createPublicUrlDiffBase_(publicUrl) {
-    return DiffBase.create({
-      type: DiffBase.Type.PUBLIC_URL,
-      input_string: publicUrl,
-      public_url: publicUrl,
-    });
-  }
-
-  /**
-   * @param {string} localFilePath
-   * @return {!mdc.proto.DiffBase}
-   * @private
-   */
-  createLocalFileDiffBase_(localFilePath) {
-    return DiffBase.create({
-      type: DiffBase.Type.FILE_PATH,
-      input_string: localFilePath,
-      local_file_path: localFilePath,
-      is_default_local_file: localFilePath === GOLDEN_JSON_RELATIVE_PATH,
-    });
-  }
-
-  /**
-   * @param {string} commit
-   * @param {string} goldenJsonFilePath
-   * @return {!mdc.proto.DiffBase}
-   * @private
-   */
-  async createCommitDiffBase_(commit, goldenJsonFilePath) {
-    const author = await this.gitRepo_.getCommitAuthor(commit);
-
-    return DiffBase.create({
-      type: DiffBase.Type.GIT_REVISION,
-      git_revision: GitRevision.create({
-        type: GitRevision.Type.COMMIT,
-        input_string: `${commit}:${goldenJsonFilePath}`, // TODO(acdvorak): Document the ':' separator format
-        golden_json_file_path: goldenJsonFilePath,
-        commit,
-        author,
-      }),
-    });
-  }
-
-  /**
-   * @param {string} remoteRef
-   * @param {string} goldenJsonFilePath
-   * @return {!mdc.proto.DiffBase}
-   * @private
-   */
-  async createRemoteBranchDiffBase_(remoteRef, goldenJsonFilePath) {
-    const allRemoteNames = await this.gitRepo_.getRemoteNames();
-    const remote = allRemoteNames.find((curRemoteName) => remoteRef.startsWith(curRemoteName + '/'));
-    const branch = remoteRef.substr(remote.length + 1); // add 1 for forward-slash separator
-    const commit = await this.gitRepo_.getFullCommitHash(remoteRef);
-    const author = await this.gitRepo_.getCommitAuthor(commit);
-
-    return DiffBase.create({
-      type: DiffBase.Type.GIT_REVISION,
-      git_revision: GitRevision.create({
-        type: GitRevision.Type.REMOTE_BRANCH,
-        input_string: `${remoteRef}:${goldenJsonFilePath}`, // TODO(acdvorak): Document the ':' separator format
-        golden_json_file_path: goldenJsonFilePath,
-        commit,
-        author,
-        remote,
-        branch,
-      }),
-    });
-  }
-
-  /**
-   * @param {string} tagRef
-   * @param {string} goldenJsonFilePath
-   * @return {!mdc.proto.DiffBase}
-   * @private
-   */
-  async createRemoteTagDiffBase_(tagRef, goldenJsonFilePath) {
-    const commit = await this.gitRepo_.getFullCommitHash(tagRef);
-    const author = await this.gitRepo_.getCommitAuthor(commit);
-
-    return DiffBase.create({
-      type: DiffBase.Type.GIT_REVISION,
-      git_revision: GitRevision.create({
-        type: GitRevision.Type.REMOTE_TAG,
-        input_string: `${tagRef}:${goldenJsonFilePath}`, // TODO(acdvorak): Document the ':' separator format
-        golden_json_file_path: goldenJsonFilePath,
-        commit,
-        author,
-        remote: 'origin',
-        tag: tagRef,
-      }),
-    });
-  }
-
-  /**
-   * @param {string} branch
-   * @param {string} goldenJsonFilePath
-   * @return {!mdc.proto.DiffBase}
-   * @private
-   */
-  async createLocalBranchDiffBase_(branch, goldenJsonFilePath) {
-    const commit = await this.gitRepo_.getFullCommitHash(branch);
-    const author = await this.gitRepo_.getCommitAuthor(commit);
-
-    return DiffBase.create({
-      type: DiffBase.Type.GIT_REVISION,
-      git_revision: GitRevision.create({
-        type: GitRevision.Type.LOCAL_BRANCH,
-        input_string: `${branch}:${goldenJsonFilePath}`, // TODO(acdvorak): Document the ':' separator format
-        golden_json_file_path: goldenJsonFilePath,
-        commit,
-        author,
-        branch,
-      }),
-    });
-  }
-
-  /**
-   * @param {string} fullRef
-   * @return {{remoteRef: string, localRef: string, tagRef: string}}
-   * @private
-   */
-  getRefType_(fullRef) {
-    const getShortGoldenRef = (type) => {
-      const regex = new RegExp(`^refs/${type}s/(.+)$`);
-      const match = regex.exec(fullRef) || [];
-      return match[1];
-    };
-
-    const remoteRef = getShortGoldenRef('remote');
-    const localRef = getShortGoldenRef('head');
-    const tagRef = getShortGoldenRef('tag');
-
-    return {remoteRef, localRef, tagRef};
+  isOffline() {
+    return !this.isOnline();
   }
 }
 

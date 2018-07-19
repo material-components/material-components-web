@@ -30,6 +30,11 @@ $custom-drawer-color: $material-color-orange-900;
   flex-direction: column;
 }
 
+.test-drawer-paragraph {
+  margin: 1em 0 0 0;
+  line-height: 1;
+}
+
 .custom-drawer--fill-color {
   @include mdc-drawer-fill-color($custom-drawer-color);
 }
