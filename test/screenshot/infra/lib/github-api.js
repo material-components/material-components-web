@@ -154,10 +154,11 @@ class GitHubApi {
    * @private
    */
   async createStatusUnthrottled_({state, targetUrl, description = undefined}) {
+    const sha = process.env.TRAVIS_PULL_REQUEST_SHA || await this.gitRepo_.getFullCommitHash();
     return await this.octokit_.repos.createStatus({
       owner: 'material-components',
       repo: 'material-components-web',
-      sha: process.env.TRAVIS_PULL_REQUEST_SHA || await this.gitRepo_.getFullCommitHash(),
+      sha,
       state,
       target_url: targetUrl,
       description,
