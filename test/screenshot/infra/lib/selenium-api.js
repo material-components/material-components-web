@@ -123,6 +123,12 @@ class SeleniumApi {
     this.numCompleted_ = 0;
 
     /**
+     * @type {number}
+     * @private
+     */
+    this.numChanged_ = 0;
+
+    /**
      * @type {boolean}
      * @private
      */
@@ -443,6 +449,7 @@ class SeleniumApi {
 
         if (diffImageResult.has_changed) {
           changedScreenshots.push(screenshot);
+          this.numChanged_++;
           this.logStatus_(CliStatuses.FAIL, message);
         } else {
           unchangedScreenshots.push(screenshot);
@@ -680,13 +687,16 @@ class SeleniumApi {
     const numTotal = numDone + this.numPending_;
     const strTotal = numTotal.toLocaleString();
 
-    const strPercent = (numTotal > 0 ? (100 * numDone / numTotal) : 0).toFixed(1);
-    // const strDiffs = numDone.toLocaleString();
+    const numChanged = this.numChanged_;
+    const strChanged = numChanged.toLocaleString();
+
+    const numPercent = numTotal > 0 ? (100 * numDone / numTotal) : 0;
+    const strPercent = numPercent.toFixed(1);
 
     if (process.env.TRAVIS === 'true') {
       this.gitHubApi_.setPullRequestStatusManual({
         state: GitHubApi.PullRequestState.PENDING,
-        description: `Captured ${strDone} of ${strTotal} (${strPercent}%)`, // - ${strDiffs} diffs
+        description: `Captured ${strDone} of ${strTotal} (${strPercent}%) - ${strChanged} diffs`,
       });
       return;
     }
