@@ -33,6 +33,7 @@ const CbtApi = require('./cbt-api');
 const Cli = require('./cli');
 const Constants = require('./constants');
 const Duration = require('./duration');
+const GitHubApi = require('./github-api');
 const ImageCropper = require('./image-cropper');
 const ImageDiffer = require('./image-differ');
 const LocalStorage = require('./local-storage');
@@ -80,6 +81,12 @@ class SeleniumApi {
     this.cli_ = new Cli();
 
     /**
+     * @type {!GitHubApi}
+     * @private
+     */
+    this.gitHubApi_ = new GitHubApi();
+
+    /**
      * @type {!ImageCropper}
      * @private
      */
@@ -114,6 +121,12 @@ class SeleniumApi {
      * @private
      */
     this.numCompleted_ = 0;
+
+    /**
+     * @type {number}
+     * @private
+     */
+    this.numChanged_ = 0;
 
     /**
      * @type {boolean}
@@ -436,6 +449,7 @@ class SeleniumApi {
 
         if (diffImageResult.has_changed) {
           changedScreenshots.push(screenshot);
+          this.numChanged_++;
           this.logStatus_(CliStatuses.FAIL, message);
         } else {
           unchangedScreenshots.push(screenshot);
@@ -659,19 +673,36 @@ class SeleniumApi {
     }
 
     // https://stackoverflow.com/a/6774395/467582
-    const eraseCurrentLine = '\r' + String.fromCodePoint(27) + '[K';
+    const escape = String.fromCodePoint(27);
+    const eraseCurrentLine = `\r${escape}[K`;
     const maxStatusWidth = Object.values(CliStatuses).map((status) => status.name.length).sort().reverse()[0];
     const statusName = status.name.toUpperCase();
     const paddingSpaces = ''.padStart(maxStatusWidth - statusName.length, ' ');
 
     console.log(eraseCurrentLine + paddingSpaces + status.color(statusName) + ':', ...args);
 
+    const numDone = this.numCompleted_;
+    const strDone = numDone.toLocaleString();
+
+    const numTotal = numDone + this.numPending_;
+    const strTotal = numTotal.toLocaleString();
+
+    const numChanged = this.numChanged_;
+    const strChanged = numChanged.toLocaleString();
+
+    const numPercent = numTotal > 0 ? (100 * numDone / numTotal) : 0;
+    const strPercent = numPercent.toFixed(1);
+
     if (process.env.TRAVIS === 'true') {
+      this.gitHubApi_.setPullRequestStatusManual({
+        state: GitHubApi.PullRequestState.PENDING,
+        description: `${strDone} of ${strTotal} (${strPercent}%) - ${strChanged} diffs`,
+      });
       return;
     }
 
     const pending = this.numPending_;
-    const completed = this.numCompleted_;
+    const completed = numDone;
     const total = pending + completed;
     const percent = (total === 0 ? 0 : (100 * completed / total).toFixed(1));
 

@@ -15,6 +15,7 @@
  */
 
 const octokit = require('@octokit/rest');
+
 const GitRepo = require('./git-repo');
 
 class GitHubApi {
@@ -41,6 +42,22 @@ class GitHubApi {
       type: 'oauth',
       token: token,
     });
+
+    const throttle = (fn, delay) => {
+      let lastCall = 0;
+      return (...args) => {
+        const now = (new Date).getTime();
+        if (now - lastCall < delay) {
+          return;
+        }
+        lastCall = now;
+        return fn(...args);
+      };
+    };
+
+    this.createStatusThrottled_ = throttle((...args) => {
+      return this.createStatusUnthrottled_(...args);
+    }, 5000);
   }
 
   /**
@@ -57,16 +74,32 @@ class GitHubApi {
   }
 
   /**
-   * @param {!mdc.proto.ReportData} reportData
+   * @param {string} state
+   * @param {string} description
    * @return {!Promise<*>}
    */
-  async setPullRequestStatus(reportData) {
-    const meta = reportData.meta;
-    const prNumber = Number(process.env.TRAVIS_PULL_REQUEST);
-    if (!prNumber) {
+  async setPullRequestStatusManual({state, description}) {
+    if (process.env.TRAVIS !== 'true') {
       return;
     }
 
+    return await this.createStatusThrottled_({
+      state,
+      targetUrl: `https://travis-ci.org/material-components/material-components-web/jobs/${process.env.TRAVIS_JOB_ID}`,
+      description,
+    });
+  }
+
+  /**
+   * @param {!mdc.proto.ReportData} reportData
+   * @return {!Promise<*>}
+   */
+  async setPullRequestStatusAuto(reportData) {
+    if (process.env.TRAVIS !== 'true') {
+      return;
+    }
+
+    const meta = reportData.meta;
     const screenshots = reportData.screenshots;
     const numUnchanged = screenshots.unchanged_screenshot_list.length;
     const numChanged =
@@ -90,22 +123,23 @@ class GitHubApi {
 
       targetUrl = meta.report_html_file.public_url;
     } else {
-      const numScreenshotsFormatted = screenshots.runnable_screenshot_list.length.toLocaleString();
+      const runnableScreenshots = screenshots.runnable_screenshot_list;
+      const numTotal = runnableScreenshots.length;
+
       state = GitHubApi.PullRequestState.PENDING;
       targetUrl = `https://travis-ci.org/material-components/material-components-web/jobs/${process.env.TRAVIS_JOB_ID}`;
-      description = `Running ${numScreenshotsFormatted} screenshot tests`;
+      description = `Running ${numTotal.toLocaleString()} screenshots...`;
     }
 
-    return await this.createStatus_({state, targetUrl, description});
+    return await this.createStatusUnthrottled_({state, targetUrl, description});
   }
 
   async setPullRequestError() {
-    const prNumber = Number(process.env.TRAVIS_PULL_REQUEST);
-    if (!prNumber) {
+    if (process.env.TRAVIS !== 'true') {
       return;
     }
 
-    return await this.createStatus_({
+    return await this.createStatusUnthrottled_({
       state: GitHubApi.PullRequestState.ERROR,
       targetUrl: `https://travis-ci.org/material-components/material-components-web/jobs/${process.env.TRAVIS_JOB_ID}`,
       description: 'Error running screenshot tests',
@@ -119,11 +153,12 @@ class GitHubApi {
    * @return {!Promise<*>}
    * @private
    */
-  async createStatus_({state, targetUrl, description = undefined}) {
+  async createStatusUnthrottled_({state, targetUrl, description = undefined}) {
+    const sha = process.env.TRAVIS_PULL_REQUEST_SHA || await this.gitRepo_.getFullCommitHash();
     return await this.octokit_.repos.createStatus({
       owner: 'material-components',
       repo: 'material-components-web',
-      sha: await this.gitRepo_.getFullCommitHash(process.env.TRAVIS_PULL_REQUEST_SHA),
+      sha,
       state,
       target_url: targetUrl,
       description,
