@@ -77,6 +77,29 @@ const fabRipple = new MDCRipple(document.querySelector('.mdc-fab'));
 
 > See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
 
+## Variants
+
+### Standard FAB
+
+A floating action button (FAB) represents the primary action of a screen.
+
+```html
+<button class="mdc-fab" aria-label="Favorite">
+  <span class="mdc-fab__icon material-icons">favorite</span>
+</button>
+```
+
+### Extended FAB
+
+```html
+<button class="mdc-fab mdc-fab--extended">
+  <span class="material-icons mdc-fab__icon">add</span>
+  <span class="mdc-fab__label">Create</span>
+</button>
+```
+
+> _NOTE:_ The extended FAB must contain label where as the icon is optional. The position of icon and label may interchange.
+
 ## Style Customization
 
 ### CSS Classes
