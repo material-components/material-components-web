@@ -680,7 +680,7 @@ class SeleniumApi {
     const numTotal = numDone + this.numPending_;
     const strTotal = numTotal.toLocaleString();
 
-    const strPercent = numDone.toFixed(1);
+    const strPercent = (numTotal > 0 ? (100 * numDone / numTotal) : 0).toFixed(1);
     // const strDiffs = numDone.toLocaleString();
 
     if (process.env.TRAVIS === 'true') {
