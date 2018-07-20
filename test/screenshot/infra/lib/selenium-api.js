@@ -25,7 +25,7 @@ const mdcProto = require('../proto/mdc.pb').mdc.proto;
 const seleniumProto = require('../proto/selenium.pb').selenium.proto;
 
 const {Screenshot, TestFile, UserAgent} = mdcProto;
-const {CaptureState} = Screenshot;
+const {CaptureState, InclusionType} = Screenshot;
 const {BrowserVendorType, Navigator} = UserAgent;
 const {RawCapabilities} = seleniumProto;
 
@@ -56,6 +56,7 @@ const CliStatuses = {
   GET: {name: 'Get', color: colors.bold.white},
   CROP: {name: 'Crop', color: colors.white},
   PASS: {name: 'Pass', color: colors.green},
+  ADD: {name: 'Add', color: colors.bgGreen.black},
   FAIL: {name: 'Fail', color: colors.red},
   RETRY: {name: 'Retry', color: colors.magenta},
   CAPTURED: {name: 'Captured', color: colors.bold.grey},
@@ -438,7 +439,12 @@ class SeleniumApi {
           this.logStatus_(CliStatuses.FAIL, message);
         } else {
           unchangedScreenshots.push(screenshot);
-          this.logStatus_(CliStatuses.PASS, message);
+
+          if (screenshot.inclusion_type === InclusionType.ADD) {
+            this.logStatus_(CliStatuses.ADD, message);
+          } else {
+            this.logStatus_(CliStatuses.PASS, message);
+          }
         }
       }
     }
@@ -617,19 +623,16 @@ class SeleniumApi {
 
   /** @private */
   async killBrowsers_() {
-    if (this.isKilled_) {
-      return;
+    const ids = Array.from(this.seleniumSessionIds_);
+    const wasAlreadyKilled = this.isKilled_;
+
+    if (!wasAlreadyKilled) {
+      console.log('\n');
     }
+
     this.isKilled_ = true;
 
-    const ids = Array.from(this.seleniumSessionIds_);
-    this.seleniumSessionIds_.clear();
-
-    console.log('\n');
-
-    await this.cbtApi_.killSeleniumTests(ids);
-
-    console.log(`Killed ${ids.length} Selenium tests!`);
+    await this.cbtApi_.killSeleniumTests(ids, /* silent */ wasAlreadyKilled);
 
     // Give the HTTP requests a chance to complete before exiting
     await this.sleep_(Duration.seconds(4).toMillis());
@@ -658,9 +661,10 @@ class SeleniumApi {
     // https://stackoverflow.com/a/6774395/467582
     const eraseCurrentLine = '\r' + String.fromCodePoint(27) + '[K';
     const maxStatusWidth = Object.values(CliStatuses).map((status) => status.name.length).sort().reverse()[0];
-    const colorStatus = status.color(status.name.toUpperCase().padStart(maxStatusWidth, ' '));
+    const statusName = status.name.toUpperCase();
+    const paddingSpaces = ''.padStart(maxStatusWidth - statusName.length, ' ');
 
-    console.log(eraseCurrentLine + colorStatus + ':', ...args);
+    console.log(eraseCurrentLine + paddingSpaces + status.color(statusName) + ':', ...args);
 
     if (process.env.TRAVIS === 'true') {
       return;

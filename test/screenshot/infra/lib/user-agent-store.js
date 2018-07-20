@@ -82,7 +82,7 @@ Expected format: 'desktop_windows_chrome@latest'.
     const [, formFactorName, osVendorName, browserVendorName, browserVersionName] = matchArray;
 
     const getEnumKeysLowerCase = (enumeration) => {
-      return Object.keys(enumeration).map((key) => key.toLowerCase());
+      return Object.keys(enumeration).filter((key) => key !== 'UNKNOWN').map((key) => key.toLowerCase());
     };
 
     // In proto3, the first enum value must always be 0.

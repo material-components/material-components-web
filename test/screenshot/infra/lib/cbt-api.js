@@ -386,11 +386,14 @@ https://crossbrowsertesting.com/account
 
   /**
    * @param {!Array<string>} seleniumTestIds
+   * @param {boolean=} silent
    * @return {!Promise<void>}
    */
-  async killSeleniumTests(seleniumTestIds) {
+  async killSeleniumTests(seleniumTestIds, silent = false) {
     await Promise.all(seleniumTestIds.map((seleniumTestId) => {
-      console.log(`${colors.red('Killing')} zombie Selenium test ${colors.bold(seleniumTestId)}`);
+      if (!silent) {
+        console.log(`${colors.red('Killing')} zombie Selenium test ${colors.bold(seleniumTestId)}`);
+      }
       return this.sendRequest_('DELETE', `/selenium/${seleniumTestId}`);
     }));
   }
