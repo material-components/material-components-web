@@ -129,7 +129,9 @@ class ReportBuilder {
   async initForCapture() {
     this.logger_.foldStart('screenshot.init', 'ReportBuilder#initForCapture()');
 
-    await this.cbtApi_.fetchAvailableDevices();
+    if (this.cli_.isOnline()) {
+      await this.cbtApi_.fetchAvailableDevices();
+    }
 
     /** @type {!mdc.proto.ReportMeta} */
     const reportMeta = await this.createReportMetaProto_();
