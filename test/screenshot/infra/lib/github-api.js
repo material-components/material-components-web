@@ -16,11 +16,6 @@
 
 const octokit = require('@octokit/rest');
 
-const mdcProto = require('../proto/mdc.pb').mdc.proto;
-
-const {Screenshot} = mdcProto;
-const {CaptureState} = Screenshot;
-
 const GitRepo = require('./git-repo');
 
 class GitHubApi {
