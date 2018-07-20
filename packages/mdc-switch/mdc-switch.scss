@@ -62,7 +62,7 @@
 }
 
 .mdc-switch__thumb-underlay {
-  @include mdc-rtl-reflexive-position(left, -18px);
+  @include mdc-rtl-reflexive-position(left, $mdc-switch-tap-target-initial-position);
   @include mdc-ripple-surface();
   @include mdc-ripple-radius-unbounded;
   @include mdc-states($mdc-switch-baseline-theme-color);
