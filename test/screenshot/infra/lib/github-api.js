@@ -154,7 +154,7 @@ class GitHubApi {
    * @private
    */
   async createStatusUnthrottled_({state, targetUrl, description = undefined}) {
-    const req = {
+    return await this.octokit_.repos.createStatus({
       owner: 'material-components',
       repo: 'material-components-web',
       sha: process.env.TRAVIS_PULL_REQUEST_SHA || await this.gitRepo_.getFullCommitHash(),
@@ -162,12 +162,7 @@ class GitHubApi {
       target_url: targetUrl,
       description,
       context: 'screenshot-test/butter-bot',
-    };
-    console.log('');
-    console.log('GitHubApi#createStatusUnthrottled_():');
-    console.log(req);
-    console.log('');
-    return await this.octokit_.repos.createStatus(req);
+    });
   }
 
   /**
