@@ -112,8 +112,7 @@ class MDCSlider extends MDCComponent {
         hasClass: (className) => this.root_.classList.contains(className),
         addClass: (className) => this.root_.classList.add(className),
         removeClass: (className) => this.root_.classList.remove(className),
-        getAttribute: (name) => this.thumb_.getAttribute(name),
-        setAttribute: (name, value) => this.thumb_.setAttribute(name, value),
+        setThumbAttribute: (name, value) => this.thumb_.setAttribute(name, value),
         computeBoundingRect: () => this.root_.getBoundingClientRect(),
         eventTargetHasClass: (target, className) => target.classList.contains(className),
         registerEventHandler: (type, handler) => {
@@ -121,12 +120,6 @@ class MDCSlider extends MDCComponent {
         },
         deregisterEventHandler: (type, handler) => {
           this.root_.removeEventListener(type, handler);
-        },
-        registerThumbEventHandler: (type, handler) => {
-          this.thumb_.addEventListener(type, handler);
-        },
-        deregisterThumbEventHandler: (type, handler) => {
-          this.thumb_.removeEventListener(type, handler);
         },
         registerBodyEventHandler: (type, handler) => {
           document.body.addEventListener(type, handler);

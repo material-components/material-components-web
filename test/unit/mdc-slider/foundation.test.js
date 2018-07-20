@@ -35,9 +35,8 @@ test('exports strings', () => {
 
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSliderFoundation, [
-    'hasClass', 'addClass', 'removeClass', 'getAttribute', 'setAttribute',
+    'hasClass', 'addClass', 'removeClass', 'setThumbAttribute',
     'computeBoundingRect', 'eventTargetHasClass', 'registerEventHandler', 'deregisterEventHandler',
-    'registerThumbEventHandler', 'deregisterThumbEventHandler',
     'registerBodyEventHandler', 'deregisterBodyEventHandler', 'registerWindowResizeHandler',
     'deregisterWindowResizeHandler', 'notifyInput', 'notifyChange', 'setThumbStyleProperty',
     'setTrackFillStyleProperty', 'focusThumb', 'activateRipple',
@@ -75,9 +74,7 @@ test('#init registers all necessary event handlers for the component', () => {
   td.verify(mockAdapter.registerEventHandler('touchstart', isA(Function)));
   td.verify(mockAdapter.registerEventHandler('keydown', isA(Function)));
   td.verify(mockAdapter.registerEventHandler('keyup', isA(Function)));
-  td.verify(mockAdapter.registerThumbEventHandler('mousedown', isA(Function)));
-  td.verify(mockAdapter.registerThumbEventHandler('pointerdown', isA(Function)));
-  td.verify(mockAdapter.registerThumbEventHandler('touchstart', isA(Function)));
+  td.verify(mockAdapter.registerEventHandler('transitionend', isA(Function)));
   td.verify(mockAdapter.registerWindowResizeHandler(isA(Function)));
 
   raf.restore();
@@ -139,9 +136,7 @@ test('#destroy deregisters all component event handlers registered during init()
   td.verify(mockAdapter.deregisterEventHandler('touchstart', isA(Function)));
   td.verify(mockAdapter.deregisterEventHandler('keydown', isA(Function)));
   td.verify(mockAdapter.deregisterEventHandler('keyup', isA(Function)));
-  td.verify(mockAdapter.deregisterThumbEventHandler('mousedown', isA(Function)));
-  td.verify(mockAdapter.deregisterThumbEventHandler('pointerdown', isA(Function)));
-  td.verify(mockAdapter.deregisterThumbEventHandler('touchstart', isA(Function)));
+  td.verify(mockAdapter.deregisterEventHandler('transitionend', isA(Function)));
   td.verify(mockAdapter.deregisterWindowResizeHandler(isA(Function)));
 });
 
@@ -248,7 +243,7 @@ test('#setValue updates "aria-valuenow" with the current value', () => {
 
   foundation.setValue(10);
 
-  td.verify(mockAdapter.setAttribute('aria-valuenow', '10'));
+  td.verify(mockAdapter.setThumbAttribute('aria-valuenow', '10'));
 
   raf.restore();
 });
@@ -360,7 +355,7 @@ test('#setMax clamps the value to the new maximum if above the new maximum', () 
   foundation.setMax(50);
 
   assert.equal(foundation.getValue(), 50);
-  td.verify(mockAdapter.setAttribute('aria-valuenow', '50'));
+  td.verify(mockAdapter.setThumbAttribute('aria-valuenow', '50'));
 
   raf.restore();
 });
@@ -397,7 +392,7 @@ test('#setMax updates "aria-valuemax" to the new maximum', () => {
 
   foundation.setMax(50);
 
-  td.verify(mockAdapter.setAttribute('aria-valuemax', '50'));
+  td.verify(mockAdapter.setThumbAttribute('aria-valuemax', '50'));
 
   raf.restore();
 });
@@ -444,7 +439,7 @@ test('#setMin clamps the value to the new minimum if above the new minimum', () 
   foundation.setMin(10);
 
   assert.equal(foundation.getValue(), 10);
-  td.verify(mockAdapter.setAttribute('aria-valuenow', '10'));
+  td.verify(mockAdapter.setThumbAttribute('aria-valuenow', '10'));
 
   raf.restore();
 });
@@ -481,7 +476,7 @@ test('#setMin updates "aria-valuemin" to the new minimum', () => {
 
   foundation.setMin(10);
 
-  td.verify(mockAdapter.setAttribute('aria-valuemin', '10'));
+  td.verify(mockAdapter.setThumbAttribute('aria-valuemin', '10'));
 
   raf.restore();
 });
@@ -512,6 +507,85 @@ test('#setStep no-op if the step value given is less than 0', () => {
   foundation.setStep(-1);
 
   assert.equal(foundation.getStep(), 5);
+
+  raf.restore();
+});
+
+test('#handleTransitionEnd sets inTransit_ to false when inTransit_ is true and event target is track-fill', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const raf = createMockRaf();
+  td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
+  foundation.init();
+  raf.flush();
+
+  // To set this.inTransit_ to true
+  const mockKeyboardEvent = {
+    preventDefault: () => {},
+    keyCode: 37,
+  };
+  foundation.handleKeydown(mockKeyboardEvent);
+  raf.flush();
+
+  const mockEvent = {
+    target: {
+      classList: ['mdc-slider__track-fill'],
+    },
+  };
+  td.when(mockAdapter.eventTargetHasClass(mockEvent.target, 'mdc-slider__track-fill')).thenReturn(true);
+  foundation.handleTransitionEnd(mockEvent);
+  raf.flush();
+
+  td.verify(mockAdapter.removeClass(cssClasses.IN_TRANSIT));
+
+  raf.restore();
+});
+
+test('#handleTransitionEnd no-op when inTransit_ is false and event target is track-fill', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const raf = createMockRaf();
+  td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
+  foundation.init();
+  raf.flush();
+
+  const mockEvent = {
+    target: {
+      classList: ['mdc-slider__track-fill'],
+    },
+  };
+  td.when(mockAdapter.eventTargetHasClass(mockEvent.target, 'mdc-slider__track-fill')).thenReturn(true);
+  foundation.handleTransitionEnd(mockEvent);
+  raf.flush();
+
+  td.verify(mockAdapter.removeClass(cssClasses.IN_TRANSIT), {times: 0});
+
+  raf.restore();
+});
+
+test('#handleTransitionEnd no-op when inTransit_ is true and event target is not track-fill', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const raf = createMockRaf();
+  td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
+  foundation.init();
+  raf.flush();
+
+  // To set this.inTransit_ to true
+  const mockKeyboardEvent = {
+    preventDefault: () => {},
+    keyCode: 37,
+  };
+  foundation.handleKeydown(mockKeyboardEvent);
+  raf.flush();
+
+  const mockEvent = {
+    target: {
+      classList: ['mdc-slider__track'],
+    },
+  };
+  td.when(mockAdapter.eventTargetHasClass(mockEvent.target, 'mdc-slider__track-fill')).thenReturn(false);
+  foundation.handleTransitionEnd(mockEvent);
+  raf.flush();
+
+  td.verify(mockAdapter.removeClass(cssClasses.IN_TRANSIT), {times: 0});
 
   raf.restore();
 });

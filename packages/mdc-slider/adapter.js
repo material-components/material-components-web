@@ -45,18 +45,11 @@ class MDCSliderAdapter {
   removeClass(className) {}
 
   /**
-   * Returns the value of the given attribute or null
-   * @param {string} name
-   * @return {?string}
-   */
-  getAttribute(name) {}
-
-  /**
-   * Sets attribute name on slider Element to value
+   * Sets attribute name on slider thumb Element to value
    * @param {string} name
    * @param {string} value
    */
-  setAttribute(name, value) {}
+  setThumbAttribute(name, value) {}
 
   /**
    * Returns the bounding client rect for the slider Element
@@ -66,7 +59,7 @@ class MDCSliderAdapter {
 
   /**
    * Returns true if target has className, false otherwise.
-   * @param {!EventTarget} target
+   * @param {EventTarget} target
    * @param {string} className
    * @return {boolean}
    */
@@ -85,20 +78,6 @@ class MDCSliderAdapter {
    * @param {function(!Event): undefined} handler
    */
   deregisterEventHandler(type, handler) {}
-
-  /**
-   * Registers an event handler on the thumb container element for a given event.
-   * @param {string} type
-   * @param {function(!Event): undefined} handler
-   */
-  registerThumbEventHandler(type, handler) {}
-
-  /**
-   * Deregisters an event handler on the thumb container element for a given event.
-   * @param {string} type
-   * @param {function(!Event): undefined} handler
-   */
-  deregisterThumbEventHandler(type, handler) {}
 
   /**
    * Registers an event handler on the body for a given event.
