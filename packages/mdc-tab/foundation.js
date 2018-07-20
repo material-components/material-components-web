@@ -62,6 +62,7 @@ class MDCTabFoundation extends MDCFoundation {
       getOffsetWidth: () => {},
       getContentOffsetLeft: () => {},
       getContentOffsetWidth: () => {},
+      focus: () => {},
     });
   }
 
@@ -127,6 +128,7 @@ class MDCTabFoundation extends MDCFoundation {
     this.adapter_.setAttr(strings.ARIA_SELECTED, 'true');
     this.adapter_.setAttr(strings.TABINDEX, '0');
     this.adapter_.activateIndicator(previousIndicatorClientRect);
+    this.adapter_.focus({preventScroll: true});
     this.adapter_.notifyActivated();
   }
 

@@ -124,6 +124,12 @@ class MDCTabAdapter {
    * @return {number}
    */
   getContentOffsetWidth() {}
+
+  /**
+   * Applies focus to the root element
+   * @param {!Object} focusOptions
+   */
+  focus(focusOptions) {}
 }
 
 export {MDCTabDimensions, MDCTabAdapter};

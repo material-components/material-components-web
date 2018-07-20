@@ -41,13 +41,13 @@
 
     <main class="mdc-toolbar-fixed-adjust">
       <section class="hero demo">
-        <div class="mdc-tab-bar demo-tab-bar">
+        <div class="mdc-tab-bar demo-tab-bar" role="tablist" aria-label="Navigation">
           <div class="mdc-tab-scroller">
             <div class="mdc-tab-scroller__scroll-area">
               <div class="mdc-tab-scroller__scroll-content">
-                <button class="mdc-tab mdc-tab--stacked mdc-tab--active" role="tab">
+                <button class="mdc-tab mdc-tab--stacked mdc-tab--active" role="tab" aria-selected="true">
                   <span class="mdc-tab__content">
-                    <span class="material-icons mdc-tab__icon">favorite</span>
+                    <span class="material-icons mdc-tab__icon" aria-hidden="true">favorite</span>
                     <span class="mdc-tab__text-label">Favorites</span>
                     <span class="mdc-tab-indicator mdc-tab-indicator--active">
                       <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
@@ -55,9 +55,9 @@
                   </span>
                   <span class="mdc-tab__ripple"></span>
                 </button>
-                <button class="mdc-tab mdc-tab--stacked" role="tab">
+                <button class="mdc-tab mdc-tab--stacked" role="tab" aria-selected="false" tabindex="-1">
                   <span class="mdc-tab__content">
-                    <span class="material-icons mdc-tab__icon">phone</span>
+                    <span class="material-icons mdc-tab__icon" aria-hidden="true">phone</span>
                     <span class="mdc-tab__text-label">Recents</span>
                     <span class="mdc-tab-indicator">
                       <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
@@ -65,9 +65,9 @@
                   </span>
                   <span class="mdc-tab__ripple"></span>
                 </button>
-                <button class="mdc-tab mdc-tab--stacked" role="tab">
+                <button class="mdc-tab mdc-tab--stacked" role="tab" aria-selected="false" tabindex="-1">
                   <span class="mdc-tab__content">
-                    <span class="material-icons mdc-tab__icon">near_me</span>
+                    <span class="material-icons mdc-tab__icon" aria-hidden="true">near_me</span>
                     <span class="mdc-tab__text-label">Nearby</span>
                     <span class="mdc-tab-indicator">
                       <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
@@ -75,9 +75,9 @@
                   </span>
                   <span class="mdc-tab__ripple"></span>
                 </button>
-                <button class="mdc-tab mdc-tab--stacked" role="tab">
+                <button class="mdc-tab mdc-tab--stacked" role="tab" aria-selected="false" tabindex="-1">
                   <span class="mdc-tab__content">
-                    <span class="material-icons mdc-tab__icon">build</span>
+                    <span class="material-icons mdc-tab__icon" aria-hidden="true">build</span>
                     <span class="mdc-tab__text-label">Tools</span>
                     <span class="mdc-tab-indicator">
                       <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
@@ -85,9 +85,9 @@
                   </span>
                   <span class="mdc-tab__ripple"></span>
                 </button>
-                <button class="mdc-tab mdc-tab--stacked" role="tab">
+                <button class="mdc-tab mdc-tab--stacked" role="tab" aria-selected="false" tabindex="-1">
                   <span class="mdc-tab__content">
-                    <span class="material-icons mdc-tab__icon">home</span>
+                    <span class="material-icons mdc-tab__icon" aria-hidden="true">home</span>
                     <span class="mdc-tab__text-label">Home</span>
                     <span class="mdc-tab-indicator">
                       <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
@@ -95,10 +95,40 @@
                   </span>
                   <span class="mdc-tab__ripple"></span>
                 </button>
-                <button class="mdc-tab mdc-tab--stacked" role="tab">
+                <button class="mdc-tab mdc-tab--stacked" role="tab" aria-selected="false" tabindex="-1">
                   <span class="mdc-tab__content">
-                    <span class="material-icons mdc-tab__icon">polymer</span>
+                    <span class="material-icons mdc-tab__icon" aria-hidden="true">polymer</span>
                     <span class="mdc-tab__text-label">Polymer</span>
+                    <span class="mdc-tab-indicator">
+                      <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+                    </span>
+                  </span>
+                  <span class="mdc-tab__ripple"></span>
+                </button>
+                <button class="mdc-tab mdc-tab--stacked" role="tab" aria-selected="false" tabindex="-1">
+                  <span class="mdc-tab__content">
+                    <span class="material-icons mdc-tab__icon" aria-hidden="true">store</span>
+                    <span class="mdc-tab__text-label">Shop</span>
+                    <span class="mdc-tab-indicator">
+                      <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+                    </span>
+                  </span>
+                  <span class="mdc-tab__ripple"></span>
+                </button>
+                <button class="mdc-tab mdc-tab--stacked" role="tab" aria-selected="false" tabindex="-1">
+                  <span class="mdc-tab__content">
+                    <span class="material-icons mdc-tab__icon" aria-hidden="true">keyboard_voice</span>
+                    <span class="mdc-tab__text-label">Voice</span>
+                    <span class="mdc-tab-indicator">
+                      <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+                    </span>
+                  </span>
+                  <span class="mdc-tab__ripple"></span>
+                </button>
+                <button class="mdc-tab mdc-tab--stacked" role="tab" aria-selected="false" tabindex="-1">
+                  <span class="mdc-tab__content">
+                    <span class="material-icons mdc-tab__icon" aria-hidden="true">all_inclusive</span>
+                    <span class="mdc-tab__text-label">Infinity</span>
                     <span class="mdc-tab-indicator">
                       <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
                     </span>

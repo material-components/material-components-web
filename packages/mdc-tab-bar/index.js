@@ -41,6 +41,8 @@ class MDCTabBar extends MDCComponent {
     this.tabScroller_;
 
     this.handleTabInteraction_;
+
+    this.handleKeyDown_;
   }
 
   /**
@@ -64,13 +66,16 @@ class MDCTabBar extends MDCComponent {
 
   initialSyncWithDOM() {
     this.handleTabInteraction_ = (evt) => this.foundation_.handleTabInteraction(evt);
+    this.handleKeyDown_ = (evt) => this.foundation_.handleKeyDown(evt);
 
     this.root_.addEventListener(MDCTabFoundation.strings.INTERACTED_EVENT, this.handleTabInteraction_);
+    this.root_.addEventListener('keydown', this.handleKeyDown_);
   }
 
   destroy() {
     super.destroy();
     this.root_.removeEventListener(MDCTabFoundation.strings.INTERACTED_EVENT, this.handleTabInteraction_);
+    this.root_.removeEventListener('keydown', this.handleKeyDown_);
   }
 
   /**

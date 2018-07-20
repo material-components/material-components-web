@@ -18,6 +18,11 @@
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
+ * @typedef {{rootLeft: number, rootRight: number, contentLeft: number, contentRight: number}}
+ */
+let MDCTabBarRelativeTabDimensions;
+
+/**
  * Adapter for MDC Tab Bar.
  *
  * Defines the shape of the adapter expected by the foundation. Implement this
@@ -51,6 +56,12 @@ class MDCTabBarAdapter {
    * @return {number}
    */
   getOffsetWidth() {}
+
+  /**
+   * Returns if the Tab Bar language direction is RTL
+   * @return {boolean}
+   */
+  isRTL() {}
 }
 
 export default MDCTabBarAdapter;
