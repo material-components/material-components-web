@@ -696,7 +696,7 @@ class SeleniumApi {
     if (process.env.TRAVIS === 'true') {
       this.gitHubApi_.setPullRequestStatusManual({
         state: GitHubApi.PullRequestState.PENDING,
-        description: `Captured ${strDone} of ${strTotal} (${strPercent}%) - ${strChanged} diffs`,
+        description: `${strDone} of ${strTotal} (${strPercent}%) - ${strChanged} diffs`,
       });
       return;
     }
