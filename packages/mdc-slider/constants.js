@@ -38,6 +38,7 @@ const cssClasses = {
   ACTIVE: 'mdc-slider--active',
   IN_TRANSIT: 'mdc-slider--in-transit',
   IS_DISCRETE: 'mdc-slider--discrete',
+  PRESSED: 'mdc-slider--pressed',
 };
 
 export {strings, cssClasses};

@@ -113,19 +113,30 @@
 
 .mdc-slider__value-label-text {
   stroke: none;
+  user-select: none;
 }
 
 .mdc-slider__value-label,
 .mdc-slider__value-label-text {
-  transform: scale(0.1) translate(155px, 170px);
-  will-change: transform;
-  transition: transform 100ms $mdc-animation-standard-curve-timing-function,
+  transform: scale(0.05) translate(360px, 360px);
+  will-change: transform, d;
+  transition: transform 100ms $mdc-animation-standard-curve-timing-function;
 }
 
 .mdc-slider--active {
   .mdc-slider__value-label,
   .mdc-slider__value-label-text {
     transform: scale(1);
+  }
+}
+
+.mdc-slider--pressed {
+  .mdc-slider__value-label {
+    transition: d 75ms $mdc-animation-standard-curve-timing-function;
+  }
+
+  .mdc-slider__value-label-text {
+    transition: transform 75ms $mdc-animation-standard-curve-timing-function;
   }
 }
 
@@ -144,7 +155,7 @@
 
 .mdc-slider--discrete:not(.mdc-slider--in-transit) {
   .mdc-slider__thumb,
-  .mdc-slider__track-fill {
+  .mdc-slider__track-fill, {
     transition: transform 75ms $mdc-animation-standard-curve-timing-function;
   }
 }

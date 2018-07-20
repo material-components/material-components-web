@@ -61,6 +61,7 @@ class MDCSliderFoundation extends MDCFoundation {
       setAttribute: () => {},
       setValueLabelPath: () => {},
       setValueLabelText: () => {},
+      removeValueLabelTextStyle: () => {},
       computeBoundingRect: () => {},
       eventTargetHasClass: () => {},
       registerEventHandler: () => {},
@@ -94,11 +95,13 @@ class MDCSliderFoundation extends MDCFoundation {
     /** @private {boolean} */
     this.inTransit_ = false;
     /** @private {boolean} */
-    this.isDiscrete = false;
+    this.pressed_ = false;
+    /** @private {boolean} */
+    this.isDiscrete_ = false;
     /** @private {number} */
     this.min_ = 0;
     /** @private {number} */
-    this.max_ = 100;
+    this.max_ = 1000000000000000000000;
     /** @private {number} */
     this.value_ = 0;
     /** @private {number} */
@@ -225,6 +228,16 @@ class MDCSliderFoundation extends MDCFoundation {
     this.setInTransit_(!this.handlingThumbTargetEvt_);
     this.handlingThumbTargetEvt_ = false;
 
+    if (this.isDiscrete_) {
+      const onTransitionEndPressed = (evt) => {
+        if (this.adapter_.eventTargetHasClass(evt.target, 'mdc-slider__value-label') && this.active_) {
+          this.setPressed_(true);
+          this.adapter_.deregisterEventHandler('transitionend', onTransitionEndPressed);
+        }
+      };
+      this.adapter_.registerEventHandler('transitionend', onTransitionEndPressed);
+    }
+
     const moveHandler = (evt) => {
       this.interactionMoveHandler_(evt);
     };
@@ -257,9 +270,13 @@ class MDCSliderFoundation extends MDCFoundation {
    */
   handleInteractionEnd() {
     this.setActive_(false);
+    this.setPressed_(false);
     this.adapter_.notifyChange();
     this.adapter_.deactivateRipple();
     this.adapter_.focusThumb();
+    if (this.isDiscrete_) {
+      this.adapter_.removeValueLabelTextStyle();
+    }
   }
 
   /**
@@ -273,8 +290,18 @@ class MDCSliderFoundation extends MDCFoundation {
     }
 
     this.setActive_(true);
-    this.setInTransit_(!this.handlingThumbTargetEvt_);
-    this.handlingThumbTargetEvt_ = false;
+    if (this.isDiscrete_) {
+      const onTransitionEndPressed = (evt) => {
+        if (this.adapter_.eventTargetHasClass(evt.target, 'mdc-slider__value-label') && this.active_) {
+          this.setPressed_(true);
+          this.adapter_.deregisterEventHandler('transitionend', onTransitionEndPressed);
+        }
+      };
+      this.adapter_.registerEventHandler('transitionend', onTransitionEndPressed);
+    } else {
+      this.setInTransit_(!this.handlingThumbTargetEvt_);
+      this.handlingThumbTargetEvt_ = false;
+    }
 
     // Prevent page from scrolling due to key presses that would normally scroll the page
     evt.preventDefault();
@@ -388,105 +415,140 @@ class MDCSliderFoundation extends MDCFoundation {
    * Calculates the value label path
    * @return {number}
    */
-  calcPath_() {
-    const topLobeRadius = 16;
-    const topNeckRadius = 14;
-    if (this.value_.toString().length <= 2) {
-      var topLobeHorizontal = 0;
-    } else {
-      var topLobeHorizontal = (this.value_.toString().length - 2) * 8.98;
+  calcPath_(translatePx) {
+    let topLobeHorizontal = 0;
+    if (this.value_.toString().length > 2) {
+      topLobeHorizontal = (this.value_.toString().length - 2) * 8.98;
     }
-    const extra = topLobeHorizontal - 30;
+    let extra = topLobeHorizontal - 30;
+    let addExtraRight = false;
+    let addExtraLeft = false;
     if (extra > 0) {
       topLobeHorizontal = 30;
+      addExtraRight = true;
+      addExtraLeft = true;
+    } else {
+      extra = 0;
     }
-    const topNeckTheta = Math.asin((15 - topLobeHorizontal)/(topLobeRadius+topNeckRadius));
+
+    const topLobeRadius = 16;
+    const topNeckRadius = 14;
     const topNeckCornerTheta = Math.acos((15 - topLobeHorizontal/2)/(topLobeRadius+topNeckRadius));
-    const topNeckCornerCenterX = 31;
-    const topNeckCornerCenterY = Math.sqrt(Math.pow(topLobeRadius+topNeckRadius, 2) - Math.pow(15 - topLobeHorizontal/2, 2));
+    const topNeckCornerCenterY = Math.sqrt(Math.pow(topLobeRadius+topNeckRadius, 2) -
+      Math.pow(15 - topLobeHorizontal/2, 2));
 
     const centersDifference = 40;
+
     const bottomLobeRadius = 6;
     const bottomNeckRadius = 4.5;
     const bottomNeckTheta = 5 * Math.PI / 18;
     const bottomNeckHeight = Math.sin(bottomNeckTheta) * (bottomLobeRadius+bottomNeckRadius);
+
     const offsetY = -39;
     const offsetX = 1;
 
-    let pointA = {
+    const pointA = {
       x: 17 + (topNeckRadius - (Math.cos(topNeckCornerTheta) * topNeckRadius)) + offsetX,
-        y: 16 + (topNeckCornerCenterY - (Math.sin(topNeckCornerTheta) * topNeckRadius)) + offsetY
-        };
+      y: 16 + (topNeckCornerCenterY - (Math.sin(topNeckCornerTheta) * topNeckRadius)) + offsetY,
+    };
     const pointB = {
       x: 17 + offsetX,
-        y: 16 + topNeckCornerCenterY + offsetY
-        };
+      y: 16 + topNeckCornerCenterY + offsetY,
+    };
     const pointC = {
       x: 17 + offsetX,
-        y: 16 + centersDifference - bottomNeckHeight + offsetY
-        };
+      y: 16 + centersDifference - bottomNeckHeight + offsetY,
+    };
     const pointD = {
       x: 17 + bottomNeckRadius - (Math.cos(bottomNeckTheta) * bottomNeckRadius) + 1 + offsetX,
-        y: (16 + centersDifference - bottomNeckHeight) + (Math.sin(bottomNeckTheta) * bottomNeckRadius) + offsetY
-        };
+      y: (16 + centersDifference - bottomNeckHeight) + (Math.sin(bottomNeckTheta) * bottomNeckRadius) + offsetY,
+    };
     const pointE = {
       x: 16 + offsetX,
-        y: 62 + offsetY
-        };
+      y: 62 + offsetY,
+    };
     const pointF = {
       x: 15 - bottomNeckRadius + (Math.cos(bottomNeckTheta) * bottomNeckRadius) - 1 + offsetX,
-        y: (16 + centersDifference - bottomNeckHeight) + (Math.sin(bottomNeckTheta) * bottomNeckRadius) + offsetY
-        };
+      y: (16 + centersDifference - bottomNeckHeight) + (Math.sin(bottomNeckTheta) * bottomNeckRadius) + offsetY,
+    };
     const pointG = {
       x: 15 + offsetX,
-        y: 16 + centersDifference - bottomNeckHeight + offsetY
-        };
+      y: 16 + centersDifference - bottomNeckHeight + offsetY,
+    };
     const pointH = {
       x: 15 + offsetX,
-        y: 16 + topNeckCornerCenterY + offsetY
-        };
-    let pointI = {
+      y: 16 + topNeckCornerCenterY + offsetY,
+    };
+    const pointI = {
       x: 15 - topNeckRadius + (Math.cos(topNeckCornerTheta) * topNeckRadius) + offsetX,
-        y: 16 + (topNeckCornerCenterY - (Math.sin(topNeckCornerTheta) * topNeckRadius)) + offsetY
-        };
-      
-      let start = {
-        x: 16 + (topLobeHorizontal/2) + offsetX,
-          y: 0 + offsetY
-          };
-      let end = {
-        x: 16 - (topLobeHorizontal/2) + offsetX,
-          y: 0 + offsetY
-          };
-    if (extra > 0) {
-      start = {
-      x: 16 + (topLobeHorizontal/2) + extra/4 + offsetX,
-        y: 0 + offsetY
-        };
-      end = {
-      x: 16 - (topLobeHorizontal/2) - (extra*3/4) + offsetX,
-        y: 0 + offsetY
-        };
-      pointA.x = pointA.x + extra/4;
-    } 
-      
-    let path = "M " + start.x + " " + start.y
-          + " A " + topLobeRadius + " " + topLobeRadius + " 0 0 1 " + pointA.x + " " + pointA.y;
-    if (extra > 0) {
-      path = path + " L " + (pointA.x - extra/4) + " " + pointA.y;
+      y: 16 + (topNeckCornerCenterY - (Math.sin(topNeckCornerTheta) * topNeckRadius)) + offsetY,
+    };
+    const start = {
+      x: 16 + (topLobeHorizontal / 2) + offsetX,
+      y: 0 + offsetY,
+    };
+    const end = {
+      x: 16 - (topLobeHorizontal / 2) + offsetX,
+      y: 0 + offsetY,
+    };
+
+    let extraLeft = extra * 3 / 4;
+    let extraRight = extra / 4;
+
+    if (translatePx - 15 < extraLeft) {
+      extraRight = extraRight + extraLeft - translatePx + 15;
+      extraLeft = translatePx - 15;
+      addExtraRight = true;
     }
-    path = path + " A " + topNeckRadius + " " + topNeckRadius + " 0 0 0 " + pointB.x + " " + pointB.y
-                + " L " + pointC.x + " " + pointC.y
-                + " A " + bottomNeckRadius + " " + bottomNeckRadius + " 0 0 0 " + pointD.x + " " + pointD.y
-                + " A " + bottomLobeRadius + " " + bottomLobeRadius + " 0 0 1 " + pointE.x + " " + pointE.y
-                + " A " + bottomLobeRadius + " " + bottomLobeRadius + " 0 0 1 " + pointF.x + " " + pointF.y
-                + " A " + bottomNeckRadius + " " + bottomNeckRadius + " 0 0 0 " + pointG.x + " " + pointG.y
-                + " L " + pointH.x + " " + pointH.y
-                + " A " + topNeckRadius + " " + topNeckRadius + " 0 0 0 " + pointI.x + " " + pointI.y;
-    if (extra > 0) {
-      path = path + " L " + (pointI.x - (3 * extra/4)) + " " + pointI.y;
+    if (this.rect_.width - translatePx - 15 < extraRight ) {
+      extraLeft = extraLeft + (extraRight - (this.rect_.width - translatePx - 15));
+      extraRight = this.rect_.width - translatePx - 15;
+      addExtraLeft = true;
     }
-    path = path + " A " + topLobeRadius + " " + topLobeRadius + " 0 0 1 " + end.x + " " + end.y + " Z";       
+
+    if (extra > 0 || extraLeft < 0 || extraRight < 0) {
+      start.x = start.x + extraRight;
+      end.x = end.x - extraLeft;
+      pointA.x = pointA.x + extraRight;
+    }
+    if (extraLeft < 0) {
+      topLobeHorizontal = 30 - (30 - translatePx*2);
+      const leftTopNeckCornerTheta = Math.acos((15 - (topLobeHorizontal)/2)/(topLobeRadius+topNeckRadius));
+      const leftTopNeckCornerCenterY = Math.sqrt(Math.pow(topLobeRadius+topNeckRadius, 2) -
+        Math.pow(15 - (topLobeHorizontal)/2, 2));
+
+      pointI.x = 15 - topNeckRadius + (Math.cos(leftTopNeckCornerTheta) * topNeckRadius) + offsetX;
+      pointI.y = 16 + (leftTopNeckCornerCenterY - (Math.sin(leftTopNeckCornerTheta) * topNeckRadius)) + offsetY;
+      pointH.y = 16 + leftTopNeckCornerCenterY + offsetY;
+    }
+    if (extraRight < 0) {
+      topLobeHorizontal = 30 - (30 - (this.rect_.width - translatePx)*2);
+      const leftTopNeckCornerTheta = Math.acos((15 - (topLobeHorizontal)/2)/(topLobeRadius+topNeckRadius));
+      const leftTopNeckCornerCenterY = Math.sqrt(Math.pow(topLobeRadius+topNeckRadius, 2) -
+        Math.pow(15 - (topLobeHorizontal)/2, 2));
+
+      pointA.x = 17 + (topNeckRadius - (Math.cos(leftTopNeckCornerTheta) * topNeckRadius)) + offsetX;
+      pointA.y = 16 + (leftTopNeckCornerCenterY - (Math.sin(leftTopNeckCornerTheta) * topNeckRadius)) + offsetY,
+      pointB.y = 16 + leftTopNeckCornerCenterY + offsetY;
+    }
+
+    let path = 'M ' + start.x + ' ' + start.y
+      + ' A ' + topLobeRadius + ' ' + topLobeRadius + ' 0 0 1 ' + pointA.x + ' ' + pointA.y;
+    if (addExtraRight && extraRight > 0) {
+      path = path + ' L ' + (pointA.x - extraRight) + ' ' + pointA.y;
+    }
+    path = path + ' A ' + topNeckRadius + ' ' + topNeckRadius + ' 0 0 0 ' + pointB.x + ' ' + pointB.y
+      + ' L ' + pointC.x + ' ' + pointC.y
+      + ' A ' + bottomNeckRadius + ' ' + bottomNeckRadius + ' 0 0 0 ' + pointD.x + ' ' + pointD.y
+      + ' A ' + bottomLobeRadius + ' ' + bottomLobeRadius + ' 0 0 1 ' + pointE.x + ' ' + pointE.y
+      + ' A ' + bottomLobeRadius + ' ' + bottomLobeRadius + ' 0 0 1 ' + pointF.x + ' ' + pointF.y
+      + ' A ' + bottomNeckRadius + ' ' + bottomNeckRadius + ' 0 0 0 ' + pointG.x + ' ' + pointG.y
+      + ' L ' + pointH.x + ' ' + pointH.y
+      + ' A ' + topNeckRadius + ' ' + topNeckRadius + ' 0 0 0 ' + pointI.x + ' ' + pointI.y;
+    if (addExtraLeft && extraLeft > 0) {
+      path = path + ' L ' + (pointI.x - extraLeft) + ' ' + pointI.y;
+    }
+    path = path + ' A ' + topLobeRadius + ' ' + topLobeRadius + ' 0 0 1 ' + end.x + ' ' + end.y + ' Z';
     return path;
   }
 
@@ -507,14 +569,53 @@ class MDCSliderFoundation extends MDCFoundation {
       this.adapter_.registerEventHandler('transitionend', onTransitionEnd);
     }
 
-    if (this.isDiscrete_) {
-      const xValue = (34 - (this.value_.toString().length * 8.98)) / 2;
-      const path = this.calcPath_();
-      this.adapter_.setValueLabelPath(path);
-      this.adapter_.setValueLabelText(xValue, String(this.value_));
-    }
+    // if (this.isDiscrete_) {
+    //   let xValue = (34 - (this.value_.toString().length * 8.98));
+    //   if (this.value_.toString().length > 5) {
+    //     xValue = (xValue * 0.75) + 4;
+    //   } else {
+    //     xValue = xValue/2;
+    //   }
+    //   let topLobeHorizontal = 0;
+    //   if (this.value_.toString().length > 2) {
+    //     topLobeHorizontal = (this.value_.toString().length - 2) * 8.98;
+    //   }
+    //   const extra = topLobeHorizontal - 30;
+    //   const extraLeft = extra * 3 / 4;
+    //   if (translatePx - 15 < extraLeft) {
+    //     xValue = xValue + extraLeft - translatePx + 15;
+    //   }
+    //   const path = this.calcPath_(translatePx, xValue);
+    //   this.adapter_.setValueLabelPath(path);
+    //   this.adapter_.setValueLabelText(xValue, String(this.value_));
+    // }
 
     requestAnimationFrame(() => {
+      if (this.isDiscrete_) {
+        let xValue = (34 - (this.value_.toString().length * 8.98));
+        let translateX = 0;
+        if (this.value_.toString().length > 5) {
+          xValue = (xValue * 0.75) + 4;
+        } else {
+          xValue = xValue/2;
+        }
+        let topLobeHorizontal = 0;
+        if (this.value_.toString().length > 2) {
+          topLobeHorizontal = (this.value_.toString().length - 2) * 8.98;
+        }
+        const extra = topLobeHorizontal - 30;
+        const extraLeft = extra * 3 / 4;
+        const extraRight = extra / 4;
+        if (translatePx - 15 < extraLeft) {
+          translateX = xValue + extraLeft - translatePx + 15 - xValue;
+        }
+        if (this.rect_.width - translatePx - 15 < extraRight) {
+          translateX = -(extraRight - (this.rect_.width - translatePx - 15));
+        }
+        const path = this.calcPath_(translatePx);
+        this.adapter_.setValueLabelPath(path);
+        this.adapter_.setValueLabelText(xValue, String(this.value_), `transform: translateX(${translateX}px)`);
+      }
       this.adapter_.setThumbStyleProperty('transform', `translateX(${translatePx}px) translateX(-50%)`);
       this.adapter_.setTrackFillStyleProperty('transform', `scaleX(${translatePx})`);
     });
@@ -536,6 +637,15 @@ class MDCSliderFoundation extends MDCFoundation {
   setInTransit_(inTransit) {
     this.inTransit_ = inTransit;
     this.toggleClass_(cssClasses.IN_TRANSIT, this.inTransit_);
+  }
+
+  /**
+   * Toggles the pressed state of the slider
+   * @param {boolean} pressed
+   */
+  setPressed_(pressed) {
+    this.pressed_ = pressed;
+    this.toggleClass_(cssClasses.PRESSED, this.pressed_);
   }
 
   /**
