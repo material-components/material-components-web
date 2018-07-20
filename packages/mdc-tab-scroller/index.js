@@ -19,7 +19,7 @@ import MDCComponent from '@material/base/component';
 
 import {MDCTabScrollerAdapter} from './adapter';
 import MDCTabScrollerFoundation from './foundation';
-import {computeHorizontalScrollbarHeight} from './util';
+import * as util from './util';
 
 /**
  * @extends {MDCComponent<!MDCTabScrollerFoundation>}
@@ -102,7 +102,7 @@ class MDCTabScroller extends MDCComponent {
       getScrollAreaOffsetWidth: () => this.area_.offsetWidth,
       computeScrollAreaClientRect: () => this.area_.getBoundingClientRect(),
       computeScrollContentClientRect: () => this.content_.getBoundingClientRect(),
-      computeHorizontalScrollbarHeight: () => computeHorizontalScrollbarHeight(),
+      computeHorizontalScrollbarHeight: () => util.computeHorizontalScrollbarHeight(document),
     });
 
     return new MDCTabScrollerFoundation(adapter);
@@ -133,4 +133,4 @@ class MDCTabScroller extends MDCComponent {
   }
 }
 
-export {MDCTabScroller, MDCTabScrollerFoundation};
+export {MDCTabScroller, MDCTabScrollerFoundation, util};

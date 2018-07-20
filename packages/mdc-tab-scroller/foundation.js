@@ -46,9 +46,11 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    */
   static get defaultAdapter() {
     return /** @type {!MDCTabScrollerAdapter} */ ({
+      eventTargetMatchesSelector: () => {},
       addClass: () => {},
       removeClass: () => {},
-      eventTargetMatchesSelector: () => {},
+      addScrollAreaClass: () => {},
+      setScrollAreaStyleProperty: () => {},
       setScrollContentStyleProperty: () => {},
       getScrollContentStyleValue: () => {},
       setScrollAreaScrollLeft: () => {},
@@ -57,6 +59,7 @@ class MDCTabScrollerFoundation extends MDCFoundation {
       getScrollAreaOffsetWidth: () => {},
       computeScrollAreaClientRect: () => {},
       computeScrollContentClientRect: () => {},
+      computeHorizontalScrollbarHeight: () => {},
     });
   }
 

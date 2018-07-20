@@ -21,23 +21,30 @@
  * Stores result from computeHorizontalScrollbarHeight to avoid redundant processing.
  * @private {number|undefined}
  */
-let horizontalScrollbarHeight;
+let horizontalScrollbarHeight_;
 
 /**
  * Computes the height of browser-rendered horizontal scrollbars using a self-created test element.
  * May return 0 (e.g. on OS X browsers under default configuration).
+ * @param {!Document} documentObj
+ * @param {boolean=} forceRefresh
  * @return {number}
  */
-function computeHorizontalScrollbarHeight() {
-  if (typeof horizontalScrollbarHeight === 'undefined') {
-    const el = document.createElement('div');
-    el.className = cssClasses.SCROLL_TEST;
-    document.body.appendChild(el);
-
-    horizontalScrollbarHeight = el.offsetHeight - el.clientHeight;
-    document.body.removeChild(el);
+function computeHorizontalScrollbarHeight(documentObj, shouldCacheResult = true) {
+  if (shouldCacheResult && typeof horizontalScrollbarHeight_ !== 'undefined') {
+    return horizontalScrollbarHeight_;
   }
 
+  const el = documentObj.createElement('div');
+  el.classList.add(cssClasses.SCROLL_TEST);
+  documentObj.body.appendChild(el);
+
+  const horizontalScrollbarHeight = el.offsetHeight - el.clientHeight;
+  documentObj.body.removeChild(el);
+
+  if (shouldCacheResult) {
+    horizontalScrollbarHeight_ = horizontalScrollbarHeight;
+  }
   return horizontalScrollbarHeight;
 }
 

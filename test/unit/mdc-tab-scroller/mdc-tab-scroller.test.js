@@ -22,6 +22,7 @@ import td from 'testdouble';
 import {
   MDCTabScroller,
   MDCTabScrollerFoundation,
+  util
 } from '../../../packages/mdc-tab-scroller';
 
 import MDCTabScrollerRTL from '../../../packages/mdc-tab-scroller/rtl-scroller';
@@ -56,6 +57,12 @@ test('#destroy() calls super.destroy()', () => {
   td.verify(foundation.destroy(), {times: 1});
 });
 
+test('#adapter.eventTargetMatchesSelector returns true if the event target matches the selector', () => {
+  const {area, component} = setupTest();
+  assert.isTrue(component.getDefaultFoundation().adapter_.eventTargetMatchesSelector(
+    area, MDCTabScrollerFoundation.strings.AREA_SELECTOR));
+});
+
 test('#adapter.addClass adds a class to the root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
@@ -69,10 +76,16 @@ test('#adapter.removeClass removes a class from the root element', () => {
   assert.isFalse(root.classList.contains('foo'));
 });
 
-test('#adapter.eventTargetMatchesSelector returns true if the event target matches the selector', () => {
-  const {area, component} = setupTest();
-  assert.isTrue(component.getDefaultFoundation().adapter_.eventTargetMatchesSelector(
-    area, MDCTabScrollerFoundation.strings.AREA_SELECTOR));
+test('#adapter.addScrollAreaClass adds a class to the area element', () => {
+  const {component, area} = setupTest();
+  component.getDefaultFoundation().adapter_.addScrollAreaClass('foo');
+  assert.isTrue(area.classList.contains('foo'));
+});
+
+test('#adapter.setScrollAreaStyleProperty sets a style property on the area element', () => {
+  const {component, area} = setupTest();
+  component.getDefaultFoundation().adapter_.setScrollAreaStyleProperty('background-color', 'red');
+  assert.strictEqual(area.style.backgroundColor, 'red');
 });
 
 test('#adapter.setScrollContentStyleProperty sets a style property on the content element', () => {
@@ -153,6 +166,17 @@ test('#adapter.computeScrollContentClientRect returns the content element boundi
     component.getDefaultFoundation().adapter_.computeScrollContentClientRect(),
     content.getBoundingClientRect()
   );
+  document.body.removeChild(root);
+});
+
+test('#adapter.computeHorizontalScrollbarHeight uses util function to return scrollbar height', () => {
+  const {component, root} = setupTest();
+  document.body.appendChild(root);
+
+  // Unfortunately we can't stub the util API due to it transpiling to a read-only property, so we need to settle for
+  // comparing the return values in each browser.
+  assert.strictEqual(component.getDefaultFoundation().adapter_.computeHorizontalScrollbarHeight(),
+    util.computeHorizontalScrollbarHeight());
   document.body.removeChild(root);
 });
 
