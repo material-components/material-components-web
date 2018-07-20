@@ -52,17 +52,17 @@
 }
 
 .mdc-slider__tick-mark-set {
-  position: relative;
   display: flex;
+  position: relative;
   margin-right: 0;
   margin-left: -1;
 
   // Last marker at the very end of the slider (right-most in LTR, left-most in RTL)
   &::after {
     display: block;
-    border-radius: 50%;
     width: 2px;
     height: 2px;
+    border-radius: 50%;
     content: "";
   }
 }
@@ -72,9 +72,9 @@
 
   &::after {
     display: block;
-    border-radius: 50%;
     width: 2px;
     height: 2px;
+    border-radius: 50%;
     content: "";
   }
 

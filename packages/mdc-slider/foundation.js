@@ -89,7 +89,7 @@ class MDCSliderFoundation extends MDCFoundation {
     /** @private {boolean} */
     this.inTransit_ = false;
     /** @private {boolean} */
-    this.isDiscrete = false;
+    this.isDiscrete_ = false;
     /** @private {number} */
     this.min_ = 0;
     /** @private {number} */
