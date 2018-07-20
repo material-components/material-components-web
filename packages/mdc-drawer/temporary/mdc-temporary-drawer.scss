@@ -28,6 +28,7 @@
   @include mdc-drawer-ink-color($mdc-temporary-drawer-ink-color);
   @include mdc-drawer-fill-color($mdc-temporary-drawer-fill-color);
   @include mdc-drawer-scrim-color($mdc-temporary-drawer-scrim-color, $mdc-temporary-drawer-scrim-opacity);
+  @include mdc-drawer-shape-radius((0, sheet-expanded, sheet-expanded, 0));
 
   position: fixed;
   top: 0;
@@ -59,7 +60,6 @@
     @include mdc-elevation(16);
     @include mdc-rtl-reflexive-position(left, 0);
     @include mdc-slideable-drawer;
-    @include mdc-shape(sheet-expanded, $rtl-reflexive: true);
 
     display: flex;
     position: absolute;

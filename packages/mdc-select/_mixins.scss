@@ -135,10 +135,10 @@
   // are siblings. .mdc-notched-outline__idle needs to be a child of
   // .mdc-notched-outline in order to remedy this issue.
   .mdc-notched-outline {
-    @include mdc-notched-outline-corner-radius($radius);
+    @include mdc-notched-outline-corner-radius(select, $radius);
   }
 
-  @include mdc-notched-outline-idle-corner-radius($radius);
+  @include mdc-notched-outline-idle-corner-radius(select, $radius);
 }
 
 @mixin mdc-select-outline-color_($color) {

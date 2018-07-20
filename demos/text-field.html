@@ -386,6 +386,24 @@
           <label for="fullwidth-alternate-colors">Alternate Colors</label>
         </div>
       </section>
+
+      <section class="example">
+        <h2>Custom shape for Outlined Text Field</h2>
+        <div id="demo-tf-outlined-wrapper-custom-shape">
+          <div id="tf-outlined-example-custom-shape" class="mdc-text-field mdc-text-field--outlined demo-tf-outlined-example-custom-shape">
+            <input type="text" id="tf-outlined-input-custom-shape" class="mdc-text-field__input"
+                   aria-controls="name-validation-message"
+                   aria-describedby="name-validation-message">
+            <label for="tf-outlined-input" class="mdc-floating-label">Your Name</label>
+            <div class="mdc-notched-outline">
+              <svg>
+                <path class="mdc-notched-outline__path"/>
+              </svg>
+            </div>
+            <div class="mdc-notched-outline__idle"></div>
+          </div>
+        </div>
+      </section>
     </main>
 
     <script src="/assets/material-components-web.js" async></script>

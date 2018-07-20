@@ -118,3 +118,7 @@
   @include mdc-text-field-helper-text-color(rgba(blue, .6));
 }
 // stylelint-enable selector-class-pattern
+
+.demo-tf-outlined-example-custom-shape {
+  @include mdc-text-field-outlined-shape-radius(pill);
+}

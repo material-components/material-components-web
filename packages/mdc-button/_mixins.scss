@@ -21,6 +21,7 @@
 @import "@material/theme/mixins";
 @import "@material/typography/mixins";
 @import "@material/shape/mixins";
+@import "@material/shape/variables";
 @import "./variables";
 
 @mixin mdc-button-filled-accessible($container-fill-color) {
@@ -64,10 +65,10 @@
 }
 
 @mixin mdc-button-shape-radius($radius) {
-  @include mdc-shape-prop(button, $radius);
+  @include mdc-shape-radius(button, $radius);
 
   &.mdc-button--dense {
-    @include mdc-shape-prop(button-dense, $radius);
+    @include mdc-shape-radius(button-dense, $radius);
   }
 }
 
@@ -85,18 +86,18 @@
   border-width: $outline-width;
   // Note: line height is adjusted for outline button because borders are not
   // considered as space available to text on the Web
-  line-height: $mdc-shape-height-button - $outline-width * 2;
+  line-height: $mdc-shape-button-height - $outline-width * 2;
 
   // postcss-bem-linter: ignore
   &.mdc-button--dense {
     // Minus extra 1 to accommodate odd font size of dense button
-    line-height: $mdc-shape-height-button-dense - $outline-width * 2 - 1;
+    line-height: $mdc-shape-button-dense-height - $outline-width * 2 - 1;
   }
 }
 
 @mixin mdc-button-base_() {
   @include mdc-typography(button);
-  @include mdc-shape(button);
+  @include mdc-button-shape-radius(button);
   @include mdc-ripple-surface;
   @include mdc-ripple-radius-bounded;
   @include mdc-button-horizontal-padding($mdc-button-horizontal-padding);
@@ -107,7 +108,7 @@
   justify-content: center;
   box-sizing: border-box;
   min-width: 64px;
-  height: $mdc-shape-height-button;
+  height: $mdc-shape-button-height;
   border: none;
   outline: none;
 
@@ -196,7 +197,7 @@
 }
 
 @mixin mdc-button--dense_() {
-  height: $mdc-shape-height-button-dense;
+  height: $mdc-shape-button-dense-height;
   font-size: .8125rem; // 13sp
-  line-height: $mdc-shape-height-button-dense;
+  line-height: $mdc-shape-button-dense-height;
 }

@@ -61,7 +61,7 @@
 }
 
 @mixin mdc-shape($category, $rtl-reflexive: false) {
-  border-radius: map-get($mdc-shape-baseline-values, $category);
+  border-radius: map-get($mdc-shape-category-values, $category);
 
   @if $rtl-reflexive {
     @include mdc-rtl {
@@ -70,13 +70,15 @@
 }
 
 @mixin mdc-shape-prop($type, $radius) {
-  @if $radius == pill {
-    @if not map-has-key($mdc-shape-height-values, $type) {
-      @error "Invalid radius: '#{$type}' doesn't support pill type radius";
+  border-radius: mdc-shape-prop-value($type, $radius);
+}
+
+@mixin mdc-shape-radius($type, $radius, $rtl-reflexive: false) {
+  border-radius: mdc-shape-prop-value($type, $radius);
+
+  @if length($radius) == 4 and $rtl-reflexive {
+    @include mdc-rtl {
+      border-radius: mdc-shape-flip-radius($radius);
     }
-
-    $radius: map-get($mdc-shape-height, $type) / 2;
   }
-
-  border-radius: $radius;
 }

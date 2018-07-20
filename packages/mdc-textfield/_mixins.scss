@@ -18,6 +18,8 @@
 @import "@material/line-ripple/mixins";
 @import "@material/notched-outline/mixins";
 @import "@material/theme/mixins";
+@import "@material/shape/mixins";
+@import "@material/shape/variables";
 @import "helper-text/mixins";
 @import "icon/mixins";
 @import "icon/variables";
@@ -200,7 +202,7 @@
   }
 }
 
-@mixin mdc-text-field-outline-corner-radius_($radius) {
+@mixin mdc-text-field-outlined-shape-radius($radius) {
   // NOTE: idle and notched state border radius mixins
   // are broken into 2 different mixins, otherwise
   // we would be overly specific (big no, no). The cause of
@@ -208,10 +210,16 @@
   // are siblings. .mdc-notched-outline__idle needs to be a child of
   // .mdc-notched-outline in order to remedy this issue.
   .mdc-notched-outline {
-    @include mdc-notched-outline-corner-radius($radius);
+    @include mdc-notched-outline-corner-radius(text-field-outlined, $radius);
   }
+  @include mdc-notched-outline-idle-corner-radius(text-field-outlined, $radius);
 
-  @include mdc-notched-outline-idle-corner-radius($radius);
+  &.mdc-text-field--dense {
+    .mdc-notched-outline {
+      @include mdc-notched-outline-corner-radius(text-field-outlined-dense, $radius);
+    }
+    @include mdc-notched-outline-idle-corner-radius(text-field-outlined-dense, $radius);
+  }
 }
 
 // Outlined
@@ -239,7 +247,7 @@
   @include mdc-floating-label-float-position($mdc-text-field-outlined-dense-label-position-y, 0%, $mdc-text-field-dense-label-scale);
   @include mdc-floating-label-shake-animation(text-field-outlined-dense);
 
-  height: 48px;
+  height: $mdc-shape-text-field-outlined-dense-height;
 
   .mdc-text-field__input {
     padding: 12px 12px 7px;
@@ -260,9 +268,9 @@
   @include mdc-text-field-focused-outline-color(primary);
   @include mdc-floating-label-float-position($mdc-text-field-outlined-label-position-y);
   @include mdc-floating-label-shake-animation(text-field-outlined);
-  @include mdc-text-field-outline-corner-radius_($mdc-text-field-border-radius);
+  @include mdc-text-field-outlined-shape-radius(small-container);
 
-  height: 56px;
+  height: $mdc-shape-text-field-outlined-height;
   border: none;
 
   .mdc-text-field__input {
@@ -331,7 +339,7 @@
     $has-nested-focusable-element: true
   );
   @include mdc-ripple-radius-bounded;
-  @include mdc-text-field-box-corner-radius($mdc-text-field-border-radius);
+  @include mdc-text-field-box-corner-radius($mdc-shape-small-container-radius);
   @include mdc-text-field-box-fill-color($mdc-text-field-box-background);
   @include mdc-floating-label-float-position($mdc-text-field-box-label-position-y);
   @include mdc-floating-label-shake-animation(text-field-box);
@@ -473,7 +481,7 @@
 }
 
 @mixin mdc-text-field-textarea_ {
-  @include mdc-text-field-textarea-corner-radius($mdc-text-field-border-radius);
+  @include mdc-text-field-textarea-corner-radius($mdc-shape-small-container-radius);
   @include mdc-text-field-textarea-stroke-color($mdc-textarea-border);
 
   // Translate above the top of the input, and compensate for the amount of offset needed
