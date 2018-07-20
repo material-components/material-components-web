@@ -24,9 +24,8 @@
 let horizontalScrollbarHeight;
 
 /**
- * Computes the height of browser-rendered horizontal scrollbars, given an element to test with.
+ * Computes the height of browser-rendered horizontal scrollbars using a self-created test element.
  * May return 0 (e.g. on OS X browsers under default configuration).
- * @param {!Element} el
  * @return {number}
  */
 function computeHorizontalScrollbarHeight() {
