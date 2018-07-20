@@ -33,6 +33,7 @@ const CbtApi = require('./cbt-api');
 const Cli = require('./cli');
 const Constants = require('./constants');
 const Duration = require('./duration');
+const GitHubApi = require('./github-api');
 const ImageCropper = require('./image-cropper');
 const ImageDiffer = require('./image-differ');
 const LocalStorage = require('./local-storage');
@@ -78,6 +79,12 @@ class SeleniumApi {
      * @private
      */
     this.cli_ = new Cli();
+
+    /**
+     * @type {!GitHubApi}
+     * @private
+     */
+    this.gitHubApi_ = new GitHubApi();
 
     /**
      * @type {!ImageCropper}
@@ -659,19 +666,33 @@ class SeleniumApi {
     }
 
     // https://stackoverflow.com/a/6774395/467582
-    const eraseCurrentLine = '\r' + String.fromCodePoint(27) + '[K';
+    const escape = String.fromCodePoint(27);
+    const eraseCurrentLine = `\r${escape}[K`;
     const maxStatusWidth = Object.values(CliStatuses).map((status) => status.name.length).sort().reverse()[0];
     const statusName = status.name.toUpperCase();
     const paddingSpaces = ''.padStart(maxStatusWidth - statusName.length, ' ');
 
     console.log(eraseCurrentLine + paddingSpaces + status.color(statusName) + ':', ...args);
 
+    const numDone = this.numCompleted_;
+    const strDone = numDone.toLocaleString();
+
+    const numTotal = numDone + this.numPending_;
+    const strTotal = numTotal.toLocaleString();
+
+    const strPercent = numDone.toFixed(1);
+    // const strDiffs = numDone.toLocaleString();
+
     if (process.env.TRAVIS === 'true') {
+      this.gitHubApi_.setPullRequestStatusManual({
+        state: GitHubApi.PullRequestState.PENDING,
+        description: `Captured ${strDone} of ${strTotal} (${strPercent}%)`, // - ${strDiffs} diffs
+      });
       return;
     }
 
     const pending = this.numPending_;
-    const completed = this.numCompleted_;
+    const completed = numDone;
     const total = pending + completed;
     const percent = (total === 0 ? 0 : (100 * completed / total).toFixed(1));
 

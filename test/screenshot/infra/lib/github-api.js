@@ -15,6 +15,12 @@
  */
 
 const octokit = require('@octokit/rest');
+
+const mdcProto = require('../proto/mdc.pb').mdc.proto;
+
+const {Screenshot} = mdcProto;
+const {CaptureState} = Screenshot;
+
 const GitRepo = require('./git-repo');
 
 class GitHubApi {
@@ -57,16 +63,32 @@ class GitHubApi {
   }
 
   /**
-   * @param {!mdc.proto.ReportData} reportData
+   * @param {string} state
+   * @param {string} description
    * @return {!Promise<*>}
    */
-  async setPullRequestStatus(reportData) {
-    const meta = reportData.meta;
-    const prNumber = Number(process.env.TRAVIS_PULL_REQUEST);
-    if (!prNumber) {
+  async setPullRequestStatusManual({state, description}) {
+    if (process.env.TRAVIS !== 'true') {
       return;
     }
 
+    return await this.createStatus_({
+      state,
+      targetUrl: `https://travis-ci.org/material-components/material-components-web/jobs/${process.env.TRAVIS_JOB_ID}`,
+      description,
+    });
+  }
+
+  /**
+   * @param {!mdc.proto.ReportData} reportData
+   * @return {!Promise<*>}
+   */
+  async setPullRequestStatusAuto(reportData) {
+    if (process.env.TRAVIS !== 'true') {
+      return;
+    }
+
+    const meta = reportData.meta;
     const screenshots = reportData.screenshots;
     const numUnchanged = screenshots.unchanged_screenshot_list.length;
     const numChanged =
@@ -90,18 +112,19 @@ class GitHubApi {
 
       targetUrl = meta.report_html_file.public_url;
     } else {
-      const numScreenshotsFormatted = screenshots.runnable_screenshot_list.length.toLocaleString();
+      const runnableScreenshots = screenshots.runnable_screenshot_list;
+      const numTotal = runnableScreenshots.length;
+
       state = GitHubApi.PullRequestState.PENDING;
       targetUrl = `https://travis-ci.org/material-components/material-components-web/jobs/${process.env.TRAVIS_JOB_ID}`;
-      description = `Running ${numScreenshotsFormatted} screenshot tests`;
+      description = `Running ${numTotal.toLocaleString()} screenshots...`;
     }
 
     return await this.createStatus_({state, targetUrl, description});
   }
 
   async setPullRequestError() {
-    const prNumber = Number(process.env.TRAVIS_PULL_REQUEST);
-    if (!prNumber) {
+    if (process.env.TRAVIS !== 'true') {
       return;
     }
 
