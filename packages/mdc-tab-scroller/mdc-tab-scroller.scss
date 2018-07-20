@@ -22,6 +22,15 @@
   overflow-y: hidden;
 }
 
+// Selector for test element used to feature-detect horizontal scrollbar height
+.mdc-tab-scroller__test {
+  position: absolute;
+  top: -9999px;
+  width: 100px;
+  height: 100px;
+  overflow-x: scroll;
+}
+
 .mdc-tab-scroller__scroll-area {
   -webkit-overflow-scrolling: touch;
   display: flex;
@@ -53,19 +62,6 @@
 
 .mdc-tab-scroller--animating .mdc-tab-scroller__scroll-content {
   transition: 250ms transform $mdc-animation-standard-curve-timing-function;
-}
-
-// Selector for test element used to feature-detect horizontal scrollbar height
-.mdc-tab-scroller__test {
-  width: 100px;
-  height: 100px;
-  position: absolute;
-  top: -9999px;
-  overflow-x: scroll;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
 }
 
 // postcss-bem-linter: end
