@@ -42,6 +42,22 @@ class GitHubApi {
       type: 'oauth',
       token: token,
     });
+
+    const throttle = (fn, delay) => {
+      let lastCall = 0;
+      return (...args) => {
+        const now = (new Date).getTime();
+        if (now - lastCall < delay) {
+          return;
+        }
+        lastCall = now;
+        return fn(...args);
+      };
+    };
+
+    this.createStatusThrottled_ = throttle((...args) => {
+      return this.createStatusUnthrottled_(...args);
+    }, 5000);
   }
 
   /**
@@ -67,7 +83,7 @@ class GitHubApi {
       return;
     }
 
-    return await this.createStatus_({
+    return await this.createStatusThrottled_({
       state,
       targetUrl: `https://travis-ci.org/material-components/material-components-web/jobs/${process.env.TRAVIS_JOB_ID}`,
       description,
@@ -115,7 +131,7 @@ class GitHubApi {
       description = `Running ${numTotal.toLocaleString()} screenshots...`;
     }
 
-    return await this.createStatus_({state, targetUrl, description});
+    return await this.createStatusUnthrottled_({state, targetUrl, description});
   }
 
   async setPullRequestError() {
@@ -123,7 +139,7 @@ class GitHubApi {
       return;
     }
 
-    return await this.createStatus_({
+    return await this.createStatusUnthrottled_({
       state: GitHubApi.PullRequestState.ERROR,
       targetUrl: `https://travis-ci.org/material-components/material-components-web/jobs/${process.env.TRAVIS_JOB_ID}`,
       description: 'Error running screenshot tests',
@@ -137,7 +153,7 @@ class GitHubApi {
    * @return {!Promise<*>}
    * @private
    */
-  async createStatus_({state, targetUrl, description = undefined}) {
+  async createStatusUnthrottled_({state, targetUrl, description = undefined}) {
     const req = {
       owner: 'material-components',
       repo: 'material-components-web',
@@ -148,7 +164,7 @@ class GitHubApi {
       context: 'screenshot-test/butter-bot',
     };
     console.log('');
-    console.log('GitHubApi#createStatus_():');
+    console.log('GitHubApi#createStatusUnthrottled_():');
     console.log(req);
     console.log('');
     return await this.octokit_.repos.createStatus(req);
