@@ -45,6 +45,22 @@ function setupTest() {
   return {foundation, mockAdapter};
 }
 
+test('#init adds mdc-switch--checked to the switch element if the switch is initially checked', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.isNativeControlChecked()).thenReturn(true);
+
+  foundation.init();
+  td.verify(mockAdapter.addClass(MDCSwitchFoundation.cssClasses.CHECKED));
+});
+
+test('#init removes mdc-switch--checked from the switch element if the switch is initially unchecked', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.isNativeControlChecked()).thenReturn(false);
+
+  foundation.init();
+  td.verify(mockAdapter.removeClass(MDCSwitchFoundation.cssClasses.CHECKED));
+});
+
 test('#isChecked returns true when the value of adapter.isChecked() is true', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.isNativeControlChecked()).thenReturn(true);
