@@ -59,7 +59,7 @@
     @include mdc-elevation(16);
     @include mdc-rtl-reflexive-position(left, 0);
     @include mdc-slideable-drawer;
-    @include mdc-shape(sheet-expanded, $top-left: 0, $bottom-left: 0);
+    @include mdc-shape(sheet-expanded, $rtl-reflexive: true);
 
     display: flex;
     position: absolute;

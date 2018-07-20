@@ -21,6 +21,7 @@
 @import "../packages/mdc-checkbox/mdc-checkbox";
 @import "../packages/mdc-form-field/mdc-form-field";
 @import "../packages/mdc-ripple/mixins";
+@import "../packages/mdc-shape/mixins";
 
 .mdc-button.secondary-text-button {
   @include mdc-button-ink-color($mdc-theme-secondary);
@@ -53,4 +54,8 @@
 
 .demo-icon-color {
   @include mdc-button-icon-color(orange);
+}
+
+.demo-button-custom-shape {
+  @include mdc-button-shape-radius(pill);
 }

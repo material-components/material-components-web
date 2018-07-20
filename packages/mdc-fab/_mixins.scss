@@ -163,7 +163,7 @@ $mdc-fab-icon-enter-duration_: 180ms;
 
   width: auto;
   max-width: 100%;
-  height: $mdc-shape-extended-fab-height;
+  height: $mdc-shape-height-extended-fab;
 }
 
 @mixin mdc-fab__icon_ {
@@ -198,6 +198,10 @@ $mdc-fab-icon-enter-duration_: 180ms;
   }
 }
 
-@mixin mdc-fab-shape-radius($top-left, $top-right, $bottom-right, $bottom-left) {
-  @include mdc-shape(fab, $top-left: $top-left, $top-right: $top-right, $bottom-right: $bottom-right, $bottom-left: $bottom-left);
+@mixin mdc-fab-shape-radius($radius) {
+  @include mdc-shape-prop(fab, $radius);
+}
+
+@mixin mdc-extended-fab-shape-radius($radius) {
+  @include mdc-shape-prop(extended-fab, $radius);
 }

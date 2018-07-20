@@ -14,59 +14,26 @@
 // limitations under the License.
 //
 
+$mdc-shape-height-extended-fab: 48px;
+$mdc-shape-height-button: 36px;
+$mdc-shape-height-button-densed: 32px;
+
 $mdc-shape-button-radius: 4px !default;
-$mdc-shape-button-top-left-radius: $mdc-shape-button-radius !default;
-$mdc-shape-button-top-right-radius: $mdc-shape-button-radius !default;
-$mdc-shape-button-bottom-right-radius: $mdc-shape-button-radius !default;
-$mdc-shape-button-bottom-left-radius: $mdc-shape-button-radius !default;
-
 $mdc-shape-fab-radius: 50% !default;
-$mdc-shape-fab-top-left-radius: $mdc-shape-fab-radius !default;
-$mdc-shape-fab-top-right-radius: $mdc-shape-fab-radius !default;
-$mdc-shape-fab-bottom-right-radius: $mdc-shape-fab-radius !default;
-$mdc-shape-fab-bottom-left-radius: $mdc-shape-fab-radius !default;
-
 $mdc-shape-sheet-expanded-radius: 0 !default;
-$mdc-shape-sheet-expanded-top-left-radius: $mdc-shape-sheet-expanded-radius !default;
-$mdc-shape-sheet-expanded-top-right-radius: $mdc-shape-sheet-expanded-radius !default;
-$mdc-shape-sheet-expanded-bottom-right-radius: $mdc-shape-sheet-expanded-radius !default;
-$mdc-shape-sheet-expanded-bottom-left-radius: $mdc-shape-sheet-expanded-radius !default;
+$mdc-shape-extended-fab-radius: $mdc-shape-height-extended-fab / 2 !default;
 
-$mdc-shape-extended-fab-height: 48px;
-$mdc-shape-extended-fab-radius: $mdc-shape-extended-fab-height / 2 !default;
-$mdc-shape-extended-fab-top-left-radius: $mdc-shape-extended-fab-radius !default;
-$mdc-shape-extended-fab-top-right-radius: $mdc-shape-extended-fab-radius !default;
-$mdc-shape-extended-fab-bottom-right-radius: $mdc-shape-extended-fab-radius !default;
-$mdc-shape-extended-fab-bottom-left-radius: $mdc-shape-extended-fab-radius !default;
-
-$mdc-shape-height: (
-  extended-fab: 48px,
-  button: 36px
+// Components which support pill shape radius.
+$mdc-shape-height-values: (
+  extended-fab: $mdc-shape-height-extended-fab,
+  button: $mdc-shape-height-button,
+  button-densed: $mdc-shape-height-button-densed
 );
 
-$mdc-shape-category: (
-  button: (
-    top-left: $mdc-shape-button-top-left-radius,
-    top-right: $mdc-shape-button-top-right-radius,
-    bottom-right: $mdc-shape-button-bottom-right-radius,
-    bottom-left: $mdc-shape-button-bottom-left-radius
-  ),
-  fab: (
-    top-left: $mdc-shape-fab-top-left-radius,
-    top-right: $mdc-shape-fab-top-right-radius,
-    bottom-right: $mdc-shape-fab-bottom-right-radius,
-    bottom-left: $mdc-shape-fab-bottom-left-radius
-  ),
-  sheet-expanded: (
-    top-left: $mdc-shape-sheet-expanded-top-left-radius,
-    top-right: $mdc-shape-sheet-expanded-top-right-radius,
-    bottom-right: $mdc-shape-sheet-expanded-bottom-right-radius,
-    bottom-left: $mdc-shape-sheet-expanded-bottom-left-radius
-  ),
-  extended-fab: (
-    top-left: $mdc-shape-extended-fab-top-left-radius,
-    top-right: $mdc-shape-extended-fab-top-right-radius,
-    bottom-right: $mdc-shape-extended-fab-bottom-right-radius,
-    bottom-left: $mdc-shape-extended-fab-bottom-left-radius
-  )
+// Shape baseline values.
+$mdc-shape-baseline-values: (
+  button: $mdc-shape-button-radius,
+  fab: $mdc-shape-fab-radius,
+  sheet-expanded: $mdc-shape-sheet-expanded-radius,
+  extended-fab: $mdc-shape-extended-fab-radius
 )

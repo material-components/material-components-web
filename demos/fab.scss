@@ -112,7 +112,9 @@ figcaption > div {
 }
 
 .demo-fab-custom-shape {
-  @include mdc-fab-shape-radius(50%, 0, 0, 0);
+  @include mdc-fab-shape-radius(20%);
 }
 
-$mdc-shape-fab-radius: 10%;
+.demo-fab-extended-custom-shape {
+  @include mdc-extended-fab-shape-radius(8px);
+}

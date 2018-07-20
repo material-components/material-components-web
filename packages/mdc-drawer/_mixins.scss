@@ -85,10 +85,10 @@
 
 @mixin mdc-drawer-shape-radius($radius) {
   &.mdc-drawer--temporary .mdc-drawer__drawer {
-    @include mdc-shape(sheet-expanded, $top-left: 0, $top-right: $radius, $bottom-right: $radius, $bottom-left: 0);
+    border-radius: 0 $radius $radius 0;
 
     @include mdc-rtl {
-      @include mdc-shape(sheet-expanded, $top-left: $radius, $top-right: 0, $bottom-right: 0, $bottom-left: $radius);
+      border-radius: $radius 0 0 $radius;
     }
   }
 }

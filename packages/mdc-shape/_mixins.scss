@@ -60,6 +60,23 @@
   }
 }
 
-@mixin mdc-shape($category, $radius: null, $top-left: null, $top-right: null, $bottom-right: null, $bottom-left: null) {
-  border-radius: mdc-shape-get-radius($category, $radius, $top-left, $top-right, $bottom-right, $bottom-left);
+@mixin mdc-shape($category, $rtl-reflexive: false) {
+  border-radius: map-get($mdc-shape-baseline-values, $category);
+
+  @if $rtl-reflexive {
+    @include mdc-rtl {
+    }
+  }
+}
+
+@mixin mdc-shape-prop($type, $radius) {
+  @if $radius == pill {
+    @if not map-has-key($mdc-shape-height-values, $type) {
+      @error "Invalid radius: '#{$type}' doesn't support pill type radius";
+    }
+
+    $radius: map-get($mdc-shape-height, $type) / 2;
+  }
+
+  border-radius: $radius;
 }

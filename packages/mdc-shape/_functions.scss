@@ -1,10 +1,6 @@
 @import './variables';
 
 @function mdc-shape-get-radius($category, $radius: null, $top-left: null, $top-right: null, $bottom-right: null, $bottom-left: null) {
-  @if $radius != null {
-    @return $radius;
-  }
-
   $mdc-shape-baseline_: map-get($mdc-shape-category, $category);
 
   @return $top-left or map-get($mdc-shape-baseline_, 'top-left')
