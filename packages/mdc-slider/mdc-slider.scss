@@ -20,15 +20,21 @@
 @import "./variables";
 
 .mdc-slider {
-  @include mdc-slider-track-color(primary);
-  @include mdc-slider-track-fill-color(primary);
-  @include mdc-slider-thumb-color(primary);
+  &:not(.mdc-slider--disabled) {
+    @include mdc-slider-track-color(primary);
+    @include mdc-slider-track-fill-color(primary);
+    @include mdc-slider-thumb-color(primary);
+  }
 
   position: relative;
   width: 100%;
   height: 48px;
   cursor: pointer;
   touch-action: pan-x;
+}
+
+.mdc-slider--disabled {
+  @include mdc-slider-disabled(on-surface);
 }
 
 .mdc-slider__track {
@@ -49,11 +55,15 @@
   will-change: transform;
 }
 
-.mdc-slider__thumb {
-  @include mdc-ripple-surface;
-  @include mdc-ripple-radius-unbounded;
-  @include mdc-states(#5725e5);
+.mdc-slider:not(.mdc-slider--disabled) {
+  .mdc-slider__thumb {
+    @include mdc-ripple-surface;
+    @include mdc-ripple-radius-unbounded;
+    @include mdc-states(#5725e5);
+  }
+}
 
+.mdc-slider__thumb {
   position: absolute;
   width: 34px;
   height: 34px;

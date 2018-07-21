@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import {strings} from './constants';
+import {strings, cssClasses} from './constants';
 import MDCSliderAdapter from './adapter';
 
 import MDCFoundation from '@material/base/foundation';
@@ -46,7 +46,9 @@ class MDCSliderFoundation extends MDCFoundation {
       addClass: () => {},
       removeClass: () => {},
       setThumbAttribute: () => {},
+      removeThumbAttribute: () => {},
       computeBoundingRect: () => {},
+      getTabIndex: () => {},
       registerEventHandler: () => {},
       deregisterEventHandler: () => {},
       registerBodyEventHandler: () => {},
@@ -79,6 +81,10 @@ class MDCSliderFoundation extends MDCFoundation {
     this.value_ = 0;
     /** @private  {boolean} */
     this.active_ = false;
+    /** @private  {boolean} */
+    this.disabled_ = false;
+    /** @private {number} */
+    this.savedTabIndex_ = 0;
     /** @private {function(!Event): undefined} */
     this.interactionStartHandler_ = (evt) => this.handleInteractionStart(evt);
     /** @private {function(!Event): undefined} */
@@ -147,11 +153,36 @@ class MDCSliderFoundation extends MDCFoundation {
     this.adapter_.setThumbAttribute(strings.ARIA_VALUEMIN, String(this.min_));
   }
 
+  /** @return {boolean} */
+  isDisabled() {
+    return this.disabled_;
+  }
+
+  /** @param {boolean} disabled */
+  setDisabled(disabled) {
+    this.disabled_ = disabled;
+    this.toggleClass_(cssClasses.DISABLED, this.disabled_);
+    if (this.disabled_) {
+      this.savedTabIndex_ = this.adapter_.getTabIndex();
+      this.adapter_.setThumbAttribute(strings.ARIA_DISABLED, 'true');
+      this.adapter_.removeThumbAttribute('tabindex');
+    } else {
+      this.adapter_.removeThumbAttribute(strings.ARIA_DISABLED);
+      if (!isNaN(this.savedTabIndex_)) {
+        this.adapter_.setThumbAttribute('tabindex', String(this.savedTabIndex_));
+      }
+    }
+  }
+
   /**
    * Called when the user starts interacting with the slider
    * @param {!Event} evt
    */
   handleInteractionStart(evt) {
+    if (this.disabled_) {
+      return;
+    }
+
     this.setActive_(true);
     this.adapter_.activateRipple();
 

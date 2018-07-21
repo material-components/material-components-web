@@ -29,4 +29,9 @@ const strings = {
   INPUT_EVENT: 'MDCSlider:input',
 };
 
-export {strings};
+/** @enum {string} */
+const cssClasses = {
+  DISABLED: 'mdc-slider--disabled',
+};
+
+export {strings, cssClasses};
