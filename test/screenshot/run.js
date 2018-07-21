@@ -16,8 +16,8 @@
 
 'use strict';
 
-const colors = require('colors');
 const Cli = require('./infra/lib/cli');
+const CliColor = require('./infra/lib/logger').colors;
 const Duration = require('./infra/lib/duration');
 const {ExitCode} = require('./infra/lib/constants');
 
@@ -77,7 +77,7 @@ async function runAsync() {
       }
     },
     (err) => {
-      console.error('\n\n' + colors.bold.red('ERROR:'), err);
+      console.error('\n\n' + CliColor.bold.red('ERROR:'), err);
       process.exit(ExitCode.UNKNOWN_ERROR);
     }
   );

@@ -21,6 +21,7 @@ const {GitRevision} = mdcProto;
 
 const CbtApi = require('./cbt-api');
 const Cli = require('./cli');
+const CliColor = require('./logger').colors;
 const CloudStorage = require('./cloud-storage');
 const Duration = require('./duration');
 const GitRepo = require('./git-repo');
@@ -194,14 +195,14 @@ class Controller {
       reportData.screenshots.added_screenshot_list.length +
       reportData.screenshots.removed_screenshot_list.length;
 
-    const boldRed = Logger.colors.bold.red;
-    const boldGreen = Logger.colors.bold.green;
 
     this.logger_.log('\n');
     if (numChanges > 0) {
+      const boldRed = CliColor.bold.red;
       this.logger_.error(boldRed(`${numChanges} screenshot${numChanges === 1 ? '' : 's'} changed!\n`));
       this.logger_.log('Diff report:', boldRed(reportData.meta.report_html_file.public_url));
     } else {
+      const boldGreen = CliColor.bold.green;
       this.logger_.log(boldGreen('0 screenshots changed!\n'));
       this.logger_.log('Diff report:', boldGreen(reportData.meta.report_html_file.public_url));
     }
