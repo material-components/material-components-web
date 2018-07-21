@@ -89,7 +89,7 @@ test('#activate activates the indicator', () => {
   td.verify(mockAdapter.activateIndicator({width: 100, left: 200}));
 });
 
-test('#activate focuses with preventScroll set to true', () => {
+test('#activate focuses the root node', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.activate({width: 100, left: 200});
   td.verify(mockAdapter.focus());
