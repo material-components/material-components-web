@@ -51,7 +51,7 @@ module.exports = {
       await gitHubApi.setPullRequestStatusAuto(reportData);
     } catch (err) {
       await gitHubApi.setPullRequestError();
-      throw new VError(err, 'Failed running screenshot tests');
+      throw new VError(err, 'Failed to run screenshot tests');
     }
 
     return await controller.getTestExitCode(reportData);

@@ -219,7 +219,7 @@ class SeleniumApi {
     } catch (err) {
       logResult(CliStatuses.FAILED);
       await this.killBrowsers_();
-      throw new VError(err, 'Failed driving web browser');
+      throw new VError(err, 'Failed to drive web browser');
     } finally {
       logResult(CliStatuses.QUITTING);
       await driver.quit();

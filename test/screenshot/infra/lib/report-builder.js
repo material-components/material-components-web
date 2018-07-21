@@ -305,7 +305,7 @@ class ReportBuilder {
    */
   async prefetchGoldenImages_(reportData) {
     // TODO(acdvorak): Figure out how to handle offline mode for prefetching and diffing
-    console.log('Prefetching golden images...');
+    console.log('Fetching golden images...');
     await Promise.all(
       reportData.screenshots.expected_screenshot_list.map((expectedScreenshot) => {
         return this.prefetchScreenshotImages_(expectedScreenshot);
