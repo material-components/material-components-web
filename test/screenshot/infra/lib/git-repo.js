@@ -21,6 +21,8 @@ const simpleGit = require('simple-git/promise');
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
 const {User} = mdcProto;
 
+let hasFetched = false;
+
 class GitRepo {
   constructor(workingDirPath = undefined) {
     /**
@@ -49,6 +51,11 @@ class GitRepo {
    * @return {!Promise<void>}
    */
   async fetch(args = []) {
+    if (hasFetched) {
+      return;
+    }
+    hasFetched = true;
+
     console.log('Fetching remote git commits...');
 
     const prFetchRef = '+refs/pull/*/head:refs/remotes/origin/pr/*';

@@ -101,10 +101,6 @@ class Controller {
    */
   async initForCapture() {
     const isOnline = this.cli_.isOnline();
-    const shouldFetch = this.cli_.shouldFetch;
-    if (isOnline && shouldFetch) {
-      await this.gitRepo_.fetch();
-    }
     if (isOnline) {
       await this.cbtApi_.killStalledSeleniumTests();
     }
@@ -115,11 +111,6 @@ class Controller {
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async initForDemo() {
-    const isOnline = this.cli_.isOnline();
-    const shouldFetch = this.cli_.shouldFetch;
-    if (isOnline && shouldFetch) {
-      await this.gitRepo_.fetch();
-    }
     return this.reportBuilder_.initForDemo();
   }
 

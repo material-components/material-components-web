@@ -355,8 +355,8 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
   }
 
   /** @return {boolean} */
-  get shouldFetch() {
-    return !this.args_['--no-fetch'];
+  get skipFetch() {
+    return this.args_['--no-fetch'];
   }
 
   /** @return {?string} */

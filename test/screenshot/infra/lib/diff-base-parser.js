@@ -65,7 +65,6 @@ class DiffBaseParser {
   }
 
   /**
-   * TODO(acdvorak): Move this method out of DiffBaseParser class - it doesn't belong here.
    * @param {string} rawDiffBase
    * @return {!Promise<!mdc.proto.DiffBase>}
    */
@@ -88,7 +87,6 @@ class DiffBaseParser {
   }
 
   /**
-   * TODO(acdvorak): Move this method out of DiffBaseParser class - it doesn't belong here.
    * @param {string} rawDiffBase
    * @return {!Promise<!mdc.proto.DiffBase>}
    * @private
@@ -110,6 +108,16 @@ class DiffBaseParser {
 
     const [inputGoldenRef, inputGoldenPath] = rawDiffBase.split(':');
     const goldenFilePath = inputGoldenPath || GOLDEN_JSON_RELATIVE_PATH;
+
+    const isRemoteBranch = inputGoldenRef.startsWith('origin/');
+    const isVersionTag = /^v[0-9.]+$/.test(inputGoldenRef);
+    const isFetchable = isRemoteBranch || isVersionTag;
+    const skipFetch = this.cli_.skipFetch;
+    const isOnline = this.cli_.isOnline();
+    if (isFetchable && !skipFetch && isOnline) {
+      await this.gitRepo_.fetch();
+    }
+
     const fullGoldenRef = await this.gitRepo_.getFullSymbolicName(inputGoldenRef);
 
     // Diff against a specific git commit.
