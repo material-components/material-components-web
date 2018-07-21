@@ -16,6 +16,7 @@
 
 'use strict';
 
+const colors = require('colors');
 const Cli = require('./infra/lib/cli');
 const Duration = require('./infra/lib/duration');
 const {ExitCode} = require('./infra/lib/constants');
@@ -76,7 +77,7 @@ async function runAsync() {
       }
     },
     (err) => {
-      console.error(err);
+      console.error('\n\n' + colors.bold.red('ERROR:'), err);
       process.exit(ExitCode.UNKNOWN_ERROR);
     }
   );
@@ -97,6 +98,7 @@ process.on('unhandledRejection', (error) => {
     'This error originated either by throwing inside of an async function without a catch block,',
     'or by rejecting a promise which was not handled with .catch().',
   ].join(' ');
+  console.error('\n');
   console.error(message);
   console.error(error);
   process.exit(ExitCode.UNHANDLED_PROMISE_REJECTION);

@@ -16,6 +16,8 @@
 
 'use strict';
 
+const VError = require('verror');
+
 const BuildCommand = require('./build');
 const Controller = require('../lib/controller');
 const GitHubApi = require('../lib/github-api');
@@ -49,7 +51,7 @@ module.exports = {
       await gitHubApi.setPullRequestStatusAuto(reportData);
     } catch (err) {
       await gitHubApi.setPullRequestError();
-      throw err;
+      throw new VError(err, 'Failed running screenshot tests');
     }
 
     return await controller.getTestExitCode(reportData);
