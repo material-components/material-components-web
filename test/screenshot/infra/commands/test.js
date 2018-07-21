@@ -46,7 +46,7 @@ module.exports = {
     try {
       await controller.uploadAllAssets(reportData);
       await controller.captureAllPages(reportData);
-      await controller.compareAllScreenshots(reportData);
+      await controller.uploadAllImages(reportData);
       await controller.generateReportPage(reportData);
       await gitHubApi.setPullRequestStatusAuto(reportData);
     } catch (err) {

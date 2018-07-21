@@ -136,9 +136,9 @@ class Controller {
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async uploadAllAssets(reportData) {
-    this.logger_.foldStart('screenshot.upload', 'Controller#uploadAllAssets()');
+    this.logger_.foldStart('screenshot.upload_assets', 'Controller#uploadAllAssets()');
     await this.cloudStorage_.uploadAllAssets(reportData);
-    this.logger_.foldEnd('screenshot.upload');
+    this.logger_.foldEnd('screenshot.upload_assets');
     return reportData;
   }
 
@@ -147,10 +147,17 @@ class Controller {
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async captureAllPages(reportData) {
-    this.logger_.foldStart('screenshot.capture', 'Controller#captureAllPages()');
+    this.logger_.foldStart('screenshot.capture_images', 'Controller#captureAllPages()');
+
     await this.seleniumApi_.captureAllPages(reportData);
-    await this.cloudStorage_.uploadAllScreenshots(reportData);
-    this.logger_.foldEnd('screenshot.capture');
+    this.reportBuilder_.populateScreenshotMaps(reportData.user_agents, reportData.screenshots);
+
+    const meta = reportData.meta;
+    meta.end_time_iso_utc = new Date().toISOString();
+    meta.duration_ms = Duration.elapsed(meta.start_time_iso_utc, meta.end_time_iso_utc).toMillis();
+
+    this.logger_.foldEnd('screenshot.capture_images');
+
     return reportData;
   }
 
@@ -158,21 +165,11 @@ class Controller {
    * @param {!mdc.proto.ReportData} reportData
    * @return {!Promise<!mdc.proto.ReportData>}
    */
-  async compareAllScreenshots(reportData) {
-    this.logger_.foldStart('screenshot.compare', 'Controller#compareAllScreenshots()');
-
-    await this.reportBuilder_.populateScreenshotMaps(reportData.user_agents, reportData.screenshots);
+  async uploadAllImages(reportData) {
+    this.logger_.foldStart('screenshot.upload_images', 'Controller#uploadAllImages()');
+    await this.cloudStorage_.uploadAllScreenshots(reportData);
     await this.cloudStorage_.uploadAllDiffs(reportData);
-
-    this.logComparisonResults_(reportData);
-
-    // TODO(acdvorak): Where should this go?
-    const meta = reportData.meta;
-    meta.end_time_iso_utc = new Date().toISOString();
-    meta.duration_ms = Duration.elapsed(meta.start_time_iso_utc, meta.end_time_iso_utc).toMillis();
-
-    this.logger_.foldEnd('screenshot.compare');
-
+    this.logger_.foldEnd('screenshot.upload_images');
     return reportData;
   }
 
@@ -181,12 +178,14 @@ class Controller {
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async generateReportPage(reportData) {
-    this.logger_.foldStart('screenshot.report', 'Controller#generateReportPage()');
+    this.logger_.foldStart('screenshot.generate_report', 'Controller#generateReportPage()');
 
     await this.reportWriter_.generateReportPage(reportData);
     await this.cloudStorage_.uploadDiffReport(reportData);
 
-    this.logger_.foldEnd('screenshot.report');
+    this.logComparisonResults_(reportData);
+
+    this.logger_.foldEnd('screenshot.generate_report');
     this.logger_.log('');
 
     // TODO(acdvorak): Store this directly in the proto so we don't have to recalculate it all over the place
