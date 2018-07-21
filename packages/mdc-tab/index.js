@@ -95,7 +95,7 @@ class MDCTab extends MDCComponent {
         getOffsetWidth: () => this.root_.offsetWidth,
         getContentOffsetLeft: () => this.content_.offsetLeft,
         getContentOffsetWidth: () => this.content_.offsetWidth,
-        focus: (focusOpts) => this.root_.focus(focusOpts),
+        focus: () => this.root_.focus(),
       }));
   }
 

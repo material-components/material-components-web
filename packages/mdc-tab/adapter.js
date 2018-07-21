@@ -127,9 +127,8 @@ class MDCTabAdapter {
 
   /**
    * Applies focus to the root element
-   * @param {!Object} focusOptions
    */
-  focus(focusOptions) {}
+  focus() {}
 }
 
 export {MDCTabDimensions, MDCTabAdapter};

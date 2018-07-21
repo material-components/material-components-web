@@ -107,9 +107,9 @@ class MDCTabBarFoundation extends MDCFoundation {
     const tabToActivate = this.tabs_[index];
     const activeTab = this.tabs_[this.activeIndex_];
     this.activeIndex_ = index;
-    this.scrollIntoView(index);
     activeTab.deactivate();
     tabToActivate.activate(activeTab.computeIndicatorClientRect());
+    this.scrollIntoView(index);
   }
 
   /**
@@ -133,8 +133,6 @@ class MDCTabBarFoundation extends MDCFoundation {
 
     const nextTabIndex = this.computeClosestOccludedTabIndex_(index, tabDimensions, scrollPosition, barWidth);
     const nextTabIsLeft = nextTabIndex < index;
-    const nextTabDimensions = this.tabs_[nextTabIndex].computeDimensions();
-    const nextTabRelativeDimensions = this.computeTabRelativeDimensions_(nextTabDimensions, scrollPosition);
 
     let scrollIncrement = 0;
 
@@ -146,10 +144,14 @@ class MDCTabBarFoundation extends MDCFoundation {
       scrollIncrement = tabRelativeDimensions.relativeRootLeft;
     } else if (nextTabIndex >= this.tabs_.length) {
       scrollIncrement = tabRelativeDimensions.relativeRootRight - barWidth;
-    } else if (nextTabIsLeft) {
-      scrollIncrement = nextTabRelativeDimensions.relativeContentRight - numbers.EXTRA_SCROLL_AMOUNT;
     } else {
-      scrollIncrement = nextTabRelativeDimensions.relativeContentLeft + numbers.EXTRA_SCROLL_AMOUNT - barWidth;
+      const nextTabDimensions = this.tabs_[nextTabIndex].computeDimensions();
+      const nextTabRelativeDimensions = this.computeTabRelativeDimensions_(nextTabDimensions, scrollPosition);
+      if (nextTabIsLeft) {
+        scrollIncrement = nextTabRelativeDimensions.relativeContentRight - numbers.EXTRA_SCROLL_AMOUNT;
+      } else {
+        scrollIncrement = nextTabRelativeDimensions.relativeContentLeft + numbers.EXTRA_SCROLL_AMOUNT - barWidth;
+      }
     }
 
     if (nextTabIsLeft && scrollIncrement > 0 || !nextTabIsLeft && scrollIncrement < 0) {
