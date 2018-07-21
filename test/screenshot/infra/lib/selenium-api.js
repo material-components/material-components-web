@@ -38,7 +38,7 @@ const GitHubApi = require('./github-api');
 const ImageCropper = require('./image-cropper');
 const ImageDiffer = require('./image-differ');
 const LocalStorage = require('./local-storage');
-const {Browser, Builder, By, Capability, logging, until} = require('selenium-webdriver');
+const {Browser, Builder, By, logging, until} = require('selenium-webdriver');
 const {CBT_CONCURRENCY_POLL_INTERVAL_MS, CBT_CONCURRENCY_MAX_WAIT_MS, ExitCode} = Constants;
 const {SELENIUM_FONT_LOAD_WAIT_MS} = Constants;
 
@@ -389,20 +389,10 @@ class SeleniumApi {
    * @private
    */
   async getDesiredCapabilities_({meta, userAgent}) {
-    /** @type {?selenium.proto.RawCapabilities} */
-    let rawCaps;
-
     if (this.cli_.isOnline()) {
-      rawCaps = await this.cbtApi_.getDesiredCapabilities({meta, userAgent});
-    } else {
-      rawCaps = this.createDesiredCapabilitiesOffline_({userAgent});
+      return this.cbtApi_.getDesiredCapabilities({meta, userAgent});
     }
-
-    const loggingPrefs = new logging.Preferences();
-    loggingPrefs.setLevel(logging.Type.BROWSER, logging.Level.WARNING);
-    rawCaps[Capability.LOGGING_PREFS] = loggingPrefs;
-
-    return rawCaps;
+    return this.createDesiredCapabilitiesOffline_({userAgent});
   }
 
   /**
