@@ -63,12 +63,11 @@ class Cli {
    * @return {!Promise<boolean>}
    */
   async checkIsOnline() {
-    if (typeof isOnlineCached !== 'boolean') {
-      if (this.offline) {
-        isOnlineCached = false;
-      } else {
-        isOnlineCached = await checkIsOnline({timeout: Duration.seconds(5).toMillis()});
-      }
+    if (this.offline) {
+      return false;
+    }
+    if (typeof isOnlineCached === 'undefined') {
+      isOnlineCached = await checkIsOnline({timeout: Duration.seconds(5).toMillis()});
     }
     return isOnlineCached;
   }

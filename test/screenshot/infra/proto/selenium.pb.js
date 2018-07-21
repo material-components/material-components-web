@@ -46,6 +46,7 @@ $root.selenium = (function() {
              * @property {string|null} [deviceName] RawCapabilities deviceName
              * @property {string|null} [deviceOrientation] RawCapabilities deviceOrientation
              * @property {string|null} [screenResolution] RawCapabilities screenResolution
+             * @property {Object.<string,string>|null} [loggingPrefs] RawCapabilities loggingPrefs
              */
 
             /**
@@ -57,6 +58,7 @@ $root.selenium = (function() {
              * @param {selenium.proto.IRawCapabilities=} [properties] Properties to set
              */
             function RawCapabilities(properties) {
+                this.loggingPrefs = {};
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         if (properties[keys[i]] != null)
@@ -168,6 +170,14 @@ $root.selenium = (function() {
             RawCapabilities.prototype.screenResolution = "";
 
             /**
+             * RawCapabilities loggingPrefs.
+             * @member {Object.<string,string>} loggingPrefs
+             * @memberof selenium.proto.RawCapabilities
+             * @instance
+             */
+            RawCapabilities.prototype.loggingPrefs = $util.emptyObject;
+
+            /**
              * Creates a new RawCapabilities instance using the specified properties.
              * @function create
              * @memberof selenium.proto.RawCapabilities
@@ -217,6 +227,9 @@ $root.selenium = (function() {
                     writer.uint32(/* id 12, wireType 2 =*/98).string(message.deviceOrientation);
                 if (message.screenResolution != null && message.hasOwnProperty("screenResolution"))
                     writer.uint32(/* id 13, wireType 2 =*/106).string(message.screenResolution);
+                if (message.loggingPrefs != null && message.hasOwnProperty("loggingPrefs"))
+                    for (var keys = Object.keys(message.loggingPrefs), i = 0; i < keys.length; ++i)
+                        writer.uint32(/* id 14, wireType 2 =*/114).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.loggingPrefs[keys[i]]).ldelim();
                 return writer;
             };
 
@@ -247,7 +260,7 @@ $root.selenium = (function() {
             RawCapabilities.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
                     reader = $Reader.create(reader);
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.selenium.proto.RawCapabilities();
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.selenium.proto.RawCapabilities(), key;
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
@@ -289,6 +302,14 @@ $root.selenium = (function() {
                         break;
                     case 13:
                         message.screenResolution = reader.string();
+                        break;
+                    case 14:
+                        reader.skip().pos++;
+                        if (message.loggingPrefs === $util.emptyObject)
+                            message.loggingPrefs = {};
+                        key = reader.string();
+                        reader.pos++;
+                        message.loggingPrefs[key] = reader.string();
                         break;
                     default:
                         reader.skipType(tag & 7);
@@ -364,6 +385,14 @@ $root.selenium = (function() {
                 if (message.screenResolution != null && message.hasOwnProperty("screenResolution"))
                     if (!$util.isString(message.screenResolution))
                         return "screenResolution: string expected";
+                if (message.loggingPrefs != null && message.hasOwnProperty("loggingPrefs")) {
+                    if (!$util.isObject(message.loggingPrefs))
+                        return "loggingPrefs: object expected";
+                    var key = Object.keys(message.loggingPrefs);
+                    for (var i = 0; i < key.length; ++i)
+                        if (!$util.isString(message.loggingPrefs[key[i]]))
+                            return "loggingPrefs: string{k:string} expected";
+                }
                 return null;
             };
 
@@ -405,6 +434,13 @@ $root.selenium = (function() {
                     message.deviceOrientation = String(object.deviceOrientation);
                 if (object.screenResolution != null)
                     message.screenResolution = String(object.screenResolution);
+                if (object.loggingPrefs) {
+                    if (typeof object.loggingPrefs !== "object")
+                        throw TypeError(".selenium.proto.RawCapabilities.loggingPrefs: object expected");
+                    message.loggingPrefs = {};
+                    for (var keys = Object.keys(object.loggingPrefs), i = 0; i < keys.length; ++i)
+                        message.loggingPrefs[keys[i]] = String(object.loggingPrefs[keys[i]]);
+                }
                 return message;
             };
 
@@ -421,6 +457,8 @@ $root.selenium = (function() {
                 if (!options)
                     options = {};
                 var object = {};
+                if (options.objects || options.defaults)
+                    object.loggingPrefs = {};
                 if (options.defaults) {
                     object.browserName = "";
                     object.browserVersion = "";
@@ -462,6 +500,12 @@ $root.selenium = (function() {
                     object.deviceOrientation = message.deviceOrientation;
                 if (message.screenResolution != null && message.hasOwnProperty("screenResolution"))
                     object.screenResolution = message.screenResolution;
+                var keys2;
+                if (message.loggingPrefs && (keys2 = Object.keys(message.loggingPrefs)).length) {
+                    object.loggingPrefs = {};
+                    for (var j = 0; j < keys2.length; ++j)
+                        object.loggingPrefs[keys2[j]] = message.loggingPrefs[keys2[j]];
+                }
                 return object;
             };
 

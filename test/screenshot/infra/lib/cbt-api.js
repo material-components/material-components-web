@@ -26,6 +26,7 @@ const {FormFactorType, OsVendorType, BrowserVendorType, BrowserVersionType} = Us
 const {CbtAccount, CbtActiveTestCounts, CbtConcurrencyStats} = cbtProto;
 const {RawCapabilities} = seleniumProto;
 
+const Cli = require('./cli');
 const DiffBaseParser = require('./diff-base-parser');
 const Duration = require('./duration');
 
@@ -40,6 +41,12 @@ let allBrowsersPromise;
 
 class CbtApi {
   constructor() {
+    /**
+     * @type {!Cli}
+     * @private
+     */
+    this.cli_ = new Cli();
+
     /**
      * @type {!DiffBaseParser}
      * @private
@@ -406,6 +413,14 @@ https://crossbrowsertesting.com/account
    * @private
    */
   async sendRequest_(method, endpoint, body = undefined) {
+    if (this.cli_.isOffline()) {
+      console.warn(
+        `${colors.magenta('WARNING')}:`,
+        new Error('CbtApi#sendRequest_() should not be called in --offline mode')
+      );
+      return [];
+    }
+
     return request({
       method,
       uri: `${REST_API_BASE_URL}${endpoint}`,

@@ -66,4 +66,6 @@ message RawCapabilities {
 
   // Desktop-only. E.g.: "1366x768".
   string screenResolution = 13;
+
+  map<string, string> loggingPrefs = 14;
 }
