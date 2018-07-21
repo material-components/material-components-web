@@ -39,6 +39,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'activateIndicator', 'deactivateIndicator', 'computeIndicatorClientRect',
     'getOffsetLeft', 'getOffsetWidth', 'getContentOffsetLeft', 'getContentOffsetWidth',
     'notifyInteracted', 'notifyActivated',
+    'focus',
   ]);
 });
 
@@ -86,6 +87,12 @@ test('#activate activates the indicator', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.activate({width: 100, left: 200});
   td.verify(mockAdapter.activateIndicator({width: 100, left: 200}));
+});
+
+test('#activate focuses with preventScroll set to true', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.activate({width: 100, left: 200});
+  td.verify(mockAdapter.focus());
 });
 
 test(`#activate emits the ${MDCTabFoundation.strings.ACTIVATED_EVENT} event`, () => {
