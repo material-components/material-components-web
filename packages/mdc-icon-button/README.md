@@ -185,4 +185,6 @@ Method Signature | Description
 
 ### Foundation: `MDCIconButtonToggleFoundation`
 
-The foundation does not contain any public properties or methods aside from those inherited from MDCFoundation.
+Method Signature | Description
+--- | ---
+`handleClick()` | Event handler triggered on the click event. It will toggle the icon from on/off and update aria attributes.
