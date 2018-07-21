@@ -124,28 +124,6 @@ test('#adapter.removeClass adds a class to the inner icon element when used', ()
   assert.isNotOk(root.querySelector('#icon').classList.contains('foo'));
 });
 
-test('#adapter.registerInteractionHandler adds an event listener for (type, handler)', () => {
-  const {root, component} = setupTest();
-  document.body.appendChild(root);
-  const handler = td.func('clickHandler');
-  component.getDefaultFoundation().adapter_.registerInteractionHandler('click', handler);
-  domEvents.emit(root, 'click');
-  td.verify(handler(td.matchers.anything()));
-  document.body.removeChild(root);
-});
-
-test('#adapter.deregisterInteractionHandler removes an event listener for (type, hander)', () => {
-  const {root, component} = setupTest();
-  document.body.appendChild(root);
-  const handler = td.func('clickHandler');
-
-  root.addEventListener('click', handler);
-  component.getDefaultFoundation().adapter_.deregisterInteractionHandler('click', handler);
-  domEvents.emit(root, 'click');
-  td.verify(handler(td.matchers.anything()), {times: 0});
-  document.body.removeChild(root);
-});
-
 test('#adapter.setText sets the text content of the root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.setText('foo');
@@ -188,4 +166,25 @@ test('assert keyup does not trigger ripple', () => {
   const {root} = setupTest();
   domEvents.emit(root, 'keyup');
   assert.isNotOk(root.classList.contains(cssClasses.FG_ACTIVATION));
+});
+
+test('click handler is added to root element', () => {
+  const MockIconToggleFoundation = td.constructor(MDCIconButtonToggleFoundation);
+  const root = document.createElement('i');
+  const foundation = new MockIconToggleFoundation();
+  const component = new MDCIconButtonToggle(root, foundation);
+
+  domEvents.emit(root, 'click');
+  td.verify(foundation.handleClick(td.matchers.isA(Object)), {times: 1});
+});
+
+test('keydown handler is removed from the root element on destroy', () => {
+  const MockIconToggleFoundation = td.constructor(MDCIconButtonToggleFoundation);
+  const root = document.createElement('i');
+  const foundation = new MockIconToggleFoundation();
+  const component = new MDCIconButtonToggle(root, foundation);
+
+  component.destroy();
+  domEvents.emit(root, 'click');
+  td.verify(foundation.handleClick(td.matchers.isA(Object)), {times: 0});
 });
