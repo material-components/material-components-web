@@ -188,15 +188,6 @@
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/19/21_11_42_130/spec/mdc-drawer/classes/temporary.html.windows_ie_11.png"
     }
   },
-  "spec/mdc-drawer/mixins/bork-color.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/07/22/07_29_44_197/spec/mdc-drawer/mixins/bork-color.html",
-    "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/07/22/07_29_44_197/spec/mdc-drawer/mixins/bork-color.html.windows_chrome_67.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/07/22/07_29_44_197/spec/mdc-drawer/mixins/bork-color.html.windows_edge_17.png",
-      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/07/22/07_29_44_197/spec/mdc-drawer/mixins/bork-color.html.windows_firefox_61.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/07/22/07_29_44_197/spec/mdc-drawer/mixins/bork-color.html.windows_ie_11.png"
-    }
-  },
   "spec/mdc-drawer/mixins/fill-color-accessible.html": {
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/17/21_05_09_679/spec/mdc-drawer/mixins/fill-color-accessible.html",
     "screenshots": {
@@ -213,6 +204,15 @@
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/19/21_11_42_130/spec/mdc-drawer/mixins/fill-color.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/19/21_11_42_130/spec/mdc-drawer/mixins/fill-color.html.windows_firefox_61.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/19/21_11_42_130/spec/mdc-drawer/mixins/fill-color.html.windows_ie_11.png"
+    }
+  },
+  "spec/mdc-drawer/mixins/ink-color.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/17/21_05_09_679/spec/mdc-drawer/mixins/ink-color.html",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/19/21_11_42_130/spec/mdc-drawer/mixins/ink-color.html.windows_chrome_67.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/19/21_11_42_130/spec/mdc-drawer/mixins/ink-color.html.windows_edge_17.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/19/21_11_42_130/spec/mdc-drawer/mixins/ink-color.html.windows_firefox_61.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/19/21_11_42_130/spec/mdc-drawer/mixins/ink-color.html.windows_ie_11.png"
     }
   },
   "spec/mdc-fab/classes/baseline.html": {
