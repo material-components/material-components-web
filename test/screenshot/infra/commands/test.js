@@ -180,7 +180,6 @@ ${listMarkdown}
 
       if (capturedScreenshots.length === 0) {
         await controller.captureAllPages(reportData);
-        await gitHubApi.setPullRequestStatusAuto(reportData);
       } else {
         await this.copyAndCompareScreenshots_({reportData, capturedScreenshots});
       }
