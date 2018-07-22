@@ -131,8 +131,10 @@ ${boldGreen('Skipping screenshot tests.')}
 </a>
 `.trim().replace(/>\n *</g, '><');
         }).join(' ');
+        const firstScreenshot = screenshotList.screenshots[0];
+        const htmlFileUrl = (firstScreenshot.actual_html_file || firstScreenshot.expected_html_file).public_url;
         return `
-* [\`${htmlFilePath}\`](${screenshotList.screenshots[0].actual_html_file.public_url}) ${browserIconMarkdown}
+* [\`${htmlFilePath}\`](${htmlFileUrl}) ${browserIconMarkdown}
 `.trim();
       }).join('\n');
 
