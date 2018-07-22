@@ -98,14 +98,59 @@ ${boldGreen('Skipping screenshot tests.')}
     const localGitRev = localDiffReportData.meta.golden_diff_base.git_revision;
     if (localGitRev && localGitRev.type === GitRevision.Type.TRAVIS_PR) {
       const reportPageUrl = masterDiffReportData.meta.report_html_file.public_url;
+
+      /**
+       * @param {string} verb
+       * @param {!Array<!mdc.proto.Screenshot>} screenshotArray
+       * @param {!Object<string, !mdc.proto.ScreenshotList>} screenshotMap
+       */
+      const genListMarkdown = (verb, screenshotArray, screenshotMap) => {
+        const numHtmlFiles = Object.keys(screenshotMap).length;
+        if (numHtmlFiles === 0) {
+          return null;
+        }
+
+        const listItemMarkdown = Object.entries(screenshotMap).map(([htmlFilePath, screenshotList]) => {
+          const browserIconMarkdown = screenshotList.screenshots.map((screenshot) => {
+            return `
+<a href="${screenshot.actual_image_file.public_url}"
+   title="${screenshot.user_agent.navigator.full_name || screenshot.user_agent.alias}">
+  <img src="${screenshot.user_agent.browser_icon_url}" width="16" height="16">
+</a>
+`.trim().replace(/>\n *</g, '><');
+          }).join(' ');
+          return `
+  * [\`${htmlFilePath}\`](${screenshotList.screenshots[0].actual_html_file.public_url}) ${browserIconMarkdown}
+  `.trim();
+        }).join('\n');
+
+        const hoorayMarkdown = '# No diffs! 💯🎉';
+
+        return `
+#### ${screenshotArray.length} ${verb}:
+
+${listItemMarkdown || hoorayMarkdown}
+`;
+      };
+
+      const listMarkdown = [
+        genListMarkdown('Changed', screenshots.changed_screenshot_list, screenshots.changed_screenshot_page_map),
+        genListMarkdown('Added', screenshots.added_screenshot_list, screenshots.added_screenshot_page_map),
+        genListMarkdown('Removed', screenshots.removed_screenshot_list, screenshots.removed_screenshot_page_map),
+      ].filter((str) => Boolean(str)).join('\n\n');
+
       await gitHubApi.createPullRequestComment(
         localGitRev.pr_number,
         `
-Beep boop!
+🤖 Beep boop!
 
-**Diff report** for commit ${localGitRev.commit}:
+### Screenshot test report
+
+Commit ${localGitRev.commit} vs. \`master\`:
 
 * ${reportPageUrl}
+
+${listMarkdown}
 `.trim()
       );
     }

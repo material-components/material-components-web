@@ -54,37 +54,14 @@ class DiffBaseParser {
    * @return {!Promise<!mdc.proto.DiffBase>}
    */
   async parseGoldenDiffBase(cliDiffBase) {
-    /** @type {?mdc.proto.GitRevision} */
-    const travisGitRevision = await this.getTravisGitRevision();
-    if (travisGitRevision) {
-      let generatedInputString;
-      if (travisGitRevision.pr_number) {
-        generatedInputString = `travis/pr/${travisGitRevision.pr_number}`;
-      } else if (travisGitRevision.tag) {
-        generatedInputString = `travis/tag/${travisGitRevision.tag}`;
-      } else if (travisGitRevision.branch) {
-        generatedInputString = `travis/branch/${travisGitRevision.branch}`;
-      } else {
-        generatedInputString = `travis/commit/${travisGitRevision.commit}`;
-      }
-      return DiffBase.create({
-        type: DiffBase.Type.GIT_REVISION,
-        input_string: generatedInputString,
-        git_revision: travisGitRevision,
-      });
-    }
-    return this.parseDiffBase(cliDiffBase);
+    return await this.getTravisDiffBase_() || await this.parseDiffBase(cliDiffBase);
   }
 
   /**
    * @return {!Promise<!mdc.proto.DiffBase>}
    */
   async parseSnapshotDiffBase() {
-    // TODO(acdvorak): Make this a CLI option instead of using env vars for Travis
-    if (process.env.TRAVIS === 'true') {
-      return this.getTravisGitRevision();
-    }
-    return this.parseDiffBase('HEAD');
+    return await this.getTravisDiffBase_() || await this.parseDiffBase('HEAD');
   }
 
   /**
@@ -173,6 +150,35 @@ class DiffBaseParser {
     // Diff against a local git branch.
     // E.g.: `--diff-base=master` or `--diff-base=HEAD`
     return this.createLocalBranchDiffBase_(localRef, goldenFilePath);
+  }
+
+  /**
+   * @return {!Promise<?mdc.proto.DiffBase>}
+   * @private
+   */
+  async getTravisDiffBase_() {
+    /** @type {?mdc.proto.GitRevision} */
+    const travisGitRevision = await this.getTravisGitRevision();
+    if (!travisGitRevision) {
+      return null;
+    }
+
+    let generatedInputString;
+    if (travisGitRevision.pr_number) {
+      generatedInputString = `travis/pr/${travisGitRevision.pr_number}`;
+    } else if (travisGitRevision.tag) {
+      generatedInputString = `travis/tag/${travisGitRevision.tag}`;
+    } else if (travisGitRevision.branch) {
+      generatedInputString = `travis/branch/${travisGitRevision.branch}`;
+    } else {
+      generatedInputString = `travis/commit/${travisGitRevision.commit}`;
+    }
+
+    return DiffBase.create({
+      type: DiffBase.Type.GIT_REVISION,
+      input_string: generatedInputString,
+      git_revision: travisGitRevision,
+    });
   }
 
   /**
