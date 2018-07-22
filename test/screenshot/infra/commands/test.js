@@ -65,13 +65,18 @@ ${boldGreen('Skipping screenshot tests.')}
       return ExitCode.OK;
     }
 
+    const screenshots = localDiffReportData.screenshots;
     /** @type {!Array<!mdc.proto.Screenshot>} */
-    const capturedScreenshots = localDiffReportData.screenshots.actual_screenshot_list;
+    const capturedScreenshots = [].concat(
+      screenshots.changed_screenshot_list,
+      screenshots.added_screenshot_list,
+      screenshots.removed_screenshot_list,
+      screenshots.unchanged_screenshot_list,
+    );
 
-    /** @type {!mdc.proto.ReportData} */
-    const masterDiffReportData = await this.diffEmAll_('origin/master', capturedScreenshots);
+    await this.diffEmAll_('origin/master', capturedScreenshots);
 
-    return this.getExitCode_(masterDiffReportData);
+    return ExitCode.OK;
   },
 
   /**
@@ -142,37 +147,38 @@ ${boldGreen('Skipping screenshot tests.')}
    */
   async copyAndCompareScreenshots_({reportData, capturedScreenshots}) {
     const promises = [];
-    const copyScreenshots = reportData.screenshots.actual_screenshot_list.concat();
-    for (const copyScreenshot of copyScreenshots) {
+    const screenshots = reportData.screenshots;
+    const masterScreenshots = screenshots.actual_screenshot_list;
+    for (const masterScreenshot of masterScreenshots) {
       for (const capturedScreenshot of capturedScreenshots) {
-        if (capturedScreenshot.html_file_path !== copyScreenshot.html_file_path ||
-            capturedScreenshot.user_agent.alias !== copyScreenshot.user_agent.alias) {
+        if (capturedScreenshot.html_file_path !== masterScreenshot.html_file_path ||
+            capturedScreenshot.user_agent.alias !== masterScreenshot.user_agent.alias) {
           continue;
         }
         promises.push(new Promise(async (resolve) => {
-          console.log(`Comparing ${copyScreenshot.html_file_path} > ${copyScreenshot.user_agent.alias}...`);
-          copyScreenshot.actual_html_file = capturedScreenshot.actual_html_file;
-          copyScreenshot.actual_image_file = capturedScreenshot.actual_image_file;
-          copyScreenshot.capture_state = capturedScreenshot.capture_state;
+          console.log(`Comparing ${masterScreenshot.html_file_path} > ${masterScreenshot.user_agent.alias}...`);
+          masterScreenshot.actual_html_file = capturedScreenshot.actual_html_file;
+          masterScreenshot.actual_image_file = capturedScreenshot.actual_image_file;
+          masterScreenshot.capture_state = capturedScreenshot.capture_state;
 
           /** @type {!mdc.proto.DiffImageResult} */
           const diffImageResult = await imageDiffer.compareOneScreenshot({
             meta: reportData.meta,
-            screenshot: copyScreenshot,
+            screenshot: masterScreenshot,
           });
 
-          copyScreenshot.diff_image_result = diffImageResult;
-          copyScreenshot.diff_image_file = diffImageResult.diff_image_file;
+          masterScreenshot.diff_image_result = diffImageResult;
+          masterScreenshot.diff_image_file = diffImageResult.diff_image_file;
 
           if (diffImageResult.has_changed) {
-            reportData.screenshots.changed_screenshot_list.push(copyScreenshot);
+            reportData.screenshots.changed_screenshot_list.push(masterScreenshot);
           } else {
-            reportData.screenshots.unchanged_screenshot_list.push(copyScreenshot);
+            reportData.screenshots.unchanged_screenshot_list.push(masterScreenshot);
           }
-          reportData.screenshots.comparable_screenshot_list.push(copyScreenshot);
-          // reportData.screenshots.runnable_screenshot_list.push(copyScreenshot);
+          reportData.screenshots.comparable_screenshot_list.push(masterScreenshot);
 
-          console.log(`Compared ${copyScreenshot.html_file_path} > ${copyScreenshot.user_agent.alias}!`);
+          console.log(`Compared ${masterScreenshot.html_file_path} > ${masterScreenshot.user_agent.alias}!`);
+
           resolve();
         }));
       }
