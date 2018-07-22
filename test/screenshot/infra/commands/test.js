@@ -115,8 +115,11 @@ ${boldGreen('Skipping screenshot tests.')}
             const userAgentFriendlyName = (
               screenshot.user_agent.navigator ? screenshot.user_agent.navigator.full_name : null
             ) || screenshot.user_agent.alias;
+            const linkUrl = screenshot.diff_image_file
+              ? screenshot.diff_image_file.public_url
+              : screenshot.actual_image_file.public_url;
             return `
-<a href="${screenshot.actual_image_file.public_url}"
+<a href="${linkUrl}"
    title="${userAgentFriendlyName}">
   <img src="${screenshot.user_agent.browser_icon_url}" width="16" height="16">
 </a>
