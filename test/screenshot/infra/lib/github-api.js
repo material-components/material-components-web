@@ -199,6 +199,20 @@ class GitHubApi {
     });
     return fileResponse.data;
   }
+
+  /**
+   * @param {number} prNumber
+   * @param {string} comment
+   * @return {!Promise<*>}
+   */
+  async createPullRequestComment(prNumber, comment) {
+    return this.octokit_.repo.issues.createComment({
+      owner: 'material-components',
+      repo: 'material-components-web',
+      number: prNumber,
+      body: comment,
+    });
+  }
 }
 
 module.exports = GitHubApi;

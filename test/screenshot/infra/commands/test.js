@@ -19,7 +19,7 @@
 const VError = require('verror');
 
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
-const {GitRevision} = mdcProto;
+const GitRevision = mdcProto.GitRevision;
 
 const BuildCommand = require('./build');
 const Cli = require('../lib/cli');
@@ -86,7 +86,17 @@ ${boldGreen('Skipping screenshot tests.')}
     /** @type {!mdc.proto.DiffBase} */
     const masterDiffBase = await diffBaseParser.parseMasterDiffBase();
 
-    await this.diffEmAll_(masterDiffBase, capturedScreenshots);
+    /** @type {!mdc.proto.ReportData} */
+    const masterDiffReportData = await this.diffEmAll_(masterDiffBase, capturedScreenshots);
+
+    const localGitRev = localDiffReportData.meta.golden_diff_base.git_revision;
+    if (localGitRev && localGitRev.type === GitRevision.Type.TRAVIS_PR) {
+      const reportPageUrl = masterDiffReportData.meta.report_html_file.public_url;
+      await gitHubApi.createPullRequestComment(
+        localGitRev.pr_number,
+        `Diff report for commit ${localGitRev.commit}: ${reportPageUrl}`
+      );
+    }
 
     return ExitCode.OK;
   },
