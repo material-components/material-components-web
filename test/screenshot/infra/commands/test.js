@@ -352,6 +352,8 @@ ${listItemMarkdown}
   <summary><b>0 screenshots changed</b></summary>
   <div>
 
+<br>
+
 ${this.getRandomCongratulatoryMemeImage_()}
 
   </div>
