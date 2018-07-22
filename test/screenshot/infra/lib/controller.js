@@ -16,9 +16,6 @@
 
 'use strict';
 
-const mdcProto = require('../proto/mdc.pb').mdc.proto;
-const {GitRevision} = mdcProto;
-
 const CbtApi = require('./cbt-api');
 const Cli = require('./cli');
 const CliColor = require('./logger').colors;
@@ -30,7 +27,6 @@ const Logger = require('./logger');
 const ReportBuilder = require('./report-builder');
 const ReportWriter = require('./report-writer');
 const SeleniumApi = require('./selenium-api');
-const {ExitCode} = require('./constants');
 
 class Controller {
   constructor() {
