@@ -28,7 +28,7 @@
   @include mdc-drawer-ink-color($mdc-temporary-drawer-ink-color);
   @include mdc-drawer-fill-color($mdc-temporary-drawer-fill-color);
   @include mdc-drawer-scrim-color($mdc-temporary-drawer-scrim-color, $mdc-temporary-drawer-scrim-opacity);
-  @include mdc-drawer-shape-radius((0, sheet-expanded, sheet-expanded, 0));
+  @include mdc-drawer-shape-radius(sheet-expanded);
 
   position: fixed;
   top: 0;

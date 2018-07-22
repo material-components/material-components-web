@@ -10,14 +10,14 @@
 }
 
 @function mdc-shape-flip-radius($radius) {
-  @return (nth($radius, 2), nth($radius, 1), nth($radius, 4), nth($radius, 3));
+  @return nth($radius, 2) nth($radius, 1) nth($radius, 4) nth($radius, 3);
 }
 
 @function mdc-shape-prop-value($type, $radius) {
-  @if type-of($radius) == list {
+  @if type-of($radius) == "list" {
     $radius-value: ();
     @each $corner in $radius {
-      $radius-value: append($radius-value, mdc-shape-prop-corner-value_($type, $radius));
+      $radius-value: append($radius-value, mdc-shape-prop-corner-value_($type, $corner));
     }
     @return $radius-value;
   } @else {
