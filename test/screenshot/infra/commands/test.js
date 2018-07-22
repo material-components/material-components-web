@@ -235,56 +235,15 @@ ${boldGreen('Skipping screenshot tests.')}
   getPrComment_: function(masterDiffReportData, snapshotGitRev) {
     const reportPageUrl = masterDiffReportData.meta.report_html_file.public_url;
 
-    const getBrowserIconMarkup = (screenshot) => {
-      const imgFile = screenshot.diff_image_file || screenshot.actual_image_file || screenshot.expected_image_file;
-      const linkUrl = imgFile.public_url;
-
-      const untrimmed = `
-<a href="${linkUrl}"
-   title="${screenshot.user_agent.alias}">
-  <img src="${screenshot.user_agent.browser_icon_url}" width="16" height="16">
-</a>
-`;
-      return untrimmed.trim().replace(/>\n *</g, '><');
-    };
-
-    /**
-     * @param {string} verb
-     * @param {!Array<!mdc.proto.Screenshot>} screenshotArray
-     * @param {!Object<string, !mdc.proto.ScreenshotList>} screenshotMap
-     */
-    const genListMarkdown = (verb, screenshotArray, screenshotMap) => {
-      const numHtmlFiles = Object.keys(screenshotMap).length;
-      if (numHtmlFiles === 0) {
-        return null;
-      }
-
-      const listItemMarkdown = Object.entries(screenshotMap).map(([htmlFilePath, screenshotList]) => {
-        const browserIconMarkup = screenshotList.screenshots.map(getBrowserIconMarkup).join(' ');
-        const firstScreenshot = screenshotList.screenshots[0];
-        const htmlFileUrl = (firstScreenshot.actual_html_file || firstScreenshot.expected_html_file).public_url;
-
-        return `
-* [\`${htmlFilePath}\`](${htmlFileUrl}) ${browserIconMarkup}
-`.trim();
-      }).join('\n');
-
-      return `
-### ${screenshotArray.length} ${verb}:
-
-${listItemMarkdown}
-`;
-    };
-
     const masterScreenshots = masterDiffReportData.screenshots;
     const listMarkdown = [
-      genListMarkdown(
+      this.getChangelistMarkdown_(
         'Changed', masterScreenshots.changed_screenshot_list, masterScreenshots.changed_screenshot_page_map
       ),
-      genListMarkdown(
+      this.getChangelistMarkdown_(
         'Added', masterScreenshots.added_screenshot_list, masterScreenshots.added_screenshot_page_map
       ),
-      genListMarkdown(
+      this.getChangelistMarkdown_(
         'Removed', masterScreenshots.removed_screenshot_list, masterScreenshots.removed_screenshot_page_map
       ),
     ].filter((str) => Boolean(str)).join('\n\n');
@@ -308,31 +267,7 @@ ${listMarkdown}
 </details>
 `.trim();
     } else {
-      const memes = {
-        'Chow Yun Fat Approves':
-          'https://user-images.githubusercontent.com/409245/43050443-c4a34bc6-8dbd-11e8-8386-a330df5e29be.gif',
-        "You're Awesome - Bill Murray":
-          'https://user-images.githubusercontent.com/409245/43050464-122754fa-8dbe-11e8-9ef8-6bd806f1fff8.jpg',
-        'Bender Wants Applause - Futurama':
-          'https://user-images.githubusercontent.com/409245/43050501-7ba8e150-8dbe-11e8-930c-412976867686.jpg',
-        'High Five Handshake':
-          'https://user-images.githubusercontent.com/409245/43050618-dbd7f06e-8dc0-11e8-8a7c-4fe1b0a63f49.gif',
-      };
-      const entries = Object.entries(memes);
-      const index = Math.round(Math.random() * 1e16) % entries.length;
-      const [alt, src] = entries[index];
-      contentMarkdown = `
-### No diffs! 💯🎉
-
-<details>
-  <summary><b>0 screenshots changed</b></summary>
-  <div>
-
-<img src="${src}" alt="${alt}" height="200">
-
-  </div>
-</details>
-`;
+      contentMarkdown = this.getCongratulatoryMarkdown_();
     }
 
     return `
@@ -346,6 +281,103 @@ Commit ${snapshotGitRev.commit} vs. \`master\`:
 
 ${contentMarkdown}
 `.trim();
+  },
+
+  /**
+   * @param {string} verb
+   * @param {!Array<!mdc.proto.Screenshot>} screenshotArray
+   * @param {!Object<string, !mdc.proto.ScreenshotList>} screenshotMap
+   */
+  getChangelistMarkdown_(verb, screenshotArray, screenshotMap) {
+    const numHtmlFiles = Object.keys(screenshotMap).length;
+    if (numHtmlFiles === 0) {
+      return null;
+    }
+
+    const listItemMarkdown = Object.entries(screenshotMap).map(([htmlFilePath, screenshotList]) => {
+      const browserIconMarkup = this.getAllBrowserIcons_(screenshotList.screenshots);
+      const firstScreenshot = screenshotList.screenshots[0];
+      const htmlFileUrl = (firstScreenshot.actual_html_file || firstScreenshot.expected_html_file).public_url;
+
+      return `
+* [\`${htmlFilePath}\`](${htmlFileUrl}) ${browserIconMarkup}
+`.trim();
+    }).join('\n');
+
+    return `
+### ${screenshotArray.length} ${verb}:
+
+${listItemMarkdown}
+`;
+  },
+
+  /**
+   * @param {!Array<!mdc.proto.Screenshot>} screenshotArray
+   * @return {string}
+   * @private
+   */
+  getAllBrowserIcons_(screenshotArray) {
+    return screenshotArray.map((screenshot) => {
+      return this.getOneBrowserIcon_(screenshot);
+    }).join(' ');
+  },
+
+  /**
+   * @param screenshot
+   * @return {string}
+   * @private
+   */
+  getOneBrowserIcon_(screenshot) {
+    const imgFile = screenshot.diff_image_file || screenshot.actual_image_file || screenshot.expected_image_file;
+    const linkUrl = imgFile.public_url;
+
+    const untrimmed = `
+<a href="${linkUrl}"
+   title="${screenshot.user_agent.alias}">
+  <img src="${screenshot.user_agent.browser_icon_url}" width="16" height="16">
+</a>
+`;
+    return untrimmed.trim().replace(/>\n *</g, '><');
+  },
+
+  /**
+   * @return {string}
+   * @private
+   */
+  getCongratulatoryMarkdown_() {
+    return `
+### No diffs! 💯🎉
+
+<details>
+  <summary><b>0 screenshots changed</b></summary>
+  <div>
+
+${this.getRandomCongratulatoryMemeImage_()}
+
+  </div>
+</details>
+`;
+  },
+
+  /**
+   * @return {string}
+   * @private
+   */
+  getRandomCongratulatoryMemeImage_() {
+    const memes = {
+      'Chow Yun Fat Approves':
+        'https://user-images.githubusercontent.com/409245/43050443-c4a34bc6-8dbd-11e8-8386-a330df5e29be.gif',
+      "You're Awesome - Bill Murray":
+        'https://user-images.githubusercontent.com/409245/43050464-122754fa-8dbe-11e8-9ef8-6bd806f1fff8.jpg',
+      'Bender Wants Applause - Futurama':
+        'https://user-images.githubusercontent.com/409245/43051279-4b62ec26-8dcc-11e8-81af-2147368a5bbd.png',
+      'High Five Handshake':
+        'https://user-images.githubusercontent.com/409245/43050618-dbd7f06e-8dc0-11e8-8a7c-4fe1b0a63f49.gif',
+    };
+    const entries = Object.entries(memes);
+    const index = Math.round(Math.random() * 1e16) % entries.length;
+    const [alt, src] = entries[index];
+    return `<img src="${src}" alt="${alt}" height="200">`;
   },
 
   /**
