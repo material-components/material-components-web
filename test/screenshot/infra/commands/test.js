@@ -78,14 +78,14 @@ ${boldGreen('Skipping screenshot tests.')}
       return ExitCode.OK;
     }
 
-    const screenshots = localDiffReportData.screenshots;
+    const localScreenshots = localDiffReportData.screenshots;
 
     /** @type {!Array<!mdc.proto.Screenshot>} */
     const capturedScreenshots = [].concat(
-      screenshots.changed_screenshot_list,
-      screenshots.added_screenshot_list,
-      screenshots.removed_screenshot_list,
-      screenshots.unchanged_screenshot_list,
+      localScreenshots.changed_screenshot_list,
+      localScreenshots.added_screenshot_list,
+      localScreenshots.removed_screenshot_list,
+      localScreenshots.unchanged_screenshot_list,
     );
 
     // TODO(acdvorak): Make this a CLI option instead of using env vars for Travis
@@ -124,20 +124,27 @@ ${boldGreen('Skipping screenshot tests.')}
   `.trim();
         }).join('\n');
 
-        const hoorayMarkdown = '# No diffs! 💯🎉';
-
         return `
 #### ${screenshotArray.length} ${verb}:
 
-${listItemMarkdown || hoorayMarkdown}
+${listItemMarkdown}
 `;
       };
 
+      const masterScreenshots = masterDiffReportData.screenshots;
       const listMarkdown = [
-        genListMarkdown('Changed', screenshots.changed_screenshot_list, screenshots.changed_screenshot_page_map),
-        genListMarkdown('Added', screenshots.added_screenshot_list, screenshots.added_screenshot_page_map),
-        genListMarkdown('Removed', screenshots.removed_screenshot_list, screenshots.removed_screenshot_page_map),
+        genListMarkdown(
+          'Changed', masterScreenshots.changed_screenshot_list, masterScreenshots.changed_screenshot_page_map
+        ),
+        genListMarkdown(
+          'Added', masterScreenshots.added_screenshot_list, masterScreenshots.added_screenshot_page_map
+        ),
+        genListMarkdown(
+          'Removed', masterScreenshots.removed_screenshot_list, masterScreenshots.removed_screenshot_page_map
+        ),
       ].filter((str) => Boolean(str)).join('\n\n');
+
+      const hoorayMarkdown = '# No diffs! 💯🎉';
 
       await gitHubApi.createPullRequestComment(
         localGitRev.pr_number,
@@ -150,7 +157,7 @@ Commit ${localGitRev.commit} vs. \`master\`:
 
 * ${reportPageUrl}
 
-${listMarkdown}
+${listMarkdown || hoorayMarkdown}
 `.trim()
       );
     }
