@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+const debounce = require('debounce');
 const octokit = require('@octokit/rest');
 
 const GitRepo = require('./git-repo');
@@ -55,9 +56,15 @@ class GitHubApi {
       };
     };
 
-    this.createStatusThrottled_ = throttle((...args) => {
+    const createStatusDebounced = debounce(() => {
       return this.createStatusUnthrottled_(...args);
     }, 5000);
+    this.createStatusThrottled_ = () => {
+      createStatusDebounced();
+      return throttle((...args) => {
+        return this.createStatusUnthrottled_(...args);
+      }, 5000);
+    };
   }
 
   /**
