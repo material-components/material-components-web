@@ -80,6 +80,10 @@ class DiffBaseParser {
    * @return {!Promise<!mdc.proto.DiffBase>}
    */
   async parseSnapshotDiffBase() {
+    // TODO(acdvorak): Make this a CLI option instead of using env vars for Travis
+    if (process.env.TRAVIS === 'true') {
+      return this.getTravisGitRevision();
+    }
     return this.parseDiffBase('HEAD');
   }
 
