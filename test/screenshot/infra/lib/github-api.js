@@ -58,7 +58,7 @@ class GitHubApi {
 
     const createStatusDebounced = debounce((...args) => {
       return this.createStatusUnthrottled_(...args);
-    }, 5000);
+    }, 2500);
     const createStatusThrottled = throttle((...args) => {
       return this.createStatusUnthrottled_(...args);
     }, 5000);
