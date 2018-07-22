@@ -55,11 +55,7 @@ class GitHubApi {
       };
     };
 
-    this.createStatusDebounced_ = throttle((...args) => {
-      return this.createStatusUnthrottled_(...args);
-    }, 1000);
     this.createStatusThrottled_ = throttle((...args) => {
-      this.createStatusDebounced_(...args);
       return this.createStatusUnthrottled_(...args);
     }, 5000);
   }

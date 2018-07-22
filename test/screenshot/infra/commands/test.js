@@ -112,9 +112,12 @@ ${boldGreen('Skipping screenshot tests.')}
 
         const listItemMarkdown = Object.entries(screenshotMap).map(([htmlFilePath, screenshotList]) => {
           const browserIconMarkdown = screenshotList.screenshots.map((screenshot) => {
+            const userAgentFriendlyName = (
+              screenshot.user_agent.navigator ? screenshot.user_agent.navigator.full_name : null
+            ) || screenshot.user_agent.alias;
             return `
 <a href="${screenshot.actual_image_file.public_url}"
-   title="${screenshot.user_agent.navigator.full_name || screenshot.user_agent.alias}">
+   title="${userAgentFriendlyName}">
   <img src="${screenshot.user_agent.browser_icon_url}" width="16" height="16">
 </a>
 `.trim().replace(/>\n *</g, '><');
