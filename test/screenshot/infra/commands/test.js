@@ -84,7 +84,7 @@ ${boldGreen('Skipping screenshot tests.')}
     );
 
     /** @type {!mdc.proto.DiffBase} */
-    const masterDiffBase = await diffBaseParser.parseGoldenDiffBase('origin/master');
+    const masterDiffBase = await diffBaseParser.parseMasterDiffBase();
 
     await this.diffEmAll_(masterDiffBase, capturedScreenshots);
 

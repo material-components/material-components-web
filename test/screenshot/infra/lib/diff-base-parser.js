@@ -76,8 +76,18 @@ class DiffBaseParser {
     return this.parseDiffBase(cliDiffBase);
   }
 
+  /**
+   * @return {!Promise<!mdc.proto.DiffBase>}
+   */
   async parseSnapshotDiffBase() {
     return this.parseDiffBase('HEAD');
+  }
+
+  /**
+   * @return {!Promise<!mdc.proto.DiffBase>}
+   */
+  async parseMasterDiffBase() {
+    return this.parseDiffBase('origin/master');
   }
 
   /**
