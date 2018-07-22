@@ -178,9 +178,14 @@ ${boldGreen('Skipping screenshot tests.')}
    * @private
    */
   async copyAndCompareScreenshots_({reportData, capturedScreenshots}) {
+    const num = capturedScreenshots.length;
+    const plural = num === 1 ? '' : 's';
+    logger.foldStart('screenshot.compare_master', `Comparing ${num} screenshot${plural} to master`);
+
     const promises = [];
     const screenshots = reportData.screenshots;
     const masterScreenshots = screenshots.actual_screenshot_list;
+
     for (const masterScreenshot of masterScreenshots) {
       for (const capturedScreenshot of capturedScreenshots) {
         if (capturedScreenshot.html_file_path !== masterScreenshot.html_file_path ||
@@ -215,8 +220,10 @@ ${boldGreen('Skipping screenshot tests.')}
         }));
       }
     }
+
     await Promise.all(promises);
-    console.log('Done copying and comparing screenshots!');
+
+    logger.foldEnd('screenshot.compare_master');
   },
 
   /**
