@@ -301,7 +301,31 @@ ${listMarkdown}
 </details>
 `.trim();
     } else {
-      contentMarkdown = '### No diffs! 💯🎉';
+      const memes = {
+        'Chow Yun Fat Approves':
+          'https://user-images.githubusercontent.com/409245/43050443-c4a34bc6-8dbd-11e8-8386-a330df5e29be.gif',
+        "Bill Murray: You're Awesome":
+          'https://user-images.githubusercontent.com/409245/43050464-122754fa-8dbe-11e8-9ef8-6bd806f1fff8.jpg',
+        'Futurama: Bender Applause':
+          'https://user-images.githubusercontent.com/409245/43050501-7ba8e150-8dbe-11e8-930c-412976867686.jpg',
+        'High Five Handshake':
+          'https://user-images.githubusercontent.com/409245/43050618-dbd7f06e-8dc0-11e8-8a7c-4fe1b0a63f49.gif',
+      };
+      const entries = Object.entries(memes);
+      const index = Math.round(Math.random() * 1e16) % entries.length;
+      const [alt, src] = entries[index];
+      contentMarkdown = `
+### No diffs! 💯🎉
+
+<details>
+  <summary><b>0 screenshots changed</b></summary>
+  <div>
+
+<img src="${src}" alt="${alt}" height="200">
+
+  </div>
+</details>
+`;
     }
 
     return `
