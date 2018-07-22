@@ -73,6 +73,11 @@ ${boldGreen('Skipping screenshot tests.')}
       return ExitCode.OK;
     }
 
+    // TODO(acdvorak): Make this a CLI option instead of using env vars for Travis
+    if (process.env.TRAVIS !== 'true') {
+      return ExitCode.OK;
+    }
+
     const screenshots = localDiffReportData.screenshots;
 
     /** @type {!Array<!mdc.proto.Screenshot>} */
@@ -83,6 +88,7 @@ ${boldGreen('Skipping screenshot tests.')}
       screenshots.unchanged_screenshot_list,
     );
 
+    // TODO(acdvorak): Make this a CLI option instead of using env vars for Travis
     /** @type {!mdc.proto.DiffBase} */
     const masterDiffBase = await diffBaseParser.parseMasterDiffBase();
 
