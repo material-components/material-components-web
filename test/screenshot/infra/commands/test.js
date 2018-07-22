@@ -100,7 +100,13 @@ ${boldGreen('Skipping screenshot tests.')}
       const reportPageUrl = masterDiffReportData.meta.report_html_file.public_url;
       await gitHubApi.createPullRequestComment(
         localGitRev.pr_number,
-        `Diff report for commit ${localGitRev.commit}: ${reportPageUrl}`
+        `
+Beep boop!
+
+**Diff report** for commit ${localGitRev.commit}:
+
+* ${reportPageUrl}
+`.trim()
       );
     }
 
