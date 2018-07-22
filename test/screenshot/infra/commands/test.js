@@ -18,6 +18,9 @@
 
 const VError = require('verror');
 
+const mdcProto = require('../proto/mdc.pb').mdc.proto;
+const {GitRevision} = mdcProto;
+
 const BuildCommand = require('./build');
 const Cli = require('../lib/cli');
 const CliColor = require('../lib/logger').colors;
