@@ -57,8 +57,19 @@ class DiffBaseParser {
     /** @type {?mdc.proto.GitRevision} */
     const travisGitRevision = await this.getTravisGitRevision();
     if (travisGitRevision) {
+      let generatedInputString;
+      if (travisGitRevision.pr_number) {
+        generatedInputString = `travis/pr/${travisGitRevision.pr_number}`;
+      } else if (travisGitRevision.tag) {
+        generatedInputString = `travis/tag/${travisGitRevision.tag}`;
+      } else if (travisGitRevision.branch) {
+        generatedInputString = `travis/branch/${travisGitRevision.branch}`;
+      } else {
+        generatedInputString = `travis/commit/${travisGitRevision.commit}`;
+      }
       return DiffBase.create({
         type: DiffBase.Type.GIT_REVISION,
+        input_string: generatedInputString,
         git_revision: travisGitRevision,
       });
     }
@@ -238,9 +249,9 @@ class DiffBaseParser {
 
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
+      input_string: `${commit}:${goldenJsonFilePath}`, // TODO(acdvorak): Document the ':' separator format
       git_revision: GitRevision.create({
         type: GitRevision.Type.COMMIT,
-        input_string: `${commit}:${goldenJsonFilePath}`, // TODO(acdvorak): Document the ':' separator format
         golden_json_file_path: goldenJsonFilePath,
         commit,
         author,
@@ -263,9 +274,9 @@ class DiffBaseParser {
 
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
+      input_string: `${remoteRef}:${goldenJsonFilePath}`, // TODO(acdvorak): Document the ':' separator format
       git_revision: GitRevision.create({
         type: GitRevision.Type.REMOTE_BRANCH,
-        input_string: `${remoteRef}:${goldenJsonFilePath}`, // TODO(acdvorak): Document the ':' separator format
         golden_json_file_path: goldenJsonFilePath,
         commit,
         author,
@@ -287,9 +298,9 @@ class DiffBaseParser {
 
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
+      input_string: `${tagRef}:${goldenJsonFilePath}`, // TODO(acdvorak): Document the ':' separator format
       git_revision: GitRevision.create({
         type: GitRevision.Type.REMOTE_TAG,
-        input_string: `${tagRef}:${goldenJsonFilePath}`, // TODO(acdvorak): Document the ':' separator format
         golden_json_file_path: goldenJsonFilePath,
         commit,
         author,
@@ -311,9 +322,9 @@ class DiffBaseParser {
 
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
+      input_string: `${branch}:${goldenJsonFilePath}`, // TODO(acdvorak): Document the ':' separator format
       git_revision: GitRevision.create({
         type: GitRevision.Type.LOCAL_BRANCH,
-        input_string: `${branch}:${goldenJsonFilePath}`, // TODO(acdvorak): Document the ':' separator format
         golden_json_file_path: goldenJsonFilePath,
         commit,
         author,

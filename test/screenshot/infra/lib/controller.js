@@ -94,15 +94,15 @@ class Controller {
   }
 
   /**
-   * @param {string} cliDiffBase
+   * @param {!mdc.proto.DiffBase} goldenDiffBase
    * @return {!Promise<!mdc.proto.ReportData>}
    */
-  async initForCapture(cliDiffBase) {
+  async initForCapture(goldenDiffBase) {
     const isOnline = this.cli_.isOnline();
     if (isOnline) {
       await this.cbtApi_.killStalledSeleniumTests();
     }
-    return this.reportBuilder_.initForCapture(cliDiffBase);
+    return this.reportBuilder_.initForCapture(goldenDiffBase);
   }
 
   /**

@@ -124,10 +124,10 @@ class ReportBuilder {
   }
 
   /**
-   * @param {string} cliDiffBase
+   * @param {!mdc.proto.DiffBase} goldenDiffBase
    * @return {!Promise<!mdc.proto.ReportData>}
    */
-  async initForCapture(cliDiffBase) {
+  async initForCapture(goldenDiffBase) {
     this.logger_.foldStart('screenshot.init', 'ReportBuilder#initForCapture()');
 
     if (this.cli_.isOnline()) {
@@ -135,7 +135,7 @@ class ReportBuilder {
     }
 
     /** @type {!mdc.proto.ReportMeta} */
-    const reportMeta = await this.createReportMetaProto_(cliDiffBase);
+    const reportMeta = await this.createReportMetaProto_(goldenDiffBase);
     /** @type {!mdc.proto.UserAgents} */
     const userAgents = await this.createUserAgentsProto_();
 
@@ -146,7 +146,7 @@ class ReportBuilder {
       await this.startTemporaryHttpServer_(reportMeta);
     }
 
-    const screenshots = await this.createScreenshotsProto_({reportMeta, userAgents, cliDiffBase});
+    const screenshots = await this.createScreenshotsProto_({reportMeta, userAgents, goldenDiffBase});
 
     const reportData = ReportData.create({
       meta: reportMeta,
@@ -381,11 +381,11 @@ class ReportBuilder {
   }
 
   /**
-   * @param {string} cliDiffBase
+   * @param {!mdc.proto.DiffBase} goldenDiffBase
    * @return {!Promise<!mdc.proto.ReportMeta>}
    * @private
    */
-  async createReportMetaProto_(cliDiffBase) {
+  async createReportMetaProto_(goldenDiffBase) {
     const isOnline = this.cli_.isOnline();
 
     // We only need to start up a local web server if the user is running in offline mode.
@@ -415,9 +415,6 @@ class ReportBuilder {
     const hostOsName = osName(os.platform(), os.release());
 
     const gitStatus = GitStatus.fromObject(await this.gitRepo_.getStatus());
-
-    /** @type {!mdc.proto.DiffBase} */
-    const goldenDiffBase = await this.diffBaseParser_.parseGoldenDiffBase(cliDiffBase);
 
     /** @type {!mdc.proto.DiffBase} */
     const snapshotDiffBase = await this.diffBaseParser_.parseSnapshotDiffBase();
@@ -561,13 +558,13 @@ class ReportBuilder {
   /**
    * @param {!mdc.proto.ReportMeta} reportMeta
    * @param {!mdc.proto.UserAgents} allUserAgents
-   * @param {string} cliDiffBase
+   * @param {!mdc.proto.DiffBase} goldenDiffBase
    * @return {!Promise<!mdc.proto.Screenshots>}
    * @private
    */
-  async createScreenshotsProto_({reportMeta, userAgents, cliDiffBase}) {
+  async createScreenshotsProto_({reportMeta, userAgents, goldenDiffBase}) {
     /** @type {!GoldenFile} */
-    const goldenFile = await this.goldenIo_.readFromDiffBase(cliDiffBase);
+    const goldenFile = await this.goldenIo_.readFromDiffBase(goldenDiffBase);
 
     /** @type {!Array<!mdc.proto.Screenshot>} */
     const expectedScreenshots = await this.getExpectedScreenshots_(goldenFile);

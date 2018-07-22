@@ -24,6 +24,7 @@ const {GitRevision} = mdcProto;
 const BuildCommand = require('./build');
 const Cli = require('../lib/cli');
 const CliColor = require('../lib/logger').colors;
+const DiffBaseParser = require('../lib/diff-base-parser');
 const Controller = require('../lib/controller');
 const GitHubApi = require('../lib/github-api');
 const ImageDiffer = require('../lib/image-differ');
@@ -31,6 +32,7 @@ const Logger = require('../lib/logger');
 const {ExitCode} = require('../lib/constants');
 
 const cli = new Cli();
+const diffBaseParser = new DiffBaseParser();
 const gitHubApi = new GitHubApi();
 const imageDiffer = new ImageDiffer();
 const logger = new Logger(__filename);
@@ -41,8 +43,11 @@ module.exports = {
 
     const cliDiffBase = cli.diffBase;
 
+    /** @type {!mdc.proto.DiffBase} */
+    const snapshotDiffBase = await diffBaseParser.parseGoldenDiffBase(cliDiffBase);
+
     /** @type {!mdc.proto.ReportData} */
-    const localDiffReportData = await this.diffEmAll_(cliDiffBase);
+    const localDiffReportData = await this.diffEmAll_(snapshotDiffBase);
 
     const {isTestable, prNumber} = this.checkIsTestable_(localDiffReportData);
     if (!isTestable) {
@@ -69,6 +74,7 @@ ${boldGreen('Skipping screenshot tests.')}
     }
 
     const screenshots = localDiffReportData.screenshots;
+
     /** @type {!Array<!mdc.proto.Screenshot>} */
     const capturedScreenshots = [].concat(
       screenshots.changed_screenshot_list,
@@ -77,23 +83,26 @@ ${boldGreen('Skipping screenshot tests.')}
       screenshots.unchanged_screenshot_list,
     );
 
-    await this.diffEmAll_('origin/master', capturedScreenshots);
+    /** @type {!mdc.proto.DiffBase} */
+    const masterDiffBase = await diffBaseParser.parseGoldenDiffBase('origin/master');
+
+    await this.diffEmAll_(masterDiffBase, capturedScreenshots);
 
     return ExitCode.OK;
   },
 
   /**
    * TODO(acdvorak): Pass diffbase through the stack instead of using `Cli#diffBase`
-   * @param {string} cliDiffBase
+   * @param {!mdc.proto.DiffBase} goldenDiffBase
    * @param {!Array<!mdc.proto.Screenshot>} capturedScreenshots
    * @return {!Promise<!mdc.proto.ReportData>}
    * @private
    */
-  async diffEmAll_(cliDiffBase, capturedScreenshots = []) {
+  async diffEmAll_(goldenDiffBase, capturedScreenshots = []) {
     const controller = new Controller();
 
     /** @type {!mdc.proto.ReportData} */
-    const reportData = await controller.initForCapture(cliDiffBase);
+    const reportData = await controller.initForCapture(goldenDiffBase);
 
     try {
       if (capturedScreenshots.length === 0) {
