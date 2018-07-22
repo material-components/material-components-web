@@ -50,9 +50,10 @@ class DiffBaseParser {
   }
 
   /**
+   * @param {string} cliDiffBase
    * @return {!Promise<!mdc.proto.DiffBase>}
    */
-  async parseGoldenDiffBase() {
+  async parseGoldenDiffBase(cliDiffBase) {
     /** @type {?mdc.proto.GitRevision} */
     const travisGitRevision = await this.getTravisGitRevision();
     if (travisGitRevision) {
@@ -61,14 +62,18 @@ class DiffBaseParser {
         git_revision: travisGitRevision,
       });
     }
-    return this.parseDiffBase();
+    return this.parseDiffBase(cliDiffBase);
+  }
+
+  async parseSnapshotDiffBase() {
+    return this.parseDiffBase('HEAD');
   }
 
   /**
    * @param {string} rawDiffBase
    * @return {!Promise<!mdc.proto.DiffBase>}
    */
-  async parseDiffBase(rawDiffBase = this.cli_.diffBase) {
+  async parseDiffBase(rawDiffBase) {
     const isOnline = this.cli_.isOnline();
     const isRealBranch = (branch) => Boolean(branch) && !['master', 'origin/master', 'HEAD'].includes(branch);
 
@@ -91,7 +96,7 @@ class DiffBaseParser {
    * @return {!Promise<!mdc.proto.DiffBase>}
    * @private
    */
-  async parseDiffBase_(rawDiffBase = this.cli_.diffBase) {
+  async parseDiffBase_(rawDiffBase) {
     // Diff against a public `golden.json` URL.
     // E.g.: `--diff-base=https://storage.googleapis.com/.../golden.json`
     const isUrl = HTTP_URL_REGEX.test(rawDiffBase);

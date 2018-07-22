@@ -118,15 +118,16 @@ class ReportBuilder {
     /** @type {!mdc.proto.ReportData} */
     const reportData = ReportData.fromObject(require(runReportJsonFile.absolute_path));
     reportData.approvals = Approvals.create();
-    this.populateScreenshotMaps(reportData.user_agents, reportData.screenshots);
+    this.populateMaps(reportData.user_agents, reportData.screenshots);
     this.populateApprovals_(reportData);
     return reportData;
   }
 
   /**
+   * @param {string} cliDiffBase
    * @return {!Promise<!mdc.proto.ReportData>}
    */
-  async initForCapture() {
+  async initForCapture(cliDiffBase) {
     this.logger_.foldStart('screenshot.init', 'ReportBuilder#initForCapture()');
 
     if (this.cli_.isOnline()) {
@@ -134,7 +135,7 @@ class ReportBuilder {
     }
 
     /** @type {!mdc.proto.ReportMeta} */
-    const reportMeta = await this.createReportMetaProto_();
+    const reportMeta = await this.createReportMetaProto_(cliDiffBase);
     /** @type {!mdc.proto.UserAgents} */
     const userAgents = await this.createUserAgentsProto_();
 
@@ -145,7 +146,7 @@ class ReportBuilder {
       await this.startTemporaryHttpServer_(reportMeta);
     }
 
-    const screenshots = await this.createScreenshotsProto_({reportMeta, userAgents});
+    const screenshots = await this.createScreenshotsProto_({reportMeta, userAgents, cliDiffBase});
 
     const reportData = ReportData.create({
       meta: reportMeta,
@@ -175,7 +176,7 @@ class ReportBuilder {
    * @param {!mdc.proto.UserAgents} userAgents
    * @param {!mdc.proto.Screenshots} screenshots
    */
-  populateScreenshotMaps(userAgents, screenshots) {
+  populateMaps(userAgents, screenshots) {
     // TODO(acdvorak): Figure out why the report page is randomly sorted. E.g.:
     // https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/04_49_09_427/report/report.html
     // https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/04_48_52_974/report/report.html
@@ -380,10 +381,11 @@ class ReportBuilder {
   }
 
   /**
+   * @param {string} cliDiffBase
    * @return {!Promise<!mdc.proto.ReportMeta>}
    * @private
    */
-  async createReportMetaProto_() {
+  async createReportMetaProto_(cliDiffBase) {
     const isOnline = this.cli_.isOnline();
 
     // We only need to start up a local web server if the user is running in offline mode.
@@ -415,10 +417,10 @@ class ReportBuilder {
     const gitStatus = GitStatus.fromObject(await this.gitRepo_.getStatus());
 
     /** @type {!mdc.proto.DiffBase} */
-    const goldenDiffBase = await this.diffBaseParser_.parseGoldenDiffBase();
+    const goldenDiffBase = await this.diffBaseParser_.parseGoldenDiffBase(cliDiffBase);
 
     /** @type {!mdc.proto.DiffBase} */
-    const snapshotDiffBase = await this.diffBaseParser_.parseDiffBase('HEAD');
+    const snapshotDiffBase = await this.diffBaseParser_.parseSnapshotDiffBase();
 
     /** @type {!mdc.proto.GitRevision} */
     const goldenGitRevision = goldenDiffBase.git_revision;
@@ -559,12 +561,13 @@ class ReportBuilder {
   /**
    * @param {!mdc.proto.ReportMeta} reportMeta
    * @param {!mdc.proto.UserAgents} allUserAgents
+   * @param {string} cliDiffBase
    * @return {!Promise<!mdc.proto.Screenshots>}
    * @private
    */
-  async createScreenshotsProto_({reportMeta, userAgents}) {
+  async createScreenshotsProto_({reportMeta, userAgents, cliDiffBase}) {
     /** @type {!GoldenFile} */
-    const goldenFile = await this.goldenIo_.readFromDiffBase();
+    const goldenFile = await this.goldenIo_.readFromDiffBase(cliDiffBase);
 
     /** @type {!Array<!mdc.proto.Screenshot>} */
     const expectedScreenshots = await this.getExpectedScreenshots_(goldenFile);
@@ -596,7 +599,7 @@ class ReportBuilder {
     this.setAllStates_(screenshots.removed_screenshot_list, InclusionType.REMOVE, CaptureState.SKIPPED);
     this.setAllStates_(screenshots.comparable_screenshot_list, InclusionType.COMPARE, CaptureState.QUEUED);
 
-    this.populateScreenshotMaps(userAgents, screenshots);
+    this.populateMaps(userAgents, screenshots);
 
     return screenshots;
   }

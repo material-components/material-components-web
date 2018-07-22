@@ -98,14 +98,15 @@ class Controller {
   }
 
   /**
+   * @param {string} cliDiffBase
    * @return {!Promise<!mdc.proto.ReportData>}
    */
-  async initForCapture() {
+  async initForCapture(cliDiffBase) {
     const isOnline = this.cli_.isOnline();
     if (isOnline) {
       await this.cbtApi_.killStalledSeleniumTests();
     }
-    return this.reportBuilder_.initForCapture();
+    return this.reportBuilder_.initForCapture(cliDiffBase);
   }
 
   /**
@@ -113,23 +114,6 @@ class Controller {
    */
   async initForDemo() {
     return this.reportBuilder_.initForDemo();
-  }
-
-  /**
-   * @param {!mdc.proto.ReportData} reportData
-   * @return {{isTestable: boolean, prNumber: ?number}}
-   */
-  checkIsTestable(reportData) {
-    const goldenGitRevision = reportData.meta.golden_diff_base.git_revision;
-    const shouldSkipScreenshotTests =
-      goldenGitRevision &&
-      goldenGitRevision.type === GitRevision.Type.TRAVIS_PR &&
-      goldenGitRevision.pr_file_paths.length === 0;
-
-    return {
-      isTestable: !shouldSkipScreenshotTests,
-      prNumber: goldenGitRevision ? goldenGitRevision.pr_number : null,
-    };
   }
 
   /**
@@ -151,7 +135,6 @@ class Controller {
     this.logger_.foldStart('screenshot.capture_images', 'Controller#captureAllPages()');
 
     await this.seleniumApi_.captureAllPages(reportData);
-    this.reportBuilder_.populateScreenshotMaps(reportData.user_agents, reportData.screenshots);
 
     const meta = reportData.meta;
     meta.end_time_iso_utc = new Date().toISOString();
@@ -160,6 +143,13 @@ class Controller {
     this.logger_.foldEnd('screenshot.capture_images');
 
     return reportData;
+  }
+
+  /**
+   * @param {!mdc.proto.ReportData} reportData
+   */
+  populateMaps(reportData) {
+    this.reportBuilder_.populateMaps(reportData.user_agents, reportData.screenshots);
   }
 
   /**
@@ -195,7 +185,6 @@ class Controller {
       reportData.screenshots.added_screenshot_list.length +
       reportData.screenshots.removed_screenshot_list.length;
 
-
     this.logger_.log('\n');
     if (numChanges > 0) {
       const boldRed = CliColor.bold.red;
@@ -208,24 +197,6 @@ class Controller {
     }
 
     return reportData;
-  }
-
-  /**
-   * @param {!mdc.proto.ReportData} reportData
-   * @return {!Promise<number>}
-   */
-  async getTestExitCode(reportData) {
-    // TODO(acdvorak): Store this directly in the proto so we don't have to recalculate it all over the place
-    const numChanges =
-      reportData.screenshots.changed_screenshot_list.length +
-      reportData.screenshots.added_screenshot_list.length +
-      reportData.screenshots.removed_screenshot_list.length;
-
-    const isOnline = this.cli_.isOnline();
-    if (isOnline && numChanges > 0) {
-      return ExitCode.CHANGES_FOUND;
-    }
-    return ExitCode.OK;
   }
 
   /**

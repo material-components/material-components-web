@@ -19,41 +19,183 @@
 const VError = require('verror');
 
 const BuildCommand = require('./build');
+const Cli = require('../lib/cli');
+const CliColor = require('../lib/logger').colors;
 const Controller = require('../lib/controller');
 const GitHubApi = require('../lib/github-api');
+const ImageDiffer = require('../lib/image-differ');
 const Logger = require('../lib/logger');
 const {ExitCode} = require('../lib/constants');
+
+const cli = new Cli();
+const gitHubApi = new GitHubApi();
+const imageDiffer = new ImageDiffer();
+const logger = new Logger(__filename);
 
 module.exports = {
   async runAsync() {
     await BuildCommand.runAsync();
-    const controller = new Controller();
-    const gitHubApi = new GitHubApi();
-    const logger = new Logger(__filename);
+
+    const cliDiffBase = cli.diffBase;
 
     /** @type {!mdc.proto.ReportData} */
-    const reportData = await controller.initForCapture();
+    const localDiffReportData = await this.diffEmAll_(cliDiffBase);
 
-    const {isTestable, prNumber} = controller.checkIsTestable(reportData);
+    const {isTestable, prNumber} = this.checkIsTestable_(localDiffReportData);
     if (!isTestable) {
-      logger.warn(`PR #${prNumber} does not contain any testable source file changes.`);
-      logger.warn('Skipping screenshot tests.');
+      const underline = CliColor.underline;
+      const boldGreen = CliColor.bold.green;
+      logger.warn(`
+${underline(`PR #${prNumber}`)} does not contain any testable source file changes.
+
+${boldGreen('Skipping screenshot tests.')}
+`);
       return ExitCode.OK;
     }
 
-    await gitHubApi.setPullRequestStatusAuto(reportData);
+    await gitHubApi.setPullRequestStatusAuto(localDiffReportData);
+
+    const localDiffExitCode = this.getExitCode_(localDiffReportData);
+    if (localDiffExitCode !== ExitCode.OK) {
+      return localDiffExitCode;
+    }
+
+    // TODO(acdvorak): Find a better way
+    if (cliDiffBase.startsWith('origin/master')) {
+      return ExitCode.OK;
+    }
+
+    /** @type {!Array<!mdc.proto.Screenshot>} */
+    const capturedScreenshots = localDiffReportData.screenshots.actual_screenshot_list;
+
+    /** @type {!mdc.proto.ReportData} */
+    const masterDiffReportData = await this.diffEmAll_('origin/master', capturedScreenshots);
+
+    return this.getExitCode_(masterDiffReportData);
+  },
+
+  /**
+   * TODO(acdvorak): Pass diffbase through the stack instead of using `Cli#diffBase`
+   * @param {string} cliDiffBase
+   * @param {!Array<!mdc.proto.Screenshot>} capturedScreenshots
+   * @return {!Promise<!mdc.proto.ReportData>}
+   * @private
+   */
+  async diffEmAll_(cliDiffBase, capturedScreenshots = []) {
+    const controller = new Controller();
+
+    /** @type {!mdc.proto.ReportData} */
+    const reportData = await controller.initForCapture(cliDiffBase);
 
     try {
+      if (capturedScreenshots.length === 0) {
+        await gitHubApi.setPullRequestStatusAuto(reportData);
+      }
+
       await controller.uploadAllAssets(reportData);
-      await controller.captureAllPages(reportData);
+
+      if (capturedScreenshots.length === 0) {
+        await controller.captureAllPages(reportData);
+        await gitHubApi.setPullRequestStatusAuto(reportData);
+      } else {
+        await this.copyAndCompareScreenshots_({reportData, capturedScreenshots});
+      }
+
+      controller.populateMaps(reportData);
+
       await controller.uploadAllImages(reportData);
       await controller.generateReportPage(reportData);
-      await gitHubApi.setPullRequestStatusAuto(reportData);
+
+      if (capturedScreenshots.length === 0) {
+        await gitHubApi.setPullRequestStatusAuto(reportData);
+      }
     } catch (err) {
       await gitHubApi.setPullRequestError();
       throw new VError(err, 'Failed to run screenshot tests');
     }
 
-    return await controller.getTestExitCode(reportData);
+    return reportData;
+  },
+
+  /**
+   * @param {!mdc.proto.ReportData} reportData
+   * @return {{isTestable: boolean, prNumber: ?number}}
+   */
+  checkIsTestable_(reportData) {
+    const goldenGitRevision = reportData.meta.golden_diff_base.git_revision;
+    const shouldSkipScreenshotTests =
+      goldenGitRevision &&
+      goldenGitRevision.type === GitRevision.Type.TRAVIS_PR &&
+      goldenGitRevision.pr_file_paths.length === 0;
+
+    return {
+      isTestable: !shouldSkipScreenshotTests,
+      prNumber: goldenGitRevision ? goldenGitRevision.pr_number : null,
+    };
+  },
+
+  /**
+   * @param {!mdc.proto.ReportData} reportData
+   * @param {!Array<!mdc.proto.Screenshot>} capturedScreenshots
+   * @return {!Promise<void>}
+   * @private
+   */
+  async copyAndCompareScreenshots_({reportData, capturedScreenshots}) {
+    const promises = [];
+    const copyScreenshots = reportData.screenshots.actual_screenshot_list.concat();
+    for (const copyScreenshot of copyScreenshots) {
+      for (const capturedScreenshot of capturedScreenshots) {
+        if (capturedScreenshot.html_file_path !== copyScreenshot.html_file_path ||
+            capturedScreenshot.user_agent.alias !== copyScreenshot.user_agent.alias) {
+          continue;
+        }
+        promises.push(new Promise(async (resolve) => {
+          console.log(`Comparing ${copyScreenshot.html_file_path} > ${copyScreenshot.user_agent.alias}...`);
+          copyScreenshot.actual_html_file = capturedScreenshot.actual_html_file;
+          copyScreenshot.actual_image_file = capturedScreenshot.actual_image_file;
+          copyScreenshot.capture_state = capturedScreenshot.capture_state;
+
+          /** @type {!mdc.proto.DiffImageResult} */
+          const diffImageResult = await imageDiffer.compareOneScreenshot({
+            meta: reportData.meta,
+            screenshot: copyScreenshot,
+          });
+
+          copyScreenshot.diff_image_result = diffImageResult;
+          copyScreenshot.diff_image_file = diffImageResult.diff_image_file;
+
+          if (diffImageResult.has_changed) {
+            reportData.screenshots.changed_screenshot_list.push(copyScreenshot);
+          } else {
+            reportData.screenshots.unchanged_screenshot_list.push(copyScreenshot);
+          }
+          reportData.screenshots.comparable_screenshot_list.push(copyScreenshot);
+          // reportData.screenshots.runnable_screenshot_list.push(copyScreenshot);
+
+          console.log(`Compared ${copyScreenshot.html_file_path} > ${copyScreenshot.user_agent.alias}!`);
+          resolve();
+        }));
+      }
+    }
+    await Promise.all(promises);
+    console.log('Done copying and comparing screenshots!');
+  },
+
+  /**
+   * @param {!mdc.proto.ReportData} reportData
+   * @return {!ExitCode|number}
+   */
+  getExitCode_(reportData) {
+    // TODO(acdvorak): Store this directly in the proto so we don't have to recalculate it all over the place
+    const numChanges =
+      reportData.screenshots.changed_screenshot_list.length +
+      reportData.screenshots.added_screenshot_list.length +
+      reportData.screenshots.removed_screenshot_list.length;
+
+    const isOnline = cli.isOnline();
+    if (isOnline && numChanges > 0) {
+      return ExitCode.CHANGES_FOUND;
+    }
+    return ExitCode.OK;
   },
 };

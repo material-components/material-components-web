@@ -69,17 +69,17 @@ class GoldenIo {
 
   /**
    * Parses the `golden.json` file specified by the `--diff-base` CLI arg.
-   * @param {string=} rawDiffBase
+   * @param {string} cliDiffBase
    * @return {!Promise<!GoldenFile>}
    */
-  async readFromDiffBase(rawDiffBase = this.cli_.diffBase) {
-    if (!this.cachedGoldenJsonMap_[rawDiffBase]) {
-      const goldenJson = JSON.parse(await this.readFromDiffBase_(rawDiffBase));
-      this.cachedGoldenJsonMap_[rawDiffBase] = new GoldenFile(goldenJson);
+  async readFromDiffBase(cliDiffBase) {
+    if (!this.cachedGoldenJsonMap_[cliDiffBase]) {
+      const goldenJson = JSON.parse(await this.readFromDiffBase_(cliDiffBase));
+      this.cachedGoldenJsonMap_[cliDiffBase] = new GoldenFile(goldenJson);
     }
 
     // Deep copy to avoid mutating shared state
-    return new GoldenFile(this.cachedGoldenJsonMap_[rawDiffBase].toJSON());
+    return new GoldenFile(this.cachedGoldenJsonMap_[cliDiffBase].toJSON());
   }
 
   /**
