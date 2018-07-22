@@ -56,14 +56,15 @@ class GitHubApi {
       };
     };
 
-    const createStatusDebounced = debounce(() => {
+    const createStatusDebounced = debounce((...args) => {
       return this.createStatusUnthrottled_(...args);
     }, 5000);
-    this.createStatusThrottled_ = () => {
-      createStatusDebounced();
-      return throttle((...args) => {
-        return this.createStatusUnthrottled_(...args);
-      }, 5000);
+    const createStatusThrottled = throttle((...args) => {
+      return this.createStatusUnthrottled_(...args);
+    }, 5000);
+    this.createStatusThrottled_ = (...args) => {
+      createStatusDebounced(...args);
+      createStatusThrottled(...args);
     };
   }
 
@@ -83,14 +84,13 @@ class GitHubApi {
   /**
    * @param {string} state
    * @param {string} description
-   * @return {!Promise<*>}
    */
-  async setPullRequestStatusManual({state, description}) {
+  setPullRequestStatusManual({state, description}) {
     if (process.env.TRAVIS !== 'true') {
       return;
     }
 
-    return await this.createStatusThrottled_({
+    this.createStatusThrottled_({
       state,
       targetUrl: `https://travis-ci.org/material-components/material-components-web/jobs/${process.env.TRAVIS_JOB_ID}`,
       description,
