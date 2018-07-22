@@ -25,6 +25,7 @@ const BuildCommand = require('./build');
 const Cli = require('../lib/cli');
 const CliColor = require('../lib/logger').colors;
 const DiffBaseParser = require('../lib/diff-base-parser');
+const Duration = require('../lib/duration');
 const Controller = require('../lib/controller');
 const GitHubApi = require('../lib/github-api');
 const ImageDiffer = require('../lib/image-differ');
@@ -94,6 +95,13 @@ ${boldGreen('Skipping screenshot tests.')}
 
     /** @type {!mdc.proto.ReportData} */
     const masterDiffReportData = await this.diffEmAll_(masterDiffBase, capturedScreenshots);
+
+    masterDiffReportData.meta.start_time_iso_utc = localDiffReportData.meta.start_time_iso_utc;
+    masterDiffReportData.meta.end_time_iso_utc = new Date().toISOString();
+    masterDiffReportData.meta.duration_ms = Duration.elapsed(
+      masterDiffReportData.meta.start_time_iso_utc,
+      masterDiffReportData.meta.end_time_iso_utc
+    ).toMillis();
 
     const localGitRev = localDiffReportData.meta.golden_diff_base.git_revision;
     if (localGitRev && localGitRev.type === GitRevision.Type.TRAVIS_PR) {
