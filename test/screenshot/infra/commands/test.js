@@ -69,13 +69,14 @@ ${boldGreen('Skipping screenshot tests.')}
       return localDiffExitCode;
     }
 
-    // TODO(acdvorak): Find a better way
-    if (cliDiffBase.startsWith('origin/master')) {
+    const snapshotGitRev = snapshotDiffBase.git_revision;
+    const isTravisPr = snapshotGitRev && snapshotGitRev.type === GitRevision.Type.TRAVIS_PR;
+    if (!isTravisPr) {
       return ExitCode.OK;
     }
 
-    // TODO(acdvorak): Make this a CLI option instead of using env vars for Travis
-    if (process.env.TRAVIS !== 'true') {
+    // TODO(acdvorak): Find a better way
+    if (cliDiffBase.startsWith('origin/master')) {
       return ExitCode.OK;
     }
 
@@ -89,7 +90,6 @@ ${boldGreen('Skipping screenshot tests.')}
       localScreenshots.unchanged_screenshot_list,
     );
 
-    // TODO(acdvorak): Make this a CLI option instead of using env vars for Travis
     /** @type {!mdc.proto.DiffBase} */
     const masterDiffBase = await diffBaseParser.parseMasterDiffBase();
 
@@ -103,78 +103,75 @@ ${boldGreen('Skipping screenshot tests.')}
       masterDiffReportData.meta.end_time_iso_utc
     ).toMillis();
 
-    const localGitRev = localDiffReportData.meta.golden_diff_base.git_revision;
-    if (localGitRev && localGitRev.type === GitRevision.Type.TRAVIS_PR) {
-      const reportPageUrl = masterDiffReportData.meta.report_html_file.public_url;
+    const reportPageUrl = masterDiffReportData.meta.report_html_file.public_url;
 
-      /**
-       * @param {string} verb
-       * @param {!Array<!mdc.proto.Screenshot>} screenshotArray
-       * @param {!Object<string, !mdc.proto.ScreenshotList>} screenshotMap
-       */
-      const genListMarkdown = (verb, screenshotArray, screenshotMap) => {
-        const numHtmlFiles = Object.keys(screenshotMap).length;
-        if (numHtmlFiles === 0) {
-          return null;
-        }
+    /**
+     * @param {string} verb
+     * @param {!Array<!mdc.proto.Screenshot>} screenshotArray
+     * @param {!Object<string, !mdc.proto.ScreenshotList>} screenshotMap
+     */
+    const genListMarkdown = (verb, screenshotArray, screenshotMap) => {
+      const numHtmlFiles = Object.keys(screenshotMap).length;
+      if (numHtmlFiles === 0) {
+        return null;
+      }
 
-        const listItemMarkdown = Object.entries(screenshotMap).map(([htmlFilePath, screenshotList]) => {
-          const browserIconMarkdown = screenshotList.screenshots.map((screenshot) => {
-            const userAgentFriendlyName = (
-              screenshot.user_agent.navigator ? screenshot.user_agent.navigator.full_name : null
-            ) || screenshot.user_agent.alias;
-            const linkUrl = screenshot.diff_image_file
-              ? screenshot.diff_image_file.public_url
-              : screenshot.actual_image_file.public_url;
-            return `
+      const listItemMarkdown = Object.entries(screenshotMap).map(([htmlFilePath, screenshotList]) => {
+        const browserIconMarkdown = screenshotList.screenshots.map((screenshot) => {
+          const userAgentFriendlyName = (
+            screenshot.user_agent.navigator ? screenshot.user_agent.navigator.full_name : null
+          ) || screenshot.user_agent.alias;
+          const linkUrl = screenshot.diff_image_file
+            ? screenshot.diff_image_file.public_url
+            : screenshot.actual_image_file.public_url;
+          return `
 <a href="${linkUrl}"
-   title="${userAgentFriendlyName}">
-  <img src="${screenshot.user_agent.browser_icon_url}" width="16" height="16">
+ title="${userAgentFriendlyName}">
+<img src="${screenshot.user_agent.browser_icon_url}" width="16" height="16">
 </a>
 `.trim().replace(/>\n *</g, '><');
-          }).join(' ');
-          return `
-  * [\`${htmlFilePath}\`](${screenshotList.screenshots[0].actual_html_file.public_url}) ${browserIconMarkdown}
-  `.trim();
-        }).join('\n');
-
+        }).join(' ');
         return `
+* [\`${htmlFilePath}\`](${screenshotList.screenshots[0].actual_html_file.public_url}) ${browserIconMarkdown}
+`.trim();
+      }).join('\n');
+
+      return `
 #### ${screenshotArray.length} ${verb}:
 
 ${listItemMarkdown}
 `;
-      };
+    };
 
-      const masterScreenshots = masterDiffReportData.screenshots;
-      const listMarkdown = [
-        genListMarkdown(
-          'Changed', masterScreenshots.changed_screenshot_list, masterScreenshots.changed_screenshot_page_map
-        ),
-        genListMarkdown(
-          'Added', masterScreenshots.added_screenshot_list, masterScreenshots.added_screenshot_page_map
-        ),
-        genListMarkdown(
-          'Removed', masterScreenshots.removed_screenshot_list, masterScreenshots.removed_screenshot_page_map
-        ),
-      ].filter((str) => Boolean(str)).join('\n\n');
+    const masterScreenshots = masterDiffReportData.screenshots;
+    const listMarkdown = [
+      genListMarkdown(
+        'Changed', masterScreenshots.changed_screenshot_list, masterScreenshots.changed_screenshot_page_map
+      ),
+      genListMarkdown(
+        'Added', masterScreenshots.added_screenshot_list, masterScreenshots.added_screenshot_page_map
+      ),
+      genListMarkdown(
+        'Removed', masterScreenshots.removed_screenshot_list, masterScreenshots.removed_screenshot_page_map
+      ),
+    ].filter((str) => Boolean(str)).join('\n\n');
 
-      const hoorayMarkdown = '# No diffs! 💯🎉';
+    const hoorayMarkdown = '# No diffs! 💯🎉';
 
-      await gitHubApi.createPullRequestComment(
-        localGitRev.pr_number,
-        `
+    await gitHubApi.createPullRequestComment(
+      snapshotGitRev.pr_number,
+      `
 🤖 Beep boop!
 
 ### Screenshot test report
 
-Commit ${localGitRev.commit} vs. \`master\`:
+Commit ${snapshotGitRev.commit} vs. \`master\`:
 
 * ${reportPageUrl}
 
 ${listMarkdown || hoorayMarkdown}
 `.trim()
-      );
-    }
+    );
 
     return ExitCode.OK;
   },
