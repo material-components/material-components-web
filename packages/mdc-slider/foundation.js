@@ -51,6 +51,11 @@ class MDCSliderFoundation extends MDCFoundation {
     return strings;
   }
 
+  /** @return enum {string} */
+  static get cssClasses() {
+    return cssClasses;
+  }
+
   /** @return {!MDCSliderAdapter} */
   static get defaultAdapter() {
     return /** @type {!MDCSliderAdapter} */ ({
@@ -194,7 +199,7 @@ class MDCSliderFoundation extends MDCFoundation {
    * @param {!Event} evt
    */
   handleTransitionEnd(evt) {
-    if (this.inTransit_ && this.adapter_.eventTargetHasClass(evt.target, strings.TRACK_FILL)) {
+    if (this.inTransit_ && this.adapter_.eventTargetHasClass(evt.target, cssClasses.TRACK_FILL)) {
       this.setInTransit_(false);
     }
   }
@@ -208,9 +213,9 @@ class MDCSliderFoundation extends MDCFoundation {
     this.adapter_.activateRipple();
 
     const shouldTransition =
-      this.adapter_.eventTargetHasClass(evt.target, strings.SLIDER) ||
-      this.adapter_.eventTargetHasClass(evt.target, strings.TRACK) ||
-      this.adapter_.eventTargetHasClass(evt.target, strings.TRACK_FILL);
+      this.adapter_.eventTargetHasClass(evt.target, cssClasses.SLIDER) ||
+      this.adapter_.eventTargetHasClass(evt.target, cssClasses.TRACK) ||
+      this.adapter_.eventTargetHasClass(evt.target, cssClasses.TRACK_FILL);
     this.setInTransit_(shouldTransition);
 
     const moveHandler = (evt) => {

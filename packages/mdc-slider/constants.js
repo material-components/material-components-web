@@ -20,9 +20,6 @@ const strings = {
   TRACK_SELECTOR: '.mdc-slider__track',
   TRACK_FILL_SELECTOR: '.mdc-slider__track-fill',
   THUMB_SELECTOR: '.mdc-slider__thumb',
-  TRACK: 'mdc-slider__track',
-  TRACK_FILL: 'mdc-slider__track-fill',
-  SLIDER: 'mdc-slider',
   ARIA_VALUEMIN: 'aria-valuemin',
   ARIA_VALUEMAX: 'aria-valuemax',
   ARIA_VALUENOW: 'aria-valuenow',
@@ -33,6 +30,9 @@ const strings = {
 };
 
 const cssClasses = {
+  SLIDER: 'mdc-slider',
+  TRACK: 'mdc-slider__track',
+  TRACK_FILL: 'mdc-slider__track-fill',
   ACTIVE: 'mdc-slider--active',
   IN_TRANSIT: 'mdc-slider--in-transit',
 };
