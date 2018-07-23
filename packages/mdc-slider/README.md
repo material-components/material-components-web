@@ -145,6 +145,7 @@ instance that was affected.
 | `removeClass(className: string) => void` | Removes a class `className` from the root element |
 | `setThumbAttribute(name: string, value: string) => void` | Sets an attribute `name` to the value `value` on the thumb element. |
 | `computeBoundingRect() => ClientRect` | Computes and returns the bounding client rect for the root element. Our implementations calls `getBoundingClientRect()` for this. |
+| `eventTargetHasClass(target: EventTarget, className: string) => boolean` | Returns true if target has className, false otherwise |
 | `registerEventHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` to the slider's root element |
 | `deregisterEventHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` from the slider's root element |
 | `registerBodyEventHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` to the `<body>` element of the slider's document |
@@ -157,7 +158,7 @@ instance that was affected.
 | `setTrackFillStyleProperty(propertyName: string, value: string) => void` | Sets a dash-cased style property `propertyName` to the given `value` on the track-fill element. |
 | `focusThumb() => void` | Sets the document focus to the thumb. |
 | `activateRipple() => void` | Activates the ripple on the thumb element. |
-| `activateRipple() => void` | Deativates the ripple on the thumb element. |
+| `deactivateRipple() => void` | Deativates the ripple on the thumb element. |
 
 ### `MDCSliderFoundation`
 
