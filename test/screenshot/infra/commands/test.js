@@ -45,47 +45,105 @@ class TestCommand {
    * @return {!Promise<number|undefined>} Process exit code. If no exit code is returned, `0` is assumed.
    */
   async runAsync() {
-    const buildCommand = new BuildCommand();
-    await buildCommand.runAsync();
-
-    const cliDiffBase = this.cli_.diffBase;
+    await this.build_();
 
     /** @type {!mdc.proto.DiffBase} */
-    const snapshotDiffBase = await this.diffBaseParser_.parseGoldenDiffBase(cliDiffBase);
+    const snapshotDiffBase = await this.diffBaseParser_.parseGoldenDiffBase(this.cli_.diffBase);
+    const snapshotGitRev = snapshotDiffBase.git_revision;
 
-    /** @type {!mdc.proto.ReportData} */
-    const localDiffReportData = await this.diffEmAll_(snapshotDiffBase);
+    const isTravisPr = snapshotGitRev && snapshotGitRev.type === GitRevision.Type.TRAVIS_PR;
+    const isTestable = isTravisPr ? snapshotGitRev.pr_file_paths.length > 0 : true;
 
-    const {isTestable, prNumber} = this.checkIsTestable_(localDiffReportData);
     if (!isTestable) {
-      const underline = CliColor.underline;
-      const boldGreen = CliColor.bold.green;
-      this.logger_.warn(`
-${underline(`PR #${prNumber}`)} does not contain any testable source file changes.
-
-${boldGreen('Skipping screenshot tests.')}
-`);
+      this.logUntestablePr_(snapshotGitRev.pr_number);
       return ExitCode.OK;
     }
 
-    await this.gitHubApi_.setPullRequestStatusAuto(localDiffReportData);
-
+    /** @type {!mdc.proto.ReportData} */
+    const localDiffReportData = await this.diffAgainstLocal_(snapshotDiffBase);
     const localDiffExitCode = this.getExitCode_(localDiffReportData);
     if (localDiffExitCode !== ExitCode.OK) {
       return localDiffExitCode;
     }
 
-    const snapshotGitRev = snapshotDiffBase.git_revision;
-    const isTravisPr = snapshotGitRev && snapshotGitRev.type === GitRevision.Type.TRAVIS_PR;
-    if (!isTravisPr) {
-      return ExitCode.OK;
+    if (isTravisPr) {
+      await this.diffAgainstMaster_({localDiffReportData, snapshotGitRev});
     }
 
-    // TODO(acdvorak): Find a better way
-    if (cliDiffBase.startsWith('origin/master')) {
-      return ExitCode.OK;
+    // Diffs against master shouldn't fail the Travis job.
+    return ExitCode.OK;
+  }
+
+  async build_() {
+    const buildCommand = new BuildCommand();
+    await buildCommand.runAsync();
+  }
+
+  /**
+   * @param {!mdc.proto.DiffBase} goldenDiffBase
+   * @return {!Promise<!mdc.proto.ReportData>}
+   * @private
+   */
+  async diffAgainstLocal_(goldenDiffBase) {
+    const controller = new Controller();
+
+    /** @type {!mdc.proto.ReportData} */
+    const reportData = await controller.initForCapture(goldenDiffBase);
+
+    try {
+      await this.gitHubApi_.setPullRequestStatusAuto(reportData);
+      await controller.uploadAllAssets(reportData);
+      await controller.captureAllPages(reportData);
+
+      controller.populateMaps(reportData);
+
+      await controller.uploadAllImages(reportData);
+      await controller.generateReportPage(reportData);
+
+      await this.gitHubApi_.setPullRequestStatusAuto(reportData);
+    } catch (err) {
+      await this.gitHubApi_.setPullRequestError();
+      throw new VError(err, 'Failed to run screenshot tests');
     }
 
+    return reportData;
+  }
+
+  /**
+   * @param {!mdc.proto.DiffBase} goldenDiffBase
+   * @param {!Array<!mdc.proto.Screenshot>} capturedScreenshots
+   * @return {!Promise<!mdc.proto.ReportData>}
+   * @private
+   */
+  async diffAgainstMasterImpl_(goldenDiffBase, capturedScreenshots) {
+    const controller = new Controller();
+
+    /** @type {!mdc.proto.ReportData} */
+    const reportData = await controller.initForCapture(goldenDiffBase);
+
+    try {
+      await controller.uploadAllAssets(reportData);
+      await this.copyAndCompareScreenshots_({reportData, capturedScreenshots});
+
+      controller.populateMaps(reportData);
+
+      await controller.uploadAllImages(reportData);
+      await controller.generateReportPage(reportData);
+    } catch (err) {
+      await this.gitHubApi_.setPullRequestError();
+      throw new VError(err, 'Failed to run screenshot tests');
+    }
+
+    return reportData;
+  }
+
+  /**
+   * @param {!mdc.proto.ReportData} localDiffReportData
+   * @param {!mdc.proto.GitRevision} snapshotGitRev
+   * @return {!Promise<void>}
+   * @private
+   */
+  async diffAgainstMaster_({localDiffReportData, snapshotGitRev}) {
     const localScreenshots = localDiffReportData.screenshots;
 
     /** @type {!Array<!mdc.proto.Screenshot>} */
@@ -100,7 +158,7 @@ ${boldGreen('Skipping screenshot tests.')}
     const masterDiffBase = await this.diffBaseParser_.parseMasterDiffBase();
 
     /** @type {!mdc.proto.ReportData} */
-    const masterDiffReportData = await this.diffEmAll_(masterDiffBase, capturedScreenshots);
+    const masterDiffReportData = await this.diffAgainstMasterImpl_(masterDiffBase, capturedScreenshots);
 
     masterDiffReportData.meta.start_time_iso_utc = localDiffReportData.meta.start_time_iso_utc;
     masterDiffReportData.meta.end_time_iso_utc = new Date().toISOString();
@@ -109,72 +167,9 @@ ${boldGreen('Skipping screenshot tests.')}
       masterDiffReportData.meta.end_time_iso_utc
     ).toMillis();
 
-    const comment = this.getPrComment_(masterDiffReportData, snapshotGitRev);
-    await this.gitHubApi_.createPullRequestComment(
-      snapshotGitRev.pr_number,
-      comment
-    );
-
-    return ExitCode.OK;
-  }
-
-  /**
-   * TODO(acdvorak): Pass diffbase through the stack instead of using `Cli#diffBase`
-   * @param {!mdc.proto.DiffBase} goldenDiffBase
-   * @param {!Array<!mdc.proto.Screenshot>} capturedScreenshots
-   * @return {!Promise<!mdc.proto.ReportData>}
-   * @private
-   */
-  async diffEmAll_(goldenDiffBase, capturedScreenshots = []) {
-    const controller = new Controller();
-
-    /** @type {!mdc.proto.ReportData} */
-    const reportData = await controller.initForCapture(goldenDiffBase);
-
-    try {
-      if (capturedScreenshots.length === 0) {
-        await this.gitHubApi_.setPullRequestStatusAuto(reportData);
-      }
-
-      await controller.uploadAllAssets(reportData);
-
-      if (capturedScreenshots.length === 0) {
-        await controller.captureAllPages(reportData);
-      } else {
-        await this.copyAndCompareScreenshots_({reportData, capturedScreenshots});
-      }
-
-      controller.populateMaps(reportData);
-
-      await controller.uploadAllImages(reportData);
-      await controller.generateReportPage(reportData);
-
-      if (capturedScreenshots.length === 0) {
-        await this.gitHubApi_.setPullRequestStatusAuto(reportData);
-      }
-    } catch (err) {
-      await this.gitHubApi_.setPullRequestError();
-      throw new VError(err, 'Failed to run screenshot tests');
-    }
-
-    return reportData;
-  }
-
-  /**
-   * @param {!mdc.proto.ReportData} reportData
-   * @return {{isTestable: boolean, prNumber: ?number}}
-   */
-  checkIsTestable_(reportData) {
-    const goldenGitRevision = reportData.meta.golden_diff_base.git_revision;
-    const shouldSkipScreenshotTests =
-      goldenGitRevision &&
-      goldenGitRevision.type === GitRevision.Type.TRAVIS_PR &&
-      goldenGitRevision.pr_file_paths.length === 0;
-
-    return {
-      isTestable: !shouldSkipScreenshotTests,
-      prNumber: goldenGitRevision ? goldenGitRevision.pr_number : null,
-    };
+    const prNumber = snapshotGitRev.pr_number;
+    const comment = this.getPrComment_({masterDiffReportData, snapshotGitRev});
+    await this.gitHubApi_.createPullRequestComment({prNumber, comment});
   }
 
   /**
@@ -199,7 +194,6 @@ ${boldGreen('Skipping screenshot tests.')}
           continue;
         }
         promises.push(new Promise(async (resolve) => {
-          console.log(`Comparing ${masterScreenshot.html_file_path} > ${masterScreenshot.user_agent.alias}...`);
           masterScreenshot.actual_html_file = capturedScreenshot.actual_html_file;
           masterScreenshot.actual_image_file = capturedScreenshot.actual_image_file;
           masterScreenshot.capture_state = capturedScreenshot.capture_state;
@@ -220,8 +214,6 @@ ${boldGreen('Skipping screenshot tests.')}
           }
           reportData.screenshots.comparable_screenshot_list.push(masterScreenshot);
 
-          console.log(`Compared ${masterScreenshot.html_file_path} > ${masterScreenshot.user_agent.alias}!`);
-
           resolve();
         }));
       }
@@ -238,7 +230,7 @@ ${boldGreen('Skipping screenshot tests.')}
    * @return {string}
    * @private
    */
-  getPrComment_(masterDiffReportData, snapshotGitRev) {
+  getPrComment_({masterDiffReportData, snapshotGitRev}) {
     const reportPageUrl = masterDiffReportData.meta.report_html_file.public_url;
 
     const masterScreenshots = masterDiffReportData.screenshots;
@@ -404,6 +396,18 @@ ${this.getRandomCongratulatoryMemeImage_()}
       return ExitCode.CHANGES_FOUND;
     }
     return ExitCode.OK;
+  }
+
+  /**
+   * @param {number} prNumber
+   * @private
+   */
+  logUntestablePr_(prNumber) {
+    this.logger_.warn(`
+${CliColor.underline(`PR #${prNumber}`)} does not contain any testable source file changes.
+
+${CliColor.bold.green('Skipping screenshot tests.')}
+`);
   }
 }
 

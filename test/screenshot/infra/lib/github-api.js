@@ -212,7 +212,7 @@ class GitHubApi {
    * @param {string} comment
    * @return {!Promise<*>}
    */
-  async createPullRequestComment(prNumber, comment) {
+  async createPullRequestComment({prNumber, comment}) {
     return this.octokit_.issues.createComment({
       owner: 'material-components',
       repo: 'material-components-web',
