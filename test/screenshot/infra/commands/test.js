@@ -63,16 +63,17 @@ class TestCommand {
     // TODO(acdvorak): Find a better word than "local"
     /** @type {!mdc.proto.ReportData} */
     const localDiffReportData = await this.diffAgainstLocal_(snapshotDiffBase);
+
+    this.logTestResults_(localDiffReportData);
+
     const localDiffExitCode = this.getExitCode_(localDiffReportData);
     if (localDiffExitCode !== ExitCode.OK) {
-      this.logTestResults_(localDiffReportData);
       return localDiffExitCode;
     }
 
     if (isTravisPr) {
       /** @type {!mdc.proto.ReportData} */
       const masterDiffReportData = await this.diffAgainstMaster_({localDiffReportData, snapshotGitRev});
-      this.logTestResults_(localDiffReportData);
       this.logTestResults_(masterDiffReportData);
     }
 
