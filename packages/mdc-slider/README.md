@@ -45,7 +45,7 @@ npm install @material/slider
     <div class="mdc-slider__track-fill"></div>
   </div>
   <div class="mdc-slider__thumb" tabindex="0" role="slider"
-     aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-disabled="false"
+     aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
      aria-label="Select Value">
     <svg class="mdc-slider__thumb-handle" width="24" height="24">
       <circle cx="12" cy="12" r="6"></circle>
@@ -85,6 +85,18 @@ DOM.
 <div class="mdc-slider" tabindex="0" role="slider"
      aria-valuemin="-5" aria-valuemax="50" aria-valuenow="10"
      aria-label="Select Value">
+  <!-- ... -->
+</div>
+```
+
+### Disabled sliders
+
+Adding an `aria-disabled` attribute to a slider will initially disable it.
+
+```html
+<div class="mdc-slider" tabindex="0" role="slider"
+     aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
+     aria-label="Select Value" aria-disabled="true">
   <!-- ... -->
 </div>
 ```
