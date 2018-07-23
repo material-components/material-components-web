@@ -724,8 +724,10 @@ class SeleniumApi {
 
     await this.cbtApi_.killSeleniumTests(ids, /* silent */ wasAlreadyKilled);
 
-    // Give the HTTP requests a chance to complete before exiting
-    await this.sleep_(Duration.seconds(4).toMillis());
+    if (!wasAlreadyKilled && ids.length > 0) {
+      console.log('\nWaiting for CBT cancellation requests to complete...');
+      await this.sleep_(Duration.seconds(4).toMillis());
+    }
   }
 
   /**

@@ -53,22 +53,39 @@ class DiffBaseParser {
    * @return {!Promise<!mdc.proto.DiffBase>}
    */
   async parseGoldenDiffBase() {
-    /** @type {?mdc.proto.GitRevision} */
-    const travisGitRevision = await this.getTravisGitRevision();
-    if (travisGitRevision) {
-      return DiffBase.create({
-        type: DiffBase.Type.GIT_REVISION,
-        git_revision: travisGitRevision,
-      });
+    return await this.getTravisDiffBase_() || await this.parseDiffBase(this.cli_.diffBase);
+  }
+
+  /**
+   * @return {!Promise<!mdc.proto.DiffBase>}
+   */
+  async parseSnapshotDiffBase() {
+    return await this.getTravisDiffBase_() || await this.parseDiffBase('HEAD');
+  }
+
+  /**
+   * @return {!Promise<!mdc.proto.DiffBase>}
+   */
+  async parseMasterDiffBase() {
+    /** @type {!mdc.proto.DiffBase} */
+    const goldenDiffBase = await this.parseGoldenDiffBase();
+    const prNumber = goldenDiffBase.git_revision ? goldenDiffBase.git_revision.pr_number : null;
+    let baseBranch = 'origin/master';
+    if (prNumber) {
+      if (process.env.TRAVIS_BRANCH) {
+        baseBranch = `origin/${process.env.TRAVIS_BRANCH}`;
+      } else {
+        baseBranch = await this.gitHubApi_.getPullRequestBaseBranch(prNumber);
+      }
     }
-    return this.parseDiffBase();
+    return this.parseDiffBase(baseBranch);
   }
 
   /**
    * @param {string} rawDiffBase
    * @return {!Promise<!mdc.proto.DiffBase>}
    */
-  async parseDiffBase(rawDiffBase = this.cli_.diffBase) {
+  async parseDiffBase(rawDiffBase) {
     const isOnline = this.cli_.isOnline();
     const isRealBranch = (branch) => Boolean(branch) && !['master', 'origin/master', 'HEAD'].includes(branch);
 
@@ -91,7 +108,7 @@ class DiffBaseParser {
    * @return {!Promise<!mdc.proto.DiffBase>}
    * @private
    */
-  async parseDiffBase_(rawDiffBase = this.cli_.diffBase) {
+  async parseDiffBase_(rawDiffBase) {
     // Diff against a public `golden.json` URL.
     // E.g.: `--diff-base=https://storage.googleapis.com/.../golden.json`
     const isUrl = HTTP_URL_REGEX.test(rawDiffBase);
@@ -146,6 +163,35 @@ class DiffBaseParser {
   }
 
   /**
+   * @return {!Promise<?mdc.proto.DiffBase>}
+   * @private
+   */
+  async getTravisDiffBase_() {
+    /** @type {?mdc.proto.GitRevision} */
+    const travisGitRevision = await this.getTravisGitRevision();
+    if (!travisGitRevision) {
+      return null;
+    }
+
+    let generatedInputString;
+    if (travisGitRevision.pr_number) {
+      generatedInputString = `travis/pr/${travisGitRevision.pr_number}`;
+    } else if (travisGitRevision.tag) {
+      generatedInputString = `travis/tag/${travisGitRevision.tag}`;
+    } else if (travisGitRevision.branch) {
+      generatedInputString = `travis/branch/${travisGitRevision.branch}`;
+    } else {
+      generatedInputString = `travis/commit/${travisGitRevision.commit}`;
+    }
+
+    return DiffBase.create({
+      type: DiffBase.Type.GIT_REVISION,
+      input_string: generatedInputString,
+      git_revision: travisGitRevision,
+    });
+  }
+
+  /**
    * @return {?Promise<!mdc.proto.GitRevision>}
    */
   async getTravisGitRevision() {
@@ -165,6 +211,7 @@ class DiffBaseParser {
         author,
         branch: travisPrBranch || travisBranch,
         pr_number: travisPrNumber,
+        pr_file_paths: await this.getTestablePrFilePaths_(travisPrNumber),
       });
     }
 
@@ -193,6 +240,28 @@ class DiffBaseParser {
     }
 
     return null;
+  }
+
+  /**
+   * @param {number} prNumber
+   * @return {!Promise<!Array<string>>}
+   * @private
+   */
+  async getTestablePrFilePaths_(prNumber) {
+    /** @type {!Array<!github.proto.PullRequestFile>} */
+    const allPrFiles = await this.gitHubApi_.getPullRequestFiles(prNumber);
+
+    return allPrFiles
+      .filter((prFile) => {
+        const isMarkdownFile = () => prFile.filename.endsWith('.md');
+        const isDemosFile = () => prFile.filename.startsWith('demos/');
+        const isDocsFile = () => prFile.filename.startsWith('docs/');
+        const isUnitTestFile = () => prFile.filename.startsWith('test/unit/');
+        const isIgnoredFile = isMarkdownFile() || isDemosFile() || isDocsFile() || isUnitTestFile();
+        return !isIgnoredFile;
+      })
+      .map((prFile) => prFile.filename)
+    ;
   }
 
   /**
@@ -233,9 +302,9 @@ class DiffBaseParser {
 
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
+      input_string: `${commit}:${goldenJsonFilePath}`, // TODO(acdvorak): Document the ':' separator format
       git_revision: GitRevision.create({
         type: GitRevision.Type.COMMIT,
-        input_string: `${commit}:${goldenJsonFilePath}`, // TODO(acdvorak): Document the ':' separator format
         golden_json_file_path: goldenJsonFilePath,
         commit,
         author,
@@ -258,9 +327,9 @@ class DiffBaseParser {
 
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
+      input_string: `${remoteRef}:${goldenJsonFilePath}`, // TODO(acdvorak): Document the ':' separator format
       git_revision: GitRevision.create({
         type: GitRevision.Type.REMOTE_BRANCH,
-        input_string: `${remoteRef}:${goldenJsonFilePath}`, // TODO(acdvorak): Document the ':' separator format
         golden_json_file_path: goldenJsonFilePath,
         commit,
         author,
@@ -282,9 +351,9 @@ class DiffBaseParser {
 
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
+      input_string: `${tagRef}:${goldenJsonFilePath}`, // TODO(acdvorak): Document the ':' separator format
       git_revision: GitRevision.create({
         type: GitRevision.Type.REMOTE_TAG,
-        input_string: `${tagRef}:${goldenJsonFilePath}`, // TODO(acdvorak): Document the ':' separator format
         golden_json_file_path: goldenJsonFilePath,
         commit,
         author,
@@ -306,9 +375,9 @@ class DiffBaseParser {
 
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
+      input_string: `${branch}:${goldenJsonFilePath}`, // TODO(acdvorak): Document the ':' separator format
       git_revision: GitRevision.create({
         type: GitRevision.Type.LOCAL_BRANCH,
-        input_string: `${branch}:${goldenJsonFilePath}`, // TODO(acdvorak): Document the ':' separator format
         golden_json_file_path: goldenJsonFilePath,
         commit,
         author,
