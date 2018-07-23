@@ -22,6 +22,8 @@ import MDCChipAdapter from './adapter';
 import {MDCChipFoundation} from './foundation';
 import {strings} from './constants';
 
+const INTERACTION_EVENTS = ['click', 'keydown', 'touchstart', 'pointerdown', 'mousedown'];
+
 /**
  * @extends {MDCComponent<!MDCChipFoundation>}
  * @final
@@ -84,12 +86,13 @@ class MDCChip extends MDCComponent {
     this.handleTransitionEnd_ = (evt) => this.foundation_.handleTransitionEnd(evt);
     this.handleTrailingIconInteraction_ = (evt) => this.foundation_.handleTrailingIconInteraction(evt);
 
-    ['click', 'keydown'].forEach((evtType) => {
+    INTERACTION_EVENTS.forEach((evtType) => {
       this.root_.addEventListener(evtType, this.handleInteraction_);
     });
     this.root_.addEventListener('transitionend', this.handleTransitionEnd_);
+
     if (this.trailingIcon_) {
-      ['click', 'keydown', 'touchstart', 'pointerdown', 'mousedown'].forEach((evtType) => {
+      INTERACTION_EVENTS.forEach((evtType) => {
         this.trailingIcon_.addEventListener(evtType, this.handleTrailingIconInteraction_);
       });
     }
@@ -98,12 +101,13 @@ class MDCChip extends MDCComponent {
   destroy() {
     this.ripple_.destroy();
 
-    ['click', 'keydown'].forEach((evtType) => {
+    INTERACTION_EVENTS.forEach((evtType) => {
       this.root_.removeEventListener(evtType, this.handleInteraction_);
     });
+    this.root_.removeEventListener('transitionend', this.handleTransitionEnd_);
+
     if (this.trailingIcon_) {
-      this.root_.removeEventListener('transitionend', this.handleTransitionEnd_);
-      ['click', 'keydown', 'touchstart', 'pointerdown', 'mousedown'].forEach((evtType) => {
+      INTERACTION_EVENTS.forEach((evtType) => {
         this.trailingIcon_.removeEventListener(evtType, this.handleTrailingIconInteraction_);
       });
     }
