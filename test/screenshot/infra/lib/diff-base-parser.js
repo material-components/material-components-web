@@ -201,7 +201,7 @@ class DiffBaseParser {
         author,
         branch: travisPrBranch || travisBranch,
         pr_number: travisPrNumber,
-        pr_file_paths: this.getTestablePrFilePaths_(travisPrNumber),
+        pr_file_paths: await this.getTestablePrFilePaths_(travisPrNumber),
       });
     }
 
