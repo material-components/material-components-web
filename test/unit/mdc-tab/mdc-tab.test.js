@@ -142,6 +142,14 @@ test('#adapter.getContentOffsetLeft() returns the offsetLeft of the content elem
   assert.strictEqual(component.getDefaultFoundation().adapter_.getContentOffsetLeft(), content.offsetLeft);
 });
 
+test('#adapter.focus() gives focus to the root element', () => {
+  const {root, component} = setupTest();
+  document.body.appendChild(root);
+  component.getDefaultFoundation().adapter_.focus();
+  assert.strictEqual(document.activeElement, root);
+  document.body.removeChild(root);
+});
+
 test(`#adapter.notifyInteracted() emits the ${MDCTabFoundation.strings.INTERACTED_EVENT} event`, () => {
   const {component} = setupTest();
   const handler = td.func('interaction handler');
