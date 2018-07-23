@@ -305,7 +305,7 @@ ${contentMarkdown}
     }).join('\n');
 
     return `
-### ${screenshotArray.length} ${verb}:
+#### ${screenshotArray.length} ${verb}:
 
 ${listItemMarkdown}
 `;
