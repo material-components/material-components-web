@@ -79,16 +79,6 @@ const fabRipple = new MDCRipple(document.querySelector('.mdc-fab'));
 
 ## Variants
 
-### Standard FAB
-
-A floating action button (FAB) represents the primary action of a screen.
-
-```html
-<button class="mdc-fab" aria-label="Favorite">
-  <span class="mdc-fab__icon material-icons">favorite</span>
-</button>
-```
-
 ### Extended FAB
 
 ```html
@@ -98,7 +88,7 @@ A floating action button (FAB) represents the primary action of a screen.
 </button>
 ```
 
-> _NOTE:_ The extended FAB must contain label where as the icon is optional. The position of icon and label may interchange.
+> _NOTE:_ The extended FAB must contain label where as the icon is optional. The icon and label may be specified in whichever order is appropriate based on context.
 
 ## Style Customization
 
