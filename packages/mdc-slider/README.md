@@ -45,10 +45,11 @@ npm install @material/slider
     <div class="mdc-slider__track-fill"></div>
   </div>
   <div class="mdc-slider__thumb" tabindex="0" role="slider"
-     aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
-     aria-label="Select Value">
-    <svg class="mdc-slider__thumb-handle" width="24" height="24">
-      <circle cx="12" cy="12" r="6"></circle>
+    aria-valuemin="0" aria-valuemax="50" aria-valuenow="20"
+    aria-label="Select Value">
+    <svg class="mdc-slider__thumb-handle" width="34" height="34">
+      <circle class="mdc-slider__thumb-handle-disabled" cx="17" cy="17" r="6"></circle>
+      <circle cx="17" cy="17" r="6"></circle>
     </svg>
   </div>
 </div>
