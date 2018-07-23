@@ -32,20 +32,26 @@ const ImageDiffer = require('../lib/image-differ');
 const Logger = require('../lib/logger');
 const {ExitCode} = require('../lib/constants');
 
-const cli = new Cli();
-const diffBaseParser = new DiffBaseParser();
-const gitHubApi = new GitHubApi();
-const imageDiffer = new ImageDiffer();
-const logger = new Logger(__filename);
+class TestCommand {
+  constructor() {
+    this.cli_ = new Cli();
+    this.diffBaseParser_ = new DiffBaseParser();
+    this.gitHubApi_ = new GitHubApi();
+    this.imageDiffer_ = new ImageDiffer();
+    this.logger_ = new Logger(__filename);
+  }
 
-module.exports = {
+  /**
+   * @return {!Promise<number|undefined>} Process exit code. If no exit code is returned, `0` is assumed.
+   */
   async runAsync() {
-    await BuildCommand.runAsync();
+    const buildCommand = new BuildCommand();
+    await buildCommand.runAsync();
 
-    const cliDiffBase = cli.diffBase;
+    const cliDiffBase = this.cli_.diffBase;
 
     /** @type {!mdc.proto.DiffBase} */
-    const snapshotDiffBase = await diffBaseParser.parseGoldenDiffBase(cliDiffBase);
+    const snapshotDiffBase = await this.diffBaseParser_.parseGoldenDiffBase(cliDiffBase);
 
     /** @type {!mdc.proto.ReportData} */
     const localDiffReportData = await this.diffEmAll_(snapshotDiffBase);
@@ -54,7 +60,7 @@ module.exports = {
     if (!isTestable) {
       const underline = CliColor.underline;
       const boldGreen = CliColor.bold.green;
-      logger.warn(`
+      this.logger_.warn(`
 ${underline(`PR #${prNumber}`)} does not contain any testable source file changes.
 
 ${boldGreen('Skipping screenshot tests.')}
@@ -62,7 +68,7 @@ ${boldGreen('Skipping screenshot tests.')}
       return ExitCode.OK;
     }
 
-    await gitHubApi.setPullRequestStatusAuto(localDiffReportData);
+    await this.gitHubApi_.setPullRequestStatusAuto(localDiffReportData);
 
     const localDiffExitCode = this.getExitCode_(localDiffReportData);
     if (localDiffExitCode !== ExitCode.OK) {
@@ -91,7 +97,7 @@ ${boldGreen('Skipping screenshot tests.')}
     );
 
     /** @type {!mdc.proto.DiffBase} */
-    const masterDiffBase = await diffBaseParser.parseMasterDiffBase();
+    const masterDiffBase = await this.diffBaseParser_.parseMasterDiffBase();
 
     /** @type {!mdc.proto.ReportData} */
     const masterDiffReportData = await this.diffEmAll_(masterDiffBase, capturedScreenshots);
@@ -104,13 +110,13 @@ ${boldGreen('Skipping screenshot tests.')}
     ).toMillis();
 
     const comment = this.getPrComment_(masterDiffReportData, snapshotGitRev);
-    await gitHubApi.createPullRequestComment(
+    await this.gitHubApi_.createPullRequestComment(
       snapshotGitRev.pr_number,
       comment
     );
 
     return ExitCode.OK;
-  },
+  }
 
   /**
    * TODO(acdvorak): Pass diffbase through the stack instead of using `Cli#diffBase`
@@ -127,7 +133,7 @@ ${boldGreen('Skipping screenshot tests.')}
 
     try {
       if (capturedScreenshots.length === 0) {
-        await gitHubApi.setPullRequestStatusAuto(reportData);
+        await this.gitHubApi_.setPullRequestStatusAuto(reportData);
       }
 
       await controller.uploadAllAssets(reportData);
@@ -144,15 +150,15 @@ ${boldGreen('Skipping screenshot tests.')}
       await controller.generateReportPage(reportData);
 
       if (capturedScreenshots.length === 0) {
-        await gitHubApi.setPullRequestStatusAuto(reportData);
+        await this.gitHubApi_.setPullRequestStatusAuto(reportData);
       }
     } catch (err) {
-      await gitHubApi.setPullRequestError();
+      await this.gitHubApi_.setPullRequestError();
       throw new VError(err, 'Failed to run screenshot tests');
     }
 
     return reportData;
-  },
+  }
 
   /**
    * @param {!mdc.proto.ReportData} reportData
@@ -169,7 +175,7 @@ ${boldGreen('Skipping screenshot tests.')}
       isTestable: !shouldSkipScreenshotTests,
       prNumber: goldenGitRevision ? goldenGitRevision.pr_number : null,
     };
-  },
+  }
 
   /**
    * @param {!mdc.proto.ReportData} reportData
@@ -180,7 +186,7 @@ ${boldGreen('Skipping screenshot tests.')}
   async copyAndCompareScreenshots_({reportData, capturedScreenshots}) {
     const num = capturedScreenshots.length;
     const plural = num === 1 ? '' : 's';
-    logger.foldStart('screenshot.compare_master', `Comparing ${num} screenshot${plural} to master`);
+    this.logger_.foldStart('screenshot.compare_master', `Comparing ${num} screenshot${plural} to master`);
 
     const promises = [];
     const screenshots = reportData.screenshots;
@@ -199,7 +205,7 @@ ${boldGreen('Skipping screenshot tests.')}
           masterScreenshot.capture_state = capturedScreenshot.capture_state;
 
           /** @type {!mdc.proto.DiffImageResult} */
-          const diffImageResult = await imageDiffer.compareOneScreenshot({
+          const diffImageResult = await this.imageDiffer_.compareOneScreenshot({
             meta: reportData.meta,
             screenshot: masterScreenshot,
           });
@@ -223,8 +229,8 @@ ${boldGreen('Skipping screenshot tests.')}
 
     await Promise.all(promises);
 
-    logger.foldEnd('screenshot.compare_master');
-  },
+    this.logger_.foldEnd('screenshot.compare_master');
+  }
 
   /**
    * @param {!mdc.proto.ReportData} masterDiffReportData
@@ -232,7 +238,7 @@ ${boldGreen('Skipping screenshot tests.')}
    * @return {string}
    * @private
    */
-  getPrComment_: function(masterDiffReportData, snapshotGitRev) {
+  getPrComment_(masterDiffReportData, snapshotGitRev) {
     const reportPageUrl = masterDiffReportData.meta.report_html_file.public_url;
 
     const masterScreenshots = masterDiffReportData.screenshots;
@@ -281,7 +287,7 @@ Commit ${snapshotGitRev.commit} vs. \`master\`:
 
 ${contentMarkdown}
 `.trim();
-  },
+  }
 
   /**
    * @param {string} verb
@@ -309,7 +315,7 @@ ${contentMarkdown}
 
 ${listItemMarkdown}
 `;
-  },
+  }
 
   /**
    * @param {!Array<!mdc.proto.Screenshot>} screenshotArray
@@ -320,7 +326,7 @@ ${listItemMarkdown}
     return screenshotArray.map((screenshot) => {
       return this.getOneBrowserIcon_(screenshot);
     }).join(' ');
-  },
+  }
 
   /**
    * @param screenshot
@@ -338,7 +344,7 @@ ${listItemMarkdown}
 </a>
 `;
     return untrimmed.trim().replace(/>\n *</g, '><');
-  },
+  }
 
   /**
    * @return {string}
@@ -359,7 +365,7 @@ ${this.getRandomCongratulatoryMemeImage_()}
   </div>
 </details>
 `;
-  },
+  }
 
   /**
    * @return {string}
@@ -380,7 +386,7 @@ ${this.getRandomCongratulatoryMemeImage_()}
     const index = Math.round(Math.random() * 1e16) % entries.length;
     const [alt, src] = entries[index];
     return `<img src="${src}" alt="${alt}" height="200">`;
-  },
+  }
 
   /**
    * @param {!mdc.proto.ReportData} reportData
@@ -393,10 +399,12 @@ ${this.getRandomCongratulatoryMemeImage_()}
       reportData.screenshots.added_screenshot_list.length +
       reportData.screenshots.removed_screenshot_list.length;
 
-    const isOnline = cli.isOnline();
+    const isOnline = this.cli_.isOnline();
     if (isOnline && numChanges > 0) {
       return ExitCode.CHANGES_FOUND;
     }
     return ExitCode.OK;
-  },
-};
+  }
+}
+
+module.exports = TestCommand;
