@@ -72,7 +72,11 @@ class DiffBaseParser {
     const prNumber = goldenDiffBase.git_revision ? goldenDiffBase.git_revision.pr_number : null;
     let baseBranch = 'origin/master';
     if (prNumber) {
-      baseBranch = await this.gitHubApi_.getPullRequestBaseBranch(prNumber);
+      if (process.env.TRAVIS_BRANCH) {
+        baseBranch = `origin/${process.env.TRAVIS_BRANCH}`;
+      } else {
+        baseBranch = await this.gitHubApi_.getPullRequestBaseBranch(prNumber);
+      }
     }
     return this.parseDiffBase(baseBranch);
   }
