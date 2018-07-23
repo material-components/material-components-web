@@ -432,6 +432,7 @@ ${CliColor.bold.green('Skipping screenshot tests.')}
     const headingUnderline = ''.padEnd(headingPlain.length, '=');
 
     this.logger_.log(`
+
 ${headingColor}
 ${headingUnderline}
 
@@ -439,7 +440,7 @@ ${headingUnderline}
   - Snapshot: ${snapshotDisplayName}
   - Changes:  ${color(changedMsg)}
   - Report:   ${color(reportPageUrl)}
-`);
+`.trimRight());
   }
 
   /**
