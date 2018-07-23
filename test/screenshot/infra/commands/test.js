@@ -428,11 +428,13 @@ ${CliColor.bold.green('Skipping screenshot tests.')}
    */
   logComparisonResults_(reportData) {
     this.logger_.log('\n');
+    this.logger_.foldStart('screenshot.diff_results', 'Diff results');
     this.logComparisonResultSet_('Skipped', reportData.screenshots.skipped_screenshot_list);
     this.logComparisonResultSet_('Unchanged', reportData.screenshots.unchanged_screenshot_list);
     this.logComparisonResultSet_('Removed', reportData.screenshots.removed_screenshot_list);
     this.logComparisonResultSet_('Added', reportData.screenshots.added_screenshot_list);
     this.logComparisonResultSet_('Changed', reportData.screenshots.changed_screenshot_list);
+    this.logger_.foldEnd('screenshot.diff_results');
   }
 
   /**
@@ -479,16 +481,17 @@ ${headingUnderline}
   getDisplayName_(diffBase) {
     const gitRev = diffBase.git_revision;
     if (gitRev) {
+      const commitShort = gitRev.commit.substr(0, 7);
       if (gitRev.pr_number) {
-        return `PR #${gitRev.pr_number}`;
+        return `PR #${gitRev.pr_number} (commit ${commitShort})`;
       }
       if (gitRev.tag) {
-        return gitRev.tag;
+        return `${gitRev.tag} (commit ${commitShort})`;
       }
       if (gitRev.branch) {
-        return gitRev.remote ? `${gitRev.remote}/${gitRev.branch}` : gitRev.branch;
+        return `${gitRev.remote ? `${gitRev.remote}/${gitRev.branch}` : gitRev.branch} (commit ${commitShort})`;
       }
-      return `commit ${gitRev.commit}`;
+      return commitShort;
     }
     return diffBase.local_file_path || diffBase.public_url;
   }
