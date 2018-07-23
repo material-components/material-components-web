@@ -62,7 +62,7 @@
 }
 
 .mdc-switch__thumb-underlay {
-  @include mdc-rtl-reflexive-position(left, -14px);
+  @include mdc-rtl-reflexive-position(left, $mdc-switch-tap-target-initial-position);
   @include mdc-ripple-surface();
   @include mdc-ripple-radius-unbounded;
   @include mdc-states($mdc-switch-baseline-theme-color);
@@ -70,7 +70,7 @@
   display: flex;
   position: absolute;
   // Ensures the knob is centered on the track.
-  top: -($mdc-switch-track-height / 2 + $mdc-switch-thumb-diameter / 2);
+  top: -(($mdc-switch-tap-target-size - $mdc-switch-track-height) / 2);
   align-items: center;
   justify-content: center;
   width: $mdc-switch-tap-target-size;
