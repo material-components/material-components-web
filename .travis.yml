@@ -32,9 +32,10 @@ matrix:
   - node_js: 8
     env:
     - TEST_SUITE=screenshot
+    git:
+      depth: 200
     script: npm run screenshot:test -- --no-fetch
     install:
-      - rm -rf node_modules
       - npm install
       #- npm ls # Noisy output, but useful for debugging npm package dependency version issues
 before_install:

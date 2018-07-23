@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-const colors = require('colors');
 const request = require('request-promise-native');
 
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
@@ -27,6 +26,7 @@ const {CbtAccount, CbtActiveTestCounts, CbtConcurrencyStats} = cbtProto;
 const {RawCapabilities} = seleniumProto;
 
 const Cli = require('./cli');
+const CliColor = require('./logger').colors;
 const DiffBaseParser = require('./diff-base-parser');
 const Duration = require('./duration');
 
@@ -399,7 +399,7 @@ https://crossbrowsertesting.com/account
   async killSeleniumTests(seleniumTestIds, silent = false) {
     await Promise.all(seleniumTestIds.map((seleniumTestId) => {
       if (!silent) {
-        console.log(`${colors.red('Killing')} zombie Selenium test ${colors.bold(seleniumTestId)}`);
+        console.log(`${CliColor.red('Killing')} zombie Selenium test ${CliColor.bold(seleniumTestId)}`);
       }
       return this.sendRequest_('DELETE', `/selenium/${seleniumTestId}`);
     }));
@@ -415,7 +415,7 @@ https://crossbrowsertesting.com/account
   async sendRequest_(method, endpoint, body = undefined) {
     if (this.cli_.isOffline()) {
       console.warn(
-        `${colors.magenta('WARNING')}:`,
+        `${CliColor.magenta('WARNING')}:`,
         new Error('CbtApi#sendRequest_() should not be called in --offline mode')
       );
       return [];

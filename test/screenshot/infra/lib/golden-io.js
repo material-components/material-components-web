@@ -69,29 +69,27 @@ class GoldenIo {
 
   /**
    * Parses the `golden.json` file specified by the `--diff-base` CLI arg.
-   * @param {string=} rawDiffBase
+   * @param {!mdc.proto.DiffBase} goldenDiffBase
    * @return {!Promise<!GoldenFile>}
    */
-  async readFromDiffBase(rawDiffBase = this.cli_.diffBase) {
-    if (!this.cachedGoldenJsonMap_[rawDiffBase]) {
-      const goldenJson = JSON.parse(await this.readFromDiffBase_(rawDiffBase));
-      this.cachedGoldenJsonMap_[rawDiffBase] = new GoldenFile(goldenJson);
+  async readFromDiffBase(goldenDiffBase) {
+    const key = goldenDiffBase.input_string;
+    if (!this.cachedGoldenJsonMap_[key]) {
+      const goldenJson = JSON.parse(await this.readFromDiffBase_(goldenDiffBase));
+      this.cachedGoldenJsonMap_[key] = new GoldenFile(goldenJson);
     }
 
     // Deep copy to avoid mutating shared state
-    return new GoldenFile(this.cachedGoldenJsonMap_[rawDiffBase].toJSON());
+    return new GoldenFile(this.cachedGoldenJsonMap_[key].toJSON());
   }
 
   /**
-   * @param {string} rawDiffBase
+   * @param {!mdc.proto.DiffBase} goldenDiffBase
    * @return {!Promise<string>}
    * @private
    */
-  async readFromDiffBase_(rawDiffBase) {
-    /** @type {!mdc.proto.DiffBase} */
-    const parsedDiffBase = await this.diffBaseParser_.parseDiffBase(rawDiffBase);
-
-    const publicUrl = parsedDiffBase.public_url;
+  async readFromDiffBase_(goldenDiffBase) {
+    const publicUrl = goldenDiffBase.public_url;
     if (publicUrl) {
       return request({
         method: 'GET',
@@ -99,19 +97,22 @@ class GoldenIo {
       });
     }
 
-    const localFilePath = parsedDiffBase.local_file_path;
+    const localFilePath = goldenDiffBase.local_file_path;
     if (localFilePath) {
       return this.localStorage_.readTextFile(localFilePath);
     }
 
-    const rev = parsedDiffBase.git_revision;
+    const rev = goldenDiffBase.git_revision;
     if (rev) {
       return this.gitRepo_.getFileAtRevision(rev.golden_json_file_path, rev.commit);
     }
 
-    const serialized = JSON.stringify({parsedDiffBase, meta}, null, 2);
+    const serialized = JSON.stringify({goldenDiffBase}, null, 2);
     throw new Error(
-      `Unable to parse '--diff-base=${rawDiffBase}': Expected a URL, local file path, or git ref.\n${serialized}`
+      `
+Unable to parse '--diff-base=${goldenDiffBase.input_string}': Expected a URL, local file path, or git ref.
+${serialized}
+`.trim()
     );
   }
 
