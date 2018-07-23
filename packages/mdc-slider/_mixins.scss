@@ -20,24 +20,30 @@
 @import "./variables";
 
 @mixin mdc-slider-track-color($color) {
-  .mdc-slider__track {
-    @include mdc-theme-prop(background-color, rgba(mdc-theme-prop-value($color), $mdc-slider-track-opacity));
+  &:not(.mdc-slider--disabled) {
+    .mdc-slider__track {
+      @include mdc-theme-prop(background-color, rgba(mdc-theme-prop-value($color), $mdc-slider-track-opacity));
+    }
   }
 }
 
 @mixin mdc-slider-track-fill-color($color) {
-  .mdc-slider__track-fill {
-    @include mdc-theme-prop(background-color, $color);
+  &:not(.mdc-slider--disabled) {
+    .mdc-slider__track-fill {
+      @include mdc-theme-prop(background-color, $color);
+    }
   }
 }
 
 @mixin mdc-slider-thumb-color($color) {
-  .mdc-slider__thumb {
-    @include mdc-states($color);
-  }
+  &:not(.mdc-slider--disabled) {
+    .mdc-slider__thumb {
+      @include mdc-states($color);
+    }
 
-  .mdc-slider__thumb-handle {
-    @include mdc-theme-prop(fill, $color);
+    .mdc-slider__thumb-handle {
+      @include mdc-theme-prop(fill, $color);
+    }
   }
 }
 
@@ -58,6 +64,7 @@
 
     stroke-width: 4px;
   }
+
   .mdc-slider__thumb-handle-disabled {
     @include mdc-theme-prop(fill, mdc-theme-prop-value(surface));
   }

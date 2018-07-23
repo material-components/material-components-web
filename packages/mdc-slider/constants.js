@@ -32,6 +32,7 @@ const strings = {
 /** @enum {string} */
 const cssClasses = {
   DISABLED: 'mdc-slider--disabled',
+  ACTIVE: 'mdc-slider--active',
 };
 
 export {strings, cssClasses};

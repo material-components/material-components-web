@@ -20,11 +20,9 @@
 @import "./variables";
 
 .mdc-slider {
-  &:not(.mdc-slider--disabled) {
-    @include mdc-slider-track-color(primary);
-    @include mdc-slider-track-fill-color(primary);
-    @include mdc-slider-thumb-color(primary);
-  }
+  @include mdc-slider-track-color(primary);
+  @include mdc-slider-track-fill-color(primary);
+  @include mdc-slider-thumb-color(primary);
 
   position: relative;
   width: 100%;
@@ -55,14 +53,6 @@
   will-change: transform;
 }
 
-.mdc-slider:not(.mdc-slider--disabled) {
-  .mdc-slider__thumb {
-    @include mdc-ripple-surface;
-    @include mdc-ripple-radius-unbounded;
-    @include mdc-states(#5725e5);
-  }
-}
-
 .mdc-slider__thumb {
   position: absolute;
   width: 34px;
@@ -73,6 +63,14 @@
 
   &:focus {
     outline: none;
+  }
+}
+
+.mdc-slider:not(.mdc-slider--disabled) {
+  .mdc-slider__thumb {
+    @include mdc-ripple-surface;
+    @include mdc-ripple-radius-unbounded;
+    @include mdc-states(#5725e5);
   }
 }
 

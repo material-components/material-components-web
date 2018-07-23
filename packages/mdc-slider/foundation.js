@@ -296,7 +296,7 @@ class MDCSliderFoundation extends MDCFoundation {
    */
   setActive_(active) {
     this.active_ = active;
-    this.toggleClass_('mdc-slider--active', this.active_);
+    this.toggleClass_(cssClasses.ACTIVE, this.active_);
   }
 
   /**

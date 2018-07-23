@@ -54,9 +54,8 @@ class MDCSliderAdapter {
   /**
    * Removes attribute name on slider thumb Element to value
    * @param {string} name
-   * @param {string} value
    */
-  removeThumbAttribute(name, value) {}
+  removeThumbAttribute(name) {}
 
   /**
    * Returns the bounding client rect for the slider Element
