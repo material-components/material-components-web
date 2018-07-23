@@ -83,13 +83,19 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 Method Signature | Description
 --- | ---
 `addClass(className: string) => void` | Adds a class to the root element.
+`addScrollAreaClass(className: string) => void` | Adds a class to the scroll area element.
 `removeClass(className: string) => void` | Removes a class from the root element.
-`setScrollContentStyleProperty(property: string, value: string) => void` | Sets the style property of the scroll content element.
-`getScrollContentStyleValue(property: string) => string` | Returns the style property value of the scroll content element.
+`setScrollAreaStyleProperty(property: string, value: string) => void` | Sets the given style property on the scroll area element.
+`setScrollContentStyleProperty(property: string, value: string) => void` | Sets the given style property on the scroll content element.
+`getScrollContentStyleValue(property: string) => string` | Returns the given style property value on the scroll content element.
 `setScrollAreaScrollLeft(scrollLeft: number) => void` | Sets the scroll area element's `scrollLeft`.
 `getScrollAreaScrollLeft() => number` | Returns the scroll area element's `scrollLeft`.
 `getScrollContentOffsetWidth() => number` | Returns the scroll content element's `offsetWidth`.
 `getScrollAreaOffsetWidth() => number` | Returns the scroll area element's `offsetWidth`.
+`computeHorizontalScrollbarHeight() => number` | Returns the height of the browser's horizontal scrollbars (in px).
+
+> *NOTE*: MDC Tab Scroller provides an implementation for `computeHorizontalScrollbarHeight` in its `util` module;
+> simply pass it the `document` object.
 
 ### `MDCTabScrollerFoundation`
 
