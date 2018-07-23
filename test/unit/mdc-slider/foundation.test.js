@@ -33,6 +33,10 @@ test('exports strings', () => {
   assert.property(MDCSliderFoundation, 'strings');
 });
 
+test('exports cssClasses', () => {
+  assert.property(MDCSliderFoundation, 'cssClasses');
+});
+
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSliderFoundation, [
     'hasClass', 'addClass', 'removeClass', 'setThumbAttribute',
