@@ -118,6 +118,7 @@ class TestCommand {
   }
 
   /**
+   * TODO(acdvorak): Rename this method
    * @param {!mdc.proto.DiffBase} goldenDiffBase
    * @param {!Array<!mdc.proto.Screenshot>} capturedScreenshots
    * @return {!Promise<!mdc.proto.ReportData>}
@@ -148,6 +149,7 @@ class TestCommand {
   }
 
   /**
+   * TODO(acdvorak): Rename this method
    * @param {!mdc.proto.ReportData} localDiffReportData
    * @param {!mdc.proto.GitRevision} snapshotGitRev
    * @return {!Promise<!mdc.proto.ReportData>}
@@ -244,8 +246,8 @@ class TestCommand {
    */
   getPrComment_({masterDiffReportData, snapshotGitRev}) {
     const reportPageUrl = masterDiffReportData.meta.report_html_file.public_url;
-
     const masterScreenshots = masterDiffReportData.screenshots;
+
     const listMarkdown = [
       this.getChangelistMarkdown_(
         'Changed', masterScreenshots.changed_screenshot_list, masterScreenshots.changed_screenshot_page_map
