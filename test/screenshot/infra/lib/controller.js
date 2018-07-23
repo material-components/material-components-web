@@ -114,18 +114,15 @@ class Controller {
 
   /**
    * @param {!mdc.proto.ReportData} reportData
-   * @return {!Promise<!mdc.proto.ReportData>}
    */
   async uploadAllAssets(reportData) {
     this.logger_.foldStart('screenshot.upload_assets', 'Controller#uploadAllAssets()');
     await this.cloudStorage_.uploadAllAssets(reportData);
     this.logger_.foldEnd('screenshot.upload_assets');
-    return reportData;
   }
 
   /**
    * @param {!mdc.proto.ReportData} reportData
-   * @return {!Promise<!mdc.proto.ReportData>}
    */
   async captureAllPages(reportData) {
     this.logger_.foldStart('screenshot.capture_images', 'Controller#captureAllPages()');
@@ -137,8 +134,6 @@ class Controller {
     meta.duration_ms = Duration.elapsed(meta.start_time_iso_utc, meta.end_time_iso_utc).toMillis();
 
     this.logger_.foldEnd('screenshot.capture_images');
-
-    return reportData;
   }
 
   /**
@@ -150,86 +145,31 @@ class Controller {
 
   /**
    * @param {!mdc.proto.ReportData} reportData
-   * @return {!Promise<!mdc.proto.ReportData>}
    */
   async uploadAllImages(reportData) {
     this.logger_.foldStart('screenshot.upload_images', 'Controller#uploadAllImages()');
     await this.cloudStorage_.uploadAllScreenshots(reportData);
     await this.cloudStorage_.uploadAllDiffs(reportData);
     this.logger_.foldEnd('screenshot.upload_images');
-    return reportData;
   }
 
   /**
    * @param {!mdc.proto.ReportData} reportData
-   * @return {!Promise<!mdc.proto.ReportData>}
    */
   async generateReportPage(reportData) {
     this.logger_.foldStart('screenshot.generate_report', 'Controller#generateReportPage()');
-
     await this.reportWriter_.generateReportPage(reportData);
     await this.cloudStorage_.uploadDiffReport(reportData);
-
-    this.logComparisonResults_(reportData);
-
     this.logger_.foldEnd('screenshot.generate_report');
-    this.logger_.log('');
-
-    // TODO(acdvorak): Store this directly in the proto so we don't have to recalculate it all over the place
-    const numChanges =
-      reportData.screenshots.changed_screenshot_list.length +
-      reportData.screenshots.added_screenshot_list.length +
-      reportData.screenshots.removed_screenshot_list.length;
-
-    this.logger_.log('\n');
-    if (numChanges > 0) {
-      const boldRed = CliColor.bold.red;
-      this.logger_.error(boldRed(`${numChanges} screenshot${numChanges === 1 ? '' : 's'} changed!\n`));
-      this.logger_.log('Diff report:', boldRed(reportData.meta.report_html_file.public_url));
-    } else {
-      const boldGreen = CliColor.bold.green;
-      this.logger_.log(boldGreen('0 screenshots changed!\n'));
-      this.logger_.log('Diff report:', boldGreen(reportData.meta.report_html_file.public_url));
-    }
-
-    return reportData;
   }
 
   /**
    * @param {!mdc.proto.ReportData} reportData
-   * @return {!Promise<!mdc.proto.ReportData>}
    */
   async approveChanges(reportData) {
     /** @type {!GoldenFile} */
     const newGoldenFile = await this.reportBuilder_.approveChanges(reportData);
     await this.goldenIo_.writeToLocalFile(newGoldenFile);
-    return reportData;
-  }
-
-  /**
-   * @param {!mdc.proto.ReportData} reportData
-   * @private
-   */
-  logComparisonResults_(reportData) {
-    console.log('');
-    this.logComparisonResultSet_('Skipped', reportData.screenshots.skipped_screenshot_list);
-    this.logComparisonResultSet_('Unchanged', reportData.screenshots.unchanged_screenshot_list);
-    this.logComparisonResultSet_('Removed', reportData.screenshots.removed_screenshot_list);
-    this.logComparisonResultSet_('Added', reportData.screenshots.added_screenshot_list);
-    this.logComparisonResultSet_('Changed', reportData.screenshots.changed_screenshot_list);
-  }
-
-  /**
-   * @param {string} title
-   * @param {!Array<!mdc.proto.Screenshot>} screenshots
-   * @private
-   */
-  logComparisonResultSet_(title, screenshots) {
-    console.log(`${title} ${screenshots.length} screenshot${screenshots.length === 1 ? '' : 's'}:`);
-    for (const screenshot of screenshots) {
-      console.log(`  - ${screenshot.html_file_path} > ${screenshot.user_agent.alias}`);
-    }
-    console.log('');
   }
 }
 

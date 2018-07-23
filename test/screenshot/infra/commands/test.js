@@ -32,6 +32,7 @@ const ImageDiffer = require('../lib/image-differ');
 const Logger = require('../lib/logger');
 const {ExitCode} = require('../lib/constants');
 
+// TODO(acdvorak): Refactor most of this class out into a separate file
 class TestCommand {
   constructor() {
     this.cli_ = new Cli();
@@ -59,15 +60,20 @@ class TestCommand {
       return ExitCode.OK;
     }
 
+    // TODO(acdvorak): Find a better word than "local"
     /** @type {!mdc.proto.ReportData} */
     const localDiffReportData = await this.diffAgainstLocal_(snapshotDiffBase);
     const localDiffExitCode = this.getExitCode_(localDiffReportData);
     if (localDiffExitCode !== ExitCode.OK) {
+      this.logTestResults_(localDiffReportData);
       return localDiffExitCode;
     }
 
     if (isTravisPr) {
-      await this.diffAgainstMaster_({localDiffReportData, snapshotGitRev});
+      /** @type {!mdc.proto.ReportData} */
+      const masterDiffReportData = await this.diffAgainstMaster_({localDiffReportData, snapshotGitRev});
+      this.logTestResults_(localDiffReportData);
+      this.logTestResults_(masterDiffReportData);
     }
 
     // Diffs against master shouldn't fail the Travis job.
@@ -101,6 +107,8 @@ class TestCommand {
       await controller.generateReportPage(reportData);
 
       await this.gitHubApi_.setPullRequestStatusAuto(reportData);
+
+      this.logComparisonResults_(reportData);
     } catch (err) {
       await this.gitHubApi_.setPullRequestError();
       throw new VError(err, 'Failed to run screenshot tests');
@@ -129,6 +137,8 @@ class TestCommand {
 
       await controller.uploadAllImages(reportData);
       await controller.generateReportPage(reportData);
+
+      this.logComparisonResults_(reportData);
     } catch (err) {
       await this.gitHubApi_.setPullRequestError();
       throw new VError(err, 'Failed to run screenshot tests');
@@ -140,7 +150,7 @@ class TestCommand {
   /**
    * @param {!mdc.proto.ReportData} localDiffReportData
    * @param {!mdc.proto.GitRevision} snapshotGitRev
-   * @return {!Promise<void>}
+   * @return {!Promise<!mdc.proto.ReportData>}
    * @private
    */
   async diffAgainstMaster_({localDiffReportData, snapshotGitRev}) {
@@ -170,6 +180,8 @@ class TestCommand {
     const prNumber = snapshotGitRev.pr_number;
     const comment = this.getPrComment_({masterDiffReportData, snapshotGitRev});
     await this.gitHubApi_.createPullRequestComment({prNumber, comment});
+
+    return masterDiffReportData;
   }
 
   /**
@@ -258,9 +270,9 @@ class TestCommand {
 <details>
   <summary><b>${numChanged} screenshot${numChanged === 1 ? '' : 's'} changed ⚠️</b></summary>
   <div>
-  
+
 ${listMarkdown}
-  
+
   </div>
 </details>
 `.trim();
@@ -408,6 +420,91 @@ ${CliColor.underline(`PR #${prNumber}`)} does not contain any testable source fi
 
 ${CliColor.bold.green('Skipping screenshot tests.')}
 `);
+  }
+
+  /**
+   * @param {!mdc.proto.ReportData} reportData
+   * @private
+   */
+  logComparisonResults_(reportData) {
+    this.logger_.log('\n');
+    this.logComparisonResultSet_('Skipped', reportData.screenshots.skipped_screenshot_list);
+    this.logComparisonResultSet_('Unchanged', reportData.screenshots.unchanged_screenshot_list);
+    this.logComparisonResultSet_('Removed', reportData.screenshots.removed_screenshot_list);
+    this.logComparisonResultSet_('Added', reportData.screenshots.added_screenshot_list);
+    this.logComparisonResultSet_('Changed', reportData.screenshots.changed_screenshot_list);
+  }
+
+  /**
+   * @param {!mdc.proto.ReportData} reportData
+   * @private
+   */
+  logTestResults_(reportData) {
+    // TODO(acdvorak): Store this directly in the proto so we don't have to recalculate it all over the place
+    const numChanges =
+      reportData.screenshots.changed_screenshot_list.length +
+      reportData.screenshots.added_screenshot_list.length +
+      reportData.screenshots.removed_screenshot_list.length;
+
+    const boldRed = CliColor.bold.red;
+    const boldGreen = CliColor.bold.green;
+    const color = numChanges === 0 ? boldGreen : boldRed;
+
+    const goldenDisplayName = this.getDisplayName_(reportData.meta.golden_diff_base);
+    const snapshotDisplayName = this.getDisplayName_(reportData.meta.snapshot_diff_base);
+
+    const changedMsg = `${numChanges} screenshot${numChanges === 1 ? '' : 's'} changed!`;
+    const reportPageUrl = reportData.meta.report_html_file.public_url;
+
+    const headingPlain = 'Screenshot Test Results';
+    const headingColor = CliColor.bold(headingPlain);
+    const headingUnderline = ''.padEnd(headingPlain.length, '=');
+
+    this.logger_.log(`
+${headingColor}
+${headingUnderline}
+
+  - Golden:   ${goldenDisplayName}
+  - Snapshot: ${snapshotDisplayName}
+  - Changes:  ${color(changedMsg)}
+  - Report:   ${color(reportPageUrl)}
+`);
+  }
+
+  /**
+   * @param {!mdc.proto.DiffBase} diffBase
+   * @return {string}
+   * @private
+   */
+  getDisplayName_(diffBase) {
+    const gitRev = diffBase.git_revision;
+    if (gitRev) {
+      if (gitRev.pr_number) {
+        return `PR #${gitRev.pr_number}`;
+      }
+      if (gitRev.tag) {
+        return gitRev.tag;
+      }
+      if (gitRev.branch) {
+        return gitRev.remote ? `${gitRev.remote}/${gitRev.branch}` : gitRev.branch;
+      }
+      return `commit ${gitRev.commit}`;
+    }
+    return diffBase.local_file_path || diffBase.public_url;
+  }
+
+  /**
+   * @param {string} title
+   * @param {!Array<!mdc.proto.Screenshot>} screenshots
+   * @private
+   */
+  logComparisonResultSet_(title, screenshots) {
+    const num = screenshots.length;
+    console.log(`${title} ${num} screenshot${num === 1 ? '' : 's'}${num > 0 ? ':' : ''}`);
+    for (const screenshot of screenshots) {
+      console.log(`  - ${screenshot.html_file_path} > ${screenshot.user_agent.alias}`);
+    }
+    console.log('');
   }
 }
 
