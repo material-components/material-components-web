@@ -40,13 +40,13 @@ npm install @material/slider
 ### HTML Structure
 
 ```html
-<div class="mdc-slider" tabindex="0" role="slider"
-     aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
-     aria-label="Select Value">
+<div class="mdc-slider" >
   <div class="mdc-slider__track">
     <div class="mdc-slider__track-fill"></div>
   </div>
-  <div class="mdc-slider__thumb">
+  <div class="mdc-slider__thumb" tabindex="0" role="slider"
+     aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-disabled="false"
+     aria-label="Select Value">
     <svg class="mdc-slider__thumb-handle" width="24" height="24">
       <circle cx="12" cy="12" r="6"></circle>
     </svg>
@@ -100,6 +100,7 @@ CSS Class | Description
 `mdc-slider__track-fill` | Mandatory. The fill element to display where the value is.
 `mdc-slider__thumb` | Mandatory. Element containing the thumb-handle.
 `mdc-slider__thumb-handle` | Mandatory. The handle element to display where the value is.
+`mdc-slider__thumb-handle-disabled` | Mandatory for disabled state.
 
 ### Sass Mixins
 
@@ -116,6 +117,7 @@ Mixin | Description
 | `value` | `number` | The current value of the slider. Changing this will update the slider's value. |
 | `min` | `number` | The minimum value a slider can have. Values set programmatically will be clamped to this minimum value. Changing this property will update the slider's value if it is lower than the new minimum |
 | `max` | `number` | The maximum value a slider can have. Values set programmatically will be clamped to this maximum value. Changing this property will update the slider's value if it is greater than the new maximum |
+| `disabled` | `boolean` | Whether or not the slider is disabled |
 
 | Method Signature | Description |
 | --- | --- |
@@ -142,10 +144,10 @@ instance that was affected.
 | `hasClass(className: string) => boolean` | Checks if `className` exists on the root element |
 | `addClass(className: string) => void` | Adds a class `className` to the root element |
 | `removeClass(className: string) => void` | Removes a class `className` from the root element |
-| `getAttribute(name: string) => string?` | Returns the value of the attribute `name` on the root element, or `null` if that attribute is not present on the root element. |
-| `setAttribute(name: string, value: string) => void` | Sets an attribute `name` to the value `value` on the root element. |
-| `removeAttribute(name: string) => void` | Removes an attribute `name` from the root element |
+| `setThumbAttribute(name: string, value: string) => void` | Sets an attribute `name` to the value `value` on the root element. |
+| `removeThumbAttribute(name: string) => void` | Removes an attribute `name` from the root element |
 | `computeBoundingRect() => ClientRect` | Computes and returns the bounding client rect for the root element. Our implementations calls `getBoundingClientRect()` for this. |
+| `getTabIndex() => number` | Returns the value of the `tabIndex` property on the thumb element |
 | `registerEventHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` to the slider's root element |
 | `deregisterEventHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` from the slider's root element |
 | `registerThumbEventHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` to the slider's thumb container element |
@@ -170,3 +172,5 @@ instance that was affected.
 | `setMax(max: number) => void` | Sets the max value the slider can have |
 | `getMin() => number` | Returns the min value the slider can have |
 | `setMin(min: number) => number` | Sets the min value the slider can have |
+| `isDisabled() => boolean` | Returns whether or not the slider is disabled |
+| `setDisabled(disabled: boolean) => void` | Disables the slider when given true, enables it otherwise. |
