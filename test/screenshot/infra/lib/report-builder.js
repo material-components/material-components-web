@@ -26,7 +26,7 @@ const path = require('path');
 const serveIndex = require('serve-index');
 
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
-const {Approvals, DiffImageResult, Dimensions, GitRevision, GitStatus, GoldenScreenshot, LibraryVersion} = mdcProto;
+const {Approvals, DiffImageResult, Dimensions, GitStatus, GoldenScreenshot, LibraryVersion} = mdcProto;
 const {ReportData, ReportMeta, Screenshot, Screenshots, ScreenshotList, TestFile, User, UserAgents} = mdcProto;
 const {InclusionType, CaptureState} = Screenshot;
 
@@ -418,26 +418,6 @@ class ReportBuilder {
 
     /** @type {!mdc.proto.DiffBase} */
     const snapshotDiffBase = await this.diffBaseParser_.parseSnapshotDiffBase();
-
-    /** @type {!mdc.proto.GitRevision} */
-    const goldenGitRevision = goldenDiffBase.git_revision;
-
-    if (goldenGitRevision && goldenGitRevision.type === GitRevision.Type.TRAVIS_PR) {
-      /** @type {!Array<!github.proto.PullRequestFile>} */
-      const allPrFiles = await this.gitHubApi_.getPullRequestFiles(goldenGitRevision.pr_number);
-
-      goldenGitRevision.pr_file_paths = allPrFiles
-        .filter((prFile) => {
-          const isMarkdownFile = () => prFile.filename.endsWith('.md');
-          const isDemosFile = () => prFile.filename.startsWith('demos/');
-          const isDocsFile = () => prFile.filename.startsWith('docs/');
-          const isUnitTestFile = () => prFile.filename.startsWith('test/unit/');
-          const isIgnoredFile = isMarkdownFile() || isDemosFile() || isDocsFile() || isUnitTestFile();
-          return !isIgnoredFile;
-        })
-        .map((prFile) => prFile.filename)
-      ;
-    }
 
     return ReportMeta.create({
       start_time_iso_utc: new Date().toISOString(),
