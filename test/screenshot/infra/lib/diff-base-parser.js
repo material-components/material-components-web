@@ -50,11 +50,10 @@ class DiffBaseParser {
   }
 
   /**
-   * @param {string} cliDiffBase
    * @return {!Promise<!mdc.proto.DiffBase>}
    */
-  async parseGoldenDiffBase(cliDiffBase) {
-    return await this.getTravisDiffBase_() || await this.parseDiffBase(cliDiffBase);
+  async parseGoldenDiffBase() {
+    return await this.getTravisDiffBase_() || await this.parseDiffBase(this.cli_.diffBase);
   }
 
   /**
@@ -68,7 +67,14 @@ class DiffBaseParser {
    * @return {!Promise<!mdc.proto.DiffBase>}
    */
   async parseMasterDiffBase() {
-    return this.parseDiffBase('origin/master');
+    /** @type {!mdc.proto.DiffBase} */
+    const goldenDiffBase = await this.parseGoldenDiffBase();
+    const prNumber = goldenDiffBase.git_revision ? goldenDiffBase.git_revision.pr_number : null;
+    let baseBranch = 'origin/master';
+    if (prNumber) {
+      baseBranch = await this.gitHubApi_.getPullRequestBaseBranch(prNumber);
+    }
+    return this.parseDiffBase(baseBranch);
   }
 
   /**

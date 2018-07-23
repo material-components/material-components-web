@@ -49,7 +49,7 @@ class TestCommand {
     await this.build_();
 
     /** @type {!mdc.proto.DiffBase} */
-    const snapshotDiffBase = await this.diffBaseParser_.parseGoldenDiffBase(this.cli_.diffBase);
+    const snapshotDiffBase = await this.diffBaseParser_.parseGoldenDiffBase();
     const snapshotGitRev = snapshotDiffBase.git_revision;
 
     const isTravisPr = snapshotGitRev && snapshotGitRev.type === GitRevision.Type.TRAVIS_PR;

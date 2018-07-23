@@ -209,6 +209,23 @@ class GitHubApi {
 
   /**
    * @param {number} prNumber
+   * @return {!Promise<string>}
+   */
+  async getPullRequestBaseBranch(prNumber) {
+    const prResponse = await this.octokit_.pullRequests.get({
+      owner: 'material-components',
+      repo: 'material-components-web',
+      number: prNumber,
+    });
+    if (!prResponse.data) {
+      const serialized = JSON.stringify(prResponse, null, 2);
+      throw new Error(`Unable to fetch data for GitHub PR #${prNumber}:\n${serialized}`);
+    }
+    return `origin/${prResponse.data.base.ref}`;
+  }
+
+  /**
+   * @param {number} prNumber
    * @param {string} comment
    * @return {!Promise<*>}
    */
