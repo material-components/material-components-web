@@ -18,7 +18,6 @@
 
 const CbtApi = require('./cbt-api');
 const Cli = require('./cli');
-const CliColor = require('./logger').colors;
 const CloudStorage = require('./cloud-storage');
 const Duration = require('./duration');
 const GitRepo = require('./git-repo');
