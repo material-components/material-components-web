@@ -22,7 +22,7 @@ import MDCChipAdapter from './adapter';
 import {MDCChipFoundation} from './foundation';
 import {strings} from './constants';
 
-const INTERACTION_EVENTS = ['click', 'keydown', 'touchstart', 'pointerdown', 'mousedown'];
+const INTERACTION_EVENTS = ['click', 'keydown'];
 
 /**
  * @extends {MDCComponent<!MDCChipFoundation>}
