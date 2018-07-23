@@ -145,6 +145,7 @@ Method Signature | Description
 `getContentOffsetWidth() => number` | Returns the `offsetWidth` value of the content element.
 `notifyInteracted() => void` | Emits the `MDCTab:interacted` event.
 `notifyActivated() => void` | Emits the `MDCTab:activated` event.
+`focus() => void` | Applies focus to the root element.
 
 ### `MDCTabFoundation`
 
