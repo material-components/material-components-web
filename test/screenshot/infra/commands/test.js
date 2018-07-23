@@ -427,7 +427,6 @@ ${CliColor.bold.green('Skipping screenshot tests.')}
    * @private
    */
   logComparisonResults_(reportData) {
-    this.logger_.log('\n');
     this.logger_.foldStart('screenshot.diff_results', 'Diff results');
     this.logComparisonResultSet_('Skipped', reportData.screenshots.skipped_screenshot_list);
     this.logComparisonResultSet_('Unchanged', reportData.screenshots.unchanged_screenshot_list);
