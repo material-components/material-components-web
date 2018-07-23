@@ -89,7 +89,7 @@ $mdc-fab-icon-enter-duration_: 180ms;
   @include mdc-ripple-surface;
   @include mdc-ripple-radius-bounded;
   @include mdc-elevation(6);
-  @include mdc-shape(fab);
+  @include mdc-fab-shape-radius(fab);
 
   display: inline-flex;
   position: relative;
@@ -156,7 +156,7 @@ $mdc-fab-icon-enter-duration_: 180ms;
 
 @mixin mdc-fab--extended_ {
   @include mdc-typography(button);
-  @include mdc-shape(extended-fab);
+  @include mdc-extended-fab-shape-radius(extended-fab);
   @include mdc-fab-extended-padding(
     $mdc-fab-extended-icon-padding,
     $mdc-fab-extended-label-padding);
