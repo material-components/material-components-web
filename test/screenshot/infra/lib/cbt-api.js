@@ -27,6 +27,7 @@ const {CbtAccount, CbtActiveTestCounts, CbtConcurrencyStats} = cbtProto;
 const {RawCapabilities} = seleniumProto;
 
 const Cli = require('./cli');
+const DiffBaseParser = require('./diff-base-parser');
 const Duration = require('./duration');
 
 const MDC_CBT_USERNAME = process.env.MDC_CBT_USERNAME;
@@ -45,6 +46,12 @@ class CbtApi {
      * @private
      */
     this.cli_ = new Cli();
+
+    /**
+     * @type {!DiffBaseParser}
+     * @private
+     */
+    this.diffBaseParser_ = new DiffBaseParser();
 
     this.validateEnvVars_();
   }
@@ -140,9 +147,8 @@ https://crossbrowsertesting.com/account
    * @param {!mdc.proto.ReportMeta} meta
    * @param {!mdc.proto.UserAgent} userAgent
    * @return {!Promise<!selenium.proto.RawCapabilities>}
-   * @private
    */
-  async getDesiredCapabilities_({meta, userAgent}) {
+  async getDesiredCapabilities({meta, userAgent}) {
     // TODO(acdvorak): Create a type for this
     /** @type {{device: !cbt.proto.CbtDevice, browser: !cbt.proto.CbtBrowser}} */
     const matchingCbtUserAgent = await this.getMatchingCbtUserAgent_(userAgent);
@@ -316,7 +322,7 @@ https://crossbrowsertesting.com/account
    */
   async getCbtTestNameAndBuildNameForReport_(meta) {
     /** @type {?mdc.proto.GitRevision} */
-    const travisGitRev = await this.cli_.getTravisGitRevision();
+    const travisGitRev = await this.diffBaseParser_.getTravisGitRevision();
     if (travisGitRev) {
       return this.getCbtTestNameAndBuildNameForGitRev_(travisGitRev);
     }
@@ -387,11 +393,14 @@ https://crossbrowsertesting.com/account
 
   /**
    * @param {!Array<string>} seleniumTestIds
+   * @param {boolean=} silent
    * @return {!Promise<void>}
    */
-  async killSeleniumTests(seleniumTestIds) {
+  async killSeleniumTests(seleniumTestIds, silent = false) {
     await Promise.all(seleniumTestIds.map((seleniumTestId) => {
-      console.log(`${colors.red('Killing')} zombie Selenium test ${colors.bold(seleniumTestId)}`);
+      if (!silent) {
+        console.log(`${colors.red('Killing')} zombie Selenium test ${colors.bold(seleniumTestId)}`);
+      }
       return this.sendRequest_('DELETE', `/selenium/${seleniumTestId}`);
     }));
   }
@@ -404,6 +413,14 @@ https://crossbrowsertesting.com/account
    * @private
    */
   async sendRequest_(method, endpoint, body = undefined) {
+    if (this.cli_.isOffline()) {
+      console.warn(
+        `${colors.magenta('WARNING')}:`,
+        new Error('CbtApi#sendRequest_() should not be called in --offline mode')
+      );
+      return [];
+    }
+
     return request({
       method,
       uri: `${REST_API_BASE_URL}${endpoint}`,

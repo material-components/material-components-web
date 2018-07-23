@@ -100,11 +100,7 @@ class Controller {
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async initForCapture() {
-    const isOnline = await this.cli_.isOnline();
-    const shouldFetch = this.cli_.shouldFetch;
-    if (isOnline && shouldFetch) {
-      await this.gitRepo_.fetch();
-    }
+    const isOnline = this.cli_.isOnline();
     if (isOnline) {
       await this.cbtApi_.killStalledSeleniumTests();
     }
@@ -115,11 +111,6 @@ class Controller {
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async initForDemo() {
-    const isOnline = await this.cli_.isOnline();
-    const shouldFetch = this.cli_.shouldFetch;
-    if (isOnline && shouldFetch) {
-      await this.gitRepo_.fetch();
-    }
     return this.reportBuilder_.initForDemo();
   }
 
@@ -207,11 +198,12 @@ class Controller {
     const boldRed = Logger.colors.bold.red;
     const boldGreen = Logger.colors.bold.green;
 
+    this.logger_.log('\n');
     if (numChanges > 0) {
-      this.logger_.error(boldRed(`\n\n${numChanges} screenshot${numChanges === 1 ? '' : 's'} changed!\n`));
+      this.logger_.error(boldRed(`${numChanges} screenshot${numChanges === 1 ? '' : 's'} changed!\n`));
       this.logger_.log('Diff report:', boldRed(reportData.meta.report_html_file.public_url));
     } else {
-      this.logger_.log(boldGreen(`\n\n${numChanges} screenshot${numChanges === 1 ? '' : 's'} changed!\n`));
+      this.logger_.log(boldGreen('0 screenshots changed!\n'));
       this.logger_.log('Diff report:', boldGreen(reportData.meta.report_html_file.public_url));
     }
 
@@ -223,19 +215,17 @@ class Controller {
    * @return {!Promise<number>}
    */
   async getTestExitCode(reportData) {
-    // Pull requests display screenshot diffs as a separate "status check" in the GitHub UI, so we don't want to mark
-    // the Travis run as "failed".
-    if (Number(process.env.TRAVIS_PULL_REQUEST)) {
-      return ExitCode.OK;
-    }
-
     // TODO(acdvorak): Store this directly in the proto so we don't have to recalculate it all over the place
     const numChanges =
       reportData.screenshots.changed_screenshot_list.length +
       reportData.screenshots.added_screenshot_list.length +
       reportData.screenshots.removed_screenshot_list.length;
 
-    return numChanges > 0 ? ExitCode.CHANGES_FOUND : ExitCode.OK;
+    const isOnline = this.cli_.isOnline();
+    if (isOnline && numChanges > 0) {
+      return ExitCode.CHANGES_FOUND;
+    }
+    return ExitCode.OK;
   }
 
   /**

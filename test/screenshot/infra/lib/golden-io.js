@@ -18,6 +18,7 @@ const request = require('request-promise-native');
 const stringify = require('json-stable-stringify');
 
 const Cli = require('./cli');
+const DiffBaseParser = require('./diff-base-parser');
 const GitRepo = require('./git-repo');
 const GoldenFile = require('./golden-file');
 const LocalStorage = require('./local-storage');
@@ -33,6 +34,12 @@ class GoldenIo {
      * @private
      */
     this.cli_ = new Cli();
+
+    /**
+     * @type {!DiffBaseParser}
+     * @private
+     */
+    this.diffBaseParser_ = new DiffBaseParser();
 
     /**
      * @type {!GitRepo}
@@ -82,7 +89,7 @@ class GoldenIo {
    */
   async readFromDiffBase_(rawDiffBase) {
     /** @type {!mdc.proto.DiffBase} */
-    const parsedDiffBase = await this.cli_.parseDiffBase(rawDiffBase);
+    const parsedDiffBase = await this.diffBaseParser_.parseDiffBase(rawDiffBase);
 
     const publicUrl = parsedDiffBase.public_url;
     if (publicUrl) {
@@ -127,22 +134,6 @@ class GoldenIo {
    */
   async stringify_(object) {
     return stringify(object, {space: '  '}) + '\n';
-  }
-
-  /**
-   * Creates a deep clone of the given `source` object's own enumerable properties.
-   * Non-JSON-serializable properties (such as functions or symbols) are silently discarded.
-   * The returned value is structurally equivalent, but not referentially equal, to the input.
-   * In Java parlance:
-   *   clone.equals(source) // true
-   *   clone == source      // false
-   * @param {!T} source JSON object to clone
-   * @return {!T} Deep clone of `source` object
-   * @template T
-   * @private
-   */
-  deepCloneJson_(source) {
-    return JSON.parse(JSON.stringify(source));
   }
 }
 
