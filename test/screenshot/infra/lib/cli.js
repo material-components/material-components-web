@@ -63,12 +63,11 @@ class Cli {
    * @return {!Promise<boolean>}
    */
   async checkIsOnline() {
-    if (typeof isOnlineCached !== 'boolean') {
-      if (this.offline) {
-        isOnlineCached = false;
-      } else {
-        isOnlineCached = await checkIsOnline({timeout: Duration.seconds(5).toMillis()});
-      }
+    if (this.offline) {
+      return false;
+    }
+    if (typeof isOnlineCached === 'undefined') {
+      isOnlineCached = await checkIsOnline({timeout: Duration.seconds(5).toMillis()});
     }
     return isOnlineCached;
   }
@@ -356,8 +355,8 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
   }
 
   /** @return {boolean} */
-  get shouldFetch() {
-    return !this.args_['--no-fetch'];
+  get skipFetch() {
+    return this.args_['--no-fetch'];
   }
 
   /** @return {?string} */

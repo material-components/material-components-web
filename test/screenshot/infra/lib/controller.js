@@ -101,10 +101,6 @@ class Controller {
    */
   async initForCapture() {
     const isOnline = this.cli_.isOnline();
-    const shouldFetch = this.cli_.shouldFetch;
-    if (isOnline && shouldFetch) {
-      await this.gitRepo_.fetch();
-    }
     if (isOnline) {
       await this.cbtApi_.killStalledSeleniumTests();
     }
@@ -115,11 +111,6 @@ class Controller {
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async initForDemo() {
-    const isOnline = this.cli_.isOnline();
-    const shouldFetch = this.cli_.shouldFetch;
-    if (isOnline && shouldFetch) {
-      await this.gitRepo_.fetch();
-    }
     return this.reportBuilder_.initForDemo();
   }
 
@@ -224,12 +215,6 @@ class Controller {
    * @return {!Promise<number>}
    */
   async getTestExitCode(reportData) {
-    // Pull requests display screenshot diffs as a separate "status check" in the GitHub UI, so we don't want to mark
-    // the Travis run as "failed".
-    if (Number(process.env.TRAVIS_PULL_REQUEST)) {
-      return ExitCode.OK;
-    }
-
     // TODO(acdvorak): Store this directly in the proto so we don't have to recalculate it all over the place
     const numChanges =
       reportData.screenshots.changed_screenshot_list.length +
