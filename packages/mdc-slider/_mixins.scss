@@ -45,24 +45,24 @@
   cursor: auto;
 
   .mdc-slider__track {
-    @include mdc-theme-prop(background-color, rgba(mdc-theme-prop-value($color), $mdc-slider-disabled-inactive-opacity));
+    @include mdc-theme-prop(background-color, rgba(mdc-theme-prop-value($color), $mdc-slider-disabled-inactive-rail-opacity));
   }
 
   .mdc-slider__track-fill {
-    @include mdc-theme-prop(background-color, rgba(mdc-theme-prop-value($color), $mdc-slider-disabled-active-opacity));
+    @include mdc-theme-prop(background-color, rgba(mdc-theme-prop-value($color), $mdc-slider-disabled-active-rail-opacity));
   }
 
   .mdc-slider__thumb-handle {
-    @include mdc-theme-prop(fill, rgba(mdc-theme-prop-value($color), $mdc-slider-disabled-active-opacity));
+    @include mdc-theme-prop(fill, rgba(mdc-theme-prop-value($color), $mdc-slider-disabled-thumb-opacity));
+    @include mdc-theme-prop(stroke, mdc-theme-prop-value(surface));
 
-    transform: scale(0.666667) translate(-14px, -14px);
+    stroke-width: 4px;
+  }
+  .mdc-slider__thumb-handle-disabled {
+    @include mdc-theme-prop(fill, mdc-theme-prop-value(surface));
   }
 
   .mdc-slider__thumb {
-    @include mdc-theme-prop(background-color, mdc-theme-prop-value(surface));
-    
-    width: 16px;
-    height: 16px;
-    padding: 9px 0;
+    pointer-events: none;
   }
 }
