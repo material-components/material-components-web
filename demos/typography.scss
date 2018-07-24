@@ -28,18 +28,19 @@ $ruler-color: #FD2549;
 }
 
 .demo-typography__title {
-  @include mdc-typography-text-baseline(34px, $trailing: true);
-
-  margin: 0;
+  @include mdc-typography-baseline-top(34px);
+  @include mdc-typography-baseline-bottom(22px);
 }
 
 .demo-typography__subtitle {
-  @include mdc-typography-text-baseline(22px, $trailing: true);
+  @include mdc-typography-baseline-top(22px);
+  @include mdc-typography-baseline-bottom(28px);
+
   @include mdc-theme-prop(color, text-secondary-on-background);
 }
 
 .demo-typography__body {
-  @include mdc-typography-text-baseline(28px);
+  @include mdc-typography-baseline-top(28px);
   @include mdc-theme-prop(color, text-secondary-on-background);
 }
 
