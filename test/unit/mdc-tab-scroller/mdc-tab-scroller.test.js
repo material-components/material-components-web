@@ -22,7 +22,7 @@ import td from 'testdouble';
 import {
   MDCTabScroller,
   MDCTabScrollerFoundation,
-  util
+  util,
 } from '../../../packages/mdc-tab-scroller';
 
 import MDCTabScrollerRTL from '../../../packages/mdc-tab-scroller/rtl-scroller';

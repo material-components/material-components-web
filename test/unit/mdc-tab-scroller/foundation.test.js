@@ -42,7 +42,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'setScrollAreaStyleProperty', 'setScrollContentStyleProperty', 'getScrollContentStyleValue',
     'setScrollAreaScrollLeft', 'getScrollAreaScrollLeft',
     'getScrollContentOffsetWidth', 'getScrollAreaOffsetWidth',
-    'computeScrollAreaClientRect', 'computeScrollContentClientRect', 'computeHorizontalScrollbarHeight'
+    'computeScrollAreaClientRect', 'computeScrollContentClientRect', 'computeHorizontalScrollbarHeight',
   ]);
 });
 

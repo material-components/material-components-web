@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
- import {cssClasses} from './constants';
+import {cssClasses} from './constants';
 
 /**
  * Stores result from computeHorizontalScrollbarHeight to avoid redundant processing.
@@ -27,7 +27,7 @@ let horizontalScrollbarHeight_;
  * Computes the height of browser-rendered horizontal scrollbars using a self-created test element.
  * May return 0 (e.g. on OS X browsers under default configuration).
  * @param {!Document} documentObj
- * @param {boolean=} forceRefresh
+ * @param {boolean=} shouldCacheResult
  * @return {number}
  */
 function computeHorizontalScrollbarHeight(documentObj, shouldCacheResult = true) {

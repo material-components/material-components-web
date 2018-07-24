@@ -38,7 +38,7 @@ function createMockDocumentForHorizontalScrollbarHeight(height) {
         offsetHeight: height * 2,
       };
     },
-  }
+  };
 
   return {mockDocument, classListAddFunc};
 }
