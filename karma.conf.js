@@ -28,20 +28,20 @@ const SL_LAUNCHERS = {
     platform: 'macOS 10.12',
     extendedDebugging: true,
   },
-  'sl-chrome-beta': {
-    base: 'SauceLabs',
-    browserName: 'chrome',
-    version: 'dev',
-    platform: 'macOS 10.12',
-    extendedDebugging: true,
-  },
-  'sl-chrome-previous': {
-    base: 'SauceLabs',
-    browserName: 'chrome',
-    version: 'latest-1',
-    platform: 'macOS 10.12',
-    extendedDebugging: true,
-  },
+  // 'sl-chrome-beta': {
+  //   base: 'SauceLabs',
+  //   browserName: 'chrome',
+  //   version: 'dev',
+  //   platform: 'macOS 10.12',
+  //   extendedDebugging: true,
+  // },
+  // 'sl-chrome-previous': {
+  //   base: 'SauceLabs',
+  //   browserName: 'chrome',
+  //   version: 'latest-1',
+  //   platform: 'macOS 10.12',
+  //   extendedDebugging: true,
+  // },
   'sl-firefox-stable': {
     base: 'SauceLabs',
     browserName: 'firefox',
@@ -49,13 +49,13 @@ const SL_LAUNCHERS = {
     platform: 'Windows 10',
     extendedDebugging: true,
   },
-  'sl-firefox-previous': {
-    base: 'SauceLabs',
-    browserName: 'firefox',
-    version: 'latest-1',
-    platform: 'Windows 10',
-    extendedDebugging: true,
-  },
+  // 'sl-firefox-previous': {
+  //   base: 'SauceLabs',
+  //   browserName: 'firefox',
+  //   version: 'latest-1',
+  //   platform: 'Windows 10',
+  //   extendedDebugging: true,
+  // },
   'sl-ie': {
     base: 'SauceLabs',
     browserName: 'internet explorer',
@@ -132,7 +132,7 @@ module.exports = function(config) {
         reporter: 'html',
         ui: 'qunit',
 
-        // Specifies the number of milliseconds to wait for an individual `test(...)` function to complete.
+        // Number of milliseconds to wait for an individual `test(...)` function to complete.
         // The default is 2000.
         timeout: 10000,
       },
