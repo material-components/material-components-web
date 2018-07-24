@@ -98,7 +98,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'registerBodyClickHandler', 'deregisterBodyClickHandler', 'notifyClose', 'isElementInContainer', 'isRtl',
     'setTransformOrigin', 'isFocused', 'saveFocus', 'restoreFocus', 'isFirstElementFocused', 'isLastElementFocused',
     'focusFirstElement', 'focusLastElement', 'getInnerDimensions', 'getAnchorDimensions', 'getWindowDimensions',
-    'getBodyDimensions', 'getWindowScroll', 'setPosition', 'setMaxHeight',
+    'getBodyDimensions', 'getWindowScroll', 'setPosition', 'setMaxHeight', 'notifyOpen',
   ]);
 });
 
@@ -141,6 +141,17 @@ testFoundation('#open removes the animation class at the end of the animation',
     clock.tick(numbers.TRANSITION_OPEN_DURATION);
     mockRaf.flush();
     td.verify(mockAdapter.removeClass(cssClasses.ANIMATING_OPEN));
+  });
+
+testFoundation('#open emits the close event at the end of the animation',
+  ({foundation, mockAdapter, mockRaf}) => {
+    const clock = lolex.install();
+    foundation.open();
+    mockRaf.flush();
+    mockRaf.flush();
+    clock.tick(numbers.TRANSITION_OPEN_DURATION);
+    mockRaf.flush();
+    td.verify(mockAdapter.notifyOpen());
   });
 
 /** Testing various layout cases for autopositioning */

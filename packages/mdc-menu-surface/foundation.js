@@ -85,6 +85,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
       registerBodyClickHandler: () => {},
       deregisterBodyClickHandler: () => {},
       notifyClose: () => {},
+      notifyOpen: () => {},
       isElementInContainer: () => false,
       isRtl: () => false,
       setTransformOrigin: () => {},
@@ -473,10 +474,13 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
       this.dimensions_ = this.adapter_.getInnerDimensions();
       this.autoPosition_();
       this.adapter_.registerBodyClickHandler(this.documentClickHandler_);
-      if (!this.quickOpen_) {
+      if (this.quickOpen_) {
+        this.adapter_.notifyOpen();
+      } else {
         this.openAnimationEndTimerId_ = setTimeout(() => {
           this.openAnimationEndTimerId_ = 0;
           this.adapter_.removeClass(MDCMenuSurfaceFoundation.cssClasses.ANIMATING_OPEN);
+          this.adapter_.notifyOpen();
         }, numbers.TRANSITION_OPEN_DURATION);
       }
     });
@@ -495,7 +499,9 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
 
     requestAnimationFrame(() => {
       this.adapter_.removeClass(MDCMenuSurfaceFoundation.cssClasses.OPEN);
-      if (!this.quickOpen_) {
+      if (this.quickOpen_) {
+        this.adapter_.notifyClose();
+      } else {
         this.closeAnimationEndTimerId_ = setTimeout(() => {
           this.closeAnimationEndTimerId_ = 0;
           this.adapter_.removeClass(MDCMenuSurfaceFoundation.cssClasses.ANIMATING_CLOSED);

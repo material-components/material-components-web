@@ -200,11 +200,19 @@ test('adapter#deregisterBodyClickHandler proxies to removeEventListener', () => 
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test(`adapter#notifyClose fires an ${strings.CLOSE_EVENT} custom event`, () => {
+test(`adapter#notifyClose fires an ${strings.CLOSED_EVENT} custom event`, () => {
   const {root, component} = setupTest();
   const handler = td.func('notifyClose handler');
-  root.addEventListener(strings.CLOSE_EVENT, handler);
+  root.addEventListener(strings.CLOSED_EVENT, handler);
   component.getDefaultFoundation().adapter_.notifyClose();
+  td.verify(handler(td.matchers.anything()));
+});
+
+test(`adapter#notifyOpen fires an ${strings.OPENED_EVENT} custom event`, () => {
+  const {root, component} = setupTest();
+  const handler = td.func('notifyOpen handler');
+  root.addEventListener(strings.OPENED_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyOpen();
   td.verify(handler(td.matchers.anything()));
 });
 

@@ -150,7 +150,8 @@ class MDCMenuSurface extends MDCComponent {
         deregisterInteractionHandler: (type, handler) => this.root_.removeEventListener(type, handler),
         registerBodyClickHandler: (handler) => document.body.addEventListener('click', handler),
         deregisterBodyClickHandler: (handler) => document.body.removeEventListener('click', handler),
-        notifyClose: () => this.emit(MDCMenuSurfaceFoundation.strings.CLOSE_EVENT, {}),
+        notifyClose: () => this.emit(MDCMenuSurfaceFoundation.strings.CLOSED_EVENT, {}),
+        notifyOpen: () => this.emit(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, {}),
         isElementInContainer: (el) => this.root_ === el || this.root_.contains(el),
         isRtl: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
         setTransformOrigin: (origin) => {
