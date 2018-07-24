@@ -69,6 +69,11 @@
   z-index: 2;
 }
 
+.mdc-tab__text-label,
+.mdc-tab__icon {
+  z-index: 2;
+}
+
 .mdc-tab__text-label {
   display: inline-block;
   padding: 16px 0 20px;

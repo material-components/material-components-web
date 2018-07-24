@@ -33,3 +33,7 @@
 @mixin mdc-tab-parent-positioning {
   position: relative;
 }
+
+@mixin mdc-tab-fixed-width($width) {
+  flex: 0 1 $width;
+}

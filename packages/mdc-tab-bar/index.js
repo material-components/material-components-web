@@ -40,8 +40,10 @@ class MDCTabBar extends MDCComponent {
     /** @private {?MDCTabScroller} */
     this.tabScroller_;
 
+    /** @private {EventHandler} */
     this.handleTabInteraction_;
 
+    /** @private {EventHandler} */
     this.handleKeyDown_;
   }
 
@@ -98,6 +100,14 @@ class MDCTabBar extends MDCComponent {
   destroy() {
     this.tabScroller_.destroy();
     this.tabList_.forEach((tab) => tab.destroy());
+  }
+
+  activateTab(index) {
+    this.foundation_.activateTab(index);
+  }
+
+  scrollIntoView(index) {
+    this.foundation_.scrollIntoView(index);
   }
 }
 

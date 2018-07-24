@@ -18,11 +18,6 @@
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
- * @typedef {{relativeRootLeft: number, relativeRootRight: number, relativeContentLeft: number, relativeContentRight: number}}
- */
-let MDCTabBarRelativeTabDimensions;
-
-/**
  * Adapter for MDC Tab Bar.
  *
  * Defines the shape of the adapter expected by the foundation. Implement this
@@ -70,4 +65,4 @@ class MDCTabBarAdapter {
   isRTL() {}
 }
 
-export {MDCTabBarAdapter, MDCTabBarRelativeTabDimensions};
+export default MDCTabBarAdapter;
