@@ -141,7 +141,7 @@ CSS Class | Description
 `mdc-list--avatar-list` | Optional, configures the leading tiles of each row to display images instead of icons. This will make the graphics of the list items larger.
 `mdc-list--two-line` | Optional, modifier to style list with two lines (primary and secondary lines).
 `mdc-list-item` | Mandatory, for the list item element.
-`mdc-list-item__text` |	Optional, primary text for the row (displayed as middle column of the list item).
+`mdc-list-item__text` |	Optional, wrapper for two line list item text content (displayed as middle column of the list item).
 `mdc-list-item__primary-text` | Optional, primary text for the list item. Should be the child of `mdc-list-item__text`.
 `mdc-list-item__secondary-text` | Optional, secondary text for the list item. Displayed below the primary text. Should be the child of `mdc-list-item__text`.
 `mdc-list-item--selected` | Optional, styles the row in an selected* state.
