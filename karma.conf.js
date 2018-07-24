@@ -21,6 +21,10 @@ const USING_TRAVISCI = Boolean(process.env.TRAVIS);
 const USING_SL = Boolean(process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY);
 
 const SL_LAUNCHERS = {
+  /*
+   * Chrome (desktop)
+   */
+
   'sl-chrome-stable': {
     base: 'SauceLabs',
     browserName: 'chrome',
@@ -42,6 +46,11 @@ const SL_LAUNCHERS = {
   //   platform: 'macOS 10.12',
   //   extendedDebugging: true,
   // },
+
+  /*
+   * Firefox
+   */
+
   'sl-firefox-stable': {
     base: 'SauceLabs',
     browserName: 'firefox',
@@ -56,12 +65,22 @@ const SL_LAUNCHERS = {
   //   platform: 'Windows 10',
   //   extendedDebugging: true,
   // },
+
+  /*
+   * IE
+   */
+
   'sl-ie': {
     base: 'SauceLabs',
     browserName: 'internet explorer',
     version: '11',
     platform: 'Windows 8.1',
   },
+
+  /*
+   * Edge
+   */
+
   // TODO(sgomes): Re-enable Edge and Safari after Sauce Labs problems are fixed.
   // 'sl-edge': {
   //   base: 'SauceLabs',
@@ -69,6 +88,11 @@ const SL_LAUNCHERS = {
   //   version: 'latest',
   //   platform: 'Windows 10',
   // },
+
+  /*
+   * Safari (desktop)
+   */
+
   // 'sl-safari-stable': {
   //   base: 'SauceLabs',
   //   browserName: 'safari',
@@ -81,6 +105,11 @@ const SL_LAUNCHERS = {
   //   version: '9.0',
   //   platform: 'OS X 10.11',
   // },
+
+  /*
+   * Safari (mobile)
+   */
+
   'sl-ios-safari-latest': {
     base: 'SauceLabs',
     deviceName: 'iPhone Simulator',
