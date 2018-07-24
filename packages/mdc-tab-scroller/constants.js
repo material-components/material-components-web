@@ -18,6 +18,8 @@
 /** @enum {string} */
 const cssClasses = {
   ANIMATING: 'mdc-tab-scroller--animating',
+  SCROLL_TEST: 'mdc-tab-scroller__test',
+  SCROLL_AREA_SCROLL: 'mdc-tab-scroller__scroll-area--scroll',
 };
 
 /** @enum {string} */

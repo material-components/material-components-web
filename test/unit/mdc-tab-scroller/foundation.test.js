@@ -37,12 +37,12 @@ test('exports strings', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTabScrollerFoundation, [
-    'addClass', 'removeClass',
     'eventTargetMatchesSelector',
-    'setScrollContentStyleProperty', 'getScrollContentStyleValue',
+    'addClass', 'removeClass', 'addScrollAreaClass',
+    'setScrollAreaStyleProperty', 'setScrollContentStyleProperty', 'getScrollContentStyleValue',
     'setScrollAreaScrollLeft', 'getScrollAreaScrollLeft',
     'getScrollContentOffsetWidth', 'getScrollAreaOffsetWidth',
-    'computeScrollAreaClientRect', 'computeScrollContentClientRect',
+    'computeScrollAreaClientRect', 'computeScrollContentClientRect', 'computeHorizontalScrollbarHeight',
   ]);
 });
 

@@ -46,9 +46,11 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    */
   static get defaultAdapter() {
     return /** @type {!MDCTabScrollerAdapter} */ ({
+      eventTargetMatchesSelector: () => {},
       addClass: () => {},
       removeClass: () => {},
-      eventTargetMatchesSelector: () => {},
+      addScrollAreaClass: () => {},
+      setScrollAreaStyleProperty: () => {},
       setScrollContentStyleProperty: () => {},
       getScrollContentStyleValue: () => {},
       setScrollAreaScrollLeft: () => {},
@@ -57,6 +59,7 @@ class MDCTabScrollerFoundation extends MDCFoundation {
       getScrollAreaOffsetWidth: () => {},
       computeScrollAreaClientRect: () => {},
       computeScrollContentClientRect: () => {},
+      computeHorizontalScrollbarHeight: () => {},
     });
   }
 
@@ -76,6 +79,14 @@ class MDCTabScrollerFoundation extends MDCFoundation {
      * @private {?MDCTabScrollerRTL}
      */
     this.rtlScrollerInstance_;
+  }
+
+  init() {
+    // Compute horizontal scrollbar height on scroller with overflow initially hidden, then update overflow to scroll
+    // and immediately adjust bottom margin to avoid the scrollbar initially appearing before JS runs.
+    const horizontalScrollbarHeight = this.adapter_.computeHorizontalScrollbarHeight();
+    this.adapter_.setScrollAreaStyleProperty('margin-bottom', -horizontalScrollbarHeight + 'px');
+    this.adapter_.addScrollAreaClass(MDCTabScrollerFoundation.cssClasses.SCROLL_AREA_SCROLL);
   }
 
   /**
