@@ -399,9 +399,14 @@ https://crossbrowsertesting.com/account
   async killSeleniumTests(seleniumTestIds, silent = false) {
     await Promise.all(seleniumTestIds.map((seleniumTestId) => {
       if (!silent) {
-        console.log(`${CliColor.red('Killing')} zombie Selenium test ${CliColor.bold(seleniumTestId)}`);
+        console.log(`${CliColor.magenta('Killing')} stalled Selenium test ${CliColor.bold(seleniumTestId)}`);
       }
-      return this.sendRequest_('DELETE', `/selenium/${seleniumTestId}`);
+      return this.sendRequest_('DELETE', `/selenium/${seleniumTestId}`).catch((err) => {
+        if (!silent) {
+          console.warn(`${CliColor.red('Failed')} to kill stalled Selenium test ${CliColor.bold(seleniumTestId)}:`);
+          console.warn(err);
+        }
+      });
     }));
   }
 
