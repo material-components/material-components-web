@@ -397,7 +397,7 @@ class MDCTabBarFoundation extends MDCFoundation {
 
   activateTabFromKeydown_(evt) {
     if (this.isRTL_()) {
-      return this.nextTabRTL_(evt);
+      return this.activateTabFromKeydownRTL_(evt);
     }
 
     const maxTabIndex = this.tabs_.length - 1;
@@ -427,7 +427,7 @@ class MDCTabBarFoundation extends MDCFoundation {
     this.activateTab(nextTabIndex);
   }
 
-  nextTabRTL_(evt) {
+  activateTabFromKeydownRTL_(evt) {
     const maxTabIndex = this.tabs_.length - 1;
     let nextTabIndex = this.activeIndex_;
     switch (evt.key) {
