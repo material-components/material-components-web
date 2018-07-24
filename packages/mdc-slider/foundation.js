@@ -15,10 +15,22 @@
  * limitations under the License.
  */
 
-import {strings} from './constants';
+import {strings, cssClasses} from './constants';
 import MDCSliderAdapter from './adapter';
 
 import MDCFoundation from '@material/base/foundation';
+
+/** @enum {string} */
+const KEY_IDS = {
+  ARROW_LEFT: 'ArrowLeft',
+  ARROW_RIGHT: 'ArrowRight',
+  ARROW_UP: 'ArrowUp',
+  ARROW_DOWN: 'ArrowDown',
+  HOME: 'Home',
+  END: 'End',
+  PAGE_UP: 'PageUp',
+  PAGE_DOWN: 'PageDown',
+};
 
 /** @enum {string} */
 const MOVE_EVENT_MAP = {
@@ -39,6 +51,11 @@ class MDCSliderFoundation extends MDCFoundation {
     return strings;
   }
 
+  /** @return enum {string} */
+  static get cssClasses() {
+    return cssClasses;
+  }
+
   /** @return {!MDCSliderAdapter} */
   static get defaultAdapter() {
     return /** @type {!MDCSliderAdapter} */ ({
@@ -47,6 +64,7 @@ class MDCSliderFoundation extends MDCFoundation {
       removeClass: () => {},
       setThumbAttribute: () => {},
       computeBoundingRect: () => {},
+      eventTargetHasClass: () => {},
       registerEventHandler: () => {},
       deregisterEventHandler: () => {},
       registerBodyEventHandler: () => {},
@@ -71,26 +89,37 @@ class MDCSliderFoundation extends MDCFoundation {
     super(Object.assign(MDCSliderFoundation.defaultAdapter, adapter));
     /** @private {?ClientRect} */
     this.rect_ = null;
+    /** @private {boolean} */
+    this.active_ = false;
+    /** @private {boolean} */
+    this.inTransit_ = false;
     /** @private {number} */
     this.min_ = 0;
     /** @private {number} */
     this.max_ = 100;
     /** @private {number} */
     this.value_ = 0;
-    /** @private  {boolean} */
-    this.active_ = false;
+    /** @private {number} */
+    this.step_ = 0;
+    /** @private {function(!Event): undefined} */
+    this.transitionEndHandler_ = (evt) => this.handleTransitionEnd(evt);
     /** @private {function(!Event): undefined} */
     this.interactionStartHandler_ = (evt) => this.handleInteractionStart(evt);
     /** @private {function(!Event): undefined} */
     this.interactionMoveHandler_ = (evt) => this.handleInteractionMove(evt);
     /** @private {function(): undefined} */
     this.interactionEndHandler_ = () => this.handleInteractionEnd();
+    /** @private {function(!Event): undefined} */
+    this.keydownHandler_ = (evt) => this.handleKeydown(evt);
     /** @private {function(): undefined} */
     this.windowResizeHandler_ = () => this.layout();
   }
 
   init() {
     DOWN_EVENTS.forEach((evtName) => this.adapter_.registerEventHandler(evtName, this.interactionStartHandler_));
+    this.adapter_.registerEventHandler('keydown', this.keydownHandler_);
+    this.adapter_.registerEventHandler('keyup', this.interactionEndHandler_);
+    this.adapter_.registerEventHandler('transitionend', this.transitionEndHandler_);
     this.adapter_.registerWindowResizeHandler(this.windowResizeHandler_);
     this.layout();
   }
@@ -99,6 +128,9 @@ class MDCSliderFoundation extends MDCFoundation {
     DOWN_EVENTS.forEach((evtName) => {
       this.adapter_.deregisterEventHandler(evtName, this.interactionStartHandler_);
     });
+    this.adapter_.deregisterEventHandler('keydown', this.keydownHandler_);
+    this.adapter_.deregisterEventHandler('keyup', this.interactionEndHandler_);
+    this.adapter_.deregisterEventHandler('transitionend', this.transitionEndHandler_);
     this.adapter_.deregisterWindowResizeHandler(this.windowResizeHandler_);
   }
 
@@ -147,6 +179,31 @@ class MDCSliderFoundation extends MDCFoundation {
     this.adapter_.setThumbAttribute(strings.ARIA_VALUEMIN, String(this.min_));
   }
 
+  /** @return {number} */
+  getStep() {
+    return this.step_;
+  }
+
+  /** @param {number} step */
+  setStep(step) {
+    if (step < 0) {
+      return;
+    }
+    this.step_ = step;
+    this.setValue_(this.value_);
+    this.adapter_.setThumbAttribute(strings.DATA_STEP, String(this.step_));
+  }
+
+  /**
+   * Called when the inTransit transition ends
+   * @param {!Event} evt
+   */
+  handleTransitionEnd(evt) {
+    if (this.inTransit_ && this.adapter_.eventTargetHasClass(evt.target, cssClasses.TRACK_FILL)) {
+      this.setInTransit_(false);
+    }
+  }
+
   /**
    * Called when the user starts interacting with the slider
    * @param {!Event} evt
@@ -154,6 +211,12 @@ class MDCSliderFoundation extends MDCFoundation {
   handleInteractionStart(evt) {
     this.setActive_(true);
     this.adapter_.activateRipple();
+
+    const shouldTransition =
+      this.adapter_.eventTargetHasClass(evt.target, cssClasses.SLIDER) ||
+      this.adapter_.eventTargetHasClass(evt.target, cssClasses.TRACK) ||
+      this.adapter_.eventTargetHasClass(evt.target, cssClasses.TRACK_FILL);
+    this.setInTransit_(shouldTransition);
 
     const moveHandler = (evt) => {
       this.interactionMoveHandler_(evt);
@@ -190,6 +253,58 @@ class MDCSliderFoundation extends MDCFoundation {
     this.adapter_.notifyChange();
     this.adapter_.deactivateRipple();
     this.adapter_.focusThumb();
+  }
+
+  /**
+   * Handles keydown events
+   * @param {!Event} evt
+   */
+  handleKeydown(evt) {
+    const value = this.getKeyIdValue_(evt);
+    if (isNaN(value)) {
+      return;
+    }
+
+    this.setActive_(true);
+    this.setInTransit_(true);
+
+    // Prevent page from scrolling due to key presses that would normally scroll the page
+    evt.preventDefault();
+    this.setValue_(value);
+    this.adapter_.notifyChange();
+  }
+
+  /**
+   * Returns the computed name of the event
+   * @param {!Event} keyboardEvt
+   * @return {number}
+   * @private
+   */
+  getKeyIdValue_(keyboardEvt) {
+    const delta = this.step_ || (this.max_ - this.min_) / 100;
+
+    if (keyboardEvt.key === KEY_IDS.ARROW_LEFT || keyboardEvt.keyCode === 37
+      || keyboardEvt.key === KEY_IDS.ARROW_DOWN || keyboardEvt.keyCode === 40) {
+      return this.value_ - delta;
+    }
+    if (keyboardEvt.key === KEY_IDS.ARROW_RIGHT || keyboardEvt.keyCode === 39
+      || keyboardEvt.key === KEY_IDS.ARROW_UP || keyboardEvt.keyCode === 38) {
+      return this.value_ + delta;
+    }
+    if (keyboardEvt.key === KEY_IDS.HOME || keyboardEvt.keyCode === 36) {
+      return this.min_;
+    }
+    if (keyboardEvt.key === KEY_IDS.END || keyboardEvt.keyCode === 35) {
+      return this.max_;
+    }
+    if (keyboardEvt.key === KEY_IDS.PAGE_UP || keyboardEvt.keyCode === 33) {
+      return this.value_ + delta * 5;
+    }
+    if (keyboardEvt.key === KEY_IDS.PAGE_DOWN || keyboardEvt.keyCode === 34) {
+      return this.value_ - delta * 5;
+    }
+
+    return NaN;
   }
 
   /**
@@ -265,7 +380,16 @@ class MDCSliderFoundation extends MDCFoundation {
    */
   setActive_(active) {
     this.active_ = active;
-    this.toggleClass_('mdc-slider--active', this.active_);
+    this.toggleClass_(cssClasses.ACTIVE, this.active_);
+  }
+
+  /**
+   * Toggles the inTransit state of the slider
+   * @param {boolean} inTransit
+   */
+  setInTransit_(inTransit) {
+    this.inTransit_ = inTransit;
+    this.toggleClass_(cssClasses.IN_TRANSIT, this.inTransit_);
   }
 
   /**
