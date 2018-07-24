@@ -64,12 +64,25 @@ class MDCTabScrollerAdapter {
   removeClass(className) {}
 
   /**
+   * Adds the given className to the scroll area element.
+   * @param {string} className The className to add
+   */
+  addScrollAreaClass(className) {}
+
+  /**
    * Returns whether the event target matches given className.
    * @param {EventTarget} evtTarget The event target
    * @param {string} selector The selector to check
    * @return {boolean}
    */
   eventTargetMatchesSelector(evtTarget, selector) {}
+
+  /**
+   * Sets a style property of the area element to the passed value.
+   * @param {string} propName The style property name to set
+   * @param {string} value The style property value
+   */
+  setScrollAreaStyleProperty(propName, value) {}
 
   /**
    * Sets a style property of the content element to the passed value.
@@ -121,6 +134,12 @@ class MDCTabScrollerAdapter {
    * @return {!ClientRect}
    */
   computeScrollContentClientRect() {}
+
+  /**
+   * Returns the height of the browser's horizontal scrollbars (in px).
+   * @return {number}
+   */
+  computeHorizontalScrollbarHeight() {}
 }
 
 export {MDCTabScrollerAnimation, MDCTabScrollerHorizontalEdges, MDCTabScrollerAdapter};

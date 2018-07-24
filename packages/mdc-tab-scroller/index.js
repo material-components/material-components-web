@@ -19,6 +19,7 @@ import MDCComponent from '@material/base/component';
 
 import {MDCTabScrollerAdapter} from './adapter';
 import MDCTabScrollerFoundation from './foundation';
+import * as util from './util';
 
 /**
  * @extends {MDCComponent<!MDCTabScrollerFoundation>}
@@ -82,8 +83,6 @@ class MDCTabScroller extends MDCComponent {
    */
   getDefaultFoundation() {
     const adapter = /** @type {!MDCTabScrollerAdapter} */ ({
-      addClass: (className) => this.root_.classList.add(className),
-      removeClass: (className) => this.root_.classList.remove(className),
       eventTargetMatchesSelector: (evtTarget, className) => {
         let matches = Element.prototype.matches;
         if (matches === undefined) {
@@ -91,6 +90,10 @@ class MDCTabScroller extends MDCComponent {
         }
         return matches.call(evtTarget, className);
       },
+      addClass: (className) => this.root_.classList.add(className),
+      removeClass: (className) => this.root_.classList.remove(className),
+      addScrollAreaClass: (className) => this.area_.classList.add(className),
+      setScrollAreaStyleProperty: (prop, value) => this.area_.style.setProperty(prop, value),
       setScrollContentStyleProperty: (prop, value) => this.content_.style.setProperty(prop, value),
       getScrollContentStyleValue: (propName) => window.getComputedStyle(this.content_).getPropertyValue(propName),
       setScrollAreaScrollLeft: (scrollX) => this.area_.scrollLeft = scrollX,
@@ -99,6 +102,7 @@ class MDCTabScroller extends MDCComponent {
       getScrollAreaOffsetWidth: () => this.area_.offsetWidth,
       computeScrollAreaClientRect: () => this.area_.getBoundingClientRect(),
       computeScrollContentClientRect: () => this.content_.getBoundingClientRect(),
+      computeHorizontalScrollbarHeight: () => util.computeHorizontalScrollbarHeight(document),
     });
 
     return new MDCTabScrollerFoundation(adapter);
@@ -129,4 +133,4 @@ class MDCTabScroller extends MDCComponent {
   }
 }
 
-export {MDCTabScroller, MDCTabScrollerFoundation};
+export {MDCTabScroller, MDCTabScrollerFoundation, util};
