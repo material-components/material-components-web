@@ -80,6 +80,7 @@ class MDCSliderFoundation extends MDCFoundation {
       focusThumb: () => {},
       activateRipple: () => {},
       deactivateRipple: () => {},
+      isRTL: () => false,
     });
   }
 
@@ -312,7 +313,12 @@ class MDCSliderFoundation extends MDCFoundation {
    * @private
    */
   getKeyIdValue_(keyboardEvt) {
-    const delta = this.step_ || (this.max_ - this.min_) / 100;
+    let delta = this.step_ || (this.max_ - this.min_) / 100;
+    if (this.adapter_.isRTL() && (
+      keyboardEvt.key === KEY_IDS.ARROW_LEFT || keyboardEvt.keyCode === 37 ||
+      keyboardEvt.key === KEY_IDS.ARROW_RIGHT || keyboardEvt.keyCode === 39)) {
+      delta = -delta;
+    }
 
     if (keyboardEvt.key === KEY_IDS.ARROW_LEFT || keyboardEvt.keyCode === 37
       || keyboardEvt.key === KEY_IDS.ARROW_DOWN || keyboardEvt.keyCode === 40) {
@@ -369,7 +375,10 @@ class MDCSliderFoundation extends MDCFoundation {
    */
   computeValueFromPageX_(pageX) {
     const xPos = pageX - this.rect_.left;
-    const pctComplete = xPos / this.rect_.width;
+    let pctComplete = xPos / this.rect_.width;
+    if (this.adapter_.isRTL()) {
+      pctComplete = 1 - pctComplete;
+    }
 
     // Fit the percentage complete between the range [min,max]
     // by remapping from [0, 1] to [min, min+(max-min)].
@@ -400,7 +409,11 @@ class MDCSliderFoundation extends MDCFoundation {
     const translatePx = pctComplete * this.rect_.width;
 
     requestAnimationFrame(() => {
-      this.adapter_.setThumbStyleProperty('transform', `translateX(${translatePx}px) translateX(-50%)`);
+      if (this.adapter_.isRTL()) {
+        this.adapter_.setThumbStyleProperty('transform', `translateX(-${translatePx}px) translateX(50%)`);
+      } else {
+        this.adapter_.setThumbStyleProperty('transform', `translateX(${translatePx}px) translateX(-50%)`);
+      }
       this.adapter_.setTrackFillStyleProperty('transform', `scaleX(${translatePx})`);
     });
   }

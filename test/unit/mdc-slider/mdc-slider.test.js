@@ -410,3 +410,25 @@ test('adapter#deactivateThumb deactivates the thumb ripple', () => {
     assert.isFalse(thumb.classList.contains('mdc-ripple-upgraded--foreground-activation'));
   }, 100);
 });
+
+test('adapter#isRTL returns true when component is in an RTL context', () => {
+  const wrapper = bel`<div dir="rtl"></div>`;
+  const {root, component} = setupTest();
+  wrapper.appendChild(root);
+  document.body.appendChild(wrapper);
+
+  assert.isTrue(component.getDefaultFoundation().adapter_.isRTL());
+
+  document.body.removeChild(wrapper);
+});
+
+test('adapter#isRTL returns false when component is not in an RTL context', () => {
+  const wrapper = bel`<div dir="ltr"></div>`;
+  const {root, component} = setupTest();
+  wrapper.appendChild(root);
+  document.body.appendChild(wrapper);
+
+  assert.isFalse(component.getDefaultFoundation().adapter_.isRTL());
+
+  document.body.removeChild(wrapper);
+});

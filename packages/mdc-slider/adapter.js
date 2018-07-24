@@ -155,6 +155,12 @@ class MDCSliderAdapter {
    * Deactivates the thumb ripple
    */
   deactivateRipple() {}
+
+  /**
+   * Returns true if the root element is RTL, otherwise false
+   * @return {boolean}
+   */
+  isRTL() {}
 }
 
 export default MDCSliderAdapter;
