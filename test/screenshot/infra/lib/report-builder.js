@@ -454,7 +454,6 @@ class ReportBuilder {
       }),
       mdc_version: LibraryVersion.create({
         version_string: mdcVersionString,
-        commit_offset: await this.getCommitDistance_(mdcVersionString),
       }),
     });
   }
@@ -511,26 +510,6 @@ class ReportBuilder {
     const options = {cwd: process.env.PWD, env: process.env};
     const stdOut = await childProcess.exec(`${cmd} --version`, options);
     return stdOut[0].trim().replace(/^v/, ''); // `node --version` returns "v8.11.0", so we strip the leading 'v'
-  }
-
-  /**
-   * @param {string} mdcVersion
-   * @return {!Promise<number>}
-   */
-  async getCommitDistance_(mdcVersion) {
-    try {
-      return (await this.gitRepo_.getLog([`v${mdcVersion}..HEAD`])).length;
-    } catch (err) {
-      // To save time, Travis CI only clones a certain number of commits.
-      // Unfortunately, if the user's PR branch has a lot of commits, `git log` will fail with an error like this:
-      //
-      //   fatal: ambiguous argument 'v0.37.1..HEAD': unknown revision or path not in the working tree.
-      //   Use '--' to separate paths from revisions, like this:
-      //   'git <command> [<revision>...] -- [<file>...]'
-      //
-      // Commit distance isn't critical information, so just return 0.
-      return 0;
-    }
   }
 
   /**

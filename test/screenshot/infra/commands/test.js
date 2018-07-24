@@ -74,6 +74,8 @@ class TestCommand {
       const masterDiffReportData = await this.diffAgainstMaster_({localDiffReportData, snapshotGitRev});
       this.logTestResults_(localDiffReportData);
       this.logTestResults_(masterDiffReportData);
+    } else {
+      this.logTestResults_(localDiffReportData);
     }
 
     // Diffs against master shouldn't fail the Travis job.
@@ -121,10 +123,11 @@ class TestCommand {
    * TODO(acdvorak): Rename this method
    * @param {!mdc.proto.DiffBase} goldenDiffBase
    * @param {!Array<!mdc.proto.Screenshot>} capturedScreenshots
+   * @param {string} startTimeIsoUtc
    * @return {!Promise<!mdc.proto.ReportData>}
    * @private
    */
-  async diffAgainstMasterImpl_(goldenDiffBase, capturedScreenshots) {
+  async diffAgainstMasterImpl_({goldenDiffBase, capturedScreenshots, startTimeIsoUtc}) {
     const controller = new Controller();
 
     /** @type {!mdc.proto.ReportData} */
@@ -132,7 +135,7 @@ class TestCommand {
 
     try {
       await controller.uploadAllAssets(reportData);
-      await this.copyAndCompareScreenshots_({reportData, capturedScreenshots});
+      await this.copyAndCompareScreenshots_({reportData, capturedScreenshots, startTimeIsoUtc});
 
       controller.populateMaps(reportData);
 
@@ -170,14 +173,11 @@ class TestCommand {
     const masterDiffBase = await this.diffBaseParser_.parseMasterDiffBase();
 
     /** @type {!mdc.proto.ReportData} */
-    const masterDiffReportData = await this.diffAgainstMasterImpl_(masterDiffBase, capturedScreenshots);
-
-    masterDiffReportData.meta.start_time_iso_utc = localDiffReportData.meta.start_time_iso_utc;
-    masterDiffReportData.meta.end_time_iso_utc = new Date().toISOString();
-    masterDiffReportData.meta.duration_ms = Duration.elapsed(
-      masterDiffReportData.meta.start_time_iso_utc,
-      masterDiffReportData.meta.end_time_iso_utc
-    ).toMillis();
+    const masterDiffReportData = await this.diffAgainstMasterImpl_({
+      goldenDiffBase: masterDiffBase,
+      capturedScreenshots,
+      startTimeIsoUtc: localDiffReportData.meta.start_time_iso_utc,
+    });
 
     const prNumber = snapshotGitRev.pr_number;
     const comment = this.getPrComment_({masterDiffReportData, snapshotGitRev});
@@ -189,10 +189,11 @@ class TestCommand {
   /**
    * @param {!mdc.proto.ReportData} reportData
    * @param {!Array<!mdc.proto.Screenshot>} capturedScreenshots
+   * @param {string} startTimeIsoUtc
    * @return {!Promise<void>}
    * @private
    */
-  async copyAndCompareScreenshots_({reportData, capturedScreenshots}) {
+  async copyAndCompareScreenshots_({reportData, capturedScreenshots, startTimeIsoUtc}) {
     const num = capturedScreenshots.length;
     const plural = num === 1 ? '' : 's';
     this.logger_.foldStart('screenshot.compare_master', `Comparing ${num} screenshot${plural} to master`);
@@ -234,6 +235,11 @@ class TestCommand {
     }
 
     await Promise.all(promises);
+
+    const endTimeIsoUtc = new Date().toISOString();
+    reportData.meta.start_time_iso_utc = startTimeIsoUtc;
+    reportData.meta.end_time_iso_utc = endTimeIsoUtc;
+    reportData.meta.duration_ms = Duration.elapsed(startTimeIsoUtc, endTimeIsoUtc).toMillis();
 
     this.logger_.foldEnd('screenshot.compare_master');
   }

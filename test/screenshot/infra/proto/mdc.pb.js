@@ -2120,7 +2120,6 @@ $root.mdc = (function() {
              * @memberof mdc.proto
              * @interface ILibraryVersion
              * @property {string|null} [version_string] LibraryVersion version_string
-             * @property {number|null} [commit_offset] LibraryVersion commit_offset
              */
 
             /**
@@ -2145,14 +2144,6 @@ $root.mdc = (function() {
              * @instance
              */
             LibraryVersion.prototype.version_string = "";
-
-            /**
-             * LibraryVersion commit_offset.
-             * @member {number} commit_offset
-             * @memberof mdc.proto.LibraryVersion
-             * @instance
-             */
-            LibraryVersion.prototype.commit_offset = 0;
 
             /**
              * Creates a new LibraryVersion instance using the specified properties.
@@ -2180,8 +2171,6 @@ $root.mdc = (function() {
                     writer = $Writer.create();
                 if (message.version_string != null && message.hasOwnProperty("version_string"))
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.version_string);
-                if (message.commit_offset != null && message.hasOwnProperty("commit_offset"))
-                    writer.uint32(/* id 2, wireType 0 =*/16).int32(message.commit_offset);
                 return writer;
             };
 
@@ -2218,9 +2207,6 @@ $root.mdc = (function() {
                     switch (tag >>> 3) {
                     case 1:
                         message.version_string = reader.string();
-                        break;
-                    case 2:
-                        message.commit_offset = reader.int32();
                         break;
                     default:
                         reader.skipType(tag & 7);
@@ -2260,9 +2246,6 @@ $root.mdc = (function() {
                 if (message.version_string != null && message.hasOwnProperty("version_string"))
                     if (!$util.isString(message.version_string))
                         return "version_string: string expected";
-                if (message.commit_offset != null && message.hasOwnProperty("commit_offset"))
-                    if (!$util.isInteger(message.commit_offset))
-                        return "commit_offset: integer expected";
                 return null;
             };
 
@@ -2280,8 +2263,6 @@ $root.mdc = (function() {
                 var message = new $root.mdc.proto.LibraryVersion();
                 if (object.version_string != null)
                     message.version_string = String(object.version_string);
-                if (object.commit_offset != null)
-                    message.commit_offset = object.commit_offset | 0;
                 return message;
             };
 
@@ -2298,14 +2279,10 @@ $root.mdc = (function() {
                 if (!options)
                     options = {};
                 var object = {};
-                if (options.defaults) {
+                if (options.defaults)
                     object.version_string = "";
-                    object.commit_offset = 0;
-                }
                 if (message.version_string != null && message.hasOwnProperty("version_string"))
                     object.version_string = message.version_string;
-                if (message.commit_offset != null && message.hasOwnProperty("commit_offset"))
-                    object.commit_offset = message.commit_offset;
                 return object;
             };
 
