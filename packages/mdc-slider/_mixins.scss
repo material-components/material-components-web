@@ -59,14 +59,10 @@
   }
 
   .mdc-slider__thumb-handle {
-    @include mdc-theme-prop(fill, rgba(mdc-theme-prop-value($color), $mdc-slider-disabled-thumb-opacity));
+    @include mdc-theme-prop(fill, $mdc-slider-disabled-thumb);
     @include mdc-theme-prop(stroke, mdc-theme-prop-value(surface));
 
     stroke-width: 4px;
-  }
-
-  .mdc-slider__thumb-handle-disabled {
-    @include mdc-theme-prop(fill, mdc-theme-prop-value(surface));
   }
 
   .mdc-slider__thumb {

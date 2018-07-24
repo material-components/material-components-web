@@ -18,4 +18,4 @@ $mdc-slider-track-opacity: .38;
 $mdc-slider-thumb-handle-active-size: 1.66667;
 $mdc-slider-disabled-active-rail-opacity: .32;
 $mdc-slider-disabled-inactive-rail-opacity: .12;
-$mdc-slider-disabled-thumb-opacity: .44;
+$mdc-slider-disabled-thumb: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 32%);

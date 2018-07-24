@@ -48,7 +48,6 @@ npm install @material/slider
     aria-valuemin="0" aria-valuemax="50" aria-valuenow="20"
     aria-label="Select Value">
     <svg class="mdc-slider__thumb-handle" width="34" height="34">
-      <circle class="mdc-slider__thumb-handle-disabled" cx="17" cy="17" r="6"></circle>
       <circle cx="17" cy="17" r="6"></circle>
     </svg>
   </div>
@@ -113,7 +112,6 @@ CSS Class | Description
 `mdc-slider__track-fill` | Mandatory. The fill element to display where the value is.
 `mdc-slider__thumb` | Mandatory. Element containing the thumb-handle.
 `mdc-slider__thumb-handle` | Mandatory. The handle element to display where the value is.
-`mdc-slider__thumb-handle-disabled` | Mandatory for disabled state.
 
 ### Sass Mixins
 
