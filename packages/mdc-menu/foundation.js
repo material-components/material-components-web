@@ -49,7 +49,6 @@ class MDCMenuFoundation extends MDCFoundation {
       getFocusedElementIndex: () => {},
       removeClassFromSelectionGroup: () => {},
       notifySelected: () => {},
-      getIndexFromEvent: () => {},
     });
   }
 
@@ -57,6 +56,7 @@ class MDCMenuFoundation extends MDCFoundation {
   constructor(adapter) {
     super(Object.assign(MDCMenuFoundation.defaultAdapter, adapter));
 
+    /** @param {number} value */
     this.closeAnimationEndTimerId_;
   }
 
@@ -66,6 +66,10 @@ class MDCMenuFoundation extends MDCFoundation {
     clearTimeout(this.closeAnimationEndTimerId_);
   }
 
+  /**
+   * Handler function for the keydown event.
+   * @param {Event} evt
+   */
   handleKeydown(evt) {
     const {key, keyCode} = evt;
 
@@ -82,6 +86,9 @@ class MDCMenuFoundation extends MDCFoundation {
     }
   }
 
+  /**
+   * Handler function for the click event.
+   */
   handleClick() {
     const listItemIndex = this.adapter_.getFocusedElementIndex();
     if (listItemIndex >= 0) {

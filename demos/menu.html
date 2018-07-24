@@ -25,86 +25,19 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <style>
-      html,
-      body,
-      main {
-        position: relative;
-        flex-direction: column;
-      }
-
-      .hero .mdc-menu {
-        z-index: initial;
-      }
-
-      .demo-content {
-        position: relative;
-        top: 64px;
-      }
-
-      .demo-controls-container {
-        width: 100%;
-        height: calc(100vh - 80px);
-      }
-
-      .demo-controls {
-        margin-left: auto;
-        margin-right: auto;
-        width: 360px;
-      }
-
-      .mdc-menu-surface--anchor {
-        position: absolute;
-        margin: 16px;
-      }
-
-      .margin-inputs input {
-        width: 2em;
-      }
-
-      .left-column-controls {
-         display: inline-block;
-         vertical-align: top;
-      }
-
-      .right-column-controls {
-        display: inline-block;
-        margin-left: 2em;
-        vertical-align: top;
-      }
-
-      .demo-button__normal-text,
-      .demo-button__long-text {
-        display: none;
-      }
-
-      .demo-button--normal .demo-button__normal-text,
-      .demo-button--long .demo-button__normal-text,
-      .demo-button--long .demo-button__long-text {
-        display: inline;
-      }
-
-      .demo-menu__long-items,
-      .demo-menu__extra-long-items {
-        display: none;
-      }
-
-      .demo-menu--long .demo-menu__long-items,
-      .demo-menu--extra-long .demo-menu__long-items,
-      .demo-menu--extra-long .demo-menu__extra-long-items {
-        display: inline;
-      }
-    </style>
   </head>
   <body class="mdc-typography">
-    <header class="mdc-toolbar mdc-toolbar--fixed demo-header-toolbar">
-      <div class="mdc-toolbar__row">
-        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-          <a href="/" class="catalog-back mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
-          <span class="mdc-toolbar__title catalog-title">Menu</span>
-        </section>
-      </div>
-    </header>
+  <header class="mdc-toolbar mdc-toolbar--fixed demo-header-toolbar">
+    <div class="mdc-toolbar__row">
+      <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+        <a href="/" class="catalog-back mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
+        <span class="mdc-toolbar__title catalog-title">Menu</span>
+      </section>
+      <section class="mdc-toolbar__section mdc-toolbar__section--align-end mdc-toolbar__section--shrink-to-fit">
+        <button id="overflow-icon" class="material-icons mdc-icon-button">more_vert</button>
+      </section>
+    </div>
+  </header>
 
     <main>
       <div class="mdc-toolbar-fixed-adjust"></div>
@@ -190,8 +123,8 @@
               <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
                 <li class="mdc-list-item" role="menuitem">
                   <span class="mdc-list-item__graphic" aria-hidden="true">
-                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                      <path d="M19,3L13,9L15,11L22,4V3M12,12.5A0.5,0.5 0 0,1 11.5,12A0.5,0.5 0 0,1 12,11.5A0.5,0.5 0 0,1 12.5,12A0.5,0.5 0 0,1 12,12.5M6,20A2,2 0 0,1 4,18C4,16.89 4.9,16 6,16A2,2 0 0,1 8,18C8,19.11 7.1,20 6,20M6,8A2,2 0 0,1 4,6C4,4.89 4.9,4 6,4A2,2 0 0,1 8,6C8,7.11 7.1,8 6,8M9.64,7.64C9.87,7.14 10,6.59 10,6A4,4 0 0,0 6,2A4,4 0 0,0 2,6A4,4 0 0,0 6,10C6.59,10 7.14,9.87 7.64,9.64L10,12L7.64,14.36C7.14,14.13 6.59,14 6,14A4,4 0 0,0 2,18A4,4 0 0,0 6,22A4,4 0 0,0 10,18C10,17.41 9.87,16.86 9.64,16.36L12,14L19,21H22V20L9.64,7.64Z" />
+                    <svg style="width: 24px; height: 24px;" viewBox="0 0 24 24">
+                      <path d="M19,3L13,9L15,11L22,4V3M12,12.5A0.5,0.5 0 0,1 11.5,12A0.5,0.5 0 0,1 12,11.5A0.5,0.5 0 0,1 12.5,12A0.5,0.5 0 0,1 12,12.5M6,20A2,2 0 0,1 4,18C4,16.89 4.9,16 6,16A2,2 0 0,1 8,18C8,19.11 7.1,20 6,20M6,8A2,2 0 0,1 4,6C4,4.89 4.9,4 6,4A2,2 0 0,1 8,6C8,7.11 7.1,8 6,8M9.64,7.64C9.87,7.14 10,6.59 10,6A4,4 0 0,0 6,2A4,4 0 0,0 2,6A4,4 0 0,0 6,10C6.59,10 7.14,9.87 7.64,9.64L10,12L7.64,14.36C7.14,14.13 6.59,14 6,14A4,4 0 0,0 2,18A4,4 0 0,0 6,22A4,4 0 0,0 10,18C10,17.41 9.87,16.86 9.64,16.36L12,14L19,21H22V20L9.64,7.64Z"></path>
                     </svg>
                   </span>
                   Cut
@@ -199,8 +132,8 @@
                 </li>
                 <li class="mdc-list-item" role="menuitem">
                   <span class="mdc-list-item__graphic" aria-hidden="true">
-                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                      <path d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z" />
+                    <svg style="width: 24px; height: 24px;" viewBox="0 0 24 24">
+                      <path d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path>
                     </svg>
                   </span>
                   Copy
@@ -208,8 +141,8 @@
                 </li>
                 <li class="mdc-list-item" role="menuitem">
                   <span class="mdc-list-item__graphic" aria-hidden="true">
-                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                      <path d="M19,20H5V4H7V7H17V4H19M12,2A1,1 0 0,1 13,3A1,1 0 0,1 12,4A1,1 0 0,1 11,3A1,1 0 0,1 12,2M19,2H14.82C14.4,0.84 13.3,0 12,0C10.7,0 9.6,0.84 9.18,2H5A2,2 0 0,0 3,4V20A2,2 0 0,0 5,22H19A2,2 0 0,0 21,20V4A2,2 0 0,0 19,2Z" />
+                    <svg style="width: 24px; height: 24px;" viewBox="0 0 24 24">
+                      <path d="M19,20H5V4H7V7H17V4H19M12,2A1,1 0 0,1 13,3A1,1 0 0,1 12,4A1,1 0 0,1 11,3A1,1 0 0,1 12,2M19,2H14.82C14.4,0.84 13.3,0 12,0C10.7,0 9.6,0.84 9.18,2H5A2,2 0 0,0 3,4V20A2,2 0 0,0 5,22H19A2,2 0 0,0 21,20V4A2,2 0 0,0 19,2Z"></path>
                     </svg>
                   </span>
                   Paste
@@ -222,6 +155,47 @@
                 </li>
               </ul>
             </div>
+
+
+            <div class="mdc-menu-surface" tabindex="-1" id="demo-menu-3">
+              <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
+                <li class="mdc-list-item" role="menuitem">
+                  Info
+                </li>
+                <li class="mdc-list-item" role="menuitem">
+                  Slideshow
+                </li>
+                <li class="mdc-list-item" role="menuitem">
+                  Loop video
+                  <div class="mdc-list-item__meta">
+                    <div class="mdc-checkbox">
+                      <input type="checkbox"
+                             class="mdc-checkbox__native-control"
+                             id="loop-video-box"/>
+                      <div class="mdc-checkbox__background">
+                        <svg class="mdc-checkbox__checkmark"
+                             viewBox="0 0 24 24">
+                          <path class="mdc-checkbox__checkmark-path"
+                                fill="none"
+                                d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
+                        </svg>
+                        <div class="mdc-checkbox__mixedmark"></div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="mdc-list-item" role="menuitem">
+                  Save to device
+                </li>
+                <li class="mdc-list-item" role="menuitem">
+                  Add to album
+                </li>
+                <li class="mdc-list-item" role="menuitem">
+                  Archive
+                </li>
+              </ul>
+            </div>
+
           </div>
         </div>
 
@@ -274,16 +248,25 @@
       demoReady(function() {
         var menuEl = document.querySelector('#demo-menu');
         var menu = new mdc.menu.MDCMenu(menuEl);
-        var menuButtonEl = document.querySelector('#menu-button');
+        var menuButtonEl = document.getElementById('menu-button');
         menuButtonEl.addEventListener('click', function() {
           menu.open = !menu.open;
         });
 
         var menuEl2 = document.querySelector('#demo-menu-2');
         var menu2 = new mdc.menu.MDCMenu(menuEl2);
-        var menuButtonEl2 = document.querySelector('#menu-button-2');
+        var menuButtonEl2 = document.getElementById('menu-button-2');
         menuButtonEl2.addEventListener('click', function() {
           menu2.open = !menu2.open;
+        });
+
+        var menuEl3 = document.getElementById('demo-menu-3');
+        var menu3 = new mdc.menu.MDCMenu(menuEl3);
+        var menuButtonEl3 = document.getElementById('overflow-icon');
+        menu3.hoistMenuToBody();
+        menu3.setAnchorElement(menuButtonEl3);
+        menuButtonEl3.addEventListener('click', function() {
+          menu3.open = !menu3.open;
         });
 
         var animation = document.querySelector('input[name="animation"]');
@@ -300,18 +283,22 @@
                 case "top start":
                   menu.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.TOP_START);
                   menu2.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.TOP_START);
+                  menu3.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.TOP_START);
                   break;
                 case "bottom start":
                   menu.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.BOTTOM_START);
                   menu2.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.BOTTOM_START);
+                  menu3.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.BOTTOM_START);
                   break;
                 case "top end":
                   menu.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.TOP_END);
                   menu2.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.TOP_END);
+                  menu3.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.TOP_END);
                   break;
                 case "bottom end":
                   menu.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.BOTTOM_END);
                   menu2.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.BOTTOM_END);
+                  menu3.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.BOTTOM_END);
                   break;
               }
             }
@@ -332,6 +319,7 @@
                           left: parseInt(leftMarginInput.value, 10)};
             menu.setAnchorMargin(margin);
             menu2.setAnchorMargin(margin);
+            menu3.setAnchorMargin(margin);
           });
         }
 
@@ -356,6 +344,17 @@
           var detail = evt.detail;
           lastSelected.textContent = 'Hot Key Menu: "' + detail.item.textContent.trim() +
             '" at index ' + detail.index;
+        });
+
+        var loopVideoBox = document.getElementById('loop-video-box');
+
+        menuEl3.addEventListener('MDCMenu:selected', function(evt) {
+          var detail = evt.detail;
+          lastSelected.textContent = 'Overflow Menu: "' + detail.item.textContent.trim() +
+            '" at index ' + detail.index;
+          if (detail.index === 2) {
+            loopVideoBox.checked = !loopVideoBox.checked;
+          }
         });
       });
     </script>

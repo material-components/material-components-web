@@ -16,9 +16,54 @@
 
 @import "./common";
 @import "../packages/mdc-button/mdc-button";
+@import "../packages/mdc-icon-button/mdc-icon-button";
+@import "../packages/mdc-checkbox/mdc-checkbox";
 @import "../packages/mdc-list/mdc-list";
 @import "../packages/mdc-menu/mdc-menu";
 @import "../packages/mdc-menu-surface/mdc-menu-surface";
+
+html,
+body,
+main {
+  position: relative;
+  flex-direction: column;
+}
+
+.hero .mdc-menu-surface {
+  z-index: auto;
+  width: calc(3 * 56px);
+}
+
+.demo-content {
+  position: relative;
+  top: 64px;
+}
+
+.demo-controls-container {
+  width: 100%;
+  height: calc(100vh - 80px);
+}
+
+.demo-controls {
+  margin-left: auto;
+  margin-right: auto;
+  width: 360px;
+}
+
+.mdc-menu-surface--anchor {
+  position: absolute;
+  margin: 16px;
+}
+
+.margin-inputs input {
+  width: 2em;
+}
+
+.right-column-controls {
+  display: inline-block;
+  margin-left: 2em;
+  vertical-align: top;
+}
 
 #demo-menu {
   width: calc(6 * 56px);
@@ -28,6 +73,12 @@
   width: calc(5 * 56px);
 }
 
+#demo-menu-3 {
+  width: calc(4 * 56px);
+}
+
 .hero .mdc-menu-surface {
   z-index: 1;
 }
+
+

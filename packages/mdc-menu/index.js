@@ -148,6 +148,26 @@ class MDCMenu extends MDCComponent {
     this.menuSurface_.quickOpen = quickOpen;
   }
 
+  set fixed(isFixed) {
+    this.menuSurface_.setFixedPosition(isFixed);
+  }
+
+  hoistMenuToBody() {
+    this.menuSurface_.hoistMenuToBody();
+  }
+
+  setIsHoisted(isHoisted) {
+    this.menuSurface_.setIsHoisted(isHoisted);
+  }
+
+  /**
+   * Sets the element that the menu-surface is anchored to.
+   * @param {!Element} element
+   */
+  setAnchorElement(element) {
+    this.menuSurface_.anchorElement = element;
+  }
+
 
   registerListeners_() {
     this.root_.addEventListener('keydown', this.handleKeydown_);
