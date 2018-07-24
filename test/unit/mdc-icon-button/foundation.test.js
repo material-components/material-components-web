@@ -35,7 +35,7 @@ test('exports cssClasses', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCIconButtonToggleFoundation, [
-    'addClass', 'removeClass', 'registerInteractionHandler', 'deregisterInteractionHandler',
+    'addClass', 'removeClass',
     'setText', 'getAttr', 'setAttr', 'notifyChange',
   ]);
 });
@@ -59,8 +59,9 @@ test('#constructor sets on to true if the toggle is pressed', () => {
 test('#handleClick calls #toggle', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
+  foundation.toggle = td.func();
   foundation.handleClick();
-  td.verify(mockAdapter.setAttr('aria-pressed', 'true'), {times: 1});
+  td.verify(foundation.toggle(), {times: 1});
 });
 
 test('#handleClick calls notifyChange', () => {
