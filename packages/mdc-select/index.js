@@ -35,7 +35,9 @@ export class MDCSelect extends MDCComponent {
   }
 
   set value(value) {
-    this.foundation_.setValue(value);
+    this.nativeControl_.value = value;
+    // Pass nativeControl_'s value to foundation, in case the original value was not able to be directly applied
+    this.foundation_.handleValueChange(this.nativeControl_.value);
   }
 
   get selectedIndex() {
@@ -43,7 +45,8 @@ export class MDCSelect extends MDCComponent {
   }
 
   set selectedIndex(selectedIndex) {
-    this.foundation_.setSelectedIndex(selectedIndex);
+    this.nativeControl_.selectedIndex = selectedIndex;
+    this.foundation_.handleValueChange(this.nativeControl_.value);
   }
 
   get disabled() {
@@ -51,6 +54,7 @@ export class MDCSelect extends MDCComponent {
   }
 
   set disabled(disabled) {
+    this.nativeControl_.disabled = disabled;
     this.foundation_.setDisabled(disabled);
   }
 
@@ -79,6 +83,14 @@ export class MDCSelect extends MDCComponent {
     if (outlineElement) {
       this.outline_ = outlineFactory(outlineElement);
     }
+
+    // TODO: remove these in destroy
+    this.nativeControl_.addEventListener('change', () => this.foundation_.handleValueChange(this.nativeControl_.value));
+    this.nativeControl_.addEventListener('focus', () => this.foundation_.handleFocus());
+    this.nativeControl_.addEventListener('blur', () => {
+      this.foundation_.handleValueChange(this.nativeControl_.value);
+      this.foundation_.handleBlur();
+    });
 
     if (this.root_.classList.contains(cssClasses.BOX)) {
       this.ripple = this.initRipple_();
@@ -110,12 +122,6 @@ export class MDCSelect extends MDCComponent {
         }
       },
       setDisabled: (disabled) => this.nativeControl_.disabled = disabled,
-      registerInteractionHandler: (type, handler) => this.nativeControl_.addEventListener(type, handler),
-      deregisterInteractionHandler: (type, handler) => this.nativeControl_.removeEventListener(type, handler),
-      getSelectedIndex: () => this.nativeControl_.selectedIndex,
-      setSelectedIndex: (index) => this.nativeControl_.selectedIndex = index,
-      getValue: () => this.nativeControl_.value,
-      setValue: (value) => this.nativeControl_.value = value,
       isRtl: () => window.getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
     },
     this.getOutlineAdapterMethods_(),
