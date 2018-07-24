@@ -36,8 +36,7 @@ export class MDCSelect extends MDCComponent {
 
   set value(value) {
     this.nativeControl_.value = value;
-    // Pass nativeControl_'s value to foundation, in case the original value was not able to be directly applied
-    this.foundation_.handleValueChange(this.nativeControl_.value);
+    this.foundation_.handleValueChange();
   }
 
   get selectedIndex() {
@@ -46,7 +45,7 @@ export class MDCSelect extends MDCComponent {
 
   set selectedIndex(selectedIndex) {
     this.nativeControl_.selectedIndex = selectedIndex;
-    this.foundation_.handleValueChange(this.nativeControl_.value);
+    this.foundation_.handleValueChange();
   }
 
   get disabled() {
@@ -85,10 +84,9 @@ export class MDCSelect extends MDCComponent {
     }
 
     // TODO: remove these in destroy
-    this.nativeControl_.addEventListener('change', () => this.foundation_.handleValueChange(this.nativeControl_.value));
+    this.nativeControl_.addEventListener('change', () => this.foundation_.handleValueChange());
     this.nativeControl_.addEventListener('focus', () => this.foundation_.handleFocus());
     this.nativeControl_.addEventListener('blur', () => {
-      this.foundation_.handleValueChange(this.nativeControl_.value);
       this.foundation_.handleBlur();
     });
 
@@ -121,8 +119,8 @@ export class MDCSelect extends MDCComponent {
           this.lineRipple_.deactivate();
         }
       },
-      setDisabled: (disabled) => this.nativeControl_.disabled = disabled,
       isRtl: () => window.getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
+      getValue: () => this.nativeControl_.value,
     },
     this.getOutlineAdapterMethods_(),
     this.getLabelAdapterMethods_()))

@@ -39,6 +39,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
       activateBottomLine: () => {},
       deactivateBottomLine: () => {},
       isRtl: () => false,
+      getValue: () => {},
       hasLabel: () => {},
       getLabelWidth: () => {},
       hasOutline: () => {},
@@ -54,8 +55,8 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.blurHandler_ = (evt) => this.handleBlur_(evt);
   }
 
-  handleValueChange(value) {
-    const optionHasValue = value.length > 0;
+  handleValueChange() {
+    const optionHasValue = this.adapter_.getValue().length > 0;
     this.adapter_.floatLabel(optionHasValue);
     this.notchOutline(optionHasValue);
   }
@@ -76,6 +77,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
   }
 
   handleBlur() {
+    this.handleValueChange();
     this.adapter_.deactivateBottomLine();
   }
 
