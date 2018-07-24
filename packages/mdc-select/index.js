@@ -86,9 +86,7 @@ export class MDCSelect extends MDCComponent {
     // TODO: remove these in destroy
     this.nativeControl_.addEventListener('change', () => this.foundation_.handleValueChange());
     this.nativeControl_.addEventListener('focus', () => this.foundation_.handleFocus());
-    this.nativeControl_.addEventListener('blur', () => {
-      this.foundation_.handleBlur();
-    });
+    this.nativeControl_.addEventListener('blur', () => this.foundation_.handleBlur());
 
     if (this.root_.classList.contains(cssClasses.BOX)) {
       this.ripple = this.initRipple_();
