@@ -61,6 +61,21 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     raf.restore();
   });
 
+  test(`on ${downEvt} adds the mdc-slider--active class to the root element`, () => {
+    const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+
+    td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+    foundation.init();
+    raf.flush();
+
+    rootHandlers[downEvt](pageXObj(50));
+    raf.flush();
+
+    td.verify(mockAdapter.addClass(cssClasses.ACTIVE));
+
+    raf.restore();
+  });
+
   test(`on ${downEvt} notifies the client of an input event`, () => {
     const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
 
@@ -171,6 +186,22 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
 
     // Once on mousedown, once on mousemove
     td.verify(mockAdapter.notifyInput(), {times: 2});
+
+    raf.restore();
+  });
+
+  test(`on body ${upEvt} removes the mdc-slider--active class from the component`, () => {
+    const {foundation, mockAdapter, raf, rootHandlers, bodyHandlers} = setupTest();
+
+    td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+    foundation.init();
+    raf.flush();
+
+    rootHandlers[downEvt](pageXObj(50));
+    raf.flush();
+    bodyHandlers[upEvt]();
+
+    td.verify(mockAdapter.removeClass(cssClasses.ACTIVE));
 
     raf.restore();
   });

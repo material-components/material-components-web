@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 
+@import "@material/animation/functions";
 @import "@material/ripple/common";
 @import "@material/ripple/mixins";
 @import "./mixins";
@@ -66,14 +67,6 @@
   }
 }
 
-.mdc-slider:not(.mdc-slider--disabled) {
-  .mdc-slider__thumb {
-    @include mdc-ripple-surface;
-    @include mdc-ripple-radius-unbounded;
-    @include mdc-states(#5725e5);
-  }
-}
-
 .mdc-slider__thumb-handle {
   transition-duration: 150ms;
   transition-property: transform;
@@ -82,5 +75,19 @@
 .mdc-slider--active {
   .mdc-slider__thumb-handle {
     transform: scale($mdc-slider-thumb-handle-active-size);
+  }
+}
+
+.mdc-slider--in-transit {
+  .mdc-slider__thumb,
+  .mdc-slider__track-fill {
+    transition: transform 150ms $mdc-animation-standard-curve-timing-function;
+  }
+}
+
+.mdc-slider:not(.mdc-slider--disabled) {
+  .mdc-slider__thumb {
+    @include mdc-ripple-surface;
+    @include mdc-ripple-radius-unbounded;
   }
 }

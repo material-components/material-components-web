@@ -32,7 +32,8 @@ function getFixture() {
       <div class="mdc-slider__track">
         <div class="mdc-slider__track-fill"></div>
       </div>
-      <div class="mdc-slider__thumb" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <div class="mdc-slider__thumb" tabindex="0" role="slider"
+      data-step="2" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
         <svg class="mdc-slider__thumb-handle" width="34" height="34">
           <circle cx="17" cy="17" r="6"></circle>
         </svg>
@@ -69,6 +70,13 @@ test('get/set max', () => {
   component.max = 80;
 
   assert.equal(component.max, 80);
+});
+
+test('get/set step', () => {
+  const {component} = setupTest();
+  component.step = 6;
+
+  assert.equal(component.step, 6);
 });
 
 test('gets the disabled state and sets the disabled state', () => {
@@ -164,6 +172,26 @@ test('#initialSyncWithDOM adds an aria-valuenow attribute if not present', () =>
   assert.equal(thumb.getAttribute('aria-valuenow'), String(component.value));
 });
 
+test('#initialSyncWithDOM syncs the step property with data-step for continuous slider', () => {
+  const root = getFixture();
+
+  const thumb = root.querySelector('.mdc-slider__thumb');
+  thumb.setAttribute('data-step', '5');
+
+  const component = new MDCSlider(root);
+  assert.equal(component.step, 5);
+});
+
+test('#initialSyncWithDOM adds an data-step attribute if not present', () => {
+  const root = getFixture();
+
+  const thumb = root.querySelector('.mdc-slider__thumb');
+  thumb.removeAttribute('data-step');
+
+  const component = new MDCSlider(root);
+  assert.equal(thumb.getAttribute('data-step'), String(component.step));
+});
+
 test('#initialSyncWithDOM disables the slider if aria-disabled is present on the component', () => {
   const root = getFixture();
   const thumb = root.querySelector('.mdc-slider__thumb');
@@ -231,6 +259,13 @@ test('adapter#computeBoundingRect computes the client rect on the root element',
     component.getDefaultFoundation().adapter_.computeBoundingRect(),
     root.getBoundingClientRect()
   );
+});
+
+test('adapter#eventTargetHasClass returns true if given element has class', () => {
+  const {component} = setupTest();
+  const mockEventTarget = bel`<div class="foo">bar</div>`;
+
+  assert.isTrue(component.getDefaultFoundation().adapter_.eventTargetHasClass(mockEventTarget, 'foo'));
 });
 
 test('adapter#registerEventHandler adds an event listener to the root element', () => {

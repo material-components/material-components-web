@@ -80,6 +80,16 @@ class MDCSlider extends MDCComponent {
     this.foundation_.setDisabled(disabled);
   }
 
+  /** @return {number} */
+  get step() {
+    return this.foundation_.getStep();
+  }
+
+  /** @param {number} step */
+  set step(step) {
+    this.foundation_.setStep(step);
+  }
+
   /**
    * @return {!MDCRipple}
    * @private
@@ -113,6 +123,7 @@ class MDCSlider extends MDCComponent {
         removeThumbAttribute: (name) => this.thumb_.removeAttribute(name),
         computeBoundingRect: () => this.root_.getBoundingClientRect(),
         getTabIndex: () => this.thumb_.tabIndex,
+        eventTargetHasClass: (target, className) => target.classList.contains(className),
         registerEventHandler: (type, handler) => {
           this.root_.addEventListener(type, handler);
         },
@@ -160,6 +171,7 @@ class MDCSlider extends MDCComponent {
     const origValueNow = parseFloat(this.thumb_.getAttribute(strings.ARIA_VALUENOW));
     this.min = parseFloat(this.thumb_.getAttribute(strings.ARIA_VALUEMIN)) || this.min;
     this.max = parseFloat(this.thumb_.getAttribute(strings.ARIA_VALUEMAX)) || this.max;
+    this.step = parseFloat(this.thumb_.getAttribute(strings.DATA_STEP)) || this.step;
     this.value = origValueNow || this.value;
     this.disabled = (
       this.thumb_.hasAttribute(strings.ARIA_DISABLED) &&

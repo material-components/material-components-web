@@ -128,6 +128,7 @@ Mixin | Description
 | `value` | `number` | The current value of the slider. Changing this will update the slider's value. |
 | `min` | `number` | The minimum value a slider can have. Values set programmatically will be clamped to this minimum value. Changing this property will update the slider's value if it is lower than the new minimum |
 | `max` | `number` | The maximum value a slider can have. Values set programmatically will be clamped to this maximum value. Changing this property will update the slider's value if it is greater than the new maximum |
+| `step` | `number` | The current step value of the slider. Changing this will update the slider's layout. |
 | `disabled` | `boolean` | Whether or not the slider is disabled |
 
 | Method Signature | Description |
@@ -159,10 +160,9 @@ instance that was affected.
 | `removeThumbAttribute(name: string) => void` | Removes an attribute `name` from the root element |
 | `computeBoundingRect() => ClientRect` | Computes and returns the bounding client rect for the root element. Our implementations calls `getBoundingClientRect()` for this. |
 | `getTabIndex() => number` | Returns the value of the `tabIndex` property on the thumb element |
+| `eventTargetHasClass(target: EventTarget, className: string) => boolean` | Returns true if target has className, false otherwise |
 | `registerEventHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` to the slider's root element |
 | `deregisterEventHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` from the slider's root element |
-| `registerThumbEventHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` to the slider's thumb container element |
-| `deregisterThumbEventHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` from the slider's thumb container element |
 | `registerBodyEventHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` to the `<body>` element of the slider's document |
 | `deregisterBodyEventHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` from the `<body>` element of the slider's document |
 | `registerResizeHandler(handler: EventListener) => void` | Adds an event listener `handler` that is called when the component's viewport resizes, e.g. `window.onresize`. |
@@ -171,6 +171,9 @@ instance that was affected.
 | `notifyChange() => void` | Broadcasts a "MDCSlider:change" event notifying clients that a change to the slider's value has been committed by the user. Similar guidance applies here as for `notifyInput()`. |
 | `setThumbStyleProperty(propertyName: string, value: string) => void` | Sets a dash-cased style property `propertyName` to the given `value` on the thumb element. |
 | `setTrackFillStyleProperty(propertyName: string, value: string) => void` | Sets a dash-cased style property `propertyName` to the given `value` on the track-fill element. |
+| `focusThumb() => void` | Sets the document focus to the thumb. |
+| `activateRipple() => void` | Activates the ripple on the thumb element. |
+| `deactivateRipple() => void` | Deativates the ripple on the thumb element. |
 
 ### `MDCSliderFoundation`
 
@@ -183,5 +186,7 @@ instance that was affected.
 | `setMax(max: number) => void` | Sets the max value the slider can have |
 | `getMin() => number` | Returns the min value the slider can have |
 | `setMin(min: number) => number` | Sets the min value the slider can have |
+| `getStep() => number` | Returns the step value of the slider |
+| `setStep(step: number) => number` | Sets the step value of the slider |
 | `isDisabled() => boolean` | Returns whether or not the slider is disabled |
 | `setDisabled(disabled: boolean) => void` | Disables the slider when given true, enables it otherwise. |

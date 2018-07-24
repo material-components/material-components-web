@@ -24,15 +24,19 @@ const strings = {
   ARIA_VALUEMAX: 'aria-valuemax',
   ARIA_VALUENOW: 'aria-valuenow',
   ARIA_DISABLED: 'aria-disabled',
-  STEP_DATA_ATTR: 'data-step',
+  DATA_STEP: 'data-step',
   CHANGE_EVENT: 'MDCSlider:change',
   INPUT_EVENT: 'MDCSlider:input',
 };
 
 /** @enum {string} */
 const cssClasses = {
-  DISABLED: 'mdc-slider--disabled',
+  SLIDER: 'mdc-slider',
+  TRACK: 'mdc-slider__track',
+  TRACK_FILL: 'mdc-slider__track-fill',
   ACTIVE: 'mdc-slider--active',
+  IN_TRANSIT: 'mdc-slider--in-transit',
+  DISABLED: 'mdc-slider--disabled',
 };
 
 export {strings, cssClasses};
