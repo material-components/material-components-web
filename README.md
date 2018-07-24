@@ -2,7 +2,7 @@
 [![codecov](https://codecov.io/gh/material-components/material-components-web/branch/master/graph/badge.svg)](https://codecov.io/gh/material-components/material-components-web)
 [![Chat](https://img.shields.io/discord/259087343246508035.svg)](https://discord.gg/material-components)
 
-# Material Components for the web
+# Material Components for the Web
 
 Material Components for the web (MDC Web) helps developers execute [Material Design](https://www.material.io).
 Developed by a core team of engineers and UX designers at Google, these components enable a reliable development workflow to build beautiful and functional web projects.
@@ -96,7 +96,7 @@ This will produce a Material Design ripple on the button!
 
 <img src="docs/button_with_ripple.png" alt="Button with Ripple" width="90" height="36">
 
-## Useful Links
+## Useful links
 
 - [Getting Started Guide](docs/getting-started.md)
 - [All Components](packages/)
@@ -105,7 +105,7 @@ This will produce a Material Design ripple on the button!
 - [Material.io](https://www.material.io) (external site)
 - [Material Design Guidelines](https://material.io/guidelines) (external site)
 
-## Browser Support
+## Browser support
 
 We officially support the last two versions of every major browser. Specifically, we test on the following browsers:
 
@@ -114,3 +114,14 @@ We officially support the last two versions of every major browser. Specifically
 - **Safari** on iOS and macOS
 - **Edge** on Windows
 - **IE 11** on Windows
+
+## Thank you
+
+Continuous integration services are generously provided by:
+
+* [CrossBrowserTesting](https://crossbrowsertesting.com/): \
+  Fast, reliable [screenshot tests](test/screenshot/) with excellent customer support. _(Free for open source projects)_
+* [Sauce Labs](https://saucelabs.com/): \
+  Browser VMs for our [unit tests](test/unit/). _(Free for open source projects)_
+* [Travis CI](https://travis-ci.org/): \
+  Continuous testing for every commit we make. _(Free for open source projects)_
