@@ -52,17 +52,17 @@
 }
 
 .mdc-slider__tick-mark-set {
-  position: relative;
   display: flex;
+  position: relative;
   margin-right: 0;
   margin-left: -1;
 
   // Last marker at the very end of the slider (right-most in LTR, left-most in RTL)
   &::after {
     display: block;
-    border-radius: 50%;
     width: 2px;
     height: 2px;
+    border-radius: 50%;
     content: "";
   }
 }
@@ -72,9 +72,9 @@
 
   &::after {
     display: block;
-    border-radius: 50%;
     width: 2px;
     height: 2px;
+    border-radius: 50%;
     content: "";
   }
 
@@ -101,9 +101,9 @@
 
 .mdc-slider__thumb-handle {
   position: absolute;
-  overflow: visible;
   transition-duration: 150ms;
   transition-property: transform;
+  overflow: visible;
 }
 
 .mdc-slider__value-label {
@@ -118,9 +118,9 @@
 
 .mdc-slider__value-label,
 .mdc-slider__value-label-text {
-  transform: scale(0.05) translate(360px, 360px);
-  will-change: transform, d;
+  transform: scale(.05) translate(360px, 360px);
   transition: transform 100ms $mdc-animation-standard-curve-timing-function;
+  will-change: transform, d;
 }
 
 .mdc-slider--active {

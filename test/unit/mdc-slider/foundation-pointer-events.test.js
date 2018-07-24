@@ -17,6 +17,8 @@
 import {assert} from 'chai';
 import td from 'testdouble';
 
+import {cssClasses} from '../../../packages/mdc-slider/constants';
+
 import {TRANSFORM_PROP, setupEventTest as setupTest} from './helpers';
 
 suite('MDCSliderFoundation - pointer events');
@@ -60,6 +62,21 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     raf.restore();
   });
 
+  test(`on ${downEvt} adds the mdc-slider--active class to the root element`, () => {
+    const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+
+    td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+    foundation.init();
+    raf.flush();
+
+    rootHandlers[downEvt](pageXObj(50));
+    raf.flush();
+
+    td.verify(mockAdapter.addClass(cssClasses.ACTIVE));
+
+    raf.restore();
+  });
+
   test(`on ${downEvt} notifies the client of an input event`, () => {
     const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
 
@@ -71,6 +88,81 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     raf.flush();
 
     td.verify(mockAdapter.notifyInput());
+
+    raf.restore();
+  });
+
+  test(`on ${downEvt} notifies discrete slider value label to change value`, () => {
+    const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+    const {isA} = td.matchers;
+
+    td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+    td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
+    foundation.init();
+    raf.flush();
+
+    rootHandlers[downEvt](pageXObj(100));
+    raf.flush();
+
+    td.verify(mockAdapter.setValueLabelText(isA(String), isA(String), isA(String)));
+
+    raf.restore();
+  });
+
+  test(`on ${downEvt} notifies discrete slider value label to change path`, () => {
+    const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+    const {isA} = td.matchers;
+
+    td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+    td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
+    foundation.init();
+    raf.flush();
+
+    rootHandlers[downEvt](pageXObj(100));
+    raf.flush();
+
+    td.verify(mockAdapter.setValueLabelPath(isA(String)));
+
+    raf.restore();
+  });
+
+  test(`on ${downEvt} notifies discrete slider value label to change path for big numbers on the right`, () => {
+    const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+    const {isA} = td.matchers;
+
+    td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+    td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
+    foundation.init();
+    raf.flush();
+
+    foundation.setMax(100000);
+    raf.flush();
+
+    rootHandlers[downEvt](pageXObj(100));
+    raf.flush();
+
+    td.verify(mockAdapter.setValueLabelPath(isA(String)));
+
+    raf.restore();
+  });
+
+  test(`on ${downEvt} notifies discrete slider value label to change path for big numbers on the left`, () => {
+    const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+    const {isA} = td.matchers;
+
+    td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+    td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
+    foundation.init();
+    raf.flush();
+
+    foundation.setMax(10000000);
+    foundation.setMin(1000000);
+    raf.flush();
+
+    rootHandlers[downEvt](pageXObj(0));
+    raf.flush();
+
+    td.verify(mockAdapter.setValueLabelPath(isA(String)));
 
     raf.restore();
   });
@@ -151,6 +243,43 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     raf.restore();
   });
 
+  test(`on body ${moveEvt} notifies discrete slider value label to change value`, () => {
+    const {foundation, mockAdapter, raf, rootHandlers, bodyHandlers} = setupTest();
+    const {isA} = td.matchers;
+
+    td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+    td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
+    foundation.init();
+    raf.flush();
+
+    rootHandlers[downEvt](pageXObj(49));
+    bodyHandlers[moveEvt](Object.assign({
+      preventDefault: () => {},
+    }, pageXObj(50)));
+    raf.flush();
+
+    // Once on mousedown, once on mousemove
+    td.verify(mockAdapter.setValueLabelText(isA(String), isA(String), isA(String)), {times: 2});
+
+    raf.restore();
+  });
+
+  test(`on body ${upEvt} removes the mdc-slider--active class from the component`, () => {
+    const {foundation, mockAdapter, raf, rootHandlers, bodyHandlers} = setupTest();
+
+    td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+    foundation.init();
+    raf.flush();
+
+    rootHandlers[downEvt](pageXObj(50));
+    raf.flush();
+    bodyHandlers[upEvt]();
+
+    td.verify(mockAdapter.removeClass(cssClasses.ACTIVE));
+
+    raf.restore();
+  });
+
   test(`on body ${upEvt} removes the ${moveEvt} and all *up/end event handlers from the document body`, () => {
     const {foundation, mockAdapter, raf, rootHandlers, bodyHandlers} = setupTest();
     const {isA} = td.matchers;
@@ -183,6 +312,23 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     bodyHandlers[upEvt]();
 
     td.verify(mockAdapter.notifyChange());
+
+    raf.restore();
+  });
+
+  test(`on body ${upEvt} removes value label text style if discrete`, () => {
+    const {foundation, mockAdapter, raf, rootHandlers, bodyHandlers} = setupTest();
+
+    td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+    td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
+    foundation.init();
+    raf.flush();
+
+    rootHandlers[downEvt](pageXObj(50));
+    raf.flush();
+    bodyHandlers[upEvt]();
+
+    td.verify(mockAdapter.removeValueLabelTextStyle());
 
     raf.restore();
   });

@@ -35,6 +35,9 @@ const strings = {
 };
 
 const cssClasses = {
+  SLIDER: 'mdc-slider',
+  TRACK: 'mdc-slider__track',
+  TRACK_FILL: 'mdc-slider__track-fill',
   ACTIVE: 'mdc-slider--active',
   IN_TRANSIT: 'mdc-slider--in-transit',
   IS_DISCRETE: 'mdc-slider--discrete',

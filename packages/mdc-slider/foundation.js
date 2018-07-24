@@ -51,14 +51,18 @@ class MDCSliderFoundation extends MDCFoundation {
     return strings;
   }
 
+  /** @return enum {string} */
+  static get cssClasses() {
+    return cssClasses;
+  }
+
   /** @return {!MDCSliderAdapter} */
   static get defaultAdapter() {
     return /** @type {!MDCSliderAdapter} */ ({
       hasClass: () => {},
       addClass: () => {},
       removeClass: () => {},
-      getAttribute: () => {},
-      setAttribute: () => {},
+      setThumbAttribute: () => {},
       setValueLabelPath: () => {},
       setValueLabelText: () => {},
       removeValueLabelTextStyle: () => {},
@@ -98,18 +102,20 @@ class MDCSliderFoundation extends MDCFoundation {
     this.pressed_ = false;
     /** @private {boolean} */
     this.isDiscrete_ = false;
+    /** @private {boolean} */
+    this.keydownDiscrete_ = false;
     /** @private {number} */
     this.min_ = 0;
     /** @private {number} */
-    this.max_ = 1000000000000000000000;
+    this.max_ = 100;
     /** @private {number} */
     this.value_ = 0;
     /** @private {number} */
     this.step_ = 0;
-    /** @private {boolean} */
-    this.handlingThumbTargetEvt_ = false;
     /** @private {function(): undefined} */
-    this.thumbPointerHandler_ = () => this.handleThumbPointer();
+    this.thumbBlurHandler_ = () => this.handleThumbBlur();
+    /** @private {function(!Event): undefined} */
+    this.transitionEndHandler_ = (evt) => this.handleTransitionEnd(evt);
     /** @private {function(!Event): undefined} */
     this.interactionStartHandler_ = (evt) => this.handleInteractionStart(evt);
     /** @private {function(!Event): undefined} */
@@ -125,11 +131,10 @@ class MDCSliderFoundation extends MDCFoundation {
   init() {
     this.isDiscrete_ = this.adapter_.hasClass(cssClasses.IS_DISCRETE);
     DOWN_EVENTS.forEach((evtName) => this.adapter_.registerEventHandler(evtName, this.interactionStartHandler_));
-    DOWN_EVENTS.forEach((evtName) => {
-      this.adapter_.registerThumbEventHandler(evtName, this.thumbPointerHandler_);
-    });
     this.adapter_.registerEventHandler('keydown', this.keydownHandler_);
     this.adapter_.registerEventHandler('keyup', this.interactionEndHandler_);
+    this.adapter_.registerEventHandler('transitionend', this.transitionEndHandler_);
+    this.adapter_.registerThumbEventHandler('blur', this.thumbBlurHandler_);
     this.adapter_.registerWindowResizeHandler(this.windowResizeHandler_);
     this.layout();
     // At last step, provide a reasonable default value to discrete slider
@@ -142,11 +147,10 @@ class MDCSliderFoundation extends MDCFoundation {
     DOWN_EVENTS.forEach((evtName) => {
       this.adapter_.deregisterEventHandler(evtName, this.interactionStartHandler_);
     });
-    DOWN_EVENTS.forEach((evtName) => {
-      this.adapter_.deregisterThumbEventHandler(evtName, this.thumbPointerHandler_);
-    });
     this.adapter_.deregisterEventHandler('keydown', this.keydownHandler_);
     this.adapter_.deregisterEventHandler('keyup', this.interactionEndHandler_);
+    this.adapter_.deregisterEventHandler('transitionend', this.transitionEndHandler_);
+    this.adapter_.deregisterThumbEventHandler('blur', this.thumbBlurHandler_);
     this.adapter_.deregisterWindowResizeHandler(this.windowResizeHandler_);
   }
 
@@ -177,7 +181,7 @@ class MDCSliderFoundation extends MDCFoundation {
     }
     this.max_ = max;
     this.setValue_(this.value_);
-    this.adapter_.setAttribute(strings.ARIA_VALUEMAX, String(this.max_));
+    this.adapter_.setThumbAttribute(strings.ARIA_VALUEMAX, String(this.max_));
   }
 
   /** @return {number} */
@@ -192,7 +196,7 @@ class MDCSliderFoundation extends MDCFoundation {
     }
     this.min_ = min;
     this.setValue_(this.value_);
-    this.adapter_.setAttribute(strings.ARIA_VALUEMIN, String(this.min_));
+    this.adapter_.setThumbAttribute(strings.ARIA_VALUEMIN, String(this.min_));
   }
 
   /** @return {number} */
@@ -207,14 +211,32 @@ class MDCSliderFoundation extends MDCFoundation {
     }
     this.step_ = step;
     this.setValue_(this.value_);
-    this.adapter_.setAttribute(strings.DATA_STEP, String(this.step_));
+    this.adapter_.setThumbAttribute(strings.DATA_STEP, String(this.step_));
   }
 
   /**
-   * Called when the user starts interacting with the thumb
+   * Called when the thumb blurs
    */
-  handleThumbPointer() {
-    this.handlingThumbTargetEvt_ = true;
+  handleThumbBlur() {
+    if (this.isDiscrete_ && this.keydownDiscrete_) {
+      this.keydownDiscrete_ = false;
+      this.setActive_(false);
+      this.setPressed_(false);
+      this.adapter_.removeValueLabelTextStyle();
+    }
+  }
+
+  /**
+   * Called when the inTransit transition ends
+   * @param {!Event} evt
+   */
+  handleTransitionEnd(evt) {
+    if (this.inTransit_ && this.adapter_.eventTargetHasClass(evt.target, cssClasses.TRACK_FILL)) {
+      this.setInTransit_(false);
+    }
+    if (this.isDiscrete_ && this.adapter_.eventTargetHasClass(evt.target, 'mdc-slider__value-label') && this.active_) {
+      this.setPressed_(true);
+    }
   }
 
   /**
@@ -222,21 +244,15 @@ class MDCSliderFoundation extends MDCFoundation {
    * @param {!Event} evt
    */
   handleInteractionStart(evt) {
+    this.keydownDiscrete_ = false;
     this.setActive_(true);
     this.adapter_.activateRipple();
 
-    this.setInTransit_(!this.handlingThumbTargetEvt_);
-    this.handlingThumbTargetEvt_ = false;
-
-    if (this.isDiscrete_) {
-      const onTransitionEndPressed = (evt) => {
-        if (this.adapter_.eventTargetHasClass(evt.target, 'mdc-slider__value-label') && this.active_) {
-          this.setPressed_(true);
-          this.adapter_.deregisterEventHandler('transitionend', onTransitionEndPressed);
-        }
-      };
-      this.adapter_.registerEventHandler('transitionend', onTransitionEndPressed);
-    }
+    const shouldTransition =
+      this.adapter_.eventTargetHasClass(evt.target, cssClasses.SLIDER) ||
+      this.adapter_.eventTargetHasClass(evt.target, cssClasses.TRACK) ||
+      this.adapter_.eventTargetHasClass(evt.target, cssClasses.TRACK_FILL);
+    this.setInTransit_(shouldTransition);
 
     const moveHandler = (evt) => {
       this.interactionMoveHandler_(evt);
@@ -269,13 +285,15 @@ class MDCSliderFoundation extends MDCFoundation {
    * Called when the user's interaction with the slider ends
    */
   handleInteractionEnd() {
-    this.setActive_(false);
-    this.setPressed_(false);
     this.adapter_.notifyChange();
-    this.adapter_.deactivateRipple();
-    this.adapter_.focusThumb();
-    if (this.isDiscrete_) {
-      this.adapter_.removeValueLabelTextStyle();
+    if (!this.keydownDiscrete_) {
+      this.setActive_(false);
+      this.setPressed_(false);
+      this.adapter_.deactivateRipple();
+      this.adapter_.focusThumb();
+      if (this.isDiscrete_) {
+        this.adapter_.removeValueLabelTextStyle();
+      }
     }
   }
 
@@ -289,18 +307,12 @@ class MDCSliderFoundation extends MDCFoundation {
       return;
     }
 
-    this.setActive_(true);
     if (this.isDiscrete_) {
-      const onTransitionEndPressed = (evt) => {
-        if (this.adapter_.eventTargetHasClass(evt.target, 'mdc-slider__value-label') && this.active_) {
-          this.setPressed_(true);
-          this.adapter_.deregisterEventHandler('transitionend', onTransitionEndPressed);
-        }
-      };
-      this.adapter_.registerEventHandler('transitionend', onTransitionEndPressed);
-    } else {
-      this.setInTransit_(!this.handlingThumbTargetEvt_);
-      this.handlingThumbTargetEvt_ = false;
+      this.keydownDiscrete_ = true;
+    }
+    this.setActive_(true);
+    if (!this.isDiscrete_) {
+      this.setInTransit_(true);
     }
 
     // Prevent page from scrolling due to key presses that would normally scroll the page
@@ -311,31 +323,31 @@ class MDCSliderFoundation extends MDCFoundation {
 
   /**
    * Returns the computed name of the event
-   * @param {!Event} kbdEvt
+   * @param {!Event} keyboardEvt
    * @return {number}
    * @private
    */
-  getKeyIdValue_(kbdEvt) {
+  getKeyIdValue_(keyboardEvt) {
     const delta = this.step_ || (this.max_ - this.min_) / 100;
 
-    if (kbdEvt.key === KEY_IDS.ARROW_LEFT || kbdEvt.keyCode === 37
-      || kbdEvt.key === KEY_IDS.ARROW_DOWN || kbdEvt.keyCode === 40) {
+    if (keyboardEvt.key === KEY_IDS.ARROW_LEFT || keyboardEvt.keyCode === 37
+      || keyboardEvt.key === KEY_IDS.ARROW_DOWN || keyboardEvt.keyCode === 40) {
       return this.value_ - delta;
     }
-    if (kbdEvt.key === KEY_IDS.ARROW_RIGHT || kbdEvt.keyCode === 39
-      || kbdEvt.key === KEY_IDS.ARROW_UP || kbdEvt.keyCode === 38) {
+    if (keyboardEvt.key === KEY_IDS.ARROW_RIGHT || keyboardEvt.keyCode === 39
+      || keyboardEvt.key === KEY_IDS.ARROW_UP || keyboardEvt.keyCode === 38) {
       return this.value_ + delta;
     }
-    if (kbdEvt.key === KEY_IDS.HOME || kbdEvt.keyCode === 36) {
+    if (keyboardEvt.key === KEY_IDS.HOME || keyboardEvt.keyCode === 36) {
       return this.min_;
     }
-    if (kbdEvt.key === KEY_IDS.END || kbdEvt.keyCode === 35) {
+    if (keyboardEvt.key === KEY_IDS.END || keyboardEvt.keyCode === 35) {
       return this.max_;
     }
-    if (kbdEvt.key === KEY_IDS.PAGE_UP || kbdEvt.keyCode === 33) {
+    if (keyboardEvt.key === KEY_IDS.PAGE_UP || keyboardEvt.keyCode === 33) {
       return this.value_ + delta * 5;
     }
-    if (kbdEvt.key === KEY_IDS.PAGE_DOWN || kbdEvt.keyCode === 34) {
+    if (keyboardEvt.key === KEY_IDS.PAGE_DOWN || keyboardEvt.keyCode === 34) {
       return this.value_ - delta * 5;
     }
 
@@ -395,7 +407,7 @@ class MDCSliderFoundation extends MDCFoundation {
       value = this.max_;
     }
     this.value_ = value;
-    this.adapter_.setAttribute(strings.ARIA_VALUENOW, String(this.value_));
+    this.adapter_.setThumbAttribute(strings.ARIA_VALUENOW, String(this.value_));
     this.updateUIForCurrentValue_();
     this.adapter_.notifyInput();
   }
@@ -413,7 +425,7 @@ class MDCSliderFoundation extends MDCFoundation {
 
   /**
    * Calculates the value label path
-   * @return {number}
+   * @return {string}
    */
   calcPath_(translatePx) {
     // Instantiate the addExtra boolean to be used later and the length of the top lobe
@@ -625,23 +637,14 @@ class MDCSliderFoundation extends MDCFoundation {
     const pctComplete = (this.value_ - this.min_) / (this.max_ - this.min_);
     const translatePx = pctComplete * this.rect_.width;
 
-    if (this.inTransit_) {
-      const onTransitionEnd = (evt) => {
-        if (this.adapter_.eventTargetHasClass(evt.target, 'mdc-slider__track-fill')) {
-          this.setInTransit_(false);
-          this.adapter_.deregisterEventHandler('transitionend', onTransitionEnd);
-        }
-      };
-      this.adapter_.registerEventHandler('transitionend', onTransitionEnd);
-    }
-
     requestAnimationFrame(() => {
       if (this.isDiscrete_ && this.active_) {
         const path = this.calcPath_(translatePx);
         const xValue = this.calcValueLabelTextXValue_();
         const translateValue = this.calcValueLabelTextTranslate_(translatePx);
         this.adapter_.setValueLabelPath(path);
-        this.adapter_.setValueLabelText(xValue, String(this.value_), `transform: translateX(${translateValue}px)`);
+        this.adapter_.setValueLabelText(
+          String(xValue), String(this.value_), `transform: translateX(${translateValue}px)`);
       }
       this.adapter_.setThumbStyleProperty('transform', `translateX(${translatePx}px) translateX(-50%)`);
       this.adapter_.setTrackFillStyleProperty('transform', `scaleX(${translatePx})`);
