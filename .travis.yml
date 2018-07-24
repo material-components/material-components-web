@@ -8,59 +8,35 @@ branches:
   - master
 matrix:
   include:
-#  - node_js: 8
-#    env:
-#    - TEST_SUITE=lint
-#    script: npm run lint
+  - node_js: 8
+    env:
+    - TEST_SUITE=lint
+    script: npm run lint
   - node_js: 8
     env:
     - TEST_SUITE=unit
     addons:
       sauce_connect: true
     script: npm run test:unit && npm run posttest
+    after_success:
+    - codecov
   - node_js: 8
     env:
-    - TEST_SUITE=unit
-    addons:
-      sauce_connect: true
-    script: npm run test:unit && npm run posttest
+    - TEST_SUITE=closure
+    - CLOSURE=1
+    script: npm run test:closure
   - node_js: 8
     env:
-    - TEST_SUITE=unit
-    addons:
-      sauce_connect: true
-    script: npm run test:unit && npm run posttest
+    - TEST_SUITE=site-generator
+    script: npm run test:site
   - node_js: 8
     env:
-    - TEST_SUITE=unit
-    addons:
-      sauce_connect: true
-    script: npm run test:unit && npm run posttest
-  - node_js: 8
-    env:
-    - TEST_SUITE=unit
-    addons:
-      sauce_connect: true
-    script: npm run test:unit && npm run posttest
-#    after_success:
-#    - codecov
-#  - node_js: 8
-#    env:
-#    - TEST_SUITE=closure
-#    - CLOSURE=1
-#    script: npm run test:closure
-#  - node_js: 8
-#    env:
-#    - TEST_SUITE=site-generator
-#    script: npm run test:site
-#  - node_js: 8
-#    env:
-#    - TEST_SUITE=screenshot
-#    git:
-#      depth: 200
-#    script: npm run screenshot:test -- --no-fetch
-#    install:
-#      - npm install
+    - TEST_SUITE=screenshot
+    git:
+      depth: 200
+    script: npm run screenshot:test -- --no-fetch
+    install:
+      - npm install
       #- npm ls # Noisy output, but useful for debugging npm package dependency version issues
 before_install:
   # Source the script to run it in the same shell process. This ensures that any environment variables set by the
