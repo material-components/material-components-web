@@ -109,7 +109,6 @@ module.exports = function(config) {
     browsers: determineBrowsers(),
     browserDisconnectTimeout: 40000,
     browserNoActivityTimeout: 120000,
-    browserDisconnectTolerance: 1,
     captureTimeout: 240000,
     concurrency: USING_SL ? 4 : Infinity,
     customLaunchers: SL_LAUNCHERS,
@@ -127,7 +126,6 @@ module.exports = function(config) {
       mocha: {
         reporter: 'html',
         ui: 'qunit',
-        timeout: 10000, // Applies to each individual test case. Limits how long a test case can run in the browser.
       },
     },
 
