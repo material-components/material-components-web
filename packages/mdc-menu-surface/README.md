@@ -119,6 +119,7 @@ Method Signature | Description
 `registerBodyClickHandler(handler: EventListener) => void` | Adds an event listener `handler` for event type `click` on the body.
 `deregisterBodyClickHandler(handler: EventListener) => void` | Removes an event listener `handler` for event type `click` on the body.
 `notifyClose() => void` | Dispatches an event notifying listeners that the menu surface has been closed.
+`notifyOpen() => void` | Dispatches an event notifying listeners that the menu surface has been opened.
 `isElementInContainer(el: Element) => Boolean` | Returns true if the `el` Element is inside the `mdc-menu-surface` container.
 `isRtl() => boolean` | Returns boolean indicating whether the current environment is RTL.
 `setTransformOrigin(value: string) => void` | Sets the transform origin for the menu surface element.
@@ -157,4 +158,5 @@ Method Signature | Description
 
 Event Name | Data | Description
 --- | --- | ---
-`MDCMenuSurface:close` | none | Event emitted after the menu surface is closed.
+`MDCMenuSurface:closed` | none | Event emitted after the menu surface is closed.
+`MDCMenuSurface:opened` | none | Event emitted after the menu surface is opened.

@@ -95,10 +95,10 @@ test('exports MenuSurfaceCorner', () => {
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCMenuSurfaceFoundation, [
     'addClass', 'removeClass', 'hasClass', 'hasAnchor', 'registerInteractionHandler', 'deregisterInteractionHandler',
-    'registerBodyClickHandler', 'deregisterBodyClickHandler', 'notifyClose', 'isElementInContainer', 'isRtl',
-    'setTransformOrigin', 'isFocused', 'saveFocus', 'restoreFocus', 'isFirstElementFocused', 'isLastElementFocused',
-    'focusFirstElement', 'focusLastElement', 'getInnerDimensions', 'getAnchorDimensions', 'getWindowDimensions',
-    'getBodyDimensions', 'getWindowScroll', 'setPosition', 'setMaxHeight',
+    'registerBodyClickHandler', 'deregisterBodyClickHandler', 'notifyClose', 'notifyOpen', 'isElementInContainer',
+    'isRtl', 'setTransformOrigin', 'isFocused', 'saveFocus', 'restoreFocus', 'isFirstElementFocused',
+    'isLastElementFocused', 'focusFirstElement', 'focusLastElement', 'getInnerDimensions', 'getAnchorDimensions',
+    'getWindowDimensions', 'getBodyDimensions', 'getWindowScroll', 'setPosition', 'setMaxHeight',
   ]);
 });
 
@@ -141,6 +141,17 @@ testFoundation('#open removes the animation class at the end of the animation',
     clock.tick(numbers.TRANSITION_OPEN_DURATION);
     mockRaf.flush();
     td.verify(mockAdapter.removeClass(cssClasses.ANIMATING_OPEN));
+  });
+
+testFoundation('#open emits the open event at the end of the animation',
+  ({foundation, mockAdapter, mockRaf}) => {
+    const clock = lolex.install();
+    foundation.open();
+    mockRaf.flush();
+    mockRaf.flush();
+    clock.tick(numbers.TRANSITION_OPEN_DURATION);
+    mockRaf.flush();
+    td.verify(mockAdapter.notifyOpen());
   });
 
 /** Testing various layout cases for autopositioning */
