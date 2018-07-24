@@ -29,3 +29,7 @@
     @include mdc-theme-prop(color, $color);
   }
 }
+
+@mixin mdc-tab-parent-positioning {
+  position: relative;
+}

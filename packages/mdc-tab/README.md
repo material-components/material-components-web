@@ -103,6 +103,7 @@ Mixin | Description
 --- | ---
 `mdc-tab-text-label-color($color)` | Customizes the color of the tab text label.
 `mdc-tab-icon-color($color)` | Customizes the color of the tab icon.
+`mdc-tab-parent-positioning` | Sets the positioning of the MDCTab's parent element so that `MDCTab.computeDimensions()` reports the same values in all browsers.
 
 ## `MDCTab` Properties and Methods
 
@@ -145,6 +146,7 @@ Method Signature | Description
 `getContentOffsetWidth() => number` | Returns the `offsetWidth` value of the content element.
 `notifyInteracted() => void` | Emits the `MDCTab:interacted` event.
 `notifyActivated() => void` | Emits the `MDCTab:activated` event.
+`focus() => void` | Applies focus to the root element.
 
 ### `MDCTabFoundation`
 

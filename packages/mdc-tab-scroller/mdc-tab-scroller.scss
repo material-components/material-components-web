@@ -16,6 +16,7 @@
 */
 
 @import "@material/animation/variables";
+@import "@material/tab/mixins";
 
 // postcss-bem-linter: define tab-scroller
 .mdc-tab-scroller {
@@ -50,6 +51,8 @@
 }
 
 .mdc-tab-scroller__scroll-content {
+  @include mdc-tab-parent-positioning;
+
   display: flex;
   flex: 1 0 auto;
   transform: none;
