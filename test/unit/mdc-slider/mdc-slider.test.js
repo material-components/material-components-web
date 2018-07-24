@@ -71,7 +71,7 @@ test('get/set max', () => {
   assert.equal(component.max, 80);
 });
 
-test('get/set disabled', () => {
+test('gets the disabled state and sets the disabled state', () => {
   const {component} = setupTest();
   component.disabled = true;
 

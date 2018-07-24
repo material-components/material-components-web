@@ -86,7 +86,7 @@
         mdc.slider.MDCSlider.attachTo(document.getElementById('hero-slider'));
         
         var demoRoot = document.getElementById('demo-root')
-        var disabled = demoRoot.querySelector('[name="disabled"]');
+        var disabledCheckbox = demoRoot.querySelector('[name="disabled"]');
 
         var continuousValue = demoRoot.querySelector('#continuous-slider-value');
         var continuousCommittedValue = demoRoot.querySelector('#continuous-slider-committed-value');
@@ -99,8 +99,8 @@
           continuousCommittedValue.textContent = continuousSlider.value;
         });
 
-        disabled.addEventListener('change', function() {
-          continuousSlider.disabled = disabled.checked;
+        disabledCheckbox.addEventListener('change', function() {
+          continuousSlider.disabled = disabledCheckbox.checked;
         });
       });
     </script>

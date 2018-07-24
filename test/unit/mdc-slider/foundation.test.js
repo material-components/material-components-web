@@ -22,7 +22,7 @@ import {verifyDefaultAdapter} from '../helpers/foundation';
 import {createMockRaf} from '../helpers/raf';
 import {setupFoundationTest} from '../helpers/setup';
 
-import {cssClasses} from '../../../packages/mdc-slider/constants';
+import {strings, cssClasses} from '../../../packages/mdc-slider/constants';
 import MDCSliderFoundation from '../../../packages/mdc-slider/foundation';
 
 suite('MDCSliderFoundation');
@@ -428,7 +428,7 @@ test('#setMin updates "aria-valuemin" to the new minimum', () => {
   raf.restore();
 });
 
-test('#isDisabled/#setDisabled retrieves / sets the disabled state, respectively', () => {
+test('#isDisabled returns the disabled state as set by #setDisabled', () => {
   const {foundation} = setupTest();
   foundation.setDisabled(true);
 
@@ -446,7 +446,7 @@ test('#setDisabled adds "aria-disabled=true" when given true', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setDisabled(true);
 
-  td.verify(mockAdapter.setThumbAttribute('aria-disabled', 'true'));
+  td.verify(mockAdapter.setThumbAttribute(strings.ARIA_DISABLED, 'true'));
 });
 
 test('#setDisabled removes the tabindex attribute when given true', () => {
@@ -467,7 +467,7 @@ test('#setDisabled removes the "aria-disabled" attribute when given false', () =
   const {foundation, mockAdapter} = setupTest();
   foundation.setDisabled(false);
 
-  td.verify(mockAdapter.removeThumbAttribute('aria-disabled'));
+  td.verify(mockAdapter.removeThumbAttribute(strings.ARIA_DISABLED));
 });
 
 test('#setDisabled restores any previously set tabindices when given false', () => {
