@@ -82,6 +82,7 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 
 Method Signature | Description
 --- | ---
+`eventTargetMatchesSelector(eventTarget: EventTarget, selector: string) => boolean` | Returns `true` if the given event target satisfies the given CSS selector.
 `addClass(className: string) => void` | Adds a class to the root element.
 `addScrollAreaClass(className: string) => void` | Adds a class to the scroll area element.
 `removeClass(className: string) => void` | Removes a class from the root element.
@@ -94,8 +95,14 @@ Method Signature | Description
 `getScrollAreaOffsetWidth() => number` | Returns the scroll area element's `offsetWidth`.
 `computeHorizontalScrollbarHeight() => number` | Returns the height of the browser's horizontal scrollbars (in px).
 
-> *NOTE*: MDC Tab Scroller provides an implementation for `computeHorizontalScrollbarHeight` in its `util` module;
-> simply pass it the `document` object.
+#### `util` Functions
+
+MDC Tab Scroller provides a `util` module with functions to help implement adapter methods.
+
+Function Signature | Description
+--- | ---
+`computeHorizontalScrollbarHeight(document: Document) => number` | Returns the height of the browser's horizontal scrollbars (in px).
+`getMatchesProperty(HTMLElementPrototype: Object) => string` | Returns the appropriate property name for the `matches` API in the current browser environment.
 
 ### `MDCTabScrollerFoundation`
 
