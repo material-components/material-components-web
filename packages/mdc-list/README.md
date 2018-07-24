@@ -58,26 +58,20 @@ in the double line list style as defined by
 <ul class="mdc-list mdc-list--two-line" aria-orientation="vertical">
   <li class="mdc-list-item">
     <span class="mdc-list-item__text">
-      First-line text
-      <span class="mdc-list-item__secondary-text">
-        Second-line text
-      </span>
+      <span class="mdc-list-item__primary-text">First-line text</span>
+      <span class="mdc-list-item__secondary-text">Second-line text</span>
     </span>
   </li>
   <li class="mdc-list-item">
     <span class="mdc-list-item__text">
-      First-line text
-      <span class="mdc-list-item__secondary-text">
-        Second-line text
-      </span>
+      <span class="mdc-list-item__primary-text">First-line text</span>
+      <span class="mdc-list-item__secondary-text">Second-line text</span>
     </span>
   </li>
   <li class="mdc-list-item">
     <span class="mdc-list-item__text">
-      First-line text
-      <span class="mdc-list-item__secondary-text">
-        Second-line text
-      </span>
+      <span class="mdc-list-item__primary-text">First-line text</span>
+      <span class="mdc-list-item__secondary-text">Second-line text</span>
     </span>
   </li>
 </ul>
@@ -148,6 +142,7 @@ CSS Class | Description
 `mdc-list--two-line` | Optional, modifier to style list with two lines (primary and secondary lines).
 `mdc-list-item` | Mandatory, for the list item element.
 `mdc-list-item__text` |	Optional, primary text for the row (displayed as middle column of the list item).
+`mdc-list-item__primary-text` | Optional, primary text for the list item. Should be the child of `mdc-list-item__text`.
 `mdc-list-item__secondary-text` | Optional, secondary text for the list item. Displayed below the primary text. Should be the child of `mdc-list-item__text`.
 `mdc-list-item--selected` | Optional, styles the row in an selected* state.
 `mdc-list-item--activated` | Optional, styles the row in an activated* state.

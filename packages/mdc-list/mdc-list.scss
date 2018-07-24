@@ -106,12 +106,28 @@
   @include mdc-typography(body2);
 }
 
+$mdc-list-item-primary-text-baseline-height_: 32px;
+$mdc-list-item-secondary-text-baseline-height_: 20px;
+
+$mdc-list-dense-item-primary-text-baseline-height_: 24px;
+$mdc-list-dense-item-secondary-text-baseline-height_: 20px;
+
 .mdc-list-item__primary-text {
-  @include mdc-typography-text-baseline(32px);
+  @include mdc-typography-baseline-top($mdc-list-item-primary-text-baseline-height_);
+  @include mdc-typography-baseline-bottom($mdc-list-item-secondary-text-baseline-height_);
+
+  .mdc-list--dense & {
+    @include mdc-typography-baseline-top($mdc-list-dense-item-primary-text-baseline-height_);
+    @include mdc-typography-baseline-bottom($mdc-list-dense-item-secondary-text-baseline-height_);
+  }
 }
 
 .mdc-list-item__secondary-text {
-  @include mdc-typography-text-baseline(20px, $trailing: false);
+  @include mdc-typography-baseline-top($mdc-list-item-secondary-text-baseline-height_);
+
+  .mdc-list--dense & {
+    @include mdc-typography-baseline-top($mdc-list-dense-item-secondary-text-baseline-height_);
+  }
 }
 
 // Match the font size to the primary text when dense
@@ -159,7 +175,7 @@
 }
 
 .mdc-list--avatar-list.mdc-list--dense .mdc-list-item {
-  height: 48px;
+  height: 60px;
 }
 
 .mdc-list--avatar-list.mdc-list--dense .mdc-list-item__graphic {

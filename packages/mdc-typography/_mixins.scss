@@ -42,6 +42,7 @@
 }
 
 @mixin mdc-typography-baseline-top($distance) {
+  display: block;
   margin-top: 0;
   line-height: normal;
 
