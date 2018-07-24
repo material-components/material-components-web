@@ -38,8 +38,8 @@ export default class MDCSelectFoundation extends MDCFoundation {
       floatLabel: (/* value: boolean */) => {},
       activateBottomLine: () => {},
       deactivateBottomLine: () => {},
-      isRtl: () => false,
       getValue: () => {},
+      isRtl: () => false,
       hasLabel: () => {},
       getLabelWidth: () => {},
       hasOutline: () => {},
@@ -55,12 +55,6 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.blurHandler_ = (evt) => this.handleBlur_(evt);
   }
 
-  handleValueChange() {
-    const optionHasValue = this.adapter_.getValue().length > 0;
-    this.adapter_.floatLabel(optionHasValue);
-    this.notchOutline(optionHasValue);
-  }
-
   setDisabled(disabled) {
     const {DISABLED} = MDCSelectFoundation.cssClasses;
     if (disabled) {
@@ -70,6 +64,12 @@ export default class MDCSelectFoundation extends MDCFoundation {
     }
   }
 
+  handleChange() {
+    const optionHasValue = this.adapter_.getValue().length > 0;
+    this.adapter_.floatLabel(optionHasValue);
+    this.notchOutline(optionHasValue);
+  }
+
   handleFocus() {
     this.adapter_.floatLabel(true);
     this.notchOutline(true);
@@ -77,7 +77,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
   }
 
   handleBlur() {
-    this.handleValueChange();
+    this.handleChange();
     this.adapter_.deactivateBottomLine();
   }
 
