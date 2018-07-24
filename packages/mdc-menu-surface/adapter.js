@@ -73,6 +73,9 @@ class MDCMenuSurfaceAdapter {
   /** Emits an event when the menu surface is closed. */
   notifyClose() {}
 
+  /** Emits an event when the menu surface is opened. */
+  notifyOpen() {}
+
   /**
    * @return {boolean}
    * @param {EventTarget} el
