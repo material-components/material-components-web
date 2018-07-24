@@ -24,7 +24,10 @@ const Cli = require('../lib/cli');
 const {ExitCode} = require('../lib/constants');
 const {TEST_DIR_RELATIVE_PATH} = require('../lib/constants');
 
-module.exports = {
+class ServeCommand {
+  /**
+   * @return {!Promise<number|undefined>} Process exit code. If no exit code is returned, `0` is assumed.
+   */
   async runAsync() {
     const cli = new Cli();
     const {port} = cli;
@@ -45,5 +48,7 @@ Local development server running on http://localhost:${port}/
 ==========================================================
 `);
     });
-  },
-};
+  }
+}
+
+module.exports = ServeCommand;

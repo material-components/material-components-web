@@ -16,10 +16,13 @@
 
 'use strict';
 
+const VError = require('verror');
 const simpleGit = require('simple-git/promise');
 
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
 const {User} = mdcProto;
+
+let hasFetched = false;
 
 class GitRepo {
   constructor(workingDirPath = undefined) {
@@ -49,6 +52,11 @@ class GitRepo {
    * @return {!Promise<void>}
    */
   async fetch(args = []) {
+    if (hasFetched) {
+      return;
+    }
+    hasFetched = true;
+
     console.log('Fetching remote git commits...');
 
     const prFetchRef = '+refs/pull/*/head:refs/remotes/origin/pr/*';
@@ -58,7 +66,12 @@ class GitRepo {
       await this.exec_('raw', ['config', '--add', 'remote.origin.fetch', prFetchRef]);
     }
 
-    await this.repo_.fetch(['--tags', ...args]);
+    try {
+      await this.repo_.fetch(['--tags', ...args]);
+    } catch (err) {
+      const serialized = JSON.stringify(args);
+      throw new VError(err, `Failed to run GitRepo.fetch(${serialized})`);
+    }
   }
 
   /**
@@ -99,21 +112,34 @@ class GitRepo {
    * @return {!Promise<string>}
    */
   async getFileAtRevision(filePath, revision = 'master') {
-    return this.repo_.show([`${revision}:${filePath}`]);
+    try {
+      return this.repo_.show([`${revision}:${filePath}`]);
+    } catch (err) {
+      const serialized = JSON.stringify(args);
+      throw new VError(err, `Failed to run GitRepo.getFileAtRevision(${serialized})`);
+    }
   }
 
   /**
    * @return {!Promise<!Array<string>>}
    */
   async getRemoteNames() {
-    return (await this.repo_.getRemotes()).map((remote) => remote.name);
+    try {
+      return (await this.repo_.getRemotes()).map((remote) => remote.name);
+    } catch (err) {
+      throw new VError(err, 'Failed to run GitRepo.getRemoteNames()');
+    }
   }
 
   /**
    * @return {!Promise<!StatusSummary>}
    */
   async getStatus() {
-    return this.repo_.status();
+    try {
+      return this.repo_.status();
+    } catch (err) {
+      throw new VError(err, 'Failed to run GitRepo.getStatus()');
+    }
   }
 
   /**
@@ -121,8 +147,13 @@ class GitRepo {
    * @return {!Promise<!Array<!DefaultLogFields>>}
    */
   async getLog(args = []) {
-    const logEntries = await this.repo_.log([...args]);
-    return logEntries.all.concat(); // convert TypeScript ReadonlyArray to mutable Array
+    try {
+      const logEntries = await this.repo_.log([...args]);
+      return logEntries.all.concat(); // convert TypeScript ReadonlyArray to mutable Array
+    } catch (err) {
+      const serialized = JSON.stringify(args);
+      throw new VError(err, `Failed to run GitRepo.getLog(${serialized})`);
+    }
   }
 
   /**
@@ -130,7 +161,11 @@ class GitRepo {
    * @return {!Promise<!Array<string>>}
    */
   async getIgnoredPaths(filePaths) {
-    return this.repo_.checkIgnore(filePaths);
+    try {
+      return this.repo_.checkIgnore(filePaths);
+    } catch (err) {
+      throw new VError(err, `Failed to run GitRepo.getIgnoredPaths(${filePaths.length} file paths)`);
+    }
   }
 
   /**
@@ -154,7 +189,12 @@ class GitRepo {
    * @private
    */
   async exec_(cmd, argList = []) {
-    return (await this.repo_[cmd](argList) || '').trim();
+    try {
+      return (await this.repo_[cmd](argList) || '').trim();
+    } catch (err) {
+      const serialized = JSON.stringify([cmd, ...argList]);
+      throw new VError(err, `Failed to run GitRepo.exec_(${serialized})`);
+    }
   }
 }
 

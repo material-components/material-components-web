@@ -22,7 +22,10 @@ const LocalStorage = require('../lib/local-storage');
 const {TEST_DIR_RELATIVE_PATH} = require('../lib/constants');
 
 // TODO(acdvorak): Clean up this entire file. It's gross.
-module.exports = {
+class IndexCommand {
+  /**
+   * @return {!Promise<number|undefined>} Process exit code. If no exit code is returned, `0` is assumed.
+   */
   async runAsync() {
     const localStorage = new LocalStorage();
 
@@ -130,5 +133,7 @@ module.exports = {
     await walkDir(path.join(TEST_DIR_RELATIVE_PATH));
 
     await localStorage.delete([fakeReportHtmlFilePath, fakeReportJsonFilePath]);
-  },
-};
+  }
+}
+
+module.exports = IndexCommand;

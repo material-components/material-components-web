@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+const debounce = require('debounce');
 const octokit = require('@octokit/rest');
 
 const GitRepo = require('./git-repo');
@@ -55,9 +56,16 @@ class GitHubApi {
       };
     };
 
-    this.createStatusThrottled_ = throttle((...args) => {
+    const createStatusDebounced = debounce((...args) => {
+      return this.createStatusUnthrottled_(...args);
+    }, 2500);
+    const createStatusThrottled = throttle((...args) => {
       return this.createStatusUnthrottled_(...args);
     }, 5000);
+    this.createStatusThrottled_ = (...args) => {
+      createStatusDebounced(...args);
+      createStatusThrottled(...args);
+    };
   }
 
   /**
@@ -76,14 +84,13 @@ class GitHubApi {
   /**
    * @param {string} state
    * @param {string} description
-   * @return {!Promise<*>}
    */
-  async setPullRequestStatusManual({state, description}) {
+  setPullRequestStatusManual({state, description}) {
     if (process.env.TRAVIS !== 'true') {
       return;
     }
 
-    return await this.createStatusThrottled_({
+    this.createStatusThrottled_({
       state,
       targetUrl: `https://travis-ci.org/material-components/material-components-web/jobs/${process.env.TRAVIS_JOB_ID}`,
       description,
@@ -198,6 +205,37 @@ class GitHubApi {
       per_page: 300,
     });
     return fileResponse.data;
+  }
+
+  /**
+   * @param {number} prNumber
+   * @return {!Promise<string>}
+   */
+  async getPullRequestBaseBranch(prNumber) {
+    const prResponse = await this.octokit_.pullRequests.get({
+      owner: 'material-components',
+      repo: 'material-components-web',
+      number: prNumber,
+    });
+    if (!prResponse.data) {
+      const serialized = JSON.stringify(prResponse, null, 2);
+      throw new Error(`Unable to fetch data for GitHub PR #${prNumber}:\n${serialized}`);
+    }
+    return `origin/${prResponse.data.base.ref}`;
+  }
+
+  /**
+   * @param {number} prNumber
+   * @param {string} comment
+   * @return {!Promise<*>}
+   */
+  async createPullRequestComment({prNumber, comment}) {
+    return this.octokit_.issues.createComment({
+      owner: 'material-components',
+      repo: 'material-components-web',
+      number: prNumber,
+      body: comment,
+    });
   }
 }
 

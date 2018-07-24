@@ -127,14 +127,16 @@ window.mdc.reportUi = (() => {
         return;
       }
       const htmlFileDetailsElems = Array.from(document.querySelectorAll('details.report-html-file'));
-      htmlFileDetailsElems.forEach((htmlFileDetailsElem) => {
+      for (const htmlFileDetailsElem of htmlFileDetailsElems) {
         htmlFileDetailsElem.open = htmlFileDetailsElem.contains(deepLinkElem);
         if (htmlFileDetailsElem.open) {
           htmlFileDetailsElem.querySelectorAll('details.report-user-agent').forEach((userAgentDetailsElem) => {
             userAgentDetailsElem.open = userAgentDetailsElem.contains(deepLinkElem);
           });
+          htmlFileDetailsElem.parentElement.closest('details').open = true;
+          break;
         }
-      });
+      }
     }
 
     collapseAll() {
