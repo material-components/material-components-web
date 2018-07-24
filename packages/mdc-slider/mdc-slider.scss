@@ -17,6 +17,7 @@
 @import "@material/animation/functions";
 @import "@material/ripple/common";
 @import "@material/ripple/mixins";
+@import "@material/rtl/mixins";
 @import "./mixins";
 @import "./variables";
 
@@ -48,6 +49,10 @@
   transform-origin: left top;
   border-radius: 1px;
   will-change: transform;
+
+  @include mdc-rtl(".mdc-slider") {
+    transform-origin: right top;
+  }
 }
 
 .mdc-slider__thumb {

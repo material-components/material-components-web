@@ -74,6 +74,7 @@
             <br>
             Value from <code>MDCSlider:change</code> event: <span id="continuous-slider-committed-value"></span>
           </p>
+          <input type="checkbox" name="rtl"> RTL
         </div>
       </section>
     </main>
@@ -83,7 +84,8 @@
       demoReady(function() {
         mdc.slider.MDCSlider.attachTo(document.getElementById('hero-slider'));
         
-        var demoRoot = document.getElementById('demo-root')
+        var demoRoot = document.getElementById('demo-root');
+        var rtl = demoRoot.querySelector('[name="rtl"]');
 
         var continuousValue = demoRoot.querySelector('#continuous-slider-value');
         var continuousCommittedValue = demoRoot.querySelector('#continuous-slider-committed-value');
@@ -94,6 +96,15 @@
         });
         continuousSlider.listen('MDCSlider:change', function() {
           continuousCommittedValue.textContent = continuousSlider.value;
+        });
+
+        rtl.addEventListener('change', function() {
+          if (rtl.checked) {
+            continuousSliderEl.setAttribute('dir', 'rtl');
+          } else {
+            continuousSliderEl.removeAttribute('dir');
+          }
+          continuousSlider.layout();
         });
       });
     </script>
