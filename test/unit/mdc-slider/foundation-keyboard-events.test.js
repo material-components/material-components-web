@@ -84,6 +84,27 @@ test('on arrow left keydown decreases the slider value by the step amount when a
   raf.restore();
 });
 
+test('on arrow left increases the slider value when in an RTL context', () => {
+  const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+
+  td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+  td.when(mockAdapter.isRTL()).thenReturn(true);
+  foundation.init();
+  raf.flush();
+
+  foundation.setValue(50);
+  raf.flush();
+
+  rootHandlers.keydown(createFakeEvent({key: 'ArrowLeft'}));
+  raf.flush();
+
+  assert.equal(foundation.getValue(), 51);
+  td.verify(mockAdapter.setThumbStyleProperty(TRANSFORM_PROP, 'translateX(-51px) translateX(50%)'));
+  td.verify(mockAdapter.setTrackFillStyleProperty(TRANSFORM_PROP, 'scaleX(51)'));
+
+  raf.restore();
+});
+
 test('on arrow left keydown works with keyCode', () => {
   const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
 
@@ -276,6 +297,27 @@ test('on arrow right keydown increases the slider value by the step amount when 
   assert.equal(foundation.getValue(), 60);
   td.verify(mockAdapter.setThumbStyleProperty(TRANSFORM_PROP, 'translateX(60px) translateX(-50%)'));
   td.verify(mockAdapter.setTrackFillStyleProperty(TRANSFORM_PROP, 'scaleX(60)'));
+
+  raf.restore();
+});
+
+test('on arrow right decreases the slider value when in an RTL context', () => {
+  const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+
+  td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+  td.when(mockAdapter.isRTL()).thenReturn(true);
+  foundation.init();
+  raf.flush();
+
+  foundation.setValue(50);
+  raf.flush();
+
+  rootHandlers.keydown(createFakeEvent({key: 'ArrowRight'}));
+  raf.flush();
+
+  assert.equal(foundation.getValue(), 49);
+  td.verify(mockAdapter.setThumbStyleProperty(TRANSFORM_PROP, 'translateX(-49px) translateX(50%)'));
+  td.verify(mockAdapter.setTrackFillStyleProperty(TRANSFORM_PROP, 'scaleX(49)'));
 
   raf.restore();
 });
