@@ -236,12 +236,10 @@ class TestCommand {
 
     await Promise.all(promises);
 
+    const endTimeIsoUtc = new Date().toISOString();
     reportData.meta.start_time_iso_utc = startTimeIsoUtc;
-    reportData.meta.end_time_iso_utc = new Date().toISOString();
-    reportData.meta.duration_ms = Duration.elapsed(
-      reportData.meta.start_time_iso_utc,
-      reportData.meta.end_time_iso_utc
-    ).toMillis();
+    reportData.meta.end_time_iso_utc = endTimeIsoUtc;
+    reportData.meta.duration_ms = Duration.elapsed(startTimeIsoUtc, endTimeIsoUtc).toMillis();
 
     this.logger_.foldEnd('screenshot.compare_master');
   }
