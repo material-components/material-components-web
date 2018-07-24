@@ -36,8 +36,6 @@ class MDCIconButtonToggleFoundation extends MDCFoundation {
     return {
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
-      registerInteractionHandler: (/* type: string, handler: EventListener */) => {},
-      deregisterInteractionHandler: (/* type: string, handler: EventListener */) => {},
       setText: (/* text: string */) => {},
       getAttr: (/* name: string */) => /* string */ '',
       setAttr: (/* name: string, value: string */) => {},
