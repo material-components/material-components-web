@@ -16,10 +16,10 @@
  */
 
 import MDCComponent from '@material/base/component';
-import {MDCMenuFoundation, AnchorMargin} from './foundation';
+import {MDCMenuFoundation} from './foundation';
 import {strings} from './constants';
-import {MDCMenuSurface} from '@material/menu-surface';
-import {MDCList} from '@material/list';
+import {MDCMenuSurface, AnchorMargin} from '@material/menu-surface/index';
+import {MDCList} from '@material/list/index';
 
 /**
  * @extends MDCComponent<!MDCMenuFoundation>
@@ -85,7 +85,6 @@ class MDCMenu extends MDCComponent {
   show() {
     this.menuSurface_.show();
     this.registerListeners_();
-    this.list_.listElements_[0].focus();
   }
 
   hide() {
@@ -94,7 +93,7 @@ class MDCMenu extends MDCComponent {
   }
 
   /**
-   * @param {Corner} corner Default anchor corner alignment of top-left
+   * @param {MenuSurfaceCorner} corner Default anchor corner alignment of top-left
    *     menu corner.
    */
   setAnchorCorner(corner) {
@@ -106,14 +105,6 @@ class MDCMenu extends MDCComponent {
    */
   setAnchorMargin(margin) {
     this.menuSurface_.setAnchorMargin(margin);
-  }
-
-  /**
-   * Return the item container element inside the component.
-   * @return {?Element}
-   */
-  get itemsContainer_() {
-    return this.list_.root_;
   }
 
   /**

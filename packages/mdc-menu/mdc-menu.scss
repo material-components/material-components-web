@@ -19,6 +19,7 @@
 @import "./variables";
 @import "./mixins";
 
+// Customize the menu-surface and contained list to match the mdc-menu styles.
 .mdc-menu-surface {
   @include mdc-list-item-meta-ink-color(text-primary-on-background);
   @include mdc-list-item-graphic-ink-color(text-primary-on-background);
@@ -60,6 +61,7 @@
   position: absolute;
 }
 
+// stylelint-disable-next-line plugin/selector-bem-pattern
 .mdc-menu-item--selected .mdc-menu__selection-group-icon {
   display: inline;
 }
