@@ -44,7 +44,7 @@ test('default adapter returns a complete adapter implementation', () => {
     'registerBodyEventHandler', 'deregisterBodyEventHandler', 'registerWindowResizeHandler',
     'deregisterWindowResizeHandler', 'notifyInput', 'notifyChange', 'setThumbStyleProperty',
     'setTrackFillStyleProperty', 'focusThumb', 'activateRipple',
-    'deactivateRipple',
+    'deactivateRipple', 'isRTL',
   ]);
 });
 
@@ -314,6 +314,23 @@ test('#setValue assigns the discrete value when slider is discrete', () => {
   raf.flush();
 
   assert.equal(foundation.getValue(), 76);
+
+  raf.restore();
+});
+
+test('#setValue sets the slider thumb position to negative when in an RTL context', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const raf = createMockRaf();
+
+  td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+  td.when(mockAdapter.isRTL()).thenReturn(true);
+  foundation.init();
+  raf.flush();
+
+  foundation.setValue(75);
+  raf.flush();
+
+  td.verify(mockAdapter.setThumbStyleProperty(TRANSFORM_PROP, 'translateX(-75px) translateX(50%)'));
 
   raf.restore();
 });

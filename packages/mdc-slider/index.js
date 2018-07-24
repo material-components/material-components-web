@@ -154,6 +154,7 @@ class MDCSlider extends MDCComponent {
         deactivateRipple: () => {
           this.ripple_.deactivate();
         },
+        isRTL: () => getComputedStyle(this.root_).direction === 'rtl',
       })
     );
   }

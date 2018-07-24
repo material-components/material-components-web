@@ -159,6 +159,7 @@ instance that was affected.
 | `focusThumb() => void` | Sets the document focus to the thumb. |
 | `activateRipple() => void` | Activates the ripple on the thumb element. |
 | `deactivateRipple() => void` | Deativates the ripple on the thumb element. |
+| `isRTL() => boolean` | True if the slider is within an RTL context, false otherwise. |
 
 ### `MDCSliderFoundation`
 

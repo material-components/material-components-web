@@ -62,6 +62,25 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     raf.restore();
   });
 
+  test(`on ${downEvt} takes RTL into account when computing the slider\'s value using the X ` +
+       'coordinate of the event', () => {
+    const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+
+    td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+    td.when(mockAdapter.isRTL()).thenReturn(true);
+    foundation.init();
+    raf.flush();
+
+    rootHandlers[downEvt](pageXObj(25));
+    raf.flush();
+
+    assert.equal(foundation.getValue(), 75);
+    td.verify(mockAdapter.setThumbStyleProperty(TRANSFORM_PROP, 'translateX(-75px) translateX(50%)'));
+    td.verify(mockAdapter.setTrackFillStyleProperty(TRANSFORM_PROP, 'scaleX(75)'));
+
+    raf.restore();
+  });
+
   test(`on ${downEvt} adds the mdc-slider--active class to the root element`, () => {
     const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
 
