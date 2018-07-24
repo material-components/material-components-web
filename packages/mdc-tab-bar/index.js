@@ -88,6 +88,8 @@ class MDCTabBar extends MDCComponent {
         incrementScroll: (scrollXIncrement) => this.tabScroller_.incrementScroll(scrollXIncrement),
         computeScrollPosition: () => this.tabScroller_.getScrollPosition(),
         getOffsetWidth: () => this.root_.offsetWidth,
+        getScrollContentWidth: () => this.tabScroller_.getScrollContentWidth(),
+        isRTL: () => window.getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
       }),
       this.tabList_,
     );

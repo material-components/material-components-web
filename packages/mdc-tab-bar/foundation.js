@@ -18,9 +18,9 @@
 import MDCFoundation from '@material/base/foundation';
 
 import {strings, numbers} from './constants';
-import MDCTabBarAdapter from './adapter';
 
 /* eslint-disable no-unused-vars */
+import {MDCTabBarAdapter, MDCTabBarRelativeTabDimensions} from './adapter';
 import MDCTabFoundation from '@material/tab/foundation';
 import {MDCTabDimensions} from '@material/tab/adapter';
 /* eslint-enable no-unused-vars */
@@ -49,7 +49,9 @@ class MDCTabBarFoundation extends MDCFoundation {
       scrollTo: () => {},
       incrementScroll: () => {},
       computeScrollPosition: () => {},
+      getScrollContentWidth: () => {},
       getOffsetWidth: () => {},
+      isRTL: () => {},
     });
   }
 
@@ -74,7 +76,7 @@ class MDCTabBarFoundation extends MDCFoundation {
    * @param {!Event} evt
    */
   handleTabInteraction(evt) {
-    this.activateTab(this.getIndexOfTab_(evt.detail.tab));
+    this.activateTab(this.tabs_.indexOf(evt.detail.tab));
   }
 
   /**
@@ -91,7 +93,7 @@ class MDCTabBarFoundation extends MDCFoundation {
 
     if (keyboardNavigation.includes(evt.key)) {
       evt.preventDefault();
-      this.nextTab_(evt);
+      this.activateTabFromKeydown_(evt);
     }
   }
 
@@ -117,6 +119,7 @@ class MDCTabBarFoundation extends MDCFoundation {
    * @param {number} index The tab index to make visible
    */
   scrollIntoView(index) {
+    // Early exit if the index is out of range
     if (!this.indexIsInRange_(index)) {
       return;
     }
@@ -162,13 +165,46 @@ class MDCTabBarFoundation extends MDCFoundation {
   }
 
   /**
-   * Returns the index of the given Tab
-   * @param {!MDCTab} tabToFind
-   * @return {number}
+   * Scrolls the tab at the given index into view in RTL
+   * @param {number} index The tab index to make visible
    * @private
    */
-  getIndexOfTab_(tabToFind) {
-    return this.tabs_.findIndex((tab) => tab === tabToFind);
+  scrollIntoViewRTL_(index) {
+    const scrollWidth = this.adapter_.getScrollContentWidth();
+    const scrollPosition = this.adapter_.computeScrollPosition();
+    const barWidth = this.adapter_.getOffsetWidth();
+
+    const tabDimensions = this.tabs_[index].computeDimensions();
+    const tabRelativeDimensions = this.computeTabRelativeDimensionsRTL_(tabDimensions, scrollPosition, scrollWidth);
+
+    const nextTabIndex = this.computeClosestOccludedTabIndexRTL_(index, tabDimensions, scrollPosition, scrollWidth, barWidth);
+    const nextTabIsLeft = nextTabIndex > index;
+
+    let scrollIncrement = 0;
+
+    // Early exit if the next computed index is the same as the current. This
+    // would only happen if the selected tab was exactly in the center.
+    if (nextTabIndex === index) {
+      return;
+    } else if (nextTabIndex < 0) {
+      scrollIncrement = tabRelativeDimensions.relativeRootRight;
+    } else if (nextTabIndex >= this.tabs_.length) {
+      scrollIncrement = tabRelativeDimensions.relativeRootLeft - barWidth;
+    } else {
+      const nextTabDimensions = this.tabs_[nextTabIndex].computeDimensions();
+      const nextTabRelativeDimensions = this.computeTabRelativeDimensionsRTL_(nextTabDimensions, scrollPosition, scrollWidth);
+      if (nextTabIsLeft) {
+        scrollIncrement = nextTabRelativeDimensions.relativeContentRight + numbers.EXTRA_SCROLL_AMOUNT - barWidth;
+      } else {
+        scrollIncrement = nextTabRelativeDimensions.relativeContentLeft - numbers.EXTRA_SCROLL_AMOUNT;
+      }
+    }
+
+    if (nextTabIsLeft && scrollIncrement < 0 || !nextTabIsLeft && scrollIncrement > 0) {
+      return;
+    }
+
+    this.adapter_.incrementScroll(scrollIncrement);
   }
 
   /**
@@ -189,13 +225,36 @@ class MDCTabBarFoundation extends MDCFoundation {
     return index > 0 && index < this.tabs_.length - 1;
   }
 
+  /**
+   * Computes the dimensions of a Tab relative to the Tab Bar
+   * @param {!MDCTabDimensions} tabDimensions The current tab dimensions
+   * @param {number} scrollPosition The current scroll position
+   * @return {!MDCTabBarRelativeTabDimensions}
+   * @private
+   */
   computeTabRelativeDimensions_(tabDimensions, scrollPosition) {
-    return {
+    return /** @type {!MDCTabBarRelativeTabDimensions} */ ({
       relativeRootLeft: tabDimensions.rootLeft - scrollPosition,
       relativeRootRight: tabDimensions.rootRight - scrollPosition,
       relativeContentLeft: tabDimensions.contentLeft - scrollPosition,
       relativeContentRight: tabDimensions.contentRight - scrollPosition,
-    };
+    });
+  }
+
+  /**
+   * Computes the dimensions of a Tab relative to the Tab Bar in RTL
+   * @param {!MDCTabDimensions} tabDimensions The current tab dimensions
+   * @param {number} scrollPosition The current scroll position
+   * @param {number} scrollContentWidth The current scroll content width
+   * @private
+   */
+  computeTabRelativeDimensionsRTL_(tabDimensions, scrollPosition, scrollContentWidth) {
+    return /** @type {!MDCTabBarRelativeTabDimensions} */ ({
+      relativeRootLeft: scrollContentWidth - tabDimensions.rootLeft - scrollPosition,
+      relativeRootRight: scrollContentWidth - tabDimensions.rootRight - scrollPosition,
+      relativeContentLeft: scrollContentWidth - tabDimensions.contentLeft - scrollPosition,
+      relativeContentRight: scrollContentWidth - tabDimensions.contentRight - scrollPosition,
+    });
   }
 
   /**
@@ -233,10 +292,6 @@ class MDCTabBarFoundation extends MDCFoundation {
      * From there, we either increment or decrement the index based on the
      * language direction of the content.
      */
-    if (this.isRTL_()) {
-      return this.computeNextAdjacentTabRTL_(index, tabDimensions, scrollPosition, barWidth);
-    }
-
     const relativeTabRootLeft = tabDimensions.rootLeft - scrollPosition;
     const relativeTabRootRight = tabDimensions.rootRight - scrollPosition - barWidth;
     const relativeTabRootDelta = relativeTabRootLeft + relativeTabRootRight;
@@ -261,19 +316,23 @@ class MDCTabBarFoundation extends MDCFoundation {
    * @param {!MDCTabDimensions} tabDimensions Whether the next tab is left or right
    * @param {number} scrollDistance The distance scrolled
    * @param {number} scrollWidth The width of the scroller
+   * @param {number} barWidth The width of the bar
    * @return {number}
    * @private
    */
-  computeNextAdjacentTabRTL_(index, tabDimensions, scrollDistance, scrollWidth) {
-    const relativeTabRootLeft = tabDimensions.rootLeft - scrollDistance;
-    const relativeTabRootRight = tabDimensions.rootRight - scrollDistance - scrollWidth;
-    const relativeTabRootDelta = relativeTabRootLeft + relativeTabRootRight;
+  computeClosestOccludedTabIndexRTL_(index, tabDimensions, scrollDistance, scrollWidth, barWidth) {
+    const rootLeft = scrollWidth - tabDimensions.rootLeft - barWidth - scrollDistance;
+    const rootRight = scrollWidth - tabDimensions.rootRight - scrollDistance;
+    const rootDelta = rootLeft + rootRight;
 
-    if (relativeTabRootLeft < 0 || relativeTabRootDelta < 0) {
+    const leftEdgeIsOccluded = rootLeft > 0 || rootDelta > 0;
+    const rightEdgeIsOccluded = rootRight < 0 || rootDelta < 0;
+
+    if (leftEdgeIsOccluded) {
       return index + 1;
     }
 
-    if (relativeTabRootRight > 0 || relativeTabRootDelta > 0) {
+    if (rightEdgeIsOccluded) {
       return index - 1;
     }
 
@@ -309,6 +368,14 @@ class MDCTabBarFoundation extends MDCFoundation {
     return tabDimensions.contentLeft - tabDimensions.rootLeft;
   }
 
+  computeTabContentDistanceRTL_(tabDimensions, isLeft) {
+    if (isLeft) {
+      return tabDimensions.rootRight - tabDimensions.contentRight;
+    }
+
+    return tabDimensions.contentLeft - tabDimensions.rootLeft;
+  }
+
   /** @private */
   initActiveTab_() {
     for (let i = 0; i < this.tabs_.length; i++) {
@@ -325,11 +392,10 @@ class MDCTabBarFoundation extends MDCFoundation {
    * @private
    */
   isRTL_() {
-    // TODO(prodee): Make this return the correct RTL state
-    return false;
+    return this.adapter_.isRTL();
   }
 
-  nextTab_(evt) {
+  activateTabFromKeydown_(evt) {
     if (this.isRTL_()) {
       return this.nextTabRTL_(evt);
     }
@@ -338,21 +404,21 @@ class MDCTabBarFoundation extends MDCFoundation {
 
     let nextTabIndex = this.activeIndex_;
     switch (evt.key) {
-    case 'ArrowLeft':
-      nextTabIndex -= 1;
-      break;
-    case 'ArrowRight':
-      nextTabIndex += 1;
-      break;
     case 'Home':
       nextTabIndex = 0;
       break;
     case 'End':
       nextTabIndex = maxTabIndex;
       break;
+    case 'ArrowLeft':
+      nextTabIndex -= 1;
+      break;
+    case 'ArrowRight':
+      nextTabIndex += 1;
+      break;
     }
 
-    if (nextTabIndex === -1) {
+    if (nextTabIndex < 0) {
       nextTabIndex = maxTabIndex;
     } else if (nextTabIndex > maxTabIndex) {
       nextTabIndex = 0;

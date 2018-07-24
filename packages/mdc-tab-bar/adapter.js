@@ -18,7 +18,7 @@
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
- * @typedef {{rootLeft: number, rootRight: number, contentLeft: number, contentRight: number}}
+ * @typedef {{relativeRootLeft: number, relativeRootRight: number, relativeContentLeft: number, relativeContentRight: number}}
  */
 let MDCTabBarRelativeTabDimensions;
 
@@ -52,6 +52,12 @@ class MDCTabBarAdapter {
   computeScrollPosition() {}
 
   /**
+   * Returns the width of the scroll content
+   * @return {number}
+   */
+  getScrollContentWidth() {}
+
+  /**
    * Returns the root element's offsetWidth
    * @return {number}
    */
@@ -64,4 +70,4 @@ class MDCTabBarAdapter {
   isRTL() {}
 }
 
-export default MDCTabBarAdapter;
+export {MDCTabBarAdapter, MDCTabBarRelativeTabDimensions};
