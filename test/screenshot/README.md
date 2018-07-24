@@ -6,8 +6,8 @@ Prevent visual regressions by running screenshot tests on every PR.
 
 ### API credentials
 
-CBT credentials can be found on the [CrossBrowserTesting.com > Account](https://crossbrowsertesting.com/account) page.
-`Authkey` is listed under the `User Profile` section.
+CBT credentials can be found on the [CrossBrowserTesting.com > Account](https://crossbrowsertesting.com/account) page. \
+Your `Authkey` is listed under the `User Profile` section.
 
 Add the following to your `~/.bash_profile` or `~/.bashrc` file:
 
