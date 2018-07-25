@@ -15,23 +15,36 @@
  */
 
 import {MDCFoundation} from '@material/base/index';
+import MDCSelectAdapter from './adapter';
 import {cssClasses, strings, numbers} from './constants';
 
+/**
+ * @extends {MDCFoundation<!MDCSelectAdapter>}
+ * @final
+ */
 export default class MDCSelectFoundation extends MDCFoundation {
+  /** @return enum {string} */
   static get cssClasses() {
     return cssClasses;
   }
 
+  /** @return enum {number} */
   static get numbers() {
     return numbers;
   }
 
+  /** @return enum {string} */
   static get strings() {
     return strings;
   }
 
+  /**
+   * {@see MDCSelectAdapter} for typing information on parameters and return
+   * types.
+   * @return {!MDCSelectAdapter}
+   */
   static get defaultAdapter() {
-    return {
+    return /** @type {!MDCSelectAdapter} */ ({
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
       hasClass: (/* className: string */) => false,
@@ -45,16 +58,25 @@ export default class MDCSelectFoundation extends MDCFoundation {
       hasOutline: () => {},
       notchOutline: () => {},
       closeOutline: () => {},
-    };
+    });
   }
 
+  /**
+   * @param {!MDCSelectAdapter} adapter
+   */
   constructor(adapter) {
     super(Object.assign(MDCSelectFoundation.defaultAdapter, adapter));
 
+    /** @private {function(): undefined} */
     this.focusHandler_ = (evt) => this.handleFocus_(evt);
+    /** @private {function(): undefined} */
     this.blurHandler_ = (evt) => this.handleBlur_(evt);
   }
 
+  /**
+   * Updates the styles of the select to show the disasbled state.
+   * @param {boolean} disabled
+   */
   updateDisabledStyle(disabled) {
     const {DISABLED} = MDCSelectFoundation.cssClasses;
     if (disabled) {
@@ -64,18 +86,27 @@ export default class MDCSelectFoundation extends MDCFoundation {
     }
   }
 
+  /**
+   * Handles value event changes.
+   */
   handleChange() {
     const optionHasValue = this.adapter_.getValue().length > 0;
     this.adapter_.floatLabel(optionHasValue);
     this.notchOutline(optionHasValue);
   }
 
+  /**
+   * Handles focus events from root element.
+   */
   handleFocus() {
     this.adapter_.floatLabel(true);
     this.notchOutline(true);
     this.adapter_.activateBottomLine();
   }
 
+  /**
+   * Handles blur events from root element.
+   */
   handleBlur() {
     this.handleChange();
     this.adapter_.deactivateBottomLine();
