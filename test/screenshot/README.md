@@ -159,7 +159,8 @@ Test pages for **small** components must have a `test-main--mobile-viewport` cla
 ```
 
 This class ensures that all components on the page fit inside an "average" mobile viewport without scrolling.
-This is necessary because most browsers' WebDriver implementations do not support taking screenshots of the entire page.
+This is necessary because most browsers' WebDriver implementations do not support taking screenshots of the entire
+`document`.
 
 Test pages for **large** components, however, must _not_ use the `--mobile-viewport` class:
 
