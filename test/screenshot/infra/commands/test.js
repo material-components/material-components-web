@@ -24,12 +24,13 @@ const GitRevision = mdcProto.GitRevision;
 const BuildCommand = require('./build');
 const Cli = require('../lib/cli');
 const CliColor = require('../lib/logger').colors;
+const Controller = require('../lib/controller');
 const DiffBaseParser = require('../lib/diff-base-parser');
 const Duration = require('../lib/duration');
-const Controller = require('../lib/controller');
 const GitHubApi = require('../lib/github-api');
 const ImageDiffer = require('../lib/image-differ');
 const Logger = require('../lib/logger');
+const getStackTrace = require('../lib/stacktrace')('TestCommand');
 const {ExitCode} = require('../lib/constants');
 
 // TODO(acdvorak): Refactor most of this class out into a separate file
@@ -47,6 +48,11 @@ class TestCommand {
    */
   async runAsync() {
     await this.build_();
+
+    if (this.isExternalPr_()) {
+      this.logExternalPr_();
+      return ExitCode.OK;
+    }
 
     /** @type {!mdc.proto.DiffBase} */
     const snapshotDiffBase = await this.diffBaseParser_.parseGoldenDiffBase();
@@ -113,7 +119,7 @@ class TestCommand {
       this.logComparisonResults_(reportData);
     } catch (err) {
       await this.gitHubApi_.setPullRequestError();
-      throw new VError(err, 'Failed to run screenshot tests');
+      throw new VError(err, getStackTrace('diffAgainstLocal_'));
     }
 
     return reportData;
@@ -145,7 +151,7 @@ class TestCommand {
       this.logComparisonResults_(reportData);
     } catch (err) {
       await this.gitHubApi_.setPullRequestError();
-      throw new VError(err, 'Failed to run screenshot tests');
+      throw new VError(err, getStackTrace('diffAgainstMasterImpl_'));
     }
 
     return reportData;
@@ -359,16 +365,6 @@ ${listItemMarkdown}
   }
 
   /**
-   * @return {string}
-   * @private
-   */
-  getCongratulatoryMarkdown_() {
-    return `
-### No diffs! 💯🎉
-`;
-  }
-
-  /**
    * @param {!mdc.proto.ReportData} reportData
    * @return {!ExitCode|number}
    */
@@ -387,11 +383,38 @@ ${listItemMarkdown}
   }
 
   /**
+   * @return {boolean}
+   * @private
+   */
+  isExternalPr_() {
+    return Boolean(
+      process.env.TRAVIS_PULL_REQUEST_SLUG &&
+      !process.env.TRAVIS_PULL_REQUEST_SLUG.startsWith('material-components/')
+    );
+  }
+
+  /**
+   * @private
+   */
+  logExternalPr_() {
+    this.logger_.warn(`
+
+${CliColor.bold.red('Screenshot tests are not supported on external PRs for security reasons.')}
+
+See ${CliColor.underline('https://docs.travis-ci.com/user/pull-requests/#Pull-Requests-and-Security-Restrictions')}
+for more information.
+
+${CliColor.bold.red('Skipping screenshot tests.')}
+`);
+  }
+
+  /**
    * @param {number} prNumber
    * @private
    */
   logUntestablePr_(prNumber) {
     this.logger_.warn(`
+
 ${CliColor.underline(`PR #${prNumber}`)} does not contain any testable source file changes.
 
 ${CliColor.bold.green('Skipping screenshot tests.')}
