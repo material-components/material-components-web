@@ -179,6 +179,7 @@ test('click handler is added to root element', () => {
 
 test('keydown handler is removed from the root element on destroy', () => {
   const {root, component} = setupTest();
+  component.foundation_.handleClick = td.func();
   const event = document.createEvent('KeyboardEvent');
   event.initEvent('click', false, true);
   root.dispatchEvent(event);
