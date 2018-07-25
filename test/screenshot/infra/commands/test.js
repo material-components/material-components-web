@@ -49,6 +49,11 @@ class TestCommand {
   async runAsync() {
     await this.build_();
 
+    if (this.isExternalPr_()) {
+      this.logExternalPr_();
+      return ExitCode.OK;
+    }
+
     /** @type {!mdc.proto.DiffBase} */
     const snapshotDiffBase = await this.diffBaseParser_.parseGoldenDiffBase();
     const snapshotGitRev = snapshotDiffBase.git_revision;
@@ -360,16 +365,6 @@ ${listItemMarkdown}
   }
 
   /**
-   * @return {string}
-   * @private
-   */
-  getCongratulatoryMarkdown_() {
-    return `
-### No diffs! 💯🎉
-`;
-  }
-
-  /**
    * @param {!mdc.proto.ReportData} reportData
    * @return {!ExitCode|number}
    */
@@ -388,11 +383,38 @@ ${listItemMarkdown}
   }
 
   /**
+   * @return {boolean}
+   * @private
+   */
+  isExternalPr_() {
+    return Boolean(
+      process.env.TRAVIS_PULL_REQUEST_SLUG &&
+      !process.env.TRAVIS_PULL_REQUEST_SLUG.startsWith('material-components/')
+    );
+  }
+
+  /**
+   * @private
+   */
+  logExternalPr_() {
+    this.logger_.warn(`
+
+${CliColor.bold.red('Screenshot tests are not supported on external PRs for security reasons.')}
+
+See ${CliColor.underline('https://docs.travis-ci.com/user/pull-requests/#Pull-Requests-and-Security-Restrictions')}
+for more information.
+
+${CliColor.bold.red('Skipping screenshot tests.')}
+`);
+  }
+
+  /**
    * @param {number} prNumber
    * @private
    */
   logUntestablePr_(prNumber) {
     this.logger_.warn(`
+
 ${CliColor.underline(`PR #${prNumber}`)} does not contain any testable source file changes.
 
 ${CliColor.bold.green('Skipping screenshot tests.')}
