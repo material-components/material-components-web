@@ -46,6 +46,10 @@
   z-index: 1;
 }
 
+.mdc-tab--min-width {
+  flex: 0 1 auto;
+}
+
 .mdc-tab__ripple {
   @include mdc-ripple-surface;
   @include mdc-ripple-radius-bounded;
@@ -63,6 +67,7 @@
   @include mdc-tab-indicator-surface;
 
   display: flex;
+  align-items: center;
   justify-content: center;
   height: inherit;
   pointer-events: none;
@@ -76,7 +81,6 @@
 
 .mdc-tab__text-label {
   display: inline-block;
-  padding: 16px 0 20px;
   opacity: $mdc-tab-text-label-opacity;
   // Setting line-height here overrides the line-height from the typography
   // mixin above. The line-height needs to be overridden so that the spacing
@@ -88,7 +92,6 @@
 .mdc-tab__icon {
   width: $mdc-tab-icon-size;
   height: $mdc-tab-icon-size;
-  padding: 12px 0;
   opacity: $mdc-tab-icon-opacity;
 }
 
@@ -99,14 +102,15 @@
 .mdc-tab--stacked .mdc-tab__content {
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
 }
 
 .mdc-tab--stacked .mdc-tab__icon {
-  padding: 12px 0 8px;
+  padding-top: 12px;
 }
 
 .mdc-tab--stacked .mdc-tab__text-label {
-  padding: 0 0 16px;
+  padding-bottom: 16px;
 }
 
 // The [de]activation animation affects color for text label and icon

@@ -31,10 +31,8 @@
 }
 
 .demo-tab-bar {
-  max-width: 420px;
-
   .mdc-tab {
-    @include mdc-tab-fixed-width(110px);
+
   }
 }
 

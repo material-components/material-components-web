@@ -70,6 +70,11 @@ class MDCTabBarFoundation extends MDCFoundation {
     super(Object.assign(MDCTabBarFoundation.defaultAdapter, adapter));
   }
 
+  init() {
+    const activeIndex = this.adapter_.getActiveTabIndex();
+    this.scrollIntoView(activeIndex);
+  }
+
   /**
    * Activates the tab at the given index
    * @param {number} index

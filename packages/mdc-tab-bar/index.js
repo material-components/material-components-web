@@ -61,6 +61,10 @@ class MDCTabBar extends MDCComponent {
     return new MDCTabBar(root);
   }
 
+  /**
+   * @param {(function(!Element): !MDCTab)=} tabFactory A function which creates a new MDCTab
+   * @param {(function(!Element): !MDCTab)=} tabScrollerFactory A function which creates a new MDCTabScroller
+   */
   initialize(
     tabFactory = (el) => new MDCTab(el),
     tabScrollerFactory = (el) => new MDCTabScroller(el),
@@ -87,6 +91,8 @@ class MDCTabBar extends MDCComponent {
     super.destroy();
     this.root_.removeEventListener(MDCTabFoundation.strings.INTERACTED_EVENT, this.handleTabInteraction_);
     this.root_.removeEventListener('keydown', this.handleKeyDown_);
+    this.tabList.forEach((tab) => tab.destroy());
+    this.tabScroller.destroy();
   }
 
   /**
@@ -112,15 +118,18 @@ class MDCTabBar extends MDCComponent {
     );
   }
 
-  destroy() {
-    this.tabScroller.destroy();
-    this.tabList.forEach((tab) => tab.destroy());
-  }
-
+  /**
+   * Activates the tab at the given index
+   * @param {number} index The index of the tab
+   */
   activateTab(index) {
     this.foundation_.activateTab(index);
   }
 
+  /**
+   * Scrolls the tab at the given index into view
+   * @param {number} index THe index of the tab
+   */
   scrollIntoView(index) {
     this.foundation_.scrollIntoView(index);
   }

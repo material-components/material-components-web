@@ -18,17 +18,200 @@
 import bel from 'bel';
 import {assert} from 'chai';
 import td from 'testdouble';
+import domEvents from 'dom-events';
 
-import {MDCTabBar} from '../../../packages/mdc-tab-bar';
+import {MDCTabBar, MDCTabBarFoundation} from '../../../packages/mdc-tab-bar';
+import {MDCTabFoundation} from '../../../packages/mdc-tab';
 
 const getFixture = () => bel`
   <div class="mdc-tab-bar">
     <div class="mdc-tab-scroller">
       <div class="mdc-tab-scroller__scroll-area">
         <div class="mdc-tab-scroller__scroll-content">
-          
+          <div class="mdc-tab">
+            <span class="mdc-tab-indicator"></span>
+            <span class="mdc-tab__ripple"></span>
+          </div>
+          <div class="mdc-tab">
+            <span class="mdc-tab-indicator"></span>
+            <span class="mdc-tab__ripple"></span>
+          </div>
+          <div class="mdc-tab">
+            <span class="mdc-tab-indicator"></span>
+            <span class="mdc-tab__ripple"></span>
+          </div>
         </div>
       </div>
     </div>
   </div>
 `;
+
+suite.only('MDCTabBar');
+
+test('attachTo returns an MDCTabBar instance', () => {
+  assert.isOk(MDCTabBar.attachTo(getFixture()) instanceof MDCTabBar);
+});
+
+class FakeTab {
+  constructor() {
+    this.destroy = td.function();
+    this.activate = td.function();
+    this.deactivate = td.function();
+    this.computeIndicatorClientRect = td.function();
+    this.computeDimensions = td.function();
+    this.active = false;
+  }
+}
+
+class FakeTabScroller {
+  constructor() {
+    this.destroy = td.function();
+    this.scrollTo = td.function();
+    this.incrementScroll = td.function();
+    this.getScrollPosition = td.function();
+    this.getScrollContentWidth = td.function();
+  }
+}
+
+test('#constructor instantiates child tab components', () => {
+  const root = getFixture();
+  const component = new MDCTabBar(root, undefined, (el) => new FakeTab(el), (el) => new FakeTabScroller(el));
+  assert.equal(component.tabList.length, 3);
+  assert.instanceOf(component.tabList[0], FakeTab);
+  assert.instanceOf(component.tabList[1], FakeTab);
+  assert.instanceOf(component.tabList[2], FakeTab);
+});
+
+test('#constructor instantiates child tab scroller component', () => {
+  const root = getFixture();
+  const component = new MDCTabBar(root, undefined, (el) => new FakeTab(el), (el) => new FakeTabScroller(el));
+  assert.instanceOf(component.tabScroller, FakeTabScroller);
+});
+
+test('#destroy cleans up child tab components', () => {
+  const root = getFixture();
+  const component = new MDCTabBar(root, undefined, (el) => new FakeTab(el), (el) => new FakeTabScroller(el));
+  component.destroy();
+  td.verify(component.tabList[0].destroy());
+  td.verify(component.tabList[1].destroy());
+  td.verify(component.tabList[2].destroy());
+});
+
+function setupTest() {
+  const root = getFixture();
+  const component = new MDCTabBar(root, undefined, (el) => new FakeTab(el), (el) => new FakeTabScroller(el));
+  return {root, component};
+}
+
+test('#adapter.scrollTo calls scrollTo of the child tab scroller', () => {
+  const {component} = setupTest();
+  component.getDefaultFoundation().adapter_.scrollTo(123);
+  td.verify(component.tabScroller.scrollTo(123));
+});
+
+test('#adapter.incrementScroll calls incrementScroll of the child tab scroller', () => {
+  const {component} = setupTest();
+  component.getDefaultFoundation().adapter_.incrementScroll(123);
+  td.verify(component.tabScroller.incrementScroll(123));
+});
+
+test('#adapter.getScrollPosition calls getScrollPosition of the child tab scroller', () => {
+  const {component} = setupTest();
+  component.getDefaultFoundation().adapter_.getScrollPosition();
+  td.verify(component.tabScroller.getScrollPosition(), {times: 1});
+});
+
+test('#adapter.getScrollContentWidth calls getScrollContentWidth of the child tab scroller', () => {
+  const {component} = setupTest();
+  component.getDefaultFoundation().adapter_.getScrollContentWidth();
+  td.verify(component.tabScroller.getScrollContentWidth(), {times: 1});
+});
+
+test('#adapter.getOffsetWidth returns getOffsetWidth of the root element', () => {
+  const {component, root} = setupTest();
+  assert.strictEqual(component.getDefaultFoundation().adapter_.getOffsetWidth(), root.offsetWidth);
+});
+
+test('#adapter.isRTL returns the RTL state of the root element', () => {
+  const {component, root} = setupTest();
+  document.body.appendChild(root);
+  document.body.setAttribute('dir', 'rtl');
+  assert.strictEqual(component.getDefaultFoundation().adapter_.isRTL(), true);
+  document.body.removeChild(root);
+  document.body.removeAttribute('dir');
+});
+
+test('#adapter.activateTabAtIndex calls activate on the tab at the index', () => {
+  const {component} = setupTest();
+  component.getDefaultFoundation().adapter_.activateTabAtIndex(2, {});
+  td.verify(component.tabList[2].activate({}), {times: 1});
+});
+
+test('#adapter.deactivateTabAtIndex calls deactivate on the tab at the index', () => {
+  const {component} = setupTest();
+  component.getDefaultFoundation().adapter_.deactivateTabAtIndex(1);
+  td.verify(component.tabList[1].deactivate(), {times: 1});
+});
+
+test('#adapter.getTabIndicatorClientRectAtIndex calls computeIndicatorClientRect on the tab at the index', () => {
+  const {component} = setupTest();
+  component.getDefaultFoundation().adapter_.getTabIndicatorClientRectAtIndex(0);
+  td.verify(component.tabList[0].computeIndicatorClientRect(), {times: 1});
+});
+
+test('#adapter.getTabDimensionsAtIndex calls computeDimensions on the tab at the index', () => {
+  const {component} = setupTest();
+  component.getDefaultFoundation().adapter_.getTabDimensionsAtIndex(0);
+  td.verify(component.tabList[0].computeDimensions(), {times: 1});
+});
+
+test('#adapter.getActiveTabIndex returns the index of the active tab', () => {
+  const {component} = setupTest();
+  component.tabList[1].active = true;
+  assert.strictEqual(component.getDefaultFoundation().adapter_.getActiveTabIndex(), 1);
+});
+
+test('#adapter.getIndexOfTab returns the index of the given tab', () => {
+  const {component} = setupTest();
+  const tab = component.tabList[2];
+  assert.strictEqual(component.getDefaultFoundation().adapter_.getIndexOfTab(tab), 2);
+});
+
+test('#adapter.getTabListLength returns the length of the tab list', () => {
+  const {component} = setupTest();
+  assert.strictEqual(component.getDefaultFoundation().adapter_.getTabListLength(), 3);
+});
+
+function setupMockFoundationTest(root = getFixture()) {
+  const MockFoundationConstructor = td.constructor(MDCTabBarFoundation);
+  const mockFoundation = new MockFoundationConstructor();
+  const component = new MDCTabBar(root, mockFoundation);
+  return {root, component, mockFoundation};
+}
+
+test('#activateTab calls activateTab', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.activateTab(1);
+  td.verify(mockFoundation.activateTab(1), {times: 1});
+});
+
+test('#scrollIntoView calls scrollIntoView', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.scrollIntoView(1);
+  td.verify(mockFoundation.scrollIntoView(1), {times: 1});
+});
+
+test(`on ${MDCTabFoundation.strings.INTERACTED_EVENT}, call handleTabInteraction`, () => {
+  const {root, mockFoundation} = setupMockFoundationTest();
+  const tab = root.querySelector(MDCTabBarFoundation.strings.TAB_SELECTOR);
+  domEvents.emit(tab, MDCTabFoundation.strings.INTERACTED_EVENT, {
+    bubbles: true,
+  });
+  td.verify(mockFoundation.handleTabInteraction(td.matchers.anything()), {times: 1});
+});
+
+test('on keydown, call handleKeyDown', () => {
+  const {root, mockFoundation} = setupMockFoundationTest();
+  domEvents.emit(root, 'keydown');
+  td.verify(mockFoundation.handleKeyDown(td.matchers.anything()), {times: 1});
+});

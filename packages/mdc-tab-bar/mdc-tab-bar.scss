@@ -15,8 +15,6 @@
   * limitations under the License.
   */
 
-@import '@material/elevation/mixins';
-
 .mdc-tab-bar {
-  @include mdc-elevation(4);
+  width: 100%;
 }
