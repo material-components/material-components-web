@@ -18,6 +18,11 @@ matrix:
     addons:
 #      chrome: stable
       sauce_connect: true
+    before_script:
+    # TODO(acdvorak): DO NOT MERGE - REVERT BEFORE MERGING
+    - export SAUCE_USERNAME=''
+    - export SAUCE_ACCESS_KEY=''
+    # TODO(acdvorak): DO NOT MERGE - REVERT BEFORE MERGING
     script: npm run test:unit && npm run posttest
     after_success:
     - codecov
