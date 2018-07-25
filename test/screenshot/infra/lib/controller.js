@@ -16,16 +16,18 @@
 
 'use strict';
 
+const VError = require('verror');
+
 const CbtApi = require('./cbt-api');
 const Cli = require('./cli');
 const CloudStorage = require('./cloud-storage');
 const Duration = require('./duration');
-const GitRepo = require('./git-repo');
 const GoldenIo = require('./golden-io');
 const Logger = require('./logger');
 const ReportBuilder = require('./report-builder');
 const ReportWriter = require('./report-writer');
 const SeleniumApi = require('./selenium-api');
+const getStackTrace = require('./stacktrace')('Controller');
 
 class Controller {
   constructor() {
@@ -46,12 +48,6 @@ class Controller {
      * @private
      */
     this.cloudStorage_ = new CloudStorage();
-
-    /**
-     * @type {!GitRepo}
-     * @private
-     */
-    this.gitRepo_ = new GitRepo();
 
     /**
      * @type {!GoldenIo}
@@ -89,7 +85,7 @@ class Controller {
    */
   async initForApproval() {
     const runReportJsonUrl = this.cli_.runReportJsonUrl;
-    return this.reportBuilder_.initForApproval({runReportJsonUrl});
+    return await this.reportBuilder_.initForApproval({runReportJsonUrl});
   }
 
   /**
@@ -101,14 +97,14 @@ class Controller {
     if (isOnline) {
       await this.cbtApi_.killStalledSeleniumTests();
     }
-    return this.reportBuilder_.initForCapture(goldenDiffBase);
+    return await this.reportBuilder_.initForCapture(goldenDiffBase);
   }
 
   /**
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async initForDemo() {
-    return this.reportBuilder_.initForDemo();
+    return await this.reportBuilder_.initForDemo();
   }
 
   /**
@@ -126,7 +122,14 @@ class Controller {
   async captureAllPages(reportData) {
     this.logger_.foldStart('screenshot.capture_images', 'Controller#captureAllPages()');
 
-    await this.seleniumApi_.captureAllPages(reportData);
+    let stackTrace;
+
+    try {
+      stackTrace = getStackTrace('captureAllPages');
+      await this.seleniumApi_.captureAllPages(reportData);
+    } catch (err) {
+      throw new VError(err, stackTrace);
+    }
 
     const meta = reportData.meta;
     meta.end_time_iso_utc = new Date().toISOString();
