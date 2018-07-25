@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2018 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,128 +37,13 @@
  * @record
  */
 class MDCMenuAdapter {
-  /** @param {string} className */
-  addClass(className) {}
-
-  /** @param {string} className */
-  removeClass(className) {}
-
-  /**
-   * @param {string} className
-   * @return {boolean}
-   */
-  hasClass(className) {}
-
-  /** @return {boolean} */
-  hasNecessaryDom() {}
-
-  /**
-   * @param {EventTarget} target
-   * @param {string} attributeName
-   * @return {string}
-   */
-  getAttributeForEventTarget(target, attributeName) {}
-
-  /** @return {{ width: number, height: number }} */
-  getInnerDimensions() {}
-
-  /** @return {boolean} */
-  hasAnchor() {}
-
-  /** @return {{width: number, height: number, top: number, right: number, bottom: number, left: number}} */
-  getAnchorDimensions() {}
-
-  /** @return {{ width: number, height: number }} */
-  getWindowDimensions() {}
-
-  /** @return {number} */
-  getNumberOfItems() {}
-
-  /**
-   * @param {string} type
-   * @param {function(!Event)} handler
-   */
-  registerInteractionHandler(type, handler) {}
-
-  /**
-   * @param {string} type
-   * @param {function(!Event)} handler
-   */
-  deregisterInteractionHandler(type, handler) {}
-
-  /** @param {function(!Event)} handler */
-  registerBodyClickHandler(handler) {}
-
-  /** @param {function(!Event)} handler */
-  deregisterBodyClickHandler(handler) {}
-
-  /**
-   * @param {EventTarget} target
-   * @return {number}
-   */
-  getIndexForEventTarget(target) {}
-
-  /** @param {{index: number}} evtData */
-  notifySelected(evtData) {}
-
-  notifyCancel() {}
-
-  saveFocus() {}
-
-  restoreFocus() {}
-
-  /** @return {boolean} */
-  isFocused() {}
-
-  focus() {}
-
-  /** @return {number} */
-  getFocusedItemIndex() /* number */ {}
-
-  /** @param {number} index */
-  focusItemAtIndex(index) {}
-
-  /** @return {boolean} */
-  isRtl() {}
-
-  /** @param {string} origin */
-  setTransformOrigin(origin) {}
-
-  /** @param {{
-  *   top: (string|undefined),
-  *   right: (string|undefined),
-  *   bottom: (string|undefined),
-  *   left: (string|undefined)
-  * }} position */
-  setPosition(position) {}
-
-  /** @param {string} height */
-  setMaxHeight(height) {}
-
-  /**
-   * @param {number} index
-   * @param {string} attr
-   * @param {string} value
-   */
-  setAttrForOptionAtIndex(index, attr, value) {}
-
-  /**
-   * @param {number} index
-   * @param {string} attr
-   */
-  rmAttrForOptionAtIndex(index, attr) {}
-
-  /**
-   * @param {number} index
-   * @param {string} className
-   */
-  addClassForOptionAtIndex(index, className) {}
-
-  /**
-   * @param {number} index
-   * @param {string} className
-   */
-  rmClassForOptionAtIndex(index, className) {}
+  selectElementAtIndex(index) {}
+  closeSurface() {};
+  getFocusedElementIndex() {};
+  removeClassFromSelectionGroup(index) {};
+  notifySelected(evtData) {};
+  isListItem(target) {};
+  toggleCheckbox(target) {};
 }
 
 export {MDCMenuAdapter};

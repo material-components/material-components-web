@@ -20,6 +20,8 @@ import {MDCMenuAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation';
 
+const ELEMENTS_KEY_ALLOWED_IN = ['input', 'button', 'textarea', 'select'];
+
 /**
  * @extends {MDCFoundation<!MDCMenuAdapter>}
  */
@@ -46,6 +48,8 @@ class MDCMenuFoundation extends MDCFoundation {
       getFocusedElementIndex: () => {},
       removeClassFromSelectionGroup: () => {},
       notifySelected: () => {},
+      isListItem: () => {},
+      toggleCheckbox: () => {},
     });
   }
 
@@ -75,21 +79,22 @@ class MDCMenuFoundation extends MDCFoundation {
     const isTab = key === 'Tab' || keyCode === 13;
 
     if (isSpace || isEnter) {
-      const index = this.adapter_.getFocusedElementIndex();
-      this.handleSelection_(index);
-      evt.preventDefault();
+      this.handleClick(evt);
     } else if (isTab) {
       this.adapter_.closeSurface();
     }
   }
 
   /**
-   * Handler function for the click event.
+   * Handler function for the click and space/enter key events.
+   * @param {Event} evt
    */
-  handleClick() {
+  handleClick(evt) {
     const listItemIndex = this.adapter_.getFocusedElementIndex();
     if (listItemIndex >= 0) {
       this.handleSelection_(listItemIndex);
+      this.preventDefaultEvent_(evt);
+      this.adapter_.toggleCheckbox(evt.target);
     }
   }
 
@@ -101,6 +106,19 @@ class MDCMenuFoundation extends MDCFoundation {
       this.adapter_.removeClassFromSelectionGroup(index);
       this.adapter_.selectElementAtIndex(index);
     }, MDCMenuSurfaceFoundation.numbers.TRANSITION_CLOSE_DURATION);
+  }
+
+  /**
+   * Ensures that preventDefault is only called if the containing element doesn't
+   * consume the event, and it will cause an unintended scroll.
+   * @param {Event} evt
+   * @private
+   */
+  preventDefaultEvent_(evt) {
+    const tagName = `${evt.target.tagName}`.toLowerCase();
+    if (ELEMENTS_KEY_ALLOWED_IN.indexOf(tagName) === -1) {
+      evt.preventDefault();
+    }
   }
 }
 

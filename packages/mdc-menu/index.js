@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2018 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,9 +17,10 @@
 
 import MDCComponent from '@material/base/component';
 import {MDCMenuFoundation} from './foundation';
-import {strings} from './constants';
-import {MDCMenuSurface, AnchorMargin} from '@material/menu-surface/index';
+import {strings, cssClasses} from './constants';
+import {MDCMenuSurface, AnchorMargin, MDCMenuSurfaceFoundation} from '@material/menu-surface/index';
 import {MDCList} from '@material/list/index';
+import {cssClasses as listClasses} from '@material/list/constants';
 
 /**
  * @extends MDCComponent<!MDCMenuFoundation>
@@ -83,6 +84,11 @@ class MDCMenu extends MDCComponent {
   }
 
   show() {
+    this.menuSurface_.listen(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, () => {
+      if (this.list_) {
+        this.items[0].focus();
+      }
+    });
     this.menuSurface_.show();
     this.registerListeners_();
   }
@@ -175,26 +181,43 @@ class MDCMenu extends MDCComponent {
     return new MDCMenuFoundation({
       selectElementAtIndex: (index) => {
         const list = this.items;
-        if (list && list.length > index && list[index].parentElement.classList.contains('mdc-menu__selection-group')) {
-          list[index].classList.add('mdc-menu-item--selected');
+        if (list && list.length > index
+          && list[index].parentElement.classList.contains(cssClasses.MENU_SELECTION_GROUP)) {
+          list[index].classList.add(cssClasses.MENU_SELECTED_LIST_ITEM);
           list[index].setAttribute('aria-selected', 'true');
         }
       },
       closeSurface: () => this.hide(),
-      getFocusedElementIndex: () => this.items.indexOf(document.activeElement),
+      getFocusedElementIndex: () => {
+        let target = document.activeElement;
+        // Find closest parent that is a list item.
+        while (!target.classList.contains(listClasses.LIST_ITEM_CLASS)) {
+          if (!target.parentElement) return -1;
+          target = target.parentElement;
+        }
+
+        return this.items.indexOf(target);
+      },
       removeClassFromSelectionGroup: (index) => {
         const ele = this.items[index];
-        if (ele.parentElement && ele.parentElement.classList.contains('mdc-menu__selection-group')) {
+        if (ele.parentElement && ele.parentElement.classList.contains(cssClasses.MENU_SELECTION_GROUP)) {
           [].slice.call(ele.parentElement.children).forEach((listItem) => {
-            listItem.classList.remove('mdc-menu-item--selected');
+            listItem.classList.remove(cssClasses.MENU_SELECTED_LIST_ITEM);
             listItem.removeAttribute('aria-selected');
           });
         }
       },
-      notifySelected: (evtData) => this.emit(MDCMenuFoundation.strings.SELECTED_EVENT, {
+      notifySelected: (evtData) => this.emit(strings.SELECTED_EVENT, {
         index: evtData.index,
         item: this.items[evtData.index],
       }),
+      isListItem: (target) => target.classList.contains(listClasses.LIST_ITEM_CLASS),
+      toggleCheckbox: (target) => {
+        const checkBox = target.querySelector('input[type="checkbox"]');
+        if (checkBox) {
+          checkBox.checked = !checkBox.checked;
+        }
+      },
     });
   }
 }

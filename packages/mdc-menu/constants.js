@@ -21,7 +21,8 @@ const cssClasses = {
   OPEN: 'mdc-menu-surface--open',
   ANIMATING_OPEN: 'mdc-menu-surface--animating-open',
   ANIMATING_CLOSED: 'mdc-menu-surface--animating-closed',
-  SELECTED_LIST_ITEM: 'mdc-list-item--selected',
+  MENU_SELECTED_LIST_ITEM: 'mdc-menu-item--selected',
+  MENU_SELECTION_GROUP: 'mdc-menu__selection-group',
 };
 
 /** @enum {string} */
