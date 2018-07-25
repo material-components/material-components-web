@@ -164,7 +164,7 @@ class GitRepo {
     try {
       return this.repo_.checkIgnore(filePaths);
     } catch (err) {
-      throw new VError(err, `Unable to check gitignore status of ${filePaths.length} file paths`);
+      throw new VError(err, `Failed to run GitRepo.getIgnoredPaths(${filePaths.length} file paths)`);
     }
   }
 
@@ -174,14 +174,7 @@ class GitRepo {
    */
   async getCommitAuthor(commit = undefined) {
     /** @type {!Array<!DefaultLogFields>} */
-    let logEntries;
-
-    try {
-      logEntries = await this.getLog([commit]);
-    } catch (err) {
-      throw new VError(err, `Unable to get author for commit "${commit}"`);
-    }
-
+    const logEntries = await this.getLog([commit]);
     const logEntry = logEntries[0];
     return User.create({
       name: logEntry.author_name,
