@@ -171,15 +171,17 @@ test('assert keyup does not trigger ripple', () => {
 test('click handler is added to root element', () => {
   const {root, component} = setupTest();
   component.foundation_.handleClick = td.func();
-  const event = new Event('click');
+  const event = document.createEvent('KeyboardEvent');
+  event.initEvent('click', false, true);
   root.dispatchEvent(event);
   td.verify(component.foundation_.handleClick(), {times: 1});
 });
 
 test('keydown handler is removed from the root element on destroy', () => {
   const {root, component} = setupTest();
-  const event = new Event('click');
-  component.destroy();
+  const event = document.createEvent('KeyboardEvent');
+  event.initEvent('click', false, true);
   root.dispatchEvent(event);
+  component.destroy();
   td.verify(component.foundation_.handleClick(), {times: 0});
 });
