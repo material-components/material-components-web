@@ -20,17 +20,15 @@ const webpackConfig = require('./webpack.config')[0];
 const USING_TRAVISCI = Boolean(process.env.TRAVIS);
 const USING_SL = Boolean(process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY);
 
-const SL_LAUNCHERS = {
-  /*
-   * Chrome (headless)
-   */
-
+const LOCAL_LAUNCHERS = {
+  /** See https://github.com/travis-ci/travis-ci/issues/8836#issuecomment-348248951 */
   'ChromeHeadlessNoSandbox': {
     base: 'ChromeHeadless',
-    // See https://github.com/travis-ci/travis-ci/issues/8836#issuecomment-348248951
     flags: ['--no-sandbox'],
   },
+};
 
+const SAUCE_LAUNCHERS = {
   /*
    * Chrome (desktop)
    */
@@ -136,6 +134,9 @@ const SL_LAUNCHERS = {
   // },
 };
 
+const getLaunchers = () => USING_SL ? SAUCE_LAUNCHERS : LOCAL_LAUNCHERS;
+const getBrowsers = () => Object.keys(getLaunchers());
+
 module.exports = function(config) {
   config.set({
     basePath: '',
@@ -150,12 +151,12 @@ module.exports = function(config) {
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
-    browsers: determineBrowsers(),
+    browsers: getBrowsers(),
     browserDisconnectTimeout: 40000,
     browserNoActivityTimeout: 120000,
     captureTimeout: 240000,
     concurrency: USING_SL ? 4 : Infinity,
-    customLaunchers: SL_LAUNCHERS,
+    customLaunchers: getLaunchers(),
 
     coverageReporter: {
       dir: 'coverage',
@@ -200,23 +201,26 @@ module.exports = function(config) {
     },
   });
 
-  // See https://github.com/karma-runner/karma-sauce-launcher/issues/73
-  if (USING_TRAVISCI) {
-    config.set({
-      sauceLabs: {
+  if (USING_SL) {
+    const sauceLabsConfig = {
+      username: process.env.SAUCE_USERNAME,
+      accessKey: process.env.SAUCE_ACCESS_KEY,
+    };
+
+    if (USING_TRAVISCI) {
+      // See https://github.com/karma-runner/karma-sauce-launcher/issues/73
+      Object.assign(sauceLabsConfig, {
         testName: 'Material Components Web Unit Tests - CI',
         tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER,
-        username: process.env.SAUCE_USERNAME,
-        accessKey: process.env.SAUCE_ACCESS_KEY,
         startConnect: false,
-      },
+      });
+    }
+
+    config.set({
+      sauceLabs: sauceLabsConfig,
       // Attempt to de-flake Sauce Labs tests on TravisCI.
       transports: ['polling'],
       browserDisconnectTolerance: 3,
     });
   }
 };
-
-function determineBrowsers() {
-  return USING_SL ? Object.keys(SL_LAUNCHERS) : ['ChromeHeadlessNoSandbox'];
-}
