@@ -17,32 +17,43 @@
 
 import * as pony from './ponyfill.js';
 
+/**
+ * Simplifies iterating over an object's own enumerable, non-prototype properties.
+ * @param {!Object} obj
+ * @param {function(value:*, key:*, i:number, pair:!Array<*>)} func
+ */
 export function objectForEach(obj, func) {
-  pony.objectEntries(obj).forEach(([key, value], i, arr) => func(value, key, i, arr));
+  pony.objectEntries(obj).forEach(([key, value], i, pair) => func(value, key, i, pair));
 }
 
 /**
- * Returns a function, that, as long as it continues to be invoked, will not be triggered.
- * The function will be called after it stops being called for N milliseconds.
- * If `immediate` is passed, trigger the function on the leading edge, instead of the trailing.
+ * Returns a function that, as long as it continues to be invoked, will not be triggered.
+ * The function will be called after it stops being called for `waitInMs` milliseconds.
+ * If `runImmediately` is `true`, the function will be triggered on the leading edge, instead of the trailing.
+ *
  * From https://davidwalsh.name/javascript-debounce-function (MIT license).
+ *
+ * @param {function(...args)} func
+ * @param {number=} waitInMs
+ * @param {boolean=} runImmediately
+ * @return {function(...args)}
  */
-export function debounce(func, wait, immediate) {
+export function debounce(func, waitInMs = 300, runImmediately = false) {
   let timeout;
 
   return function(...args) {
-    const callNow = immediate && !timeout;
+    const callNow = runImmediately && !timeout;
 
     clearTimeout(timeout);
     timeout = setTimeout(() => {
       timeout = null;
-      if (!immediate) {
-        func.apply(this, args);
+      if (!runImmediately) {
+        func(...args);
       }
-    }, wait);
+    }, waitInMs);
 
     if (callNow) {
-      func.apply(this, args);
+      func(...args);
     }
   };
 }

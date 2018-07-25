@@ -17,7 +17,7 @@
 import td from 'testdouble';
 
 import {captureHandlers} from '../helpers/foundation';
-import {testFoundation} from './helpers';
+import {setupTest, testFoundation} from './helpers';
 import {cssClasses, strings, numbers} from '../../../packages/mdc-ripple/constants';
 
 suite('MDCRippleFoundation - Activation Logic');
@@ -176,7 +176,7 @@ testFoundation('sets FG position from the coords to the center within surface on
     ));
   });
 
-testFoundation('adds activation classes on keydown when surface is made active',
+testFoundation('adds activation classes on keydown when surface is made active on same frame',
   ({foundation, adapter, mockRaf}) => {
     const handlers = captureHandlers(adapter, 'registerInteractionHandler');
     td.when(adapter.isSurfaceActive()).thenReturn(true);
@@ -184,9 +184,34 @@ testFoundation('adds activation classes on keydown when surface is made active',
     mockRaf.flush();
 
     handlers.keydown();
+    td.verify(adapter.addClass(cssClasses.FG_ACTIVATION));
+  });
+
+testFoundation('adds activation classes on keydown when surface only reflects :active on next frame for space keydown',
+  ({foundation, adapter, mockRaf}) => {
+    const handlers = captureHandlers(adapter, 'registerInteractionHandler');
+    td.when(adapter.isSurfaceActive()).thenReturn(false, true);
+    foundation.init();
     mockRaf.flush();
 
-    td.verify(adapter.addClass(cssClasses.FG_ACTIVATION));
+    handlers.keydown({key: ' '});
+    td.verify(adapter.addClass(cssClasses.FG_ACTIVATION), {times: 0});
+
+    mockRaf.flush();
+    td.verify(adapter.addClass(cssClasses.FG_ACTIVATION), {times: 1});
+  });
+
+testFoundation('does not add activation classes on keydown when surface is not made active',
+  ({foundation, adapter, mockRaf}) => {
+    const handlers = captureHandlers(adapter, 'registerInteractionHandler');
+    td.when(adapter.isSurfaceActive()).thenReturn(false, false);
+    foundation.init();
+    mockRaf.flush();
+
+    handlers.keydown({key: ' '});
+    mockRaf.flush();
+
+    td.verify(adapter.addClass(cssClasses.FG_ACTIVATION), {times: 0});
   });
 
 testFoundation('sets FG position to center on non-pointer activation', ({foundation, adapter, mockRaf}) => {
@@ -316,6 +341,64 @@ testFoundation('removes deactivation classes on activate to ensure ripples can b
     mockRaf.flush();
 
     td.verify(adapter.removeClass(cssClasses.FG_DEACTIVATION));
+  });
+
+testFoundation('will not activate multiple ripples on same frame if one surface descends from another',
+  ({foundation, adapter, mockRaf}) => {
+    const secondRipple = setupTest();
+    const firstHandlers = captureHandlers(adapter, 'registerInteractionHandler');
+    const secondHandlers = captureHandlers(secondRipple.adapter, 'registerInteractionHandler');
+    td.when(secondRipple.adapter.containsEventTarget(td.matchers.anything())).thenReturn(true);
+    foundation.init();
+    secondRipple.foundation.init();
+    mockRaf.flush();
+
+    firstHandlers.mousedown();
+    secondHandlers.mousedown();
+    mockRaf.flush();
+
+    td.verify(adapter.addClass(cssClasses.FG_ACTIVATION));
+    td.verify(secondRipple.adapter.addClass(cssClasses.FG_ACTIVATION), {times: 0});
+  });
+
+testFoundation('will not activate multiple ripples on same frame for parent surface w/ touch follow-on events',
+  ({foundation, adapter, mockRaf}) => {
+    const secondRipple = setupTest();
+    const firstHandlers = captureHandlers(adapter, 'registerInteractionHandler');
+    const secondHandlers = captureHandlers(secondRipple.adapter, 'registerInteractionHandler');
+    td.when(secondRipple.adapter.containsEventTarget(td.matchers.anything())).thenReturn(true);
+    foundation.init();
+    secondRipple.foundation.init();
+    mockRaf.flush();
+
+    firstHandlers.touchstart({changedTouches: [{pageX: 0, pageY: 0}]});
+    secondHandlers.touchstart({changedTouches: [{pageX: 0, pageY: 0}]});
+    // Simulated mouse events on touch devices always happen after a delay, not on the same frame
+    mockRaf.flush();
+    firstHandlers.mousedown();
+    secondHandlers.mousedown();
+    mockRaf.flush();
+
+    td.verify(adapter.addClass(cssClasses.FG_ACTIVATION));
+    td.verify(secondRipple.adapter.addClass(cssClasses.FG_ACTIVATION), {times: 0});
+  });
+
+testFoundation('will activate multiple ripples on same frame for surfaces without an ancestor/descendant relationship',
+  ({foundation, adapter, mockRaf}) => {
+    const secondRipple = setupTest();
+    const firstHandlers = captureHandlers(adapter, 'registerInteractionHandler');
+    const secondHandlers = captureHandlers(secondRipple.adapter, 'registerInteractionHandler');
+    td.when(secondRipple.adapter.containsEventTarget(td.matchers.anything())).thenReturn(false);
+    foundation.init();
+    secondRipple.foundation.init();
+    mockRaf.flush();
+
+    firstHandlers.mousedown();
+    secondHandlers.mousedown();
+    mockRaf.flush();
+
+    td.verify(adapter.addClass(cssClasses.FG_ACTIVATION));
+    td.verify(secondRipple.adapter.addClass(cssClasses.FG_ACTIVATION));
   });
 
 testFoundation('displays the foreground ripple on activation when unbounded', ({foundation, adapter, mockRaf}) => {

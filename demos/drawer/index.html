@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2016 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Drawer - Material Components Catalog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
+    <link rel="stylesheet" href="/assets/drawer/drawer.css">
+    <link rel="stylesheet" href="/assets/radio.css">
+    <script src="/ready.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+  </head>
+  <body class="mdc-typography demo-body">
+    <div class="mdc-toolbar mdc-toolbar--fixed">
+      <div class="mdc-toolbar__row">
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+          <a href="/" class="catalog-back mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
+          <span class="mdc-toolbar__title catalog-title">Drawer</span>
+        </section>
+      </div>
+    </div>
+
+    <main class="mdc-toolbar-fixed-adjust">
+      <div class="intro">
+       <p>
+        To best show the functionality of drawers, we put all demos in iframes.
+        Click the links above the iframe to view the demo in a full browser window.
+       </p>
+       <p>
+        It's worth noting that we also use icons in this demo, which aren't loaded by default.
+        In order to properly include icons in your own project, you'll need to load in the Material Icons stylesheet:
+       </p>
+       <pre>&lt;link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"&gt;</pre>
+      </div>
+
+      <section class="examples">
+        <div class="example">
+          <h2 class="drawer-example-heading">
+            <span>Temporary Drawer</span>
+          </h2>
+          <p><a href="./temporary-drawer.html" target="_blank">View in separate window</a></p>
+          <iframe src="./temporary-drawer.html"></iframe>
+        </div>
+
+        <div class="example">
+          <h2 class="drawer-example-heading">
+            <span>Persistent Drawer</span>
+          </h2>
+          <p><a href="./persistent-drawer.html" target="_blank">View in separate window</a></p>
+          <iframe src="./persistent-drawer.html"></iframe>
+        </div>
+
+        <div class="example">
+          <h2 class="drawer-example-heading">
+            <span>Permanent drawer above toolbar</span>
+          </h2>
+          <p><a href="./permanent-drawer-above-toolbar.html" target="_blank">View in separate window</a></p>
+          <iframe src="./permanent-drawer-above-toolbar.html"></iframe>
+        </div>
+
+        <div class="example">
+          <h2 class="drawer-example-heading">
+            <span>Permanent drawer below toolbar</span>
+          </h2>
+          <p><a href="./permanent-drawer-below-toolbar.html" target="_blank">View in separate window</a></p>
+          <iframe src="./permanent-drawer-below-toolbar.html"></iframe>
+        </div>
+      </section>
+    </main>
+
+    <script src="/assets/material-components-web.js" async></script>
+  </body>
+</html>

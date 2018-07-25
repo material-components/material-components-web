@@ -20,15 +20,10 @@
 @import "./mixins";
 @import "../mixins";
 
-.mdc-tab-bar__indicator {
-  @include mdc-tab-bar-indicator-mixin_;
-  bottom: 0;
-}
-
 // postcss-bem-linter: define tab-bar
 
 @at-root {
-  @include mdc-tab-bar-indicator-ink-color(text-primary-on-light);
+  @include mdc-tab-bar-indicator-ink-color(text-primary-on-background);
 }
 
 .mdc-tab-bar {
@@ -37,47 +32,16 @@
   height: 48px;
   margin: 0 auto;
   text-transform: uppercase;
+}
 
-  &__indicator {
-    width: 100%;
+.mdc-tab-bar__indicator {
+  @include mdc-tab-bar-indicator-mixin_;
 
-    @include mdc-theme-dark(".mdc-tab-bar") {
-      @include mdc-theme-prop(background-color, text-primary-on-dark);
-    }
-
-    transform-origin: left top;
-    transition: mdc-animation-enter(transform, 240ms);
-    will-change: transform;
-  }
-
-  // postcss-bem-linter: ignore
-  .mdc-toolbar & {
-    .mdc-tab {
-      @include mdc-theme-prop(color, text-secondary-on-primary);
-
-      @include mdc-theme-dark(".mdc-tab-bar") {
-        @include mdc-theme-prop(color, text-secondary-on-dark);
-      }
-    }
-
-    .mdc-tab--active,
-    .mdc-tab:hover {
-      @include mdc-theme-prop(color, text-primary-on-primary);
-
-      @include mdc-theme-dark(".mdc-tab-bar") {
-        @include mdc-theme-prop(color, text-primary-on-dark);
-      }
-    }
-
-    // postcss-bem-linter: ignore
-    .mdc-tab-bar__indicator {
-      @include mdc-theme-prop(background-color, text-primary-on-primary);
-
-      @include mdc-theme-dark(".mdc-tab-bar") {
-        @include mdc-theme-prop(background-color, text-primary-on-dark);
-      }
-    }
-  }
+  left: 0;
+  width: 100%;
+  transform-origin: left top;
+  transition: mdc-animation-enter(transform, 240ms);
+  will-change: transform;
 }
 
 .mdc-tab-bar--icons-with-text {

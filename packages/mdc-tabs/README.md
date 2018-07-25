@@ -10,7 +10,7 @@ path: /catalog/tabs/
 # MDC Tabs
 
 The MDC Tabs component contains components which are used to create spec-aligned tabbed navigation components adhering to the
-[Material Design tabs guidelines](https://material.io/guidelines/components/tabs.html). These components are:
+[Material Design tabs guidelines](https://material.io/go/design-tabs). These components are:
 
 - **mdc-tab**: The individual tab elements
 - **mdc-tab-bar**: The main component which is composed of `mdc-tab` elements
@@ -20,17 +20,17 @@ The MDC Tabs component contains components which are used to create spec-aligned
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/tabs.html">Material Design guidelines: Tabs</a>
+    <a href="https://material.io/go/design-tabs">Material Design guidelines: Tabs</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="http://material-components-web.appspot.com/tabs.html">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/tabs">Demo</a>
   </li>
 </ul>
 
 ## Installation
 
 ```
-npm install --save @material/tabs
+npm install @material/tabs
 ```
 
 ## Tabs usage
@@ -115,24 +115,6 @@ ancestor element with attribute `dir="rtl"`.
 ```html
 <html dir="rtl">
   <!--...-->
-  <nav id="basic-tab-bar" class="mdc-tab-bar">
-    <a class="mdc-tab mdc-tab--active" href="#one">Home</a>
-    <a class="mdc-tab" href="#two">Merchandise</a>
-    <a class="mdc-tab" href="#three">About Us</a>
-    <span class="mdc-tab-bar__indicator"></span>
-  </nav>
-</html>
-```
-
-#### Dark Mode Support
-
-Like other MDC Web components, tabs support dark mode either when an
-`mdc-tab-bar--theme-dark` class is attached to the root element, or the element has
-an ancestor with class `mdc-theme--dark`.
-
-```html
-<html class="mdc-theme--dark">
-  <!-- ... -->
   <nav id="basic-tab-bar" class="mdc-tab-bar">
     <a class="mdc-tab mdc-tab--active" href="#one">Home</a>
     <a class="mdc-tab" href="#two">Merchandise</a>

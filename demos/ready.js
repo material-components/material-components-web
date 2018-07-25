@@ -27,6 +27,7 @@ window.demoReady = (function(root) {
   var POLL_MAX_WAIT_MS = 60 * 1000;
 
   var isReadyCached = false;
+  var isDomLoaded = false;
   var handlers = [];
   var testDom = null;
   var startTimeMs = null;
@@ -37,7 +38,8 @@ window.demoReady = (function(root) {
       return true;
     }
     ensureDetectionDom();
-    isReadyCached = Boolean(window.mdc) && getComputedStyle(testDom).position === 'relative';
+    isReadyCached = getComputedStyle(testDom).position === 'relative' &&
+      (Boolean(window.mdc) || (isDomLoaded && !root.querySelector('script[src*="material-components-web.js"]')));
     return isReadyCached;
   }
 
@@ -64,6 +66,9 @@ window.demoReady = (function(root) {
     }
     startTimeMs = Date.now();
     pollTimer = setInterval(tick, POLL_INTERVAL_MS);
+    window.addEventListener('load', function() {
+      tick();
+    });
   }
 
   function tick() {
@@ -74,11 +79,11 @@ window.demoReady = (function(root) {
       return;
     }
 
-    const elapsedTimeMs = Date.now() - startTimeMs;
+    var elapsedTimeMs = Date.now() - startTimeMs;
     if (elapsedTimeMs > POLL_MAX_WAIT_MS) {
       clearInterval(pollTimer);
       removeDetectionDom();
-      console.error('Timed out waiting for JS and CSS to load');
+      console.error('Timed out waiting for JS and CSS to load after ' + POLL_MAX_WAIT_MS + ' ms');
       return;
     }
   }
@@ -87,7 +92,12 @@ window.demoReady = (function(root) {
     handlers.forEach(function(handler) {
       handler(root);
     });
+    handlers.length = 0;
   }
+
+  root.addEventListener('DOMContentLoaded', function() {
+    isDomLoaded = true;
+  });
 
   return function addHandler(handler) {
     if (isReady()) {

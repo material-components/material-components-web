@@ -63,6 +63,7 @@ class MDCRipple extends MDCComponent {
       isSurfaceDisabled: () => instance.disabled,
       addClass: (className) => instance.root_.classList.add(className),
       removeClass: (className) => instance.root_.classList.remove(className),
+      containsEventTarget: (target) => instance.root_.contains(target),
       registerInteractionHandler: (evtType, handler) =>
         instance.root_.addEventListener(evtType, handler, util.applyPassive()),
       deregisterInteractionHandler: (evtType, handler) =>
@@ -113,11 +114,15 @@ class MDCRipple extends MDCComponent {
     this.foundation_.layout();
   }
 
-  /** @return {!MDCRippleFoundation} */
+  /**
+   * @return {!MDCRippleFoundation}
+   * @override
+   */
   getDefaultFoundation() {
     return new MDCRippleFoundation(MDCRipple.createAdapter(this));
   }
 
+  /** @override */
   initialSyncWithDOM() {
     this.unbounded = 'mdcRippleIsUnbounded' in this.root_.dataset;
   }

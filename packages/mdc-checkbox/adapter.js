@@ -16,7 +16,7 @@
  */
 
 /* eslint-disable no-unused-vars */
-import {MDCSelectionControlState} from '@material/selection-control';
+import {MDCSelectionControlState} from '@material/selection-control/index';
 
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
@@ -42,6 +42,19 @@ class MDCCheckboxAdapter {
 
   /** @param {string} className */
   removeClass(className) {}
+
+  /**
+   * Sets an attribute with a given value on the input element.
+   * @param {string} attr
+   * @param {string} value
+   */
+  setNativeControlAttr(attr, value) {}
+
+  /**
+   * Removes an attribute from the input element.
+   * @param {string} attr
+   */
+  removeNativeControlAttr(attr) {}
 
   /** @param {!EventListener} handler */
   registerAnimationEndHandler(handler) {}

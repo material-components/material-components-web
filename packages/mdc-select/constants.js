@@ -13,22 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export const cssClasses = {
-  BOTTOM_LINE: 'mdc-select__bottom-line',
-  BOTTOM_LINE_ACTIVE: 'mdc-select__bottom-line--active',
+const cssClasses = {
   BOX: 'mdc-select--box',
   DISABLED: 'mdc-select--disabled',
-  LABEL_FLOAT_ABOVE: 'mdc-select__label--float-above',
-  OPEN: 'mdc-select--open',
   ROOT: 'mdc-select',
-  SCROLL_LOCK: 'mdc-select-scroll-lock',
+  OUTLINED: 'mdc-select--outlined',
 };
 
-export const strings = {
+const strings = {
   CHANGE_EVENT: 'MDCSelect:change',
-  BOTTOM_LINE_SELECTOR: '.mdc-select__bottom-line',
-  LABEL_SELECTOR: '.mdc-select__label',
-  MENU_SELECTOR: '.mdc-select__menu',
-  SURFACE_SELECTOR: '.mdc-select__surface',
-  SELECTED_TEXT_SELECTOR: '.mdc-select__selected-text',
+  LINE_RIPPLE_SELECTOR: '.mdc-line-ripple',
+  LABEL_SELECTOR: '.mdc-floating-label',
+  NATIVE_CONTROL_SELECTOR: '.mdc-select__native-control',
+  OUTLINE_SELECTOR: '.mdc-notched-outline',
 };
+
+/** @enum {number} */
+const numbers = {
+  LABEL_SCALE: 0.75,
+};
+
+export {cssClasses, strings, numbers};

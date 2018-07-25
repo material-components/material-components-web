@@ -16,6 +16,7 @@
  */
 
 import * as dom from './dom.js';
+import * as pony from './ponyfill.js';
 import * as util from './util.js';
 
 const classes = {
@@ -84,6 +85,9 @@ export class ToolbarProvider extends InteractivityProvider {
     }
   }
 }
+
+/** @type {?HotSwapper} */
+let hotSwapperInstance = null;
 
 export class HotSwapper extends InteractivityProvider {
   /**
@@ -281,21 +285,38 @@ export class HotSwapper extends InteractivityProvider {
    * @return {!HotSwapper}
    */
   static getInstance(root) {
-    // Yeah, I know, this is gross.
-    if (!root.demoHotSwapperRootMap_) {
-      /** @type {?Map<{key:*, value:*}>} @private */
-      root.demoHotSwapperRootMap_ = new Map();
+    if (!hotSwapperInstance) {
+      hotSwapperInstance = HotSwapper.attachTo(root, ToolbarProvider.attachTo(root));
     }
-    let instance = root.demoHotSwapperRootMap_.get(root);
-    if (!instance) {
-      instance = HotSwapper.attachTo(root, ToolbarProvider.attachTo(root));
-      root.demoHotSwapperRootMap_.set(root, instance);
-    }
+    return hotSwapperInstance;
+  }
+}
+
+class HashLinker extends InteractivityProvider {
+  /** @param {!Document|!Element} root */
+  static attachTo(root) {
+    const instance = new HashLinker(root);
+    instance.lazyInit();
     return instance;
+  }
+
+  /** @override */
+  lazyInit() {
+    this.root_.addEventListener('click', (evt) => {
+      if (this.shouldPreventDefault_(evt)) {
+        evt.preventDefault();
+      }
+    });
+  }
+
+  /** @private */
+  shouldPreventDefault_(evt) {
+    return pony.closest(evt.target, 'a[href="#"], [data-demo-disable-hash-link-navigation] a[href^="#"]');
   }
 }
 
 /** @param {!Document|!Element} root */
 export function init(root) {
   HotSwapper.getInstance(root);
+  HashLinker.attachTo(root);
 }

@@ -39,11 +39,13 @@ const strings = {
   TRANSITION_STATE_CHECKED: 'checked',
   TRANSITION_STATE_UNCHECKED: 'unchecked',
   TRANSITION_STATE_INDETERMINATE: 'indeterminate',
+  ARIA_CHECKED_ATTR: 'aria-checked',
+  ARIA_CHECKED_INDETERMINATE_VALUE: 'mixed',
 };
 
 /** @enum {number} */
 const numbers = {
-  ANIM_END_LATCH_MS: 100,
+  ANIM_END_LATCH_MS: 250,
 };
 
 export {cssClasses, strings, numbers};

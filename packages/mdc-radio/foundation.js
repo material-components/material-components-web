@@ -17,7 +17,7 @@
 
 import MDCFoundation from '@material/base/foundation';
 /* eslint-disable no-unused-vars */
-import {MDCSelectionControlState} from '@material/selection-control';
+import {MDCSelectionControlState} from '@material/selection-control/index';
 import MDCRadioAdapter from './adapter';
 /* eslint-enable no-unused-vars */
 import {cssClasses, strings} from './constants';

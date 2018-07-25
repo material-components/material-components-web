@@ -41,7 +41,7 @@ let exitCode = 0;
 main();
 
 function main() {
-  globSync('packages/mdc-*/**/*.js')
+  globSync('packages/**/*.js')
     .filter((p) => !(/\/node_modules\/|\/dist\//).test(p))
     .forEach(check);
   process.exit(exitCode);
@@ -65,6 +65,7 @@ function check(srcFile) {
       } else {
         assertModuleImportSpecifiedAsPkgDep(source, pkgRoot, srcFile, node);
       }
+      assertNoLocalDirectoryImports(source, pkgRoot, srcFile, node);
     },
   });
 }
@@ -84,6 +85,30 @@ function assertImportResolvesWithinPkgRoot(source, pkgRoot, srcFile, node) {
     error(
       `Import source '${source}' is outside of the package root '${pkgRoot}'. ` +
       'Perhaps this should be a module import instead?', source, srcFile, node);
+  }
+}
+
+function assertNoLocalDirectoryImports(source, pkgRoot, srcFile, node) {
+  if (source.indexOf('@material') === -1 && source[0] !== '.') {
+    return; // skip check for external dependencies
+  }
+
+  const srcDir = path.dirname(srcFile);
+  const resolvedSrc = path.relative(process.cwd(), path.resolve(srcDir, source));
+  const relPathFromPkgRoot = resolvedSrc.indexOf('@material') > -1 ?
+    './packages/mdc-'+resolvedSrc.slice(resolvedSrc.indexOf('@material')+10) :
+    './'+resolvedSrc;
+
+  if (!fs.existsSync(path.extname(relPathFromPkgRoot) ?
+    relPathFromPkgRoot :
+    relPathFromPkgRoot+'.js') &&
+    fs.existsSync(relPathFromPkgRoot) &&
+    fs.statSync(relPathFromPkgRoot).isDirectory()) {
+    error(
+      `Import source '${source}' is pointing to a directory.  ` +
+      'To maximize compatibility with different module loaders, be specific ' +
+      'when importing files local to this project. (e.g. ' +
+      `'${source}/index')`, source, srcFile, node);
   }
 }
 

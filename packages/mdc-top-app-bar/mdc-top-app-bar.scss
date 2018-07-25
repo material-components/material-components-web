@@ -1,0 +1,212 @@
+//
+// Copyright 2018 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+@import "@material/elevation/mixins";
+@import "@material/animation/variables";
+@import "@material/rtl/mixins";
+@import "@material/typography/mixins";
+@import "./mixins";
+@import "./variables";
+
+// postcss-bem-linter: define top-app-bar
+.mdc-top-app-bar {
+  @include mdc-top-app-bar-fill-color-accessible(primary);
+  @include mdc-top-app-bar-icon-ink-color(on-primary);
+
+  display: flex;
+  position: fixed;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+  width: 100%;
+  z-index: 4;
+
+  &__row {
+    display: flex;
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+    height: $mdc-top-app-bar-row-height;
+  }
+
+  &__section {
+    display: inline-flex;
+    flex: 1 1 auto;
+    align-items: center;
+    min-width: 0;
+    padding: $mdc-top-app-bar-section-vertical-padding $mdc-top-app-bar-section-horizontal-padding;
+    z-index: 1;
+
+    &--align-start {
+      justify-content: flex-start;
+      order: -1;
+    }
+
+    &--align-end {
+      justify-content: flex-end;
+      order: 1;
+    }
+  }
+
+  &__title {
+    @include mdc-typography(headline6);
+    @include mdc-rtl-reflexive-box(padding, left, $mdc-top-app-bar-title-left-padding);
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  &__action-item,
+  &__navigation-icon {
+    @include mdc-top-app-bar-icon_;
+  }
+}
+
+.mdc-top-app-bar--short {
+  top: 0;
+  right: auto;
+  left: 0;
+  width: 100%;
+  transition: width 250ms $mdc-animation-standard-curve-timing-function;
+
+  @include mdc-rtl {
+    right: 0;
+    left: auto;
+  }
+
+  .mdc-top-app-bar__row {
+    height: $mdc-top-app-bar-mobile-row-height;
+  }
+
+  .mdc-top-app-bar__section {
+    padding: $mdc-top-app-bar-mobile-section-padding;
+  }
+
+  .mdc-top-app-bar__title {
+    transition: opacity 200ms $mdc-animation-standard-curve-timing-function;
+    opacity: 1;
+  }
+}
+
+.mdc-top-app-bar--short-collapsed {
+  @include mdc-top-app-bar-short-border-radius;
+  @include mdc-elevation(4);
+
+  width: $mdc-top-app-bar-short-collapsed-width;
+  transition: width 300ms $mdc-animation-standard-curve-timing-function;
+
+  .mdc-top-app-bar__title {
+    display: none;
+  }
+
+  .mdc-top-app-bar__action-item {
+    transition: padding 150ms $mdc-animation-standard-curve-timing-function;
+  }
+}
+
+// stylelint-disable-next-line plugin/selector-bem-pattern
+.mdc-top-app-bar--short-collapsed.mdc-top-app-bar--short-has-action-item {
+  width: $mdc-top-app-bar-short-collapsed-width * 2;
+
+  .mdc-top-app-bar__section--align-end {
+    @include mdc-rtl-reflexive-box(padding, right, 12px);
+  }
+}
+
+.mdc-top-app-bar--dense {
+  .mdc-top-app-bar__row {
+    height: $mdc-top-app-bar-dense-row-height;
+  }
+
+  .mdc-top-app-bar__section {
+    padding: 0 $mdc-top-app-bar-dense-section-horizontal-padding;
+  }
+
+  .mdc-top-app-bar__title {
+    @include mdc-rtl-reflexive-box(padding, left, $mdc-top-app-bar-dense-title-left-padding);
+  }
+}
+
+.mdc-top-app-bar--prominent {
+  .mdc-top-app-bar__row {
+    height: $mdc-top-app-bar-prominent-row-height;
+  }
+
+  .mdc-top-app-bar__title {
+    align-self: flex-end;
+    padding-bottom: $mdc-top-app-bar-prominent-title-bottom-padding;
+  }
+
+  .mdc-top-app-bar__action-item,
+  .mdc-top-app-bar__navigation-icon {
+    align-self: flex-start;
+  }
+}
+
+// stylelint-disable-next-line plugin/selector-bem-pattern
+.mdc-top-app-bar--fixed {
+  transition: box-shadow 200ms linear;
+}
+
+.mdc-top-app-bar--fixed-scrolled {
+  @include mdc-elevation(4);
+
+  transition: box-shadow 200ms linear;
+}
+
+// Specific styles for prominent and dense styled top app bar
+// stylelint-disable plugin/selector-bem-pattern
+.mdc-top-app-bar--dense.mdc-top-app-bar--prominent {
+  .mdc-top-app-bar__row {
+    height: $mdc-top-app-bar-dense-row-height * 2;
+  }
+
+  .mdc-top-app-bar__section {
+    padding: 0 $mdc-top-app-bar-section-horizontal-padding;
+  }
+
+  .mdc-top-app-bar__title {
+    @include mdc-rtl-reflexive-box(padding, left, $mdc-top-app-bar-title-left-padding);
+
+    padding-bottom: $mdc-top-app-bar-prominent-dense-title-bottom-padding;
+  }
+}
+// stylelint-enable plugin/selector-bem-pattern
+
+.mdc-top-app-bar--fixed-adjust {
+  padding-top: $mdc-top-app-bar-row-height;
+}
+
+.mdc-top-app-bar--dense-fixed-adjust {
+  padding-top: $mdc-top-app-bar-dense-row-height;
+}
+
+.mdc-top-app-bar--short-fixed-adjust {
+  padding-top: $mdc-top-app-bar-mobile-row-height;
+}
+
+.mdc-top-app-bar--prominent-fixed-adjust {
+  padding-top: $mdc-top-app-bar-prominent-row-height;
+}
+
+.mdc-top-app-bar--dense-prominent-fixed-adjust {
+  padding-top: $mdc-top-app-bar-dense-row-height * 2;
+}
+
+// Mobile Styles
+@include mdc-top-app-bar-mobile-breakpoint_;

@@ -24,17 +24,11 @@
 $mdc-theme-primary: #6200ee !default; // baseline purple, 500 tone
 $mdc-theme-secondary: #018786 !default; // baseline teal, 600 tone
 
-// Import button and ripple mixins to apply overrides for dark theme
-// TODO(kfranqueiro): Pending further design discussion around how to manage dark theme
-@import "../packages/mdc-button/mixins";
-@import "../packages/mdc-ripple/mixins";
 // All demo pages have a top toolbar, and most of them use theme variables.
 // Import these *after* setting theme colors to override defaults in mdc-theme.
 @import "../packages/mdc-theme/mdc-theme";
 @import "../packages/mdc-toolbar/mdc-toolbar";
 @import "../packages/mdc-typography/mdc-typography";
-
-$dark-button-color: $material-color-light-green-a200;
 
 // Used by ready.js to test whether the CSS has finished loading.
 .demo-ready-detect {
@@ -47,41 +41,18 @@ fieldset {
   border: 0;
 }
 
-.mdc-button {
-  @include mdc-theme-dark {
-    @include mdc-button-ink-color($dark-button-color);
-    @include mdc-states($dark-button-color);
-  }
-}
-
-.mdc-button--raised {
-  @include mdc-theme-dark(".mdc-button", true) {
-    @include mdc-button-filled-accessible($dark-button-color);
-  }
-}
-
-.mdc-button--unelevated {
-  @include mdc-theme-dark(".mdc-button", true) {
-    @include mdc-button-filled-accessible($dark-button-color);
-  }
-}
-
-.mdc-button--stroked {
-  @include mdc-theme-dark(".mdc-button", true) {
-    @include mdc-button-stroke-color($dark-button-color);
-  }
-}
-
 .catalog-title {
   font-family: "Roboto Mono", monospace;
 }
 
 .catalog-logo,
 .catalog-back {
-  padding-right: 24px;
   color: #eee;
   text-decoration: none;
 }
+
+// Use full-opacity equivalent of rgba(0, 0, 0, .05) and expose for demos to reference
+$hero-background-color: #f2f2f2;
 
 .hero {
   display: flex;
@@ -90,7 +61,7 @@ fieldset {
   justify-content: center;
   height: 360px;
   min-height: 360px;
-  background-color: rgba(0, 0, 0, .05);
+  background-color: $hero-background-color;
 }
 
 // Default padding on all examples.

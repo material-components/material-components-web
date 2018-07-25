@@ -23,7 +23,7 @@
 @import "../../packages/mdc-elevation/mdc-elevation";
 @import "../../packages/mdc-fab/mdc-fab";
 @import "../../packages/mdc-form-field/mdc-form-field";
-@import "../../packages/mdc-icon-toggle/mdc-icon-toggle";
+@import "../../packages/mdc-icon-button/mdc-icon-button";
 @import "../../packages/mdc-linear-progress/mdc-linear-progress";
 @import "../../packages/mdc-list/mdc-list";
 @import "../../packages/mdc-menu/mdc-menu";
@@ -198,24 +198,8 @@ figure {
   background-color: $demo-color-low-luminance;
 }
 
-.demo-theme-bg--low-luminance-light {
-  background-color: mdc-theme-light-variant($demo-color-low-luminance);
-}
-
-.demo-theme-bg--low-luminance-dark {
-  background-color: mdc-theme-dark-variant($demo-color-low-luminance);
-}
-
 .demo-theme-bg--high-luminance {
   background-color: $demo-color-high-luminance;
-}
-
-.demo-theme-bg--high-luminance-light {
-  background-color: mdc-theme-light-variant($demo-color-high-luminance);
-}
-
-.demo-theme-bg--high-luminance-dark {
-  background-color: mdc-theme-dark-variant($demo-color-high-luminance);
 }
 
 .demo-theme-bg--custom-light {
@@ -264,33 +248,16 @@ figure {
 
 .demo-card-wrapper {
   display: inline-block;
-  width: 350px;
   margin: 0 24px 24px 0;
   vertical-align: top;
 }
 
-.demo-card--with-avatar .mdc-card__primary {
-  position: relative;
+.demo-card__media {
+  background-image: url("/images/1-1.jpg");
 }
 
-.demo-card--with-avatar .demo-card__avatar {
-  position: absolute;
-  width: 2.5rem; // 40sp
-  height: 2.5rem; // 40sp
-  border-radius: 50%;
-  background: #bdbdbd;
-}
-
-.demo-card--with-avatar .mdc-card__title,
-.demo-card--with-avatar .mdc-card__subtitle {
-  margin-left: 56px;
-}
-
-.demo-card--small .mdc-card__media {
-  height: 10.938rem; // 175sp, for 1:1 ratio with 175sp demo card width
-  background-image: url(/images/1-1.jpg);
-  background-repeat: no-repeat;
-  background-size: cover;
+.demo-card__media--16-9 {
+  background-image: url("/images/16-9.jpg");
 }
 
 //
@@ -327,6 +294,8 @@ figure {
 //
 
 .demo-drawer-toggle {
+  @include mdc-states(on-primary);
+
   vertical-align: middle;
   cursor: pointer;
 }
@@ -360,8 +329,8 @@ figure {
 // Icon Toggle demo
 //
 
-.mdc-icon-toggle {
-  // .material-icons and .mdc-icon-toggle each set different `display` values. Whichever CSS file is imported last
+.mdc-icon-button {
+  // .material-icons and .mdc-icon-button each set different `display` values. Whichever CSS file is imported last
   // will win, so prevent them from fighting by specifying the value we want here.
   display: inline-flex;
 }
