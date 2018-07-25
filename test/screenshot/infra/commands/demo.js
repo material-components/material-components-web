@@ -19,11 +19,19 @@
 const BuildCommand = require('./build');
 const Controller = require('../lib/controller');
 
-module.exports = {
+class DemoCommand {
+  /**
+   * @return {!Promise<number|undefined>} Process exit code. If no exit code is returned, `0` is assumed.
+   */
   async runAsync() {
-    await BuildCommand.runAsync();
+    const buildCommand = new BuildCommand();
     const controller = new Controller();
+
+    await buildCommand.runAsync();
+
     const reportData = await controller.initForDemo();
     await controller.uploadAllAssets(reportData);
-  },
-};
+  }
+}
+
+module.exports = DemoCommand;

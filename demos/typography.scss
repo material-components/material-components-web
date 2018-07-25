@@ -15,3 +15,56 @@
 //
 
 @import "./common";
+@import "../packages/mdc-typography/mixins";
+
+$ruler-color: #FD2549;
+
+.demo-typography--section-baseline {
+  position: relative;
+  margin: 24px;
+  padding: 0 24px 24px 24px;
+  border: 1px solid #ddd;
+  max-width: 350px;
+}
+
+.demo-typography__title {
+  @include mdc-typography-baseline-top(34px);
+  @include mdc-typography-baseline-bottom(22px);
+}
+
+.demo-typography__subtitle {
+  @include mdc-typography-baseline-top(22px);
+  @include mdc-typography-baseline-bottom(28px);
+
+  @include mdc-theme-prop(color, text-secondary-on-background);
+}
+
+.demo-typography__body {
+  @include mdc-typography-baseline-top(28px);
+  @include mdc-theme-prop(color, text-secondary-on-background);
+}
+
+.demo-typography-line-1,
+.demo-typography-line-2,
+.demo-typography-line-3 {
+  position: absolute;
+  border-top: 1px solid $ruler-color;
+  width: 100%;
+  left: 0;
+  right: 0;
+  color: $ruler-color;
+  font-size: 10px;
+  text-align: right;
+}
+
+.demo-typography-line-1 {
+  top: 34px;
+}
+
+.demo-typography-line-2 {
+  top: calc(34px + 22px);
+}
+
+.demo-typography-line-3 {
+  top: calc(34px + 22px + 28px);
+}

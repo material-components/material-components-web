@@ -82,7 +82,7 @@ Expected format: 'desktop_windows_chrome@latest'.
     const [, formFactorName, osVendorName, browserVendorName, browserVersionName] = matchArray;
 
     const getEnumKeysLowerCase = (enumeration) => {
-      return Object.keys(enumeration).map((key) => key.toLowerCase());
+      return Object.keys(enumeration).filter((key) => key !== 'UNKNOWN').map((key) => key.toLowerCase());
     };
 
     // In proto3, the first enum value must always be 0.
@@ -132,7 +132,7 @@ Expected browser vendor to be one of [${validBrowserVendors}], but got '${browse
       );
     }
 
-    const isOnline = await this.cli_.isOnline();
+    const isOnline = this.cli_.isOnline();
     const isEnabledByCli = this.isAliasEnabled_(alias);
     const isAvailableLocally = await this.isAvailableLocally_(browserVendorType);
     const isRunnable = isEnabledByCli && (isOnline || isAvailableLocally);

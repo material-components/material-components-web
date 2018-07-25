@@ -19,14 +19,20 @@
 const del = require('del');
 const mkdirp = require('mkdirp');
 const path = require('path');
+
 const {TEST_DIR_RELATIVE_PATH} = require('../lib/constants');
 
-module.exports = {
+class CleanCommand {
+  /**
+   * @return {!Promise<number|undefined>} Process exit code. If no exit code is returned, `0` is assumed.
+   */
   async runAsync() {
     const relativePathPatterns = ['out', '**/index.html'].map((filename) => {
       return path.join(TEST_DIR_RELATIVE_PATH, filename);
     });
     await del(relativePathPatterns);
     mkdirp.sync(path.join(TEST_DIR_RELATIVE_PATH, 'out'));
-  },
-};
+  }
+}
+
+module.exports = CleanCommand;

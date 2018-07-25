@@ -1,12 +1,11 @@
-/**
- * @license
+/*
  * Copyright 2018 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,17 +14,13 @@
  * limitations under the License.
  */
 
-/** @enum {string} */
-const cssClasses = {
-  CHECKED: 'mdc-switch--checked',
-  DISABLED: 'mdc-switch--disabled',
-};
-
-/** @enum {string} */
-const strings = {
-  NATIVE_CONTROL_SELECTOR: '.mdc-switch__native-control',
-  RIPPLE_SURFACE_SELECTOR: '.mdc-switch__thumb-underlay',
-};
-
-
-export {cssClasses, strings};
+/**
+ * @typedef {{
+ *   optionNames: !Array<string>,
+ *   description: string,
+ *   isRequired: ?boolean,
+ *   type: ?string,
+ *   defaultValue: ?*,
+ *   exampleValue: ?string,
+ * }} CliOptionConfig
+ */
