@@ -172,10 +172,10 @@ test('click handler is added to root element', () => {
   const MockIconToggleFoundation = td.constructor(MDCIconButtonToggleFoundation);
   const root = document.createElement('i');
   const foundation = new MockIconToggleFoundation();
-  const component = new MDCIconButtonToggle(root, foundation);
+  new MDCIconButtonToggle(root, foundation); // eslint-disable-line no-new
 
   domEvents.emit(root, 'click');
-  td.verify(foundation.handleClick(td.matchers.isA(Object)), {times: 1});
+  td.verify(foundation.handleClick(), {times: 1});
 });
 
 test('keydown handler is removed from the root element on destroy', () => {
@@ -186,5 +186,5 @@ test('keydown handler is removed from the root element on destroy', () => {
 
   component.destroy();
   domEvents.emit(root, 'click');
-  td.verify(foundation.handleClick(td.matchers.isA(Object)), {times: 0});
+  td.verify(foundation.handleClick(), {times: 0});
 });
