@@ -115,9 +115,9 @@ export class MDCSelect extends MDCComponent {
   }
 
   destroy() {
-    this.nativeControl_.removeEventListener(this.handleChange_);
-    this.nativeControl_.removeEventListener(this.handleFocus_);
-    this.nativeControl_.removeEventListener(this.handleBlur_);
+    this.nativeControl_.removeEventListener('change', this.handleChange_);
+    this.nativeControl_.removeEventListener('focus', this.handleFocus_);
+    this.nativeControl_.removeEventListener('blur', this.handleBlur_);
 
     if (this.ripple) {
       this.ripple.destroy();
