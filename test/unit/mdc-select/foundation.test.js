@@ -52,15 +52,15 @@ function setupTest() {
   return {mockAdapter, foundation};
 }
 
-test('#setDisabled to true calls adapter.setDisabled and adapter.addClass', () => {
+test('#updateDisabledStyle to true calls adapter.addClass', () => {
   const {mockAdapter, foundation} = setupTest();
-  foundation.setDisabled(true);
+  foundation.updateDisabledStyle(true);
   td.verify(mockAdapter.addClass(MDCSelectFoundation.cssClasses.DISABLED));
 });
 
-test('#setDisabled to false calls adapter.setDisabled false and adapter.removeClass', () => {
+test('#updateDisabledStyle to false calls adapter.removeClass', () => {
   const {mockAdapter, foundation} = setupTest();
-  foundation.setDisabled(false);
+  foundation.updateDisabledStyle(false);
   td.verify(mockAdapter.removeClass(MDCSelectFoundation.cssClasses.DISABLED));
 });
 

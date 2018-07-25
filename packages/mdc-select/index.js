@@ -54,7 +54,7 @@ export class MDCSelect extends MDCComponent {
 
   set disabled(disabled) {
     this.nativeControl_.disabled = disabled;
-    this.foundation_.setDisabled(disabled);
+    this.foundation_.updateDisabledStyle(disabled);
   }
 
   /**

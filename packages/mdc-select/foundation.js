@@ -55,7 +55,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
     this.blurHandler_ = (evt) => this.handleBlur_(evt);
   }
 
-  setDisabled(disabled) {
+  updateDisabledStyle(disabled) {
     const {DISABLED} = MDCSelectFoundation.cssClasses;
     if (disabled) {
       this.adapter_.addClass(DISABLED);

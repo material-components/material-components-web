@@ -106,7 +106,7 @@ test('#get/setSelectedIndex', () => {
   assert.equal(component.selectedIndex, 1);
 });
 
-test('#get/setDisabled', () => {
+test('#get/set disabled', () => {
   const {component} = setupTest();
   assert.isFalse(component.disabled);
   component.disabled = true;
@@ -142,11 +142,11 @@ test('#set selectedIndex calls foundation.handleChange', () => {
   td.verify(component.foundation_.handleChange(), {times: 1});
 });
 
-test('#set disabled calls foundation.setDisabled', () => {
+test('#set disabled calls foundation.updateDisabledStyle', () => {
   const {component} = setupTest();
-  component.foundation_.setDisabled = td.func();
+  component.foundation_.updateDisabledStyle = td.func();
   component.disabled = true;
-  td.verify(component.foundation_.setDisabled(true), {times: 1});
+  td.verify(component.foundation_.updateDisabledStyle(true), {times: 1});
 });
 
 test('#initialSyncWithDOM sets the selected index if an option has the selected attr', () => {
