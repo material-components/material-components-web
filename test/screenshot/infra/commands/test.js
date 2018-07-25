@@ -389,7 +389,7 @@ ${listItemMarkdown}
   isExternalPr_() {
     return Boolean(
       process.env.TRAVIS_PULL_REQUEST_SLUG &&
-      process.env.TRAVIS_PULL_REQUEST_SLUG.startsWith('material-components/')
+      !process.env.TRAVIS_PULL_REQUEST_SLUG.startsWith('material-components/')
     );
   }
 
