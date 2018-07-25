@@ -140,7 +140,8 @@ const getLaunchers = () => {
   } else {
     return ['Chrome'];
   }
-}
+};
+
 const getBrowsers = () => Object.keys(getLaunchers());
 
 module.exports = function(config) {
