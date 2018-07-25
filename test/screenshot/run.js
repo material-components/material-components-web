@@ -16,81 +16,87 @@
 
 'use strict';
 
-const Cli = require('./lib/cli');
-const Duration = require('./lib/duration');
-const {ExitCode} = require('./lib/constants');
+const Cli = require('./infra/lib/cli');
+const CliColor = require('./infra/lib/logger').colors;
+const Duration = require('./infra/lib/duration');
+const {ExitCode} = require('./infra/lib/constants');
+const {formatError} = require('./infra/lib/stacktrace');
 
-const COMMAND_MAP = {
-  async approve() {
-    return require('./commands/approve').runAsync();
+const COMMANDS = {
+  get approve() {
+    return require('./infra/commands/approve');
   },
-
-  async build() {
-    return require('./commands/build').runAsync();
+  get build() {
+    return require('./infra/commands/build');
   },
-
-  async clean() {
-    return require('./commands/clean').runAsync();
+  get clean() {
+    return require('./infra/commands/clean');
   },
-
-  async demo() {
-    return require('./commands/demo').runAsync();
+  get demo() {
+    return require('./infra/commands/demo');
   },
-
-  async proto() {
-    return require('./commands/proto').runAsync();
+  get index() {
+    return require('./infra/commands/index');
   },
-
-  async serve() {
-    return require('./commands/serve').runAsync();
+  get proto() {
+    return require('./infra/commands/proto');
   },
-
-  async test() {
-    return require('./commands/test').runAsync();
+  get serve() {
+    return require('./infra/commands/serve');
+  },
+  get test() {
+    return require('./infra/commands/test');
   },
 };
 
-async function run() {
+async function runAsync() {
   const cli = new Cli();
-  const cmd = COMMAND_MAP[cli.command];
+  const CmdClass = COMMANDS[cli.command];
 
-  if (cmd) {
-    const isOnline = await cli.isOnline();
-    if (!isOnline) {
-      console.log('Offline mode!');
-    }
-
-    cmd()
-      .then(
-        (exitCode = 0) => {
-          process.exit(exitCode);
-        },
-        (err) => {
-          console.error(err);
-          process.exit(ExitCode.UNKNOWN_ERROR);
-        });
-  } else {
+  if (!CmdClass) {
     console.error(`Error: Unknown command: '${cli.command}'`);
     process.exit(ExitCode.UNSUPPORTED_CLI_COMMAND);
+    return;
   }
+
+  const cmd = new CmdClass();
+  const isOnline = await cli.checkIsOnline();
+  if (!isOnline) {
+    console.log('Offline mode!');
+  }
+
+  cmd.runAsync().then(
+    (exitCode = ExitCode.OK) => {
+      if (exitCode !== ExitCode.OK) {
+        process.exit(exitCode);
+      }
+    },
+    (err) => {
+      console.error('\n\n' + CliColor.bold.red('ERROR:'), formatError(err));
+      process.exit(ExitCode.UNKNOWN_ERROR);
+    }
+  );
 }
 
 const startTimeMs = new Date();
 
+// TODO(acdvorak): Create a centralized class to manage global exit handlers
 process.on('exit', () => {
   const elapsedTimeHuman = Duration.elapsed(startTimeMs, new Date()).toHumanShort();
   console.log(`\nRun time: ${elapsedTimeHuman}\n`);
 });
 
+// TODO(acdvorak): Create a centralized class to manage global exit handlers
 process.on('unhandledRejection', (error) => {
   const message = [
     'UnhandledPromiseRejectionWarning: Unhandled promise rejection.',
     'This error originated either by throwing inside of an async function without a catch block,',
     'or by rejecting a promise which was not handled with .catch().',
   ].join(' ');
+  console.error('\n');
   console.error(message);
   console.error(error);
   process.exit(ExitCode.UNHANDLED_PROMISE_REJECTION);
 });
 
-run();
+runAsync();

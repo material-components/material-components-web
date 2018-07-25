@@ -1,3 +1,16 @@
+<a name="0.37.1"></a>
+## [0.37.1](https://github.com/material-components/material-components-web/compare/v0.37.0...v0.37.1) (2018-07-16)
+
+
+### Bug Fixes
+
+* hot-patching closure annotations. ([#3024](https://github.com/material-components/material-components-web/issues/3024)) ([d5b95ab](https://github.com/material-components/material-components-web/commit/d5b95ab))
+* **button:** Remove dense/stroked line-height tweaks to improve alignment ([#3028](https://github.com/material-components/material-components-web/issues/3028)) ([8b5f595](https://github.com/material-components/material-components-web/commit/8b5f595))
+* **notched-outline:** Remove unused dependency from scss ([#3044](https://github.com/material-components/material-components-web/issues/3044)) ([85ecf11](https://github.com/material-components/material-components-web/commit/85ecf11))
+* **typography:**  Update variable reference to work for newer versions of ruby-sass ([#3047](https://github.com/material-components/material-components-web/issues/3047)) ([0dfad9a](https://github.com/material-components/material-components-web/commit/0dfad9a))
+
+
+
 <a name="0.37.0"></a>
 # [0.37.0](https://github.com/material-components/material-components-web/compare/v0.36.0...v0.37.0) (2018-07-02)
 
