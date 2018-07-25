@@ -87,7 +87,7 @@ process.on('exit', () => {
 });
 
 // TODO(acdvorak): Create a centralized class to manage global exit handlers
-process.on('unhandledRejection', (error) => {
+process.on('unhandledRejection', (err) => {
   const message = [
     'UnhandledPromiseRejectionWarning: Unhandled promise rejection.',
     'This error originated either by throwing inside of an async function without a catch block,',
@@ -95,7 +95,7 @@ process.on('unhandledRejection', (error) => {
   ].join(' ');
   console.error('\n');
   console.error(message);
-  console.error(error);
+  console.error(formatError(err));
   process.exit(ExitCode.UNHANDLED_PROMISE_REJECTION);
 });
 
