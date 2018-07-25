@@ -35,11 +35,11 @@ matrix:
     git:
       depth: 200
     script: npm run screenshot:test -- --no-fetch
+    before_install:
+      # Source the script to run it in the same shell process. This ensures that any environment variables set by the
+      # script are visible to subsequent Travis CLI commands.
+      # https://superuser.com/a/176788/62792
+      - source test/screenshot/infra/commands/travis.sh
     install:
       - npm install
       #- npm ls # Noisy output, but useful for debugging npm package dependency version issues
-before_install:
-  # Source the script to run it in the same shell process. This ensures that any environment variables set by the
-  # script are visible to subsequent Travis CLI commands.
-  # https://superuser.com/a/176788/62792
-  - source test/screenshot/infra/commands/travis.sh
