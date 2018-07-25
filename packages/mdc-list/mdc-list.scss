@@ -111,10 +111,12 @@ $mdc-list-dense-item-primary-text-baseline-height_: 24px;
 
   display: block;
 
+  // stylelint-disable plugin/selector-bem-pattern
   .mdc-list--dense & {
     @include mdc-typography-baseline-top($mdc-list-dense-item-primary-text-baseline-height_);
     @include mdc-typography-baseline-bottom($mdc-list-item-secondary-text-baseline-height_);
   }
+  // stylelint-enable plugin/selector-bem-pattern
 }
 
 .mdc-list-item__secondary-text {
@@ -124,11 +126,13 @@ $mdc-list-dense-item-primary-text-baseline-height_: 24px;
 
   display: block;
 
+  // stylelint-disable plugin/selector-bem-pattern
   .mdc-list--dense & {
     @include mdc-typography-baseline-top($mdc-list-item-secondary-text-baseline-height_);
 
     font-size: inherit;
   }
+  // stylelint-enable plugin/selector-bem-pattern
 }
 
 // stylelint-disable plugin/selector-bem-pattern
