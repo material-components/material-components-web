@@ -52,13 +52,13 @@ function setupTest() {
   return {mockAdapter, foundation};
 }
 
-test('#updateDisabledStyle to true calls adapter.addClass', () => {
+test('#updateDisabledStyle(true) calls adapter.addClass', () => {
   const {mockAdapter, foundation} = setupTest();
   foundation.updateDisabledStyle(true);
   td.verify(mockAdapter.addClass(MDCSelectFoundation.cssClasses.DISABLED));
 });
 
-test('#updateDisabledStyle to false calls adapter.removeClass', () => {
+test('#updateDisabledStyle(false) calls adapter.removeClass', () => {
   const {mockAdapter, foundation} = setupTest();
   foundation.updateDisabledStyle(false);
   td.verify(mockAdapter.removeClass(MDCSelectFoundation.cssClasses.DISABLED));
@@ -111,7 +111,7 @@ test('#handleChange calls adapter.floatLabel(true) when there is a value', () =>
   td.verify(mockAdapter.floatLabel(true), {times: 1});
 });
 
-test('#handleChange calls adapter.floatLabel(false) when there is no a value', () => {
+test('#handleChange calls adapter.floatLabel(false) when there is no value', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getValue()).thenReturn('');
 
@@ -128,7 +128,7 @@ test('#handleChange calls foundation.notchOutline(true) when there is a value', 
   td.verify(foundation.notchOutline(true), {times: 1});
 });
 
-test('#handleChange calls foundation.notchOutline(false) when there is no a value', () => {
+test('#handleChange calls foundation.notchOutline(false) when there is no value', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.notchOutline = td.func();
   td.when(mockAdapter.getValue()).thenReturn('');
