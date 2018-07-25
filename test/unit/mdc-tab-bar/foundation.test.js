@@ -22,7 +22,7 @@ import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
 import MDCTabBarFoundation from '../../../packages/mdc-tab-bar/foundation';
 
-suite.only('MDCTabBarFoundation');
+suite('MDCTabBarFoundation');
 
 test('exports cssClasses', () => {
   assert.isOk('cssClasses' in MDCTabBarFoundation);

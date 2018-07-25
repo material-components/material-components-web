@@ -46,7 +46,7 @@ const getFixture = () => bel`
   </div>
 `;
 
-suite.only('MDCTabBar');
+suite('MDCTabBar');
 
 test('attachTo returns an MDCTabBar instance', () => {
   assert.isOk(MDCTabBar.attachTo(getFixture()) instanceof MDCTabBar);

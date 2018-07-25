@@ -56,7 +56,6 @@ class MDCTabBarFoundation extends MDCFoundation {
       deactivateTabAtIndex: () => {},
       getTabIndicatorClientRectAtIndex: () => {},
       getTabDimensionsAtIndex: () => {},
-      getTabListLength: () => {},
       getActiveTabIndex: () => {},
       getIndexOfTab: () => {},
       getTabListLength: () => {},
@@ -153,66 +152,30 @@ class MDCTabBarFoundation extends MDCFoundation {
    * @private
    */
   activateTabFromKeydown_(evt) {
-    if (this.isRTL_()) {
-      return this.activateTabFromKeydownRTL_(evt);
-    }
-
+    const isRTL = this.isRTL_();
     const maxTabIndex = this.adapter_.getTabListLength() - 1;
-    let nextTabIndex = this.adapter_.getActiveTabIndex();
-    switch (evt.key) {
-    case 'Home':
-      nextTabIndex = 0;
-      break;
-    case 'End':
-      nextTabIndex = maxTabIndex;
-      break;
-    case 'ArrowLeft':
-      nextTabIndex -= 1;
-      break;
-    case 'ArrowRight':
-      nextTabIndex += 1;
-      break;
+    const shouldGoToEnd = evt.key === 'End' && !isRTL || evt.key === 'Home' && isRTL;
+    const shouldDecrement = evt.key === 'ArrowLeft' && !isRTL || evt.key === 'ArrowRight' && isRTL;
+    const shouldIncrement = evt.key === 'ArrowRight' && !isRTL || evt.key === 'ArrowLeft' && isRTL;
+    let tabIndex = this.adapter_.getActiveTabIndex();
+
+    if (shouldGoToEnd) {
+      tabIndex = maxTabIndex;
+    } else if (shouldDecrement) {
+      tabIndex -= 1;
+    } else if (shouldIncrement) {
+      tabIndex += 1;
+    } else {
+      tabIndex = 0;
     }
 
-    if (nextTabIndex < 0) {
-      nextTabIndex = maxTabIndex;
-    } else if (nextTabIndex > maxTabIndex) {
-      nextTabIndex = 0;
+    if (tabIndex < 0) {
+      tabIndex = maxTabIndex;
+    } else if (tabIndex > maxTabIndex) {
+      tabIndex = 0;
     }
 
-    this.activateTab(nextTabIndex);
-  }
-
-  /**
-   * Private method for activating a tab from the keydown in RTL
-   * @param {!Event} evt The keydown event
-   * @private
-   */
-  activateTabFromKeydownRTL_(evt) {
-    const maxTabIndex = this.adapter_.getTabListLength() - 1;
-    let nextTabIndex = this.adapter_.getActiveTabIndex();
-    switch (evt.key) {
-    case 'Home':
-      nextTabIndex = maxTabIndex;
-      break;
-    case 'End':
-      nextTabIndex = 0;
-      break;
-    case 'ArrowLeft':
-      nextTabIndex += 1;
-      break;
-    case 'ArrowRight':
-      nextTabIndex -= 1;
-      break;
-    }
-
-    if (nextTabIndex === -1) {
-      nextTabIndex = maxTabIndex;
-    } else if (nextTabIndex > maxTabIndex) {
-      nextTabIndex = 0;
-    }
-
-    this.activateTab(nextTabIndex);
+    this.activateTab(tabIndex);
   }
 
   calculateScrollIncrement_(index, nextTabIndex, scrollPosition, barWidth) {
@@ -278,11 +241,11 @@ class MDCTabBarFoundation extends MDCFoundation {
      * From there, we either increment or decrement the index based on the
      * language direction of the content.
      */
-    const rootLeft = tabDimensions.rootLeft - scrollPosition;
-    const rootRight = tabDimensions.rootRight - scrollPosition - barWidth;
-    const rootDelta = rootLeft + rootRight;
-    const leftEdgeIsCloser = rootLeft < 0 || rootDelta < 0;
-    const rightEdgeIsCloser = rootRight > 0 || rootDelta > 0;
+    const relativeRootLeft = tabDimensions.rootLeft - scrollPosition;
+    const relativeRootRight = tabDimensions.rootRight - scrollPosition - barWidth;
+    const relativeRootDelta = relativeRootLeft + relativeRootRight;
+    const leftEdgeIsCloser = relativeRootLeft < 0 || relativeRootDelta < 0;
+    const rightEdgeIsCloser = relativeRootRight > 0 || relativeRootDelta > 0;
 
     if (leftEdgeIsCloser) {
       return index - 1;
