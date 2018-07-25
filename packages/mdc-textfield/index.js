@@ -326,19 +326,19 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
+   * Enables or disables the use of native validation. Use this for custom validation.
+   * @param {boolean} useNativeValidation Set this to false to ignore native input validation.
+   */
+  set useNativeValidation(useNativeValidation) {
+    this.foundation_.setUseNativeValidation(useNativeValidation);
+  }
+
+  /**
    * Recomputes the outline SVG path for the outline element.
    */
   layout() {
     const openNotch = this.foundation_.shouldFloat;
     this.foundation_.notchOutline(openNotch);
-  }
-
-  /**
-   * Enables or disables error state of text field and helper text.
-   * @param {boolean} enable Set to true to enable error state.
-   */
-  setError(enable) {
-    this.foundation_.styleValidity(!enable);
   }
 
   /**

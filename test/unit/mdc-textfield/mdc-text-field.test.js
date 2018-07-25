@@ -471,11 +471,3 @@ test('get/set step', () => {
   component.step = '10';
   assert.equal(component.step, '10');
 });
-
-test('sets error state of text field', () => {
-  const {component, mockFoundation} = setupMockFoundationTest();
-  component.setError(true);
-  td.verify(mockFoundation.styleValidity(false));
-  component.setError(false);
-  td.verify(mockFoundation.styleValidity(true));
-});

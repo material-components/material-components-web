@@ -106,6 +106,10 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.useCustomValidityChecking_ = false;
     /** @private {boolean} */
     this.isValid_ = true;
+
+    /** @private {boolean} */
+    this.useNativeValidation_ = true;
+
     /** @private {function(): undefined} */
     this.inputFocusHandler_ = () => this.activateFocus();
     /** @private {function(): undefined} */
@@ -179,7 +183,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
   handleValidationAttributeChange(attributesList) {
     attributesList.some((attributeName) => {
       if (VALIDATION_ATTR_WHITELIST.indexOf(attributeName) > -1) {
-        this.styleValidity(true);
+        this.styleValidity_(true);
         return true;
       }
     });
@@ -253,7 +257,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     const input = this.getNativeInput_();
     const shouldRemoveLabelFloat = !input.value && !this.isBadInput_();
     const isValid = this.isValid();
-    this.styleValidity(isValid);
+    this.styleValidity_(isValid);
     this.styleFocused_(this.isFocused_);
     if (this.adapter_.hasLabel()) {
       this.adapter_.shakeLabel(this.shouldShake);
@@ -278,7 +282,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
   setValue(value) {
     this.getNativeInput_().value = value;
     const isValid = this.isValid();
-    this.styleValidity(isValid);
+    this.styleValidity_(isValid);
     if (this.adapter_.hasLabel()) {
       this.adapter_.shakeLabel(this.shouldShake);
       this.adapter_.floatLabel(this.shouldFloat);
@@ -291,22 +295,29 @@ class MDCTextFieldFoundation extends MDCFoundation {
    *     Otherwise, returns the result of native validity checks.
    */
   isValid() {
-    return this.useCustomValidityChecking_
-      ? this.isValid_ : this.isNativeInputValid_();
+    return this.useNativeValidation_
+      ? this.isNativeInputValid_() : this.isValid_;
   }
 
   /**
    * @param {boolean} isValid Sets the validity state of the Text Field.
    */
   setValid(isValid) {
-    this.useCustomValidityChecking_ = true;
     this.isValid_ = isValid;
-    // Retrieve from the getter to ensure correct logic is applied.
-    isValid = this.isValid();
-    this.styleValidity(isValid);
+    this.styleValidity_(isValid);
+
+    const shouldShake = !isValid && !this.isFocused_;
     if (this.adapter_.hasLabel()) {
-      this.adapter_.shakeLabel(this.shouldShake);
+      this.adapter_.shakeLabel(shouldShake);
     }
+  }
+
+  /**
+   * Enables or disables the use of native validation. Use this for custom validation.
+   * @param {boolean} useNativeValidation Set this to false to ignore native input validation.
+   */
+  setUseNativeValidation(useNativeValidation) {
+    this.useNativeValidation_ = useNativeValidation;
   }
 
   /**
@@ -373,8 +384,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
   /**
    * Styles the component based on the validity state.
    * @param {boolean} isValid
+   * @private
    */
-  styleValidity(isValid) {
+  styleValidity_(isValid) {
     const {INVALID} = MDCTextFieldFoundation.cssClasses;
     if (isValid) {
       this.adapter_.removeClass(INVALID);

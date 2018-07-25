@@ -392,7 +392,7 @@
         <section id="demo-text-field-wrapper">
           <div class="mdc-text-field" id="demo-textfield-error-state">
             <input type="text" pattern="^\d{10}$" id="demo-textfield-error-state-input" class="mdc-text-field__input">
-            <label class="mdc-floating-label" for="demo-textfield-error-state-input">Hint text</label>
+            <label class="mdc-floating-label" for="demo-textfield-error-state-input">Phone number</label>
             <div class="mdc-line-ripple"></div>
           </div>
           <p id="username-helper-text" class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent	mdc-text-field-helper-text--validation-msg" aria-hidden="true">
@@ -744,7 +744,7 @@
 
         textFieldEl.addEventListener('input', function(event) {
           if (textField.valid) {
-            textField.setError(false);
+            textField.valid = true;
           }
         });
       });
