@@ -254,7 +254,7 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | Method Signature | Description |
 | --- | --- |
 | `notchOutline(openNotch: boolean) => void` | Opens/closes the notched outline. |
-| `setDisabled(disabled: boolean) => void` | Adds/removes disabled class, and sets disabled attribute on the component. |
+| `updateDisabledStyle(disabled: boolean) => void` | Updates appearance based on disabled state. This must be called whenever the `disabled` state changes. |
 | `handleFocus() => void` | Handles a focus event on the `select` element. |
 | `handleBlur() => void` | Handles a blur event on the `select` element. |
-| `handleChange() => void` | Handles a change event on the `select` element, or a programmatic change requested via the component API. |
+| `handleChange() => void` | Handles a change to the `select` element's value. This must be called both for `change` events and programmatic changes requested via the component API. |
