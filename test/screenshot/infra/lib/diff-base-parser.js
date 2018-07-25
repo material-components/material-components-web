@@ -25,6 +25,7 @@ const {GOLDEN_JSON_RELATIVE_PATH} = require('./constants');
 const Cli = require('./cli');
 const GitHubApi = require('./github-api');
 const GitRepo = require('./git-repo');
+const getStackTrace = require('./stacktrace')('DiffBaseParser');
 
 const HTTP_URL_REGEX = new RegExp('^https?://');
 
@@ -201,9 +202,11 @@ class DiffBaseParser {
     const travisPrBranch = process.env.TRAVIS_PULL_REQUEST_BRANCH;
     const travisPrSha = process.env.TRAVIS_PULL_REQUEST_SHA;
 
+    const logInfo = {travisBranch, travisTag, travisPrNumber, travisPrBranch, travisPrSha};
+
     if (travisPrNumber) {
       const commit = await this.gitRepo_.getFullCommitHash(travisPrSha);
-      const author = await this.gitRepo_.getCommitAuthor(commit);
+      const author = await this.gitRepo_.getCommitAuthor(commit, getStackTrace('getTravisGitRevision', logInfo));
       return GitRevision.create({
         type: GitRevision.Type.TRAVIS_PR,
         golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
@@ -217,7 +220,7 @@ class DiffBaseParser {
 
     if (travisTag) {
       const commit = await this.gitRepo_.getFullCommitHash(travisTag);
-      const author = await this.gitRepo_.getCommitAuthor(commit);
+      const author = await this.gitRepo_.getCommitAuthor(commit, getStackTrace('getTravisGitRevision', logInfo));
       return GitRevision.create({
         type: GitRevision.Type.REMOTE_TAG,
         golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
@@ -229,7 +232,7 @@ class DiffBaseParser {
 
     if (travisBranch) {
       const commit = await this.gitRepo_.getFullCommitHash(travisBranch);
-      const author = await this.gitRepo_.getCommitAuthor(commit);
+      const author = await this.gitRepo_.getCommitAuthor(commit, getStackTrace('getTravisGitRevision', logInfo));
       return GitRevision.create({
         type: GitRevision.Type.LOCAL_BRANCH,
         golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
@@ -298,7 +301,7 @@ class DiffBaseParser {
    * @private
    */
   async createCommitDiffBase_(commit, goldenJsonFilePath) {
-    const author = await this.gitRepo_.getCommitAuthor(commit);
+    const author = await this.gitRepo_.getCommitAuthor(commit, getStackTrace('createCommitDiffBase_'));
 
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
@@ -323,7 +326,7 @@ class DiffBaseParser {
     const remote = allRemoteNames.find((curRemoteName) => remoteRef.startsWith(curRemoteName + '/'));
     const branch = remoteRef.substr(remote.length + 1); // add 1 for forward-slash separator
     const commit = await this.gitRepo_.getFullCommitHash(remoteRef);
-    const author = await this.gitRepo_.getCommitAuthor(commit);
+    const author = await this.gitRepo_.getCommitAuthor(commit, getStackTrace('createRemoteBranchDiffBase_'));
 
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
@@ -347,7 +350,7 @@ class DiffBaseParser {
    */
   async createRemoteTagDiffBase_(tagRef, goldenJsonFilePath) {
     const commit = await this.gitRepo_.getFullCommitHash(tagRef);
-    const author = await this.gitRepo_.getCommitAuthor(commit);
+    const author = await this.gitRepo_.getCommitAuthor(commit, getStackTrace('createRemoteTagDiffBase_'));
 
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
@@ -371,7 +374,7 @@ class DiffBaseParser {
    */
   async createLocalBranchDiffBase_(branch, goldenJsonFilePath) {
     const commit = await this.gitRepo_.getFullCommitHash(branch);
-    const author = await this.gitRepo_.getCommitAuthor(commit);
+    const author = await this.gitRepo_.getCommitAuthor(commit, getStackTrace('createLocalBranchDiffBase_'));
 
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,

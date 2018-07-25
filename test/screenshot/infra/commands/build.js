@@ -55,8 +55,8 @@ class BuildCommand {
 
     this.logger_.foldStart('screenshot.build', 'Compiling source files');
 
-    this.buildProtoFiles_(shouldWatch);
-    this.buildHtmlFiles_(shouldWatch);
+    await this.buildProtoFiles_(shouldWatch);
+    await this.buildHtmlFiles_(shouldWatch);
 
     if (shouldWatch) {
       this.processManager_.spawnChildProcess('npm', ['run', 'screenshot:webpack', '--', '--watch']);
@@ -71,12 +71,12 @@ class BuildCommand {
    * @param {boolean} shouldWatch
    * @private
    */
-  buildProtoFiles_(shouldWatch) {
-    const buildRightNow = () => this.protoCommand_.runAsync();
+  async buildProtoFiles_(shouldWatch) {
+    const buildRightNow = async () => this.protoCommand_.runAsync(shouldWatch);
     const buildDelayed = debounce(buildRightNow, 1000);
 
     if (!shouldWatch) {
-      buildRightNow();
+      await buildRightNow();
       return;
     }
 
@@ -93,12 +93,12 @@ class BuildCommand {
    * @param {boolean} shouldWatch
    * @private
    */
-  buildHtmlFiles_(shouldWatch) {
-    const buildRightNow = () => this.indexCommand_.runAsync();
+  async buildHtmlFiles_(shouldWatch) {
+    const buildRightNow = async () => this.indexCommand_.runAsync();
     const buildDelayed = debounce(buildRightNow, 1000);
 
     if (!shouldWatch) {
-      buildRightNow();
+      await buildRightNow();
       return;
     }
 

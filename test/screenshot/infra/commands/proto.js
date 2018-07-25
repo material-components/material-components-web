@@ -24,9 +24,10 @@ const {TEST_DIR_RELATIVE_PATH} = require('../lib/constants');
 
 class ProtoCommand {
   /**
+   * @param {boolean} isWatching
    * @return {!Promise<number|undefined>} Process exit code. If no exit code is returned, `0` is assumed.
    */
-  async runAsync() {
+  async runAsync(isWatching = false) {
     const processManager = new ProcessManager();
     const protoFilePaths = glob.sync(path.join(TEST_DIR_RELATIVE_PATH, '**/*.proto'));
 
@@ -35,7 +36,9 @@ class ProtoCommand {
 
     for (const protoFilePath of protoFilePaths) {
       const jsFilePath = protoFilePath.replace(/.proto$/, '.pb.js');
-      processManager.spawnChildProcessSync(cmd, args.concat(`--out=${jsFilePath}`, protoFilePath));
+      processManager.spawnChildProcessSync(
+        cmd, args.concat(`--out=${jsFilePath}`, protoFilePath), undefined, isWatching
+      );
     }
   }
 }
