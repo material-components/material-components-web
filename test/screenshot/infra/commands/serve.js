@@ -16,6 +16,8 @@
 
 'use strict';
 
+/** @type {!CliColor} */
+const colors = require('colors');
 const detectPort = require('detect-port');
 const express = require('express');
 const serveIndex = require('serve-index');
@@ -42,11 +44,16 @@ class ServeCommand {
     app.use('/', express.static(TEST_DIR_RELATIVE_PATH), serveIndex(TEST_DIR_RELATIVE_PATH));
 
     app.listen(port, () => {
-      console.log(`
-==========================================================
-Local development server running on http://localhost:${port}/
-==========================================================
-`);
+      const urlPlain = `http://localhost:${port}/`;
+      const urlColor = colors.bold.underline(urlPlain);
+      const noticePlain = `Local development server running on ${urlPlain}`;
+      const noticeColor = `Local development server running on ${urlColor}`;
+      const borderColor = colors.green(''.padStart(noticePlain.length, '='));
+      console.log((`
+${borderColor}
+${noticeColor}
+${borderColor}
+`));
     });
   }
 }
