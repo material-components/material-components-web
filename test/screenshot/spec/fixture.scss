@@ -1,0 +1,79 @@
+//
+// Copyright 2018 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,600,700");
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+
+$test-trim-color: #abc123; // Value must match `TRIM_COLOR_CSS_VALUE` in `image-cropper.js`
+$test-grid-color: #dddddd;
+
+.test-body {
+  display: flex;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.test-main {
+  position: relative;
+  box-sizing: border-box;
+}
+
+.test-main--mobile-viewport {
+  width: 350px; // fits 2 columns of buttons within a Galaxy S7 viewport
+  height: 590px; // fits 8 rows of buttons within a Galaxy S7 viewport
+  margin: 5px 0 5px 5px; // Extra padding ensures that CBT's "chromeless" screenshots don't get cut off
+  border: 1px solid $test-trim-color;
+  overflow: hidden;
+}
+
+.test-main--overflowing::after {
+  display: block;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 10px 20px;
+  background-color: rgba(255, 0, 0, .5);
+  color: white;
+  font-family: Roboto, sans-serif;
+  font-size: .9rem;
+  font-weight: bold;
+  text-shadow: 0 0 3px rgba(0, 0, 0, .5);
+  content: "ERROR: Content overflows mobile viewport!";
+}
+
+.test-grid {
+  display: flex;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+}
+
+.test-cell {
+  box-sizing: border-box;
+  margin: 1px;
+
+  // Ensure that shadows from adjacent components don't overlap
+  padding: 10px;
+
+  // Ruler grid pattern
+  // https://stackoverflow.com/a/32861765/467582
+  background-image:
+    linear-gradient(to right, #{$test-grid-color} 1px, transparent 1.01px),  // fraction for IE 11
+    linear-gradient(to bottom, #{$test-grid-color} 1px, transparent 1.01px); // fraction for IE 11
+
+  background-size: 10px 10px;
+}
