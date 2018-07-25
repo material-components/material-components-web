@@ -57,9 +57,7 @@ the input element.
   <label for="username" class="mdc-floating-label">Username</label>
   <div class="mdc-line-ripple"></div>
 </div>
-<p id="username-helper-text" class="mdc-text-field-helper-text" aria-hidden="true">
-  This will be displayed on your public profile
-</p>
+<p id="username-helper-text" class="mdc-text-field-helper-text" aria-hidden="true">This will be displayed on your public profile</p>
 ```
 
 When using our vanilla JS component, if the browser sees that the input element has an `aria-controls`
