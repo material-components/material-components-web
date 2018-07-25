@@ -77,6 +77,19 @@ const fabRipple = new MDCRipple(document.querySelector('.mdc-fab'));
 
 > See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
 
+## Variants
+
+### Extended FAB
+
+```html
+<button class="mdc-fab mdc-fab--extended">
+  <span class="material-icons mdc-fab__icon">add</span>
+  <span class="mdc-fab__label">Create</span>
+</button>
+```
+
+> _NOTE:_ The extended FAB must contain label where as the icon is optional. The icon and label may be specified in whichever order is appropriate based on context.
+
 ## Style Customization
 
 ### CSS Classes
