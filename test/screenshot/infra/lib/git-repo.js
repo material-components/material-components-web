@@ -169,17 +169,18 @@ class GitRepo {
   }
 
   /**
-   * @param {string=} commit
+   * @param {string} commit
+   * @param {string} stackTrace
    * @return {!Promise<!mdc.proto.User>}
    */
-  async getCommitAuthor(commit = undefined) {
+  async getCommitAuthor(commit, stackTrace) {
     /** @type {!Array<!DefaultLogFields>} */
     let logEntries;
 
     try {
       logEntries = await this.getLog([commit]);
     } catch (err) {
-      throw new VError(err, `Unable to get author for commit "${commit}"`);
+      throw new VError(err, `Unable to get author for commit "${commit}":\n${stackTrace}`);
     }
 
     const logEntry = logEntries[0];
