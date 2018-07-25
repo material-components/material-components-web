@@ -24,12 +24,13 @@ const GitRevision = mdcProto.GitRevision;
 const BuildCommand = require('./build');
 const Cli = require('../lib/cli');
 const CliColor = require('../lib/logger').colors;
+const Controller = require('../lib/controller');
 const DiffBaseParser = require('../lib/diff-base-parser');
 const Duration = require('../lib/duration');
-const Controller = require('../lib/controller');
 const GitHubApi = require('../lib/github-api');
 const ImageDiffer = require('../lib/image-differ');
 const Logger = require('../lib/logger');
+const getStackTrace = require('../lib/stacktrace')('TestCommand');
 const {ExitCode} = require('../lib/constants');
 
 // TODO(acdvorak): Refactor most of this class out into a separate file
@@ -113,7 +114,7 @@ class TestCommand {
       this.logComparisonResults_(reportData);
     } catch (err) {
       await this.gitHubApi_.setPullRequestError();
-      throw new VError(err, 'Failed to run screenshot tests');
+      throw new VError(err, getStackTrace('diffAgainstLocal_'));
     }
 
     return reportData;
@@ -145,7 +146,7 @@ class TestCommand {
       this.logComparisonResults_(reportData);
     } catch (err) {
       await this.gitHubApi_.setPullRequestError();
-      throw new VError(err, 'Failed to run screenshot tests');
+      throw new VError(err, getStackTrace('diffAgainstMasterImpl_'));
     }
 
     return reportData;

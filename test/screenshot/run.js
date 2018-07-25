@@ -20,6 +20,7 @@ const Cli = require('./infra/lib/cli');
 const CliColor = require('./infra/lib/logger').colors;
 const Duration = require('./infra/lib/duration');
 const {ExitCode} = require('./infra/lib/constants');
+const {formatError} = require('./infra/lib/stacktrace');
 
 const COMMANDS = {
   get approve() {
@@ -71,7 +72,7 @@ async function runAsync() {
       }
     },
     (err) => {
-      console.error('\n\n' + CliColor.bold.red('ERROR:'), err);
+      console.error('\n\n' + CliColor.bold.red('ERROR:'), formatError(err));
       process.exit(ExitCode.UNKNOWN_ERROR);
     }
   );

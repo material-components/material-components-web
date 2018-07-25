@@ -108,7 +108,7 @@ class LocalStorage {
    */
   async readTextFile(filePath) {
     try {
-      return fs.readFile(filePath, {encoding: 'utf8'});
+      return await fs.readFile(filePath, {encoding: 'utf8'});
     } catch (err) {
       throw new VError(err, `Failed to run LocalStorage.readTextFile(${filePath})`);
     }
@@ -116,14 +116,10 @@ class LocalStorage {
 
   /**
    * @param {string} filePath
-   * @return {!Promise<string>}
+   * @return {string}
    */
   readTextFileSync(filePath) {
-    try {
-      return fs.readFileSync(filePath, {encoding: 'utf8'});
-    } catch (err) {
-      throw new VError(err, `Failed to run LocalStorage.readTextFileSync(${filePath})`);
-    }
+    return fs.readFileSync(filePath, {encoding: 'utf8'});
   }
 
   /**
@@ -133,7 +129,7 @@ class LocalStorage {
    */
   async readBinaryFile(filePath, encoding = null) {
     try {
-      return fs.readFile(filePath, {encoding});
+      return await fs.readFile(filePath, {encoding});
     } catch (err) {
       throw new VError(err, `Failed to run LocalStorage.readBinaryFile(${filePath}, ${encoding})`);
     }
@@ -170,7 +166,7 @@ class LocalStorage {
    */
   async copy(src, dest) {
     try {
-      return fsx.copy(src, dest);
+      return await fsx.copy(src, dest);
     } catch (err) {
       throw new VError(err, `Failed to run LocalStorage.copy(${src}, ${dest})`);
     }
@@ -182,7 +178,7 @@ class LocalStorage {
    */
   async delete(pathPatterns) {
     try {
-      return del(pathPatterns);
+      return await del(pathPatterns);
     } catch (err) {
       throw new VError(err, `Failed to run LocalStorage.delete(${pathPatterns} patterns)`);
     }
@@ -194,7 +190,7 @@ class LocalStorage {
    */
   async exists(filePath) {
     try {
-      return fs.exists(filePath);
+      return await fs.exists(filePath);
     } catch (err) {
       throw new VError(err, `Failed to run LocalStorage.exists(${filePath})`);
     }
