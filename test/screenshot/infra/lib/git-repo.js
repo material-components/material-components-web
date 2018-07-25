@@ -22,8 +22,6 @@ const simpleGit = require('simple-git/promise');
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
 const {User} = mdcProto;
 
-const getStackTrace = require('./stacktrace')('GitRepo');
-
 let hasFetched = false;
 
 class GitRepo {
