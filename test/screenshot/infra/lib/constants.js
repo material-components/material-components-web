@@ -51,29 +51,18 @@ module.exports = {
    * Number of milliseconds to wait for fonts to load on a test page in Selenium before giving up.
    * @type {number}
    */
-  SELENIUM_FONT_LOAD_WAIT_MS: 3 * 1000, // 3 seconds
-
-  /**
-   * Number of milliseconds a Selenium test should wait to receive commands before being considered "stalled".
-   * @type {number}
-   */
-  SELENIUM_STALLED_TIME_MS: 2 * 60 * 1000, // 2 minutes
+  SELENIUM_FONT_LOAD_WAIT_MS: 3000,
 
   ExitCode: {
     OK: 0,
-
-    /** ctrl-c */
-    SIGINT: 11,
-
-    /** kill */
-    SIGTERM: 12,
-
-    UNKNOWN_ERROR: 13,
-    UNCAUGHT_EXCEPTION: 14,
-    UNHANDLED_PROMISE_REJECTION: 15,
-    UNSUPPORTED_CLI_COMMAND: 16,
-    MISSING_ENV_VAR: 17,
-    HTTP_PORT_ALREADY_IN_USE: 18,
-    CHANGES_FOUND: 19,
+    UNKNOWN_ERROR: 11,
+    SIGINT: 12, // ctrl-c
+    SIGTERM: 13, // kill
+    UNSUPPORTED_CLI_COMMAND: 14,
+    HTTP_PORT_ALREADY_IN_USE: 15,
+    MISSING_ENV_VAR: 16,
+    UNHANDLED_PROMISE_REJECTION: 17,
+    CHANGES_FOUND: 18,
+    UNSUPPORTED_EXTERNAL_PR: 19,
   },
 };

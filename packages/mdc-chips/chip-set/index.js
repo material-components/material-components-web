@@ -19,7 +19,7 @@ import MDCComponent from '@material/base/component';
 
 import MDCChipSetAdapter from './adapter';
 import MDCChipSetFoundation from './foundation';
-import {MDCChip, MDCChipFoundation} from '../chip/index';
+import {MDCChip} from '../chip/index';
 
 /**
  * @extends {MDCComponent<!MDCChipSetFoundation>}
@@ -36,11 +36,6 @@ class MDCChipSet extends MDCComponent {
     this.chips;
     /** @type {(function(!Element): !MDCChip)} */
     this.chipFactory_;
-
-    /** @private {?function(?Event): undefined} */
-    this.handleChipInteraction_;
-    /** @private {?function(?Event): undefined} */
-    this.handleChipRemoval_;
   }
 
   /**
@@ -60,32 +55,18 @@ class MDCChipSet extends MDCComponent {
     this.chips = this.instantiateChips_(this.chipFactory_);
   }
 
+  destroy() {
+    this.chips.forEach((chip) => {
+      chip.destroy();
+    });
+  }
+
   initialSyncWithDOM() {
     this.chips.forEach((chip) => {
       if (chip.isSelected()) {
         this.foundation_.select(chip.foundation);
       }
     });
-
-    this.handleChipInteraction_ = (evt) => this.foundation_.handleChipInteraction(evt);
-    this.handleChipRemoval_ = (evt) => this.foundation_.handleChipRemoval(evt);
-    this.root_.addEventListener(
-      MDCChipFoundation.strings.INTERACTION_EVENT, this.handleChipInteraction_);
-    this.root_.addEventListener(
-      MDCChipFoundation.strings.REMOVAL_EVENT, this.handleChipRemoval_);
-  }
-
-  destroy() {
-    this.chips.forEach((chip) => {
-      chip.destroy();
-    });
-
-    this.root_.removeEventListener(
-      MDCChipFoundation.strings.INTERACTION_EVENT, this.handleChipInteraction_);
-    this.root_.removeEventListener(
-      MDCChipFoundation.strings.REMOVAL_EVENT, this.handleChipRemoval_);
-
-    super.destroy();
   }
 
   /**
@@ -102,6 +83,8 @@ class MDCChipSet extends MDCComponent {
   getDefaultFoundation() {
     return new MDCChipSetFoundation(/** @type {!MDCChipSetAdapter} */ (Object.assign({
       hasClass: (className) => this.root_.classList.contains(className),
+      registerInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
+      deregisterInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
       removeChip: (chip) => {
         const index = this.chips.indexOf(chip);
         this.chips.splice(index, 1);

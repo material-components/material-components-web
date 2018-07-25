@@ -18,15 +18,10 @@
 
 const Controller = require('../lib/controller');
 
-class ApproveCommand {
-  /**
-   * @return {!Promise<number|undefined>} Process exit code. If no exit code is returned, `0` is assumed.
-   */
+module.exports = {
   async runAsync() {
     const controller = new Controller();
     const reportData = await controller.initForApproval();
     await controller.approveChanges(reportData);
-  }
-}
-
-module.exports = ApproveCommand;
+  },
+};

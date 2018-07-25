@@ -106,7 +106,7 @@ test('#get/setSelectedIndex', () => {
   assert.equal(component.selectedIndex, 1);
 });
 
-test('#get/set disabled', () => {
+test('#get/setDisabled', () => {
   const {component} = setupTest();
   assert.isFalse(component.disabled);
   component.disabled = true;
@@ -126,27 +126,6 @@ test('#set value sets the value on the <select>', () => {
   const {component, nativeControl} = setupTest();
   component.value = 'orange';
   assert.equal(nativeControl.value, 'orange');
-});
-
-test('#set value calls foundation.handleChange', () => {
-  const {component} = setupTest();
-  component.foundation_.handleChange = td.func();
-  component.value = 'orange';
-  td.verify(component.foundation_.handleChange(), {times: 1});
-});
-
-test('#set selectedIndex calls foundation.handleChange', () => {
-  const {component} = setupTest();
-  component.foundation_.handleChange = td.func();
-  component.selectedIndex = 1;
-  td.verify(component.foundation_.handleChange(), {times: 1});
-});
-
-test('#set disabled calls foundation.updateDisabledStyle', () => {
-  const {component} = setupTest();
-  component.foundation_.updateDisabledStyle = td.func();
-  component.disabled = true;
-  td.verify(component.foundation_.updateDisabledStyle(true), {times: 1});
 });
 
 test('#initialSyncWithDOM sets the selected index if an option has the selected attr', () => {
@@ -359,47 +338,37 @@ test('adapter#deactivateBottomLine removes active class from the bottom line', (
   td.verify(bottomLine.deactivate());
 });
 
-test('change event triggers foundation.handleChange()', () => {
+test('adapter#registerInteractionHandler adds an event listener to the nativeControl element', () => {
   const {component, nativeControl} = setupTest();
-  component.foundation_.handleChange = td.func();
-  domEvents.emit(nativeControl, 'change');
-  td.verify(component.foundation_.handleChange(), {times: 1});
+  const listener = td.func('eventlistener');
+  component.getDefaultFoundation().adapter_.registerInteractionHandler('click', listener);
+  domEvents.emit(nativeControl, 'click');
+  td.verify(listener(td.matchers.anything()));
 });
 
-test('focus event triggers foundation.handleFocus()', () => {
+test('adapter#deregisterInteractionHandler removes an event listener from the nativeControl element', () => {
   const {component, nativeControl} = setupTest();
-  component.foundation_.handleFocus = td.func();
-  domEvents.emit(nativeControl, 'focus');
-  td.verify(component.foundation_.handleFocus(), {times: 1});
+  const listener = td.func('eventlistener');
+  nativeControl.addEventListener('click', listener);
+  component.getDefaultFoundation().adapter_.deregisterInteractionHandler('click', listener);
+  domEvents.emit(nativeControl, 'click');
+  td.verify(listener(td.matchers.anything()), {times: 0});
 });
 
-test('blur event triggers foundation.handleBlur()', () => {
-  const {component, nativeControl} = setupTest();
-  component.foundation_.handleBlur = td.func();
-  domEvents.emit(nativeControl, 'blur');
-  td.verify(component.foundation_.handleBlur(), {times: 1});
+test('adapter#setValue sets the value of the select to the correct option', () => {
+  const {nativeControl, component} = setupTest();
+  component.getDefaultFoundation().adapter_.setValue('orange');
+  assert.equal(nativeControl.value, 'orange');
 });
 
-test('#destroy removes the change handler', () => {
-  const {component, nativeControl} = setupTest();
-  component.foundation_.handleChange = td.func();
-  component.destroy();
-  domEvents.emit(nativeControl, 'change');
-  td.verify(component.foundation_.handleChange(), {times: 0});
+test('adapter#getValue returns the nativeControl value', () => {
+  const {nativeControl, component} = setupTest();
+  nativeControl.value = 'orange';
+  assert.equal(component.getDefaultFoundation().adapter_.getValue(), 'orange');
 });
 
-test('#destroy removes the focus handler', () => {
-  const {component, nativeControl} = setupTest();
-  component.foundation_.handleFocus = td.func();
-  component.destroy();
-  domEvents.emit(nativeControl, 'focus');
-  td.verify(component.foundation_.handleFocus(), {times: 0});
-});
-
-test('#destroy removes the blur handler', () => {
-  const {component, nativeControl} = setupTest();
-  component.foundation_.handleBlur = td.func();
-  component.destroy();
-  domEvents.emit(nativeControl, 'blur');
-  td.verify(component.foundation_.handleBlur(), {times: 0});
+test('adapter#getSelectedIndex returns selected index', () => {
+  const {component} = setupTest();
+  component.selectedIndex = 1;
+  assert.equal(component.getDefaultFoundation().adapter_.getSelectedIndex(), 1);
 });

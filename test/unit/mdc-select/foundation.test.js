@@ -40,8 +40,9 @@ test('exports strings', () => {
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSelectFoundation, [
     'addClass', 'removeClass', 'hasClass', 'floatLabel', 'activateBottomLine',
-    'deactivateBottomLine', 'getValue',
-    'isRtl', 'hasLabel', 'getLabelWidth', 'hasOutline',
+    'deactivateBottomLine', 'setDisabled', 'registerInteractionHandler',
+    'deregisterInteractionHandler', 'getValue', 'setValue', 'getSelectedIndex',
+    'setSelectedIndex', 'isRtl', 'hasLabel', 'getLabelWidth', 'hasOutline',
     'notchOutline', 'closeOutline',
   ]);
 });
@@ -52,16 +53,70 @@ function setupTest() {
   return {mockAdapter, foundation};
 }
 
-test('#updateDisabledStyle(true) calls adapter.addClass', () => {
+test('#setDisabled to true calls adapter.setDisabled and adapter.addClass', () => {
   const {mockAdapter, foundation} = setupTest();
-  foundation.updateDisabledStyle(true);
+  foundation.setDisabled(true);
+  td.verify(mockAdapter.setDisabled(true));
   td.verify(mockAdapter.addClass(MDCSelectFoundation.cssClasses.DISABLED));
 });
 
-test('#updateDisabledStyle(false) calls adapter.removeClass', () => {
+test('#setDisabled to false calls adapter.setDisabled false and adapter.removeClass', () => {
   const {mockAdapter, foundation} = setupTest();
-  foundation.updateDisabledStyle(false);
+  foundation.setDisabled(false);
+  td.verify(mockAdapter.setDisabled(false));
   td.verify(mockAdapter.removeClass(MDCSelectFoundation.cssClasses.DISABLED));
+});
+
+test('#init registers focus, blur, and change handlers', () => {
+  const {mockAdapter, foundation} = setupTest();
+  foundation.init();
+  td.verify(mockAdapter.registerInteractionHandler('focus', foundation.focusHandler_));
+  td.verify(mockAdapter.registerInteractionHandler('blur', foundation.blurHandler_));
+  td.verify(mockAdapter.registerInteractionHandler('change', foundation.selectionHandler_));
+});
+
+test('#destroy deregisters focus, blur, and change handlers', () => {
+  const {mockAdapter, foundation} = setupTest();
+  foundation.destroy();
+  td.verify(mockAdapter.deregisterInteractionHandler('focus', foundation.focusHandler_));
+  td.verify(mockAdapter.deregisterInteractionHandler('blur', foundation.blurHandler_));
+  td.verify(mockAdapter.deregisterInteractionHandler('change', foundation.selectionHandler_));
+});
+
+test('#setSelectedIndex calls adapter.setSelectedIndex', () => {
+  const {mockAdapter, foundation} = setupTest();
+  foundation.setSelectedIndex(1);
+  td.verify(mockAdapter.setSelectedIndex(1));
+});
+
+
+test('#setSelectedIndex floats label', () => {
+  const {mockAdapter, foundation} = setupTest();
+  td.when(mockAdapter.getValue()).thenReturn('value');
+  foundation.setSelectedIndex(1);
+  td.verify(mockAdapter.floatLabel(true));
+});
+
+test('#setSelectedIndex with index of an empty value defloats label', () => {
+  const {mockAdapter, foundation} = setupTest();
+  td.when(mockAdapter.getValue(1)).thenReturn('');
+  foundation.setSelectedIndex(1);
+  td.verify(mockAdapter.floatLabel(false));
+});
+
+test('#setValue calls setValue on adapter', () => {
+  const {mockAdapter, foundation} = setupTest();
+  td.when(mockAdapter.getSelectedIndex()).thenReturn(1);
+  foundation.setValue('value');
+  td.verify(mockAdapter.setValue('value'));
+});
+
+test('#setValue calls setSelectedIndex, which calls floatLabel true', () => {
+  const {mockAdapter, foundation} = setupTest();
+  td.when(mockAdapter.getValue()).thenReturn('value');
+  td.when(mockAdapter.getSelectedIndex()).thenReturn(1);
+  foundation.setValue('value');
+  td.verify(mockAdapter.floatLabel(true));
 });
 
 test('#notchOutline updates the SVG path of the outline element', () => {
@@ -101,71 +156,4 @@ test('#notchOutline calls updates notched outline to return to idle state when '
 
   foundation.notchOutline(false);
   td.verify(mockAdapter.closeOutline());
-});
-
-test('#handleChange calls adapter.floatLabel(true) when there is a value', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.getValue()).thenReturn('value');
-
-  foundation.handleChange();
-  td.verify(mockAdapter.floatLabel(true), {times: 1});
-});
-
-test('#handleChange calls adapter.floatLabel(false) when there is no value', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.getValue()).thenReturn('');
-
-  foundation.handleChange();
-  td.verify(mockAdapter.floatLabel(false), {times: 1});
-});
-
-test('#handleChange calls foundation.notchOutline(true) when there is a value', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.notchOutline = td.func();
-  td.when(mockAdapter.getValue()).thenReturn('value');
-
-  foundation.handleChange();
-  td.verify(foundation.notchOutline(true), {times: 1});
-});
-
-test('#handleChange calls foundation.notchOutline(false) when there is no value', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.notchOutline = td.func();
-  td.when(mockAdapter.getValue()).thenReturn('');
-
-  foundation.handleChange();
-  td.verify(foundation.notchOutline(false), {times: 1});
-});
-
-test('#handleFocus calls adapter.floatLabel(true)', () => {
-  const {foundation, mockAdapter} = setupTest();
-
-  foundation.handleFocus();
-  td.verify(mockAdapter.floatLabel(true), {times: 1});
-});
-
-test('#handleFocus calls foundation.notchOutline(true)', () => {
-  const {foundation} = setupTest();
-  foundation.notchOutline = td.func();
-  foundation.handleFocus();
-  td.verify(foundation.notchOutline(true), {times: 1});
-});
-
-test('#handleFocus calls adapter.activateBottomLine()', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.handleFocus();
-  td.verify(mockAdapter.activateBottomLine(), {times: 1});
-});
-
-test('#handleBlur calls foundation.handleChange()', () => {
-  const {foundation} = setupTest();
-  foundation.handleChange = td.func();
-  foundation.handleBlur();
-  td.verify(foundation.handleChange(), {times: 1});
-});
-
-test('#handleBlur calls adapter.deactivateBottomLine()', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.handleBlur();
-  td.verify(mockAdapter.deactivateBottomLine(), {times: 1});
 });
