@@ -65,7 +65,7 @@ autoInit.register('MDCNotchedOutline', notchedOutline.MDCNotchedOutline);
 autoInit.register('MDCRadio', radio.MDCRadio);
 autoInit.register('MDCSnackbar', snackbar.MDCSnackbar);
 autoInit.register('MDCTab_', tab.MDCTab);
-autoInit.register('MDCTabBar', tabBar.MDCTabBar);
+autoInit.register('MDCTabBar_', tabBar.MDCTabBar);
 autoInit.register('MDCTabIndicator', tabIndicator.MDCTabIndicator);
 autoInit.register('MDCTabScroller', tabScroller.MDCTabScroller);
 autoInit.register('MDCTab', tabs.MDCTab);

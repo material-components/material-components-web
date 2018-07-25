@@ -34,11 +34,17 @@ class MDCTabBar extends MDCComponent {
   constructor(...args) {
     super(...args);
 
-    /** @private {!Array<MDCTab>} */
-    this.tabList_ = [];
+    /** @type {!Array<!MDCTab>} */
+    this.tabList;
 
-    /** @private {?MDCTabScroller} */
-    this.tabScroller_;
+    /** @type {(function(!Element): !MDCTab)} */
+    this.tabFactory_;
+
+    /** @type {?MDCTabScroller} */
+    this.tabScroller;
+
+    /** @type {(function(!Element): !MDCTabScroller)} */
+    this.tabScrollerFactory_;
 
     /** @private {EventHandler} */
     this.handleTabInteraction_;
@@ -59,11 +65,14 @@ class MDCTabBar extends MDCComponent {
     tabFactory = (el) => new MDCTab(el),
     tabScrollerFactory = (el) => new MDCTabScroller(el),
   ) {
-    const tabElements = this.root_.querySelectorAll(MDCTabBarFoundation.strings.TAB_SELECTOR);
-    this.tabList_ = [].map.call(tabElements, tabFactory);
+    this.tabFactory_ = tabFactory;
+    this.tabScrollerFactory_ = tabScrollerFactory;
+
+    const tabElements = [].slice.call(this.root_.querySelectorAll(MDCTabBarFoundation.strings.TAB_SELECTOR));
+    this.tabList = tabElements.map((el) => this.tabFactory_(el));
 
     const tabScrollerElement = this.root_.querySelector(MDCTabBarFoundation.strings.TAB_SCROLLER_SELECTOR);
-    this.tabScroller_ = tabScrollerFactory(tabScrollerElement);
+    this.tabScroller = this.tabScrollerFactory_(tabScrollerElement);
   }
 
   initialSyncWithDOM() {
@@ -86,20 +95,26 @@ class MDCTabBar extends MDCComponent {
   getDefaultFoundation() {
     return new MDCTabBarFoundation(
       /** @type {!MDCTabBarAdapter} */ ({
-        scrollTo: (scrollX) => this.tabScroller_.scrollTo(scrollX),
-        incrementScroll: (scrollXIncrement) => this.tabScroller_.incrementScroll(scrollXIncrement),
-        computeScrollPosition: () => this.tabScroller_.getScrollPosition(),
+        scrollTo: (scrollX) => this.tabScroller.scrollTo(scrollX),
+        incrementScroll: (scrollXIncrement) => this.tabScroller.incrementScroll(scrollXIncrement),
+        getScrollPosition: () => this.tabScroller.getScrollPosition(),
+        getScrollContentWidth: () => this.tabScroller.getScrollContentWidth(),
         getOffsetWidth: () => this.root_.offsetWidth,
-        getScrollContentWidth: () => this.tabScroller_.getScrollContentWidth(),
         isRTL: () => window.getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
-      }),
-      this.tabList_,
+        activateTabAtIndex: (index, clientRect) => this.tabList[index].activate(clientRect),
+        deactivateTabAtIndex: (index) => this.tabList[index].deactivate(),
+        getTabIndicatorClientRectAtIndex: (index) => this.tabList[index].computeIndicatorClientRect(),
+        getTabDimensionsAtIndex: (index) => this.tabList[index].computeDimensions(),
+        getActiveTabIndex: () => this.tabList.findIndex((tab) => tab.active),
+        getIndexOfTab: (tabToFind) => this.tabList.indexOf(tabToFind),
+        getTabListLength: () => this.tabList.length,
+      })
     );
   }
 
   destroy() {
-    this.tabScroller_.destroy();
-    this.tabList_.forEach((tab) => tab.destroy());
+    this.tabScroller.destroy();
+    this.tabList.forEach((tab) => tab.destroy());
   }
 
   activateTab(index) {

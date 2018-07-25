@@ -44,7 +44,7 @@ class MDCTabBarAdapter {
    * Returns the current scroll distance
    * @return {number}
    */
-  computeScrollPosition() {}
+  getScrollPosition() {}
 
   /**
    * Returns the width of the scroll content
@@ -63,6 +63,20 @@ class MDCTabBarAdapter {
    * @return {boolean}
    */
   isRTL() {}
+
+  activateTabAtIndex(index, clientRect) {}
+
+  deactivateTabAtIndex(index) {}
+
+  getTabIndicatorClientRectAtIndex(index) {}
+
+  getTabDimensionsAtIndex(index) {}
+
+  getTabListLength() {}
+
+  getActiveTabIndex() {}
+
+  getIndexOfTab(tab) {}
 }
 
 export default MDCTabBarAdapter;
