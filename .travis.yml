@@ -16,7 +16,7 @@ matrix:
     env:
     - TEST_SUITE=unit
     addons:
-      chrome: stable
+#      chrome: stable
       sauce_connect: true
     script: npm run test:unit && npm run posttest
     after_success:
