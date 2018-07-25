@@ -36,8 +36,10 @@ function setupTest({tabIndex = undefined, useInnerIconElement = false} = {}) {
   if (tabIndex !== undefined) {
     root.tabIndex = tabIndex;
   }
-  const component = new MDCIconButtonToggle(root);
-  return {root, component};
+  const MockFoundationCtor = td.constructor(MDCIconButtonToggleFoundation);
+  const mockFoundation = new MockFoundationCtor();
+  const component = new MDCIconButtonToggle(root, mockFoundation);
+  return {root, component, mockFoundation};
 }
 
 suite('MDCIconButtonToggle');
@@ -169,20 +171,14 @@ test('assert keyup does not trigger ripple', () => {
 });
 
 test('click handler is added to root element', () => {
-  const {root, component} = setupTest();
-  component.foundation_.handleClick = td.func();
-  const event = document.createEvent('KeyboardEvent');
-  event.initEvent('click', false, true);
-  root.dispatchEvent(event);
-  td.verify(component.foundation_.handleClick(), {times: 1});
+  const {root, mockFoundation} = setupTest();
+  domEvents.emit(root, 'click');
+  td.verify(mockFoundation.handleClick(), {times: 1});
 });
 
 test('keydown handler is removed from the root element on destroy', () => {
-  const {root, component} = setupTest();
-  component.foundation_.handleClick = td.func();
-  const event = document.createEvent('KeyboardEvent');
-  event.initEvent('click', false, true);
-  root.dispatchEvent(event);
+  const {root, component, mockFoundation} = setupTest();
   component.destroy();
-  td.verify(component.foundation_.handleClick(), {times: 0});
+  domEvents.emit(root, 'click');
+  td.verify(mockFoundation.handleClick(), {times: 0});
 });
