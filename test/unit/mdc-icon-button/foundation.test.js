@@ -18,7 +18,7 @@ import {assert} from 'chai';
 import td from 'testdouble';
 
 import {setupFoundationTest} from '../helpers/setup';
-import {verifyDefaultAdapter, captureHandlers as baseCaptureHandlers} from '../helpers/foundation';
+import {verifyDefaultAdapter} from '../helpers/foundation';
 import MDCIconButtonToggleFoundation from '../../../packages/mdc-icon-button/foundation';
 
 const {strings} = MDCIconButtonToggleFoundation;
@@ -57,7 +57,7 @@ test('#constructor sets on to true if the toggle is pressed', () => {
 });
 
 test('#handleClick calls #toggle', () => {
-  const {foundation, mockAdapter} = setupTest();
+  const {foundation} = setupTest();
   foundation.init();
   foundation.toggle = td.func();
   foundation.handleClick();
