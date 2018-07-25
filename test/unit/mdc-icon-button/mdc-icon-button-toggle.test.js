@@ -25,7 +25,7 @@ import {MDCIconButtonToggle, MDCIconButtonToggleFoundation} from '../../../packa
 import {MDCRipple} from '../../../packages/mdc-ripple';
 import {cssClasses} from '../../../packages/mdc-ripple/constants';
 
-function setupTest({tabIndex = undefined, useInnerIconElement = false} = {}) {
+function setupTest({tabIndex = undefined, useInnerIconElement = false, createMockFoundation = false} = {}) {
   const root = document.createElement('button');
   if (useInnerIconElement) {
     const icon = document.createElement('i');
@@ -36,8 +36,11 @@ function setupTest({tabIndex = undefined, useInnerIconElement = false} = {}) {
   if (tabIndex !== undefined) {
     root.tabIndex = tabIndex;
   }
-  const MockFoundationCtor = td.constructor(MDCIconButtonToggleFoundation);
-  const mockFoundation = new MockFoundationCtor();
+  let mockFoundation;
+  if (createMockFoundation) {
+    const MockFoundationCtor = td.constructor(MDCIconButtonToggleFoundation);
+    mockFoundation = new MockFoundationCtor();
+  }
   const component = new MDCIconButtonToggle(root, mockFoundation);
   return {root, component, mockFoundation};
 }
@@ -171,13 +174,13 @@ test('assert keyup does not trigger ripple', () => {
 });
 
 test('click handler is added to root element', () => {
-  const {root, mockFoundation} = setupTest();
+  const {root, mockFoundation} = setupTest({createMockFoundation: true});
   domEvents.emit(root, 'click');
   td.verify(mockFoundation.handleClick(), {times: 1});
 });
 
-test('keydown handler is removed from the root element on destroy', () => {
-  const {root, component, mockFoundation} = setupTest();
+test('click handler is removed from the root element on destroy', () => {
+  const {root, component, mockFoundation} = setupTest({createMockFoundation: true});
   component.destroy();
   domEvents.emit(root, 'click');
   td.verify(mockFoundation.handleClick(), {times: 0});
