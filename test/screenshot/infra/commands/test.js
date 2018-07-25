@@ -257,8 +257,21 @@ class TestCommand {
    * @private
    */
   getPrComment_({masterDiffReportData, snapshotGitRev}) {
-    const reportPageUrl = masterDiffReportData.meta.report_html_file.public_url;
+    const masterReportPageUrl = masterDiffReportData.meta.report_html_file.public_url;
     const masterScreenshots = masterDiffReportData.screenshots;
+    const masterGitRev = masterDiffReportData.meta.golden_diff_base.git_revision;
+
+    const numTotal = masterScreenshots.actual_screenshot_list.length;
+    const numChanged =
+      masterScreenshots.changed_screenshot_list.length +
+      masterScreenshots.added_screenshot_list.length +
+      masterScreenshots.removed_screenshot_list.length;
+    const plural = numChanged === 1 ? '' : 's';
+
+    if (numChanged === 0) {
+      const range = `commit ${snapshotGitRev.commit} vs. \`${masterGitRev.branch}\``;
+      return `**All ${numTotal} screenshot tests passed** for ${range}! 💯🎉`;
+    }
 
     const listMarkdown = [
       this.getChangelistMarkdown_(
@@ -272,38 +285,22 @@ class TestCommand {
       ),
     ].filter((str) => Boolean(str)).join('\n\n');
 
-    let contentMarkdown;
 
-    const numChanged =
-      masterScreenshots.changed_screenshot_list.length +
-      masterScreenshots.added_screenshot_list.length +
-      masterScreenshots.removed_screenshot_list.length;
+    return `
+### Screenshot test report ⚠️
 
-    if (listMarkdown) {
-      contentMarkdown = `
+**${numChanged}** screenshot${plural} changed from \`${masterGitRev.branch}\` on commit ${snapshotGitRev.commit}:
+
+* ${masterReportPageUrl}
+
 <details>
-  <summary><b>${numChanged} screenshot${numChanged === 1 ? '' : 's'} changed ⚠️</b></summary>
+  <summary><b>Details</b></summary>
   <div>
 
 ${listMarkdown}
 
   </div>
 </details>
-`.trim();
-    } else {
-      contentMarkdown = '### No diffs! 💯🎉';
-    }
-
-    return `
-🤖 Beep boop!
-
-### Screenshot test report
-
-Commit ${snapshotGitRev.commit} vs. \`master\`:
-
-* ${reportPageUrl}
-
-${contentMarkdown}
 `.trim();
   }
 
