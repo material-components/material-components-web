@@ -1,0 +1,30 @@
+.flex-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.color-card {
+    width: 15rem;
+    height: 15rem;
+}
+
+.color-card-primary {
+    background-color: $mdc-theme-primary;
+}
+
+.color-card-secondary {
+    background-color: $mdc-theme-secondary;
+}
+
+.color-card-on-primary {
+    background-color: $mdc-theme-on-primary;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.color-card-on-secondary {
+    background-color: $mdc-theme-on-secondary;
+}
+
+.catalog-title {
+    font-family: "Istock Web", sans-serif;
+}
