@@ -136,6 +136,11 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * @param {number} scrollXIncrement The value by which to increment the scroll position
    */
   incrementScroll(scrollXIncrement) {
+    // Early exit for non-operational increment values
+    if (scrollXIncrement === 0) {
+      return;
+    }
+
     if (this.isRTL_()) {
       return this.incrementScrollRTL_(scrollXIncrement);
     }
@@ -165,6 +170,14 @@ class MDCTabScrollerFoundation extends MDCFoundation {
     }
 
     return this.rtlScrollerInstance_;
+  }
+
+  /**
+   * Returns the width of the scroll content
+   * @return {number}
+   */
+  getScrollContentWidth() {
+    return this.adapter_.getScrollContentOffsetWidth();
   }
 
   /**
