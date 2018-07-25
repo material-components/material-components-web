@@ -17,75 +17,25 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Color Theming - Material Components Catalog</title>
+    <title>ISS Color Theming - Material Components Catalog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Rubik:300,400,500">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Istok+Web">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script src="/ready.js"></script>
     <script src="/uri.js"></script>
     <script src="/theme-loader.js"></script>
-    <noscript>
-      <link rel="stylesheet" href="/assets/theme/theme-baseline.css">
-    </noscript>
+    <link rel="stylesheet" href="/assets/theme/theme-iss.css">
   </head>
+
   <body class="mdc-typography">
     <header class="mdc-toolbar mdc-toolbar--fixed demo-toolbar">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
           <button class="material-icons mdc-toolbar__menu-icon demo-drawer-toggle mdc-icon-button" data-mdc-ripple-is-unbounded>menu</button>
-          <span class="mdc-toolbar__title catalog-title">Color Theming</span>
+          <span class="mdc-toolbar__title catalog-title">ISS Theme</span>
         </section>
-        <section class="mdc-toolbar__section mdc-toolbar__section--align-end mdc-toolbar__section--shrink-to-fit" role="toolbar">
-          <div class="mdc-menu-anchor">
-            <button id="theme-color-action" class="mdc-toolbar__icon mdc-icon-button" title="Change theme colors" data-theme="baseline" data-mdc-ripple-is-unbounded>
-              <i class="demo-theme-color-radio">
-                <span class="demo-theme-color-radio__inner"></span>
-              </i>
-            </button>
-            <div class="mdc-menu demo-theme-menu" style="position: absolute;" tabindex="-1" id="theme-color-menu">
-              <ul class="mdc-menu__items mdc-list demo-theme-list"
-                  role="menu"
-                  aria-hidden="true"
-                  style="list-style-type: none"><!-- Inline style needed to fix IE 11 rendering bug (see https://stackoverflow.com/a/23717689/467582) -->
-                <li class="mdc-list-item demo-theme-menu__list-item--selected" role="menuitem" tabindex="0" data-theme="baseline">
-                  <div class="mdc-list-item__graphic">
-                    <i class="demo-theme-color-radio">
-                      <span class="demo-theme-color-radio__inner"></span>
-                    </i>
-                  </div>
-                  Baseline (default)
-                </li>
-                <li class="mdc-list-item" role="menuitem" tabindex="0" data-theme="dark">
-                  <div class="mdc-list-item__graphic">
-                    <i class="demo-theme-color-radio">
-                      <span class="demo-theme-color-radio__inner"></span>
-                    </i>
-                  </div>
-                  Dark background (custom)
-                </li>
-                <li class="mdc-list-item" role="menuitem" tabindex="0" data-theme="black">
-                  <div class="mdc-list-item__graphic">
-                    <i class="demo-theme-color-radio">
-                      <span class="demo-theme-color-radio__inner"></span>
-                    </i>
-                  </div>
-                  Black primary (custom)
-                </li>
-                <li class="mdc-list-item" role="menuitem" tabindex="0" data-theme="shrine">
-                  <div class="mdc-list-item__graphic">
-                    <i class="demo-theme-color-radio">
-                      <span class="demo-theme-color-radio__inner"></span>
-                    </i>
-                  </div>
-                  Shrine (custom)
-                </li>
-              </ul>
-            </div>
-          </div>
-        </section>
+        
       </div>
       <div class="mdc-toolbar__row demo-toolbar-progress-row">
         <div role="progressbar"
@@ -144,9 +94,42 @@
     </aside>
 
     <main class="mdc-toolbar-fixed-adjust demo-main">
+
+      <section>
+          <h2>Typography</h2>
+          <h1 class="mdc-typography--headline1">h1 header</h1>
+          <h2 class="mdc-typography--headline2">h2 header</h2>
+          <h3 class="mdc-typography--headline3">h3 header</h3>
+          <h4 class="mdc-typography--headline4">h4 header</h4>
+          <h5 class="mdc-typography--headline5">h5 header</h5>
+          <h6 class="mdc-typography--headline6">h6 header</h6>
+        </section>
+
       <h2 class="mdc-typography--headline4">
         Baseline Colors
       </h2>
+
+      <section>
+        <h2>Colors</h2>
+        <div class="flex-container">
+          <div>
+            <div class="color-card color-card-primary"></div>
+            <p>Primary Color</p>
+          </div>
+          <div>
+            <div class="color-card color-card-secondary"></div>
+            <p>Secondary Color</p>
+          </div>
+          <div>
+            <div class="color-card color-card-on-primary"></div>
+            <p>Color on Primary</p>
+          </div>
+          <div>
+            <div class="color-card color-card-on-secondary"></div>
+            <p>Color on Secondary</p>
+          </div>
+        </div>
+      </section>
 
       <section class="demo-component-section">
         <i id="classes" class="demo-anchor-with-toolbar-offset"></i>
@@ -704,7 +687,6 @@
         </h3>
 
         <figure class="demo-figure--tab-bar">
-          <figcaption>Default</figcaption>
 
           <nav class="mdc-tab-bar mdc-tab-bar--icons-with-text demo-tab-bar">
             <a class="mdc-tab mdc-tab--with-icon-and-text mdc-tab--active demo-tab" href="javascript:">
@@ -722,44 +704,7 @@
             <span class="mdc-tab-bar__indicator"></span>
           </nav>
         </figure>
-        <figure class="demo-figure--tab-bar">
-          <figcaption>Primary Color</figcaption>
-
-          <nav class="mdc-tab-bar mdc-tab-bar--icons-with-text mdc-tab-bar--indicator-primary demo-tab-bar">
-            <a class="mdc-tab mdc-tab--with-icon-and-text mdc-tab--active demo-tab" href="javascript:">
-              <i class="material-icons mdc-tab__icon" aria-hidden="true">phone</i>
-              <span class="mdc-tab__icon-text">Recents</span>
-            </a>
-            <a class="mdc-tab mdc-tab--with-icon-and-text demo-tab" href="javascript:">
-              <i class="material-icons mdc-tab__icon" aria-hidden="true">favorite</i>
-              <span class="mdc-tab__icon-text">Favorites</span>
-            </a>
-            <a class="mdc-tab mdc-tab--with-icon-and-text demo-tab" href="javascript:">
-              <i class="material-icons mdc-tab__icon" aria-hidden="true">person_pin</i>
-              <span class="mdc-tab__icon-text">Nearby</span>
-            </a>
-            <span class="mdc-tab-bar__indicator"></span>
-          </nav>
-        </figure>
-        <figure class="demo-figure--tab-bar">
-          <figcaption>Secondary Color</figcaption>
-
-          <nav class="mdc-tab-bar mdc-tab-bar--icons-with-text mdc-tab-bar--indicator-accent demo-tab-bar">
-            <a class="mdc-tab mdc-tab--with-icon-and-text mdc-tab--active demo-tab" href="javascript:">
-              <i class="material-icons mdc-tab__icon" aria-hidden="true">phone</i>
-              <span class="mdc-tab__icon-text">Recents</span>
-            </a>
-            <a class="mdc-tab mdc-tab--with-icon-and-text demo-tab" href="javascript:">
-              <i class="material-icons mdc-tab__icon" aria-hidden="true">favorite</i>
-              <span class="mdc-tab__icon-text">Favorites</span>
-            </a>
-            <a class="mdc-tab mdc-tab--with-icon-and-text demo-tab" href="javascript:">
-              <i class="material-icons mdc-tab__icon" aria-hidden="true">person_pin</i>
-              <span class="mdc-tab__icon-text">Nearby</span>
-            </a>
-            <span class="mdc-tab-bar__indicator"></span>
-          </nav>
-        </figure>
+       
       </section>
 
       <section class="demo-component-section">
