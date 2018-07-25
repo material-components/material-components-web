@@ -43,12 +43,10 @@ class MDCMenuFoundation extends MDCFoundation {
    */
   static get defaultAdapter() {
     return /** @type {!MDCMenuAdapter} */ ({
-      selectElementAtIndex: () => {},
       closeSurface: () => {},
-      getFocusedElementIndex: () => {},
-      removeClassFromSelectionGroup: () => {},
+      getElementIndex: () => {},
+      getParentElement: () => {},
       notifySelected: () => {},
-      isListItem: () => {},
       toggleCheckbox: () => {},
     });
   }
@@ -90,22 +88,95 @@ class MDCMenuFoundation extends MDCFoundation {
    * @param {Event} evt
    */
   handleClick(evt) {
-    const listItemIndex = this.adapter_.getFocusedElementIndex();
-    if (listItemIndex >= 0) {
-      this.handleSelection_(listItemIndex);
+    const listItem = this.getListItem_(evt.target);
+    if (listItem) {
+      this.handleSelection_(listItem);
       this.preventDefaultEvent_(evt);
       this.adapter_.toggleCheckbox(evt.target);
     }
   }
 
-  handleSelection_(index) {
+  handleSelection_(listItem) {
+    const index = this.adapter_.getElementIndex(listItem);
+    if (index < 0) {
+      return;
+    }
+
     this.adapter_.notifySelected({index});
     this.adapter_.closeSurface();
+
     // Wait for the menu to close before adding/removing classes that affect styles.
     this.closeAnimationEndTimerId_ = setTimeout(() => {
-      this.adapter_.removeClassFromSelectionGroup(index);
-      this.adapter_.selectElementAtIndex(index);
+      const selectionGroup = this.getSelectionGroup_(listItem);
+
+      if (selectionGroup !== null) {
+        this.handleSelectionGroup_(selectionGroup, index);
+      }
     }, MDCMenuSurfaceFoundation.numbers.TRANSITION_CLOSE_DURATION);
+  }
+
+  /**
+   * Handles toggling the selected classes in a selection group when a
+   * selection is made.
+   * @param {Element} selectionGroup
+   * @param {number} index The selected index value
+   * @private
+   */
+  handleSelectionGroup_(selectionGroup, index) {
+    if (selectionGroup !== null) {
+      // De-select the previous selection in this group.
+      const selectedIndex = this.adapter_.getSelectedElementIndex(selectionGroup);
+      if (selectedIndex >= 0) {
+        this.adapter_.removeAttributeFromElementAtIndex(selectedIndex, strings.ARIA_SELECTED_ATTR);
+        this.adapter_.removeClassFromElementAtIndex(selectedIndex, cssClasses.MENU_SELECTED_LIST_ITEM);
+      }
+      // Select the new list item in this group.
+      this.adapter_.addClassToElementAtIndex(index, cssClasses.MENU_SELECTED_LIST_ITEM);
+      this.adapter_.addAttributeToElementAtIndex(index, strings.ARIA_SELECTED_ATTR, 'true');
+    }
+  }
+
+  /**
+   * Returns the parent selection group of an element or the
+   * @param listItem
+   * @return {*}
+   * @private
+   */
+  getSelectionGroup_(listItem) {
+    let parent = this.adapter_.getParentElement(listItem);
+    let isGroup = this.adapter_.elementContainsClass(parent, cssClasses.MENU_SELECTION_GROUP);
+    // Iterate through ancestors until we find the group or get to the list.
+    while (!isGroup && !this.adapter_.elementContainsClass(parent, cssClasses.LIST_CLASS)) {
+      parent = this.adapter_.getParentElement(listItem);
+      isGroup = this.adapter_.elementContainsClass(parent, cssClasses.MENU_SELECTION_GROUP);
+    }
+
+    if (isGroup) {
+      return parent;
+    } else {
+      return null;
+    }
+  }
+
+  /**
+   * Find the first ancestor with the mdc-list-item class.
+   * @param {Element} target
+   * @return {Element|null}
+   * @private
+   */
+  getListItem_(target) {
+    let isListItem = this.adapter_.elementContainsClass(target, cssClasses.LIST_ITEM_CLASS);
+
+    while (!isListItem) {
+      target = this.adapter_.getParentElement(target);
+      if (target) {
+        isListItem = this.adapter_.elementContainsClass(target, cssClasses.LIST_ITEM_CLASS);
+      } else { // target has no parent element.
+        return null;
+      }
+    }
+
+    return target;
   }
 
   /**

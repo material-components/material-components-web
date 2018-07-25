@@ -51,6 +51,7 @@ class FakeMenuSurface {
     this.open = false;
     this.show = td.func('.show');
     this.hide = td.func('.hide');
+    this.listen = td.func('.listen');
     this.setAnchorCorner = td.func('.setAnchorCorner');
     this.setAnchorMargin = td.func('.setAnchorMargin');
     this.quickOpen = false;

@@ -19,12 +19,9 @@
 
 /**
  * Adapter for MDC Menu. Provides an interface for managing
- * - classes
- * - dom
- * - focus
- * - position
- * - dimensions
- * - event handlers
+ * - selected element classes
+ * - get focused elements
+ * - toggling a checkbox inside a list item
  *
  * Additionally, provides type information for the adapter to the Closure
  * compiler.
@@ -37,12 +34,81 @@
  * @record
  */
 class MDCMenuAdapter {
-  selectElementAtIndex(index) {}
+  /**
+   * Adds a class to the element at the index provided.
+   * @param {number} index
+   * @param {string} className
+   */
+  addClassToElementAtIndex(index, className) {}
+
+  /**
+   * Removes a class from the element at the index provided
+   * @param {number} index
+   * @param {string} className
+   */
+  removeClassFromElementAtIndex(index, className) {}
+
+  /**
+   * Adds an attribute, with value, to the element at the index provided.
+   * @param {number} index
+   * @param {string} attr
+   * @param {string} value
+   */
+  addAttributeToElementAtIndex(index, attr, value) {}
+
+  /**
+   * Removes an attribute from an element at the index provided.
+   * @param {number} index
+   * @param {string} attr
+   */
+  removeAttributeFromElementAtIndex(index, attr) {}
+
+  /**
+   * Returns true if the element contains the className.
+   * @param {Element} element
+   * @param {string} className
+   * @return {boolean} true if the element contains the className
+   */
+  elementContainsClass(element, className) {}
+
+  /**
+   * Closes the menu-surface.
+   */
   closeSurface() {};
-  getFocusedElementIndex() {};
-  removeClassFromSelectionGroup(index) {};
+
+  /**
+   * Returns the index for the element provided.
+   * @param {Element} element
+   * @return {number} index of the element in the list or -1 if it is not in the list.
+   */
+  getElementIndex(element) {};
+
+  /**
+   * Returns the parentElement of the provided element.
+   * @param {Element} element
+   * @return {Element} parentElement of the element provided.
+   */
+  getParentElement(element) {};
+
+  /**
+   * Returns the element within the selectionGroup containing the selected element class.
+   * @param {Element} selectionGroup
+   * @return {Element} element within the selectionGroup that contains the selected element class.
+   */
+  getSelectedElementIndex(selectionGroup) {};
+
+  /**
+   * Emits an event using the evtData.
+   * @param {{
+ *   index: number
+ * }} evtData
+   */
   notifySelected(evtData) {};
-  isListItem(target) {};
+
+  /**
+   * Toggles the checkbox within a list item, if any.
+   * @param {Element} target
+   */
   toggleCheckbox(target) {};
 }
 

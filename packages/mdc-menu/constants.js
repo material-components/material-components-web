@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2018 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,21 +18,19 @@
 /** @enum {string} */
 const cssClasses = {
   ROOT: 'mdc-menu',
-  OPEN: 'mdc-menu-surface--open',
-  ANIMATING_OPEN: 'mdc-menu-surface--animating-open',
-  ANIMATING_CLOSED: 'mdc-menu-surface--animating-closed',
   MENU_SELECTED_LIST_ITEM: 'mdc-menu-item--selected',
   MENU_SELECTION_GROUP: 'mdc-menu__selection-group',
+  LIST_CLASS: 'mdc-list',
+  LIST_ITEM_CLASS: 'mdc-list-item',
 };
 
 /** @enum {string} */
 const strings = {
-  ITEMS_SELECTOR: '.mdc-list',
+  ITEMS_SELECTOR: '.mdc-list-items',
   SELECTED_EVENT: 'MDCMenu:selected',
-  CANCEL_EVENT: 'MDCMenu:cancel',
-  ARIA_DISABLED_ATTR: 'aria-disabled',
+  ARIA_SELECTED_ATTR: 'aria-selected',
   LIST_SELECTOR: '.mdc-list',
-  MENU_SURFACE_SELECTOR: '.mdc-menu-surface',
+  CHECKBOX_SELECTOR: 'input[type="checkbox"]',
 };
 
 export {cssClasses, strings};

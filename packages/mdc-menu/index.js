@@ -20,7 +20,6 @@ import {MDCMenuFoundation} from './foundation';
 import {strings, cssClasses} from './constants';
 import {MDCMenuSurface, AnchorMargin, MDCMenuSurfaceFoundation} from '@material/menu-surface/index';
 import {MDCList} from '@material/list/index';
-import {cssClasses as listClasses} from '@material/list/constants';
 
 /**
  * @extends MDCComponent<!MDCMenuFoundation>
@@ -179,43 +178,47 @@ class MDCMenu extends MDCComponent {
   /** @return {!MDCMenuFoundation} */
   getDefaultFoundation() {
     return new MDCMenuFoundation({
-      selectElementAtIndex: (index) => {
+      addClassToElementAtIndex: (index, className) => {
         const list = this.items;
-        if (list && list.length > index
-          && list[index].parentElement.classList.contains(cssClasses.MENU_SELECTION_GROUP)) {
-          list[index].classList.add(cssClasses.MENU_SELECTED_LIST_ITEM);
-          list[index].setAttribute('aria-selected', 'true');
+        if (list && list.length > index) {
+          list[index].classList.add(className);
         }
       },
+      removeClassFromElementAtIndex: (index, className) => {
+        const list = this.items;
+        if (list && list.length > index) {
+          list[index].classList.remove(className);
+        }
+      },
+      addAttributeToElementAtIndex: (index, attr, value) => {
+        const list = this.items;
+        if (list && list.length > index) {
+          list[index].setAttribute(attr, value);
+        }
+      },
+      removeAttributeFromElementAtIndex: (index, attr) => {
+        const list = this.items;
+        if (list && list.length > index) {
+          list[index].removeAttribute(attr);
+        }
+      },
+      elementContainsClass: (element, className) => element.classList.contains(className),
       closeSurface: () => this.hide(),
-      getFocusedElementIndex: () => {
-        let target = document.activeElement;
-        // Find closest parent that is a list item.
-        while (!target.classList.contains(listClasses.LIST_ITEM_CLASS)) {
-          if (!target.parentElement) return -1;
-          target = target.parentElement;
-        }
-
-        return this.items.indexOf(target);
-      },
-      removeClassFromSelectionGroup: (index) => {
-        const ele = this.items[index];
-        if (ele.parentElement && ele.parentElement.classList.contains(cssClasses.MENU_SELECTION_GROUP)) {
-          [].slice.call(ele.parentElement.children).forEach((listItem) => {
-            listItem.classList.remove(cssClasses.MENU_SELECTED_LIST_ITEM);
-            listItem.removeAttribute('aria-selected');
-          });
-        }
+      getElementIndex: (element) => this.items.indexOf(element),
+      getParentElement: (element) => element.parentElement,
+      getSelectedElementIndex: (selectionGroup) => {
+        return this.items.indexOf(selectionGroup.querySelector(`.${cssClasses.MENU_SELECTED_LIST_ITEM}`));
       },
       notifySelected: (evtData) => this.emit(strings.SELECTED_EVENT, {
         index: evtData.index,
         item: this.items[evtData.index],
       }),
-      isListItem: (target) => target.classList.contains(listClasses.LIST_ITEM_CLASS),
-      toggleCheckbox: (target) => {
-        const checkBox = target.querySelector('input[type="checkbox"]');
+      toggleCheckbox: (element) => {
+        const checkBox = element.querySelector(strings.CHECKBOX_SELECTOR);
         if (checkBox) {
           checkBox.checked = !checkBox.checked;
+          const event = new Event('change');
+          checkBox.dispatchEvent(event);
         }
       },
     });
