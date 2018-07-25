@@ -35,8 +35,7 @@ export class MDCSelect extends MDCComponent {
   }
 
   set value(value) {
-    this.nativeControl_.value = value;
-    this.foundation_.handleChange();
+    this.foundation_.setValue(value);
   }
 
   get selectedIndex() {
@@ -44,8 +43,7 @@ export class MDCSelect extends MDCComponent {
   }
 
   set selectedIndex(selectedIndex) {
-    this.nativeControl_.selectedIndex = selectedIndex;
-    this.foundation_.handleChange();
+    this.foundation_.setSelectedIndex(selectedIndex);
   }
 
   get disabled() {
@@ -53,8 +51,7 @@ export class MDCSelect extends MDCComponent {
   }
 
   set disabled(disabled) {
-    this.nativeControl_.disabled = disabled;
-    this.foundation_.updateDisabledStyle(disabled);
+    this.foundation_.setDisabled(disabled);
   }
 
   /**
@@ -97,38 +94,6 @@ export class MDCSelect extends MDCComponent {
     return new MDCRipple(this.root_, foundation);
   }
 
-  initialSyncWithDOM() {
-    this.handleChange_ = () => this.foundation_.handleChange();
-    this.handleFocus_ = () => this.foundation_.handleFocus();
-    this.handleBlur_ = () => this.foundation_.handleBlur();
-
-    this.nativeControl_.addEventListener('change', this.handleChange_);
-    this.nativeControl_.addEventListener('focus', this.handleFocus_);
-    this.nativeControl_.addEventListener('blur', this.handleBlur_);
-
-    // Initially sync floating label
-    this.foundation_.handleChange();
-
-    if (this.nativeControl_.disabled) {
-      this.disabled = true;
-    }
-  }
-
-  destroy() {
-    this.nativeControl_.removeEventListener('change', this.handleChange_);
-    this.nativeControl_.removeEventListener('focus', this.handleFocus_);
-    this.nativeControl_.removeEventListener('blur', this.handleBlur_);
-
-    if (this.ripple) {
-      this.ripple.destroy();
-    }
-    if (this.outline_) {
-      this.outline_.destroy();
-    }
-
-    super.destroy();
-  }
-
   getDefaultFoundation() {
     return new MDCSelectFoundation((Object.assign({
       addClass: (className) => this.root_.classList.add(className),
@@ -144,12 +109,37 @@ export class MDCSelect extends MDCComponent {
           this.lineRipple_.deactivate();
         }
       },
-      isRtl: () => window.getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
+      setDisabled: (disabled) => this.nativeControl_.disabled = disabled,
+      registerInteractionHandler: (type, handler) => this.nativeControl_.addEventListener(type, handler),
+      deregisterInteractionHandler: (type, handler) => this.nativeControl_.removeEventListener(type, handler),
+      getSelectedIndex: () => this.nativeControl_.selectedIndex,
+      setSelectedIndex: (index) => this.nativeControl_.selectedIndex = index,
       getValue: () => this.nativeControl_.value,
+      setValue: (value) => this.nativeControl_.value = value,
+      isRtl: () => window.getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
     },
     this.getOutlineAdapterMethods_(),
     this.getLabelAdapterMethods_()))
     );
+  }
+
+  initialSyncWithDOM() {
+    // needed to sync floating label
+    this.selectedIndex = this.nativeControl_.selectedIndex;
+
+    if (this.nativeControl_.disabled) {
+      this.disabled = true;
+    }
+  }
+
+  destroy() {
+    if (this.ripple) {
+      this.ripple.destroy();
+    }
+    if (this.outline_) {
+      this.outline_.destroy();
+    }
+    super.destroy();
   }
 
   /**

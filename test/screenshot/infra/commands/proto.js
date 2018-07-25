@@ -22,13 +22,10 @@ const path = require('path');
 const ProcessManager = require('../lib/process-manager');
 const {TEST_DIR_RELATIVE_PATH} = require('../lib/constants');
 
-class ProtoCommand {
-  /**
-   * @param {boolean} isWatching
-   * @return {!Promise<number|undefined>} Process exit code. If no exit code is returned, `0` is assumed.
-   */
-  async runAsync(isWatching = false) {
-    const processManager = new ProcessManager();
+const processManager = new ProcessManager();
+
+module.exports = {
+  async runAsync() {
     const protoFilePaths = glob.sync(path.join(TEST_DIR_RELATIVE_PATH, '**/*.proto'));
 
     const cmd = 'pbjs';
@@ -36,11 +33,7 @@ class ProtoCommand {
 
     for (const protoFilePath of protoFilePaths) {
       const jsFilePath = protoFilePath.replace(/.proto$/, '.pb.js');
-      processManager.spawnChildProcessSync(
-        cmd, args.concat(`--out=${jsFilePath}`, protoFilePath), undefined, isWatching
-      );
+      processManager.spawnChildProcessSync(cmd, args.concat(`--out=${jsFilePath}`, protoFilePath));
     }
-  }
-}
-
-module.exports = ProtoCommand;
+  },
+};

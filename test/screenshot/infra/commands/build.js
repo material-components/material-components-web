@@ -27,22 +27,13 @@ const ProcessManager = require('../lib/process-manager');
 const ProtoCommand = require('./proto');
 const {TEST_DIR_RELATIVE_PATH} = require('../lib/constants');
 
-class BuildCommand {
-  constructor() {
-    this.logger_ = new Logger(__filename);
-    this.processManager_ = new ProcessManager();
+const logger = new Logger(__filename);
+const processManager = new ProcessManager();
 
-    this.cleanCommand_ = new CleanCommand();
-    this.indexCommand_ = new IndexCommand();
-    this.protoCommand_ = new ProtoCommand();
-  }
-
-  /**
-   * @return {!Promise<number|undefined>} Process exit code. If no exit code is returned, `0` is assumed.
-   */
+module.exports = {
   async runAsync() {
     // Travis sometimes forgets to emit this
-    this.logger_.foldEnd('install.npm');
+    logger.foldEnd('install.npm');
 
     const shouldBuild = await this.shouldBuild_();
     const shouldWatch = await this.shouldWatch_();
@@ -51,32 +42,32 @@ class BuildCommand {
       return;
     }
 
-    await this.cleanCommand_.runAsync();
+    await CleanCommand.runAsync();
 
-    this.logger_.foldStart('screenshot.build', 'Compiling source files');
+    logger.foldStart('screenshot.build', 'Compiling source files');
 
-    await this.buildProtoFiles_(shouldWatch);
-    await this.buildHtmlFiles_(shouldWatch);
+    this.buildProtoFiles_(shouldWatch);
+    this.buildHtmlFiles_(shouldWatch);
 
     if (shouldWatch) {
-      this.processManager_.spawnChildProcess('npm', ['run', 'screenshot:webpack', '--', '--watch']);
+      processManager.spawnChildProcess('npm', ['run', 'screenshot:webpack', '--', '--watch']);
     } else {
-      this.processManager_.spawnChildProcessSync('npm', ['run', 'screenshot:webpack']);
+      processManager.spawnChildProcessSync('npm', ['run', 'screenshot:webpack']);
     }
 
-    this.logger_.foldEnd('screenshot.build');
-  }
+    logger.foldEnd('screenshot.build');
+  },
 
   /**
    * @param {boolean} shouldWatch
    * @private
    */
-  async buildProtoFiles_(shouldWatch) {
-    const buildRightNow = async () => this.protoCommand_.runAsync(shouldWatch);
+  buildProtoFiles_(shouldWatch) {
+    const buildRightNow = () => ProtoCommand.runAsync();
     const buildDelayed = debounce(buildRightNow, 1000);
 
     if (!shouldWatch) {
-      await buildRightNow();
+      buildRightNow();
       return;
     }
 
@@ -87,18 +78,18 @@ class BuildCommand {
 
     watcher.on('add', buildDelayed);
     watcher.on('change', buildDelayed);
-  }
+  },
 
   /**
    * @param {boolean} shouldWatch
    * @private
    */
-  async buildHtmlFiles_(shouldWatch) {
-    const buildRightNow = async () => this.indexCommand_.runAsync();
+  buildHtmlFiles_(shouldWatch) {
+    const buildRightNow = () => IndexCommand.runAsync();
     const buildDelayed = debounce(buildRightNow, 1000);
 
     if (!shouldWatch) {
-      await buildRightNow();
+      buildRightNow();
       return;
     }
 
@@ -110,7 +101,7 @@ class BuildCommand {
 
     watcher.on('add', buildDelayed);
     watcher.on('unlink', buildDelayed);
-  }
+  },
 
   /**
    * @return {!Promise<boolean>}
@@ -130,7 +121,7 @@ class BuildCommand {
     }
 
     return true;
-  }
+  },
 
   /**
    * @return {!Promise<boolean>}
@@ -139,7 +130,7 @@ class BuildCommand {
   async shouldWatch_() {
     const cli = new Cli();
     return cli.watch;
-  }
+  },
 
   /**
    * TODO(acvdorak): Store PID in local text file instead of scanning through running processes
@@ -148,7 +139,7 @@ class BuildCommand {
    */
   async getExistingProcessId_() {
     /** @type {!Array<!PsNodeProcess>} */
-    const allProcs = await this.processManager_.getRunningProcessesInPwdAsync('node', 'build');
+    const allProcs = await processManager.getRunningProcessesInPwdAsync('node', 'build');
     const buildProcs = allProcs.filter((proc) => {
       const [script, command] = proc.arguments;
       return (
@@ -158,7 +149,5 @@ class BuildCommand {
     });
 
     return buildProcs.length > 0 ? buildProcs[0].pid : null;
-  }
-}
-
-module.exports = BuildCommand;
+  },
+};

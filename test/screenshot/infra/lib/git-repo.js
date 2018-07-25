@@ -16,13 +16,10 @@
 
 'use strict';
 
-const VError = require('verror');
 const simpleGit = require('simple-git/promise');
 
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
 const {User} = mdcProto;
-
-let hasFetched = false;
 
 class GitRepo {
   constructor(workingDirPath = undefined) {
@@ -52,11 +49,6 @@ class GitRepo {
    * @return {!Promise<void>}
    */
   async fetch(args = []) {
-    if (hasFetched) {
-      return;
-    }
-    hasFetched = true;
-
     console.log('Fetching remote git commits...');
 
     const prFetchRef = '+refs/pull/*/head:refs/remotes/origin/pr/*';
@@ -66,12 +58,7 @@ class GitRepo {
       await this.exec_('raw', ['config', '--add', 'remote.origin.fetch', prFetchRef]);
     }
 
-    try {
-      await this.repo_.fetch(['--tags', ...args]);
-    } catch (err) {
-      const serialized = JSON.stringify(args);
-      throw new VError(err, `Failed to run GitRepo.fetch(${serialized})`);
-    }
+    await this.repo_.fetch(['--tags', ...args]);
   }
 
   /**
@@ -112,34 +99,21 @@ class GitRepo {
    * @return {!Promise<string>}
    */
   async getFileAtRevision(filePath, revision = 'master') {
-    try {
-      return this.repo_.show([`${revision}:${filePath}`]);
-    } catch (err) {
-      const serialized = JSON.stringify(args);
-      throw new VError(err, `Failed to run GitRepo.getFileAtRevision(${serialized})`);
-    }
+    return this.repo_.show([`${revision}:${filePath}`]);
   }
 
   /**
    * @return {!Promise<!Array<string>>}
    */
   async getRemoteNames() {
-    try {
-      return (await this.repo_.getRemotes()).map((remote) => remote.name);
-    } catch (err) {
-      throw new VError(err, 'Failed to run GitRepo.getRemoteNames()');
-    }
+    return (await this.repo_.getRemotes()).map((remote) => remote.name);
   }
 
   /**
    * @return {!Promise<!StatusSummary>}
    */
   async getStatus() {
-    try {
-      return this.repo_.status();
-    } catch (err) {
-      throw new VError(err, 'Failed to run GitRepo.getStatus()');
-    }
+    return this.repo_.status();
   }
 
   /**
@@ -147,13 +121,8 @@ class GitRepo {
    * @return {!Promise<!Array<!DefaultLogFields>>}
    */
   async getLog(args = []) {
-    try {
-      const logEntries = await this.repo_.log([...args]);
-      return logEntries.all.concat(); // convert TypeScript ReadonlyArray to mutable Array
-    } catch (err) {
-      const serialized = JSON.stringify(args);
-      throw new VError(err, `Failed to run GitRepo.getLog(${serialized})`);
-    }
+    const logEntries = await this.repo_.log([...args]);
+    return logEntries.all.concat(); // convert TypeScript ReadonlyArray to mutable Array
   }
 
   /**
@@ -161,28 +130,16 @@ class GitRepo {
    * @return {!Promise<!Array<string>>}
    */
   async getIgnoredPaths(filePaths) {
-    try {
-      return this.repo_.checkIgnore(filePaths);
-    } catch (err) {
-      throw new VError(err, `Unable to check gitignore status of ${filePaths.length} file paths`);
-    }
+    return this.repo_.checkIgnore(filePaths);
   }
 
   /**
-   * @param {string} commit
-   * @param {string} stackTrace
+   * @param {string=} commit
    * @return {!Promise<!mdc.proto.User>}
    */
-  async getCommitAuthor(commit, stackTrace) {
+  async getCommitAuthor(commit = undefined) {
     /** @type {!Array<!DefaultLogFields>} */
-    let logEntries;
-
-    try {
-      logEntries = await this.getLog([commit]);
-    } catch (err) {
-      throw new VError(err, `Unable to get author for commit "${commit}":\n${stackTrace}`);
-    }
-
+    const logEntries = await this.getLog([commit]);
     const logEntry = logEntries[0];
     return User.create({
       name: logEntry.author_name,
@@ -197,12 +154,7 @@ class GitRepo {
    * @private
    */
   async exec_(cmd, argList = []) {
-    try {
-      return (await this.repo_[cmd](argList) || '').trim();
-    } catch (err) {
-      const serialized = JSON.stringify([cmd, ...argList]);
-      throw new VError(err, `Failed to run GitRepo.exec_(${serialized})`);
-    }
+    return (await this.repo_[cmd](argList) || '').trim();
   }
 }
 

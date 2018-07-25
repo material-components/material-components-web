@@ -316,7 +316,7 @@ th {
 }
 
 .report-review-status--hidden {
-  display: none;
+  visibility: hidden;
 }
 
 .report-review-status[data-review-status="approve"] {

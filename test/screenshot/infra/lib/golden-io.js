@@ -18,7 +18,6 @@ const request = require('request-promise-native');
 const stringify = require('json-stable-stringify');
 
 const Cli = require('./cli');
-const DiffBaseParser = require('./diff-base-parser');
 const GitRepo = require('./git-repo');
 const GoldenFile = require('./golden-file');
 const LocalStorage = require('./local-storage');
@@ -34,12 +33,6 @@ class GoldenIo {
      * @private
      */
     this.cli_ = new Cli();
-
-    /**
-     * @type {!DiffBaseParser}
-     * @private
-     */
-    this.diffBaseParser_ = new DiffBaseParser();
 
     /**
      * @type {!GitRepo}
@@ -69,27 +62,29 @@ class GoldenIo {
 
   /**
    * Parses the `golden.json` file specified by the `--diff-base` CLI arg.
-   * @param {!mdc.proto.DiffBase} goldenDiffBase
+   * @param {string=} rawDiffBase
    * @return {!Promise<!GoldenFile>}
    */
-  async readFromDiffBase(goldenDiffBase) {
-    const key = goldenDiffBase.input_string;
-    if (!this.cachedGoldenJsonMap_[key]) {
-      const goldenJson = JSON.parse(await this.readFromDiffBase_(goldenDiffBase));
-      this.cachedGoldenJsonMap_[key] = new GoldenFile(goldenJson);
+  async readFromDiffBase(rawDiffBase = this.cli_.diffBase) {
+    if (!this.cachedGoldenJsonMap_[rawDiffBase]) {
+      const goldenJson = JSON.parse(await this.readFromDiffBase_(rawDiffBase));
+      this.cachedGoldenJsonMap_[rawDiffBase] = new GoldenFile(goldenJson);
     }
 
     // Deep copy to avoid mutating shared state
-    return new GoldenFile(this.cachedGoldenJsonMap_[key].toJSON());
+    return new GoldenFile(this.cachedGoldenJsonMap_[rawDiffBase].toJSON());
   }
 
   /**
-   * @param {!mdc.proto.DiffBase} goldenDiffBase
+   * @param {string} rawDiffBase
    * @return {!Promise<string>}
    * @private
    */
-  async readFromDiffBase_(goldenDiffBase) {
-    const publicUrl = goldenDiffBase.public_url;
+  async readFromDiffBase_(rawDiffBase) {
+    /** @type {!mdc.proto.DiffBase} */
+    const parsedDiffBase = await this.cli_.parseDiffBase(rawDiffBase);
+
+    const publicUrl = parsedDiffBase.public_url;
     if (publicUrl) {
       return request({
         method: 'GET',
@@ -97,22 +92,19 @@ class GoldenIo {
       });
     }
 
-    const localFilePath = goldenDiffBase.local_file_path;
+    const localFilePath = parsedDiffBase.local_file_path;
     if (localFilePath) {
       return this.localStorage_.readTextFile(localFilePath);
     }
 
-    const rev = goldenDiffBase.git_revision;
+    const rev = parsedDiffBase.git_revision;
     if (rev) {
       return this.gitRepo_.getFileAtRevision(rev.golden_json_file_path, rev.commit);
     }
 
-    const serialized = JSON.stringify({goldenDiffBase}, null, 2);
+    const serialized = JSON.stringify({parsedDiffBase, meta}, null, 2);
     throw new Error(
-      `
-Unable to parse '--diff-base=${goldenDiffBase.input_string}': Expected a URL, local file path, or git ref.
-${serialized}
-`.trim()
+      `Unable to parse '--diff-base=${rawDiffBase}': Expected a URL, local file path, or git ref.\n${serialized}`
     );
   }
 
@@ -135,6 +127,22 @@ ${serialized}
    */
   async stringify_(object) {
     return stringify(object, {space: '  '}) + '\n';
+  }
+
+  /**
+   * Creates a deep clone of the given `source` object's own enumerable properties.
+   * Non-JSON-serializable properties (such as functions or symbols) are silently discarded.
+   * The returned value is structurally equivalent, but not referentially equal, to the input.
+   * In Java parlance:
+   *   clone.equals(source) // true
+   *   clone == source      // false
+   * @param {!T} source JSON object to clone
+   * @return {!T} Deep clone of `source` object
+   * @template T
+   * @private
+   */
+  deepCloneJson_(source) {
+    return JSON.parse(JSON.stringify(source));
   }
 }
 

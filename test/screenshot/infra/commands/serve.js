@@ -16,8 +16,6 @@
 
 'use strict';
 
-/** @type {!CliColor} */
-const colors = require('colors');
 const detectPort = require('detect-port');
 const express = require('express');
 const serveIndex = require('serve-index');
@@ -26,10 +24,7 @@ const Cli = require('../lib/cli');
 const {ExitCode} = require('../lib/constants');
 const {TEST_DIR_RELATIVE_PATH} = require('../lib/constants');
 
-class ServeCommand {
-  /**
-   * @return {!Promise<number|undefined>} Process exit code. If no exit code is returned, `0` is assumed.
-   */
+module.exports = {
   async runAsync() {
     const cli = new Cli();
     const {port} = cli;
@@ -44,18 +39,11 @@ class ServeCommand {
     app.use('/', express.static(TEST_DIR_RELATIVE_PATH), serveIndex(TEST_DIR_RELATIVE_PATH));
 
     app.listen(port, () => {
-      const urlPlain = `http://localhost:${port}/`;
-      const urlColor = colors.bold.underline(urlPlain);
-      const noticePlain = `Local development server running on ${urlPlain}`;
-      const noticeColor = `Local development server running on ${urlColor}`;
-      const borderColor = colors.green(''.padStart(noticePlain.length, '='));
-      console.log((`
-${borderColor}
-${noticeColor}
-${borderColor}
-`));
+      console.log(`
+==========================================================
+Local development server running on http://localhost:${port}/
+==========================================================
+`);
     });
-  }
-}
-
-module.exports = ServeCommand;
+  },
+};
