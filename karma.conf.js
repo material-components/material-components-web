@@ -22,6 +22,16 @@ const USING_SL = Boolean(process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_
 
 const SL_LAUNCHERS = {
   /*
+   * Chrome (headless)
+   */
+
+  'ChromeHeadlessNoSandbox': {
+    base: 'ChromeHeadless',
+    // See https://github.com/travis-ci/travis-ci/issues/8836#issuecomment-348248951
+    flags: ['--no-sandbox'],
+  },
+
+  /*
    * Chrome (desktop)
    */
 
@@ -208,5 +218,5 @@ module.exports = function(config) {
 };
 
 function determineBrowsers() {
-  return USING_SL ? Object.keys(SL_LAUNCHERS) : ['Chrome'];
+  return USING_SL ? Object.keys(SL_LAUNCHERS) : ['ChromeHeadlessNoSandbox'];
 }

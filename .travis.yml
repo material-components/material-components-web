@@ -18,15 +18,15 @@ matrix:
     addons:
       chrome: stable
       sauce_connect: true
-    sudo: required
+#    sudo: required
     before_script:
     # TODO(acdvorak): DO NOT MERGE - REVERT BEFORE MERGING
     - export SAUCE_USERNAME=''
     - export SAUCE_ACCESS_KEY=''
     # TODO(acdvorak): DO NOT MERGE - REVERT BEFORE MERGING
     # https://github.com/travis-ci/travis-ci/issues/9024#issuecomment-356282802
-    - sudo chown root /opt/google/chrome/chrome-sandbox
-    - sudo chmod 4755 /opt/google/chrome/chrome-sandbox
+#    - sudo chown root /opt/google/chrome/chrome-sandbox
+#    - sudo chmod 4755 /opt/google/chrome/chrome-sandbox
     script: npm run test:unit && npm run posttest
     after_success:
     - codecov
