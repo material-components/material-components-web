@@ -144,6 +144,7 @@ class MDCMenu extends MDCComponent {
     this.menuSurface_.quickOpen = quickOpen;
   }
 
+  /** @param {boolean} isFixed */
   set fixed(isFixed) {
     this.menuSurface_.setFixedPosition(isFixed);
   }

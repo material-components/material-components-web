@@ -16,11 +16,9 @@
 
 import {assert} from 'chai';
 import bel from 'bel';
-import domEvents from 'dom-events';
 import td from 'testdouble';
 
 import {MDCMenu} from '../../../packages/mdc-menu/index';
-import {strings} from '../../../packages/mdc-menu/constants';
 import {MenuSurfaceCorner} from '../../../packages/mdc-menu-surface/constants';
 
 function getFixture(open) {

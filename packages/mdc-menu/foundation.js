@@ -43,9 +43,15 @@ class MDCMenuFoundation extends MDCFoundation {
    */
   static get defaultAdapter() {
     return /** @type {!MDCMenuAdapter} */ ({
+      addClassToElementAtIndex: () => {},
+      removeClassFromElementAtIndex: () => {},
+      addAttributeToElementAtIndex: () => {},
+      removeAttributeFromElementAtIndex: () => {},
+      elementContainsClass: () => {},
       closeSurface: () => {},
       getElementIndex: () => {},
       getParentElement: () => {},
+      getSelectedElementIndex: () => {},
       notifySelected: () => {},
       toggleCheckbox: () => {},
     });
@@ -96,6 +102,11 @@ class MDCMenuFoundation extends MDCFoundation {
     }
   }
 
+  /**
+   * Handler for a selected list item.
+   * @param {Element} listItem
+   * @private
+   */
   handleSelection_(listItem) {
     const index = this.adapter_.getElementIndex(listItem);
     if (index < 0) {
