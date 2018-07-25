@@ -34,14 +34,6 @@
  * }} ChildProcessSpawnOptions
  */
 
-/**
- * @typedef {{
- *   status: number,
- *   signal: ?string,
- *   pid: number,
- * }} ChildProcessSpawnResult
- */
-
 
 /*
  * Resemble.js API
