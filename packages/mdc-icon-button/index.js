@@ -72,7 +72,7 @@ class MDCIconButtonToggle extends MDCComponent {
   }
 
   initialSyncWithDOM() {
-    this.handleClick_ = this.foundation_.handleClick.bind(this.foundation_);
+    this.handleClick_ = () => this.foundation_.handleClick();
     this.on = this.root_.getAttribute(MDCIconButtonToggleFoundation.strings.ARIA_PRESSED) === 'true';
     this.root_.addEventListener('click', this.handleClick_);
   }
