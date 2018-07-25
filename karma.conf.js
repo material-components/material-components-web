@@ -134,15 +134,8 @@ const SAUCE_LAUNCHERS = {
   // },
 };
 
-const getLaunchers = () => {
-  if (USING_TRAVISCI) {
-    return USING_SL ? SAUCE_LAUNCHERS : LOCAL_LAUNCHERS;
-  } else {
-    return ['Chrome'];
-  }
-};
-
-const getBrowsers = () => Object.keys(getLaunchers());
+const getLaunchers = () => USING_SL ? SAUCE_LAUNCHERS : LOCAL_LAUNCHERS;
+const getBrowsers = () => USING_TRAVISCI ? Object.keys(getLaunchers()) : ['Chrome'];
 
 module.exports = function(config) {
   config.set({
