@@ -218,8 +218,9 @@ test('#initialSyncWithDOM setUpTickMarks removes old tick marks and updates', ()
 
 test('#setUpTickMarks does execute if it is continuous slider', () => {
   const root = getFixture();
+  const track = root.querySelector('.mdc-slider__track');
   const tickMarkSet = root.querySelector('.mdc-slider__tick-mark-set');
-  tickMarkSet.remove();
+  track.removeChild(tickMarkSet);
 
   const component = new MDCSlider(root);
 
