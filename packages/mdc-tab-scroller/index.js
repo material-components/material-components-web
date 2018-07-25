@@ -83,12 +83,9 @@ class MDCTabScroller extends MDCComponent {
    */
   getDefaultFoundation() {
     const adapter = /** @type {!MDCTabScrollerAdapter} */ ({
-      eventTargetMatchesSelector: (evtTarget, className) => {
-        let matches = Element.prototype.matches;
-        if (matches === undefined) {
-          matches = Element.prototype.msMatchesSelector;
-        }
-        return matches.call(evtTarget, className);
+      eventTargetMatchesSelector: (evtTarget, selector) => {
+        const MATCHES = util.getMatchesProperty(HTMLElement.prototype);
+        return evtTarget[MATCHES](selector);
       },
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),

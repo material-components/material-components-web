@@ -51,3 +51,12 @@ test('#computeHorizontalScrollbarHeight returns value based on difference betwee
     expectedHeight);
   td.verify(classListAddFunc(cssClasses.SCROLL_TEST));
 });
+
+test('#getMatchesProperty returns the correct property for selector matching', () => {
+  assert.strictEqual(util.getMatchesProperty({matches: () => {}}), 'matches');
+  assert.strictEqual(util.getMatchesProperty({msMatchesSelector: () => {}}), 'msMatchesSelector');
+});
+
+test('#getMatchesProperty returns the standard function if more than one method is present', () => {
+  assert.strictEqual(util.getMatchesProperty({matches: () => {}, msMatchesSelector: () => {}}), 'matches');
+});
