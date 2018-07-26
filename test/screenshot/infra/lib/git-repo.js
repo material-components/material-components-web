@@ -79,7 +79,11 @@ class GitRepo {
    * @return {!Promise<string>}
    */
   async getFullCommitHash(ref = 'HEAD') {
-    return this.exec_('revparse', [ref]);
+    const hash = this.exec_('revparse', [ref]);
+    if (!hash) {
+      throw new Error(`Unable to get commit hash for git ref "${ref}"`);
+    }
+    return hash;
   }
 
   /**
@@ -87,7 +91,11 @@ class GitRepo {
    * @return {!Promise<string>}
    */
   async getBranchName(ref = 'HEAD') {
-    return this.exec_('revparse', ['--abbrev-ref', ref]);
+    const branch = this.exec_('revparse', ['--abbrev-ref', ref]);
+    if (!branch) {
+      throw new Error(`Unable to get branch name for git ref "${ref}"`);
+    }
+    return branch;
   }
 
   /**
@@ -102,7 +110,11 @@ class GitRepo {
    * @return {!Promise<string>}
    */
   async getFullSymbolicName(ref = 'HEAD') {
-    return this.exec_('revparse', ['--symbolic-full-name', ref]);
+    const fullName = this.exec_('revparse', ['--symbolic-full-name', ref]);
+    if (!fullName) {
+      throw new Error(`Unable to get full symbolic name for git ref "${ref}"`);
+    }
+    return fullName;
   }
 
   /**

@@ -20,6 +20,7 @@ function print_travis_env_vars() {
 
 function maybe_add_git_branch() {
   if [[ -n "$1" ]]; then
+    # https://github.com/marionebl/commitlint/issues/6#issuecomment-231186598
     git remote set-branches --add origin "$1"
   fi
 }
