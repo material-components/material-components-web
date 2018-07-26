@@ -17,6 +17,11 @@
 
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
+/* eslint-disable no-unused-vars */
+import {MDCTabDimensions} from '@material/tab/adapter';
+import {MDCTab} from '@material/tab/index';
+/* eslint-enable no-unused-vars */
+
 /**
  * Adapter for MDC Tab Bar.
  *
@@ -64,18 +69,50 @@ class MDCTabBarAdapter {
    */
   isRTL() {}
 
+  /**
+   * Activates the tab at the given index with the given client rect
+   * @param {number} index The index of the tab to activate
+   * @param {!ClientRect} clientRect The client rect of the previously active Tab Indicator
+   */
   activateTabAtIndex(index, clientRect) {}
 
+  /**
+   * Deactivates the tab at the given index
+   * @param {number} index The index of the tab to activate
+   */
   deactivateTabAtIndex(index) {}
 
+  /**
+   * Returns the client rect of the tab's indicator
+   * @param {number} index The index of the tab
+   * @return {!ClientRect}
+   */
   getTabIndicatorClientRectAtIndex(index) {}
 
+  /**
+   * Returns the tab dimensions of the tab at the given index
+   * @param {number} index The index of the tab
+   * @return {!MDCTabDimensions}
+   */
   getTabDimensionsAtIndex(index) {}
 
+  /**
+   * Returns the length of the tab list
+   * @return {number}
+   */
   getTabListLength() {}
 
+  /**
+   * Returns the index of the active tab
+   * @return {number}
+   */
   getActiveTabIndex() {}
 
+  /**
+   * Returns the index of the given tab
+   * @param {!MDCTab} tab The tab whose index to determin
+   * @return {number}
+   */
   getIndexOfTab(tab) {}
 }
 

@@ -178,24 +178,43 @@ class MDCTabBarFoundation extends MDCFoundation {
     this.activateTab(tabIndex);
   }
 
-  calculateScrollIncrement_(index, nextTabIndex, scrollPosition, barWidth) {
-    const nextTabDimensions = this.adapter_.getTabDimensionsAtIndex(nextTabIndex);
+  /**
+   * Calculates the scroll increment that will make the tab at the given index visible
+   * @param {number} index The index of the tab
+   * @param {number} nextIndex The index of the next tab
+   * @param {number} scrollPosition The current scroll position
+   * @param {number} barWidth The width of the Tab Bar
+   * @return {number}
+   * @private
+   */
+  calculateScrollIncrement_(index, nextIndex, scrollPosition, barWidth) {
+    const nextTabDimensions = this.adapter_.getTabDimensionsAtIndex(nextIndex);
     const relativeContentLeft = nextTabDimensions.contentLeft - scrollPosition - barWidth;
     const relativeContentRight = nextTabDimensions.contentRight - scrollPosition;
     const leftIncrement = relativeContentRight - numbers.EXTRA_SCROLL_AMOUNT;
     const rightIncrement = relativeContentLeft + numbers.EXTRA_SCROLL_AMOUNT;
 
-    if (nextTabIndex < index) {
+    if (nextIndex < index) {
       return Math.min(leftIncrement, 0);
     }
 
     return Math.max(rightIncrement, 0);
   }
 
-  calculateScrollIncrementRTL_(index, nextIndex, scrollPosition, scrollWidth, barWidth) {
+  /**
+   * Calculates the scroll increment that will make the tab at the given index visible in RTL
+   * @param {number} index The index of the tab
+   * @param {number} nextIndex The index of the next tab
+   * @param {number} scrollPosition The current scroll position
+   * @param {number} scrollContentWidth The width of the scroll content
+   * @param {number} barWidth The width of the Tab Bar
+   * @return {number}
+   * @private
+   */
+  calculateScrollIncrementRTL_(index, nextIndex, scrollPosition, scrollContentWidth, barWidth) {
     const nextTabDimensions = this.adapter_.getTabDimensionsAtIndex(nextIndex);
-    const relativeContentLeft = scrollWidth - nextTabDimensions.contentLeft - scrollPosition;
-    const relativeContentRight = scrollWidth - nextTabDimensions.contentRight - scrollPosition - barWidth;
+    const relativeContentLeft = scrollContentWidth - nextTabDimensions.contentLeft - scrollPosition;
+    const relativeContentRight = scrollContentWidth - nextTabDimensions.contentRight - scrollPosition - barWidth;
     const leftIncrement = relativeContentRight + numbers.EXTRA_SCROLL_AMOUNT;
     const rightIncrement = relativeContentLeft - numbers.EXTRA_SCROLL_AMOUNT;
 
@@ -219,9 +238,9 @@ class MDCTabBarFoundation extends MDCFoundation {
     /**
      * Tabs are laid out in the Tab Scroller like this:
      *
-     *    Scroll Distance
+     *    Scroll Position
      *    +---+
-     *    |   |   Scroller Width
+     *    |   |   Bar Width
      *    |   +-----------------------------------+
      *    |   |                                   |
      *    |   V                                   V
@@ -234,12 +253,11 @@ class MDCTabBarFoundation extends MDCFoundation {
      *        +-----------------------------------+
      *
      * To determine the next adjacent index, we look at the Tab root left and
-     * Tab root right, both relative to the scroll distance. If the Tab root
-     * left is less than the scroll distance, then we know it's out of view to
-     * the left. If the Tab root right minus the scroll distance is greater
-     * than the scroller width, we know the Tab is out of view to the right.
-     * From there, we either increment or decrement the index based on the
-     * language direction of the content.
+     * Tab root right, both relative to the scroll position. If the Tab root
+     * left is less than 0, then we know it's out of view to the left. If the
+     * Tab root right minues the bar width is greater than 0, we know the Tab is
+     * out of view to the right. From there, we either increment or decrement
+     * the index.
      */
     const relativeRootLeft = tabDimensions.rootLeft - scrollPosition;
     const relativeRootRight = tabDimensions.rootRight - scrollPosition - barWidth;

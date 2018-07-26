@@ -46,10 +46,10 @@ class MDCTabBar extends MDCComponent {
     /** @type {(function(!Element): !MDCTabScroller)} */
     this.tabScrollerFactory_;
 
-    /** @private {EventHandler} */
+    /** @private {?function(?Event): undefined} */
     this.handleTabInteraction_;
 
-    /** @private {EventHandler} */
+    /** @private {?function(?Event): undefined} */
     this.handleKeyDown_;
   }
 
@@ -63,7 +63,7 @@ class MDCTabBar extends MDCComponent {
 
   /**
    * @param {(function(!Element): !MDCTab)=} tabFactory A function which creates a new MDCTab
-   * @param {(function(!Element): !MDCTab)=} tabScrollerFactory A function which creates a new MDCTabScroller
+   * @param {(function(!Element): !MDCTabScroller)=} tabScrollerFactory A function which creates a new MDCTabScroller
    */
   initialize(
     tabFactory = (el) => new MDCTab(el),
@@ -76,7 +76,9 @@ class MDCTabBar extends MDCComponent {
     this.tabList = tabElements.map((el) => this.tabFactory_(el));
 
     const tabScrollerElement = this.root_.querySelector(MDCTabBarFoundation.strings.TAB_SCROLLER_SELECTOR);
-    this.tabScroller = this.tabScrollerFactory_(tabScrollerElement);
+    if (tabScrollerElement) {
+      this.tabScroller = this.tabScrollerFactory_(tabScrollerElement);
+    }
   }
 
   initialSyncWithDOM() {
@@ -96,7 +98,7 @@ class MDCTabBar extends MDCComponent {
   }
 
   /**
-   * @return {!MDCTabBarAdapter}
+   * @return {!MDCTabBarFoundation}
    */
   getDefaultFoundation() {
     return new MDCTabBarFoundation(
@@ -111,7 +113,14 @@ class MDCTabBar extends MDCComponent {
         deactivateTabAtIndex: (index) => this.tabList[index].deactivate(),
         getTabIndicatorClientRectAtIndex: (index) => this.tabList[index].computeIndicatorClientRect(),
         getTabDimensionsAtIndex: (index) => this.tabList[index].computeDimensions(),
-        getActiveTabIndex: () => this.tabList.findIndex((tab) => tab.active),
+        getActiveTabIndex: () => {
+          for (let i = 0; i < this.tabList.length; i++) {
+            if (this.tabList[i].active) {
+              return i;
+            }
+          }
+          return -1;
+        },
         getIndexOfTab: (tabToFind) => this.tabList.indexOf(tabToFind),
         getTabListLength: () => this.tabList.length,
       })
