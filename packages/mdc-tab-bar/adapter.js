@@ -46,7 +46,7 @@ class MDCTabBarAdapter {
   incrementScroll(scrollXIncrement) {}
 
   /**
-   * Returns the current scroll distance
+   * Returns the current scroll position
    * @return {number}
    */
   getScrollPosition() {}

@@ -222,12 +222,12 @@ class MDCTabBarFoundation extends MDCFoundation {
    * @param {number} index The index of the tab
    * @param {number} nextIndex The index of the next tab
    * @param {number} scrollPosition The current scroll position
-   * @param {number} scrollContentWidth The width of the scroll content
    * @param {number} barWidth The width of the Tab Bar
+   * @param {number} scrollContentWidth The width of the scroll content
    * @return {number}
    * @private
    */
-  calculateScrollIncrementRTL_(index, nextIndex, scrollPosition, scrollContentWidth, barWidth) {
+  calculateScrollIncrementRTL_(index, nextIndex, scrollPosition, barWidth, scrollContentWidth, ) {
     const nextTabDimensions = this.adapter_.getTabDimensionsAtIndex(nextIndex);
     const relativeContentLeft = scrollContentWidth - nextTabDimensions.contentLeft - scrollPosition;
     const relativeContentRight = scrollContentWidth - nextTabDimensions.contentRight - scrollPosition - barWidth;
@@ -242,15 +242,15 @@ class MDCTabBarFoundation extends MDCFoundation {
   }
 
   /**
-   * Determines the index of the next adjacent tab
+   * Determines the index of the adjacent tab closest to either edge of the Tab Bar
    * @param {number} index The index of the tab
-   * @param {!MDCTabDimensions} tabDimensions Whether the next tab is left or right
+   * @param {!MDCTabDimensions} tabDimensions The dimensions of the tab
    * @param {number} scrollPosition The current scroll position
    * @param {number} barWidth The width of the tab bar
    * @return {number}
    * @private
    */
-  findTabIndexClosestToEdge_(index, tabDimensions, scrollPosition, barWidth) {
+  findAdjacentTabIndexClosestToEdge_(index, tabDimensions, scrollPosition, barWidth) {
     /**
      * Tabs are laid out in the Tab Scroller like this:
      *
@@ -293,18 +293,18 @@ class MDCTabBarFoundation extends MDCFoundation {
   }
 
   /**
-   * Determines the index of the next adjacent tab in RTL
+   * Determines the index of the adjacent tab closest to either edge of the Tab Bar in RTL
    * @param {number} index The index of the tab
-   * @param {!MDCTabDimensions} tabDimensions Whether the next tab is left or right
-   * @param {number} scrollDistance The distance scrolled
-   * @param {number} scrollWidth The width of the scroller
-   * @param {number} barWidth The width of the bar
+   * @param {!MDCTabDimensions} tabDimensions The dimensions of the tab
+   * @param {number} scrollPosition The current scroll position
+   * @param {number} barWidth The width of the tab bar
+   * @param {number} scrollContentWidth The width of the scroller content
    * @return {number}
    * @private
    */
-  findTabIndexClosestToEdgeRTL_(index, tabDimensions, scrollDistance, scrollWidth, barWidth) {
-    const rootLeft = scrollWidth - tabDimensions.rootLeft - barWidth - scrollDistance;
-    const rootRight = scrollWidth - tabDimensions.rootRight - scrollDistance;
+  findAdjacentTabIndexClosestToEdgeRTL_(index, tabDimensions, scrollPosition, barWidth, scrollContentWidth) {
+    const rootLeft = scrollContentWidth - tabDimensions.rootLeft - barWidth - scrollPosition;
+    const rootRight = scrollContentWidth - tabDimensions.rootRight - scrollPosition;
     const rootDelta = rootLeft + rootRight;
     const leftEdgeIsCloser = rootLeft > 0 || rootDelta > 0;
     const rightEdgeIsCloser = rootRight < 0 || rootDelta < 0;
@@ -361,7 +361,7 @@ class MDCTabBarFoundation extends MDCFoundation {
     const scrollPosition = this.adapter_.getScrollPosition();
     const barWidth = this.adapter_.getOffsetWidth();
     const tabDimensions = this.adapter_.getTabDimensionsAtIndex(index);
-    const nextIndex = this.findTabIndexClosestToEdge_(index, tabDimensions, scrollPosition, barWidth);
+    const nextIndex = this.findAdjacentTabIndexClosestToEdge_(index, tabDimensions, scrollPosition, barWidth);
 
     if (!this.indexIsInRange_(nextIndex)) {
       return;
@@ -381,13 +381,13 @@ class MDCTabBarFoundation extends MDCFoundation {
     const scrollWidth = this.adapter_.getScrollContentWidth();
     const scrollPosition = this.adapter_.getScrollPosition();
     const tabDimensions = this.adapter_.getTabDimensionsAtIndex(index);
-    const nextIndex = this.findTabIndexClosestToEdgeRTL_(index, tabDimensions, scrollPosition, scrollWidth, barWidth);
+    const nextIndex = this.findAdjacentTabIndexClosestToEdgeRTL_(index, tabDimensions, scrollPosition, scrollWidth, barWidth);
 
     if (!this.indexIsInRange_(nextIndex)) {
       return;
     }
 
-    const scrollIncrement = this.calculateScrollIncrementRTL_(index, nextIndex, scrollPosition, scrollWidth, barWidth);
+    const scrollIncrement = this.calculateScrollIncrementRTL_(index, nextIndex, scrollPosition, barWidth, scrollWidth);
     this.adapter_.incrementScroll(scrollIncrement);
   }
 }

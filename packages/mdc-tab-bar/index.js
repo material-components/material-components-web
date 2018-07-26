@@ -34,14 +34,14 @@ class MDCTabBar extends MDCComponent {
   constructor(...args) {
     super(...args);
 
-    /** @type {!Array<!MDCTab>} */
-    this.tabList;
+    /** @private {!Array<!MDCTab>} */
+    this.tabList_;
 
     /** @type {(function(!Element): !MDCTab)} */
     this.tabFactory_;
 
-    /** @type {?MDCTabScroller} */
-    this.tabScroller;
+    /** @private {?MDCTabScroller} */
+    this.tabScroller_;
 
     /** @type {(function(!Element): !MDCTabScroller)} */
     this.tabScrollerFactory_;
@@ -73,11 +73,11 @@ class MDCTabBar extends MDCComponent {
     this.tabScrollerFactory_ = tabScrollerFactory;
 
     const tabElements = [].slice.call(this.root_.querySelectorAll(MDCTabBarFoundation.strings.TAB_SELECTOR));
-    this.tabList = tabElements.map((el) => this.tabFactory_(el));
+    this.tabList_ = tabElements.map((el) => this.tabFactory_(el));
 
     const tabScrollerElement = this.root_.querySelector(MDCTabBarFoundation.strings.TAB_SCROLLER_SELECTOR);
     if (tabScrollerElement) {
-      this.tabScroller = this.tabScrollerFactory_(tabScrollerElement);
+      this.tabScroller_ = this.tabScrollerFactory_(tabScrollerElement);
     }
   }
 
@@ -93,8 +93,8 @@ class MDCTabBar extends MDCComponent {
     super.destroy();
     this.root_.removeEventListener(MDCTabFoundation.strings.INTERACTED_EVENT, this.handleTabInteraction_);
     this.root_.removeEventListener('keydown', this.handleKeyDown_);
-    this.tabList.forEach((tab) => tab.destroy());
-    this.tabScroller.destroy();
+    this.tabList_.forEach((tab) => tab.destroy());
+    this.tabScroller_.destroy();
   }
 
   /**
@@ -103,26 +103,26 @@ class MDCTabBar extends MDCComponent {
   getDefaultFoundation() {
     return new MDCTabBarFoundation(
       /** @type {!MDCTabBarAdapter} */ ({
-        scrollTo: (scrollX) => this.tabScroller.scrollTo(scrollX),
-        incrementScroll: (scrollXIncrement) => this.tabScroller.incrementScroll(scrollXIncrement),
-        getScrollPosition: () => this.tabScroller.getScrollPosition(),
-        getScrollContentWidth: () => this.tabScroller.getScrollContentWidth(),
+        scrollTo: (scrollX) => this.tabScroller_.scrollTo(scrollX),
+        incrementScroll: (scrollXIncrement) => this.tabScroller_.incrementScroll(scrollXIncrement),
+        getScrollPosition: () => this.tabScroller_.getScrollPosition(),
+        getScrollContentWidth: () => this.tabScroller_.getScrollContentWidth(),
         getOffsetWidth: () => this.root_.offsetWidth,
         isRTL: () => window.getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
-        activateTabAtIndex: (index, clientRect) => this.tabList[index].activate(clientRect),
-        deactivateTabAtIndex: (index) => this.tabList[index].deactivate(),
-        getTabIndicatorClientRectAtIndex: (index) => this.tabList[index].computeIndicatorClientRect(),
-        getTabDimensionsAtIndex: (index) => this.tabList[index].computeDimensions(),
+        activateTabAtIndex: (index, clientRect) => this.tabList_[index].activate(clientRect),
+        deactivateTabAtIndex: (index) => this.tabList_[index].deactivate(),
+        getTabIndicatorClientRectAtIndex: (index) => this.tabList_[index].computeIndicatorClientRect(),
+        getTabDimensionsAtIndex: (index) => this.tabList_[index].computeDimensions(),
         getActiveTabIndex: () => {
-          for (let i = 0; i < this.tabList.length; i++) {
-            if (this.tabList[i].active) {
+          for (let i = 0; i < this.tabList_.length; i++) {
+            if (this.tabList_[i].active) {
               return i;
             }
           }
           return -1;
         },
-        getIndexOfTab: (tabToFind) => this.tabList.indexOf(tabToFind),
-        getTabListLength: () => this.tabList.length,
+        getIndexOfTab: (tabToFind) => this.tabList_.indexOf(tabToFind),
+        getTabListLength: () => this.tabList_.length,
       })
     );
   }

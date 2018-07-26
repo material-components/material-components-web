@@ -65,6 +65,9 @@ npm install @material/tab-bar
 
 ```scss
 @import "@material/tab-bar/mdc-tab-bar";
+@import "@material/tab-scroller/mdc-tab-scroller";
+@import "@material/tab-indicator/mdc-tab-indicator";
+@import "@material/tab/mdc-tab";
 ```
 
 ### JavaScript Instantiation
