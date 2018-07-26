@@ -82,7 +82,7 @@ const SAUCE_LAUNCHERS = {
     base: 'SauceLabs',
     browserName: 'internet explorer',
     version: '11',
-    platform: 'Windows 8.1',
+    platform: 'Windows 10',
   },
 
   /*
