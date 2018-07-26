@@ -9,7 +9,7 @@
     "floatinglabel",
     "floating label"
   ],
-  "main": "index.js",
+  "main": "dist/mdc.floatingLabel.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/material-components/material-components-web.git"

@@ -8,7 +8,7 @@
     "material design",
     "animation"
   ],
-  "main": "index.js",
+  "main": "dist/mdc.animation.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git"
