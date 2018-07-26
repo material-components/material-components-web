@@ -97,11 +97,6 @@ class MDCTabAdapter {
   notifyInteracted() {}
 
   /**
-   * Emits the MDCTab:activated event for use by parent components
-   */
-  notifyActivated() {}
-
-  /**
    * Returns the offsetLeft value of the root element.
    * @return {number}
    */
