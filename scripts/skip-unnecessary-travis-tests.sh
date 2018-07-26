@@ -91,6 +91,7 @@ if [[ "$TEST_SUITE" == 'screenshot' ]]; then
   check_for_testable_files '^packages/.+\.(js|css|sass)$' '^test/screenshot/.+[^m][^d]$' '\.(png|jpg|jpeg|gif|svg)$'
 
   if [[ $? != 0 ]]; then
-    export TESTABLE_FILE_COUNT=0
+    # Don't exit here. Set a flag to tell the screenshot JS to exit after building source files.
+    export BUILD_AND_EXIT=true
   fi
 fi

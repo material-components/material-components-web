@@ -59,9 +59,9 @@ class TestCommand {
     const snapshotGitRev = snapshotDiffBase.git_revision;
 
     const isTravisPr = snapshotGitRev && snapshotGitRev.type === GitRevision.Type.TRAVIS_PR;
-    const isUntestable = Number(process.env.TESTABLE_FILE_COUNT) === 0;
+    const shouldExit = Boolean(process.env.BUILD_AND_EXIT);
 
-    if (isUntestable) {
+    if (shouldExit) {
       this.logUntestableFiles_();
       return ExitCode.OK;
     }
