@@ -4,6 +4,8 @@
 
 # Material Components for the web
 
+FOO
+
 Material Components for the web (MDC Web) helps developers execute [Material Design](https://www.material.io).
 Developed by a core team of engineers and UX designers at Google, these components enable a reliable development workflow to build beautiful and functional web projects.
 
