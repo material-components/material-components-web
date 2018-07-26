@@ -59,7 +59,7 @@ function exit_if_files_not_changed() {
     log_success "No testable source files were found between commits $TRAVIS_COMMIT_RANGE."
     log_success
     log_success "Skipping $TEST_SUITE tests."
-    exit 1
+    exit
   fi
 }
 
@@ -68,7 +68,7 @@ print_all_changed_files
 
 if [[ "$TEST_SUITE" == 'unit' ]]; then
   # Only run unit tests if JS files changed
-  exit_if_files_not_changed '^packages/.+\.js$'
+  exit_if_files_not_changed '^packages/.+\.js$' '^test/unit/.+\.js$'
 fi
 
 if [[ "$TEST_SUITE" == 'lint' ]]; then
