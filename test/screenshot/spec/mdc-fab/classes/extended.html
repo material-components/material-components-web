@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2018 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Extended FAB (Floating Action Button) - MDC Web Screenshot Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../../../out/mdc.fab.css">
+    <link rel="stylesheet" href="../../../out/spec/fixture.css">
+    <link rel="stylesheet" href="../../../out/spec/mdc-fab/fixture.css">
+  </head>
+
+  <body class="test-body">
+    <main class="test-main test-main--mobile-viewport">
+      <div class="test-grid">
+        <div class="test-cell test-cell--fab-extended">
+          <button class="mdc-fab mdc-fab--extended" aria-label="Create">
+            <span class="material-icons mdc-fab__icon">add</span>
+            <span class="mdc-fab__label">Create</span>
+          </button>
+        </div>
+        <div class="test-cell test-cell--fab-extended">
+          <button class="mdc-fab mdc-fab--extended" aria-label="Create">
+            <span class="mdc-fab__label">Create</span>
+            <span class="material-icons mdc-fab__icon">add</span>
+          </button>
+        </div>
+        <div class="test-cell test-cell--fab-extended">
+          <button class="mdc-fab mdc-fab--extended" aria-label="Create">
+            <span class="mdc-fab__label">Create</span>
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Automatically provides/replaces `Promise` if missing or broken. -->
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fontfaceobserver/2.0.13/fontfaceobserver.standalone.js"></script>
+    <script src="../../../out/spec/fixture.js"></script>
+  </body>
+</html>

@@ -94,23 +94,46 @@
   @include mdc-rtl-reflexive-property(margin, auto, 0, ".mdc-list-item");
 }
 
-.mdc-list-item__text,
-.mdc-list-item__secondary-text {
+.mdc-list-item__text {
   @include mdc-typography-overflow-ellipsis;
 
+  align-self: flex-start;
+}
+
+$mdc-list-item-primary-text-baseline-height_: 32px;
+$mdc-list-item-secondary-text-baseline-height_: 20px;
+$mdc-list-dense-item-primary-text-baseline-height_: 24px;
+
+.mdc-list-item__primary-text {
+  @include mdc-typography-overflow-ellipsis;
+  @include mdc-typography-baseline-top($mdc-list-item-primary-text-baseline-height_);
+  @include mdc-typography-baseline-bottom($mdc-list-item-secondary-text-baseline-height_);
+
   display: block;
+
+  // stylelint-disable plugin/selector-bem-pattern
+  .mdc-list--dense & {
+    @include mdc-typography-baseline-top($mdc-list-dense-item-primary-text-baseline-height_);
+    @include mdc-typography-baseline-bottom($mdc-list-item-secondary-text-baseline-height_);
+  }
+  // stylelint-enable plugin/selector-bem-pattern
 }
 
 .mdc-list-item__secondary-text {
   @include mdc-typography(body2);
-}
+  @include mdc-typography-overflow-ellipsis;
+  @include mdc-typography-baseline-top($mdc-list-item-secondary-text-baseline-height_);
 
-// Match the font size to the primary text when dense
-// stylelint-disable plugin/selector-bem-pattern
-.mdc-list--dense .mdc-list-item__secondary-text {
-  font-size: inherit;
+  display: block;
+
+  // stylelint-disable plugin/selector-bem-pattern
+  .mdc-list--dense & {
+    @include mdc-typography-baseline-top($mdc-list-item-secondary-text-baseline-height_);
+
+    font-size: inherit;
+  }
+  // stylelint-enable plugin/selector-bem-pattern
 }
-// stylelint-enable plugin/selector-bem-pattern
 
 // stylelint-disable plugin/selector-bem-pattern
 .mdc-list--dense .mdc-list-item {
@@ -140,7 +163,7 @@
 }
 
 .mdc-list--avatar-list.mdc-list--dense .mdc-list-item {
-  height: 48px;
+  height: 60px;
 }
 
 .mdc-list--avatar-list.mdc-list--dense .mdc-list-item__graphic {
