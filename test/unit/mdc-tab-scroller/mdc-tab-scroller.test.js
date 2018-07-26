@@ -206,10 +206,10 @@ test('#getScrollPosition() calls getScrollPosition', () => {
   td.verify(mockFoundation.getScrollPosition(), {times: 1});
 });
 
-test('#getScrollContentWidth() calls getScrollContentWidth', () => {
-  const {component, mockFoundation} = setupMockFoundationTest();
-  component.getScrollContentWidth();
-  td.verify(mockFoundation.getScrollContentWidth(), {times: 1});
+test('#getScrollContentWidth() returns the offsetWidth of the content element', () => {
+  const {component, root} = setupMockFoundationTest();
+  const contentElement = root.querySelector(MDCTabScrollerFoundation.strings.CONTENT_SELECTOR);
+  assert.strictEqual(component.getScrollContentWidth(), contentElement.offsetWidth);
 });
 
 function setupTestRTL() {

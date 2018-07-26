@@ -118,7 +118,7 @@ class MDCTabScroller extends MDCComponent {
    * @return {number}
    */
   getScrollContentWidth() {
-    return this.foundation_.getScrollContentWidth();
+    return this.content_.offsetWidth;
   }
 
   /**
