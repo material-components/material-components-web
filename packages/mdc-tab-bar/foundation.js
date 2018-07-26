@@ -108,7 +108,7 @@ class MDCTabBarFoundation extends MDCFoundation {
     this.adapter_.deactivateTabAtIndex(previousActiveIndex);
     this.adapter_.activateTabAtIndex(index, this.adapter_.getTabIndicatorClientRectAtIndex(previousActiveIndex));
     this.scrollIntoView(index);
-    this.notifyTabActivated(index);
+    this.adapter_.notifyTabActivated(index);
   }
 
   /**
@@ -379,10 +379,10 @@ class MDCTabBarFoundation extends MDCFoundation {
    * @private
    */
   scrollIntoViewRTL_(index) {
-    const barWidth = this.adapter_.getOffsetWidth();
-    const scrollWidth = this.adapter_.getScrollContentWidth();
     const scrollPosition = this.adapter_.getScrollPosition();
+    const barWidth = this.adapter_.getOffsetWidth();
     const tabDimensions = this.adapter_.getTabDimensionsAtIndex(index);
+    const scrollWidth = this.adapter_.getScrollContentWidth();
     const nextIndex = this.findAdjacentTabIndexClosestToEdgeRTL_(
       index, tabDimensions, scrollPosition, barWidth, scrollWidth);
 

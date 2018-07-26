@@ -182,6 +182,14 @@ test('#adapter.getTabListLength returns the length of the tab list', () => {
   assert.strictEqual(component.getDefaultFoundation().adapter_.getTabListLength(), 3);
 });
 
+test(`#adapter.notifyTabActivated emits the ${MDCTabBarFoundation.strings.TAB_ACTIVATED_EVENT} event`, () => {
+  const {component, root} = setupTest();
+  const handler = td.function();
+  domEvents.on(root, MDCTabBarFoundation.strings.TAB_ACTIVATED_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyTabActivated(66);
+  td.verify(handler(td.matchers.contains({detail: {index: 66}})));
+});
+
 function setupMockFoundationTest(root = getFixture()) {
   const MockFoundationConstructor = td.constructor(MDCTabBarFoundation);
   const mockFoundation = new MockFoundationConstructor();

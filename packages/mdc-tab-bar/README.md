@@ -94,6 +94,10 @@ Method Signature | Description
 `activateTab(index: number) => void` | Activates the tab at the given index.
 `scrollIntoView(index: number) => void` | Scrolls the tab at the given index into view.
 
+Event Name | Event Data Structure | Description
+--- | --- | ---
+`MDCTabBar:activated` | `{"detail": {"index": number}}` | Emitted when a Tab is activated with the index of the activated Tab. Listen for this to update content when a Tab becomes active.
+
 ## Usage within Web Frameworks
 
 If you are using a JavaScript framework, such as React or Angular, you can create a Tab for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).

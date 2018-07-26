@@ -39,10 +39,19 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'activateTabAtIndex', 'deactivateTabAtIndex',
     'getTabIndicatorClientRectAtIndex', 'getTabDimensionsAtIndex',
     'getActiveTabIndex', 'getIndexOfTab', 'getTabListLength',
+    'notifyTabActivated',
   ]);
 });
 
 const setupTest = () => setupFoundationTest(MDCTabBarFoundation);
+
+test('#init() scrolls the active tab into view', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.scrollIntoView = td.function();
+  td.when(mockAdapter.getActiveTabIndex()).thenReturn(99);
+  foundation.init();
+  td.verify(foundation.scrollIntoView(99), {times: 1});
+});
 
 const stubActivateTab = () => {
   const {foundation, mockAdapter} = setupTest();
@@ -287,6 +296,17 @@ test('#activateTab() scrolls the new tab index into view', () => {
   });
   foundation.activateTab(1);
   td.verify(scrollIntoView(1));
+});
+
+test(`#activateTab() emits the ${MDCTabBarFoundation.strings.TAB_ACTIVATED_EVENT} with the index of the tab`, () => {
+  const {foundation, mockAdapter} = setupActivateTabTest();
+  td.when(mockAdapter.getTabListLength()).thenReturn(13);
+  td.when(mockAdapter.getActiveTabIndex()).thenReturn(6);
+  td.when(mockAdapter.getTabIndicatorClientRectAtIndex(6)).thenReturn({
+    left: 22, right: 33,
+  });
+  foundation.activateTab(1);
+  td.verify(mockAdapter.notifyTabActivated(1));
 });
 
 function setupScrollIntoViewTest({
