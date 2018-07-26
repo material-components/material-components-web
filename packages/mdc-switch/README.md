@@ -49,6 +49,25 @@ npm install @material/switch
 </div>
 <label for="basic-switch">off/on</label>
 ```
+
+### Styles
+
+```scss
+@import "@material/switch/mdc-switch";
+```
+
+### JavaScript Instantiation
+
+The Switch requires JavaScript to function, so it is necessary to instantiate MDCSwitch with the HTML.
+
+```js
+import {MDCSwitch} from '@material/switch';
+
+const switchControl = new MDCSwitch(document.querySelector('.mdc-switch'));
+```
+
+> See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
+
 ## Variant
 
 ### Disabled Switch
@@ -79,14 +98,11 @@ CSS Class | Description
 `mdc-switch__thumb` | Mandatory, for the thumb element.
 `mdc-switch__native-control` | Mandatory, for the hidden input checkbox.
 
-## Style Customization
-
-MDC Switch uses [MDC Theme](../mdc-theme)'s `secondary` color by default for the checked (toggled on) state. Use the following mixins to customize it.
-
 ### Sass Mixins
 
-The following mixins apply only to _enabled_ switches.
-It is not currently possible to customize the color of a _disabled_ switch. Disabled switches use the same colors as enabled switches, but with a different opacity value.
+MDC Switch uses [MDC Theme](../mdc-theme)'s `secondary` color by default for the checked (toggled on) state.
+Use the following mixins to customize _enabled_ switches. It is not currently possible to customize the color of a
+ _disabled_ switch. Disabled switches use the same colors as enabled switches, but with a different opacity value.
 
 Mixin | Description
 --- | ---
@@ -108,7 +124,7 @@ Property | Value Type | Description
 
 ## Usage within Web Frameworks
 
-If you are using a JavaScript framework, such as React or Angular, you can create a switch for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
+If you are using a JavaScript framework, such as React or Angular, you can create a Switch for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
 ### `MDCSwitchAdapter`
 
