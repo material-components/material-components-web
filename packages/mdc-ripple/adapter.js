@@ -38,7 +38,6 @@
  *
  * @record
  */
-
 class MDCRippleAdapter {
   /** @return {boolean} */
   browserSupportsCssVars() {}

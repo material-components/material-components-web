@@ -42,7 +42,7 @@ class MDCSelectAdapter {
   addClass(className) {}
 
   /**
-   * Removes a class from the root Element.
+   * Removes a class from the root element.
    * @param {string} className
    */
   removeClass(className) {}
@@ -89,8 +89,7 @@ class MDCSelectAdapter {
   hasLabel() {}
 
   /**
-   * Only implement if label exists.
-   * Returns width of label in pixels.
+   * Returns width of label in pixels, if the label exists.
    * @return {number}
    */
   getLabelWidth() {}
@@ -102,17 +101,15 @@ class MDCSelectAdapter {
   hasOutline() {}
 
   /**
-   * Only implement if outline element exists.
    * Updates SVG Path and outline element based on the
-   * label element width and RTL context.
+   * label element width and RTL context, if the outline exists.
    * @param {number} labelWidth
    * @param {boolean=} isRtl
    */
   notchOutline(labelWidth, isRtl) {}
 
   /**
-   * Only implement if outline element exists.
-   * Closes notch in outline element.
+   * Closes notch in outline element, if the outline exists.
    */
   closeOutline() {}
 }

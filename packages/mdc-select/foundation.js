@@ -47,19 +47,19 @@ class MDCSelectFoundation extends MDCFoundation {
    */
   static get defaultAdapter() {
     return /** @type {!MDCSelectAdapter} */ ({
-      activateBottomLine: () => {},
       addClass: (/* className: string */) => {},
-      closeOutline: () => {},
-      deactivateBottomLine: () => {},
-      floatLabel: (/* value: boolean */) => {},
-      getLabelWidth: () => {},
-      getValue: () => {},
+      removeClass: (/* className: string */) => {},
       hasClass: (/* className: string */) => false,
       hasLabel: () => false,
-      hasOutline: () => false,
+      floatLabel: (/* value: boolean */) => {},
+      getLabelWidth: () => {},
       isRtl: () => false,
+      getValue: () => {},
       notchOutline: (/* labelWidth: number, isRtl: boolean */) => {},
-      removeClass: (/* className: string */) => {},
+      closeOutline: () => {},
+      hasOutline: () => false,
+      activateBottomLine: () => {},
+      deactivateBottomLine: () => {},
     });
   }
 
@@ -84,7 +84,7 @@ class MDCSelectFoundation extends MDCFoundation {
   }
 
   /**
-   * Handles value event changes.
+   * Handles value changes, via change event or programmatic updates.
    */
   handleChange() {
     const optionHasValue = this.adapter_.getValue().length > 0;
