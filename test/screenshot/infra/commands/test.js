@@ -59,10 +59,10 @@ class TestCommand {
     const snapshotGitRev = snapshotDiffBase.git_revision;
 
     const isTravisPr = snapshotGitRev && snapshotGitRev.type === GitRevision.Type.TRAVIS_PR;
-    const isTestable = isTravisPr ? snapshotGitRev.pr_file_paths.length > 0 : true;
+    const isUntestable = Number(process.env.TESTABLE_FILE_COUNT) === 0;
 
-    if (!isTestable) {
-      this.logUntestablePr_(snapshotGitRev.pr_number);
+    if (isUntestable) {
+      this.logUntestableFiles_();
       return ExitCode.OK;
     }
 
@@ -406,16 +406,15 @@ ${CliColor.bold.red('Skipping screenshot tests.')}
   }
 
   /**
-   * @param {number} prNumber
    * @private
    */
-  logUntestablePr_(prNumber) {
-    this.logger_.warn(`
+  logUntestableFiles_() {
+    this.logger_.log(CliColor.bold.green(`
 
-${CliColor.underline(`PR #${prNumber}`)} does not contain any testable source file changes.
+No testable source files were found between commits ${process.env.TRAVIS_COMMIT_RANGE}.
 
-${CliColor.bold.green('Skipping screenshot tests.')}
-`);
+Skipping screenshot tests.
+`));
   }
 
   /**
