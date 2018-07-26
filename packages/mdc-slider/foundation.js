@@ -75,6 +75,7 @@ class MDCSliderFoundation extends MDCFoundation {
       notifyChange: () => {},
       setThumbStyleProperty: () => {},
       setTrackFillStyleProperty: () => {},
+      setLastTickMarkStyleProperty: () => {},
       focusThumb: () => {},
       activateRipple: () => {},
       deactivateRipple: () => {},
@@ -200,6 +201,28 @@ class MDCSliderFoundation extends MDCFoundation {
     this.step_ = step;
     this.setValue_(this.value_);
     this.adapter_.setThumbAttribute(strings.DATA_STEP, String(this.step_));
+  }
+
+  /**
+   * Calculates the number of tick marks for discrete slider
+   * @return {number}
+   */
+  calculateNumberOfTickMarks() {
+    if (this.step_ < 1) {
+      this.step_ = 1;
+    }
+    let numMarks = (this.max_ - this.min_) / this.step_;
+    numMarks = Math.ceil(numMarks);
+    return numMarks;
+  }
+
+  /**
+   * Adjusts the last tick mark style
+   * @param {number} numMarks
+   */
+  adjustLastTickMark(numMarks) {
+    const lastStepRatio = (this.max_ - numMarks * this.step_) / this.step_ + 1;
+    this.adapter_.setLastTickMarkStyleProperty('flex', String(lastStepRatio));
   }
 
   /**

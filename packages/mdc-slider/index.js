@@ -38,6 +38,8 @@ class MDCSlider extends MDCComponent {
     this.trackFill_;
     /** @type {?Element} */
     this.tickMarkSet_;
+    /** @type {?Element} */
+    this.lastTickMark_;
     /** @private {!MDCRipple} */
     this.ripple_ = this.initRipple_();
   }
@@ -60,6 +62,7 @@ class MDCSlider extends MDCComponent {
   /** @param {number} min */
   set min(min) {
     this.foundation_.setMin(min);
+    this.layout();
   }
 
   /** @return {number} */
@@ -70,6 +73,7 @@ class MDCSlider extends MDCComponent {
   /** @param {number} max */
   set max(max) {
     this.foundation_.setMax(max);
+    this.layout();
   }
 
   /** @return {number} */
@@ -80,6 +84,7 @@ class MDCSlider extends MDCComponent {
   /** @param {number} step */
   set step(step) {
     this.foundation_.setStep(step);
+    this.layout();
   }
 
   /**
@@ -145,6 +150,9 @@ class MDCSlider extends MDCComponent {
         setTrackFillStyleProperty: (propertyName, value) => {
           this.trackFill_.style.setProperty(propertyName, value);
         },
+        setLastTickMarkStyleProperty: (propertyName, value) => {
+          this.lastTickMark_.style.setProperty(propertyName, value);
+        },
         focusThumb: () => {
           this.thumb_.focus();
         },
@@ -171,18 +179,7 @@ class MDCSlider extends MDCComponent {
   }
 
   setUpTickMarks() {
-    if (this.step < 1) {
-      this.step = 1;
-    }
-    let numMarks = (this.max - this.min) / this.step;
-
-    // In case distance between max & min is indivisible to step,
-    // we place the secondary to last mark proportionally at where thumb
-    // could reach and place the last mark at max value
-    const indivisible = Math.ceil(numMarks) !== numMarks;
-    if (indivisible) {
-      numMarks = Math.ceil(numMarks);
-    }
+    const numMarks = this.foundation_.calculateNumberOfTickMarks();
 
     // Remove tick marks if there are any
     while (this.tickMarkSet_.firstChild) {
@@ -198,15 +195,17 @@ class MDCSlider extends MDCComponent {
     }
     this.tickMarkSet_.appendChild(frag);
 
-    if (indivisible) {
-      const lastStepRatio = (this.max - numMarks * this.step) / this.step + 1;
-      const lastTickMark = this.root_.querySelector(strings.LAST_TICK_MARK_SELECTOR);
-      lastTickMark.style.setProperty('flex', String(lastStepRatio));
-    }
+    // Assign the last tick mark
+    this.lastTickMark_ = this.root_.querySelector(strings.LAST_TICK_MARK_SELECTOR);
+
+    this.foundation_.adjustLastTickMark(numMarks);
   }
 
   layout() {
     this.foundation_.layout();
+    if (this.tickMarkSet_) {
+      this.setUpTickMarks();
+    }
   }
 }
 

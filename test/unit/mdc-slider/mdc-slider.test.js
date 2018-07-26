@@ -31,7 +31,9 @@ function getFixture() {
     <div class="mdc-slider">
       <div class="mdc-slider__track">
         <div class="mdc-slider__track-fill"></div>
-        <div class="mdc-slider__tick-mark-set"></div>
+        <div class="mdc-slider__tick-mark-set">
+          <div class="mdc-slider__tick-mark:last-child"></div>
+        </div>
       </div>
       <div class="mdc-slider__thumb" tabindex="0" role="slider"
       data-step="2" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
@@ -216,7 +218,7 @@ test('#initialSyncWithDOM setUpTickMarks removes old tick marks and updates', ()
   assert.equal(component.tickMarkSet_.children.length, 25);
 });
 
-test('#setUpTickMarks does execute if it is continuous slider', () => {
+test('#setUpTickMarks does not execute if it is continuous slider', () => {
   const root = getFixture();
   const track = root.querySelector('.mdc-slider__track');
   const tickMarkSet = root.querySelector('.mdc-slider__tick-mark-set');
@@ -382,6 +384,18 @@ test('adapter#setTrackFillStyleProperty sets a style property on the track-fill 
   component.getDefaultFoundation().adapter_.setTrackFillStyleProperty('background-color', 'black');
 
   assert.equal(trackFill.style.backgroundColor, div.style.backgroundColor);
+});
+
+test('adapter#setLastTickMarkStyleProperty sets a style property on the last tick mark element', () => {
+  const {root, component} = setupTest();
+  const lastTickMark = root.querySelector('.mdc-slider__tick-mark:last-child');
+
+  const div = bel`<div></div>`;
+  div.style.backgroundColor = 'black';
+
+  component.getDefaultFoundation().adapter_.setLastTickMarkStyleProperty('background-color', 'black');
+
+  assert.equal(lastTickMark.style.backgroundColor, div.style.backgroundColor);
 });
 
 test('adapter#focusThumb sets the focus of the document to the thumb', () => {

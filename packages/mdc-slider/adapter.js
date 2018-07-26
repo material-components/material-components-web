@@ -130,6 +130,13 @@ class MDCSliderAdapter {
   setTrackFillStyleProperty(propertyName, value) {}
 
   /**
+   * Sets a style property of the last tick mark element to the passed value
+   * @param {string} propertyName
+   * @param {string} value
+   */
+  setLastTickMarkStyleProperty(propertyName, value) {}
+
+  /**
    * Sets focus to thumb
    */
   focusThumb() {}
