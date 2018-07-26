@@ -43,3 +43,8 @@ test('#incrementScrollRTL() is abstract and does nothing', () => {
   const {scroller} = setup();
   assert.isUndefined(scroller.incrementScrollRTL());
 });
+
+test('#getAnimatingScrollPosition() is abstract and does nothing', () => {
+  const {scroller} = setup();
+  assert.isUndefined(scroller.getAnimatingScrollPosition());
+});

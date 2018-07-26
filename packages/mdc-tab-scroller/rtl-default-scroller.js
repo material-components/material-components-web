@@ -64,6 +64,14 @@ class MDCTabScrollerRTLDefault extends MDCTabScrollerRTL {
   }
 
   /**
+   * @param {number} scrollX
+   * @return {number}
+   */
+  getAnimatingScrollPosition(scrollX) {
+    return scrollX;
+  }
+
+  /**
    * @return {!MDCTabScrollerHorizontalEdges}
    * @private
    */

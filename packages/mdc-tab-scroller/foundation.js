@@ -305,10 +305,25 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    */
   stopScrollAnimation_() {
     this.isAnimating_ = false;
-    const currentScrollPosition = this.getScrollPosition();
+    const currentScrollPosition = this.getAnimatingScrollPosition_();
     this.adapter_.removeClass(MDCTabScrollerFoundation.cssClasses.ANIMATING);
     this.adapter_.setScrollContentStyleProperty('transform', 'translateX(0px)');
     this.adapter_.setScrollAreaScrollLeft(currentScrollPosition);
+  }
+
+  /**
+   * Gets the current scroll position during animation
+   * @return {number}
+   * @private
+   */
+  getAnimatingScrollPosition_() {
+    const currentTranslateX = this.calculateCurrentTranslateX_();
+    const scrollLeft = this.adapter_.getScrollAreaScrollLeft();
+    if (this.isRTL_()) {
+      return this.getRTLScroller().getAnimatingScrollPosition(scrollLeft, currentTranslateX);
+    }
+
+    return scrollLeft - currentTranslateX;
   }
 
   /**
