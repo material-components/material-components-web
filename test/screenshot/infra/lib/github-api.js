@@ -181,7 +181,10 @@ class GitHubApi {
       return null;
     }
 
-    const sha = process.env.TRAVIS_PULL_REQUEST_SHA || await this.gitRepo_.getFullCommitHash();
+    const travisPrSha = process.env.TRAVIS_PULL_REQUEST_SHA;
+    const travisCommit = process.env.TRAVIS_COMMIT;
+    const sha = travisPrSha || travisCommit || await this.gitRepo_.getFullCommitHash();
+
     let stackTrace;
 
     try {
