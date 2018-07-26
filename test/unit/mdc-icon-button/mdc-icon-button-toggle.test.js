@@ -25,11 +25,22 @@ import {MDCIconButtonToggle, MDCIconButtonToggleFoundation} from '../../../packa
 import {MDCRipple} from '../../../packages/mdc-ripple';
 import {cssClasses} from '../../../packages/mdc-ripple/constants';
 
+function getFixture() {
+  return bel`
+    <button></button>
+  `;
+}
+
+function getIconFixture() {
+  return bel`
+    <i id="icon"></i>
+  `;
+}
+
 function setupTest({tabIndex = undefined, useInnerIconElement = false, createMockFoundation = false} = {}) {
-  const root = document.createElement('button');
+  const root = getFixture();
   if (useInnerIconElement) {
-    const icon = document.createElement('i');
-    icon.id = 'icon';
+    const icon = getIconFixture();
     root.dataset.iconInnerSelector = `#${icon.id}`;
     root.appendChild(icon);
   }
@@ -183,5 +194,5 @@ test('click handler is removed from the root element on destroy', () => {
   const {root, component, mockFoundation} = setupTest({createMockFoundation: true});
   component.destroy();
   domEvents.emit(root, 'click');
-  td.verify(mockFoundation.handleClick(), {times: 0});
+  td.verify(mockFoundation.handleClick(td.matchers.anything()), {times: 0});
 });
