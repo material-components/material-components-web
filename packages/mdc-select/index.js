@@ -43,6 +43,12 @@ class MDCSelect extends MDCComponent {
     this.label_;
     /** @private {?MDCNotchedOutline} */
     this.outline_;
+    /** @private {!Function} */
+    this.handleChange_;
+    /** @private {!Function} */
+    this.handleFocus_;
+    /** @private {!Function} */
+    this.handleBlur_;
   }
 
   /**
