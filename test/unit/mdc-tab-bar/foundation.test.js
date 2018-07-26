@@ -51,10 +51,11 @@ const stubActivateTab = () => {
   return {activateTab, foundation, mockAdapter};
 };
 
-const mockKeyDownEvent = (key) => {
+const mockKeyDownEvent = ({key, keyCode}) => {
   const preventDefault = td.function();
   const fakeEvent = {
     key,
+    keyCode,
     preventDefault,
   };
 
@@ -67,144 +68,162 @@ test('#handleTabInteraction() activates the tab', () => {
   td.verify(activateTab(td.matchers.anything()), {times: 1});
 });
 
-test('#handleKeyDown() activates the tab at the 0th index when the Home key is pressed', () => {
+test('#handleKeyDown() activates the tab at the 0th index when the home key is pressed', () => {
   const {foundation, activateTab} = stubActivateTab();
-  const {fakeEvent} = mockKeyDownEvent('Home');
-  foundation.handleKeyDown(fakeEvent);
-  td.verify(activateTab(0), {times: 1});
+  const {fakeEvent: fakeKeyEvent} = mockKeyDownEvent({key: 'Home'});
+  const {fakeEvent: fakeKeyCodeEvent} = mockKeyDownEvent({keyCode: 36});
+  foundation.handleKeyDown(fakeKeyEvent);
+  foundation.handleKeyDown(fakeKeyCodeEvent);
+  td.verify(activateTab(0), {times: 2});
 });
 
-test('#handleKeyDown() activates the tab at the N - 1 index when the Home key is pressed'
-  + ' and the text direction is RTL', () => {
+test('#handleKeyDown() activates the tab at the N - 1 index when the end key is pressed', () => {
   const {foundation, mockAdapter, activateTab} = stubActivateTab();
-  const {fakeEvent} = mockKeyDownEvent('Home');
-  td.when(mockAdapter.isRTL()).thenReturn(true);
+  const {fakeEvent: fakeKeyEvent} = mockKeyDownEvent({key: 'End'});
+  const {fakeEvent: fakeKeyCodeEvent} = mockKeyDownEvent({keyCode: 35});
   td.when(mockAdapter.getTabListLength()).thenReturn(13);
-  foundation.handleKeyDown(fakeEvent);
-  td.verify(activateTab(12), {times: 1});
+  foundation.handleKeyDown(fakeKeyEvent);
+  foundation.handleKeyDown(fakeKeyCodeEvent);
+  td.verify(activateTab(12), {times: 2});
 });
 
-test('#handleKeyDown() activates the tab at the N - 1 index when the End key is pressed', () => {
+test('#handleKeyDown() activates the tab at the previous index when the left arrow key is pressed', () => {
   const {foundation, mockAdapter, activateTab} = stubActivateTab();
-  const {fakeEvent} = mockKeyDownEvent('End');
-  td.when(mockAdapter.getTabListLength()).thenReturn(13);
-  foundation.handleKeyDown(fakeEvent);
-  td.verify(activateTab(12), {times: 1});
-});
-
-test('#handleKeyDown() activates the tab at the 0th index when the End key is pressed'
-  + ' and the text direction is RTL', () => {
-  const {foundation, mockAdapter, activateTab} = stubActivateTab();
-  const {fakeEvent} = mockKeyDownEvent('End');
-  td.when(mockAdapter.isRTL()).thenReturn(true);
-  td.when(mockAdapter.getTabListLength()).thenReturn(13);
-  foundation.handleKeyDown(fakeEvent);
-  td.verify(activateTab(0), {times: 1});
-});
-
-test('#handleKeyDown() activates the tab at the previous index when the ArrowLeft key is pressed', () => {
-  const {foundation, mockAdapter, activateTab} = stubActivateTab();
-  const {fakeEvent} = mockKeyDownEvent('ArrowLeft');
+  const {fakeEvent: fakeKeyEvent} = mockKeyDownEvent({key: 'ArrowLeft'});
+  const {fakeEvent: fakeKeyCodeEvent} = mockKeyDownEvent({keyCode: 37});
   td.when(mockAdapter.getActiveTabIndex()).thenReturn(2);
   td.when(mockAdapter.getTabListLength()).thenReturn(13);
-  foundation.handleKeyDown(fakeEvent);
-  td.verify(activateTab(1), {times: 1});
+  foundation.handleKeyDown(fakeKeyEvent);
+  foundation.handleKeyDown(fakeKeyCodeEvent);
+  td.verify(activateTab(1), {times: 2});
 });
 
-test('#handleKeyDown() activates the tab at the next index when the ArrowLeft key is pressed'
+test('#handleKeyDown() activates the tab at the next index when the right arrow key is pressed'
   + ' and the text direction is RTL', () => {
   const {foundation, mockAdapter, activateTab} = stubActivateTab();
-  const {fakeEvent} = mockKeyDownEvent('ArrowLeft');
+  const {fakeEvent: fakeKeyEvent} = mockKeyDownEvent({key: 'ArrowLeft'});
+  const {fakeEvent: fakeKeyCodeEvent} = mockKeyDownEvent({keyCode: 37});
   td.when(mockAdapter.isRTL()).thenReturn(true);
   td.when(mockAdapter.getActiveTabIndex()).thenReturn(2);
   td.when(mockAdapter.getTabListLength()).thenReturn(13);
-  foundation.handleKeyDown(fakeEvent);
-  td.verify(activateTab(3), {times: 1});
+  foundation.handleKeyDown(fakeKeyEvent);
+  foundation.handleKeyDown(fakeKeyCodeEvent);
+  td.verify(activateTab(3), {times: 2});
 });
 
-test('#handleKeyDown() activates the tab at the N - 1 index when the ArrowLeft key is pressed'
+test('#handleKeyDown() activates the tab at the N - 1 index when the left arrow key is pressed'
   + ' and the current active index is 0', () => {
   const {foundation, mockAdapter, activateTab} = stubActivateTab();
-  const {fakeEvent} = mockKeyDownEvent('ArrowLeft');
+  const {fakeEvent: fakeKeyEvent} = mockKeyDownEvent({key: 'ArrowLeft'});
+  const {fakeEvent: fakeKeyCodeEvent} = mockKeyDownEvent({keyCode: 37});
   td.when(mockAdapter.getActiveTabIndex()).thenReturn(0);
   td.when(mockAdapter.getTabListLength()).thenReturn(13);
-  foundation.handleKeyDown(fakeEvent);
-  td.verify(activateTab(12), {times: 1});
+  foundation.handleKeyDown(fakeKeyEvent);
+  foundation.handleKeyDown(fakeKeyCodeEvent);
+  td.verify(activateTab(12), {times: 2});
 });
 
-test('#handleKeyDown() activates the tab at the N - 1 index when the ArrowRight key is pressed'
+test('#handleKeyDown() activates the tab at the N - 1 index when the right arrow key is pressed'
   + ' and the current active index is the 0th index and the text direction is RTL', () => {
   const {foundation, mockAdapter, activateTab} = stubActivateTab();
-  const {fakeEvent} = mockKeyDownEvent('ArrowRight');
+  const {fakeEvent: fakeKeyEvent} = mockKeyDownEvent({key: 'ArrowRight'});
+  const {fakeEvent: fakeKeyCodeEvent} = mockKeyDownEvent({keyCode: 39});
   td.when(mockAdapter.isRTL()).thenReturn(true);
   td.when(mockAdapter.getActiveTabIndex()).thenReturn(0);
   td.when(mockAdapter.getTabListLength()).thenReturn(13);
-  foundation.handleKeyDown(fakeEvent);
-  td.verify(activateTab(12), {times: 1});
+  foundation.handleKeyDown(fakeKeyEvent);
+  foundation.handleKeyDown(fakeKeyCodeEvent);
+  td.verify(activateTab(12), {times: 2});
 });
 
-test('#handleKeyDown() activates the tab at the next index when the ArrowRight key is pressed', () => {
+test('#handleKeyDown() activates the tab at the next index when the right arrow key is pressed', () => {
   const {foundation, mockAdapter, activateTab} = stubActivateTab();
-  const {fakeEvent} = mockKeyDownEvent('ArrowRight');
+  const {fakeEvent: fakeKeyEvent} = mockKeyDownEvent({key: 'ArrowRight'});
+  const {fakeEvent: fakeKeyCodeEvent} = mockKeyDownEvent({keyCode: 39});
   td.when(mockAdapter.getActiveTabIndex()).thenReturn(2);
   td.when(mockAdapter.getTabListLength()).thenReturn(13);
-  foundation.handleKeyDown(fakeEvent);
-  td.verify(activateTab(3), {times: 1});
+  foundation.handleKeyDown(fakeKeyEvent);
+  foundation.handleKeyDown(fakeKeyCodeEvent);
+  td.verify(activateTab(3), {times: 2});
 });
 
-test('#handleKeyDown() activates the tab at the previous index when the ArrowLeft key is pressed'
+test('#handleKeyDown() activates the tab at the previous index when the right arrow key is pressed'
   + ' and the text direction is RTL', () => {
   const {foundation, mockAdapter, activateTab} = stubActivateTab();
-  const {fakeEvent} = mockKeyDownEvent('ArrowRight');
+  const {fakeEvent: fakeKeyEvent} = mockKeyDownEvent({key: 'ArrowRight'});
+  const {fakeEvent: fakeKeyCodeEvent} = mockKeyDownEvent({keyCode: 39});
   td.when(mockAdapter.isRTL()).thenReturn(true);
   td.when(mockAdapter.getActiveTabIndex()).thenReturn(2);
   td.when(mockAdapter.getTabListLength()).thenReturn(13);
-  foundation.handleKeyDown(fakeEvent);
-  td.verify(activateTab(1), {times: 1});
+  foundation.handleKeyDown(fakeKeyEvent);
+  foundation.handleKeyDown(fakeKeyCodeEvent);
+  td.verify(activateTab(1), {times: 2});
 });
 
-test('#handleKeyDown() activates the tab at the 0th index when the ArrowRight key is pressed'
+test('#handleKeyDown() activates the tab at the 0th index when the right arrow key is pressed'
   + ' and the current active index is the max index', () => {
   const {foundation, mockAdapter, activateTab} = stubActivateTab();
-  const {fakeEvent} = mockKeyDownEvent('ArrowRight');
+  const {fakeEvent: fakeKeyEvent} = mockKeyDownEvent({key: 'ArrowRight'});
+  const {fakeEvent: fakeKeyCodeEvent} = mockKeyDownEvent({keyCode: 39});
   td.when(mockAdapter.getActiveTabIndex()).thenReturn(12);
   td.when(mockAdapter.getTabListLength()).thenReturn(13);
-  foundation.handleKeyDown(fakeEvent);
-  td.verify(activateTab(0), {times: 1});
+  foundation.handleKeyDown(fakeKeyEvent);
+  foundation.handleKeyDown(fakeKeyCodeEvent);
+  td.verify(activateTab(0), {times: 2});
 });
 
-test('#handleKeyDown() activates the tab at the 0th index when the ArrowLeft key is pressed'
+test('#handleKeyDown() activates the tab at the 0th index when the left arrow key is pressed'
   + ' and the current active index is the max index and the text direction is RTL', () => {
   const {foundation, mockAdapter, activateTab} = stubActivateTab();
-  const {fakeEvent} = mockKeyDownEvent('ArrowLeft');
+  const {fakeEvent: fakeKeyEvent} = mockKeyDownEvent({key: 'ArrowLeft'});
+  const {fakeEvent: fakeKeyCodeEvent} = mockKeyDownEvent({keyCode: 37});
   td.when(mockAdapter.isRTL()).thenReturn(true);
   td.when(mockAdapter.getActiveTabIndex()).thenReturn(12);
   td.when(mockAdapter.getTabListLength()).thenReturn(13);
-  foundation.handleKeyDown(fakeEvent);
-  td.verify(activateTab(0), {times: 1});
+  foundation.handleKeyDown(fakeKeyEvent);
+  foundation.handleKeyDown(fakeKeyCodeEvent);
+  td.verify(activateTab(0), {times: 2});
 });
 
 test('#handleKeyDown() prevents the default behavior when the pressed key is ArrowLeft, ArrowRight, End, or Home',
   () => {
     ['ArrowLeft', 'ArrowRight', 'Home', 'End'].forEach((evtName) => {
       const {foundation} = stubActivateTab();
-      const {fakeEvent, preventDefault} = mockKeyDownEvent(evtName);
+      const {fakeEvent, preventDefault} = mockKeyDownEvent({key: evtName});
       foundation.handleKeyDown(fakeEvent);
       td.verify(preventDefault());
     });
   });
 
+test('#handleKeyDown() prevents the default behavior when the pressed keyCode is 35, 36, 37, or 39', () => {
+  [35, 36, 37, 39].forEach((keyCode) => {
+    const {foundation} = stubActivateTab();
+    const {fakeEvent, preventDefault} = mockKeyDownEvent({keyCode});
+    foundation.handleKeyDown(fakeEvent);
+    td.verify(preventDefault());
+  });
+});
+
 test('#handleKeyDown() does not prevent the default behavior when a non-directional key is pressed', () => {
   const {foundation} = stubActivateTab();
-  const {fakeEvent, preventDefault} = mockKeyDownEvent('Shift');
+  const {fakeEvent, preventDefault} = mockKeyDownEvent({key: 'Shift'});
+  foundation.handleKeyDown(fakeEvent);
+  td.verify(preventDefault(), {times: 0});
+});
+
+test('#handleKeyDown() does not prevent the default behavior when a non-directional keyCode is pressed', () => {
+  const {foundation} = stubActivateTab();
+  const {fakeEvent, preventDefault} = mockKeyDownEvent({keyCode: 16});
   foundation.handleKeyDown(fakeEvent);
   td.verify(preventDefault(), {times: 0});
 });
 
 test('#handleKeyDown() does not activate a tab when a non-directional key is pressed', () => {
   const {foundation, activateTab} = stubActivateTab();
-  const {fakeEvent} = mockKeyDownEvent('Shift');
-  foundation.handleKeyDown(fakeEvent);
+  const {fakeEvent: fakeKeyEvent} = mockKeyDownEvent({key: 'Shift'});
+  const {fakeEvent: fakeKeyCodeEvent} = mockKeyDownEvent({keyCode: 16});
+  foundation.handleKeyDown(fakeKeyEvent);
+  foundation.handleKeyDown(fakeKeyCodeEvent);
   td.verify(activateTab(), {times: 0});
 });
 

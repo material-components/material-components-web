@@ -26,6 +26,26 @@ import {MDCTabDimensions} from '@material/tab/adapter';
 /* eslint-enable no-unused-vars */
 
 /**
+ * @type {Set<string>}
+ */
+const ACCEPTABLE_KEYS = new Set([
+  strings.ARROW_LEFT_KEY,
+  strings.ARROW_RIGHT_KEY,
+  strings.END_KEY,
+  strings.HOME_KEY,
+]);
+
+/**
+ * @type {Map<number, string>}
+ */
+const KEYCODE_MAP = new Map([
+  [numbers.HOME_KEYCODE, strings.HOME_KEY],
+  [numbers.END_KEYCODE, strings.END_KEY],
+  [numbers.ARROW_LEFT_KEYCODE, strings.ARROW_LEFT_KEY],
+  [numbers.ARROW_RIGHT_KEYCODE, strings.ARROW_RIGHT_KEY],
+]);
+
+/**
  * @extends {MDCFoundation<!MDCTabBarAdapter>}
  * @final
  */
@@ -94,20 +114,16 @@ class MDCTabBarFoundation extends MDCFoundation {
    * @param {!Event} evt
    */
   handleKeyDown(evt) {
-    const keyboardNavigation = [
-      'ArrowLeft',
-      'ArrowRight',
-      'Home',
-      'End',
-    ];
+    // Get the key from the event
+    const key = this.getKeyFromEvent_(evt);
 
     // Early exit if the event key isn't one of the keyboard navigation keys
-    if (keyboardNavigation.indexOf(evt.key) === -1) {
+    if (key === undefined) {
       return;
     }
 
     evt.preventDefault();
-    this.activateTabFromKeydown_(evt);
+    this.activateTabFromKey_(key);
   }
 
   /**
@@ -147,16 +163,16 @@ class MDCTabBarFoundation extends MDCFoundation {
   }
 
   /**
-   * Private method for activating a tab from the keydown
-   * @param {!Event} evt The keydown event
+   * Private method for activating a tab from a key
+   * @param {string} key The name of the key
    * @private
    */
-  activateTabFromKeydown_(evt) {
+  activateTabFromKey_(key) {
     const isRTL = this.isRTL_();
     const maxTabIndex = this.adapter_.getTabListLength() - 1;
-    const shouldGoToEnd = evt.key === 'End' && !isRTL || evt.key === 'Home' && isRTL;
-    const shouldDecrement = evt.key === 'ArrowLeft' && !isRTL || evt.key === 'ArrowRight' && isRTL;
-    const shouldIncrement = evt.key === 'ArrowRight' && !isRTL || evt.key === 'ArrowLeft' && isRTL;
+    const shouldGoToEnd = key === strings.END_KEY;
+    const shouldDecrement = key === strings.ARROW_LEFT_KEY && !isRTL || key === strings.ARROW_RIGHT_KEY && isRTL;
+    const shouldIncrement = key === strings.ARROW_RIGHT_KEY && !isRTL || key === strings.ARROW_LEFT_KEY && isRTL;
     let tabIndex = this.adapter_.getActiveTabIndex();
 
     if (shouldGoToEnd) {
@@ -255,7 +271,7 @@ class MDCTabBarFoundation extends MDCFoundation {
      * To determine the next adjacent index, we look at the Tab root left and
      * Tab root right, both relative to the scroll position. If the Tab root
      * left is less than 0, then we know it's out of view to the left. If the
-     * Tab root right minues the bar width is greater than 0, we know the Tab is
+     * Tab root right minus the bar width is greater than 0, we know the Tab is
      * out of view to the right. From there, we either increment or decrement
      * the index.
      */
@@ -302,6 +318,20 @@ class MDCTabBarFoundation extends MDCFoundation {
     }
 
     return -1;
+  }
+
+  /**
+   * Returns the key associated with a keydown event
+   * @param {!Event} evt The keydown event
+   * @return {string}
+   * @private
+   */
+  getKeyFromEvent_(evt) {
+    if (ACCEPTABLE_KEYS.has(evt.key)) {
+      return evt.key;
+    }
+
+    return KEYCODE_MAP.get(evt.keyCode);
   }
 
   /**

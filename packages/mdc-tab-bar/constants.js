@@ -19,11 +19,19 @@
 const strings = {
   TAB_SCROLLER_SELECTOR: '.mdc-tab-scroller',
   TAB_SELECTOR: '.mdc-tab',
+  END_KEY: 'End',
+  HOME_KEY: 'Home',
+  ARROW_LEFT_KEY: 'ArrowLeft',
+  ARROW_RIGHT_KEY: 'ArrowRight',
 };
 
 /** @enum {number} */
 const numbers = {
   EXTRA_SCROLL_AMOUNT: 20,
+  END_KEYCODE: 35,
+  HOME_KEYCODE: 36,
+  ARROW_LEFT_KEYCODE: 37,
+  ARROW_RIGHT_KEYCODE: 39,
 };
 
 export {
