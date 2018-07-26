@@ -16,6 +16,7 @@
 
 'use strict';
 
+const VError = require('verror');
 const del = require('del');
 const fs = require('mz/fs');
 const fsx = require('fs-extra');
@@ -63,7 +64,11 @@ class LocalStorage {
    */
   async getTestPageDestinationPaths(reportMeta) {
     const cwd = reportMeta.local_asset_base_dir;
-    return glob.sync('**/spec/mdc-*/**/*.html', {cwd, nodir: true, ignore: ['**/index.html']});
+    try {
+      return glob.sync('**/spec/mdc-*/**/*.html', {cwd, nodir: true, ignore: ['**/index.html']});
+    } catch (err) {
+      throw new VError(err, `Failed to run LocalStorage.getTestPageDestinationPaths(${cwd})`);
+    }
   }
 
   /**
@@ -72,8 +77,13 @@ class LocalStorage {
    * @return {!Promise<void>}
    */
   async writeTextFile(filePath, fileContent) {
-    mkdirp.sync(path.dirname(filePath));
-    await fs.writeFile(filePath, fileContent, {encoding: 'utf8'});
+    try {
+      mkdirp.sync(path.dirname(filePath));
+      await fs.writeFile(filePath, fileContent, {encoding: 'utf8'});
+    } catch (err) {
+      const serialized = JSON.stringify({filePath, fileContent: fileContent.length + ' bytes'});
+      throw new VError(err, `Failed to run LocalStorage.writeTextFile(${serialized})`);
+    }
   }
 
   /**
@@ -83,8 +93,13 @@ class LocalStorage {
    * @return {!Promise<void>}
    */
   async writeBinaryFile(filePath, fileContent, encoding = null) {
-    mkdirp.sync(path.dirname(filePath));
-    await fs.writeFile(filePath, fileContent, {encoding});
+    try {
+      mkdirp.sync(path.dirname(filePath));
+      await fs.writeFile(filePath, fileContent, {encoding});
+    } catch (err) {
+      const serialized = JSON.stringify({filePath, fileContent: fileContent.length + ' bytes', encoding});
+      throw new VError(err, `Failed to run LocalStorage.writeBinaryFile(${serialized})`);
+    }
   }
 
   /**
@@ -92,12 +107,16 @@ class LocalStorage {
    * @return {!Promise<string>}
    */
   async readTextFile(filePath) {
-    return fs.readFile(filePath, {encoding: 'utf8'});
+    try {
+      return await fs.readFile(filePath, {encoding: 'utf8'});
+    } catch (err) {
+      throw new VError(err, `Failed to run LocalStorage.readTextFile(${filePath})`);
+    }
   }
 
   /**
    * @param {string} filePath
-   * @return {!Promise<string>}
+   * @return {string}
    */
   readTextFileSync(filePath) {
     return fs.readFileSync(filePath, {encoding: 'utf8'});
@@ -109,7 +128,11 @@ class LocalStorage {
    * @return {!Promise<!Buffer>}
    */
   async readBinaryFile(filePath, encoding = null) {
-    return fs.readFile(filePath, {encoding});
+    try {
+      return await fs.readFile(filePath, {encoding});
+    } catch (err) {
+      throw new VError(err, `Failed to run LocalStorage.readBinaryFile(${filePath}, ${encoding})`);
+    }
   }
 
   /**
@@ -142,7 +165,11 @@ class LocalStorage {
    * @return {!Promise<void>}
    */
   async copy(src, dest) {
-    return fsx.copy(src, dest);
+    try {
+      return await fsx.copy(src, dest);
+    } catch (err) {
+      throw new VError(err, `Failed to run LocalStorage.copy(${src}, ${dest})`);
+    }
   }
 
   /**
@@ -150,7 +177,11 @@ class LocalStorage {
    * @return {!Promise<*>}
    */
   async delete(pathPatterns) {
-    return del(pathPatterns);
+    try {
+      return await del(pathPatterns);
+    } catch (err) {
+      throw new VError(err, `Failed to run LocalStorage.delete(${pathPatterns} patterns)`);
+    }
   }
 
   /**
@@ -158,7 +189,11 @@ class LocalStorage {
    * @return {!Promise<boolean>}
    */
   async exists(filePath) {
-    return fs.exists(filePath);
+    try {
+      return await fs.exists(filePath);
+    } catch (err) {
+      throw new VError(err, `Failed to run LocalStorage.exists(${filePath})`);
+    }
   }
 
   /**

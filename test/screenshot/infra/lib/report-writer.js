@@ -417,8 +417,6 @@ class ReportWriter {
       return new Handlebars.SafeString(`<a href="${diffBase.public_url}">${diffBase.public_url}</a>`);
     }
 
-    const rev = diffBase.git_revision;
-
     if (diffBase.local_file_path) {
       const localFilePathMarkup = diffBase.is_default_local_file
         ? `<a href="${meta.golden_json_file.public_url}">${diffBase.local_file_path}</a>`
@@ -427,6 +425,7 @@ class ReportWriter {
       return new Handlebars.SafeString(`${localFilePathMarkup} (local file)`);
     }
 
+    const rev = diffBase.git_revision;
     if (rev) {
       const prMarkup = rev.pr_number
         ? `(PR <a href="${GITHUB_REPO_URL}/pull/${rev.pr_number}">#${rev.pr_number}</a>)`

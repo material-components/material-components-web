@@ -109,7 +109,6 @@ message User {
 
 message LibraryVersion {
   string version_string = 1;
-  int32 commit_offset = 2;
 }
 
 message UserAgents {

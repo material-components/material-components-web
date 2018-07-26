@@ -14,19 +14,13 @@
  * limitations under the License.
  */
 
-'use strict';
-
-const Controller = require('../lib/controller');
-
-class ApproveCommand {
-  /**
-   * @return {!Promise<number|undefined>} Process exit code. If no exit code is returned, `0` is assumed.
-   */
-  async runAsync() {
-    const controller = new Controller();
-    const reportData = await controller.initForApproval();
-    await controller.approveChanges(reportData);
-  }
-}
-
-module.exports = ApproveCommand;
+/**
+ * @typedef {{
+ *   optionNames: !Array<string>,
+ *   description: string,
+ *   isRequired: ?boolean,
+ *   type: ?string,
+ *   defaultValue: ?*,
+ *   exampleValue: ?string,
+ * }} CliOptionConfig
+ */
