@@ -9,6 +9,13 @@ path: /catalog/tabs/tab/
 
 # Tab
 
+<!--<div class="article__asset">
+  <a class="article__asset-link"
+     href="https://material-components.github.io/material-components-web-catalog/#/component/tabs">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/tab.png" width="363" alt="Tab screenshot">
+  </a>
+</div>-->
+
 Tabs organize and allow navigation between groups of content that are related and at the same level of hierarchy.
 Each Tab governs the visibility of one group of content.
 
@@ -92,6 +99,7 @@ CSS Class | Description
 `mdc-tab__ripple` | Mandatory. Denotes the ripple surface for the tab.
 `mdc-tab--active` | Optional. Indicates that the tab is active.
 `mdc-tab--stacked` | Optional. Indicates that the tab icon and label should flow vertically instead of horizontally.
+`mdc-tab--min-width` | Optional. Indicates that the tab should shrink in size to be as narrow as possible without causing text to wrap.
 `mdc-tab__text-label` | Optional. Indicates an icon in the tab.
 `mdc-tab__icon` | Optional. Indicates a leading icon in the tab.
 
@@ -104,6 +112,7 @@ Mixin | Description
 `mdc-tab-text-label-color($color)` | Customizes the color of the tab text label.
 `mdc-tab-icon-color($color)` | Customizes the color of the tab icon.
 `mdc-tab-parent-positioning` | Sets the positioning of the MDCTab's parent element so that `MDCTab.computeDimensions()` reports the same values in all browsers.
+`mdc-tab-fixed-width($width)` | Sets the fixed width of the tab. The tab will never be smaller than the given width.
 
 ## `MDCTab` Properties and Methods
 

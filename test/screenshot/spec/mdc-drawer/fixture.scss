@@ -1,0 +1,48 @@
+//
+// Copyright 2018 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+@import "../../../../packages/mdc-drawer/mixins";
+@import "../../../../packages/mdc-list/mixins";
+@import "../../../../packages/mdc-theme/color-palette";
+
+$custom-drawer-color: $material-color-orange-900;
+
+.test-main--drawer {
+  display: flex;
+  flex-direction: row;
+}
+
+.test-drawer-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.test-drawer-paragraph {
+  margin: 1em 0 0 0;
+  line-height: 1;
+}
+
+.custom-drawer--fill-color {
+  @include mdc-drawer-fill-color($custom-drawer-color);
+}
+
+.custom-drawer--fill-color-accessible {
+  @include mdc-drawer-fill-color-accessible($custom-drawer-color);
+}
+
+.custom-drawer--ink-color {
+  @include mdc-drawer-ink-color($custom-drawer-color);
+}

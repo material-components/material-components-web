@@ -67,3 +67,7 @@
     animation: mdc-floating-label-shake-float-above-#{$modifier} 250ms 1;
   }
 }
+
+@mixin mdc-floating-label-max-width($max-width) {
+  max-width: $max-width;
+}

@@ -71,6 +71,10 @@
   justify-content: center;
   height: inherit;
   pointer-events: none;
+}
+
+.mdc-tab__text-label,
+.mdc-tab__icon {
   z-index: 2;
 }
 
