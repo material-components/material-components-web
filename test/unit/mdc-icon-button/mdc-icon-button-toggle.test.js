@@ -58,19 +58,6 @@ function setupTest({tabIndex = undefined, useInnerIconElement = false, createMoc
 
 suite('MDCIconButtonToggle');
 
-test('click handler is added to root element', () => {
-  const {root, mockFoundation} = setupTest({createMockFoundation: true});
-  domEvents.emit(root, 'click');
-  td.verify(mockFoundation.handleClick(), {times: 1});
-});
-
-test('click handler is removed from the root element on destroy', () => {
-  const {root, component, mockFoundation} = setupTest({createMockFoundation: true});
-  component.destroy();
-  domEvents.emit(root, 'click');
-  td.verify(mockFoundation.handleClick(td.matchers.anything()), {times: 0});
-});
-
 test('attachTo initializes and returns a MDCIconButtonToggle instance', () => {
   assert.isOk(MDCIconButtonToggle.attachTo(document.createElement('i')) instanceof MDCIconButtonToggle);
 });
@@ -195,4 +182,17 @@ test('assert keyup does not trigger ripple', () => {
   const {root} = setupTest();
   domEvents.emit(root, 'keyup');
   assert.isNotOk(root.classList.contains(cssClasses.FG_ACTIVATION));
+});
+
+test('click handler is added to root element', () => {
+  const {root, mockFoundation} = setupTest({createMockFoundation: true});
+  domEvents.emit(root, 'click');
+  td.verify(mockFoundation.handleClick(td.matchers.anything()), {times: 1});
+});
+
+test('click handler is removed from the root element on destroy', () => {
+  const {root, component, mockFoundation} = setupTest({createMockFoundation: true});
+  component.destroy();
+  domEvents.emit(root, 'click');
+  td.verify(mockFoundation.handleClick(td.matchers.anything()), {times: 0});
 });
