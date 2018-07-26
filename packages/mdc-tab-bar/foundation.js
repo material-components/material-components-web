@@ -381,7 +381,8 @@ class MDCTabBarFoundation extends MDCFoundation {
     const scrollWidth = this.adapter_.getScrollContentWidth();
     const scrollPosition = this.adapter_.getScrollPosition();
     const tabDimensions = this.adapter_.getTabDimensionsAtIndex(index);
-    const nextIndex = this.findAdjacentTabIndexClosestToEdgeRTL_(index, tabDimensions, scrollPosition, scrollWidth, barWidth);
+    const nextIndex = this.findAdjacentTabIndexClosestToEdgeRTL_(
+      index, tabDimensions, scrollPosition, barWidth, scrollWidth);
 
     if (!this.indexIsInRange_(nextIndex)) {
       return;
