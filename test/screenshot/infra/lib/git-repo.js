@@ -196,6 +196,10 @@ class GitRepo {
     }
 
     const logEntry = logEntries[0];
+    if (!logEntry) {
+      throw new VError(err, `Unable to get author for commit "${commit}":\n${stackTrace}`);
+    }
+
     return User.create({
       name: logEntry.author_name,
       email: logEntry.author_email,
