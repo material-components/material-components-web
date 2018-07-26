@@ -47,19 +47,19 @@ class MDCSelectFoundation extends MDCFoundation {
    */
   static get defaultAdapter() {
     return /** @type {!MDCSelectAdapter} */ ({
-      addClass: (/* className: string */) => {},
-      removeClass: (/* className: string */) => {},
-      hasClass: (/* className: string */) => false,
-      floatLabel: (/* value: boolean */) => {},
       activateBottomLine: () => {},
-      deactivateBottomLine: () => {},
-      getValue: () => {},
-      isRtl: () => false,
-      hasLabel: () => {},
-      getLabelWidth: () => {},
-      hasOutline: () => {},
-      notchOutline: () => {},
+      addClass: (/* className: string */) => {},
       closeOutline: () => {},
+      deactivateBottomLine: () => {},
+      floatLabel: (/* value: boolean */) => {},
+      getLabelWidth: () => {},
+      getValue: () => {},
+      hasClass: (/* className: string */) => false,
+      hasLabel: () => false,
+      hasOutline: () => false,
+      isRtl: () => false,
+      notchOutline: (/* labelWidth: number, isRtl: boolean */) => {},
+      removeClass: (/* className: string */) => {},
     });
   }
 

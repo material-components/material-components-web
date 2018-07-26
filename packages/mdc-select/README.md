@@ -242,12 +242,19 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 
 | Method Signature | Description |
 | --- | --- |
-| `addClass(className: string) => void` | Adds a class to the root element. |
-| `removeClass(className: string) => void` | Removes a class from the root element. |
-| `floatLabel(value: boolean) => void` | Floats or defloats label. |
 | `activateBottomLine() => void` | Activates the bottom line component. |
+| `addClass(className: string) => void` | Adds a class to the root element. |
+| `closeOutline() => void` | Switches the notched outline element to its closed state. |
 | `deactivateBottomLine() => void` | Deactivates the bottom line component. |
+| `floatLabel(value: boolean) => void` | Floats or defloats label. |
+| `getLabelWidth() => number` | Returns the offsetWidth of the label element. |
 | `getValue() => string` | Returns the value selected on the `select` element. |
+| `hasClass(className: string) => boolean` | Returns true if the root element has the className in its classList. |
+| `hasLabel() => boolean` | Returns true if the `select` has a label associated with it. |
+| `hasOutlined() => boolean` | Returns true if the `select` has the notched outline element. |
+| `isRtl() => boolean` | Returns true if a parent of the root element is in RTL. |
+| `notchOutline(labelWidth: number, isRtl, boolean) => void` | Switches the notched outline element to its "notched state." |
+| `removeClass(className: string) => void` | Removes a class from the root element. |
 
 ### `MDCSelectFoundation`
 
