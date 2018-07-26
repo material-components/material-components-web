@@ -184,7 +184,7 @@ test('assert keyup does not trigger ripple', () => {
   assert.isNotOk(root.classList.contains(cssClasses.FG_ACTIVATION));
 });
 
-test('click handler is added to root element', () => {
+test.only('click handler is added to root element', () => {
   const {root, mockFoundation} = setupTest({createMockFoundation: true});
   domEvents.emit(root, 'click');
   td.verify(mockFoundation.handleClick(td.matchers.anything()), {times: 1});
