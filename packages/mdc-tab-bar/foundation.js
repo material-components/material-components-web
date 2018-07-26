@@ -28,22 +28,22 @@ import {MDCTabDimensions} from '@material/tab/adapter';
 /**
  * @type {Set<string>}
  */
-const ACCEPTABLE_KEYS = new Set([
-  strings.ARROW_LEFT_KEY,
-  strings.ARROW_RIGHT_KEY,
-  strings.END_KEY,
-  strings.HOME_KEY,
-]);
+const ACCEPTABLE_KEYS = new Set();
+// IE11 has no support for new Set with iterable so we need to initialize this by hand
+ACCEPTABLE_KEYS.add(strings.ARROW_LEFT_KEY);
+ACCEPTABLE_KEYS.add(strings.ARROW_RIGHT_KEY);
+ACCEPTABLE_KEYS.add(strings.END_KEY);
+ACCEPTABLE_KEYS.add(strings.HOME_KEY);
 
 /**
  * @type {Map<number, string>}
  */
-const KEYCODE_MAP = new Map([
-  [numbers.HOME_KEYCODE, strings.HOME_KEY],
-  [numbers.END_KEYCODE, strings.END_KEY],
-  [numbers.ARROW_LEFT_KEYCODE, strings.ARROW_LEFT_KEY],
-  [numbers.ARROW_RIGHT_KEYCODE, strings.ARROW_RIGHT_KEY],
-]);
+const KEYCODE_MAP = new Map();
+// IE11 has no support for new Map with iterable so we need to initialize this by hand
+KEYCODE_MAP.set(numbers.HOME_KEYCODE, strings.HOME_KEY);
+KEYCODE_MAP.set(numbers.END_KEYCODE, strings.END_KEY);
+KEYCODE_MAP.set(numbers.ARROW_LEFT_KEYCODE, strings.ARROW_LEFT_KEY);
+KEYCODE_MAP.set(numbers.ARROW_RIGHT_KEYCODE, strings.ARROW_RIGHT_KEY);
 
 /**
  * @extends {MDCFoundation<!MDCTabBarAdapter>}
