@@ -22,6 +22,8 @@ import MDCChipAdapter from './adapter';
 import {MDCChipFoundation} from './foundation';
 import {strings} from './constants';
 
+const INTERACTION_EVENTS = ['click', 'keydown'];
+
 /**
  * @extends {MDCComponent<!MDCChipFoundation>}
  * @final
@@ -35,8 +37,17 @@ class MDCChip extends MDCComponent {
 
     /** @private {?Element} */
     this.leadingIcon_;
+    /** @private {?Element} */
+    this.trailingIcon_;
     /** @private {!MDCRipple} */
     this.ripple_;
+
+    /** @private {?function(?Event): undefined} */
+    this.handleInteraction_;
+    /** @private {?function(!Event): undefined} */
+    this.handleTransitionEnd_;
+    /** @private {function(!Event): undefined} */
+    this.handleTrailingIconInteraction_;
   }
 
   /**
@@ -49,6 +60,7 @@ class MDCChip extends MDCComponent {
 
   initialize() {
     this.leadingIcon_ = this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
+    this.trailingIcon_ = this.root_.querySelector(strings.TRAILING_ICON_SELECTOR);
 
     // Adjust ripple size for chips with animated growing width. This applies when filter chips without
     // a leading icon are selected, and a leading checkmark will cause the chip width to expand.
@@ -69,8 +81,37 @@ class MDCChip extends MDCComponent {
     }
   }
 
+  initialSyncWithDOM() {
+    this.handleInteraction_ = (evt) => this.foundation_.handleInteraction(evt);
+    this.handleTransitionEnd_ = (evt) => this.foundation_.handleTransitionEnd(evt);
+    this.handleTrailingIconInteraction_ = (evt) => this.foundation_.handleTrailingIconInteraction(evt);
+
+    INTERACTION_EVENTS.forEach((evtType) => {
+      this.root_.addEventListener(evtType, this.handleInteraction_);
+    });
+    this.root_.addEventListener('transitionend', this.handleTransitionEnd_);
+
+    if (this.trailingIcon_) {
+      INTERACTION_EVENTS.forEach((evtType) => {
+        this.trailingIcon_.addEventListener(evtType, this.handleTrailingIconInteraction_);
+      });
+    }
+  }
+
   destroy() {
     this.ripple_.destroy();
+
+    INTERACTION_EVENTS.forEach((evtType) => {
+      this.root_.removeEventListener(evtType, this.handleInteraction_);
+    });
+    this.root_.removeEventListener('transitionend', this.handleTransitionEnd_);
+
+    if (this.trailingIcon_) {
+      INTERACTION_EVENTS.forEach((evtType) => {
+        this.trailingIcon_.removeEventListener(evtType, this.handleTrailingIconInteraction_);
+      });
+    }
+
     super.destroy();
   }
 
@@ -131,20 +172,6 @@ class MDCChip extends MDCComponent {
         }
       },
       eventTargetHasClass: (target, className) => target.classList.contains(className),
-      registerEventHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
-      deregisterEventHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
-      registerTrailingIconInteractionHandler: (evtType, handler) => {
-        const trailingIconEl = this.root_.querySelector(strings.TRAILING_ICON_SELECTOR);
-        if (trailingIconEl) {
-          trailingIconEl.addEventListener(evtType, handler);
-        }
-      },
-      deregisterTrailingIconInteractionHandler: (evtType, handler) => {
-        const trailingIconEl = this.root_.querySelector(strings.TRAILING_ICON_SELECTOR);
-        if (trailingIconEl) {
-          trailingIconEl.removeEventListener(evtType, handler);
-        }
-      },
       notifyInteraction: () => this.emit(strings.INTERACTION_EVENT, {chip: this}, true /* shouldBubble */),
       notifyTrailingIconInteraction: () => this.emit(
         strings.TRAILING_ICON_INTERACTION_EVENT, {chip: this}, true /* shouldBubble */),
