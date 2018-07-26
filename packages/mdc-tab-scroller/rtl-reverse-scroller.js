@@ -63,6 +63,14 @@ class MDCTabScrollerRTLReverse extends MDCTabScrollerRTL {
   }
 
   /**
+   * @param {number} scrollX
+   * @return {number}
+   */
+  getAnimatingScrollPosition(scrollX, translateX) {
+    return scrollX + translateX;
+  }
+
+  /**
    * @return {!MDCTabScrollerHorizontalEdges}
    * @private
    */

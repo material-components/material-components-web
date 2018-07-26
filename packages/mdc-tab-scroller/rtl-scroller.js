@@ -51,6 +51,14 @@ class MDCTabScrollerRTL {
    * @abstract
    */
   incrementScrollRTL(scrollX) {}
+
+  /**
+   * @param {number} scrollX The current scrollX position
+   * @param {number} translateX The current translateX position
+   * @return {number}
+   * @abstract
+   */
+  getAnimatingScrollPosition(scrollX, translateX) {}
 }
 
 export default MDCTabScrollerRTL;

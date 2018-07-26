@@ -89,3 +89,8 @@ test('#incrementScrollRTL() returns max scroll value for scrollX property when s
     assert.strictEqual(scroller.incrementScrollRTL(-124).finalScrollPosition, 800);
   }
 );
+
+test('#getAnimatingScrollPosition() returns just the scrollX value', () => {
+  const {scroller} = setupTest({rootWidth: 200, contentWidth: 1000, scrollLeft: 677});
+  assert.strictEqual(scroller.getAnimatingScrollPosition(123, 11), 123);
+});
