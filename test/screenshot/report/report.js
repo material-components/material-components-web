@@ -21,6 +21,7 @@ window.mdc.reportUi = (() => {
   class ReportUi {
     constructor() {
       this.bindEventListeners_();
+      this.collapseAllExceptDeepLink_();
 
       this.fetchReportData_().then((reportData) => {
         /**
@@ -116,6 +117,28 @@ window.mdc.reportUi = (() => {
       });
     }
 
+    collapseAllExceptDeepLink_() {
+      const [, id] = (/^#(.+)$/.exec(location.hash || '') || []);
+      if (!id) {
+        return;
+      }
+      const deepLinkElem = document.getElementById(id);
+      if (!deepLinkElem) {
+        return;
+      }
+      const htmlFileDetailsElems = Array.from(document.querySelectorAll('details.report-html-file'));
+      for (const htmlFileDetailsElem of htmlFileDetailsElems) {
+        htmlFileDetailsElem.open = htmlFileDetailsElem.contains(deepLinkElem);
+        if (htmlFileDetailsElem.open) {
+          htmlFileDetailsElem.querySelectorAll('details.report-user-agent').forEach((userAgentDetailsElem) => {
+            userAgentDetailsElem.open = userAgentDetailsElem.contains(deepLinkElem);
+          });
+          htmlFileDetailsElem.parentElement.closest('details').open = true;
+          break;
+        }
+      }
+    }
+
     collapseAll() {
       const allDetailsElems = Array.from(document.querySelectorAll('details'));
       allDetailsElems.forEach((detailsElem) => detailsElem.open = false);
@@ -127,15 +150,6 @@ window.mdc.reportUi = (() => {
     }
 
     collapseImages() {
-      this.collapseNone();
-
-      const collectionDetailsElems = Array.from(document.querySelectorAll('.report-collection'));
-      collectionDetailsElems.forEach((detailsElem) => {
-        const hasScreenshots = Number(detailsElem.getAttribute('data-num-screenshots')) > 0;
-        const isComparable = !['skipped', 'unchanged'].includes(detailsElem.getAttribute('data-collection-type'));
-        detailsElem.open = hasScreenshots && isComparable;
-      });
-
       const userAgentDetailsElems = Array.from(document.querySelectorAll('.report-user-agent'));
       userAgentDetailsElems.forEach((detailsElem) => detailsElem.open = false);
     }
