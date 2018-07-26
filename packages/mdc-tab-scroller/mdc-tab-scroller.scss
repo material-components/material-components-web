@@ -59,15 +59,15 @@
   will-change: transform;
 }
 
-.mdc-tab-scroller--start-aligned .mdc-tab-scroller__scroll-content {
+.mdc-tab-scroller--align-start .mdc-tab-scroller__scroll-content {
   justify-content: flex-start;
 }
 
-.mdc-tab-scroller--end-aligned .mdc-tab-scroller__scroll-content {
+.mdc-tab-scroller--align-end .mdc-tab-scroller__scroll-content {
   justify-content: flex-end;
 }
 
-.mdc-tab-scroller--center-aligned .mdc-tab-scroller__scroll-content {
+.mdc-tab-scroller--align-center .mdc-tab-scroller__scroll-content {
   justify-content: center;
 }
 
