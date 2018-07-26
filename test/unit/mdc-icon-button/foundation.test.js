@@ -18,7 +18,7 @@ import {assert} from 'chai';
 import td from 'testdouble';
 
 import {setupFoundationTest} from '../helpers/setup';
-import {verifyDefaultAdapter, captureHandlers as baseCaptureHandlers} from '../helpers/foundation';
+import {verifyDefaultAdapter} from '../helpers/foundation';
 import MDCIconButtonToggleFoundation from '../../../packages/mdc-icon-button/foundation';
 
 const {strings} = MDCIconButtonToggleFoundation;
@@ -35,7 +35,7 @@ test('exports cssClasses', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCIconButtonToggleFoundation, [
-    'addClass', 'removeClass', 'registerInteractionHandler', 'deregisterInteractionHandler',
+    'addClass', 'removeClass',
     'setText', 'getAttr', 'setAttr', 'notifyChange',
   ]);
 });
@@ -54,6 +54,21 @@ test('#constructor sets on to true if the toggle is pressed', () => {
   td.when(mockAdapter.getAttr(strings.ARIA_PRESSED)).thenReturn('true');
   const foundation = new MDCIconButtonToggleFoundation(mockAdapter);
   assert.isTrue(foundation.isOn());
+});
+
+test('#handleClick calls #toggle', () => {
+  const {foundation} = setupTest();
+  foundation.init();
+  foundation.toggle = td.func();
+  foundation.handleClick();
+  td.verify(foundation.toggle(), {times: 1});
+});
+
+test('#handleClick calls notifyChange', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.init();
+  foundation.handleClick();
+  td.verify(mockAdapter.notifyChange({isOn: true}), {times: 1});
 });
 
 test('#toggle flips on', () => {
@@ -189,38 +204,4 @@ test('#refreshToggleData syncs the foundation state with data-toggle-on, data-to
   foundation.toggle(true);
   td.verify(mockAdapter.addClass('second-class-on'));
   td.verify(mockAdapter.removeClass('second-class-off'));
-});
-
-test('#destroy deregisters all interaction handlers', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const {isA} = td.matchers;
-  foundation.destroy();
-  td.verify(mockAdapter.deregisterInteractionHandler('click', isA(Function)));
-});
-
-const captureHandlers = (adapter) => baseCaptureHandlers(adapter, 'registerInteractionHandler');
-
-test('updates toggle state on click', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const handlers = captureHandlers(mockAdapter);
-  foundation.init();
-
-  handlers.click();
-  assert.isOk(foundation.isOn());
-  td.verify(mockAdapter.setAttr(strings.ARIA_PRESSED, 'true'));
-
-  handlers.click();
-  assert.isNotOk(foundation.isOn());
-  td.verify(mockAdapter.setAttr(strings.ARIA_PRESSED, 'false'));
-});
-
-test('broadcasts change notification on click', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const handlers = captureHandlers(mockAdapter);
-  foundation.init();
-
-  handlers.click();
-  td.verify(mockAdapter.notifyChange({isOn: true}));
-  handlers.click();
-  td.verify(mockAdapter.notifyChange({isOn: false}));
 });
