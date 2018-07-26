@@ -9,7 +9,7 @@
     "notchedoutline",
     "notched outline"
   ],
-  "main": "index.js",
+  "main": "dist/mdc.notchedOutline.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/material-components/material-components-web.git"

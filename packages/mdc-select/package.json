@@ -9,7 +9,7 @@
     "select",
     "multi select"
   ],
-  "main": "index.js",
+  "main": "dist/mdc.select.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git"
