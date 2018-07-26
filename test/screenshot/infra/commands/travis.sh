@@ -18,6 +18,20 @@ function print_travis_env_vars() {
   echo
 }
 
+function maybe_add_git_branch() {
+  if [[ -n "$1" ]]; then
+    # https://github.com/marionebl/commitlint/issues/6#issuecomment-231186598
+    git remote set-branches --add origin "$1"
+  fi
+}
+
+function maybe_fetch_git_branches() {
+  maybe_add_git_branch 'master'
+  maybe_add_git_branch "$TRAVIS_BRANCH"
+  maybe_add_git_branch "$TRAVIS_PULL_REQUEST_BRANCH"
+  git fetch --tags
+}
+
 function maybe_extract_api_credentials() {
   if [[ -z "$encrypted_eead2343bb54_key" ]] || [[ -z "$encrypted_eead2343bb54_iv" ]]; then
     log_error
@@ -83,6 +97,7 @@ function maybe_install_gcloud_sdk() {
 
 if [[ "$TEST_SUITE" == 'screenshot' ]]; then
   print_travis_env_vars
+  maybe_fetch_git_branches
   maybe_extract_api_credentials
   maybe_install_gcloud_sdk
 fi
