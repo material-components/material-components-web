@@ -62,12 +62,6 @@ test('#getScrollPosition() returns difference between scrollLeft and translateX'
   assert.strictEqual(foundation.getScrollPosition(), 111);
 });
 
-test('#getScrollContentWidth() returns the width of the scroll content element', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.getScrollContentOffsetWidth()).thenReturn(808);
-  assert.strictEqual(foundation.getScrollContentWidth(), 808);
-});
-
 test('#handleInteraction() does nothing if should not handle interaction', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.handleInteraction();

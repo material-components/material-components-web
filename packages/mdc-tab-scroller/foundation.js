@@ -173,14 +173,6 @@ class MDCTabScrollerFoundation extends MDCFoundation {
   }
 
   /**
-   * Returns the width of the scroll content
-   * @return {number}
-   */
-  getScrollContentWidth() {
-    return this.adapter_.getScrollContentOffsetWidth();
-  }
-
-  /**
    * Returns the translateX value from a CSS matrix transform function string
    * @return {number}
    * @private

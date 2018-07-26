@@ -65,9 +65,9 @@ CSS Class | Description
 `mdc-tab-scroller` | Mandatory. Contains the tab scroller content.
 `mdc-tab-scroller__scroll-area` | Mandatory. Denotes the scrolling area.
 `mdc-tab-scroller__scroll-content` | Mandatory. Denotes the scrolling content.
-`mdc-tab-scroller--start-aligned` | Optional. Sets the elements inside the scroll content element to be aligned to the start of the scroll content element.
-`mdc-tab-scroller--end-aligned` | Optional. Sets the elements inside the scroll content element to be aligned to the end of the scroll content element.
-`mdc-tab-scroller--center-aligned` | Optional. Sets the elements inside the scroll content element to be aligned to the center of the scroll content element.
+`mdc-tab-scroller--align-start` | Optional. Sets the elements inside the scroll content element to be aligned to the start of the scroll content element.
+`mdc-tab-scroller--align-end` | Optional. Sets the elements inside the scroll content element to be aligned to the end of the scroll content element.
+`mdc-tab-scroller--align-center` | Optional. Sets the elements inside the scroll content element to be aligned to the center of the scroll content element.
 
 ## `MDCTabScroller` Methods
 
@@ -115,4 +115,3 @@ Method Signature | Description
 `scrollTo(scrollX: number) => void` | Scrolls to the `scrollX` value.
 `incrementScroll(scrollX: number) => void` | Increments the current scroll value by the `scrollX` value.
 `getScrollPosition() => number` | Returns the current visual scroll position.
-`getScrollContentWidth() => number` | Returns the width of the scroll content element.
