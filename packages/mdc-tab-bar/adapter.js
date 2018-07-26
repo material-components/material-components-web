@@ -114,6 +114,12 @@ class MDCTabBarAdapter {
    * @return {number}
    */
   getIndexOfTab(tab) {}
+
+  /**
+   * Emits the MDCTabBar:activated event
+   * @param {number} index The index of the activated tab
+   */
+  notifyTabActivated(index) {}
 }
 
 export default MDCTabBarAdapter;

@@ -123,6 +123,7 @@ class MDCTabBar extends MDCComponent {
         },
         getIndexOfTab: (tabToFind) => this.tabList_.indexOf(tabToFind),
         getTabListLength: () => this.tabList_.length,
+        notifyTabActivated: (index) => this.emit(MDCTabBarFoundation.strings.TAB_ACTIVATED_EVENT, {index}, true),
       })
     );
   }

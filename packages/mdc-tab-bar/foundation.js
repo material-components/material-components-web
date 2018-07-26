@@ -79,6 +79,7 @@ class MDCTabBarFoundation extends MDCFoundation {
       getActiveTabIndex: () => {},
       getIndexOfTab: () => {},
       getTabListLength: () => {},
+      notifyTabActivated: () => {},
     });
   }
 
@@ -107,6 +108,7 @@ class MDCTabBarFoundation extends MDCFoundation {
     this.adapter_.deactivateTabAtIndex(previousActiveIndex);
     this.adapter_.activateTabAtIndex(index, this.adapter_.getTabIndicatorClientRectAtIndex(previousActiveIndex));
     this.scrollIntoView(index);
+    this.notifyTabActivated(index);
   }
 
   /**

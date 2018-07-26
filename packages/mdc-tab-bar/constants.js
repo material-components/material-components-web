@@ -17,6 +17,7 @@
 
 /** @enum {string} */
 const strings = {
+  TAB_ACTIVATED_EVENT: 'MDCTabBar:activated',
   TAB_SCROLLER_SELECTOR: '.mdc-tab-scroller',
   TAB_SELECTOR: '.mdc-tab',
   END_KEY: 'End',
