@@ -30,7 +30,6 @@ const strings = {
   TAB_INDICATOR_SELECTOR: '.mdc-tab-indicator',
   TABINDEX: 'tabIndex',
   INTERACTED_EVENT: 'MDCTab:interacted',
-  ACTIVATED_EVENT: 'MDCTab:activated',
 };
 
 export {

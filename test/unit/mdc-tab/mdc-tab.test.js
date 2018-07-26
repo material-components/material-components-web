@@ -159,15 +159,6 @@ test(`#adapter.notifyInteracted() emits the ${MDCTabFoundation.strings.INTERACTE
   td.verify(handler(td.matchers.anything()));
 });
 
-test(`#adapter.notifyActivated() emits the ${MDCTabFoundation.strings.ACTIVATED_EVENT} event`, () => {
-  const {component} = setupTest();
-  const handler = td.func('interaction handler');
-
-  component.listen(MDCTabFoundation.strings.ACTIVATED_EVENT, handler);
-  component.getDefaultFoundation().adapter_.notifyActivated();
-  td.verify(handler(td.matchers.anything()));
-});
-
 function setupMockFoundationTest(root = getFixture()) {
   const MockFoundationConstructor = td.constructor(MDCTabFoundation);
   const mockFoundation = new MockFoundationConstructor();

@@ -130,7 +130,6 @@ Method Signature | Description
 Event Name | Event Data Structure | Description
 --- | --- | ---
 `MDCTab:interacted` | `{"detail": {"tab": MDCTab}}` | Emitted when the Tab is interacted with, regardless of its active state. Used by parent components to know which Tab to activate.
-`MDCTab:activated` | `{"detail": {"tab": MDCTab}}` | Emitted when the Tab is activated. Listen for this to update content when a Tab becomes active.
 
 ## Usage within Web Frameworks
 
@@ -154,7 +153,6 @@ Method Signature | Description
 `getContentOffsetLeft() => number` | Returns the `offsetLeft` value of the content element.
 `getContentOffsetWidth() => number` | Returns the `offsetWidth` value of the content element.
 `notifyInteracted() => void` | Emits the `MDCTab:interacted` event.
-`notifyActivated() => void` | Emits the `MDCTab:activated` event.
 `focus() => void` | Applies focus to the root element.
 
 ### `MDCTabFoundation`

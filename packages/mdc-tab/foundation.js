@@ -57,7 +57,6 @@ class MDCTabFoundation extends MDCFoundation {
       deactivateIndicator: () => {},
       computeIndicatorClientRect: () => {},
       notifyInteracted: () => {},
-      notifyActivated: () => {},
       getOffsetLeft: () => {},
       getOffsetWidth: () => {},
       getContentOffsetLeft: () => {},
@@ -129,7 +128,6 @@ class MDCTabFoundation extends MDCFoundation {
     this.adapter_.setAttr(strings.TABINDEX, '0');
     this.adapter_.activateIndicator(previousIndicatorClientRect);
     this.adapter_.focus();
-    this.adapter_.notifyActivated();
   }
 
   /**
