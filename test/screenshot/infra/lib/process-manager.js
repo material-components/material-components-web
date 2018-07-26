@@ -18,6 +18,7 @@
 
 const childProcess = require('child_process');
 const ps = require('ps-node');
+const {ExitCode} = require('../lib/constants');
 
 class ProcessManager {
   /**
@@ -46,9 +47,10 @@ class ProcessManager {
    * @param {string} cmd
    * @param {!Array<string>} args
    * @param {!ChildProcessSpawnOptions=} opts
-   * @return {!ChildProcessSpawnResult}
+   * @param {boolean=} isWatching
+   * @return {!SpawnSyncReturns}
    */
-  spawnChildProcessSync(cmd, args, opts = {}) {
+  spawnChildProcessSync(cmd, args, opts = {}, isWatching = false) {
     /** @type {!ChildProcessSpawnOptions} */
     const defaultOpts = {
       stdio: 'inherit',
@@ -61,7 +63,16 @@ class ProcessManager {
 
     console.log(`${cmd} ${args.join(' ')}`);
 
-    return childProcess.spawnSync(cmd, args, mergedOpts);
+    const result = childProcess.spawnSync(cmd, args, mergedOpts);
+    if (result.status !== ExitCode.OK) {
+      const message = `${cmd} process exited with code ${result.status}`;
+      if (isWatching) {
+        console.error(message);
+      } else {
+        throw new Error(message);
+      }
+    }
+    return result;
   }
 
   /**
