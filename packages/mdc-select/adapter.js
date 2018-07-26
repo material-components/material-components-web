@@ -34,10 +34,9 @@
  * @record
  */
 
-
 class MDCSelectAdapter {
   /**
-   * Adds class to root element
+   * Adds class to root element.
    * @param {string} className
    */
   addClass(className) {}

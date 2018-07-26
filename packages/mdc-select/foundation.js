@@ -15,14 +15,16 @@
  */
 
 import {MDCFoundation} from '@material/base/index';
+/* eslint-disable no-unused-vars */
 import MDCSelectAdapter from './adapter';
+/* eslint-enable no-unused-vars */
 import {cssClasses, strings, numbers} from './constants';
 
 /**
  * @extends {MDCFoundation<!MDCSelectAdapter>}
  * @final
  */
-export default class MDCSelectFoundation extends MDCFoundation {
+class MDCSelectFoundation extends MDCFoundation {
   /** @return enum {string} */
   static get cssClasses() {
     return cssClasses;
@@ -66,11 +68,6 @@ export default class MDCSelectFoundation extends MDCFoundation {
    */
   constructor(adapter) {
     super(Object.assign(MDCSelectFoundation.defaultAdapter, adapter));
-
-    /** @private {function(): undefined} */
-    this.focusHandler_ = (evt) => this.handleFocus_(evt);
-    /** @private {function(): undefined} */
-    this.blurHandler_ = (evt) => this.handleBlur_(evt);
   }
 
   /**
@@ -131,3 +128,5 @@ export default class MDCSelectFoundation extends MDCFoundation {
     }
   }
 }
+
+export default MDCSelectFoundation;

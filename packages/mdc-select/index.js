@@ -24,9 +24,10 @@ import MDCSelectFoundation from './foundation';
 import MDCSelectAdapter from './adapter';
 import {cssClasses, strings} from './constants';
 
-export {MDCSelectFoundation};
-
-export class MDCSelect extends MDCComponent {
+/**
+ * @extends MDCComponent<!MDCSelectFoundation>
+ */
+class MDCSelect extends MDCComponent {
   /**
    * @param {...?} args
    */
@@ -260,3 +261,5 @@ export class MDCSelect extends MDCComponent {
     };
   }
 }
+
+export {MDCSelect, MDCSelectFoundation};
