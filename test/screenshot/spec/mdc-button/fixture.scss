@@ -1,0 +1,60 @@
+//
+// Copyright 2018 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+@import "../../../../packages/mdc-button/mixins";
+@import "../../../../packages/mdc-theme/color-palette";
+
+$custom-button-color: $material-color-red-300;
+$custom-button-custom-corner-radius: 8px;
+$custom-button-custom-outline-width: 4px;
+$custom-button-custom-horizontal-padding: 24px;
+
+.test-cell--button {
+  width: 171px;
+  height: 71px;
+}
+
+.custom-button--ink-color {
+  @include mdc-button-ink-color($custom-button-color);
+}
+
+.custom-button--container-fill-color {
+  @include mdc-button-container-fill-color($custom-button-color);
+}
+
+.custom-button--filled-accessible {
+  @include mdc-button-filled-accessible($custom-button-color);
+}
+
+.custom-button--outline-color {
+  @include mdc-button-outline-color($custom-button-color);
+}
+
+.custom-button--outline-width {
+  @include mdc-button-outline-width($custom-button-custom-outline-width);
+}
+
+.custom-button--corner-radius {
+  @include mdc-button-corner-radius($custom-button-custom-corner-radius);
+}
+
+.custom-button--icon-color {
+  @include mdc-button-icon-color($custom-button-color);
+}
+
+.custom-button--horizontal-padding {
+  @include mdc-button-horizontal-padding($custom-button-custom-horizontal-padding);
+}

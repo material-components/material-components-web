@@ -38,13 +38,7 @@ export default class MDCSelectFoundation extends MDCFoundation {
       floatLabel: (/* value: boolean */) => {},
       activateBottomLine: () => {},
       deactivateBottomLine: () => {},
-      registerInteractionHandler: (/* type: string, handler: EventListener */) => {},
-      deregisterInteractionHandler: (/* type: string, handler: EventListener */) => {},
-      getSelectedIndex: () => /* number */ -1,
-      setSelectedIndex: (/* index: number */) => {},
-      setDisabled: (/* disabled: boolean */) => {},
-      getValue: () => /* string */ '',
-      setValue: (/* value: string */) => {},
+      getValue: () => {},
       isRtl: () => false,
       hasLabel: () => {},
       getLabelWidth: () => {},
@@ -59,34 +53,10 @@ export default class MDCSelectFoundation extends MDCFoundation {
 
     this.focusHandler_ = (evt) => this.handleFocus_(evt);
     this.blurHandler_ = (evt) => this.handleBlur_(evt);
-    this.selectionHandler_ = (evt) => this.handleSelect_(evt);
   }
 
-  init() {
-    this.adapter_.registerInteractionHandler('focus', this.focusHandler_);
-    this.adapter_.registerInteractionHandler('blur', this.blurHandler_);
-    this.adapter_.registerInteractionHandler('change', this.selectionHandler_);
-  }
-
-  destroy() {
-    this.adapter_.deregisterInteractionHandler('focus', this.focusHandler_);
-    this.adapter_.deregisterInteractionHandler('blur', this.blurHandler_);
-    this.adapter_.deregisterInteractionHandler('change', this.selectionHandler_);
-  }
-
-  setSelectedIndex(index) {
-    this.adapter_.setSelectedIndex(index);
-    this.floatLabelWithValue_();
-  }
-
-  setValue(value) {
-    this.adapter_.setValue(value);
-    this.setSelectedIndex(this.adapter_.getSelectedIndex());
-  }
-
-  setDisabled(disabled) {
+  updateDisabledStyle(disabled) {
     const {DISABLED} = MDCSelectFoundation.cssClasses;
-    this.adapter_.setDisabled(disabled);
     if (disabled) {
       this.adapter_.addClass(DISABLED);
     } else {
@@ -94,25 +64,21 @@ export default class MDCSelectFoundation extends MDCFoundation {
     }
   }
 
-  floatLabelWithValue_() {
+  handleChange() {
     const optionHasValue = this.adapter_.getValue().length > 0;
     this.adapter_.floatLabel(optionHasValue);
     this.notchOutline(optionHasValue);
   }
 
-  handleFocus_() {
+  handleFocus() {
     this.adapter_.floatLabel(true);
     this.notchOutline(true);
     this.adapter_.activateBottomLine();
   }
 
-  handleBlur_() {
-    this.floatLabelWithValue_();
+  handleBlur() {
+    this.handleChange();
     this.adapter_.deactivateBottomLine();
-  }
-
-  handleSelect_() {
-    this.setSelectedIndex(this.adapter_.getSelectedIndex());
   }
 
   /**
