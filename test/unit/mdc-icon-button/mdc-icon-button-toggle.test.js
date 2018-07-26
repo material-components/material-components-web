@@ -25,19 +25,35 @@ import {MDCIconButtonToggle, MDCIconButtonToggleFoundation} from '../../../packa
 import {MDCRipple} from '../../../packages/mdc-ripple';
 import {cssClasses} from '../../../packages/mdc-ripple/constants';
 
-function setupTest({tabIndex = undefined, useInnerIconElement = false} = {}) {
-  const root = document.createElement('button');
+function getFixture() {
+  return bel`
+    <button></button>
+  `;
+}
+
+function getIconFixture() {
+  return bel`
+    <i id="icon"></i>
+  `;
+}
+
+function setupTest({tabIndex = undefined, useInnerIconElement = false, createMockFoundation = false} = {}) {
+  const root = getFixture();
   if (useInnerIconElement) {
-    const icon = document.createElement('i');
-    icon.id = 'icon';
+    const icon = getIconFixture();
     root.dataset.iconInnerSelector = `#${icon.id}`;
     root.appendChild(icon);
   }
   if (tabIndex !== undefined) {
     root.tabIndex = tabIndex;
   }
-  const component = new MDCIconButtonToggle(root);
-  return {root, component};
+  let mockFoundation;
+  if (createMockFoundation) {
+    const MockFoundationCtor = td.constructor(MDCIconButtonToggleFoundation);
+    mockFoundation = new MockFoundationCtor();
+  }
+  const component = new MDCIconButtonToggle(root, mockFoundation);
+  return {root, component, mockFoundation};
 }
 
 suite('MDCIconButtonToggle');
@@ -124,28 +140,6 @@ test('#adapter.removeClass adds a class to the inner icon element when used', ()
   assert.isNotOk(root.querySelector('#icon').classList.contains('foo'));
 });
 
-test('#adapter.registerInteractionHandler adds an event listener for (type, handler)', () => {
-  const {root, component} = setupTest();
-  document.body.appendChild(root);
-  const handler = td.func('clickHandler');
-  component.getDefaultFoundation().adapter_.registerInteractionHandler('click', handler);
-  domEvents.emit(root, 'click');
-  td.verify(handler(td.matchers.anything()));
-  document.body.removeChild(root);
-});
-
-test('#adapter.deregisterInteractionHandler removes an event listener for (type, hander)', () => {
-  const {root, component} = setupTest();
-  document.body.appendChild(root);
-  const handler = td.func('clickHandler');
-
-  root.addEventListener('click', handler);
-  component.getDefaultFoundation().adapter_.deregisterInteractionHandler('click', handler);
-  domEvents.emit(root, 'click');
-  td.verify(handler(td.matchers.anything()), {times: 0});
-  document.body.removeChild(root);
-});
-
 test('#adapter.setText sets the text content of the root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.setText('foo');
@@ -188,4 +182,17 @@ test('assert keyup does not trigger ripple', () => {
   const {root} = setupTest();
   domEvents.emit(root, 'keyup');
   assert.isNotOk(root.classList.contains(cssClasses.FG_ACTIVATION));
+});
+
+test('click handler is added to root element', () => {
+  const {root, mockFoundation} = setupTest({createMockFoundation: true});
+  domEvents.emit(root, 'click');
+  td.verify(mockFoundation.handleClick(td.matchers.anything()), {times: 1});
+});
+
+test('click handler is removed from the root element on destroy', () => {
+  const {root, component, mockFoundation} = setupTest({createMockFoundation: true});
+  component.destroy();
+  domEvents.emit(root, 'click');
+  td.verify(mockFoundation.handleClick(td.matchers.anything()), {times: 0});
 });
