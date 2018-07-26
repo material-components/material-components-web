@@ -209,6 +209,13 @@ test('#scrollTo() unsets the transform property in a rAF', () => {
   td.verify(mockAdapter.setScrollContentStyleProperty('transform', 'none'), {times: 1});
 });
 
+test('#incrementScroll() exits early if increment is 0', () => {
+  const {foundation, mockAdapter} = setupScrollToTest({scrollLeft: 700});
+  foundation.incrementScroll(0);
+  td.verify(mockAdapter.setScrollContentStyleProperty(td.matchers.isA(String), td.matchers.isA(String)), {times: 0});
+  td.verify(mockAdapter.setScrollAreaScrollLeft(td.matchers.isA(Number)), {times: 0});
+});
+
 test('#incrementScroll() exits early if increment puts the scrollLeft over the max value', () => {
   const {foundation, mockAdapter} = setupScrollToTest({scrollLeft: 700});
   foundation.incrementScroll(10);

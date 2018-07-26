@@ -114,6 +114,14 @@ class MDCTabScroller extends MDCComponent {
   }
 
   /**
+   * Returns the width of the scroll content
+   * @return {number}
+   */
+  getScrollContentWidth() {
+    return this.content_.offsetWidth;
+  }
+
+  /**
    * Increments the scroll value by the given amount
    * @param {number} scrollXIncrement The pixel value by which to increment the scroll value
    */

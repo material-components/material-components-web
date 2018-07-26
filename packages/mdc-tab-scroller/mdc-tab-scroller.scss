@@ -59,6 +59,18 @@
   will-change: transform;
 }
 
+.mdc-tab-scroller--align-start .mdc-tab-scroller__scroll-content {
+  justify-content: flex-start;
+}
+
+.mdc-tab-scroller--align-end .mdc-tab-scroller__scroll-content {
+  justify-content: flex-end;
+}
+
+.mdc-tab-scroller--align-center .mdc-tab-scroller__scroll-content {
+  justify-content: center;
+}
+
 .mdc-tab-scroller--animating .mdc-tab-scroller__scroll-area {
   -webkit-overflow-scrolling: auto;
 }

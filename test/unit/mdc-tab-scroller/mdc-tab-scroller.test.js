@@ -18,6 +18,7 @@
 import bel from 'bel';
 import {assert} from 'chai';
 import td from 'testdouble';
+import domEvents from 'dom-events';
 
 import {
   MDCTabScroller,
@@ -205,6 +206,12 @@ test('#getScrollPosition() calls getScrollPosition', () => {
   td.verify(mockFoundation.getScrollPosition(), {times: 1});
 });
 
+test('#getScrollContentWidth() returns the offsetWidth of the content element', () => {
+  const {component, root} = setupMockFoundationTest();
+  const contentElement = root.querySelector(MDCTabScrollerFoundation.strings.CONTENT_SELECTOR);
+  assert.strictEqual(component.getScrollContentWidth(), contentElement.offsetWidth);
+});
+
 function setupTestRTL() {
   const {root, content, component} = setupTest();
   root.style.setProperty('width', '100px');
@@ -222,4 +229,18 @@ test('#getRTLScroller() returns an instance of MDCTabScrollerRTL', () => {
   document.body.appendChild(root);
   assert.instanceOf(component.getDefaultFoundation().getRTLScroller(), MDCTabScrollerRTL);
   document.body.removeChild(root);
+});
+
+test('on interaction in the area element, call #handleInteraction()', () => {
+  const {root, mockFoundation} = setupMockFoundationTest();
+  const area = root.querySelector(MDCTabScrollerFoundation.strings.AREA_SELECTOR);
+  domEvents.emit(area, 'touchstart', {bubbles: true});
+  td.verify(mockFoundation.handleInteraction());
+});
+
+test('on transitionend of the content element, call #handleTransitionEnd()', () => {
+  const {root, mockFoundation} = setupMockFoundationTest();
+  const content = root.querySelector(MDCTabScrollerFoundation.strings.CONTENT_SELECTOR);
+  domEvents.emit(content, 'transitionend', {bubbles: true});
+  td.verify(mockFoundation.handleTransitionEnd(td.matchers.anything()));
 });
