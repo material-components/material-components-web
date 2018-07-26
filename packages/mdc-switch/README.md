@@ -58,7 +58,7 @@ npm install @material/switch
 
 ### JavaScript Instantiation
 
-The switch requires JavaScript to function, so it is necessary to instantiate MDCSwitch with the HTML when using it.
+The Switch requires JavaScript to function, so it is necessary to instantiate MDCSwitch with the HTML.
 
 ```js
 import {MDCSwitch} from '@material/switch';
@@ -98,12 +98,11 @@ CSS Class | Description
 `mdc-switch__thumb` | Mandatory, for the thumb element.
 `mdc-switch__native-control` | Mandatory, for the hidden input checkbox.
 
-MDC Switch uses [MDC Theme](../mdc-theme)'s `secondary` color by default for the checked (toggled on) state. Use the following mixins to customize it.
-
 ### Sass Mixins
 
-The following mixins apply only to _enabled_ switches.
-It is not currently possible to customize the color of a _disabled_ switch. Disabled switches use the same colors as enabled switches, but with a different opacity value.
+MDC Switch uses [MDC Theme](../mdc-theme)'s `secondary` color by default for the checked (toggled on) state.
+Use the following mixins to customize _enabled_ switches. It is not currently possible to customize the color of a
+ _disabled_ switch. Disabled switches use the same colors as enabled switches, but with a different opacity value.
 
 Mixin | Description
 --- | ---
