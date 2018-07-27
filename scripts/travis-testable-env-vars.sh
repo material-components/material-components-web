@@ -37,7 +37,7 @@ function check_for_testable_files() {
   local CRITICAL_FILE_COUNT=$(echo "$CRITICAL_FILE_PATHS" | wc -l | tr -d ' ')
 
   if [[ -n "$CRITICAL_FILE_PATHS" ]] && [[ "$CRITICAL_FILE_COUNT" -gt 0 ]]; then
-    return 0
+    return 0 # Exit code `0` means "true" - i.e., there is at least one testable file in the PR
   fi
 
   for CUR_PATH_PATTERN in "$@"; do
@@ -45,11 +45,11 @@ function check_for_testable_files() {
     local MATCHING_FILE_COUNT=$(echo "$MATCHING_FILE_PATHS" | wc -l | tr -d ' ')
 
     if [[ -n "$MATCHING_FILE_PATHS" ]] && [[ "$MATCHING_FILE_COUNT" -gt 0 ]]; then
-      return 0
+      return 0 # Exit code `0` means "true" - i.e., there is at least one testable file in the PR
     fi
   done
 
-  return 1
+  return 1 # Exit code `1` means "false" - i.e., there are no testable files in the PR
 }
 
 function set_skip_tests_if_files_not_changed() {
@@ -69,6 +69,10 @@ function log_untestable_files() {
     log_warning
     log_warning "Skipping $TEST_SUITE tests."
   fi
+}
+
+function has_testable_files() {
+  return "$SKIP_TESTS"
 }
 
 print_travis_env_vars

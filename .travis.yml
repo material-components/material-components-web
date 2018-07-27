@@ -13,8 +13,7 @@ before_install:
   - source scripts/travis-testable-env-vars.sh
 
 install:
-  - 'if [[ "$SKIP_TESTS" != 1 ]]; then npm install; fi'
-  #- npm ls # Noisy output, but useful for debugging npm package dependency version issues
+  - if has_testable_files; then npm install; else  npm ls # Noisy output, but useful for debugging npm package dependency version issues; fi
 
 matrix:
   include:
@@ -23,8 +22,7 @@ matrix:
     env:
       - TEST_SUITE=lint
     script:
-      - 'if [[ "$SKIP_TESTS" != 1 ]]; then npm run lint; fi'
-      - log_untestable_files
+      - if has_testable_files; then npm run lint; else log_untestable_files; fi
 
   - node_js: 8
     env:
@@ -32,8 +30,7 @@ matrix:
     addons:
       sauce_connect: true
     script:
-      - 'if [[ "$SKIP_TESTS" != 1 ]]; then npm run test:unit && npm run posttest; fi'
-      - log_untestable_files
+      - if has_testable_files; then npm run test:unit && npm run posttest; else log_untestable_files; fi
     after_success:
       - codecov
 
@@ -42,15 +39,13 @@ matrix:
       - TEST_SUITE=closure
       - CLOSURE=1
     script:
-      - 'if [[ "$SKIP_TESTS" != 1 ]]; then npm run test:closure; fi'
-      - log_untestable_files
+      - if has_testable_files; then npm run test:closure; else log_untestable_files; fi
 
   - node_js: 8
     env:
       - TEST_SUITE=site-generator
     script:
-      - 'if [[ "$SKIP_TESTS" != 1 ]]; then npm run test:site; fi'
-      - log_untestable_files
+      - if has_testable_files; then npm run test:site; else log_untestable_files; fi
 
   - node_js: 8
     env:
