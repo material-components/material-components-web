@@ -107,6 +107,10 @@ class MDCChipSet extends MDCComponent {
         this.chips.splice(index, 1);
         chip.destroy();
       },
+      setSelected: (chipId, selected) => {
+        const chip = this.chips.find((chip) => chip.id === chipId);
+        chip.setSelected(selected);
+      },
     })));
   }
 

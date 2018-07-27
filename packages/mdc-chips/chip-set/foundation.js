@@ -56,41 +56,41 @@ class MDCChipSetFoundation extends MDCFoundation {
 
     /**
      * The selected chips in the set. Only used for choice chip set or filter chip set.
-     * @private {!Array<!MDCChipFoundation>}
+     * @private {!Array<number>}
      */
-    this.selectedChips_ = [];
+    this.selectedChipIds_ = [];
   }
 
   /**
    * Selects the given chip. Deselects all other chips if the chip set is of the choice variant.
    * @param {!MDCChipFoundation} chipFoundation
    */
-  select(chipFoundation) {
+  select(chipId) {
     if (this.adapter_.hasClass(cssClasses.CHOICE)) {
       this.deselectAll_();
     }
-    chipFoundation.setSelected(true);
-    this.selectedChips_.push(chipFoundation);
+    this.adapter_setSelected(chipId, true);
+    this.selectedChipIds_.push(chipId);
   }
 
   /**
    * Deselects the given chip.
    * @param {!MDCChipFoundation} chipFoundation
    */
-  deselect(chipFoundation) {
-    const index = this.selectedChips_.indexOf(chipFoundation);
+  deselect(chipId) {
+    const index = this.selectedChipIds_.indexOf(chipId);
     if (index >= 0) {
-      this.selectedChips_.splice(index, 1);
+      this.selectedChipIds_.splice(index, 1);
     }
-    chipFoundation.setSelected(false);
+    this.adapter_setSelected(chipId, false);
   }
 
   /** Deselects all selected chips. */
   deselectAll_() {
-    this.selectedChips_.forEach((chipFoundation) => {
-      chipFoundation.setSelected(false);
+    this.selectedChipIds_.forEach((chipId) => {
+      this.adapter_setSelected(chipId, false);
     });
-    this.selectedChips_.length = 0;
+    this.selectedChipIds_.length = 0;
   }
 
   /**
@@ -99,12 +99,12 @@ class MDCChipSetFoundation extends MDCFoundation {
    * @private
    */
   handleChipInteraction(evt) {
-    const chipFoundation = evt.detail.chip.foundation;
+    const {chipId} = evt.detail;
     if (this.adapter_.hasClass(cssClasses.CHOICE) || this.adapter_.hasClass(cssClasses.FILTER)) {
-      if (chipFoundation.isSelected()) {
-        this.deselect(chipFoundation);
+      if (this.selectedChipIds_.includes(chipId)) {
+        this.deselect(chipId);
       } else {
-        this.select(chipFoundation);
+        this.select(chipId);
       }
     }
   }

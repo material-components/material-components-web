@@ -35,6 +35,8 @@ class MDCChip extends MDCComponent {
   constructor(...args) {
     super(...args);
 
+    /** @type {number} */
+    this.id = Math.random();
     /** @private {?Element} */
     this.leadingIcon_;
     /** @private {?Element} */
@@ -121,6 +123,10 @@ class MDCChip extends MDCComponent {
    */
   isSelected() {
     return this.foundation_.isSelected();
+  }
+
+  setSelected(selected) {
+    return this.foundation_.setSelected(selected);
   }
 
   /**
