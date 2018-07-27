@@ -144,6 +144,7 @@ testFoundation('#open removes the animation class at the end of the animation',
     clock.tick(numbers.TRANSITION_OPEN_DURATION);
     mockRaf.flush();
     td.verify(mockAdapter.removeClass(cssClasses.ANIMATING_OPEN));
+    clock.uninstall();
   });
 
 testFoundation('#open focuses the menu after open.', ({foundation, mockAdapter, mockRaf}) => {
@@ -508,6 +509,7 @@ testFoundation('#close removes the animation class at the end of the animation',
     clock.tick(numbers.TRANSITION_OPEN_DURATION);
     mockRaf.flush();
     td.verify(mockAdapter.removeClass(cssClasses.ANIMATING_CLOSED));
+    clock.uninstall();
   });
 
 test('#isOpen returns true when the menu is open', () => {

@@ -225,6 +225,7 @@ test('top app bar : resize events throttle multiple calls of throttledResizeHand
   resizeHandler();
   clock.tick(numbers.DEBOUNCE_THROTTLE_RESIZE_TIME_MS);
   assert.isTrue(!foundation.resizeThrottleId_);
+  clock.uninstall();
 });
 
 test('top app bar : resize events debounce changing isCurrentlyBeingResized_ to false ', () => {
@@ -243,4 +244,5 @@ test('top app bar : resize events debounce changing isCurrentlyBeingResized_ to 
   assert.isTrue(foundation.isCurrentlyBeingResized_);
   clock.tick(150);
   assert.isFalse(foundation.isCurrentlyBeingResized_);
+  clock.uninstall();
 });
