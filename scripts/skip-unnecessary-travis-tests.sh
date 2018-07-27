@@ -8,9 +8,9 @@ else
   CHANGED_FILE_COUNT=0
 fi
 
-function log_success() {
+function log_warning() {
   if [[ $# -gt 0 ]]; then
-    echo -e "\033[32m\033[1m$@\033[0m"
+    echo -e "\033[35m\033[1m$@\033[0m"
   else
     echo
   fi
@@ -64,9 +64,9 @@ function set_build_and_exit_if_files_not_changed() {
 
 function log_untestable_files() {
   if [[ "$SKIP_TESTS" != 0 ]]; then
-    log_success "No testable source files were found between commits $TRAVIS_COMMIT_RANGE."
-    log_success
-    log_success "Skipping $TEST_SUITE tests."
+    log_warning "No testable source files were found between commits $TRAVIS_COMMIT_RANGE."
+    log_warning
+    log_warning "Skipping $TEST_SUITE tests."
   fi
 }
 
