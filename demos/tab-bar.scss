@@ -21,6 +21,7 @@
 @import "../packages/mdc-tab-indicator/mixins";
 @import "../packages/mdc-tab-scroller/mdc-tab-scroller";
 @import "../packages/mdc-tab-bar/mdc-tab-bar";
+@import "../packages/mdc-tab-bar/mixins";
 @import "../packages/mdc-elevation/mixins";
 @import "../packages/mdc-ripple/mixins";
 @import "../packages/mdc-theme/color-palette";
@@ -30,9 +31,30 @@
   align-items: center;
 }
 
-.demo-tab-bar {
-  .mdc-tab {
+.hero-demo-tab-bar {
+  @include mdc-tab-bar-width(420px);
+}
 
+.custom-demo-tab-bar {
+  .mdc-tab {
+    @include mdc-typography(subtitle1);
+    @include mdc-tab-fixed-width(120px);
+    @include mdc-tab-text-label-color($material-color-blue-600);
+    @include mdc-tab-icon-color($material-color-blue-600);
+  }
+
+  .mdc-tab__ripple {
+    @include mdc-states($material-color-yellow-700);
+  }
+
+  .mdc-tab--active {
+    @include mdc-tab-text-label-color($material-color-blue-900);
+    @include mdc-tab-icon-color($material-color-blue-900);
+  }
+
+  .mdc-tab-indicator {
+    @include mdc-tab-indicator-underline-height(5px);
+    @include mdc-tab-indicator-underline-color($material-color-yellow-700);
   }
 }
 
@@ -43,24 +65,4 @@
 .rtl-container {
   margin: 24px;
   padding: 24px;
-}
-
-.custom-tab {
-  @include mdc-tab-text-label-color($material-color-blue-300);
-  @include mdc-tab-icon-color($material-color-orange-300);
-
-  .custom-tab-indicator {
-    @include mdc-tab-indicator-underline-color($material-color-pink-a700);
-    @include mdc-tab-indicator-underline-height(5px);
-    @include mdc-tab-indicator-underline-top-corner-radius(5px);
-  }
-
-  .mdc-tab__ripple {
-    @include mdc-states($material-color-pink-100);
-  }
-
-  &.mdc-tab--active {
-    @include mdc-tab-text-label-color($material-color-blue-900);
-    @include mdc-tab-icon-color($material-color-orange-900);
-  }
 }

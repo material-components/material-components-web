@@ -87,6 +87,14 @@ CSS Class | Description
 --- | ---
 `mdc-tab-bar` | Mandatory.
 
+### Sass Mixins
+
+To customize the width of the tab bar, use the following mixin.
+
+Mixin | Description
+--- | ---
+`mdc-tab-bar-width($width)` | Customizes the width of the tab bar.
+
 ## `MDCTabBar` Properties and Methods
 
 Method Signature | Description
