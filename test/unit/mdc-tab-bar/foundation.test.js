@@ -259,6 +259,15 @@ test('#activateTab() does nothing if the index underflows the tab list', () => {
   td.verify(mockAdapter.activateTabAtIndex(td.matchers.isA(Number)), {times: 0});
 });
 
+test(`#activateTab() does not emit the ${MDCTabBarFoundation.strings.TAB_ACTIVATED_EVENT} event if the index` +
+  ' is the currently active index', () => {
+  const {foundation, mockAdapter} = setupActivateTabTest();
+  td.when(mockAdapter.getTabListLength()).thenReturn(13);
+  td.when(mockAdapter.getActiveTabIndex()).thenReturn(6);
+  foundation.activateTab(6);
+  td.verify(mockAdapter.notifyTabActivated(td.matchers.anything()), {times: 0});
+});
+
 test('#activateTab() deactivates the previously active tab', () => {
   const {foundation, mockAdapter} = setupActivateTabTest();
   td.when(mockAdapter.getTabListLength()).thenReturn(13);

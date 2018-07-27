@@ -108,7 +108,11 @@ class MDCTabBarFoundation extends MDCFoundation {
     this.adapter_.deactivateTabAtIndex(previousActiveIndex);
     this.adapter_.activateTabAtIndex(index, this.adapter_.getTabIndicatorClientRectAtIndex(previousActiveIndex));
     this.scrollIntoView(index);
-    this.adapter_.notifyTabActivated(index);
+
+    // Only notify the tab activation if the index is different than the previously active index
+    if (index !== previousActiveIndex) {
+      this.adapter_.notifyTabActivated(index);
+    }
   }
 
   /**
