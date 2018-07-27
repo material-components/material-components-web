@@ -10,7 +10,7 @@ branches:
 
 before_install:
   # Source the scripts to export their env vars. See https://superuser.com/a/176788/62792
-  - source scripts/travis-testable-env-vars.sh
+  - source scripts/travis-env-vars.sh
 
 install:
   - if has_testable_files; then npm install; else  npm ls # Noisy output, but useful for debugging npm package dependency version issues; fi
@@ -54,7 +54,7 @@ matrix:
       depth: 200
     before_install: # Override global settings
       # Source the scripts to export their env vars. See https://superuser.com/a/176788/62792
-      - source scripts/travis-testable-env-vars.sh
+      - source scripts/travis-env-vars.sh
       - source test/screenshot/infra/commands/travis.sh
     install: # Override global settings
       - npm install
