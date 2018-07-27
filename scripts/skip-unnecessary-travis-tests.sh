@@ -55,17 +55,19 @@ function check_for_testable_files() {
 function set_skip_tests_if_files_not_changed() {
   check_for_testable_files "$@"
   export SKIP_TESTS=$?
-
-  if [[ "$SKIP_TESTS" != 0 ]]; then
-    log_success "No testable source files were found between commits $TRAVIS_COMMIT_RANGE."
-    log_success
-    log_success "Skipping $TEST_SUITE tests."
-  fi
 }
 
 function set_build_and_exit_if_files_not_changed() {
   check_for_testable_files "$@"
   export BUILD_AND_EXIT=$?
+}
+
+function log_untestable_files() {
+  if [[ "$SKIP_TESTS" != 0 ]]; then
+    log_success "No testable source files were found between commits $TRAVIS_COMMIT_RANGE."
+    log_success
+    log_success "Skipping $TEST_SUITE tests."
+  fi
 }
 
 print_travis_env_vars
