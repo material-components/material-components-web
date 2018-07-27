@@ -36,6 +36,7 @@ import * as select from '@material/select/index';
 import * as selectionControl from '@material/selection-control/index';
 import * as slider from '@material/slider/index';
 import * as snackbar from '@material/snackbar/index';
+import * as switchControl from '@material/switch/index';
 import * as tabs from '@material/tabs/index';
 import * as textField from '@material/textfield/index';
 import * as toolbar from '@material/toolbar/index';
@@ -66,6 +67,7 @@ autoInit.register('MDCTextField', textField.MDCTextField);
 autoInit.register('MDCMenu', menu.MDCMenu);
 autoInit.register('MDCSelect', select.MDCSelect);
 autoInit.register('MDCSlider', slider.MDCSlider);
+autoInit.register('MDCSwitch', switchControl.MDCSwitch);
 autoInit.register('MDCToolbar', toolbar.MDCToolbar);
 autoInit.register('MDCTopAppBar', topAppBar.MDCTopAppBar);
 
@@ -92,6 +94,7 @@ export {
   select,
   selectionControl,
   slider,
+  switchControl,
   snackbar,
   tabs,
   textField,

@@ -147,6 +147,7 @@ class JsBundleFactory {
         selectionControl: getAbsolutePath('/packages/mdc-selection-control/index.js'),
         slider: getAbsolutePath('/packages/mdc-slider/index.js'),
         snackbar: getAbsolutePath('/packages/mdc-snackbar/index.js'),
+        switch: getAbsolutePath('/packages/mdc-switch/index.js'),
         tabs: getAbsolutePath('/packages/mdc-tabs/index.js'),
         textfield: getAbsolutePath('/packages/mdc-textfield/index.js'),
         toolbar: getAbsolutePath('/packages/mdc-toolbar/index.js'),
