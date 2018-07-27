@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+EXIT_CODE=0
+
 CHANGED_FILE_PATHS=$(git diff --name-only "$TRAVIS_COMMIT_RANGE")
 
 if [[ -n "$CHANGED_FILE_PATHS" ]]; then
@@ -37,6 +39,7 @@ function check_for_testable_files() {
   local CRITICAL_FILE_COUNT=$(echo "$CRITICAL_FILE_PATHS" | wc -l | tr -d ' ')
 
   if [[ -n "$CRITICAL_FILE_PATHS" ]] && [[ "$CRITICAL_FILE_COUNT" -gt 0 ]]; then
+    # Found a testable file
     return 0
   fi
 
@@ -45,21 +48,26 @@ function check_for_testable_files() {
     local MATCHING_FILE_COUNT=$(echo "$MATCHING_FILE_PATHS" | wc -l | tr -d ' ')
 
     if [[ -n "$MATCHING_FILE_PATHS" ]] && [[ "$MATCHING_FILE_COUNT" -gt 0 ]]; then
+      # Found a testable file
       return 0
     fi
   done
 
+  # No testable files found
   return 1
 }
 
-function exit_if_files_not_changed() {
-  check_for_testable_files "$@"
-
-  if [[ $? != 0 ]]; then
+function maybe_log_skipping_tests() {
+  if [[ "$EXIT_CODE" != 0 ]]; then
     log_success "No testable source files were found between commits $TRAVIS_COMMIT_RANGE."
     log_success
     log_success "Skipping $TEST_SUITE tests."
-    exit
+  fi
+}
+
+function maybe_set_build_and_exit() {
+  if [[ "$EXIT_CODE" != 0 ]]; then
+    export BUILD_AND_EXIT=true
   fi
 }
 
@@ -68,30 +76,37 @@ print_all_changed_files
 
 if [[ "$TEST_SUITE" == 'unit' ]]; then
   # Only run unit tests if JS files changed
-  exit_if_files_not_changed '^packages/.+\.js$' '^test/unit/.+\.js$'
+  check_for_testable_files '^packages/.+\.js$' '^test/unit/.+\.js$'
+  EXIT_CODE=$?
+  maybe_log_skipping_tests
 fi
 
 if [[ "$TEST_SUITE" == 'lint' ]]; then
   # Only run linter if package JS/Sass files changed
-  exit_if_files_not_changed '\.(js|css|scss)$'
+  check_for_testable_files '\.(js|css|scss)$'
+  EXIT_CODE=$?
+  maybe_log_skipping_tests
 fi
 
 if [[ "$TEST_SUITE" == 'closure' ]]; then
   # Only run closure test if package JS files changed
-  exit_if_files_not_changed '^packages/.+\.js$'
+  check_for_testable_files '^packages/.+\.js$'
+  EXIT_CODE=$?
+  maybe_log_skipping_tests
 fi
 
 if [[ "$TEST_SUITE" == 'site-generator' ]]; then
   # Only run site-generator test if docs, Markdown, or image files changed
-  exit_if_files_not_changed '^docs/' '\.md$' '\.(png|jpg|jpeg|gif|svg)$'
+  check_for_testable_files '^docs/' '\.md$' '\.(png|jpg|jpeg|gif|svg)$'
+  EXIT_CODE=$?
+  maybe_log_skipping_tests
 fi
 
 if [[ "$TEST_SUITE" == 'screenshot' ]]; then
   # Only run screenshot tests if package JS/Sass files, non-Markdown screenshot test files, or image files changed.
   check_for_testable_files '^packages/.+\.(js|css|sass)$' '^test/screenshot/.+[^m][^d]$' '\.(png|jpg|jpeg|gif|svg)$'
-
-  if [[ $? != 0 ]]; then
-    # Don't exit here. Set a flag to tell the screenshot JS to exit after building source files.
-    export BUILD_AND_EXIT=true
-  fi
+  EXIT_CODE=$?
+  maybe_set_build_and_exit
 fi
+
+return "$EXIT_CODE"
