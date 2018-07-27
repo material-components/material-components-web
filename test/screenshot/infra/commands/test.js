@@ -49,6 +49,11 @@ class TestCommand {
   async runAsync() {
     await this.build_();
 
+    this.logger_.log(`
+
+${sparkles} ${CliColor.bold.green('Aww yiss - MDC Web builds successfully!')} ${sparkles}
+`);
+
     if (this.isExternalPr_()) {
       this.logExternalPr_();
       return ExitCode.OK;
@@ -397,7 +402,6 @@ ${listItemMarkdown}
    */
   logExternalPr_() {
     this.logger_.warn(`
-
 ${CliColor.bold.red('Screenshot tests are not supported on external PRs for security reasons.')}
 
 See ${CliColor.underline('https://docs.travis-ci.com/user/pull-requests/#Pull-Requests-and-Security-Restrictions')}
@@ -415,9 +419,6 @@ ${CliColor.bold.red('Skipping screenshot tests.')}
     const sparkles = '✨✨✨';
 
     this.logger_.log(`
-
-${sparkles} ${CliColor.bold.green('Aww yiss - MDC Web builds successfully!')} ${sparkles}
-
 ${CliColor.bold.magenta(`No testable source files were found for commit range ${range}.`)}
 
 ${CliColor.bold.magenta('Skipping screenshot tests.')}
