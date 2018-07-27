@@ -70,7 +70,9 @@ class BuildCommand {
     this.logger_.foldEnd('screenshot.build');
 
     this.logger_.log('');
+    this.logger_.log('');
     this.logger_.log(colors.bold.green('✨✨✨ Aww yiss - MDC Web build succeeded! ✨✨✨'));
+    this.logger_.log('');
   }
 
   /**
