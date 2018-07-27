@@ -16,6 +16,7 @@
 
 @import "@material/theme/mixins";
 @import "@material/shape/mixins";
+@import "@material/shape/functions";
 
 @mixin mdc-notched-outline-idle-color($color) {
   .mdc-notched-outline__idle {
@@ -36,11 +37,11 @@
 }
 
 @mixin mdc-notched-outline-corner-radius($type, $radius) {
-  @include mdc-shape-pill-radius($type, $radius);
+  @include mdc-shape-radius(mdc-shape-resolve-pill-radius($type, $radius));
 }
 
 @mixin mdc-notched-outline-idle-corner-radius($type, $radius) {
   .mdc-notched-outline__idle {
-    @include mdc-shape-pill-radius($type, $radius);
+    @include mdc-shape-radius(mdc-shape-resolve-pill-radius($type, $radius));
   }
 }

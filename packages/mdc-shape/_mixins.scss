@@ -68,14 +68,6 @@
   }
 }
 
-@mixin mdc-shape-pill-radius($type, $radius, $rtl-reflexive: false) {
-  border-radius: mdc-shape-prop-value($radius, $type: $type);
-
-  @if ($rtl-reflexive) {
-    @include mdc-shape-flip-radius($radius);
-  }
-}
-
 @mixin mdc-shape-flip-radius($radius) {
   @if length($radius) == 4 {
     @include mdc-rtl {

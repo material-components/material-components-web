@@ -21,7 +21,7 @@
 @import "@material/theme/mixins";
 @import "@material/rtl/mixins";
 @import "@material/shape/mixins";
-@import "@material/shape/variables";
+@import "@material/shape/functions";
 @import "./variables";
 
 @mixin mdc-fab-accessible($container-color) {
@@ -199,9 +199,9 @@ $mdc-fab-icon-enter-duration_: 180ms;
 }
 
 @mixin mdc-fab-shape-radius($radius) {
-  @include mdc-shape-pill-radius(fab, $radius);
+  @include mdc-shape-radius(mdc-shape-resolve-pill-radius(fab, $radius));
 }
 
 @mixin mdc-extended-fab-shape-radius($radius) {
-  @include mdc-shape-pill-radius(extended-fab, $radius);
+  @include mdc-shape-radius(mdc-shape-resolve-pill-radius(extended-fab, $radius));
 }

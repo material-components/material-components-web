@@ -21,7 +21,7 @@
 @import "@material/theme/mixins";
 @import "@material/typography/mixins";
 @import "@material/shape/mixins";
-@import "@material/shape/variables";
+@import "@material/shape/functions";
 @import "./variables";
 
 @mixin mdc-button-filled-accessible($container-fill-color) {
@@ -65,10 +65,10 @@
 }
 
 @mixin mdc-button-shape-radius($radius) {
-  @include mdc-shape-pill-radius(button, $radius);
+  @include mdc-shape-radius(mdc-shape-resolve-pill-radius(button, $radius));
 
   &.mdc-button--dense {
-    @include mdc-shape-pill-radius(button-dense, $radius);
+    @include mdc-shape-radius(mdc-shape-resolve-pill-radius(button-dense, $radius));
   }
 }
 
