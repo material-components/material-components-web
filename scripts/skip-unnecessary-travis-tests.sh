@@ -64,6 +64,7 @@ function set_build_and_exit_if_files_not_changed() {
 
 function log_untestable_files() {
   if [[ "$SKIP_TESTS" != 0 ]]; then
+    log_warning
     log_warning "No testable source files were found between commits $TRAVIS_COMMIT_RANGE."
     log_warning
     log_warning "Skipping $TEST_SUITE tests."
