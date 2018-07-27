@@ -69,7 +69,7 @@ class MDCChipSetFoundation extends MDCFoundation {
     if (this.adapter_.hasClass(cssClasses.CHOICE)) {
       this.deselectAll_();
     }
-    this.adapter_setSelected(chipId, true);
+    this.adapter_.setSelected(chipId, true);
     this.selectedChipIds_.push(chipId);
   }
 
@@ -82,13 +82,13 @@ class MDCChipSetFoundation extends MDCFoundation {
     if (index >= 0) {
       this.selectedChipIds_.splice(index, 1);
     }
-    this.adapter_setSelected(chipId, false);
+    this.adapter_.setSelected(chipId, false);
   }
 
   /** Deselects all selected chips. */
   deselectAll_() {
     this.selectedChipIds_.forEach((chipId) => {
-      this.adapter_setSelected(chipId, false);
+      this.adapter_.setSelected(chipId, false);
     });
     this.selectedChipIds_.length = 0;
   }
