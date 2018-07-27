@@ -287,7 +287,9 @@ class TestCommand {
 
 
     return `
-### Screenshot test report ⚠️
+🤖 Beep boop!
+
+### Screenshot test report 🚦
 
 **${numChanged}** screenshot${plural} changed from \`${masterGitRev.branch}\` on commit ${snapshotGitRev.commit}:
 
