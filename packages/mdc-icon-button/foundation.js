@@ -36,8 +36,6 @@ class MDCIconButtonToggleFoundation extends MDCFoundation {
     return {
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
-      registerInteractionHandler: (/* type: string, handler: EventListener */) => {},
-      deregisterInteractionHandler: (/* type: string, handler: EventListener */) => {},
       setText: (/* text: string */) => {},
       getAttr: (/* name: string */) => /* string */ '',
       setAttr: (/* name: string, value: string */) => {},
@@ -61,18 +59,10 @@ class MDCIconButtonToggleFoundation extends MDCFoundation {
 
     /** @private {?IconButtonToggleState} */
     this.toggleOffData_ = null;
-
-    this.clickHandler_ = /** @private {!EventListener} */ (
-      () => this.toggleFromEvt_());
   }
 
   init() {
     this.refreshToggleData();
-    this.adapter_.registerInteractionHandler('click', this.clickHandler_);
-  }
-
-  destroy() {
-    this.adapter_.deregisterInteractionHandler('click', this.clickHandler_);
   }
 
   refreshToggleData() {
@@ -88,8 +78,7 @@ class MDCIconButtonToggleFoundation extends MDCFoundation {
     };
   }
 
-  /** @private */
-  toggleFromEvt_() {
+  handleClick() {
     this.toggle();
     const {on_: isOn} = this;
     this.adapter_.notifyChange(/** @type {!IconButtonToggleEvent} */ ({isOn}));
