@@ -52,15 +52,20 @@ function check_for_testable_files() {
   return 1
 }
 
-function exit_if_files_not_changed() {
+function set_skip_tests_if_files_not_changed() {
   check_for_testable_files "$@"
+  export SKIP_TESTS=$?
 
-  if [[ $? != 0 ]]; then
+  if [[ "$SKIP_TESTS" != 0 ]]; then
     log_success "No testable source files were found between commits $TRAVIS_COMMIT_RANGE."
     log_success
     log_success "Skipping $TEST_SUITE tests."
-    exit
   fi
+}
+
+function set_build_and_exit_if_files_not_changed() {
+  check_for_testable_files "$@"
+  export BUILD_AND_EXIT=$?
 }
 
 print_travis_env_vars
@@ -68,30 +73,25 @@ print_all_changed_files
 
 if [[ "$TEST_SUITE" == 'unit' ]]; then
   # Only run unit tests if JS files changed
-  exit_if_files_not_changed '^packages/.+\.js$' '^test/unit/.+\.js$'
+  set_skip_tests_if_files_not_changed '^packages/.+\.js$' '^test/unit/.+\.js$'
 fi
 
 if [[ "$TEST_SUITE" == 'lint' ]]; then
   # Only run linter if package JS/Sass files changed
-  exit_if_files_not_changed '\.(js|css|scss)$'
+  set_skip_tests_if_files_not_changed '\.(js|css|scss)$'
 fi
 
 if [[ "$TEST_SUITE" == 'closure' ]]; then
   # Only run closure test if package JS files changed
-  exit_if_files_not_changed '^packages/.+\.js$'
+  set_skip_tests_if_files_not_changed '^packages/.+\.js$'
 fi
 
 if [[ "$TEST_SUITE" == 'site-generator' ]]; then
   # Only run site-generator test if docs, Markdown, or image files changed
-  exit_if_files_not_changed '^docs/' '\.md$' '\.(png|jpg|jpeg|gif|svg)$'
+  set_skip_tests_if_files_not_changed '^docs/' '\.md$' '\.(png|jpg|jpeg|gif|svg)$'
 fi
 
 if [[ "$TEST_SUITE" == 'screenshot' ]]; then
   # Only run screenshot tests if package JS/Sass files, non-Markdown screenshot test files, or image files changed.
-  check_for_testable_files '^packages/.+\.(js|css|sass)$' '^test/screenshot/.+[^m][^d]$' '\.(png|jpg|jpeg|gif|svg)$'
-
-  if [[ $? != 0 ]]; then
-    # Don't exit here. Set a flag to tell the screenshot JS to exit after building source files.
-    export BUILD_AND_EXIT=true
-  fi
+  set_build_and_exit_if_files_not_changed '^packages/.+\.(js|css|sass)$' '^test/screenshot/.+[^m][^d]$' '\.(png|jpg|jpeg|gif|svg)$'
 fi
