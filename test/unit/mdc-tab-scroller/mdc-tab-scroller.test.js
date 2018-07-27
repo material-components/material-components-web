@@ -114,20 +114,26 @@ function setupScrollLeftTests() {
   return {component, area, root};
 }
 
-test('#adapter.setScrollAreaScrollLeft sets the scrollLeft value of the area element', () => {
+test('#adapter.setScrollAreaScrollLeft sets the scrollLeft value of the area element', function(done) {
   const {component, root, area} = setupScrollLeftTests();
   document.body.appendChild(root);
   component.getDefaultFoundation().adapter_.setScrollAreaScrollLeft(101);
-  assert.strictEqual(area.scrollLeft, 101);
-  document.body.removeChild(root);
+  setTimeout(function() {
+    assert.strictEqual(area.scrollLeft, 101);
+    document.body.removeChild(root);
+    done();
+  }, 100);
 });
 
-test('#adapter.getScrollAreaScrollLeft returns the scrollLeft value of the root element', () => {
+test('#adapter.getScrollAreaScrollLeft returns the scrollLeft value of the root element', function(done) {
   const {component, root, area} = setupScrollLeftTests();
   document.body.appendChild(root);
   area.scrollLeft = 416;
-  assert.strictEqual(component.getDefaultFoundation().adapter_.getScrollAreaScrollLeft(), 416);
-  document.body.removeChild(root);
+  setTimeout(function() {
+    assert.strictEqual(component.getDefaultFoundation().adapter_.getScrollAreaScrollLeft(), 416);
+    document.body.removeChild(root);
+    done();
+  }, 100);
 });
 
 test('#adapter.getScrollContentOffsetWidth returns the content element offsetWidth', () => {
