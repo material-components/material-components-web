@@ -215,11 +215,19 @@ class MDCMenu extends MDCComponent {
         index: evtData.index,
         item: this.items[evtData.index],
       }),
-      toggleCheckbox: (element) => {
-        const checkBox = element.querySelector(strings.CHECKBOX_SELECTOR);
+      getCheckbox: (index) => {
+        const list = this.items;
+        if (list.length > index) {
+          return list[index].querySelector(strings.CHECKBOX_SELECTOR);
+        } else {
+          return null;
+        }
+      },
+      toggleCheckbox: (checkBox) => {
         if (checkBox) {
           checkBox.checked = !checkBox.checked;
-          const event = new Event('change');
+          const event = document.createEvent('Event');
+          event.initEvent('change', false, true);
           checkBox.dispatchEvent(event);
         }
       },

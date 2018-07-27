@@ -1,5 +1,5 @@
 /**
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2018 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCMenuFoundation, [
     'addClassToElementAtIndex', 'removeClassFromElementAtIndex', 'addAttributeToElementAtIndex',
     'removeAttributeFromElementAtIndex', 'elementContainsClass', 'closeSurface', 'getElementIndex', 'getParentElement',
-    'getSelectedElementIndex', 'notifySelected', 'toggleCheckbox',
+    'getSelectedElementIndex', 'notifySelected', 'getCheckbox', 'toggleCheckbox',
   ]);
 });
 
@@ -168,6 +168,34 @@ test('handleKeydown space/enter key inside of a child of a list item causes the 
   td.verify(mockAdapter.notifySelected({index: 0}), {times: 1});
 });
 
+test('handleKeydown space/enter key on a list item with a checkbox toggles the checkbox', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const key = {key: 'Space', target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
+  const checkbox = document.createElement('input');
+  checkbox.type = 'checkbox';
+  td.when(mockAdapter.elementContainsClass(key.target, cssClasses.LIST_ITEM_CLASS)).thenReturn(false, true);
+  td.when(mockAdapter.getParentElement(key.target)).thenReturn(key.target);
+  td.when(mockAdapter.getElementIndex(key.target)).thenReturn(0);
+  td.when(mockAdapter.getCheckbox(0)).thenReturn(checkbox);
+
+  foundation.handleKeydown(key);
+
+  td.verify(mockAdapter.toggleCheckbox(checkbox), {times: 1});
+});
+
+test('handleKeydown space/enter key on a list item without a checkbox does not toggle a checkbox', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const key = {key: 'Space', target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
+  td.when(mockAdapter.elementContainsClass(key.target, cssClasses.LIST_ITEM_CLASS)).thenReturn(false, true);
+  td.when(mockAdapter.getParentElement(key.target)).thenReturn(key.target);
+  td.when(mockAdapter.getElementIndex(key.target)).thenReturn(0);
+  td.when(mockAdapter.getCheckbox(0)).thenReturn(null);
+
+  foundation.handleKeydown(key);
+
+  td.verify(mockAdapter.toggleCheckbox(td.matchers.anything()), {times: 0});
+});
+
 test('handleKeydown space/enter key inside of a list item not inside of the menu', () => {
   const {foundation, mockAdapter} = setupTest();
   const key = {key: 'Space', target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
@@ -256,9 +284,9 @@ test('handleKeydown space/enter key inside of a child element of a selection gro
 
 // Clicks
 
-test('handleClick space/enter key causes the menu to close', () => {
+test('Click event causes the menu to close', () => {
   const {foundation, mockAdapter} = setupTest();
-  const key = {key: 'Space', target: 'My Element', preventDefault: td.func('preventDefault')};
+  const key = {target: 'My Element', preventDefault: td.func('preventDefault')};
   td.when(mockAdapter.elementContainsClass(key.target, cssClasses.LIST_ITEM_CLASS)).thenReturn(true);
   td.when(mockAdapter.getElementIndex(key.target)).thenReturn(0);
 
@@ -267,9 +295,9 @@ test('handleClick space/enter key causes the menu to close', () => {
   td.verify(mockAdapter.closeSurface(), {times: 1});
 });
 
-test('handleClick space/enter key causes the menu to emit the selected item', () => {
+test('Click event causes the menu to emit the selected item', () => {
   const {foundation, mockAdapter} = setupTest();
-  const key = {key: 'Space', target: 'My Element', preventDefault: td.func('preventDefault')};
+  const key = {target: 'My Element', preventDefault: td.func('preventDefault')};
   td.when(mockAdapter.elementContainsClass(key.target, cssClasses.LIST_ITEM_CLASS)).thenReturn(true);
   td.when(mockAdapter.getElementIndex(key.target)).thenReturn(0);
 
@@ -278,9 +306,9 @@ test('handleClick space/enter key causes the menu to emit the selected item', ()
   td.verify(mockAdapter.notifySelected({index: 0}), {times: 1});
 });
 
-test('handleClick space/enter key inside an input does not prevent default on the event', () => {
+test('Click event inside an input does not prevent default on the event', () => {
   const {foundation, mockAdapter} = setupTest();
-  const key = {key: 'Space', target: {tagName: 'input'}, preventDefault: td.func('preventDefault')};
+  const key = {target: {tagName: 'input'}, preventDefault: td.func('preventDefault')};
   td.when(mockAdapter.elementContainsClass(key.target, cssClasses.LIST_ITEM_CLASS)).thenReturn(true);
   td.when(mockAdapter.getElementIndex(key.target)).thenReturn(0);
 
@@ -289,9 +317,9 @@ test('handleClick space/enter key inside an input does not prevent default on th
   td.verify(key.preventDefault(), {times: 0});
 });
 
-test('handleClick space/enter key inside a list item causes the preventDefault to be called', () => {
+test('Click event inside a list item causes the preventDefault to be called', () => {
   const {foundation, mockAdapter} = setupTest();
-  const key = {key: 'Space', target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
+  const key = {target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
   td.when(mockAdapter.elementContainsClass(key.target, cssClasses.LIST_ITEM_CLASS)).thenReturn(true);
   td.when(mockAdapter.getElementIndex(key.target)).thenReturn(0);
 
@@ -300,9 +328,9 @@ test('handleClick space/enter key inside a list item causes the preventDefault t
   td.verify(key.preventDefault(), {times: 1});
 });
 
-test('handleClick space/enter key not inside of a list item does nothing', () => {
+test('Click event not inside of a list item does nothing', () => {
   const {foundation, mockAdapter} = setupTest();
-  const key = {key: 'Space', target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
+  const key = {target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
   td.when(mockAdapter.elementContainsClass(key.target, cssClasses.LIST_ITEM_CLASS)).thenReturn(false);
   td.when(mockAdapter.getParentElement(key.target)).thenReturn(null);
   td.when(mockAdapter.getElementIndex(key.target)).thenReturn(0);
@@ -312,9 +340,9 @@ test('handleClick space/enter key not inside of a list item does nothing', () =>
   td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0});
 });
 
-test('handleClick space/enter key not inside of a child of a list item causes the list item to be selected', () => {
+test('Click event not inside of a child of a list item causes the list item to be selected', () => {
   const {foundation, mockAdapter} = setupTest();
-  const key = {key: 'Space', target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
+  const key = {target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
   td.when(mockAdapter.elementContainsClass(key.target, cssClasses.LIST_ITEM_CLASS)).thenReturn(false, false);
   td.when(mockAdapter.getParentElement(key.target)).thenReturn(key.target, null);
   td.when(mockAdapter.getElementIndex(key.target)).thenReturn(-1);
@@ -324,9 +352,9 @@ test('handleClick space/enter key not inside of a child of a list item causes th
   td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0});
 });
 
-test('handleClick space/enter key inside of a child of a list item causes the list item to be selected', () => {
+test('Click event inside of a child of a list item causes the list item to be selected', () => {
   const {foundation, mockAdapter} = setupTest();
-  const key = {key: 'Space', target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
+  const key = {target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
   td.when(mockAdapter.elementContainsClass(key.target, cssClasses.LIST_ITEM_CLASS)).thenReturn(false, true);
   td.when(mockAdapter.getParentElement(key.target)).thenReturn(key.target);
   td.when(mockAdapter.getElementIndex(key.target)).thenReturn(0);
@@ -336,9 +364,37 @@ test('handleClick space/enter key inside of a child of a list item causes the li
   td.verify(mockAdapter.notifySelected({index: 0}), {times: 1});
 });
 
-test('handleClick space/enter key inside of a list item not inside of the menu', () => {
+test('Click event on a list item with a checkbox toggles the checkbox', () => {
   const {foundation, mockAdapter} = setupTest();
-  const key = {key: 'Space', target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
+  const key = {target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
+  const checkbox = document.createElement('input');
+  checkbox.type = 'checkbox';
+  td.when(mockAdapter.elementContainsClass(key.target, cssClasses.LIST_ITEM_CLASS)).thenReturn(false, true);
+  td.when(mockAdapter.getParentElement(key.target)).thenReturn(key.target);
+  td.when(mockAdapter.getElementIndex(key.target)).thenReturn(0);
+  td.when(mockAdapter.getCheckbox(0)).thenReturn(checkbox);
+
+  foundation.handleClick(key);
+
+  td.verify(mockAdapter.toggleCheckbox(checkbox), {times: 1});
+});
+
+test('Click event on a list item without a checkbox does not toggle a checkbox', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const key = {target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
+  td.when(mockAdapter.elementContainsClass(key.target, cssClasses.LIST_ITEM_CLASS)).thenReturn(false, true);
+  td.when(mockAdapter.getParentElement(key.target)).thenReturn(key.target);
+  td.when(mockAdapter.getElementIndex(key.target)).thenReturn(0);
+  td.when(mockAdapter.getCheckbox(0)).thenReturn(null);
+
+  foundation.handleClick(key);
+
+  td.verify(mockAdapter.toggleCheckbox(td.matchers.anything()), {times: 0});
+});
+
+test('Click event inside of a list item not inside of the menu', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const key = {target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
   td.when(mockAdapter.elementContainsClass(key.target, cssClasses.LIST_ITEM_CLASS)).thenReturn(true);
   td.when(mockAdapter.getElementIndex(key.target)).thenReturn(-1);
 
@@ -347,10 +403,10 @@ test('handleClick space/enter key inside of a list item not inside of the menu',
   td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0});
 });
 
-test('handleClick space/enter key inside of a selection group with another element selected', () => {
+test('Click event inside of a selection group with another element selected', () => {
   const {foundation, mockAdapter} = setupTest();
   const clock = lolex.install();
-  const key = {key: 'Space', target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
+  const key = {target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
   td.when(mockAdapter.elementContainsClass(key.target, cssClasses.LIST_ITEM_CLASS)).thenReturn(true);
   td.when(mockAdapter.getElementIndex(key.target)).thenReturn(0);
   td.when(mockAdapter.getParentElement(key.target)).thenReturn(key.target);
@@ -365,10 +421,10 @@ test('handleClick space/enter key inside of a selection group with another eleme
   clock.uninstall();
 });
 
-test('handleClick space/enter key inside of a selection group with no element selected', () => {
+test('Click event inside of a selection group with no element selected', () => {
   const {foundation, mockAdapter} = setupTest();
   const clock = lolex.install();
-  const key = {key: 'Space', target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
+  const key = {target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
   td.when(mockAdapter.elementContainsClass(key.target, cssClasses.LIST_ITEM_CLASS)).thenReturn(true);
   td.when(mockAdapter.getElementIndex(key.target)).thenReturn(0);
   td.when(mockAdapter.getParentElement(key.target)).thenReturn(key.target);
@@ -383,11 +439,10 @@ test('handleClick space/enter key inside of a selection group with no element se
   clock.uninstall();
 });
 
-test('handleClick space/enter key inside of a child element of a list item in a selection group with no ' +
-  'element selected', () => {
+test('Click event inside of a child element of a list item in a selection group with no element selected', () => {
   const {foundation, mockAdapter} = setupTest();
   const clock = lolex.install();
-  const key = {key: 'Space', target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
+  const key = {target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
   td.when(mockAdapter.elementContainsClass(key.target, cssClasses.LIST_ITEM_CLASS)).thenReturn(true);
   td.when(mockAdapter.getElementIndex(key.target)).thenReturn(0);
   td.when(mockAdapter.getParentElement(key.target)).thenReturn(key.target);
@@ -402,11 +457,11 @@ test('handleClick space/enter key inside of a child element of a list item in a 
   clock.uninstall();
 });
 
-test('handleClick space/enter key inside of a child element of a selection group (but not a list item) with no ' +
-  'element selected', () => {
+test('Click event inside of a child element of a selection group (but not a list item) with no element ' +
+  'selected', () => {
   const {foundation, mockAdapter} = setupTest();
   const clock = lolex.install();
-  const key = {key: 'Space', target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
+  const key = {target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
   td.when(mockAdapter.elementContainsClass(key.target, cssClasses.LIST_ITEM_CLASS)).thenReturn(true);
   td.when(mockAdapter.getElementIndex(key.target)).thenReturn(0);
   td.when(mockAdapter.getParentElement(key.target)).thenReturn(key.target);

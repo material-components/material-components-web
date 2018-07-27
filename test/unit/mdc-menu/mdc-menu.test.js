@@ -1,5 +1,5 @@
 /**
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2018 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -392,7 +392,7 @@ test('adapter#notifySelected emits an event for a selected element', () => {
   td.verify(handler(td.matchers.anything()));
 });
 
-test('adapter#toggleCheckbox toggle a checkbox in a list item', () => {
+test('adapter#getCheckbox returns a checkbox inside a list item at the index specified', () => {
   const {root, component} = setupTest();
   const checkbox = document.createElement('input');
   checkbox.type = 'checkbox';
@@ -400,17 +400,35 @@ test('adapter#toggleCheckbox toggle a checkbox in a list item', () => {
   const firstItem = root.querySelector('.mdc-list-item');
   firstItem.append(checkbox);
 
-  component.getDefaultFoundation().adapter_.toggleCheckbox(firstItem);
-  assert.isTrue(checkbox.checked);
+  component.getDefaultFoundation().adapter_.getCheckbox(0);
+  assert.equal(component.getDefaultFoundation().adapter_.getCheckbox(0), checkbox);
 });
 
-test('adapter#toggleCheckbox does not throw an error if a checkbox is not in a list item', () => {
+test('adapter#getCheckbox returns null if a checkbox does not exist in the element at the index specified', () => {
+  const {component} = setupTest();
+  assert.isNull(component.getDefaultFoundation().adapter_.getCheckbox(0));
+});
+
+test('adapter#getCheckbox returns null if the index is greater than the list length', () => {
+  const {component} = setupTest();
+  assert.isNull(component.getDefaultFoundation().adapter_.getCheckbox(component.items.length));
+});
+
+test('adapter#toggleCheckbox toggle a checkbox', () => {
   const {root, component} = setupTest();
+  document.body.appendChild(root);
   const checkbox = document.createElement('input');
   checkbox.type = 'checkbox';
   checkbox.checked = false;
   const firstItem = root.querySelector('.mdc-list-item');
+  firstItem.append(checkbox);
 
-  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.toggleCheckbox(firstItem));
-  assert.isFalse(checkbox.checked);
+  component.getDefaultFoundation().adapter_.toggleCheckbox(checkbox);
+  assert.isTrue(checkbox.checked);
+  document.body.removeChild(root);
+});
+
+test('adapter#toggleCheckbox does not throw an error if there is no checkbox', () => {
+  const {component} = setupTest();
+  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.toggleCheckbox());
 });

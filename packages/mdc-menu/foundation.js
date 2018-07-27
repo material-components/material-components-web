@@ -53,6 +53,7 @@ class MDCMenuFoundation extends MDCFoundation {
       getParentElement: () => {},
       getSelectedElementIndex: () => {},
       notifySelected: () => {},
+      getCheckbox: () => {},
       toggleCheckbox: () => {},
     });
   }
@@ -109,7 +110,6 @@ class MDCMenuFoundation extends MDCFoundation {
     if (listItem) {
       this.handleSelection_(listItem);
       this.preventDefaultEvent_(evt);
-      this.adapter_.toggleCheckbox(/** @type {HTMLElement} */ (evt.target));
     }
   }
 
@@ -126,6 +126,11 @@ class MDCMenuFoundation extends MDCFoundation {
 
     this.adapter_.notifySelected({index});
     this.adapter_.closeSurface();
+
+    const checkbox = this.adapter_.getCheckbox(index);
+    if (checkbox) {
+      this.adapter_.toggleCheckbox(checkbox);
+    }
 
     // Wait for the menu to close before adding/removing classes that affect styles.
     this.closeAnimationEndTimerId_ = setTimeout(() => {

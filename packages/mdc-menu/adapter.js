@@ -106,8 +106,14 @@ class MDCMenuAdapter {
   notifySelected(evtData) {};
 
   /**
+   * Returns the checkbox contained within the element at the index specified.
+   * @param {number} index
+   */
+  getCheckbox(index) {};
+
+  /**
    * Toggles the checkbox within a list item, if any.
-   * @param {Element} target
+   * @param {HTMLElement} target
    */
   toggleCheckbox(target) {};
 }
