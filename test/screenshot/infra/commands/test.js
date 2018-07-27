@@ -412,22 +412,11 @@ ${CliColor.bold.red('Skipping screenshot tests.')}
    */
   logUntestableFiles_() {
     const range = process.env.TRAVIS_COMMIT_RANGE;
-    const sparkle = '✨✨✨✨✨';
-
-    this.logger_.log('');
-    this.logger_.log('');
-    this.logger_.log(`${sparkle} ${CliColor.bold.green('Aww yiss - MDC Web builds successfully!')}`);
-    this.logger_.log('');
-    this.logger_.log(CliColor.bold.magenta(`No testable source files were found for commit range ${range}.`));
-    this.logger_.log('');
-    this.logger_.log(CliColor.bold.magenta('Skipping screenshot tests.'));
-
-    this.logger_.log('');
-    this.logger_.log('========================================');
+    const sparkles = '✨✨✨';
 
     this.logger_.log(`
 
-${sparkle} ${CliColor.bold.green('Aww yiss - MDC Web builds successfully!')}
+${sparkles} ${CliColor.bold.green('Aww yiss - MDC Web builds successfully!')} ${sparkles}
 
 ${CliColor.bold.magenta(`No testable source files were found for commit range ${range}.`)}
 
