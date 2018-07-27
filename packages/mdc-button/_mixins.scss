@@ -65,12 +65,10 @@
 }
 
 @mixin mdc-button-shape-radius($radius) {
-  $radius-value: mdc-shape-pill-radius(button, $radius);
-  @include mdc-shape-radius($radius-value);
+  @include mdc-shape-pill-radius(button, $radius);
 
   &.mdc-button--dense {
-    $radius-value: mdc-shape-pill-radius(button-dense, $radius);
-    @include mdc-shape-radius($radius-value);
+    @include mdc-shape-pill-radius(button-dense, $radius);
   }
 }
 
