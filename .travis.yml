@@ -14,7 +14,9 @@ before_install:
   - source scripts/travis-env-vars.sh
 
 install:
-  - if has_testable_files; then npm install; else  npm ls # Noisy output, but useful for debugging npm package dependency version issues; fi
+  - if has_testable_files; then npm install; else log_untestable_files; fi
+  # Noisy output, but useful for debugging npm package dependency version issues:
+  #- npm ls
 
 matrix:
   include:
@@ -59,6 +61,7 @@ matrix:
       - source test/screenshot/infra/commands/travis.sh
     install: # Override global settings
       - npm install
-      #- npm ls # Noisy output, but useful for debugging npm package dependency version issues
+      # Noisy output, but useful for debugging npm package dependency version issues:
+      #- npm ls
     script:
       - npm run screenshot:test
