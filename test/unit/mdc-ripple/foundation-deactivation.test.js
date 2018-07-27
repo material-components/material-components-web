@@ -256,7 +256,6 @@ testFoundation('clears any pending foreground deactivation class removal timers 
     // Verify that the foreground deactivation class removal was only called twice: once within the
     // original activation, and again within this subsequent activation; NOT by means of any timers firing.
     td.verify(adapter.removeClass(cssClasses.FG_DEACTIVATION), {times: 2});
-    clock.uninstall();
   });
 
 testFoundation('waits until activation UX timer runs before removing active fill classes',
