@@ -14,8 +14,10 @@
 // limitations under the License.
 //
 
-@import "@material/animation/variables";
+@import "../../../../packages/mdc-textfield/mixins";
+@import "../../../../packages/mdc-theme/color-palette";
 
-@function mdc-switch-transition($property) {
-  @return $property 90ms $mdc-animation-standard-curve-timing-function;
+.test-cell--textfield {
+  width: 301px;
+  height: 101px;
 }

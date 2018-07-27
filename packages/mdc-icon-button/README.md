@@ -173,16 +173,13 @@ Method Signature | Description
 --- | ---
 `addClass(className: string) => void` | Adds a class to the root element, or the inner icon element.
 `removeClass(className: string) => void` | Removes a class from the root element, or the inner icon element.
-`registerInteractionHandler(type: string, handler: EventListener) => void` | Registers an event handler for an interaction event, such as `click` or `keydown`.
-`deregisterInteractionHandler(type: string, handler: EventListener) => void` | Removes an event handler for an interaction event, such as `click` or `keydown`.
 `setText(text: string) => void` | Sets the text content of the root element, or the inner icon element.
-`getTabIndex() => number` | Returns the tab index of the root element.
-`setTabIndex(tabIndex: number) => void` | Sets the tab index of the root element.
 `getAttr(name: string) => string` | Returns the value of the attribute `name` on the root element. Can also return `null`, similar to `getAttribute()`.
 `setAttr(name: string, value: string) => void` | Sets the attribute `name` to `value` on the root element.
-`removeAttr(name: string) => void` | Removes the attribute `name` on the root element.
 `notifyChange(evtData: {isOn: boolean}) => void` | Broadcasts a change notification, passing along the `evtData` to the environment's event handling system. In our vanilla implementation, Custom Events are used for this.
 
 ### Foundation: `MDCIconButtonToggleFoundation`
 
-The foundation does not contain any public properties or methods aside from those inherited from MDCFoundation.
+Method Signature | Description
+--- | ---
+`handleClick()` | Event handler triggered on the click event. It will toggle the icon from on/off and update aria attributes.
