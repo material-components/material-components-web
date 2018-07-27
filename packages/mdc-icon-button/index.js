@@ -32,6 +32,8 @@ class MDCIconButtonToggle extends MDCComponent {
 
     /** @private {!MDCRipple} */
     this.ripple_ = this.initRipple_();
+    /** @private {!Function} */
+    this.handleClick_;
   }
 
   /** @return {!Element} */
@@ -52,6 +54,7 @@ class MDCIconButtonToggle extends MDCComponent {
   }
 
   destroy() {
+    this.root_.removeEventListener('click', this.handleClick_);
     this.ripple_.destroy();
     super.destroy();
   }
@@ -61,8 +64,6 @@ class MDCIconButtonToggle extends MDCComponent {
     return new MDCIconButtonToggleFoundation({
       addClass: (className) => this.iconEl_.classList.add(className),
       removeClass: (className) => this.iconEl_.classList.remove(className),
-      registerInteractionHandler: (type, handler) => this.root_.addEventListener(type, handler),
-      deregisterInteractionHandler: (type, handler) => this.root_.removeEventListener(type, handler),
       setText: (text) => this.iconEl_.textContent = text,
       getAttr: (name) => this.root_.getAttribute(name),
       setAttr: (name, value) => this.root_.setAttribute(name, value),
@@ -71,7 +72,9 @@ class MDCIconButtonToggle extends MDCComponent {
   }
 
   initialSyncWithDOM() {
+    this.handleClick_ = this.foundation_.handleClick.bind(this.foundation_);
     this.on = this.root_.getAttribute(MDCIconButtonToggleFoundation.strings.ARIA_PRESSED) === 'true';
+    this.root_.addEventListener('click', this.handleClick_);
   }
 
   /** @return {!MDCRipple} */
