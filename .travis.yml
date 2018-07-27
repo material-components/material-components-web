@@ -54,7 +54,7 @@ matrix:
     #- npm ls # Noisy output, but useful for debugging npm package dependency version issues
 before_install:
 # Source the scripts to export their env vars. See https://superuser.com/a/176788/62792
-- source scripts/skip-unnecessary-travis-tests.sh
+- source scripts/travis-testable-env-vars.sh
 install:
 - 'if [[ "$SKIP_TESTS" != 1 ]]; then npm install; fi'
 #- npm ls # Noisy output, but useful for debugging npm package dependency version issues
