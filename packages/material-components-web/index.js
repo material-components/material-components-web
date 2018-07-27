@@ -37,7 +37,10 @@ import * as selectionControl from '@material/selection-control/index';
 import * as slider from '@material/slider/index';
 import * as snackbar from '@material/snackbar/index';
 import * as switchControl from '@material/switch/index';
-import * as tabs from '@material/tabs/index';
+import * as tab from '@material/tab/index';
+import * as tabBar from '@material/tab-bar/index';
+import * as tabIndicator from '@material/tab-indicator/index';
+import * as tabScroller from '@material/tab-scroller/index';
 import * as textField from '@material/textfield/index';
 import * as toolbar from '@material/toolbar/index';
 import * as topAppBar from '@material/top-app-bar/index';
@@ -61,8 +64,7 @@ autoInit.register('MDCList', list.MDCList);
 autoInit.register('MDCNotchedOutline', notchedOutline.MDCNotchedOutline);
 autoInit.register('MDCRadio', radio.MDCRadio);
 autoInit.register('MDCSnackbar', snackbar.MDCSnackbar);
-autoInit.register('MDCTab', tabs.MDCTab);
-autoInit.register('MDCTabBar', tabs.MDCTabBar);
+autoInit.register('MDCTabBar', tabBar.MDCTabBar);
 autoInit.register('MDCTextField', textField.MDCTextField);
 autoInit.register('MDCMenu', menu.MDCMenu);
 autoInit.register('MDCSelect', select.MDCSelect);
@@ -96,7 +98,10 @@ export {
   slider,
   switchControl,
   snackbar,
-  tabs,
+  tab,
+  tabBar,
+  tabIndicator,
+  tabScroller,
   textField,
   toolbar,
   topAppBar,
