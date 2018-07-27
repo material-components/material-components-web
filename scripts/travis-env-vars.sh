@@ -57,7 +57,7 @@ function check_for_testable_files() {
 function log_untestable_files() {
   if [[ "$HAS_TESTABLE_FILES" != 0 ]]; then
     log_warning
-    log_warning "No testable source files were found between commits $TRAVIS_COMMIT_RANGE."
+    log_warning "No testable source files were found for commit range $TRAVIS_COMMIT_RANGE."
     log_warning
     log_warning "Skipping $TEST_SUITE tests."
   fi
