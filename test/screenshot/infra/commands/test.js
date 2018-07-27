@@ -409,12 +409,14 @@ ${CliColor.bold.red('Skipping screenshot tests.')}
    * @private
    */
   logUntestableFiles_() {
-    this.logger_.log(CliColor.bold.magenta(`
-
-No testable source files were found between commits ${process.env.TRAVIS_COMMIT_RANGE}.
-
-Skipping screenshot tests.
-`));
+    this.logger_.log('');
+    this.logger_.log(CliColor.bold.magenta(
+      `No testable source files were found between commits ${process.env.TRAVIS_COMMIT_RANGE}.`
+    ));
+    this.logger_.log('');
+    this.logger_.log(CliColor.bold.magenta(
+      'Skipping screenshot tests.'
+    ));
   }
 
   /**
