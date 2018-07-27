@@ -85,7 +85,7 @@
 
 @mixin mdc-drawer-shape-radius($radius) {
   &.mdc-drawer--temporary .mdc-drawer__drawer {
-    @include mdc-shape-radius(drawer-temporary, (0, $radius, $radius, 0), $rtl-reflexive: true);
+    @include mdc-shape-radius((0, $radius, $radius, 0), $rtl-reflexive: true);
   }
 }
 

@@ -60,23 +60,24 @@
   }
 }
 
-@mixin mdc-shape($category, $rtl-reflexive: false) {
-  border-radius: map-get($mdc-shape-category-values, $category);
+@mixin mdc-shape-radius($radius, $rtl-reflexive: false) {
+  border-radius: mdc-shape-prop-value($radius);
 
-  @if $rtl-reflexive {
-    @include mdc-rtl {
-    }
+  @if ($rtl-reflexive) {
+    @include mdc-shape-flip-radius($radius);
   }
 }
 
-@mixin mdc-shape-prop($type, $radius) {
-  border-radius: mdc-shape-prop-value($type, $radius);
+@mixin mdc-shape-pill-radius($type, $radius, $rtl-reflexive: false) {
+  border-radius: mdc-shape-prop-value($radius, $type: $type);
+
+  @if ($rtl-reflexive) {
+    @include mdc-shape-flip-radius($radius);
+  }
 }
 
-@mixin mdc-shape-radius($type, $radius, $rtl-reflexive: false) {
-  border-radius: mdc-shape-prop-value($type, $radius);
-
-  @if length($radius) == 4 and $rtl-reflexive {
+@mixin mdc-shape-flip-radius($radius) {
+  @if length($radius) == 4 {
     @include mdc-rtl {
       border-radius: mdc-shape-flip-radius($radius);
     }

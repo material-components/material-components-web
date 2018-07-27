@@ -199,9 +199,9 @@ $mdc-fab-icon-enter-duration_: 180ms;
 }
 
 @mixin mdc-fab-shape-radius($radius) {
-  @include mdc-shape-radius(fab, $radius);
+  @include mdc-shape-pill-radius(fab, $radius);
 }
 
 @mixin mdc-extended-fab-shape-radius($radius) {
-  @include mdc-shape-radius(extended-fab, $radius);
+  @include mdc-shape-pill-radius(extended-fab, $radius);
 }

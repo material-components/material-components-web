@@ -1,31 +1,22 @@
 @import './variables';
 
-@function mdc-shape-get-radius($category, $radius: null, $top-left: null, $top-right: null, $bottom-right: null, $bottom-left: null) {
-  $mdc-shape-baseline_: map-get($mdc-shape-category, $category);
-
-  @return $top-left or map-get($mdc-shape-baseline_, 'top-left')
-      $top-right or map-get($mdc-shape-baseline_, 'top-right')
-      $bottom-right or map-get($mdc-shape-baseline_, 'bottom-right')
-      $bottom-left or map-get($mdc-shape-baseline_, 'bottom-left');
-}
-
 @function mdc-shape-flip-radius($radius) {
   @return nth($radius, 2) nth($radius, 1) nth($radius, 4) nth($radius, 3);
 }
 
-@function mdc-shape-prop-value($type, $radius) {
+@function mdc-shape-prop-value($radius, $type: null) {
   @if type-of($radius) == "list" {
     $radius-value: ();
     @each $corner in $radius {
-      $radius-value: append($radius-value, mdc-shape-prop-corner-value_($type, $corner));
+      $radius-value: append($radius-value, mdc-shape-prop-corner-value_($corner, $type: $type));
     }
     @return $radius-value;
   } @else {
-    @return mdc-shape-prop-corner-value_($type, $radius);
+    @return mdc-shape-prop-corner-value_($radius, $type: $type);
   }
 }
 
-@function mdc-shape-prop-corner-value_($type, $radius) {
+@function mdc-shape-prop-corner-value_($radius, $type: null) {
   @if $radius == pill {
     @if not map-has-key($mdc-shape-height-values, $type) {
       @error "Invalid radius: '#{$type}' doesn't support pill type radius";
@@ -37,4 +28,8 @@
   }
 
   @return $radius;
+}
+
+@function mdc-shape-pill-radius($type, $radius) {
+  @return mdc-shape-prop-value($radius, $type: $type);
 }
