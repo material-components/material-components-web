@@ -49,12 +49,6 @@ class TestCommand {
   async runAsync() {
     await this.build_();
 
-    const sparkles = '✨✨✨';
-    this.logger_.log(`
-
-${sparkles} ${CliColor.bold.green('Aww yiss - MDC Web builds successfully!')} ${sparkles}
-`);
-
     if (this.isExternalPr_()) {
       this.logExternalPr_();
       return ExitCode.OK;

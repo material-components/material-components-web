@@ -136,6 +136,7 @@ class JsBundleFactory {
         gridList: getAbsolutePath('/packages/mdc-grid-list/index.js'),
         iconButton: getAbsolutePath('/packages/mdc-icon-button/index.js'),
         iconToggle: getAbsolutePath('/packages/mdc-icon-toggle/index.js'),
+        list: getAbsolutePath('/packages/mdc-list/index.js'),
         lineRipple: getAbsolutePath('/packages/mdc-line-ripple/index.js'),
         linearProgress: getAbsolutePath('/packages/mdc-linear-progress/index.js'),
         menu: getAbsolutePath('/packages/mdc-menu/index.js'),
