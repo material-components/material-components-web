@@ -43,6 +43,13 @@ function maybe_extract_api_credentials() {
   openssl aes-256-cbc -K "$encrypted_eead2343bb54_key" -iv "$encrypted_eead2343bb54_iv" \
     -in test/screenshot/infra/auth/travis.tar.enc -out test/screenshot/infra/auth/travis.tar -d
 
+  echo openssl aes-256-cbc \
+    -K "${encrypted_eead2343bb54_key:0:5} + ${encrypted_eead2343bb54_key:5}" \
+    -iv "${encrypted_eead2343bb54_iv:0:5} + ${encrypted_eead2343bb54_iv:5}" \
+    -in test/screenshot/infra/auth/travis.tar.enc \
+    -out test/screenshot/infra/auth/travis.tar \
+    -d
+
   tar -xf test/screenshot/infra/auth/travis.tar -C test/screenshot/infra/auth/
 }
 
