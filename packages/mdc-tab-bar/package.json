@@ -3,7 +3,6 @@
   "description": "The Material Components for the web tab bar component",
   "version": "0.0.0",
   "license": "Apache-2.0",
-  "private": true,
   "keywords": [
     "material components",
     "material design",
