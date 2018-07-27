@@ -422,7 +422,7 @@ ${CliColor.bold.red('Skipping screenshot tests.')}
 ${CliColor.bold.magenta(`No testable source files were found for commit range ${range}.`)}
 
 ${CliColor.bold.magenta('Skipping screenshot tests.')}
-`.trimRight());
+`.trim());
   }
 
   /**
