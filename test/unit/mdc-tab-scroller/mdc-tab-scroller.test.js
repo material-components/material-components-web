@@ -107,10 +107,10 @@ test('#adapter.getScrollContentStyleValue returns the style property value on th
 function setupScrollLeftTests() {
   const {component, area, content, root} = setupTest();
   area.style.setProperty('width', '100px');
-  area.style.setProperty('height', '10px');
+  area.style.setProperty('height', '100px');
   area.style.setProperty('overflow-x', 'scroll');
   content.style.setProperty('width', '10000px');
-  content.style.setProperty('height', '10px');
+  content.style.setProperty('height', '100px');
   return {component, area, root};
 }
 
