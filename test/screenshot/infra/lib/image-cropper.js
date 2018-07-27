@@ -16,7 +16,7 @@
 
 const Jimp = require('jimp');
 
-const TRIM_COLOR_CSS_VALUE = '#abc123'; // Value must match `$test-trim-color` in `fixture.scss`
+const TRIM_COLOR_CSS_VALUE = '#abc123'; // Value must match `$test-viewport-trim-color` in `fixture.scss`
 
 /**
  * Fractional value (0 to 1 inclusive) indicating the minimum percentage of pixels in a row or column that must

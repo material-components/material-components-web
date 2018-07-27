@@ -152,20 +152,20 @@ There are two types of components:
 1. **Large** fullpage components (dialog, drawer, top app bar, etc.)
 2. **Small** widget components (button, checkbox, linear progress, etc.)
 
-Test pages for **small** components must have a `test-main--mobile-viewport` class on the `<main>` element:
+Test pages for **small** components must have a `test-viewport--mobile` class on the `<main>` element:
 
 ```html
-<main class="test-main test-main--mobile-viewport">
+<main class="test-viewport test-viewport--mobile">
 ```
 
 This class ensures that all components on the page fit inside an "average" mobile viewport without scrolling.
 This is necessary because most browsers' WebDriver implementations do not support taking screenshots of the entire
 `document`.
 
-Test pages for **large** components, however, must _not_ use the `--mobile-viewport` class:
+Test pages for **large** components, however, must _not_ use the `test-viewport--mobile` class:
 
 ```html
-<main class="test-main">
+<main class="test-viewport">
 ```
 
 For **small** components, you also need to specify the dimensions of the `test-cell--FOO` class in your component's 
@@ -185,8 +185,8 @@ This prevents noisy diffs in the event that your component's `height` or `margin
 
 CSS Class | Description
 --- | ---
-`test-main` | Mandatory. Wraps all page content.
-`test-main--mobile-viewport` | Mandatory (**small** components only). Ensures that all page content fits in a mobile viewport.
+`test-viewport` | Mandatory. Wraps all page content.
+`test-viewport--mobile` | Mandatory (**small** components only). Ensures that all page content fits in a mobile viewport.
 `test-cell--<FOO>` | Mandatory (**small** components only). Sets the dimensions of cells in the grid.
 `custom-<FOO>--<MIXIN>` | Mandatory (mixin test pages only). Calls a single Sass theme mixin.
 
