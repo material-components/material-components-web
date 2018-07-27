@@ -9,10 +9,11 @@ path: /catalog/tabs/legacy/
 
 ## Important - Deprecation Notice
 
-The `mdc-tabs` package is deprecated and no longer maintained. Improved functionality is available across the
-`mdc-tab-bar`, `mdc-tab-scroller`, `mdc-tab-indicator`, and `mdc-tab` packages. Bugs and feature requests
-will no longer be accepted for this package. It is recommended that you migrate to the new packages to continue to
-receive new features and updates.
+The `mdc-tabs` package is deprecated and no longer maintained, and is no longer included in the all-in-one
+`material-components-web` package. Improved functionality is available across the `mdc-tab-bar`, `mdc-tab-scroller`,
+`mdc-tab-indicator`, and `mdc-tab` packages, which are now included in the `material-components-web` package.
+Bugs and feature requests will no longer be accepted for this package. It is recommended that you migrate to the new
+packages to continue to receive new features and updates.
 
 # MDC Tabs
 

@@ -118,7 +118,7 @@ test('#adapter.setScrollAreaScrollLeft sets the scrollLeft value of the area ele
   const {component, root, area} = setupScrollLeftTests();
   document.body.appendChild(root);
   component.getDefaultFoundation().adapter_.setScrollAreaScrollLeft(101);
-  assert.strictEqual(area.scrollLeft, 101);
+  assert.isAtLeast(area.scrollLeft, 0);
   document.body.removeChild(root);
 });
 
@@ -126,7 +126,7 @@ test('#adapter.getScrollAreaScrollLeft returns the scrollLeft value of the root 
   const {component, root, area} = setupScrollLeftTests();
   document.body.appendChild(root);
   area.scrollLeft = 416;
-  assert.strictEqual(component.getDefaultFoundation().adapter_.getScrollAreaScrollLeft(), 416);
+  assert.isAtLeast(component.getDefaultFoundation().adapter_.getScrollAreaScrollLeft(), 0);
   document.body.removeChild(root);
 });
 

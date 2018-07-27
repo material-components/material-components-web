@@ -192,6 +192,7 @@
           "switch",
           "tabs",
           "tab",
+          "tab-bar",
           "tab-indicator",
           "tab-scroller",
           "text-field",
@@ -230,6 +231,7 @@
     "mdc-tab",
     "mdc-tab-indicator",
     "mdc-tab-scroller",
+    "mdc-tab-bar",
     "mdc-textfield",
     "mdc-top-app-bar"
   ]
