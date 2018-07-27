@@ -398,7 +398,7 @@ test('adapter#getCheckbox returns a checkbox inside a list item at the index spe
   checkbox.type = 'checkbox';
   checkbox.checked = false;
   const firstItem = root.querySelector('.mdc-list-item');
-  firstItem.append(checkbox);
+  firstItem.appendChild(checkbox);
 
   component.getDefaultFoundation().adapter_.getCheckbox(0);
   assert.equal(component.getDefaultFoundation().adapter_.getCheckbox(0), checkbox);
@@ -421,7 +421,7 @@ test('adapter#toggleCheckbox toggle a checkbox', () => {
   checkbox.type = 'checkbox';
   checkbox.checked = false;
   const firstItem = root.querySelector('.mdc-list-item');
-  firstItem.append(checkbox);
+  firstItem.appendChild(checkbox);
 
   component.getDefaultFoundation().adapter_.toggleCheckbox(checkbox);
   assert.isTrue(checkbox.checked);
