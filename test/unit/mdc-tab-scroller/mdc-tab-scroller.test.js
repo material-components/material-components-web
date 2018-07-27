@@ -122,7 +122,6 @@ test('#adapter.setScrollAreaScrollLeft sets the scrollLeft value of the area ele
   const {component, root, area} = setupScrollLeftTests();
   document.body.appendChild(root);
   component.getDefaultFoundation().adapter_.setScrollAreaScrollLeft(101);
-  debugger;
   assert.strictEqual(area.scrollLeft, 101);
   document.body.removeChild(root);
 });
