@@ -1,20 +1,13 @@
 <!--docs:
-title: "Tab"
+title: "Tab Bar"
 layout: detail
 section: components
-excerpt: "Governs the visibility of one of several groups of content."
+excerpt: "Manages a set of Tabs."
 iconId: tabs
 path: /catalog/tabs/tab-bar/
 -->
 
 # Tab Bar
-
-<!--<div class="article__asset">
-  <a class="article__asset-link"
-     href="https://material-components.github.io/material-components-web-catalog/#/component/tabs">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/tab.png" width="363" alt="Tab screenshot">
-  </a>
-</div>-->
 
 Tabs organize and allow navigation between groups of content that are related and at the same level of hierarchy.
 The Tab Bar contains the Tab Scroller and Tab components.
@@ -77,6 +70,7 @@ import {MDCTabBar} from '@material/tab-bar';
 
 const tabBar = new MDCTabBar(document.querySelector('.mdc-tab-bar'));
 ```
+
 > See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
 
 ## Style Customization
@@ -108,7 +102,7 @@ Event Name | Event Data Structure | Description
 
 ## Usage within Web Frameworks
 
-If you are using a JavaScript framework, such as React or Angular, you can create a Tab for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
+If you are using a JavaScript framework, such as React or Angular, you can create a Tab Bar for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
 ### `MDCTabBarAdapter`
 
@@ -127,6 +121,7 @@ Method Signature | Description
 `getTabListLength() => number` | Returns the number of child Tab components.
 `getActiveTabIndex() => number` | Returns the index of the active Tab.
 `getIndexOfTab(tab: MDCTab) => number` | Returns the index of the given Tab instance.
+`notifyTabActivated(index: number) => void` | Emits the `MDCTabBar:activated` event.
 
 ### `MDCTabBarFoundation`
 
