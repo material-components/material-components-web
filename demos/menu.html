@@ -246,6 +246,8 @@
     <script src="/assets/material-components-web.js" async></script>
     <script>
       demoReady(function() {
+
+        // Selection group menu
         var menuEl = document.querySelector('#demo-menu');
         var menu = new mdc.menu.MDCMenu(menuEl);
         var menuButtonEl = document.getElementById('menu-button');
@@ -253,6 +255,7 @@
           menu.open = !menu.open;
         });
 
+        // Normal meny
         var menuEl2 = document.querySelector('#demo-menu-2');
         var menu2 = new mdc.menu.MDCMenu(menuEl2);
         var menuButtonEl2 = document.getElementById('menu-button-2');
@@ -260,6 +263,7 @@
           menu2.open = !menu2.open;
         });
 
+        // Hoisted menu
         var menuEl3 = document.getElementById('demo-menu-3');
         var menu3 = new mdc.menu.MDCMenu(menuEl3);
         var menuButtonEl3 = document.getElementById('overflow-icon');
@@ -273,6 +277,7 @@
         animation.addEventListener('change', function(evt) {
            menu.quickOpen = evt.target.checked;
            menu2.quickOpen = evt.target.checked;
+           menu3.quickOpen = evt.target.checked;
         });
 
         var radios = document.querySelectorAll('input[name="menu-position"]');
@@ -281,24 +286,24 @@
             if (evt.target.checked) {
               switch (evt.target.value) {
                 case "top start":
-                  menu.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.TOP_START);
-                  menu2.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.TOP_START);
-                  menu3.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.TOP_START);
+                  menu.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.Corner.TOP_START);
+                  menu2.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.Corner.TOP_START);
+                  menu3.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.Corner.TOP_START);
                   break;
                 case "bottom start":
-                  menu.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.BOTTOM_START);
-                  menu2.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.BOTTOM_START);
-                  menu3.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.BOTTOM_START);
+                  menu.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.Corner.BOTTOM_START);
+                  menu2.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.Corner.BOTTOM_START);
+                  menu3.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.Corner.BOTTOM_START);
                   break;
                 case "top end":
-                  menu.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.TOP_END);
-                  menu2.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.TOP_END);
-                  menu3.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.TOP_END);
+                  menu.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.Corner.TOP_END);
+                  menu2.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.Corner.TOP_END);
+                  menu3.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.Corner.TOP_END);
                   break;
                 case "bottom end":
-                  menu.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.BOTTOM_END);
-                  menu2.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.BOTTOM_END);
-                  menu3.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.MenuSurfaceCorner.BOTTOM_END);
+                  menu.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.Corner.BOTTOM_END);
+                  menu2.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.Corner.BOTTOM_END);
+                  menu3.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.Corner.BOTTOM_END);
                   break;
               }
             }
@@ -328,8 +333,10 @@
           var demoWrapper = document.getElementById('demo-wrapper');
           if (rtl.checked) {
             demoWrapper.setAttribute('dir', 'rtl');
+            menuEl3.setAttribute('dir', 'rtl');
           } else {
             demoWrapper.removeAttribute('dir');
+            menuEl3.removeAttribute('dir');
           }
         });
 
@@ -351,6 +358,8 @@
           lastSelected.textContent = 'Overflow Menu: "' + detail.item.textContent.trim() +
             '" at index ' + detail.index;
         });
+
+        [].slice.call(document.querySelectorAll('.mdc-list-item')).forEach((ele) => mdc.ripple.MDCRipple.attachTo(ele));
       });
     </script>
   </body>

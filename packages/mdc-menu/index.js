@@ -18,7 +18,8 @@
 import MDCComponent from '@material/base/component';
 import {MDCMenuFoundation} from './foundation';
 import {strings, cssClasses} from './constants';
-import {MDCMenuSurface, AnchorMargin, MDCMenuSurfaceFoundation} from '@material/menu-surface/index';
+import {MDCMenuSurface, Corner} from '@material/menu-surface/index';
+import {MDCMenuSurfaceFoundation, AnchorMargin} from '@material/menu-surface/foundation';
 import {MDCList} from '@material/list/index';
 
 /**
@@ -39,7 +40,7 @@ class MDCMenu extends MDCComponent {
   }
 
   /**
-   * @param {!Element} root
+   * @param {!HTMLElement} root
    * @return {!MDCMenu}
    */
   static attachTo(root) {
@@ -84,8 +85,9 @@ class MDCMenu extends MDCComponent {
 
   show() {
     this.menuSurface_.listen(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, () => {
-      if (this.list_) {
-        this.items[0].focus();
+      const list = this.items;
+      if (list.length > 0) {
+        list[0].focus();
       }
     });
     this.menuSurface_.show();
@@ -98,7 +100,7 @@ class MDCMenu extends MDCComponent {
   }
 
   /**
-   * @param {MenuSurfaceCorner} corner Default anchor corner alignment of top-left
+   * @param {Corner} corner Default anchor corner alignment of top-left
    *     menu corner.
    */
   setAnchorCorner(corner) {
@@ -116,18 +118,16 @@ class MDCMenu extends MDCComponent {
    * Return the items within the menu. Note that this only contains the set of elements within
    * the items container that are proper list items, and not supplemental / presentational DOM
    * elements.
-   * @return {!Array<!Element>}
+   * @return {!Array<!HTMLElement>}
    */
   get items() {
-    if (this.list_) {
-      return this.list_.listElements_;
-    }
+    return this.list_.listElements_;
   }
 
   /**
    * Return the item within the menu at the index specified.
    * @param {number} index
-   * @return {?Element}
+   * @return {?HTMLElement}
    */
   getOptionByIndex(index) {
     const items = this.items;
@@ -153,13 +153,14 @@ class MDCMenu extends MDCComponent {
     this.menuSurface_.hoistMenuToBody();
   }
 
+  /** @param {boolean} isHoisted */
   setIsHoisted(isHoisted) {
     this.menuSurface_.setIsHoisted(isHoisted);
   }
 
   /**
    * Sets the element that the menu-surface is anchored to.
-   * @param {!Element} element
+   * @param {!HTMLElement} element
    */
   setAnchorElement(element) {
     this.menuSurface_.anchorElement = element;
@@ -181,25 +182,25 @@ class MDCMenu extends MDCComponent {
     return new MDCMenuFoundation({
       addClassToElementAtIndex: (index, className) => {
         const list = this.items;
-        if (list && list.length > index) {
+        if (list.length > index) {
           list[index].classList.add(className);
         }
       },
       removeClassFromElementAtIndex: (index, className) => {
         const list = this.items;
-        if (list && list.length > index) {
+        if (list.length > index) {
           list[index].classList.remove(className);
         }
       },
       addAttributeToElementAtIndex: (index, attr, value) => {
         const list = this.items;
-        if (list && list.length > index) {
+        if (list.length > index) {
           list[index].setAttribute(attr, value);
         }
       },
       removeAttributeFromElementAtIndex: (index, attr) => {
         const list = this.items;
-        if (list && list.length > index) {
+        if (list.length > index) {
           list[index].removeAttribute(attr);
         }
       },
@@ -226,4 +227,4 @@ class MDCMenu extends MDCComponent {
   }
 }
 
-export {MDCMenuFoundation, MDCMenu, AnchorMargin};
+export {MDCMenuFoundation, MDCMenu, AnchorMargin, Corner};

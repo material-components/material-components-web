@@ -61,19 +61,21 @@ class MDCMenuFoundation extends MDCFoundation {
   constructor(adapter) {
     super(Object.assign(MDCMenuFoundation.defaultAdapter, adapter));
 
-    /** @param {number} value */
-    this.closeAnimationEndTimerId_;
+    /** @type {number} */
+    this.closeAnimationEndTimerId_ = 0;
   }
 
-  init() {}
-
   destroy() {
-    clearTimeout(this.closeAnimationEndTimerId_);
+    if (this.closeAnimationEndTimerId_) {
+      clearTimeout(this.closeAnimationEndTimerId_);
+    }
+
+    this.adapter_.closeSurface();
   }
 
   /**
-   * Handler function for the keydown event.
-   * @param {Event} evt
+   * Handler function for the keydown events.
+   * @param {!Event} evt
    */
   handleKeydown(evt) {
     const {key, keyCode} = evt;
@@ -83,28 +85,37 @@ class MDCMenuFoundation extends MDCFoundation {
     const isTab = key === 'Tab' || keyCode === 13;
 
     if (isSpace || isEnter) {
-      this.handleClick(evt);
+      this.handleAction_(evt);
     } else if (isTab) {
       this.adapter_.closeSurface();
     }
   }
 
   /**
-   * Handler function for the click and space/enter key events.
-   * @param {Event} evt
+   * Handler function for the click events.
+   * @param {!Event} evt
    */
   handleClick(evt) {
-    const listItem = this.getListItem_(evt.target);
+    this.handleAction_(evt);
+  }
+
+  /**
+   * Combined action handling for click/keypress events.
+   * @param {!Event} evt
+   * @private
+   */
+  handleAction_(evt) {
+    const listItem = this.getListItem_(/** @type {HTMLElement} */ (evt.target));
     if (listItem) {
       this.handleSelection_(listItem);
       this.preventDefaultEvent_(evt);
-      this.adapter_.toggleCheckbox(evt.target);
+      this.adapter_.toggleCheckbox(/** @type {HTMLElement} */ (evt.target));
     }
   }
 
   /**
    * Handler for a selected list item.
-   * @param {Element} listItem
+   * @param {!HTMLElement} listItem
    * @private
    */
   handleSelection_(listItem) {
@@ -129,28 +140,26 @@ class MDCMenuFoundation extends MDCFoundation {
   /**
    * Handles toggling the selected classes in a selection group when a
    * selection is made.
-   * @param {Element} selectionGroup
+   * @param {!HTMLElement} selectionGroup
    * @param {number} index The selected index value
    * @private
    */
   handleSelectionGroup_(selectionGroup, index) {
-    if (selectionGroup !== null) {
-      // De-select the previous selection in this group.
-      const selectedIndex = this.adapter_.getSelectedElementIndex(selectionGroup);
-      if (selectedIndex >= 0) {
-        this.adapter_.removeAttributeFromElementAtIndex(selectedIndex, strings.ARIA_SELECTED_ATTR);
-        this.adapter_.removeClassFromElementAtIndex(selectedIndex, cssClasses.MENU_SELECTED_LIST_ITEM);
-      }
-      // Select the new list item in this group.
-      this.adapter_.addClassToElementAtIndex(index, cssClasses.MENU_SELECTED_LIST_ITEM);
-      this.adapter_.addAttributeToElementAtIndex(index, strings.ARIA_SELECTED_ATTR, 'true');
+    // De-select the previous selection in this group.
+    const selectedIndex = this.adapter_.getSelectedElementIndex(selectionGroup);
+    if (selectedIndex >= 0) {
+      this.adapter_.removeAttributeFromElementAtIndex(selectedIndex, strings.ARIA_SELECTED_ATTR);
+      this.adapter_.removeClassFromElementAtIndex(selectedIndex, cssClasses.MENU_SELECTED_LIST_ITEM);
     }
+    // Select the new list item in this group.
+    this.adapter_.addClassToElementAtIndex(index, cssClasses.MENU_SELECTED_LIST_ITEM);
+    this.adapter_.addAttributeToElementAtIndex(index, strings.ARIA_SELECTED_ATTR, 'true');
   }
 
   /**
    * Returns the parent selection group of an element or the
    * @param listItem
-   * @return {*}
+   * @return {HTMLElement|null}
    * @private
    */
   getSelectionGroup_(listItem) {
@@ -171,8 +180,8 @@ class MDCMenuFoundation extends MDCFoundation {
 
   /**
    * Find the first ancestor with the mdc-list-item class.
-   * @param {Element} target
-   * @return {Element|null}
+   * @param {HTMLElement} target
+   * @return {HTMLElement}
    * @private
    */
   getListItem_(target) {

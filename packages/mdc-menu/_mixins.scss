@@ -14,8 +14,12 @@
 // limitations under the License.
 //
 
+@import "./variables";
+
 @mixin mdc-menu-width($width) {
-  .mdc-menu-surface {
-    width: $width;
-  }
+  width: $width;
+}
+
+@mixin mdc-menu-width-calc($multiplier) {
+  width: $multiplier * $mdc-menu-width-base;
 }

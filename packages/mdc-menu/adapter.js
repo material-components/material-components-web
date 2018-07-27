@@ -65,8 +65,8 @@ class MDCMenuAdapter {
 
   /**
    * Returns true if the element contains the className.
-   * @param {Element} element
-   * @param {string} className
+   * @param {HTMLElement} element
+   * @param {!string} className
    * @return {boolean} true if the element contains the className
    */
   elementContainsClass(element, className) {}
@@ -78,22 +78,22 @@ class MDCMenuAdapter {
 
   /**
    * Returns the index for the element provided.
-   * @param {Element} element
+   * @param {HTMLElement} element
    * @return {number} index of the element in the list or -1 if it is not in the list.
    */
   getElementIndex(element) {};
 
   /**
    * Returns the parentElement of the provided element.
-   * @param {Element} element
-   * @return {Element} parentElement of the element provided.
+   * @param {HTMLElement} element
+   * @return {?HTMLElement} parentElement of the element provided.
    */
   getParentElement(element) {};
 
   /**
    * Returns the element within the selectionGroup containing the selected element class.
-   * @param {Element} selectionGroup
-   * @return {Element} element within the selectionGroup that contains the selected element class.
+   * @param {HTMLElement} selectionGroup
+   * @return {number} element within the selectionGroup that contains the selected element class.
    */
   getSelectedElementIndex(selectionGroup) {};
 

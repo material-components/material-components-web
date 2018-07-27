@@ -21,7 +21,7 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 
 import {MDCMenuSurface, MDCMenuSurfaceFoundation} from '../../../packages/mdc-menu-surface/index';
-import {strings, cssClasses, MenuSurfaceCorner} from '../../../packages/mdc-menu-surface/constants';
+import {strings, cssClasses, Corner} from '../../../packages/mdc-menu-surface/constants';
 import {getTransformPropertyName} from '../../../packages/mdc-menu-surface/util';
 
 function getFixture(open) {
@@ -136,8 +136,8 @@ test('setFixedPosition is false', () => {
 
 test('setAnchorCorner', () => {
   const {component, mockFoundation} = setupTest();
-  component.setAnchorCorner(MenuSurfaceCorner.TOP_START);
-  td.verify(mockFoundation.setAnchorCorner(MenuSurfaceCorner.TOP_START));
+  component.setAnchorCorner(Corner.TOP_START);
+  td.verify(mockFoundation.setAnchorCorner(Corner.TOP_START));
 });
 
 test('setAnchorMargin', () => {

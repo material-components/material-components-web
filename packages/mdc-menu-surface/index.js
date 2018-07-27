@@ -19,7 +19,7 @@ import MDCComponent from '@material/base/component';
 import {getTransformPropertyName} from './util';
 import {MDCMenuSurfaceFoundation, AnchorMargin} from './foundation';
 import {MDCMenuSurfaceAdapter} from './adapter';
-import {MenuSurfaceCorner, MenuSurfaceCornerBit, strings, cssClasses} from './constants';
+import {Corner, CornerBit, strings, cssClasses} from './constants';
 
 /**
  * @extends MDCComponent<!MDCMenuSurfaceFoundation>
@@ -129,7 +129,7 @@ class MDCMenuSurface extends MDCComponent {
   }
 
   /**
-   * @param {MenuSurfaceCorner} corner Default anchor corner alignment of top-left
+   * @param {Corner} corner Default anchor corner alignment of top-left
    *     surface corner.
    */
   setAnchorCorner(corner) {
@@ -246,4 +246,4 @@ class MDCMenuSurface extends MDCComponent {
   }
 }
 
-export {MDCMenuSurfaceFoundation, MDCMenuSurface, AnchorMargin, MenuSurfaceCorner, MenuSurfaceCornerBit};
+export {MDCMenuSurfaceFoundation, MDCMenuSurface, AnchorMargin, Corner, CornerBit};
