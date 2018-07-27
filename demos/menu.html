@@ -359,7 +359,10 @@
             '" at index ' + detail.index;
         });
 
-        [].slice.call(document.querySelectorAll('.mdc-list-item')).forEach((ele) => mdc.ripple.MDCRipple.attachTo(ele));
+        [].slice.call(document.querySelectorAll('.mdc-list-item')).forEach(
+          function(ele) {
+            mdc.ripple.MDCRipple.attachTo(ele);
+          });
       });
     </script>
   </body>
