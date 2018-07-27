@@ -56,21 +56,6 @@ class BuildCommand {
 
     await this.cleanCommand_.runAsync();
 
-    function print(key, varName) {
-      console.log(process.env);
-      console.log('varName:', varName);
-      const value = process.env[varName];
-      const middle = Math.floor(value.length / 2);
-      console.log(`${key}=${value.substr(0, middle)} + ${value.substr(middle)}`);
-    }
-
-    this.logger_.foldStart('screenshot.env', 'env');
-    print('x1', 'encrypted_eead2343bb2344_iv');
-    print('x2', 'encrypted_eead2345bb2346_key');
-    print('x3', 'SAUCE_ACCESS_KEY');
-    print('x4', 'SAUCE_USERNAME');
-    this.logger_.foldEnd('screenshot.env');
-
     this.logger_.foldStart('screenshot.build', 'Compiling source files');
 
     await this.buildProtoFiles_(shouldWatch);
