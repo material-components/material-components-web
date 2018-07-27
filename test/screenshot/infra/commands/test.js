@@ -49,6 +49,7 @@ class TestCommand {
   async runAsync() {
     await this.build_();
 
+    const sparkles = '✨✨✨';
     this.logger_.log(`
 
 ${sparkles} ${CliColor.bold.green('Aww yiss - MDC Web builds successfully!')} ${sparkles}
@@ -416,7 +417,6 @@ ${CliColor.bold.red('Skipping screenshot tests.')}
    */
   logUntestableFiles_() {
     const range = process.env.TRAVIS_COMMIT_RANGE;
-    const sparkles = '✨✨✨';
 
     this.logger_.log(`
 ${CliColor.bold.magenta(`No testable source files were found for commit range ${range}.`)}
