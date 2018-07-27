@@ -37,7 +37,8 @@ function check_for_testable_files() {
   local CRITICAL_FILE_COUNT=$(echo "$CRITICAL_FILE_PATHS" | wc -l | tr -d ' ')
 
   if [[ -n "$CRITICAL_FILE_PATHS" ]] && [[ "$CRITICAL_FILE_COUNT" -gt 0 ]]; then
-    return 0 # Exit code `0` means "true" - i.e., there is at least one testable file in the PR
+    export HAS_TESTABLE_FILES=true
+    return
   fi
 
   for CUR_PATH_PATTERN in "$@"; do
@@ -45,25 +46,16 @@ function check_for_testable_files() {
     local MATCHING_FILE_COUNT=$(echo "$MATCHING_FILE_PATHS" | wc -l | tr -d ' ')
 
     if [[ -n "$MATCHING_FILE_PATHS" ]] && [[ "$MATCHING_FILE_COUNT" -gt 0 ]]; then
-      return 0 # Exit code `0` means "true" - i.e., there is at least one testable file in the PR
+      export HAS_TESTABLE_FILES=true
+      return
     fi
   done
 
-  return 1 # Exit code `1` means "false" - i.e., there are no testable files in the PR
-}
-
-function set_skip_tests_if_files_not_changed() {
-  check_for_testable_files "$@"
-  export SKIP_TESTS=$?
-}
-
-function set_build_and_exit_if_files_not_changed() {
-  check_for_testable_files "$@"
-  export BUILD_AND_EXIT=$?
+  export HAS_TESTABLE_FILES=false
 }
 
 function log_untestable_files() {
-  if [[ "$SKIP_TESTS" != 0 ]]; then
+  if [[ "$HAS_TESTABLE_FILES" != 0 ]]; then
     log_warning
     log_warning "No testable source files were found between commits $TRAVIS_COMMIT_RANGE."
     log_warning
@@ -72,7 +64,7 @@ function log_untestable_files() {
 }
 
 function has_testable_files() {
-  return "$SKIP_TESTS"
+  [[ "$HAS_TESTABLE_FILES" == 'true' ]]
 }
 
 print_travis_env_vars
@@ -80,25 +72,25 @@ print_all_changed_files
 
 if [[ "$TEST_SUITE" == 'unit' ]]; then
   # Only run unit tests if JS files changed
-  set_skip_tests_if_files_not_changed '^packages/.+\.js$' '^test/unit/.+\.js$'
+  check_for_testable_files '^packages/.+\.js$' '^test/unit/.+\.js$'
 fi
 
 if [[ "$TEST_SUITE" == 'lint' ]]; then
   # Only run linter if package JS/Sass files changed
-  set_skip_tests_if_files_not_changed '\.(js|css|scss)$'
+  check_for_testable_files '\.(js|css|scss)$'
 fi
 
 if [[ "$TEST_SUITE" == 'closure' ]]; then
   # Only run closure test if package JS files changed
-  set_skip_tests_if_files_not_changed '^packages/.+\.js$'
+  check_for_testable_files '^packages/.+\.js$'
 fi
 
 if [[ "$TEST_SUITE" == 'site-generator' ]]; then
   # Only run site-generator test if docs, Markdown, or image files changed
-  set_skip_tests_if_files_not_changed '^docs/' '\.md$' '\.(png|jpg|jpeg|gif|svg)$'
+  check_for_testable_files '^docs/' '\.md$' '\.(png|jpg|jpeg|gif|svg)$'
 fi
 
 if [[ "$TEST_SUITE" == 'screenshot' ]]; then
   # Only run screenshot tests if package JS/Sass files, non-Markdown screenshot test files, or image files changed.
-  set_build_and_exit_if_files_not_changed '^packages/.+\.(js|css|sass)$' '^test/screenshot/.+[^m][^d]$' '\.(png|jpg|jpeg|gif|svg)$'
+  check_for_testable_files '^packages/.+\.(js|css|sass)$' '^test/screenshot/.+[^m][^d]$' '\.(png|jpg|jpeg|gif|svg)$'
 fi
