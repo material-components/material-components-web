@@ -36,6 +36,10 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'registerEventHandler', 'deregisterEventHandler',
     'addClass', 'removeClass', 'hasClass',
     'setAttr',
+    'activateIndicator', 'deactivateIndicator', 'computeIndicatorClientRect',
+    'getOffsetLeft', 'getOffsetWidth', 'getContentOffsetLeft', 'getContentOffsetWidth',
+    'notifyInteracted',
+    'focus',
   ]);
 });
 
@@ -73,6 +77,30 @@ test('#activate sets the root element aria-selected attribute to true', () => {
   td.verify(mockAdapter.setAttr(MDCTabFoundation.strings.ARIA_SELECTED, 'true'));
 });
 
+test('#activate sets the root element tabindex to 0', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.activate();
+  td.verify(mockAdapter.setAttr(MDCTabFoundation.strings.TABINDEX, '0'));
+});
+
+test('#activate activates the indicator', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.activate({width: 100, left: 200});
+  td.verify(mockAdapter.activateIndicator({width: 100, left: 200}));
+});
+
+test('#activate focuses the root node', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.activate({width: 100, left: 200});
+  td.verify(mockAdapter.focus());
+});
+
+test('#computeIndicatorClientRect calls computeIndicatorClientRect on the adapter', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.computeIndicatorClientRect();
+  td.verify(mockAdapter.computeIndicatorClientRect());
+});
+
 test('#deactivate does nothing if not active', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.deactivate();
@@ -108,6 +136,20 @@ test('#deactivate sets the root element aria-selected attribute to false', () =>
   td.verify(mockAdapter.setAttr(MDCTabFoundation.strings.ARIA_SELECTED, 'false'));
 });
 
+test('#deactivate deactivates the indicator', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(MDCTabFoundation.cssClasses.ACTIVE)).thenReturn(true);
+  foundation.deactivate();
+  td.verify(mockAdapter.deactivateIndicator());
+});
+
+test('#deactivate sets the root element tabindex to -1', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(MDCTabFoundation.cssClasses.ACTIVE)).thenReturn(true);
+  foundation.deactivate();
+  td.verify(mockAdapter.setAttr(MDCTabFoundation.strings.TABINDEX, '-1'));
+});
+
 test('#handleTransitionEnd removes mdc-tab--animating-activate class', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.handleTransitionEnd({pseudoElement: ''});
@@ -134,12 +176,40 @@ test('#handleTransitionEnd does nothing when triggered by a pseudo element', () 
   td.verify(mockAdapter.deregisterEventHandler('transitionend', td.matchers.isA(Function)), {times: 0});
 });
 
-test('on transitionend, do nothing when triggered by a pseudeo element', () => {
+test('on transitionend, call #handleTransitionEnd', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerEventHandler');
+  foundation.handleTransitionEnd = td.function('handles transitionend');
   foundation.activate();
-  handlers.transitionend({pseudoElement: '::after'});
-  td.verify(mockAdapter.removeClass(MDCTabFoundation.cssClasses.ANIMATING_ACTIVATE), {times: 0});
-  td.verify(mockAdapter.removeClass(MDCTabFoundation.cssClasses.ANIMATING_DEACTIVATE), {times: 0});
-  td.verify(mockAdapter.deregisterEventHandler('transitionend', td.matchers.isA(Function)), {times: 0});
+  handlers.transitionend();
+  td.verify(foundation.handleTransitionEnd(td.matchers.anything()), {times: 1});
+});
+
+test(`#handleClick emits the ${MDCTabFoundation.strings.INTERACTED_EVENT} event`, () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.handleClick();
+  td.verify(mockAdapter.notifyInteracted(), {times: 1});
+});
+
+test('on click, call #handleClick', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerEventHandler');
+  foundation.handleClick = td.function('handles click');
+  foundation.init();
+  handlers.click();
+  td.verify(foundation.handleClick(), {times: 1});
+});
+
+test('#computeDimensions() returns the dimensions of the tab', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getOffsetLeft()).thenReturn(10);
+  td.when(mockAdapter.getOffsetWidth()).thenReturn(100);
+  td.when(mockAdapter.getContentOffsetLeft()).thenReturn(11);
+  td.when(mockAdapter.getContentOffsetWidth()).thenReturn(30);
+  assert.deepEqual(foundation.computeDimensions(), {
+    rootLeft: 10,
+    rootRight: 110,
+    contentLeft: 21,
+    contentRight: 51,
+  });
 });
