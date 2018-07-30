@@ -40,8 +40,8 @@ npm install @material/tab-bar
       <div class="mdc-tab-scroller__scroll-content">
         <button class="mdc-tab mdc-tab--active" role="tab" aria-selected="true" tabindex="0">
           <div class="mdc-tab__content">
-            <span class="mdc-tab__icon">heart</div>
-            <span class="mdc-tab__text-label">Favorites</div>
+            <span class="mdc-tab__icon">heart</span>
+            <span class="mdc-tab__text-label">Favorites</span>
           </div>
           <span class="mdc-tab-indicator mdc-tab-indicator--active">
             <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
