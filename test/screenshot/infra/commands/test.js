@@ -59,10 +59,10 @@ class TestCommand {
     const snapshotGitRev = snapshotDiffBase.git_revision;
 
     const isTravisPr = snapshotGitRev && snapshotGitRev.type === GitRevision.Type.TRAVIS_PR;
-    const isTestable = isTravisPr ? snapshotGitRev.pr_file_paths.length > 0 : true;
+    const shouldExit = process.env.HAS_TESTABLE_FILES === 'false';
 
-    if (!isTestable) {
-      this.logUntestablePr_(snapshotGitRev.pr_number);
+    if (shouldExit) {
+      this.logUntestableFiles_();
       return ExitCode.OK;
     }
 
@@ -287,7 +287,9 @@ class TestCommand {
 
 
     return `
-### Screenshot test report ⚠️
+🤖 Beep boop!
+
+### Screenshot test report 🚦
 
 **${numChanged}** screenshot${plural} changed from \`${masterGitRev.branch}\` on commit ${snapshotGitRev.commit}:
 
@@ -395,7 +397,6 @@ ${listItemMarkdown}
    */
   logExternalPr_() {
     this.logger_.warn(`
-
 ${CliColor.bold.red('Screenshot tests are not supported on external PRs for security reasons.')}
 
 See ${CliColor.underline('https://docs.travis-ci.com/user/pull-requests/#Pull-Requests-and-Security-Restrictions')}
@@ -406,16 +407,16 @@ ${CliColor.bold.red('Skipping screenshot tests.')}
   }
 
   /**
-   * @param {number} prNumber
    * @private
    */
-  logUntestablePr_(prNumber) {
-    this.logger_.warn(`
+  logUntestableFiles_() {
+    const range = process.env.TRAVIS_COMMIT_RANGE;
 
-${CliColor.underline(`PR #${prNumber}`)} does not contain any testable source file changes.
+    this.logger_.log(`
+${CliColor.bold.magenta(`No testable source files were found for commit range ${range}.`)}
 
-${CliColor.bold.green('Skipping screenshot tests.')}
-`);
+${CliColor.bold.magenta('Skipping screenshot tests.')}
+`.trim());
   }
 
   /**

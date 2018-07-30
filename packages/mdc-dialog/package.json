@@ -1,6 +1,6 @@
 {
   "name": "@material/dialog",
-  "version": "0.37.1",
+  "version": "0.38.0",
   "description": "The Material Components Web dialog component",
   "license": "Apache-2.0",
   "keywords": [
@@ -17,11 +17,11 @@
   "dependencies": {
     "@material/animation": "^0.34.0",
     "@material/base": "^0.35.0",
-    "@material/elevation": "^0.36.1",
-    "@material/ripple": "^0.37.1",
+    "@material/elevation": "^0.38.0",
+    "@material/ripple": "^0.38.0",
     "@material/rtl": "^0.36.0",
-    "@material/theme": "^0.35.0",
-    "@material/typography": "^0.37.1",
+    "@material/theme": "^0.38.0",
+    "@material/typography": "^0.38.0",
     "focus-trap": "^2.3.0"
   },
   "publishConfig": {
