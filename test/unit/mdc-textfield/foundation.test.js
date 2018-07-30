@@ -166,8 +166,9 @@ test('#isValid for native validation', () => {
   assert.isNotOk(foundation.isValid());
 });
 
-test('#setValid overrides native validation', () => {
+test('#setValid overrides native validation when useNativeValidation set to false', () => {
   const {foundation, nativeInput} = setupValueTest('', /* isValid */ false);
+  foundation.setUseNativeValidation(false);
   foundation.setValid(true);
   assert.isOk(foundation.isValid());
 
@@ -622,14 +623,14 @@ test('does not style label on blur if input has a value and hasLabel is false', 
   td.verify(mockAdapter.floatLabel(td.matchers.anything()), {times: 0});
 });
 
-test('on blur removes mdc-text-field--invalid if custom validity is false and' +
+test('on blur removes mdc-text-field--invalid if useNativeValidation is true and' +
      'input.checkValidity() returns true', () => {
   const {mockAdapter, blur} = setupBlurTest();
   blur();
   td.verify(mockAdapter.removeClass(cssClasses.INVALID));
 });
 
-test('on blur adds mdc-textfied--invalid if custom validity is false and' +
+test('on blur adds mdc-textfied--invalid if useNativeValidation is true and' +
      'input.checkValidity() returns false', () => {
   const {mockAdapter, blur, nativeInput} = setupBlurTest();
   nativeInput.validity.valid = false;
@@ -637,9 +638,10 @@ test('on blur adds mdc-textfied--invalid if custom validity is false and' +
   td.verify(mockAdapter.addClass(cssClasses.INVALID));
 });
 
-test('on blur does not remove mdc-text-field--invalid if custom validity is true and' +
+test('on blur does not remove mdc-text-field--invalid if useNativeValidation is false and' +
      'input.checkValidity() returns true', () => {
   const {foundation, mockAdapter, blur} = setupBlurTest();
+  foundation.setUseNativeValidation(false);
   foundation.setValid(false);
   blur();
   td.verify(mockAdapter.removeClass(cssClasses.INVALID), {times: 0});

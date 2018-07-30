@@ -16,7 +16,11 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-import MDCTabAdapter from './adapter';
+
+/* eslint-disable no-unused-vars */
+import {MDCTabAdapter, MDCTabDimensions} from './adapter';
+/* eslint-enable no-unused-vars */
+
 import {
   cssClasses,
   strings,
@@ -49,6 +53,15 @@ class MDCTabFoundation extends MDCFoundation {
       removeClass: () => {},
       hasClass: () => {},
       setAttr: () => {},
+      activateIndicator: () => {},
+      deactivateIndicator: () => {},
+      computeIndicatorClientRect: () => {},
+      notifyInteracted: () => {},
+      getOffsetLeft: () => {},
+      getOffsetWidth: () => {},
+      getContentOffsetLeft: () => {},
+      getContentOffsetWidth: () => {},
+      focus: () => {},
     });
   }
 
@@ -58,6 +71,13 @@ class MDCTabFoundation extends MDCFoundation {
 
     /** @private {function(!Event): undefined} */
     this.handleTransitionEnd_ = (evt) => this.handleTransitionEnd(evt);
+
+    /** @private {function(?Event): undefined} */
+    this.handleClick_ = () => this.handleClick();
+  }
+
+  init() {
+    this.adapter_.registerEventHandler('click', this.handleClick_);
   }
 
   /**
@@ -75,6 +95,15 @@ class MDCTabFoundation extends MDCFoundation {
   }
 
   /**
+   * Handles the "click" event
+   */
+  handleClick() {
+    // It's up to the parent component to keep track of the active Tab and
+    // ensure we don't activate a Tab that's already active.
+    this.adapter_.notifyInteracted();
+  }
+
+  /**
    * Returns the Tab's active state
    * @return {boolean}
    */
@@ -84,16 +113,21 @@ class MDCTabFoundation extends MDCFoundation {
 
   /**
    * Activates the Tab
+   * @param {!ClientRect=} previousIndicatorClientRect
    */
-  activate() {
+  activate(previousIndicatorClientRect) {
     // Early exit
     if (this.isActive()) {
       return;
     }
+
     this.adapter_.registerEventHandler('transitionend', this.handleTransitionEnd_);
     this.adapter_.addClass(cssClasses.ANIMATING_ACTIVATE);
     this.adapter_.addClass(cssClasses.ACTIVE);
     this.adapter_.setAttr(strings.ARIA_SELECTED, 'true');
+    this.adapter_.setAttr(strings.TABINDEX, '0');
+    this.adapter_.activateIndicator(previousIndicatorClientRect);
+    this.adapter_.focus();
   }
 
   /**
@@ -104,10 +138,39 @@ class MDCTabFoundation extends MDCFoundation {
     if (!this.isActive()) {
       return;
     }
+
     this.adapter_.registerEventHandler('transitionend', this.handleTransitionEnd_);
     this.adapter_.addClass(cssClasses.ANIMATING_DEACTIVATE);
     this.adapter_.removeClass(cssClasses.ACTIVE);
     this.adapter_.setAttr(strings.ARIA_SELECTED, 'false');
+    this.adapter_.setAttr(strings.TABINDEX, '-1');
+    this.adapter_.deactivateIndicator();
+  }
+
+  /**
+   * Returns the indicator's client rect
+   * @return {!ClientRect}
+   */
+  computeIndicatorClientRect() {
+    return this.adapter_.computeIndicatorClientRect();
+  }
+
+  /**
+   * Returns the dimensions of the Tab
+   * @return {!MDCTabDimensions}
+   */
+  computeDimensions() {
+    const rootWidth = this.adapter_.getOffsetWidth();
+    const rootLeft = this.adapter_.getOffsetLeft();
+    const contentWidth = this.adapter_.getContentOffsetWidth();
+    const contentLeft = this.adapter_.getContentOffsetLeft();
+
+    return {
+      rootLeft,
+      rootRight: rootLeft + rootWidth,
+      contentLeft: rootLeft + contentLeft,
+      contentRight: rootLeft + contentLeft + contentWidth,
+    };
   }
 }
 

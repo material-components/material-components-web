@@ -6,6 +6,9 @@ Prevent visual regressions by running screenshot tests on every PR.
 
 ### API credentials
 
+CBT credentials can be found on the [CrossBrowserTesting.com > Account](https://crossbrowsertesting.com/account) page. \
+Your `Authkey` is listed under the `User Profile` section.
+
 Add the following to your `~/.bash_profile` or `~/.bashrc` file:
 
 ```bash
@@ -13,12 +16,17 @@ export MDC_CBT_USERNAME='you@example.com'
 export MDC_CBT_AUTHKEY='example'
 ```
 
-Credentials can be found here:
+Make the env vars available to existing terminal(s):
 
-* [CrossBrowserTesting.com > Account](https://crossbrowsertesting.com/account) \
-    `Authkey` is listed under the `User Profile` section
-* [Google Cloud Console > IAM & admin > Service accounts](https://console.cloud.google.com/iam-admin/serviceaccounts?project=material-components-web) \
-    Click the `︙` icon on the right side of the service account, then choose `Create key` 
+```bash
+[[ -f ~/.bash_profile ]] && source ~/.bash_profile || source ~/.bashrc
+```
+
+Then authorize your GCP account:
+
+```bash
+gcloud auth login
+```
 
 ### Test your changes
 
@@ -44,6 +52,18 @@ https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/14/03_37
 ```
 
 ## Basic usage
+
+### Local dev server
+
+The deprecated `npm run dev` command has been replaced by:
+
+```bash
+npm start
+```
+
+Open http://localhost:8080/ in your browser to view the test pages.
+
+Source files are automatically recompiled when they change.
 
 ### Updating "golden" screenshots
 
@@ -98,18 +118,6 @@ These options are treated as regular expressions, so partial matches are possibl
 
 See `test/screenshot/browser.json` for the full list of supported browsers.
 
-### Local dev server
-
-The deprecated `npm run dev` command has been replaced by:
-
-```bash
-npm start
-```
-
-Open http://localhost:8080/ in your browser to view the test pages.
-
-Source files are automatically recompiled when they change.
-
 ## Advanced usage
 
 Use `--help` to see all available CLI options:
@@ -123,6 +131,67 @@ npm run screenshot:test -- --help
 ```
 
 **IMPORTANT:** Note the `--` between the script name and its arguments. This is required by `npm`.
+
+### Creating new screenshot tests
+
+The easiest way to create new screenshot tests is to copy an existing test page or directory, and modify it for your 
+component.
+
+For example, to create tests for `mdc-radio`, start by copying and renaming the `mdc-checkbox` tests:
+
+```bash
+cp -r test/screenshot/spec/mdc-{checkbox,radio}
+sed -i '' 's/-checkbox/-radio/g' test/screenshot/spec/mdc-radio/*.* test/screenshot/spec/mdc-radio/*/*.*
+vim ...
+```
+
+#### Component sizes
+
+There are two types of components:
+
+1. **Large** fullpage components (dialog, drawer, top app bar, etc.)
+2. **Small** widget components (button, checkbox, linear progress, etc.)
+
+Test pages for **small** components must have a `test-viewport--mobile` class on the `<main>` element:
+
+```html
+<main class="test-viewport test-viewport--mobile">
+```
+
+This class ensures that all components on the page fit inside an "average" mobile viewport without scrolling.
+This is necessary because most browsers' WebDriver implementations do not support taking screenshots of the entire
+`document`.
+
+Test pages for **large** components, however, must _not_ use the `test-viewport--mobile` class:
+
+```html
+<main class="test-viewport">
+```
+
+For **small** components, you also need to specify the dimensions of the `test-cell--FOO` class in your component's 
+`fixture.scss` file:
+
+```css
+.test-cell--button {
+  width: 171px;
+  height: 71px;
+}
+```
+
+The dimensions should be large enough to fit all variants of your component, with an extra ~`10px` or so of wiggle room.
+This prevents noisy diffs in the event that your component's `height` or `margin` changes unexpectedly.
+
+#### CSS classes
+
+CSS Class | Description
+--- | ---
+`test-viewport` | Mandatory. Wraps all page content.
+`test-viewport--mobile` | Mandatory (**small** components only). Ensures that all page content fits in a mobile viewport.
+`test-cell--<FOO>` | Mandatory (**small** components only). Sets the dimensions of cells in the grid.
+`custom-<FOO>--<MIXIN>` | Mandatory (mixin test pages only). Calls a single Sass theme mixin.
+
+\* _`<FOO>` is the name of the component, minus the `mdc-` prefix. E.g.: `radio`, `top-app-bar`._ \
+\* _`<MIXIN>` is the name of the Sass mixin, minus the `mdc-<FOO>-` prefix. E.g.: `container-fill-color`._ 
 
 ### Public demos
 

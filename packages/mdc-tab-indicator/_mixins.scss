@@ -1,0 +1,54 @@
+/**
+  * @license
+  * Copyright 2018 Google Inc. All Rights Reserved.
+  *
+  * Licensed under the Apache License, Version 2.0 (the "License")
+  * you may not use this file except in compliance with the License.
+  * You may obtain a copy of the License at
+  *
+  *      http://www.apache.org/licenses/LICENSE-2.0
+  *
+  * Unless required by applicable law or agreed to in writing, software
+  * distributed under the License is distributed on an "AS IS" BASIS,
+  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  * See the License for the specific language governing permissions and
+  * limitations under the License.
+*/
+
+@import "@material/theme/mixins";
+
+@mixin mdc-tab-indicator-surface {
+  position: relative;
+}
+
+@mixin mdc-tab-indicator-underline-color($color) {
+  > .mdc-tab-indicator__content--underline {
+    @include mdc-theme-prop(background-color, $color);
+  }
+}
+
+@mixin mdc-tab-indicator-underline-height($height) {
+  > .mdc-tab-indicator__content--underline {
+    height: $height;
+  }
+}
+
+@mixin mdc-tab-indicator-underline-top-corner-radius($radius) {
+  > .mdc-tab-indicator__content--underline {
+    border-top-left-radius: $radius;
+    border-top-right-radius: $radius;
+  }
+}
+
+@mixin mdc-tab-indicator-icon-color($color) {
+  > .mdc-tab-indicator__content--icon {
+    @include mdc-theme-prop(color, $color);
+  }
+}
+
+@mixin mdc-tab-indicator-icon-height($height) {
+  > .mdc-tab-indicator__content--icon {
+    height: $height;
+    font-size: $height;
+  }
+}

@@ -14,15 +14,19 @@
  * limitations under the License.
  */
 
-/* eslint-disable no-var */
-
 window.mdc = window.mdc || {};
 
 window.mdc.testFixture = {
-  attachFontObserver: function() {
-    var fontsLoadedPromise = new Promise(function(resolve) {
-      var robotoFont = new FontFaceObserver('Roboto');
-      var materialIconsFont = new FontFaceObserver('Material Icons');
+  onPageLoad() {
+    this.attachFontObserver_();
+    this.measureMobileViewport_();
+  },
+
+  /** @private */
+  attachFontObserver_() {
+    const fontsLoadedPromise = new Promise((resolve) => {
+      const robotoFont = new FontFaceObserver('Roboto');
+      const materialIconsFont = new FontFaceObserver('Material Icons');
 
       // The `load()` method accepts an optional string of text to ensure that those specific glyphs are available.
       // For the Material Icons font, we need to pass it one of the icon names.
@@ -30,12 +34,41 @@ window.mdc.testFixture = {
         resolve();
       });
 
-      setTimeout(function() {
+      setTimeout(() => {
         resolve();
       }, 3000); // TODO(acdvorak): Create a constant for font loading timeout values
     });
-    fontsLoadedPromise.then(function() {
+
+    fontsLoadedPromise.then(() => {
       document.body.setAttribute('data-fonts-loaded', '');
     });
   },
+
+  measureMobileViewport_() {
+    const mainEl = document.querySelector('.test-viewport');
+    if (!mainEl || !mainEl.classList.contains('test-viewport--mobile')) {
+      return;
+    }
+
+    window.requestAnimationFrame(() => {
+      const setHeight = mainEl.offsetHeight;
+      mainEl.style.height = 'auto';
+      const autoHeight = mainEl.offsetHeight;
+      mainEl.style.height = '';
+
+      if (autoHeight > setHeight) {
+        mainEl.classList.add('test-viewport--overflowing');
+        console.error(`
+Page content overflows a mobile viewport!
+Consider splitting this page into two separate pages.
+If you are trying to create a test page for a fullscreen component like drawer or top-app-bar,
+remove the 'test-viewport--mobile' class from the '<main class="test-viewport">' element.
+          `.trim());
+      }
+    });
+  },
 };
+
+window.addEventListener('load', () => {
+  window.mdc.testFixture.onPageLoad();
+});
