@@ -1,3 +1,5 @@
+
+
 # Contributing to Material Components Web (MDC Web)
 
 We'd love for you to contribute and make Material Components for the web even better than it is today!
@@ -106,7 +108,7 @@ npm run test:closure # Runs closure build tests against all closurized files
 
 #### Running Tests across browsers
 
-If you're making big changes or developing new components, we encourage you to be a good citizen and test your changes across browsers! A super simple way to do this is to use [sauce labs](https://saucelabs.com/), which is how we tests our collaborator PRs on TravisCI:
+If you're making big changes or developing new components, we encourage you to be a good citizen and test your changes across browsers! A super simple way to do this is to use [sauce labs](https://saucelabs.com/), which is how we test our collaborator PRs on TravisCI:
 
 1. [Sign up](https://saucelabs.com/beta/signup) for a sauce labs account (choose "Open Sauce" as your selected plan; [it's free](https://saucelabs.com/opensauce/)!)
 2. [Download sauce connect](https://wiki.saucelabs.com/display/DOCS/Sauce+Connect+Proxy) for your OS and make sure that the `bin` folder in the downloaded zip is somewhere on your `$PATH`.
@@ -136,7 +138,7 @@ If you've done some experimental work on your branch/fork and committed these vi
 
 Finally, it helps to make sure that your branch/fork is up to date with what's currently on master. You can ensure this by running `git pull --rebase origin master` on your branch.
 
-> **NOTE**: Please do _not merge_ master into your branch. _Always_ `pull --rebase` instead. This ensures a linear history by always putting the work you've done after the work that's already on master, regardless of the date in which those commits were made.
+>**NOTE**: Please do _not merge_ master into your branch. _Always_ `pull --rebase` instead. This ensures a linear history by always putting the work you've done after the work that's already on master, regardless of the date in which those commits were made.
 
 [js-style-guide]: https://google.github.io/styleguide/jsguide.html
 [css-style-guide]: https://github.com/material-components/material-components-web/blob/master/.stylelintrc.yaml
