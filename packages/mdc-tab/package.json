@@ -1,9 +1,8 @@
 {
   "name": "@material/tab",
   "description": "The Material Components for the web tab component",
-  "version": "0.37.1",
+  "version": "0.38.0",
   "license": "Apache-2.0",
-  "private": true,
   "keywords": [
     "material components",
     "material design",
@@ -16,10 +15,11 @@
   },
   "dependencies": {
     "@material/base": "^0.35.0",
-    "@material/ripple": "^0.37.1",
-    "@material/rtl": "^0.30.0",
-    "@material/theme": "^0.30.0",
-    "@material/typography": "^0.37.1"
+    "@material/ripple": "^0.38.0",
+    "@material/rtl": "^0.36.0",
+    "@material/tab-indicator": "^0.38.0",
+    "@material/theme": "^0.38.0",
+    "@material/typography": "^0.38.0"
   },
   "publishConfig": {
     "access": "public"
