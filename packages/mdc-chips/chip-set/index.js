@@ -141,7 +141,7 @@ class MDCChipSet extends MDCComponent {
    * @param {string} chipId
    * @return {number}
    */
-  findChipIndex_(chipId){
+  findChipIndex_(chipId) {
     for (let i = 0; i < this.chips.length; i++) {
       if (this.chips[i].id === chipId) {
         return i;
