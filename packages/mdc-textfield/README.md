@@ -9,9 +9,9 @@ path: /catalog/input-controls/text-field/
 ## Important - Default Style Deprecation Notice
 
 The existing default text field style will be changed in an upcoming release. The Material spec indicates that
-the default style will be the filled variant (currently referred to as the box variant). This will become the  
+the default style will be the filled variant (currently referred to as the box variant). This will become the
 default style. Continuing to add the `mdc-text-field--box` class to the text field will
-result in no change. 
+result in no change.
 
 # Text Field
 
@@ -255,6 +255,7 @@ Property | Value Type | Description
 --- | --- | ---
 `value` | String | Proxies to the foundation's `getValue`/`setValue` methods.
 `disabled` | Boolean | Proxies to the foundation's `isDisabled`/`setDisabled` methods.
+`useNativeValidation` | Boolean (write-only) | Proxies to the foundation's `setUseNativeValidation` method.
 `valid` | Boolean | Proxies to the foundation's `isValid`/`setValid` methods.
 `required` | Boolean | Proxies to the foundation's `isRequired`/`setRequired` methods.
 `helperTextContent` | String | Proxies to the foundation's `setHelperTextContent` method when set.
@@ -303,8 +304,9 @@ Method Signature | Description
 --- | ---
 `getValue() => string` | Returns the input's value.
 `setValue(value: string)` | Sets the input's value.
-`isValid() => boolean` | If a custom validity is set, returns that value. Otherwise, returns the result of native validity checks.
-`setValid(isValid: boolean)` | Sets custom validity. Once set, native validity checking is ignored.
+`setUseNativeValidation(useNativeValidation: boolean)` | Sets whether to check native HTML validity state (`true`, default) or custom validity state when updating styles (`false`).
+`setValid(isValid: boolean)` | Sets custom validity and updates styles accordingly. Note that native validation will still be honored subsequently unless `setUseNativeValidation(false)` is also called.
+`isValid() => boolean` | Returns the component's current validity state (either native or custom, depending on how `setUseNativeValidation()` was configured).
 `isDisabled() => boolean` | Returns whether or not the input is disabled.
 `setDisabled(disabled: boolean) => void` | Updates the input's disabled state.
 `isRequired() => boolean` | Returns whether the input is required.

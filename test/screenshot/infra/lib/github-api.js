@@ -103,7 +103,7 @@ class GitHubApi {
 
     this.createStatusThrottled_({
       state,
-      targetUrl: `https://travis-ci.org/material-components/material-components-web/jobs/${process.env.TRAVIS_JOB_ID}`,
+      targetUrl: `https://travis-ci.com/material-components/material-components-web/jobs/${process.env.TRAVIS_JOB_ID}`,
       description,
     });
   }
@@ -145,7 +145,7 @@ class GitHubApi {
       const numTotal = runnableScreenshots.length;
 
       state = GitHubApi.PullRequestState.PENDING;
-      targetUrl = `https://travis-ci.org/material-components/material-components-web/jobs/${process.env.TRAVIS_JOB_ID}`;
+      targetUrl = `https://travis-ci.com/material-components/material-components-web/jobs/${process.env.TRAVIS_JOB_ID}`;
       description = `Running ${numTotal.toLocaleString()} screenshots...`;
     }
 
@@ -159,7 +159,7 @@ class GitHubApi {
 
     return await this.createStatusUnthrottled_({
       state: GitHubApi.PullRequestState.ERROR,
-      targetUrl: `https://travis-ci.org/material-components/material-components-web/jobs/${process.env.TRAVIS_JOB_ID}`,
+      targetUrl: `https://travis-ci.com/material-components/material-components-web/jobs/${process.env.TRAVIS_JOB_ID}`,
       description: 'Error running screenshot tests',
     });
   }

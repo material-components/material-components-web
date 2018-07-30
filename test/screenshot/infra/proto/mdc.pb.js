@@ -1426,7 +1426,6 @@ $root.mdc = (function() {
              * @property {string|null} [branch] GitRevision branch
              * @property {string|null} [tag] GitRevision tag
              * @property {number|null} [pr_number] GitRevision pr_number
-             * @property {Array.<string>|null} [pr_file_paths] GitRevision pr_file_paths
              * @property {mdc.proto.IUser|null} [author] GitRevision author
              * @property {mdc.proto.IUser|null} [committer] GitRevision committer
              */
@@ -1440,7 +1439,6 @@ $root.mdc = (function() {
              * @param {mdc.proto.IGitRevision=} [properties] Properties to set
              */
             function GitRevision(properties) {
-                this.pr_file_paths = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         if (properties[keys[i]] != null)
@@ -1504,14 +1502,6 @@ $root.mdc = (function() {
             GitRevision.prototype.pr_number = 0;
 
             /**
-             * GitRevision pr_file_paths.
-             * @member {Array.<string>} pr_file_paths
-             * @memberof mdc.proto.GitRevision
-             * @instance
-             */
-            GitRevision.prototype.pr_file_paths = $util.emptyArray;
-
-            /**
              * GitRevision author.
              * @member {mdc.proto.IUser|null|undefined} author
              * @memberof mdc.proto.GitRevision
@@ -1565,13 +1555,10 @@ $root.mdc = (function() {
                     writer.uint32(/* id 6, wireType 2 =*/50).string(message.tag);
                 if (message.pr_number != null && message.hasOwnProperty("pr_number"))
                     writer.uint32(/* id 7, wireType 0 =*/56).uint32(message.pr_number);
-                if (message.pr_file_paths != null && message.pr_file_paths.length)
-                    for (var i = 0; i < message.pr_file_paths.length; ++i)
-                        writer.uint32(/* id 8, wireType 2 =*/66).string(message.pr_file_paths[i]);
                 if (message.author != null && message.hasOwnProperty("author"))
-                    $root.mdc.proto.User.encode(message.author, writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
+                    $root.mdc.proto.User.encode(message.author, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
                 if (message.committer != null && message.hasOwnProperty("committer"))
-                    $root.mdc.proto.User.encode(message.committer, writer.uint32(/* id 10, wireType 2 =*/82).fork()).ldelim();
+                    $root.mdc.proto.User.encode(message.committer, writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
                 return writer;
             };
 
@@ -1628,14 +1615,9 @@ $root.mdc = (function() {
                         message.pr_number = reader.uint32();
                         break;
                     case 8:
-                        if (!(message.pr_file_paths && message.pr_file_paths.length))
-                            message.pr_file_paths = [];
-                        message.pr_file_paths.push(reader.string());
-                        break;
-                    case 9:
                         message.author = $root.mdc.proto.User.decode(reader, reader.uint32());
                         break;
-                    case 10:
+                    case 9:
                         message.committer = $root.mdc.proto.User.decode(reader, reader.uint32());
                         break;
                     default:
@@ -1703,13 +1685,6 @@ $root.mdc = (function() {
                 if (message.pr_number != null && message.hasOwnProperty("pr_number"))
                     if (!$util.isInteger(message.pr_number))
                         return "pr_number: integer expected";
-                if (message.pr_file_paths != null && message.hasOwnProperty("pr_file_paths")) {
-                    if (!Array.isArray(message.pr_file_paths))
-                        return "pr_file_paths: array expected";
-                    for (var i = 0; i < message.pr_file_paths.length; ++i)
-                        if (!$util.isString(message.pr_file_paths[i]))
-                            return "pr_file_paths: string[] expected";
-                }
                 if (message.author != null && message.hasOwnProperty("author")) {
                     var error = $root.mdc.proto.User.verify(message.author);
                     if (error)
@@ -1773,13 +1748,6 @@ $root.mdc = (function() {
                     message.tag = String(object.tag);
                 if (object.pr_number != null)
                     message.pr_number = object.pr_number >>> 0;
-                if (object.pr_file_paths) {
-                    if (!Array.isArray(object.pr_file_paths))
-                        throw TypeError(".mdc.proto.GitRevision.pr_file_paths: array expected");
-                    message.pr_file_paths = [];
-                    for (var i = 0; i < object.pr_file_paths.length; ++i)
-                        message.pr_file_paths[i] = String(object.pr_file_paths[i]);
-                }
                 if (object.author != null) {
                     if (typeof object.author !== "object")
                         throw TypeError(".mdc.proto.GitRevision.author: object expected");
@@ -1806,8 +1774,6 @@ $root.mdc = (function() {
                 if (!options)
                     options = {};
                 var object = {};
-                if (options.arrays || options.defaults)
-                    object.pr_file_paths = [];
                 if (options.defaults) {
                     object.type = options.enums === String ? "UNKNOWN" : 0;
                     object.golden_json_file_path = "";
@@ -1833,11 +1799,6 @@ $root.mdc = (function() {
                     object.tag = message.tag;
                 if (message.pr_number != null && message.hasOwnProperty("pr_number"))
                     object.pr_number = message.pr_number;
-                if (message.pr_file_paths && message.pr_file_paths.length) {
-                    object.pr_file_paths = [];
-                    for (var j = 0; j < message.pr_file_paths.length; ++j)
-                        object.pr_file_paths[j] = message.pr_file_paths[j];
-                }
                 if (message.author != null && message.hasOwnProperty("author"))
                     object.author = $root.mdc.proto.User.toObject(message.author, options);
                 if (message.committer != null && message.hasOwnProperty("committer"))
