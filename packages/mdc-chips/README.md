@@ -209,24 +209,27 @@ To use the `MDCChip` and `MDCChipSet` classes, [import](../../docs/importing-js.
 
 #### `MDCChip`
 
-Method Signature | Description
---- | ---
-`isSelected() => boolean` | Proxies to the foundation's `isSelected` method
-`beginExit() => void` | Proxies to the foundation's `beginExit` method
-
 Property | Value Type | Description
 --- | --- | ---
-`foundation` | MDCChipFoundation | The foundation
-`shouldRemoveOnTrailingIconClick` | Boolean | Proxies to the foundation's `getShouldRemoveOnTrailingIconClick`/`setShouldRemoveOnTrailingIconClick` methods
+`id` | string | Unique identifier on the chip*
+`selected` | Boolean | Proxies to the foundation's `isSelected`/`setSelected` methods
+`shouldRemoveOnTrailingIconClick` | Boolean | Proxies to the foundation's `getShouldRemoveOnTrailingIconClick`/`setShouldRemoveOnTrailingIconClick` methods**
 `ripple` | `MDCRipple` | The `MDCRipple` instance for the root element that `MDCChip` initializes
 
->_NOTE_: If `shouldRemoveOnTrailingIconClick` is set to false, you must manually call `beginExit()` on the chip to remove it.
+> *_NOTE_: By default, this will be the same as the `id` attribute on the root element. If an `id` is not provided, a random one will be generated.
+
+> **_NOTE_: If `shouldRemoveOnTrailingIconClick` is set to false, you must manually call `beginExit()` on the chip to remove it.
+
+Method Signature | Description
+--- | ---
+`beginExit() => void` | Proxies to the foundation's `beginExit` method
 
 #### `MDCChipSet`
 
 Method Signature | Description
 --- | ---
 `addChip(chipEl: Element) => void` | Adds a new `MDCChip` instance to the chip set based on the given `mdc-chip` element
+`getSelectedChipIds() => boolean` | Returns an array of the IDs of all selected chips
 
 Property | Value Type | Description
 --- | --- | ---
@@ -286,5 +289,6 @@ Method Signature | Description
 `select(chipId: string) => void` | Selects the chip with the given id
 `deselect(chipId: string) => void` | Deselects the chip with the given id
 `toggleSelect(chipId: string) => void` | Toggles selection of the chip with the given id
+`getSelectedChipIds() => boolean` | Returns an array of the IDs of all selected chips
 `handleChipInteraction(evt: Event) => void` | Handles a custom `MDCChip:interaction` event on the root element
 `handleChipRemoval(evt: Event) => void` | Handles a custom `MDCChip:removal` event on the root element

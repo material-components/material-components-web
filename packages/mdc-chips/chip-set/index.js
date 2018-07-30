@@ -62,7 +62,7 @@ class MDCChipSet extends MDCComponent {
 
   initialSyncWithDOM() {
     this.chips.forEach((chip) => {
-      if (chip.isSelected()) {
+      if (chip.selected) {
         this.foundation_.select(chip.id);
       }
     });
@@ -97,6 +97,14 @@ class MDCChipSet extends MDCComponent {
   }
 
   /**
+   * Returns an array of the IDs of all selected chips.
+   * @return {!Array<string>}
+   */
+  getSelectedChipIds() {
+    return this.foundation_.getSelectedChipIds();
+  }
+
+  /**
    * @return {!MDCChipSetFoundation}
    */
   getDefaultFoundation() {
@@ -112,7 +120,7 @@ class MDCChipSet extends MDCComponent {
       setSelected: (chipId, selected) => {
         const index = this.findChipIndex_(chipId);
         if (index >= 0) {
-          this.chips[index].setSelected(selected);
+          this.chips[index].selected = selected;
         }
       },
     })));
@@ -134,7 +142,7 @@ class MDCChipSet extends MDCComponent {
    * @return {number}
    */
   findChipIndex_(chipId){
-    for (i = 0; i < this.chips.length; i++) {
+    for (let i = 0; i < this.chips.length; i++) {
       if (this.chips[i].id === chipId) {
         return i;
       }

@@ -18,7 +18,7 @@
 import MDCFoundation from '@material/base/foundation';
 import MDCChipSetAdapter from './adapter';
 // eslint-disable-next-line no-unused-vars
-import {MDCChipFoundation, MDCChipInteractionEventType} from '../chip/foundation';
+import {MDCChipInteractionEventType} from '../chip/foundation';
 import {strings, cssClasses} from './constants';
 
 /**
@@ -60,6 +60,14 @@ class MDCChipSetFoundation extends MDCFoundation {
      * @private {!Array<string>}
      */
     this.selectedChipIds_ = [];
+  }
+
+  /**
+   * Returns an array of the IDs of all selected chips.
+   * @return {!Array<string>}
+   */
+  getSelectedChipIds() {
+    return this.selectedChipIds_;
   }
 
   /**
@@ -111,7 +119,7 @@ class MDCChipSetFoundation extends MDCFoundation {
    */
   handleChipInteraction(evt) {
     const {chipId} = evt.detail;
-    this.handleSelect(chipId);
+    this.toggleSelect(chipId);
   }
 
   /**
