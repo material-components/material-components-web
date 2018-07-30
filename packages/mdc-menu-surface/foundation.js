@@ -136,6 +136,8 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     this.hoistedElement_ = false;
     /** @private {boolean} */
     this.isFixedPosition_ = false;
+    /** @private {{x: {number}, y: {number}}} */
+    this.position_ = {x: 0, y: 0};
   }
 
   init() {
@@ -178,14 +180,30 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     this.anchorMargin_.left = typeof margin.left === 'number' ? margin.left : 0;
   }
 
+  /**
+   * Used to indicate if the menu-surface is hoisted to the body.
+   * @param {boolean} isHoisted
+   */
   setIsHoisted(isHoisted) {
-    this.close();
     this.hoistedElement_ = isHoisted;
   }
 
+  /**
+   * Used to set the menu-surface calculations based on a fixed position menu.
+   * @param {boolean} isFixedPosition
+   */
   setFixedPosition(isFixedPosition) {
-    this.close();
     this.isFixedPosition_ = isFixedPosition;
+  }
+
+  /**
+   * Sets the menu-surface position on the page.
+   * @param x
+   * @param y
+   */
+  setAbsolutePosition(x, y) {
+    this.position_.x = x;
+    this.position_.y = y;
   }
 
   /** @param {boolean} quickOpen */
@@ -236,10 +254,23 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
    * @return {AutoLayoutMeasurements} Measurements used to position menu surface popup.
    */
   getAutoLayoutMeasurements_() {
-    const anchorRect = this.adapter_.getAnchorDimensions();
+    let anchorRect = this.adapter_.getAnchorDimensions();
     const viewport = this.adapter_.getWindowDimensions();
     const bodyDimensions = this.adapter_.getBodyDimensions();
     const windowScroll = this.adapter_.getWindowScroll();
+
+    if (!anchorRect) {
+      anchorRect = /** @type {ClientRect} */ ({
+        x: this.position_.x,
+        y: this.position_.y,
+        top: this.position_.y,
+        bottom: this.position_.y,
+        left: this.position_.x,
+        right: this.position_.x,
+        height: 0,
+        width: 0,
+      });
+    }
 
     return {
       viewport,
@@ -376,10 +407,6 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
 
   /** @private */
   autoPosition_() {
-    if (!this.adapter_.hasAnchor()) {
-      return;
-    }
-
     // Compute measurements for autoposition methods reuse.
     this.measures_ = this.getAutoLayoutMeasurements_();
 
