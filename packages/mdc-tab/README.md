@@ -36,8 +36,8 @@ npm install @material/tab
 ```html
 <button class="mdc-tab" role="tab" aria-selected="false" tabindex="-1">
   <div class="mdc-tab__content">
-    <span class="mdc-tab__icon">heart</div>
-    <span class="mdc-tab__text-label">Favorites</div>
+    <span class="mdc-tab__icon">heart</span>
+    <span class="mdc-tab__text-label">Favorites</span>
   </div>
   <span class="mdc-tab-indicator">
     <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>

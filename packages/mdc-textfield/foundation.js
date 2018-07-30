@@ -106,6 +106,10 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.useCustomValidityChecking_ = false;
     /** @private {boolean} */
     this.isValid_ = true;
+
+    /** @private {boolean} */
+    this.useNativeValidation_ = true;
+
     /** @private {function(): undefined} */
     this.inputFocusHandler_ = () => this.activateFocus();
     /** @private {function(): undefined} */
@@ -291,22 +295,29 @@ class MDCTextFieldFoundation extends MDCFoundation {
    *     Otherwise, returns the result of native validity checks.
    */
   isValid() {
-    return this.useCustomValidityChecking_
-      ? this.isValid_ : this.isNativeInputValid_();
+    return this.useNativeValidation_
+      ? this.isNativeInputValid_() : this.isValid_;
   }
 
   /**
    * @param {boolean} isValid Sets the validity state of the Text Field.
    */
   setValid(isValid) {
-    this.useCustomValidityChecking_ = true;
     this.isValid_ = isValid;
-    // Retrieve from the getter to ensure correct logic is applied.
-    isValid = this.isValid();
     this.styleValidity_(isValid);
+
+    const shouldShake = !isValid && !this.isFocused_;
     if (this.adapter_.hasLabel()) {
-      this.adapter_.shakeLabel(this.shouldShake);
+      this.adapter_.shakeLabel(shouldShake);
     }
+  }
+
+  /**
+   * Enables or disables the use of native validation. Use this for custom validation.
+   * @param {boolean} useNativeValidation Set this to false to ignore native input validation.
+   */
+  setUseNativeValidation(useNativeValidation) {
+    this.useNativeValidation_ = useNativeValidation;
   }
 
   /**
