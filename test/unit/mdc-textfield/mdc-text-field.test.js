@@ -422,6 +422,12 @@ test('get/set required', () => {
   assert.isFalse(component.required);
 });
 
+test('set useNativeValidation', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.useNativeValidation = true;
+  td.verify(mockFoundation.setUseNativeValidation(true));
+});
+
 test('get/set pattern', () => {
   const {component} = setupMockFoundationTest();
   component.pattern = '.{8,}';

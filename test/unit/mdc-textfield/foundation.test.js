@@ -754,7 +754,7 @@ test('touchstart on the input sets the line ripple origin', () => {
   td.verify(mockAdapter.setLineRippleTransformOrigin(td.matchers.anything()));
 });
 
-test('on validation attribute change calls styleValidity', () => {
+test('on validation attribute change calls styleValidity_', () => {
   const {foundation, mockAdapter, helperText} = setupTest();
   let attributeChange;
   td.when(mockAdapter.registerValidationAttributeChangeHandler(td.matchers.isA(Function)))
@@ -771,7 +771,7 @@ test('on validation attribute change calls styleValidity', () => {
   td.verify(mockAdapter.removeClass(cssClasses.DISABLED), {times: 0});
 });
 
-test('should not call styleValidity on non-whitelisted attribute change', () => {
+test('should not call styleValidity_ on non-whitelisted attribute change', () => {
   const {foundation, mockAdapter, helperText} = setupTest();
   let attributeChange;
   td.when(mockAdapter.registerValidationAttributeChangeHandler(td.matchers.isA(Function)))
