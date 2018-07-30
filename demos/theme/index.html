@@ -677,19 +677,23 @@
         </h3>
 
         <fieldset class="demo-switch-wrapper">
-          <div class="mdc-switch">
-            <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" role="switch" checked>
-            <div class="mdc-switch__background">
-              <div class="mdc-switch__knob"></div>
+          <div class="mdc-switch mdc-switch--checked">
+            <div class="mdc-switch__track"></div>
+            <div class="mdc-switch__thumb-underlay">
+              <div class="mdc-switch__thumb">
+                <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" role="switch" checked>
+              </div>
             </div>
           </div>
           <label for="basic-switch" class="mdc-switch-label">off/on</label>
         </fieldset>
         <fieldset class="demo-switch-wrapper" disabled>
-          <div class="mdc-switch">
-            <input type="checkbox" id="disabled-switch" class="mdc-switch__native-control" role="switch" checked>
-            <div class="mdc-switch__background">
-              <div class="mdc-switch__knob"></div>
+          <div class="mdc-switch mdc-switch--checked mdc-switch--disabled">
+            <div class="mdc-switch__track"></div>
+            <div class="mdc-switch__thumb-underlay">
+              <div class="mdc-switch__thumb">
+                <input type="checkbox" id="disabled-switch" class="mdc-switch__native-control" role="switch" checked>
+              </div>
             </div>
           </div>
           <label for="disabled-switch" class="mdc-switch-label">disabled</label>
@@ -931,6 +935,14 @@
 
         [].forEach.call(document.querySelectorAll('.mdc-slider'), function(slider) {
           mdc.slider.MDCSlider.attachTo(slider);
+        });
+
+        /*
+         * Switch
+         */
+
+        [].forEach.call(document.querySelectorAll('.mdc-switch'), function(switchEl) {
+            mdc.switchComponent.MDCSwitch.attachTo(switchEl);
         });
 
         /*

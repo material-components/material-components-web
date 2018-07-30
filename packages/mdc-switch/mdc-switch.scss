@@ -1,5 +1,5 @@
 //
-// Copyright 2016 Google Inc. All Rights Reserved.
+// Copyright 2018 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,147 +16,118 @@
 
 @import "@material/elevation/mixins";
 @import "@material/rtl/mixins";
+@import "@material/ripple/common";
+@import "@material/ripple/mixins";
 @import "./functions";
 @import "./mixins";
 @import "./variables";
 
-// postcss-bem-linter: define switch
 .mdc-switch {
+  @include mdc-switch-toggled-on-track-color($mdc-switch-baseline-theme-color);
+  @include mdc-switch-toggled-on-thumb-color($mdc-switch-baseline-theme-color);
+  @include mdc-switch-toggled-off-track-color($mdc-switch-toggled-off-track-color);
+  @include mdc-switch-toggled-off-thumb-color($mdc-switch-toggled-off-thumb-color);
+  @include mdc-switch-toggled-off-ripple-color($mdc-switch-toggled-off-ripple-color);
+
   display: inline-block;
   position: relative;
-
-  &__native-control {
-    @include mdc-switch-native-control_;
-
-    display: inline-block;
-    margin-top: $mdc-switch-knob-vertical-offset_;
-    margin-left: 0;
-    transition: mdc-switch-transition(transform);
-    opacity: 0;
-    cursor: pointer;
-    z-index: 2;
-
-    &:checked {
-      transform: translateX($mdc-switch-knob-active-margin);
-
-      @include mdc-rtl {
-        transform: translateX(-($mdc-switch-knob-active-margin));
-      }
-    }
-  }
-}
-
-@at-root {
-  @include mdc-switch-unchecked-track-color_($mdc-switch-unchecked-track-color);
-  @include mdc-switch-unchecked-knob-color_($mdc-switch-unchecked-knob-color);
-  @include mdc-switch-unchecked-focus-indicator-color_($mdc-switch-unchecked-focus-ring-color);
-  @include mdc-switch-track-color($mdc-switch-baseline-theme-color);
-  @include mdc-switch-knob-color($mdc-switch-baseline-theme-color);
-  @include mdc-switch-focus-indicator-color($mdc-switch-baseline-theme-color);
-}
-
-.mdc-switch__background {
-  display: block;
-  position: relative;
-  width: $mdc-switch-track-width;
-  height: $mdc-switch-track-height;
-  border-radius: 50%;
   outline: none;
   user-select: none;
-
-  // Track
-  &::before {
-    display: block;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    transition:
-      mdc-switch-transition(opacity),
-      mdc-switch-transition(background-color),
-      mdc-switch-transition(border-color);
-    border: 1px solid;
-    border-radius: 7px;
-    opacity: .38;
-    content: "";
-  }
 }
 
-.mdc-switch__knob {
-  @include mdc-elevation(2);
+.mdc-switch__native-control {
   @include mdc-rtl-reflexive-position(left, 0);
 
-  display: block;
   position: absolute;
-  top: $mdc-switch-knob-vertical-offset_;
+  top: 0;
+  width: $mdc-switch-native-control-width;
+  height: $mdc-switch-tap-target-size;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.mdc-switch__track {
   box-sizing: border-box;
-  width: $mdc-switch-knob-diameter;
-  height: $mdc-switch-knob-diameter;
+  width: $mdc-switch-track-width;
+  height: $mdc-switch-track-height;
+  transition:
+    mdc-switch-transition(opacity),
+    mdc-switch-transition(background-color),
+    mdc-switch-transition(border-color);
+  border: 1px solid;
+  border-radius: $mdc-switch-track-height / 2;
+  opacity: .38;
+}
+
+.mdc-switch__thumb-underlay {
+  @include mdc-rtl-reflexive-position(left, $mdc-switch-tap-target-initial-position);
+  @include mdc-ripple-surface();
+  @include mdc-ripple-radius-unbounded;
+  @include mdc-states($mdc-switch-baseline-theme-color);
+
+  display: flex;
+  position: absolute;
+  // Ensures the knob is centered on the track.
+  top: -(($mdc-switch-tap-target-size - $mdc-switch-track-height) / 2);
+  align-items: center;
+  justify-content: center;
+  width: $mdc-switch-tap-target-size;
+  height: $mdc-switch-tap-target-size;
   transform: translateX(0);
   transition:
     mdc-switch-transition(transform),
     mdc-switch-transition(background-color),
     mdc-switch-transition(border-color);
-  border: $mdc-switch-knob-diameter / 2 solid;
+}
+
+.mdc-switch__thumb {
+  @include mdc-elevation(2);
+
+  box-sizing: border-box;
+  width: $mdc-switch-thumb-diameter;
+  height: $mdc-switch-thumb-diameter;
+  border: $mdc-switch-thumb-diameter / 2 solid;
   border-radius: 50%;
+  // Allow events to go through to the native control, necessary for IE and Edge.
+  pointer-events: none;
   z-index: 1;
-
-  // Focus indicator
-  &::before {
-    @include mdc-switch-tap-target_;
-
-    transform: scale(0);
-    transition:
-      mdc-switch-transition(transform),
-      mdc-switch-transition(background-color);
-    border-radius: 50%;
-    opacity: .2;
-    content: "";
-  }
 }
 
-// Focus indicator
-.mdc-switch__native-control:focus ~ .mdc-switch__background .mdc-switch__knob::before {
-  transform: scale(1);
-}
-
-.mdc-switch__native-control:checked ~ .mdc-switch__background {
-  // Track
-  &::before {
-    opacity: .5;
+.mdc-switch--checked {
+  .mdc-switch__track {
+    opacity: .54;
   }
 
-  .mdc-switch__knob {
-    transform: translateX($mdc-switch-knob-active-margin);
+  .mdc-switch__thumb-underlay {
+    transform: translateX($mdc-switch-thumb-active-margin);
 
     @include mdc-rtl {
-      transform: translateX(-($mdc-switch-knob-active-margin));
+      transform: translateX(-($mdc-switch-thumb-active-margin));
     }
+  }
 
-    // Focus indicator
-    &::before {
-      opacity: .15;
+  // Translate the native control the opposite direction so that the tap target stays the same.
+  .mdc-switch__native-control {
+    transform: translateX(-($mdc-switch-thumb-active-margin));
+
+    @include mdc-rtl {
+      transform: translateX($mdc-switch-thumb-active-margin);
     }
   }
 }
 
-// postcss-bem-linter: end
+.mdc-switch--disabled {
+  opacity: .38;
+  pointer-events: none;
 
-.mdc-switch__native-control:disabled {
-  cursor: initial;
-}
-
-.mdc-switch__native-control:disabled ~ .mdc-switch__background {
-  // Track
-  &::before {
-    background-color: $mdc-switch-unchecked-track-color;
-    opacity: .12;
+  .mdc-switch__thumb {
+    border-width: 1px;  // In high contrast mode, only show outline of knob.
   }
 
-  .mdc-switch__knob {
-    border-width: 1px;  // In high contrast mode, only show outline of the knob.
-    border-color: $mdc-switch-disabled-knob-color;
-    background-color: $mdc-switch-disabled-knob-color;
+  .mdc-switch__native-control {
+    cursor: default;
+    pointer-events: none;
   }
 }

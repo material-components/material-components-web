@@ -17,30 +17,30 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,600,700");
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
-$test-trim-color: #abc123; // Value must match `TRIM_COLOR_CSS_VALUE` in `image-cropper.js`
-$test-grid-color: #dddddd;
+$test-viewport-trim-color: #abc123; // Value must match `TRIM_COLOR_CSS_VALUE` in `image-cropper.js`
+$test-layout-cell-grid-color: #dddddd;
 
-.test-body {
+.test-container {
   display: flex;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-.test-main {
+.test-viewport {
   position: relative;
   box-sizing: border-box;
 }
 
-.test-main--mobile-viewport {
+.test-viewport--mobile {
   width: 350px; // fits 2 columns of buttons within a Galaxy S7 viewport
   height: 590px; // fits 8 rows of buttons within a Galaxy S7 viewport
   margin: 5px 0 5px 5px; // Extra padding ensures that CBT's "chromeless" screenshots don't get cut off
-  border: 1px solid $test-trim-color;
+  border: 1px solid $test-viewport-trim-color;
   overflow: hidden;
 }
 
-.test-main--overflowing::after {
+.test-viewport--overflowing::after {
   display: block;
   position: absolute;
   right: 0;
@@ -56,7 +56,7 @@ $test-grid-color: #dddddd;
   content: "ERROR: Content overflows mobile viewport!";
 }
 
-.test-grid {
+.test-layout {
   display: flex;
   flex-wrap: wrap;
   box-sizing: border-box;
@@ -72,8 +72,8 @@ $test-grid-color: #dddddd;
   // Ruler grid pattern
   // https://stackoverflow.com/a/32861765/467582
   background-image:
-    linear-gradient(to right, #{$test-grid-color} 1px, transparent 1.01px),  // fraction for IE 11
-    linear-gradient(to bottom, #{$test-grid-color} 1px, transparent 1.01px); // fraction for IE 11
+    linear-gradient(to right, #{$test-layout-cell-grid-color} 1px, transparent 1.01px),  // fraction for IE 11
+    linear-gradient(to bottom, #{$test-layout-cell-grid-color} 1px, transparent 1.01px); // fraction for IE 11
 
   background-size: 10px 10px;
 }
