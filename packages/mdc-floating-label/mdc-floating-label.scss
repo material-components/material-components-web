@@ -37,7 +37,13 @@
       transform $mdc-floating-label-transition-duration $mdc-animation-standard-curve-timing-function,
       color $mdc-floating-label-transition-duration $mdc-animation-standard-curve-timing-function;
     line-height: 1.15rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     cursor: text;
+    overflow: hidden;
+    // Force the label into its own layer to prevent visible layer promotion adjustments
+    // when the ripple is activated behind it.
+    will-change: transform;
 
     @include mdc-rtl {
       /* @noflip */

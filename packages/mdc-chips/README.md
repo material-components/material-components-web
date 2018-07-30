@@ -248,10 +248,6 @@ Method Signature | Description
 `addClassToLeadingIcon(className: string) => void` | Adds a class to the leading icon element
 `removeClassFromLeadingIcon(className: string) => void` | Removes a class from the leading icon element
 `eventTargetHasClass(target: EventTarget, className: string) => boolean` | Returns true if target has className, false otherwise
-`registerEventHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the root element
-`deregisterEventHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the root element
-`registerTrailingIconInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the trailing icon element
-`deregisterTrailingIconInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the trailing icon element
 `notifyInteraction() => void` | Emits a custom event `MDCChip:interaction` denoting the chip has been interacted with
 `notifyTrailingIconInteraction() => void` | Emits a custom event `MDCChip:trailingIconInteraction` denoting the chip's trailing icon has been interacted with
 `notifyRemoval() => void` | Emits a custom event `MDCChip:removal` denoting the chip will be removed
@@ -267,8 +263,6 @@ Method Signature | Description
 Method Signature | Description
 --- | ---
 `hasClass(className: string) => boolean` | Returns whether the chip set element has the given class
-`registerInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event handler on the root element for a given event
-`deregisterInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event handler on the root element for a given event
 `removeChip(chip: MDCChip) => void` | Removes the chip object from the chip set
 
 ### Foundations: `MDCChipFoundation` and `MDCChipSetFoundation`
@@ -292,3 +286,5 @@ Method Signature | Description
 --- | ---
 `select(chipFoundation: MDCChipFoundation) => void` | Selects the given chip
 `deselect(chipFoundation: MDCChipFoundation) => void` | Deselects the given chip
+`handleChipInteraction(evt: Event) => void` | Handles a custom `MDCChip:interaction` event on the root element
+`handleChipRemoval(evt: Event) => void` | Handles a custom `MDCChip:removal` event on the root element

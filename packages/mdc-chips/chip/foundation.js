@@ -48,10 +48,6 @@ class MDCChipFoundation extends MDCFoundation {
       addClassToLeadingIcon: () => {},
       removeClassFromLeadingIcon: () => {},
       eventTargetHasClass: () => {},
-      registerEventHandler: () => {},
-      deregisterEventHandler: () => {},
-      registerTrailingIconInteractionHandler: () => {},
-      deregisterTrailingIconInteractionHandler: () => {},
       notifyInteraction: () => {},
       notifyTrailingIconInteraction: () => {},
       notifyRemoval: () => {},
@@ -71,32 +67,6 @@ class MDCChipFoundation extends MDCFoundation {
      * @private {boolean}
      * */
     this.shouldRemoveOnTrailingIconClick_ = true;
-    /** @private {function(!Event): undefined} */
-    this.interactionHandler_ = (evt) => this.handleInteraction(evt);
-    /** @private {function(!Event): undefined} */
-    this.transitionEndHandler_ = (evt) => this.handleTransitionEnd(evt);
-    /** @private {function(!Event): undefined} */
-    this.trailingIconInteractionHandler_ = (evt) => this.handleTrailingIconInteraction(evt);
-  }
-
-  init() {
-    ['click', 'keydown'].forEach((evtType) => {
-      this.adapter_.registerEventHandler(evtType, this.interactionHandler_);
-    });
-    this.adapter_.registerEventHandler('transitionend', this.transitionEndHandler_);
-    ['click', 'keydown', 'touchstart', 'pointerdown', 'mousedown'].forEach((evtType) => {
-      this.adapter_.registerTrailingIconInteractionHandler(evtType, this.trailingIconInteractionHandler_);
-    });
-  }
-
-  destroy() {
-    ['click', 'keydown'].forEach((evtType) => {
-      this.adapter_.deregisterEventHandler(evtType, this.interactionHandler_);
-    });
-    this.adapter_.deregisterEventHandler('transitionend', this.transitionEndHandler_);
-    ['click', 'keydown', 'touchstart', 'pointerdown', 'mousedown'].forEach((evtType) => {
-      this.adapter_.deregisterTrailingIconInteractionHandler(evtType, this.trailingIconInteractionHandler_);
-    });
   }
 
   /**

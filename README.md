@@ -1,4 +1,4 @@
-[![Build Status](https://img.shields.io/travis/material-components/material-components-web/master.svg)](https://travis-ci.org/material-components/material-components-web/)
+[![Build Status](https://travis-ci.com/material-components/material-components-web.svg?branch=master)](https://travis-ci.com/material-components/material-components-web/)
 [![codecov](https://codecov.io/gh/material-components/material-components-web/branch/master/graph/badge.svg)](https://codecov.io/gh/material-components/material-components-web)
 [![Chat](https://img.shields.io/discord/259087343246508035.svg)](https://discord.gg/material-components)
 
@@ -109,10 +109,8 @@ This will produce a Material Design ripple on the button!
 
 We officially support the last two versions of every major browser. Specifically, we test on the following browsers:
 
-- Chrome
-- Safari
-- Firefox
-- IE 11/Edge
-- Opera
-- Mobile Safari
-- Chrome on Android
+- **Chrome** on Android, Windows, macOS, and Linux
+- **Firefox** on Windows, macOS, and Linux
+- **Safari** on iOS and macOS
+- **Edge** on Windows
+- **IE 11** on Windows
