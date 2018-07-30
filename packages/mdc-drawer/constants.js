@@ -17,6 +17,7 @@
 /** @enum {string} */
 const cssClasses = {
   DISMISSIBLE: 'mdc-drawer--dismissible',
+  MODAL: 'mdc-drawer--modal',
   OPEN: 'mdc-drawer--open',
   ANIMATING_CLOSE: 'mdc-drawer--animating-close',
   ANIMATING_OPEN: 'mdc-drawer--animating-open',

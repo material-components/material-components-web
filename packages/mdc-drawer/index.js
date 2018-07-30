@@ -114,6 +114,8 @@ export class MDCDrawer extends MDCComponent {
 
     if (this.root_.classList.contains(MDCDismissibleDrawerFoundation.cssClasses.DISMISSIBLE)) {
       return new MDCDismissibleDrawerFoundation(adapter);
+    } else if (this.root_.classList.contains(MDCModalDrawerFoundation.cssClasses.MODAL)) {
+      return new MDCModalDrawerFoundation(adapter);
     }
   }
 }
