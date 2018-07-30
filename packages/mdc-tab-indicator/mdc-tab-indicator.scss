@@ -1,0 +1,68 @@
+/**
+  * @license
+  * Copyright 2018 Google Inc. All Rights Reserved.
+  *
+  * Licensed under the Apache License, Version 2.0 (the "License")
+  * you may not use this file except in compliance with the License.
+  * You may obtain a copy of the License at
+  *
+  *      http://www.apache.org/licenses/LICENSE-2.0
+  *
+  * Unless required by applicable law or agreed to in writing, software
+  * distributed under the License is distributed on an "AS IS" BASIS,
+  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  * See the License for the specific language governing permissions and
+  * limitations under the License.
+*/
+
+@import "@material/animation/variables";
+@import "./mixins";
+
+.mdc-tab-indicator {
+  @include mdc-tab-indicator-underline-color(primary);
+  @include mdc-tab-indicator-underline-height(2px);
+  @include mdc-tab-indicator-icon-color(secondary);
+  @include mdc-tab-indicator-icon-height(34px);
+
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.mdc-tab-indicator__content {
+  transform-origin: left;
+  opacity: 0;
+}
+
+.mdc-tab-indicator__content--underline {
+  align-self: flex-end;
+  width: 100%;
+}
+
+.mdc-tab-indicator__content--icon {
+  align-self: center;
+  margin: 0 auto;
+}
+
+.mdc-tab-indicator--active > .mdc-tab-indicator__content {
+  opacity: 1;
+}
+
+.mdc-tab-indicator--sliding-activate > .mdc-tab-indicator__content {
+  transition: 250ms transform $mdc-animation-standard-curve-timing-function;
+}
+
+.mdc-tab-indicator--fading-activate > .mdc-tab-indicator__content,
+.mdc-tab-indicator--fading-deactivate > .mdc-tab-indicator__content {
+  transition: 150ms opacity linear;
+}
+
+.mdc-tab-indicator--fading-activate > .mdc-tab-indicator__content {
+  transition-delay: 100ms;
+}
+

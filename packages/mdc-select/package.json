@@ -1,7 +1,7 @@
 {
   "name": "@material/select",
   "description": "The Material Components web select (text field drop-down) component",
-  "version": "0.37.1",
+  "version": "0.38.0",
   "license": "Apache-2.0",
   "keywords": [
     "material components",
@@ -17,12 +17,12 @@
   "dependencies": {
     "@material/animation": "^0.34.0",
     "@material/base": "^0.35.0",
-    "@material/floating-label": "^0.37.1",
-    "@material/line-ripple": "^0.35.0",
-    "@material/notched-outline": "^0.37.1",
-    "@material/ripple": "^0.37.1",
+    "@material/floating-label": "^0.38.0",
+    "@material/line-ripple": "^0.38.0",
+    "@material/notched-outline": "^0.38.0",
+    "@material/ripple": "^0.38.0",
     "@material/rtl": "^0.36.0",
-    "@material/theme": "^0.35.0",
-    "@material/typography": "^0.37.1"
+    "@material/theme": "^0.38.0",
+    "@material/typography": "^0.38.0"
   }
 }

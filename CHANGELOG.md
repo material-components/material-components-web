@@ -1,3 +1,40 @@
+<a name="0.38.0"></a>
+# [0.38.0](https://github.com/material-components/material-components-web/compare/v0.37.1...v0.38.0) (2018-07-30)
+
+
+### Bug Fixes
+
+* **chips:** Remove color change from selected filter chips ([#3093](https://github.com/material-components/material-components-web/issues/3093)) ([19e3d7f](https://github.com/material-components/material-components-web/commit/19e3d7f))
+* **infrastructure:** Rework goog.module positioning ([#3098](https://github.com/material-components/material-components-web/issues/3098)) ([fbbf58a](https://github.com/material-components/material-components-web/commit/fbbf58a))
+* **infrastructure:** update saucelabs windows 8 to windows 10 IE11 browser ([#3234](https://github.com/material-components/material-components-web/issues/3234)) ([547a980](https://github.com/material-components/material-components-web/commit/547a980))
+* **list:** add list to webpack js bundler ([#3244](https://github.com/material-components/material-components-web/issues/3244)) ([b95d4e7](https://github.com/material-components/material-components-web/commit/b95d4e7))
+* **theme:** Allow CSS variables to be passed to mdc-theme-prop ([#3086](https://github.com/material-components/material-components-web/issues/3086)) ([b47fe7d](https://github.com/material-components/material-components-web/commit/b47fe7d))
+
+
+### Features
+
+* **auto-init:** return initialized components ([#1333](https://github.com/material-components/material-components-web/issues/1333)) ([19955bf](https://github.com/material-components/material-components-web/commit/19955bf))
+* **floating-label:** Add max-width mixin ([#2956](https://github.com/material-components/material-components-web/issues/2956)) ([66f8bf7](https://github.com/material-components/material-components-web/commit/66f8bf7))
+* **chips:** Register handlers in component instead of foundation ([#3146](https://github.com/material-components/material-components-web/issues/3146)) ([36e2755](https://github.com/material-components/material-components-web/commit/36e2755))
+* **icon-button:** update event handling to new standard ([#3165](https://github.com/material-components/material-components-web/issues/3165)) ([531867e](https://github.com/material-components/material-components-web/commit/531867e))
+* **list:** Add single selection ([#2970](https://github.com/material-components/material-components-web/issues/2970)) ([cd1f972](https://github.com/material-components/material-components-web/commit/cd1f972))
+* **list:** Updated two-line list to use typography baseline to match spec. ([#3085](https://github.com/material-components/material-components-web/issues/3085)) ([4d11b37](https://github.com/material-components/material-components-web/commit/4d11b37))
+* **select:** reduce adapter apis not used in MDCReact and update events to new pattern ([#3204](https://github.com/material-components/material-components-web/issues/3204)) ([e29742a](https://github.com/material-components/material-components-web/commit/e29742a))
+* **switch:** Merge updated switch into master ([#3214](https://github.com/material-components/material-components-web/issues/3214)) ([19724f1](https://github.com/material-components/material-components-web/commit/19724f1)), closes [#2825](https://github.com/material-components/material-components-web/issues/2825)
+* **tab-bar:** Launch tab, tab indicator, tab scroller, tab bar ([#3252](https://github.com/material-components/material-components-web/issues/3252)) ([78bf4bc](https://github.com/material-components/material-components-web/commit/78bf4bc))
+* **typography:** New mixin to set exact baseline height of text elements. ([#3083](https://github.com/material-components/material-components-web/issues/3083)) ([dd3817a](https://github.com/material-components/material-components-web/commit/dd3817a))
+
+
+### BREAKING CHANGES
+
+* **tab-bar:** mdc-tabs is deprecated and no longer bundled in the material-components-web package. You are encouraged to use the new mdc-tab-bar and related packages instead.
+* **switch:** MDC Switch DOM structure and Sass APIs have changed, and JavaScript APIs have been added. See the documentation for more information.
+* **icon-button:** Removed some adapter APIs (registerInteractionHandler, deregisterInteractionHandler) and shifted responsibility of event handling out of the foundation and into the component.
+* **select:** Removed some adapter APIs (setDisabled, setSelectedIndex, getSelectedIndex, setValue, registerInteractionHandler, deregisterInteractionHandler) and shifted responsibility of event handling and programmatic select element updates out of the foundation and into the component.
+* **chips:** `MDCChip`/`MDCChipSet` registerEventHandler adapter methods were removed, and corresponding handlers were made public in `MDCChipFoundation`/`MDCChipSetFoundation`.
+* **list:** The layout of two-line list items is changed to wrap primary text line in a separate block element.
+
+
 <a name="0.37.1"></a>
 ## [0.37.1](https://github.com/material-components/material-components-web/compare/v0.37.0...v0.37.1) (2018-07-16)
 
