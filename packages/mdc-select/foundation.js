@@ -50,16 +50,16 @@ class MDCSelectFoundation extends MDCFoundation {
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
       hasClass: (/* className: string */) => false,
+      activateBottomLine: () => {},
+      deactivateBottomLine: () => {},
+      getValue: () => {},
+      isRtl: () => false,
       hasLabel: () => false,
       floatLabel: (/* value: boolean */) => {},
       getLabelWidth: () => {},
-      isRtl: () => false,
-      getValue: () => {},
+      hasOutline: () => false,
       notchOutline: (/* labelWidth: number, isRtl: boolean */) => {},
       closeOutline: () => {},
-      hasOutline: () => false,
-      activateBottomLine: () => {},
-      deactivateBottomLine: () => {},
     });
   }
 

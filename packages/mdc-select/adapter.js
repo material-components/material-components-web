@@ -55,12 +55,6 @@ class MDCSelectAdapter {
   hasClass(className) {}
 
   /**
-   * Floats label determined based off of the shouldFloat argument.
-   * @param {boolean} shouldFloat
-   */
-  floatLabel(shouldFloat) {}
-
-  /**
    * Activates the bottom line, showing a focused state.
    */
   activateBottomLine() {}
@@ -87,6 +81,12 @@ class MDCSelectAdapter {
    * @return {boolean}
    */
   hasLabel() {}
+
+  /**
+   * Floats label determined based off of the shouldFloat argument.
+   * @param {boolean} shouldFloat
+   */
+  floatLabel(shouldFloat) {}
 
   /**
    * Returns width of label in pixels, if the label exists.

@@ -90,14 +90,14 @@ class MDCSelect extends MDCComponent {
   }
 
   /**
-   * @return {boolean} True if the Select is disabled.
+   * @return {boolean} True if the select is disabled.
    */
   get disabled() {
     return this.nativeControl_.disabled;
   }
 
   /**
-   * @param {boolean} disabled Sets the Select disabled or enabled.
+   * @param {boolean} disabled Sets the select disabled or enabled.
    */
   set disabled(disabled) {
     this.nativeControl_.disabled = disabled;
@@ -114,12 +114,9 @@ class MDCSelect extends MDCComponent {
 
 
   /**
-   * @param {(function(!Element): !MDCLineRipple)=} lineRippleFactory A function which
-   * creates a new MDCLineRipple.
-   * @param {(function(!Element): !MDCFloatingLabel)=} labelFactory A function which
-   * creates a new MDCFloatingLabel.
-   * @param {(function(!Element): !MDCNotchedOutline)=} outlineFactory A function which
-   * creates a new MDCNotchedOutline.
+   * @param {(function(!Element): !MDCLineRipple)=} lineRippleFactory A function which creates a new MDCLineRipple.
+   * @param {(function(!Element): !MDCFloatingLabel)=} labelFactory A function which creates a new MDCFloatingLabel.
+   * @param {(function(!Element): !MDCNotchedOutline)=} outlineFactory A function which creates a new MDCNotchedOutline.
    */
   initialize(
     labelFactory = (el) => new MDCFloatingLabel(el),
@@ -158,7 +155,7 @@ class MDCSelect extends MDCComponent {
   }
 
   /**
-   * Initiliazes the Select's event listeners and internal state based
+   * Initializes the select's event listeners and internal state based
    * on the environment's state.
    */
   initialSyncWithDOM() {
@@ -202,6 +199,8 @@ class MDCSelect extends MDCComponent {
         addClass: (className) => this.root_.classList.add(className),
         removeClass: (className) => this.root_.classList.remove(className),
         hasClass: (className) => this.root_.classList.contains(className),
+        getValue: () => this.nativeControl_.value,
+        isRtl: () => window.getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
         activateBottomLine: () => {
           if (this.lineRipple_) {
             this.lineRipple_.activate();
@@ -212,8 +211,6 @@ class MDCSelect extends MDCComponent {
             this.lineRipple_.deactivate();
           }
         },
-        isRtl: () => window.getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
-        getValue: () => this.nativeControl_.value,
       },
       this.getOutlineAdapterMethods_(),
       this.getLabelAdapterMethods_())
@@ -223,13 +220,14 @@ class MDCSelect extends MDCComponent {
 
   /**
    * @return {!{
+   *   hasOutline: function(): boolean,
    *   notchOutline: function(number, boolean): undefined,
    *   closeOutline: function(): undefined,
-   *   hasOutline: function(): boolean,
    * }}
    */
   getOutlineAdapterMethods_() {
     return {
+      hasOutline: () => !!this.outline_,
       notchOutline: (labelWidth, isRtl) => {
         if (this.outline_) {
           this.outline_.notch(labelWidth, isRtl);
@@ -240,25 +238,24 @@ class MDCSelect extends MDCComponent {
           this.outline_.closeNotch();
         }
       },
-      hasOutline: () => !!this.outline_,
     };
   }
 
   /**
    * @return {!{
-   *   floatLabel: function(boolean): undefined,
    *   hasLabel: function(): boolean,
+   *   floatLabel: function(boolean): undefined,
    *   getLabelWidth: function(): number,
    * }}
    */
   getLabelAdapterMethods_() {
     return {
+      hasLabel: () => !!this.label_,
       floatLabel: (shouldFloat) => {
         if (this.label_) {
           this.label_.float(shouldFloat);
         }
       },
-      hasLabel: () => !!this.label_,
       getLabelWidth: () => {
         if (this.label_) {
           return this.label_.getWidth();

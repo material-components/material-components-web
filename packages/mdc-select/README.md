@@ -245,16 +245,16 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `addClass(className: string) => void` | Adds a class to the root element. |
 | `removeClass(className: string) => void` | Removes a class from the root element. |
 | `hasClass(className: string) => boolean` | Returns true if the root element has the className in its classList. |
-| `getValue() => string` | Returns the value selected on the `select` element. |
-| `closeOutline() => void` | Switches the notched outline element to its closed state. |
-| `notchOutline(labelWidth: number, isRtl, boolean) => void` | Switches the notched outline element to its "notched state." |
-| `hasOutline() => boolean` | Returns true if the `select` has the notched outline element. |
-| `isRtl() => boolean` | Returns true if a parent of the root element is in RTL. |
-| `floatLabel(value: boolean) => void` | Floats or defloats label. |
-| `hasLabel() => boolean` | Returns true if the `select` has a label associated with it. |
-| `getLabelWidth() => number` | Returns the offsetWidth of the label element. |
 | `activateBottomLine() => void` | Activates the bottom line component. |
 | `deactivateBottomLine() => void` | Deactivates the bottom line component. |
+| `getValue() => string` | Returns the value selected on the `select` element. |
+| `isRtl() => boolean` | Returns true if a parent of the root element is in RTL. |
+| `hasLabel() => boolean` | Returns true if the `select` has a label associated with it. |
+| `floatLabel(value: boolean) => void` | Floats or defloats label. |
+| `getLabelWidth() => number` | Returns the offsetWidth of the label element. |
+| `hasOutline() => boolean` | Returns true if the `select` has the notched outline element. |
+| `notchOutline(labelWidth: number, isRtl, boolean) => void` | Switches the notched outline element to its "notched state." |
+| `closeOutline() => void` | Switches the notched outline element to its closed state. |
 
 ### `MDCSelectFoundation`
 
