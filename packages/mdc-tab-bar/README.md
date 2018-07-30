@@ -51,7 +51,7 @@ npm install @material/tab-bar
       </div>
     </div>
   </div>
-</button>
+</div>
 ```
 
 ### Styles
