@@ -19,6 +19,9 @@
 const chokidar = require('chokidar');
 const debounce = require('debounce');
 
+/** @type {!CliColor} */
+const colors = require('colors');
+
 const CleanCommand = require('./clean');
 const Cli = require('../lib/cli');
 const IndexCommand = require('./index');
@@ -65,6 +68,11 @@ class BuildCommand {
     }
 
     this.logger_.foldEnd('screenshot.build');
+
+    this.logger_.log('');
+    this.logger_.log('');
+    this.logger_.log(colors.bold.green('✨✨✨ Aww yiss - MDC Web build succeeded! ✨✨✨'));
+    this.logger_.log('');
   }
 
   /**
