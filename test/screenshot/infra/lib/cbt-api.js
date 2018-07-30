@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-const colors = require('colors');
+const VError = require('verror');
 const request = require('request-promise-native');
 
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
@@ -26,8 +26,11 @@ const {FormFactorType, OsVendorType, BrowserVendorType, BrowserVersionType} = Us
 const {CbtAccount, CbtActiveTestCounts, CbtConcurrencyStats} = cbtProto;
 const {RawCapabilities} = seleniumProto;
 
+const Cli = require('./cli');
+const CliColor = require('./logger').colors;
 const DiffBaseParser = require('./diff-base-parser');
 const Duration = require('./duration');
+const getStackTrace = require('./stacktrace')('CbtApi');
 
 const MDC_CBT_USERNAME = process.env.MDC_CBT_USERNAME;
 const MDC_CBT_AUTHKEY = process.env.MDC_CBT_AUTHKEY;
@@ -40,6 +43,12 @@ let allBrowsersPromise;
 
 class CbtApi {
   constructor() {
+    /**
+     * @type {!Cli}
+     * @private
+     */
+    this.cli_ = new Cli();
+
     /**
      * @type {!DiffBaseParser}
      * @private
@@ -91,8 +100,8 @@ https://crossbrowsertesting.com/account
    */
   async fetchConcurrencyStats() {
     const [accountJson, activesJson] = await Promise.all([
-      this.sendRequest_('GET', '/account'),
-      this.sendRequest_('GET', '/account/activeTestCounts'),
+      this.sendRequest_(getStackTrace('fetchConcurrencyStats'), 'GET', '/account'),
+      this.sendRequest_(getStackTrace('fetchConcurrencyStats'), 'GET', '/account/activeTestCounts'),
     ]);
 
     const account = CbtAccount.fromObject(accountJson);
@@ -119,7 +128,8 @@ https://crossbrowsertesting.com/account
 
     console.log('Fetching browsers from CBT...');
 
-    allBrowsersPromise = this.sendRequest_('GET', '/selenium/browsers');
+    const stackTrace = getStackTrace('fetchAvailableDevices');
+    allBrowsersPromise = this.sendRequest_(stackTrace, 'GET', '/selenium/browsers');
 
     return allBrowsersPromise;
   }
@@ -130,7 +140,8 @@ https://crossbrowsertesting.com/account
    * @return {!Promise<void>}
    */
   async setTestScore({seleniumSessionId, changedScreenshots}) {
-    await this.sendRequest_('PUT', `/selenium/${seleniumSessionId}`, {
+    const stackTrace = getStackTrace('fetchAvailableDevices');
+    await this.sendRequest_(stackTrace, 'PUT', `/selenium/${seleniumSessionId}`, {
       action: 'set_score',
       score: changedScreenshots.length === 0 ? 'pass' : 'fail',
     });
@@ -356,13 +367,17 @@ https://crossbrowsertesting.com/account
     // NOTE: This only returns Selenium tests running on the authenticated CBT user's account.
     // It does NOT return Selenium tests running under other users.
     /** @type {!CbtSeleniumListResponse} */
-    const listResponse = await this.sendRequest_('GET', '/selenium?active=true&num=100');
+    const listResponse = await this.sendRequest_(
+      getStackTrace('killStalledSeleniumTests'),
+      'GET', '/selenium?active=true&num=100'
+    );
 
     const activeSeleniumTestIds = listResponse.selenium.map((test) => test.selenium_test_id);
 
     /** @type {!Array<!CbtSeleniumInfoResponse>} */
     const infoResponses = await Promise.all(activeSeleniumTestIds.map((seleniumTestId) => {
-      return this.sendRequest_('GET', `/selenium/${seleniumTestId}`);
+      const infoStackTrace = getStackTrace('killStalledSeleniumTests');
+      return this.sendRequest_(infoStackTrace, 'GET', `/selenium/${seleniumTestId}`);
     }));
 
     const stalledSeleniumTestIds = [];
@@ -390,32 +405,53 @@ https://crossbrowsertesting.com/account
    * @return {!Promise<void>}
    */
   async killSeleniumTests(seleniumTestIds, silent = false) {
-    await Promise.all(seleniumTestIds.map((seleniumTestId) => {
+    await Promise.all(seleniumTestIds.map(async (seleniumTestId) => {
       if (!silent) {
-        console.log(`${colors.red('Killing')} zombie Selenium test ${colors.bold(seleniumTestId)}`);
+        console.log(`${CliColor.magenta('Killing')} stalled Selenium test ${CliColor.bold(seleniumTestId)}`);
       }
-      return this.sendRequest_('DELETE', `/selenium/${seleniumTestId}`);
+      const stackTrace = getStackTrace('killSeleniumTests');
+      return await this.sendRequest_(stackTrace, 'DELETE', `/selenium/${seleniumTestId}`).catch((err) => {
+        if (!silent) {
+          console.warn(`${CliColor.red('Failed')} to kill stalled Selenium test ${CliColor.bold(seleniumTestId)}:`);
+          console.warn(err);
+        }
+      });
     }));
   }
 
   /**
+   * @param {string} stackTrace
    * @param {string} method
    * @param {string} endpoint
    * @param {!Object=} body
    * @return {!Promise<!Object<string, *>|!Array<*>>}
    * @private
    */
-  async sendRequest_(method, endpoint, body = undefined) {
-    return request({
-      method,
-      uri: `${REST_API_BASE_URL}${endpoint}`,
-      auth: {
-        username: MDC_CBT_USERNAME,
-        password: MDC_CBT_AUTHKEY,
-      },
-      body,
-      json: true, // Automatically stringify the request body and parse the response body as JSON
-    });
+  async sendRequest_(stackTrace, method, endpoint, body = undefined) {
+    const uri = `${REST_API_BASE_URL}${endpoint}`;
+
+    if (this.cli_.isOffline()) {
+      console.warn(
+        `${CliColor.magenta('WARNING')}:`,
+        new Error('CbtApi#sendRequest_() should not be called in --offline mode')
+      );
+      return [];
+    }
+
+    try {
+      return await request({
+        method,
+        uri,
+        auth: {
+          username: MDC_CBT_USERNAME,
+          password: MDC_CBT_AUTHKEY,
+        },
+        body,
+        json: true, // Automatically stringify the request body and parse the response body as JSON
+      });
+    } catch (err) {
+      throw new VError(err, `CBT API request failed: ${method} ${uri}:\n${stackTrace}`);
+    }
   }
 }
 

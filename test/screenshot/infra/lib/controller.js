@@ -16,20 +16,18 @@
 
 'use strict';
 
-const mdcProto = require('../proto/mdc.pb').mdc.proto;
-const {GitRevision} = mdcProto;
+const VError = require('verror');
 
 const CbtApi = require('./cbt-api');
 const Cli = require('./cli');
 const CloudStorage = require('./cloud-storage');
 const Duration = require('./duration');
-const GitRepo = require('./git-repo');
 const GoldenIo = require('./golden-io');
 const Logger = require('./logger');
 const ReportBuilder = require('./report-builder');
 const ReportWriter = require('./report-writer');
 const SeleniumApi = require('./selenium-api');
-const {ExitCode} = require('./constants');
+const getStackTrace = require('./stacktrace')('Controller');
 
 class Controller {
   constructor() {
@@ -50,12 +48,6 @@ class Controller {
      * @private
      */
     this.cloudStorage_ = new CloudStorage();
-
-    /**
-     * @type {!GitRepo}
-     * @private
-     */
-    this.gitRepo_ = new GitRepo();
 
     /**
      * @type {!GoldenIo}
@@ -93,191 +85,93 @@ class Controller {
    */
   async initForApproval() {
     const runReportJsonUrl = this.cli_.runReportJsonUrl;
-    return this.reportBuilder_.initForApproval({runReportJsonUrl});
+    return await this.reportBuilder_.initForApproval({runReportJsonUrl});
   }
 
   /**
+   * @param {!mdc.proto.DiffBase} goldenDiffBase
    * @return {!Promise<!mdc.proto.ReportData>}
    */
-  async initForCapture() {
+  async initForCapture(goldenDiffBase) {
     const isOnline = this.cli_.isOnline();
-    const shouldFetch = this.cli_.shouldFetch;
-    if (isOnline && shouldFetch) {
-      await this.gitRepo_.fetch();
-    }
     if (isOnline) {
       await this.cbtApi_.killStalledSeleniumTests();
     }
-    return this.reportBuilder_.initForCapture();
+    return await this.reportBuilder_.initForCapture(goldenDiffBase);
   }
 
   /**
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async initForDemo() {
-    const isOnline = this.cli_.isOnline();
-    const shouldFetch = this.cli_.shouldFetch;
-    if (isOnline && shouldFetch) {
-      await this.gitRepo_.fetch();
-    }
-    return this.reportBuilder_.initForDemo();
+    return await this.reportBuilder_.initForDemo();
   }
 
   /**
    * @param {!mdc.proto.ReportData} reportData
-   * @return {{isTestable: boolean, prNumber: ?number}}
-   */
-  checkIsTestable(reportData) {
-    const goldenGitRevision = reportData.meta.golden_diff_base.git_revision;
-    const shouldSkipScreenshotTests =
-      goldenGitRevision &&
-      goldenGitRevision.type === GitRevision.Type.TRAVIS_PR &&
-      goldenGitRevision.pr_file_paths.length === 0;
-
-    return {
-      isTestable: !shouldSkipScreenshotTests,
-      prNumber: goldenGitRevision ? goldenGitRevision.pr_number : null,
-    };
-  }
-
-  /**
-   * @param {!mdc.proto.ReportData} reportData
-   * @return {!Promise<!mdc.proto.ReportData>}
    */
   async uploadAllAssets(reportData) {
-    this.logger_.foldStart('screenshot.upload', 'Controller#uploadAllAssets()');
+    this.logger_.foldStart('screenshot.upload_assets', 'Controller#uploadAllAssets()');
     await this.cloudStorage_.uploadAllAssets(reportData);
-    this.logger_.foldEnd('screenshot.upload');
-    return reportData;
+    this.logger_.foldEnd('screenshot.upload_assets');
   }
 
   /**
    * @param {!mdc.proto.ReportData} reportData
-   * @return {!Promise<!mdc.proto.ReportData>}
    */
   async captureAllPages(reportData) {
-    this.logger_.foldStart('screenshot.capture', 'Controller#captureAllPages()');
-    await this.seleniumApi_.captureAllPages(reportData);
-    await this.cloudStorage_.uploadAllScreenshots(reportData);
-    this.logger_.foldEnd('screenshot.capture');
-    return reportData;
-  }
+    this.logger_.foldStart('screenshot.capture_images', 'Controller#captureAllPages()');
 
-  /**
-   * @param {!mdc.proto.ReportData} reportData
-   * @return {!Promise<!mdc.proto.ReportData>}
-   */
-  async compareAllScreenshots(reportData) {
-    this.logger_.foldStart('screenshot.compare', 'Controller#compareAllScreenshots()');
+    let stackTrace;
 
-    await this.reportBuilder_.populateScreenshotMaps(reportData.user_agents, reportData.screenshots);
-    await this.cloudStorage_.uploadAllDiffs(reportData);
+    try {
+      stackTrace = getStackTrace('captureAllPages');
+      await this.seleniumApi_.captureAllPages(reportData);
+    } catch (err) {
+      throw new VError(err, stackTrace);
+    }
 
-    this.logComparisonResults_(reportData);
-
-    // TODO(acdvorak): Where should this go?
     const meta = reportData.meta;
     meta.end_time_iso_utc = new Date().toISOString();
     meta.duration_ms = Duration.elapsed(meta.start_time_iso_utc, meta.end_time_iso_utc).toMillis();
 
-    this.logger_.foldEnd('screenshot.compare');
-
-    return reportData;
+    this.logger_.foldEnd('screenshot.capture_images');
   }
 
   /**
    * @param {!mdc.proto.ReportData} reportData
-   * @return {!Promise<!mdc.proto.ReportData>}
+   */
+  populateMaps(reportData) {
+    this.reportBuilder_.populateMaps(reportData.user_agents, reportData.screenshots);
+  }
+
+  /**
+   * @param {!mdc.proto.ReportData} reportData
+   */
+  async uploadAllImages(reportData) {
+    this.logger_.foldStart('screenshot.upload_images', 'Controller#uploadAllImages()');
+    await this.cloudStorage_.uploadAllScreenshots(reportData);
+    await this.cloudStorage_.uploadAllDiffs(reportData);
+    this.logger_.foldEnd('screenshot.upload_images');
+  }
+
+  /**
+   * @param {!mdc.proto.ReportData} reportData
    */
   async generateReportPage(reportData) {
-    this.logger_.foldStart('screenshot.report', 'Controller#generateReportPage()');
-
+    this.logger_.foldStart('screenshot.generate_report', 'Controller#generateReportPage()');
     await this.reportWriter_.generateReportPage(reportData);
     await this.cloudStorage_.uploadDiffReport(reportData);
-
-    this.logger_.foldEnd('screenshot.report');
-    this.logger_.log('');
-
-    // TODO(acdvorak): Store this directly in the proto so we don't have to recalculate it all over the place
-    const numChanges =
-      reportData.screenshots.changed_screenshot_list.length +
-      reportData.screenshots.added_screenshot_list.length +
-      reportData.screenshots.removed_screenshot_list.length;
-
-    const boldRed = Logger.colors.bold.red;
-    const boldGreen = Logger.colors.bold.green;
-
-    this.logger_.log('\n');
-    if (numChanges > 0) {
-      this.logger_.error(boldRed(`${numChanges} screenshot${numChanges === 1 ? '' : 's'} changed!\n`));
-      this.logger_.log('Diff report:', boldRed(reportData.meta.report_html_file.public_url));
-    } else {
-      this.logger_.log(boldGreen('0 screenshots changed!\n'));
-      this.logger_.log('Diff report:', boldGreen(reportData.meta.report_html_file.public_url));
-    }
-
-    return reportData;
+    this.logger_.foldEnd('screenshot.generate_report');
   }
 
   /**
    * @param {!mdc.proto.ReportData} reportData
-   * @return {!Promise<number>}
-   */
-  async getTestExitCode(reportData) {
-    // Pull requests display screenshot diffs as a separate "status check" in the GitHub UI, so we don't want to mark
-    // the Travis run as "failed".
-    if (Number(process.env.TRAVIS_PULL_REQUEST)) {
-      return ExitCode.OK;
-    }
-
-    // TODO(acdvorak): Store this directly in the proto so we don't have to recalculate it all over the place
-    const numChanges =
-      reportData.screenshots.changed_screenshot_list.length +
-      reportData.screenshots.added_screenshot_list.length +
-      reportData.screenshots.removed_screenshot_list.length;
-
-    const isOnline = this.cli_.isOnline();
-    if (isOnline && numChanges > 0) {
-      return ExitCode.CHANGES_FOUND;
-    }
-    return ExitCode.OK;
-  }
-
-  /**
-   * @param {!mdc.proto.ReportData} reportData
-   * @return {!Promise<!mdc.proto.ReportData>}
    */
   async approveChanges(reportData) {
     /** @type {!GoldenFile} */
     const newGoldenFile = await this.reportBuilder_.approveChanges(reportData);
     await this.goldenIo_.writeToLocalFile(newGoldenFile);
-    return reportData;
-  }
-
-  /**
-   * @param {!mdc.proto.ReportData} reportData
-   * @private
-   */
-  logComparisonResults_(reportData) {
-    console.log('');
-    this.logComparisonResultSet_('Skipped', reportData.screenshots.skipped_screenshot_list);
-    this.logComparisonResultSet_('Unchanged', reportData.screenshots.unchanged_screenshot_list);
-    this.logComparisonResultSet_('Removed', reportData.screenshots.removed_screenshot_list);
-    this.logComparisonResultSet_('Added', reportData.screenshots.added_screenshot_list);
-    this.logComparisonResultSet_('Changed', reportData.screenshots.changed_screenshot_list);
-  }
-
-  /**
-   * @param {string} title
-   * @param {!Array<!mdc.proto.Screenshot>} screenshots
-   * @private
-   */
-  logComparisonResultSet_(title, screenshots) {
-    console.log(`${title} ${screenshots.length} screenshot${screenshots.length === 1 ? '' : 's'}:`);
-    for (const screenshot of screenshots) {
-      console.log(`  - ${screenshot.html_file_path} > ${screenshot.user_agent.alias}`);
-    }
-    console.log('');
   }
 }
 

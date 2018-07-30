@@ -26,7 +26,7 @@ const path = require('path');
 const serveIndex = require('serve-index');
 
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
-const {Approvals, DiffImageResult, Dimensions, GitRevision, GitStatus, GoldenScreenshot, LibraryVersion} = mdcProto;
+const {Approvals, DiffImageResult, Dimensions, GitStatus, GoldenScreenshot, LibraryVersion} = mdcProto;
 const {ReportData, ReportMeta, Screenshot, Screenshots, ScreenshotList, TestFile, User, UserAgents} = mdcProto;
 const {InclusionType, CaptureState} = Screenshot;
 
@@ -118,21 +118,24 @@ class ReportBuilder {
     /** @type {!mdc.proto.ReportData} */
     const reportData = ReportData.fromObject(require(runReportJsonFile.absolute_path));
     reportData.approvals = Approvals.create();
-    this.populateScreenshotMaps(reportData.user_agents, reportData.screenshots);
+    this.populateMaps(reportData.user_agents, reportData.screenshots);
     this.populateApprovals_(reportData);
     return reportData;
   }
 
   /**
+   * @param {!mdc.proto.DiffBase} goldenDiffBase
    * @return {!Promise<!mdc.proto.ReportData>}
    */
-  async initForCapture() {
+  async initForCapture(goldenDiffBase) {
     this.logger_.foldStart('screenshot.init', 'ReportBuilder#initForCapture()');
 
-    await this.cbtApi_.fetchAvailableDevices();
+    if (this.cli_.isOnline()) {
+      await this.cbtApi_.fetchAvailableDevices();
+    }
 
     /** @type {!mdc.proto.ReportMeta} */
-    const reportMeta = await this.createReportMetaProto_();
+    const reportMeta = await this.createReportMetaProto_(goldenDiffBase);
     /** @type {!mdc.proto.UserAgents} */
     const userAgents = await this.createUserAgentsProto_();
 
@@ -143,7 +146,7 @@ class ReportBuilder {
       await this.startTemporaryHttpServer_(reportMeta);
     }
 
-    const screenshots = await this.createScreenshotsProto_({reportMeta, userAgents});
+    const screenshots = await this.createScreenshotsProto_({reportMeta, userAgents, goldenDiffBase});
 
     const reportData = ReportData.create({
       meta: reportMeta,
@@ -173,7 +176,7 @@ class ReportBuilder {
    * @param {!mdc.proto.UserAgents} userAgents
    * @param {!mdc.proto.Screenshots} screenshots
    */
-  populateScreenshotMaps(userAgents, screenshots) {
+  populateMaps(userAgents, screenshots) {
     // TODO(acdvorak): Figure out why the report page is randomly sorted. E.g.:
     // https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/04_49_09_427/report/report.html
     // https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/12/04_48_52_974/report/report.html
@@ -303,7 +306,7 @@ class ReportBuilder {
    */
   async prefetchGoldenImages_(reportData) {
     // TODO(acdvorak): Figure out how to handle offline mode for prefetching and diffing
-    console.log('Prefetching golden images...');
+    console.log('Fetching golden images...');
     await Promise.all(
       reportData.screenshots.expected_screenshot_list.map((expectedScreenshot) => {
         return this.prefetchScreenshotImages_(expectedScreenshot);
@@ -378,10 +381,11 @@ class ReportBuilder {
   }
 
   /**
+   * @param {!mdc.proto.DiffBase} goldenDiffBase
    * @return {!Promise<!mdc.proto.ReportMeta>}
    * @private
    */
-  async createReportMetaProto_() {
+  async createReportMetaProto_(goldenDiffBase) {
     const isOnline = this.cli_.isOnline();
 
     // We only need to start up a local web server if the user is running in offline mode.
@@ -413,30 +417,7 @@ class ReportBuilder {
     const gitStatus = GitStatus.fromObject(await this.gitRepo_.getStatus());
 
     /** @type {!mdc.proto.DiffBase} */
-    const goldenDiffBase = await this.diffBaseParser_.parseGoldenDiffBase();
-
-    /** @type {!mdc.proto.DiffBase} */
-    const snapshotDiffBase = await this.diffBaseParser_.parseDiffBase('HEAD');
-
-    /** @type {!mdc.proto.GitRevision} */
-    const goldenGitRevision = goldenDiffBase.git_revision;
-
-    if (goldenGitRevision && goldenGitRevision.type === GitRevision.Type.TRAVIS_PR) {
-      /** @type {!Array<!github.proto.PullRequestFile>} */
-      const allPrFiles = await this.gitHubApi_.getPullRequestFiles(goldenGitRevision.pr_number);
-
-      goldenGitRevision.pr_file_paths = allPrFiles
-        .filter((prFile) => {
-          const isMarkdownFile = () => prFile.filename.endsWith('.md');
-          const isDemosFile = () => prFile.filename.startsWith('demos/');
-          const isDocsFile = () => prFile.filename.startsWith('docs/');
-          const isUnitTestFile = () => prFile.filename.startsWith('test/unit/');
-          const isIgnoredFile = isMarkdownFile() || isDemosFile() || isDocsFile() || isUnitTestFile();
-          return !isIgnoredFile;
-        })
-        .map((prFile) => prFile.filename)
-      ;
-    }
+    const snapshotDiffBase = await this.diffBaseParser_.parseSnapshotDiffBase();
 
     return ReportMeta.create({
       start_time_iso_utc: new Date().toISOString(),
@@ -473,7 +454,6 @@ class ReportBuilder {
       }),
       mdc_version: LibraryVersion.create({
         version_string: mdcVersionString,
-        commit_offset: await this.getCommitDistance_(mdcVersionString),
       }),
     });
   }
@@ -533,14 +513,6 @@ class ReportBuilder {
   }
 
   /**
-   * @param {string} mdcVersion
-   * @return {!Promise<number>}
-   */
-  async getCommitDistance_(mdcVersion) {
-    return (await this.gitRepo_.getLog([`v${mdcVersion}..HEAD`])).length;
-  }
-
-  /**
    * @return {!Promise<!mdc.proto.UserAgents>}
    * @private
    */
@@ -557,12 +529,13 @@ class ReportBuilder {
   /**
    * @param {!mdc.proto.ReportMeta} reportMeta
    * @param {!mdc.proto.UserAgents} allUserAgents
+   * @param {!mdc.proto.DiffBase} goldenDiffBase
    * @return {!Promise<!mdc.proto.Screenshots>}
    * @private
    */
-  async createScreenshotsProto_({reportMeta, userAgents}) {
+  async createScreenshotsProto_({reportMeta, userAgents, goldenDiffBase}) {
     /** @type {!GoldenFile} */
-    const goldenFile = await this.goldenIo_.readFromDiffBase();
+    const goldenFile = await this.goldenIo_.readFromDiffBase(goldenDiffBase);
 
     /** @type {!Array<!mdc.proto.Screenshot>} */
     const expectedScreenshots = await this.getExpectedScreenshots_(goldenFile);
@@ -594,7 +567,7 @@ class ReportBuilder {
     this.setAllStates_(screenshots.removed_screenshot_list, InclusionType.REMOVE, CaptureState.SKIPPED);
     this.setAllStates_(screenshots.comparable_screenshot_list, InclusionType.COMPARE, CaptureState.QUEUED);
 
-    this.populateScreenshotMaps(userAgents, screenshots);
+    this.populateMaps(userAgents, screenshots);
 
     return screenshots;
   }

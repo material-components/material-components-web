@@ -45,8 +45,8 @@ window.mdc.testFixture = {
   },
 
   measureMobileViewport_() {
-    const mainEl = document.querySelector('.test-main');
-    if (!mainEl || !mainEl.classList.contains('test-main--mobile-viewport')) {
+    const mainEl = document.querySelector('.test-viewport');
+    if (!mainEl || !mainEl.classList.contains('test-viewport--mobile')) {
       return;
     }
 
@@ -57,12 +57,12 @@ window.mdc.testFixture = {
       mainEl.style.height = '';
 
       if (autoHeight > setHeight) {
-        mainEl.classList.add('test-main--overflowing');
+        mainEl.classList.add('test-viewport--overflowing');
         console.error(`
 Page content overflows a mobile viewport!
 Consider splitting this page into two separate pages.
 If you are trying to create a test page for a fullscreen component like drawer or top-app-bar,
-remove the 'test-main--mobile-viewport' class from the '<main class="test-main">' element.
+remove the 'test-viewport--mobile' class from the '<main class="test-viewport">' element.
           `.trim());
       }
     });

@@ -17,6 +17,7 @@
 'use strict';
 
 const Jimp = require('jimp');
+const VError = require('verror');
 const UserAgentParser = require('useragent');
 const colors = require('colors/safe');
 const path = require('path');
@@ -37,7 +38,7 @@ const GitHubApi = require('./github-api');
 const ImageCropper = require('./image-cropper');
 const ImageDiffer = require('./image-differ');
 const LocalStorage = require('./local-storage');
-const {Browser, Builder, By, until} = require('selenium-webdriver');
+const {Browser, Builder, By, logging, until} = require('selenium-webdriver');
 const {CBT_CONCURRENCY_POLL_INTERVAL_MS, CBT_CONCURRENCY_MAX_WAIT_MS, ExitCode} = Constants;
 const {SELENIUM_FONT_LOAD_WAIT_MS} = Constants;
 
@@ -213,11 +214,12 @@ class SeleniumApi {
 
     try {
       changedScreenshots = (await this.driveBrowser_({reportData, userAgent, driver})).changedScreenshots;
+      await this.printBrowserConsoleLogs_(driver);
       logResult(CliStatuses.FINISHED);
     } catch (err) {
-      logResult(CliStatuses.FAILED, err);
+      logResult(CliStatuses.FAILED);
       await this.killBrowsers_();
-      throw err;
+      throw new VError(err, 'Failed to drive web browser');
     } finally {
       logResult(CliStatuses.QUITTING);
       await driver.quit();
@@ -229,6 +231,26 @@ class SeleniumApi {
         seleniumSessionId,
         changedScreenshots,
       });
+    }
+  }
+
+  /**
+   * @param {!IWebDriver} driver
+   * @return {!Promise<void>}
+   * @private
+   */
+  async printBrowserConsoleLogs_(driver) {
+    const log = driver.manage().logs();
+
+    // Chrome is the only browser that supports logging as of 2018-07-20.
+    const logEntries = (await log.get(logging.Type.BROWSER).catch(() => [])).filter((logEntry) => {
+      // Ignore messages about missing favicon
+      return logEntry.message.indexOf('favicon.ico') === -1;
+    });
+
+    if (logEntries.length > 0) {
+      const messageColor = colors.bold.red('Browser console log:');
+      console.log(`\n\n${messageColor}\n`, JSON.stringify(logEntries, null, 2), '\n');
     }
   }
 
@@ -300,7 +322,7 @@ class SeleniumApi {
     this.logStatus_(CliStatuses.STARTING, `${userAgent.alias}...`);
 
     /** @type {!IWebDriver} */
-    const driver = await driverBuilder.build();
+    const driver = await this.buildWebDriverWithRetries_(driverBuilder);
 
     /** @type {!selenium.proto.RawCapabilities} */
     const actualCapabilities = await this.getActualCapabilities_(driver);
@@ -323,6 +345,44 @@ class SeleniumApi {
   }
 
   /**
+   * @param {!Builder} driverBuilder
+   * @param {number=} startTimeMs
+   * @return {!Promise<!IWebDriver>}
+   * @private
+   */
+  async buildWebDriverWithRetries_(driverBuilder, startTimeMs = Date.now()) {
+    try {
+      return await driverBuilder.build();
+    } catch (err) {
+      if (err.message.indexOf('maximum number of parallel') === -1) {
+        throw new VError(err, 'WebDriver instance could not be created');
+      }
+    }
+
+    /** @type {!cbt.proto.CbtConcurrencyStats} */
+    const concurrencyStats = await this.cbtApi_.fetchConcurrencyStats();
+    const max = concurrencyStats.max_concurrent_selenium_tests;
+
+    // TODO(acdvorak): De-dupe this with getMaxParallelTests_()
+    const elapsedTimeMs = Date.now() - startTimeMs;
+    const elapsedTimeHuman = Duration.millis(elapsedTimeMs).toHumanShort();
+    if (elapsedTimeMs > CBT_CONCURRENCY_MAX_WAIT_MS) {
+      throw new Error(`Timed out waiting for CBT resources to become available after ${elapsedTimeHuman}`);
+    }
+
+    // TODO(acdvorak): De-dupe this with getMaxParallelTests_()
+    const waitTimeMs = CBT_CONCURRENCY_POLL_INTERVAL_MS;
+    const waitTimeHuman = Duration.millis(waitTimeMs).toHumanShort();
+    this.logStatus_(
+      CliStatuses.WAITING,
+      `Parallel execution limit reached. ${max} tests are already running on CBT. Will retry in ${waitTimeHuman}...`
+    );
+    await this.sleep_(waitTimeMs);
+
+    return this.buildWebDriverWithRetries_(driverBuilder, startTimeMs);
+  }
+
+  /**
    * @param {!mdc.proto.ReportMeta} meta
    * @param {!mdc.proto.UserAgent} userAgent
    * @return {!selenium.proto.RawCapabilities}
@@ -330,9 +390,17 @@ class SeleniumApi {
    */
   async getDesiredCapabilities_({meta, userAgent}) {
     if (this.cli_.isOnline()) {
-      return await this.cbtApi_.getDesiredCapabilities({meta, userAgent});
+      return this.cbtApi_.getDesiredCapabilities({meta, userAgent});
     }
+    return this.createDesiredCapabilitiesOffline_({userAgent});
+  }
 
+  /**
+   * @param {!mdc.proto.UserAgent} userAgent
+   * @return {!selenium.proto.RawCapabilities}
+   * @private
+   */
+  createDesiredCapabilitiesOffline_({userAgent}) {
     const browserVendorMap = {
       [BrowserVendorType.CHROME]: Browser.CHROME,
       [BrowserVendorType.EDGE]: Browser.EDGE,
@@ -431,6 +499,10 @@ class SeleniumApi {
     ];
 
     for (const [isSmallComponent, screenshotQueue] of screenshotQueues) {
+      if (screenshotQueue.length === 0) {
+        continue;
+      }
+
       await this.resizeWindow_({driver, isSmallComponent});
 
       for (const screenshot of screenshotQueue) {
@@ -637,6 +709,10 @@ class SeleniumApi {
 
   /** @private */
   async killBrowsers_() {
+    if (this.cli_.isOffline()) {
+      return;
+    }
+
     const ids = Array.from(this.seleniumSessionIds_);
     const wasAlreadyKilled = this.isKilled_;
 
@@ -648,8 +724,10 @@ class SeleniumApi {
 
     await this.cbtApi_.killSeleniumTests(ids, /* silent */ wasAlreadyKilled);
 
-    // Give the HTTP requests a chance to complete before exiting
-    await this.sleep_(Duration.seconds(4).toMillis());
+    if (!wasAlreadyKilled && ids.length > 0) {
+      console.log('\nWaiting for CBT cancellation requests to complete...');
+      await this.sleep_(Duration.seconds(4).toMillis());
+    }
   }
 
   /**
