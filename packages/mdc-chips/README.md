@@ -248,22 +248,21 @@ Method Signature | Description
 `addClassToLeadingIcon(className: string) => void` | Adds a class to the leading icon element
 `removeClassFromLeadingIcon(className: string) => void` | Removes a class from the leading icon element
 `eventTargetHasClass(target: EventTarget, className: string) => boolean` | Returns true if target has className, false otherwise
-`notifyInteraction() => void` | Emits a custom event `MDCChip:interaction` denoting the chip has been interacted with
-`notifyTrailingIconInteraction() => void` | Emits a custom event `MDCChip:trailingIconInteraction` denoting the chip's trailing icon has been interacted with
-`notifyRemoval() => void` | Emits a custom event `MDCChip:removal` denoting the chip will be removed
+`notifyInteraction() => void` | Emits a custom event `MDCChip:interaction` denoting the chip has been interacted with*
+`notifyTrailingIconInteraction() => void` | Emits a custom event `MDCChip:trailingIconInteraction` denoting the chip's trailing icon has been interacted with*
+`notifyRemoval() => void` | Emits a custom event `MDCChip:removal` denoting the chip will be removed*
 `getComputedStyleValue(propertyName: string) => string` | Returns the computed property value of the given style property on the root element
 `setStyleProperty(propertyName: string, value: string) => void` | Sets the property value of the given style property on the root element
 
-> _NOTE_: The custom events emitted by `notifyInteraction` and `notifyTrailingIconInteraction` must pass along the target chip in its event `detail`, as well as bubble to the parent `mdc-chip-set` element.
-
-> _NOTE_: The custom event emitted by `notifyRemoval` must pass along the target chip and its root element in the event `detail`, as well as bubble to the parent `mdc-chip-set` element.
+> *_NOTE_: The custom events emitted by `notifyInteraction`, `notifyTrailingIconInteraction` and `notifyRemoval` must pass along the target chip's ID in its event `detail`, as well as bubble to the parent `mdc-chip-set` element.
 
 #### `MDCChipSetAdapter`
 
 Method Signature | Description
 --- | ---
 `hasClass(className: string) => boolean` | Returns whether the chip set element has the given class
-`removeChip(chip: MDCChip) => void` | Removes the chip object from the chip set
+`removeChip(chipId: string) => void` | Removes the chip with the given id from the chip set
+`setSelected(chipId: string, selected: boolean) => void` | Sets the selected state of the chip with the given id
 
 ### Foundations: `MDCChipFoundation` and `MDCChipSetFoundation`
 
@@ -284,7 +283,8 @@ Method Signature | Description
 
 Method Signature | Description
 --- | ---
-`select(chipFoundation: MDCChipFoundation) => void` | Selects the given chip
-`deselect(chipFoundation: MDCChipFoundation) => void` | Deselects the given chip
+`select(chipId: string) => void` | Selects the chip with the given id
+`deselect(chipId: string) => void` | Deselects the chip with the given id
+`toggleSelect(chipId: string) => void` | Toggles selection of the chip with the given id
 `handleChipInteraction(evt: Event) => void` | Handles a custom `MDCChip:interaction` event on the root element
 `handleChipRemoval(evt: Event) => void` | Handles a custom `MDCChip:removal` event on the root element

@@ -45,6 +45,7 @@ class MDCChipSetFoundation extends MDCFoundation {
     return /** @type {!MDCChipSetAdapter} */ ({
       hasClass: () => {},
       removeChip: () => {},
+      setSelected: () => {},
     });
   }
 
@@ -55,27 +56,45 @@ class MDCChipSetFoundation extends MDCFoundation {
     super(Object.assign(MDCChipSetFoundation.defaultAdapter, adapter));
 
     /**
-     * The selected chips in the set. Only used for choice chip set or filter chip set.
-     * @private {!Array<number>}
+     * The ids of the selected chips in the set. Only used for choice chip set or filter chip set.
+     * @private {!Array<string>}
      */
     this.selectedChipIds_ = [];
   }
 
   /**
-   * Selects the given chip. Deselects all other chips if the chip set is of the choice variant.
-   * @param {!MDCChipFoundation} chipFoundation
+   * Toggles selection of the chip with the given id.
+   * @param {string} chipId
+   */
+  toggleSelect(chipId) {
+    if (this.adapter_.hasClass(cssClasses.CHOICE) || this.adapter_.hasClass(cssClasses.FILTER)) {
+      if (this.selectedChipIds_.indexOf(chipId) >= 0) {
+        this.deselect(chipId);
+      } else {
+        this.select(chipId);
+      }
+    }
+  }
+
+  /**
+   * Selects the chip with the given id. Deselects all other chips if the chip set is of the choice variant.
+   * @param {string} chipId
    */
   select(chipId) {
     if (this.adapter_.hasClass(cssClasses.CHOICE)) {
-      this.deselectAll_();
+      // Deselect all selected chips.
+      this.selectedChipIds_.forEach((chipId) => {
+        this.adapter_.setSelected(chipId, false);
+      });
+      this.selectedChipIds_.length = 0;
     }
     this.adapter_.setSelected(chipId, true);
     this.selectedChipIds_.push(chipId);
   }
 
   /**
-   * Deselects the given chip.
-   * @param {!MDCChipFoundation} chipFoundation
+   * Deselects the chip with the given id.
+   * @param {string} chipId
    */
   deselect(chipId) {
     const index = this.selectedChipIds_.indexOf(chipId);
@@ -85,14 +104,6 @@ class MDCChipSetFoundation extends MDCFoundation {
     this.adapter_.setSelected(chipId, false);
   }
 
-  /** Deselects all selected chips. */
-  deselectAll_() {
-    this.selectedChipIds_.forEach((chipId) => {
-      this.adapter_.setSelected(chipId, false);
-    });
-    this.selectedChipIds_.length = 0;
-  }
-
   /**
    * Handles a chip interaction event
    * @param {!MDCChipInteractionEventType} evt
@@ -100,13 +111,7 @@ class MDCChipSetFoundation extends MDCFoundation {
    */
   handleChipInteraction(evt) {
     const {chipId} = evt.detail;
-    if (this.adapter_.hasClass(cssClasses.CHOICE) || this.adapter_.hasClass(cssClasses.FILTER)) {
-      if (this.selectedChipIds_.includes(chipId)) {
-        this.deselect(chipId);
-      } else {
-        this.select(chipId);
-      }
-    }
+    this.handleSelect(chipId);
   }
 
   /**
@@ -115,9 +120,9 @@ class MDCChipSetFoundation extends MDCFoundation {
    * @private
    */
   handleChipRemoval(evt) {
-    const {chip} = evt.detail;
-    this.deselect(chip.foundation);
-    this.adapter_.removeChip(chip);
+    const {chipId} = evt.detail;
+    this.deselect(chipId);
+    this.adapter_.removeChip(chipId);
   }
 }
 

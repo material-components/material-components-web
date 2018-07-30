@@ -39,10 +39,17 @@ class MDCChipSetAdapter {
   hasClass(className) {}
 
   /**
-   * Removes the chip object from the chip set.
-   * @param {!Object} chip
+   * Removes the chip with the given id from the chip set.
+   * @param {string} chipId
    */
-  removeChip(chip) {}
+  removeChip(chipId) {}
+
+  /**
+   * Sets the selected state of the chip with the given id.
+   * @param {string} chipId
+   * @param {boolean} selected
+   */
+  setSelected(chipId, selected) {}
 }
 
 export default MDCChipSetAdapter;

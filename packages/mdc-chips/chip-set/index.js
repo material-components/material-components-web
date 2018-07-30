@@ -102,16 +102,17 @@ class MDCChipSet extends MDCComponent {
   getDefaultFoundation() {
     return new MDCChipSetFoundation(/** @type {!MDCChipSetAdapter} */ (Object.assign({
       hasClass: (className) => this.root_.classList.contains(className),
-      removeChip: (chip) => {
-        const index = this.chips.indexOf(chip);
-        this.chips.splice(index, 1);
-        chip.destroy();
+      removeChip: (chipId) => {
+        const index = this.findChipIndex_(chipId);
+        if (index >= 0) {
+          this.chips[index].destroy();
+          this.chips.splice(index, 1);
+        }
       },
       setSelected: (chipId, selected) => {
-        console.log(this.chips);
-        const chip = this.chips.find((chip) => chip.id === chipId);
-        if (chip) {
-          chip.setSelected(selected);
+        const index = this.findChipIndex_(chipId);
+        if (index >= 0) {
+          this.chips[index].setSelected(selected);
         }
       },
     })));
@@ -125,6 +126,20 @@ class MDCChipSet extends MDCComponent {
   instantiateChips_(chipFactory) {
     const chipElements = [].slice.call(this.root_.querySelectorAll(MDCChipSetFoundation.strings.CHIP_SELECTOR));
     return chipElements.map((el) => chipFactory(el));
+  }
+
+  /**
+   * Returns the index of the chip with the given id, or -1 if the chip does not exist.
+   * @param {string} chipId
+   * @return {number}
+   */
+  findChipIndex_(chipId){
+    for (i = 0; i < this.chips.length; i++) {
+      if (this.chips[i].id === chipId) {
+        return i;
+      }
+    }
+    return -1;
   }
 }
 
