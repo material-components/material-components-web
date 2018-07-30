@@ -24,12 +24,14 @@ const colors = require('colors');
 module.exports = function(className) {
   /**
    * @param {string} methodName
+   * @param {*=} infoData
    * @return {string}
    */
-  function getStackTrace(methodName) {
+  function getStackTrace(methodName, infoData = undefined) {
+    const infoStr = typeof infoData === 'object' ? '\n' + JSON.stringify(infoData, null, 2) : '';
     const fullStack = new Error(`${className}.${methodName}()`).stack;
     // Remove THIS function from the stack trace because it's not useful
-    return fullStack.split('\n').filter((line, index) => index !== 1).join('\n');
+    return fullStack.split('\n').filter((line, index) => index !== 1).join('\n') + infoStr;
   }
 
   return getStackTrace;

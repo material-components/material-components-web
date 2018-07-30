@@ -18,6 +18,9 @@ const VError = require('verror');
 const debounce = require('debounce');
 const octokit = require('@octokit/rest');
 
+/** @type {!CliColor} */
+const colors = require('colors');
+
 const GitRepo = require('./git-repo');
 const getStackTrace = require('./stacktrace')('GitHubApi');
 
@@ -25,12 +28,13 @@ class GitHubApi {
   constructor() {
     this.gitRepo_ = new GitRepo();
     this.octokit_ = octokit();
+    this.isAuthenticated_ = false;
+    this.hasWarnedNoAuth_ = false;
     this.authenticate_();
+    this.initStatusThrottle_();
   }
 
-  /**
-   * @private
-   */
+  /** @private */
   authenticate_() {
     let token;
 
@@ -46,6 +50,11 @@ class GitHubApi {
       token: token,
     });
 
+    this.isAuthenticated_ = true;
+  }
+
+  /** @private */
+  initStatusThrottle_() {
     const throttle = (fn, delay) => {
       let lastCall = 0;
       return (...args) => {
@@ -94,7 +103,7 @@ class GitHubApi {
 
     this.createStatusThrottled_({
       state,
-      targetUrl: `https://travis-ci.org/material-components/material-components-web/jobs/${process.env.TRAVIS_JOB_ID}`,
+      targetUrl: `https://travis-ci.com/material-components/material-components-web/jobs/${process.env.TRAVIS_JOB_ID}`,
       description,
     });
   }
@@ -136,7 +145,7 @@ class GitHubApi {
       const numTotal = runnableScreenshots.length;
 
       state = GitHubApi.PullRequestState.PENDING;
-      targetUrl = `https://travis-ci.org/material-components/material-components-web/jobs/${process.env.TRAVIS_JOB_ID}`;
+      targetUrl = `https://travis-ci.com/material-components/material-components-web/jobs/${process.env.TRAVIS_JOB_ID}`;
       description = `Running ${numTotal.toLocaleString()} screenshots...`;
     }
 
@@ -150,7 +159,7 @@ class GitHubApi {
 
     return await this.createStatusUnthrottled_({
       state: GitHubApi.PullRequestState.ERROR,
-      targetUrl: `https://travis-ci.org/material-components/material-components-web/jobs/${process.env.TRAVIS_JOB_ID}`,
+      targetUrl: `https://travis-ci.com/material-components/material-components-web/jobs/${process.env.TRAVIS_JOB_ID}`,
       description: 'Error running screenshot tests',
     });
   }
@@ -163,7 +172,19 @@ class GitHubApi {
    * @private
    */
   async createStatusUnthrottled_({state, targetUrl, description = undefined}) {
-    const sha = process.env.TRAVIS_PULL_REQUEST_SHA || await this.gitRepo_.getFullCommitHash();
+    if (!this.isAuthenticated_) {
+      if (!this.hasWarnedNoAuth_) {
+        const warning = colors.magenta('WARNING');
+        console.warn(`${warning}: Cannot set GitHub commit status because no API credentials were found.`);
+        this.hasWarnedNoAuth_ = true;
+      }
+      return null;
+    }
+
+    const travisPrSha = process.env.TRAVIS_PULL_REQUEST_SHA;
+    const travisCommit = process.env.TRAVIS_COMMIT;
+    const sha = travisPrSha || travisCommit || await this.gitRepo_.getFullCommitHash();
+
     let stackTrace;
 
     try {
