@@ -40,15 +40,15 @@ npm install @material/slider
 ### HTML Structure
 
 ```html
-<div class="mdc-slider" tabindex="0" role="slider"
-     aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
-     aria-label="Select Value">
+<div class="mdc-slider">
   <div class="mdc-slider__track">
     <div class="mdc-slider__track-fill"></div>
   </div>
-  <div class="mdc-slider__thumb">
-    <svg class="mdc-slider__thumb-handle" width="24" height="24">
-      <circle cx="12" cy="12" r="6"></circle>
+  <div class="mdc-slider__thumb" tabindex="0" role="slider"
+    aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"
+    aria-label="Select Value">
+    <svg class="mdc-slider__thumb-handle" width="34" height="34">
+      <circle cx="17" cy="17" r="6"></circle>
     </svg>
   </div>
 </div>
@@ -74,6 +74,15 @@ const slider = new MDCSlider(document.querySelector('.mdc-slider'));
 
 Use continuous sliders allow users to make meaningful selections that don’t require a specific value. Continuous Slider is the default variant.
 
+### Discrete Slider
+
+Discrete sliders display a numeric value label upon pressing the thumb, which allows a user to input an exact value. Add mdc-slider--discrete to the component class for this variant.
+```html
+<div class="mdc-slider mdc-slider--discrete">
+  <!-- ... -->
+</div>
+```
+
 ### Initializing the slider with custom ranges/values
 
 When `MDCSlider` is initialized, it reads the element's `aria-valuemin`, `aria-valuemax`, and
@@ -89,6 +98,51 @@ DOM.
 </div>
 ```
 
+### Using a step value
+
+> **NOTE**: In a discrete slider, the step value defines the slider values that are valid. In a continuous 
+> slider, the step value only defines the size of an arrow key step, but the slider can still hold continuous values.
+
+`MDCSlider` supports quantization by allowing users to supply a floating-point `step` value via a
+`data-step` attribute.
+
+```html
+<div class="mdc-slider" tabindex="0" role="slider"
+     aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
+     data-step="2" aria-label="Select Value">
+  <!-- ... -->
+</div>
+```
+
+When a step value is given, the slider will quantize all values to match that step value, _except_
+for the minimum and maximum values, which can always be set. This is to ensure consistent behavior.
+
+The step value can be any positive floating-point number, or `0`. When the step value is `0`, the
+slider is considered to not have any step. A error will be thrown if you are trying to set step
+value to be a negative number.
+
+Discrete sliders are required to have a positive step value other than 0. If a step value of 0 is
+provided, or no value is provided, the step value will default to 1.
+
+### Display tick marks (discrete slider only)
+
+Discrete sliders support tick marks on their tracks by adding `<div class="mdc-slider__tick-mark-set"></div>`
+to the track element after the `mdc-slider__track-fill` element.
+
+```html
+<div class="mdc-slider mdc-slider--discrete">
+     <div class="mdc-slider__track">
+      <div class="mdc-slider__track-fill"></div>
+      <div class="mdc-slider__tick-mark-set"></div>
+    </div>
+    <!-- ... -->
+</div>
+```
+
+> **NOTE**: When the provided step is indivisible to distance between max and min,
+> we place the second to last marker proportionally at where thumb could reach and
+> place the last marker at max value.
+
 ## Style Customization
 
 ### CSS Classes
@@ -98,8 +152,10 @@ CSS Class | Description
 `mdc-slider` | Mandatory.
 `mdc-slider__track` | Mandatory. Element containing the track-fill.
 `mdc-slider__track-fill` | Mandatory. The fill element to display where the value is.
+`mdc-slider__tick-mark-set` | Optional. Will render tick marks if present. Contains the tick marks inside this element
 `mdc-slider__thumb` | Mandatory. Element containing the thumb-handle.
 `mdc-slider__thumb-handle` | Mandatory. The handle element to display where the value is.
+`mdc-slider--discrete` | Optional. Will make slider discrete.
 
 ### Sass Mixins
 
@@ -107,7 +163,8 @@ Mixin | Description
 --- | ---
 `mdc-slider-track-color($color)` | Customizes the color of the track for the slider
 `mdc-slider-track-fill-color($color)` | Customizes the color of the track-fill for the slider
-`mdc-slider-thumb-color($color)` | Customizes the color of the thumb for the slider
+`mdc-slider-thumb-color($color)` | Customizes the color of the thumb and thumb ripple for the slider
+`mdc-slider-tick-mark-color($color)` | Customizes the color of the tick marks
 
 ## `MDCSlider` Properties and Methods
 
@@ -156,9 +213,11 @@ instance that was affected.
 | `notifyChange() => void` | Broadcasts a "MDCSlider:change" event notifying clients that a change to the slider's value has been committed by the user. Similar guidance applies here as for `notifyInput()`. |
 | `setThumbStyleProperty(propertyName: string, value: string) => void` | Sets a dash-cased style property `propertyName` to the given `value` on the thumb element. |
 | `setTrackFillStyleProperty(propertyName: string, value: string) => void` | Sets a dash-cased style property `propertyName` to the given `value` on the track-fill element. |
+| `setLastTickMarkStyleProperty(propertyName: string, value: string) => void` | Sets a dash-cased style property `propertyName` to the given `value` on the last tick mark element. |
 | `focusThumb() => void` | Sets the document focus to the thumb. |
 | `activateRipple() => void` | Activates the ripple on the thumb element. |
 | `deactivateRipple() => void` | Deativates the ripple on the thumb element. |
+| `isRTL() => boolean` | True if the slider is within an RTL context, false otherwise. |
 
 ### `MDCSliderFoundation`
 

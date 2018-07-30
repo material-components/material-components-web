@@ -83,7 +83,7 @@
                 <div class="mdc-slider__track-fill"></div>
                 <div class="mdc-slider__tick-mark-set"></div>
               </div>
-              <div class="mdc-slider__thumb" tabindex="0" role="slider" data-step="1" 
+              <div class="mdc-slider__thumb" tabindex="0" role="slider" data-step="10" 
               aria-valuemin="0" aria-valuemax="100" aria-valuenow="20"
               aria-label="Select Value">
                 <svg class="mdc-slider__thumb-handle" width="34" height="34" style="overflow: visible;">
@@ -98,6 +98,22 @@
             <br>
             Value from <code>MDCSlider:change</code> event: <span id="discrete-slider-committed-value"></span>
           </p>
+          <h3>Discrete Sliders with No Tick Marks</h3>
+          <div id="discrete-mdc-slider1" class="mdc-slider mdc-slider--discrete">
+            <div class="mdc-slider__track">
+              <div class="mdc-slider__track-fill"></div>
+            </div>
+            <div class="mdc-slider__thumb" tabindex="0" role="slider" data-step="2" 
+            aria-valuemin="0" aria-valuemax="100" aria-valuenow="20"
+            aria-label="Select Value">
+              <svg class="mdc-slider__thumb-handle" width="34" height="34" style="overflow: visible;">
+                <path class="mdc-slider__value-label"/> 
+                <text class="mdc-slider__value-label-text" x="8" y="-18" stroke="white" fill="white">20</text>
+                <circle cx="17" cy="17" r="6"></circle>
+              </svg>
+            </div>
+          </div>
+          <h3>Discrete Sliders with Large Values</h3>
           <div id="discrete-mdc-slider2" class="mdc-slider mdc-slider--discrete">
             <div class="mdc-slider__track">
               <div class="mdc-slider__track-fill"></div>
@@ -129,6 +145,7 @@
             </div>
           </div>
         </div>
+        <input type="checkbox" name="rtl"> RTL
       </section>
     </main>
 
@@ -137,7 +154,8 @@
       demoReady(function() {
         mdc.slider.MDCSlider.attachTo(document.getElementById('hero-slider'));
         
-        var demoRoot = document.getElementById('demo-root')
+        var demoRoot = document.getElementById('demo-root');
+        var rtl = demoRoot.querySelector('[name="rtl"]');
 
         var continuousValue = demoRoot.querySelector('#continuous-slider-value');
         var continuousCommittedValue = demoRoot.querySelector('#continuous-slider-committed-value');
@@ -161,11 +179,35 @@
           discreteCommittedValue.textContent = discreteSlider.value;
         });
 
+        var discreteSliderEl1 = demoRoot.querySelector('#discrete-mdc-slider1');
+        var discreteSlider1 = new mdc.slider.MDCSlider(discreteSliderEl1);
+
         var discreteSliderEl2 = demoRoot.querySelector('#discrete-mdc-slider2');
         var discreteSlider2 = new mdc.slider.MDCSlider(discreteSliderEl2);
 
         var discreteSliderEl3 = demoRoot.querySelector('#discrete-mdc-slider3');
         var discreteSlider3 = new mdc.slider.MDCSlider(discreteSliderEl3);
+
+        rtl.addEventListener('change', function() {
+          if (rtl.checked) {
+            continuousSliderEl.setAttribute('dir', 'rtl');
+            discreteSliderEl.setAttribute('dir', 'rtl');
+            discreteSliderEl1.setAttribute('dir', 'rtl');
+            discreteSliderEl2.setAttribute('dir', 'rtl');
+            discreteSliderEl3.setAttribute('dir', 'rtl');
+          } else {
+            continuousSliderEl.removeAttribute('dir');
+            discreteSliderEl.removeAttribute('dir');
+            discreteSliderEl1.removeAttribute('dir');
+            discreteSliderEl2.removeAttribute('dir');
+            discreteSliderEl3.removeAttribute('dir');
+          }
+          continuousSlider.layout();
+          discreteSlider.layout();
+          discreteSlider1.layout();
+          discreteSlider2.layout();
+          discreteSlider3.layout();
+        });
       });
     </script>
   </body>

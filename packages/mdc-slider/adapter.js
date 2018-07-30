@@ -163,6 +163,13 @@ class MDCSliderAdapter {
   setTrackFillStyleProperty(propertyName, value) {}
 
   /**
+   * Sets a style property of the last tick mark element to the passed value
+   * @param {string} propertyName
+   * @param {string} value
+   */
+  setLastTickMarkStyleProperty(propertyName, value) {}
+
+  /**
    * Sets focus to thumb
    */
   focusThumb() {}
@@ -176,6 +183,12 @@ class MDCSliderAdapter {
    * Deactivates the thumb ripple
    */
   deactivateRipple() {}
+
+  /**
+   * Returns true if the root element is RTL, otherwise false
+   * @return {boolean}
+   */
+  isRTL() {}
 }
 
 export default MDCSliderAdapter;

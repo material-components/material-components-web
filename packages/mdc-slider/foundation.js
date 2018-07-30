@@ -80,9 +80,11 @@ class MDCSliderFoundation extends MDCFoundation {
       notifyChange: () => {},
       setThumbStyleProperty: () => {},
       setTrackFillStyleProperty: () => {},
+      setLastTickMarkStyleProperty: () => {},
       focusThumb: () => {},
       activateRipple: () => {},
       deactivateRipple: () => {},
+      isRTL: () => false,
     });
   }
 
@@ -129,7 +131,7 @@ class MDCSliderFoundation extends MDCFoundation {
   }
 
   init() {
-    this.isDiscrete_ = this.adapter_.hasClass(cssClasses.IS_DISCRETE);
+    this.isDiscrete_ = this.adapter_.hasClass(cssClasses.DISCRETE);
     DOWN_EVENTS.forEach((evtName) => this.adapter_.registerEventHandler(evtName, this.interactionStartHandler_));
     this.adapter_.registerEventHandler('keydown', this.keydownHandler_);
     this.adapter_.registerEventHandler('keyup', this.interactionEndHandler_);
@@ -224,6 +226,28 @@ class MDCSliderFoundation extends MDCFoundation {
       this.setPressed_(false);
       this.adapter_.removeValueLabelTextStyle();
     }
+  }
+
+  /**
+   * Calculates the number of tick marks for discrete slider
+   * @return {number}
+   */
+  calculateNumberOfTickMarks() {
+    if (this.step_ < 1) {
+      this.step_ = 1;
+    }
+    let numMarks = (this.max_ - this.min_) / this.step_;
+    numMarks = Math.ceil(numMarks);
+    return numMarks;
+  }
+
+  /**
+   * Adjusts the last tick mark style
+   * @param {number} numMarks
+   */
+  adjustLastTickMark(numMarks) {
+    const lastStepRatio = (this.max_ - numMarks * this.step_) / this.step_ + 1;
+    this.adapter_.setLastTickMarkStyleProperty('flex', String(lastStepRatio));
   }
 
   /**
@@ -328,7 +352,12 @@ class MDCSliderFoundation extends MDCFoundation {
    * @private
    */
   getKeyIdValue_(keyboardEvt) {
-    const delta = this.step_ || (this.max_ - this.min_) / 100;
+    let delta = this.step_ || (this.max_ - this.min_) / 100;
+    if (this.adapter_.isRTL() && (
+      keyboardEvt.key === KEY_IDS.ARROW_LEFT || keyboardEvt.keyCode === 37 ||
+      keyboardEvt.key === KEY_IDS.ARROW_RIGHT || keyboardEvt.keyCode === 39)) {
+      delta = -delta;
+    }
 
     if (keyboardEvt.key === KEY_IDS.ARROW_LEFT || keyboardEvt.keyCode === 37
       || keyboardEvt.key === KEY_IDS.ARROW_DOWN || keyboardEvt.keyCode === 40) {
@@ -385,7 +414,10 @@ class MDCSliderFoundation extends MDCFoundation {
    */
   computeValueFromPageX_(pageX) {
     const xPos = pageX - this.rect_.left;
-    const pctComplete = xPos / this.rect_.width;
+    let pctComplete = xPos / this.rect_.width;
+    if (this.adapter_.isRTL()) {
+      pctComplete = 1 - pctComplete;
+    }
 
     // Fit the percentage complete between the range [min,max]
     // by remapping from [0, 1] to [min, min+(max-min)].
@@ -453,13 +485,24 @@ class MDCSliderFoundation extends MDCFoundation {
 
     // If the thumb is reaching the ends of the slider then edit the left and right to make sure
     // it does not bleed off the screen.
-    if (translatePx - 15 < extraLeft) {
-      extraRight = extraRight + extraLeft - translatePx + 15;
-      extraLeft = translatePx - 15;
-    }
-    if (this.rect_.width - translatePx - 15 < extraRight ) {
-      extraLeft = extraLeft + (extraRight - (this.rect_.width - translatePx - 15));
-      extraRight = this.rect_.width - translatePx - 15;
+    if (this.adapter_.isRTL()) {
+      if (translatePx - 15 < extraRight) {
+        extraLeft = extraRight + extraLeft - translatePx + 15;
+        extraRight = translatePx - 15;
+      }
+      if (this.rect_.width - translatePx - 15 < extraLeft ) {
+        extraRight = extraLeft + (extraRight - (this.rect_.width - translatePx - 15));
+        extraLeft = this.rect_.width - translatePx - 15;
+      }
+    } else {
+      if (translatePx - 15 < extraLeft) {
+        extraRight = extraRight + extraLeft - translatePx + 15;
+        extraLeft = translatePx - 15;
+      }
+      if (this.rect_.width - translatePx - 15 < extraRight ) {
+        extraLeft = extraLeft + (extraRight - (this.rect_.width - translatePx - 15));
+        extraRight = this.rect_.width - translatePx - 15;
+      }
     }
 
     // These constants define the shape of the default value label.
@@ -547,7 +590,11 @@ class MDCSliderFoundation extends MDCFoundation {
     // When the slider reaches a certain point close to the edges the extra on the side closest to the edge
     // is 0 and the angles of the neck need to be updates to create smooth value label
     if (extraLeft < 0 && addExtra) {
-      topLobeHorizontal = translatePx*2;
+      if (this.adapter_.isRTL()) {
+        topLobeHorizontal = (this.rect_.width - translatePx)*2;
+      } else {
+        topLobeHorizontal = translatePx*2;
+      }
       const leftTopNeckCornerTheta = Math.acos((15 - (topLobeHorizontal)/2)/(topLobeRadius+topNeckRadius));
       const leftTopNeckCornerCenterY = Math.sqrt(Math.pow(topLobeRadius+topNeckRadius, 2) -
         Math.pow(15 - (topLobeHorizontal)/2, 2));
@@ -557,7 +604,11 @@ class MDCSliderFoundation extends MDCFoundation {
       pointH.y = 16 + leftTopNeckCornerCenterY + offsetY;
     }
     if (extraRight < 0 && addExtra) {
-      topLobeHorizontal = (this.rect_.width - translatePx)*2;
+      if (this.adapter_.isRTL()) {
+        topLobeHorizontal = translatePx*2;
+      } else {
+        topLobeHorizontal = (this.rect_.width - translatePx)*2;
+      }
       const leftTopNeckCornerTheta = Math.acos((15 - (topLobeHorizontal)/2)/(topLobeRadius+topNeckRadius));
       const leftTopNeckCornerCenterY = Math.sqrt(Math.pow(topLobeRadius+topNeckRadius, 2) -
         Math.pow(15 - (topLobeHorizontal)/2, 2));
@@ -604,6 +655,9 @@ class MDCSliderFoundation extends MDCFoundation {
     } else {
       xValue = xValue / 2;
     }
+    if (this.adapter_.isRTL()) {
+      xValue = xValue + (this.value_.toString().length * characterWidth);
+    }
     return xValue;
   }
 
@@ -619,13 +673,21 @@ class MDCSliderFoundation extends MDCFoundation {
       topLobeHorizontal = (this.value_.toString().length - 2) * characterWidth;
     }
     const extra = topLobeHorizontal - 30;
-    const extraLeft = extra * 3 / 4;
-    const extraRight = extra / 4;
+    let extraLeft = extra * 3 / 4;
+    let extraRight = extra / 4;
+    if (this.adapter_.isRTL()) {
+      const temp = extraRight;
+      extraRight = extraLeft;
+      extraLeft = temp;
+    }
     if (translatePx - 15 < extraLeft && topLobeHorizontal > 30) {
       translateValue = extraLeft - translatePx + 15;
     }
     if (this.rect_.width - translatePx - 15 < extraRight && topLobeHorizontal > 30) {
       translateValue = -(extraRight - (this.rect_.width - translatePx - 15));
+    }
+    if (this.adapter_.isRTL()) {
+      translateValue = -translateValue;
     }
     return translateValue;
   }
@@ -646,7 +708,11 @@ class MDCSliderFoundation extends MDCFoundation {
         this.adapter_.setValueLabelText(
           String(xValue), String(this.value_), `transform: translateX(${translateValue}px)`);
       }
-      this.adapter_.setThumbStyleProperty('transform', `translateX(${translatePx}px) translateX(-50%)`);
+      if (this.adapter_.isRTL()) {
+        this.adapter_.setThumbStyleProperty('transform', `translateX(-${translatePx}px) translateX(50%)`);
+      } else {
+        this.adapter_.setThumbStyleProperty('transform', `translateX(${translatePx}px) translateX(-50%)`);
+      }
       this.adapter_.setTrackFillStyleProperty('transform', `scaleX(${translatePx})`);
     });
   }

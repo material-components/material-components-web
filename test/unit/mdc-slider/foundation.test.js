@@ -45,8 +45,8 @@ test('default adapter returns a complete adapter implementation', () => {
     'registerThumbEventHandler', 'deregisterThumbEventHandler',
     'registerBodyEventHandler', 'deregisterBodyEventHandler', 'registerWindowResizeHandler',
     'deregisterWindowResizeHandler', 'notifyInput', 'notifyChange', 'setThumbStyleProperty',
-    'setTrackFillStyleProperty', 'focusThumb', 'activateRipple',
-    'deactivateRipple',
+    'setTrackFillStyleProperty', 'setLastTickMarkStyleProperty', 'focusThumb', 'activateRipple',
+    'deactivateRipple', 'isRTL',
   ]);
 });
 
@@ -96,7 +96,7 @@ test('#init checks if slider is discrete', () => {
 
   raf.flush();
 
-  td.verify(mockAdapter.hasClass(cssClasses.IS_DISCRETE));
+  td.verify(mockAdapter.hasClass(cssClasses.DISCRETE));
 
   raf.restore();
 });
@@ -106,7 +106,7 @@ test('#init sets step to one if slider is discrete but step is zero', () => {
   const raf = createMockRaf();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({width: 100, left: 200});
-  td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
   foundation.init();
 
   raf.flush();
@@ -318,6 +318,23 @@ test('#setValue assigns the discrete value when slider is discrete', () => {
   raf.flush();
 
   assert.equal(foundation.getValue(), 76);
+
+  raf.restore();
+});
+
+test('#setValue sets the slider thumb position to negative when in an RTL context', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const raf = createMockRaf();
+
+  td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+  td.when(mockAdapter.isRTL()).thenReturn(true);
+  foundation.init();
+  raf.flush();
+
+  foundation.setValue(75);
+  raf.flush();
+
+  td.verify(mockAdapter.setThumbStyleProperty(TRANSFORM_PROP, 'translateX(-75px) translateX(50%)'));
 
   raf.restore();
 });
@@ -602,7 +619,7 @@ test('#handleTransitionEnd sets pressed_ to true when all parameters are true', 
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
-  td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
   foundation.init();
   raf.flush();
 
@@ -632,7 +649,7 @@ test('#handleTransitionEnd no-op when isDiscrete_ is false', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
-  td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(false);
+  td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(false);
   foundation.init();
   raf.flush();
 
@@ -662,7 +679,7 @@ test('#handleTransitionEnd no-op for pressed_ when active_ is false', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
-  td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
   foundation.init();
   raf.flush();
 
@@ -684,7 +701,7 @@ test('#handleTransitionEnd no-op for pressed_ when event target is not mdc-slide
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
-  td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
   foundation.init();
   raf.flush();
 
@@ -714,7 +731,7 @@ test('#handleThumbBlur resets thumb when discrete and keydown', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
-  td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
   foundation.init();
   raf.flush();
 
@@ -738,7 +755,7 @@ test('#handleThumbBlur no-op when slider is not discrete', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
-  td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(false);
+  td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(false);
   foundation.init();
   raf.flush();
 
@@ -762,7 +779,7 @@ test('#handleThumbBlur no-op when no keydown event', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
-  td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
   foundation.init();
   raf.flush();
 

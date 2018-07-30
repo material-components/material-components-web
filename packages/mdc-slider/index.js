@@ -18,7 +18,7 @@
 import MDCComponent from '@material/base/component';
 
 import {MDCRipple} from '@material/ripple/index';
-import {strings} from './constants';
+import {strings, cssClasses} from './constants';
 import MDCSliderAdapter from './adapter';
 import MDCSliderFoundation from './foundation';
 
@@ -42,6 +42,8 @@ class MDCSlider extends MDCComponent {
     this.valueLabel_;
     /** @type {?Element} */
     this.valueLabelText_;
+    /** @type {?Element} */
+    this.lastTickMark_;
     /** @private {!MDCRipple} */
     this.ripple_ = this.initRipple_();
   }
@@ -166,6 +168,9 @@ class MDCSlider extends MDCComponent {
         setTrackFillStyleProperty: (propertyName, value) => {
           this.trackFill_.style.setProperty(propertyName, value);
         },
+        setLastTickMarkStyleProperty: (propertyName, value) => {
+          this.lastTickMark_.style.setProperty(propertyName, value);
+        },
         focusThumb: () => {
           this.thumb_.focus();
         },
@@ -175,34 +180,24 @@ class MDCSlider extends MDCComponent {
         deactivateRipple: () => {
           this.ripple_.deactivate();
         },
+        isRTL: () => getComputedStyle(this.root_).direction === 'rtl',
       })
     );
   }
 
   initialSyncWithDOM() {
     const origValueNow = parseFloat(this.thumb_.getAttribute(strings.ARIA_VALUENOW));
-    this.min = parseFloat(this.thumb_.getAttribute(strings.ARIA_VALUEMIN)) || this.min;
     this.max = parseFloat(this.thumb_.getAttribute(strings.ARIA_VALUEMAX)) || this.max;
+    this.min = parseFloat(this.thumb_.getAttribute(strings.ARIA_VALUEMIN)) || this.min;
     this.step = parseFloat(this.thumb_.getAttribute(strings.DATA_STEP)) || this.step;
     this.value = origValueNow || this.value;
-    if (this.tickMarkSet_) {
-      this.setUpTickMarks();
+    if (this.tickMarkSet_ && this.root_.classList.contains(cssClasses.DISCRETE)) {
+      this.setUpTickMarks_();
     }
   }
 
-  setUpTickMarks() {
-    if (this.step < 1) {
-      this.step = 1;
-    }
-    let numMarks = (this.max - this.min) / this.step;
-
-    // In case distance between max & min is indivisible to step,
-    // we place the secondary to last mark proportionally at where thumb
-    // could reach and place the last mark at max value
-    const indivisible = Math.ceil(numMarks) !== numMarks;
-    if (indivisible) {
-      numMarks = Math.ceil(numMarks);
-    }
+  setUpTickMarks_() {
+    const numMarks = this.foundation_.calculateNumberOfTickMarks();
 
     // Remove tick marks if there are any
     while (this.tickMarkSet_.firstChild) {
@@ -213,20 +208,22 @@ class MDCSlider extends MDCComponent {
     const frag = document.createDocumentFragment();
     for (let i = 0; i < numMarks; i++) {
       const mark = document.createElement('div');
-      mark.classList.add(strings.TICK_MARK);
+      mark.classList.add(cssClasses.TICK_MARK);
       frag.appendChild(mark);
     }
     this.tickMarkSet_.appendChild(frag);
 
-    if (indivisible) {
-      const lastStepRatio = (this.max - numMarks * this.step) / this.step + 1;
-      const lastTickMark = this.root_.querySelector(strings.LAST_TICK_MARK_SELECTOR);
-      lastTickMark.style.setProperty('flex', String(lastStepRatio));
-    }
+    // Assign the last tick mark
+    this.lastTickMark_ = this.root_.querySelector(strings.LAST_TICK_MARK_SELECTOR);
+
+    this.foundation_.adjustLastTickMark(numMarks);
   }
 
   layout() {
     this.foundation_.layout();
+    if (this.tickMarkSet_ && this.root_.classList.contains(cssClasses.DISCRETE)) {
+      this.setUpTickMarks_();
+    }
   }
 }
 

@@ -62,6 +62,25 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     raf.restore();
   });
 
+  test(`on ${downEvt} takes RTL into account when computing the slider\'s value using the X ` +
+       'coordinate of the event', () => {
+    const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+
+    td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+    td.when(mockAdapter.isRTL()).thenReturn(true);
+    foundation.init();
+    raf.flush();
+
+    rootHandlers[downEvt](pageXObj(25));
+    raf.flush();
+
+    assert.equal(foundation.getValue(), 75);
+    td.verify(mockAdapter.setThumbStyleProperty(TRANSFORM_PROP, 'translateX(-75px) translateX(50%)'));
+    td.verify(mockAdapter.setTrackFillStyleProperty(TRANSFORM_PROP, 'scaleX(75)'));
+
+    raf.restore();
+  });
+
   test(`on ${downEvt} adds the mdc-slider--active class to the root element`, () => {
     const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
 
@@ -97,7 +116,25 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     const {isA} = td.matchers;
 
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
-    td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
+    td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
+    foundation.init();
+    raf.flush();
+
+    rootHandlers[downEvt](pageXObj(100));
+    raf.flush();
+
+    td.verify(mockAdapter.setValueLabelText(isA(String), isA(String), isA(String)));
+
+    raf.restore();
+  });
+
+  test(`on ${downEvt} notifies discrete slider value label to change value when RTL`, () => {
+    const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+    const {isA} = td.matchers;
+
+    td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+    td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
+    td.when(mockAdapter.isRTL()).thenReturn(true);
     foundation.init();
     raf.flush();
 
@@ -114,7 +151,7 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     const {isA} = td.matchers;
 
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
-    td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
+    td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
     foundation.init();
     raf.flush();
 
@@ -131,7 +168,29 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     const {isA} = td.matchers;
 
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
-    td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
+    td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
+    foundation.init();
+    raf.flush();
+
+    foundation.setMax(100000);
+    raf.flush();
+
+    rootHandlers[downEvt](pageXObj(100));
+    raf.flush();
+
+    td.verify(mockAdapter.setValueLabelPath(isA(String)));
+
+    raf.restore();
+  });
+
+  test(`on ${downEvt} notifies discrete slider value label to change path for big numbers` +
+       'on the right with RTL', () => {
+    const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+    const {isA} = td.matchers;
+
+    td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+    td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
+    td.when(mockAdapter.isRTL()).thenReturn(true);
     foundation.init();
     raf.flush();
 
@@ -151,7 +210,29 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     const {isA} = td.matchers;
 
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
-    td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
+    td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
+    foundation.init();
+    raf.flush();
+
+    foundation.setMax(10000000);
+    foundation.setMin(1000000);
+    raf.flush();
+
+    rootHandlers[downEvt](pageXObj(0));
+    raf.flush();
+
+    td.verify(mockAdapter.setValueLabelPath(isA(String)));
+
+    raf.restore();
+  });
+
+  test(`on ${downEvt} notifies discrete slider value label to change path for big numbers on the left with RTL`, () => {
+    const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+    const {isA} = td.matchers;
+
+    td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+    td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
+    td.when(mockAdapter.isRTL()).thenReturn(true);
     foundation.init();
     raf.flush();
 
@@ -248,7 +329,7 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     const {isA} = td.matchers;
 
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
-    td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
+    td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
     foundation.init();
     raf.flush();
 
@@ -320,7 +401,7 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     const {foundation, mockAdapter, raf, rootHandlers, bodyHandlers} = setupTest();
 
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
-    td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
+    td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
     foundation.init();
     raf.flush();
 
