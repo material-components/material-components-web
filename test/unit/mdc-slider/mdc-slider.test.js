@@ -32,7 +32,6 @@ function getFixture() {
       <div class="mdc-slider__track">
         <div class="mdc-slider__track-fill"></div>
         <div class="mdc-slider__tick-mark-set">
-          <div class="mdc-slider__tick-mark:last-child"></div>
         </div>
       </div>
       <div class="mdc-slider__thumb" tabindex="0" role="slider"
@@ -190,6 +189,7 @@ test('#initialSyncWithDOM adds an data-step attribute if not present', () => {
 
 test('#initialSyncWithDOM calls setUpTickMarks if tick-mark-set is present', () => {
   const root = getFixture();
+  root.classList.add('mdc-slider--discrete');
   const component = new MDCSlider(root);
 
   assert.isTrue(component.tickMarkSet_.hasChildNodes());
@@ -197,7 +197,7 @@ test('#initialSyncWithDOM calls setUpTickMarks if tick-mark-set is present', () 
 
 test('#initialSyncWithDOM setUpTickMarks works with indivisble numbers', () => {
   const root = getFixture();
-
+  root.classList.add('mdc-slider--discrete');
   const thumb = root.querySelector('.mdc-slider__thumb');
   thumb.setAttribute('data-step', 3);
 
@@ -208,12 +208,13 @@ test('#initialSyncWithDOM setUpTickMarks works with indivisble numbers', () => {
 
 test('#initialSyncWithDOM setUpTickMarks removes old tick marks and updates', () => {
   const root = getFixture();
+  root.classList.add('mdc-slider--discrete');
   const component = new MDCSlider(root);
 
   assert.equal(component.tickMarkSet_.children.length, 50);
 
   component.max = 50;
-  component.setUpTickMarks();
+  component.setUpTickMarks_();
 
   assert.equal(component.tickMarkSet_.children.length, 25);
 });
@@ -388,6 +389,7 @@ test('adapter#setTrackFillStyleProperty sets a style property on the track-fill 
 
 test('adapter#setLastTickMarkStyleProperty sets a style property on the last tick mark element', () => {
   const {root, component} = setupTest();
+  component.setUpTickMarks_();
   const lastTickMark = root.querySelector('.mdc-slider__tick-mark:last-child');
 
   const div = bel`<div></div>`;

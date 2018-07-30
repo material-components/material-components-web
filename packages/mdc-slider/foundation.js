@@ -120,7 +120,7 @@ class MDCSliderFoundation extends MDCFoundation {
   }
 
   init() {
-    this.isDiscrete_ = this.adapter_.hasClass(cssClasses.IS_DISCRETE);
+    this.isDiscrete_ = this.adapter_.hasClass(cssClasses.DISCRETE);
     DOWN_EVENTS.forEach((evtName) => this.adapter_.registerEventHandler(evtName, this.interactionStartHandler_));
     this.adapter_.registerEventHandler('keydown', this.keydownHandler_);
     this.adapter_.registerEventHandler('keyup', this.interactionEndHandler_);

@@ -18,7 +18,7 @@
 import MDCComponent from '@material/base/component';
 
 import {MDCRipple} from '@material/ripple/index';
-import {strings} from './constants';
+import {strings, cssClasses} from './constants';
 import MDCSliderAdapter from './adapter';
 import MDCSliderFoundation from './foundation';
 
@@ -173,12 +173,12 @@ class MDCSlider extends MDCComponent {
     this.max = parseFloat(this.thumb_.getAttribute(strings.ARIA_VALUEMAX)) || this.max;
     this.step = parseFloat(this.thumb_.getAttribute(strings.DATA_STEP)) || this.step;
     this.value = origValueNow || this.value;
-    if (this.tickMarkSet_) {
-      this.setUpTickMarks();
+    if (this.tickMarkSet_ && this.root_.classList.contains(cssClasses.DISCRETE)) {
+      this.setUpTickMarks_();
     }
   }
 
-  setUpTickMarks() {
+  setUpTickMarks_() {
     const numMarks = this.foundation_.calculateNumberOfTickMarks();
 
     // Remove tick marks if there are any
@@ -190,7 +190,7 @@ class MDCSlider extends MDCComponent {
     const frag = document.createDocumentFragment();
     for (let i = 0; i < numMarks; i++) {
       const mark = document.createElement('div');
-      mark.classList.add(strings.TICK_MARK);
+      mark.classList.add(cssClasses.TICK_MARK);
       frag.appendChild(mark);
     }
     this.tickMarkSet_.appendChild(frag);
@@ -203,8 +203,8 @@ class MDCSlider extends MDCComponent {
 
   layout() {
     this.foundation_.layout();
-    if (this.tickMarkSet_) {
-      this.setUpTickMarks();
+    if (this.tickMarkSet_ && this.root_.classList.contains(cssClasses.DISCRETE)) {
+      this.setUpTickMarks_();
     }
   }
 }

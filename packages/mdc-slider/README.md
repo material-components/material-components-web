@@ -100,8 +100,8 @@ DOM.
 
 ### Using a step value
 
-> **NOTE**: If a slider contains a step value it does _not_ mean that the slider is a "discrete"
-> slider. "Discrete slider" is a UX treatment, while having a step value is behavioral.
+> **NOTE**: In a discrete slider, the step value defines the slider values that are valid. In a continuous 
+> slider, the step value only defines the size of an arrow key step, but the slider can still hold continuous values.
 
 `MDCSlider` supports quantization by allowing users to supply a floating-point `step` value via a
 `data-step` attribute.
@@ -126,8 +126,8 @@ provided, or no value is provided, the step value will default to 1.
 
 ### Display tick marks (discrete slider only)
 
-Discrete sliders support display tick marks on their tracks by adding `<div class="mdc-slider__tick-mark-set"></div>`
-to the track element.
+Discrete sliders support tick marks on their tracks by adding `<div class="mdc-slider__tick-mark-set"></div>`
+to the track element after the `mdc-slider__track-fill` element.
 
 ```html
 <div class="mdc-slider mdc-slider--discrete">

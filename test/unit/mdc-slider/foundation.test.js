@@ -93,7 +93,7 @@ test('#init checks if slider is discrete', () => {
 
   raf.flush();
 
-  td.verify(mockAdapter.hasClass(cssClasses.IS_DISCRETE));
+  td.verify(mockAdapter.hasClass(cssClasses.DISCRETE));
 
   raf.restore();
 });
@@ -103,7 +103,7 @@ test('#init sets step to one if slider is discrete but step is zero', () => {
   const raf = createMockRaf();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({width: 100, left: 200});
-  td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
   foundation.init();
 
   raf.flush();

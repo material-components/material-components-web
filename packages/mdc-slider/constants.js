@@ -21,7 +21,6 @@ const strings = {
   TRACK_FILL_SELECTOR: '.mdc-slider__track-fill',
   TICK_MARK_SET_SELECTOR: '.mdc-slider__tick-mark-set',
   LAST_TICK_MARK_SELECTOR: '.mdc-slider__tick-mark:last-child',
-  TICK_MARK: 'mdc-slider__tick-mark',
   THUMB_SELECTOR: '.mdc-slider__thumb',
   ARIA_VALUEMIN: 'aria-valuemin',
   ARIA_VALUEMAX: 'aria-valuemax',
@@ -36,9 +35,10 @@ const cssClasses = {
   SLIDER: 'mdc-slider',
   TRACK: 'mdc-slider__track',
   TRACK_FILL: 'mdc-slider__track-fill',
+  TICK_MARK: 'mdc-slider__tick-mark',
   ACTIVE: 'mdc-slider--active',
   IN_TRANSIT: 'mdc-slider--in-transit',
-  IS_DISCRETE: 'mdc-slider--discrete',
+  DISCRETE: 'mdc-slider--discrete',
 };
 
 export {strings, cssClasses};
