@@ -136,7 +136,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     this.hoistedElement_ = false;
     /** @private {boolean} */
     this.isFixedPosition_ = false;
-    /** @private {{x: {number}, y: {number}}} */
+    /** @private {{x: number, y: number}} */
     this.position_ = {x: 0, y: 0};
   }
 
@@ -198,12 +198,12 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
 
   /**
    * Sets the menu-surface position on the page.
-   * @param x
-   * @param y
+   * @param {number} x
+   * @param {number} y
    */
   setAbsolutePosition(x, y) {
-    this.position_.x = x;
-    this.position_.y = y;
+    this.position_.x = isNaN(x) ? 0 : x;
+    this.position_.y = isNaN(y) ? 0 : y;
   }
 
   /** @param {boolean} quickOpen */

@@ -120,8 +120,8 @@ class MDCMenuSurface extends MDCComponent {
 
   /**
    * Sets the absolute x/y position to position based on. Requires the menu to be hoisted.
-   * @param {number] x
-   * @param {number] y
+   * @param {number} x
+   * @param {number} y
    */
   setAbsolutePosition(x, y) {
     this.foundation_.setAbsolutePosition(x, y);

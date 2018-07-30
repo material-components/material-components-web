@@ -123,7 +123,7 @@ test('setFixedPosition is true', () => {
 test('setAbsolutePosition calls the foundation setAbsolutePosition function', () => {
   const {component, mockFoundation} = setupTest();
   component.setAbsolutePosition(10, 10);
-  td.verify(mockFoundation.setAbsolutePosition(10,10));
+  td.verify(mockFoundation.setAbsolutePosition(10, 10));
   td.verify(mockFoundation.setIsHoisted(true));
 });
 
