@@ -90,11 +90,11 @@ class MDCChipSetFoundation extends MDCFoundation {
    */
   select(chipId) {
     if (this.adapter_.hasClass(cssClasses.CHOICE)) {
-      // Deselect all selected chips.
-      this.selectedChipIds_.forEach((chipId) => {
-        this.adapter_.setSelected(chipId, false);
-      });
-      this.selectedChipIds_.length = 0;
+      const selectedChipId = this.selectedChipIds_.length > 0 && this.selectedChipIds_[0];
+      if (selectedChipId && selectedChipId != chipId) {
+        this.adapter_.setSelected(selectedChipId, false);
+        this.selectedChipIds_.length = 0;
+      }
     }
     this.adapter_.setSelected(chipId, true);
     this.selectedChipIds_.push(chipId);
