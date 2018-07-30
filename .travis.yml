@@ -1,45 +1,66 @@
 language: node_js
+
 branches:
   # Only run Travis on:
   #   A) Commits made directly to the `master` branch (i.e., merged PRs); and
   #   B) PRs that will eventually be merged into `master`.
   # This prevents excessive resource usage and CI slowness.
   only:
-  - master
+    - master
+
+before_install:
+  # Source the scripts to export their env vars. See https://superuser.com/a/176788/62792
+  - source scripts/travis-env-vars.sh
+
+install:
+  - if has_testable_files; then npm install; fi
+  # Noisy output, but useful for debugging npm package dependency version issues:
+  #- npm ls
+
 matrix:
   include:
+
   - node_js: 8
     env:
-    - TEST_SUITE=lint
-    script: npm run lint
+      - TEST_SUITE=lint
+    script:
+      - if has_testable_files; then npm run lint; else log_untestable_files; fi
+
   - node_js: 8
     env:
-    - TEST_SUITE=unit
+      - TEST_SUITE=unit
     addons:
       sauce_connect: true
-    script: npm run test:unit && npm run posttest
+    script:
+      - if has_testable_files; then npm run test:unit && npm run posttest; else log_untestable_files; fi
     after_success:
-    - codecov
+      - codecov
+
   - node_js: 8
     env:
-    - TEST_SUITE=closure
-    - CLOSURE=1
-    script: npm run test:closure
+      - TEST_SUITE=closure
+      - CLOSURE=1
+    script:
+      - if has_testable_files; then npm run test:closure; else log_untestable_files; fi
+
   - node_js: 8
     env:
-    - TEST_SUITE=site-generator
-    script: npm run test:site
+      - TEST_SUITE=site-generator
+    script:
+      - if has_testable_files; then npm run test:site; else log_untestable_files; fi
+
   - node_js: 8
     env:
-    - TEST_SUITE=screenshot
+      - TEST_SUITE=screenshot
     git:
       depth: 200
-    script: npm run screenshot:test -- --no-fetch
-    before_install:
-      # Source the script to run it in the same shell process. This ensures that any environment variables set by the
-      # script are visible to subsequent Travis CLI commands.
-      # https://superuser.com/a/176788/62792
+    before_install: # Override global settings
+      # Source the scripts to export their env vars. See https://superuser.com/a/176788/62792
+      - source scripts/travis-env-vars.sh
       - source test/screenshot/infra/commands/travis.sh
-    install:
+    install: # Override global settings
       - npm install
-      #- npm ls # Noisy output, but useful for debugging npm package dependency version issues
+      # Noisy output, but useful for debugging npm package dependency version issues:
+      #- npm ls
+    script:
+      - npm run screenshot:test
