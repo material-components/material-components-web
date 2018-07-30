@@ -2,7 +2,7 @@
 [![codecov](https://codecov.io/gh/material-components/material-components-web/branch/master/graph/badge.svg)](https://codecov.io/gh/material-components/material-components-web)
 [![Chat](https://img.shields.io/discord/259087343246508035.svg)](https://discord.gg/material-components)
 
-# Material Components for the Web
+# Material Components for the web
 
 Material Components for the web (MDC Web) helps developers execute [Material Design](https://www.material.io).
 Developed by a core team of engineers and UX designers at Google, these components enable a reliable development workflow to build beautiful and functional web projects.
@@ -117,11 +117,13 @@ We officially support the last two versions of every major browser. Specifically
 
 ## Thank you
 
-Continuous integration services are generously provided by:
+Fast, reliable [automated screenshot testing](test/screenshot/) is generously provided by:
 
-* [CrossBrowserTesting](https://crossbrowsertesting.com/): \
-  Fast, reliable [screenshot tests](test/screenshot/) with excellent customer support. _(Free for open source projects)_
-* [Sauce Labs](https://saucelabs.com/): \
-  Browser VMs for our [unit tests](test/unit/). _(Free for open source projects)_
-* [Travis CI](https://travis-ci.org/): \
-  Continuous testing for every commit we make. _(Free for open source projects)_
+[![CrossBrowserTesting logo](test/screenshot/static/images/cbt-logo.png)](https://crossbrowsertesting.com/)
+
+Free for open source projects!
+
+Additional continuous integration services courtesy of:
+
+- [Travis CI](https://travis-ci.com/)
+- [Sauce Labs](https://saucelabs.com/)
