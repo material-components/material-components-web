@@ -18,7 +18,7 @@
 import MDCFoundation from '@material/base/foundation';
 import MDCChipSetAdapter from './adapter';
 // eslint-disable-next-line no-unused-vars
-import {MDCChipEventType} from '../chip/foundation';
+import {MDCChipInteractionEventType, MDCChipRemovalEventType} from '../chip/foundation';
 import {strings, cssClasses} from './constants';
 
 /**
@@ -113,7 +113,7 @@ class MDCChipSetFoundation extends MDCFoundation {
 
   /**
    * Handles a chip interaction event
-   * @param {!MDCChipEventType} evt
+   * @param {!MDCChipInteractionEventType} evt
    */
   handleChipInteraction(evt) {
     const {chipId} = evt.detail;
@@ -124,7 +124,7 @@ class MDCChipSetFoundation extends MDCFoundation {
 
   /**
    * Handles the event when a chip is removed.
-   * @param {!MDCChipEventType} evt
+   * @param {!MDCChipRemovalEventType} evt
    */
   handleChipRemoval(evt) {
     const {chipId} = evt.detail;
