@@ -15,46 +15,65 @@
  */
 
 import {MDCFoundation} from '@material/base/index';
+/* eslint-disable no-unused-vars */
+import MDCSelectAdapter from './adapter';
+/* eslint-enable no-unused-vars */
 import {cssClasses, strings, numbers} from './constants';
 
-export default class MDCSelectFoundation extends MDCFoundation {
+/**
+ * @extends {MDCFoundation<!MDCSelectAdapter>}
+ * @final
+ */
+class MDCSelectFoundation extends MDCFoundation {
+  /** @return enum {string} */
   static get cssClasses() {
     return cssClasses;
   }
 
+  /** @return enum {number} */
   static get numbers() {
     return numbers;
   }
 
+  /** @return enum {string} */
   static get strings() {
     return strings;
   }
 
+  /**
+   * {@see MDCSelectAdapter} for typing information on parameters and return
+   * types.
+   * @return {!MDCSelectAdapter}
+   */
   static get defaultAdapter() {
-    return {
+    return /** @type {!MDCSelectAdapter} */ ({
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
       hasClass: (/* className: string */) => false,
-      floatLabel: (/* value: boolean */) => {},
       activateBottomLine: () => {},
       deactivateBottomLine: () => {},
       getValue: () => {},
       isRtl: () => false,
-      hasLabel: () => {},
+      hasLabel: () => false,
+      floatLabel: (/* value: boolean */) => {},
       getLabelWidth: () => {},
-      hasOutline: () => {},
-      notchOutline: () => {},
+      hasOutline: () => false,
+      notchOutline: (/* labelWidth: number, isRtl: boolean */) => {},
       closeOutline: () => {},
-    };
+    });
   }
 
+  /**
+   * @param {!MDCSelectAdapter} adapter
+   */
   constructor(adapter) {
     super(Object.assign(MDCSelectFoundation.defaultAdapter, adapter));
-
-    this.focusHandler_ = (evt) => this.handleFocus_(evt);
-    this.blurHandler_ = (evt) => this.handleBlur_(evt);
   }
 
+  /**
+   * Updates the styles of the select to show the disasbled state.
+   * @param {boolean} disabled
+   */
   updateDisabledStyle(disabled) {
     const {DISABLED} = MDCSelectFoundation.cssClasses;
     if (disabled) {
@@ -64,18 +83,27 @@ export default class MDCSelectFoundation extends MDCFoundation {
     }
   }
 
+  /**
+   * Handles value changes, via change event or programmatic updates.
+   */
   handleChange() {
     const optionHasValue = this.adapter_.getValue().length > 0;
     this.adapter_.floatLabel(optionHasValue);
     this.notchOutline(optionHasValue);
   }
 
+  /**
+   * Handles focus events from root element.
+   */
   handleFocus() {
     this.adapter_.floatLabel(true);
     this.notchOutline(true);
     this.adapter_.activateBottomLine();
   }
 
+  /**
+   * Handles blur events from root element.
+   */
   handleBlur() {
     this.handleChange();
     this.adapter_.deactivateBottomLine();
@@ -100,3 +128,5 @@ export default class MDCSelectFoundation extends MDCFoundation {
     }
   }
 }
+
+export default MDCSelectFoundation;
