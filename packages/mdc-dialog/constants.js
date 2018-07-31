@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-export const cssClasses = {
+const cssClasses = {
   ROOT: 'mdc-dialog',
   OPEN: 'mdc-dialog--open',
   ANIMATING: 'mdc-dialog--animating',
@@ -24,10 +24,16 @@ export const cssClasses = {
   CANCEL_BTN: 'mdc-dialog__footer__button--cancel',
 };
 
-export const strings = {
+const strings = {
   OPEN_DIALOG_SELECTOR: '.mdc-dialog--open',
   DIALOG_SURFACE_SELECTOR: '.mdc-dialog__surface',
   ACCEPT_SELECTOR: '.mdc-dialog__footer__button--accept',
   ACCEPT_EVENT: 'MDCDialog:accept',
   CANCEL_EVENT: 'MDCDialog:cancel',
 };
+
+const numbers = {
+  DIALOG_ANIMATION_TIME_MS: 120,
+};
+
+export {cssClasses, strings, numbers};
