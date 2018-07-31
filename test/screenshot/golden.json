@@ -152,6 +152,24 @@
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/17/22_50_36_536/spec/mdc-button/mixins/stroke-width.html.windows_ie_11.png"
     }
   },
+  "spec/mdc-card/classes/baseline.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/31/04_55_54_478/spec/mdc-card/classes/baseline.html",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/31/04_55_54_478/spec/mdc-card/classes/baseline.html.windows_chrome_67.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/31/04_55_54_478/spec/mdc-card/classes/baseline.html.windows_edge_17.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/31/04_55_54_478/spec/mdc-card/classes/baseline.html.windows_firefox_61.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/31/04_55_54_478/spec/mdc-card/classes/baseline.html.windows_ie_11.png"
+    }
+  },
+  "spec/mdc-card/mixins/mixins.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/31/04_55_54_478/spec/mdc-card/mixins/mixins.html",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/31/04_55_54_478/spec/mdc-card/mixins/mixins.html.windows_chrome_67.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/31/04_55_54_478/spec/mdc-card/mixins/mixins.html.windows_edge_17.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/31/04_55_54_478/spec/mdc-card/mixins/mixins.html.windows_firefox_61.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/31/04_55_54_478/spec/mdc-card/mixins/mixins.html.windows_ie_11.png"
+    }
+  },
   "spec/mdc-checkbox/classes/baseline.html": {
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/mattgoo/2018/07/18/19_29_49_289/spec/mdc-checkbox/classes/baseline.html",
     "screenshots": {
