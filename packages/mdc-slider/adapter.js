@@ -66,7 +66,7 @@ class MDCSliderAdapter {
   setValueLabelText(xValue, text, translateX) {}
 
   /**
-   * Removes the style attribute
+   * Removes the style attribute for the value label text Element
    */
   removeValueLabelTextStyle() {}
 
