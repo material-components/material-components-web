@@ -28,6 +28,10 @@ const getFixture = () => bel`
       <span class="mdc-tab__text-label">Foo</span>
       <span class="mdc-tab__icon"></span>
     </div>
+    <span class="mdc-tab__ripple"></span>
+    <span class="mdc-tab-indicator">
+      <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+    </span>
   </button>
 `;
 
@@ -39,8 +43,9 @@ test('attachTo returns an MDCTab instance', () => {
 
 function setupTest() {
   const root = getFixture();
+  const content = root.querySelector(MDCTabFoundation.strings.CONTENT_SELECTOR);
   const component = new MDCTab(root);
-  return {root, component};
+  return {root, content, component};
 }
 
 test('#destroy removes the ripple', () => {
@@ -96,6 +101,64 @@ test('#adapter.deregisterEventHandler removes an event listener from the root el
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
+test('#adapter.activateIndicator activates the indicator subcomponent', () => {
+  const {root, component} = setupTest();
+  component.getDefaultFoundation().adapter_.activateIndicator();
+  assert.ok(root.querySelector('.mdc-tab-indicator').classList.contains('mdc-tab-indicator--active'));
+});
+
+test('#adapter.deactivateIndicator deactivates the indicator subcomponent', () => {
+  const {root, component} = setupTest();
+  component.getDefaultFoundation().adapter_.deactivateIndicator();
+  assert.notOk(root.querySelector('.mdc-tab-indicator').classList.contains('mdc-tab-indicator--active'));
+});
+
+test('#adapter.computeIndicatorClientRect returns the indicator element\'s bounding client rect', () => {
+  const {root, component} = setupTest();
+  component.getDefaultFoundation().adapter_.deactivateIndicator();
+  assert.deepEqual(
+    component.getDefaultFoundation().adapter_.computeIndicatorClientRect(),
+    root.querySelector('.mdc-tab-indicator').getBoundingClientRect()
+  );
+});
+
+test('#adapter.getOffsetWidth() returns the offsetWidth of the root element', () => {
+  const {root, component} = setupTest();
+  assert.strictEqual(component.getDefaultFoundation().adapter_.getOffsetWidth(), root.offsetWidth);
+});
+
+test('#adapter.getOffsetLeft() returns the offsetLeft of the root element', () => {
+  const {root, component} = setupTest();
+  assert.strictEqual(component.getDefaultFoundation().adapter_.getOffsetLeft(), root.offsetLeft);
+});
+
+test('#adapter.getContentOffsetWidth() returns the offsetLeft of the content element', () => {
+  const {content, component} = setupTest();
+  assert.strictEqual(component.getDefaultFoundation().adapter_.getContentOffsetWidth(), content.offsetWidth);
+});
+
+test('#adapter.getContentOffsetLeft() returns the offsetLeft of the content element', () => {
+  const {content, component} = setupTest();
+  assert.strictEqual(component.getDefaultFoundation().adapter_.getContentOffsetLeft(), content.offsetLeft);
+});
+
+test('#adapter.focus() gives focus to the root element', () => {
+  const {root, component} = setupTest();
+  document.body.appendChild(root);
+  component.getDefaultFoundation().adapter_.focus();
+  assert.strictEqual(document.activeElement, root);
+  document.body.removeChild(root);
+});
+
+test(`#adapter.notifyInteracted() emits the ${MDCTabFoundation.strings.INTERACTED_EVENT} event`, () => {
+  const {component} = setupTest();
+  const handler = td.func('interaction handler');
+
+  component.listen(MDCTabFoundation.strings.INTERACTED_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyInteracted();
+  td.verify(handler(td.matchers.anything()));
+});
+
 function setupMockFoundationTest(root = getFixture()) {
   const MockFoundationConstructor = td.constructor(MDCTabFoundation);
   const mockFoundation = new MockFoundationConstructor();
@@ -109,14 +172,32 @@ test('#active getter calls isActive', () => {
   td.verify(mockFoundation.isActive(), {times: 1});
 });
 
-test('#active set to true calls activate', () => {
+test('#activate() calls activate', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
-  component.active = true;
-  td.verify(mockFoundation.activate(), {times: 1});
+  component.activate();
+  td.verify(mockFoundation.activate(undefined), {times: 1});
 });
 
-test('#active set to false calls deactivate', () => {
+test('#activate({ClientRect}) calls activate', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
-  component.active = false;
+  component.activate({width: 100, left: 200});
+  td.verify(mockFoundation.activate({width: 100, left: 200}), {times: 1});
+});
+
+test('#deactivate() calls deactivate', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.deactivate();
   td.verify(mockFoundation.deactivate(), {times: 1});
+});
+
+test('#computeIndicatorClientRect() calls computeIndicatorClientRect', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.computeIndicatorClientRect();
+  td.verify(mockFoundation.computeIndicatorClientRect(), {times: 1});
+});
+
+test('#computeDimensions() calls computeDimensions', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.computeDimensions();
+  td.verify(mockFoundation.computeDimensions(), {times: 1});
 });

@@ -17,7 +17,8 @@
 
 import MDCFoundation from '@material/base/foundation';
 import MDCChipSetAdapter from './adapter';
-import MDCChipFoundation from '../chip/foundation';
+// eslint-disable-next-line no-unused-vars
+import {MDCChipFoundation, MDCChipInteractionEventType} from '../chip/foundation';
 import {strings, cssClasses} from './constants';
 
 /**
@@ -43,9 +44,6 @@ class MDCChipSetFoundation extends MDCFoundation {
   static get defaultAdapter() {
     return /** @type {!MDCChipSetAdapter} */ ({
       hasClass: () => {},
-      registerInteractionHandler: () => {},
-      deregisterInteractionHandler: () => {},
-      appendChip: () => {},
       removeChip: () => {},
     });
   }
@@ -61,38 +59,6 @@ class MDCChipSetFoundation extends MDCFoundation {
      * @private {!Array<!MDCChipFoundation>}
      */
     this.selectedChips_ = [];
-
-    /** @private {function(!Event): undefined} */
-    this.chipInteractionHandler_ = (evt) => this.handleChipInteraction_(evt);
-    /** @private {function(!Event): undefined} */
-    this.chipRemovalHandler_ = (evt) => this.handleChipRemoval_(evt);
-  }
-
-  init() {
-    this.adapter_.registerInteractionHandler(
-      MDCChipFoundation.strings.INTERACTION_EVENT, this.chipInteractionHandler_);
-    this.adapter_.registerInteractionHandler(
-      MDCChipFoundation.strings.REMOVAL_EVENT, this.chipRemovalHandler_);
-  }
-
-  destroy() {
-    this.adapter_.deregisterInteractionHandler(
-      MDCChipFoundation.strings.INTERACTION_EVENT, this.chipInteractionHandler_);
-    this.adapter_.deregisterInteractionHandler(
-      MDCChipFoundation.strings.REMOVAL_EVENT, this.chipRemovalHandler_);
-  }
-
-  /**
-   * Returns a new chip element with the given text, leading icon, and trailing icon,
-   * added to the root chip set element.
-   * @param {string} text
-   * @param {?Element} leadingIcon
-   * @param {?Element} trailingIcon
-   * @return {!Element}
-   */
-  addChip(text, leadingIcon, trailingIcon) {
-    const chipEl = this.adapter_.appendChip(text, leadingIcon, trailingIcon);
-    return chipEl;
   }
 
   /**
@@ -129,10 +95,10 @@ class MDCChipSetFoundation extends MDCFoundation {
 
   /**
    * Handles a chip interaction event
-   * @param {!Event} evt
+   * @param {!MDCChipInteractionEventType} evt
    * @private
    */
-  handleChipInteraction_(evt) {
+  handleChipInteraction(evt) {
     const chipFoundation = evt.detail.chip.foundation;
     if (this.adapter_.hasClass(cssClasses.CHOICE) || this.adapter_.hasClass(cssClasses.FILTER)) {
       if (chipFoundation.isSelected()) {
@@ -145,10 +111,10 @@ class MDCChipSetFoundation extends MDCFoundation {
 
   /**
    * Handles the event when a chip is removed.
-   * @param {!Event} evt
+   * @param {!MDCChipInteractionEventType} evt
    * @private
    */
-  handleChipRemoval_(evt) {
+  handleChipRemoval(evt) {
     const {chip} = evt.detail;
     this.deselect(chip.foundation);
     this.adapter_.removeChip(chip);

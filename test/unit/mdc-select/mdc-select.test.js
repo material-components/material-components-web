@@ -24,6 +24,7 @@ import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 import {MDCRipple, MDCRippleFoundation} from '../../../packages/mdc-ripple';
 import {MDCSelect} from '../../../packages/mdc-select';
 import {cssClasses} from '../../../packages/mdc-select/constants';
+import {MDCNotchedOutline} from '../../../packages/mdc-notched-outline';
 
 class FakeLabel {
   constructor() {
@@ -35,6 +36,12 @@ class FakeBottomLine {
   constructor() {
     this.activate = td.func('bottomLine.activate');
     this.deactivate = td.func('bottomLine.deactivate');
+  }
+}
+
+class FakeOutline {
+  constructor() {
+    this.destroy = td.func('.destroy');
   }
 }
 
@@ -86,9 +93,10 @@ function setupTest() {
   const nativeControl = fixture.querySelector('.mdc-select__native-control');
   const labelEl = fixture.querySelector('.mdc-floating-label');
   const bottomLineEl = fixture.querySelector('.mdc-line-ripple');
-  const component = new MDCSelect(fixture, /* foundation */ undefined, () => label, () => bottomLine);
+  const outline = new FakeOutline();
+  const component = new MDCSelect(fixture, /* foundation */ undefined, () => label, () => bottomLine, () => outline);
 
-  return {fixture, nativeControl, label, labelEl, bottomLine, bottomLineEl, component};
+  return {fixture, nativeControl, label, labelEl, bottomLine, bottomLineEl, component, outline};
 }
 
 test('#get/setSelectedIndex', () => {
@@ -98,7 +106,7 @@ test('#get/setSelectedIndex', () => {
   assert.equal(component.selectedIndex, 1);
 });
 
-test('#get/setDisabled', () => {
+test('#get/set disabled', () => {
   const {component} = setupTest();
   assert.isFalse(component.disabled);
   component.disabled = true;
@@ -118,6 +126,27 @@ test('#set value sets the value on the <select>', () => {
   const {component, nativeControl} = setupTest();
   component.value = 'orange';
   assert.equal(nativeControl.value, 'orange');
+});
+
+test('#set value calls foundation.handleChange', () => {
+  const {component} = setupTest();
+  component.foundation_.handleChange = td.func();
+  component.value = 'orange';
+  td.verify(component.foundation_.handleChange(), {times: 1});
+});
+
+test('#set selectedIndex calls foundation.handleChange', () => {
+  const {component} = setupTest();
+  component.foundation_.handleChange = td.func();
+  component.selectedIndex = 1;
+  td.verify(component.foundation_.handleChange(), {times: 1});
+});
+
+test('#set disabled calls foundation.updateDisabledStyle', () => {
+  const {component} = setupTest();
+  component.foundation_.updateDisabledStyle = td.func();
+  component.disabled = true;
+  td.verify(component.foundation_.updateDisabledStyle(true), {times: 1});
 });
 
 test('#initialSyncWithDOM sets the selected index if an option has the selected attr', () => {
@@ -171,6 +200,12 @@ test('adapter#removeClass removes a class from the root element', () => {
   assert.isFalse(fixture.classList.contains('foo'));
 });
 
+test('adapter#hasClass returns true if a class exists on the root element', () => {
+  const {component, fixture} = setupTest();
+  fixture.classList.add('foo');
+  assert.isTrue(component.getDefaultFoundation().adapter_.hasClass('foo'));
+});
+
 test('adapter_.floatLabel does not throw error if label does not exist', () => {
   const fixture = bel`
     <div class="mdc-select">
@@ -212,6 +247,20 @@ test('adapter.activateBottomLine and adapter.deactivateBottomLine ' +
     () => component.getDefaultFoundation().adapter_.deactivateBottomLine());
 });
 
+
+test('#adapter.isRtl returns true when the root element is in an RTL context' +
+  'and false otherwise', () => {
+  const wrapper = bel`<div dir="rtl"></div>`;
+  const {fixture, component} = setupTest();
+  assert.isFalse(component.getDefaultFoundation().adapter_.isRtl());
+
+  wrapper.appendChild(fixture);
+  document.body.appendChild(wrapper);
+  assert.isTrue(component.getDefaultFoundation().adapter_.isRtl());
+
+  document.body.removeChild(wrapper);
+});
+
 test(`instantiates ripple when ${cssClasses.BOX} class is present`, function() {
   if (!supportsCssVariables(window, true)) {
     this.skip(); // eslint-disable-line no-invalid-this
@@ -227,6 +276,13 @@ test(`instantiates ripple when ${cssClasses.BOX} class is present`, function() {
   assert.instanceOf(component.ripple, MDCRipple);
   assert.isTrue(fixture.classList.contains(MDCRippleFoundation.cssClasses.ROOT));
   raf.restore();
+});
+
+test(`#constructor instantiates an outline on the ${cssClasses.OUTLINE_SELECTOR} element if present`, () => {
+  const root = getFixture();
+  root.appendChild(bel`<div class="mdc-notched-outline"></div>`);
+  const component = new MDCSelect(root);
+  assert.instanceOf(component.outline_, MDCNotchedOutline);
 });
 
 test(`handles ripple focus properly when ${cssClasses.BOX} class is present`, function() {
@@ -270,6 +326,13 @@ test('#destroy removes the ripple', function() {
   raf.restore();
 });
 
+test('#destroy cleans up the outline if present', () => {
+  const {component, outline} = setupTest();
+  component.outline_ = outline;
+  component.destroy();
+  td.verify(outline.destroy());
+});
+
 test(`does not instantiate ripple when ${cssClasses.BOX} class is not present`, () => {
   const {component} = setupTest();
   assert.isUndefined(component.ripple);
@@ -296,37 +359,47 @@ test('adapter#deactivateBottomLine removes active class from the bottom line', (
   td.verify(bottomLine.deactivate());
 });
 
-test('adapter#registerInteractionHandler adds an event listener to the nativeControl element', () => {
+test('change event triggers foundation.handleChange()', () => {
   const {component, nativeControl} = setupTest();
-  const listener = td.func('eventlistener');
-  component.getDefaultFoundation().adapter_.registerInteractionHandler('click', listener);
-  domEvents.emit(nativeControl, 'click');
-  td.verify(listener(td.matchers.anything()));
+  component.foundation_.handleChange = td.func();
+  domEvents.emit(nativeControl, 'change');
+  td.verify(component.foundation_.handleChange(), {times: 1});
 });
 
-test('adapter#deregisterInteractionHandler removes an event listener from the nativeControl element', () => {
+test('focus event triggers foundation.handleFocus()', () => {
   const {component, nativeControl} = setupTest();
-  const listener = td.func('eventlistener');
-  nativeControl.addEventListener('click', listener);
-  component.getDefaultFoundation().adapter_.deregisterInteractionHandler('click', listener);
-  domEvents.emit(nativeControl, 'click');
-  td.verify(listener(td.matchers.anything()), {times: 0});
+  component.foundation_.handleFocus = td.func();
+  domEvents.emit(nativeControl, 'focus');
+  td.verify(component.foundation_.handleFocus(), {times: 1});
 });
 
-test('adapter#setValue sets the value of the select to the correct option', () => {
-  const {nativeControl, component} = setupTest();
-  component.getDefaultFoundation().adapter_.setValue('orange');
-  assert.equal(nativeControl.value, 'orange');
+test('blur event triggers foundation.handleBlur()', () => {
+  const {component, nativeControl} = setupTest();
+  component.foundation_.handleBlur = td.func();
+  domEvents.emit(nativeControl, 'blur');
+  td.verify(component.foundation_.handleBlur(), {times: 1});
 });
 
-test('adapter#getValue returns the nativeControl value', () => {
-  const {nativeControl, component} = setupTest();
-  nativeControl.value = 'orange';
-  assert.equal(component.getDefaultFoundation().adapter_.getValue(), 'orange');
+test('#destroy removes the change handler', () => {
+  const {component, nativeControl} = setupTest();
+  component.foundation_.handleChange = td.func();
+  component.destroy();
+  domEvents.emit(nativeControl, 'change');
+  td.verify(component.foundation_.handleChange(), {times: 0});
 });
 
-test('adapter#getSelectedIndex returns selected index', () => {
-  const {component} = setupTest();
-  component.selectedIndex = 1;
-  assert.equal(component.getDefaultFoundation().adapter_.getSelectedIndex(), 1);
+test('#destroy removes the focus handler', () => {
+  const {component, nativeControl} = setupTest();
+  component.foundation_.handleFocus = td.func();
+  component.destroy();
+  domEvents.emit(nativeControl, 'focus');
+  td.verify(component.foundation_.handleFocus(), {times: 0});
+});
+
+test('#destroy removes the blur handler', () => {
+  const {component, nativeControl} = setupTest();
+  component.foundation_.handleBlur = td.func();
+  component.destroy();
+  domEvents.emit(nativeControl, 'blur');
+  td.verify(component.foundation_.handleBlur(), {times: 0});
 });

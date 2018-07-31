@@ -1,0 +1,11 @@
+{
+  "resemble_config": {
+    "output": {
+      "transparency": 0
+    }
+  },
+  "flaky_tests": {
+    "min_changed_pixel_count": 15,
+    "max_auto_retry_changed_pixel_fraction": 0.10
+  }
+}

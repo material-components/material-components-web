@@ -310,6 +310,30 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
+   * Sets the aria label of the icon.
+   * @param {string} label
+   */
+  set iconAriaLabel(label) {
+    this.foundation_.setIconAriaLabel(label);
+  }
+
+  /**
+   * Sets the text content of the icon.
+   * @param {string} content
+   */
+  set iconContent(content) {
+    this.foundation_.setIconContent(content);
+  }
+
+  /**
+   * Enables or disables the use of native validation. Use this for custom validation.
+   * @param {boolean} useNativeValidation Set this to false to ignore native input validation.
+   */
+  set useNativeValidation(useNativeValidation) {
+    this.foundation_.setUseNativeValidation(useNativeValidation);
+  }
+
+  /**
    * Recomputes the outline SVG path for the outline element.
    */
   layout() {

@@ -1,0 +1,62 @@
+//
+// Copyright 2018 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+@import "./common";
+@import "../packages/mdc-tab/mixins";
+@import "../packages/mdc-tab/mdc-tab";
+@import "../packages/mdc-tab-indicator/mdc-tab-indicator";
+@import "../packages/mdc-tab-indicator/mixins";
+@import "../packages/mdc-elevation/mixins";
+@import "../packages/mdc-ripple/mixins";
+@import "../packages/mdc-theme/color-palette";
+
+.demo {
+  display: flex;
+  align-items: center;
+}
+
+.demo-tab {
+  flex: 0 1 auto;
+}
+
+.demo-controls {
+  padding: 0 16px;
+}
+
+.rtl-container {
+  margin: 24px;
+  padding: 24px;
+}
+
+.custom-tab {
+  @include mdc-tab-text-label-color($material-color-blue-300);
+  @include mdc-tab-icon-color($material-color-orange-300);
+
+  .custom-tab-indicator {
+    @include mdc-tab-indicator-underline-color($material-color-pink-a700);
+    @include mdc-tab-indicator-underline-height(5px);
+    @include mdc-tab-indicator-underline-top-corner-radius(5px);
+  }
+
+  .mdc-tab__ripple {
+    @include mdc-states($material-color-pink-100);
+  }
+
+  &.mdc-tab--active {
+    @include mdc-tab-text-label-color($material-color-blue-900);
+    @include mdc-tab-icon-color($material-color-orange-900);
+  }
+}

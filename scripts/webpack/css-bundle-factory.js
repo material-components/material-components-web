@@ -146,6 +146,7 @@ class CssBundleFactory {
         'mdc.floating-label': getAbsolutePath('/packages/mdc-floating-label/mdc-floating-label.scss'),
         'mdc.form-field': getAbsolutePath('/packages/mdc-form-field/mdc-form-field.scss'),
         'mdc.grid-list': getAbsolutePath('/packages/mdc-grid-list/mdc-grid-list.scss'),
+        'mdc.icon-button': getAbsolutePath('/packages/mdc-icon-button/mdc-icon-button.scss'),
         'mdc.icon-toggle': getAbsolutePath('/packages/mdc-icon-toggle/mdc-icon-toggle.scss'),
         'mdc.image-list': getAbsolutePath('/packages/mdc-image-list/mdc-image-list.scss'),
         'mdc.layout-grid': getAbsolutePath('/packages/mdc-layout-grid/mdc-layout-grid.scss'),
@@ -161,6 +162,10 @@ class CssBundleFactory {
         'mdc.slider': getAbsolutePath('/packages/mdc-slider/mdc-slider.scss'),
         'mdc.snackbar': getAbsolutePath('/packages/mdc-snackbar/mdc-snackbar.scss'),
         'mdc.switch': getAbsolutePath('/packages/mdc-switch/mdc-switch.scss'),
+        'mdc.tab': getAbsolutePath('/packages/mdc-tab/mdc-tab.scss'),
+        'mdc.tab-bar': getAbsolutePath('/packages/mdc-tab-bar/mdc-tab-bar.scss'),
+        'mdc.tab-indicator': getAbsolutePath('/packages/mdc-tab-indicator/mdc-tab-indicator.scss'),
+        'mdc.tab-scroller': getAbsolutePath('/packages/mdc-tab-scroller/mdc-tab-scroller.scss'),
         'mdc.tabs': getAbsolutePath('/packages/mdc-tabs/mdc-tabs.scss'),
         'mdc.textfield': getAbsolutePath('/packages/mdc-textfield/mdc-text-field.scss'),
         'mdc.theme': getAbsolutePath('/packages/mdc-theme/mdc-theme.scss'),
@@ -194,7 +199,7 @@ class CssBundleFactory {
           loader: 'postcss-loader',
           options: {
             sourceMap: true,
-            plugins: () => [this.autoprefixerLib_({grid: false})],
+            plugins: () => [this.autoprefixerLib_()],
           },
         },
         {
