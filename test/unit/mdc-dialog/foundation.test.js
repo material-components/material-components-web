@@ -15,6 +15,7 @@
 
 import {assert} from 'chai';
 import td from 'testdouble';
+import lolex from 'lolex';
 
 import {setupFoundationTest} from '../helpers/setup';
 import {verifyDefaultAdapter, captureHandlers} from '../helpers/foundation';
@@ -38,7 +39,6 @@ test('default adapter returns a complete adapter implementation', () => {
     'eventTargetHasClass', 'registerInteractionHandler', 'deregisterInteractionHandler',
     'registerSurfaceInteractionHandler', 'deregisterSurfaceInteractionHandler',
     'registerDocumentKeydownHandler', 'deregisterDocumentKeydownHandler',
-    'registerTransitionEndHandler', 'deregisterTransitionEndHandler',
     'notifyAccept', 'notifyCancel', 'trapFocusOnSurface', 'untrapFocusOnSurface', 'isDialog',
   ]);
 });
@@ -129,10 +129,8 @@ test('#open adds scroll lock class to the body', () => {
 test('#close removes the scroll lock class from the body', () => {
   const {foundation, mockAdapter} = setupTest();
 
-  td.when(mockAdapter.registerTransitionEndHandler(td.callback)).thenCallback({target: {}});
   td.when(mockAdapter.isDialog(td.matchers.isA(Object))).thenReturn(true);
   foundation.open();
-  td.when(mockAdapter.registerTransitionEndHandler(td.callback)).thenCallback({target: {}});
   td.when(mockAdapter.isDialog(td.matchers.isA(Object))).thenReturn(true);
   foundation.close();
 
@@ -141,10 +139,11 @@ test('#close removes the scroll lock class from the body', () => {
 
 test('#open activates focus trapping on the dialog surface', () => {
   const {foundation, mockAdapter} = setupTest();
+  const clock = lolex.install();
 
-  td.when(mockAdapter.registerTransitionEndHandler(td.callback)).thenCallback({target: {}});
   td.when(mockAdapter.isDialog(td.matchers.isA(Object))).thenReturn(true);
   foundation.open();
+  clock.tick(MDCDialogFoundation.numbers.DIALOG_ANIMATION_TIME_MS);
 
   td.verify(mockAdapter.trapFocusOnSurface());
 });
@@ -330,7 +329,5 @@ test('on document keydown does nothing when key other than escape is pressed', (
 test('should clean up transition handlers after dialog close', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.isDialog(td.matchers.isA(Object))).thenReturn(true);
-  td.when(mockAdapter.registerTransitionEndHandler(td.callback)).thenCallback({target: {}});
   foundation.close();
-  td.verify(mockAdapter.deregisterTransitionEndHandler(td.matchers.isA(Function)));
 });
