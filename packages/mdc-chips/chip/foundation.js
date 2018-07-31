@@ -181,11 +181,11 @@ class MDCChipFoundation extends MDCFoundation {
 /**
  * @typedef {{
  *   detail: {
- *     chip: {foundation: !MDCChipFoundation},
+ *     chipId: string,
  *   },
  *   bubbles: boolean,
  * }}
  */
-let MDCChipInteractionEventType;
+let MDCChipEventType;
 
-export {MDCChipFoundation, MDCChipInteractionEventType};
+export {MDCChipFoundation, MDCChipEventType};

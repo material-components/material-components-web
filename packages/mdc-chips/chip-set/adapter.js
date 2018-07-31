@@ -15,9 +15,6 @@
  * limitations under the License.
  */
 
-// eslint-disable-next-line no-unused-vars
-import {MDCChipInteractionEventType} from '../chip/foundation';
-
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
