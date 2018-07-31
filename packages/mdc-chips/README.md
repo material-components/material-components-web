@@ -40,7 +40,7 @@ npm install @material/chips
 ### HTML Structure
 
 ```html
-<div class="mdc-chip-set">
+<div id="my-chip-set" class="mdc-chip-set">
   <div class="mdc-chip" tabindex="0">
     <div class="mdc-chip__text">Chip content</div>
   </div>
@@ -94,40 +94,60 @@ A trailing icon comes with the functionality to remove the chip from the set. If
 
 Choice chips are a variant of chips which allow single selection from a set of options. To define a set of chips as choice chips, add the class `mdc-chip-set--choice` to the chip set element.
 
+```html
+<div id="my-choice-chip-set" class="mdc-chip-set mdc-chip-set--choice">
+  ...
+</div>
+```
+
 ### Filter Chips
 
 Filter chips are a variant of chips which allow multiple selection from a set of options. To define a set of chips as filter chips, add the class `mdc-chip-set--filter` to the chip set element. When a filter chip is selected, a checkmark appears as the leading icon. If the chip already has a leading icon, the checkmark replaces it. This requires the HTML structure of a filter chip to differ from other chips:
 
 ```html
-<div class="mdc-chip">
-  <div class="mdc-chip__checkmark" >
-    <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
-      <path class="mdc-chip__checkmark-path" fill="none" stroke="black"
-            d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-    </svg>
+<div id="my-filter-chip-set" class="mdc-chip-set mdc-chip-set--filter">
+  <div class="mdc-chip">
+    <div class="mdc-chip__checkmark" >
+      <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
+        <path class="mdc-chip__checkmark-path" fill="none" stroke="black"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+      </svg>
+    </div>
+    <div class="mdc-chip__text">Filterable content</div>
   </div>
-  <div class="mdc-chip__text">Filterable content</div>
+  ...
 </div>
 ```
 
 To use a leading icon in a filter chip, put the `mdc-chip__icon--leading` element _before_ the `mdc-chip__checkmark` element:
 
 ```html
-<div class="mdc-chip">
-  <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">face</i>
-  <div class="mdc-chip__checkmark" >
-    <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
-      <path class="mdc-chip__checkmark-path" fill="none" stroke="black"
-            d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-    </svg>
+<div id="my-filter-chip-set" class="mdc-chip-set mdc-chip-set--filter">
+  <div class="mdc-chip">
+    <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">face</i>
+    <div class="mdc-chip__checkmark" >
+      <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
+        <path class="mdc-chip__checkmark-path" fill="none" stroke="black"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+      </svg>
+    </div>
+    <div class="mdc-chip__text">Filterable content</div>
   </div>
-  <div class="mdc-chip__text">Filterable content</div>
+  ...
 </div>
 ```
 
 ### Input Chips
 
-Input chips are a variant of chips which enable user input by converting text into chips. To define a set of chips as input chips, add the class `mdc-chip-set--input` to the chip set element. You'd also want to add an event listener that calls `addChip` on the `MDCChipSet` to convert text to a chip. More information can be found in the "`MDCChip` Properties and Methods" section below.
+Input chips are a variant of chips which enable user input by converting text into chips. To define a set of chips as input chips, add the class `mdc-chip-set--input` to the chip set element.
+
+```html
+<div id="my-input-chip-set" class="mdc-chip-set mdc-chip-set--input">
+  ...
+</div>
+```
+
+ You'd also want to add an event listener that calls `addChip` on the `MDCChipSet` to convert text to a chip. More information can be found in the "`MDCChip` Properties and Methods" section below.
 
 ### Pre-selected
 
@@ -220,7 +240,7 @@ Property | Value Type | Description
 `shouldRemoveOnTrailingIconClick` | Boolean | Proxies to the foundation's `getShouldRemoveOnTrailingIconClick`/`setShouldRemoveOnTrailingIconClick` methods\*\*
 `ripple` | `MDCRipple` | The `MDCRipple` instance for the root element that `MDCChip` initializes
 
-> \*_NOTE_: By default, this will be the same as the `id` attribute on the root element. If an `id` is not provided, a random one will be generated.
+> \*_NOTE_: This will be the same as the `id` attribute on the root element. If an `id` is not provided, a pseudo-random one will be generated based on the chip set `id` and the chip's index. We recommend providing an `id` on either the chip or the chip set element to avoid collision.
 
 > \*\*_NOTE_: If `shouldRemoveOnTrailingIconClick` is set to false, you must manually call `beginExit()` on the chip to remove it.
 
@@ -253,11 +273,13 @@ Method Signature | Description
 `eventTargetHasClass(target: EventTarget, className: string) => boolean` | Returns true if target has className, false otherwise
 `notifyInteraction() => void` | Emits a custom event `MDCChip:interaction` denoting the chip has been interacted with\*
 `notifyTrailingIconInteraction() => void` | Emits a custom event `MDCChip:trailingIconInteraction` denoting the chip's trailing icon has been interacted with\*
-`notifyRemoval() => void` | Emits a custom event `MDCChip:removal` denoting the chip will be removed\*
+`notifyRemoval() => void` | Emits a custom event `MDCChip:removal` denoting the chip will be removed\*\*
 `getComputedStyleValue(propertyName: string) => string` | Returns the computed property value of the given style property on the root element
 `setStyleProperty(propertyName: string, value: string) => void` | Sets the property value of the given style property on the root element
 
-> \*_NOTE_: The custom events emitted by `notifyInteraction`, `notifyTrailingIconInteraction` and `notifyRemoval` must pass along the target chip's ID via `event.detail.chipId`, as well as bubble to the parent `mdc-chip-set` element.
+> \*_NOTE_: The custom events emitted by `notifyInteraction` and `notifyTrailingIconInteraction` must pass along the target chip's ID via `event.detail.chipId`, as well as bubble to the parent `mdc-chip-set` element.
+
+> \*\*_NOTE_: The custom event emitted by `notifyRemoval` must pass along the target chip's ID via `event.detail.chipId` and its root element via `event.detail.root`, as well as bubble to the parent `mdc-chip-set` element.
 
 #### `MDCChipSetAdapter`
 

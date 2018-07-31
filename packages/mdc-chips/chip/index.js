@@ -61,7 +61,7 @@ class MDCChip extends MDCComponent {
   }
 
   initialize() {
-    this.id = this.root_.id || this.root_.innerText.slice(0, -1) + Math.random();
+    this.id = this.root_.id;
     this.leadingIcon_ = this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
     this.trailingIcon_ = this.root_.querySelector(strings.TRAILING_ICON_SELECTOR);
 
@@ -180,7 +180,7 @@ class MDCChip extends MDCComponent {
       notifyTrailingIconInteraction: () => this.emit(
         strings.TRAILING_ICON_INTERACTION_EVENT, {chipId: this.id}, true /* shouldBubble */),
       notifyRemoval: () =>
-        this.emit(strings.REMOVAL_EVENT, {chipId: this.id}, true /* shouldBubble */),
+        this.emit(strings.REMOVAL_EVENT, {chipId: this.id, root: this.root_}, true /* shouldBubble */),
       getComputedStyleValue: (propertyName) => window.getComputedStyle(this.root_).getPropertyValue(propertyName),
       setStyleProperty: (propertyName, value) => this.root_.style.setProperty(propertyName, value),
     })));
