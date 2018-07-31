@@ -53,10 +53,6 @@ npm install @material/textfield
 </div>
 ```
 
-> NOTE: Text field supports `text`, `number`, and `password` input types (e.g., `<input type="password" class="mdc-text-field__input">`).
->
-> Other input types (such as `date`) are not currently supported.
-
 > NOTE: For more details, see [MDC Line Ripple](../mdc-line-ripple/README.md)
 > and [MDC Floating Label](../mdc-floating-label/README.md).
 

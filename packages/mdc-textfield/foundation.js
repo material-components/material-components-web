@@ -21,8 +21,7 @@ import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
 import MDCTextFieldIconFoundation from './icon/foundation';
 /* eslint-enable no-unused-vars */
 import {MDCTextFieldAdapter, NativeInputType, FoundationMapType} from './adapter';
-import {cssClasses, strings, numbers, VALIDATION_ATTR_WHITELIST} from './constants';
-
+import {cssClasses, strings, numbers, VALIDATION_ATTR_WHITELIST, ALWAYS_FLOAT_TYPES} from './constants';
 
 /**
  * @extends {MDCFoundation<!MDCTextFieldAdapter>}
@@ -49,9 +48,18 @@ class MDCTextFieldFoundation extends MDCFoundation {
     return !this.isValid() && !this.isFocused_;
   }
 
+  /**
+   * @return {boolean}
+   * @private
+   */
+  get shouldAlwaysFloat_() {
+    const type = this.getNativeInput_().type;
+    return ALWAYS_FLOAT_TYPES.indexOf(type) >= 0;
+  }
+
   /** @return {boolean} */
   get shouldFloat() {
-    return this.isFocused_ || !!this.getValue() || this.isBadInput_();
+    return this.shouldAlwaysFloat_ || this.isFocused_ || !!this.getValue() || this.isBadInput_();
   }
 
   /**
@@ -129,14 +137,12 @@ class MDCTextFieldFoundation extends MDCFoundation {
 
   init() {
     this.adapter_.addClass(MDCTextFieldFoundation.cssClasses.UPGRADED);
-    // Ensure label does not collide with any pre-filled value.
-    if (this.adapter_.hasLabel() && (this.getValue() || this.isBadInput_())) {
-      this.adapter_.floatLabel(this.shouldFloat);
-      this.notchOutline(this.shouldFloat);
-    }
 
     if (this.adapter_.isFocused()) {
       this.inputFocusHandler_();
+    } else if (this.adapter_.hasLabel() && this.shouldFloat) {
+      this.notchOutline(true);
+      this.adapter_.floatLabel(true);
     }
 
     this.adapter_.registerInputInteractionHandler('focus', this.inputFocusHandler_);
@@ -194,7 +200,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
    * @param {boolean} openNotch
    */
   notchOutline(openNotch) {
-    if (!this.adapter_.hasOutline() || !this.adapter_.hasLabel()) {
+    if (!this.adapter_.hasOutline()) {
       return;
     }
 
@@ -216,10 +222,10 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.isFocused_ = true;
     this.styleFocused_(this.isFocused_);
     this.adapter_.activateLineRipple();
-    this.notchOutline(this.shouldFloat);
     if (this.adapter_.hasLabel()) {
-      this.adapter_.shakeLabel(this.shouldShake);
+      this.notchOutline(this.shouldFloat);
       this.adapter_.floatLabel(this.shouldFloat);
+      this.adapter_.shakeLabel(this.shouldShake);
     }
     if (this.helperText_) {
       this.helperText_.showToScreenReader();
@@ -254,17 +260,15 @@ class MDCTextFieldFoundation extends MDCFoundation {
   deactivateFocus() {
     this.isFocused_ = false;
     this.adapter_.deactivateLineRipple();
-    const input = this.getNativeInput_();
-    const shouldRemoveLabelFloat = !input.value && !this.isBadInput_();
     const isValid = this.isValid();
     this.styleValidity_(isValid);
     this.styleFocused_(this.isFocused_);
     if (this.adapter_.hasLabel()) {
-      this.adapter_.shakeLabel(this.shouldShake);
-      this.adapter_.floatLabel(this.shouldFloat);
       this.notchOutline(this.shouldFloat);
+      this.adapter_.floatLabel(this.shouldFloat);
+      this.adapter_.shakeLabel(this.shouldShake);
     }
-    if (shouldRemoveLabelFloat) {
+    if (!this.shouldFloat) {
       this.receivedUserInput_ = false;
     }
   }
@@ -284,9 +288,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
     const isValid = this.isValid();
     this.styleValidity_(isValid);
     if (this.adapter_.hasLabel()) {
-      this.adapter_.shakeLabel(this.shouldShake);
-      this.adapter_.floatLabel(this.shouldFloat);
       this.notchOutline(this.shouldFloat);
+      this.adapter_.floatLabel(this.shouldFloat);
+      this.adapter_.shakeLabel(this.shouldShake);
     }
   }
 

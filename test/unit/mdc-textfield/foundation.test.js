@@ -792,3 +792,19 @@ test('label floats on invalid input even if value is empty', () => {
   const {mockAdapter} = setupValueTest('', false, true, true);
   td.verify(mockAdapter.floatLabel(true));
 });
+
+test('label floats when type is date even if value is empty', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasLabel()).thenReturn(true);
+  const nativeInput = {
+    type: 'date',
+    value: '',
+    validity: {
+      valid: true,
+      badInput: false,
+    },
+  };
+  td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
+  foundation.init();
+  td.verify(mockAdapter.floatLabel(true));
+});
