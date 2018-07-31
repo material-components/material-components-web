@@ -209,20 +209,20 @@ To use the `MDCChip` and `MDCChipSet` classes, [import](../../docs/importing-js.
 
 #### `MDCChip`
 
-Property | Value Type | Description
---- | --- | ---
-`id` | string | Unique identifier on the chip*
-`selected` | Boolean | Proxies to the foundation's `isSelected`/`setSelected` methods
-`shouldRemoveOnTrailingIconClick` | Boolean | Proxies to the foundation's `getShouldRemoveOnTrailingIconClick`/`setShouldRemoveOnTrailingIconClick` methods**
-`ripple` | `MDCRipple` | The `MDCRipple` instance for the root element that `MDCChip` initializes
-
-> *_NOTE_: By default, this will be the same as the `id` attribute on the root element. If an `id` is not provided, a random one will be generated.
-
-> **_NOTE_: If `shouldRemoveOnTrailingIconClick` is set to false, you must manually call `beginExit()` on the chip to remove it.
-
 Method Signature | Description
 --- | ---
 `beginExit() => void` | Proxies to the foundation's `beginExit` method
+
+Property | Value Type | Description
+--- | --- | ---
+`id` | string | Unique identifier on the chip\*
+`selected` | Boolean | Proxies to the foundation's `isSelected`/`setSelected` methods
+`shouldRemoveOnTrailingIconClick` | Boolean | Proxies to the foundation's `getShouldRemoveOnTrailingIconClick`/`setShouldRemoveOnTrailingIconClick` methods\*\*
+`ripple` | `MDCRipple` | The `MDCRipple` instance for the root element that `MDCChip` initializes
+
+> \*_NOTE_: By default, this will be the same as the `id` attribute on the root element. If an `id` is not provided, a random one will be generated.
+
+> \*\*_NOTE_: If `shouldRemoveOnTrailingIconClick` is set to false, you must manually call `beginExit()` on the chip to remove it.
 
 #### `MDCChipSet`
 
@@ -251,13 +251,13 @@ Method Signature | Description
 `addClassToLeadingIcon(className: string) => void` | Adds a class to the leading icon element
 `removeClassFromLeadingIcon(className: string) => void` | Removes a class from the leading icon element
 `eventTargetHasClass(target: EventTarget, className: string) => boolean` | Returns true if target has className, false otherwise
-`notifyInteraction() => void` | Emits a custom event `MDCChip:interaction` denoting the chip has been interacted with*
-`notifyTrailingIconInteraction() => void` | Emits a custom event `MDCChip:trailingIconInteraction` denoting the chip's trailing icon has been interacted with*
-`notifyRemoval() => void` | Emits a custom event `MDCChip:removal` denoting the chip will be removed*
+`notifyInteraction() => void` | Emits a custom event `MDCChip:interaction` denoting the chip has been interacted with\*
+`notifyTrailingIconInteraction() => void` | Emits a custom event `MDCChip:trailingIconInteraction` denoting the chip's trailing icon has been interacted with\*
+`notifyRemoval() => void` | Emits a custom event `MDCChip:removal` denoting the chip will be removed\*
 `getComputedStyleValue(propertyName: string) => string` | Returns the computed property value of the given style property on the root element
 `setStyleProperty(propertyName: string, value: string) => void` | Sets the property value of the given style property on the root element
 
-> *_NOTE_: The custom events emitted by `notifyInteraction`, `notifyTrailingIconInteraction` and `notifyRemoval` must pass along the target chip's ID in its event `detail`, as well as bubble to the parent `mdc-chip-set` element.
+> \*_NOTE_: The custom events emitted by `notifyInteraction`, `notifyTrailingIconInteraction` and `notifyRemoval` must pass along the target chip's ID via `event.detail.chipId`, as well as bubble to the parent `mdc-chip-set` element.
 
 #### `MDCChipSetAdapter`
 

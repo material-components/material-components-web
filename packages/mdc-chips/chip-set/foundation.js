@@ -75,12 +75,10 @@ class MDCChipSetFoundation extends MDCFoundation {
    * @param {string} chipId
    */
   toggleSelect(chipId) {
-    if (this.adapter_.hasClass(cssClasses.CHOICE) || this.adapter_.hasClass(cssClasses.FILTER)) {
-      if (this.selectedChipIds_.indexOf(chipId) >= 0) {
-        this.deselect(chipId);
-      } else {
-        this.select(chipId);
-      }
+    if (this.selectedChipIds_.indexOf(chipId) >= 0) {
+      this.deselect(chipId);
+    } else {
+      this.select(chipId);
     }
   }
 
@@ -89,6 +87,10 @@ class MDCChipSetFoundation extends MDCFoundation {
    * @param {string} chipId
    */
   select(chipId) {
+    if (this.selectedChipIds_.indexOf(chipId) >= 0) {
+      return;
+    }
+
     if (this.adapter_.hasClass(cssClasses.CHOICE) && this.selectedChipIds_.length > 0) {
       const selectedChipId = this.selectedChipIds_[0];
       if (selectedChipId != chipId) {
@@ -108,8 +110,8 @@ class MDCChipSetFoundation extends MDCFoundation {
     const index = this.selectedChipIds_.indexOf(chipId);
     if (index >= 0) {
       this.selectedChipIds_.splice(index, 1);
+      this.adapter_.setSelected(chipId, false);
     }
-    this.adapter_.setSelected(chipId, false);
   }
 
   /**
@@ -118,7 +120,9 @@ class MDCChipSetFoundation extends MDCFoundation {
    */
   handleChipInteraction(evt) {
     const {chipId} = evt.detail;
-    this.toggleSelect(chipId);
+    if (this.adapter_.hasClass(cssClasses.CHOICE) || this.adapter_.hasClass(cssClasses.FILTER)) {
+      this.toggleSelect(chipId);
+    }
   }
 
   /**
