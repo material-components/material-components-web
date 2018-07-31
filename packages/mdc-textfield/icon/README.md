@@ -21,6 +21,18 @@ Icons describe the type of input a text field requires. They can also be interac
 
 ## Basic Usage
 
+### Icon Set
+
+We recommend using [Material Icons](https://material.io/tools/icons/) from Google Fonts:
+
+```html
+<head>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+```
+
+However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any other icon library you wish.
+
 ### HTML Structure
 
 ```html

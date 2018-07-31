@@ -40,6 +40,20 @@ npm install @material/toolbar
 
 ## Usage
 
+### Menu Icon
+
+We recommend using [Material Icons](https://material.io/tools/icons/) from Google Fonts:
+
+```html
+<head>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+```
+
+However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any other icon library you wish.
+
+### HTML Structure
+
 Wrap the items with `mdc-toolbar` class in the following way:
 
 ```html

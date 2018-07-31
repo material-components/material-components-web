@@ -49,7 +49,20 @@ component.
 There are also three different permutations of tab labels. These include text,
 icon-only, and text with icon. An example of each is available on the demo site.
 
+### Icons
+
+We recommend using [Material Icons](https://material.io/tools/icons/) from Google Fonts:
+
+```html
+<head>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+```
+
+However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any other icon library you wish.
+
 #### Tab Bar with text labels
+
 ```html
 <nav id="basic-tab-bar" class="mdc-tab-bar">
   <a class="mdc-tab mdc-tab--active" href="#one">Home</a>
@@ -60,6 +73,7 @@ icon-only, and text with icon. An example of each is available on the demo site.
 ```
 
 #### Tab Bar with icon labels
+
 ```html
 <nav class="mdc-tab-bar mdc-tab-bar--icon-tab-bar">
   <a class="mdc-tab mdc-tab--active" href="#recents">
@@ -76,6 +90,7 @@ icon-only, and text with icon. An example of each is available on the demo site.
 ```
 
 #### Tab Bar with icon and text labels
+
 ```html
 <nav id="icon-text-tab-bar" class="mdc-tab-bar mdc-tab-bar--icons-with-text">
   <a class="mdc-tab mdc-tab--with-icon-and-text mdc-tab--active" href="#recents">
@@ -132,7 +147,6 @@ ancestor element with attribute `dir="rtl"`.
 </html>
 ```
 
-
 ### Dynamic view switching
 
 While facilitating the view switching is left up to the developer, the demo site
@@ -166,6 +180,7 @@ provides a minimal example of how to do so using JavaScript, also shown below.
 ```
 
 #### Script:
+
 ```js
 var dynamicTabBar = window.dynamicTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#dynamic-tab-bar'));
 var dots = document.querySelector('.dots');
@@ -227,15 +242,19 @@ dots.addEventListener('click', function (evt) {
 To customize the ink color of any part of the tab, use the following mixins. We recommend you apply these mixins within CSS selectors like `.foo-tab:not(.mdc-tab--active)` to select your inactive tabs, `foo-tab:hover` to select the hover state of your tabs, and `.foo-tab.mdc-tab--active` to select your active tabs.
 
 #### `mdc-tab-ink-color`
+
 Use this mixin to set the color of all ink on the tab.
 
 #### `mdc-tab-icon-ink-color`
+
 This mixin customizes the icon ink color.
 
 #### `mdc-tab-label-ink-color`
+
 This mixin customizes the label ink color.
 
 #### `mdc-tab-bar-indicator-ink-color`
+
 This mixin customizes the indicator ink color.
 
 ### Using the CSS-Only Component
@@ -259,7 +278,6 @@ currently active tab.
 `mdc-tab-bar` ships with a Component/Foundation combo for ingesting instances of `mdc-tab` (a tab).
 `mdc-tab-bar` uses its `initialize()` method call a factory function which gathers and instantiates
 any tab elements that are children of the `mdc-tab-bar` root element.
-
 
 #### Including in code
 
@@ -334,14 +352,11 @@ import {MDCTabBar, MDCTabBarFoundation} from '@material/tabs';
 const tabBar = new MDCTabBar(document.querySelector('#my-mdc-tab-bar'));
 ```
 
-
 ### Using the JavaScript Tab Bar Scroller Component
 
 `mdc-tab-bar-scroller` ships with a Component/Foundation combo which wraps instances of `mdc-tab-bar`. `mdc-tab-bar-scroller` uses its `initialize()` method call a factory function which gathers and instantiates any tab bar elements that are children of the `mdc-tab-bar-scroller` root element.
 
 The anatomy of `mdc-tab-bar-scroller` includes an instance of `mdc-tab-bar`, RTL-aware forward and back indicators which, when actioned on, move the tab bar left and right, and a scroll frame. The scroll frame is the parent element of the tab bar, and serves to mask the tabs in the tab bar when they overflow the available width.
-
-
 
 #### Including in code
 
@@ -456,8 +471,8 @@ const scrollerEl = document.querySelector('#my-mdc-tab-bar-scroller');
 
 const tabBarScroller = new MDCTabBarScroller(scrollerEl, undefined, tabBarEl);
 ```
-This will create an instance of MDC Tab Bar during the initialization phase of Tab Bar Scroller.
 
+This will create an instance of MDC Tab Bar during the initialization phase of Tab Bar Scroller.
 
 ## Tab
 
@@ -478,12 +493,10 @@ This will create an instance of MDC Tab Bar during the initialization phase of T
 
 Broadcast when a user actions on the tab.
 
-
 ### Using the Foundation Class
 
 MDC Tab ships with an `MDCTabFoundation` class that external frameworks and libraries can
 use to integrate the component. As with all foundation classes, an adapter object must be provided.
-
 
 ### Adapter API
 
@@ -496,7 +509,6 @@ use to integrate the component. As with all foundation classes, an adapter objec
 | `getOffsetWidth() => number` | Return the width of the tab |
 | `getOffsetLeft() => number` | Return distance between left edge of tab and left edge of its parent element |
 | `notifySelected() => {}` | Broadcasts an event denoting that the user has actioned on the tab |
-
 
 ### The full foundation API
 
@@ -528,7 +540,6 @@ Sets tabs `preventDefaultOnClick` property to the value of the `preventDefaultOn
 
 Sets `computedWidth_` and `computedLeft_` for a tab.
 
-
 ## Tab Bar
 
 ### Tab Bar component API
@@ -551,13 +562,11 @@ Proxies to the foundation's `layout()` method.
 
 Broadcast when a user actions on a tab, resulting in a change in the selected tab.
 
-
 ### Using the Foundation Class
 
 `mdc-tab-bar` ships with an `MDCTabBarFoundation` class that external frameworks
 and libraries can use to integrate the component. As with all foundation
 classes, an adapter object must be provided.
-
 
 ### Adapter API
 
@@ -583,7 +592,6 @@ classes, an adapter object must be provided.
 | `getComputedWidthForTabAtIndex(index: number) => number` | Returns width of tab at given index. |
 | `getComputedLeftForTabAtIndex(index: number) => number` | Returns left offset of tab at given index. |
 
-
 ### The full foundation API
 
 #### MDCTabBarFoundation.layout() => void
@@ -606,7 +614,6 @@ Updates the active tab to be the tab at the given index, emits `MDCTabBar:change
 
 Returns the index of the currently active tab.
 
-
 ## Tab Bar Scroller
 
 ### Tab Bar Scroller component API
@@ -624,7 +631,6 @@ Proxies to the foundation's `layout()` method.
 ### Using the Foundation Class
 
 MDC Tab Bar Scroller ships with an `MDCTabBarScrollerFoundation` class that external frameworks and libraries can use to integrate the component. As with all foundation classes, an adapter object must be provided.
-
 
 ### Adapter API
 
@@ -656,7 +662,6 @@ MDC Tab Bar Scroller ships with an `MDCTabBarScrollerFoundation` class that exte
 | `setTransformStyleForTabBar(value: string) => void` | Sets the `translateX` `transform` property for the tab bar. |
 | `getOffsetLeftForEventTarget(target: HTMLElement) => number`| Returns the left offset of a given element. |
 | `getOffsetWidthForEventTarget(target: HTMLElement) => number` | Returns the width of a given element. |
-
 
 ### The full foundation API
 

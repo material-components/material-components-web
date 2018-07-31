@@ -120,9 +120,15 @@ The icon button toggle can be used with other font libraries such as Font Awesom
 
 ### Icons
 
-The icon button can be used with a standard icon library such as Material Icons or Font Awesome, or with an `svg`.
-The icon button toggle should only be used with an standard icon library. We recommend you use 
-[Material Icons](https://material.io/tools/icons) from Google Fonts.
+We recommend using [Material Icons](https://material.io/tools/icons/) from Google Fonts:
+
+```html
+<head>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+```
+
+However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any other icon library you wish.
 
 ### Disabled
 

@@ -42,10 +42,21 @@ designed to work with any icon set.
 npm install @material/icon-toggle
 ```
 
-## Usage
+## Basic Usage
 
-In order to use MDC Icon Toggle, you will need to import an icon set, such as
-[Material Icons](https://design.google.com/icons/) or [Font Awesome](http://fontawesome.io/).
+In order to use MDC Icon Toggle, you will need to import an icon set.
+
+We recommend using [Material Icons](https://material.io/tools/icons/) from Google Fonts:
+
+```html
+<head>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+```
+
+However, you can use any icon set you like! See the [section on Font Awesome](#font-awesome) for details.
+
+### HTML Structure
 
 ```html
 <i class="mdc-icon-toggle material-icons" role="button" aria-pressed="false"
@@ -71,9 +82,10 @@ Also note that you may omit the initial `aria-label` attribute and `favorite_bor
 they will be added by the component. However, we recommend adding to prevent an initial flash of
 un-styled content.
 
+<a id="font-awesome"></a>
 ### Using with Font Awesome and similar libraries
 
-Font Awesome - as well as other popular icon font libraries - use pseudo-elements in order to
+[Font Awesome](https://fontawesome.com/) and other popular icon font libraries use pseudo-elements in order to
 provide the icon, via the `content` property. However, MDC Web uses pseudo-elements for ripple styles.
 In order to get around this, you can nest the icon itself inside the icon toggle.
 

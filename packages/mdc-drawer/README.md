@@ -31,6 +31,18 @@ user interaction.
 npm install @material/drawer
 ```
 
+## Menu Icon
+
+We recommend using [Material Icons](https://material.io/tools/icons/) from Google Fonts:
+
+```html
+<head>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+```
+
+However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any other icon library you wish.
+
 ## Permanent drawer usage
 
 A permanent drawer is always open, sitting to the side of the content. It is appropriate for any display size larger

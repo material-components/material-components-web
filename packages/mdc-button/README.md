@@ -75,11 +75,19 @@ To style a contained button, add the `mdc-button--raised` class to the `<button>
 
 To style an outlined button, add the class `mdc-button--outlined` to the `<button>` element.
 
-### Icons 
+### Icons
+
+We recommend using [Material Icons](https://material.io/tools/icons/) from Google Fonts:
+
+```html
+<head>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+```
+
+However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any other icon library you wish.
 
 To add an icon, add an element with the `mdc-button__icon` class inside the button element and set the attribute `aria-hidden="true"`. The icon is set to 18px to meet legibility requirements.
-
-We recommend you use [Material Icons](https://material.io/icons/) from Google Fonts:
 
 ```html
 <button class="mdc-button">
