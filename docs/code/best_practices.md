@@ -1,4 +1,3 @@
-
 # Best Practices
 
 MDC Web follows naming and documentation best practices to keep our code
