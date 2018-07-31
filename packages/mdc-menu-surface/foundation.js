@@ -202,8 +202,8 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
    * @param {number} y
    */
   setAbsolutePosition(x, y) {
-    this.position_.x = isNaN(x) ? 0 : x;
-    this.position_.y = isNaN(y) ? 0 : y;
+    this.position_.x = Number.isFinite(x) ? x : 0;
+    this.position_.y = Number.isFinite(y) ? y : 0;
   }
 
   /** @param {boolean} quickOpen */
