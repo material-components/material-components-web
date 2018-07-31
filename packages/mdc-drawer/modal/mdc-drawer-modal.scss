@@ -22,102 +22,67 @@
 
 .mdc-drawer--modal {
   @include mdc-drawer-scrim-color($mdc-drawer-modal-scrim-color, $mdc-drawer-modal-scrim-opacity);
+  @include mdc-elevation(16);
+  @include mdc-rtl-reflexive-position(left, 0);
 
   position: fixed;
-  top: 0;
-  left: 0;
   box-sizing: border-box;
   width: 100%;
   height: 100%;
-  pointer-events: none;
   overflow: hidden;
-  contain: strict;
   z-index: 5;
+  background: transparent;
+  display: none;
+  transition: transform $mdc-drawer-animation-exit $mdc-animation-standard-curve-timing-function;
+  position: absolute;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: calc(100% - 56px);
+  max-width: 280px;
+  overflow: hidden;
+  height: 100%;
+  background: #fff;
+  transform: translateX(-100%);
 
-  // Shaded background
-  &::before {
+  @media (min-width: 600px) {
+    width: calc(100% - 64px);
+    max-width: 320px;
+  }
+
+  &.mdc-drawer--modal-animate {
+    transform: translateX(0);
+    transition-duration: $mdc-animation-standard-curve-timing-function;
+  }
+
+  &.mdc-drawer--modal-open {
     display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    box-sizing: border-box;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    opacity: var(--mdc-temporary-drawer-opacity, 0);
-    content: "";
-    will-change: opacity;
   }
+}
 
-  .mdc-drawer__drawer {
-    @include mdc-elevation(16);
-    @include mdc-rtl-reflexive-position(left, 0);
-    // @include mdc-slideable-drawer;
+.mdc-drawer__content {
+  flex-grow: 1;
+  box-sizing: border-box;
+  margin: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+}
 
-    display: flex;
-    position: absolute;
-    flex-direction: column;
-    box-sizing: border-box;
-    width: calc(100% - 56px);
-    max-width: 280px;
-    overflow: hidden;
-    touch-action: none;
+.mdc-drawer__scrim {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity $mdc-drawer-animation-enter $mdc-animation-standard-curve-timing-function;
+  opacity: 0;
+  background: rgba(0, 0, 0, 0.2);
 
-    // TODO(sgomes): replace with global breakpoints when we have them
-    @media (min-width: 600px) {
-      width: calc(100% - 64px);
-      max-width: 320px;
-    }
-  }
-
-  .mdc-drawer__content {
-    flex-grow: 1;
-    box-sizing: border-box;
-    margin: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    touch-action: pan-y;
-  }
-
-  .mdc-drawer__footer {
-    @include mdc-elevation(2);
-
-    flex-shrink: 0;
-  }
-
-  &.mdc-drawer--open {
-    pointer-events: auto;
-
-    &::before {
-      opacity: 1;
-      opacity: var(--mdc-temporary-drawer-opacity, 1);
-    }
-
-    .mdc-drawer__drawer {
-      @include mdc-slideable-drawer-open;
-    }
-
-    // Specificity fix to ensure that mdc-drawer is not translated off-screen within an RTL context
-    @include mdc-rtl {
-      .mdc-drawer__drawer {
-        @include mdc-slideable-drawer-open;
-      }
-    }
-  }
-
-  &.mdc-drawer--animating {
-    &::before {
-      transition: mdc-animation-enter(opacity, .3s);
-    }
-
-    .mdc-drawer__drawer {
-      transition: $mdc-slidable-drawer-transition-close;
-    }
-
-    &.mdc-drawer--open .mdc-drawer__drawer {
-      transition: $mdc-slidable-drawer-transition-open;
-    }
+  .mdc-drawer--modal-animate + & {
+    opacity: 1;
   }
 }
 

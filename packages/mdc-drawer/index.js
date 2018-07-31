@@ -16,6 +16,7 @@
  */
 import {MDCComponent} from '@material/base/index';
 import MDCDismissibleDrawerFoundation from './dismissible/foundation';
+import MDCModalDrawerFoundation from './modal/foundation';
 import {strings} from './constants';
 
 /**
@@ -112,7 +113,8 @@ export class MDCDrawer extends MDCComponent {
       notifyOpen: () => this.emit(strings.OPEN_EVENT, null, true /* shouldBubble */),
     }));
 
-    if (this.root_.classList.contains(MDCDismissibleDrawerFoundation.cssClasses.DISMISSIBLE)) {
+    if (this.root_.classList.contains(MDCDismissibleDrawerFoundation.cssClasses.DISMISSIBLE) ||
+        this.root_.classList.contains(MDCDismissibleDrawerFoundation.cssClasses.RAIL)) {
       return new MDCDismissibleDrawerFoundation(adapter);
     } else if (this.root_.classList.contains(MDCModalDrawerFoundation.cssClasses.MODAL)) {
       return new MDCModalDrawerFoundation(adapter);

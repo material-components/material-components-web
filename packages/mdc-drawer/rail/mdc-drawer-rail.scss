@@ -1,0 +1,49 @@
+//
+// Copyright 2018 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+@import "@material/rtl/mixins";
+@import "@material/typography/mixins";
+@import "@material/typography/variables";
+@import "@material/theme/variables";
+@import "@material/theme/mixins";
+@import "@material/animation/functions";
+@import "../variables";
+@import "../mixins";
+
+.mdc-drawer--rail {
+  min-width: $mdc-drawer-rail-width;
+  width: $mdc-drawer-rail-width;
+  transition: mdc-animation-standard(all, $mdc-drawer-animation-enter);
+
+  &.mdc-drawer--open {
+    width: $mdc-drawer-width;
+    min-width: $mdc-drawer-width;
+  }
+}
+
+.mdc-drawer__list-item-label,
+.mdc-drawer__list-group-subheader,
+.mdc-drawer__header {
+  transition: opacity 0.24s ease-in-out;
+  transition-delay: 0.15s;
+  opacity: 0;
+  visibility: hidden;
+
+  .mdc-drawer--open & {
+    opacity: 1;
+    visibility: visible;
+  }
+}

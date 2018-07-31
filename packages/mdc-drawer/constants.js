@@ -18,7 +18,9 @@
 const cssClasses = {
   DISMISSIBLE: 'mdc-drawer--dismissible',
   MODAL: 'mdc-drawer--modal',
+  RAIL: 'mdc-drawer--rail',
   OPEN: 'mdc-drawer--open',
+  ANIMATE: 'mdc-drawer--animate',
   ANIMATING_CLOSE: 'mdc-drawer--animating-close',
   ANIMATING_OPEN: 'mdc-drawer--animating-open',
   APP_CONTENT_ANIMATE_CLOSE: 'mdc-drawer-app-content--animating-close',
