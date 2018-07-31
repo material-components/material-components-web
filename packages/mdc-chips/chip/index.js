@@ -128,10 +128,10 @@ class MDCChip extends MDCComponent {
 
   /**
    * Sets selected state on the chip.
-   * @param {boolean}
+   * @param {boolean} selected
    */
   set selected(selected) {
-    return this.foundation_.setSelected(selected);
+    this.foundation_.setSelected(selected);
   }
 
   /**
@@ -147,7 +147,7 @@ class MDCChip extends MDCComponent {
    * @param {boolean} shouldRemove
    */
   set shouldRemoveOnTrailingIconClick(shouldRemove) {
-    return this.foundation_.setShouldRemoveOnTrailingIconClick(shouldRemove);
+    this.foundation_.setShouldRemoveOnTrailingIconClick(shouldRemove);
   }
 
   /**
