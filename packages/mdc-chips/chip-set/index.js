@@ -36,6 +36,11 @@ class MDCChipSet extends MDCComponent {
     this.chips;
     /** @type {(function(!Element): !MDCChip)} */
     this.chipFactory_;
+
+    /** @private {?function(?Event): undefined} */
+    this.handleChipInteraction_;
+    /** @private {?function(?Event): undefined} */
+    this.handleChipRemoval_;
   }
 
   /**
@@ -55,28 +60,39 @@ class MDCChipSet extends MDCComponent {
     this.chips = this.instantiateChips_(this.chipFactory_);
   }
 
-  destroy() {
-    this.chips.forEach((chip) => {
-      chip.destroy();
-    });
-  }
-
   initialSyncWithDOM() {
     this.chips.forEach((chip) => {
       if (chip.isSelected()) {
         this.foundation_.select(chip.foundation);
       }
     });
+
+    this.handleChipInteraction_ = (evt) => this.foundation_.handleChipInteraction(evt);
+    this.handleChipRemoval_ = (evt) => this.foundation_.handleChipRemoval(evt);
+    this.root_.addEventListener(
+      MDCChipFoundation.strings.INTERACTION_EVENT, this.handleChipInteraction_);
+    this.root_.addEventListener(
+      MDCChipFoundation.strings.REMOVAL_EVENT, this.handleChipRemoval_);
+  }
+
+  destroy() {
+    this.chips.forEach((chip) => {
+      chip.destroy();
+    });
+
+    this.root_.removeEventListener(
+      MDCChipFoundation.strings.INTERACTION_EVENT, this.handleChipInteraction_);
+    this.root_.removeEventListener(
+      MDCChipFoundation.strings.REMOVAL_EVENT, this.handleChipRemoval_);
+
+    super.destroy();
   }
 
   /**
-   * Creates a new chip in the chip set with the given text, leading icon, and trailing icon.
-   * @param {string} text
-   * @param {?Element} leadingIcon
-   * @param {?Element} trailingIcon
+   * Adds a new chip object to the chip set from the given chip element.
+   * @param {!Element} chipEl
    */
-  addChip(text, leadingIcon, trailingIcon) {
-    const chipEl = this.foundation_.addChip(text, leadingIcon, trailingIcon);
+  addChip(chipEl) {
     this.chips.push(this.chipFactory_(chipEl));
   }
 
@@ -86,29 +102,10 @@ class MDCChipSet extends MDCComponent {
   getDefaultFoundation() {
     return new MDCChipSetFoundation(/** @type {!MDCChipSetAdapter} */ (Object.assign({
       hasClass: (className) => this.root_.classList.contains(className),
-      registerInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
-      deregisterInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
-      appendChip: (text, leadingIcon, trailingIcon) => {
-        const chipTextEl = document.createElement('div');
-        chipTextEl.classList.add(MDCChipFoundation.cssClasses.TEXT);
-        chipTextEl.appendChild(document.createTextNode(text));
-
-        const chipEl = document.createElement('div');
-        chipEl.classList.add(MDCChipFoundation.cssClasses.CHIP);
-        if (leadingIcon) {
-          chipEl.appendChild(leadingIcon);
-        }
-        chipEl.appendChild(chipTextEl);
-        if (trailingIcon) {
-          chipEl.appendChild(trailingIcon);
-        }
-        this.root_.appendChild(chipEl);
-        return chipEl;
-      },
       removeChip: (chip) => {
         const index = this.chips.indexOf(chip);
         this.chips.splice(index, 1);
-        chip.remove();
+        chip.destroy();
       },
     })));
   }

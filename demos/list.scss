@@ -20,6 +20,7 @@
 @import "../packages/mdc-form-field/mdc-form-field";
 @import "../packages/mdc-list/mdc-list";
 @import "../packages/mdc-ripple/mixins";
+@import "../packages/mdc-typography/mixins";
 
 a.material-icons {
   text-decoration: none;
@@ -59,12 +60,6 @@ a.material-icons {
   margin-left: 72px;
 }
 
-.checkbox-list-ripple-surface:not(.mdc-ripple-upgraded):active::after {
-  // TODO(moog16): Update mdc-ripple to prevent duplicate ripples on parent elements, and remove this hack
-  // Prevent checkbox clicks from activating a second ripple on the list item.
-  opacity: 0 !important;
-}
-
 #demo-wrapper {
   margin: 24px;
 }
@@ -74,7 +69,7 @@ a.material-icons {
 }
 
 #demo-wrapper .mdc-list, #demo-wrapper .mdc-list-group {
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, .1);
 }
 
 #demo-wrapper .mdc-list-group .mdc-list {
@@ -82,18 +77,18 @@ a.material-icons {
 }
 
 #demo-wrapper h2 {
-  font-size: 1.5em;
-  margin-bottom: 0.8em;
+  margin-bottom: .8em;
   margin-left: 24px;
+  font-size: 1.5em;
 }
 
 #demo-wrapper h3 {
-  margin-bottom: 0.8em;
+  margin-bottom: .8em;
 }
 
 .hero .mdc-list {
   @include mdc-elevation(4);
 
-  background-color: white;
   min-width: 320px;
+  background-color: white;
 }

@@ -80,6 +80,7 @@ class MDCCheckboxFoundation extends MDCFoundation {
       () => this.handleChange());
   }
 
+  /** @override */
   init() {
     this.currentCheckState_ = this.determineCheckState_(this.getNativeControl_());
     this.updateAriaChecked_();
@@ -88,6 +89,7 @@ class MDCCheckboxFoundation extends MDCFoundation {
     this.installPropertyChangeHooks_();
   }
 
+  /** @override */
   destroy() {
     this.adapter_.deregisterChangeHandler(this.changeHandler_);
     this.uninstallPropertyChangeHooks_();

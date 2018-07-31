@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 
+@import "@material/rtl/mixins";
 @import "./variables";
 
 @mixin mdc-floating-label-ink-color($color) {
@@ -65,4 +66,8 @@
   .mdc-floating-label--shake {
     animation: mdc-floating-label-shake-float-above-#{$modifier} 250ms 1;
   }
+}
+
+@mixin mdc-floating-label-max-width($max-width) {
+  max-width: $max-width;
 }

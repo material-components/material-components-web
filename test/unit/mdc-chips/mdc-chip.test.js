@@ -17,7 +17,6 @@
 import bel from 'bel';
 import {assert} from 'chai';
 import td from 'testdouble';
-import domEvents from 'dom-events';
 
 import {MDCRipple} from '../../../packages/mdc-ripple';
 import {MDCChip, MDCChipFoundation} from '../../../packages/mdc-chips/chip';
@@ -106,56 +105,6 @@ test('adapter#eventTargetHasClass returns true if given element has class', () =
   assert.isTrue(component.getDefaultFoundation().adapter_.eventTargetHasClass(mockEventTarget, 'foo'));
 });
 
-test('#adapter.registerEventHandler adds event listener for a given event to the root element', () => {
-  const {root, component} = setupTest();
-  const handler = td.func('click handler');
-  component.getDefaultFoundation().adapter_.registerEventHandler('click', handler);
-  domEvents.emit(root, 'click');
-
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('#adapter.deregisterEventHandler removes event listener for a given event from the root element', () => {
-  const {root, component} = setupTest();
-  const handler = td.func('click handler');
-
-  root.addEventListener('click', handler);
-  component.getDefaultFoundation().adapter_.deregisterEventHandler('click', handler);
-  domEvents.emit(root, 'click');
-
-  td.verify(handler(td.matchers.anything()), {times: 0});
-});
-
-test('#adapter.registerTrailingIconInteractionHandler adds event listener for a given event to the trailing' +
-'icon element', () => {
-  const {root, component} = setupTest();
-  const icon = bel`
-    <i class="material-icons mdc-chip__icon mdc-chip__icon--trailing" tabindex="0" role="button">cancel</i>
-  `;
-  root.appendChild(icon);
-  const handler = td.func('click handler');
-  component.getDefaultFoundation().adapter_.registerTrailingIconInteractionHandler('click', handler);
-  domEvents.emit(icon, 'click');
-
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('#adapter.deregisterTrailingIconInteractionHandler removes event listener for a given event from the trailing ' +
-'icon element', () => {
-  const {root, component} = setupTest();
-  const icon = bel`
-    <i class="material-icons mdc-chip__icon mdc-chip__icon--trailing" tabindex="0" role="button">cancel</i>
-  `;
-  root.appendChild(icon);
-  const handler = td.func('click handler');
-
-  icon.addEventListener('click', handler);
-  component.getDefaultFoundation().adapter_.deregisterTrailingIconInteractionHandler('click', handler);
-  domEvents.emit(icon, 'click');
-
-  td.verify(handler(td.matchers.anything()), {times: 0});
-});
-
 test('#adapter.notifyInteraction emits ' + MDCChipFoundation.strings.INTERACTION_EVENT, () => {
   const {component} = setupTest();
   const handler = td.func('interaction handler');
@@ -203,13 +152,19 @@ test('#isSelected proxies to foundation', () => {
   td.verify(mockFoundation.isSelected());
 });
 
-test('#remove removes the root element from the DOM', () => {
-  const wrapper = bel`<div></div>`;
-  const {root, component, mockFoundation} = setupMockFoundationTest();
-  wrapper.appendChild(root);
-  assert.equal(wrapper.childNodes.length, 1);
+test('#get shouldRemoveOnTrailingIconClick proxies to foundation', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  assert.equal(component.shouldRemoveOnTrailingIconClick, mockFoundation.getShouldRemoveOnTrailingIconClick());
+});
 
-  component.remove();
-  td.verify(mockFoundation.destroy());
-  assert.equal(wrapper.childNodes.length, 0);
+test('#set shouldRemoveOnTrailingIconClick proxies to foundation', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.shouldRemoveOnTrailingIconClick = false;
+  td.verify(mockFoundation.setShouldRemoveOnTrailingIconClick(false));
+});
+
+test('#beginExit proxies to foundation', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.beginExit();
+  td.verify(mockFoundation.beginExit());
 });

@@ -30,7 +30,7 @@ test('exports strings', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTextFieldIconFoundation, [
-    'getAttr', 'setAttr', 'removeAttr', 'registerInteractionHandler', 'deregisterInteractionHandler',
+    'getAttr', 'setAttr', 'removeAttr', 'setContent', 'registerInteractionHandler', 'deregisterInteractionHandler',
     'notifyIconAction',
   ]);
 });
@@ -92,6 +92,24 @@ test('#setDisabled does not change icon tabindex or role when set to false if ic
   foundation.setDisabled(false);
   td.verify(mockAdapter.setAttr('tabindex', td.matchers.isA(String)), {times: 0});
   td.verify(mockAdapter.setAttr('role', td.matchers.isA(String)), {times: 0});
+});
+
+test('#setAriaLabel updates the aria-label', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const ariaLabel = 'Test label';
+  foundation.init();
+
+  foundation.setAriaLabel(ariaLabel);
+  td.verify(mockAdapter.setAttr('aria-label', ariaLabel));
+});
+
+test('#setContent updates the text content', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const content = 'test';
+  foundation.init();
+
+  foundation.setContent(content);
+  td.verify(mockAdapter.setContent(content));
 });
 
 test('on click notifies custom icon event', () => {

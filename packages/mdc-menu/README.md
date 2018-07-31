@@ -188,7 +188,7 @@ Method Signature | Description
 
 Method Signature | Description
 --- | ---
-`setAnchorCorner(corder: Corner) => void` | Sets the corner that the menu will be anchored to. See [constants.js](https://github.com/material-components/material-components-web/blob/cc299230728ba5a994866ebd31aaaf1a0f4cc87f/packages/mdc-menu/constants.js#L73)
+`setAnchorCorner(corder: Corner) => void` | Sets the corner that the menu will be anchored to. See [constants.js](https://github.com/material-components/material-components-web/blob/v0.35.2/packages/mdc-menu/constants.js#L73)
 `setAnchorMargin(margin: AnchorMargin) => void` | Sets the distance from the anchor point that the menu should be shown.
 `open({focusIndex: ?number}) => void` | Opens the menu. Optionally accepts an object with a `focusIndex` parameter to indicate which list item should receive focus when the menu is opened.
 `close(evt: ?Event)` | Closes the menu. Optionally accepts the event to check if the target is disabled before closing the menu.

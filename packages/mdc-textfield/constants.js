@@ -43,4 +43,15 @@ const numbers = {
   DENSE_LABEL_SCALE: 0.923,
 };
 
-export {cssClasses, strings, numbers};
+// whitelist based off of https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
+// under section: `Validation-related attributes`
+const VALIDATION_ATTR_WHITELIST = [
+  'pattern', 'min', 'max', 'required', 'step', 'minlength', 'maxlength',
+];
+
+// Label should always float for these types as they show some UI even if value is empty.
+const ALWAYS_FLOAT_TYPES = [
+  'color', 'date', 'datetime-local', 'month', 'range', 'time', 'week',
+];
+
+export {cssClasses, strings, numbers, VALIDATION_ATTR_WHITELIST, ALWAYS_FLOAT_TYPES};

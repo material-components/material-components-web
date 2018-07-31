@@ -44,9 +44,11 @@ MDC Typography is a foundational module that applies these styles to MDC Web com
 npm install @material/typography
 ```
 
-## Usage
+## Basic Usage
 
-We recommend you load Roboto from Google Fonts
+### HTML Structure
+
+We recommend you load Roboto from Google Fonts:
 
 ```html
 <head>
@@ -56,6 +58,14 @@ We recommend you load Roboto from Google Fonts
   <h1 class="mdc-typography--headline1">Big header</h1>
 </body>
 ```
+
+### Styles
+
+```css
+@import "@material/typography/mdc-typography";
+```
+
+## Style Customization
 
 ### CSS Classes
 
@@ -87,6 +97,8 @@ Mixin | Description
 `mdc-typography-base` | Sets the font to Roboto
 `mdc-typography($style)` | Applies one of the typography styles, including setting the font to Roboto
 `mdc-typography-overflow-ellipsis` | Truncates overflow text to one line with an ellipsis
+`mdc-typography-baseline-top($distance)` | Sets the baseline height of a text element from top.
+`mdc-typography-baseline-bottom($distance)` | Sets the distance from text baseline to bottom. This mixin should be combined with `mdc-typography-baseline-top` when setting baseline distance to following text element.
 
 > **A note about `mdc-typography-overflow-ellipsis`**, `mdc-typography-overflow-ellipsis` should only be used if the element is `display: block` or `display: inline-block`.
 

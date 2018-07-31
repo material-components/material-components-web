@@ -26,6 +26,8 @@ import MDCTopAppBarFoundation from '../../../packages/mdc-top-app-bar/foundation
 import MDCFixedTopAppBarFoundation from '../../../packages/mdc-top-app-bar/fixed/foundation';
 import MDCShortTopAppBarFoundation from '../../../packages/mdc-top-app-bar/short/foundation';
 
+const MENU_ICONS_COUNT = 3;
+
 function getFixture(removeIcon) {
   const html = bel`
     <div>
@@ -74,11 +76,11 @@ class FakeRipple {
   }
 }
 
-function setupTest(removeIcon = false) {
+function setupTest(removeIcon = false, rippleFactory = (el) => new FakeRipple(el)) {
   const fixture = getFixture(removeIcon);
   const root = fixture.querySelector(strings.ROOT_SELECTOR);
   const icon = root.querySelector(strings.NAVIGATION_ICON_SELECTOR);
-  const component = new MDCTopAppBar(root, undefined, (el) => new FakeRipple(el));
+  const component = new MDCTopAppBar(root, undefined, rippleFactory);
 
   return {root, component, icon};
 }
@@ -89,12 +91,21 @@ test('attachTo initializes and returns an MDCTopAppBar instance', () => {
   assert.isTrue(MDCTopAppBar.attachTo(getFixture()) instanceof MDCTopAppBar);
 });
 
-test('constructor instantiates icon ripples', () => {
-  const {root, component} = setupTest();
-  const selector = strings.ACTION_ITEM_SELECTOR + ',' + strings.NAVIGATION_ICON_SELECTOR;
-  const totalIcons = root.querySelectorAll(selector).length;
+test('constructor instantiates icon ripples for all icons', () => {
+  const rippleFactory = td.function();
+  // Including navigation icon.
+  const totalIcons = MENU_ICONS_COUNT + 1;
 
-  assert.isTrue(component.iconRipples_.length === totalIcons);
+  td.when(rippleFactory(td.matchers.anything()), {times: totalIcons}).thenReturn((el) => new FakeRipple(el));
+  setupTest(/** removeIcon */ false, rippleFactory);
+});
+
+test('constructor does not instantiate ripple for nav icon when not present', () => {
+  const rippleFactory = td.function();
+  const totalIcons = MENU_ICONS_COUNT;
+
+  td.when(rippleFactory(td.matchers.anything()), {times: totalIcons}).thenReturn((el) => new FakeRipple(el));
+  setupTest(/** removeIcon */ true, rippleFactory);
 });
 
 test('destroy destroys icon ripples', () => {
