@@ -22,6 +22,7 @@ import domEvents from 'dom-events';
 import {MDCMenu, MDCMenuFoundation} from '../../../packages/mdc-menu/index';
 import {Corner} from '../../../packages/mdc-menu-surface/constants';
 import {MDCListFoundation} from '../../../packages/mdc-list';
+import {MDCMenuSurfaceFoundation} from '../../../packages/mdc-menu-surface/foundation';
 
 function getFixture(open) {
   return bel`
@@ -56,6 +57,7 @@ class FakeMenuSurface {
     this.show = td.func('.show');
     this.hide = td.func('.hide');
     this.listen = td.function();
+    this.unlisten = td.function();
     this.setAnchorCorner = td.func('.setAnchorCorner');
     this.setAnchorMargin = td.func('.setAnchorMargin');
     this.quickOpen = false;
@@ -63,8 +65,6 @@ class FakeMenuSurface {
     this.hoistMenuToBody = td.func('.hoistMenuToBody');
     this.setIsHoisted = td.func('.setIsHoisted');
     this.anchorElement = null;
-
-    td.when(this.listen(td.matchers.anything(), td.callback())).thenCallback();
   }
 }
 
@@ -96,6 +96,7 @@ test('destroy causes the menu-surface and list to be destroyed', () => {
   component.destroy();
   td.verify(list.destroy());
   td.verify(menuSurface.destroy());
+  td.verify(menuSurface.unlisten(td.matchers.anything(), td.matchers.anything()));
 });
 
 test('destroy does throw an error if the list is not instantiated', () => {
@@ -247,12 +248,28 @@ test('show de-registers event listener for click', () => {
   td.verify(mockFoundation.handleClick(td.matchers.anything()), {times: 0});
 });
 
-test('show causes first element to be focused', () => {
-  const {component, root} = setupTestWithFakes();
+test('menu surface opened event causes first element to be focused', () => {
+  const {root} = setupTest();
   document.body.appendChild(root);
-  component.show();
+  const event = document.createEvent('Event');
+  event.initEvent(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, false, true);
+  root.dispatchEvent(event);
 
   assert.equal(document.activeElement, root.querySelector('.mdc-list-item'));
+  document.body.removeChild(root);
+});
+
+test('menu surface opened event causes no element to be focused if the list is empty', () => {
+  const {root} = setupTest();
+  const lastActiveElement = document.activeElement;
+  root.querySelector('.mdc-list').innerHTML = ''; // Quick clear of all list items
+  const event = document.createEvent('Event');
+  event.initEvent(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, false, true);
+  document.body.appendChild(root);
+
+  root.dispatchEvent(event);
+
+  assert.equal(document.activeElement, lastActiveElement);
   document.body.removeChild(root);
 });
 
@@ -265,7 +282,7 @@ test('show causes does not throw an error if there are no items in the list to f
   document.body.removeChild(root);
 });
 
-// Adapter method tesst
+// Adapter method test
 
 test('adapter#addClassToElementAtIndex adds a class to the element at the index provided', () => {
   const {root, component} = setupTest();

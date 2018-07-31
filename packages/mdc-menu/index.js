@@ -37,6 +37,8 @@ class MDCMenu extends MDCComponent {
     this.handleKeydown_ = this.foundation_.handleKeydown.bind(this.foundation_);
     /** @private {!Function} */
     this.handleClick_ = this.foundation_.handleClick.bind(this.foundation_);
+    /** @private {!Function} */
+    this.afterOpenedCallback_;
   }
 
   /**
@@ -51,12 +53,14 @@ class MDCMenu extends MDCComponent {
     menuSurfaceFactory = (el) => new MDCMenuSurface(el),
     listFactory = (el) => new MDCList(el)) {
     this.menuSurface_ = menuSurfaceFactory(this.root_);
+    this.afterOpenedCallback_ = () => this.handleAfterOpened_();
 
     const list = this.root_.querySelector(strings.LIST_SELECTOR);
     if (list) {
       this.list_ = listFactory(list);
       this.list_.wrapFocus = true;
     }
+    this.menuSurface_.listen(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, this.afterOpenedCallback_);
   }
 
   destroy() {
@@ -65,6 +69,7 @@ class MDCMenu extends MDCComponent {
     }
 
     this.menuSurface_.destroy();
+    this.menuSurface_.unlisten(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, this.afterOpenedCallback_);
     this.deregisterListeners_();
     super.destroy();
   }
@@ -84,12 +89,6 @@ class MDCMenu extends MDCComponent {
   }
 
   show() {
-    this.menuSurface_.listen(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, () => {
-      const list = this.items;
-      if (list.length > 0) {
-        list[0].focus();
-      }
-    });
     this.menuSurface_.show();
     this.registerListeners_();
   }
@@ -100,7 +99,7 @@ class MDCMenu extends MDCComponent {
   }
 
   /**
-   * @param {Corner} corner Default anchor corner alignment of top-left
+   * @param {!Corner} corner Default anchor corner alignment of top-left
    *     menu corner.
    */
   setAnchorCorner(corner) {
@@ -108,7 +107,7 @@ class MDCMenu extends MDCComponent {
   }
 
   /**
-   * @param {AnchorMargin} margin
+   * @param {!AnchorMargin} margin
    */
   setAnchorMargin(margin) {
     this.menuSurface_.setAnchorMargin(margin);
@@ -166,7 +165,6 @@ class MDCMenu extends MDCComponent {
     this.menuSurface_.anchorElement = element;
   }
 
-
   registerListeners_() {
     this.root_.addEventListener('keydown', this.handleKeydown_);
     this.root_.addEventListener('click', this.handleClick_);
@@ -175,6 +173,13 @@ class MDCMenu extends MDCComponent {
   deregisterListeners_() {
     this.root_.removeEventListener('keydown', this.handleKeydown_);
     this.root_.removeEventListener('click', this.handleClick_);
+  }
+
+  handleAfterOpened_() {
+    const list = this.items;
+    if (list.length > 0) {
+      list[0].focus();
+    }
   }
 
   /** @return {!MDCMenuFoundation} */

@@ -108,6 +108,13 @@ CSS Class | Description
 `mdc-menu--open` | Indicates the menu is currently open, or is currently animating open.
 `mdc-menu--animating-closed` | Indicates the menu is currently animating closed. This class is removed once the animation completes.
 
+### Sass Mixins
+
+Mixin | Description
+--- | ---
+`mdc-menu-width($multiplier)` | Used to set the width of the menu. Accepts an integer to multiply the base width of `56px`.
+`mdc-menu-width($value)` | Used to set the width of the menu. Sets the menu width to `$value`. 
+
 ### JS Examples
 
 ```js

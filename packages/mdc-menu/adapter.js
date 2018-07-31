@@ -65,7 +65,7 @@ class MDCMenuAdapter {
 
   /**
    * Returns true if the element contains the className.
-   * @param {HTMLElement} element
+   * @param {?HTMLElement} element
    * @param {!string} className
    * @return {boolean} true if the element contains the className
    */
@@ -74,48 +74,48 @@ class MDCMenuAdapter {
   /**
    * Closes the menu-surface.
    */
-  closeSurface() {};
+  closeSurface() {}
 
   /**
    * Returns the index for the element provided.
-   * @param {HTMLElement} element
+   * @param {?HTMLElement} element
    * @return {number} index of the element in the list or -1 if it is not in the list.
    */
-  getElementIndex(element) {};
+  getElementIndex(element) {}
 
   /**
    * Returns the parentElement of the provided element.
-   * @param {HTMLElement} element
+   * @param {?HTMLElement} element
    * @return {?HTMLElement} parentElement of the element provided.
    */
-  getParentElement(element) {};
+  getParentElement(element) {}
 
   /**
    * Returns the element within the selectionGroup containing the selected element class.
-   * @param {HTMLElement} selectionGroup
+   * @param {!HTMLElement} selectionGroup
    * @return {number} element within the selectionGroup that contains the selected element class.
    */
-  getSelectedElementIndex(selectionGroup) {};
+  getSelectedElementIndex(selectionGroup) {}
 
   /**
    * Emits an event using the evtData.
    * @param {{
- *   index: number
- * }} evtData
+ *    index: number
+ *   }} evtData
    */
-  notifySelected(evtData) {};
+  notifySelected(evtData) {}
 
   /**
    * Returns the checkbox contained within the element at the index specified.
    * @param {number} index
    */
-  getCheckbox(index) {};
+  getCheckbox(index) {}
 
   /**
    * Toggles the checkbox within a list item, if any.
-   * @param {HTMLElement} target
+   * @param {!HTMLElement} target
    */
-  toggleCheckbox(target) {};
+  toggleCheckbox(target) {}
 }
 
 export {MDCMenuAdapter};

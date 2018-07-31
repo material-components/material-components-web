@@ -17,9 +17,9 @@
 @import "./variables";
 
 @mixin mdc-menu-width($width) {
-  width: $width;
-}
-
-@mixin mdc-menu-width-calc($multiplier) {
-  width: $multiplier * $mdc-menu-width-base;
+  @if unitless($width) {
+    width: $width * $mdc-menu-width-base;
+  } @else {
+    width: $width;
+  }
 }

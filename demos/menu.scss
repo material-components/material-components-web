@@ -66,15 +66,15 @@ main {
 }
 
 #demo-menu {
-  @include mdc-menu-width-calc(6);
+  @include mdc-menu-width(6);
 }
 
 #demo-menu-2 {
-  @include mdc-menu-width-calc(5);
+  @include mdc-menu-width(5);
 }
 
 #demo-menu-3 {
-  @include mdc-menu-width-calc(4);
+  @include mdc-menu-width(4);
 }
 
 .hero .mdc-menu-surface {

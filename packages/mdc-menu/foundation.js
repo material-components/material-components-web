@@ -115,7 +115,7 @@ class MDCMenuFoundation extends MDCFoundation {
 
   /**
    * Handler for a selected list item.
-   * @param {!HTMLElement} listItem
+   * @param {?HTMLElement} listItem
    * @private
    */
   handleSelection_(listItem) {
@@ -164,12 +164,13 @@ class MDCMenuFoundation extends MDCFoundation {
   /**
    * Returns the parent selection group of an element or the
    * @param listItem
-   * @return {HTMLElement|null}
+   * @return {?HTMLElement}
    * @private
    */
   getSelectionGroup_(listItem) {
     let parent = this.adapter_.getParentElement(listItem);
     let isGroup = this.adapter_.elementContainsClass(parent, cssClasses.MENU_SELECTION_GROUP);
+
     // Iterate through ancestors until we find the group or get to the list.
     while (!isGroup && !this.adapter_.elementContainsClass(parent, cssClasses.LIST_CLASS)) {
       parent = this.adapter_.getParentElement(listItem);
@@ -185,8 +186,8 @@ class MDCMenuFoundation extends MDCFoundation {
 
   /**
    * Find the first ancestor with the mdc-list-item class.
-   * @param {HTMLElement} target
-   * @return {HTMLElement}
+   * @param {?HTMLElement} target
+   * @return {?HTMLElement}
    * @private
    */
   getListItem_(target) {
@@ -207,7 +208,7 @@ class MDCMenuFoundation extends MDCFoundation {
   /**
    * Ensures that preventDefault is only called if the containing element doesn't
    * consume the event, and it will cause an unintended scroll.
-   * @param {Event} evt
+   * @param {!Event} evt
    * @private
    */
   preventDefaultEvent_(evt) {
