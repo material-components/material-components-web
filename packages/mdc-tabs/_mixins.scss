@@ -1,5 +1,5 @@
 @mixin mdc-tab-bar-indicator-mixin_ {
-  @include mdc-theme-prop(background-color, text-primary-on-light);
+  @include mdc-theme-prop(background-color, text-primary-on-background);
 
   position: absolute;
   bottom: 0;
