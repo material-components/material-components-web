@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,6 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+/** @enum {string} */
 const cssClasses = {
   BOX: 'mdc-select--box',
   DISABLED: 'mdc-select--disabled',
@@ -20,6 +23,7 @@ const cssClasses = {
   OUTLINED: 'mdc-select--outlined',
 };
 
+/** @enum {string} */
 const strings = {
   CHANGE_EVENT: 'MDCSelect:change',
   LINE_RIPPLE_SELECTOR: '.mdc-line-ripple',
