@@ -44,22 +44,13 @@ const setupTest = () => {
   return {foundation, mockAdapter};
 };
 
-test('#select does nothing if chip is already selected', () => {
+test('in choice chips, #select does nothing if chip is already selected', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(cssClasses.CHOICE)).thenReturn(false);
+  td.when(mockAdapter.hasClass(cssClasses.CHOICE)).thenReturn(true);
   foundation.select('chipA');
   foundation.select('chipA');
   td.verify(mockAdapter.setSelected('chipA', true), {times: 1});
   assert.equal(foundation.getSelectedChipIds().length, 1);
-});
-
-test('#deselect does nothing if chip is not selected', () => {
-  const {foundation, mockAdapter} = setupTest();
-  assert.equal(foundation.getSelectedChipIds().length, 0);
-
-  foundation.deselect('chipA');
-  td.verify(mockAdapter.setSelected('chipA', false), {times: 0});
-  assert.equal(foundation.getSelectedChipIds().length, 0);
 });
 
 test('in choice chips, #select selects chip if no chips are selected', () => {
@@ -96,6 +87,16 @@ test('in filter chips, #select selects multiple chips', () => {
   foundation.select('chipB');
   td.verify(mockAdapter.setSelected('chipB', true));
   assert.equal(foundation.getSelectedChipIds().length, 2);
+});
+
+test('in filter chips, #select does nothing if chip is already selected', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(cssClasses.CHOICE)).thenReturn(false);
+  td.when(mockAdapter.hasClass(cssClasses.FILTER)).thenReturn(true);
+  foundation.select('chipA');
+  foundation.select('chipA');
+  td.verify(mockAdapter.setSelected('chipA', true), {times: 1});
+  assert.equal(foundation.getSelectedChipIds().length, 1);
 });
 
 test('in filter chips, #deselect deselects selected chips', () => {

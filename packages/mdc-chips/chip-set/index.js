@@ -100,7 +100,7 @@ class MDCChipSet extends MDCComponent {
    * Returns an array of the IDs of all selected chips.
    * @return {!Array<string>}
    */
-  getSelectedChipIds() {
+  get selectedChipIds() {
     return this.foundation_.getSelectedChipIds();
   }
 

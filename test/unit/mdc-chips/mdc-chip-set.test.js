@@ -41,9 +41,10 @@ test('attachTo returns an MDCChipSet instance', () => {
 });
 
 class FakeChip {
-  constructor() {
+  constructor(el) {
+    this.id = el.id;
     this.destroy = td.func('.destroy');
-    this.selected = td.func('.selected');
+    this.selected = false;
   }
 }
 
@@ -102,10 +103,10 @@ test('#adapter.removeChip removes the chip object from the chip set', () => {
   td.verify(chip.destroy());
 });
 
-test('#adapter.setSelected sets select on chip object', () => {
+test('#adapter.setSelected sets selected on chip object', () => {
   const root = getFixture();
   const component = new MDCChipSet(root, undefined, (el) => new FakeChip(el));
   const chip = component.chips[0];
-  component.getDefaultFoundation().adapter_.setSelected(chip, true);
+  component.getDefaultFoundation().adapter_.setSelected('chip1', true);
   assert.equal(chip.selected, true);
 });
