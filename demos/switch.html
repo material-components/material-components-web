@@ -18,6 +18,7 @@
   <head>
     <meta charset="utf-8">
     <title>Switch - Material Components Catalog</title>
+    <script src="/ready.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <link rel="stylesheet" href="/assets/switch.css">
@@ -63,9 +64,11 @@
       <div class="demo-wrapper">
         <section class="hero">
           <div class="mdc-switch">
-            <input type="checkbox" class="mdc-switch__native-control" role="switch">
-            <div class="mdc-switch__background">
-              <div class="mdc-switch__knob"></div>
+            <div class="mdc-switch__track"></div>
+            <div class="mdc-switch__thumb-underlay">
+              <div class="mdc-switch__thumb">
+                <input type="checkbox" class="mdc-switch__native-control" role="switch">
+              </div>
             </div>
           </div>
         </section>
@@ -74,21 +77,25 @@
           <h2>Enabled</h2>
           <div class="demo-switch-wrapper">
             <div class="mdc-switch">
-              <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" role="switch">
-              <div class="mdc-switch__background">
-                <div class="mdc-switch__knob"></div>
+              <div class="mdc-switch__track"></div>
+              <div class="mdc-switch__thumb-underlay">
+                <div class="mdc-switch__thumb">
+                  <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" role="switch">
+                </div>
               </div>
             </div>
             <label for="basic-switch" class="mdc-switch-label">off/on</label>
           </div>
           <div class="demo-switch-wrapper">
-            <div class="mdc-switch demo-switch--custom">
-              <input type="checkbox"
-                    id="basic-switch-custom"
-                    class="mdc-switch__native-control"
-                    role="switch" checked>
-              <div class="mdc-switch__background">
-                <div class="mdc-switch__knob"></div>
+            <div class="mdc-switch demo-switch--custom mdc-switch--checked">
+              <div class="mdc-switch__track"></div>
+              <div class="mdc-switch__thumb-underlay">
+                <div class="mdc-switch__thumb">
+                  <input type="checkbox"
+                  id="basic-switch-custom"
+                  class="mdc-switch__native-control"
+                  role="switch" checked>
+                </div>
               </div>
             </div>
             <label for="basic-switch-custom" class="mdc-switch-label">custom color</label>
@@ -97,14 +104,16 @@
         <section class="example">
           <h2>Disabled</h2>
           <div class="demo-switch-wrapper">
-            <div class="mdc-switch">
-              <input type="checkbox"
-                    id="basic-switch--disabled"
-                    class="mdc-switch__native-control"
-                    role="switch"
-                    disabled>
-              <div class="mdc-switch__background">
-                <div class="mdc-switch__knob"></div>
+            <div class="mdc-switch mdc-switch--disabled">
+              <div class="mdc-switch__track"></div>
+              <div class="mdc-switch__thumb-underlay">
+                <div class="mdc-switch__thumb">
+                  <input type="checkbox"
+                  id="basic-switch--disabled"
+                  class="mdc-switch__native-control"
+                  role="switch"
+                  disabled>
+                </div>
               </div>
             </div>
             <label for="basic-switch--disabled" class="mdc-switch-label">off/on</label>
@@ -134,9 +143,15 @@
 
     <script src="/assets/material-components-web.js" async></script>
     <script>
-      const demoWrapper = document.querySelector('.demo-wrapper');
+      var demoWrapper = document.querySelector('.demo-wrapper');
       document.getElementById('toggle-rtl').addEventListener('change', function() {
         this.checked ? demoWrapper.setAttribute('dir', 'rtl') : demoWrapper.removeAttribute('dir');
+      });
+      demoReady(function() {
+        var switches = document.querySelectorAll('.mdc-switch');
+        for (var i = 0, switchEl; switchEl = switches[i]; i++) {
+          var switchInstance = new mdc.switchControl.MDCSwitch(switchEl);
+        }
       });
     </script>
   </body>

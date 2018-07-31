@@ -77,6 +77,10 @@
   @include mdc-list-item-graphic-ink-color(primary);
 }
 
+.mdc-list-item--disabled {
+  @include mdc-list-item-primary-text-ink-color(text-disabled-on-background);
+}
+
 .mdc-list-item__graphic {
   @include mdc-list-graphic-size_(24px);
 
@@ -90,23 +94,46 @@
   @include mdc-rtl-reflexive-property(margin, auto, 0, ".mdc-list-item");
 }
 
-.mdc-list-item__text,
-.mdc-list-item__secondary-text {
+.mdc-list-item__text {
   @include mdc-typography-overflow-ellipsis;
 
+  align-self: flex-start;
+}
+
+$mdc-list-item-primary-text-baseline-height_: 32px;
+$mdc-list-item-secondary-text-baseline-height_: 20px;
+$mdc-list-dense-item-primary-text-baseline-height_: 24px;
+
+.mdc-list-item__primary-text {
+  @include mdc-typography-overflow-ellipsis;
+  @include mdc-typography-baseline-top($mdc-list-item-primary-text-baseline-height_);
+  @include mdc-typography-baseline-bottom($mdc-list-item-secondary-text-baseline-height_);
+
   display: block;
+
+  // stylelint-disable plugin/selector-bem-pattern
+  .mdc-list--dense & {
+    @include mdc-typography-baseline-top($mdc-list-dense-item-primary-text-baseline-height_);
+    @include mdc-typography-baseline-bottom($mdc-list-item-secondary-text-baseline-height_);
+  }
+  // stylelint-enable plugin/selector-bem-pattern
 }
 
 .mdc-list-item__secondary-text {
   @include mdc-typography(body2);
-}
+  @include mdc-typography-overflow-ellipsis;
+  @include mdc-typography-baseline-top($mdc-list-item-secondary-text-baseline-height_);
 
-// Match the font size to the primary text when dense
-// stylelint-disable plugin/selector-bem-pattern
-.mdc-list--dense .mdc-list-item__secondary-text {
-  font-size: inherit;
+  display: block;
+
+  // stylelint-disable plugin/selector-bem-pattern
+  .mdc-list--dense & {
+    @include mdc-typography-baseline-top($mdc-list-item-secondary-text-baseline-height_);
+
+    font-size: inherit;
+  }
+  // stylelint-enable plugin/selector-bem-pattern
 }
-// stylelint-enable plugin/selector-bem-pattern
 
 // stylelint-disable plugin/selector-bem-pattern
 .mdc-list--dense .mdc-list-item {
@@ -127,16 +154,6 @@
   border-radius: 50%;
 }
 
-// List items should support states by default, but it should be possible to opt out.
-// Direct child combinator is necessary for non-interactive modifier on parent to not match this selector.
-:not(.mdc-list--non-interactive) > .mdc-list-item {
-  @include mdc-ripple-surface;
-  @include mdc-ripple-radius-bounded;
-  @include mdc-states;
-  @include mdc-states-activated(primary);
-  @include mdc-states-selected(primary);
-}
-
 .mdc-list--two-line .mdc-list-item {
   height: 72px;
 }
@@ -146,11 +163,21 @@
 }
 
 .mdc-list--avatar-list.mdc-list--dense .mdc-list-item {
-  height: 48px;
+  height: 60px;
 }
 
 .mdc-list--avatar-list.mdc-list--dense .mdc-list-item__graphic {
   @include mdc-list-graphic-size_(36px);
+}
+
+// List items should support states by default, but it should be possible to opt out.
+// Direct child combinator is necessary for non-interactive modifier on parent to not match this selector.
+:not(.mdc-list--non-interactive) > :not(.mdc-list-item--disabled).mdc-list-item {
+  @include mdc-ripple-surface;
+  @include mdc-ripple-radius-bounded;
+  @include mdc-states;
+  @include mdc-states-activated(primary);
+  @include mdc-states-selected(primary);
 }
 // postcss-bem-linter: end
 

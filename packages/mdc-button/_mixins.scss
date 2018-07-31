@@ -78,15 +78,6 @@
   @include mdc-button-horizontal-padding($padding-value);
 
   border-width: $outline-width;
-  // Note: line height is adjusted for outline button because borders are not
-  // considered as space available to text on the Web
-  line-height: $mdc-button-height - $outline-width * 2;
-
-  // postcss-bem-linter: ignore
-  &.mdc-button--dense {
-    // Minus extra 1 to accommodate odd font size of dense button
-    line-height: $mdc-dense-button-height - $outline-width * 2 - 1;
-  }
 }
 
 @mixin mdc-button-base_() {
@@ -192,5 +183,4 @@
 @mixin mdc-button--dense_() {
   height: $mdc-dense-button-height;
   font-size: .8125rem; // 13sp
-  line-height: $mdc-dense-button-height;
 }
