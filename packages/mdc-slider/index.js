@@ -18,7 +18,7 @@
 import MDCComponent from '@material/base/component';
 
 import {MDCRipple} from '@material/ripple/index';
-import {strings} from './constants';
+import {strings, cssClasses} from './constants';
 import MDCSliderAdapter from './adapter';
 import MDCSliderFoundation from './foundation';
 
@@ -36,6 +36,10 @@ class MDCSlider extends MDCComponent {
     this.thumb_;
     /** @type {?Element} */
     this.trackFill_;
+    /** @type {?Element} */
+    this.tickMarkSet_;
+    /** @type {?Element} */
+    this.lastTickMark_;
     /** @private {!MDCRipple} */
     this.ripple_ = this.initRipple_();
   }
@@ -58,6 +62,7 @@ class MDCSlider extends MDCComponent {
   /** @param {number} min */
   set min(min) {
     this.foundation_.setMin(min);
+    this.layout();
   }
 
   /** @return {number} */
@@ -68,6 +73,7 @@ class MDCSlider extends MDCComponent {
   /** @param {number} max */
   set max(max) {
     this.foundation_.setMax(max);
+    this.layout();
   }
 
   /** @return {number} */
@@ -78,6 +84,7 @@ class MDCSlider extends MDCComponent {
   /** @param {number} step */
   set step(step) {
     this.foundation_.setStep(step);
+    this.layout();
   }
 
   /**
@@ -98,6 +105,7 @@ class MDCSlider extends MDCComponent {
   initialize() {
     this.thumb_ = this.root_.querySelector(strings.THUMB_SELECTOR);
     this.trackFill_ = this.root_.querySelector(strings.TRACK_FILL_SELECTOR);
+    this.tickMarkSet_ = this.root_.querySelector(strings.TICK_MARK_SET_SELECTOR);
   }
 
   /**
@@ -142,6 +150,9 @@ class MDCSlider extends MDCComponent {
         setTrackFillStyleProperty: (propertyName, value) => {
           this.trackFill_.style.setProperty(propertyName, value);
         },
+        setLastTickMarkStyleProperty: (propertyName, value) => {
+          this.lastTickMark_.style.setProperty(propertyName, value);
+        },
         focusThumb: () => {
           this.thumb_.focus();
         },
@@ -162,10 +173,39 @@ class MDCSlider extends MDCComponent {
     this.max = parseFloat(this.thumb_.getAttribute(strings.ARIA_VALUEMAX)) || this.max;
     this.step = parseFloat(this.thumb_.getAttribute(strings.DATA_STEP)) || this.step;
     this.value = origValueNow || this.value;
+    if (this.tickMarkSet_ && this.root_.classList.contains(cssClasses.DISCRETE)) {
+      this.setUpTickMarks_();
+    }
+  }
+
+  setUpTickMarks_() {
+    const numMarks = this.foundation_.calculateNumberOfTickMarks();
+
+    // Remove tick marks if there are any
+    while (this.tickMarkSet_.firstChild) {
+      this.tickMarkSet_.removeChild(this.tickMarkSet_.firstChild);
+    }
+
+    // Create the tick marks and append to the tick mark set
+    const frag = document.createDocumentFragment();
+    for (let i = 0; i < numMarks; i++) {
+      const mark = document.createElement('div');
+      mark.classList.add(cssClasses.TICK_MARK);
+      frag.appendChild(mark);
+    }
+    this.tickMarkSet_.appendChild(frag);
+
+    // Assign the last tick mark
+    this.lastTickMark_ = this.root_.querySelector(strings.LAST_TICK_MARK_SELECTOR);
+
+    this.foundation_.adjustLastTickMark(numMarks);
   }
 
   layout() {
     this.foundation_.layout();
+    if (this.tickMarkSet_ && this.root_.classList.contains(cssClasses.DISCRETE)) {
+      this.setUpTickMarks_();
+    }
   }
 }
 
