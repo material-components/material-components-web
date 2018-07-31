@@ -266,19 +266,18 @@ test('adapter#setThumbAttribute sets an attribute on the thumb element', () => {
 
 test('adapter#setValueLabelPath sets the path on the value label element', () => {
   const {root, component} = setupTest();
+
+  component.getDefaultFoundation().adapter_.setValueLabelPath('M 0 1');
   const valueLabel = root.querySelector('.mdc-slider__value-label');
 
-  component.getDefaultFoundation().adapter_.setValueLabelPath('foo');
-
-  assert.equal(valueLabel.getAttribute('d'), 'foo');
+  assert.equal(valueLabel.getAttribute('d'), 'M 0 1');
 });
 
 test('adapter#setValueLabelText sets the x, text content, anbd style on the value label text element', () => {
   const {root, component} = setupTest();
-  const valueLabelText = root.querySelector('.mdc-slider__value-label-text');
-
   component.getDefaultFoundation().adapter_.setValueLabelText('foo', 'bar', 'foobar');
 
+  const valueLabelText = root.querySelector('.mdc-slider__value-label-text');
   assert.equal(valueLabelText.getAttribute('x'), 'foo');
   assert.equal(valueLabelText.textContent, 'bar');
   assert.equal(valueLabelText.getAttribute('style'), 'foobar');
