@@ -1,7 +1,7 @@
 {
   "name": "@material/radio",
   "description": "The Material Components for the web radio component",
-  "version": "0.37.1",
+  "version": "0.38.0",
   "license": "Apache-2.0",
   "keywords": [
     "material components",
@@ -16,8 +16,8 @@
   "dependencies": {
     "@material/animation": "^0.34.0",
     "@material/base": "^0.35.0",
-    "@material/ripple": "^0.37.1",
-    "@material/selection-control": "^0.37.1",
-    "@material/theme": "^0.35.0"
+    "@material/ripple": "^0.38.0",
+    "@material/selection-control": "^0.38.0",
+    "@material/theme": "^0.38.0"
   }
 }
