@@ -14,7 +14,23 @@
 // limitations under the License.
 //
 
+@import "../../../../packages/mdc-checkbox/mixins";
+@import "../../../../packages/mdc-theme/color-palette";
+
+$custom-checkbox-color: $material-color-red-300;
+
 .test-cell--checkbox {
   width: 91px;
   height: 91px;
+}
+
+.custom-checkbox--container-colors {
+  @include mdc-checkbox-container-colors(
+    $unmarked-stroke-color: $custom-checkbox-color,
+    $marked-fill-color: $custom-checkbox-color
+  );
+}
+
+.custom-checkbox--ink-color {
+  @include mdc-checkbox-ink-color($custom-checkbox-color);
 }
