@@ -128,26 +128,13 @@ git commit -am "chore: Publish"
 
 ### For Pre-Releases and Patch Releases
 
-Simply run the post-release script to update and commit the changelog and apply an annotated vX.Y.Z git tag:
-
-```
-./scripts/post-release.sh
-```
-
-Make sure that a CHANGELOG commit actually appears in your `git log`! If you need to retry the process:
-
-```
-git tag -d <tag> # Delete the tag that the script created
-git reset --hard HEAD^ # Rewind to the previous commit
-```
-
-Alternatively, if you would like to be extra sure of the changelog, you can generate it manually prior to running the
-post-release script, in which case it will skip `npm run changelog` and commit your local changes:
+It's recommended to generate the changelog prior to running the post-release script so you can double-check the changes
+before it creates a tag:
 
 ```
 npm run changelog
 git diff # Review the changelog and make sure it looks OK
-./scripts/post-release.sh
+./scripts/post-release.sh # This will commit the changelog diff and then create a tag
 ```
 
 ### For Minor Releases
@@ -188,13 +175,13 @@ You will need to temporarily alter Github's master branch protection in order to
 1. Perform the process outlined in one of the sections below
 1. Don't forget to re-enable "Include administrators" & click "Save changes" afterwards
 
-### For Pre-releases and Feature/Breaking-Change Releases
+### For Pre-releases and Minor Releases
 
 `git push origin master && git push origin <tag>`
 
 This will ensure the new commits *and* tag are pushed to the remote git repository.
 
-### For Bugfix Releases
+### For Patch Releases
 
 `git push origin <tag>`
 
@@ -212,13 +199,27 @@ git push
 
 ## Update and Deploy Catalog Repository
 
-We maintain a `next` branch on the MDC Web Catalog repository to keep ahead of breaking changes in new releases.
+### For Patch Releases
+
+1. Update the `material-components-web` dependency in the catalog's `package.json` to the new patch version
+1. Run `npm start` and glance through the catalog pages to make sure everything looks normal
+1. Send a PR for the dependency update, then run `npm deploy` once it's merged to master
+
+### For Minor Releases
+
+We typically maintain a `next` branch on the MDC Web Catalog repository which follows MDC Web pre-releases, to keep
+ahead of breaking changes in new releases.
+
+In the event no pre-releases were tagged, the above process for patch releases would be followed, but would require
+checking for necessary updates to accommodate breaking changes in MDC Web.
+
+Below is the process when a `next` branch is used:
 
 1. Ensure you have the latest `master` checked out: `git checkout master && git pull`
 1. Create a new branch, e.g.: `git checkout -b chore/0.36.0`
 1. Merge `next` into the branch: `git merge next`
 1. Deal with any conflicts if necessary
-1. Update `package.json` to reference the newly-released final versions of MDC Web packages
+1. Update `package.json` to reference the newly-released minor version of `material-components-web`
 1. `rm -rf node_modules && npm i` to cause `package-lock.json` to update
 1. `npm start` and test the catalog, in case any further breaking changes occurred since the last pre-release
 1. `npm run build` to double-check that there are no unforeseen errors when building resources for deployment

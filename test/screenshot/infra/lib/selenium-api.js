@@ -17,6 +17,7 @@
 'use strict';
 
 const Jimp = require('jimp');
+const VError = require('verror');
 const UserAgentParser = require('useragent');
 const colors = require('colors/safe');
 const path = require('path');
@@ -25,7 +26,7 @@ const mdcProto = require('../proto/mdc.pb').mdc.proto;
 const seleniumProto = require('../proto/selenium.pb').selenium.proto;
 
 const {Screenshot, TestFile, UserAgent} = mdcProto;
-const {CaptureState} = Screenshot;
+const {CaptureState, InclusionType} = Screenshot;
 const {BrowserVendorType, Navigator} = UserAgent;
 const {RawCapabilities} = seleniumProto;
 
@@ -33,11 +34,12 @@ const CbtApi = require('./cbt-api');
 const Cli = require('./cli');
 const Constants = require('./constants');
 const Duration = require('./duration');
+const GitHubApi = require('./github-api');
 const ImageCropper = require('./image-cropper');
 const ImageDiffer = require('./image-differ');
 const LocalStorage = require('./local-storage');
-const {Browser, Builder, By, until} = require('selenium-webdriver');
-const {CBT_CONCURRENCY_POLL_INTERVAL_MS, CBT_CONCURRENCY_MAX_WAIT_MS} = Constants;
+const {Browser, Builder, By, logging, until} = require('selenium-webdriver');
+const {CBT_CONCURRENCY_POLL_INTERVAL_MS, CBT_CONCURRENCY_MAX_WAIT_MS, ExitCode} = Constants;
 const {SELENIUM_FONT_LOAD_WAIT_MS} = Constants;
 
 /**
@@ -46,6 +48,7 @@ const {SELENIUM_FONT_LOAD_WAIT_MS} = Constants;
  *   color: !CliColor,
  * }} CliStatus
  */
+
 const CliStatuses = {
   ACTIVE: {name: 'Active', color: colors.bold.cyan},
   QUEUED: {name: 'Queued', color: colors.cyan},
@@ -54,7 +57,11 @@ const CliStatuses = {
   STARTED: {name: 'Started', color: colors.bold.green},
   GET: {name: 'Get', color: colors.bold.white},
   CROP: {name: 'Crop', color: colors.white},
-  RETRY: {name: 'Retry', color: colors.red},
+  PASS: {name: 'Pass', color: colors.green},
+  ADD: {name: 'Add', color: colors.bgGreen.black},
+  FAIL: {name: 'Fail', color: colors.red},
+  RETRY: {name: 'Retry', color: colors.magenta},
+  CAPTURED: {name: 'Captured', color: colors.bold.grey},
   FINISHED: {name: 'Finished', color: colors.bold.green},
   FAILED: {name: 'Failed', color: colors.bold.red},
   QUITTING: {name: 'Quitting', color: colors.white},
@@ -75,6 +82,12 @@ class SeleniumApi {
     this.cli_ = new Cli();
 
     /**
+     * @type {!GitHubApi}
+     * @private
+     */
+    this.gitHubApi_ = new GitHubApi();
+
+    /**
      * @type {!ImageCropper}
      * @private
      */
@@ -91,6 +104,40 @@ class SeleniumApi {
      * @private
      */
     this.localStorage_ = new LocalStorage();
+
+    /**
+     * @type {!Set<string>}
+     * @private
+     */
+    this.seleniumSessionIds_ = new Set();
+
+    /**
+     * @type {number}
+     * @private
+     */
+    this.numPending_ = 0;
+
+    /**
+     * @type {number}
+     * @private
+     */
+    this.numCompleted_ = 0;
+
+    /**
+     * @type {number}
+     * @private
+     */
+    this.numChanged_ = 0;
+
+    /**
+     * @type {boolean}
+     * @private
+     */
+    this.isKilled_ = false;
+
+    if (this.cli_.isOnline()) {
+      this.killBrowsersOnExit_();
+    }
   }
 
   /**
@@ -101,6 +148,9 @@ class SeleniumApi {
     const runnableUserAgents = reportData.user_agents.runnable_user_agents;
     let queuedUserAgents = runnableUserAgents.slice();
     let runningUserAgents;
+
+    this.numPending_ = reportData.screenshots.runnable_screenshot_list.length;
+    this.numCompleted_ = 0;
 
     function getLoggableAliases(userAgentAliases) {
       return userAgentAliases.length > 0 ? userAgentAliases.join(', ') : '(none)';
@@ -118,6 +168,8 @@ class SeleniumApi {
       this.logStatus_(CliStatuses.QUEUED, queuedUserAgentLoggable);
       await this.captureAllPagesInAllBrowsers_({reportData, userAgents: runningUserAgents});
     }
+
+    console.log('');
 
     return reportData;
   }
@@ -151,28 +203,55 @@ class SeleniumApi {
     const seleniumSessionId = session.getId();
     let changedScreenshots;
 
-    const logResult = (status) => {
+    this.seleniumSessionIds_.add(seleniumSessionId);
+
+    const logResult = (status, ...args) => {
       /* eslint-disable camelcase */
       const {os_name, os_version, browser_name, browser_version} = userAgent.navigator;
-      this.logStatus_(status, `${browser_name} ${browser_version} on ${os_name} ${os_version}!`);
+      this.logStatus_(status, `${browser_name} ${browser_version} on ${os_name} ${os_version}!`, ...args);
       /* eslint-enable camelcase */
     };
 
     try {
       changedScreenshots = (await this.driveBrowser_({reportData, userAgent, driver})).changedScreenshots;
+      await this.printBrowserConsoleLogs_(driver);
       logResult(CliStatuses.FINISHED);
     } catch (err) {
       logResult(CliStatuses.FAILED);
-      throw err;
+      await this.killBrowsers_();
+      throw new VError(err, 'Failed to drive web browser');
     } finally {
       logResult(CliStatuses.QUITTING);
       await driver.quit();
+      this.seleniumSessionIds_.delete(seleniumSessionId);
     }
 
-    await this.cbtApi_.setTestScore({
-      seleniumSessionId,
-      changedScreenshots,
+    if (this.cli_.isOnline()) {
+      await this.cbtApi_.setTestScore({
+        seleniumSessionId,
+        changedScreenshots,
+      });
+    }
+  }
+
+  /**
+   * @param {!IWebDriver} driver
+   * @return {!Promise<void>}
+   * @private
+   */
+  async printBrowserConsoleLogs_(driver) {
+    const log = driver.manage().logs();
+
+    // Chrome is the only browser that supports logging as of 2018-07-20.
+    const logEntries = (await log.get(logging.Type.BROWSER).catch(() => [])).filter((logEntry) => {
+      // Ignore messages about missing favicon
+      return logEntry.message.indexOf('favicon.ico') === -1;
     });
+
+    if (logEntries.length > 0) {
+      const messageColor = colors.bold.red('Browser console log:');
+      console.log(`\n\n${messageColor}\n`, JSON.stringify(logEntries, null, 2), '\n');
+    }
   }
 
   /**
@@ -180,8 +259,7 @@ class SeleniumApi {
    * @private
    */
   async getMaxParallelTests_() {
-    const isOnline = await this.cli_.isOnline();
-    if (!isOnline) {
+    if (this.cli_.isOffline()) {
       return 1;
     }
 
@@ -236,7 +314,7 @@ class SeleniumApi {
     userAgent.desired_capabilities = desiredCapabilities;
     driverBuilder.withCapabilities(desiredCapabilities);
 
-    const isOnline = await this.cli_.isOnline();
+    const isOnline = this.cli_.isOnline();
     if (isOnline) {
       driverBuilder.usingServer(this.cbtApi_.getSeleniumServerUrl());
     }
@@ -244,7 +322,7 @@ class SeleniumApi {
     this.logStatus_(CliStatuses.STARTING, `${userAgent.alias}...`);
 
     /** @type {!IWebDriver} */
-    const driver = await driverBuilder.build();
+    const driver = await this.buildWebDriverWithRetries_(driverBuilder);
 
     /** @type {!selenium.proto.RawCapabilities} */
     const actualCapabilities = await this.getActualCapabilities_(driver);
@@ -267,17 +345,62 @@ class SeleniumApi {
   }
 
   /**
+   * @param {!Builder} driverBuilder
+   * @param {number=} startTimeMs
+   * @return {!Promise<!IWebDriver>}
+   * @private
+   */
+  async buildWebDriverWithRetries_(driverBuilder, startTimeMs = Date.now()) {
+    try {
+      return await driverBuilder.build();
+    } catch (err) {
+      if (err.message.indexOf('maximum number of parallel') === -1) {
+        throw new VError(err, 'WebDriver instance could not be created');
+      }
+    }
+
+    /** @type {!cbt.proto.CbtConcurrencyStats} */
+    const concurrencyStats = await this.cbtApi_.fetchConcurrencyStats();
+    const max = concurrencyStats.max_concurrent_selenium_tests;
+
+    // TODO(acdvorak): De-dupe this with getMaxParallelTests_()
+    const elapsedTimeMs = Date.now() - startTimeMs;
+    const elapsedTimeHuman = Duration.millis(elapsedTimeMs).toHumanShort();
+    if (elapsedTimeMs > CBT_CONCURRENCY_MAX_WAIT_MS) {
+      throw new Error(`Timed out waiting for CBT resources to become available after ${elapsedTimeHuman}`);
+    }
+
+    // TODO(acdvorak): De-dupe this with getMaxParallelTests_()
+    const waitTimeMs = CBT_CONCURRENCY_POLL_INTERVAL_MS;
+    const waitTimeHuman = Duration.millis(waitTimeMs).toHumanShort();
+    this.logStatus_(
+      CliStatuses.WAITING,
+      `Parallel execution limit reached. ${max} tests are already running on CBT. Will retry in ${waitTimeHuman}...`
+    );
+    await this.sleep_(waitTimeMs);
+
+    return this.buildWebDriverWithRetries_(driverBuilder, startTimeMs);
+  }
+
+  /**
    * @param {!mdc.proto.ReportMeta} meta
    * @param {!mdc.proto.UserAgent} userAgent
    * @return {!selenium.proto.RawCapabilities}
    * @private
    */
   async getDesiredCapabilities_({meta, userAgent}) {
-    const isOnline = await this.cli_.isOnline();
-    if (isOnline) {
-      return await this.cbtApi_.getDesiredCapabilities_({meta, userAgent});
+    if (this.cli_.isOnline()) {
+      return this.cbtApi_.getDesiredCapabilities({meta, userAgent});
     }
+    return this.createDesiredCapabilitiesOffline_({userAgent});
+  }
 
+  /**
+   * @param {!mdc.proto.UserAgent} userAgent
+   * @return {!selenium.proto.RawCapabilities}
+   * @private
+   */
+  createDesiredCapabilitiesOffline_({userAgent}) {
     const browserVendorMap = {
       [BrowserVendorType.CHROME]: Browser.CHROME,
       [BrowserVendorType.EDGE]: Browser.EDGE,
@@ -369,12 +492,17 @@ class SeleniumApi {
     /** @type {!Array<!mdc.proto.Screenshot>} */
     const screenshotQueueAll = reportData.screenshots.runnable_screenshot_browser_map[userAgent.alias].screenshots;
 
+    // TODO(acdvorak): Find a better way to do this
     const screenshotQueues = [
       [true, screenshotQueueAll.filter((screenshot) => this.isSmallComponent_(screenshot.html_file_path))],
       [false, screenshotQueueAll.filter((screenshot) => !this.isSmallComponent_(screenshot.html_file_path))],
     ];
 
     for (const [isSmallComponent, screenshotQueue] of screenshotQueues) {
+      if (screenshotQueue.length === 0) {
+        continue;
+      }
+
       await this.resizeWindow_({driver, isSmallComponent});
 
       for (const screenshot of screenshotQueue) {
@@ -386,10 +514,23 @@ class SeleniumApi {
         screenshot.diff_image_result = diffImageResult;
         screenshot.diff_image_file = diffImageResult.diff_image_file;
 
+        this.numPending_--;
+        this.numCompleted_++;
+
+        const message = `${screenshot.actual_html_file.public_url} > ${screenshot.user_agent.alias}`;
+
         if (diffImageResult.has_changed) {
           changedScreenshots.push(screenshot);
+          this.numChanged_++;
+          this.logStatus_(CliStatuses.FAIL, message);
         } else {
           unchangedScreenshots.push(screenshot);
+
+          if (screenshot.inclusion_type === InclusionType.ADD) {
+            this.logStatus_(CliStatuses.ADD, message);
+          } else {
+            this.logStatus_(CliStatuses.PASS, message);
+          }
         }
       }
     }
@@ -513,7 +654,7 @@ class SeleniumApi {
   async capturePageAsPng_({driver, userAgent, url, delayMs = 0}) {
     this.logStatus_(CliStatuses.GET, `${url} > ${userAgent.alias}...`);
 
-    const isOnline = await this.cli_.isOnline();
+    const isOnline = this.cli_.isOnline();
     const fontTimeoutMs = isOnline ? SELENIUM_FONT_LOAD_WAIT_MS : 500;
 
     await driver.get(url);
@@ -539,6 +680,56 @@ class SeleniumApi {
     return croppedImageBuffer;
   }
 
+  /** @private */
+  killBrowsersOnExit_() {
+    // catches ctrl+c event
+    process.on('SIGINT', () => {
+      const exit = () => process.exit(ExitCode.SIGINT);
+      this.killBrowsers_().then(exit, exit);
+    });
+
+    // catches "kill pid"
+    process.on('SIGTERM', () => {
+      const exit = () => process.exit(ExitCode.SIGTERM);
+      this.killBrowsers_().then(exit, exit);
+    });
+
+    process.on('uncaughtException', (err) => {
+      console.error(err);
+      const exit = () => process.exit(ExitCode.UNCAUGHT_EXCEPTION);
+      this.killBrowsers_().then(exit, exit);
+    });
+
+    process.on('unhandledRejection', (err) => {
+      console.error(err);
+      const exit = () => process.exit(ExitCode.UNHANDLED_PROMISE_REJECTION);
+      this.killBrowsers_().then(exit, exit);
+    });
+  }
+
+  /** @private */
+  async killBrowsers_() {
+    if (this.cli_.isOffline()) {
+      return;
+    }
+
+    const ids = Array.from(this.seleniumSessionIds_);
+    const wasAlreadyKilled = this.isKilled_;
+
+    if (!wasAlreadyKilled) {
+      console.log('\n');
+    }
+
+    this.isKilled_ = true;
+
+    await this.cbtApi_.killSeleniumTests(ids, /* silent */ wasAlreadyKilled);
+
+    if (!wasAlreadyKilled && ids.length > 0) {
+      console.log('\nWaiting for CBT cancellation requests to complete...');
+      await this.sleep_(Duration.seconds(4).toMillis());
+    }
+  }
+
   /**
    * @param {number} ms
    * @return {!Promise<void>}
@@ -554,8 +745,51 @@ class SeleniumApi {
    * @private
    */
   logStatus_(status, ...args) {
-    const maxWidth = Object.values(CliStatuses).map((status) => status.name.length).sort().reverse()[0];
-    console.log(status.color(status.name.toUpperCase().padStart(maxWidth, ' ')) + ':', ...args);
+    // Don't output misleading errors
+    if (this.isKilled_) {
+      return;
+    }
+
+    // https://stackoverflow.com/a/6774395/467582
+    const escape = String.fromCodePoint(27);
+    const eraseCurrentLine = `\r${escape}[K`;
+    const maxStatusWidth = Object.values(CliStatuses).map((status) => status.name.length).sort().reverse()[0];
+    const statusName = status.name.toUpperCase();
+    const paddingSpaces = ''.padStart(maxStatusWidth - statusName.length, ' ');
+
+    console.log(eraseCurrentLine + paddingSpaces + status.color(statusName) + ':', ...args);
+
+    const numDone = this.numCompleted_;
+    const strDone = numDone.toLocaleString();
+
+    const numTotal = numDone + this.numPending_;
+    const strTotal = numTotal.toLocaleString();
+
+    const numChanged = this.numChanged_;
+    const strChanged = numChanged.toLocaleString();
+
+    const numPercent = numTotal > 0 ? (100 * numDone / numTotal) : 0;
+    const strPercent = numPercent.toFixed(1);
+
+    if (process.env.TRAVIS === 'true') {
+      this.gitHubApi_.setPullRequestStatusManual({
+        state: GitHubApi.PullRequestState.PENDING,
+        description: `${strDone} of ${strTotal} (${strPercent}%) - ${strChanged} diffs`,
+      });
+      return;
+    }
+
+    const pending = this.numPending_;
+    const completed = numDone;
+    const total = pending + completed;
+    const percent = (total === 0 ? 0 : (100 * completed / total).toFixed(1));
+
+    const colorCaptured = CliStatuses.CAPTURED.color(CliStatuses.CAPTURED.name.toUpperCase());
+    const colorCompleted = colors.bold.white(completed.toLocaleString());
+    const colorTotal = colors.bold.white(total.toLocaleString());
+    const colorPercent = colors.bold.white(`${percent}%`);
+
+    process.stdout.write(`${colorCaptured}: ${colorCompleted} of ${colorTotal} screenshots (${colorPercent} complete)`);
   }
 }
 

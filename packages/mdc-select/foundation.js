@@ -15,78 +15,67 @@
  */
 
 import {MDCFoundation} from '@material/base/index';
+/* eslint-disable no-unused-vars */
+import MDCSelectAdapter from './adapter';
+/* eslint-enable no-unused-vars */
 import {cssClasses, strings, numbers} from './constants';
 
-export default class MDCSelectFoundation extends MDCFoundation {
+/**
+ * @extends {MDCFoundation<!MDCSelectAdapter>}
+ * @final
+ */
+class MDCSelectFoundation extends MDCFoundation {
+  /** @return enum {string} */
   static get cssClasses() {
     return cssClasses;
   }
 
+  /** @return enum {number} */
   static get numbers() {
     return numbers;
   }
 
+  /** @return enum {string} */
   static get strings() {
     return strings;
   }
 
+  /**
+   * {@see MDCSelectAdapter} for typing information on parameters and return
+   * types.
+   * @return {!MDCSelectAdapter}
+   */
   static get defaultAdapter() {
-    return {
+    return /** @type {!MDCSelectAdapter} */ ({
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
       hasClass: (/* className: string */) => false,
-      floatLabel: (/* value: boolean */) => {},
       activateBottomLine: () => {},
       deactivateBottomLine: () => {},
-      registerInteractionHandler: (/* type: string, handler: EventListener */) => {},
-      deregisterInteractionHandler: (/* type: string, handler: EventListener */) => {},
-      getSelectedIndex: () => /* number */ -1,
-      setSelectedIndex: (/* index: number */) => {},
-      setDisabled: (/* disabled: boolean */) => {},
-      getValue: () => /* string */ '',
-      setValue: (/* value: string */) => {},
+      getValue: () => {},
       isRtl: () => false,
-      hasLabel: () => {},
+      hasLabel: () => false,
+      floatLabel: (/* value: boolean */) => {},
       getLabelWidth: () => {},
-      hasOutline: () => {},
-      notchOutline: () => {},
+      hasOutline: () => false,
+      notchOutline: (/* labelWidth: number, isRtl: boolean */) => {},
       closeOutline: () => {},
-    };
+    });
   }
 
+  /**
+   * @param {!MDCSelectAdapter} adapter
+   */
   constructor(adapter) {
     super(Object.assign(MDCSelectFoundation.defaultAdapter, adapter));
-
-    this.focusHandler_ = (evt) => this.handleFocus_(evt);
-    this.blurHandler_ = (evt) => this.handleBlur_(evt);
-    this.selectionHandler_ = (evt) => this.handleSelect_(evt);
   }
 
-  init() {
-    this.adapter_.registerInteractionHandler('focus', this.focusHandler_);
-    this.adapter_.registerInteractionHandler('blur', this.blurHandler_);
-    this.adapter_.registerInteractionHandler('change', this.selectionHandler_);
-  }
-
-  destroy() {
-    this.adapter_.deregisterInteractionHandler('focus', this.focusHandler_);
-    this.adapter_.deregisterInteractionHandler('blur', this.blurHandler_);
-    this.adapter_.deregisterInteractionHandler('change', this.selectionHandler_);
-  }
-
-  setSelectedIndex(index) {
-    this.adapter_.setSelectedIndex(index);
-    this.floatLabelWithValue_();
-  }
-
-  setValue(value) {
-    this.adapter_.setValue(value);
-    this.setSelectedIndex(this.adapter_.getSelectedIndex());
-  }
-
-  setDisabled(disabled) {
+  /**
+   * Updates the styles of the select to show the disasbled state.
+   * @param {boolean} disabled
+   */
+  updateDisabledStyle(disabled) {
     const {DISABLED} = MDCSelectFoundation.cssClasses;
-    this.adapter_.setDisabled(disabled);
     if (disabled) {
       this.adapter_.addClass(DISABLED);
     } else {
@@ -94,25 +83,30 @@ export default class MDCSelectFoundation extends MDCFoundation {
     }
   }
 
-  floatLabelWithValue_() {
+  /**
+   * Handles value changes, via change event or programmatic updates.
+   */
+  handleChange() {
     const optionHasValue = this.adapter_.getValue().length > 0;
     this.adapter_.floatLabel(optionHasValue);
     this.notchOutline(optionHasValue);
   }
 
-  handleFocus_() {
+  /**
+   * Handles focus events from root element.
+   */
+  handleFocus() {
     this.adapter_.floatLabel(true);
     this.notchOutline(true);
     this.adapter_.activateBottomLine();
   }
 
-  handleBlur_() {
-    this.floatLabelWithValue_();
+  /**
+   * Handles blur events from root element.
+   */
+  handleBlur() {
+    this.handleChange();
     this.adapter_.deactivateBottomLine();
-  }
-
-  handleSelect_() {
-    this.setSelectedIndex(this.adapter_.getSelectedIndex());
   }
 
   /**
@@ -134,3 +128,5 @@ export default class MDCSelectFoundation extends MDCFoundation {
     }
   }
 }
+
+export default MDCSelectFoundation;

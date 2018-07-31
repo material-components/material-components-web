@@ -205,28 +205,6 @@ test('adapter#deregisterDocumentKeydownHandler removes a "keydown" handler from 
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test('adapter#registerTransitionEndHandler adds a transition end event listener on the dialog element', () => {
-  const {root, component} = setupTest();
-  const surface = root.querySelector(strings.DIALOG_SURFACE_SELECTOR);
-  const handler = td.func('transitionEndHandler');
-  component.getDefaultFoundation().adapter_.registerTransitionEndHandler(handler);
-  domEvents.emit(surface, 'transitionend');
-
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('adapter#deregisterTransitionEndHandler removes a transition end event listener on the dialog element', () => {
-  const {root, component} = setupTest();
-  const surface = root.querySelector(strings.DIALOG_SURFACE_SELECTOR);
-  const handler = td.func('transitionEndHandler');
-  surface.addEventListener('transitionend', handler);
-
-  component.getDefaultFoundation().adapter_.deregisterTransitionEndHandler(handler);
-  domEvents.emit(surface, 'transitionend');
-
-  td.verify(handler(td.matchers.anything()), {times: 0});
-});
-
 test('adapter#eventTargetHasClass returns whether or not the className is in the target\'s classList', () => {
   const {component} = setupTest();
   const target = bel`<div class="existent-class"></div>`;

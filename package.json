@@ -129,6 +129,7 @@
     "to-slug-case": "^1.0.0",
     "useragent": "^2.3.0",
     "validate-commit-msg": "^2.6.1",
+    "verror": "^1.10.0",
     "webpack": "^3.0.0",
     "webpack-dev-server": "^2.4.3"
   },
@@ -191,6 +192,9 @@
           "switch",
           "tabs",
           "tab",
+          "tab-bar",
+          "tab-indicator",
+          "tab-scroller",
           "text-field",
           "theme",
           "toolbar",
@@ -222,9 +226,14 @@
     "mdc-notched-outline",
     "mdc-radio",
     "mdc-ripple",
+    "mdc-select",
     "mdc-selection-control",
     "mdc-slider",
+    "mdc-switch",
     "mdc-tab",
+    "mdc-tab-indicator",
+    "mdc-tab-scroller",
+    "mdc-tab-bar",
     "mdc-textfield",
     "mdc-top-app-bar"
   ]

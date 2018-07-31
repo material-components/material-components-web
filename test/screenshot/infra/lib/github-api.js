@@ -14,19 +14,27 @@
  * limitations under the License.
  */
 
+const VError = require('verror');
+const debounce = require('debounce');
 const octokit = require('@octokit/rest');
+
+/** @type {!CliColor} */
+const colors = require('colors');
+
 const GitRepo = require('./git-repo');
+const getStackTrace = require('./stacktrace')('GitHubApi');
 
 class GitHubApi {
   constructor() {
     this.gitRepo_ = new GitRepo();
     this.octokit_ = octokit();
+    this.isAuthenticated_ = false;
+    this.hasWarnedNoAuth_ = false;
     this.authenticate_();
+    this.initStatusThrottle_();
   }
 
-  /**
-   * @private
-   */
+  /** @private */
   authenticate_() {
     let token;
 
@@ -41,6 +49,34 @@ class GitHubApi {
       type: 'oauth',
       token: token,
     });
+
+    this.isAuthenticated_ = true;
+  }
+
+  /** @private */
+  initStatusThrottle_() {
+    const throttle = (fn, delay) => {
+      let lastCall = 0;
+      return (...args) => {
+        const now = (new Date).getTime();
+        if (now - lastCall < delay) {
+          return;
+        }
+        lastCall = now;
+        return fn(...args);
+      };
+    };
+
+    const createStatusDebounced = debounce((...args) => {
+      return this.createStatusUnthrottled_(...args);
+    }, 2500);
+    const createStatusThrottled = throttle((...args) => {
+      return this.createStatusUnthrottled_(...args);
+    }, 5000);
+    this.createStatusThrottled_ = (...args) => {
+      createStatusDebounced(...args);
+      createStatusThrottled(...args);
+    };
   }
 
   /**
@@ -57,16 +93,31 @@ class GitHubApi {
   }
 
   /**
-   * @param {!mdc.proto.ReportData} reportData
-   * @return {!Promise<*>}
+   * @param {string} state
+   * @param {string} description
    */
-  async setPullRequestStatus(reportData) {
-    const meta = reportData.meta;
-    const prNumber = Number(process.env.TRAVIS_PULL_REQUEST);
-    if (!prNumber) {
+  setPullRequestStatusManual({state, description}) {
+    if (process.env.TRAVIS !== 'true') {
       return;
     }
 
+    this.createStatusThrottled_({
+      state,
+      targetUrl: `https://travis-ci.com/material-components/material-components-web/jobs/${process.env.TRAVIS_JOB_ID}`,
+      description,
+    });
+  }
+
+  /**
+   * @param {!mdc.proto.ReportData} reportData
+   * @return {!Promise<*>}
+   */
+  async setPullRequestStatusAuto(reportData) {
+    if (process.env.TRAVIS !== 'true') {
+      return;
+    }
+
+    const meta = reportData.meta;
     const screenshots = reportData.screenshots;
     const numUnchanged = screenshots.unchanged_screenshot_list.length;
     const numChanged =
@@ -90,24 +141,25 @@ class GitHubApi {
 
       targetUrl = meta.report_html_file.public_url;
     } else {
-      const numScreenshotsFormatted = screenshots.runnable_screenshot_list.length.toLocaleString();
+      const runnableScreenshots = screenshots.runnable_screenshot_list;
+      const numTotal = runnableScreenshots.length;
+
       state = GitHubApi.PullRequestState.PENDING;
-      targetUrl = `https://travis-ci.org/material-components/material-components-web/jobs/${process.env.TRAVIS_JOB_ID}`;
-      description = `Running ${numScreenshotsFormatted} screenshot tests`;
+      targetUrl = `https://travis-ci.com/material-components/material-components-web/jobs/${process.env.TRAVIS_JOB_ID}`;
+      description = `Running ${numTotal.toLocaleString()} screenshots...`;
     }
 
-    return await this.createStatus_({state, targetUrl, description});
+    return await this.createStatusUnthrottled_({state, targetUrl, description});
   }
 
   async setPullRequestError() {
-    const prNumber = Number(process.env.TRAVIS_PULL_REQUEST);
-    if (!prNumber) {
+    if (process.env.TRAVIS !== 'true') {
       return;
     }
 
-    return await this.createStatus_({
+    return await this.createStatusUnthrottled_({
       state: GitHubApi.PullRequestState.ERROR,
-      targetUrl: `https://travis-ci.org/material-components/material-components-web/jobs/${process.env.TRAVIS_JOB_ID}`,
+      targetUrl: `https://travis-ci.com/material-components/material-components-web/jobs/${process.env.TRAVIS_JOB_ID}`,
       description: 'Error running screenshot tests',
     });
   }
@@ -119,16 +171,36 @@ class GitHubApi {
    * @return {!Promise<*>}
    * @private
    */
-  async createStatus_({state, targetUrl, description = undefined}) {
-    return await this.octokit_.repos.createStatus({
-      owner: 'material-components',
-      repo: 'material-components-web',
-      sha: await this.gitRepo_.getFullCommitHash(process.env.TRAVIS_PULL_REQUEST_SHA),
-      state,
-      target_url: targetUrl,
-      description,
-      context: 'screenshot-test/butter-bot',
-    });
+  async createStatusUnthrottled_({state, targetUrl, description = undefined}) {
+    if (!this.isAuthenticated_) {
+      if (!this.hasWarnedNoAuth_) {
+        const warning = colors.magenta('WARNING');
+        console.warn(`${warning}: Cannot set GitHub commit status because no API credentials were found.`);
+        this.hasWarnedNoAuth_ = true;
+      }
+      return null;
+    }
+
+    const travisPrSha = process.env.TRAVIS_PULL_REQUEST_SHA;
+    const travisCommit = process.env.TRAVIS_COMMIT;
+    const sha = travisPrSha || travisCommit || await this.gitRepo_.getFullCommitHash();
+
+    let stackTrace;
+
+    try {
+      stackTrace = getStackTrace('createStatusUnthrottled_');
+      return await this.octokit_.repos.createStatus({
+        owner: 'material-components',
+        repo: 'material-components-web',
+        sha,
+        state,
+        target_url: targetUrl,
+        description,
+        context: 'screenshot-test/butter-bot',
+      });
+    } catch (err) {
+      throw new VError(err, `Failed to set commit status:\n${stackTrace}`);
+    }
   }
 
   /**
@@ -138,13 +210,21 @@ class GitHubApi {
   async getPullRequestNumber(branch = undefined) {
     branch = branch || await this.gitRepo_.getBranchName();
 
-    const allPRs = await this.octokit_.pullRequests.getAll({
-      owner: 'material-components',
-      repo: 'material-components-web',
-      per_page: 100,
-    });
+    let allPrsResponse;
+    let stackTrace;
 
-    const filteredPRs = allPRs.data.filter((pr) => pr.head.ref === branch);
+    try {
+      stackTrace = getStackTrace('getPullRequestNumber');
+      allPrsResponse = await this.octokit_.pullRequests.getAll({
+        owner: 'material-components',
+        repo: 'material-components-web',
+        per_page: 100,
+      });
+    } catch (err) {
+      throw new VError(err, `Failed to get pull request number for branch "${branch}":\n${stackTrace}`);
+    }
+
+    const filteredPRs = allPrsResponse.data.filter((pr) => pr.head.ref === branch);
 
     const pr = filteredPRs[0];
     return pr ? pr.number : null;
@@ -156,13 +236,70 @@ class GitHubApi {
    */
   async getPullRequestFiles(prNumber) {
     /** @type {!github.proto.PullRequestFileResponse} */
-    const fileResponse = await this.octokit_.pullRequests.getFiles({
-      owner: 'material-components',
-      repo: 'material-components-web',
-      number: prNumber,
-      per_page: 300,
-    });
+    let fileResponse;
+    let stackTrace;
+
+    try {
+      stackTrace = getStackTrace('getPullRequestFiles');
+      fileResponse = await this.octokit_.pullRequests.getFiles({
+        owner: 'material-components',
+        repo: 'material-components-web',
+        number: prNumber,
+        per_page: 300,
+      });
+    } catch (err) {
+      throw new VError(err, `Failed to get file list for PR #${prNumber}:\n${stackTrace}`);
+    }
+
     return fileResponse.data;
+  }
+
+  /**
+   * @param {number} prNumber
+   * @return {!Promise<string>}
+   */
+  async getPullRequestBaseBranch(prNumber) {
+    let prResponse;
+    let stackTrace;
+
+    try {
+      stackTrace = getStackTrace('getPullRequestBaseBranch');
+      prResponse = await this.octokit_.pullRequests.get({
+        owner: 'material-components',
+        repo: 'material-components-web',
+        number: prNumber,
+      });
+    } catch (err) {
+      throw new VError(err, `Failed to get the base branch for PR #${prNumber}:\n${stackTrace}`);
+    }
+
+    if (!prResponse.data) {
+      const serialized = JSON.stringify(prResponse, null, 2);
+      throw new Error(`Unable to fetch data for GitHub PR #${prNumber}:\n${serialized}`);
+    }
+
+    return `origin/${prResponse.data.base.ref}`;
+  }
+
+  /**
+   * @param {number} prNumber
+   * @param {string} comment
+   * @return {!Promise<*>}
+   */
+  async createPullRequestComment({prNumber, comment}) {
+    let stackTrace;
+
+    try {
+      stackTrace = getStackTrace('createPullRequestComment');
+      return await this.octokit_.issues.createComment({
+        owner: 'material-components',
+        repo: 'material-components-web',
+        number: prNumber,
+        body: comment,
+      });
+    } catch (err) {
+      throw new VError(err, `Failed to create comment on PR #${prNumber}:\n${stackTrace}`);
+    }
   }
 }
 

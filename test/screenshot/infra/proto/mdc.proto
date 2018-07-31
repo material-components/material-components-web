@@ -92,13 +92,12 @@ message GitRevision {
   string branch = 5;
   string tag = 6;
   uint32 pr_number = 7;
-  repeated string pr_file_paths = 8;
 
   // "author" is the person who created the PR; "committer" is the person who created the commit.
   // E.g., if Alice creates a PR and Bob clicks "Update branch" in the GitHub UI, then
   // author = "Alice" and committer = "Bob".
-  User author = 9;
-  User committer = 10;
+  User author = 8;
+  User committer = 9;
 }
 
 message User {
@@ -109,7 +108,6 @@ message User {
 
 message LibraryVersion {
   string version_string = 1;
-  int32 commit_offset = 2;
 }
 
 message UserAgents {

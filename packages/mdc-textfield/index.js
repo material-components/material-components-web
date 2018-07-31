@@ -326,6 +326,14 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
+   * Enables or disables the use of native validation. Use this for custom validation.
+   * @param {boolean} useNativeValidation Set this to false to ignore native input validation.
+   */
+  set useNativeValidation(useNativeValidation) {
+    this.foundation_.setUseNativeValidation(useNativeValidation);
+  }
+
+  /**
    * Recomputes the outline SVG path for the outline element.
    */
   layout() {

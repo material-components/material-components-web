@@ -80,33 +80,23 @@ class CloudStorage {
    */
   async uploadDirectory_(noun, reportData, localSourceDir) {
     const isSourceDirEmpty = glob.sync('**/*', {cwd: localSourceDir, nodir: true}).length === 0;
-    const isOnline = await this.cli_.isOnline();
-    if (isSourceDirEmpty || !isOnline) {
+    const isOffline = this.cli_.isOffline();
+    if (isSourceDirEmpty || isOffline) {
       return;
     }
 
-    console.log(`\nUploading ${noun} to GCS...\n`);
-
-    /** @type {!ChildProcessSpawnResult} */
-    const gsutilProcess = await this.spawnGsutilUploadProcess_(reportData, localSourceDir);
-
-    /** @type {number} */
-    const exitCode = gsutilProcess.status;
-
+    console.log(`Uploading ${noun} to GCS...\n`);
+    this.spawnGsutilUploadProcess_(reportData, localSourceDir);
     console.log('');
-
-    if (exitCode !== 0) {
-      throw new Error(`gsutil processes exited with code ${exitCode}`);
-    }
   }
 
   /**
    * @param {!mdc.proto.ReportData} reportData
    * @param {string} localSourceDir
-   * @return {!Promise<!ChildProcessSpawnResult>}
+   * @return {!SpawnSyncReturns}
    * @private
    */
-  async spawnGsutilUploadProcess_(reportData, localSourceDir) {
+  spawnGsutilUploadProcess_(reportData, localSourceDir) {
     const removeTrailingSlash = (filePath) => filePath.replace(new RegExp('/+$'), '');
 
     // Normalize directory paths by removing trailing slashes
