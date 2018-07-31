@@ -455,6 +455,13 @@ class MDCSliderFoundation extends MDCFoundation {
     return discreteValue;
   }
 
+  calcLocaleString_() {
+    const characterWidth = 8.98;
+    const commaWidth = 3.16;
+    const numOfCommas = this.value_.toLocaleString().length - this.value_.toString().length;
+    return this.value_.toString().length * characterWidth + numOfCommas * commaWidth;
+  }
+
   /**
    * Calculates the value label path
    * @return {string}
@@ -464,10 +471,11 @@ class MDCSliderFoundation extends MDCFoundation {
     let addExtra = false;
     const characterWidth = 8.98;
     let topLobeHorizontal = 0;
+    const valueLocaleString = this.calcLocaleString_();
 
     // Less than 2 characters does not need to add horizontal space
     if (this.value_.toString().length > 2) {
-      topLobeHorizontal = (this.value_.toString().length - 2) * characterWidth;
+      topLobeHorizontal = valueLocaleString - (2 * characterWidth);
     }
 
     // If topLopeHorizontal is greater than 30 then add what ever is after 30 to extra
@@ -648,15 +656,15 @@ class MDCSliderFoundation extends MDCFoundation {
    * @return {number}
    */
   calcValueLabelTextXValue_() {
-    const characterWidth = 8.98;
-    let xValue = (34 - (this.value_.toString().length * characterWidth));
+    const valueLocaleString = this.calcLocaleString_();
+    let xValue = (34 - valueLocaleString);
     if (this.value_.toString().length > 5) {
       xValue = (xValue * 0.75) + 4;
     } else {
       xValue = xValue / 2;
     }
     if (this.adapter_.isRTL()) {
-      xValue = xValue + (this.value_.toString().length * characterWidth);
+      xValue = xValue + valueLocaleString;
     }
     return xValue;
   }
@@ -669,8 +677,9 @@ class MDCSliderFoundation extends MDCFoundation {
     let translateValue = 0;
     let topLobeHorizontal = 0;
     const characterWidth = 8.98;
+    const valueLocaleString = this.calcLocaleString_();
     if (this.value_.toString().length > 2) {
-      topLobeHorizontal = (this.value_.toString().length - 2) * characterWidth;
+      topLobeHorizontal = valueLocaleString - (2 * characterWidth);
     }
     const extra = topLobeHorizontal - 30;
     let extraLeft = extra * 3 / 4;
@@ -706,7 +715,7 @@ class MDCSliderFoundation extends MDCFoundation {
         const translateValue = this.calcValueLabelTextTranslate_(translatePx);
         this.adapter_.setValueLabelPath(path);
         this.adapter_.setValueLabelText(
-          String(xValue), String(this.value_), `transform: translateX(${translateValue}px)`);
+          String(xValue), this.value_.toLocaleString(), `transform: translateX(${translateValue}px)`);
       }
       if (this.adapter_.isRTL()) {
         this.adapter_.setThumbStyleProperty('transform', `translateX(-${translatePx}px) translateX(50%)`);

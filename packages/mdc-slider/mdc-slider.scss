@@ -26,6 +26,8 @@
   @include mdc-slider-track-fill-color(primary);
   @include mdc-slider-tick-mark-color(primary);
   @include mdc-slider-thumb-color(primary);
+  @include mdc-slider-value-label-color(primary);
+  @include mdc-slider-value-label-ink-color(on-primary);
 
   position: relative;
   width: 100%;
@@ -109,21 +111,16 @@
   }
 }
 
-.mdc-slider__thumb-handle {
+.mdc-slider__value-label-text {
+  stroke: none;
+  user-select: none;
+}
+
+.mdc-slider .mdc-slider__thumb-handle {
   position: absolute;
   transition-duration: 150ms;
   transition-property: transform;
   overflow: visible;
-}
-
-.mdc-slider__value-label {
-  stroke: #6200ee;
-  fill: #6200ee;
-}
-
-.mdc-slider__value-label-text {
-  stroke: none;
-  user-select: none;
 }
 
 .mdc-slider__value-label,
