@@ -558,8 +558,8 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
   }
 
   /**
-   * Number.isNaN that doesn't force conversion to number type.
-   * Equivalent to Number.isNaN in ES2015, but is not included in IE11.
+   * isFinite that doesn't force conversion to number type.
+   * Equivalent to Number.isFinite in ES2015, but is not included in IE11.
    * @param {number} num
    * @return {boolean}
    * @private
