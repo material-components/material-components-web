@@ -36,4 +36,4 @@ const numbers = {
   DIALOG_ANIMATION_TIME_MS: 120,
 };
 
-export {cssClasses, strings, numbers}
+export {cssClasses, strings, numbers};
