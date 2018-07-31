@@ -65,9 +65,11 @@ class BuildCommand {
       this.processManager_.spawnChildProcess('npm', ['run', 'screenshot:webpack', '--', '--watch']);
     } else {
       this.processManager_.spawnChildProcessSync('npm', ['run', 'screenshot:webpack']);
+    }
 
-      this.logger_.foldEnd('screenshot.build');
+    this.logger_.foldEnd('screenshot.build');
 
+    if (!shouldWatch) {
       this.logger_.log('');
       this.logger_.log('');
       this.logger_.log(colors.bold.green('✨✨✨ Aww yiss - MDC Web build succeeded! ✨✨✨'));
