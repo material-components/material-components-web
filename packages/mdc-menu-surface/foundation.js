@@ -202,8 +202,8 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
    * @param {number} y
    */
   setAbsolutePosition(x, y) {
-    this.position_.x = Number.isFinite(x) ? x : 0;
-    this.position_.y = Number.isFinite(y) ? y : 0;
+    this.position_.x = this.typeCheckisFinite_(x) ? x : 0;
+    this.position_.y = this.typeCheckisFinite_(y) ? y : 0;
   }
 
   /** @param {boolean} quickOpen */
@@ -555,6 +555,17 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
   /** @return {boolean} */
   isOpen() {
     return this.isOpen_;
+  }
+
+  /**
+   * Number.isNaN that doesn't force conversion to number type.
+   * Equivalent to Number.isNaN in ES2015, but is not included in IE11.
+   * @param {number} num
+   * @return {boolean}
+   * @private
+   */
+  typeCheckisFinite_(num) {
+    return typeof num === 'number' && isFinite(num);
   }
 }
 
