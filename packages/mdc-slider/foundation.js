@@ -714,11 +714,12 @@ class MDCSliderFoundation extends MDCFoundation {
     requestAnimationFrame(() => {
       if (this.isDiscrete_ && this.active_) {
         const path = this.calcPath_(translatePx);
-        const xValue = this.calcValueLabelTextXValue_();
+        let xValue = this.calcValueLabelTextXValue_();
         const translateValue = this.calcValueLabelTextTranslate_(translatePx);
+        xValue += translateValue;
         this.adapter_.setValueLabelPath(path);
         this.adapter_.setValueLabelText(
-          String(xValue), this.value_.toLocaleString(), `transform: scale(1) translateX(${translateValue}px)`);
+          String(xValue), this.value_.toLocaleString(), 'scale(1)');
       }
       if (this.adapter_.isRTL()) {
         this.adapter_.setThumbStyleProperty('transform', `translateX(-${translatePx}px) translateX(50%)`);
