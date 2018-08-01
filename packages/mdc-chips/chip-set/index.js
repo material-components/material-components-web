@@ -21,6 +21,8 @@ import MDCChipSetAdapter from './adapter';
 import MDCChipSetFoundation from './foundation';
 import {MDCChip, MDCChipFoundation} from '../chip/index';
 
+let idCounter = 0;
+
 /**
  * @extends {MDCComponent<!MDCChipSetFoundation>}
  * @final
@@ -36,8 +38,6 @@ class MDCChipSet extends MDCComponent {
     this.chips;
     /** @private {(function(!Element): !MDCChip)} */
     this.chipFactory_;
-    /** @private {number} */
-    this.idCounter_;
 
     /** @private {?function(?Event): undefined} */
     this.handleChipInteraction_;
@@ -58,7 +58,6 @@ class MDCChipSet extends MDCComponent {
    * creates a new MDCChip.
    */
   initialize(chipFactory = (el) => new MDCChip(el)) {
-    this.idCounter_ = 0;
     this.chipFactory_ = chipFactory;
     this.chips = this.instantiateChips_(this.chipFactory_);
   }
@@ -96,7 +95,7 @@ class MDCChipSet extends MDCComponent {
    * @param {!Element} chipEl
    */
   addChip(chipEl) {
-    chipEl.id = chipEl.id || `${this.root_.id || 'mdc-chip-set'}-mdc-chip-${++this.idCounter_}`;
+    chipEl.id = chipEl.id || `mdc-chip-${++idCounter}`;
     this.chips.push(this.chipFactory_(chipEl));
   }
 
@@ -138,7 +137,7 @@ class MDCChipSet extends MDCComponent {
   instantiateChips_(chipFactory) {
     const chipElements = [].slice.call(this.root_.querySelectorAll(MDCChipSetFoundation.strings.CHIP_SELECTOR));
     return chipElements.map((el) => {
-      el.id = el.id || `${this.root_.id || 'mdc-chip-set'}-mdc-chip-${++this.idCounter_}`;
+      el.id = el.id || `mdc-chip-${++idCounter}`;
       return chipFactory(el);
     });
   }

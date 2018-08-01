@@ -107,6 +107,6 @@ test('#adapter.setSelected sets selected on chip object', () => {
   const root = getFixture();
   const component = new MDCChipSet(root, undefined, (el) => new FakeChip(el));
   const chip = component.chips[0];
-  component.getDefaultFoundation().adapter_.setSelected('chip1', true);
+  component.getDefaultFoundation().adapter_.setSelected(chip.id, true);
   assert.equal(chip.selected, true);
 });
