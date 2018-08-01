@@ -24,14 +24,70 @@
 @import "../mixins";
 
 .mdc-drawer--rail {
-  @include mdc-drawer-hide-text-when-opening_();
-  
-  min-width: $mdc-drawer-rail-width;
+  transition-property: width;
+  transition-timing-function: $mdc-animation-standard-curve-timing-function;
+  height: 100%;
   width: $mdc-drawer-rail-width;
-  transition: mdc-animation-standard(all, $mdc-drawer-animation-enter);
+  transition-duration: $mdc-drawer-animation-enter;
 
   &.mdc-drawer--open {
     width: $mdc-drawer-width;
-    min-width: $mdc-drawer-width;
+  }
+
+  &.mdc-drawer--animate {
+    width: 0;
+  }
+
+  &.mdc-drawer--opening {
+    width: $mdc-drawer-width;
+    transition-duration: $mdc-drawer-animation-enter;
+  }
+
+  &.mdc-drawer--closing {
+    transition-duration: $mdc-drawer-animation-exit;
+    width: $mdc-drawer-rail-width;
+  }
+
+  .mdc-drawer__list-item-label,
+  .mdc-drawer__list-group-subheader,
+  .mdc-drawer__header {
+    transition-property: opacity;
+    transition-timing-function: $mdc-animation-standard-curve-timing-function;
+    opacity: 0;
+  }
+
+  &.mdc-drawer--open {
+    .mdc-drawer__list-item-label,
+    .mdc-drawer__list-group-subheader,
+    .mdc-drawer__header {
+      opacity: 1;
+    }
+  }
+
+  &.mdc-drawer--animate {
+    .mdc-drawer__list-item-label,
+    .mdc-drawer__list-group-subheader,
+    .mdc-drawer__header {
+      opacity: 0;
+    }
+  }
+
+  &.mdc-drawer--opening {
+    .mdc-drawer__list-item-label,
+    .mdc-drawer__list-group-subheader,
+    .mdc-drawer__header {
+      opacity: 1;
+      transition-duration: 50ms;
+      transition-delay: 200ms;
+    }
+  }
+
+  &.mdc-drawer--closing {
+    .mdc-drawer__list-item-label,
+    .mdc-drawer__list-group-subheader,
+    .mdc-drawer__header {
+      opacity: 0;
+      transition-duration: 50ms;
+    }
   }
 }

@@ -37,6 +37,7 @@
   border-right-width: 1px;
   border-right-style: solid;
   overflow: hidden;
+  flex-shrink: 0;
 
   @include mdc-rtl {
     border-right-width: 0;

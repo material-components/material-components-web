@@ -20,7 +20,7 @@
 @import "../mixins";
 
 .mdc-drawer--dismissible {
-  transition-property: transform, width;
+  transition-property: transform;
   transition-timing-function: $mdc-animation-standard-curve-timing-function;
   position: absolute;
   top: 0;
