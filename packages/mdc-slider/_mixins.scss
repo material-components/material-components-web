@@ -48,3 +48,15 @@
   }
 }
 
+@mixin mdc-slider-value-label-color($color) {
+  .mdc-slider__value-label {
+    @include mdc-theme-prop(fill, $color);
+    @include mdc-theme-prop(stroke, $color);
+  }
+}
+
+@mixin mdc-slider-value-label-ink-color($color) {
+  .mdc-slider__value-label-text {
+    @include mdc-theme-prop(fill, $color);
+  }
+}

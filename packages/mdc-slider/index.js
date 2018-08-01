@@ -39,6 +39,10 @@ class MDCSlider extends MDCComponent {
     /** @type {?Element} */
     this.tickMarkSet_;
     /** @type {?Element} */
+    this.valueLabel_;
+    /** @type {?Element} */
+    this.valueLabelText_;
+    /** @type {?Element} */
     this.lastTickMark_;
     /** @private {!MDCRipple} */
     this.ripple_ = this.initRipple_();
@@ -62,7 +66,6 @@ class MDCSlider extends MDCComponent {
   /** @param {number} min */
   set min(min) {
     this.foundation_.setMin(min);
-    this.layout();
   }
 
   /** @return {number} */
@@ -73,7 +76,6 @@ class MDCSlider extends MDCComponent {
   /** @param {number} max */
   set max(max) {
     this.foundation_.setMax(max);
-    this.layout();
   }
 
   /** @return {number} */
@@ -84,7 +86,6 @@ class MDCSlider extends MDCComponent {
   /** @param {number} step */
   set step(step) {
     this.foundation_.setStep(step);
-    this.layout();
   }
 
   /**
@@ -106,6 +107,8 @@ class MDCSlider extends MDCComponent {
     this.thumb_ = this.root_.querySelector(strings.THUMB_SELECTOR);
     this.trackFill_ = this.root_.querySelector(strings.TRACK_FILL_SELECTOR);
     this.tickMarkSet_ = this.root_.querySelector(strings.TICK_MARK_SET_SELECTOR);
+    this.valueLabel_ = this.root_.querySelector(strings.VALUE_LABEL_SELECTOR);
+    this.valueLabelText_ = this.root_.querySelector(strings.VALUE_LABEL_TEXT_SELECTOR);
   }
 
   /**
@@ -118,13 +121,32 @@ class MDCSlider extends MDCComponent {
         addClass: (className) => this.root_.classList.add(className),
         removeClass: (className) => this.root_.classList.remove(className),
         setThumbAttribute: (name, value) => this.thumb_.setAttribute(name, value),
+        setValueLabelPath: (value) => this.valueLabel_.setAttribute('d', value),
+        setValueLabelText: (xValue, text, translateX) => {
+          this.valueLabelText_.setAttribute('x', xValue);
+          this.valueLabelText_.textContent = text;
+          this.valueLabelText_.setAttribute('transform', translateX);
+        },
+        removeValueLabelTextStyle: () => {
+          this.valueLabelText_.removeAttribute('style');
+        },
         computeBoundingRect: () => this.root_.getBoundingClientRect(),
-        eventTargetHasClass: (target, className) => target.classList.contains(className),
+        eventTargetHasClass: (target, className) => {
+          if (target.classList) {
+            target.classList.contains(className);
+          }
+        },
         registerEventHandler: (type, handler) => {
           this.root_.addEventListener(type, handler);
         },
         deregisterEventHandler: (type, handler) => {
           this.root_.removeEventListener(type, handler);
+        },
+        registerThumbEventHandler: (type, handler) => {
+          this.thumb_.addEventListener(type, handler);
+        },
+        deregisterThumbEventHandler: (type, handler) => {
+          this.thumb_.removeEventListener(type, handler);
         },
         registerBodyEventHandler: (type, handler) => {
           document.body.addEventListener(type, handler);
@@ -169,8 +191,8 @@ class MDCSlider extends MDCComponent {
 
   initialSyncWithDOM() {
     const origValueNow = parseFloat(this.thumb_.getAttribute(strings.ARIA_VALUENOW));
-    this.min = parseFloat(this.thumb_.getAttribute(strings.ARIA_VALUEMIN)) || this.min;
     this.max = parseFloat(this.thumb_.getAttribute(strings.ARIA_VALUEMAX)) || this.max;
+    this.min = parseFloat(this.thumb_.getAttribute(strings.ARIA_VALUEMIN)) || this.min;
     this.step = parseFloat(this.thumb_.getAttribute(strings.DATA_STEP)) || this.step;
     this.value = origValueNow || this.value;
     if (this.tickMarkSet_ && this.root_.classList.contains(cssClasses.DISCRETE)) {

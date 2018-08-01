@@ -37,7 +37,7 @@ npm install @material/slider
 
 ## Basic Usage
 
-### HTML Structure
+### Continuous HTML Structure
 
 ```html
 <div class="mdc-slider">
@@ -48,6 +48,26 @@ npm install @material/slider
     aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"
     aria-label="Select Value">
     <svg class="mdc-slider__thumb-handle" width="34" height="34">
+      <circle cx="17" cy="17" r="6"></circle>
+    </svg>
+  </div>
+</div>
+```
+
+### Discrete HTML Structure
+
+```html
+<div class="mdc-slider mdc-slider--discrete">
+  <div class="mdc-slider__track">
+    <div class="mdc-slider__track-fill"></div>
+    <div class="mdc-slider__tick-mark-set"></div>
+  </div>
+  <div class="mdc-slider__thumb" tabindex="0" role="slider" 
+    aria-valuemin="0" aria-valuemax="100" aria-valuenow="20"
+    aria-label="Select Value">
+    <svg class="mdc-slider__thumb-handle" width="34" height="34">
+      <path class="mdc-slider__value-label"/> 
+      <text class="mdc-slider__value-label-text" y="-18"></text>
       <circle cx="17" cy="17" r="6"></circle>
     </svg>
   </div>
@@ -156,6 +176,8 @@ CSS Class | Description
 `mdc-slider__thumb` | Mandatory. Element containing the thumb-handle.
 `mdc-slider__thumb-handle` | Mandatory. The handle element to display where the value is.
 `mdc-slider--discrete` | Optional. Will make slider discrete.
+`mdc-slider__value-label` | Mandatory with Discrete. Element for the Value Label
+`mdc-slider__value-label-text` | Mandatory with Discrete. Element for the Value Label text
 
 ### Sass Mixins
 
@@ -165,6 +187,8 @@ Mixin | Description
 `mdc-slider-track-fill-color($color)` | Customizes the color of the track-fill for the slider
 `mdc-slider-thumb-color($color)` | Customizes the color of the thumb and thumb ripple for the slider
 `mdc-slider-tick-mark-color($color)` | Customizes the color of the tick marks
+`mdc-slider-value-label-color($color)` | Customizes the color of the value label
+`mdc-slider-value-label-ink-color($color)` | Customizes the color of the value label text
 
 ## `MDCSlider` Properties and Methods
 
@@ -201,6 +225,9 @@ instance that was affected.
 | `addClass(className: string) => void` | Adds a class `className` to the root element |
 | `removeClass(className: string) => void` | Removes a class `className` from the root element |
 | `setThumbAttribute(name: string, value: string) => void` | Sets an attribute `name` to the value `value` on the thumb element. |
+| `setValueLabelPath(value: string) => void` | Sets the path of the value label Element to the value `value`. |
+| `setValueLabelText(xValue: string, text: string, translateX: string) => void` | Sets the inner text, x value, and translateX to the assigned values. |
+| `removeValueLabelTextStyle() => void` | Removes the style attribute for the value label text Element. |
 | `computeBoundingRect() => ClientRect` | Computes and returns the bounding client rect for the root element. Our implementations calls `getBoundingClientRect()` for this. |
 | `eventTargetHasClass(target: EventTarget, className: string) => boolean` | Returns true if target has className, false otherwise |
 | `registerEventHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` to the slider's root element |

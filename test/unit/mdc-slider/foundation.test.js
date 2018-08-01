@@ -39,8 +39,10 @@ test('exports cssClasses', () => {
 
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSliderFoundation, [
-    'hasClass', 'addClass', 'removeClass', 'setThumbAttribute',
-    'computeBoundingRect', 'eventTargetHasClass', 'registerEventHandler', 'deregisterEventHandler',
+    'hasClass', 'addClass', 'removeClass', 'setThumbAttribute', 'setValueLabelPath',
+    'setValueLabelText', 'removeValueLabelTextStyle', 'computeBoundingRect',
+    'eventTargetHasClass', 'registerEventHandler', 'deregisterEventHandler',
+    'registerThumbEventHandler', 'deregisterThumbEventHandler',
     'registerBodyEventHandler', 'deregisterBodyEventHandler', 'registerWindowResizeHandler',
     'deregisterWindowResizeHandler', 'notifyInput', 'notifyChange', 'setThumbStyleProperty',
     'setTrackFillStyleProperty', 'setLastTickMarkStyleProperty', 'focusThumb', 'activateRipple',
@@ -79,6 +81,7 @@ test('#init registers all necessary event handlers for the component', () => {
   td.verify(mockAdapter.registerEventHandler('keydown', isA(Function)));
   td.verify(mockAdapter.registerEventHandler('keyup', isA(Function)));
   td.verify(mockAdapter.registerEventHandler('transitionend', isA(Function)));
+  td.verify(mockAdapter.registerThumbEventHandler('blur', isA(Function)));
   td.verify(mockAdapter.registerWindowResizeHandler(isA(Function)));
 
   raf.restore();
@@ -141,6 +144,7 @@ test('#destroy deregisters all component event handlers registered during init()
   td.verify(mockAdapter.deregisterEventHandler('keydown', isA(Function)));
   td.verify(mockAdapter.deregisterEventHandler('keyup', isA(Function)));
   td.verify(mockAdapter.deregisterEventHandler('transitionend', isA(Function)));
+  td.verify(mockAdapter.deregisterThumbEventHandler('blur', isA(Function)));
   td.verify(mockAdapter.deregisterWindowResizeHandler(isA(Function)));
 });
 
@@ -607,6 +611,182 @@ test('#handleTransitionEnd no-op when inTransit_ is true and event target is not
   raf.flush();
 
   td.verify(mockAdapter.removeClass(cssClasses.IN_TRANSIT), {times: 0});
+
+  raf.restore();
+});
+
+test('#handleTransitionEnd sets pressed_ to true when all parameters are true', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const raf = createMockRaf();
+  td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
+  td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
+  foundation.init();
+  raf.flush();
+
+  // To set this.active_ to true
+  const mockKeyboardEvent = {
+    preventDefault: () => {},
+    keyCode: 37,
+  };
+  foundation.handleKeydown(mockKeyboardEvent);
+  raf.flush();
+
+  const mockEvent = {
+    target: {
+      classList: ['mdc-slider__value-label'],
+    },
+  };
+  td.when(mockAdapter.eventTargetHasClass(mockEvent.target, 'mdc-slider__value-label')).thenReturn(true);
+  foundation.handleTransitionEnd(mockEvent);
+  raf.flush();
+
+  td.verify(mockAdapter.addClass(cssClasses.PRESSED));
+
+  raf.restore();
+});
+
+test('#handleTransitionEnd no-op when isDiscrete_ is false', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const raf = createMockRaf();
+  td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
+  td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(false);
+  foundation.init();
+  raf.flush();
+
+  // To set this.active_ to true
+  const mockKeyboardEvent = {
+    preventDefault: () => {},
+    keyCode: 37,
+  };
+  foundation.handleKeydown(mockKeyboardEvent);
+  raf.flush();
+
+  const mockEvent = {
+    target: {
+      classList: ['mdc-slider__value-label'],
+    },
+  };
+  td.when(mockAdapter.eventTargetHasClass(mockEvent.target, 'mdc-slider__value-label')).thenReturn(true);
+  foundation.handleTransitionEnd(mockEvent);
+  raf.flush();
+
+  td.verify(mockAdapter.addClass(cssClasses.PRESSED), {times: 0});
+
+  raf.restore();
+});
+
+test('#handleTransitionEnd no-op for pressed_ when active_ is false', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const raf = createMockRaf();
+  td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
+  td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
+  foundation.init();
+  raf.flush();
+
+  const mockEvent = {
+    target: {
+      classList: ['mdc-slider__value-label'],
+    },
+  };
+  td.when(mockAdapter.eventTargetHasClass(mockEvent.target, 'mdc-slider__value-label')).thenReturn(true);
+  foundation.handleTransitionEnd(mockEvent);
+  raf.flush();
+
+  td.verify(mockAdapter.addClass(cssClasses.PRESSED), {times: 0});
+
+  raf.restore();
+});
+
+test('#handleTransitionEnd no-op for pressed_ when event target is not mdc-slider__value-label', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const raf = createMockRaf();
+  td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
+  td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
+  foundation.init();
+  raf.flush();
+
+  // To set this.active_ to true
+  const mockKeyboardEvent = {
+    preventDefault: () => {},
+    keyCode: 37,
+  };
+  foundation.handleKeydown(mockKeyboardEvent);
+  raf.flush();
+
+  const mockEvent = {
+    target: {
+      classList: ['mdc-slider__thumb'],
+    },
+  };
+  td.when(mockAdapter.eventTargetHasClass(mockEvent.target, 'mdc-slider__value-label')).thenReturn(false);
+  foundation.handleTransitionEnd(mockEvent);
+  raf.flush();
+
+  td.verify(mockAdapter.addClass(cssClasses.PRESSED), {times: 0});
+
+  raf.restore();
+});
+
+test('#handleThumbBlur resets thumb when discrete and keydown', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const raf = createMockRaf();
+  td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
+  td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
+  foundation.init();
+  raf.flush();
+
+  // To set this.keydownDiscrete to true
+  const mockKeyboardEvent = {
+    preventDefault: () => {},
+    keyCode: 37,
+  };
+  foundation.handleKeydown(mockKeyboardEvent);
+  raf.flush();
+
+  foundation.handleThumbBlur();
+  raf.flush();
+
+  td.verify(mockAdapter.removeValueLabelTextStyle());
+
+  raf.restore();
+});
+
+test('#handleThumbBlur no-op when slider is not discrete', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const raf = createMockRaf();
+  td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
+  td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(false);
+  foundation.init();
+  raf.flush();
+
+  // To set this.keydownDiscrete to true
+  const mockKeyboardEvent = {
+    preventDefault: () => {},
+    keyCode: 37,
+  };
+  foundation.handleKeydown(mockKeyboardEvent);
+  raf.flush();
+
+  foundation.handleThumbBlur();
+  raf.flush();
+
+  td.verify(mockAdapter.removeValueLabelTextStyle(), {times: 0});
+
+  raf.restore();
+});
+
+test('#handleThumbBlur no-op when no keydown event', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const raf = createMockRaf();
+  td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
+  td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
+  foundation.init();
+  raf.flush();
+
+  foundation.handleThumbBlur();
+  raf.flush();
+
+  td.verify(mockAdapter.removeValueLabelTextStyle(), {times: 0});
 
   raf.restore();
 });

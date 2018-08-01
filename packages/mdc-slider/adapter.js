@@ -52,6 +52,25 @@ class MDCSliderAdapter {
   setThumbAttribute(name, value) {}
 
   /**
+   * Sets the path of the value label Element
+   * @param {string} value
+   */
+  setValueLabelPath(value) {}
+
+  /**
+   * Sets the inner text of the value label text to the passed value
+   * @param {string} xValue
+   * @param {string} text
+   * @param {string} translateX
+   */
+  setValueLabelText(xValue, text, translateX) {}
+
+  /**
+   * Removes the style attribute for the value label text Element
+   */
+  removeValueLabelTextStyle() {}
+
+  /**
    * Returns the bounding client rect for the slider Element
    * @return {?ClientRect}
    */
@@ -78,6 +97,20 @@ class MDCSliderAdapter {
    * @param {function(!Event): undefined} handler
    */
   deregisterEventHandler(type, handler) {}
+
+  /**
+   * Registers an event handler on the thumb element for a given event.
+   * @param {string} type
+   * @param {function(!Event): undefined} handler
+   */
+  registerThumbEventHandler(type, handler) {}
+
+  /**
+   * Deregisters an event handler on the thumb element for a given event.
+   * @param {string} type
+   * @param {function(!Event): undefined} handler
+   */
+  deregisterThumbEventHandler(type, handler) {}
 
   /**
    * Registers an event handler on the body for a given event.

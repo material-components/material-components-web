@@ -22,6 +22,8 @@ const strings = {
   TICK_MARK_SET_SELECTOR: '.mdc-slider__tick-mark-set',
   LAST_TICK_MARK_SELECTOR: '.mdc-slider__tick-mark:last-child',
   THUMB_SELECTOR: '.mdc-slider__thumb',
+  VALUE_LABEL_SELECTOR: '.mdc-slider__value-label',
+  VALUE_LABEL_TEXT_SELECTOR: '.mdc-slider__value-label-text',
   ARIA_VALUEMIN: 'aria-valuemin',
   ARIA_VALUEMAX: 'aria-valuemax',
   ARIA_VALUENOW: 'aria-valuenow',
@@ -39,6 +41,7 @@ const cssClasses = {
   ACTIVE: 'mdc-slider--active',
   IN_TRANSIT: 'mdc-slider--in-transit',
   DISCRETE: 'mdc-slider--discrete',
+  PRESSED: 'mdc-slider--pressed',
 };
 
 export {strings, cssClasses};
