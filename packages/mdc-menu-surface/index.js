@@ -129,7 +129,7 @@ class MDCMenuSurface extends MDCComponent {
   }
 
   /**
-   * @param {Corner} corner Default anchor corner alignment of top-left
+   * @param {!Corner} corner Default anchor corner alignment of top-left
    *     surface corner.
    */
   setAnchorCorner(corner) {
@@ -137,7 +137,7 @@ class MDCMenuSurface extends MDCComponent {
   }
 
   /**
-   * @param {AnchorMargin} margin
+   * @param {!AnchorMargin} margin
    */
   setAnchorMargin(margin) {
     this.foundation_.setAnchorMargin(margin);

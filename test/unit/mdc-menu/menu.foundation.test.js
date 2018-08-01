@@ -36,7 +36,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCMenuFoundation, [
     'addClassToElementAtIndex', 'removeClassFromElementAtIndex', 'addAttributeToElementAtIndex',
     'removeAttributeFromElementAtIndex', 'elementContainsClass', 'closeSurface', 'getElementIndex', 'getParentElement',
-    'getSelectedElementIndex', 'notifySelected', 'getCheckbox', 'toggleCheckbox',
+    'getSelectedElementIndex', 'notifySelected', 'getCheckboxAtIndex', 'toggleCheckbox',
   ]);
 });
 
@@ -176,7 +176,7 @@ test('handleKeydown space/enter key on a list item with a checkbox toggles the c
   td.when(mockAdapter.elementContainsClass(key.target, cssClasses.LIST_ITEM_CLASS)).thenReturn(false, true);
   td.when(mockAdapter.getParentElement(key.target)).thenReturn(key.target);
   td.when(mockAdapter.getElementIndex(key.target)).thenReturn(0);
-  td.when(mockAdapter.getCheckbox(0)).thenReturn(checkbox);
+  td.when(mockAdapter.getCheckboxAtIndex(0)).thenReturn(checkbox);
 
   foundation.handleKeydown(key);
 
@@ -189,7 +189,7 @@ test('handleKeydown space/enter key on a list item without a checkbox does not t
   td.when(mockAdapter.elementContainsClass(key.target, cssClasses.LIST_ITEM_CLASS)).thenReturn(false, true);
   td.when(mockAdapter.getParentElement(key.target)).thenReturn(key.target);
   td.when(mockAdapter.getElementIndex(key.target)).thenReturn(0);
-  td.when(mockAdapter.getCheckbox(0)).thenReturn(null);
+  td.when(mockAdapter.getCheckboxAtIndex(0)).thenReturn(null);
 
   foundation.handleKeydown(key);
 
@@ -372,7 +372,7 @@ test('Click event on a list item with a checkbox toggles the checkbox', () => {
   td.when(mockAdapter.elementContainsClass(key.target, cssClasses.LIST_ITEM_CLASS)).thenReturn(false, true);
   td.when(mockAdapter.getParentElement(key.target)).thenReturn(key.target);
   td.when(mockAdapter.getElementIndex(key.target)).thenReturn(0);
-  td.when(mockAdapter.getCheckbox(0)).thenReturn(checkbox);
+  td.when(mockAdapter.getCheckboxAtIndex(0)).thenReturn(checkbox);
 
   foundation.handleClick(key);
 
@@ -385,7 +385,7 @@ test('Click event on a list item without a checkbox does not toggle a checkbox',
   td.when(mockAdapter.elementContainsClass(key.target, cssClasses.LIST_ITEM_CLASS)).thenReturn(false, true);
   td.when(mockAdapter.getParentElement(key.target)).thenReturn(key.target);
   td.when(mockAdapter.getElementIndex(key.target)).thenReturn(0);
-  td.when(mockAdapter.getCheckbox(0)).thenReturn(null);
+  td.when(mockAdapter.getCheckboxAtIndex(0)).thenReturn(null);
 
   foundation.handleClick(key);
 

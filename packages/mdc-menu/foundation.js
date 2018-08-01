@@ -53,7 +53,7 @@ class MDCMenuFoundation extends MDCFoundation {
       getParentElement: () => {},
       getSelectedElementIndex: () => {},
       notifySelected: () => {},
-      getCheckbox: () => {},
+      getCheckboxAtIndex: () => {},
       toggleCheckbox: () => {},
     });
   }
@@ -127,9 +127,9 @@ class MDCMenuFoundation extends MDCFoundation {
     this.adapter_.notifySelected({index});
     this.adapter_.closeSurface();
 
-    const checkbox = this.adapter_.getCheckbox(index);
+    const checkbox = this.adapter_.getCheckboxAtIndex(index);
     if (checkbox) {
-      this.adapter_.toggleCheckbox(checkbox);
+      this.adapter_.toggleCheckbox(/** @type {!HTMLElement} */ (checkbox));
     }
 
     // Wait for the menu to close before adding/removing classes that affect styles.
@@ -137,7 +137,7 @@ class MDCMenuFoundation extends MDCFoundation {
       const selectionGroup = this.getSelectionGroup_(listItem);
 
       if (selectionGroup !== null) {
-        this.handleSelectionGroup_(selectionGroup, index);
+        this.handleSelectionGroup_(/** @type {!HTMLElement} */ (selectionGroup), index);
       }
     }, MDCMenuSurfaceFoundation.numbers.TRANSITION_CLOSE_DURATION);
   }
@@ -162,9 +162,9 @@ class MDCMenuFoundation extends MDCFoundation {
   }
 
   /**
-   * Returns the parent selection group of an element or the
+   * Returns the parent selection group of an element if one exists.
    * @param listItem
-   * @return {?HTMLElement}
+   * @return {?HTMLElement} parent selection group element or null.
    * @private
    */
   getSelectionGroup_(listItem) {
@@ -212,7 +212,8 @@ class MDCMenuFoundation extends MDCFoundation {
    * @private
    */
   preventDefaultEvent_(evt) {
-    const tagName = `${evt.target.tagName}`.toLowerCase();
+    const target = /** @type {!HTMLElement} */ (evt.target);
+    const tagName = `${target.tagName}`.toLowerCase();
     if (ELEMENTS_KEY_ALLOWED_IN.indexOf(tagName) === -1) {
       evt.preventDefault();
     }

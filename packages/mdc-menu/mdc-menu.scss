@@ -22,7 +22,7 @@
 @import "./mixins";
 
 // Customize the menu-surface and contained list to match the mdc-menu styles.
-.mdc-menu-surface {
+.mdc-menu {
   @include mdc-list-item-meta-ink-color(text-primary-on-background);
   @include mdc-list-item-graphic-ink-color(text-primary-on-background);
 

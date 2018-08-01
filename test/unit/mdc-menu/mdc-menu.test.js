@@ -62,6 +62,7 @@ class FakeMenuSurface {
     this.setAnchorMargin = td.func('.setAnchorMargin');
     this.quickOpen = false;
     this.setFixedPosition = td.func('.setFixedPosition');
+    this.setAbsolutePosition = td.func('.setAbsolutePosition');
     this.hoistMenuToBody = td.func('.hoistMenuToBody');
     this.setIsHoisted = td.func('.setIsHoisted');
     this.anchorElement = null;
@@ -185,10 +186,10 @@ test('getOptionByIndex returns null if index is > list length', () => {
 
 test('fixed', () => {
   const {component, menuSurface} = setupTestWithFakes();
-  component.fixed = true;
+  component.setFixedPosition(true);
   td.verify(menuSurface.setFixedPosition(true));
 
-  component.fixed = false;
+  component.setFixedPosition(false);
   td.verify(menuSurface.setFixedPosition(false));
 });
 
@@ -212,6 +213,12 @@ test('setAnchorElement', () => {
   const button = document.createElement('button');
   component.setAnchorElement(button);
   assert.equal(menuSurface.anchorElement, button);
+});
+
+test('setAbsolutePosition', () => {
+  const {component, menuSurface} = setupTestWithFakes();
+  component.setAbsolutePosition(100, 100);
+  td.verify(menuSurface.setAbsolutePosition(100, 100));
 });
 
 test('show registers event listener for keydown', () => {
@@ -291,26 +298,12 @@ test('adapter#addClassToElementAtIndex adds a class to the element at the index 
   assert.isTrue(firstItem.classList.contains('foo'));
 });
 
-test('adapter#addClassToElementAtIndex does not throw an error if index does not exist', () => {
-  const {root, component} = setupTest();
-  const items = root.querySelectorAll('.mdc-list-item');
-  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.addClassToElementAtIndex(items.length, 'foo'));
-});
-
 test('adapter#removeClassFromElementAtIndex adds a class to the element at the index provided', () => {
   const {root, component} = setupTest();
   const firstItem = root.querySelector('.mdc-list-item');
   firstItem.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClassFromElementAtIndex(0, 'foo');
   assert.isFalse(firstItem.classList.contains('foo'));
-});
-
-test('adapter#removeClassFromElementAtIndex does not throw an error if index does not exist', () => {
-  const {root, component} = setupTest();
-  const items = root.querySelectorAll('.mdc-list-item');
-  items[0].classList.add('foo');
-  assert.doesNotThrow(() =>
-    component.getDefaultFoundation().adapter_.removeClassFromElementAtIndex(items.length, 'foo'));
 });
 
 test('adapter#addAttributeToElementAtIndex adds a class to the element at the index provided', () => {
@@ -320,27 +313,12 @@ test('adapter#addAttributeToElementAtIndex adds a class to the element at the in
   assert.isTrue(firstItem.getAttribute('foo') === 'true');
 });
 
-test('adapter#addAttributeToElementAtIndex does not throw an error if index does not exist', () => {
-  const {root, component} = setupTest();
-  const items = root.querySelectorAll('.mdc-list-item');
-  assert.doesNotThrow(() =>
-    component.getDefaultFoundation().adapter_.addAttributeToElementAtIndex(items.length, 'foo', 'true'));
-});
-
 test('adapter#removeAttributeFromElementAtIndex adds a class to the element at the index provided', () => {
   const {root, component} = setupTest();
   const firstItem = root.querySelector('.mdc-list-item');
   firstItem.setAttribute('foo', 'true');
   component.getDefaultFoundation().adapter_.removeAttributeFromElementAtIndex(0, 'foo');
   assert.isNull(firstItem.getAttribute('foo'));
-});
-
-test('adapter#removeAttributeFromElementAtIndex does not throw an error if index does not exist', () => {
-  const {root, component} = setupTest();
-  const items = root.querySelectorAll('.mdc-list-item');
-  items[0].setAttribute('foo', 'true');
-  assert.doesNotThrow(() =>
-    component.getDefaultFoundation().adapter_.removeAttributeFromElementAtIndex(items.length, 'foo'));
 });
 
 test('adapter#elementContainsClass returns true if the class exists on the element', () => {
@@ -409,7 +387,7 @@ test('adapter#notifySelected emits an event for a selected element', () => {
   td.verify(handler(td.matchers.anything()));
 });
 
-test('adapter#getCheckbox returns a checkbox inside a list item at the index specified', () => {
+test('adapter#getCheckboxAtIndex returns a checkbox inside a list item at the index specified', () => {
   const {root, component} = setupTest();
   const checkbox = document.createElement('input');
   checkbox.type = 'checkbox';
@@ -417,18 +395,13 @@ test('adapter#getCheckbox returns a checkbox inside a list item at the index spe
   const firstItem = root.querySelector('.mdc-list-item');
   firstItem.appendChild(checkbox);
 
-  component.getDefaultFoundation().adapter_.getCheckbox(0);
-  assert.equal(component.getDefaultFoundation().adapter_.getCheckbox(0), checkbox);
+  component.getDefaultFoundation().adapter_.getCheckboxAtIndex(0);
+  assert.equal(component.getDefaultFoundation().adapter_.getCheckboxAtIndex(0), checkbox);
 });
 
-test('adapter#getCheckbox returns null if a checkbox does not exist in the element at the index specified', () => {
+test('adapter#getCheckboxAtIndex returns null if a checkbox does not exist in the element at index specified', () => {
   const {component} = setupTest();
-  assert.isNull(component.getDefaultFoundation().adapter_.getCheckbox(0));
-});
-
-test('adapter#getCheckbox returns null if the index is greater than the list length', () => {
-  const {component} = setupTest();
-  assert.isNull(component.getDefaultFoundation().adapter_.getCheckbox(component.items.length));
+  assert.isNull(component.getDefaultFoundation().adapter_.getCheckboxAtIndex(0));
 });
 
 test('adapter#toggleCheckbox toggle a checkbox', () => {
@@ -443,9 +416,4 @@ test('adapter#toggleCheckbox toggle a checkbox', () => {
   component.getDefaultFoundation().adapter_.toggleCheckbox(checkbox);
   assert.isTrue(checkbox.checked);
   document.body.removeChild(root);
-});
-
-test('adapter#toggleCheckbox does not throw an error if there is no checkbox', () => {
-  const {component} = setupTest();
-  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.toggleCheckbox());
 });

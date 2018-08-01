@@ -144,7 +144,7 @@ class MDCMenu extends MDCComponent {
   }
 
   /** @param {boolean} isFixed */
-  set fixed(isFixed) {
+  setFixedPosition(isFixed) {
     this.menuSurface_.setFixedPosition(isFixed);
   }
 
@@ -155,6 +155,14 @@ class MDCMenu extends MDCComponent {
   /** @param {boolean} isHoisted */
   setIsHoisted(isHoisted) {
     this.menuSurface_.setIsHoisted(isHoisted);
+  }
+
+  /**
+   * @param {number} x
+   * @param {number} y
+   */
+  setAbsolutePosition(x, y) {
+    this.menuSurface_.setAbsolutePosition(x, y);
   }
 
   /**
@@ -187,27 +195,19 @@ class MDCMenu extends MDCComponent {
     return new MDCMenuFoundation({
       addClassToElementAtIndex: (index, className) => {
         const list = this.items;
-        if (list.length > index) {
-          list[index].classList.add(className);
-        }
+        list[index].classList.add(className);
       },
       removeClassFromElementAtIndex: (index, className) => {
         const list = this.items;
-        if (list.length > index) {
-          list[index].classList.remove(className);
-        }
+        list[index].classList.remove(className);
       },
       addAttributeToElementAtIndex: (index, attr, value) => {
         const list = this.items;
-        if (list.length > index) {
-          list[index].setAttribute(attr, value);
-        }
+        list[index].setAttribute(attr, value);
       },
       removeAttributeFromElementAtIndex: (index, attr) => {
         const list = this.items;
-        if (list.length > index) {
-          list[index].removeAttribute(attr);
-        }
+        list[index].removeAttribute(attr);
       },
       elementContainsClass: (element, className) => element.classList.contains(className),
       closeSurface: () => this.hide(),
@@ -220,21 +220,15 @@ class MDCMenu extends MDCComponent {
         index: evtData.index,
         item: this.items[evtData.index],
       }),
-      getCheckbox: (index) => {
+      getCheckboxAtIndex: (index) => {
         const list = this.items;
-        if (list.length > index) {
-          return list[index].querySelector(strings.CHECKBOX_SELECTOR);
-        } else {
-          return null;
-        }
+        return list[index].querySelector(strings.CHECKBOX_SELECTOR);
       },
       toggleCheckbox: (checkBox) => {
-        if (checkBox) {
-          checkBox.checked = !checkBox.checked;
-          const event = document.createEvent('Event');
-          event.initEvent('change', false, true);
-          checkBox.dispatchEvent(event);
-        }
+        checkBox.checked = !checkBox.checked;
+        const event = document.createEvent('Event');
+        event.initEvent('change', false, true);
+        checkBox.dispatchEvent(event);
       },
     });
   }

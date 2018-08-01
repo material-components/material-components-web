@@ -108,8 +108,9 @@ class MDCMenuAdapter {
   /**
    * Returns the checkbox contained within the element at the index specified.
    * @param {number} index
+   * @return {?HTMLElement} checkbox
    */
-  getCheckbox(index) {}
+  getCheckboxAtIndex(index) {}
 
   /**
    * Toggles the checkbox within a list item, if any.

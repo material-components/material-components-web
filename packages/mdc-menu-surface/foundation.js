@@ -124,9 +124,9 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     this.animationRequestId_ = 0;
     /** @private {!{ width: number, height: number }} */
     this.dimensions_;
-    /** @private {Corner} */
+    /** @private {!Corner} */
     this.anchorCorner_ = Corner.TOP_START;
-    /** @private {AnchorMargin} */
+    /** @private {!AnchorMargin} */
     this.anchorMargin_ = {top: 0, right: 0, bottom: 0, left: 0};
     /** @private {?AutoLayoutMeasurements} */
     this.measures_ = null;
@@ -291,7 +291,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
 
   /**
    * Computes the corner of the anchor from which to animate and position the menu surface.
-   * @return {Corner}
+   * @return {!Corner}
    * @private
    */
   getOriginCorner_() {
@@ -334,7 +334,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {Corner} corner Origin corner of the menu surface.
+   * @param {!Corner} corner Origin corner of the menu surface.
    * @return {number} Horizontal offset of menu surface origin corner from corresponding anchor corner.
    * @private
    */
@@ -360,7 +360,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {Corner} corner Origin corner of the menu surface.
+   * @param {!Corner} corner Origin corner of the menu surface.
    * @return {number} Vertical offset of menu surface origin corner from corresponding anchor corner.
    * @private
    */
@@ -379,7 +379,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {Corner} corner Origin corner of the menu surface.
+   * @param {!Corner} corner Origin corner of the menu surface.
    * @return {number} Maximum height of the menu surface, based on available space. 0 indicates should not be set.
    * @private
    */
@@ -448,13 +448,13 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
   /**
    * Calculates the offsets for positioning the menu-surface when the menu-surface has been
    * hoisted to the body.
-   * @param {{
+   * @param {!{
    *   top: (string|undefined),
    *   right: (string|undefined),
    *   bottom: (string|undefined),
    *   left: (string|undefined)
    * }} position
-   * @return {{
+   * @return {!{
    *   top: (string|undefined),
    *   right: (string|undefined),
    *   bottom: (string|undefined),
