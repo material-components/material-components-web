@@ -80,7 +80,7 @@
             <div class="mdc-line-ripple"></div>
           </div>
           <p id="my-text-field-helper-text" class="mdc-text-field-helper-text"
-             aria-hidden="true">
+             aria-hidden="true" style="visibility: hidden">
             Helper Text (possibly validation message)
           </p>
         </section>
@@ -197,7 +197,7 @@
             <div class="mdc-line-ripple"></div>
           </div>
           <p class="mdc-text-field-helper-text"
-            id="box-name-validation-message">
+            id="box-name-validation-message" style="visibility: hidden">
             Helper Text (possibly validation message)
           </p>
         </div>
@@ -503,7 +503,7 @@
 
         document.getElementById('box-use-helper-text').addEventListener('change', function(evt) {
           var target = evt.target;
-          helperText.style.display = target.checked ? 'block' : 'none';
+          helperText.style.visibility = target.checked ? 'visible' : 'hidden';
           document.getElementById('box-persistent-helper-text').disabled = !target.checked;
           document.getElementById('box-helper-text-as-validation').disabled = !target.checked;
         });
