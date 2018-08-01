@@ -90,7 +90,7 @@
   @include mdc-checkbox__focus-indicator_;
 }
 
-.mdc-ripple-upgraded--unbounded .mdc-checkbox__background::before {
+.mdc-ripple-upgraded--background-focused .mdc-checkbox__background::before {
   @include mdc-checkbox__focus-indicator--ripple-upgraded-unbounded_;
 }
 
