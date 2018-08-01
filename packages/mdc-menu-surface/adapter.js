@@ -112,22 +112,22 @@ class MDCMenuSurfaceAdapter {
   /** Focuses the first focusable element in the menu-surface. */
   focusLastElement() {}
 
-  /** @return {{width: number, height: number}} */
+  /** @return {!{width: number, height: number}} */
   getInnerDimensions() {}
 
-  /** @return {{width: number, height: number, top: number, right: number, bottom: number, left: number}} */
+  /** @return {!{width: number, height: number, top: number, right: number, bottom: number, left: number}} */
   getAnchorDimensions() {}
 
-  /** @return {{ width: number, height: number }} */
+  /** @return {!{ width: number, height: number }} */
   getWindowDimensions() {}
 
-  /** @return {{ width: number, height: number }} */
+  /** @return {!{ width: number, height: number }} */
   getBodyDimensions() {}
 
-  /** @return {{ width: number, height: number }} */
+  /** @return {!{ width: number, height: number }} */
   getWindowScroll() {}
 
-  /** @param {{
+  /** @param {!{
   *   top: (string|undefined),
   *   right: (string|undefined),
   *   bottom: (string|undefined),

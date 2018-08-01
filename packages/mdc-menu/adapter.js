@@ -66,7 +66,7 @@ class MDCMenuAdapter {
   /**
    * Returns true if the element contains the className.
    * @param {?HTMLElement} element
-   * @param {!string} className
+   * @param {string} className
    * @return {boolean} true if the element contains the className
    */
   elementContainsClass(element, className) {}

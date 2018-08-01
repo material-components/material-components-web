@@ -174,7 +174,7 @@ class MDCMenuSurface extends MDCComponent {
   }
 
   /**
-   * @return {{
+   * @return {!{
    * isFocused: function(): boolean,
    * saveFocus: function(),
    * restoreFocus: function(),
@@ -210,7 +210,7 @@ class MDCMenuSurface extends MDCComponent {
   }
 
   /**
-   * @return {{
+   * @return {!{
    * getInnerDimensions: function(),
    * getAnchorDimensions: function(): (HTMLElement | null | * | ClientRect),
    * getWindowDimensions: function(),

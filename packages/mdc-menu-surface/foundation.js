@@ -136,7 +136,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     this.hoistedElement_ = false;
     /** @private {boolean} */
     this.isFixedPosition_ = false;
-    /** @private {{x: number, y: number}} */
+    /** @private {!{x: number, y: number}} */
     this.position_ = {x: 0, y: 0};
   }
 
@@ -251,7 +251,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
   }
 
   /**
-   * @return {AutoLayoutMeasurements} Measurements used to position menu surface popup.
+   * @return {!AutoLayoutMeasurements} Measurements used to position menu surface popup.
    */
   getAutoLayoutMeasurements_() {
     let anchorRect = this.adapter_.getAnchorDimensions();
