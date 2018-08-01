@@ -386,6 +386,20 @@
           <label for="fullwidth-alternate-colors">Alternate Colors</label>
         </div>
       </section>
+
+      <section class="example">
+        <h2>Custom error state behaviour - remove error state as soon as invalid input is resolved</h2>
+        <section id="demo-text-field-wrapper">
+          <div class="mdc-text-field" id="demo-textfield-error-state">
+            <input type="text" pattern="^\d{10}$" id="demo-textfield-error-state-input" class="mdc-text-field__input">
+            <label class="mdc-floating-label" for="demo-textfield-error-state-input">Phone number</label>
+            <div class="mdc-line-ripple"></div>
+          </div>
+          <p id="username-helper-text" class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent mdc-text-field-helper-text--validation-msg" aria-hidden="true">
+            Enter 10 digit phone number including area code
+          </p>
+        </section>
+      </section>
     </main>
 
     <script src="/assets/material-components-web.js" async></script>
@@ -721,6 +735,17 @@
           var target = evt.target;
           tfRoot.classList[target.checked ? 'add' : 'remove']('demo-fullwidth-input');
           tfMultiRoot.classList[target.checked ? 'add' : 'remove']('demo-textarea');
+        });
+      });
+
+      demoReady(function() {
+        var textFieldEl = document.querySelector('#demo-textfield-error-state');
+        var textField = new mdc.textField.MDCTextField(textFieldEl);
+
+        textFieldEl.addEventListener('input', function(event) {
+          if (textField.valid) {
+            textField.valid = true;
+          }
         });
       });
     </script>
