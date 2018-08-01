@@ -109,3 +109,8 @@
   @include mdc-drawer-item-activated-text-color(pink, 1);
   @include mdc-drawer-icon-activated-ink-color(pink, 1);
 }
+
+.demo-clipped-content {
+  display: flex;
+  position: relative;
+}
