@@ -129,6 +129,7 @@ class MDCSlider extends MDCComponent {
         },
         removeValueLabelTextStyle: () => {
           this.valueLabelText_.removeAttribute('style');
+          this.valueLabelText_.removeAttribute('transform');
         },
         computeBoundingRect: () => this.root_.getBoundingClientRect(),
         eventTargetHasClass: (target, className) => {
