@@ -166,9 +166,50 @@
             <div>
               <label><input type="checkbox" name="fixed-position"> Fixed Position Menu Surface</label>
             </div>
+            <div>
+              <label><input type="checkbox" name="right-click"> Enable Right-Click Menu Surface</label>
+            </div>
             <hr>
           </div>
         </div>
+      </div>
+
+
+      <div class="mdc-menu-surface" tabindex="-1" id="demo-context-menu">
+        <ul class="mdc-image-list standard-image-list demo-menu-surface" role="menu">
+          <li role="menuitem" class="mdc-image-list__item" tabindex="0">
+            <div class="mdc-image-list__image-aspect-container">
+              <img class="mdc-image-list__image" src="images/photos/3x2/1.jpg">
+            </div>
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li role="menuitem" class="mdc-image-list__item" tabindex="0">
+            <div class="mdc-image-list__image-aspect-container">
+              <img class="mdc-image-list__image" src="images/photos/3x2/2.jpg">
+            </div>
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li role="menuitem" class="mdc-image-list__item" tabindex="0">
+            <div class="mdc-image-list__image-aspect-container">
+              <img class="mdc-image-list__image" src="images/photos/3x2/3.jpg">
+            </div>
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+          <li role="menuitem" class="mdc-image-list__item" tabindex="0">
+            <div class="mdc-image-list__image-aspect-container">
+              <img class="mdc-image-list__image" src="images/photos/3x2/4.jpg">
+            </div>
+            <div class="mdc-image-list__supporting">
+              <span class="mdc-image-list__label">Text label</span>
+            </div>
+          </li>
+        </ul>
       </div>
     </main>
 
@@ -178,6 +219,10 @@
         var menuEl = document.querySelector('#demo-menu');
         var menu = mdc.menuSurface.MDCMenuSurface.attachTo(menuEl);
         var menuButtonEl = document.querySelector('#menu-button');
+
+        var contextMenuEl = document.querySelector('#demo-context-menu');
+        var contextMenu = mdc.menuSurface.MDCMenuSurface.attachTo(contextMenuEl);
+        contextMenu.hoistMenuToBody();
 
         menuButtonEl.addEventListener('click', function() {
           menu.open = !menu.open;
@@ -304,7 +349,25 @@
 
         fixedPosition.addEventListener('change', function() {
           menu.setFixedPosition(fixedPosition.checked);
+          contextMenu.setFixedPosition(fixedPosition.checked);
         });
+
+        var contextMenuFunc = function(clickEvent) {
+          contextMenu.setAbsolutePosition(clickEvent.clientX, clickEvent.clientY);
+          contextMenu.show();
+          clickEvent.preventDefault();
+          return false;
+        };
+
+        var rightClickCheckbox = document.querySelector('input[name="right-click"]');
+        rightClickCheckbox.addEventListener('change', function() {
+          if (rightClickCheckbox.checked) {
+            document.body.addEventListener('contextmenu', contextMenuFunc);
+          } else {
+            document.body.removeEventListener('contextmenu', contextMenuFunc);
+          }
+        });
+
       });
     </script>
   </body>
