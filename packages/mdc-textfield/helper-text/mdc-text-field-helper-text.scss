@@ -22,18 +22,12 @@
 
 .mdc-text-field-helper-text {
   @include mdc-typography(caption);
+  @include mdc-typography-baseline-top(16px);
 
   margin: 0;
   transition: mdc-text-field-transition(opacity);
   opacity: 0;
   will-change: opacity;
-
-  // stylelint-disable plugin/selector-bem-pattern
-  .mdc-text-field + & {
-    margin-bottom: 8px;
-  }
-
-  // stylelint-enable plugin/selector-bem-pattern
 }
 
 .mdc-text-field-helper-text--persistent {
