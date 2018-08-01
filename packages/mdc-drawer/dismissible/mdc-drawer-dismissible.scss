@@ -17,62 +17,45 @@
 @import "@material/animation/functions";
 @import "@material/rtl/mixins";
 @import "../variables";
+@import "../mixins";
 
 .mdc-drawer--dismissible {
-  width: 0;
-  min-width: 0;
-  transform: translateX(-100%);
-  border-right-width: 0;
+  transition-property: transform;
+  transition-timing-function: $mdc-animation-standard-curve-timing-function;
+  display: none;
 
-  @include mdc-rtl {
-    transform: translateX(100%);
-    border-left-width: 0;
+  &.mdc-drawer--open {
+    transition: mdc-animation-standard(transform, $mdc-drawer-animation-enter);
+    display: block;
+  }
+
+  &.mdc-drawer--animate {
+    transform: translateX(-100%);
+  }
+
+  &.mdc-drawer--opening {
+    transform: translateX(0);
+    transition-duration: $mdc-drawer-animation-enter;
+  }
+
+  &.mdc-drawer--closing {
+    transform: translateX(-100%);
+    transition-duration: $mdc-drawer-animation-exit;
   }
 }
 
-.mdc-drawer--open {
-  width: $mdc-drawer-width;
-  min-width: $mdc-drawer-width;
-  border-right-width: 1px;
-
-  @include mdc-rtl {
-    border-left-width: 1px;
-  }
-}
-
-.mdc-drawer--open:not(.mdc-drawer--animating-close) {
-  transform: translateX(0);
-}
-
-.mdc-drawer--dismissible,
 .mdc-drawer-app-content {
-  transform-origin: top left;
-  will-change: transform;
+  height: 0;
+  width: 0;
 
-  @include mdc-rtl {
-    transform-origin: top right;
+  transition-property: width;
+  transition-timing-function: $mdc-animation-standard-curve-timing-function;
+
+  &.mdc-drawer--opening {
+    transition-duration: $mdc-drawer-animation-enter;
   }
-}
 
-.mdc-drawer--animating-close {
-  transform: translateX(-100%);
-  transition: mdc-animation-standard(transform, $mdc-drawer-animation-exit);
-
-  @include mdc-rtl {
-    transform: translateX(100%);
+  &.mdc-drawer--closing {
+    transition-duration: $mdc-drawer-animation-exit;
   }
-}
-
-.mdc-drawer--animating-open {
-  // the `all` transition should be transform, but IE11 and Edge
-  // do not apply the animation in the opening.
-  transition: mdc-animation-standard(all, $mdc-drawer-animation-enter);
-}
-
-.mdc-drawer-app-content--animating-open {
-  transition: mdc-animation-standard(transform, $mdc-drawer-animation-enter);
-}
-
-.mdc-drawer-app-content--animating-close {
-  transition: mdc-animation-standard(transform, $mdc-drawer-animation-exit);
 }

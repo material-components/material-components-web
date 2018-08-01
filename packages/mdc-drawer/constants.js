@@ -21,15 +21,15 @@ const cssClasses = {
   RAIL: 'mdc-drawer--rail',
   OPEN: 'mdc-drawer--open',
   ANIMATE: 'mdc-drawer--animate',
-  ANIMATING_CLOSE: 'mdc-drawer--animating-close',
-  ANIMATING_OPEN: 'mdc-drawer--animating-open',
-  APP_CONTENT_ANIMATE_CLOSE: 'mdc-drawer-app-content--animating-close',
-  APP_CONTENT_ANIMATE_OPEN: 'mdc-drawer-app-content--animating-open',
+  OPENING: 'mdc-drawer--opening',
+  CLOSING: 'mdc-drawer--closing',
 };
 
 /** @enum {string} */
 const strings = {
   APP_CONTENT_SELECTOR: '.mdc-drawer-app-content',
+  SCRIM_SELECTOR: '.mdc-drawer__scrim',
+  STRUT_SELECTOR: '.mdc-drawer__strut',
   CLOSE_EVENT: 'MDCDrawer:close',
   OPEN_EVENT: 'MDCDrawer:open',
 };

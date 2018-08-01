@@ -20,42 +20,22 @@
 @import "../mixins";
 @import "../variables";
 
+$mdc-drawer-z-index_: 5;
+
 .mdc-drawer--modal {
   @include mdc-drawer-scrim-color($mdc-drawer-modal-scrim-color, $mdc-drawer-modal-scrim-opacity);
   @include mdc-elevation(16);
   @include mdc-rtl-reflexive-position(left, 0);
 
   position: fixed;
-  box-sizing: border-box;
-  width: 100%;
+  z-index: $mdc-drawer-z-index_;
   height: 100%;
-  overflow: hidden;
-  z-index: 5;
-  background: transparent;
-  display: none;
   transition: transform $mdc-drawer-animation-exit $mdc-animation-standard-curve-timing-function;
-  position: absolute;
-  flex-direction: column;
-  box-sizing: border-box;
-  width: calc(100% - 56px);
-  max-width: 280px;
-  overflow: hidden;
-  height: 100%;
-  background: #fff;
   transform: translateX(-100%);
 
-  @media (min-width: 600px) {
-    width: calc(100% - 64px);
-    max-width: 320px;
-  }
-
-  &.mdc-drawer--modal-animate {
+  &.mdc-drawer--open {
     transform: translateX(0);
-    transition-duration: $mdc-animation-standard-curve-timing-function;
-  }
-
-  &.mdc-drawer--modal-open {
-    display: block;
+    transition-duration: $mdc-drawer-animation-enter;
   }
 }
 
@@ -77,12 +57,15 @@
   bottom: 0;
   width: 100%;
   height: 100%;
+  z-index: $mdc-drawer-z-index_ - 1;
   transition: opacity $mdc-drawer-animation-enter $mdc-animation-standard-curve-timing-function;
   opacity: 0;
+  visibility: hidden;
   background: rgba(0, 0, 0, 0.2);
 
-  .mdc-drawer--modal-animate + & {
+  .mdc-drawer--open + & {
     opacity: 1;
+    visibility: visible;
   }
 }
 

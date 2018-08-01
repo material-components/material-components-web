@@ -129,3 +129,20 @@
     background-color: rgba(mdc-theme-prop-value($color), $opacity);
   }
 }
+
+@mixin mdc-drawer-hide-text-when-opening_() {
+  .mdc-drawer__list-item-label,
+  .mdc-drawer__list-group-subheader,
+  .mdc-drawer__header {
+    transition: opacity 0.24s ease-in-out;
+    opacity: 0;
+  }
+
+  &.mdc-drawer--open {
+    .mdc-drawer__list-item-label,
+    .mdc-drawer__list-group-subheader,
+    .mdc-drawer__header {
+      opacity: 1;
+    }
+  }
+}

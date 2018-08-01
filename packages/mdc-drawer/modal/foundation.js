@@ -47,6 +47,10 @@ class MDCModalDrawerFoundation extends MDCDismissibleDrawerFoundation {
       notifyOpen: () => {},
     });
   }
+
+  handleScrimClick() {
+    this.close();
+  }
 }
 
 export default MDCModalDrawerFoundation;

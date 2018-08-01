@@ -24,6 +24,8 @@
 @import "../mixins";
 
 .mdc-drawer--rail {
+  @include mdc-drawer-hide-text-when-opening_();
+  
   min-width: $mdc-drawer-rail-width;
   width: $mdc-drawer-rail-width;
   transition: mdc-animation-standard(all, $mdc-drawer-animation-enter);
@@ -31,19 +33,5 @@
   &.mdc-drawer--open {
     width: $mdc-drawer-width;
     min-width: $mdc-drawer-width;
-  }
-}
-
-.mdc-drawer__list-item-label,
-.mdc-drawer__list-group-subheader,
-.mdc-drawer__header {
-  transition: opacity 0.24s ease-in-out;
-  transition-delay: 0.15s;
-  opacity: 0;
-  visibility: hidden;
-
-  .mdc-drawer--open & {
-    opacity: 1;
-    visibility: visible;
   }
 }

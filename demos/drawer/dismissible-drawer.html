@@ -29,6 +29,7 @@
   </head>
   <body class="mdc-typography demo-body">
     <aside id="demo-drawer" class="mdc-drawer mdc-drawer--dismissible demo-drawer">
+      <div class="mdc-drawer__strut"></div>
       <div class="mdc-drawer__header">
         <h3 class="mdc-drawer__title">Mail</h3>
         <h6 class="mdc-drawer__subtitle">email@material.io</h6>
@@ -37,40 +38,49 @@
         <div class="mdc-list-group">
           <nav class="mdc-list">
             <a class="mdc-list-item mdc-list-item--activated demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
+              <span class="mdc-list-item__label mdc-drawer__list-item-label">Inbox</span>
             </a>
             <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>
+              <span class="mdc-list-item__label mdc-drawer__list-item-label">Star</span>
             </a>
             <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>Sent Mail
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
+              <span class="mdc-list-item__label mdc-drawer__list-item-label">Sent Mail</span>
             </a>
             <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>Drafts
-            </a>
-          </nav>
-
-          <hr class="mdc-list-divider">
-          <h6 class="mdc-list-group__subheader">Labels</h6>
-          <nav class="mdc-list">
-            <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>Family
-            </a>
-            <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>Friends
-            </a>
-            <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>Work
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
+              <span class="mdc-list-item__label mdc-drawer__list-item-label">Drafts</span>
             </a>
           </nav>
 
           <hr class="mdc-list-divider">
+          <h6 class="mdc-list-group__subheader mdc-drawer__list-group-subheader">Labels</h6>
           <nav class="mdc-list">
             <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings</i>Settings
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
+              <span class="mdc-list-item__label mdc-drawer__list-item-label">Family</span>
             </a>
             <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">announcement</i>Help & feedback
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
+              <span class="mdc-list-item__label mdc-drawer__list-item-label">Friends</span>
+            </a>
+            <a class="mdc-list-item demo-drawer-list-item" href="#">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
+              <span class="mdc-list-item__label mdc-drawer__list-item-label">Work</span>
+            </a>
+          </nav>
+
+          <hr class="mdc-list-divider">
+          <nav class="mdc-list">
+            <a class="mdc-list-item demo-drawer-list-item" href="#">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings</i>
+              <span class="mdc-list-item__label mdc-drawer__list-item-label">Settings</span>
+            </a>
+            <a class="mdc-list-item demo-drawer-list-item" href="#">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">announcement</i>
+              <span class="mdc-list-item__label mdc-drawer__list-item-label">Help & feedback</span>
             </a>
           </nav>
         </div>

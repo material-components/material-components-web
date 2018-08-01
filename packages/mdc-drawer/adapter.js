@@ -72,6 +72,8 @@ class MDCDrawerAdapter {
    */
   setStyleAppContent(propertyName, value) {}
 
+  setStrutWidth(width) {}
+
   /**
    * Returns true if parent element is dir='rtl'.
    * @return {boolean}
