@@ -71,7 +71,7 @@
 
       <section class="example">
         <h2>Full Functionality JS Component (Floating Label, Validation)</h2>
-        <section id="demo-text-field-wrapper">
+        <section id="demo-text-field-wrapper" class="demo-text-field-wrapper">
           <div class="mdc-text-field">
             <input type="text" class="mdc-text-field__input" id="full-func-text-field"
                    aria-controls="my-text-field-helper-text"
@@ -80,7 +80,7 @@
             <div class="mdc-line-ripple"></div>
           </div>
           <p id="my-text-field-helper-text" class="mdc-text-field-helper-text"
-             aria-hidden="true" style="display:none;">
+             aria-hidden="true" style="visibility: hidden">
             Helper Text (possibly validation message)
           </p>
         </section>
@@ -138,7 +138,7 @@
 
       <section class="example">
         <h2>Outlined Text Field</h2>
-        <div id="demo-tf-outlined-wrapper">
+        <div id="demo-tf-outlined-wrapper" class="demo-text-field-wrapper">
           <div id="tf-outlined-example" class="mdc-text-field mdc-text-field--outlined" data-demo-no-auto-js>
             <input type="text" id="tf-outlined-input" class="mdc-text-field__input"
                    aria-controls="name-validation-message"
@@ -188,7 +188,7 @@
 
       <section class="example" id="text-field-box-example">
         <h2>Text Field box</h2>
-        <div id="demo-tf-box-wrapper">
+        <div id="demo-tf-box-wrapper" class="demo-text-field-wrapper">
           <div id="tf-box-example" class="mdc-text-field mdc-text-field--box" data-demo-no-auto-js>
             <input type="text" id="tf-box" class="mdc-text-field__input"
                    aria-controls="box-name-validation-message"
@@ -197,8 +197,7 @@
             <div class="mdc-line-ripple"></div>
           </div>
           <p class="mdc-text-field-helper-text"
-            id="box-name-validation-message"
-            style="display: none;">
+            id="box-name-validation-message" style="visibility: hidden">
             Helper Text (possibly validation message)
           </p>
         </div>
@@ -276,7 +275,7 @@
             <div class="mdc-notched-outline__idle"></div>
           </div>
         </div>
-        <div id="demo-tf-outlined-trailing-wrapper">
+        <div id="demo-tf-outlined-trailing-wrapper" class="demo-text-field-wrapper">
           <div id="tf-outlined-trailing-example"
             class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-trailing-icon" data-demo-no-auto-js>
             <input type="text" id="tf-outlined-trailing" class="mdc-text-field__input">
@@ -333,7 +332,7 @@
 
       <section class="example">
         <h2>Textarea</h2>
-        <section id="demo-text-field-textarea-wrapper">
+        <section id="demo-text-field-textarea-wrapper" class="demo-text-field-wrapper">
           <div class="mdc-text-field mdc-text-field--textarea">
             <textarea id="textarea" class="mdc-text-field__input" rows="8" cols="40"></textarea>
             <label for="textarea" class="mdc-floating-label">Textarea Label</label>
@@ -359,7 +358,7 @@
 
       <section class="example">
         <h2>Full-Width Text Field and Textarea</h2>
-        <div id="demo-fullwidth-wrapper">
+        <div id="demo-fullwidth-wrapper" class="demo-text-field-wrapper">
           <div class="mdc-text-field mdc-text-field--fullwidth">
             <input class="mdc-text-field__input" type="text" placeholder="Subject" aria-label="Subject">
             <div class="mdc-line-ripple"></div>
@@ -504,7 +503,7 @@
 
         document.getElementById('box-use-helper-text').addEventListener('change', function(evt) {
           var target = evt.target;
-          helperText.style.display = target.checked ? 'block' : 'none';
+          helperText.style.visibility = target.checked ? 'visible' : 'hidden';
           document.getElementById('box-persistent-helper-text').disabled = !target.checked;
           document.getElementById('box-helper-text-as-validation').disabled = !target.checked;
         });
@@ -660,7 +659,7 @@
         });
         document.getElementById('use-helper-text').addEventListener('change', function(evt) {
           var target = evt.target;
-          helperText.style.display = target.checked ? 'block' : 'none';
+          helperText.style.visibility = target.checked ? 'visible' : 'hidden';
           document.getElementById('persistent-helper-text').disabled = !target.checked;
           document.getElementById('helper-text-as-validation').disabled = !target.checked;
         });
