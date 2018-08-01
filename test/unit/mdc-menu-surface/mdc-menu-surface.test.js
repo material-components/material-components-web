@@ -68,6 +68,17 @@ test('show opens the menu surface', () => {
   td.verify(mockFoundation.open());
 });
 
+test('show opens the menu surface does not throw error if no focusable elements', () => {
+  const {root, component, mockFoundation} = setupTest();
+
+  while (root.firstChild) {
+    root.removeChild(root.firstChild);
+  }
+
+  assert.doesNotThrow(() => component.show());
+  td.verify(mockFoundation.open());
+});
+
 test('hide closes the menu surface', () => {
   const {component, mockFoundation} = setupTest();
   component.open = true;
@@ -107,6 +118,13 @@ test('setFixedPosition is true', () => {
   component.setFixedPosition(true);
   assert.isTrue(root.classList.contains(cssClasses.FIXED));
   td.verify(mockFoundation.setFixedPosition(true));
+});
+
+test('setAbsolutePosition calls the foundation setAbsolutePosition function', () => {
+  const {component, mockFoundation} = setupTest();
+  component.setAbsolutePosition(10, 10);
+  td.verify(mockFoundation.setAbsolutePosition(10, 10));
+  td.verify(mockFoundation.setIsHoisted(true));
 });
 
 test('setFixedPosition is false', () => {
@@ -243,6 +261,18 @@ test('adapter#restoreFocus does not restores the focus if never called adapter#s
   document.body.removeChild(root);
 });
 
+test('adapter#restoreFocus does nothing if the active focused element is not in the menu-surface', () => {
+  const {root, component} = setupTest(true);
+  const button = bel`<button>Foo</button>`;
+  document.body.appendChild(button);
+  document.body.appendChild(root);
+  button.focus();
+  component.getDefaultFoundation().adapter_.restoreFocus();
+  assert.equal(document.activeElement, button);
+  document.body.removeChild(button);
+  document.body.removeChild(root);
+});
+
 test('adapter#isFocused returns whether the menu surface is focused', () => {
   const {root, component} = setupTest(true);
   document.body.appendChild(root);
@@ -330,6 +360,14 @@ test('adapter#getAnchorDimensions returns the dimensions of the anchor element',
   document.body.removeChild(anchor);
 });
 
+test('adapter#getAnchorDimensions returns undefined if there is no anchor element', () => {
+  const {root, component} = setupTest(true);
+  document.body.appendChild(root);
+  component.initialSyncWithDOM();
+  assert.equal(component.getDefaultFoundation().adapter_.getAnchorDimensions(), undefined);
+  document.body.removeChild(root);
+});
+
 test('adapter#getWindowDimensions returns the dimensions of the window', () => {
   const {root, component} = setupTest(true);
   document.body.appendChild(root);
@@ -338,7 +376,7 @@ test('adapter#getWindowDimensions returns the dimensions of the window', () => {
   document.body.removeChild(root);
 });
 
-test('adapter#getBodyDimensions returns the scroll position of the window when not scrolled', () => {
+test('adapter#getBodyDimensions returns the body dimensions', () => {
   const {root, component} = setupTest(true);
   document.body.appendChild(root);
   assert.equal(component.getDefaultFoundation().adapter_.getBodyDimensions().height, document.body.clientHeight);
@@ -349,8 +387,8 @@ test('adapter#getBodyDimensions returns the scroll position of the window when n
 test('adapter#getWindowScroll returns the scroll position of the window when not scrolled', () => {
   const {root, component} = setupTest(true);
   document.body.appendChild(root);
-  assert.equal(component.getDefaultFoundation().adapter_.getWindowDimensions().height, window.innerHeight);
-  assert.equal(component.getDefaultFoundation().adapter_.getWindowDimensions().width, window.innerWidth);
+  assert.equal(component.getDefaultFoundation().adapter_.getWindowScroll().x, window.pageXOffset);
+  assert.equal(component.getDefaultFoundation().adapter_.getWindowScroll().y, window.pageYOffset);
   document.body.removeChild(root);
 });
 

@@ -29,6 +29,7 @@ function setupTest() {
   const size = {width: 500, height: 200};
   td.when(mockAdapter.hasClass(cssClasses.ROOT)).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.OPEN)).thenReturn(false);
+  td.when(mockAdapter.getWindowDimensions()).thenReturn({width: window.innerWidth, height: window.innerHeight});
 
   td.when(mockAdapter.getInnerDimensions()).thenReturn(size);
 
@@ -330,6 +331,34 @@ testFoundation('#open from anchor in top right of viewport, absolute position, h
     td.verify(mockAdapter.setTransformOrigin('left top'));
     td.verify(mockAdapter.setPosition({left: '20px', top: '30px'}));
   });
+
+testFoundation('#open in absolute position at x/y=100, absolute position, hoisted menu surface, scrollY 10 px',
+  ({foundation, mockAdapter, mockRaf}) => {
+    initAnchorLayout(mockAdapter, smallTopLeft, true, 200, {x: 0, y: 10});
+    td.when(mockAdapter.hasAnchor()).thenReturn(false);
+    td.when(mockAdapter.getAnchorDimensions()).thenReturn(undefined);
+    foundation.setIsHoisted(true);
+    foundation.setAbsolutePosition(100, 100);
+    foundation.open();
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('left top'));
+    td.verify(mockAdapter.setPosition({left: '100px', top: '110px'}));
+  });
+
+testFoundation('#open in absolute position at x/y=100, fixed position, hoisted menu surface, scrollY 10 px',
+  ({foundation, mockAdapter, mockRaf}) => {
+    initAnchorLayout(mockAdapter, smallTopLeft, true, 200, {x: 0, y: 10});
+    td.when(mockAdapter.hasAnchor()).thenReturn(false);
+    td.when(mockAdapter.getAnchorDimensions()).thenReturn(undefined);
+    foundation.setIsHoisted(true);
+    foundation.setFixedPosition(true);
+    foundation.setAbsolutePosition(100, 100);
+    foundation.open();
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('left top'));
+    td.verify(mockAdapter.setPosition({left: '100px', top: '100px'}));
+  });
+
 
 testFoundation('#open from small anchor in left bottom of viewport, default (TOP_START) anchor corner, RTL',
   ({foundation, mockAdapter, mockRaf}) => {

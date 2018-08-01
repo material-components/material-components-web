@@ -97,6 +97,7 @@ Method Signature | Description
 `setAnchorCorner(Corner) => void` | Proxies to the foundation's `setAnchorCorner(Corner)` method.
 `setAnchorMargin(AnchorMargin) => void` | Proxies to the foundation's `setAnchorMargin(AnchorMargin)` method.
 `setFixedPosition(isFixed: boolean) => void` | Adds the `mdc-menu-surface--fixed` class to the `mdc-menu-surface` element. Proxies to the foundation's `setIsHoisted()` and `setFixedPosition()` methods.
+`setAbsolutePosition(x: number, y: number) => void` | Proxies to the foundation's `setAbsolutePosition(x, y)` method. Used to set the absolute x/y position of the menu on the page. Should only be used when the menu is hoisted to the body.
 `setMenuSurfaceAnchorElement(element: Element) => void` | Changes the element used as an anchor for `menu-surface` positioning logic. Should be used with conjunction with `hoistMenuToBody()`.
 `hoistMenuToBody() => void` | Removes the `menu-surface` element from the DOM and appends it to the `body` element. Should be used to overcome `overflow: hidden` issues.
 `setIsHoisted() => void` | Proxies tot he foundation's `setIsHoisted` method.
@@ -147,6 +148,7 @@ Method Signature | Description
 `setAnchorMargin(margin: AnchorMargin) => void` | Sets the distance from the anchor point that the menu surface should be shown.
 `setIsHoisted(isHoisted: boolean) => void` | Sets whether the menu surface has been hoisted to the body so that the offsets are calculated relative to the page and not the anchor.
 `setFixedPosition(isFixed: boolean) => void` | Sets whether the menu surface is using fixed positioning.
+`setAbsolutePosition(x: number, y: numnber) => void` | Sets the absolute x/y position of the menu. Should only be used when the menu is hoisted or using fixed positioning.
 `handleDocumentClick(event: Event) => void` | Method used as the callback function for the `click` event.
 `handleKeyboardDown(event: Event) => void` | Method used as the callback function for the `keydown` events.
 `open() => void` | Opens the menu surface. Optionally accepts an object with a `focusIndex` parameter to indicate which element should receive focus when the menu surface is opened.
