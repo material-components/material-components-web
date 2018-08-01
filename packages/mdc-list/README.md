@@ -77,8 +77,6 @@ in the double line list style as defined by
 </ul>
 ```
 
-> NOTE: Make sure that there are no white-space characters before primary and secondary text.
-
 ### List Groups
 
 Multiple related lists can be grouped together using the `mdc-list-group` class on a containing element.
