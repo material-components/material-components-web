@@ -20,8 +20,12 @@
 @import "../mixins";
 
 .mdc-drawer--dismissible {
-  transition-property: transform;
+  transition-property: transform, width;
   transition-timing-function: $mdc-animation-standard-curve-timing-function;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
   display: none;
 
   &.mdc-drawer--open {
@@ -45,17 +49,24 @@
 }
 
 .mdc-drawer-app-content {
-  height: 0;
-  width: 0;
-
-  transition-property: width;
+  transition-property: margin;
   transition-timing-function: $mdc-animation-standard-curve-timing-function;
+  transition-duration: $mdc-drawer-animation-enter;
+  margin-left: 0;
 
-  &.mdc-drawer--opening {
+  .mdc-drawer--open + & {
+    margin-left: $mdc-drawer-width;
+  }
+
+  .mdc-drawer--opening + & {
     transition-duration: $mdc-drawer-animation-enter;
   }
 
-  &.mdc-drawer--closing {
+  .mdc-drawer--closing + & {
     transition-duration: $mdc-drawer-animation-exit;
+  }
+
+  .mdc-drawer--closing.mdc-drawer--animate + & {
+    margin-left: 0;
   }
 }

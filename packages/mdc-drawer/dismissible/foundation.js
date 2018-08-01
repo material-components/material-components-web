@@ -58,8 +58,6 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
     this.adapter_.addClass(cssClasses.OPEN);
     this.adapter_.addClass(cssClasses.ANIMATE);
     setTimeout(() => this.adapter_.addClass(cssClasses.OPENING), 50);
-    const drawerWidth = this.adapter_.computeBoundingRect().width;
-    this.adapter_.setStrutWidth(drawerWidth);
   }
 
   /**
@@ -70,10 +68,8 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
       return;
     }
 
+    this.adapter_.addClass(cssClasses.ANIMATE);
     this.adapter_.addClass(cssClasses.CLOSING);
-    const drawerWidth = this.adapter_.computeBoundingRect().width;
-    this.adapter_.setStrutWidth(drawerWidth);
-    this.adapter_.setStrutWidth(0);
   }
 
   /**

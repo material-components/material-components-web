@@ -30,12 +30,26 @@ $mdc-drawer-z-index_: 5;
   position: fixed;
   z-index: $mdc-drawer-z-index_;
   height: 100%;
-  transition: transform $mdc-drawer-animation-exit $mdc-animation-standard-curve-timing-function;
-  transform: translateX(-100%);
+  transition-property: transform;
+  transition-timing-function: $mdc-animation-standard-curve-timing-function;
+  display: none;
 
   &.mdc-drawer--open {
-    transform: translateX(0);
+    display: block;
+  }
+
+  &.mdc-drawer--animate {
+    transform: translateX(-100%);
+  }
+
+  &.mdc-drawer--opening {
     transition-duration: $mdc-drawer-animation-enter;
+    transform: translateX(0);
+  }
+
+  &.mdc-drawer--closing {
+    transition-duration: $mdc-drawer-animation-exit;
+    transform: translateX(-100%);
   }
 }
 
@@ -59,13 +73,25 @@ $mdc-drawer-z-index_: 5;
   height: 100%;
   z-index: $mdc-drawer-z-index_ - 1;
   transition: opacity $mdc-drawer-animation-enter $mdc-animation-standard-curve-timing-function;
-  opacity: 0;
-  visibility: hidden;
+  display: none;
   background: rgba(0, 0, 0, 0.2);
 
   .mdc-drawer--open + & {
+    display: block;
+  }
+
+  .mdc-drawer--animate + & {
+    opacity: 0;
+  }
+
+  .mdc-drawer--opening + & {
     opacity: 1;
-    visibility: visible;
+    transition-duration: $mdc-drawer-animation-enter;
+  }
+
+  .mdc-drawer--closing + & {
+    opacity: 0;
+    transition-duration: $mdc-drawer-animation-exit;
   }
 }
 
