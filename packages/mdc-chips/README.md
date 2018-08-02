@@ -313,7 +313,3 @@ Method Signature | Description
 `toggleSelect(chipId: string) => void` | Toggles selection of the chip with the given id
 `handleChipInteraction(evt: Event) => void` | Handles a custom `MDCChip:interaction` event on the root element
 `handleChipRemoval(evt: Event) => void` | Handles a custom `MDCChip:removal` event on the root element
-
-Property | Value Type | Description
---- | --- | ---
-`selectedChipIds` | Boolean | An array of the IDs of all selected chips
