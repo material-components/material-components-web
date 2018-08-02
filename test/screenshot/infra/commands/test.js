@@ -20,6 +20,7 @@ const VError = require('verror');
 
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
 const GitRevision = mdcProto.GitRevision;
+const InclusionType = mdcProto.Screenshot.InclusionType;
 
 const BuildCommand = require('./build');
 const Cli = require('../lib/cli');
@@ -205,35 +206,48 @@ class TestCommand {
     this.logger_.foldStart('screenshot.compare_master', `Comparing ${num} screenshot${plural} to master`);
 
     const promises = [];
-    const screenshots = reportData.screenshots;
-    const masterScreenshots = screenshots.actual_screenshot_list;
+    const masterScreenshotSets = reportData.screenshots;
+    const masterScreenshotList = masterScreenshotSets.actual_screenshot_list;
 
-    for (const masterScreenshot of masterScreenshots) {
+    masterScreenshotSets.added_screenshot_list.length = 0;
+    masterScreenshotSets.removed_screenshot_list.length = 0;
+    masterScreenshotSets.changed_screenshot_list.length = 0;
+    masterScreenshotSets.unchanged_screenshot_list.length = 0;
+    masterScreenshotSets.comparable_screenshot_list.length = 0;
+
+    for (const masterScreenshot of masterScreenshotList) {
       for (const capturedScreenshot of capturedScreenshots) {
         if (capturedScreenshot.html_file_path !== masterScreenshot.html_file_path ||
             capturedScreenshot.user_agent.alias !== masterScreenshot.user_agent.alias) {
           continue;
         }
+
         promises.push(new Promise(async (resolve) => {
           masterScreenshot.actual_html_file = capturedScreenshot.actual_html_file;
           masterScreenshot.actual_image_file = capturedScreenshot.actual_image_file;
           masterScreenshot.capture_state = capturedScreenshot.capture_state;
 
-          /** @type {!mdc.proto.DiffImageResult} */
-          const diffImageResult = await this.imageDiffer_.compareOneScreenshot({
-            meta: reportData.meta,
-            screenshot: masterScreenshot,
-          });
+          if (masterScreenshot.inclusion_type === InclusionType.ADD) {
+            masterScreenshotSets.added_screenshot_list.push(masterScreenshot);
+          } else if (masterScreenshot.inclusion_type === InclusionType.REMOVE) {
+            masterScreenshotSets.removed_screenshot_list.push(masterScreenshot);
+          } else if (masterScreenshot.inclusion_type === InclusionType.COMPARE) {
+            /** @type {!mdc.proto.DiffImageResult} */
+            const diffImageResult = await this.imageDiffer_.compareOneScreenshot({
+              meta: reportData.meta,
+              screenshot: masterScreenshot,
+            });
 
-          masterScreenshot.diff_image_result = diffImageResult;
-          masterScreenshot.diff_image_file = diffImageResult.diff_image_file;
+            masterScreenshot.diff_image_result = diffImageResult;
+            masterScreenshot.diff_image_file = diffImageResult.diff_image_file;
 
-          if (diffImageResult.has_changed) {
-            reportData.screenshots.changed_screenshot_list.push(masterScreenshot);
-          } else {
-            reportData.screenshots.unchanged_screenshot_list.push(masterScreenshot);
+            if (diffImageResult.has_changed) {
+              masterScreenshotSets.changed_screenshot_list.push(masterScreenshot);
+            } else {
+              masterScreenshotSets.unchanged_screenshot_list.push(masterScreenshot);
+            }
+            masterScreenshotSets.comparable_screenshot_list.push(masterScreenshot);
           }
-          reportData.screenshots.comparable_screenshot_list.push(masterScreenshot);
 
           resolve();
         }));
