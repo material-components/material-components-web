@@ -74,6 +74,7 @@
 .demo-content {
   flex: auto;
   overflow: auto;
+  position: relative;
 }
 
 .demo-main {
@@ -113,4 +114,8 @@
 .demo-clipped-content {
   display: flex;
   position: relative;
+}
+
+.demo-top-app-bar {
+  position: absolute;
 }
