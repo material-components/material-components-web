@@ -20,9 +20,21 @@
 $custom-elevation-color: $material-color-red-300;
 
 .test-cell--elevation {
-  width: 81px;
-  height: 81px;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 111px;
+  height: 131px;
+}
+
+.test-elevation {
+  display: inline-flex;
+  position: relative;
+  top: -10px;
+  align-items: center;
+  justify-content: center;
+  width: 2em;
+  height: 2em;
 }
 
 .custom-elevation--color {
