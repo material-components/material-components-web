@@ -227,20 +227,20 @@ class TestCommand {
           masterScreenshot.actual_image_file = capturedScreenshot.actual_image_file;
           masterScreenshot.capture_state = capturedScreenshot.capture_state;
 
-          /** @type {!mdc.proto.DiffImageResult} */
-          const diffImageResult = await this.imageDiffer_.compareOneScreenshot({
-            meta: reportData.meta,
-            screenshot: masterScreenshot,
-          });
-
-          masterScreenshot.diff_image_result = diffImageResult;
-          masterScreenshot.diff_image_file = diffImageResult.diff_image_file;
-
-          if (capturedScreenshot.inclusion_type === InclusionType.ADD) {
+          if (masterScreenshot.inclusion_type === InclusionType.ADD) {
             masterScreenshotSets.added_screenshot_list.push(masterScreenshot);
-          } else if (capturedScreenshot.inclusion_type === InclusionType.REMOVE) {
+          } else if (masterScreenshot.inclusion_type === InclusionType.REMOVE) {
             masterScreenshotSets.removed_screenshot_list.push(masterScreenshot);
-          } else if (capturedScreenshot.inclusion_type === InclusionType.COMPARE) {
+          } else if (masterScreenshot.inclusion_type === InclusionType.COMPARE) {
+            /** @type {!mdc.proto.DiffImageResult} */
+            const diffImageResult = await this.imageDiffer_.compareOneScreenshot({
+              meta: reportData.meta,
+              screenshot: masterScreenshot,
+            });
+
+            masterScreenshot.diff_image_result = diffImageResult;
+            masterScreenshot.diff_image_file = diffImageResult.diff_image_file;
+
             if (diffImageResult.has_changed) {
               masterScreenshotSets.changed_screenshot_list.push(masterScreenshot);
             } else {
