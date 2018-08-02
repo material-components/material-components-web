@@ -20,6 +20,7 @@ const VError = require('verror');
 
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
 const GitRevision = mdcProto.GitRevision;
+const InclusionType = mdcProto.Screenshot.InclusionType;
 
 const BuildCommand = require('./build');
 const Cli = require('../lib/cli');
@@ -228,12 +229,14 @@ class TestCommand {
           masterScreenshot.diff_image_result = diffImageResult;
           masterScreenshot.diff_image_file = diffImageResult.diff_image_file;
 
-          if (diffImageResult.has_changed) {
-            reportData.screenshots.changed_screenshot_list.push(masterScreenshot);
-          } else {
-            reportData.screenshots.unchanged_screenshot_list.push(masterScreenshot);
+          if (capturedScreenshot.inclusion_type === InclusionType.COMPARE) {
+            if (diffImageResult.has_changed) {
+              reportData.screenshots.changed_screenshot_list.push(masterScreenshot);
+            } else {
+              reportData.screenshots.unchanged_screenshot_list.push(masterScreenshot);
+            }
+            reportData.screenshots.comparable_screenshot_list.push(masterScreenshot);
           }
-          reportData.screenshots.comparable_screenshot_list.push(masterScreenshot);
 
           resolve();
         }));
