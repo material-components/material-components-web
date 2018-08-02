@@ -308,6 +308,7 @@ Method Signature | Description
 
 Method Signature | Description
 --- | ---
+`getSelectedChipIds() => boolean` | Returns an array of the IDs of all selected chips
 `select(chipId: string) => void` | Selects the chip with the given id
 `deselect(chipId: string) => void` | Deselects the chip with the given id
 `toggleSelect(chipId: string) => void` | Toggles selection of the chip with the given id
