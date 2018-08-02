@@ -4,7 +4,27 @@ Prevent visual regressions by running screenshot tests on every PR.
 
 ## Quick start
 
-### API credentials
+### 1. Google Cloud SDK
+
+Install the `gcloud` SDK and command line tools (including `gsutil`):
+
+```bash
+curl https://sdk.cloud.google.com | bash
+```
+
+Restart your shell:
+
+```bash
+exec -l $SHELL
+```
+
+Authorize your GCP account:
+
+```bash
+gcloud init --project=material-components-web
+```
+
+### 2. API credentials
 
 CBT credentials can be found on the [CrossBrowserTesting.com > Account](https://crossbrowsertesting.com/account) page. \
 Your `Authkey` is listed under the `User Profile` section.
@@ -16,24 +36,27 @@ export MDC_CBT_USERNAME='you@example.com'
 export MDC_CBT_AUTHKEY='example'
 ```
 
-Make the env vars available to existing terminal(s):
+Restart your shell:
 
 ```bash
-[[ -f ~/.bash_profile ]] && source ~/.bash_profile || source ~/.bashrc
+exec -l $SHELL
 ```
 
-Then authorize your GCP account:
+### 3. Test your changes
+
+Create an experimental branch:
 
 ```bash
-gcloud auth login
+git checkout master
+git pull
+git checkout -b experimental/$USER/screenshot-test
+npm install
 ```
-
-### Test your changes
 
 Modify a Sass file:
 
 ```bash
-echo '.mdc-button:not(:disabled){color:red}' >> packages/mdc-button/mdc-button.scss
+echo -e '\n.mdc-button:not(:disabled) {\n  color: red;\n}' >> packages/mdc-button/mdc-button.scss
 ```
  
 Run the tests:
@@ -45,10 +68,9 @@ npm run screenshot:test
 You should see something like this in the terminal:
 
 ```
-Changed 1 screenshot:
-  - mdc-fab/classes/baseline.html > desktop_windows_edge@latest
+64 screenshots changed!
 
-https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/14/03_37_19_142/report/report.html
+https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/08/02/16_20_43_829/report/report.html
 ```
 
 ## Basic usage
@@ -68,7 +90,7 @@ Source files are automatically recompiled when they change.
 ### Updating "golden" screenshots
 
 On the
-[report page](https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/14/03_37_19_142/report/report.html),
+[report page](https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/08/02/16_20_43_829/report/report.html),
 select the checkboxes for all screenshots you want to approve, and click the "Approve" button at the bottom of the page.
 
 This will display a modal dialog containing a CLI command to copy/paste:
@@ -76,7 +98,7 @@ This will display a modal dialog containing a CLI command to copy/paste:
 ```bash
 npm run screenshot:approve -- \
   --all \
-  --report=https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/14/03_37_19_142/report/report.json
+  --report=https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/08/02/16_20_43_829/report/report.json
 ```
 
 **IMPORTANT:** Note the `--` between the script name and its arguments. This is required by `npm`.
@@ -88,7 +110,7 @@ This command will update your local `test/screenshot/golden.json` file with the 
 You can rerun a subset of the tests without running the entire suite, filtering by browser and/or URL.
 
 On the
-[report page](https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/14/03_37_19_142/report/report.html),
+[report page](https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/08/02/16_20_43_829/report/report.html),
 select the checkboxes for all screenshots you want to retry, and click the "Retry" button at the bottom of the page.
 
 This will display a modal dialog containing a CLI command to copy/paste:
@@ -329,7 +351,7 @@ For example:
 
 1.  Keep HTML files _small_ and _focused_. This makes it easier to review diffs.
 
-2.  Each page should target a single logical "variant" of a component. For example:
+2.  Each page should generally target a single logical "variant" of a component. For example:
     - One "block" CSS class (e.g., `mdc-button`)
     - One "modifier" CSS class (e.g., `mdc-button--dense`)
     - One Sass mixin (e.g., `mdc-button-ink-color`)
@@ -337,21 +359,24 @@ For example:
 3.  File structure:
 
         /test/screenshot
-            /mdc-foo
-                /classes
-                    - baseline.html
-                    - dense.html
-                    - ...
-                /mixins
-                    - custom.scss
-                    - fill-color.html
-                    - filled-accessible.html
-                    - ink-color.html
-                    - ...
+            /spec
+                /mdc-foo
+                    /classes
+                        - baseline.html
+                        - dense.html
+                        - ...
+                    /mixins
+                        - fill-color.html
+                        - filled-accessible.html
+                        - ink-color.html
+                        - ...
+                    /fixture.js
+                    /fixture.scss
 
 4.  Do not test _combinations_ of mixins and modifier classes unless:
-    1. It's necessary to prevent a regression; or
-    2. We explicitly support the combination, and the implementation is likely to have bugs (e.g., `mdc-button--dense` and `mdc-button-outline-width` both set `line-height`)
+    1.  It's necessary to prevent a regression; or
+    2.  We explicitly support the combination, and the implementation is likely to have bugs \
+        (e.g., `mdc-button--dense` and `mdc-button-outline-width` both set `line-height`)
 
 ### Example test page
 
