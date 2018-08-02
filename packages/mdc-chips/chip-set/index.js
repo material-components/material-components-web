@@ -21,6 +21,8 @@ import MDCChipSetAdapter from './adapter';
 import MDCChipSetFoundation from './foundation';
 import {MDCChip, MDCChipFoundation} from '../chip/index';
 
+let idCounter = 0;
+
 /**
  * @extends {MDCComponent<!MDCChipSetFoundation>}
  * @final
@@ -34,7 +36,7 @@ class MDCChipSet extends MDCComponent {
 
     /** @type {!Array<!MDCChip>} */
     this.chips;
-    /** @type {(function(!Element): !MDCChip)} */
+    /** @private {(function(!Element): !MDCChip)} */
     this.chipFactory_;
 
     /** @private {?function(?Event): undefined} */
@@ -62,8 +64,8 @@ class MDCChipSet extends MDCComponent {
 
   initialSyncWithDOM() {
     this.chips.forEach((chip) => {
-      if (chip.isSelected()) {
-        this.foundation_.select(chip.foundation);
+      if (chip.selected) {
+        this.foundation_.select(chip.id);
       }
     });
 
@@ -93,7 +95,16 @@ class MDCChipSet extends MDCComponent {
    * @param {!Element} chipEl
    */
   addChip(chipEl) {
+    chipEl.id = chipEl.id || `mdc-chip-${++idCounter}`;
     this.chips.push(this.chipFactory_(chipEl));
+  }
+
+  /**
+   * Returns an array of the IDs of all selected chips.
+   * @return {!Array<string>}
+   */
+  get selectedChipIds() {
+    return this.foundation_.getSelectedChipIds();
   }
 
   /**
@@ -102,10 +113,18 @@ class MDCChipSet extends MDCComponent {
   getDefaultFoundation() {
     return new MDCChipSetFoundation(/** @type {!MDCChipSetAdapter} */ (Object.assign({
       hasClass: (className) => this.root_.classList.contains(className),
-      removeChip: (chip) => {
-        const index = this.chips.indexOf(chip);
-        this.chips.splice(index, 1);
-        chip.destroy();
+      removeChip: (chipId) => {
+        const index = this.findChipIndex_(chipId);
+        if (index >= 0) {
+          this.chips[index].destroy();
+          this.chips.splice(index, 1);
+        }
+      },
+      setSelected: (chipId, selected) => {
+        const index = this.findChipIndex_(chipId);
+        if (index >= 0) {
+          this.chips[index].selected = selected;
+        }
       },
     })));
   }
@@ -117,7 +136,24 @@ class MDCChipSet extends MDCComponent {
    */
   instantiateChips_(chipFactory) {
     const chipElements = [].slice.call(this.root_.querySelectorAll(MDCChipSetFoundation.strings.CHIP_SELECTOR));
-    return chipElements.map((el) => chipFactory(el));
+    return chipElements.map((el) => {
+      el.id = el.id || `mdc-chip-${++idCounter}`;
+      return chipFactory(el);
+    });
+  }
+
+  /**
+   * Returns the index of the chip with the given id, or -1 if the chip does not exist.
+   * @param {string} chipId
+   * @return {number}
+   */
+  findChipIndex_(chipId) {
+    for (let i = 0; i < this.chips.length; i++) {
+      if (this.chips[i].id === chipId) {
+        return i;
+      }
+    }
+    return -1;
   }
 }
 

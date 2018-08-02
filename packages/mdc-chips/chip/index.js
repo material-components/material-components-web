@@ -35,6 +35,8 @@ class MDCChip extends MDCComponent {
   constructor(...args) {
     super(...args);
 
+    /** @type {string} */
+    this.id;
     /** @private {?Element} */
     this.leadingIcon_;
     /** @private {?Element} */
@@ -59,6 +61,7 @@ class MDCChip extends MDCComponent {
   }
 
   initialize() {
+    this.id = this.root_.id;
     this.leadingIcon_ = this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
     this.trailingIcon_ = this.root_.querySelector(strings.TRAILING_ICON_SELECTOR);
 
@@ -116,25 +119,19 @@ class MDCChip extends MDCComponent {
   }
 
   /**
-   * Returns true if the chip is selected.
+   * Returns whether the chip is selected.
    * @return {boolean}
    */
-  isSelected() {
+  get selected() {
     return this.foundation_.isSelected();
   }
 
   /**
-   * Begins the exit animation which leads to removal of the chip.
+   * Sets selected state on the chip.
+   * @param {boolean} selected
    */
-  beginExit() {
-    this.foundation_.beginExit();
-  }
-
-  /**
-   * @return {!MDCChipFoundation}
-   */
-  get foundation() {
-    return this.foundation_;
+  set selected(selected) {
+    this.foundation_.setSelected(selected);
   }
 
   /**
@@ -150,7 +147,14 @@ class MDCChip extends MDCComponent {
    * @param {boolean} shouldRemove
    */
   set shouldRemoveOnTrailingIconClick(shouldRemove) {
-    return this.foundation_.setShouldRemoveOnTrailingIconClick(shouldRemove);
+    this.foundation_.setShouldRemoveOnTrailingIconClick(shouldRemove);
+  }
+
+  /**
+   * Begins the exit animation which leads to removal of the chip.
+   */
+  beginExit() {
+    this.foundation_.beginExit();
   }
 
   /**
@@ -172,10 +176,11 @@ class MDCChip extends MDCComponent {
         }
       },
       eventTargetHasClass: (target, className) => target.classList.contains(className),
-      notifyInteraction: () => this.emit(strings.INTERACTION_EVENT, {chip: this}, true /* shouldBubble */),
+      notifyInteraction: () => this.emit(strings.INTERACTION_EVENT, {chipId: this.id}, true /* shouldBubble */),
       notifyTrailingIconInteraction: () => this.emit(
-        strings.TRAILING_ICON_INTERACTION_EVENT, {chip: this}, true /* shouldBubble */),
-      notifyRemoval: () => this.emit(strings.REMOVAL_EVENT, {chip: this, root: this.root_}, true /* shouldBubble */),
+        strings.TRAILING_ICON_INTERACTION_EVENT, {chipId: this.id}, true /* shouldBubble */),
+      notifyRemoval: () =>
+        this.emit(strings.REMOVAL_EVENT, {chipId: this.id, root: this.root_}, true /* shouldBubble */),
       getComputedStyleValue: (propertyName) => window.getComputedStyle(this.root_).getPropertyValue(propertyName),
       setStyleProperty: (propertyName, value) => this.root_.style.setProperty(propertyName, value),
     })));
