@@ -206,15 +206,22 @@ class TestCommand {
     this.logger_.foldStart('screenshot.compare_master', `Comparing ${num} screenshot${plural} to master`);
 
     const promises = [];
-    const screenshots = reportData.screenshots;
-    const masterScreenshots = screenshots.actual_screenshot_list;
+    const masterScreenshotSets = reportData.screenshots;
+    const masterScreenshotList = masterScreenshotSets.actual_screenshot_list;
 
-    for (const masterScreenshot of masterScreenshots) {
+    masterScreenshotSets.added_screenshot_list.length = 0;
+    masterScreenshotSets.removed_screenshot_list.length = 0;
+    masterScreenshotSets.changed_screenshot_list.length = 0;
+    masterScreenshotSets.unchanged_screenshot_list.length = 0;
+    masterScreenshotSets.comparable_screenshot_list.length = 0;
+
+    for (const masterScreenshot of masterScreenshotList) {
       for (const capturedScreenshot of capturedScreenshots) {
         if (capturedScreenshot.html_file_path !== masterScreenshot.html_file_path ||
             capturedScreenshot.user_agent.alias !== masterScreenshot.user_agent.alias) {
           continue;
         }
+
         promises.push(new Promise(async (resolve) => {
           masterScreenshot.actual_html_file = capturedScreenshot.actual_html_file;
           masterScreenshot.actual_image_file = capturedScreenshot.actual_image_file;
@@ -229,13 +236,17 @@ class TestCommand {
           masterScreenshot.diff_image_result = diffImageResult;
           masterScreenshot.diff_image_file = diffImageResult.diff_image_file;
 
-          if (capturedScreenshot.inclusion_type === InclusionType.COMPARE) {
+          if (capturedScreenshot.inclusion_type === InclusionType.ADD) {
+            masterScreenshotSets.added_screenshot_list.push(masterScreenshot);
+          } else if (capturedScreenshot.inclusion_type === InclusionType.REMOVE) {
+            masterScreenshotSets.removed_screenshot_list.push(masterScreenshot);
+          } else if (capturedScreenshot.inclusion_type === InclusionType.COMPARE) {
             if (diffImageResult.has_changed) {
-              reportData.screenshots.changed_screenshot_list.push(masterScreenshot);
+              masterScreenshotSets.changed_screenshot_list.push(masterScreenshot);
             } else {
-              reportData.screenshots.unchanged_screenshot_list.push(masterScreenshot);
+              masterScreenshotSets.unchanged_screenshot_list.push(masterScreenshot);
             }
-            reportData.screenshots.comparable_screenshot_list.push(masterScreenshot);
+            masterScreenshotSets.comparable_screenshot_list.push(masterScreenshot);
           }
 
           resolve();
