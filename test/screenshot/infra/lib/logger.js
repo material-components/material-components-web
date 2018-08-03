@@ -31,6 +31,12 @@ class Logger {
      * @private
      */
     this.foldStartTimeMap_ = new Map();
+
+    /**
+     * @type {boolean}
+     * @private
+     */
+    this.isTravis_ = process.env.TRAVIS === 'true';
   }
 
   /**
@@ -50,7 +56,7 @@ class Logger {
 
     this.foldStartTimeMap_.set(foldId, Date.now());
 
-    if (!this.isTravisJob_()) {
+    if (!this.isTravis_) {
       console.log('');
       console.log(colorMessage);
       console.log(colors.reset(''));
@@ -71,7 +77,7 @@ class Logger {
    * @param {string} foldId
    */
   foldEnd(foldId) {
-    if (!this.isTravisJob_()) {
+    if (!this.isTravis_) {
       return;
     }
 
@@ -137,14 +143,6 @@ class Logger {
    */
   error(...args) {
     console.error(...args);
-  }
-
-  /**
-   * @return {boolean}
-   * @private
-   */
-  isTravisJob_() {
-    return process.env.TRAVIS === 'true';
   }
 
   /**
