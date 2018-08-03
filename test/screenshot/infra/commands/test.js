@@ -41,7 +41,7 @@ class TestCommand {
     this.diffBaseParser_ = new DiffBaseParser();
     this.gitHubApi_ = new GitHubApi();
     this.imageDiffer_ = new ImageDiffer();
-    this.logger_ = new Logger(__filename);
+    this.logger_ = new Logger();
   }
 
   /**
@@ -102,8 +102,12 @@ class TestCommand {
   async diffAgainstLocal_(goldenDiffBase) {
     const controller = new Controller();
 
+    this.logger_.debug('Initializing for capture...');
+
     /** @type {!mdc.proto.ReportData} */
     const reportData = await controller.initForCapture(goldenDiffBase);
+
+    this.logger_.debug('Initialized for capture!');
 
     try {
       await this.gitHubApi_.setPullRequestStatusAuto(reportData);

@@ -99,7 +99,7 @@ class ReportBuilder {
      * @type {!Logger}
      * @private
      */
-    this.logger_ = new Logger(__filename);
+    this.logger_ = new Logger();
 
     /**
      * @type {!UserAgentStore}
@@ -167,6 +167,7 @@ class ReportBuilder {
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async initForDemo() {
+    // TODO(acdvorak): Pass `goldenDiffBase` argument
     return ReportData.create({
       meta: await this.createReportMetaProto_(),
     });
@@ -305,13 +306,15 @@ class ReportBuilder {
    * @private
    */
   async prefetchGoldenImages_(reportData) {
+    const expectedScreenshots = reportData.screenshots.expected_screenshot_list;
     // TODO(acdvorak): Figure out how to handle offline mode for prefetching and diffing
-    console.log('Fetching golden images...');
+    this.logger_.debug(`Fetching ${expectedScreenshots.length.toLocaleString()} golden images...`);
     await Promise.all(
-      reportData.screenshots.expected_screenshot_list.map((expectedScreenshot) => {
+      expectedScreenshots.map((expectedScreenshot) => {
         return this.prefetchScreenshotImages_(expectedScreenshot);
       })
     );
+    this.logger_.debug(`Fetched ${expectedScreenshots.length.toLocaleString()} golden images!`);
   }
 
   /**

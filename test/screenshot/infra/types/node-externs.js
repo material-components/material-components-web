@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      https://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -79,4 +79,53 @@
  *   command: string,
  *   arguments: !Array<string>,
  * }} PsNodeProcess
+ */
+
+
+/*
+ * colors API
+ */
+
+
+/**
+ * @typedef {(function(string):string|!AnsiColorProps)} AnsiColor
+ */
+
+/**
+ * @typedef {{
+ *   enable: !AnsiColor,
+ *   disable: !AnsiColor,
+ *   strip: !AnsiColor,
+ *   strip: !AnsiColor,
+ *   black: !AnsiColor,
+ *   red: !AnsiColor,
+ *   green: !AnsiColor,
+ *   yellow: !AnsiColor,
+ *   blue: !AnsiColor,
+ *   magenta: !AnsiColor,
+ *   cyan: !AnsiColor,
+ *   white: !AnsiColor,
+ *   gray: !AnsiColor,
+ *   grey: !AnsiColor,
+ *   bgBlack: !AnsiColor,
+ *   bgRed: !AnsiColor,
+ *   bgGreen: !AnsiColor,
+ *   bgYellow: !AnsiColor,
+ *   bgBlue: !AnsiColor,
+ *   bgMagenta: !AnsiColor,
+ *   bgCyan: !AnsiColor,
+ *   bgWhite: !AnsiColor,
+ *   reset: !AnsiColor,
+ *   bold: !AnsiColor,
+ *   dim: !AnsiColor,
+ *   italic: !AnsiColor,
+ *   underline: !AnsiColor,
+ *   inverse: !AnsiColor,
+ *   hidden: !AnsiColor,
+ *   strikethrough: !AnsiColor,
+ *   rainbow: !AnsiColor,
+ *   zebra: !AnsiColor,
+ *   america: !AnsiColor,
+ *   random: !AnsiColor,
+ * }} AnsiColorProps
  */

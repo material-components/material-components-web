@@ -18,104 +18,26 @@
 
 const colors = require('colors/safe');
 const crypto = require('crypto');
-const path = require('path');
 
 const Duration = require('./duration');
 
-/**
- * @typedef {(function(string):string|{
- *   enable: !CliColor,
- *   disable: !CliColor,
- *   strip: !CliColor,
- *   strip: !CliColor,
- *   black: !CliColor,
- *   red: !CliColor,
- *   green: !CliColor,
- *   yellow: !CliColor,
- *   blue: !CliColor,
- *   magenta: !CliColor,
- *   cyan: !CliColor,
- *   white: !CliColor,
- *   gray: !CliColor,
- *   grey: !CliColor,
- *   bgBlack: !CliColor,
- *   bgRed: !CliColor,
- *   bgGreen: !CliColor,
- *   bgYellow: !CliColor,
- *   bgBlue: !CliColor,
- *   bgMagenta: !CliColor,
- *   bgCyan: !CliColor,
- *   bgWhite: !CliColor,
- *   reset: !CliColor,
- *   bold: !CliColor,
- *   dim: !CliColor,
- *   italic: !CliColor,
- *   underline: !CliColor,
- *   inverse: !CliColor,
- *   hidden: !CliColor,
- *   strikethrough: !CliColor,
- *   rainbow: !CliColor,
- *   zebra: !CliColor,
- *   america: !CliColor,
- *   random: !CliColor,
- * })} CliColor
- */
+/** @type {?Date} */
+let lastDebugDate;
 
 class Logger {
-  /**
-   * @param {string} callerFilePath
-   */
-  constructor(callerFilePath) {
+  constructor() {
     /**
-     * @type {string}
+     * @type {!Map<string, number>} Map of fold names to start times (number of milliseconds since the UNIX epoch).
      * @private
      */
-    this.id_ = path.basename(callerFilePath);
-
-    /**
-     * @type {?Logger}
-     * @private
-     */
-    this.parent_ = null;
-
-    /**
-     * @type {!Array<!Logger>}
-     * @private
-     */
-    this.children_ = [];
-
-    /**
-     * @type {!Map<string, number>}
-     * @private
-     */
-    this.foldStartTimesMs_ = new Map();
+    this.foldStartTimeMap_ = new Map();
   }
 
   /**
-   * @return {!CliColor}
+   * @return {!AnsiColor}
    */
   static get colors() {
     return colors;
-  }
-
-  /**
-   * @param {string} id
-   * @return {!Logger}
-   */
-  createChild(id) {
-    const child = new Logger(id);
-    this.addChild(child);
-    return child;
-  }
-
-  /**
-   * @param {!Logger} child
-   */
-  addChild(child) {
-    child.parent_ = this;
-    if (!this.children_.includes(child)) {
-      this.children_.push(child);
-    }
   }
 
   /**
@@ -126,7 +48,7 @@ class Logger {
     const timerId = this.getFoldTimerId_(foldId);
     const colorMessage = colors.bold.yellow(shortMessage);
 
-    this.foldStartTimesMs_.set(foldId, Date.now());
+    this.foldStartTimeMap_.set(foldId, Date.now());
 
     if (!this.isTravisJob_()) {
       console.log('');
@@ -157,7 +79,7 @@ class Logger {
     // https://github.com/travis-ci/docs-travis-ci-com/issues/949#issuecomment-276755003
     console.log(`travis_fold:end:${foldId}`);
 
-    const startMs = this.foldStartTimesMs_.get(foldId);
+    const startMs = this.foldStartTimeMap_.get(foldId);
     if (startMs) {
       const timerId = this.getFoldTimerId_(foldId);
       const startNanos = Duration.millis(startMs).toNanos();
@@ -168,6 +90,25 @@ class Logger {
       // https://github.com/rspec/rspec-support/blob/5a1c6756a9d8322fc18639b982e00196f452974d/script/travis_functions.sh
       console.log(`travis_time:end:${timerId}:start=${startNanos},finish=${finishNanos},duration=${durationNanos}`);
     }
+  }
+
+  /**
+   * @param {*} args
+   */
+  debug(...args) {
+    const nowDate = new Date();
+    if (!lastDebugDate) {
+      lastDebugDate = nowDate;
+    }
+
+    const deltaMsFormatted = (nowDate - lastDebugDate).toLocaleString().padStart(7, ' ');
+    lastDebugDate = nowDate;
+
+    const deltaHumanPlain = `${deltaMsFormatted}ms`;
+    const [, spaces, text] = /^(\s*)(\S+)$/.exec(deltaHumanPlain);
+    const deltaHumanColor = spaces + colors.cyan(text);
+
+    console.log(`[+${deltaHumanColor}]`, ...args);
   }
 
   /**

@@ -19,11 +19,9 @@
 const chokidar = require('chokidar');
 const debounce = require('debounce');
 
-/** @type {!CliColor} */
-const colors = require('colors');
-
 const CleanCommand = require('./clean');
 const Cli = require('../lib/cli');
+const CliColor = require('../lib/logger').colors;
 const IndexCommand = require('./index');
 const Logger = require('../lib/logger');
 const ProcessManager = require('../lib/process-manager');
@@ -32,7 +30,7 @@ const {TEST_DIR_RELATIVE_PATH} = require('../lib/constants');
 
 class BuildCommand {
   constructor() {
-    this.logger_ = new Logger(__filename);
+    this.logger_ = new Logger();
     this.processManager_ = new ProcessManager();
 
     this.cleanCommand_ = new CleanCommand();
@@ -72,7 +70,7 @@ class BuildCommand {
     if (!shouldWatch) {
       this.logger_.log('');
       this.logger_.log('');
-      this.logger_.log(colors.bold.green('✨✨✨ Aww yiss - MDC Web build succeeded! ✨✨✨'));
+      this.logger_.log(CliColor.bold.green('✨✨✨ Aww yiss - MDC Web build succeeded! ✨✨✨'));
       this.logger_.log('');
     }
   }

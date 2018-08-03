@@ -59,7 +59,7 @@ class Controller {
      * @type {!Logger}
      * @private
      */
-    this.logger_ = new Logger(__filename);
+    this.logger_ = new Logger();
 
     /**
      * @type {!ReportBuilder}
