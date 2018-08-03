@@ -19,6 +19,7 @@ import MDCFoundation from '@material/base/foundation';
 import {MDCMenuAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation';
+import MDCListFoundation from '../mdc-list/foundation';
 
 const ELEMENTS_KEY_ALLOWED_IN = ['input', 'button', 'textarea', 'select'];
 
@@ -83,7 +84,7 @@ class MDCMenuFoundation extends MDCFoundation {
 
     const isSpace = key === 'Space' || keyCode === 32;
     const isEnter = key === 'Enter' || keyCode === 13;
-    const isTab = key === 'Tab' || keyCode === 13;
+    const isTab = key === 'Tab' || keyCode === 9;
 
     if (isSpace || isEnter) {
       this.handleAction_(evt);
@@ -172,7 +173,7 @@ class MDCMenuFoundation extends MDCFoundation {
     let isGroup = this.adapter_.elementContainsClass(parent, cssClasses.MENU_SELECTION_GROUP);
 
     // Iterate through ancestors until we find the group or get to the list.
-    while (!isGroup && !this.adapter_.elementContainsClass(parent, cssClasses.LIST_CLASS)) {
+    while (!isGroup && !this.adapter_.elementContainsClass(parent, MDCListFoundation.cssClass.ROOT)) {
       parent = this.adapter_.getParentElement(listItem);
       isGroup = this.adapter_.elementContainsClass(parent, cssClasses.MENU_SELECTION_GROUP);
     }
@@ -191,12 +192,12 @@ class MDCMenuFoundation extends MDCFoundation {
    * @private
    */
   getListItem_(target) {
-    let isListItem = this.adapter_.elementContainsClass(target, cssClasses.LIST_ITEM_CLASS);
+    let isListItem = this.adapter_.elementContainsClass(target, MDCListFoundation.cssClasses.LIST_ITEM_CLASS);
 
     while (!isListItem) {
       target = this.adapter_.getParentElement(target);
       if (target) {
-        isListItem = this.adapter_.elementContainsClass(target, cssClasses.LIST_ITEM_CLASS);
+        isListItem = this.adapter_.elementContainsClass(target, MDCListFoundation.cssClasses.LIST_ITEM_CLASS);
       } else { // target has no parent element.
         return null;
       }

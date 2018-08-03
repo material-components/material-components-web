@@ -23,7 +23,7 @@ or other control.
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/menus.html">Material Design guidelines: Menus</a>
+    <a href="https://material.io/go/design-menus">Material Design guidelines: Menus</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
     <a href="https://material-components.github.io/material-components-web-catalog/#/component/menu">Demo</a>
@@ -41,7 +41,7 @@ npm install @material/menu
 ### HTML Structure
 
 ```html
-<div class="mdc-menu demo-menu" tabindex="-1">
+<div class="mdc-menu" tabindex="-1">
   <ul class="mdc-menu__items mdc-list" role="menu" aria-hidden="true">
     <li class="mdc-list-item" role="menuitem" tabindex="0">
       A Menu Item
@@ -110,6 +110,8 @@ Menus can contain a group of list items that can represent the selection state o
 </div>
 ```
 
+### Anchors and Positioning
+
 #### Anchored To Parent
 
 The menu can be positioned to automatically anchor to a parent element when opened.
@@ -173,34 +175,17 @@ menu.setAbsolutePosition(100, 100);
 CSS Class | Description
 --- | ---
 `mdc-menu` | Required on the root element
-`mdc-menu-surface` | Required on the root element. See `mdc-menu-surface` documentation for other `mdc-menu-surface` classes.
-`mdc-list` | Required on the nested `ul` element. See `mdc-list` documentation for other `mdc-list` classes.
+`mdc-menu-surface` | Required on the root element. See [`mdc-menu-surface` documentation](../mdc-menu-surface) for other `mdc-menu-surface` classes.
+`mdc-list` | Required on the nested `ul` element. See [`mdc-list` documentation](../mdc-list) for other `mdc-list` classes.
 `mdc-menu__selection-group` | Used to wrap a group of `mdc-list-item` elements that will represent a selection group.
 `mdc-menu__selection-group-icon` | Required when using a selection group to indicate which item is selected. Should contain an icon or svg that indicates the selected state of the list item.
 `mdc-menu-item--selected` | Used to indicate which element in a selection group is selected.
-
-
-### Sass Mixins, Variables, and Functions
-
-Mixin | Description
---- | ---
-`mdc-menu-width($width)` | Used to set the `width` of the menu. When used without units (e.g. `4` or `5`) it computes the `width` by multiplying by the base width (`56px`). When used with units (e.g. `240px`, `15%`, or `calc(200px + 10px)` it sets the `width` to the exact value provided.
-
-### CSS Classes
-
-CSS Class | Description
---- | ---
-`mdc-menu` | Mandatory
-`mdc-menu--animating-open` | Indicates the menu is currently animating open. This class is removed once the animation completes.
-`mdc-menu--open` | Indicates the menu is currently open, or is currently animating open.
-`mdc-menu--animating-closed` | Indicates the menu is currently animating closed. This class is removed once the animation completes.
 
 ### Sass Mixins
 
 Mixin | Description
 --- | ---
-`mdc-menu-width($multiplier)` | Used to set the width of the menu. Accepts an integer to multiply the base width of `56px`.
-`mdc-menu-width($value)` | Used to set the width of the menu. Sets the menu width to `$value`. 
+`mdc-menu-width($width)` | Used to set the `width` of the menu. When used without units (e.g. `4` or `5`) it computes the `width` by multiplying by the base width (`56px`). When used with units (e.g. `240px`, `15%`, or `calc(200px + 10px)` it sets the `width` to the exact value provided.
 
 ## `MDCMenu` Properties and Methods
 

@@ -20,13 +20,10 @@ const cssClasses = {
   ROOT: 'mdc-menu',
   MENU_SELECTED_LIST_ITEM: 'mdc-menu-item--selected',
   MENU_SELECTION_GROUP: 'mdc-menu__selection-group',
-  LIST_CLASS: 'mdc-list',
-  LIST_ITEM_CLASS: 'mdc-list-item',
 };
 
 /** @enum {string} */
 const strings = {
-  ITEMS_SELECTOR: '.mdc-list-items',
   SELECTED_EVENT: 'MDCMenu:selected',
   ARIA_SELECTED_ATTR: 'aria-selected',
   LIST_SELECTOR: '.mdc-list',

@@ -17,6 +17,7 @@
 
 /** @enum {string} */
 const cssClasses = {
+  ROOT: 'mdc-list',
   LIST_ITEM_CLASS: 'mdc-list-item',
   LIST_ITEM_SELECTED_CLASS: 'mdc-list-item--selected',
 };
