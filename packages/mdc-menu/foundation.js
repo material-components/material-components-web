@@ -19,7 +19,7 @@ import MDCFoundation from '@material/base/foundation';
 import {MDCMenuAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation';
-import MDCListFoundation from '../mdc-list/foundation';
+import MDCListFoundation from '@material/list/foundation';
 
 const ELEMENTS_KEY_ALLOWED_IN = ['input', 'button', 'textarea', 'select'];
 
@@ -173,7 +173,7 @@ class MDCMenuFoundation extends MDCFoundation {
     let isGroup = this.adapter_.elementContainsClass(parent, cssClasses.MENU_SELECTION_GROUP);
 
     // Iterate through ancestors until we find the group or get to the list.
-    while (!isGroup && !this.adapter_.elementContainsClass(parent, MDCListFoundation.cssClass.ROOT)) {
+    while (!isGroup && !this.adapter_.elementContainsClass(parent, MDCListFoundation.cssClasses.ROOT)) {
       parent = this.adapter_.getParentElement(listItem);
       isGroup = this.adapter_.elementContainsClass(parent, cssClasses.MENU_SELECTION_GROUP);
     }

@@ -21,7 +21,7 @@ import {setupFoundationTest} from '../helpers/setup';
 import {createMockRaf} from '../helpers/raf';
 import lolex from 'lolex';
 import {MDCMenuFoundation} from '../../../packages/mdc-menu/foundation';
-import {cssClasses as listClasses} from '../../../packages/mdc-list/foundation';
+import {cssClasses as listClasses} from '../../../packages/mdc-list/constants';
 import {cssClasses, strings} from '../../../packages/mdc-menu/constants';
 import {numbers} from '../../../packages/mdc-menu-surface/constants';
 

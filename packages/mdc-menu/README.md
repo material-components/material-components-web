@@ -60,10 +60,6 @@ npm install @material/menu
 @import "@material/menu/mdc-menu-surface";
 @import "@material/menu/mdc-menu";
 
-.demo-menu {
-  @include mdc-menu-width(4); // Multiples of 56px
-}
-
 ```
 
 ### JavaScript Instantiation
@@ -71,7 +67,7 @@ npm install @material/menu
 ```js
 import {MDCMenu} from '@material/menu';
 
-const menu = new MDCMenu(document.querySelector('.demo-menu'));
+const menu = new MDCMenu(document.querySelector('.mdc-menu'));
 menu.show();
 
 ```
