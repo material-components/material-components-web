@@ -22,10 +22,18 @@ const simpleGit = require('simple-git/promise');
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
 const {User} = mdcProto;
 
+const Logger = require('./logger');
+
 let hasFetched = false;
 
 class GitRepo {
   constructor(workingDirPath = undefined) {
+    /**
+     * @type {!Logger}
+     * @private
+     */
+    this.logger_ = new Logger();
+
     /**
      * @type {!SimpleGit}
      * @private
@@ -57,7 +65,7 @@ class GitRepo {
     }
     hasFetched = true;
 
-    console.log('Fetching remote git commits...');
+    this.logger_.debug('Fetching remote git commits...');
 
     const prFetchRef = '+refs/pull/*/head:refs/remotes/origin/pr/*';
     const existingFetchRefs = (await this.exec_('raw', ['config', '--get-all', 'remote.origin.fetch'])).split('\n');
@@ -72,6 +80,8 @@ class GitRepo {
       const serialized = JSON.stringify(args);
       throw new VError(err, `Failed to run GitRepo.fetch(${serialized})`);
     }
+
+    this.logger_.debug('Fetched remote git commits!');
   }
 
   /**
@@ -79,7 +89,7 @@ class GitRepo {
    * @return {!Promise<string>}
    */
   async getFullCommitHash(ref = 'HEAD') {
-    const hash = this.exec_('revparse', [ref]);
+    const hash = await this.exec_('revparse', [ref]);
     if (!hash) {
       throw new Error(`Unable to get commit hash for git ref "${ref}"`);
     }
@@ -91,7 +101,7 @@ class GitRepo {
    * @return {!Promise<string>}
    */
   async getBranchName(ref = 'HEAD') {
-    const branch = this.exec_('revparse', ['--abbrev-ref', ref]);
+    const branch = await this.exec_('revparse', ['--abbrev-ref', ref]);
     if (!branch) {
       throw new Error(`Unable to get branch name for git ref "${ref}"`);
     }
@@ -110,7 +120,7 @@ class GitRepo {
    * @return {!Promise<string>}
    */
   async getFullSymbolicName(ref = 'HEAD') {
-    const fullName = this.exec_('revparse', ['--symbolic-full-name', ref]);
+    const fullName = await this.exec_('revparse', ['--symbolic-full-name', ref]);
     if (!fullName) {
       throw new Error(`Unable to get full symbolic name for git ref "${ref}"`);
     }
@@ -125,7 +135,7 @@ class GitRepo {
    */
   async getFileAtRevision(filePath, revision = 'master') {
     try {
-      return this.repo_.show([`${revision}:${filePath}`]);
+      return await this.repo_.show([`${revision}:${filePath}`]);
     } catch (err) {
       const serialized = JSON.stringify(args);
       throw new VError(err, `Failed to run GitRepo.getFileAtRevision(${serialized})`);
@@ -148,7 +158,7 @@ class GitRepo {
    */
   async getStatus() {
     try {
-      return this.repo_.status();
+      return await this.repo_.status();
     } catch (err) {
       throw new VError(err, 'Failed to run GitRepo.getStatus()');
     }
@@ -173,8 +183,25 @@ class GitRepo {
    * @return {!Promise<!Array<string>>}
    */
   async getIgnoredPaths(filePaths) {
+    this.logger_.debug(`Finding files ignored by git from ${filePaths.length.toLocaleString()} paths...`);
+    const batchSize = 1000;
+    const allIgnoredPaths = [];
+    // If we try to pass too many file paths to git, glibc throws "Error: spawn E2BIG".
+    for (let i = 0; i < filePaths.length; i += batchSize) {
+      const curIgnoredPaths = await this.getIgnoredPathsImpl_(filePaths.slice(i, i + batchSize));
+      allIgnoredPaths.push(...curIgnoredPaths);
+    }
+    this.logger_.debug(`Found ${allIgnoredPaths.length.toLocaleString()} file paths ignored by git!`);
+    return allIgnoredPaths;
+  }
+
+  /**
+   * @param {!Array<string>} filePaths
+   * @return {!Promise<!Array<string>>}
+   */
+  async getIgnoredPathsImpl_(filePaths) {
     try {
-      return this.repo_.checkIgnore(filePaths);
+      return await this.repo_.checkIgnore(filePaths);
     } catch (err) {
       throw new VError(err, `Unable to check gitignore status of ${filePaths.length} file paths`);
     }
