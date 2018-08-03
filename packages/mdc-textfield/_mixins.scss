@@ -326,10 +326,7 @@
   // Text Field Box intentionally omits press ripple, so each state needs to be specified individually
   @include mdc-states-base-color($mdc-text-field-ink-color);
   @include mdc-states-hover-opacity(mdc-states-opacity($mdc-text-field-ink-color, hover));
-  @include mdc-states-focus-opacity(
-    mdc-states-opacity($mdc-text-field-ink-color, focus),
-    $has-nested-focusable-element: true
-  );
+  @include mdc-states-focus-opacity(mdc-states-opacity($mdc-text-field-ink-color, focus));
   @include mdc-ripple-radius-bounded;
   @include mdc-text-field-box-corner-radius($mdc-text-field-border-radius);
   @include mdc-text-field-box-fill-color($mdc-text-field-box-background);
