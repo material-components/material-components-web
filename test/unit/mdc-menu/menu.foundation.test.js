@@ -21,7 +21,7 @@ import {setupFoundationTest} from '../helpers/setup';
 import {createMockRaf} from '../helpers/raf';
 import lolex from 'lolex';
 import {MDCMenuFoundation} from '../../../packages/mdc-menu/foundation';
-import {cssClasses as listClasses} from '../../../packages/mdc-list/constants';
+import MDCListFoundation from '../../../packages/mdc-list/foundation';
 import {cssClasses, strings} from '../../../packages/mdc-menu/constants';
 import {numbers} from '../../../packages/mdc-menu-surface/constants';
 
@@ -30,6 +30,8 @@ function setupTest() {
   const mockRaf = createMockRaf();
   return {foundation, mockAdapter, mockRaf};
 }
+
+const listClasses = MDCListFoundation.cssClasses;
 
 suite('MDCMenuFoundation');
 
@@ -272,7 +274,7 @@ test('handleKeydown space/enter key inside of a child element of a selection gro
   td.when(mockAdapter.getElementIndex(key.target)).thenReturn(0);
   td.when(mockAdapter.getParentElement(key.target)).thenReturn(key.target);
   td.when(mockAdapter.elementContainsClass(key.target, cssClasses.MENU_SELECTION_GROUP)).thenReturn(false);
-  td.when(mockAdapter.elementContainsClass(key.target, cssClasses.LIST_CLASS)).thenReturn(false, true);
+  td.when(mockAdapter.elementContainsClass(key.target, listClasses.ROOT)).thenReturn(false, true);
   td.when(mockAdapter.getSelectedElementIndex(key.target)).thenReturn(-1);
 
   foundation.handleKeydown(key);
@@ -467,7 +469,7 @@ test('Click event inside of a child element of a selection group (but not a list
   td.when(mockAdapter.getElementIndex(key.target)).thenReturn(0);
   td.when(mockAdapter.getParentElement(key.target)).thenReturn(key.target);
   td.when(mockAdapter.elementContainsClass(key.target, cssClasses.MENU_SELECTION_GROUP)).thenReturn(false);
-  td.when(mockAdapter.elementContainsClass(key.target, cssClasses.LIST_CLASS)).thenReturn(false, true);
+  td.when(mockAdapter.elementContainsClass(key.target, listClasses.ROOT)).thenReturn(false, true);
   td.when(mockAdapter.getSelectedElementIndex(key.target)).thenReturn(-1);
 
   foundation.handleClick(key);
