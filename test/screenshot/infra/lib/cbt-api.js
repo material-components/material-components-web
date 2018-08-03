@@ -445,7 +445,7 @@ https://crossbrowsertesting.com/account
     if (this.cli_.isOffline()) {
       console.warn(
         `${CliColor.magenta('WARNING')}:`,
-        new Error('CbtApi#sendRequest_() should not be called in --offline mode')
+        new Error('CbtApi.sendRequest_() should not be called in --offline mode')
       );
       return [];
     }

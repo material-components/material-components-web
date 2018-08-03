@@ -128,7 +128,7 @@ class ReportBuilder {
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async initForCapture(goldenDiffBase) {
-    this.logger_.foldStart('screenshot.init', 'ReportBuilder#initForCapture()');
+    this.logger_.foldStart('screenshot.init', 'ReportBuilder.initForCapture()');
 
     if (this.cli_.isOnline()) {
       await this.cbtApi_.fetchAvailableDevices();
