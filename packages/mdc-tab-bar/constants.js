@@ -20,19 +20,23 @@ const strings = {
   TAB_ACTIVATED_EVENT: 'MDCTabBar:activated',
   TAB_SCROLLER_SELECTOR: '.mdc-tab-scroller',
   TAB_SELECTOR: '.mdc-tab',
-  END_KEY: 'End',
-  HOME_KEY: 'Home',
   ARROW_LEFT_KEY: 'ArrowLeft',
   ARROW_RIGHT_KEY: 'ArrowRight',
+  END_KEY: 'End',
+  ENTER_KEY: 'Enter',
+  HOME_KEY: 'Home',
+  SPACE_KEY: 'Space',
 };
 
 /** @enum {number} */
 const numbers = {
   EXTRA_SCROLL_AMOUNT: 20,
-  END_KEYCODE: 35,
-  HOME_KEYCODE: 36,
   ARROW_LEFT_KEYCODE: 37,
   ARROW_RIGHT_KEYCODE: 39,
+  END_KEYCODE: 35,
+  HOME_KEYCODE: 36,
+  ENTER_KEYCODE: 13,
+  SPACE_KEYCODE: 32,
 };
 
 export {
