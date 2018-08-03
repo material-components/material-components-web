@@ -25,7 +25,7 @@ class GitHubApi {
   constructor() {
     this.gitRepo_ = new GitRepo();
     this.octokit_ = octokit();
-    this.isTravis_ = process.env.TRAVIS !== 'true';
+    this.isTravis_ = process.env.TRAVIS === 'true';
     this.isAuthenticated_ = false;
     this.authenticate_();
     this.initStatusThrottle_();
