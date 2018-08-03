@@ -127,13 +127,15 @@ class BuildCommand {
   async shouldBuild_() {
     const cli = new Cli();
     if (cli.skipBuild) {
-      console.error('Skipping build step');
+      console.error(CliColor.magenta('Skipping build step.'));
+      console.error('');
       return false;
     }
 
     const pid = await this.getExistingProcessId_();
     if (pid) {
-      console.log(`Build is already running (pid ${pid})`);
+      console.log(CliColor.bold(`Build is already running (pid ${pid}).`));
+      console.log('');
       return false;
     }
 

@@ -51,8 +51,6 @@ class Logger {
    * @param {string} shortMessage
    */
   foldStart(foldId, shortMessage) {
-    console.log('');
-
     if (this.isTravis_) {
       const timerId = this.getFoldTimerId_(foldId);
       this.foldStartTimeMap_.set(foldId, Date.now());

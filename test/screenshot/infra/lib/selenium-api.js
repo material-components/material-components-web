@@ -170,6 +170,7 @@ class SeleniumApi {
     }
 
     console.log('');
+    console.log('');
 
     return reportData;
   }
