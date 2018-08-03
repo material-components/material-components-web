@@ -51,25 +51,20 @@ class Logger {
    * @param {string} shortMessage
    */
   foldStart(foldId, shortMessage) {
-    const timerId = this.getFoldTimerId_(foldId);
-    const colorMessage = colors.bold.yellow(shortMessage);
+    console.log('');
 
-    this.foldStartTimeMap_.set(foldId, Date.now());
+    if (this.isTravis_) {
+      const timerId = this.getFoldTimerId_(foldId);
+      this.foldStartTimeMap_.set(foldId, Date.now());
 
-    if (!this.isTravis_) {
-      console.log('');
-      console.log(colorMessage);
-      console.log(colors.reset(''));
-      return;
+      // Undocumented Travis CI job logging feature. See:
+      // https://github.com/travis-ci/docs-travis-ci-com/issues/949#issuecomment-276755003
+      // https://github.com/rspec/rspec-support/blob/5a1c6756a9d8322fc18639b982e00196f452974d/script/travis_functions.sh
+      console.log(`travis_fold:start:${foldId}`);
+      console.log(`travis_time:start:${timerId}`);
     }
 
-    // Undocumented Travis CI job logging features. See:
-    // https://github.com/travis-ci/docs-travis-ci-com/issues/949#issuecomment-276755003
-    // https://github.com/rspec/rspec-support/blob/5a1c6756a9d8322fc18639b982e00196f452974d/script/travis_functions.sh
-    console.log('');
-    console.log(`travis_fold:start:${foldId}`);
-    console.log(`travis_time:start:${timerId}`);
-    console.log(colorMessage);
+    console.log(colors.bold.yellow(shortMessage));
     console.log(colors.reset(''));
   }
 
@@ -86,16 +81,18 @@ class Logger {
     console.log(`travis_fold:end:${foldId}`);
 
     const startMs = this.foldStartTimeMap_.get(foldId);
-    if (startMs) {
-      const timerId = this.getFoldTimerId_(foldId);
-      const startNanos = Duration.millis(startMs).toNanos();
-      const finishNanos = Duration.millis(Date.now()).toNanos();
-      const durationNanos = finishNanos - startNanos;
-
-      // Undocumented Travis CI job logging feature. See:
-      // https://github.com/rspec/rspec-support/blob/5a1c6756a9d8322fc18639b982e00196f452974d/script/travis_functions.sh
-      console.log(`travis_time:end:${timerId}:start=${startNanos},finish=${finishNanos},duration=${durationNanos}`);
+    if (!startMs) {
+      return;
     }
+
+    const timerId = this.getFoldTimerId_(foldId);
+    const startNanos = Duration.millis(startMs).toNanos();
+    const finishNanos = Duration.millis(Date.now()).toNanos();
+    const durationNanos = finishNanos - startNanos;
+
+    // Undocumented Travis CI job logging feature. See:
+    // https://github.com/rspec/rspec-support/blob/5a1c6756a9d8322fc18639b982e00196f452974d/script/travis_functions.sh
+    console.log(`travis_time:end:${timerId}:start=${startNanos},finish=${finishNanos},duration=${durationNanos}`);
   }
 
   /**
