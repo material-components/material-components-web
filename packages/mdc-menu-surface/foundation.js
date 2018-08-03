@@ -80,10 +80,6 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
       removeClass: () => {},
       hasClass: () => false,
       hasAnchor: () => false,
-      registerInteractionHandler: () => {},
-      deregisterInteractionHandler: () => {},
-      registerBodyClickHandler: () => {},
-      deregisterBodyClickHandler: () => {},
       notifyClose: () => {},
       notifyOpen: () => {},
       isElementInContainer: () => false,
@@ -110,10 +106,6 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
   constructor(adapter) {
     super(Object.assign(MDCMenuSurfaceFoundation.defaultAdapter, adapter));
 
-    /** @private {function(!Event)} */
-    this.keydownHandler_ = (evt) => this.handleKeyboardDown(evt);
-    /** @private {function(!Event)} */
-    this.documentClickHandler_ = (evt) => this.handleDocumentClick(evt);
     /** @private {boolean} */
     this.isOpen_ = false;
     /** @private {number} */
@@ -150,8 +142,6 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     if (this.adapter_.hasClass(OPEN)) {
       this.isOpen_ = true;
     }
-
-    this.adapter_.registerInteractionHandler('keydown', this.keydownHandler_);
   }
 
   destroy() {
@@ -159,8 +149,6 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     clearTimeout(this.closeAnimationEndTimerId_);
     // Cancel any currently running animations.
     cancelAnimationFrame(this.animationRequestId_);
-    this.adapter_.deregisterInteractionHandler('keydown', this.keydownHandler_);
-    this.adapter_.deregisterBodyClickHandler(this.documentClickHandler_);
   }
 
   /**
@@ -231,7 +219,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
    * @param {!Event} evt
    * @private
    */
-  handleKeyboardDown(evt) {
+  handleKeydown(evt) {
     const {keyCode, key, shiftKey} = evt;
 
     const isEscape = key === 'Escape' || keyCode === 27;
@@ -500,7 +488,6 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
       this.adapter_.addClass(MDCMenuSurfaceFoundation.cssClasses.OPEN);
       this.dimensions_ = this.adapter_.getInnerDimensions();
       this.autoPosition_();
-      this.adapter_.registerBodyClickHandler(this.documentClickHandler_);
       if (this.quickOpen_) {
         this.adapter_.notifyOpen();
       } else {
@@ -518,8 +505,6 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
    * Closes the menu surface.
    */
   close() {
-    this.adapter_.deregisterBodyClickHandler(this.documentClickHandler_);
-
     if (!this.quickOpen_) {
       this.adapter_.addClass(MDCMenuSurfaceFoundation.cssClasses.ANIMATING_CLOSED);
     }

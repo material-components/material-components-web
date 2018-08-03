@@ -37,6 +37,14 @@ class MDCMenuSurface extends MDCComponent {
     this.firstFocusableElement_;
     /** @private {Element} */
     this.lastFocusableElement_;
+    /** @private {function(!Event)} */
+    this.keydownHandler_;
+    /** @private {function(!Event)} */
+    this.documentClickHandler_;
+    /** @private {function()} */
+    this.registerEvents_;
+    /** @private {function()} */
+    this.deregisterEvents_;
   }
 
   /**
@@ -48,9 +56,23 @@ class MDCMenuSurface extends MDCComponent {
   }
 
   initialSyncWithDOM() {
+    this.keydownHandler_ = (evt) => this.foundation_.handleKeydown(evt);
+    this.documentClickHandler_ = (evt) => this.foundation_.handleDocumentClick(evt);
+    this.registerEvents_ = () => this.registerListeners_();
+    this.deregisterEvents_ = () => this.deregisterEventListeners_();
+
+    this.root_.addEventListener(strings.OPENED_EVENT, this.registerEvents_);
+    this.root_.addEventListener(strings.CLOSED_EVENT, this.deregisterEvents_);
+
     if (this.root_.parentElement && this.root_.parentElement.classList.contains(cssClasses.ANCHOR)) {
       this.anchorElement = this.root_.parentElement;
     }
+  }
+
+  destroy() {
+    this.root_.removeEventListener(strings.OPENED_EVENT, this.registerEvents_);
+    this.root_.removeEventListener(strings.CLOSED_EVENT, this.deregisterEvents_);
+    this.deregisterEventListeners_();
   }
 
   /** @return {boolean} */
@@ -63,7 +85,7 @@ class MDCMenuSurface extends MDCComponent {
     if (value) {
       this.show();
     } else {
-      this.foundation_.close();
+      this.hide();
     }
   }
 
@@ -71,11 +93,23 @@ class MDCMenuSurface extends MDCComponent {
     const focusableElements = this.root_.querySelectorAll(strings.FOCUSABLE_ELEMENTS);
     this.firstFocusableElement_ = focusableElements.length > 0 ? focusableElements[0] : null;
     this.lastFocusableElement_ = focusableElements.length > 0 ? focusableElements[focusableElements.length - 1] : null;
+
+    // Register event listeners
     this.foundation_.open();
   }
 
   hide() {
     this.foundation_.close();
+  }
+
+  registerListeners_() {
+    this.root_.addEventListener('keydown', this.keydownHandler_);
+    document.body.addEventListener('click', this.documentClickHandler_);
+  }
+
+  deregisterEventListeners_() {
+    this.root_.removeEventListener('keydown', this.keydownHandler_);
+    document.body.removeEventListener('click', this.documentClickHandler_);
   }
 
   /**
@@ -156,10 +190,6 @@ class MDCMenuSurface extends MDCComponent {
         removeClass: (className) => this.root_.classList.remove(className),
         hasClass: (className) => this.root_.classList.contains(className),
         hasAnchor: () => !!this.anchorElement,
-        registerInteractionHandler: (type, handler) => this.root_.addEventListener(type, handler),
-        deregisterInteractionHandler: (type, handler) => this.root_.removeEventListener(type, handler),
-        registerBodyClickHandler: (handler) => document.body.addEventListener('click', handler),
-        deregisterBodyClickHandler: (handler) => document.body.removeEventListener('click', handler),
         notifyClose: () => this.emit(MDCMenuSurfaceFoundation.strings.CLOSED_EVENT, {}),
         notifyOpen: () => this.emit(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, {}),
         isElementInContainer: (el) => this.root_ === el || this.root_.contains(el),

@@ -51,6 +51,29 @@ test('attachTo initializes and returns a MDCMenuSurface instance', () => {
   assert.isTrue(MDCMenuSurface.attachTo(getFixture()) instanceof MDCMenuSurface);
 });
 
+test('initializing registers the event listeners on the menu-surface', () => {
+  const {root, mockFoundation} = setupTest();
+  document.body.appendChild(root);
+  domEvents.emit(root, strings.OPENED_EVENT);
+  domEvents.emit(document.body, 'click');
+  domEvents.emit(root, 'keydown');
+  td.verify(mockFoundation.handleDocumentClick(td.matchers.anything()), {times: 1});
+  td.verify(mockFoundation.handleKeydown(td.matchers.anything()), {times: 1});
+  document.body.removeChild(root);
+});
+
+test('destroy deregisters the event listeners from the menu-surface and body', () => {
+  const {root, component, mockFoundation} = setupTest();
+  document.body.appendChild(root);
+  domEvents.emit(root, strings.OPENED_EVENT);
+  component.destroy();
+  domEvents.emit(document.body, 'click');
+  domEvents.emit(root, 'keydown');
+  td.verify(mockFoundation.handleDocumentClick(td.matchers.anything()), {times: 0});
+  td.verify(mockFoundation.handleKeydown(td.matchers.anything()), {times: 0});
+  document.body.removeChild(root);
+});
+
 test('get/set open', () => {
   const {component, mockFoundation} = setupTest();
   td.when(mockFoundation.isOpen()).thenReturn(true);
@@ -180,42 +203,6 @@ test('adapter#getInnerDimensions returns the dimensions of the container', () =>
   const {root, component} = setupTest();
   assert.equal(component.getDefaultFoundation().adapter_.getInnerDimensions().width, root.offsetWidth);
   assert.equal(component.getDefaultFoundation().adapter_.getInnerDimensions().height, root.offsetHeight);
-});
-
-test('adapter#registerInteractionHandler proxies to addEventListener', () => {
-  const {root, component} = setupTest();
-  const handler = td.func('interactionHandler');
-  component.getDefaultFoundation().adapter_.registerInteractionHandler('foo', handler);
-  domEvents.emit(root, 'foo');
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('adapter#deregisterInteractionHandler proxies to removeEventListener', () => {
-  const {root, component} = setupTest();
-  const handler = td.func('interactionHandler');
-  root.addEventListener('foo', handler);
-  component.getDefaultFoundation().adapter_.deregisterInteractionHandler('foo', handler);
-  domEvents.emit(root, 'foo');
-  td.verify(handler(td.matchers.anything()), {times: 0});
-});
-
-test('adapter#registerBodyClickHandler proxies to addEventListener', () => {
-  const {component} = setupTest();
-  const handler = td.func('interactionHandler');
-
-  component.getDefaultFoundation().adapter_.registerBodyClickHandler(handler);
-  domEvents.emit(document.body, 'click');
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('adapter#deregisterBodyClickHandler proxies to removeEventListener', () => {
-  const {component} = setupTest();
-  const handler = td.func('interactionHandler');
-
-  document.body.addEventListener('click', handler);
-  component.getDefaultFoundation().adapter_.deregisterBodyClickHandler(handler);
-  domEvents.emit(document.body, 'click');
-  td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
 test(`adapter#notifyClose fires an ${strings.CLOSED_EVENT} custom event`, () => {

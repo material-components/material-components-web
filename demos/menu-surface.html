@@ -238,7 +238,6 @@
             menu.hoistMenuToBody();
             hoistMenu.checked = true;
             hoistMenu.disabled = true;
-            fixedPosition.disabled = true;
           } else {
             menu.setMenuSurfaceAnchorElement(menuButtonEl.parentElement);
             hoistMenu.checked = false;
@@ -246,7 +245,6 @@
             event.initEvent("change", false, true);
             hoistMenu.dispatchEvent(event);
             hoistMenu.disabled = false;
-            fixedPosition.disabled = false;
           }
         });
 
@@ -268,8 +266,9 @@
         });
 
         var animation = document.querySelector('input[name="animation"]');
-        animation.addEventListener('change', function(evt) {
-          menu.quickOpen = evt.target.checked;
+        animation.addEventListener('change', function() {
+          menu.quickOpen = animation.checked;
+          contextMenu.quickOpen = animation.checked;
         });
 
         var radios = document.querySelectorAll('input[name="position"]');

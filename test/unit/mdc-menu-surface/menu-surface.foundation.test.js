@@ -95,8 +95,7 @@ test('exports MenuSurfaceCorner', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCMenuSurfaceFoundation, [
-    'addClass', 'removeClass', 'hasClass', 'hasAnchor', 'registerInteractionHandler', 'deregisterInteractionHandler',
-    'registerBodyClickHandler', 'deregisterBodyClickHandler', 'notifyClose', 'notifyOpen', 'isElementInContainer',
+    'addClass', 'removeClass', 'hasClass', 'hasAnchor', 'notifyClose', 'notifyOpen', 'isElementInContainer',
     'isRtl', 'setTransformOrigin', 'isFocused', 'saveFocus', 'restoreFocus', 'isFirstElementFocused',
     'isLastElementFocused', 'focusFirstElement', 'focusLastElement', 'getInnerDimensions', 'getAnchorDimensions',
     'getWindowDimensions', 'getBodyDimensions', 'getWindowScroll', 'setPosition', 'setMaxHeight',
@@ -153,6 +152,14 @@ testFoundation('#open emits the open event at the end of the animation',
     clock.tick(numbers.TRANSITION_OPEN_DURATION);
     mockRaf.flush();
     td.verify(mockAdapter.notifyOpen());
+  });
+
+testFoundation('#open emits the open event at the end of the animation when quickOpen is true',
+  ({foundation, mockAdapter, mockRaf}) => {
+    foundation.setQuickOpen(true);
+    foundation.open();
+    mockRaf.flush();
+    td.verify(mockAdapter.notifyOpen(), {times: 1});
   });
 
 /** Testing various layout cases for autopositioning */
@@ -509,12 +516,15 @@ testFoundation('#close adds the animation class to start an animation', ({founda
   td.verify(mockAdapter.addClass(cssClasses.ANIMATING_CLOSED));
 });
 
-testFoundation('#close does not add animation class if quickOpen is set to true', ({foundation, mockAdapter}) => {
-  foundation.setQuickOpen(true);
-  foundation.close();
-  td.verify(mockAdapter.addClass(cssClasses.ANIMATING_CLOSED), {times: 0});
-  td.verify(mockAdapter.removeClass(cssClasses.ANIMATING_CLOSED), {times: 0});
-});
+testFoundation('#close does not add animation class if quickOpen is set to true',
+  ({foundation, mockAdapter, mockRaf}) => {
+    foundation.setQuickOpen(true);
+    foundation.close();
+    mockRaf.flush();
+    td.verify(mockAdapter.addClass(cssClasses.ANIMATING_CLOSED), {times: 0});
+    td.verify(mockAdapter.removeClass(cssClasses.ANIMATING_CLOSED), {times: 0});
+    td.verify(mockAdapter.notifyClose());
+  });
 
 testFoundation('#close removes the open class from the menu surface', ({foundation, mockAdapter, mockRaf}) => {
   foundation.close();
@@ -579,13 +589,12 @@ test('#isOpen returns false when the menu surface is initiated without the open 
 
 test('on escape keydown closes the menu surface and sends close event', () => {
   const {foundation, mockAdapter} = setupTest();
-  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
   const raf = createMockRaf();
   const target = {};
 
   foundation.init();
-  handlers.keydown({target, key: 'Escape'});
+  foundation.handleKeydown({target, key: 'Escape'});
   raf.flush();
   clock.tick(numbers.TRANSITION_CLOSE_DURATION);
   td.verify(mockAdapter.removeClass(cssClasses.OPEN));
@@ -598,14 +607,13 @@ test('on escape keydown closes the menu surface and sends close event', () => {
 
 test('on Tab keydown on the last element, it moves to the first', () => {
   const {foundation, mockAdapter} = setupTest();
-  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
   const raf = createMockRaf();
   const target = {};
   td.when(mockAdapter.isLastElementFocused()).thenReturn(true);
 
   foundation.init();
-  handlers.keydown({target, key: 'Tab', preventDefault: () => {}});
+  foundation.handleKeydown({target, key: 'Tab', preventDefault: () => {}});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
   raf.flush();
   td.verify(mockAdapter.focusFirstElement());
@@ -616,14 +624,13 @@ test('on Tab keydown on the last element, it moves to the first', () => {
 
 test('on Shift+Tab keydown on the first element, it moves to the last', () => {
   const {foundation, mockAdapter} = setupTest();
-  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
   const clock = lolex.install();
   const raf = createMockRaf();
   const target = {};
   td.when(mockAdapter.isFirstElementFocused()).thenReturn(true);
 
   foundation.init();
-  handlers.keydown({target, key: 'Tab', shiftKey: true, preventDefault: () => {}});
+  foundation.handleKeydown({target, key: 'Tab', shiftKey: true, preventDefault: () => {}});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
   raf.flush();
   td.verify(mockAdapter.focusLastElement(), {times: 1});
@@ -633,15 +640,14 @@ test('on Shift+Tab keydown on the first element, it moves to the last', () => {
 });
 
 test('on any other keydown event, do not prevent default on the event', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+  const {foundation} = setupTest();
   const clock = lolex.install();
   const raf = createMockRaf();
   const target = {};
   const preventDefault = td.func('event.preventDefault');
 
   foundation.init();
-  handlers.keydown({target, key: 'Foo', preventDefault});
+  foundation.handleKeydown({target, key: 'Foo', preventDefault});
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
   raf.flush();
   td.verify(preventDefault(), {times: 0});
@@ -658,10 +664,7 @@ test('on document click closes the menu surface', () => {
     target: {},
   };
   const clock = lolex.install();
-  let documentClickHandler;
-  td.when(mockAdapter.registerBodyClickHandler(td.matchers.isA(Function))).thenDo((handler) => {
-    documentClickHandler = handler;
-  });
+  const documentClickHandler = (evt) => foundation.handleDocumentClick(evt);
 
   td.when(mockAdapter.hasClass(MDCMenuSurfaceFoundation.cssClasses.OPEN)).thenReturn(true);
   td.when(mockAdapter.isElementInContainer(td.matchers.anything())).thenReturn(false);
@@ -686,10 +689,8 @@ test('on menu surface click does not emit close', () => {
   const mockEvt = {
     target: {},
   };
-  let documentClickHandler;
-  td.when(mockAdapter.registerBodyClickHandler(td.matchers.isA(Function))).thenDo((handler) => {
-    documentClickHandler = handler;
-  });
+  const documentClickHandler = (evt) => foundation.handleDocumentClick(evt);
+
   td.when(mockAdapter.isElementInContainer(td.matchers.anything())).thenReturn(true);
 
   foundation.init();
@@ -712,8 +713,34 @@ testFoundation('should cancel animation after destroy', ({foundation, mockAdapte
   mockRaf.flush();
   mockRaf.flush();
 
-  td.verify(
-    mockAdapter.setPosition(td.matchers.anything()),
-    {times: 0}
+  td.verify(mockAdapter.setPosition(td.matchers.anything()), {times: 0}
   );
 });
+
+testFoundation('should restore focus to previous element if focus is within the menu when the menu is closed',
+  ({foundation, mockAdapter, mockRaf}) => {
+    const clock = lolex.install();
+    foundation.init();
+    foundation.open();
+    td.when(mockAdapter.isFocused()).thenReturn(true);
+    foundation.close();
+    clock.tick(numbers.TRANSITION_CLOSE_DURATION);
+    mockRaf.flush();
+
+    td.verify(mockAdapter.restoreFocus(), {times: 1}
+    );
+  });
+
+testFoundation('should not restore focus to previous element if focus is within the menu when the menu is closed',
+  ({foundation, mockAdapter, mockRaf}) => {
+    const clock = lolex.install();
+    foundation.init();
+    foundation.open();
+    td.when(mockAdapter.isFocused()).thenReturn(false);
+    foundation.close();
+    clock.tick(numbers.TRANSITION_CLOSE_DURATION);
+    mockRaf.flush();
+
+    td.verify(mockAdapter.restoreFocus(), {times: 0}
+    );
+  });

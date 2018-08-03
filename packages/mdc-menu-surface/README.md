@@ -150,7 +150,7 @@ Method Signature | Description
 `setFixedPosition(isFixed: boolean) => void` | Sets whether the menu surface is using fixed positioning.
 `setAbsolutePosition(x: number, y: numnber) => void` | Sets the absolute x/y position of the menu. Should only be used when the menu is hoisted or using fixed positioning.
 `handleDocumentClick(event: Event) => void` | Method used as the callback function for the `click` event.
-`handleKeyboardDown(event: Event) => void` | Method used as the callback function for the `keydown` events.
+`handleKeydown(event: Event) => void` | Method used as the callback function for the `keydown` events.
 `open() => void` | Opens the menu surface. Optionally accepts an object with a `focusIndex` parameter to indicate which element should receive focus when the menu surface is opened.
 `close()` | Closes the menu.
 `isOpen() => boolean` | Returns a boolean indicating whether the menu surface is open.
