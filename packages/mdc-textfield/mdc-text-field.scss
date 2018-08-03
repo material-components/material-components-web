@@ -188,7 +188,8 @@
   }
 
   .mdc-text-field--box + &,
-  .mdc-text-field--outlined + & {
+  .mdc-text-field--outlined + &,
+  .mdc-text-field--textarea + & {
     margin-right: 16px;
     margin-left: 16px;
   }
