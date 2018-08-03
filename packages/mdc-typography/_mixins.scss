@@ -42,13 +42,14 @@
 }
 
 @mixin mdc-typography-baseline-top($distance) {
-  display: flex;
-  align-items: baseline;
+  display: block;
   margin-top: 0;
   line-height: normal;
 
   &::before {
     @include mdc-typography-baseline-strut_($distance);
+
+    vertical-align: 0;
   }
 }
 
@@ -58,12 +59,12 @@
   &::after {
     @include mdc-typography-baseline-strut_($distance);
 
-    align-items: flex-start;
+    vertical-align: -1 * $distance;
   }
 }
 
 @mixin mdc-typography-baseline-strut_($distance) {
-  display: inline-flex;
+  display: inline-block;
   width: 0;
   height: $distance;
   content: "";
