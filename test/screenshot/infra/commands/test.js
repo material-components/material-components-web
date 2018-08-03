@@ -41,7 +41,7 @@ class TestCommand {
     this.diffBaseParser_ = new DiffBaseParser();
     this.gitHubApi_ = new GitHubApi();
     this.imageDiffer_ = new ImageDiffer();
-    this.logger_ = new Logger(__filename);
+    this.logger_ = new Logger();
   }
 
   /**
