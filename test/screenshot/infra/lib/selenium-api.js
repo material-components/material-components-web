@@ -19,7 +19,6 @@
 const Jimp = require('jimp');
 const VError = require('verror');
 const UserAgentParser = require('useragent');
-const colors = require('colors/safe');
 const path = require('path');
 
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
@@ -32,6 +31,7 @@ const {RawCapabilities} = seleniumProto;
 
 const CbtApi = require('./cbt-api');
 const Cli = require('./cli');
+const CliColor = require('./logger').colors;
 const Constants = require('./constants');
 const Duration = require('./duration');
 const GitHubApi = require('./github-api');
@@ -50,21 +50,21 @@ const {SELENIUM_FONT_LOAD_WAIT_MS} = Constants;
  */
 
 const CliStatuses = {
-  ACTIVE: {name: 'Active', color: colors.bold.cyan},
-  QUEUED: {name: 'Queued', color: colors.cyan},
-  WAITING: {name: 'Waiting', color: colors.magenta},
-  STARTING: {name: 'Starting', color: colors.green},
-  STARTED: {name: 'Started', color: colors.bold.green},
-  GET: {name: 'Get', color: colors.bold.white},
-  CROP: {name: 'Crop', color: colors.white},
-  PASS: {name: 'Pass', color: colors.green},
-  ADD: {name: 'Add', color: colors.bgGreen.black},
-  FAIL: {name: 'Fail', color: colors.red},
-  RETRY: {name: 'Retry', color: colors.magenta},
-  CAPTURED: {name: 'Captured', color: colors.bold.grey},
-  FINISHED: {name: 'Finished', color: colors.bold.green},
-  FAILED: {name: 'Failed', color: colors.bold.red},
-  QUITTING: {name: 'Quitting', color: colors.white},
+  ACTIVE: {name: 'Active', color: CliColor.bold.cyan},
+  QUEUED: {name: 'Queued', color: CliColor.cyan},
+  WAITING: {name: 'Waiting', color: CliColor.magenta},
+  STARTING: {name: 'Starting', color: CliColor.green},
+  STARTED: {name: 'Started', color: CliColor.bold.green},
+  GET: {name: 'Get', color: CliColor.bold.white},
+  CROP: {name: 'Crop', color: CliColor.white},
+  PASS: {name: 'Pass', color: CliColor.green},
+  ADD: {name: 'Add', color: CliColor.bgGreen.black},
+  FAIL: {name: 'Fail', color: CliColor.red},
+  RETRY: {name: 'Retry', color: CliColor.magenta},
+  CAPTURED: {name: 'Captured', color: CliColor.bold.grey},
+  FINISHED: {name: 'Finished', color: CliColor.bold.green},
+  FAILED: {name: 'Failed', color: CliColor.bold.red},
+  QUITTING: {name: 'Quitting', color: CliColor.white},
 };
 
 class SeleniumApi {
@@ -170,6 +170,7 @@ class SeleniumApi {
     }
 
     console.log('');
+    console.log('');
 
     return reportData;
   }
@@ -249,7 +250,7 @@ class SeleniumApi {
     });
 
     if (logEntries.length > 0) {
-      const messageColor = colors.bold.red('Browser console log:');
+      const messageColor = CliColor.bold.red('Browser console log:');
       console.log(`\n\n${messageColor}\n`, JSON.stringify(logEntries, null, 2), '\n');
     }
   }
@@ -523,14 +524,11 @@ class SeleniumApi {
           changedScreenshots.push(screenshot);
           this.numChanged_++;
           this.logStatus_(CliStatuses.FAIL, message);
+        } else if (screenshot.inclusion_type === InclusionType.ADD) {
+          this.logStatus_(CliStatuses.ADD, message);
         } else {
           unchangedScreenshots.push(screenshot);
-
-          if (screenshot.inclusion_type === InclusionType.ADD) {
-            this.logStatus_(CliStatuses.ADD, message);
-          } else {
-            this.logStatus_(CliStatuses.PASS, message);
-          }
+          this.logStatus_(CliStatuses.PASS, message);
         }
       }
     }
@@ -785,9 +783,9 @@ class SeleniumApi {
     const percent = (total === 0 ? 0 : (100 * completed / total).toFixed(1));
 
     const colorCaptured = CliStatuses.CAPTURED.color(CliStatuses.CAPTURED.name.toUpperCase());
-    const colorCompleted = colors.bold.white(completed.toLocaleString());
-    const colorTotal = colors.bold.white(total.toLocaleString());
-    const colorPercent = colors.bold.white(`${percent}%`);
+    const colorCompleted = CliColor.bold.white(completed.toLocaleString());
+    const colorTotal = CliColor.bold.white(total.toLocaleString());
+    const colorPercent = CliColor.bold.white(`${percent}%`);
 
     process.stdout.write(`${colorCaptured}: ${colorCompleted} of ${colorTotal} screenshots (${colorPercent} complete)`);
   }

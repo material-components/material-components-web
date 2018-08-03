@@ -92,5 +92,5 @@ fi
 
 if [[ "$TEST_SUITE" == 'screenshot' ]]; then
   # Only run screenshot tests if package JS/Sass files, non-Markdown screenshot test files, or image files changed.
-  check_for_testable_files '^packages/.+\.(js|css|sass)$' '^test/screenshot/.+[^m][^d]$' '\.(png|jpg|jpeg|gif|svg)$'
+  check_for_testable_files '^packages/.+\.(js|css|scss)$' '^test/screenshot/.+[^m][^d]$' '\.(png|jpg|jpeg|gif|svg)$'
 fi

@@ -18,9 +18,6 @@ const VError = require('verror');
 const debounce = require('debounce');
 const octokit = require('@octokit/rest');
 
-/** @type {!CliColor} */
-const colors = require('colors');
-
 const GitRepo = require('./git-repo');
 const getStackTrace = require('./stacktrace')('GitHubApi');
 
@@ -28,8 +25,8 @@ class GitHubApi {
   constructor() {
     this.gitRepo_ = new GitRepo();
     this.octokit_ = octokit();
+    this.isTravis_ = process.env.TRAVIS === 'true';
     this.isAuthenticated_ = false;
-    this.hasWarnedNoAuth_ = false;
     this.authenticate_();
     this.initStatusThrottle_();
   }
@@ -97,7 +94,7 @@ class GitHubApi {
    * @param {string} description
    */
   setPullRequestStatusManual({state, description}) {
-    if (process.env.TRAVIS !== 'true') {
+    if (!this.isTravis_ || !this.isAuthenticated_) {
       return;
     }
 
@@ -113,7 +110,7 @@ class GitHubApi {
    * @return {!Promise<*>}
    */
   async setPullRequestStatusAuto(reportData) {
-    if (process.env.TRAVIS !== 'true') {
+    if (!this.isTravis_ || !this.isAuthenticated_) {
       return;
     }
 
@@ -153,7 +150,7 @@ class GitHubApi {
   }
 
   async setPullRequestError() {
-    if (process.env.TRAVIS !== 'true') {
+    if (!this.isTravis_ || !this.isAuthenticated_) {
       return;
     }
 
@@ -173,11 +170,6 @@ class GitHubApi {
    */
   async createStatusUnthrottled_({state, targetUrl, description = undefined}) {
     if (!this.isAuthenticated_) {
-      if (!this.hasWarnedNoAuth_) {
-        const warning = colors.magenta('WARNING');
-        console.warn(`${warning}: Cannot set GitHub commit status because no API credentials were found.`);
-        this.hasWarnedNoAuth_ = true;
-      }
       return null;
     }
 
@@ -287,6 +279,10 @@ class GitHubApi {
    * @return {!Promise<*>}
    */
   async createPullRequestComment({prNumber, comment}) {
+    if (!this.isTravis_ || !this.isAuthenticated_) {
+      return;
+    }
+
     let stackTrace;
 
     try {
