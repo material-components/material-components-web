@@ -176,7 +176,7 @@ class MDCRippleFoundation extends MDCFoundation {
    * @return {boolean}
    * @private
    */
-  isSupported_() {
+  supportsPressRipple_() {
     return this.adapter_.browserSupportsCssVars();
   }
 
@@ -196,57 +196,61 @@ class MDCRippleFoundation extends MDCFoundation {
 
   /** @override */
   init() {
-    if (!this.isSupported_()) {
-      return;
-    }
-    this.registerRootHandlers_();
+    const supportsPressRipple = this.supportsPressRipple_();
 
-    const {ROOT, UNBOUNDED} = MDCRippleFoundation.cssClasses;
-    requestAnimationFrame(() => {
-      this.adapter_.addClass(ROOT);
-      if (this.adapter_.isUnbounded()) {
-        this.adapter_.addClass(UNBOUNDED);
-        // Unbounded ripples need layout logic applied immediately to set coordinates for both shade and ripple
-        this.layoutInternal_();
-      }
-    });
+    this.registerRootHandlers_(supportsPressRipple);
+
+    if (supportsPressRipple) {
+      const {ROOT, UNBOUNDED} = MDCRippleFoundation.cssClasses;
+      requestAnimationFrame(() => {
+        this.adapter_.addClass(ROOT);
+        if (this.adapter_.isUnbounded()) {
+          this.adapter_.addClass(UNBOUNDED);
+          // Unbounded ripples need layout logic applied immediately to set coordinates for both shade and ripple
+          this.layoutInternal_();
+        }
+      });
+    }
   }
 
   /** @override */
   destroy() {
-    if (!this.isSupported_()) {
-      return;
-    }
+    if (this.supportsPressRipple_()) {
+      if (this.activationTimer_) {
+        clearTimeout(this.activationTimer_);
+        this.activationTimer_ = 0;
+        const {FG_ACTIVATION} = MDCRippleFoundation.cssClasses;
+        this.adapter_.removeClass(FG_ACTIVATION);
+      }
 
-    if (this.activationTimer_) {
-      clearTimeout(this.activationTimer_);
-      this.activationTimer_ = 0;
-      const {FG_ACTIVATION} = MDCRippleFoundation.cssClasses;
-      this.adapter_.removeClass(FG_ACTIVATION);
+      const {ROOT, UNBOUNDED} = MDCRippleFoundation.cssClasses;
+      requestAnimationFrame(() => {
+        this.adapter_.removeClass(ROOT);
+        this.adapter_.removeClass(UNBOUNDED);
+        this.removeCssVars_();
+      });
     }
 
     this.deregisterRootHandlers_();
     this.deregisterDeactivationHandlers_();
-
-    const {ROOT, UNBOUNDED} = MDCRippleFoundation.cssClasses;
-    requestAnimationFrame(() => {
-      this.adapter_.removeClass(ROOT);
-      this.adapter_.removeClass(UNBOUNDED);
-      this.removeCssVars_();
-    });
   }
 
-  /** @private */
-  registerRootHandlers_() {
-    ACTIVATION_EVENT_TYPES.forEach((type) => {
-      this.adapter_.registerInteractionHandler(type, this.activateHandler_);
-    });
+  /**
+   * @param {boolean} supportsPressRipple Passed from init to save a redundant function call
+   * @private
+   */
+  registerRootHandlers_(supportsPressRipple) {
+    if (supportsPressRipple) {
+      ACTIVATION_EVENT_TYPES.forEach((type) => {
+        this.adapter_.registerInteractionHandler(type, this.activateHandler_);
+      });
+      if (this.adapter_.isUnbounded()) {
+        this.adapter_.registerResizeHandler(this.resizeHandler_);
+      }
+    }
+
     this.adapter_.registerInteractionHandler('focus', this.focusHandler_);
     this.adapter_.registerInteractionHandler('blur', this.blurHandler_);
-
-    if (this.adapter_.isUnbounded()) {
-      this.adapter_.registerResizeHandler(this.resizeHandler_);
-    }
   }
 
   /**
