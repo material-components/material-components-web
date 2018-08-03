@@ -42,10 +42,12 @@ ACCEPTABLE_KEYS.add(strings.ENTER_KEY);
  */
 const KEYCODE_MAP = new Map();
 // IE11 has no support for new Map with iterable so we need to initialize this by hand
-KEYCODE_MAP.set(numbers.HOME_KEYCODE, strings.HOME_KEY);
-KEYCODE_MAP.set(numbers.END_KEYCODE, strings.END_KEY);
 KEYCODE_MAP.set(numbers.ARROW_LEFT_KEYCODE, strings.ARROW_LEFT_KEY);
 KEYCODE_MAP.set(numbers.ARROW_RIGHT_KEYCODE, strings.ARROW_RIGHT_KEY);
+KEYCODE_MAP.set(numbers.END_KEYCODE, strings.END_KEY);
+KEYCODE_MAP.set(numbers.HOME_KEYCODE, strings.HOME_KEY);
+KEYCODE_MAP.set(numbers.SPACE_KEYCODE, strings.SPACE_KEY);
+KEYCODE_MAP.set(numbers.ENTER_KEYCODE, strings.ENTER_KEY);
 
 /**
  * @extends {MDCFoundation<!MDCTabBarAdapter>}
