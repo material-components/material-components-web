@@ -18,104 +18,32 @@
 
 const colors = require('colors/safe');
 const crypto = require('crypto');
-const path = require('path');
 
 const Duration = require('./duration');
 
-/**
- * @typedef {(function(string):string|{
- *   enable: !CliColor,
- *   disable: !CliColor,
- *   strip: !CliColor,
- *   strip: !CliColor,
- *   black: !CliColor,
- *   red: !CliColor,
- *   green: !CliColor,
- *   yellow: !CliColor,
- *   blue: !CliColor,
- *   magenta: !CliColor,
- *   cyan: !CliColor,
- *   white: !CliColor,
- *   gray: !CliColor,
- *   grey: !CliColor,
- *   bgBlack: !CliColor,
- *   bgRed: !CliColor,
- *   bgGreen: !CliColor,
- *   bgYellow: !CliColor,
- *   bgBlue: !CliColor,
- *   bgMagenta: !CliColor,
- *   bgCyan: !CliColor,
- *   bgWhite: !CliColor,
- *   reset: !CliColor,
- *   bold: !CliColor,
- *   dim: !CliColor,
- *   italic: !CliColor,
- *   underline: !CliColor,
- *   inverse: !CliColor,
- *   hidden: !CliColor,
- *   strikethrough: !CliColor,
- *   rainbow: !CliColor,
- *   zebra: !CliColor,
- *   america: !CliColor,
- *   random: !CliColor,
- * })} CliColor
- */
+/** @type {?Date} */
+let lastDebugDate;
 
 class Logger {
-  /**
-   * @param {string} callerFilePath
-   */
-  constructor(callerFilePath) {
+  constructor() {
     /**
-     * @type {string}
+     * @type {!Map<string, number>} Map of fold names to start times (number of milliseconds since the UNIX epoch).
      * @private
      */
-    this.id_ = path.basename(callerFilePath);
+    this.foldStartTimeMap_ = new Map();
 
     /**
-     * @type {?Logger}
+     * @type {boolean}
      * @private
      */
-    this.parent_ = null;
-
-    /**
-     * @type {!Array<!Logger>}
-     * @private
-     */
-    this.children_ = [];
-
-    /**
-     * @type {!Map<string, number>}
-     * @private
-     */
-    this.foldStartTimesMs_ = new Map();
+    this.isTravis_ = process.env.TRAVIS === 'true';
   }
 
   /**
-   * @return {!CliColor}
+   * @return {!AnsiColor}
    */
   static get colors() {
     return colors;
-  }
-
-  /**
-   * @param {string} id
-   * @return {!Logger}
-   */
-  createChild(id) {
-    const child = new Logger(id);
-    this.addChild(child);
-    return child;
-  }
-
-  /**
-   * @param {!Logger} child
-   */
-  addChild(child) {
-    child.parent_ = this;
-    if (!this.children_.includes(child)) {
-      this.children_.push(child);
-    }
   }
 
   /**
@@ -123,25 +51,18 @@ class Logger {
    * @param {string} shortMessage
    */
   foldStart(foldId, shortMessage) {
-    const timerId = this.getFoldTimerId_(foldId);
-    const colorMessage = colors.bold.yellow(shortMessage);
+    if (this.isTravis_) {
+      const timerId = this.getFoldTimerId_(foldId);
+      this.foldStartTimeMap_.set(foldId, Date.now());
 
-    this.foldStartTimesMs_.set(foldId, Date.now());
-
-    if (!this.isTravisJob_()) {
-      console.log('');
-      console.log(colorMessage);
-      console.log(colors.reset(''));
-      return;
+      // Undocumented Travis CI job logging feature. See:
+      // https://github.com/travis-ci/docs-travis-ci-com/issues/949#issuecomment-276755003
+      // https://github.com/rspec/rspec-support/blob/5a1c6756a9d8322fc18639b982e00196f452974d/script/travis_functions.sh
+      console.log(`travis_fold:start:${foldId}`);
+      console.log(`travis_time:start:${timerId}`);
     }
 
-    // Undocumented Travis CI job logging features. See:
-    // https://github.com/travis-ci/docs-travis-ci-com/issues/949#issuecomment-276755003
-    // https://github.com/rspec/rspec-support/blob/5a1c6756a9d8322fc18639b982e00196f452974d/script/travis_functions.sh
-    console.log('');
-    console.log(`travis_fold:start:${foldId}`);
-    console.log(`travis_time:start:${timerId}`);
-    console.log(colorMessage);
+    console.log(colors.bold.yellow(shortMessage));
     console.log(colors.reset(''));
   }
 
@@ -149,7 +70,7 @@ class Logger {
    * @param {string} foldId
    */
   foldEnd(foldId) {
-    if (!this.isTravisJob_()) {
+    if (!this.isTravis_) {
       return;
     }
 
@@ -157,17 +78,38 @@ class Logger {
     // https://github.com/travis-ci/docs-travis-ci-com/issues/949#issuecomment-276755003
     console.log(`travis_fold:end:${foldId}`);
 
-    const startMs = this.foldStartTimesMs_.get(foldId);
-    if (startMs) {
-      const timerId = this.getFoldTimerId_(foldId);
-      const startNanos = Duration.millis(startMs).toNanos();
-      const finishNanos = Duration.millis(Date.now()).toNanos();
-      const durationNanos = finishNanos - startNanos;
-
-      // Undocumented Travis CI job logging feature. See:
-      // https://github.com/rspec/rspec-support/blob/5a1c6756a9d8322fc18639b982e00196f452974d/script/travis_functions.sh
-      console.log(`travis_time:end:${timerId}:start=${startNanos},finish=${finishNanos},duration=${durationNanos}`);
+    const startMs = this.foldStartTimeMap_.get(foldId);
+    if (!startMs) {
+      return;
     }
+
+    const timerId = this.getFoldTimerId_(foldId);
+    const startNanos = Duration.millis(startMs).toNanos();
+    const finishNanos = Duration.millis(Date.now()).toNanos();
+    const durationNanos = finishNanos - startNanos;
+
+    // Undocumented Travis CI job logging feature. See:
+    // https://github.com/rspec/rspec-support/blob/5a1c6756a9d8322fc18639b982e00196f452974d/script/travis_functions.sh
+    console.log(`travis_time:end:${timerId}:start=${startNanos},finish=${finishNanos},duration=${durationNanos}`);
+  }
+
+  /**
+   * @param {*} args
+   */
+  debug(...args) {
+    const nowDate = new Date();
+    if (!lastDebugDate) {
+      lastDebugDate = nowDate;
+    }
+
+    const deltaMsFormatted = (nowDate - lastDebugDate).toLocaleString().padStart(7, ' ');
+    lastDebugDate = nowDate;
+
+    const deltaHumanPlain = `${deltaMsFormatted}ms`;
+    const [, spaces, text] = /^(\s*)(\S+)$/.exec(deltaHumanPlain);
+    const deltaHumanColor = spaces + colors.cyan(text);
+
+    console.log(`[+${deltaHumanColor}]`, ...args);
   }
 
   /**
@@ -196,14 +138,6 @@ class Logger {
    */
   error(...args) {
     console.error(...args);
-  }
-
-  /**
-   * @return {boolean}
-   * @private
-   */
-  isTravisJob_() {
-    return process.env.TRAVIS === 'true';
   }
 
   /**

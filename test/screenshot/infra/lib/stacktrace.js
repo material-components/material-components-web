@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-/** @type {!CliColor} */
-const colors = require('colors');
+const CliColor = require('./logger').colors;
 
 /**
  * @param {string} className
@@ -45,7 +44,7 @@ module.exports.formatError = formatError;
  */
 function formatError(err) {
   return formatErrorInternal(err)
-    .replace(/^([^\n]+)/, (fullMatch, line) => colors.bold.red(line))
+    .replace(/^([^\n]+)/, (fullMatch, line) => CliColor.bold.red(line))
   ;
 }
 
@@ -57,7 +56,7 @@ function formatErrorInternal(err) {
   const parentStr = stringifyError(err);
   if (err.jse_cause) {
     const childStr = formatError(err.jse_cause);
-    return `${childStr}\n\n${colors.italic('called from:')}\n\n${parentStr}`;
+    return `${childStr}\n\n${CliColor.italic('called from:')}\n\n${parentStr}`;
   }
   return parentStr;
 }
@@ -105,10 +104,10 @@ function formatClassMethod(errorLine) {
   return errorLine
     .replace(/^( +)(at) (\w+)\.(\w+)(.+)$/, (fullMatch, leadingSpaces, atPrefix, className, methodName, rest) => {
       if (className === 'process' && methodName === '_tickCallback') {
-        return colors.dim(fullMatch);
+        return CliColor.dim(fullMatch);
       }
       rest = formatFileNameAndLineNumber(rest);
-      return `${leadingSpaces}${atPrefix} ${colors.underline(className)}.${colors.bold(methodName)}${rest}`;
+      return `${leadingSpaces}${atPrefix} ${CliColor.underline(className)}.${CliColor.bold(methodName)}${rest}`;
     })
   ;
 }
@@ -121,7 +120,7 @@ function formatNamedFunction(errorLine) {
   return errorLine
     .replace(/^( +)(at) (\w+)([^.].+)$/, (fullMatch, leadingSpaces, atPrefix, functionName, rest) => {
       rest = formatFileNameAndLineNumber(rest);
-      return `${leadingSpaces}${atPrefix} ${colors.bold(functionName)}${rest}`;
+      return `${leadingSpaces}${atPrefix} ${CliColor.bold(functionName)}${rest}`;
     })
   ;
 }
@@ -132,7 +131,7 @@ function formatNamedFunction(errorLine) {
  */
 function formatAnonymousFunction(errorLine) {
   return errorLine.replace(/^ +at <anonymous>.*$/, (fullMatch) => {
-    return colors.dim(fullMatch);
+    return CliColor.dim(fullMatch);
   });
 }
 
@@ -142,6 +141,6 @@ function formatAnonymousFunction(errorLine) {
  */
 function formatFileNameAndLineNumber(errorLine) {
   return errorLine.replace(/\/([^/]+\.\w+):(\d+):(\d+)(\).*)$/, (fullMatch, fileName, lineNumber, colNumber, rest) => {
-    return `/${colors.underline(fileName)}:${colors.bold(lineNumber)}:${colNumber}${rest}`;
+    return `/${CliColor.underline(fileName)}:${CliColor.bold(lineNumber)}:${colNumber}${rest}`;
   });
 }
