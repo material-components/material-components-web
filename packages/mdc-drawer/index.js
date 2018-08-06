@@ -18,6 +18,7 @@ import {MDCComponent} from '@material/base/index';
 import MDCDismissibleDrawerFoundation from './dismissible/foundation';
 import MDCModalDrawerFoundation from './modal/foundation';
 import {strings} from './constants';
+import * as util from './util';
 
 /**
  * @extends {MDCComponent<!MDCDismissibleDrawerFoundation>}
@@ -55,6 +56,7 @@ export class MDCDrawer extends MDCComponent {
       this.appContent_= appContent;
     }
     this.scrim_ = this.root_.parentElement.querySelector(MDCDismissibleDrawerFoundation.strings.SCRIM_SELECTOR);
+    this.focusTrap_ = util.createFocusTrapInstance(this.root_);
   }
 
   /**
@@ -122,9 +124,11 @@ export class MDCDrawer extends MDCComponent {
       isRtl: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
       notifyClose: () => this.emit(strings.CLOSE_EVENT, null, true /* shouldBubble */),
       notifyOpen: () => this.emit(strings.OPEN_EVENT, null, true /* shouldBubble */),
-      setStrutWidth: (width) => {
-        this.root_.querySelector(MDCDismissibleDrawerFoundation.strings.STRUT_SELECTOR).style.width = `${width}px`;
-      },
+      // trapFocusOnSurface: () => this.focusTrap_.activate(),
+      // untrapFocusOnSurface: () => this.focusTrap_.deactivate(),
+      trapFocusOnSurface: () => {},
+      untrapFocusOnSurface: () => {},
+      focusFirstFocusableElement: () => {},
     }));
 
     if (this.root_.classList.contains(MDCDismissibleDrawerFoundation.cssClasses.DISMISSIBLE) ||

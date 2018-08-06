@@ -89,6 +89,12 @@ class MDCDrawerAdapter {
    * Emits a custom event "MDCDrawer:open" denoting the drawer has opened.
    */
   notifyOpen() {}
+
+  trapFocusOnSurface() {}
+
+  untrapFocusOnSurface() {}
+
+  focusFirstFocusableElement() {}
 }
 
 export default MDCDrawerAdapter;

@@ -45,6 +45,9 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
       isRtl: () => {},
       notifyClose: () => {},
       notifyOpen: () => {},
+      trapFocusOnSurface: () => {},
+      untrapFocusOnSurface: () => {},
+      focusFirstFocusableElement: () => {},
     });
   }
 
@@ -57,7 +60,7 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
     }
     this.adapter_.addClass(cssClasses.OPEN);
     this.adapter_.addClass(cssClasses.ANIMATE);
-    setTimeout(() => this.adapter_.addClass(cssClasses.OPENING), 50);
+    delay(() => this.adapter_.addClass(cssClasses.OPENING));
   }
 
   /**
@@ -71,6 +74,12 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
     this.adapter_.addClass(cssClasses.ANIMATE);
     this.adapter_.addClass(cssClasses.CLOSING);
   }
+
+  /** @protected */
+  opened() {}
+
+  /** @protected */
+  closed() {}
 
   /**
    * Returns true if drawer is in open state.
@@ -117,8 +126,10 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
     const {OPENING, CLOSING, OPEN, ANIMATE} = cssClasses;
     if (this.isClosing()) {
       this.adapter_.removeClass(OPEN);
+      this.closed();
       this.adapter_.notifyClose();
     } else {
+      this.opened();
       this.adapter_.notifyOpen();
     }
 
@@ -127,5 +138,9 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
     this.adapter_.removeClass(CLOSING);
   }
 }
+
+const delay = function(fn) {
+  setTimeout(fn, 10);
+};
 
 export default MDCDismissibleDrawerFoundation;

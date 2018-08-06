@@ -45,7 +45,27 @@ class MDCModalDrawerFoundation extends MDCDismissibleDrawerFoundation {
       isRtl: () => {},
       notifyClose: () => {},
       notifyOpen: () => {},
+      trapFocusOnSurface: () => {},
+      untrapFocusOnSurface: () => {},
+      focusFirstFocusableElement: () => {},
     });
+  }
+
+  /**
+   * On open.
+   * @override
+   */
+  opened() {
+    this.adapter_.trapFocusOnSurface();
+    this.adapter_.focusFirstFocusableElement();
+  }
+
+  /**
+   * On close.
+   * @override
+   */
+  closed() {
+    this.adapter_.untrapFocusOnSurface();
   }
 
   handleScrimClick() {
