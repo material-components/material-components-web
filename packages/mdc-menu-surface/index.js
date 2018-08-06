@@ -16,7 +16,7 @@
  */
 
 import MDCComponent from '@material/base/component';
-import {getTransformPropertyName} from './util';
+import * as util from './util';
 import {MDCMenuSurfaceFoundation, AnchorMargin} from './foundation';
 import {MDCMenuSurfaceAdapter} from './adapter';
 import {Corner, CornerBit, strings, cssClasses} from './constants';
@@ -165,7 +165,7 @@ class MDCMenuSurface extends MDCComponent {
         isElementInContainer: (el) => this.root_ === el || this.root_.contains(el),
         isRtl: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
         setTransformOrigin: (origin) => {
-          this.root_.style[`${getTransformPropertyName(window)}-origin`] = origin;
+          this.root_.style[`${util.getTransformPropertyName(window)}-origin`] = origin;
         },
       },
       this.getFocusAdapterMethods_(),
@@ -246,4 +246,4 @@ class MDCMenuSurface extends MDCComponent {
   }
 }
 
-export {MDCMenuSurfaceFoundation, MDCMenuSurface, AnchorMargin, Corner, CornerBit};
+export {MDCMenuSurfaceFoundation, MDCMenuSurface, AnchorMargin, Corner, CornerBit, util};
