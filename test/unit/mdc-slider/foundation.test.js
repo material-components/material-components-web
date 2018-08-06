@@ -633,10 +633,10 @@ test('#handleTransitionEnd sets pressed_ to true when all parameters are true', 
 
   const mockEvent = {
     target: {
-      classList: ['mdc-slider__value-label'],
+      classList: ['mdc-slider__value-label-text'],
     },
   };
-  td.when(mockAdapter.eventTargetHasClass(mockEvent.target, 'mdc-slider__value-label')).thenReturn(true);
+  td.when(mockAdapter.eventTargetHasClass(mockEvent.target, 'mdc-slider__value-label-text')).thenReturn(true);
   foundation.handleTransitionEnd(mockEvent);
   raf.flush();
 

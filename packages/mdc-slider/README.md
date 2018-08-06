@@ -226,7 +226,7 @@ instance that was affected.
 | `removeClass(className: string) => void` | Removes a class `className` from the root element |
 | `setThumbAttribute(name: string, value: string) => void` | Sets an attribute `name` to the value `value` on the thumb element. |
 | `setValueLabelPath(value: string) => void` | Sets the path of the value label Element to the value `value`. |
-| `setValueLabelText(xValue: string, text: string, translateX: string) => void` | Sets the inner text, x value, and translateX to the assigned values. |
+| `setValueLabelText(xValue: string, text: string) => void` | Sets the inner text and translateX to the assigned values. |
 | `removeValueLabelTextStyle() => void` | Removes the style attribute for the value label text Element. |
 | `computeBoundingRect() => ClientRect` | Computes and returns the bounding client rect for the root element. Our implementations calls `getBoundingClientRect()` for this. |
 | `eventTargetHasClass(target: EventTarget, className: string) => boolean` | Returns true if target has className, false otherwise |

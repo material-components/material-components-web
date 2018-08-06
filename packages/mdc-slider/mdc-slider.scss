@@ -120,40 +120,42 @@
 
 .mdc-slider__value-label {
   transform: scale(.05) translate(330px, 360px);
-  opacity: 0;
-  transition: transform 100ms $mdc-animation-standard-curve-timing-function,
+  transition:
+    transform 100ms $mdc-animation-standard-curve-timing-function,
     opacity 0ms ease 100ms;
+  opacity: 0;
   will-change: transform, d;
 }
 
 .mdc-slider__value-label-text {
   position: absolute;
-  user-select: none;
-  transform: translateX(16px) scale(0.05);
-  transform-origin: left;
-  opacity: 0;
   margin-top: 8px;
-  transition: transform 100ms $mdc-animation-standard-curve-timing-function,
+  transform: translateX(16px) scale(.05);
+  transform-origin: left;
+  transition:
+    transform 100ms $mdc-animation-standard-curve-timing-function,
     opacity 0ms ease 100ms;
+  opacity: 0;
+  user-select: none;
   will-change: transform;
 
   @include mdc-rtl(".mdc-slider") {
+    transform: translateX(-16px) scale(.05);
     transform-origin: right;
-    transform: translateX(-16px) scale(0.05);
   }
 }
 
 .mdc-slider--active {
   .mdc-slider__value-label {
     transform: scale(1);
-    opacity: 1;
     transition: transform 100ms $mdc-animation-standard-curve-timing-function;
+    opacity: 1;
   }
 
   .mdc-slider__value-label-text {
     transform: scale(1) translateY(-39px);
-    opacity: 1;
     transition: transform 100ms $mdc-animation-standard-curve-timing-function;
+    opacity: 1;
   }
 }
 

@@ -275,11 +275,10 @@ test('adapter#setValueLabelPath sets the path on the value label element', () =>
 
 test('adapter#setValueLabelText sets the x, text content, anbd style on the value label text element', () => {
   const {root, component} = setupTest();
-  component.getDefaultFoundation().adapter_.setValueLabelText('8', 'text', 'transform: scale(1);');
+  component.getDefaultFoundation().adapter_.setValueLabelText('transform: scale(1);', 'text');
 
   const valueLabelText = root.querySelector('.mdc-slider__value-label-text');
 
-  assert.equal(valueLabelText.getAttribute('x'), '8');
   assert.equal(valueLabelText.textContent, 'text');
   assert.equal(valueLabelText.getAttribute('style'), 'transform: scale(1);');
 });
