@@ -117,6 +117,7 @@ Method Signature | Description
 --- | ---
 `activate(previousIndicatorClientRect: ClientRect=) => void` | Activates the indicator.  `previousIndicatorClientRect` is an optional argument.
 `deactivate() => void` | Deactivates the indicator.
+`focus() => void` | Focuses the tab.
 `computeIndicatorClientRect() => ClientRect` | Returns the bounding client rect of the indicator.
 `computeDimensions() => MDCTabDimensions` | Returns the dimensions of the Tab.
 

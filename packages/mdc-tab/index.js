@@ -135,6 +135,13 @@ class MDCTab extends MDCComponent {
   computeDimensions() {
     return this.foundation_.computeDimensions();
   }
+
+  /**
+   * Focuses the tab
+   */
+  focus() {
+    this.root_.focus();
+  }
 }
 
 export {MDCTab, MDCTabFoundation};

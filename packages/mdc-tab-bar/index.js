@@ -61,6 +61,10 @@ class MDCTabBar extends MDCComponent {
     return new MDCTabBar(root);
   }
 
+  set useAutomaticActivation(useAutomaticActivation) {
+    this.foundation_.setUseAutomaticActivation(useAutomaticActivation);
+  }
+
   /**
    * @param {(function(!Element): !MDCTab)=} tabFactory A function which creates a new MDCTab
    * @param {(function(!Element): !MDCTabScroller)=} tabScrollerFactory A function which creates a new MDCTabScroller
@@ -72,8 +76,7 @@ class MDCTabBar extends MDCComponent {
     this.tabFactory_ = tabFactory;
     this.tabScrollerFactory_ = tabScrollerFactory;
 
-    const tabElements = [].slice.call(this.root_.querySelectorAll(MDCTabBarFoundation.strings.TAB_SELECTOR));
-    this.tabList_ = tabElements.map((el) => this.tabFactory_(el));
+    this.tabList_ = this.getTabElements_().map((el) => this.tabFactory_(el));
 
     const tabScrollerElement = this.root_.querySelector(MDCTabBarFoundation.strings.TAB_SCROLLER_SELECTOR);
     if (tabScrollerElement) {
@@ -111,6 +114,7 @@ class MDCTabBar extends MDCComponent {
         isRTL: () => window.getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
         activateTabAtIndex: (index, clientRect) => this.tabList_[index].activate(clientRect),
         deactivateTabAtIndex: (index) => this.tabList_[index].deactivate(),
+        focusTabAtIndex: (index) => this.tabList_[index].focus(),
         getTabIndicatorClientRectAtIndex: (index) => this.tabList_[index].computeIndicatorClientRect(),
         getTabDimensionsAtIndex: (index) => this.tabList_[index].computeDimensions(),
         getActiveTabIndex: () => {
@@ -120,6 +124,11 @@ class MDCTabBar extends MDCComponent {
             }
           }
           return -1;
+        },
+        getFocusedTabIndex: () => {
+          const tabElements = this.getTabElements_();
+          const activeElement = document.activeElement;
+          return tabElements.indexOf(activeElement);
         },
         getIndexOfTab: (tabToFind) => this.tabList_.indexOf(tabToFind),
         getTabListLength: () => this.tabList_.length,
@@ -142,6 +151,10 @@ class MDCTabBar extends MDCComponent {
    */
   scrollIntoView(index) {
     this.foundation_.scrollIntoView(index);
+  }
+
+  getTabElements_() {
+    return [].slice.call(this.root_.querySelectorAll(MDCTabBarFoundation.strings.TAB_SELECTOR));
   }
 }
 

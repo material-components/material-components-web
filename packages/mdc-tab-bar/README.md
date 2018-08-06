@@ -116,10 +116,12 @@ Method Signature | Description
 `isRTL() => boolean` | Returns if the text direction is RTL.
 `activateTabAtIndex(index: number, clientRect: ClientRect) => void` | Activates the Tab at the given index with the given clientRect.
 `deactivateTabAtIndex(index) => void` | Deactivates the Tab at the given index.
+`focusTabAtIndex(index: number) => void` | Focuses the Tab at the given index.
 `getTabIndicatorClientRectAtIndex(index: number) => ClientRect` | Returns the client rect of the Tab at the given index.
 `getTabDimensionsAtIndex(index) => MDCTabDimensions` | Returns the dimensions of the Tab at the given index.
 `getTabListLength() => number` | Returns the number of child Tab components.
 `getActiveTabIndex() => number` | Returns the index of the active Tab.
+`getFocusedTabIndex() => number` | Returns the index of the focused Tab.
 `getIndexOfTab(tab: MDCTab) => number` | Returns the index of the given Tab instance.
 `notifyTabActivated(index: number) => void` | Emits the `MDCTabBar:activated` event.
 
