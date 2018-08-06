@@ -6,6 +6,7 @@ We release a new version of MDC Web every 2 weeks. We also limit our breaking ch
 - New tabs
 - New switch
 
+## Future Releases
 ### 0.39.0 - August 2018 (R18)
 - New navigation drawer
 - New menu
@@ -18,12 +19,12 @@ We release a new version of MDC Web every 2 weeks. We also limit our breaking ch
 
 ### 0.41.0 - October 2018 (R20)
 - Shadows Theme
-- More text field sizes
 - Text field prefix and suffix support
+- Text field with a drop down menu (aka a Select)
 
 ### 0.42.0 - November 2018 (R21)
 - New side sheet
-- Text field with a drop down menu (aka a Select)
+- More text field sizes
 - Cascading menus
 
 ### 0.43.0 - December 2018 (R22)
