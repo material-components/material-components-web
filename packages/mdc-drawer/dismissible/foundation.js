@@ -71,7 +71,6 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
       return;
     }
 
-    this.adapter_.addClass(cssClasses.ANIMATE);
     this.adapter_.addClass(cssClasses.CLOSING);
   }
 

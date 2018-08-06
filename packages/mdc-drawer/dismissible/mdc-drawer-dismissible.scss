@@ -64,9 +64,6 @@
 
   .mdc-drawer--closing + & {
     transition-duration: $mdc-drawer-animation-exit;
-  }
-
-  .mdc-drawer--closing.mdc-drawer--animate + & {
     margin-left: 0;
   }
 }
