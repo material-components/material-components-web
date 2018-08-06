@@ -23,8 +23,8 @@ const strings = {
   ARROW_LEFT_KEY: 'ArrowLeft',
   ARROW_RIGHT_KEY: 'ArrowRight',
   END_KEY: 'End',
-  ENTER_KEY: 'Enter',
   HOME_KEY: 'Home',
+  ENTER_KEY: 'Enter',
   SPACE_KEY: 'Space',
 };
 

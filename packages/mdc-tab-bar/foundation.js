@@ -34,8 +34,8 @@ ACCEPTABLE_KEYS.add(strings.ARROW_LEFT_KEY);
 ACCEPTABLE_KEYS.add(strings.ARROW_RIGHT_KEY);
 ACCEPTABLE_KEYS.add(strings.END_KEY);
 ACCEPTABLE_KEYS.add(strings.HOME_KEY);
-ACCEPTABLE_KEYS.add(strings.SPACE_KEY);
 ACCEPTABLE_KEYS.add(strings.ENTER_KEY);
+ACCEPTABLE_KEYS.add(strings.SPACE_KEY);
 
 /**
  * @type {Map<number, string>}
@@ -46,8 +46,8 @@ KEYCODE_MAP.set(numbers.ARROW_LEFT_KEYCODE, strings.ARROW_LEFT_KEY);
 KEYCODE_MAP.set(numbers.ARROW_RIGHT_KEYCODE, strings.ARROW_RIGHT_KEY);
 KEYCODE_MAP.set(numbers.END_KEYCODE, strings.END_KEY);
 KEYCODE_MAP.set(numbers.HOME_KEYCODE, strings.HOME_KEY);
-KEYCODE_MAP.set(numbers.SPACE_KEYCODE, strings.SPACE_KEY);
 KEYCODE_MAP.set(numbers.ENTER_KEYCODE, strings.ENTER_KEY);
+KEYCODE_MAP.set(numbers.SPACE_KEYCODE, strings.SPACE_KEY);
 
 /**
  * @extends {MDCFoundation<!MDCTabBarAdapter>}
@@ -105,7 +105,7 @@ class MDCTabBarFoundation extends MDCFoundation {
   }
 
   /**
-   * Switches between automatic and manual activation models.
+   * Switches between automatic and manual activation modes.
    * See https://www.w3.org/TR/wai-aria-practices/#tabpanel for examples.
    * @param {boolean} useAutomaticActivation
    */
@@ -146,10 +146,13 @@ class MDCTabBarFoundation extends MDCFoundation {
       return;
     }
 
-    evt.preventDefault();
+    // Prevent default behavior for movement keys, but not for activation keys, since :active is used to apply ripple
+    if (!this.isActivationKey_(key)) {
+      evt.preventDefault();
+    }
 
     if (this.useAutomaticActivation_) {
-      if (key === strings.SPACE_KEY || key === strings.ENTER_KEY) {
+      if (this.isActivationKey_(key)) {
         return;
       }
 
@@ -158,7 +161,7 @@ class MDCTabBarFoundation extends MDCFoundation {
       this.scrollIntoView(index);
     } else {
       const focusedTabIndex = this.adapter_.getFocusedTabIndex();
-      if (key === strings.SPACE_KEY || key === strings.ENTER_KEY) {
+      if (this.isActivationKey_(key)) {
         this.activateTab(focusedTabIndex);
       } else {
         let index = this.determineTargetFromKey_(focusedTabIndex, key);
@@ -376,6 +379,10 @@ class MDCTabBarFoundation extends MDCFoundation {
     }
 
     return KEYCODE_MAP.get(evt.keyCode);
+  }
+
+  isActivationKey_(key) {
+    return key === strings.SPACE_KEY || key === strings.ENTER_KEY;
   }
 
   /**

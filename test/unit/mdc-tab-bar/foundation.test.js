@@ -25,11 +25,15 @@ import MDCTabBarFoundation from '../../../packages/mdc-tab-bar/foundation';
 suite('MDCTabBarFoundation');
 
 test('exports cssClasses', () => {
-  assert.isOk('cssClasses' in MDCTabBarFoundation);
+  assert.isTrue('cssClasses' in MDCTabBarFoundation);
 });
 
 test('exports strings', () => {
-  assert.isOk('strings' in MDCTabBarFoundation);
+  assert.isTrue('strings' in MDCTabBarFoundation);
+});
+
+test('exports numbers', () => {
+  assert.isTrue('numbers' in MDCTabBarFoundation);
 });
 
 test('defaultAdapter returns a complete adapter implementation', () => {
@@ -257,29 +261,49 @@ test('#handleKeyDown() activates the tab at the previous index on left arrow pre
   td.verify(activateTab(1), {times: 2});
 });
 
-test('#handleKeyDown() prevents the default behavior for handled keys',
-  () => {
-    [
-      MDCTabBarFoundation.strings.ARROW_LEFT_KEY,
-      MDCTabBarFoundation.strings.ARROW_RIGHT_KEY,
-      MDCTabBarFoundation.strings.HOME_KEY,
-      MDCTabBarFoundation.strings.END_KEY,
-      MDCTabBarFoundation.strings.ENTER_KEY,
-      MDCTabBarFoundation.strings.SPACE_KEY,
-    ].forEach((evtName) => {
-      const {foundation} = setupKeyDownTest();
-      const {fakeEvent, preventDefault} = mockKeyDownEvent({key: evtName});
-      foundation.handleKeyDown(fakeEvent);
-      td.verify(preventDefault());
-    });
+test('#handleKeyDown() prevents the default behavior for handled non-activation keys', () => {
+  [
+    MDCTabBarFoundation.strings.ARROW_LEFT_KEY,
+    MDCTabBarFoundation.strings.ARROW_RIGHT_KEY,
+    MDCTabBarFoundation.strings.HOME_KEY,
+    MDCTabBarFoundation.strings.END_KEY,
+  ].forEach((evtName) => {
+    const {foundation} = setupKeyDownTest();
+    const {fakeEvent, preventDefault} = mockKeyDownEvent({key: evtName});
+    foundation.handleKeyDown(fakeEvent);
+    td.verify(preventDefault());
   });
+});
 
-test('#handleKeyDown() prevents the default behavior for handled keyCodes', () => {
-  [13, 32, 35, 36, 37, 39].forEach((keyCode) => {
+test('#handleKeyDown() does not prevent the default behavior for handled activation keys', () => {
+  [MDCTabBarFoundation.strings.SPACE_KEY, MDCTabBarFoundation.strings.ENTER_KEY].forEach((evtName) => {
+    const {foundation} = setupKeyDownTest();
+    const {fakeEvent, preventDefault} = mockKeyDownEvent({key: evtName});
+    foundation.handleKeyDown(fakeEvent);
+    td.verify(preventDefault(), {times: 0});
+  });
+});
+
+test('#handleKeyDown() prevents the default behavior for handled non-activation keyCodes', () => {
+  [
+    MDCTabBarFoundation.numbers.ARROW_LEFT_KEYCODE,
+    MDCTabBarFoundation.numbers.ARROW_RIGHT_KEYCODE,
+    MDCTabBarFoundation.numbers.HOME_KEYCODE,
+    MDCTabBarFoundation.numbers.END_KEYCODE,
+  ].forEach((keyCode) => {
     const {foundation} = setupKeyDownTest();
     const {fakeEvent, preventDefault} = mockKeyDownEvent({keyCode});
     foundation.handleKeyDown(fakeEvent);
     td.verify(preventDefault());
+  });
+});
+
+test('#handleKeyDown() prevents the default behavior for handled activation keyCodes', () => {
+  [MDCTabBarFoundation.numbers.SPACE_KEYCODE, MDCTabBarFoundation.numbers.ENTER_KEYCODE].forEach((keyCode) => {
+    const {foundation} = setupKeyDownTest();
+    const {fakeEvent, preventDefault} = mockKeyDownEvent({keyCode});
+    foundation.handleKeyDown(fakeEvent);
+    td.verify(preventDefault(), {times: 0});
   });
 });
 
