@@ -156,7 +156,7 @@ class MDCTabBarFoundation extends MDCFoundation {
         return;
       }
 
-      let index = this.determineTargetFromKey_(this.adapter_.getActiveTabIndex(), key);
+      const index = this.determineTargetFromKey_(this.adapter_.getActiveTabIndex(), key);
       this.activateTab(index);
       this.scrollIntoView(index);
     } else {
@@ -164,7 +164,7 @@ class MDCTabBarFoundation extends MDCFoundation {
       if (this.isActivationKey_(key)) {
         this.activateTab(focusedTabIndex);
       } else {
-        let index = this.determineTargetFromKey_(focusedTabIndex, key);
+        const index = this.determineTargetFromKey_(focusedTabIndex, key);
         this.adapter_.focusTabAtIndex(index);
         this.scrollIntoView(index);
       }

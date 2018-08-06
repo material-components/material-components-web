@@ -84,7 +84,7 @@ test('#handleTabInteraction() activates the tab', () => {
 });
 
 test('#handleKeyDown() focuses the tab at the 0th index on home key press', () => {
-  const {foundation, activateTab, mockAdapter} = setupKeyDownTest();
+  const {foundation, mockAdapter} = setupKeyDownTest();
   const {fakeEvent: fakeKeyEvent} = mockKeyDownEvent({key: MDCTabBarFoundation.strings.HOME_KEY});
   const {fakeEvent: fakeKeyCodeEvent} = mockKeyDownEvent({keyCode: 36});
   td.when(mockAdapter.getFocusedTabIndex()).thenReturn(2);
@@ -94,7 +94,7 @@ test('#handleKeyDown() focuses the tab at the 0th index on home key press', () =
 });
 
 test('#handleKeyDown() focuses the tab at the N - 1 index on end key press', () => {
-  const {foundation, mockAdapter, activateTab} = setupKeyDownTest();
+  const {foundation, mockAdapter} = setupKeyDownTest();
   const {fakeEvent: fakeKeyEvent} = mockKeyDownEvent({key: MDCTabBarFoundation.strings.END_KEY});
   const {fakeEvent: fakeKeyCodeEvent} = mockKeyDownEvent({keyCode: 35});
   td.when(mockAdapter.getFocusedTabIndex()).thenReturn(2);
@@ -105,7 +105,7 @@ test('#handleKeyDown() focuses the tab at the N - 1 index on end key press', () 
 });
 
 test('#handleKeyDown() focuses the tab at the previous index on left arrow press', () => {
-  const {foundation, mockAdapter, activateTab} = setupKeyDownTest();
+  const {foundation, mockAdapter} = setupKeyDownTest();
   const {fakeEvent: fakeKeyEvent} = mockKeyDownEvent({key: MDCTabBarFoundation.strings.ARROW_LEFT_KEY});
   const {fakeEvent: fakeKeyCodeEvent} = mockKeyDownEvent({keyCode: 37});
   td.when(mockAdapter.getFocusedTabIndex()).thenReturn(2);
