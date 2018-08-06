@@ -1,5 +1,5 @@
 //
-// Copyright 2017 Google Inc. All Rights Reserved.
+// Copyright 2018 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,26 +14,24 @@
 // limitations under the License.
 //
 
-@import "../functions";
-@import "@material/theme/mixins";
-@import "@material/typography/mixins";
+@import "../../../../packages/mdc-radio/mixins";
+@import "../../../../packages/mdc-theme/color-palette";
 
-// postcss-bem-linter: define text-field-helper-text
+$custom-radio-color: $material-color-red-300;
 
-.mdc-text-field-helper-text {
-  @include mdc-typography(caption);
-  @include mdc-typography-baseline-top(16px);
-
-  margin: 0;
-  transition: mdc-text-field-transition(opacity);
-  opacity: 0;
-  will-change: opacity;
+.test-cell--radio {
+  width: 71px;
+  height: 71px;
 }
 
-.mdc-text-field-helper-text--persistent {
-  transition: none;
-  opacity: 1;
-  will-change: initial;
+.custom-radio--unchecked-stroke-color {
+  @include mdc-radio-unchecked-stroke-color($custom-radio-color);
 }
 
-// postcss-bem-linter: end
+.custom-radio--checked-stroke-color {
+  @include mdc-radio-checked-stroke-color($custom-radio-color);
+}
+
+.custom-radio--ink-color {
+  @include mdc-radio-ink-color($custom-radio-color);
+}

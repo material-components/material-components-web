@@ -99,7 +99,7 @@ class ReportBuilder {
      * @type {!Logger}
      * @private
      */
-    this.logger_ = new Logger(__filename);
+    this.logger_ = new Logger();
 
     /**
      * @type {!UserAgentStore}
@@ -128,7 +128,7 @@ class ReportBuilder {
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async initForCapture(goldenDiffBase) {
-    this.logger_.foldStart('screenshot.init', 'ReportBuilder#initForCapture()');
+    this.logger_.foldStart('screenshot.init', 'ReportBuilder.initForCapture()');
 
     if (this.cli_.isOnline()) {
       await this.cbtApi_.fetchAvailableDevices();
@@ -167,6 +167,7 @@ class ReportBuilder {
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async initForDemo() {
+    // TODO(acdvorak): Pass `goldenDiffBase` argument
     return ReportData.create({
       meta: await this.createReportMetaProto_(),
     });
@@ -300,18 +301,24 @@ class ReportBuilder {
   }
 
   /**
+   * TODO(acdvorak): Figure out how to handle offline mode for prefetching and diffing
+   * TODO(acdvorak): Cache downloaded images on Travis
    * @param {!mdc.proto.ReportData} reportData
    * @return {!Promise<void>}
    * @private
    */
   async prefetchGoldenImages_(reportData) {
-    // TODO(acdvorak): Figure out how to handle offline mode for prefetching and diffing
-    console.log('Fetching golden images...');
+    const expectedScreenshots = reportData.screenshots.expected_screenshot_list;
+
+    this.logger_.debug(`Fetching ${expectedScreenshots.length.toLocaleString()} golden images...`);
+
     await Promise.all(
-      reportData.screenshots.expected_screenshot_list.map((expectedScreenshot) => {
+      expectedScreenshots.map((expectedScreenshot) => {
         return this.prefetchScreenshotImages_(expectedScreenshot);
       })
     );
+
+    this.logger_.debug(`Fetched ${expectedScreenshots.length.toLocaleString()} golden images!`);
   }
 
   /**

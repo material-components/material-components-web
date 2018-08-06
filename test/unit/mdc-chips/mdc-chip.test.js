@@ -48,6 +48,16 @@ test('get ripple returns MDCRipple instance', () => {
   assert.isTrue(component.ripple instanceof MDCRipple);
 });
 
+test('sets id on chip if attribute exists', () => {
+  const root = bel`
+    <div class="mdc-chip" id="hello-chip">
+      <div class="mdc-chip__text">Hello</div>
+    </div>
+  `;
+  const component = new MDCChip(root);
+  assert.equal(component.id, 'hello-chip');
+});
+
 test('#adapter.hasClass returns true if class is set on chip set element', () => {
   const {root, component} = setupTest();
   root.classList.add('foo');
@@ -146,10 +156,15 @@ function setupMockFoundationTest(root = getFixture()) {
   return {root, component, mockFoundation};
 }
 
-test('#isSelected proxies to foundation', () => {
+test('#get selected proxies to foundation', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
-  component.isSelected();
-  td.verify(mockFoundation.isSelected());
+  assert.equal(component.selected, mockFoundation.isSelected());
+});
+
+test('#set selected proxies to foundation', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.selected = true;
+  td.verify(mockFoundation.setSelected(true));
 });
 
 test('#get shouldRemoveOnTrailingIconClick proxies to foundation', () => {

@@ -77,7 +77,7 @@ in the double line list style as defined by
 </ul>
 ```
 
-> NOTE: Make sure that there are no white-space characters before primary and secondary text.
+> NOTE: Make sure there are no white-space characters before primary and secondary text content.
 
 ### List Groups
 

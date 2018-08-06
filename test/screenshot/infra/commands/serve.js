@@ -16,13 +16,12 @@
 
 'use strict';
 
-/** @type {!CliColor} */
-const colors = require('colors');
 const detectPort = require('detect-port');
 const express = require('express');
 const serveIndex = require('serve-index');
 
 const Cli = require('../lib/cli');
+const CliColor = require('../lib/logger').colors;
 const {ExitCode} = require('../lib/constants');
 const {TEST_DIR_RELATIVE_PATH} = require('../lib/constants');
 
@@ -45,10 +44,10 @@ class ServeCommand {
 
     app.listen(port, () => {
       const urlPlain = `http://localhost:${port}/`;
-      const urlColor = colors.bold.underline(urlPlain);
+      const urlColor = CliColor.bold.underline(urlPlain);
       const noticePlain = `Local development server running on ${urlPlain}`;
       const noticeColor = `Local development server running on ${urlColor}`;
-      const borderColor = colors.green(''.padStart(noticePlain.length, '='));
+      const borderColor = CliColor.green(''.padStart(noticePlain.length, '='));
       console.log((`
 ${borderColor}
 ${noticeColor}
