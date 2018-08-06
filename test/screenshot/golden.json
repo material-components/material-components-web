@@ -588,7 +588,7 @@
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/01/00_49_00_411/spec/mdc-textfield/classes/invalid-focused-helper-text-persistent.html",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/06/20_23_47_283/spec/mdc-textfield/classes/invalid-focused-helper-text-persistent.html.windows_chrome_68.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/06/20_36_40_393/spec/mdc-textfield/classes/invalid-focused-helper-text-persistent.html.windows_edge_17.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/06/20_51_26_951/spec/mdc-textfield/classes/invalid-focused-helper-text-persistent.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/06/20_23_47_283/spec/mdc-textfield/classes/invalid-focused-helper-text-persistent.html.windows_firefox_61.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/06/20_23_47_283/spec/mdc-textfield/classes/invalid-focused-helper-text-persistent.html.windows_ie_11.png"
     }
@@ -651,7 +651,7 @@
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/01/00_49_00_411/spec/mdc-textfield/classes/invalid-helper-text-persistent.html",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/06/20_23_47_283/spec/mdc-textfield/classes/invalid-helper-text-persistent.html.windows_chrome_68.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/06/20_36_40_393/spec/mdc-textfield/classes/invalid-helper-text-persistent.html.windows_edge_17.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/06/20_51_26_951/spec/mdc-textfield/classes/invalid-helper-text-persistent.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/06/20_23_47_283/spec/mdc-textfield/classes/invalid-helper-text-persistent.html.windows_firefox_61.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/06/20_23_47_283/spec/mdc-textfield/classes/invalid-helper-text-persistent.html.windows_ie_11.png"
     }
