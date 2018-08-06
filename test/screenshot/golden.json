@@ -399,7 +399,7 @@
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/01/00_49_00_411/spec/mdc-textfield/classes/baseline-helper-text-persistent.html",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/06/21_43_39_751/spec/mdc-textfield/classes/baseline-helper-text-persistent.html.windows_chrome_68.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/06/22_44_14_328/spec/mdc-textfield/classes/baseline-helper-text-persistent.html.windows_edge_17.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/06/22_58_13_153/spec/mdc-textfield/classes/baseline-helper-text-persistent.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/06/21_43_39_751/spec/mdc-textfield/classes/baseline-helper-text-persistent.html.windows_firefox_61.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/06/21_43_39_751/spec/mdc-textfield/classes/baseline-helper-text-persistent.html.windows_ie_11.png"
     }
@@ -408,7 +408,7 @@
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/01/00_49_00_411/spec/mdc-textfield/classes/baseline-helper-text-validation-msg.html",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/06/21_43_39_751/spec/mdc-textfield/classes/baseline-helper-text-validation-msg.html.windows_chrome_68.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/06/21_43_39_751/spec/mdc-textfield/classes/baseline-helper-text-validation-msg.html.windows_edge_17.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/06/22_58_13_153/spec/mdc-textfield/classes/baseline-helper-text-validation-msg.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/06/21_43_39_751/spec/mdc-textfield/classes/baseline-helper-text-validation-msg.html.windows_firefox_61.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/06/21_43_39_751/spec/mdc-textfield/classes/baseline-helper-text-validation-msg.html.windows_ie_11.png"
     }
@@ -516,7 +516,7 @@
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/01/00_49_00_411/spec/mdc-textfield/classes/focused-helper-text-persistent-validation-msg.html",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/06/21_43_39_751/spec/mdc-textfield/classes/focused-helper-text-persistent-validation-msg.html.windows_chrome_68.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/06/21_51_14_172/spec/mdc-textfield/classes/focused-helper-text-persistent-validation-msg.html.windows_edge_17.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/06/22_58_13_153/spec/mdc-textfield/classes/focused-helper-text-persistent-validation-msg.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/06/21_43_39_751/spec/mdc-textfield/classes/focused-helper-text-persistent-validation-msg.html.windows_firefox_61.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/06/21_43_39_751/spec/mdc-textfield/classes/focused-helper-text-persistent-validation-msg.html.windows_ie_11.png"
     }
@@ -525,7 +525,7 @@
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/01/00_49_00_411/spec/mdc-textfield/classes/focused-helper-text-persistent.html",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/06/21_43_39_751/spec/mdc-textfield/classes/focused-helper-text-persistent.html.windows_chrome_68.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/06/22_44_14_328/spec/mdc-textfield/classes/focused-helper-text-persistent.html.windows_edge_17.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/06/22_58_13_153/spec/mdc-textfield/classes/focused-helper-text-persistent.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/06/21_43_39_751/spec/mdc-textfield/classes/focused-helper-text-persistent.html.windows_firefox_61.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/06/21_43_39_751/spec/mdc-textfield/classes/focused-helper-text-persistent.html.windows_ie_11.png"
     }
@@ -543,7 +543,7 @@
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/01/00_49_00_411/spec/mdc-textfield/classes/focused-helper-text.html",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/06/21_43_39_751/spec/mdc-textfield/classes/focused-helper-text.html.windows_chrome_68.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/06/22_39_08_980/spec/mdc-textfield/classes/focused-helper-text.html.windows_edge_17.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/06/22_58_13_153/spec/mdc-textfield/classes/focused-helper-text.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/06/21_43_39_751/spec/mdc-textfield/classes/focused-helper-text.html.windows_firefox_61.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/06/21_43_39_751/spec/mdc-textfield/classes/focused-helper-text.html.windows_ie_11.png"
     }
@@ -606,7 +606,7 @@
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/01/00_49_00_411/spec/mdc-textfield/classes/invalid-focused-helper-text.html",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/06/21_43_39_751/spec/mdc-textfield/classes/invalid-focused-helper-text.html.windows_chrome_68.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/06/21_43_39_751/spec/mdc-textfield/classes/invalid-focused-helper-text.html.windows_edge_17.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/06/22_58_13_153/spec/mdc-textfield/classes/invalid-focused-helper-text.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/06/21_43_39_751/spec/mdc-textfield/classes/invalid-focused-helper-text.html.windows_firefox_61.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/06/21_43_39_751/spec/mdc-textfield/classes/invalid-focused-helper-text.html.windows_ie_11.png"
     }
@@ -723,7 +723,7 @@
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/01/15_41_51_957/spec/mdc-textfield/classes/textarea-invalid.html",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/06/21_43_39_751/spec/mdc-textfield/classes/textarea-invalid.html.windows_chrome_68.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/06/21_43_39_751/spec/mdc-textfield/classes/textarea-invalid.html.windows_edge_17.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/06/22_58_13_153/spec/mdc-textfield/classes/textarea-invalid.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/06/21_43_39_751/spec/mdc-textfield/classes/textarea-invalid.html.windows_firefox_61.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/06/21_43_39_751/spec/mdc-textfield/classes/textarea-invalid.html.windows_ie_11.png"
     }
