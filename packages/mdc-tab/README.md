@@ -35,14 +35,14 @@ npm install @material/tab
 
 ```html
 <button class="mdc-tab" role="tab" aria-selected="false" tabindex="-1">
-  <div class="mdc-tab__content">
+  <span class="mdc-tab__content">
     <span class="mdc-tab__icon">heart</span>
     <span class="mdc-tab__text-label">Favorites</span>
-  </div>
+  </span>
   <span class="mdc-tab-indicator">
     <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
   </span>
-  <div class="mdc-tab__ripple"></div>
+  <span class="mdc-tab__ripple"></span>
 </button>
 ```
 
@@ -70,14 +70,14 @@ const tab = new MDCTab(document.querySelector('.mdc-tab'));
 
 ```html
 <button class="mdc-tab mdc-tab--active" role="tab" aria-selected="true">
-  <div class="mdc-tab__content">
-    <span class="mdc-tab__icon">heart</div>
-    <span class="mdc-tab__text-label">Favorites</div>
-  </div>
+  <span class="mdc-tab__content">
+    <span class="mdc-tab__icon">heart</span>
+    <span class="mdc-tab__text-label">Favorites</span>
+  </span>
   <span class="mdc-tab-indicator mdc-tab-indicator--active">
     <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
   </span>
-  <div class="mdc-tab__ripple"></div>
+  <span class="mdc-tab__ripple"></span>
 </button>
 ```
 
