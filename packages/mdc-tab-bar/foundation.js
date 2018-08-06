@@ -96,7 +96,7 @@ class MDCTabBarFoundation extends MDCFoundation {
     super(Object.assign(MDCTabBarFoundation.defaultAdapter, adapter));
 
     /** @private {boolean} */
-    this.useAutomaticActivation_ = true;
+    this.useAutomaticActivation_ = false;
   }
 
   init() {
@@ -149,6 +149,10 @@ class MDCTabBarFoundation extends MDCFoundation {
     evt.preventDefault();
 
     if (this.useAutomaticActivation_) {
+      if (key === strings.SPACE_KEY || key === strings.ENTER_KEY) {
+        return;
+      }
+
       let index = this.determineTargetFromKey_(this.adapter_.getActiveTabIndex(), key);
       this.activateTab(index);
       this.scrollIntoView(index);
