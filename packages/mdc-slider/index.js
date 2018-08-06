@@ -122,19 +122,17 @@ class MDCSlider extends MDCComponent {
         removeClass: (className) => this.root_.classList.remove(className),
         setThumbAttribute: (name, value) => this.thumb_.setAttribute(name, value),
         setValueLabelPath: (value) => this.valueLabel_.setAttribute('d', value),
-        setValueLabelText: (xValue, text, translateX) => {
-          this.valueLabelText_.setAttribute('x', xValue);
+        setValueLabelText: (xValue, text) => {
+          this.valueLabelText_.setAttribute('style', xValue);
           this.valueLabelText_.textContent = text;
-          this.valueLabelText_.setAttribute('transform', translateX);
         },
         removeValueLabelTextStyle: () => {
           this.valueLabelText_.removeAttribute('style');
-          this.valueLabelText_.removeAttribute('transform');
         },
         computeBoundingRect: () => this.root_.getBoundingClientRect(),
         eventTargetHasClass: (target, className) => {
           if (target.classList) {
-            target.classList.contains(className);
+            return target.classList.contains(className);
           }
         },
         registerEventHandler: (type, handler) => {

@@ -258,7 +258,8 @@ class MDCSliderFoundation extends MDCFoundation {
     if (this.inTransit_ && this.adapter_.eventTargetHasClass(evt.target, cssClasses.TRACK_FILL)) {
       this.setInTransit_(false);
     }
-    if (this.isDiscrete_ && this.adapter_.eventTargetHasClass(evt.target, 'mdc-slider__value-label') && this.active_) {
+    if (this.isDiscrete_ && this.adapter_.eventTargetHasClass(evt.target, 'mdc-slider__value-label-text')
+      && this.active_) {
       this.setPressed_(true);
     }
   }
@@ -656,10 +657,16 @@ class MDCSliderFoundation extends MDCFoundation {
 
   /**
    * Calculates the value label text x attribute value
+   * @param {number} translatePx
    * @return {number}
    */
-  calcValueLabelTextXValue_() {
+  calcValueLabelTextXValue_(translatePx) {
     const localeStringValue = this.calcLocaleString_();
+    let extraTranslateValue = 0;
+    let topLobeHorizontal = 0;
+    const characterWidth = 8.98;
+
+    // Calculates default translateX value for the size of the text
     let xValue = (34 - localeStringValue);
     if (this.value_.toString().length > 5) {
       xValue = (xValue * 0.75) + 4;
@@ -669,18 +676,8 @@ class MDCSliderFoundation extends MDCFoundation {
     if (this.adapter_.isRTL()) {
       xValue = xValue + localeStringValue;
     }
-    return xValue;
-  }
 
-  /**
-   * Calculates the value label text translate
-   * @return {number}
-   */
-  calcValueLabelTextTranslate_(translatePx) {
-    let translateValue = 0;
-    let topLobeHorizontal = 0;
-    const characterWidth = 8.98;
-    const localeStringValue = this.calcLocaleString_();
+    // Calculates any extra translate value on either side if the slider is near the ends
     if (this.value_.toString().length > 2) {
       topLobeHorizontal = localeStringValue - (2 * characterWidth);
     }
@@ -693,15 +690,16 @@ class MDCSliderFoundation extends MDCFoundation {
       extraLeft = temp;
     }
     if (translatePx - 15 < extraLeft && topLobeHorizontal > 30) {
-      translateValue = extraLeft - translatePx + 15;
+      extraTranslateValue = extraLeft - translatePx + 15;
     }
     if (this.rect_.width - translatePx - 15 < extraRight && topLobeHorizontal > 30) {
-      translateValue = -(extraRight - (this.rect_.width - translatePx - 15));
+      extraTranslateValue = -(extraRight - (this.rect_.width - translatePx - 15));
     }
     if (this.adapter_.isRTL()) {
-      translateValue = -translateValue;
+      extraTranslateValue = -extraTranslateValue;
+      extraTranslateValue -= 34;
     }
-    return translateValue;
+    return xValue + extraTranslateValue;
   }
 
   /**
@@ -714,12 +712,10 @@ class MDCSliderFoundation extends MDCFoundation {
     requestAnimationFrame(() => {
       if (this.isDiscrete_ && this.active_) {
         const path = this.calcPath_(translatePx);
-        let xValue = this.calcValueLabelTextXValue_();
-        const translateValue = this.calcValueLabelTextTranslate_(translatePx);
-        xValue += translateValue;
+        const xValue = this.calcValueLabelTextXValue_(translatePx);
         this.adapter_.setValueLabelPath(path);
         this.adapter_.setValueLabelText(
-          String(xValue), this.value_.toLocaleString(), 'scale(1)');
+          `transform: translateX(${xValue}px) translateY(-39px)`, this.value_.toLocaleString());
       }
       if (this.adapter_.isRTL()) {
         this.adapter_.setThumbStyleProperty('transform', `translateX(-${translatePx}px) translateX(50%)`);
