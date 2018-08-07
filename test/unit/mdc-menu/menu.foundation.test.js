@@ -98,7 +98,7 @@ test('handleKeydown space/enter key causes the menu to close', () => {
   td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
 
   foundation.handleKeydown(event);
-  enter.key = 'Enter';
+  event.key = 'Enter';
   foundation.handleKeydown(event);
 
   td.verify(mockAdapter.closeSurface(), {times: 2});
@@ -111,7 +111,7 @@ test('handleKeydown space/enter key causes the menu to emit the selected item', 
   td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
 
   foundation.handleKeydown(event);
-  enter.key = 'Enter';
+  event.key = 'Enter';
   foundation.handleKeydown(event);
 
   td.verify(mockAdapter.notifySelected({index: 0}), {times: 2});
@@ -124,7 +124,7 @@ test('handleKeydown space/enter key inside an input does not prevent default on 
   td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
 
   foundation.handleKeydown(event);
-  enter.key = 'Enter';
+  event.key = 'Enter';
   foundation.handleKeydown(event);
 
   td.verify(event.preventDefault(), {times: 0});
@@ -137,7 +137,7 @@ test('handleKeydown space/enter key inside a list item causes the preventDefault
   td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
 
   foundation.handleKeydown(event);
-  enter.key = 'Enter';
+  event.key = 'Enter';
   foundation.handleKeydown(event);
 
   td.verify(event.preventDefault(), {times: 2});
@@ -151,7 +151,7 @@ test('handleKeydown space/enter key not inside of a list item does nothing', () 
   td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
 
   foundation.handleKeydown(event);
-  enter.key = 'Enter';
+  event.key = 'Enter';
   foundation.handleKeydown(event);
 
   td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0});
@@ -165,7 +165,7 @@ test('handleKeydown space/enter key not inside of a child of a list item causes 
   td.when(mockAdapter.getElementIndex(event.target)).thenReturn(-1);
 
   foundation.handleKeydown(event);
-  enter.key = 'Enter';
+  event.key = 'Enter';
   foundation.handleKeydown(event);
 
   td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0});
@@ -179,7 +179,7 @@ test('handleKeydown space/enter key inside of a child of a list item causes the 
   td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
 
   foundation.handleKeydown(event);
-  enter.key = 'Enter';
+  event.key = 'Enter';
   foundation.handleKeydown(event);
 
   td.verify(mockAdapter.notifySelected({index: 0}), {times: 2});
@@ -196,7 +196,7 @@ test('handleKeydown space/enter key on a list item with a checkbox toggles the c
   td.when(mockAdapter.getCheckboxAtIndex(0)).thenReturn(checkbox);
 
   foundation.handleKeydown(event);
-  enter.key = 'Enter';
+  event.key = 'Enter';
   foundation.handleKeydown(event);
 
   td.verify(mockAdapter.toggleCheckbox(checkbox), {times: 2});
@@ -211,7 +211,7 @@ test('handleKeydown space/enter key on a list item without a checkbox does not t
   td.when(mockAdapter.getCheckboxAtIndex(0)).thenReturn(null);
 
   foundation.handleKeydown(event);
-  enter.key = 'Enter';
+  event.key = 'Enter';
   foundation.handleKeydown(event);
 
   td.verify(mockAdapter.toggleCheckbox(td.matchers.anything()), {times: 0});
@@ -224,7 +224,7 @@ test('handleKeydown space/enter key inside of a list item not inside of the menu
   td.when(mockAdapter.getElementIndex(event.target)).thenReturn(-1);
 
   foundation.handleKeydown(event);
-  enter.key = 'Enter';
+  event.key = 'Enter';
   foundation.handleKeydown(event);
 
   td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0});
@@ -241,7 +241,7 @@ test('handleKeydown space/enter key inside of a selection group with another ele
   td.when(mockAdapter.getSelectedElementIndex(event.target)).thenReturn(0);
 
   foundation.handleKeydown(event);
-  enter.key = 'Enter';
+  event.key = 'Enter';
   foundation.handleKeydown(event);
   clock.tick(numbers.TRANSITION_CLOSE_DURATION);
 
@@ -261,7 +261,7 @@ test('handleKeydown space/enter key inside of a selection group with no element 
   td.when(mockAdapter.getSelectedElementIndex(event.target)).thenReturn(-1);
 
   foundation.handleKeydown(event);
-  enter.key = 'Enter';
+  event.key = 'Enter';
   foundation.handleKeydown(event);
   clock.tick(numbers.TRANSITION_CLOSE_DURATION);
 
@@ -283,7 +283,7 @@ test('handleKeydown space/enter key inside of a child element of a list item in 
   td.when(mockAdapter.getSelectedElementIndex(event.target)).thenReturn(-1);
 
   foundation.handleKeydown(event);
-  enter.key = 'Enter';
+  event.key = 'Enter';
   foundation.handleKeydown(event);
   clock.tick(numbers.TRANSITION_CLOSE_DURATION);
 
@@ -306,7 +306,7 @@ test('handleKeydown space/enter key inside of a child element of a selection gro
   td.when(mockAdapter.getSelectedElementIndex(event.target)).thenReturn(-1);
 
   foundation.handleKeydown(event);
-  enter.key = 'Enter';
+  event.key = 'Enter';
   foundation.handleKeydown(event);
   clock.tick(numbers.TRANSITION_CLOSE_DURATION);
 
