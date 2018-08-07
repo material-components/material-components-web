@@ -59,7 +59,6 @@ npm install @material/menu
 @import "@material/menu/mdc-list";
 @import "@material/menu/mdc-menu-surface";
 @import "@material/menu/mdc-menu";
-
 ```
 
 ### JavaScript Instantiation
@@ -69,7 +68,6 @@ import {MDCMenu} from '@material/menu';
 
 const menu = new MDCMenu(document.querySelector('.mdc-menu'));
 menu.show();
-
 ```
 
 > See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.

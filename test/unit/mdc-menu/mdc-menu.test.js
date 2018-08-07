@@ -26,7 +26,7 @@ import {MDCMenuSurfaceFoundation} from '../../../packages/mdc-menu-surface/found
 
 function getFixture(open) {
   return bel`
-    <div class="mdc-menu-surface ${open ? 'mdc-menu-surface--open' : ''}" tabindex="-1">
+    <div class="mdc-menu mdc-menu-surface ${open ? 'mdc-menu-surface--open' : ''}" tabindex="-1">
       <ul class="mdc-list" role="menu">
         <li tabIndex="-1" class="mdc-list-item" role="menuitem">Item</a>
         <li role="separator"></li>
@@ -100,7 +100,7 @@ test('destroy causes the menu-surface and list to be destroyed', () => {
   td.verify(menuSurface.unlisten(td.matchers.anything(), td.matchers.anything()));
 });
 
-test('destroy does throw an error if the list is not instantiated', () => {
+test('destroy does not throw an error if the list is not instantiated', () => {
   const fixture = getFixture();
   const list = fixture.querySelector('.mdc-list');
   list.parentElement.removeChild(list);
@@ -181,10 +181,10 @@ test('getOptionByIndex returns null if index is > list length', () => {
   const {root, component, list} = setupTestWithFakes();
   const items = [].slice.call(root.querySelectorAll('[role="menuitem"]'));
   list.listElements_ = items;
-  assert.equal(component.getOptionByIndex(items.length), null);
+  assert.equal(null, component.getOptionByIndex(items.length));
 });
 
-test('fixed', () => {
+test('setFixedPosition', () => {
   const {component, menuSurface} = setupTestWithFakes();
   component.setFixedPosition(true);
   td.verify(menuSurface.setFixedPosition(true));
@@ -212,13 +212,13 @@ test('setAnchorElement', () => {
   const {component, menuSurface} = setupTestWithFakes();
   const button = document.createElement('button');
   component.setAnchorElement(button);
-  assert.equal(menuSurface.anchorElement, button);
+  assert.equal(button, menuSurface.anchorElement);
 });
 
 test('setAbsolutePosition', () => {
   const {component, menuSurface} = setupTestWithFakes();
-  component.setAbsolutePosition(100, 100);
-  td.verify(menuSurface.setAbsolutePosition(100, 100));
+  component.setAbsolutePosition(100, 120);
+  td.verify(menuSurface.setAbsolutePosition(100, 120));
 });
 
 test('show registers event listener for keydown', () => {
@@ -246,7 +246,7 @@ test('hide de-registers event listener for keydown', () => {
   td.verify(mockFoundation.handleKeydown(td.matchers.anything()), {times: 0});
 });
 
-test('show de-registers event listener for click', () => {
+test('hide de-registers event listener for click', () => {
   const {component, mockFoundation, root} = setupTestWithFakes();
   component.show();
   component.hide();
@@ -276,11 +276,11 @@ test('menu surface opened event causes no element to be focused if the list is e
 
   root.dispatchEvent(event);
 
-  assert.equal(document.activeElement, lastActiveElement);
+  assert.equal(lastActiveElement, document.activeElement);
   document.body.removeChild(root);
 });
 
-test('show causes does not throw an error if there are no items in the list to focus', () => {
+test('show does not throw an error if there are no items in the list to focus', () => {
   const {component, root, list} = setupTestWithFakes();
   list.listElements_ = [];
   document.body.appendChild(root);
@@ -336,7 +336,7 @@ test('adapter#elementContainsClass returns false if the class does not exist on 
   assert.isFalse(containsFoo);
 });
 
-test('adapter#closeSurface returns false if the class does not exist on the element', () => {
+test('adapter#closeSurface proxies to menuSurface#hide', () => {
   const {component, menuSurface} = setupTestWithFakes();
   component.getDefaultFoundation().adapter_.closeSurface();
   td.verify(menuSurface.hide(), {times: 1});
@@ -346,14 +346,14 @@ test('adapter#getElementIndex returns the index value of an element in the list'
   const {root, component} = setupTest();
   const firstItem = root.querySelector('.mdc-list-item');
   const indexValue = component.getDefaultFoundation().adapter_.getElementIndex(firstItem);
-  assert.equal(0, indexValue);
+  assert.equal(indexValue, 0);
 });
 
 test('adapter#getElementIndex returns -1 if the element does not exist in the list', () => {
   const {component} = setupTest();
   const firstItem = document.createElement('li');
   const indexValue = component.getDefaultFoundation().adapter_.getElementIndex(firstItem);
-  assert.equal(-1, indexValue);
+  assert.equal(indexValue, -1);
 });
 
 test('adapter#getParentElement returns the parent element of an element', () => {
@@ -376,7 +376,7 @@ test('adapter#getSelectedElementIndex returns -1 if the "selected" element is no
   const element = root.querySelector('.mdc-menu-item--selected');
   element.classList.remove('mdc-menu-item--selected');
   const index = component.getDefaultFoundation().adapter_.getSelectedElementIndex(selectionGroup);
-  assert.equal(-1, index);
+  assert.equal(index, -1);
 });
 
 test('adapter#notifySelected emits an event for a selected element', () => {
@@ -396,7 +396,7 @@ test('adapter#getCheckboxAtIndex returns a checkbox inside a list item at the in
   firstItem.appendChild(checkbox);
 
   component.getDefaultFoundation().adapter_.getCheckboxAtIndex(0);
-  assert.equal(component.getDefaultFoundation().adapter_.getCheckboxAtIndex(0), checkbox);
+  assert.equal(checkbox, component.getDefaultFoundation().adapter_.getCheckboxAtIndex(0));
 });
 
 test('adapter#getCheckboxAtIndex returns null if a checkbox does not exist in the element at index specified', () => {
@@ -404,7 +404,7 @@ test('adapter#getCheckboxAtIndex returns null if a checkbox does not exist in th
   assert.isNull(component.getDefaultFoundation().adapter_.getCheckboxAtIndex(0));
 });
 
-test('adapter#toggleCheckbox toggle a checkbox', () => {
+test('adapter#toggleCheckbox toggles a checkbox', () => {
   const {root, component} = setupTest();
   document.body.appendChild(root);
   const checkbox = document.createElement('input');
