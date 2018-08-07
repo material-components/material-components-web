@@ -108,6 +108,12 @@ class MDCDrawerAdapter {
   untrapFocusOnSurface() {}
 
   focusFirstFocusableElement() {}
+
+  /**
+   * @param {!Element} targetElement target element
+   * @param {string} className class name
+   */
+  eventTargetHasClass(targetElement, className) {}
 }
 
 export default MDCDrawerAdapter;

@@ -16,6 +16,7 @@
  */
 /** @enum {string} */
 const cssClasses = {
+  ROOT: 'mdc-drawer',
   DISMISSIBLE: 'mdc-drawer--dismissible',
   MODAL: 'mdc-drawer--modal',
   RAIL: 'mdc-drawer--rail',

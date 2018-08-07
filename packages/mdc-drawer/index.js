@@ -92,7 +92,7 @@ export class MDCDrawer extends MDCComponent {
     this.handleKeydown_ = this.foundation_.handleKeydown.bind(this.foundation_);
     this.handleTransitionEnd_ = this.foundation_.handleTransitionEnd.bind(this.foundation_);
     document.addEventListener('keydown', this.handleKeydown_);
-    this.root_.addEventListener('transitionend', this.handleTransitionEnd_);
+    this.root_.addEventListener('transitionend', this.handleTransitionEnd_, true);
     this.handleScrimClick_ = () => this.foundation_.handleScrimClick();
     if (this.scrim_) {
       this.scrim_.addEventListener('click', this.handleScrimClick_);
@@ -124,10 +124,11 @@ export class MDCDrawer extends MDCComponent {
       isRtl: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
       notifyClose: () => this.emit(strings.CLOSE_EVENT, null, true /* shouldBubble */),
       notifyOpen: () => this.emit(strings.OPEN_EVENT, null, true /* shouldBubble */),
-      // trapFocusOnSurface: () => this.focusTrap_.activate(),
-      // untrapFocusOnSurface: () => this.focusTrap_.deactivate(),
-      trapFocusOnSurface: () => {},
-      untrapFocusOnSurface: () => {},
+      trapFocusOnSurface: () => this.focusTrap_.activate(),
+      untrapFocusOnSurface: () => this.focusTrap_.deactivate(),
+      eventTargetHasClass: (targetElement, className) => {
+        return targetElement.classList.contains(className);
+      },
     }));
 
     if (this.root_.classList.contains(MDCDismissibleDrawerFoundation.cssClasses.DISMISSIBLE) ||

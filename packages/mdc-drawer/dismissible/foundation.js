@@ -47,6 +47,7 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
       notifyOpen: () => {},
       trapFocusOnSurface: () => {},
       untrapFocusOnSurface: () => {},
+      eventTargetHasClass: () => {},
     });
   }
 
@@ -120,8 +121,12 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
    * Handles a transition end event on the root element.
    * @param {!Event} evt
    */
-  handleTransitionEnd() {
-    const {OPENING, CLOSING, OPEN, ANIMATE} = cssClasses;
+  handleTransitionEnd(evt) {
+    const {OPENING, CLOSING, OPEN, ANIMATE, ROOT} = cssClasses;
+    if (!this.adapter_.eventTargetHasClass(evt.target, ROOT)) {
+      return;
+    }
+
     if (this.isClosing()) {
       this.adapter_.removeClass(OPEN);
       this.closed();

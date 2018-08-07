@@ -47,6 +47,7 @@ class MDCModalDrawerFoundation extends MDCDismissibleDrawerFoundation {
       notifyOpen: () => {},
       trapFocusOnSurface: () => {},
       untrapFocusOnSurface: () => {},
+      eventTargetHasClass: () => {},
     });
   }
 
