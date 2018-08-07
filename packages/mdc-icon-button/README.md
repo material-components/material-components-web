@@ -92,10 +92,11 @@ var toggleButton = new mdc.iconButton.MDCIconButtonToggle(document.getElementByI
 
 #### Icon Button Toggle States
 
-Note the use of `data-toggle-on` attribute in the above examples. When an MDCIconButtonToggle
-instance is toggled, it looks at this data attribute to determine which element is the on element. This is what
-allows MDCIconButtonToggle to be so flexible. The `data-toggle-on` properties will be as the `on` value, and the
-`mdc-icon-button--on` class will be used to indicate the `on` state.
+Note the use of `data-toggle-on` attribute in the above examples. This attribute indicates which element is the
+on element. When the `mdc-icon-button--on` class is present, the element with the `data-toggle-on` attribute
+will be shown and the other element will be hidden. When the `mdc-icon-button--on` class is not present, the element
+with the `data-toggle-on` attribute will be hidden and the other element will beshown. This is what allows
+MDCIconButtonToggle to be so flexible. 
 
 Attribute | Description
 --- | ---
@@ -117,6 +118,21 @@ The icon button toggle can be used with SVGs.
    <svg class="mdc-icon-button__icon" data-toggle-on>
      ...
   </svg>
+</button>
+```
+
+#### Icon Button Toggle with an Image
+
+The icon button toggle can be used with `img` tags.
+
+```html
+<button id="star-this-item"
+   class="mdc-icon-button mdc-icon-button--on"
+   aria-label="Unstar this item"
+   aria-hidden="true"
+   aria-pressed="true">
+   <img src="" class="mdc-icon-button__icon"/>
+   <img src="" class="mdc-icon-button__icon" data-toggle-on/>
 </button>
 ```
 
