@@ -74,9 +74,31 @@
             <br>
             Value from <code>MDCSlider:change</code> event: <span id="continuous-slider-committed-value"></span>
           </p>
-          <input type="checkbox" name="disabled"> Disabled
-          <input type="checkbox" name="rtl"> RTL
         </div>
+
+        <h2>Discrete Slider</h2>
+        <div class="slider-example">
+            <div id="discrete-mdc-slider" class="mdc-slider mdc-slider--discrete">
+              <div class="mdc-slider__track">
+                <div class="mdc-slider__track-fill"></div>
+                <div class="mdc-slider__tick-mark-set"></div>
+              </div>
+              <div class="mdc-slider__thumb" tabindex="0" role="slider"
+              aria-valuemin="0" aria-valuemax="50" aria-valuenow="20"
+              aria-label="Select Value">
+                <svg class="mdc-slider__thumb-handle" width="34" height="34">
+                  <circle cx="17" cy="17" r="6"></circle>
+                </svg>
+              </div>
+            </div>
+          <p>
+            Value from <code>MDCSlider:input</code> event: <span id="discrete-slider-value"></span>
+            <br>
+            Value from <code>MDCSlider:change</code> event: <span id="discrete-slider-committed-value"></span>
+          </p>
+        </div>
+        <input type="checkbox" name="disabled"> Disabled
+        <input type="checkbox" name="rtl"> RTL
       </section>
     </main>
 
@@ -100,17 +122,32 @@
           continuousCommittedValue.textContent = continuousSlider.value;
         });
 
+        var discreteValue = demoRoot.querySelector('#discrete-slider-value');
+        var discreteCommittedValue = demoRoot.querySelector('#discrete-slider-committed-value');
+        var discreteSliderEl = demoRoot.querySelector('#discrete-mdc-slider');
+        var discreteSlider = new mdc.slider.MDCSlider(discreteSliderEl);
+        discreteSlider.listen('MDCSlider:input', function() {
+          discreteValue.textContent = discreteSlider.value;
+        });
+        discreteSlider.listen('MDCSlider:change', function() {
+          discreteCommittedValue.textContent = discreteSlider.value;
+        });
+
         disabledCheckbox.addEventListener('change', function() {
           continuousSlider.disabled = disabledCheckbox.checked;
+          discreteSlider.disabled = disabledCheckbox.checked;
         });
         
         rtl.addEventListener('change', function() {
           if (rtl.checked) {
             continuousSliderEl.setAttribute('dir', 'rtl');
+            discreteSliderEl.setAttribute('dir', 'rtl');
           } else {
             continuousSliderEl.removeAttribute('dir');
+            discreteSliderEl.removeAttribute('dir');
           }
           continuousSlider.layout();
+          discreteSlider.layout();
         });
       });
     </script>

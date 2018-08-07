@@ -77,6 +77,7 @@ class MDCSliderFoundation extends MDCFoundation {
       notifyChange: () => {},
       setThumbStyleProperty: () => {},
       setTrackFillStyleProperty: () => {},
+      setLastTickMarkStyleProperty: () => {},
       focusThumb: () => {},
       activateRipple: () => {},
       deactivateRipple: () => {},
@@ -96,6 +97,8 @@ class MDCSliderFoundation extends MDCFoundation {
     this.active_ = false;
     /** @private {boolean} */
     this.inTransit_ = false;
+    /** @private {boolean} */
+    this.isDiscrete_ = false;
     /** @private {number} */
     this.min_ = 0;
     /** @private {number} */
@@ -121,12 +124,17 @@ class MDCSliderFoundation extends MDCFoundation {
   }
 
   init() {
+    this.isDiscrete_ = this.adapter_.hasClass(cssClasses.DISCRETE);
     DOWN_EVENTS.forEach((evtName) => this.adapter_.registerEventHandler(evtName, this.interactionStartHandler_));
     this.adapter_.registerEventHandler('keydown', this.keydownHandler_);
     this.adapter_.registerEventHandler('keyup', this.interactionEndHandler_);
     this.adapter_.registerEventHandler('transitionend', this.transitionEndHandler_);
     this.adapter_.registerWindowResizeHandler(this.windowResizeHandler_);
     this.layout();
+    // At last step, provide a reasonable default value to discrete slider
+    if (this.isDiscrete_ && this.getStep() == 0) {
+      this.step_ = 1;
+    }
   }
 
   destroy() {
@@ -217,6 +225,28 @@ class MDCSliderFoundation extends MDCFoundation {
     this.step_ = step;
     this.setValue_(this.value_);
     this.adapter_.setThumbAttribute(strings.DATA_STEP, String(this.step_));
+  }
+
+  /**
+   * Calculates the number of tick marks for discrete slider
+   * @return {number}
+   */
+  calculateNumberOfTickMarks() {
+    if (this.step_ < 1) {
+      this.step_ = 1;
+    }
+    let numMarks = (this.max_ - this.min_) / this.step_;
+    numMarks = Math.ceil(numMarks);
+    return numMarks;
+  }
+
+  /**
+   * Adjusts the last tick mark style
+   * @param {number} numMarks
+   */
+  adjustLastTickMark(numMarks) {
+    const lastStepRatio = (this.max_ - numMarks * this.step_) / this.step_ + 1;
+    this.adapter_.setLastTickMarkStyleProperty('flex', String(lastStepRatio));
   }
 
   /**
@@ -387,6 +417,10 @@ class MDCSliderFoundation extends MDCFoundation {
    * @param {number} value
    */
   setValue_(value) {
+    const valueSetToBoundary = value === this.min_ || value === this.max_;
+    if (this.isDiscrete_ && !valueSetToBoundary) {
+      value = this.setDiscreteValue_(value);
+    }
     if (value < this.min_) {
       value = this.min_;
     } else if (value > this.max_) {
@@ -396,6 +430,17 @@ class MDCSliderFoundation extends MDCFoundation {
     this.adapter_.setThumbAttribute(strings.ARIA_VALUENOW, String(this.value_));
     this.updateUIForCurrentValue_();
     this.adapter_.notifyInput();
+  }
+
+  /**
+   * Calculates the discrete value
+   * @param {number} value
+   * @return {number}
+   */
+  setDiscreteValue_(value) {
+    const numSteps = Math.round(value / this.step_);
+    const discreteValue = numSteps * this.step_;
+    return discreteValue;
   }
 
   /**
