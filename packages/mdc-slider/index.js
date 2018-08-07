@@ -177,8 +177,17 @@ class MDCSlider extends MDCComponent {
 
   initialSyncWithDOM() {
     const origValueNow = parseFloat(this.root_.getAttribute(strings.ARIA_VALUENOW));
-    this.min = parseFloat(this.root_.getAttribute(strings.ARIA_VALUEMIN)) || this.min;
-    this.max = parseFloat(this.root_.getAttribute(strings.ARIA_VALUEMAX)) || this.max;
+    const min = parseFloat(this.root_.getAttribute(strings.ARIA_VALUEMIN)) || this.min;
+    const max = parseFloat(this.root_.getAttribute(strings.ARIA_VALUEMAX)) || this.max;
+
+    if (min >= this.max) {
+      this.max = max;
+      this.min = min;
+    } else {
+      this.min = min;
+      this.max = max;
+    }
+
     this.step = parseFloat(this.root_.getAttribute(strings.STEP_DATA_ATTR)) || this.step;
     this.value = origValueNow || this.value;
     this.disabled = (
