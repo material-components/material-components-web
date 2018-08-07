@@ -56,7 +56,7 @@ const numbers = {
  * Enum for bits in the {@see Corner) bitmap.
  * @enum {number}
  */
-const MenuSurfaceCornerBit = {
+const CornerBit = {
   BOTTOM: 1,
   CENTER: 2,
   RIGHT: 4,
@@ -72,16 +72,15 @@ const MenuSurfaceCornerBit = {
  *
  * @enum {number}
  */
-const MenuSurfaceCorner = {
+const Corner = {
   TOP_LEFT: 0,
-  TOP_RIGHT: MenuSurfaceCornerBit.RIGHT,
-  BOTTOM_LEFT: MenuSurfaceCornerBit.BOTTOM,
-  BOTTOM_RIGHT: MenuSurfaceCornerBit.BOTTOM | MenuSurfaceCornerBit.RIGHT,
-  TOP_START: MenuSurfaceCornerBit.FLIP_RTL,
-  TOP_END: MenuSurfaceCornerBit.FLIP_RTL | MenuSurfaceCornerBit.RIGHT,
-  BOTTOM_START: MenuSurfaceCornerBit.BOTTOM | MenuSurfaceCornerBit.FLIP_RTL,
-  BOTTOM_END: MenuSurfaceCornerBit.BOTTOM | MenuSurfaceCornerBit.RIGHT | MenuSurfaceCornerBit.FLIP_RTL,
+  TOP_RIGHT: CornerBit.RIGHT,
+  BOTTOM_LEFT: CornerBit.BOTTOM,
+  BOTTOM_RIGHT: CornerBit.BOTTOM | CornerBit.RIGHT,
+  TOP_START: CornerBit.FLIP_RTL,
+  TOP_END: CornerBit.FLIP_RTL | CornerBit.RIGHT,
+  BOTTOM_START: CornerBit.BOTTOM | CornerBit.FLIP_RTL,
+  BOTTOM_END: CornerBit.BOTTOM | CornerBit.RIGHT | CornerBit.FLIP_RTL,
 };
 
-
-export {cssClasses, strings, numbers, MenuSurfaceCornerBit, MenuSurfaceCorner};
+export {cssClasses, strings, numbers, CornerBit, Corner};

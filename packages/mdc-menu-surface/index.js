@@ -16,10 +16,10 @@
  */
 
 import MDCComponent from '@material/base/component';
-import {getTransformPropertyName} from './util';
+import * as util from './util';
 import {MDCMenuSurfaceFoundation, AnchorMargin} from './foundation';
 import {MDCMenuSurfaceAdapter} from './adapter';
-import {MenuSurfaceCorner, MenuSurfaceCornerBit, strings, cssClasses} from './constants';
+import {Corner, CornerBit, strings, cssClasses} from './constants';
 
 /**
  * @extends MDCComponent<!MDCMenuSurfaceFoundation>
@@ -129,7 +129,7 @@ class MDCMenuSurface extends MDCComponent {
   }
 
   /**
-   * @param {MenuSurfaceCorner} corner Default anchor corner alignment of top-left
+   * @param {!Corner} corner Default anchor corner alignment of top-left
    *     surface corner.
    */
   setAnchorCorner(corner) {
@@ -137,7 +137,7 @@ class MDCMenuSurface extends MDCComponent {
   }
 
   /**
-   * @param {AnchorMargin} margin
+   * @param {!AnchorMargin} margin
    */
   setAnchorMargin(margin) {
     this.foundation_.setAnchorMargin(margin);
@@ -165,7 +165,7 @@ class MDCMenuSurface extends MDCComponent {
         isElementInContainer: (el) => this.root_ === el || this.root_.contains(el),
         isRtl: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
         setTransformOrigin: (origin) => {
-          this.root_.style[`${getTransformPropertyName(window)}-origin`] = origin;
+          this.root_.style[`${util.getTransformPropertyName(window)}-origin`] = origin;
         },
       },
       this.getFocusAdapterMethods_(),
@@ -174,7 +174,7 @@ class MDCMenuSurface extends MDCComponent {
   }
 
   /**
-   * @return {{
+   * @return {!{
    * isFocused: function(): boolean,
    * saveFocus: function(),
    * restoreFocus: function(),
@@ -210,7 +210,7 @@ class MDCMenuSurface extends MDCComponent {
   }
 
   /**
-   * @return {{
+   * @return {!{
    * getInnerDimensions: function(),
    * getAnchorDimensions: function(): (HTMLElement | null | * | ClientRect),
    * getWindowDimensions: function(),
@@ -246,4 +246,4 @@ class MDCMenuSurface extends MDCComponent {
   }
 }
 
-export {MDCMenuSurfaceFoundation, MDCMenuSurface, AnchorMargin, MenuSurfaceCorner, MenuSurfaceCornerBit};
+export {MDCMenuSurfaceFoundation, MDCMenuSurface, AnchorMargin, Corner, CornerBit, util};
