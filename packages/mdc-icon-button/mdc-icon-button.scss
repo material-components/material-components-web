@@ -23,4 +23,22 @@
   @include mdc-states;
 }
 
+.mdc-icon-button__icon {
+  display: inline-block;
+
+  &[data-toggle-on] {
+    display: none;
+  }
+}
+
+.mdc-icon-button--on {
+  .mdc-icon-button__icon {
+    display: none;
+
+    &[data-toggle-on] {
+      display: inline-block;
+    }
+  }
+}
+
 // postcss-bem-linter: end

@@ -34,48 +34,27 @@ class MDCIconButtonToggleFoundation extends MDCFoundation {
 
   static get defaultAdapter() {
     return {
-      addClass: (/* className: string */) => {},
-      removeClass: (/* className: string */) => {},
-      setText: (/* text: string */) => {},
-      getAttr: (/* name: string */) => /* string */ '',
-      setAttr: (/* name: string, value: string */) => {},
-      notifyChange: (/* evtData: IconButtonToggleEvent */) => {},
+      addClass: () => {},
+      removeClass: () => {},
+      hasClass: () => {},
+      setAttr: () => {},
+      notifyChange: () => {},
     };
   }
 
   constructor(adapter) {
     super(Object.assign(MDCIconButtonToggleFoundation.defaultAdapter, adapter));
 
-    const {ARIA_PRESSED} = MDCIconButtonToggleFoundation.strings;
+    const {ICON_BUTTON_ON_CLASS} = MDCIconButtonToggleFoundation.cssClasses;
 
     /** @private {boolean} */
-    this.on_ = this.adapter_.getAttr(ARIA_PRESSED) === 'true';
-
+    this.on_ = this.adapter_.hasClass(ICON_BUTTON_ON_CLASS) || false;
     /** @private {boolean} */
     this.disabled_ = false;
-
-    /** @private {?IconButtonToggleState} */
-    this.toggleOnData_ = null;
-
-    /** @private {?IconButtonToggleState} */
-    this.toggleOffData_ = null;
   }
 
   init() {
-    this.refreshToggleData();
-  }
-
-  refreshToggleData() {
-    this.toggleOnData_ = {
-      label: this.adapter_.getAttr(strings.DATA_TOGGLE_ON_LABEL),
-      content: this.adapter_.getAttr(strings.DATA_TOGGLE_ON_CONTENT),
-      cssClass: this.adapter_.getAttr(strings.DATA_TOGGLE_ON_CLASS),
-    };
-    this.toggleOffData_ = {
-      label: this.adapter_.getAttr(strings.DATA_TOGGLE_OFF_LABEL),
-      content: this.adapter_.getAttr(strings.DATA_TOGGLE_OFF_CONTENT),
-      cssClass: this.adapter_.getAttr(strings.DATA_TOGGLE_OFF_CLASS),
-    };
+    this.adapter_.setAttr(strings.ARIA_PRESSED, `${this.isOn()}`);
   }
 
   handleClick() {
@@ -91,52 +70,20 @@ class MDCIconButtonToggleFoundation extends MDCFoundation {
 
   /** @param {boolean=} isOn */
   toggle(isOn = !this.on_) {
+    const {ICON_BUTTON_ON_CLASS} = MDCIconButtonToggleFoundation.cssClasses;
+
     this.on_ = isOn;
-
-    const {ARIA_LABEL, ARIA_PRESSED} = MDCIconButtonToggleFoundation.strings;
-
-    this.adapter_.setAttr(ARIA_PRESSED, this.on_.toString());
-
-    const {cssClass: classToRemove} =
-        this.on_ ? this.toggleOffData_ : this.toggleOnData_;
-
-    if (classToRemove) {
-      this.adapter_.removeClass(classToRemove);
+    if (this.isOn()) {
+      this.adapter_.addClass(ICON_BUTTON_ON_CLASS);
+    } else {
+      this.adapter_.removeClass(ICON_BUTTON_ON_CLASS);
     }
 
-    const {content, label, cssClass} = this.on_ ? this.toggleOnData_ : this.toggleOffData_;
-
-    if (cssClass) {
-      this.adapter_.addClass(cssClass);
-    }
-    if (content) {
-      this.adapter_.setText(content);
-    }
-    if (label) {
-      this.adapter_.setAttr(ARIA_LABEL, label);
-    }
+    this.adapter_.setAttr(strings.ARIA_PRESSED, `${this.isOn()}`);
   }
 }
 
 /** @record */
 class IconButtonToggleState {}
-
-/**
- * The aria-label value of the icon toggle, or undefined if there is no aria-label.
- * @export {string|undefined}
- */
-IconButtonToggleState.prototype.label;
-
-/**
- * The text for the icon toggle, or undefined if there is no text.
- * @export {string|undefined}
- */
-IconButtonToggleState.prototype.content;
-
-/**
- * The CSS class to add to the icon toggle, or undefined if there is no CSS class.
- * @export {string|undefined}
- */
-IconButtonToggleState.prototype.cssClass;
 
 export default MDCIconButtonToggleFoundation;

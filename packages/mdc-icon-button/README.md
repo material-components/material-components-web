@@ -70,19 +70,20 @@ iconButtonRipple.unbounded = true;
 
 ### Icon Button Toggle
 
-The icon button can be used to toggle between an on and off icon. To style an icon button as an icon button toggle, add the
-`data-toggle-on` and `data-toggle-off` attributes to the `mdc-icon-button` element. Then instantiate an `MDCIconButtonToggle` on the root element.
+The icon button can be used to toggle between an on and off icon. To style an icon button as an icon button toggle, add
+both icons as child elements and place the `data-toggle-on` attribute on the icon that should be on. If the button
+should be initialized in the "on" state, then add the `mdc-icon-button--on` class to the parent `button`. Then
+instantiate an `MDCIconButtonToggle` on the root element.
 
 ```html
 <button id="add-to-favorites"
-   class="mdc-icon-button material-icons"
+   class="mdc-icon-button"
    aria-label="Add to favorites"
    aria-hidden="true"
-   aria-pressed="false"
-   data-toggle-on-content="favorite"
-   data-toggle-on-label="Remove from favorites"
-   data-toggle-off-content="favorite_border"
-   data-toggle-off-label="Add to favorites">favorite_border</button>
+   aria-pressed="false">
+   <i class="material-icons mdc-icon-button__icon">favorite</i>
+   <i class="material-icons mdc-icon-button__icon" data-toggle-on>favorite_border</i>
+</button>
 ```
 
 ```js
@@ -91,38 +92,38 @@ var toggleButton = new mdc.iconButton.MDCIconButtonToggle(document.getElementByI
 
 #### Icon Button Toggle States
 
-Note the use of `data-toggle-*` properties in the above examples. When an MDCIconButtonToggle
-instance is toggled, it looks at these data attributes to determine how to update the element. This is what
-allows MDCIconButtonToggle to be so flexible. The `data-toggle-on-*` properties will be used when the is
-MDCIconButtonToggle is toggled on, and vice versa for `data-toggle-off-*`.
+Note the use of `data-toggle-on` attribute in the above examples. When an MDCIconButtonToggle
+instance is toggled, it looks at this data attribute to determine which element is the on element. This is what
+allows MDCIconButtonToggle to be so flexible. The `data-toggle-on` properties will be as the `on` value, and the
+`mdc-icon-button--on` class will be used to indicate the `on` state.
 
 Attribute | Description
 --- | ---
-`data-toggle-<TOGGLE STATE>-label` | The value to apply to the element's "aria-label" attribute.
-`data-toggle-<TOGGLE STATE>-content` | The text content to set on the element. Note that if an inner icon is used, the text content will be set on that element instead.
-`data-toggle-<TOGGLE STATE>-class` | A CSS class to apply to the icon element. The same rules regarding inner icon elements described for `content` apply here as well.
+`data-toggle-on` | Used to indicate which element in an icon button toggle is the `on` value.
 
-#### Icon Button Toggle with Font Awesome
+#### Icon Button Toggle with SVG
 
-The icon button toggle can be used with other font libraries such as Font Awesome that use an inner icon element.
+The icon button toggle can be used with SVGs.
 
 ```html
 <button id="star-this-item"
-   class="mdc-icon-button"
+   class="mdc-icon-button mdc-icon-button--on"
    aria-label="Unstar this item"
    aria-hidden="true"
-   aria-pressed="true"
-   data-toggle-on-class="fa-star"
-   data-toggle-on-label="Unstar this item"
-   data-toggle-off-class="fa-star-o"
-   data-toggle-off-label="Star this item"><i class="fa fa-2x fa-star"></i></button>
+   aria-pressed="true">
+   <svg class="mdc-icon-button__icon">
+     ...
+   </svg>
+   <svg class="mdc-icon-button__icon" data-toggle-on>
+     ...
+  </svg>
+</button>
 ```
 
 ### Icons
 
-The icon button can be used with a standard icon library such as Material Icons or Font Awesome, or with an `svg`.
-The icon button toggle should only be used with an standard icon library. We recommend you use 
-[Material Icons](https://material.io/tools/icons) from Google Fonts.
+The icon button can be used with a standard icon library such as Material Icons, or with an `svg`.
+We recommend you use [Material Icons](https://material.io/tools/icons) from Google Fonts.
 
 ### Disabled
 
@@ -140,6 +141,7 @@ cannot be disabled. Disabled icon buttons cannot be interacted with and have no 
 CSS Class | Description
 --- | ---
 `mdc-icon-button` | Mandatory.
+`mdc-icon-button--on` | Used to indicate the toggle button icon that is the not-selected option.
 
 ### Sass Mixins
 
@@ -171,9 +173,8 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 
 Method Signature | Description
 --- | ---
-`addClass(className: string) => void` | Adds a class to the root element, or the inner icon element.
-`removeClass(className: string) => void` | Removes a class from the root element, or the inner icon element.
-`setText(text: string) => void` | Sets the text content of the root element, or the inner icon element.
+`addClass(className: string) => void` | Adds a class to a icon element.
+`removeClass(className: string) => void` | Removes a class from a icon element.
 `getAttr(name: string) => string` | Returns the value of the attribute `name` on the root element. Can also return `null`, similar to `getAttribute()`.
 `setAttr(name: string, value: string) => void` | Sets the attribute `name` to `value` on the root element.
 `notifyChange(evtData: {isOn: boolean}) => void` | Broadcasts a change notification, passing along the `evtData` to the environment's event handling system. In our vanilla implementation, Custom Events are used for this.
