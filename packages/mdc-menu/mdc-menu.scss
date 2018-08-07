@@ -50,15 +50,17 @@
   fill: currentColor;
 
   .mdc-list-item {
-    @include mdc-rtl-reflexive-box(padding, left, 56px);
+    @include mdc-rtl-reflexive-box(padding, left, 68px);
   }
 }
 
 .mdc-menu__selection-group-icon {
-  @include mdc-rtl-reflexive-position(left, 16px);
+  @include mdc-rtl-reflexive-position(left, 24px);
 
   display: none;
   position: absolute;
+  width: 24px;
+  height: 24px;
 }
 
 // stylelint-disable-next-line plugin/selector-bem-pattern
