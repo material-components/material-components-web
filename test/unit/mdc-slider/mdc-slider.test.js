@@ -453,3 +453,25 @@ test('adapter#isRTL returns false when component is not in an RTL context', () =
 
   document.body.removeChild(wrapper);
 });
+
+test('adapter#updateTickMarkClasses sets from the first tick mark to the specified number active', () => {
+  const root = getFixture();
+  root.classList.add('mdc-slider--discrete');
+  const component = new MDCSlider(root);
+  component.value = 50;
+  component.layout();
+
+  assert.isTrue(component.tickMarkSet_.children[0].classList.contains('mdc-slider__tick-mark--active'));
+  assert.isTrue(component.tickMarkSet_.children[24].classList.contains('mdc-slider__tick-mark--active'));
+});
+
+test('adapter#updateTickMarkClasses sets from the specified number to the last tick mark inactive', () => {
+  const root = getFixture();
+  root.classList.add('mdc-slider--discrete');
+  const component = new MDCSlider(root);
+  component.value = 50;
+  component.layout();
+
+  assert.isFalse(component.tickMarkSet_.children[25].classList.contains('mdc-slider__tick-mark--active'));
+  assert.isFalse(component.tickMarkSet_.children[49].classList.contains('mdc-slider__tick-mark--active'));
+});

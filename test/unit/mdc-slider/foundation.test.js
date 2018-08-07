@@ -44,7 +44,7 @@ test('default adapter returns a complete adapter implementation', () => {
     'registerBodyEventHandler', 'deregisterBodyEventHandler', 'registerWindowResizeHandler',
     'deregisterWindowResizeHandler', 'notifyInput', 'notifyChange', 'setThumbStyleProperty',
     'setTrackFillStyleProperty', 'setLastTickMarkStyleProperty', 'focusThumb', 'activateRipple',
-    'deactivateRipple', 'isRTL',
+    'deactivateRipple', 'isRTL', 'updateTickMarkClasses',
   ]);
 });
 

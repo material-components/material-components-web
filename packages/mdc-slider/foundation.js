@@ -80,6 +80,7 @@ class MDCSliderFoundation extends MDCFoundation {
       activateRipple: () => {},
       deactivateRipple: () => {},
       isRTL: () => false,
+      updateTickMarkClasses: () => {},
     });
   }
 
@@ -421,7 +422,10 @@ class MDCSliderFoundation extends MDCFoundation {
   updateUIForCurrentValue_() {
     const pctComplete = (this.value_ - this.min_) / (this.max_ - this.min_);
     const translatePx = pctComplete * this.rect_.width;
-
+    if (this.isDiscrete_) {
+      const numSteps = Math.round(this.value_ / this.step_);
+      this.adapter_.updateTickMarkClasses(numSteps);
+    }
     requestAnimationFrame(() => {
       if (this.adapter_.isRTL()) {
         this.adapter_.setThumbStyleProperty('transform', `translateX(-${translatePx}px) translateX(50%)`);

@@ -163,6 +163,20 @@ class MDCSlider extends MDCComponent {
           this.ripple_.deactivate();
         },
         isRTL: () => getComputedStyle(this.root_).direction === 'rtl',
+        updateTickMarkClasses: (currentTickMark) => {
+          if (this.tickMarkSet_.children) {
+            for (let i = 0; i < currentTickMark; i++) {
+              if (!this.tickMarkSet_.children[i].classList.contains(cssClasses.TICK_MARK_ACTIVE)) {
+                this.tickMarkSet_.children[i].classList.add(cssClasses.TICK_MARK_ACTIVE);
+              }
+            }
+            for (let i = currentTickMark; i < this.tickMarkSet_.children.length; i++) {
+              if (this.tickMarkSet_.children[i].classList.contains(cssClasses.TICK_MARK_ACTIVE)) {
+                this.tickMarkSet_.children[i].classList.remove(cssClasses.TICK_MARK_ACTIVE);
+              }
+            }
+          }
+        },
       })
     );
   }
@@ -199,6 +213,7 @@ class MDCSlider extends MDCComponent {
     this.lastTickMark_ = this.root_.querySelector(strings.LAST_TICK_MARK_SELECTOR);
 
     this.foundation_.adjustLastTickMark(numMarks);
+    this.foundation_.layout();
   }
 
   layout() {

@@ -156,6 +156,12 @@ class MDCSliderAdapter {
    * @return {boolean}
    */
   isRTL() {}
+
+  /**
+   * Updates the tick marks to be active or not active
+   * @param {number} currentTickMark
+   */
+  updateTickMarkClasses(currentTickMark) {}
 }
 
 export default MDCSliderAdapter;
