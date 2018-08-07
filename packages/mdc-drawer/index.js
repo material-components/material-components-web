@@ -128,7 +128,6 @@ export class MDCDrawer extends MDCComponent {
       // untrapFocusOnSurface: () => this.focusTrap_.deactivate(),
       trapFocusOnSurface: () => {},
       untrapFocusOnSurface: () => {},
-      focusFirstFocusableElement: () => {},
     }));
 
     if (this.root_.classList.contains(MDCDismissibleDrawerFoundation.cssClasses.DISMISSIBLE) ||

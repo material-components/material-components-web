@@ -47,7 +47,6 @@ class MDCModalDrawerFoundation extends MDCDismissibleDrawerFoundation {
       notifyOpen: () => {},
       trapFocusOnSurface: () => {},
       untrapFocusOnSurface: () => {},
-      focusFirstFocusableElement: () => {},
     });
   }
 
@@ -57,7 +56,6 @@ class MDCModalDrawerFoundation extends MDCDismissibleDrawerFoundation {
    */
   opened() {
     this.adapter_.trapFocusOnSurface();
-    this.adapter_.focusFirstFocusableElement();
   }
 
   /**

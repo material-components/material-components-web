@@ -47,7 +47,6 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
       notifyOpen: () => {},
       trapFocusOnSurface: () => {},
       untrapFocusOnSurface: () => {},
-      focusFirstFocusableElement: () => {},
     });
   }
 

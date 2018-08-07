@@ -34,10 +34,6 @@
     width: $mdc-drawer-width;
   }
 
-  &.mdc-drawer--animate {
-    width: 0;
-  }
-
   &.mdc-drawer--opening {
     width: $mdc-drawer-width;
     transition-duration: $mdc-drawer-animation-enter;

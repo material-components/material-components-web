@@ -48,6 +48,19 @@ class MDCDrawerAdapter {
   hasClass(className) {}
 
   /**
+   * Sets attribute name on slider Element to value
+   * @param {string} name
+   * @param {string} value
+   */
+  setAttribute(name, value) {}
+
+  /**
+   * Removes attribute name from slider Element
+   * @param {string} name
+   */
+  removeAttribute(name) {}
+
+  /**
    * Returns ClientRect of the root Element.
    * @return {!ClientRect}
    */
