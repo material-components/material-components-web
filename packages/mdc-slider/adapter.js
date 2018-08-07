@@ -67,7 +67,7 @@ class MDCSliderAdapter {
    * Returns the tab index of the slider Element
    * @return {number}
    */
-  getTabIndex() {}
+  getThumbTabIndex() {}
 
   /**
    * Returns true if target has className, false otherwise.

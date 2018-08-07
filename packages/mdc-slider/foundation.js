@@ -65,7 +65,7 @@ class MDCSliderFoundation extends MDCFoundation {
       setThumbAttribute: () => {},
       removeThumbAttribute: () => {},
       computeBoundingRect: () => {},
-      getTabIndex: () => {},
+      getThumbTabIndex: () => {},
       eventTargetHasClass: () => {},
       registerEventHandler: () => {},
       deregisterEventHandler: () => {},
@@ -96,8 +96,6 @@ class MDCSliderFoundation extends MDCFoundation {
     this.active_ = false;
     /** @private {boolean} */
     this.inTransit_ = false;
-    /** @private  {boolean} */
-    this.disabled_ = false;
     /** @private {number} */
     this.min_ = 0;
     /** @private {number} */
@@ -188,15 +186,14 @@ class MDCSliderFoundation extends MDCFoundation {
 
   /** @return {boolean} */
   isDisabled() {
-    return this.disabled_;
+    return this.adapter_.hasClass(cssClasses.DISABLED);
   }
 
   /** @param {boolean} disabled */
   setDisabled(disabled) {
-    this.disabled_ = disabled;
-    this.toggleClass_(cssClasses.DISABLED, this.disabled_);
-    if (this.disabled_) {
-      this.savedTabIndex_ = this.adapter_.getTabIndex();
+    this.toggleClass_(cssClasses.DISABLED, disabled);
+    if (disabled) {
+      this.savedTabIndex_ = this.adapter_.getThumbTabIndex();
       this.adapter_.setThumbAttribute(strings.ARIA_DISABLED, 'true');
       this.adapter_.removeThumbAttribute('tabindex');
     } else {
@@ -237,7 +234,7 @@ class MDCSliderFoundation extends MDCFoundation {
    * @param {!Event} evt
    */
   handleInteractionStart(evt) {
-    if (this.disabled_) {
+    if (this.isDisabled()) {
       return;
     }
 

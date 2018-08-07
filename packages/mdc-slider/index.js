@@ -122,7 +122,7 @@ class MDCSlider extends MDCComponent {
         setThumbAttribute: (name, value) => this.thumb_.setAttribute(name, value),
         removeThumbAttribute: (name) => this.thumb_.removeAttribute(name),
         computeBoundingRect: () => this.root_.getBoundingClientRect(),
-        getTabIndex: () => this.thumb_.tabIndex,
+        getThumbTabIndex: () => this.thumb_.tabIndex,
         eventTargetHasClass: (target, className) => target.classList.contains(className),
         registerEventHandler: (type, handler) => {
           this.root_.addEventListener(type, handler);

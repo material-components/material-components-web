@@ -34,7 +34,7 @@
 }
 
 .mdc-slider--disabled {
-  @include mdc-slider-disabled(on-surface);
+  @include mdc-slider-disabled-color(on-surface);
 }
 
 .mdc-slider__track {

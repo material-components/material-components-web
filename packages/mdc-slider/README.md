@@ -159,7 +159,7 @@ instance that was affected.
 | `setThumbAttribute(name: string, value: string) => void` | Sets an attribute `name` to the value `value` on the root element. |
 | `removeThumbAttribute(name: string) => void` | Removes an attribute `name` from the root element |
 | `computeBoundingRect() => ClientRect` | Computes and returns the bounding client rect for the root element. Our implementations calls `getBoundingClientRect()` for this. |
-| `getTabIndex() => number` | Returns the value of the `tabIndex` property on the thumb element |
+| `getThumbTabIndex() => number` | Returns the value of the `tabIndex` property on the thumb element |
 | `eventTargetHasClass(target: EventTarget, className: string) => boolean` | Returns true if target has className, false otherwise |
 | `registerEventHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` to the slider's root element |
 | `deregisterEventHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` from the slider's root element |

@@ -128,7 +128,7 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     raf.restore();
   });
 
-  test('on ${downEvt} does nothing if the component is disabled', () => {
+  test(`on ${downEvt} does nothing if the component is disabled`, () => {
     const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
     const {anything} = td.matchers;
 
@@ -138,6 +138,7 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
 
     const valueBeforeEvent = foundation.getValue();
     foundation.setDisabled(true);
+    td.when(mockAdapter.hasClass(cssClasses.DISABLED)).thenReturn(true);
 
     rootHandlers[downEvt](pageXObj(50));
     raf.flush();
