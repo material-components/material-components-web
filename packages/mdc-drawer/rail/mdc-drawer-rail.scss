@@ -50,6 +50,8 @@
     transition-property: opacity;
     transition-timing-function: $mdc-animation-standard-curve-timing-function;
     opacity: 0;
+    text-overflow: clip;
+    white-space: nowrap;
   }
 
   &.mdc-drawer--open {
@@ -73,8 +75,7 @@
     .mdc-drawer__list-group-subheader,
     .mdc-drawer__header {
       opacity: 1;
-      transition-duration: 50ms;
-      transition-delay: 200ms;
+      transition-duration: $mdc-drawer-animation-enter;
     }
   }
 
@@ -83,7 +84,7 @@
     .mdc-drawer__list-group-subheader,
     .mdc-drawer__header {
       opacity: 0;
-      transition-duration: 50ms;
+      transition-duration: $mdc-drawer-animation-exit;
     }
   }
 }
