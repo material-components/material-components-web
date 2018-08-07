@@ -181,7 +181,7 @@ test('getOptionByIndex returns null if index is > list length', () => {
   const {root, component, list} = setupTestWithFakes();
   const items = [].slice.call(root.querySelectorAll('[role="menuitem"]'));
   list.listElements_ = items;
-  assert.equal(null, component.getOptionByIndex(items.length));
+  assert.isNull(component.getOptionByIndex(items.length));
 });
 
 test('setFixedPosition', () => {
@@ -212,7 +212,7 @@ test('setAnchorElement', () => {
   const {component, menuSurface} = setupTestWithFakes();
   const button = document.createElement('button');
   component.setAnchorElement(button);
-  assert.equal(button, menuSurface.anchorElement);
+  assert.equal(menuSurface.anchorElement, button);
 });
 
 test('setAbsolutePosition', () => {
@@ -276,7 +276,7 @@ test('menu surface opened event causes no element to be focused if the list is e
 
   root.dispatchEvent(event);
 
-  assert.equal(lastActiveElement, document.activeElement);
+  assert.equal(document.activeElement, lastActiveElement);
   document.body.removeChild(root);
 });
 
@@ -395,8 +395,7 @@ test('adapter#getCheckboxAtIndex returns a checkbox inside a list item at the in
   const firstItem = root.querySelector('.mdc-list-item');
   firstItem.appendChild(checkbox);
 
-  component.getDefaultFoundation().adapter_.getCheckboxAtIndex(0);
-  assert.equal(checkbox, component.getDefaultFoundation().adapter_.getCheckboxAtIndex(0));
+  assert.equal(component.getDefaultFoundation().adapter_.getCheckboxAtIndex(0), checkbox);
 });
 
 test('adapter#getCheckboxAtIndex returns null if a checkbox does not exist in the element at index specified', () => {
