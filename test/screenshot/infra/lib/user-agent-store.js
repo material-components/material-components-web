@@ -200,11 +200,11 @@ Expected browser vendor to be one of [${validBrowserVendors}], but got '${browse
   getBrowserIconUrl_(browserVendorType) {
     /* eslint-disable max-len */
     const map = {
-      [BrowserVendorType.CHROME]: 'https://cdnjs.cloudflare.com/ajax/libs/browser-logos/45.10.0/chrome/chrome.svg',
-      [BrowserVendorType.EDGE]: 'https://cdnjs.cloudflare.com/ajax/libs/browser-logos/45.10.0/edge/edge.svg',
-      [BrowserVendorType.FIREFOX]: 'https://cdnjs.cloudflare.com/ajax/libs/browser-logos/45.10.0/firefox/firefox.svg',
-      [BrowserVendorType.IE]: 'https://cdnjs.cloudflare.com/ajax/libs/browser-logos/45.10.0/archive/internet-explorer_9-11/internet-explorer_9-11.svg',
-      [BrowserVendorType.SAFARI]: 'https://cdnjs.cloudflare.com/ajax/libs/browser-logos/45.10.0/safari/safari.png',
+      [BrowserVendorType.CHROME]: 'https://cdnjs.cloudflare.com/ajax/libs/browser-logos/45.10.0/chrome/chrome_16x16.png',
+      [BrowserVendorType.EDGE]: 'https://cdnjs.cloudflare.com/ajax/libs/browser-logos/45.10.0/edge/edge_16x16.png',
+      [BrowserVendorType.FIREFOX]: 'https://cdnjs.cloudflare.com/ajax/libs/browser-logos/45.10.0/firefox/firefox_16x16.png',
+      [BrowserVendorType.IE]: 'https://cdnjs.cloudflare.com/ajax/libs/browser-logos/45.10.0/archive/internet-explorer_9-11/internet-explorer_9-11_16x16.png',
+      [BrowserVendorType.SAFARI]: 'https://cdnjs.cloudflare.com/ajax/libs/browser-logos/45.10.0/safari/safari_16x16.png',
     };
     /* eslint-enable max-len */
     return map[browserVendorType];

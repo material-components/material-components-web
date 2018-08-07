@@ -376,7 +376,7 @@ For example:
 4.  Do not test _combinations_ of mixins and modifier classes unless:
     1.  It's necessary to prevent a regression; or
     2.  We explicitly support the combination, and the implementation is likely to have bugs \
-        (e.g., `mdc-button--dense` and `mdc-button-outline-width` both set `line-height`)
+        (e.g., `.mdc-foo--dense` and `mdc-foo-outline-width()` both set `line-height`)
 
 ### Example test page
 
