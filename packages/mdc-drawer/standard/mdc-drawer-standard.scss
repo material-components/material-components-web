@@ -14,6 +14,8 @@
 // limitations under the License.
 //
 
+@import "@material/animation/functions";
+@import "@material/animation/variables";
 @import "@material/rtl/mixins";
 @import "@material/typography/mixins";
 @import "@material/typography/variables";
@@ -38,6 +40,12 @@
   border-right-style: solid;
   overflow: hidden;
   flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  transition-property: transform;
+  transition-timing-function: $mdc-animation-standard-curve-timing-function;
+  height: 100%;
+  display: none;
 
   @include mdc-rtl {
     border-right-width: 0;
@@ -72,11 +80,31 @@
   }
 }
 
+.mdc-drawer--open {
+  transition: mdc-animation-standard(transform, $mdc-drawer-animation-enter);
+  display: block;
+}
+
+.mdc-drawer--animate {
+  transform: translateX(-100%);
+}
+
+.mdc-drawer--opening {
+  transform: translateX(0);
+  transition-duration: $mdc-drawer-animation-enter;
+}
+
+.mdc-drawer--closing {
+  transform: translateX(-100%);
+  transition-duration: $mdc-drawer-animation-exit;
+}
+
 .mdc-drawer__header {
   box-sizing: border-box;
   min-height: 64px; // same as $mdc-top-app-bar-row-height
   padding: $mdc-drawer-surface-padding;
   padding-bottom: 4px;
+  flex-shrink: 0;
 }
 
 .mdc-drawer__title {
@@ -91,7 +119,7 @@
   margin: 0;
 }
 
-.mdc-drawer__scrollable {
+.mdc-drawer__content {
   height: 100%;
   overflow-y: auto;
 }

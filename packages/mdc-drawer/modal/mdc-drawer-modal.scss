@@ -29,28 +29,6 @@ $mdc-drawer-z-index_: 5;
 
   position: fixed;
   z-index: $mdc-drawer-z-index_;
-  height: 100%;
-  transition-property: transform;
-  transition-timing-function: $mdc-animation-standard-curve-timing-function;
-  display: none;
-
-  &.mdc-drawer--open {
-    display: block;
-  }
-
-  &.mdc-drawer--animate {
-    transform: translateX(-100%);
-  }
-
-  &.mdc-drawer--opening {
-    transition-duration: $mdc-drawer-animation-enter;
-    transform: translateX(0);
-  }
-
-  &.mdc-drawer--closing {
-    transition-duration: $mdc-drawer-animation-exit;
-    transform: translateX(-100%);
-  }
 }
 
 .mdc-drawer__content {

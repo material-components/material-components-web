@@ -25,27 +25,6 @@
   position: absolute;
   top: 0;
   left: 0;
-  height: 100%;
-  display: none;
-
-  &.mdc-drawer--open {
-    transition: mdc-animation-standard(transform, $mdc-drawer-animation-enter);
-    display: block;
-  }
-
-  &.mdc-drawer--animate {
-    transform: translateX(-100%);
-  }
-
-  &.mdc-drawer--opening {
-    transform: translateX(0);
-    transition-duration: $mdc-drawer-animation-enter;
-  }
-
-  &.mdc-drawer--closing {
-    transform: translateX(-100%);
-    transition-duration: $mdc-drawer-animation-exit;
-  }
 }
 
 .mdc-drawer-app-content {

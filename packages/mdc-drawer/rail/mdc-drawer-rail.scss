@@ -28,19 +28,14 @@
   transition-timing-function: $mdc-animation-standard-curve-timing-function;
   height: 100%;
   width: $mdc-drawer-rail-width;
-  transition-duration: $mdc-drawer-animation-enter;
+  display: block;
+  transform: translateX(0);
 
   &.mdc-drawer--open {
     width: $mdc-drawer-width;
   }
 
-  &.mdc-drawer--opening {
-    width: $mdc-drawer-width;
-    transition-duration: $mdc-drawer-animation-enter;
-  }
-
   &.mdc-drawer--closing {
-    transition-duration: $mdc-drawer-animation-exit;
     width: $mdc-drawer-rail-width;
   }
 
