@@ -82,20 +82,12 @@ class MDCMenu extends MDCComponent {
   /** @param {boolean} value */
   set open(value) {
     if (value) {
-      this.show();
+      this.menuSurface_.open = true;
+      this.registerListeners_();
     } else {
-      this.hide();
+      this.deregisterListeners_();
+      this.menuSurface_.open = false;
     }
-  }
-
-  show() {
-    this.menuSurface_.show();
-    this.registerListeners_();
-  }
-
-  hide() {
-    this.deregisterListeners_();
-    this.menuSurface_.hide();
   }
 
   /**
@@ -210,7 +202,7 @@ class MDCMenu extends MDCComponent {
         list[index].removeAttribute(attr);
       },
       elementContainsClass: (element, className) => element.classList.contains(className),
-      closeSurface: () => this.hide(),
+      closeSurface: () => this.open = false,
       getElementIndex: (element) => this.items.indexOf(element),
       getParentElement: (element) => element.parentElement,
       getSelectedElementIndex: (selectionGroup) => {

@@ -51,6 +51,10 @@ class MDCMenuSurface extends MDCComponent {
     if (this.root_.parentElement && this.root_.parentElement.classList.contains(cssClasses.ANCHOR)) {
       this.anchorElement = this.root_.parentElement;
     }
+
+    if (this.root_.classList.contains(cssClasses.FIXED)) {
+      this.setFixedPosition(true);
+    }
   }
 
   /** @return {boolean} */
@@ -61,21 +65,14 @@ class MDCMenuSurface extends MDCComponent {
   /** @param {boolean} value */
   set open(value) {
     if (value) {
-      this.show();
+      const focusableElements = this.root_.querySelectorAll(strings.FOCUSABLE_ELEMENTS);
+      this.firstFocusableElement_ = focusableElements.length > 0 ? focusableElements[0] : null;
+      this.lastFocusableElement_ = focusableElements.length > 0 ?
+        focusableElements[focusableElements.length - 1] : null;
+      this.foundation_.open();
     } else {
       this.foundation_.close();
     }
-  }
-
-  show() {
-    const focusableElements = this.root_.querySelectorAll(strings.FOCUSABLE_ELEMENTS);
-    this.firstFocusableElement_ = focusableElements.length > 0 ? focusableElements[0] : null;
-    this.lastFocusableElement_ = focusableElements.length > 0 ? focusableElements[focusableElements.length - 1] : null;
-    this.foundation_.open();
-  }
-
-  hide() {
-    this.foundation_.close();
   }
 
   /**

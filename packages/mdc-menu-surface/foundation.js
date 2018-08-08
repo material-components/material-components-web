@@ -111,9 +111,9 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     super(Object.assign(MDCMenuSurfaceFoundation.defaultAdapter, adapter));
 
     /** @private {function(!Event)} */
-    this.keydownHandler_ = (evt) => this.handleKeyboardDown(evt);
+    this.keydownHandler_ = (evt) => this.handleKeydown(evt);
     /** @private {function(!Event)} */
-    this.documentClickHandler_ = (evt) => this.handleDocumentClick(evt);
+    this.documentClickHandler_ = (evt) => this.handleBodyClick(evt);
     /** @private {boolean} */
     this.isOpen_ = false;
     /** @private {number} */
@@ -216,7 +216,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
    * @param {!Event} evt
    * @private
    */
-  handleDocumentClick(evt) {
+  handleBodyClick(evt) {
     const el = evt.target;
 
     if (this.adapter_.isElementInContainer(el)) {
@@ -231,7 +231,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
    * @param {!Event} evt
    * @private
    */
-  handleKeyboardDown(evt) {
+  handleKeydown(evt) {
     const {keyCode, key, shiftKey} = evt;
 
     const isEscape = key === 'Escape' || keyCode === 27;
@@ -538,7 +538,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     });
 
     this.isOpen_ = false;
-    this.shouldRestoreFocus_();
+    this.maybeRestoreFocus_();
   }
 
   /**
@@ -546,7 +546,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
    * focused on or within the menu surface when it is closed.
    * @private
    */
-  shouldRestoreFocus_() {
+  maybeRestoreFocus_() {
     if (this.adapter_.isFocused() || this.adapter_.isElementInContainer(document.activeElement)) {
       this.adapter_.restoreFocus();
     }

@@ -216,11 +216,11 @@
     <script src="/assets/material-components-web.js" async></script>
     <script>
       demoReady(function() {
-        var menuEl = document.querySelector('#demo-menu');
+        var menuEl = document.getElementById('demo-menu');
         var menu = mdc.menuSurface.MDCMenuSurface.attachTo(menuEl);
-        var menuButtonEl = document.querySelector('#menu-button');
+        var menuButtonEl = document.getElementById('menu-button');
 
-        var contextMenuEl = document.querySelector('#demo-context-menu');
+        var contextMenuEl = document.getElementById('demo-context-menu');
         var contextMenu = mdc.menuSurface.MDCMenuSurface.attachTo(contextMenuEl);
         contextMenu.hoistMenuToBody();
 
@@ -321,7 +321,7 @@
           });
         }
 
-        var marginInputsEl = document.querySelector('#margin-inputs');
+        var marginInputsEl = document.getElementById('margin-inputs');
         var inputs = marginInputsEl.querySelectorAll('input[type="text"]');
         for (var i = 0; i < inputs.length; i++) {
           inputs[i].addEventListener('change', function(evt) {
@@ -354,7 +354,7 @@
 
         var contextMenuFunc = function(clickEvent) {
           contextMenu.setAbsolutePosition(clickEvent.clientX, clickEvent.clientY);
-          contextMenu.show();
+          contextMenu.open = true;
           clickEvent.preventDefault();
           return false;
         };

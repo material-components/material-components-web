@@ -54,8 +54,6 @@ class FakeMenuSurface {
     this.root = root;
     this.destroy = td.func('.destroy');
     this.open = false;
-    this.show = td.func('.show');
-    this.hide = td.func('.hide');
     this.listen = td.function();
     this.unlisten = td.function();
     this.setAnchorCorner = td.func('.setAnchorCorner');
@@ -119,23 +117,10 @@ test('get/set open', () => {
   assert.isFalse(component.open);
 
   component.open = true;
-  td.verify(menuSurface.show());
+  assert.isTrue(menuSurface.open);
 
   component.open = false;
-  td.verify(menuSurface.hide());
-});
-
-test('show opens the menu', () => {
-  const {component, menuSurface} = setupTestWithFakes();
-  component.show();
-  td.verify(menuSurface.show());
-});
-
-test('hide closes the menu', () => {
-  const {component, menuSurface} = setupTestWithFakes();
-  component.open = true;
-  component.hide();
-  td.verify(menuSurface.hide());
+  assert.isFalse(menuSurface.open);
 });
 
 test('setAnchorCorner proxies to the MDCMenuSurface#setAnchorCorner method', () => {
@@ -223,7 +208,7 @@ test('setAbsolutePosition', () => {
 
 test('show registers event listener for keydown', () => {
   const {component, mockFoundation, root} = setupTestWithFakes();
-  component.show();
+  component.open = true;
 
   domEvents.emit(root, 'keydown');
   td.verify(mockFoundation.handleKeydown(td.matchers.anything()), {times: 1});
@@ -231,7 +216,7 @@ test('show registers event listener for keydown', () => {
 
 test('show registers event listener for click', () => {
   const {component, mockFoundation, root} = setupTestWithFakes();
-  component.show();
+  component.open = true;
 
   domEvents.emit(root, 'click');
   td.verify(mockFoundation.handleClick(td.matchers.anything()), {times: 1});
@@ -239,8 +224,8 @@ test('show registers event listener for click', () => {
 
 test('hide de-registers event listener for keydown', () => {
   const {component, mockFoundation, root} = setupTestWithFakes();
-  component.show();
-  component.hide();
+  component.open = true;
+  component.open = false;
 
   domEvents.emit(root, 'keydown');
   td.verify(mockFoundation.handleKeydown(td.matchers.anything()), {times: 0});
@@ -248,8 +233,8 @@ test('hide de-registers event listener for keydown', () => {
 
 test('hide de-registers event listener for click', () => {
   const {component, mockFoundation, root} = setupTestWithFakes();
-  component.show();
-  component.hide();
+  component.open = true;
+  component.open = false;
 
   domEvents.emit(root, 'click');
   td.verify(mockFoundation.handleClick(td.matchers.anything()), {times: 0});
@@ -285,7 +270,9 @@ test('show does not throw an error if there are no items in the list to focus', 
   list.listElements_ = [];
   document.body.appendChild(root);
   root.querySelector('.mdc-list-item');
-  assert.doesNotThrow(() => component.show());
+  assert.doesNotThrow(() => {
+    component.open = true;
+  });
   document.body.removeChild(root);
 });
 
@@ -338,8 +325,9 @@ test('adapter#elementContainsClass returns false if the class does not exist on 
 
 test('adapter#closeSurface proxies to menuSurface#hide', () => {
   const {component, menuSurface} = setupTestWithFakes();
+  menuSurface.open = true;
   component.getDefaultFoundation().adapter_.closeSurface();
-  td.verify(menuSurface.hide(), {times: 1});
+  assert.isFalse(menuSurface.open);
 });
 
 test('adapter#getElementIndex returns the index value of an element in the list', () => {

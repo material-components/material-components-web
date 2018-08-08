@@ -21,13 +21,6 @@
 @import "../packages/mdc-menu-surface/mdc-menu-surface";
 @import "../packages/mdc-image-list/mdc-image-list";
 
-html,
-body,
-main {
-  position: relative;
-  flex-direction: column;
-}
-
 .hero .mdc-menu-surface {
   position: static; // Required for proper IE11 alignment.
   z-index: auto;

@@ -27,7 +27,6 @@ const cssClasses = {
 
 /** @enum {string} */
 const strings = {
-  ARIA_DISABLED_ATTR: 'aria-disabled',
   CLOSED_EVENT: 'MDCMenuSurface:closed',
   OPENED_EVENT: 'MDCMenuSurface:opened',
   FOCUSABLE_ELEMENTS: 'button:not(:disabled), [href]:not([aria-disabled="true"]), input:not(:disabled), ' +
@@ -36,10 +35,6 @@ const strings = {
 
 /** @enum {number} */
 const numbers = {
-  // Amount of time to wait before triggering a selected event on the menu-surface. Note that this time
-  // will most likely be bumped up once interactive lists are supported to allow for the ripple to
-  // animate before closing the menu-surface
-  SELECTED_TRIGGER_DELAY: 50,
   // Total duration of menu-surface open animation.
   TRANSITION_OPEN_DURATION: 120,
   // Total duration of menu-surface close animation.
@@ -48,8 +43,6 @@ const numbers = {
   MARGIN_TO_EDGE: 32,
   // Ratio of anchor width to menu-surface width for switching from corner positioning to center positioning.
   ANCHOR_TO_MENU_SURFACE_WIDTH_RATIO: 0.67,
-  // Ratio of vertical offset to menu-surface height for switching from corner to mid-way origin positioning.
-  OFFSET_TO_MENU_SURFACE_HEIGHT_RATIO: 0.1,
 };
 
 /**

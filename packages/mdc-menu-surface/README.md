@@ -63,6 +63,67 @@ const menuSurface = new MDCMenuSurface(document.querySelector('.mdc-menu-surface
 
 > See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
 
+
+## Variants
+
+### Anchors and Positioning
+
+#### Anchored To Parent
+
+The menu surface can be positioned to automatically anchor to a parent element when opened.
+
+```html
+<div id="toolbar" class="toolbar mdc-menu-surface--anchor">
+  <div class="mdc-menu-surface">
+  ...
+  </div>
+</div>
+```
+
+#### Anchor To Element Within Wrapper
+
+The menu surface can be positioned to automatically anchor to another element, by wrapping the other element with the anchor class.
+
+```html
+<div class="mdc-menu-surface--anchor">
+  <button id="menu-surface-button">Open Menu Surface</button>
+  <div class="mdc-menu-surface">
+  ...
+  </div>
+</div>
+```
+
+#### Fixed Position
+
+The menu surface can use fixed positioning when being displayed.
+
+```html
+<div class="mdc-menu-surface mdc-menu-surface--fixed">
+...
+</div>
+```
+
+```js
+// ...
+menuSurface.setFixedPosition(true);
+```
+
+#### Absolute Position
+
+The menu surface can use absolutely positioned when being displayed.
+
+```html
+<div class="mdc-menu-surface">
+...
+</div>
+```
+
+```js
+// ...
+menuSurface.hoistMenuToBody(); // Not required if the menu-surface is already positioned on the body.
+menuSurface.setAbsolutePosition(100, 100);
+```
+
 ## Style Customization
 
 ### CSS Classes
@@ -82,6 +143,7 @@ Mixin | Description
 --- | ---
 `mdc-menu-surface-ink-color($color)` | Sets the `color` property of the `mdc-menu-surface`.
 `mdc-menu-surface-fill-color($color)` | Sets the `background-color` property of the `mdc-menu-surface`.
+`mdc-menu-surface-corner-radius($radius)` | Sets the `border-radius` property of the `mdc-menu-surface`.
 
 ## `MDCMenuSurface` Properties and Methods
 
@@ -92,16 +154,21 @@ Property | Value Type | Description
 
 Method Signature | Description
 --- | ---
-`show() => void` | Proxies to the foundation's `open()` method.
-`hide() => void` | Proxies to the foundation's `close()` method.
 `setAnchorCorner(Corner) => void` | Proxies to the foundation's `setAnchorCorner(Corner)` method.
 `setAnchorMargin(AnchorMargin) => void` | Proxies to the foundation's `setAnchorMargin(AnchorMargin)` method.
 `setFixedPosition(isFixed: boolean) => void` | Adds the `mdc-menu-surface--fixed` class to the `mdc-menu-surface` element. Proxies to the foundation's `setIsHoisted()` and `setFixedPosition()` methods.
 `setAbsolutePosition(x: number, y: number) => void` | Proxies to the foundation's `setAbsolutePosition(x, y)` method. Used to set the absolute x/y position of the menu on the page. Should only be used when the menu is hoisted to the body.
 `setMenuSurfaceAnchorElement(element: Element) => void` | Changes the element used as an anchor for `menu-surface` positioning logic. Should be used with conjunction with `hoistMenuToBody()`.
 `hoistMenuToBody() => void` | Removes the `menu-surface` element from the DOM and appends it to the `body` element. Should be used to overcome `overflow: hidden` issues.
-`setIsHoisted() => void` | Proxies tot he foundation's `setIsHoisted` method.
+`setIsHoisted() => void` | Proxies to the foundation's `setIsHoisted` method.
 `getDefaultFoundation() => MDCMenuSurfaceFoundation` | Returns the foundation.
+
+### Events
+
+Event Name | Data | Description
+--- | --- | ---
+`MDCMenuSurface:closed` | none | Event emitted after the menu surface is closed.
+`MDCMenuSurface:opened` | none | Event emitted after the menu surface is opened.
 
 ## Usage Within Frameworks
 
@@ -149,16 +216,9 @@ Method Signature | Description
 `setIsHoisted(isHoisted: boolean) => void` | Sets whether the menu surface has been hoisted to the body so that the offsets are calculated relative to the page and not the anchor.
 `setFixedPosition(isFixed: boolean) => void` | Sets whether the menu surface is using fixed positioning.
 `setAbsolutePosition(x: number, y: numnber) => void` | Sets the absolute x/y position of the menu. Should only be used when the menu is hoisted or using fixed positioning.
-`handleDocumentClick(event: Event) => void` | Method used as the callback function for the `click` event.
-`handleKeyboardDown(event: Event) => void` | Method used as the callback function for the `keydown` events.
-`open() => void` | Opens the menu surface. Optionally accepts an object with a `focusIndex` parameter to indicate which element should receive focus when the menu surface is opened.
-`close()` | Closes the menu.
+`handleBodyClick(event: Event) => void` | Method used as the callback function for the `click` event.
+`handleKeydown(event: Event) => void` | Method used as the callback function for the `keydown` events.
+`open() => void` | Opens the menu surface. 
+`close() => void` | Closes the menu.
 `isOpen() => boolean` | Returns a boolean indicating whether the menu surface is open.
 `setQuickOpen(quickOpen: boolean) => void` | Sets whether the menu surface should open and close without animation when the `open`/`close` methods are called.
-
-### Events
-
-Event Name | Data | Description
---- | --- | ---
-`MDCMenuSurface:closed` | none | Event emitted after the menu surface is closed.
-`MDCMenuSurface:opened` | none | Event emitted after the menu surface is opened.

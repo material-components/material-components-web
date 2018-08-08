@@ -288,7 +288,7 @@
       demoReady(function() {
 
         // Selection group menu
-        var menuEl = document.querySelector('#demo-menu');
+        var menuEl = document.getElementById('demo-menu');
         var menu = new mdc.menu.MDCMenu(menuEl);
         var menuButtonEl = document.getElementById('menu-button');
         menuButtonEl.addEventListener('click', function() {
@@ -296,7 +296,7 @@
         });
 
         // Normal menu
-        var menuEl2 = document.querySelector('#demo-menu-2');
+        var menuEl2 = document.getElementById('demo-menu-2');
         var menu2 = new mdc.menu.MDCMenu(menuEl2);
         var menuButtonEl2 = document.getElementById('menu-button-2');
         menuButtonEl2.addEventListener('click', function() {
@@ -325,7 +325,7 @@
         // Right click callback function
         var contextMenuFunc = function(clickEvent) {
           menu4.setAbsolutePosition(clickEvent.clientX, clickEvent.clientY);
-          menu4.show();
+          menu4.open = true;
           clickEvent.preventDefault();
           return false;
         };
@@ -381,7 +381,7 @@
           });
         }
 
-        var marginInputsEl = document.querySelector('#margin-inputs');
+        var marginInputsEl = document.getElementById('margin-inputs');
         var inputs = marginInputsEl.querySelectorAll('input[type="text"]');
         for (var i = 0; i < inputs.length; i++) {
           inputs[i].addEventListener('change', function(evt) {
@@ -435,7 +435,7 @@
 
         menuEl4.addEventListener('MDCMenu:selected', function(evt) {
           var detail = evt.detail;
-          lastSelected.textContent = 'Overflow Menu: "' + detail.item.textContent.trim() +
+          lastSelected.textContent = 'Context Menu: "' + detail.item.textContent.trim() +
             '" at index ' + detail.index;
         });
 

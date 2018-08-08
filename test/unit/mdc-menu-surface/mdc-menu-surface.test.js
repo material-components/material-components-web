@@ -62,27 +62,28 @@ test('get/set open', () => {
   assert.isFalse(component.open);
 });
 
-test('show opens the menu surface', () => {
+test('open=true opens the menu surface', () => {
   const {component, mockFoundation} = setupTest();
-  component.show();
+  component.open = true;
   td.verify(mockFoundation.open());
 });
 
-test('show opens the menu surface does not throw error if no focusable elements', () => {
+test('open=true does not throw error if no focusable elements', () => {
   const {root, component, mockFoundation} = setupTest();
 
   while (root.firstChild) {
     root.removeChild(root.firstChild);
   }
 
-  assert.doesNotThrow(() => component.show());
+  assert.doesNotThrow(() => {
+    component.open = true;
+  });
   td.verify(mockFoundation.open());
 });
 
-test('hide closes the menu surface', () => {
+test('open=false closes the menu surface', () => {
   const {component, mockFoundation} = setupTest();
-  component.open = true;
-  component.hide();
+  component.open = false;
   td.verify(mockFoundation.close());
 });
 
@@ -285,12 +286,12 @@ test('adapter#isFirstElementFocused returns true if the first element is focused
   const {root, component} = setupTest(true);
   const item = root.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[0];
   document.body.appendChild(root);
-  component.show();
+  component.open = true;
 
   assert.isFalse(component.getDefaultFoundation().adapter_.isFirstElementFocused());
   item.focus();
   assert.isTrue(component.getDefaultFoundation().adapter_.isFirstElementFocused());
-  component.hide();
+  component.open = false;
 
   document.body.removeChild(root);
 });
@@ -299,13 +300,13 @@ test('adapter#isLastElementFocused returns true if the last element is focused',
   const {root, component} = setupTest(true);
   const item = root.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[1];
   document.body.appendChild(root);
-  component.show();
+  component.open = true;
 
   assert.isFalse(component.getDefaultFoundation().adapter_.isLastElementFocused());
   item.focus();
   assert.isTrue(component.getDefaultFoundation().adapter_.isLastElementFocused());
 
-  component.hide();
+  component.open = false;
   document.body.removeChild(root);
 });
 
@@ -313,11 +314,11 @@ test('adapter#focusFirstElement focuses the first menu surface element', () => {
   const {root, component} = setupTest(true);
   const item = root.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[0];
   document.body.appendChild(root);
-  component.show();
+  component.open = true;
 
   component.getDefaultFoundation().adapter_.focusFirstElement();
   assert.equal(document.activeElement, item);
-  component.hide();
+  component.open = false;
   document.body.removeChild(root);
 });
 
@@ -325,11 +326,11 @@ test('adapter#focusLastElement focuses the last menu surface element', () => {
   const {root, component} = setupTest(true);
   const item = root.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[1];
   document.body.appendChild(root);
-  component.show();
+  component.open = true;
 
   component.getDefaultFoundation().adapter_.focusLastElement();
   assert.equal(document.activeElement, item);
-  component.hide();
+  component.open = false;
   document.body.removeChild(root);
 });
 
