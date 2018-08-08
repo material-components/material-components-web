@@ -332,7 +332,8 @@ configuration shown above, since Sass is only scanning for `@material` packages 
 directory.
 
 Alternatively, you can implement an importer as follows, which makes use of node's module resolution algorithm to find
-the dependency nearest to the file that imported it:
+the dependency nearest to the file that imported it. Add the following code near the top of your `webpack.config.js`
+(before the `exports`):
 
 ```js
 const path = require('path');
@@ -364,7 +365,7 @@ function materialImporter(url, prev) {
 }
 ```
 
-Then, in your `sass-loader` config:
+Then update your `sass-loader` config to the following:
 
 ```js
 {
