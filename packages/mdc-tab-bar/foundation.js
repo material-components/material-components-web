@@ -34,16 +34,20 @@ ACCEPTABLE_KEYS.add(strings.ARROW_LEFT_KEY);
 ACCEPTABLE_KEYS.add(strings.ARROW_RIGHT_KEY);
 ACCEPTABLE_KEYS.add(strings.END_KEY);
 ACCEPTABLE_KEYS.add(strings.HOME_KEY);
+ACCEPTABLE_KEYS.add(strings.ENTER_KEY);
+ACCEPTABLE_KEYS.add(strings.SPACE_KEY);
 
 /**
  * @type {Map<number, string>}
  */
 const KEYCODE_MAP = new Map();
 // IE11 has no support for new Map with iterable so we need to initialize this by hand
-KEYCODE_MAP.set(numbers.HOME_KEYCODE, strings.HOME_KEY);
-KEYCODE_MAP.set(numbers.END_KEYCODE, strings.END_KEY);
 KEYCODE_MAP.set(numbers.ARROW_LEFT_KEYCODE, strings.ARROW_LEFT_KEY);
 KEYCODE_MAP.set(numbers.ARROW_RIGHT_KEYCODE, strings.ARROW_RIGHT_KEY);
+KEYCODE_MAP.set(numbers.END_KEYCODE, strings.END_KEY);
+KEYCODE_MAP.set(numbers.HOME_KEYCODE, strings.HOME_KEY);
+KEYCODE_MAP.set(numbers.ENTER_KEYCODE, strings.ENTER_KEY);
+KEYCODE_MAP.set(numbers.SPACE_KEYCODE, strings.SPACE_KEY);
 
 /**
  * @extends {MDCFoundation<!MDCTabBarAdapter>}
@@ -74,9 +78,11 @@ class MDCTabBarFoundation extends MDCFoundation {
       isRTL: () => {},
       activateTabAtIndex: () => {},
       deactivateTabAtIndex: () => {},
+      focusTabAtIndex: () => {},
       getTabIndicatorClientRectAtIndex: () => {},
       getTabDimensionsAtIndex: () => {},
       getActiveTabIndex: () => {},
+      getFocusedTabIndex: () => {},
       getIndexOfTab: () => {},
       getTabListLength: () => {},
       notifyTabActivated: () => {},
@@ -88,11 +94,23 @@ class MDCTabBarFoundation extends MDCFoundation {
    * */
   constructor(adapter) {
     super(Object.assign(MDCTabBarFoundation.defaultAdapter, adapter));
+
+    /** @private {boolean} */
+    this.useAutomaticActivation_ = false;
   }
 
   init() {
     const activeIndex = this.adapter_.getActiveTabIndex();
     this.scrollIntoView(activeIndex);
+  }
+
+  /**
+   * Switches between automatic and manual activation modes.
+   * See https://www.w3.org/TR/wai-aria-practices/#tabpanel for examples.
+   * @param {boolean} useAutomaticActivation
+   */
+  setUseAutomaticActivation(useAutomaticActivation) {
+    this.useAutomaticActivation_ = useAutomaticActivation;
   }
 
   /**
@@ -128,8 +146,29 @@ class MDCTabBarFoundation extends MDCFoundation {
       return;
     }
 
-    evt.preventDefault();
-    this.activateTabFromKey_(key);
+    // Prevent default behavior for movement keys, but not for activation keys, since :active is used to apply ripple
+    if (!this.isActivationKey_(key)) {
+      evt.preventDefault();
+    }
+
+    if (this.useAutomaticActivation_) {
+      if (this.isActivationKey_(key)) {
+        return;
+      }
+
+      const index = this.determineTargetFromKey_(this.adapter_.getActiveTabIndex(), key);
+      this.activateTab(index);
+      this.scrollIntoView(index);
+    } else {
+      const focusedTabIndex = this.adapter_.getFocusedTabIndex();
+      if (this.isActivationKey_(key)) {
+        this.activateTab(focusedTabIndex);
+      } else {
+        const index = this.determineTargetFromKey_(focusedTabIndex, key);
+        this.adapter_.focusTabAtIndex(index);
+        this.scrollIntoView(index);
+      }
+    }
   }
 
   /**
@@ -169,35 +208,37 @@ class MDCTabBarFoundation extends MDCFoundation {
   }
 
   /**
-   * Private method for activating a tab from a key
+   * Private method for determining the index of the destination tab based on what key was pressed
+   * @param {number} origin The original index from which to determine the destination
    * @param {string} key The name of the key
+   * @return {number}
    * @private
    */
-  activateTabFromKey_(key) {
+  determineTargetFromKey_(origin, key) {
     const isRTL = this.isRTL_();
-    const maxTabIndex = this.adapter_.getTabListLength() - 1;
+    const maxIndex = this.adapter_.getTabListLength() - 1;
     const shouldGoToEnd = key === strings.END_KEY;
     const shouldDecrement = key === strings.ARROW_LEFT_KEY && !isRTL || key === strings.ARROW_RIGHT_KEY && isRTL;
     const shouldIncrement = key === strings.ARROW_RIGHT_KEY && !isRTL || key === strings.ARROW_LEFT_KEY && isRTL;
-    let tabIndex = this.adapter_.getActiveTabIndex();
+    let index = origin;
 
     if (shouldGoToEnd) {
-      tabIndex = maxTabIndex;
+      index = maxIndex;
     } else if (shouldDecrement) {
-      tabIndex -= 1;
+      index -= 1;
     } else if (shouldIncrement) {
-      tabIndex += 1;
+      index += 1;
     } else {
-      tabIndex = 0;
+      index = 0;
     }
 
-    if (tabIndex < 0) {
-      tabIndex = maxTabIndex;
-    } else if (tabIndex > maxTabIndex) {
-      tabIndex = 0;
+    if (index < 0) {
+      index = maxIndex;
+    } else if (index > maxIndex) {
+      index = 0;
     }
 
-    this.activateTab(tabIndex);
+    return index;
   }
 
   /**
@@ -233,7 +274,7 @@ class MDCTabBarFoundation extends MDCFoundation {
    * @return {number}
    * @private
    */
-  calculateScrollIncrementRTL_(index, nextIndex, scrollPosition, barWidth, scrollContentWidth, ) {
+  calculateScrollIncrementRTL_(index, nextIndex, scrollPosition, barWidth, scrollContentWidth) {
     const nextTabDimensions = this.adapter_.getTabDimensionsAtIndex(nextIndex);
     const relativeContentLeft = scrollContentWidth - nextTabDimensions.contentLeft - scrollPosition;
     const relativeContentRight = scrollContentWidth - nextTabDimensions.contentRight - scrollPosition - barWidth;
@@ -338,6 +379,10 @@ class MDCTabBarFoundation extends MDCFoundation {
     }
 
     return KEYCODE_MAP.get(evt.keyCode);
+  }
+
+  isActivationKey_(key) {
+    return key === strings.SPACE_KEY || key === strings.ENTER_KEY;
   }
 
   /**

@@ -78,9 +78,15 @@ class MDCTabBarAdapter {
 
   /**
    * Deactivates the tab at the given index
-   * @param {number} index The index of the tab to activate
+   * @param {number} index The index of the tab to deactivate
    */
   deactivateTabAtIndex(index) {}
+
+  /**
+   * Focuses the tab at the given index
+   * @param {number} index The index of the tab to focus
+   */
+  focusTabAtIndex(index) {}
 
   /**
    * Returns the client rect of the tab's indicator
@@ -107,6 +113,12 @@ class MDCTabBarAdapter {
    * @return {number}
    */
   getActiveTabIndex() {}
+
+  /**
+   * Returns the index of the focused tab
+   * @return {number}
+   */
+  getFocusedTabIndex() {}
 
   /**
    * Returns the index of the given tab
