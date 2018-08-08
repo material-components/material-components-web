@@ -20,6 +20,7 @@
   <title>Invalid/Focused Text Field Element - MDC Web Screenshot Test</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="../../../out/mdc.textfield.css">
+  <link rel="stylesheet" href="../../../out/mdc.typography.css">
   <link rel="stylesheet" href="../../../out/spec/fixture.css">
   <link rel="stylesheet" href="../../../out/spec/mdc-textfield/fixture.css">
 </head>
@@ -31,18 +32,16 @@
 
     <div class="test-cell test-cell--textfield">
       <div class="mdc-text-field mdc-text-field--box mdc-text-field--invalid mdc-text-field--focused">
-        <input type="text" id="filled-text-field" class="mdc-text-field__input">
+        <input type="text" id="filled-text-field" class="mdc-text-field__input test-text-field__input">
         <label class="mdc-floating-label" for="filled-text-field">Label</label>
         <div class="mdc-line-ripple mdc-line-ripple--active"></div>
       </div>
-      <p class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent mdc-text-field-helper-text--validation-msg" aria-hidden="true">
-        Helper Text (possibly validation message)
-      </p>
+      <p class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent mdc-text-field-helper-text--validation-msg" aria-hidden="true">Helper Text</p>
     </div>
 
     <div class="test-cell test-cell--textfield">
       <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--invalid mdc-text-field--focused">
-        <input type="text" id="outlined-text-field" class="mdc-text-field__input" value=" ">
+        <input type="text" id="outlined-text-field" class="mdc-text-field__input test-text-field__input" value=" ">
         <label for="outlined-text-field-with-value" class="mdc-floating-label mdc-floating-label--float-above">Label</label>
         <div class="mdc-notched-outline mdc-notched-outline--notched">
           <svg>
@@ -51,25 +50,21 @@
         </div>
         <div class="mdc-notched-outline__idle"></div>
       </div>
-      <p class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent mdc-text-field-helper-text--validation-msg" aria-hidden="true">
-        Helper Text (possibly validation message)
-      </p>
+      <p class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent mdc-text-field-helper-text--validation-msg" aria-hidden="true">Helper Text</p>
     </div>
 
     <div class="test-cell test-cell--textfield">
       <div class="mdc-text-field mdc-text-field--box mdc-text-field--invalid mdc-text-field--focused">
-        <input type="text" id="filled-text-field-with-value" class="mdc-text-field__input" value="Filled value">
+        <input type="text" id="filled-text-field-with-value" class="mdc-text-field__input test-text-field__input" value="Filled value">
         <label for="filled-text-field-with-value" class="mdc-floating-label mdc-floating-label--float-above">Label</label>
         <div class="mdc-line-ripple mdc-line-ripple--active"></div>
       </div>
-      <p class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent mdc-text-field-helper-text--validation-msg" aria-hidden="true">
-        Helper Text (possibly validation message)
-      </p>
+      <p class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent mdc-text-field-helper-text--validation-msg" aria-hidden="true">Helper Text</p>
     </div>
 
     <div class="test-cell test-cell--textfield">
       <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--invalid mdc-text-field--focused">
-        <input type="text" id="outlined-text-field-with-value" class="mdc-text-field__input" value="Filled value">
+        <input type="text" id="outlined-text-field-with-value" class="mdc-text-field__input test-text-field__input" value="Filled value">
         <label for="outlined-text-field-with-value" class="mdc-floating-label mdc-floating-label--float-above">Label</label>
         <div class="mdc-notched-outline mdc-notched-outline--notched">
           <svg>
@@ -78,9 +73,7 @@
         </div>
         <div class="mdc-notched-outline__idle"></div>
       </div>
-      <p class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent mdc-text-field-helper-text--validation-msg" aria-hidden="true">
-        Helper Text (possibly validation message)
-      </p>
+      <p class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent mdc-text-field-helper-text--validation-msg" aria-hidden="true">Helper Text</p>
     </div>
 
   </div>
