@@ -1,0 +1,117 @@
+//
+// Copyright 2018 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+@import "../../../../packages/mdc-typography/mixins";
+
+.test-typography {
+  display: inline-block;
+  //outline: 1px solid black;
+}
+
+.test-cell--typography-headline1 {
+  width: 421px;
+  height: 221px;
+}
+
+.test-cell--typography-headline2 {
+  width: 281px;
+  height: 151px;
+}
+
+.test-cell--typography-headline3 {
+  width: 241px;
+  height: 131px;
+}
+
+.test-cell--typography-headline4 {
+  width: 181px;
+  height: 111px;
+}
+
+.test-cell--typography-headline5 {
+  width: 141px;
+  height: 101px;
+}
+
+.test-cell--typography-headline6 {
+  width: 121px;
+  height: 101px;
+}
+
+.test-cell--typography-subtitle1 {
+  width: 101px;
+  height: 91px;
+}
+
+.test-cell--typography-subtitle2 {
+  width: 91px;
+  height: 81px;
+}
+
+.test-cell--typography-body1 {
+  width: 81px;
+  height: 81px;
+}
+
+.test-cell--typography-body2 {
+  width: 71px;
+  height: 71px;
+}
+
+.test-cell--typography-caption {
+  width: 81px;
+  height: 71px;
+}
+
+.test-cell--typography-button {
+  width: 91px;
+  height: 101px;
+}
+
+.test-cell--typography-overline {
+  width: 101px;
+  height: 101px;
+}
+
+.test-cell--typography-overflow-ellipsis {
+  width: 341px;
+  height: 81px;
+}
+
+.test-cell--typography-baseline-text {
+  width: 341px;
+  height: 141px;
+}
+
+.custom-typography--overflow-ellipsis {
+  @include mdc-typography-overflow-ellipsis;
+
+  width: 7em;
+}
+
+.custom-typography--baseline-1 {
+  @include mdc-typography-baseline-top(34px);
+  @include mdc-typography-baseline-bottom(22px);
+}
+
+.custom-typography--baseline-2 {
+  @include mdc-typography-baseline-top(22px);
+  @include mdc-typography-baseline-bottom(28px);
+}
+
+.custom-typography--baseline-3 {
+  @include mdc-typography-baseline-top(28px);
+}
