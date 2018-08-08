@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 
+@import "@material/ripple/variables";
 @import "@material/theme/variables";
 
 $mdc-checkbox-mark-color: mdc-theme-prop-value(on-primary);
@@ -28,8 +29,7 @@ $mdc-checkbox-mark-stroke-size: 2/15 * $mdc-checkbox-size;
 $mdc-checkbox-border-width: 2px;
 $mdc-checkbox-transition-duration: 90ms;
 $mdc-checkbox-item-spacing: 4px;
-$mdc-checkbox-ripple-opacity: .14;
-$mdc-checkbox-focus-indicator-opacity: .26;
+$mdc-checkbox-focus-indicator-opacity: map-get($mdc-ripple-dark-ink-opacities, focus);
 
 // Manual calculation done on SVG
 $mdc-checkbox-mark-path-length_: 29.7833385;
