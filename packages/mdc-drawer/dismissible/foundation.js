@@ -45,6 +45,9 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
       isRtl: () => {},
       notifyClose: () => {},
       notifyOpen: () => {},
+      trapFocusOnSurface: () => {},
+      untrapFocusOnSurface: () => {},
+      eventTargetHasClass: () => {},
     });
   }
 
@@ -56,8 +59,8 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
       return;
     }
     this.adapter_.addClass(cssClasses.OPEN);
-    this.adapter_.addClass(cssClasses.ANIMATING_OPEN);
-    this.animateAppContent_(true);
+    this.adapter_.addClass(cssClasses.ANIMATE);
+    delay(() => this.adapter_.addClass(cssClasses.OPENING));
   }
 
   /**
@@ -67,28 +70,15 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
     if (!this.isOpen() || this.isOpening() || this.isClosing()) {
       return;
     }
-    this.adapter_.addClass(cssClasses.ANIMATING_CLOSE);
-    this.animateAppContent_(false);
+
+    this.adapter_.addClass(cssClasses.CLOSING);
   }
 
-  /**
-   * Animates the app content (sibling to the drawer) open/closed along with the drawer.
-   * @param {boolean} isOpening
-   */
-  animateAppContent_(isOpening) {
-    const {APP_CONTENT_ANIMATE_OPEN, APP_CONTENT_ANIMATE_CLOSE} = cssClasses;
-    const drawerWidth = this.adapter_.computeBoundingRect().width;
-    const invert = this.adapter_.isRtl() ? drawerWidth : -drawerWidth;
-    const firstTransform = isOpening ? `translateX(${invert}px)` : '';
-    const lastTransform = isOpening ? '' : `translateX(${invert}px)`;
-    this.adapter_.setStyleAppContent('transform', firstTransform);
+  /** @protected */
+  opened() {}
 
-    requestAnimationFrame(() => {
-      const animateClass = isOpening ? APP_CONTENT_ANIMATE_OPEN : APP_CONTENT_ANIMATE_CLOSE;
-      this.adapter_.addClassAppContent(animateClass);
-      this.adapter_.setStyleAppContent('transform', lastTransform);
-    });
-  }
+  /** @protected */
+  closed() {}
 
   /**
    * Returns true if drawer is in open state.
@@ -103,7 +93,7 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
    * @return {boolean}
    */
   isOpening() {
-    return this.adapter_.hasClass(cssClasses.ANIMATING_OPEN);
+    return this.adapter_.hasClass(cssClasses.OPENING);
   }
 
   /**
@@ -111,7 +101,7 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
    * @return {boolean}
    */
   isClosing() {
-    return this.adapter_.hasClass(cssClasses.ANIMATING_CLOSE);
+    return this.adapter_.hasClass(cssClasses.CLOSING);
   }
 
   /**
@@ -131,20 +121,29 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
    * Handles a transition end event on the root element.
    * @param {!Event} evt
    */
-  handleTransitionEnd() {
-    const {APP_CONTENT_ANIMATE_OPEN, APP_CONTENT_ANIMATE_CLOSE, ANIMATING_OPEN, ANIMATING_CLOSE, OPEN} = cssClasses;
+  handleTransitionEnd(evt) {
+    const {OPENING, CLOSING, OPEN, ANIMATE, ROOT} = cssClasses;
+    if (!this.adapter_.eventTargetHasClass(evt.target, ROOT)) {
+      return;
+    }
+
     if (this.isClosing()) {
       this.adapter_.removeClass(OPEN);
-      this.adapter_.setStyleAppContent('transform', '');
+      this.closed();
       this.adapter_.notifyClose();
     } else {
+      this.opened();
       this.adapter_.notifyOpen();
     }
-    this.adapter_.removeClassAppContent(APP_CONTENT_ANIMATE_OPEN);
-    this.adapter_.removeClassAppContent(APP_CONTENT_ANIMATE_CLOSE);
-    this.adapter_.removeClass(ANIMATING_OPEN);
-    this.adapter_.removeClass(ANIMATING_CLOSE);
+
+    this.adapter_.removeClass(ANIMATE);
+    this.adapter_.removeClass(OPENING);
+    this.adapter_.removeClass(CLOSING);
   }
 }
+
+const delay = function(fn) {
+  setTimeout(fn, 10);
+};
 
 export default MDCDismissibleDrawerFoundation;

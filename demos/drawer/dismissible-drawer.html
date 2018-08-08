@@ -28,56 +28,61 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   </head>
   <body class="mdc-typography demo-body">
-    <aside id="demo-drawer" class="mdc-drawer mdc-drawer--dismissible demo-drawer">
+    <aside id="demo-drawer" class="mdc-drawer mdc-drawer--dismissible mdc-drawer--open demo-drawer">
       <div class="mdc-drawer__header">
         <h3 class="mdc-drawer__title">Mail</h3>
         <h6 class="mdc-drawer__subtitle">email@material.io</h6>
       </div>
-      <div class="mdc-drawer__scrollable">
+      <div class="mdc-drawer__content">
         <div class="mdc-list-group">
           <nav class="mdc-list">
-            <a class="mdc-list-item mdc-list-item--activated demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
+            <a class="mdc-list-item mdc-list-item--activated demo-drawer-list-item" href="#" tabindex="0">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
+              <span class="mdc-list-item__label mdc-drawer__list-item-label">Inbox</span>
             </a>
             <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>
+              <span class="mdc-list-item__label mdc-drawer__list-item-label">Star</span>
             </a>
             <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>Sent Mail
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
+              <span class="mdc-list-item__label mdc-drawer__list-item-label">Sent Mail</span>
             </a>
             <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>Drafts
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
+              <span class="mdc-list-item__label mdc-drawer__list-item-label">Drafts</span>
             </a>
-          </nav>
 
-          <hr class="mdc-list-divider">
-          <h6 class="mdc-list-group__subheader">Labels</h6>
-          <nav class="mdc-list">
-            <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>Family
+            <hr class="mdc-list-divider">
+            <h6 class="mdc-list-group__subheader mdc-drawer__list-group-subheader">Labels</h6>
+            <a class="mdc-list-item demo-drawer-list-item" href="#" tabindex="0">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
+              <span class="mdc-list-item__label mdc-drawer__list-item-label">Family</span>
             </a>
             <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>Friends
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
+              <span class="mdc-list-item__label mdc-drawer__list-item-label">Friends</span>
             </a>
             <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>Work
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
+              <span class="mdc-list-item__label mdc-drawer__list-item-label">Work</span>
             </a>
-          </nav>
 
-          <hr class="mdc-list-divider">
-          <nav class="mdc-list">
-            <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings</i>Settings
+            <hr class="mdc-list-divider">
+            <a class="mdc-list-item demo-drawer-list-item" href="#" tabindex="0">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings</i>
+              <span class="mdc-list-item__label mdc-drawer__list-item-label">Settings</span>
             </a>
             <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">announcement</i>Help & feedback
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">announcement</i>
+              <span class="mdc-list-item__label mdc-drawer__list-item-label">Help & feedback</span>
             </a>
           </nav>
         </div>
       </div>
     </aside>
     <div class="demo-content mdc-drawer-app-content" id="demo-content">
-      <header class="mdc-top-app-bar" id="app-bar">
+      <header class="mdc-top-app-bar demo-top-app-bar" id="app-bar">
         <div class="mdc-top-app-bar__row">
           <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
             <a href="#" class="demo-menu material-icons mdc-top-app-bar__navigation-icon">menu</a>
@@ -198,6 +203,12 @@
           } else {
             drawer.open = true;
           }
+        });
+        var listList = document.querySelectorAll('.mdc-list');
+        listList.forEach(function(list) {
+          var list = mdc.list.MDCList.attachTo(list);
+          list.singleSelection = true;
+          list.vertical = true;
         });
       });
     </script>

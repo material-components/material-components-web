@@ -16,7 +16,9 @@
  */
 import {MDCComponent} from '@material/base/index';
 import MDCDismissibleDrawerFoundation from './dismissible/foundation';
+import MDCModalDrawerFoundation from './modal/foundation';
 import {strings} from './constants';
+import * as util from './util';
 
 /**
  * @extends {MDCComponent<!MDCDismissibleDrawerFoundation>}
@@ -35,6 +37,8 @@ export class MDCDrawer extends MDCComponent {
     this.handleKeydown_;
     /** @private {?Function} */
     this.handleTransitionEnd_;
+    /** @private {?Function} */
+    this.handleScrimClick_;
   }
 
   /**
@@ -51,6 +55,8 @@ export class MDCDrawer extends MDCComponent {
     if (appContent) {
       this.appContent_= appContent;
     }
+    this.scrim_ = this.root_.parentElement.querySelector(MDCDismissibleDrawerFoundation.strings.SCRIM_SELECTOR);
+    this.focusTrap_ = util.createFocusTrapInstance(this.root_);
   }
 
   /**
@@ -76,13 +82,21 @@ export class MDCDrawer extends MDCComponent {
   destroy() {
     document.removeEventListener('keydown', this.handleKeydown_);
     this.root_.removeEventListener('transitionend', this.handleTransitionEnd_);
+
+    if (this.scrim_) {
+      this.scrim_.addEventListener('click', this.handleScrimClick_);
+    }
   }
 
   initialSyncWithDOM() {
     this.handleKeydown_ = this.foundation_.handleKeydown.bind(this.foundation_);
     this.handleTransitionEnd_ = this.foundation_.handleTransitionEnd.bind(this.foundation_);
     document.addEventListener('keydown', this.handleKeydown_);
-    this.root_.addEventListener('transitionend', this.handleTransitionEnd_);
+    this.root_.addEventListener('transitionend', this.handleTransitionEnd_, true);
+    this.handleScrimClick_ = () => this.foundation_.handleScrimClick();
+    if (this.scrim_) {
+      this.scrim_.addEventListener('click', this.handleScrimClick_);
+    }
   }
 
   getDefaultFoundation() {
@@ -110,10 +124,18 @@ export class MDCDrawer extends MDCComponent {
       isRtl: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
       notifyClose: () => this.emit(strings.CLOSE_EVENT, null, true /* shouldBubble */),
       notifyOpen: () => this.emit(strings.OPEN_EVENT, null, true /* shouldBubble */),
+      trapFocusOnSurface: () => this.focusTrap_.activate(),
+      untrapFocusOnSurface: () => this.focusTrap_.deactivate(),
+      eventTargetHasClass: (targetElement, className) => {
+        return targetElement.classList.contains(className);
+      },
     }));
 
-    if (this.root_.classList.contains(MDCDismissibleDrawerFoundation.cssClasses.DISMISSIBLE)) {
+    if (this.root_.classList.contains(MDCDismissibleDrawerFoundation.cssClasses.DISMISSIBLE) ||
+        this.root_.classList.contains(MDCDismissibleDrawerFoundation.cssClasses.RAIL)) {
       return new MDCDismissibleDrawerFoundation(adapter);
+    } else if (this.root_.classList.contains(MDCModalDrawerFoundation.cssClasses.MODAL)) {
+      return new MDCModalDrawerFoundation(adapter);
     }
   }
 }

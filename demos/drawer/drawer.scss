@@ -74,6 +74,7 @@
 .demo-content {
   flex: auto;
   overflow: auto;
+  position: relative;
 }
 
 .demo-main {
@@ -81,6 +82,8 @@
   padding-right: 16px;
   overflow: auto;
   height: 100%;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 #extra-wide-content {
@@ -108,4 +111,21 @@
   @include mdc-drawer-activated-overlay-color(pink);
   @include mdc-drawer-item-activated-text-color(pink, 1);
   @include mdc-drawer-icon-activated-ink-color(pink, 1);
+}
+
+.demo-clipped-content {
+  display: flex;
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  flex-direction: column;
+}
+
+.demo-top-app-bar {
+  position: absolute;
+}
+
+.demo-clipped-content-body {
+  display: flex;
+  height: 100%;
 }

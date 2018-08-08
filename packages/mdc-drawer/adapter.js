@@ -48,6 +48,19 @@ class MDCDrawerAdapter {
   hasClass(className) {}
 
   /**
+   * Sets attribute name on slider Element to value
+   * @param {string} name
+   * @param {string} value
+   */
+  setAttribute(name, value) {}
+
+  /**
+   * Removes attribute name from slider Element
+   * @param {string} name
+   */
+  removeAttribute(name) {}
+
+  /**
    * Returns ClientRect of the root Element.
    * @return {!ClientRect}
    */
@@ -72,6 +85,8 @@ class MDCDrawerAdapter {
    */
   setStyleAppContent(propertyName, value) {}
 
+  setStrutWidth(width) {}
+
   /**
    * Returns true if parent element is dir='rtl'.
    * @return {boolean}
@@ -87,6 +102,18 @@ class MDCDrawerAdapter {
    * Emits a custom event "MDCDrawer:open" denoting the drawer has opened.
    */
   notifyOpen() {}
+
+  trapFocusOnSurface() {}
+
+  untrapFocusOnSurface() {}
+
+  focusFirstFocusableElement() {}
+
+  /**
+   * @param {!Element} targetElement target element
+   * @param {string} className class name
+   */
+  eventTargetHasClass(targetElement, className) {}
 }
 
 export default MDCDrawerAdapter;
