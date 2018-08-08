@@ -26,7 +26,8 @@
 .mdc-icon-button__icon {
   display: inline-block;
 
-  &[data-toggle-on] {
+  // stylelint-disable-next-line plugin/selector-bem-pattern
+  &.mdc-icon-button__icon--on {
     display: none;
   }
 }
@@ -35,7 +36,8 @@
   .mdc-icon-button__icon {
     display: none;
 
-    &[data-toggle-on] {
+    // stylelint-disable-next-line plugin/selector-bem-pattern
+    &.mdc-icon-button__icon--on {
       display: inline-block;
     }
   }

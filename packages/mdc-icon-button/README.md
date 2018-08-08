@@ -71,9 +71,9 @@ iconButtonRipple.unbounded = true;
 ### Icon Button Toggle
 
 The icon button can be used to toggle between an on and off icon. To style an icon button as an icon button toggle, add
-both icons as child elements and place the `data-toggle-on` attribute on the icon that should be on. If the button
-should be initialized in the "on" state, then add the `mdc-icon-button--on` class to the parent `button`. Then
-instantiate an `MDCIconButtonToggle` on the root element.
+both icons as child elements and place the `mdc-icon-button__icon--on` class on the icon that represents the on element.
+If the button should be initialized in the "on" state, then add the `mdc-icon-button--on` class to the parent `button`. 
+Then instantiate an `MDCIconButtonToggle` on the root element.
 
 ```html
 <button id="add-to-favorites"
@@ -82,25 +82,13 @@ instantiate an `MDCIconButtonToggle` on the root element.
    aria-hidden="true"
    aria-pressed="false">
    <i class="material-icons mdc-icon-button__icon">favorite</i>
-   <i class="material-icons mdc-icon-button__icon" data-toggle-on>favorite_border</i>
+   <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">favorite_border</i>
 </button>
 ```
 
 ```js
 var toggleButton = new mdc.iconButton.MDCIconButtonToggle(document.getElementById('add-to-favorites'));
 ```
-
-#### Icon Button Toggle States
-
-Note the use of `data-toggle-on` attribute in the above examples. This attribute indicates which element is the
-on element. When the `mdc-icon-button--on` class is present, the element with the `data-toggle-on` attribute
-will be shown and the other element will be hidden. When the `mdc-icon-button--on` class is not present, the element
-with the `data-toggle-on` attribute will be hidden and the other element will beshown. This is what allows
-MDCIconButtonToggle to be so flexible. 
-
-Attribute | Description
---- | ---
-`data-toggle-on` | Used to indicate which element in an icon button toggle is the `on` value.
 
 #### Icon Button Toggle with SVG
 
@@ -115,7 +103,7 @@ The icon button toggle can be used with SVGs.
    <svg class="mdc-icon-button__icon">
      ...
    </svg>
-   <svg class="mdc-icon-button__icon" data-toggle-on>
+   <svg class="mdc-icon-button__icon mdc-icon-button__icon--on">
      ...
   </svg>
 </button>
@@ -132,7 +120,7 @@ The icon button toggle can be used with `img` tags.
    aria-hidden="true"
    aria-pressed="true">
    <img src="" class="mdc-icon-button__icon"/>
-   <img src="" class="mdc-icon-button__icon" data-toggle-on/>
+   <img src="" class="mdc-icon-button__icon mdc-icon-button__icon--on"/>
 </button>
 ```
 
@@ -157,7 +145,9 @@ cannot be disabled. Disabled icon buttons cannot be interacted with and have no 
 CSS Class | Description
 --- | ---
 `mdc-icon-button` | Mandatory.
-`mdc-icon-button--on` | Used to indicate the toggle button icon that is the not-selected option.
+`mdc-icon-button--on` | This class is applied to the root element and is used to indicate if the icon button toggle is in the "on" state.
+`mdc-icon-button__icon` | This class is applied to each icon element for the icon button toggle.
+`mdc-icon-button__icon--on` | This class is applied to a icon element and is used to indicate the toggle button icon that is represents the "on" icon.
 
 ### Sass Mixins
 
@@ -167,7 +157,6 @@ Mixin | Description
 --- | ---
 `mdc-icon-button-size($width, $height, $padding)` | Sets the width, height, font-size and padding for the icon and ripple. `$height` is optional and defaults to `$width`. `$padding` is optional and defaults to `max($width, $height)/2`. `font-size` is set to `max($width, $height)`.
 `mdc-icon-button-ink-color($color)` | Sets the font color and the ripple color to the provided color value.
-
 
 ## `MDCIconButtonToggle` Properties and Methods
 
@@ -189,9 +178,8 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 
 Method Signature | Description
 --- | ---
-`addClass(className: string) => void` | Adds a class to a icon element.
-`removeClass(className: string) => void` | Removes a class from a icon element.
-`getAttr(name: string) => string` | Returns the value of the attribute `name` on the root element. Can also return `null`, similar to `getAttribute()`.
+`addClass(className: string) => void` | Adds a class to the root element.
+`removeClass(className: string) => void` | Removes a class from the root element.
 `setAttr(name: string, value: string) => void` | Sets the attribute `name` to `value` on the root element.
 `notifyChange(evtData: {isOn: boolean}) => void` | Broadcasts a change notification, passing along the `evtData` to the environment's event handling system. In our vanilla implementation, Custom Events are used for this.
 

@@ -45,10 +45,6 @@ class MDCIconButtonToggleFoundation extends MDCFoundation {
   constructor(adapter) {
     super(Object.assign(MDCIconButtonToggleFoundation.defaultAdapter, adapter));
 
-    const {ICON_BUTTON_ON_CLASS} = MDCIconButtonToggleFoundation.cssClasses;
-
-    /** @private {boolean} */
-    this.on_ = this.adapter_.hasClass(ICON_BUTTON_ON_CLASS) || false;
     /** @private {boolean} */
     this.disabled_ = false;
   }
@@ -59,27 +55,23 @@ class MDCIconButtonToggleFoundation extends MDCFoundation {
 
   handleClick() {
     this.toggle();
-    const {on_: isOn} = this;
-    this.adapter_.notifyChange(/** @type {!IconButtonToggleEvent} */ ({isOn}));
+    this.adapter_.notifyChange(/** @type {!IconButtonToggleEvent} */ ({isOn: this.isOn()}));
   }
 
   /** @return {boolean} */
   isOn() {
-    return this.on_;
+    return this.adapter_.hasClass(cssClasses.ICON_BUTTON_ON_CLASS);
   }
 
   /** @param {boolean=} isOn */
-  toggle(isOn = !this.on_) {
-    const {ICON_BUTTON_ON_CLASS} = MDCIconButtonToggleFoundation.cssClasses;
-
-    this.on_ = isOn;
-    if (this.isOn()) {
-      this.adapter_.addClass(ICON_BUTTON_ON_CLASS);
+  toggle(isOn = !this.isOn()) {
+    if (isOn) {
+      this.adapter_.addClass(cssClasses.ICON_BUTTON_ON_CLASS);
     } else {
-      this.adapter_.removeClass(ICON_BUTTON_ON_CLASS);
+      this.adapter_.removeClass(cssClasses.ICON_BUTTON_ON_CLASS);
     }
 
-    this.adapter_.setAttr(strings.ARIA_PRESSED, `${this.isOn()}`);
+    this.adapter_.setAttr(strings.ARIA_PRESSED, `${isOn}`);
   }
 }
 

@@ -31,22 +31,9 @@ function getFixture() {
   `;
 }
 
-function getIconFixture() {
-  return bel`
-    <i id="icon"></i>
-  `;
-}
-
-function setupTest({tabIndex = undefined, useInnerIconElement = false, createMockFoundation = false} = {}) {
+function setupTest({createMockFoundation = false} = {}) {
   const root = getFixture();
-  if (useInnerIconElement) {
-    const icon = getIconFixture();
-    root.dataset.iconInnerSelector = `#${icon.id}`;
-    root.appendChild(icon);
-  }
-  if (tabIndex !== undefined) {
-    root.tabIndex = tabIndex;
-  }
+
   let mockFoundation;
   if (createMockFoundation) {
     const MockFoundationCtor = td.constructor(MDCIconButtonToggleFoundation);

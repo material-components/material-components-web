@@ -46,7 +46,7 @@ DOM, and attach the `data-mdc-auto-init="MDCIconButtonToggle"` attribute.
    aria-label="Add to favorites"
    aria-pressed="false"
    data-mdc-auto-init="MDCIconButtonToggle">
-  <i class="material-icons mdc-icon-button__icon" data-toggle-on>favorite</i>
+  <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">favorite</i>
   <i class="material-icons mdc-icon-button__icon">favorite_border</i>
 </button>
 ```
