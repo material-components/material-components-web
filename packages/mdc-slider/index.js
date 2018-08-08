@@ -42,6 +42,10 @@ class MDCSlider extends MDCComponent {
     this.valueLabel_;
     /** @type {?Element} */
     this.valueLabelText_;
+    /** @type {number} */
+    this.digitWidth_;
+    /** @type {number} */
+    this.commaWidth_;
     /** @type {?Element} */
     this.lastTickMark_;
     /** @private {!MDCRipple} */
@@ -109,6 +113,15 @@ class MDCSlider extends MDCComponent {
     this.tickMarkSet_ = this.root_.querySelector(strings.TICK_MARK_SET_SELECTOR);
     this.valueLabel_ = this.root_.querySelector(strings.VALUE_LABEL_SELECTOR);
     this.valueLabelText_ = this.root_.querySelector(strings.VALUE_LABEL_TEXT_SELECTOR);
+
+    // Render a digit and a comma to get the width for calculations.
+    // This is to accomodate for different fonts and sizes used.
+    if (this.valueLabelText_) {
+      this.valueLabelText_.textContent = 0;
+      this.digitWidth_ = this.valueLabelText_.clientWidth;
+      this.valueLabelText_.textContent = ',';
+      this.commaWidth_ = this.valueLabelText_.clientWidth;
+    }
   }
 
   /**
@@ -129,6 +142,8 @@ class MDCSlider extends MDCComponent {
         removeValueLabelTextStyle: () => {
           this.valueLabelText_.removeAttribute('style');
         },
+        getDigitWidth: () => this.digitWidth_,
+        getCommaWidth: () => this.commaWidth_,
         computeBoundingRect: () => this.root_.getBoundingClientRect(),
         eventTargetHasClass: (target, className) => {
           if (target.classList) {

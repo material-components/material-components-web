@@ -152,6 +152,8 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
 
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
     td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
+    td.when(mockAdapter.getCommaWidth()).thenReturn(3);
+    td.when(mockAdapter.getDigitWidth()).thenReturn(9);
     foundation.init();
     raf.flush();
 
@@ -169,6 +171,8 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
 
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
     td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
+    td.when(mockAdapter.getCommaWidth()).thenReturn(3);
+    td.when(mockAdapter.getDigitWidth()).thenReturn(9);
     foundation.init();
     raf.flush();
 
@@ -191,6 +195,8 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
     td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
     td.when(mockAdapter.isRTL()).thenReturn(true);
+    td.when(mockAdapter.getCommaWidth()).thenReturn(3);
+    td.when(mockAdapter.getDigitWidth()).thenReturn(9);
     foundation.init();
     raf.flush();
 
@@ -211,6 +217,8 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
 
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
     td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
+    td.when(mockAdapter.getCommaWidth()).thenReturn(3);
+    td.when(mockAdapter.getDigitWidth()).thenReturn(9);
     foundation.init();
     raf.flush();
 
@@ -232,7 +240,8 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
 
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
     td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
-    td.when(mockAdapter.isRTL()).thenReturn(true);
+    td.when(mockAdapter.getCommaWidth()).thenReturn(3);
+    td.when(mockAdapter.getDigitWidth()).thenReturn(9);
     foundation.init();
     raf.flush();
 

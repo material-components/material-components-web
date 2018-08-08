@@ -458,10 +458,8 @@ test('adapter#setLastTickMarkStyleProperty sets a style property on the last tic
 test('adapter#focusThumb sets the focus of the document to the thumb', () => {
   const {root, component} = setupTest();
   const thumb = root.querySelector('.mdc-slider__thumb');
-
+  component.getDefaultFoundation().adapter_.focusThumb();
   setTimeout(function() {
-    component.getDefaultFoundation().adapter_.focusThumb();
-
     assert.equal(thumb, document.activeElement);
   }, 100);
 });
@@ -480,9 +478,8 @@ test('adapter#deactivateThumb deactivates the thumb ripple', () => {
   const thumb = root.querySelector('.mdc-slider__thumb');
 
   component.getDefaultFoundation().adapter_.activateRipple();
+  component.getDefaultFoundation().adapter_.deactivateRipple();
   setTimeout(function() {
-    component.getDefaultFoundation().adapter_.deactivateRipple();
-
     assert.isFalse(thumb.classList.contains('mdc-ripple-upgraded--foreground-activation'));
   }, 100);
 });
@@ -507,4 +504,22 @@ test('adapter#isRTL returns false when component is not in an RTL context', () =
   assert.isFalse(component.getDefaultFoundation().adapter_.isRTL());
 
   document.body.removeChild(wrapper);
+});
+
+test('adapter#getDigitWidth returns the digit width', () => {
+  const {root, component} = setupTest();
+  const valueLabelText = root.querySelector(strings.VALUE_LABEL_TEXT_SELECTOR);
+  valueLabelText.textContent = 0;
+  const digitWidth = valueLabelText.clientWidth;
+
+  assert.equal(component.getDefaultFoundation().adapter_.getDigitWidth(), digitWidth);
+});
+
+test('adapter#getCommaWidth returns the comma width', () => {
+  const {root, component} = setupTest();
+  const valueLabelText = root.querySelector(strings.VALUE_LABEL_TEXT_SELECTOR);
+  valueLabelText.textContent = ',';
+  const commaWidth = valueLabelText.clientWidth;
+
+  assert.equal(component.getDefaultFoundation().adapter_.getCommaWidth(), commaWidth);
 });

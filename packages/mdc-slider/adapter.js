@@ -70,6 +70,18 @@ class MDCSliderAdapter {
   removeValueLabelTextStyle() {}
 
   /**
+   * Returns the width of a single digit
+   * @return {number}
+   */
+  getDigitWidth() {}
+
+  /**
+   * Returns the width of a single comma
+   * @return {number}
+   */
+  getCommaWidth() {}
+
+  /**
    * Returns the bounding client rect for the slider Element
    * @return {?ClientRect}
    */
