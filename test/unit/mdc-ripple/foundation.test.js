@@ -98,11 +98,13 @@ testFoundation('#init does not register a resize handler for bounded ripple', ({
   td.verify(adapter.registerResizeHandler(td.matchers.isA(Function)), {times: 0});
 });
 
-testFoundation('#init does not register events if CSS custom properties not supported', ({foundation, adapter}) => {
+testFoundation('#init only registers focus/blur if CSS custom properties not supported', ({foundation, adapter}) => {
   td.when(adapter.browserSupportsCssVars()).thenReturn(false);
   foundation.init();
 
-  td.verify(adapter.registerInteractionHandler(td.matchers.isA(String), td.matchers.isA(Function)), {times: 0});
+  td.verify(adapter.registerInteractionHandler(td.matchers.isA(String), td.matchers.isA(Function)), {times: 2});
+  td.verify(adapter.registerInteractionHandler('focus', td.matchers.isA(Function)));
+  td.verify(adapter.registerInteractionHandler('blur', td.matchers.isA(Function)));
 });
 
 testFoundation('#destroy unregisters all bound interaction handlers', ({foundation, adapter}) => {
@@ -185,14 +187,16 @@ testFoundation('#destroy clears the timer if activation is interrupted',
     assert.equal(foundation.activationTimer_, 0);
   });
 
-testFoundation('#destroy does nothing if CSS custom properties are not supported', ({foundation, adapter, mockRaf}) => {
+testFoundation('#destroy when CSS custom properties are not supported', ({foundation, adapter, mockRaf}) => {
   const isA = td.matchers.isA;
   td.when(adapter.browserSupportsCssVars()).thenReturn(false);
   foundation.destroy();
   mockRaf.flush();
 
-  td.verify(adapter.deregisterInteractionHandler(isA(String), isA(Function)), {times: 0});
-  td.verify(adapter.deregisterResizeHandler(isA(Function)), {times: 0});
+  // #destroy w/o CSS vars still calls event deregistration functions (to deregister focus/blur; the rest are no-ops)
+  td.verify(adapter.deregisterInteractionHandler('focus', isA(Function)));
+  td.verify(adapter.deregisterInteractionHandler('blur', isA(Function)));
+  // #destroy w/o CSS vars doesn't change any CSS classes or custom properties
   td.verify(adapter.removeClass(isA(String)), {times: 0});
   td.verify(adapter.updateCssVariable(isA(String), isA(String)), {times: 0});
 });

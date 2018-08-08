@@ -40,8 +40,7 @@ function getFixture() {
   `;
 }
 
-function setupTest() {
-  const root = getFixture();
+function setupTest(root = getFixture()) {
   const MockFoundationCtor = td.constructor(MDCListFoundation);
   const mockFoundation = new MockFoundationCtor();
   const component = new MDCList(root, mockFoundation);
@@ -52,6 +51,25 @@ suite('MDCList');
 
 test('attachTo initializes and returns a MDCList instance', () => {
   assert.isTrue(MDCList.attachTo(getFixture()) instanceof MDCList);
+});
+
+test('component calls setVerticalOrientation on the foundation if aria-orientation is not set', () => {
+  const {mockFoundation} = setupTest();
+  td.verify(mockFoundation.setVerticalOrientation(true), {times: 1});
+});
+
+test('component calls setVerticalOrientation(false) on the foundation if aria-orientation=horizontal', () => {
+  const root = getFixture();
+  root.setAttribute('aria-orientation', 'horizontal');
+  const {mockFoundation} = setupTest(root);
+  td.verify(mockFoundation.setVerticalOrientation(false), {times: 1});
+});
+
+test('component calls setVerticalOrientation(true) on the foundation if aria-orientation=vertical', () => {
+  const root = getFixture();
+  root.setAttribute('aria-orientation', 'vertical');
+  const {mockFoundation} = setupTest(root);
+  td.verify(mockFoundation.setVerticalOrientation(true), {times: 1});
 });
 
 test('#adapter.getListItemCount returns correct number of list items', () => {
@@ -177,33 +195,33 @@ test('#adapter.focusItemAtIndex focuses the list item at the index specified', (
 });
 
 test('adapter#isListItem returns true if the element is a list item', () => {
-  const {root, component} = setupTest(true);
+  const {root, component} = setupTest();
   const item1 = root.querySelectorAll('.mdc-list-item')[0];
   assert.isTrue(component.getDefaultFoundation().adapter_.isListItem(item1));
 });
 
 test('adapter#isListItem returns false if the element is a not a list item', () => {
-  const {root, component} = setupTest(true);
+  const {root, component} = setupTest();
   const item1 = root.querySelectorAll('.mdc-list-item button')[0];
   assert.isFalse(component.getDefaultFoundation().adapter_.isListItem(item1));
 });
 
 test('adapter#isElementFocusable returns true if the element is a focusable list item sub-element', () => {
-  const {root, component} = setupTest(true);
+  const {root, component} = setupTest();
   const item1 = root.querySelectorAll('.mdc-list-item button')[0];
   assert.isTrue(component.getDefaultFoundation().adapter_.isElementFocusable(item1));
 });
 
 test('adapter#isElementFocusable returns false if the element is not a focusable list item sub-element',
   () => {
-    const {root, component} = setupTest(true);
+    const {root, component} = setupTest();
     const item1 = root.querySelectorAll('.mdc-list-item')[2];
     assert.isFalse(component.getDefaultFoundation().adapter_.isElementFocusable(item1));
   });
 
 test('adapter#isElementFocusable returns false if the element is null/undefined',
   () => {
-    const {component} = setupTest(true);
+    const {component} = setupTest();
     assert.isFalse(component.getDefaultFoundation().adapter_.isElementFocusable());
   });
 
@@ -231,8 +249,8 @@ test('layout adds tabindex=-1 to all list item button/a elements', () => {
 
 test('vertical calls setVerticalOrientation on foundation', () => {
   const {component, mockFoundation} = setupTest();
-  component.vertical = true;
-  td.verify(mockFoundation.setVerticalOrientation(true), {times: 1});
+  component.vertical = false;
+  td.verify(mockFoundation.setVerticalOrientation(false), {times: 1});
 });
 
 test('wrapFocus calls setWrapFocus on foundation', () => {

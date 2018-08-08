@@ -17,6 +17,7 @@
 @import "@material/animation/functions";
 @import "@material/ripple/common";
 @import "@material/ripple/mixins";
+@import "@material/ripple/variables";
 @import "./functions";
 @import "./mixins";
 @import "./variables";
@@ -108,7 +109,7 @@
   }
 
   // stylelint-disable plugin/selector-bem-pattern
-  &.mdc-ripple-upgraded {
+  &.mdc-ripple-upgraded--background-focused {
     .mdc-radio__background::before {
       content: none;
     }
@@ -164,7 +165,7 @@
   + .mdc-radio__background::before {
     transform: scale(2, 2);
     transition: mdc-radio-enter(opacity), mdc-radio-enter(transform);
-    opacity: .26;
+    opacity: map-get($mdc-ripple-dark-ink-opacities, focus);
   }
 }
 
