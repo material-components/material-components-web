@@ -36,7 +36,7 @@
       <div class="mdc-drawer__scrollable">
         <div class="mdc-list-group">
           <nav class="mdc-list">
-            <a class="mdc-list-item mdc-list-item--activated demo-drawer-list-item" href="#">
+            <a class="mdc-list-item mdc-list-item--activated demo-drawer-list-item" href="#" tabindex="0">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
               <span class="mdc-list-item__label mdc-drawer__list-item-label">Inbox</span>
             </a>
@@ -52,12 +52,10 @@
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
               <span class="mdc-list-item__label mdc-drawer__list-item-label">Drafts</span>
             </a>
-          </nav>
 
-          <hr class="mdc-list-divider">
-          <h6 class="mdc-list-group__subheader mdc-drawer__list-group-subheader">Labels</h6>
-          <nav class="mdc-list">
-            <a class="mdc-list-item demo-drawer-list-item" href="#">
+            <hr class="mdc-list-divider">
+            <h6 class="mdc-list-group__subheader mdc-drawer__list-group-subheader">Labels</h6>
+            <a class="mdc-list-item demo-drawer-list-item" href="#" tabindex="0">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
               <span class="mdc-list-item__label mdc-drawer__list-item-label">Family</span>
             </a>
@@ -69,11 +67,9 @@
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
               <span class="mdc-list-item__label mdc-drawer__list-item-label">Work</span>
             </a>
-          </nav>
 
-          <hr class="mdc-list-divider">
-          <nav class="mdc-list">
-            <a class="mdc-list-item demo-drawer-list-item" href="#">
+            <hr class="mdc-list-divider">
+            <a class="mdc-list-item demo-drawer-list-item" href="#" tabindex="0">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings</i>
               <span class="mdc-list-item__label mdc-drawer__list-item-label">Settings</span>
             </a>
@@ -207,6 +203,12 @@
           } else {
             drawer.open = true;
           }
+        });
+        var listList = document.querySelectorAll('.mdc-list');
+        listList.forEach(function(list) {
+          var list = mdc.list.MDCList.attachTo(list);
+          list.singleSelection = true;
+          list.vertical = true;
         });
       });
     </script>
