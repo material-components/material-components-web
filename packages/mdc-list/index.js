@@ -65,7 +65,7 @@ class MDCList extends MDCComponent {
 
   layout() {
     const direction = this.root_.getAttribute(strings.ARIA_ORIENTATION);
-    this.vertical = direction === strings.ARIA_ORIENTATION_VERTICAL;
+    this.vertical = direction !== strings.ARIA_ORIENTATION_HORIZONTAL;
 
     // List items need to have at least tabindex=-1 to be focusable.
     [].slice.call(this.root_.querySelectorAll('.mdc-list-item:not([tabindex])'))

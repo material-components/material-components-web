@@ -138,7 +138,7 @@ single list item to become selected or deselected.
 
 ```html
 <ul id="my-list" class="mdc-list" aria-orientation="vertical">
-  <li class="mdc-list-item">Single-line item</li>
+  <li class="mdc-list-item" tabindex="0">Single-line item</li>
   <li class="mdc-list-item">Single-line item</li>
   <li class="mdc-list-item">Single-line item</li>
 </ul>
@@ -158,7 +158,7 @@ the `mdc-list-item--selected` class and `aria-selected="true"` attribute before 
 ```html
 <ul id="my-list" class="mdc-list" aria-orientation="vertical">
   <li class="mdc-list-item">Single-line item</li>
-  <li class="mdc-list-item mdc-list-item--selected" aria-selected="true">Single-line item</li>
+  <li class="mdc-list-item mdc-list-item--selected" aria-selected="true" tabindex="0">Single-line item</li>
   <li class="mdc-list-item">Single-line item</li>
 </ul>
 ```
