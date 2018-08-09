@@ -80,8 +80,8 @@
             <div class="mdc-line-ripple"></div>
           </div>
           <p id="my-text-field-helper-text" class="mdc-text-field-helper-text"
-             aria-hidden="true" style="visibility: hidden"
-            >Helper Text (possibly validation message)
+             aria-hidden="true" style="visibility: hidden">
+            Helper Text
           </p>
         </section>
         <div>
@@ -131,8 +131,8 @@
           <div class="mdc-line-ripple"></div>
         </div>
         <p class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent mdc-text-field-helper-text--validation-msg"
-           id="pw-validation-msg"
-          >Must be at least 8 characters long
+           id="pw-validation-msg">
+          Must be at least 8 characters long
         </p>
       </section>
 
@@ -152,8 +152,8 @@
             <div class="mdc-notched-outline__idle"></div>
           </div>
           <p class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
-             id="name-validation-message"
-            >Helper Text (possibly validation message)
+             id="name-validation-message">
+            Helper Text
           </p>
         </div>
         <div>
@@ -197,8 +197,8 @@
             <div class="mdc-line-ripple"></div>
           </div>
           <p class="mdc-text-field-helper-text"
-            id="box-name-validation-message" style="visibility: hidden"
-            >Helper Text (possibly validation message)
+            id="box-name-validation-message" style="visibility: hidden">
+            Helper Text
           </p>
         </div>
         <div>
@@ -417,7 +417,7 @@
         var tf = new mdc.textField.MDCTextField(tfEl);
         var outlinedInputEl = tfEl.querySelector('input');
         var wrapper = document.getElementById('demo-tf-outlined-wrapper');
-        var plainHelperText = 'Helper Text (possibly validation message)';
+        var plainHelperText = 'Helper Text';
         var minLengthError = 'Must be at least 8 characters';
         var maxLengthError = 'Must not exceed 10 characters';
 
@@ -496,7 +496,7 @@
         document.getElementById('box-pattern').addEventListener('change', function(evt) {
           var checked = evt.target.checked;
           var requiredHelperText = 'Must be at least 8 characters';
-          var plainHelperText = 'Helper Text (possibly validation message)';
+          var plainHelperText = 'Helper Text';
           togglePattern(tf, checked);
           tf.helperTextContent = checked ? requiredHelperText : plainHelperText;
         });
