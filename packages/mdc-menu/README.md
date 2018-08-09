@@ -187,14 +187,12 @@ See [Importing the JS component](../../docs/importing-js.md) for more informatio
 
 Property | Value Type | Description
 --- | --- | ---
-`open` | Boolean | `get` proxies to the menu surface's `open` property. `set` proxies to the `show` and `hide`methods.
+`open` | Boolean | Proxies to the menu surface's `open` property.
 `items` | Array<Element> | Proxies to the list to query for all `.mdc-list-item` elements.
 `quickOpen` | Boolean | Proxies to the menu surface `quickOpen` property.
 
 Method Signature | Description
 --- | ---
-`show() => void` | Proxies to the menu surface's `open()` method.
-`hide() => void` | Proxies to the foundation's `close()` method.
 `setAnchorCorner(Corner) => void` | Proxies to the menu surface's `setAnchorCorner(Corner)` method.
 `setAnchorMargin(AnchorMargin) => void` | Proxies to the menu surface's `setAnchorMargin(AnchorMargin)` method.
 `setAbsolutePosition(x: number, y: number) => void` | Proxies to the menu surface's `setAbsolutePosition(x: number, y: number)` method.

@@ -347,6 +347,9 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     if (isRightAligned) {
       const rightOffset = avoidHorizontalOverlap ? anchorWidth - this.anchorMargin_.left : this.anchorMargin_.right;
 
+      // For hoisted or fixed elements, adjust the offset by the difference between viewport width and body width so
+      // when we calculate the right value (`adjustPositionForHoistedElement_`) based on the element position,
+      // the right property is correct.
       if (this.hoistedElement_ || this.isFixedPosition_) {
         return rightOffset - (this.measures_.viewport.width - this.measures_.bodyDimensions.width);
       }

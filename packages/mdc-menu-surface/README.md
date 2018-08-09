@@ -103,6 +103,8 @@ The menu surface can use fixed positioning when being displayed.
 </div>
 ```
 
+Or in JS:
+
 ```js
 // ...
 menuSurface.setFixedPosition(true);

@@ -121,18 +121,18 @@ test('setFixedPosition is true', () => {
   td.verify(mockFoundation.setFixedPosition(true));
 });
 
-test('setAbsolutePosition calls the foundation setAbsolutePosition function', () => {
-  const {component, mockFoundation} = setupTest();
-  component.setAbsolutePosition(10, 10);
-  td.verify(mockFoundation.setAbsolutePosition(10, 10));
-  td.verify(mockFoundation.setIsHoisted(true));
-});
-
 test('setFixedPosition is false', () => {
   const {root, component, mockFoundation} = setupTest();
   component.setFixedPosition(false);
   assert.isFalse(root.classList.contains(cssClasses.FIXED));
   td.verify(mockFoundation.setFixedPosition(false));
+});
+
+test('setAbsolutePosition calls the foundation setAbsolutePosition function', () => {
+  const {component, mockFoundation} = setupTest();
+  component.setAbsolutePosition(10, 10);
+  td.verify(mockFoundation.setAbsolutePosition(10, 10));
+  td.verify(mockFoundation.setIsHoisted(true));
 });
 
 test('setAnchorCorner', () => {
@@ -153,7 +153,7 @@ test('setQuickOpen', () => {
   td.verify(mockFoundation.setQuickOpen(false));
 });
 
-test('foundationAdapter#addClass adds a class to the root element', () => {
+test('adapter#addClass adds a class to the root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
   assert.isTrue(root.classList.contains('foo'));
@@ -235,7 +235,7 @@ test(`adapter#notifyOpen fires an ${strings.OPENED_EVENT} custom event`, () => {
   td.verify(handler(td.matchers.anything()));
 });
 
-test('adapter#restoreFocus restores the focus saved by adapter#saveFocus', () => {
+test('adapter#restoreFocus restore focus saved by adapter#saveFocus', () => {
   const {root, component} = setupTest(true);
   const button = bel`<button>Foo</button>`;
   document.body.appendChild(button);
@@ -249,7 +249,7 @@ test('adapter#restoreFocus restores the focus saved by adapter#saveFocus', () =>
   document.body.removeChild(root);
 });
 
-test('adapter#restoreFocus does not restores the focus if never called adapter#saveFocus', () => {
+test('adapter#restoreFocus does not restore focus if never called adapter#saveFocus', () => {
   const {root, component} = setupTest(true);
   const button = bel`<button>Foo</button>`;
   document.body.appendChild(button);
@@ -365,7 +365,7 @@ test('adapter#getAnchorDimensions returns undefined if there is no anchor elemen
   const {root, component} = setupTest(true);
   document.body.appendChild(root);
   component.initialSyncWithDOM();
-  assert.equal(component.getDefaultFoundation().adapter_.getAnchorDimensions(), undefined);
+  assert.isUndefined(component.getDefaultFoundation().adapter_.getAnchorDimensions());
   document.body.removeChild(root);
 });
 
