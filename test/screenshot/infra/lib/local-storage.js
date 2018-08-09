@@ -84,10 +84,13 @@ class LocalStorage {
 
   /**
    * @param {string} filePath
-   * @param {string|!Buffer} fileContent
+   * @param {string} fileContent
    * @return {!Promise<void>}
    */
   async writeTextFile(filePath, fileContent) {
+    if (!fileContent.endsWith('\n')) {
+      fileContent += '\n';
+    }
     try {
       mkdirp.sync(path.dirname(filePath));
       await fs.writeFile(filePath, fileContent, {encoding: 'utf8'});
@@ -152,10 +155,12 @@ class LocalStorage {
    * @return {!Array<string>}
    */
   globFiles(pattern, cwd = process.cwd()) {
-    if (pattern.endsWith('/')) {
-      pattern = pattern.replace(new RegExp('/+$'), '');
-    }
-    return glob.sync(pattern, {cwd, nodir: true});
+    return glob.sync(pattern, {
+      cwd,
+      nodir: true,
+      dot: true,
+      ignore: ['**/node_modules/**'],
+    });
   }
 
   /**
@@ -167,7 +172,12 @@ class LocalStorage {
     if (!pattern.endsWith('/')) {
       pattern += '/';
     }
-    return glob.sync(pattern, {cwd, nodir: false});
+    return glob.sync(pattern, {
+      cwd,
+      nodir: false,
+      dot: false,
+      ignore: ['**/node_modules/**'],
+    });
   }
 
   /**

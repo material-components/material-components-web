@@ -125,7 +125,7 @@ class IndexCommand {
     </main>
   </body>
 </html>
-      `;
+      `.trim();
 
       await localStorage.writeTextFile(path.join(parentDirPath, 'index.html'), html);
     }
