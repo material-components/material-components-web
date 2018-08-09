@@ -135,9 +135,11 @@ class MDCSlider extends MDCComponent {
         removeClass: (className) => this.root_.classList.remove(className),
         setThumbAttribute: (name, value) => this.thumb_.setAttribute(name, value),
         setValueLabelPath: (value) => this.valueLabel_.setAttribute('d', value),
-        setValueLabelText: (xValue, text) => {
-          this.valueLabelText_.setAttribute('style', xValue);
+        setValueLabelText: (text) => {
           this.valueLabelText_.textContent = text;
+        },
+        setValueLabelStyleProperty: (propertyName, value) => {
+          this.valueLabelText_.setAttribute(propertyName, value);
         },
         removeValueLabelTextStyle: () => {
           this.valueLabelText_.removeAttribute('style');

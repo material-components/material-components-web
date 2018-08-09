@@ -40,9 +40,9 @@ test('exports cssClasses', () => {
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSliderFoundation, [
     'hasClass', 'addClass', 'removeClass', 'setThumbAttribute', 'setValueLabelPath',
-    'setValueLabelText', 'removeValueLabelTextStyle', 'getDigitWidth', 'getCommaWidth',
-    'computeBoundingRect', 'eventTargetHasClass', 'registerEventHandler', 'deregisterEventHandler',
-    'registerThumbEventHandler', 'deregisterThumbEventHandler',
+    'setValueLabelText', 'setValueLabelStyleProperty', 'removeValueLabelTextStyle', 'getDigitWidth',
+    'getCommaWidth', 'computeBoundingRect', 'eventTargetHasClass', 'registerEventHandler',
+    'deregisterEventHandler', 'registerThumbEventHandler', 'deregisterThumbEventHandler',
     'registerBodyEventHandler', 'deregisterBodyEventHandler', 'registerWindowResizeHandler',
     'deregisterWindowResizeHandler', 'notifyInput', 'notifyChange', 'setThumbStyleProperty',
     'setTrackFillStyleProperty', 'setLastTickMarkStyleProperty', 'focusThumb', 'activateRipple',
@@ -81,6 +81,7 @@ test('#init registers all necessary event handlers for the component', () => {
   td.verify(mockAdapter.registerEventHandler('keydown', isA(Function)));
   td.verify(mockAdapter.registerEventHandler('keyup', isA(Function)));
   td.verify(mockAdapter.registerEventHandler('transitionend', isA(Function)));
+  td.verify(mockAdapter.registerThumbEventHandler('focus', isA(Function)));
   td.verify(mockAdapter.registerThumbEventHandler('blur', isA(Function)));
   td.verify(mockAdapter.registerWindowResizeHandler(isA(Function)));
 
@@ -144,6 +145,7 @@ test('#destroy deregisters all component event handlers registered during init()
   td.verify(mockAdapter.deregisterEventHandler('keydown', isA(Function)));
   td.verify(mockAdapter.deregisterEventHandler('keyup', isA(Function)));
   td.verify(mockAdapter.deregisterEventHandler('transitionend', isA(Function)));
+  td.verify(mockAdapter.deregisterThumbEventHandler('focus', isA(Function)));
   td.verify(mockAdapter.deregisterThumbEventHandler('blur', isA(Function)));
   td.verify(mockAdapter.deregisterWindowResizeHandler(isA(Function)));
 });
@@ -615,7 +617,7 @@ test('#handleTransitionEnd no-op when inTransit_ is true and event target is not
   raf.restore();
 });
 
-test('#handleTransitionEnd sets pressed_ to true when all parameters are true', () => {
+test('#handleTransitionEnd sets pressed_ to true when thumb growing transition ends on discrete slider', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
@@ -640,12 +642,12 @@ test('#handleTransitionEnd sets pressed_ to true when all parameters are true', 
   foundation.handleTransitionEnd(mockEvent);
   raf.flush();
 
-  td.verify(mockAdapter.addClass(cssClasses.PRESSED));
+  td.verify(mockAdapter.addClass(cssClasses.DISCRETE_MOTION));
 
   raf.restore();
 });
 
-test('#handleTransitionEnd no-op when isDiscrete_ is false', () => {
+test('#handleTransitionEnd does not set discreteMotion_ on continuous slider', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
@@ -663,19 +665,19 @@ test('#handleTransitionEnd no-op when isDiscrete_ is false', () => {
 
   const mockEvent = {
     target: {
-      classList: ['mdc-slider__value-label'],
+      classList: [cssClasses.VALUE_LABEL_TEXT],
     },
   };
-  td.when(mockAdapter.eventTargetHasClass(mockEvent.target, 'mdc-slider__value-label')).thenReturn(true);
+  td.when(mockAdapter.eventTargetHasClass(mockEvent.target, cssClasses.VALUE_LABEL_TEXT)).thenReturn(true);
   foundation.handleTransitionEnd(mockEvent);
   raf.flush();
 
-  td.verify(mockAdapter.addClass(cssClasses.PRESSED), {times: 0});
+  td.verify(mockAdapter.addClass(cssClasses.DISCRETE_MOTION), {times: 0});
 
   raf.restore();
 });
 
-test('#handleTransitionEnd no-op for pressed_ when active_ is false', () => {
+test('#handleTransitionEnd does not set discreteMotion_ when slider is not active', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
@@ -692,12 +694,13 @@ test('#handleTransitionEnd no-op for pressed_ when active_ is false', () => {
   foundation.handleTransitionEnd(mockEvent);
   raf.flush();
 
-  td.verify(mockAdapter.addClass(cssClasses.PRESSED), {times: 0});
+  td.verify(mockAdapter.addClass(cssClasses.DISCRETE_MOTION), {times: 0});
 
   raf.restore();
 });
 
-test('#handleTransitionEnd no-op for pressed_ when event target is not mdc-slider__value-label', () => {
+test('#handleTransitionEnd handleTransitionEnd does not set discreteMotion_ ' +
+  'when event target is not mdc-slider__value-label', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
@@ -722,7 +725,7 @@ test('#handleTransitionEnd no-op for pressed_ when event target is not mdc-slide
   foundation.handleTransitionEnd(mockEvent);
   raf.flush();
 
-  td.verify(mockAdapter.addClass(cssClasses.PRESSED), {times: 0});
+  td.verify(mockAdapter.addClass(cssClasses.DISCRETE_MOTION), {times: 0});
 
   raf.restore();
 });
@@ -766,12 +769,7 @@ test('#handleThumbBlur no-op when interactingWithSlider is true', () => {
   foundation.init();
   raf.flush();
 
-  // To set this.interactingWithSlider_ to true
-  const mockKeyboardEvent = {
-    preventDefault: () => {},
-    keyCode: 37,
-  };
-  foundation.handleKeydown(mockKeyboardEvent);
+  foundation.interactingWithSlider_ = true;
   raf.flush();
 
   foundation.handleThumbBlur();

@@ -273,13 +273,21 @@ test('adapter#setValueLabelPath sets the path on the value label element', () =>
   assert.equal(valueLabel.getAttribute('d'), 'M 0 1');
 });
 
-test('adapter#setValueLabelText sets the x, text content, anbd style on the value label text element', () => {
+test('adapter#setValueLabelText sets the text content for the value label text element', () => {
   const {root, component} = setupTest();
-  component.getDefaultFoundation().adapter_.setValueLabelText('transform: scale(1);', 'text');
+  component.getDefaultFoundation().adapter_.setValueLabelText('text');
 
   const valueLabelText = root.querySelector('.mdc-slider__value-label-text');
 
   assert.equal(valueLabelText.textContent, 'text');
+});
+
+test('adapter#setValueLabelStyleProperty sets the style on the value label text element', () => {
+  const {root, component} = setupTest();
+  component.getDefaultFoundation().adapter_.setValueLabelStyleProperty('style', 'transform: scale(1);');
+
+  const valueLabelText = root.querySelector('.mdc-slider__value-label-text');
+
   assert.equal(valueLabelText.getAttribute('style'), 'transform: scale(1);');
 });
 

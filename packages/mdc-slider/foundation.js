@@ -65,6 +65,7 @@ class MDCSliderFoundation extends MDCFoundation {
       setThumbAttribute: () => {},
       setValueLabelPath: () => {},
       setValueLabelText: () => {},
+      setValueLabelStyleProperty: () => {},
       removeValueLabelTextStyle: () => {},
       getDigitWidth: () => {},
       getCommaWidth: () => {},
@@ -103,7 +104,7 @@ class MDCSliderFoundation extends MDCFoundation {
     /** @private {boolean} */
     this.inTransit_ = false;
     /** @private {boolean} */
-    this.pressed_ = false;
+    this.discreteMotion_ = false;
     /** @private {boolean} */
     this.isDiscrete_ = false;
     /** @private {boolean} */
@@ -265,7 +266,7 @@ class MDCSliderFoundation extends MDCFoundation {
   handleThumbBlur() {
     if (!this.interactingWithSlider_) {
       this.setActive_(false);
-      this.setPressed_(false);
+      this.setDiscreteMotion_(false);
       if (this.isDiscrete_) {
         this.adapter_.removeValueLabelTextStyle();
       }
@@ -280,9 +281,10 @@ class MDCSliderFoundation extends MDCFoundation {
     if (this.inTransit_ && this.adapter_.eventTargetHasClass(evt.target, cssClasses.TRACK_FILL)) {
       this.setInTransit_(false);
     }
-    if (this.isDiscrete_ && this.adapter_.eventTargetHasClass(evt.target, 'mdc-slider__value-label-text')
+    // After value label grows, the discrete-motion class is added to adjust the snapping motion
+    if (this.isDiscrete_ && this.adapter_.eventTargetHasClass(evt.target, cssClasses.VALUE_LABEL_TEXT)
       && this.active_) {
-      this.setPressed_(true);
+      this.setDiscreteMotion_(true);
     }
   }
 
@@ -348,9 +350,6 @@ class MDCSliderFoundation extends MDCFoundation {
       return;
     }
 
-    if (this.isDiscrete_) {
-      this.interactingWithSlider_ = true;
-    }
     this.setActive_(true);
     if (!this.isDiscrete_) {
       this.setInTransit_(true);
@@ -502,10 +501,16 @@ class MDCSliderFoundation extends MDCFoundation {
     let extraHorizontalWidthLeft = extraHorizontalWidth * 3 / 4;
     let extraHorizontalWidthRight = extraHorizontalWidth / 4;
 
+    // Max width of one side of the top lobe neck arc
+    // Used for when there is extraHorizontalWidth meaning that the arc is at its max width and
+    // for finding the top neck corner theta since (topNeckArcWidth - topLobeHorizontal/2) affects the theta
+    const topNeckArcWidth = 15;
     // If the thumb is reaching the ends of the slider then edit the left and right to make sure
     // it does not bleed off the screen.
-    const distanceFromLeft = this.adapter_.isRTL() ? this.rect_.width - translatePx - 15 : translatePx - 15;
-    const distanceFromRight = this.adapter_.isRTL() ? translatePx - 15 : this.rect_.width - translatePx - 15;
+    const distanceFromLeft =
+      this.adapter_.isRTL() ? this.rect_.width - translatePx - topNeckArcWidth : translatePx - topNeckArcWidth;
+    const distanceFromRight =
+      this.adapter_.isRTL() ? translatePx - topNeckArcWidth : this.rect_.width - translatePx - topNeckArcWidth;
 
     if (distanceFromLeft < extraHorizontalWidthLeft) {
       extraHorizontalWidthRight = extraHorizontalWidth - distanceFromLeft;
@@ -531,20 +536,22 @@ class MDCSliderFoundation extends MDCFoundation {
     // X position for the left side of the stem
     const leftStemX = 15;
     // Angle of the top neck corner
-    const topNeckCornerTheta = Math.acos((15 - topLobeHorizontal/2)/(topLobeRadius+topNeckRadius));
+    const topNeckCornerTheta = Math.acos((topNeckArcWidth - topLobeHorizontal/2)/(topLobeRadius+topNeckRadius));
     // Y position of the top neck corner
     const topNeckCornerCenterY = Math.sqrt(Math.pow(topLobeRadius+topNeckRadius, 2) -
-      Math.pow(15 - topLobeHorizontal/2, 2));
+      Math.pow(topNeckArcWidth - topLobeHorizontal/2, 2));
     // Distance between the top lobe and the bottom lobe
     const centersDifference = 40;
     // Radius of the bottom lobe
     const bottomLobeRadius = 6;
     // Radius of the bottom neck
     const bottomNeckRadius = 4.5;
-    // Angle of the bottom neck
+    // Angle of the bottom neck (50 degrees)
     const bottomNeckTheta = 5 * Math.PI / 18;
     // Height of the bottom neck, used for the math below
     const bottomNeckHeight = Math.sin(bottomNeckTheta) * (bottomLobeRadius+bottomNeckRadius);
+    // Height of value label
+    const valueLabelHeight = topLobeRadius + centersDifference + bottomLobeRadius;
     // Offset values to adjust the value label to the svg of the thumb.
     const offsetY = -39;
     const offsetX = 1;
@@ -569,7 +576,7 @@ class MDCSliderFoundation extends MDCFoundation {
     };
     const pointE = {
       x: topLobeRadius + offsetX,
-      y: 62 + offsetY,
+      y: valueLabelHeight + offsetY,
     };
     const pointF = {
       x: leftStemX - bottomNeckRadius + (Math.cos(bottomNeckTheta) * bottomNeckRadius) - 1 + offsetX,
@@ -609,11 +616,12 @@ class MDCSliderFoundation extends MDCFoundation {
     if (extraHorizontalWidthLeft < 0 && extraHorizontalWidth > 0) {
       const topLobeHorizontalLeft = this.adapter_.isRTL() ? (this.rect_.width - translatePx) * 2 : translatePx * 2;
 
-      const leftTopNeckCornerTheta = Math.acos((15 - (topLobeHorizontalLeft)/2)/(topLobeRadius+topNeckRadius));
+      const leftTopNeckCornerTheta =
+        Math.acos((topNeckArcWidth - (topLobeHorizontalLeft)/2)/(topLobeRadius+topNeckRadius));
       const leftTopNeckCornerCenterY = Math.sqrt(Math.pow(topLobeRadius+topNeckRadius, 2) -
-        Math.pow(15 - (topLobeHorizontalLeft)/2, 2));
+        Math.pow(topNeckArcWidth - (topLobeHorizontalLeft)/2, 2));
 
-      pointI.x = 15 - topNeckRadius + (Math.cos(leftTopNeckCornerTheta) * topNeckRadius) + offsetX;
+      pointI.x = topNeckArcWidth - topNeckRadius + (Math.cos(leftTopNeckCornerTheta) * topNeckRadius) + offsetX;
       pointI.y =
         topLobeRadius + (leftTopNeckCornerCenterY - (Math.sin(leftTopNeckCornerTheta) * topNeckRadius)) + offsetY;
       pointH.y = topLobeRadius + leftTopNeckCornerCenterY + offsetY;
@@ -621,9 +629,10 @@ class MDCSliderFoundation extends MDCFoundation {
     if (extraHorizontalWidthRight < 0 && extraHorizontalWidth > 0) {
       const topLobeHorizontalRight = this.adapter_.isRTL() ? translatePx * 2 : (this.rect_.width - translatePx) * 2;
 
-      const leftTopNeckCornerTheta = Math.acos((15 - (topLobeHorizontalRight)/2)/(topLobeRadius+topNeckRadius));
+      const leftTopNeckCornerTheta =
+        Math.acos((topNeckArcWidth - (topLobeHorizontalRight)/2)/(topLobeRadius+topNeckRadius));
       const leftTopNeckCornerCenterY = Math.sqrt(Math.pow(topLobeRadius+topNeckRadius, 2) -
-        Math.pow(15 - (topLobeHorizontalRight)/2, 2));
+        Math.pow(topNeckArcWidth - (topLobeHorizontalRight)/2, 2));
 
       pointA.x = rightStemX + (topNeckRadius - (Math.cos(leftTopNeckCornerTheta) * topNeckRadius)) + offsetX;
       pointA.y =
@@ -665,10 +674,16 @@ class MDCSliderFoundation extends MDCFoundation {
     const localeStringWidth = this.calcLocaleStringWidth_();
     let extraTranslateValue = 0;
     let topLobeHorizontal = 0;
+    // Max width of one side of the top lobe neck arc
+    // Used for when there is extraHorizontalWidth meaning that the arc is at its max width and
+    // for finding the top neck corner theta since (topNeckArcWidth - topLobeHorizontal/2) affects the theta
+    const topNeckArcWidth = 15;
     const digitWidth = this.adapter_.getDigitWidth();
+    // The workspace of the svg element width
+    const svgWidth = 34;
 
     // Calculates default translateX value for the size of the text
-    let xValue = (34 - localeStringWidth);
+    let xValue = (svgWidth - localeStringWidth);
     if (this.value_.toString().length > 5) {
       xValue = (xValue * 0.75) + 4;
     } else {
@@ -682,23 +697,23 @@ class MDCSliderFoundation extends MDCFoundation {
     if (this.value_.toString().length > 2) {
       topLobeHorizontal = localeStringWidth - (2 * digitWidth);
     }
-    const extra = topLobeHorizontal - 30;
-    let extraLeft = extra * 3 / 4;
-    let extraRight = extra / 4;
+    const extraHorizontalWidth = topLobeHorizontal - 30;
+    let extraHorizontalWidthLeft = extraHorizontalWidth * 3 / 4;
+    let extraHorizontalWidthRight = extraHorizontalWidth / 4;
     if (this.adapter_.isRTL()) {
-      const temp = extraRight;
-      extraRight = extraLeft;
-      extraLeft = temp;
+      const temp = extraHorizontalWidthRight;
+      extraHorizontalWidthRight = extraHorizontalWidthLeft;
+      extraHorizontalWidthLeft = temp;
     }
-    if (translatePx - 15 < extraLeft && topLobeHorizontal > 30) {
-      extraTranslateValue = extraLeft - translatePx + 15;
+    if (translatePx - topNeckArcWidth < extraHorizontalWidthLeft && topLobeHorizontal > 30) {
+      extraTranslateValue = extraHorizontalWidthLeft - translatePx + topNeckArcWidth;
     }
-    if (this.rect_.width - translatePx - 15 < extraRight && topLobeHorizontal > 30) {
-      extraTranslateValue = -(extraRight - (this.rect_.width - translatePx - 15));
+    if (this.rect_.width - translatePx - topNeckArcWidth < extraHorizontalWidthRight && topLobeHorizontal > 30) {
+      extraTranslateValue = -(extraHorizontalWidthRight - (this.rect_.width - translatePx - topNeckArcWidth));
     }
     if (this.adapter_.isRTL()) {
       extraTranslateValue = -extraTranslateValue;
-      extraTranslateValue -= 34;
+      extraTranslateValue -= svgWidth;
     }
     return xValue + extraTranslateValue;
   }
@@ -715,8 +730,8 @@ class MDCSliderFoundation extends MDCFoundation {
         const path = this.calcPath_(translatePx);
         const xValue = this.calcValueLabelTextXValue_(translatePx);
         this.adapter_.setValueLabelPath(path);
-        this.adapter_.setValueLabelText(
-          `transform: translateX(${xValue}px) translateY(-39px)`, this.value_.toLocaleString());
+        this.adapter_.setValueLabelText(this.value_.toLocaleString());
+        this.adapter_.setValueLabelStyleProperty('style', `transform: translateX(${xValue}px) translateY(-39px)`);
       }
       if (this.adapter_.isRTL()) {
         this.adapter_.setThumbStyleProperty('transform', `translateX(-${translatePx}px) translateX(50%)`);
@@ -746,12 +761,12 @@ class MDCSliderFoundation extends MDCFoundation {
   }
 
   /**
-   * Toggles the pressed state of the slider
-   * @param {boolean} pressed
+   * Toggles the discreteMotion state of the slider to provide the discrete snapping motion
+   * @param {boolean} discreteMotion
    */
-  setPressed_(pressed) {
-    this.pressed_ = pressed;
-    this.toggleClass_(cssClasses.PRESSED, this.pressed_);
+  setDiscreteMotion_(discreteMotion) {
+    this.discreteMotion_ = discreteMotion;
+    this.toggleClass_(cssClasses.DISCRETE_MOTION, this.discreteMotion_);
   }
 
   /**

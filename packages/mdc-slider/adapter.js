@@ -59,10 +59,16 @@ class MDCSliderAdapter {
 
   /**
    * Sets the inner text of the value label text to the passed value
-   * @param {string} xValue
    * @param {string} text
    */
-  setValueLabelText(xValue, text) {}
+  setValueLabelText(text) {}
+
+  /**
+   * Sets a style property of the value label text element to the passed value
+   * @param {string} propertyName
+   * @param {string} value
+   */
+  setValueLabelStyleProperty(propertyName, value) {}
 
   /**
    * Removes the style attribute for the value label text Element

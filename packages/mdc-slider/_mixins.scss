@@ -49,6 +49,8 @@
 }
 
 @mixin mdc-slider-value-label-color($color) {
+  @include mdc-slider-thumb-color($color);
+
   .mdc-slider__value-label {
     @include mdc-theme-prop(fill, $color);
     @include mdc-theme-prop(stroke, $color);
