@@ -354,22 +354,6 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     raf.restore();
   });
 
-  test(`on body ${upEvt} removes the mdc-slider--active class from the component`, () => {
-    const {foundation, mockAdapter, raf, rootHandlers, bodyHandlers} = setupTest();
-
-    td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
-    foundation.init();
-    raf.flush();
-
-    rootHandlers[downEvt](pageXObj(50));
-    raf.flush();
-    bodyHandlers[upEvt]();
-
-    td.verify(mockAdapter.removeClass(cssClasses.ACTIVE));
-
-    raf.restore();
-  });
-
   test(`on body ${upEvt} removes the ${moveEvt} and all *up/end event handlers from the document body`, () => {
     const {foundation, mockAdapter, raf, rootHandlers, bodyHandlers} = setupTest();
     const {isA} = td.matchers;
@@ -402,23 +386,6 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     bodyHandlers[upEvt]();
 
     td.verify(mockAdapter.notifyChange());
-
-    raf.restore();
-  });
-
-  test(`on body ${upEvt} removes value label text style if discrete`, () => {
-    const {foundation, mockAdapter, raf, rootHandlers, bodyHandlers} = setupTest();
-
-    td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
-    td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
-    foundation.init();
-    raf.flush();
-
-    rootHandlers[downEvt](pageXObj(50));
-    raf.flush();
-    bodyHandlers[upEvt]();
-
-    td.verify(mockAdapter.removeValueLabelTextStyle());
 
     raf.restore();
   });

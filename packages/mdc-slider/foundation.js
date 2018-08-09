@@ -107,7 +107,7 @@ class MDCSliderFoundation extends MDCFoundation {
     /** @private {boolean} */
     this.isDiscrete_ = false;
     /** @private {boolean} */
-    this.keydownDiscrete_ = false;
+    this.interactingWithSlider_ = false;
     /** @private {number} */
     this.min_ = 0;
     /** @private {number} */
@@ -116,6 +116,8 @@ class MDCSliderFoundation extends MDCFoundation {
     this.value_ = 0;
     /** @private {number} */
     this.step_ = 0;
+    /** @private {function(): undefined} */
+    this.thumbFocusHandler_ = () => this.handleThumbFocus();
     /** @private {function(): undefined} */
     this.thumbBlurHandler_ = () => this.handleThumbBlur();
     /** @private {function(!Event): undefined} */
@@ -138,6 +140,7 @@ class MDCSliderFoundation extends MDCFoundation {
     this.adapter_.registerEventHandler('keydown', this.keydownHandler_);
     this.adapter_.registerEventHandler('keyup', this.interactionEndHandler_);
     this.adapter_.registerEventHandler('transitionend', this.transitionEndHandler_);
+    this.adapter_.registerThumbEventHandler('focus', this.thumbFocusHandler_);
     this.adapter_.registerThumbEventHandler('blur', this.thumbBlurHandler_);
     this.adapter_.registerWindowResizeHandler(this.windowResizeHandler_);
     this.layout();
@@ -154,6 +157,7 @@ class MDCSliderFoundation extends MDCFoundation {
     this.adapter_.deregisterEventHandler('keydown', this.keydownHandler_);
     this.adapter_.deregisterEventHandler('keyup', this.interactionEndHandler_);
     this.adapter_.deregisterEventHandler('transitionend', this.transitionEndHandler_);
+    this.adapter_.deregisterThumbEventHandler('focus', this.thumbFocusHandler_);
     this.adapter_.deregisterThumbEventHandler('blur', this.thumbBlurHandler_);
     this.adapter_.deregisterWindowResizeHandler(this.windowResizeHandler_);
   }
@@ -219,18 +223,6 @@ class MDCSliderFoundation extends MDCFoundation {
   }
 
   /**
-   * Called when the thumb blurs
-   */
-  handleThumbBlur() {
-    if (this.isDiscrete_ && this.keydownDiscrete_) {
-      this.keydownDiscrete_ = false;
-      this.setActive_(false);
-      this.setPressed_(false);
-      this.adapter_.removeValueLabelTextStyle();
-    }
-  }
-
-  /**
    * Calculates the number of tick marks for discrete slider
    * @return {number}
    */
@@ -260,6 +252,27 @@ class MDCSliderFoundation extends MDCFoundation {
   }
 
   /**
+   * Called when the thumb is focused
+   */
+  handleThumbFocus() {
+    this.setActive_(true);
+    this.updateUIForCurrentValue_();
+  }
+
+  /**
+   * Called when the thumb blurs
+   */
+  handleThumbBlur() {
+    if (!this.interactingWithSlider_) {
+      this.setActive_(false);
+      this.setPressed_(false);
+      if (this.isDiscrete_) {
+        this.adapter_.removeValueLabelTextStyle();
+      }
+    }
+  }
+
+  /**
    * Called when the inTransit transition ends
    * @param {!Event} evt
    */
@@ -278,7 +291,7 @@ class MDCSliderFoundation extends MDCFoundation {
    * @param {!Event} evt
    */
   handleInteractionStart(evt) {
-    this.keydownDiscrete_ = false;
+    this.interactingWithSlider_ = true;
     this.setActive_(true);
     this.adapter_.activateRipple();
 
@@ -320,15 +333,9 @@ class MDCSliderFoundation extends MDCFoundation {
    */
   handleInteractionEnd() {
     this.adapter_.notifyChange();
-    if (!this.keydownDiscrete_) {
-      this.setActive_(false);
-      this.setPressed_(false);
-      this.adapter_.deactivateRipple();
-      this.adapter_.focusThumb();
-      if (this.isDiscrete_) {
-        this.adapter_.removeValueLabelTextStyle();
-      }
-    }
+    this.adapter_.deactivateRipple();
+    this.adapter_.focusThumb();
+    this.interactingWithSlider_ = false;
   }
 
   /**
@@ -342,7 +349,7 @@ class MDCSliderFoundation extends MDCFoundation {
     }
 
     if (this.isDiscrete_) {
-      this.keydownDiscrete_ = true;
+      this.interactingWithSlider_ = true;
     }
     this.setActive_(true);
     if (!this.isDiscrete_) {

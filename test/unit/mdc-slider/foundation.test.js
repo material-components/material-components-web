@@ -727,20 +727,27 @@ test('#handleTransitionEnd no-op for pressed_ when event target is not mdc-slide
   raf.restore();
 });
 
-test('#handleThumbBlur resets thumb when discrete and keydown', () => {
+test('#handleThumbFocus sets the slider to active', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const raf = createMockRaf();
+  td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
+  foundation.init();
+  raf.flush();
+
+  foundation.handleThumbFocus();
+  raf.flush();
+
+  td.verify(mockAdapter.addClass(cssClasses.ACTIVE));
+
+  raf.restore();
+});
+
+test('#handleThumbBlur resets thumb', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
   td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
   foundation.init();
-  raf.flush();
-
-  // To set this.keydownDiscrete to true
-  const mockKeyboardEvent = {
-    preventDefault: () => {},
-    keyCode: 37,
-  };
-  foundation.handleKeydown(mockKeyboardEvent);
   raf.flush();
 
   foundation.handleThumbBlur();
@@ -751,7 +758,7 @@ test('#handleThumbBlur resets thumb when discrete and keydown', () => {
   raf.restore();
 });
 
-test('#handleThumbBlur no-op when slider is not discrete', () => {
+test('#handleThumbBlur no-op when interactingWithSlider is true', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
@@ -759,28 +766,12 @@ test('#handleThumbBlur no-op when slider is not discrete', () => {
   foundation.init();
   raf.flush();
 
-  // To set this.keydownDiscrete to true
+  // To set this.interactingWithSlider_ to true
   const mockKeyboardEvent = {
     preventDefault: () => {},
     keyCode: 37,
   };
   foundation.handleKeydown(mockKeyboardEvent);
-  raf.flush();
-
-  foundation.handleThumbBlur();
-  raf.flush();
-
-  td.verify(mockAdapter.removeValueLabelTextStyle(), {times: 0});
-
-  raf.restore();
-});
-
-test('#handleThumbBlur no-op when no keydown event', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
-  td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
-  td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
-  foundation.init();
   raf.flush();
 
   foundation.handleThumbBlur();
