@@ -1,5 +1,5 @@
 //
-// Copyright 2017 Google Inc. All Rights Reserved.
+// Copyright 2018 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -34,19 +34,9 @@ $mdc-drawer-inactive-ink-opacity: 1;
 
 // Widths
 $mdc-drawer-width: 256px;
-$mdc-drawer-rail-width: 58px;
 $mdc-drawer-list-item-spacing: 4px;
 $mdc-drawer-surface-padding: 16px;
 
 // Animations
 $mdc-drawer-animation-enter: 250ms;
 $mdc-drawer-animation-exit: 200ms;
-
-// Scrim
-$mdc-drawer-modal-scrim-color: #000 !default;
-$mdc-drawer-modal-scrim-opacity: .6 !default;
-
-$mdc-drawer-modal-transition-close-time: 200ms;
-$mdc-drawer-modal-transition-open-time: 250ms;
-$mdc-drawer-modal-transition-close: mdc-animation-standard(transform, $mdc-drawer-modal-transition-close-time);
-$mdc-drawer-modal-transition-open: mdc-animation-standard(transform, $mdc-drawer-modal-transition-open-time);
