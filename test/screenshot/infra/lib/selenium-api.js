@@ -45,7 +45,7 @@ const {SELENIUM_FONT_LOAD_WAIT_MS} = Constants;
 /**
  * @typedef {{
  *   name: string,
- *   color: !CliColor,
+ *   color: !AnsiColor,
  * }} CliStatus
  */
 
@@ -772,7 +772,7 @@ class SeleniumApi {
     if (process.env.TRAVIS === 'true') {
       this.gitHubApi_.setPullRequestStatusManual({
         state: GitHubApi.PullRequestState.PENDING,
-        description: `${strDone} of ${strTotal} (${strPercent}%) - ${strChanged} diffs`,
+        description: `${strDone} of ${strTotal} (${strPercent}%) - ${strChanged} diff${numChanged === 1 ? '' : 's'}`,
       });
       return;
     }
