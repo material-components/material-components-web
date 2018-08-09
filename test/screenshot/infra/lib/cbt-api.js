@@ -30,6 +30,7 @@ const Cli = require('./cli');
 const CliColor = require('./logger').colors;
 const DiffBaseParser = require('./diff-base-parser');
 const Duration = require('./duration');
+const Logger = require('./logger');
 const getStackTrace = require('./stacktrace')('CbtApi');
 
 const MDC_CBT_USERNAME = process.env.MDC_CBT_USERNAME;
@@ -54,6 +55,12 @@ class CbtApi {
      * @private
      */
     this.diffBaseParser_ = new DiffBaseParser();
+
+    /**
+     * @type {!Logger}
+     * @private
+     */
+    this.logger_ = new Logger();
 
     this.validateEnvVars_();
   }
@@ -126,12 +133,17 @@ https://crossbrowsertesting.com/account
       return allBrowsersPromise;
     }
 
-    console.log('Fetching browsers from CBT...');
+    this.logger_.debug('Fetching browsers from CBT...');
 
     const stackTrace = getStackTrace('fetchAvailableDevices');
     allBrowsersPromise = this.sendRequest_(stackTrace, 'GET', '/selenium/browsers');
 
-    return allBrowsersPromise;
+    /** @type {!Array<!cbt.proto.CbtDevice>} */
+    const allBrowsers = await allBrowsersPromise;
+
+    this.logger_.debug(`Fetched ${allBrowsers.length} browsers from CBT!`);
+
+    return allBrowsers;
   }
 
   /**
@@ -433,7 +445,7 @@ https://crossbrowsertesting.com/account
     if (this.cli_.isOffline()) {
       console.warn(
         `${CliColor.magenta('WARNING')}:`,
-        new Error('CbtApi#sendRequest_() should not be called in --offline mode')
+        new Error('CbtApi.sendRequest_() should not be called in --offline mode')
       );
       return [];
     }

@@ -18,7 +18,7 @@
 import MDCFoundation from '@material/base/foundation';
 import MDCChipSetAdapter from './adapter';
 // eslint-disable-next-line no-unused-vars
-import {MDCChipFoundation, MDCChipInteractionEventType} from '../chip/foundation';
+import {MDCChipInteractionEventType, MDCChipRemovalEventType} from '../chip/foundation';
 import {strings, cssClasses} from './constants';
 
 /**
@@ -45,6 +45,7 @@ class MDCChipSetFoundation extends MDCFoundation {
     return /** @type {!MDCChipSetAdapter} */ ({
       hasClass: () => {},
       removeChip: () => {},
+      setSelected: () => {},
     });
   }
 
@@ -55,69 +56,80 @@ class MDCChipSetFoundation extends MDCFoundation {
     super(Object.assign(MDCChipSetFoundation.defaultAdapter, adapter));
 
     /**
-     * The selected chips in the set. Only used for choice chip set or filter chip set.
-     * @private {!Array<!MDCChipFoundation>}
+     * The ids of the selected chips in the set. Only used for choice chip set or filter chip set.
+     * @private {!Array<string>}
      */
-    this.selectedChips_ = [];
+    this.selectedChipIds_ = [];
   }
 
   /**
-   * Selects the given chip. Deselects all other chips if the chip set is of the choice variant.
-   * @param {!MDCChipFoundation} chipFoundation
+   * Returns an array of the IDs of all selected chips.
+   * @return {!Array<string>}
    */
-  select(chipFoundation) {
-    if (this.adapter_.hasClass(cssClasses.CHOICE)) {
-      this.deselectAll_();
+  getSelectedChipIds() {
+    return this.selectedChipIds_;
+  }
+
+  /**
+   * Toggles selection of the chip with the given id.
+   * @param {string} chipId
+   */
+  toggleSelect(chipId) {
+    if (this.selectedChipIds_.indexOf(chipId) >= 0) {
+      this.deselect(chipId);
+    } else {
+      this.select(chipId);
     }
-    chipFoundation.setSelected(true);
-    this.selectedChips_.push(chipFoundation);
   }
 
   /**
-   * Deselects the given chip.
-   * @param {!MDCChipFoundation} chipFoundation
+   * Selects the chip with the given id. Deselects all other chips if the chip set is of the choice variant.
+   * @param {string} chipId
    */
-  deselect(chipFoundation) {
-    const index = this.selectedChips_.indexOf(chipFoundation);
+  select(chipId) {
+    if (this.selectedChipIds_.indexOf(chipId) >= 0) {
+      return;
+    }
+
+    if (this.adapter_.hasClass(cssClasses.CHOICE) && this.selectedChipIds_.length > 0) {
+      this.adapter_.setSelected(this.selectedChipIds_[0], false);
+      this.selectedChipIds_.length = 0;
+    }
+    this.adapter_.setSelected(chipId, true);
+    this.selectedChipIds_.push(chipId);
+  }
+
+  /**
+   * Deselects the chip with the given id.
+   * @param {string} chipId
+   */
+  deselect(chipId) {
+    const index = this.selectedChipIds_.indexOf(chipId);
     if (index >= 0) {
-      this.selectedChips_.splice(index, 1);
+      this.selectedChipIds_.splice(index, 1);
+      this.adapter_.setSelected(chipId, false);
     }
-    chipFoundation.setSelected(false);
-  }
-
-  /** Deselects all selected chips. */
-  deselectAll_() {
-    this.selectedChips_.forEach((chipFoundation) => {
-      chipFoundation.setSelected(false);
-    });
-    this.selectedChips_.length = 0;
   }
 
   /**
    * Handles a chip interaction event
    * @param {!MDCChipInteractionEventType} evt
-   * @private
    */
   handleChipInteraction(evt) {
-    const chipFoundation = evt.detail.chip.foundation;
+    const {chipId} = evt.detail;
     if (this.adapter_.hasClass(cssClasses.CHOICE) || this.adapter_.hasClass(cssClasses.FILTER)) {
-      if (chipFoundation.isSelected()) {
-        this.deselect(chipFoundation);
-      } else {
-        this.select(chipFoundation);
-      }
+      this.toggleSelect(chipId);
     }
   }
 
   /**
    * Handles the event when a chip is removed.
-   * @param {!MDCChipInteractionEventType} evt
-   * @private
+   * @param {!MDCChipRemovalEventType} evt
    */
   handleChipRemoval(evt) {
-    const {chip} = evt.detail;
-    this.deselect(chip.foundation);
-    this.adapter_.removeChip(chip);
+    const {chipId} = evt.detail;
+    this.deselect(chipId);
+    this.adapter_.removeChip(chipId);
   }
 }
 

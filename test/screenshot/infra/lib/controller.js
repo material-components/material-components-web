@@ -59,7 +59,7 @@ class Controller {
      * @type {!Logger}
      * @private
      */
-    this.logger_ = new Logger(__filename);
+    this.logger_ = new Logger();
 
     /**
      * @type {!ReportBuilder}
@@ -111,7 +111,7 @@ class Controller {
    * @param {!mdc.proto.ReportData} reportData
    */
   async uploadAllAssets(reportData) {
-    this.logger_.foldStart('screenshot.upload_assets', 'Controller#uploadAllAssets()');
+    this.logger_.foldStart('screenshot.upload_assets', 'Controller.uploadAllAssets()');
     await this.cloudStorage_.uploadAllAssets(reportData);
     this.logger_.foldEnd('screenshot.upload_assets');
   }
@@ -120,7 +120,7 @@ class Controller {
    * @param {!mdc.proto.ReportData} reportData
    */
   async captureAllPages(reportData) {
-    this.logger_.foldStart('screenshot.capture_images', 'Controller#captureAllPages()');
+    this.logger_.foldStart('screenshot.capture_images', 'Controller.captureAllPages()');
 
     let stackTrace;
 
@@ -149,7 +149,7 @@ class Controller {
    * @param {!mdc.proto.ReportData} reportData
    */
   async uploadAllImages(reportData) {
-    this.logger_.foldStart('screenshot.upload_images', 'Controller#uploadAllImages()');
+    this.logger_.foldStart('screenshot.upload_images', 'Controller.uploadAllImages()');
     await this.cloudStorage_.uploadAllScreenshots(reportData);
     await this.cloudStorage_.uploadAllDiffs(reportData);
     this.logger_.foldEnd('screenshot.upload_images');
@@ -159,7 +159,7 @@ class Controller {
    * @param {!mdc.proto.ReportData} reportData
    */
   async generateReportPage(reportData) {
-    this.logger_.foldStart('screenshot.generate_report', 'Controller#generateReportPage()');
+    this.logger_.foldStart('screenshot.generate_report', 'Controller.generateReportPage()');
     await this.reportWriter_.generateReportPage(reportData);
     await this.cloudStorage_.uploadDiffReport(reportData);
     this.logger_.foldEnd('screenshot.generate_report');

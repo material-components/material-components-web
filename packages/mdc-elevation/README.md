@@ -63,9 +63,9 @@ Function | Description
 
 Variable | Description
 --- | ---
-`mdc-elevation-property` | Default property for elevation transitions
-`mdc-elevation-transition-duration` | Default duration value for elevation transitions
-`mdc-elevation-transition-timing-function` | Default easing value for elevation transitions
+`$mdc-elevation-property` | Default property for elevation transitions
+`$mdc-elevation-transition-duration` | Default duration value for elevation transitions
+`$mdc-elevation-transition-timing-function` | Default easing value for elevation transitions
 
 If you need more configurability over your transitions, use the `mdc-elevation-transition-value` function in conjunction with the exported sass variables.
 
