@@ -18,12 +18,11 @@
 /** @enum {string} */
 const cssClasses = {
   ROOT: 'mdc-icon-button',
-  ICON_BUTTON_ON_CLASS: 'mdc-icon-button--on',
+  ICON_BUTTON_ON: 'mdc-icon-button--on',
 };
 
 /** @enum {string} */
 const strings = {
-  DATA_TOGGLE_ON_ATTR: 'data-toggle-on',
   ARIA_PRESSED: 'aria-pressed',
   ARIA_LABEL: 'aria-label',
   CHANGE_EVENT: 'MDCIconButtonToggle:change',

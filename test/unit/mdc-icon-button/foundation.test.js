@@ -43,14 +43,14 @@ const setupTest = () => setupFoundationTest(MDCIconButtonToggleFoundation);
 
 test('#constructor sets on to false', () => {
   const {mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(cssClasses.ICON_BUTTON_ON_CLASS)).thenReturn(false);
+  td.when(mockAdapter.hasClass(cssClasses.ICON_BUTTON_ON)).thenReturn(false);
   const foundation = new MDCIconButtonToggleFoundation(mockAdapter);
   assert.isFalse(foundation.isOn());
 });
 
-test(`#constructor sets on to true if the ${cssClasses.ICON_BUTTON_ON_CLASS} is present`, () => {
+test(`#constructor sets on to true if the ${cssClasses.ICON_BUTTON_ON} is present`, () => {
   const {mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(cssClasses.ICON_BUTTON_ON_CLASS)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.ICON_BUTTON_ON)).thenReturn(true);
   const foundation = new MDCIconButtonToggleFoundation(mockAdapter);
   assert.isTrue(foundation.isOn());
 });
@@ -65,7 +65,7 @@ test('#handleClick calls #toggle', () => {
 
 test('#handleClick calls notifyChange', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(cssClasses.ICON_BUTTON_ON_CLASS)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.ICON_BUTTON_ON)).thenReturn(true);
   foundation.init();
   foundation.handleClick();
   td.verify(mockAdapter.notifyChange({isOn: true}), {times: 1});
@@ -74,12 +74,12 @@ test('#handleClick calls notifyChange', () => {
 test('#toggle flips on', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
-  td.when(mockAdapter.hasClass(cssClasses.ICON_BUTTON_ON_CLASS)).thenReturn(true, false);
+  td.when(mockAdapter.hasClass(cssClasses.ICON_BUTTON_ON)).thenReturn(true, false);
 
   foundation.toggle();
-  td.verify(mockAdapter.removeClass(cssClasses.ICON_BUTTON_ON_CLASS), {times: 1});
+  td.verify(mockAdapter.removeClass(cssClasses.ICON_BUTTON_ON), {times: 1});
   foundation.toggle();
-  td.verify(mockAdapter.addClass(cssClasses.ICON_BUTTON_ON_CLASS), {times: 1});
+  td.verify(mockAdapter.addClass(cssClasses.ICON_BUTTON_ON), {times: 1});
 });
 
 test('#toggle accepts boolean argument denoting toggle state', () => {
@@ -87,9 +87,9 @@ test('#toggle accepts boolean argument denoting toggle state', () => {
   foundation.init();
 
   foundation.toggle(false);
-  td.verify(mockAdapter.removeClass(cssClasses.ICON_BUTTON_ON_CLASS), {times: 1});
+  td.verify(mockAdapter.removeClass(cssClasses.ICON_BUTTON_ON), {times: 1});
   foundation.toggle(true);
-  td.verify(mockAdapter.addClass(cssClasses.ICON_BUTTON_ON_CLASS), {times: 1});
+  td.verify(mockAdapter.addClass(cssClasses.ICON_BUTTON_ON), {times: 1});
 });
 
 test('#toggle sets "aria-pressed" to true when toggled on', () => {
