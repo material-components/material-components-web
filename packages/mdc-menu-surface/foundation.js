@@ -347,8 +347,6 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     if (isRightAligned) {
       const rightOffset = avoidHorizontalOverlap ? anchorWidth - this.anchorMargin_.left : this.anchorMargin_.right;
 
-      // Hoisted elements positioning doesn't account for the scrollbar, so the right property needs to be reduced by
-      // the difference between the window and body width.
       if (this.hoistedElement_ || this.isFixedPosition_) {
         return rightOffset - (this.measures_.viewport.width - this.measures_.bodyDimensions.width);
       }
