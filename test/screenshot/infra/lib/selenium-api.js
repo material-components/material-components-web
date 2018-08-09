@@ -770,13 +770,9 @@ class SeleniumApi {
     const strPercent = numPercent.toFixed(1);
 
     if (process.env.TRAVIS === 'true') {
-      const progress = `${strDone} of ${strTotal} (${strPercent}%)`;
-      const description = numChanged > 0
-        ? `${progress} - ${strChanged} diff${numChanged === 1 ? '' : 's'}`
-        : `${progress} - no diffs`;
       this.gitHubApi_.setPullRequestStatusManual({
         state: GitHubApi.PullRequestState.PENDING,
-        description,
+        description: `${strDone} of ${strTotal} (${strPercent}%) - ${strChanged} diff${numChanged === 1 ? '' : 's'}`,
       });
       return;
     }
