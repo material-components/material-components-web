@@ -42,13 +42,13 @@ For example, say you want to use an [icon button toogle](../mdc-icon-button). Si
 DOM, and attach the `data-mdc-auto-init="MDCIconButtonToggle"` attribute.
 
 ```html
-<button class="mdc-icon-button material-icons" 
+<button class="mdc-icon-button" 
    aria-label="Add to favorites"
-   data-toggle-on-content="favorite"
-   data-toggle-on-label="Remove from favorites"
-   data-toggle-off-content="favorite_border"
-   data-toggle-off-label="Add to favorites"
-   data-mdc-auto-init="MDCIconButtonToggle">favorite_border</i>
+   aria-pressed="false"
+   data-mdc-auto-init="MDCIconButtonToggle">
+  <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">favorite</i>
+  <i class="material-icons mdc-icon-button__icon">favorite_border</i>
+</button>
 ```
 
 Then at the bottom of your html, insert this one-line script tag:

@@ -16,6 +16,7 @@
 
 @import "../../../../packages/mdc-icon-button/mixins";
 @import "../../../../packages/mdc-theme/color-palette";
+@import "../../../../packages/mdc-theme/mdc-theme";
 
 $custom-icon-button-icon-ink-color: $material-color-red-500;
 $custom-icon-button-size: 36px;
