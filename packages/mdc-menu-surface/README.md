@@ -110,7 +110,8 @@ menuSurface.setFixedPosition(true);
 
 #### Absolute Position
 
-The menu surface can use absolutely positioned when being displayed.
+The menu surface can use absolute positioning when being displayed. This requires that the element containing the 
+menu(`body` if using `hoistMenyToBody()`) has the `position: relative` style. 
 
 ```html
 <div class="mdc-menu-surface">
