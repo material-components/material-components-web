@@ -461,8 +461,8 @@ test('adapter#updateTickMarkClasses sets from the first tick mark to the specifi
   component.value = 50;
   component.layout();
 
-  assert.isTrue(component.tickMarkSet_.children[0].classList.contains('mdc-slider__tick-mark--active'));
-  assert.isTrue(component.tickMarkSet_.children[24].classList.contains('mdc-slider__tick-mark--active'));
+  assert.isTrue(component.tickMarkSet_.children[0].classList.contains('mdc-slider__tick-mark--filled'));
+  assert.isTrue(component.tickMarkSet_.children[24].classList.contains('mdc-slider__tick-mark--filled'));
 });
 
 test('adapter#updateTickMarkClasses sets from the specified number to the last tick mark inactive', () => {
@@ -472,6 +472,6 @@ test('adapter#updateTickMarkClasses sets from the specified number to the last t
   component.value = 50;
   component.layout();
 
-  assert.isFalse(component.tickMarkSet_.children[25].classList.contains('mdc-slider__tick-mark--active'));
-  assert.isFalse(component.tickMarkSet_.children[49].classList.contains('mdc-slider__tick-mark--active'));
+  assert.isFalse(component.tickMarkSet_.children[25].classList.contains('mdc-slider__tick-mark--filled'));
+  assert.isFalse(component.tickMarkSet_.children[49].classList.contains('mdc-slider__tick-mark--filled'));
 });

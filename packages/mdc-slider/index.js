@@ -153,6 +153,10 @@ class MDCSlider extends MDCComponent {
         setLastTickMarkStyleProperty: (propertyName, value) => {
           this.lastTickMark_.style.setProperty(propertyName, value);
         },
+        tickMarkHasClass: (tickMark, className) => tickMark.classList.contains(className),
+        tickMarkAddClass: (tickMark, className) => tickMark.classList.add(className),
+        tickMarkRemoveClass: (tickMark, className) => tickMark.classList.remove(className),
+        getTickMarks: () => this.tickMarkSet_.children,
         focusThumb: () => {
           this.thumb_.focus();
         },
@@ -163,20 +167,6 @@ class MDCSlider extends MDCComponent {
           this.ripple_.deactivate();
         },
         isRTL: () => getComputedStyle(this.root_).direction === 'rtl',
-        updateTickMarkClasses: (currentTickMark) => {
-          if (this.tickMarkSet_.children) {
-            for (let i = 0; i < currentTickMark; i++) {
-              if (!this.tickMarkSet_.children[i].classList.contains(cssClasses.TICK_MARK_ACTIVE)) {
-                this.tickMarkSet_.children[i].classList.add(cssClasses.TICK_MARK_ACTIVE);
-              }
-            }
-            for (let i = currentTickMark; i < this.tickMarkSet_.children.length; i++) {
-              if (this.tickMarkSet_.children[i].classList.contains(cssClasses.TICK_MARK_ACTIVE)) {
-                this.tickMarkSet_.children[i].classList.remove(cssClasses.TICK_MARK_ACTIVE);
-              }
-            }
-          }
-        },
       })
     );
   }

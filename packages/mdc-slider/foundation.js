@@ -76,11 +76,14 @@ class MDCSliderFoundation extends MDCFoundation {
       setThumbStyleProperty: () => {},
       setTrackFillStyleProperty: () => {},
       setLastTickMarkStyleProperty: () => {},
+      tickMarkHasClass: () => {},
+      tickMarkAddClass: () => {},
+      tickMarkRemoveClass: () => {},
+      getTickMarks: () => {},
       focusThumb: () => {},
       activateRipple: () => {},
       deactivateRipple: () => {},
       isRTL: () => false,
-      updateTickMarkClasses: () => {},
     });
   }
 
@@ -224,6 +227,26 @@ class MDCSliderFoundation extends MDCFoundation {
   adjustLastTickMark(numMarks) {
     const lastStepRatio = (this.max_ - numMarks * this.step_) / this.step_ + 1;
     this.adapter_.setLastTickMarkStyleProperty('flex', String(lastStepRatio));
+  }
+
+  /**
+   * Update the classes on the tick marks to distinguish filled
+   * @param {number} currentTickMark
+   */
+  updateTickMarkClasses(currentTickMark) {
+    const tickMarks = this.adapter_.getTickMarks();
+    if (tickMarks) {
+      for (let i = 0; i < currentTickMark; i++) {
+        if (!this.adapter_.tickMarkHasClass(tickMarks[i], cssClasses.TICK_MARK_FILLED)) {
+          this.adapter_.tickMarkAddClass(tickMarks[i], cssClasses.TICK_MARK_FILLED);
+        }
+      }
+      for (let i = currentTickMark; i < tickMarks.length; i++) {
+        if (this.adapter_.tickMarkHasClass(tickMarks[i], cssClasses.TICK_MARK_FILLED)) {
+          this.adapter_.tickMarkRemoveClass(tickMarks[i], cssClasses.TICK_MARK_FILLED);
+        }
+      }
+    }
   }
 
   /**
@@ -424,7 +447,7 @@ class MDCSliderFoundation extends MDCFoundation {
     const translatePx = pctComplete * this.rect_.width;
     if (this.isDiscrete_) {
       const numSteps = Math.round(this.value_ / this.step_);
-      this.adapter_.updateTickMarkClasses(numSteps);
+      this.updateTickMarkClasses(numSteps);
     }
     requestAnimationFrame(() => {
       if (this.adapter_.isRTL()) {
