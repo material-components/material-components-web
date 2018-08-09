@@ -41,17 +41,15 @@ test('defaultAdapter returns a complete adapter implementation', () => {
 
 const setupTest = () => setupFoundationTest(MDCIconButtonToggleFoundation);
 
-test('#constructor sets on to false', () => {
-  const {mockAdapter} = setupTest();
+test(`isOn is false if hasClass{${cssClasses.ICON_BUTTON_ON}) returns false`, () => {
+  const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.hasClass(cssClasses.ICON_BUTTON_ON)).thenReturn(false);
-  const foundation = new MDCIconButtonToggleFoundation(mockAdapter);
   assert.isFalse(foundation.isOn());
 });
 
-test(`#constructor sets on to true if the ${cssClasses.ICON_BUTTON_ON} is present`, () => {
-  const {mockAdapter} = setupTest();
+test(`isOn is true if hasClass{${cssClasses.ICON_BUTTON_ON}) returns true`, () => {
+  const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.hasClass(cssClasses.ICON_BUTTON_ON)).thenReturn(true);
-  const foundation = new MDCIconButtonToggleFoundation(mockAdapter);
   assert.isTrue(foundation.isOn());
 });
 
