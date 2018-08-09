@@ -427,7 +427,6 @@
     outline: none;
 
     .mdc-text-field__input {
-      width: 100%;
       height: 100%;
       padding: 0;
       resize: none;
@@ -476,8 +475,8 @@
   $label-offset-x: $padding-inset;
 
   display: flex;
-  width: fit-content;
-  height: initial;
+  width: auto;
+  height: auto;
   transition: none;
   border: 1px solid;
   overflow: hidden;
