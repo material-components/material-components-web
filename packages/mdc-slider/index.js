@@ -153,9 +153,9 @@ class MDCSlider extends MDCComponent {
         setLastTickMarkStyleProperty: (propertyName, value) => {
           this.lastTickMark_.style.setProperty(propertyName, value);
         },
-        tickMarkHasClass: (tickMark, className) => tickMark.classList.contains(className),
-        tickMarkAddClass: (tickMark, className) => tickMark.classList.add(className),
-        tickMarkRemoveClass: (tickMark, className) => tickMark.classList.remove(className),
+        hasTickMarkClass: (tickMark, className) => tickMark.classList.contains(className),
+        addTickMarkClass: (tickMark, className) => tickMark.classList.add(className),
+        removeTickMarkClass: (tickMark, className) => tickMark.classList.remove(className),
         getTickMarks: () => this.tickMarkSet_.children,
         focusThumb: () => {
           this.thumb_.focus();

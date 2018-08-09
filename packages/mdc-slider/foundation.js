@@ -76,9 +76,9 @@ class MDCSliderFoundation extends MDCFoundation {
       setThumbStyleProperty: () => {},
       setTrackFillStyleProperty: () => {},
       setLastTickMarkStyleProperty: () => {},
-      tickMarkHasClass: () => {},
-      tickMarkAddClass: () => {},
-      tickMarkRemoveClass: () => {},
+      hasTickMarkClass: () => {},
+      addTickMarkClass: () => {},
+      removeTickMarkClass: () => {},
       getTickMarks: () => {},
       focusThumb: () => {},
       activateRipple: () => {},
@@ -237,13 +237,13 @@ class MDCSliderFoundation extends MDCFoundation {
     const tickMarks = this.adapter_.getTickMarks();
     if (tickMarks) {
       for (let i = 0; i < currentTickMark; i++) {
-        if (!this.adapter_.tickMarkHasClass(tickMarks[i], cssClasses.TICK_MARK_FILLED)) {
-          this.adapter_.tickMarkAddClass(tickMarks[i], cssClasses.TICK_MARK_FILLED);
+        if (!this.adapter_.hasTickMarkClass(tickMarks[i], cssClasses.TICK_MARK_FILLED)) {
+          this.adapter_.addTickMarkClass(tickMarks[i], cssClasses.TICK_MARK_FILLED);
         }
       }
       for (let i = currentTickMark; i < tickMarks.length; i++) {
-        if (this.adapter_.tickMarkHasClass(tickMarks[i], cssClasses.TICK_MARK_FILLED)) {
-          this.adapter_.tickMarkRemoveClass(tickMarks[i], cssClasses.TICK_MARK_FILLED);
+        if (this.adapter_.hasTickMarkClass(tickMarks[i], cssClasses.TICK_MARK_FILLED)) {
+          this.adapter_.removeTickMarkClass(tickMarks[i], cssClasses.TICK_MARK_FILLED);
         }
       }
     }

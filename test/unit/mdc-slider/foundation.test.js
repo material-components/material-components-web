@@ -43,8 +43,8 @@ test('default adapter returns a complete adapter implementation', () => {
     'computeBoundingRect', 'eventTargetHasClass', 'registerEventHandler', 'deregisterEventHandler',
     'registerBodyEventHandler', 'deregisterBodyEventHandler', 'registerWindowResizeHandler',
     'deregisterWindowResizeHandler', 'notifyInput', 'notifyChange', 'setThumbStyleProperty',
-    'setTrackFillStyleProperty', 'setLastTickMarkStyleProperty', 'tickMarkHasClass', 'tickMarkAddClass',
-    'tickMarkRemoveClass', 'getTickMarks', 'focusThumb', 'activateRipple',
+    'setTrackFillStyleProperty', 'setLastTickMarkStyleProperty', 'hasTickMarkClass', 'addTickMarkClass',
+    'removeTickMarkClass', 'getTickMarks', 'focusThumb', 'activateRipple',
     'deactivateRipple', 'isRTL',
   ]);
 });
@@ -619,14 +619,14 @@ test('#updateTickMarkClasses adds the filled class to the tick marks', () => {
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
   td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
   td.when(mockAdapter.getTickMarks()).thenReturn([1, 2, 3]);
-  td.when(mockAdapter.tickMarkHasClass(anything(), anything())).thenReturn(false);
+  td.when(mockAdapter.hasTickMarkClass(anything(), anything())).thenReturn(false);
   foundation.init();
   raf.flush();
 
   foundation.updateTickMarkClasses(2);
   raf.flush();
 
-  td.verify(mockAdapter.tickMarkAddClass(anything(), anything()));
+  td.verify(mockAdapter.addTickMarkClass(anything(), anything()));
 
   raf.restore();
 });
@@ -638,14 +638,14 @@ test('#updateTickMarkClasses removes the filled class from the tick marks', () =
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
   td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
   td.when(mockAdapter.getTickMarks()).thenReturn([1, 2, 3]);
-  td.when(mockAdapter.tickMarkHasClass(anything(), anything())).thenReturn(true);
+  td.when(mockAdapter.hasTickMarkClass(anything(), anything())).thenReturn(true);
   foundation.init();
   raf.flush();
 
   foundation.updateTickMarkClasses(1);
   raf.flush();
 
-  td.verify(mockAdapter.tickMarkRemoveClass(anything(), anything()));
+  td.verify(mockAdapter.removeTickMarkClass(anything(), anything()));
 
   raf.restore();
 });
@@ -663,7 +663,7 @@ test('#updateTickMarkClasses no-op if no tick marks', () => {
   foundation.updateTickMarkClasses(1);
   raf.flush();
 
-  td.verify(mockAdapter.tickMarkHasClass(anything(), anything()), {times: 0});
+  td.verify(mockAdapter.hasTickMarkClass(anything(), anything()), {times: 0});
 
   raf.restore();
 });

@@ -142,21 +142,21 @@ class MDCSliderAdapter {
    * @param {string} className
    * @return {boolean}
    */
-  tickMarkHasClass(tickMark, className) {}
+  hasTickMarkClass(tickMark, className) {}
 
   /**
    * Adds the given class to the given tick mark
    * @param {Element} tickMark
    * @param {string} className
    */
-  tickMarkAddClass(tickMark, className) {}
+  addTickMarkClass(tickMark, className) {}
 
   /**
    * Removes the given class from the given tick mark
    * @param {Element} tickMark
    * @param {string} className
    */
-  tickMarkRemoveClass(tickMark, className) {}
+  removeTickMarkClass(tickMark, className) {}
 
   /**
    * Returns the array of tick marks
