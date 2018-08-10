@@ -229,7 +229,7 @@ instance that was affected.
 | --- | --- |
 | `layout() => void` | Same as layout() detailed within the component methods table. Does the majority of the work; the component's layout method simply proxies to this. |
 | `calculateNumberOfTickMarks() => number` | Calculates the number of tick marks for discrete slider. |
-| `adjustLastTickMark() => void` | Adjusts the last tick mark style for discrete sliders. |
+| `adjustLastTickMark(numMarks: number) => void` | Adjusts the last tick mark style for discrete sliders. |
 | `getValue() => number` | Returns the current value of the slider |
 | `setValue(value: number) => void` | Sets the current value of the slider |
 | `getMax() => number` | Returns the max value the slider can have |
