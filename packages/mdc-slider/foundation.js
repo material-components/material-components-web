@@ -110,6 +110,8 @@ class MDCSliderFoundation extends MDCFoundation {
     /** @private {boolean} */
     this.interactingWithSlider_ = false;
     /** @private {number} */
+    this.animationFrameID_ = 0;
+    /** @private {number} */
     this.min_ = 0;
     /** @private {number} */
     this.max_ = 100;
@@ -725,7 +727,10 @@ class MDCSliderFoundation extends MDCFoundation {
     const pctComplete = (this.value_ - this.min_) / (this.max_ - this.min_);
     const translatePx = pctComplete * this.rect_.width;
 
-    requestAnimationFrame(() => {
+    if (this.animationFrameID_) {
+      window.cancelAnimationFrame(this.animationFrameID_);
+    }
+    this.animationFrameID_ = requestAnimationFrame(() => {
       if (this.isDiscrete_ && this.active_) {
         const path = this.calcPath_(translatePx);
         const xValue = this.calcValueLabelTextXValue_(translatePx);

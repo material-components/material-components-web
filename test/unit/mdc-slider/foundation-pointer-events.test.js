@@ -350,9 +350,8 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     }, pageXObj(50)));
     raf.flush();
 
-    // Once on mousedown, once on mousemove
-    td.verify(mockAdapter.setValueLabelText(isA(String)), {times: 2});
-    td.verify(mockAdapter.setValueLabelTextStyleProperty(isA(String), isA(String)), {times: 2});
+    td.verify(mockAdapter.setValueLabelText(isA(String)));
+    td.verify(mockAdapter.setValueLabelTextStyleProperty(isA(String), isA(String)));
 
     raf.restore();
   });
