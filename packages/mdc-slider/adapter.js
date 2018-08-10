@@ -52,10 +52,22 @@ class MDCSliderAdapter {
   setThumbAttribute(name, value) {}
 
   /**
+   * Removes attribute name on slider thumb Element to value
+   * @param {string} name
+   */
+  removeThumbAttribute(name) {}
+
+  /**
    * Returns the bounding client rect for the slider Element
    * @return {?ClientRect}
    */
   computeBoundingRect() {}
+
+  /**
+   * Returns the tab index of the slider Element
+   * @return {number}
+   */
+  getThumbTabIndex() {}
 
   /**
    * Returns true if target has className, false otherwise.

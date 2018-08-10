@@ -98,6 +98,18 @@ DOM.
 </div>
 ```
 
+### Disabled sliders
+
+Adding an `aria-disabled` attribute to a slider will initially disable it.
+
+```html
+<div class="mdc-slider" tabindex="0" role="slider"
+     aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
+     aria-label="Select Value" aria-disabled="true">
+  <!-- ... -->
+</div>
+```
+
 ### Using a step value
 
 > **NOTE**: In a discrete slider, the step value defines the slider values that are valid. In a continuous 
@@ -174,6 +186,7 @@ Mixin | Description
 | `min` | `number` | The minimum value a slider can have. Values set programmatically will be clamped to this minimum value. Changing this property will update the slider's value if it is lower than the new minimum |
 | `max` | `number` | The maximum value a slider can have. Values set programmatically will be clamped to this maximum value. Changing this property will update the slider's value if it is greater than the new maximum |
 | `step` | `number` | The current step value of the slider. Changing this will update the slider's layout. |
+| `disabled` | `boolean` | Whether or not the slider is disabled |
 
 | Method Signature | Description |
 | --- | --- |
@@ -200,8 +213,10 @@ instance that was affected.
 | `hasClass(className: string) => boolean` | Checks if `className` exists on the root element |
 | `addClass(className: string) => void` | Adds a class `className` to the root element |
 | `removeClass(className: string) => void` | Removes a class `className` from the root element |
-| `setThumbAttribute(name: string, value: string) => void` | Sets an attribute `name` to the value `value` on the thumb element. |
+| `setThumbAttribute(name: string, value: string) => void` | Sets an attribute `name` to the value `value` on the root element. |
+| `removeThumbAttribute(name: string) => void` | Removes an attribute `name` from the root element |
 | `computeBoundingRect() => ClientRect` | Computes and returns the bounding client rect for the root element. Our implementations calls `getBoundingClientRect()` for this. |
+| `getThumbTabIndex() => number` | Returns the value of the `tabIndex` property on the thumb element |
 | `eventTargetHasClass(target: EventTarget, className: string) => boolean` | Returns true if target has className, false otherwise |
 | `registerEventHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` to the slider's root element |
 | `deregisterEventHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` from the slider's root element |
@@ -238,3 +253,5 @@ instance that was affected.
 | `setMin(min: number) => number` | Sets the min value the slider can have |
 | `getStep() => number` | Returns the step value of the slider |
 | `setStep(step: number) => number` | Sets the step value of the slider |
+| `isDisabled() => boolean` | Returns whether or not the slider is disabled |
+| `setDisabled(disabled: boolean) => void` | Disables the slider when given true, enables it otherwise. |

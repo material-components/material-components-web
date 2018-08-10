@@ -18,7 +18,6 @@ import {assert} from 'chai';
 import td from 'testdouble';
 
 import {cssClasses} from '../../../packages/mdc-slider/constants';
-
 import {TRANSFORM_PROP, setupEventTest as setupTest} from './helpers';
 
 suite('MDCSliderFoundation - pointer events');
@@ -126,6 +125,30 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     td.verify(mockAdapter.registerBodyEventHandler('mouseup', isA(Function)));
     td.verify(mockAdapter.registerBodyEventHandler('pointerup', isA(Function)));
     td.verify(mockAdapter.registerBodyEventHandler('touchend', isA(Function)));
+    raf.restore();
+  });
+
+  test(`on ${downEvt} does nothing if the component is disabled`, () => {
+    const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+    const {anything} = td.matchers;
+
+    td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+    foundation.init();
+    raf.flush();
+
+    const valueBeforeEvent = foundation.getValue();
+    foundation.setDisabled(true);
+    td.when(mockAdapter.hasClass(cssClasses.DISABLED)).thenReturn(true);
+
+    rootHandlers[downEvt](pageXObj(50));
+    raf.flush();
+
+    assert.equal(foundation.getValue(), valueBeforeEvent);
+    td.verify(mockAdapter.addClass(cssClasses.ACTIVE), {times: 0});
+    // These should only happen once during initialization
+    td.verify(mockAdapter.setThumbStyleProperty(anything(), anything()), {times: 1});
+    td.verify(mockAdapter.setTrackFillStyleProperty(anything(), anything()), {times: 1});
+
     raf.restore();
   });
 
