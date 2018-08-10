@@ -76,6 +76,10 @@ class MDCSliderFoundation extends MDCFoundation {
       setThumbStyleProperty: () => {},
       setTrackFillStyleProperty: () => {},
       setLastTickMarkStyleProperty: () => {},
+      hasTickMarkClass: () => {},
+      addTickMarkClass: () => {},
+      removeTickMarkClass: () => {},
+      getTickMarks: () => {},
       focusThumb: () => {},
       activateRipple: () => {},
       deactivateRipple: () => {},
@@ -223,6 +227,27 @@ class MDCSliderFoundation extends MDCFoundation {
   adjustLastTickMark(numMarks) {
     const lastStepRatio = (this.max_ - numMarks * this.step_) / this.step_ + 1;
     this.adapter_.setLastTickMarkStyleProperty('flex', String(lastStepRatio));
+  }
+
+  /**
+   * Update the classes on the tick marks to distinguish filled
+   * @param {number} currentTickMark
+   * @private
+   */
+  updateTickMarkClasses_(currentTickMark) {
+    const tickMarks = this.adapter_.getTickMarks();
+    if (tickMarks) {
+      for (let i = 0; i < currentTickMark; i++) {
+        if (!this.adapter_.hasTickMarkClass(tickMarks[i], cssClasses.TICK_MARK_FILLED)) {
+          this.adapter_.addTickMarkClass(tickMarks[i], cssClasses.TICK_MARK_FILLED);
+        }
+      }
+      for (let i = currentTickMark; i < tickMarks.length; i++) {
+        if (this.adapter_.hasTickMarkClass(tickMarks[i], cssClasses.TICK_MARK_FILLED)) {
+          this.adapter_.removeTickMarkClass(tickMarks[i], cssClasses.TICK_MARK_FILLED);
+        }
+      }
+    }
   }
 
   /**
@@ -421,7 +446,10 @@ class MDCSliderFoundation extends MDCFoundation {
   updateUIForCurrentValue_() {
     const pctComplete = (this.value_ - this.min_) / (this.max_ - this.min_);
     const translatePx = pctComplete * this.rect_.width;
-
+    if (this.isDiscrete_) {
+      const numSteps = Math.round(this.value_ / this.step_);
+      this.updateTickMarkClasses_(numSteps);
+    }
     requestAnimationFrame(() => {
       if (this.adapter_.isRTL()) {
         this.adapter_.setThumbStyleProperty('transform', `translateX(-${translatePx}px) translateX(50%)`);

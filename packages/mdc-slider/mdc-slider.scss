@@ -24,7 +24,7 @@
 .mdc-slider {
   @include mdc-slider-track-color(primary);
   @include mdc-slider-track-fill-color(primary);
-  @include mdc-slider-tick-mark-color(primary);
+  @include mdc-slider-tick-mark-color(primary, on-primary);
   @include mdc-slider-thumb-color(primary);
 
   position: relative;
@@ -84,6 +84,7 @@
     display: block;
     width: 2px;
     height: 2px;
+    transition: background-color 75ms $mdc-animation-standard-curve-timing-function;
     border-radius: 50%;
     content: "";
   }
@@ -124,5 +125,9 @@
   .mdc-slider__thumb,
   .mdc-slider__track-fill {
     transition: transform 150ms $mdc-animation-standard-curve-timing-function;
+  }
+
+  .mdc-slider__tick-mark::after {
+    transition: background-color 150ms $mdc-animation-standard-curve-timing-function;
   }
 }
