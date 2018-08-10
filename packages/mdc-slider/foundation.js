@@ -232,8 +232,9 @@ class MDCSliderFoundation extends MDCFoundation {
   /**
    * Update the classes on the tick marks to distinguish filled
    * @param {number} currentTickMark
+   * @private
    */
-  updateTickMarkClasses(currentTickMark) {
+  updateTickMarkClasses_(currentTickMark) {
     const tickMarks = this.adapter_.getTickMarks();
     if (tickMarks) {
       for (let i = 0; i < currentTickMark; i++) {
@@ -447,7 +448,7 @@ class MDCSliderFoundation extends MDCFoundation {
     const translatePx = pctComplete * this.rect_.width;
     if (this.isDiscrete_) {
       const numSteps = Math.round(this.value_ / this.step_);
-      this.updateTickMarkClasses(numSteps);
+      this.updateTickMarkClasses_(numSteps);
     }
     requestAnimationFrame(() => {
       if (this.adapter_.isRTL()) {

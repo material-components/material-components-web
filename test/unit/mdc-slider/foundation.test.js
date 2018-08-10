@@ -612,7 +612,7 @@ test('#handleTransitionEnd no-op when inTransit_ is true and event target is not
   raf.restore();
 });
 
-test('#updateTickMarkClasses adds the filled class to the tick marks', () => {
+test('#updateTickMarkClasses_ adds the filled class to the tick marks', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
   const {anything} = td.matchers;
@@ -623,7 +623,7 @@ test('#updateTickMarkClasses adds the filled class to the tick marks', () => {
   foundation.init();
   raf.flush();
 
-  foundation.updateTickMarkClasses(2);
+  foundation.updateTickMarkClasses_(2);
   raf.flush();
 
   td.verify(mockAdapter.addTickMarkClass(anything(), anything()));
@@ -631,7 +631,7 @@ test('#updateTickMarkClasses adds the filled class to the tick marks', () => {
   raf.restore();
 });
 
-test('#updateTickMarkClasses removes the filled class from the tick marks', () => {
+test('#updateTickMarkClasses_ removes the filled class from the tick marks', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
   const {anything} = td.matchers;
@@ -642,7 +642,7 @@ test('#updateTickMarkClasses removes the filled class from the tick marks', () =
   foundation.init();
   raf.flush();
 
-  foundation.updateTickMarkClasses(1);
+  foundation.updateTickMarkClasses_(1);
   raf.flush();
 
   td.verify(mockAdapter.removeTickMarkClass(anything(), anything()));
@@ -650,7 +650,7 @@ test('#updateTickMarkClasses removes the filled class from the tick marks', () =
   raf.restore();
 });
 
-test('#updateTickMarkClasses no-op if no tick marks', () => {
+test('#updateTickMarkClasses_ no-op if no tick marks', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
   const {anything} = td.matchers;
@@ -660,7 +660,7 @@ test('#updateTickMarkClasses no-op if no tick marks', () => {
   foundation.init();
   raf.flush();
 
-  foundation.updateTickMarkClasses(1);
+  foundation.updateTickMarkClasses_(1);
   raf.flush();
 
   td.verify(mockAdapter.hasTickMarkClass(anything(), anything()), {times: 0});
