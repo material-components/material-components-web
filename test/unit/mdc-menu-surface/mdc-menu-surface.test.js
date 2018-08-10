@@ -210,43 +210,6 @@ test('adapter#getInnerDimensions returns the dimensions of the container', () =>
   assert.equal(component.getDefaultFoundation().adapter_.getInnerDimensions().height, root.offsetHeight);
 });
 
-//
-// test('adapter#registerInteractionHandler proxies to addEventListener', () => {
-//   const {root, component} = setupTest();
-//   const handler = td.func('interactionHandler');
-//   component.getDefaultFoundation().adapter_.registerInteractionHandler('foo', handler);
-//   domEvents.emit(root, 'foo');
-//   td.verify(handler(td.matchers.anything()));
-// });
-//
-// test('adapter#deregisterInteractionHandler proxies to removeEventListener', () => {
-//   const {root, component} = setupTest();
-//   const handler = td.func('interactionHandler');
-//   root.addEventListener('foo', handler);
-//   component.getDefaultFoundation().adapter_.deregisterInteractionHandler('foo', handler);
-//   domEvents.emit(root, 'foo');
-//   td.verify(handler(td.matchers.anything()), {times: 0});
-// });
-//
-// test('adapter#registerBodyClickHandler proxies to addEventListener', () => {
-//   const {component} = setupTest();
-//   const handler = td.func('interactionHandler');
-//
-//   component.getDefaultFoundation().adapter_.registerBodyClickHandler(handler);
-//   domEvents.emit(document.body, 'click');
-//   td.verify(handler(td.matchers.anything()));
-// });
-//
-// test('adapter#deregisterBodyClickHandler proxies to removeEventListener', () => {
-//   const {component} = setupTest();
-//   const handler = td.func('interactionHandler');
-//
-//   document.body.addEventListener('click', handler);
-//   component.getDefaultFoundation().adapter_.deregisterBodyClickHandler(handler);
-//   domEvents.emit(document.body, 'click');
-//   td.verify(handler(td.matchers.anything()), {times: 0});
-// });
-
 test(`adapter#notifyClose fires an ${strings.CLOSED_EVENT} custom event`, () => {
   const {root, component} = setupTest();
   const handler = td.func('notifyClose handler');
