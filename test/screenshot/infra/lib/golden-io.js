@@ -131,10 +131,10 @@ ${serialized}
 
   /**
    * @param {!Object|!Array} object
-   * @return {!Promise<string>}
+   * @return {string}
    */
   async stringify_(object) {
-    return stringify(object, {space: '  '}) + '\n';
+    return stringify(object, {space: '  '});
   }
 }
 
