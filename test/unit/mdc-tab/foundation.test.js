@@ -17,7 +17,7 @@
 import {assert} from 'chai';
 import td from 'testdouble';
 
-import {captureHandlers, verifyDefaultAdapter} from '../helpers/foundation';
+import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
 import MDCTabFoundation from '../../../packages/mdc-tab/foundation';
 
@@ -33,7 +33,6 @@ test('exports strings', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTabFoundation, [
-    'registerEventHandler', 'deregisterEventHandler',
     'addClass', 'removeClass', 'hasClass',
     'setAttr',
     'activateIndicator', 'deactivateIndicator', 'computeIndicatorClientRect',
@@ -126,15 +125,6 @@ test(`#handleClick emits the ${MDCTabFoundation.strings.INTERACTED_EVENT} event`
   const {foundation, mockAdapter} = setupTest();
   foundation.handleClick();
   td.verify(mockAdapter.notifyInteracted(), {times: 1});
-});
-
-test('on click, call #handleClick', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const handlers = captureHandlers(mockAdapter, 'registerEventHandler');
-  foundation.handleClick = td.function('handles click');
-  foundation.init();
-  handlers.click();
-  td.verify(foundation.handleClick(), {times: 1});
 });
 
 test('#computeDimensions() returns the dimensions of the tab', () => {

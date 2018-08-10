@@ -47,8 +47,6 @@ class MDCTabFoundation extends MDCFoundation {
    */
   static get defaultAdapter() {
     return /** @type {!MDCTabAdapter} */ ({
-      registerEventHandler: () => {},
-      deregisterEventHandler: () => {},
       addClass: () => {},
       removeClass: () => {},
       hasClass: () => {},
@@ -71,16 +69,6 @@ class MDCTabFoundation extends MDCFoundation {
 
     /** @private {function(?Event): undefined} */
     this.handleClick_ = () => this.handleClick();
-  }
-
-  init() {
-    // TODO: move
-    this.adapter_.registerEventHandler('click', this.handleClick_);
-  }
-
-  destroy() {
-    // TODO: move
-    this.adapter_.deregisterEventHandler('click', this.handleClick_);
   }
 
   /**
