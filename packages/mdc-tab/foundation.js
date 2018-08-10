@@ -69,29 +69,18 @@ class MDCTabFoundation extends MDCFoundation {
   constructor(adapter) {
     super(Object.assign(MDCTabFoundation.defaultAdapter, adapter));
 
-    /** @private {function(!Event): undefined} */
-    this.handleTransitionEnd_ = (evt) => this.handleTransitionEnd(evt);
-
     /** @private {function(?Event): undefined} */
     this.handleClick_ = () => this.handleClick();
   }
 
   init() {
+    // TODO: move
     this.adapter_.registerEventHandler('click', this.handleClick_);
   }
 
-  /**
-   * Handles the "transitionend" event
-   * @param {!Event} evt A browser event
-   */
-  handleTransitionEnd(evt) {
-    // Early exit for ripple
-    if (evt.pseudoElement) {
-      return;
-    }
-    this.adapter_.deregisterEventHandler('transitionend', this.handleTransitionEnd_);
-    this.adapter_.removeClass(cssClasses.ANIMATING_ACTIVATE);
-    this.adapter_.removeClass(cssClasses.ANIMATING_DEACTIVATE);
+  destroy() {
+    // TODO: move
+    this.adapter_.deregisterEventHandler('click', this.handleClick_);
   }
 
   /**
@@ -121,8 +110,6 @@ class MDCTabFoundation extends MDCFoundation {
       return;
     }
 
-    this.adapter_.registerEventHandler('transitionend', this.handleTransitionEnd_);
-    this.adapter_.addClass(cssClasses.ANIMATING_ACTIVATE);
     this.adapter_.addClass(cssClasses.ACTIVE);
     this.adapter_.setAttr(strings.ARIA_SELECTED, 'true');
     this.adapter_.setAttr(strings.TABINDEX, '0');
@@ -139,8 +126,6 @@ class MDCTabFoundation extends MDCFoundation {
       return;
     }
 
-    this.adapter_.registerEventHandler('transitionend', this.handleTransitionEnd_);
-    this.adapter_.addClass(cssClasses.ANIMATING_DEACTIVATE);
     this.adapter_.removeClass(cssClasses.ACTIVE);
     this.adapter_.setAttr(strings.ARIA_SELECTED, 'false');
     this.adapter_.setAttr(strings.TABINDEX, '-1');
