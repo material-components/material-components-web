@@ -15,7 +15,7 @@
  */
 
 import td from 'testdouble';
-
+import lolex from 'lolex';
 import {setupFoundationTest} from '../helpers/setup';
 import {createMockRaf} from '../helpers/raf';
 import MDCRippleFoundation from '../../../packages/mdc-ripple/foundation';
@@ -34,11 +34,14 @@ export function testFoundation(desc, isCssVarsSupported, runTests) {
     isCssVarsSupported = true;
   }
 
+
   test(desc, () => {
+    const clock = lolex.install();
     const {adapter, foundation} = setupTest(isCssVarsSupported);
     const mockRaf = createMockRaf();
-    runTests({adapter, foundation, mockRaf});
+    runTests({adapter, foundation, mockRaf, clock});
     mockRaf.restore();
+    clock.uninstall();
   });
 }
 
