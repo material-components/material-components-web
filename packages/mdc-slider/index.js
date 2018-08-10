@@ -82,6 +82,16 @@ class MDCSlider extends MDCComponent {
     this.foundation_.setMax(max);
   }
 
+  /** @return {boolean} */
+  get disabled() {
+    return this.foundation_.isDisabled();
+  }
+
+  /** @param {boolean} disabled */
+  set disabled(disabled) {
+    this.foundation_.setDisabled(disabled);
+  }
+
   /** @return {number} */
   get step() {
     return this.foundation_.getStep();
@@ -152,6 +162,8 @@ class MDCSlider extends MDCComponent {
             return target.classList.contains(className);
           }
         },
+        removeThumbAttribute: (name) => this.thumb_.removeAttribute(name),
+        getThumbTabIndex: () => this.thumb_.tabIndex,
         registerEventHandler: (type, handler) => {
           this.root_.addEventListener(type, handler);
         },
@@ -194,7 +206,7 @@ class MDCSlider extends MDCComponent {
         hasTickMarkClass: (tickMark, className) => tickMark.classList.contains(className),
         addTickMarkClass: (tickMark, className) => tickMark.classList.add(className),
         removeTickMarkClass: (tickMark, className) => tickMark.classList.remove(className),
-        getTickMarks: () => this.tickMarkSet_.children,
+        getTickMarks: () => this.tickMarkSet_ ? this.tickMarkSet_.children : null,
         focusThumb: () => {
           this.thumb_.focus();
         },
@@ -215,6 +227,10 @@ class MDCSlider extends MDCComponent {
     this.min = parseFloat(this.thumb_.getAttribute(strings.ARIA_VALUEMIN)) || this.min;
     this.step = parseFloat(this.thumb_.getAttribute(strings.DATA_STEP)) || this.step;
     this.value = origValueNow || this.value;
+    this.disabled = (
+      this.thumb_.hasAttribute(strings.ARIA_DISABLED) &&
+      this.thumb_.getAttribute(strings.ARIA_DISABLED) !== 'false'
+    );
     if (this.tickMarkSet_ && this.root_.classList.contains(cssClasses.DISCRETE)) {
       this.setUpTickMarks_();
     }

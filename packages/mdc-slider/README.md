@@ -118,6 +118,18 @@ DOM.
 </div>
 ```
 
+### Disabled sliders
+
+Adding an `aria-disabled` attribute to a slider will initially disable it.
+
+```html
+<div class="mdc-slider" tabindex="0" role="slider"
+     aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
+     aria-label="Select Value" aria-disabled="true">
+  <!-- ... -->
+</div>
+```
+
 ### Using a step value
 
 > **NOTE**: In a discrete slider, the step value defines the slider values that are valid. In a continuous 
@@ -198,6 +210,7 @@ Mixin | Description
 | `min` | `number` | The minimum value a slider can have. Values set programmatically will be clamped to this minimum value. Changing this property will update the slider's value if it is lower than the new minimum |
 | `max` | `number` | The maximum value a slider can have. Values set programmatically will be clamped to this maximum value. Changing this property will update the slider's value if it is greater than the new maximum |
 | `step` | `number` | The current step value of the slider. Changing this will update the slider's layout. |
+| `disabled` | `boolean` | Whether or not the slider is disabled |
 
 | Method Signature | Description |
 | --- | --- |
@@ -224,44 +237,46 @@ instance that was affected.
 | `hasClass(className: string) => boolean` | Checks if `className` exists on the root element |
 | `addClass(className: string) => void` | Adds a class `className` to the root element |
 | `removeClass(className: string) => void` | Removes a class `className` from the root element |
-| `setThumbAttribute(name: string, value: string) => void` | Sets an attribute `name` to the value `value` on the thumb element. |
-| `setValueLabelPath(value: string) => void` | Sets the path of the value label Element to the value `value`. |
-| `setValueLabelText(text: string) => void` | Sets the text content to the assigned value. |
-| `setValueLabelTextStyleProperty(propertyName: string, value: string) => void` | Sets a dash-cased style property `propertyName` to the given `value` on the value label text element. |
-| `removeValueLabelTextStyle() => void` | Removes the style attribute for the value label text Element. |
-| `getDigitWidth() => number` | Returns the width of one digit. |
-| `getCommaWidth() => number` | Returns the width of one comma. |
-| `computeBoundingRect() => ClientRect` | Computes and returns the bounding client rect for the root element. Our implementations calls `getBoundingClientRect()` for this. |
+| `setThumbAttribute(name: string, value: string) => void` | Sets an attribute `name` to the value `value` on the thumb element |
+| `setValueLabelPath(value: string) => void` | Sets the path of the value label element to the value `value` |
+| `setValueLabelText(text: string) => void` | Sets the text content to the assigned value |
+| `setValueLabelTextStyleProperty(propertyName: string, value: string) => void` | Sets a dash-cased style property `propertyName` to the given `value` on the value label text element |
+| `removeValueLabelTextStyle() => void` | Removes the style attribute for the value label text element |
+| `getDigitWidth() => number` | Returns the width of one digit |
+| `getCommaWidth() => number` | Returns the width of one comma |
+| `computeBoundingRect() => ClientRect` | Computes and returns the bounding client rect for the root element Our implementations calls `getBoundingClientRect()` for this |
 | `eventTargetHasClass(target: EventTarget, className: string) => boolean` | Returns true if target has className, false otherwise |
+| `removeThumbAttribute(name: string) => void` | Removes an attribute `name` from the root element |
+| `getThumbTabIndex() => number` | Returns the value of the `tabIndex` property on the thumb element |
 | `registerEventHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` to the slider's root element |
 | `deregisterEventHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` from the slider's root element |
 | `registerThumbEventHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` to the slider's thumb element |
 | `deregisterThumbEventHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` from the slider's thumb element |
 | `registerBodyEventHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` to the `<body>` element of the slider's document |
 | `deregisterBodyEventHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` from the `<body>` element of the slider's document |
-| `registerResizeHandler(handler: EventListener) => void` | Adds an event listener `handler` that is called when the component's viewport resizes, e.g. `window.onresize`. |
-| `deregisterResizeHandler(handler: EventListener) => void` | Removes an event listener `handler` that was attached via `registerResizeHandler`. |
+| `registerResizeHandler(handler: EventListener) => void` | Adds an event listener `handler` that is called when the component's viewport resizes, e.g. `window.onresize` |
+| `deregisterResizeHandler(handler: EventListener) => void` | Removes an event listener `handler` that was attached via `registerResizeHandler` |
 | `notifyInput() => void` | Broadcasts an "MDCSlider:input" event notifying clients that the slider's value is currently being changed. The implementation should choose to pass along any relevant information pertaining to this event. In our case we pass along the instance of the component for which the event is triggered for. |
-| `notifyChange() => void` | Broadcasts a "MDCSlider:change" event notifying clients that a change to the slider's value has been committed by the user. Similar guidance applies here as for `notifyInput()`. |
-| `setThumbStyleProperty(propertyName: string, value: string) => void` | Sets a dash-cased style property `propertyName` to the given `value` on the thumb element. |
-| `setTrackFillStyleProperty(propertyName: string, value: string) => void` | Sets a dash-cased style property `propertyName` to the given `value` on the track-fill element. |
-| `setLastTickMarkStyleProperty(propertyName: string, value: string) => void` | Sets a dash-cased style property `propertyName` to the given `value` on the last tick mark element. |
-| `hasTickMarkClass(tickMark: Element, className: string) => void` | Returns true if the given `tickMark` contains the given `className`. |
-| `addTickMarkClass(tickMark: Element, className: string) => void` | Adds the given `className` to the given `tickMark`. |
-| `removeTickMarkClass(tickMark: Element, className: string) => void` | Removes the given `className` from the given `tickMark`. |
-| `getTickMarks() => void` | Returns an array of the tickMark elements. |
-| `focusThumb() => void` | Sets the document focus to the thumb. |
-| `activateRipple() => void` | Activates the ripple on the thumb element. |
-| `deactivateRipple() => void` | Deativates the ripple on the thumb element. |
-| `isRTL() => boolean` | True if the slider is within an RTL context, false otherwise. |
+| `notifyChange() => void` | Broadcasts a "MDCSlider:change" event notifying clients that a change to the slider's value has been committed by the user. Similar guidance applies here as for `notifyInput()` |
+| `setThumbStyleProperty(propertyName: string, value: string) => void` | Sets a dash-cased style property `propertyName` to the given `value` on the thumb element |
+| `setTrackFillStyleProperty(propertyName: string, value: string) => void` | Sets a dash-cased style property `propertyName` to the given `value` on the track-fill element |
+| `setLastTickMarkStyleProperty(propertyName: string, value: string) => void` | Sets a dash-cased style property `propertyName` to the given `value` on the last tick mark element |
+| `hasTickMarkClass(tickMark: Element, className: string) => void` | Returns true if the given `tickMark` contains the given `className` |
+| `addTickMarkClass(tickMark: Element, className: string) => void` | Adds the given `className` to the given `tickMark` |
+| `removeTickMarkClass(tickMark: Element, className: string) => void` | Removes the given `className` from the given `tickMark` |
+| `getTickMarks() => void` | Returns an array of the tickMark elements |
+| `focusThumb() => void` | Sets the document focus to the thumb |
+| `activateRipple() => void` | Activates the ripple on the thumb element |
+| `deactivateRipple() => void` | Deativates the ripple on the thumb element |
+| `isRTL() => boolean` | True if the slider is within an RTL context, false otherwise |
 
 ### `MDCSliderFoundation`
 
 | Method Signature | Description |
 | --- | --- |
-| `layout() => void` | Same as layout() detailed within the component methods table. Does the majority of the work; the component's layout method simply proxies to this. |
-| `calculateNumberOfTickMarks() => number` | Calculates the number of tick marks for discrete slider. |
-| `adjustLastTickMark(numMarks: number) => void` | Adjusts the last tick mark style for discrete sliders. |
+| `layout() => void` | Same as layout() detailed within the component methods table. Does the majority of the work; the component's layout method simply proxies to this |
+| `calculateNumberOfTickMarks() => number` | Calculates the number of tick marks for discrete slider |
+| `adjustLastTickMark(numMarks: number) => void` | Adjusts the last tick mark style for discrete sliders |
 | `getValue() => number` | Returns the current value of the slider |
 | `setValue(value: number) => void` | Sets the current value of the slider |
 | `getMax() => number` | Returns the max value the slider can have |
@@ -270,3 +285,5 @@ instance that was affected.
 | `setMin(min: number) => number` | Sets the min value the slider can have |
 | `getStep() => number` | Returns the step value of the slider |
 | `setStep(step: number) => number` | Sets the step value of the slider |
+| `isDisabled() => boolean` | Returns whether or not the slider is disabled |
+| `setDisabled(disabled: boolean) => void` | Disables the slider when given true, enables it otherwise |

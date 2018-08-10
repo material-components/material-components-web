@@ -33,6 +33,7 @@ const strings = {
   INPUT_EVENT: 'MDCSlider:input',
 };
 
+/** @enum {string} */
 const cssClasses = {
   SLIDER: 'mdc-slider',
   TRACK: 'mdc-slider__track',
@@ -42,6 +43,7 @@ const cssClasses = {
   TICK_MARK_FILLED: 'mdc-slider__tick-mark--filled',
   ACTIVE: 'mdc-slider--active',
   IN_TRANSIT: 'mdc-slider--in-transit',
+  DISABLED: 'mdc-slider--disabled',
   DISCRETE: 'mdc-slider--discrete',
   DISCRETE_MOTION: 'mdc-slider--discrete-motion',
 };

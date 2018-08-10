@@ -145,6 +145,7 @@
             </div>
           </div>
         </div>
+        <input type="checkbox" name="disabled"> Disabled
         <input type="checkbox" name="rtl"> RTL
       </section>
     </main>
@@ -154,7 +155,8 @@
       demoReady(function() {
         mdc.slider.MDCSlider.attachTo(document.getElementById('hero-slider'));
         
-        var demoRoot = document.getElementById('demo-root');
+        var demoRoot = document.getElementById('demo-root')
+        var disabledCheckbox = demoRoot.querySelector('[name="disabled"]');
         var rtl = demoRoot.querySelector('[name="rtl"]');
 
         var continuousValue = demoRoot.querySelector('#continuous-slider-value');
@@ -188,6 +190,14 @@
         var discreteSliderEl3 = demoRoot.querySelector('#discrete-mdc-slider3');
         var discreteSlider3 = new mdc.slider.MDCSlider(discreteSliderEl3);
 
+        disabledCheckbox.addEventListener('change', function() {
+          continuousSlider.disabled = disabledCheckbox.checked;
+          discreteSlider.disabled = disabledCheckbox.checked;
+          discreteSlider1.disabled = disabledCheckbox.checked;
+          discreteSlider2.disabled = disabledCheckbox.checked;
+          discreteSlider3.disabled = disabledCheckbox.checked;
+        });
+        
         rtl.addEventListener('change', function() {
           if (rtl.checked) {
             continuousSliderEl.setAttribute('dir', 'rtl');

@@ -69,7 +69,9 @@ class MDCSliderFoundation extends MDCFoundation {
       removeValueLabelTextStyle: () => {},
       getDigitWidth: () => {},
       getCommaWidth: () => {},
+      removeThumbAttribute: () => {},
       computeBoundingRect: () => {},
+      getThumbTabIndex: () => {},
       eventTargetHasClass: () => {},
       registerEventHandler: () => {},
       deregisterEventHandler: () => {},
@@ -121,6 +123,8 @@ class MDCSliderFoundation extends MDCFoundation {
     this.max_ = 100;
     /** @private {number} */
     this.value_ = 0;
+    /** @private {number} */
+    this.savedTabIndex_ = 0;
     /** @private {number} */
     this.step_ = 0;
     /** @private {function(): undefined} */
@@ -214,6 +218,26 @@ class MDCSliderFoundation extends MDCFoundation {
     this.adapter_.setThumbAttribute(strings.ARIA_VALUEMIN, String(this.min_));
   }
 
+  /** @return {boolean} */
+  isDisabled() {
+    return this.adapter_.hasClass(cssClasses.DISABLED);
+  }
+
+  /** @param {boolean} disabled */
+  setDisabled(disabled) {
+    this.toggleClass_(cssClasses.DISABLED, disabled);
+    if (disabled) {
+      this.savedTabIndex_ = this.adapter_.getThumbTabIndex();
+      this.adapter_.setThumbAttribute(strings.ARIA_DISABLED, 'true');
+      this.adapter_.removeThumbAttribute('tabindex');
+    } else {
+      this.adapter_.removeThumbAttribute(strings.ARIA_DISABLED);
+      if (!isNaN(this.savedTabIndex_)) {
+        this.adapter_.setThumbAttribute('tabindex', String(this.savedTabIndex_));
+      }
+    }
+  }
+
   /** @return {number} */
   getStep() {
     return this.step_;
@@ -285,7 +309,7 @@ class MDCSliderFoundation extends MDCFoundation {
    */
   updateTickMarkClasses_(currentTickMark) {
     const tickMarks = this.adapter_.getTickMarks();
-    if (tickMarks) {
+    if (tickMarks && tickMarks.length > 0) {
       for (let i = 0; i < currentTickMark; i++) {
         if (!this.adapter_.hasTickMarkClass(tickMarks[i], cssClasses.TICK_MARK_FILLED)) {
           this.adapter_.addTickMarkClass(tickMarks[i], cssClasses.TICK_MARK_FILLED);
@@ -319,6 +343,10 @@ class MDCSliderFoundation extends MDCFoundation {
    * @param {!Event} evt
    */
   handleInteractionStart(evt) {
+    if (this.isDisabled()) {
+      return;
+    }
+
     this.interactingWithSlider_ = true;
     this.setActive_(true);
     this.adapter_.activateRipple();
@@ -755,7 +783,7 @@ class MDCSliderFoundation extends MDCFoundation {
       window.cancelAnimationFrame(this.animationFrameID_);
     }
     if (this.isDiscrete_) {
-      const numSteps = Math.round(this.value_ / this.step_);
+      const numSteps = Math.round((this.value_ - this.min_) / this.step_);
       this.updateTickMarkClasses_(numSteps);
     }
     this.animationFrameID_ = requestAnimationFrame(() => {

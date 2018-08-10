@@ -84,6 +84,13 @@ test('get/set step', () => {
   assert.equal(component.step, 6);
 });
 
+test('gets the disabled state and sets the disabled state', () => {
+  const {component} = setupTest();
+  component.disabled = true;
+
+  assert.isTrue(component.disabled);
+});
+
 test('#layout lays out the component', () => {
   const raf = createMockRaf();
   const {root, component} = setupTest();
@@ -188,6 +195,26 @@ test('#initialSyncWithDOM adds an data-step attribute if not present', () => {
 
   const component = new MDCSlider(root);
   assert.equal(thumb.getAttribute('data-step'), String(component.step));
+});
+
+test('#initialSyncWithDOM disables the slider if aria-disabled is present on the component', () => {
+  const root = getFixture();
+  const thumb = root.querySelector('.mdc-slider__thumb');
+
+  thumb.setAttribute('aria-disabled', 'true');
+
+  const component = new MDCSlider(root);
+  assert.isTrue(component.disabled);
+});
+
+test('#initialSyncWithDOM does not disable the component if aria-disabled is "false"', () => {
+  const root = getFixture();
+  const thumb = root.querySelector('.mdc-slider__thumb');
+
+  thumb.setAttribute('aria-disabled', 'false');
+
+  const component = new MDCSlider(root);
+  assert.isFalse(component.disabled);
 });
 
 test('#initialSyncWithDOM calls setUpTickMarks if tick-mark-set is present', () => {
@@ -299,6 +326,16 @@ test('adapter#removeValueLabelTextStyle removes the style from the value label t
   component.getDefaultFoundation().adapter_.removeValueLabelTextStyle();
 
   assert.notEqual(valueLabelText.getAttribute('style'), 'foo');
+});
+
+test('adapter#removeAttribute removes an attribute from the root element', () => {
+  const {root, component} = setupTest();
+  const thumb = root.querySelector('.mdc-slider__thumb');
+
+  thumb.setAttribute('data-foo', 'bar');
+  component.getDefaultFoundation().adapter_.removeThumbAttribute('data-foo');
+
+  assert.isFalse(thumb.hasAttribute('data-foo'));
 });
 
 test('adapter#computeBoundingRect computes the client rect on the root element', () => {

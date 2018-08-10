@@ -36,6 +36,10 @@
   touch-action: pan-x;
 }
 
+.mdc-slider--disabled {
+  @include mdc-slider-disabled-color(on-surface);
+}
+
 .mdc-slider__track {
   position: absolute;
   width: 100%;
@@ -97,9 +101,6 @@
 }
 
 .mdc-slider__thumb {
-  @include mdc-ripple-surface;
-  @include mdc-ripple-radius-unbounded;
-
   position: absolute;
   width: 34px;
   height: 34px;
@@ -191,5 +192,12 @@
   .mdc-slider__thumb,
   .mdc-slider__track-fill, {
     transition: transform 75ms $mdc-animation-standard-curve-timing-function;
+  }
+}
+
+.mdc-slider:not(.mdc-slider--disabled) {
+  .mdc-slider__thumb {
+    @include mdc-ripple-surface;
+    @include mdc-ripple-radius-unbounded;
   }
 }

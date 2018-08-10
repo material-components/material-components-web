@@ -20,14 +20,18 @@
 @import "./variables";
 
 @mixin mdc-slider-track-color($color) {
-  .mdc-slider__track {
-    @include mdc-theme-prop(background-color, rgba(mdc-theme-prop-value($color), $mdc-slider-track-opacity));
+  &:not(.mdc-slider--disabled) {
+    .mdc-slider__track {
+      @include mdc-theme-prop(background-color, rgba(mdc-theme-prop-value($color), $mdc-slider-track-opacity));
+    }
   }
 }
 
 @mixin mdc-slider-track-fill-color($color) {
-  .mdc-slider__track-fill {
-    @include mdc-theme-prop(background-color, $color);
+  &:not(.mdc-slider--disabled) {
+    .mdc-slider__track-fill {
+      @include mdc-theme-prop(background-color, $color);
+    }
   }
 }
 
@@ -43,12 +47,14 @@
 }
 
 @mixin mdc-slider-thumb-color($color) {
-  .mdc-slider__thumb {
-    @include mdc-states($color);
-  }
+  &:not(.mdc-slider--disabled) {
+    .mdc-slider__thumb {
+      @include mdc-states($color);
+    }
 
-  .mdc-slider__thumb-handle {
-    @include mdc-theme-prop(fill, $color);
+    .mdc-slider__thumb-handle {
+      @include mdc-theme-prop(fill, $color);
+    }
   }
 }
 
@@ -64,5 +70,37 @@
 @mixin mdc-slider-value-label-ink-color($color) {
   .mdc-slider__value-label-text {
     @include mdc-theme-prop(color, $color);
+  }
+}
+
+@mixin mdc-slider-disabled-color($color) {
+  cursor: auto;
+
+  .mdc-slider__track {
+    @include mdc-theme-prop(background-color, rgba(mdc-theme-prop-value($color), $mdc-slider-disabled-track-opacity));
+  }
+
+  .mdc-slider__track-fill {
+    @include mdc-theme-prop(background-color, rgba(mdc-theme-prop-value($color), $mdc-slider-disabled-track-fill-opacity));
+  }
+
+  .mdc-slider__tick-mark::after,
+  .mdc-slider__tick-mark-set::after {
+    @include mdc-theme-prop(background-color, rgba(mdc-theme-prop-value($color), $mdc-slider-disabled-tick-mark-opacity));
+  }
+
+  .mdc-slider__tick-mark--filled::after {
+    @include mdc-theme-prop(background-color, $mdc-slider-disabled-tick-mark-filled);
+  }
+
+  .mdc-slider__thumb-handle {
+    @include mdc-theme-prop(fill, $mdc-slider-disabled-thumb);
+    @include mdc-theme-prop(stroke, mdc-theme-prop-value(surface));
+
+    stroke-width: 4px;
+  }
+
+  .mdc-slider__thumb {
+    pointer-events: none;
   }
 }
