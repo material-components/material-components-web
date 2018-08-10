@@ -52,24 +52,6 @@ class MDCMenuSurfaceAdapter {
   /** @return {boolean} */
   hasAnchor() {}
 
-  /**
-   * @param {string} type
-   * @param {function(!Event)} handler
-   */
-  registerInteractionHandler(type, handler) {}
-
-  /**
-   * @param {string} type
-   * @param {function(!Event)} handler
-   */
-  deregisterInteractionHandler(type, handler) {}
-
-  /** @param {function(!Event)} handler */
-  registerBodyClickHandler(handler) {}
-
-  /** @param {function(!Event)} handler */
-  deregisterBodyClickHandler(handler) {}
-
   /** Emits an event when the menu surface is closed. */
   notifyClose() {}
 
@@ -87,9 +69,6 @@ class MDCMenuSurfaceAdapter {
 
   /** @param {string} origin */
   setTransformOrigin(origin) {}
-
-  /** Focuses the menu surface. */
-  focus() {}
 
   /** @return {boolean} */
   isFocused() {}

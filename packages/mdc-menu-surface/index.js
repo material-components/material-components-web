@@ -37,6 +37,14 @@ class MDCMenuSurface extends MDCComponent {
     this.firstFocusableElement_;
     /** @private {Element} */
     this.lastFocusableElement_;
+    /** @private {!Function} */
+    this.handleKeydown_;
+    /** @private {!Function} */
+    this.handleBodyClick_;
+    /** @private {!Function} */
+    this.registerBodyClickListener_;
+    /** @private {!Function} */
+    this.deregisterBodyClickListener_;
   }
 
   /**
@@ -55,6 +63,22 @@ class MDCMenuSurface extends MDCComponent {
     if (this.root_.classList.contains(cssClasses.FIXED)) {
       this.setFixedPosition(true);
     }
+
+    this.handleKeydown_ = (evt) => this.foundation_.handleKeydown(evt);
+    this.handleBodyClick_ = (evt) => this.foundation_.handleBodyClick(evt);
+
+    this.registerBodyClickListener_ = () => document.body.addEventListener('click', this.handleBodyClick_);
+    this.deregisterBodyClickListener_ = () => document.body.removeEventListener('click', this.handleBodyClick_);
+
+    this.root_.addEventListener('keydown', this.handleKeydown_);
+    this.root_.addEventListener(strings.OPENED_EVENT, this.registerBodyClickListener_);
+    this.root_.addEventListener(strings.CLOSED_EVENT, this.deregisterBodyClickListener_);
+  }
+
+  destroy() {
+    this.root_.removeEventListener('keydown', this.handleKeydown_);
+    this.root_.removeEventListener(strings.OPENED_EVENT, this.registerBodyClickListener_);
+    this.root_.removeEventListener(strings.CLOSED_EVENT, this.deregisterBodyClickListener_);
   }
 
   /** @return {boolean} */
@@ -153,10 +177,6 @@ class MDCMenuSurface extends MDCComponent {
         removeClass: (className) => this.root_.classList.remove(className),
         hasClass: (className) => this.root_.classList.contains(className),
         hasAnchor: () => !!this.anchorElement,
-        registerInteractionHandler: (type, handler) => this.root_.addEventListener(type, handler),
-        deregisterInteractionHandler: (type, handler) => this.root_.removeEventListener(type, handler),
-        registerBodyClickHandler: (handler) => document.body.addEventListener('click', handler),
-        deregisterBodyClickHandler: (handler) => document.body.removeEventListener('click', handler),
         notifyClose: () => this.emit(MDCMenuSurfaceFoundation.strings.CLOSED_EVENT, {}),
         notifyOpen: () => this.emit(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, {}),
         isElementInContainer: (el) => this.root_ === el || this.root_.contains(el),

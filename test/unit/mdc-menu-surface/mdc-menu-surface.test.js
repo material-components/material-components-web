@@ -41,7 +41,6 @@ function setupTest(open = false) {
   const MockFoundationConstructor = td.constructor(MDCMenuSurfaceFoundation);
   const mockFoundation = new MockFoundationConstructor();
   const component = new MDCMenuSurface(root, mockFoundation);
-  component.initialSyncWithDOM();
   return {root, component, mockFoundation};
 }
 
@@ -49,6 +48,20 @@ suite('MDCMenuSurface');
 
 test('attachTo initializes and returns a MDCMenuSurface instance', () => {
   assert.isTrue(MDCMenuSurface.attachTo(getFixture()) instanceof MDCMenuSurface);
+});
+
+test('initialSyncWithDOM registers key handler on the menu surface', () => {
+  const {root, component, mockFoundation} = setupTest();
+  domEvents.emit(root, 'keydown');
+  td.verify(mockFoundation.handleKeydown(td.matchers.isA(Event)), {times: 1});
+  component.destroy();
+});
+
+test('destroy deregisters key handler on the menu surface', () => {
+  const {root, component, mockFoundation} = setupTest();
+  component.destroy();
+  domEvents.emit(root, 'keydown');
+  td.verify(mockFoundation.handleKeydown(td.matchers.isA(Event)), {times: 0});
 });
 
 test('get/set open', () => {
@@ -68,6 +81,13 @@ test('open=true opens the menu surface', () => {
   td.verify(mockFoundation.open());
 });
 
+test(`${strings.OPENED_EVENT} causes the body click handler to be registered`, () => {
+  const {root, mockFoundation} = setupTest();
+  domEvents.emit(root, strings.OPENED_EVENT);
+  domEvents.emit(document.body, 'click');
+  td.verify(mockFoundation.handleBodyClick(td.matchers.isA(Event)), {times: 1});
+});
+
 test('open=true does not throw error if no focusable elements', () => {
   const {root, component, mockFoundation} = setupTest();
 
@@ -85,6 +105,13 @@ test('open=false closes the menu surface', () => {
   const {component, mockFoundation} = setupTest();
   component.open = false;
   td.verify(mockFoundation.close());
+});
+
+test(`${strings.CLOSED_EVENT} causes the body click handler to be deregistered`, () => {
+  const {root, mockFoundation} = setupTest();
+  domEvents.emit(root, strings.CLOSED_EVENT);
+  domEvents.emit(document.body, 'click');
+  td.verify(mockFoundation.handleBodyClick(td.matchers.isA(Event)), {times: 0});
 });
 
 test('setMenuSurfaceAnchorElement', () => {
@@ -183,41 +210,42 @@ test('adapter#getInnerDimensions returns the dimensions of the container', () =>
   assert.equal(component.getDefaultFoundation().adapter_.getInnerDimensions().height, root.offsetHeight);
 });
 
-test('adapter#registerInteractionHandler proxies to addEventListener', () => {
-  const {root, component} = setupTest();
-  const handler = td.func('interactionHandler');
-  component.getDefaultFoundation().adapter_.registerInteractionHandler('foo', handler);
-  domEvents.emit(root, 'foo');
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('adapter#deregisterInteractionHandler proxies to removeEventListener', () => {
-  const {root, component} = setupTest();
-  const handler = td.func('interactionHandler');
-  root.addEventListener('foo', handler);
-  component.getDefaultFoundation().adapter_.deregisterInteractionHandler('foo', handler);
-  domEvents.emit(root, 'foo');
-  td.verify(handler(td.matchers.anything()), {times: 0});
-});
-
-test('adapter#registerBodyClickHandler proxies to addEventListener', () => {
-  const {component} = setupTest();
-  const handler = td.func('interactionHandler');
-
-  component.getDefaultFoundation().adapter_.registerBodyClickHandler(handler);
-  domEvents.emit(document.body, 'click');
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('adapter#deregisterBodyClickHandler proxies to removeEventListener', () => {
-  const {component} = setupTest();
-  const handler = td.func('interactionHandler');
-
-  document.body.addEventListener('click', handler);
-  component.getDefaultFoundation().adapter_.deregisterBodyClickHandler(handler);
-  domEvents.emit(document.body, 'click');
-  td.verify(handler(td.matchers.anything()), {times: 0});
-});
+//
+// test('adapter#registerInteractionHandler proxies to addEventListener', () => {
+//   const {root, component} = setupTest();
+//   const handler = td.func('interactionHandler');
+//   component.getDefaultFoundation().adapter_.registerInteractionHandler('foo', handler);
+//   domEvents.emit(root, 'foo');
+//   td.verify(handler(td.matchers.anything()));
+// });
+//
+// test('adapter#deregisterInteractionHandler proxies to removeEventListener', () => {
+//   const {root, component} = setupTest();
+//   const handler = td.func('interactionHandler');
+//   root.addEventListener('foo', handler);
+//   component.getDefaultFoundation().adapter_.deregisterInteractionHandler('foo', handler);
+//   domEvents.emit(root, 'foo');
+//   td.verify(handler(td.matchers.anything()), {times: 0});
+// });
+//
+// test('adapter#registerBodyClickHandler proxies to addEventListener', () => {
+//   const {component} = setupTest();
+//   const handler = td.func('interactionHandler');
+//
+//   component.getDefaultFoundation().adapter_.registerBodyClickHandler(handler);
+//   domEvents.emit(document.body, 'click');
+//   td.verify(handler(td.matchers.anything()));
+// });
+//
+// test('adapter#deregisterBodyClickHandler proxies to removeEventListener', () => {
+//   const {component} = setupTest();
+//   const handler = td.func('interactionHandler');
+//
+//   document.body.addEventListener('click', handler);
+//   component.getDefaultFoundation().adapter_.deregisterBodyClickHandler(handler);
+//   domEvents.emit(document.body, 'click');
+//   td.verify(handler(td.matchers.anything()), {times: 0});
+// });
 
 test(`adapter#notifyClose fires an ${strings.CLOSED_EVENT} custom event`, () => {
   const {root, component} = setupTest();
@@ -235,7 +263,7 @@ test(`adapter#notifyOpen fires an ${strings.OPENED_EVENT} custom event`, () => {
   td.verify(handler(td.matchers.anything()));
 });
 
-test('adapter#restoreFocus restore focus saved by adapter#saveFocus', () => {
+test('adapter#restoreFocus restores focus saved by adapter#saveFocus', () => {
   const {root, component} = setupTest(true);
   const button = bel`<button>Foo</button>`;
   document.body.appendChild(button);

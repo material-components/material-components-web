@@ -185,16 +185,11 @@ Method Signature | Description
 `removeClass(className: string) => void` | Removes a class from the root element.
 `hasClass(className: string) => boolean` | Returns a boolean indicating whether the root element has a given class.
 `hasAnchor: () => boolean` | Returns whether the menu surface has an anchor for positioning.
-`registerInteractionHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type`.
-`deregisterInteractionHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type`.
-`registerBodyClickHandler(handler: EventListener) => void` | Adds an event listener `handler` for event type `click` on the body.
-`deregisterBodyClickHandler(handler: EventListener) => void` | Removes an event listener `handler` for event type `click` on the body.
 `notifyClose() => void` | Dispatches an event notifying listeners that the menu surface has been closed.
 `notifyOpen() => void` | Dispatches an event notifying listeners that the menu surface has been opened.
 `isElementInContainer(el: Element) => Boolean` | Returns true if the `el` Element is inside the `mdc-menu-surface` container.
 `isRtl() => boolean` | Returns boolean indicating whether the current environment is RTL.
 `setTransformOrigin(value: string) => void` | Sets the transform origin for the menu surface element.
-`focus() => void` | Focuses the root element of the menu surface.
 `isFocused() => boolean` | Returns a boolean value indicating whether the root element of the menu surface is focused.
 `saveFocus() => void` | Stores the currently focused element on the document, for restoring with `restoreFocus`.
 `restoreFocus() => void` | Restores the previously saved focus state, by making the previously focused element the active focus again.

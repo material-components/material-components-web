@@ -111,6 +111,34 @@ test('attachTo initializes and returns a MDCMenu instance', () => {
   assert.isTrue(MDCMenu.attachTo(getFixture()) instanceof MDCMenu);
 });
 
+test('initialize registers event listener for click', () => {
+  const {mockFoundation, root} = setupTestWithFakes();
+  domEvents.emit(root, 'click');
+  td.verify(mockFoundation.handleClick(td.matchers.isA(Event)), {times: 1});
+});
+
+test('initialize registers event listener for keydown', () => {
+  const {mockFoundation, root} = setupTestWithFakes();
+  domEvents.emit(root, 'keydown');
+  td.verify(mockFoundation.handleKeydown(td.matchers.isA(Event)), {times: 1});
+});
+
+test('destory deregisters event listener for click', () => {
+  const {component, mockFoundation, root} = setupTestWithFakes();
+  component.destroy();
+
+  domEvents.emit(root, 'click');
+  td.verify(mockFoundation.handleClick(td.matchers.anything()), {times: 0});
+});
+
+test('destory deregisters event listener for keydown', () => {
+  const {component, mockFoundation, root} = setupTestWithFakes();
+  component.destroy();
+
+  domEvents.emit(root, 'keydown');
+  td.verify(mockFoundation.handleKeydown(td.matchers.anything()), {times: 0});
+});
+
 test('get/set open', () => {
   const {component, menuSurface} = setupTestWithFakes();
 
@@ -206,40 +234,6 @@ test('setAbsolutePosition', () => {
   td.verify(menuSurface.setAbsolutePosition(100, 120));
 });
 
-test('show registers event listener for keydown', () => {
-  const {component, mockFoundation, root} = setupTestWithFakes();
-  component.open = true;
-
-  domEvents.emit(root, 'keydown');
-  td.verify(mockFoundation.handleKeydown(td.matchers.anything()), {times: 1});
-});
-
-test('show registers event listener for click', () => {
-  const {component, mockFoundation, root} = setupTestWithFakes();
-  component.open = true;
-
-  domEvents.emit(root, 'click');
-  td.verify(mockFoundation.handleClick(td.matchers.anything()), {times: 1});
-});
-
-test('hide de-registers event listener for keydown', () => {
-  const {component, mockFoundation, root} = setupTestWithFakes();
-  component.open = true;
-  component.open = false;
-
-  domEvents.emit(root, 'keydown');
-  td.verify(mockFoundation.handleKeydown(td.matchers.anything()), {times: 0});
-});
-
-test('hide de-registers event listener for click', () => {
-  const {component, mockFoundation, root} = setupTestWithFakes();
-  component.open = true;
-  component.open = false;
-
-  domEvents.emit(root, 'click');
-  td.verify(mockFoundation.handleClick(td.matchers.anything()), {times: 0});
-});
-
 test('menu surface opened event causes first element to be focused', () => {
   const {root} = setupTest();
   document.body.appendChild(root);
@@ -265,7 +259,7 @@ test('menu surface opened event causes no element to be focused if the list is e
   document.body.removeChild(root);
 });
 
-test('show does not throw an error if there are no items in the list to focus', () => {
+test('open=true does not throw an error if there are no items in the list to focus', () => {
   const {component, root, list} = setupTestWithFakes();
   list.listElements_ = [];
   document.body.appendChild(root);
@@ -323,7 +317,7 @@ test('adapter#elementContainsClass returns false if the class does not exist on 
   assert.isFalse(containsFoo);
 });
 
-test('adapter#closeSurface proxies to menuSurface#hide', () => {
+test('adapter#closeSurface proxies to menuSurface#open', () => {
   const {component, menuSurface} = setupTestWithFakes();
   menuSurface.open = true;
   component.getDefaultFoundation().adapter_.closeSurface();

@@ -34,9 +34,9 @@ class MDCMenu extends MDCComponent {
     /** @private {!MDCList} */
     this.list_;
     /** @private {!Function} */
-    this.handleKeydown_ = this.foundation_.handleKeydown.bind(this.foundation_);
+    this.handleKeydown_;
     /** @private {!Function} */
-    this.handleClick_ = this.foundation_.handleClick.bind(this.foundation_);
+    this.handleClick_;
     /** @private {!Function} */
     this.afterOpenedCallback_;
   }
@@ -53,14 +53,21 @@ class MDCMenu extends MDCComponent {
     menuSurfaceFactory = (el) => new MDCMenuSurface(el),
     listFactory = (el) => new MDCList(el)) {
     this.menuSurface_ = menuSurfaceFactory(this.root_);
-    this.afterOpenedCallback_ = () => this.handleAfterOpened_();
 
     const list = this.root_.querySelector(strings.LIST_SELECTOR);
     if (list) {
       this.list_ = listFactory(list);
       this.list_.wrapFocus = true;
     }
+  }
+
+  initialSyncWithDOM() {
+    this.afterOpenedCallback_ = () => this.handleAfterOpened_();
+    this.handleKeydown_ = (evt) => this.foundation_.handleKeydown(evt);
+    this.handleClick_ = (evt) => this.foundation_.handleClick(evt);
+
     this.menuSurface_.listen(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, this.afterOpenedCallback_);
+    this.registerListeners_();
   }
 
   destroy() {
@@ -81,13 +88,7 @@ class MDCMenu extends MDCComponent {
 
   /** @param {boolean} value */
   set open(value) {
-    if (value) {
-      this.menuSurface_.open = true;
-      this.registerListeners_();
-    } else {
-      this.deregisterListeners_();
-      this.menuSurface_.open = false;
-    }
+    this.menuSurface_.open = value;
   }
 
   /**

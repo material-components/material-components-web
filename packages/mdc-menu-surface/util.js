@@ -32,4 +32,5 @@ function getTransformPropertyName(globalObj, forceRefresh = false) {
 
   return storedTransformPropertyName_;
 }
+
 export {getTransformPropertyName};
