@@ -58,16 +58,15 @@
   transition: 250ms transform $mdc-animation-standard-curve-timing-function;
 }
 
-.mdc-tab-indicator--fade > .mdc-tab-indicator__content,
+// --no-transition is applied in cases where styles need to be applied immediately to set up a transition
+.mdc-tab-indicator--no-transition > .mdc-tab-indicator__content {
+  transition: none;
+}
+
 .mdc-tab-indicator--fade > .mdc-tab-indicator__content {
   transition: 150ms opacity linear;
 }
 
 .mdc-tab-indicator--active.mdc-tab-indicator--fade > .mdc-tab-indicator__content {
   transition-delay: 100ms;
-}
-
-// --no-transition is applied in cases where styles need to be applied immediately to set up a transition
-.mdc-tab-indicator--no-transition > .mdc-tab-indicator__content {
-  transition: none;
 }
