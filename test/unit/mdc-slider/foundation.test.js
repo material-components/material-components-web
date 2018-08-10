@@ -40,7 +40,7 @@ test('exports cssClasses', () => {
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSliderFoundation, [
     'hasClass', 'addClass', 'removeClass', 'setThumbAttribute', 'setValueLabelPath',
-    'setValueLabelText', 'setValueLabelStyleProperty', 'removeValueLabelTextStyle', 'getDigitWidth',
+    'setValueLabelText', 'setValueLabelTextStyleProperty', 'removeValueLabelTextStyle', 'getDigitWidth',
     'getCommaWidth', 'computeBoundingRect', 'eventTargetHasClass', 'registerEventHandler',
     'deregisterEventHandler', 'registerThumbEventHandler', 'deregisterThumbEventHandler',
     'registerBodyEventHandler', 'deregisterBodyEventHandler', 'registerWindowResizeHandler',

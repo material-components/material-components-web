@@ -65,7 +65,7 @@ class MDCSliderFoundation extends MDCFoundation {
       setThumbAttribute: () => {},
       setValueLabelPath: () => {},
       setValueLabelText: () => {},
-      setValueLabelStyleProperty: () => {},
+      setValueLabelTextStyleProperty: () => {},
       removeValueLabelTextStyle: () => {},
       getDigitWidth: () => {},
       getCommaWidth: () => {},
@@ -731,7 +731,7 @@ class MDCSliderFoundation extends MDCFoundation {
         const xValue = this.calcValueLabelTextXValue_(translatePx);
         this.adapter_.setValueLabelPath(path);
         this.adapter_.setValueLabelText(this.value_.toLocaleString());
-        this.adapter_.setValueLabelStyleProperty('style', `transform: translateX(${xValue}px) translateY(-39px)`);
+        this.adapter_.setValueLabelTextStyleProperty('transform', `translateX(${xValue}px) translateY(-39px)`);
       }
       if (this.adapter_.isRTL()) {
         this.adapter_.setThumbStyleProperty('transform', `translateX(-${translatePx}px) translateX(50%)`);

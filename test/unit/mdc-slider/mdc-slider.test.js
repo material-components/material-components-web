@@ -282,13 +282,13 @@ test('adapter#setValueLabelText sets the text content for the value label text e
   assert.equal(valueLabelText.textContent, 'text');
 });
 
-test('adapter#setValueLabelStyleProperty sets the style on the value label text element', () => {
+test('adapter#setValueLabelTextStyleProperty sets the style on the value label text element', () => {
   const {root, component} = setupTest();
-  component.getDefaultFoundation().adapter_.setValueLabelStyleProperty('style', 'transform: scale(1);');
+  component.getDefaultFoundation().adapter_.setValueLabelTextStyleProperty('background-color', 'black');
 
   const valueLabelText = root.querySelector('.mdc-slider__value-label-text');
 
-  assert.equal(valueLabelText.getAttribute('style'), 'transform: scale(1);');
+  assert.equal(valueLabelText.style.backgroundColor, 'black');
 });
 
 test('adapter#removeValueLabelTextStyle removes the style from the value label text element', () => {

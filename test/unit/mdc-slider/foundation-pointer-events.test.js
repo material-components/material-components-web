@@ -124,7 +124,7 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     raf.flush();
 
     td.verify(mockAdapter.setValueLabelText(isA(String)));
-    td.verify(mockAdapter.setValueLabelStyleProperty(isA(String), isA(String)));
+    td.verify(mockAdapter.setValueLabelTextStyleProperty(isA(String), isA(String)));
 
     raf.restore();
   });
@@ -143,7 +143,7 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     raf.flush();
 
     td.verify(mockAdapter.setValueLabelText(isA(String)));
-    td.verify(mockAdapter.setValueLabelStyleProperty(isA(String), isA(String)));
+    td.verify(mockAdapter.setValueLabelTextStyleProperty(isA(String), isA(String)));
 
     raf.restore();
   });
@@ -352,7 +352,7 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
 
     // Once on mousedown, once on mousemove
     td.verify(mockAdapter.setValueLabelText(isA(String)), {times: 2});
-    td.verify(mockAdapter.setValueLabelStyleProperty(isA(String), isA(String)), {times: 2});
+    td.verify(mockAdapter.setValueLabelTextStyleProperty(isA(String), isA(String)), {times: 2});
 
     raf.restore();
   });

@@ -226,8 +226,8 @@ instance that was affected.
 | `removeClass(className: string) => void` | Removes a class `className` from the root element |
 | `setThumbAttribute(name: string, value: string) => void` | Sets an attribute `name` to the value `value` on the thumb element. |
 | `setValueLabelPath(value: string) => void` | Sets the path of the value label Element to the value `value`. |
-| `setValueLabelText(text: string) => void` | Sets the inner text and translateX to the assigned values. |
-| `setValueLabelStyleProperty(propertyName: string, value: string) => void` | Sets a dash-cased style property `propertyName` to the given `value` on the thumb element. |
+| `setValueLabelText(text: string) => void` | Sets the text content to the assigned value. |
+| `setValueLabelTextStyleProperty(propertyName: string, value: string) => void` | Sets a dash-cased style property `propertyName` to the given `value` on the value label text element. |
 | `removeValueLabelTextStyle() => void` | Removes the style attribute for the value label text Element. |
 | `getDigitWidth() => number` | Returns the width of one digit. |
 | `getCommaWidth() => number` | Returns the width of one comma. |

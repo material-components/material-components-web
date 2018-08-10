@@ -68,7 +68,7 @@ class MDCSliderAdapter {
    * @param {string} propertyName
    * @param {string} value
    */
-  setValueLabelStyleProperty(propertyName, value) {}
+  setValueLabelTextStyleProperty(propertyName, value) {}
 
   /**
    * Removes the style attribute for the value label text Element

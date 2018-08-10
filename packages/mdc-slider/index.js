@@ -138,8 +138,8 @@ class MDCSlider extends MDCComponent {
         setValueLabelText: (text) => {
           this.valueLabelText_.textContent = text;
         },
-        setValueLabelStyleProperty: (propertyName, value) => {
-          this.valueLabelText_.setAttribute(propertyName, value);
+        setValueLabelTextStyleProperty: (propertyName, value) => {
+          this.valueLabelText_.style.setProperty(propertyName, value);
         },
         removeValueLabelTextStyle: () => {
           this.valueLabelText_.removeAttribute('style');
