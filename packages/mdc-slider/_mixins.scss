@@ -35,10 +35,14 @@
   }
 }
 
-@mixin mdc-slider-tick-mark-color($color) {
+@mixin mdc-slider-tick-mark-color($color, $filled-color) {
   .mdc-slider__tick-mark::after,
   .mdc-slider__tick-mark-set::after {
-    @include mdc-theme-prop(background-color, $color);
+    @include mdc-theme-prop(background-color, rgba(mdc-theme-prop-value($color), $mdc-slider-tick-mark-opacity));
+  }
+
+  .mdc-slider__tick-mark--filled::after {
+    @include mdc-theme-prop(background-color, rgba(mdc-theme-prop-value($filled-color), $mdc-slider-tick-mark-opacity));
   }
 }
 

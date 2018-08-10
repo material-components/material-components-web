@@ -437,6 +437,52 @@ test('adapter#setLastTickMarkStyleProperty sets a style property on the last tic
   assert.equal(lastTickMark.style.backgroundColor, div.style.backgroundColor);
 });
 
+test('adapter#hasTickMarkClass returns true if class is present on the given tick mark', () => {
+  const {root, component} = setupTest();
+  component.setUpTickMarks_();
+  const tickMark = root.querySelector('.mdc-slider__tick-mark');
+  tickMark.classList.add('mdc-slider--test');
+
+  assert.isTrue(component.getDefaultFoundation().adapter_.hasTickMarkClass(tickMark, 'mdc-slider--test'));
+});
+
+test('adapter#hasTickMarkClass returns false if class is not present on the given tick mark', () => {
+  const {root, component} = setupTest();
+  component.setUpTickMarks_();
+  const tickMark = root.querySelector('.mdc-slider__tick-mark');
+
+  assert.isFalse(component.getDefaultFoundation().adapter_.hasTickMarkClass(tickMark, 'mdc-slider--test'));
+});
+
+test('adapter#addTickMarkClass adds the given class to the given tickmark', () => {
+  const {root, component} = setupTest();
+  component.setUpTickMarks_();
+  const tickMark = root.querySelector('.mdc-slider__tick-mark');
+
+  component.getDefaultFoundation().adapter_.addTickMarkClass(tickMark, 'mdc-slider--test');
+
+  assert.isTrue(tickMark.classList.contains('mdc-slider--test'));
+});
+
+test('adapter#removeTickMarkClass removes the given class from the given tickmark', () => {
+  const {root, component} = setupTest();
+  component.setUpTickMarks_();
+  const tickMark = root.querySelector('.mdc-slider__tick-mark');
+
+  tickMark.classList.add('mdc-slider--test');
+  component.getDefaultFoundation().adapter_.removeTickMarkClass(tickMark, 'mdc-slider--test');
+
+  assert.isFalse(tickMark.classList.contains('mdc-slider--test'));
+});
+
+test('adapter#getTickMarks returns the tickMarkSet children', () => {
+  const {root, component} = setupTest();
+  component.setUpTickMarks_();
+  const tickMarkSet = root.querySelector('.mdc-slider__tick-mark-set').children;
+
+  assert.equal(component.getDefaultFoundation().adapter_.getTickMarks(), tickMarkSet);
+});
+
 test('adapter#focusThumb sets the focus of the document to the thumb', () => {
   const {root, component} = setupTest();
   const thumb = root.querySelector('.mdc-slider__thumb');

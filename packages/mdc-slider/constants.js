@@ -37,6 +37,7 @@ const cssClasses = {
   TRACK: 'mdc-slider__track',
   TRACK_FILL: 'mdc-slider__track-fill',
   TICK_MARK: 'mdc-slider__tick-mark',
+  TICK_MARK_FILLED: 'mdc-slider__tick-mark--filled',
   ACTIVE: 'mdc-slider--active',
   IN_TRANSIT: 'mdc-slider--in-transit',
   DISABLED: 'mdc-slider--disabled',
