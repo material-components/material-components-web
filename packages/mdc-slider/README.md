@@ -246,6 +246,10 @@ instance that was affected.
 | `setThumbStyleProperty(propertyName: string, value: string) => void` | Sets a dash-cased style property `propertyName` to the given `value` on the thumb element. |
 | `setTrackFillStyleProperty(propertyName: string, value: string) => void` | Sets a dash-cased style property `propertyName` to the given `value` on the track-fill element. |
 | `setLastTickMarkStyleProperty(propertyName: string, value: string) => void` | Sets a dash-cased style property `propertyName` to the given `value` on the last tick mark element. |
+| `hasTickMarkClass(tickMark: Element, className: string) => void` | Returns true if the given `tickMark` contains the given `className`. |
+| `addTickMarkClass(tickMark: Element, className: string) => void` | Adds the given `className` to the given `tickMark`. |
+| `removeTickMarkClass(tickMark: Element, className: string) => void` | Removes the given `className` from the given `tickMark`. |
+| `getTickMarks() => void` | Returns an array of the tickMark elements. |
 | `focusThumb() => void` | Sets the document focus to the thumb. |
 | `activateRipple() => void` | Activates the ripple on the thumb element. |
 | `deactivateRipple() => void` | Deativates the ripple on the thumb element. |
@@ -256,6 +260,8 @@ instance that was affected.
 | Method Signature | Description |
 | --- | --- |
 | `layout() => void` | Same as layout() detailed within the component methods table. Does the majority of the work; the component's layout method simply proxies to this. |
+| `calculateNumberOfTickMarks() => number` | Calculates the number of tick marks for discrete slider. |
+| `adjustLastTickMark(numMarks: number) => void` | Adjusts the last tick mark style for discrete sliders. |
 | `getValue() => number` | Returns the current value of the slider |
 | `setValue(value: number) => void` | Sets the current value of the slider |
 | `getMax() => number` | Returns the max value the slider can have |

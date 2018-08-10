@@ -84,6 +84,10 @@ class MDCSliderFoundation extends MDCFoundation {
       setThumbStyleProperty: () => {},
       setTrackFillStyleProperty: () => {},
       setLastTickMarkStyleProperty: () => {},
+      hasTickMarkClass: () => {},
+      addTickMarkClass: () => {},
+      removeTickMarkClass: () => {},
+      getTickMarks: () => {},
       focusThumb: () => {},
       activateRipple: () => {},
       deactivateRipple: () => {},
@@ -271,6 +275,26 @@ class MDCSliderFoundation extends MDCFoundation {
       this.setDiscreteMotion_(false);
       if (this.isDiscrete_) {
         this.adapter_.removeValueLabelTextStyle();
+      }
+    }
+  }
+  /**
+   * Update the classes on the tick marks to distinguish filled
+   * @param {number} currentTickMark
+   * @private
+   */
+  updateTickMarkClasses_(currentTickMark) {
+    const tickMarks = this.adapter_.getTickMarks();
+    if (tickMarks) {
+      for (let i = 0; i < currentTickMark; i++) {
+        if (!this.adapter_.hasTickMarkClass(tickMarks[i], cssClasses.TICK_MARK_FILLED)) {
+          this.adapter_.addTickMarkClass(tickMarks[i], cssClasses.TICK_MARK_FILLED);
+        }
+      }
+      for (let i = currentTickMark; i < tickMarks.length; i++) {
+        if (this.adapter_.hasTickMarkClass(tickMarks[i], cssClasses.TICK_MARK_FILLED)) {
+          this.adapter_.removeTickMarkClass(tickMarks[i], cssClasses.TICK_MARK_FILLED);
+        }
       }
     }
   }
@@ -729,6 +753,10 @@ class MDCSliderFoundation extends MDCFoundation {
 
     if (this.animationFrameID_) {
       window.cancelAnimationFrame(this.animationFrameID_);
+    }
+    if (this.isDiscrete_) {
+      const numSteps = Math.round(this.value_ / this.step_);
+      this.updateTickMarkClasses_(numSteps);
     }
     this.animationFrameID_ = requestAnimationFrame(() => {
       if (this.isDiscrete_ && this.active_) {
