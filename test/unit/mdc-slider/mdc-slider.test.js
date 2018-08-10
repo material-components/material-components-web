@@ -441,9 +441,9 @@ test('adapter#removeTickMarkClass removes the given class from the given tickmar
 test('adapter#getTickMarks returns the tickMarkSet children', () => {
   const {root, component} = setupTest();
   component.setUpTickMarks_();
-  const tickMarkset = root.querySelector('.mdc-slider__tick-mark-set').children;
+  const tickMarkSet = root.querySelector('.mdc-slider__tick-mark-set').children;
 
-  assert.equal(tickMarkset, component.getDefaultFoundation().adapter_.getTickMarks());
+  assert.equal(component.getDefaultFoundation().adapter_.getTickMarks(), tickMarkSet);
 });
 
 test('adapter#focusThumb sets the focus of the document to the thumb', () => {
