@@ -63,7 +63,9 @@ class MDCSliderFoundation extends MDCFoundation {
       addClass: () => {},
       removeClass: () => {},
       setThumbAttribute: () => {},
+      removeThumbAttribute: () => {},
       computeBoundingRect: () => {},
+      getThumbTabIndex: () => {},
       eventTargetHasClass: () => {},
       registerEventHandler: () => {},
       deregisterEventHandler: () => {},
@@ -107,6 +109,8 @@ class MDCSliderFoundation extends MDCFoundation {
     this.max_ = 100;
     /** @private {number} */
     this.value_ = 0;
+    /** @private {number} */
+    this.savedTabIndex_ = 0;
     /** @private {number} */
     this.step_ = 0;
     /** @private {function(!Event): undefined} */
@@ -192,6 +196,26 @@ class MDCSliderFoundation extends MDCFoundation {
     this.adapter_.setThumbAttribute(strings.ARIA_VALUEMIN, String(this.min_));
   }
 
+  /** @return {boolean} */
+  isDisabled() {
+    return this.adapter_.hasClass(cssClasses.DISABLED);
+  }
+
+  /** @param {boolean} disabled */
+  setDisabled(disabled) {
+    this.toggleClass_(cssClasses.DISABLED, disabled);
+    if (disabled) {
+      this.savedTabIndex_ = this.adapter_.getThumbTabIndex();
+      this.adapter_.setThumbAttribute(strings.ARIA_DISABLED, 'true');
+      this.adapter_.removeThumbAttribute('tabindex');
+    } else {
+      this.adapter_.removeThumbAttribute(strings.ARIA_DISABLED);
+      if (!isNaN(this.savedTabIndex_)) {
+        this.adapter_.setThumbAttribute('tabindex', String(this.savedTabIndex_));
+      }
+    }
+  }
+
   /** @return {number} */
   getStep() {
     return this.step_;
@@ -265,6 +289,10 @@ class MDCSliderFoundation extends MDCFoundation {
    * @param {!Event} evt
    */
   handleInteractionStart(evt) {
+    if (this.isDisabled()) {
+      return;
+    }
+
     this.setActive_(true);
     this.adapter_.activateRipple();
 

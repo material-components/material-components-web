@@ -22,7 +22,7 @@ import {verifyDefaultAdapter} from '../helpers/foundation';
 import {createMockRaf} from '../helpers/raf';
 import {setupFoundationTest} from '../helpers/setup';
 
-import {cssClasses} from '../../../packages/mdc-slider/constants';
+import {strings, cssClasses} from '../../../packages/mdc-slider/constants';
 import MDCSliderFoundation from '../../../packages/mdc-slider/foundation';
 
 suite('MDCSliderFoundation');
@@ -39,8 +39,8 @@ test('exports cssClasses', () => {
 
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSliderFoundation, [
-    'hasClass', 'addClass', 'removeClass', 'setThumbAttribute',
-    'computeBoundingRect', 'eventTargetHasClass', 'registerEventHandler', 'deregisterEventHandler',
+    'hasClass', 'addClass', 'removeClass', 'setThumbAttribute', 'removeThumbAttribute',
+    'computeBoundingRect', 'getThumbTabIndex', 'eventTargetHasClass', 'registerEventHandler', 'deregisterEventHandler',
     'registerBodyEventHandler', 'deregisterBodyEventHandler', 'registerWindowResizeHandler',
     'deregisterWindowResizeHandler', 'notifyInput', 'notifyChange', 'setThumbStyleProperty',
     'setTrackFillStyleProperty', 'setLastTickMarkStyleProperty', 'hasTickMarkClass', 'addTickMarkClass',
@@ -248,7 +248,7 @@ test('#setValue updates "aria-valuenow" with the current value', () => {
 
   foundation.setValue(10);
 
-  td.verify(mockAdapter.setThumbAttribute('aria-valuenow', '10'));
+  td.verify(mockAdapter.setThumbAttribute(strings.ARIA_VALUENOW, '10'));
 
   raf.restore();
 });
@@ -377,7 +377,7 @@ test('#setMax clamps the value to the new maximum if above the new maximum', () 
   foundation.setMax(50);
 
   assert.equal(foundation.getValue(), 50);
-  td.verify(mockAdapter.setThumbAttribute('aria-valuenow', '50'));
+  td.verify(mockAdapter.setThumbAttribute(strings.ARIA_VALUENOW, '50'));
 
   raf.restore();
 });
@@ -414,7 +414,7 @@ test('#setMax updates "aria-valuemax" to the new maximum', () => {
 
   foundation.setMax(50);
 
-  td.verify(mockAdapter.setThumbAttribute('aria-valuemax', '50'));
+  td.verify(mockAdapter.setThumbAttribute(strings.ARIA_VALUEMAX, '50'));
 
   raf.restore();
 });
@@ -461,7 +461,7 @@ test('#setMin clamps the value to the new minimum if above the new minimum', () 
   foundation.setMin(10);
 
   assert.equal(foundation.getValue(), 10);
-  td.verify(mockAdapter.setThumbAttribute('aria-valuenow', '10'));
+  td.verify(mockAdapter.setThumbAttribute(strings.ARIA_VALUENOW, '10'));
 
   raf.restore();
 });
@@ -498,7 +498,7 @@ test('#setMin updates "aria-valuemin" to the new minimum', () => {
 
   foundation.setMin(10);
 
-  td.verify(mockAdapter.setThumbAttribute('aria-valuemin', '10'));
+  td.verify(mockAdapter.setThumbAttribute(strings.ARIA_VALUEMIN, '10'));
 
   raf.restore();
 });
@@ -610,6 +610,61 @@ test('#handleTransitionEnd no-op when inTransit_ is true and event target is not
   td.verify(mockAdapter.removeClass(cssClasses.IN_TRANSIT), {times: 0});
 
   raf.restore();
+});
+
+test('#isDisabled returns the disabled state as set by #setDisabled', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(cssClasses.DISABLED)).thenReturn(true);
+  foundation.setDisabled(true);
+
+  assert.isTrue(foundation.isDisabled());
+});
+
+test('#setDisabled adds the mdc-slider--disabled class when given true', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.setDisabled(true);
+
+  td.verify(mockAdapter.addClass(cssClasses.DISABLED));
+});
+
+test('#setDisabled adds "aria-disabled=true" when given true', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.setDisabled(true);
+
+  td.verify(mockAdapter.setThumbAttribute(strings.ARIA_DISABLED, 'true'));
+});
+
+test('#setDisabled removes the tabindex attribute when given true', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.setDisabled(true);
+
+  td.verify(mockAdapter.removeThumbAttribute('tabindex'));
+});
+
+test('#setDisabled removes the mdc-slider--disabled class when given false', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.setDisabled(false);
+
+  td.verify(mockAdapter.removeClass(cssClasses.DISABLED));
+});
+
+test('#setDisabled removes the "aria-disabled" attribute when given false', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.setDisabled(false);
+
+  td.verify(mockAdapter.removeThumbAttribute(strings.ARIA_DISABLED));
+});
+
+test('#setDisabled restores any previously set tabindices when given false', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getThumbTabIndex()).thenReturn(0);
+
+  // Save the mock tab index set above
+  foundation.setDisabled(true);
+
+  foundation.setDisabled(false);
+
+  td.verify(mockAdapter.setThumbAttribute('tabindex', '0'));
 });
 
 test('#updateTickMarkClasses_ adds the filled class to the tick marks', () => {
