@@ -137,6 +137,34 @@ class MDCSliderAdapter {
   setLastTickMarkStyleProperty(propertyName, value) {}
 
   /**
+   * Returns true if the given tick mark has the given class
+   * @param {Element} tickMark
+   * @param {string} className
+   * @return {boolean}
+   */
+  hasTickMarkClass(tickMark, className) {}
+
+  /**
+   * Adds the given class to the given tick mark
+   * @param {Element} tickMark
+   * @param {string} className
+   */
+  addTickMarkClass(tickMark, className) {}
+
+  /**
+   * Removes the given class from the given tick mark
+   * @param {Element} tickMark
+   * @param {string} className
+   */
+  removeTickMarkClass(tickMark, className) {}
+
+  /**
+   * Returns the array of tick marks
+   * @return {Array}
+   */
+  getTickMarks() {}
+
+  /**
    * Sets focus to thumb
    */
   focusThumb() {}
