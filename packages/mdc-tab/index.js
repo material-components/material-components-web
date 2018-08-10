@@ -78,7 +78,7 @@ class MDCTab extends MDCComponent {
   }
 
   destroy() {
-    this.unlisten('click', this.handleClick_);
+    this.unlisten('click', /** @type {!Function} */ (this.handleClick_));
     this.ripple_.destroy();
     super.destroy();
   }
