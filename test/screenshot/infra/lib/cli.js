@@ -259,12 +259,8 @@ during normal business hours when other people are likely to be running tests.
     this.addArg_(subparser, {
       optionNames: ['--retries'],
       type: 'integer',
-      defaultValue: 3,
       description: `
-Number of times to retry a screenshot that comes back with diffs. If you're not expecting any diffs, automatically
-retrying screenshots can help decrease noise from flaky browser rendering. However, if you're making a change that
-intentionally affects the rendered output, there's no point slowing down the test by retrying a bunch of screenshots
-that you know are going to have diffs.
+Number of times to retry a screenshot that has diffs. Overrides values from 'test/screenshot/diffing.json'.
 `,
     });
 

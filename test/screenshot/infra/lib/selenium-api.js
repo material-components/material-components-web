@@ -16,6 +16,8 @@
 
 'use strict';
 
+require('url-search-params-polyfill');
+
 const Jimp = require('jimp');
 const VError = require('verror');
 const UserAgentParser = require('useragent');
@@ -38,9 +40,9 @@ const GitHubApi = require('./github-api');
 const ImageCropper = require('./image-cropper');
 const ImageDiffer = require('./image-differ');
 const LocalStorage = require('./local-storage');
+const getStackTrace = require('./stacktrace')('SeleniumApi');
 const {Browser, Builder, By, logging, until} = require('selenium-webdriver');
 const {CBT_CONCURRENCY_POLL_INTERVAL_MS, CBT_CONCURRENCY_MAX_WAIT_MS, ExitCode} = Constants;
-const {SELENIUM_FONT_LOAD_WAIT_MS} = Constants;
 
 /**
  * @typedef {{
@@ -135,6 +137,30 @@ class SeleniumApi {
      */
     this.isKilled_ = false;
 
+    /**
+     * @type {boolean}
+     * @private
+     */
+    this.isKillRequested_ = false;
+
+    /**
+     * @type {number}
+     * @private
+     */
+    this.numSessionsStarted_ = 0;
+
+    /**
+     * @type {number}
+     * @private
+     */
+    this.numSessionsEnded_ = 0;
+
+    /**
+     * @type {?number}
+     * @private
+     */
+    this.prevNumWaiting_ = null;
+
     if (this.cli_.isOnline()) {
       this.killBrowsersOnExit_();
     }
@@ -183,10 +209,16 @@ class SeleniumApi {
    */
   async captureAllPagesInAllBrowsers_({reportData, userAgents}) {
     const promises = [];
+
     for (const userAgent of userAgents) {
       promises.push(this.captureAllPagesInOneBrowser_({reportData, userAgent}));
     }
-    await Promise.all(promises);
+
+    try {
+      await Promise.all(promises);
+    } finally {
+      await this.killBrowsersGracefully_();
+    }
   }
 
   /**
@@ -196,12 +228,34 @@ class SeleniumApi {
    * @private
    */
   async captureAllPagesInOneBrowser_({reportData, userAgent}) {
-    /** @type {!IWebDriver} */
-    const driver = await this.createWebDriver_({reportData, userAgent});
+    /** @type {!VError|!Error|undefined} */
+    let runtimeError;
+
+    /** @type {!IWebDriver|undefined} */
+    let driver;
+
+    /** @type {string|undefined} */
+    let stackTrace;
+
+    this.numSessionsStarted_++;
+
+    try {
+      stackTrace = getStackTrace('captureAllPagesInOneBrowser_');
+      driver = await this.createWebDriver_({reportData, userAgent});
+    } catch (err) {
+      runtimeError = new VError(err, stackTrace);
+      this.numSessionsEnded_++;
+    }
+
+    if (runtimeError) {
+      throw runtimeError;
+    }
 
     /** @type {!Session} */
     const session = await driver.getSession();
     const seleniumSessionId = session.getId();
+
+    /** @type {?Array<!mdc.proto.Screenshot>} */
     let changedScreenshots;
 
     this.seleniumSessionIds_.add(seleniumSessionId);
@@ -214,18 +268,29 @@ class SeleniumApi {
     };
 
     try {
-      changedScreenshots = (await this.driveBrowser_({reportData, userAgent, driver})).changedScreenshots;
-      await this.printBrowserConsoleLogs_(driver);
+      stackTrace = getStackTrace('captureAllPagesInOneBrowser_');
+      changedScreenshots = await this.driveBrowser_({reportData, userAgent, driver});
       logResult(CliStatuses.FINISHED);
     } catch (err) {
+      runtimeError = new VError(err, stackTrace);
       logResult(CliStatuses.FAILED);
-      await this.killBrowsers_();
-      throw new VError(err, 'Failed to drive web browser');
     } finally {
+      this.numSessionsEnded_++;
       logResult(CliStatuses.QUITTING);
-      await driver.quit();
-      this.seleniumSessionIds_.delete(seleniumSessionId);
+      await driver.quit().catch(() => 0);
     }
+
+    if (runtimeError) {
+      throw runtimeError;
+    }
+
+    if (!changedScreenshots) {
+      return;
+    }
+
+    this.seleniumSessionIds_.delete(seleniumSessionId);
+
+    await this.printBrowserConsoleLogs_(driver);
 
     if (this.cli_.isOnline()) {
       await this.cbtApi_.setTestScore({
@@ -474,14 +539,12 @@ class SeleniumApi {
     }).join('_');
     /* eslint-enable camelcase */
   }
+
   /**
    * @param {!mdc.proto.ReportData} reportData
    * @param {!mdc.proto.UserAgent} userAgent
    * @param {!IWebDriver} driver
-   * @return {Promise<{
-   *   changedScreenshots: !Array<!mdc.proto.Screenshot>,
-   *   unchangedScreenshots: !Array<!mdc.proto.Screenshot>,
-   * }>}
+   * @return {!Promise<?Array<!mdc.proto.Screenshot>>} Changed screenshots
    * @private
    */
   async driveBrowser_({reportData, userAgent, driver}) {
@@ -492,6 +555,11 @@ class SeleniumApi {
 
     /** @type {!Array<!mdc.proto.Screenshot>} */
     const screenshotQueueAll = reportData.screenshots.runnable_screenshot_browser_map[userAgent.alias].screenshots;
+
+    // Populate `userAgent.navigator`
+    screenshotQueueAll.forEach((screenshot) => {
+      screenshot.user_agent = userAgent;
+    });
 
     // TODO(acdvorak): Find a better way to do this
     const screenshotQueues = [
@@ -509,7 +577,12 @@ class SeleniumApi {
       for (const screenshot of screenshotQueue) {
         screenshot.capture_state = CaptureState.RUNNING;
 
-        const diffImageResult = await this.takeScreenshotWithRetries_({driver, userAgent, screenshot, meta});
+        /** @type {!mdc.proto.DiffImageResult} */
+        const diffImageResult = await this.takeScreenshotWithRetries_({driver, screenshot, meta});
+
+        if (this.isKillRequested_ || this.isKilled_) {
+          return null;
+        }
 
         screenshot.capture_state = CaptureState.DIFFED;
         screenshot.diff_image_result = diffImageResult;
@@ -536,7 +609,7 @@ class SeleniumApi {
     reportData.screenshots.changed_screenshot_list.push(...changedScreenshots);
     reportData.screenshots.unchanged_screenshot_list.push(...unchangedScreenshots);
 
-    return {changedScreenshots, unchangedScreenshots};
+    return changedScreenshots;
   }
 
   /**
@@ -562,45 +635,55 @@ class SeleniumApi {
   async resizeWindow_({driver, isSmallComponent}) {
     /** @type {!Window} */
     const window = driver.manage().window();
+
+    // TODO(acdvorak): Put these values in `test/screenshot/diffing.json` or `constants.js`
     const rect = isSmallComponent
       ? {x: 0, y: 0, width: 400, height: 768}
       : {x: 0, y: 0, width: 1366, height: 768}
     ;
+
     await window.setRect(rect).catch(() => undefined);
     return rect;
   }
 
   /**
    * @param {!IWebDriver} driver
-   * @param {!mdc.proto.UserAgent} userAgent
    * @param {!mdc.proto.Screenshot} screenshot
    * @param {!mdc.proto.ReportMeta} meta
-   * @return {!Promise<!mdc.proto.DiffImageResult>}
+   * @return {!Promise<?mdc.proto.DiffImageResult>}
    * @private
    */
-  async takeScreenshotWithRetries_({driver, userAgent, screenshot, meta}) {
-    let delayMs = 0;
-
+  async takeScreenshotWithRetries_({driver, screenshot, meta}) {
     /** @type {?mdc.proto.DiffImageResult} */
     let diffImageResult = null;
     let changedPixelCount = 0;
     let changedPixelFraction = 0;
-    const maxPixelFraction = require('../../diffing.json').flaky_tests.max_auto_retry_changed_pixel_fraction;
 
-    while (screenshot.retry_count <= screenshot.max_retries && changedPixelFraction <= maxPixelFraction) {
+    const maxRetries = screenshot.flake_config.max_retries;
+    const maxPixelFraction = screenshot.flake_config.max_changed_pixel_fraction_to_retry;
+    const userAgent = screenshot.user_agent;
+
+    while (true) {
+      const isRetryCountExceeded = screenshot.retry_count > maxRetries;
+      const isPixelFractionExceeded = changedPixelFraction > maxPixelFraction;
+      if (isRetryCountExceeded || isPixelFractionExceeded) {
+        break;
+      }
+
+      if (this.isKillRequested_ || this.isKilled_) {
+        return null;
+      }
+
       if (screenshot.retry_count > 0) {
         const {width, height} = diffImageResult.diff_image_dimensions;
         const whichMsg = `${screenshot.actual_html_file.public_url} > ${userAgent.alias}`;
-        const countMsg = `attempt ${screenshot.retry_count} of ${screenshot.max_retries}`;
+        const countMsg = `attempt ${screenshot.retry_count} of ${maxRetries}`;
         const pixelMsg = `${changedPixelCount.toLocaleString()} pixels differed`;
         const deltaMsg = `${diffImageResult.changed_pixel_percentage}% of ${width}x${height}`;
         this.logStatus_(CliStatuses.RETRY, `${whichMsg} (${countMsg}). ${pixelMsg} (${deltaMsg})`);
-        delayMs = 500;
       }
 
-      screenshot.actual_image_file = await this.takeScreenshotWithoutRetries_({
-        meta, screenshot, userAgent, driver, delayMs,
-      });
+      screenshot.actual_image_file = await this.takeScreenshotWithoutRetries_({meta, screenshot, driver});
       diffImageResult = await this.imageDiffer_.compareOneScreenshot({meta, screenshot});
 
       if (!diffImageResult.has_changed) {
@@ -618,16 +701,15 @@ class SeleniumApi {
   /**
    * @param {!mdc.proto.ReportMeta} meta
    * @param {!mdc.proto.Screenshot} screenshot
-   * @param {!mdc.proto.UserAgent} userAgent
    * @param {!IWebDriver} driver
-   * @param {number=} delayMs
    * @return {!Promise<!mdc.proto.TestFile>}
    * @private
    */
-  async takeScreenshotWithoutRetries_({meta, screenshot, userAgent, driver, delayMs = 0}) {
+  async takeScreenshotWithoutRetries_({meta, screenshot, driver}) {
+    const userAgent = screenshot.user_agent;
     const htmlFilePath = screenshot.html_file_path;
     const htmlFileUrl = screenshot.actual_html_file.public_url;
-    const imageBuffer = await this.capturePageAsPng_({driver, userAgent, url: htmlFileUrl, delayMs});
+    const imageBuffer = await this.capturePageAsPng_({driver, screenshot, url: htmlFileUrl});
     const imageFileNameSuffix = userAgent.image_filename_suffix;
     const imageFilePathRelative = `${htmlFilePath}.${imageFileNameSuffix}.png`;
     const imageFilePathAbsolute = path.resolve(meta.local_screenshot_image_base_dir, imageFilePathRelative);
@@ -643,21 +725,30 @@ class SeleniumApi {
 
   /**
    * @param {!IWebDriver} driver
-   * @param {!mdc.proto.UserAgent} userAgent
+   * @param {!mdc.proto.Screenshot} screenshot
    * @param {string} url
-   * @param {number=} delayMs
    * @return {!Promise<!Buffer>} Buffer containing PNG image data for the cropped screenshot image
    * @private
    */
-  async capturePageAsPng_({driver, userAgent, url, delayMs = 0}) {
-    this.logStatus_(CliStatuses.GET, `${url} > ${userAgent.alias}...`);
+  async capturePageAsPng_({driver, screenshot, url}) {
+    const userAgent = screenshot.user_agent;
+    const flakeConfig = screenshot.flake_config;
+
+    const qsParams = new URLSearchParams({
+      font_face_observer_timeout_ms: flakeConfig.font_face_observer_timeout_ms,
+      fonts_loaded_reflow_delay_ms: flakeConfig.fonts_loaded_reflow_delay_ms,
+    });
+    const urlWithQsParams = `${url}?${qsParams}`;
+
+    this.logStatus_(CliStatuses.GET, `${urlWithQsParams} > ${userAgent.alias}...`);
 
     const isOnline = this.cli_.isOnline();
-    const fontTimeoutMs = isOnline ? SELENIUM_FONT_LOAD_WAIT_MS : 500;
+    const fontLoadTimeoutMs = isOnline ? flakeConfig.font_face_observer_timeout_ms : 500;
 
-    await driver.get(url);
-    await driver.wait(until.elementLocated(By.css('[data-fonts-loaded]')), fontTimeoutMs).catch(() => 0);
+    await driver.get(urlWithQsParams);
+    await driver.wait(until.elementLocated(By.css('[data-fonts-loaded]')), fontLoadTimeoutMs).catch(() => 0);
 
+    const delayMs = flakeConfig.retry_delay_ms;
     if (delayMs > 0) {
       await driver.sleep(delayMs);
     }
@@ -671,7 +762,7 @@ class SeleniumApi {
     const {width: uncroppedWidth, height: uncroppedHeight} = uncroppedJimpImage.bitmap;
     const {width: croppedWidth, height: croppedHeight} = croppedJimpImage.bitmap;
 
-    const message = `${url} > ${userAgent.alias} screenshot from ` +
+    const message = `${urlWithQsParams} > ${userAgent.alias} screenshot from ` +
       `${uncroppedWidth}x${uncroppedHeight} to ${croppedWidth}x${croppedHeight}`;
     this.logStatus_(CliStatuses.CROP, message);
 
@@ -683,30 +774,83 @@ class SeleniumApi {
     // catches ctrl+c event
     process.on('SIGINT', () => {
       const exit = () => process.exit(ExitCode.SIGINT);
-      this.killBrowsers_().then(exit, exit);
+      this.killBrowsersGracefully_().then(exit, exit);
     });
 
     // catches "kill pid"
     process.on('SIGTERM', () => {
       const exit = () => process.exit(ExitCode.SIGTERM);
-      this.killBrowsers_().then(exit, exit);
+      this.killBrowsersGracefully_().then(exit, exit);
     });
 
     process.on('uncaughtException', (err) => {
       console.error(err);
       const exit = () => process.exit(ExitCode.UNCAUGHT_EXCEPTION);
-      this.killBrowsers_().then(exit, exit);
+      this.killBrowsersGracefully_().then(exit, exit);
     });
 
     process.on('unhandledRejection', (err) => {
       console.error(err);
       const exit = () => process.exit(ExitCode.UNHANDLED_PROMISE_REJECTION);
-      this.killBrowsers_().then(exit, exit);
+      this.killBrowsersGracefully_().then(exit, exit);
     });
   }
 
+  /**
+   * @return {!Promise<void>}
+   * @private
+   */
+  async killBrowsersGracefully_() {
+    this.isKillRequested_ = true;
+
+    return new Promise((resolve) => {
+      const startTimeMs = Date.now();
+      const timer = setInterval(() => {
+        this.checkIfBrowsersCanBeKilled_(timer, startTimeMs, resolve);
+      }, 1000);
+    });
+  }
+
+  /**
+   * @param {!Object} timer
+   * @param {number} startTimeMs
+   * @param {function()} resolve
+   * @private
+   */
+  checkIfBrowsersCanBeKilled_(timer, startTimeMs, resolve) {
+    const numStarted = this.numSessionsStarted_;
+    const numEnded = this.numSessionsEnded_;
+
+    const isFinished = numStarted > 0 && numStarted === numEnded;
+    const isTimedOut = Duration.hasElapsed(Constants.SELENIUM_KILL_WAIT_MS, startTimeMs);
+
+    if (isFinished || isTimedOut) {
+      clearInterval(timer);
+      this.killBrowsersImmediately_().then(resolve);
+      return;
+    }
+
+    const numWaiting = numStarted - numEnded;
+    const plural = numWaiting === 1 ? '' : 's';
+    const pronoun = numWaiting === 1 ? 'it' : 'they';
+
+    if (numWaiting === this.prevNumWaiting_) {
+      return;
+    }
+
+    console.log('');
+    console.log(
+      CliColor.magenta(
+        `Waiting for ${numWaiting} Selenium session${plural} to start so ${pronoun} can be gracefully terminated...`
+      )
+    );
+    console.log('');
+
+    this.prevNumWaiting_ = numWaiting;
+  }
+
   /** @private */
-  async killBrowsers_() {
+  async killBrowsersImmediately_() {
     if (this.cli_.isOffline()) {
       return;
     }
@@ -715,17 +859,13 @@ class SeleniumApi {
     const wasAlreadyKilled = this.isKilled_;
 
     if (!wasAlreadyKilled) {
-      console.log('\n');
+      console.log('');
+      console.log('');
     }
 
     this.isKilled_ = true;
 
     await this.cbtApi_.killSeleniumTests(ids, /* silent */ wasAlreadyKilled);
-
-    if (!wasAlreadyKilled && ids.length > 0) {
-      console.log('\nWaiting for CBT cancellation requests to complete...');
-      await this.sleep_(Duration.seconds(4).toMillis());
-    }
   }
 
   /**
@@ -756,6 +896,10 @@ class SeleniumApi {
     const paddingSpaces = ''.padStart(maxStatusWidth - statusName.length, ' ');
 
     console.log(eraseCurrentLine + paddingSpaces + status.color(statusName) + ':', ...args);
+
+    if (this.isKillRequested_) {
+      return;
+    }
 
     const numDone = this.numCompleted_;
     const strDone = numDone.toLocaleString();
