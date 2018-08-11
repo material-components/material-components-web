@@ -364,7 +364,7 @@ class SeleniumApi {
       const max = stats.max_concurrent_selenium_tests;
       const available = max - active;
 
-      if (!available) {
+      if (available === 0) {
         const elapsedTimeMs = Date.now() - startTimeMs;
         const elapsedTimeHuman = Duration.millis(elapsedTimeMs).toHumanShort();
         if (elapsedTimeMs > CBT_CONCURRENCY_MAX_WAIT_MS) {
@@ -381,14 +381,19 @@ class SeleniumApi {
         continue;
       }
 
-      const requested = Math.min(this.cli_.parallels, available);
+      const cliParallels = this.cli_.parallels;
+      if (cliParallels > 0) {
+        return Math.min(cliParallels, available);
+      }
 
       // If nobody else is running any tests, run half the number of concurrent tests allowed by our CBT account.
       // This gives us _some_ parallelism while still allowing other users to run their tests.
-      // If someone else is already running tests, only run one test at a time.
-      const half = active === 0 ? Math.ceil(max / 2) : 1;
+      if (active === 0) {
+        return Math.ceil(max / 2);
+      }
 
-      return requested === 0 ? half : requested;
+      // If someone else is already running tests, only run one test at a time.
+      return 1;
     }
   }
 

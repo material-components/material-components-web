@@ -247,12 +247,12 @@ If a local dev server is not already running, one will be started for the durati
     this.addArg_(subparser, {
       optionNames: ['--parallels'],
       type: 'integer',
-      defaultValue: 0,
       description: `
 Maximum number of browser VMs to run in parallel (subject to our CBT plan limit and VM availability).
-A value of '0' will start 3 browsers if nobody else is running tests, or 1 browser if other tests are already running.
-IMPORTANT: To ensure that multiple developers can run their tests simultaneously, do not set this value higher than 1
-during normal business hours when other people are likely to be running tests.
+If no value is specified, the default is to start 3 browsers if nobody else is running tests, or 1 browser if other
+tests are already running.
+IMPORTANT: To ensure that multiple developers can run their tests simultaneously, DO NOT set this value during normal
+business hours.
 `,
     });
 
@@ -335,12 +335,12 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
     return this.args_['--diff-base'];
   }
 
-  /** @return {number} */
+  /** @return {?number} */
   get parallels() {
     return this.args_['--parallels'];
   }
 
-  /** @return {number} */
+  /** @return {?number} */
   get retries() {
     return this.args_['--retries'];
   }
