@@ -128,12 +128,15 @@ class GitHubApi {
     let description;
 
     if (reportFileUrl) {
-      if (numChanged > 0) {
-        state = GitHubApi.PullRequestState.FAILURE;
-        description = `${numChanged.toLocaleString()} screenshots differ from PR's golden.json`;
-      } else {
+      if (numChanged === 0) {
         state = GitHubApi.PullRequestState.SUCCESS;
         description = `All ${numUnchanged.toLocaleString()} screenshots match PR's golden.json`;
+      } else if (numChanged === 1) {
+        state = GitHubApi.PullRequestState.FAILURE;
+        description = "1 screenshot differs from PR's golden.json";
+      } else {
+        state = GitHubApi.PullRequestState.FAILURE;
+        description = `${numChanged.toLocaleString()} screenshots differ from PR's golden.json`;
       }
 
       targetUrl = meta.report_html_file.public_url;
