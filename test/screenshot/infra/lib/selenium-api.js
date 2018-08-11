@@ -840,6 +840,11 @@ class SeleniumApi {
   async killBrowsersGracefully_() {
     this.isKillRequested_ = true;
 
+    const numStarted = this.numSessionsStarted_;
+    if (numStarted === 0) {
+      return;
+    }
+
     return new Promise((resolve) => {
       const startTimeMs = Date.now();
       const timer = setInterval(() => {
@@ -868,17 +873,22 @@ class SeleniumApi {
     }
 
     const numWaiting = numStarted - numEnded;
-    const plural = numWaiting === 1 ? '' : 's';
-    const pronoun = numWaiting === 1 ? 'it' : 'they';
 
+    if (numWaiting === 0) {
+      clearInterval(timer);
+      return;
+    }
+
+    // Reduce log spam. Don't print the same message twice in a row.
     if (numWaiting === this.prevNumWaiting_) {
       return;
     }
 
+    const plural = numWaiting === 1 ? '' : 's';
     console.log('');
     console.log(
       CliColor.magenta(
-        `Waiting for ${numWaiting} Selenium session${plural} to start so ${pronoun} can be gracefully terminated...`
+        `Waiting for ${numWaiting} Selenium session${plural} to exit gracefully...`
       )
     );
     console.log('');
