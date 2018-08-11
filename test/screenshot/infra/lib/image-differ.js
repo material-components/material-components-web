@@ -82,7 +82,7 @@ class ImageDiffer {
       /** @type {!Buffer} */
       diffImageBuffer,
       /** @type {!mdc.proto.DiffImageResult} */
-      diffImageResult
+      diffImageResult,
     } = await this.analyzeComparisonResult_({
       expectedImageBuffer,
       actualImageBuffer,
