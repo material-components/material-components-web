@@ -26,7 +26,7 @@ const path = require('path');
 const serveIndex = require('serve-index');
 
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
-const {Approvals, DiffImageResult, Dimensions, GitStatus, GoldenScreenshot, LibraryVersion} = mdcProto;
+const {Approvals, DiffImageResult, Dimensions, FlakeConfig, GitStatus, GoldenScreenshot, LibraryVersion} = mdcProto;
 const {ReportData, ReportMeta, Screenshot, Screenshots, ScreenshotList, TestFile, User, UserAgents} = mdcProto;
 const {InclusionType, CaptureState} = Screenshot;
 
@@ -136,6 +136,7 @@ class ReportBuilder {
 
     /** @type {!mdc.proto.ReportMeta} */
     const reportMeta = await this.createReportMetaProto_(goldenDiffBase);
+
     /** @type {!mdc.proto.UserAgents} */
     const userAgents = await this.createUserAgentsProto_();
 
@@ -146,6 +147,7 @@ class ReportBuilder {
       await this.startTemporaryHttpServer_(reportMeta);
     }
 
+    /** @type {!mdc.proto.Screenshots} */
     const screenshots = await this.createScreenshotsProto_({reportMeta, userAgents, goldenDiffBase});
 
     const reportData = ReportData.create({
@@ -673,7 +675,6 @@ class ReportBuilder {
       });
 
       for (const userAgent of allUserAgents) {
-        const maxRetries = this.cli_.isOnline() ? this.cli_.retries : 0;
         const userAgentAlias = userAgent.alias;
         const isScreenshotRunnable = isHtmlFileRunnable && userAgent.is_runnable;
         const expectedScreenshotImageUrl = goldenFile.getScreenshotImageUrl({htmlFilePath, userAgentAlias});
@@ -692,12 +693,63 @@ class ReportBuilder {
           actual_html_file: actualHtmlFile,
           expected_image_file: expectedImageFile,
           retry_count: 0,
-          max_retries: maxRetries,
+          flake_config: this.getFlakeConfig_({userAgent, htmlFilePath}),
         }));
       }
     }
 
     return allScreenshots;
+  }
+
+  /**
+   * @param {!mdc.proto.UserAgent} userAgent
+   * @param {string} htmlFilePath
+   * @return {!mdc.proto.FlakeConfig}
+   * @private
+   */
+  getFlakeConfig_({userAgent, htmlFilePath}) {
+    const diffingJson = require('../../diffing.json');
+    const flakeConfig = FlakeConfig.fromObject(diffingJson.flaky_test_config.global_config);
+
+    /**
+     * @param {?Array<string>} patterns
+     * @return {!Array<!RegExp>}
+     */
+    function toRegExpArray(patterns) {
+      if (!patterns) {
+        return [];
+      }
+      return patterns.map((pattern) => new RegExp(pattern));
+    }
+
+    for (const override of diffingJson.flaky_test_config.config_overrides) {
+      const browserRegexPatterns = toRegExpArray(override.browser_regex_patterns);
+      const urlRegexPatterns = toRegExpArray(override.url_regex_patterns);
+
+      const isBrowserMatch =
+        browserRegexPatterns.length === 0 ||
+        browserRegexPatterns.some((regexp) => regexp.test(userAgent.alias));
+
+      const isUrlMatch =
+        urlRegexPatterns.length === 0 ||
+        urlRegexPatterns.some((regexp) => regexp.test(htmlFilePath));
+
+      if (!isBrowserMatch || !isUrlMatch) {
+        continue;
+      }
+
+      Object.assign(flakeConfig, override.custom_config);
+    }
+
+    if (!this.cli_.isOnline()) {
+      flakeConfig.max_retries = 0;
+    }
+
+    if (Number.isFinite(this.cli_.retries)) {
+      flakeConfig.max_retries = this.cli_.retries;
+    }
+
+    return flakeConfig;
   }
 
   /**
