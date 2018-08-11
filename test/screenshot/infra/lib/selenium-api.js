@@ -171,6 +171,24 @@ class SeleniumApi {
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async captureAllPages(reportData) {
+    /** @type {string|undefined} */
+    let stackTrace;
+
+    try {
+      stackTrace = getStackTrace('captureAllPages');
+      return await this.captureAllPages_(reportData);
+    } catch (err) {
+      throw new VError(err, stackTrace);
+    } finally {
+      await this.killBrowsersGracefully_();
+    }
+  }
+
+  /**
+   * @param {!mdc.proto.ReportData} reportData
+   * @return {!Promise<!mdc.proto.ReportData>}
+   */
+  async captureAllPages_(reportData) {
     const runnableUserAgents = reportData.user_agents.runnable_user_agents;
     let queuedUserAgents = runnableUserAgents.slice();
     let runningUserAgents;
@@ -184,17 +202,31 @@ class SeleniumApi {
 
     while (queuedUserAgents.length > 0) {
       const maxParallelTests = await this.getMaxParallelTests_();
+
       runningUserAgents = queuedUserAgents.slice(0, maxParallelTests);
       queuedUserAgents = queuedUserAgents.slice(maxParallelTests);
+
       const runningUserAgentAliases = runningUserAgents.map((ua) => ua.alias);
       const queuedUserAgentAliases = queuedUserAgents.map((ua) => ua.alias);
       const runningUserAgentLoggable = getLoggableAliases(runningUserAgentAliases);
       const queuedUserAgentLoggable = getLoggableAliases(queuedUserAgentAliases);
+
       this.logStatus_(CliStatuses.ACTIVE, runningUserAgentLoggable);
       this.logStatus_(CliStatuses.QUEUED, queuedUserAgentLoggable);
-      await this.captureAllPagesInAllBrowsers_({reportData, userAgents: runningUserAgents});
+
+      /** @type {string|undefined} */
+      let stackTrace;
+
+      try {
+        stackTrace = getStackTrace('captureAllPages_');
+        await this.captureAllPagesInAllBrowsers_({reportData, userAgents: runningUserAgents});
+      } catch (err) {
+        throw new VError(err, stackTrace);
+      }
     }
 
+    // The CLI status line "CAPTURED: 3 of 4 screenshots (75.0% complete)" does not end with a newline. This allows it
+    // to be deleted and overwritten in the terminal. We need to print an extra newline here to move the cursor past it.
     console.log('');
     console.log('');
 
@@ -209,16 +241,10 @@ class SeleniumApi {
    */
   async captureAllPagesInAllBrowsers_({reportData, userAgents}) {
     const promises = [];
-
     for (const userAgent of userAgents) {
       promises.push(this.captureAllPagesInOneBrowser_({reportData, userAgent}));
     }
-
-    try {
-      await Promise.all(promises);
-    } finally {
-      await this.killBrowsersGracefully_();
-    }
+    await Promise.all(promises);
   }
 
   /**
@@ -417,11 +443,22 @@ class SeleniumApi {
    * @private
    */
   async buildWebDriverWithRetries_(driverBuilder, startTimeMs = Date.now()) {
+    // TODO(acdvorak): De-dupe this with getMaxParallelTests_()
+    const elapsedTimeMs = Date.now() - startTimeMs;
+    const elapsedTimeHuman = Duration.millis(elapsedTimeMs).toHumanShort();
+    if (elapsedTimeMs > CBT_CONCURRENCY_MAX_WAIT_MS) {
+      throw new Error(`Timed out waiting for CBT resources to become available after ${elapsedTimeHuman}`);
+    }
+
+    /** @type {string|undefined} */
+    let stackTrace;
+
     try {
+      stackTrace = getStackTrace('buildWebDriverWithRetries_');
       return await driverBuilder.build();
     } catch (err) {
       if (err.message.indexOf('maximum number of parallel') === -1) {
-        throw new VError(err, 'WebDriver instance could not be created');
+        throw new VError(err, stackTrace);
       }
     }
 
@@ -430,19 +467,14 @@ class SeleniumApi {
     const max = concurrencyStats.max_concurrent_selenium_tests;
 
     // TODO(acdvorak): De-dupe this with getMaxParallelTests_()
-    const elapsedTimeMs = Date.now() - startTimeMs;
-    const elapsedTimeHuman = Duration.millis(elapsedTimeMs).toHumanShort();
-    if (elapsedTimeMs > CBT_CONCURRENCY_MAX_WAIT_MS) {
-      throw new Error(`Timed out waiting for CBT resources to become available after ${elapsedTimeHuman}`);
-    }
-
-    // TODO(acdvorak): De-dupe this with getMaxParallelTests_()
     const waitTimeMs = CBT_CONCURRENCY_POLL_INTERVAL_MS;
     const waitTimeHuman = Duration.millis(waitTimeMs).toHumanShort();
+
     this.logStatus_(
       CliStatuses.WAITING,
       `Parallel execution limit reached. ${max} tests are already running on CBT. Will retry in ${waitTimeHuman}...`
     );
+
     await this.sleep_(waitTimeMs);
 
     return this.buildWebDriverWithRetries_(driverBuilder, startTimeMs);
