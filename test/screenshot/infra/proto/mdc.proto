@@ -259,7 +259,16 @@ message Screenshot {
   DiffImageResult diff_image_result = 11;
 
   uint32 retry_count = 12;
-  uint32 max_retries = 13;
+  FlakeConfig flake_config = 13;
+}
+
+message FlakeConfig {
+  uint32 max_retries = 1;
+  uint32 retry_delay_ms = 2;
+  uint32 min_changed_pixel_count = 3;
+  double max_changed_pixel_fraction_to_retry = 4;
+  uint32 font_face_observer_timeout_ms = 5;
+  uint32 fonts_loaded_reflow_delay_ms = 6;
 }
 
 message Dimensions {

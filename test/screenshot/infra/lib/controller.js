@@ -95,7 +95,7 @@ class Controller {
   async initForCapture(goldenDiffBase) {
     const isOnline = this.cli_.isOnline();
     if (isOnline) {
-      await this.cbtApi_.killStalledSeleniumTests();
+      await this.cbtApi_.killZombieSeleniumTests();
     }
     return await this.reportBuilder_.initForCapture(goldenDiffBase);
   }

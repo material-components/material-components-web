@@ -4,8 +4,42 @@
       "transparency": 0
     }
   },
-  "flaky_tests": {
-    "min_changed_pixel_count": 15,
-    "max_auto_retry_changed_pixel_fraction": 0.10
+
+  "flaky_test_config": {
+    "global_config": {
+      "max_retries": 2,
+      "retry_delay_ms": 500,
+      "min_changed_pixel_count": 15,
+      "max_changed_pixel_fraction_to_retry": 0.10,
+      "font_face_observer_timeout_ms": 3000,
+      "fonts_loaded_reflow_delay_ms": 50
+    },
+
+    "config_overrides": [
+      {
+        "browser_regex_patterns": [
+          "desktop_windows_edge@latest",
+          "desktop_windows_ie@11"
+        ],
+        "custom_config": {
+          "max_retries": 4,
+          "fonts_loaded_reflow_delay_ms": 300
+        }
+      },
+      {
+        "browser_regex_patterns": [
+          "desktop_windows_edge@latest",
+          "desktop_windows_ie@11"
+        ],
+        "url_regex_patterns": [
+          "mdc-textfield",
+          "mdc-typography"
+        ],
+        "custom_config": {
+          "max_retries": 6,
+          "fonts_loaded_reflow_delay_ms": 500
+        }
+      }
+    ]
   }
 }
