@@ -12,7 +12,7 @@
       "min_changed_pixel_count": 15,
       "max_changed_pixel_fraction_to_retry": 0.10,
       "font_face_observer_timeout_ms": 3000,
-      "fonts_loaded_reflow_delay_ms": 100
+      "fonts_loaded_reflow_delay_ms": 50
     },
 
     "config_overrides": [
@@ -23,7 +23,7 @@
         ],
         "custom_config": {
           "max_retries": 4,
-          "fonts_loaded_reflow_delay_ms": 500
+          "fonts_loaded_reflow_delay_ms": 300
         }
       },
       {
@@ -37,7 +37,7 @@
         ],
         "custom_config": {
           "max_retries": 6,
-          "fonts_loaded_reflow_delay_ms": 1000
+          "fonts_loaded_reflow_delay_ms": 500
         }
       }
     ]
