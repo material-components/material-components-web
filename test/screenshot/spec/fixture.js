@@ -14,10 +14,24 @@
  * limitations under the License.
  */
 
+import 'url-search-params-polyfill';
+
 window.mdc = window.mdc || {};
 
 class TestFixture {
   constructor() {
+    /**
+     * @type {number}
+     * @private
+     */
+    this.fontFaceObserverTimeoutMs_ = this.getUrlParamInt_('font_face_observer_timeout_ms', 3000);
+
+    /**
+     * @type {number}
+     * @private
+     */
+    this.fontsLoadedReflowDelayMs_ = this.getUrlParamInt_('fonts_loaded_reflow_delay_ms', 100);
+
     /**
      * @type {!Promise<void>}
      */
@@ -28,11 +42,6 @@ class TestFixture {
       this.measureMobileViewport_();
       this.notifyWebDriver_();
     });
-  }
-
-  /** @private */
-  notifyWebDriver_() {
-    document.body.setAttribute('data-fonts-loaded', '');
   }
 
   /**
@@ -59,13 +68,11 @@ class TestFixture {
 
       Promise.all([robotoFontPromise, materialIconsFontPromise]).then(() => {
         // Give Microsoft Edge enough time to reflow and repaint `.mdc-text-field__input` elements after the page loads.
-        // TODO(acdvorak): Only do this for Edge on textfield URLs.
-        setTimeout(resolve, 500);
+        setTimeout(resolve, this.fontsLoadedReflowDelayMs_);
       });
 
-      // Fallback in case a font never loads.
-      // TODO(acdvorak): Create a constant for font loading timeout values
-      setTimeout(resolve, 3000);
+      // Fallback in case one or more fonts don't load.
+      setTimeout(resolve, this.fontFaceObserverTimeoutMs_);
     });
   }
 
@@ -101,6 +108,23 @@ If you are trying to create a test page for a fullscreen component like drawer o
 remove the 'test-viewport--mobile' class from the '<main class="test-viewport">' element.
           `.trim());
     }
+  }
+
+  /** @private */
+  notifyWebDriver_() {
+    document.body.setAttribute('data-fonts-loaded', '');
+  }
+
+  /**
+   * @param {string} name
+   * @param {number=} defaultValue
+   * @return {number}
+   * @private
+   */
+  getUrlParamInt_(name, defaultValue = 0) {
+    const qs = new URLSearchParams(window.location.search);
+    const val = parseInt(qs.get(name), 10);
+    return isFinite(val) ? val : defaultValue;
   }
 }
 
