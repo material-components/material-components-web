@@ -688,6 +688,7 @@ class ReportBuilder {
 
         allScreenshots.push(Screenshot.create({
           is_runnable: isScreenshotRunnable,
+          is_url_skipped_by_cli: !isHtmlFileRunnable,
           user_agent: userAgent,
           html_file_path: htmlFilePath,
           expected_html_file: expectedHtmlFile,

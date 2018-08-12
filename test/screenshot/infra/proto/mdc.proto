@@ -246,6 +246,7 @@ message Screenshot {
   }
 
   bool is_runnable = 1;
+  bool is_url_skipped_by_cli = 14;
   InclusionType inclusion_type = 2;
   CaptureState capture_state = 3;
   UserAgent user_agent = 4;

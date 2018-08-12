@@ -5490,6 +5490,7 @@ $root.mdc = (function() {
              * @memberof mdc.proto
              * @interface IScreenshot
              * @property {boolean|null} [is_runnable] Screenshot is_runnable
+             * @property {boolean|null} [is_url_skipped_by_cli] Screenshot is_url_skipped_by_cli
              * @property {mdc.proto.Screenshot.InclusionType|null} [inclusion_type] Screenshot inclusion_type
              * @property {mdc.proto.Screenshot.CaptureState|null} [capture_state] Screenshot capture_state
              * @property {mdc.proto.IUserAgent|null} [user_agent] Screenshot user_agent
@@ -5526,6 +5527,14 @@ $root.mdc = (function() {
              * @instance
              */
             Screenshot.prototype.is_runnable = false;
+
+            /**
+             * Screenshot is_url_skipped_by_cli.
+             * @member {boolean} is_url_skipped_by_cli
+             * @memberof mdc.proto.Screenshot
+             * @instance
+             */
+            Screenshot.prototype.is_url_skipped_by_cli = false;
 
             /**
              * Screenshot inclusion_type.
@@ -5673,6 +5682,8 @@ $root.mdc = (function() {
                     writer.uint32(/* id 12, wireType 0 =*/96).uint32(message.retry_count);
                 if (message.flake_config != null && message.hasOwnProperty("flake_config"))
                     $root.mdc.proto.FlakeConfig.encode(message.flake_config, writer.uint32(/* id 13, wireType 2 =*/106).fork()).ldelim();
+                if (message.is_url_skipped_by_cli != null && message.hasOwnProperty("is_url_skipped_by_cli"))
+                    writer.uint32(/* id 14, wireType 0 =*/112).bool(message.is_url_skipped_by_cli);
                 return writer;
             };
 
@@ -5709,6 +5720,9 @@ $root.mdc = (function() {
                     switch (tag >>> 3) {
                     case 1:
                         message.is_runnable = reader.bool();
+                        break;
+                    case 14:
+                        message.is_url_skipped_by_cli = reader.bool();
                         break;
                     case 2:
                         message.inclusion_type = reader.int32();
@@ -5784,6 +5798,9 @@ $root.mdc = (function() {
                 if (message.is_runnable != null && message.hasOwnProperty("is_runnable"))
                     if (typeof message.is_runnable !== "boolean")
                         return "is_runnable: boolean expected";
+                if (message.is_url_skipped_by_cli != null && message.hasOwnProperty("is_url_skipped_by_cli"))
+                    if (typeof message.is_url_skipped_by_cli !== "boolean")
+                        return "is_url_skipped_by_cli: boolean expected";
                 if (message.inclusion_type != null && message.hasOwnProperty("inclusion_type"))
                     switch (message.inclusion_type) {
                     default:
@@ -5869,6 +5886,8 @@ $root.mdc = (function() {
                 var message = new $root.mdc.proto.Screenshot();
                 if (object.is_runnable != null)
                     message.is_runnable = Boolean(object.is_runnable);
+                if (object.is_url_skipped_by_cli != null)
+                    message.is_url_skipped_by_cli = Boolean(object.is_url_skipped_by_cli);
                 switch (object.inclusion_type) {
                 case "UNKNOWN":
                 case 0:
@@ -5987,6 +6006,7 @@ $root.mdc = (function() {
                     object.diff_image_result = null;
                     object.retry_count = 0;
                     object.flake_config = null;
+                    object.is_url_skipped_by_cli = false;
                 }
                 if (message.is_runnable != null && message.hasOwnProperty("is_runnable"))
                     object.is_runnable = message.is_runnable;
@@ -6014,6 +6034,8 @@ $root.mdc = (function() {
                     object.retry_count = message.retry_count;
                 if (message.flake_config != null && message.hasOwnProperty("flake_config"))
                     object.flake_config = $root.mdc.proto.FlakeConfig.toObject(message.flake_config, options);
+                if (message.is_url_skipped_by_cli != null && message.hasOwnProperty("is_url_skipped_by_cli"))
+                    object.is_url_skipped_by_cli = message.is_url_skipped_by_cli;
                 return object;
             };
 
