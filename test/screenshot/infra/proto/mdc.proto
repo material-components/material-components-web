@@ -246,6 +246,7 @@ message Screenshot {
   }
 
   bool is_runnable = 1;
+  bool is_url_skipped_by_cli = 14;
   InclusionType inclusion_type = 2;
   CaptureState capture_state = 3;
   UserAgent user_agent = 4;
@@ -269,6 +270,7 @@ message FlakeConfig {
   double max_changed_pixel_fraction_to_retry = 4;
   uint32 font_face_observer_timeout_ms = 5;
   uint32 fonts_loaded_reflow_delay_ms = 6;
+  bool skip_all = 7;
 }
 
 message Dimensions {
