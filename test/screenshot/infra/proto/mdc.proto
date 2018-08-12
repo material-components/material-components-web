@@ -269,6 +269,7 @@ message FlakeConfig {
   double max_changed_pixel_fraction_to_retry = 4;
   uint32 font_face_observer_timeout_ms = 5;
   uint32 fonts_loaded_reflow_delay_ms = 6;
+  bool skip_all = 7;
 }
 
 message Dimensions {

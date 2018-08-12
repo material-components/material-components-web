@@ -6083,6 +6083,7 @@ $root.mdc = (function() {
              * @property {number|null} [max_changed_pixel_fraction_to_retry] FlakeConfig max_changed_pixel_fraction_to_retry
              * @property {number|null} [font_face_observer_timeout_ms] FlakeConfig font_face_observer_timeout_ms
              * @property {number|null} [fonts_loaded_reflow_delay_ms] FlakeConfig fonts_loaded_reflow_delay_ms
+             * @property {boolean|null} [skip_all] FlakeConfig skip_all
              */
 
             /**
@@ -6149,6 +6150,14 @@ $root.mdc = (function() {
             FlakeConfig.prototype.fonts_loaded_reflow_delay_ms = 0;
 
             /**
+             * FlakeConfig skip_all.
+             * @member {boolean} skip_all
+             * @memberof mdc.proto.FlakeConfig
+             * @instance
+             */
+            FlakeConfig.prototype.skip_all = false;
+
+            /**
              * Creates a new FlakeConfig instance using the specified properties.
              * @function create
              * @memberof mdc.proto.FlakeConfig
@@ -6184,6 +6193,8 @@ $root.mdc = (function() {
                     writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.font_face_observer_timeout_ms);
                 if (message.fonts_loaded_reflow_delay_ms != null && message.hasOwnProperty("fonts_loaded_reflow_delay_ms"))
                     writer.uint32(/* id 6, wireType 0 =*/48).uint32(message.fonts_loaded_reflow_delay_ms);
+                if (message.skip_all != null && message.hasOwnProperty("skip_all"))
+                    writer.uint32(/* id 7, wireType 0 =*/56).bool(message.skip_all);
                 return writer;
             };
 
@@ -6235,6 +6246,9 @@ $root.mdc = (function() {
                         break;
                     case 6:
                         message.fonts_loaded_reflow_delay_ms = reader.uint32();
+                        break;
+                    case 7:
+                        message.skip_all = reader.bool();
                         break;
                     default:
                         reader.skipType(tag & 7);
@@ -6289,6 +6303,9 @@ $root.mdc = (function() {
                 if (message.fonts_loaded_reflow_delay_ms != null && message.hasOwnProperty("fonts_loaded_reflow_delay_ms"))
                     if (!$util.isInteger(message.fonts_loaded_reflow_delay_ms))
                         return "fonts_loaded_reflow_delay_ms: integer expected";
+                if (message.skip_all != null && message.hasOwnProperty("skip_all"))
+                    if (typeof message.skip_all !== "boolean")
+                        return "skip_all: boolean expected";
                 return null;
             };
 
@@ -6316,6 +6333,8 @@ $root.mdc = (function() {
                     message.font_face_observer_timeout_ms = object.font_face_observer_timeout_ms >>> 0;
                 if (object.fonts_loaded_reflow_delay_ms != null)
                     message.fonts_loaded_reflow_delay_ms = object.fonts_loaded_reflow_delay_ms >>> 0;
+                if (object.skip_all != null)
+                    message.skip_all = Boolean(object.skip_all);
                 return message;
             };
 
@@ -6339,6 +6358,7 @@ $root.mdc = (function() {
                     object.max_changed_pixel_fraction_to_retry = 0;
                     object.font_face_observer_timeout_ms = 0;
                     object.fonts_loaded_reflow_delay_ms = 0;
+                    object.skip_all = false;
                 }
                 if (message.max_retries != null && message.hasOwnProperty("max_retries"))
                     object.max_retries = message.max_retries;
@@ -6352,6 +6372,8 @@ $root.mdc = (function() {
                     object.font_face_observer_timeout_ms = message.font_face_observer_timeout_ms;
                 if (message.fonts_loaded_reflow_delay_ms != null && message.hasOwnProperty("fonts_loaded_reflow_delay_ms"))
                     object.fonts_loaded_reflow_delay_ms = message.fonts_loaded_reflow_delay_ms;
+                if (message.skip_all != null && message.hasOwnProperty("skip_all"))
+                    object.skip_all = message.skip_all;
                 return object;
             };
 

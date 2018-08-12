@@ -17,16 +17,18 @@
 
     "config_overrides": [
       {
+        "description": "IE and Edge flake more frequently than other browsers, especially with font rendering",
         "browser_regex_patterns": [
           "desktop_windows_edge@latest",
           "desktop_windows_ie@11"
         ],
         "custom_config": {
-          "max_retries": 4,
-          "fonts_loaded_reflow_delay_ms": 300
+          "max_retries": 3,
+          "fonts_loaded_reflow_delay_ms": 250
         }
       },
       {
+        "description": "IE and Edge are extra flaky on Textfield and Typography pages for some reason",
         "browser_regex_patterns": [
           "desktop_windows_edge@latest",
           "desktop_windows_ie@11"
@@ -38,6 +40,19 @@
         "custom_config": {
           "max_retries": 6,
           "fonts_loaded_reflow_delay_ms": 500
+        }
+      },
+      {
+        "description": "Edge flakes so frequently on certain pages that it needs to be disabled entirely",
+        "browser_regex_patterns": [
+          "desktop_windows_edge@latest"
+        ],
+        "url_regex_patterns": [
+          "mdc-textfield/.*textarea",
+          "mdc-typography"
+        ],
+        "custom_config": {
+          "skip_all": true
         }
       }
     ]

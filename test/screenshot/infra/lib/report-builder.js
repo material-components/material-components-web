@@ -676,7 +676,8 @@ class ReportBuilder {
 
       for (const userAgent of allUserAgents) {
         const userAgentAlias = userAgent.alias;
-        const isScreenshotRunnable = isHtmlFileRunnable && userAgent.is_runnable;
+        const flakeConfig = this.getFlakeConfig_({userAgent, htmlFilePath});
+        const isScreenshotRunnable = isHtmlFileRunnable && userAgent.is_runnable && !flakeConfig.skip_all;
         const expectedScreenshotImageUrl = goldenFile.getScreenshotImageUrl({htmlFilePath, userAgentAlias});
 
         /** @type {?mdc.proto.TestFile} */
@@ -693,7 +694,7 @@ class ReportBuilder {
           actual_html_file: actualHtmlFile,
           expected_image_file: expectedImageFile,
           retry_count: 0,
-          flake_config: this.getFlakeConfig_({userAgent, htmlFilePath}),
+          flake_config: flakeConfig,
         }));
       }
     }
