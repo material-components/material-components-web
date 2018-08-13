@@ -144,6 +144,7 @@
   @include mdc-text-field-fill-color_($mdc-text-field-disabled-background);
 
   pointer-events: none;
+  border-bottom: none;
 
   .mdc-floating-label {
     cursor: default;

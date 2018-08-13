@@ -33,20 +33,17 @@
 // postcss-bem-linter: define text-field
 
 .mdc-text-field {
-  @include mdc-floating-label-float-position($mdc-text-field-label-position-y);
-  @include mdc-floating-label-shake-animation(text-field);
-  @include mdc-ripple-surface;
-  // Text Field intentionally omits press ripple, so each state needs to be specified individually
-  @include mdc-states-base-color($mdc-text-field-ink-color);
-  @include mdc-states-hover-opacity(mdc-states-opacity($mdc-text-field-ink-color, hover));
-  @include mdc-states-focus-opacity(
-    mdc-states-opacity($mdc-text-field-ink-color, focus),
-    $has-nested-focusable-element: true
-  );
-  @include mdc-ripple-radius-bounded;
+  //@include mdc-text-field-bottom-line-color($mdc-text-field-bottom-line-idle);
+  //@include mdc-text-field-hover-bottom-line-color($mdc-text-field-bottom-line-hover);
+  //@include mdc-text-field-line-ripple-color_(primary);
+  //@include mdc-text-field-ink-color($mdc-text-field-ink-color);
+  //@include mdc-text-field-label-color($mdc-text-field-label);
+  //@include mdc-text-field-helper-text-color($mdc-text-field-helper-text-color);
+  //@include mdc-text-field-fullwidth-bottom-line-color($mdc-text-field-fullwidth-bottom-line-color);
+  //@include mdc-text-field-icon-color($mdc-text-field-icon-color);
+  //@include mdc-text-field-caret-color(primary);
+  // Will be removed when floating label is updated after select default is removed
   @include mdc-text-field-bottom-line-color($mdc-text-field-bottom-line-idle);
-  @include mdc-text-field-corner-radius($mdc-text-field-border-radius);
-  @include mdc-text-field-fill-color($mdc-text-field-background);
   @include mdc-text-field-floating-label_;
   @include mdc-text-field-fullwidth-bottom-line-color($mdc-text-field-fullwidth-bottom-line-color);
   @include mdc-text-field-helper-text-color($mdc-text-field-helper-text-color);
@@ -56,14 +53,25 @@
   @include mdc-text-field-label-color($mdc-text-field-label);
   @include mdc-text-field-line-ripple-color_(primary);
   @include mdc-text-field-caret-color(primary);
+  @include mdc-ripple-surface;
+  // Text Field Box intentionally omits press ripple, so each state needs to be specified individually
+  @include mdc-states-base-color($mdc-text-field-ink-color);
+  @include mdc-states-hover-opacity(mdc-states-opacity($mdc-text-field-ink-color, hover));
+  @include mdc-states-focus-opacity(mdc-states-opacity($mdc-text-field-ink-color, focus));
+  @include mdc-ripple-radius-bounded;
+  @include mdc-text-field-corner-radius($mdc-text-field-border-radius);
+  @include mdc-text-field-fill-color($mdc-text-field-background);
+  @include mdc-floating-label-float-position($mdc-text-field-label-position-y);
+  @include mdc-floating-label-shake-animation(text-field-box);
+  @include mdc-floating-label-shake-keyframes(text-field-box, $mdc-text-field-label-position-y);
 
   display: inline-flex;
   position: relative;
   height: 56px;
   margin-top: 16px;
-  margin-bottom: 8px;
   overflow: hidden;
   will-change: opacity, transform, color;
+
 }
 
 .mdc-text-field__input {
@@ -98,10 +106,25 @@
   // Move label when text-field gets autofilled in Chrome
   // stylelint-disable plugin/selector-bem-pattern
   &:-webkit-autofill + .mdc-floating-label {
-    transform: translateY(-100%) scale(.75);
+    transform: translateY(-50%) scale(.75);
     cursor: auto;
   }
   // stylelint-enable plugin/selector-bem-pattern
+}
+
+.mdc-floating-label {
+  @include mdc-rtl-reflexive-position(left, 16px);
+
+  position: absolute;
+  bottom: 20px;
+  width: calc(100% - #{$mdc-text-field-icon-padding});
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  pointer-events: none;
+  overflow: hidden;
+  // Force the label into its own layer to prevent to prevent visible layer promotion adjustments
+  // when the ripple is activated behind it.
+  will-change: transform;
 }
 
 .mdc-text-field--outlined {
@@ -226,7 +249,6 @@
   @include mdc-text-field-textarea-disabled_;
 }
 
-@include mdc-floating-label-shake-keyframes(text-field, $mdc-text-field-label-position-y);
 @include mdc-floating-label-shake-keyframes(text-field-dense, $mdc-text-field-dense-label-position-y, 0%, $mdc-text-field-dense-label-scale);
 @include mdc-floating-label-shake-keyframes(text-field-outlined, $mdc-text-field-outlined-label-position-y);
 @include mdc-floating-label-shake-keyframes(text-field-outlined-dense, $mdc-text-field-outlined-dense-label-position-y, 0%, $mdc-text-field-dense-label-scale);
