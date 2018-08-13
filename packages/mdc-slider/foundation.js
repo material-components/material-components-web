@@ -340,16 +340,6 @@ class MDCSliderFoundation extends MDCFoundation {
   }
 
   /**
-   * Called when the inTransit transition ends
-   * @param {!Event} evt
-   */
-  handleTransitionEnd(evt) {
-    if (this.inTransit_ && this.adapter_.eventTargetHasClass(evt.target, cssClasses.TRACK_FILL)) {
-      this.setInTransit_(false);
-    }
-  }
-
-  /**
    * Called when the user starts interacting with the slider
    * @param {!Event} evt
    */
