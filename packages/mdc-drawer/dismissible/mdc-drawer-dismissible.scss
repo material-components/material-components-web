@@ -33,7 +33,7 @@
   }
 }
 
-.mdc-drawer-app-content {
+.mdc-drawer__app-content {
   @include mdc-rtl-reflexive-box(margin, left, 0);
 
   .mdc-drawer--open + & {

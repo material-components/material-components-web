@@ -21,31 +21,11 @@ import td from 'testdouble';
 
 import {MDCDrawer} from '../../../packages/mdc-drawer';
 
-function getFixtureWithAppContent() {
-  return bel`
-    <div class="body-content">
-      <div class="mdc-drawer mdc-drawer--dismissible">
-        <div class="mdc-drawer__scrollable">
-        <div class="mdc-list-group">
-          <nav class="mdc-list">
-            <a class="mdc-list-item mdc-list-item--activated demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
-            </a>
-          </nav>
-        </div>
-      </div>
-      <div class="mdc-drawer-app-content">
-        <p>App content</p>
-      </div>
-    </div>
-  `;
-}
-
 function getFixture() {
   return bel`
   <div class="body-content">
     <div class="mdc-drawer mdc-drawer--dismissible">
-      <div class="mdc-drawer__scrollable">
+      <div class="mdc-drawer__content">
       <div class="mdc-list-group">
         <nav class="mdc-list">
           <a class="mdc-list-item mdc-list-item--activated demo-drawer-list-item" href="#">
@@ -58,28 +38,17 @@ function getFixture() {
 `;
 }
 
-function setupTest(withAppContent) {
-  const root = withAppContent ? getFixtureWithAppContent() : getFixture();
+function setupTest() {
+  const root = getFixture();
   const drawer = root.querySelector('.mdc-drawer');
-  const appContent = root.querySelector('.mdc-drawer-app-content');
   const component = new MDCDrawer(drawer);
-  return {appContent, root, drawer, component};
+  return {root, drawer, component};
 }
 suite('MDCDrawer');
 
 test('attachTo initializes and returns a MDCDrawer instance', () => {
   const drawer = getFixture().querySelector('.mdc-drawer');
   assert.isTrue(MDCDrawer.attachTo(drawer) instanceof MDCDrawer);
-});
-
-test('#initialize creates appContent element', () => {
-  const {component} = setupTest(true);
-  assert.exists(component.appContent_);
-});
-
-test('#initialize does not create appContent element if it doesn\'t exists', () => {
-  const {component} = setupTest();
-  assert.notExists(component.appContent_);
 });
 
 test('#get open calls foundation.isOpen', () => {
@@ -104,35 +73,36 @@ test('#set open false calls foundation.close', () => {
 });
 
 test('keydown event calls foundation.handleKeydown method', () => {
-  const {component} = setupTest();
+  const {component, drawer} = setupTest();
   component.foundation_.handleKeydown = td.func();
-  component.initialSyncWithDOM();
-  domEvents.emit(document, 'keydown');
+  drawer.querySelector('.demo-drawer-list-item').focus();
+  domEvents.emit(drawer, 'keydown');
   td.verify(component.foundation_.handleKeydown(td.matchers.isA(Object)), {times: 1});
 });
 
 test('transitionend event calls foundation.handleTransitionEnd method', () => {
   const {component, drawer} = setupTest();
   component.foundation_.handleTransitionEnd = td.func();
-  component.initialSyncWithDOM();
   domEvents.emit(drawer, 'transitionend');
   td.verify(component.foundation_.handleTransitionEnd(td.matchers.isA(Object)), {times: 1});
 });
 
 test('#destroy removes keydown event listener', () => {
-  const {component} = setupTest();
-  const originalRemove = document.removeEventListener;
-  document.removeEventListener = td.func();
+  const {component, drawer} = setupTest();
+  const originalRemove = drawer.removeEventListener;
+  drawer.removeEventListener = td.func();
   component.destroy();
-  td.verify(document.removeEventListener('keydown', td.matchers.isA(Function)), {times: 1});
-  document.removeEventListener = originalRemove;
+  td.verify(drawer.removeEventListener('keydown', td.matchers.isA(Function)), {times: 1});
+  drawer.removeEventListener = originalRemove;
 });
 
 test('#destroy removes transitionend event listener', () => {
   const {component, drawer} = setupTest();
+  const originalRemove = drawer.removeEventListener;
   drawer.removeEventListener = td.func();
   component.destroy();
   td.verify(drawer.removeEventListener('transitionend', td.matchers.isA(Function)), {times: 1});
+  drawer.removeEventListener = originalRemove;
 });
 
 test('adapter#addClass adds class to drawer', () => {
@@ -141,7 +111,7 @@ test('adapter#addClass adds class to drawer', () => {
   assert.isTrue(drawer.classList.contains('test-class'));
 });
 
-test('adapter#removeClass adds class to drawer', () => {
+test('adapter#removeClass removes class from drawer', () => {
   const {component, drawer} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('test-class');
 
@@ -162,68 +132,9 @@ test('adapter#hasClass returns false when there is no class on drawer element', 
   assert.isFalse(hasClass);
 });
 
-test('adapter#setStyleAppContent updates styles on the appContent', () => {
-  const {appContent, component} = setupTest(true);
-  component.getDefaultFoundation().adapter_.setStyleAppContent('display', 'inline-block');
-  assert.equal(appContent.style['display'], 'inline-block');
-});
-
-test('adapter#setStyleAppContent doesn\'t throw an error if appContent element does not exist', () => {
+test('adapter#eventTargetHasClass returns true when class is found on event target', () => {
   const {component} = setupTest();
-  assert.doesNotThrow(component.getDefaultFoundation().adapter_.setStyleAppContent);
-});
+  const mockEventTarget = bel`<div class="foo">bar</div>`;
 
-test('adapter#computeBoundingRect returns the client rect object on the root element', () => {
-  const {root, drawer, component} = setupTest();
-  document.body.appendChild(root);
-  assert.deepEqual(component.getDefaultFoundation().adapter_.computeBoundingRect(), drawer.getBoundingClientRect());
-  document.body.removeChild(root);
-});
-
-test('adapter#addClassAppContent adds class to appContent element', () => {
-  const {component, appContent} = setupTest(true);
-  component.getDefaultFoundation().adapter_.addClassAppContent('test-class');
-  assert.isTrue(appContent.classList.contains('test-class'));
-});
-
-test('adapter#addClassAppContent doesn\'t add a class if there is no appContent element', () => {
-  const {component} = setupTest();
-  assert.doesNotThrow(component.getDefaultFoundation().adapter_.addClassAppContent);
-});
-
-test('adapter#removeClassAppContent removes class from appContent element', () => {
-  const {component, appContent} = setupTest(true);
-  component.getDefaultFoundation().adapter_.addClassAppContent('test-class');
-
-  component.getDefaultFoundation().adapter_.removeClassAppContent('test-class');
-  assert.isFalse(appContent.classList.contains('test-class'));
-});
-
-test('adapter#removeClassAppContent doesn\'t remove class if there is no appContent element', () => {
-  const {component} = setupTest();
-  assert.doesNotThrow(component.getDefaultFoundation().adapter_.removeClassAppContent);
-});
-
-test('adapter#isRtl returns true if dir="rtl"', () => {
-  const fixture = bel`
-    <div class="body-content" dir='rtl'>
-      <div class="mdc-drawer mdc-drawer--dismissible"></div>
-    </div>
-  `;
-  const drawer = fixture.querySelector('.mdc-drawer');
-  const component = new MDCDrawer(drawer);
-  document.body.appendChild(fixture);
-  assert.isTrue(component.getDefaultFoundation().adapter_.isRtl());
-});
-
-test('adapter#isRtl returns false if dir not set', () => {
-  const fixture = bel`
-    <div class="body-content">
-      <div class="mdc-drawer mdc-drawer--dismissible"></div>
-    </div>
-  `;
-  const drawer = fixture.querySelector('.mdc-drawer');
-  const component = new MDCDrawer(drawer);
-  document.body.appendChild(fixture);
-  assert.isFalse(component.getDefaultFoundation().adapter_.isRtl());
+  assert.isTrue(component.getDefaultFoundation().adapter_.eventTargetHasClass(mockEventTarget, 'foo'));
 });

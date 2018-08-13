@@ -28,7 +28,7 @@ const cssClasses = {
 
 /** @enum {string} */
 const strings = {
-  APP_CONTENT_SELECTOR: '.mdc-drawer-app-content',
+  APP_CONTENT_SELECTOR: '.mdc-drawer__app-content',
   SCRIM_SELECTOR: '.mdc-drawer__scrim',
   STRUT_SELECTOR: '.mdc-drawer__strut',
   CLOSE_EVENT: 'MDCDrawer:close',

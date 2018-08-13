@@ -16,10 +16,10 @@
  */
 
 import {assert} from 'chai';
+import bel from 'bel';
 import td from 'testdouble';
 
 import MDCDismissibleDrawerFoundation from '../../../packages/mdc-drawer/dismissible/foundation';
-import {createMockRaf} from '../helpers/raf';
 import {strings, cssClasses} from '../../../packages/mdc-drawer/constants';
 import {verifyDefaultAdapter} from '../helpers/foundation';
 
@@ -45,7 +45,7 @@ test('exports cssClasses', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCDismissibleDrawerFoundation, [
-    'hasClass', 'addClass', 'removeClass', 'computeBoundingRect', 'notifyClose', 'notifyOpen',
+    'hasClass', 'addClass', 'removeClass', 'eventTargetHasClass', 'computeBoundingRect', 'notifyClose', 'notifyOpen',
   ]);
 });
 
@@ -58,14 +58,14 @@ test('#open does nothing if drawer is already open', () => {
 
 test('#open does nothing if drawer is already opening', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(cssClasses.ANIMATING_OPEN)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.OPENING)).thenReturn(true);
   foundation.open();
   td.verify(mockAdapter.addClass(td.matchers.isA(String)), {times: 0});
 });
 
 test('#open does nothing if drawer is closing', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(cssClasses.ANIMATING_CLOSE)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.CLOSING)).thenReturn(true);
   foundation.open();
   td.verify(mockAdapter.addClass(td.matchers.isA(String)), {times: 0});
 });
@@ -85,14 +85,14 @@ test('#close does nothing if drawer is already closed', () => {
 
 test('#close does nothing if drawer is opening', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(cssClasses.ANIMATING_OPEN)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.OPENING)).thenReturn(true);
   foundation.close();
   td.verify(mockAdapter.addClass(td.matchers.isA(String)), {times: 0});
 });
 
 test('#close does nothing if drawer is closing', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(cssClasses.ANIMATING_CLOSE)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.CLOSING)).thenReturn(true);
   foundation.close();
   td.verify(mockAdapter.addClass(td.matchers.isA(String)), {times: 0});
 });
@@ -117,27 +117,27 @@ test(`#isOpen returns false when it lacks ${cssClasses.OPEN} class`, () => {
   assert.isFalse(foundation.isOpen());
 });
 
-test(`#isOpening returns true when it has ${cssClasses.ANIMATING_OPEN} class`, () => {
+test(`#isOpening returns true when it has ${cssClasses.OPENING} class`, () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(cssClasses.ANIMATING_OPEN)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.OPENING)).thenReturn(true);
   assert.isTrue(foundation.isOpening());
 });
 
-test(`#isOpening returns false when it lacks ${cssClasses.ANIMATING_OPEN} class`, () => {
+test(`#isOpening returns false when it lacks ${cssClasses.OPENING} class`, () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(cssClasses.ANIMATING_OPEN)).thenReturn(false);
+  td.when(mockAdapter.hasClass(cssClasses.OPENING)).thenReturn(false);
   assert.isFalse(foundation.isOpening());
 });
 
-test(`#isClosing returns true when it has ${cssClasses.ANIMATING_CLOSE} class`, () => {
+test(`#isClosing returns true when it has ${cssClasses.CLOSING} class`, () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(cssClasses.ANIMATING_CLOSE)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.CLOSING)).thenReturn(true);
   assert.isTrue(foundation.isClosing());
 });
 
-test(`#isClosing returns false when it lacks ${cssClasses.ANIMATING_CLOSE} class`, () => {
+test(`#isClosing returns false when it lacks ${cssClasses.CLOSING} class`, () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(cssClasses.ANIMATING_CLOSE)).thenReturn(false);
+  td.when(mockAdapter.hasClass(cssClasses.CLOSING)).thenReturn(false);
   assert.isFalse(foundation.isClosing());
 });
 
@@ -148,7 +148,7 @@ test('#handleKeydown does nothing when event key is not the escape key', () => {
   td.when(mockAdapter.hasClass(cssClasses.OPEN)).thenReturn(true);
   foundation.handleKeydown({key: 'Shift'});
 
-  td.verify(mockAdapter.addClass(cssClasses.ANIMATING_CLOSE), {times: 0});
+  td.verify(mockAdapter.addClass(cssClasses.CLOSING), {times: 0});
 });
 
 test('#handleKeydown does nothing when event keyCode is not 27', () => {
@@ -158,7 +158,7 @@ test('#handleKeydown does nothing when event keyCode is not 27', () => {
   td.when(mockAdapter.hasClass(cssClasses.OPEN)).thenReturn(true);
   foundation.handleKeydown({keyCode: 11});
 
-  td.verify(mockAdapter.addClass(cssClasses.ANIMATING_CLOSE), {times: 0});
+  td.verify(mockAdapter.addClass(cssClasses.CLOSING), {times: 0});
 });
 
 test('#handleKeydown calls close when event key is the escape key', () => {
@@ -168,7 +168,7 @@ test('#handleKeydown calls close when event key is the escape key', () => {
   td.when(mockAdapter.hasClass(cssClasses.OPEN)).thenReturn(true);
   foundation.handleKeydown({key: 'Escape'});
 
-  td.verify(mockAdapter.addClass(cssClasses.ANIMATING_CLOSE), {times: 1});
+  td.verify(mockAdapter.addClass(cssClasses.CLOSING), {times: 1});
 });
 
 test('#handleKeydown calls close when event keyCode is 27', () => {
@@ -178,12 +178,14 @@ test('#handleKeydown calls close when event keyCode is 27', () => {
   td.when(mockAdapter.hasClass(cssClasses.OPEN)).thenReturn(true);
   foundation.handleKeydown({keyCode: 27});
 
-  td.verify(mockAdapter.addClass(cssClasses.ANIMATING_CLOSE), {times: 1});
+  td.verify(mockAdapter.addClass(cssClasses.CLOSING), {times: 1});
 });
 
 test('#handleTransitionEnd removes all animating classes', () => {
   const {foundation, mockAdapter} = setupTest();
-  foundation.handleTransitionEnd();
+  const mockEventTarget = bel`<div class="foo">bar</div>`;
+  td.when(mockAdapter.eventTargetHasClass(mockEventTarget, cssClasses.ROOT)).thenReturn(true);
+  foundation.handleTransitionEnd({target: mockEventTarget});
   td.verify(mockAdapter.removeClass(cssClasses.ANIMATE), {times: 1});
   td.verify(mockAdapter.removeClass(cssClasses.OPENING), {times: 1});
   td.verify(mockAdapter.removeClass(cssClasses.CLOSING), {times: 1});
@@ -191,16 +193,34 @@ test('#handleTransitionEnd removes all animating classes', () => {
 
 test('#handleTransitionEnd removes open class after closing and calls notifyClose', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(cssClasses.OPEN)).thenReturn(true);
-  foundation.handleTransitionEnd();
+  const mockEventTarget = bel`<div>root</div>`;
+  td.when(mockAdapter.eventTargetHasClass(mockEventTarget, cssClasses.ROOT)).thenReturn(true);
+  td.when(foundation.isClosing(cssClasses.OPEN)).thenReturn(true);
+
+  foundation.handleTransitionEnd({target: mockEventTarget});
   td.verify(mockAdapter.removeClass(cssClasses.OPEN), {times: 1});
   td.verify(mockAdapter.notifyClose(), {times: 1});
 });
 
 test('#handleTransitionEnd doesn\'t remove open class after opening and calls notifyOpen', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(cssClasses.OPEN)).thenReturn(false);
-  foundation.handleTransitionEnd();
+  const mockEventTarget = bel`<div>root</div>`;
+  td.when(mockAdapter.eventTargetHasClass(mockEventTarget, cssClasses.ROOT)).thenReturn(true);
+  td.when(foundation.isClosing(cssClasses.OPEN)).thenReturn(false);
+
+  foundation.handleTransitionEnd({target: mockEventTarget});
   td.verify(mockAdapter.removeClass(cssClasses.OPEN), {times: 0});
   td.verify(mockAdapter.notifyOpen(), {times: 1});
+});
+
+test('#handleTransitionEnd doesn\'t do anything if event is not triggered by root element', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const mockEventTarget = bel`<div>child</div>`;
+  td.when(mockAdapter.eventTargetHasClass(mockEventTarget, cssClasses.ROOT)).thenReturn(false);
+
+  foundation.handleTransitionEnd({target: mockEventTarget});
+  td.verify(mockAdapter.removeClass(cssClasses.OPEN), {times: 0});
+  td.verify(mockAdapter.removeClass(cssClasses.ANIMATE), {times: 0});
+  td.verify(mockAdapter.notifyOpen(), {times: 0});
+  td.verify(mockAdapter.notifyClose(), {times: 0});
 });

@@ -68,7 +68,8 @@ export class MDCDrawer extends MDCComponent {
   }
 
   destroy() {
-    document.removeEventListener('keydown', this.handleKeydown_);
+    this.root_.removeEventListener('keydown', this.handleKeydown_);
+    this.root_.removeEventListener('transitionend', this.handleTransitionEnd_);
   }
 
   initialSyncWithDOM() {
@@ -76,7 +77,7 @@ export class MDCDrawer extends MDCComponent {
     this.handleTransitionEnd_ = (evt) => this.foundation_.handleTransitionEnd(evt);
 
     this.root_.addEventListener('keydown', this.handleKeydown_);
-    this.root_.addEventListener('transitionend', this.handleTransitionEnd_, /* useCapture */ true);
+    this.root_.addEventListener('transitionend', this.handleTransitionEnd_);
   }
 
   getDefaultFoundation() {
