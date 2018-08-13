@@ -50,8 +50,6 @@ npm install @material/drawer
 </header>
 ```
 
-> NOTE: First navigation item in list group should explicitely set tabindex to '0'.
-
 ### Styles
 
 ```scss
@@ -100,6 +98,20 @@ npm install @material/drawer
     </nav>
   </div>
 </div>
+```
+
+> NOTE: First navigation item in list group should be explicitely set tabindex to '0'.
+
+And then list group needs to be instantiated for keyboard navigation.
+
+```javascript
+var listList = document.querySelectorAll('.mdc-list');
+
+listList.forEach(function(list) {
+  var list = mdc.list.MDCList.attachTo(list);
+  list.singleSelection = true;
+  list.vertical = true;
+});
 ```
 
 Please see the [list readme](https://github.com/material-components/material-components-web/tree/master/packages/mdc-list#list-groups)
