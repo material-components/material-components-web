@@ -22,11 +22,11 @@
 .mdc-drawer--dismissible {
   @include mdc-rtl-reflexive-position(left, 0);
 
-  transition-property: transform;
-  transition-timing-function: $mdc-animation-standard-curve-timing-function;
+  display: none;
   position: absolute;
   top: 0;
-  display: none;
+  transition-property: transform;
+  transition-timing-function: $mdc-animation-standard-curve-timing-function;
 
   &.mdc-drawer--open {
     display: block;

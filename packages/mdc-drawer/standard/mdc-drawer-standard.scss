@@ -34,18 +34,18 @@
   @include mdc-drawer-item-activated-text-color($mdc-drawer-activated-ink-color, $mdc-drawer-activated-ink-opacity);
   @include mdc-drawer-item-corner-radius(4px);
 
-  width: $mdc-drawer-width;
-  max-width: $mdc-drawer-width;
-  border-right-width: 1px;
-  border-right-style: solid;
-  box-sizing: border-box;
-  overflow: hidden;
-  flex-shrink: 0;
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  width: $mdc-drawer-width;
+  max-width: $mdc-drawer-width;
+  height: 100%;
   transition-property: transform;
   transition-timing-function: $mdc-animation-standard-curve-timing-function;
-  height: 100%;
+  border-right-width: 1px;
+  border-right-style: solid;
+  overflow: hidden;
   z-index: $mdc-drawer-z-index;
 
   @include mdc-rtl {
@@ -94,8 +94,8 @@
 }
 
 .mdc-drawer--opening {
-  transition-duration: $mdc-drawer-animation-enter;
   transform: translateX(0);
+  transition-duration: $mdc-drawer-animation-enter;
 
   // Required to level the specificity with animate class.
   @include mdc-rtl {
@@ -104,8 +104,8 @@
 }
 
 .mdc-drawer--closing {
-  transition-duration: $mdc-drawer-animation-exit;
   transform: translateX(-100%);
+  transition-duration: $mdc-drawer-animation-exit;
 
   @include mdc-rtl {
     transform: translateX(100%);
@@ -113,11 +113,11 @@
 }
 
 .mdc-drawer__header {
+  flex-shrink: 0;
   box-sizing: border-box;
   min-height: 64px; // same as $mdc-top-app-bar-row-height
   padding: $mdc-drawer-surface-padding;
   padding-bottom: 4px;
-  flex-shrink: 0;
 }
 
 .mdc-drawer__title {
