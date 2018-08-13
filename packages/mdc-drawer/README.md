@@ -153,17 +153,17 @@ Dismissible drawers are by default hidden off screen, and can slide into view. D
     </div>
   </header>
 
-  <div class="mdc-drawer__app-content">
+  <div class="mdc-drawer-app-content">
     App Content
   </div>
 </body>
 ```
 
-> Use the `mdc-drawer__app-content` class to the element sibling to the drawer to get the open/close animations to work.
+> Use the `mdc-drawer-app-content` class to the element sibling to the drawer to get the open/close animations to work.
 
 ### Usage with Top App Bar
 
-There are some styles that need to be applied to get the top app bar and the dismissible drawer to independently scroll and work on all browsers. `.mdc-drawer__content` and `#main-content` elements should independently scroll each other. The `mdc-drawer--dismissible` and `mdc-drawer__app-content` should then sit side-by-side. The markup looks something like this:
+There are some styles that need to be applied to get the top app bar and the dismissible drawer to independently scroll and work on all browsers. `.mdc-drawer__content` and `#main-content` elements should independently scroll each other. The `mdc-drawer--dismissible` and `mdc-drawer-app-content` should then sit side-by-side. The markup looks something like this:
 
 ```html
 <body>
@@ -177,7 +177,7 @@ There are some styles that need to be applied to get the top app bar and the dis
     </div>
   </nav>
 
-  <div class="mdc-drawer__app-content">
+  <div class="mdc-drawer-app-content">
     <header class="mdc-top-app-bar" id="app-bar">
       <div class="mdc-top-app-bar__row">
         <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
@@ -206,7 +206,7 @@ body {
   height: 100vh;
 }
 
-.mdc-drawer__app-content {
+.mdc-drawer-app-content {
   flex: auto;
   overflow: auto;
 }
@@ -227,7 +227,7 @@ Class | Description
 `mdc-drawer` |  Mandatory.
 `mdc-drawer--closing` | Applies the transition to the dismissible drawer while it is animating from the open to the closed position.
 `mdc-drawer--opening` | Applies the transition to the dismissible drawer while it is animating from the closed to the open position.
-`mdc-drawer__app-content` | Used for dismissible drawer variant sibling element that should animate open/closed with it.
+`mdc-drawer-app-content` | Used for dismissible drawer variant sibling element that should animate open/closed with it.
 while it is animating to the closed position.
 `mdc-drawer--dismissible` | Dismissible drawer variant class.
 `mdc-drawer__header` | Non-scrollable element that exists on the top of the drawer.
