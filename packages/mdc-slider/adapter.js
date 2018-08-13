@@ -52,6 +52,12 @@ class MDCSliderAdapter {
   setThumbAttribute(name, value) {}
 
   /**
+   * Removes attribute name on slider thumb Element to value
+   * @param {string} name
+   */
+  removeThumbAttribute(name) {}
+
+  /**
    * Sets the path of the value label Element
    * @param {string} value
    */
@@ -88,12 +94,6 @@ class MDCSliderAdapter {
   getCommaWidth() {}
 
   /**
-   * Removes attribute name on slider thumb Element to value
-   * @param {string} name
-   */
-  removeThumbAttribute(name) {}
-
-  /**
    * Returns the bounding client rect for the slider Element
    * @return {?ClientRect}
    */
@@ -121,9 +121,10 @@ class MDCSliderAdapter {
   registerEventHandler(type, handler) {}
 
   /**
-   * Deregisters an event handler on the root element for a given event.
-   * @param {string} type
-   * @param {function(!Event): undefined} handler
+   * Returns true if target has className, false otherwise.
+   * @param {EventTarget} target
+   * @param {string} className
+   * @return {boolean}
    */
   deregisterEventHandler(type, handler) {}
 

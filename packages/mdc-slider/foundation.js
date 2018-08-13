@@ -302,6 +302,7 @@ class MDCSliderFoundation extends MDCFoundation {
       }
     }
   }
+  
   /**
    * Update the classes on the tick marks to distinguish filled
    * @param {number} currentTickMark
@@ -335,6 +336,16 @@ class MDCSliderFoundation extends MDCFoundation {
     if (this.isDiscrete_ && this.adapter_.eventTargetHasClass(evt.target, cssClasses.VALUE_LABEL_TEXT)
       && this.active_) {
       this.setDiscreteMotion_(true);
+    }
+  }
+
+  /**
+   * Called when the inTransit transition ends
+   * @param {!Event} evt
+   */
+  handleTransitionEnd(evt) {
+    if (this.inTransit_ && this.adapter_.eventTargetHasClass(evt.target, cssClasses.TRACK_FILL)) {
+      this.setInTransit_(false);
     }
   }
 

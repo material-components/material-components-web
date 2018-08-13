@@ -45,6 +45,21 @@ const MASTER_PKG = require(path.join(process.env.PWD, MASTER_PKG_PATH));
 // are necessary since other MDC packages depend on them.
 const CSS_WHITELIST = ['base', 'animation', 'auto-init', 'rtl', 'selection-control'];
 
+// List of packages that are intentionally not included in the MCW package's dependencies
+const NOT_MCW_DEP = [
+  'tabs', // Deprecated; CSS classes conflict with tab and tab-bar
+];
+
+const NOT_AUTOINIT = [
+  'auto-init',
+  'base',
+  'selection-control',
+  'tab', // Only makes sense in context of tab-bar
+  'tab-indicator', // Only makes sense in context of tab-bar
+  'tab-scroller', // Only makes sense in context of tab-bar
+  'tabs', // Deprecated
+];
+
 main();
 
 function main() {
@@ -127,15 +142,17 @@ function checkDependencyAddedInMDCPackage() {
 }
 
 function checkPkgDependencyAddedInMDCPackage() {
-  assert.notEqual(typeof MASTER_PKG.dependencies[pkg.name], 'undefined',
-    'FAILURE: Component ' + pkg.name + ' is not a denpendency for MDC Web. ' +
-    'Please add ' + pkg.name +' to ' + MASTER_PKG_PATH + '\' dependencies before commit.');
+  if (NOT_MCW_DEP.indexOf(getPkgName()) === -1) {
+    assert.notEqual(typeof MASTER_PKG.dependencies[pkg.name], 'undefined',
+      'FAILURE: Component ' + pkg.name + ' is not a denpendency for MDC Web. ' +
+      'Please add ' + pkg.name +' to ' + MASTER_PKG_PATH + '\' dependencies before commit.');
+  }
 }
 
 function checkCSSDependencyAddedInMDCPackage() {
   const name = getPkgName();
   const nameMDC = `mdc-${name}`;
-  if (CSS_WHITELIST.indexOf(name) === -1) {
+  if (CSS_WHITELIST.indexOf(name) === -1 && NOT_MCW_DEP.indexOf(name) === -1) {
     const src = fs.readFileSync(path.join(process.env.PWD, MASTER_CSS_PATH), 'utf8');
     const cssRules = cssom.parse(src).cssRules;
     const cssRule = path.join(pkg.name, nameMDC);
@@ -150,9 +167,8 @@ function checkCSSDependencyAddedInMDCPackage() {
 
 function checkJSDependencyAddedInMDCPackage() {
   const NOT_IMPORTED = ['animation'];
-  const NOT_AUTOINIT = ['auto-init', 'base', 'selection-control'];
   const name = getPkgName();
-  if (typeof(pkg.main) !== 'undefined' && NOT_IMPORTED.indexOf(name) === -1) {
+  if (typeof(pkg.main) !== 'undefined' && NOT_IMPORTED.indexOf(name) === -1 && NOT_MCW_DEP.indexOf(name) === -1) {
     const nameCamel = camelCase(pkg.name.replace('@material/', ''));
     const src = fs.readFileSync(path.join(process.env.PWD, MASTER_JS_PATH), 'utf8');
     const ast = recast.parse(src, {
@@ -193,6 +209,8 @@ function checkAutoInitAddedInMDCPackage(ast) {
   let nameCamel = camelCase(pkg.name.replace('@material/', ''));
   if (nameCamel === 'textfield') {
     nameCamel = 'textField';
+  } else if (nameCamel === 'switch') {
+    nameCamel = 'switchControl';
   }
   let autoInitedCount = 0;
   traverse(ast, {
@@ -216,6 +234,8 @@ function checkComponentExportedAddedInMDCPackage(ast) {
   let nameCamel = camelCase(pkg.name.replace('@material/', ''));
   if (nameCamel === 'textfield') {
     nameCamel = 'textField';
+  } else if (nameCamel === 'switch') {
+    nameCamel = 'switchControl';
   }
   let isExported = false;
   traverse(ast, {
