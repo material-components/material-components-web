@@ -136,8 +136,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   init() {
-    this.adapter_.addClass(MDCTextFieldFoundation.cssClasses.UPGRADED);
-
     if (this.adapter_.isFocused()) {
       this.inputFocusHandler_();
     } else if (this.adapter_.hasLabel() && this.shouldFloat) {
@@ -159,7 +157,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   destroy() {
-    this.adapter_.removeClass(MDCTextFieldFoundation.cssClasses.UPGRADED);
     this.adapter_.deregisterInputInteractionHandler('focus', this.inputFocusHandler_);
     this.adapter_.deregisterInputInteractionHandler('blur', this.inputBlurHandler_);
     this.adapter_.deregisterInputInteractionHandler('input', this.inputInputHandler_);
