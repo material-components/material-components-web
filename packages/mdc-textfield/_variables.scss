@@ -41,6 +41,7 @@ $mdc-text-field-outlined-hover-border: rgba(mdc-theme-prop-value(on-surface), .8
 
 $mdc-textarea-border: rgba(mdc-theme-prop-value(on-surface), .73);
 $mdc-textarea-background: rgba(mdc-theme-prop-value(surface), 1);
+$mdc-textarea-disabled-border-color: rgba(mdc-theme-prop-value(on-surface), .26);
 // cannot be transparent because multiline textarea input
 // will make text unreadable
 $mdc-textarea-disabled-background: rgba(249, 249, 249, 1);

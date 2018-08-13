@@ -33,34 +33,31 @@
 // postcss-bem-linter: define text-field
 
 .mdc-text-field {
-  //@include mdc-text-field-bottom-line-color($mdc-text-field-bottom-line-idle);
-  //@include mdc-text-field-hover-bottom-line-color($mdc-text-field-bottom-line-hover);
-  //@include mdc-text-field-line-ripple-color_(primary);
-  //@include mdc-text-field-ink-color($mdc-text-field-ink-color);
-  //@include mdc-text-field-label-color($mdc-text-field-label);
-  //@include mdc-text-field-helper-text-color($mdc-text-field-helper-text-color);
-  //@include mdc-text-field-fullwidth-bottom-line-color($mdc-text-field-fullwidth-bottom-line-color);
-  //@include mdc-text-field-icon-color($mdc-text-field-icon-color);
-  //@include mdc-text-field-caret-color(primary);
-  // Will be removed when floating label is updated after select default is removed
-  @include mdc-text-field-bottom-line-color($mdc-text-field-bottom-line-idle);
-  @include mdc-text-field-floating-label_;
-  @include mdc-text-field-fullwidth-bottom-line-color($mdc-text-field-fullwidth-bottom-line-color);
-  @include mdc-text-field-helper-text-color($mdc-text-field-helper-text-color);
-  @include mdc-text-field-hover-bottom-line-color($mdc-text-field-bottom-line-hover);
-  @include mdc-text-field-icon-color($mdc-text-field-icon-color);
-  @include mdc-text-field-ink-color($mdc-text-field-ink-color);
-  @include mdc-text-field-label-color($mdc-text-field-label);
-  @include mdc-text-field-line-ripple-color_(primary);
-  @include mdc-text-field-caret-color(primary);
   @include mdc-ripple-surface;
-  // Text Field Box intentionally omits press ripple, so each state needs to be specified individually
+  // Text Field intentionally omits press ripple, so each state needs to be specified individually.
   @include mdc-states-base-color($mdc-text-field-ink-color);
   @include mdc-states-hover-opacity(mdc-states-opacity($mdc-text-field-ink-color, hover));
   @include mdc-states-focus-opacity(mdc-states-opacity($mdc-text-field-ink-color, focus));
   @include mdc-ripple-radius-bounded;
+
+  // Shape
   @include mdc-text-field-corner-radius($mdc-text-field-border-radius);
+
+  // Colors
+  @include mdc-text-field-label-color($mdc-text-field-label);
+  @include mdc-text-field-ink-color($mdc-text-field-ink-color);
+  @include mdc-text-field-caret-color(primary);
+  @include mdc-text-field-bottom-line-color($mdc-text-field-bottom-line-idle);
+  @include mdc-text-field-hover-bottom-line-color($mdc-text-field-bottom-line-hover);
+  @include mdc-text-field-line-ripple-color_(primary);
+  @include mdc-text-field-fullwidth-bottom-line-color($mdc-text-field-fullwidth-bottom-line-color);
+  @include mdc-text-field-helper-text-color($mdc-text-field-helper-text-color);
+  @include mdc-text-field-icon-color($mdc-text-field-icon-color);
   @include mdc-text-field-fill-color($mdc-text-field-background);
+
+  // Floating Label
+  @include mdc-text-field-floating-label_;
+  // The following mixins will be removed after select is updated to default to the box.
   @include mdc-floating-label-float-position($mdc-text-field-label-position-y);
   @include mdc-floating-label-shake-animation(text-field-box);
   @include mdc-floating-label-shake-keyframes(text-field-box, $mdc-text-field-label-position-y);
@@ -113,11 +110,7 @@
 }
 
 .mdc-floating-label {
-  @include mdc-rtl-reflexive-position(left, 16px);
-
   position: absolute;
-  bottom: 20px;
-  width: calc(100% - #{$mdc-text-field-icon-padding});
   text-overflow: ellipsis;
   white-space: nowrap;
   pointer-events: none;

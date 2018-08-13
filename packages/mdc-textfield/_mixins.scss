@@ -296,6 +296,10 @@
   .mdc-text-field__icon {
     z-index: 2;
   }
+
+  .mdc-floating-label {
+    width: auto;
+  }
 }
 
 @mixin mdc-text-field-outline-color_($color) {
@@ -392,7 +396,7 @@
 // Textarea
 
 @mixin mdc-text-field-textarea-disabled_ {
-  @include mdc-text-field-textarea-stroke-color_($mdc-text-field-disabled-border);
+  @include mdc-text-field-textarea-stroke-color_($mdc-textarea-disabled-border-color);
   @include mdc-text-field-textarea-fill-color_($mdc-textarea-disabled-background);
 
   border-bottom-width: 1px;
@@ -450,6 +454,7 @@
 
     top: $label-offset-y;
     bottom: auto;
+    width: auto;
     margin-top: 2px;
     padding: 12px 8px 8px 8px;
     line-height: 1.15;
