@@ -16,12 +16,15 @@
 
 @import "@material/animation/variables";
 @import "@material/base/mixins";
+@import "@material/rtl/mixins";
 @import "./mixins";
 @import "./variables";
 
 // Notched Outline is intended for use by multiple components, but its styles should only be emitted once when bundled
 @include mdc-base-emit-once("mdc-notched-outline") {
   .mdc-notched-outline {
+    @include mdc-rtl-reflexive(text-align, left, text-align, right);
+
     position: absolute;
     top: 0;
     left: 0;
