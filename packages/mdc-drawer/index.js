@@ -34,9 +34,6 @@ export class MDCDrawer extends MDCComponent {
 
     /** @private {?Function} */
     this.handleTransitionEnd_;
-
-    /** @private {?Function} */
-    this.handleScrimClick_;
   }
 
   /**

@@ -114,19 +114,6 @@
   @include mdc-drawer-icon-activated-ink-color(pink, 1);
 }
 
-.demo-clipped-content {
-  display: flex;
-  position: relative;
-  height: 100%;
-  overflow: hidden;
-  flex-direction: column;
-}
-
 .demo-top-app-bar {
   position: absolute;
-}
-
-.demo-clipped-content-body {
-  display: flex;
-  height: 100%;
 }

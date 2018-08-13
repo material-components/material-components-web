@@ -39,7 +39,6 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
       removeClass: (/* className: string */) => {},
       hasClass: (/* className: string */) => {},
       eventTargetHasClass: (/* targetElement: !Element, className: string */) => {},
-      computeBoundingRect: () => {},
       notifyClose: () => {},
       notifyOpen: () => {},
     });

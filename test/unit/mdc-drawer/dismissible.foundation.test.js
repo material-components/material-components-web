@@ -45,7 +45,7 @@ test('exports cssClasses', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCDismissibleDrawerFoundation, [
-    'hasClass', 'addClass', 'removeClass', 'eventTargetHasClass', 'computeBoundingRect', 'notifyClose', 'notifyOpen',
+    'hasClass', 'addClass', 'removeClass', 'eventTargetHasClass', 'notifyClose', 'notifyOpen',
   ]);
 });
 
@@ -143,8 +143,6 @@ test(`#isClosing returns false when it lacks ${cssClasses.CLOSING} class`, () =>
 
 test('#handleKeydown does nothing when event key is not the escape key', () => {
   const {foundation, mockAdapter} = setupTest();
-  const width = 250;
-  td.when(mockAdapter.computeBoundingRect()).thenReturn({width});
   td.when(mockAdapter.hasClass(cssClasses.OPEN)).thenReturn(true);
   foundation.handleKeydown({key: 'Shift'});
 
@@ -153,8 +151,6 @@ test('#handleKeydown does nothing when event key is not the escape key', () => {
 
 test('#handleKeydown does nothing when event keyCode is not 27', () => {
   const {foundation, mockAdapter} = setupTest();
-  const width = 250;
-  td.when(mockAdapter.computeBoundingRect()).thenReturn({width});
   td.when(mockAdapter.hasClass(cssClasses.OPEN)).thenReturn(true);
   foundation.handleKeydown({keyCode: 11});
 
@@ -163,8 +159,6 @@ test('#handleKeydown does nothing when event keyCode is not 27', () => {
 
 test('#handleKeydown calls close when event key is the escape key', () => {
   const {foundation, mockAdapter} = setupTest();
-  const width = 250;
-  td.when(mockAdapter.computeBoundingRect()).thenReturn({width});
   td.when(mockAdapter.hasClass(cssClasses.OPEN)).thenReturn(true);
   foundation.handleKeydown({key: 'Escape'});
 
@@ -173,8 +167,6 @@ test('#handleKeydown calls close when event key is the escape key', () => {
 
 test('#handleKeydown calls close when event keyCode is 27', () => {
   const {foundation, mockAdapter} = setupTest();
-  const width = 250;
-  td.when(mockAdapter.computeBoundingRect()).thenReturn({width});
   td.when(mockAdapter.hasClass(cssClasses.OPEN)).thenReturn(true);
   foundation.handleKeydown({keyCode: 27});
 

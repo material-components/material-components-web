@@ -54,12 +54,6 @@ class MDCDrawerAdapter {
   eventTargetHasClass(targetElement, className) {}
 
   /**
-   * Returns ClientRect of the root Element.
-   * @return {!ClientRect}
-   */
-  computeBoundingRect() {}
-
-  /**
    * Emits a custom event "MDCDrawer:close" denoting the drawer has closed.
    */
   notifyClosed() {}
