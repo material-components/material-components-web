@@ -25,163 +25,182 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <style>
-      html,
-      body,
-      main {
-        position: relative;
-        flex-direction: column;
-      }
-
-      .hero .mdc-menu {
-        z-index: initial;
-      }
-
-      .demo-content {
-        position: relative;
-        top: 64px;
-      }
-
-      .demo-controls-container {
-        width: 100%;
-        height: calc(100vh - 80px);
-      }
-
-      .demo-controls {
-        margin-left: auto;
-        margin-right: auto;
-        width: 360px;
-      }
-
-      .mdc-menu-anchor {
-        position: absolute;
-        margin: 16px;
-      }
-
-      .margin-inputs input {
-        width: 2em;
-      }
-
-      .left-column-controls {
-         display: inline-block;
-         vertical-align: top;
-      }
-
-      .right-column-controls {
-        display: inline-block;
-        margin-left: 2em;
-        vertical-align: top;
-      }
-
-      .demo-button__normal-text,
-      .demo-button__long-text {
-        display: none;
-      }
-
-      .demo-button--normal .demo-button__normal-text,
-      .demo-button--long .demo-button__normal-text,
-      .demo-button--long .demo-button__long-text {
-        display: inline;
-      }
-
-      .demo-menu__long-items,
-      .demo-menu__extra-long-items {
-        display: none;
-      }
-
-      .demo-menu--long .demo-menu__long-items,
-      .demo-menu--extra-long .demo-menu__long-items,
-      .demo-menu--extra-long .demo-menu__extra-long-items {
-        display: inline;
-      }
-    </style>
   </head>
   <body class="mdc-typography">
-    <header class="mdc-toolbar mdc-toolbar--fixed demo-header-toolbar">
-      <div class="mdc-toolbar__row">
-        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-          <a href="/" class="catalog-back mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
-          <span class="mdc-toolbar__title catalog-title">Menu</span>
-        </section>
-      </div>
-    </header>
+  <header class="mdc-toolbar mdc-toolbar--fixed demo-header-toolbar">
+    <div class="mdc-toolbar__row">
+      <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+        <a href="/" class="catalog-back mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
+        <span class="mdc-toolbar__title catalog-title">Menu</span>
+      </section>
+      <section class="mdc-toolbar__section mdc-toolbar__section--align-end mdc-toolbar__section--shrink-to-fit">
+        <button id="overflow-icon" class="material-icons mdc-icon-button">more_vert</button>
+      </section>
+    </div>
+  </header>
 
     <main>
       <div class="mdc-toolbar-fixed-adjust"></div>
       <section class="hero">
-        <div class="mdc-menu mdc-menu--open">
-          <ul class="mdc-menu__items mdc-list">
-            <li class="mdc-list-item" role="menuitem">Back</li>
-            <li class="mdc-list-item" role="menuitem">Forward</li>
-            <li class="mdc-list-item" role="menuitem">Reload</li>
-            <li class="mdc-list-divider" role="separator"></li>
-            <li class="mdc-list-item" role="menuitem">Help &amp; Feedback</li>
-            <li class="mdc-list-item" role="menuitem">Settings</li>
+        <div class="mdc-menu mdc-menu-surface mdc-menu-surface--open">
+          <ul class="mdc-list">
+            <li class="mdc-list-item" role="menuitem">Item 1</li>
+            <li class="mdc-list-item" role="menuitem">Item 2</li>
+            <li class="mdc-list-item mdc-list-item--disabled" role="menuitem">Item 3</li>
+            <li class="mdc-list-item" role="menuitem">Item 4</li>
+            <li class="mdc-list-item" role="menuitem">Item 5</li>
           </ul>
         </div>
       </section>
       <div class="demo-content">
         <div id="demo-wrapper">
-          <div class="mdc-menu-anchor">
+          <div class="mdc-menu-surface--anchor" style="top: 0; left: 0;">
             <button id="menu-button" class="mdc-button mdc-button--raised demo-button demo-button--normal">
               <span>
-                Show<span class="demo-button__normal-text"> Menu</span><span class="demo-button__long-text"> From Here Now!</span>
+                Show Selection Group Menu
               </span>
             </button>
 
-            <div class="mdc-menu" style="position: absolute;" tabindex="-1" id="demo-menu">
-              <ul class="mdc-menu__items mdc-list" role="menu" aria-hidden="true">
-                <li class="mdc-list-item" role="menuitem" tabindex="0">Back</li>
-                <li class="mdc-list-item" role="menuitem" tabindex="0">Forward</li>
-                <li class="mdc-list-item" role="menuitem" tabindex="0">Reload</li>
+            <div class="mdc-menu mdc-menu-surface" tabindex="-1" id="demo-menu">
+              <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
+                <li>
+                  <ul class="mdc-menu__selection-group">
+                    <li class="mdc-list-item" role="menuitem">
+                      <span class="mdc-menu__selection-group-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                          <path fill="none" d="M0 0h24v24H0z"/>
+                          <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
+                        </svg>
+                      </span>
+                      Single
+                    </li>
+                    <li class="mdc-list-item mdc-list-item--disabled" role="menuitem">
+                      <span class="mdc-menu__selection-group-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                          <path fill="none" d="M0 0h24v24H0z"/>
+                          <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
+                        </svg>
+                      </span>
+                      1.15
+                    </li>
+                    <li class="mdc-list-item" role="menuitem">
+                      <span class="mdc-menu__selection-group-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                          <path fill="none" d="M0 0h24v24H0z"/>
+                          <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
+                        </svg>
+                      </span>
+                      Double
+                    </li>
+                    <li class="mdc-list-item mdc-menu-item--selected" role="menuitem">
+                      <span class="mdc-menu__selection-group-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                          <path fill="none" d="M0 0h24v24H0z"/>
+                          <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
+                        </svg>
+                      </span>
+                      Custom: 1.2
+                    </li>
+                  </ul>
+                </li>
                 <li class="mdc-list-divider" role="separator"></li>
-
-                <li class="mdc-list-item" role="menuitem" tabindex="0">Save As...</li>
-                <li class="mdc-list-item" role="menuitem" tabindex="0">Help</li>
-                <span class="demo-menu__long-items">
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Settings</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Feedback</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Options...</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 1</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 2</li>
-                </span>
-                <span class="demo-menu__extra-long-items">
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 3</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 4</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 5</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 6</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 7</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 8</li>
-                  <li class="mdc-list-item" role="menuitem" tabindex="0">Item 9</li>
-                </span>
+                <li class="mdc-list-item" role="menuitem">Add space before paragraph</li>
+                <li class="mdc-list-item" role="menuitem">Add space after paragraph</li>
+                <li class="mdc-list-divider" role="separator"></li>
+                <li class="mdc-list-item" role="menuitem">Custom spacing...</li>
               </ul>
             </div>
+          </div>
+
+          <div class="mdc-menu-surface--anchor" style="top: 0; right: 0;">
+            <button id="menu-button-2" class="mdc-button mdc-button--raised demo-button demo-button--normal">
+              <span>
+                Show Hot Key Menu
+              </span>
+            </button>
+
+            <div class="mdc-menu mdc-menu-surface" tabindex="-1" id="demo-menu-2">
+              <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
+                <li class="mdc-list-item" role="menuitem">
+                  <span class="mdc-list-item__graphic" aria-hidden="true">
+                    <svg style="width: 24px; height: 24px;" viewBox="0 0 24 24">
+                      <path d="M19,3L13,9L15,11L22,4V3M12,12.5A0.5,0.5 0 0,1 11.5,12A0.5,0.5 0 0,1 12,11.5A0.5,0.5 0 0,1 12.5,12A0.5,0.5 0 0,1 12,12.5M6,20A2,2 0 0,1 4,18C4,16.89 4.9,16 6,16A2,2 0 0,1 8,18C8,19.11 7.1,20 6,20M6,8A2,2 0 0,1 4,6C4,4.89 4.9,4 6,4A2,2 0 0,1 8,6C8,7.11 7.1,8 6,8M9.64,7.64C9.87,7.14 10,6.59 10,6A4,4 0 0,0 6,2A4,4 0 0,0 2,6A4,4 0 0,0 6,10C6.59,10 7.14,9.87 7.64,9.64L10,12L7.64,14.36C7.14,14.13 6.59,14 6,14A4,4 0 0,0 2,18A4,4 0 0,0 6,22A4,4 0 0,0 10,18C10,17.41 9.87,16.86 9.64,16.36L12,14L19,21H22V20L9.64,7.64Z"></path>
+                    </svg>
+                  </span>
+                  Cut
+                  <span class="mdc-list-item__meta" aria-label="Shortcut: Command Key + X">⌘X</span>
+                </li>
+                <li class="mdc-list-item" role="menuitem">
+                  <span class="mdc-list-item__graphic" aria-hidden="true">
+                    <svg style="width: 24px; height: 24px;" viewBox="0 0 24 24">
+                      <path d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path>
+                    </svg>
+                  </span>
+                  Copy
+                  <span class="mdc-list-item__meta" aria-label="Shortcut: Command Key + C">⌘C</span>
+                </li>
+                <li class="mdc-list-item" role="menuitem">
+                  <span class="mdc-list-item__graphic" aria-hidden="true">
+                    <svg style="width: 24px; height: 24px;" viewBox="0 0 24 24">
+                      <path d="M19,20H5V4H7V7H17V4H19M12,2A1,1 0 0,1 13,3A1,1 0 0,1 12,4A1,1 0 0,1 11,3A1,1 0 0,1 12,2M19,2H14.82C14.4,0.84 13.3,0 12,0C10.7,0 9.6,0.84 9.18,2H5A2,2 0 0,0 3,4V20A2,2 0 0,0 5,22H19A2,2 0 0,0 21,20V4A2,2 0 0,0 19,2Z"></path>
+                    </svg>
+                  </span>
+                  Paste
+                  <span class="mdc-list-item__meta" aria-label="Shortcut: Command Key + P">⌘P</span>
+                </li>
+                <li class="mdc-list-divider" role="separator"></li>
+                <li class="mdc-list-item" role="menuitem">
+                  <span class="mdc-list-item__graphic material-icons" aria-hidden="true">cloud</span>
+                  Web Clipboard
+                </li>
+              </ul>
+            </div>
+
+
+            <div class="mdc-menu mdc-menu-surface" tabindex="-1" id="demo-menu-3">
+              <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
+                <li class="mdc-list-item" role="menuitem">
+                  Info
+                </li>
+                <li class="mdc-list-item" role="menuitem">
+                  Slideshow
+                </li>
+                <li class="mdc-list-item" role="menuitem">
+                  Loop video
+                  <div class="mdc-list-item__meta">
+                    <div class="mdc-checkbox">
+                      <input type="checkbox"
+                             class="mdc-checkbox__native-control"
+                             id="loop-video-box"/>
+                      <div class="mdc-checkbox__background">
+                        <svg class="mdc-checkbox__checkmark"
+                             viewBox="0 0 24 24">
+                          <path class="mdc-checkbox__checkmark-path"
+                                fill="none"
+                                d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
+                        </svg>
+                        <div class="mdc-checkbox__mixedmark"></div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="mdc-list-item" role="menuitem">
+                  Save to device
+                </li>
+                <li class="mdc-list-item" role="menuitem">
+                  Add to album
+                </li>
+                <li class="mdc-list-item" role="menuitem">
+                  Archive
+                </li>
+              </ul>
+            </div>
+
           </div>
         </div>
 
         <div class="demo-controls-container">
           <div class="demo-controls">
-            <div class="left-column-controls">
-              Button Position:
-              <div>
-                <label><input type="radio" name="position" value="top left" checked> Top left</label>
-              </div>
-              <div>
-                <label><input type="radio" name="position" value="top right"> Top right</label>
-              </div>
-              <div>
-                <label><input type="radio" name="position" value="middle left"> Middle left</label>
-              </div>
-              <div>
-                <label><input type="radio" name="position" value="middle right"> Middle right</label>
-              </div>
-              <div>
-                <label><input type="radio" name="position" value="bottom left"> Bottom left</label>
-              </div>
-              <div>
-                <label><input type="radio" name="position" value="bottom right"> Bottom right</label>
-              </div>
-            </div>
             <div class="right-column-controls">
               Default Menu Position:
               <div>
@@ -213,37 +232,11 @@
               <label><input type="checkbox" name="is-rtl"> RTL</label>
             </div>
             <div>
-              <label><input type="checkbox" name="remember"> Remember Selected Item</label>
-            </div>
-            <div>
               <label><input type="checkbox" name="animation"> Disable Open Animation</label>
             </div>
-            <p>
-              <div class="left-column-controls">
-                Menu Sizes:
-                <div>
-                  <label><input type="radio" name="menu-length" value="small" checked> Regular menu</label>
-                </div>
-                <div>
-                  <label><input type="radio" name="menu-length" value="large"> Large menu</label>
-                </div>
-                <div>
-                  <label><input type="radio" name="menu-length" value="tall"> Extra tall menu</label>
-                </div>
-              </div>
-              <div class="right-column-controls">
-                Anchor Widths
-                <div>
-                  <label><input type="radio" name="anchor-width" value="tiny"> Small button</label>
-                </div>
-                <div>
-                  <label><input type="radio" name="anchor-width" value="regular" checked> Comparable to menu</label>
-                </div>
-                <div>
-                  <label><input type="radio" name="anchor-width" value="wide"> Wider than menu</label>
-                </div>
-              </div>
-            </p>
+            <div>
+              <label><input type="checkbox" name="right-click"> Enable Right Click Menu</label>
+            </div>
             <hr>
             <div>
               <span>Last Selected item: <em id="last-selected">&lt;none selected&gt;</em></span>
@@ -253,76 +246,142 @@
       </div>
     </main>
 
+  <div class="mdc-menu mdc-menu-surface" tabindex="-1" id="demo-menu-4">
+    <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
+      <li class="mdc-list-item" role="menuitem">
+                  <span class="mdc-list-item__graphic" aria-hidden="true">
+                    <svg style="width: 24px; height: 24px;" viewBox="0 0 24 24">
+                      <path d="M19,3L13,9L15,11L22,4V3M12,12.5A0.5,0.5 0 0,1 11.5,12A0.5,0.5 0 0,1 12,11.5A0.5,0.5 0 0,1 12.5,12A0.5,0.5 0 0,1 12,12.5M6,20A2,2 0 0,1 4,18C4,16.89 4.9,16 6,16A2,2 0 0,1 8,18C8,19.11 7.1,20 6,20M6,8A2,2 0 0,1 4,6C4,4.89 4.9,4 6,4A2,2 0 0,1 8,6C8,7.11 7.1,8 6,8M9.64,7.64C9.87,7.14 10,6.59 10,6A4,4 0 0,0 6,2A4,4 0 0,0 2,6A4,4 0 0,0 6,10C6.59,10 7.14,9.87 7.64,9.64L10,12L7.64,14.36C7.14,14.13 6.59,14 6,14A4,4 0 0,0 2,18A4,4 0 0,0 6,22A4,4 0 0,0 10,18C10,17.41 9.87,16.86 9.64,16.36L12,14L19,21H22V20L9.64,7.64Z"></path>
+                    </svg>
+                  </span>
+        Cut
+        <span class="mdc-list-item__meta" aria-label="Shortcut: Command Key + X">⌘X</span>
+      </li>
+      <li class="mdc-list-item" role="menuitem">
+                  <span class="mdc-list-item__graphic" aria-hidden="true">
+                    <svg style="width: 24px; height: 24px;" viewBox="0 0 24 24">
+                      <path d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path>
+                    </svg>
+                  </span>
+        Copy
+        <span class="mdc-list-item__meta" aria-label="Shortcut: Command Key + C">⌘C</span>
+      </li>
+      <li class="mdc-list-item" role="menuitem">
+                  <span class="mdc-list-item__graphic" aria-hidden="true">
+                    <svg style="width: 24px; height: 24px;" viewBox="0 0 24 24">
+                      <path d="M19,20H5V4H7V7H17V4H19M12,2A1,1 0 0,1 13,3A1,1 0 0,1 12,4A1,1 0 0,1 11,3A1,1 0 0,1 12,2M19,2H14.82C14.4,0.84 13.3,0 12,0C10.7,0 9.6,0.84 9.18,2H5A2,2 0 0,0 3,4V20A2,2 0 0,0 5,22H19A2,2 0 0,0 21,20V4A2,2 0 0,0 19,2Z"></path>
+                    </svg>
+                  </span>
+        Paste
+        <span class="mdc-list-item__meta" aria-label="Shortcut: Command Key + P">⌘P</span>
+      </li>
+      <li class="mdc-list-divider" role="separator"></li>
+      <li class="mdc-list-item" role="menuitem">
+        <span class="mdc-list-item__graphic material-icons" aria-hidden="true">cloud</span>
+        Web Clipboard
+      </li>
+    </ul>
+  </div>
+
     <script src="/assets/material-components-web.js" async></script>
     <script>
       demoReady(function() {
-        var menuEl = document.querySelector('#demo-menu');
+
+        // Selection group menu
+        var menuEl = document.getElementById('demo-menu');
         var menu = new mdc.menu.MDCMenu(menuEl);
-        var menuButtonEl = document.querySelector('#menu-button');
+        var menuButtonEl = document.getElementById('menu-button');
         menuButtonEl.addEventListener('click', function() {
           menu.open = !menu.open;
         });
 
-        var remember = document.querySelector('input[name="remember"]');
-        remember.addEventListener('change', function(evt) {
-          menu.rememberSelection = evt.target.checked;
+        // Normal menu
+        var menuEl2 = document.getElementById('demo-menu-2');
+        var menu2 = new mdc.menu.MDCMenu(menuEl2);
+        var menuButtonEl2 = document.getElementById('menu-button-2');
+        menuButtonEl2.addEventListener('click', function() {
+          menu2.open = !menu2.open;
+        });
+
+        // Hoisted menu
+        var menuEl3 = document.getElementById('demo-menu-3');
+        var menu3 = new mdc.menu.MDCMenu(menuEl3);
+        var menuButtonEl3 = document.getElementById('overflow-icon');
+        menu3.hoistMenuToBody();
+        menu3.setAnchorElement(menuButtonEl3);
+        menu3.setFixedPosition(true);
+        menuButtonEl3.addEventListener('click', function() {
+          menu3.open = !menu3.open;
+        });
+
+        // Right Click  menu
+        var menuEl4 = document.getElementById('demo-menu-4');
+        var menu4 = new mdc.menu.MDCMenu(menuEl4);
+        menu4.hoistMenuToBody();
+        menu4.setFixedPosition(true);
+
+        var rightClickCheckbox = document.querySelector('input[name="right-click"]');
+
+        // Right click callback function
+        var contextMenuFunc = function(clickEvent) {
+          menu4.setAbsolutePosition(clickEvent.clientX, clickEvent.clientY);
+          menu4.open = true;
+          clickEvent.preventDefault();
+          return false;
+        };
+
+        // Right click checkbox listener
+        rightClickCheckbox.addEventListener('change', function() {
+          if (rightClickCheckbox.checked) {
+            document.body.addEventListener('contextmenu', contextMenuFunc);
+          } else {
+            document.body.removeEventListener('contextmenu', contextMenuFunc);
+          }
         });
 
         var animation = document.querySelector('input[name="animation"]');
         animation.addEventListener('change', function(evt) {
-          menu.quickOpen = evt.target.checked;
+           menu.quickOpen = evt.target.checked;
+           menu2.quickOpen = evt.target.checked;
+           menu3.quickOpen = evt.target.checked;
+           menu4.quickOpen = evt.target.checked;
         });
 
-        var radios = document.querySelectorAll('input[name="position"]');
-        var anchor = document.querySelector('.mdc-menu-anchor');
-        // Initialize to top left.
-        anchor.style.setProperty('top', '0');
-        anchor.style.setProperty('left', '0');
-        for (var i = 0; i < radios.length; i++) {
-          radios[i].addEventListener('change', function(evt) {
-            if (evt.target.checked) {
-              if (evt.target.value) {
-                anchor.style.removeProperty('top');
-                anchor.style.removeProperty('right');
-                anchor.style.removeProperty('bottom');
-                anchor.style.removeProperty('left');
-
-                var vertical = evt.target.value.split(' ')[0];
-                var horizontal = evt.target.value.split(' ')[1];
-                if (vertical === 'middle') {
-                  anchor.style.setProperty('top', '35%');
-                } else {
-                  anchor.style.setProperty(vertical, '0');
-                }
-                anchor.style.setProperty(horizontal, '0');
-              }
-            }
-          });
-        }
-
-        radios = document.querySelectorAll('input[name="menu-position"]');
+        var radios = document.querySelectorAll('input[name="menu-position"]');
         for (var i = 0; i < radios.length; i++) {
           radios[i].addEventListener('change', function(evt) {
             if (evt.target.checked) {
               switch (evt.target.value) {
                 case "top start":
-                  menu.setAnchorCorner(mdc.menu.MDCMenuFoundation.Corner.TOP_START);
+                  menu.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.Corner.TOP_START);
+                  menu2.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.Corner.TOP_START);
+                  menu3.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.Corner.TOP_START);
+                  menu4.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.Corner.TOP_START);
                   break;
                 case "bottom start":
-                  menu.setAnchorCorner(mdc.menu.MDCMenuFoundation.Corner.BOTTOM_START);
+                  menu.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.Corner.BOTTOM_START);
+                  menu2.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.Corner.BOTTOM_START);
+                  menu3.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.Corner.BOTTOM_START);
+                  menu4.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.Corner.BOTTOM_START);
                   break;
                 case "top end":
-                  menu.setAnchorCorner(mdc.menu.MDCMenuFoundation.Corner.TOP_END);
+                  menu.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.Corner.TOP_END);
+                  menu2.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.Corner.TOP_END);
+                  menu3.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.Corner.TOP_END);
+                  menu4.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.Corner.TOP_END);
                   break;
                 case "bottom end":
-                  menu.setAnchorCorner(mdc.menu.MDCMenuFoundation.Corner.BOTTOM_END);
+                  menu.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.Corner.BOTTOM_END);
+                  menu2.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.Corner.BOTTOM_END);
+                  menu3.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.Corner.BOTTOM_END);
+                  menu4.setAnchorCorner(mdc.menuSurface.MDCMenuSurfaceFoundation.Corner.BOTTOM_END);
                   break;
               }
             }
           });
         }
 
-        var marginInputsEl = document.querySelector('#margin-inputs');
+        var marginInputsEl = document.getElementById('margin-inputs');
         var inputs = marginInputsEl.querySelectorAll('input[type="text"]');
         for (var i = 0; i < inputs.length; i++) {
           inputs[i].addEventListener('change', function(evt) {
@@ -335,6 +394,9 @@
                           bottom: parseInt(bottomMarginInput.value, 10),
                           left: parseInt(leftMarginInput.value, 10)};
             menu.setAnchorMargin(margin);
+            menu2.setAnchorMargin(margin);
+            menu3.setAnchorMargin(margin);
+            menu4.setAnchorMargin(margin);
           });
         }
 
@@ -343,61 +405,44 @@
           var demoWrapper = document.getElementById('demo-wrapper');
           if (rtl.checked) {
             demoWrapper.setAttribute('dir', 'rtl');
+            menuEl3.setAttribute('dir', 'rtl');
+            menuEl4.setAttribute('dir', 'rtl');
           } else {
             demoWrapper.removeAttribute('dir');
+            menuEl3.removeAttribute('dir');
+            menuEl4.removeAttribute('dir');
           }
         });
-
-        radios = document.querySelectorAll('input[name="menu-length"]');
-        for (var i = 0; i < radios.length; i++) {
-          radios[i].addEventListener('change', function(evt) {
-            if (evt.target.checked) {
-              switch (evt.target.value) {
-                case "small":
-                  menuEl.classList.remove('demo-menu--long');
-                  menuEl.classList.remove('demo-menu--extra-long');
-                  break;
-                case "large":
-                  menuEl.classList.add('demo-menu--long');
-                  menuEl.classList.remove('demo-menu--extra-long');
-                  break;
-                case "tall":
-                  menuEl.classList.remove('demo-menu--long');
-                  menuEl.classList.add('demo-menu--extra-long');
-                  break;
-              }
-            }
-          });
-        }
-
-        radios = document.querySelectorAll('input[name="anchor-width"]');
-        for (var i = 0; i < radios.length; i++) {
-          radios[i].addEventListener('change', function(evt) {
-            if (evt.target.checked) {
-              switch (evt.target.value) {
-                case "tiny":
-                  menuButtonEl.classList.remove('demo-button--normal');
-                  menuButtonEl.classList.remove('demo-button--long');
-                  break;
-                case "regular":
-                  menuButtonEl.classList.add('demo-button--normal');
-                  menuButtonEl.classList.remove('demo-button--long');
-                  break;
-                case "wide":
-                  menuButtonEl.classList.remove('demo-button--normal');
-                  menuButtonEl.classList.add('demo-button--long');
-                  break;
-              }
-            }
-          });
-        }
 
         var lastSelected = document.getElementById('last-selected');
         menuEl.addEventListener('MDCMenu:selected', function(evt) {
           var detail = evt.detail;
-          lastSelected.textContent = '"' + detail.item.textContent.trim() +
+          lastSelected.textContent = 'Selection Group Menu: "' + detail.item.textContent.trim() +
             '" at index ' + detail.index;
         });
+
+        menuEl2.addEventListener('MDCMenu:selected', function(evt) {
+          var detail = evt.detail;
+          lastSelected.textContent = 'Hot Key Menu: "' + detail.item.textContent.trim() +
+            '" at index ' + detail.index;
+        });
+
+        menuEl3.addEventListener('MDCMenu:selected', function(evt) {
+          var detail = evt.detail;
+          lastSelected.textContent = 'Overflow Menu: "' + detail.item.textContent.trim() +
+            '" at index ' + detail.index;
+        });
+
+        menuEl4.addEventListener('MDCMenu:selected', function(evt) {
+          var detail = evt.detail;
+          lastSelected.textContent = 'Context Menu: "' + detail.item.textContent.trim() +
+            '" at index ' + detail.index;
+        });
+
+        [].slice.call(document.querySelectorAll('.mdc-list-item')).forEach(
+          function(ele) {
+            mdc.ripple.MDCRipple.attachTo(ele);
+          });
       });
     </script>
   </body>
