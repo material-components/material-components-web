@@ -142,6 +142,17 @@ test('#setValue valid and invalid input', () => {
   td.verify(mockAdapter.floatLabel(true));
 });
 
+test('#setValue with invalid status and empty value does not shake the label', () => {
+  const {foundation, mockAdapter, helperText} =
+    setupValueTest('', /* isValid */ false, undefined, true);
+
+  foundation.setValue('');
+  td.verify(mockAdapter.addClass(cssClasses.INVALID));
+  td.verify(helperText.setValidity(false));
+  td.verify(mockAdapter.shakeLabel(false));
+  td.verify(mockAdapter.floatLabel(false));
+});
+
 test('#setValue does not affect focused state', () => {
   const {foundation, mockAdapter} = setupValueTest('');
   foundation.setValue('');
