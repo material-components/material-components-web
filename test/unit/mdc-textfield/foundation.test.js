@@ -281,12 +281,6 @@ test('#setValid removes mdc-textfied--invalid when set to true', () => {
   td.verify(mockAdapter.removeClass(cssClasses.INVALID));
 });
 
-test('#init adds mdc-text-field--upgraded class', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.init();
-  td.verify(mockAdapter.addClass(cssClasses.UPGRADED));
-});
-
 test('#init focuses on input if adapter.isFocused is true', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.isFocused()).thenReturn(true);
