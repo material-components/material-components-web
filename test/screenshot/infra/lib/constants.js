@@ -48,16 +48,16 @@ module.exports = {
   CBT_CONCURRENCY_MAX_WAIT_MS: 10 * 60 * 1000, // 10 minutes
 
   /**
-   * Number of milliseconds to wait for fonts to load on a test page in Selenium before giving up.
-   * @type {number}
-   */
-  SELENIUM_FONT_LOAD_WAIT_MS: 3 * 1000, // 3 seconds
-
-  /**
    * Number of milliseconds a Selenium test should wait to receive commands before being considered "stalled".
    * @type {number}
    */
-  SELENIUM_STALLED_TIME_MS: 2 * 60 * 1000, // 2 minutes
+  SELENIUM_ZOMBIE_SESSION_DURATION_MS: 2 * 60 * 1000, // 2 minutes
+
+  /**
+   * Number of milliseconds to wait for Selenium tests to start before killing them when an error occurs.
+   * @type {number}
+   */
+  SELENIUM_KILL_WAIT_MS: 30 * 1000, // 30 seconds
 
   ExitCode: {
     OK: 0,

@@ -125,6 +125,7 @@
     "stylelint-selector-bem-pattern": "^1.0.0",
     "testdouble": "^3.2.4",
     "to-slug-case": "^1.0.0",
+    "url-search-params-polyfill": "^4.0.1",
     "useragent": "^2.3.0",
     "validate-commit-msg": "^2.6.1",
     "verror": "^1.10.0",
