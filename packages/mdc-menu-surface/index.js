@@ -79,6 +79,7 @@ class MDCMenuSurface extends MDCComponent {
     this.root_.removeEventListener('keydown', this.handleKeydown_);
     this.root_.removeEventListener(strings.OPENED_EVENT, this.registerBodyClickListener_);
     this.root_.removeEventListener(strings.CLOSED_EVENT, this.deregisterBodyClickListener_);
+    super.destroy();
   }
 
   /** @return {boolean} */

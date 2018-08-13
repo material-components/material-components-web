@@ -123,7 +123,7 @@ test('initialize registers event listener for keydown', () => {
   td.verify(mockFoundation.handleKeydown(td.matchers.isA(Event)), {times: 1});
 });
 
-test('destory deregisters event listener for click', () => {
+test('destroy deregisters event listener for click', () => {
   const {component, mockFoundation, root} = setupTestWithFakes();
   component.destroy();
 
@@ -131,7 +131,7 @@ test('destory deregisters event listener for click', () => {
   td.verify(mockFoundation.handleClick(td.matchers.anything()), {times: 0});
 });
 
-test('destory deregisters event listener for keydown', () => {
+test('destroy deregisters event listener for keydown', () => {
   const {component, mockFoundation, root} = setupTestWithFakes();
   component.destroy();
 

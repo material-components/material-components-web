@@ -67,7 +67,8 @@ class MDCMenu extends MDCComponent {
     this.handleClick_ = (evt) => this.foundation_.handleClick(evt);
 
     this.menuSurface_.listen(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, this.afterOpenedCallback_);
-    this.registerListeners_();
+    this.listen('keydown', this.handleKeydown_);
+    this.listen('click', this.handleClick_);
   }
 
   destroy() {
@@ -77,7 +78,8 @@ class MDCMenu extends MDCComponent {
 
     this.menuSurface_.destroy();
     this.menuSurface_.unlisten(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, this.afterOpenedCallback_);
-    this.deregisterListeners_();
+    this.unlisten('keydown', this.handleKeydown_);
+    this.unlisten('click', this.handleClick_);
     super.destroy();
   }
 
@@ -164,16 +166,6 @@ class MDCMenu extends MDCComponent {
    */
   setAnchorElement(element) {
     this.menuSurface_.anchorElement = element;
-  }
-
-  registerListeners_() {
-    this.root_.addEventListener('keydown', this.handleKeydown_);
-    this.root_.addEventListener('click', this.handleClick_);
-  }
-
-  deregisterListeners_() {
-    this.root_.removeEventListener('keydown', this.handleKeydown_);
-    this.root_.removeEventListener('click', this.handleClick_);
   }
 
   handleAfterOpened_() {
