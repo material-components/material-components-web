@@ -38,16 +38,10 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
       hasClass: (/* className: string */) => {},
+      eventTargetHasClass: (/* targetElement: !Element, className: string */) => {},
       computeBoundingRect: () => {},
-      setStyleAppContent: (/* propertyName: string, value: string */) => {},
-      addClassAppContent: (/* className: string */) => {},
-      removeClassAppContent: (/* className: string */) => {},
-      isRtl: () => {},
       notifyClose: () => {},
       notifyOpen: () => {},
-      trapFocusOnSurface: () => {},
-      untrapFocusOnSurface: () => {},
-      eventTargetHasClass: () => {},
     });
   }
 
@@ -74,10 +68,16 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
     this.adapter_.addClass(cssClasses.CLOSING);
   }
 
-  /** @protected */
+  /**
+   * Abstract method which gets called when drawer finished opening.
+   * @abstract
+   */
   opened() {}
 
-  /** @protected */
+  /**
+   * Abstract method which gets called when drawer finished closing.
+   * @abstract
+   */
   closed() {}
 
   /**

@@ -16,9 +16,7 @@
  */
 import {MDCComponent} from '@material/base/index';
 import MDCDismissibleDrawerFoundation from './dismissible/foundation';
-import MDCModalDrawerFoundation from './modal/foundation';
 import {strings} from './constants';
-import * as util from './util';
 
 /**
  * @extends {MDCComponent<!MDCDismissibleDrawerFoundation>}
@@ -31,12 +29,12 @@ export class MDCDrawer extends MDCComponent {
   constructor(...args) {
     super(...args);
 
-    /** @private {?Element} */
-    this.appContent_;
     /** @private {?Function} */
     this.handleKeydown_;
+
     /** @private {?Function} */
     this.handleTransitionEnd_;
+
     /** @private {?Function} */
     this.handleScrimClick_;
   }
@@ -47,16 +45,6 @@ export class MDCDrawer extends MDCComponent {
    */
   static attachTo(root) {
     return new MDCDrawer(root);
-  }
-
-  initialize() {
-    const appContent = this.root_.parentElement.querySelector(
-      MDCDismissibleDrawerFoundation.strings.APP_CONTENT_SELECTOR);
-    if (appContent) {
-      this.appContent_= appContent;
-    }
-    this.scrim_ = this.root_.parentElement.querySelector(MDCDismissibleDrawerFoundation.strings.SCRIM_SELECTOR);
-    this.focusTrap_ = util.createFocusTrapInstance(this.root_);
   }
 
   /**
@@ -81,22 +69,14 @@ export class MDCDrawer extends MDCComponent {
 
   destroy() {
     document.removeEventListener('keydown', this.handleKeydown_);
-    this.root_.removeEventListener('transitionend', this.handleTransitionEnd_);
-
-    if (this.scrim_) {
-      this.scrim_.addEventListener('click', this.handleScrimClick_);
-    }
   }
 
   initialSyncWithDOM() {
-    this.handleKeydown_ = this.foundation_.handleKeydown.bind(this.foundation_);
-    this.handleTransitionEnd_ = this.foundation_.handleTransitionEnd.bind(this.foundation_);
-    document.addEventListener('keydown', this.handleKeydown_);
-    this.root_.addEventListener('transitionend', this.handleTransitionEnd_, true);
-    this.handleScrimClick_ = () => this.foundation_.handleScrimClick();
-    if (this.scrim_) {
-      this.scrim_.addEventListener('click', this.handleScrimClick_);
-    }
+    this.handleKeydown_ = (evt) => this.foundation_.handleKeydown(evt);
+    this.handleTransitionEnd_ = (evt) => this.foundation_.handleTransitionEnd(evt);
+
+    this.root_.addEventListener('keydown', this.handleKeydown_);
+    this.root_.addEventListener('transitionend', this.handleTransitionEnd_, /* useCapture */ true);
   }
 
   getDefaultFoundation() {
@@ -105,37 +85,14 @@ export class MDCDrawer extends MDCComponent {
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       hasClass: (className) => this.root_.classList.contains(className),
-      setStyleAppContent: (propertyName, value) => {
-        if (this.appContent_) {
-          return this.appContent_.style.setProperty(propertyName, value);
-        }
-      },
-      computeBoundingRect: () => this.root_.getBoundingClientRect(),
-      addClassAppContent: (className) => {
-        if (this.appContent_) {
-          this.appContent_.classList.add(className);
-        }
-      },
-      removeClassAppContent: (className) => {
-        if (this.appContent_) {
-          this.appContent_.classList.remove(className);
-        }
-      },
-      isRtl: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
+      eventTargetHasClass: (targetElement, className) => targetElement.classList.contains(className),
       notifyClose: () => this.emit(strings.CLOSE_EVENT, null, true /* shouldBubble */),
       notifyOpen: () => this.emit(strings.OPEN_EVENT, null, true /* shouldBubble */),
-      trapFocusOnSurface: () => this.focusTrap_.activate(),
-      untrapFocusOnSurface: () => this.focusTrap_.deactivate(),
-      eventTargetHasClass: (targetElement, className) => {
-        return targetElement.classList.contains(className);
-      },
     }));
 
-    if (this.root_.classList.contains(MDCDismissibleDrawerFoundation.cssClasses.DISMISSIBLE) ||
-        this.root_.classList.contains(MDCDismissibleDrawerFoundation.cssClasses.RAIL)) {
+    const {DISMISSIBLE} = MDCDismissibleDrawerFoundation.cssClasses;
+    if (this.root_.classList.contains(DISMISSIBLE)) {
       return new MDCDismissibleDrawerFoundation(adapter);
-    } else if (this.root_.classList.contains(MDCModalDrawerFoundation.cssClasses.MODAL)) {
-      return new MDCModalDrawerFoundation(adapter);
     }
   }
 }

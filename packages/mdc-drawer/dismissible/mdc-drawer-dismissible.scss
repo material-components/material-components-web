@@ -17,62 +17,30 @@
 @import "@material/animation/functions";
 @import "@material/rtl/mixins";
 @import "../variables";
+@import "../mixins";
 
 .mdc-drawer--dismissible {
-  width: 0;
-  min-width: 0;
-  transform: translateX(-100%);
-  border-right-width: 0;
+  @include mdc-rtl-reflexive-position(left, 0);
 
-  @include mdc-rtl {
-    transform: translateX(100%);
-    border-left-width: 0;
+  transition-property: transform;
+  transition-timing-function: $mdc-animation-standard-curve-timing-function;
+  position: absolute;
+  top: 0;
+  display: none;
+
+  &.mdc-drawer--open {
+    display: block;
   }
 }
 
-.mdc-drawer--open {
-  width: $mdc-drawer-width;
-  min-width: $mdc-drawer-width;
-  border-right-width: 1px;
-
-  @include mdc-rtl {
-    border-left-width: 1px;
-  }
-}
-
-.mdc-drawer--open:not(.mdc-drawer--animating-close) {
-  transform: translateX(0);
-}
-
-.mdc-drawer--dismissible,
 .mdc-drawer-app-content {
-  transform-origin: top left;
-  will-change: transform;
+  @include mdc-rtl-reflexive-box(margin, left, 0);
 
-  @include mdc-rtl {
-    transform-origin: top right;
+  .mdc-drawer--open + & {
+    @include mdc-rtl-reflexive-box(margin, left, $mdc-drawer-width);
   }
-}
 
-.mdc-drawer--animating-close {
-  transform: translateX(-100%);
-  transition: mdc-animation-standard(transform, $mdc-drawer-animation-exit);
-
-  @include mdc-rtl {
-    transform: translateX(100%);
+  .mdc-drawer--closing + & {
+    @include mdc-rtl-reflexive-box(margin, left, 0);
   }
-}
-
-.mdc-drawer--animating-open {
-  // the `all` transition should be transform, but IE11 and Edge
-  // do not apply the animation in the opening.
-  transition: mdc-animation-standard(all, $mdc-drawer-animation-enter);
-}
-
-.mdc-drawer-app-content--animating-open {
-  transition: mdc-animation-standard(transform, $mdc-drawer-animation-enter);
-}
-
-.mdc-drawer-app-content--animating-close {
-  transition: mdc-animation-standard(transform, $mdc-drawer-animation-exit);
 }

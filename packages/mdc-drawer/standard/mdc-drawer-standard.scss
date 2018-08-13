@@ -38,6 +38,7 @@
   max-width: $mdc-drawer-width;
   border-right-width: 1px;
   border-right-style: solid;
+  box-sizing: border-box;
   overflow: hidden;
   flex-shrink: 0;
   display: flex;
@@ -45,7 +46,7 @@
   transition-property: transform;
   transition-timing-function: $mdc-animation-standard-curve-timing-function;
   height: 100%;
-  display: none;
+  z-index: $mdc-drawer-z-index;
 
   @include mdc-rtl {
     border-right-width: 0;
@@ -82,21 +83,33 @@
 
 .mdc-drawer--open {
   transition: mdc-animation-standard(transform, $mdc-drawer-animation-enter);
-  display: block;
 }
 
 .mdc-drawer--animate {
   transform: translateX(-100%);
+
+  @include mdc-rtl {
+    transform: translateX(100%);
+  }
 }
 
 .mdc-drawer--opening {
-  transform: translateX(0);
   transition-duration: $mdc-drawer-animation-enter;
+  transform: translateX(0);
+
+  // Required to level the specificity with animate class.
+  @include mdc-rtl {
+    transform: translateX(0);
+  }
 }
 
 .mdc-drawer--closing {
-  transform: translateX(-100%);
   transition-duration: $mdc-drawer-animation-exit;
+  transform: translateX(-100%);
+
+  @include mdc-rtl {
+    transform: translateX(100%);
+  }
 }
 
 .mdc-drawer__header {

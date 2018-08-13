@@ -45,8 +45,7 @@ test('exports cssClasses', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCDismissibleDrawerFoundation, [
-    'hasClass', 'addClass', 'removeClass', 'computeBoundingRect', 'setStyleAppContent',
-    'addClassAppContent', 'removeClassAppContent', 'isRtl', 'notifyClose', 'notifyOpen',
+    'hasClass', 'addClass', 'removeClass', 'computeBoundingRect', 'notifyClose', 'notifyOpen',
   ]);
 });
 
@@ -73,38 +72,8 @@ test('#open does nothing if drawer is closing', () => {
 
 test('#open adds appropriate classes', () => {
   const {foundation, mockAdapter} = setupTest();
-  const width = 250;
-  td.when(mockAdapter.computeBoundingRect()).thenReturn({width});
   foundation.open();
   td.verify(mockAdapter.addClass(cssClasses.OPEN), {times: 1});
-  td.verify(mockAdapter.addClass(cssClasses.ANIMATING_OPEN), {times: 1});
-});
-
-test('#open animates appContent element', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
-  const width = 250;
-  td.when(mockAdapter.computeBoundingRect()).thenReturn({width});
-  foundation.open();
-  td.verify(mockAdapter.setStyleAppContent('transform', 'translateX(-250px)'));
-  raf.flush();
-  td.verify(mockAdapter.addClassAppContent(cssClasses.APP_CONTENT_ANIMATE_OPEN));
-  td.verify(mockAdapter.setStyleAppContent('transform', ''));
-  raf.restore();
-});
-
-test('#open animates appContent element when isRtl returns true', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
-  const width = 250;
-  td.when(mockAdapter.isRtl()).thenReturn(true);
-  td.when(mockAdapter.computeBoundingRect()).thenReturn({width});
-  foundation.open();
-  td.verify(mockAdapter.setStyleAppContent('transform', 'translateX(250px)'));
-  raf.flush();
-  td.verify(mockAdapter.addClassAppContent(cssClasses.APP_CONTENT_ANIMATE_OPEN));
-  td.verify(mockAdapter.setStyleAppContent('transform', ''));
-  raf.restore();
 });
 
 test('#close does nothing if drawer is already closed', () => {
@@ -130,43 +99,10 @@ test('#close does nothing if drawer is closing', () => {
 
 test('#close adds appropriate classes', () => {
   const {foundation, mockAdapter} = setupTest();
-  const width = 250;
-  td.when(mockAdapter.computeBoundingRect()).thenReturn({width});
   td.when(mockAdapter.hasClass(cssClasses.OPEN)).thenReturn(true);
   foundation.close();
 
-  td.verify(mockAdapter.addClass(cssClasses.ANIMATING_CLOSE), {times: 1});
-});
-
-test('#close animates appContent element', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
-  const width = 250;
-  td.when(mockAdapter.computeBoundingRect()).thenReturn({width});
-  td.when(mockAdapter.hasClass(cssClasses.OPEN)).thenReturn(true);
-  foundation.close();
-
-  td.verify(mockAdapter.setStyleAppContent('transform', ''));
-  raf.flush();
-  td.verify(mockAdapter.addClassAppContent(cssClasses.APP_CONTENT_ANIMATE_CLOSE));
-  td.verify(mockAdapter.setStyleAppContent('transform', 'translateX(-250px)'));
-  raf.restore();
-});
-
-test('#close animates appContent element when isRtl returns true', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
-  const width = 250;
-  td.when(mockAdapter.isRtl()).thenReturn(true);
-  td.when(mockAdapter.computeBoundingRect()).thenReturn({width});
-  td.when(mockAdapter.hasClass(cssClasses.OPEN)).thenReturn(true);
-  foundation.close();
-
-  td.verify(mockAdapter.setStyleAppContent('transform', ''));
-  raf.flush();
-  td.verify(mockAdapter.addClassAppContent(cssClasses.APP_CONTENT_ANIMATE_CLOSE));
-  td.verify(mockAdapter.setStyleAppContent('transform', 'translateX(250px)'));
-  raf.restore();
+  td.verify(mockAdapter.addClass(cssClasses.CLOSING), {times: 1});
 });
 
 test(`#isOpen returns true when it has ${cssClasses.OPEN} class`, () => {
@@ -248,26 +184,23 @@ test('#handleKeydown calls close when event keyCode is 27', () => {
 test('#handleTransitionEnd removes all animating classes', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.handleTransitionEnd();
-  td.verify(mockAdapter.removeClassAppContent(cssClasses.APP_CONTENT_ANIMATE_OPEN), {times: 1});
-  td.verify(mockAdapter.removeClassAppContent(cssClasses.APP_CONTENT_ANIMATE_CLOSE), {times: 1});
-  td.verify(mockAdapter.removeClass(cssClasses.ANIMATING_OPEN), {times: 1});
-  td.verify(mockAdapter.removeClass(cssClasses.ANIMATING_CLOSE), {times: 1});
+  td.verify(mockAdapter.removeClass(cssClasses.ANIMATE), {times: 1});
+  td.verify(mockAdapter.removeClass(cssClasses.OPENING), {times: 1});
+  td.verify(mockAdapter.removeClass(cssClasses.CLOSING), {times: 1});
 });
 
 test('#handleTransitionEnd removes open class after closing and calls notifyClose', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(cssClasses.ANIMATING_CLOSE)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.OPEN)).thenReturn(true);
   foundation.handleTransitionEnd();
   td.verify(mockAdapter.removeClass(cssClasses.OPEN), {times: 1});
-  td.verify(mockAdapter.setStyleAppContent('transform', ''), {times: 1});
   td.verify(mockAdapter.notifyClose(), {times: 1});
 });
 
-test('#handleTransitionEnd doesn\'t remove open class after closing and calls notifyOpen', () => {
+test('#handleTransitionEnd doesn\'t remove open class after opening and calls notifyOpen', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(cssClasses.ANIMATING_CLOSE)).thenReturn(false);
+  td.when(mockAdapter.hasClass(cssClasses.OPEN)).thenReturn(false);
   foundation.handleTransitionEnd();
   td.verify(mockAdapter.removeClass(cssClasses.OPEN), {times: 0});
-  td.verify(mockAdapter.setStyleAppContent('transform', ''), {times: 0});
   td.verify(mockAdapter.notifyOpen(), {times: 1});
 });
