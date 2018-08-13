@@ -162,6 +162,6 @@ Method Signature | Description
 
 When wrapping the Tab component, it is necessary to register the following event handler. For an example of this, see the [MDCTab](index.js) component's `initialSyncWithDOM` method.
 
-| Event | Element | Foundation Handler |
-| --- | --- | --- |
-| `click` | Root element | `handleClick()` |
+Event | Element | Foundation Handler
+--- | --- | ---
+`click` | Root element | `handleClick()`
