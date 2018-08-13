@@ -676,6 +676,22 @@ test('#handleBodyClick event closes the menu surface', () => {
   mockRaf.restore();
 });
 
+test('on menu surface click does not emit close', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const mockRaf = createMockRaf();
+  const mockEvt = {
+    target: {},
+  };
+  td.when(mockAdapter.isElementInContainer(td.matchers.anything())).thenReturn(true);
+  foundation.init();
+  foundation.open();
+  mockRaf.flush();
+  foundation.handleBodyClick(mockEvt);
+  mockRaf.flush();
+  td.verify(mockAdapter.notifyClose(), {times: 0});
+  mockRaf.restore();
+});
+
 testFoundation('should cancel animation after destroy', ({foundation, mockAdapter, mockRaf}) => {
   foundation.init();
   mockRaf.flush();
