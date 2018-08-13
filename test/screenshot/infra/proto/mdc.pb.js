@@ -5490,6 +5490,7 @@ $root.mdc = (function() {
              * @memberof mdc.proto
              * @interface IScreenshot
              * @property {boolean|null} [is_runnable] Screenshot is_runnable
+             * @property {boolean|null} [is_url_skipped_by_cli] Screenshot is_url_skipped_by_cli
              * @property {mdc.proto.Screenshot.InclusionType|null} [inclusion_type] Screenshot inclusion_type
              * @property {mdc.proto.Screenshot.CaptureState|null} [capture_state] Screenshot capture_state
              * @property {mdc.proto.IUserAgent|null} [user_agent] Screenshot user_agent
@@ -5526,6 +5527,14 @@ $root.mdc = (function() {
              * @instance
              */
             Screenshot.prototype.is_runnable = false;
+
+            /**
+             * Screenshot is_url_skipped_by_cli.
+             * @member {boolean} is_url_skipped_by_cli
+             * @memberof mdc.proto.Screenshot
+             * @instance
+             */
+            Screenshot.prototype.is_url_skipped_by_cli = false;
 
             /**
              * Screenshot inclusion_type.
@@ -5673,6 +5682,8 @@ $root.mdc = (function() {
                     writer.uint32(/* id 12, wireType 0 =*/96).uint32(message.retry_count);
                 if (message.flake_config != null && message.hasOwnProperty("flake_config"))
                     $root.mdc.proto.FlakeConfig.encode(message.flake_config, writer.uint32(/* id 13, wireType 2 =*/106).fork()).ldelim();
+                if (message.is_url_skipped_by_cli != null && message.hasOwnProperty("is_url_skipped_by_cli"))
+                    writer.uint32(/* id 14, wireType 0 =*/112).bool(message.is_url_skipped_by_cli);
                 return writer;
             };
 
@@ -5709,6 +5720,9 @@ $root.mdc = (function() {
                     switch (tag >>> 3) {
                     case 1:
                         message.is_runnable = reader.bool();
+                        break;
+                    case 14:
+                        message.is_url_skipped_by_cli = reader.bool();
                         break;
                     case 2:
                         message.inclusion_type = reader.int32();
@@ -5784,6 +5798,9 @@ $root.mdc = (function() {
                 if (message.is_runnable != null && message.hasOwnProperty("is_runnable"))
                     if (typeof message.is_runnable !== "boolean")
                         return "is_runnable: boolean expected";
+                if (message.is_url_skipped_by_cli != null && message.hasOwnProperty("is_url_skipped_by_cli"))
+                    if (typeof message.is_url_skipped_by_cli !== "boolean")
+                        return "is_url_skipped_by_cli: boolean expected";
                 if (message.inclusion_type != null && message.hasOwnProperty("inclusion_type"))
                     switch (message.inclusion_type) {
                     default:
@@ -5869,6 +5886,8 @@ $root.mdc = (function() {
                 var message = new $root.mdc.proto.Screenshot();
                 if (object.is_runnable != null)
                     message.is_runnable = Boolean(object.is_runnable);
+                if (object.is_url_skipped_by_cli != null)
+                    message.is_url_skipped_by_cli = Boolean(object.is_url_skipped_by_cli);
                 switch (object.inclusion_type) {
                 case "UNKNOWN":
                 case 0:
@@ -5987,6 +6006,7 @@ $root.mdc = (function() {
                     object.diff_image_result = null;
                     object.retry_count = 0;
                     object.flake_config = null;
+                    object.is_url_skipped_by_cli = false;
                 }
                 if (message.is_runnable != null && message.hasOwnProperty("is_runnable"))
                     object.is_runnable = message.is_runnable;
@@ -6014,6 +6034,8 @@ $root.mdc = (function() {
                     object.retry_count = message.retry_count;
                 if (message.flake_config != null && message.hasOwnProperty("flake_config"))
                     object.flake_config = $root.mdc.proto.FlakeConfig.toObject(message.flake_config, options);
+                if (message.is_url_skipped_by_cli != null && message.hasOwnProperty("is_url_skipped_by_cli"))
+                    object.is_url_skipped_by_cli = message.is_url_skipped_by_cli;
                 return object;
             };
 
@@ -6083,6 +6105,7 @@ $root.mdc = (function() {
              * @property {number|null} [max_changed_pixel_fraction_to_retry] FlakeConfig max_changed_pixel_fraction_to_retry
              * @property {number|null} [font_face_observer_timeout_ms] FlakeConfig font_face_observer_timeout_ms
              * @property {number|null} [fonts_loaded_reflow_delay_ms] FlakeConfig fonts_loaded_reflow_delay_ms
+             * @property {boolean|null} [skip_all] FlakeConfig skip_all
              */
 
             /**
@@ -6149,6 +6172,14 @@ $root.mdc = (function() {
             FlakeConfig.prototype.fonts_loaded_reflow_delay_ms = 0;
 
             /**
+             * FlakeConfig skip_all.
+             * @member {boolean} skip_all
+             * @memberof mdc.proto.FlakeConfig
+             * @instance
+             */
+            FlakeConfig.prototype.skip_all = false;
+
+            /**
              * Creates a new FlakeConfig instance using the specified properties.
              * @function create
              * @memberof mdc.proto.FlakeConfig
@@ -6184,6 +6215,8 @@ $root.mdc = (function() {
                     writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.font_face_observer_timeout_ms);
                 if (message.fonts_loaded_reflow_delay_ms != null && message.hasOwnProperty("fonts_loaded_reflow_delay_ms"))
                     writer.uint32(/* id 6, wireType 0 =*/48).uint32(message.fonts_loaded_reflow_delay_ms);
+                if (message.skip_all != null && message.hasOwnProperty("skip_all"))
+                    writer.uint32(/* id 7, wireType 0 =*/56).bool(message.skip_all);
                 return writer;
             };
 
@@ -6235,6 +6268,9 @@ $root.mdc = (function() {
                         break;
                     case 6:
                         message.fonts_loaded_reflow_delay_ms = reader.uint32();
+                        break;
+                    case 7:
+                        message.skip_all = reader.bool();
                         break;
                     default:
                         reader.skipType(tag & 7);
@@ -6289,6 +6325,9 @@ $root.mdc = (function() {
                 if (message.fonts_loaded_reflow_delay_ms != null && message.hasOwnProperty("fonts_loaded_reflow_delay_ms"))
                     if (!$util.isInteger(message.fonts_loaded_reflow_delay_ms))
                         return "fonts_loaded_reflow_delay_ms: integer expected";
+                if (message.skip_all != null && message.hasOwnProperty("skip_all"))
+                    if (typeof message.skip_all !== "boolean")
+                        return "skip_all: boolean expected";
                 return null;
             };
 
@@ -6316,6 +6355,8 @@ $root.mdc = (function() {
                     message.font_face_observer_timeout_ms = object.font_face_observer_timeout_ms >>> 0;
                 if (object.fonts_loaded_reflow_delay_ms != null)
                     message.fonts_loaded_reflow_delay_ms = object.fonts_loaded_reflow_delay_ms >>> 0;
+                if (object.skip_all != null)
+                    message.skip_all = Boolean(object.skip_all);
                 return message;
             };
 
@@ -6339,6 +6380,7 @@ $root.mdc = (function() {
                     object.max_changed_pixel_fraction_to_retry = 0;
                     object.font_face_observer_timeout_ms = 0;
                     object.fonts_loaded_reflow_delay_ms = 0;
+                    object.skip_all = false;
                 }
                 if (message.max_retries != null && message.hasOwnProperty("max_retries"))
                     object.max_retries = message.max_retries;
@@ -6352,6 +6394,8 @@ $root.mdc = (function() {
                     object.font_face_observer_timeout_ms = message.font_face_observer_timeout_ms;
                 if (message.fonts_loaded_reflow_delay_ms != null && message.hasOwnProperty("fonts_loaded_reflow_delay_ms"))
                     object.fonts_loaded_reflow_delay_ms = message.fonts_loaded_reflow_delay_ms;
+                if (message.skip_all != null && message.hasOwnProperty("skip_all"))
+                    object.skip_all = message.skip_all;
                 return object;
             };
 

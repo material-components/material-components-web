@@ -426,8 +426,8 @@
   $label-offset-x: $padding-inset;
 
   display: flex;
-  width: fit-content;
-  height: initial;
+  width: auto;
+  height: auto;
   transition: none;
   border: 1px solid;
   overflow: hidden;

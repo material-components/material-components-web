@@ -41,6 +41,9 @@ class MDCTab extends MDCComponent {
     this.tabIndicator_;
     /** @private {?Element} */
     this.content_;
+
+    /** @private {?Function} */
+    this.handleClick_;
   }
 
   /**
@@ -69,7 +72,13 @@ class MDCTab extends MDCComponent {
     this.content_ = this.root_.querySelector(MDCTabFoundation.strings.CONTENT_SELECTOR);
   }
 
+  initialSyncWithDOM() {
+    this.handleClick_ = this.foundation_.handleClick.bind(this.foundation_);
+    this.listen('click', this.handleClick_);
+  }
+
   destroy() {
+    this.unlisten('click', /** @type {!Function} */ (this.handleClick_));
     this.ripple_.destroy();
     super.destroy();
   }
@@ -81,8 +90,6 @@ class MDCTab extends MDCComponent {
     return new MDCTabFoundation(
       /** @type {!MDCTabAdapter} */ ({
         setAttr: (attr, value) => this.root_.setAttribute(attr, value),
-        registerEventHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
-        deregisterEventHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
         addClass: (className) => this.root_.classList.add(className),
         removeClass: (className) => this.root_.classList.remove(className),
         hasClass: (className) => this.root_.classList.contains(className),
