@@ -94,9 +94,7 @@ class MDCSwitch extends MDCComponent {
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       setNativeControlChecked: (checked) => this.nativeControl_.checked = checked,
-      isNativeControlChecked: () => this.nativeControl_.checked,
       setNativeControlDisabled: (disabled) => this.nativeControl_.disabled = disabled,
-      isNativeControlDisabled: () => this.nativeControl_.disabled,
     });
   }
 
@@ -107,7 +105,7 @@ class MDCSwitch extends MDCComponent {
 
   /** @return {boolean} */
   get checked() {
-    return this.foundation_.isChecked();
+    return this.nativeControl_.checked;
   }
 
   /** @param {boolean} checked */
@@ -117,7 +115,7 @@ class MDCSwitch extends MDCComponent {
 
   /** @return {boolean} */
   get disabled() {
-    return this.foundation_.isDisabled();
+    return this.nativeControl_.disabled;
   }
 
   /** @param {boolean} disabled */

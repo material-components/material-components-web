@@ -34,8 +34,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
   const methods = Object.keys(defaultAdapter).filter((k) => typeof defaultAdapter[k] === 'function');
 
   assert.equal(methods.length, Object.keys(defaultAdapter).length, 'Every adapter key must be a function');
-  assert.deepEqual(methods, ['addClass', 'removeClass', 'setNativeControlChecked', 'isNativeControlChecked',
-    'setNativeControlDisabled', 'isNativeControlDisabled']);
+  assert.deepEqual(methods, ['addClass', 'removeClass', 'setNativeControlChecked', 'setNativeControlDisabled']);
   methods.forEach((m) => assert.doesNotThrow(defaultAdapter[m]));
 });
 
@@ -44,34 +43,6 @@ function setupTest() {
   const foundation = new MDCSwitchFoundation(mockAdapter);
   return {foundation, mockAdapter};
 }
-
-test('#init adds mdc-switch--checked to the switch element if the switch is initially checked', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.isNativeControlChecked()).thenReturn(true);
-
-  foundation.init();
-  td.verify(mockAdapter.addClass(MDCSwitchFoundation.cssClasses.CHECKED));
-});
-
-test('#init removes mdc-switch--checked from the switch element if the switch is initially unchecked', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.isNativeControlChecked()).thenReturn(false);
-
-  foundation.init();
-  td.verify(mockAdapter.removeClass(MDCSwitchFoundation.cssClasses.CHECKED));
-});
-
-test('#isChecked returns true when the value of adapter.isChecked() is true', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.isNativeControlChecked()).thenReturn(true);
-  assert.isOk(foundation.isChecked());
-});
-
-test('#isChecked returns false when the value of adapter.isChecked() is false', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.isNativeControlChecked()).thenReturn(false);
-  assert.isNotOk(foundation.isChecked());
-});
 
 test('#setChecked updates the checked state', () => {
   const {foundation, mockAdapter} = setupTest();
@@ -84,28 +55,14 @@ test('#setChecked updates the checked state', () => {
 
 test('#setChecked adds mdc-switch--checked to the switch element when set to true', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.isNativeControlChecked()).thenReturn(true);
   foundation.setChecked(true);
   td.verify(mockAdapter.addClass(MDCSwitchFoundation.cssClasses.CHECKED));
 });
 
 test('#setChecked removes mdc-switch--checked from the switch element when set to false', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.isNativeControlChecked()).thenReturn(false);
   foundation.setChecked(false);
   td.verify(mockAdapter.removeClass(MDCSwitchFoundation.cssClasses.CHECKED));
-});
-
-test('#isDisabled returns true when adapter.isDisabled() is true', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.isNativeControlDisabled()).thenReturn(true);
-  assert.isOk(foundation.isDisabled());
-});
-
-test('#isDisabled returns false when adapter.isDisabled() is false', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.isNativeControlDisabled()).thenReturn(false);
-  assert.isNotOk(foundation.isDisabled());
 });
 
 test('#setDisabled updates the disabled state', () => {
@@ -132,17 +89,13 @@ test('#setDisabled removes mdc-switch--disabled from the switch element when set
 test('#handleChange adds mdc-switch--checked to the switch when it is a checked state', () => {
   const {foundation, mockAdapter} = setupTest();
 
-  td.when(mockAdapter.isNativeControlChecked()).thenReturn(true);
-
-  foundation.handleChange();
+  foundation.handleChange({target: {checked: true}});
   td.verify(mockAdapter.addClass(MDCSwitchFoundation.cssClasses.CHECKED));
 });
 
 test('#handleChange removes mdc-switch--checked from the switch when it is an unchecked state', () => {
   const {foundation, mockAdapter} = setupTest();
 
-  td.when(mockAdapter.isNativeControlChecked()).thenReturn(false);
-
-  foundation.handleChange();
+  foundation.handleChange({target: {checked: false}});
   td.verify(mockAdapter.removeClass(MDCSwitchFoundation.cssClasses.CHECKED));
 });
