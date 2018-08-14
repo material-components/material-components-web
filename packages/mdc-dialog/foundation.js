@@ -15,7 +15,7 @@
  */
 
 import {MDCFoundation} from '@material/base/index';
-import {cssClasses, strings} from './constants';
+import {cssClasses, strings, numbers} from './constants';
 
 export default class MDCDialogFoundation extends MDCFoundation {
   static get cssClasses() {
@@ -24,6 +24,10 @@ export default class MDCDialogFoundation extends MDCFoundation {
 
   static get strings() {
     return strings;
+  }
+
+  static get numbers() {
+    return numbers;
   }
 
   static get defaultAdapter() {
