@@ -77,3 +77,12 @@ $test-layout-cell-grid-color: #dddddd;
 
   background-size: 10px 10px;
 }
+
+.test-cell__heading {
+  height: 20px;
+}
+
+.test-animation--paused {
+  animation-play-state: paused !important;
+  transition: none !important;
+}
