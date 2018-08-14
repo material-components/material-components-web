@@ -16,13 +16,13 @@
  */
 
 declare class MDCFoundation {
-    public static cssClasses(): Object;
+    public static get cssClasses(): Object;
 
-    public static strings(): Object;
+    public static get strings(): Object;
 
-    public static numbers(): Object;
+    public static get numbers(): Object;
 
-    public static defaultAdapter(): Object;
+    public static get defaultAdapter(): Object;
 
     protected adapter_: Object;
 
