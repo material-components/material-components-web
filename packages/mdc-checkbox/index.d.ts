@@ -16,9 +16,6 @@ declare class MDCCheckbox extends MDCComponent {
 }
 
 declare class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
-    public static get cssClasses(): Object;
-    public static get strings(): Object;
-    public static get numbers(): Object;
     public static get defaultAdapter(): MDCCheckboxAdapter;
     constructor(MDCCheckboxAdapter);
     public init();

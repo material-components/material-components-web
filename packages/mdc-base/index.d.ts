@@ -15,18 +15,18 @@
  * limitations under the License.
  */
 
-declare class MDCFoundation {
-    public static get cssClasses(): Object;
+declare class MDCFoundation<A> {
+    public static get cssClasses(): {[s: string]: string};
 
-    public static get strings(): Object;
+    public static get strings(): {[s: string]: string};
 
-    public static get numbers(): Object;
+    public static get numbers(): {[s: string]: string};
 
     public static get defaultAdapter(): Object;
 
-    protected adapter_: Object;
+    protected adapter_: A;
 
-    constructor(adapter: Object = {});
+    constructor(adapter: A = {});
 
     public init(): void;
 
