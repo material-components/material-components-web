@@ -20,17 +20,21 @@ import lolex from 'lolex';
 import {setupFoundationTest} from '../helpers/setup';
 import {verifyDefaultAdapter, captureHandlers} from '../helpers/foundation';
 
-import {cssClasses} from '../../../packages/mdc-dialog/constants';
+import {cssClasses, strings, numbers} from '../../../packages/mdc-dialog/constants';
 import MDCDialogFoundation from '../../../packages/mdc-dialog/foundation';
 
 suite('MDCDialogFoundation');
 
 test('exports cssClasses', () => {
-  assert.isTrue('cssClasses' in MDCDialogFoundation);
+  assert.deepEqual(MDCDialogFoundation.cssClasses, cssClasses);
 });
 
 test('exports strings', () => {
-  assert.isTrue('strings' in MDCDialogFoundation);
+  assert.deepEqual(MDCDialogFoundation.strings, strings);
+});
+
+test('exports numbers', () => {
+  assert.deepEqual(MDCDialogFoundation.numbers, numbers);
 });
 
 test('default adapter returns a complete adapter implementation', () => {
@@ -110,12 +114,17 @@ test('#close removes the open class to hide the dialog', () => {
   td.verify(mockAdapter.removeClass(cssClasses.OPEN));
 });
 
-test('#open adds the animation class to start an animation', () => {
+test('#open adds the animation class to start an animation, and removes it after the animation is done', () => {
   const {foundation, mockAdapter} = setupTest();
+  const clock = lolex.install();
 
   foundation.open();
-
   td.verify(mockAdapter.addClass(cssClasses.ANIMATING));
+
+  clock.tick(numbers.DIALOG_ANIMATION_TIME_MS);
+  td.verify(mockAdapter.removeClass(cssClasses.ANIMATING));
+
+  clock.uninstall();
 });
 
 test('#open adds scroll lock class to the body', () => {
@@ -143,9 +152,11 @@ test('#open activates focus trapping on the dialog surface', () => {
 
   td.when(mockAdapter.isDialog(td.matchers.isA(Object))).thenReturn(true);
   foundation.open();
-  clock.tick(MDCDialogFoundation.numbers.DIALOG_ANIMATION_TIME_MS);
 
+  clock.tick(numbers.DIALOG_ANIMATION_TIME_MS);
   td.verify(mockAdapter.trapFocusOnSurface());
+
+  clock.uninstall();
 });
 
 test('#close deactivates focus trapping on the dialog surface', () => {
