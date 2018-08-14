@@ -58,6 +58,21 @@
   }
 }
 
+@mixin mdc-slider-value-label-color($color) {
+  @include mdc-slider-thumb-color($color);
+
+  .mdc-slider__value-label {
+    @include mdc-theme-prop(fill, $color);
+    @include mdc-theme-prop(stroke, $color);
+  }
+}
+
+@mixin mdc-slider-value-label-ink-color($color) {
+  .mdc-slider__value-label-text {
+    @include mdc-theme-prop(color, $color);
+  }
+}
+
 @mixin mdc-slider-disabled-color($color) {
   cursor: auto;
 
@@ -72,6 +87,10 @@
   .mdc-slider__tick-mark::after,
   .mdc-slider__tick-mark-set::after {
     @include mdc-theme-prop(background-color, rgba(mdc-theme-prop-value($color), $mdc-slider-disabled-tick-mark-opacity));
+  }
+
+  .mdc-slider__tick-mark--filled::after {
+    @include mdc-theme-prop(background-color, $mdc-slider-disabled-tick-mark-filled);
   }
 
   .mdc-slider__thumb-handle {

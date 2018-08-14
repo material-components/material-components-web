@@ -110,6 +110,154 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     raf.restore();
   });
 
+  test(`on ${downEvt} notifies discrete slider value label to change value`, () => {
+    const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+    const {isA} = td.matchers;
+
+    td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+    td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
+    foundation.init();
+    raf.flush();
+
+    rootHandlers[downEvt](pageXObj(100));
+    raf.flush();
+
+    td.verify(mockAdapter.setValueLabelText(isA(String)));
+    td.verify(mockAdapter.setValueLabelTextStyleProperty(isA(String), isA(String)));
+
+    raf.restore();
+  });
+
+  test(`on ${downEvt} notifies discrete slider value label to change value when RTL`, () => {
+    const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+    const {isA} = td.matchers;
+
+    td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+    td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
+    td.when(mockAdapter.isRTL()).thenReturn(true);
+    foundation.init();
+    raf.flush();
+
+    rootHandlers[downEvt](pageXObj(100));
+    raf.flush();
+
+    td.verify(mockAdapter.setValueLabelText(isA(String)));
+    td.verify(mockAdapter.setValueLabelTextStyleProperty(isA(String), isA(String)));
+
+    raf.restore();
+  });
+
+  test(`on ${downEvt} notifies discrete slider value label to change path`, () => {
+    const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+    const {isA} = td.matchers;
+
+    td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+    td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
+    td.when(mockAdapter.getCommaWidth()).thenReturn(3);
+    td.when(mockAdapter.getDigitWidth()).thenReturn(9);
+    foundation.init();
+    raf.flush();
+
+    rootHandlers[downEvt](pageXObj(100));
+    raf.flush();
+
+    td.verify(mockAdapter.setValueLabelPath(isA(String)));
+
+    raf.restore();
+  });
+
+  test(`on ${downEvt} notifies discrete slider value label to change path for big numbers on the right`, () => {
+    const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+    const {isA} = td.matchers;
+
+    td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+    td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
+    td.when(mockAdapter.getCommaWidth()).thenReturn(3);
+    td.when(mockAdapter.getDigitWidth()).thenReturn(9);
+    foundation.init();
+    raf.flush();
+
+    foundation.setMax(100000);
+    raf.flush();
+
+    rootHandlers[downEvt](pageXObj(100));
+    raf.flush();
+
+    td.verify(mockAdapter.setValueLabelPath(isA(String)));
+
+    raf.restore();
+  });
+
+  test(`on ${downEvt} notifies discrete slider value label to change path for big numbers` +
+       'on the right with RTL', () => {
+    const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+    const {isA} = td.matchers;
+
+    td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+    td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
+    td.when(mockAdapter.isRTL()).thenReturn(true);
+    td.when(mockAdapter.getCommaWidth()).thenReturn(3);
+    td.when(mockAdapter.getDigitWidth()).thenReturn(9);
+    foundation.init();
+    raf.flush();
+
+    foundation.setMax(100000);
+    raf.flush();
+
+    rootHandlers[downEvt](pageXObj(100));
+    raf.flush();
+
+    td.verify(mockAdapter.setValueLabelPath(isA(String)));
+
+    raf.restore();
+  });
+
+  test(`on ${downEvt} notifies discrete slider value label to change path for big numbers on the left`, () => {
+    const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+    const {isA} = td.matchers;
+
+    td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+    td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
+    td.when(mockAdapter.getCommaWidth()).thenReturn(3);
+    td.when(mockAdapter.getDigitWidth()).thenReturn(9);
+    foundation.init();
+    raf.flush();
+
+    foundation.setMax(10000000);
+    foundation.setMin(1000000);
+    raf.flush();
+
+    rootHandlers[downEvt](pageXObj(0));
+    raf.flush();
+
+    td.verify(mockAdapter.setValueLabelPath(isA(String)));
+
+    raf.restore();
+  });
+
+  test(`on ${downEvt} notifies discrete slider value label to change path for big numbers on the left with RTL`, () => {
+    const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+    const {isA} = td.matchers;
+
+    td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+    td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
+    td.when(mockAdapter.getCommaWidth()).thenReturn(3);
+    td.when(mockAdapter.getDigitWidth()).thenReturn(9);
+    foundation.init();
+    raf.flush();
+
+    foundation.setMax(10000000);
+    foundation.setMin(1000000);
+    raf.flush();
+
+    rootHandlers[downEvt](pageXObj(0));
+    raf.flush();
+
+    td.verify(mockAdapter.setValueLabelPath(isA(String)));
+
+    raf.restore();
+  });
+
   test(`on ${downEvt} attaches event handlers for ${moveEvt} and all *up/end events to the document body`, () => {
     const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
     const {isA} = td.matchers;
@@ -210,18 +358,23 @@ function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pa
     raf.restore();
   });
 
-  test(`on body ${upEvt} removes the mdc-slider--active class from the component`, () => {
+  test(`on body ${moveEvt} notifies discrete slider value label to change value`, () => {
     const {foundation, mockAdapter, raf, rootHandlers, bodyHandlers} = setupTest();
+    const {isA} = td.matchers;
 
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
+    td.when(mockAdapter.hasClass(cssClasses.DISCRETE)).thenReturn(true);
     foundation.init();
     raf.flush();
 
-    rootHandlers[downEvt](pageXObj(50));
+    rootHandlers[downEvt](pageXObj(49));
+    bodyHandlers[moveEvt](Object.assign({
+      preventDefault: () => {},
+    }, pageXObj(50)));
     raf.flush();
-    bodyHandlers[upEvt]();
 
-    td.verify(mockAdapter.removeClass(cssClasses.ACTIVE));
+    td.verify(mockAdapter.setValueLabelText(isA(String)));
+    td.verify(mockAdapter.setValueLabelTextStyleProperty(isA(String), isA(String)));
 
     raf.restore();
   });

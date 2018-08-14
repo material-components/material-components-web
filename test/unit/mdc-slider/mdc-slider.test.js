@@ -23,6 +23,7 @@ import {createMockRaf} from '../helpers/raf';
 import {TRANSFORM_PROP} from './helpers';
 
 import {MDCSlider} from '../../../packages/mdc-slider';
+import {strings} from '../../../packages/mdc-slider/constants';
 
 suite('MDCSlider');
 
@@ -37,6 +38,8 @@ function getFixture() {
       <div class="mdc-slider__thumb" tabindex="0" role="slider"
       data-step="2" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
         <svg class="mdc-slider__thumb-handle" width="34" height="34">
+          <path class="mdc-slider__value-label"/> 
+          <text class="mdc-slider__value-label-text" x="8" y="-18" stroke="white" fill="white">20</text>
           <circle cx="17" cy="17" r="6"></circle>
         </svg>
       </div>
@@ -288,6 +291,43 @@ test('adapter#setThumbAttribute sets an attribute on the thumb element', () => {
   assert.equal(thumb.getAttribute('data-foo'), 'bar');
 });
 
+test('adapter#setValueLabelPath sets the path on the value label element', () => {
+  const {root, component} = setupTest();
+
+  component.getDefaultFoundation().adapter_.setValueLabelPath('M 0 1');
+  const valueLabel = root.querySelector('.mdc-slider__value-label');
+
+  assert.equal(valueLabel.getAttribute('d'), 'M 0 1');
+});
+
+test('adapter#setValueLabelText sets the text content for the value label text element', () => {
+  const {root, component} = setupTest();
+  component.getDefaultFoundation().adapter_.setValueLabelText('text');
+
+  const valueLabelText = root.querySelector('.mdc-slider__value-label-text');
+
+  assert.equal(valueLabelText.textContent, 'text');
+});
+
+test('adapter#setValueLabelTextStyleProperty sets the style on the value label text element', () => {
+  const {root, component} = setupTest();
+  component.getDefaultFoundation().adapter_.setValueLabelTextStyleProperty('background-color', 'black');
+
+  const valueLabelText = root.querySelector('.mdc-slider__value-label-text');
+
+  assert.equal(valueLabelText.style.backgroundColor, 'black');
+});
+
+test('adapter#removeValueLabelTextStyle removes the style from the value label text element', () => {
+  const {root, component} = setupTest();
+  const valueLabelText = root.querySelector('.mdc-slider__value-label-text');
+  valueLabelText.setAttribute('style', 'foo');
+
+  component.getDefaultFoundation().adapter_.removeValueLabelTextStyle();
+
+  assert.notEqual(valueLabelText.getAttribute('style'), 'foo');
+});
+
 test('adapter#removeAttribute removes an attribute from the root element', () => {
   const {root, component} = setupTest();
   const thumb = root.querySelector('.mdc-slider__thumb');
@@ -329,6 +369,29 @@ test('adapter#deregisterEventHandler removes an event listener from the root ele
 
   root.addEventListener('click', handler);
   component.getDefaultFoundation().adapter_.deregisterEventHandler('click', handler);
+  domEvents.emit(root, 'click');
+
+  td.verify(handler(td.matchers.anything()), {times: 0});
+});
+
+test('adapter#registerThumbEventHandler adds an event listener to the root element', () => {
+  const {root, component} = setupTest();
+  const handler = td.func('interactionHandler');
+  const thumb = root.querySelector(strings.THUMB_SELECTOR);
+
+  component.getDefaultFoundation().adapter_.registerThumbEventHandler('click', handler);
+  domEvents.emit(thumb, 'click');
+
+  td.verify(handler(td.matchers.anything()));
+});
+
+test('adapter#deregisterThumbEventHandler removes an event listener from the root element', () => {
+  const {root, component} = setupTest();
+  const handler = td.func('interactionHandler');
+  const thumb = root.querySelector(strings.THUMB_SELECTOR);
+
+  thumb.addEventListener('click', handler);
+  component.getDefaultFoundation().adapter_.deregisterThumbEventHandler('click', handler);
   domEvents.emit(root, 'click');
 
   td.verify(handler(td.matchers.anything()), {times: 0});
@@ -486,10 +549,8 @@ test('adapter#getTickMarks returns the tickMarkSet children', () => {
 test('adapter#focusThumb sets the focus of the document to the thumb', () => {
   const {root, component} = setupTest();
   const thumb = root.querySelector('.mdc-slider__thumb');
-
+  component.getDefaultFoundation().adapter_.focusThumb();
   setTimeout(function() {
-    component.getDefaultFoundation().adapter_.focusThumb();
-
     assert.equal(thumb, document.activeElement);
   }, 100);
 });
@@ -508,9 +569,8 @@ test('adapter#deactivateThumb deactivates the thumb ripple', () => {
   const thumb = root.querySelector('.mdc-slider__thumb');
 
   component.getDefaultFoundation().adapter_.activateRipple();
+  component.getDefaultFoundation().adapter_.deactivateRipple();
   setTimeout(function() {
-    component.getDefaultFoundation().adapter_.deactivateRipple();
-
     assert.isFalse(thumb.classList.contains('mdc-ripple-upgraded--foreground-activation'));
   }, 100);
 });
@@ -535,4 +595,22 @@ test('adapter#isRTL returns false when component is not in an RTL context', () =
   assert.isFalse(component.getDefaultFoundation().adapter_.isRTL());
 
   document.body.removeChild(wrapper);
+});
+
+test('adapter#getDigitWidth returns the digit width', () => {
+  const {root, component} = setupTest();
+  const valueLabelText = root.querySelector(strings.VALUE_LABEL_TEXT_SELECTOR);
+  valueLabelText.textContent = 0;
+  const digitWidth = valueLabelText.clientWidth;
+
+  assert.equal(component.getDefaultFoundation().adapter_.getDigitWidth(), digitWidth);
+});
+
+test('adapter#getCommaWidth returns the comma width', () => {
+  const {root, component} = setupTest();
+  const valueLabelText = root.querySelector(strings.VALUE_LABEL_TEXT_SELECTOR);
+  valueLabelText.textContent = ',';
+  const commaWidth = valueLabelText.clientWidth;
+
+  assert.equal(component.getDefaultFoundation().adapter_.getCommaWidth(), commaWidth);
 });

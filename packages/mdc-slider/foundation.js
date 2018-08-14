@@ -63,12 +63,20 @@ class MDCSliderFoundation extends MDCFoundation {
       addClass: () => {},
       removeClass: () => {},
       setThumbAttribute: () => {},
+      setValueLabelPath: () => {},
+      setValueLabelText: () => {},
+      setValueLabelTextStyleProperty: () => {},
+      removeValueLabelTextStyle: () => {},
+      getDigitWidth: () => {},
+      getCommaWidth: () => {},
       removeThumbAttribute: () => {},
       computeBoundingRect: () => {},
       getThumbTabIndex: () => {},
       eventTargetHasClass: () => {},
       registerEventHandler: () => {},
       deregisterEventHandler: () => {},
+      registerThumbEventHandler: () => {},
+      deregisterThumbEventHandler: () => {},
       registerBodyEventHandler: () => {},
       deregisterBodyEventHandler: () => {},
       registerWindowResizeHandler: () => {},
@@ -102,7 +110,13 @@ class MDCSliderFoundation extends MDCFoundation {
     /** @private {boolean} */
     this.inTransit_ = false;
     /** @private {boolean} */
+    this.discreteMotion_ = false;
+    /** @private {boolean} */
     this.isDiscrete_ = false;
+    /** @private {boolean} */
+    this.interactingWithSlider_ = false;
+    /** @private {number} */
+    this.animationFrameID_ = 0;
     /** @private {number} */
     this.min_ = 0;
     /** @private {number} */
@@ -113,6 +127,10 @@ class MDCSliderFoundation extends MDCFoundation {
     this.savedTabIndex_ = 0;
     /** @private {number} */
     this.step_ = 0;
+    /** @private {function(): undefined} */
+    this.thumbFocusHandler_ = () => this.handleThumbFocus();
+    /** @private {function(): undefined} */
+    this.thumbBlurHandler_ = () => this.handleThumbBlur();
     /** @private {function(!Event): undefined} */
     this.transitionEndHandler_ = (evt) => this.handleTransitionEnd(evt);
     /** @private {function(!Event): undefined} */
@@ -133,6 +151,8 @@ class MDCSliderFoundation extends MDCFoundation {
     this.adapter_.registerEventHandler('keydown', this.keydownHandler_);
     this.adapter_.registerEventHandler('keyup', this.interactionEndHandler_);
     this.adapter_.registerEventHandler('transitionend', this.transitionEndHandler_);
+    this.adapter_.registerThumbEventHandler('focus', this.thumbFocusHandler_);
+    this.adapter_.registerThumbEventHandler('blur', this.thumbBlurHandler_);
     this.adapter_.registerWindowResizeHandler(this.windowResizeHandler_);
     this.layout();
     // At last step, provide a reasonable default value to discrete slider
@@ -148,6 +168,8 @@ class MDCSliderFoundation extends MDCFoundation {
     this.adapter_.deregisterEventHandler('keydown', this.keydownHandler_);
     this.adapter_.deregisterEventHandler('keyup', this.interactionEndHandler_);
     this.adapter_.deregisterEventHandler('transitionend', this.transitionEndHandler_);
+    this.adapter_.deregisterThumbEventHandler('focus', this.thumbFocusHandler_);
+    this.adapter_.deregisterThumbEventHandler('blur', this.thumbBlurHandler_);
     this.adapter_.deregisterWindowResizeHandler(this.windowResizeHandler_);
   }
 
@@ -249,8 +271,36 @@ class MDCSliderFoundation extends MDCFoundation {
    * @param {number} numMarks
    */
   adjustLastTickMark(numMarks) {
+    // Calculate number of marks without using Math.ceil
+    const rawNumMarks = (this.max_ - this.min_) / this.step_;
+
+    // Check to see if indivisible
+    if (rawNumMarks === numMarks) {
+      return;
+    }
     const lastStepRatio = (this.max_ - numMarks * this.step_) / this.step_ + 1;
     this.adapter_.setLastTickMarkStyleProperty('flex', String(lastStepRatio));
+  }
+
+  /**
+   * Called when the thumb is focused
+   */
+  handleThumbFocus() {
+    this.setActive_(true);
+    this.updateUIForCurrentValue_();
+  }
+
+  /**
+   * Called when the thumb blurs
+   */
+  handleThumbBlur() {
+    if (!this.interactingWithSlider_) {
+      this.setActive_(false);
+      this.setDiscreteMotion_(false);
+      if (this.isDiscrete_) {
+        this.adapter_.removeValueLabelTextStyle();
+      }
+    }
   }
 
   /**
@@ -282,6 +332,11 @@ class MDCSliderFoundation extends MDCFoundation {
     if (this.inTransit_ && this.adapter_.eventTargetHasClass(evt.target, cssClasses.TRACK_FILL)) {
       this.setInTransit_(false);
     }
+    // After value label grows, the discrete-motion class is added to adjust the snapping motion
+    if (this.isDiscrete_ && this.adapter_.eventTargetHasClass(evt.target, cssClasses.VALUE_LABEL_TEXT)
+      && this.active_) {
+      this.setDiscreteMotion_(true);
+    }
   }
 
   /**
@@ -293,6 +348,7 @@ class MDCSliderFoundation extends MDCFoundation {
       return;
     }
 
+    this.interactingWithSlider_ = true;
     this.setActive_(true);
     this.adapter_.activateRipple();
 
@@ -333,10 +389,10 @@ class MDCSliderFoundation extends MDCFoundation {
    * Called when the user's interaction with the slider ends
    */
   handleInteractionEnd() {
-    this.setActive_(false);
     this.adapter_.notifyChange();
     this.adapter_.deactivateRipple();
     this.adapter_.focusThumb();
+    this.interactingWithSlider_ = false;
   }
 
   /**
@@ -350,7 +406,9 @@ class MDCSliderFoundation extends MDCFoundation {
     }
 
     this.setActive_(true);
-    this.setInTransit_(true);
+    if (!this.isDiscrete_) {
+      this.setInTransit_(true);
+    }
 
     // Prevent page from scrolling due to key presses that would normally scroll the page
     evt.preventDefault();
@@ -467,6 +525,253 @@ class MDCSliderFoundation extends MDCFoundation {
     const discreteValue = numSteps * this.step_;
     return discreteValue;
   }
+  /**
+   * Calculates the locale string value length
+   * @return {number}
+   */
+  calcLocaleStringWidth_() {
+    const digitWidth = this.adapter_.getDigitWidth();
+    const commaWidth = this.adapter_.getCommaWidth();
+    const numOfCommas = this.value_.toLocaleString().length - this.value_.toString().length;
+    return this.value_.toString().length * digitWidth + numOfCommas * commaWidth;
+  }
+
+  /**
+   * Calculates the value label path
+   * @return {string}
+   */
+  calcPath_(translatePx) {
+    const digitWidth = this.adapter_.getDigitWidth();
+    const localeStringWidth = this.calcLocaleStringWidth_();
+    const maxTopLobeHorizontal = 30;
+
+    // Less than 2 characters does not need to add horizontal space
+    const labelHorizontalWidth = this.value_.toString().length > 2 ? localeStringWidth - (2 * digitWidth) : 0;
+    // The distance added to widen the top lobe
+    const topLobeHorizontal = Math.min(labelHorizontalWidth, maxTopLobeHorizontal);
+    // Value to add to the sides of the toplobe to adjust for big numbers
+    const extraHorizontalWidth = Math.max(labelHorizontalWidth - maxTopLobeHorizontal, 0);
+
+    // Distributes the extra length to left and right
+    let extraHorizontalWidthLeft = extraHorizontalWidth * 3 / 4;
+    let extraHorizontalWidthRight = extraHorizontalWidth / 4;
+
+    // Max width of one side of the top lobe neck arc
+    // Used for when there is extraHorizontalWidth meaning that the arc is at its max width and
+    // for finding the top neck corner theta since (topNeckArcWidth - topLobeHorizontal/2) affects the theta
+    const topNeckArcWidth = 15;
+    // If the thumb is reaching the ends of the slider then edit the left and right to make sure
+    // it does not bleed off the screen.
+    const distanceFromLeft =
+      this.adapter_.isRTL() ? this.rect_.width - translatePx - topNeckArcWidth : translatePx - topNeckArcWidth;
+    const distanceFromRight =
+      this.adapter_.isRTL() ? translatePx - topNeckArcWidth : this.rect_.width - translatePx - topNeckArcWidth;
+
+    if (distanceFromLeft < extraHorizontalWidthLeft) {
+      extraHorizontalWidthRight = extraHorizontalWidth - distanceFromLeft;
+      extraHorizontalWidthLeft = distanceFromLeft;
+    }
+    if (distanceFromRight < extraHorizontalWidthRight) {
+      extraHorizontalWidthLeft = extraHorizontalWidth - distanceFromRight;
+      extraHorizontalWidthRight = distanceFromRight;
+    }
+
+    // These constants define the shape of the default value label.
+    // The value label changes shape based on the size of
+    // the text: The top lobe spreads horizontally, and the
+    // top arc on the neck moves down to keep it merging smoothly
+    // with the top lobe as it expands.
+
+    // Radius of the top lobe of the value indicator.
+    const topLobeRadius = 16;
+    // Radius of the top neck of the value indicator.
+    const topNeckRadius = 14;
+    // X position for the right side of the stem
+    const rightStemX = 17;
+    // X position for the left side of the stem
+    const leftStemX = 15;
+    // Angle of the top neck corner
+    const topNeckCornerTheta = Math.acos((topNeckArcWidth - topLobeHorizontal/2)/(topLobeRadius+topNeckRadius));
+    // Y position of the top neck corner
+    const topNeckCornerCenterY = Math.sqrt(Math.pow(topLobeRadius+topNeckRadius, 2) -
+      Math.pow(topNeckArcWidth - topLobeHorizontal/2, 2));
+    // Distance between the top lobe and the bottom lobe
+    const centersDifference = 40;
+    // Radius of the bottom lobe
+    const bottomLobeRadius = 6;
+    // Radius of the bottom neck
+    const bottomNeckRadius = 4.5;
+    // Angle of the bottom neck (50 degrees)
+    const bottomNeckTheta = 5 * Math.PI / 18;
+    // Height of the bottom neck, used for the math below
+    const bottomNeckHeight = Math.sin(bottomNeckTheta) * (bottomLobeRadius+bottomNeckRadius);
+    // Height of value label
+    const valueLabelHeight = topLobeRadius + centersDifference + bottomLobeRadius;
+    // Offset values to adjust the value label to the svg of the thumb.
+    const offsetY = -39;
+    const offsetX = 1;
+
+    // Each point that is needed to create the path is created here.
+    const pointA = {
+      x: rightStemX + (topNeckRadius - (Math.cos(topNeckCornerTheta) * topNeckRadius)) + offsetX,
+      y: topLobeRadius + (topNeckCornerCenterY - (Math.sin(topNeckCornerTheta) * topNeckRadius)) + offsetY,
+    };
+    const pointB = {
+      x: rightStemX + offsetX,
+      y: topLobeRadius + topNeckCornerCenterY + offsetY,
+    };
+    const pointC = {
+      x: rightStemX + offsetX,
+      y: topLobeRadius + centersDifference - bottomNeckHeight + offsetY,
+    };
+    const pointD = {
+      x: rightStemX + bottomNeckRadius - (Math.cos(bottomNeckTheta) * bottomNeckRadius) + 1 + offsetX,
+      y: (topLobeRadius + centersDifference - bottomNeckHeight) +
+         (Math.sin(bottomNeckTheta) * bottomNeckRadius) + offsetY,
+    };
+    const pointE = {
+      x: topLobeRadius + offsetX,
+      y: valueLabelHeight + offsetY,
+    };
+    const pointF = {
+      x: leftStemX - bottomNeckRadius + (Math.cos(bottomNeckTheta) * bottomNeckRadius) - 1 + offsetX,
+      y: (topLobeRadius + centersDifference - bottomNeckHeight) +
+         (Math.sin(bottomNeckTheta) * bottomNeckRadius) + offsetY,
+    };
+    const pointG = {
+      x: leftStemX + offsetX,
+      y: topLobeRadius + centersDifference - bottomNeckHeight + offsetY,
+    };
+    const pointH = {
+      x: leftStemX + offsetX,
+      y: topLobeRadius + topNeckCornerCenterY + offsetY,
+    };
+    const pointI = {
+      x: leftStemX - topNeckRadius + (Math.cos(topNeckCornerTheta) * topNeckRadius) + offsetX,
+      y: topLobeRadius + (topNeckCornerCenterY - (Math.sin(topNeckCornerTheta) * topNeckRadius)) + offsetY,
+    };
+    const start = {
+      x: topLobeRadius + (topLobeHorizontal / 2) + offsetX,
+      y: 0 + offsetY,
+    };
+    const end = {
+      x: topLobeRadius - (topLobeHorizontal / 2) + offsetX,
+      y: 0 + offsetY,
+    };
+
+    // If there is extra, update the start, end, and pointA X positions for correct path
+    if (extraHorizontalWidth > 0) {
+      start.x = start.x + extraHorizontalWidthRight;
+      end.x = end.x - extraHorizontalWidthLeft;
+      pointA.x = pointA.x + extraHorizontalWidthRight;
+    }
+
+    // When the slider reaches a certain point close to the edges the extra on the side closest to the edge
+    // is negative and the angles of the neck need to be updates to create smooth value label
+    if (extraHorizontalWidthLeft < 0 && extraHorizontalWidth > 0) {
+      const topLobeHorizontalLeft = this.adapter_.isRTL() ? (this.rect_.width - translatePx) * 2 : translatePx * 2;
+
+      const leftTopNeckCornerTheta =
+        Math.acos((topNeckArcWidth - (topLobeHorizontalLeft)/2)/(topLobeRadius+topNeckRadius));
+      const leftTopNeckCornerCenterY = Math.sqrt(Math.pow(topLobeRadius+topNeckRadius, 2) -
+        Math.pow(topNeckArcWidth - (topLobeHorizontalLeft)/2, 2));
+
+      pointI.x = topNeckArcWidth - topNeckRadius + (Math.cos(leftTopNeckCornerTheta) * topNeckRadius) + offsetX;
+      pointI.y =
+        topLobeRadius + (leftTopNeckCornerCenterY - (Math.sin(leftTopNeckCornerTheta) * topNeckRadius)) + offsetY;
+      pointH.y = topLobeRadius + leftTopNeckCornerCenterY + offsetY;
+    }
+    if (extraHorizontalWidthRight < 0 && extraHorizontalWidth > 0) {
+      const topLobeHorizontalRight = this.adapter_.isRTL() ? translatePx * 2 : (this.rect_.width - translatePx) * 2;
+
+      const leftTopNeckCornerTheta =
+        Math.acos((topNeckArcWidth - (topLobeHorizontalRight)/2)/(topLobeRadius+topNeckRadius));
+      const leftTopNeckCornerCenterY = Math.sqrt(Math.pow(topLobeRadius+topNeckRadius, 2) -
+        Math.pow(topNeckArcWidth - (topLobeHorizontalRight)/2, 2));
+
+      pointA.x = rightStemX + (topNeckRadius - (Math.cos(leftTopNeckCornerTheta) * topNeckRadius)) + offsetX;
+      pointA.y =
+        topLobeRadius + (leftTopNeckCornerCenterY - (Math.sin(leftTopNeckCornerTheta) * topNeckRadius)) + offsetY,
+      pointB.y = topLobeRadius + leftTopNeckCornerCenterY + offsetY;
+    }
+
+    // Path is created with string concatenation
+    let path = 'M ' + start.x + ' ' + start.y
+      + ' A ' + topLobeRadius + ' ' + topLobeRadius + ' 0 0 1 ' + pointA.x + ' ' + pointA.y;
+    // If there is extra right that needs to be added, it is added here
+    if (extraHorizontalWidth > 0 && extraHorizontalWidthRight > 0) {
+      path = path + ' L ' + (pointA.x - extraHorizontalWidthRight) + ' ' + pointA.y;
+    }
+    // The path continues to be concatenated here
+    path = path + ' A ' + topNeckRadius + ' ' + topNeckRadius + ' 0 0 0 ' + pointB.x + ' ' + pointB.y
+      + ' L ' + pointC.x + ' ' + pointC.y
+      + ' A ' + bottomNeckRadius + ' ' + bottomNeckRadius + ' 0 0 0 ' + pointD.x + ' ' + pointD.y
+      + ' A ' + bottomLobeRadius + ' ' + bottomLobeRadius + ' 0 0 1 ' + pointE.x + ' ' + pointE.y
+      + ' A ' + bottomLobeRadius + ' ' + bottomLobeRadius + ' 0 0 1 ' + pointF.x + ' ' + pointF.y
+      + ' A ' + bottomNeckRadius + ' ' + bottomNeckRadius + ' 0 0 0 ' + pointG.x + ' ' + pointG.y
+      + ' L ' + pointH.x + ' ' + pointH.y
+      + ' A ' + topNeckRadius + ' ' + topNeckRadius + ' 0 0 0 ' + pointI.x + ' ' + pointI.y;
+    // If there is extra left that needs to be added, it is added here
+    if (extraHorizontalWidth > 0 && extraHorizontalWidthLeft > 0) {
+      path = path + ' L ' + (pointI.x - extraHorizontalWidthLeft) + ' ' + pointI.y;
+    }
+    // Path is finished off here
+    path = path + ' A ' + topLobeRadius + ' ' + topLobeRadius + ' 0 0 1 ' + end.x + ' ' + end.y + ' Z';
+    return path;
+  }
+
+  /**
+   * Calculates the value label text x attribute value
+   * @param {number} translatePx
+   * @return {number}
+   */
+  calcValueLabelTextXValue_(translatePx) {
+    const localeStringWidth = this.calcLocaleStringWidth_();
+    let extraTranslateValue = 0;
+    let topLobeHorizontal = 0;
+    // Max width of one side of the top lobe neck arc
+    // Used for when there is extraHorizontalWidth meaning that the arc is at its max width and
+    // for finding the top neck corner theta since (topNeckArcWidth - topLobeHorizontal/2) affects the theta
+    const topNeckArcWidth = 15;
+    const digitWidth = this.adapter_.getDigitWidth();
+    // The workspace of the svg element width
+    const svgWidth = 34;
+
+    // Calculates default translateX value for the size of the text
+    let xValue = (svgWidth - localeStringWidth);
+    if (this.value_.toString().length > 5) {
+      xValue = (xValue * 0.75) + 4;
+    } else {
+      xValue = xValue / 2;
+    }
+    if (this.adapter_.isRTL()) {
+      xValue = xValue + localeStringWidth;
+    }
+
+    // Calculates any extra translate value on either side if the slider is near the ends
+    if (this.value_.toString().length > 2) {
+      topLobeHorizontal = localeStringWidth - (2 * digitWidth);
+    }
+    const extraHorizontalWidth = topLobeHorizontal - 30;
+    let extraHorizontalWidthLeft = extraHorizontalWidth * 3 / 4;
+    let extraHorizontalWidthRight = extraHorizontalWidth / 4;
+    if (this.adapter_.isRTL()) {
+      const temp = extraHorizontalWidthRight;
+      extraHorizontalWidthRight = extraHorizontalWidthLeft;
+      extraHorizontalWidthLeft = temp;
+    }
+    if (translatePx - topNeckArcWidth < extraHorizontalWidthLeft && topLobeHorizontal > 30) {
+      extraTranslateValue = extraHorizontalWidthLeft - translatePx + topNeckArcWidth;
+    }
+    if (this.rect_.width - translatePx - topNeckArcWidth < extraHorizontalWidthRight && topLobeHorizontal > 30) {
+      extraTranslateValue = -(extraHorizontalWidthRight - (this.rect_.width - translatePx - topNeckArcWidth));
+    }
+    if (this.adapter_.isRTL()) {
+      extraTranslateValue = -extraTranslateValue;
+      extraTranslateValue -= svgWidth;
+    }
+    return xValue + extraTranslateValue;
+  }
 
   /**
    * Updates the track-fill and thumb style properties to reflect current value
@@ -474,11 +779,22 @@ class MDCSliderFoundation extends MDCFoundation {
   updateUIForCurrentValue_() {
     const pctComplete = (this.value_ - this.min_) / (this.max_ - this.min_);
     const translatePx = pctComplete * this.rect_.width;
+
+    if (this.animationFrameID_) {
+      window.cancelAnimationFrame(this.animationFrameID_);
+    }
     if (this.isDiscrete_) {
-      const numSteps = Math.round(this.value_ / this.step_);
+      const numSteps = Math.round((this.value_ - this.min_) / this.step_);
       this.updateTickMarkClasses_(numSteps);
     }
-    requestAnimationFrame(() => {
+    this.animationFrameID_ = requestAnimationFrame(() => {
+      if (this.isDiscrete_ && this.active_) {
+        const path = this.calcPath_(translatePx);
+        const xValue = this.calcValueLabelTextXValue_(translatePx);
+        this.adapter_.setValueLabelPath(path);
+        this.adapter_.setValueLabelText(this.value_.toLocaleString());
+        this.adapter_.setValueLabelTextStyleProperty('transform', `translateX(${xValue}px) translateY(-39px)`);
+      }
       if (this.adapter_.isRTL()) {
         this.adapter_.setThumbStyleProperty('transform', `translateX(-${translatePx}px) translateX(50%)`);
       } else {
@@ -504,6 +820,15 @@ class MDCSliderFoundation extends MDCFoundation {
   setInTransit_(inTransit) {
     this.inTransit_ = inTransit;
     this.toggleClass_(cssClasses.IN_TRANSIT, this.inTransit_);
+  }
+
+  /**
+   * Toggles the discreteMotion state of the slider to provide the discrete snapping motion
+   * @param {boolean} discreteMotion
+   */
+  setDiscreteMotion_(discreteMotion) {
+    this.discreteMotion_ = discreteMotion;
+    this.toggleClass_(cssClasses.DISCRETE_MOTION, this.discreteMotion_);
   }
 
   /**

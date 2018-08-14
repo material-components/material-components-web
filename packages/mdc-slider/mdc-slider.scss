@@ -26,6 +26,8 @@
   @include mdc-slider-track-fill-color(primary);
   @include mdc-slider-tick-mark-color(primary, on-primary);
   @include mdc-slider-thumb-color(primary);
+  @include mdc-slider-value-label-color(primary);
+  @include mdc-slider-value-label-ink-color(on-primary);
 
   position: relative;
   width: 100%;
@@ -111,12 +113,65 @@
   }
 }
 
-.mdc-slider__thumb-handle {
+.mdc-slider .mdc-slider__thumb-handle {
+  position: absolute;
   transition-duration: 150ms;
   transition-property: transform;
+  overflow: visible;
+}
+
+.mdc-slider__value-label {
+  transform: scale(.05) translate(330px, 360px);
+  transition:
+    transform 100ms $mdc-animation-standard-curve-timing-function,
+    opacity 0ms ease 100ms;
+  opacity: 0;
+  will-change: transform, d;
+}
+
+.mdc-slider__value-label-text {
+  position: absolute;
+  margin-top: 8px;
+  transform: translateX(16px) scale(.05);
+  transform-origin: left;
+  transition:
+    transform 100ms $mdc-animation-standard-curve-timing-function,
+    opacity 0ms ease 100ms;
+  opacity: 0;
+  user-select: none;
+  will-change: transform;
+
+  @include mdc-rtl(".mdc-slider") {
+    transform: translateX(-16px) scale(.05);
+    transform-origin: right;
+  }
 }
 
 .mdc-slider--active {
+  .mdc-slider__value-label {
+    transform: scale(1);
+    transition: transform 100ms $mdc-animation-standard-curve-timing-function;
+    opacity: 1;
+  }
+
+  .mdc-slider__value-label-text {
+    transform: scale(1) translateY(-39px);
+    transition: transform 100ms $mdc-animation-standard-curve-timing-function;
+    opacity: 1;
+  }
+}
+
+.mdc-slider--discrete-motion {
+  .mdc-slider__value-label {
+    transition: d 75ms $mdc-animation-standard-curve-timing-function;
+  }
+
+  .mdc-slider__value-label-text {
+    transition: transform 75ms $mdc-animation-standard-curve-timing-function;
+  }
+}
+
+.mdc-slider--active:not(.mdc-slider--discrete) {
   .mdc-slider__thumb-handle {
     transform: scale($mdc-slider-thumb-handle-active-size);
   }
@@ -130,6 +185,13 @@
 
   .mdc-slider__tick-mark::after {
     transition: background-color 150ms $mdc-animation-standard-curve-timing-function;
+  }
+}
+
+.mdc-slider--discrete:not(.mdc-slider--in-transit) {
+  .mdc-slider__thumb,
+  .mdc-slider__track-fill, {
+    transition: transform 75ms $mdc-animation-standard-curve-timing-function;
   }
 }
 
