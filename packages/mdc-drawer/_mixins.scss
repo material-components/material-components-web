@@ -123,3 +123,11 @@
     @include mdc-theme-prop(color, $value);
   }
 }
+
+@mixin mdc-drawer-scrim-color($color, $opacity) {
+  $value: rgba(mdc-theme-prop-value($color), $opacity);
+
+  .mdc-drawer-scrim {
+    @include mdc-theme-prop(color, $value);
+  }
+}

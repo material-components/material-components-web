@@ -18,6 +18,7 @@
 const cssClasses = {
   ROOT: 'mdc-drawer',
   DISMISSIBLE: 'mdc-drawer--dismissible',
+  MODAL: 'mdc-drawer--modal',
   OPEN: 'mdc-drawer--open',
   ANIMATE: 'mdc-drawer--animate',
   OPENING: 'mdc-drawer--opening',
@@ -27,6 +28,7 @@ const cssClasses = {
 /** @enum {string} */
 const strings = {
   APP_CONTENT_SELECTOR: '.mdc-drawer-app-content',
+  SCRIM_SELECTOR: '.mdc-drawer-scrim',
   ACTIVE_NAV_ITEM_SELECTOR: '[aria-selected="true"]',
   CLOSE_EVENT: 'MDCDrawer:close',
   OPEN_EVENT: 'MDCDrawer:open',

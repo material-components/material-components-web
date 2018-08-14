@@ -41,5 +41,9 @@ $mdc-drawer-surface-padding: 16px;
 $mdc-drawer-animation-enter: 250ms;
 $mdc-drawer-animation-exit: 200ms;
 
+// Scrim
+$mdc-drawer-modal-scrim-color: #000 !default;
+$mdc-drawer-modal-scrim-opacity: .6 !default;
+
 $mdc-drawer-z-index: 5;
 $mdc-drawer-modal-elevation: 16;

@@ -77,6 +77,16 @@ class MDCDrawerAdapter {
    * Emits a custom event "MDCDrawer:open" denoting the drawer has opened.
    */
   notifyOpen() {}
+
+  /**
+   * Traps focus on surface and focuses on first focusable element.
+   */
+  trapFocusOnSurface() {}
+
+  /**
+   * Removes trap focus from surface and resumes focus to nav button.
+   */
+  untrapFocusOnSurface() {}
 }
 
 export default MDCDrawerAdapter;
