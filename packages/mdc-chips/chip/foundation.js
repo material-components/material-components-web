@@ -48,10 +48,6 @@ class MDCChipFoundation extends MDCFoundation {
       addClassToLeadingIcon: () => {},
       removeClassFromLeadingIcon: () => {},
       eventTargetHasClass: () => {},
-      registerEventHandler: () => {},
-      deregisterEventHandler: () => {},
-      registerTrailingIconInteractionHandler: () => {},
-      deregisterTrailingIconInteractionHandler: () => {},
       notifyInteraction: () => {},
       notifyTrailingIconInteraction: () => {},
       notifyRemoval: () => {},
@@ -71,32 +67,6 @@ class MDCChipFoundation extends MDCFoundation {
      * @private {boolean}
      * */
     this.shouldRemoveOnTrailingIconClick_ = true;
-    /** @private {function(!Event): undefined} */
-    this.interactionHandler_ = (evt) => this.handleInteraction_(evt);
-    /** @private {function(!Event): undefined} */
-    this.transitionEndHandler_ = (evt) => this.handleTransitionEnd_(evt);
-    /** @private {function(!Event): undefined} */
-    this.trailingIconInteractionHandler_ = (evt) => this.handleTrailingIconInteraction_(evt);
-  }
-
-  init() {
-    ['click', 'keydown'].forEach((evtType) => {
-      this.adapter_.registerEventHandler(evtType, this.interactionHandler_);
-    });
-    this.adapter_.registerEventHandler('transitionend', this.transitionEndHandler_);
-    ['click', 'keydown', 'touchstart', 'pointerdown', 'mousedown'].forEach((evtType) => {
-      this.adapter_.registerTrailingIconInteractionHandler(evtType, this.trailingIconInteractionHandler_);
-    });
-  }
-
-  destroy() {
-    ['click', 'keydown'].forEach((evtType) => {
-      this.adapter_.deregisterEventHandler(evtType, this.interactionHandler_);
-    });
-    this.adapter_.deregisterEventHandler('transitionend', this.transitionEndHandler_);
-    ['click', 'keydown', 'touchstart', 'pointerdown', 'mousedown'].forEach((evtType) => {
-      this.adapter_.deregisterTrailingIconInteractionHandler(evtType, this.trailingIconInteractionHandler_);
-    });
   }
 
   /**
@@ -142,7 +112,7 @@ class MDCChipFoundation extends MDCFoundation {
    * Handles an interaction event on the root element.
    * @param {!Event} evt
    */
-  handleInteraction_(evt) {
+  handleInteraction(evt) {
     if (evt.type === 'click' || evt.key === 'Enter' || evt.keyCode === 13) {
       this.adapter_.notifyInteraction();
     }
@@ -152,7 +122,7 @@ class MDCChipFoundation extends MDCFoundation {
    * Handles a transition end event on the root element.
    * @param {!Event} evt
    */
-  handleTransitionEnd_(evt) {
+  handleTransitionEnd(evt) {
     // Handle transition end event on the chip when it is about to be removed.
     if (this.adapter_.eventTargetHasClass(/** @type {!EventTarget} */ (evt.target), cssClasses.CHIP_EXIT)) {
       if (evt.propertyName === 'width') {
@@ -197,7 +167,7 @@ class MDCChipFoundation extends MDCFoundation {
    * prevent the ripple from activating on interaction with the trailing icon.
    * @param {!Event} evt
    */
-  handleTrailingIconInteraction_(evt) {
+  handleTrailingIconInteraction(evt) {
     evt.stopPropagation();
     if (evt.type === 'click' || evt.key === 'Enter' || evt.keyCode === 13) {
       this.adapter_.notifyTrailingIconInteraction();
@@ -211,11 +181,22 @@ class MDCChipFoundation extends MDCFoundation {
 /**
  * @typedef {{
  *   detail: {
- *     chip: {foundation: !MDCChipFoundation},
+ *     chipId: string,
  *   },
  *   bubbles: boolean,
  * }}
  */
 let MDCChipInteractionEventType;
 
-export {MDCChipFoundation, MDCChipInteractionEventType};
+/**
+ * @typedef {{
+ *   detail: {
+ *     chipId: string,
+ *     root: Element,
+ *   },
+ *   bubbles: boolean,
+ * }}
+ */
+let MDCChipRemovalEventType;
+
+export {MDCChipFoundation, MDCChipInteractionEventType, MDCChipRemovalEventType};

@@ -618,7 +618,7 @@ test('#handleTransitionEnd no-op when inTransit_ is true and event target is not
   raf.restore();
 });
 
-test('#handleTransitionEnd sets pressed_ to true when thumb growing transition ends on discrete slider', () => {
+test('#handleTransitionEnd sets discreteMotion_ to true when thumb growing transition ends on discrete slider', () => {
   const {foundation, mockAdapter} = setupTest();
   const raf = createMockRaf();
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});

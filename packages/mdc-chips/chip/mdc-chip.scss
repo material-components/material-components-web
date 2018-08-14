@@ -30,7 +30,6 @@
   @include mdc-chip-corner-radius($mdc-chip-border-radius-default);
   @include mdc-chip-fill-color($mdc-chip-fill-color-default);
   @include mdc-chip-ink-color($mdc-chip-ink-color-default);
-  @include mdc-chip-selected-ink-color(primary);
   @include mdc-chip-leading-icon-color($mdc-chip-icon-color);
   @include mdc-chip-trailing-icon-color($mdc-chip-icon-color);
   @include mdc-chip-leading-icon-size($mdc-chip-leading-icon-size);
@@ -59,10 +58,6 @@
     padding 100ms linear,
     margin 100ms linear;
   opacity: 0;
-}
-
-.mdc-chip--selected {
-  @include mdc-theme-prop(background-color, surface);
 }
 
 .mdc-chip__text {
@@ -99,6 +94,18 @@
 
 .mdc-chip--selected .mdc-chip__checkmark-path {
   stroke-dashoffset: 0;
+}
+
+// Change color of selected choice chips
+
+.mdc-chip-set--choice {
+  .mdc-chip {
+    @include mdc-chip-selected-ink-color(primary);
+  }
+
+  .mdc-chip--selected {
+    @include mdc-theme-prop(background-color, surface);
+  }
 }
 
 // Add leading checkmark to filter chips with no leading icon

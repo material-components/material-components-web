@@ -54,7 +54,7 @@
     $style-props: map-merge($base-styles, $style-props);
 
     // Merge global overrides onto each style.
-    @if global_variable_exists(mdc-typography-styles-#{$style}) {
+    @if global_variable_exists(unquote("mdc-typography-styles-#{$style}")) {
       $style-props: map-merge($style-props, mdc-typography-get-global-variable_(#{$style}));
     }
 

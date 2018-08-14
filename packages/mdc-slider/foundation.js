@@ -302,6 +302,7 @@ class MDCSliderFoundation extends MDCFoundation {
       }
     }
   }
+
   /**
    * Update the classes on the tick marks to distinguish filled
    * @param {number} currentTickMark
@@ -309,7 +310,7 @@ class MDCSliderFoundation extends MDCFoundation {
    */
   updateTickMarkClasses_(currentTickMark) {
     const tickMarks = this.adapter_.getTickMarks();
-    if (tickMarks && tickMarks.length > 0) {
+    if (tickMarks && tickMarks.length) {
       for (let i = 0; i < currentTickMark; i++) {
         if (!this.adapter_.hasTickMarkClass(tickMarks[i], cssClasses.TICK_MARK_FILLED)) {
           this.adapter_.addTickMarkClass(tickMarks[i], cssClasses.TICK_MARK_FILLED);

@@ -73,62 +73,71 @@ Run the pre-release script:
 This will ensure you can publish/tag, build all release files, and ensure all tests
 pass prior to releasing (lerna will update versions for us in the next step).
 
-## Release
+## Publish to npm
 
 ### For Pre-releases
 
 ```
 $(npm bin)/lerna publish --skip-git --npm-tag=next
-git commit -am "chore: Publish"
 ```
 
-When lerna prompts for version, choose prerelease.
+When lerna prompts for version, choose Prerelease.
 
-> **Do not forget** both arguments to `publish` - we want to avoid updating the `latest` tag, and we want to
-> generate the changelog before generating and pushing the new tag.
+Be sure to include the command-line flags:
 
-### For Minor and Patch Releases
+* `--skip-git` avoids immediately applying a git tag, which we will do later after updating the changelog
+* `--npm-tag=next` avoids updating the `latest` tag on npm, since pre-releases should not be installed by default
+
+### For Minor Releases
+
+```
+$(npm bin)/lerna publish --skip-git --since=<previous-patch-tag>
+```
+
+When lerna prompts for version, choose Minor.
+
+Be sure to include the command-line flags:
+
+* `--skip-git` avoids immediately applying a git tag, which we will do later after updating the changelog
+* `--since=<previous-patch-tag>` (e.g. `--since=v0.36.1`) forces lerna to diff against the latest patch; otherwise,
+  it diffs against the previous minor release which may cause some packages without changes to be published (this
+  happens because bugfix releases aren't tagged from the master branch)
+
+### For Patch Releases
 
 ```
 $(npm bin)/lerna publish --skip-git
+```
+
+When lerna prompts for version, choose Patch.
+
+Be sure to include the command-line flag; `--skip-git` avoids immediately applying a git tag, which we will do later
+after updating the changelog.
+
+## Commit Version Bumps
+
+Regardless of which arguments were passed to `lerna publish` above, at this point the packages will have been
+published to npm, but you will have local changes to update the versions of each package that was published,
+which need to be committed:
+
+```
 git commit -am "chore: Publish"
 ```
 
-When lerna prompts for version, pick Minor or Patch as appropriate
-(for breaking-change/feature releases or bugfix releases, respectively).
-
-> **Do not forget** the `--skip-git` argument - we want to generate the changelog before generating and pushing the
-> new tag.
-
-## Post-Release
+## Update Changelog and Create Git Tag
 
 ### For Pre-Releases and Patch Releases
 
-Simply run the post-release script to update and commit the changelog and apply an annotated vX.Y.Z git tag:
-
-```
-./scripts/post-release.sh
-```
-
-Make sure that a CHANGELOG commit actually appears in your `git log`! If you need to retry the process:
-
-```
-git tag -d <tag> # Delete the tag that the script created
-git reset --hard HEAD^ # Rewind to the previous commit
-```
-
-Alternatively, if you would like to be extra sure of the changelog, you can generate it manually prior to running the
-post-release script, in which case it will skip `npm run changelog` and commit your local changes:
+It's recommended to generate the changelog prior to running the post-release script so you can double-check the changes
+before it creates a tag:
 
 ```
 npm run changelog
 git diff # Review the changelog and make sure it looks OK
-./scripts/post-release.sh
+./scripts/post-release.sh # This will commit the changelog diff and then create a tag
 ```
 
 ### For Minor Releases
-
-> Note: In the rare case there were no pre-releases leading up to this release, you can follow the same steps above.
 
 First, update the changelog without committing it:
 
@@ -138,11 +147,12 @@ npm run changelog
 
 Next, edit the changelog:
 
-* Bring any changes from the prior pre-releases under their respective headings for the new final release
+* Bring any changes from any prior pre-releases under their respective headings for the new final release
 * Remove headings for the pre-releases
+* Remove any duplicated items in the new minor release that were already listed under patch releases
 
 See [this v0.36.0 commit](https://github.com/material-components/material-components-web/commit/13fd6784866864839d0d287b3703b3beb0888d9c)
-for an example of the resulting changes.
+for an example of the resulting changes after moving the pre-release notes.
 
 This will make the changelog easier to read, since users won't be interested in the pre-releases once the final is
 tagged, and shouldn't need to read the new release's changes across multiple headings.
@@ -165,13 +175,13 @@ You will need to temporarily alter Github's master branch protection in order to
 1. Perform the process outlined in one of the sections below
 1. Don't forget to re-enable "Include administrators" & click "Save changes" afterwards
 
-### For Pre-releases and Feature/Breaking-Change Releases
+### For Pre-releases and Minor Releases
 
 `git push origin master && git push origin <tag>`
 
 This will ensure the new commits *and* tag are pushed to the remote git repository.
 
-### For Bugfix Releases
+### For Patch Releases
 
 `git push origin <tag>`
 
@@ -189,13 +199,27 @@ git push
 
 ## Update and Deploy Catalog Repository
 
-We maintain a `next` branch on the MDC Web Catalog repository to keep ahead of breaking changes in new releases.
+### For Patch Releases
+
+1. Update the `material-components-web` dependency in the catalog's `package.json` to the new patch version
+1. Run `npm start` and glance through the catalog pages to make sure everything looks normal
+1. Send a PR for the dependency update, then run `npm deploy` once it's merged to master
+
+### For Minor Releases
+
+We typically maintain a `next` branch on the MDC Web Catalog repository which follows MDC Web pre-releases, to keep
+ahead of breaking changes in new releases.
+
+In the event no pre-releases were tagged, the above process for patch releases would be followed, but would require
+checking for necessary updates to accommodate breaking changes in MDC Web.
+
+Below is the process when a `next` branch is used:
 
 1. Ensure you have the latest `master` checked out: `git checkout master && git pull`
 1. Create a new branch, e.g.: `git checkout -b chore/0.36.0`
 1. Merge `next` into the branch: `git merge next`
 1. Deal with any conflicts if necessary
-1. Update `package.json` to reference the newly-released final versions of MDC Web packages
+1. Update `package.json` to reference the newly-released minor version of `material-components-web`
 1. `rm -rf node_modules && npm i` to cause `package-lock.json` to update
 1. `npm start` and test the catalog, in case any further breaking changes occurred since the last pre-release
 1. `npm run build` to double-check that there are no unforeseen errors when building resources for deployment
