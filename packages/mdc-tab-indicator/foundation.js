@@ -43,8 +43,6 @@ class MDCTabIndicatorFoundation extends MDCFoundation {
    */
   static get defaultAdapter() {
     return /** @type {!MDCTabIndicatorAdapter} */ ({
-      registerEventHandler: () => {},
-      deregisterEventHandler: () => {},
       addClass: () => {},
       removeClass: () => {},
       computeContentClientRect: () => {},

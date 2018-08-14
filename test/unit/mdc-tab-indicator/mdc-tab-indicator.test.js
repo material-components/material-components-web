@@ -18,7 +18,6 @@
 import bel from 'bel';
 import {assert} from 'chai';
 import td from 'testdouble';
-import domEvents from 'dom-events';
 
 import {
   MDCTabIndicator,
@@ -67,23 +66,6 @@ test('#adapter.removeClass removes a class to the root element', () => {
   root.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClass('foo');
   assert.isFalse(root.classList.contains('foo'));
-});
-
-test('#adapter.registerEventHandler adds an event listener on the root element', () => {
-  const {root, component} = setupTest();
-  const handler = td.func('transitionend handler');
-  component.getDefaultFoundation().adapter_.registerEventHandler('transitionend', handler);
-  domEvents.emit(root, 'transitionend');
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('#adapter.deregisterEventHandler remoes an event listener from the root element', () => {
-  const {root, component} = setupTest();
-  const handler = td.func('transitionend handler');
-  root.addEventListener('transitionend', handler);
-  component.getDefaultFoundation().adapter_.deregisterEventHandler('transitionend', handler);
-  domEvents.emit(root, 'transitionend');
-  td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
 test('#adapter.computeContentClientRect returns the root element client rect', () => {
