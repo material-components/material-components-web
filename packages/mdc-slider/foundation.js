@@ -302,7 +302,7 @@ class MDCSliderFoundation extends MDCFoundation {
       }
     }
   }
-  
+
   /**
    * Update the classes on the tick marks to distinguish filled
    * @param {number} currentTickMark

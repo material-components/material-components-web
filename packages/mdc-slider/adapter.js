@@ -121,10 +121,9 @@ class MDCSliderAdapter {
   registerEventHandler(type, handler) {}
 
   /**
-   * Returns true if target has className, false otherwise.
-   * @param {EventTarget} target
-   * @param {string} className
-   * @return {boolean}
+   * Deregisters an event handler on the root element for a given event.
+   * @param {string} type
+   * @param {function(!Event): undefined} handler
    */
   deregisterEventHandler(type, handler) {}
 
