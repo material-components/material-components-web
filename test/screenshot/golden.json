@@ -350,6 +350,33 @@
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/17/22_50_36_536/spec/mdc-icon-button/mixins/ink-color.html.windows_ie_11.png"
     }
   },
+  "spec/mdc-linear-progress/classes/baseline.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/08/14/07_30_19_707/spec/mdc-linear-progress/classes/baseline.html",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/08/14/07_30_19_707/spec/mdc-linear-progress/classes/baseline.html.windows_chrome_68.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/14/07_44_08_226/spec/mdc-linear-progress/classes/baseline.html.windows_edge_17.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/08/14/07_30_19_707/spec/mdc-linear-progress/classes/baseline.html.windows_firefox_61.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/08/14/07_30_19_707/spec/mdc-linear-progress/classes/baseline.html.windows_ie_11.png"
+    }
+  },
+  "spec/mdc-linear-progress/mixins/bar-color.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/08/14/07_30_19_707/spec/mdc-linear-progress/mixins/bar-color.html",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/08/14/07_30_19_707/spec/mdc-linear-progress/mixins/bar-color.html.windows_chrome_68.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/08/14/07_30_19_707/spec/mdc-linear-progress/mixins/bar-color.html.windows_edge_17.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/08/14/07_30_19_707/spec/mdc-linear-progress/mixins/bar-color.html.windows_firefox_61.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/08/14/07_30_19_707/spec/mdc-linear-progress/mixins/bar-color.html.windows_ie_11.png"
+    }
+  },
+  "spec/mdc-linear-progress/mixins/buffer-color.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/08/14/07_30_19_707/spec/mdc-linear-progress/mixins/buffer-color.html",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/08/14/07_30_19_707/spec/mdc-linear-progress/mixins/buffer-color.html.windows_chrome_68.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/08/14/07_30_19_707/spec/mdc-linear-progress/mixins/buffer-color.html.windows_edge_17.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/08/14/07_30_19_707/spec/mdc-linear-progress/mixins/buffer-color.html.windows_firefox_61.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/08/14/07_30_19_707/spec/mdc-linear-progress/mixins/buffer-color.html.windows_ie_11.png"
+    }
+  },
   "spec/mdc-radio/classes/baseline.html": {
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/02/15_12_11_524/spec/mdc-radio/classes/baseline.html",
     "screenshots": {
