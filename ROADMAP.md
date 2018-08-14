@@ -18,11 +18,11 @@ We release a new version of MDC Web every 2 weeks. We also limit our breaking ch
 - New dialog
 
 ### 0.41.0 - October 2018 (R20)
-- Shadows Theme
 - Text field prefix and suffix support
 - Text field with a drop down menu (aka a Select)
 
 ### 0.42.0 - November 2018 (R21)
+- Shadows Theme
 - New side sheet
 - More text field sizes
 - Cascading menus
