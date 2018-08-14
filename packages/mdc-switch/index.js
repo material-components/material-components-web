@@ -51,6 +51,11 @@ class MDCSwitch extends MDCComponent {
   initialSyncWithDOM() {
     this.changeHandler_ = this.foundation_.handleChange.bind(this.foundation_);
     this.nativeControl_.addEventListener('change', this.changeHandler_);
+
+    // Sometimes the checked state of the input element is saved in the history.
+    // The switch styling should match the checked state of the input element.
+    // Do an initial synce between the native control and the foundation.
+    this.checked = this.checked;
   }
 
   /**
