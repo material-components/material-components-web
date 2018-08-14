@@ -281,6 +281,9 @@ Method Signature | Description
 `hasClass(className: string) => boolean` | Returns true if the root element contains the given `className`.
 `removeClass(className: string) => void` | Removes a class from the root element.
 `eventTargetHasClass(targetElement: !Element, className: string) => boolean` | Returns true if the target element contains the given class.
+`saveFocus() => void` | Saves the focus of currently active element.
+`restoreFocus() => void` | Restores focus to element previously saved with 'saveFocus'.
+`focusActiveNavigationItem() => void` | Focuses the active / selected navigation item.
 `notifyClosed() => void` | Emits the `MDCDrawer:close` event.
 `notifyOpen() => void` | Emits the `MDCDrawer:open` event.
 

@@ -41,6 +41,9 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
       eventTargetHasClass: (/* targetElement: !Element, className: string */) => {},
       notifyClose: () => {},
       notifyOpen: () => {},
+      saveFocus: () => {},
+      restoreFocus: () => {},
+      focusActiveNavigationItem: () => {},
     });
   }
 
@@ -54,6 +57,7 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
     this.adapter_.addClass(cssClasses.OPEN);
     this.adapter_.addClass(cssClasses.ANIMATE);
     delay(() => this.adapter_.addClass(cssClasses.OPENING));
+    this.adapter_.saveFocus();
   }
 
   /**
@@ -128,9 +132,11 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
 
     if (this.isClosing()) {
       this.adapter_.removeClass(OPEN);
+      this.adapter_.restoreFocus();
       this.closed();
       this.adapter_.notifyClose();
     } else {
+      this.adapter_.focusActiveNavigationItem();
       this.opened();
       this.adapter_.notifyOpen();
     }

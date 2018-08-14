@@ -29,10 +29,13 @@ export class MDCDrawer extends MDCComponent {
   constructor(...args) {
     super(...args);
 
-    /** @private {?Function} */
+    /** @private {!Element} */
+    this.previousFocus_;
+
+    /** @private {!Function} */
     this.handleKeydown_;
 
-    /** @private {?Function} */
+    /** @private {!Function} */
     this.handleTransitionEnd_;
   }
 
@@ -84,6 +87,22 @@ export class MDCDrawer extends MDCComponent {
       removeClass: (className) => this.root_.classList.remove(className),
       hasClass: (className) => this.root_.classList.contains(className),
       eventTargetHasClass: (targetElement, className) => targetElement.classList.contains(className),
+      saveFocus: () => {
+        this.previousFocus_ = document.activeElement;
+      },
+      restoreFocus: () => {
+        if (this.root_.contains(document.activeElement)) {
+          if (this.previousFocus_ && this.previousFocus_.focus) {
+            this.previousFocus_.focus();
+          }
+        }
+      },
+      focusActiveNavigationItem: () => {
+        const activeNavItemEl = this.root_.querySelector(strings.ACTIVE_NAV_ITEM_SELECTOR);
+        if (activeNavItemEl) {
+          activeNavItemEl.focus();
+        }
+      },
       notifyClose: () => this.emit(strings.CLOSE_EVENT, null, true /* shouldBubble */),
       notifyOpen: () => this.emit(strings.OPEN_EVENT, null, true /* shouldBubble */),
     }));

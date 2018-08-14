@@ -54,6 +54,21 @@ class MDCDrawerAdapter {
   eventTargetHasClass(targetElement, className) {}
 
   /**
+   * Saves the focus of currently active element.
+   */
+  saveFocus() {}
+
+  /**
+   * Restores focus to element previously saved with 'saveFocus'.
+   */
+  restoreFocus() {}
+
+  /**
+   * Focuses the active / selected navigation item.
+   */
+  focusActiveNavigationItem() {}
+
+  /**
    * Emits a custom event "MDCDrawer:close" denoting the drawer has closed.
    */
   notifyClosed() {}

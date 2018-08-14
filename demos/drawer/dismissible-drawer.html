@@ -36,7 +36,7 @@
       <div class="mdc-drawer__content">
         <div class="mdc-list-group">
           <nav class="mdc-list">
-            <a class="mdc-list-item mdc-list-item--activated demo-drawer-list-item" href="#" tabindex="0">
+            <a class="mdc-list-item mdc-list-item--selected demo-drawer-list-item" href="#" tabindex="0" aria-selected="true">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
               <span class="mdc-list-item__label mdc-drawer__list-item-label">Inbox</span>
             </a>
@@ -55,7 +55,7 @@
 
             <hr class="mdc-list-divider">
             <h6 class="mdc-list-group__subheader mdc-drawer__list-group-subheader">Labels</h6>
-            <a class="mdc-list-item demo-drawer-list-item" href="#" tabindex="0">
+            <a class="mdc-list-item demo-drawer-list-item" href="#">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
               <span class="mdc-list-item__label mdc-drawer__list-item-label">Family</span>
             </a>
@@ -69,7 +69,7 @@
             </a>
 
             <hr class="mdc-list-divider">
-            <a class="mdc-list-item demo-drawer-list-item" href="#" tabindex="0">
+            <a class="mdc-list-item demo-drawer-list-item" href="#">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings</i>
               <span class="mdc-list-item__label mdc-drawer__list-item-label">Settings</span>
             </a>
@@ -161,19 +161,19 @@
         });
 
         var activatedClass = 'mdc-list-item--activated';
-        document.querySelector('.mdc-drawer').addEventListener('click', function(event) {
-          var el = event.target;
-          while (el && !el.classList.contains('mdc-list-item')) {
-            el = el.parentElement;
-          }
-          if (el) {
-            var activatedItem = document.querySelector('.' + activatedClass);
-            if (activatedItem) {
-              activatedItem.classList.remove(activatedClass);
-            }
-            event.target.classList.add(activatedClass);
-          }
-        });
+        // document.querySelector('.mdc-drawer').addEventListener('click', function(event) {
+        //   var el = event.target;
+        //   while (el && !el.classList.contains('mdc-list-item')) {
+        //     el = el.parentElement;
+        //   }
+        //   if (el) {
+        //     var activatedItem = document.querySelector('.' + activatedClass);
+        //     if (activatedItem) {
+        //       activatedItem.classList.remove(activatedClass);
+        //     }
+        //     event.target.classList.add(activatedClass);
+        //   }
+        // });
 
         var drawerEl = document.getElementById('demo-drawer');
         var drawer = new mdc.drawer.MDCDrawer(drawerEl);
@@ -204,12 +204,10 @@
             drawer.open = true;
           }
         });
-        var listList = document.querySelectorAll('.mdc-list');
-        listList.forEach(function(list) {
-          var list = mdc.list.MDCList.attachTo(list);
-          list.singleSelection = true;
-          list.vertical = true;
-        });
+        var listEl = drawerEl.querySelector('.mdc-list');
+        var list = mdc.list.MDCList.attachTo(listEl);
+        list.singleSelection = true;
+        list.vertical = true;
       });
     </script>
   </body>
