@@ -55,3 +55,6 @@
 }
 
 // postcss-bem-linter: end
+.mdc-fab:not(:disabled) {
+  color: red;
+}
