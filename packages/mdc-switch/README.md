@@ -72,7 +72,7 @@ const switchControl = new MDCSwitch(document.querySelector('.mdc-switch'));
 
 ### Initially Disabled Switch
 
-Add the 'mdc-switch--disabled' class to the 'mdc-switch' element, and `disabled` attribute to the `mdc-switch__native-control` element to disable the switch. This logic is handled by `MDCSwitchFoundation.setDisabled` method, but you'll want to avoid a FOUC by initially adding this class and attribute.
+Add the 'mdc-switch--disabled' class to the 'mdc-switch' element, and `disabled` attribute to the `mdc-switch__native-control` element to disable the switch. This logic is handled by the `MDCSwitchFoundation.setDisabled` method, but you'll want to avoid a FOUC by initially adding this class and attribute.
 
 ```html
 <div class="mdc-switch mdc-switch--disabled">
@@ -88,7 +88,7 @@ Add the 'mdc-switch--disabled' class to the 'mdc-switch' element, and `disabled`
 
 ### Initially "On" Switch
 
-Add the 'mdc-switch--checked' class to the 'mdc-switch' element, and `checked` attribute to the `mdc-switch__native-control` element to toggle the switch to "on". This logic is handled by `MDCSwitchFoundation.setChecked` method, but you'll want to avoid a FOUC by initially adding this class and attribute.
+Add the 'mdc-switch--checked' class to the 'mdc-switch' element, and `checked` attribute to the `mdc-switch__native-control` element to toggle the switch to "on". This logic is handled by the `MDCSwitchFoundation.setChecked` method, but you'll want to avoid a FOUC by initially adding this class and attribute.
 
 ```html
 <div class="mdc-switch mdc-switch--checked">
@@ -110,7 +110,7 @@ CSS Class | Description
 --- | ---
 `mdc-switch` | Mandatory, for the parent element.
 `mdc-switch--disabled` | Optional, styles the switch as disabled
-`mdc-switch--checked` | Optional, styles the switch as checked
+`mdc-switch--checked` | Optional, styles the switch as checked ("on")
 `mdc-switch__track` | Mandatory, for the track element.
 `mdc-switch__thumb-underlay` | Mandatory, for the ripple effect.
 `mdc-switch__thumb` | Mandatory, for the thumb element.

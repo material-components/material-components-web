@@ -54,7 +54,7 @@ class MDCSwitch extends MDCComponent {
 
     // Sometimes the checked state of the input element is saved in the history.
     // The switch styling should match the checked state of the input element.
-    // Do an initial synce between the native control and the foundation.
+    // Do an initial sync between the native control and the foundation.
     this.checked = this.checked;
   }
 
