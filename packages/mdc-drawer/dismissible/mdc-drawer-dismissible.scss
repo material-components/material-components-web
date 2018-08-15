@@ -33,9 +33,9 @@
 }
 
 .mdc-drawer-app-content {
-  position: relative;
-
   @include mdc-rtl-reflexive-box(margin, left, 0);
+
+  position: relative;
 
   .mdc-drawer--open + & {
     @include mdc-rtl-reflexive-box(margin, left, $mdc-drawer-width);
