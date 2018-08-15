@@ -56,7 +56,7 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
     }
     this.adapter_.addClass(cssClasses.OPEN);
     this.adapter_.addClass(cssClasses.ANIMATE);
-    delay(() => this.adapter_.addClass(cssClasses.OPENING));
+    requestAnimationFrame(() => this.adapter_.addClass(cssClasses.OPENING));
     this.adapter_.saveFocus();
   }
 
@@ -146,9 +146,5 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
     this.adapter_.removeClass(CLOSING);
   }
 }
-
-const delay = function(fn) {
-  setTimeout(fn, 10);
-};
 
 export default MDCDismissibleDrawerFoundation;

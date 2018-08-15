@@ -20,6 +20,7 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 
 import {MDCDrawer} from '../../../packages/mdc-drawer';
+import MDCDismissibleDrawerFoundation from '../../../packages/mdc-drawer/dismissible/foundation';
 
 function getFixture() {
   return bel`
@@ -28,7 +29,7 @@ function getFixture() {
       <div class="mdc-drawer__content">
       <div class="mdc-list-group">
         <nav class="mdc-list">
-          <a class="mdc-list-item mdc-list-item--activated demo-drawer-list-item" href="#">
+          <a class="mdc-list-item mdc-list-item--activated" href="#">
             <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
           </a>
         </nav>
@@ -42,7 +43,9 @@ function setupTest() {
   const root = getFixture();
   const drawer = root.querySelector('.mdc-drawer');
   const component = new MDCDrawer(drawer);
-  return {root, drawer, component};
+  const MockFoundationCtor = td.constructor(MDCDismissibleDrawerFoundation);
+  const mockFoundation = new MockFoundationCtor();
+  return {root, drawer, component, mockFoundation};
 }
 suite('MDCDrawer');
 
@@ -75,7 +78,7 @@ test('#set open false calls foundation.close', () => {
 test('keydown event calls foundation.handleKeydown method', () => {
   const {component, drawer} = setupTest();
   component.foundation_.handleKeydown = td.func();
-  drawer.querySelector('.demo-drawer-list-item').focus();
+  drawer.querySelector('.mdc-list-item').focus();
   domEvents.emit(drawer, 'keydown');
   td.verify(component.foundation_.handleKeydown(td.matchers.isA(Object)), {times: 1});
 });
@@ -88,21 +91,19 @@ test('transitionend event calls foundation.handleTransitionEnd method', () => {
 });
 
 test('#destroy removes keydown event listener', () => {
-  const {component, drawer} = setupTest();
-  const originalRemove = drawer.removeEventListener;
-  drawer.removeEventListener = td.func();
+  const {component, drawer, mockFoundation} = setupTest();
   component.destroy();
-  td.verify(drawer.removeEventListener('keydown', td.matchers.isA(Function)), {times: 1});
-  drawer.removeEventListener = originalRemove;
+
+  domEvents.emit(drawer, 'keydown');
+  td.verify(mockFoundation.handleKeydown(td.matchers.isA(Object)), {times: 0});
 });
 
 test('#destroy removes transitionend event listener', () => {
-  const {component, drawer} = setupTest();
-  const originalRemove = drawer.removeEventListener;
-  drawer.removeEventListener = td.func();
+  const {component, drawer, mockFoundation} = setupTest();
   component.destroy();
-  td.verify(drawer.removeEventListener('transitionend', td.matchers.isA(Function)), {times: 1});
-  drawer.removeEventListener = originalRemove;
+
+  domEvents.emit(drawer, 'transitionend');
+  td.verify(mockFoundation.handleTransitionEnd(td.matchers.isA(Object)), {times: 0});
 });
 
 test('adapter#addClass adds class to drawer', () => {

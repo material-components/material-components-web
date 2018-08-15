@@ -25,8 +25,6 @@
   display: none;
   position: absolute;
   top: 0;
-  transition-property: transform;
-  transition-timing-function: $mdc-animation-standard-curve-timing-function;
 
   &.mdc-drawer--open {
     display: block;
@@ -34,6 +32,8 @@
 }
 
 .mdc-drawer-app-content {
+  position: relative;
+
   @include mdc-rtl-reflexive-box(margin, left, 0);
 
   .mdc-drawer--open + & {

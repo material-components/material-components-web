@@ -33,22 +33,6 @@ const setupTest = () => {
   return {foundation, mockAdapter};
 };
 
-test('exports strings', () => {
-  assert.isTrue('strings' in MDCDismissibleDrawerFoundation);
-  assert.deepEqual(MDCDismissibleDrawerFoundation.strings, strings);
-});
-
-test('exports cssClasses', () => {
-  assert.isTrue('cssClasses' in MDCDismissibleDrawerFoundation);
-  assert.deepEqual(MDCDismissibleDrawerFoundation.cssClasses, cssClasses);
-});
-
-test('defaultAdapter returns a complete adapter implementation', () => {
-  verifyDefaultAdapter(MDCDismissibleDrawerFoundation, [
-    'hasClass', 'addClass', 'removeClass', 'eventTargetHasClass', 'notifyClose', 'notifyOpen',
-  ]);
-});
-
 test('#open does nothing if drawer is already open', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.hasClass(cssClasses.OPEN)).thenReturn(true);
@@ -187,7 +171,7 @@ test('#handleTransitionEnd removes open class after closing and calls notifyClos
   const {foundation, mockAdapter} = setupTest();
   const mockEventTarget = bel`<div>root</div>`;
   td.when(mockAdapter.eventTargetHasClass(mockEventTarget, cssClasses.ROOT)).thenReturn(true);
-  td.when(foundation.isClosing(cssClasses.OPEN)).thenReturn(true);
+  td.when(foundation.isClosing()).thenReturn(true);
 
   foundation.handleTransitionEnd({target: mockEventTarget});
   td.verify(mockAdapter.removeClass(cssClasses.OPEN), {times: 1});
@@ -198,7 +182,7 @@ test('#handleTransitionEnd doesn\'t remove open class after opening and calls no
   const {foundation, mockAdapter} = setupTest();
   const mockEventTarget = bel`<div>root</div>`;
   td.when(mockAdapter.eventTargetHasClass(mockEventTarget, cssClasses.ROOT)).thenReturn(true);
-  td.when(foundation.isClosing(cssClasses.OPEN)).thenReturn(false);
+  td.when(foundation.isClosing()).thenReturn(false);
 
   foundation.handleTransitionEnd({target: mockEventTarget});
   td.verify(mockAdapter.removeClass(cssClasses.OPEN), {times: 0});
