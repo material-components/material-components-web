@@ -30,7 +30,7 @@ declare class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
     public setValue(value?: string): void;
     public handleAnimationEnd(): void;
     public handleChange(): void;
-    private installPropertyChangeHooks(): void;
+    private installPropertyChangeHooks_(): void;
     private uninstallPropertyChangeHooks_(): void;
     private transitionCheckState_(): void
     private determineCheckState_(nativeCb: Object): string;
