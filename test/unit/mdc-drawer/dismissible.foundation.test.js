@@ -26,7 +26,6 @@ suite('MDCDismissibleDrawerFoundation');
 
 const setupTest = () => {
   const mockAdapter = td.object(MDCDismissibleDrawerFoundation.defaultAdapter);
-
   const foundation = new MDCDismissibleDrawerFoundation(mockAdapter);
 
   return {foundation, mockAdapter};
