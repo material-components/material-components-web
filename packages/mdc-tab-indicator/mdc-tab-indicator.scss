@@ -53,16 +53,20 @@
   opacity: 1;
 }
 
-.mdc-tab-indicator--sliding-activate > .mdc-tab-indicator__content {
+// Slide by default
+.mdc-tab-indicator > .mdc-tab-indicator__content {
   transition: 250ms transform $mdc-animation-standard-curve-timing-function;
 }
 
-.mdc-tab-indicator--fading-activate > .mdc-tab-indicator__content,
-.mdc-tab-indicator--fading-deactivate > .mdc-tab-indicator__content {
+// --no-transition is applied in cases where styles need to be applied immediately to set up a transition
+.mdc-tab-indicator--no-transition > .mdc-tab-indicator__content {
+  transition: none;
+}
+
+.mdc-tab-indicator--fade > .mdc-tab-indicator__content {
   transition: 150ms opacity linear;
 }
 
-.mdc-tab-indicator--fading-activate > .mdc-tab-indicator__content {
+.mdc-tab-indicator--active.mdc-tab-indicator--fade > .mdc-tab-indicator__content {
   transition-delay: 100ms;
 }
-
