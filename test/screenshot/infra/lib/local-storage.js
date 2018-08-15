@@ -25,6 +25,7 @@ const mkdirp = require('mkdirp');
 const path = require('path');
 
 const GitRepo = require('./git-repo');
+const Logger = require('./logger');
 const {TEST_DIR_RELATIVE_PATH} = require('../lib/constants');
 
 class LocalStorage {
@@ -34,6 +35,12 @@ class LocalStorage {
      * @private
      */
     this.gitRepo_ = new GitRepo();
+
+    /**
+     * @type {!Logger}
+     * @private
+     */
+    this.logger_ = new Logger();
   }
 
   /**
@@ -46,6 +53,8 @@ class LocalStorage {
 
     const fileCopyPromises = [];
 
+    this.logger_.debug(`Copying ${allAssetFileRelativePaths.length} files to temp dir...`);
+
     for (const assetFileRelativePath of allAssetFileRelativePaths) {
       const assetFileshortPath = assetFileRelativePath.replace(TEST_DIR_RELATIVE_PATH, '');
       const sourceFilePathAbsolute = path.resolve(assetFileRelativePath);
@@ -56,6 +65,8 @@ class LocalStorage {
     }
 
     await Promise.all(fileCopyPromises);
+
+    this.logger_.debug(`Copied ${allAssetFileRelativePaths.length} files to temp dir!`);
   }
 
   /**
@@ -73,10 +84,13 @@ class LocalStorage {
 
   /**
    * @param {string} filePath
-   * @param {string|!Buffer} fileContent
+   * @param {string} fileContent
    * @return {!Promise<void>}
    */
   async writeTextFile(filePath, fileContent) {
+    if (!fileContent.endsWith('\n')) {
+      fileContent += '\n';
+    }
     try {
       mkdirp.sync(path.dirname(filePath));
       await fs.writeFile(filePath, fileContent, {encoding: 'utf8'});
@@ -141,10 +155,12 @@ class LocalStorage {
    * @return {!Array<string>}
    */
   globFiles(pattern, cwd = process.cwd()) {
-    if (pattern.endsWith('/')) {
-      pattern = pattern.replace(new RegExp('/+$'), '');
-    }
-    return glob.sync(pattern, {cwd, nodir: true});
+    return glob.sync(pattern, {
+      cwd,
+      nodir: true,
+      dot: true,
+      ignore: ['**/node_modules/**'],
+    });
   }
 
   /**
@@ -156,7 +172,12 @@ class LocalStorage {
     if (!pattern.endsWith('/')) {
       pattern += '/';
     }
-    return glob.sync(pattern, {cwd, nodir: false});
+    return glob.sync(pattern, {
+      cwd,
+      nodir: false,
+      dot: false,
+      ignore: ['**/node_modules/**'],
+    });
   }
 
   /**
@@ -216,7 +237,15 @@ class LocalStorage {
    */
   async getAssetFileSourcePaths_() {
     const cwd = TEST_DIR_RELATIVE_PATH;
-    return (await this.filterIgnoredFiles_(glob.sync('**/*', {cwd, nodir: true}))).sort();
+
+    this.logger_.debug(`Finding all files in "${cwd}"...`);
+
+    /** @type {!Array<string>} */
+    const allFilePaths = glob.sync('**/*', {cwd, nodir: true});
+
+    this.logger_.debug(`Found ${allFilePaths.length.toLocaleString()} files in "${cwd}"!`);
+
+    return (await this.filterIgnoredFiles_(allFilePaths)).sort();
   }
 
   /**

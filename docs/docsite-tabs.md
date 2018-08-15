@@ -7,7 +7,7 @@ section: components
 excerpt: "Components for tabbed navigation."
 iconId: tabs
 path: /catalog/tabs/
-redirect_path: /catalog/tabs/tab/
+redirect_path: /catalog/tabs/tab-bar/
 ---
 
 {% include redirect-page.html %}

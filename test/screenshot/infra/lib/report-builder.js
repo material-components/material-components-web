@@ -26,7 +26,7 @@ const path = require('path');
 const serveIndex = require('serve-index');
 
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
-const {Approvals, DiffImageResult, Dimensions, GitStatus, GoldenScreenshot, LibraryVersion} = mdcProto;
+const {Approvals, DiffImageResult, Dimensions, FlakeConfig, GitStatus, GoldenScreenshot, LibraryVersion} = mdcProto;
 const {ReportData, ReportMeta, Screenshot, Screenshots, ScreenshotList, TestFile, User, UserAgents} = mdcProto;
 const {InclusionType, CaptureState} = Screenshot;
 
@@ -99,7 +99,7 @@ class ReportBuilder {
      * @type {!Logger}
      * @private
      */
-    this.logger_ = new Logger(__filename);
+    this.logger_ = new Logger();
 
     /**
      * @type {!UserAgentStore}
@@ -128,7 +128,7 @@ class ReportBuilder {
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async initForCapture(goldenDiffBase) {
-    this.logger_.foldStart('screenshot.init', 'ReportBuilder#initForCapture()');
+    this.logger_.foldStart('screenshot.init', 'ReportBuilder.initForCapture()');
 
     if (this.cli_.isOnline()) {
       await this.cbtApi_.fetchAvailableDevices();
@@ -136,6 +136,7 @@ class ReportBuilder {
 
     /** @type {!mdc.proto.ReportMeta} */
     const reportMeta = await this.createReportMetaProto_(goldenDiffBase);
+
     /** @type {!mdc.proto.UserAgents} */
     const userAgents = await this.createUserAgentsProto_();
 
@@ -146,6 +147,7 @@ class ReportBuilder {
       await this.startTemporaryHttpServer_(reportMeta);
     }
 
+    /** @type {!mdc.proto.Screenshots} */
     const screenshots = await this.createScreenshotsProto_({reportMeta, userAgents, goldenDiffBase});
 
     const reportData = ReportData.create({
@@ -167,6 +169,7 @@ class ReportBuilder {
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async initForDemo() {
+    // TODO(acdvorak): Pass `goldenDiffBase` argument
     return ReportData.create({
       meta: await this.createReportMetaProto_(),
     });
@@ -300,18 +303,24 @@ class ReportBuilder {
   }
 
   /**
+   * TODO(acdvorak): Figure out how to handle offline mode for prefetching and diffing
+   * TODO(acdvorak): Cache downloaded images on Travis
    * @param {!mdc.proto.ReportData} reportData
    * @return {!Promise<void>}
    * @private
    */
   async prefetchGoldenImages_(reportData) {
-    // TODO(acdvorak): Figure out how to handle offline mode for prefetching and diffing
-    console.log('Fetching golden images...');
+    const expectedScreenshots = reportData.screenshots.expected_screenshot_list;
+
+    this.logger_.debug(`Fetching ${expectedScreenshots.length.toLocaleString()} golden images...`);
+
     await Promise.all(
-      reportData.screenshots.expected_screenshot_list.map((expectedScreenshot) => {
+      expectedScreenshots.map((expectedScreenshot) => {
         return this.prefetchScreenshotImages_(expectedScreenshot);
       })
     );
+
+    this.logger_.debug(`Fetched ${expectedScreenshots.length.toLocaleString()} golden images!`);
   }
 
   /**
@@ -666,9 +675,9 @@ class ReportBuilder {
       });
 
       for (const userAgent of allUserAgents) {
-        const maxRetries = this.cli_.isOnline() ? this.cli_.retries : 0;
         const userAgentAlias = userAgent.alias;
-        const isScreenshotRunnable = isHtmlFileRunnable && userAgent.is_runnable;
+        const flakeConfig = this.getFlakeConfig_({userAgent, htmlFilePath});
+        const isScreenshotRunnable = isHtmlFileRunnable && userAgent.is_runnable && !flakeConfig.skip_all;
         const expectedScreenshotImageUrl = goldenFile.getScreenshotImageUrl({htmlFilePath, userAgentAlias});
 
         /** @type {?mdc.proto.TestFile} */
@@ -679,18 +688,70 @@ class ReportBuilder {
 
         allScreenshots.push(Screenshot.create({
           is_runnable: isScreenshotRunnable,
+          is_url_skipped_by_cli: !isHtmlFileRunnable,
           user_agent: userAgent,
           html_file_path: htmlFilePath,
           expected_html_file: expectedHtmlFile,
           actual_html_file: actualHtmlFile,
           expected_image_file: expectedImageFile,
           retry_count: 0,
-          max_retries: maxRetries,
+          flake_config: flakeConfig,
         }));
       }
     }
 
     return allScreenshots;
+  }
+
+  /**
+   * @param {!mdc.proto.UserAgent} userAgent
+   * @param {string} htmlFilePath
+   * @return {!mdc.proto.FlakeConfig}
+   * @private
+   */
+  getFlakeConfig_({userAgent, htmlFilePath}) {
+    const diffingJson = require('../../diffing.json');
+    const flakeConfig = FlakeConfig.fromObject(diffingJson.flaky_test_config.global_config);
+
+    /**
+     * @param {?Array<string>} patterns
+     * @return {!Array<!RegExp>}
+     */
+    function toRegExpArray(patterns) {
+      if (!patterns) {
+        return [];
+      }
+      return patterns.map((pattern) => new RegExp(pattern));
+    }
+
+    for (const override of diffingJson.flaky_test_config.config_overrides) {
+      const browserRegexPatterns = toRegExpArray(override.browser_regex_patterns);
+      const urlRegexPatterns = toRegExpArray(override.url_regex_patterns);
+
+      const isBrowserMatch =
+        browserRegexPatterns.length === 0 ||
+        browserRegexPatterns.some((regexp) => regexp.test(userAgent.alias));
+
+      const isUrlMatch =
+        urlRegexPatterns.length === 0 ||
+        urlRegexPatterns.some((regexp) => regexp.test(htmlFilePath));
+
+      if (!isBrowserMatch || !isUrlMatch) {
+        continue;
+      }
+
+      Object.assign(flakeConfig, override.custom_config);
+    }
+
+    if (!this.cli_.isOnline()) {
+      flakeConfig.max_retries = 0;
+    }
+
+    if (Number.isFinite(this.cli_.retries)) {
+      flakeConfig.max_retries = this.cli_.retries;
+    }
+
+    return flakeConfig;
   }
 
   /**

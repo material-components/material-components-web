@@ -1,3 +1,19 @@
+<a name="0.38.1"></a>
+## [0.38.1](https://github.com/material-components/material-components-web/compare/v0.38.0...v0.38.1) (2018-08-13)
+
+
+### Bug Fixes
+
+* **dialog:** Fixes transitionend event not always being called ([#3267](https://github.com/material-components/material-components-web/issues/3267)) ([f4af684](https://github.com/material-components/material-components-web/commit/f4af684))
+* **list:** Update clickable elements selector ([#3312](https://github.com/material-components/material-components-web/issues/3312)) ([c4fc932](https://github.com/material-components/material-components-web/commit/c4fc932))
+* **radio:** Add missing `[@import](https://github.com/import)` for theme mixins; add screenshot tests ([#3285](https://github.com/material-components/material-components-web/issues/3285)) ([553438a](https://github.com/material-components/material-components-web/commit/553438a))
+* **ripple:** Register focus/blur handlers in IE ([#3294](https://github.com/material-components/material-components-web/issues/3294)) ([1e10ac2](https://github.com/material-components/material-components-web/commit/1e10ac2))
+* **select:** add adapter ([#3233](https://github.com/material-components/material-components-web/issues/3233)) ([3b20de8](https://github.com/material-components/material-components-web/commit/3b20de8))
+* **text-field:** Set the margin for text-area helper text ([#3290](https://github.com/material-components/material-components-web/issues/3290)) ([e395bb3](https://github.com/material-components/material-components-web/commit/e395bb3))
+* **text-field:** Stop emitting unused CSS in Text Field & Select ([#3293](https://github.com/material-components/material-components-web/issues/3293)) ([4041d9e](https://github.com/material-components/material-components-web/commit/4041d9e))
+
+
+
 <a name="0.38.0"></a>
 # [0.38.0](https://github.com/material-components/material-components-web/compare/v0.37.1...v0.38.0) (2018-07-30)
 

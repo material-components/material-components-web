@@ -98,10 +98,7 @@
   // Select Box intentionally omits press ripple, so each state needs to be specified individually
   @include mdc-states-base-color($mdc-select-ink-color);
   @include mdc-states-hover-opacity(mdc-states-opacity($mdc-select-ink-color, hover));
-  @include mdc-states-focus-opacity(
-    mdc-states-opacity($mdc-select-ink-color, focus),
-    $has-nested-focusable-element: true
-  );
+  @include mdc-states-focus-opacity(mdc-states-opacity($mdc-select-ink-color, focus));
 
   height: 56px;
   border-radius: 4px 4px 0 0;

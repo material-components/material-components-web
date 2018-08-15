@@ -1,3 +1,5 @@
-[].forEach.call(document.querySelectorAll('.mdc-text-field'), function(el) {
-  mdc.textField.MDCTextField.attachTo(el);
+window.mdc.testFixture.fontsLoaded.then(() => {
+  [].forEach.call(document.querySelectorAll('.mdc-text-field'), (el) => {
+    mdc.textField.MDCTextField.attachTo(el);
+  });
 });

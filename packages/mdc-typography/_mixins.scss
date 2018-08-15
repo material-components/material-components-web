@@ -42,11 +42,14 @@
 }
 
 @mixin mdc-typography-baseline-top($distance) {
+  display: block;
   margin-top: 0;
   line-height: normal;
 
   &::before {
-    @include mdc-typography-baseline-strut_($distance, 0);
+    @include mdc-typography-baseline-strut_($distance);
+
+    vertical-align: 0;
   }
 }
 
@@ -54,14 +57,15 @@
   margin-bottom: -1 * $distance;
 
   &::after {
-    @include mdc-typography-baseline-strut_($distance, -1 * $distance);
+    @include mdc-typography-baseline-strut_($distance);
+
+    vertical-align: -1 * $distance;
   }
 }
 
-@mixin mdc-typography-baseline-strut_($distance, $vertical-align) {
+@mixin mdc-typography-baseline-strut_($distance) {
   display: inline-block;
   width: 0;
   height: $distance;
   content: "";
-  vertical-align: $vertical-align;
 }

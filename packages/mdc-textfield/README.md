@@ -53,10 +53,6 @@ npm install @material/textfield
 </div>
 ```
 
-> NOTE: Text field supports `text`, `number`, and `password` input types (e.g., `<input type="password" class="mdc-text-field__input">`).
->
-> Other input types (such as `date`) are not currently supported.
-
 > NOTE: For more details, see [MDC Line Ripple](../mdc-line-ripple/README.md)
 > and [MDC Floating Label](../mdc-floating-label/README.md).
 
@@ -166,12 +162,12 @@ by HTML5's form validation API.
 ### Pre-filled
 
 When dealing with JS-driven text fields that already have values, you'll want to ensure that you
-render `mdc-floating-label` with the `mdc-floating-label--float-above` modifier class, and `mdc-text-field` with the `mdc-text-field--upgraded` modifier class. This will
+render `mdc-floating-label` with the `mdc-floating-label--float-above` modifier class. This will
 ensure that the label moves out of the way of the text field's value and prevents a Flash Of
 Un-styled Content (**FOUC**).
 
 ```html
-<div class="mdc-text-field mdc-text-field--upgraded">
+<div class="mdc-text-field">
   <input type="text" id="pre-filled" class="mdc-text-field__input" value="Pre-filled value">
   <label class="mdc-floating-label mdc-floating-label--float-above" for="pre-filled">
     Label in correct place
@@ -187,7 +183,6 @@ Un-styled Content (**FOUC**).
 CSS Class | Description
 --- | ---
 `mdc-text-field` | Mandatory.
-`mdc-text-field--upgraded` | Indicates the text field is upgraded, using JavaScript.
 `mdc-text-field--box` | Styles the text field as a box text field.
 `mdc-text-field--outlined` | Styles the text field as an outlined text field.
 `mdc-text-field--fullwidth` | Styles the text field as a full width text field.
