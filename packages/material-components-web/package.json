@@ -1,7 +1,7 @@
 {
   "name": "material-components-web",
   "description": "Modular and customizable Material Design UI components for the web",
-  "version": "0.38.1",
+  "version": "0.38.2",
   "license": "Apache-2.0",
   "keywords": [
     "material components",
@@ -20,7 +20,7 @@
     "@material/card": "^0.38.1",
     "@material/checkbox": "^0.38.1",
     "@material/chips": "^0.38.1",
-    "@material/dialog": "^0.38.1",
+    "@material/dialog": "^0.38.2",
     "@material/drawer": "^0.38.0",
     "@material/elevation": "^0.38.0",
     "@material/fab": "^0.38.1",
