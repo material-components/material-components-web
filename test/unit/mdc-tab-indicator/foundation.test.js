@@ -34,7 +34,6 @@ test('exports strings', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTabIndicatorFoundation, [
-    'registerEventHandler', 'deregisterEventHandler',
     'addClass', 'removeClass',
     'setContentStyleProperty',
     'computeContentClientRect',
@@ -52,13 +51,13 @@ test('#computeContentClientRect returns the client rect', () => {
 test('#activate is abstract and does nothing', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.activate();
-  td.verify(mockAdapter.addClass, {times: 0});
-  td.verify(mockAdapter.removeClass, {times: 0});
+  td.verify(mockAdapter.addClass(td.matchers.isA(String)), {times: 0});
+  td.verify(mockAdapter.removeClass(td.matchers.isA(String)), {times: 0});
 });
 
 test('#deactivate is abstract and does nothing', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.deactivate();
-  td.verify(mockAdapter.addClass, {times: 0});
-  td.verify(mockAdapter.removeClass, {times: 0});
+  td.verify(mockAdapter.addClass(td.matchers.isA(String)), {times: 0});
+  td.verify(mockAdapter.removeClass(td.matchers.isA(String)), {times: 0});
 });

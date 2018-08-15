@@ -61,8 +61,6 @@ class MDCTabIndicator extends MDCComponent {
    */
   getDefaultFoundation() {
     const adapter = /** @type {!MDCTabIndicatorAdapter} */ (Object.assign({
-      registerEventHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
-      deregisterEventHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       computeContentClientRect: () => this.content_.getBoundingClientRect(),
