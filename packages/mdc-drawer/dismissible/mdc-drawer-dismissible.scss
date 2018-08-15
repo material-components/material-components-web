@@ -27,7 +27,8 @@
   top: 0;
 
   &.mdc-drawer--open {
-    display: block;
+    display: flex;
+    flex-direction: column;
   }
 }
 
