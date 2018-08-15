@@ -51,6 +51,11 @@ class MDCSwitch extends MDCComponent {
   initialSyncWithDOM() {
     this.changeHandler_ = this.foundation_.handleChange.bind(this.foundation_);
     this.nativeControl_.addEventListener('change', this.changeHandler_);
+
+    // Sometimes the checked state of the input element is saved in the history.
+    // The switch styling should match the checked state of the input element.
+    // Do an initial sync between the native control and the foundation.
+    this.checked = this.checked;
   }
 
   /**
@@ -94,9 +99,7 @@ class MDCSwitch extends MDCComponent {
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       setNativeControlChecked: (checked) => this.nativeControl_.checked = checked,
-      isNativeControlChecked: () => this.nativeControl_.checked,
       setNativeControlDisabled: (disabled) => this.nativeControl_.disabled = disabled,
-      isNativeControlDisabled: () => this.nativeControl_.disabled,
     });
   }
 
@@ -107,7 +110,7 @@ class MDCSwitch extends MDCComponent {
 
   /** @return {boolean} */
   get checked() {
-    return this.foundation_.isChecked();
+    return this.nativeControl_.checked;
   }
 
   /** @param {boolean} checked */
@@ -117,7 +120,7 @@ class MDCSwitch extends MDCComponent {
 
   /** @return {boolean} */
   get disabled() {
-    return this.foundation_.isDisabled();
+    return this.nativeControl_.disabled;
   }
 
   /** @param {boolean} disabled */
