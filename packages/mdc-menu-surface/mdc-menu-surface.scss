@@ -54,7 +54,6 @@
       opacity $mdc-menu-surface-fade-in-duration linear,
       transform $mdc-menu-surface-scale-duration $mdc-animation-deceleration-curve-timing-function;
     opacity: 0;
-    overflow-y: hidden;
   }
 
   &--open {
@@ -67,7 +66,6 @@
     display: inline-block;
     transition: opacity $mdc-menu-surface-fade-out-duration linear;
     opacity: 0;
-    overflow-y: hidden;
   }
 }
 

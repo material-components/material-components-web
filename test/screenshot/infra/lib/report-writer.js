@@ -400,9 +400,13 @@ class ReportWriter {
      */
     function getIconHtml(userAgent) {
       const title = userAgent.navigator ? userAgent.navigator.full_name : userAgent.alias;
-      return `
+      const img = `
 <img src="${userAgent.browser_icon_url}" width="16" height="16" class="report-user-agent__icon" title="${title}">
 `.trim();
+      if (userAgent.selenium_result_url) {
+        return `<a href="${userAgent.selenium_result_url}">${img}</a>`;
+      }
+      return img;
     }
 
     const runnableHtml = runnableUserAgents.map(getIconHtml).join(' ');

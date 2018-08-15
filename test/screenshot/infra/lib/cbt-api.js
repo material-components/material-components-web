@@ -147,6 +147,16 @@ https://crossbrowsertesting.com/account
   }
 
   /**
+   * @param {string} sessionId
+   * @return {!Promise<string>}
+   */
+  async getPublicTestResultUrl(sessionId) {
+    const stackTrace = getStackTrace('getPublicTestResultUrl');
+    const responseBody = await this.sendRequest_(stackTrace, 'GET', `/selenium/${sessionId}`);
+    return responseBody['show_result_public_url'];
+  }
+
+  /**
    * @param {string} seleniumSessionId
    * @param {!Array<!mdc.proto.Screenshot>} changedScreenshots
    * @return {!Promise<void>}
