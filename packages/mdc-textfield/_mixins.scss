@@ -143,8 +143,8 @@
   @include mdc-text-field-fullwidth-bottom-line-color_($mdc-text-field-fullwidth-bottom-line-color);
   @include mdc-text-field-fill-color_($mdc-text-field-disabled-background);
 
-  pointer-events: none;
   border-bottom: none;
+  pointer-events: none;
 
   .mdc-floating-label {
     cursor: default;
