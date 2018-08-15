@@ -45,7 +45,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
 
   /** @return {boolean} */
   get shouldShake() {
-    return !this.isValid() && !this.isFocused_;
+    return !this.isValid() && !this.isFocused_ && !!this.getValue();
   }
 
   /**

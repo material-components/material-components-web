@@ -19,9 +19,7 @@
 const cssClasses = {
   ACTIVE: 'mdc-tab-indicator--active',
   FADE: 'mdc-tab-indicator--fade',
-  FADING_ACTIVATE: 'mdc-tab-indicator--fading-activate',
-  FADING_DEACTIVATE: 'mdc-tab-indicator--fading-deactivate',
-  SLIDING_ACTIVATE: 'mdc-tab-indicator--sliding-activate',
+  NO_TRANSITION: 'mdc-tab-indicator--no-transition',
 };
 
 /** @enum {string} */
