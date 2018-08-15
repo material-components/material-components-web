@@ -40,3 +40,32 @@
   white-space: nowrap;
   overflow: hidden;
 }
+
+@mixin mdc-typography-baseline-top($distance) {
+  display: block;
+  margin-top: 0;
+  line-height: normal;
+
+  &::before {
+    @include mdc-typography-baseline-strut_($distance);
+
+    vertical-align: 0;
+  }
+}
+
+@mixin mdc-typography-baseline-bottom($distance) {
+  margin-bottom: -1 * $distance;
+
+  &::after {
+    @include mdc-typography-baseline-strut_($distance);
+
+    vertical-align: -1 * $distance;
+  }
+}
+
+@mixin mdc-typography-baseline-strut_($distance) {
+  display: inline-block;
+  width: 0;
+  height: $distance;
+  content: "";
+}

@@ -100,21 +100,19 @@ npm install @material/drawer
 </div>
 ```
 
-> NOTE: First navigation item in list group should be explicitely set tabindex to '0'.
+> NOTE: First navigation item in list group should explicitly set tabindex to '0'.
 
-And then list group needs to be instantiated for keyboard navigation.
+List group needs to be instantiated for keyboard navigation.
 
 ```javascript
-var listList = document.querySelectorAll('.mdc-list');
+var listEl = drawerEl.querySelector('.mdc-list');
 
-listList.forEach(function(list) {
-  var list = mdc.list.MDCList.attachTo(list);
-  list.singleSelection = true;
-  list.vertical = true;
-});
+var list = mdc.list.MDCList.attachTo(listEl);
+list.singleSelection = true;
+list.vertical = true;
 ```
 
-Please see the [list readme](https://github.com/material-components/material-components-web/tree/master/packages/mdc-list#list-groups)
+Please see the [list readme](../mdc-list#list-group)
 for more details on list and list groups instructions.
 
 ### Drawers with Header
@@ -228,7 +226,6 @@ Class | Description
 `mdc-drawer--closing` | Applies the transition to the dismissible drawer while it is animating from the open to the closed position.
 `mdc-drawer--opening` | Applies the transition to the dismissible drawer while it is animating from the closed to the open position.
 `mdc-drawer-app-content` | Used for dismissible drawer variant sibling element that should animate open/closed with it.
-while it is animating to the closed position.
 `mdc-drawer--dismissible` | Dismissible drawer variant class.
 `mdc-drawer__header` | Non-scrollable element that exists on the top of the drawer.
 `mdc-drawer--open` | If present indicates that dismissible drawer is in the open position.

@@ -14,6 +14,8 @@
 // limitations under the License.
 //
 
+@import "../../../../packages/mdc-fab/mixins";
+
 .test-cell--fab {
   width: 81px;
   height: 81px;
@@ -22,4 +24,17 @@
 .test-cell--fab-extended {
   width: 191px;
   height: 71px;
+}
+
+.custom-fab--extended-padding-and-icon-size {
+  @include mdc-fab-extended-padding(12px, 24px);
+  @include mdc-fab-icon-size(32px);
+}
+
+.custom-fab--extended-padding {
+  @include mdc-fab-extended-padding(16px, 24px);
+}
+
+.custom-fab--extended-label-padding {
+  @include mdc-fab-extended-label-padding(24px);
 }

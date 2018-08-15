@@ -28,7 +28,6 @@ const strings = {
 /** @enum {string} */
 const cssClasses = {
   ROOT: 'mdc-text-field',
-  UPGRADED: 'mdc-text-field--upgraded',
   DISABLED: 'mdc-text-field--disabled',
   DENSE: 'mdc-text-field--dense',
   FOCUSED: 'mdc-text-field--focused',
@@ -49,4 +48,9 @@ const VALIDATION_ATTR_WHITELIST = [
   'pattern', 'min', 'max', 'required', 'step', 'minlength', 'maxlength',
 ];
 
-export {cssClasses, strings, numbers, VALIDATION_ATTR_WHITELIST};
+// Label should always float for these types as they show some UI even if value is empty.
+const ALWAYS_FLOAT_TYPES = [
+  'color', 'date', 'datetime-local', 'month', 'range', 'time', 'week',
+];
+
+export {cssClasses, strings, numbers, VALIDATION_ATTR_WHITELIST, ALWAYS_FLOAT_TYPES};

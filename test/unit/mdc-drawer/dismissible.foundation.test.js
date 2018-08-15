@@ -20,8 +20,7 @@ import bel from 'bel';
 import td from 'testdouble';
 
 import MDCDismissibleDrawerFoundation from '../../../packages/mdc-drawer/dismissible/foundation';
-import {strings, cssClasses} from '../../../packages/mdc-drawer/constants';
-import {verifyDefaultAdapter} from '../helpers/foundation';
+import {cssClasses} from '../../../packages/mdc-drawer/constants';
 
 suite('MDCDismissibleDrawerFoundation');
 
@@ -32,22 +31,6 @@ const setupTest = () => {
 
   return {foundation, mockAdapter};
 };
-
-test('exports strings', () => {
-  assert.isTrue('strings' in MDCDismissibleDrawerFoundation);
-  assert.deepEqual(MDCDismissibleDrawerFoundation.strings, strings);
-});
-
-test('exports cssClasses', () => {
-  assert.isTrue('cssClasses' in MDCDismissibleDrawerFoundation);
-  assert.deepEqual(MDCDismissibleDrawerFoundation.cssClasses, cssClasses);
-});
-
-test('defaultAdapter returns a complete adapter implementation', () => {
-  verifyDefaultAdapter(MDCDismissibleDrawerFoundation, [
-    'hasClass', 'addClass', 'removeClass', 'eventTargetHasClass', 'notifyClose', 'notifyOpen',
-  ]);
-});
 
 test('#open does nothing if drawer is already open', () => {
   const {foundation, mockAdapter} = setupTest();
@@ -70,10 +53,11 @@ test('#open does nothing if drawer is closing', () => {
   td.verify(mockAdapter.addClass(td.matchers.isA(String)), {times: 0});
 });
 
-test('#open adds appropriate classes', () => {
+test('#open adds appropriate classes and saves focus', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.open();
   td.verify(mockAdapter.addClass(cssClasses.OPEN), {times: 1});
+  td.verify(mockAdapter.saveFocus(), {times: 1});
 });
 
 test('#close does nothing if drawer is already closed', () => {
@@ -183,25 +167,28 @@ test('#handleTransitionEnd removes all animating classes', () => {
   td.verify(mockAdapter.removeClass(cssClasses.CLOSING), {times: 1});
 });
 
-test('#handleTransitionEnd removes open class after closing and calls notifyClose', () => {
+test('#handleTransitionEnd removes open class after closing, restores the focus and calls notifyClose', () => {
   const {foundation, mockAdapter} = setupTest();
   const mockEventTarget = bel`<div>root</div>`;
   td.when(mockAdapter.eventTargetHasClass(mockEventTarget, cssClasses.ROOT)).thenReturn(true);
-  td.when(foundation.isClosing(cssClasses.OPEN)).thenReturn(true);
+  td.when(foundation.isClosing()).thenReturn(true);
 
   foundation.handleTransitionEnd({target: mockEventTarget});
   td.verify(mockAdapter.removeClass(cssClasses.OPEN), {times: 1});
+  td.verify(mockAdapter.restoreFocus(), {times: 1});
   td.verify(mockAdapter.notifyClose(), {times: 1});
 });
 
-test('#handleTransitionEnd doesn\'t remove open class after opening and calls notifyOpen', () => {
+test(`#handleTransitionEnd doesn\'t remove open class after opening,
+    focuses on active navigation item and calls notifyOpen`, () => {
   const {foundation, mockAdapter} = setupTest();
   const mockEventTarget = bel`<div>root</div>`;
   td.when(mockAdapter.eventTargetHasClass(mockEventTarget, cssClasses.ROOT)).thenReturn(true);
-  td.when(foundation.isClosing(cssClasses.OPEN)).thenReturn(false);
+  td.when(foundation.isClosing()).thenReturn(false);
 
   foundation.handleTransitionEnd({target: mockEventTarget});
   td.verify(mockAdapter.removeClass(cssClasses.OPEN), {times: 0});
+  td.verify(mockAdapter.focusActiveNavigationItem(), {times: 1});
   td.verify(mockAdapter.notifyOpen(), {times: 1});
 });
 

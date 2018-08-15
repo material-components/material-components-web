@@ -44,7 +44,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
   assert.equal(methods.length, Object.keys(defaultAdapter).length, 'Every adapter key must be a function');
   assert.deepEqual(methods, [
     'addClass', 'removeClass', 'setAriaHidden', 'unsetAriaHidden', 'setActionAriaHidden',
-    'unsetActionAriaHidden', 'setActionText', 'setMessageText', 'setFocus', 'visibilityIsHidden',
+    'unsetActionAriaHidden', 'setActionText', 'setMessageText', 'setFocus', 'isFocused', 'visibilityIsHidden',
     'registerCapturedBlurHandler', 'deregisterCapturedBlurHandler', 'registerVisibilityChangeHandler',
     'deregisterVisibilityChangeHandler', 'registerCapturedInteractionHandler',
     'deregisterCapturedInteractionHandler', 'registerActionClickHandler',
