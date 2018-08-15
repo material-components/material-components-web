@@ -55,7 +55,7 @@ async function runAsync() {
 
   if (!CmdClass) {
     console.error(`Error: Unknown command: '${cli.command}'`);
-    process.exit(ExitCode.UNSUPPORTED_CLI_COMMAND);
+    exit(ExitCode.UNSUPPORTED_CLI_COMMAND);
     return;
   }
 
@@ -68,12 +68,12 @@ async function runAsync() {
   cmd.runAsync().then(
     (exitCode = ExitCode.OK) => {
       if (exitCode !== ExitCode.OK) {
-        process.exit(exitCode);
+        exit(exitCode);
       }
     },
     (err) => {
       console.error('\n\n' + CliColor.bold.red('ERROR:'), formatError(err));
-      process.exit(ExitCode.UNKNOWN_ERROR);
+      exit(ExitCode.UNKNOWN_ERROR);
     }
   );
 }
@@ -96,7 +96,11 @@ process.on('unhandledRejection', (err) => {
   console.error('\n');
   console.error(message);
   console.error(formatError(err));
-  process.exit(ExitCode.UNHANDLED_PROMISE_REJECTION);
+  exit(ExitCode.UNHANDLED_PROMISE_REJECTION);
 });
+
+function exit(code) {
+  process.exitCode = code;
+}
 
 runAsync();

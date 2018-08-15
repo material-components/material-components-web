@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2018 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,11 @@
  */
 
 import MDCComponent from '@material/base/component';
-import {getTransformPropertyName} from './util';
-import {MDCMenuFoundation, AnchorMargin} from './foundation';
-import {Corner, CornerBit} from './constants';
+import {MDCMenuFoundation} from './foundation';
+import {strings, cssClasses} from './constants';
+import {MDCMenuSurface, Corner} from '@material/menu-surface/index';
+import {MDCMenuSurfaceFoundation, AnchorMargin} from '@material/menu-surface/foundation';
+import {MDCList} from '@material/list/index';
 
 /**
  * @extends MDCComponent<!MDCMenuFoundation>
@@ -27,79 +29,99 @@ class MDCMenu extends MDCComponent {
   /** @param {...?} args */
   constructor(...args) {
     super(...args);
-    /** @private {!Element} */
-    this.previousFocus_;
+    /** @private {!MDCMenuSurface} */
+    this.menuSurface_;
+    /** @private {!MDCList} */
+    this.list_;
+    /** @private {!Function} */
+    this.handleKeydown_;
+    /** @private {!Function} */
+    this.handleClick_;
+    /** @private {!Function} */
+    this.afterOpenedCallback_;
   }
 
   /**
-   * @param {!Element} root
+   * @param {!HTMLElement} root
    * @return {!MDCMenu}
    */
   static attachTo(root) {
     return new MDCMenu(root);
   }
 
+  initialize(
+    menuSurfaceFactory = (el) => new MDCMenuSurface(el),
+    listFactory = (el) => new MDCList(el)) {
+    this.menuSurface_ = menuSurfaceFactory(this.root_);
+
+    const list = this.root_.querySelector(strings.LIST_SELECTOR);
+    if (list) {
+      this.list_ = listFactory(list);
+      this.list_.wrapFocus = true;
+    }
+  }
+
+  initialSyncWithDOM() {
+    this.afterOpenedCallback_ = () => this.handleAfterOpened_();
+    this.handleKeydown_ = (evt) => this.foundation_.handleKeydown(evt);
+    this.handleClick_ = (evt) => this.foundation_.handleClick(evt);
+
+    this.menuSurface_.listen(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, this.afterOpenedCallback_);
+    this.listen('keydown', this.handleKeydown_);
+    this.listen('click', this.handleClick_);
+  }
+
+  destroy() {
+    if (this.list_) {
+      this.list_.destroy();
+    }
+
+    this.menuSurface_.destroy();
+    this.menuSurface_.unlisten(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, this.afterOpenedCallback_);
+    this.unlisten('keydown', this.handleKeydown_);
+    this.unlisten('click', this.handleClick_);
+    super.destroy();
+  }
+
   /** @return {boolean} */
   get open() {
-    return this.foundation_.isOpen();
+    return this.menuSurface_.open;
   }
 
   /** @param {boolean} value */
   set open(value) {
-    if (value) {
-      this.foundation_.open();
-    } else {
-      this.foundation_.close();
-    }
-  }
-
-  /** @param {{focusIndex: ?number}=} options */
-  show({focusIndex = null} = {}) {
-    this.foundation_.open({focusIndex: focusIndex});
-  }
-
-  hide() {
-    this.foundation_.close();
+    this.menuSurface_.open = value;
   }
 
   /**
-   * @param {Corner} corner Default anchor corner alignment of top-left
+   * @param {!Corner} corner Default anchor corner alignment of top-left
    *     menu corner.
    */
   setAnchorCorner(corner) {
-    this.foundation_.setAnchorCorner(corner);
+    this.menuSurface_.setAnchorCorner(corner);
   }
 
   /**
-   * @param {AnchorMargin} margin
+   * @param {!AnchorMargin} margin
    */
   setAnchorMargin(margin) {
-    this.foundation_.setAnchorMargin(margin);
-  }
-
-  /**
-   * Return the item container element inside the component.
-   * @return {?Element}
-   */
-  get itemsContainer_() {
-    return this.root_.querySelector(MDCMenuFoundation.strings.ITEMS_SELECTOR);
+    this.menuSurface_.setAnchorMargin(margin);
   }
 
   /**
    * Return the items within the menu. Note that this only contains the set of elements within
    * the items container that are proper list items, and not supplemental / presentational DOM
    * elements.
-   * @return {!Array<!Element>}
+   * @return {!Array<!HTMLElement>}
    */
   get items() {
-    const {itemsContainer_: itemsContainer} = this;
-    return [].slice.call(itemsContainer.querySelectorAll('.mdc-list-item[role]'));
+    return this.list_.listElements_;
   }
 
   /**
-   * Return the item within the menu that is selected.
+   * Return the item within the menu at the index specified.
    * @param {number} index
-   * @return {?Element}
+   * @return {?HTMLElement}
    */
   getOptionByIndex(index) {
     const items = this.items;
@@ -111,85 +133,90 @@ class MDCMenu extends MDCComponent {
     }
   }
 
-  /** @param {number} index */
-  set selectedItemIndex(index) {
-    this.foundation_.setSelectedIndex(index);
-  }
-
-  /** @return {number} */
-  get selectedItemIndex() {
-    return this.foundation_.getSelectedIndex();
-  }
-
-  /** @param {!boolean} rememberSelection */
-  set rememberSelection(rememberSelection) {
-    this.foundation_.setRememberSelection(rememberSelection);
-  }
-
   /** @param {boolean} quickOpen */
   set quickOpen(quickOpen) {
-    this.foundation_.setQuickOpen(quickOpen);
+    this.menuSurface_.quickOpen = quickOpen;
+  }
+
+  /** @param {boolean} isFixed */
+  setFixedPosition(isFixed) {
+    this.menuSurface_.setFixedPosition(isFixed);
+  }
+
+  hoistMenuToBody() {
+    this.menuSurface_.hoistMenuToBody();
+  }
+
+  /** @param {boolean} isHoisted */
+  setIsHoisted(isHoisted) {
+    this.menuSurface_.setIsHoisted(isHoisted);
+  }
+
+  /**
+   * @param {number} x
+   * @param {number} y
+   */
+  setAbsolutePosition(x, y) {
+    this.menuSurface_.setAbsolutePosition(x, y);
+  }
+
+  /**
+   * Sets the element that the menu-surface is anchored to.
+   * @param {!HTMLElement} element
+   */
+  setAnchorElement(element) {
+    this.menuSurface_.anchorElement = element;
+  }
+
+  handleAfterOpened_() {
+    const list = this.items;
+    if (list.length > 0) {
+      list[0].focus();
+    }
   }
 
   /** @return {!MDCMenuFoundation} */
   getDefaultFoundation() {
     return new MDCMenuFoundation({
-      addClass: (className) => this.root_.classList.add(className),
-      removeClass: (className) => this.root_.classList.remove(className),
-      hasClass: (className) => this.root_.classList.contains(className),
-      hasNecessaryDom: () => Boolean(this.itemsContainer_),
-      getAttributeForEventTarget: (target, attributeName) => target.getAttribute(attributeName),
-      getInnerDimensions: () => {
-        const {itemsContainer_: itemsContainer} = this;
-        return {width: itemsContainer.offsetWidth, height: itemsContainer.offsetHeight};
+      addClassToElementAtIndex: (index, className) => {
+        const list = this.items;
+        list[index].classList.add(className);
       },
-      hasAnchor: () => this.root_.parentElement && this.root_.parentElement.classList.contains('mdc-menu-anchor'),
-      getAnchorDimensions: () => this.root_.parentElement.getBoundingClientRect(),
-      getWindowDimensions: () => {
-        return {width: window.innerWidth, height: window.innerHeight};
+      removeClassFromElementAtIndex: (index, className) => {
+        const list = this.items;
+        list[index].classList.remove(className);
       },
-      getNumberOfItems: () => this.items.length,
-      registerInteractionHandler: (type, handler) => this.root_.addEventListener(type, handler),
-      deregisterInteractionHandler: (type, handler) => this.root_.removeEventListener(type, handler),
-      registerBodyClickHandler: (handler) => document.body.addEventListener('click', handler),
-      deregisterBodyClickHandler: (handler) => document.body.removeEventListener('click', handler),
-      getIndexForEventTarget: (target) => this.items.indexOf(target),
-      notifySelected: (evtData) => this.emit(MDCMenuFoundation.strings.SELECTED_EVENT, {
+      addAttributeToElementAtIndex: (index, attr, value) => {
+        const list = this.items;
+        list[index].setAttribute(attr, value);
+      },
+      removeAttributeFromElementAtIndex: (index, attr) => {
+        const list = this.items;
+        list[index].removeAttribute(attr);
+      },
+      elementContainsClass: (element, className) => element.classList.contains(className),
+      closeSurface: () => this.open = false,
+      getElementIndex: (element) => this.items.indexOf(element),
+      getParentElement: (element) => element.parentElement,
+      getSelectedElementIndex: (selectionGroup) => {
+        return this.items.indexOf(selectionGroup.querySelector(`.${cssClasses.MENU_SELECTED_LIST_ITEM}`));
+      },
+      notifySelected: (evtData) => this.emit(strings.SELECTED_EVENT, {
         index: evtData.index,
         item: this.items[evtData.index],
       }),
-      notifyCancel: () => this.emit(MDCMenuFoundation.strings.CANCEL_EVENT, {}),
-      saveFocus: () => {
-        this.previousFocus_ = document.activeElement;
+      getCheckboxAtIndex: (index) => {
+        const list = this.items;
+        return list[index].querySelector(strings.CHECKBOX_SELECTOR);
       },
-      restoreFocus: () => {
-        if (this.previousFocus_ && this.previousFocus_.focus) {
-          this.previousFocus_.focus();
-        }
+      toggleCheckbox: (checkBox) => {
+        checkBox.checked = !checkBox.checked;
+        const event = document.createEvent('Event');
+        event.initEvent('change', false, true);
+        checkBox.dispatchEvent(event);
       },
-      isFocused: () => document.activeElement === this.root_,
-      focus: () => this.root_.focus(),
-      getFocusedItemIndex: () => this.items.indexOf(document.activeElement),
-      focusItemAtIndex: (index) => this.items[index].focus(),
-      isRtl: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
-      setTransformOrigin: (origin) => {
-        this.root_.style[`${getTransformPropertyName(window)}-origin`] = origin;
-      },
-      setPosition: (position) => {
-        this.root_.style.left = 'left' in position ? position.left : null;
-        this.root_.style.right = 'right' in position ? position.right : null;
-        this.root_.style.top = 'top' in position ? position.top : null;
-        this.root_.style.bottom = 'bottom' in position ? position.bottom : null;
-      },
-      setMaxHeight: (height) => {
-        this.root_.style.maxHeight = height;
-      },
-      setAttrForOptionAtIndex: (index, attr, value) => this.items[index].setAttribute(attr, value),
-      rmAttrForOptionAtIndex: (index, attr) => this.items[index].removeAttribute(attr),
-      addClassForOptionAtIndex: (index, className) => this.items[index].classList.add(className),
-      rmClassForOptionAtIndex: (index, className) => this.items[index].classList.remove(className),
     });
   }
 }
 
-export {MDCMenuFoundation, MDCMenu, AnchorMargin, Corner, CornerBit};
+export {MDCMenuFoundation, MDCMenu, AnchorMargin, Corner};
