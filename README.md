@@ -1,4 +1,4 @@
-[![Build Status](https://img.shields.io/travis/material-components/material-components-web/master.svg)](https://travis-ci.org/material-components/material-components-web/)
+[![Build Status](https://travis-ci.com/material-components/material-components-web.svg?branch=master)](https://travis-ci.com/material-components/material-components-web/)
 [![codecov](https://codecov.io/gh/material-components/material-components-web/branch/master/graph/badge.svg)](https://codecov.io/gh/material-components/material-components-web)
 [![Chat](https://img.shields.io/discord/259087343246508035.svg)](https://discord.gg/material-components)
 
@@ -96,7 +96,7 @@ This will produce a Material Design ripple on the button!
 
 <img src="docs/button_with_ripple.png" alt="Button with Ripple" width="90" height="36">
 
-## Useful Links
+## Useful links
 
 - [Getting Started Guide](docs/getting-started.md)
 - [All Components](packages/)
@@ -105,7 +105,7 @@ This will produce a Material Design ripple on the button!
 - [Material.io](https://www.material.io) (external site)
 - [Material Design Guidelines](https://material.io/guidelines) (external site)
 
-## Browser Support
+## Browser support
 
 We officially support the last two versions of every major browser. Specifically, we test on the following browsers:
 
@@ -114,3 +114,16 @@ We officially support the last two versions of every major browser. Specifically
 - **Safari** on iOS and macOS
 - **Edge** on Windows
 - **IE 11** on Windows
+
+## Thank you
+
+Fast, reliable [automated screenshot testing](test/screenshot/) is generously provided by:
+
+[![CrossBrowserTesting logo](test/screenshot/static/images/cbt-logo.png)](https://crossbrowsertesting.com/)
+
+Free for open source projects!
+
+Additional continuous integration services courtesy of:
+
+- [Travis CI](https://travis-ci.com/)
+- [Sauce Labs](https://saucelabs.com/)

@@ -14,7 +14,47 @@
 // limitations under the License.
 //
 
+@import "../../../../packages/mdc-button/mixins";
+@import "../../../../packages/mdc-theme/color-palette";
+
+$custom-button-color: $material-color-red-300;
+$custom-button-custom-corner-radius: 8px;
+$custom-button-custom-outline-width: 4px;
+$custom-button-custom-horizontal-padding: 24px;
+
 .test-cell--button {
   width: 171px;
   height: 71px;
+}
+
+.custom-button--ink-color {
+  @include mdc-button-ink-color($custom-button-color);
+}
+
+.custom-button--container-fill-color {
+  @include mdc-button-container-fill-color($custom-button-color);
+}
+
+.custom-button--filled-accessible {
+  @include mdc-button-filled-accessible($custom-button-color);
+}
+
+.custom-button--outline-color {
+  @include mdc-button-outline-color($custom-button-color);
+}
+
+.custom-button--outline-width {
+  @include mdc-button-outline-width($custom-button-custom-outline-width);
+}
+
+.custom-button--corner-radius {
+  @include mdc-button-corner-radius($custom-button-custom-corner-radius);
+}
+
+.custom-button--icon-color {
+  @include mdc-button-icon-color($custom-button-color);
+}
+
+.custom-button--horizontal-padding {
+  @include mdc-button-horizontal-padding($custom-button-custom-horizontal-padding);
 }

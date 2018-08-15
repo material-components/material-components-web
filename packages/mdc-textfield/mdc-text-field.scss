@@ -43,9 +43,11 @@
   @include mdc-text-field-icon-color($mdc-text-field-icon-color);
   @include mdc-text-field-caret-color(primary);
 
-  display: inline-block;
+  display: inline-flex;
   position: relative;
-  margin-bottom: 8px;
+  box-sizing: border-box;
+  height: 56px;
+  margin-top: 16px;
   will-change: opacity, transform, color;
 }
 
@@ -145,19 +147,6 @@
   @include mdc-text-field-dense-with-trailing-icon_;
 }
 
-.mdc-text-field--upgraded:not(.mdc-text-field--fullwidth):not(.mdc-text-field--box) {
-  display: inline-flex;
-  position: relative;
-  align-items: flex-end;
-  box-sizing: border-box;
-  margin-top: 16px;
-
-  // stylelint-disable-next-line selector-max-specificity
-  &:not(.mdc-text-field--textarea):not(.mdc-text-field--outlined) {
-    height: 48px;
-  }
-}
-
 .mdc-text-field--dense {
   @include mdc-text-field-dense_;
 }
@@ -188,7 +177,8 @@
   }
 
   .mdc-text-field--box + &,
-  .mdc-text-field--outlined + & {
+  .mdc-text-field--outlined + &,
+  .mdc-text-field--textarea + & {
     margin-right: 16px;
     margin-left: 16px;
   }

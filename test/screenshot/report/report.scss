@@ -159,8 +159,6 @@ th {
  */
 
 .report-user-agent__icon {
-  width: 16px;
-  height: 16px;
   vertical-align: middle;
 }
 
@@ -318,7 +316,7 @@ th {
 }
 
 .report-review-status--hidden {
-  visibility: hidden;
+  display: none;
 }
 
 .report-review-status[data-review-status="approve"] {

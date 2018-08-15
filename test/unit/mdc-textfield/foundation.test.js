@@ -142,6 +142,17 @@ test('#setValue valid and invalid input', () => {
   td.verify(mockAdapter.floatLabel(true));
 });
 
+test('#setValue with invalid status and empty value does not shake the label', () => {
+  const {foundation, mockAdapter, helperText} =
+    setupValueTest('', /* isValid */ false, undefined, true);
+
+  foundation.setValue('');
+  td.verify(mockAdapter.addClass(cssClasses.INVALID));
+  td.verify(helperText.setValidity(false));
+  td.verify(mockAdapter.shakeLabel(false));
+  td.verify(mockAdapter.floatLabel(false));
+});
+
 test('#setValue does not affect focused state', () => {
   const {foundation, mockAdapter} = setupValueTest('');
   foundation.setValue('');
@@ -166,8 +177,9 @@ test('#isValid for native validation', () => {
   assert.isNotOk(foundation.isValid());
 });
 
-test('#setValid overrides native validation', () => {
+test('#setValid overrides native validation when useNativeValidation set to false', () => {
   const {foundation, nativeInput} = setupValueTest('', /* isValid */ false);
+  foundation.setUseNativeValidation(false);
   foundation.setValid(true);
   assert.isOk(foundation.isValid());
 
@@ -278,12 +290,6 @@ test('#setValid removes mdc-textfied--invalid when set to true', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setValid(true);
   td.verify(mockAdapter.removeClass(cssClasses.INVALID));
-});
-
-test('#init adds mdc-text-field--upgraded class', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.init();
-  td.verify(mockAdapter.addClass(cssClasses.UPGRADED));
 });
 
 test('#init focuses on input if adapter.isFocused is true', () => {
@@ -622,14 +628,14 @@ test('does not style label on blur if input has a value and hasLabel is false', 
   td.verify(mockAdapter.floatLabel(td.matchers.anything()), {times: 0});
 });
 
-test('on blur removes mdc-text-field--invalid if custom validity is false and' +
+test('on blur removes mdc-text-field--invalid if useNativeValidation is true and' +
      'input.checkValidity() returns true', () => {
   const {mockAdapter, blur} = setupBlurTest();
   blur();
   td.verify(mockAdapter.removeClass(cssClasses.INVALID));
 });
 
-test('on blur adds mdc-textfied--invalid if custom validity is false and' +
+test('on blur adds mdc-textfied--invalid if useNativeValidation is true and' +
      'input.checkValidity() returns false', () => {
   const {mockAdapter, blur, nativeInput} = setupBlurTest();
   nativeInput.validity.valid = false;
@@ -637,9 +643,10 @@ test('on blur adds mdc-textfied--invalid if custom validity is false and' +
   td.verify(mockAdapter.addClass(cssClasses.INVALID));
 });
 
-test('on blur does not remove mdc-text-field--invalid if custom validity is true and' +
+test('on blur does not remove mdc-text-field--invalid if useNativeValidation is false and' +
      'input.checkValidity() returns true', () => {
   const {foundation, mockAdapter, blur} = setupBlurTest();
+  foundation.setUseNativeValidation(false);
   foundation.setValid(false);
   blur();
   td.verify(mockAdapter.removeClass(cssClasses.INVALID), {times: 0});
@@ -788,5 +795,21 @@ test('should not call styleValidity_ on non-whitelisted attribute change', () =>
 
 test('label floats on invalid input even if value is empty', () => {
   const {mockAdapter} = setupValueTest('', false, true, true);
+  td.verify(mockAdapter.floatLabel(true));
+});
+
+test('label floats when type is date even if value is empty', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasLabel()).thenReturn(true);
+  const nativeInput = {
+    type: 'date',
+    value: '',
+    validity: {
+      valid: true,
+      badInput: false,
+    },
+  };
+  td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
+  foundation.init();
   td.verify(mockAdapter.floatLabel(true));
 });
