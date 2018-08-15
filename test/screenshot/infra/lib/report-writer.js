@@ -130,10 +130,18 @@ class ReportWriter {
       getLocalChangesMarkup: function(gitStatus) {
         return self.getLocalChangesMarkup_(gitStatus);
       },
+      /**
+       * @param {!mdc.proto.Screenshots} screenshots
+       */
       getFilteredUrlCountMarkup: function(screenshots) {
+        const actualScreenshots = screenshots.actual_screenshot_list;
+        const runnableScreenshotArray = actualScreenshots.filter((screenshot) => !screenshot.is_url_skipped_by_cli);
+        const skippedScreenshotArray = actualScreenshots.filter((screenshot) => screenshot.is_url_skipped_by_cli);
+        const runnableUrls = new Set(runnableScreenshotArray.map((screenshot) => screenshot.html_file_path));
+        const skippedUrls = new Set(skippedScreenshotArray.map((screenshot) => screenshot.html_file_path));
         return self.getFilteredCountMarkup_(
-          screenshots.runnable_test_page_urls.length,
-          screenshots.skipped_test_page_urls.length
+          runnableUrls.size,
+          skippedUrls.size
         );
       },
       getFilteredBrowserIconsMarkup: function(userAgents) {

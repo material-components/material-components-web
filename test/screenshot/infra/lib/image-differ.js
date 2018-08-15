@@ -47,6 +47,7 @@ class ImageDiffer {
       meta,
       actualImageFile: screenshot.actual_image_file,
       expectedImageFile: screenshot.expected_image_file,
+      flakeConfig: screenshot.flake_config,
     });
   }
 
@@ -54,10 +55,11 @@ class ImageDiffer {
    * @param {!mdc.proto.ReportMeta} meta
    * @param {!mdc.proto.TestFile} actualImageFile
    * @param {?mdc.proto.TestFile} expectedImageFile
+   * @param {!mdc.proto.FlakeConfig} flakeConfig
    * @return {!Promise<!mdc.proto.DiffImageResult>}
    * @private
    */
-  async compareOneImage_({meta, actualImageFile, expectedImageFile}) {
+  async compareOneImage_({meta, actualImageFile, expectedImageFile, flakeConfig}) {
     const actualImageBuffer = await this.localStorage_.readBinaryFile(actualImageFile.absolute_path);
 
     if (!expectedImageFile) {
@@ -76,14 +78,24 @@ class ImageDiffer {
     const resembleComparisonResult = await this.computeDiff_({actualImageBuffer, expectedImageBuffer});
 
     const diffImageFile = this.createDiffImageFile_({meta, actualImageFile});
-    const {diffImageBuffer, diffImageResult} = await this.analyzeComparisonResult_({
+    const {
+      /** @type {!Buffer} */
+      diffImageBuffer,
+      /** @type {!mdc.proto.DiffImageResult} */
+      diffImageResult,
+    } = await this.analyzeComparisonResult_({
       expectedImageBuffer,
       actualImageBuffer,
       resembleComparisonResult,
+      flakeConfig,
     });
+
     diffImageResult.diff_image_file = diffImageFile;
 
-    await this.localStorage_.writeBinaryFile(diffImageFile.absolute_path, diffImageBuffer);
+    // TODO(acdvorak): Only write file if all retries fail, and do it in `selenium-api.js`.
+    if (diffImageResult.changed_pixel_count > 0) {
+      await this.localStorage_.writeBinaryFile(diffImageFile.absolute_path, diffImageBuffer);
+    }
 
     return diffImageResult;
   }
@@ -107,10 +119,11 @@ class ImageDiffer {
    * @param {!Buffer} expectedImageBuffer
    * @param {!Buffer} actualImageBuffer
    * @param {!ResembleApiComparisonResult} resembleComparisonResult
+   * @param {!mdc.proto.FlakeConfig} flakeConfig
    * @return {!Promise<{diffImageBuffer: !Buffer, diffImageResult: !mdc.proto.DiffImageResult}>}
    * @private
    */
-  async analyzeComparisonResult_({expectedImageBuffer, actualImageBuffer, resembleComparisonResult}) {
+  async analyzeComparisonResult_({expectedImageBuffer, actualImageBuffer, resembleComparisonResult, flakeConfig}) {
     /** @type {!Buffer} */
     const diffImageBuffer = resembleComparisonResult.getBuffer();
 
@@ -131,7 +144,7 @@ class ImageDiffer {
     const diffPixelRoundPercentage = roundPercentage(diffPixelRawPercentage);
     const diffPixelFraction = diffPixelRawPercentage / 100;
     const diffPixelCount = Math.ceil(diffPixelFraction * diffJimpImage.bitmap.width * diffJimpImage.bitmap.height);
-    const minChangedPixelCount = require('../../diffing.json').flaky_tests.min_changed_pixel_count;
+    const minChangedPixelCount = flakeConfig.min_changed_pixel_count;
     const hasChanged = diffPixelCount >= minChangedPixelCount;
     const diffImageResult = DiffImageResult.create({
       expected_image_dimensions: Dimensions.create({

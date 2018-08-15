@@ -15,9 +15,6 @@
  * limitations under the License.
  */
 
-// eslint-disable-next-line no-unused-vars
-import {MDCChipInteractionEventType} from '../chip/foundation';
-
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
@@ -39,10 +36,17 @@ class MDCChipSetAdapter {
   hasClass(className) {}
 
   /**
-   * Removes the chip object from the chip set.
-   * @param {!Object} chip
+   * Removes the chip with the given id from the chip set.
+   * @param {string} chipId
    */
-  removeChip(chip) {}
+  removeChip(chipId) {}
+
+  /**
+   * Sets the selected state of the chip with the given id.
+   * @param {string} chipId
+   * @param {boolean} selected
+   */
+  setSelected(chipId, selected) {}
 }
 
 export default MDCChipSetAdapter;

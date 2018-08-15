@@ -16,6 +16,7 @@
 
 @import "@material/animation/variables";
 @import "@material/base/mixins";
+@import "@material/rtl/mixins";
 @import "./mixins";
 @import "./variables";
 
@@ -29,7 +30,12 @@
     height: calc(100% - 2px);
     transition: opacity $mdc-notched-outline-transition-duration $mdc-animation-standard-curve-timing-function;
     opacity: 0;
+    text-align: left;
     overflow: hidden;
+
+    @include mdc-rtl {
+      text-align: right;
+    }
 
     // stylelint-disable selector-max-type
     svg {

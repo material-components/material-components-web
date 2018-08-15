@@ -262,7 +262,6 @@
   @include mdc-floating-label-shake-animation(text-field-outlined);
   @include mdc-text-field-outline-corner-radius_($mdc-text-field-border-radius);
 
-  height: 56px;
   border: none;
 
   .mdc-text-field__input {
@@ -326,20 +325,13 @@
   // Text Field Box intentionally omits press ripple, so each state needs to be specified individually
   @include mdc-states-base-color($mdc-text-field-ink-color);
   @include mdc-states-hover-opacity(mdc-states-opacity($mdc-text-field-ink-color, hover));
-  @include mdc-states-focus-opacity(
-    mdc-states-opacity($mdc-text-field-ink-color, focus),
-    $has-nested-focusable-element: true
-  );
+  @include mdc-states-focus-opacity(mdc-states-opacity($mdc-text-field-ink-color, focus));
   @include mdc-ripple-radius-bounded;
   @include mdc-text-field-box-corner-radius($mdc-text-field-border-radius);
   @include mdc-text-field-box-fill-color($mdc-text-field-box-background);
   @include mdc-floating-label-float-position($mdc-text-field-box-label-position-y);
   @include mdc-floating-label-shake-animation(text-field-box);
 
-  display: inline-flex;
-  position: relative;
-  height: 56px;
-  margin-top: 16px;
   overflow: hidden;
 
   .mdc-text-field__input {
@@ -429,15 +421,12 @@
 
   &:not(.mdc-text-field--textarea) {
     display: block;
-    box-sizing: border-box;
-    height: 56px;
     margin: 0;
     border: none;
     border-bottom: 1px solid;
     outline: none;
 
     .mdc-text-field__input {
-      width: 100%;
       height: 100%;
       padding: 0;
       resize: none;
@@ -486,8 +475,8 @@
   $label-offset-x: $padding-inset;
 
   display: flex;
-  width: fit-content;
-  height: initial;
+  width: auto;
+  height: auto;
   transition: none;
   border: 1px solid;
   overflow: hidden;

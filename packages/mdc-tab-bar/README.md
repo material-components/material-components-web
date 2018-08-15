@@ -39,14 +39,14 @@ npm install @material/tab-bar
     <div class="mdc-tab-scroller__scroll-area">
       <div class="mdc-tab-scroller__scroll-content">
         <button class="mdc-tab mdc-tab--active" role="tab" aria-selected="true" tabindex="0">
-          <div class="mdc-tab__content">
+          <span class="mdc-tab__content">
             <span class="mdc-tab__icon">heart</span>
             <span class="mdc-tab__text-label">Favorites</span>
-          </div>
+          </span>
           <span class="mdc-tab-indicator mdc-tab-indicator--active">
             <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
           </span>
-          <div class="mdc-tab__ripple"></div>
+          <span class="mdc-tab__ripple"></span>
         </button>
       </div>
     </div>
@@ -116,10 +116,12 @@ Method Signature | Description
 `isRTL() => boolean` | Returns if the text direction is RTL.
 `activateTabAtIndex(index: number, clientRect: ClientRect) => void` | Activates the Tab at the given index with the given clientRect.
 `deactivateTabAtIndex(index) => void` | Deactivates the Tab at the given index.
+`focusTabAtIndex(index: number) => void` | Focuses the Tab at the given index.
 `getTabIndicatorClientRectAtIndex(index: number) => ClientRect` | Returns the client rect of the Tab at the given index.
 `getTabDimensionsAtIndex(index) => MDCTabDimensions` | Returns the dimensions of the Tab at the given index.
 `getTabListLength() => number` | Returns the number of child Tab components.
 `getActiveTabIndex() => number` | Returns the index of the active Tab.
+`getFocusedTabIndex() => number` | Returns the index of the focused Tab.
 `getIndexOfTab(tab: MDCTab) => number` | Returns the index of the given Tab instance.
 `notifyTabActivated(index: number) => void` | Emits the `MDCTabBar:activated` event.
 
