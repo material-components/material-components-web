@@ -41,12 +41,30 @@ test('attachTo returns an MDCTab instance', () => {
   assert.isTrue(MDCTab.attachTo(getFixture()) instanceof MDCTab);
 });
 
-function setupTest() {
+function setupTest({createMockFoundation = false} = {}) {
   const root = getFixture();
   const content = root.querySelector(MDCTabFoundation.strings.CONTENT_SELECTOR);
-  const component = new MDCTab(root);
-  return {root, content, component};
+  const mockFoundation = createMockFoundation ? new (td.constructor(MDCTabFoundation))() : undefined;
+  const component = new MDCTab(root, mockFoundation);
+  return {root, content, component, mockFoundation};
 }
+
+test('click handler is added during initialSyncWithDOM', () => {
+  const {component, root, mockFoundation} = setupTest({createMockFoundation: true});
+
+  domEvents.emit(root, 'click');
+  td.verify(mockFoundation.handleClick(td.matchers.anything()), {times: 1});
+
+  component.destroy();
+});
+
+test('click handler is removed during destroy', () => {
+  const {component, root, mockFoundation} = setupTest({createMockFoundation: true});
+
+  component.destroy();
+  domEvents.emit(root, 'click');
+  td.verify(mockFoundation.handleClick(td.matchers.anything()), {times: 0});
+});
 
 test('#destroy removes the ripple', () => {
   const raf = createMockRaf();
@@ -82,23 +100,6 @@ test('#adapter.setAttr adds a given attribute to the root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.setAttr('foo', 'bar');
   assert.equal(root.getAttribute('foo'), 'bar');
-});
-
-test('#adapter.registerEventHandler adds an event listener to the root element for a given event', () => {
-  const {root, component} = setupTest();
-  const handler = td.func('transitionend handler');
-  component.getDefaultFoundation().adapter_.registerEventHandler('transitionend', handler);
-  domEvents.emit(root, 'transitionend');
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('#adapter.deregisterEventHandler removes an event listener from the root element for a given event', () => {
-  const {root, component} = setupTest();
-  const handler = td.func('transitionend handler');
-  root.addEventListener('transitionend', handler);
-  component.getDefaultFoundation().adapter_.deregisterEventHandler('transitionend', handler);
-  domEvents.emit(root, 'transitionend');
-  td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
 test('#adapter.activateIndicator activates the indicator subcomponent', () => {

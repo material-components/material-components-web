@@ -221,15 +221,15 @@
 // stylelint-enable plugin/selector-bem-pattern
 
 .mdc-toolbar-fixed-adjust {
-  margin-top: $mdc-toolbar-row-height;
+  padding-top: $mdc-toolbar-row-height;
 
   @media (max-width: $mdc-toolbar-mobile-landscape-width-breakpoint)
     and (max-height: $mdc-toolbar-mobile-breakpoint) {
-    margin-top: $mdc-toolbar-mobile-landscape-row-height;
+    padding-top: $mdc-toolbar-mobile-landscape-row-height;
   }
 
   @media (max-width: $mdc-toolbar-mobile-breakpoint) {
-    margin-top: $mdc-toolbar-mobile-row-height;
+    padding-top: $mdc-toolbar-mobile-row-height;
   }
 }
 

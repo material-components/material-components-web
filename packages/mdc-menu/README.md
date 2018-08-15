@@ -16,9 +16,8 @@ path: /catalog/menus/
   </a>
 </div>-->
 
-The MDC Menu component is a spec-aligned menu component adhering to the
-[Material Design menu specification](https://material.io/go/design-menus).
-Menus require JavaScript to properly position themselves when opening.
+A menu displays a list of choices on a temporary surface. They appear when users interact with a button, action, 
+or other control.
 
 ## Design & API Documentation
 
@@ -37,11 +36,9 @@ Menus require JavaScript to properly position themselves when opening.
 npm install @material/menu
 ```
 
-## Usage
+## Basic Usage
 
 ### HTML Structure
-
-A menu is initially hidden, appearing when opened via the JS API. It is appropriate for any display size.
 
 ```html
 <div class="mdc-menu" tabindex="-1">
@@ -56,13 +53,66 @@ A menu is initially hidden, appearing when opened via the JS API. It is appropri
 </div>
 ```
 
-#### Anchor To Parent
+### Styles
+
+```scss
+@import "@material/menu/mdc-list";
+@import "@material/menu/mdc-menu-surface";
+@import "@material/menu/mdc-menu";
+```
+
+### JavaScript Instantiation
+
+```js
+import {MDCMenu} from '@material/menu';
+
+const menu = new MDCMenu(document.querySelector('.mdc-menu'));
+menu.show();
+```
+
+> See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
+
+## Variants
+
+### Selection Group Menu
+
+Menus can contain a group of list items that can represent the selection state of elements within the group.
+
+```html
+<div class="mdc-menu mdc-menu-surface" tabindex="-1" id="demo-menu">
+  <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
+    <li>
+      <ul class="mdc-menu__selection-group">
+        <li class="mdc-list-item" role="menuitem">
+          <span class="mdc-menu__selection-group-icon">
+            ...
+          </span>
+          Single
+        </li>
+        <li class="mdc-list-item" role="menuitem">
+          <span class="mdc-menu__selection-group-icon">
+           ...
+          </span>
+          1.15
+        </li>
+      </ul>
+    </li>
+    <li class="mdc-list-divider" role="separator"></li>
+    <li class="mdc-list-item" role="menuitem">Add space before paragraph</li>
+    ...
+  </ul>
+</div>
+```
+
+### Anchors and Positioning
+
+#### Anchored To Parent
 
 The menu can be positioned to automatically anchor to a parent element when opened.
 
 ```html
-<div id="toolbar" class="toolbar mdc-menu-anchor">
-  <div class="mdc-menu">
+<div id="toolbar" class="toolbar mdc-menu-surface--anchor">
+  <div class="mdc-menu mdc-menu-surface">
   ...
   </div>
 </div>
@@ -73,131 +123,118 @@ The menu can be positioned to automatically anchor to a parent element when open
 The menu can be positioned to automatically anchor to another element, by wrapping the other element with the anchor class.
 
 ```html
-<div id="demo-menu" class="mdc-menu-anchor">
+<div id="demo-menu" class="mdc-menu-surface--anchor">
   <button id="menu-button">Open Menu</button>
-  <div class="mdc-menu">
+  <div class="mdc-menu mdc-menu-surface">
   ...
   </div>
 </div>
 ```
 
-#### Disabled menu items
+#### Fixed Position
 
-When used in components such as MDC Menu, list items can be disabled.
-To disable a list item, set `aria-disabled` property to `"true"`, and set `tabindex` to `"-1"`.
+The menu can use fixed positioning when being displayed.
 
 ```html
-<div class="mdc-menu" tabindex="-1">
-  <ul class="mdc-menu__items mdc-list" role="menu" aria-hidden="true">
-    <li class="mdc-list-item" role="menuitem" tabindex="0">
-      A Menu Item
-    </li>
-    <li class="mdc-list-item" role="menuitem" tabindex="-1" aria-disabled="true">
-      Disabled Menu Item
-    </li>
-  </ul>
+<div class="mdc-menu mdc-menu-surface">
+...
 </div>
 ```
+
+```js
+// ...
+menu.setFixedPosition(true);
+```
+
+#### Absolute Position
+
+The menu can use absolutely positioned when being displayed.
+
+```html
+<div class="mdc-menu mdc-menu-surface">
+...
+</div>
+```
+
+```js
+// ...
+menu.hoistMenuToBody(); // Not required if the menu is already positioned on the body.
+menu.setAbsolutePosition(100, 100);
+```
+
+## Style Customization
 
 ### CSS Classes
 
 CSS Class | Description
 --- | ---
-`mdc-menu` | Mandatory
-`mdc-menu--animating-open` | Indicates the menu is currently animating open. This class is removed once the animation completes.
-`mdc-menu--open` | Indicates the menu is currently open, or is currently animating open.
-`mdc-menu--animating-closed` | Indicates the menu is currently animating closed. This class is removed once the animation completes.
+`mdc-menu` | Required on the root element
+`mdc-menu-surface` | Required on the root element. See [`mdc-menu-surface` documentation](../mdc-menu-surface) for other `mdc-menu-surface` classes.
+`mdc-list` | Required on the nested `ul` element. See [`mdc-list` documentation](../mdc-list) for other `mdc-list` classes.
+`mdc-menu__selection-group` | Used to wrap a group of `mdc-list-item` elements that will represent a selection group.
+`mdc-menu__selection-group-icon` | Required when using a selection group to indicate which item is selected. Should contain an icon or svg that indicates the selected state of the list item.
+`mdc-menu-item--selected` | Used to indicate which element in a selection group is selected.
 
-### JS Examples
+### Sass Mixins
 
-```js
-  // Instantiation
-  var menuEl = document.querySelector('#toolbar');
-  var menu = new mdc.menu.MDCMenu(menuEl);
-  var menuButtonEl = document.querySelector('#menu-button');
+Mixin | Description
+--- | ---
+`mdc-menu-width($width)` | Used to set the `width` of the menu. When used without units (e.g. `4` or `5`) it computes the `width` by multiplying by the base width (`56px`). When used with units (e.g. `240px`, `15%`, or `calc(200px + 10px)` it sets the `width` to the exact value provided.
 
-  // Toggle menu open
-  menuButtonEl.addEventListener('click', function() {
-    menu.open = !menu.open;
-  });
-
-  // Listen for selected item
-  menuEl.addEventListener('MDCMenu:selected', function(evt) {
-     var detail = evt.detail;
-  });
-
-  // Set Anchor Corner to Bottom End
-  menu.setAnchorCorner(Corner.BOTTOM_END);
-
-  // Turn off menu open animations
-  menu.quickOpen = true;
-```
-
-### `MDCMenu`
+## `MDCMenu` Properties and Methods
 
 See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
 
 Property | Value Type | Description
 --- | --- | ---
-`open` | Boolean | Proxies to the foundation's `isOpen`/(`open`, `close`) methods.
-`items` | Array<Element> | Proxies to the foundation's container to query for all `.mdc-list-item[role]` elements.
-`itemsContainer` | Element | Queries the foundation's root element for the `mdc-menu__items` container element.
-`quickOpen` | Boolean | Proxies to the foundation's `setQuickOpen()` method.
+`open` | Boolean | Proxies to the menu surface's `open` property.
+`items` | Array<Element> | Proxies to the list to query for all `.mdc-list-item` elements.
+`quickOpen` | Boolean | Proxies to the menu surface `quickOpen` property.
 
 Method Signature | Description
 --- | ---
-`show({focusIndex: ?number}) => void` | Proxies to the foundation's `open()` method. An optional config parameter allows the caller to specify which item should receive focus after the menu opens.
-`hide() => void` | Proxies to the foundation's `close()` method.
-`setAnchorCorner(Corner) => void` | Proxies to the foundation's `setAnchorCorner(Corner)` method.
-`setAnchorMargin(AnchorMargin) => void` | Proxies to the foundation's `setAnchorMargin(AnchorMargin)` method.
+`setAnchorCorner(Corner) => void` | Proxies to the menu surface's `setAnchorCorner(Corner)` method.
+`setAnchorMargin(AnchorMargin) => void` | Proxies to the menu surface's `setAnchorMargin(AnchorMargin)` method.
+`setAbsolutePosition(x: number, y: number) => void` | Proxies to the menu surface's `setAbsolutePosition(x: number, y: number)` method.
+`setFixedPosition(isFixed: boolean) => void` | Proxies to the menu surface's `setFixedPosition(isFixed: boolean)` method.
+`hoistMenuToBody() => void` | Proxies to the menu surface's `hoistMenuToBody()` method.
+`setIsHoisted(isHoisted: boolean) => void` | Proxies to the menu surface's `setIsHoisted(isHoisted: boolean)` method.
+`setAnchorElement(element: HTMLElement) => void` | Proxies to the menu surface's `setAnchorElement(element)` method.
+`getOptionByIndex(index: number) => ?HTMLElement` | Returns the list item at the `index` specified.
 `getDefaultFoundation() => MDCMenuFoundation` | Returns the foundation.
+
+> See [Menu Surface](../mdc-menu-surface/README.md) and [List](../mdc-list/README.md) documentation for more information on proxied methods and properties.
+
+## Usage within Web Frameworks
+
+If you are using a JavaScript framework, such as React or Angular, you can create a Menu for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
 ### `MDCMenuAdapter`
 
 Method Signature | Description
 --- | ---
-`addClass(className: string) => void` | Adds a class to the root element.
-`removeClass(className: string) => void` | Removes a class from the root element.
-`hasClass(className: string) => boolean` | Returns a boolean indicating whether the root element has a given class.
-`hasNecessaryDom() => boolean` | Returns boolean indicating whether the necessary DOM is present (namely, the `mdc-menu__items` container).
-`getAttributeForEventTarget(target: EventTarget, attributeName: string) => string` | Returns the value of a given attribute on an event target.
-`getInnerDimensions() => {width: number, height: number}` | Returns an object with the items container width and height.
-`hasAnchor: () => boolean` | Returns whether the menu has an anchor for positioning.
-`getAnchorDimensions() => {width: number, height: number, top: number, right: number, bottom: number, left: number}` | Returns an object with the dimensions and position of the anchor (same semantics as `DOMRect`).
-`getWindowDimensions() => {width: number, height: number}` | Returns an object with width and height of the page, in pixels.
-`getNumberOfItems() => number` | Returns the number of _item_ elements inside the items container. In our vanilla component, we determine this by counting the number of list items whose `role` attribute corresponds to the correct child role of the role present on the menu list element. For example, if the list element has a role of `menu` this queries for all elements that have a role of `menuitem`.
-`registerInteractionHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type`.
-`deregisterInteractionHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type`.
-`registerBodyClickHandler(handler: EventListener) => void` | Adds an event listener `handler` for event type `click`.
-`deregisterBodyClickHandler(handler: EventListener) => void` | Removes an event listener `handler` for event type `click`.
-`getIndexForEventTarget(target: EventTarget) => number` | Checks to see if the `target` of an event pertains to one of the menu items, and if so returns the index of that item. Returns -1 if the target is not one of the menu items.
-`notifySelected(evtData: {index: number}) => void` | Dispatches an event notifying listeners that a menu item has been selected. The function should accept an `evtData` parameter containing an object with an `index` property representing the index of the selected item. Implementations may choose to supplement this data with additional data, such as the item itself.
-`notifyCancel() => void` | Dispatches an event notifying listeners that the menu has been closed with no selection made.
-`saveFocus() => void` | Stores the currently focused element on the document, for restoring with `restoreFocus`.
-`restoreFocus() => void` | Restores the previously saved focus state, by making the previously focused element the active focus again.
-`isFocused() => boolean` | Returns a boolean value indicating whether the root element of the menu is focused.
-`focus() => void` | Focuses the root element of the menu.
-`getFocusedItemIndex() => number` | Returns the index of the currently focused menu item (-1 if none).
-`focusItemAtIndex(index: number) => void` | Focuses the menu item with the provided index.
-`isRtl() => boolean` | Returns boolean indicating whether the current environment is RTL.
-`setTransformOrigin(value: string) => void` | Sets the transform origin for the menu element.
-`setPosition(position: {top: string, right: string, bottom: string, left: string}) => void` | Sets the position of the menu element.
-`setMaxHeight(value: string) => void` | Sets `max-height` style for the menu element.
+`addClassToElementAtIndex(index: number, className: string) => void` | Adds the `className` class to the element at the `index` specified.
+`removeClassFromElementAtIndex(index: number, className: string) => void` | Removes the `className` class from the element at the `index` specified.
+`addAttributeToElementAtIndex(index: number, attr: string, value: string) => void` | Adds the `attr` attribute with value `value` to the element at the `index` specified.
+`removeAttributeFromElementAtIndex(index: number, attr: string) => void` | Removes the `attr` attribute from the element at the `index` specified.
+`elementContainsClass(element: HTMLElement, className: string) => boolean` | Returns true if the `element` contains the `className` class.
+`closeSurface() => void` | Closes the menu surface.
+`getElementIndex(element: HTMLElement) => number` | Returns the `index` value of the `element`.
+`getParentElement(element: HTMLElement) => ?HTMLElement` | Returns the `.parentElement` element of the `element` provided.
+`getSelectedElementIndex(element: HTMLElement) => number` | Returns the `index` value of the element within the selection group provided, `element` that contains the `mdc-menu-item--selected` class.
+`notifySelected(index: number) => void` | Emits a `MDCMenu:selected` event for the element at the `index` specified.
+`getCheckboxAtIndex(index: number) => ?HTMLElement` | Returns the checkbox element contained within the element at the `index` specified.
+`toggleCheckbox(checkbox: HTMLElement) => void` | Toggles the `checkbox` element provided and triggers a `change` event for the element.
 
 ### `MDCMenuFoundation`
 
 Method Signature | Description
 --- | ---
-`setAnchorCorner(corder: Corner) => void` | Sets the corner that the menu will be anchored to. See [constants.js](https://github.com/material-components/material-components-web/blob/v0.35.2/packages/mdc-menu/constants.js#L73)
-`setAnchorMargin(margin: AnchorMargin) => void` | Sets the distance from the anchor point that the menu should be shown.
-`open({focusIndex: ?number}) => void` | Opens the menu. Optionally accepts an object with a `focusIndex` parameter to indicate which list item should receive focus when the menu is opened.
-`close(evt: ?Event)` | Closes the menu. Optionally accepts the event to check if the target is disabled before closing the menu.
-`isOpen() => boolean` | Returns a boolean indicating whether the menu is open.
-`setQuickOpen(quickOpen: boolean) => void` | Sets whether the menu should open and close without animation when the `open`/`close` methods are called.
+`handleKeydown(evt: Event) => void` | Event handler for the `keydown` events within the menu.
+`handleClick(evt: Event) => void` | Event handler for the `click` events within the menu.
 
 ### Events
 
 Event Name | Data | Description
 --- | --- | ---
 `MDCMenu:selected` | `{detail: {item: HTMLElement, index: number}}` | Used to indicate when an element has been selected. This event also includes the item selected and the list index of that item.
-`MDCMenu:cancel` | none | Event emitted when the menu is closed with no selection made (e.g. if the user hits `Esc` while it's open, or clicks somewhere else on the page).
