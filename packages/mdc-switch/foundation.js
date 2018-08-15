@@ -40,9 +40,7 @@ class MDCSwitchFoundation extends MDCFoundation {
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
       setNativeControlChecked: (/* checked: boolean */) => {},
-      isNativeControlChecked: () => /* boolean */ {},
       setNativeControlDisabled: (/* disabled: boolean */) => {},
-      isNativeControlDisabled: () => /* boolean */ {},
     });
   }
 
@@ -50,26 +48,10 @@ class MDCSwitchFoundation extends MDCFoundation {
     super(Object.assign(MDCSwitchFoundation.defaultAdapter, adapter));
   }
 
-  /** @override */
-  init() {
-    // Do an initial state update based on the state of the native control.
-    this.handleChange();
-  }
-
-  /** @return {boolean} */
-  isChecked() {
-    return this.adapter_.isNativeControlChecked();
-  }
-
   /** @param {boolean} checked */
   setChecked(checked) {
     this.adapter_.setNativeControlChecked(checked);
     this.updateCheckedStyling_(checked);
-  }
-
-  /** @return {boolean} */
-  isDisabled() {
-    return this.adapter_.isNativeControlDisabled();
   }
 
   /** @param {boolean} disabled */
@@ -84,9 +66,10 @@ class MDCSwitchFoundation extends MDCFoundation {
 
   /**
    * Handles the change event for the switch native control.
+   * @param {!Event} evt
    */
-  handleChange() {
-    this.updateCheckedStyling_(this.isChecked());
+  handleChange(evt) {
+    this.updateCheckedStyling_(evt.target.checked);
   }
 
   /**
