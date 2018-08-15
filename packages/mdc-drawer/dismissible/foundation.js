@@ -54,9 +54,12 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
     if (this.isOpen() || this.isOpening() || this.isClosing()) {
       return;
     }
+
     this.adapter_.addClass(cssClasses.OPEN);
     this.adapter_.addClass(cssClasses.ANIMATE);
-    requestAnimationFrame(() => this.adapter_.addClass(cssClasses.OPENING));
+
+    // Runs this after Style and Layout information have been calculated and the paint has occurred.
+    requestAnimationFrame(() => setTimeout(() => this.adapter_.addClass(cssClasses.OPENING), 0));
     this.adapter_.saveFocus();
   }
 
