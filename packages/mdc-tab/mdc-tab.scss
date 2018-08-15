@@ -75,6 +75,7 @@
 
 .mdc-tab__text-label,
 .mdc-tab__icon {
+  transition: 150ms color linear, 150ms opacity linear;
   z-index: 2;
 }
 
@@ -112,26 +113,13 @@
   padding-bottom: 16px;
 }
 
-// The [de]activation animation affects color for text label and icon
-.mdc-tab--animating-activate .mdc-tab__text-label,
-.mdc-tab--animating-activate .mdc-tab__icon,
-.mdc-tab--animating-deactivate .mdc-tab__text-label,
-.mdc-tab--animating-deactivate .mdc-tab__icon {
-  transition: 150ms color linear, 150ms opacity linear;
-}
-
-// The activation animation has a delay of 100ms
-.mdc-tab--animating-activate .mdc-tab__text-label,
-.mdc-tab--animating-activate .mdc-tab__icon {
-  transition-delay: 100ms;
-}
-
 .mdc-tab--active {
   @include mdc-tab-text-label-color(primary);
   @include mdc-tab-icon-color(primary);
 
   .mdc-tab__text-label,
   .mdc-tab__icon {
+    transition-delay: 100ms;
     opacity: 1;
   }
 }

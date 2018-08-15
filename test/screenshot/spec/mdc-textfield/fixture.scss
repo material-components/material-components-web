@@ -19,5 +19,18 @@
 
 .test-cell--textfield {
   width: 301px;
-  height: 101px;
+  height: 121px;
+}
+
+.test-cell--textarea {
+  width: 301px;
+  height: 181px;
+}
+
+// Work around MS Edge rendering bug.
+// TODO(acdvorak): Create and link to GitHub issue
+@supports (-ms-ime-align:auto) {
+  .test-text-field__input {
+    transform: translateX(.1px);
+  }
 }

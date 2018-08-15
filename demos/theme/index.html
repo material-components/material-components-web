@@ -327,14 +327,13 @@
                 <button class="mdc-button mdc-card__action mdc-card__action--button">Bookmark</button>
               </div>
               <div class="mdc-card__action-icons">
-                <button class="mdc-icon-button material-icons mdc-card__action mdc-card__action--icon"
+                <button class="mdc-icon-button mdc-card__action mdc-card__action--icon"
                    aria-pressed="false"
                    aria-label="Add to favorites"
-                   title="Add to favorites"
-                   data-toggle-on-content="favorite"
-                   data-toggle-on-label="Remove from favorites"
-                   data-toggle-off-content="favorite_border"
-                   data-toggle-off-label="Add to favorites">favorite_border</button>
+                   title="Add to favorites" data-demo-toggle>
+                  <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">favorite</i>
+                  <i class="material-icons mdc-icon-button__icon">favorite_border</i>
+                </button>
                 <button class="mdc-icon-button material-icons mdc-card__action mdc-card__action--icon"
                    data-mdc-ripple-is-unbounded
                    title="Share">share</button>
@@ -496,26 +495,23 @@
           <div class="mdc-elevation--z2 demo-icon-toggle-tile">
             <h4 class="mdc-typography--subtitle1">Enabled</h4>
 
-            <button class="mdc-icon-button material-icons"
+            <button class="mdc-icon-button"
                aria-label="Add to favorites"
-               aria-pressed="false"
-               data-toggle-on-content="favorite"
-               data-toggle-on-label="Remove from favorites"
-               data-toggle-off-content="favorite_border"
-               data-toggle-off-label="Add to favorites">favorite_border</button>
+               aria-pressed="false" data-demo-toggle>
+              <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">favorite</i>
+              <i class="material-icons mdc-icon-button__icon">favorite_border</i></button>
           </div>
 
           <div class="mdc-elevation--z2 demo-icon-toggle-tile">
             <h4 class="mdc-typography--subtitle1">Disabled</h4>
 
-            <button class="mdc-icon-button  material-icons"
+            <button class="mdc-icon-button"
                aria-label="Add to favorites"
                aria-pressed="false"
-               disabled
-               data-toggle-on-content="favorite"
-               data-toggle-on-label="Remove from favorites"
-               data-toggle-off-content="favorite_border"
-               data-toggle-off-label="Add to favorites">favorite_border</button>
+               disabled data-demo-toggle>
+              <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">favorite</i>
+              <i class="material-icons mdc-icon-button__icon">favorite_border</i>
+            </button>
           </div>
         </div>
       </section>
@@ -893,7 +889,7 @@
          * Icon Toggle
          */
 
-        [].forEach.call(document.querySelectorAll('.mdc-icon-button[data-toggle-on-content]'), function(iconButtonToggleEl) {
+        [].forEach.call(document.querySelectorAll('.mdc-icon-button[data-demo-toggle]'), function(iconButtonToggleEl) {
           mdc.iconButton.MDCIconButtonToggle.attachTo(iconButtonToggleEl);
         });
 
