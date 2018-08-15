@@ -2,7 +2,6 @@
 title: "Drawers"
 layout: detail
 section: components
-excerpt: "Permanent drawers."
 iconId: side_navigation
 path: /catalog/drawers/
 -->
@@ -36,7 +35,7 @@ npm install @material/drawer
 <nav class="mdc-drawer">
   <div class="mdc-drawer__content">
     <nav class="mdc-list">
-      <a class="mdc-list-item mdc-list-item--activated" href='#' tabindex="0">
+      <a class="mdc-list-item mdc-list-item--selected" href='#' tabindex="0">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
       </a>
       <a class="mdc-list-item" href="#">
@@ -56,6 +55,13 @@ npm install @material/drawer
 @import "@material/drawer/mdc-drawer";
 ```
 
+### JavaScript Instantiation
+
+```js
+var drawerEl = document.getElementById('demo-drawer');
+drawer = new mdc.drawer.MDCDrawer(drawerEl);
+```
+
 ## Variants
 
 ### Drawers with separate list groups
@@ -64,7 +70,7 @@ npm install @material/drawer
 <nav class="mdc-drawer">
   <div class="mdc-drawer__content">
     <nav class="mdc-list">
-      <a class="mdc-list-item mdc-list-item--activated" href="#" tabindex="0">
+      <a class="mdc-list-item mdc-list-item--selected" href="#" tabindex="0">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
         <span class="mdc-list-item__label mdc-drawer__list-item-label">Inbox</span>
       </a>
@@ -127,8 +133,14 @@ Drawers can contain a header element which will not scroll with the rest of the 
   </div>
   <div class="mdc-drawer__content">
     <nav class="mdc-list">
-      <a class="mdc-list-item mdc-list-item--activated" href='#'>
+      <a class="mdc-list-item mdc-list-item--selected" href='#' tabindex="0">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
+      </a>
+      <a class="mdc-list-item" href="#">
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>Outgoing
+      </a>
+      <a class="mdc-list-item" href="#">
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>Drafts
       </a>
     </nav>
   </div>
@@ -144,8 +156,14 @@ Dismissible drawers are by default hidden off screen, and can slide into view. D
   <header class="mdc-drawer mdc-drawer--dismissible">
     <div class="mdc-drawer__content">
       <nav class="mdc-list">
-        <a class="mdc-list-item mdc-list-item--activated" href='#'>
+        <a class="mdc-list-item mdc-list-item--selected" href='#'>
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
+        </a>
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>Outgoing
+        </a>
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>Drafts
         </a>
       </nav>
     </div>
@@ -157,7 +175,35 @@ Dismissible drawers are by default hidden off screen, and can slide into view. D
 </body>
 ```
 
-> Use the `mdc-drawer-app-content` class to the element sibling to the drawer to get the open/close animations to work.
+## Modal Drawer
+
+Modal drawers are elevated above most of the app’s UI and don’t affect the screen’s layout grid.
+
+```html
+<body>
+  <header class="mdc-drawer mdc-drawer--modal">
+    <div class="mdc-drawer__content">
+      <nav class="mdc-list">
+        <a class="mdc-list-item mdc-list-item--selected" href='#' tabindex="0">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
+        </a>
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>Outgoing
+        </a>
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>Drafts
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="mdc-drawer-scrim">
+    App Content
+  </div>
+</body>
+```
+
+> Use the `mdc-drawer-scrim` class on next sibling element to add backdrop to block app's UI.
 
 ### Usage with Top App Bar
 
@@ -165,11 +211,17 @@ There are some styles that need to be applied to get the top app bar and the dis
 
 ```html
 <body>
-  <nav class="mdc-drawer mdc-drawer--dismissible">
+  <nav class="mdc-drawer mdc-drawer--dismissible" id="drawer">
     <div class="mdc-drawer__content">
       <div class="mdc-list">
-        <a class="mdc-list-item mdc-list-item--activated" href='#'>
+        <a class="mdc-list-item mdc-list-item--selected" href='#' tabindex="0">
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
+        </a>
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>Outgoing
+        </a>
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>Drafts
         </a>
       </div>
     </div>
@@ -222,6 +274,8 @@ body {
 JavaScript code to wireup TopAppBar with drawer.
 
 ```javascript
+var drawerEl = document.getElementById('demo-drawer');
+drawer = new mdc.drawer.MDCDrawer(drawerEl);
 var topAppBarEl = document.getElementById('app-bar');
 var topAppBar = new mdc.topAppBar.MDCTopAppBar(topAppBarEl);
 // Auto hides top app bar when main content is scrolled.
