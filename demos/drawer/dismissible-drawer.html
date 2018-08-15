@@ -160,21 +160,6 @@
           extraTall.style.display = extraTall.style.display ? '' : 'none';
         });
 
-        var activatedClass = 'mdc-list-item--activated';
-        // document.querySelector('.mdc-drawer').addEventListener('click', function(event) {
-        //   var el = event.target;
-        //   while (el && !el.classList.contains('mdc-list-item')) {
-        //     el = el.parentElement;
-        //   }
-        //   if (el) {
-        //     var activatedItem = document.querySelector('.' + activatedClass);
-        //     if (activatedItem) {
-        //       activatedItem.classList.remove(activatedClass);
-        //     }
-        //     event.target.classList.add(activatedClass);
-        //   }
-        // });
-
         var drawerEl = document.getElementById('demo-drawer');
         var drawer = new mdc.drawer.MDCDrawer(drawerEl);
         var radioEl = document.querySelector('#demo-radio-buttons');
