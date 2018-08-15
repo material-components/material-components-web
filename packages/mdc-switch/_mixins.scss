@@ -1,5 +1,5 @@
 //
-// Copyright 2016 Google Inc. All Rights Reserved.
+// Copyright 2018 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,72 +15,58 @@
 //
 
 @import "@material/theme/mixins";
+@import "@material/ripple/mixins";
+@import "@material/rtl/mixins";
 @import "./variables";
 
-//
-// Public
-//
+@mixin mdc-switch-toggled-on-color($color) {
+  @include mdc-switch-toggled-on-track-color($color);
+  @include mdc-switch-toggled-on-thumb-color($color);
+  @include mdc-switch-toggled-on-ripple-color($color);
+}
 
-@mixin mdc-switch-track-color($color) {
-  .mdc-switch__native-control:enabled:checked ~ .mdc-switch__background::before {
+@mixin mdc-switch-toggled-off-color($color) {
+  @include mdc-switch-toggled-off-track-color($color);
+  @include mdc-switch-toggled-off-thumb-color($color);
+  @include mdc-switch-toggled-off-ripple-color($color);
+}
+
+@mixin mdc-switch-toggled-on-track-color($color) {
+  &.mdc-switch--checked .mdc-switch__track {
     @include mdc-theme-prop(background-color, $color);
     @include mdc-theme-prop(border-color, $color);
   }
 }
 
-@mixin mdc-switch-knob-color($color) {
-  // stylelint-disable-next-line selector-max-specificity
-  .mdc-switch__native-control:enabled:checked ~ .mdc-switch__background .mdc-switch__knob {
+@mixin mdc-switch-toggled-on-thumb-color($color) {
+  &.mdc-switch--checked .mdc-switch__thumb {
     @include mdc-theme-prop(background-color, $color);
     @include mdc-theme-prop(border-color, $color);
   }
 }
 
-@mixin mdc-switch-focus-indicator-color($color) {
-  // stylelint-disable-next-line selector-max-specificity
-  .mdc-switch__native-control:enabled:checked ~ .mdc-switch__background .mdc-switch__knob::before {
-    @include mdc-theme-prop(background-color, $color);
+@mixin mdc-switch-toggled-on-ripple-color($color) {
+  &.mdc-switch--checked .mdc-switch__thumb-underlay {
+    @include mdc-states($color);
   }
 }
 
-//
-// Private
-//
-
-@mixin mdc-switch-unchecked-track-color_($color) {
-  .mdc-switch__native-control:enabled:not(:checked) ~ .mdc-switch__background::before {
+@mixin mdc-switch-toggled-off-track-color($color) {
+  &:not(.mdc-switch--checked) .mdc-switch__track {
     @include mdc-theme-prop(background-color, $color);
     @include mdc-theme-prop(border-color, $color);
   }
 }
 
-@mixin mdc-switch-unchecked-knob-color_($color) {
-  // stylelint-disable-next-line selector-max-specificity
-  .mdc-switch__native-control:enabled:not(:checked) ~ .mdc-switch__background .mdc-switch__knob {
+@mixin mdc-switch-toggled-off-thumb-color($color) {
+  &:not(.mdc-switch--checked) .mdc-switch__thumb {
     @include mdc-theme-prop(background-color, $color);
     @include mdc-theme-prop(border-color, $color);
   }
 }
 
-@mixin mdc-switch-unchecked-focus-indicator-color_($color) {
-  // stylelint-disable-next-line selector-max-specificity
-  .mdc-switch__native-control:enabled:not(:checked) ~ .mdc-switch__background .mdc-switch__knob::before {
-    @include mdc-theme-prop(background-color, $color);
+@mixin mdc-switch-toggled-off-ripple-color($color) {
+  &:not(.mdc-switch--checked) .mdc-switch__thumb-underlay {
+    @include mdc-states($color);
   }
-}
-
-@mixin mdc-switch-native-control_ {
-  position: absolute;
-  top: -14px;
-  left: -14px;
-  width: $mdc-switch-focus-ring-diameter;
-  height: $mdc-switch-focus-ring-diameter;
-}
-
-@mixin mdc-switch-tap-target_ {
-  position: absolute;
-  top: -24px;
-  left: -24px;
-  width: $mdc-switch-focus-ring-diameter;
-  height: $mdc-switch-focus-ring-diameter;
 }

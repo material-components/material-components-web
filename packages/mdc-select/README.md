@@ -9,8 +9,8 @@ path: /catalog/input-controls/select-menus/
 ## Important - Default Style Deprecation Notice
 
 The existing default select style will be changed in an upcoming release. The Material spec indicates that
-the default style will be the filled variant (currently referred to as the box variant). This will become the  
-default style. Continuing to add the `mdc-select--box` class to the select will result in no change. 
+the default style will be the filled variant (currently referred to as the box variant). This will become the
+default style. Continuing to add the `mdc-select--box` class to the select will result in no change.
 
 # Select Menus
 
@@ -100,7 +100,7 @@ modifier class on the root element.
 
 ### Outlined Select
 
-The Select Outlined variant uses the `mdc-notched-outline` in place of the `mdc-line-ripple` element and adds the 
+The Select Outlined variant uses the `mdc-notched-outline` in place of the `mdc-line-ripple` element and adds the
 `mdc-select--outlined` modifier class on the root element.
 
 ```html
@@ -244,22 +244,24 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | --- | --- |
 | `addClass(className: string) => void` | Adds a class to the root element. |
 | `removeClass(className: string) => void` | Removes a class from the root element. |
-| `floatLabel(value: boolean) => void` | Floats or defloats label. |
+| `hasClass(className: string) => boolean` | Returns true if the root element has the className in its classList. |
 | `activateBottomLine() => void` | Activates the bottom line component. |
 | `deactivateBottomLine() => void` | Deactivates the bottom line component. |
-| `setDisabled(disabled: boolean) => void` | Sets the `disabled` property of the `<select>` element. |
-| `registerInteractionHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` on the `<select>` element. |
-| `deregisterInteractionHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` on the `<select>` element. |
-| `getSelectedIndex() => number` | Returns the selected index of the `<select>` element. |
-| `setSelectedIndex(index: number) => void` | Sets the selected index of the `<select>` element. |
-| `getValue() => string` | Returns the value selected on the `<select>` element. |
-| `setValue(value: string) => void` | Sets the value of the `<select>` element. |
+| `getValue() => string` | Returns the value selected on the `select` element. |
+| `isRtl() => boolean` | Returns true if a parent of the root element is in RTL. |
+| `hasLabel() => boolean` | Returns true if the `select` has a label associated with it. |
+| `floatLabel(value: boolean) => void` | Floats or defloats label. |
+| `getLabelWidth() => number` | Returns the offsetWidth of the label element. |
+| `hasOutline() => boolean` | Returns true if the `select` has the notched outline element. |
+| `notchOutline(labelWidth: number, isRtl, boolean) => void` | Switches the notched outline element to its "notched state." |
+| `closeOutline() => void` | Switches the notched outline element to its closed state. |
 
 ### `MDCSelectFoundation`
 
 | Method Signature | Description |
 | --- | --- |
 | `notchOutline(openNotch: boolean) => void` | Opens/closes the notched outline. |
-| `setValue(value: string) => void` | Sets the value of the component. |
-| `setDisabled(disabled: boolean) => void` | Adds/removes disabled class, and sets disabled attribute on the component. |
-| `setSelectedIndex(selectedIndex: number) => void` | Sets the selected index of the component. |
+| `updateDisabledStyle(disabled: boolean) => void` | Updates appearance based on disabled state. This must be called whenever the `disabled` state changes. |
+| `handleFocus() => void` | Handles a focus event on the `select` element. |
+| `handleBlur() => void` | Handles a blur event on the `select` element. |
+| `handleChange() => void` | Handles a change to the `select` element's value. This must be called both for `change` events and programmatic changes requested via the component API. |
