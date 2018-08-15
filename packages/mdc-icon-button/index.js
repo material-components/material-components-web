@@ -36,13 +36,6 @@ class MDCIconButtonToggle extends MDCComponent {
     this.handleClick_;
   }
 
-  /** @return {!Element} */
-  get iconEl_() {
-    const {'iconInnerSelector': sel} = this.root_.dataset;
-    return sel ?
-      /** @type {!Element} */ (this.root_.querySelector(sel)) : this.root_;
-  }
-
   /**
    * @return {!MDCRipple}
    * @private
@@ -62,18 +55,16 @@ class MDCIconButtonToggle extends MDCComponent {
   /** @return {!MDCIconButtonToggleFoundation} */
   getDefaultFoundation() {
     return new MDCIconButtonToggleFoundation({
-      addClass: (className) => this.iconEl_.classList.add(className),
-      removeClass: (className) => this.iconEl_.classList.remove(className),
-      setText: (text) => this.iconEl_.textContent = text,
-      getAttr: (name) => this.root_.getAttribute(name),
-      setAttr: (name, value) => this.root_.setAttribute(name, value),
+      addClass: (className) => this.root_.classList.add(className),
+      removeClass: (className) => this.root_.classList.remove(className),
+      hasClass: (className) => this.root_.classList.contains(className),
+      setAttr: (attrName, attrValue) => this.root_.setAttribute(attrName, attrValue),
       notifyChange: (evtData) => this.emit(MDCIconButtonToggleFoundation.strings.CHANGE_EVENT, evtData),
     });
   }
 
   initialSyncWithDOM() {
     this.handleClick_ = this.foundation_.handleClick.bind(this.foundation_);
-    this.on = this.root_.getAttribute(MDCIconButtonToggleFoundation.strings.ARIA_PRESSED) === 'true';
     this.root_.addEventListener('click', this.handleClick_);
   }
 
@@ -90,10 +81,6 @@ class MDCIconButtonToggle extends MDCComponent {
   /** @param {boolean} isOn */
   set on(isOn) {
     this.foundation_.toggle(isOn);
-  }
-
-  refreshToggleData() {
-    this.foundation_.refreshToggleData();
   }
 }
 

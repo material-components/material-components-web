@@ -275,7 +275,7 @@ class TestCommand {
     const masterScreenshots = masterDiffReportData.screenshots;
     const masterGitRev = masterDiffReportData.meta.golden_diff_base.git_revision;
 
-    const numTotal = masterScreenshots.actual_screenshot_list.length;
+    const numTotal = masterScreenshots.runnable_screenshot_list.length;
     const numChanged =
       masterScreenshots.changed_screenshot_list.length +
       masterScreenshots.added_screenshot_list.length +

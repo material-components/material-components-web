@@ -262,7 +262,6 @@
   @include mdc-floating-label-shake-animation(text-field-outlined);
   @include mdc-text-field-outline-corner-radius_($mdc-text-field-border-radius);
 
-  height: 56px;
   border: none;
 
   .mdc-text-field__input {
@@ -333,10 +332,6 @@
   @include mdc-floating-label-float-position($mdc-text-field-box-label-position-y);
   @include mdc-floating-label-shake-animation(text-field-box);
 
-  display: inline-flex;
-  position: relative;
-  height: 56px;
-  margin-top: 16px;
   overflow: hidden;
 
   .mdc-text-field__input {
@@ -426,15 +421,12 @@
 
   &:not(.mdc-text-field--textarea) {
     display: block;
-    box-sizing: border-box;
-    height: 56px;
     margin: 0;
     border: none;
     border-bottom: 1px solid;
     outline: none;
 
     .mdc-text-field__input {
-      width: 100%;
       height: 100%;
       padding: 0;
       resize: none;
@@ -483,8 +475,8 @@
   $label-offset-x: $padding-inset;
 
   display: flex;
-  width: fit-content;
-  height: initial;
+  width: auto;
+  height: auto;
   transition: none;
   border: 1px solid;
   overflow: hidden;
