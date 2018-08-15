@@ -17,7 +17,6 @@
 
 import td from 'testdouble';
 
-import {captureHandlers} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
 import MDCFadingTabIndicatorFoundation from '../../../packages/mdc-tab-indicator/fading-foundation';
 
@@ -25,62 +24,14 @@ suite('MDCFadingTabIndicatorFoundation');
 
 const setupTest = () => setupFoundationTest(MDCFadingTabIndicatorFoundation);
 
-test('#activate registers a transitionend handler', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.activate();
-  td.verify(mockAdapter.registerEventHandler('transitionend', td.matchers.isA(Function)));
-});
-
 test(`#activate adds the ${MDCFadingTabIndicatorFoundation.cssClasses.ACTIVE} class`, () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.activate();
   td.verify(mockAdapter.addClass(MDCFadingTabIndicatorFoundation.cssClasses.ACTIVE));
 });
 
-test(`#activate adds the ${MDCFadingTabIndicatorFoundation.cssClasses.FADING_ACTIVATE} class`, () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.activate();
-  td.verify(mockAdapter.addClass(MDCFadingTabIndicatorFoundation.cssClasses.FADING_ACTIVATE));
-});
-
-test('#deactivate registers a transitionend handler', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.deactivate();
-  td.verify(mockAdapter.registerEventHandler('transitionend', td.matchers.isA(Function)));
-});
-
 test(`#deactivate removes the ${MDCFadingTabIndicatorFoundation.cssClasses.ACTIVE} class`, () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.deactivate();
   td.verify(mockAdapter.removeClass(MDCFadingTabIndicatorFoundation.cssClasses.ACTIVE));
-});
-
-test(`#deactivate adds the ${MDCFadingTabIndicatorFoundation.cssClasses.FADING_DEACTIVATE} class`, () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.deactivate();
-  td.verify(mockAdapter.addClass(MDCFadingTabIndicatorFoundation.cssClasses.FADING_DEACTIVATE));
-});
-
-test('on transitionend, deregister the transitionend handler', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const handlers = captureHandlers(mockAdapter, 'registerEventHandler');
-  foundation.activate();
-  handlers.transitionend();
-  td.verify(mockAdapter.deregisterEventHandler('transitionend', td.matchers.isA(Function)));
-});
-
-test(`on transitionend, remove the ${MDCFadingTabIndicatorFoundation.cssClasses.FADING_ACTIVATE} class`, () => {
-  const {foundation, mockAdapter} = setupTest();
-  const handlers = captureHandlers(mockAdapter, 'registerEventHandler');
-  foundation.activate();
-  handlers.transitionend();
-  td.verify(mockAdapter.removeClass(MDCFadingTabIndicatorFoundation.cssClasses.FADING_ACTIVATE));
-});
-
-test(`on transitionend, remove the ${MDCFadingTabIndicatorFoundation.cssClasses.FADING_DEACTIVATE} class`, () => {
-  const {foundation, mockAdapter} = setupTest();
-  const handlers = captureHandlers(mockAdapter, 'registerEventHandler');
-  foundation.activate();
-  handlers.transitionend();
-  td.verify(mockAdapter.removeClass(MDCFadingTabIndicatorFoundation.cssClasses.FADING_DEACTIVATE));
 });

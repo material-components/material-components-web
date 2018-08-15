@@ -31,22 +31,9 @@ function getFixture() {
   `;
 }
 
-function getIconFixture() {
-  return bel`
-    <i id="icon"></i>
-  `;
-}
-
-function setupTest({tabIndex = undefined, useInnerIconElement = false, createMockFoundation = false} = {}) {
+function setupTest({createMockFoundation = false} = {}) {
   const root = getFixture();
-  if (useInnerIconElement) {
-    const icon = getIconFixture();
-    root.dataset.iconInnerSelector = `#${icon.id}`;
-    root.appendChild(icon);
-  }
-  if (tabIndex !== undefined) {
-    root.tabIndex = tabIndex;
-  }
+
   let mockFoundation;
   if (createMockFoundation) {
     const MockFoundationCtor = td.constructor(MDCIconButtonToggleFoundation);
@@ -59,7 +46,7 @@ function setupTest({tabIndex = undefined, useInnerIconElement = false, createMoc
 suite('MDCIconButtonToggle');
 
 test('attachTo initializes and returns a MDCIconButtonToggle instance', () => {
-  assert.isOk(MDCIconButtonToggle.attachTo(document.createElement('i')) instanceof MDCIconButtonToggle);
+  assert.isTrue(MDCIconButtonToggle.attachTo(document.createElement('i')) instanceof MDCIconButtonToggle);
 });
 
 if (supportsCssVariables(window)) {
@@ -67,7 +54,7 @@ if (supportsCssVariables(window)) {
     const raf = createMockRaf();
     const {root} = setupTest();
     raf.flush();
-    assert.isOk(root.classList.contains('mdc-ripple-upgraded'));
+    assert.isTrue(root.classList.contains('mdc-ripple-upgraded'));
     raf.restore();
   });
 
@@ -77,7 +64,7 @@ if (supportsCssVariables(window)) {
     raf.flush();
     component.destroy();
     raf.flush();
-    assert.isNotOk(root.classList.contains('mdc-ripple-upgraded'));
+    assert.isFalse(root.classList.contains('mdc-ripple-upgraded'));
     raf.restore();
   });
 }
@@ -85,77 +72,30 @@ if (supportsCssVariables(window)) {
 test('set/get on', () => {
   const {root, component} = setupTest();
   component.on = true;
-  assert.isOk(component.on);
+  assert.isTrue(component.on);
   assert.equal(root.getAttribute('aria-pressed'), 'true');
 
   component.on = false;
-  assert.isNotOk(component.on);
+  assert.isFalse(component.on);
   assert.equal(root.getAttribute('aria-pressed'), 'false');
-});
-
-
-test('#refreshToggleData proxies to foundation.refreshToggleData()', () => {
-  const MockIconToggleFoundation = td.constructor(MDCIconButtonToggleFoundation);
-  const root = document.createElement('i');
-  const foundation = new MockIconToggleFoundation();
-  const component = new MDCIconButtonToggle(root, foundation);
-  component.refreshToggleData();
-  td.verify(foundation.refreshToggleData());
-});
-
-test('intially set to on if root has aria-pressed=true', () => {
-  const root = bel`<button class="mdc-icon-button" aria-pressed="true"></button>`;
-  const component = new MDCIconButtonToggle(root);
-  assert.isOk(component.on);
 });
 
 test('get ripple returns a MDCRipple instance', () => {
   const {component} = setupTest();
-  assert.isOk(component.ripple instanceof MDCRipple);
+  assert.isTrue(component.ripple instanceof MDCRipple);
 });
 
 test('#adapter.addClass adds a class to the root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
-  assert.isOk(root.classList.contains('foo'));
-});
-
-test('#adapter.addClass adds a class to the inner icon element when used', () => {
-  const {root, component} = setupTest({useInnerIconElement: true});
-  component.getDefaultFoundation().adapter_.addClass('foo');
-  assert.isOk(root.querySelector('#icon').classList.contains('foo'));
+  assert.isTrue(root.classList.contains('foo'));
 });
 
 test('#adapter.removeClass removes a class from the root element', () => {
   const {root, component} = setupTest();
   root.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClass('foo');
-  assert.isNotOk(root.classList.contains('foo'));
-});
-
-test('#adapter.removeClass adds a class to the inner icon element when used', () => {
-  const {root, component} = setupTest({useInnerIconElement: true});
-  root.querySelector('#icon').classList.add('foo');
-  component.getDefaultFoundation().adapter_.removeClass('foo');
-  assert.isNotOk(root.querySelector('#icon').classList.contains('foo'));
-});
-
-test('#adapter.setText sets the text content of the root element', () => {
-  const {root, component} = setupTest();
-  component.getDefaultFoundation().adapter_.setText('foo');
-  assert.equal(root.textContent, 'foo');
-});
-
-test('#adapter.setText sets the text content of the inner icon element when used', () => {
-  const {root, component} = setupTest({useInnerIconElement: true});
-  component.getDefaultFoundation().adapter_.setText('foo');
-  assert.equal(root.querySelector('#icon').textContent, 'foo');
-});
-
-test('#adapter.getAttr retrieves an attribute from the root element', () => {
-  const {root, component} = setupTest();
-  root.setAttribute('aria-label', 'hello');
-  assert.equal(component.getDefaultFoundation().adapter_.getAttr('aria-label'), 'hello');
+  assert.isFalse(root.classList.contains('foo'));
 });
 
 test('#adapter.setAttr sets an attribute on the root element', () => {
@@ -175,13 +115,13 @@ test(`#adapter.notifyChange broadcasts a ${MDCIconButtonToggleFoundation.strings
 test('assert keydown does not trigger ripple', () => {
   const {root} = setupTest();
   domEvents.emit(root, 'keydown');
-  assert.isNotOk(root.classList.contains(cssClasses.FG_ACTIVATION));
+  assert.isFalse(root.classList.contains(cssClasses.FG_ACTIVATION));
 });
 
 test('assert keyup does not trigger ripple', () => {
   const {root} = setupTest();
   domEvents.emit(root, 'keyup');
-  assert.isNotOk(root.classList.contains(cssClasses.FG_ACTIVATION));
+  assert.isFalse(root.classList.contains(cssClasses.FG_ACTIVATION));
 });
 
 test('click handler is added to root element', () => {

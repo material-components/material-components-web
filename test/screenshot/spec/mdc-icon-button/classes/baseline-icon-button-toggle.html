@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2018 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Baseline Icon Button Toggle - MDC Web Screenshot Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css">
+    <link rel="stylesheet" href="../../../out/mdc.icon-button.css">
+    <link rel="stylesheet" href="../../../out/spec/fixture.css">
+    <link rel="stylesheet" href="../../../out/spec/mdc-icon-button/fixture.css">
+  </head>
+  <body class="test-container mdc-typography">
+    <main class="test-viewport test-viewport--mobile">
+      <div class="test-layout">
+        <div class="test-cell test-cell--icon-button">
+          <button class="mdc-icon-button mdc-icon-button--on"
+                  aria-label="Add to favorites"
+                  aria-pressed="true">
+            <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">favorite</i>
+            <i class="material-icons mdc-icon-button__icon">favorite_border</i>
+          </button>
+        </div>
+        <div class="test-cell test-cell--icon-button">
+            <button class="mdc-icon-button"
+                    aria-label="Add to favorites"
+                    aria-pressed="false">
+              <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">favorite</i>
+              <i class="material-icons mdc-icon-button__icon">favorite_border</i>
+          </button>
+        </div>
+        <div class="test-cell test-cell--icon-button">
+          <button class="mdc-icon-button mdc-icon-button--on"
+                  aria-label="Unstar this item"
+                  aria-pressed="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="mdc-icon-button__icon mdc-icon-button__icon--on">
+              <path d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"></path>
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="mdc-icon-button__icon">
+              <path d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M13 7h-2v4H7v2h4v4h2v-4h4v-2h-4V7zm-1-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="test-cell test-cell--icon-button">
+          <button class="mdc-icon-button"
+                  aria-label="Unstar this item"
+                  aria-pressed="false">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="mdc-icon-button__icon mdc-icon-button__icon--on">
+              <path d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"></path>
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="mdc-icon-button__icon">
+              <path d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M13 7h-2v4H7v2h4v4h2v-4h4v-2h-4V7zm-1-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="test-cell test-cell--icon-button">
+          <button class="mdc-icon-button mdc-icon-button--on mdc-theme--primary"
+                  aria-label="Add to favorites"
+                  aria-pressed="true">
+            <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">favorite</i>
+            <i class="material-icons mdc-icon-button__icon">favorite_border</i>
+          </button>
+        </div>
+        <div class="test-cell test-cell--icon-button mdc-theme--primary">
+            <button class="mdc-icon-button material-icons"
+                    aria-label="Add to favorites"
+                    aria-pressed="false">
+              <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">favorite</i>
+              <i class="material-icons mdc-icon-button__icon">favorite_border</i>
+            </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Automatically provides/replaces `Promise` if missing or broken. -->
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fontfaceobserver/2.0.13/fontfaceobserver.standalone.js"></script>
+    <script src="../../../out/spec/fixture.js"></script>
+  </body>
+</html>

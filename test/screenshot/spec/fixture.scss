@@ -22,6 +22,7 @@ $test-layout-cell-grid-color: #dddddd;
 
 .test-container {
   display: flex;
+  flex-direction: column;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -76,4 +77,18 @@ $test-layout-cell-grid-color: #dddddd;
     linear-gradient(to bottom, #{$test-layout-cell-grid-color} 1px, transparent 1.01px); // fraction for IE 11
 
   background-size: 10px 10px;
+}
+
+.test-cell__heading {
+  height: 20px;
+}
+
+.test-animation--paused,
+.test-animation--paused::before,
+.test-animation--paused::after,
+.test-animation--paused *,
+.test-animation--paused *::before,
+.test-animation--paused *::after {
+  animation-play-state: paused !important;
+  transition: none !important;
 }

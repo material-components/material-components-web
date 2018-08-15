@@ -247,24 +247,20 @@ If a local dev server is not already running, one will be started for the durati
     this.addArg_(subparser, {
       optionNames: ['--parallels'],
       type: 'integer',
-      defaultValue: 0,
       description: `
 Maximum number of browser VMs to run in parallel (subject to our CBT plan limit and VM availability).
-A value of '0' will start 3 browsers if nobody else is running tests, or 1 browser if other tests are already running.
-IMPORTANT: To ensure that multiple developers can run their tests simultaneously, do not set this value higher than 1
-during normal business hours when other people are likely to be running tests.
+If no value is specified, the default is to start 3 browsers if nobody else is running tests, or 1 browser if other
+tests are already running.
+IMPORTANT: To ensure that multiple developers can run their tests simultaneously, DO NOT set this value during normal
+business hours.
 `,
     });
 
     this.addArg_(subparser, {
       optionNames: ['--retries'],
       type: 'integer',
-      defaultValue: 3,
       description: `
-Number of times to retry a screenshot that comes back with diffs. If you're not expecting any diffs, automatically
-retrying screenshots can help decrease noise from flaky browser rendering. However, if you're making a change that
-intentionally affects the rendered output, there's no point slowing down the test by retrying a bunch of screenshots
-that you know are going to have diffs.
+Number of times to retry a screenshot that has diffs. Overrides values from 'test/screenshot/diffing.json'.
 `,
     });
 
@@ -339,12 +335,12 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
     return this.args_['--diff-base'];
   }
 
-  /** @return {number} */
+  /** @return {?number} */
   get parallels() {
     return this.args_['--parallels'];
   }
 
-  /** @return {number} */
+  /** @return {?number} */
   get retries() {
     return this.args_['--retries'];
   }

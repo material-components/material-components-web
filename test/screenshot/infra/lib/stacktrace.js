@@ -56,7 +56,7 @@ function formatErrorInternal(err) {
   const parentStr = stringifyError(err);
   if (err.jse_cause) {
     const childStr = formatError(err.jse_cause);
-    return `${childStr}\n\n${CliColor.italic('called from:')}\n\n${parentStr}`;
+    return `${childStr}\n\n${CliColor.italic('↳  called from:')}\n\n${parentStr}`;
   }
   return parentStr;
 }

@@ -121,14 +121,13 @@ above, or with icon buttons, as below:
 
 ```html
 <div class="mdc-card__actions">
-  <button class="mdc-icon-button material-icons mdc-card__action mdc-card__action--icon"
+  <button class="mdc-icon-button mdc-card__action mdc-card__action--icon"
      aria-pressed="false"
      aria-label="Add to favorites"
-     title="Add to favorites"
-     data-toggle-on-content="favorite"
-     data-toggle-on-label="Remove from favorites"
-     data-toggle-off-content="favorite_border"
-     data-toggle-off-label="Add to favorites">favorite_border</button>
+     title="Add to favorites">
+   <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">favorite</i>
+   <i class="material-icons mdc-icon-button__icon">favorite_border</i>
+  </button>
   <button class="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon" title="Share">share</button>
   <button class="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon" title="More options">more_vert</button>
 </div>
