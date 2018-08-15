@@ -38,18 +38,6 @@ npm install @material/top-app-bar
 
 ## Basic Usage
 
-### Menu Icon
-
-We recommend using [Material Icons](https://material.io/tools/icons/) from Google Fonts:
-
-```html
-<head>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-</head>
-```
-
-However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any other icon library you wish.
-
 ### HTML Structure
 
 ```html
@@ -62,6 +50,18 @@ However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any 
   </div>
 </header>
 ```
+
+#### Menu Icon
+
+We recommend using [Material Icons](https://material.io/tools/icons/) from Google Fonts:
+
+```html
+<head>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+```
+
+However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any other icon library you wish.
 
 ### Styles
 

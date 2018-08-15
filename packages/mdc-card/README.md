@@ -39,18 +39,6 @@ npm install @material/card
 
 ## Usage
 
-### Icons
-
-We recommend using [Material Icons](https://material.io/tools/icons/) from Google Fonts:
-
-```html
-<head>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-</head>
-```
-
-However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any other icon library you wish.
-
 ### HTML Structure
 
 ```html
@@ -93,6 +81,18 @@ If you'd like to maintain a consistent width and height across cards, you'll nee
   width: 350px;
 }
 ```
+
+#### Icons
+
+We recommend using [Material Icons](https://material.io/tools/icons/) from Google Fonts:
+
+```html
+<head>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+```
+
+However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any other icon library you wish.
 
 #### Content blocks
 
