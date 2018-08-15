@@ -1,3 +1,13 @@
+<a name="0.38.2"></a>
+## [0.38.2](https://github.com/material-components/material-components-web/compare/v0.38.1...v0.38.2) (2018-08-15)
+
+
+### Bug Fixes
+
+* **dialog:** Expose numbers on foundation ([#3346](https://github.com/material-components/material-components-web/issues/3346)) ([8aa7ae0](https://github.com/material-components/material-components-web/commit/8aa7ae0))
+
+
+
 <a name="0.38.1"></a>
 ## [0.38.1](https://github.com/material-components/material-components-web/compare/v0.38.0...v0.38.1) (2018-08-13)
 
