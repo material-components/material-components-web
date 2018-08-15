@@ -214,6 +214,25 @@ body {
   height: 100%;
 }
 
+#app-bar {
+  position: absolute;
+}
+```
+
+JavaScript code to wireup TopAppBar with drawer.
+
+```javascript
+var topAppBarEl = document.getElementById('app-bar');
+var topAppBar = new mdc.topAppBar.MDCTopAppBar(topAppBarEl);
+// Auto hides top app bar when main content is scrolled.
+topAppBar.setScrollTarget(document.getElementById('main-content'));
+topAppBar.listen('MDCTopAppBar:nav', function() {
+  if (drawer.open) {
+    drawer.open = false;
+  } else {
+    drawer.open = true;
+  }
+});
 ```
 
 ## Style Customization
@@ -225,13 +244,15 @@ Class | Description
 `mdc-drawer` |  Mandatory.
 `mdc-drawer--closing` | Applies the transition to the dismissible drawer while it is animating from the open to the closed position.
 `mdc-drawer--opening` | Applies the transition to the dismissible drawer while it is animating from the closed to the open position.
-`mdc-drawer-app-content` | Used for dismissible drawer variant sibling element that should animate open/closed with it.
 `mdc-drawer--dismissible` | Dismissible drawer variant class.
+`mdc-drawer--modal` | Modal drawer variant class.
 `mdc-drawer__header` | Non-scrollable element that exists on the top of the drawer.
 `mdc-drawer--open` | If present indicates that dismissible drawer is in the open position.
 `mdc-drawer__content` | Scrollable content area of the drawer.
 `mdc-drawer__subtitle` | Subtitle text element of the drawer.
 `mdc-drawer__title` | Title text element of the drawer.
+`mdc-drawer-app-content` | Used for dismissible drawer variant sibling element that should animate open/closed with it.
+`mdc-drawer-scrim` | Used for backdrop to overlay on the app content. Applicable only for modal variant.
 
 
 ### Sass Mixins
@@ -252,6 +273,7 @@ Mixin | Description
 `mdc-drawer-meta-ink-color($color, $opacity)` | Sets drawer list item meta icon ink color.
 `mdc-drawer-surface-fill-color($color, $opacity)` | Sets the background color of `mdc-drawer`.
 `mdc-drawer-title-ink-color($color, $opacity)` | Sets the ink color of `mdc-drawer__title`.
+`mdc-drawer-scrim-fill-color($color, $opacity)` | Sets the fill color of `mdc-drawer-scrim`.
 
 ## `MDCDrawer` Properties and Methods
 
@@ -283,15 +305,29 @@ Method Signature | Description
 `focusActiveNavigationItem() => void` | Focuses the active / selected navigation item.
 `notifyClosed() => void` | Emits the `MDCDrawer:close` event.
 `notifyOpen() => void` | Emits the `MDCDrawer:open` event.
+`trapFocusOnSurface() => void` | Traps focus on surface and focuses the active navigation element.
+`untrapFocusOnSurface() => void` | Removes trap focus from surface and resumes focus to nav button.
 
-### Foundations: `MDCDismissibleDrawerFoundation`
+### Foundations
+
+#### `MDCDismissibleDrawerFoundation`
 
 Method Signature | Description
 --- | ---
 `open() => void` | Opens the drawer from the closed state.
 `close() => void` | Closes the drawer from the open state.
+`opened() => void` | Abstract method which gets called when drawer finished opening.
+`closed() => void` | Abstract method which gets called when drawer finished closing.
 `isOpen() => boolean` | Returns true if the drawer is in the open position.
 `isOpening() => boolean` | Returns true if the drawer is animating open.
 `isClosing() => boolean` | Returns true if the drawer is animating closed.
 `handleKeyDown(evt: Event) => void` | Handles the keydown event.
 `handleTransitionEnd(evt: Event) => void` | Handles the transitionend event when the drawer finishes opening/closing.
+
+#### `MDCModalDrawerFoundation` (extends `MDCDismissibleDrawerFoundation`)
+
+Method Signature | Description
+--- | ---
+`opened() => void` | Executed when drawer finishes open animation.
+`closed() => void` | Executed when drawer finishes close animation.
+`handleScrimClick() => void` | Handles click event on scrim.

@@ -79,7 +79,7 @@ class MDCDrawerAdapter {
   notifyOpen() {}
 
   /**
-   * Traps focus on surface and focuses on first focusable element.
+   * Traps focus on surface and focuses the active navigation element.
    */
   trapFocusOnSurface() {}
 
