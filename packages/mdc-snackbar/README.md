@@ -35,9 +35,9 @@ Snackbars provide brief messages about app processes at the bottom of the screen
 npm install @material/snackbar
 ```
 
-## Usage
+## Basic Usage
 
-### Snackbar DOM
+### HTML Structure
 
 ```html
 <div class="mdc-snackbar"
@@ -50,6 +50,26 @@ npm install @material/snackbar
   </div>
 </div>
 ```
+
+### Styles
+
+```scss
+@import "@material/snackbar/mdc-snackbar";
+```
+
+### JavaScript Instantiation
+
+MDC Snackbar ships with a Component / Foundation combo which provides the API for showing snackbar messages with optional action.
+
+```js
+import {MDCSnackbar} from '@material/snackbar';
+
+const snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
+```
+
+> See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
+
+## Variants
 
 ### Start Aligned Snackbars (tablet and desktop only)
 
@@ -66,62 +86,6 @@ snackbar, add the `mdc-snackbar--align-start` modifier class to the root element
     <button type="button" class="mdc-snackbar__action-button"></button>
   </div>
 </div>
-```
-
-### Using the JS Component
-
-MDC Snackbar ships with a Component / Foundation combo which provides the API for showing snackbar
-messages with optional action.
-
-#### Including in code
-
-##### ES2015
-
-```javascript
-import {MDCSnackbar, MDCSnackbarFoundation} from '@material/snackbar';
-```
-
-##### CommonJS
-
-```javascript
-const mdcSnackbar = require('mdc-snackbar');
-const MDCSnackbar = mdcSnackbar.MDCSnackbar;
-const MDCSnackbarFoundation = mdcSnackbar.MDCSnackbarFoundation;
-```
-
-##### AMD
-
-```javascript
-require(['path/to/mdc-snackbar'], mdcSnackbar => {
-  const MDCSnackbar = mdcSnackbar.MDCSnackbar;
-  const MDCSnackbarFoundation = mdcSnackbar.MDCSnackbarFoundation;
-});
-```
-
-##### Global
-
-```javascript
-const MDCSnackbar = mdc.snackbar.MDCSnackbar;
-const MDCSnackbarFoundation = mdc.snackbar.MDCSnackbarFoundation;
-```
-
-#### Automatic Instantiation
-
-If you do not care about retaining the component instance for the snackbar, simply call `attachTo()`
-and pass it a DOM element.
-
-```javascript
-mdc.snackbar.MDCSnackbar.attachTo(document.querySelector('.mdc-snackbar'));
-```
-
-#### Manual Instantiation
-
-Snackbars can easily be initialized using their default constructors as well, similar to `attachTo`.
-
-```javascript
-import {MDCSnackbar} from '@material/snackbar';
-
-const snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
 ```
 
 #### Handling events
@@ -175,6 +139,17 @@ const dataObj = {
 
 snackbar.show(dataObj);
 ```
+
+## Style Customization
+
+### CSS Classes
+
+CSS Class | Description
+--- | ---
+`mdc-notched-outline` | Mandatory. Container for the SVG of the notched outline path.
+`mdc-notched-outline--notched` | Class to open notch outline.
+`mdc-notched-outline__path` | Mandatory. The path of the SVG of the notched outline.
+`mdc-notched-outline__idle` | Mandatory. The full outline when the notch is hidden.
 
 
 ### Keep snackbar when the action button is pressed
