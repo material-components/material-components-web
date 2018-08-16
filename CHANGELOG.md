@@ -1,3 +1,48 @@
+<a name="0.39.0-0"></a>
+# [0.39.0-0](https://github.com/material-components/material-components-web/compare/v0.38.0...v0.39.0-0) (2018-08-16)
+
+
+### Bug Fixes
+
+* **menu-surface:** Remove overflow hidden during menu-surface animation. ([#3358](https://github.com/material-components/material-components-web/issues/3358)) ([951a3ae](https://github.com/material-components/material-components-web/commit/951a3ae))
+* **notched-outline:** Add alignment ([#3349](https://github.com/material-components/material-components-web/issues/3349)) ([ee93c61](https://github.com/material-components/material-components-web/commit/ee93c61))
+* **snackbar:** Doesn't close while other element is focused ([#2183](https://github.com/material-components/material-components-web/issues/2183)) ([e161cc0](https://github.com/material-components/material-components-web/commit/e161cc0))
+* **text-field:** Adjust the baseline of text field's helper text to match spec ([#3069](https://github.com/material-components/material-components-web/issues/3069)) ([36acc28](https://github.com/material-components/material-components-web/commit/36acc28))
+* **text-field:** Fix label shake bug. Update invalid screenshots to show required star. ([#3338](https://github.com/material-components/material-components-web/issues/3338)) ([1245573](https://github.com/material-components/material-components-web/commit/1245573))
+* **text-field:** Input position and textarea size ([#3321](https://github.com/material-components/material-components-web/issues/3321)) ([5160241](https://github.com/material-components/material-components-web/commit/5160241)), closes [#2826](https://github.com/material-components/material-components-web/issues/2826)
+
+
+### Features
+
+* **chips:** Pass chip ids instead of foundations in events  ([#3265](https://github.com/material-components/material-components-web/issues/3265)) ([7ce0fba](https://github.com/material-components/material-components-web/commit/7ce0fba))
+* **icon-button:** Add SVG support ([#3310](https://github.com/material-components/material-components-web/issues/3310)) ([25fa51e](https://github.com/material-components/material-components-web/commit/25fa51e))
+* **menu:** Adds new menu, menu-surface. ([#3311](https://github.com/material-components/material-components-web/issues/3311)) ([6439c5b](https://github.com/material-components/material-components-web/commit/6439c5b))
+* **switch:** Move component specific logic out of foundation ([#3342](https://github.com/material-components/material-components-web/issues/3342)) ([e1e4465](https://github.com/material-components/material-components-web/commit/e1e4465))
+* **tab:** Move event registration to component ([#3331](https://github.com/material-components/material-components-web/issues/3331)) ([f2ac793](https://github.com/material-components/material-components-web/commit/f2ac793))
+* **tab-bar:** Support manual and automatic activation behavior ([#3303](https://github.com/material-components/material-components-web/issues/3303)) ([7182fa1](https://github.com/material-components/material-components-web/commit/7182fa1))
+* **tab-indicator:** Remove transitionend event handling ([#3337](https://github.com/material-components/material-components-web/issues/3337)) ([c8af69b](https://github.com/material-components/material-components-web/commit/c8af69b))
+* **text-field:** New API to enable/disable native input validation for custom validity ([#3084](https://github.com/material-components/material-components-web/issues/3084)) ([bd49920](https://github.com/material-components/material-components-web/commit/bd49920))
+* **text-field:** Support for types- color, date, datetime-local, etc ([#2854](https://github.com/material-components/material-components-web/issues/2854)) ([0d02f1f](https://github.com/material-components/material-components-web/commit/0d02f1f))
+* **typography:** Reverted baseline mixin to use display inline-block because of IE issues ([#3297](https://github.com/material-components/material-components-web/issues/3297)) ([ded07d0](https://github.com/material-components/material-components-web/commit/ded07d0))
+
+
+### BREAKING CHANGES
+
+* **switch:** We've removed the `isChecked` and `isDisabled` methods from `MDCSwitchFoundation`. Please update any call to `MDCSwitchFoundation.handleChange` so it passes in the change event. And note that `isNativeControlChecked` and `isNativeControlDisabled` are no longer required methods in `MDCSwitchAdapter`
+* **text-field:** Setting the validity state using `setValid` no longer ignores native input validation. New API `useNativeValidation` is introduced to enable / disable native validation for custom validity.
+* **menu:** Menu positioning logic has been split into its own package (mdc-menu-surface). mdc-menu is rebuilt to use mdc-menu-surface and mdc-list styles and JavaScript.
+* **text-field:** The `mdc-text-field--upgraded` class has been removed. `mdc-text-field__input` position has changed by 2px to match spec. `mdc-text-field--textarea` width in IE and Edge now matches other browsers.
+* **tab:** Removes handleTransitionEnd foundation API. Removes [de]registerEventHandler adapter APIs. Event registration is now the component's responsibility.
+* **icon-button:** Removes the previous data attributes and no longer dynamically changes the label. Allows developers to add both elements to the button, with one indicated as the on state by using a data-toggle-on attribute. State is now changed by adding/removing the mdc-icon-button--on class to the mdc-icon-button element. All icon elements should have the mdc-icon-button__icon class.
+* **tab-indicator:** Removes handleTransitionEnd foundation API. Removes [de]registerEventHandler adapter APIs.
+* **typography:** Helper text and MDC List two-line text that uses new typography baseline mixin should strip the white-space.
+* **chips:** `MDCChip` takes an `id`, no longer exposes its `foundation`, and has `selected` as a property. Custom event details require a `chipId` instead of `chipFoundation`. New methods added to `MDCChipSetAdapter` and `MDCChipSetFoundation`.
+* **text-field:** Removed bottom margin from both text field and helper text.
+* **snackbar:** Adds a new adapter method that is required `isFocused`.
+* **tab-bar:** Adds focusTabAtIndex and getFocusedTabIndex MDCTabBarAdapter APIs; adds focus MDCTab component API used by MDCTabBar.
+
+
+
 <a name="0.38.2"></a>
 ## [0.38.2](https://github.com/material-components/material-components-web/compare/v0.38.1...v0.38.2) (2018-08-15)
 
