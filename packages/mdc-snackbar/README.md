@@ -88,17 +88,36 @@ snackbar, add the `mdc-snackbar--align-start` modifier class to the root element
 </div>
 ```
 
-#### Handling events
+## Style Customization
 
-When snackbar is shown or dismissed, the component will emit a `MDCSnackbar:show` or
-`MDCSnackbar:hide` custom event with no data attached.
+### CSS Classes
 
-### Showing a message and action
+CSS Class | Description
+--- | ---
+`mdc-snackbar` | Mandatory. Container for the snackbar elements.
+`mdc-snackbar__action-wrapper` | Mandatory. Wraps the action button.
+`mdc-snackbar__action-button` | Mandatory. The action button.
+`mdc-snackbar__text` | Mandtory. The next of the snackbar.
+`mdc-snackbar--align-start` | Optional. Class to align snackbar to start, ltr dependent.
+`mdc-snackbar--action-on-bottom` | Optional on the mdc-snackbar element. Moves action to bottom of snackbar. Can be applied in js.
+`mdc-snackbar--multiline` | Optional on the mdc-snackbar element. Makes the snackbar multiple lines. Can be applied in js.
 
-Once you have obtained an MDCSnackbar instance attached to the DOM, you can use
-the `show` method to trigger the display of a message with optional action. The
-`show`  method takes an object for snackbar data. The table below shows the
-properties and their usage.
+## `MDCSnackbar` Properties and Methods
+
+Property | Value Type | Description
+--- | --- | ---
+`dismissesOnAction` | `boolean` | Allows getting or setting the dismissesOnAction state of the snackbar.
+
+Method Signature | Description
+--- | ---
+`show(data: DataObject=) => void` | Displays the snackbar. `data` populates the snackbar and sets some options.
+
+Event Name | Event Data Structure | Description
+--- | --- | ---
+`MDCTab:hide` | `{}` | Emitted when the Snackbar is hidden.
+`MDCTab:show` | `{}` | Emitted when the Snackbar is shown.
+
+### DataObject API
 
 | Property | Effect | Remarks | Type |
 |-----------|--------|---------|---------|
@@ -140,18 +159,6 @@ const dataObj = {
 snackbar.show(dataObj);
 ```
 
-## Style Customization
-
-### CSS Classes
-
-CSS Class | Description
---- | ---
-`mdc-notched-outline` | Mandatory. Container for the SVG of the notched outline path.
-`mdc-notched-outline--notched` | Class to open notch outline.
-`mdc-notched-outline__path` | Mandatory. The path of the SVG of the notched outline.
-`mdc-notched-outline__idle` | Mandatory. The full outline when the notch is hidden.
-
-
 ### Keep snackbar when the action button is pressed
 
 By default the snackbar will be dimissed when the user presses the action button.
@@ -163,6 +170,10 @@ property to `false`:
 const snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
 snackbar.dismissesOnAction = false
 ```
+
+## Usage Within Frameworks
+
+If you are using a JavaScript framework, such as React or Angular, you can create a Snackbar for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
 ### Using the Foundation Class
 
