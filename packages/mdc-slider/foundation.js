@@ -553,8 +553,8 @@ class MDCSliderFoundation extends MDCFoundation {
     const extraHorizontalWidth = Math.max(labelHorizontalWidth - maxTopLobeHorizontal, 0);
 
     // Distributes the extra length to left and right
-    let extraHorizontalWidthLeft = extraHorizontalWidth * 3 / 4;
-    let extraHorizontalWidthRight = extraHorizontalWidth / 4;
+    let extraHorizontalWidthLeft = extraHorizontalWidth / 2;
+    let extraHorizontalWidthRight = extraHorizontalWidth / 2;
 
     // Max width of one side of the top lobe neck arc
     // Used for when there is extraHorizontalWidth meaning that the arc is at its max width and
@@ -738,12 +738,7 @@ class MDCSliderFoundation extends MDCFoundation {
     const svgWidth = 34;
 
     // Calculates default translateX value for the size of the text
-    let xValue = (svgWidth - localeStringWidth);
-    if (this.value_.toString().length > 5) {
-      xValue = (xValue * 0.75) + 4;
-    } else {
-      xValue = xValue / 2;
-    }
+    let xValue = (svgWidth - localeStringWidth) / 2;
     if (this.adapter_.isRTL()) {
       xValue = xValue + localeStringWidth;
     }
@@ -753,8 +748,8 @@ class MDCSliderFoundation extends MDCFoundation {
       topLobeHorizontal = localeStringWidth - (2 * digitWidth);
     }
     const extraHorizontalWidth = topLobeHorizontal - 30;
-    let extraHorizontalWidthLeft = extraHorizontalWidth * 3 / 4;
-    let extraHorizontalWidthRight = extraHorizontalWidth / 4;
+    let extraHorizontalWidthLeft = extraHorizontalWidth / 2;
+    let extraHorizontalWidthRight = extraHorizontalWidth / 2;
     if (this.adapter_.isRTL()) {
       const temp = extraHorizontalWidthRight;
       extraHorizontalWidthRight = extraHorizontalWidthLeft;
