@@ -36,7 +36,7 @@
       <div class="mdc-drawer__content">
         <div class="mdc-list-group">
           <nav class="mdc-list">
-            <a class="mdc-list-item mdc-list-item--selected demo-drawer-list-item" href="#" tabindex="0" aria-selected="true">
+            <a class="mdc-list-item mdc-list-item--selected demo-drawer-list-item" href="#" aria-selected="true">
               <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
               <span class="mdc-list-item__label">Inbox</span>
             </a>
@@ -192,7 +192,6 @@
         var listEl = drawerEl.querySelector('.mdc-list');
         var list = mdc.list.MDCList.attachTo(listEl);
         list.singleSelection = true;
-        list.vertical = true;
       });
     </script>
   </body>

@@ -35,7 +35,7 @@ npm install @material/drawer
 <nav class="mdc-drawer">
   <div class="mdc-drawer__content">
     <nav class="mdc-list">
-      <a class="mdc-list-item mdc-list-item--selected" href='#' tabindex="0">
+      <a class="mdc-list-item mdc-list-item--activated" href='#'>
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
       </a>
       <a class="mdc-list-item" href="#">
@@ -70,56 +70,50 @@ drawer = new mdc.drawer.MDCDrawer(drawerEl);
 <nav class="mdc-drawer">
   <div class="mdc-drawer__content">
     <nav class="mdc-list">
-      <a class="mdc-list-item mdc-list-item--selected" href="#" tabindex="0">
+      <a class="mdc-list-item mdc-list-item--activated" href="#">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
-        <span class="mdc-list-item__label mdc-drawer__list-item-label">Inbox</span>
+        <span class="mdc-list-item__label">Inbox</span>
       </a>
       <a class="mdc-list-item" href="#">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>
-        <span class="mdc-list-item__label mdc-drawer__list-item-label">Star</span>
+        <span class="mdc-list-item__label">Star</span>
       </a>
       <a class="mdc-list-item" href="#">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
-        <span class="mdc-list-item__label mdc-drawer__list-item-label">Sent Mail</span>
+        <span class="mdc-list-item__label">Sent Mail</span>
       </a>
       <a class="mdc-list-item" href="#">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
-        <span class="mdc-list-item__label mdc-drawer__list-item-label">Drafts</span>
+        <span class="mdc-list-item__label">Drafts</span>
       </a>
 
       <hr class="mdc-list-divider">
-      <h6 class="mdc-list-group__subheader mdc-drawer__list-group-subheader">Labels</h6>
-      <a class="mdc-list-item" href="#" tabindex="0">
+      <h6 class="mdc-list-group__subheader">Labels</h6>
+      <a class="mdc-list-item" href="#">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
-        <span class="mdc-list-item__label mdc-drawer__list-item-label">Family</span>
+        <span class="mdc-list-item__label">Family</span>
       </a>
       <a class="mdc-list-item" href="#">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
-        <span class="mdc-list-item__label mdc-drawer__list-item-label">Friends</span>
+        <span class="mdc-list-item__label">Friends</span>
       </a>
       <a class="mdc-list-item" href="#">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
-        <span class="mdc-list-item__label mdc-drawer__list-item-label">Work</span>
+        <span class="mdc-list-item__label">Work</span>
       </a>
     </nav>
   </div>
 </div>
 ```
 
-> NOTE: First navigation item in list group should explicitly set tabindex to '0'.
-
-List group needs to be instantiated for keyboard navigation.
+The list needs to be instantiated for keyboard navigation.
 
 ```javascript
 var listEl = drawerEl.querySelector('.mdc-list');
 
 var list = mdc.list.MDCList.attachTo(listEl);
 list.singleSelection = true;
-list.vertical = true;
 ```
-
-Please see the [list readme](../mdc-list#list-group)
-for more details on list and list groups instructions.
 
 ### Drawers with Header
 
@@ -354,6 +348,7 @@ Method Signature | Description
 `hasClass(className: string) => boolean` | Returns true if the root element contains the given `className`.
 `removeClass(className: string) => void` | Removes a class from the root element.
 `eventTargetHasClass(targetElement: !Element, className: string) => boolean` | Returns true if the target element contains the given class.
+`computeBoundingRect() => !ClientRect` | Returns the ClientRect for the surface.
 `saveFocus() => void` | Saves the focus of currently active element.
 `restoreFocus() => void` | Restores focus to element previously saved with 'saveFocus'.
 `focusActiveNavigationItem() => void` | Focuses the active / selected navigation item.

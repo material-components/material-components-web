@@ -93,7 +93,7 @@ test('transitionend event calls foundation.handleTransitionEnd method', () => {
 test('#destroy removes keydown event listener', () => {
   const {component, drawer, mockFoundation} = setupTest();
   component.destroy();
-
+  drawer.querySelector('.mdc-list-item').focus();
   domEvents.emit(drawer, 'keydown');
   td.verify(mockFoundation.handleKeydown(td.matchers.isA(Object)), {times: 0});
 });

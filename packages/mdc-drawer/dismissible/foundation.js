@@ -39,6 +39,7 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
       removeClass: (/* className: string */) => {},
       hasClass: (/* className: string */) => {},
       eventTargetHasClass: (/* targetElement: !Element, className: string */) => {},
+      computeBoundingRect: () => {},
       notifyClose: () => {},
       notifyOpen: () => {},
       saveFocus: () => {},
@@ -57,9 +58,9 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
 
     this.adapter_.addClass(cssClasses.OPEN);
     this.adapter_.addClass(cssClasses.ANIMATE);
+    this.adapter_.computeBoundingRect(); // Force reflow.
+    this.adapter_.addClass(cssClasses.OPENING);
 
-    // Runs this after Style and Layout information have been calculated and the paint has occurred.
-    requestAnimationFrame(() => setTimeout(() => this.adapter_.addClass(cssClasses.OPENING), 0));
     this.adapter_.saveFocus();
   }
 

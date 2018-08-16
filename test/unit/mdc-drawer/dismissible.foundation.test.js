@@ -20,7 +20,8 @@ import bel from 'bel';
 import td from 'testdouble';
 
 import MDCDismissibleDrawerFoundation from '../../../packages/mdc-drawer/dismissible/foundation';
-import {cssClasses} from '../../../packages/mdc-drawer/constants';
+import {strings, cssClasses} from '../../../packages/mdc-drawer/constants';
+import {verifyDefaultAdapter} from '../helpers/foundation';
 
 suite('MDCDismissibleDrawerFoundation');
 
@@ -30,6 +31,23 @@ const setupTest = () => {
 
   return {foundation, mockAdapter};
 };
+
+test('exports strings', () => {
+  assert.isTrue('strings' in MDCDismissibleDrawerFoundation);
+  assert.deepEqual(MDCDismissibleDrawerFoundation.strings, strings);
+});
+
+test('exports cssClasses', () => {
+  assert.isTrue('cssClasses' in MDCDismissibleDrawerFoundation);
+  assert.deepEqual(MDCDismissibleDrawerFoundation.cssClasses, cssClasses);
+});
+
+test('defaultAdapter returns a complete adapter implementation', () => {
+  verifyDefaultAdapter(MDCDismissibleDrawerFoundation, [
+    'hasClass', 'addClass', 'removeClass', 'eventTargetHasClass', 'computeBoundingRect', 'saveFocus', 'restoreFocus',
+    'focusActiveNavigationItem', 'notifyClose', 'notifyOpen',
+  ]);
+});
 
 test('#open does nothing if drawer is already open', () => {
   const {foundation, mockAdapter} = setupTest();
