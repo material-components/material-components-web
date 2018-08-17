@@ -17,7 +17,7 @@
 import {MDCComponent} from '@material/base/index';
 import MDCDismissibleDrawerFoundation from './dismissible/foundation';
 import {MDCList} from '@material/list/index';
-import {cssClasses as listCssClasses} from '@material/list/constants';
+import MDCListFoundation from '@material/list/foundation';
 import {strings} from './constants';
 
 /**
@@ -75,7 +75,7 @@ export class MDCDrawer extends MDCComponent {
   }
 
   initialize() {
-    const list = MDCList.attachTo(this.root_.querySelector(`.${listCssClasses.ROOT}`));
+    const list = MDCList.attachTo(this.root_.querySelector(`.${MDCListFoundation.cssClasses.ROOT}`));
     list.singleSelection = true;
   }
 

@@ -20,6 +20,7 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 
 import {MDCDrawer} from '../../../packages/mdc-drawer';
+import {strings} from '../../../packages/mdc-drawer/constants';
 import MDCDismissibleDrawerFoundation from '../../../packages/mdc-drawer/dismissible/foundation';
 
 function getFixture() {
@@ -29,7 +30,7 @@ function getFixture() {
       <div class="mdc-drawer__content">
       <div class="mdc-list-group">
         <nav class="mdc-list">
-          <a class="mdc-list-item mdc-list-item--activated" href="#">
+          <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
             <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
           </a>
         </nav>
@@ -140,9 +141,92 @@ test('adapter#eventTargetHasClass returns true when class is found on event targ
   assert.isTrue(component.getDefaultFoundation().adapter_.eventTargetHasClass(mockEventTarget, 'foo'));
 });
 
+
+test('adapter#restoreFocus restores focus to previously saved focus', () => {
+  const {component, root} = setupTest();
+  const button = bel`<button>Foo</button>`;
+  document.body.appendChild(button);
+  document.body.appendChild(root);
+  button.focus();
+
+  component.getDefaultFoundation().adapter_.saveFocus();
+  root.querySelector(strings.ACTIVE_NAV_ITEM_SELECTOR).focus();
+  component.getDefaultFoundation().adapter_.restoreFocus();
+
+  assert.equal(button, document.activeElement);
+  document.body.removeChild(button);
+  document.body.removeChild(root);
+});
+
+test('adapter#restoreFocus focus shouldn\'t restore if focus is not within root element', () => {
+  const {component, root} = setupTest();
+  const navButtonEl = bel`<button>Foo</button>`;
+  const otherButtonEl = bel`<button>Bar</button>`;
+  document.body.appendChild(navButtonEl);
+  document.body.appendChild(otherButtonEl);
+  document.body.appendChild(root);
+  navButtonEl.focus();
+
+  component.getDefaultFoundation().adapter_.saveFocus();
+  otherButtonEl.focus();
+  component.getDefaultFoundation().adapter_.restoreFocus();
+
+  assert.notEqual(navButtonEl, document.activeElement);
+  document.body.removeChild(navButtonEl);
+  document.body.removeChild(otherButtonEl);
+  document.body.removeChild(root);
+});
+
+test('adapter#restoreFocus focus is not restored if saveFocus never called', () => {
+  const {component, root} = setupTest();
+  const button = bel`<button>Foo</button>`;
+  document.body.appendChild(button);
+  document.body.appendChild(root);
+  button.focus();
+
+  const navItem = root.querySelector(strings.ACTIVE_NAV_ITEM_SELECTOR);
+  navItem.focus();
+  component.getDefaultFoundation().adapter_.restoreFocus();
+
+  assert.equal(navItem, document.activeElement);
+  document.body.removeChild(button);
+  document.body.removeChild(root);
+});
+
 test('adapter#computeBoundingRect calls getBoundingClientRect() on root', () => {
   const {root, component} = setupTest();
   document.body.appendChild(root);
   assert.deepEqual(component.getDefaultFoundation().adapter_.computeBoundingRect(), root.getBoundingClientRect());
+  document.body.removeChild(root);
+});
+
+test('adapter#notifyOpen emits drawer open event', () => {
+  const {component} = setupTest();
+
+  const handler = td.func('openHandler');
+
+  component.listen(strings.OPEN_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyOpen();
+
+  td.verify(handler(td.matchers.anything()));
+});
+
+test('adapter#notifyClose emits drawer close event', () => {
+  const {component} = setupTest();
+
+  const handler = td.func('closeHandler');
+
+  component.listen(strings.CLOSE_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyClose();
+
+  td.verify(handler(td.matchers.anything()));
+});
+
+test('adapter#focusActiveNavigationItem focuses on active navigation item', () => {
+  const {component, root} = setupTest();
+  document.body.appendChild(root);
+  component.getDefaultFoundation().adapter_.focusActiveNavigationItem();
+
+  assert.equal(root.querySelector(strings.ACTIVE_NAV_ITEM_SELECTOR), document.activeElement);
   document.body.removeChild(root);
 });

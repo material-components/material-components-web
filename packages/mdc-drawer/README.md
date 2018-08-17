@@ -36,7 +36,7 @@ npm install @material/drawer
 <nav class="mdc-drawer">
   <div class="mdc-drawer__content">
     <nav class="mdc-list">
-      <a class="mdc-list-item mdc-list-item--activated" href='#'>
+      <a class="mdc-list-item mdc-list-item--activated" href='#' aria-selected="true">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
       </a>
       <a class="mdc-list-item" href="#">
@@ -81,7 +81,7 @@ const drawer = MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
 <nav class="mdc-drawer">
   <div class="mdc-drawer__content">
     <nav class="mdc-list">
-      <a class="mdc-list-item mdc-list-item--activated" href="#">
+      <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
         <span class="mdc-list-item__label">Inbox</span>
       </a>
@@ -129,7 +129,7 @@ Drawers can contain a header element which will not scroll with the rest of the 
   </div>
   <div class="mdc-drawer__content">
     <nav class="mdc-list">
-      <a class="mdc-list-item mdc-list-item--activated" href='#'>
+      <a class="mdc-list-item mdc-list-item--activated" href='#' aria-selected="true">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
       </a>
     </nav>
@@ -146,7 +146,7 @@ Dismissible drawers are by default hidden off screen, and can slide into view. D
   <header class="mdc-drawer mdc-drawer--dismissible">
     <div class="mdc-drawer__content">
       <nav class="mdc-list">
-        <a class="mdc-list-item mdc-list-item--activated" href='#'>
+        <a class="mdc-list-item mdc-list-item--activated" href='#' aria-selected="true">
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
         </a>
       </nav>
@@ -170,7 +170,7 @@ There are some styles that need to be applied to get the top app bar and the dis
   <nav class="mdc-drawer mdc-drawer--dismissible">
     <div class="mdc-drawer__content">
       <div class="mdc-list">
-        <a class="mdc-list-item mdc-list-item--activated" href='#'>
+        <a class="mdc-list-item mdc-list-item--activated" href='#' aria-selected="true">
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
         </a>
       </div>
