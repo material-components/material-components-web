@@ -35,7 +35,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTabFoundation, [
     'addClass', 'removeClass', 'hasClass',
     'setAttr',
-    'activateIndicator', 'deactivateIndicator', 'computeIndicatorClientRect',
+    'activateIndicator', 'deactivateIndicator',
     'getOffsetLeft', 'getOffsetWidth', 'getContentOffsetLeft', 'getContentOffsetWidth',
     'notifyInteracted',
     'focus',
@@ -79,12 +79,6 @@ test('#activate focuses the root node', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.activate({width: 100, left: 200});
   td.verify(mockAdapter.focus());
-});
-
-test('#computeIndicatorClientRect calls computeIndicatorClientRect on the adapter', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.computeIndicatorClientRect();
-  td.verify(mockAdapter.computeIndicatorClientRect());
 });
 
 test('#deactivate does nothing if not active', () => {

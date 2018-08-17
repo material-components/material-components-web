@@ -173,6 +173,8 @@ message UserAgent {
   RawCapabilities desired_capabilities = 11;
   RawCapabilities actual_capabilities = 12;
   Navigator navigator = 13;
+  string selenium_session_id = 20;
+  string selenium_result_url = 21;
 
   bool is_enabled_by_cli = 14;
   bool is_available_locally = 15;

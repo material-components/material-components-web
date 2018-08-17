@@ -1,7 +1,7 @@
 {
   "name": "@material/tab-bar",
   "description": "The Material Components for the web tab bar component",
-  "version": "0.38.1",
+  "version": "0.39.0-0",
   "license": "Apache-2.0",
   "keywords": [
     "material components",
@@ -17,8 +17,8 @@
   "dependencies": {
     "@material/base": "^0.35.0",
     "@material/elevation": "^0.38.0",
-    "@material/tab": "^0.38.1",
-    "@material/tab-scroller": "^0.38.1"
+    "@material/tab": "^0.39.0-0",
+    "@material/tab-scroller": "^0.39.0-0"
   },
   "publishConfig": {
     "access": "public"

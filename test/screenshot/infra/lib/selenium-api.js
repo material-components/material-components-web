@@ -279,30 +279,23 @@ class SeleniumApi {
 
     /** @type {!Session} */
     const session = await driver.getSession();
-    const seleniumSessionId = session.getId();
+    const sessionId = session.getId();
 
     /** @type {?Array<!mdc.proto.Screenshot>} */
     let changedScreenshots;
 
-    this.seleniumSessionIds_.add(seleniumSessionId);
-
-    const logResult = (status, ...args) => {
-      /* eslint-disable camelcase */
-      const {os_name, os_version, browser_name, browser_version} = userAgent.navigator;
-      this.logStatus_(status, `${browser_name} ${browser_version} on ${os_name} ${os_version}!`, ...args);
-      /* eslint-enable camelcase */
-    };
+    this.seleniumSessionIds_.add(sessionId);
 
     try {
       stackTrace = getStackTrace('captureAllPagesInOneBrowser_');
       changedScreenshots = await this.driveBrowser_({reportData, userAgent, driver});
-      logResult(CliStatuses.FINISHED);
+      this.logSession_(CliStatuses.FINISHED, userAgent);
     } catch (err) {
       runtimeError = new VError(err, stackTrace);
-      logResult(CliStatuses.FAILED);
+      this.logSession_(CliStatuses.FAILED, userAgent);
     } finally {
       this.numSessionsEnded_++;
-      logResult(CliStatuses.QUITTING);
+      this.logSession_(CliStatuses.QUITTING, userAgent);
       await driver.quit().catch(() => 0);
     }
 
@@ -314,13 +307,13 @@ class SeleniumApi {
       return;
     }
 
-    this.seleniumSessionIds_.delete(seleniumSessionId);
+    this.seleniumSessionIds_.delete(sessionId);
 
     await this.printBrowserConsoleLogs_(driver);
 
     if (this.cli_.isOnline()) {
       await this.cbtApi_.setTestScore({
-        seleniumSessionId,
+        seleniumSessionId: sessionId,
         changedScreenshots,
       });
     }
@@ -427,16 +420,18 @@ class SeleniumApi {
     /** @type {!mdc.proto.UserAgent.Navigator} */
     const navigator = await this.getUserAgentNavigator_(driver);
 
-    /* eslint-disable camelcase */
-    const {os_name, os_version, browser_name, browser_version} = navigator;
+    /** @type {!Session} */
+    const session = await driver.getSession();
+    const sessionId = session.getId();
 
     userAgent.navigator = navigator;
+    userAgent.browser_version_value = navigator.browser_version;
+    userAgent.selenium_session_id = sessionId;
+    userAgent.selenium_result_url = await this.cbtApi_.getPublicTestResultUrl(sessionId);
     userAgent.actual_capabilities = actualCapabilities;
-    userAgent.browser_version_value = browser_version;
     userAgent.image_filename_suffix = this.getImageFileNameSuffix_(userAgent);
 
-    this.logStatus_(CliStatuses.STARTED, `${browser_name} ${browser_version} on ${os_name} ${os_version}!`);
-    /* eslint-enable camelcase */
+    this.logSession_(CliStatuses.STARTED, userAgent);
 
     return driver;
   }
@@ -712,6 +707,7 @@ class SeleniumApi {
       }
 
       if (screenshot.retry_count > 0) {
+        // TODO(acdvorak): Print this info when a test fails.
         const {width, height} = diffImageResult.diff_image_dimensions;
         const whichMsg = `${screenshot.actual_html_file.public_url} > ${userAgent.alias}`;
         const countMsg = `attempt ${screenshot.retry_count} of ${maxRetries}`;
@@ -799,7 +795,8 @@ class SeleniumApi {
     const {width: uncroppedWidth, height: uncroppedHeight} = uncroppedJimpImage.bitmap;
     const {width: croppedWidth, height: croppedHeight} = croppedJimpImage.bitmap;
 
-    const message = `${urlWithQsParams} > ${userAgent.alias} screenshot from ` +
+    const message =
+      `${urlWithQsParams} > ${userAgent.alias} screenshot from ` +
       `${uncroppedWidth}x${uncroppedHeight} to ${croppedWidth}x${croppedHeight}`;
     this.logStatus_(CliStatuses.CROP, message);
 
@@ -922,6 +919,21 @@ class SeleniumApi {
    */
   async sleep_(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  /**
+   * @param {!CliStatus} status
+   * @param {!mdc.proto.UserAgent} userAgent
+   * @private
+   */
+  logSession_(status, userAgent) {
+    const navigator = userAgent.navigator;
+    const browser = CliColor.bold(`${navigator.browser_name} ${navigator.browser_version}`);
+    const os = `${navigator.os_name} ${navigator.os_version}`;
+    const sessionId = userAgent.selenium_session_id;
+    const publicCbtUrl = CliColor.underline(userAgent.selenium_result_url);
+
+    this.logStatus_(status, `${browser} on ${os}! - video: ${publicCbtUrl} (Selenium session ID: ${sessionId})`);
   }
 
   /**
