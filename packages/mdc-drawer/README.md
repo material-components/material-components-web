@@ -125,7 +125,7 @@ Drawers can contain a header element which will not scroll with the rest of the 
 <nav class="mdc-drawer">
   <div class="mdc-drawer__header">
     <h3 class="mdc-drawer__title">Mail</h3>
-    <h6 class="mdc-drawer__subtitle">email@material.io</h6>
+    <h6 class="mdc-drawer__subtext">email@material.io</h6>
   </div>
   <div class="mdc-drawer__content">
     <nav class="mdc-list">
@@ -232,7 +232,7 @@ Class | Description
 `mdc-drawer__header` | Non-scrollable element that exists on the top of the drawer.
 `mdc-drawer--open` | If present indicates that dismissible drawer is in the open position.
 `mdc-drawer__content` | Scrollable content area of the drawer.
-`mdc-drawer__subtitle` | Subtitle text element of the drawer.
+`mdc-drawer__subtext` | Subtext element of the drawer.
 `mdc-drawer__title` | Title text element of the drawer.
 
 
@@ -244,7 +244,7 @@ Mixin | Description
 `mdc-drawer-border-color($color, $opacity)` | Sets border color of `mdc-drawer` surface.
 `mdc-drawer-divider-color($color, $opacity)` | Sets divider color found between list groups.
 `mdc-drawer-fill-color-accessible($color)` | Sets the fill color to `$color`, and list item text and icon ink colors to an accessible color relative to `$color`.
-`mdc-drawer-group-header-text-color` | Sets drawer list subheader and drawer subtitle ink color.
+`mdc-drawer-subtitle-text-color` | Sets drawer list subheader and drawer subtitle ink color.
 `mdc-drawer-icon-fill-color($color, $opacity)` | Sets drawer list item graphic icon background color.
 `mdc-drawer-icon-activated-ink-color($color, $opacity)` | Sets activated drawer list item icon ink color.
 `mdc-drawer-icon-ink-color($color, $opacity)` | Sets drawer list item graphic icon ink color.
