@@ -139,3 +139,10 @@ test('adapter#eventTargetHasClass returns true when class is found on event targ
 
   assert.isTrue(component.getDefaultFoundation().adapter_.eventTargetHasClass(mockEventTarget, 'foo'));
 });
+
+test('adapter#computeBoundingRect calls getBoundingClientRect() on root', () => {
+  const {root, component} = setupTest();
+  document.body.appendChild(root);
+  assert.deepEqual(component.getDefaultFoundation().adapter_.computeBoundingRect(), root.getBoundingClientRect());
+  document.body.removeChild(root);
+});
