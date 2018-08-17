@@ -41,11 +41,9 @@
   overflow: hidden;
 
   // Firefox, Edge <= 16, IE 11
-  @supports not (-webkit-line-clamp: $max-lines) {
-    display: flex;
-    flex-direction: column;
-    max-height: (1.5em * $max-lines);
-  }
+  display: flex;
+  flex-direction: column;
+  max-height: (1.5em * $max-lines);
 
   // Chrome, Safari, Edge 17+
   @supports (-webkit-line-clamp: $max-lines) {
