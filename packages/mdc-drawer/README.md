@@ -284,7 +284,7 @@ Method Signature | Description
 `saveFocus() => void` | Saves the focus of currently active element.
 `restoreFocus() => void` | Restores focus to element previously saved with 'saveFocus'.
 `focusActiveNavigationItem() => void` | Focuses the active / selected navigation item.
-`notifyClosed() => void` | Emits the `MDCDrawer:close` event.
+`notifyClose() => void` | Emits the `MDCDrawer:close` event.
 `notifyOpen() => void` | Emits the `MDCDrawer:open` event.
 
 ### Foundations: `MDCDismissibleDrawerFoundation`

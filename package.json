@@ -216,6 +216,7 @@
     "mdc-base",
     "mdc-checkbox",
     "mdc-chips",
+    "mdc-drawer",
     "mdc-floating-label",
     "mdc-form-field",
     "mdc-icon-button",
