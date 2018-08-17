@@ -78,14 +78,12 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
   }
 
   /**
-   * Abstract method which gets called when drawer finished opening.
-   * @abstract
+   * Extensible method which gets called when drawer finished opening.
    */
   opened() {}
 
   /**
-   * Abstract method which gets called when drawer finished closing.
-   * @abstract
+   * Extensible method which gets called when drawer finished closing.
    */
   closed() {}
 
@@ -132,7 +130,7 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
    */
   handleTransitionEnd(evt) {
     const {OPENING, CLOSING, OPEN, ANIMATE, ROOT} = cssClasses;
-    if (!this.adapter_.eventTargetHasClass(evt.target, ROOT)) {
+    if (!this.adapter_.eventTargetHasClass(/** @type {!Element} */ (evt.target), ROOT)) {
       return;
     }
 

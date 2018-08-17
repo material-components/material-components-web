@@ -153,6 +153,7 @@ test('adapter#eventTargetHasClass returns true when class is found on event targ
   assert.isTrue(component.getDefaultFoundation().adapter_.eventTargetHasClass(mockEventTarget, 'foo'));
 });
 
+<<<<<<< HEAD
 test('adapter#restoreFocus restores focus to previously saved focus', () => {
   const {component, root} = setupTest();
   const button = bel`<button>Foo</button>`;
@@ -263,10 +264,11 @@ test('adapter#notifyClose emits drawer close event', () => {
 
   td.verify(handler(td.matchers.anything()));
 });
-
+=======
 test('adapter#computeBoundingRect calls getBoundingClientRect() on root', () => {
   const {root, component} = setupTest();
   document.body.appendChild(root);
   assert.deepEqual(component.getDefaultFoundation().adapter_.computeBoundingRect(), root.getBoundingClientRect());
   document.body.removeChild(root);
 });
+>>>>>>> feat/navigation-drawer-dismissible-foundation-update

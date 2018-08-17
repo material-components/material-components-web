@@ -34,46 +34,40 @@
         <h6 class="mdc-drawer__subtitle">email@material.io</h6>
       </div>
       <div class="mdc-drawer__content">
-        <div class="mdc-list-group">
-          <nav class="mdc-list">
-            <a class="mdc-list-item mdc-list-item--activated demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
-            </a>
-            <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
-            </a>
-            <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>Sent Mail
-            </a>
-            <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>Drafts
-            </a>
-          </nav>
+        <nav class="mdc-list">
+          <a class="mdc-list-item mdc-list-item--selected demo-drawer-list-item" href="#" aria-selected="true">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
+          </a>
+          <a class="mdc-list-item demo-drawer-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
+          </a>
+          <a class="mdc-list-item demo-drawer-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>Sent Mail
+          </a>
+          <a class="mdc-list-item demo-drawer-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>Drafts
+          </a>
 
           <hr class="mdc-list-divider">
           <h6 class="mdc-list-group__subheader">Labels</h6>
-          <nav class="mdc-list">
-            <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>Family
-            </a>
-            <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>Friends
-            </a>
-            <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>Work
-            </a>
-          </nav>
+          <a class="mdc-list-item demo-drawer-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>Family
+          </a>
+          <a class="mdc-list-item demo-drawer-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>Friends
+          </a>
+          <a class="mdc-list-item demo-drawer-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>Work
+          </a>
 
           <hr class="mdc-list-divider">
-          <nav class="mdc-list">
-            <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings</i>Settings
-            </a>
-            <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">announcement</i>Help & feedback
-            </a>
-          </nav>
-        </div>
+          <a class="mdc-list-item demo-drawer-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings</i>Settings
+          </a>
+          <a class="mdc-list-item demo-drawer-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">announcement</i>Help & feedback
+          </a>
+        </nav>
       </div>
     </aside>
     <div class="demo-content" id="demo-content">
@@ -185,6 +179,10 @@
         });
         var topAppBar = new mdc.topAppBar.MDCTopAppBar(document.getElementById('app-bar'));
         topAppBar.setScrollTarget(document.getElementById('demo-content'));
+
+        var listEl = drawerEl.querySelector('.mdc-list');
+        var list = mdc.list.MDCList.attachTo(listEl);
+        list.singleSelection = true;
       });
     </script>
   </body>

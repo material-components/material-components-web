@@ -74,7 +74,7 @@ class MDCDrawerAdapter {
   /**
    * Emits a custom event "MDCDrawer:close" denoting the drawer has closed.
    */
-  notifyClosed() {}
+  notifyClose() {}
 
   /**
    * Emits a custom event "MDCDrawer:open" denoting the drawer has opened.

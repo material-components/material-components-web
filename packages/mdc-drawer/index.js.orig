@@ -15,10 +15,14 @@
  * limitations under the License.
  */
 import {MDCComponent} from '@material/base/index';
+import {MDCFoundation} from '@material/base/foundation';
 import MDCDismissibleDrawerFoundation from './dismissible/foundation';
+<<<<<<< HEAD
 import MDCModalDrawerFoundation from './modal/foundation';
+=======
 import {MDCList} from '@material/list/index';
 import {cssClasses as listCssClasses} from '@material/list/constants';
+>>>>>>> feat/navigation-drawer-dismissible-foundation-update
 import {strings} from './constants';
 import * as util from './util';
 
@@ -74,11 +78,19 @@ export class MDCDrawer extends MDCComponent {
     }
   }
 
+<<<<<<< HEAD
+=======
+  destroy() {
+    this.root_.removeEventListener('keydown', this.handleKeydown_);
+    this.root_.removeEventListener('transitionend', this.handleTransitionEnd_);
+  }
+
   initialize() {
     const list = MDCList.attachTo(this.root_.querySelector(`.${listCssClasses.ROOT}`));
     list.singleSelection = true;
   }
 
+>>>>>>> feat/navigation-drawer-dismissible-foundation-update
   initialSyncWithDOM() {
     const {MODAL} = MDCDismissibleDrawerFoundation.cssClasses;
 
