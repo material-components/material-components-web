@@ -56,6 +56,23 @@ npm install @material/drawer
 @import "@material/drawer/mdc-drawer";
 ```
 
+### JavaScript Instantiation
+
+For standard drawer the list has to be instantiated like this:
+
+```js
+import {MDCList} from "@material/list";
+const list = MDCList.attachTo(document.querySelector('.mdc-list'));
+const.singleSelection = true;
+```
+
+For other variants:
+
+```js
+import {MDCDrawer} from "@material/drawer";
+const drawer = MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
+```
+
 ## Variants
 
 ### Drawers with separate list groups
@@ -100,15 +117,6 @@ npm install @material/drawer
 </div>
 ```
 
-The list needs to be instantiated for keyboard navigation.
-
-```javascript
-var listEl = drawerEl.querySelector('.mdc-list');
-
-var list = mdc.list.MDCList.attachTo(listEl);
-list.singleSelection = true;
-```
-
 ### Drawers with Header
 
 Drawers can contain a header element which will not scroll with the rest of the drawer content. Things like account switchers and titles should live in the header element.
@@ -129,7 +137,7 @@ Drawers can contain a header element which will not scroll with the rest of the 
 </header>
 ```
 
-## Dismissible Drawer
+### Dismissible Drawer
 
 Dismissible drawers are by default hidden off screen, and can slide into view. Dismissible drawers should be used when navigation is not common, and the main app content is prioritized.
 

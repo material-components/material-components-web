@@ -15,7 +15,10 @@
  * limitations under the License.
  */
 import {MDCComponent} from '@material/base/index';
+import {MDCFoundation} from '@material/base/foundation';
 import MDCDismissibleDrawerFoundation from './dismissible/foundation';
+import {MDCList} from '@material/list/index';
+import {cssClasses as listCssClasses} from '@material/list/constants';
 import {strings} from './constants';
 
 /**
@@ -70,6 +73,11 @@ export class MDCDrawer extends MDCComponent {
   destroy() {
     this.root_.removeEventListener('keydown', this.handleKeydown_);
     this.root_.removeEventListener('transitionend', this.handleTransitionEnd_);
+  }
+
+  initialize() {
+    const list = MDCList.attachTo(this.root_.querySelector(`.${listCssClasses.ROOT}`));
+    list.singleSelection = true;
   }
 
   initialSyncWithDOM() {
