@@ -21,6 +21,10 @@
 // TODO(acdvorak): Create mixins for all redline values.
 // TODO(acdvorak): Create screenshot test page with `body { font-size: 200$; }` for all components to test a11y
 
+//
+// Public
+//
+
 @mixin mdc-dialog-corner-radius($radius: $mdc-dialog-corner-radius) {
   border-radius: $radius;
 }
@@ -38,14 +42,25 @@
 }
 
 @mixin mdc-dialog-multiline-ellipsis($max-lines: 2) {
+  @include mdc-dialog-multiline-ellipsis-fallback_($max-lines);
+  @include mdc-dialog-multiline-ellipsis-webkit_($max-lines);
+
+  // All browsers
   overflow: hidden;
+}
 
-  // Firefox, Edge <= 16, IE 11
+//
+// Private
+//
+
+// Firefox, Edge <= 16, IE 11
+@mixin mdc-dialog-multiline-ellipsis-fallback_($max-lines) {
   display: flex;
-  flex-direction: column;
   max-height: (1.5em * $max-lines);
+}
 
-  // Chrome, Safari, Edge 17+
+// Chrome, Safari, Edge 17+
+@mixin mdc-dialog-multiline-ellipsis-webkit_($max-lines) {
   @supports (-webkit-line-clamp: $max-lines) {
     // stylelint-disable-next-line value-no-vendor-prefix
     display: -webkit-box;
